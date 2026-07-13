@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json,sys; d=json.load(sys.stdin); fp=d.get('tool_input',{}).get('file_path',''); (print('[Tailwind CSS Enforcer] Run tailwind-css-enforcer agent to audit CSS classes in: '+fp),sys.exit(0)) if any(fp.endswith(e) for e in ('.tsx','.jsx','.css','.scss','.sass','.html','.vue')) else None\""
+          }
+        ]
+      }
+    ]
+  }
+}

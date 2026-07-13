@@ -1,0 +1,40 @@
+{
+  "Home": {
+    "title": "Schooltest",
+    "subtitle": "Next.js 16 Frontend für die Schooltest-Plattform.",
+    "articlesCta": "Artikel-Demo ansehen",
+    "docsHint": "Die API-Dokumentation wird von Strapi unter /documentation bereitgestellt."
+  },
+  "Nav": {
+    "home": "Startseite",
+    "articles": "Artikel"
+  },
+  "Articles": {
+    "title": "Artikel",
+    "description": "Beispielmodul, End-to-End mit der Strapi-Artikel-API verbunden.",
+    "createTitle": "Artikel erstellen"
+  },
+  "Auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "username": "Benutzername",
+    "identifier": "E-Mail oder Benutzername",
+    "noAccount": "Noch kein Konto?",
+    "haveAccount": "Bereits ein Konto?",
+    "welcome": "Willkommen, {name}",
+    "signInError": "Ungültige Anmeldedaten",
+    "signUpError": "Konto konnte nicht erstellt werden"
+  },
+  "LocaleSwitcher": {
+    "label": "Sprache"
+  },
+  "Common": {
+    "loading": "Wird geladen…",
+    "error": "Etwas ist schiefgelaufen",
+    "retry": "Erneut versuchen",
+    "notFound": "Seite nicht gefunden"
+  }
+}
