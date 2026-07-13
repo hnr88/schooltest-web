@@ -27,3 +27,7 @@ pnpm typecheck
 pnpm lint
 pnpm test:e2e
 ```
+
+## Deployment
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for the production and staging Coolify setup.

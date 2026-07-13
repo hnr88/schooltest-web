@@ -1,54 +1,68 @@
 # syntax=docker/dockerfile:1
-# Next.js 16 (App Router, React 19) production image — multi-stage, standalone
-# output, non-root runtime. Build context is ./app.
-#
-# NEXT_PUBLIC_* client constants are inlined at BUILD time, so the public API URL
-# is passed as a build arg. Server-only env is injected at RUNTIME by compose.
+ARG NODE_VERSION=22-alpine
 
-# ---- deps ----
-FROM node:22-bookworm-slim AS deps
-ENV PNPM_HOME=/pnpm \
-    PATH=/pnpm:$PATH \
-    CI=true
-RUN corepack enable
+# =============================================================================
+# Stage 1: install dependencies (cached unless package files change)
+# =============================================================================
+FROM node:${NODE_VERSION} AS deps
+
 WORKDIR /app
+
+RUN corepack enable pnpm
+
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm install --frozen-lockfile
 
-# ---- build ----
-FROM node:22-bookworm-slim AS build
-ENV PNPM_HOME=/pnpm \
-    PATH=/pnpm:$PATH \
-    NEXT_TELEMETRY_DISABLED=1 \
-    NODE_ENV=production \
-    SKIP_ENV_VALIDATION=1
-RUN corepack enable
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
+
+# =============================================================================
+# Stage 2: build the standalone Next.js application
+# =============================================================================
+FROM node:${NODE_VERSION} AS builder
+
 WORKDIR /app
+
+RUN corepack enable pnpm
+
+# NEXT_PUBLIC_* values are compiled into the browser bundle, so Coolify must
+# supply the environment-specific values as Docker build args.
 ARG NEXT_PUBLIC_API_BASE_URL=http://localhost:1337
 ARG NEXT_PUBLIC_APP_URL=http://localhost:3000
-ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL} \
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL} \
     NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN pnpm build
 
-# ---- runner ----
-FROM node:22-bookworm-slim AS runner
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates tini wget \
-    && rm -rf /var/lib/apt/lists/*
-RUN useradd -u 10001 -m nextjs
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./package.json
+COPY . .
+
+RUN pnpm run build
+
+# =============================================================================
+# Stage 3: production image (minimal, standalone)
+# =============================================================================
+FROM node:${NODE_VERSION} AS runner
+
+WORKDIR /app
+
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PORT=3000 \
     HOSTNAME=0.0.0.0
-WORKDIR /app
-COPY --from=build --chown=nextjs:nextjs /app/.next/standalone ./
-COPY --from=build --chown=nextjs:nextjs /app/.next/static ./.next/static
-COPY --from=build --chown=nextjs:nextjs /app/public ./public
-USER nextjs
-EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD wget -qO- http://127.0.0.1:3000/ >/dev/null 2>&1 || exit 1
-ENTRYPOINT ["/usr/bin/tini", "--"]
+
+COPY --from=builder --chown=node:node /app/public ./public
+
+RUN mkdir .next && chown node:node .next
+
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+
+USER node
+
+# Coolify waits for this before routing a rolling deployment to the container.
+# Any response below 500 proves that the Next.js server is accepting traffic.
+HEALTHCHECK --interval=10s --timeout=5s --start-period=40s --retries=3 \
+  CMD node -e "const http=require('http');const req=http.get({host:'127.0.0.1',port:process.env.PORT||3000,path:'/'},r=>process.exit(r.statusCode<500?0:1));req.on('error',()=>process.exit(1));req.setTimeout(4000,()=>{req.destroy();process.exit(1)});"
+
 CMD ["node", "server.js"]

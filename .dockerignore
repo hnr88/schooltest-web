@@ -11,7 +11,14 @@ npm-debug.log*
 .codex
 .agents
 *.md
+!README.md
 .DS_Store
 coverage
 .vscode
 .idea
+tests
+playwright.config.ts
+playwright-report
+test-results
+.playwright
+.turbo
