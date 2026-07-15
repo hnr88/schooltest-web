@@ -1,9 +1,51 @@
 {
   "Home": {
     "title": "Schooltest",
+    "brandPrefix": "School",
+    "brandAccent": "Test",
+    "skipToContent": "Skip to content",
     "subtitle": "Next.js 16 frontend for the Schooltest platform.",
     "articlesCta": "Explore the articles demo",
-    "docsHint": "API docs are served by Strapi at /documentation."
+    "docsHint": "API docs are served by Strapi at /documentation.",
+    "navigationLabel": "Primary navigation",
+    "nav": {
+      "why": "Why SchoolTest",
+      "plan": "Your learning plan",
+      "expect": "What to expect"
+    },
+    "headerCta": "See your plan",
+    "headerCtaShort": "Plan",
+    "eyebrow": "Personal English learning for ages 9–18",
+    "heroTitle": "Get test-ready for your move to Australia.",
+    "heroDescription": "Friendly placement tests, daily practice, and progress you can actually see — built to help every learner grow with confidence.",
+    "primaryCta": "Explore your plan",
+    "secondaryCta": "See how it works",
+    "trust": "Aligned to the ACARA EAL/D learning progression",
+    "benefits": {
+      "label": "What to expect",
+      "adaptive": "A starting point that meets you where you are",
+      "skills": "Four skills, one clear learning path",
+      "progress": "Progress you can see and celebrate"
+    },
+    "preview": {
+      "eyebrow": "Your learning snapshot",
+      "title": "A plan made for you",
+      "description": "Start with a friendly placement test, then keep moving with short, focused practice.",
+      "week": "Week one",
+      "levelLabel": "Current level",
+      "level": "B1",
+      "levelName": "Developing",
+      "reading": "Reading",
+      "listening": "Listening",
+      "writing": "Writing",
+      "speaking": "Speaking",
+      "progressLabel": "This week’s progress",
+      "progress": "3 of 4 activities complete",
+      "skillProgress": "{skill}: {value}% complete",
+      "weeklyProgress": "This week’s progress: {value}% complete",
+      "streakLabel": "Practice streak",
+      "streak": "5 days"
+    }
   },
   "Nav": {
     "home": "Home",
