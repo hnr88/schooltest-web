@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-import type { StatusBadgeProps } from '../types/design-system.types';
+import type { StatusBadgeProps } from '@/modules/design-system/types/design-system.types';
 
 const PILL_CLASSES: Record<StatusBadgeProps['status'], string> = {
   live: 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300',

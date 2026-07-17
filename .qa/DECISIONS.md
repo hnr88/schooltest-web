@@ -111,3 +111,69 @@ Critic found 4 SHOULD-FIX where task files deviated from the authoritative DS sp
 4. Button destructive overridden to spec solid bg (was ui soft tint).
 Plus NOTE fixes: SegmentedControl spacing={1} (spec 4px), ProgressBar track h-1.5 (spec 6px).
 Pixel-level NOTEs (font-size nits, inherited ui colors) intentionally left — scope discipline.
+
+## 2026-07-17 D16 — Task-07 showcase decisions (merged from .thellmspace/DECISIONS.md)
+# DECISIONS.md — mission decision log
+
+## Task 07 — /design-system showcase page
+
+1. **Demo fixture data is hardcoded, all prose is not.** The `DesignSystem` namespace
+   (106 keys, en/de parity from task 02) has no keys for: StatCard values ("24", "312",
+   "8.4"), table dates/question counts/averages/footer totals, pagination page numbers,
+   avatar initials (LP/MK/JD/AW/ST), AvatarGroupCount "+9", the "⌘D" shortcut glyph, the
+   invalid-email `defaultValue` ("demo@schooltest"), and the popover share-link URL
+   ("https://schooltest.app/t/science-quiz"). Task 07 mandates EXACTLY the existing
+   namespace keys and law 4 forbids touching task 02's catalog contract, so these are
+   shipped as presentational fixtures (numbers/initials/symbols/URLs — zero English
+   words). Every user-facing word, aria-label, and alt text comes from `DesignSystem.*`.
+2. **ui-default English strings remain in read-only primitives.** `PaginationPrevious`/
+   `PaginationNext` visible text ("Previous"/"Next"), their aria-labels, the pagination
+   nav aria-label ("pagination"), and `Spinner`'s aria-label ("Loading") are hardcoded
+   inside `src/components/ui/*`, which law 11 makes read-only. No `DesignSystem` keys
+   exist to override them with (`text` prop left at default). Flagged for tasks 14–15:
+   de mode will show these ui defaults on /design-system.
+3. **No pagination island.** The task file's island list is explicit and exhaustive
+   ("Client islands ONLY": TagDemo, AlertDismissDemo, DialogDemo, DropdownDemo,
+   PopoverDemo, SegmentedDemo; tooltip composed directly since ui Tooltip is already
+   client). Pagination therefore renders as plain anchors (`href="#"`, page 1
+   `isActive`). C-E2E-DS-VARIANTS mentions "pagination/tabs switch" — tabs switch via
+   uncontrolled Base UI Tabs (`defaultValue`); pagination has no state. Task 14 must
+   assert accordingly.
+4. **7 barrel exports render through composition, not direct JSX**: `DialogPortal` +
+   `DialogOverlay` (inside ui `DialogContent`, src/components/ui/dialog.tsx:50-52),
+   `DropdownMenuPortal` (inside ui `DropdownMenuContent`, dropdown-menu.tsx:34),
+   `SelectScrollUpButton` + `SelectScrollDownButton` (inside ui `SelectContent`,
+   select.tsx:89,91), `ProgressTrack` + `ProgressIndicator` (inside ui `Progress` root,
+   progress.tsx:21-23). Placing them directly would duplicate portals/tracks; they do
+   render in the DOM via the composed parents.
+5. **Namespace key reuse where no dedicated key exists**: SegmentedControl
+   `ariaLabel` = `sectionData`; CountBadge `ariaLabel` = `buttonNotifications`; popover
+   link-input aria-label = `tooltipContent` ("Copy share link"); dropdown group labels
+   = `tableTest` / `selectLabel`; dropdown sub-menu items = `tooltipContent` /
+   `popoverCopy`; accordion items reuse the `tabs*` keys; Badge variant labels cycle
+   `badgeLive`/`badgeScheduled`/`badgeDraft`/`tagGrade`.
+6. **Structural splits for the size rules**: `ChoiceControls` extracted from
+   `FormsSection` (component ≤120 lines); `components/showcase/index.ts` sub-barrel
+   added and re-exported via `export * from './components/showcase'` under the
+   barrel's `// showcase` group (module barrel stays ≤200 lines). `ChoiceControls` and
+   `DataTable` are internal helpers, intentionally not barrel-exported.
+7. **AvatarImage src** points to `/brand/logo-mark.png` (the only suitable public
+   image) so the `AvatarImage` export renders a real image; alt from `avatarAlt`.
+8. **Choice controls use `aria-labelledby`** (Checkbox/RadioGroupItem/Switch render
+   `<span role="...">` in Base UI, so `htmlFor` association is impossible); visible
+   `Label` siblings carry the ids. RadioGroup additionally gets
+   `aria-label={t('selectLabel')}`.
+
+## 2026-07-17 D17 — Pagination i18n
+Added DesignSystem.paginationPrevious/Next(+Aria)/NavAria keys (en+de) and passed
+text/aria-label props in the showcase data-table (ui/pagination defaults are English).
+Demo fixtures in the showcase (numerals, initials, dd.mm dates, demo@schooltest, share URL)
+are locale-invariant data, not copy — accepted by verifier ruling.
+
+## 2026-07-17 D18 — Wave-3 critic fixes
+1. ui-baked English sr-only leaks addressed showcase-side: dialog demo now uses
+   showCloseButton={false} + own DialogClose X (dialogCloseLabel key); Spinner gets
+   spinnerLabel; Breadcrumb nav gets breadcrumbNavAria. Ellipsis sr-only strings
+   (pagination/breadcrumb "More") live in aria-hidden subtrees — not exposed, documented.
+2. All 48 upward-relative imports in the design-system module converted to @/ alias
+   (imports.md compliance); same-dir ./x imports kept.

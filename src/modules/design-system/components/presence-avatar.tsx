@@ -5,7 +5,7 @@ import type {
   PresenceAvatarProps,
   PresenceAvatarSize,
   PresenceStatus,
-} from '../types/design-system.types';
+} from '@/modules/design-system/types/design-system.types';
 
 const SIZE_CLASSES: Record<PresenceAvatarSize, string> = {
   sm: 'size-6',

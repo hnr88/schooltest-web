@@ -350,6 +350,14 @@
     "avatarAlt": "Avatar der Lehrkraft",
     "breadcrumbDashboard": "Dashboard",
     "breadcrumbTests": "Tests",
-    "breadcrumbCurrent": "Algebra-Zwischenprüfung"
+    "breadcrumbCurrent": "Algebra-Zwischenprüfung",
+    "paginationPrevious": "Zurück",
+    "paginationNext": "Weiter",
+    "paginationPreviousAria": "Zur vorherigen Seite",
+    "paginationNextAria": "Zur nächsten Seite",
+    "paginationNavAria": "Seitennavigation",
+    "spinnerLabel": "Wird geladen…",
+    "dialogCloseLabel": "Schließen",
+    "breadcrumbNavAria": "Breadcrumb-Navigation"
   }
 }

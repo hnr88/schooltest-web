@@ -350,6 +350,14 @@
     "avatarAlt": "Teacher avatar",
     "breadcrumbDashboard": "Dashboard",
     "breadcrumbTests": "Tests",
-    "breadcrumbCurrent": "Midterm Algebra"
+    "breadcrumbCurrent": "Midterm Algebra",
+    "paginationPrevious": "Previous",
+    "paginationNext": "Next",
+    "paginationPreviousAria": "Go to previous page",
+    "paginationNextAria": "Go to next page",
+    "paginationNavAria": "Pagination",
+    "spinnerLabel": "Loading…",
+    "dialogCloseLabel": "Close",
+    "breadcrumbNavAria": "Breadcrumb navigation"
   }
 }

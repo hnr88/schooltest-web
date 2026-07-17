@@ -4,7 +4,7 @@ import { XIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-import type { TagProps } from '../types/design-system.types';
+import type { TagProps } from '@/modules/design-system/types/design-system.types';
 
 function Tag({ label, onRemove, removeLabel, className }: TagProps) {
   return (

@@ -192,3 +192,6 @@ export {
   AccordionTrigger,
   AccordionContent,
 } from '@/components/ui/accordion';
+
+// showcase
+export * from './components/showcase';

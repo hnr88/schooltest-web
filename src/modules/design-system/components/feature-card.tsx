@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-import type { FeatureCardProps, FeatureCardTone } from '../types/design-system.types';
+import type { FeatureCardProps, FeatureCardTone } from '@/modules/design-system/types/design-system.types';
 
 const TILE_TONES: Record<FeatureCardTone, string> = {
   light: 'bg-blue-50 text-blue-600',

@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-import type { CountBadgeProps } from '../types/design-system.types';
+import type { CountBadgeProps } from '@/modules/design-system/types/design-system.types';
 
 function CountBadge({ count, ariaLabel, className }: CountBadgeProps) {
   return (

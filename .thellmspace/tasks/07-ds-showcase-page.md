@@ -6,7 +6,7 @@ kind: build
 slice: showcase route exercising the whole design-system barrel with all variants
 target: src/app/design-system/page.tsx, src/modules/design-system/components/showcase/
 contract: C-PAGE-DS
-status: TODO
+status: DONE
 depends_on: [02, 03, 04, 05, 06]
 ---
 ## Objective
@@ -68,4 +68,5 @@ DesignSystem.*), nextjs-patterns (server by default, 'use client' leaves), quali
 - Runtime proof happens in tasks 13–15 (Playwright) per the wave plan; this task's gate is
   compile/lint/review (keeps one-server-at-a-time discipline).
 ## Evidence
+PASS (independent verifier, 2026-07-17): every barrel export exercised (7 via composed parents, verified in ui source); all 10 button + 10 badge variants, alerts ×4, stat/feature cards, forms states, overlays, tabs/segmented/table/pagination/breadcrumb, progress/skeleton/spinner, logo ×3; zero hardcoded English words in JSX; tsc 0, lint 0 errors. Orchestrator fix after verify: pagination text + aria-labels i18n-driven (5 new keys, parity 300 keys OK); stray .thellmspace/DECISIONS.md merged into .qa/DECISIONS.md.
 (filled by builder/verifier)

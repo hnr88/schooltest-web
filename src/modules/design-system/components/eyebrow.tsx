@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-import type { EyebrowProps } from '../types/design-system.types';
+import type { EyebrowProps } from '@/modules/design-system/types/design-system.types';
 
 const TONE_CLASSES: Record<NonNullable<EyebrowProps['tone']>, string> = {
   blue: 'text-blue-600',

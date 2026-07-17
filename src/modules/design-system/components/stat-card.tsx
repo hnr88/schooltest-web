@@ -6,7 +6,7 @@ import type {
   StatCardDeltaTone,
   StatCardIconTone,
   StatCardProps,
-} from '../types/design-system.types';
+} from '@/modules/design-system/types/design-system.types';
 
 const TILE_TONES: Record<StatCardIconTone, string> = {
   blue: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-500',

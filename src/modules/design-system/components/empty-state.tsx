@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-import type { EmptyStateProps } from '../types/design-system.types';
+import type { EmptyStateProps } from '@/modules/design-system/types/design-system.types';
 
 function EmptyState({ icon: Icon, title, description, action, className }: EmptyStateProps) {
   return (

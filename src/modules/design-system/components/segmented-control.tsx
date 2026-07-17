@@ -3,7 +3,7 @@
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
 
-import type { SegmentedControlProps } from '../types/design-system.types';
+import type { SegmentedControlProps } from '@/modules/design-system/types/design-system.types';
 
 function SegmentedControl({
   options,

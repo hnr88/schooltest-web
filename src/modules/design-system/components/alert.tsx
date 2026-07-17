@@ -10,7 +10,7 @@ import {
 import { cn } from '@/lib/utils';
 
 import { Button } from './button';
-import type { AlertProps, AlertVariant } from '../types/design-system.types';
+import type { AlertProps, AlertVariant } from '@/modules/design-system/types/design-system.types';
 
 const VARIANT_CONFIG: Record<AlertVariant, { icon: LucideIcon; tile: string }> = {
   info: { icon: Info, tile: 'bg-blue-50 text-blue-600' },

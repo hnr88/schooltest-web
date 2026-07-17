@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-import type { ContainerProps, SectionProps } from '../types/design-system.types';
+import type { ContainerProps, SectionProps } from '@/modules/design-system/types/design-system.types';
 
 function Container({ children, className }: ContainerProps) {
   return (
