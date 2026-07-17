@@ -115,8 +115,11 @@
         "grammar": "Grammatik",
         "vocabulary": "Wortschatz",
         "coherence": "Kohärenz",
+        "scoreGrammar": "8.5",
+        "scoreVocabulary": "7.0",
+        "scoreCoherence": "6.5",
         "scoreLabel": "{skill}: {score} von 9 Punkten",
-        "suggestion": "Verknüpfen Sie den zweiten und dritten Absatz — „on the other hand“ würde den Kontrast deutlicher machen."
+        "suggestion": "Verknüpfen Sie den zweiten und dritten Absatz — <mark>\"on the other hand\"</mark> würde den Kontrast deutlicher machen."
       }
     },
     "stats": {

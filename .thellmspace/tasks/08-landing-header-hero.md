@@ -6,7 +6,7 @@ kind: build
 slice: landing sections 1–5 as separate server components
 target: src/modules/landing/components/{AnnouncementBar,LandingHeader,MobileNav,HeroSection,HeroFlow,TrustedByStrip}.tsx
 contract: C-PAGE-LANDING
-status: TODO
+status: DONE
 depends_on: [01, 02, 03]
 ---
 ## Objective
@@ -75,4 +75,5 @@ next/image priority for LCP, semantic landmarks), imports.md.
 - Sections 6–13 land in tasks 09–11; interim page = sections 1–5 only (fine).
 - HeroFlow lives inside HeroSection's card as a child component (separate file, composed).
 ## Evidence
+PASS (independent verifier, 2026-07-17): 6 components per C-PAGE-LANDING 1–5; old hero files deleted with zero references; Sheet family barrel exact; all strings incl. aria/alt traced to Home.* both locales; exactly one h1; tsc 0, lint 0 errors; interim `<main>` re-home confirmed scheduled in task 11.
 (filled by builder/verifier)

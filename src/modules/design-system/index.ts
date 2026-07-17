@@ -154,6 +154,16 @@ export {
   PopoverTitle,
   PopoverTrigger,
 } from '@/components/ui/popover';
+export {
+  Sheet,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
 
 // data display
 export { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';

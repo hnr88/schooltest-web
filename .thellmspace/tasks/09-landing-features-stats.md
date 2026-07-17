@@ -6,7 +6,7 @@ kind: build
 slice: landing sections 6–8
 target: src/modules/landing/components/{FeaturesSection,FeatureDetailSection,AiFeedbackCard,StatsBand}.tsx
 contract: C-PAGE-LANDING
-status: TODO
+status: DONE
 depends_on: [01, 02, 03, 05]
 ---
 ## Objective
@@ -64,4 +64,15 @@ keep order), imports.md.
 - Scores 8.5/7.0/6.5 and bar percentages (85/70/65) are spec content; percentages as plain
   numbers in the component props (not user-facing text) — labels/values come from messages.
 ## Evidence
+PASS (independent verifier, 2026-07-17): PARITY OK 306 keys; 3 score keys both locales (8.5/7.0/6.5); suggestion rich `<mark>` both locales with English learner phrase kept; FeaturesSection (navy middle card), FeatureDetailSection + AiFeedbackCard (per-row bar colors, ICU aria labels), StatsBand (watermark, stat order + tones) all contract-conform; one h1; tsc 0, lint 0 errors.
+BUILDER (2026-07-17): Added missed keys to en/de `Home.featureDetail.card`: scoreGrammar
+"8.5" / scoreVocabulary "7.0" / scoreCoherence "6.5" (identical both locales); `suggestion`
+converted to rich `<mark>` form (learner quote "on the other hand" kept verbatim in both
+locales; `suggestionHighlight` key NOT added — t.rich `<mark>` approach makes it redundant).
+Parity: PARITY OK 306 keys. Built FeaturesSection (id=product), FeatureDetailSection
+(id=ai-feedback), AiFeedbackCard (per-row ProgressBar indicator override via className
+passthrough, values 85/70/65 as props), StatsBand (watermark Logo mark white opacity-10).
+Page now renders sections 1–8 (HeroFlow lives inside HeroSection). tsc 0 errors; lint 0
+errors (1 pre-existing articles warning). Contract overrides spec where they differ
+(CircleCheck teal-600, teal-500/blue-100 stat values, vertical score rows).
 (filled by builder/verifier)

@@ -115,8 +115,11 @@
         "grammar": "Grammar",
         "vocabulary": "Vocabulary",
         "coherence": "Coherence",
+        "scoreGrammar": "8.5",
+        "scoreVocabulary": "7.0",
+        "scoreCoherence": "6.5",
         "scoreLabel": "{skill}: score {score} out of 9",
-        "suggestion": "Try linking your second and third paragraphs — \"on the other hand\" would make the contrast clearer."
+        "suggestion": "Try linking your second and third paragraphs — <mark>\"on the other hand\"</mark> would make the contrast clearer."
       }
     },
     "stats": {

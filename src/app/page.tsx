@@ -1,10 +1,23 @@
-import { LandingHeader, LandingHero } from '@/modules/landing';
+import {
+  AnnouncementBar,
+  FeatureDetailSection,
+  FeaturesSection,
+  HeroSection,
+  LandingHeader,
+  StatsBand,
+  TrustedByStrip,
+} from '@/modules/landing';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-canvas text-ink">
+    <>
+      <AnnouncementBar />
       <LandingHeader />
-      <LandingHero />
-    </div>
+      <HeroSection />
+      <TrustedByStrip />
+      <FeaturesSection />
+      <FeatureDetailSection />
+      <StatsBand />
+    </>
   );
 }

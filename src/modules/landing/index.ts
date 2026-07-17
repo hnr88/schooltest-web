@@ -1,2 +1,10 @@
+export { AnnouncementBar } from '@/modules/landing/components/AnnouncementBar';
 export { LandingHeader } from '@/modules/landing/components/LandingHeader';
-export { LandingHero } from '@/modules/landing/components/LandingHero';
+export { MobileNav } from '@/modules/landing/components/MobileNav';
+export { HeroSection } from '@/modules/landing/components/HeroSection';
+export { HeroFlow } from '@/modules/landing/components/HeroFlow';
+export { TrustedByStrip } from '@/modules/landing/components/TrustedByStrip';
+export { FeaturesSection } from '@/modules/landing/components/FeaturesSection';
+export { FeatureDetailSection } from '@/modules/landing/components/FeatureDetailSection';
+export { AiFeedbackCard } from '@/modules/landing/components/AiFeedbackCard';
+export { StatsBand } from '@/modules/landing/components/StatsBand';

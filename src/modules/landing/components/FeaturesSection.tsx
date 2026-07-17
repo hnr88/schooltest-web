@@ -1,0 +1,43 @@
+import { BarChart3, FileText, Sparkles } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
+
+import { Container, Eyebrow, FeatureCard, Section } from '@/modules/design-system';
+
+async function FeaturesSection() {
+  const t = await getTranslations('Home');
+
+  return (
+    <Section id="product">
+      <Container>
+        <div className="mx-auto max-w-xl text-center">
+          <Eyebrow>{t('features.eyebrow')}</Eyebrow>
+          <h2 className="mt-3 text-4xl font-bold tracking-tight text-balance">
+            {t('features.title')}
+          </h2>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <FeatureCard
+            icon={FileText}
+            tone="light"
+            title={t('features.questionTypes.title')}
+            description={t('features.questionTypes.description')}
+          />
+          <FeatureCard
+            icon={Sparkles}
+            tone="navy"
+            title={t('features.aiGrading.title')}
+            description={t('features.aiGrading.description')}
+          />
+          <FeatureCard
+            icon={BarChart3}
+            tone="light"
+            title={t('features.analytics.title')}
+            description={t('features.analytics.description')}
+          />
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+export { FeaturesSection };

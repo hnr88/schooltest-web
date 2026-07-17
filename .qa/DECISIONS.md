@@ -177,3 +177,10 @@ are locale-invariant data, not copy — accepted by verifier ruling.
    (pagination/breadcrumb "More") live in aria-hidden subtrees — not exposed, documented.
 2. All 48 upward-relative imports in the design-system module converted to @/ alias
    (imports.md compliance); same-dir ./x imports kept.
+
+## 2026-07-17 D19 — Wave-4 critic fixes
+Desktop header targets bumped to ≥44px: nav links py-3, Sign in / Start free h-11.
+Inline text links (announcement, footer columns) stay exempt per WCAG 2.5.8 inline
+exception + C-E2E-6 standalone-controls scoping. Contract-over-spec drift accepted:
+flow strip inside navy hero card, horizontal scrim, hero pill without decorative dot,
+rounded-4xl token radii.

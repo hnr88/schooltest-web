@@ -14,8 +14,8 @@ Task files: .thellmspace/tasks/NN-*.md. Plan: .qa/PLAN.md.
 | 05 | DS feedback & cards | 01 | DONE | PASS |
 | 06 | DS overlays & data | 01 | DONE | PASS |
 | 07 | /design-system showcase | 02–06 | TODO | — |
-| 08 | Landing header/hero | 01–03 | TODO | — |
-| 09 | Landing features/stats | 01–03,05 | TODO | — |
+| 08 | Landing header/hero | 01–03 | DONE | PASS |
+| 09 | Landing features/stats | 01–03,05 | DONE | PASS |
 | 10 | Landing how/pricing/faq | 01–03,05,06 | TODO | — |
 | 11 | Landing cta/footer | 01–03,06 | TODO | — |
 | 12 | Compose + cleanup | 08–11 | TODO | — |
