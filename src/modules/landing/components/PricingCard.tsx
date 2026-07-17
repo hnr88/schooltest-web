@@ -47,7 +47,7 @@ async function PricingCard({ tier }: { tier: PricingTier }) {
       </ul>
       <Button
         variant={tier.featured ? 'default' : 'outline'}
-        render={<a href="#cta" />}
+        href="#cta"
         className="mt-auto h-11 w-full"
       >
         {t(tier.ctaKey)}

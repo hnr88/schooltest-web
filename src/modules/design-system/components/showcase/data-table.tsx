@@ -1,3 +1,4 @@
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import {
@@ -5,9 +6,6 @@ import {
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from '@/components/ui/pagination';
 import {
   Table,
@@ -20,6 +18,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { Button } from '@/modules/design-system/components/button';
 import { StatusBadge } from '@/modules/design-system/components/status-badge';
 
 const ROWS = [
@@ -71,28 +70,34 @@ async function DataTable() {
         <Pagination className="mx-0 w-auto" aria-label={t('paginationNavAria')}>
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                text={t('paginationPrevious')}
-                aria-label={t('paginationPreviousAria')}
-              />
+              <Button href="#" variant="ghost" aria-label={t('paginationPreviousAria')}>
+                <ChevronLeftIcon data-icon="inline-start" aria-hidden="true" />
+                {t('paginationPrevious')}
+              </Button>
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink href="#" isActive>
+              <Button href="#" variant="outline" size="icon" aria-current="page">
                 1
-              </PaginationLink>
+              </Button>
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
+              <Button href="#" variant="ghost" size="icon">
+                2
+              </Button>
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
+              <Button href="#" variant="ghost" size="icon">
+                3
+              </Button>
             </PaginationItem>
             <PaginationItem>
               <PaginationEllipsis />
             </PaginationItem>
             <PaginationItem>
-              <PaginationNext href="#" text={t('paginationNext')} aria-label={t('paginationNextAria')} />
+              <Button href="#" variant="ghost" aria-label={t('paginationNextAria')}>
+                {t('paginationNext')}
+                <ChevronRightIcon data-icon="inline-end" aria-hidden="true" />
+              </Button>
             </PaginationItem>
           </PaginationContent>
         </Pagination>

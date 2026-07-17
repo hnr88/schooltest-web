@@ -33,11 +33,11 @@ async function HeroSection() {
             </h1>
             <p className="max-w-xl text-lg text-blue-100/90">{t('hero.subtitle')}</p>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <Button variant="white" size="xl" render={<a href="#pricing" />}>
+              <Button variant="white" size="xl" href="#pricing">
                 {t('hero.primaryCta')}
                 <ArrowRight aria-hidden="true" />
               </Button>
-              <Button variant="outline-white" size="xl" render={<a href="#product" />}>
+              <Button variant="outline-white" size="xl" href="#product">
                 <Play aria-hidden="true" />
                 {t('hero.secondaryCta')}
               </Button>

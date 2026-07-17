@@ -192,3 +192,44 @@ never rendered before the task-11 footer. Fix: LOCALE_COOKIE moved to isomorphic
 src/i18n/routing.ts; request.ts and LocaleSwitcher.tsx import it from there.
 Lesson recorded for the mission: tsc+lint do not catch server/client boundary violations
 — runtime smoke is mandatory before closing integration tasks.
+
+## 2026-07-17 D21 — DS Button gains href prop (true link semantics)
+Task-13 surfaced Base UI warning for render={<a/>} buttons; first fix (nativeButton=
+false) silenced it but Base UI then applies role=button — wrong for navigation CTAs.
+Correct design: DS Button now takes href and renders a real <a> styled via
+buttonVariants (shadcn idiom); Base UI Button is used only for actual buttons.
+All 7 landing CTA usages converted from render={<a/>} to href. nativeButton passthrough
+kept for other render cases.
+
+## 2026-07-17 D22 — Task-15 a11y sweep: real fixes + showcase 44px ruling
+1. **Fixed (real defects, markup-side):** skip link moved out of LandingHeader to be the
+   first focusable element on '/' (was preceded by the announcement link, WCAG 2.4.1);
+   header logo Link padded to a 46px target; LocaleSwitcher trigger min-h-11 (was 32px);
+   announcement text container div→p (documents the D19 inline-link exemption in markup);
+   MobileNav SheetClose render={<a>} replaced by controlled Sheet + real links closing via
+   onClick (Base UI logged console.errors and dropped link semantics — same class of issue
+   as D21); six serious axe color-contrast violations fixed in own components: TrustedBy
+   wordmarks muted-foreground/70→slate-600 (2.63→7.2:1), Eyebrow teal-600→teal-700
+   (3.55→5.2:1), StatCard delta green-600→green-700 (3.21→5.0:1), DS Button accent variant
+   white-on-teal-500→navy-900-on-accent with teal-400 hover (2.48→6.3:1), DS Button
+   destructive variant text-destructive-foreground→text-white (the
+   --color-destructive-foreground token was never registered in @theme, so the utility
+   generated no CSS and text inherited navy-on-red 3.16:1 → 4.83:1), showcase avatar
+   fallbacks / tabs triggers / segmented items muted-foreground→slate-600 (4.34/4.1→7.2:1).
+   Vendored ui untouched (law 11) — all fixes in modules/* or app/*.
+2. **Showcase 44px ruling:** the 44px target sweep asserts zero failures on '/' (375+1280).
+   On '/design-system' it is collected and logged, not asserted: the gallery exhibits the
+   full vendored size scale (h-7…h-9 buttons, size-8 icons, size-4 checkboxes, 18px
+   switches, h-8 inputs) which law 11 forbids editing and task-14's spec explicitly asserts
+   (button.h-7/.h-8/.h-9) — a three-way contract conflict. The showcase is a component
+   gallery, not user-facing UI chrome; small sizes there are essential to the information
+   conveyed (WCAG 2.5.8 essential-presentation exception). 43 undersized exhibits at both
+   widths, all vendored-primitive demos.
+3. **Test-infra notes:** TanStack Query devtools trigger (dev-only, absent from production
+   builds) is excluded from the sweep (.tsqd-parent-container). Playwright screenshots hide
+   the caret by writing inline caret-color:transparent — taking one while the RSC tree is
+   still hydrating triggers a spurious React hydration-mismatch console.error, so the
+   responsive spec waits for networkidle after goto before screenshots.
+4. **Orchestrator follow-up:** `--color-destructive-foreground` registered in @theme
+   (globals.css:55) so the token utility now generates for future consumers.
+

@@ -15,7 +15,7 @@ const TILE_TONES: Record<StatCardIconTone, string> = {
 };
 
 const DELTA_TONES: Record<StatCardDeltaTone, string> = {
-  positive: 'text-green-600',
+  positive: 'text-green-700',
   neutral: 'text-muted-foreground',
 };
 
@@ -38,7 +38,7 @@ function StatCard({
             aria-hidden="true"
             className={cn(
               'flex size-8.5 shrink-0 items-center justify-center rounded-lg',
-              TILE_TONES[iconTone]
+              TILE_TONES[iconTone],
             )}
           >
             <Icon className="size-4" />

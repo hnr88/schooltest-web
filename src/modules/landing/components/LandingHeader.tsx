@@ -10,14 +10,8 @@ async function LandingHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/88 backdrop-blur">
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-6 focus:z-50 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-ring"
-      >
-        {t('skipToContent')}
-      </a>
       <Container className="flex h-16 items-center gap-7">
-        <Link href="/" className="shrink-0">
+        <Link href="/" className="shrink-0 py-2">
           <Logo alt={t('footer.logoAlt')} />
         </Link>
         <nav aria-label={t('nav.label')} className="hidden items-center gap-1 lg:flex">
@@ -32,10 +26,10 @@ async function LandingHeader() {
           ))}
         </nav>
         <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" render={<a href="#cta" />} className="h-11 px-4">
+          <Button variant="ghost" href="#cta" className="h-11 px-4">
             {t('nav.signIn')}
           </Button>
-          <Button render={<a href="#pricing" />} className="h-11 px-5">
+          <Button href="#pricing" className="h-11 px-5">
             {t('nav.startFree')}
           </Button>
         </div>

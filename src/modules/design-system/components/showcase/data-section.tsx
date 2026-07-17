@@ -36,7 +36,7 @@ async function DataSection() {
       <Tabs defaultValue="overview" className="mt-6">
         <TabsList>
           {TABS.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value}>
+            <TabsTrigger key={tab.value} value={tab.value} className="text-slate-600">
               {t(tab.labelKey)}
             </TabsTrigger>
           ))}

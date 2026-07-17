@@ -6,7 +6,7 @@ kind: verify
 slice: Playwright specs for /design-system variants, props, interactions, locale toggle
 target: tests/e2e/design-system.spec.ts
 contract: C-E2E (E2E-DS-VARIANTS, E2E-DS-PROPS, E2E-LOCALE-TOGGLE)
-status: TODO
+status: DONE
 depends_on: [07, 12]
 ---
 ## Objective
@@ -56,4 +56,6 @@ testing.md, quality.md; assertions read catalogs from messages JSONs (no duplica
 - LocaleSwitcher keeps its current Select-based UI (read src/modules/i18n first; the spec
   drives whatever control it renders).
 ## Evidence
+PASS (independent verifier, 2026-07-17): fresh full suite 12/12 green; all interactions genuinely exercised; console guard zero-whitelist; locale toggle same-URL + content flip proven; production fixes (tooltip children, pagination→DS Button href, href props spread) all sound — pagination deviation ACCEPTED with C-PAGE-DS addendum; tsc 0, lint 0 errors.
+
 (filled by builder/verifier)

@@ -5,12 +5,12 @@ async function AnnouncementBar() {
 
   return (
     <div className="bg-navy-900 px-6 py-2.5 text-sm text-white">
-      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+      <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
         <span>{t('announcement.message')}</span>
         <a href="#ai-feedback" className="font-semibold underline-offset-4 hover:underline">
           {t('announcement.link')}
         </a>
-      </div>
+      </p>
     </div>
   );
 }

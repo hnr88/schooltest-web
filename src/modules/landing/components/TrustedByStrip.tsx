@@ -9,11 +9,11 @@ async function TrustedByStrip() {
   return (
     <section className="py-10">
       <Container className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-        <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+        <span className="text-xs font-semibold tracking-widest text-slate-600 uppercase">
           {t('trustedBy.label')}
         </span>
         {TRUSTED_WORDMARKS.map((key) => (
-          <span key={key} className="text-lg font-semibold text-muted-foreground/70">
+          <span key={key} className="text-lg font-semibold text-slate-600">
             {t(key)}
           </span>
         ))}

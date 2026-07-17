@@ -2,6 +2,7 @@
 
 import { Menu, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 import {
   Button,
@@ -17,9 +18,11 @@ import { NAV_LINKS } from '@/modules/landing/constants/landing.constants';
 
 function MobileNav() {
   const t = useTranslations('Home');
+  const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
         render={
           <Button
@@ -49,42 +52,36 @@ function MobileNav() {
             <X aria-hidden="true" className="size-5" />
           </SheetClose>
         </SheetHeader>
+        {/* Nav entries are real links (D21 semantics); SheetClose with render={<a>}
+            drops native semantics and triggers Base UI console errors, so the sheet
+            is controlled and links close it via onClick. */}
         <nav aria-label={t('nav.label')} className="flex flex-col gap-1 p-4">
           {NAV_LINKS.map(({ href, key }) => (
-            <SheetClose
+            <a
               key={key}
-              render={
-                <a
-                  href={href}
-                  className="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-muted"
-                />
-              }
+              href={href}
+              onClick={close}
+              className="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-muted"
             >
               {t(key)}
-            </SheetClose>
+            </a>
           ))}
         </nav>
         <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
-          <SheetClose
-            render={
-              <a
-                href="#cta"
-                className="inline-flex h-11 items-center justify-center rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted"
-              />
-            }
+          <a
+            href="#cta"
+            onClick={close}
+            className="inline-flex h-11 items-center justify-center rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted"
           >
             {t('nav.signIn')}
-          </SheetClose>
-          <SheetClose
-            render={
-              <a
-                href="#pricing"
-                className="inline-flex h-11 items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/80"
-              />
-            }
+          </a>
+          <a
+            href="#pricing"
+            onClick={close}
+            className="inline-flex h-11 items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/80"
           >
             {t('nav.startFree')}
-          </SheetClose>
+          </a>
         </div>
       </SheetContent>
     </Sheet>

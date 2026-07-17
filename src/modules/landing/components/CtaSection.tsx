@@ -19,11 +19,11 @@ async function CtaSection() {
             </h2>
             <p className="mt-4 text-lg text-blue-100/85">{t('cta.subtitle')}</p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Button variant="white" size="xl" render={<a href="#pricing" />}>
+              <Button variant="white" size="xl" href="#pricing">
                 {t('cta.primary')}
                 <ArrowRight aria-hidden="true" />
               </Button>
-              <Button variant="outline-white" size="xl" render={<a href="#pricing" />}>
+              <Button variant="outline-white" size="xl" href="#pricing">
                 {t('cta.secondary')}
               </Button>
             </div>

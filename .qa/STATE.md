@@ -19,9 +19,9 @@ Task files: .thellmspace/tasks/NN-*.md. Plan: .qa/PLAN.md.
 | 10 | Landing how/pricing/faq | 01–03,05,06 | DONE | PASS |
 | 11 | Landing cta/footer | 01–03,06 | DONE | PASS |
 | 12 | Compose + cleanup | 08–11 | DONE | PASS |
-| 13 | E2E landing | 12 | TODO | — |
-| 14 | E2E showcase | 07,12 | TODO | — |
-| 15 | E2E a11y/responsive | 07,12 | TODO | — |
+| 13 | E2E landing | 12 | DONE | PASS |
+| 14 | E2E showcase | 07,12 | DONE | PASS |
+| 15 | E2E a11y/responsive | 07,12 | DONE | PASS |
 | 16 | Final regression | 13–15 | TODO | — |
 
 ## Per-layer rollup

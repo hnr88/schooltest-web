@@ -143,3 +143,10 @@ is required. Copy from `DesignSystem` namespace. generateMetadata from same name
 
 Existing `tests/e2e/home.spec.ts` must stay green (title /Schooltest/i — new meta title
 "SchoolTest — …" matches; /articles untouched).
+
+### C-PAGE-DS addendum (2026-07-17, task-14 verify)
+`PaginationLink`/`PaginationPrevious`/`PaginationNext` (ui re-exports) are NOT exercised
+on the showcase: the vendored ui/pagination.tsx renders anchors with role=button +
+a hydration data-slot mismatch (proven in Base UI useButton source), and law 11 forbids
+editing it. The showcase demos pagination with DS Button href (real link semantics)
+plus Pagination/PaginationContent/PaginationItem/PaginationEllipsis (still exercised).

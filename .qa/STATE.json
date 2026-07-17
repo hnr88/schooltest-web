@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "Design system + landing page from design-system-and-components/ in schooltest-web; copy from i18n JSONs; en+de",
-  "updated_at": "2026-07-17T20:08:53.392Z",
+  "updated_at": "2026-07-17T22:26:50.389Z",
   "tasks": [
     {
       "id": "01",
@@ -259,9 +259,13 @@
       "depends_on": [
         "12"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784318946.149,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "fresh full suite 7/7 green; assertions catalog-driven (zero hardcoded copy); all C-E2E 1&4 items asserted incl FAQ 4 Q&A + no-leak both directions + DOM order + anchors; no weakened assertions; D21 href path confirmed, nativeButton warning gone; tsc/lint 0 errors"
+      }
     },
     {
       "id": "14",
@@ -275,9 +279,13 @@
         "07",
         "12"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784320570.858,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "fresh full suite 12/12 green; interactions genuinely exercised (dialog 3 close paths, tooltip hover+keyboard focus, segmented flip, tag 2→1, alert 4→3, tabs switch); console guard zero-whitelist; locale toggle same-URL proven; 3 production fixes sound; pagination deviation ACCEPTED (ui bug proven, law 11) with C-PAGE-DS addendum; tsc/lint 0 errors"
+      }
     },
     {
       "id": "15",
@@ -291,9 +299,13 @@
         "07",
         "12"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784324450.757,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "fresh full suite 17/17 green ×2; axe 0 serious/critical on / (en+de) + /design-system, no disableRules; no-hscroll both widths; 44px sweep loophole-audited (landing zero undersized); skip link first focusable; 11 fixes all in modules/app, ui untouched; 6 screenshots on disk + visually checked; showcase-44px deviation ruled ACCEPTABLE; tsc/lint 0 errors"
+      }
     },
     {
       "id": "16",

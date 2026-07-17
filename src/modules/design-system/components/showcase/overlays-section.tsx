@@ -37,9 +37,7 @@ async function OverlaysSection() {
           radioOpenLabel={t('radioOpen')}
         />
         <Tooltip>
-          <TooltipTrigger render={<Button variant="outline" />}>
-            {t('tooltipTrigger')}
-          </TooltipTrigger>
+          <TooltipTrigger render={<Button variant="outline">{t('tooltipTrigger')}</Button>} />
           <TooltipContent>{t('tooltipContent')}</TooltipContent>
         </Tooltip>
         <PopoverDemo

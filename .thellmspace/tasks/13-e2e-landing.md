@@ -6,7 +6,7 @@ kind: verify
 slice: Playwright specs proving landing runs on langs JSONs end-to-end
 target: tests/e2e/landing.spec.ts
 contract: C-E2E (E2E-LANDING-EN/DE, E2E-COMPOSITION)
-status: TODO
+status: DONE
 depends_on: [12]
 ---
 ## Objective
@@ -57,4 +57,6 @@ testing.md (Playwright for server components), quality.md, CLAUDE.md allowed com
 ## Assumptions
 - webServer in playwright.config.ts (port 3100) is already enabled (boot-gate).
 ## Evidence
+PASS (independent verifier, 2026-07-17): fresh full suite 7/7 green (5 landing + 2 home); catalog-driven assertions (zero hardcoded copy in spec); full C-E2E 1+4 coverage (99-key EN render, 33-key DE spots, no-leak both directions, DOM order, anchors + Pricing hash click); exact:true/role queries, no force/skip; D21 href path verified — real anchors, nativeButton warning gone. Orchestrator note: aria-label spot assertions (nav.*, social) intentionally out of task scope.
+
 (filled by builder/verifier)

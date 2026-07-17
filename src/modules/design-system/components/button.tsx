@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ComponentPropsWithoutRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { Button as ButtonPrimitive, buttonVariants } from '@/components/ui/button';
@@ -9,11 +9,11 @@ const extendedButtonVariants = cva('', {
   variants: {
     variant: {
       navy: 'bg-navy-900 text-white hover:bg-navy-800',
-      accent: 'bg-accent text-accent-foreground hover:bg-teal-600',
+      accent: 'bg-accent text-navy-900 hover:bg-teal-400',
       white: 'bg-white text-navy-900 hover:bg-blue-50',
       'outline-white': 'border-white/40 bg-transparent text-white hover:bg-white/10',
       destructive:
-        'bg-destructive text-destructive-foreground hover:bg-red-700 dark:bg-destructive dark:hover:bg-red-600',
+        'bg-destructive text-white hover:bg-red-700 dark:bg-destructive dark:hover:bg-red-600',
     },
     size: {
       xl: 'h-12 px-7 rounded-xl text-[15px]',
@@ -23,9 +23,7 @@ const extendedButtonVariants = cva('', {
 
 type UiButtonVariant = NonNullable<VariantProps<typeof buttonVariants>['variant']>;
 type UiButtonSize = NonNullable<VariantProps<typeof buttonVariants>['size']>;
-type ExtendedButtonVariant = NonNullable<
-  VariantProps<typeof extendedButtonVariants>['variant']
->;
+type ExtendedButtonVariant = NonNullable<VariantProps<typeof extendedButtonVariants>['variant']>;
 
 type ButtonVariant = UiButtonVariant | ExtendedButtonVariant;
 type ButtonSize = UiButtonSize | 'xl';
@@ -34,6 +32,7 @@ interface ButtonProps extends Omit<ComponentProps<typeof ButtonPrimitive>, 'vari
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
+  href?: string;
 }
 
 function Button({
@@ -43,24 +42,56 @@ function Button({
   loading = false,
   disabled,
   children,
+  nativeButton,
+  render,
+  href,
   ...props
 }: ButtonProps) {
   const isExtendedVariant =
-    variant === 'navy' || variant === 'accent' || variant === 'white' || variant === 'outline-white';
+    variant === 'navy' ||
+    variant === 'accent' ||
+    variant === 'white' ||
+    variant === 'outline-white';
   const cvaVariant = isExtendedVariant || variant === 'destructive' ? variant : undefined;
+  const classes = cn(
+    extendedButtonVariants({
+      variant: cvaVariant,
+      size: size === 'xl' ? 'xl' : undefined,
+    }),
+    className,
+  );
+  if (href !== undefined) {
+    // Link semantics (D21): forward caller props (aria-*, data-*, target, …) to the anchor.
+    // They are plain DOM props at runtime; Base UI's button-generic handler types are nominal.
+    const anchorProps = props as ComponentPropsWithoutRef<'a'>;
+    return (
+      <a
+        href={href}
+        aria-busy={loading || undefined}
+        aria-disabled={disabled || loading || undefined}
+        className={cn(
+          buttonVariants({
+            variant: isExtendedVariant ? 'default' : variant,
+            size: size === 'xl' ? 'default' : size,
+          }),
+          classes,
+        )}
+        {...anchorProps}
+      >
+        {loading ? <Spinner aria-hidden="true" /> : null}
+        {children}
+      </a>
+    );
+  }
   return (
     <ButtonPrimitive
       variant={isExtendedVariant ? 'default' : variant}
       size={size === 'xl' ? 'default' : size}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      className={cn(
-        extendedButtonVariants({
-          variant: cvaVariant,
-          size: size === 'xl' ? 'xl' : undefined,
-        }),
-        className
-      )}
+      render={render}
+      nativeButton={nativeButton ?? (render !== undefined ? false : undefined)}
+      className={classes}
       {...props}
     >
       {loading ? <Spinner aria-hidden="true" /> : null}
