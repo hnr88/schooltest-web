@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 
@@ -8,14 +8,21 @@ import { Providers } from '@/components/providers';
 import { Toaster } from '@/components/ui/sonner';
 import { env } from '@/lib/env';
 
-const geistSans = Geist({
+const googleSans = localFont({
+  src: [
+    {
+      path: '../app/fonts/GoogleSans-Variable.ttf',
+      weight: '400 800',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/GoogleSans-Italic-Variable.ttf',
+      weight: '400 800',
+      style: 'italic',
+    },
+  ],
   variable: '--font-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-mono',
-  subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -45,7 +52,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${googleSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider locale={locale} messages={messages}>

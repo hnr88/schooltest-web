@@ -1,0 +1,38 @@
+{
+  "instance_name": "schooltest-web-ds",
+  "detected_at": "2026-07-17T14:05:00Z",
+  "stack": {
+    "frontend": {
+      "path": "schooltest-web",
+      "framework": "Next.js 16.2.10 (App Router, React 19.2.7, Turbopack, reactCompiler)",
+      "language": "TypeScript 5.9 strict",
+      "styling": "Tailwind CSS v4 CSS-first (@theme, OKLCH), shadcn base-nova on @base-ui/react",
+      "i18n": "next-intl 4.13, cookie-based locale (NEXT_LOCALE), locales [en, de], no URL prefix",
+      "data": "TanStack Query v5 + typed axios (src/lib/axios/strapi.ts) — NOT used by this mission (static landing)",
+      "package_manager": "pnpm (pnpm-lock.yaml)",
+      "port": 3100
+    },
+    "backend": {
+      "path": "schooltest-api (Strapi v5) — OUT OF SCOPE, not touched, not needed",
+      "datastore": "none for this mission — landing content lives in src/i18n/messages/{en,de}.json"
+    },
+    "neighbors_to_avoid": {
+      "port_3000": "BUSY (another instance on this machine)",
+      "schooltest-app": "separate product app — do not touch",
+      "schooltest-api": "Strapi backend — do not touch"
+    }
+  },
+  "run_path": {
+    "install": "pnpm install (already installed, node_modules present)",
+    "typecheck": "pnpm tsc --noEmit",
+    "lint": "pnpm lint",
+    "e2e": "pnpm exec playwright test — playwright.config.ts webServer boots `next dev -p 3100` on demand; no persistent servers, no docker"
+  },
+  "ports": { "frontend_e2e": 3100, "backend": null, "datastore": null },
+  "verification": {
+    "e2e_tool": "@playwright/test 1.61 (+@axe-core/playwright for a11y)",
+    "base_url": "http://localhost:3100",
+    "screenshots": ".qa/screenshots/"
+  },
+  "baseline": { "tsc": "0 errors", "lint": "0 errors, 1 pre-existing warning (articles module, out of scope)" }
+}

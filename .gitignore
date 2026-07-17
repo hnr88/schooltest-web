@@ -43,3 +43,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# qa run artifacts (state docs are committed; logs/screenshots are not)
+.qa/*.log
+.qa/heartbeat
+.qa/screenshots/
+.qa/nohup.out

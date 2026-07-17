@@ -1,8 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// Runs against an already-running stack (docker compose / Coolify / `pnpm dev`).
-// Set E2E_BASE_URL to point at the target environment.
-const baseURL = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
+// Port 3100 is allocated to this instance (port 3000 belongs to a neighbor — see
+// .qa/STACK.json). Override with E2E_BASE_URL / E2E_PORT when targeting another stack.
+const port = Number(process.env.E2E_PORT ?? 3100);
+const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${port}`;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -15,6 +16,12 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  // To let Playwright boot the app itself, build first then uncomment:
-  // webServer: { command: 'pnpm start', url: baseURL, reuseExistingServer: !process.env.CI },
+  // Playwright boots the app itself (the only server-run mechanism; CLAUDE.md law 12
+  // forbids running dev/build/start manually — `pnpm exec playwright test` is allowed).
+  webServer: {
+    command: `pnpm exec next dev -p ${port}`,
+    url: baseURL,
+    reuseExistingServer: !process.env.CI,
+    timeout: 180_000,
+  },
 });
