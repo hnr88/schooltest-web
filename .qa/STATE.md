@@ -13,12 +13,12 @@ Task files: .thellmspace/tasks/NN-*.md. Plan: .qa/PLAN.md.
 | 04 | DS forms barrel | 01 | DONE | PASS |
 | 05 | DS feedback & cards | 01 | DONE | PASS |
 | 06 | DS overlays & data | 01 | DONE | PASS |
-| 07 | /design-system showcase | 02–06 | TODO | — |
+| 07 | /design-system showcase | 02–06 | DONE | PASS |
 | 08 | Landing header/hero | 01–03 | DONE | PASS |
 | 09 | Landing features/stats | 01–03,05 | DONE | PASS |
-| 10 | Landing how/pricing/faq | 01–03,05,06 | TODO | — |
-| 11 | Landing cta/footer | 01–03,06 | TODO | — |
-| 12 | Compose + cleanup | 08–11 | TODO | — |
+| 10 | Landing how/pricing/faq | 01–03,05,06 | DONE | PASS |
+| 11 | Landing cta/footer | 01–03,06 | DONE | PASS |
+| 12 | Compose + cleanup | 08–11 | DONE | PASS |
 | 13 | E2E landing | 12 | TODO | — |
 | 14 | E2E showcase | 07,12 | TODO | — |
 | 15 | E2E a11y/responsive | 07,12 | TODO | — |

@@ -6,7 +6,7 @@ kind: build
 slice: landing sections 9–11
 target: src/modules/landing/components/{HowItWorksSection,TestimonialCard,PricingSection,FaqSection}.tsx
 contract: C-PAGE-LANDING
-status: TODO
+status: DONE
 depends_on: [01, 02, 03, 05, 06]
 ---
 ## Objective
@@ -53,4 +53,6 @@ support comes free from Base UI — do not hand-roll), imports.md.
 ## Assumptions
 - Accordion defaultValue = first item value ("accounts").
 ## Evidence
+PASS (independent verifier, 2026-07-17): sections 9–11 contract-conform; ui Accordion with defaultValue [accounts]; Pro navy middle tier; only Free AI row crossed out; star row role=img single announce; all 42 keys both locales; tsc 0, lint 0 errors. Orchestrator polish: testimonial.quote wrapped in typographic quotes (en “…” / de „…“) per spec.
+
 (filled by builder/verifier)

@@ -1,10 +1,13 @@
 export { AnnouncementBar } from '@/modules/landing/components/AnnouncementBar';
 export { LandingHeader } from '@/modules/landing/components/LandingHeader';
-export { MobileNav } from '@/modules/landing/components/MobileNav';
 export { HeroSection } from '@/modules/landing/components/HeroSection';
 export { HeroFlow } from '@/modules/landing/components/HeroFlow';
 export { TrustedByStrip } from '@/modules/landing/components/TrustedByStrip';
 export { FeaturesSection } from '@/modules/landing/components/FeaturesSection';
 export { FeatureDetailSection } from '@/modules/landing/components/FeatureDetailSection';
-export { AiFeedbackCard } from '@/modules/landing/components/AiFeedbackCard';
 export { StatsBand } from '@/modules/landing/components/StatsBand';
+export { HowItWorksSection } from '@/modules/landing/components/HowItWorksSection';
+export { PricingSection } from '@/modules/landing/components/PricingSection';
+export { FaqSection } from '@/modules/landing/components/FaqSection';
+export { CtaSection } from '@/modules/landing/components/CtaSection';
+export { LandingFooter } from '@/modules/landing/components/LandingFooter';

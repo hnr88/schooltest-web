@@ -1,17 +1,8 @@
 {
   "Home": {
     "title": "Schooltest",
-    "brandPrefix": "School",
-    "brandAccent": "Test",
     "skipToContent": "Zum Inhalt springen",
-    "subtitle": "Next.js 16 Frontend für die Schooltest-Plattform.",
-    "articlesCta": "Artikel-Demo ansehen",
-    "docsHint": "Die API-Dokumentation wird von Strapi unter /documentation bereitgestellt.",
-    "navigationLabel": "Hauptnavigation",
     "nav": {
-      "why": "Warum SchoolTest",
-      "plan": "Dein Lernplan",
-      "expect": "Was dich erwartet",
       "label": "Hauptnavigation",
       "product": "Produkt",
       "schools": "Für Schulen",
@@ -21,39 +12,6 @@
       "startFree": "Kostenlos starten",
       "openMenu": "Menü öffnen",
       "closeMenu": "Menü schließen"
-    },
-    "headerCta": "Deinen Plan ansehen",
-    "headerCtaShort": "Plan",
-    "eyebrow": "Persönliches Englischlernen für 9- bis 18-Jährige",
-    "heroTitle": "Mach dich fit für deinen Start in Australien.",
-    "heroDescription": "Freundliche Einstufungstests, tägliche Übungen und Fortschritte, die du wirklich sehen kannst — damit jeder Lernende selbstbewusst wachsen kann.",
-    "primaryCta": "Deinen Plan entdecken",
-    "secondaryCta": "So funktioniert es",
-    "trust": "Ausgerichtet an der ACARA EAL/D-Lernprogression",
-    "benefits": {
-      "label": "Was dich erwartet",
-      "adaptive": "Ein Einstieg, der dich genau dort abholt, wo du stehst",
-      "skills": "Vier Fähigkeiten, ein klarer Lernweg",
-      "progress": "Fortschritte, die du sehen und feiern kannst"
-    },
-    "preview": {
-      "eyebrow": "Dein Lernüberblick",
-      "title": "Ein Plan, der zu dir passt",
-      "description": "Starte mit einem freundlichen Einstufungstest und übe danach kurz und gezielt weiter.",
-      "week": "Woche eins",
-      "levelLabel": "Dein aktuelles Niveau",
-      "level": "B1",
-      "levelName": "Aufbauphase",
-      "reading": "Lesen",
-      "listening": "Hören",
-      "writing": "Schreiben",
-      "speaking": "Sprechen",
-      "progressLabel": "Dein Fortschritt diese Woche",
-      "progress": "3 von 4 Lernaktivitäten abgeschlossen",
-      "skillProgress": "{skill}: {value}% abgeschlossen",
-      "weeklyProgress": "Dein Fortschritt diese Woche: {value}% abgeschlossen",
-      "streakLabel": "Übungsserie",
-      "streak": "5 Tage"
     },
     "meta": {
       "title": "SchoolTest — Intelligentere Tests. Bessere Ergebnisse.",
@@ -140,7 +98,7 @@
       "stepThreeDescription": "Die KI erstellt Bewertungs- und Feedbackentwürfe, sobald Schülerinnen und Schüler fertig sind. Bestätigen, anpassen und versenden — noch am selben Tag."
     },
     "testimonial": {
-      "quote": "Ich verbringe meine Sonntage nicht mehr mit dem Korrigieren. Die KI erstellt das Feedback, ich bestätige es, und meine Schülerinnen und Schüler erhalten ihre Ergebnisse noch am selben Tag.",
+      "quote": "„Ich verbringe meine Sonntage nicht mehr mit dem Korrigieren. Die KI erstellt das Feedback, ich bestätige es, und meine Schülerinnen und Schüler erhalten ihre Ergebnisse noch am selben Tag.“",
       "name": "Lena Petrova",
       "role": "Englischlehrerin, Lyzeum 14",
       "ratingLabel": "Mit 5 von 5 bewertet"

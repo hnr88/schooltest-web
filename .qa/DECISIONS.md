@@ -184,3 +184,11 @@ Inline text links (announcement, footer columns) stay exempt per WCAG 2.5.8 inli
 exception + C-E2E-6 standalone-controls scoping. Contract-over-spec drift accepted:
 flow strip inside navy hero card, horizontal scrim, hero pill without decorative dot,
 rounded-4xl token radii.
+
+## 2026-07-17 D20 — LocaleSwitcher client-graph violation (task-12 verify FAIL → fix)
+Verifier proved / returned 500: LocaleSwitcher (client) imported LOCALE_COOKIE from
+@/i18n/request which imports next/headers (server-only) — latent since the switcher was
+never rendered before the task-11 footer. Fix: LOCALE_COOKIE moved to isomorphic
+src/i18n/routing.ts; request.ts and LocaleSwitcher.tsx import it from there.
+Lesson recorded for the mission: tsc+lint do not catch server/client boundary violations
+— runtime smoke is mandatory before closing integration tasks.

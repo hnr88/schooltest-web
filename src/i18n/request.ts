@@ -1,9 +1,7 @@
 import { cookies } from 'next/headers';
 import { getRequestConfig } from 'next-intl/server';
 
-import { routing, type Locale } from './routing';
-
-export const LOCALE_COOKIE = 'NEXT_LOCALE';
+import { LOCALE_COOKIE, routing, type Locale } from './routing';
 
 // Cookie-based locale selection (no URL prefix). The LocaleSwitcher writes the
 // cookie; upgrading to locale-prefixed routing later only touches this file,

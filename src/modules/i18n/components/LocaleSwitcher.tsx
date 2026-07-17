@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { LOCALE_COOKIE } from '@/i18n/request';
+import { LOCALE_COOKIE } from '@/i18n/routing';
 import { LOCALES, LOCALE_LABELS } from '@/modules/i18n/constants/locales.constants';
 
 export function LocaleSwitcher() {

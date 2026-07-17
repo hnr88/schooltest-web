@@ -6,7 +6,7 @@ kind: build
 slice: page.tsx final composition + generateMetadata + remove old tokens/keys/components
 target: src/app/page.tsx, src/app/globals.css, src/i18n/messages/*.json, src/modules/landing/
 contract: C-PAGE-LANDING
-status: TODO
+status: DONE
 depends_on: [08, 09, 10, 11]
 ---
 ## Objective
@@ -60,4 +60,5 @@ must stay green — they use Common/Articles/Nav namespaces and semantic tokens 
 - /articles page keeps working (it uses semantic tokens only — verifier confirms by reading
   its components for old-brand class usage).
 ## Evidence
+PASS after fix (independent verifier, 2026-07-17): initial verdict FAIL — LocaleSwitcher (client) imported LOCALE_COOKIE from server-only @/i18n/request, making / return 500 (latent defect activated by the task-11 footer). Orchestrator fix (D20): LOCALE_COOKIE moved to isomorphic src/i18n/routing.ts. Re-verified: purge clean (old tokens zero refs; 38 obsolete keys removed both locales; PARITY OK 268 keys); generateMetadata from Home.meta; landing barrel = 13 sections; root div bg-background text-foreground min-h-screen; tsc 0 errors, lint 0 errors, `pnpm exec playwright test` 2/2 green.
 (filled by builder/verifier)

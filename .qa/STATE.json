@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "Design system + landing page from design-system-and-components/ in schooltest-web; copy from i18n JSONs; en+de",
-  "updated_at": "2026-07-17T18:54:08.010Z",
+  "updated_at": "2026-07-17T20:08:53.392Z",
   "tasks": [
     {
       "id": "01",
@@ -194,9 +194,13 @@
         "05",
         "06"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784315251.718,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "sections 9-11 contract-conform (navy middle Pro tier, crossed-out Free AI row, FAQ defaultValue=[accounts], star row single-announces, h-11 CTAs); all 42 keys both locales; tsc/lint 0 errors; orchestrator polish: testimonial.quote wrapped in typographic quotes en/de per spec"
+      }
     },
     {
       "id": "11",
@@ -212,9 +216,13 @@
         "03",
         "06"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784316412.201,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "cta-gradient token-only; CtaSection + LandingFooter contract-conform; footer outside main, single #main-content; D7 mapping exact; social hrefs exact D7 URLs with spec SVG paths; LocaleSwitcher+i18n module untouched; footer.* keys both locales; tsc/lint 0 errors"
+      }
     },
     {
       "id": "12",
@@ -232,9 +240,13 @@
         "10",
         "11"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784317438.306,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier (FAIL then fixed)",
+        "evidence": "initial FAIL: LocaleSwitcher→@/i18n/request→next/headers client-graph violation made / 500; orchestrator fix D20 (LOCALE_COOKIE→routing.ts); re-run: tsc 0, lint 0, playwright 2/2 green; purge verified (old tokens/keys zero refs, parity 268 keys); metadata + barrel + structure conform"
+      }
     },
     {
       "id": "13",

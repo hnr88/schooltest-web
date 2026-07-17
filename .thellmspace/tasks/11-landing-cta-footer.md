@@ -6,7 +6,7 @@ kind: build
 slice: landing sections 12–13
 target: src/modules/landing/components/{CtaSection,LandingFooter}.tsx
 contract: C-PAGE-LANDING
-status: TODO
+status: DONE
 depends_on: [01, 02, 03, 06]
 ---
 ## Objective
@@ -64,4 +64,5 @@ aria-labels on icon links, external-link rel), imports.md (barrel-only cross-mod
 ## Assumptions
 - Social hrefs are real external URLs (D7). Legal links omitted (D7).
 ## Evidence
+PASS (independent verifier, 2026-07-17): cta-gradient via token only; CtaSection + LandingFooter contract-conform; footer outside `<main>`, exactly one #main-content, skip link resolves; D7 link mapping + social URLs exact; SocialIcons = spec SVG paths (lucide dropped brand icons); LocaleSwitcher reused unmodified via @/modules/i18n; all footer.*/cta.* keys both locales; tsc 0, lint 0 errors.
 (filled by builder/verifier)

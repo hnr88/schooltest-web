@@ -6,3 +6,6 @@ export const routing = defineRouting({
 });
 
 export type Locale = (typeof routing.locales)[number];
+
+// Isomorphic (no server-only imports) so client components can read the cookie key.
+export const LOCALE_COOKIE = 'NEXT_LOCALE';
