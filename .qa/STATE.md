@@ -9,10 +9,10 @@ Task files: .thellmspace/tasks/NN-*.md. Plan: .qa/PLAN.md.
 |---|------|---------|--------|--------|
 | 01 | Foundation tokens/fonts/assets | — | DONE | PASS |
 | 02 | Messages en/de | — | DONE | PASS |
-| 03 | DS actions & brand | 01 | TODO | — |
-| 04 | DS forms barrel | 01 | TODO | — |
-| 05 | DS feedback & cards | 01 | TODO | — |
-| 06 | DS overlays & data | 01 | TODO | — |
+| 03 | DS actions & brand | 01 | DONE | PASS |
+| 04 | DS forms barrel | 01 | DONE | PASS |
+| 05 | DS feedback & cards | 01 | DONE | PASS |
+| 06 | DS overlays & data | 01 | DONE | PASS |
 | 07 | /design-system showcase | 02–06 | TODO | — |
 | 08 | Landing header/hero | 01–03 | TODO | — |
 | 09 | Landing features/stats | 01–03,05 | TODO | — |

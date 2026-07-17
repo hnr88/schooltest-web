@@ -6,7 +6,7 @@ kind: build
 slice: Button/Badge/StatusBadge/Tag/CountBadge/Logo/Eyebrow/Container/Section wrappers
 target: src/modules/design-system/{components,types,index.ts}
 contract: C-DS
-status: TODO
+status: DONE
 depends_on: [01]
 ---
 ## Objective
@@ -79,4 +79,5 @@ convention: kebab file names, PascalCase components).
 ## Assumptions
 - Tailwind built-in palette (green/amber/slate/red) is OKLCH in v4 → allowed for status tints.
 ## Evidence
+PASS (independent verifier, 2026-07-17): all 9 components + barrel per C-DS; Button 10 variants + xl + loading; Badge 9 variants; globals.css diff exactly +1 line; tsc 0, lint 0 errors; no ui/* edits; no hex/any/hardcoded strings; D14 deviations ruled ACCEPT.
 (filled by builder/verifier)

@@ -6,7 +6,7 @@ kind: build
 slice: SegmentedControl composite + Dialog/DropdownMenu/Tooltip/Popover/Tabs/Table/Pagination/Breadcrumb/Separator/Accordion re-exports
 target: src/modules/design-system/{components/segmented-control.tsx,index.ts}
 contract: C-DS
-status: TODO
+status: DONE
 depends_on: [01]
 ---
 ## Objective
@@ -51,4 +51,5 @@ line 1).
 - ToggleGroup single-selection API of the installed base-nova version applies; if its props
   differ, adapt to the actual ui file (read it) and note the deviation in Evidence.
 ## Evidence
+PASS (independent verifier, 2026-07-17): all 10 overlay/data families re-exported verbatim; SegmentedControl Base-UI mapping proven against library source; tw-merge active-style override empirically tested; tsc 0, lint 0 errors; no ui/* edits.
 (filled by builder/verifier)

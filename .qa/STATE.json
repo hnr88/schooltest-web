@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "Design system + landing page from design-system-and-components/ in schooltest-web; copy from i18n JSONs; en+de",
-  "updated_at": "2026-07-17T15:19:17.351Z",
+  "updated_at": "2026-07-17T16:51:29.336Z",
   "tasks": [
     {
       "id": "01",
@@ -48,9 +48,13 @@
       "depends_on": [
         "01"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784302459.897,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "9 components + barrel per C-DS; all variants reachable; globals.css diff = exactly +1 line (--container-landing); tsc/lint 0 errors; no ui/* edits; no hex/any/hardcoded strings; D14 deviations (Spinner aria-hidden, 3 arbitrary values from task spec) ruled ACCEPT; token utilities resolve in v4"
+      }
     },
     {
       "id": "04",
@@ -63,9 +67,13 @@
       "depends_on": [
         "01"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784303745.746,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "all 10 ui families re-exported with exact names (0 invented, 0 missing); no Form, no export *; task-03 exports intact; import probe typechecks; tsc/lint 0 errors; ui/* untouched"
+      }
     },
     {
       "id": "05",
@@ -78,9 +86,13 @@
       "depends_on": [
         "01"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784304196.204,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "6 composites + re-export families exact (Card 7/7, Progress 5/5, Avatar 6/6); contract conformance all confirmed; discriminated-union compile errors proven via tsc probe; 21 sampled Tailwind classes generate in v4; deviations all ruled ACCEPT; tsc/lint 0 errors; no ui/* edits"
+      }
     },
     {
       "id": "06",
@@ -93,9 +105,13 @@
       "depends_on": [
         "01"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784306168.722,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "10 families re-exported verbatim (TooltipProvider/tabsListVariants exclusions justified); SegmentedControl Base-UI adaptation proven vs library source (array value, empty-array re-click guard, data-pressed); tw-merge override empirically tested; controlled semantics correct; tsc/lint 0 errors; no ui/* edits"
+      }
     },
     {
       "id": "07",

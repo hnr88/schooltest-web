@@ -6,7 +6,7 @@ kind: build
 slice: feedback + card composites and their re-exports
 target: src/modules/design-system/{components,index.ts,types}
 contract: C-DS
-status: TODO
+status: DONE
 depends_on: [01]
 ---
 ## Objective
@@ -63,4 +63,5 @@ imports.md, lucide-react icons only.
 ## Assumptions
 - 34px stat value → text-4xl token (spec 34px ≈ 36px token; no arbitrary values wins).
 ## Evidence
+PASS (independent verifier, 2026-07-17): 6 composites contract-conform; re-exports exact vs ui sources; tsc probe proves dismissLabel/ariaLabel required-ness; all sampled classes generate in Tailwind v4; tsc 0, lint 0 errors; no ui/* edits.
 (filled by builder/verifier)

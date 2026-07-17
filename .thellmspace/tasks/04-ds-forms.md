@@ -6,7 +6,7 @@ kind: build
 slice: form primitives re-exported through the design-system barrel
 target: src/modules/design-system/index.ts, src/modules/design-system/components/form-field.tsx
 contract: C-DS
-status: TODO
+status: DONE
 depends_on: [01]
 ---
 ## Objective
@@ -51,4 +51,5 @@ module-pattern (barrel only), imports.md (@/ alias), law 11 (no ui edits).
 - Re-export ≠ wrapper: styling comes from tokens (task 01). Variant-level changes for forms
   are not in the spec beyond what tokens already deliver.
 ## Evidence
+PASS (independent verifier, 2026-07-17): 10 form families re-exported with exact ui names; barrel import probe typechecks; tsc 0, lint 0 errors; ui/* untouched.
 (filled by builder/verifier)

@@ -90,3 +90,24 @@ the exact en literal; de translated to match, key-parity enforced by script). `A
 ## 2026-07-17 D13 — German price format
 Wave-1 critic NOTE: de.json prices now symbol-after ("0 $", "29 $") for consistency
 with the localized number formats ("2,4 Mio.", "6 Std."). USD branding kept.
+
+## 2026-07-17 D14 — DS actions/brand judgment calls (task 03)
+- Loading `Button` renders ui `Spinner` with `aria-hidden="true"` (button keeps `aria-busy`):
+  ui/spinner.tsx hardcodes an English `aria-label="Loading"` and ui/* is read-only — hiding the
+  decorative spinner prevents en leakage in de mode while the button label stays visible.
+- DS `Badge` variant union EXCLUDES ui's `destructive` (C-DS list has `error` instead).
+- Badge `warning`/`error` dark variants (amber-950/300, red-950/300) inferred from the task's
+  own success/accent dark pattern (task specifies light tints only for these two).
+- `Logo` width derived from intrinsic aspect (503×160 lockup, 179×119 mark, verified on disk)
+  via Math.round — next/image requires numeric width/height.
+- Arbitrary values `text-[15px]`, `text-[11px]`, `tracking-[0.1em]` kept exactly as the task
+  file specifies (explicit spec overrides the no-arbitrary-values rule for these).
+
+## 2026-07-17 D15 — Wave-2 critic fixes applied (spec wins over task files)
+Critic found 4 SHOULD-FIX where task files deviated from the authoritative DS spec; fixed:
+1. Alert icon tiles success/warning/error -50 → spec -100 shades; role="alert" restored.
+2. StatusBadge reworked to spec tinted pills (live green / scheduled BLUE (was amber) / draft slate).
+3. Tag: removeLabel now required when onRemove set (discriminated union, mirrors Alert).
+4. Button destructive overridden to spec solid bg (was ui soft tint).
+Plus NOTE fixes: SegmentedControl spacing={1} (spec 4px), ProgressBar track h-1.5 (spec 6px).
+Pixel-level NOTEs (font-size nits, inherited ui colors) intentionally left — scope discipline.
