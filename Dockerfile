@@ -38,10 +38,11 @@ ENV NODE_ENV=production \
 # sets it, so a missing build arg fails the build instead of shipping silently.
 ARG ALLOW_LOCALHOST_PUBLIC_URLS=false
 RUN if [ "${ALLOW_LOCALHOST_PUBLIC_URLS}" != "true" ]; then \
-      for v in "${NEXT_PUBLIC_API_BASE_URL}" "${NEXT_PUBLIC_APP_URL}"; do \
+      for raw in "${NEXT_PUBLIC_API_BASE_URL}" "${NEXT_PUBLIC_APP_URL}"; do \
+        v=$(printf '%s' "$raw" | tr 'A-Z' 'a-z'); \
         case "$v" in \
-          ''|*localhost*|*127.0.0.1*|*0.0.0.0*|*\[::1\]*) \
-            echo "BUILD REFUSED: NEXT_PUBLIC_API_BASE_URL / NEXT_PUBLIC_APP_URL is empty or points at localhost (got: '$v')."; \
+          ''|*localhost*|*127.0.0.1*|*0.0.0.0*|*\[::1\]*|*host.docker.internal*) \
+            echo "BUILD REFUSED: NEXT_PUBLIC_API_BASE_URL / NEXT_PUBLIC_APP_URL is empty or points at a local address (got: '$raw')."; \
             echo "Set the real domains as Docker build args in Coolify (see DEPLOYMENT.md)."; \
             echo "For a local dev image, pass ALLOW_LOCALHOST_PUBLIC_URLS=true."; \
             exit 1 ;; \

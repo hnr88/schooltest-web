@@ -7,6 +7,10 @@
 | `git push origin staging` | Staging |
 | `git push origin main` | Production |
 
+The `staging` branch does not exist yet in this repo — create and push it once
+before creating the staging resource: `git branch staging main && git push
+origin staging` (same one-time step applies in schooltest-api).
+
 Create one Coolify **Compose** resource for each branch. Enable auto-deploy on
 push for the matching branch and use the repository's `docker-compose.yml` so
 the selected loopback port is applied consistently.
