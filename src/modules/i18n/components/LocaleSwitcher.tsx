@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/modules/design-system';
 import { LOCALE_COOKIE } from '@/i18n/routing';
 import { LOCALES, LOCALE_LABELS } from '@/modules/i18n/constants/locales.constants';
 

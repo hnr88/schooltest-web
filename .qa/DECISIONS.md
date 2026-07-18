@@ -374,3 +374,12 @@ Vendored outline rendered bg-background (off-white) + border-border (near-invisi
 looked washed-out on white cards. DS Button outline now: bg-card (white) + border-input
 (#CBD5E1, spec) + hover:bg-background (#F7F9FC, spec). Secondary hover → blue-100 (spec;
 was a color-mix darkening). Routing via a typed OVERRIDE_VARIANTS list.
+
+## 2026-07-18 D36 — Dropdown/select design restored (user-reported)
+Vendored menu + select primitives hover items with bg-accent — TEAL in this token set,
+never the design's intent (spec hover = #F1F5F9 muted). Added spec-styled wrappers in the
+design-system module (menu.tsx, select-wrappers.tsx): container = white card, border
+#E3E8F0, radius 12, shadow-lg, 200px min-width, 6px padding; items = 500 weight, slate
+icons, muted hover, red-50 destructive hover. primitives.ts exports the wrapped versions;
+dropdown demo + forms section + LocaleSwitcher consume them. Non-spec group label removed
+from the dropdown demo.

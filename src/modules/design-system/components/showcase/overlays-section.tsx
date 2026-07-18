@@ -25,7 +25,6 @@ async function OverlaysSection() {
         />
         <DropdownDemo
           triggerLabel={t('dropdownTrigger')}
-          groupLabel={t('tableTest')}
           editLabel={t('dropdownEdit')}
           duplicateLabel={t('dropdownDuplicate')}
           shareLabel={t('dropdownShare')}

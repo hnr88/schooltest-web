@@ -5,26 +5,27 @@ import { Copy, Mail, Pencil, Trash2 } from 'lucide-react';
 
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuRadioItem,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from '@/modules/design-system/components/menu';
 
 import { Button } from '@/modules/design-system/components/button';
 
 interface DropdownDemoProps {
   triggerLabel: string;
-  groupLabel: string;
   editLabel: string;
   duplicateLabel: string;
   shareLabel: string;
@@ -39,7 +40,6 @@ interface DropdownDemoProps {
 
 function DropdownDemo({
   triggerLabel,
-  groupLabel,
   editLabel,
   duplicateLabel,
   shareLabel,
@@ -60,7 +60,6 @@ function DropdownDemo({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{groupLabel}</DropdownMenuLabel>
           <DropdownMenuItem>
             <Pencil aria-hidden="true" />
             {editLabel}

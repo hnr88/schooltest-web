@@ -10,9 +10,7 @@ export { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 export { Switch } from '@/components/ui/switch';
 export {
   Select,
-  SelectContent,
   SelectGroup,
-  SelectItem,
   SelectLabel,
   SelectScrollDownButton,
   SelectScrollUpButton,
@@ -20,6 +18,8 @@ export {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+// spec-styled select surfaces (muted hovers, spec container) — wrappers over ui
+export { SelectContent, SelectItem } from './components/select-wrappers';
 export {
   NativeSelect,
   NativeSelectOptGroup,
@@ -95,19 +95,22 @@ export {
   DropdownMenu,
   DropdownMenuPortal,
   DropdownMenuTrigger,
-  DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuLabel,
-  DropdownMenuItem,
-  DropdownMenuCheckboxItem,
   DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu';
+// spec-styled menu surfaces (muted hovers, spec container) — wrappers over ui
+export {
+  DropdownMenuContent,
+  DropdownMenuSubContent,
+  DropdownMenuItem,
+  DropdownMenuSubTrigger,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+} from './components/menu';
 export { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 export {
   Popover,

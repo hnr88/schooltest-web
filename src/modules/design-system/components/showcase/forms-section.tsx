@@ -25,14 +25,13 @@ import {
 } from '@/components/ui/native-select';
 import {
   Select,
-  SelectContent,
   SelectGroup,
-  SelectItem,
   SelectLabel,
   SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { SelectContent, SelectItem } from '@/modules/design-system/components/select-wrappers';
 import { Textarea } from '@/components/ui/textarea';
 
 import { Section } from '@/modules/design-system/components/layout';
