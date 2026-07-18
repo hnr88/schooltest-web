@@ -7,7 +7,7 @@ import { home, loadMessages, type Locale, type Messages } from './helpers/i18n';
 import { collectSmallTargets, watchErrors } from './helpers/ui';
 
 // Assertions derive from the catalogs at runtime — no copy is duplicated into this spec.
-const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), de: loadMessages('de') };
+const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), zh: loadMessages('zh') };
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const MOBILE = { width: 375, height: 812 };
@@ -64,26 +64,26 @@ test('AXE: /design-system has zero serious/critical violations', async ({ page }
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
-test('AXE: / (de via NEXT_LOCALE cookie) has zero serious/critical violations', async ({
+test('AXE: / (zh via NEXT_LOCALE cookie) has zero serious/critical violations', async ({
   browser,
   baseURL,
 }) => {
   const context = await browser.newContext({ baseURL, viewport: DESKTOP });
   await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'de', url: baseURL ?? 'http://localhost:3100' },
+    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? 'http://localhost:3100' },
   ]);
   const page = await context.newPage();
   const errors = watchErrors(page);
   try {
     await page.goto('/');
-    await expectAxeClean(page, '/ de');
+    await expectAxeClean(page, '/ zh');
     await page.screenshot({
-      path: path.join(SCREENSHOTS, 'landing-de-desktop.png'),
+      path: path.join(SCREENSHOTS, 'landing-zh-desktop.png'),
       fullPage: true,
     });
     await page.setViewportSize(MOBILE);
     await page.screenshot({
-      path: path.join(SCREENSHOTS, 'landing-de-mobile.png'),
+      path: path.join(SCREENSHOTS, 'landing-zh-mobile.png'),
       fullPage: true,
     });
     expect(errors, errors.join('\n')).toEqual([]);

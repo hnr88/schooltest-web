@@ -119,3 +119,27 @@ student-t06@schooltest.local), zwp80l593equy81t0tk1drue (no parent), axahnn1nkyn
 v5.50.1 build anonymous calls to auth-required routes answer the masked 403 Forbidden
 (not 401); task 06's evidence documents the deviation, and `global::is-authenticated`
 (schoolgo) does not exist in this install.
+
+## 2026-07-18 D16 — Parent list route moves to /api/my/students; /users/me gets role via extension
+Task 07 proved two facts: (1) the core GET /api/students route carries an IS_TEACHER
+policy (parents get 403 there), and (2) /users/me never expands `role` in this install.
+Adjustments:
+- C-STUDENT-LIST moves from GET /api/students to **GET /api/my/students** (the repo's
+  existing /my/* convention — zero teacher-regression risk, no shadowing of the core
+  teacher-scoped route). C-STUDENT-CREATE stays POST /api/students via the custom route
+  with role-branching (parent → server-side parent injection; teacher/admin →
+  passthrough to existing behavior).
+- Task 08's users-permissions extension ALSO wraps the plugin `me` controller to include
+  the user's role (schoolgo pattern) so C-AUTH-ME returns role:{type} as contracted.
+- User reaffirmed: check for existing Meilisearch integration before building search
+  (task 11) — the infra agent may have shipped it; reuse over rebuild.
+
+## 2026-07-18 D17 — Locale set adopted from schoolgo (user-directed)
+schooltest-web locales are now en/zh/ko/ms/vi/th (schoolgo's set) in cookie mode; de dropped
+("not this dummy DE"). 6 catalogs with identical key shape (336 keys, parity-checked):
+43 keys/locale carry REAL schoolgo translations (Auth, Common/Errors, Dashboard-students
+areas — brand-replaced SchoolGo→SchoolTest); the remaining keys (M1 landing, DesignSystem
+showcase, unmapped extras) follow a documented ENGLISH-FALLBACK policy — honest fallback,
+never machine-generated pseudo-translations. LocaleSwitcher lists all 6 with endonym
+labels. E2E realigned: ZH render, toggle en→zh→en on the translated skip-link, fallback
+policy spec, axe zh. schooltest-app (desktop) stays single-locale en (separate surface).

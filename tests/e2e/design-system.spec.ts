@@ -13,7 +13,7 @@ import {
 import { expectVariantButton, watchErrors } from './helpers/ui';
 
 // Assertions derive from the catalogs at runtime — no copy is duplicated into this spec.
-const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), de: loadMessages('de') };
+const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), zh: loadMessages('zh') };
 const DS_SECTION_KEYS = [
   'sectionBrand',
   'sectionButtons',
@@ -238,9 +238,11 @@ test('DS-PROPS: ds-probe Button merges custom className with variant styling', a
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
-test('LOCALE-TOGGLE: footer switcher en→de→en updates content without reload', async ({ page }) => {
+test('LOCALE-TOGGLE: footer switcher en→zh→en updates translated chrome without reload', async ({
+  page,
+}) => {
   const errors = watchErrors(page);
-  const { en, de } = catalogs;
+  const { en, zh } = catalogs;
   await page.goto('/');
   await page.evaluate(() => {
     (window as unknown as Record<string, unknown>).__noReload = 1;
@@ -251,19 +253,19 @@ test('LOCALE-TOGGLE: footer switcher en→de→en updates content without reload
   await footer
     .getByRole('combobox', { name: cat(en, 'LocaleSwitcher.label'), exact: true })
     .click();
-  await page.getByRole('option', { name: 'Deutsch' }).click();
-  for (const line of heroTitleLines(de)) await expect(h1).toContainText(line);
-  await expect(page.getByText(home(de, 'features.title'), { exact: true }).first()).toBeVisible();
-  await expect(footer.getByText(home(de, 'footer.tagline'), { exact: true })).toBeVisible();
+  await page.getByRole('option', { name: '中文' }).click();
+  // Shared chrome flips to the schoolgo translation…
+  await expect(page.getByText(zh['Home.skipToContent'], { exact: true })).toBeAttached();
+  // …while SchoolTest-specific copy keeps the documented English fallback.
+  for (const line of heroTitleLines(en)) await expect(h1).toContainText(line);
   expect(page.url()).toBe(url); // cookie + router.refresh, no navigation
   expect(await page.evaluate(() => (window as unknown as Record<string, unknown>).__noReload)).toBe(
     1,
   );
   await footer
-    .getByRole('combobox', { name: cat(de, 'LocaleSwitcher.label'), exact: true })
+    .getByRole('combobox', { name: cat(zh, 'LocaleSwitcher.label'), exact: true })
     .click();
   await page.getByRole('option', { name: 'English' }).click();
-  for (const line of heroTitleLines(en)) await expect(h1).toContainText(line);
-  await expect(footer.getByText(home(en, 'footer.tagline'), { exact: true })).toBeVisible();
+  await expect(page.getByText(en['Home.skipToContent'], { exact: true })).toBeAttached();
   expect(errors, errors.join('\n')).toEqual([]);
 });

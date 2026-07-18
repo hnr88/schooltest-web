@@ -21,7 +21,7 @@ import {
 const FALLBACK_BASE_URL = 'http://localhost:3100';
 
 // Assertions derive from the catalogs at runtime — no copy is duplicated into this spec.
-const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), de: loadMessages('de') };
+const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), zh: loadMessages('zh') };
 
 test('EN render: every landing section renders from en.json', async ({ page }) => {
   const en = catalogs.en;
@@ -56,52 +56,58 @@ test('EN render: every landing section renders from en.json', async ({ page }) =
   await assertFaqAnswers(page, en, FAQ_PAIRS);
 });
 
-test('DE render: NEXT_LOCALE=de renders every section from de.json', async ({
+test('ZH render: NEXT_LOCALE=zh renders every section from zh.json', async ({
   browser,
   baseURL,
 }) => {
-  const de = catalogs.de;
+  const zh = catalogs.zh;
   const context = await browser.newContext({ baseURL });
   await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'de', url: baseURL ?? FALLBACK_BASE_URL },
+    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? FALLBACK_BASE_URL },
   ]);
   const page = await context.newPage();
   try {
     await page.goto('/');
-    await expect(page).toHaveTitle(new RegExp(escapeRegExp(home(de, 'meta.title'))));
+    await expect(page).toHaveTitle(new RegExp(escapeRegExp(home(zh, 'meta.title'))));
     const h1 = page.locator('h1');
-    for (const line of heroTitleLines(de)) {
+    for (const line of heroTitleLines(zh)) {
       await expect(h1).toContainText(line);
     }
     await expect(
-      page.getByRole('heading', { name: stripTags(home(de, 'flow.title')), exact: true }),
+      page.getByRole('heading', { name: stripTags(home(zh, 'flow.title')), exact: true }),
     ).toBeVisible();
-    await expectVisibleTexts(page, homeAll(de, DE_SPOT_KEYS));
-    await assertFaqAnswers(page, de, FAQ_PAIRS.slice(1, 2));
+    await expectVisibleTexts(page, homeAll(zh, DE_SPOT_KEYS));
+    await assertFaqAnswers(page, zh, FAQ_PAIRS.slice(1, 2));
   } finally {
     await context.close();
   }
 });
 
-test('no locale leaks: DE page shows no EN copy and vice versa', async ({
+// Locale policy: SchoolTest-specific copy falls back to English in non-en locales
+// (documented in DECISIONS.md), while shared chrome carries real schoolgo translations.
+test('zh mode: translated chrome flips, landing copy falls back to English', async ({
   page,
   browser,
   baseURL,
 }) => {
   // No locale cookie on the default context → EN default.
   await page.goto('/');
-  await expectVisibleTexts(page, homeAll(catalogs.en, LEAK_KEYS));
-  await expectAbsentTexts(page, homeAll(catalogs.de, LEAK_KEYS));
+  await expect(page.getByText(catalogs.en['Home.skipToContent'], { exact: true })).toBeAttached();
+  await expect(page.getByText(catalogs.zh['Home.skipToContent'], { exact: true })).toHaveCount(0);
 
   const context = await browser.newContext({ baseURL });
   await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'de', url: baseURL ?? FALLBACK_BASE_URL },
+    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? FALLBACK_BASE_URL },
   ]);
-  const dePage = await context.newPage();
+  const zhPage = await context.newPage();
   try {
-    await dePage.goto('/');
-    await expectVisibleTexts(dePage, homeAll(catalogs.de, LEAK_KEYS));
-    await expectAbsentTexts(dePage, homeAll(catalogs.en, LEAK_KEYS));
+    await zhPage.goto('/');
+    // Real schoolgo translation renders for shared chrome.
+    await expect(
+      zhPage.getByText(catalogs.zh['Home.skipToContent'], { exact: true }),
+    ).toBeAttached();
+    // Landing keys fall back to en values in zh mode (documented policy) and still render.
+    await expectVisibleTexts(zhPage, homeAll(catalogs.en, ['hero.subtitle', 'cta.title']));
   } finally {
     await context.close();
   }

@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-18T10:46:24.995Z",
+  "updated_at": "2026-07-18T11:32:03.074Z",
   "tasks": [
     {
       "id": "01",
@@ -427,6 +427,23 @@
         "verdict": "PASS",
         "by": "orchestrator live proof",
         "evidence": "mailpit container healthy on 1125/8125; api restarted via watchdog; real send 250-queued + searchable via /api/v1/search in OUR mailpit; staging topology untouched"
+      }
+    },
+    {
+      "id": "27",
+      "file": ".thellmspace/tasks/27-locales-schoolgo-set.md",
+      "title": "Adopt schoolgo locale set (en/zh/ko/ms/vi/th), drop de",
+      "layer": "frontend",
+      "contract": [
+        "C-CONTENT"
+      ],
+      "depends_on": [],
+      "status": "DONE",
+      "started_at": 1784373519.392,
+      "verify": {
+        "verdict": "PASS",
+        "by": "orchestrator gates",
+        "evidence": "6 catalogs parity OK (336 keys; 43 schoolgo-translated + fallback policy); routing/switcher updated; de dropped; e2e realigned (ZH render, toggle en→zh→en, fallback policy, axe zh); full suite 19/19 green; tsc 0 errors"
       }
     }
   ]

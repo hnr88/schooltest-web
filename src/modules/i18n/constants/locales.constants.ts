@@ -4,5 +4,9 @@ export const LOCALES = routing.locales;
 
 export const LOCALE_LABELS: Record<Locale, string> = {
   en: 'English',
-  de: 'Deutsch',
+  zh: '中文',
+  ko: '한국어',
+  ms: 'Melayu',
+  vi: 'Tiếng Việt',
+  th: 'ไทย',
 };

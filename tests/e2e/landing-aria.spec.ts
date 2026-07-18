@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 import { home, icu, loadMessages, type Locale, type Messages } from './helpers/i18n';
 
 // Aria-label catalog keys are proven rendered, not just present in the JSONs (C-E2E-1).
-const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), de: loadMessages('de') };
+const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), zh: loadMessages('zh') };
 
 test('aria labels: nav landmark, socials, rating, score bars render from en.json', async ({
   page,
@@ -38,31 +38,31 @@ test('aria labels: nav landmark, socials, rating, score bars render from en.json
   }
 });
 
-test('aria labels: German catalog values render in de mode', async ({ browser, baseURL }) => {
-  const de = catalogs.de;
+test('aria labels: zh catalog values render in zh mode', async ({ browser, baseURL }) => {
+  const zh = catalogs.zh;
   const context = await browser.newContext({ baseURL });
   await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'de', url: baseURL ?? 'http://localhost:3100' },
+    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? 'http://localhost:3100' },
   ]);
   const page = await context.newPage();
   try {
     await page.goto('/');
     await expect(
-      page.getByRole('navigation', { name: home(de, 'nav.label'), exact: true }),
+      page.getByRole('navigation', { name: home(zh, 'nav.label'), exact: true }),
     ).toHaveCount(1);
     await expect(
-      page.getByRole('img', { name: home(de, 'testimonial.ratingLabel'), exact: true }),
+      page.getByRole('img', { name: home(zh, 'testimonial.ratingLabel'), exact: true }),
     ).toBeVisible();
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       'content',
-      home(de, 'meta.description'),
+      home(zh, 'meta.description'),
     );
     for (const key of ['footer.socialX', 'footer.socialYouTube', 'footer.socialLinkedIn']) {
-      await expect(page.getByRole('link', { name: home(de, key), exact: true })).toBeVisible();
+      await expect(page.getByRole('link', { name: home(zh, key), exact: true })).toBeVisible();
     }
-    const name = icu(home(de, 'featureDetail.card.scoreLabel'), {
-      skill: home(de, 'featureDetail.card.grammar'),
-      score: home(de, 'featureDetail.card.scoreGrammar'),
+    const name = icu(home(zh, 'featureDetail.card.scoreLabel'), {
+      skill: home(zh, 'featureDetail.card.grammar'),
+      score: home(zh, 'featureDetail.card.scoreGrammar'),
     });
     await expect(page.getByRole('progressbar', { name, exact: true })).toBeVisible();
   } finally {

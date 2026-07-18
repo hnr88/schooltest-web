@@ -42,10 +42,10 @@ All endpoints are Strapi v5 on `http://localhost:5500`. Envelope: v5 flat entiti
 
 ## STUDENTS (parent-scoped; custom route 01-custom-parent-students.ts)
 
-### C-STUDENT-LIST — GET /api/students (Bearer parent JWT)
+### C-STUDENT-LIST — GET /api/my/students (Bearer parent JWT)
 - Query: standard Strapi (`pagination[page]`, `pagination[pageSize]≤100`, `sort`).
-- Controller force-merges `filters[parent][documentId][$eq]=<caller>` (re-applied after
-  sanitizeQuery — schoolgo anti-leak pattern). Parent sees ONLY own students.
+- Controller forces `filters[parent][documentId][$eq]=<caller>` server-side (the /my/*
+  convention — no core-route shadowing). Parent sees ONLY own students.
 - 200: `{ data: Student[], meta: { pagination } }`. 401 unauth.
 
 ### C-STUDENT-CREATE — POST /api/students (Bearer parent JWT)

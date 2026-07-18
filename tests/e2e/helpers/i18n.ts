@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { expect, type Page } from '@playwright/test';
 
-export type Locale = 'en' | 'de';
+export type Locale = 'en' | 'zh';
 export type Messages = Record<string, string>;
 
 function flatten(node: Record<string, unknown>, prefix: string, out: Messages): Messages {
