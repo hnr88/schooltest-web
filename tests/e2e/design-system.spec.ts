@@ -25,7 +25,7 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
   ];
   for (const [row, key, sel] of variants) await expectVariantButton(buttonRows.nth(row), ds(en, key), sel);
   const sizes = buttonRows.nth(2);
-  for (const cls of ['h-7', 'h-8', 'h-9']) await expectVariantButton(sizes, ds(en, 'buttonCreate'), `button.${cls}`);
+  for (const cls of ['h-8', 'h-10', 'h-11']) await expectVariantButton(sizes, ds(en, 'buttonCreate'), `button.${cls}`);
   await expectVariantButton(sizes, ds(en, 'buttonGetStarted'), 'button.h-12'); // xl size
   const states = buttonRows.nth(3);
   const loading = states.getByRole('button', { name: ds(en, 'buttonSaving'), exact: true });

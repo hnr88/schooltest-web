@@ -112,6 +112,21 @@ const FOOTER_COLUMNS = [
       { href: '#for-schools', labelKey: 'footer.schoolsCaseStudies' },
     ],
   },
+  {
+    titleKey: 'footer.companyTitle',
+    links: [
+      { href: '/about', labelKey: 'footer.companyAbout' },
+      { href: '/blog', labelKey: 'footer.companyBlog' },
+      { href: '/careers', labelKey: 'footer.companyCareers' },
+      { href: '#cta', labelKey: 'footer.companyContact' },
+    ],
+  },
+] as const;
+
+const FOOTER_LEGAL = [
+  { href: '/privacy', labelKey: 'footer.privacy' },
+  { href: '/terms', labelKey: 'footer.terms' },
+  { href: '/security', labelKey: 'footer.security' },
 ] as const;
 
 export {
@@ -126,4 +141,5 @@ export {
   FAQ_ITEMS,
   FOOTER_SOCIALS,
   FOOTER_COLUMNS,
+  FOOTER_LEGAL,
 };

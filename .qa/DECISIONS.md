@@ -310,3 +310,17 @@ from SchoolTest Landing.dc.html: FileTextIcon, SparklesIcon (big+small), Sparkle
 BarChartIcon, PlayIcon (same pattern as SocialIcons.tsx). FeatureCard icon prop type
 widened to ComponentType<{className?}> (lucide still compatible). Check/X/Star/ArrowRight
 are path-identical to lucide and stay on lucide-react.
+
+## 2026-07-18 D30 — Component drift fixes (user: "not even close")
+- Footer restored to the spec: Company column back (About/Blog/Careers → real routes,
+  branded 404 until those pages exist — uniform honest rule: section-relatable links →
+  anchors, page links → real routes; Contact → #cta), Privacy/Terms/Security back in the
+  bottom bar (/privacy|/terms|/security routes). 8 keys re-added to en+de (274 total).
+- Announcement link → spec teal-300. Status dot → teal-400.
+- DS Button sizes remapped to the DS doc scale (sm h-8/13px/r8, default h-10/14px/r10,
+  lg h-11/15px/r12; xl unchanged) — vendored ui scale was visibly more compact than the
+  design. E2E size assertions updated accordingly.
+- Showcase: EmptyState action + Plus icon; dropdown demo items + spec icons
+  (Pencil/Copy/Mail/Trash2).
+- Accent button stays navy-on-teal (AA; the spec's white-on-teal fails WCAG 2.48:1) —
+  flagged to the user.

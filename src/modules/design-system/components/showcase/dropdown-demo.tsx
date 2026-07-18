@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Copy, Mail, Pencil, Trash2 } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -60,19 +61,29 @@ function DropdownDemo({
       <DropdownMenuContent>
         <DropdownMenuGroup>
           <DropdownMenuLabel>{groupLabel}</DropdownMenuLabel>
-          <DropdownMenuItem>{editLabel}</DropdownMenuItem>
           <DropdownMenuItem>
+            <Pencil aria-hidden="true" />
+            {editLabel}
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Copy aria-hidden="true" />
             {duplicateLabel}
             <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger>{shareLabel}</DropdownMenuSubTrigger>
+            <DropdownMenuSubTrigger>
+              <Mail aria-hidden="true" />
+              {shareLabel}
+            </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
               <DropdownMenuItem>{copyLinkLabel}</DropdownMenuItem>
               <DropdownMenuItem>{copyLabel}</DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
-          <DropdownMenuItem variant="destructive">{deleteLabel}</DropdownMenuItem>
+          <DropdownMenuItem variant="destructive">
+            <Trash2 aria-hidden="true" />
+            {deleteLabel}
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

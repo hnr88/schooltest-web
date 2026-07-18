@@ -162,7 +162,15 @@
       "status": "Alle Systeme betriebsbereit",
       "socialX": "X",
       "socialYouTube": "YouTube",
-      "socialLinkedIn": "LinkedIn"
+      "socialLinkedIn": "LinkedIn",
+      "companyTitle": "Unternehmen",
+      "companyAbout": "Über uns",
+      "companyBlog": "Blog",
+      "companyCareers": "Karriere",
+      "companyContact": "Kontakt",
+      "privacy": "Datenschutz",
+      "terms": "AGB",
+      "security": "Sicherheit"
     }
   },
   "Nav": {

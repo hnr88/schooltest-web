@@ -1,4 +1,4 @@
-import { ClipboardListIcon, FileTextIcon, GaugeIcon, SparklesIcon, UsersIcon } from 'lucide-react';
+import { ClipboardListIcon, FileTextIcon, GaugeIcon, Plus, SparklesIcon, UsersIcon } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import {
@@ -83,7 +83,12 @@ async function CardsSection() {
           icon={ClipboardListIcon}
           title={t('emptyTitle')}
           description={t('emptyBody')}
-          action={<Button>{t('emptyAction')}</Button>}
+          action={
+            <Button>
+              <Plus aria-hidden="true" />
+              {t('emptyAction')}
+            </Button>
+          }
         />
       </div>
     </Section>

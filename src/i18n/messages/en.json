@@ -162,7 +162,15 @@
       "status": "All systems operational",
       "socialX": "X",
       "socialYouTube": "YouTube",
-      "socialLinkedIn": "LinkedIn"
+      "socialLinkedIn": "LinkedIn",
+      "companyTitle": "Company",
+      "companyAbout": "About",
+      "companyBlog": "Blog",
+      "companyCareers": "Careers",
+      "companyContact": "Contact",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "security": "Security"
     }
   },
   "Nav": {

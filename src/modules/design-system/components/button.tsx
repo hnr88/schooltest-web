@@ -16,7 +16,10 @@ const extendedButtonVariants = cva('', {
         'bg-destructive text-white hover:bg-red-700 dark:bg-destructive dark:hover:bg-red-600',
     },
     size: {
-      xl: 'h-12 px-7 rounded-xl text-[15px]',
+      sm: 'h-8 gap-1.5 rounded-md px-3.5 text-[13px]',
+      default: 'h-10 gap-2 rounded-lg px-4.5 text-sm',
+      lg: 'h-11 gap-2 rounded-xl px-6.5 text-[15px]',
+      xl: 'h-12 gap-2 px-7 rounded-xl text-[15px]',
     },
   },
 });
@@ -53,10 +56,12 @@ function Button({
     variant === 'white' ||
     variant === 'outline-white';
   const cvaVariant = isExtendedVariant || variant === 'destructive' ? variant : undefined;
+  const cvaSize =
+    size === 'sm' || size === 'default' || size === 'lg' || size === 'xl' ? size : undefined;
   const classes = cn(
     extendedButtonVariants({
       variant: cvaVariant,
-      size: size === 'xl' ? 'xl' : undefined,
+      size: cvaSize,
     }),
     className,
   );

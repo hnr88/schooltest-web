@@ -146,6 +146,9 @@ export const LANDING_TEXT_KEYS = [
   'footer.productAnalytics', 'footer.productPricing',
   'footer.schoolsTitle', 'footer.schoolsDistricts', 'footer.schoolsLanguageCenters',
   'footer.schoolsUniversities', 'footer.schoolsCaseStudies',
+  'footer.companyTitle', 'footer.companyAbout', 'footer.companyBlog',
+  'footer.companyCareers', 'footer.companyContact',
+  'footer.privacy', 'footer.terms', 'footer.security',
   'footer.copyright', 'footer.status',
 ] as const;
 
