@@ -39,7 +39,7 @@ function FeatureCard({
         >
           <Icon className="size-5" />
         </span>
-        <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+        <h3 className="mt-4 text-lg font-bold">{title}</h3>
         <p className={cn('mt-2 text-sm leading-relaxed', DESCRIPTION_TONES[tone])}>
           {description}
         </p>

@@ -324,3 +324,14 @@ are path-identical to lucide and stay on lucide-react.
   (Pencil/Copy/Mail/Trash2).
 - Accent button stays navy-on-teal (AA; the spec's white-on-teal fails WCAG 2.48:1) —
   flagged to the user.
+
+## 2026-07-18 D31 — Typography scale corrected to the design
+The DS doc type scale + landing inline styles were checked element by element; several
+headings were wrong. Added exact @theme tokens: --text-display now reaches the spec's
+68px (was 56), plus --text-h1 40, --text-h2 32, --text-h3 24, --text-h4 18, --text-flow 34,
+--text-cta-title 42, --text-quote 19 (each with the spec's line-height/letter-spacing).
+Applied: hero H1 68, features/pricing H2 40 (was 36), FAQ + feature-detail 32 (was 36/30),
+flow 34, CTA title 42 (was 36), CTA subtitle 16 (was 18), testimonial quote 19 (was 18),
+feature-card titles font-bold 18/700 (was semibold), FAQ triggers text-base. Body text
+stays on the DS scale (16/14/12 tokens) — landing half-pixel values (13.5/14.5/15.5) map
+to the nearest DS step per the doc's own scale.

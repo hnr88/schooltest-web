@@ -17,7 +17,7 @@ async function TestimonialCard() {
           <Star key={index} aria-hidden="true" className="size-4 fill-amber-500 text-amber-500" />
         ))}
       </div>
-      <blockquote className="mt-4 text-lg leading-relaxed">{t('testimonial.quote')}</blockquote>
+      <blockquote className="mt-4 text-quote">{t('testimonial.quote')}</blockquote>
       <div className="mt-auto flex items-center gap-3 pt-6">
         <span
           aria-hidden="true"

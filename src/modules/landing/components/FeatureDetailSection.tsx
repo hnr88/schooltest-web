@@ -13,7 +13,7 @@ async function FeatureDetailSection() {
       <Container className="grid items-center gap-12 lg:grid-cols-2">
         <div>
           <Eyebrow tone="teal">{t('featureDetail.eyebrow')}</Eyebrow>
-          <h3 className="mt-3 text-3xl font-bold tracking-tight text-balance">
+          <h3 className="mt-3 text-h2 font-bold text-balance">
             {t('featureDetail.title')}
           </h3>
           <p className="mt-4 text-muted-foreground">{t('featureDetail.description')}</p>

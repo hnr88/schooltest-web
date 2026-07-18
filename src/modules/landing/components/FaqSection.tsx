@@ -16,14 +16,14 @@ async function FaqSection() {
   return (
     <Section id="resources">
       <Container className="max-w-3xl">
-        <h2 className="text-center text-4xl font-bold tracking-tight text-balance">
+        <h2 className="text-center text-h2 font-bold text-balance">
           {t('faq.title')}
         </h2>
         <div className="mt-10 rounded-2xl border border-border bg-card px-2 py-1">
           <Accordion defaultValue={[FAQ_ITEMS[0].value]}>
             {FAQ_ITEMS.map((item) => (
               <AccordionItem key={item.value} value={item.value}>
-                <AccordionTrigger className="py-4 text-left font-semibold">
+                <AccordionTrigger className="py-4 text-left text-base font-semibold">
                   {t(item.questionKey)}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">
