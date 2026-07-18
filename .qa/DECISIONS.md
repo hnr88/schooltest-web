@@ -368,3 +368,9 @@ Full audit + cleanup on user request:
   through). DS Button now overrides the default hover to the spec's solid blue-700.
 - Loading state opacity 0.5 → spec's 0.85 (disabled:opacity-85 overrides ui's
   disabled:opacity-50 only when loading; true disabled stays 0.5).
+
+## 2026-07-18 D35 — Outline/secondary button variants restored to spec (user-reported)
+Vendored outline rendered bg-background (off-white) + border-border (near-invisible) —
+looked washed-out on white cards. DS Button outline now: bg-card (white) + border-input
+(#CBD5E1, spec) + hover:bg-background (#F7F9FC, spec). Secondary hover → blue-100 (spec;
+was a color-mix darkening). Routing via a typed OVERRIDE_VARIANTS list.

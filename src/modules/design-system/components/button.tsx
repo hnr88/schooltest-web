@@ -13,6 +13,8 @@ const extendedButtonVariants = cva('', {
       accent: 'bg-accent text-navy-900 hover:bg-teal-400',
       white: 'bg-white text-navy-900 hover:bg-blue-50',
       'outline-white': 'border-white/40 bg-transparent text-white hover:bg-white/10',
+      outline: 'border-input bg-card hover:bg-background',
+      secondary: 'hover:bg-blue-100',
       destructive:
         'bg-destructive text-white hover:bg-red-700 dark:bg-destructive dark:hover:bg-red-600',
     },
@@ -31,6 +33,17 @@ type ExtendedButtonVariant = NonNullable<VariantProps<typeof extendedButtonVaria
 
 type ButtonVariant = UiButtonVariant | ExtendedButtonVariant;
 type ButtonSize = UiButtonSize | 'xl';
+
+const OVERRIDE_VARIANTS: readonly ExtendedButtonVariant[] = [
+  'default',
+  'navy',
+  'accent',
+  'white',
+  'outline-white',
+  'outline',
+  'secondary',
+  'destructive',
+];
 
 interface ButtonProps extends Omit<ComponentProps<typeof ButtonPrimitive>, 'variant' | 'size'> {
   variant?: ButtonVariant;
@@ -56,8 +69,9 @@ function Button({
     variant === 'accent' ||
     variant === 'white' ||
     variant === 'outline-white';
-  const cvaVariant =
-    isExtendedVariant || variant === 'destructive' || variant === 'default' ? variant : undefined;
+  const cvaVariant = (OVERRIDE_VARIANTS as readonly string[]).includes(variant)
+    ? (variant as ExtendedButtonVariant)
+    : undefined;
   const cvaSize =
     size === 'sm' || size === 'default' || size === 'lg' || size === 'xl' ? size : undefined;
   const classes = cn(
