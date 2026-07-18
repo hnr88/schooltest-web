@@ -17,7 +17,7 @@ async function HowItWorksSection() {
               <li key={step.titleKey} className="flex items-start gap-4.5">
                 <span
                   aria-hidden="true"
-                  className="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-600 text-[15px] font-bold text-white"
+                  className="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-600 text-button font-bold text-white"
                 >
                   {index + 1}
                 </span>

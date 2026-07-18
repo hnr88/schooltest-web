@@ -14,9 +14,7 @@ async function CtaSection() {
             <Logo variant="mark" theme="white" alt="" height={240} />
           </div>
           <div className="relative mx-auto max-w-2xl text-center">
-            <h2 className="text-cta-title font-bold text-balance text-white">
-              {t('cta.title')}
-            </h2>
+            <h2 className="text-cta-title font-bold text-balance text-white">{t('cta.title')}</h2>
             <p className="mt-4 text-base text-blue-100/85">{t('cta.subtitle')}</p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Button variant="white" size="xl" href="#pricing">

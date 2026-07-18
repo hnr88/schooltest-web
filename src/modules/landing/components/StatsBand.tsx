@@ -37,9 +37,7 @@ async function StatsBand() {
           <div className="grid gap-8 text-center text-white sm:grid-cols-3">
             {STATS.map((stat) => (
               <div key={stat.valueKey}>
-                <p className={cn('text-5xl font-bold', stat.valueClassName)}>
-                  {t(stat.valueKey)}
-                </p>
+                <p className={cn('text-5xl font-bold', stat.valueClassName)}>{t(stat.valueKey)}</p>
                 <p className="mt-2 text-sm text-slate-400">{t(stat.labelKey)}</p>
               </div>
             ))}

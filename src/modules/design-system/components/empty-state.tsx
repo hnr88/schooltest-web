@@ -8,7 +8,7 @@ function EmptyState({ icon: Icon, title, description, action, className }: Empty
       data-slot="empty-state"
       className={cn(
         'flex flex-col items-center rounded-xl border border-dashed p-10 text-center',
-        className
+        className,
       )}
     >
       <span

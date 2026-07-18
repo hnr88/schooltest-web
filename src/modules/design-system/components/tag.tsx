@@ -12,7 +12,7 @@ function Tag({ label, onRemove, removeLabel, className }: TagProps) {
       data-slot="tag"
       className={cn(
         'inline-flex h-7 items-center gap-1 rounded-full bg-secondary px-3 text-sm font-medium text-secondary-foreground',
-        className
+        className,
       )}
     >
       {label}
@@ -21,7 +21,7 @@ function Tag({ label, onRemove, removeLabel, className }: TagProps) {
           type="button"
           aria-label={removeLabel}
           onClick={onRemove}
-          className="inline-flex size-4 items-center justify-center rounded-full transition-colors hover:bg-secondary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+          className="inline-flex size-4 items-center justify-center rounded-full transition-colors hover:bg-secondary-foreground/10 focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
           <XIcon aria-hidden="true" className="size-3" />
         </button>

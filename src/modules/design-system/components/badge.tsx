@@ -37,7 +37,7 @@ function Badge({ className, variant = 'default', ...props }: BadgeProps) {
       variant={isExtendedVariant ? 'default' : variant}
       className={cn(
         extendedBadgeVariants({ variant: isExtendedVariant ? variant : undefined }),
-        className
+        className,
       )}
       {...props}
     />

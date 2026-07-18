@@ -47,7 +47,7 @@ function PresenceAvatar({ initials, size = 'default', presence, className }: Pre
           className={cn(
             'absolute right-0 bottom-0 z-10 rounded-full ring-2 ring-background',
             DOT_SIZE_CLASSES[size],
-            DOT_TONES[presence]
+            DOT_TONES[presence],
           )}
         />
       ) : null}

@@ -26,6 +26,10 @@
   --text-cta-title--letter-spacing: -0.025em;
   --text-quote: 1.1875rem;
   --text-quote--line-height: 1.55;
+  --text-micro: 0.6875rem;
+  --text-caption: 0.8125rem;
+  --text-button: 0.9375rem;
+  --tracking-eyebrow: 0.1em;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-navy-950: var(--navy-950);
@@ -45,11 +49,23 @@
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --font-sans: var(--font-sans);
-  --font-mono: ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas',
-    'Liberation Mono', 'Courier New', monospace;
+  --font-mono:
+    ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New',
+    monospace;
   --font-heading: var(--font-sans);
-  --background-image-cta-gradient: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 60%, var(--blue-700) 140%);
-  --background-image-hero-scrim: linear-gradient(180deg, oklch(0.227 0.0691 263.0857 / 55%) 0%, oklch(0.227 0.0691 263.0857 / 18%) 45%, oklch(0.227 0.0691 263.0857 / 42%) 88%, oklch(0.227 0.0691 263.0857 / 10%) 100%);
+  --background-image-cta-gradient: linear-gradient(
+    135deg,
+    var(--navy-900) 0%,
+    var(--navy-800) 60%,
+    var(--blue-700) 140%
+  );
+  --background-image-hero-scrim: linear-gradient(
+    180deg,
+    oklch(0.227 0.0691 263.0857 / 55%) 0%,
+    oklch(0.227 0.0691 263.0857 / 18%) 45%,
+    oklch(0.227 0.0691 263.0857 / 42%) 88%,
+    oklch(0.227 0.0691 263.0857 / 10%) 100%
+  );
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
@@ -200,4 +216,8 @@
   html {
     @apply font-sans;
   }
+}
+
+@utility grid-cols-footer {
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
 }

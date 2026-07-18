@@ -22,7 +22,7 @@ function Logo({ variant = 'lockup', theme = 'color', alt, height, className }: L
       className={cn(
         theme === 'white' && 'brightness-0 invert',
         theme === 'color' && 'dark:brightness-0 dark:invert',
-        className
+        className,
       )}
     />
   );

@@ -145,9 +145,7 @@ test('composition: section landmarks render once, in contract order, with one h1
       if (index === 0) return true;
       const previous = elements[index - 1];
       if (previous === null || previous === undefined) return false;
-      return (
-        (previous.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0
-      );
+      return (previous.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
     });
   }, chain);
   expect(ordered).toBe(true);

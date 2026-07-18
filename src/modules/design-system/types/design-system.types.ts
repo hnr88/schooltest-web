@@ -25,8 +25,7 @@ export type TagProps = {
   label: string;
   className?: string;
 } & (
-  | { onRemove: () => void; removeLabel: string }
-  | { onRemove?: undefined; removeLabel?: undefined }
+  { onRemove: () => void; removeLabel: string } | { onRemove?: undefined; removeLabel?: undefined }
 );
 
 export interface CountBadgeProps {

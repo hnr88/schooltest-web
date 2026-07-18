@@ -48,11 +48,7 @@ async function ChoiceControls() {
         </RadioGroup>
       </FieldSet>
       <Field orientation="horizontal">
-        <Switch
-          id="ds-switch-shuffle"
-          defaultChecked
-          aria-labelledby="ds-switch-shuffle-label"
-        />
+        <Switch id="ds-switch-shuffle" defaultChecked aria-labelledby="ds-switch-shuffle-label" />
         <Label id="ds-switch-shuffle-label">{t('switchShuffle')}</Label>
       </Field>
       <Field orientation="horizontal" data-disabled>

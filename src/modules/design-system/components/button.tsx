@@ -16,10 +16,10 @@ const extendedButtonVariants = cva('', {
         'bg-destructive text-white hover:bg-red-700 dark:bg-destructive dark:hover:bg-red-600',
     },
     size: {
-      sm: 'h-8 gap-1.5 rounded-md px-3.5 text-[13px]',
+      sm: 'h-8 gap-1.5 rounded-md px-3.5 text-caption',
       default: 'h-10 gap-2 rounded-lg px-4.5 text-sm',
-      lg: 'h-11 gap-2 rounded-xl px-6.5 text-[15px]',
-      xl: 'h-12 gap-2 px-7 rounded-xl text-[15px]',
+      lg: 'h-11 gap-2 rounded-xl px-6.5 text-button',
+      xl: 'h-12 gap-2 px-7 rounded-xl text-button',
     },
   },
 });

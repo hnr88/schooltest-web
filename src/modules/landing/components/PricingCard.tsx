@@ -14,11 +14,11 @@ async function PricingCard({ tier }: { tier: PricingTier }) {
     <Card
       className={cn(
         'h-full p-8',
-        tier.featured && 'relative border-navy-900 bg-navy-900 text-white shadow-xl'
+        tier.featured && 'relative border-navy-900 bg-navy-900 text-white shadow-xl',
       )}
     >
       {tier.badgeKey ? (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-teal-300 px-3.5 py-1.5 text-[11px] font-bold tracking-wider text-teal-950 uppercase">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-teal-300 px-3.5 py-1.5 text-micro font-bold tracking-wider text-teal-950 uppercase">
           {t(tier.badgeKey)}
         </span>
       ) : null}
@@ -26,7 +26,9 @@ async function PricingCard({ tier }: { tier: PricingTier }) {
       <p className="mt-3 flex items-baseline gap-1.5">
         <span className="text-4xl font-bold tracking-tight">{t(tier.priceKey)}</span>
         {tier.suffixKey ? (
-          <span className={cn('text-sm', tier.featured ? 'text-slate-400' : 'text-muted-foreground')}>
+          <span
+            className={cn('text-sm', tier.featured ? 'text-slate-400' : 'text-muted-foreground')}
+          >
             {t(tier.suffixKey)}
           </span>
         ) : null}
@@ -39,7 +41,7 @@ async function PricingCard({ tier }: { tier: PricingTier }) {
               strokeWidth={2.75}
               className={cn(
                 'size-3.5 shrink-0',
-                tier.featured ? 'text-teal-300' : 'text-green-600 dark:text-green-400'
+                tier.featured ? 'text-teal-300' : 'text-green-600 dark:text-green-400',
               )}
             />
             <span className={cn(tier.featured && 'text-blue-200')}>{t(featureKey)}</span>

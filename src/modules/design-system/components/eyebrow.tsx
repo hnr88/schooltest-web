@@ -11,7 +11,7 @@ function Eyebrow({ tone = 'blue', children, className }: EyebrowProps) {
   return (
     <p
       data-slot="eyebrow"
-      className={cn('text-xs font-bold tracking-[0.1em] uppercase', TONE_CLASSES[tone], className)}
+      className={cn('text-xs font-bold tracking-eyebrow uppercase', TONE_CLASSES[tone], className)}
     >
       {children}
     </p>

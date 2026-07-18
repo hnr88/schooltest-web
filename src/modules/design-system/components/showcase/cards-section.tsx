@@ -1,4 +1,11 @@
-import { ClipboardListIcon, FileTextIcon, GaugeIcon, Plus, SparklesIcon, UsersIcon } from 'lucide-react';
+import {
+  ClipboardListIcon,
+  FileTextIcon,
+  GaugeIcon,
+  Plus,
+  SparklesIcon,
+  UsersIcon,
+} from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import {

@@ -1,7 +1,10 @@
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 
-import type { ProgressBarProps, ProgressBarTone } from '@/modules/design-system/types/design-system.types';
+import type {
+  ProgressBarProps,
+  ProgressBarTone,
+} from '@/modules/design-system/types/design-system.types';
 
 const TONE_CLASSES: Record<ProgressBarTone, string> = {
   solid: '',

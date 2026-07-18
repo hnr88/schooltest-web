@@ -335,3 +335,18 @@ flow 34, CTA title 42 (was 36), CTA subtitle 16 (was 18), testimonial quote 19 (
 feature-card titles font-bold 18/700 (was semibold), FAQ triggers text-base. Body text
 stays on the DS scale (16/14/12 tokens) — landing half-pixel values (13.5/14.5/15.5) map
 to the nearest DS step per the doc's own scale.
+
+## 2026-07-18 D32 — CLAUDE.md + .claude/rules compliance pass
+Full audit + cleanup on user request:
+- Arbitrary VALUES eliminated (tailwind.md): text-[11/13/15px] → new tokens --text-micro/
+  --text-caption/--text-button; tracking-[0.1em] → --tracking-eyebrow; footer grid
+  lg:grid-cols-[1.4fr...] → @utility grid-cols-footer. Zero arbitrary values remain in
+  mission code (arbitrary data-slot SELECTORS remain — different mechanism, the module's
+  sanctioned idiom, ui uses the same).
+- tailwind-merge config fixed (lib/utils.ts): the new text-* size tokens were being
+  misclassified as colors, silently dropping paired text colors (white hero CTA text went
+  navy — caught by axe). extendTailwindMerge now registers all custom font-size tokens.
+- Prettier applied to all mission files (src/modules/landing, design-system, tests/e2e,
+  app touched files) — the repo baseline is not prettier-clean; only mission files were
+  formatted. Verified: no ../ imports, no any, no hex in components, no ui/* edits,
+  files ≤200 lines, server-by-default, @/ imports only.

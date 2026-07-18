@@ -12,9 +12,7 @@ async function PricingSection() {
       <Container>
         <div className="mx-auto max-w-xl text-center">
           <Eyebrow>{t('pricing.eyebrow')}</Eyebrow>
-          <h2 className="mt-3 text-h1 font-bold text-balance">
-            {t('pricing.title')}
-          </h2>
+          <h2 className="mt-3 text-h1 font-bold text-balance">{t('pricing.title')}</h2>
         </div>
         <div className="mt-12 grid items-stretch gap-6 md:grid-cols-3">
           {PRICING_TIERS.map((tier) => (

@@ -21,7 +21,7 @@ function StatusBadge({ status, label, className }: StatusBadgeProps) {
       className={cn(
         'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
         PILL_CLASSES[status],
-        className
+        className,
       )}
     >
       <span aria-hidden="true" className={cn('size-2 rounded-full', DOT_CLASSES[status])} />
