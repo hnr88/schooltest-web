@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 const extendedButtonVariants = cva('', {
   variants: {
     variant: {
+      default: 'hover:bg-blue-700',
       navy: 'bg-navy-900 text-white hover:bg-navy-800',
       accent: 'bg-accent text-navy-900 hover:bg-teal-400',
       white: 'bg-white text-navy-900 hover:bg-blue-50',
@@ -55,7 +56,8 @@ function Button({
     variant === 'accent' ||
     variant === 'white' ||
     variant === 'outline-white';
-  const cvaVariant = isExtendedVariant || variant === 'destructive' ? variant : undefined;
+  const cvaVariant =
+    isExtendedVariant || variant === 'destructive' || variant === 'default' ? variant : undefined;
   const cvaSize =
     size === 'sm' || size === 'default' || size === 'lg' || size === 'xl' ? size : undefined;
   const classes = cn(
@@ -63,6 +65,7 @@ function Button({
       variant: cvaVariant,
       size: cvaSize,
     }),
+    loading && 'disabled:opacity-85',
     className,
   );
   if (href !== undefined) {

@@ -362,3 +362,9 @@ Full audit + cleanup on user request:
 - global-error.tsx: stays plain English (replaces root layout — no next-intl) but now
   matches the design language (imports globals.css, card + mark + navy/blue button).
 - The design has NO dedicated 500 page — error.tsx applies the 404 design language.
+
+## 2026-07-18 D34 — Button opacity fixes (user-reported)
+- Vendored ui default variant hovers with bg-primary/80 (translucent — photos/panels bled
+  through). DS Button now overrides the default hover to the spec's solid blue-700.
+- Loading state opacity 0.5 → spec's 0.85 (disabled:opacity-85 overrides ui's
+  disabled:opacity-50 only when loading; true disabled stays 0.5).
