@@ -158,11 +158,6 @@
       "schoolsLanguageCenters": "Language centers",
       "schoolsUniversities": "Universities",
       "schoolsCaseStudies": "Case studies",
-      "companyTitle": "Company",
-      "companyAbout": "About",
-      "companyBlog": "Blog",
-      "companyCareers": "Careers",
-      "companyContact": "Contact",
       "copyright": "© 2026 SchoolTest, Inc.",
       "status": "All systems operational",
       "socialX": "X",
@@ -319,6 +314,9 @@
     "paginationNavAria": "Pagination",
     "spinnerLabel": "Loading…",
     "dialogCloseLabel": "Close",
-    "breadcrumbNavAria": "Breadcrumb navigation"
+    "breadcrumbNavAria": "Breadcrumb navigation",
+    "sheetTrigger": "Open sheet",
+    "sheetTitle": "Share \"Science Quiz\"",
+    "sheetBody": "Anyone with the link can take this test."
   }
 }

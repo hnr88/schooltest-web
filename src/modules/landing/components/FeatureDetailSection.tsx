@@ -20,7 +20,7 @@ async function FeatureDetailSection() {
           <ul className="mt-6 flex flex-col gap-3">
             {FEATURE_CHECKLIST.map((key) => (
               <li key={key} className="flex items-center gap-2.5">
-                <CircleCheck aria-hidden="true" className="size-4 shrink-0 text-teal-600" />
+                <CircleCheck aria-hidden="true" className="size-4 shrink-0 text-teal-600 dark:text-teal-400" />
                 <span className="text-sm font-medium">{t(key)}</span>
               </li>
             ))}

@@ -65,7 +65,8 @@ only import surface. Variant/size names follow shadcn conventions (lowercase str
 - `PresenceAvatar` — Avatar+Fallback initials; props `initials`, `size: 'sm' | 'default' |
   'lg' | 'xl'` (24/32/40/56px), `presence?: 'online' | 'offline'`.
 - `SegmentedControl` — 'use client', on ui/toggle-group; props `options: {value,label}[]`,
-  `value`, `onValueChange`, `ariaLabel`.
+  `value`, `onValueChange`, `ariaLabel`. Sheet family re-exported and demoed (showcase
+  SheetDemo island, added 2026-07-17 after final-critic pass 1).
 - `Container` — max-w per spec (1200px) mx-auto px-6; `Section` — `<section>` with vertical
   rhythm + optional `id`.
 - Re-exports through the barrel (single import surface, no edits to ui/*): Card family,
@@ -92,7 +93,7 @@ Order (spec Landing.dc.html), each its own server component in `src/modules/land
 1. `AnnouncementBar` (navy strip, message + Learn more → `#ai-feedback`)
 2. `LandingHeader` (sticky, logo, nav anchors, Sign in→`#cta`, Start free→`#pricing`;
    `MobileNav` client sheet for <lg)
-3. `HeroSection` id=`main-content` — navy rounded-4xl card, hero-field.webp bg + navy scrim,
+3. `HeroSection` — navy rounded-4xl card (page.tsx owns `<main id="main-content">` wrapping sections 3–12), hero-field.webp bg + navy scrim,
    badge pill, h1 (rich, 2 lines), subtitle, CTAs (`#pricing`, `#product`), microcopy
 4. `HeroFlow` — rich title (blue/teal spans) + 3 numbered steps with arrows
 5. `TrustedByStrip` — label + 5 wordmarks
@@ -106,7 +107,7 @@ Order (spec Landing.dc.html), each its own server component in `src/modules/land
     School outline); CTAs → `#cta`
 11. `FaqSection` id=`resources` — h2 + Accordion, 4 items, first open by default
 12. `CtaSection` id=`cta` — navy gradient panel, watermark, h2, sub, 2 buttons
-13. `LandingFooter` — navy, white logo + tagline, socials, 3 link columns (section anchors),
+13. `LandingFooter` — navy, white logo + tagline, socials, 2 link columns (section anchors; the spec's Company column omitted — no real targets, same rationale as the D7 legal-link omission),
     LocaleSwitcher, bottom bar (copyright + status pill)
 `page.tsx` composes them; `generateMetadata` from `Home.meta`. ONE h1 (hero). `Nav`/header
 anchor targets all exist (D7).

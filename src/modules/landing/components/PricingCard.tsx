@@ -34,7 +34,7 @@ async function PricingCard({ tier }: { tier: PricingTier }) {
       <ul className="mt-6 flex flex-col gap-2.5">
         {tier.includedFeatureKeys.map((featureKey) => (
           <li key={featureKey} className="flex items-center gap-2">
-            <CircleCheck aria-hidden="true" className="size-4 shrink-0 text-teal-600" />
+            <CircleCheck aria-hidden="true" className="size-4 shrink-0 text-teal-600 dark:text-teal-400" />
             <span className={cn(tier.featured && 'text-blue-100/85')}>{t(featureKey)}</span>
           </li>
         ))}

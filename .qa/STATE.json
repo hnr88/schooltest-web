@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "Design system + landing page from design-system-and-components/ in schooltest-web; copy from i18n JSONs; en+de",
-  "updated_at": "2026-07-17T22:26:50.389Z",
+  "updated_at": "2026-07-18T00:50:42.190Z",
   "tasks": [
     {
       "id": "01",
@@ -320,9 +320,13 @@
         "14",
         "15"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784327225.352,
+      "verify": {
+        "verdict": "PASS",
+        "by": "11 critic passes (10+11 consecutively CLEAN) + orchestrator gates",
+        "evidence": "19/19 suite green; tsc/lint 0 errors; parity 266/266; banned-pattern scan CLEAN; quality gate closed: critic passes 10 and 11 consecutively CLEAN; REPORT.md written"
+      }
     }
   ]
 }

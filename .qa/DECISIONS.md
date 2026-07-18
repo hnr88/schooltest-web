@@ -233,3 +233,52 @@ kept for other render cases.
 4. **Orchestrator follow-up:** `--color-destructive-foreground` registered in @theme
    (globals.css:55) so the token utility now generates for future consumers.
 
+
+## 2026-07-17 D23 — Final-critic pass-1 fixes
+1. Footer Company column REMOVED (About/Blog/Careers/Contact → #cta was label/destination
+   fakery, against D7s own rationale); 5 company keys removed; footer grid → 3 columns.
+2. Sheet family now demoed on /design-system (SheetDemo island + e2e assertion) — the last
+   undemoed barrel family (3 new keys; parity 266).
+3. e2e strengthened: flow.title asserted EN+DE; nav.*, pricing suffixes, meta.description
+   added; aria-label keys proven rendered (new landing-aria.spec.ts, EN+DE); composition
+   chain now covers all 13 sections (data-slot hooks on AnnouncementBar/TrustedBy/StatsBand).
+4. Spec files re-split under the 200-line cap (design-system-de.spec.ts).
+
+## 2026-07-17 D24 — Critic pass-5 fixes
+1. SheetFooter now demoed (sheet-demo close button lives inside SheetFooter; duplicate
+   close button from the move removed — caught by the interactions spec).
+2. Turbopack FATAL panic root-caused and eliminated: stray package.json/package-lock.json/
+   node_modules at the schooltest root (accidental npm-install debris from this session)
+   poisoned Nexts workspace-root inference; debris removed + stale .next cache cleared.
+   The turbopack.root config line was reverted (config transpile context resolves neither
+   import.meta.dirname nor __dirname correctly — documented for the future).
+3. not-found.tsx "← Home" hardcoded string replaced by the Nav.home catalog key (de: Startseite).
+
+## 2026-07-17 D25 — Critic pass-6 clarifications (docs only)
+1. D17 wording clarified: pagination text/aria keys are passed to DS Button href anchors,
+   NOT to ui PaginationLink/Previous/Next — those 3 exports remain deliberately unexercised
+   per the C-PAGE-DS addendum (vendored role=button anchors + hydration mismatch; law 11).
+2. D23.2 wording corrected: Sheet was the last undemoed family intended for demo; the
+   pagination trio stays unexercised by design (same addendum).
+3. Ruling on LandingHeader backdrop-blur: functional sticky-nav treatment straight from the
+   spec (rgba white .88 + blur) — accepted as borderline-functional, not the decorative
+   glassmorphism tailwind.md bans. No change.
+
+## 2026-07-17 D26 — Critic pass-8 fixes
+1. Dark-mode contrast fixed (theme is system-default, so dark is reachable): Eyebrow
+   dark:text-blue-300/teal-300; TrustedBy label+wordmarks dark:text-slate-400;
+   SegmentedControl items dark:text-slate-400; showcase tab triggers + avatar fallbacks
+   dark:text-slate-400. Landing spec is light-first but dark tokens shipped — AA now holds
+   in both themes.
+2. /design-system added to sitemap.ts.
+3. openGraph title/description added to both pages generateMetadata (from catalogs).
+
+## 2026-07-17 D27 — Critic pass-9 fixes (dark family, final)
+1. StatCard positive delta dark:text-green-400 (was green-700 = 1.56:1 on dark card).
+2. Logo color theme now flips to white in dark mode via dark:brightness-0 dark:invert
+   (navy lockup was near-invisible in the dark header/sheet; theme=white path unchanged).
+3. HeroFlow blue span text-blue-500 → text-blue-300 (2.72:1 on navy, below the 3:1
+   large-text floor; AA fix — spec-light-color kept for light mode since the span lives
+   on the navy card in both themes).
+4. Decorative teal check icons dark:text-teal-400 (PricingCard, FeatureDetailSection).
+5. /design-system openGraph.url set (was inheriting layout og:url "/").

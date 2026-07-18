@@ -6,7 +6,7 @@ kind: verify
 slice: whole-mission regression + quality gate + .qa/REPORT.md
 target: tests/e2e/, .qa/REPORT.md
 contract: C-E2E (all)
-status: TODO
+status: DONE
 depends_on: [13, 14, 15]
 ---
 ## Objective
@@ -34,4 +34,6 @@ scan empty, all task files carry evidence, report written.
 - All gates green on a FRESH run by the independent verifier; report exists; two
   consecutive critic+grep clean passes recorded (wave critics + this final scan).
 ## Evidence
+PASS (2026-07-18): full gates fresh-run — 19/19 Playwright, tsc 0 errors, lint 0 errors, parity 266/266, banned-pattern scan CLEAN. Quality loop terminated: critic passes 10 and 11 consecutively CLEAN (prior passes 1–9 findings all fixed: D23–D27). .qa/REPORT.md written.
+
 (filled by builder/verifier)

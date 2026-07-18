@@ -19,7 +19,11 @@ function Logo({ variant = 'lockup', theme = 'color', alt, height, className }: L
       alt={alt}
       width={Math.round((resolvedHeight * source.width) / source.height)}
       height={resolvedHeight}
-      className={cn(theme === 'white' && 'brightness-0 invert', className)}
+      className={cn(
+        theme === 'white' && 'brightness-0 invert',
+        theme === 'color' && 'dark:brightness-0 dark:invert',
+        className
+      )}
     />
   );
 }

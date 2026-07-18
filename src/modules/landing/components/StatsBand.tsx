@@ -27,7 +27,10 @@ async function StatsBand() {
   return (
     <Section>
       <Container>
-        <div className="relative overflow-hidden rounded-4xl bg-navy-900 p-10 sm:p-14">
+        <div
+          data-slot="stats-band"
+          className="relative overflow-hidden rounded-4xl bg-navy-900 p-10 sm:p-14"
+        >
           <div aria-hidden="true" className="absolute -right-10 -bottom-12 opacity-10">
             <Logo variant="mark" theme="white" alt="" height={220} />
           </div>

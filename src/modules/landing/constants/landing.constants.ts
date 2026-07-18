@@ -112,15 +112,6 @@ const FOOTER_COLUMNS = [
       { href: '#for-schools', labelKey: 'footer.schoolsCaseStudies' },
     ],
   },
-  {
-    titleKey: 'footer.companyTitle',
-    links: [
-      { href: '#cta', labelKey: 'footer.companyAbout' },
-      { href: '#cta', labelKey: 'footer.companyBlog' },
-      { href: '#cta', labelKey: 'footer.companyCareers' },
-      { href: '#cta', labelKey: 'footer.companyContact' },
-    ],
-  },
 ] as const;
 
 export {

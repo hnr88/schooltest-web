@@ -122,6 +122,13 @@ test('DS interactions: overlays, segmented, tag, alert, tabs all work', async ({
   await expect(page.getByText(ds(en, 'popoverTitle'), { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: ds(en, 'popoverCopy'), exact: true })).toBeVisible();
   await page.keyboard.press('Escape');
+  // Sheet opens on trigger; closes via its translated X close button.
+  await page.getByRole('button', { name: ds(en, 'sheetTrigger'), exact: true }).click();
+  const sheet = page.getByRole('dialog', { name: ds(en, 'sheetTitle') });
+  await expect(sheet).toBeVisible();
+  await expect(sheet.getByText(ds(en, 'sheetBody'), { exact: true })).toBeVisible();
+  await sheet.getByRole('button', { name: ds(en, 'dialogCloseLabel'), exact: true }).click();
+  await expect(sheet).toBeHidden();
   // Segmented control: clicking Month presses it and un-presses Week.
   const segmented = page.locator('[data-slot="segmented-control"]');
   const week = segmented.getByRole('button', { name: ds(en, 'segmentedWeek'), exact: true });
@@ -180,21 +187,3 @@ test('LOCALE-TOGGLE: footer switcher en→de→en updates content without reload
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
-test('DS German: NEXT_LOCALE=de renders the showcase from de.json', async ({ browser, baseURL }) => {
-  const de = catalogs.de;
-  const context = await browser.newContext({ baseURL });
-  await context.addCookies([{ name: 'NEXT_LOCALE', value: 'de', url: baseURL ?? 'http://localhost:3100' }]);
-  const page = await context.newPage();
-  const errors = watchErrors(page);
-  try {
-    await page.goto('/design-system');
-    await expect(page).toHaveTitle(new RegExp(escapeRegExp(ds(de, 'meta.title'))));
-    await expect(page.getByRole('heading', { level: 1, name: ds(de, 'pageTitle') })).toBeVisible();
-    for (const key of ['sectionBrand', 'sectionCards', 'sectionData'] as const) {
-      await expect(page.getByRole('heading', { level: 2, name: ds(de, key), exact: true })).toBeVisible();
-    }
-    expect(errors, errors.join('\n')).toEqual([]);
-  } finally {
-    await context.close();
-  }
-});

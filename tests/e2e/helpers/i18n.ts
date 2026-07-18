@@ -112,6 +112,7 @@ export async function assertFaqAnswers(
 /** Every static landing string as Home-namespace keys — the EN spec asserts them all. */
 export const LANDING_TEXT_KEYS = [
   'announcement.message',
+  'nav.product', 'nav.schools', 'nav.resources', 'nav.signIn',
   'hero.badge', 'hero.subtitle', 'hero.microcopy',
   'flow.stepOne', 'flow.stepTwo', 'flow.stepThree',
   'trustedBy.label', 'trustedBy.one', 'trustedBy.two', 'trustedBy.three', 'trustedBy.four',
@@ -131,7 +132,7 @@ export const LANDING_TEXT_KEYS = [
   'howItWorks.stepTwoTitle', 'howItWorks.stepTwoDescription',
   'howItWorks.stepThreeTitle', 'howItWorks.stepThreeDescription',
   'testimonial.quote', 'testimonial.name', 'testimonial.role',
-  'pricing.eyebrow', 'pricing.title',
+  'pricing.eyebrow', 'pricing.title', 'pricing.perMonth', 'pricing.perTeacherMonth',
   'pricing.freeName', 'pricing.freePrice', 'pricing.freeCta',
   'pricing.freeFeatureStudents', 'pricing.freeFeatureTests', 'pricing.freeFeatureAi',
   'pricing.proName', 'pricing.proBadge', 'pricing.proPrice', 'pricing.proCta',
@@ -145,8 +146,7 @@ export const LANDING_TEXT_KEYS = [
   'footer.productAnalytics', 'footer.productPricing',
   'footer.schoolsTitle', 'footer.schoolsDistricts', 'footer.schoolsLanguageCenters',
   'footer.schoolsUniversities', 'footer.schoolsCaseStudies',
-  'footer.companyTitle', 'footer.companyAbout', 'footer.companyBlog',
-  'footer.companyCareers', 'footer.companyContact', 'footer.copyright', 'footer.status',
+  'footer.copyright', 'footer.status',
 ] as const;
 
 /** DE spot-checks — at least one key from every landing section. */
@@ -161,7 +161,7 @@ export const DE_SPOT_KEYS = [
   'howItWorks.eyebrow', 'howItWorks.stepTwoTitle', 'testimonial.quote', 'testimonial.role',
   'pricing.title', 'pricing.proBadge', 'pricing.proFeatureTwo', 'pricing.schoolCta',
   'faq.title', 'cta.title', 'cta.subtitle',
-  'footer.tagline', 'footer.schoolsTitle', 'footer.companyContact',
+  'footer.tagline', 'footer.schoolsTitle',
   'footer.copyright', 'footer.status',
 ] as const;
 

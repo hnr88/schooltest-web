@@ -15,7 +15,7 @@ const TILE_TONES: Record<StatCardIconTone, string> = {
 };
 
 const DELTA_TONES: Record<StatCardDeltaTone, string> = {
-  positive: 'text-green-700',
+  positive: 'text-green-700 dark:text-green-400',
   neutral: 'text-muted-foreground',
 };
 

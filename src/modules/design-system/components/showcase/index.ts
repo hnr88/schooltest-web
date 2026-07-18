@@ -12,4 +12,5 @@ export { DialogDemo, type DialogDemoProps } from './dialog-demo';
 export { DropdownDemo, type DropdownDemoProps } from './dropdown-demo';
 export { PopoverDemo, type PopoverDemoProps } from './popover-demo';
 export { SegmentedDemo, type SegmentedDemoProps } from './segmented-demo';
+export { SheetDemo, type SheetDemoProps } from './sheet-demo';
 export { TagDemo, type TagDemoProps } from './tag-demo';

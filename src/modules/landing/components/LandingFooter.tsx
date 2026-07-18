@@ -17,7 +17,7 @@ async function LandingFooter() {
   return (
     <footer className="bg-navy-900 text-blue-100/80">
       <Container className="py-14">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Logo theme="white" alt={t('footer.logoAlt')} />
             <p className="mt-4 max-w-xs text-sm">{t('footer.tagline')}</p>

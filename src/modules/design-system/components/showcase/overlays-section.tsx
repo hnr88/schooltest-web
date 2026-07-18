@@ -7,6 +7,7 @@ import { Section } from '@/modules/design-system/components/layout';
 import { DialogDemo } from './dialog-demo';
 import { DropdownDemo } from './dropdown-demo';
 import { PopoverDemo } from './popover-demo';
+import { SheetDemo } from './sheet-demo';
 
 async function OverlaysSection() {
   const t = await getTranslations('DesignSystem');
@@ -47,6 +48,12 @@ async function OverlaysSection() {
           copyLabel={t('popoverCopy')}
           inputAriaLabel={t('tooltipContent')}
           linkUrl="https://schooltest.app/t/science-quiz"
+        />
+        <SheetDemo
+          triggerLabel={t('sheetTrigger')}
+          title={t('sheetTitle')}
+          body={t('sheetBody')}
+          closeLabel={t('dialogCloseLabel')}
         />
       </div>
     </Section>

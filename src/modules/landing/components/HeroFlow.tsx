@@ -10,7 +10,7 @@ async function HeroFlow() {
     <div className="relative border-t border-white/10 px-6 py-12 sm:px-12">
       <h2 className="mx-auto max-w-2xl text-center text-2xl font-bold text-balance text-white sm:text-3xl">
         {t.rich('flow.title', {
-          blue: (chunks) => <span className="text-blue-500">{chunks}</span>,
+          blue: (chunks) => <span className="text-blue-300">{chunks}</span>,
           teal: (chunks) => <span className="text-teal-500">{chunks}</span>,
         })}
       </h2>

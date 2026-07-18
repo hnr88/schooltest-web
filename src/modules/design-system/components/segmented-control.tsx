@@ -31,7 +31,7 @@ function SegmentedControl({
         <ToggleGroupItem
           key={option.value}
           value={option.value}
-          className="rounded-lg px-3.5 py-1.5 text-sm font-medium text-slate-600 aria-pressed:bg-background aria-pressed:text-foreground data-pressed:bg-background data-pressed:text-foreground data-pressed:shadow-sm"
+          className="rounded-lg px-3.5 py-1.5 text-sm font-medium text-slate-600 aria-pressed:bg-background aria-pressed:text-foreground data-pressed:bg-background data-pressed:text-foreground data-pressed:shadow-sm dark:text-slate-400"
         >
           {option.label}
         </ToggleGroupItem>

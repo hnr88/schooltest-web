@@ -22,7 +22,9 @@ Task files: .thellmspace/tasks/NN-*.md. Plan: .qa/PLAN.md.
 | 13 | E2E landing | 12 | DONE | PASS |
 | 14 | E2E showcase | 07,12 | DONE | PASS |
 | 15 | E2E a11y/responsive | 07,12 | DONE | PASS |
-| 16 | Final regression | 13–15 | TODO | — |
+| 16 | Final regression | 13–15 | DONE | PASS |
+
+All 16 tasks DONE + PASS. Quality gate: critic passes 10+11 consecutively CLEAN.
 
 ## Per-layer rollup
 - ui: 01,03,04,05,06,07,08,09,10,11 — all TODO

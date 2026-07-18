@@ -29,11 +29,18 @@ test('EN render: every landing section renders from en.json', async ({ page }) =
 
   // The root layout applies a "%s · Schooltest" template — match the catalog title inside it.
   await expect(page).toHaveTitle(new RegExp(escapeRegExp(home(en, 'meta.title'))));
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    home(en, 'meta.description'),
+  );
 
   const h1 = page.locator('h1');
   for (const line of heroTitleLines(en)) {
     await expect(h1).toContainText(line);
   }
+  await expect(
+    page.getByRole('heading', { name: stripTags(home(en, 'flow.title')), exact: true }),
+  ).toBeVisible();
   await expect(
     page.getByRole('img', { name: home(en, 'hero.imageAlt'), exact: true }),
   ).toBeVisible();
@@ -66,6 +73,9 @@ test('DE render: NEXT_LOCALE=de renders every section from de.json', async ({
     for (const line of heroTitleLines(de)) {
       await expect(h1).toContainText(line);
     }
+    await expect(
+      page.getByRole('heading', { name: stripTags(home(de, 'flow.title')), exact: true }),
+    ).toBeVisible();
     await expectVisibleTexts(page, homeAll(de, DE_SPOT_KEYS));
     await assertFaqAnswers(page, de, FAQ_PAIRS.slice(1, 2));
   } finally {
@@ -114,11 +124,14 @@ test('composition: section landmarks render once, in contract order, with one h1
   // The hero section carries no id — the single h1 marks its place in the chain.
   // document.querySelector does not cross shadow roots, so this chain is overlay-immune.
   const chain = [
+    '[data-slot=announcement-bar]',
     'header',
     'main#main-content',
     'h1',
+    '[data-slot=trusted-by]',
     '#product',
     '#ai-feedback',
+    '[data-slot=stats-band]',
     '#for-schools',
     '#pricing',
     '#resources',

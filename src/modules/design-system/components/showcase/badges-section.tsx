@@ -47,23 +47,23 @@ async function BadgesSection() {
       <div className="mt-6 flex flex-wrap items-center gap-4">
         <Avatar>
           <AvatarImage src="/brand/logo-mark.png" alt={t('avatarAlt')} />
-          <AvatarFallback className="text-slate-600">ST</AvatarFallback>
+          <AvatarFallback className="text-slate-600 dark:text-slate-400">ST</AvatarFallback>
         </Avatar>
         <Avatar size="lg">
-          <AvatarFallback className="text-slate-600">LP</AvatarFallback>
+          <AvatarFallback className="text-slate-600 dark:text-slate-400">LP</AvatarFallback>
           <AvatarBadge aria-hidden="true" />
         </Avatar>
         <AvatarGroup>
           <Avatar>
-            <AvatarFallback className="text-slate-600">LP</AvatarFallback>
+            <AvatarFallback className="text-slate-600 dark:text-slate-400">LP</AvatarFallback>
           </Avatar>
           <Avatar>
-            <AvatarFallback className="text-slate-600">MK</AvatarFallback>
+            <AvatarFallback className="text-slate-600 dark:text-slate-400">MK</AvatarFallback>
           </Avatar>
           <Avatar>
-            <AvatarFallback className="text-slate-600">JD</AvatarFallback>
+            <AvatarFallback className="text-slate-600 dark:text-slate-400">JD</AvatarFallback>
           </Avatar>
-          <AvatarGroupCount className="text-slate-600">+9</AvatarGroupCount>
+          <AvatarGroupCount className="text-slate-600 dark:text-slate-400">+9</AvatarGroupCount>
         </AvatarGroup>
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-4">

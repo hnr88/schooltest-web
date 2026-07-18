@@ -3,8 +3,8 @@ import { cn } from '@/lib/utils';
 import type { EyebrowProps } from '@/modules/design-system/types/design-system.types';
 
 const TONE_CLASSES: Record<NonNullable<EyebrowProps['tone']>, string> = {
-  blue: 'text-blue-600',
-  teal: 'text-teal-700',
+  blue: 'text-blue-600 dark:text-blue-300',
+  teal: 'text-teal-700 dark:text-teal-300',
 };
 
 function Eyebrow({ tone = 'blue', children, className }: EyebrowProps) {

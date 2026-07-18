@@ -19,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: t('meta.title'),
     description: t('meta.description'),
+    openGraph: { title: t('meta.title'), description: t('meta.description'), url: '/design-system' },
   };
 }
 

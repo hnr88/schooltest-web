@@ -158,11 +158,6 @@
       "schoolsLanguageCenters": "Sprachzentren",
       "schoolsUniversities": "Universitäten",
       "schoolsCaseStudies": "Fallstudien",
-      "companyTitle": "Unternehmen",
-      "companyAbout": "Über uns",
-      "companyBlog": "Blog",
-      "companyCareers": "Karriere",
-      "companyContact": "Kontakt",
       "copyright": "© 2026 SchoolTest, Inc.",
       "status": "Alle Systeme betriebsbereit",
       "socialX": "X",
@@ -319,6 +314,9 @@
     "paginationNavAria": "Seitennavigation",
     "spinnerLabel": "Wird geladen…",
     "dialogCloseLabel": "Schließen",
-    "breadcrumbNavAria": "Breadcrumb-Navigation"
+    "breadcrumbNavAria": "Breadcrumb-Navigation",
+    "sheetTrigger": "Sheet öffnen",
+    "sheetTitle": "„Naturwissenschafts-Quiz“ teilen",
+    "sheetBody": "Alle mit dem Link können diesen Test ablegen."
   }
 }
