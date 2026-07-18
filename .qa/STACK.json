@@ -25,7 +25,7 @@
     },
     "infra": {
       "postgres": "127.0.0.1:5540 (running)",
-      "mailhog": "SMTP 127.0.0.1:1025, HTTP API 127.0.0.1:8025 (running)"
+      "mailpit (ours)": "docker schooltest-api-st1-mailpit — SMTP 127.0.0.1:1125, HTTP API /api/v1 on 127.0.0.1:8125 (docker-compose.dev.yml); neighbor mailhog on 1025/8025 untouched; staging/prod docker-compose.yml carries in-stack mailpit (deployment-infra agent)"
     }
   },
   "api_base_urls": {

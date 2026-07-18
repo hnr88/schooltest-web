@@ -6,7 +6,7 @@ kind: build
 slice: the three public auth routes the desktop app already calls
 target: schooltest-api/src/api/student-magic-link/{controllers,routes}/
 contract: C-ML-REQUEST, C-ML-VERIFY, C-ML-ME
-status: TODO
+status: DONE
 depends_on: [04]
 ---
 ## Objective
@@ -41,4 +41,5 @@ errors; thin controllers; no `auth:true`.
 - POST request ×6 same email within the hour → last one 429.
 - tsc zero errors.
 ## Evidence
+PASS (independent verifier, 2026-07-18): POST request → 200 {ok:true} byte-exact + OUR mailpit message (both locale-prefixed + schooltest:// links); unknown email → 200, zero messages (enumeration-safe); malformed → 400 typed envelope; verify → 200 exact {jwt, student{documentId,firstName,lastName,email,parentDocumentId,gradeYear}}; JWT payload {type:student, exp-iat 28800}; token reuse → 401 {error:{status:401,message,reason:used}}; missing/bad token → 400; me → 200 {payload,student} and 401 without header; rate limit: 5×200 then 429 (exactly 5 rows + 5 emails); tsc 0, lint 0 errors.
 (filled by builder/verifier)

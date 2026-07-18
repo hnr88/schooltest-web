@@ -6,7 +6,7 @@ kind: build
 slice: content-type + service: hashed token create, rate limit, verify, student JWT, email
 target: schooltest-api/src/api/student-magic-link/**, src/utils/
 contract: C-ML-REQUEST, C-ML-VERIFY, C-ML-ME
-status: DOING
+status: DONE
 depends_on: [01, 02]
 ---
 ## Objective
@@ -41,4 +41,5 @@ ts:generate-types after schema change.
   throws used; rate limit trips on the 6th create in the same hour; email row has sha256
   NOT the raw token; tsc zero errors.
 ## Evidence
+PASS (independent verifier, 2026-07-18): schema contract-exact with private token; createToken stores sha256 only, +30min expiry; single-use verified (2nd call → UnauthorizedError reason=used); malformed + unknown tokens → ValidationError(400); rate limit RateLimitError on 6th; JWT round-trip {type:student, exp-iat 28800}, tamper → null; toStudentDto exact 6-key shape with UP-user email fallback; findStudentByEmail case-insensitive; email template contains both the locale-prefixed http link and the schooltest:// deep link; tsc 0, lint 0 errors; committed as 23f2b54. Note for task 05: controller must map err.reason into the 401 body (core does not serialize custom props).
 (filled by builder/verifier)

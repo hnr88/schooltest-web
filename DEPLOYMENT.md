@@ -35,6 +35,12 @@ so set them as **Docker Build Args** for each resource.
 For a Compose resource, set the same values in the resource environment; the
 compose file forwards them as build arguments.
 
+The Dockerfile refuses to build a deployable image whose `NEXT_PUBLIC_*` values
+still point at localhost — a Coolify resource with missing build args fails
+loudly instead of shipping a bundle that calls `http://localhost:1337`. Local
+dev images opt out by setting `ALLOW_LOCALHOST_PUBLIC_URLS=true` in `.env`
+(see `.env.example`); never set that variable in Coolify.
+
 ### Production
 
 ```dotenv
@@ -52,14 +58,14 @@ For a host Nginx proxy, use `http://127.0.0.1:28721`.
 ### Staging
 
 ```dotenv
-NEXT_PUBLIC_API_BASE_URL=https://staging-api.schooltest.com.au
-NEXT_PUBLIC_APP_URL=https://staging-schooltest.com.au
+NEXT_PUBLIC_API_BASE_URL=https://stagingapi.schooltest.com.au
+NEXT_PUBLIC_APP_URL=https://staging.schooltest.com.au
 PORT_INTERNAL=28821
 ```
 
-Set the web resource domain to `https://staging-schooltest.com.au:28821`. Coolify
+Set the web resource domain to `https://staging.schooltest.com.au:28821`. Coolify
 uses the port only to reach the container; the public URL remains
-`https://staging-schooltest.com.au`.
+`https://staging.schooltest.com.au`.
 
 For a host Nginx proxy, use `http://127.0.0.1:28821`.
 
@@ -70,6 +76,17 @@ Point only these DNS records at the corresponding Coolify resources:
 | Environment | Web | API |
 |---|---|---|
 | Production | `schooltest.com.au` | `api.schooltest.com.au` |
-| Staging | `staging-schooltest.com.au` | `staging-api.schooltest.com.au` |
+| Staging | `staging.schooltest.com.au` | `stagingapi.schooltest.com.au` |
 
 No portal, audience, or other application subdomains are part of this setup.
+
+DNS state and cutover: `api.schooltest.com.au` already serves the live API. The
+apex `schooltest.com.au` currently routes to the API as well — after the first
+successful production deploy of this web resource (healthcheck green on `/`),
+repoint the apex at the web resource and verify the landing page loads over
+HTTPS. `staging.schooltest.com.au` and `stagingapi.schooltest.com.au` records
+must be created in Cloudflare (proxied, SSL Full strict).
+
+Related infrastructure — mail catch (Mailpit), status monitoring (Gatus), and
+database backup/restore — is owned by the API repository: see
+`schooltest-api/COOLIFY_DEPLOY.md` and `schooltest-api/DISASTER_RECOVERY.md`.

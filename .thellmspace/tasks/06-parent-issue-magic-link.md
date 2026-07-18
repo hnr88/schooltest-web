@@ -6,7 +6,7 @@ kind: build
 slice: parent sends their student a login link (ownership-enforced)
 target: schooltest-api/src/api/student-magic-link/{controllers,routes}/ (extend), policies
 contract: C-ML-ISSUE
-status: TODO
+status: DOING
 depends_on: [03, 04]
 ---
 ## Objective

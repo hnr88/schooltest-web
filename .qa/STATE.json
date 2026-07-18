@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-18T09:01:10.819Z",
+  "updated_at": "2026-07-18T10:11:36.282Z",
   "tasks": [
     {
       "id": "01",
@@ -69,9 +69,13 @@
         "01",
         "02"
       ],
-      "status": "DOING",
+      "status": "DONE",
       "started_at": 1784365270.819,
-      "verify": null
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "schema contract-exact (private token); full lifecycle proven: sha256 at rest, single-use (used reason), 400 invalid classes, rate limit 5/h, HS256 round-trip exp-iat 28800, dto exact shape, case-insensitive email lookup incl. UP-user fallback; template has both locale-prefixed http link + schooltest:// deep link; tsc/lint 0; committed 23f2b54"
+      }
     },
     {
       "id": "05",
@@ -86,9 +90,13 @@
       "depends_on": [
         "04"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784367429.948,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "all 3 endpoints live-proven: request 200 {ok:true} byte-exact + mailpit message with both links; enumeration-safe unknown email; verify 200 exact {jwt,student(dto 6 keys)} with JWT payload exp-iat 28800; reuse → 401 error.reason=used; me 200 {payload,student} / 401 unauth; rate limit 429 on 6th with exactly 5 rows+emails; tsc/lint 0. student1+student2 rate-limited until ~11:05 UTC (use student3/4 next)"
+      }
     },
     {
       "id": "06",
@@ -102,8 +110,8 @@
         "03",
         "04"
       ],
-      "status": "TODO",
-      "started_at": null,
+      "status": "DOING",
+      "started_at": 1784369496.282,
       "verify": null
     },
     {
@@ -397,6 +405,25 @@
       "status": "TODO",
       "started_at": null,
       "verify": null
+    },
+    {
+      "id": "26",
+      "file": ".thellmspace/tasks/26-docker-mailpit-dev.md",
+      "title": "Mailpit service in docker-compose.dev.yml",
+      "layer": "backend",
+      "contract": [
+        "C-ML-REQUEST"
+      ],
+      "depends_on": [
+        "01"
+      ],
+      "status": "DONE",
+      "started_at": 1784368547.163,
+      "verify": {
+        "verdict": "PASS",
+        "by": "orchestrator live proof",
+        "evidence": "mailpit container healthy on 1125/8125; api restarted via watchdog; real send 250-queued + searchable via /api/v1/search in OUR mailpit; staging topology untouched"
+      }
     }
   ]
 }

@@ -97,3 +97,14 @@ schooltest-app uses localePrefix 'always' (static export, no middleware) — the
 HTTP URL is <APP_WEB_BASE>/en/auth/student/verify?token= (unprefixed paths 404 there).
 Deep link schooltest://auth/student/verify?token= stays unprefixed (the app's
 DeepLinkHandler adds the locale when routing). CONTRACTS.md updated (D13, additive).
+
+## 2026-07-18 D14 — Own dockerized mailpit for local dev (user instruction, dms-craiova pattern)
+schooltest-api/docker-compose.dev.yml now carries axllent/mailpit (container
+schooltest-api-st1-mailpit): SMTP 127.0.0.1:1125, web UI 127.0.0.1:8125 (Mailpit API is
+/api/v1 — the neighbor's Mailhog on 1025/8025 uses /api/v2 and stays untouched).
+Api .env points EMAIL_SMTP_PORT=1125; real send proven queued+searchable in our mailpit.
+The staging/prod topology (docker-compose.yml, in-stack mailpit, EMAIL_SMTP_HOST=mailpit
+in .env.production/.staging examples) is the deployment-infra agent's work — aligned and
+left untouched. Auth doctrine reaffirmed per user: JWT in localStorage only, never
+session cookies; Strapi built-ins over custom code (users-permissions, email plugin,
+Document Service).

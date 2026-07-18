@@ -7,6 +7,9 @@ services:
         NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:1337}
         NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
         PORT_INTERNAL: ${PORT_INTERNAL:-28721}
+        # Defaults to false so a Coolify deploy with missing NEXT_PUBLIC_*
+        # build args fails loudly; local dev sets true in .env.
+        ALLOW_LOCALHOST_PUBLIC_URLS: ${ALLOW_LOCALHOST_PUBLIC_URLS:-false}
     image: ${DOCKER_IMAGE:-schooltest-web:latest}
     restart: unless-stopped
     environment:
