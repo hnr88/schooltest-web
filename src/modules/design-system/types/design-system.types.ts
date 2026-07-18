@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface LogoProps {
@@ -86,7 +86,7 @@ export interface StatCardProps {
 export type FeatureCardTone = 'light' | 'navy';
 
 export interface FeatureCardProps {
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
   tone?: FeatureCardTone;
   title: string;
   description: string;

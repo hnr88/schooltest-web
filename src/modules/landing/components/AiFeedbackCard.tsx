@@ -1,7 +1,7 @@
-import { Sparkles } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import { Badge, ProgressBar } from '@/modules/design-system';
+import { SparkleIcon } from '@/modules/landing/components/LandingIcons';
 
 const SCORE_TILES = [
   {
@@ -34,7 +34,7 @@ async function AiFeedbackCard() {
           aria-hidden="true"
           className="flex size-8 items-center justify-center rounded-lg bg-navy-900"
         >
-          <Sparkles className="size-4 text-teal-300" />
+          <SparkleIcon className="size-4 text-teal-300" />
         </span>
         <span className="text-base font-bold">{t('featureDetail.card.title')}</span>
         <Badge variant="accent" className="ml-auto">

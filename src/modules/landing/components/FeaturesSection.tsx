@@ -1,7 +1,11 @@
-import { BarChart3, FileText, Sparkles } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import { Container, Eyebrow, FeatureCard, Section } from '@/modules/design-system';
+import {
+  BarChartIcon,
+  FileTextIcon,
+  SparklesIcon,
+} from '@/modules/landing/components/LandingIcons';
 
 async function FeaturesSection() {
   const t = await getTranslations('Home');
@@ -17,21 +21,21 @@ async function FeaturesSection() {
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           <FeatureCard
-            icon={FileText}
+            icon={FileTextIcon}
             tone="light"
             title={t('features.questionTypes.title')}
             description={t('features.questionTypes.description')}
             className="bg-background transition hover:-translate-y-0.75 hover:shadow-lg"
           />
           <FeatureCard
-            icon={Sparkles}
+            icon={SparklesIcon}
             tone="navy"
             title={t('features.aiGrading.title')}
             description={t('features.aiGrading.description')}
             className="transition hover:-translate-y-0.75 hover:shadow-xl"
           />
           <FeatureCard
-            icon={BarChart3}
+            icon={BarChartIcon}
             tone="light"
             title={t('features.analytics.title')}
             description={t('features.analytics.description')}

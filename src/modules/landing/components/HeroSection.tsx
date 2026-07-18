@@ -1,9 +1,10 @@
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
 import { Badge, Button, Container, Section } from '@/modules/design-system';
 import { HeroFlow } from '@/modules/landing/components/HeroFlow';
+import { PlayIcon } from '@/modules/landing/components/LandingIcons';
 
 async function HeroSection() {
   const t = await getTranslations('Home');
@@ -36,7 +37,7 @@ async function HeroSection() {
                 <ArrowRight aria-hidden="true" />
               </Button>
               <Button variant="white" size="xl" href="#product">
-                <Play aria-hidden="true" />
+                <PlayIcon />
                 {t('hero.secondaryCta')}
               </Button>
             </div>

@@ -302,3 +302,11 @@ direct comparison against SchoolTest Landing.dc.html renders:
   bg-background + hover lift; FAQ wrapped in the white card; how-it-works card bg-background.
 AA kept where the spec itself fails contrast (teal avatar text, muted-foreground role text).
 Suite re-verified: 19/19 green, tsc/lint 0 errors, axe 0 serious/critical.
+
+## 2026-07-18 D29 — Exact spec icons (user: "lucide is AI slop")
+Lucide glyphs differ from the designs own SVGs (sparkle shape, file-text line count,
+play triangle, bar-chart axis). Created LandingIcons.tsx with the EXACT paths extracted
+from SchoolTest Landing.dc.html: FileTextIcon, SparklesIcon (big+small), SparkleIcon,
+BarChartIcon, PlayIcon (same pattern as SocialIcons.tsx). FeatureCard icon prop type
+widened to ComponentType<{className?}> (lucide still compatible). Check/X/Star/ArrowRight
+are path-identical to lucide and stay on lucide-react.
