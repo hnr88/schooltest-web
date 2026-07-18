@@ -350,3 +350,15 @@ Full audit + cleanup on user request:
   app touched files) — the repo baseline is not prettier-clean; only mission files were
   formatted. Verified: no ../ imports, no any, no hex in components, no ui/* edits,
   files ≤200 lines, server-by-default, @/ imports only.
+
+## 2026-07-18 D33 — Error pages implemented per the design
+- 404 (not-found.tsx): the DS doc section-17 design — white card, "4 + logo-mark + 4"
+  (64px, new --text-error-code token), "This page hopped away", subtext, Back to
+  dashboard → "/" + Report a problem → mailto:support@schooltest.app (conventional
+  brand-domain support address; no support channel exists yet — logged). Common.notFound
+  key replaced by notFoundTitle/notFoundDescription/backToDashboard/reportProblem (en+de).
+- error.tsx: same design language (alert tile, card, retry via unstable_retry + back link);
+  new Common.errorDescription key.
+- global-error.tsx: stays plain English (replaces root layout — no next-intl) but now
+  matches the design language (imports globals.css, card + mark + navy/blue button).
+- The design has NO dedicated 500 page — error.tsx applies the 404 design language.

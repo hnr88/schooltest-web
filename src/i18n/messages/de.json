@@ -203,7 +203,11 @@
     "loading": "Wird geladen…",
     "error": "Etwas ist schiefgelaufen",
     "retry": "Erneut versuchen",
-    "notFound": "Seite nicht gefunden"
+    "notFoundTitle": "Diese Seite ist davongehüpft",
+    "notFoundDescription": "Der Link ist möglicherweise defekt, oder der Test wurde gelöscht.",
+    "backToDashboard": "Zurück zur Startseite",
+    "reportProblem": "Problem melden",
+    "errorDescription": "Beim Laden dieser Seite ist ein unerwarteter Fehler aufgetreten."
   },
   "DesignSystem": {
     "meta": {

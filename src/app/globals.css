@@ -29,6 +29,9 @@
   --text-micro: 0.6875rem;
   --text-caption: 0.8125rem;
   --text-button: 0.9375rem;
+  --text-error-code: 4rem;
+  --text-error-code--line-height: 1;
+  --text-error-code--letter-spacing: -0.04em;
   --tracking-eyebrow: 0.1em;
   --color-background: var(--background);
   --color-foreground: var(--foreground);

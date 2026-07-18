@@ -203,7 +203,11 @@
     "loading": "Loading…",
     "error": "Something went wrong",
     "retry": "Try again",
-    "notFound": "Page not found"
+    "notFoundTitle": "This page hopped away",
+    "notFoundDescription": "The link may be broken, or the test may have been deleted.",
+    "backToDashboard": "Back to dashboard",
+    "reportProblem": "Report a problem",
+    "errorDescription": "An unexpected error occurred while loading this page."
   },
   "DesignSystem": {
     "meta": {
