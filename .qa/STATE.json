@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-18T11:32:03.074Z",
+  "updated_at": "2026-07-18T11:45:11.564Z",
   "tasks": [
     {
       "id": "01",
@@ -442,8 +442,8 @@
       "started_at": 1784373519.392,
       "verify": {
         "verdict": "PASS",
-        "by": "orchestrator gates",
-        "evidence": "6 catalogs parity OK (336 keys; 43 schoolgo-translated + fallback policy); routing/switcher updated; de dropped; e2e realigned (ZH render, toggle en→zh→en, fallback policy, axe zh); full suite 19/19 green; tsc 0 errors"
+        "by": "independent explore verifier + fix",
+        "evidence": "parity 336×6; 38 real schoolgo translations per locale (verbatim-checked); brand-fixed; zero SchoolGo hits; live zh/ko/th render with lang attr + translated chrome + en fallback; full suite 19/19. Verifier found 10 borrowed [TODO:] placeholders from schoolgo Errors namespace → replaced with honest en fallback, zero remaining, suite re-green."
       }
     }
   ]

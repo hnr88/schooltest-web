@@ -229,10 +229,10 @@
     "error": "出了点问题",
     "retry": "再试一次",
     "notFoundTitle": "页面未找到",
-    "notFoundDescription": "[TODO: zh] The page you're looking for doesn't exist or has been moved.",
+    "notFoundDescription": "The link may be broken, or the test may have been deleted.",
     "backToDashboard": "回到首页",
     "reportProblem": "Report a problem",
-    "errorDescription": "[TODO: zh] We hit an unexpected bump. Don't worry — your data is safe."
+    "errorDescription": "An unexpected error occurred while loading this page."
   },
   "DesignSystem": {
     "meta": {
