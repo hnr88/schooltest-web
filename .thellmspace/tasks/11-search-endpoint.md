@@ -6,7 +6,7 @@ kind: build
 slice: typed global search over the caller's students ($containsi)
 target: schooltest-api/src/api/search/{controllers/search.ts,routes/01-custom-search.ts,services/}
 contract: C-STUDENT-SEARCH
-status: TODO
+status: DONE
 depends_on: [10]
 ---
 ## Objective

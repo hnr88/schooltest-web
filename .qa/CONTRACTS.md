@@ -34,11 +34,22 @@ All endpoints are Strapi v5 on `http://localhost:5500`. Envelope: v5 flat entiti
 - 401: `{ error: { status:401, message:"Unauthorized" } }` when no/invalid token.
 
 ### C-AUTH-GOOGLE (env-gated, D5) — GET /api/connect/google
-- Enabled only when GOOGLE_CLIENT_ID/SECRET set. 302 → Google consent; callback
-  GET /api/auth/google/callback → 302 → FRONTEND_URL/auth/google/callback with
-  `?id_token=<jwt>` (users-permissions grant flow). Web callback stores jwt → /dashboard.
-- Without credentials the route responds with the plugin's provider error (not wired) —
-  e2e BLOCKED (D5), documented.
+- Enabled only when GOOGLE_ENABLED=true + GOOGLE_CLIENT_ID/SECRET set (validate-env
+  requires the pair). Without credentials it answers 400
+  {error:{status:400,message:"This provider is disabled"}} (never a 500).
+- Flow (verified against installed grant@5.4.24 + users-permissions 5.50.1):
+  1. GET /api/connect/google → 302 to Google consent (redirect_uri =
+     <server>/api/connect/google/callback — register that in the Google console).
+  2. Post-consent, grant 302s the browser to providers.google.callback =
+     <FRONTEND_URL>/auth/google/callback with GOOGLE tokens in the query
+     (?access_token=<google-token>&id_token=<google-OIDC-token>&raw[...]).
+  3. The web callback FORWARDS that query to GET /api/auth/google/callback,
+     which answers JSON {jwt, user} — THE STRAPI JWT comes from the API response,
+     NOT from the query id_token (that one belongs to Google). The web stores the
+     API-returned jwt (writeClientToken) → /dashboard.
+  4. OAuth-registered users' role: defaults apply today; assigning the parent role
+     to OAuth registrations is a follow-up after credentials land (DECISIONS D5/D18).
+
 
 ## STUDENTS (parent-scoped; custom route 01-custom-parent-students.ts)
 

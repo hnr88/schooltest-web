@@ -143,3 +143,14 @@ showcase, unmapped extras) follow a documented ENGLISH-FALLBACK policy — hones
 never machine-generated pseudo-translations. LocaleSwitcher lists all 6 with endonym
 labels. E2E realigned: ZH render, toggle en→zh→en on the translated skip-link, fallback
 policy spec, axe zh. schooltest-app (desktop) stays single-locale en (separate surface).
+
+## 2026-07-18 D18 — Google flow correction (verified against installed grant@5.4.24)
+The post-consent redirect lands on the FRONTEND callback with GOOGLE's tokens in the
+query; the Strapi JWT comes from forwarding that query to GET /api/auth/google/callback
+(JSON {jwt, user}). The query's id_token is Google's OIDC token, NOT our session token —
+never store it. providers config is inert on v5.50.1 without the extension's bootstrap
+store-sync (added in strapi-server.ts). Grant keys are key/secret (not clientId/
+clientSecret). providers.google.callback = <FRONTEND_URL>/auth/google/callback (the only
+redirect grant performs — using the API URL would strand the browser on JSON).
+Follow-up (not this mission): OAuth-registered users get a default role; assigning the
+parent role to OAuth registrations is a post-credentials task.

@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-18T11:45:11.564Z",
+  "updated_at": "2026-07-18T14:28:31.432Z",
   "tasks": [
     {
       "id": "01",
@@ -130,9 +130,13 @@
         "02",
         "03"
       ],
-      "status": "DOING",
+      "status": "DONE",
       "started_at": 1784371584.995,
-      "verify": null
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "parent user exactly once (confirmed, role parent); both Keller students linked with correct data; idempotent compare-then-skip (counts stable across re-bootstrap); real login 200 + wrong-password 400; /users/me 200 (role NOT expanded — task 08 must add); /users/me?populate=students shows both Kellers; core /api/students 403 for parent (expected until task 10); t06 fixtures intact; swept in 4a5c210"
+      }
     },
     {
       "id": "08",
@@ -145,9 +149,13 @@
       "depends_on": [
         "03"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784375522.201,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "register assigns parent role in DB (not authenticated); /users/me returns role{type} with no-store; teacher /me 403 confirmed pre-existing permission gap (not extension); D4 allowlist rejects role/userType params; factory-wrap verified against plugin dist; register shape stock; tsc/lint 0"
+      }
     },
     {
       "id": "09",
@@ -158,9 +166,13 @@
         "C-AUTH-GOOGLE"
       ],
       "depends_on": [],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784378310.163,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "providers.google env-gated; store-sync proven (store carries callback+scope impossible from registry); disabled → exact 400 This provider is disabled; validate-env pair-gate; .env.example docs; running .env has FRONTEND_URL only; grant key/secret citations accurate; scope exactly 4 files"
+      }
     },
     {
       "id": "10",
@@ -175,9 +187,13 @@
         "02",
         "03"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784381057.419,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "GET /api/my/students scoped per parent (Kellers vs t06, zero leaks, hostile parent filter rejected 400, pageSize clamped); create injects parent caller (hostile parent/teacher/student_key stripped) + DB link proof + cleanup; typed 400s list invalid fields; teacher GET regression intact, teacher POST 403 unchanged; grant findMyStudents on parent role; tsc/lint 0; scope 4 files"
+      }
     },
     {
       "id": "11",
@@ -190,9 +206,13 @@
       "depends_on": [
         "10"
       ],
-      "status": "TODO",
-      "started_at": null,
-      "verify": null
+      "status": "DONE",
+      "started_at": 1784383790.982,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "search exact per contract: q matches name+email case-insensitively, empty q recents ≤10, 80-char clamp, meta.query echo; zero cross-parent leaks (name-collision proof); teacher/anon 403; admin path bypasses parent filter; shape = C-STUDENT-LIST exactly; grants parent+admin only; scope 3 files; tsc/lint 0"
+      }
     },
     {
       "id": "12",
@@ -203,8 +223,8 @@
         "C-AUTH-LOGIN"
       ],
       "depends_on": [],
-      "status": "TODO",
-      "started_at": null,
+      "status": "DOING",
+      "started_at": 1784384911.432,
       "verify": null
     },
     {

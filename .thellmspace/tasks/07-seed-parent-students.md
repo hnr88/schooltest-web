@@ -6,7 +6,7 @@ kind: build
 slice: idempotent seed of the parent e2e account + linked students
 target: schooltest-api/src/bootstrap/seed-users.ts (+ seed-users-data.ts if that file holds the data)
 contract: SEED (CONTRACTS.md)
-status: DOING
+status: DONE
 depends_on: [02, 03]
 ---
 ## Objective

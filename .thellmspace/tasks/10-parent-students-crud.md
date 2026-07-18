@@ -6,7 +6,7 @@ kind: build
 slice: parent-scoped find + parent-ownership-injecting create (anti-leak controller)
 target: schooltest-api/src/api/student/{controllers/student.ts,routes/01-custom-parent-students.ts}
 contract: C-STUDENT-LIST, C-STUDENT-CREATE
-status: TODO
+status: DONE
 depends_on: [02, 03]
 ---
 ## Objective

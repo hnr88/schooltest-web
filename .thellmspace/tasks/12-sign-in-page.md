@@ -6,7 +6,7 @@ kind: build
 slice: /sign-in with email+password login and styled inline errors (en+de)
 target: schooltest-web/src/app/sign-in/**, src/modules/auth/**, src/i18n/messages/*.json
 contract: C-AUTH-LOGIN
-status: TODO
+status: DOING
 depends_on: []
 ---
 ## Objective

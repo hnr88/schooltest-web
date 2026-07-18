@@ -6,7 +6,7 @@ kind: build
 slice: users-permissions grant config for Google (active only with credentials)
 target: schooltest-api/config/plugins.ts, .env.example, .env, src/bootstrap/validate-env.ts, FRONTEND_URL
 contract: C-AUTH-GOOGLE
-status: TODO
+status: DONE
 depends_on: []
 ---
 ## Objective

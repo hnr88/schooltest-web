@@ -6,7 +6,7 @@ kind: build
 slice: src/extensions/users-permissions/strapi-server.ts register wrap
 target: schooltest-api/src/extensions/users-permissions/strapi-server.ts
 contract: C-AUTH-REGISTER
-status: TODO
+status: DONE
 depends_on: [03]
 ---
 ## Objective
