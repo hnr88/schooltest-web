@@ -44,8 +44,8 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
     [0, 'buttonGetStarted', 'button.bg-navy-900'], // default, navy
     [0, 'buttonCreate', 'button.bg-accent'],
     [0, 'buttonSave', 'button.bg-secondary'],
-    [0, 'buttonCancel', 'button.bg-background'],
-    [0, 'buttonCancel', 'button:not(.bg-background)'], // outline, ghost
+    [0, 'buttonCancel', 'button.border-input'], // outline (spec: white bg + input border)
+    [0, 'buttonCancel', 'button:not(.border-input)'], // ghost
     [0, 'buttonDelete', 'button.bg-destructive'],
     [0, 'buttonLearnMore', 'button.text-primary'], // destructive, link
     [1, 'buttonGetStarted', 'button.bg-white'],
