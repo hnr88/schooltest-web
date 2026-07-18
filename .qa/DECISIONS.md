@@ -108,3 +108,14 @@ in .env.production/.staging examples) is the deployment-infra agent's work — a
 left untouched. Auth doctrine reaffirmed per user: JWT in localStorage only, never
 session cookies; Strapi built-ins over custom code (users-permissions, email plugin,
 Document Service).
+
+## 2026-07-18 D15 — Task-06 parent fixtures (real persistence path, reusable)
+Task 06 needed a parent before task 07's seed exists. Provisioned via `strapi console`
+Document Service (idempotent by email/name — task 07 may reuse or overwrite): parent
+`parent-t06@schooltest.local` / `Parent1234!` (role parent, confirmed, documentId
+jq9z4y202436jafn73zx5szc) + students fui3ya0bhclw399ypgti9udt (own, email
+student-t06@schooltest.local), zwp80l593equy81t0tk1drue (no parent), axahnn1nkynj8nf7d7mjpsct
+(own, no email). Recorded HERE only — same rule as D9. Also recorded: on this Strapi
+v5.50.1 build anonymous calls to auth-required routes answer the masked 403 Forbidden
+(not 401); task 06's evidence documents the deviation, and `global::is-authenticated`
+(schoolgo) does not exist in this install.

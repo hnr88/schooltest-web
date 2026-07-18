@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-18T10:11:36.282Z",
+  "updated_at": "2026-07-18T10:46:24.995Z",
   "tasks": [
     {
       "id": "01",
@@ -110,9 +110,13 @@
         "03",
         "04"
       ],
-      "status": "DOING",
+      "status": "DONE",
       "started_at": 1784369496.282,
-      "verify": null
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "parent-issue endpoint live: 200 {ok:true} + mailpit message; foreign student 403; no-email 400; teacher 403; anon 403 (documented build behavior); 404 missing; grant issueMagicLink on parent role; end-to-end token redemption with parentDocumentId attribution; committed in cc6bb4a"
+      }
     },
     {
       "id": "07",
@@ -126,8 +130,8 @@
         "02",
         "03"
       ],
-      "status": "TODO",
-      "started_at": null,
+      "status": "DOING",
+      "started_at": 1784371584.995,
       "verify": null
     },
     {
