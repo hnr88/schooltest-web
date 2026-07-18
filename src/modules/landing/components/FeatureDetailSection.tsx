@@ -1,4 +1,4 @@
-import { CircleCheck } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import { Container, Eyebrow, Section } from '@/modules/design-system';
@@ -9,7 +9,7 @@ async function FeatureDetailSection() {
   const t = await getTranslations('Home');
 
   return (
-    <Section id="ai-feedback">
+    <Section id="ai-feedback" className="bg-white dark:bg-background">
       <Container className="grid items-center gap-12 lg:grid-cols-2">
         <div>
           <Eyebrow tone="teal">{t('featureDetail.eyebrow')}</Eyebrow>
@@ -20,7 +20,11 @@ async function FeatureDetailSection() {
           <ul className="mt-6 flex flex-col gap-3">
             {FEATURE_CHECKLIST.map((key) => (
               <li key={key} className="flex items-center gap-2.5">
-                <CircleCheck aria-hidden="true" className="size-4 shrink-0 text-teal-600 dark:text-teal-400" />
+                <Check
+                  aria-hidden="true"
+                  strokeWidth={2.75}
+                  className="size-4 shrink-0 text-green-600 dark:text-green-400"
+                />
                 <span className="text-sm font-medium">{t(key)}</span>
               </li>
             ))}

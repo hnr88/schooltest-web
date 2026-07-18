@@ -15,13 +15,13 @@ async function LandingFooter() {
   const t = await getTranslations('Home');
 
   return (
-    <footer className="bg-navy-900 text-blue-100/80">
+    <footer className="bg-navy-900 text-slate-400">
       <Container className="py-14">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Logo theme="white" alt={t('footer.logoAlt')} />
             <p className="mt-4 max-w-xs text-sm">{t('footer.tagline')}</p>
-            <div className="mt-6 flex gap-2">
+            <div className="mt-6 flex gap-2.5">
               {FOOTER_SOCIALS.map((social) => {
                 const Icon = SOCIAL_ICONS[social.key];
                 return (
@@ -31,7 +31,7 @@ async function LandingFooter() {
                     target="_blank"
                     rel="noreferrer noopener"
                     aria-label={t(social.labelKey)}
-                    className="grid size-11 place-items-center rounded-full transition-colors hover:bg-white/10"
+                    className="grid size-11 place-items-center rounded-lg bg-navy-800 text-slate-300 transition-colors hover:text-white"
                   >
                     <Icon className="size-4" />
                   </a>
@@ -41,13 +41,15 @@ async function LandingFooter() {
           </div>
           {FOOTER_COLUMNS.map((column) => (
             <nav key={column.titleKey} aria-label={t(column.titleKey)}>
-              <h2 className="text-sm font-semibold text-white">{t(column.titleKey)}</h2>
+              <h2 className="text-xs font-bold tracking-wider text-slate-400 uppercase">
+                {t(column.titleKey)}
+              </h2>
               <ul className="mt-4 space-y-2.5 text-sm">
                 {column.links.map((link) => (
                   <li key={link.labelKey}>
                     <a
                       href={link.href}
-                      className="inline-block py-1.5 transition-colors hover:text-white"
+                      className="inline-block py-1.5 text-blue-200 transition-colors hover:text-white"
                     >
                       {t(link.labelKey)}
                     </a>

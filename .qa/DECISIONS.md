@@ -282,3 +282,23 @@ kept for other render cases.
    on the navy card in both themes).
 4. Decorative teal check icons dark:text-teal-400 (PricingCard, FeatureDetailSection).
 5. /design-system openGraph.url set (was inheriting layout og:url "/").
+
+## 2026-07-18 D28 — Spec-fidelity pass (user-reported visual drift)
+User review found the implementation drifted from the design in several places. Fixed by
+direct comparison against SchoolTest Landing.dc.html renders:
+- Hero: flow strip MOVED OUT of the navy card (spec: light section below it — the fill
+  image bled into it); scrim → spec vertical gradient token (was heavy horizontal); badge
+  teal dot restored; CTAs → spec colors (blue primary + white glass, was white + outline);
+  hero container 1360px token; section bg white→background gradient; h1/subtitle text-shadow.
+- AI feedback card: rebuilt as spec — blue-50→teal-50 gradient card + blue-200 border,
+  3 score TILES with mini bars (was full-width rows), white suggestion box, exact header.
+- Icons: CircleCheck → plain Check (pricing, checklist); how-it-works numbers → solid
+  blue rounded-squares (was light circles); testimonial avatar teal (initials navy-900 for
+  AA); stars amber-500; footer social tiles navy-800.
+- Pricing: "Most popular" badge straddles Pro card top edge (spec) instead of in-card.
+- Colors: stats accuracy teal-300/saved blue-300/labels slate-400; navy-tier features
+  blue-200; footer tagline/column titles slate-400, column links blue-200.
+- Sections: features + feature-detail on white (spec alternation), light feature cards
+  bg-background + hover lift; FAQ wrapped in the white card; how-it-works card bg-background.
+AA kept where the spec itself fails contrast (teal avatar text, muted-foreground role text).
+Suite re-verified: 19/19 green, tsc/lint 0 errors, axe 0 serious/critical.

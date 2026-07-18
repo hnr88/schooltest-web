@@ -31,6 +31,7 @@
     'Liberation Mono', 'Courier New', monospace;
   --font-heading: var(--font-sans);
   --background-image-cta-gradient: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 60%, var(--blue-700) 140%);
+  --background-image-hero-scrim: linear-gradient(180deg, oklch(0.227 0.0691 263.0857 / 55%) 0%, oklch(0.227 0.0691 263.0857 / 18%) 45%, oklch(0.227 0.0691 263.0857 / 42%) 88%, oklch(0.227 0.0691 263.0857 / 10%) 100%);
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
@@ -73,6 +74,7 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   --container-landing: 1200px;
+  --container-hero: 1360px;
 }
 
 :root {

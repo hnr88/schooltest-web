@@ -7,24 +7,27 @@ async function HeroFlow() {
   const t = await getTranslations('Home');
 
   return (
-    <div className="relative border-t border-white/10 px-6 py-12 sm:px-12">
-      <h2 className="mx-auto max-w-2xl text-center text-2xl font-bold text-balance text-white sm:text-3xl">
+    <div className="mx-auto max-w-4xl px-6 pt-16 text-center sm:pt-24">
+      <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
         {t.rich('flow.title', {
-          blue: (chunks) => <span className="text-blue-300">{chunks}</span>,
-          teal: (chunks) => <span className="text-teal-500">{chunks}</span>,
+          blue: (chunks) => <span className="text-blue-600 dark:text-blue-400">{chunks}</span>,
+          teal: (chunks) => <span className="text-teal-600 dark:text-teal-400">{chunks}</span>,
         })}
       </h2>
-      <ol className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
+      <ol className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-9">
         {FLOW_STEPS.map((key, index) => (
-          <li key={key} className="flex items-center gap-4 sm:gap-6">
+          <li key={key} className="flex items-center gap-4 sm:gap-9">
             <span className="flex items-center gap-2.5">
-              <span className="grid size-9 place-items-center rounded-full bg-white/10 text-sm font-semibold text-white">
+              <span className="grid size-9 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-600 dark:bg-blue-950 dark:text-blue-300">
                 {index + 1}
               </span>
-              <span className="text-sm font-semibold text-white">{t(key)}</span>
+              <span className="text-sm font-semibold text-foreground">{t(key)}</span>
             </span>
             {index < FLOW_STEPS.length - 1 ? (
-              <ArrowRight aria-hidden="true" className="hidden size-5 text-white/40 sm:block" />
+              <ArrowRight
+                aria-hidden="true"
+                className="hidden size-5 text-slate-300 sm:block dark:text-slate-600"
+              />
             ) : null}
           </li>
         ))}

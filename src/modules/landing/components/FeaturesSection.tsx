@@ -7,7 +7,7 @@ async function FeaturesSection() {
   const t = await getTranslations('Home');
 
   return (
-    <Section id="product">
+    <Section id="product" className="bg-white dark:bg-background">
       <Container>
         <div className="mx-auto max-w-xl text-center">
           <Eyebrow>{t('features.eyebrow')}</Eyebrow>
@@ -21,18 +21,21 @@ async function FeaturesSection() {
             tone="light"
             title={t('features.questionTypes.title')}
             description={t('features.questionTypes.description')}
+            className="bg-background transition hover:-translate-y-0.75 hover:shadow-lg"
           />
           <FeatureCard
             icon={Sparkles}
             tone="navy"
             title={t('features.aiGrading.title')}
             description={t('features.aiGrading.description')}
+            className="transition hover:-translate-y-0.75 hover:shadow-xl"
           />
           <FeatureCard
             icon={BarChart3}
             tone="light"
             title={t('features.analytics.title')}
             description={t('features.analytics.description')}
+            className="bg-background transition hover:-translate-y-0.75 hover:shadow-lg"
           />
         </div>
       </Container>
