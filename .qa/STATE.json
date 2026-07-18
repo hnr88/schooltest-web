@@ -1,332 +1,402 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
-  "mission": "Design system + landing page from design-system-and-components/ in schooltest-web; copy from i18n JSONs; en+de",
-  "updated_at": "2026-07-18T00:50:42.190Z",
+  "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
+  "updated_at": "2026-07-18T09:01:10.819Z",
   "tasks": [
     {
       "id": "01",
-      "file": ".thellmspace/tasks/01-foundation-tokens-fonts-assets.md",
-      "title": "Foundation tokens/fonts/assets",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/01-email-provider-config.md",
+      "title": "Email provider (SMTP→Mailhog) in api",
+      "layer": "backend",
       "contract": [
-        "C-TOKENS"
+        "C-ML-REQUEST"
       ],
       "depends_on": [],
       "status": "DONE",
-      "started_at": 1784298947.318,
+      "started_at": 1784360655.378,
       "verify": {
         "verdict": "PASS",
         "by": "independent explore verifier",
-        "evidence": "85/85 OKLCH values verbatim; assets byte-identical (TTF×2, PNG 503×160 + 179×119, WebP 1200×800 192KB); tsc 0 errors; lint 0 errors (1 pre-existing warning); no ui/* edits; no banned patterns"
+        "evidence": "nodemailer@5.50.1 (smtp pkg E404); email block env-driven; validate-env requires EMAIL_SMTP_HOST in prod; api healthy :5500; independent fresh send → Mailhog 250-queued + searchable; tsc/lint 0; scope exact"
       }
     },
     {
       "id": "02",
-      "file": ".thellmspace/tasks/02-messages-en-de.md",
-      "title": "Messages en/de (Home + DesignSystem)",
-      "layer": "frontend",
+      "file": ".thellmspace/tasks/02-student-schema-email-parent.md",
+      "title": "Student schema +email +parent + types",
+      "layer": "backend",
       "contract": [
-        "C-CONTENT"
+        "schema"
       ],
       "depends_on": [],
       "status": "DONE",
-      "started_at": 1784299958.283,
+      "started_at": 1784361788.491,
       "verify": {
         "verdict": "PASS",
         "by": "independent explore verifier",
-        "evidence": "PARITY OK 295 keys; en literal 0 diffs vs task file; kept namespaces deep-equal to HEAD; no untranslated EN in de (keep-list excepted); rich tags + ICU intact; formal Sie throughout; tsc/lint 0 errors; home.spec 2/2 green; orchestrator polish: trustedBy.label → Bereits im Einsatz bei"
+        "evidence": "schema fields present; extension carries full User attribute set + students inverse; types regenerated; DB: email column + join table, 35 students intact, 6 seed users repaired with roles; teacher login + students GET 200; boot clean since 11:30; tsc/lint 0"
       }
     },
     {
       "id": "03",
-      "file": ".thellmspace/tasks/03-ds-actions-brand.md",
-      "title": "DS actions & brand",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/03-parent-role-permissions.md",
+      "title": "Parent role + bootstrap grants",
+      "layer": "backend",
       "contract": [
-        "C-DS"
+        "C-STUDENT-*",
+        "C-ML-ISSUE"
       ],
       "depends_on": [
-        "01"
+        "02"
       ],
       "status": "DONE",
-      "started_at": 1784302459.897,
+      "started_at": 1784364317.095,
       "verify": {
         "verdict": "PASS",
         "by": "independent explore verifier",
-        "evidence": "9 components + barrel per C-DS; all variants reachable; globals.css diff = exactly +1 line (--container-landing); tsc/lint 0 errors; no ui/* edits; no hex/any/hardcoded strings; D14 deviations (Spinner aria-hidden, 3 arbitrary values from task spec) ruled ACCEPT; token utilities resolve in v4"
+        "evidence": "parent role exactly once with 6 grants (student.find/findOne/create, magic-link.requestMagicLink, search.students, users-permissions.user.me); idempotent across re-bootstrap; teacher 403 on /users/me confirmed (pre-existing gap documented); tsc/lint 0; scope exact"
       }
     },
     {
       "id": "04",
-      "file": ".thellmspace/tasks/04-ds-forms.md",
-      "title": "DS forms barrel",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/04-magic-link-model-service.md",
+      "title": "student-magic-link content-type + service",
+      "layer": "backend",
       "contract": [
-        "C-DS"
+        "C-ML-*"
       ],
       "depends_on": [
-        "01"
+        "01",
+        "02"
       ],
-      "status": "DONE",
-      "started_at": 1784303745.746,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "all 10 ui families re-exported with exact names (0 invented, 0 missing); no Form, no export *; task-03 exports intact; import probe typechecks; tsc/lint 0 errors; ui/* untouched"
-      }
+      "status": "DOING",
+      "started_at": 1784365270.819,
+      "verify": null
     },
     {
       "id": "05",
-      "file": ".thellmspace/tasks/05-ds-feedback-cards.md",
-      "title": "DS feedback & cards",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/05-magic-link-endpoints.md",
+      "title": "request/verify/me endpoints",
+      "layer": "backend",
       "contract": [
-        "C-DS"
+        "C-ML-REQUEST",
+        "C-ML-VERIFY",
+        "C-ML-ME"
       ],
       "depends_on": [
-        "01"
+        "04"
       ],
-      "status": "DONE",
-      "started_at": 1784304196.204,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "6 composites + re-export families exact (Card 7/7, Progress 5/5, Avatar 6/6); contract conformance all confirmed; discriminated-union compile errors proven via tsc probe; 21 sampled Tailwind classes generate in v4; deviations all ruled ACCEPT; tsc/lint 0 errors; no ui/* edits"
-      }
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "06",
-      "file": ".thellmspace/tasks/06-ds-overlays-data.md",
-      "title": "DS overlays & data",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/06-parent-issue-magic-link.md",
+      "title": "POST /students/:id/magic-link (owner)",
+      "layer": "backend",
       "contract": [
-        "C-DS"
+        "C-ML-ISSUE"
       ],
       "depends_on": [
-        "01"
+        "03",
+        "04"
       ],
-      "status": "DONE",
-      "started_at": 1784306168.722,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "10 families re-exported verbatim (TooltipProvider/tabsListVariants exclusions justified); SegmentedControl Base-UI adaptation proven vs library source (array value, empty-array re-click guard, data-pressed); tw-merge override empirically tested; controlled semantics correct; tsc/lint 0 errors; no ui/* edits"
-      }
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "07",
-      "file": ".thellmspace/tasks/07-ds-showcase-page.md",
-      "title": "/design-system showcase page",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/07-seed-parent-students.md",
+      "title": "Seed parent user + 2 linked students",
+      "layer": "backend",
       "contract": [
-        "C-PAGE-DS"
+        "seed"
       ],
       "depends_on": [
-        "02",
-        "03",
-        "04",
-        "05",
-        "06"
-      ],
-      "status": "DONE",
-      "started_at": 1784308250.328,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "130/137 exports exercised directly + 7 via composed parents (verified in ui source); all variants present; zero hardcoded English in JSX; demo fixtures ruled ACCEPT; tsc/lint 0 errors; orchestrator fix: pagination prev/next + aria labels now i18n-driven (300 keys parity OK)"
-      }
-    },
-    {
-      "id": "08",
-      "file": ".thellmspace/tasks/08-landing-header-hero.md",
-      "title": "Landing header/hero",
-      "layer": "ui",
-      "contract": [
-        "C-PAGE-LANDING"
-      ],
-      "depends_on": [
-        "01",
         "02",
         "03"
       ],
-      "status": "DONE",
-      "started_at": 1784311905.879,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "6 components contract-conform; old files deleted, 0 references; Sheet barrel exact 8/8; every string incl aria/alt traced to Home.* keys (166/166 parity); one h1; interim main structure coherent, re-home scheduled in task 11; tsc/lint 0 errors; no ui/* edits"
-      }
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "08",
+      "file": ".thellmspace/tasks/08-register-parent-role.md",
+      "title": "users-permissions register extension",
+      "layer": "backend",
+      "contract": [
+        "C-AUTH-REGISTER"
+      ],
+      "depends_on": [
+        "03"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "09",
-      "file": ".thellmspace/tasks/09-landing-features-stats.md",
-      "title": "Landing features/stats",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/09-google-provider-config.md",
+      "title": "Google grant config (env-gated)",
+      "layer": "backend",
       "contract": [
-        "C-PAGE-LANDING"
+        "C-AUTH-GOOGLE"
       ],
-      "depends_on": [
-        "01",
-        "02",
-        "03",
-        "05"
-      ],
-      "status": "DONE",
-      "started_at": 1784313336.99,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "PARITY OK 306 keys; scores in both locales; rich-mark suggestion both locales; sections 6-8 contract-conform (navy middle card, per-row bar colors, watermark, stat order/colors); one h1, heading order intact; tsc/lint 0 errors; no ui/* edits"
-      }
+      "depends_on": [],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "10",
-      "file": ".thellmspace/tasks/10-landing-how-pricing-faq.md",
-      "title": "Landing how/pricing/faq",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/10-parent-students-crud.md",
+      "title": "Parent-scoped GET/POST /students",
+      "layer": "backend",
       "contract": [
-        "C-PAGE-LANDING"
+        "C-STUDENT-LIST",
+        "C-STUDENT-CREATE"
       ],
       "depends_on": [
-        "01",
         "02",
-        "03",
-        "05",
-        "06"
+        "03"
       ],
-      "status": "DONE",
-      "started_at": 1784315251.718,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "sections 9-11 contract-conform (navy middle Pro tier, crossed-out Free AI row, FAQ defaultValue=[accounts], star row single-announces, h-11 CTAs); all 42 keys both locales; tsc/lint 0 errors; orchestrator polish: testimonial.quote wrapped in typographic quotes en/de per spec"
-      }
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "11",
-      "file": ".thellmspace/tasks/11-landing-cta-footer.md",
-      "title": "Landing cta/footer",
-      "layer": "ui",
+      "file": ".thellmspace/tasks/11-search-endpoint.md",
+      "title": "GET /api/search/students (parent)",
+      "layer": "backend",
       "contract": [
-        "C-PAGE-LANDING"
+        "C-STUDENT-SEARCH"
       ],
       "depends_on": [
-        "01",
-        "02",
-        "03",
-        "06"
+        "10"
       ],
-      "status": "DONE",
-      "started_at": 1784316412.201,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "cta-gradient token-only; CtaSection + LandingFooter contract-conform; footer outside main, single #main-content; D7 mapping exact; social hrefs exact D7 URLs with spec SVG paths; LocaleSwitcher+i18n module untouched; footer.* keys both locales; tsc/lint 0 errors"
-      }
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "12",
-      "file": ".thellmspace/tasks/12-landing-compose-cleanup.md",
-      "title": "Landing compose + cleanup",
-      "layer": "integration",
+      "file": ".thellmspace/tasks/12-sign-in-page.md",
+      "title": "Sign-in page + password login + error model",
+      "layer": "frontend",
       "contract": [
-        "C-PAGE-LANDING",
-        "C-TOKENS",
-        "C-CONTENT"
+        "C-AUTH-LOGIN"
       ],
-      "depends_on": [
-        "08",
-        "09",
-        "10",
-        "11"
-      ],
-      "status": "DONE",
-      "started_at": 1784317438.306,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier (FAIL then fixed)",
-        "evidence": "initial FAIL: LocaleSwitcher→@/i18n/request→next/headers client-graph violation made / 500; orchestrator fix D20 (LOCALE_COOKIE→routing.ts); re-run: tsc 0, lint 0, playwright 2/2 green; purge verified (old tokens/keys zero refs, parity 268 keys); metadata + barrel + structure conform"
-      }
+      "depends_on": [],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "13",
-      "file": ".thellmspace/tasks/13-e2e-landing.md",
-      "title": "E2E landing en/de",
-      "layer": "integration",
+      "file": ".thellmspace/tasks/13-sign-up-page.md",
+      "title": "Sign-up page (register→dashboard)",
+      "layer": "frontend",
       "contract": [
-        "C-E2E"
+        "C-AUTH-REGISTER"
       ],
       "depends_on": [
+        "08",
         "12"
       ],
-      "status": "DONE",
-      "started_at": 1784318946.149,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "fresh full suite 7/7 green; assertions catalog-driven (zero hardcoded copy); all C-E2E 1&4 items asserted incl FAQ 4 Q&A + no-leak both directions + DOM order + anchors; no weakened assertions; D21 href path confirmed, nativeButton warning gone; tsc/lint 0 errors"
-      }
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "14",
-      "file": ".thellmspace/tasks/14-e2e-design-system.md",
-      "title": "E2E design-system showcase",
-      "layer": "integration",
+      "file": ".thellmspace/tasks/14-google-button-callback.md",
+      "title": "Google button + /auth/google/callback",
+      "layer": "frontend",
       "contract": [
-        "C-E2E"
+        "C-AUTH-GOOGLE"
       ],
       "depends_on": [
-        "07",
+        "09",
         "12"
       ],
-      "status": "DONE",
-      "started_at": 1784320570.858,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "fresh full suite 12/12 green; interactions genuinely exercised (dialog 3 close paths, tooltip hover+keyboard focus, segmented flip, tag 2→1, alert 4→3, tabs switch); console guard zero-whitelist; locale toggle same-URL proven; 3 production fixes sound; pagination deviation ACCEPTED (ui bug proven, law 11) with C-PAGE-DS addendum; tsc/lint 0 errors"
-      }
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "15",
-      "file": ".thellmspace/tasks/15-e2e-a11y-responsive.md",
-      "title": "E2E a11y + responsive",
-      "layer": "a11y",
+      "file": ".thellmspace/tasks/15-dashboard-guard.md",
+      "title": "/dashboard route + client guard",
+      "layer": "frontend",
       "contract": [
-        "C-E2E"
+        "frontend"
       ],
-      "depends_on": [
-        "07",
-        "12"
-      ],
-      "status": "DONE",
-      "started_at": 1784324450.757,
-      "verify": {
-        "verdict": "PASS",
-        "by": "independent explore verifier",
-        "evidence": "fresh full suite 17/17 green ×2; axe 0 serious/critical on / (en+de) + /design-system, no disableRules; no-hscroll both widths; 44px sweep loophole-audited (landing zero undersized); skip link first focusable; 11 fixes all in modules/app, ui untouched; 6 screenshots on disk + visually checked; showcase-44px deviation ruled ACCEPTABLE; tsc/lint 0 errors"
-      }
+      "depends_on": [],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     },
     {
       "id": "16",
-      "file": ".thellmspace/tasks/16-final-regression.md",
-      "title": "Final regression + report",
-      "layer": "regression",
+      "file": ".thellmspace/tasks/16-students-list.md",
+      "title": "Dashboard students list + empty state",
+      "layer": "frontend",
       "contract": [
-        "C-E2E"
+        "C-STUDENT-LIST"
       ],
       "depends_on": [
-        "13",
-        "14",
+        "10",
         "15"
       ],
-      "status": "DONE",
-      "started_at": 1784327225.352,
-      "verify": {
-        "verdict": "PASS",
-        "by": "11 critic passes (10+11 consecutively CLEAN) + orchestrator gates",
-        "evidence": "19/19 suite green; tsc/lint 0 errors; parity 266/266; banned-pattern scan CLEAN; quality gate closed: critic passes 10 and 11 consecutively CLEAN; REPORT.md written"
-      }
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "17",
+      "file": ".thellmspace/tasks/17-add-student-dialog.md",
+      "title": "Add-student form + create mutation",
+      "layer": "frontend",
+      "contract": [
+        "C-STUDENT-CREATE"
+      ],
+      "depends_on": [
+        "16"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "18",
+      "file": ".thellmspace/tasks/18-search-bar-ui.md",
+      "title": "Dashboard search bar + results",
+      "layer": "frontend",
+      "contract": [
+        "C-STUDENT-SEARCH"
+      ],
+      "depends_on": [
+        "11",
+        "16"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "19",
+      "file": ".thellmspace/tasks/19-e2e-parent-login.md",
+      "title": "E2E: parent password login → dashboard",
+      "layer": "integration",
+      "contract": [
+        "C-AUTH-LOGIN"
+      ],
+      "depends_on": [
+        "07",
+        "16"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "20",
+      "file": ".thellmspace/tasks/20-e2e-invalid-creds.md",
+      "title": "E2E: invalid credentials error",
+      "layer": "integration",
+      "contract": [
+        "C-AUTH-LOGIN"
+      ],
+      "depends_on": [
+        "12"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "21",
+      "file": ".thellmspace/tasks/21-e2e-add-student.md",
+      "title": "E2E: add student persists + reload",
+      "layer": "integration",
+      "contract": [
+        "C-STUDENT-CREATE"
+      ],
+      "depends_on": [
+        "17"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "22",
+      "file": ".thellmspace/tasks/22-e2e-search.md",
+      "title": "E2E: search filters results",
+      "layer": "integration",
+      "contract": [
+        "C-STUDENT-SEARCH"
+      ],
+      "depends_on": [
+        "18"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "23",
+      "file": ".thellmspace/tasks/23-e2e-magic-link-flow.md",
+      "title": "E2E: app request → Mailhog → verify → /home",
+      "layer": "integration",
+      "contract": [
+        "C-ML-*"
+      ],
+      "depends_on": [
+        "05",
+        "07"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "24",
+      "file": ".thellmspace/tasks/24-e2e-a11y-regression.md",
+      "title": "E2E: a11y + responsive + Google-BLOCKED doc",
+      "layer": "integration",
+      "contract": [
+        "all"
+      ],
+      "depends_on": [
+        "19",
+        "20",
+        "21",
+        "22",
+        "23"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
+    },
+    {
+      "id": "25",
+      "file": ".thellmspace/tasks/25-critic-report.md",
+      "title": "Critic loop ×2 clean + REPORT.md",
+      "layer": "integration",
+      "contract": [
+        "all"
+      ],
+      "depends_on": [
+        "24"
+      ],
+      "status": "TODO",
+      "started_at": null,
+      "verify": null
     }
   ]
 }

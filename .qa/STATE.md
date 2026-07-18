@@ -1,40 +1,37 @@
-# STATE.md — mission board (human-readable mirror of STATE.json)
+# STATE.md — mission 2 board (mirror of STATE.json)
 
-Mission: design system + landing page from `design-system-and-components/` in
-schooltest-web; all copy from i18n JSONs (en/de). Contracts: .qa/CONTRACTS.md.
-Task files: .thellmspace/tasks/NN-*.md. Plan: .qa/PLAN.md.
+Mission: parent auth (password + Google-wired), student passwordless magic-link API,
+parent dashboard (list/add students), global search — borrowed from schoolgo.
+Contracts: .qa/CONTRACTS.md · Tasks: .thellmspace/tasks/ (25) · Plan: .qa/PLAN.md
 
 ## Board
 | # | Task | Depends | Status | Verify |
 |---|------|---------|--------|--------|
-| 01 | Foundation tokens/fonts/assets | — | DONE | PASS |
-| 02 | Messages en/de | — | DONE | PASS |
-| 03 | DS actions & brand | 01 | DONE | PASS |
-| 04 | DS forms barrel | 01 | DONE | PASS |
-| 05 | DS feedback & cards | 01 | DONE | PASS |
-| 06 | DS overlays & data | 01 | DONE | PASS |
-| 07 | /design-system showcase | 02–06 | DONE | PASS |
-| 08 | Landing header/hero | 01–03 | DONE | PASS |
-| 09 | Landing features/stats | 01–03,05 | DONE | PASS |
-| 10 | Landing how/pricing/faq | 01–03,05,06 | DONE | PASS |
-| 11 | Landing cta/footer | 01–03,06 | DONE | PASS |
-| 12 | Compose + cleanup | 08–11 | DONE | PASS |
-| 13 | E2E landing | 12 | DONE | PASS |
-| 14 | E2E showcase | 07,12 | DONE | PASS |
-| 15 | E2E a11y/responsive | 07,12 | DONE | PASS |
-| 16 | Final regression | 13–15 | DONE | PASS |
+| 01 | Email provider (SMTP→Mailhog) | — | TODO | — |
+| 02 | Student schema +email +parent | — | TODO | — |
+| 03 | Parent role + grants | 02 | TODO | — |
+| 04 | Magic-link model + service | 01,02 | TODO | — |
+| 05 | request/verify/me endpoints | 04 | TODO | — |
+| 06 | Parent-issue endpoint | 03,04 | TODO | — |
+| 07 | Seed parent + students | 02,03 | TODO | — |
+| 08 | Register→parent role ext | 03 | TODO | — |
+| 09 | Google provider config | — | TODO | — |
+| 10 | Parent students CRUD | 02,03 | TODO | — |
+| 11 | Search endpoint | 10 | TODO | — |
+| 12 | Sign-in page + errors | — | TODO | — |
+| 13 | Sign-up page | 08,12 | TODO | — |
+| 14 | Google button + callback | 09,12 | TODO | — |
+| 15 | Dashboard route + guard | — | TODO | — |
+| 16 | Students list | 10,15 | TODO | — |
+| 17 | Add-student dialog | 16 | TODO | — |
+| 18 | Search bar UI | 11,16 | TODO | — |
+| 19 | E2E parent login | 07,16 | TODO | — |
+| 20 | E2E invalid creds | 12 | TODO | — |
+| 21 | E2E add student | 17 | TODO | — |
+| 22 | E2E search | 18 | TODO | — |
+| 23 | E2E magic-link flow | 05,07 | TODO | — |
+| 24 | E2E a11y + regression | 19–23 | TODO | — |
+| 25 | Critic ×2 + REPORT | 24 | TODO | — |
 
-All 16 tasks DONE + PASS. Quality gate: critic passes 10+11 consecutively CLEAN.
-
-## Per-layer rollup
-- ui: 01,03,04,05,06,07,08,09,10,11 — all TODO
-- frontend (content): 02 — TODO
-- integration: 12,13,14 — TODO
-- a11y: 15 — TODO · regression: 16 — TODO
-
-## Waves
-W1 {01,02} → W2 {03,04,05,06} → W3 {07} → W4 {08,09} → W5 {10,11,12} →
-W6 {13,14,15} → W7 {16}
-
-Boot-gate: PASSED (baseline tsc 0 / lint 0 errors; playwright webServer boots app on
-:3100; existing home.spec green — see .qa/STATE.json baseline).
+Boot-gate: api :5500 healthy ✓ (running), web :3100, mailhog :1025/:8025 ✓,
+postgres :5540 ✓, seeded-read via teacher JWT (see .qa/STACK.json).

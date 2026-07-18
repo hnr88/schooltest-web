@@ -1,0 +1,332 @@
+{
+  "contracts_file": ".qa/CONTRACTS.md",
+  "mission": "Design system + landing page from design-system-and-components/ in schooltest-web; copy from i18n JSONs; en+de",
+  "updated_at": "2026-07-18T00:50:42.190Z",
+  "tasks": [
+    {
+      "id": "01",
+      "file": ".thellmspace/tasks/01-foundation-tokens-fonts-assets.md",
+      "title": "Foundation tokens/fonts/assets",
+      "layer": "ui",
+      "contract": [
+        "C-TOKENS"
+      ],
+      "depends_on": [],
+      "status": "DONE",
+      "started_at": 1784298947.318,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "85/85 OKLCH values verbatim; assets byte-identical (TTF×2, PNG 503×160 + 179×119, WebP 1200×800 192KB); tsc 0 errors; lint 0 errors (1 pre-existing warning); no ui/* edits; no banned patterns"
+      }
+    },
+    {
+      "id": "02",
+      "file": ".thellmspace/tasks/02-messages-en-de.md",
+      "title": "Messages en/de (Home + DesignSystem)",
+      "layer": "frontend",
+      "contract": [
+        "C-CONTENT"
+      ],
+      "depends_on": [],
+      "status": "DONE",
+      "started_at": 1784299958.283,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "PARITY OK 295 keys; en literal 0 diffs vs task file; kept namespaces deep-equal to HEAD; no untranslated EN in de (keep-list excepted); rich tags + ICU intact; formal Sie throughout; tsc/lint 0 errors; home.spec 2/2 green; orchestrator polish: trustedBy.label → Bereits im Einsatz bei"
+      }
+    },
+    {
+      "id": "03",
+      "file": ".thellmspace/tasks/03-ds-actions-brand.md",
+      "title": "DS actions & brand",
+      "layer": "ui",
+      "contract": [
+        "C-DS"
+      ],
+      "depends_on": [
+        "01"
+      ],
+      "status": "DONE",
+      "started_at": 1784302459.897,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "9 components + barrel per C-DS; all variants reachable; globals.css diff = exactly +1 line (--container-landing); tsc/lint 0 errors; no ui/* edits; no hex/any/hardcoded strings; D14 deviations (Spinner aria-hidden, 3 arbitrary values from task spec) ruled ACCEPT; token utilities resolve in v4"
+      }
+    },
+    {
+      "id": "04",
+      "file": ".thellmspace/tasks/04-ds-forms.md",
+      "title": "DS forms barrel",
+      "layer": "ui",
+      "contract": [
+        "C-DS"
+      ],
+      "depends_on": [
+        "01"
+      ],
+      "status": "DONE",
+      "started_at": 1784303745.746,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "all 10 ui families re-exported with exact names (0 invented, 0 missing); no Form, no export *; task-03 exports intact; import probe typechecks; tsc/lint 0 errors; ui/* untouched"
+      }
+    },
+    {
+      "id": "05",
+      "file": ".thellmspace/tasks/05-ds-feedback-cards.md",
+      "title": "DS feedback & cards",
+      "layer": "ui",
+      "contract": [
+        "C-DS"
+      ],
+      "depends_on": [
+        "01"
+      ],
+      "status": "DONE",
+      "started_at": 1784304196.204,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "6 composites + re-export families exact (Card 7/7, Progress 5/5, Avatar 6/6); contract conformance all confirmed; discriminated-union compile errors proven via tsc probe; 21 sampled Tailwind classes generate in v4; deviations all ruled ACCEPT; tsc/lint 0 errors; no ui/* edits"
+      }
+    },
+    {
+      "id": "06",
+      "file": ".thellmspace/tasks/06-ds-overlays-data.md",
+      "title": "DS overlays & data",
+      "layer": "ui",
+      "contract": [
+        "C-DS"
+      ],
+      "depends_on": [
+        "01"
+      ],
+      "status": "DONE",
+      "started_at": 1784306168.722,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "10 families re-exported verbatim (TooltipProvider/tabsListVariants exclusions justified); SegmentedControl Base-UI adaptation proven vs library source (array value, empty-array re-click guard, data-pressed); tw-merge override empirically tested; controlled semantics correct; tsc/lint 0 errors; no ui/* edits"
+      }
+    },
+    {
+      "id": "07",
+      "file": ".thellmspace/tasks/07-ds-showcase-page.md",
+      "title": "/design-system showcase page",
+      "layer": "ui",
+      "contract": [
+        "C-PAGE-DS"
+      ],
+      "depends_on": [
+        "02",
+        "03",
+        "04",
+        "05",
+        "06"
+      ],
+      "status": "DONE",
+      "started_at": 1784308250.328,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "130/137 exports exercised directly + 7 via composed parents (verified in ui source); all variants present; zero hardcoded English in JSX; demo fixtures ruled ACCEPT; tsc/lint 0 errors; orchestrator fix: pagination prev/next + aria labels now i18n-driven (300 keys parity OK)"
+      }
+    },
+    {
+      "id": "08",
+      "file": ".thellmspace/tasks/08-landing-header-hero.md",
+      "title": "Landing header/hero",
+      "layer": "ui",
+      "contract": [
+        "C-PAGE-LANDING"
+      ],
+      "depends_on": [
+        "01",
+        "02",
+        "03"
+      ],
+      "status": "DONE",
+      "started_at": 1784311905.879,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "6 components contract-conform; old files deleted, 0 references; Sheet barrel exact 8/8; every string incl aria/alt traced to Home.* keys (166/166 parity); one h1; interim main structure coherent, re-home scheduled in task 11; tsc/lint 0 errors; no ui/* edits"
+      }
+    },
+    {
+      "id": "09",
+      "file": ".thellmspace/tasks/09-landing-features-stats.md",
+      "title": "Landing features/stats",
+      "layer": "ui",
+      "contract": [
+        "C-PAGE-LANDING"
+      ],
+      "depends_on": [
+        "01",
+        "02",
+        "03",
+        "05"
+      ],
+      "status": "DONE",
+      "started_at": 1784313336.99,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "PARITY OK 306 keys; scores in both locales; rich-mark suggestion both locales; sections 6-8 contract-conform (navy middle card, per-row bar colors, watermark, stat order/colors); one h1, heading order intact; tsc/lint 0 errors; no ui/* edits"
+      }
+    },
+    {
+      "id": "10",
+      "file": ".thellmspace/tasks/10-landing-how-pricing-faq.md",
+      "title": "Landing how/pricing/faq",
+      "layer": "ui",
+      "contract": [
+        "C-PAGE-LANDING"
+      ],
+      "depends_on": [
+        "01",
+        "02",
+        "03",
+        "05",
+        "06"
+      ],
+      "status": "DONE",
+      "started_at": 1784315251.718,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "sections 9-11 contract-conform (navy middle Pro tier, crossed-out Free AI row, FAQ defaultValue=[accounts], star row single-announces, h-11 CTAs); all 42 keys both locales; tsc/lint 0 errors; orchestrator polish: testimonial.quote wrapped in typographic quotes en/de per spec"
+      }
+    },
+    {
+      "id": "11",
+      "file": ".thellmspace/tasks/11-landing-cta-footer.md",
+      "title": "Landing cta/footer",
+      "layer": "ui",
+      "contract": [
+        "C-PAGE-LANDING"
+      ],
+      "depends_on": [
+        "01",
+        "02",
+        "03",
+        "06"
+      ],
+      "status": "DONE",
+      "started_at": 1784316412.201,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "cta-gradient token-only; CtaSection + LandingFooter contract-conform; footer outside main, single #main-content; D7 mapping exact; social hrefs exact D7 URLs with spec SVG paths; LocaleSwitcher+i18n module untouched; footer.* keys both locales; tsc/lint 0 errors"
+      }
+    },
+    {
+      "id": "12",
+      "file": ".thellmspace/tasks/12-landing-compose-cleanup.md",
+      "title": "Landing compose + cleanup",
+      "layer": "integration",
+      "contract": [
+        "C-PAGE-LANDING",
+        "C-TOKENS",
+        "C-CONTENT"
+      ],
+      "depends_on": [
+        "08",
+        "09",
+        "10",
+        "11"
+      ],
+      "status": "DONE",
+      "started_at": 1784317438.306,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier (FAIL then fixed)",
+        "evidence": "initial FAIL: LocaleSwitcher→@/i18n/request→next/headers client-graph violation made / 500; orchestrator fix D20 (LOCALE_COOKIE→routing.ts); re-run: tsc 0, lint 0, playwright 2/2 green; purge verified (old tokens/keys zero refs, parity 268 keys); metadata + barrel + structure conform"
+      }
+    },
+    {
+      "id": "13",
+      "file": ".thellmspace/tasks/13-e2e-landing.md",
+      "title": "E2E landing en/de",
+      "layer": "integration",
+      "contract": [
+        "C-E2E"
+      ],
+      "depends_on": [
+        "12"
+      ],
+      "status": "DONE",
+      "started_at": 1784318946.149,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "fresh full suite 7/7 green; assertions catalog-driven (zero hardcoded copy); all C-E2E 1&4 items asserted incl FAQ 4 Q&A + no-leak both directions + DOM order + anchors; no weakened assertions; D21 href path confirmed, nativeButton warning gone; tsc/lint 0 errors"
+      }
+    },
+    {
+      "id": "14",
+      "file": ".thellmspace/tasks/14-e2e-design-system.md",
+      "title": "E2E design-system showcase",
+      "layer": "integration",
+      "contract": [
+        "C-E2E"
+      ],
+      "depends_on": [
+        "07",
+        "12"
+      ],
+      "status": "DONE",
+      "started_at": 1784320570.858,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "fresh full suite 12/12 green; interactions genuinely exercised (dialog 3 close paths, tooltip hover+keyboard focus, segmented flip, tag 2→1, alert 4→3, tabs switch); console guard zero-whitelist; locale toggle same-URL proven; 3 production fixes sound; pagination deviation ACCEPTED (ui bug proven, law 11) with C-PAGE-DS addendum; tsc/lint 0 errors"
+      }
+    },
+    {
+      "id": "15",
+      "file": ".thellmspace/tasks/15-e2e-a11y-responsive.md",
+      "title": "E2E a11y + responsive",
+      "layer": "a11y",
+      "contract": [
+        "C-E2E"
+      ],
+      "depends_on": [
+        "07",
+        "12"
+      ],
+      "status": "DONE",
+      "started_at": 1784324450.757,
+      "verify": {
+        "verdict": "PASS",
+        "by": "independent explore verifier",
+        "evidence": "fresh full suite 17/17 green ×2; axe 0 serious/critical on / (en+de) + /design-system, no disableRules; no-hscroll both widths; 44px sweep loophole-audited (landing zero undersized); skip link first focusable; 11 fixes all in modules/app, ui untouched; 6 screenshots on disk + visually checked; showcase-44px deviation ruled ACCEPTABLE; tsc/lint 0 errors"
+      }
+    },
+    {
+      "id": "16",
+      "file": ".thellmspace/tasks/16-final-regression.md",
+      "title": "Final regression + report",
+      "layer": "regression",
+      "contract": [
+        "C-E2E"
+      ],
+      "depends_on": [
+        "13",
+        "14",
+        "15"
+      ],
+      "status": "DONE",
+      "started_at": 1784327225.352,
+      "verify": {
+        "verdict": "PASS",
+        "by": "11 critic passes (10+11 consecutively CLEAN) + orchestrator gates",
+        "evidence": "19/19 suite green; tsc/lint 0 errors; parity 266/266; banned-pattern scan CLEAN; quality gate closed: critic passes 10 and 11 consecutively CLEAN; REPORT.md written"
+      }
+    }
+  ]
+}
