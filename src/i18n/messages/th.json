@@ -476,8 +476,7 @@
     "nav": {
       "overview": "ภาพรวม",
       "myChildren": "บุตรหลานของฉัน",
-      "schoolSearch": "ค้นหาโรงเรียน",
-      "agentSearch": "ค้นหาตัวแทน",
+      "search": "ค้นหา",
       "settings": "การตั้งค่า"
     },
     "sidebar": {
@@ -576,6 +575,52 @@
       "tuition": "เริ่มต้น <strong>{amount}</strong>/ปี"
     }
   },
+  "AgentSearch": {
+    "loading": "กำลังโหลดตัวแทน",
+    "resultsCount": "{count, plural, other {ตัวแทน # ราย}}",
+    "verified": "ยืนยันแล้ว",
+    "aria": {
+      "filters": "ตัวกรองตัวแทน"
+    },
+    "chipGroups": {
+      "countries": "ประเทศที่ให้บริการ",
+      "languages": "ภาษาที่ใช้",
+      "services": "บริการที่มี"
+    },
+    "services": {
+      "counselling": "การให้คำปรึกษา",
+      "application": "ช่วยเหลือการสมัคร",
+      "visa": "ช่วยเหลือด้านวีซ่า",
+      "scholarship": "ทุนการศึกษา",
+      "english_prep": "เตรียมภาษาอังกฤษ",
+      "accommodation": "ที่พัก",
+      "under18_welfare": "ดูแลผู้เยาว์อายุต่ำกว่า 18 ปี",
+      "post_arrival": "สนับสนุนหลังเดินทางถึง"
+    },
+    "sort": {
+      "label": "จัดเรียง"
+    },
+    "sortOptions": {
+      "relevance": "ความเกี่ยวข้อง",
+      "experience": "ประสบการณ์มากที่สุด",
+      "name_asc": "ชื่อ: A ถึง Z",
+      "name_desc": "ชื่อ: Z ถึง A",
+      "recently_verified": "ยืนยันล่าสุด"
+    },
+    "footer": {
+      "yearsExperience": "ประสบการณ์ <b>{years}</b> ปี",
+      "partnerSchools": "โรงเรียนพันธมิตร <b>{count}</b> แห่ง"
+    },
+    "empty": {
+      "title": "ไม่มีตัวแทนที่ตรงกับตัวกรอง",
+      "sub": "ลองปรับตัวกรองหรือคำค้นหาเพื่อดูผลลัพธ์เพิ่มเติม"
+    },
+    "error": {
+      "title": "ไม่สามารถโหลดตัวแทนได้",
+      "body": "เกิดข้อผิดพลาดขณะโหลดตัวแทน โปรดลองอีกครั้ง",
+      "retry": "ลองอีกครั้ง"
+    }
+  },
   "Search": {
     "resetFilters": "รีเซ็ตตัวกรอง",
     "paginationLabel": "การแบ่งหน้าผลการค้นหา",
@@ -583,5 +628,21 @@
     "prevPage": "หน้าก่อนหน้า",
     "nextPage": "หน้าถัดไป",
     "goToPage": "ไปที่หน้า {page}"
+  },
+  "UnifiedSearch": {
+    "searchPlaceholderSchools": "ค้นหาโรงเรียนหรือย่าน",
+    "searchPlaceholderAgents": "ค้นหาตัวแทนตามชื่อหรือบริษัท",
+    "clearSearch": "ล้างการค้นหา",
+    "titleSchools": "ค้นหาโรงเรียน",
+    "titleAgents": "ค้นหาตัวแทน",
+    "subtitleSchools": "ค้นหาและเปรียบเทียบโรงเรียนในออสเตรเลียตามรัฐ ประเภท และค่าเล่าเรียน",
+    "subtitleAgents": "ค้นหาตัวแทนการศึกษาที่ผ่านการยืนยันตามประเทศที่ให้บริการ ภาษา และบริการ",
+    "modeSchools": "โรงเรียน",
+    "modeAgents": "ตัวแทน",
+    "modeSelectorLabel": "โหมดการค้นหา",
+    "meta": {
+      "title": "ค้นหา — SchoolTest",
+      "description": "ค้นหาโรงเรียนในออสเตรเลียและตัวแทนการศึกษาในการค้นหาเดียว"
+    }
   }
 }

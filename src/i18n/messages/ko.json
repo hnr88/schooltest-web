@@ -476,8 +476,7 @@
     "nav": {
       "overview": "개요",
       "myChildren": "내 자녀",
-      "schoolSearch": "학교 검색",
-      "agentSearch": "유학원 검색",
+      "search": "검색",
       "settings": "설정"
     },
     "sidebar": {
@@ -576,6 +575,52 @@
       "tuition": "연 <strong>{amount}</strong>부터"
     }
   },
+  "AgentSearch": {
+    "loading": "중개사를 불러오는 중",
+    "resultsCount": "{count, plural, other {중개사 #곳}}",
+    "verified": "인증됨",
+    "aria": {
+      "filters": "중개사 필터"
+    },
+    "chipGroups": {
+      "countries": "지원 국가",
+      "languages": "사용 언어",
+      "services": "제공 서비스"
+    },
+    "services": {
+      "counselling": "상담",
+      "application": "지원 대행",
+      "visa": "비자 지원",
+      "scholarship": "장학금",
+      "english_prep": "영어 준비",
+      "accommodation": "숙소 지원",
+      "under18_welfare": "미성년자 보호",
+      "post_arrival": "도착 후 지원"
+    },
+    "sort": {
+      "label": "정렬"
+    },
+    "sortOptions": {
+      "relevance": "관련도",
+      "experience": "경력 많은 순",
+      "name_asc": "이름: A–Z",
+      "name_desc": "이름: Z–A",
+      "recently_verified": "최근 인증순"
+    },
+    "footer": {
+      "yearsExperience": "경력 <b>{years}</b>년",
+      "partnerSchools": "제휴 학교 <b>{count}</b>곳"
+    },
+    "empty": {
+      "title": "필터에 맞는 중개사가 없습니다",
+      "sub": "필터나 검색어를 조정하여 더 많은 결과를 확인하세요."
+    },
+    "error": {
+      "title": "중개사를 불러오지 못했습니다",
+      "body": "중개사를 불러오는 중 문제가 발생했습니다. 다시 시도해 주세요.",
+      "retry": "다시 시도"
+    }
+  },
   "Search": {
     "resetFilters": "필터 초기화",
     "paginationLabel": "검색 결과 페이지 매김",
@@ -583,5 +628,21 @@
     "prevPage": "이전 페이지",
     "nextPage": "다음 페이지",
     "goToPage": "{page} 페이지로 이동"
+  },
+  "UnifiedSearch": {
+    "searchPlaceholderSchools": "학교 또는 지역 검색",
+    "searchPlaceholderAgents": "이름 또는 회사로 에이전트 검색",
+    "clearSearch": "검색 지우기",
+    "titleSchools": "학교 찾기",
+    "titleAgents": "유학원 찾기",
+    "subtitleSchools": "주, 설립 유형, 학비별로 호주 학교를 검색하고 비교하세요.",
+    "subtitleAgents": "담당 국가, 언어, 서비스별로 인증된 유학원을 찾아보세요.",
+    "modeSchools": "학교",
+    "modeAgents": "유학원",
+    "modeSelectorLabel": "검색 유형",
+    "meta": {
+      "title": "검색 — SchoolTest",
+      "description": "호주 학교와 유학원을 하나의 통합 검색에서 찾아보세요."
+    }
   }
 }

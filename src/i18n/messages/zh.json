@@ -476,8 +476,7 @@
     "nav": {
       "overview": "概览",
       "myChildren": "我的孩子",
-      "schoolSearch": "学校搜索",
-      "agentSearch": "中介搜索",
+      "search": "搜索",
       "settings": "设置"
     },
     "sidebar": {
@@ -576,6 +575,52 @@
       "tuition": "每年 <strong>{amount}</strong> 起"
     }
   },
+  "AgentSearch": {
+    "loading": "正在加载中介",
+    "resultsCount": "{count, plural, other {# 家中介}}",
+    "verified": "已认证",
+    "aria": {
+      "filters": "中介筛选"
+    },
+    "chipGroups": {
+      "countries": "服务国家/地区",
+      "languages": "使用语言",
+      "services": "提供的服务"
+    },
+    "services": {
+      "counselling": "咨询辅导",
+      "application": "申请协助",
+      "visa": "签证协助",
+      "scholarship": "奖学金",
+      "english_prep": "英语备考",
+      "accommodation": "住宿安排",
+      "under18_welfare": "未成年监护",
+      "post_arrival": "抵达后支持"
+    },
+    "sort": {
+      "label": "排序"
+    },
+    "sortOptions": {
+      "relevance": "相关度",
+      "experience": "经验最丰富",
+      "name_asc": "名称：A 到 Z",
+      "name_desc": "名称：Z 到 A",
+      "recently_verified": "最近认证"
+    },
+    "footer": {
+      "yearsExperience": "<b>{years}</b> 年经验",
+      "partnerSchools": "<b>{count}</b> 所合作学校"
+    },
+    "empty": {
+      "title": "没有符合筛选条件的中介",
+      "sub": "请调整筛选条件或搜索关键词以查看更多结果。"
+    },
+    "error": {
+      "title": "无法加载中介",
+      "body": "加载中介时出现问题，请重试。",
+      "retry": "重试"
+    }
+  },
   "Search": {
     "resetFilters": "重置筛选",
     "paginationLabel": "搜索结果分页",
@@ -583,5 +628,21 @@
     "prevPage": "上一页",
     "nextPage": "下一页",
     "goToPage": "转到第 {page} 页"
+  },
+  "UnifiedSearch": {
+    "searchPlaceholderSchools": "搜索学校或地区",
+    "searchPlaceholderAgents": "按名称或公司搜索代理",
+    "clearSearch": "清除搜索",
+    "titleSchools": "查找学校",
+    "titleAgents": "查找中介",
+    "subtitleSchools": "按州、办学性质和学费搜索并对比澳大利亚学校。",
+    "subtitleAgents": "按服务国家、语言和服务类型查找已认证的留学中介。",
+    "modeSchools": "学校",
+    "modeAgents": "中介",
+    "modeSelectorLabel": "搜索类型",
+    "meta": {
+      "title": "搜索 — SchoolTest",
+      "description": "在一处统一搜索澳大利亚学校和留学中介。"
+    }
   }
 }

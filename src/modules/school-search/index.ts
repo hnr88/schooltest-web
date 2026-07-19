@@ -39,7 +39,7 @@ export { useSchoolSearchQuery } from './queries/use-school-search.query';
 
 export { useSchoolSearchStore } from './stores/use-school-search-store';
 
-export { SchoolSearchScreen } from './components/SchoolSearchScreen';
+export { SchoolsPane } from './components/SchoolsPane';
 export { SchoolFilterChips } from './components/SchoolFilterChips';
 export { FeeRangeChip } from './components/FeeRangeChip';
 export { SortChip } from './components/SortChip';

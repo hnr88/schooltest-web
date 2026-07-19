@@ -476,8 +476,7 @@
     "nav": {
       "overview": "Overview",
       "myChildren": "My children",
-      "schoolSearch": "School search",
-      "agentSearch": "Agent search",
+      "search": "Search",
       "settings": "Settings"
     },
     "sidebar": {
@@ -576,6 +575,52 @@
       "tuition": "From <strong>{amount}</strong>/yr"
     }
   },
+  "AgentSearch": {
+    "loading": "Loading agents",
+    "resultsCount": "{count, plural, one {# result} other {# results}}",
+    "verified": "Verified",
+    "aria": {
+      "filters": "Agent filters"
+    },
+    "chipGroups": {
+      "countries": "Countries served",
+      "languages": "Languages spoken",
+      "services": "Services offered"
+    },
+    "services": {
+      "counselling": "Counselling",
+      "application": "Application support",
+      "visa": "Visa support",
+      "scholarship": "Scholarships",
+      "english_prep": "English preparation",
+      "accommodation": "Accommodation",
+      "under18_welfare": "Under-18 welfare",
+      "post_arrival": "Post-arrival support"
+    },
+    "sort": {
+      "label": "Sort"
+    },
+    "sortOptions": {
+      "relevance": "Relevance",
+      "experience": "Most experienced",
+      "name_asc": "Name: A to Z",
+      "name_desc": "Name: Z to A",
+      "recently_verified": "Recently verified"
+    },
+    "footer": {
+      "yearsExperience": "<b>{years}</b> {years, plural, one {yr} other {yrs}} experience",
+      "partnerSchools": "<b>{count}</b> {count, plural, one {partner school} other {partner schools}}"
+    },
+    "empty": {
+      "title": "No agents match your filters",
+      "sub": "Try adjusting your filters or search terms to see more results."
+    },
+    "error": {
+      "title": "Couldn’t load agents",
+      "body": "Something went wrong while loading agents. Please try again.",
+      "retry": "Try again"
+    }
+  },
   "Search": {
     "resetFilters": "Reset filters",
     "paginationLabel": "Search results pagination",
@@ -583,5 +628,21 @@
     "prevPage": "Previous page",
     "nextPage": "Next page",
     "goToPage": "Go to page {page}"
+  },
+  "UnifiedSearch": {
+    "searchPlaceholderSchools": "Search schools or suburbs",
+    "searchPlaceholderAgents": "Search agents by name or company",
+    "clearSearch": "Clear search",
+    "titleSchools": "Find a school",
+    "titleAgents": "Find an agent",
+    "subtitleSchools": "Search and compare Australian schools by state, sector and tuition.",
+    "subtitleAgents": "Find verified education agents by country served, language and service.",
+    "modeSchools": "Schools",
+    "modeAgents": "Agents",
+    "modeSelectorLabel": "Search mode",
+    "meta": {
+      "title": "Search — SchoolTest",
+      "description": "Search Australian schools and education agents from one unified search."
+    }
   }
 }

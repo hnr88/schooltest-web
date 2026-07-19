@@ -476,8 +476,7 @@
     "nav": {
       "overview": "Tổng quan",
       "myChildren": "Con của tôi",
-      "schoolSearch": "Tìm kiếm trường học",
-      "agentSearch": "Tìm kiếm tư vấn du học",
+      "search": "Tìm kiếm",
       "settings": "Cài đặt"
     },
     "sidebar": {
@@ -576,6 +575,52 @@
       "tuition": "Từ <strong>{amount}</strong>/năm"
     }
   },
+  "AgentSearch": {
+    "loading": "Đang tải đại lý",
+    "resultsCount": "{count, plural, other {# đại lý}}",
+    "verified": "Đã xác minh",
+    "aria": {
+      "filters": "Bộ lọc đại lý"
+    },
+    "chipGroups": {
+      "countries": "Quốc gia phục vụ",
+      "languages": "Ngôn ngữ sử dụng",
+      "services": "Dịch vụ cung cấp"
+    },
+    "services": {
+      "counselling": "Tư vấn",
+      "application": "Hỗ trợ hồ sơ",
+      "visa": "Hỗ trợ visa",
+      "scholarship": "Học bổng",
+      "english_prep": "Luyện tiếng Anh",
+      "accommodation": "Chỗ ở",
+      "under18_welfare": "Chăm sóc dưới 18 tuổi",
+      "post_arrival": "Hỗ trợ sau khi đến"
+    },
+    "sort": {
+      "label": "Sắp xếp"
+    },
+    "sortOptions": {
+      "relevance": "Liên quan",
+      "experience": "Nhiều kinh nghiệm nhất",
+      "name_asc": "Tên: A đến Z",
+      "name_desc": "Tên: Z đến A",
+      "recently_verified": "Mới xác minh"
+    },
+    "footer": {
+      "yearsExperience": "<b>{years}</b> năm kinh nghiệm",
+      "partnerSchools": "<b>{count}</b> trường đối tác"
+    },
+    "empty": {
+      "title": "Không có đại lý nào khớp với bộ lọc",
+      "sub": "Hãy điều chỉnh bộ lọc hoặc từ khóa tìm kiếm để xem thêm kết quả."
+    },
+    "error": {
+      "title": "Không thể tải đại lý",
+      "body": "Đã xảy ra lỗi khi tải đại lý. Vui lòng thử lại.",
+      "retry": "Thử lại"
+    }
+  },
   "Search": {
     "resetFilters": "Đặt lại bộ lọc",
     "paginationLabel": "Phân trang kết quả tìm kiếm",
@@ -583,5 +628,21 @@
     "prevPage": "Trang trước",
     "nextPage": "Trang sau",
     "goToPage": "Đến trang {page}"
+  },
+  "UnifiedSearch": {
+    "searchPlaceholderSchools": "Tìm trường học hoặc khu vực",
+    "searchPlaceholderAgents": "Tìm đại lý theo tên hoặc công ty",
+    "clearSearch": "Xóa tìm kiếm",
+    "titleSchools": "Tìm trường học",
+    "titleAgents": "Tìm tư vấn du học",
+    "subtitleSchools": "Tìm và so sánh các trường học tại Úc theo bang, loại hình và học phí.",
+    "subtitleAgents": "Tìm các tư vấn du học đã xác minh theo quốc gia phục vụ, ngôn ngữ và dịch vụ.",
+    "modeSchools": "Trường học",
+    "modeAgents": "Tư vấn du học",
+    "modeSelectorLabel": "Chế độ tìm kiếm",
+    "meta": {
+      "title": "Tìm kiếm — SchoolTest",
+      "description": "Tìm kiếm các trường học tại Úc và tư vấn du học trong một công cụ thống nhất."
+    }
   }
 }

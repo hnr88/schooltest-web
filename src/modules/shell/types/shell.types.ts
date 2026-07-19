@@ -3,8 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 export type NavLabelKey =
   | 'overview'
   | 'myChildren'
-  | 'schoolSearch'
-  | 'agentSearch'
+  | 'search'
   | 'settings';
 
 export interface NavItem {

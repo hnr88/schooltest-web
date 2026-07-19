@@ -476,8 +476,7 @@
     "nav": {
       "overview": "Ringkasan",
       "myChildren": "Anak saya",
-      "schoolSearch": "Carian sekolah",
-      "agentSearch": "Carian ejen",
+      "search": "Carian",
       "settings": "Tetapan"
     },
     "sidebar": {
@@ -576,6 +575,52 @@
       "tuition": "Dari <strong>{amount}</strong>/tahun"
     }
   },
+  "AgentSearch": {
+    "loading": "Memuatkan ejen",
+    "resultsCount": "{count, plural, other {# ejen}}",
+    "verified": "Disahkan",
+    "aria": {
+      "filters": "Penapis ejen"
+    },
+    "chipGroups": {
+      "countries": "Negara dikhidmati",
+      "languages": "Bahasa dituturkan",
+      "services": "Perkhidmatan ditawarkan"
+    },
+    "services": {
+      "counselling": "Kaunseling",
+      "application": "Bantuan permohonan",
+      "visa": "Bantuan visa",
+      "scholarship": "Biasiswa",
+      "english_prep": "Persediaan bahasa Inggeris",
+      "accommodation": "Penginapan",
+      "under18_welfare": "Kebajikan bawah 18",
+      "post_arrival": "Sokongan selepas ketibaan"
+    },
+    "sort": {
+      "label": "Isih"
+    },
+    "sortOptions": {
+      "relevance": "Kaitan",
+      "experience": "Paling berpengalaman",
+      "name_asc": "Nama: A ke Z",
+      "name_desc": "Nama: Z ke A",
+      "recently_verified": "Disahkan terkini"
+    },
+    "footer": {
+      "yearsExperience": "<b>{years}</b> tahun pengalaman",
+      "partnerSchools": "<b>{count}</b> sekolah rakan kongsi"
+    },
+    "empty": {
+      "title": "Tiada ejen sepadan dengan penapis anda",
+      "sub": "Cuba laraskan penapis atau kata carian untuk melihat lebih banyak hasil."
+    },
+    "error": {
+      "title": "Tidak dapat memuatkan ejen",
+      "body": "Sesuatu telah berlaku semasa memuatkan ejen. Sila cuba lagi.",
+      "retry": "Cuba lagi"
+    }
+  },
   "Search": {
     "resetFilters": "Set semula penapis",
     "paginationLabel": "Penomboran hasil carian",
@@ -583,5 +628,21 @@
     "prevPage": "Halaman sebelumnya",
     "nextPage": "Halaman seterusnya",
     "goToPage": "Pergi ke halaman {page}"
+  },
+  "UnifiedSearch": {
+    "searchPlaceholderSchools": "Cari sekolah atau pinggir bandar",
+    "searchPlaceholderAgents": "Cari ejen mengikut nama atau syarikat",
+    "clearSearch": "Kosongkan carian",
+    "titleSchools": "Cari sekolah",
+    "titleAgents": "Cari ejen",
+    "subtitleSchools": "Cari dan bandingkan sekolah Australia mengikut negeri, sektor dan yuran.",
+    "subtitleAgents": "Cari ejen pendidikan yang disahkan mengikut negara dilayani, bahasa dan perkhidmatan.",
+    "modeSchools": "Sekolah",
+    "modeAgents": "Ejen",
+    "modeSelectorLabel": "Mod carian",
+    "meta": {
+      "title": "Carian — SchoolTest",
+      "description": "Cari sekolah Australia dan ejen pendidikan dalam satu carian bersatu."
+    }
   }
 }
