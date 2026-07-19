@@ -12,6 +12,7 @@ export {
 } from './schemas/student.schema';
 export { addStudentSchema, YEAR_LEVEL_OPTIONS } from './schemas/add-student.schema';
 export { useDashboardSearchStore } from './stores/use-dashboard-search.store';
+export { useDebouncedValue } from './hooks/use-debounced-value';
 export type { Student, StudentsResponse, SearchStudentsResponse } from './types/student.types';
 export type {
   AddStudentFormValues,

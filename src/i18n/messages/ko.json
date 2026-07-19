@@ -501,5 +501,87 @@
     "subtitle": "계정 환경설정과 보안을 관리하세요.",
     "changePasswordTitle": "비밀번호 변경",
     "changePasswordSubtitle": "새 비밀번호는 6자 이상이어야 합니다."
+  },
+  "SchoolSearch": {
+    "meta": {
+      "title": "학교 검색 — SchoolTest",
+      "description": "주, 설립 유형, 학교 종류, 학비별로 호주 학교를 검색하고 비교하세요."
+    },
+    "title": "학교 검색",
+    "subtitle": "주, 설립 유형, 학비별로 호주 학교를 검색하고 비교하세요.",
+    "searchLabel": "학교 검색",
+    "searchPlaceholder": "학교 또는 지역으로 검색",
+    "loading": "학교를 불러오는 중",
+    "resultsCount": "{count, plural, other {학교 #곳}}",
+    "aria": {
+      "filters": "학교 필터"
+    },
+    "states": {
+      "QLD": "QLD",
+      "NSW": "NSW",
+      "VIC": "VIC",
+      "SA": "SA",
+      "WA": "WA",
+      "TAS": "TAS",
+      "NT": "NT",
+      "ACT": "ACT"
+    },
+    "sectors": {
+      "government": "공립",
+      "nonGovernment": "사립",
+      "catholic": "가톨릭"
+    },
+    "schoolTypes": {
+      "combined": "통합",
+      "primary": "초등",
+      "secondary": "중등"
+    },
+    "toggles": {
+      "scholarshipAvailable": "장학금",
+      "atarAvailable": "ATAR 진학 과정",
+      "elicos": "ELICOS"
+    },
+    "badges": {
+      "cricos": "CRICOS",
+      "scholarships": "장학금",
+      "elicos": "ELICOS"
+    },
+    "sort": {
+      "label": "정렬"
+    },
+    "sortOptions": {
+      "nameAsc": "이름: A–Z",
+      "nameDesc": "이름: Z–A",
+      "feeAsc": "학비: 낮은 순",
+      "feeDesc": "학비: 높은 순",
+      "relevance": "관련도"
+    },
+    "fee": {
+      "label": "학비",
+      "any": "전체",
+      "readout": "${min}k – ${max}k",
+      "clear": "지우기",
+      "apply": "적용"
+    },
+    "empty": {
+      "title": "학교를 찾을 수 없습니다",
+      "sub": "필터나 검색어를 조정하여 더 많은 결과를 확인하세요."
+    },
+    "error": {
+      "title": "학교를 불러오지 못했습니다",
+      "body": "학교를 불러오는 중 문제가 발생했습니다. 다시 시도해 주세요.",
+      "retry": "다시 시도"
+    },
+    "card": {
+      "tuition": "연 <strong>{amount}</strong>부터"
+    }
+  },
+  "Search": {
+    "resetFilters": "필터 초기화",
+    "paginationLabel": "검색 결과 페이지 매김",
+    "showing": "{total}개 중 {from}–{to} 표시",
+    "prevPage": "이전 페이지",
+    "nextPage": "다음 페이지",
+    "goToPage": "{page} 페이지로 이동"
   }
 }

@@ -501,5 +501,87 @@
     "subtitle": "จัดการการตั้งค่าบัญชีและความปลอดภัยของคุณ",
     "changePasswordTitle": "เปลี่ยนรหัสผ่าน",
     "changePasswordSubtitle": "รหัสผ่านใหม่ของคุณต้องมีอย่างน้อย 6 ตัวอักษร"
+  },
+  "SchoolSearch": {
+    "meta": {
+      "title": "ค้นหาโรงเรียน — SchoolTest",
+      "description": "ค้นหาและเปรียบเทียบโรงเรียนในออสเตรเลียตามรัฐ ประเภทการบริหาร ระดับชั้น และค่าเล่าเรียน"
+    },
+    "title": "ค้นหาโรงเรียน",
+    "subtitle": "ค้นหาและเปรียบเทียบโรงเรียนในออสเตรเลียตามรัฐ ประเภท และค่าเล่าเรียน",
+    "searchLabel": "ค้นหาโรงเรียน",
+    "searchPlaceholder": "ค้นหาตามโรงเรียนหรือย่าน",
+    "loading": "กำลังโหลดโรงเรียน",
+    "resultsCount": "{count, plural, other {# โรงเรียน}}",
+    "aria": {
+      "filters": "ตัวกรองโรงเรียน"
+    },
+    "states": {
+      "QLD": "QLD",
+      "NSW": "NSW",
+      "VIC": "VIC",
+      "SA": "SA",
+      "WA": "WA",
+      "TAS": "TAS",
+      "NT": "NT",
+      "ACT": "ACT"
+    },
+    "sectors": {
+      "government": "รัฐบาล",
+      "nonGovernment": "เอกชน",
+      "catholic": "คาทอลิก"
+    },
+    "schoolTypes": {
+      "combined": "รวมระดับ",
+      "primary": "ประถมศึกษา",
+      "secondary": "มัธยมศึกษา"
+    },
+    "toggles": {
+      "scholarshipAvailable": "ทุนการศึกษา",
+      "atarAvailable": "เส้นทาง ATAR",
+      "elicos": "ELICOS"
+    },
+    "badges": {
+      "cricos": "CRICOS",
+      "scholarships": "ทุนการศึกษา",
+      "elicos": "ELICOS"
+    },
+    "sort": {
+      "label": "จัดเรียง"
+    },
+    "sortOptions": {
+      "nameAsc": "ชื่อ: A ถึง Z",
+      "nameDesc": "ชื่อ: Z ถึง A",
+      "feeAsc": "ค่าเล่าเรียน: น้อยไปมาก",
+      "feeDesc": "ค่าเล่าเรียน: มากไปน้อย",
+      "relevance": "ความเกี่ยวข้อง"
+    },
+    "fee": {
+      "label": "ค่าเล่าเรียน",
+      "any": "ทั้งหมด",
+      "readout": "${min}k – ${max}k",
+      "clear": "ล้าง",
+      "apply": "ใช้"
+    },
+    "empty": {
+      "title": "ไม่พบโรงเรียน",
+      "sub": "ลองปรับตัวกรองหรือคำค้นหาเพื่อดูผลลัพธ์เพิ่มเติม"
+    },
+    "error": {
+      "title": "ไม่สามารถโหลดโรงเรียนได้",
+      "body": "เกิดข้อผิดพลาดขณะโหลดโรงเรียน โปรดลองอีกครั้ง",
+      "retry": "ลองอีกครั้ง"
+    },
+    "card": {
+      "tuition": "เริ่มต้น <strong>{amount}</strong>/ปี"
+    }
+  },
+  "Search": {
+    "resetFilters": "รีเซ็ตตัวกรอง",
+    "paginationLabel": "การแบ่งหน้าผลการค้นหา",
+    "showing": "แสดง {from}–{to} จาก {total}",
+    "prevPage": "หน้าก่อนหน้า",
+    "nextPage": "หน้าถัดไป",
+    "goToPage": "ไปที่หน้า {page}"
   }
 }

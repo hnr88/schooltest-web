@@ -501,5 +501,87 @@
     "subtitle": "Manage your account preferences and security.",
     "changePasswordTitle": "Change password",
     "changePasswordSubtitle": "Your new password must be at least 6 characters long."
+  },
+  "SchoolSearch": {
+    "meta": {
+      "title": "School search — SchoolTest",
+      "description": "Search Australian schools by state, sector, school type and tuition, and compare them side by side."
+    },
+    "title": "School search",
+    "subtitle": "Search and compare Australian schools by state, sector and tuition.",
+    "searchLabel": "Search schools",
+    "searchPlaceholder": "Search by school or suburb",
+    "loading": "Loading schools",
+    "resultsCount": "{count, plural, one {# result} other {# results}}",
+    "aria": {
+      "filters": "School filters"
+    },
+    "states": {
+      "QLD": "QLD",
+      "NSW": "NSW",
+      "VIC": "VIC",
+      "SA": "SA",
+      "WA": "WA",
+      "TAS": "TAS",
+      "NT": "NT",
+      "ACT": "ACT"
+    },
+    "sectors": {
+      "government": "Government",
+      "nonGovernment": "Non-government",
+      "catholic": "Catholic"
+    },
+    "schoolTypes": {
+      "combined": "Combined",
+      "primary": "Primary",
+      "secondary": "Secondary"
+    },
+    "toggles": {
+      "scholarshipAvailable": "Scholarships",
+      "atarAvailable": "ATAR pathway",
+      "elicos": "ELICOS"
+    },
+    "badges": {
+      "cricos": "CRICOS",
+      "scholarships": "Scholarships",
+      "elicos": "ELICOS"
+    },
+    "sort": {
+      "label": "Sort"
+    },
+    "sortOptions": {
+      "nameAsc": "Name: A to Z",
+      "nameDesc": "Name: Z to A",
+      "feeAsc": "Tuition: low to high",
+      "feeDesc": "Tuition: high to low",
+      "relevance": "Relevance"
+    },
+    "fee": {
+      "label": "Tuition",
+      "any": "Any",
+      "readout": "${min}k – ${max}k",
+      "clear": "Clear",
+      "apply": "Apply"
+    },
+    "empty": {
+      "title": "No schools found",
+      "sub": "Try adjusting your filters or search terms to see more results."
+    },
+    "error": {
+      "title": "Couldn’t load schools",
+      "body": "Something went wrong while loading schools. Please try again.",
+      "retry": "Try again"
+    },
+    "card": {
+      "tuition": "From <strong>{amount}</strong>/yr"
+    }
+  },
+  "Search": {
+    "resetFilters": "Reset filters",
+    "paginationLabel": "Search results pagination",
+    "showing": "Showing {from}–{to} of {total}",
+    "prevPage": "Previous page",
+    "nextPage": "Next page",
+    "goToPage": "Go to page {page}"
   }
 }

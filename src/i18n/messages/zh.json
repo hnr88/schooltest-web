@@ -501,5 +501,87 @@
     "subtitle": "管理您的账户偏好与安全设置。",
     "changePasswordTitle": "修改密码",
     "changePasswordSubtitle": "新密码长度至少为 6 个字符。"
+  },
+  "SchoolSearch": {
+    "meta": {
+      "title": "学校搜索 — SchoolTest",
+      "description": "按州、办学性质、学校类型和学费搜索澳大利亚学校，并进行对比。"
+    },
+    "title": "学校搜索",
+    "subtitle": "按州、办学性质和学费搜索并对比澳大利亚学校。",
+    "searchLabel": "搜索学校",
+    "searchPlaceholder": "按学校或城区搜索",
+    "loading": "正在加载学校",
+    "resultsCount": "{count, plural, other {# 所学校}}",
+    "aria": {
+      "filters": "学校筛选"
+    },
+    "states": {
+      "QLD": "QLD",
+      "NSW": "NSW",
+      "VIC": "VIC",
+      "SA": "SA",
+      "WA": "WA",
+      "TAS": "TAS",
+      "NT": "NT",
+      "ACT": "ACT"
+    },
+    "sectors": {
+      "government": "公立",
+      "nonGovernment": "非公立",
+      "catholic": "天主教"
+    },
+    "schoolTypes": {
+      "combined": "综合",
+      "primary": "小学",
+      "secondary": "中学"
+    },
+    "toggles": {
+      "scholarshipAvailable": "奖学金",
+      "atarAvailable": "ATAR 升学路径",
+      "elicos": "ELICOS"
+    },
+    "badges": {
+      "cricos": "CRICOS",
+      "scholarships": "奖学金",
+      "elicos": "ELICOS"
+    },
+    "sort": {
+      "label": "排序"
+    },
+    "sortOptions": {
+      "nameAsc": "名称：A 到 Z",
+      "nameDesc": "名称：Z 到 A",
+      "feeAsc": "学费：从低到高",
+      "feeDesc": "学费：从高到低",
+      "relevance": "相关度"
+    },
+    "fee": {
+      "label": "学费",
+      "any": "不限",
+      "readout": "${min}k – ${max}k",
+      "clear": "清除",
+      "apply": "应用"
+    },
+    "empty": {
+      "title": "未找到学校",
+      "sub": "请调整筛选条件或搜索关键词以查看更多结果。"
+    },
+    "error": {
+      "title": "无法加载学校",
+      "body": "加载学校时出现问题，请重试。",
+      "retry": "重试"
+    },
+    "card": {
+      "tuition": "每年 <strong>{amount}</strong> 起"
+    }
+  },
+  "Search": {
+    "resetFilters": "重置筛选",
+    "paginationLabel": "搜索结果分页",
+    "showing": "显示第 {from}–{to} 项，共 {total} 项",
+    "prevPage": "上一页",
+    "nextPage": "下一页",
+    "goToPage": "转到第 {page} 页"
   }
 }

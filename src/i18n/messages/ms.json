@@ -501,5 +501,87 @@
     "subtitle": "Urus keutamaan akaun dan keselamatan anda.",
     "changePasswordTitle": "Tukar kata laluan",
     "changePasswordSubtitle": "Kata laluan baharu anda mestilah sekurang-kurangnya 6 aksara."
+  },
+  "SchoolSearch": {
+    "meta": {
+      "title": "Carian sekolah — SchoolTest",
+      "description": "Cari dan bandingkan sekolah Australia mengikut negeri, sektor, jenis sekolah dan yuran."
+    },
+    "title": "Carian sekolah",
+    "subtitle": "Cari dan bandingkan sekolah Australia mengikut negeri, sektor dan yuran.",
+    "searchLabel": "Cari sekolah",
+    "searchPlaceholder": "Cari mengikut sekolah atau daerah",
+    "loading": "Memuatkan sekolah",
+    "resultsCount": "{count, plural, other {# sekolah}}",
+    "aria": {
+      "filters": "Penapis sekolah"
+    },
+    "states": {
+      "QLD": "QLD",
+      "NSW": "NSW",
+      "VIC": "VIC",
+      "SA": "SA",
+      "WA": "WA",
+      "TAS": "TAS",
+      "NT": "NT",
+      "ACT": "ACT"
+    },
+    "sectors": {
+      "government": "Kerajaan",
+      "nonGovernment": "Bukan kerajaan",
+      "catholic": "Katolik"
+    },
+    "schoolTypes": {
+      "combined": "Gabungan",
+      "primary": "Rendah",
+      "secondary": "Menengah"
+    },
+    "toggles": {
+      "scholarshipAvailable": "Biasiswa",
+      "atarAvailable": "Laluan ATAR",
+      "elicos": "ELICOS"
+    },
+    "badges": {
+      "cricos": "CRICOS",
+      "scholarships": "Biasiswa",
+      "elicos": "ELICOS"
+    },
+    "sort": {
+      "label": "Isih"
+    },
+    "sortOptions": {
+      "nameAsc": "Nama: A ke Z",
+      "nameDesc": "Nama: Z ke A",
+      "feeAsc": "Yuran: rendah ke tinggi",
+      "feeDesc": "Yuran: tinggi ke rendah",
+      "relevance": "Kaitan"
+    },
+    "fee": {
+      "label": "Yuran",
+      "any": "Mana-mana",
+      "readout": "${min}k – ${max}k",
+      "clear": "Kosongkan",
+      "apply": "Guna"
+    },
+    "empty": {
+      "title": "Tiada sekolah dijumpai",
+      "sub": "Cuba laraskan penapis atau kata carian untuk melihat lebih banyak hasil."
+    },
+    "error": {
+      "title": "Tidak dapat memuatkan sekolah",
+      "body": "Sesuatu telah berlaku semasa memuatkan sekolah. Sila cuba lagi.",
+      "retry": "Cuba lagi"
+    },
+    "card": {
+      "tuition": "Dari <strong>{amount}</strong>/tahun"
+    }
+  },
+  "Search": {
+    "resetFilters": "Set semula penapis",
+    "paginationLabel": "Penomboran hasil carian",
+    "showing": "Memaparkan {from}–{to} daripada {total}",
+    "prevPage": "Halaman sebelumnya",
+    "nextPage": "Halaman seterusnya",
+    "goToPage": "Pergi ke halaman {page}"
   }
 }

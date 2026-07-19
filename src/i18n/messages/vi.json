@@ -501,5 +501,87 @@
     "subtitle": "Quản lý tuỳ chọn tài khoản và bảo mật của bạn.",
     "changePasswordTitle": "Đổi mật khẩu",
     "changePasswordSubtitle": "Mật khẩu mới của bạn phải có ít nhất 6 ký tự."
+  },
+  "SchoolSearch": {
+    "meta": {
+      "title": "Tìm kiếm trường học — SchoolTest",
+      "description": "Tìm và so sánh các trường học tại Úc theo bang, loại hình, cấp học và học phí."
+    },
+    "title": "Tìm kiếm trường học",
+    "subtitle": "Tìm và so sánh các trường học tại Úc theo bang, loại hình và học phí.",
+    "searchLabel": "Tìm kiếm trường học",
+    "searchPlaceholder": "Tìm theo trường hoặc khu vực",
+    "loading": "Đang tải trường học",
+    "resultsCount": "{count, plural, other {# trường}}",
+    "aria": {
+      "filters": "Bộ lọc trường học"
+    },
+    "states": {
+      "QLD": "QLD",
+      "NSW": "NSW",
+      "VIC": "VIC",
+      "SA": "SA",
+      "WA": "WA",
+      "TAS": "TAS",
+      "NT": "NT",
+      "ACT": "ACT"
+    },
+    "sectors": {
+      "government": "Công lập",
+      "nonGovernment": "Ngoài công lập",
+      "catholic": "Công giáo"
+    },
+    "schoolTypes": {
+      "combined": "Liên cấp",
+      "primary": "Tiểu học",
+      "secondary": "Trung học"
+    },
+    "toggles": {
+      "scholarshipAvailable": "Học bổng",
+      "atarAvailable": "Lộ trình ATAR",
+      "elicos": "ELICOS"
+    },
+    "badges": {
+      "cricos": "CRICOS",
+      "scholarships": "Học bổng",
+      "elicos": "ELICOS"
+    },
+    "sort": {
+      "label": "Sắp xếp"
+    },
+    "sortOptions": {
+      "nameAsc": "Tên: A đến Z",
+      "nameDesc": "Tên: Z đến A",
+      "feeAsc": "Học phí: thấp đến cao",
+      "feeDesc": "Học phí: cao đến thấp",
+      "relevance": "Liên quan"
+    },
+    "fee": {
+      "label": "Học phí",
+      "any": "Bất kỳ",
+      "readout": "${min}k – ${max}k",
+      "clear": "Xóa",
+      "apply": "Áp dụng"
+    },
+    "empty": {
+      "title": "Không tìm thấy trường học",
+      "sub": "Hãy điều chỉnh bộ lọc hoặc từ khóa tìm kiếm để xem thêm kết quả."
+    },
+    "error": {
+      "title": "Không thể tải trường học",
+      "body": "Đã xảy ra lỗi khi tải trường học. Vui lòng thử lại.",
+      "retry": "Thử lại"
+    },
+    "card": {
+      "tuition": "Từ <strong>{amount}</strong>/năm"
+    }
+  },
+  "Search": {
+    "resetFilters": "Đặt lại bộ lọc",
+    "paginationLabel": "Phân trang kết quả tìm kiếm",
+    "showing": "Hiển thị {from}–{to} trong {total}",
+    "prevPage": "Trang trước",
+    "nextPage": "Trang sau",
+    "goToPage": "Đến trang {page}"
   }
 }
