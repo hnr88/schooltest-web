@@ -26,10 +26,10 @@ async function LandingHeader() {
           ))}
         </nav>
         <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" href="#cta" className="h-11 px-4">
+          <Button variant="ghost" href="/sign-in" className="h-11 px-4">
             {t('nav.signIn')}
           </Button>
-          <Button href="#pricing" className="h-11 px-5">
+          <Button href="/sign-up" className="h-11 px-5">
             {t('nav.startFree')}
           </Button>
         </div>

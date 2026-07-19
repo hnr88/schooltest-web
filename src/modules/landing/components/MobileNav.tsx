@@ -69,14 +69,14 @@ function MobileNav() {
         </nav>
         <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
           <a
-            href="#cta"
+            href="/sign-in"
             onClick={close}
             className="inline-flex h-11 items-center justify-center rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted"
           >
             {t('nav.signIn')}
           </a>
           <a
-            href="#pricing"
+            href="/sign-up"
             onClick={close}
             className="inline-flex h-11 items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/80"
           >
