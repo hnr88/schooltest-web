@@ -3,18 +3,20 @@
 import { useMemo } from 'react';
 
 import { FeeRangeChip } from '@/modules/school-search/components/FeeRangeChip';
+import { MapToggle } from '@/modules/school-search/components/MapToggle';
+import { MobileMapSheet } from '@/modules/school-search/components/MobileMapSheet';
 import { SchoolFilterChips } from '@/modules/school-search/components/SchoolFilterChips';
 import { SchoolResultsGrid } from '@/modules/school-search/components/SchoolResultsGrid';
+import { SchoolsSplitLayout } from '@/modules/school-search/components/SchoolsSplitLayout';
 import { SortChip } from '@/modules/school-search/components/SortChip';
 import { storeToRequest } from '@/modules/school-search/lib/store-to-request';
 import { useSchoolSearchQuery } from '@/modules/school-search/queries/use-school-search.query';
 import { useSchoolSearchStore } from '@/modules/school-search/stores/use-school-search-store';
 
-// C-UI-SEARCH-SCHOOLS Schools pane (mode==='schools'): the former SchoolSearchScreen
-// minus the heading + §5.4 search input — both hoisted to C-UI-SEARCH-UNIFIED (038).
-// Renders from the filter chip row down, driven entirely by the Zustand store through
-// `storeToRequest` into the TanStack query. Individual selectors avoid whole-store
-// subscription re-render churn.
+// C-UI-SEARCH-SCHOOLS + C-UI-SEARCH-MAP Schools pane (mode==='schools'): the filter
+// chip row + the Airbnb-style split (cards left, sticky Leaflet map right on lg+, a
+// full-bleed sheet on mobile). The map plots the SAME query hits the cards render
+// (M2 option A — one network call). Individual selectors avoid whole-store churn.
 function SchoolsPane() {
   const q = useSchoolSearchStore((s) => s.q);
   const states = useSchoolSearchStore((s) => s.states);
@@ -28,6 +30,7 @@ function SchoolsPane() {
   const feeMax = useSchoolSearchStore((s) => s.feeMax);
   const sortBy = useSchoolSearchStore((s) => s.sortBy);
   const page = useSchoolSearchStore((s) => s.page);
+  const isMapOpen = useSchoolSearchStore((s) => s.isMapOpen);
   const setPage = useSchoolSearchStore((s) => s.setPage);
   const reset = useSchoolSearchStore((s) => s.reset);
 
@@ -64,6 +67,7 @@ function SchoolsPane() {
   );
 
   const query = useSchoolSearchQuery(request);
+  const hits = query.data?.data ?? [];
 
   return (
     <div className="flex flex-col gap-6">
@@ -71,13 +75,18 @@ function SchoolsPane() {
         <SchoolFilterChips />
         <FeeRangeChip />
         <SortChip />
+        <MapToggle />
+        <MobileMapSheet hits={hits} />
       </div>
-      <SchoolResultsGrid
-        query={query}
-        onRetry={() => void query.refetch()}
-        onReset={reset}
-        onPageChange={setPage}
-      />
+      <SchoolsSplitLayout isMapOpen={isMapOpen} hits={hits}>
+        <SchoolResultsGrid
+          query={query}
+          isMapOpen={isMapOpen}
+          onRetry={() => void query.refetch()}
+          onReset={reset}
+          onPageChange={setPage}
+        />
+      </SchoolsSplitLayout>
     </div>
   );
 }

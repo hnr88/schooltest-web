@@ -54,3 +54,13 @@ export const SORT_OPTION_LABEL_KEYS: Record<SortBy, string> = {
   'fee-desc': 'feeDesc',
   relevance: 'relevance',
 };
+
+// Australia-wide Leaflet map config (legacy schoolgo parity, M1 §3/§5).
+export const AU_MAP_CENTER: [number, number] = [-28, 133];
+export const AU_MAP_ZOOM = 5;
+export const AU_MAP_MAX_BOUNDS: [[number, number], [number, number]] = [
+  [-46, 110],
+  [-8, 160],
+];
+export const CLUSTER_MAX_RADIUS = 60;
+export const CLUSTER_DISABLE_AT_ZOOM = 15;

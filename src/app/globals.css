@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+@import 'leaflet/dist/leaflet.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -223,4 +224,144 @@
 
 @utility grid-cols-footer {
   grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+}
+
+/* ── Leaflet map design-token skin (ported from schoolgo globals.css ~L486-632,
+   C-UI-SEARCH-MAP / M1 §3-§8). Unlayered so these win over leaflet/dist/leaflet.css
+   defaults by source order. Raw hex from the legacy port is translated to the
+   existing OKLCH tokens (--primary / --card / --border / --shadow-*). */
+
+/* Desaturate the free OSM raster basemap to a muted brand-neutral surface —
+   design-fit is CSS, not tiles (M1 §3). */
+.leaflet-tile-pane {
+  filter: grayscale(0.9) contrast(0.85) brightness(1.05);
+}
+
+/* Cluster count badge — round --primary pill, --card border, hover scale, 180ms. */
+.school-map-cluster {
+  background: transparent !important;
+  border: 0 !important;
+  transition: opacity 200ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.school-map-cluster__circle {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  border: 3px solid var(--card);
+  box-shadow: var(--shadow-lg), var(--shadow-md);
+  cursor: pointer;
+  transition:
+    transform 180ms cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 180ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.school-map-cluster__circle:hover {
+  transform: scale(1.08);
+  box-shadow: var(--shadow-xl), var(--shadow-lg);
+}
+
+/* Marker pin — DivIcon (no raster; leaflet's default marker image 404s under
+   the bundler, M2 §5): round --primary pill, --card border, layered brand shadow. */
+.school-map-marker {
+  background: transparent !important;
+  border: 0 !important;
+  scale: 1 !important;
+}
+
+.school-map-marker__pin {
+  position: relative;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  color: var(--primary-foreground);
+  border-radius: 999px;
+  background: var(--primary);
+  border: 3px solid var(--card);
+  box-shadow: var(--shadow-lg), var(--shadow-md);
+  transition:
+    transform 180ms cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 180ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Hover-sync active pin (092): distinct class swap → scale up + accent ring, so a
+   card hover raises its matching pin. zIndexOffset (JS) keeps it above neighbours. */
+.school-map-marker--active .school-map-marker__pin {
+  transform: scale(1.18);
+  box-shadow:
+    0 0 0 4px color-mix(in oklab, var(--primary) 32%, transparent),
+    var(--shadow-xl),
+    var(--shadow-lg);
+}
+
+.school-map-marker__pin::after {
+  position: absolute;
+  right: 3px;
+  bottom: -4px;
+  left: 3px;
+  height: 5px;
+  content: '';
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--foreground) 18%, transparent);
+  filter: blur(4px);
+}
+
+.school-map-marker__inner {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: inherit;
+  border-radius: 999px;
+}
+
+.school-map-marker:hover .school-map-marker__pin {
+  box-shadow: var(--shadow-xl), var(--shadow-lg);
+}
+
+/* Popup — 16px radius, --card bg, --border, custom tip. */
+.schoolgo-map-popup .leaflet-popup-content-wrapper {
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+  box-shadow: var(--shadow-lg);
+}
+
+.schoolgo-map-popup .leaflet-popup-content {
+  width: 16rem !important;
+  margin: 0;
+}
+
+.schoolgo-map-popup--compact .leaflet-popup-content {
+  width: auto !important;
+  margin: 0 !important;
+}
+
+.schoolgo-map-popup .leaflet-popup-tip {
+  background: var(--card);
+  box-shadow: var(--shadow-md);
+}
+
+/* Honour reduced-motion (MOTION & POLISH BASELINE, D-UI-2): drop map hover
+   transitions/transforms for users who opt out. */
+@media (prefers-reduced-motion: reduce) {
+  .school-map-cluster,
+  .school-map-cluster__circle,
+  .school-map-marker__pin {
+    transition: none;
+  }
+  .school-map-cluster__circle:hover,
+  .school-map-marker--active .school-map-marker__pin {
+    transform: none;
+  }
 }

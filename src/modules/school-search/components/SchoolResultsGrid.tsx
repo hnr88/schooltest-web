@@ -17,14 +17,17 @@ import {
 
 // Owns the results zone: count header, the four query states (loading skeletons /
 // error Alert / empty CTA / grid) and pagination. Refetches keep previous data
-// and dim the grid (`opacity-60`) instead of hard-swapping to skeletons.
+// and dim the grid (`opacity-60`) instead of hard-swapping to skeletons. `isMapOpen`
+// narrows the grid to two columns while the split map occupies the right rail.
 function SchoolResultsGrid({
   query,
+  isMapOpen,
   onRetry,
   onReset,
   onPageChange,
 }: {
   query: ReturnType<typeof useSchoolSearchQuery>;
+  isMapOpen: boolean;
   onRetry: () => void;
   onReset: () => void;
   onPageChange: (page: number) => void;
@@ -73,7 +76,8 @@ function SchoolResultsGrid({
       </p>
       <div
         className={cn(
-          'grid grid-cols-1 gap-4 transition-opacity duration-200 ease-out motion-reduce:transition-none md:grid-cols-2 2xl:grid-cols-3',
+          'grid grid-cols-1 gap-4 transition-opacity duration-200 ease-out motion-reduce:transition-none',
+          isMapOpen ? 'xl:grid-cols-2' : 'md:grid-cols-2 2xl:grid-cols-3',
           isFetching && 'opacity-60',
         )}
       >

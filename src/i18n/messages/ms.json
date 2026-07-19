@@ -573,6 +573,16 @@
     },
     "card": {
       "tuition": "Dari <strong>{amount}</strong>/tahun"
+    },
+    "map": {
+      "region": "Peta keputusan sekolah",
+      "zoomIn": "Zum masuk",
+      "zoomOut": "Zum keluar",
+      "reset": "Set semula paparan peta",
+      "showMap": "Tunjuk peta",
+      "showList": "Tunjuk senarai",
+      "ctrlScrollHint": "Tekan Ctrl + tatal untuk zum peta",
+      "markerCount": "{count, plural, =0 {Tiada sekolah dipaparkan pada peta} other {# sekolah dipaparkan pada peta}}"
     }
   },
   "AgentSearch": {

@@ -573,6 +573,16 @@
     },
     "card": {
       "tuition": "From <strong>{amount}</strong>/yr"
+    },
+    "map": {
+      "region": "School results map",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "reset": "Reset map view",
+      "showMap": "Show map",
+      "showList": "Show list",
+      "ctrlScrollHint": "Use Ctrl + scroll to zoom the map",
+      "markerCount": "{count, plural, =0 {No schools shown on the map} one {# school shown on the map} other {# schools shown on the map}}"
     }
   },
   "AgentSearch": {

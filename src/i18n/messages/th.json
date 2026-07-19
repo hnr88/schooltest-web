@@ -573,6 +573,16 @@
     },
     "card": {
       "tuition": "เริ่มต้น <strong>{amount}</strong>/ปี"
+    },
+    "map": {
+      "region": "แผนที่ผลการค้นหาโรงเรียน",
+      "zoomIn": "ขยาย",
+      "zoomOut": "ย่อ",
+      "reset": "รีเซ็ตมุมมองแผนที่",
+      "showMap": "แสดงแผนที่",
+      "showList": "แสดงรายการ",
+      "ctrlScrollHint": "กด Ctrl ค้างไว้แล้วเลื่อนเพื่อซูมแผนที่",
+      "markerCount": "{count, plural, =0 {ไม่มีโรงเรียนแสดงบนแผนที่} other {แสดง # โรงเรียนบนแผนที่}}"
     }
   },
   "AgentSearch": {

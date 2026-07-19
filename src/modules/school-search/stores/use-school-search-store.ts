@@ -15,6 +15,10 @@ import type {
 } from '@/modules/school-search/types/school-search.types';
 
 interface SchoolSearchStore extends SchoolSearchFilters {
+  // Transient map state — NOT part of SchoolSearchFilters so it never reaches
+  // `storeToRequest` and never triggers a refetch. In-memory, resets on reload.
+  activeSchoolId: string | null;
+  isMapOpen: boolean;
   setQ: (q: string) => void;
   toggleState: (state: StateCode) => void;
   toggleSector: (sector: SectorValue) => void;
@@ -23,6 +27,8 @@ interface SchoolSearchStore extends SchoolSearchFilters {
   setFeeRange: (feeMin: number, feeMax: number) => void;
   setSort: (sortBy: SortBy) => void;
   setPage: (page: number) => void;
+  setActiveSchoolId: (id: string | null) => void;
+  toggleMap: () => void;
   reset: () => void;
 }
 
@@ -51,6 +57,8 @@ function toggleValue<T>(values: T[], value: T): T[] {
 // Every filter mutation resets `page` to 1 so results re-page from the top.
 export const useSchoolSearchStore = create<SchoolSearchStore>((set) => ({
   ...INITIAL,
+  activeSchoolId: null,
+  isMapOpen: true,
   setQ: (q) => set({ q, page: 1 }),
   toggleState: (state) =>
     set((current) => ({ states: toggleValue(current.states, state), page: 1 })),
@@ -66,5 +74,8 @@ export const useSchoolSearchStore = create<SchoolSearchStore>((set) => ({
   setFeeRange: (feeMin, feeMax) => set({ feeMin, feeMax, page: 1 }),
   setSort: (sortBy) => set({ sortBy, page: 1 }),
   setPage: (page) => set({ page }),
+  // Pure hover/focus highlight state — MUST NOT reset `page` (would refetch).
+  setActiveSchoolId: (id) => set({ activeSchoolId: id }),
+  toggleMap: () => set((current) => ({ isMapOpen: !current.isMapOpen })),
   reset: () => set(INITIAL),
 }));

@@ -573,6 +573,16 @@
     },
     "card": {
       "tuition": "Từ <strong>{amount}</strong>/năm"
+    },
+    "map": {
+      "region": "Bản đồ kết quả trường học",
+      "zoomIn": "Phóng to",
+      "zoomOut": "Thu nhỏ",
+      "reset": "Đặt lại chế độ xem bản đồ",
+      "showMap": "Hiện bản đồ",
+      "showList": "Hiện danh sách",
+      "ctrlScrollHint": "Nhấn Ctrl + cuộn để phóng to bản đồ",
+      "markerCount": "{count, plural, =0 {Không có trường nào hiển thị trên bản đồ} other {# trường hiển thị trên bản đồ}}"
     }
   },
   "AgentSearch": {

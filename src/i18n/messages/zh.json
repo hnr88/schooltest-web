@@ -573,6 +573,16 @@
     },
     "card": {
       "tuition": "每年 <strong>{amount}</strong> 起"
+    },
+    "map": {
+      "region": "学校结果地图",
+      "zoomIn": "放大",
+      "zoomOut": "缩小",
+      "reset": "重置地图视图",
+      "showMap": "显示地图",
+      "showList": "显示列表",
+      "ctrlScrollHint": "按住 Ctrl 并滚动以缩放地图",
+      "markerCount": "{count, plural, =0 {地图上未显示学校} other {地图上显示 # 所学校}}"
     }
   },
   "AgentSearch": {

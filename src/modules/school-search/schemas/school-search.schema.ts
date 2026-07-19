@@ -42,6 +42,8 @@ export const schoolHitSchema = z.object({
   seniorSecAnnualTuition: z.number().nullable(),
   annualTuitionFrom: z.number().nullable(),
   cricosStatus: z.string().nullable(),
+  latitude: z.number().nullable(),
+  longitude: z.number().nullable(),
 });
 
 export const schoolSearchPaginationSchema = z.object({

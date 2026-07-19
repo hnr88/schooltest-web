@@ -9,6 +9,9 @@ import {
   type SchoolSearchResult,
 } from '@/modules/school-search/schemas/school-search.schema';
 
+// A SchoolHit that survived the map coord filter — both coordinates are present.
+export type GeoSchoolHit = SchoolHit & { latitude: number; longitude: number };
+
 export type StateCode = z.infer<typeof schoolStateSchema>;
 export type SchoolTypeValue = z.infer<typeof schoolTypeSchema>;
 export type SectorValue = z.infer<typeof schoolSectorSchema>;
