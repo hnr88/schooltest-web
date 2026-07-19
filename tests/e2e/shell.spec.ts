@@ -24,8 +24,10 @@ const MOBILE = { width: 375, height: 812 };
 const NAV_MODEL = [
   { labelKey: 'Shell.nav.overview', href: '/dashboard', missing: false },
   { labelKey: 'Shell.nav.myChildren', href: '/dashboard/children', missing: true },
-  { labelKey: 'Shell.nav.schoolSearch', href: '/dashboard/search/schools', missing: true },
-  { labelKey: 'Shell.nav.agentSearch', href: '/dashboard/search/agents', missing: true },
+  // W7/038 collapsed the two standalone search legs (schoolSearch + agentSearch)
+  // into ONE unified Search entry — /dashboard/search ships the C-UI-SEARCH-UNIFIED
+  // screen, so this leg is no longer a 404.
+  { labelKey: 'Shell.nav.search', href: '/dashboard/search', missing: false },
   // /dashboard/settings shipped in W3 (C-UI-AUTH-PAGES change-password page) —
   // no longer a 404 leg; its content assertions live in that task's own spec.
   { labelKey: 'Shell.nav.settings', href: '/dashboard/settings', missing: false },
@@ -50,7 +52,7 @@ async function readToken(page: Page): Promise<string | null> {
 test.describe('shell — desktop (1280)', () => {
   test.use({ viewport: DESKTOP });
 
-  test('sidebar: visible at 248px with the 5 catalog-labelled links, soft active overview', async ({
+  test('sidebar: visible at 248px with the 4 catalog-labelled links, soft active overview', async ({
     page,
   }) => {
     await loginAsParent(page);
@@ -134,7 +136,7 @@ test.describe('shell — desktop (1280)', () => {
 test.describe('shell — mobile (375, Sheet nav)', () => {
   test.use({ viewport: MOBILE });
 
-  test('aside hidden, hamburger opens the Sheet with all 5 links, Escape closes it', async ({
+  test('aside hidden, hamburger opens the Sheet with all 4 links, Escape closes it', async ({
     page,
   }) => {
     await loginAsParent(page);

@@ -19,7 +19,7 @@ function UnifiedSearchScreen() {
   const isSchools = mode === 'schools';
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-8 py-7">
+    <div className="flex flex-1 flex-col gap-6 px-8 py-7">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-navy-950">
           {isSchools ? t('titleSchools') : t('titleAgents')}
@@ -38,7 +38,7 @@ function UnifiedSearchScreen() {
       >
         {isSchools ? <SchoolsPane /> : <AgentsPane />}
       </div>
-    </main>
+    </div>
   );
 }
 
