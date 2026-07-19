@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { ParentGuard } from '@/modules/auth';
 import { DashboardScreen } from '@/modules/dashboard';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -13,12 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// Client-guarded shell (D11, task 15): ParentGuard redirects to /sign-in
-// without a JWT; authenticated parents see the DashboardScreen stub.
+// The parent auth gate lives in the dashboard layout (task 012) — this page
+// renders the Overview content only; the layout guards every /dashboard/* once.
 export default function DashboardPage() {
-  return (
-    <ParentGuard>
-      <DashboardScreen />
-    </ParentGuard>
-  );
+  return <DashboardScreen />;
 }

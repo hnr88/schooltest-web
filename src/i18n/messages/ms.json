@@ -422,5 +422,25 @@
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
     "loading": "Loading your students…"
+  },
+  "Shell": {
+    "nav": {
+      "overview": "Ringkasan",
+      "myChildren": "Anak saya",
+      "schoolSearch": "Carian sekolah",
+      "agentSearch": "Carian ejen",
+      "settings": "Tetapan"
+    },
+    "sidebar": {
+      "logoAlt": "SchoolTest"
+    },
+    "topbar": {
+      "openNav": "Buka navigasi",
+      "userMenuLabel": "Buka menu pengguna"
+    },
+    "userMenu": {
+      "settings": "Tetapan",
+      "signOut": "Log keluar"
+    }
   }
 }

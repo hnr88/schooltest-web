@@ -422,5 +422,25 @@
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
     "loading": "Loading your students…"
+  },
+  "Shell": {
+    "nav": {
+      "overview": "Tổng quan",
+      "myChildren": "Con của tôi",
+      "schoolSearch": "Tìm kiếm trường học",
+      "agentSearch": "Tìm kiếm tư vấn du học",
+      "settings": "Cài đặt"
+    },
+    "sidebar": {
+      "logoAlt": "SchoolTest"
+    },
+    "topbar": {
+      "openNav": "Mở điều hướng",
+      "userMenuLabel": "Mở menu người dùng"
+    },
+    "userMenu": {
+      "settings": "Cài đặt",
+      "signOut": "Đăng xuất"
+    }
   }
 }

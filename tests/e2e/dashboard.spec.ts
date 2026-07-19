@@ -6,10 +6,11 @@ import { expect, test } from '@playwright/test';
 import { cat, escapeRegExp, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
 
-// Task 15 verification: the /dashboard route is guarded client-side (D11) by
-// ParentGuard/useRequireParent — no JWT in localStorage means an immediate
-// redirect to /sign-in, a real JWT means the real DashboardScreen renders
-// (welcome message pulled live from GET /api/users/me, no mock/stub data).
+// Task 15 verification (guard hoisted to the dashboard LAYOUT in task 012):
+// every /dashboard/* route is gated client-side by ParentGuard/useRequireParent
+// — no JWT in localStorage means an immediate redirect to /sign-in, a real JWT
+// means the real DashboardScreen renders (welcome message pulled live from
+// GET /api/users/me, no mock/stub data).
 // The real JWT below comes from a genuine POST /api/auth/local against the
 // live api on :5500 (D9 seeded parent) — never a synthetic token.
 const en = loadMessages('en');
@@ -65,10 +66,24 @@ test('en: seeded parent session renders the real guarded dashboard shell, axe cl
     page.getByRole('heading', { level: 1, name: /Welcome back, parent!/ }),
   ).toBeVisible();
   await expect(page.getByText(cat(en, 'Dashboard.welcomeSubtitle'))).toBeVisible();
-  const signOut = page.getByRole('button', { name: cat(en, 'Common.signOut'), exact: true });
-  await expect(signOut).toBeVisible();
+  // Task 012: the Overview header's right-aligned primary is a real link to the
+  // upcoming add-student flow (route ships W9; the href contract holds today).
+  const addStudentLink = page.getByRole('link', {
+    name: cat(en, 'Dashboard.addStudent'),
+    exact: true,
+  });
+  await expect(addStudentLink).toBeVisible();
+  await expect(addStudentLink).toHaveAttribute('href', '/dashboard/children/new');
+  // Sign-out relocated to the topbar user chip (task 011) — the inline dashboard
+  // button is gone; the chip trigger is the visible entry point now.
+  const userMenuTrigger = page.getByRole('button', {
+    name: cat(en, 'Shell.topbar.userMenuLabel'),
+    exact: true,
+  });
+  await expect(userMenuTrigger).toBeVisible();
 
   await page.screenshot({ path: path.join(SCREENSHOTS, 'dashboard-en.png') });
+  await page.screenshot({ path: path.join(SCREENSHOTS, '012-overview-restyled.png') });
 
   const results = await new AxeBuilder({ page }).analyze();
   const blockers = results.violations.filter(
@@ -99,7 +114,20 @@ test('en: signing out from the dashboard clears the JWT and returns to a guarded
   await page.goto('/dashboard');
   await expect(page).toHaveURL(/\/dashboard$/);
 
-  await page.getByRole('button', { name: cat(en, 'Common.signOut'), exact: true }).click();
+  // Task 011: sign-out lives in the topbar user chip menu (C-UI-SHELL §12.3).
+  await page
+    .getByRole('button', { name: cat(en, 'Shell.topbar.userMenuLabel'), exact: true })
+    .click();
+  const signOutItem = page.getByRole('menuitem', {
+    name: cat(en, 'Shell.userMenu.signOut'),
+    exact: true,
+  });
+  await expect(signOutItem).toBeVisible();
+  await expect(
+    page.getByRole('menuitem', { name: cat(en, 'Shell.userMenu.settings'), exact: true }),
+  ).toBeVisible();
+  await page.screenshot({ path: path.join(SCREENSHOTS, '011-user-menu-open.png') });
+  await signOutItem.click();
 
   // The guard reacts live to the store losing its token — no full reload needed.
   await page.waitForURL('**/sign-in');

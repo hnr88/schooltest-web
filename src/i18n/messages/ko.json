@@ -422,5 +422,25 @@
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
     "loading": "Loading your students…"
+  },
+  "Shell": {
+    "nav": {
+      "overview": "개요",
+      "myChildren": "내 자녀",
+      "schoolSearch": "학교 검색",
+      "agentSearch": "유학원 검색",
+      "settings": "설정"
+    },
+    "sidebar": {
+      "logoAlt": "SchoolTest"
+    },
+    "topbar": {
+      "openNav": "내비게이션 열기",
+      "userMenuLabel": "사용자 메뉴 열기"
+    },
+    "userMenu": {
+      "settings": "설정",
+      "signOut": "로그아웃"
+    }
   }
 }

@@ -422,5 +422,25 @@
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
     "loading": "Loading your students…"
+  },
+  "Shell": {
+    "nav": {
+      "overview": "概览",
+      "myChildren": "我的孩子",
+      "schoolSearch": "学校搜索",
+      "agentSearch": "中介搜索",
+      "settings": "设置"
+    },
+    "sidebar": {
+      "logoAlt": "SchoolTest"
+    },
+    "topbar": {
+      "openNav": "打开导航",
+      "userMenuLabel": "打开用户菜单"
+    },
+    "userMenu": {
+      "settings": "设置",
+      "signOut": "退出登录"
+    }
   }
 }

@@ -443,7 +443,7 @@ test.describe('dashboard (authed, seeded parent) — a11y + responsive + focus o
     expect(errors, errors.join('\n')).toEqual([]);
   });
 
-  test('focus order: sign out → search → add student', async ({ page, request }) => {
+  test('focus order: user menu → search → add student', async ({ page, request }) => {
     await loginAsSeededParent(page, request);
     await page.setViewportSize(DESKTOP);
     await page.goto('/dashboard');
@@ -452,8 +452,13 @@ test.describe('dashboard (authed, seeded parent) — a11y + responsive + focus o
     ).toBeVisible();
     await expectForwardFocusOrder(page, [
       {
-        label: 'sign out button',
-        locator: page.getByRole('button', { name: cat(en, 'Common.signOut'), exact: true }),
+        // Sign-out moved into the topbar user chip menu (task 011) — the chip
+        // trigger is the tab stop that precedes the dashboard content now.
+        label: 'user menu trigger',
+        locator: page.getByRole('button', {
+          name: cat(en, 'Shell.topbar.userMenuLabel'),
+          exact: true,
+        }),
       },
       {
         label: 'search combobox',

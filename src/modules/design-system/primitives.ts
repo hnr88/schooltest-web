@@ -168,3 +168,20 @@ export {
   AccordionTrigger,
   AccordionContent,
 } from '@/components/ui/accordion';
+
+// shell / sidebar — the primitive's default SIDEBAR_WIDTH (16rem) is WRONG for this
+// design: consumers must pass style={{ '--sidebar-width': '248px' } as React.CSSProperties}
+// on SidebarProvider (spec §12.1 fixed 248px; inline CSS-var override, not Tailwind).
+export {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+  useSidebar,
+} from '@/components/ui/sidebar';

@@ -422,5 +422,25 @@
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
     "loading": "Loading your students…"
+  },
+  "Shell": {
+    "nav": {
+      "overview": "ภาพรวม",
+      "myChildren": "บุตรหลานของฉัน",
+      "schoolSearch": "ค้นหาโรงเรียน",
+      "agentSearch": "ค้นหาตัวแทน",
+      "settings": "การตั้งค่า"
+    },
+    "sidebar": {
+      "logoAlt": "SchoolTest"
+    },
+    "topbar": {
+      "openNav": "เปิดเมนูนำทาง",
+      "userMenuLabel": "เปิดเมนูผู้ใช้"
+    },
+    "userMenu": {
+      "settings": "การตั้งค่า",
+      "signOut": "ออกจากระบบ"
+    }
   }
 }

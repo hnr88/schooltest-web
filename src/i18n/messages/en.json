@@ -422,5 +422,25 @@
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
     "loading": "Loading your students…"
+  },
+  "Shell": {
+    "nav": {
+      "overview": "Overview",
+      "myChildren": "My children",
+      "schoolSearch": "School search",
+      "agentSearch": "Agent search",
+      "settings": "Settings"
+    },
+    "sidebar": {
+      "logoAlt": "SchoolTest"
+    },
+    "topbar": {
+      "openNav": "Open navigation",
+      "userMenuLabel": "Open user menu"
+    },
+    "userMenu": {
+      "settings": "Settings",
+      "signOut": "Sign out"
+    }
   }
 }
