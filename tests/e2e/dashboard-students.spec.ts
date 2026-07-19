@@ -2,16 +2,20 @@ import path from 'node:path';
 
 import { expect, type Page, test } from '@playwright/test';
 
+import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
 
 // Task 21 verification: C-STUDENT-CREATE through the real dialog, with a
 // DB-truth reload proof AND a direct api-only assertion (bypassing the
 // TanStack Query cache entirely) that the created row is scoped to its
-// owning parent. Each test registers its OWN fresh throwaway parent (same
-// convention as tasks 16/17 — never the seeded parent@schooltest.local) so
-// this file never perturbs the "seeded parent has exactly Mia+Jonas"
-// fixtures/e2e assumptions relied on elsewhere.
+// owning parent. Each test provisions its OWN fresh throwaway parent through
+// the full real register → Mailpit confirm → login round-trip (D-AUTH-1:
+// register alone no longer returns a jwt; same convention as tasks 16/17 —
+// never the seeded parent@schooltest.local) so this file never perturbs the
+// "seeded parent has exactly Mia+Jonas" fixtures/e2e assumptions relied on
+// elsewhere.
 //
 // Deviation from the task-21 spec text (recorded, not silently ignored): the
 // spec says "prove via a direct api GET /api/students". Live-verified
@@ -28,32 +32,16 @@ const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const API_BASE_URL = 'http://localhost:5500';
-
-interface FreshParent {
-  username: string;
-  email: string;
-  password: string;
-}
-
-function freshParent(tag: string): FreshParent {
-  const suffix = `${tag}${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  return {
-    username: `e2e${suffix}`.slice(0, 20),
-    email: `e2e-${suffix}@schooltest.local`,
-    password: 'Parent1234!',
-  };
-}
+const usedEmails: string[] = [];
 
 async function registerAndVisitDashboard(
   page: Page,
   request: import('@playwright/test').APIRequestContext,
-  parent: FreshParent,
+  flow: string,
 ): Promise<void> {
-  const registerRes = await request.post(`${API_BASE_URL}/api/auth/local/register`, {
-    data: parent,
-  });
-  expect(registerRes.ok(), await registerRes.text()).toBeTruthy();
-  const { jwt } = (await registerRes.json()) as { jwt: string };
+  const parent = await registerAndConfirmParent(request, flow);
+  usedEmails.push(parent.email);
+  const jwt = await loginParentJwt(request, parent);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
@@ -80,14 +68,19 @@ interface ApiStudentsResponse {
 // this file's tests one at a time sidesteps it, same as add-student-dialog.spec.ts.
 test.describe.configure({ mode: 'serial' });
 
+// Test hygiene (task 020 convention): drop the auth_email_requests budget rows
+// every throwaway registration above created.
+test.afterAll(() => {
+  for (const email of usedEmails) deleteAuthEmailRows(email);
+});
+
 test('en: parent adds a student — appears without reload, survives a hard reload, and is provable via a direct api call scoped to the caller', async ({
   page,
   request,
 }) => {
   const errors = watchErrors(page);
   await page.setViewportSize(DESKTOP);
-  const parent = freshParent('reload');
-  await registerAndVisitDashboard(page, request, parent);
+  await registerAndVisitDashboard(page, request, 'students-reload');
 
   const studentEmail = `e2e+${Date.now()}@schooltest.local`;
 
@@ -158,12 +151,9 @@ test('en: parent adds a student — appears without reload, survives a hard relo
   // Negative ownership check: a DIFFERENT parent's own token must NOT see
   // this row — proving the scoping is a real per-caller boundary, not an
   // artifact of there being only one row in the whole table.
-  const otherParent = freshParent('other');
-  const otherRegisterRes = await request.post(`${API_BASE_URL}/api/auth/local/register`, {
-    data: otherParent,
-  });
-  expect(otherRegisterRes.ok(), await otherRegisterRes.text()).toBeTruthy();
-  const { jwt: otherJwt } = (await otherRegisterRes.json()) as { jwt: string };
+  const otherParent = await registerAndConfirmParent(request, 'students-other');
+  usedEmails.push(otherParent.email);
+  const otherJwt = await loginParentJwt(request, otherParent);
   const otherRes = await page.request.get(`${API_BASE_URL}/api/my/students`, {
     headers: { Authorization: `Bearer ${otherJwt}` },
   });
@@ -181,8 +171,7 @@ test('en: a second student with year level 5 is blocked by the form — the opti
   request,
 }) => {
   await page.setViewportSize(DESKTOP);
-  const parent = freshParent('blocked');
-  await registerAndVisitDashboard(page, request, parent);
+  await registerAndVisitDashboard(page, request, 'students-blocked');
 
   // First student succeeds normally, so the "second student" attempt below
   // is genuinely a second-row attempt against a non-empty list.

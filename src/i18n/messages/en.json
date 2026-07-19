@@ -280,6 +280,7 @@
     "currentPasswordPlaceholder": "Enter your current password",
     "currentPasswordRequired": "Current password is required",
     "wrongCurrentPassword": "The current password you entered is incorrect.",
+    "sessionExpired": "Your session has expired. Please sign in again.",
     "updatePasswordButton": "Update password",
     "updatingPassword": "Updating password…",
     "passwordUpdated": "Password updated",

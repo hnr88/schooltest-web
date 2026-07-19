@@ -280,6 +280,7 @@
     "currentPasswordPlaceholder": "현재 비밀번호를 입력하세요",
     "currentPasswordRequired": "현재 비밀번호를 입력해주세요",
     "wrongCurrentPassword": "입력하신 현재 비밀번호가 올바르지 않습니다.",
+    "sessionExpired": "세션이 만료되었습니다. 다시 로그인해 주세요.",
     "updatePasswordButton": "비밀번호 업데이트",
     "updatingPassword": "비밀번호를 업데이트하는 중…",
     "passwordUpdated": "비밀번호가 업데이트되었습니다",

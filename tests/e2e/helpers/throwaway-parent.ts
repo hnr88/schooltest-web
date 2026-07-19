@@ -35,7 +35,12 @@ export async function registerParent(
   password = E2E_PASSWORD,
 ): Promise<ThrowawayParent> {
   const email = freshEmail(flow);
-  const username = email.replace(/@.*$/, '').replace(/[^a-z0-9]/g, '').slice(0, 20);
+  // Suffix FIRST: usernames cap at 20 chars, so a long flow name must never
+  // truncate away the per-call uniqueness (task 066: `students-empty` kept only
+  // 4 suffix chars → "Username are already taken" collisions across runs). The
+  // suffix is the last dash-separated alnum token of the freshEmail local part.
+  const suffix = email.match(/-([a-z0-9]+)@/)?.[1] ?? '';
+  const username = `e2e${suffix}${flow.replace(/[^a-z0-9]/g, '')}`.slice(0, 20);
   const res = await request.post(`${API_BASE_URL}/api/auth/local/register`, {
     data: { username, email, password },
   });
@@ -69,4 +74,24 @@ export async function registerAndConfirmParent(
     .poll(() => userRoleType(account.email), { message: `parent role assigned to ${account.email}` })
     .toBe('parent');
   return account;
+}
+
+/**
+ * Real POST /api/auth/local login for a confirmed throwaway parent → the 7d
+ * jwt (C-AUTH-LOGIN). With D-AUTH-1 confirmation ON, register returns NO jwt —
+ * this is the only api-side way for a spec to seed `app.auth.token`.
+ */
+export async function loginParentJwt(
+  request: APIRequestContext,
+  account: ThrowawayParent,
+): Promise<string> {
+  const res = await request.post(`${API_BASE_URL}/api/auth/local`, {
+    data: { identifier: account.email, password: account.password },
+  });
+  if (res.status() !== 200) {
+    throw new Error(`[e2e] login ${account.email} failed: ${res.status()} ${await res.text()}`);
+  }
+  const body = (await res.json()) as { jwt?: string };
+  if (!body.jwt) throw new Error(`[e2e] login ${account.email}: no jwt in response`);
+  return body.jwt;
 }

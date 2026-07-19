@@ -13,10 +13,15 @@ import { Alert, Card, CardContent, Logo, Separator } from '@/modules/design-syst
 
 interface SignInCardProps {
   hasGoogleError?: boolean;
+  hasSessionExpired?: boolean;
   showConfirmedBanner?: boolean;
 }
 
-export function SignInCard({ hasGoogleError = false, showConfirmedBanner = false }: SignInCardProps) {
+export function SignInCard({
+  hasGoogleError = false,
+  hasSessionExpired = false,
+  showConfirmedBanner = false,
+}: SignInCardProps) {
   const t = useTranslations('Auth');
   const tHome = useTranslations('Home');
   const router = useRouter();
@@ -51,6 +56,14 @@ export function SignInCard({ hasGoogleError = false, showConfirmedBanner = false
         ) : null}
         {hasGoogleError ? (
           <Alert variant="error" title={t('googleError')} className="mt-4">
+            {null}
+          </Alert>
+        ) : null}
+        {hasSessionExpired ? (
+          // C-AUTH-CHANGE 401 lands here via /sign-in?error=session — the
+          // change-password form clears the dead session then leaves for this
+          // styled explanation of why a signed-in screen kicked the user out.
+          <Alert variant="error" title={t('sessionExpired')} className="mt-4">
             {null}
           </Alert>
         ) : null}

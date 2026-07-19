@@ -3,14 +3,17 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+import { deleteAuthEmailRows } from './helpers/auth-db';
 import { type AnyLocale, cat, loadMessages } from './helpers/i18n';
+import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
 
 // Task 16 verification: the dashboard's StudentsSection is fed by the real
 // C-STUDENT-LIST endpoint (GET /api/my/students) via a zod-parsed TanStack
 // Query — no mocks. The seeded parent (D9) has two real students (Mia +
-// Jonas Keller); a freshly-registered parent has zero and must see the
-// EmptyState instead of a table.
+// Jonas Keller); a freshly-provisioned parent (full real register → Mailpit
+// confirm → login round-trip; D-AUTH-1: register alone returns no jwt) has
+// zero and must see the EmptyState instead of a table.
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
@@ -30,14 +33,13 @@ const STALE_DASHBOARD_TITLES: Partial<Record<AnyLocale, string>> = {
   zh: '控制台',
 };
 
-function freshParent() {
-  const suffix = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  return {
-    username: `e2e${suffix}`.slice(0, 20),
-    email: `e2e-${suffix}@schooltest.local`,
-    password: 'Parent1234!',
-  };
-}
+const usedEmails: string[] = [];
+
+// Test hygiene (task 020 convention): drop the auth_email_requests budget rows
+// the empty-state test's throwaway registration created.
+test.afterAll(() => {
+  for (const email of usedEmails) deleteAuthEmailRows(email);
+});
 
 async function signInAs(
   page: import('@playwright/test').Page,
@@ -147,15 +149,17 @@ test('en: a freshly-registered parent with zero students sees the real empty sta
 }) => {
   const errors = watchErrors(page);
   await page.setViewportSize(DESKTOP);
-  const parent = freshParent();
-  const registerRes = await request.post(`${API_BASE_URL}/api/auth/local/register`, {
-    data: parent,
-  });
-  expect(registerRes.ok(), await registerRes.text()).toBeTruthy();
-  const { jwt } = (await registerRes.json()) as { jwt: string };
+  const parent = await registerAndConfirmParent(request, 'students-empty');
+  usedEmails.push(parent.email);
+  const jwt = await loginParentJwt(request, parent);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
+  // Task 065's dashboard-content entrance fades in on mount and the empty
+  // state pops in as soon as the students query resolves — axe right after
+  // would sample color-contrast mid-fade (a11y-auth.spec.ts search-panel
+  // precedent). Reduced motion disables the animate-in variants entirely.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/dashboard');
 
   await expect(

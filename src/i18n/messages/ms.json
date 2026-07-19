@@ -280,6 +280,7 @@
     "currentPasswordPlaceholder": "Masukkan kata laluan semasa anda",
     "currentPasswordRequired": "Kata laluan semasa diperlukan",
     "wrongCurrentPassword": "Kata laluan semasa yang anda masukkan tidak betul.",
+    "sessionExpired": "Sesi anda telah tamat tempoh. Sila log masuk semula.",
     "updatePasswordButton": "Kemas kini kata laluan",
     "updatingPassword": "Mengemas kini kata laluan…",
     "passwordUpdated": "Kata laluan dikemas kini",

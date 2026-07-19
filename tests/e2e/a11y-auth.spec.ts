@@ -387,6 +387,11 @@ test.describe('google callback error state — a11y + responsive', () => {
       const alert = page.locator('[data-slot="alert"]');
       await expect(alert).toBeVisible();
       await expect(alert).toContainText(cat(en, 'Auth.googleError'));
+      // Next 16 streams <title> for dynamic pages: right after the client-side
+      // redirect the swapped-in /sign-in title can land a beat AFTER the alert
+      // renders, and axe's document-title rule is serious — wait it in (task
+      // 066: flaked 1-in-3 full-suite runs otherwise).
+      await page.waitForFunction(() => document.title.trim().length > 0);
       await expectAxeClean(page, `/sign-in?error=google @ ${viewport.width}px`);
       await expectNoHorizontalScroll(page, `/sign-in?error=google @ ${viewport.width}px`);
       await logSmallTargets(page, `/sign-in?error=google @ ${viewport.width}px`);
@@ -462,6 +467,13 @@ test.describe('dashboard search panel — a11y + responsive (open/results state)
     request,
   }) => {
     await loginAsSeededParent(page, request);
+    // Task 065's dashboard-content entrance (D-UI-2) fades in on every
+    // /dashboard mount, and this test runs axe the moment the results panel
+    // (which has its own fade-in) shows an option — axe would sample
+    // color-contrast mid-fade. Same fix as the google-callback describe:
+    // reduced motion disables the animate-in variants (all honor
+    // motion-reduce:animate-none) for BOTH viewports' axe passes.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const viewport of [MOBILE, DESKTOP]) {
       await page.setViewportSize(viewport);
       await page.goto('/dashboard');

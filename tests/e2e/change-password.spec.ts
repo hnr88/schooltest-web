@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
+import { loginAsParent } from './helpers/auth';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { registerAndConfirmParent } from './helpers/throwaway-parent';
@@ -94,4 +95,34 @@ test('en: flow 4 — change password in settings → toast → sign out → old 
   // New password → /dashboard, UI only.
   await signIn(page, parent.email, CHANGED_PASSWORD);
   await page.waitForURL('**/dashboard');
+});
+
+test('en: garbage Bearer on change-password → session expired: token cleared, /sign-in?error=session shows the alert', async ({
+  page,
+}) => {
+  // C-AUTH-CHANGE 401 leg (task 066): a PRESENT-but-invalid Bearer is rejected
+  // by the u-p jwt verification as 401 UnauthorizedError "Missing or invalid
+  // credentials" (a MISSING header would 403 instead). Seeded parent is safe
+  // here — the 401 fires before anything could mutate, so no throwaway
+  // registration (and no auth_email_requests rows) is needed.
+  await page.setViewportSize(DESKTOP);
+  await loginAsParent(page);
+  await page.goto('/dashboard/settings');
+  await expect(
+    page.getByText(cat(en, 'Settings.changePasswordTitle'), { exact: true }),
+  ).toBeVisible();
+
+  // Corrupt ONLY the stored token: the in-memory session keeps the guarded
+  // screen rendered, and the axios interceptor reads localStorage per request —
+  // the next mutation genuinely sends `Authorization: Bearer garbage…`.
+  await page.evaluate(() => window.localStorage.setItem('app.auth.token', 'garbage-invalid-jwt'));
+  await fillChangeForm(page, 'Irrelevant123!', 'Irrelevant456!');
+
+  // sessionExpired path: token cleared (localStorage + store), hard redirect
+  // to /sign-in?error=session, styled alert explains the kick-out.
+  await page.waitForURL('**/sign-in?error=session');
+  const alert = page.locator('[data-slot="alert"]');
+  await expect(alert).toBeVisible();
+  await expect(alert).toContainText(cat(en, 'Auth.sessionExpired'));
+  expect(await page.evaluate(() => window.localStorage.getItem('app.auth.token'))).toBeNull();
 });

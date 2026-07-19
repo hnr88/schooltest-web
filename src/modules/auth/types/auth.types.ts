@@ -57,6 +57,7 @@ export type ResetPasswordErrorKey = 'invalidOrExpired' | 'offlineError' | 'serve
 
 export type ChangePasswordErrorKey =
   | 'wrongCurrentPassword'
+  | 'sessionExpired'
   | 'tooManyRequests'
   | 'offlineError'
   | 'serverError';

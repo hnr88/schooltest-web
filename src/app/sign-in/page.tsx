@@ -20,14 +20,20 @@ interface SignInPageProps {
 // centered card alone below. The card's logo lockup stays the page's logo link
 // home. ?error=google (C-AUTH-GOOGLE, D18) arrives from /auth/google/callback
 // when the forwarded query is absent or the api rejects it — surfaced as the
-// card's alert. ?confirmed=1 (C-AUTH-CONFIRM redirect target) renders the
-// email-confirmed success strip above the form.
+// card's alert. ?error=session (C-AUTH-CHANGE 401: invalid/expired Bearer)
+// arrives from the change-password form's session teardown — same alert slot.
+// ?confirmed=1 (C-AUTH-CONFIRM redirect target) renders the email-confirmed
+// success strip above the form.
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const { error, confirmed } = await searchParams;
 
   return (
     <AuthSplitLayout>
-      <SignInCard hasGoogleError={error === 'google'} showConfirmedBanner={confirmed === '1'} />
+      <SignInCard
+        hasGoogleError={error === 'google'}
+        hasSessionExpired={error === 'session'}
+        showConfirmedBanner={confirmed === '1'}
+      />
     </AuthSplitLayout>
   );
 }

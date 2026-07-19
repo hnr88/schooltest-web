@@ -280,6 +280,7 @@
     "currentPasswordPlaceholder": "Nhập mật khẩu hiện tại của bạn",
     "currentPasswordRequired": "Vui lòng nhập mật khẩu hiện tại",
     "wrongCurrentPassword": "Mật khẩu hiện tại bạn nhập không đúng.",
+    "sessionExpired": "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
     "updatePasswordButton": "Cập nhật mật khẩu",
     "updatingPassword": "Đang cập nhật mật khẩu…",
     "passwordUpdated": "Đã cập nhật mật khẩu",

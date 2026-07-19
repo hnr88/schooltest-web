@@ -280,6 +280,7 @@
     "currentPasswordPlaceholder": "กรอกรหัสผ่านปัจจุบันของคุณ",
     "currentPasswordRequired": "กรุณากรอกรหัสผ่านปัจจุบัน",
     "wrongCurrentPassword": "รหัสผ่านปัจจุบันที่คุณกรอกไม่ถูกต้อง",
+    "sessionExpired": "เซสชันของคุณหมดอายุแล้ว กรุณาเข้าสู่ระบบอีกครั้ง",
     "updatePasswordButton": "อัปเดตรหัสผ่าน",
     "updatingPassword": "กำลังอัปเดตรหัสผ่าน…",
     "passwordUpdated": "อัปเดตรหัสผ่านแล้ว",

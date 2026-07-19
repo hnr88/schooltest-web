@@ -13,15 +13,21 @@ import {
   changePasswordSchema,
   type ChangePasswordInput,
 } from '@/modules/auth/schemas/change-password.schema';
+import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import type { ChangePasswordErrorKey } from '@/modules/auth/types/auth.types';
 import { Alert, Button } from '@/modules/design-system';
 
 // §5.13 change-password form: three PasswordFields + right-aligned primary
 // submit. Success → sonner toast + reset (a fresh jwt is stored by the
 // mutation; old jwts keep working, so the copy claims no sign-out anywhere).
+// A 401 (C-AUTH-CHANGE: present-but-invalid/expired Bearer) means the session
+// itself is dead: clear it and leave for /sign-in?error=session via a full
+// navigation, so ParentGuard's own plain /sign-in redirect can never outrace
+// the sessionExpired one.
 export function ChangePasswordForm() {
   const t = useTranslations('Auth');
   const changePassword = useChangePasswordMutation();
+  const setToken = useAuthStore((state) => state.setToken);
   const [visible, setVisible] = useState({ current: false, next: false, confirm: false });
   const [formError, setFormError] = useState<ChangePasswordErrorKey | null>(null);
   const {
@@ -44,7 +50,15 @@ export function ChangePasswordForm() {
         toast.success(t('passwordUpdated'));
         reset();
       },
-      onError: (error) => setFormError(classifyChangePasswordError(error)),
+      onError: (error) => {
+        const key = classifyChangePasswordError(error);
+        if (key === 'sessionExpired') {
+          setToken(null);
+          window.location.replace('/sign-in?error=session');
+          return;
+        }
+        setFormError(key);
+      },
     });
   });
 

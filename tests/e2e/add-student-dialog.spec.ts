@@ -3,38 +3,29 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, type Page, test } from '@playwright/test';
 
+import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
 
 // Task 17 verification: AddStudentDialog persists via the real C-STUDENT-CREATE
 // endpoint (POST /api/students) through use-create-student.mutation — no mocks.
-// Each test registers its OWN fresh throwaway parent (never the seeded
-// parent@schooltest.local) so it never perturbs task 16's "exactly 2 students"
-// fixtures/e2e assumptions.
+// Each test provisions its OWN fresh throwaway parent through the full real
+// register → Mailpit confirm → login round-trip (D-AUTH-1: register alone no
+// longer returns a jwt) — never the seeded parent@schooltest.local, so it never
+// perturbs task 16's "exactly 2 students" fixtures/e2e assumptions.
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
-const API_BASE_URL = 'http://localhost:5500';
-
-function freshParent() {
-  const suffix = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  return {
-    username: `e2e${suffix}`.slice(0, 20),
-    email: `e2e-${suffix}@schooltest.local`,
-    password: 'Parent1234!',
-  };
-}
+const usedEmails: string[] = [];
 
 async function registerAndVisitDashboard(
   page: Page,
   request: import('@playwright/test').APIRequestContext,
 ): Promise<void> {
-  const parent = freshParent();
-  const registerRes = await request.post(`${API_BASE_URL}/api/auth/local/register`, {
-    data: parent,
-  });
-  expect(registerRes.ok(), await registerRes.text()).toBeTruthy();
-  const { jwt } = (await registerRes.json()) as { jwt: string };
+  const parent = await registerAndConfirmParent(request, 'add-dialog');
+  usedEmails.push(parent.email);
+  const jwt = await loginParentJwt(request, parent);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
@@ -48,6 +39,12 @@ async function registerAndVisitDashboard(
 // concurrency = zero flakes). Running this file's registrations one at a time
 // sidesteps it without touching backend code.
 test.describe.configure({ mode: 'serial' });
+
+// Test hygiene (task 020 convention): drop the auth_email_requests budget rows
+// every throwaway registration above created.
+test.afterAll(() => {
+  for (const email of usedEmails) deleteAuthEmailRows(email);
+});
 
 test('en: parent adds a student via the dialog — appears without reload, persists after reload, axe clean', async ({
   page,
