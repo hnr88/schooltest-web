@@ -31,7 +31,7 @@ export function DashboardSearchResults({
   return (
     <div
       data-slot="dashboard-search-panel"
-      className="absolute z-50 mt-2 w-full rounded-xl border border-border bg-popover p-1.5 text-sm text-popover-foreground shadow-lg"
+      className="absolute z-50 mt-2 w-full rounded-xl border border-border bg-popover p-1.5 text-sm text-popover-foreground shadow-lg duration-200 ease-out animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 motion-reduce:animate-none"
     >
       {isLoading ? (
         <div className="flex flex-col gap-1" aria-hidden="true">
@@ -62,7 +62,7 @@ export function DashboardSearchResults({
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => onSelect(student.documentId)}
                 className={cn(
-                  'flex cursor-pointer flex-col gap-0.5 rounded-md px-2.5 py-2 font-medium hover:bg-muted',
+                  'flex cursor-pointer flex-col gap-0.5 rounded-md px-2.5 py-2 font-medium transition-colors duration-150 ease-out hover:bg-muted motion-reduce:transition-none',
                   index === activeIndex && 'bg-muted',
                 )}
               >

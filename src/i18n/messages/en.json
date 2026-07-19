@@ -242,6 +242,54 @@
     "googleCallbackMeta": {
       "title": "Connecting your account — SchoolTest",
       "description": "Finishing your Google sign-in to SchoolTest."
+    },
+    "forgotMeta": {
+      "title": "Forgot password — SchoolTest",
+      "description": "Request a password reset link for your SchoolTest parent account."
+    },
+    "forgotTitle": "Forgot your password?",
+    "forgotSubtitle": "Enter your account email and we'll send you a link to reset your password.",
+    "sendResetLink": "Send reset link",
+    "sendingResetLink": "Sending reset link…",
+    "backToSignIn": "Back to sign in",
+    "sentTitle": "Check your email",
+    "sentBody": "We sent a reset link to <strong>{email}</strong>. The link expires in 30 minutes.",
+    "sentSuccess": "Email sent successfully",
+    "resendEmail": "Resend email",
+    "resendEmailCountdown": "Resend email ({time})",
+    "tooManyRequests": "Too many requests. Please wait a while before trying again.",
+    "resetMeta": {
+      "title": "Reset password — SchoolTest",
+      "description": "Set a new password for your SchoolTest parent account."
+    },
+    "resetTitle": "Set a new password",
+    "resetSubtitle": "Choose a new password of at least 6 characters for your account.",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "resetButton": "Reset password",
+    "resettingPassword": "Resetting password…",
+    "invalidLinkTitle": "Link invalid or expired",
+    "invalidLinkBody": "This password reset link is invalid or has expired — links only last 30 minutes. Request a new one below.",
+    "requestNewLink": "Request a new link",
+    "checkEmailTitle": "Check your email",
+    "checkEmailBody": "We sent a confirmation link to <strong>{email}</strong>. Open it to activate your account, then sign in.",
+    "alreadyConfirmed": "This email is already confirmed. You can sign in now.",
+    "emailConfirmedBanner": "Email confirmed — you can sign in now.",
+    "notConfirmedError": "Your email isn't confirmed yet. Open the confirmation link we emailed you, then sign in.",
+    "currentPasswordLabel": "Current password",
+    "currentPasswordPlaceholder": "Enter your current password",
+    "currentPasswordRequired": "Current password is required",
+    "wrongCurrentPassword": "The current password you entered is incorrect.",
+    "updatePasswordButton": "Update password",
+    "updatingPassword": "Updating password…",
+    "passwordUpdated": "Password updated",
+    "split": {
+      "title": "Every test, one dashboard.",
+      "body": "Sign in to follow your students' tests, scores, and AI feedback in one place.",
+      "benefitTests": "Track every assigned test and deadline",
+      "benefitScores": "See scores the moment they're graded",
+      "benefitFeedback": "Understand progress with AI feedback",
+      "legal": "© 2026 SchoolTest. All rights reserved."
     }
   },
   "LocaleSwitcher": {
@@ -442,5 +490,15 @@
       "settings": "Settings",
       "signOut": "Sign out"
     }
+  },
+  "Settings": {
+    "meta": {
+      "title": "Settings — SchoolTest",
+      "description": "Manage your SchoolTest account settings and password."
+    },
+    "title": "Settings",
+    "subtitle": "Manage your account preferences and security.",
+    "changePasswordTitle": "Change password",
+    "changePasswordSubtitle": "Your new password must be at least 6 characters long."
   }
 }

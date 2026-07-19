@@ -1,5 +1,6 @@
 'use client';
 
+import { CircleCheck } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -12,9 +13,10 @@ import { Alert, Card, CardContent, Logo, Separator } from '@/modules/design-syst
 
 interface SignInCardProps {
   hasGoogleError?: boolean;
+  showConfirmedBanner?: boolean;
 }
 
-export function SignInCard({ hasGoogleError = false }: SignInCardProps) {
+export function SignInCard({ hasGoogleError = false, showConfirmedBanner = false }: SignInCardProps) {
   const t = useTranslations('Auth');
   const tHome = useTranslations('Home');
   const router = useRouter();
@@ -32,13 +34,21 @@ export function SignInCard({ hasGoogleError = false }: SignInCardProps) {
   }, [hydrated, token, router]);
 
   return (
-    <Card className="w-full rounded-2xl shadow-lg [--card-spacing:--spacing(8)]">
+    <Card className="w-full rounded-2xl shadow-lg [--card-spacing:--spacing(8)] animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
       <CardContent className="flex flex-col">
         <Link href="/" className="self-start rounded-sm">
           <Logo alt={tHome('footer.logoAlt')} height={26} />
         </Link>
-        <h1 className="mt-5 text-xl font-bold">{t('signInTitle')}</h1>
+        <h1 className="mt-5 text-2xl font-bold">{t('signInTitle')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t('signInSubtitle')}</p>
+        {showConfirmedBanner ? (
+          // C-AUTH-CONFIRM lands here via /sign-in?confirmed=1 — success strip
+          // above the form, same styling family as the forgot-password strip.
+          <p className="mt-4 flex items-center gap-2 rounded-lg border border-teal-100 bg-teal-50 px-4 py-3 text-sm text-teal-600 animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
+            <CircleCheck aria-hidden="true" className="size-4 shrink-0" />
+            {t('emailConfirmedBanner')}
+          </p>
+        ) : null}
         {hasGoogleError ? (
           <Alert variant="error" title={t('googleError')} className="mt-4">
             {null}

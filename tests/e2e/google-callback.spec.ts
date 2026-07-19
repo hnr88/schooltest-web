@@ -30,6 +30,10 @@ test('en: callback with no query redirects to /sign-in?error=google and the aler
   page,
 }) => {
   const errors = watchErrors(page);
+  // The sign-in card's D-UI-2 entrance animation honors motion-reduce:*;
+  // reduced motion keeps this axe color-contrast pass deterministic right
+  // after the client-side redirect (contrast is otherwise sampled mid-fade).
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/auth/google/callback');
 
   await page.waitForURL(/\/sign-in\?error=google$/);

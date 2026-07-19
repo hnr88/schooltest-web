@@ -47,3 +47,19 @@ export async function collectSmallTargets(page: Page): Promise<string[]> {
     return small;
   });
 }
+
+/**
+ * Waits for every finite CSS/JS animation on the page to finish (D-UI-2 entrance
+ * animations run ~300ms) so screenshots capture the settled state, never a
+ * mid-fade frame. Infinite animations (spinners, pulses) are skipped.
+ */
+export async function waitForAnimationsSettled(page: Page): Promise<void> {
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((animation) => animation.effect?.getTiming().iterations !== Infinity)
+        .map((animation) => animation.finished.catch(() => undefined)),
+    ),
+  );
+}

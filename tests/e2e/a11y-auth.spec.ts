@@ -28,15 +28,6 @@ const DESKTOP = { width: 1280, height: 800 };
 const MOBILE = { width: 375, height: 812 };
 const API_BASE_URL = 'http://localhost:5500';
 
-function freshParent() {
-  const suffix = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  return {
-    username: `e2e${suffix}`.slice(0, 20),
-    email: `e2e-${suffix}@schooltest.local`,
-    password: 'Parent1234!',
-  };
-}
-
 /**
  * Asserts zero serious/critical axe violations; moderate/minor are always
  * logged, never asserted. `knownExemptions` names specific axe rule IDs that
@@ -177,22 +168,6 @@ async function loginAsSeededParent(
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
-}
-
-async function registerFreshParentAndVisitDashboard(
-  page: Page,
-  request: import('@playwright/test').APIRequestContext,
-): Promise<void> {
-  const parent = freshParent();
-  const registerRes = await request.post(`${API_BASE_URL}/api/auth/local/register`, {
-    data: parent,
-  });
-  expect(registerRes.ok(), await registerRes.text()).toBeTruthy();
-  const { jwt } = (await registerRes.json()) as { jwt: string };
-  await page.addInitScript((token) => {
-    window.localStorage.setItem('app.auth.token', token);
-  }, jwt);
-  await page.goto('/dashboard');
 }
 
 async function openAddStudentDialog(page: Page): Promise<Locator> {
@@ -400,6 +375,11 @@ test.describe('google callback error state — a11y + responsive', () => {
   // env-gated rejection flow (D5/D18 — never a fabricated success state).
   test('axe clean, no h-scroll at 375 & 1280', async ({ page }) => {
     const errors = watchErrors(page);
+    // The sign-in card's D-UI-2 entrance animation honors motion-reduce:*;
+    // emulating reduced motion exercises that variant AND keeps axe's
+    // color-contrast pass deterministic right after the client-side redirect
+    // (contrast is otherwise sampled mid-fade).
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const viewport of [MOBILE, DESKTOP]) {
       await page.setViewportSize(viewport);
       await page.goto('/auth/google/callback');
@@ -502,15 +482,16 @@ test.describe('dashboard search panel — a11y + responsive (open/results state)
 });
 
 test.describe('add-student dialog — a11y + responsive (open state)', () => {
-  // Each test registers its OWN fresh throwaway parent (never the seeded
-  // parent@schooltest.local) — serial to avoid D20's documented concurrent-
-  // registration role-assignment race (a pre-existing backend characteristic,
-  // not caused by this file).
-  test.describe.configure({ mode: 'serial' });
-
+  // Auth via the seeded parent's REAL login (task 017: with D-AUTH-7 email
+  // confirmation ON, register no longer returns a jwt, so the old fresh-
+  // registration path is impossible without a Mailpit round-trip this a11y
+  // sweep doesn't need). The dialog is only OPENED here — never submitted —
+  // so no seeded data mutates. Task 054 owns removing this coverage when the
+  // wizard replaces the dialog.
   test('desktop 1280: axe clean, no h-scroll while open', async ({ page, request }) => {
     await page.setViewportSize(DESKTOP);
-    await registerFreshParentAndVisitDashboard(page, request);
+    await loginAsSeededParent(page, request);
+    await page.goto('/dashboard');
     await openAddStudentDialog(page);
     await expectAxeClean(page, 'add-student dialog open @ 1280px');
     await expectNoHorizontalScroll(page, 'add-student dialog open @ 1280px');
@@ -519,7 +500,8 @@ test.describe('add-student dialog — a11y + responsive (open state)', () => {
 
   test('mobile 375: axe clean, no h-scroll while open', async ({ page, request }) => {
     await page.setViewportSize(MOBILE);
-    await registerFreshParentAndVisitDashboard(page, request);
+    await loginAsSeededParent(page, request);
+    await page.goto('/dashboard');
     await openAddStudentDialog(page);
     await expectAxeClean(page, 'add-student dialog open @ 375px');
     await expectNoHorizontalScroll(page, 'add-student dialog open @ 375px');

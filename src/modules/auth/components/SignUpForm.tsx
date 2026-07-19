@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { isAxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -26,9 +25,12 @@ function classifyError(error: unknown): FormErrorKey {
   return 'registerError';
 }
 
-export function SignUpForm() {
+interface SignUpFormProps {
+  onRegistered: (email: string) => void;
+}
+
+export function SignUpForm({ onRegistered }: SignUpFormProps) {
   const t = useTranslations('Auth');
-  const router = useRouter();
   const signUp = useRegisterMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -47,7 +49,9 @@ export function SignUpForm() {
     signUp.mutate(
       { username: values.username, email: values.email, password: values.password },
       {
-        onSuccess: () => router.push('/dashboard'),
+        // D-AUTH-1 (C-AUTH-REGISTER): register returns {user} with NO jwt —
+        // the card swaps to the check-your-email state instead of navigating.
+        onSuccess: () => onRegistered(values.email),
         onError: (error) => setFormError(classifyError(error)),
       },
     );

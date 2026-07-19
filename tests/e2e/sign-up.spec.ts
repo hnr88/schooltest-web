@@ -4,26 +4,20 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { freshParent } from './helpers/sign-up-form';
 import { watchErrors } from './helpers/ui';
 
-// Task 13 verification: /sign-up renders the DS card sibling to /sign-in (D10),
-// registers a fresh parent against the real api on :5500 (C-AUTH-REGISTER), the
-// taken-email/username error is translated+styled, and axe is clean. Assertions
-// derive from the message catalogs at runtime — no copy is duplicated here.
+// Task 017: /sign-up structure, validation, and error legs against the real
+// api on :5500. With email confirmation ON (D-AUTH-1/C-AUTH-REGISTER) the
+// registration → Mailpit → /sign-in?confirmed=1 round-trip lives in
+// sign-up-confirm.spec.ts (200-line file limit); shared fixtures sit in
+// helpers/sign-up-form.ts. Assertions derive from the message catalogs at
+// runtime — no copy is duplicated here.
 const en = loadMessages('en');
 const zh = loadMessages('zh');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
-
-function freshParent() {
-  const suffix = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  return {
-    username: `e2e${suffix}`.slice(0, 20),
-    email: `e2e-${suffix}@schooltest.local`,
-    password: 'Parent1234!',
-  };
-}
 
 test('en: renders the DS sign-up card structure, axe clean', async ({ page }) => {
   const errors = watchErrors(page);
@@ -120,38 +114,6 @@ test('en: taken email/username renders the styled inline error (never a Strapi p
   const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
   expect(token).toBeNull();
   await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-up-error.png') });
-});
-
-test('en: registering a fresh parent stores the JWT, lands on /dashboard, and the api assigns the parent role', async ({
-  page,
-}) => {
-  const parent = freshParent();
-  await page.goto('/sign-up');
-  await page.getByLabel(cat(en, 'Auth.usernameLabel'), { exact: true }).fill(parent.username);
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(parent.password);
-  await page
-    .getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true })
-    .fill(parent.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signUpButton'), exact: true }).click();
-
-  await page.waitForURL('**/dashboard');
-  await expect(
-    page.getByRole('heading', { level: 1, name: new RegExp(`Welcome back, ${parent.username}`) }),
-  ).toBeVisible();
-
-  const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
-  expect(token).toMatch(/^eyJ/);
-
-  // Real round trip against the running api (:5500) — proves the extension
-  // (task 08) really assigned the parent role, not just that the UI redirected.
-  const me = await page.evaluate(async (jwt) => {
-    const res = await fetch('http://localhost:5500/api/users/me', {
-      headers: { Authorization: `Bearer ${jwt}` },
-    });
-    return res.json();
-  }, token);
-  expect(me.role?.type).toBe('parent');
 });
 
 test('en: an existing token redirects the card to /dashboard', async ({ context, page }) => {

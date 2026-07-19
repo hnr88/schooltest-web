@@ -4,7 +4,7 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
-import { watchErrors } from './helpers/ui';
+import { waitForAnimationsSettled, watchErrors } from './helpers/ui';
 
 // Task 12 verification: /sign-in renders the DS card, password login works against
 // the real api on :5500 (seeded parent, D9), the error model is translated+styled,
@@ -20,7 +20,7 @@ const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 
-test('en: renders the DS sign-in card structure, no forgot link, axe clean', async ({
+test('en: renders the §14.1 split-panel sign-in with forgot link, axe clean', async ({
   page,
 }) => {
   const errors = watchErrors(page);
@@ -52,10 +52,23 @@ test('en: renders the DS sign-in card structure, no forgot link, axe clean', asy
   const signUp = page.getByRole('link', { name: cat(en, 'Auth.signUp'), exact: true });
   await expect(signUp).toHaveAttribute('href', '/sign-up');
 
-  // No forgot-password link this milestone (no-fake-links; noted in the task file).
-  await expect(page.getByText(cat(en, 'Auth.forgotPasswordLink'))).toHaveCount(0);
+  // §14.1 restored the forgot-password link (task 017, C-UI-AUTH-PAGES).
+  const forgot = page.getByRole('link', {
+    name: cat(en, 'Auth.forgotPasswordLink'),
+    exact: true,
+  });
+  await expect(forgot).toBeVisible();
+  await expect(forgot).toHaveAttribute('href', '/forgot-password');
 
-  await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-en.png') });
+  // Split-panel left navy panel is visible at 1280px (hidden <1024px).
+  await expect(page.getByText(cat(en, 'Auth.split.title'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.split.benefitTests'))).toBeVisible();
+  await page.setViewportSize({ width: 768, height: 800 });
+  await expect(page.getByText(cat(en, 'Auth.split.title'))).toBeHidden();
+  await page.setViewportSize(DESKTOP);
+
+  await waitForAnimationsSettled(page);
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-split-en.png') });
 
   const results = await new AxeBuilder({ page }).analyze();
   const blockers = results.violations.filter(
@@ -69,6 +82,19 @@ test('en: renders the DS sign-in card structure, no forgot link, axe clean', asy
     '/sign-in en',
   ).toEqual([]);
   expect(errors, errors.join('\n')).toEqual([]);
+});
+
+test('en: ?confirmed=1 renders the email-confirmed banner above the form', async ({ page }) => {
+  // C-AUTH-CONFIRM redirects the emailed link here (C-AUTH-SETTINGS-ASSERT).
+  await page.setViewportSize(DESKTOP);
+  await page.goto('/sign-in?confirmed=1');
+  await expect(page.getByText(cat(en, 'Auth.emailConfirmedBanner'))).toBeVisible();
+  await waitForAnimationsSettled(page);
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-confirmed-banner.png') });
+
+  // Plain /sign-in never shows the strip.
+  await page.goto('/sign-in');
+  await expect(page.getByText(cat(en, 'Auth.emailConfirmedBanner'))).toHaveCount(0);
 });
 
 test('en: empty submit shows translated field validation, no api call', async ({ page }) => {

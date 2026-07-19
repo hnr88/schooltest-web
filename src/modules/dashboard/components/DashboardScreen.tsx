@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/modules/auth';
 import { DashboardSearch } from '@/modules/dashboard/components/DashboardSearch';
 import { StudentsSection } from '@/modules/dashboard/components/StudentsSection';
-import { Button } from '@/modules/design-system';
+import { Button, Skeleton } from '@/modules/design-system';
 
 // Overview content (C-UI-SHELL §12.3, task 012): full-width content area with
 // greeting header left and a right-aligned primary "Add student" link to
@@ -14,13 +14,18 @@ import { Button } from '@/modules/design-system';
 // moves to /dashboard/children in W9).
 export function DashboardScreen() {
   const t = useTranslations('Dashboard');
-  const tCommon = useTranslations('Common');
   const { user, isLoading } = useAuth();
 
   if (isLoading || !user) {
+    // D-UI-2: loading is skeleton shimmer (animate-pulse via the Skeleton
+    // primitive) mirroring the header + content blocks, never bare text.
     return (
-      <main className="flex flex-1 flex-col px-8 py-7">
-        <p className="text-muted-foreground">{tCommon('loading')}</p>
+      <main className="flex flex-1 flex-col gap-8 px-8 py-7">
+        <div aria-hidden="true" className="flex flex-col gap-4">
+          <Skeleton className="h-8 w-1/3" />
+          <Skeleton className="h-4 w-1/2" />
+          <Skeleton className="h-40 w-full" />
+        </div>
       </main>
     );
   }

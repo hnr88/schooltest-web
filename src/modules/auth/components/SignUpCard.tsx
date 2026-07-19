@@ -3,15 +3,18 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { GoogleButton } from '@/modules/auth/components/GoogleButton';
+import { SignUpConfirmState } from '@/modules/auth/components/SignUpConfirmState';
 import { SignUpForm } from '@/modules/auth/components/SignUpForm';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { Card, CardContent, Logo, Separator } from '@/modules/design-system';
 
 // Sibling of SignInCard per D10: same DS card layout/copy-family, submitting
-// through the register endpoint (C-AUTH-REGISTER) instead of login.
+// through the register endpoint (C-AUTH-REGISTER). On register 200 the card
+// content swaps to the check-your-email state (§14.2, D-AUTH-1 — no jwt, no
+// redirect) holding the submitted email for the resend flow.
 export function SignUpCard() {
   const t = useTranslations('Auth');
   const tHome = useTranslations('Home');
@@ -19,6 +22,7 @@ export function SignUpCard() {
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const hydrate = useAuthStore((state) => state.hydrate);
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
 
   useEffect(() => {
     if (!hydrated) hydrate();
@@ -30,29 +34,35 @@ export function SignUpCard() {
   }, [hydrated, token, router]);
 
   return (
-    <Card className="w-full rounded-2xl shadow-lg [--card-spacing:--spacing(8)]">
+    <Card className="w-full rounded-2xl shadow-lg [--card-spacing:--spacing(8)] animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
       <CardContent className="flex flex-col">
-        <Link href="/" className="self-start rounded-sm">
-          <Logo alt={tHome('footer.logoAlt')} height={26} />
-        </Link>
-        <h1 className="mt-5 text-xl font-bold">{t('signUpTitle')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t('signUpSubtitle')}</p>
-        <GoogleButton className="mt-5 w-full" />
-        <div aria-hidden="true" className="my-4 flex items-center gap-3">
-          <Separator className="flex-1" />
-          <span className="text-xs text-muted-foreground">{t('orDivider')}</span>
-          <Separator className="flex-1" />
-        </div>
-        <SignUpForm />
-        <p className="mt-4 text-center text-sm text-muted-foreground">
-          {t('hasAccount')}{' '}
-          <Link
-            href="/sign-in"
-            className="font-semibold text-foreground underline-offset-4 hover:underline"
-          >
-            {t('signInLink')}
-          </Link>
-        </p>
+        {registeredEmail !== null ? (
+          <SignUpConfirmState email={registeredEmail} />
+        ) : (
+          <>
+            <Link href="/" className="self-start rounded-sm">
+              <Logo alt={tHome('footer.logoAlt')} height={26} />
+            </Link>
+            <h1 className="mt-5 text-2xl font-bold">{t('signUpTitle')}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{t('signUpSubtitle')}</p>
+            <GoogleButton className="mt-5 w-full" />
+            <div aria-hidden="true" className="my-4 flex items-center gap-3">
+              <Separator className="flex-1" />
+              <span className="text-xs text-muted-foreground">{t('orDivider')}</span>
+              <Separator className="flex-1" />
+            </div>
+            <SignUpForm onRegistered={setRegisteredEmail} />
+            <p className="mt-4 text-center text-sm text-muted-foreground">
+              {t('hasAccount')}{' '}
+              <Link
+                href="/sign-in"
+                className="font-semibold text-foreground underline-offset-4 transition-colors hover:underline"
+              >
+                {t('signInLink')}
+              </Link>
+            </p>
+          </>
+        )}
       </CardContent>
     </Card>
   );

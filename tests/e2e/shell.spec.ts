@@ -26,7 +26,9 @@ const NAV_MODEL = [
   { labelKey: 'Shell.nav.myChildren', href: '/dashboard/children', missing: true },
   { labelKey: 'Shell.nav.schoolSearch', href: '/dashboard/search/schools', missing: true },
   { labelKey: 'Shell.nav.agentSearch', href: '/dashboard/search/agents', missing: true },
-  { labelKey: 'Shell.nav.settings', href: '/dashboard/settings', missing: true },
+  // /dashboard/settings shipped in W3 (C-UI-AUTH-PAGES change-password page) —
+  // no longer a 404 leg; its content assertions live in that task's own spec.
+  { labelKey: 'Shell.nav.settings', href: '/dashboard/settings', missing: false },
 ] as const;
 
 // The vendored primitive (ui/ read-only) renders the fixed shell sidebar as

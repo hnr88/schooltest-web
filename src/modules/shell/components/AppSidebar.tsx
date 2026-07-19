@@ -39,7 +39,10 @@ function AppSidebar() {
       className="h-auto border-r border-sidebar-border max-md:hidden"
     >
       <SidebarHeader className="px-4 pt-6 pb-0">
-        <Link href="/dashboard" className="mb-5.5 self-start">
+        <Link
+          href="/dashboard"
+          className="mb-5.5 self-start rounded-md transition-opacity duration-200 ease-out hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
+        >
           <Logo alt={t('sidebar.logoAlt')} />
         </Link>
       </SidebarHeader>
