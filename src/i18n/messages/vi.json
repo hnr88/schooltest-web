@@ -220,9 +220,29 @@
     "offlineError": "You appear to be offline. Check your connection and try again.",
     "serverError": "Something went wrong on our side. Please try again.",
     "googleError": "Google sign-in did not complete. Please try again.",
+    "googleConnecting": "Connecting your Google account…",
     "loginSuccess": "Welcome back!",
     "registerSuccess": "Your account is ready. Welcome!",
-    "close": "Đóng"
+    "close": "Đóng",
+    "signUpMeta": {
+      "title": "Sign up — SchoolTest",
+      "description": "Create your SchoolTest parent account to add your students and follow their test progress."
+    },
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "yourusername",
+    "usernameTooShort": "Username must be at least 3 characters",
+    "usernameTooLong": "Username must be at most 20 characters",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordMismatch": "Passwords do not match",
+    "showConfirmPassword": "Show confirm password",
+    "hideConfirmPassword": "Hide confirm password",
+    "googleCallbackMeta": {
+      "title": "Connecting your account — SchoolTest",
+      "description": "Finishing your Google sign-in to SchoolTest."
+    }
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -235,7 +255,8 @@
     "notFoundDescription": "The link may be broken, or the test may have been deleted.",
     "backToDashboard": "Về trang chủ",
     "reportProblem": "Report a problem",
-    "errorDescription": "An unexpected error occurred while loading this page."
+    "errorDescription": "An unexpected error occurred while loading this page.",
+    "signOut": "Sign out"
   },
   "DesignSystem": {
     "meta": {
@@ -364,8 +385,10 @@
       "title": "Your students — SchoolTest",
       "description": "Add your students and follow their test progress."
     },
-    "title": "Trang chủ",
+    "title": "Học sinh của bạn",
     "subtitle": "Add your students and follow their test progress.",
+    "welcomeTitle": "Welcome back, {name}!",
+    "welcomeSubtitle": "You're signed in to your SchoolTest parent account.",
     "addStudent": "Thêm Học Sinh",
     "studentsEmptyTitle": "Chưa có học sinh",
     "studentsEmptySubtitle": "Thêm học sinh đầu tiên để bắt đầu xây dựng hồ sơ và nộp đơn vào trường.",
@@ -396,6 +419,8 @@
     "emailInvalid": "Enter a valid email address.",
     "nameRequired": "This field is required.",
     "yearLevelRequired": "Pick a year level.",
+    "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
+    "addStudentServerError": "Something went wrong on our side. Please try again.",
     "loading": "Loading your students…"
   }
 }

@@ -1,0 +1,183 @@
+import path from 'node:path';
+
+import { AxeBuilder } from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
+
+import { cat, loadMessages } from './helpers/i18n';
+import { watchErrors } from './helpers/ui';
+
+// Task 13 verification: /sign-up renders the DS card sibling to /sign-in (D10),
+// registers a fresh parent against the real api on :5500 (C-AUTH-REGISTER), the
+// taken-email/username error is translated+styled, and axe is clean. Assertions
+// derive from the message catalogs at runtime — no copy is duplicated here.
+const en = loadMessages('en');
+const zh = loadMessages('zh');
+const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
+const DESKTOP = { width: 1280, height: 800 };
+const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+
+function freshParent() {
+  const suffix = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  return {
+    username: `e2e${suffix}`.slice(0, 20),
+    email: `e2e-${suffix}@schooltest.local`,
+    password: 'Parent1234!',
+  };
+}
+
+test('en: renders the DS sign-up card structure, axe clean', async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.setViewportSize(DESKTOP);
+  await page.goto('/sign-up');
+
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    cat(en, 'Auth.signUpMeta.description'),
+  );
+  await expect(
+    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.signUpTitle') }),
+  ).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.signUpSubtitle'))).toBeVisible();
+
+  await expect(page.getByLabel(cat(en, 'Auth.usernameLabel'), { exact: true })).toBeVisible();
+  await expect(page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })).toBeVisible();
+  await expect(page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })).toBeVisible();
+  await expect(
+    page.getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }),
+  ).toHaveAttribute('aria-pressed', 'false');
+  await expect(
+    page.getByRole('button', { name: cat(en, 'Auth.showConfirmPassword'), exact: true }),
+  ).toHaveAttribute('aria-pressed', 'false');
+  await expect(
+    page.getByRole('button', { name: cat(en, 'Auth.signUpButton'), exact: true }),
+  ).toBeVisible();
+  const signIn = page.getByRole('link', { name: cat(en, 'Auth.signInLink'), exact: true });
+  await expect(signIn).toHaveAttribute('href', '/sign-in');
+
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-up-en.png') });
+
+  const results = await new AxeBuilder({ page }).analyze();
+  const blockers = results.violations.filter(
+    (violation) => violation.impact === 'serious' || violation.impact === 'critical',
+  );
+  expect(
+    blockers.map(
+      (violation) =>
+        `${violation.impact}:${violation.id} → ${violation.nodes.map((node) => node.target).join(' | ')}`,
+    ),
+    '/sign-up en',
+  ).toEqual([]);
+  expect(errors, errors.join('\n')).toEqual([]);
+});
+
+test('en: empty submit shows translated field validation, no api call', async ({ page }) => {
+  await page.goto('/sign-up');
+  await page.getByRole('button', { name: cat(en, 'Auth.signUpButton'), exact: true }).click();
+  await expect(page.getByText(cat(en, 'Auth.usernameTooShort'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.emailRequired'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.passwordTooShort'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.confirmPasswordRequired'))).toBeVisible();
+  const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
+  expect(token).toBeNull();
+});
+
+test('en: mismatched passwords render a client-side error, no api call', async ({ page }) => {
+  const parent = freshParent();
+  await page.goto('/sign-up');
+  await page.getByLabel(cat(en, 'Auth.usernameLabel'), { exact: true }).fill(parent.username);
+  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(parent.password);
+  await page
+    .getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true })
+    .fill('SomethingElse1!');
+  await page.getByRole('button', { name: cat(en, 'Auth.signUpButton'), exact: true }).click();
+  await expect(page.getByText(cat(en, 'Auth.passwordMismatch'))).toBeVisible();
+  await expect(page).toHaveURL(/\/sign-up$/);
+  const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
+  expect(token).toBeNull();
+});
+
+test('en: taken email/username renders the styled inline error (never a Strapi page)', async ({
+  page,
+}) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto('/sign-up');
+  await page.getByLabel(cat(en, 'Auth.usernameLabel'), { exact: true }).fill('parent');
+  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(PARENT.password);
+  await page
+    .getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true })
+    .fill(PARENT.password);
+  await page.getByRole('button', { name: cat(en, 'Auth.signUpButton'), exact: true }).click();
+
+  const alert = page.locator('[data-slot="alert"]');
+  await expect(alert).toBeVisible();
+  await expect(alert).toContainText(cat(en, 'Auth.takenError'));
+  await expect(page).toHaveURL(/\/sign-up$/);
+  const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
+  expect(token).toBeNull();
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-up-error.png') });
+});
+
+test('en: registering a fresh parent stores the JWT, lands on /dashboard, and the api assigns the parent role', async ({
+  page,
+}) => {
+  const parent = freshParent();
+  await page.goto('/sign-up');
+  await page.getByLabel(cat(en, 'Auth.usernameLabel'), { exact: true }).fill(parent.username);
+  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(parent.password);
+  await page
+    .getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true })
+    .fill(parent.password);
+  await page.getByRole('button', { name: cat(en, 'Auth.signUpButton'), exact: true }).click();
+
+  await page.waitForURL('**/dashboard');
+  await expect(
+    page.getByRole('heading', { level: 1, name: new RegExp(`Welcome back, ${parent.username}`) }),
+  ).toBeVisible();
+
+  const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
+  expect(token).toMatch(/^eyJ/);
+
+  // Real round trip against the running api (:5500) — proves the extension
+  // (task 08) really assigned the parent role, not just that the UI redirected.
+  const me = await page.evaluate(async (jwt) => {
+    const res = await fetch('http://localhost:5500/api/users/me', {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+    return res.json();
+  }, token);
+  expect(me.role?.type).toBe('parent');
+});
+
+test('en: an existing token redirects the card to /dashboard', async ({ context, page }) => {
+  await context.addInitScript(() => window.localStorage.setItem('app.auth.token', 'stub-jwt'));
+  await page.goto('/sign-up');
+  await page.waitForURL('**/dashboard');
+});
+
+test('zh: renders the Chinese sign-up card from the zh catalog', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ baseURL, viewport: DESKTOP });
+  await context.addCookies([
+    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? 'http://localhost:3100' },
+  ]);
+  const page = await context.newPage();
+  try {
+    await page.goto('/sign-up');
+    await expect(
+      page.getByRole('heading', { level: 1, name: cat(zh, 'Auth.signUpTitle') }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: cat(zh, 'Auth.signUpButton'), exact: true }),
+    ).toBeVisible();
+    await expect(page.getByLabel(cat(zh, 'Auth.usernameLabel'), { exact: true })).toBeVisible();
+    await expect(page.getByLabel(cat(zh, 'Auth.emailLabel'), { exact: true })).toBeVisible();
+    await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-up-zh.png') });
+  } finally {
+    await context.close();
+  }
+});

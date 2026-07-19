@@ -1,7 +1,7 @@
 import path from 'node:path';
 
 import { AxeBuilder } from '@axe-core/playwright';
-import { chromium, expect, test, type Browser } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
@@ -11,18 +11,9 @@ import { watchErrors } from './helpers/ui';
 // zh renders from its catalog, and axe is clean. Assertions derive from the
 // message catalogs at runtime — no copy is duplicated into this spec.
 //
-// CORS NOTE: the api's .env had FRONTEND_ORIGIN=http://localhost:3000 while this
-// instance's web app lives on :3100 (STACK.json), so browsers blocked the login
-// XHR. The .env is corrected to :3100 (task 12) but the running api picks it up
-// only on its next sanctioned restart (api RULES: restarts via the run task
-// only). Until then the two api round-trip tests below run in a chromium
-// launched with --disable-web-security: nothing is mocked — the api really
-// validates credentials and issues the real JWT; only the browser's CORS
-// enforcement (which the corrected api env will satisfy) is relaxed. After the
-// api restart, relaxedBrowser() can be dropped in favor of the default page.
-async function relaxedBrowser(): Promise<Browser> {
-  return chromium.launch({ args: ['--disable-web-security'] });
-}
+// The api's FRONTEND_ORIGIN is aligned to :3100 (this instance's web app) and the
+// api has picked it up via its sanctioned dev-server restart, so the real browser's
+// CORS enforcement passes against the real api round trip — no relaxed browser flags.
 const en = loadMessages('en');
 const zh = loadMessages('zh');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
@@ -94,51 +85,39 @@ test('en: empty submit shows translated field validation, no api call', async ({
 });
 
 test('en: wrong password renders the styled inline error (never a Strapi page)', async ({
-  baseURL,
+  page,
 }) => {
-  const browser = await relaxedBrowser();
-  const page = await browser.newPage({ baseURL, viewport: DESKTOP });
-  try {
-    await page.goto('/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(PARENT.email);
-    await page
-      .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-      .fill('WrongPass123!');
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.setViewportSize(DESKTOP);
+  await page.goto('/sign-in');
+  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill('WrongPass123!');
+  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
 
-    const alert = page.locator('[data-slot="alert"]');
-    await expect(alert).toBeVisible();
-    await expect(alert).toContainText(cat(en, 'Auth.loginError'));
-    await expect(page).toHaveURL(/\/sign-in$/);
-    const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
-    expect(token).toBeNull();
-    await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-error.png') });
-  } finally {
-    await browser.close();
-  }
+  const alert = page.locator('[data-slot="alert"]');
+  await expect(alert).toBeVisible();
+  await expect(alert).toContainText(cat(en, 'Auth.loginError'));
+  await expect(page).toHaveURL(/\/sign-in$/);
+  const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
+  expect(token).toBeNull();
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-error.png') });
 });
 
-test('en: seeded parent login stores the JWT and navigates to /dashboard', async ({
-  baseURL,
+test('en: seeded parent login stores the JWT and lands on a real /dashboard', async ({
+  page,
 }) => {
-  const browser = await relaxedBrowser();
-  const page = await browser.newPage({ baseURL });
-  try {
-    await page.goto('/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(PARENT.email);
-    await page
-      .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-      .fill(PARENT.password);
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.goto('/sign-in');
+  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(PARENT.password);
+  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
 
-    // /dashboard ships in task 15 — today it 404s after the push; what we prove here
-    // is the real JWT in localStorage (C-AUTH-LOGIN) plus the navigation attempt.
-    await page.waitForURL('**/dashboard');
-    const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
-    expect(token).toMatch(/^eyJ/);
-  } finally {
-    await browser.close();
-  }
+  // /dashboard (task 15) renders a real, guarded shell — not a 404 — and shows
+  // the authenticated parent's real username fetched from GET /api/users/me.
+  await page.waitForURL('**/dashboard');
+  await expect(
+    page.getByRole('heading', { level: 1, name: /Welcome back, parent/ }),
+  ).toBeVisible();
+  const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
+  expect(token).toMatch(/^eyJ/);
 });
 
 test('en: an existing token redirects the card to /dashboard', async ({ context, page }) => {

@@ -4,6 +4,12 @@ import path from 'node:path';
 import { expect, type Page } from '@playwright/test';
 
 export type Locale = 'en' | 'zh';
+// All 6 shipped catalogs (D17: en/zh/ko/ms/vi/th). `Locale` above stays 'en' | 'zh'
+// on purpose — several specs key `Record<Locale, Messages>` on exactly those two
+// and widening it would force them to carry all six. `loadMessages` accepts the
+// full set so any spec needing full-locale coverage (e.g. students-list) can load
+// ko/ms/th/vi without a second loader function.
+export type AnyLocale = 'en' | 'ko' | 'ms' | 'th' | 'vi' | 'zh';
 export type Messages = Record<string, string>;
 
 function flatten(node: Record<string, unknown>, prefix: string, out: Messages): Messages {
@@ -19,7 +25,7 @@ function flatten(node: Record<string, unknown>, prefix: string, out: Messages): 
 }
 
 /** Loads and flattens a locale catalog to dot keys (e.g. "Home.hero.subtitle"). */
-export function loadMessages(locale: Locale): Messages {
+export function loadMessages(locale: AnyLocale): Messages {
   const file = path.resolve(process.cwd(), 'src/i18n/messages', `${locale}.json`);
   const raw = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>;
   return flatten(raw, '', {});
