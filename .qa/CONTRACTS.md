@@ -198,3 +198,51 @@ details? } }` shape.
   the browser PushSubscription shape / `{ endpoint }`; owner is server-derived. SMS stays
   the existing honest Twilio-prepared server channel and is exercised through its real API
   dispatch path rather than a fabricated browser control.
+
+### C-UI-SHELL-NAV — sidebar and contextual dashboard header
+
+- Transport/persistence: no new HTTP operation. The existing `SidebarProvider` owns the
+  session-local expanded/collapsed state; navigation continues to use locale-aware links.
+- Desktop: the dark primary sidebar is `collapsible="icon"`, so an explicit desktop trigger
+  and the documented Ctrl/Cmd+B shortcut toggle it between full navigation and accessible
+  icon navigation. Mobile remains an off-canvas sheet controlled by the same trigger.
+- Header: the left region always renders a semantic breadcrumb ending in the current route plus
+  an H1-equivalent page title sourced from the locale catalog. The user menu remains on the
+  right. No route title, breadcrumb label, or navigation target may be hard-coded.
+- Errors: route metadata has an explicit dashboard fallback rather than an empty or broken
+  header. There is no persistence effect.
+
+### C-SEARCH-SCHOOLS — cover-media amendment
+
+- Transport/auth/request/pagination/error behavior remain unchanged for `POST /api/search/schools`.
+- Additive 200 item field: `coverImage` is either `null` or the strict media view
+  `{ url: non-empty string, alternativeText: string|null, width: positive integer|null,
+  height: positive integer|null }`. `url` is returned by the configured Strapi upload provider
+  and is populated explicitly from `school.coverImage`; no client path or stock-photo fallback
+  is permitted.
+- Persistence: `school.coverImage` is an optional single Strapi media relation. An absent
+  verified media relation remains `null`; the client then renders an honest metadata-based
+  identity tile, never a false photo. Existing real cover media is stored/read through the
+  upload plugin and survives a live API reload.
+
+### C-UI-CHILD-LEARNING-SURFACE — child list and individual learning dashboard
+
+- Transport: consumes the existing typed `C-STUDENT-LIST` and
+  `C-PARENT-CHILD-PROGRESS` operations without a client-side shape rewrite.
+- Presentation: the child list is a navigable profile collection. The individual route is a
+  distinct learning-progress surface, not a visual duplicate of the parent overview: profile
+  context, an activity/completion summary derived only from real session metrics, and a
+  chronological assessment-result stream. When no metrics or results exist, the UI states that
+  honestly rather than synthesizing a score, chart, or recommendation.
+- Errors/ownership/persistence: inherited unchanged from the two source contracts; the route
+  must retain foreign/not-found protection and show the same real data after reload.
+
+### C-UI-DASHBOARD-OVERVIEW — parent overview redesign
+
+- Transport: reads only the existing typed parent-owned student list/query. All totals, plan
+  readiness, and profile rows are derived from returned persisted student fields.
+- Presentation: the parent overview uses a distinct action-oriented composition from the child
+  learning route, with a contextual header, real profile summary, and links to the existing
+  Children/Search actions. No made-up activity, score, or notification count is rendered.
+- Errors/persistence: existing loading/error/retry behavior is retained; data remains visible
+  after a normal live reload.

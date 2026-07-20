@@ -513,6 +513,9 @@
     },
     "topbar": {
       "openNav": "Open navigation",
+      "toggleNav": "Toggle navigation",
+      "breadcrumbLabel": "Breadcrumb",
+      "dashboard": "Dashboard",
       "userMenuLabel": "Open user menu"
     },
     "userMenu": {

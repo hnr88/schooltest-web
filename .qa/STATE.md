@@ -44,7 +44,7 @@ from the authoritative STATE.json, task-by-task, with no additions ahead of it)
 ## UI polish + parent notifications board (2026-07-20)
 
 Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.md` through
-`41-*.md` · authoritative machine state: `STATE.json.ui_polish_20260720`.
+`45-*.md` · authoritative machine state: `STATE.json.ui_polish_20260720`.
 
 | # | Task | Depends | Status | Verify |
 |---|------|---------|--------|--------|
@@ -57,7 +57,11 @@ Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.m
 | 34 | Parent child progress API | 33 | DONE | PASS — live persisted API/security |
 | 35 | Child cards and profile metrics | 34 | DONE | PASS — live profile/card/archive/mobile/a11y 13/13 |
 | 36 | Separated settings tabs | 35 | DONE | PASS — live tabs/preferences/auth restore 3/3 |
-| 37 | In-app notification bell and feed | 36 | TODO | — |
+| 42 | Dark sidebar toggle + contextual header | 36 | DONE | PASS — live desktop/mobile/header/axe |
+| 43 | Search workspace + Strapi cover media | 42 | TODO | — |
+| 44 | My Children + learning dashboard redesign | 43 | TODO | — |
+| 45 | Parent dashboard overview redesign | 44 | TODO | — |
+| 37 | In-app notification bell and feed | 45 | TODO | — |
 | 38 | Notification preferences settings | 37 | TODO | — |
 | 39 | Browser push subscription | 38 | TODO | — |
 | 40 | Notification delivery and SMS preparation proof | 39 | TODO | — |

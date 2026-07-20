@@ -84,7 +84,7 @@ test.describe('shell axe — mobile (375)', () => {
     await expectAxeClean(page, 'shell /dashboard @ 375px', TABLE_SCROLL_EXEMPTION);
 
     await page
-      .getByRole('button', { name: cat(en, 'Shell.topbar.openNav'), exact: true })
+      .getByRole('button', { name: cat(en, 'Shell.topbar.toggleNav'), exact: true })
       .click();
     const sheet = page.getByRole('dialog');
     await expect(sheet).toBeVisible();

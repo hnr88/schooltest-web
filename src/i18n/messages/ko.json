@@ -513,6 +513,9 @@
     },
     "topbar": {
       "openNav": "내비게이션 열기",
+      "toggleNav": "내비게이션 전환",
+      "breadcrumbLabel": "탐색 경로",
+      "dashboard": "대시보드",
       "userMenuLabel": "사용자 메뉴 열기"
     },
     "userMenu": {

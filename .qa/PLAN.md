@@ -47,7 +47,7 @@ subscription and the existing SMS-preparation API.
 
 ## Complexity band
 
-MEDIUM — 14 thin vertical slices. The work crosses existing Next modules and two additive
+MEDIUM — 18 thin vertical slices. The work crosses existing Next modules and two additive
 Strapi read/config surfaces, while notifications already have real persisted backend models.
 The user explicitly requested no fan-out, so tasks are deliberately serialized. Every slice
 has an independent Playwright/API verifier before its status becomes DONE.
@@ -55,11 +55,12 @@ has an independent Playwright/API verifier before its status becomes DONE.
 ## DAG
 
 28:— · 29:28 · 30:29 · 31:30 · 32:31 · 33:32 · 34:33 · 35:34 ·
-36:35 · 37:36 · 38:37 · 39:38 · 40:39 · 41:40
+36:35 · 42:36 · 43:42 · 44:43 · 45:44 · 37:45 · 38:37 · 39:38 · 40:39 · 41:40
 
 ## Waves
 
 - W1: 28–33, visual fixes against existing live data.
 - W2: 34–35, parent-owned child progress contract and detail screen.
-- W3: 36–39, tabbed settings and notification/push user surfaces.
-- W4: 40–41, live delivery sweep, critic, and regression proof.
+- W3: 36, then 42–45, settings followed by the shell/search/children/dashboard visual repair.
+- W4: 37–39, notification/push user surfaces.
+- W5: 40–41, live delivery sweep, critic, and regression proof.

@@ -23,7 +23,7 @@ const MOBILE = { width: 375, height: 812 };
 // the dashboard layout (and with it the sidebar) does not wrap unmatched URLs.
 const NAV_MODEL = [
   { labelKey: 'Shell.nav.overview', href: '/dashboard', missing: false },
-  { labelKey: 'Shell.nav.myChildren', href: '/dashboard/children', missing: true },
+  { labelKey: 'Shell.nav.myChildren', href: '/dashboard/children', missing: false },
   // W7/038 collapsed the two standalone search legs (schoolSearch + agentSearch)
   // into ONE unified Search entry — /dashboard/search ships the C-UI-SEARCH-UNIFIED
   // screen, so this leg is no longer a 404.
@@ -102,6 +102,44 @@ test.describe('shell — desktop (1280)', () => {
     await page.screenshot({ path: path.join(SCREENSHOTS, 'shell-desktop.png'), fullPage: true });
   });
 
+  test('desktop navigation toggles to its branded icon rail and returns with Ctrl+B', async ({
+    page,
+  }) => {
+    await loginAsParent(page);
+    const aside = sidebar(page);
+    const trigger = page.getByRole('button', {
+      name: cat(en, 'Shell.topbar.toggleNav'),
+      exact: true,
+    });
+
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+    await expect(aside).toHaveCSS('width', '48px');
+    await expect(aside.getByRole('img', { name: cat(en, 'Shell.sidebar.logoAlt') })).toBeVisible();
+    await page.screenshot({ path: path.join(SCREENSHOTS, 'shell-desktop-collapsed.png') });
+    await expect(navLink(page, cat(en, 'Shell.nav.overview'))).toHaveAttribute(
+      'aria-label',
+      cat(en, 'Shell.nav.overview'),
+    );
+
+    await page.keyboard.press('Control+b');
+    await expect(aside).toHaveCSS('width', '248px');
+  });
+
+  test('header left side shows the current breadcrumb and title', async ({ page }) => {
+    await loginAsParent(page);
+    await page.goto('/dashboard/children');
+
+    const breadcrumb = page.getByRole('navigation', {
+      name: cat(en, 'Shell.topbar.breadcrumbLabel'),
+    });
+    await expect(breadcrumb).toContainText(cat(en, 'Shell.topbar.dashboard'));
+    await expect(breadcrumb).toContainText(cat(en, 'Shell.nav.myChildren'));
+    await expect(page.locator('[data-slot="topbar-page-title"]')).toHaveText(
+      cat(en, 'Shell.nav.myChildren'),
+    );
+  });
+
   test('each nav link lands on its contract URL; 404 routes never bounce the session', async ({
     page,
   }) => {
@@ -153,7 +191,7 @@ test.describe('shell — mobile (375, Sheet nav)', () => {
     await loginAsParent(page);
     await expect(sidebar(page)).toBeHidden();
     const trigger = page.getByRole('button', {
-      name: cat(en, 'Shell.topbar.openNav'),
+      name: cat(en, 'Shell.topbar.toggleNav'),
       exact: true,
     });
     await expect(trigger).toBeVisible();

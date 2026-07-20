@@ -513,6 +513,9 @@
     },
     "topbar": {
       "openNav": "เปิดเมนูนำทาง",
+      "toggleNav": "สลับการนำทาง",
+      "breadcrumbLabel": "เส้นทางการนำทาง",
+      "dashboard": "แดชบอร์ด",
       "userMenuLabel": "เปิดเมนูผู้ใช้"
     },
     "userMenu": {

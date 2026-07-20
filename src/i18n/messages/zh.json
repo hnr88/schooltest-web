@@ -513,6 +513,9 @@
     },
     "topbar": {
       "openNav": "打开导航",
+      "toggleNav": "切换导航",
+      "breadcrumbLabel": "导航路径",
+      "dashboard": "控制面板",
       "userMenuLabel": "打开用户菜单"
     },
     "userMenu": {

@@ -526,7 +526,7 @@
   "ui_polish_20260720": {
     "contracts_file": ".qa/CONTRACTS.md",
     "mission": "Requested UI polish, child detail metrics, settings tabs, and notification web surfaces",
-    "updated_at": "2026-07-20T19:15:06.000Z",
+    "updated_at": "2026-07-20T19:47:00.000Z",
     "tasks": [
       {
         "id": "28",
@@ -663,7 +663,52 @@
           "evidence": "settings-tabs.spec.ts passed 3/3 against live web :3100 and API :5500: URL-addressable/keyboard Auth, Search and Children tabs; real search-preference PUT persisted through reload and was restored; a live auth-tab password POST 200 was restored through the authenticated API on a dedicated seeded parent account, then its original password login was re-proven. tsc 0 errors; lint 0 errors with one known unrelated warning."
         }
       },
-      { "id": "37", "file": ".thellmspace/tasks/37-notification-bell-feed.md", "title": "In-app notification bell and feed", "layer": "frontend", "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"], "depends_on": ["36"], "status": "TODO", "started_at": null },
+      {
+        "id": "42",
+        "file": ".thellmspace/tasks/42-sidebar-contextual-header.md",
+        "title": "Restore collapsible dark navigation and contextual dashboard header",
+        "layer": "ui",
+        "contract": ["C-UI-SHELL-NAV"],
+        "depends_on": ["36"],
+        "status": "DONE",
+        "started_at": 1784575920,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential live browser and axe verification",
+          "evidence": "shell.spec.ts 6/6 passed against live web :3100/API :5500: desktop trigger collapsed 248px to 48px with visible brand mark and accessible icon links; Ctrl+B restored; mobile sheet still opened/closed; Dashboard breadcrumb/current title rendered in the left header. shell-a11y.spec.ts 2/2 passed with zero serious/critical violations. tsc 0 errors; lint 0 errors with one known unrelated warning; six-locale parity and diff check clean."
+        }
+      },
+      {
+        "id": "43",
+        "file": ".thellmspace/tasks/43-school-search-layout-media.md",
+        "title": "Rebuild school search layout with persistent filters and Strapi cover media",
+        "layer": "integration",
+        "contract": ["C-SEARCH-SCHOOLS"],
+        "depends_on": ["42"],
+        "status": "TODO",
+        "started_at": null
+      },
+      {
+        "id": "44",
+        "file": ".thellmspace/tasks/44-children-learning-dashboard.md",
+        "title": "Redesign My Children and the individual learning dashboard",
+        "layer": "frontend",
+        "contract": ["C-STUDENT-LIST", "C-PARENT-CHILD-PROGRESS", "C-UI-CHILD-LEARNING-SURFACE"],
+        "depends_on": ["43"],
+        "status": "TODO",
+        "started_at": null
+      },
+      {
+        "id": "45",
+        "file": ".thellmspace/tasks/45-dashboard-overview-redesign.md",
+        "title": "Redesign the parent dashboard overview around real child context",
+        "layer": "frontend",
+        "contract": ["C-STUDENT-LIST", "C-UI-DASHBOARD-OVERVIEW"],
+        "depends_on": ["44"],
+        "status": "TODO",
+        "started_at": null
+      },
+      { "id": "37", "file": ".thellmspace/tasks/37-notification-bell-feed.md", "title": "In-app notification bell and feed", "layer": "frontend", "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"], "depends_on": ["45"], "status": "TODO", "started_at": null },
       { "id": "38", "file": ".thellmspace/tasks/38-notification-preferences.md", "title": "Notification preferences settings", "layer": "frontend", "contract": ["C-PREF-GET", "C-PREF-UPDATE"], "depends_on": ["37"], "status": "TODO", "started_at": null },
       { "id": "39", "file": ".thellmspace/tasks/39-browser-push-subscription.md", "title": "Browser push subscription", "layer": "integration", "contract": ["C-PUSH-VAPID-CONFIG", "C-PUSH-SUBSCRIBE", "C-PUSH-UNSUBSCRIBE"], "depends_on": ["38"], "status": "TODO", "started_at": null },
       { "id": "40", "file": ".thellmspace/tasks/40-notification-delivery-e2e.md", "title": "Notification delivery and SMS preparation proof", "layer": "integration", "contract": ["C-NOTIF-EVENTS", "C-PUSH-SUBSCRIBE"], "depends_on": ["39"], "status": "TODO", "started_at": null },

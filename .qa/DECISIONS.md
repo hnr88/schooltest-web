@@ -309,9 +309,9 @@ instead, not deleted and not a fake pass.
 - Scope is exactly the user-requested auth/search/sidebar/children/settings/notifications
   work. Existing school and agent APIs already return real data, so presentation work does
   not invent duplicate search endpoints or data fields.
-- School records have no verified individual image field. School cards may use the existing
-  product-owned decorative `/brand/hero-field.webp` with empty alt text; it is not labelled
-  or implied to be a photograph of a specific school.
+- School records have no verified individual image field. The previous decorative local photo
+  is not an acceptable school-card fallback; the next school-search slice adds an explicit
+  Strapi media relation and renders an honest identity tile while a verified relation is absent.
 - Existing child records, sessions, results, notification preferences, notifications and push
   subscriptions persist in the live PostgreSQL datastore. New child-progress and VAPID-public
   key read surfaces are additive, parent-scoped contracts; no seed, mock or fallback data is
@@ -319,3 +319,16 @@ instead, not deleted and not a fake pass.
 - The currently running local stack is reused: web `:3100`, API `:5500`, PostgreSQL `:5540`,
   Mailpit `:8125`. Project rules prohibit starting development/build servers; verification
   targets these live services.
+
+## 2026-07-20 D29 — UI repair research and hierarchy
+
+- Current shadcn sidebar guidance confirms the installed primitive's intended model: a
+  `SidebarProvider` plus `SidebarTrigger`, with `collapsible="icon"` for a desktop icon rail
+  and the same trigger/keyboard shortcut for mobile off-canvas navigation. Task 42 uses that
+  mechanism instead of a custom sidebar state machine.
+- The dashboard repair follows current parent/student progress patterns: parent overview and
+  individual child learning progress must be separate information architectures, with an
+  activity/completion summary and chronological assessment results only where backed by actual
+  data. This prevents a generic duplicated card wall and avoids inventing scores.
+- The desktop school search will use a persistent filter rail, result list and map workspace;
+  mobile retains a constrained sheet. This replaces the desktop dropdown as requested.

@@ -513,6 +513,9 @@
     },
     "topbar": {
       "openNav": "Buka navigasi",
+      "toggleNav": "Togol navigasi",
+      "breadcrumbLabel": "Jejak navigasi",
+      "dashboard": "Papan pemuka",
       "userMenuLabel": "Buka menu pengguna"
     },
     "userMenu": {

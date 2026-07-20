@@ -513,6 +513,9 @@
     },
     "topbar": {
       "openNav": "Mở điều hướng",
+      "toggleNav": "Chuyển điều hướng",
+      "breadcrumbLabel": "Đường dẫn điều hướng",
+      "dashboard": "Bảng điều khiển",
       "userMenuLabel": "Mở menu người dùng"
     },
     "userMenu": {

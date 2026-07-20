@@ -26,7 +26,7 @@ const MENU_BUTTON_CLASSES =
 
 function AppSidebar() {
   const pathname = usePathname();
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { setOpenMobile } = useSidebar();
   const t = useTranslations('Shell');
 
   // collapsible="none" returns before the primitive's isMobile Sheet branch, so
@@ -34,36 +34,50 @@ function AppSidebar() {
   // frame (isMobile is false until the media query subscribes).
   return (
     <Sidebar
-      collapsible={isMobile ? 'offcanvas' : 'none'}
+      collapsible="icon"
       className="dark h-svh shrink-0 border-r border-sidebar-border max-md:hidden"
     >
-      <SidebarHeader className="shrink-0 px-4 pt-6 pb-0">
+      <SidebarHeader className="shrink-0 px-4 pt-6 pb-0 group-data-[collapsible=icon]:px-2">
         <Link
           href="/dashboard"
-          className="mb-5.5 self-start rounded-md transition-opacity duration-200 ease-out hover:opacity-80 focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:outline-none motion-reduce:transition-none"
+          className="mb-5.5 self-start rounded-md transition-opacity duration-200 ease-out hover:opacity-80 focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:outline-none motion-reduce:transition-none group-data-[collapsible=icon]:mb-4"
         >
-          <Logo theme="white" alt={t('sidebar.logoAlt')} />
+          <Logo
+            theme="white"
+            alt={t('sidebar.logoAlt')}
+            className="group-data-[collapsible=icon]:hidden"
+          />
+          <Logo
+            variant="mark"
+            theme="white"
+            alt={t('sidebar.logoAlt')}
+            className="hidden group-data-[collapsible=icon]:block"
+          />
         </Link>
       </SidebarHeader>
-      <SidebarContent className="overscroll-contain px-4">
+      <SidebarContent className="overscroll-contain px-4 group-data-[collapsible=icon]:px-2">
         <nav>
           <SidebarMenu className="gap-1.5">
             {NAV_ITEMS.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   isActive={isNavItemActive(pathname, item)}
+                  tooltip={t(`nav.${item.labelKey}`)}
+                  aria-label={t(`nav.${item.labelKey}`)}
                   className={MENU_BUTTON_CLASSES}
                   render={<Link href={item.href} onClick={() => setOpenMobile(false)} />}
                 >
                   <item.icon aria-hidden="true" strokeWidth={2} />
-                  <span>{t(`nav.${item.labelKey}`)}</span>
+                  <span className="group-data-[collapsible=icon]:hidden">
+                    {t(`nav.${item.labelKey}`)}
+                  </span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
         </nav>
       </SidebarContent>
-      <SidebarFooter className="mt-auto shrink-0 px-4 pt-0 pb-6" />
+      <SidebarFooter className="mt-auto shrink-0 px-4 pt-0 pb-6 group-data-[collapsible=icon]:px-2" />
     </Sidebar>
   );
 }
