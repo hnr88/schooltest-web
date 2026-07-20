@@ -654,5 +654,114 @@
       "title": "搜索 — SchoolTest",
       "description": "在一处统一搜索澳大利亚学校和留学中介。"
     }
+  },
+  "StudentWizard": {
+    "meta": {
+      "title": "添加学生 — SchoolTest",
+      "description": "通过五个引导步骤将学生添加到您的 SchoolTest 账户。"
+    },
+    "back": "返回",
+    "continue": "继续",
+    "createStudent": "创建学生",
+    "saveChanges": "保存更改",
+    "stepPlaceholder": "此步骤的字段将在后续环节中添加。",
+    "stepCaption": "第 {current} 步，共 {total} 步 · {title}",
+    "steps": {
+      "personal": {
+        "label": "个人",
+        "title": "个人信息"
+      },
+      "education": {
+        "label": "教育",
+        "title": "教育情况"
+      },
+      "guardian": {
+        "label": "监护人",
+        "title": "家长或监护人"
+      },
+      "media": {
+        "label": "媒体",
+        "title": "照片和语音"
+      },
+      "review": {
+        "label": "核对",
+        "title": "核对并提交"
+      }
+    },
+    "personal": {
+      "givenName": "名字",
+      "givenNamePlaceholder": "例如 Mia",
+      "familyName": "姓氏",
+      "familyNamePlaceholder": "例如 Chen",
+      "email": "电子邮箱",
+      "emailPlaceholder": "student@example.com",
+      "dateOfBirth": "出生日期",
+      "gender": {
+        "label": "性别",
+        "male": "男",
+        "female": "女",
+        "other": "其他",
+        "prefer_not_to_say": "不愿透露"
+      },
+      "nationality": "国籍",
+      "nationalityPlaceholder": "搜索国家/地区…",
+      "nationalityEmpty": "未找到匹配的国家/地区。",
+      "passportNumber": "护照号码",
+      "passportPlaceholder": "例如 E12345678",
+      "passportHelper": "可选 —— 学校将用于入学材料。"
+    },
+    "education": {
+      "currentSchool": "就读学校",
+      "currentSchoolPlaceholder": "例如：橡木小学",
+      "currentYearLevel": "当前年级",
+      "currentYearLevelPlaceholder": "选择当前年级",
+      "yearLevel": "考试年级（7–12）",
+      "yearLevelPlaceholder": "选择考试年级",
+      "yearLevelHelper": "SchoolTest 考试年级 — 与在校年级不同。",
+      "targetEntryYear": "目标入学年份",
+      "targetEntryYearPlaceholder": "选择年份",
+      "targetEntryTerm": "目标入学学期",
+      "prep": "学前班",
+      "yearOption": "{n}年级",
+      "term": "第 {n} 学期"
+    },
+    "guardian": {
+      "name": "家长或监护人姓名",
+      "namePlaceholder": "例如：陈伟",
+      "phone": "电话",
+      "phonePlaceholder": "+44 7700 900000",
+      "email": "邮箱",
+      "emailPlaceholder": "guardian@example.com",
+      "wechat": "微信号",
+      "wechatPlaceholder": "例如：wei_chen88",
+      "preferredContact": "首选联系方式",
+      "channel": {
+        "whatsapp": "WhatsApp",
+        "wechat": "微信",
+        "email": "邮箱",
+        "sms": "短信"
+      }
+    }
+  },
+  "StudentWizardSchema": {
+    "givenNameRequired": "请填写名字",
+    "givenNameTooLong": "名字过长",
+    "familyNameRequired": "请填写姓氏",
+    "familyNameTooLong": "姓氏过长",
+    "emailInvalid": "请输入有效的电子邮箱",
+    "dobInvalid": "请输入有效的出生日期",
+    "nationalityRequired": "请填写国籍",
+    "nationalityTooLong": "国籍过长",
+    "passportTooLong": "护照号码过长",
+    "currentSchoolTooLong": "学校名称过长",
+    "yearLevelInvalid": "请选择 7 至 12 之间的年级",
+    "targetYearRequired": "请填写目标入学年份",
+    "targetYearInvalid": "请输入有效的四位数年份",
+    "termRequired": "请选择目标入学学期",
+    "guardianNameRequired": "请填写监护人姓名",
+    "guardianNameTooLong": "监护人姓名过长",
+    "guardianPhoneRequired": "请填写监护人电话",
+    "guardianPhoneTooLong": "监护人电话过长",
+    "wechatTooLong": "微信号过长"
   }
 }

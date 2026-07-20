@@ -654,5 +654,114 @@
       "title": "검색 — SchoolTest",
       "description": "호주 학교와 유학원을 하나의 통합 검색에서 찾아보세요."
     }
+  },
+  "StudentWizard": {
+    "meta": {
+      "title": "학생 추가 — SchoolTest",
+      "description": "다섯 단계의 안내에 따라 SchoolTest 계정에 학생을 추가하세요."
+    },
+    "back": "뒤로",
+    "continue": "계속",
+    "createStudent": "학생 등록",
+    "saveChanges": "변경 사항 저장",
+    "stepPlaceholder": "이 단계의 입력 항목은 다음 단계에서 추가됩니다.",
+    "stepCaption": "{total}단계 중 {current}단계 · {title}",
+    "steps": {
+      "personal": {
+        "label": "인적사항",
+        "title": "인적사항"
+      },
+      "education": {
+        "label": "학력",
+        "title": "학력"
+      },
+      "guardian": {
+        "label": "보호자",
+        "title": "부모 또는 보호자"
+      },
+      "media": {
+        "label": "미디어",
+        "title": "사진 및 음성"
+      },
+      "review": {
+        "label": "검토",
+        "title": "검토 및 제출"
+      }
+    },
+    "personal": {
+      "givenName": "이름",
+      "givenNamePlaceholder": "예: Mia",
+      "familyName": "성",
+      "familyNamePlaceholder": "예: Chen",
+      "email": "이메일",
+      "emailPlaceholder": "student@example.com",
+      "dateOfBirth": "생년월일",
+      "gender": {
+        "label": "성별",
+        "male": "남성",
+        "female": "여성",
+        "other": "기타",
+        "prefer_not_to_say": "밝히지 않음"
+      },
+      "nationality": "국적",
+      "nationalityPlaceholder": "국가 검색…",
+      "nationalityEmpty": "일치하는 국가가 없습니다.",
+      "passportNumber": "여권 번호",
+      "passportPlaceholder": "예: E12345678",
+      "passportHelper": "선택 사항 — 학교에서 입학 서류에 사용합니다."
+    },
+    "education": {
+      "currentSchool": "재학 중인 학교",
+      "currentSchoolPlaceholder": "예: 오크우드 초등학교",
+      "currentYearLevel": "현재 학년",
+      "currentYearLevelPlaceholder": "현재 학년 선택",
+      "yearLevel": "시험 학년 (7–12)",
+      "yearLevelPlaceholder": "시험 학년 선택",
+      "yearLevelHelper": "SchoolTest 시험 학년대 — 재학 학년과는 별개입니다.",
+      "targetEntryYear": "목표 입학 연도",
+      "targetEntryYearPlaceholder": "연도 선택",
+      "targetEntryTerm": "목표 입학 학기",
+      "prep": "예비 학년",
+      "yearOption": "{n}학년",
+      "term": "{n}학기"
+    },
+    "guardian": {
+      "name": "부모 또는 보호자 이름",
+      "namePlaceholder": "예: 첸 웨이",
+      "phone": "전화번호",
+      "phonePlaceholder": "+44 7700 900000",
+      "email": "이메일",
+      "emailPlaceholder": "guardian@example.com",
+      "wechat": "위챗 ID",
+      "wechatPlaceholder": "예: wei_chen88",
+      "preferredContact": "선호하는 연락 수단",
+      "channel": {
+        "whatsapp": "WhatsApp",
+        "wechat": "위챗",
+        "email": "이메일",
+        "sms": "문자"
+      }
+    }
+  },
+  "StudentWizardSchema": {
+    "givenNameRequired": "이름을 입력하세요",
+    "givenNameTooLong": "이름이 너무 깁니다",
+    "familyNameRequired": "성을 입력하세요",
+    "familyNameTooLong": "성이 너무 깁니다",
+    "emailInvalid": "유효한 이메일 주소를 입력하세요",
+    "dobInvalid": "유효한 생년월일을 입력하세요",
+    "nationalityRequired": "국적을 입력하세요",
+    "nationalityTooLong": "국적이 너무 깁니다",
+    "passportTooLong": "여권 번호가 너무 깁니다",
+    "currentSchoolTooLong": "학교 이름이 너무 깁니다",
+    "yearLevelInvalid": "7~12학년 중에서 선택하세요",
+    "targetYearRequired": "목표 입학 연도를 입력하세요",
+    "targetYearInvalid": "유효한 네 자리 연도를 입력하세요",
+    "termRequired": "목표 입학 학기를 선택하세요",
+    "guardianNameRequired": "보호자 이름을 입력하세요",
+    "guardianNameTooLong": "보호자 이름이 너무 깁니다",
+    "guardianPhoneRequired": "보호자 전화번호를 입력하세요",
+    "guardianPhoneTooLong": "보호자 전화번호가 너무 깁니다",
+    "wechatTooLong": "위챗 ID가 너무 깁니다"
   }
 }

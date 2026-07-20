@@ -654,5 +654,114 @@
       "title": "Carian — SchoolTest",
       "description": "Cari sekolah Australia dan ejen pendidikan dalam satu carian bersatu."
     }
+  },
+  "StudentWizard": {
+    "meta": {
+      "title": "Tambah pelajar — SchoolTest",
+      "description": "Tambah pelajar ke akaun SchoolTest anda melalui lima langkah berpandu."
+    },
+    "back": "Kembali",
+    "continue": "Teruskan",
+    "createStudent": "Cipta pelajar",
+    "saveChanges": "Simpan perubahan",
+    "stepPlaceholder": "Medan langkah ini akan ditambah dalam bahagian akan datang.",
+    "stepCaption": "Langkah {current} daripada {total} · {title}",
+    "steps": {
+      "personal": {
+        "label": "Peribadi",
+        "title": "Butiran peribadi"
+      },
+      "education": {
+        "label": "Pendidikan",
+        "title": "Pendidikan"
+      },
+      "guardian": {
+        "label": "Penjaga",
+        "title": "Ibu bapa atau penjaga"
+      },
+      "media": {
+        "label": "Media",
+        "title": "Foto & suara"
+      },
+      "review": {
+        "label": "Semak",
+        "title": "Semak & hantar"
+      }
+    },
+    "personal": {
+      "givenName": "Nama pertama",
+      "givenNamePlaceholder": "cth. Mia",
+      "familyName": "Nama keluarga",
+      "familyNamePlaceholder": "cth. Chen",
+      "email": "E-mel",
+      "emailPlaceholder": "student@example.com",
+      "dateOfBirth": "Tarikh lahir",
+      "gender": {
+        "label": "Jantina",
+        "male": "Lelaki",
+        "female": "Perempuan",
+        "other": "Lain-lain",
+        "prefer_not_to_say": "Tidak mahu nyatakan"
+      },
+      "nationality": "Kewarganegaraan",
+      "nationalityPlaceholder": "Cari negara…",
+      "nationalityEmpty": "Tiada negara sepadan.",
+      "passportNumber": "Nombor pasport",
+      "passportPlaceholder": "cth. E12345678",
+      "passportHelper": "Pilihan — sekolah menggunakannya untuk dokumen pendaftaran."
+    },
+    "education": {
+      "currentSchool": "Sekolah semasa",
+      "currentSchoolPlaceholder": "cth. Sekolah Rendah Oakwood",
+      "currentYearLevel": "Tahap tahun semasa",
+      "currentYearLevelPlaceholder": "Pilih tahun semasa",
+      "yearLevel": "Tahap tahun ujian (7–12)",
+      "yearLevelPlaceholder": "Pilih tahun ujian",
+      "yearLevelHelper": "Jalur ujian SchoolTest — berasingan daripada tahun persekolahan.",
+      "targetEntryYear": "Tahun kemasukan sasaran",
+      "targetEntryYearPlaceholder": "Pilih tahun",
+      "targetEntryTerm": "Penggal kemasukan sasaran",
+      "prep": "Prasekolah",
+      "yearOption": "Tahun {n}",
+      "term": "Penggal {n}"
+    },
+    "guardian": {
+      "name": "Nama ibu bapa atau penjaga",
+      "namePlaceholder": "cth. Wei Chen",
+      "phone": "Telefon",
+      "phonePlaceholder": "+44 7700 900000",
+      "email": "E-mel",
+      "emailPlaceholder": "guardian@example.com",
+      "wechat": "ID WeChat",
+      "wechatPlaceholder": "cth. wei_chen88",
+      "preferredContact": "Saluran hubungan pilihan",
+      "channel": {
+        "whatsapp": "WhatsApp",
+        "wechat": "WeChat",
+        "email": "E-mel",
+        "sms": "SMS"
+      }
+    }
+  },
+  "StudentWizardSchema": {
+    "givenNameRequired": "Nama pertama diperlukan",
+    "givenNameTooLong": "Nama pertama terlalu panjang",
+    "familyNameRequired": "Nama keluarga diperlukan",
+    "familyNameTooLong": "Nama keluarga terlalu panjang",
+    "emailInvalid": "Masukkan alamat e-mel yang sah",
+    "dobInvalid": "Masukkan tarikh lahir yang sah",
+    "nationalityRequired": "Kewarganegaraan diperlukan",
+    "nationalityTooLong": "Kewarganegaraan terlalu panjang",
+    "passportTooLong": "Nombor pasport terlalu panjang",
+    "currentSchoolTooLong": "Nama sekolah terlalu panjang",
+    "yearLevelInvalid": "Pilih tahap tahun antara 7 dan 12",
+    "targetYearRequired": "Tahun kemasukan sasaran diperlukan",
+    "targetYearInvalid": "Masukkan tahun empat digit yang sah",
+    "termRequired": "Pilih penggal kemasukan sasaran",
+    "guardianNameRequired": "Nama penjaga diperlukan",
+    "guardianNameTooLong": "Nama penjaga terlalu panjang",
+    "guardianPhoneRequired": "Telefon penjaga diperlukan",
+    "guardianPhoneTooLong": "Telefon penjaga terlalu panjang",
+    "wechatTooLong": "ID WeChat terlalu panjang"
   }
 }

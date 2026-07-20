@@ -654,5 +654,114 @@
       "title": "Search — SchoolTest",
       "description": "Search Australian schools and education agents from one unified search."
     }
+  },
+  "StudentWizard": {
+    "meta": {
+      "title": "Add a student — SchoolTest",
+      "description": "Add a student to your SchoolTest account across five guided steps."
+    },
+    "back": "Back",
+    "continue": "Continue",
+    "createStudent": "Create student",
+    "saveChanges": "Save changes",
+    "stepPlaceholder": "This step's fields are added in an upcoming slice.",
+    "stepCaption": "Step {current} of {total} · {title}",
+    "steps": {
+      "personal": {
+        "label": "Personal",
+        "title": "Personal details"
+      },
+      "education": {
+        "label": "Education",
+        "title": "Education"
+      },
+      "guardian": {
+        "label": "Guardian",
+        "title": "Parent or guardian"
+      },
+      "media": {
+        "label": "Media",
+        "title": "Photo & voice"
+      },
+      "review": {
+        "label": "Review",
+        "title": "Review & submit"
+      }
+    },
+    "personal": {
+      "givenName": "Given name",
+      "givenNamePlaceholder": "e.g. Mia",
+      "familyName": "Family name",
+      "familyNamePlaceholder": "e.g. Chen",
+      "email": "Email",
+      "emailPlaceholder": "student@example.com",
+      "dateOfBirth": "Date of birth",
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "other": "Other",
+        "prefer_not_to_say": "Prefer not to say"
+      },
+      "nationality": "Nationality",
+      "nationalityPlaceholder": "Search countries…",
+      "nationalityEmpty": "No matching country.",
+      "passportNumber": "Passport number",
+      "passportPlaceholder": "e.g. E12345678",
+      "passportHelper": "Optional — schools use this for enrolment paperwork."
+    },
+    "education": {
+      "currentSchool": "Current school",
+      "currentSchoolPlaceholder": "e.g. Oakwood Primary",
+      "currentYearLevel": "Current year level",
+      "currentYearLevelPlaceholder": "Select current year",
+      "yearLevel": "Test year level (7–12)",
+      "yearLevelPlaceholder": "Select test year",
+      "yearLevelHelper": "The SchoolTest testing band — separate from the school year.",
+      "targetEntryYear": "Target entry year",
+      "targetEntryYearPlaceholder": "Select a year",
+      "targetEntryTerm": "Target entry term",
+      "prep": "Prep",
+      "yearOption": "Year {n}",
+      "term": "Term {n}"
+    },
+    "guardian": {
+      "name": "Parent or guardian name",
+      "namePlaceholder": "e.g. Wei Chen",
+      "phone": "Phone",
+      "phonePlaceholder": "+44 7700 900000",
+      "email": "Email",
+      "emailPlaceholder": "guardian@example.com",
+      "wechat": "WeChat ID",
+      "wechatPlaceholder": "e.g. wei_chen88",
+      "preferredContact": "Preferred contact channel",
+      "channel": {
+        "whatsapp": "WhatsApp",
+        "wechat": "WeChat",
+        "email": "Email",
+        "sms": "SMS"
+      }
+    }
+  },
+  "StudentWizardSchema": {
+    "givenNameRequired": "First name is required",
+    "givenNameTooLong": "First name is too long",
+    "familyNameRequired": "Last name is required",
+    "familyNameTooLong": "Last name is too long",
+    "emailInvalid": "Enter a valid email address",
+    "dobInvalid": "Enter a valid date of birth",
+    "nationalityRequired": "Nationality is required",
+    "nationalityTooLong": "Nationality is too long",
+    "passportTooLong": "Passport number is too long",
+    "currentSchoolTooLong": "School name is too long",
+    "yearLevelInvalid": "Select a year level between 7 and 12",
+    "targetYearRequired": "Target entry year is required",
+    "targetYearInvalid": "Enter a valid four-digit year",
+    "termRequired": "Select a target entry term",
+    "guardianNameRequired": "Guardian name is required",
+    "guardianNameTooLong": "Guardian name is too long",
+    "guardianPhoneRequired": "Guardian phone is required",
+    "guardianPhoneTooLong": "Guardian phone is too long",
+    "wechatTooLong": "WeChat ID is too long"
   }
 }

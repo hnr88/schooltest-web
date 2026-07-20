@@ -654,5 +654,114 @@
       "title": "ค้นหา — SchoolTest",
       "description": "ค้นหาโรงเรียนในออสเตรเลียและตัวแทนการศึกษาในการค้นหาเดียว"
     }
+  },
+  "StudentWizard": {
+    "meta": {
+      "title": "เพิ่มนักเรียน — SchoolTest",
+      "description": "เพิ่มนักเรียนเข้าบัญชี SchoolTest ของคุณผ่านห้าขั้นตอนแบบมีคำแนะนำ"
+    },
+    "back": "ย้อนกลับ",
+    "continue": "ดำเนินการต่อ",
+    "createStudent": "สร้างนักเรียน",
+    "saveChanges": "บันทึกการเปลี่ยนแปลง",
+    "stepPlaceholder": "ฟิลด์ของขั้นตอนนี้จะถูกเพิ่มในส่วนถัดไป",
+    "stepCaption": "ขั้นตอนที่ {current} จาก {total} · {title}",
+    "steps": {
+      "personal": {
+        "label": "ส่วนตัว",
+        "title": "ข้อมูลส่วนตัว"
+      },
+      "education": {
+        "label": "การศึกษา",
+        "title": "การศึกษา"
+      },
+      "guardian": {
+        "label": "ผู้ปกครอง",
+        "title": "บิดามารดาหรือผู้ปกครอง"
+      },
+      "media": {
+        "label": "สื่อ",
+        "title": "รูปภาพและเสียง"
+      },
+      "review": {
+        "label": "ตรวจสอบ",
+        "title": "ตรวจสอบและส่ง"
+      }
+    },
+    "personal": {
+      "givenName": "ชื่อ",
+      "givenNamePlaceholder": "เช่น Mia",
+      "familyName": "นามสกุล",
+      "familyNamePlaceholder": "เช่น Chen",
+      "email": "อีเมล",
+      "emailPlaceholder": "student@example.com",
+      "dateOfBirth": "วันเกิด",
+      "gender": {
+        "label": "เพศ",
+        "male": "ชาย",
+        "female": "หญิง",
+        "other": "อื่น ๆ",
+        "prefer_not_to_say": "ไม่ต้องการระบุ"
+      },
+      "nationality": "สัญชาติ",
+      "nationalityPlaceholder": "ค้นหาประเทศ…",
+      "nationalityEmpty": "ไม่พบประเทศที่ตรงกัน",
+      "passportNumber": "หมายเลขหนังสือเดินทาง",
+      "passportPlaceholder": "เช่น E12345678",
+      "passportHelper": "ไม่บังคับ — โรงเรียนใช้สำหรับเอกสารการรับสมัคร"
+    },
+    "education": {
+      "currentSchool": "โรงเรียนปัจจุบัน",
+      "currentSchoolPlaceholder": "เช่น โรงเรียนประถมโอ๊ควูด",
+      "currentYearLevel": "ระดับชั้นปัจจุบัน",
+      "currentYearLevelPlaceholder": "เลือกระดับชั้นปัจจุบัน",
+      "yearLevel": "ระดับชั้นทดสอบ (7–12)",
+      "yearLevelPlaceholder": "เลือกระดับชั้นทดสอบ",
+      "yearLevelHelper": "ช่วงชั้นทดสอบของ SchoolTest — แยกจากชั้นเรียนในโรงเรียน",
+      "targetEntryYear": "ปีที่ต้องการเข้าเรียน",
+      "targetEntryYearPlaceholder": "เลือกปี",
+      "targetEntryTerm": "ภาคเรียนที่ต้องการเข้าเรียน",
+      "prep": "ชั้นเตรียม",
+      "yearOption": "ชั้นปีที่ {n}",
+      "term": "ภาคเรียนที่ {n}"
+    },
+    "guardian": {
+      "name": "ชื่อผู้ปกครอง",
+      "namePlaceholder": "เช่น เหว่ย เฉิน",
+      "phone": "โทรศัพท์",
+      "phonePlaceholder": "+44 7700 900000",
+      "email": "อีเมล",
+      "emailPlaceholder": "guardian@example.com",
+      "wechat": "ไอดี WeChat",
+      "wechatPlaceholder": "เช่น wei_chen88",
+      "preferredContact": "ช่องทางติดต่อที่ต้องการ",
+      "channel": {
+        "whatsapp": "WhatsApp",
+        "wechat": "WeChat",
+        "email": "อีเมล",
+        "sms": "SMS"
+      }
+    }
+  },
+  "StudentWizardSchema": {
+    "givenNameRequired": "กรุณากรอกชื่อ",
+    "givenNameTooLong": "ชื่อยาวเกินไป",
+    "familyNameRequired": "กรุณากรอกนามสกุล",
+    "familyNameTooLong": "นามสกุลยาวเกินไป",
+    "emailInvalid": "กรุณากรอกอีเมลที่ถูกต้อง",
+    "dobInvalid": "กรุณากรอกวันเกิดที่ถูกต้อง",
+    "nationalityRequired": "กรุณากรอกสัญชาติ",
+    "nationalityTooLong": "สัญชาติยาวเกินไป",
+    "passportTooLong": "หมายเลขหนังสือเดินทางยาวเกินไป",
+    "currentSchoolTooLong": "ชื่อโรงเรียนยาวเกินไป",
+    "yearLevelInvalid": "เลือกระดับชั้นปีระหว่าง 7 ถึง 12",
+    "targetYearRequired": "กรุณากรอกปีที่ต้องการเข้าเรียน",
+    "targetYearInvalid": "กรุณากรอกปีสี่หลักที่ถูกต้อง",
+    "termRequired": "เลือกภาคเรียนที่ต้องการเข้าเรียน",
+    "guardianNameRequired": "กรุณากรอกชื่อผู้ปกครอง",
+    "guardianNameTooLong": "ชื่อผู้ปกครองยาวเกินไป",
+    "guardianPhoneRequired": "กรุณากรอกเบอร์โทรผู้ปกครอง",
+    "guardianPhoneTooLong": "เบอร์โทรผู้ปกครองยาวเกินไป",
+    "wechatTooLong": "ไอดี WeChat ยาวเกินไป"
   }
 }

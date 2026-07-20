@@ -654,5 +654,114 @@
       "title": "Tìm kiếm — SchoolTest",
       "description": "Tìm kiếm các trường học tại Úc và tư vấn du học trong một công cụ thống nhất."
     }
+  },
+  "StudentWizard": {
+    "meta": {
+      "title": "Thêm học sinh — SchoolTest",
+      "description": "Thêm học sinh vào tài khoản SchoolTest của bạn qua năm bước hướng dẫn."
+    },
+    "back": "Quay lại",
+    "continue": "Tiếp tục",
+    "createStudent": "Tạo học sinh",
+    "saveChanges": "Lưu thay đổi",
+    "stepPlaceholder": "Các trường của bước này sẽ được thêm ở phần sau.",
+    "stepCaption": "Bước {current} trên {total} · {title}",
+    "steps": {
+      "personal": {
+        "label": "Cá nhân",
+        "title": "Thông tin cá nhân"
+      },
+      "education": {
+        "label": "Học vấn",
+        "title": "Học vấn"
+      },
+      "guardian": {
+        "label": "Người giám hộ",
+        "title": "Cha mẹ hoặc người giám hộ"
+      },
+      "media": {
+        "label": "Phương tiện",
+        "title": "Ảnh & giọng nói"
+      },
+      "review": {
+        "label": "Xem lại",
+        "title": "Xem lại & gửi"
+      }
+    },
+    "personal": {
+      "givenName": "Tên",
+      "givenNamePlaceholder": "ví dụ: Mia",
+      "familyName": "Họ",
+      "familyNamePlaceholder": "ví dụ: Chen",
+      "email": "Email",
+      "emailPlaceholder": "student@example.com",
+      "dateOfBirth": "Ngày sinh",
+      "gender": {
+        "label": "Giới tính",
+        "male": "Nam",
+        "female": "Nữ",
+        "other": "Khác",
+        "prefer_not_to_say": "Không muốn tiết lộ"
+      },
+      "nationality": "Quốc tịch",
+      "nationalityPlaceholder": "Tìm quốc gia…",
+      "nationalityEmpty": "Không có quốc gia phù hợp.",
+      "passportNumber": "Số hộ chiếu",
+      "passportPlaceholder": "ví dụ: E12345678",
+      "passportHelper": "Tùy chọn — trường dùng cho hồ sơ nhập học."
+    },
+    "education": {
+      "currentSchool": "Trường hiện tại",
+      "currentSchoolPlaceholder": "ví dụ: Trường Tiểu học Oakwood",
+      "currentYearLevel": "Khối lớp hiện tại",
+      "currentYearLevelPlaceholder": "Chọn khối lớp hiện tại",
+      "yearLevel": "Khối lớp kiểm tra (7–12)",
+      "yearLevelPlaceholder": "Chọn khối lớp kiểm tra",
+      "yearLevelHelper": "Nhóm khối kiểm tra SchoolTest — tách biệt với khối lớp ở trường.",
+      "targetEntryYear": "Năm nhập học mục tiêu",
+      "targetEntryYearPlaceholder": "Chọn năm",
+      "targetEntryTerm": "Học kỳ nhập học mục tiêu",
+      "prep": "Lớp dự bị",
+      "yearOption": "Lớp {n}",
+      "term": "Học kỳ {n}"
+    },
+    "guardian": {
+      "name": "Tên phụ huynh hoặc người giám hộ",
+      "namePlaceholder": "vd. Wei Chen",
+      "phone": "Số điện thoại",
+      "phonePlaceholder": "+44 7700 900000",
+      "email": "Email",
+      "emailPlaceholder": "guardian@example.com",
+      "wechat": "ID WeChat",
+      "wechatPlaceholder": "vd. wei_chen88",
+      "preferredContact": "Kênh liên hệ ưu tiên",
+      "channel": {
+        "whatsapp": "WhatsApp",
+        "wechat": "WeChat",
+        "email": "Email",
+        "sms": "SMS"
+      }
+    }
+  },
+  "StudentWizardSchema": {
+    "givenNameRequired": "Vui lòng nhập tên",
+    "givenNameTooLong": "Tên quá dài",
+    "familyNameRequired": "Vui lòng nhập họ",
+    "familyNameTooLong": "Họ quá dài",
+    "emailInvalid": "Nhập địa chỉ email hợp lệ",
+    "dobInvalid": "Nhập ngày sinh hợp lệ",
+    "nationalityRequired": "Vui lòng nhập quốc tịch",
+    "nationalityTooLong": "Quốc tịch quá dài",
+    "passportTooLong": "Số hộ chiếu quá dài",
+    "currentSchoolTooLong": "Tên trường quá dài",
+    "yearLevelInvalid": "Chọn khối lớp từ 7 đến 12",
+    "targetYearRequired": "Vui lòng nhập năm nhập học mục tiêu",
+    "targetYearInvalid": "Nhập năm bốn chữ số hợp lệ",
+    "termRequired": "Chọn học kỳ nhập học mục tiêu",
+    "guardianNameRequired": "Vui lòng nhập tên người giám hộ",
+    "guardianNameTooLong": "Tên người giám hộ quá dài",
+    "guardianPhoneRequired": "Vui lòng nhập số điện thoại người giám hộ",
+    "guardianPhoneTooLong": "Số điện thoại người giám hộ quá dài",
+    "wechatTooLong": "ID WeChat quá dài"
   }
 }
