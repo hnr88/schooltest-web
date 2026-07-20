@@ -33,7 +33,13 @@ interface LoginResponseBody {
 }
 
 interface StudentsResponseBody {
-  data: { given_name: string; family_name: string }[];
+  data: {
+    given_name: string;
+    family_name: string;
+    status: string | null;
+    target_entry_year: string | null;
+    target_entry_term: string | null;
+  }[];
 }
 
 test('en: parent password login through the real UI lands on /dashboard with both seeded students, network-verified', async ({
@@ -71,17 +77,31 @@ test('en: parent password login through the real UI lands on /dashboard with bot
   const fullNames = studentsBody.data.map(
     (student) => `${student.given_name} ${student.family_name}`,
   );
+  const activeStudents = studentsBody.data.filter((student) => student.status === 'active').length;
+  const enrolledStudents = studentsBody.data.filter(
+    (student) => student.status === 'enrolled',
+  ).length;
+  const entryPlans = studentsBody.data.filter(
+    (student) => student.target_entry_year && student.target_entry_term,
+  ).length;
+  const formatNumber = new Intl.NumberFormat('en');
   expect(fullNames).toContain('Mia Keller');
   expect(fullNames).toContain('Jonas Keller');
 
-  // UI truth mirrors the network truth: both students render in the real table.
-  await expect(
-    page.getByRole('heading', { level: 2, name: cat(en, 'Dashboard.title') }),
-  ).toBeVisible();
-  const table = page.getByRole('table');
-  await expect(table).toBeVisible();
-  await expect(page.getByRole('row', { name: /Mia Keller/ })).toBeVisible();
-  await expect(page.getByRole('row', { name: /Jonas Keller/ })).toBeVisible();
+  // UI truth mirrors the network truth through the overview's functional profile list.
+  const overview = page.locator('[data-slot="dashboard-overview"]');
+  await expect(overview).toBeVisible();
+  const metricCards = overview.locator('[data-slot="stat-card"]');
+  await expect(metricCards).toHaveCount(4);
+  await expect(metricCards.nth(0)).toContainText(formatNumber.format(studentsBody.data.length));
+  await expect(metricCards.nth(1)).toContainText(formatNumber.format(activeStudents));
+  await expect(metricCards.nth(2)).toContainText(formatNumber.format(enrolledStudents));
+  await expect(metricCards.nth(3)).toContainText(
+    `${formatNumber.format(entryPlans)}/${formatNumber.format(studentsBody.data.length)}`,
+  );
+  await expect(overview.locator('[data-slot="dashboard-recent-profiles"]')).toContainText(
+    fullNames[0],
+  );
 
   const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
   expect(token).toMatch(/^eyJ/);

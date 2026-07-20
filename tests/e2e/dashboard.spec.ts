@@ -74,6 +74,13 @@ test('en: seeded parent session renders the real guarded dashboard shell, axe cl
   });
   await expect(addStudentLink).toBeVisible();
   await expect(addStudentLink).toHaveAttribute('href', '/dashboard/children/new');
+  const overview = page.locator('[data-slot="dashboard-overview"]');
+  await expect(overview).toBeVisible();
+  await expect(overview.locator('[data-slot="stat-card"]')).toHaveCount(4);
+  await expect(overview.locator('[data-slot="dashboard-recent-profile"]').first()).toBeVisible();
+  const exploreOptions = overview.locator('[data-slot="dashboard-explore-options"]');
+  await expect(exploreOptions.locator('a[href="/dashboard/search?mode=schools"]')).toBeVisible();
+  await expect(exploreOptions.locator('a[href="/dashboard/search?mode=agents"]')).toBeVisible();
   // Sign-out relocated to the topbar user chip (task 011) — the inline dashboard
   // button is gone; the chip trigger is the visible entry point now.
   const userMenuTrigger = page.getByRole('button', {
