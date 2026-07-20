@@ -4,6 +4,7 @@ import {
   schoolSectorSchema,
   schoolStateSchema,
   schoolTypeSchema,
+  type SchoolCoverImage,
   type SchoolHit,
   type SchoolSearchPagination,
   type SchoolSearchResult,
@@ -50,4 +51,4 @@ export interface SchoolSearchFilters {
   page: number;
 }
 
-export type { SchoolHit, SchoolSearchPagination, SchoolSearchResult };
+export type { SchoolCoverImage, SchoolHit, SchoolSearchPagination, SchoolSearchResult };

@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-18T20:50:00.000Z",
+  "updated_at": "2026-07-20T23:07:02+03:00",
   "tasks": [
     {
       "id": "01",
@@ -685,8 +685,13 @@
         "layer": "integration",
         "contract": ["C-SEARCH-SCHOOLS"],
         "depends_on": ["42"],
-        "status": "TODO",
-        "started_at": null
+        "status": "DONE",
+        "started_at": 1784576020,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential adversarial live API and browser verification",
+          "evidence": "Live Strapi upload + Document Service relation persists Abbotsleigh cover media. search-schools API suite 19/19 covers strict coverImage projection, validation and auth; school presentation/filter/map suite 9/9 confirms actual :5500 upload image, identity fallback, permanent grouped rail, loaded tiles and visible map points. API/web tsc 0 errors; API lint 0 errors; web lint 0 errors with one known unrelated CreateArticleForm warning."
+        }
       },
       {
         "id": "44",

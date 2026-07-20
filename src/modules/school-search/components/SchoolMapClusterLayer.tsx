@@ -17,9 +17,8 @@ import {
 } from '@/modules/school-search/lib/school-map-utils';
 import type { GeoSchoolHit } from '@/modules/school-search/types/school-search.types';
 
-const FOCUS_PADDING_TOP_LEFT: [number, number] = [50, 50];
-// Reserve room under the results column so expanded pins clear the cards.
-const FOCUS_PADDING_BOTTOM_RIGHT: [number, number] = [340, 50];
+const FOCUS_PADDING_TOP_LEFT: [number, number] = [24, 24];
+const FOCUS_PADDING_BOTTOM_RIGHT: [number, number] = [24, 24];
 
 function isMarkerCluster(
   layer: unknown,
@@ -36,8 +35,8 @@ function isMarkerCluster(
 
 // "Zoom grouping": react-leaflet-cluster MarkerClusterGroup with the legacy config.
 // Custom click: already zoomed in → spiderfy the overlapping pins; else flyToBounds
-// the cluster (reserving space under the results column). animate:false is the
-// sanctioned de-jitter — smoothness comes from the flyToBounds camera, not morphing.
+// the cluster inside the dedicated map column. animate:false is the sanctioned
+// de-jitter — smoothness comes from the flyToBounds camera, not morphing.
 function SchoolMapClusterLayer({ geoHits }: { geoHits: GeoSchoolHit[] }) {
   const map = useMap();
 

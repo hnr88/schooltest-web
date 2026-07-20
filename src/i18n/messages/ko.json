@@ -633,6 +633,8 @@
     },
     "fee": {
       "label": "학비",
+      "minimum": "최소",
+      "maximum": "최대",
       "any": "전체",
       "readout": "${min}k – ${max}k",
       "clear": "지우기",
@@ -648,7 +650,8 @@
       "retry": "다시 시도"
     },
     "card": {
-      "tuition": "연 <strong>{amount}</strong>부터"
+      "tuition": "연 <strong>{amount}</strong>부터",
+      "coverImageAlt": "{name} 캠퍼스 이미지"
     },
     "map": {
       "region": "학교 결과 지도",

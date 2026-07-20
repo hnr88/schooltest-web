@@ -6,7 +6,7 @@ kind: fix
 slice: school search API media contract plus aligned desktop search/map/filter composition
 target: schooltest-api/src/api/school/content-types/school/schema.json; schooltest-api/src/contracts/search-domains.ts; schooltest-api/src/api/search/services/search-schools.ts; schooltest-api/src/utils/school-search.ts; schooltest-web/src/modules/school-search/**; tests/e2e/school-search-presentation.spec.ts
 contract: C-SEARCH-SCHOOLS
-status: TODO
+status: DONE
 depends_on: [42]
 ---
 ## Objective
@@ -63,4 +63,17 @@ honest rather than inferred from a school name or replaced by an unrelated photo
 
 ## Evidence
 
-Pending.
+- Real Strapi upload and Document Service relation: the Abbotsleigh record now returns the
+  persisted `/uploads/abbotsleigh_marian_clarke_5a44838c99.jpg` relation after API reload;
+  `HEAD http://localhost:5500/uploads/abbotsleigh_marian_clarke_5a44838c99.jpg` returned
+  `200 image/jpeg`.
+- API contract: `pnpm exec playwright test tests/e2e/search-schools.spec.ts --reporter=line`
+  passed 19/19 against live API `:5500`, including exact strict four-field media projection,
+  malformed request and both authorization refusals. API `pnpm tsc --noEmit` and `pnpm lint`
+  passed.
+- Browser: presentation/filter/map Playwright suite passed 9/9 against live web `:3100` and
+  API `:5500`; it proves the permanent filter rail, real `:5500/uploads/` image, compact
+  card identity tile when no media exists, loaded map tiles and a visible in-map cluster.
+  Screenshot: `.qa/screenshots/school-search-workspace.png`.
+- Web `pnpm tsc --noEmit` passed; `pnpm lint` has zero errors and one known unrelated
+  React Compiler warning in `CreateArticleForm.tsx`.

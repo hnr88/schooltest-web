@@ -633,6 +633,8 @@
     },
     "fee": {
       "label": "学费",
+      "minimum": "最低",
+      "maximum": "最高",
       "any": "不限",
       "readout": "${min}k – ${max}k",
       "clear": "清除",
@@ -648,7 +650,8 @@
       "retry": "重试"
     },
     "card": {
-      "tuition": "每年 <strong>{amount}</strong> 起"
+      "tuition": "每年 <strong>{amount}</strong> 起",
+      "coverImageAlt": "{name} 校园图片"
     },
     "map": {
       "region": "学校结果地图",

@@ -8,9 +8,8 @@ import { getMapResultFocusTarget } from '@/modules/school-search/lib/map-result-
 import { prefersReducedMotion } from '@/modules/school-search/lib/school-map-utils';
 import type { GeoSchoolHit } from '@/modules/school-search/types/school-search.types';
 
-const FOCUS_PADDING_TOP_LEFT: [number, number] = [50, 50];
-// Reserve space under the sticky results column so pins never hide behind cards.
-const FOCUS_PADDING_BOTTOM_RIGHT: [number, number] = [340, 50];
+const FOCUS_PADDING_TOP_LEFT: [number, number] = [24, 24];
+const FOCUS_PADDING_BOTTOM_RIGHT: [number, number] = [24, 24];
 const CAMERA_DISTANCE_TOLERANCE_METERS = 75;
 const CAMERA_ZOOM_TOLERANCE = 0.25;
 
@@ -41,12 +40,11 @@ function getBoundsCamera(
   return { bounds, center, zoom };
 }
 
-// Fly the camera to the current result set (ported from schoolgo useMapResultFocus).
-// The initial mount keeps the Australia-wide default view; the camera only flies
-// once the result set CHANGES (a new documentId set). Snaps under reduced motion.
+// Frame every result set inside the dedicated map column. The first focus snaps
+// into place so people never land on a nearly empty Australia-wide canvas; later
+// searches retain the smooth camera transition unless motion is reduced.
 export function useMapResultFocus(map: LeafletMap | null, schools: GeoSchoolHit[]): void {
   const focusedKeyRef = useRef<string | null>(null);
-  const isFirstRef = useRef(true);
 
   useEffect(() => {
     if (!map) return;
@@ -55,20 +53,23 @@ export function useMapResultFocus(map: LeafletMap | null, schools: GeoSchoolHit[
     if (!target) return;
 
     const focusKey = `${target.type}:${target.key}`;
-    if (isFirstRef.current) {
-      isFirstRef.current = false;
-      focusedKeyRef.current = focusKey;
-      return;
-    }
     if (focusedKeyRef.current === focusKey) return;
+    const isInitialFocus = focusedKeyRef.current === null;
     focusedKeyRef.current = focusKey;
 
+    map.invalidateSize({ animate: false, pan: false });
     const animate = !prefersReducedMotion();
 
     if (target.type === 'school') {
       const center = L.latLng(target.center);
       const zoom = Math.max(map.getZoom(), target.zoom);
       if (map.getBounds().contains(center) || isAlreadyFocused(map, center, zoom)) return;
+
+      if (isInitialFocus) {
+        map.setView(center, zoom, { animate: false });
+        return;
+      }
+
       map.flyTo(center, zoom, { animate });
       return;
     }
@@ -78,6 +79,11 @@ export function useMapResultFocus(map: LeafletMap | null, schools: GeoSchoolHit[
 
     const camera = getBoundsCamera(map, target.bounds, target.maxZoom);
     if (isAlreadyFocused(map, camera.center, camera.zoom)) return;
+
+    if (isInitialFocus) {
+      map.setView(camera.center, camera.zoom, { animate: false });
+      return;
+    }
 
     map.flyToBounds(camera.bounds, {
       paddingTopLeft: FOCUS_PADDING_TOP_LEFT,

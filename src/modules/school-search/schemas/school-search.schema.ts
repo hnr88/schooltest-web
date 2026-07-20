@@ -19,6 +19,15 @@ export const schoolSectorSchema = z.enum([
   'catholic',
 ]);
 
+export const schoolCoverImageSchema = z
+  .object({
+    url: z.string().min(1),
+    alternativeText: z.string().nullable(),
+    width: z.number().int().positive().nullable(),
+    height: z.number().int().positive().nullable(),
+  })
+  .nullable();
+
 export const schoolHitSchema = z.object({
   documentId: z.string(),
   slug: z.string(),
@@ -42,6 +51,7 @@ export const schoolHitSchema = z.object({
   seniorSecAnnualTuition: z.number().nullable(),
   annualTuitionFrom: z.number().nullable(),
   cricosStatus: z.string().nullable(),
+  coverImage: schoolCoverImageSchema,
   latitude: z.number().nullable(),
   longitude: z.number().nullable(),
 });
@@ -61,5 +71,6 @@ export const schoolSearchResponseSchema = z.object({
 });
 
 export type SchoolHit = z.infer<typeof schoolHitSchema>;
+export type SchoolCoverImage = z.infer<typeof schoolCoverImageSchema>;
 export type SchoolSearchResult = z.infer<typeof schoolSearchResponseSchema>;
 export type SchoolSearchPagination = z.infer<typeof schoolSearchPaginationSchema>;

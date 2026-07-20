@@ -332,3 +332,16 @@ instead, not deleted and not a fake pass.
   data. This prevents a generic duplicated card wall and avoids inventing scores.
 - The desktop school search will use a persistent filter rail, result list and map workspace;
   mobile retains a constrained sheet. This replaces the desktop dropdown as requested.
+
+## 2026-07-20 D30 — verified live school cover-media provenance
+
+- The lone real directory image deliberately added in task 43 is Wikimedia Commons'
+  **"(1) Marian Clarke Building Abbotsleigh School"**, author Sardaka, licensed CC BY 3.0:
+  `https://commons.wikimedia.org/wiki/File:(1)_Marian_Clarke_Building_Abbotsleigh_School.jpg`.
+  It depicts the Marian Clarke Building at Abbotsleigh in Sydney; it is not a generic stock
+  substitute or a reused local brand image.
+- It was downloaded once, uploaded through the running Strapi upload API (real upload id `24`),
+  and attached to the real Abbotsleigh school via `strapi.documents('api::school.school').update`
+  using that record's documentId. The API now explicitly projects only `url`, `alternativeText`,
+  `width`, and `height`; the caption retains source/author/license attribution. No client fallback
+  fabricates an image for the other records.

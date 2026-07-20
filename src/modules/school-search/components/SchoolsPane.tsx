@@ -2,7 +2,6 @@
 
 import { useMemo } from 'react';
 
-import { FeeRangeChip } from '@/modules/school-search/components/FeeRangeChip';
 import { MapToggle } from '@/modules/school-search/components/MapToggle';
 import { MobileMapSheet } from '@/modules/school-search/components/MobileMapSheet';
 import { SchoolFilterPanel } from '@/modules/school-search/components/SchoolFilterPanel';
@@ -70,23 +69,26 @@ function SchoolsPane() {
   const hits = query.data?.data ?? [];
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center gap-2.5">
+    <div className="grid min-w-0 gap-6 lg:grid-cols-12">
+      <aside className="min-w-0 lg:col-span-3">
         <SchoolFilterPanel />
-        <FeeRangeChip />
-        <SortChip />
-        <MapToggle />
-        <MobileMapSheet hits={hits} />
+      </aside>
+      <div data-slot="school-search-workspace" className="flex min-w-0 flex-col gap-4 lg:col-span-9">
+        <div data-slot="school-search-toolbar" className="flex flex-wrap items-center gap-3">
+          <SortChip />
+          <MapToggle />
+          <MobileMapSheet hits={hits} />
+        </div>
+        <SchoolsSplitLayout isMapOpen={isMapOpen} hits={hits}>
+          <SchoolResultsGrid
+            query={query}
+            isMapOpen={isMapOpen}
+            onRetry={() => void query.refetch()}
+            onReset={reset}
+            onPageChange={setPage}
+          />
+        </SchoolsSplitLayout>
       </div>
-      <SchoolsSplitLayout isMapOpen={isMapOpen} hits={hits}>
-        <SchoolResultsGrid
-          query={query}
-          isMapOpen={isMapOpen}
-          onRetry={() => void query.refetch()}
-          onReset={reset}
-          onPageChange={setPage}
-        />
-      </SchoolsSplitLayout>
     </div>
   );
 }

@@ -633,6 +633,8 @@
     },
     "fee": {
       "label": "ค่าเล่าเรียน",
+      "minimum": "ต่ำสุด",
+      "maximum": "สูงสุด",
       "any": "ทั้งหมด",
       "readout": "${min}k – ${max}k",
       "clear": "ล้าง",
@@ -648,7 +650,8 @@
       "retry": "ลองอีกครั้ง"
     },
     "card": {
-      "tuition": "เริ่มต้น <strong>{amount}</strong>/ปี"
+      "tuition": "เริ่มต้น <strong>{amount}</strong>/ปี",
+      "coverImageAlt": "ภาพวิทยาเขตของ {name}"
     },
     "map": {
       "region": "แผนที่ผลการค้นหาโรงเรียน",

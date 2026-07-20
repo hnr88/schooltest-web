@@ -10,7 +10,7 @@ export const chipVariants = cva(
       active: {
         true: 'bg-primary font-semibold text-primary-foreground hover:bg-primary/90',
         false:
-          'border border-input bg-background font-medium text-muted-foreground hover:bg-muted',
+          'border border-input bg-background font-medium text-foreground hover:bg-muted',
       },
     },
     defaultVariants: {

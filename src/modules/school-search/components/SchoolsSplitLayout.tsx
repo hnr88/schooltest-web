@@ -24,12 +24,12 @@ function SchoolsSplitLayout({
     <div
       className={cn(
         'grid grid-cols-1 gap-6 duration-300 ease-out animate-in fade-in motion-reduce:animate-none',
-        isMapOpen && 'lg:grid-cols-2',
+        isMapOpen && 'lg:grid-cols-12',
       )}
     >
-      <div className="min-w-0">{children}</div>
+      <div className={cn('min-w-0', isMapOpen && 'lg:col-span-5')}>{children}</div>
       {isMapOpen ? (
-        <aside className="hidden lg:sticky lg:top-6 lg:block lg:h-[calc(100dvh-9rem)]">
+        <aside className="hidden lg:sticky lg:top-6 lg:col-span-7 lg:block lg:h-screen">
           <div className="h-full overflow-hidden rounded-lg border border-border shadow-2">
             <SchoolResultsMapPanel hits={hits} />
           </div>

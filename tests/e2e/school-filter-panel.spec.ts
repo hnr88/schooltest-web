@@ -10,13 +10,8 @@ test('school search: grouped filter panel changes the real result request', asyn
   await page.setViewportSize(DESKTOP);
   await gotoSchoolsMap(page);
 
-  const trigger = page.getByRole('button', {
-    name: cat(en, 'SchoolSearch.filterPanel.trigger'),
-    exact: true,
-  });
-  await trigger.click();
-
-  const panel = page.locator('[data-slot="popover-content"]');
+  const panel = page.locator('[data-slot="school-filter-panel"]');
+  await expect(panel).toBeVisible();
   await expect(panel.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.location') })).toBeVisible();
   await expect(
     panel.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.schoolProfile') }),

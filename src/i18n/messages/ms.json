@@ -633,6 +633,8 @@
     },
     "fee": {
       "label": "Yuran",
+      "minimum": "Minimum",
+      "maximum": "Maksimum",
       "any": "Mana-mana",
       "readout": "${min}k – ${max}k",
       "clear": "Kosongkan",
@@ -648,7 +650,8 @@
       "retry": "Cuba lagi"
     },
     "card": {
-      "tuition": "Dari <strong>{amount}</strong>/tahun"
+      "tuition": "Dari <strong>{amount}</strong>/tahun",
+      "coverImageAlt": "Imej kampus {name}"
     },
     "map": {
       "region": "Peta keputusan sekolah",

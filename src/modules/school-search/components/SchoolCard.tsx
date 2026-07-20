@@ -32,23 +32,27 @@ function SchoolCard({ hit }: { hit: SchoolHit }) {
       onFocus={() => setActiveSchoolId(hit.documentId)}
       onBlur={() => setActiveSchoolId(null)}
       className={cn(
-        'group flex flex-col gap-3 rounded-2xl border bg-card p-3.5 transition duration-150 ease-out hover:border-input motion-reduce:transition-none',
+        'group flex flex-col gap-3 rounded-2xl border bg-card p-3 transition duration-150 ease-out hover:border-input motion-reduce:transition-none',
         isActive
           ? '-translate-y-0.5 border-primary shadow-md ring-2 ring-primary motion-reduce:translate-y-0'
           : 'border-border',
       )}
     >
-      <div className="flex items-start gap-3.5">
-        <SchoolCardCover />
+      <div className="flex items-start gap-3">
+        <SchoolCardCover
+          coverImage={hit.coverImage}
+          alt={hit.coverImage?.alternativeText ?? t('card.coverImageAlt', { name: hit.name })}
+          state={hit.state}
+        />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div className="flex flex-wrap items-center gap-1.5">
             <SchoolSectorPill sector={hit.sector} />
             <SchoolStateBadge state={hit.state} />
           </div>
-          <div className="min-w-0">
-            <h3 className="line-clamp-2 text-base font-bold text-navy-950">{hit.name}</h3>
+          <div className="flex min-w-0 flex-col gap-1">
+            <h3 className="line-clamp-2 text-sm font-bold text-navy-950">{hit.name}</h3>
             {location ? (
-              <p className="mt-0.5 line-clamp-1 text-sm text-muted-foreground">{location}</p>
+              <p className="line-clamp-1 text-sm text-muted-foreground">{location}</p>
             ) : null}
           </div>
           <p className="mt-auto text-xs text-muted-foreground">

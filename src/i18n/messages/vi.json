@@ -633,6 +633,8 @@
     },
     "fee": {
       "label": "Học phí",
+      "minimum": "Tối thiểu",
+      "maximum": "Tối đa",
       "any": "Bất kỳ",
       "readout": "${min}k – ${max}k",
       "clear": "Xóa",
@@ -648,7 +650,8 @@
       "retry": "Thử lại"
     },
     "card": {
-      "tuition": "Từ <strong>{amount}</strong>/năm"
+      "tuition": "Từ <strong>{amount}</strong>/năm",
+      "coverImageAlt": "Hình ảnh khuôn viên {name}"
     },
     "map": {
       "region": "Bản đồ kết quả trường học",

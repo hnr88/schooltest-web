@@ -633,6 +633,8 @@
     },
     "fee": {
       "label": "Tuition",
+      "minimum": "Minimum",
+      "maximum": "Maximum",
       "any": "Any",
       "readout": "${min}k – ${max}k",
       "clear": "Clear",
@@ -648,7 +650,8 @@
       "retry": "Try again"
     },
     "card": {
-      "tuition": "From <strong>{amount}</strong>/yr"
+      "tuition": "From <strong>{amount}</strong>/yr",
+      "coverImageAlt": "{name} campus image"
     },
     "map": {
       "region": "School results map",

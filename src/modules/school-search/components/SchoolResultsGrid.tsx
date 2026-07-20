@@ -3,7 +3,6 @@
 import { SearchX } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { cn } from '@/lib/utils';
 import { Alert, Button } from '@/modules/design-system';
 import { SchoolCard } from '@/modules/school-search/components/SchoolCard';
 import { SchoolCardSkeleton } from '@/modules/school-search/components/SchoolCardSkeleton';
@@ -17,8 +16,8 @@ import {
 
 // Owns the results zone: count header, the four query states (loading skeletons /
 // error Alert / empty CTA / grid) and pagination. Refetches keep previous data
-// and dim the grid (`opacity-60`) instead of hard-swapping to skeletons. `isMapOpen`
-// narrows the grid to two columns while the split map occupies the right rail.
+// visible without degrading readable card contrast. `isMapOpen` narrows the grid
+// to two columns while the split map occupies the right rail.
 function SchoolResultsGrid({
   query,
   isMapOpen,
@@ -33,7 +32,7 @@ function SchoolResultsGrid({
   onPageChange: (page: number) => void;
 }) {
   const t = useTranslations('SchoolSearch');
-  const { data, isPending, isError, isFetching } = query;
+  const { data, isPending, isError } = query;
 
   if (isError) {
     return (
@@ -70,16 +69,20 @@ function SchoolResultsGrid({
   }
 
   return (
-    <div className="flex flex-col gap-4 duration-300 ease-out animate-in fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
+    <div
+      data-slot="school-search-results"
+      className="flex flex-col gap-4 duration-300 ease-out animate-in fade-in slide-in-from-bottom-2 motion-reduce:animate-none"
+    >
       <p aria-live="polite" className="text-caption text-muted-foreground">
         {t('resultsCount', { count: total })}
       </p>
       <div
-        className={cn(
-          'grid grid-cols-1 gap-4 transition-opacity duration-200 ease-out motion-reduce:transition-none',
-          isMapOpen ? 'xl:grid-cols-2' : 'md:grid-cols-2 2xl:grid-cols-3',
-          isFetching && 'opacity-60',
-        )}
+        data-slot="school-card-grid"
+        className={
+          isMapOpen
+            ? 'grid grid-cols-1 gap-4'
+            : 'grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3'
+        }
       >
         {hits.map((hit) => (
           <SchoolCard key={hit.documentId} hit={hit} />

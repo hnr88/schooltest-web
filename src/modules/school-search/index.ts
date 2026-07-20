@@ -1,5 +1,6 @@
 export {
   schoolHitSchema,
+  schoolCoverImageSchema,
   schoolSearchPaginationSchema,
   schoolSearchResponseSchema,
   schoolSectorSchema,
@@ -9,6 +10,7 @@ export {
 
 export type {
   LevelValue,
+  SchoolCoverImage,
   SchoolHit,
   SchoolSearchFilters,
   SchoolSearchPagination,
