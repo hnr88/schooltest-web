@@ -6,7 +6,7 @@ kind: implement
 slice: GET child test/result summary persisted in Strapi/PostgreSQL
 target: schooltest-api/src/api/student/{controllers,services,routes}; schooltest-api/src/bootstrap/{permissions-action-refs,permissions-actions}.ts; schooltest-api/src/contracts; schooltest-api/tests/e2e; web .qa contract/state artifacts
 contract: C-PARENT-CHILD-PROGRESS
-status: TODO
+status: DONE
 depends_on: [33]
 ---
 ## Objective
@@ -52,4 +52,9 @@ The existing result/session schemas contain sufficient persisted fields for a pa
 
 ## Evidence
 
-Pending independent verification.
+Live Strapi route registration confirmed `/api/my/students/:documentId/progress` before the
+detail wildcard. A real seeded-parent request returned the persisted child projection and
+real zero-valued session/result metrics (the queried child has no session or result rows),
+then returned the identical data on a fresh request. Focused API E2E passed 2/2: own,
+foreign 404, malformed path/query 400, anonymous/non-parent 403. API `pnpm tsc --noEmit`,
+`pnpm lint`, `git diff --check`, and the touched-code banned-pattern scan passed cleanly.

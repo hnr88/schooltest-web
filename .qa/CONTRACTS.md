@@ -130,17 +130,24 @@ details? } }` shape.
 - Auth: users-permissions parent JWT only. The requested student must belong to the caller;
   unknown and foreign records both return 404 to avoid ownership disclosure. Missing or
   non-parent authentication returns the project-standard 403.
-- Request: path `documentId`, a non-empty Strapi document id. No body or query.
-- 200: `{ data: { student, metrics, recentResults } }`, where `student` is the existing
-  parent-safe detail projection (no passport or parent-private fields), `metrics` is
-  `{ totalSessions: nonnegative integer, completedSessions: nonnegative integer,
-  activeSessions: nonnegative integer, officialResults: nonnegative integer }`, and
-  `recentResults` is at most five newest official, parent-owned test summaries
-  `{ documentId, skill: string|null, displayLabel: string|null, cefrBand: string|null,
-  readiness: string|null, status: string, publishedAt: ISO datetime|null }`.
+- Request: path `documentId`, a 24-character alphanumeric Strapi document id. No body or query
+  parameters are accepted.
+- 200: Strapi's single-response envelope `{ data, meta }`; `data` is
+  `{ student, metrics, recentResults }`. `student` is the explicit parent-safe projection
+  `{ documentId, given_name, family_name, year_level, nationality, current_year_level,
+  target_entry_year, target_entry_term, status, createdAt, updatedAt }` (all scalar profile
+  fields except `documentId`/`status`/timestamps may be null; no passport, guardian, parent,
+  user, teacher, class, or numeric id). `metrics` is `{ totalSessions: nonnegative integer,
+  completedSessions: nonnegative integer, activeSessions: nonnegative integer,
+  officialResults: nonnegative integer }`. `recentResults` is at most five newest official,
+  parent-owned test summaries `{ documentId, skill: reading|listening|speaking|writing|null,
+  displayLabel: string|null, cefrBand: pre_A1|A1|A2|B1|B2|C1|null,
+  readiness: met|approaching|not_yet|not_assessed|null,
+  status: scoring|partial_pending|complete, publishedAt: ISO datetime|null }`.
 - Persistence: read-only Document Service queries over the caller's child, sessions and
   official results; no record is created or changed.
-- Errors: 400 malformed path; 403 unauthenticated/non-parent; 404 absent or foreign child.
+- Errors: 400 malformed path or any query parameter; 403 unauthenticated/non-parent; 404 absent
+  or foreign child.
 
 ### C-PUSH-VAPID-CONFIG — GET /api/push-subscriptions/vapid-public-key
 

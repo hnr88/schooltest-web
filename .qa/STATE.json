@@ -526,7 +526,7 @@
   "ui_polish_20260720": {
     "contracts_file": ".qa/CONTRACTS.md",
     "mission": "Requested UI polish, child detail metrics, settings tabs, and notification web surfaces",
-    "updated_at": "2026-07-20T18:22:59.000Z",
+    "updated_at": "2026-07-20T18:33:33.000Z",
     "tasks": [
       {
         "id": "28",
@@ -618,7 +618,21 @@
           "evidence": "Keyboard-highlighted and selected wizard options measured AA+ contrast; real POST /api/students 200 and the new child survived a UI reload. Wizard suite 5/5, tsc 0 errors, lint 0 errors with one pre-existing warning, diff and banned-pattern checks clean."
         }
       },
-      { "id": "34", "file": ".thellmspace/tasks/34-parent-child-progress-api.md", "title": "Parent child progress API", "layer": "backend", "contract": ["C-PARENT-CHILD-PROGRESS"], "depends_on": ["33"], "status": "TODO", "started_at": null },
+      {
+        "id": "34",
+        "file": ".thellmspace/tasks/34-parent-child-progress-api.md",
+        "title": "Parent child progress API",
+        "layer": "backend",
+        "contract": ["C-PARENT-CHILD-PROGRESS"],
+        "depends_on": ["33"],
+        "status": "DONE",
+        "started_at": 1784571837,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential live API contract and security pass",
+          "evidence": "Live route and persisted read confirmed; 2/2 API E2E covers own reload, foreign 404, malformed path/query 400 and anon/non-parent 403. API tsc/lint/diff/banned-pattern checks clean."
+        }
+      },
       { "id": "35", "file": ".thellmspace/tasks/35-child-cards-and-profile.md", "title": "Child cards and profile metrics", "layer": "frontend", "contract": ["C-PARENT-CHILD-PROGRESS"], "depends_on": ["34"], "status": "TODO", "started_at": null },
       { "id": "36", "file": ".thellmspace/tasks/36-settings-tabs.md", "title": "Separated settings tabs", "layer": "frontend", "contract": ["C-STUDENT-LIST", "C-PREF-GET"], "depends_on": ["35"], "status": "TODO", "started_at": null },
       { "id": "37", "file": ".thellmspace/tasks/37-notification-bell-feed.md", "title": "In-app notification bell and feed", "layer": "frontend", "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"], "depends_on": ["36"], "status": "TODO", "started_at": null },

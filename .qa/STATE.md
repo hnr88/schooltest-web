@@ -54,7 +54,7 @@ Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.m
 | 31 | Grouped school filters | 30 | DONE | PASS — live filter/map 12/12 |
 | 32 | Agent search polish | 31 | DONE | PASS — live query/filter/a11y |
 | 33 | Student selection contrast | 32 | DONE | PASS — live contrast + persisted child |
-| 34 | Parent child progress API | 33 | TODO | — |
+| 34 | Parent child progress API | 33 | DONE | PASS — live persisted API/security |
 | 35 | Child cards and profile metrics | 34 | TODO | — |
 | 36 | Separated settings tabs | 35 | TODO | — |
 | 37 | In-app notification bell and feed | 36 | TODO | — |
