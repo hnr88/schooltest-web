@@ -15,10 +15,11 @@ export function ChildMetrics({ metrics }: ChildMetricsProps) {
   const t = useTranslations('Children');
 
   return (
-    <section aria-labelledby="child-metrics-title">
+    <section data-slot="child-activity-metrics" aria-labelledby="child-metrics-title">
       <h2 id="child-metrics-title" className="text-lg font-bold text-foreground">
         {t('metricsHeading')}
       </h2>
+      <p className="mt-1 text-sm text-muted-foreground">{t('activitySnapshotDescription')}</p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {CHILD_METRICS.map((metric) => (
           <article key={metric.key} aria-label={t(metric.labelKey)}>

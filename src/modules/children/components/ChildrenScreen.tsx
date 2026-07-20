@@ -1,11 +1,11 @@
 'use client';
 
-import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { ChildrenEmptyState } from '@/modules/children/components/ChildrenEmptyState';
 import { ChildrenGrid } from '@/modules/children/components/ChildrenGrid';
+import { ChildrenRosterSummary } from '@/modules/children/components/ChildrenRosterSummary';
 import { ChildrenToolbar } from '@/modules/children/components/ChildrenToolbar';
 import { useChildrenList } from '@/modules/children/hooks/use-children-list';
 
@@ -18,6 +18,9 @@ export function ChildrenScreen() {
     rows,
     totalCount,
     visibleCount,
+    allProfileCount,
+    activeCount,
+    archivedCount,
     hasAnyChildren,
     includeArchived,
     setIncludeArchived,
@@ -28,19 +31,15 @@ export function ChildrenScreen() {
   } = useChildrenList();
 
   return (
-    <main className="flex flex-1 animate-in flex-col gap-6 px-8 py-7 duration-300 ease-out slide-in-from-bottom-2 motion-reduce:animate-none">
-      <header className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-2.5">
-          <h1 className="text-xl font-bold text-foreground">{t('heading')}</h1>
-          <span className="rounded-full bg-blue-50 px-2 py-0.5 text-caption font-semibold text-navy-800 dark:bg-blue-950 dark:text-blue-100">
-            {totalCount}
-          </span>
-        </div>
-        <Button href="/dashboard/children/new" className="h-11">
-          <Plus aria-hidden="true" className="size-4" />
-          {t('addStudent')}
-        </Button>
-      </header>
+    <main
+      data-surface="children-roster"
+      className="flex flex-1 animate-in flex-col gap-6 px-8 py-7 duration-300 ease-out slide-in-from-bottom-2 motion-reduce:animate-none"
+    >
+      <ChildrenRosterSummary
+        activeCount={activeCount}
+        archivedCount={archivedCount}
+        totalCount={allProfileCount}
+      />
 
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3" aria-hidden="true">

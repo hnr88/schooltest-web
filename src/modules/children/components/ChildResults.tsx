@@ -1,9 +1,9 @@
 'use client';
 
-import { CalendarDays, CircleGauge, FileText, Languages } from 'lucide-react';
+import { CalendarDays, ChartNoAxesColumnIncreasing, CircleGauge, FileText, Languages } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 
-import { Badge } from '@/modules/design-system';
+import { Badge, EmptyState } from '@/modules/design-system';
 import {
   getChildResultTitle,
   getResultBadgeVariant,
@@ -20,8 +20,9 @@ export function ChildResults({ results }: ChildResultsProps) {
 
   return (
     <section
+      data-slot="child-results-timeline"
       aria-labelledby="child-results-title"
-      className="rounded-2xl border border-border bg-card p-6"
+      className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
@@ -30,17 +31,24 @@ export function ChildResults({ results }: ChildResultsProps) {
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">{t('recentResultsDescription')}</p>
         </div>
-        <FileText aria-hidden="true" className="size-5 text-blue-600" />
+        <FileText aria-hidden="true" className="size-5 text-primary" />
       </div>
       {results.length === 0 ? (
-        <p className="mt-5 rounded-xl bg-muted px-4 py-5 text-sm text-foreground">
-          {t('emptyResults')}
-        </p>
+        <EmptyState
+          icon={ChartNoAxesColumnIncreasing}
+          title={t('emptyResults')}
+          description={t('recentResultsDescription')}
+          className="mt-5 bg-muted/40"
+        />
       ) : (
-        <ol className="mt-5 grid gap-3">
+        <ol className="mt-5 grid gap-4 border-l border-border pl-5">
           {results.map((result) => (
-            <li key={result.documentId}>
-              <article className="rounded-xl border border-border p-4">
+            <li key={result.documentId} className="relative">
+              <span
+                aria-hidden="true"
+                className="absolute top-5 -left-7 size-3 rounded-full border-2 border-card bg-primary"
+              />
+              <article className="rounded-xl border border-border bg-muted/30 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <h3 className="font-semibold text-foreground">
                     {getChildResultTitle(result, t('untitledResult'))}

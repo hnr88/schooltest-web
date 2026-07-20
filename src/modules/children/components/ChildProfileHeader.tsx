@@ -4,7 +4,7 @@ import { ArrowLeft, CalendarDays, GraduationCap, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import { Badge, Button, PresenceAvatar } from '@/modules/design-system';
+import { Badge, Button, Eyebrow, PresenceAvatar } from '@/modules/design-system';
 import {
   getChildProfileName,
   getChildProfileTarget,
@@ -23,50 +23,59 @@ export function ChildProfileHeader({ student }: ChildProfileHeaderProps) {
   const status = getStatusMeta(student.status);
 
   return (
-    <header className="flex flex-col gap-5">
-      <div>
-        <Button href="/dashboard/children" variant="outline" size="sm" className="h-11 px-4">
-          <ArrowLeft aria-hidden="true" className="size-4" />
-          {t('backToList')}
-        </Button>
-      </div>
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex min-w-0 items-center gap-4">
+    <header data-slot="child-learning-hero" className="rounded-2xl bg-navy-950 p-6 text-white shadow-lg sm:p-8">
+      <Button href="/dashboard/children" variant="outline-white" size="sm" className="mb-6">
+        <ArrowLeft aria-hidden="true" className="size-4" />
+        {t('backToList')}
+      </Button>
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex min-w-0 items-center gap-4">
             <PresenceAvatar
               initials={getInitials(student.given_name ?? '', student.family_name ?? '')}
               size="xl"
             />
             <div className="min-w-0">
+              <Eyebrow tone="teal" className="text-teal-300">
+                {t('learningDashboardEyebrow')}
+              </Eyebrow>
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="truncate text-2xl font-bold text-foreground">{name}</h1>
+                <h1 className="truncate text-3xl font-bold tracking-tight">{name}</h1>
                 <Badge className={cn('tracking-wide uppercase', status.className)}>
                   {t(status.labelKey)}
                 </Badge>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground">{t('profileSubtitle')}</p>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-blue-100/80">
+                {t('learningDashboardSubtitle')}
+              </p>
+            </div>
+        </div>
+        <dl className="grid gap-3 rounded-xl bg-white/10 p-4 text-sm sm:grid-cols-3 lg:min-w-120">
+          <div className="flex items-center gap-2 text-blue-100/80">
+            <GraduationCap aria-hidden="true" className="size-4 shrink-0 text-teal-300" />
+            <div>
+              <dt className="text-caption font-semibold">{t('yearLevel')}</dt>
+              <dd className="mt-1 font-semibold text-white">
+                {getChildProfileYear(student, t('notAvailable'))}
+              </dd>
             </div>
           </div>
-          <dl className="grid gap-3 text-sm sm:min-w-56">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <GraduationCap aria-hidden="true" className="size-4 shrink-0 text-blue-600" />
-              <dt className="sr-only">{t('yearLevel')}</dt>
-              <dd className="text-foreground">{getChildProfileYear(student, t('notAvailable'))}</dd>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <CalendarDays aria-hidden="true" className="size-4 shrink-0 text-teal-600" />
-              <dt className="sr-only">{t('targetEntry')}</dt>
-              <dd className="text-foreground">
+          <div className="flex items-center gap-2 text-blue-100/80">
+            <CalendarDays aria-hidden="true" className="size-4 shrink-0 text-teal-300" />
+            <div>
+              <dt className="text-caption font-semibold">{t('targetEntry')}</dt>
+              <dd className="mt-1 font-semibold text-white">
                 {getChildProfileTarget(student, t('notAvailable'))}
               </dd>
             </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <MapPin aria-hidden="true" className="text-navy-700 size-4 shrink-0" />
-              <dt className="sr-only">{t('nationality')}</dt>
-              <dd className="text-foreground">{student.nationality ?? t('notAvailable')}</dd>
+          </div>
+          <div className="flex items-center gap-2 text-blue-100/80">
+            <MapPin aria-hidden="true" className="size-4 shrink-0 text-teal-300" />
+            <div>
+              <dt className="text-caption font-semibold">{t('nationality')}</dt>
+              <dd className="mt-1 font-semibold text-white">{student.nationality ?? t('notAvailable')}</dd>
             </div>
-          </dl>
-        </div>
+          </div>
+        </dl>
       </div>
     </header>
   );

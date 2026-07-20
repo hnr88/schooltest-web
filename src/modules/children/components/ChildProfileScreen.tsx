@@ -1,6 +1,7 @@
 'use client';
 
 import { Alert, Button, Skeleton } from '@/modules/design-system';
+import { ChildLearningSummary } from '@/modules/children/components/ChildLearningSummary';
 import { ChildMetrics } from '@/modules/children/components/ChildMetrics';
 import { ChildProfileHeader } from '@/modules/children/components/ChildProfileHeader';
 import { ChildResults } from '@/modules/children/components/ChildResults';
@@ -68,8 +69,12 @@ export function ChildProfileScreen({ documentId }: ChildProfileScreenProps) {
   }
 
   return (
-    <main className="flex flex-1 animate-in flex-col gap-6 px-8 py-7 duration-300 ease-out slide-in-from-bottom-2 motion-reduce:animate-none">
+    <main
+      data-surface="child-learning-dashboard"
+      className="flex flex-1 animate-in flex-col gap-6 px-8 py-7 duration-300 ease-out slide-in-from-bottom-2 motion-reduce:animate-none"
+    >
       <ChildProfileHeader student={data.student} />
+      <ChildLearningSummary metrics={data.metrics} />
       <ChildMetrics metrics={data.metrics} />
       <ChildResults results={data.recentResults} />
     </main>

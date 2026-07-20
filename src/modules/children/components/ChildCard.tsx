@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, CalendarDays, GraduationCap, MapPin } from 'lucide-react';
+import { ArrowUpRight, CalendarDays, GraduationCap, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
@@ -28,8 +28,8 @@ export function ChildCard({ student }: ChildCardProps) {
 
   return (
     <article aria-label={t('childCardLabel', { name })}>
-      <Card className="h-full gap-4 border-border bg-card shadow-sm transition-shadow duration-150 ease-out hover:shadow-md motion-reduce:transition-none">
-        <CardContent className="flex flex-1 flex-col gap-4">
+      <Card className="h-full gap-4 rounded-2xl border-border bg-card shadow-sm transition duration-150 ease-out hover:-translate-y-0.5 hover:shadow-md motion-reduce:translate-y-0 motion-reduce:transition-none">
+        <CardContent className="flex flex-1 flex-col gap-5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3">
               <PresenceAvatar
@@ -48,21 +48,29 @@ export function ChildCard({ student }: ChildCardProps) {
             </Badge>
           </div>
 
-          <dl className="grid gap-3 border-y border-border py-3 text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <GraduationCap aria-hidden="true" className="size-4 shrink-0 text-blue-600" />
-              <dt className="sr-only">{t('yearLevel')}</dt>
-              <dd className="text-foreground">{yearLevel}</dd>
+          <dl className="grid gap-3 rounded-xl bg-muted/60 p-3 text-sm sm:grid-cols-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <GraduationCap aria-hidden="true" className="size-4 shrink-0 text-primary" />
+              <div className="min-w-0">
+                <dt className="text-caption font-semibold text-muted-foreground">{t('yearLevel')}</dt>
+                <dd className="truncate font-semibold text-foreground">{yearLevel}</dd>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex min-w-0 items-center gap-2">
               <CalendarDays aria-hidden="true" className="size-4 shrink-0 text-teal-600" />
-              <dt className="sr-only">{t('targetEntry')}</dt>
-              <dd className="text-foreground">{targetEntry}</dd>
+              <div className="min-w-0">
+                <dt className="text-caption font-semibold text-muted-foreground">{t('targetEntry')}</dt>
+                <dd className="truncate font-semibold text-foreground">{targetEntry}</dd>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <MapPin aria-hidden="true" className="text-navy-700 size-4 shrink-0" />
-              <dt className="sr-only">{t('nationality')}</dt>
-              <dd className="text-foreground">{student.nationality ?? t('notAvailable')}</dd>
+            <div className="flex min-w-0 items-center gap-2 sm:col-span-2">
+              <MapPin aria-hidden="true" className="size-4 shrink-0 text-navy-700" />
+              <div className="min-w-0">
+                <dt className="text-caption font-semibold text-muted-foreground">{t('nationality')}</dt>
+                <dd className="truncate font-semibold text-foreground">
+                  {student.nationality ?? t('notAvailable')}
+                </dd>
+              </div>
             </div>
           </dl>
         </CardContent>
@@ -73,7 +81,7 @@ export function ChildCard({ student }: ChildCardProps) {
             className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary transition-colors duration-150 ease-out hover:bg-blue-50 hover:text-blue-700 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none dark:hover:bg-blue-950"
           >
             {t('viewProfile')}
-            <ArrowRight aria-hidden="true" className="size-4" />
+            <ArrowUpRight aria-hidden="true" className="size-4" />
           </Link>
           <ChildrenRowActions student={student} />
         </CardFooter>

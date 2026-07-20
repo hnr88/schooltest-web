@@ -6,7 +6,7 @@ kind: fix
 slice: child collection and a distinct assessment-progress detail surface
 target: src/modules/children/**; messages/*.json; tests/e2e/children-profile.spec.ts
 contract: C-STUDENT-LIST, C-PARENT-CHILD-PROGRESS, C-UI-CHILD-LEARNING-SURFACE
-status: TODO
+status: DOING
 depends_on: [43]
 ---
 ## Objective

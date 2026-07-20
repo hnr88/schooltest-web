@@ -63,6 +63,9 @@ test('en: child cards open a real persisted profile with metrics and an honest r
   await signInAs(page, request, PARENT.email, PARENT.password);
   await page.goto('/dashboard/children');
 
+  await expect(page.locator('[data-surface="children-roster"]')).toBeVisible();
+  await expect(page.locator('[data-slot="children-roster-summary"]')).toBeVisible();
+
   const card = page.getByRole('article', {
     name: icu(cat(en, 'Children.childCardLabel'), { name: 'Mia Keller' }),
   });
@@ -78,6 +81,9 @@ test('en: child cards open a real persisted profile with metrics and an honest r
   expect(response.status(), await response.text()).toBe(200);
 
   await expect(page.getByRole('heading', { level: 1, name: 'Mia Keller' })).toBeVisible();
+  await expect(page.locator('[data-surface="child-learning-dashboard"]')).toBeVisible();
+  await expect(page.locator('[data-slot="child-learning-summary"]')).toBeVisible();
+  await expect(page.locator('[data-slot="child-results-timeline"]')).toBeVisible();
   await expect(
     page.getByRole('region', { name: cat(en, 'Children.metricsHeading') }),
   ).toBeVisible();

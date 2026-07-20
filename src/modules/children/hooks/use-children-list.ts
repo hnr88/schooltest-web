@@ -16,16 +16,28 @@ export function useChildrenList() {
   const selectedStudentId = useDashboardSearchStore((state) => state.selectedStudentId);
 
   const allRows = useMemo(() => query.data?.data ?? [], [query.data]);
+  const allChildren = useMemo(() => allStudentsQuery.data?.data ?? [], [allStudentsQuery.data]);
   const rows = useMemo(
     () => allRows.filter((row) => !selectedStudentId || row.documentId === selectedStudentId),
     [allRows, selectedStudentId],
+  );
+  const activeCount = useMemo(
+    () => allChildren.filter((child) => child.status === 'active').length,
+    [allChildren],
+  );
+  const archivedCount = useMemo(
+    () => allChildren.filter((child) => child.status === 'archived').length,
+    [allChildren],
   );
 
   return {
     rows,
     totalCount: allRows.length,
     visibleCount: rows.length,
-    hasAnyChildren: (allStudentsQuery.data?.data.length ?? 0) > 0,
+    allProfileCount: allChildren.length,
+    activeCount,
+    archivedCount,
+    hasAnyChildren: allChildren.length > 0,
     includeArchived,
     setIncludeArchived,
     isLoading: query.isLoading || allStudentsQuery.isLoading,
