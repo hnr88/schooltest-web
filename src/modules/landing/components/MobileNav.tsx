@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { Link } from '@/i18n/navigation';
 import {
   Button,
   Logo,
@@ -68,20 +69,20 @@ function MobileNav() {
           ))}
         </nav>
         <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
-          <a
+          <Link
             href="/sign-in"
             onClick={close}
             className="inline-flex h-11 items-center justify-center rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted"
           >
             {t('nav.signIn')}
-          </a>
-          <a
+          </Link>
+          <Link
             href="/sign-up"
             onClick={close}
             className="inline-flex h-11 items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/80"
           >
             {t('nav.startFree')}
-          </a>
+          </Link>
         </div>
       </SheetContent>
     </Sheet>

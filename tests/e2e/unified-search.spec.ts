@@ -59,7 +59,10 @@ async function expectAxeClean(page: Page, label: string): Promise<void> {
   if (advisories.length > 0) {
     console.log(`[axe ${label}]`, advisories.map((v) => `${v.impact}:${v.id}`).join(', '));
   }
-  expect(blockers.map((v) => `${v.impact}:${v.id}`), label).toEqual([]);
+  expect(
+    blockers.map((v) => `${v.impact}:${v.id}`),
+    label,
+  ).toEqual([]);
 }
 
 test('schools: sidebar nav → default corpus, one-debounced request, chip filter, pagination', async ({
@@ -87,7 +90,10 @@ test('schools: sidebar nav → default corpus, one-debounced request, chip filte
   await expect(page.getByText(resultsCount(312, 'SchoolSearch'))).toBeVisible();
   await expect(schoolCards(page)).toHaveCount(12);
   await expect(schoolCards(page).first().locator('h3')).toHaveText('A B Paterson College');
-  await page.screenshot({ path: path.join(SCREENSHOTS, '039-unified-schools.png'), fullPage: true });
+  await page.screenshot({
+    path: path.join(SCREENSHOTS, '039-unified-schools.png'),
+    fullPage: true,
+  });
 
   // Debounce: 8 fast keystrokes collapse to exactly ONE settled "Paterson" POST.
   postedQueries.length = 0;
@@ -103,7 +109,11 @@ test('schools: sidebar nav → default corpus, one-debounced request, chip filte
   await expect(schoolCards(page)).toHaveCount(1);
   await expect(page.getByRole('heading', { level: 3, name: 'A B Paterson College' })).toBeVisible();
   await expect.poll(() => postedQueries.filter((q) => q === 'Paterson').length).toBe(1);
-  expect(postedQueries.some((q) => typeof q === 'string' && q !== 'Paterson' && 'Paterson'.startsWith(q))).toBe(false);
+  expect(
+    postedQueries.some(
+      (q) => typeof q === 'string' && q !== 'Paterson' && 'Paterson'.startsWith(q),
+    ),
+  ).toBe(false);
 
   // Clear q + QLD chip → count drops to 74, chip aria-pressed=true.
   await searchBar(page).fill('');
@@ -160,17 +170,10 @@ test('axe: both modes have zero serious/critical violations', async ({ page }) =
   await expectAxeClean(page, '/dashboard/search?mode=agents @ 1280px');
 });
 
-test('zh: the UnifiedSearch h1 renders the zh catalog title in both modes', async ({
-  page,
-  context,
-  baseURL,
-}) => {
+test('zh: /zh/dashboard/search renders the zh catalog title in both modes', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
-  await loginAsParent(page); // sign-in copy is en; switch locale after auth
-  await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? 'http://localhost:3100' },
-  ]);
-  await page.goto('/dashboard/search');
+  await loginAsParent(page); // sign-in copy is en; navigate to the localized search route after auth
+  await page.goto('/zh/dashboard/search');
   await expect(
     page.getByRole('heading', { level: 1, name: cat(zh, 'UnifiedSearch.titleSchools') }),
   ).toBeVisible();

@@ -49,15 +49,19 @@ async function authAndGoto(page: Page, request: APIRequestContext) {
   }, jwt);
 }
 
-async function fillToStep4(page: Page, m: Messages) {
-  await page.goto('/dashboard/children/new');
+async function fillToStep4(page: Page, m: Messages, locale: AnyLocale = 'en') {
+  await page.goto(
+    locale === 'en' ? '/dashboard/children/new' : `/${locale}/dashboard/children/new`,
+  );
   await page.getByLabel(cat(m, 'StudentWizard.personal.givenName')).fill('Mia');
   await page.getByLabel(cat(m, 'StudentWizard.personal.familyName')).fill('Chen');
   await page.getByRole('combobox', { name: cat(m, 'StudentWizard.personal.nationality') }).click();
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
-  await page.getByRole('combobox', { name: cat(m, 'StudentWizard.education.targetEntryYear') }).click();
+  await page
+    .getByRole('combobox', { name: cat(m, 'StudentWizard.education.targetEntryYear') })
+    .click();
   await page.getByRole('option').first().click();
   await page
     .getByRole('group', { name: cat(m, 'StudentWizard.education.targetEntryTerm') })
@@ -93,7 +97,11 @@ test('EN: step 4 media — client gate blocks bad files, real upload previews, r
   const photoInput = page.locator('#wizard-photo');
 
   // Invalid type on the photo field → inline error, NO request
-  await photoInput.setInputFiles({ name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from('x') });
+  await photoInput.setInputFiles({
+    name: 'notes.txt',
+    mimeType: 'text/plain',
+    buffer: Buffer.from('x'),
+  });
   await expect(page.getByText(cat(en, 'StudentWizard.media.photo.invalidType'))).toBeVisible();
 
   // 16MB image → too-large inline error, NO request
@@ -117,7 +125,9 @@ test('EN: step 4 media — client gate blocks bad files, real upload previews, r
 
   const preview = page.getByAltText(cat(en, 'StudentWizard.media.photo.previewAlt'));
   await expect(preview).toBeVisible();
-  await expect(page.getByRole('button', { name: cat(en, 'StudentWizard.media.remove') })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: cat(en, 'StudentWizard.media.remove') }),
+  ).toBeVisible();
 
   // Absolutized preview url serves 200 (relative /uploads/* would 404 on the web origin)
   const src = await preview.getAttribute('src');
@@ -147,11 +157,10 @@ test('EN: step 4 media — client gate blocks bad files, real upload previews, r
   expect(errors).toEqual([]);
 });
 
-test('ZH: step 4 renders localized media copy', async ({ page, request, context }) => {
+test('ZH: step 4 renders localized media copy', async ({ page, request }) => {
   const zh = loadMessages('zh' as AnyLocale);
-  await context.addCookies([{ name: 'NEXT_LOCALE', value: 'zh', url: 'http://localhost:3100' }]);
   await authAndGoto(page, request);
-  await fillToStep4(page, zh);
+  await fillToStep4(page, zh, 'zh');
   await expect(page.getByText(cat(zh, 'StudentWizard.media.photo.helper'))).toBeVisible();
   await expect(page.getByText(cat(zh, 'StudentWizard.media.voice.dropTitle'))).toBeVisible();
   await waitForAnimationsSettled(page);

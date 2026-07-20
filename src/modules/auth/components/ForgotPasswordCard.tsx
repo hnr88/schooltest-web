@@ -1,11 +1,10 @@
 'use client';
 
 import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
+import { Link, useRouter } from '@/i18n/navigation';
 import { ForgotPasswordForm } from '@/modules/auth/components/ForgotPasswordForm';
 import { ForgotPasswordSentState } from '@/modules/auth/components/ForgotPasswordSentState';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';

@@ -470,7 +470,8 @@
     "yearLevelRequired": "Pick a year level.",
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
-    "loading": "Loading your students…"
+    "loading": "Loading your students…",
+    "viewChildren": "Xem con của tôi"
   },
   "Shell": {
     "nav": {
@@ -763,6 +764,31 @@
         "invalidType": "Hãy chọn tệp âm thanh (MP3 hoặc WAV).",
         "tooLarge": "Âm thanh vượt quá 10MB. Hãy chọn tệp nhỏ hơn."
       }
+    },
+    "toastCreated": "Đã tạo học sinh",
+    "review": {
+      "intro": "Hãy kiểm tra mọi thông tin trước khi tạo học sinh này.",
+      "edit": "Chỉnh sửa",
+      "empty": "—",
+      "photo": "Ảnh",
+      "voice": "Giới thiệu bằng giọng nói",
+      "photoAlt": "Xem trước ảnh học sinh",
+      "voiceAlt": "Xem trước giới thiệu bằng giọng nói",
+      "section": {
+        "personal": "Thông tin cá nhân",
+        "education": "Học vấn",
+        "guardian": "Cha mẹ hoặc người giám hộ",
+        "media": "Ảnh & giọng nói"
+      },
+      "error": {
+        "validationTitle": "Kiểm tra thông tin",
+        "validationBody": "Một số thông tin cần được sửa trước khi có thể tạo học sinh này.",
+        "serverTitle": "Đã xảy ra sự cố",
+        "serverBody": "Chúng tôi không thể tạo học sinh này. Vui lòng thử lại.",
+        "offlineTitle": "Bạn đang ngoại tuyến",
+        "offlineBody": "Hãy kiểm tra kết nối và thử lại.",
+        "dismiss": "Đóng"
+      }
     }
   },
   "StudentWizardSchema": {
@@ -785,5 +811,49 @@
     "guardianPhoneRequired": "Vui lòng nhập số điện thoại người giám hộ",
     "guardianPhoneTooLong": "Số điện thoại người giám hộ quá dài",
     "wechatTooLong": "ID WeChat quá dài"
+  },
+  "Children": {
+    "meta": {
+      "title": "Con của tôi — SchoolTest",
+      "description": "Quản lý con của bạn và chỉnh sửa thông tin của chúng."
+    },
+    "editMeta": {
+      "title": "Chỉnh sửa con — SchoolTest",
+      "description": "Cập nhật thông tin con của bạn."
+    },
+    "heading": "Con của tôi",
+    "addStudent": "Thêm học sinh",
+    "includeArchived": "Bao gồm đã lưu trữ",
+    "showing": "Hiển thị {from}–{to} trong số {total}",
+    "columnStudent": "Học sinh",
+    "columnNationality": "Quốc tịch",
+    "columnYearLevel": "Khối lớp",
+    "columnTargetEntry": "Nhập học mục tiêu",
+    "columnStatus": "Trạng thái",
+    "columnAdded": "Đã thêm",
+    "columnActions": "Thao tác",
+    "actionsLabel": "Thao tác cho {name}",
+    "edit": "Chỉnh sửa",
+    "archive": "Lưu trữ",
+    "unarchive": "Bỏ lưu trữ",
+    "statusActive": "Đang hoạt động",
+    "statusArchived": "Đã lưu trữ",
+    "statusEnrolled": "Đã ghi danh",
+    "noMatches": "Không có con nào khớp với tìm kiếm của bạn.",
+    "emptyTitle": "Chưa có con nào",
+    "emptyDescription": "Thêm con đầu tiên của bạn để bắt đầu theo dõi hành trình học tập của chúng.",
+    "errorTitle": "Không thể tải danh sách con của bạn.",
+    "retry": "Thử lại",
+    "archiveDialogTitle": "Lưu trữ {name}?",
+    "archiveDialogDescription": "Con đã lưu trữ sẽ bị ẩn khỏi danh sách của bạn. Bạn có thể khôi phục bất cứ lúc nào bằng “Bao gồm đã lưu trữ”.",
+    "archiveConfirm": "Lưu trữ",
+    "archiveCancel": "Hủy",
+    "archivedToast": "{name} đã được lưu trữ.",
+    "unarchivedToast": "{name} đã được khôi phục.",
+    "actionError": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "updatedToast": "Đã lưu thay đổi.",
+    "editErrorTitle": "Chúng tôi không thể tải con này.",
+    "editErrorDescription": "Có thể chúng đã bị xóa, hoặc bạn không có quyền truy cập.",
+    "backToList": "Quay lại con của tôi"
   }
 }

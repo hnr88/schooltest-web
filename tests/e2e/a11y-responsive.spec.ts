@@ -64,32 +64,22 @@ test('AXE: /design-system has zero serious/critical violations', async ({ page }
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
-test('AXE: / (zh via NEXT_LOCALE cookie) has zero serious/critical violations', async ({
-  browser,
-  baseURL,
-}) => {
-  const context = await browser.newContext({ baseURL, viewport: DESKTOP });
-  await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? 'http://localhost:3100' },
-  ]);
-  const page = await context.newPage();
+test('AXE: /zh has zero serious/critical violations', async ({ page }) => {
   const errors = watchErrors(page);
-  try {
-    await page.goto('/');
-    await expectAxeClean(page, '/ zh');
-    await page.screenshot({
-      path: path.join(SCREENSHOTS, 'landing-zh-desktop.png'),
-      fullPage: true,
-    });
-    await page.setViewportSize(MOBILE);
-    await page.screenshot({
-      path: path.join(SCREENSHOTS, 'landing-zh-mobile.png'),
-      fullPage: true,
-    });
-    expect(errors, errors.join('\n')).toEqual([]);
-  } finally {
-    await context.close();
-  }
+  await page.setViewportSize(DESKTOP);
+  await page.goto('/zh');
+  await expect(page).toHaveURL((url) => url.pathname === '/zh');
+  await expectAxeClean(page, '/zh');
+  await page.screenshot({
+    path: path.join(SCREENSHOTS, 'landing-zh-desktop.png'),
+    fullPage: true,
+  });
+  await page.setViewportSize(MOBILE);
+  await page.screenshot({
+    path: path.join(SCREENSHOTS, 'landing-zh-mobile.png'),
+    fullPage: true,
+  });
+  expect(errors, errors.join('\n')).toEqual([]);
 });
 
 test('RESPONSIVE: no horizontal scroll; landing touch targets ≥44px at 375/1280', async ({

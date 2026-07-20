@@ -2,12 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Link, useRouter } from '@/i18n/navigation';
 import { classifySignInError } from '@/modules/auth/lib/classify-sign-in-error';
 import { useLoginMutation } from '@/modules/auth/queries/use-login.mutation';
 import { signInSchema, type SignInInput } from '@/modules/auth/schemas/sign-in.schema';

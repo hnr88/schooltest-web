@@ -1,10 +1,10 @@
 'use client';
 
 import { ArrowLeft, TriangleAlert } from 'lucide-react';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { Link } from '@/i18n/navigation';
 import { ResetPasswordForm } from '@/modules/auth/components/ResetPasswordForm';
 import { Button, Card, CardContent, Logo } from '@/modules/design-system';
 

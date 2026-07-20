@@ -470,7 +470,8 @@
     "yearLevelRequired": "Pick a year level.",
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
-    "loading": "Loading your students…"
+    "loading": "Loading your students…",
+    "viewChildren": "查看我的孩子"
   },
   "Shell": {
     "nav": {
@@ -763,6 +764,31 @@
         "invalidType": "请选择音频文件（MP3 或 WAV）。",
         "tooLarge": "该音频超过 10MB，请选择较小的文件。"
       }
+    },
+    "toastCreated": "学生已创建",
+    "review": {
+      "intro": "创建此学生前，请确认所有信息无误。",
+      "edit": "编辑",
+      "empty": "—",
+      "photo": "照片",
+      "voice": "语音介绍",
+      "photoAlt": "学生照片预览",
+      "voiceAlt": "语音介绍预览",
+      "section": {
+        "personal": "个人信息",
+        "education": "教育信息",
+        "guardian": "家长或监护人",
+        "media": "照片和语音"
+      },
+      "error": {
+        "validationTitle": "请检查信息",
+        "validationBody": "创建此学生前，部分信息需要修正。",
+        "serverTitle": "出现错误",
+        "serverBody": "无法创建此学生，请重试。",
+        "offlineTitle": "您已离线",
+        "offlineBody": "请检查网络连接后重试。",
+        "dismiss": "关闭"
+      }
     }
   },
   "StudentWizardSchema": {
@@ -785,5 +811,49 @@
     "guardianPhoneRequired": "请填写监护人电话",
     "guardianPhoneTooLong": "监护人电话过长",
     "wechatTooLong": "微信号过长"
+  },
+  "Children": {
+    "meta": {
+      "title": "我的孩子 — SchoolTest",
+      "description": "管理您的孩子并编辑他们的信息。"
+    },
+    "editMeta": {
+      "title": "编辑孩子 — SchoolTest",
+      "description": "更新您孩子的信息。"
+    },
+    "heading": "我的孩子",
+    "addStudent": "添加学生",
+    "includeArchived": "包含已归档",
+    "showing": "显示第 {from}–{to} 条，共 {total} 条",
+    "columnStudent": "学生",
+    "columnNationality": "国籍",
+    "columnYearLevel": "年级",
+    "columnTargetEntry": "目标入学",
+    "columnStatus": "状态",
+    "columnAdded": "添加时间",
+    "columnActions": "操作",
+    "actionsLabel": "{name} 的操作",
+    "edit": "编辑",
+    "archive": "归档",
+    "unarchive": "取消归档",
+    "statusActive": "活跃",
+    "statusArchived": "已归档",
+    "statusEnrolled": "已入学",
+    "noMatches": "没有符合搜索条件的孩子。",
+    "emptyTitle": "还没有孩子",
+    "emptyDescription": "添加您的第一个孩子，开始追踪他们的求学历程。",
+    "errorTitle": "无法加载您的孩子。",
+    "retry": "重试",
+    "archiveDialogTitle": "归档 {name}？",
+    "archiveDialogDescription": "已归档的孩子将从列表中隐藏。您可以随时通过“包含已归档”恢复。",
+    "archiveConfirm": "归档",
+    "archiveCancel": "取消",
+    "archivedToast": "{name} 已归档。",
+    "unarchivedToast": "{name} 已恢复。",
+    "actionError": "出了点问题，请重试。",
+    "updatedToast": "更改已保存。",
+    "editErrorTitle": "无法加载此孩子。",
+    "editErrorDescription": "他们可能已被删除，或您没有访问权限。",
+    "backToList": "返回我的孩子"
   }
 }

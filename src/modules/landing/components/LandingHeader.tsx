@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
+import { Link } from '@/i18n/navigation';
 import { Button, Container, Logo } from '@/modules/design-system';
 import { MobileNav } from '@/modules/landing/components/MobileNav';
 import { NAV_LINKS } from '@/modules/landing/constants/landing.constants';

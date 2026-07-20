@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { cn } from '@/lib/utils';
 import { Container, Logo, Section } from '@/modules/design-system';
+import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 
 const STATS = [
   {
@@ -27,22 +28,24 @@ async function StatsBand() {
   return (
     <Section>
       <Container>
-        <div
-          data-slot="stats-band"
-          className="relative overflow-hidden rounded-4xl bg-navy-900 p-10 sm:p-14"
-        >
-          <div aria-hidden="true" className="absolute -right-10 -bottom-12 opacity-10">
-            <Logo variant="mark" theme="white" alt="" height={220} />
+        <ScrollReveal variant="scale">
+          <div
+            data-slot="stats-band"
+            className="relative overflow-hidden rounded-4xl bg-navy-900 p-10 sm:p-14"
+          >
+            <div aria-hidden="true" className="absolute -right-10 -bottom-12 opacity-10">
+              <Logo variant="mark" theme="white" alt="" height={220} />
+            </div>
+            <div className="grid gap-8 text-center text-white sm:grid-cols-3">
+              {STATS.map((stat) => (
+                <div key={stat.valueKey}>
+                  <p className={cn('text-5xl font-bold', stat.valueClassName)}>{t(stat.valueKey)}</p>
+                  <p className="mt-2 text-sm text-slate-400">{t(stat.labelKey)}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="grid gap-8 text-center text-white sm:grid-cols-3">
-            {STATS.map((stat) => (
-              <div key={stat.valueKey}>
-                <p className={cn('text-5xl font-bold', stat.valueClassName)}>{t(stat.valueKey)}</p>
-                <p className="mt-2 text-sm text-slate-400">{t(stat.labelKey)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        </ScrollReveal>
       </Container>
     </Section>
   );

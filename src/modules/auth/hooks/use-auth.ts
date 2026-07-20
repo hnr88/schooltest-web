@@ -1,9 +1,9 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+import { useRouter } from '@/i18n/navigation';
 import { useMeQuery } from '@/modules/auth/queries/use-me.query';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 

@@ -1,10 +1,9 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
+import { Link, useRouter } from '@/i18n/navigation';
 import { GoogleButton } from '@/modules/auth/components/GoogleButton';
 import { SignUpConfirmState } from '@/modules/auth/components/SignUpConfirmState';
 import { SignUpForm } from '@/modules/auth/components/SignUpForm';

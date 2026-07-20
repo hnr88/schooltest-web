@@ -122,24 +122,16 @@ test('en: an existing token redirects the card to /dashboard', async ({ context,
   await page.waitForURL('**/dashboard');
 });
 
-test('zh: renders the Chinese sign-up card from the zh catalog', async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ baseURL, viewport: DESKTOP });
-  await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? 'http://localhost:3100' },
-  ]);
-  const page = await context.newPage();
-  try {
-    await page.goto('/sign-up');
-    await expect(
-      page.getByRole('heading', { level: 1, name: cat(zh, 'Auth.signUpTitle') }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: cat(zh, 'Auth.signUpButton'), exact: true }),
-    ).toBeVisible();
-    await expect(page.getByLabel(cat(zh, 'Auth.usernameLabel'), { exact: true })).toBeVisible();
-    await expect(page.getByLabel(cat(zh, 'Auth.emailLabel'), { exact: true })).toBeVisible();
-    await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-up-zh.png') });
-  } finally {
-    await context.close();
-  }
+test('zh: /zh/sign-up renders the Chinese card from the zh catalog', async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto('/zh/sign-up');
+  await expect(
+    page.getByRole('heading', { level: 1, name: cat(zh, 'Auth.signUpTitle') }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: cat(zh, 'Auth.signUpButton'), exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel(cat(zh, 'Auth.usernameLabel'), { exact: true })).toBeVisible();
+  await expect(page.getByLabel(cat(zh, 'Auth.emailLabel'), { exact: true })).toBeVisible();
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-up-zh.png') });
 });

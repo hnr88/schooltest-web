@@ -1,10 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
+import { useRouter } from '@/i18n/navigation';
 import { classifyWizardError } from '@/modules/student-wizard/lib/classify-wizard-error';
 import { useCreateStudentFullMutation } from '@/modules/student-wizard/queries/use-create-student-full.mutation';
 import type { StudentWizardOutput } from '@/modules/student-wizard/schemas/student-wizard.schema';

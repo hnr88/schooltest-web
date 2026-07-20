@@ -1,10 +1,10 @@
 'use client';
 
 import { ArrowLeft, Mail } from 'lucide-react';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { Link } from '@/i18n/navigation';
 import { ResendCountdownButton } from '@/modules/auth/components/ResendCountdownButton';
 import { classifyResendConfirmationError } from '@/modules/auth/lib/classify-resend-confirmation-error';
 import { useResendConfirmationMutation } from '@/modules/auth/queries/use-resend-confirmation.mutation';

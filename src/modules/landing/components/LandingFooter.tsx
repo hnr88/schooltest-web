@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
+import { Link } from '@/i18n/navigation';
 import { Container, Logo } from '@/modules/design-system';
 import { LocaleSwitcher } from '@/modules/i18n';
 import { LinkedInIcon, XIcon, YouTubeIcon } from '@/modules/landing/components/SocialIcons';
@@ -51,12 +52,21 @@ async function LandingFooter() {
               <ul className="mt-4 space-y-2.5 text-sm">
                 {column.links.map((link) => (
                   <li key={link.labelKey}>
-                    <a
-                      href={link.href}
-                      className="inline-block py-1.5 text-blue-200 transition-colors hover:text-white"
-                    >
-                      {t(link.labelKey)}
-                    </a>
+                    {link.href.startsWith('/') ? (
+                      <Link
+                        href={link.href}
+                        className="inline-block py-1.5 text-blue-200 transition-colors hover:text-white"
+                      >
+                        {t(link.labelKey)}
+                      </Link>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="inline-block py-1.5 text-blue-200 transition-colors hover:text-white"
+                      >
+                        {t(link.labelKey)}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -72,9 +82,9 @@ async function LandingFooter() {
             <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
               {FOOTER_LEGAL.map((link) => (
                 <li key={link.labelKey}>
-                  <a href={link.href} className="transition-colors hover:text-white">
+                  <Link href={link.href} className="transition-colors hover:text-white">
                     {t(link.labelKey)}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

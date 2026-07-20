@@ -238,16 +238,10 @@ test('DS-PROPS: ds-probe Button merges custom className with variant styling', a
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
-test('LOCALE-TOGGLE: footer switcher en→zh→en updates landing copy without reload', async ({
-  page,
-}) => {
+test('LOCALE-TOGGLE: footer switcher en→zh→en uses canonical locale URLs', async ({ page }) => {
   const errors = watchErrors(page);
   const { en, zh } = catalogs;
   await page.goto('/');
-  await page.evaluate(() => {
-    (window as unknown as Record<string, unknown>).__noReload = 1;
-  });
-  const url = page.url();
   const footer = page.getByRole('contentinfo');
   const h1 = page.locator('h1');
   await footer
@@ -257,14 +251,12 @@ test('LOCALE-TOGGLE: footer switcher en→zh→en updates landing copy without r
   // Shared chrome and the landing content both flip to Chinese.
   await expect(page.getByText(zh['Home.skipToContent'], { exact: true })).toBeAttached();
   for (const line of heroTitleLines(zh)) await expect(h1).toContainText(line);
-  expect(page.url()).toBe(url); // cookie + router.refresh, no navigation
-  expect(await page.evaluate(() => (window as unknown as Record<string, unknown>).__noReload)).toBe(
-    1,
-  );
+  await expect(page).toHaveURL((url) => url.pathname === '/zh');
   await footer
     .getByRole('combobox', { name: cat(zh, 'LocaleSwitcher.label'), exact: true })
     .click();
   await page.getByRole('option', { name: 'English' }).click();
   await expect(page.getByText(en['Home.skipToContent'], { exact: true })).toBeAttached();
+  await expect(page).toHaveURL((url) => url.pathname === '/');
   expect(errors, errors.join('\n')).toEqual([]);
 });

@@ -38,34 +38,26 @@ test('aria labels: nav landmark, socials, rating, score bars render from en.json
   }
 });
 
-test('aria labels: zh catalog values render in zh mode', async ({ browser, baseURL }) => {
+test('aria labels: zh catalog values render at /zh', async ({ page }) => {
   const zh = catalogs.zh;
-  const context = await browser.newContext({ baseURL });
-  await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? 'http://localhost:3100' },
-  ]);
-  const page = await context.newPage();
-  try {
-    await page.goto('/');
-    await expect(
-      page.getByRole('navigation', { name: home(zh, 'nav.label'), exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      page.getByRole('img', { name: home(zh, 'testimonial.ratingLabel'), exact: true }),
-    ).toBeVisible();
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-      'content',
-      home(zh, 'meta.description'),
-    );
-    for (const key of ['footer.socialX', 'footer.socialYouTube', 'footer.socialLinkedIn']) {
-      await expect(page.getByRole('link', { name: home(zh, key), exact: true })).toBeVisible();
-    }
-    const name = icu(home(zh, 'featureDetail.card.scoreLabel'), {
-      skill: home(zh, 'featureDetail.card.grammar'),
-      score: home(zh, 'featureDetail.card.scoreGrammar'),
-    });
-    await expect(page.getByRole('progressbar', { name, exact: true })).toBeVisible();
-  } finally {
-    await context.close();
+  await page.goto('/zh');
+  await expect(page).toHaveURL((url) => url.pathname === '/zh');
+  await expect(
+    page.getByRole('navigation', { name: home(zh, 'nav.label'), exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    page.getByRole('img', { name: home(zh, 'testimonial.ratingLabel'), exact: true }),
+  ).toBeVisible();
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    home(zh, 'meta.description'),
+  );
+  for (const key of ['footer.socialX', 'footer.socialYouTube', 'footer.socialLinkedIn']) {
+    await expect(page.getByRole('link', { name: home(zh, key), exact: true })).toBeVisible();
   }
+  const name = icu(home(zh, 'featureDetail.card.scoreLabel'), {
+    skill: home(zh, 'featureDetail.card.grammar'),
+    score: home(zh, 'featureDetail.card.scoreGrammar'),
+  });
+  await expect(page.getByRole('progressbar', { name, exact: true })).toBeVisible();
 });

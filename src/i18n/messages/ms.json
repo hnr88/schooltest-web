@@ -470,7 +470,8 @@
     "yearLevelRequired": "Pick a year level.",
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
-    "loading": "Loading your students…"
+    "loading": "Loading your students…",
+    "viewChildren": "Lihat anak saya"
   },
   "Shell": {
     "nav": {
@@ -763,6 +764,31 @@
         "invalidType": "Pilih fail audio (MP3 atau WAV).",
         "tooLarge": "Audio itu melebihi 10MB. Pilih fail lebih kecil."
       }
+    },
+    "toastCreated": "Pelajar dicipta",
+    "review": {
+      "intro": "Pastikan semua maklumat betul sebelum mencipta pelajar ini.",
+      "edit": "Sunting",
+      "empty": "—",
+      "photo": "Foto",
+      "voice": "Pengenalan suara",
+      "photoAlt": "Pratonton foto pelajar",
+      "voiceAlt": "Pratonton pengenalan suara",
+      "section": {
+        "personal": "Butiran peribadi",
+        "education": "Pendidikan",
+        "guardian": "Ibu bapa atau penjaga",
+        "media": "Foto & suara"
+      },
+      "error": {
+        "validationTitle": "Semak butiran",
+        "validationBody": "Beberapa butiran perlu dibetulkan sebelum kami boleh mencipta pelajar ini.",
+        "serverTitle": "Sesuatu telah berlaku",
+        "serverBody": "Kami tidak dapat mencipta pelajar ini. Sila cuba lagi.",
+        "offlineTitle": "Anda di luar talian",
+        "offlineBody": "Semak sambungan anda dan cuba lagi.",
+        "dismiss": "Tutup"
+      }
     }
   },
   "StudentWizardSchema": {
@@ -785,5 +811,49 @@
     "guardianPhoneRequired": "Telefon penjaga diperlukan",
     "guardianPhoneTooLong": "Telefon penjaga terlalu panjang",
     "wechatTooLong": "ID WeChat terlalu panjang"
+  },
+  "Children": {
+    "meta": {
+      "title": "Anak saya — SchoolTest",
+      "description": "Urus anak anda dan edit butiran mereka."
+    },
+    "editMeta": {
+      "title": "Edit anak — SchoolTest",
+      "description": "Kemas kini butiran anak anda."
+    },
+    "heading": "Anak saya",
+    "addStudent": "Tambah pelajar",
+    "includeArchived": "Sertakan diarkib",
+    "showing": "Menunjukkan {from}–{to} daripada {total}",
+    "columnStudent": "Pelajar",
+    "columnNationality": "Kewarganegaraan",
+    "columnYearLevel": "Tahun persekolahan",
+    "columnTargetEntry": "Kemasukan sasaran",
+    "columnStatus": "Status",
+    "columnAdded": "Ditambah",
+    "columnActions": "Tindakan",
+    "actionsLabel": "Tindakan untuk {name}",
+    "edit": "Edit",
+    "archive": "Arkib",
+    "unarchive": "Nyaharkib",
+    "statusActive": "Aktif",
+    "statusArchived": "Diarkib",
+    "statusEnrolled": "Didaftarkan",
+    "noMatches": "Tiada anak sepadan dengan carian anda.",
+    "emptyTitle": "Belum ada anak",
+    "emptyDescription": "Tambah anak pertama anda untuk mula menjejaki perjalanan persekolahan mereka.",
+    "errorTitle": "Tidak dapat memuatkan anak anda.",
+    "retry": "Cuba lagi",
+    "archiveDialogTitle": "Arkibkan {name}?",
+    "archiveDialogDescription": "Anak yang diarkib disembunyikan daripada senarai anda. Anda boleh memulihkannya bila-bila masa dengan “Sertakan diarkib”.",
+    "archiveConfirm": "Arkib",
+    "archiveCancel": "Batal",
+    "archivedToast": "{name} telah diarkibkan.",
+    "unarchivedToast": "{name} telah dipulihkan.",
+    "actionError": "Sesuatu tidak kena. Sila cuba lagi.",
+    "updatedToast": "Perubahan disimpan.",
+    "editErrorTitle": "Kami tidak dapat memuatkan anak ini.",
+    "editErrorDescription": "Mereka mungkin telah dialih keluar, atau anda tiada akses.",
+    "backToList": "Kembali ke anak saya"
   }
 }

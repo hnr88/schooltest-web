@@ -3,6 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { Button as ButtonPrimitive, buttonVariants } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 
 const extendedButtonVariants = cva('', {
@@ -87,7 +88,7 @@ function Button({
     // They are plain DOM props at runtime; Base UI's button-generic handler types are nominal.
     const anchorProps = props as ComponentPropsWithoutRef<'a'>;
     return (
-      <a
+      <Link
         href={href}
         aria-busy={loading || undefined}
         aria-disabled={disabled || loading || undefined}
@@ -102,7 +103,7 @@ function Button({
       >
         {loading ? <Spinner aria-hidden="true" /> : null}
         {children}
-      </a>
+      </Link>
     );
   }
   return (

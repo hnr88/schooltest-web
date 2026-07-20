@@ -24,8 +24,10 @@ async function authAndGoto(page: Page, request: import('@playwright/test').APIRe
   }, jwt);
 }
 
-async function fillToStep3(page: Page, m: Messages) {
-  await page.goto('/dashboard/children/new');
+async function fillToStep3(page: Page, m: Messages, locale: AnyLocale = 'en') {
+  await page.goto(
+    locale === 'en' ? '/dashboard/children/new' : `/${locale}/dashboard/children/new`,
+  );
   // Step 1 — Personal (required: given, family, nationality)
   await page.getByLabel(cat(m, 'StudentWizard.personal.givenName')).fill('Mia');
   await page.getByLabel(cat(m, 'StudentWizard.personal.familyName')).fill('Chen');
@@ -34,7 +36,9 @@ async function fillToStep3(page: Page, m: Messages) {
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
   // Step 2 — Education (required: target entry year, target entry term)
-  await page.getByRole('combobox', { name: cat(m, 'StudentWizard.education.targetEntryYear') }).click();
+  await page
+    .getByRole('combobox', { name: cat(m, 'StudentWizard.education.targetEntryYear') })
+    .click();
   await page.getByRole('option').first().click();
   await page
     .getByRole('group', { name: cat(m, 'StudentWizard.education.targetEntryTerm') })
@@ -55,10 +59,16 @@ test('EN: step 3 cards render, default whatsapp, click/keyboard select, validati
   await authAndGoto(page, request);
   await fillToStep3(page, en);
 
-  const group = page.getByRole('radiogroup', { name: cat(en, 'StudentWizard.guardian.preferredContact') });
+  const group = page.getByRole('radiogroup', {
+    name: cat(en, 'StudentWizard.guardian.preferredContact'),
+  });
   await expect(group).toBeVisible();
-  const whatsapp = group.getByRole('radio', { name: cat(en, 'StudentWizard.guardian.channel.whatsapp') });
-  const wechat = group.getByRole('radio', { name: cat(en, 'StudentWizard.guardian.channel.wechat') });
+  const whatsapp = group.getByRole('radio', {
+    name: cat(en, 'StudentWizard.guardian.channel.whatsapp'),
+  });
+  const wechat = group.getByRole('radio', {
+    name: cat(en, 'StudentWizard.guardian.channel.wechat'),
+  });
   const email = group.getByRole('radio', { name: cat(en, 'StudentWizard.guardian.channel.email') });
 
   // Default whatsapp preselected
@@ -105,17 +115,18 @@ test('EN: step 3 cards render, default whatsapp, click/keyboard select, validati
   expect(errors).toEqual([]);
 });
 
-test('ZH: step 3 renders localized labels and channel names', async ({ page, request, context }) => {
+test('ZH: step 3 renders localized labels and channel names', async ({ page, request }) => {
   const zh = loadMessages('zh' as AnyLocale);
-  await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'zh', url: 'http://localhost:3100' },
-  ]);
   await authAndGoto(page, request);
-  await fillToStep3(page, zh);
+  await fillToStep3(page, zh, 'zh');
 
-  const group = page.getByRole('radiogroup', { name: cat(zh, 'StudentWizard.guardian.preferredContact') });
+  const group = page.getByRole('radiogroup', {
+    name: cat(zh, 'StudentWizard.guardian.preferredContact'),
+  });
   await expect(group).toBeVisible();
-  await expect(group.getByRole('radio', { name: cat(zh, 'StudentWizard.guardian.channel.wechat') })).toBeVisible();
+  await expect(
+    group.getByRole('radio', { name: cat(zh, 'StudentWizard.guardian.channel.wechat') }),
+  ).toBeVisible();
   await expect(page.getByLabel(cat(zh, 'StudentWizard.guardian.name'))).toBeVisible();
   await page.screenshot({ path: path.join(EVIDENCE, '051-step3-zh.png'), fullPage: true });
 });

@@ -1,8 +1,9 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 
+import { usePathname, useRouter } from '@/i18n/navigation';
 import {
   SEARCH_MODES,
   SEARCH_MODE_PARAM,
@@ -22,8 +23,8 @@ function coerceMode(raw: string | null): UnifiedSearchMode {
 // source of truth — `mode` is derived from the live search params each render
 // (absent/invalid → 'schools'), and a tab change writes it back with router.replace
 // so switching never stacks a history entry. All other pane state (q, filters, page,
-// sort) stays in the per-pane Zustand stores. i18n is cookie-based here (no locale
-// prefix in the path), so plain next/navigation is the project precedent.
+// sort) stays in the per-pane Zustand stores. The locale-aware router retains the
+// active locale prefix while the query string changes.
 export function useSearchModeSync(): SearchModeSync {
   const router = useRouter();
   const pathname = usePathname();

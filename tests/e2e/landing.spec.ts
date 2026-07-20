@@ -18,8 +18,6 @@ import {
   type Messages,
 } from './helpers/i18n';
 
-const FALLBACK_BASE_URL = 'http://localhost:3100';
-
 // Assertions derive from the catalogs at runtime — no copy is duplicated into this spec.
 const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), zh: loadMessages('zh') };
 
@@ -56,60 +54,34 @@ test('EN render: every landing section renders from en.json', async ({ page }) =
   await assertFaqAnswers(page, en, FAQ_PAIRS);
 });
 
-test('ZH render: NEXT_LOCALE=zh renders every section from zh.json', async ({
-  browser,
-  baseURL,
-}) => {
+test('ZH render: /zh renders every section from zh.json', async ({ page }) => {
   const zh = catalogs.zh;
-  const context = await browser.newContext({ baseURL });
-  await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? FALLBACK_BASE_URL },
-  ]);
-  const page = await context.newPage();
-  try {
-    await page.goto('/');
-    await expect(page).toHaveTitle(new RegExp(escapeRegExp(home(zh, 'meta.title'))));
-    const h1 = page.locator('h1');
-    for (const line of heroTitleLines(zh)) {
-      await expect(h1).toContainText(line);
-    }
-    await expect(
-      page.getByRole('heading', { name: stripTags(home(zh, 'flow.title')), exact: true }),
-    ).toBeVisible();
-    await expectVisibleTexts(page, homeAll(zh, DE_SPOT_KEYS));
-    await assertFaqAnswers(page, zh, FAQ_PAIRS.slice(1, 2));
-  } finally {
-    await context.close();
+  await page.goto('/zh');
+  await expect(page).toHaveURL((url) => url.pathname === '/zh');
+  await expect(page).toHaveTitle(new RegExp(escapeRegExp(home(zh, 'meta.title'))));
+  const h1 = page.locator('h1');
+  for (const line of heroTitleLines(zh)) {
+    await expect(h1).toContainText(line);
   }
+  await expect(
+    page.getByRole('heading', { name: stripTags(home(zh, 'flow.title')), exact: true }),
+  ).toBeVisible();
+  await expectVisibleTexts(page, homeAll(zh, DE_SPOT_KEYS));
+  await assertFaqAnswers(page, zh, FAQ_PAIRS.slice(1, 2));
 });
 
-test('zh mode: translated chrome and landing copy render in Chinese', async ({
-  page,
-  browser,
-  baseURL,
-}) => {
-  // No locale cookie on the default context → EN default.
+test('zh mode: translated chrome and landing copy render at /zh', async ({ page }) => {
+  // The unprefixed default route is English.
   await page.goto('/');
   await expect(page.getByText(catalogs.en['Home.skipToContent'], { exact: true })).toBeAttached();
   await expect(page.getByText(catalogs.zh['Home.skipToContent'], { exact: true })).toHaveCount(0);
 
-  const context = await browser.newContext({ baseURL });
-  await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? FALLBACK_BASE_URL },
-  ]);
-  const zhPage = await context.newPage();
-  try {
-    await zhPage.goto('/');
-    // Shared chrome renders in Chinese.
-    await expect(
-      zhPage.getByText(catalogs.zh['Home.skipToContent'], { exact: true }),
-    ).toBeAttached();
-    // Landing text must not silently fall back to English after a locale switch.
-    await expectVisibleTexts(zhPage, homeAll(catalogs.zh, ['hero.subtitle', 'cta.title']));
-    await expectAbsentTexts(zhPage, homeAll(catalogs.en, ['hero.subtitle', 'cta.title']));
-  } finally {
-    await context.close();
-  }
+  await page.goto('/zh');
+  // Shared chrome renders in Chinese.
+  await expect(page.getByText(catalogs.zh['Home.skipToContent'], { exact: true })).toBeAttached();
+  // Landing text must not silently fall back to English after a locale switch.
+  await expectVisibleTexts(page, homeAll(catalogs.zh, ['hero.subtitle', 'cta.title']));
+  await expectAbsentTexts(page, homeAll(catalogs.en, ['hero.subtitle', 'cta.title']));
 });
 
 test('composition: section landmarks render once, in contract order, with one h1', async ({

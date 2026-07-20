@@ -470,7 +470,8 @@
     "yearLevelRequired": "Pick a year level.",
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
-    "loading": "Loading your students…"
+    "loading": "Loading your students…",
+    "viewChildren": "ดูบุตรหลานของฉัน"
   },
   "Shell": {
     "nav": {
@@ -763,6 +764,31 @@
         "invalidType": "โปรดเลือกไฟล์เสียง (MP3 หรือ WAV)",
         "tooLarge": "เสียงเกิน 10MB โปรดเลือกไฟล์ที่เล็กกว่า"
       }
+    },
+    "toastCreated": "สร้างนักเรียนแล้ว",
+    "review": {
+      "intro": "โปรดตรวจสอบข้อมูลทั้งหมดให้ถูกต้องก่อนสร้างนักเรียนคนนี้",
+      "edit": "แก้ไข",
+      "empty": "—",
+      "photo": "รูปภาพ",
+      "voice": "แนะนำตัวด้วยเสียง",
+      "photoAlt": "ตัวอย่างรูปภาพนักเรียน",
+      "voiceAlt": "ตัวอย่างการแนะนำตัวด้วยเสียง",
+      "section": {
+        "personal": "ข้อมูลส่วนตัว",
+        "education": "การศึกษา",
+        "guardian": "ผู้ปกครอง",
+        "media": "รูปภาพและเสียง"
+      },
+      "error": {
+        "validationTitle": "ตรวจสอบข้อมูล",
+        "validationBody": "มีข้อมูลบางส่วนที่ต้องแก้ไขก่อนจึงจะสร้างนักเรียนคนนี้ได้",
+        "serverTitle": "เกิดข้อผิดพลาด",
+        "serverBody": "เราไม่สามารถสร้างนักเรียนคนนี้ได้ โปรดลองอีกครั้ง",
+        "offlineTitle": "คุณออฟไลน์อยู่",
+        "offlineBody": "โปรดตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+        "dismiss": "ปิด"
+      }
     }
   },
   "StudentWizardSchema": {
@@ -785,5 +811,49 @@
     "guardianPhoneRequired": "กรุณากรอกเบอร์โทรผู้ปกครอง",
     "guardianPhoneTooLong": "เบอร์โทรผู้ปกครองยาวเกินไป",
     "wechatTooLong": "ไอดี WeChat ยาวเกินไป"
+  },
+  "Children": {
+    "meta": {
+      "title": "บุตรหลานของฉัน — SchoolTest",
+      "description": "จัดการบุตรหลานและแก้ไขข้อมูลของพวกเขา"
+    },
+    "editMeta": {
+      "title": "แก้ไขบุตรหลาน — SchoolTest",
+      "description": "อัปเดตข้อมูลบุตรหลานของคุณ"
+    },
+    "heading": "บุตรหลานของฉัน",
+    "addStudent": "เพิ่มนักเรียน",
+    "includeArchived": "รวมที่เก็บถาวร",
+    "showing": "แสดง {from}–{to} จาก {total}",
+    "columnStudent": "นักเรียน",
+    "columnNationality": "สัญชาติ",
+    "columnYearLevel": "ระดับชั้น",
+    "columnTargetEntry": "การเข้าเรียนเป้าหมาย",
+    "columnStatus": "สถานะ",
+    "columnAdded": "เพิ่มเมื่อ",
+    "columnActions": "การดำเนินการ",
+    "actionsLabel": "การดำเนินการสำหรับ {name}",
+    "edit": "แก้ไข",
+    "archive": "เก็บถาวร",
+    "unarchive": "ยกเลิกการเก็บถาวร",
+    "statusActive": "ใช้งานอยู่",
+    "statusArchived": "เก็บถาวรแล้ว",
+    "statusEnrolled": "ลงทะเบียนแล้ว",
+    "noMatches": "ไม่มีบุตรหลานที่ตรงกับการค้นหาของคุณ",
+    "emptyTitle": "ยังไม่มีบุตรหลาน",
+    "emptyDescription": "เพิ่มบุตรหลานคนแรกของคุณเพื่อเริ่มติดตามเส้นทางการเรียน",
+    "errorTitle": "ไม่สามารถโหลดบุตรหลานของคุณได้",
+    "retry": "ลองอีกครั้ง",
+    "archiveDialogTitle": "เก็บถาวร {name} หรือไม่?",
+    "archiveDialogDescription": "บุตรหลานที่เก็บถาวรจะถูกซ่อนจากรายการของคุณ คุณสามารถกู้คืนได้ทุกเมื่อด้วย “รวมที่เก็บถาวร”",
+    "archiveConfirm": "เก็บถาวร",
+    "archiveCancel": "ยกเลิก",
+    "archivedToast": "เก็บถาวร {name} แล้ว",
+    "unarchivedToast": "กู้คืน {name} แล้ว",
+    "actionError": "เกิดข้อผิดพลาด โปรดลองอีกครั้ง",
+    "updatedToast": "บันทึกการเปลี่ยนแปลงแล้ว",
+    "editErrorTitle": "เราไม่สามารถโหลดบุตรหลานคนนี้ได้",
+    "editErrorDescription": "อาจถูกลบไปแล้ว หรือคุณไม่มีสิทธิ์เข้าถึง",
+    "backToList": "กลับไปที่บุตรหลานของฉัน"
   }
 }

@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import {
@@ -15,6 +13,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/modules/design-system';
+import { Link, usePathname } from '@/i18n/navigation';
 import { NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
 

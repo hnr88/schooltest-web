@@ -1,9 +1,9 @@
 'use client';
 
 import { ChevronDown, LogOut, Settings } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import { useRouter } from '@/i18n/navigation';
 import { useAuth } from '@/modules/auth';
 import {
   DropdownMenu,

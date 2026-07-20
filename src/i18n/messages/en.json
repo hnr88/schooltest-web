@@ -470,7 +470,8 @@
     "yearLevelRequired": "Pick a year level.",
     "addStudentOfflineError": "You appear to be offline. Check your connection and try again.",
     "addStudentServerError": "Something went wrong on our side. Please try again.",
-    "loading": "Loading your students…"
+    "loading": "Loading your students…",
+    "viewChildren": "View my children"
   },
   "Shell": {
     "nav": {
@@ -763,6 +764,31 @@
         "invalidType": "Choose an audio file (MP3 or WAV).",
         "tooLarge": "That audio is over 10MB. Choose a smaller file."
       }
+    },
+    "toastCreated": "Student created",
+    "review": {
+      "intro": "Check everything is correct before creating this student.",
+      "edit": "Edit",
+      "empty": "—",
+      "photo": "Photo",
+      "voice": "Voice introduction",
+      "photoAlt": "Student photo preview",
+      "voiceAlt": "Voice introduction preview",
+      "section": {
+        "personal": "Personal details",
+        "education": "Education",
+        "guardian": "Parent or guardian",
+        "media": "Photo & voice"
+      },
+      "error": {
+        "validationTitle": "Check the details",
+        "validationBody": "Some details need fixing before we can create this student.",
+        "serverTitle": "Something went wrong",
+        "serverBody": "We couldn’t create this student. Please try again.",
+        "offlineTitle": "You’re offline",
+        "offlineBody": "Check your connection and try again.",
+        "dismiss": "Dismiss"
+      }
     }
   },
   "StudentWizardSchema": {
@@ -785,5 +811,49 @@
     "guardianPhoneRequired": "Guardian phone is required",
     "guardianPhoneTooLong": "Guardian phone is too long",
     "wechatTooLong": "WeChat ID is too long"
+  },
+  "Children": {
+    "meta": {
+      "title": "My children — SchoolTest",
+      "description": "Manage your children and edit their details."
+    },
+    "editMeta": {
+      "title": "Edit child — SchoolTest",
+      "description": "Update your child's details."
+    },
+    "heading": "My children",
+    "addStudent": "Add student",
+    "includeArchived": "Include archived",
+    "showing": "Showing {from}–{to} of {total}",
+    "columnStudent": "Student",
+    "columnNationality": "Nationality",
+    "columnYearLevel": "Year level",
+    "columnTargetEntry": "Target entry",
+    "columnStatus": "Status",
+    "columnAdded": "Added",
+    "columnActions": "Actions",
+    "actionsLabel": "Actions for {name}",
+    "edit": "Edit",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "statusActive": "Active",
+    "statusArchived": "Archived",
+    "statusEnrolled": "Enrolled",
+    "noMatches": "No children match your search.",
+    "emptyTitle": "No children yet",
+    "emptyDescription": "Add your first child to start tracking their school journey.",
+    "errorTitle": "Could not load your children.",
+    "retry": "Retry",
+    "archiveDialogTitle": "Archive {name}?",
+    "archiveDialogDescription": "Archived children are hidden from your list. You can restore them anytime with “Include archived”.",
+    "archiveConfirm": "Archive",
+    "archiveCancel": "Cancel",
+    "archivedToast": "{name} was archived.",
+    "unarchivedToast": "{name} was restored.",
+    "actionError": "Something went wrong. Please try again.",
+    "updatedToast": "Changes saved.",
+    "editErrorTitle": "We couldn't load this child.",
+    "editErrorDescription": "They may have been removed, or you don't have access.",
+    "backToList": "Back to my children"
   }
 }

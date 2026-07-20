@@ -20,9 +20,7 @@ const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 
-test('en: renders the §14.1 split-panel sign-in with forgot link, axe clean', async ({
-  page,
-}) => {
+test('en: renders the §14.1 split-panel sign-in with forgot link, axe clean', async ({ page }) => {
   const errors = watchErrors(page);
   await page.setViewportSize(DESKTOP);
   await page.goto('/sign-in');
@@ -128,9 +126,7 @@ test('en: wrong password renders the styled inline error (never a Strapi page)',
   await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-error.png') });
 });
 
-test('en: seeded parent login stores the JWT and lands on a real /dashboard', async ({
-  page,
-}) => {
+test('en: seeded parent login stores the JWT and lands on a real /dashboard', async ({ page }) => {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(PARENT.email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(PARENT.password);
@@ -139,9 +135,7 @@ test('en: seeded parent login stores the JWT and lands on a real /dashboard', as
   // /dashboard (task 15) renders a real, guarded shell — not a 404 — and shows
   // the authenticated parent's real username fetched from GET /api/users/me.
   await page.waitForURL('**/dashboard');
-  await expect(
-    page.getByRole('heading', { level: 1, name: /Welcome back, parent/ }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /Welcome back, parent/ })).toBeVisible();
   const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
   expect(token).toMatch(/^eyJ/);
 });
@@ -152,24 +146,16 @@ test('en: an existing token redirects the card to /dashboard', async ({ context,
   await page.waitForURL('**/dashboard');
 });
 
-test('zh: renders the Chinese sign-in card from the zh catalog', async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ baseURL, viewport: DESKTOP });
-  await context.addCookies([
-    { name: 'NEXT_LOCALE', value: 'zh', url: baseURL ?? 'http://localhost:3100' },
-  ]);
-  const page = await context.newPage();
-  try {
-    await page.goto('/sign-in');
-    await expect(
-      page.getByRole('heading', { level: 1, name: cat(zh, 'Auth.signInTitle') }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: cat(zh, 'Auth.signInButton'), exact: true }),
-    ).toBeVisible();
-    await expect(page.getByLabel(cat(zh, 'Auth.emailLabel'), { exact: true })).toBeVisible();
-    await expect(page.getByLabel(cat(zh, 'Auth.passwordLabel'), { exact: true })).toBeVisible();
-    await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-zh.png') });
-  } finally {
-    await context.close();
-  }
+test('zh: /zh/sign-in renders the Chinese card from the zh catalog', async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto('/zh/sign-in');
+  await expect(
+    page.getByRole('heading', { level: 1, name: cat(zh, 'Auth.signInTitle') }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: cat(zh, 'Auth.signInButton'), exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel(cat(zh, 'Auth.emailLabel'), { exact: true })).toBeVisible();
+  await expect(page.getByLabel(cat(zh, 'Auth.passwordLabel'), { exact: true })).toBeVisible();
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-zh.png') });
 });

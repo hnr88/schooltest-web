@@ -2,11 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useRouter } from '@/i18n/navigation';
 import { PasswordField } from '@/modules/auth/components/PasswordField';
 import { classifyResetPasswordError } from '@/modules/auth/lib/classify-reset-password-error';
 import { useResetPasswordMutation } from '@/modules/auth/queries/use-reset-password.mutation';

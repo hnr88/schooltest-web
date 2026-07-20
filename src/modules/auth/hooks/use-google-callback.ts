@@ -1,8 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
+import { useRouter } from '@/i18n/navigation';
 import { useGoogleCallbackMutation } from '@/modules/auth/queries/use-google-callback.mutation';
 
 // Drives the C-AUTH-GOOGLE post-consent exchange (D18): queryString is the

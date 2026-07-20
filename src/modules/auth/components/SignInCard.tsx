@@ -1,11 +1,10 @@
 'use client';
 
 import { CircleCheck } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
+import { Link, useRouter } from '@/i18n/navigation';
 import { GoogleButton } from '@/modules/auth/components/GoogleButton';
 import { SignInForm } from '@/modules/auth/components/SignInForm';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';

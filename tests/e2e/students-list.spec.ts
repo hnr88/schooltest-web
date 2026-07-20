@@ -115,30 +115,21 @@ test('en: seeded parent sees Mia and Jonas in the real students table, axe clean
 
 for (const locale of ALL_LOCALES) {
   test(`${locale}: the students-section heading means "your students", not the stale generic Dashboard label`, async ({
-    browser,
-    baseURL,
+    page,
     request,
   }) => {
-    const context = await browser.newContext({ baseURL, viewport: DESKTOP });
-    await context.addCookies([
-      { name: 'NEXT_LOCALE', value: locale, url: baseURL ?? 'http://localhost:3100' },
-    ]);
-    const page = await context.newPage();
-    try {
-      await signInAs(page, request, PARENT.email, PARENT.password);
-      const messages = loadMessages(locale);
-      await page.goto('/dashboard');
+    await page.setViewportSize(DESKTOP);
+    await signInAs(page, request, PARENT.email, PARENT.password);
+    const messages = loadMessages(locale);
+    await page.goto(locale === 'en' ? '/dashboard' : `/${locale}/dashboard`);
 
-      await expect(
-        page.getByRole('heading', { level: 2, name: cat(messages, 'Dashboard.title') }),
-      ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: cat(messages, 'Dashboard.title') }),
+    ).toBeVisible();
 
-      const staleTitle = STALE_DASHBOARD_TITLES[locale];
-      if (staleTitle !== undefined) {
-        await expect(page.getByText(staleTitle, { exact: true })).toHaveCount(0);
-      }
-    } finally {
-      await context.close();
+    const staleTitle = STALE_DASHBOARD_TITLES[locale];
+    if (staleTitle !== undefined) {
+      await expect(page.getByText(staleTitle, { exact: true })).toHaveCount(0);
     }
   });
 }

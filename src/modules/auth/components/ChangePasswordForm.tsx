@@ -1,11 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { getPathname } from '@/i18n/navigation';
+import type { Locale } from '@/i18n/routing';
 import { PasswordField } from '@/modules/auth/components/PasswordField';
 import { classifyChangePasswordError } from '@/modules/auth/lib/classify-change-password-error';
 import { useChangePasswordMutation } from '@/modules/auth/queries/use-change-password.mutation';
@@ -26,6 +28,7 @@ import { Alert, Button } from '@/modules/design-system';
 // the sessionExpired one.
 export function ChangePasswordForm() {
   const t = useTranslations('Auth');
+  const locale = useLocale() as Locale;
   const changePassword = useChangePasswordMutation();
   const setToken = useAuthStore((state) => state.setToken);
   const [visible, setVisible] = useState({ current: false, next: false, confirm: false });
@@ -54,7 +57,12 @@ export function ChangePasswordForm() {
         const key = classifyChangePasswordError(error);
         if (key === 'sessionExpired') {
           setToken(null);
-          window.location.replace('/sign-in?error=session');
+          window.location.replace(
+            getPathname({
+              href: { pathname: '/sign-in', query: { error: 'session' } },
+              locale,
+            }),
+          );
           return;
         }
         setFormError(key);
