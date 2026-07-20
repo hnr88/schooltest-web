@@ -33,15 +33,17 @@ export function SignUpCard() {
   }, [hydrated, token, router]);
 
   return (
-    <Card className="w-full rounded-2xl shadow-lg [--card-spacing:--spacing(8)] animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
+    <Card className="w-full animate-in rounded-2xl shadow-lg duration-300 [--card-spacing:--spacing(8)] fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
       <CardContent className="flex flex-col">
+        <Link href="/" className="self-start rounded-sm">
+          <Logo alt={tHome('footer.logoAlt')} height={26} />
+        </Link>
         {registeredEmail !== null ? (
-          <SignUpConfirmState email={registeredEmail} />
+          <div className="mt-5">
+            <SignUpConfirmState email={registeredEmail} />
+          </div>
         ) : (
           <>
-            <Link href="/" className="self-start rounded-sm">
-              <Logo alt={tHome('footer.logoAlt')} height={26} />
-            </Link>
             <h1 className="mt-5 text-2xl font-bold">{t('signUpTitle')}</h1>
             <p className="mt-1 text-sm text-muted-foreground">{t('signUpSubtitle')}</p>
             <GoogleButton className="mt-5 w-full" />

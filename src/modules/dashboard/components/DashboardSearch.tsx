@@ -18,7 +18,7 @@ import {
 
 // Dashboard header search bar (task 18, D8): debounced C-STUDENT-SEARCH lookup
 // with a keyboard-navigable results panel. Selecting a row filters
-// StudentsSection's table via the shared dashboard-search store; clearing
+// the children list's table via the shared dashboard-search store; clearing
 // resets both the query and the filter together.
 export function DashboardSearch() {
   const t = useTranslations('Dashboard');

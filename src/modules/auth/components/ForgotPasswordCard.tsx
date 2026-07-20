@@ -31,12 +31,12 @@ export function ForgotPasswordCard() {
   }, [hydrated, token, router]);
 
   return (
-    <div className="flex w-full max-w-md flex-col items-center gap-8 animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
-      <Link href="/" className="rounded-sm">
-        <Logo alt={tHome('footer.logoAlt')} height={34} />
-      </Link>
-      <Card className="w-full rounded-2xl shadow-lg [--card-spacing:--spacing(9)]">
-        <CardContent className="flex flex-col gap-5">
+    <Card className="w-full animate-in rounded-2xl shadow-lg duration-300 [--card-spacing:--spacing(8)] fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
+      <CardContent className="flex flex-col">
+        <Link href="/" className="self-start rounded-sm">
+          <Logo alt={tHome('footer.logoAlt')} height={26} />
+        </Link>
+        <div className="mt-5 flex flex-col gap-5">
           {sentEmail ? (
             <ForgotPasswordSentState email={sentEmail} />
           ) : (
@@ -49,8 +49,8 @@ export function ForgotPasswordCard() {
             <ArrowLeft aria-hidden="true" className="size-4" />
             {t('backToSignIn')}
           </Link>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

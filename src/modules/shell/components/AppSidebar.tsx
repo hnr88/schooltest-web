@@ -35,9 +35,9 @@ function AppSidebar() {
   return (
     <Sidebar
       collapsible={isMobile ? 'offcanvas' : 'none'}
-      className="h-auto border-r border-sidebar-border max-md:hidden"
+      className="h-svh shrink-0 border-r border-sidebar-border max-md:hidden"
     >
-      <SidebarHeader className="px-4 pt-6 pb-0">
+      <SidebarHeader className="shrink-0 px-4 pt-6 pb-0">
         <Link
           href="/dashboard"
           className="mb-5.5 self-start rounded-md transition-opacity duration-200 ease-out hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
@@ -45,7 +45,7 @@ function AppSidebar() {
           <Logo alt={t('sidebar.logoAlt')} />
         </Link>
       </SidebarHeader>
-      <SidebarContent className="px-4">
+      <SidebarContent className="overscroll-contain px-4">
         <nav>
           <SidebarMenu className="gap-1.5">
             {NAV_ITEMS.map((item) => (
@@ -63,7 +63,7 @@ function AppSidebar() {
           </SidebarMenu>
         </nav>
       </SidebarContent>
-      <SidebarFooter className="mt-auto px-4 pt-0 pb-6" />
+      <SidebarFooter className="mt-auto shrink-0 px-4 pt-0 pb-6" />
     </Sidebar>
   );
 }

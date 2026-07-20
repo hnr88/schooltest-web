@@ -170,16 +170,6 @@ async function loginAsSeededParent(
   }, jwt);
 }
 
-async function openAddStudentDialog(page: Page): Promise<Locator> {
-  await page
-    .locator('[data-slot="students-heading"]')
-    .getByRole('button', { name: cat(en, 'Dashboard.addStudent') })
-    .click();
-  const dialog = page.getByRole('dialog', { name: cat(en, 'Dashboard.dialogTitle') });
-  await expect(dialog).toBeVisible();
-  return dialog;
-}
-
 test.describe('sign-in — a11y + responsive + focus order', () => {
   test('axe clean, no h-scroll, primary 44px targets regression-checked at 375 & 1280', async ({
     page,
@@ -428,12 +418,15 @@ test.describe('dashboard (authed, seeded parent) — a11y + responsive + focus o
     expect(errors, errors.join('\n')).toEqual([]);
   });
 
-  test('focus order: user menu → search → add student', async ({ page, request }) => {
+  test('focus order (children): user menu → add student → search', async ({ page, request }) => {
+    // The children table + search relocated to /dashboard/children (task 054,
+    // C-UI-MYCHILDREN). DOM order there is topbar user chip → header "Add
+    // student" link → toolbar search combobox.
     await loginAsSeededParent(page, request);
     await page.setViewportSize(DESKTOP);
-    await page.goto('/dashboard');
+    await page.goto('/dashboard/children');
     await expect(
-      page.getByRole('heading', { level: 1, name: /Welcome back, parent/ }),
+      page.getByRole('heading', { level: 1, name: cat(en, 'Children.heading') }),
     ).toBeVisible();
     await expectForwardFocusOrder(page, [
       {
@@ -446,14 +439,12 @@ test.describe('dashboard (authed, seeded parent) — a11y + responsive + focus o
         }),
       },
       {
-        label: 'search combobox',
-        locator: page.getByRole('combobox', { name: cat(en, 'Dashboard.searchPlaceholder') }),
+        label: 'add student link',
+        locator: page.getByRole('link', { name: cat(en, 'Children.addStudent'), exact: true }),
       },
       {
-        label: 'add student button',
-        locator: page
-          .locator('[data-slot="students-heading"]')
-          .getByRole('button', { name: cat(en, 'Dashboard.addStudent') }),
+        label: 'search combobox',
+        locator: page.getByRole('combobox', { name: cat(en, 'Dashboard.searchPlaceholder') }),
       },
     ]);
   });
@@ -476,7 +467,8 @@ test.describe('dashboard search panel — a11y + responsive (open/results state)
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const viewport of [MOBILE, DESKTOP]) {
       await page.setViewportSize(viewport);
-      await page.goto('/dashboard');
+      // Search relocated to the children list (task 054, C-UI-MYCHILDREN).
+      await page.goto('/dashboard/children');
       const search = page.getByRole('combobox', { name: cat(en, 'Dashboard.searchPlaceholder') });
       await search.fill('keller');
       await expect(
@@ -484,40 +476,12 @@ test.describe('dashboard search panel — a11y + responsive (open/results state)
       ).toBeVisible();
       await expectAxeClean(
         page,
-        `dashboard search panel open @ ${viewport.width}px`,
+        `children search panel open @ ${viewport.width}px`,
         TABLE_SCROLL_EXEMPTION,
       );
-      await expectNoHorizontalScroll(page, `dashboard search panel open @ ${viewport.width}px`);
-      await logSmallTargets(page, `dashboard search panel open @ ${viewport.width}px`);
+      await expectNoHorizontalScroll(page, `children search panel open @ ${viewport.width}px`);
+      await logSmallTargets(page, `children search panel open @ ${viewport.width}px`);
     }
-  });
-});
-
-test.describe('add-student dialog — a11y + responsive (open state)', () => {
-  // Auth via the seeded parent's REAL login (task 017: with D-AUTH-7 email
-  // confirmation ON, register no longer returns a jwt, so the old fresh-
-  // registration path is impossible without a Mailpit round-trip this a11y
-  // sweep doesn't need). The dialog is only OPENED here — never submitted —
-  // so no seeded data mutates. Task 054 owns removing this coverage when the
-  // wizard replaces the dialog.
-  test('desktop 1280: axe clean, no h-scroll while open', async ({ page, request }) => {
-    await page.setViewportSize(DESKTOP);
-    await loginAsSeededParent(page, request);
-    await page.goto('/dashboard');
-    await openAddStudentDialog(page);
-    await expectAxeClean(page, 'add-student dialog open @ 1280px');
-    await expectNoHorizontalScroll(page, 'add-student dialog open @ 1280px');
-    await logSmallTargets(page, 'add-student dialog open @ 1280px');
-  });
-
-  test('mobile 375: axe clean, no h-scroll while open', async ({ page, request }) => {
-    await page.setViewportSize(MOBILE);
-    await loginAsSeededParent(page, request);
-    await page.goto('/dashboard');
-    await openAddStudentDialog(page);
-    await expectAxeClean(page, 'add-student dialog open @ 375px');
-    await expectNoHorizontalScroll(page, 'add-student dialog open @ 375px');
-    await logSmallTargets(page, 'add-student dialog open @ 375px');
   });
 });
 

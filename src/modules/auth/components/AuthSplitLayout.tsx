@@ -2,6 +2,7 @@ import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
+import { Link } from '@/i18n/navigation';
 import { Logo } from '@/modules/design-system';
 
 const BENEFIT_KEYS = ['benefitTests', 'benefitScores', 'benefitFeedback'] as const;
@@ -21,8 +22,10 @@ export function AuthSplitLayout({ children }: AuthSplitLayoutProps) {
   return (
     <main className="grid flex-1 bg-slate-50 lg:grid-cols-[560px_1fr]">
       <aside className="hidden flex-col justify-between gap-12 bg-navy-950 p-14 lg:flex">
-        <Logo theme="white" alt={tHome('footer.logoAlt')} height={40} />
-        <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
+        <Link href="/" className="self-start rounded-sm">
+          <Logo theme="white" alt={tHome('footer.logoAlt')} height={40} />
+        </Link>
+        <div className="flex animate-in flex-col gap-6 duration-300 fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
           <p className="text-4xl font-bold text-balance text-white">{t('title')}</p>
           <p className="text-base text-blue-200">{t('body')}</p>
           <ul className="flex flex-col gap-3">

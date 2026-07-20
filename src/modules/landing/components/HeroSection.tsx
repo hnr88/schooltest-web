@@ -5,6 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { Badge, Button, Container, Section } from '@/modules/design-system';
 import { HeroFlow } from '@/modules/landing/components/HeroFlow';
 import { PlayIcon } from '@/modules/landing/components/LandingIcons';
+import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 
 async function HeroSection() {
   const t = await getTranslations('Home');
@@ -45,7 +46,9 @@ async function HeroSection() {
           </div>
         </div>
         <Container>
-          <HeroFlow />
+          <ScrollReveal delay={80}>
+            <HeroFlow />
+          </ScrollReveal>
         </Container>
       </div>
     </Section>

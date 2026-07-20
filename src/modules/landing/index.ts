@@ -2,6 +2,7 @@ export { AnnouncementBar } from '@/modules/landing/components/AnnouncementBar';
 export { LandingHeader } from '@/modules/landing/components/LandingHeader';
 export { HeroSection } from '@/modules/landing/components/HeroSection';
 export { HeroFlow } from '@/modules/landing/components/HeroFlow';
+export { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 export { TrustedByStrip } from '@/modules/landing/components/TrustedByStrip';
 export { FeaturesSection } from '@/modules/landing/components/FeaturesSection';
 export { FeatureDetailSection } from '@/modules/landing/components/FeatureDetailSection';

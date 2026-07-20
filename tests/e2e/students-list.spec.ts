@@ -8,30 +8,26 @@ import { type AnyLocale, cat, loadMessages } from './helpers/i18n';
 import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
 
-// Task 16 verification: the dashboard's StudentsSection is fed by the real
-// C-STUDENT-LIST endpoint (GET /api/my/students) via a zod-parsed TanStack
-// Query — no mocks. The seeded parent (D9) has two real students (Mia +
-// Jonas Keller); a freshly-provisioned parent (full real register → Mailpit
-// confirm → login round-trip; D-AUTH-1: register alone returns no jwt) has
-// zero and must see the EmptyState instead of a table.
+// Task 054 (C-UI-MYCHILDREN): the children table relocated from /dashboard to
+// /dashboard/children, fed by the real C-STUDENT-LIST-EXT endpoint
+// (GET /api/my/students) via a zod-parsed TanStack Query — no mocks. The seeded
+// parent (D9) has Mia + Jonas Keller (both status active after the
+// C-CT-STUDENT-EXT backfill); a freshly-provisioned parent has zero and sees the
+// empty state instead of a table.
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const API_BASE_URL = 'http://localhost:5500';
 const ALL_LOCALES: readonly AnyLocale[] = ['en', 'ko', 'ms', 'th', 'vi', 'zh'];
-// Attempt-1 gap (verifier-reported): `Dashboard.title` carried a stale generic
-// "Dashboard"/"Home page" value in these 5 locales instead of meaning "your
-// students" like the fixed EN copy. Asserted absent below so a future revert of
-// the catalog fix fails loud, not just a positive match against whatever the
-// catalog currently says.
-const STALE_DASHBOARD_TITLES: Partial<Record<AnyLocale, string>> = {
-  ko: '대시보드',
-  ms: 'Papan Pemuka',
-  th: 'แดชบอร์ด',
-  vi: 'Trang chủ',
-  zh: '控制台',
-};
+const COLUMN_KEYS = [
+  'columnStudent',
+  'columnNationality',
+  'columnYearLevel',
+  'columnTargetEntry',
+  'columnStatus',
+  'columnAdded',
+] as const;
 
 const usedEmails: string[] = [];
 
@@ -57,47 +53,38 @@ async function signInAs(
   }, jwt);
 }
 
-test('en: seeded parent sees Mia and Jonas in the real students table, axe clean', async ({
+test('en: seeded parent sees Mia and Jonas as ACTIVE rows in the real children table, axe clean', async ({
   page,
   request,
 }) => {
   const errors = watchErrors(page);
   await page.setViewportSize(DESKTOP);
   await signInAs(page, request, PARENT.email, PARENT.password);
-  await page.goto('/dashboard');
+  await page.goto('/dashboard/children');
 
   await expect(
-    page.getByRole('heading', { level: 2, name: cat(en, 'Dashboard.title') }),
+    page.getByRole('heading', { level: 1, name: cat(en, 'Children.heading') }),
   ).toBeVisible();
-  await expect(page.locator('[data-slot="students-heading"]')).toContainText('2');
 
   const table = page.getByRole('table');
   await expect(table).toBeVisible();
-  await expect(
-    table.getByRole('columnheader', { name: cat(en, 'Dashboard.columnName') }),
-  ).toBeVisible();
-  await expect(
-    table.getByRole('columnheader', { name: cat(en, 'Dashboard.columnYearLevel') }),
-  ).toBeVisible();
-  await expect(
-    table.getByRole('columnheader', { name: cat(en, 'Dashboard.columnEmail') }),
-  ).toBeVisible();
-  await expect(
-    table.getByRole('columnheader', { name: cat(en, 'Dashboard.columnAdded') }),
-  ).toBeVisible();
+  for (const column of COLUMN_KEYS) {
+    await expect(
+      table.getByRole('columnheader', { name: cat(en, `Children.${column}`) }),
+    ).toBeVisible();
+  }
 
   const miaRow = page.getByRole('row', { name: /Mia Keller/ });
   await expect(miaRow).toContainText('8');
-  await expect(miaRow).toContainText('mia.keller@schooltest.local');
-  await expect(miaRow).toContainText('2026');
+  await expect(miaRow).toContainText(cat(en, 'Children.statusActive'));
 
   const jonasRow = page.getByRole('row', { name: /Jonas Keller/ });
   await expect(jonasRow).toContainText('10');
-  await expect(jonasRow).toContainText('jonas.keller@schooltest.local');
+  await expect(jonasRow).toContainText(cat(en, 'Children.statusActive'));
 
-  await expect(page.getByText(cat(en, 'Dashboard.studentsEmptyTitle'))).toHaveCount(0);
+  await expect(page.getByText(cat(en, 'Children.emptyTitle'), { exact: true })).toHaveCount(0);
 
-  await page.screenshot({ path: path.join(SCREENSHOTS, 'dashboard-students-en.png') });
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'children-list-en.png') });
 
   const results = await new AxeBuilder({ page }).analyze();
   const blockers = results.violations.filter(
@@ -108,58 +95,59 @@ test('en: seeded parent sees Mia and Jonas in the real students table, axe clean
       (violation) =>
         `${violation.impact}:${violation.id} → ${violation.nodes.map((node) => node.target).join(' | ')}`,
     ),
-    'dashboard students table',
+    'children table',
   ).toEqual([]);
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
 for (const locale of ALL_LOCALES) {
-  test(`${locale}: the students-section heading means "your students", not the stale generic Dashboard label`, async ({
-    page,
+  test(`${locale}: the children page renders the localized "My children" heading`, async ({
+    browser,
+    baseURL,
     request,
   }) => {
-    await page.setViewportSize(DESKTOP);
-    await signInAs(page, request, PARENT.email, PARENT.password);
-    const messages = loadMessages(locale);
-    await page.goto(locale === 'en' ? '/dashboard' : `/${locale}/dashboard`);
+    const context = await browser.newContext({ baseURL, viewport: DESKTOP });
+    await context.addCookies([
+      { name: 'NEXT_LOCALE', value: locale, url: baseURL ?? 'http://localhost:3100' },
+    ]);
+    const page = await context.newPage();
+    try {
+      await signInAs(page, request, PARENT.email, PARENT.password);
+      const messages = loadMessages(locale);
+      await page.goto('/dashboard/children');
 
-    await expect(
-      page.getByRole('heading', { level: 2, name: cat(messages, 'Dashboard.title') }),
-    ).toBeVisible();
-
-    const staleTitle = STALE_DASHBOARD_TITLES[locale];
-    if (staleTitle !== undefined) {
-      await expect(page.getByText(staleTitle, { exact: true })).toHaveCount(0);
+      await expect(
+        page.getByRole('heading', { level: 1, name: cat(messages, 'Children.heading') }),
+      ).toBeVisible();
+    } finally {
+      await context.close();
     }
   });
 }
 
-test('en: a freshly-registered parent with zero students sees the real empty state', async ({
+test('en: a freshly-registered parent with zero children sees the real empty state', async ({
   page,
   request,
 }) => {
   const errors = watchErrors(page);
   await page.setViewportSize(DESKTOP);
-  const parent = await registerAndConfirmParent(request, 'students-empty');
+  const parent = await registerAndConfirmParent(request, 'children-empty');
   usedEmails.push(parent.email);
   const jwt = await loginParentJwt(request, parent);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
-  // Task 065's dashboard-content entrance fades in on mount and the empty
-  // state pops in as soon as the students query resolves — axe right after
-  // would sample color-contrast mid-fade (a11y-auth.spec.ts search-panel
-  // precedent). Reduced motion disables the animate-in variants entirely.
+  // The content entrance + empty-state pop-in fade in on mount; axe right after
+  // would sample color-contrast mid-fade. Reduced motion disables the animate-in
+  // variants entirely.
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/dashboard');
+  await page.goto('/dashboard/children');
 
-  await expect(
-    page.getByText(cat(en, 'Dashboard.studentsEmptyTitle'), { exact: true }),
-  ).toBeVisible();
-  await expect(page.getByText(cat(en, 'Dashboard.studentsEmptySubtitle'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Children.emptyTitle'), { exact: true })).toBeVisible();
+  await expect(page.getByText(cat(en, 'Children.emptyDescription'))).toBeVisible();
   await expect(page.getByRole('table')).toHaveCount(0);
 
-  await page.screenshot({ path: path.join(SCREENSHOTS, 'dashboard-students-empty-en.png') });
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'children-empty-en.png') });
 
   const results = await new AxeBuilder({ page }).analyze();
   const blockers = results.violations.filter(
@@ -170,7 +158,7 @@ test('en: a freshly-registered parent with zero students sees the real empty sta
       (violation) =>
         `${violation.impact}:${violation.id} → ${violation.nodes.map((node) => node.target).join(' | ')}`,
     ),
-    'dashboard students empty state',
+    'children empty state',
   ).toEqual([]);
   expect(errors, errors.join('\n')).toEqual([]);
 });

@@ -22,14 +22,14 @@ export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
   const [isInvalid, setIsInvalid] = useState(false);
 
   return (
-    <div className="flex w-full max-w-md flex-col items-center gap-8 animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
-      <Link href="/" className="rounded-sm">
-        <Logo alt={tHome('footer.logoAlt')} height={34} />
-      </Link>
-      <Card className="w-full rounded-2xl shadow-lg [--card-spacing:--spacing(9)]">
-        <CardContent className="flex flex-col gap-5">
+    <Card className="w-full animate-in rounded-2xl shadow-lg duration-300 [--card-spacing:--spacing(8)] fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
+      <CardContent className="flex flex-col">
+        <Link href="/" className="self-start rounded-sm">
+          <Logo alt={tHome('footer.logoAlt')} height={26} />
+        </Link>
+        <div className="mt-5 flex flex-col gap-5">
           {!code || isInvalid ? (
-            <div className="flex flex-col gap-5 animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
+            <div className="flex animate-in flex-col gap-5 duration-300 fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
               <span
                 aria-hidden="true"
                 className="flex size-11 items-center justify-center rounded-xl bg-red-100 text-red-600"
@@ -54,8 +54,8 @@ export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
             <ArrowLeft aria-hidden="true" className="size-4" />
             {t('backToSignIn')}
           </Link>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

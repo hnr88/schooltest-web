@@ -11,7 +11,7 @@ const DEBOUNCE_MS = 300;
 // Owns DashboardSearch's interactive state (open/closed, active option,
 // keyboard handling) so the component itself stays presentational. Clicking
 // a result (or the row it navigates to via arrow keys + Enter) writes the
-// selection into the shared store; StudentsSection reads it to filter.
+// selection into the shared store; the children list reads it to filter.
 export function useDashboardSearch() {
   const query = useDashboardSearchStore((state) => state.query);
   const setQuery = useDashboardSearchStore((state) => state.setQuery);

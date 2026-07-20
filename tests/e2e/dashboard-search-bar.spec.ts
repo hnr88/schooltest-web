@@ -40,7 +40,7 @@ test('en: search filters, selects, clears, no-results, Escape, axe clean', async
   const errors = watchErrors(page);
   await page.setViewportSize(DESKTOP);
   await signInAs(page, request, PARENT.email, PARENT.password);
-  await page.goto('/dashboard');
+  await page.goto('/dashboard/children');
 
   const search = page.getByRole('combobox', { name: cat(en, 'Dashboard.searchPlaceholder') });
   await expect(search).toBeVisible();
@@ -91,7 +91,7 @@ test('en: arrow keys navigate results and Enter selects the active option', asyn
 }) => {
   await page.setViewportSize(DESKTOP);
   await signInAs(page, request, PARENT.email, PARENT.password);
-  await page.goto('/dashboard');
+  await page.goto('/dashboard/children');
 
   const search = page.getByRole('combobox', { name: cat(en, 'Dashboard.searchPlaceholder') });
   await search.fill('keller');
