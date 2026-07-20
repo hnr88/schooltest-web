@@ -526,7 +526,7 @@
   "ui_polish_20260720": {
     "contracts_file": ".qa/CONTRACTS.md",
     "mission": "Requested UI polish, child detail metrics, settings tabs, and notification web surfaces",
-    "updated_at": "2026-07-20T18:33:33.000Z",
+    "updated_at": "2026-07-20T18:34:21.000Z",
     "tasks": [
       {
         "id": "28",
@@ -633,7 +633,21 @@
           "evidence": "Live route and persisted read confirmed; 2/2 API E2E covers own reload, foreign 404, malformed path/query 400 and anon/non-parent 403. API tsc/lint/diff/banned-pattern checks clean."
         }
       },
-      { "id": "35", "file": ".thellmspace/tasks/35-child-cards-and-profile.md", "title": "Child cards and profile metrics", "layer": "frontend", "contract": ["C-PARENT-CHILD-PROGRESS"], "depends_on": ["34"], "status": "TODO", "started_at": null },
+      {
+        "id": "35",
+        "file": ".thellmspace/tasks/35-child-cards-and-profile.md",
+        "title": "Child cards and profile metrics",
+        "layer": "frontend",
+        "contract": ["C-PARENT-CHILD-PROGRESS"],
+        "depends_on": ["34"],
+        "status": "DONE",
+        "started_at": 1784572461,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential adversarial live browser verification",
+          "evidence": "Strict Zod client parse of the live 200 progress contract; reload persistence, truthful empty results, foreign parent 404/error UI, mobile no-overflow and axe passed. children-profile 3/3, dashboard-students 2/2 and students-list 8/8 passed; web tsc 0 errors and lint 0 errors with one pre-existing warning."
+        }
+      },
       { "id": "36", "file": ".thellmspace/tasks/36-settings-tabs.md", "title": "Separated settings tabs", "layer": "frontend", "contract": ["C-STUDENT-LIST", "C-PREF-GET"], "depends_on": ["35"], "status": "TODO", "started_at": null },
       { "id": "37", "file": ".thellmspace/tasks/37-notification-bell-feed.md", "title": "In-app notification bell and feed", "layer": "frontend", "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"], "depends_on": ["36"], "status": "TODO", "started_at": null },
       { "id": "38", "file": ".thellmspace/tasks/38-notification-preferences.md", "title": "Notification preferences settings", "layer": "frontend", "contract": ["C-PREF-GET", "C-PREF-UPDATE"], "depends_on": ["37"], "status": "TODO", "started_at": null },

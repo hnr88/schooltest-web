@@ -901,6 +901,53 @@
     "updatedToast": "변경 사항이 저장되었습니다.",
     "editErrorTitle": "이 자녀를 불러올 수 없습니다.",
     "editErrorDescription": "삭제되었거나 접근 권한이 없을 수 있습니다.",
-    "backToList": "내 자녀로 돌아가기"
+    "backToList": "내 자녀로 돌아가기",
+    "profileMeta": {
+      "title": "자녀 진행 상황 — SchoolTest",
+      "description": "자녀의 진행 상황, 세션 및 시험 결과를 확인하세요."
+    },
+    "childCardLabel": "{name} 자녀 카드",
+    "cardListLabel": "자녀 프로필",
+    "viewProfile": "프로필 보기",
+    "viewProfileLabel": "{name} 프로필 보기",
+    "notAvailable": "정보 없음",
+    "yearLevel": "학년",
+    "targetEntry": "목표 입학",
+    "nationality": "국적",
+    "profileSubtitle": "진행 상황, 세션 및 공식 시험 결과",
+    "unknownStudent": "학생",
+    "metricsHeading": "진행 상황 지표",
+    "metricTotalSessions": "전체 세션",
+    "metricCompletedSessions": "완료된 세션",
+    "metricActiveSessions": "진행 중 세션",
+    "metricOfficialResults": "공식 결과",
+    "recentResultsHeading": "최근 시험 결과",
+    "recentResultsDescription": "자녀의 가장 최근 공식 시험 결과 5건입니다.",
+    "emptyResults": "아직 확인할 수 있는 공식 시험 결과가 없습니다.",
+    "untitledResult": "공식 시험 결과",
+    "resultStatus": {
+      "scoring": "채점 중",
+      "partial_pending": "일부 대기 중",
+      "complete": "완료"
+    },
+    "resultSkill": "영역",
+    "resultSkills": {
+      "reading": "읽기",
+      "listening": "듣기",
+      "speaking": "말하기",
+      "writing": "쓰기"
+    },
+    "resultCefr": "CEFR",
+    "resultReadiness": "준비도",
+    "resultReadinessValues": {
+      "met": "충족",
+      "approaching": "근접",
+      "not_yet": "아직 아님",
+      "not_assessed": "평가되지 않음"
+    },
+    "resultPublished": "게시일",
+    "notPublished": "아직 게시되지 않음",
+    "profileErrorTitle": "이 자녀의 진행 상황을 불러올 수 없습니다.",
+    "profileErrorDescription": "삭제되었거나 이 프로필에 접근할 권한이 없을 수 있습니다."
   }
 }

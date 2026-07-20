@@ -6,7 +6,7 @@ kind: implement
 slice: My Children redesign and child profile route backed by progress API
 target: src/app/[locale]/dashboard/children/[documentId]/page.tsx; src/modules/children/{components,queries,schemas,types,index.ts}; messages/*.json; tests/e2e/children-profile.spec.ts
 contract: C-PARENT-CHILD-PROGRESS
-status: TODO
+status: DONE
 depends_on: [34]
 ---
 ## Objective
@@ -52,4 +52,12 @@ Existing archive/edit behaviour remains in scope and must be preserved rather th
 
 ## Evidence
 
-Pending independent verification.
+PASS — live browser/API verification on 2026-07-20. The profile query strictly parsed the
+real `GET /api/my/students/:documentId/progress` response (200), rendered Mia Keller's
+persisted zero metrics and the truthful no-results state, and rendered the same data after a
+reload. A fresh parent received the real 404 for Mia's foreign profile and the UI showed its
+access error. Playwright: `children-profile` 3/3 (desktop axe, mobile no-overflow, foreign
+404), `dashboard-students` 2/2 (archive/unarchive DB proof + edit), and `students-list` 8/8
+(cards, empty state, six locales). `pnpm tsc --noEmit` passed; `pnpm lint` had zero errors
+and its one existing CreateArticleForm warning. Visual screenshot:
+`.qa/screenshots/child-profile-en.png`.

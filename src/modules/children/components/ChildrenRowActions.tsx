@@ -60,20 +60,27 @@ export function ChildrenRowActions({ student }: ChildrenRowActionsProps) {
       <DropdownMenu>
         <DropdownMenuTrigger
           aria-label={t('actionsLabel', { name })}
-          className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors duration-150 ease-out hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
+          className="inline-flex size-11 items-center justify-center rounded-md text-muted-foreground transition-colors duration-150 ease-out hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
         >
           <MoreHorizontal aria-hidden="true" className="size-4" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem
+            className="min-h-11"
             onClick={() => router.push(`/dashboard/children/${student.documentId}/edit`)}
           >
             {t('edit')}
           </DropdownMenuItem>
           {isArchived ? (
-            <DropdownMenuItem onClick={handleUnarchive}>{t('unarchive')}</DropdownMenuItem>
+            <DropdownMenuItem className="min-h-11" onClick={handleUnarchive}>
+              {t('unarchive')}
+            </DropdownMenuItem>
           ) : (
-            <DropdownMenuItem variant="destructive" onClick={() => setConfirmOpen(true)}>
+            <DropdownMenuItem
+              variant="destructive"
+              className="min-h-11"
+              onClick={() => setConfirmOpen(true)}
+            >
               {t('archive')}
             </DropdownMenuItem>
           )}

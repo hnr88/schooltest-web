@@ -9,7 +9,7 @@ const STATUS_META: Record<string, StatusMeta> = {
   },
   archived: {
     labelKey: 'statusArchived',
-    className: 'bg-muted text-muted-foreground',
+    className: 'bg-muted text-foreground',
   },
   enrolled: {
     labelKey: 'statusEnrolled',
@@ -19,7 +19,7 @@ const STATUS_META: Record<string, StatusMeta> = {
 
 const FALLBACK_STATUS: StatusMeta = {
   labelKey: 'statusActive',
-  className: 'bg-muted text-muted-foreground',
+  className: 'bg-muted text-foreground',
 };
 
 export function getStatusMeta(status: string | null | undefined): StatusMeta {

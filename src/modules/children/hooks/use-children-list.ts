@@ -12,6 +12,7 @@ import { useDashboardSearchStore, useStudentsQuery } from '@/modules/dashboard';
 export function useChildrenList() {
   const [includeArchived, setIncludeArchived] = useState(false);
   const query = useStudentsQuery({ includeArchived });
+  const allStudentsQuery = useStudentsQuery({ includeArchived: true });
   const selectedStudentId = useDashboardSearchStore((state) => state.selectedStudentId);
 
   const allRows = useMemo(() => query.data?.data ?? [], [query.data]);
@@ -24,11 +25,12 @@ export function useChildrenList() {
     rows,
     totalCount: allRows.length,
     visibleCount: rows.length,
+    hasAnyChildren: (allStudentsQuery.data?.data.length ?? 0) > 0,
     includeArchived,
     setIncludeArchived,
-    isLoading: query.isLoading,
-    isError: query.isError,
-    isFetching: query.isFetching,
-    refetch: query.refetch,
+    isLoading: query.isLoading || allStudentsQuery.isLoading,
+    isError: query.isError || allStudentsQuery.isError,
+    isFetching: query.isFetching || allStudentsQuery.isFetching,
+    refetch: async () => Promise.all([query.refetch(), allStudentsQuery.refetch()]),
   };
 }

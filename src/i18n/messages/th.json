@@ -901,6 +901,53 @@
     "updatedToast": "บันทึกการเปลี่ยนแปลงแล้ว",
     "editErrorTitle": "เราไม่สามารถโหลดบุตรหลานคนนี้ได้",
     "editErrorDescription": "อาจถูกลบไปแล้ว หรือคุณไม่มีสิทธิ์เข้าถึง",
-    "backToList": "กลับไปที่บุตรหลานของฉัน"
+    "backToList": "กลับไปที่บุตรหลานของฉัน",
+    "profileMeta": {
+      "title": "ความก้าวหน้าของบุตรหลาน — SchoolTest",
+      "description": "ดูความก้าวหน้า เซสชัน และผลการทดสอบของบุตรหลาน"
+    },
+    "childCardLabel": "การ์ดบุตรหลานสำหรับ {name}",
+    "cardListLabel": "โปรไฟล์บุตรหลาน",
+    "viewProfile": "ดูโปรไฟล์",
+    "viewProfileLabel": "ดูโปรไฟล์ของ {name}",
+    "notAvailable": "ไม่มีข้อมูล",
+    "yearLevel": "ระดับชั้น",
+    "targetEntry": "การเข้าเรียนเป้าหมาย",
+    "nationality": "สัญชาติ",
+    "profileSubtitle": "ความก้าวหน้า เซสชัน และผลการทดสอบอย่างเป็นทางการ",
+    "unknownStudent": "นักเรียน",
+    "metricsHeading": "ตัวชี้วัดความก้าวหน้า",
+    "metricTotalSessions": "จำนวนเซสชันทั้งหมด",
+    "metricCompletedSessions": "เซสชันที่เสร็จสิ้น",
+    "metricActiveSessions": "เซสชันที่กำลังดำเนินการ",
+    "metricOfficialResults": "ผลอย่างเป็นทางการ",
+    "recentResultsHeading": "ผลการทดสอบล่าสุด",
+    "recentResultsDescription": "ผลการทดสอบอย่างเป็นทางการล่าสุด 5 รายการของบุตรหลาน",
+    "emptyResults": "ยังไม่มีผลการทดสอบอย่างเป็นทางการให้แสดง",
+    "untitledResult": "ผลการทดสอบอย่างเป็นทางการ",
+    "resultStatus": {
+      "scoring": "กำลังให้คะแนน",
+      "partial_pending": "รอดำเนินการบางส่วน",
+      "complete": "เสร็จสิ้น"
+    },
+    "resultSkill": "ทักษะ",
+    "resultSkills": {
+      "reading": "การอ่าน",
+      "listening": "การฟัง",
+      "speaking": "การพูด",
+      "writing": "การเขียน"
+    },
+    "resultCefr": "CEFR",
+    "resultReadiness": "ความพร้อม",
+    "resultReadinessValues": {
+      "met": "บรรลุแล้ว",
+      "approaching": "ใกล้ถึง",
+      "not_yet": "ยังไม่ถึง",
+      "not_assessed": "ยังไม่ได้ประเมิน"
+    },
+    "resultPublished": "เผยแพร่แล้ว",
+    "notPublished": "ยังไม่เผยแพร่",
+    "profileErrorTitle": "เราไม่สามารถโหลดความก้าวหน้าของบุตรหลานคนนี้ได้",
+    "profileErrorDescription": "อาจถูกลบไปแล้ว หรือคุณไม่มีสิทธิ์เข้าถึงโปรไฟล์ของพวกเขา"
   }
 }

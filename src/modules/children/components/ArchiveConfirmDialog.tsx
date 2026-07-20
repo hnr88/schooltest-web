@@ -40,8 +40,16 @@ export function ArchiveConfirmDialog({
           <AlertDialogDescription>{t('archiveDialogDescription')}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={pending}>{t('archiveCancel')}</AlertDialogCancel>
-          <Button type="button" variant="destructive" loading={pending} onClick={onConfirm}>
+          <AlertDialogCancel className="h-11 px-4" disabled={pending}>
+            {t('archiveCancel')}
+          </AlertDialogCancel>
+          <Button
+            type="button"
+            variant="destructive"
+            className="h-11 px-4"
+            loading={pending}
+            onClick={onConfirm}
+          >
             {t('archiveConfirm')}
           </Button>
         </AlertDialogFooter>

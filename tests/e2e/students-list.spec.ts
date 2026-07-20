@@ -4,30 +4,20 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 import { deleteAuthEmailRows } from './helpers/auth-db';
-import { type AnyLocale, cat, loadMessages } from './helpers/i18n';
+import { type AnyLocale, cat, icu, loadMessages } from './helpers/i18n';
 import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
 
-// Task 054 (C-UI-MYCHILDREN): the children table relocated from /dashboard to
-// /dashboard/children, fed by the real C-STUDENT-LIST-EXT endpoint
-// (GET /api/my/students) via a zod-parsed TanStack Query — no mocks. The seeded
-// parent (D9) has Mia + Jonas Keller (both status active after the
-// C-CT-STUDENT-EXT backfill); a freshly-provisioned parent has zero and sees the
-// empty state instead of a table.
+// C-UI-MYCHILDREN: parent-owned child cards are fed by the real
+// C-STUDENT-LIST-EXT endpoint (GET /api/my/students) through the typed query.
+// The seeded parent has Mia + Jonas Keller; a newly provisioned parent has zero
+// children and sees the real empty state instead of a fabricated card.
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const API_BASE_URL = 'http://localhost:5500';
 const ALL_LOCALES: readonly AnyLocale[] = ['en', 'ko', 'ms', 'th', 'vi', 'zh'];
-const COLUMN_KEYS = [
-  'columnStudent',
-  'columnNationality',
-  'columnYearLevel',
-  'columnTargetEntry',
-  'columnStatus',
-  'columnAdded',
-] as const;
 
 const usedEmails: string[] = [];
 
@@ -53,7 +43,7 @@ async function signInAs(
   }, jwt);
 }
 
-test('en: seeded parent sees Mia and Jonas as ACTIVE rows in the real children table, axe clean', async ({
+test('en: seeded parent sees Mia and Jonas as active child cards, axe clean', async ({
   page,
   request,
 }) => {
@@ -66,21 +56,18 @@ test('en: seeded parent sees Mia and Jonas as ACTIVE rows in the real children t
     page.getByRole('heading', { level: 1, name: cat(en, 'Children.heading') }),
   ).toBeVisible();
 
-  const table = page.getByRole('table');
-  await expect(table).toBeVisible();
-  for (const column of COLUMN_KEYS) {
-    await expect(
-      table.getByRole('columnheader', { name: cat(en, `Children.${column}`) }),
-    ).toBeVisible();
-  }
+  await expect(page.getByLabel(cat(en, 'Children.cardListLabel'))).toBeVisible();
+  const miaCard = page.getByRole('article', {
+    name: icu(cat(en, 'Children.childCardLabel'), { name: 'Mia Keller' }),
+  });
+  await expect(miaCard).toContainText('8');
+  await expect(miaCard).toContainText(cat(en, 'Children.statusActive'));
 
-  const miaRow = page.getByRole('row', { name: /Mia Keller/ });
-  await expect(miaRow).toContainText('8');
-  await expect(miaRow).toContainText(cat(en, 'Children.statusActive'));
-
-  const jonasRow = page.getByRole('row', { name: /Jonas Keller/ });
-  await expect(jonasRow).toContainText('10');
-  await expect(jonasRow).toContainText(cat(en, 'Children.statusActive'));
+  const jonasCard = page.getByRole('article', {
+    name: icu(cat(en, 'Children.childCardLabel'), { name: 'Jonas Keller' }),
+  });
+  await expect(jonasCard).toContainText('10');
+  await expect(jonasCard).toContainText(cat(en, 'Children.statusActive'));
 
   await expect(page.getByText(cat(en, 'Children.emptyTitle'), { exact: true })).toHaveCount(0);
 
@@ -95,7 +82,7 @@ test('en: seeded parent sees Mia and Jonas as ACTIVE rows in the real children t
       (violation) =>
         `${violation.impact}:${violation.id} → ${violation.nodes.map((node) => node.target).join(' | ')}`,
     ),
-    'children table',
+    'children cards',
   ).toEqual([]);
   expect(errors, errors.join('\n')).toEqual([]);
 });
@@ -114,7 +101,8 @@ for (const locale of ALL_LOCALES) {
     try {
       await signInAs(page, request, PARENT.email, PARENT.password);
       const messages = loadMessages(locale);
-      await page.goto('/dashboard/children');
+      const pathname = locale === 'en' ? '/dashboard/children' : `/${locale}/dashboard/children`;
+      await page.goto(pathname);
 
       await expect(
         page.getByRole('heading', { level: 1, name: cat(messages, 'Children.heading') }),
@@ -145,7 +133,7 @@ test('en: a freshly-registered parent with zero children sees the real empty sta
 
   await expect(page.getByText(cat(en, 'Children.emptyTitle'), { exact: true })).toBeVisible();
   await expect(page.getByText(cat(en, 'Children.emptyDescription'))).toBeVisible();
-  await expect(page.getByRole('table')).toHaveCount(0);
+  await expect(page.getByLabel(cat(en, 'Children.cardListLabel'))).toHaveCount(0);
 
   await page.screenshot({ path: path.join(SCREENSHOTS, 'children-empty-en.png') });
 

@@ -901,6 +901,53 @@
     "updatedToast": "Đã lưu thay đổi.",
     "editErrorTitle": "Chúng tôi không thể tải con này.",
     "editErrorDescription": "Có thể chúng đã bị xóa, hoặc bạn không có quyền truy cập.",
-    "backToList": "Quay lại con của tôi"
+    "backToList": "Quay lại con của tôi",
+    "profileMeta": {
+      "title": "Tiến độ của con — SchoolTest",
+      "description": "Xem tiến độ, buổi làm bài và kết quả kiểm tra của con bạn."
+    },
+    "childCardLabel": "Thẻ con của {name}",
+    "cardListLabel": "Hồ sơ của con",
+    "viewProfile": "Xem hồ sơ",
+    "viewProfileLabel": "Xem hồ sơ của {name}",
+    "notAvailable": "Chưa có thông tin",
+    "yearLevel": "Khối lớp",
+    "targetEntry": "Nhập học mục tiêu",
+    "nationality": "Quốc tịch",
+    "profileSubtitle": "Tiến độ, buổi làm bài và kết quả kiểm tra chính thức",
+    "unknownStudent": "Học sinh",
+    "metricsHeading": "Chỉ số tiến độ",
+    "metricTotalSessions": "Tổng buổi làm bài",
+    "metricCompletedSessions": "Buổi đã hoàn thành",
+    "metricActiveSessions": "Buổi đang hoạt động",
+    "metricOfficialResults": "Kết quả chính thức",
+    "recentResultsHeading": "Kết quả kiểm tra gần đây",
+    "recentResultsDescription": "Năm kết quả kiểm tra chính thức gần đây nhất của con bạn.",
+    "emptyResults": "Chưa có kết quả kiểm tra chính thức để hiển thị.",
+    "untitledResult": "Kết quả kiểm tra chính thức",
+    "resultStatus": {
+      "scoring": "Đang chấm điểm",
+      "partial_pending": "Đang chờ một phần",
+      "complete": "Hoàn tất"
+    },
+    "resultSkill": "Kỹ năng",
+    "resultSkills": {
+      "reading": "Đọc",
+      "listening": "Nghe",
+      "speaking": "Nói",
+      "writing": "Viết"
+    },
+    "resultCefr": "CEFR",
+    "resultReadiness": "Mức sẵn sàng",
+    "resultReadinessValues": {
+      "met": "Đạt",
+      "approaching": "Đang tiến gần",
+      "not_yet": "Chưa đạt",
+      "not_assessed": "Chưa đánh giá"
+    },
+    "resultPublished": "Đã công bố",
+    "notPublished": "Chưa công bố",
+    "profileErrorTitle": "Chúng tôi không thể tải tiến độ của con này.",
+    "profileErrorDescription": "Có thể các em đã bị xóa, hoặc bạn không có quyền truy cập hồ sơ của các em."
   }
 }

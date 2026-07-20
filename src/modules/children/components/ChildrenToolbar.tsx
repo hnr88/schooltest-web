@@ -33,7 +33,7 @@ export function ChildrenToolbar({
           aria-pressed={includeArchived}
           onClick={() => onIncludeArchivedChange(!includeArchived)}
           className={cn(
-            'rounded-full border px-3.5 py-1.5 text-caption font-medium transition-colors duration-150 ease-out focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none',
+            'min-h-11 rounded-full border px-4 text-caption font-medium transition-colors duration-150 ease-out focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none',
             includeArchived
               ? 'border-transparent bg-primary text-primary-foreground'
               : 'border-input bg-card text-muted-foreground hover:bg-muted',

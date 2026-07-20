@@ -68,7 +68,7 @@ async function listStatuses(
   return body.data.filter((s) => s.documentId === documentId).map((s) => s.status);
 }
 
-test('en: archive → confirm → row disappears; "Include archived" restores it; unarchive re-activates (DB-proven)', async ({
+test('en: archive → confirm → card disappears; "Include archived" restores it; unarchive re-activates (DB-proven)', async ({
   page,
   request,
 }) => {
@@ -87,9 +87,10 @@ test('en: archive → confirm → row disappears; "Include archived" restores it
   });
   await page.goto('/dashboard/children');
 
-  const row = page.getByRole('row', { name: /Nora Archive/ });
-  await expect(row).toBeVisible();
-  await expect(row).toContainText(cat(en, 'Children.statusActive'));
+  const cardName = icu(cat(en, 'Children.childCardLabel'), { name: 'Nora Archive' });
+  const card = page.getByRole('article', { name: cardName });
+  await expect(card).toBeVisible();
+  await expect(card).toContainText(cat(en, 'Children.statusActive'));
 
   // Open the ⋯ actions dropdown, choose Archive, confirm in the AlertDialog.
   await page
@@ -101,19 +102,21 @@ test('en: archive → confirm → row disappears; "Include archived" restores it
   ).toBeVisible();
   await page.getByRole('button', { name: cat(en, 'Children.archiveConfirm'), exact: true }).click();
 
-  // Row leaves the default list (server filter status $ne archived) + toast.
+  // Card leaves the default list (server filter status $ne archived) + toast.
   await expect(
     page.getByText(icu(cat(en, 'Children.archivedToast'), { name: 'Nora Archive' })),
   ).toBeVisible();
-  await expect(page.getByRole('row', { name: /Nora Archive/ })).toHaveCount(0);
+  await expect(page.getByRole('article', { name: cardName })).toHaveCount(0);
   expect(await listStatuses(request, jwt, documentId, false)).toEqual([]);
   expect(await listStatuses(request, jwt, documentId, true)).toEqual(['archived']);
 
-  // "Include archived" chip re-queries with filters[status][$in] → row returns.
-  await page.getByRole('button', { name: cat(en, 'Children.includeArchived'), exact: true }).click();
-  const archivedRow = page.getByRole('row', { name: /Nora Archive/ });
-  await expect(archivedRow).toBeVisible();
-  await expect(archivedRow).toContainText(cat(en, 'Children.statusArchived'));
+  // "Include archived" chip re-queries with filters[status][$in] → card returns.
+  await page
+    .getByRole('button', { name: cat(en, 'Children.includeArchived'), exact: true })
+    .click();
+  const archivedCard = page.getByRole('article', { name: cardName });
+  await expect(archivedCard).toBeVisible();
+  await expect(archivedCard).toContainText(cat(en, 'Children.statusArchived'));
 
   // Unarchive → back to active (UI + DB).
   await page
@@ -123,7 +126,9 @@ test('en: archive → confirm → row disappears; "Include archived" restores it
   await expect(
     page.getByText(icu(cat(en, 'Children.unarchivedToast'), { name: 'Nora Archive' })),
   ).toBeVisible();
-  await expect(page.getByRole('row', { name: /Nora Archive/ }).getByText(cat(en, 'Children.statusActive'))).toBeVisible();
+  await expect(
+    page.getByRole('article', { name: cardName }).getByText(cat(en, 'Children.statusActive')),
+  ).toBeVisible();
   expect(await listStatuses(request, jwt, documentId, false)).toEqual(['active']);
 
   expect(errors, errors.join('\n')).toEqual([]);
@@ -162,14 +167,18 @@ test('en: edit opens the wizard prefilled (passport empty) and Save changes PUTs
 
   // Advance through the 5 steps (all prefilled valid) to Review and Save.
   for (let step = 0; step < 4; step += 1) {
-    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue'), exact: true }).click();
+    await page
+      .getByRole('button', { name: cat(en, 'StudentWizard.continue'), exact: true })
+      .click();
   }
   const putPromise = page.waitForResponse(
     (response) =>
       response.url().includes(`/api/students/${documentId}`) &&
       response.request().method() === 'PUT',
   );
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.saveChanges'), exact: true }).click();
+  await page
+    .getByRole('button', { name: cat(en, 'StudentWizard.saveChanges'), exact: true })
+    .click();
   const put = await putPromise;
   expect(put.status(), await put.text()).toBe(200);
 

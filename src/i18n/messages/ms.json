@@ -901,6 +901,53 @@
     "updatedToast": "Perubahan disimpan.",
     "editErrorTitle": "Kami tidak dapat memuatkan anak ini.",
     "editErrorDescription": "Mereka mungkin telah dialih keluar, atau anda tiada akses.",
-    "backToList": "Kembali ke anak saya"
+    "backToList": "Kembali ke anak saya",
+    "profileMeta": {
+      "title": "Kemajuan anak — SchoolTest",
+      "description": "Lihat kemajuan, sesi dan keputusan ujian anak anda."
+    },
+    "childCardLabel": "Kad anak untuk {name}",
+    "cardListLabel": "Profil anak",
+    "viewProfile": "Lihat profil",
+    "viewProfileLabel": "Lihat profil untuk {name}",
+    "notAvailable": "Tidak tersedia",
+    "yearLevel": "Tahun persekolahan",
+    "targetEntry": "Kemasukan sasaran",
+    "nationality": "Kewarganegaraan",
+    "profileSubtitle": "Kemajuan, sesi dan keputusan ujian rasmi",
+    "unknownStudent": "Pelajar",
+    "metricsHeading": "Metrik kemajuan",
+    "metricTotalSessions": "Jumlah sesi",
+    "metricCompletedSessions": "Sesi selesai",
+    "metricActiveSessions": "Sesi aktif",
+    "metricOfficialResults": "Keputusan rasmi",
+    "recentResultsHeading": "Keputusan ujian terkini",
+    "recentResultsDescription": "Lima keputusan ujian rasmi terkini anak anda.",
+    "emptyResults": "Belum ada keputusan ujian rasmi untuk dipaparkan.",
+    "untitledResult": "Keputusan ujian rasmi",
+    "resultStatus": {
+      "scoring": "Sedang dinilai",
+      "partial_pending": "Sebahagiannya tertunda",
+      "complete": "Selesai"
+    },
+    "resultSkill": "Kemahiran",
+    "resultSkills": {
+      "reading": "Membaca",
+      "listening": "Mendengar",
+      "speaking": "Bertutur",
+      "writing": "Menulis"
+    },
+    "resultCefr": "CEFR",
+    "resultReadiness": "Kesediaan",
+    "resultReadinessValues": {
+      "met": "Dicapai",
+      "approaching": "Menghampiri",
+      "not_yet": "Belum lagi",
+      "not_assessed": "Belum dinilai"
+    },
+    "resultPublished": "Diterbitkan",
+    "notPublished": "Belum diterbitkan",
+    "profileErrorTitle": "Kami tidak dapat memuatkan kemajuan anak ini.",
+    "profileErrorDescription": "Mereka mungkin telah dialih keluar, atau anda tiada akses kepada profil mereka."
   }
 }

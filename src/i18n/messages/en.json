@@ -901,6 +901,53 @@
     "updatedToast": "Changes saved.",
     "editErrorTitle": "We couldn't load this child.",
     "editErrorDescription": "They may have been removed, or you don't have access.",
-    "backToList": "Back to my children"
+    "backToList": "Back to my children",
+    "profileMeta": {
+      "title": "Child progress — SchoolTest",
+      "description": "View your child's progress, sessions and test results."
+    },
+    "childCardLabel": "Child card for {name}",
+    "cardListLabel": "Child profiles",
+    "viewProfile": "View profile",
+    "viewProfileLabel": "View profile for {name}",
+    "notAvailable": "Not available",
+    "yearLevel": "Year level",
+    "targetEntry": "Target entry",
+    "nationality": "Nationality",
+    "profileSubtitle": "Progress, sessions and official test results",
+    "unknownStudent": "Student",
+    "metricsHeading": "Progress metrics",
+    "metricTotalSessions": "Total sessions",
+    "metricCompletedSessions": "Completed sessions",
+    "metricActiveSessions": "Active sessions",
+    "metricOfficialResults": "Official results",
+    "recentResultsHeading": "Recent test results",
+    "recentResultsDescription": "Your child's five most recent official test results.",
+    "emptyResults": "No official test results are available yet.",
+    "untitledResult": "Official test result",
+    "resultStatus": {
+      "scoring": "Scoring",
+      "partial_pending": "Partially pending",
+      "complete": "Complete"
+    },
+    "resultSkill": "Skill",
+    "resultSkills": {
+      "reading": "Reading",
+      "listening": "Listening",
+      "speaking": "Speaking",
+      "writing": "Writing"
+    },
+    "resultCefr": "CEFR",
+    "resultReadiness": "Readiness",
+    "resultReadinessValues": {
+      "met": "Met",
+      "approaching": "Approaching",
+      "not_yet": "Not yet",
+      "not_assessed": "Not assessed"
+    },
+    "resultPublished": "Published",
+    "notPublished": "Not published yet",
+    "profileErrorTitle": "We couldn't load this child's progress.",
+    "profileErrorDescription": "They may have been removed, or you don't have access to their profile."
   }
 }

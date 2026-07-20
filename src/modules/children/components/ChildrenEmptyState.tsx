@@ -16,7 +16,7 @@ export function ChildrenEmptyState() {
       title={t('emptyTitle')}
       description={t('emptyDescription')}
       action={
-        <Button href="/dashboard/children/new">
+        <Button href="/dashboard/children/new" className="h-11">
           <Plus aria-hidden="true" className="size-4" />
           {t('addStudent')}
         </Button>

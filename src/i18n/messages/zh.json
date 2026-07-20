@@ -901,6 +901,53 @@
     "updatedToast": "更改已保存。",
     "editErrorTitle": "无法加载此孩子。",
     "editErrorDescription": "他们可能已被删除，或您没有访问权限。",
-    "backToList": "返回我的孩子"
+    "backToList": "返回我的孩子",
+    "profileMeta": {
+      "title": "孩子进度 — SchoolTest",
+      "description": "查看孩子的学习进度、测试场次和测试结果。"
+    },
+    "childCardLabel": "{name} 的孩子卡片",
+    "cardListLabel": "孩子档案",
+    "viewProfile": "查看档案",
+    "viewProfileLabel": "查看 {name} 的档案",
+    "notAvailable": "暂无信息",
+    "yearLevel": "年级",
+    "targetEntry": "目标入学",
+    "nationality": "国籍",
+    "profileSubtitle": "学习进度、测试场次和正式测试结果",
+    "unknownStudent": "学生",
+    "metricsHeading": "进度指标",
+    "metricTotalSessions": "测试总场次",
+    "metricCompletedSessions": "已完成场次",
+    "metricActiveSessions": "进行中场次",
+    "metricOfficialResults": "正式结果",
+    "recentResultsHeading": "最近测试结果",
+    "recentResultsDescription": "孩子最近的五项正式测试结果。",
+    "emptyResults": "暂时没有可显示的正式测试结果。",
+    "untitledResult": "正式测试结果",
+    "resultStatus": {
+      "scoring": "评分中",
+      "partial_pending": "部分待处理",
+      "complete": "已完成"
+    },
+    "resultSkill": "技能",
+    "resultSkills": {
+      "reading": "阅读",
+      "listening": "听力",
+      "speaking": "口语",
+      "writing": "写作"
+    },
+    "resultCefr": "CEFR",
+    "resultReadiness": "准备程度",
+    "resultReadinessValues": {
+      "met": "已达到",
+      "approaching": "接近达到",
+      "not_yet": "尚未达到",
+      "not_assessed": "未评估"
+    },
+    "resultPublished": "发布日期",
+    "notPublished": "尚未发布",
+    "profileErrorTitle": "无法加载这名孩子的学习进度。",
+    "profileErrorDescription": "他们可能已被删除，或您没有访问其档案的权限。"
   }
 }
