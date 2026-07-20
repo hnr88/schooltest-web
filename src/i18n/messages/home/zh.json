@@ -1,0 +1,176 @@
+{
+  "Home": {
+    "title": "Schooltest",
+    "skipToContent": "跳至内容",
+    "nav": {
+      "label": "主导航",
+      "product": "产品",
+      "schools": "面向学校",
+      "pricing": "定价",
+      "resources": "资源",
+      "signIn": "登录",
+      "startFree": "免费开始",
+      "openMenu": "打开菜单",
+      "closeMenu": "关闭菜单"
+    },
+    "meta": {
+      "title": "SchoolTest — 更智能的测试，更出色的结果。",
+      "description": "几分钟即可创建语言测试，通过一个链接发放，并由 AI 起草评分——始终由您掌控。"
+    },
+    "announcement": {
+      "message": "新增：所有方案现均提供 AI 口语反馈",
+      "link": "了解详情 →"
+    },
+    "hero": {
+      "badge": "深受 1,200+ 所学校和语言中心信赖",
+      "title": "更智能的测试。<br></br>更出色的结果。",
+      "subtitle": "几分钟即可创建语言测试，通过一个链接发放，并由 AI 起草评分——始终由您掌控。",
+      "primaryCta": "开始免费试用",
+      "secondaryCta": "观看演示",
+      "microcopy": "最多 30 名学生免费使用 · 无需信用卡",
+      "imageAlt": "学生们走过阳光明媚的校园草坪"
+    },
+    "flow": {
+      "title": "学生作答。<blue>AI 起草评分。</blue>您审核并发布——<teal>当天即可完成。</teal>",
+      "stepOne": "创建并分享链接",
+      "stepTwo": "AI 起草分数",
+      "stepThree": "您发布结果"
+    },
+    "trustedBy": {
+      "label": "深受信赖",
+      "one": "Northfield Academy",
+      "two": "LinguaLab",
+      "three": "Prep&Go",
+      "four": "EduCore",
+      "five": "Wexford Schools"
+    },
+    "features": {
+      "eyebrow": "一站式满足所需",
+      "title": "从第一道题到最终评分",
+      "questionTypes": {
+        "title": "20 种题型",
+        "description": "选择题、拖放题、听写、口语、作文——所有 PTE 风格任务均已就绪，可直接使用。"
+      },
+      "aiGrading": {
+        "title": "AI 评分与反馈",
+        "description": "口语和写作将在几秒内根据您的评分量表完成评分。您审核、调整并发布。"
+      },
+      "analytics": {
+        "title": "按技能分析",
+        "description": "听力、阅读、写作、口语——清楚了解每位学生及每个班级的水平。"
+      }
+    },
+    "featureDetail": {
+      "eyebrow": "学生真正会阅读的 AI 反馈",
+      "title": "过去要花整个周末的评分，现在一杯咖啡的时间就够",
+      "description": "每一份口语和写作答案都会获得基于评分量表的分数和具体建议。教师会逐条审核，再展示给学生。",
+      "checkOne": "语法、词汇与连贯性评分",
+      "checkTwo": "学生可一键“应用建议”",
+      "checkThree": "发布前由教师审核",
+      "card": {
+        "title": "AI 写作反馈",
+        "badge": "BETA",
+        "grammar": "语法",
+        "vocabulary": "词汇",
+        "coherence": "连贯性",
+        "scoreGrammar": "8.5",
+        "scoreVocabulary": "7.0",
+        "scoreCoherence": "6.5",
+        "scoreLabel": "{skill}：9 分制得分 {score}",
+        "suggestion": "试着衔接第二段和第三段——<mark>“另一方面”</mark> 能让对比更清晰。"
+      }
+    },
+    "stats": {
+      "deliveredValue": "2.4M",
+      "deliveredLabel": "已发放测试",
+      "accuracyValue": "98%",
+      "accuracyLabel": "评分准确率",
+      "savedValue": "6 hrs",
+      "savedLabel": "每位教师每周节省"
+    },
+    "howItWorks": {
+      "eyebrow": "使用方式",
+      "stepOneTitle": "创建测试",
+      "stepOneDescription": "从 20 种题型中选择，或从模板开始。可从 CSV 或 DOCX 导入现有题目。",
+      "stepTwoTitle": "分享一个链接",
+      "stepTwoDescription": "学生输入姓名即可加入——无需账户，无需安装。适用于任何设备。",
+      "stepThreeTitle": "审核并发布结果",
+      "stepThreeDescription": "学生完成后，AI 会起草分数和反馈。审核、调整并发送——当天即可完成。"
+    },
+    "testimonial": {
+      "quote": "“我不再把周日都花在评分上。AI 会起草反馈，我来审核，学生当天就能拿到结果。”",
+      "name": "Lena Petrova",
+      "role": "英语教师，Lyceum 14",
+      "ratingLabel": "5 分制满分 5 分"
+    },
+    "pricing": {
+      "eyebrow": "定价",
+      "title": "免费开始，随需求增长",
+      "perMonth": "/ 月",
+      "perTeacherMonth": "/ 教师 / 月",
+      "freeName": "Free",
+      "freePrice": "$0",
+      "freeFeatureStudents": "最多 30 名学生",
+      "freeFeatureTests": "每月 5 次测试",
+      "freeFeatureAi": "AI 反馈",
+      "freeCta": "立即开始",
+      "proName": "Pro",
+      "proBadge": "最受欢迎",
+      "proPrice": "$29",
+      "proFeatureOne": "学生与测试不限量",
+      "proFeatureTwo": "AI 口语与写作反馈",
+      "proFeatureThree": "完整的按技能分析",
+      "proCta": "开始免费试用",
+      "schoolName": "School",
+      "schoolPrice": "定制",
+      "schoolFeatureOne": "SSO 与名册同步",
+      "schoolFeatureTwo": "学区级报告",
+      "schoolFeatureThree": "专属支持",
+      "schoolCta": "联系销售"
+    },
+    "faq": {
+      "title": "常见问题",
+      "accountsQuestion": "学生需要账户吗？",
+      "accountsAnswer": "不需要——分享一个链接，学生输入姓名即可加入。若要跨测试跟踪学习进度，账户为可选项。",
+      "aiGradingQuestion": "AI 评分如何运作？",
+      "aiGradingAnswer": "口语和写作答案会根据您的评分量表即时评分。教师可以查看每个分数，并在发布结果前进行调整。",
+      "importQuestion": "我可以导入现有测试吗？",
+      "importAnswer": "可以——上传 CSV 或 DOCX，我们会自动将题目映射到正确的类型。",
+      "pteQuestion": "SchoolTest 适合 PTE / IELTS 备考吗？",
+      "pteAnswer": "适合。已内置全部 20 种 PTE Academic 任务类型——从 Read Aloud 到 Write from Dictation——并提供贴近真实考试的计时与评分。"
+    },
+    "cta": {
+      "title": "准备好让您的班级拥有更好的考试体验了吗？",
+      "subtitle": "不到五分钟即可设置您的首场测试。最多 30 名学生免费使用。",
+      "primary": "开始免费试用",
+      "secondary": "联系销售"
+    },
+    "footer": {
+      "tagline": "为教师、学生和学校带来更智能的测试和更出色的结果。",
+      "logoAlt": "SchoolTest",
+      "productTitle": "产品",
+      "productBuilder": "测试创建器",
+      "productFeedback": "AI 反馈",
+      "productAnalytics": "数据分析",
+      "productPricing": "定价",
+      "schoolsTitle": "面向学校",
+      "schoolsDistricts": "学区",
+      "schoolsLanguageCenters": "语言中心",
+      "schoolsUniversities": "大学",
+      "schoolsCaseStudies": "案例研究",
+      "copyright": "© 2026 SchoolTest, Inc.",
+      "status": "所有系统运行正常",
+      "socialX": "X",
+      "socialYouTube": "YouTube",
+      "socialLinkedIn": "LinkedIn",
+      "companyTitle": "公司",
+      "companyAbout": "关于我们",
+      "companyBlog": "博客",
+      "companyCareers": "招聘",
+      "companyContact": "联系我们",
+      "privacy": "隐私",
+      "terms": "条款",
+      "security": "安全"
+    }
+  }
+}

@@ -30,7 +30,7 @@ async function HeroSection() {
             <h1 className="max-w-3xl text-display font-bold text-balance text-white text-shadow-lg">
               {t.rich('hero.title', { br: () => <br /> })}
             </h1>
-            <p className="max-w-xl text-lg text-blue-100/90 text-shadow-sm">{t('hero.subtitle')}</p>
+            <p className="max-w-xl text-lg text-white text-shadow-sm">{t('hero.subtitle')}</p>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <Button size="xl" href="#pricing">
                 {t('hero.primaryCta')}
@@ -41,7 +41,7 @@ async function HeroSection() {
                 {t('hero.secondaryCta')}
               </Button>
             </div>
-            <p className="text-sm text-blue-100/80">{t('hero.microcopy')}</p>
+            <p className="text-sm text-white">{t('hero.microcopy')}</p>
           </div>
         </div>
         <Container>

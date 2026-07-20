@@ -741,6 +741,28 @@
         "email": "Email",
         "sms": "SMS"
       }
+    },
+    "media": {
+      "browse": "Kéo & thả hoặc nhấp để tải lên",
+      "uploading": "Đang tải lên…",
+      "remove": "Xóa",
+      "uploadFailed": "Tải lên thất bại. Vui lòng thử lại.",
+      "photo": {
+        "label": "Ảnh học sinh",
+        "dropTitle": "Thêm ảnh",
+        "helper": "JPG hoặc PNG, tối đa 15MB.",
+        "previewAlt": "Xem trước ảnh học sinh",
+        "invalidType": "Hãy chọn tệp hình ảnh (JPG hoặc PNG).",
+        "tooLarge": "Ảnh vượt quá 15MB. Hãy chọn tệp nhỏ hơn."
+      },
+      "voice": {
+        "label": "Giới thiệu bằng giọng nói",
+        "dropTitle": "Thêm giới thiệu bằng giọng nói",
+        "helper": "MP3 hoặc WAV, tối đa 10MB.",
+        "previewAlt": "Xem trước giới thiệu bằng giọng nói",
+        "invalidType": "Hãy chọn tệp âm thanh (MP3 hoặc WAV).",
+        "tooLarge": "Âm thanh vượt quá 10MB. Hãy chọn tệp nhỏ hơn."
+      }
     }
   },
   "StudentWizardSchema": {

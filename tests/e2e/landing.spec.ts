@@ -83,9 +83,7 @@ test('ZH render: NEXT_LOCALE=zh renders every section from zh.json', async ({
   }
 });
 
-// Locale policy: SchoolTest-specific copy falls back to English in non-en locales
-// (documented in DECISIONS.md), while shared chrome carries real schoolgo translations.
-test('zh mode: translated chrome flips, landing copy falls back to English', async ({
+test('zh mode: translated chrome and landing copy render in Chinese', async ({
   page,
   browser,
   baseURL,
@@ -102,12 +100,13 @@ test('zh mode: translated chrome flips, landing copy falls back to English', asy
   const zhPage = await context.newPage();
   try {
     await zhPage.goto('/');
-    // Real schoolgo translation renders for shared chrome.
+    // Shared chrome renders in Chinese.
     await expect(
       zhPage.getByText(catalogs.zh['Home.skipToContent'], { exact: true }),
     ).toBeAttached();
-    // Landing keys fall back to en values in zh mode (documented policy) and still render.
-    await expectVisibleTexts(zhPage, homeAll(catalogs.en, ['hero.subtitle', 'cta.title']));
+    // Landing text must not silently fall back to English after a locale switch.
+    await expectVisibleTexts(zhPage, homeAll(catalogs.zh, ['hero.subtitle', 'cta.title']));
+    await expectAbsentTexts(zhPage, homeAll(catalogs.en, ['hero.subtitle', 'cta.title']));
   } finally {
     await context.close();
   }

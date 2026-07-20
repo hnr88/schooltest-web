@@ -1,0 +1,176 @@
+{
+  "Home": {
+    "title": "Schooltest",
+    "skipToContent": "Langkau ke kandungan",
+    "nav": {
+      "label": "Navigasi utama",
+      "product": "Produk",
+      "schools": "Untuk sekolah",
+      "pricing": "Harga",
+      "resources": "Sumber",
+      "signIn": "Log masuk",
+      "startFree": "Mula secara percuma",
+      "openMenu": "Buka menu",
+      "closeMenu": "Tutup menu"
+    },
+    "meta": {
+      "title": "SchoolTest — Ujian lebih pintar. Hasil lebih baik.",
+      "description": "Bina ujian bahasa dalam beberapa minit, kongsi dengan satu pautan, dan biarkan AI merangka pemarkahan — anda kekal mengawal."
+    },
+    "announcement": {
+      "message": "Baharu: maklum balas pertuturan AI kini tersedia pada setiap pelan",
+      "link": "Ketahui lebih lanjut →"
+    },
+    "hero": {
+      "badge": "Dipercayai oleh 1,200+ sekolah dan pusat bahasa",
+      "title": "Ujian lebih pintar.<br></br>Hasil lebih baik.",
+      "subtitle": "Bina ujian bahasa dalam beberapa minit, kongsi dengan satu pautan, dan biarkan AI merangka pemarkahan — anda kekal mengawal.",
+      "primaryCta": "Mulakan percubaan percuma",
+      "secondaryCta": "Tonton demo",
+      "microcopy": "Percuma untuk sehingga 30 pelajar · Tiada kad kredit diperlukan",
+      "imageAlt": "Pelajar berjalan di padang rumput kampus sekolah yang cerah"
+    },
+    "flow": {
+      "title": "Pelajar menjawab. <blue>AI merangka gred.</blue> Anda meluluskan dan menerbitkannya — <teal>pada hari yang sama.</teal>",
+      "stepOne": "Cipta & kongsi pautan",
+      "stepTwo": "AI merangka markah",
+      "stepThree": "Anda menerbitkan keputusan"
+    },
+    "trustedBy": {
+      "label": "Dipercayai oleh",
+      "one": "Northfield Academy",
+      "two": "LinguaLab",
+      "three": "Prep&Go",
+      "four": "EduCore",
+      "five": "Wexford Schools"
+    },
+    "features": {
+      "eyebrow": "Segala-galanya di satu tempat",
+      "title": "Dari soalan pertama hingga gred akhir",
+      "questionTypes": {
+        "title": "20 jenis soalan",
+        "description": "Aneka pilihan, seret dan lepas, imlak, pertuturan, esei — setiap tugasan gaya PTE, sedia digunakan."
+      },
+      "aiGrading": {
+        "title": "Penggredan & maklum balas AI",
+        "description": "Jawapan pertuturan dan penulisan diberi markah dalam beberapa saat mengikut rubrik anda. Anda semak, laraskan dan terbitkan."
+      },
+      "analytics": {
+        "title": "Analitik mengikut kemahiran",
+        "description": "Mendengar, membaca, menulis, bertutur — lihat dengan tepat kedudukan setiap pelajar dan kelas."
+      }
+    },
+    "featureDetail": {
+      "eyebrow": "Maklum balas AI yang benar-benar dibaca pelajar",
+      "title": "Penggredan yang dahulu mengambil hujung minggu kini hanya mengambil masa rehat kopi",
+      "description": "Setiap jawapan pertuturan dan penulisan menerima skor rubrik dan cadangan konkrit. Guru meluluskan setiap satu sebelum pelajar melihatnya.",
+      "checkOne": "Skor tatabahasa, kosa kata dan kesepaduan",
+      "checkTwo": "\"Gunakan cadangan\" satu klik untuk pelajar",
+      "checkThree": "Semakan guru sebelum apa-apa diterbitkan",
+      "card": {
+        "title": "Maklum balas penulisan AI",
+        "badge": "BETA",
+        "grammar": "Tatabahasa",
+        "vocabulary": "Kosa kata",
+        "coherence": "Kesepaduan",
+        "scoreGrammar": "8.5",
+        "scoreVocabulary": "7.0",
+        "scoreCoherence": "6.5",
+        "scoreLabel": "{skill}: skor {score} daripada 9",
+        "suggestion": "Cuba hubungkan perenggan kedua dan ketiga anda — <mark>\"sebaliknya\"</mark> akan menjadikan perbezaannya lebih jelas."
+      }
+    },
+    "stats": {
+      "deliveredValue": "2.4M",
+      "deliveredLabel": "ujian dihantar",
+      "accuracyValue": "98%",
+      "accuracyLabel": "ketepatan penggredan",
+      "savedValue": "6 hrs",
+      "savedLabel": "dijimatkan bagi setiap guru, setiap minggu"
+    },
+    "howItWorks": {
+      "eyebrow": "Cara ia berfungsi",
+      "stepOneTitle": "Cipta ujian anda",
+      "stepOneDescription": "Pilih daripada 20 jenis soalan atau mulakan dengan templat. Import soalan sedia ada daripada CSV atau DOCX.",
+      "stepTwoTitle": "Kongsi satu pautan",
+      "stepTwoDescription": "Pelajar menyertai menggunakan nama mereka — tanpa akaun, tanpa pemasangan. Berfungsi pada sebarang peranti.",
+      "stepThreeTitle": "Semak & terbitkan keputusan",
+      "stepThreeDescription": "AI merangka markah dan maklum balas apabila pelajar selesai. Luluskan, laraskan dan hantar — pada hari yang sama."
+    },
+    "testimonial": {
+      "quote": "“Saya tidak lagi menghabiskan hari Ahad untuk menggred. AI merangka maklum balas, saya meluluskannya, dan pelajar saya mendapat keputusan pada hari yang sama.”",
+      "name": "Lena Petrova",
+      "role": "Guru bahasa Inggeris, Lyceum 14",
+      "ratingLabel": "Dinilai 5 daripada 5"
+    },
+    "pricing": {
+      "eyebrow": "Harga",
+      "title": "Mulakan percuma, berkembang apabila anda bersedia",
+      "perMonth": "/ bulan",
+      "perTeacherMonth": "/ guru / bulan",
+      "freeName": "Percuma",
+      "freePrice": "$0",
+      "freeFeatureStudents": "Sehingga 30 pelajar",
+      "freeFeatureTests": "5 ujian sebulan",
+      "freeFeatureAi": "Maklum balas AI",
+      "freeCta": "Mulakan",
+      "proName": "Pro",
+      "proBadge": "Pilihan paling popular",
+      "proPrice": "$29",
+      "proFeatureOne": "Pelajar & ujian tanpa had",
+      "proFeatureTwo": "Maklum balas pertuturan & penulisan AI",
+      "proFeatureThree": "Analitik lengkap mengikut kemahiran",
+      "proCta": "Mulakan percubaan percuma",
+      "schoolName": "Sekolah",
+      "schoolPrice": "Tersuai",
+      "schoolFeatureOne": "SSO & penyegerakan senarai pelajar",
+      "schoolFeatureTwo": "Pelaporan peringkat daerah",
+      "schoolFeatureThree": "Sokongan khusus",
+      "schoolCta": "Hubungi jualan"
+    },
+    "faq": {
+      "title": "Soalan, dijawab",
+      "accountsQuestion": "Adakah pelajar memerlukan akaun?",
+      "accountsAnswer": "Tidak — kongsi satu pautan dan pelajar menyertai menggunakan nama mereka. Akaun adalah pilihan untuk menjejak kemajuan antara ujian.",
+      "aiGradingQuestion": "Bagaimanakah penggredan AI berfungsi?",
+      "aiGradingAnswer": "Jawapan pertuturan dan penulisan diberi markah serta-merta mengikut rubrik anda. Guru melihat setiap skor dan boleh melaraskan sebelum keputusan diterbitkan.",
+      "importQuestion": "Bolehkah saya mengimport ujian sedia ada?",
+      "importAnswer": "Ya — muat naik CSV atau DOCX dan kami memadankan soalan anda dengan jenis yang betul secara automatik.",
+      "pteQuestion": "Adakah SchoolTest sesuai untuk persediaan PTE / IELTS?",
+      "pteAnswer": "Ya. Kesemua 20 jenis tugasan PTE Academic tersedia terbina dalam — daripada Read Aloud hingga Write from Dictation — dengan masa dan pemarkahan yang realistik."
+    },
+    "cta": {
+      "title": "Sedia untuk memberi kelas anda hari ujian yang lebih baik?",
+      "subtitle": "Sediakan ujian pertama anda dalam kurang lima minit. Percuma untuk sehingga 30 pelajar.",
+      "primary": "Mulakan percubaan percuma",
+      "secondary": "Hubungi jualan"
+    },
+    "footer": {
+      "tagline": "Ujian lebih pintar dan hasil lebih baik untuk guru, pelajar dan sekolah.",
+      "logoAlt": "SchoolTest",
+      "productTitle": "Produk",
+      "productBuilder": "Pembina ujian",
+      "productFeedback": "Maklum balas AI",
+      "productAnalytics": "Analitik",
+      "productPricing": "Harga",
+      "schoolsTitle": "Untuk sekolah",
+      "schoolsDistricts": "Daerah",
+      "schoolsLanguageCenters": "Pusat bahasa",
+      "schoolsUniversities": "Universiti",
+      "schoolsCaseStudies": "Kajian kes",
+      "copyright": "© 2026 SchoolTest, Inc.",
+      "status": "Semua sistem beroperasi",
+      "socialX": "X",
+      "socialYouTube": "YouTube",
+      "socialLinkedIn": "LinkedIn",
+      "companyTitle": "Syarikat",
+      "companyAbout": "Tentang kami",
+      "companyBlog": "Blog",
+      "companyCareers": "Kerjaya",
+      "companyContact": "Hubungi kami",
+      "privacy": "Privasi",
+      "terms": "Terma",
+      "security": "Keselamatan"
+    }
+  }
+}

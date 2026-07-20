@@ -5,12 +5,21 @@ export { StepPersonal } from './components/StepPersonal';
 export { StepEducation } from './components/StepEducation';
 export { StepGuardian } from './components/StepGuardian';
 export { StepMedia } from './components/StepMedia';
+export { StepReview } from './components/StepReview';
 export { MediaUpload } from './components/MediaUpload';
 export { ContactChannelCards } from './components/ContactChannelCards';
 export { NationalityCombobox } from './components/NationalityCombobox';
 
 export { useUploadMediaMutation } from './queries/use-upload-media.mutation';
+export { useCreateStudentFullMutation } from './queries/use-create-student-full.mutation';
 export { toAbsoluteMediaUrl } from './lib/media-url';
+export { buildStudentPayload } from './lib/build-student-payload';
+export { classifyWizardError } from './lib/classify-wizard-error';
+export { useWizardMediaStore } from './stores/use-wizard-media-store';
+export {
+  createStudentResponseSchema,
+  type CreateStudentResponse,
+} from './schemas/student-create.schema';
 
 export type {
   MediaAccept,
@@ -57,8 +66,13 @@ export type {
   ContactChannelOption,
   CurrentYearLevel,
   Gender,
+  ReviewRowModel,
+  ReviewSectionModel,
+  StudentCreatePayload,
   Term,
+  WizardMediaKey,
   WizardMode,
   WizardScreenProps,
   WizardStepKey,
+  WizardSubmitError,
 } from './types/student-wizard.types';

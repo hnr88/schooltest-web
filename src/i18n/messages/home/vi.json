@@ -1,0 +1,176 @@
+{
+  "Home": {
+    "title": "Schooltest",
+    "skipToContent": "Chuyển đến nội dung",
+    "nav": {
+      "label": "Điều hướng chính",
+      "product": "Sản phẩm",
+      "schools": "Dành cho trường học",
+      "pricing": "Bảng giá",
+      "resources": "Tài nguyên",
+      "signIn": "Đăng nhập",
+      "startFree": "Bắt đầu miễn phí",
+      "openMenu": "Mở menu",
+      "closeMenu": "Đóng menu"
+    },
+    "meta": {
+      "title": "SchoolTest — Bài kiểm tra thông minh hơn. Kết quả tốt hơn.",
+      "description": "Tạo bài kiểm tra ngôn ngữ chỉ trong vài phút, gửi bằng một liên kết và để AI soạn bản chấm điểm — bạn vẫn luôn là người kiểm soát."
+    },
+    "announcement": {
+      "message": "Mới: phản hồi nói bằng AI hiện có trong mọi gói",
+      "link": "Tìm hiểu thêm →"
+    },
+    "hero": {
+      "badge": "Được hơn 1.200 trường học và trung tâm ngôn ngữ tin dùng",
+      "title": "Bài kiểm tra thông minh hơn.<br></br>Kết quả tốt hơn.",
+      "subtitle": "Tạo bài kiểm tra ngôn ngữ chỉ trong vài phút, gửi bằng một liên kết và để AI soạn bản chấm điểm — bạn vẫn luôn là người kiểm soát.",
+      "primaryCta": "Bắt đầu dùng thử miễn phí",
+      "secondaryCta": "Xem demo",
+      "microcopy": "Miễn phí cho tối đa 30 học viên · Không cần thẻ tín dụng",
+      "imageAlt": "Học viên đi bộ trên bãi cỏ đầy nắng trong khuôn viên trường"
+    },
+    "flow": {
+      "title": "Học viên trả lời. <blue>AI soạn điểm.</blue> Bạn phê duyệt và công bố — <teal>ngay trong ngày.</teal>",
+      "stepOne": "Tạo & chia sẻ liên kết",
+      "stepTwo": "AI phác thảo điểm số",
+      "stepThree": "Bạn công bố kết quả"
+    },
+    "trustedBy": {
+      "label": "Được tin dùng bởi",
+      "one": "Northfield Academy",
+      "two": "LinguaLab",
+      "three": "Prep&Go",
+      "four": "EduCore",
+      "five": "Wexford Schools"
+    },
+    "features": {
+      "eyebrow": "Mọi thứ ở một nơi",
+      "title": "Từ câu hỏi đầu tiên đến điểm cuối cùng",
+      "questionTypes": {
+        "title": "20 dạng câu hỏi",
+        "description": "Trắc nghiệm, kéo thả, chính tả, nói, bài luận — mọi dạng bài theo phong cách PTE, sẵn sàng sử dụng."
+      },
+      "aiGrading": {
+        "title": "Chấm điểm & phản hồi bằng AI",
+        "description": "Câu trả lời nói và viết được chấm trong vài giây theo rubric của bạn. Bạn rà soát, điều chỉnh và công bố."
+      },
+      "analytics": {
+        "title": "Phân tích theo từng kỹ năng",
+        "description": "Nghe, đọc, viết, nói — xem chính xác từng học viên và cả lớp đang ở đâu."
+      }
+    },
+    "featureDetail": {
+      "eyebrow": "Phản hồi AI mà học viên thực sự đọc",
+      "title": "Việc chấm điểm từng tốn cả cuối tuần giờ chỉ bằng một giờ nghỉ cà phê",
+      "description": "Mỗi câu trả lời nói và viết đều nhận được điểm rubric cùng một gợi ý cụ thể. Giáo viên phê duyệt từng mục trước khi học viên nhìn thấy.",
+      "checkOne": "Điểm ngữ pháp, từ vựng và mạch lạc",
+      "checkTwo": "\"Áp dụng gợi ý\" chỉ với một cú nhấp cho học viên",
+      "checkThree": "Giáo viên rà soát trước khi bất cứ điều gì được công bố",
+      "card": {
+        "title": "Phản hồi viết bằng AI",
+        "badge": "BETA",
+        "grammar": "Ngữ pháp",
+        "vocabulary": "Từ vựng",
+        "coherence": "Mạch lạc",
+        "scoreGrammar": "8.5",
+        "scoreVocabulary": "7.0",
+        "scoreCoherence": "6.5",
+        "scoreLabel": "{skill}: điểm {score} trên 9",
+        "suggestion": "Hãy thử liên kết đoạn thứ hai và thứ ba — <mark>\"mặt khác\"</mark> sẽ làm rõ sự tương phản hơn."
+      }
+    },
+    "stats": {
+      "deliveredValue": "2.4M",
+      "deliveredLabel": "bài kiểm tra đã gửi",
+      "accuracyValue": "98%",
+      "accuracyLabel": "độ chính xác chấm điểm",
+      "savedValue": "6 hrs",
+      "savedLabel": "tiết kiệm cho mỗi giáo viên, mỗi tuần"
+    },
+    "howItWorks": {
+      "eyebrow": "Cách hoạt động",
+      "stepOneTitle": "Tạo bài kiểm tra",
+      "stepOneDescription": "Chọn từ 20 dạng câu hỏi hoặc bắt đầu bằng một mẫu. Nhập câu hỏi có sẵn từ CSV hoặc DOCX.",
+      "stepTwoTitle": "Chia sẻ một liên kết",
+      "stepTwoDescription": "Học viên tham gia bằng tên của mình — không cần tài khoản, không cần cài đặt. Hoạt động trên mọi thiết bị.",
+      "stepThreeTitle": "Rà soát & công bố kết quả",
+      "stepThreeDescription": "AI soạn điểm và phản hồi khi học viên hoàn thành. Phê duyệt, điều chỉnh và gửi đi — ngay trong ngày."
+    },
+    "testimonial": {
+      "quote": "“Tôi không còn dành Chủ nhật để chấm bài. AI soạn phản hồi, tôi phê duyệt và học viên nhận kết quả ngay trong ngày.”",
+      "name": "Lena Petrova",
+      "role": "Giáo viên tiếng Anh, Lyceum 14",
+      "ratingLabel": "Được đánh giá 5 trên 5"
+    },
+    "pricing": {
+      "eyebrow": "Bảng giá",
+      "title": "Bắt đầu miễn phí, mở rộng khi bạn sẵn sàng",
+      "perMonth": "/ tháng",
+      "perTeacherMonth": "/ giáo viên / tháng",
+      "freeName": "Miễn phí",
+      "freePrice": "$0",
+      "freeFeatureStudents": "Tối đa 30 học viên",
+      "freeFeatureTests": "5 bài kiểm tra mỗi tháng",
+      "freeFeatureAi": "Phản hồi AI",
+      "freeCta": "Bắt đầu",
+      "proName": "Pro",
+      "proBadge": "Phổ biến nhất",
+      "proPrice": "$29",
+      "proFeatureOne": "Không giới hạn học viên & bài kiểm tra",
+      "proFeatureTwo": "Phản hồi nói & viết bằng AI",
+      "proFeatureThree": "Phân tích đầy đủ theo từng kỹ năng",
+      "proCta": "Bắt đầu dùng thử miễn phí",
+      "schoolName": "Trường học",
+      "schoolPrice": "Tùy chỉnh",
+      "schoolFeatureOne": "SSO & đồng bộ danh sách lớp",
+      "schoolFeatureTwo": "Báo cáo cấp quận/huyện",
+      "schoolFeatureThree": "Hỗ trợ chuyên biệt",
+      "schoolCta": "Liên hệ bộ phận kinh doanh"
+    },
+    "faq": {
+      "title": "Giải đáp thắc mắc",
+      "accountsQuestion": "Học viên có cần tài khoản không?",
+      "accountsAnswer": "Không — hãy chia sẻ một liên kết và học viên tham gia bằng tên của họ. Tài khoản là tùy chọn để theo dõi tiến độ giữa các bài kiểm tra.",
+      "aiGradingQuestion": "AI chấm điểm hoạt động như thế nào?",
+      "aiGradingAnswer": "Câu trả lời nói và viết được chấm ngay theo rubric của bạn. Giáo viên thấy mọi điểm số và có thể điều chỉnh trước khi công bố kết quả.",
+      "importQuestion": "Tôi có thể nhập các bài kiểm tra hiện có không?",
+      "importAnswer": "Có — tải CSV hoặc DOCX lên và chúng tôi tự động ghép các câu hỏi của bạn với đúng dạng.",
+      "pteQuestion": "SchoolTest có phù hợp để ôn PTE / IELTS không?",
+      "pteAnswer": "Có. Tất cả 20 dạng bài PTE Academic đều có sẵn — từ Read Aloud đến Write from Dictation — với thời gian và cách chấm điểm sát thực tế."
+    },
+    "cta": {
+      "title": "Sẵn sàng mang đến cho lớp học của bạn một ngày kiểm tra tốt hơn?",
+      "subtitle": "Thiết lập bài kiểm tra đầu tiên trong chưa đầy năm phút. Miễn phí cho tối đa 30 học viên.",
+      "primary": "Bắt đầu dùng thử miễn phí",
+      "secondary": "Liên hệ bộ phận kinh doanh"
+    },
+    "footer": {
+      "tagline": "Bài kiểm tra thông minh hơn và kết quả tốt hơn cho giáo viên, học viên và trường học.",
+      "logoAlt": "SchoolTest",
+      "productTitle": "Sản phẩm",
+      "productBuilder": "Trình tạo bài kiểm tra",
+      "productFeedback": "Phản hồi AI",
+      "productAnalytics": "Phân tích",
+      "productPricing": "Bảng giá",
+      "schoolsTitle": "Dành cho trường học",
+      "schoolsDistricts": "Học khu",
+      "schoolsLanguageCenters": "Trung tâm ngôn ngữ",
+      "schoolsUniversities": "Đại học",
+      "schoolsCaseStudies": "Câu chuyện khách hàng",
+      "copyright": "© 2026 SchoolTest, Inc.",
+      "status": "Mọi hệ thống đang hoạt động bình thường",
+      "socialX": "X",
+      "socialYouTube": "YouTube",
+      "socialLinkedIn": "LinkedIn",
+      "companyTitle": "Công ty",
+      "companyAbout": "Về chúng tôi",
+      "companyBlog": "Blog",
+      "companyCareers": "Tuyển dụng",
+      "companyContact": "Liên hệ",
+      "privacy": "Quyền riêng tư",
+      "terms": "Điều khoản",
+      "security": "Bảo mật"
+    }
+  }
+}

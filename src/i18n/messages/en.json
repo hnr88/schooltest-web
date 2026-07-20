@@ -741,6 +741,28 @@
         "email": "Email",
         "sms": "SMS"
       }
+    },
+    "media": {
+      "browse": "Drag & drop or click to upload",
+      "uploading": "Uploading…",
+      "remove": "Remove",
+      "uploadFailed": "Upload failed. Try again.",
+      "photo": {
+        "label": "Student photo",
+        "dropTitle": "Add a photo",
+        "helper": "JPG or PNG, up to 15MB.",
+        "previewAlt": "Student photo preview",
+        "invalidType": "Choose an image file (JPG or PNG).",
+        "tooLarge": "That image is over 15MB. Choose a smaller file."
+      },
+      "voice": {
+        "label": "Voice introduction",
+        "dropTitle": "Add a voice intro",
+        "helper": "MP3 or WAV, up to 10MB.",
+        "previewAlt": "Voice introduction preview",
+        "invalidType": "Choose an audio file (MP3 or WAV).",
+        "tooLarge": "That audio is over 10MB. Choose a smaller file."
+      }
     }
   },
   "StudentWizardSchema": {

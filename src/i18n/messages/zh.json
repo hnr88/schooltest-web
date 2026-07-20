@@ -741,6 +741,28 @@
         "email": "邮箱",
         "sms": "短信"
       }
+    },
+    "media": {
+      "browse": "拖放或点击上传",
+      "uploading": "上传中…",
+      "remove": "移除",
+      "uploadFailed": "上传失败，请重试。",
+      "photo": {
+        "label": "学生照片",
+        "dropTitle": "添加照片",
+        "helper": "JPG 或 PNG，最大 15MB。",
+        "previewAlt": "学生照片预览",
+        "invalidType": "请选择图片文件（JPG 或 PNG）。",
+        "tooLarge": "该图片超过 15MB，请选择较小的文件。"
+      },
+      "voice": {
+        "label": "语音介绍",
+        "dropTitle": "添加语音介绍",
+        "helper": "MP3 或 WAV，最大 10MB。",
+        "previewAlt": "语音介绍预览",
+        "invalidType": "请选择音频文件（MP3 或 WAV）。",
+        "tooLarge": "该音频超过 10MB，请选择较小的文件。"
+      }
     }
   },
   "StudentWizardSchema": {

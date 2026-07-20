@@ -238,7 +238,7 @@ test('DS-PROPS: ds-probe Button merges custom className with variant styling', a
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
-test('LOCALE-TOGGLE: footer switcher en→zh→en updates translated chrome without reload', async ({
+test('LOCALE-TOGGLE: footer switcher en→zh→en updates landing copy without reload', async ({
   page,
 }) => {
   const errors = watchErrors(page);
@@ -254,10 +254,9 @@ test('LOCALE-TOGGLE: footer switcher en→zh→en updates translated chrome with
     .getByRole('combobox', { name: cat(en, 'LocaleSwitcher.label'), exact: true })
     .click();
   await page.getByRole('option', { name: '中文' }).click();
-  // Shared chrome flips to the schoolgo translation…
+  // Shared chrome and the landing content both flip to Chinese.
   await expect(page.getByText(zh['Home.skipToContent'], { exact: true })).toBeAttached();
-  // …while SchoolTest-specific copy keeps the documented English fallback.
-  for (const line of heroTitleLines(en)) await expect(h1).toContainText(line);
+  for (const line of heroTitleLines(zh)) await expect(h1).toContainText(line);
   expect(page.url()).toBe(url); // cookie + router.refresh, no navigation
   expect(await page.evaluate(() => (window as unknown as Record<string, unknown>).__noReload)).toBe(
     1,

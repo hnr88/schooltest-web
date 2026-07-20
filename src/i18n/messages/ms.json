@@ -741,6 +741,28 @@
         "email": "E-mel",
         "sms": "SMS"
       }
+    },
+    "media": {
+      "browse": "Seret & lepas atau klik untuk muat naik",
+      "uploading": "Memuat naik…",
+      "remove": "Buang",
+      "uploadFailed": "Muat naik gagal. Cuba lagi.",
+      "photo": {
+        "label": "Foto pelajar",
+        "dropTitle": "Tambah foto",
+        "helper": "JPG atau PNG, sehingga 15MB.",
+        "previewAlt": "Pratonton foto pelajar",
+        "invalidType": "Pilih fail imej (JPG atau PNG).",
+        "tooLarge": "Imej itu melebihi 15MB. Pilih fail lebih kecil."
+      },
+      "voice": {
+        "label": "Pengenalan suara",
+        "dropTitle": "Tambah pengenalan suara",
+        "helper": "MP3 atau WAV, sehingga 10MB.",
+        "previewAlt": "Pratonton pengenalan suara",
+        "invalidType": "Pilih fail audio (MP3 atau WAV).",
+        "tooLarge": "Audio itu melebihi 10MB. Pilih fail lebih kecil."
+      }
     }
   },
   "StudentWizardSchema": {

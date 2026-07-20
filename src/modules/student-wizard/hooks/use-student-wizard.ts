@@ -39,6 +39,11 @@ export function useStudentWizard({ mode, initialValues }: UseStudentWizardParams
     setStep((current) => Math.max(0, current - 1));
   }, []);
 
+  // Step 5 review "Edit" links jump straight to a step (clamped to the range).
+  const goToStep = useCallback((target: number) => {
+    setStep(Math.min(WIZARD_STEP_COUNT - 1, Math.max(0, target)));
+  }, []);
+
   const next = useCallback(async () => {
     const valid = await form.trigger([...STEP_FIELDS[step]], { shouldFocus: true });
     if (!valid) {
@@ -52,6 +57,7 @@ export function useStudentWizard({ mode, initialValues }: UseStudentWizardParams
     form,
     step,
     setStep,
+    goToStep,
     back,
     next,
     mode,

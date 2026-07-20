@@ -98,7 +98,9 @@ test('EN: step 3 cards render, default whatsapp, click/keyboard select, validati
   await phoneInput.blur();
   await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
   await expect(page.getByText('Step 4 of 5', { exact: false })).toBeVisible();
-  await expect(page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.media.title') })).toBeVisible();
+  // Step 4 now renders StepMedia (task 052 swapped the placeholder heading for the
+  // MediaUpload dropzones); assert the photo drop-zone copy instead of the old h2.
+  await expect(page.getByText(cat(en, 'StudentWizard.media.photo.dropTitle'))).toBeVisible();
 
   expect(errors).toEqual([]);
 });

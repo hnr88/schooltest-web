@@ -28,12 +28,15 @@ export function LocaleSwitcher() {
 
   return (
     <Select value={locale} onValueChange={handleChange} disabled={isPending}>
-      <SelectTrigger aria-label={t('label')} className="min-h-11 w-32">
+      <SelectTrigger
+        aria-label={t('label')}
+        className="min-h-11 w-32 border-white/50 bg-white text-navy-900 shadow-sm hover:bg-blue-50"
+      >
         <SelectValue />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent alignItemWithTrigger={false} side="top">
         {LOCALES.map((code) => (
-          <SelectItem key={code} value={code}>
+          <SelectItem key={code} value={code} className="focus:**:!text-navy-900">
             {LOCALE_LABELS[code]}
           </SelectItem>
         ))}

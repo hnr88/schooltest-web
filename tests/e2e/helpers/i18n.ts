@@ -26,8 +26,15 @@ function flatten(node: Record<string, unknown>, prefix: string, out: Messages): 
 
 /** Loads and flattens a locale catalog to dot keys (e.g. "Home.hero.subtitle"). */
 export function loadMessages(locale: AnyLocale): Messages {
-  const file = path.resolve(process.cwd(), 'src/i18n/messages', `${locale}.json`);
+  const messagesDir = path.resolve(process.cwd(), 'src/i18n/messages');
+  const file = path.resolve(messagesDir, `${locale}.json`);
   const raw = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>;
+
+  if (locale !== 'en') {
+    const landingFile = path.resolve(messagesDir, 'home', `${locale}.json`);
+    Object.assign(raw, JSON.parse(readFileSync(landingFile, 'utf8')) as Record<string, unknown>);
+  }
+
   return flatten(raw, '', {});
 }
 
