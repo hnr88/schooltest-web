@@ -48,6 +48,8 @@ const searchBar = (page: Page) =>
   page.getByLabel(cat(en, 'UnifiedSearch.searchPlaceholderSchools'));
 const schoolsTab = (page: Page) =>
   page.getByRole('tab', { name: cat(en, 'UnifiedSearch.modeSchools'), exact: true });
+const schoolFilters = (page: Page) =>
+  page.getByRole('button', { name: cat(en, 'SchoolSearch.filterPanel.trigger'), exact: true });
 
 async function expectAxeClean(page: Page, label: string): Promise<void> {
   // A client mode switch (router.replace) briefly clears <title> mid metadata swap;
@@ -117,7 +119,10 @@ test('schools: sidebar nav → default corpus, one-debounced request, chip filte
 
   // Clear q + QLD chip → count drops to 74, chip aria-pressed=true.
   await searchBar(page).fill('');
-  const qld = page.getByRole('button', { name: cat(en, 'SchoolSearch.states.QLD'), exact: true });
+  await schoolFilters(page).click();
+  const qld = page
+    .locator('[data-slot="popover-content"]')
+    .getByRole('button', { name: cat(en, 'SchoolSearch.states.QLD'), exact: true });
   await qld.click();
   await expect(page.getByText(resultsCount(74, 'SchoolSearch'))).toBeVisible();
   await expect(qld).toHaveAttribute('aria-pressed', 'true');

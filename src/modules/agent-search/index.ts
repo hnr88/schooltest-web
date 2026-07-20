@@ -37,6 +37,6 @@ export { AgentsPane } from './components/AgentsPane';
 export { AgentCard } from './components/AgentCard';
 export { AgentCardMeta } from './components/AgentCardMeta';
 export { AgentCardSkeleton } from './components/AgentCardSkeleton';
-export { AgentFilterChips } from './components/AgentFilterChips';
+export { AgentFilterPanel } from './components/AgentFilterPanel';
 export { AgentSortChip } from './components/AgentSortChip';
 export { AgentResultsGrid } from './components/AgentResultsGrid';

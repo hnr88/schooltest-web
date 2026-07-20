@@ -29,6 +29,7 @@ interface SchoolSearchStore extends SchoolSearchFilters {
   setPage: (page: number) => void;
   setActiveSchoolId: (id: string | null) => void;
   toggleMap: () => void;
+  clearFilters: () => void;
   reset: () => void;
 }
 
@@ -77,5 +78,11 @@ export const useSchoolSearchStore = create<SchoolSearchStore>((set) => ({
   // Pure hover/focus highlight state — MUST NOT reset `page` (would refetch).
   setActiveSchoolId: (id) => set({ activeSchoolId: id }),
   toggleMap: () => set((current) => ({ isMapOpen: !current.isMapOpen })),
+  clearFilters: () =>
+    set((current) => ({
+      ...INITIAL,
+      q: current.q,
+      isMapOpen: current.isMapOpen,
+    })),
   reset: () => set(INITIAL),
 }));

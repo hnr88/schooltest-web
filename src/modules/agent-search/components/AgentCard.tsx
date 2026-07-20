@@ -17,31 +17,33 @@ function AgentCard({ hit }: { hit: AgentHit }) {
   return (
     <article
       data-slot="agent-card"
-      className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 transition duration-150 ease-out hover:border-input hover:shadow-md motion-reduce:transition-none"
+      className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 transition duration-150 ease-out hover:border-input hover:shadow-md motion-reduce:transition-none"
     >
-      <div className="flex items-start gap-3">
-        <Avatar size="lg" className="size-13">
+      <div data-slot="agent-card-profile" className="flex items-start gap-3">
+        <Avatar size="lg" className="size-12">
           {hit.photoUrl ? <AvatarImage src={hit.photoUrl} alt="" /> : null}
-          <AvatarFallback className="bg-blue-100 text-base font-bold text-navy-900">
+          <AvatarFallback className="bg-navy-950 text-base font-bold text-white dark:bg-blue-100 dark:text-navy-950">
             {getAgentInitials(hit.name)}
           </AvatarFallback>
         </Avatar>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-base font-bold text-navy-950">{hit.name}</h3>
+            <h3 className="text-base font-bold text-navy-950 dark:text-blue-100">{hit.name}</h3>
             {hit.verified ? (
-              <Badge variant="success" className="shrink-0">
+              <Badge variant="success" className="shrink-0 bg-navy-950 text-white dark:bg-blue-100 dark:text-navy-950">
                 {t('verified')}
               </Badge>
             ) : null}
           </div>
           {subtitle ? (
-            <p className="line-clamp-2 text-sm text-muted-foreground">{subtitle}</p>
+            <p className="line-clamp-2 text-sm text-navy-800 dark:text-blue-100">{subtitle}</p>
           ) : null}
         </div>
       </div>
 
-      <AgentCardMeta hit={hit} />
+      <div className="border-t border-border pt-3">
+        <AgentCardMeta hit={hit} />
+      </div>
     </article>
   );
 }

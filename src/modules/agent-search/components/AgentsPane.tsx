@@ -2,8 +2,9 @@
 
 import { useMemo } from 'react';
 
-import { AgentFilterChips } from '@/modules/agent-search/components/AgentFilterChips';
+import { AgentFilterPanel } from '@/modules/agent-search/components/AgentFilterPanel';
 import { AgentResultsGrid } from '@/modules/agent-search/components/AgentResultsGrid';
+import { AgentSortChip } from '@/modules/agent-search/components/AgentSortChip';
 import { storeToRequest } from '@/modules/agent-search/lib/store-to-request';
 import { useAgentSearchQuery } from '@/modules/agent-search/queries/use-agent-search.query';
 import { useAgentSearchStore } from '@/modules/agent-search/stores/use-agent-search-store';
@@ -31,7 +32,10 @@ function AgentsPane() {
 
   return (
     <div className="flex flex-col gap-6">
-      <AgentFilterChips />
+      <div className="flex flex-wrap items-center gap-2.5">
+        <AgentFilterPanel />
+        <AgentSortChip />
+      </div>
       <AgentResultsGrid
         query={query}
         onRetry={() => void query.refetch()}

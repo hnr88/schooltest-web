@@ -115,3 +115,51 @@ All endpoints are Strapi v5 on `http://localhost:5500`. Envelope: v5 flat entiti
 - Parent user `parent@schooltest.local` (role parent, confirmed) + students
   `Mia Keller (year_level 8, mia.keller@schooltest.local)` and `Jonas Keller
   (year_level 10, jonas.keller@schooltest.local)` linked to the parent.
+
+---
+
+# UI polish + parent notifications contract addendum (2026-07-20)
+
+Existing endpoints retain their established contract; the UI consumes them through the
+existing typed Axios + TanStack Query boundary. New operation IDs below are owned by tasks
+34 and 39. Error envelopes are Strapi's existing `{ error: { status, name, message,
+details? } }` shape.
+
+### C-PARENT-CHILD-PROGRESS — GET /api/my/students/:documentId/progress
+
+- Auth: users-permissions parent JWT only. The requested student must belong to the caller;
+  unknown and foreign records both return 404 to avoid ownership disclosure. Missing or
+  non-parent authentication returns the project-standard 403.
+- Request: path `documentId`, a non-empty Strapi document id. No body or query.
+- 200: `{ data: { student, metrics, recentResults } }`, where `student` is the existing
+  parent-safe detail projection (no passport or parent-private fields), `metrics` is
+  `{ totalSessions: nonnegative integer, completedSessions: nonnegative integer,
+  activeSessions: nonnegative integer, officialResults: nonnegative integer }`, and
+  `recentResults` is at most five newest official, parent-owned test summaries
+  `{ documentId, skill: string|null, displayLabel: string|null, cefrBand: string|null,
+  readiness: string|null, status: string, publishedAt: ISO datetime|null }`.
+- Persistence: read-only Document Service queries over the caller's child, sessions and
+  official results; no record is created or changed.
+- Errors: 400 malformed path; 403 unauthenticated/non-parent; 404 absent or foreign child.
+
+### C-PUSH-VAPID-CONFIG — GET /api/push-subscriptions/vapid-public-key
+
+- Auth: users-permissions parent JWT only; no object parameter.
+- 200: `{ data: { publicKey: string|null } }`. `null` honestly reports an unavailable
+  server configuration; the endpoint never exposes a VAPID private key or any user data.
+- Persistence: read-only server configuration. Errors: project-standard 403 for
+  unauthenticated/non-parent callers.
+
+### Existing notification operations consumed by the web UI
+
+- `C-NOTIF-LIST`: `GET /api/notifications?page=&pageSize=&read=&category=` → owner-scoped
+  `{ data, meta: { pagination, unreadCount } }`; no token or foreign data leaks.
+- `C-NOTIF-READ`: `PUT /api/notifications/:documentId/read` → `200 { data }`; foreign 403,
+  unknown 404. `C-NOTIF-READ-ALL`: `POST /api/notifications/read-all` →
+  `200 { data: { updated } }`.
+- `C-PREF-GET`/`C-PREF-UPDATE`: `GET`/`PUT /api/notification-preferences/me`, each
+  parent-owned and runtime-validated.
+- `C-PUSH-SUBSCRIBE`/`C-PUSH-UNSUBSCRIBE`: `POST`/`DELETE /api/push-subscriptions` with
+  the browser PushSubscription shape / `{ endpoint }`; owner is server-derived. SMS stays
+  the existing honest Twilio-prepared server channel and is exercised through its real API
+  dispatch path rather than a fabricated browser control.

@@ -544,6 +544,17 @@
     "aria": {
       "filters": "School filters"
     },
+    "filterPanel": {
+      "trigger": "Filters",
+      "title": "Filter schools",
+      "clear": "Clear filters",
+      "location": "Location",
+      "schoolProfile": "School profile",
+      "features": "Features",
+      "state": "State or territory",
+      "sector": "Sector",
+      "schoolType": "School type"
+    },
     "states": {
       "QLD": "QLD",
       "NSW": "NSW",
@@ -620,6 +631,14 @@
     "verified": "Verified",
     "aria": {
       "filters": "Agent filters"
+    },
+    "filterPanel": {
+      "trigger": "Filters",
+      "title": "Filter agents",
+      "clear": "Clear filters",
+      "countries": "Countries served",
+      "languages": "Languages spoken",
+      "services": "Services offered"
     },
     "chipGroups": {
       "countries": "Countries served",

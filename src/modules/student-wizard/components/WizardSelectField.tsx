@@ -72,7 +72,11 @@ export function WizardSelectField({
         </SelectTrigger>
         <SelectContent>
           {options.map((option) => (
-            <SelectItem key={String(option.value)} value={option.value}>
+            <SelectItem
+              key={String(option.value)}
+              value={option.value}
+              className="focus:bg-muted focus:text-foreground data-highlighted:bg-muted data-highlighted:text-foreground data-selected:bg-muted data-selected:text-foreground"
+            >
               {option.label}
             </SelectItem>
           ))}

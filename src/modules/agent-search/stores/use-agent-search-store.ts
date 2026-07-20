@@ -14,6 +14,7 @@ interface AgentSearchStore extends AgentSearchFilters {
   toggleService: (service: AgentServiceValue) => void;
   setSort: (sort: AgentSortBy) => void;
   setPage: (page: number) => void;
+  clearFilters: () => void;
   reset: () => void;
 }
 
@@ -55,5 +56,10 @@ export const useAgentSearchStore = create<AgentSearchStore>((set) => ({
     })),
   setSort: (sort) => set({ sort, page: 1 }),
   setPage: (page) => set({ page }),
+  clearFilters: () =>
+    set((current) => ({
+      ...INITIAL,
+      q: current.q,
+    })),
   reset: () => set(INITIAL),
 }));

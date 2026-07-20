@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { FeeRangeChip } from '@/modules/school-search/components/FeeRangeChip';
 import { MapToggle } from '@/modules/school-search/components/MapToggle';
 import { MobileMapSheet } from '@/modules/school-search/components/MobileMapSheet';
-import { SchoolFilterChips } from '@/modules/school-search/components/SchoolFilterChips';
+import { SchoolFilterPanel } from '@/modules/school-search/components/SchoolFilterPanel';
 import { SchoolResultsGrid } from '@/modules/school-search/components/SchoolResultsGrid';
 import { SchoolsSplitLayout } from '@/modules/school-search/components/SchoolsSplitLayout';
 import { SortChip } from '@/modules/school-search/components/SortChip';
@@ -72,7 +72,7 @@ function SchoolsPane() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center gap-2.5">
-        <SchoolFilterChips />
+        <SchoolFilterPanel />
         <FeeRangeChip />
         <SortChip />
         <MapToggle />

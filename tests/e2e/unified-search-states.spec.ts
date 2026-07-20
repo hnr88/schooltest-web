@@ -97,7 +97,13 @@ test('agents service-enum pin (C10): a service chip sends the schema enum; name_
       new URL(request.url()).pathname === AGENTS_PATH &&
       Boolean((request.postDataJSON() as { services?: string[] } | null)?.services?.includes('visa')),
   );
-  await page.getByRole('button', { name: cat(en, 'AgentSearch.services.visa'), exact: true }).click();
+  await page
+    .getByRole('button', { name: cat(en, 'AgentSearch.filterPanel.trigger'), exact: true })
+    .click();
+  await page
+    .locator('[data-slot="popover-content"]')
+    .getByRole('button', { name: cat(en, 'AgentSearch.services.visa'), exact: true })
+    .click();
   const body = (await visaRequest).postDataJSON() as { services: string[] };
   expect(body.services).toContain('visa');
   expect(body.services).not.toContain('school_placement');

@@ -39,6 +39,30 @@ from the authoritative STATE.json, task-by-task, with no additions ahead of it)
 | 26 | Mailpit service in docker-compose.dev.yml | 01 | DONE | PASS |
 | 27 | Adopt schoolgo locale set (en/zh/ko/ms/vi/th), drop de | — | DONE | PASS |
 
+---
+
+## UI polish + parent notifications board (2026-07-20)
+
+Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.md` through
+`41-*.md` · authoritative machine state: `STATE.json.ui_polish_20260720`.
+
+| # | Task | Depends | Status | Verify |
+|---|------|---------|--------|--------|
+| 28 | Single logo on auth screens | — | DONE | PASS — live 6/6 auth/a11y |
+| 29 | Dark primary sidebar | 28 | DONE | PASS — live desktop/mobile shell |
+| 30 | School cards and larger map | 29 | DONE | PASS — live map/data 8/8 |
+| 31 | Grouped school filters | 30 | DONE | PASS — live filter/map 12/12 |
+| 32 | Agent search polish | 31 | DONE | PASS — live query/filter/a11y |
+| 33 | Student selection contrast | 32 | DONE | PASS — live contrast + persisted child |
+| 34 | Parent child progress API | 33 | TODO | — |
+| 35 | Child cards and profile metrics | 34 | TODO | — |
+| 36 | Separated settings tabs | 35 | TODO | — |
+| 37 | In-app notification bell and feed | 36 | TODO | — |
+| 38 | Notification preferences settings | 37 | TODO | — |
+| 39 | Browser push subscription | 38 | TODO | — |
+| 40 | Notification delivery and SMS preparation proof | 39 | TODO | — |
+| 41 | Independent critic and final regression | 40 | TODO | — |
+
 Task 15 ("/dashboard route + client guard") is now DONE — verified 2026-07-18 by an
 independent explore verifier against its own Done Criteria (not assumed correct just
 because task 12's D19 stopgap had already built the files): real incognito redirect to

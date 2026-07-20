@@ -522,5 +522,110 @@
         "evidence": "parity 336\u00d76; 38 real schoolgo translations per locale (verbatim-checked); brand-fixed; zero SchoolGo hits; live zh/ko/th render with lang attr + translated chrome + en fallback; full suite 19/19. Verifier found 10 borrowed [TODO:] placeholders from schoolgo Errors namespace \u2192 replaced with honest en fallback, zero remaining, suite re-green."
       }
     }
-  ]
+  ],
+  "ui_polish_20260720": {
+    "contracts_file": ".qa/CONTRACTS.md",
+    "mission": "Requested UI polish, child detail metrics, settings tabs, and notification web surfaces",
+    "updated_at": "2026-07-20T18:22:59.000Z",
+    "tasks": [
+      {
+        "id": "28",
+        "file": ".thellmspace/tasks/28-auth-single-logo.md",
+        "title": "Single logo on auth screens",
+        "layer": "ui",
+        "contract": ["C-UI-AUTH-LOGO"],
+        "depends_on": [],
+        "status": "DONE",
+        "started_at": 1784569778,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential independent browser/a11y pass",
+          "evidence": "Live regression first reproduced 2 visible desktop logos, then auth-logo E2E passed desktop+mobile across sign-in/sign-up/forgot/reset. Focused auth axe/focus pass: 6/6. tsc 0 errors; lint 0 errors with one pre-existing warning; diff check clean."
+        }
+      },
+      {
+        "id": "29",
+        "file": ".thellmspace/tasks/29-dark-primary-sidebar.md",
+        "title": "Dark primary sidebar",
+        "layer": "ui",
+        "contract": ["C-UI-SIDEBAR-DARK"],
+        "depends_on": ["28"],
+        "status": "DONE",
+        "started_at": 1784569963,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential independent browser pass",
+          "evidence": "Focused shell E2E passed desktop dark sidebar and mobile drawer navigation (2/2), with dark rendered RGB proof. tsc 0 errors; lint 0 errors plus one pre-existing warning; diff check clean."
+        }
+      },
+      {
+        "id": "30",
+        "file": ".thellmspace/tasks/30-school-search-map-cards.md",
+        "title": "School cards and larger map",
+        "layer": "ui",
+        "contract": ["C-SEARCH-SCHOOLS"],
+        "depends_on": ["29"],
+        "status": "DONE",
+        "started_at": 1784570311,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential independent live map/browser pass",
+          "evidence": "Presentation + full school-map E2E passed 8/8 against live school data/map. tsc 0 errors; lint 0 errors plus one pre-existing warning; diff check clean."
+        }
+      },
+      {
+        "id": "31",
+        "file": ".thellmspace/tasks/31-school-filter-hierarchy.md",
+        "title": "Grouped school filters",
+        "layer": "ui",
+        "contract": ["C-SEARCH-SCHOOLS"],
+        "depends_on": ["30"],
+        "status": "DONE",
+        "started_at": 1784570461,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential independent live search/browser pass",
+          "evidence": "Panel/unified/map E2E passed 12/12 with one documented skip; runtime real QLD request and panel axe confirmed. Six-locale parity 710x6; tsc/lint/diff checks clean except pre-existing lint warning."
+        }
+      },
+      {
+        "id": "32",
+        "file": ".thellmspace/tasks/32-agent-search-polish.md",
+        "title": "Agent search polish",
+        "layer": "ui",
+        "contract": ["C-SEARCH-AGENTS"],
+        "depends_on": ["31"],
+        "status": "DONE",
+        "started_at": 1784570846,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential independent live search/browser pass",
+          "evidence": "Relevant Pacific query, Visa enum request, grouped filters, sort and agent axe all live-proven; combined agent/school regression passed 9/9 plus one documented skip. i18n 716x6, tsc/lint/diff checks clean except one pre-existing lint warning."
+        }
+      },
+      {
+        "id": "33",
+        "file": ".thellmspace/tasks/33-student-selection-contrast.md",
+        "title": "Student selection contrast",
+        "layer": "a11y",
+        "contract": ["C-UI-STUDENT-CONTRAST"],
+        "depends_on": ["32"],
+        "status": "DONE",
+        "started_at": 1784571449,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential live browser and regression pass",
+          "evidence": "Keyboard-highlighted and selected wizard options measured AA+ contrast; real POST /api/students 200 and the new child survived a UI reload. Wizard suite 5/5, tsc 0 errors, lint 0 errors with one pre-existing warning, diff and banned-pattern checks clean."
+        }
+      },
+      { "id": "34", "file": ".thellmspace/tasks/34-parent-child-progress-api.md", "title": "Parent child progress API", "layer": "backend", "contract": ["C-PARENT-CHILD-PROGRESS"], "depends_on": ["33"], "status": "TODO", "started_at": null },
+      { "id": "35", "file": ".thellmspace/tasks/35-child-cards-and-profile.md", "title": "Child cards and profile metrics", "layer": "frontend", "contract": ["C-PARENT-CHILD-PROGRESS"], "depends_on": ["34"], "status": "TODO", "started_at": null },
+      { "id": "36", "file": ".thellmspace/tasks/36-settings-tabs.md", "title": "Separated settings tabs", "layer": "frontend", "contract": ["C-STUDENT-LIST", "C-PREF-GET"], "depends_on": ["35"], "status": "TODO", "started_at": null },
+      { "id": "37", "file": ".thellmspace/tasks/37-notification-bell-feed.md", "title": "In-app notification bell and feed", "layer": "frontend", "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"], "depends_on": ["36"], "status": "TODO", "started_at": null },
+      { "id": "38", "file": ".thellmspace/tasks/38-notification-preferences.md", "title": "Notification preferences settings", "layer": "frontend", "contract": ["C-PREF-GET", "C-PREF-UPDATE"], "depends_on": ["37"], "status": "TODO", "started_at": null },
+      { "id": "39", "file": ".thellmspace/tasks/39-browser-push-subscription.md", "title": "Browser push subscription", "layer": "integration", "contract": ["C-PUSH-VAPID-CONFIG", "C-PUSH-SUBSCRIBE", "C-PUSH-UNSUBSCRIBE"], "depends_on": ["38"], "status": "TODO", "started_at": null },
+      { "id": "40", "file": ".thellmspace/tasks/40-notification-delivery-e2e.md", "title": "Notification delivery and SMS preparation proof", "layer": "integration", "contract": ["C-NOTIF-EVENTS", "C-PUSH-SUBSCRIBE"], "depends_on": ["39"], "status": "TODO", "started_at": null },
+      { "id": "41", "file": ".thellmspace/tasks/41-ui-polish-final-regression.md", "title": "Independent critic and final regression", "layer": "regression", "contract": ["all-ui-polish"], "depends_on": ["40"], "status": "TODO", "started_at": null }
+    ]
+  }
 }

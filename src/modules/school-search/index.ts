@@ -40,7 +40,7 @@ export { useSchoolSearchQuery } from './queries/use-school-search.query';
 export { useSchoolSearchStore } from './stores/use-school-search-store';
 
 export { SchoolsPane } from './components/SchoolsPane';
-export { SchoolFilterChips } from './components/SchoolFilterChips';
+export { SchoolFilterPanel } from './components/SchoolFilterPanel';
 export { FeeRangeChip } from './components/FeeRangeChip';
 export { SortChip } from './components/SortChip';
 export { SchoolCard } from './components/SchoolCard';

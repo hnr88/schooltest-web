@@ -544,6 +544,17 @@
     "aria": {
       "filters": "学校筛选"
     },
+    "filterPanel": {
+      "trigger": "筛选",
+      "title": "筛选学校",
+      "clear": "清除筛选",
+      "location": "地点",
+      "schoolProfile": "学校概况",
+      "features": "特色",
+      "state": "州或领地",
+      "sector": "办学性质",
+      "schoolType": "学校类型"
+    },
     "states": {
       "QLD": "QLD",
       "NSW": "NSW",
@@ -620,6 +631,14 @@
     "verified": "已认证",
     "aria": {
       "filters": "中介筛选"
+    },
+    "filterPanel": {
+      "trigger": "筛选",
+      "title": "筛选中介",
+      "clear": "清除筛选",
+      "countries": "服务国家/地区",
+      "languages": "使用语言",
+      "services": "提供的服务"
     },
     "chipGroups": {
       "countries": "服务国家/地区",

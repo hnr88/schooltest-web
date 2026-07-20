@@ -544,6 +544,17 @@
     "aria": {
       "filters": "Penapis sekolah"
     },
+    "filterPanel": {
+      "trigger": "Penapis",
+      "title": "Tapis sekolah",
+      "clear": "Kosongkan penapis",
+      "location": "Lokasi",
+      "schoolProfile": "Profil sekolah",
+      "features": "Ciri-ciri",
+      "state": "Negeri atau wilayah",
+      "sector": "Sektor",
+      "schoolType": "Jenis sekolah"
+    },
     "states": {
       "QLD": "QLD",
       "NSW": "NSW",
@@ -620,6 +631,14 @@
     "verified": "Disahkan",
     "aria": {
       "filters": "Penapis ejen"
+    },
+    "filterPanel": {
+      "trigger": "Penapis",
+      "title": "Tapis ejen",
+      "clear": "Kosongkan penapis",
+      "countries": "Negara dikhidmati",
+      "languages": "Bahasa dituturkan",
+      "services": "Perkhidmatan ditawarkan"
     },
     "chipGroups": {
       "countries": "Negara dikhidmati",

@@ -303,3 +303,19 @@ Also reconfirmed per D5: the Google OAuth LIVE consent round-trip stays BLOCKED 
 GOOGLE_CLIENT_ID/SECRET anywhere in this workspace, never faked) — documented as a
 named `test.skip` in `tests/e2e/a11y-auth.spec.ts` with the exact reason and what ships
 instead, not deleted and not a fake pass.
+
+## 2026-07-20 D28 — UI polish mission operational decisions
+
+- Scope is exactly the user-requested auth/search/sidebar/children/settings/notifications
+  work. Existing school and agent APIs already return real data, so presentation work does
+  not invent duplicate search endpoints or data fields.
+- School records have no verified individual image field. School cards may use the existing
+  product-owned decorative `/brand/hero-field.webp` with empty alt text; it is not labelled
+  or implied to be a photograph of a specific school.
+- Existing child records, sessions, results, notification preferences, notifications and push
+  subscriptions persist in the live PostgreSQL datastore. New child-progress and VAPID-public
+  key read surfaces are additive, parent-scoped contracts; no seed, mock or fallback data is
+  introduced.
+- The currently running local stack is reused: web `:3100`, API `:5500`, PostgreSQL `:5540`,
+  Mailpit `:8125`. Project rules prohibit starting development/build servers; verification
+  targets these live services.

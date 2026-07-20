@@ -24,7 +24,7 @@ function SchoolsSplitLayout({
     <div
       className={cn(
         'grid grid-cols-1 gap-6 duration-300 ease-out animate-in fade-in motion-reduce:animate-none',
-        isMapOpen && 'lg:grid-cols-[1fr_minmax(22rem,40%)]',
+        isMapOpen && 'lg:grid-cols-2',
       )}
     >
       <div className="min-w-0">{children}</div>

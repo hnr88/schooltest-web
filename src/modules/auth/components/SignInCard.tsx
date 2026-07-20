@@ -40,7 +40,7 @@ export function SignInCard({
   return (
     <Card className="w-full rounded-2xl shadow-lg [--card-spacing:--spacing(8)] animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
       <CardContent className="flex flex-col">
-        <Link href="/" className="self-start rounded-sm">
+        <Link href="/" className="self-start rounded-sm lg:hidden">
           <Logo alt={tHome('footer.logoAlt')} height={26} />
         </Link>
         <h1 className="mt-5 text-2xl font-bold">{t('signInTitle')}</h1>

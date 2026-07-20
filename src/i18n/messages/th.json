@@ -544,6 +544,17 @@
     "aria": {
       "filters": "ตัวกรองโรงเรียน"
     },
+    "filterPanel": {
+      "trigger": "ตัวกรอง",
+      "title": "กรองโรงเรียน",
+      "clear": "ล้างตัวกรอง",
+      "location": "สถานที่",
+      "schoolProfile": "ข้อมูลโรงเรียน",
+      "features": "คุณลักษณะ",
+      "state": "รัฐหรือดินแดน",
+      "sector": "ประเภทการบริหาร",
+      "schoolType": "ประเภทโรงเรียน"
+    },
     "states": {
       "QLD": "QLD",
       "NSW": "NSW",
@@ -620,6 +631,14 @@
     "verified": "ยืนยันแล้ว",
     "aria": {
       "filters": "ตัวกรองตัวแทน"
+    },
+    "filterPanel": {
+      "trigger": "ตัวกรอง",
+      "title": "กรองตัวแทน",
+      "clear": "ล้างตัวกรอง",
+      "countries": "ประเทศที่ให้บริการ",
+      "languages": "ภาษาที่ใช้",
+      "services": "บริการที่นำเสนอ"
     },
     "chipGroups": {
       "countries": "ประเทศที่ให้บริการ",

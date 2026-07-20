@@ -544,6 +544,17 @@
     "aria": {
       "filters": "학교 필터"
     },
+    "filterPanel": {
+      "trigger": "필터",
+      "title": "학교 필터",
+      "clear": "필터 지우기",
+      "location": "위치",
+      "schoolProfile": "학교 정보",
+      "features": "특징",
+      "state": "주 또는 준주",
+      "sector": "설립 유형",
+      "schoolType": "학교 유형"
+    },
     "states": {
       "QLD": "QLD",
       "NSW": "NSW",
@@ -620,6 +631,14 @@
     "verified": "인증됨",
     "aria": {
       "filters": "중개사 필터"
+    },
+    "filterPanel": {
+      "trigger": "필터",
+      "title": "중개사 필터",
+      "clear": "필터 지우기",
+      "countries": "지원 국가",
+      "languages": "사용 언어",
+      "services": "제공 서비스"
     },
     "chipGroups": {
       "countries": "지원 국가",

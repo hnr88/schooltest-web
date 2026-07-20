@@ -62,7 +62,11 @@ export function NationalityCombobox({
         <ComboboxEmpty>{emptyLabel}</ComboboxEmpty>
         <ComboboxList>
           {(country: string) => (
-            <ComboboxItem key={country} value={country}>
+            <ComboboxItem
+              key={country}
+              value={country}
+              className="data-highlighted:bg-muted data-highlighted:text-foreground data-selected:bg-muted data-selected:text-foreground"
+            >
               {country}
             </ComboboxItem>
           )}

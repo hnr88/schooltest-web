@@ -9,10 +9,10 @@ import type { AgentHit } from '@/modules/agent-search/types/agent-search.types';
 
 // Neutral pill (spec §6): slate-100 surface, slate-600 label.
 const NEUTRAL_PILL =
-  'inline-flex shrink-0 items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap text-slate-600 dark:bg-slate-800 dark:text-slate-300';
+  'inline-flex shrink-0 items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap text-navy-800 dark:bg-navy-800 dark:text-blue-100';
 
 function bold(chunks: ReactNode) {
-  return <strong className="font-bold text-slate-500">{chunks}</strong>;
+  return <strong className="font-bold text-navy-900 dark:text-blue-100">{chunks}</strong>;
 }
 
 // Country pills + optional services row + dot-separated meta footer for AgentCard.
@@ -34,11 +34,9 @@ function AgentCardMeta({ hit }: { hit: AgentHit }) {
         </div>
       ) : null}
 
-      {services.length > 0 ? (
-        <p className="line-clamp-1 text-xs text-muted-foreground">{services.join(' · ')}</p>
-      ) : null}
+      {services.length > 0 ? <p className="line-clamp-1 text-xs text-navy-800 dark:text-blue-100">{services.join(' · ')}</p> : null}
 
-      <p className="mt-auto flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+      <p className="mt-auto flex flex-wrap items-center gap-x-1.5 text-xs text-navy-800 dark:text-blue-100">
         {hit.yearsExperience !== null ? (
           <span>{t.rich('footer.yearsExperience', { years: hit.yearsExperience, b: bold })}</span>
         ) : null}

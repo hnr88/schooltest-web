@@ -59,6 +59,17 @@ test.describe('shell — desktop (1280)', () => {
     const aside = sidebar(page);
     await expect(aside).toBeVisible();
     await expect(aside).toHaveCSS('width', '248px');
+    const sidebarRgb = await aside.evaluate((element) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1;
+      canvas.height = 1;
+      const context = canvas.getContext('2d');
+      if (!context) throw new Error('2d canvas context unavailable');
+      context.fillStyle = getComputedStyle(element).backgroundColor;
+      context.fillRect(0, 0, 1, 1);
+      return [...context.getImageData(0, 0, 1, 1).data.slice(0, 3)];
+    });
+    expect(Math.max(...sidebarRgb)).toBeLessThan(100);
 
     const links = aside.locator('nav a');
     await expect(links).toHaveCount(NAV_MODEL.length);

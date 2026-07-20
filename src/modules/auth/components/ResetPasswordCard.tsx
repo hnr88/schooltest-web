@@ -24,7 +24,7 @@ export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
   return (
     <Card className="w-full animate-in rounded-2xl shadow-lg duration-300 [--card-spacing:--spacing(8)] fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
       <CardContent className="flex flex-col">
-        <Link href="/" className="self-start rounded-sm">
+        <Link href="/" className="self-start rounded-sm lg:hidden">
           <Logo alt={tHome('footer.logoAlt')} height={26} />
         </Link>
         <div className="mt-5 flex flex-col gap-5">

@@ -544,6 +544,17 @@
     "aria": {
       "filters": "Bộ lọc trường học"
     },
+    "filterPanel": {
+      "trigger": "Bộ lọc",
+      "title": "Lọc trường học",
+      "clear": "Xóa bộ lọc",
+      "location": "Vị trí",
+      "schoolProfile": "Thông tin trường",
+      "features": "Đặc điểm",
+      "state": "Bang hoặc vùng lãnh thổ",
+      "sector": "Loại hình",
+      "schoolType": "Loại trường"
+    },
     "states": {
       "QLD": "QLD",
       "NSW": "NSW",
@@ -620,6 +631,14 @@
     "verified": "Đã xác minh",
     "aria": {
       "filters": "Bộ lọc đại lý"
+    },
+    "filterPanel": {
+      "trigger": "Bộ lọc",
+      "title": "Lọc đại lý",
+      "clear": "Xóa bộ lọc",
+      "countries": "Quốc gia phục vụ",
+      "languages": "Ngôn ngữ sử dụng",
+      "services": "Dịch vụ cung cấp"
     },
     "chipGroups": {
       "countries": "Quốc gia phục vụ",
