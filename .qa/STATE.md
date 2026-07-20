@@ -56,7 +56,7 @@ Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.m
 | 33 | Student selection contrast | 32 | DONE | PASS — live contrast + persisted child |
 | 34 | Parent child progress API | 33 | DONE | PASS — live persisted API/security |
 | 35 | Child cards and profile metrics | 34 | DONE | PASS — live profile/card/archive/mobile/a11y 13/13 |
-| 36 | Separated settings tabs | 35 | TODO | — |
+| 36 | Separated settings tabs | 35 | DONE | PASS — live tabs/preferences/auth restore 3/3 |
 | 37 | In-app notification bell and feed | 36 | TODO | — |
 | 38 | Notification preferences settings | 37 | TODO | — |
 | 39 | Browser push subscription | 38 | TODO | — |

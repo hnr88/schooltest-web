@@ -526,7 +526,7 @@
   "ui_polish_20260720": {
     "contracts_file": ".qa/CONTRACTS.md",
     "mission": "Requested UI polish, child detail metrics, settings tabs, and notification web surfaces",
-    "updated_at": "2026-07-20T18:34:21.000Z",
+    "updated_at": "2026-07-20T19:15:06.000Z",
     "tasks": [
       {
         "id": "28",
@@ -648,7 +648,21 @@
           "evidence": "Strict Zod client parse of the live 200 progress contract; reload persistence, truthful empty results, foreign parent 404/error UI, mobile no-overflow and axe passed. children-profile 3/3, dashboard-students 2/2 and students-list 8/8 passed; web tsc 0 errors and lint 0 errors with one pre-existing warning."
         }
       },
-      { "id": "36", "file": ".thellmspace/tasks/36-settings-tabs.md", "title": "Separated settings tabs", "layer": "frontend", "contract": ["C-STUDENT-LIST", "C-PREF-GET"], "depends_on": ["35"], "status": "TODO", "started_at": null },
+      {
+        "id": "36",
+        "file": ".thellmspace/tasks/36-settings-tabs.md",
+        "title": "Separated settings tabs",
+        "layer": "frontend",
+        "contract": ["C-SEARCHPREF-GET", "C-SEARCHPREF-UPDATE", "C-STUDENT-LIST"],
+        "depends_on": ["35"],
+        "status": "DONE",
+        "started_at": 1784574550,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential live browser and API verification",
+          "evidence": "settings-tabs.spec.ts passed 3/3 against live web :3100 and API :5500: URL-addressable/keyboard Auth, Search and Children tabs; real search-preference PUT persisted through reload and was restored; a live auth-tab password POST 200 was restored through the authenticated API on a dedicated seeded parent account, then its original password login was re-proven. tsc 0 errors; lint 0 errors with one known unrelated warning."
+        }
+      },
       { "id": "37", "file": ".thellmspace/tasks/37-notification-bell-feed.md", "title": "In-app notification bell and feed", "layer": "frontend", "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"], "depends_on": ["36"], "status": "TODO", "started_at": null },
       { "id": "38", "file": ".thellmspace/tasks/38-notification-preferences.md", "title": "Notification preferences settings", "layer": "frontend", "contract": ["C-PREF-GET", "C-PREF-UPDATE"], "depends_on": ["37"], "status": "TODO", "started_at": null },
       { "id": "39", "file": ".thellmspace/tasks/39-browser-push-subscription.md", "title": "Browser push subscription", "layer": "integration", "contract": ["C-PUSH-VAPID-CONFIG", "C-PUSH-SUBSCRIBE", "C-PUSH-UNSUBSCRIBE"], "depends_on": ["38"], "status": "TODO", "started_at": null },

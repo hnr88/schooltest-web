@@ -149,6 +149,34 @@ details? } }` shape.
 - Errors: 400 malformed path or any query parameter; 403 unauthenticated/non-parent; 404 absent
   or foreign child.
 
+### C-SEARCHPREF-GET — GET /api/search-preferences/me
+
+- Auth: users-permissions parent JWT only. There is no request body, path parameter or query
+  parameter; the owning user is always derived server-side from the JWT.
+- 200: `{ data }`, without a `meta` member. `data` is the parent-safe strict view
+  `{ documentId, default_states: AU-state[], default_school_types:
+  combined|primary|secondary[], default_sectors: government|non-government|catholic[],
+  default_sort: relevance|name-asc|name-desc|fee-asc|fee-desc, default_page_size: integer
+  1..50, default_fee_min: integer 0..1000000|null, default_fee_max: integer
+  0..1000000|null, createdAt: ISO datetime, updatedAt: ISO datetime }`.
+- Persistence: get-or-create the caller's single `search_preferences` row through the real
+  Document Service. First read returns the persisted defaults (empty arrays, `relevance`, page
+  size `12`, null fees); it never returns the `user` relation.
+- Errors: project-standard 403 for unauthenticated/non-parent callers.
+
+### C-SEARCHPREF-UPDATE — PUT /api/search-preferences/me
+
+- Auth/ownership: same parent-only JWT and server-derived row as C-SEARCHPREF-GET.
+- Request: a strict, flat partial object using only C-SEARCHPREF-GET's seven
+  `default_*` setting fields. Arrays have the same enum vocabulary and maximum cardinality
+  (states 8, school types/sectors 3); duplicates are persisted once. `default_page_size` is
+  1..50; fee values are integers 0..1000000 or null; when both fee bounds are non-null,
+  minimum must not exceed maximum. Owner/id/timestamp or other unknown fields are rejected.
+- 200: the exact `{ data: SearchPreferenceView }` response above after the durable update.
+- Persistence: partial update of only supplied whitelisted fields; an empty object returns the
+  current persisted row unchanged. Errors: 400 typed `ValidationError` for invalid/unknown
+  input; 403 for unauthenticated/non-parent callers.
+
 ### C-PUSH-VAPID-CONFIG — GET /api/push-subscriptions/vapid-public-key
 
 - Auth: users-permissions parent JWT only; no object parameter.

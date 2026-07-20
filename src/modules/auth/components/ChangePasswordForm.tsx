@@ -113,7 +113,7 @@ export function ChangePasswordForm() {
         registration={register('passwordConfirmation')}
       />
       <div className="flex justify-end">
-        <Button type="submit" loading={changePassword.isPending}>
+        <Button type="submit" className="h-11" loading={changePassword.isPending}>
           {changePassword.isPending ? t('updatingPassword') : t('updatePasswordButton')}
         </Button>
       </div>
