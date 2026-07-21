@@ -62,7 +62,7 @@ Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.m
 | 44 | My Children + learning dashboard redesign | 43 | DONE | PASS — live children/profile 13/13 + axe |
 | 45 | Parent dashboard overview redesign | 44 | DONE | PASS — live parent data/reload/mobile/axe + critic |
 | 37 | In-app notification bell and feed | 45 | DONE | PASS — live notification contract/feed/error path 4/4 + critic |
-| 38 | Notification preferences settings | 37 | TODO | — |
+| 38 | Notification preferences settings | 37 | DONE | PASS — live preference persistence/error/mobile 6/6 + critic |
 | 39 | Browser push subscription | 38 | TODO | — |
 | 40 | Notification delivery and SMS preparation proof | 39 | TODO | — |
 | 41 | Independent critic and final regression | 40 | TODO | — |

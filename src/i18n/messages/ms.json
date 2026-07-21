@@ -548,6 +548,7 @@
     "tabs": {
       "auth": "Pengesahan",
       "search": "Carian",
+      "notifications": "Pemberitahuan",
       "children": "Anak"
     },
     "searchPreferencesTitle": "Keutamaan carian sekolah",
@@ -576,7 +577,55 @@
     "childrenSettingsLoadErrorTitle": "Kami tidak dapat memuatkan anak anda.",
     "childrenSettingsLoadErrorDescription": "Sila cuba lagi untuk memuatkan profil anak anda.",
     "childrenSettingsEmpty": "Tambah anak untuk mula mengurus perjalanan sekolah mereka.",
-    "addChild": "Tambah anak"
+    "addChild": "Tambah anak",
+    "notificationPreferences": {
+      "title": "Keutamaan pemberitahuan",
+      "description": "Pilih kemas kini yang anda terima dan cara ia dihantar.",
+      "deliveryTitle": "Saluran penghantaran",
+      "categoriesTitle": "Kemas kini untuk diterima",
+      "channels": {
+        "email": {
+          "title": "Kemas kini e-mel",
+          "description": "Terima kemas kini yang layak dalam peti masuk anda."
+        },
+        "inApp": {
+          "title": "Kemas kini dalam aplikasi",
+          "description": "Paparkan kemas kini yang layak dalam suapan pemberitahuan SchoolTest."
+        }
+      },
+      "categories": {
+        "children": {
+          "title": "Kemas kini anak",
+          "description": "Perubahan dan aktiviti berkaitan anak anda."
+        },
+        "testActivity": {
+          "title": "Aktiviti ujian",
+          "description": "Kemas kini tentang ujian, jemputan dan kemajuan."
+        },
+        "testResults": {
+          "title": "Keputusan ujian",
+          "description": "Apabila keputusan penilaian baharu sedia untuk disemak."
+        }
+      },
+      "digest": {
+        "title": "Kekerapan e-mel",
+        "description": "Pilih cara kemas kini e-mel yang layak dikumpulkan.",
+        "options": {
+          "immediate": "Hantar segera",
+          "daily": "Ringkasan harian",
+          "weekly": "Ringkasan mingguan",
+          "off": "Jangan hantar ringkasan"
+        }
+      },
+      "alwaysOnTitle": "Kemas kini akaun dan keselamatan sentiasa aktif",
+      "alwaysOnDescription": "Notis akaun dan keselamatan penting tidak boleh dimatikan.",
+      "save": "Simpan keutamaan pemberitahuan",
+      "saving": "Menyimpan keutamaan",
+      "saved": "Keutamaan pemberitahuan disimpan.",
+      "saveError": "Kami tidak dapat menyimpan keutamaan pemberitahuan anda.",
+      "loadErrorTitle": "Kami tidak dapat memuatkan keutamaan pemberitahuan anda.",
+      "loadErrorDescription": "Cuba semula untuk memuatkan tetapan pemberitahuan yang disimpan."
+    }
   },
   "SchoolSearch": {
     "meta": {

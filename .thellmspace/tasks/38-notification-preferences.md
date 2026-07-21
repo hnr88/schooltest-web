@@ -6,7 +6,7 @@ kind: implement
 slice: persisted email and in-app notification preference controls
 target: src/modules/notifications/{components,queries,schemas,types,index.ts}; src/modules/settings/**; messages/*.json; tests/e2e/notification-preferences.spec.ts
 contract: C-PREF-GET, C-PREF-UPDATE
-status: TODO
+status: DONE
 depends_on: [37]
 ---
 ## Objective
@@ -50,4 +50,9 @@ Push controls are intentionally completed by task 39 because browser permission 
 
 ## Evidence
 
-Pending independent verification.
+Independent notification-preferences verifier passed the live contract and browser proof.
+The parent-owned API returned its exact 13-field response and accepted only the six UI-owned
+fields. Playwright passed the real save, direct API persistence, browser reload, restoration,
+unauthorized GET/PUT rejection, localized mutation failure, keyboard use, mobile layout, and
+axe checks (6/6 including the settings-tab regression). `pnpm tsc --noEmit` passed; `pnpm lint`
+had zero errors and only the pre-existing `CreateArticleForm` warning.

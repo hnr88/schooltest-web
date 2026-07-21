@@ -548,6 +548,7 @@
     "tabs": {
       "auth": "身份验证",
       "search": "搜索",
+      "notifications": "通知",
       "children": "孩子"
     },
     "searchPreferencesTitle": "学校搜索偏好",
@@ -576,7 +577,55 @@
     "childrenSettingsLoadErrorTitle": "无法加载您的孩子。",
     "childrenSettingsLoadErrorDescription": "请重试以加载孩子的档案。",
     "childrenSettingsEmpty": "添加孩子以开始管理他们的求学旅程。",
-    "addChild": "添加孩子"
+    "addChild": "添加孩子",
+    "notificationPreferences": {
+      "title": "通知偏好设置",
+      "description": "选择您要接收的更新及其发送方式。",
+      "deliveryTitle": "送达渠道",
+      "categoriesTitle": "要接收的更新",
+      "channels": {
+        "email": {
+          "title": "电子邮件更新",
+          "description": "在您的收件箱中接收符合条件的更新。"
+        },
+        "inApp": {
+          "title": "应用内更新",
+          "description": "在 SchoolTest 通知动态中显示符合条件的更新。"
+        }
+      },
+      "categories": {
+        "children": {
+          "title": "孩子更新",
+          "description": "与您的孩子相关的变更和活动。"
+        },
+        "testActivity": {
+          "title": "测试活动",
+          "description": "有关测试、邀请和进度的更新。"
+        },
+        "testResults": {
+          "title": "测试结果",
+          "description": "有新的评估结果可供查看时通知您。"
+        }
+      },
+      "digest": {
+        "title": "电子邮件频率",
+        "description": "选择符合条件的电子邮件更新的汇总方式。",
+        "options": {
+          "immediate": "立即发送",
+          "daily": "每日摘要",
+          "weekly": "每周摘要",
+          "off": "不发送摘要"
+        }
+      },
+      "alwaysOnTitle": "账户和安全更新始终开启",
+      "alwaysOnDescription": "重要的账户和安全通知无法关闭。",
+      "save": "保存通知偏好设置",
+      "saving": "正在保存偏好设置",
+      "saved": "通知偏好设置已保存。",
+      "saveError": "无法保存您的通知偏好设置。",
+      "loadErrorTitle": "无法加载您的通知偏好设置。",
+      "loadErrorDescription": "请重试以加载已保存的通知设置。"
+    }
   },
   "SchoolSearch": {
     "meta": {

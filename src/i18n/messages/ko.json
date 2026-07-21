@@ -548,6 +548,7 @@
     "tabs": {
       "auth": "인증",
       "search": "검색",
+      "notifications": "알림",
       "children": "자녀"
     },
     "searchPreferencesTitle": "학교 검색 환경설정",
@@ -576,7 +577,55 @@
     "childrenSettingsLoadErrorTitle": "자녀를 불러올 수 없습니다.",
     "childrenSettingsLoadErrorDescription": "자녀 프로필을 불러오려면 재시도하세요.",
     "childrenSettingsEmpty": "자녀를 추가하여 학교 여정을 관리하세요.",
-    "addChild": "자녀 추가"
+    "addChild": "자녀 추가",
+    "notificationPreferences": {
+      "title": "알림 설정",
+      "description": "받을 업데이트와 전달 방법을 선택하세요.",
+      "deliveryTitle": "전달 채널",
+      "categoriesTitle": "받을 업데이트",
+      "channels": {
+        "email": {
+          "title": "이메일 업데이트",
+          "description": "받을 수 있는 업데이트를 받은편지함으로 받습니다."
+        },
+        "inApp": {
+          "title": "앱 내 업데이트",
+          "description": "받을 수 있는 업데이트를 SchoolTest 알림 피드에 표시합니다."
+        }
+      },
+      "categories": {
+        "children": {
+          "title": "자녀 업데이트",
+          "description": "자녀와 관련된 변경 사항 및 활동입니다."
+        },
+        "testActivity": {
+          "title": "시험 활동",
+          "description": "시험, 초대 및 진행 상황에 관한 업데이트입니다."
+        },
+        "testResults": {
+          "title": "시험 결과",
+          "description": "새 평가 결과를 확인할 수 있을 때 알립니다."
+        }
+      },
+      "digest": {
+        "title": "이메일 수신 빈도",
+        "description": "받을 수 있는 이메일 업데이트를 묶는 방식을 선택하세요.",
+        "options": {
+          "immediate": "즉시 보내기",
+          "daily": "매일 요약",
+          "weekly": "매주 요약",
+          "off": "요약 이메일 보내지 않기"
+        }
+      },
+      "alwaysOnTitle": "계정 및 보안 업데이트는 항상 켜져 있습니다",
+      "alwaysOnDescription": "중요한 계정 및 보안 알림은 끌 수 없습니다.",
+      "save": "알림 설정 저장",
+      "saving": "설정 저장 중",
+      "saved": "알림 설정이 저장되었습니다.",
+      "saveError": "알림 설정을 저장할 수 없습니다.",
+      "loadErrorTitle": "알림 설정을 불러올 수 없습니다.",
+      "loadErrorDescription": "저장된 알림 설정을 다시 불러오세요."
+    }
   },
   "SchoolSearch": {
     "meta": {

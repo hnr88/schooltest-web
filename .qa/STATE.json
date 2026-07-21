@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-21T09:30:39+03:00",
+  "updated_at": "2026-07-21T10:05:42+03:00",
   "tasks": [
     {
       "id": "01",
@@ -526,7 +526,7 @@
   "ui_polish_20260720": {
     "contracts_file": ".qa/CONTRACTS.md",
     "mission": "Requested UI polish, child detail metrics, settings tabs, and notification web surfaces",
-    "updated_at": "2026-07-21T09:30:39+03:00",
+    "updated_at": "2026-07-21T10:05:42+03:00",
     "tasks": [
       {
         "id": "28",
@@ -738,7 +738,21 @@
           "evidence": "Live API ownership/security + bell/feed/mutation-error Playwright tests passed 4/4 serially. Verified unauth 403, invalid query 400, unknown read 404, dynamic seeded foreign row 403, persisted read/reload state, localized error toast, responsive feed, six-locale parity, tsc 0 errors, lint 0 errors plus one known unrelated warning."
         }
       },
-      { "id": "38", "file": ".thellmspace/tasks/38-notification-preferences.md", "title": "Notification preferences settings", "layer": "frontend", "contract": ["C-PREF-GET", "C-PREF-UPDATE"], "depends_on": ["37"], "status": "TODO", "started_at": null },
+      {
+        "id": "38",
+        "file": ".thellmspace/tasks/38-notification-preferences.md",
+        "title": "Notification preferences settings",
+        "layer": "frontend",
+        "contract": ["C-PREF-GET", "C-PREF-UPDATE"],
+        "depends_on": ["37"],
+        "status": "DONE",
+        "started_at": 1784615540,
+        "verify": {
+          "verdict": "PASS",
+          "by": "independent notification preferences verifier",
+          "evidence": "Live 13-field C-PREF response and exact 6-field UI mutation verified. Preferences, settings-tabs, security, keyboard, mobile, axe, reload persistence, restore, and localized refusal passed 6/6 against :3100/:5500; tsc 0 errors and lint 0 errors plus one known unrelated warning."
+        }
+      },
       { "id": "39", "file": ".thellmspace/tasks/39-browser-push-subscription.md", "title": "Browser push subscription", "layer": "integration", "contract": ["C-PUSH-VAPID-CONFIG", "C-PUSH-SUBSCRIBE", "C-PUSH-UNSUBSCRIBE"], "depends_on": ["38"], "status": "TODO", "started_at": null },
       { "id": "40", "file": ".thellmspace/tasks/40-notification-delivery-e2e.md", "title": "Notification delivery and SMS preparation proof", "layer": "integration", "contract": ["C-NOTIF-EVENTS", "C-PUSH-SUBSCRIBE"], "depends_on": ["39"], "status": "TODO", "started_at": null },
       { "id": "41", "file": ".thellmspace/tasks/41-ui-polish-final-regression.md", "title": "Independent critic and final regression", "layer": "regression", "contract": ["all-ui-polish"], "depends_on": ["40"], "status": "TODO", "started_at": null }

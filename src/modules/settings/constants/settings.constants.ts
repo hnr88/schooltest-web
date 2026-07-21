@@ -1,4 +1,4 @@
-import { KeyRound, Search, Users } from 'lucide-react';
+import { Bell, KeyRound, Search, Users } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 import { SORT_OPTIONS, STATES } from '@/modules/school-search';
@@ -8,7 +8,12 @@ import type {
 } from '@/modules/settings/types/settings.types';
 
 export const SETTINGS_TAB_PARAM = 'tab';
-export const SETTINGS_TABS: readonly SettingsTab[] = ['auth', 'search', 'children'];
+export const SETTINGS_TABS: readonly SettingsTab[] = [
+  'auth',
+  'search',
+  'notifications',
+  'children',
+];
 
 export const SETTINGS_TAB_CONFIG: readonly {
   value: SettingsTab;
@@ -17,6 +22,7 @@ export const SETTINGS_TAB_CONFIG: readonly {
 }[] = [
   { value: 'auth', labelKey: 'tabs.auth', icon: KeyRound },
   { value: 'search', labelKey: 'tabs.search', icon: Search },
+  { value: 'notifications', labelKey: 'tabs.notifications', icon: Bell },
   { value: 'children', labelKey: 'tabs.children', icon: Users },
 ];
 

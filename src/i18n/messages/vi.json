@@ -548,6 +548,7 @@
     "tabs": {
       "auth": "Xác thực",
       "search": "Tìm kiếm",
+      "notifications": "Thông báo",
       "children": "Con"
     },
     "searchPreferencesTitle": "Tùy chọn tìm kiếm trường học",
@@ -576,7 +577,55 @@
     "childrenSettingsLoadErrorTitle": "Chúng tôi không thể tải danh sách con của bạn.",
     "childrenSettingsLoadErrorDescription": "Vui lòng thử lại để tải hồ sơ của con bạn.",
     "childrenSettingsEmpty": "Thêm con để bắt đầu quản lý hành trình học tập của các em.",
-    "addChild": "Thêm con"
+    "addChild": "Thêm con",
+    "notificationPreferences": {
+      "title": "Tùy chọn thông báo",
+      "description": "Chọn các cập nhật bạn nhận được và cách gửi chúng.",
+      "deliveryTitle": "Kênh gửi",
+      "categoriesTitle": "Cập nhật cần nhận",
+      "channels": {
+        "email": {
+          "title": "Cập nhật qua email",
+          "description": "Nhận các cập nhật phù hợp trong hộp thư đến."
+        },
+        "inApp": {
+          "title": "Cập nhật trong ứng dụng",
+          "description": "Hiển thị các cập nhật phù hợp trong nguồn cấp thông báo SchoolTest."
+        }
+      },
+      "categories": {
+        "children": {
+          "title": "Cập nhật về con em",
+          "description": "Thay đổi và hoạt động liên quan đến con em của bạn."
+        },
+        "testActivity": {
+          "title": "Hoạt động kiểm tra",
+          "description": "Cập nhật về bài kiểm tra, lời mời và tiến độ."
+        },
+        "testResults": {
+          "title": "Kết quả kiểm tra",
+          "description": "Khi có kết quả đánh giá mới để xem lại."
+        }
+      },
+      "digest": {
+        "title": "Tần suất email",
+        "description": "Chọn cách nhóm các cập nhật email phù hợp.",
+        "options": {
+          "immediate": "Gửi ngay",
+          "daily": "Tổng hợp hằng ngày",
+          "weekly": "Tổng hợp hằng tuần",
+          "off": "Không gửi bản tổng hợp"
+        }
+      },
+      "alwaysOnTitle": "Cập nhật tài khoản và bảo mật luôn bật",
+      "alwaysOnDescription": "Không thể tắt các thông báo quan trọng về tài khoản và bảo mật.",
+      "save": "Lưu tùy chọn thông báo",
+      "saving": "Đang lưu tùy chọn",
+      "saved": "Đã lưu tùy chọn thông báo.",
+      "saveError": "Không thể lưu tùy chọn thông báo của bạn.",
+      "loadErrorTitle": "Không thể tải tùy chọn thông báo của bạn.",
+      "loadErrorDescription": "Vui lòng thử lại để tải các cài đặt thông báo đã lưu."
+    }
   },
   "SchoolSearch": {
     "meta": {

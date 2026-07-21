@@ -5,7 +5,7 @@ import type {
   searchPreferenceSchema,
 } from '@/modules/settings/schemas/search-preferences.schema';
 
-export type SettingsTab = 'auth' | 'search' | 'children';
+export type SettingsTab = 'auth' | 'search' | 'notifications' | 'children';
 
 export type SearchPreference = z.infer<typeof searchPreferenceSchema>;
 export type SearchPreferenceFormValues = z.infer<typeof searchPreferenceFormSchema>;

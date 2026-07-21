@@ -11,7 +11,7 @@ export function SettingsTabs() {
   return (
     <TabsList
       aria-label={t('tabsLabel')}
-      className="w-full justify-start gap-1 overflow-x-auto rounded-xl bg-muted p-1"
+      className="grid h-auto w-full grid-cols-2 items-stretch gap-1 rounded-xl bg-muted p-1 group-data-horizontal/tabs:h-auto sm:flex sm:items-center sm:justify-start"
     >
       {SETTINGS_TAB_CONFIG.map((tab) => {
         const Icon = tab.icon;
@@ -19,7 +19,7 @@ export function SettingsTabs() {
           <TabsTrigger
             key={tab.value}
             value={tab.value}
-            className="min-h-11 flex-none gap-2 rounded-lg px-4 text-sm font-semibold text-slate-700 transition-colors duration-150 ease-out hover:bg-card hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none dark:text-slate-300 data-active:bg-card data-active:text-foreground data-active:shadow-sm"
+            className="h-auto min-h-11 w-full justify-center gap-2 rounded-lg px-3 text-sm font-semibold text-slate-700 hover:bg-card hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:w-auto sm:flex-none sm:px-4 dark:text-slate-300 data-active:bg-card data-active:text-foreground data-active:shadow-sm"
           >
             <Icon aria-hidden="true" className="size-4" />
             {t(tab.labelKey)}

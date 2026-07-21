@@ -76,12 +76,19 @@ test('en: settings tabs are URL-addressable, keyboard-operable, and expose real 
 
   const authTab = page.getByRole('tab', { name: cat(en, 'Settings.tabs.auth') });
   const searchTab = page.getByRole('tab', { name: cat(en, 'Settings.tabs.search') });
+  const notificationsTab = page.getByRole('tab', { name: cat(en, 'Settings.tabs.notifications') });
   await expect(authTab).toHaveAttribute('aria-selected', 'true');
   await authTab.press('ArrowRight');
   await expect(searchTab).toBeFocused();
   await searchTab.press('Enter');
   await expect(page).toHaveURL(/\/dashboard\/settings\?tab=search$/);
   await expect(searchTab).toHaveAttribute('aria-selected', 'true');
+
+  await searchTab.press('ArrowRight');
+  await expect(notificationsTab).toBeFocused();
+  await notificationsTab.press('Enter');
+  await expect(page).toHaveURL(/\/dashboard\/settings\?tab=notifications$/);
+  await expect(notificationsTab).toHaveAttribute('aria-selected', 'true');
 
   await page.getByRole('tab', { name: cat(en, 'Settings.tabs.children') }).click();
   await expect(page).toHaveURL(/\/dashboard\/settings\?tab=children$/);

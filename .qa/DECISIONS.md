@@ -345,3 +345,14 @@ instead, not deleted and not a fake pass.
   using that record's documentId. The API now explicitly projects only `url`, `alternativeText`,
   `width`, and `height`; the caption retains source/author/license attribution. No client fallback
   fabricates an image for the other records.
+
+## 2026-07-21 D31 — notification preference interaction design
+
+- The notification settings controls follow the installed Base UI switch guidance: each switch is
+  enclosed by its own native label so its visible title and description provide the accessible
+  name and the whole preference card is a pointer target. This avoids an unsupported sibling-label
+  association with Base UI's default non-button switch root.
+- The preference cards use a 64px minimum height, exceeding WCAG 2.2 AA's 24px target-size
+  minimum and giving users a large equivalent tap target without editing the read-only primitive.
+- At phone widths the four settings tabs are a two-column grid. Desktop keeps the compact row;
+  this prevents the selected Notifications tab from being clipped after its addition.
