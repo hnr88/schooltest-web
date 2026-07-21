@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-21T08:54:33+03:00",
+  "updated_at": "2026-07-21T09:30:39+03:00",
   "tasks": [
     {
       "id": "01",
@@ -526,7 +526,7 @@
   "ui_polish_20260720": {
     "contracts_file": ".qa/CONTRACTS.md",
     "mission": "Requested UI polish, child detail metrics, settings tabs, and notification web surfaces",
-    "updated_at": "2026-07-21T08:54:33+03:00",
+    "updated_at": "2026-07-21T09:30:39+03:00",
     "tasks": [
       {
         "id": "28",
@@ -723,7 +723,21 @@
           "evidence": "Dashboard, parent-auth, and parent-auth-errors run 8/8 against :3100/:5500. The new parent surface derives all values from the live parent-scoped student response; it passes axe, reload persistence, mobile no-overflow, and live Children navigation. The critic caught stale old-selector coverage and the test-file cap; both were fixed, then re-verified. tsc 0 errors; lint 0 errors with one known unrelated CreateArticleForm warning; six-catalog key parity passed."
         }
       },
-      { "id": "37", "file": ".thellmspace/tasks/37-notification-bell-feed.md", "title": "In-app notification bell and feed", "layer": "frontend", "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"], "depends_on": ["45"], "status": "TODO", "started_at": null },
+      {
+        "id": "37",
+        "file": ".thellmspace/tasks/37-notification-bell-feed.md",
+        "title": "In-app notification bell and feed",
+        "layer": "frontend",
+        "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"],
+        "depends_on": ["45"],
+        "status": "DONE",
+        "started_at": 1784613523,
+        "verify": {
+          "verdict": "PASS",
+          "by": "independent notification verifier",
+          "evidence": "Live API ownership/security + bell/feed/mutation-error Playwright tests passed 4/4 serially. Verified unauth 403, invalid query 400, unknown read 404, dynamic seeded foreign row 403, persisted read/reload state, localized error toast, responsive feed, six-locale parity, tsc 0 errors, lint 0 errors plus one known unrelated warning."
+        }
+      },
       { "id": "38", "file": ".thellmspace/tasks/38-notification-preferences.md", "title": "Notification preferences settings", "layer": "frontend", "contract": ["C-PREF-GET", "C-PREF-UPDATE"], "depends_on": ["37"], "status": "TODO", "started_at": null },
       { "id": "39", "file": ".thellmspace/tasks/39-browser-push-subscription.md", "title": "Browser push subscription", "layer": "integration", "contract": ["C-PUSH-VAPID-CONFIG", "C-PUSH-SUBSCRIBE", "C-PUSH-UNSUBSCRIBE"], "depends_on": ["38"], "status": "TODO", "started_at": null },
       { "id": "40", "file": ".thellmspace/tasks/40-notification-delivery-e2e.md", "title": "Notification delivery and SMS preparation proof", "layer": "integration", "contract": ["C-NOTIF-EVENTS", "C-PUSH-SUBSCRIBE"], "depends_on": ["39"], "status": "TODO", "started_at": null },

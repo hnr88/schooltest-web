@@ -516,6 +516,7 @@
     "nav": {
       "overview": "Tổng quan",
       "myChildren": "Con của tôi",
+      "notifications": "Thông báo",
       "search": "Tìm kiếm",
       "settings": "Cài đặt"
     },
@@ -1013,5 +1014,39 @@
     "notPublished": "Chưa công bố",
     "profileErrorTitle": "Chúng tôi không thể tải tiến độ của con này.",
     "profileErrorDescription": "Có thể các em đã bị xóa, hoặc bạn không có quyền truy cập hồ sơ của các em."
+  },
+  "Notifications": {
+    "meta": {
+      "title": "Thông báo — SchoolTest",
+      "description": "Xem các cập nhật quan trọng về tài khoản, con em và đánh giá."
+    },
+    "title": "Thông báo",
+    "subtitle": "Theo dõi các cập nhật quan trọng về tài khoản, con em và bài kiểm tra.",
+    "feedDescription": "Đọc cập nhật mới hoặc xem lại hoạt động gần đây tại một nơi.",
+    "bellLabel": "Mở thông báo",
+    "recentTitle": "Thông báo gần đây",
+    "viewAll": "Xem tất cả thông báo",
+    "markAllRead": "Đánh dấu tất cả là đã đọc",
+    "markRead": "Đánh dấu là đã đọc",
+    "unread": "Chưa đọc",
+    "read": "Đã đọc",
+    "unreadCount": "{count, plural, =0 {Không có thông báo chưa đọc} one {# thông báo chưa đọc} other {# thông báo chưa đọc}}",
+    "emptyTitle": "Bạn đã cập nhật mọi thứ",
+    "emptyDescription": "Các cập nhật mới về tài khoản, con em và bài kiểm tra sẽ xuất hiện ở đây.",
+    "errorTitle": "Không thể tải thông báo",
+    "errorDescription": "Kiểm tra kết nối của bạn rồi thử lại.",
+    "actionError": "Không thể cập nhật thông báo. Vui lòng thử lại.",
+    "retry": "Thử lại",
+    "paginationLabel": "Trang thông báo",
+    "pageSummary": "Trang {page} trên {total}",
+    "previous": "Trước",
+    "next": "Tiếp theo",
+    "categories": {
+      "account": "Tài khoản",
+      "security": "Bảo mật",
+      "children": "Con em",
+      "testActivity": "Hoạt động kiểm tra",
+      "testResults": "Kết quả kiểm tra"
+    }
   }
 }

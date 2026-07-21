@@ -3,6 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 export type NavLabelKey =
   | 'overview'
   | 'myChildren'
+  | 'notifications'
   | 'search'
   | 'settings';
 

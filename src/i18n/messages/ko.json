@@ -516,6 +516,7 @@
     "nav": {
       "overview": "개요",
       "myChildren": "내 자녀",
+      "notifications": "알림",
       "search": "검색",
       "settings": "설정"
     },
@@ -1013,5 +1014,39 @@
     "notPublished": "아직 게시되지 않음",
     "profileErrorTitle": "이 자녀의 진행 상황을 불러올 수 없습니다.",
     "profileErrorDescription": "삭제되었거나 이 프로필에 접근할 권한이 없을 수 있습니다."
+  },
+  "Notifications": {
+    "meta": {
+      "title": "알림 — SchoolTest",
+      "description": "중요한 계정, 자녀 및 평가 업데이트를 확인하세요."
+    },
+    "title": "알림",
+    "subtitle": "중요한 계정, 자녀 및 시험 업데이트를 확인하세요.",
+    "feedDescription": "새로운 업데이트를 읽고 최근 활동을 한곳에서 다시 확인하세요.",
+    "bellLabel": "알림 열기",
+    "recentTitle": "최근 알림",
+    "viewAll": "모든 알림 보기",
+    "markAllRead": "모두 읽음으로 표시",
+    "markRead": "읽음으로 표시",
+    "unread": "읽지 않음",
+    "read": "읽음",
+    "unreadCount": "{count, plural, =0 {읽지 않은 알림 없음} other {읽지 않은 알림 #개}}",
+    "emptyTitle": "모두 확인했습니다",
+    "emptyDescription": "새 계정, 자녀 및 시험 업데이트가 여기에 표시됩니다.",
+    "errorTitle": "알림을 불러올 수 없습니다",
+    "errorDescription": "연결을 확인하고 다시 시도하세요.",
+    "actionError": "알림을 업데이트할 수 없습니다. 다시 시도해 주세요.",
+    "retry": "다시 시도",
+    "paginationLabel": "알림 페이지",
+    "pageSummary": "{total}페이지 중 {page}페이지",
+    "previous": "이전",
+    "next": "다음",
+    "categories": {
+      "account": "계정",
+      "security": "보안",
+      "children": "자녀",
+      "testActivity": "시험 활동",
+      "testResults": "시험 결과"
+    }
   }
 }

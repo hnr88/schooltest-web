@@ -14,6 +14,7 @@ import {
 } from '@/modules/design-system';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
 import { getShellRouteMeta } from '@/modules/shell/lib/route-meta';
+import { NotificationBell } from '@/modules/notifications';
 
 function AppTopbar() {
   const t = useTranslations('Shell');
@@ -43,6 +44,7 @@ function AppTopbar() {
         </p>
       </div>
       <div data-slot="topbar-actions" className="flex items-center gap-4">
+        <NotificationBell />
         <UserMenu />
       </div>
     </header>

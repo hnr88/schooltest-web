@@ -516,6 +516,7 @@
     "nav": {
       "overview": "Ringkasan",
       "myChildren": "Anak saya",
+      "notifications": "Pemberitahuan",
       "search": "Carian",
       "settings": "Tetapan"
     },
@@ -1013,5 +1014,39 @@
     "notPublished": "Belum diterbitkan",
     "profileErrorTitle": "Kami tidak dapat memuatkan kemajuan anak ini.",
     "profileErrorDescription": "Mereka mungkin telah dialih keluar, atau anda tiada akses kepada profil mereka."
+  },
+  "Notifications": {
+    "meta": {
+      "title": "Pemberitahuan — SchoolTest",
+      "description": "Semak kemas kini penting akaun, anak dan penilaian."
+    },
+    "title": "Pemberitahuan",
+    "subtitle": "Jejaki kemas kini penting akaun, anak dan ujian.",
+    "feedDescription": "Baca kemas kini baharu atau semak semula aktiviti terkini di satu tempat.",
+    "bellLabel": "Buka pemberitahuan",
+    "recentTitle": "Pemberitahuan terkini",
+    "viewAll": "Lihat semua pemberitahuan",
+    "markAllRead": "Tanda semua sebagai dibaca",
+    "markRead": "Tanda sebagai dibaca",
+    "unread": "Belum dibaca",
+    "read": "Dibaca",
+    "unreadCount": "{count, plural, =0 {Tiada pemberitahuan belum dibaca} one {# pemberitahuan belum dibaca} other {# pemberitahuan belum dibaca}}",
+    "emptyTitle": "Anda sudah mengikuti semua kemas kini",
+    "emptyDescription": "Kemas kini akaun, anak dan ujian baharu akan dipaparkan di sini.",
+    "errorTitle": "Tidak dapat memuatkan pemberitahuan",
+    "errorDescription": "Semak sambungan anda dan cuba lagi.",
+    "actionError": "Tidak dapat mengemas kini pemberitahuan. Sila cuba lagi.",
+    "retry": "Cuba lagi",
+    "paginationLabel": "Halaman pemberitahuan",
+    "pageSummary": "Halaman {page} daripada {total}",
+    "previous": "Sebelumnya",
+    "next": "Seterusnya",
+    "categories": {
+      "account": "Akaun",
+      "security": "Keselamatan",
+      "children": "Anak",
+      "testActivity": "Aktiviti ujian",
+      "testResults": "Keputusan ujian"
+    }
   }
 }

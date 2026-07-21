@@ -6,8 +6,8 @@ kind: implement
 slice: dashboard notification visibility and read state
 target: src/modules/notifications/{components,queries,schemas,types,index.ts}; src/modules/shell/components/AppTopbar.tsx; src/app/[locale]/dashboard/notifications/page.tsx; messages/*.json; tests/e2e/notification-feed.spec.ts
 contract: C-NOTIF-LIST, C-NOTIF-READ, C-NOTIF-READ-ALL
-status: TODO
-depends_on: [36]
+status: DONE
+depends_on: [45]
 ---
 ## Objective
 
@@ -25,7 +25,7 @@ The named notifications module, topbar integration, page route, six locale files
 
 ## Depends on
 
-Task 36 completes the settings navigation into which preference controls will later land.
+Task 45 completes the parent dashboard hierarchy that owns the topbar bell and full feed route.
 
 ## Steps
 
@@ -50,4 +50,11 @@ The backend notification trigger service is already the authoritative source of 
 
 ## Evidence
 
-Pending independent verification.
+Independent verifier PASS: `pnpm tsc --noEmit` passed and `pnpm lint` had zero errors
+(one pre-existing `CreateArticleForm.tsx` warning). Live Playwright ran 4/4 serially against
+`:3100` and `:5500`: API security/ownership, bell → individual read → View all → persisted
+full feed, mobile feed, and a real refused mutation showing the localized Sonner error. Direct
+live probes confirmed unauthenticated list/read-all 403, malformed query 400, unknown read
+404, and primary-parent access to a dynamically selected seeded `parent-t06` notification
+returns 403 with the exact ownership message. Screenshots: `.qa/screenshots/notification-bell-en.png`,
+`.qa/screenshots/notification-feed-en.png`, `.qa/screenshots/notification-feed-mobile-en.png`.

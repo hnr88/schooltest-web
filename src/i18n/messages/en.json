@@ -516,6 +516,7 @@
     "nav": {
       "overview": "Overview",
       "myChildren": "My children",
+      "notifications": "Notifications",
       "search": "Search",
       "settings": "Settings"
     },
@@ -1013,5 +1014,39 @@
     "notPublished": "Not published yet",
     "profileErrorTitle": "We couldn't load this child's progress.",
     "profileErrorDescription": "They may have been removed, or you don't have access to their profile."
+  },
+  "Notifications": {
+    "meta": {
+      "title": "Notifications — SchoolTest",
+      "description": "Review important account, child and assessment updates."
+    },
+    "title": "Notifications",
+    "subtitle": "Track important account, child and test updates.",
+    "feedDescription": "Read new updates or revisit recent activity in one place.",
+    "bellLabel": "Open notifications",
+    "recentTitle": "Recent notifications",
+    "viewAll": "View all notifications",
+    "markAllRead": "Mark all as read",
+    "markRead": "Mark as read",
+    "unread": "Unread",
+    "read": "Read",
+    "unreadCount": "{count, plural, =0 {No unread notifications} one {# unread notification} other {# unread notifications}}",
+    "emptyTitle": "You're all caught up",
+    "emptyDescription": "New account, child and test updates will appear here.",
+    "errorTitle": "Couldn't load notifications",
+    "errorDescription": "Check your connection and try again.",
+    "actionError": "Couldn't update notifications. Please try again.",
+    "retry": "Retry",
+    "paginationLabel": "Notification pages",
+    "pageSummary": "Page {page} of {total}",
+    "previous": "Previous",
+    "next": "Next",
+    "categories": {
+      "account": "Account",
+      "security": "Security",
+      "children": "Children",
+      "testActivity": "Test activity",
+      "testResults": "Test results"
+    }
   }
 }
