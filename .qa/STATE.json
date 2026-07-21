@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-21T10:47:38+03:00",
+  "updated_at": "2026-07-21T10:49:54+03:00",
   "tasks": [
     {
       "id": "01",
@@ -768,7 +768,7 @@
           "evidence": "Live VAPID shape/access, owner create/upsert/foreign-claim 403/opaque foreign delete/owner delete-retry, worker headers, five Playwright checks, mobile, axe and both package type/lint gates passed. Chromium permission is honestly denied locally, so the UI shows a disabled blocked state rather than claiming a subscription."
         }
       },
-      { "id": "40", "file": ".thellmspace/tasks/40-notification-delivery-e2e.md", "title": "Notification delivery and SMS preparation proof", "layer": "integration", "contract": ["C-NOTIF-EVENTS", "C-PUSH-SUBSCRIBE"], "depends_on": ["39"], "status": "TODO", "started_at": null },
+      { "id": "40", "file": ".thellmspace/tasks/40-notification-delivery-e2e.md", "title": "Notification delivery and SMS preparation proof", "layer": "integration", "contract": ["C-NOTIF-EVENTS", "C-PUSH-SUBSCRIBE", "C-PUSH-SEND", "C-SMS-ADAPTER"], "depends_on": ["39"], "status": "DOING", "started_at": 1784618994 },
       { "id": "41", "file": ".thellmspace/tasks/41-ui-polish-final-regression.md", "title": "Independent critic and final regression", "layer": "regression", "contract": ["all-ui-polish"], "depends_on": ["40"], "status": "TODO", "started_at": null }
     ]
   }

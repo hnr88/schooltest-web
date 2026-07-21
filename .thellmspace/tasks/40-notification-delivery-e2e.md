@@ -5,8 +5,8 @@ layer: integration
 kind: verify
 slice: relevant real events across in-app, email, push and SMS-prepared channels
 target: schooltest-api/tests/e2e/notifications-*.spec.ts; schooltest-web/tests/e2e/notification-*.spec.ts; .qa/screenshots
-contract: C-NOTIF-EVENTS, C-PUSH-SUBSCRIBE
-status: TODO
+contract: C-NOTIF-EVENTS, C-PUSH-SUBSCRIBE, C-PUSH-SEND, C-SMS-ADAPTER
+status: DOING
 depends_on: [39]
 ---
 ## Objective

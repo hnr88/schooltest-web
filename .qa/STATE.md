@@ -64,7 +64,7 @@ Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.m
 | 37 | In-app notification bell and feed | 45 | DONE | PASS — live notification contract/feed/error path 4/4 + critic |
 | 38 | Notification preferences settings | 37 | DONE | PASS — live preference persistence/error/mobile 6/6 + critic |
 | 39 | Browser push subscription | 38 | DONE | PASS — live VAPID/ownership/worker/UI 5/5 + critic |
-| 40 | Notification delivery and SMS preparation proof | 39 | TODO | — |
+| 40 | Notification delivery and SMS preparation proof | 39 | DOING | — |
 | 41 | Independent critic and final regression | 40 | TODO | — |
 
 Task 15 ("/dashboard route + client guard") is now DONE — verified 2026-07-18 by an

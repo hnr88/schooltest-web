@@ -194,6 +194,42 @@ details? } }` shape.
   `200 { data: { updated } }`.
 - `C-PREF-GET`/`C-PREF-UPDATE`: `GET`/`PUT /api/notification-preferences/me`, each
   parent-owned and runtime-validated.
+
+### C-NOTIF-EVENTS — persisted domain-event delivery fan-out
+
+- Transport/auth: internal event handlers invoke the existing notification dispatcher after an
+  authorized domain action (including account confirmation, child creation, password changes and
+  test-result completion). There is no public dispatch endpoint and no client-supplied recipient:
+  the recipient is derived by the domain action/server relation.
+- Success/persistence: dispatch writes one real `notifications` row with server-derived event
+  category, title/body/link and recipient relation. It then records the actual channel outcomes
+  (`emailSent`, `pushSent`, `smsSent` and a truthful SMS blocked reason where applicable). A
+  suppressed in-app preference retains the audit row but marks it read; account/security events
+  remain non-suppressible.
+- Errors: a notification channel failure is best-effort and does not falsify or fail the completed
+  domain action. The persisted row is the delivery ledger; no channel reports a fabricated success.
+
+### C-PUSH-SEND — internal Web Push delivery
+
+- Transport/auth: the server selects only the persisted push-subscription rows owned by the
+  server-derived notification recipient; it serializes `{ title, body, url }` through the real
+  `web-push` VAPID sender. No public send route or client-selected subscription exists.
+- Success: internal `{ pushSent, accepted, reaped }`; `pushSent` is true only after a push service
+  accepts a real encrypted VAPID request. HTTP 404/410 from that service reaps the owned endpoint.
+- Errors: unavailable VAPID configuration, no subscription and non-accepting endpoints return an
+  honest no-send result and leave the domain event successful without setting `pushSent`.
+
+### C-SMS-ADAPTER — prepared Twilio delivery channel
+
+- Transport/auth: no public browser SMS route is fabricated. The internal channel sends a real
+  authenticated `POST /2010-04-01/Accounts/{sid}/Messages.json` only when server-side Twilio
+  credentials and a normalized recipient phone exist.
+- Success: internal `{ smsSent: true, smsSentAt, sid? }` only for a real Twilio 2xx response.
+- Errors/preparation: absent credentials return `{ smsSent: false,
+  smsBlockedReason: "sms_blocked_no_credentials" }` with no outbound request; absent/invalid phone
+  is similarly `sms_blocked_no_phone_number`. HTTP/network failures become truthful bounded
+  blocked reasons, never a fabricated carrier-delivery receipt.
+
 ### C-PUSH-SUBSCRIBE — POST /api/push-subscriptions
 
 - Auth/ownership: parent JWT only. The browser subscription owner is always server-derived
