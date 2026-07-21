@@ -6,7 +6,7 @@ kind: fix
 slice: parent dashboard information hierarchy and action surfaces
 target: src/modules/dashboard/**; messages/*.json; tests/e2e/dashboard.spec.ts
 contract: C-STUDENT-LIST, C-UI-DASHBOARD-OVERVIEW
-status: TODO
+status: DONE
 depends_on: [44]
 ---
 ## Objective
@@ -53,4 +53,16 @@ The parent overview remains read-only except for navigation to the existing add-
 
 ## Evidence
 
-Pending.
+- TDD began with `dashboard.spec.ts` failing on the absent parent-overview slots.
+- Live Chromium verification against `:3100` and the real Strapi/PostgreSQL data at `:5500`:
+  dashboard, parent-auth, and parent-auth-errors suites pass 8/8. The dashboard test covers
+  axe serious/critical cleanliness, a persisted profile link after reload, mobile no-overflow,
+  and the live My Children action route.
+- Parent-auth assertions now mirror the new family summary, plan board, and profile roster from
+  the actual `/api/my/students` response. Its error cases were split into a focused 83-line spec;
+  all touched components and test files are under the required limits.
+- `pnpm tsc --noEmit` passes; `pnpm lint` has zero errors and only the known unrelated
+  `CreateArticleForm.tsx` React Hook Form warning. Six-locale key parity passed. Independent
+  adversarial review passed after catching and resolving the stale test-selector and file-size
+  regressions. Screenshots: `.qa/screenshots/dashboard-en.png` and
+  `.qa/screenshots/dashboard-mobile-actions-en.png`.

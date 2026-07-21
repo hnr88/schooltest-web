@@ -1,7 +1,7 @@
 'use client';
 
-import { ArrowRight, Compass } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { ArrowRight, Compass, UsersRound } from 'lucide-react';
+import { useFormatter, useTranslations } from 'next-intl';
 
 import {
   Badge,
@@ -16,11 +16,12 @@ import {
 import type { DashboardOverview } from '@/modules/dashboard/types/dashboard-overview.types';
 
 export function DashboardHero({ overview }: { overview: DashboardOverview }) {
+  const format = useFormatter();
   const t = useTranslations('Dashboard');
 
   return (
-    <section data-slot="dashboard-hero" aria-labelledby="dashboard-hero-title">
-      <Card className="border-navy-800 bg-navy-900 py-6 text-white shadow-lg">
+    <section data-slot="dashboard-family-summary" aria-labelledby="dashboard-family-summary-title">
+      <Card className="rounded-2xl border-navy-900 bg-navy-950 py-6 text-white shadow-lg">
         <CardHeader className="gap-3 px-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Eyebrow tone="teal" className="text-teal-100">
@@ -31,23 +32,50 @@ export function DashboardHero({ overview }: { overview: DashboardOverview }) {
             </Badge>
           </div>
           <CardTitle
-            id="dashboard-hero-title"
+            id="dashboard-family-summary-title"
             role="heading"
             aria-level={2}
             className="max-w-2xl text-h3 font-bold text-white"
           >
-            {t('overviewTitle')}
+            {t('familySummaryTitle')}
           </CardTitle>
           <CardDescription className="max-w-2xl text-blue-100">
-            {t('overviewSubtitle')}
+            {t('familySummaryDescription')}
           </CardDescription>
         </CardHeader>
-        <CardContent className="px-6">
-          <Button href="/dashboard/search?mode=schools" variant="white" size="lg">
-            <Compass aria-hidden="true" className="size-4" />
-            {t('exploreSchools')}
-            <ArrowRight aria-hidden="true" className="size-4" />
-          </Button>
+        <CardContent className="flex flex-col gap-5 px-6">
+          <dl className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-xl bg-white/10 p-4">
+              <dt className="flex items-center gap-2 text-sm text-blue-100">
+                <UsersRound aria-hidden="true" className="size-4 text-teal-300" />
+                {t('totalProfiles')}
+              </dt>
+              <dd className="mt-2 text-2xl font-bold">{format.number(overview.totalStudents)}</dd>
+            </div>
+            <div className="rounded-xl bg-white/10 p-4">
+              <dt className="text-sm text-blue-100">{t('activeProfiles')}</dt>
+              <dd className="mt-2 text-2xl font-bold">{format.number(overview.activeStudents)}</dd>
+            </div>
+            <div className="rounded-xl bg-white/10 p-4">
+              <dt className="text-sm text-blue-100">{t('entryPlans')}</dt>
+              <dd className="mt-2 text-2xl font-bold">
+                {t('metricFraction', {
+                  completed: format.number(overview.studentsWithEntryPlan),
+                  total: format.number(overview.totalStudents),
+                })}
+              </dd>
+            </div>
+          </dl>
+          <div className="flex flex-wrap gap-3">
+            <Button href="/dashboard/children" variant="outline-white" size="lg">
+              {t('viewChildren')}
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Button>
+            <Button href="/dashboard/search?mode=schools" variant="white" size="lg">
+              <Compass aria-hidden="true" className="size-4" />
+              {t('exploreSchools')}
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </section>

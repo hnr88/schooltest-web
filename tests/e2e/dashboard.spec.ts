@@ -76,11 +76,22 @@ test('en: seeded parent session renders the real guarded dashboard shell, axe cl
   await expect(addStudentLink).toHaveAttribute('href', '/dashboard/children/new');
   const overview = page.locator('[data-slot="dashboard-overview"]');
   await expect(overview).toBeVisible();
-  await expect(overview.locator('[data-slot="stat-card"]')).toHaveCount(4);
-  await expect(overview.locator('[data-slot="dashboard-recent-profile"]').first()).toBeVisible();
-  const exploreOptions = overview.locator('[data-slot="dashboard-explore-options"]');
-  await expect(exploreOptions.locator('a[href="/dashboard/search?mode=schools"]')).toBeVisible();
-  await expect(exploreOptions.locator('a[href="/dashboard/search?mode=agents"]')).toBeVisible();
+  await expect(overview).toHaveAttribute('data-surface', 'parent-overview');
+  await expect(overview.locator('[data-slot="dashboard-family-summary"]')).toBeVisible();
+  await expect(overview.locator('[data-slot="dashboard-plan-board"]')).toBeVisible();
+  const roster = overview.locator('[data-slot="dashboard-profile-roster"]');
+  await expect(roster).toBeVisible();
+  const firstProfileLink = roster.locator('a[href^="/dashboard/children/"]').first();
+  await expect(firstProfileLink).toBeVisible();
+  const firstProfileHref = await firstProfileLink.getAttribute('href');
+  if (!firstProfileHref) throw new Error('Expected a persisted child dashboard route.');
+  const actionHub = overview.locator('[data-slot="dashboard-action-hub"]');
+  await expect(actionHub.locator('a[href="/dashboard/search?mode=schools"]')).toBeVisible();
+  await expect(actionHub.locator('a[href="/dashboard/search?mode=agents"]')).toBeVisible();
+  await page.reload();
+  await expect(
+    page.locator('[data-slot="dashboard-profile-roster"] a[href^="/dashboard/children/"]').first(),
+  ).toHaveAttribute('href', firstProfileHref);
   // Sign-out relocated to the topbar user chip (task 011) — the inline dashboard
   // button is gone; the chip trigger is the visible entry point now.
   const userMenuTrigger = page.getByRole('button', {
@@ -89,7 +100,7 @@ test('en: seeded parent session renders the real guarded dashboard shell, axe cl
   });
   await expect(userMenuTrigger).toBeVisible();
 
-  await page.screenshot({ path: path.join(SCREENSHOTS, 'dashboard-en.png') });
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'dashboard-en.png'), fullPage: true });
   await page.screenshot({ path: path.join(SCREENSHOTS, '012-overview-restyled.png') });
 
   const results = await new AxeBuilder({ page }).analyze();
@@ -140,4 +151,40 @@ test('en: signing out from the dashboard clears the JWT and returns to a guarded
   await page.waitForURL('**/sign-in');
   const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
   expect(token).toBeNull();
+});
+
+test('en: parent overview is usable on mobile and routes to the real children roster', async ({
+  page,
+  request,
+}) => {
+  const errors = watchErrors(page);
+  const loginRes = await request.post(`${API_BASE_URL}/api/auth/local`, {
+    data: { identifier: PARENT.email, password: PARENT.password },
+  });
+  expect(loginRes.ok(), await loginRes.text()).toBeTruthy();
+  const { jwt } = (await loginRes.json()) as { jwt: string };
+
+  await page.addInitScript((token) => {
+    window.localStorage.setItem('app.auth.token', token);
+  }, jwt);
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto('/dashboard');
+
+  const overview = page.locator('[data-slot="dashboard-overview"]');
+  await expect(overview).toHaveAttribute('data-surface', 'parent-overview');
+  await expect(overview.locator('[data-slot="dashboard-action-hub"]')).toBeVisible();
+  await expect(
+    page.locator('[data-slot="dashboard-family-summary"] a[href="/dashboard/children"]'),
+  ).toBeVisible();
+  expect(
+    await page.locator('html').evaluate((element) => element.scrollWidth > element.clientWidth),
+  ).toBe(false);
+
+  const actionHub = overview.locator('[data-slot="dashboard-action-hub"]');
+  await actionHub.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'dashboard-mobile-actions-en.png') });
+  await actionHub.locator('a[href="/dashboard/children"]').click();
+  await expect(page).toHaveURL(/\/dashboard\/children$/);
+  await expect(page.locator('[data-surface="children-roster"]')).toBeVisible();
+  expect(errors, errors.join('\n')).toEqual([]);
 });

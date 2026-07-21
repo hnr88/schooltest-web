@@ -69,6 +69,7 @@ export function DashboardScreen() {
   return (
     <main
       data-slot="dashboard-overview"
+      data-surface="parent-overview"
       className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8"
     >
       <header className="flex flex-wrap items-center justify-between gap-4">
@@ -86,11 +87,13 @@ export function DashboardScreen() {
 
       <DashboardHero overview={overview} />
       <DashboardMetrics overview={overview} />
-      <div className="grid gap-6 xl:grid-cols-3">
-        <div className="xl:col-span-2">
+      <div className="grid gap-6 xl:grid-cols-12">
+        <div className="xl:col-span-8">
           <DashboardRecentProfiles overview={overview} />
         </div>
-        <DashboardExploreOptions />
+        <div className="xl:col-span-4">
+          <DashboardExploreOptions />
+        </div>
       </div>
     </main>
   );

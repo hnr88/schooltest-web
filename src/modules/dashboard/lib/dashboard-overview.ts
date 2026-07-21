@@ -12,6 +12,18 @@ export function getStudentInitials(student: StudentListRow): string {
   return initials.toUpperCase() || '?';
 }
 
+export function getDashboardEntryPlan(student: StudentListRow): string | null {
+  if (!student.target_entry_year) return null;
+
+  return student.target_entry_term
+    ? `${student.target_entry_year} · ${student.target_entry_term}`
+    : student.target_entry_year;
+}
+
+export function getDashboardYearLevel(student: StudentListRow): string | null {
+  return student.current_year_level ?? student.year_level?.toString() ?? null;
+}
+
 export function getDashboardOverview(students: StudentListRow[]): DashboardOverview {
   const totalStudents = students.length;
   const studentsWithEntryPlan = students.filter(hasEntryPlan).length;
@@ -21,6 +33,7 @@ export function getDashboardOverview(students: StudentListRow[]): DashboardOverv
     activeStudents: students.filter((student) => student.status === 'active').length,
     enrolledStudents: students.filter((student) => student.status === 'enrolled').length,
     studentsWithEntryPlan,
+    studentsMissingEntryPlan: totalStudents - studentsWithEntryPlan,
     entryPlanCompletion:
       totalStudents === 0 ? 0 : Math.round((studentsWithEntryPlan / totalStudents) * 100),
     recentStudents: [...students]

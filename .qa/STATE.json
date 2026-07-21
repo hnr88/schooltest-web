@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-21T08:34:02+03:00",
+  "updated_at": "2026-07-21T08:54:33+03:00",
   "tasks": [
     {
       "id": "01",
@@ -526,7 +526,7 @@
   "ui_polish_20260720": {
     "contracts_file": ".qa/CONTRACTS.md",
     "mission": "Requested UI polish, child detail metrics, settings tabs, and notification web surfaces",
-    "updated_at": "2026-07-20T19:47:00.000Z",
+    "updated_at": "2026-07-21T08:54:33+03:00",
     "tasks": [
       {
         "id": "28",
@@ -715,8 +715,13 @@
         "layer": "frontend",
         "contract": ["C-STUDENT-LIST", "C-UI-DASHBOARD-OVERVIEW"],
         "depends_on": ["44"],
-        "status": "TODO",
-        "started_at": null
+        "status": "DONE",
+        "started_at": 1784612095,
+        "verify": {
+          "verdict": "PASS",
+          "by": "independent adversarial dashboard critic and live browser verification",
+          "evidence": "Dashboard, parent-auth, and parent-auth-errors run 8/8 against :3100/:5500. The new parent surface derives all values from the live parent-scoped student response; it passes axe, reload persistence, mobile no-overflow, and live Children navigation. The critic caught stale old-selector coverage and the test-file cap; both were fixed, then re-verified. tsc 0 errors; lint 0 errors with one known unrelated CreateArticleForm warning; six-catalog key parity passed."
+        }
       },
       { "id": "37", "file": ".thellmspace/tasks/37-notification-bell-feed.md", "title": "In-app notification bell and feed", "layer": "frontend", "contract": ["C-NOTIF-LIST", "C-NOTIF-READ", "C-NOTIF-READ-ALL"], "depends_on": ["45"], "status": "TODO", "started_at": null },
       { "id": "38", "file": ".thellmspace/tasks/38-notification-preferences.md", "title": "Notification preferences settings", "layer": "frontend", "contract": ["C-PREF-GET", "C-PREF-UPDATE"], "depends_on": ["37"], "status": "TODO", "started_at": null },

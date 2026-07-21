@@ -5,6 +5,7 @@ export interface DashboardOverview {
   activeStudents: number;
   enrolledStudents: number;
   studentsWithEntryPlan: number;
+  studentsMissingEntryPlan: number;
   entryPlanCompletion: number;
   recentStudents: StudentListRow[];
 }

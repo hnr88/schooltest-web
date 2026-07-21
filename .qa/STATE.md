@@ -60,7 +60,7 @@ Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.m
 | 42 | Dark sidebar toggle + contextual header | 36 | DONE | PASS — live desktop/mobile/header/axe |
 | 43 | Search workspace + Strapi cover media | 42 | DONE | PASS — live API 19/19 + browser 9/9 |
 | 44 | My Children + learning dashboard redesign | 43 | DONE | PASS — live children/profile 13/13 + axe |
-| 45 | Parent dashboard overview redesign | 44 | TODO | — |
+| 45 | Parent dashboard overview redesign | 44 | DONE | PASS — live parent data/reload/mobile/axe + critic |
 | 37 | In-app notification bell and feed | 45 | TODO | — |
 | 38 | Notification preferences settings | 37 | TODO | — |
 | 39 | Browser push subscription | 38 | TODO | — |

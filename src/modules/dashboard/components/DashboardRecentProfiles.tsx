@@ -1,10 +1,9 @@
 'use client';
 
 import { ArrowRight, Plus, Users } from 'lucide-react';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 import {
-  Badge,
   Button,
   Card,
   CardAction,
@@ -13,23 +12,21 @@ import {
   CardHeader,
   CardTitle,
   EmptyState,
-  PresenceAvatar,
 } from '@/modules/design-system';
-import { getStudentInitials, hasEntryPlan } from '@/modules/dashboard/lib/dashboard-overview';
+import { DashboardProfileRosterItem } from '@/modules/dashboard/components/DashboardProfileRosterItem';
 import type { DashboardOverview } from '@/modules/dashboard/types/dashboard-overview.types';
 
 export function DashboardRecentProfiles({ overview }: { overview: DashboardOverview }) {
-  const format = useFormatter();
   const t = useTranslations('Dashboard');
 
   return (
     <section
-      data-slot="dashboard-recent-profiles"
-      aria-labelledby="dashboard-recent-profiles-title"
+      data-slot="dashboard-profile-roster"
+      aria-labelledby="dashboard-profile-roster-title"
     >
-      <Card className="h-full border-border shadow-sm">
+      <Card className="h-full rounded-2xl border-border shadow-sm">
         <CardHeader>
-          <CardTitle id="dashboard-recent-profiles-title" role="heading" aria-level={2}>
+          <CardTitle id="dashboard-profile-roster-title" role="heading" aria-level={2}>
             {t('recentProfilesTitle')}
           </CardTitle>
           <CardDescription>{t('recentProfilesSubtitle')}</CardDescription>
@@ -40,7 +37,7 @@ export function DashboardRecentProfiles({ overview }: { overview: DashboardOverv
             </Button>
           </CardAction>
         </CardHeader>
-        <CardContent className="flex flex-col gap-1">
+        <CardContent className="flex flex-col gap-3">
           {overview.recentStudents.length === 0 ? (
             <EmptyState
               icon={Users}
@@ -55,32 +52,11 @@ export function DashboardRecentProfiles({ overview }: { overview: DashboardOverv
               className="border-0 bg-muted/50 p-8"
             />
           ) : (
-            overview.recentStudents.map((student) => {
-              const entryPlanReady = hasEntryPlan(student);
-
-              return (
-                <article
-                  key={student.documentId}
-                  data-slot="dashboard-recent-profile"
-                  className="flex flex-wrap items-center gap-3 rounded-lg p-3 transition-colors duration-200 ease-out-expo hover:bg-muted/70 motion-reduce:transition-none sm:flex-nowrap"
-                >
-                  <PresenceAvatar initials={getStudentInitials(student)} />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-semibold text-foreground">
-                      {student.given_name} {student.family_name}
-                    </p>
-                    <p className="text-caption text-muted-foreground">
-                      {t('addedOn', {
-                        date: format.dateTime(new Date(student.createdAt), { dateStyle: 'medium' }),
-                      })}
-                    </p>
-                  </div>
-                  <Badge variant={entryPlanReady ? 'success' : 'warning'} className="shrink-0">
-                    {entryPlanReady ? t('entryPlanSet') : t('entryPlanMissing')}
-                  </Badge>
-                </article>
-              );
-            })
+            <div className="grid gap-3 lg:grid-cols-2">
+              {overview.recentStudents.map((student) => (
+                <DashboardProfileRosterItem key={student.documentId} student={student} />
+              ))}
+            </div>
           )}
         </CardContent>
       </Card>
