@@ -1,7 +1,7 @@
 {
   "contracts_file": ".qa/CONTRACTS.md",
   "mission": "M2: parent auth (password+Google) + student passwordless + dashboard + search",
-  "updated_at": "2026-07-20T23:07:02+03:00",
+  "updated_at": "2026-07-21T08:34:02+03:00",
   "tasks": [
     {
       "id": "01",
@@ -700,8 +700,13 @@
         "layer": "frontend",
         "contract": ["C-STUDENT-LIST", "C-PARENT-CHILD-PROGRESS", "C-UI-CHILD-LEARNING-SURFACE"],
         "depends_on": ["43"],
-        "status": "DOING",
-        "started_at": 1784578195
+        "status": "DONE",
+        "started_at": 1784578195,
+        "verify": {
+          "verdict": "PASS",
+          "by": "sequential adversarial live browser and axe verification",
+          "evidence": "Live roster and child dashboard use separate data surfaces; completion is derived only from persisted metrics. children-profile/students-list/dashboard-students 13/13 passed against :3100/:5500: navigation, reload, foreign 404, mobile no-overflow, archive/unarchive persistence, locale render and axe. tsc 0 errors; lint 0 errors with one known unrelated CreateArticleForm warning; six-locale key parity passed."
+        }
       },
       {
         "id": "45",

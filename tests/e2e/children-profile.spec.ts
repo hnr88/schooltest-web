@@ -122,11 +122,13 @@ test('en: child cards remain usable at mobile width', async ({ page, request }) 
   await signInAs(page, request, PARENT.email, PARENT.password);
   await page.goto('/dashboard/children');
 
-  await expect(
-    page.getByRole('link', {
+  await page
+    .getByRole('link', {
       name: icu(cat(en, 'Children.viewProfileLabel'), { name: 'Mia Keller' }),
-    }),
-  ).toBeVisible();
+    })
+    .click();
+  await expect(page.locator('[data-surface="child-learning-dashboard"]')).toBeVisible();
+  await expect(page.locator('[data-slot="child-learning-summary"]')).toBeVisible();
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
   ).toBeTruthy();

@@ -58,31 +58,41 @@ export function ChildResults({ results }: ChildResultsProps) {
                   </Badge>
                 </div>
                 <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 xl:grid-cols-4">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Languages aria-hidden="true" className="size-4 text-teal-600" />
-                    <dt>{t('resultSkill')}</dt>
-                    <dd className="text-foreground">
+                  <div>
+                    <dt className="flex items-center gap-2 text-muted-foreground">
+                      <Languages aria-hidden="true" className="size-4 text-teal-600" />
+                      {t('resultSkill')}
+                    </dt>
+                    <dd className="mt-1 font-medium text-foreground">
                       {result.skill ? t(`resultSkills.${result.skill}`) : t('notAvailable')}
                     </dd>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <CircleGauge aria-hidden="true" className="size-4 text-blue-600" />
-                    <dt>{t('resultCefr')}</dt>
-                    <dd className="text-foreground">{result.cefrBand ?? t('notAvailable')}</dd>
+                  <div>
+                    <dt className="flex items-center gap-2 text-muted-foreground">
+                      <CircleGauge aria-hidden="true" className="size-4 text-blue-600" />
+                      {t('resultCefr')}
+                    </dt>
+                    <dd className="mt-1 font-medium text-foreground">
+                      {result.cefrBand ?? t('notAvailable')}
+                    </dd>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <FileText aria-hidden="true" className="text-navy-700 size-4" />
-                    <dt>{t('resultReadiness')}</dt>
-                    <dd className="text-foreground">
+                  <div>
+                    <dt className="flex items-center gap-2 text-muted-foreground">
+                      <FileText aria-hidden="true" className="size-4 text-navy-700" />
+                      {t('resultReadiness')}
+                    </dt>
+                    <dd className="mt-1 font-medium text-foreground">
                       {result.readiness
                         ? t(`resultReadinessValues.${result.readiness}`)
                         : t('notAvailable')}
                     </dd>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <CalendarDays aria-hidden="true" className="size-4 text-teal-600" />
-                    <dt>{t('resultPublished')}</dt>
-                    <dd className="text-foreground">
+                  <div>
+                    <dt className="flex items-center gap-2 text-muted-foreground">
+                      <CalendarDays aria-hidden="true" className="size-4 text-teal-600" />
+                      {t('resultPublished')}
+                    </dt>
+                    <dd className="mt-1 font-medium text-foreground">
                       {result.publishedAt
                         ? format.dateTime(new Date(result.publishedAt), { dateStyle: 'medium' })
                         : t('notPublished')}

@@ -45,11 +45,13 @@ function ChildLearningSummary({ metrics }: { metrics: ChildProgressMetrics }) {
         )}
         <div>
           <p className="text-sm font-semibold text-foreground">{t('completionLabel')}</p>
-          <p className="mt-1 text-2xl font-bold text-foreground">
-            {completionPercent === null
-              ? t('notAvailable')
-              : t('completionPercent', { percent: format.number(completionPercent) })}
-          </p>
+          {completionPercent === null ? (
+            <p className="mt-1 text-sm font-medium text-foreground">{t('noSessionProgress')}</p>
+          ) : (
+            <p className="mt-1 text-2xl font-bold text-foreground">
+              {t('completionPercent', { percent: format.number(completionPercent) })}
+            </p>
+          )}
         </div>
       </div>
     </section>

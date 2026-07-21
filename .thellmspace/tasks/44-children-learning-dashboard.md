@@ -6,7 +6,7 @@ kind: fix
 slice: child collection and a distinct assessment-progress detail surface
 target: src/modules/children/**; messages/*.json; tests/e2e/children-profile.spec.ts
 contract: C-STUDENT-LIST, C-PARENT-CHILD-PROGRESS, C-UI-CHILD-LEARNING-SURFACE
-status: DOING
+status: DONE
 depends_on: [43]
 ---
 ## Objective
@@ -57,4 +57,14 @@ for an honest progress composition.
 
 ## Evidence
 
-Pending.
+- The live My Children roster and child dashboard now use distinct data surfaces: profile
+  collection `data-surface="children-roster"` and `data-surface="child-learning-dashboard"`.
+  The latter derives its completion signal only from live `completedSessions` / `totalSessions`
+  and renders an honest no-sessions / no-results state when the API returns zero values.
+- `pnpm exec playwright test tests/e2e/children-profile.spec.ts tests/e2e/students-list.spec.ts
+  tests/e2e/dashboard-students.spec.ts --reporter=line` passed 13/13 against live web `:3100`
+  and API `:5500`: real profile navigation, reload, foreign-child 404, mobile detail no-overflow,
+  archive/unarchive persistence, localized roster headings, and zero serious/critical axe issues.
+- Screenshots: `.qa/screenshots/children-list-en.png` and `.qa/screenshots/child-profile-en.png`.
+  `pnpm tsc --noEmit` passed; `pnpm lint` has zero errors and one known unrelated React Compiler
+  warning in `CreateArticleForm.tsx`. All six locale catalogs have identical key shape.

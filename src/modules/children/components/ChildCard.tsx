@@ -49,28 +49,28 @@ export function ChildCard({ student }: ChildCardProps) {
           </div>
 
           <dl className="grid gap-3 rounded-xl bg-muted/60 p-3 text-sm sm:grid-cols-2">
-            <div className="flex min-w-0 items-center gap-2">
-              <GraduationCap aria-hidden="true" className="size-4 shrink-0 text-primary" />
-              <div className="min-w-0">
-                <dt className="text-caption font-semibold text-muted-foreground">{t('yearLevel')}</dt>
-                <dd className="truncate font-semibold text-foreground">{yearLevel}</dd>
-              </div>
+            <div className="min-w-0">
+              <dt className="flex items-center gap-2 text-caption font-semibold text-muted-foreground">
+                <GraduationCap aria-hidden="true" className="size-4 shrink-0 text-primary" />
+                {t('yearLevel')}
+              </dt>
+              <dd className="mt-1 truncate font-semibold text-foreground">{yearLevel}</dd>
             </div>
-            <div className="flex min-w-0 items-center gap-2">
-              <CalendarDays aria-hidden="true" className="size-4 shrink-0 text-teal-600" />
-              <div className="min-w-0">
-                <dt className="text-caption font-semibold text-muted-foreground">{t('targetEntry')}</dt>
-                <dd className="truncate font-semibold text-foreground">{targetEntry}</dd>
-              </div>
+            <div className="min-w-0">
+              <dt className="flex items-center gap-2 text-caption font-semibold text-muted-foreground">
+                <CalendarDays aria-hidden="true" className="size-4 shrink-0 text-teal-600" />
+                {t('targetEntry')}
+              </dt>
+              <dd className="mt-1 truncate font-semibold text-foreground">{targetEntry}</dd>
             </div>
-            <div className="flex min-w-0 items-center gap-2 sm:col-span-2">
-              <MapPin aria-hidden="true" className="size-4 shrink-0 text-navy-700" />
-              <div className="min-w-0">
-                <dt className="text-caption font-semibold text-muted-foreground">{t('nationality')}</dt>
-                <dd className="truncate font-semibold text-foreground">
-                  {student.nationality ?? t('notAvailable')}
-                </dd>
-              </div>
+            <div className="min-w-0 sm:col-span-2">
+              <dt className="flex items-center gap-2 text-caption font-semibold text-muted-foreground">
+                <MapPin aria-hidden="true" className="size-4 shrink-0 text-navy-700" />
+                {t('nationality')}
+              </dt>
+              <dd className="mt-1 truncate font-semibold text-foreground">
+                {student.nationality ?? t('notAvailable')}
+              </dd>
             </div>
           </dl>
         </CardContent>
