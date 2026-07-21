@@ -619,6 +619,27 @@
       },
       "alwaysOnTitle": "Kemas kini akaun dan keselamatan sentiasa aktif",
       "alwaysOnDescription": "Notis akaun dan keselamatan penting tidak boleh dimatikan.",
+      "push": {
+        "title": "Pemberitahuan peranti",
+        "description": "Terima kemas kini SchoolTest yang penting dalam pelayar ini.",
+        "enable": "Dayakan pada peranti ini",
+        "enabling": "Mendayakan pemberitahuan",
+        "disable": "Nyahdayakan pada peranti ini",
+        "disabling": "Menyahdayakan pemberitahuan",
+        "enabled": "Pemberitahuan peranti telah didayakan.",
+        "disabled": "Pemberitahuan peranti telah dinyahdayakan.",
+        "enableError": "Kami tidak dapat mendayakan pemberitahuan peranti.",
+        "disableError": "Kami tidak dapat menyahdayakan pemberitahuan peranti.",
+        "status": {
+          "checking": "Memeriksa sokongan pelayar",
+          "ready": "Sedia untuk didayakan",
+          "subscribed": "Didayakan pada peranti ini",
+          "unsupported": "Tidak disokong oleh pelayar ini",
+          "permissionDenied": "Kebenaran disekat",
+          "notConfigured": "Penghantaran tolak tidak tersedia",
+          "error": "Kami tidak dapat mengesahkan peranti ini"
+        }
+      },
       "save": "Simpan keutamaan pemberitahuan",
       "saving": "Menyimpan keutamaan",
       "saved": "Keutamaan pemberitahuan disimpan.",

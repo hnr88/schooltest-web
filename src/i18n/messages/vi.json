@@ -619,6 +619,27 @@
       },
       "alwaysOnTitle": "Cập nhật tài khoản và bảo mật luôn bật",
       "alwaysOnDescription": "Không thể tắt các thông báo quan trọng về tài khoản và bảo mật.",
+      "push": {
+        "title": "Thông báo trên thiết bị",
+        "description": "Nhận các cập nhật SchoolTest quan trọng trên trình duyệt này.",
+        "enable": "Bật trên thiết bị này",
+        "enabling": "Đang bật thông báo",
+        "disable": "Tắt trên thiết bị này",
+        "disabling": "Đang tắt thông báo",
+        "enabled": "Đã bật thông báo trên thiết bị.",
+        "disabled": "Đã tắt thông báo trên thiết bị.",
+        "enableError": "Không thể bật thông báo trên thiết bị.",
+        "disableError": "Không thể tắt thông báo trên thiết bị.",
+        "status": {
+          "checking": "Đang kiểm tra hỗ trợ của trình duyệt",
+          "ready": "Sẵn sàng bật",
+          "subscribed": "Đã bật trên thiết bị này",
+          "unsupported": "Trình duyệt này không hỗ trợ",
+          "permissionDenied": "Quyền đã bị chặn",
+          "notConfigured": "Không thể gửi thông báo đẩy",
+          "error": "Không thể xác minh thiết bị này"
+        }
+      },
       "save": "Lưu tùy chọn thông báo",
       "saving": "Đang lưu tùy chọn",
       "saved": "Đã lưu tùy chọn thông báo.",

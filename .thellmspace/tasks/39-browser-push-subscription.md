@@ -4,9 +4,9 @@ title: Browser push subscription and VAPID configuration surface
 layer: integration
 kind: implement
 slice: real browser push registration persisted through Strapi
-target: schooltest-api/src/api/push-subscription/{controllers,routes}; schooltest-api/src/bootstrap/{permissions-action-refs,permissions-actions}.ts; schooltest-web/src/app/service-worker/route.ts; schooltest-web/src/modules/notifications/**; messages/*.json; tests/e2e/push-subscription.spec.ts
+target: schooltest-api/src/api/push-subscription/{controllers,routes,services}; schooltest-api/src/bootstrap/{permissions-action-refs,permissions-actions}.ts; schooltest-web/src/app/service-worker/route.ts; schooltest-web/src/modules/notifications/**; messages/*.json; tests/e2e/push-subscription*.spec.ts
 contract: C-PUSH-VAPID-CONFIG, C-PUSH-SUBSCRIBE, C-PUSH-UNSUBSCRIBE
-status: TODO
+status: DONE
 depends_on: [38]
 ---
 ## Objective
@@ -18,8 +18,9 @@ through the existing real Strapi API.
 ## Contract
 
 Implement `C-PUSH-VAPID-CONFIG`; retain existing subscribe/unsubscribe request schemas and
-owner-forced persistence. The service worker only displays server-delivered push payloads and
-never contains secrets or invented message text.
+server-forced owner persistence. A known endpoint owned by another parent is rejected rather
+than reassigned. The service worker only displays server-delivered push payloads and never
+contains secrets or invented message text.
 
 ## Files
 
@@ -54,4 +55,12 @@ The running API has its existing VAPID configuration; a missing key is reported 
 
 ## Evidence
 
-Pending independent verification.
+Independent verifier PASS, 2026-07-21: parent-only `GET /api/push-subscriptions/vapid-public-key`
+returned the exact public-only shape; anonymous/teacher calls and malformed subscribe were rejected.
+Dynamic real subscription records proved same-owner upsert, foreign claim generic 403 with unchanged
+owner, opaque foreign delete 0, owner delete 1 and idempotent retry 0 in PostgreSQL. Playwright
+`push-subscription*.spec.ts` passed 5/5, including the worker response/headers, configuration failure
+control, mobile no-overflow and axe serious/critical clean. Both package typechecks and API lint passed;
+web lint has zero errors and its one pre-existing `CreateArticleForm` warning. Local Chromium honestly
+keeps notification permission denied, so UI proof covers the truthful disabled/blocked state rather than
+claiming an impossible browser opt-in.

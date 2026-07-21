@@ -619,6 +619,27 @@
       },
       "alwaysOnTitle": "Account and security updates stay on",
       "alwaysOnDescription": "Important account and security notices cannot be switched off.",
+      "push": {
+        "title": "Device notifications",
+        "description": "Receive time-sensitive SchoolTest updates on this browser.",
+        "enable": "Enable on this device",
+        "enabling": "Enabling notifications",
+        "disable": "Disable on this device",
+        "disabling": "Disabling notifications",
+        "enabled": "Device notifications enabled.",
+        "disabled": "Device notifications disabled.",
+        "enableError": "We couldn't enable device notifications.",
+        "disableError": "We couldn't disable device notifications.",
+        "status": {
+          "checking": "Checking browser support",
+          "ready": "Ready to enable",
+          "subscribed": "Enabled on this device",
+          "unsupported": "Not supported by this browser",
+          "permissionDenied": "Permission is blocked",
+          "notConfigured": "Push delivery is unavailable",
+          "error": "Couldn't verify this device"
+        }
+      },
       "save": "Save notification preferences",
       "saving": "Saving preferences",
       "saved": "Notification preferences saved.",

@@ -619,6 +619,27 @@
       },
       "alwaysOnTitle": "账户和安全更新始终开启",
       "alwaysOnDescription": "重要的账户和安全通知无法关闭。",
+      "push": {
+        "title": "设备通知",
+        "description": "在此浏览器中接收重要的 SchoolTest 更新。",
+        "enable": "在此设备上启用",
+        "enabling": "正在启用通知",
+        "disable": "在此设备上停用",
+        "disabling": "正在停用通知",
+        "enabled": "已启用设备通知。",
+        "disabled": "已停用设备通知。",
+        "enableError": "无法启用设备通知。",
+        "disableError": "无法停用设备通知。",
+        "status": {
+          "checking": "正在检查浏览器支持",
+          "ready": "可以启用",
+          "subscribed": "已在此设备上启用",
+          "unsupported": "此浏览器不支持",
+          "permissionDenied": "权限已被阻止",
+          "notConfigured": "推送通知暂不可用",
+          "error": "无法验证此设备"
+        }
+      },
       "save": "保存通知偏好设置",
       "saving": "正在保存偏好设置",
       "saved": "通知偏好设置已保存。",

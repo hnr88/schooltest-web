@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/modules/design-system';
 import { NotificationPreferencesForm } from '@/modules/notifications/components/NotificationPreferencesForm';
+import { PushSubscriptionControl } from '@/modules/notifications/components/PushSubscriptionControl';
 
 function NotificationPreferencesPanel() {
   const t = useTranslations('Settings');
@@ -22,7 +23,8 @@ function NotificationPreferencesPanel() {
           </CardTitle>
           <CardDescription>{t('notificationPreferences.description')}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-6">
+          <PushSubscriptionControl />
           <NotificationPreferencesForm />
         </CardContent>
       </Card>

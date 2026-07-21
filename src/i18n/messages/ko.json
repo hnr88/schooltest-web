@@ -619,6 +619,27 @@
       },
       "alwaysOnTitle": "계정 및 보안 업데이트는 항상 켜져 있습니다",
       "alwaysOnDescription": "중요한 계정 및 보안 알림은 끌 수 없습니다.",
+      "push": {
+        "title": "기기 알림",
+        "description": "이 브라우저에서 중요한 SchoolTest 업데이트를 받아보세요.",
+        "enable": "이 기기에서 사용",
+        "enabling": "알림을 켜는 중",
+        "disable": "이 기기에서 사용 안 함",
+        "disabling": "알림을 끄는 중",
+        "enabled": "기기 알림이 켜졌습니다.",
+        "disabled": "기기 알림이 꺼졌습니다.",
+        "enableError": "기기 알림을 켤 수 없습니다.",
+        "disableError": "기기 알림을 끌 수 없습니다.",
+        "status": {
+          "checking": "브라우저 지원 확인 중",
+          "ready": "사용할 준비가 되었습니다",
+          "subscribed": "이 기기에서 사용 중",
+          "unsupported": "이 브라우저에서는 지원되지 않습니다",
+          "permissionDenied": "권한이 차단되었습니다",
+          "notConfigured": "푸시 전송을 사용할 수 없습니다",
+          "error": "이 기기를 확인할 수 없습니다"
+        }
+      },
       "save": "알림 설정 저장",
       "saving": "설정 저장 중",
       "saved": "알림 설정이 저장되었습니다.",

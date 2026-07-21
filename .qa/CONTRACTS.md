@@ -194,10 +194,27 @@ details? } }` shape.
   `200 { data: { updated } }`.
 - `C-PREF-GET`/`C-PREF-UPDATE`: `GET`/`PUT /api/notification-preferences/me`, each
   parent-owned and runtime-validated.
-- `C-PUSH-SUBSCRIBE`/`C-PUSH-UNSUBSCRIBE`: `POST`/`DELETE /api/push-subscriptions` with
-  the browser PushSubscription shape / `{ endpoint }`; owner is server-derived. SMS stays
-  the existing honest Twilio-prepared server channel and is exercised through its real API
-  dispatch path rather than a fabricated browser control.
+### C-PUSH-SUBSCRIBE — POST /api/push-subscriptions
+
+- Auth/ownership: parent JWT only. The browser subscription owner is always server-derived
+  from that JWT; `user` is not an accepted request field.
+- Request: strict browser `PushSubscription.toJSON()` shape `{ endpoint, keys: { p256dh, auth },
+  expirationTime?: epoch-ms|null, userAgent?: string }`. Unknown/missing keys → typed 400
+  `ValidationError`; unauthenticated/non-parent → project-standard 403.
+- 200: `{ data: { documentId: string, endpoint: string } }`. An endpoint already owned by the
+  same parent updates its subscription material. An endpoint owned by a different parent returns
+  generic 403 `ForbiddenError`; it is never reassigned or disclosed.
+- Persistence: creates/updates exactly one `push_subscriptions` row, connecting the creator to
+  the authenticated parent by the server-side relation.
+
+### C-PUSH-UNSUBSCRIBE — DELETE /api/push-subscriptions
+
+- Auth/ownership: parent JWT only; strict body `{ endpoint: string }` (or the documented
+  `?endpoint=` equivalent). Invalid input → typed 400 `ValidationError`; unauthenticated/non-parent
+  → project-standard 403.
+- 200: `{ data: { deleted: 0|1 } }`. A missing or foreign endpoint returns `deleted: 0` so no
+  other parent's subscription is exposed; an owned endpoint is removed and a retry remains 0.
+- Persistence: deletes only the authenticated parent's matching `push_subscriptions` row.
 
 ### C-UI-SHELL-NAV — sidebar and contextual dashboard header
 

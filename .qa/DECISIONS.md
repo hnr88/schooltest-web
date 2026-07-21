@@ -356,3 +356,14 @@ instead, not deleted and not a fake pass.
   minimum and giving users a large equivalent tap target without editing the read-only primitive.
 - At phone widths the four settings tabs are a two-column grid. Desktop keeps the compact row;
   this prevents the selected Notifications tab from being clipped after its addition.
+
+## 2026-07-21 D32 — browser push ownership and local permission behavior
+
+- A globally unique browser push endpoint is immutable across parent accounts. Re-subscribing as
+  its existing owner updates only keys and metadata; another parent receives a generic 403 and
+  cannot learn or transfer ownership. This is enforced by an explicit populated owner check in
+  the real Strapi Document Service before any update.
+- The local headless Chromium runtime reports `Notification.permission === 'denied'` even after
+  Playwright's documented notification grant. The app therefore renders the real blocked state
+  and disables opt-in; it does not fake a browser subscription or delivery receipt. API-level
+  persistence and web-push dispatch remain proven against the running Strapi/PostgreSQL stack.
