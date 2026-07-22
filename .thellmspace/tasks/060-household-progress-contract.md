@@ -7,7 +7,7 @@ slice: GET /api/my/progress — the single shared shape definition for the house
 target: schooltest-api/src/contracts/parent-household-progress.ts · schooltest-api/src/contracts/index.ts · schooltest-web/tests/e2e/household-progress-contract.spec.ts
 contract: C-DASH-HOUSEHOLD
 design: .qa/design/spec/01-portal-dashboard.md#10-metric-inventory (rows 1,3,4,5,6,7) · .qa/design/screens/portal--main.html:26-57 · .qa/design/spec/02-portal-children.md#a5-component-childcard
-status: TODO
+status: DONE
 depends_on: []
 ---
 
@@ -166,4 +166,40 @@ Nothing. W2 has no dependency on W0/W1 (`.qa/PLAN.md` wave table).
 
 ## Evidence
 
-<!-- filled in as the task runs -->
+**BUILD** (2026-07-22 ~22:11) — created `schooltest-api/src/contracts/parent-household-progress.ts`
+(54 lines), appended one barrel line to `src/contracts/index.ts`, created
+`schooltest-web/tests/e2e/household-progress-contract.spec.ts` (115 lines). Stage-1 keys only.
+
+**VERIFY — PASS** (independent agent, never the builder, 2026-07-22 ~22:30). Its own evidence:
+- Runtime key dump: `household` = `[childCount, testsCompleted, resultsPublished]`;
+  `child` = `[documentId, givenName, familyName, yearLevel, status]`. Exactly the staging rule.
+  No later-stage key smuggled in; no per-child `cefrBand`/`cefrStageIndex`/`acaraPhase` (A1 held).
+- `CEFR_LADDER = ["pre_A1","A1","A2","B1","B2","C1"]`, len 6, no `C2` — byte-matches
+  `result/schema.json:52-55` and `DOC1:43`. `READINESS_RANK` has no `not_assessed`.
+- All four schemas are `z.strictObject`; loophole grep (`optional|passthrough|catchall|loose|
+  nullish|z.object(`) returns nothing.
+- Real-data proof, verifier's own SQL against 127.0.0.1:5540: `select distinct cefr_band from
+  results` returns `pre_A1,A1,A2,B1,B2,C1` + NULL over 2358 rows; `count(*) where cefr_band='C2'`
+  = **0**. `HOUSEHOLD_SQL` for the top parent (user 49, 10 children) returns `10|18|3`;
+  `CHILDREN_SQL` returns 10 real rows. No fixture, no mock, no hardcoded stand-in.
+- Strictness bites — verifier's own 19-case mutation harness: extra key, negative count,
+  non-integer, missing key, injected per-child `cefrBand`/`cefrStageIndex`/`acaraPhase`, nested
+  child composite, and `household.practiceByDay` stage-creep were ALL rejected; the four legal
+  nullable/enum cases were accepted.
+- Gates: api `tsc` 0, api `lint` 0; web `tsc` 0, web `lint` 0 errors (1 pre-existing warning).
+  New spec in isolation: **6 passed**. Full suite: **163 passed** = 157 baseline + 6 new, twice.
+  Control run excluding the new spec: **157 passed**. Zero regressions.
+- Banned-pattern grep over all three files: no hits for
+  `any|populate:'*'|mock|fake|stub|dummy|placeholder|TODO|FIXME|numeric id:`.
+- Scope: `schooltest-api` git status is exactly the two claimed files. In `schooltest-web`, mtime
+  ordering shows the three other untracked specs predate the builder by 2+ hours.
+
+**Findings carried forward (not defects in this task):**
+1. `students.given_name` is nullable in Postgres and 30 rows are NULL, though **0 of 337
+   parent-linked students** are. Non-nullable `givenName` is safe today; task **062** must keep
+   the query parent-scoped or add a defensive filter, or the Zod parse throws.
+2. `schooltest-web/src/modules/children/lib/child-skills.ts:30` already hand-declares a duplicate
+   `CEFR_LADDER`. Single-source-of-truth violation predating this task — W3/W5 must collapse it
+   onto the exported constant.
+3. `enrolled` is a legal `status` but occurs in zero rows, so the DB-driven test proves the enum
+   is a superset of reality, not that `enrolled` round-trips.

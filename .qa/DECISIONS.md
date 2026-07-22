@@ -564,3 +564,38 @@ coarse reading in D-SCOPE-3:
 
 Practical rule for every W4-W10 task: read `.qa/intake/RECONCILIATION.md` §4.4 before deleting or
 rewriting anything in the module you are touching.
+
+## D-VERIFY-2 — The regression gate is the PASSED COUNT, not the failing test's name
+
+Discovered by the independent verifier of task 060 (2026-07-22), and it corrects the baseline this
+mission recorded in `.qa/PLAN.md` and `.qa/HANDOFF.md`.
+
+Three consecutive full-suite runs produced **three different failure sets**:
+
+| Run | Failure(s) |
+|---|---|
+| 1 | `notification-preference-controls.spec.ts:75` |
+| 2 | `settings-tabs.spec.ts:68` |
+| 3 (control, new spec excluded) | `a11y-responsive.spec.ts:96` + `notification-preferences.spec.ts:88` |
+
+**Every one of them passes in isolation.** `settings-tabs.spec.ts:68`'s full-suite failure is an
+axe assertion firing against a not-yet-rendered document — 43 violations led by
+`document-title: "Document does not have a non-empty <title> element"`. That is a
+navigation/hydration race under `fullyParallel: true` with 6-12 workers against a dev server, not
+a product defect.
+
+**Consequence — binding for every wave:**
+
+1. The regression gate is the **passed count**: 157 without new specs, +1 per genuinely new test.
+   A run is green when the passed count is at or above the expected number and every failure of
+   the run passes on an isolated re-run.
+2. **Never gate on the identity of the failing spec.** The earlier framing ("the single permitted
+   failure is `notification-preference-controls.spec.ts:75`") was wrong and would have caused a
+   real regression to be waved through as "the known red", or a flake to halt the mission.
+3. A failure must be re-run in isolation before it is called a regression. If it passes alone and
+   the passed count is intact, it is contention. If it fails alone, it is real — stop and fix.
+4. **This makes task 260 more interesting, not less.** Its diagnosis — the SMS opt-out row being
+   clobbered by a concurrent spec writing the same parent's preference row — now looks like the
+   same class of defect as the wider flakiness: shared mutable seed state across parallel workers.
+   W9/W11 should consider whether the suite needs per-worker isolation of the seeded parent rather
+   than only fixing one spec.

@@ -330,6 +330,13 @@ Product vocabulary source of truth: `docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md` �
 
 ## C-DASH-HOUSEHOLD — GET /api/my/progress
 
+> **SUPERSEDED IN PART BY AMENDMENT A1 (at the end of this file). READ A1 BEFORE BUILDING.**
+> The per-child `cefrBand`, `cefrStageIndex` and `acaraPhase` fields shown in the v1 payload
+> below are DELETED — a single per-child level is a cross-skill composite, forbidden by
+> `DOC1:304` and `DOC0:46`. Bands live only in `skills[]`, one entry per skill, and `skills[]`
+> IS padded: every skill without an official result appears with `readiness: "not_assessed"`.
+> Where this section and A1 disagree, **A1 wins**.
+
 Household + per-child dashboard aggregate. Exists because `/my/students/:documentId/progress` is
 strictly per-child (gap **G1**), so the design's dashboard would otherwise need 1+N requests
 against a 120 req/min/IP limiter.
