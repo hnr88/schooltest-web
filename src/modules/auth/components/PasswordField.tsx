@@ -1,8 +1,16 @@
 'use client';
 
 import { Eye, EyeOff } from 'lucide-react';
+import type { ReactNode } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
+import { cn } from '@/lib/utils';
+import { AuthFieldError } from '@/modules/auth/components/AuthFieldError';
+import {
+  AUTH_FIELD_CLASS,
+  AUTH_INPUT_CLASS,
+  AUTH_LABEL_CLASS,
+} from '@/modules/auth/constants/auth-field.constants';
 import { Button, Input, Label } from '@/modules/design-system';
 
 interface PasswordFieldProps {
@@ -15,6 +23,7 @@ interface PasswordFieldProps {
   toggleLabel: string;
   error?: string;
   registration: UseFormRegisterReturn;
+  labelAccessory?: ReactNode;
 }
 
 // Shared password input + show/hide toggle, extracted so SignUpForm (username,
@@ -29,10 +38,16 @@ export function PasswordField({
   toggleLabel,
   error,
   registration,
+  labelAccessory,
 }: PasswordFieldProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
+    <div className={AUTH_FIELD_CLASS}>
+      <div className="flex items-baseline justify-between gap-3">
+        <Label htmlFor={id} className={AUTH_LABEL_CLASS}>
+          {label}
+        </Label>
+        {labelAccessory}
+      </div>
       <div className="relative">
         <Input
           id={id}
@@ -41,7 +56,7 @@ export function PasswordField({
           placeholder={placeholder}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
-          className="h-11 pr-12"
+          className={cn(AUTH_INPUT_CLASS, 'pr-12')}
           {...registration}
         />
         <Button
@@ -51,7 +66,7 @@ export function PasswordField({
           onClick={onToggleVisible}
           aria-pressed={visible}
           aria-label={toggleLabel}
-          className="absolute top-0 right-0 size-11 text-muted-foreground"
+          className="absolute top-0 right-0 size-11 rounded-lg text-muted-foreground transition-transform duration-150 ease-out-expo hover:scale-110 hover:text-foreground active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100"
         >
           {visible ? (
             <EyeOff aria-hidden="true" className="size-4" />
@@ -60,11 +75,7 @@ export function PasswordField({
           )}
         </Button>
       </div>
-      {error ? (
-        <p id={`${id}-error`} className="text-sm text-destructive">
-          {error}
-        </p>
-      ) : null}
+      {error ? <AuthFieldError id={`${id}-error`} message={error} /> : null}
     </div>
   );
 }

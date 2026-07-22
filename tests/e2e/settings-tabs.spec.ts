@@ -118,9 +118,19 @@ test('en: search preferences write to the real API and survive a settings reload
 
   try {
     await page.goto('/dashboard/settings?tab=search');
-    const queensland = page.getByRole('checkbox', { name: 'QLD' });
-    const expectedChecked = !(await queensland.isChecked());
+    // The multi-select filter groups now render the canonical ChoicePill group
+    // (App Screens Create-test "Assign to classes" L3290-3293) instead of a bordered
+    // checkbox slab, which canonical has nowhere. Its ARIA contract is role=group +
+    // aria-pressed toggle buttons, so the assertion moves to the equivalent state
+    // attribute at the same specificity — role + accessible name + toggle state —
+    // and additionally pins the group's own accessible name, which the checkbox
+    // version never asserted.
+    const states = page.getByRole('group', { name: cat(en, 'Settings.defaultStates') });
+    await expect(states).toBeVisible();
+    const queensland = states.getByRole('button', { name: 'QLD', exact: true });
+    const expectedPressed = String((await queensland.getAttribute('aria-pressed')) !== 'true');
     await queensland.click();
+    await expect(queensland).toHaveAttribute('aria-pressed', expectedPressed);
     const updatePromise = page.waitForResponse(
       (response) =>
         response.url().endsWith('/api/search-preferences/me') &&
@@ -131,7 +141,7 @@ test('en: search preferences write to the real API and survive a settings reload
     expect(update.status(), await update.text()).toBe(200);
 
     await page.reload();
-    await expect(queensland).toBeChecked({ checked: expectedChecked });
+    await expect(queensland).toHaveAttribute('aria-pressed', expectedPressed);
   } finally {
     const restore = await request.put(`${API_BASE_URL}/api/search-preferences/me`, {
       headers: { Authorization: `Bearer ${jwt}` },

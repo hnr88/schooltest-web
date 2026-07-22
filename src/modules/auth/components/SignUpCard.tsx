@@ -4,19 +4,20 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { Link, useRouter } from '@/i18n/navigation';
+import { AuthDivider } from '@/modules/auth/components/AuthDivider';
 import { GoogleButton } from '@/modules/auth/components/GoogleButton';
 import { SignUpConfirmState } from '@/modules/auth/components/SignUpConfirmState';
 import { SignUpForm } from '@/modules/auth/components/SignUpForm';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
-import { Card, CardContent, Logo, Separator } from '@/modules/design-system';
 
-// Sibling of SignInCard per D10: same DS card layout/copy-family, submitting
-// through the register endpoint (C-AUTH-REGISTER). On register 200 the card
-// content swaps to the check-your-email state (§14.2, D-AUTH-1 — no jwt, no
-// redirect) holding the submitted email for the resend flow.
+// Register screen (design spec 06 §1.2): centred 560px column — heading block,
+// then the white r16 form card on a 1px --border rule with --shadow-sm, then the
+// "already have an account" line. Submitting goes through the register endpoint
+// (C-AUTH-REGISTER); on 200 the card swaps to the check-your-email state (§14.2,
+// D-AUTH-1 — no jwt, no redirect) holding the submitted email for the resend
+// flow. Google keeps its DOM slot above the fields (a11y-auth.spec focus order).
 export function SignUpCard() {
   const t = useTranslations('Auth');
-  const tHome = useTranslations('Home');
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
@@ -32,39 +33,34 @@ export function SignUpCard() {
     if (hydrated && token) router.replace('/dashboard');
   }, [hydrated, token, router]);
 
+  if (registeredEmail !== null) {
+    return (
+      <div className="rounded-panel border border-border bg-card p-7 shadow-sm sm:p-8">
+        <SignUpConfirmState email={registeredEmail} />
+      </div>
+    );
+  }
+
   return (
-    <Card className="w-full animate-in rounded-2xl shadow-lg duration-300 [--card-spacing:--spacing(8)] fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
-      <CardContent className="flex flex-col">
-        <Link href="/" className="self-start rounded-sm lg:hidden">
-          <Logo alt={tHome('footer.logoAlt')} height={26} />
+    <div className="flex animate-in flex-col gap-6 duration-500 ease-out-expo fade-in slide-in-from-bottom-3 motion-reduce:animate-none">
+      <div className="flex flex-col gap-2 text-center">
+        <h1 className="text-auth-title font-bold text-foreground">{t('signUpTitle')}</h1>
+        <p className="text-body-md text-muted-foreground">{t('signUpSubtitle')}</p>
+      </div>
+      <div className="flex flex-col gap-4 rounded-panel border border-border bg-card p-7 shadow-sm sm:p-8">
+        <GoogleButton className="w-full" />
+        <AuthDivider label={t('orDivider')} />
+        <SignUpForm onRegistered={setRegisteredEmail} />
+      </div>
+      <p className="text-center text-body-md text-muted-foreground">
+        {t('hasAccount')}{' '}
+        <Link
+          href="/sign-in"
+          className="rounded-sm font-semibold text-primary transition-colors duration-150 hover:text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        >
+          {t('signInLink')}
         </Link>
-        {registeredEmail !== null ? (
-          <div className="mt-5">
-            <SignUpConfirmState email={registeredEmail} />
-          </div>
-        ) : (
-          <>
-            <h1 className="mt-5 text-2xl font-bold">{t('signUpTitle')}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{t('signUpSubtitle')}</p>
-            <GoogleButton className="mt-5 w-full" />
-            <div aria-hidden="true" className="my-4 flex items-center gap-3">
-              <Separator className="flex-1" />
-              <span className="text-xs text-muted-foreground">{t('orDivider')}</span>
-              <Separator className="flex-1" />
-            </div>
-            <SignUpForm onRegistered={setRegisteredEmail} />
-            <p className="mt-4 text-center text-sm text-muted-foreground">
-              {t('hasAccount')}{' '}
-              <Link
-                href="/sign-in"
-                className="font-semibold text-foreground underline-offset-4 transition-colors hover:underline"
-              >
-                {t('signInLink')}
-              </Link>
-            </p>
-          </>
-        )}
-      </CardContent>
-    </Card>
+      </p>
+    </div>
   );
 }

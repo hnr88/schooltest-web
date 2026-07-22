@@ -64,13 +64,13 @@ export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProp
     <div className="flex flex-col gap-5">
       <span
         aria-hidden="true"
-        className="flex size-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
+        className="flex size-11 items-center justify-center rounded-tile bg-blue-50 text-blue-600"
       >
         <KeyRound className="size-5" />
       </span>
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">{t('resetTitle')}</h1>
-        <p className="text-sm text-muted-foreground">{t('resetSubtitle')}</p>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-h3 font-bold text-foreground">{t('resetTitle')}</h1>
+        <p className="text-body-md text-muted-foreground">{t('resetSubtitle')}</p>
       </div>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
         {formError ? (
@@ -102,7 +102,12 @@ export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProp
           }
           registration={register('passwordConfirmation')}
         />
-        <Button type="submit" size="lg" loading={resetPassword.isPending} className="w-full">
+        <Button
+          type="submit"
+          size="xl"
+          loading={resetPassword.isPending}
+          className="w-full rounded-lg shadow-sm transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+        >
           {resetPassword.isPending ? t('resettingPassword') : t('resetButton')}
         </Button>
       </form>

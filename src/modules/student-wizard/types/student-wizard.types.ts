@@ -1,5 +1,7 @@
+import type { KeyboardEvent, ReactNode, Ref } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
+import type { ChoiceOption } from '@/modules/design-system';
 import type {
   StudentWizardOutput,
   StudentWizardValues,
@@ -32,6 +34,83 @@ export type WizardMediaKey = 'photo' | 'voice_intro';
 export interface ContactChannelOption {
   value: ContactChannel;
   icon: LucideIcon;
+}
+
+// >5-option canonical select (DS §06). `value` stays the wire value — a number for
+// the SchoolTest testing band, a string for every other enum.
+export interface WizardSelectOption {
+  value: string | number;
+  label: string;
+}
+
+export interface WizardSelectFieldProps {
+  id: string;
+  label: string;
+  placeholder: string;
+  options: readonly WizardSelectOption[];
+  value: string | number | null;
+  helper?: string;
+  error?: string;
+  required?: boolean;
+  triggerRef?: Ref<HTMLButtonElement>;
+  onValueChange: (value: string | number) => void;
+}
+
+// 2–5 short mutually exclusive labels inside a form → the portal chip row
+// (spec 03 §1.4 `PortalChip`). One tab stop, arrows move the answer.
+export type WizardChipSize = 'wide' | 'medium';
+
+export interface WizardChoiceFieldProps {
+  id: string;
+  label: string;
+  options: readonly ChoiceOption[];
+  value: string;
+  helper?: string;
+  error?: string;
+  required?: boolean;
+  size?: WizardChipSize;
+  onValueChange: (value: string) => void;
+}
+
+export interface WizardChipGroupProps {
+  options: readonly ChoiceOption[];
+  value: string;
+  ariaLabelledBy: string;
+  invalid?: boolean;
+  size?: WizardChipSize;
+  onValueChange: (value: string) => void;
+}
+
+// The props `useWizardChoice` hands each chip — the whole radiogroup contract in
+// one object so the component never re-states an ARIA attribute by hand.
+export interface WizardChoiceItemProps {
+  role: 'radio';
+  type: 'button';
+  'data-value': string;
+  'aria-checked': boolean;
+  tabIndex: number;
+  ref: (node: HTMLButtonElement | null) => void;
+  onKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
+  onClick: () => void;
+}
+
+export interface WizardFieldProps {
+  id: string;
+  label: string;
+  labelId?: string;
+  required?: boolean;
+  helper?: string;
+  error?: string;
+  className?: string;
+  children: ReactNode;
+}
+
+// One row of the step rail (spec 03 §2.2): title + hint, plus the state the dot,
+// the connector and the two type ramps are drawn from.
+export interface WizardRailStep {
+  key: WizardStepKey;
+  title: string;
+  hint: string;
 }
 
 // Reused for both /dashboard/children/new (create) and the edit route (054):
@@ -88,15 +167,16 @@ export type WizardSubmitError =
   | { kind: 'server' }
   | { kind: 'validation'; message?: string };
 
+// One row of the step-5 summary table (spec 03 §2.8): a key on the left and a
+// ` · `-joined sentence on the right. Every segment comes from what the parent
+// actually typed — an empty optional is dropped from the join, never invented, so
+// a row with nothing behind it renders `value: null` → the em-dash.
 export interface ReviewRowModel {
   label: string;
   value: string | null;
 }
 
-export interface ReviewSectionModel {
-  id: string;
-  title: string;
-  step: number;
+export interface ReviewModel {
   rows: ReviewRowModel[];
 }
 

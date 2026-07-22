@@ -1,17 +1,18 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Link, useRouter } from '@/i18n/navigation';
+import { PasswordField } from '@/modules/auth/components/PasswordField';
+import { TextField } from '@/modules/auth/components/TextField';
 import { classifySignInError } from '@/modules/auth/lib/classify-sign-in-error';
 import { useLoginMutation } from '@/modules/auth/queries/use-login.mutation';
 import { signInSchema, type SignInInput } from '@/modules/auth/schemas/sign-in.schema';
 import type { SignInErrorKey } from '@/modules/auth/types/auth.types';
-import { Alert, Button, Input, Label } from '@/modules/design-system';
+import { Alert, Button } from '@/modules/design-system';
 
 export function SignInForm() {
   const t = useTranslations('Auth');
@@ -42,72 +43,47 @@ export function SignInForm() {
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
       {formError ? (
-        <Alert variant={formError === 'notConfirmedError' ? 'warning' : 'error'} title={t(formError)}>
+        <Alert
+          variant={formError === 'notConfirmedError' ? 'warning' : 'error'}
+          title={t(formError)}
+        >
           {null}
         </Alert>
       ) : null}
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="sign-in-email">{t('emailLabel')}</Label>
-        <Input
-          id="sign-in-email"
-          type="email"
-          autoComplete="email"
-          placeholder={t('emailPlaceholder')}
-          aria-invalid={errors.email ? true : undefined}
-          aria-describedby={errors.email ? 'sign-in-email-error' : undefined}
-          className="h-11"
-          {...register('email')}
-        />
-        {errors.email?.message ? (
-          <p id="sign-in-email-error" className="text-sm text-destructive">
-            {t(errors.email.message)}
-          </p>
-        ) : null}
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="sign-in-password">{t('passwordLabel')}</Label>
+      <TextField
+        id="sign-in-email"
+        type="email"
+        label={t('emailLabel')}
+        placeholder={t('emailPlaceholder')}
+        autoComplete="email"
+        error={errors.email?.message ? t(errors.email.message) : undefined}
+        registration={register('email')}
+      />
+      <PasswordField
+        id="sign-in-password"
+        label={t('passwordLabel')}
+        placeholder={t('passwordPlaceholder')}
+        autoComplete="current-password"
+        visible={showPassword}
+        onToggleVisible={() => setShowPassword((current) => !current)}
+        toggleLabel={t(showPassword ? 'hidePassword' : 'showPassword')}
+        error={errors.password?.message ? t(errors.password.message) : undefined}
+        registration={register('password')}
+        labelAccessory={
           <Link
             href="/forgot-password"
-            className="text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
+            className="rounded-sm text-caption font-semibold text-primary transition-colors duration-150 hover:text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             {t('forgotPasswordLink')}
           </Link>
-        </div>
-        <div className="relative">
-          <Input
-            id="sign-in-password"
-            type={showPassword ? 'text' : 'password'}
-            autoComplete="current-password"
-            placeholder={t('passwordPlaceholder')}
-            aria-invalid={errors.password ? true : undefined}
-            aria-describedby={errors.password ? 'sign-in-password-error' : undefined}
-            className="h-11 pr-12"
-            {...register('password')}
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowPassword((current) => !current)}
-            aria-pressed={showPassword}
-            aria-label={t(showPassword ? 'hidePassword' : 'showPassword')}
-            className="absolute top-0 right-0 size-11 text-muted-foreground"
-          >
-            {showPassword ? (
-              <EyeOff aria-hidden="true" className="size-4" />
-            ) : (
-              <Eye aria-hidden="true" className="size-4" />
-            )}
-          </Button>
-        </div>
-        {errors.password?.message ? (
-          <p id="sign-in-password-error" className="text-sm text-destructive">
-            {t(errors.password.message)}
-          </p>
-        ) : null}
-      </div>
-      <Button type="submit" size="lg" loading={login.isPending} className="mt-1 w-full">
+        }
+      />
+      <Button
+        type="submit"
+        size="xl"
+        loading={login.isPending}
+        className="mt-1 w-full rounded-lg shadow-sm transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      >
         {login.isPending ? t('signingIn') : t('signInButton')}
       </Button>
     </form>

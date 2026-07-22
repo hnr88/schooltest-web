@@ -1,11 +1,15 @@
 'use client';
 
-import { useNow } from 'next-intl';
+import { useNow, useTranslations } from 'next-intl';
 
-import { NotificationDayHeading } from '@/modules/notifications/components/NotificationDayHeading';
 import { NotificationFeedItem } from '@/modules/notifications/components/NotificationFeedItem';
-import { groupNotificationsByDay } from '@/modules/notifications/lib/notification-grouping';
+import { groupNotificationsByRecency } from '@/modules/notifications/lib/notification-grouping';
 import type { Notification } from '@/modules/notifications/types/notification.types';
+
+// Group eyebrow (.qa/design/spec/03 §5.1): 12px/600 uppercase at .06em tracking with
+// 20px of air above and 4px below.
+const GROUP_HEADING_CLASS =
+  'pt-5 pb-1 text-meta font-semibold tracking-overline text-muted-foreground uppercase';
 
 function NotificationFeedList({
   notifications,
@@ -17,18 +21,20 @@ function NotificationFeedList({
   isMarking?: boolean;
 }) {
   const now = useNow();
-  const groups = groupNotificationsByDay(notifications, now);
+  const t = useTranslations('Notifications');
+  const groups = groupNotificationsByRecency(notifications, now);
 
   return (
-    <div data-slot="notification-list" className="flex flex-col gap-6">
+    <div data-slot="notification-list" className="flex flex-col">
       {groups.map((group) => (
-        <section key={group.key} className="flex flex-col gap-3">
-          <NotificationDayHeading date={group.date} dayOffset={group.dayOffset} />
-          <ul className="flex flex-col gap-2">
+        <section key={group.key}>
+          <h2 className={GROUP_HEADING_CLASS}>{t(group.key)}</h2>
+          <ul className="flex flex-col">
             {group.notifications.map((notification) => (
               <NotificationFeedItem
                 key={notification.documentId}
                 notification={notification}
+                now={now}
                 onMarkRead={onMarkRead}
                 isMarking={isMarking}
               />

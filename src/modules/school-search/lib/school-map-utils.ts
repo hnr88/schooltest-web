@@ -34,13 +34,39 @@ export const SCHOOL_MAP_ICON_ACTIVE = new L.DivIcon({
   popupAnchor: [0, -18],
 });
 
+// SELECTED pin (spec 01 §8.5): the clicked school's marker flips to the navy fill
+// while every other pin keeps the default. Hover can land on top of it, so the two
+// states are separate classes and the combined icon carries both.
+export const SCHOOL_MAP_ICON_SELECTED = new L.DivIcon({
+  className: 'school-map-marker school-map-marker--selected',
+  html: MARKER_PIN_HTML,
+  iconSize: [36, 36],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -18],
+});
+
+export const SCHOOL_MAP_ICON_SELECTED_ACTIVE = new L.DivIcon({
+  className: 'school-map-marker school-map-marker--selected school-map-marker--active',
+  html: MARKER_PIN_HTML,
+  iconSize: [36, 36],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -18],
+});
+
+export function getSchoolMarkerIcon(selected: boolean, active: boolean): L.DivIcon {
+  if (selected) return active ? SCHOOL_MAP_ICON_SELECTED_ACTIVE : SCHOOL_MAP_ICON_SELECTED;
+  return active ? SCHOOL_MAP_ICON_ACTIVE : SCHOOL_MAP_ICON;
+}
+
 // Cluster count badge (DivIcon) — size scales with child count; styled in
 // globals.css (.school-map-cluster*). Structural param type avoids depending on
 // @types/leaflet.markercluster (not installed; react-leaflet-cluster options are
 // erased under skipLibCheck).
 export function createClusterIcon(cluster: { getChildCount: () => number }): L.DivIcon {
   const count = cluster.getChildCount();
-  const size = count < 10 ? 36 : count < 50 ? 42 : 48;
+  // 38px is the design's cluster bubble (spec 01 §8.5); a bubble holding 50+ schools
+  // grows one step so a three-digit count is not clipped.
+  const size = count < 100 ? 38 : 46;
 
   return new L.DivIcon({
     className: 'school-map-cluster',

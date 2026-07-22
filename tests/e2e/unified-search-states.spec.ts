@@ -97,11 +97,12 @@ test('agents service-enum pin (C10): a service chip sends the schema enum; name_
       new URL(request.url()).pathname === AGENTS_PATH &&
       Boolean((request.postDataJSON() as { services?: string[] } | null)?.services?.includes('visa')),
   );
+  // The agents filters open in the §8.6 "All filters" overlay (same as schools).
   await page
     .getByRole('button', { name: cat(en, 'AgentSearch.filterPanel.trigger'), exact: true })
     .click();
   await page
-    .locator('[data-slot="popover-content"]')
+    .getByRole('dialog')
     .getByRole('button', { name: cat(en, 'AgentSearch.services.visa'), exact: true })
     .click();
   const body = (await visaRequest).postDataJSON() as { services: string[] };
@@ -110,6 +111,10 @@ test('agents service-enum pin (C10): a service chip sends the schema enum; name_
   expect(body.services).not.toContain('visa_assistance');
   await expect(agentCards(page).first()).toBeVisible();
   expect(postedServices.every((services) => !services.includes('school_placement'))).toBe(true);
+
+  // Close the overlay so the toolbar sort control is reachable again.
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toBeHidden();
 
   // Sort Z→A: the first card flips to the last-alphabetical seeded agent.
   await page.getByRole('button', { name: new RegExp(escapeRegExp(cat(en, 'AgentSearch.sort.label'))) }).click();

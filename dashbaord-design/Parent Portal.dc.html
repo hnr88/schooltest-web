@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family: 'Google Sans'; src: url('fonts/GoogleSans-Variable.ttf') format('truetype'); font-weight: 400 800; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Google Sans'; src: url('fonts/GoogleSans-Italic-Variable.ttf') format('truetype'); font-weight: 400 800; font-style: italic; font-display: swap; }
+body { margin: 0; background: #EEF1F6; font-family: 'Google Sans', -apple-system, 'Segoe UI', system-ui, sans-serif; color: #3D4A5C; -webkit-font-smoothing: antialiased; }
+a { color: #0E2350; text-decoration: none; }
+a:hover { color: #2563EB; }
+input::placeholder { color: #9AA6B8; }
+input, button, select { font-family: inherit; }
+.leaflet-container { font-family: inherit; }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</helmet>
+
+<div style="display:flex;gap:24px;padding:24px;height:100vh;box-sizing:border-box;max-width:1600px;margin:0 auto">
+
+  <!-- ===== DETACHED SIDEBAR ===== -->
+  <aside style="width:248px;flex:none;background:#FFFFFF;border-radius:24px;box-shadow:0 1px 2px rgba(14,35,80,.04), 0 8px 32px rgba(14,35,80,.06);display:flex;flex-direction:column;padding:28px 16px 16px;box-sizing:border-box">
+    <img src="assets/logo.png" alt="SchoolTest" style="height:26px;width:auto;align-self:flex-start;margin:0 12px 36px" />
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9AA6B8;padding:0 14px 8px">Manage</div>
+    <nav style="display:flex;flex-direction:column;gap:2px">
+      <div onClick="{{ goDash }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navDash.w }};background:{{ navDash.bg }};color:{{ navDash.fg }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="2"></rect><rect x="14" y="3" width="7" height="5" rx="2"></rect><rect x="14" y="12" width="7" height="9" rx="2"></rect><rect x="3" y="16" width="7" height="5" rx="2"></rect></svg>Overview
+      </div>
+      <div onClick="{{ goKids }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navKids.w }};background:{{ navKids.bg }};color:{{ navKids.fg }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>My children
+      </div>
+      <div onClick="{{ goSearch }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navSearch.w }};background:{{ navSearch.bg }};color:{{ navSearch.fg }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Search
+      </div>
+    </nav>
+    <div style="flex:1"></div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9AA6B8;padding:0 14px 8px">Account</div>
+    <div onClick="{{ goBilling }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navBilling.w }};background:{{ navBilling.bg }};color:{{ navBilling.fg }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"></rect><path d="M2 10h20"></path></svg>Billing
+    </div>
+    <div onClick="{{ goSettings }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navSettings.w }};background:{{ navSettings.bg }};color:{{ navSettings.fg }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M3.5 5.5 5.6 7.6M18.4 16.4l2.1 2.1M2 12h3M19 12h3M3.5 18.5l2.1-2.1M18.4 7.6l2.1-2.1"></path></svg>Settings
+    </div>
+    <div style="margin-top:14px;background:#F4F6FA;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:11px">
+      <span style="width:36px;height:36px;border-radius:999px;background:#0E2350;color:#fff;display:grid;place-items:center;font-weight:600;font-size:13px;flex:none">M</span>
+      <div style="display:flex;flex-direction:column;gap:1px;min-width:0">
+        <span style="font-size:13.5px;font-weight:600;color:#0E2350">Maria Rodriguez</span>
+        <span style="font-size:12px;color:#7C8698">Parent account</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto">
+
+    <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;gap:28px;padding:8px 4px 8px 8px">
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:13px;color:#7C8698;margin-bottom:6px">Tuesday, July 22</div>
+          <h1 style="margin:0;font-size:32px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Good morning, Maria</h1>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px;background:#FFFFFF;border-radius:999px;height:44px;padding:0 18px;width:240px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C8698" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input placeholder="Search" style="border:none;outline:none;background:none;font-size:14px;flex:1;color:#0E2350" />
+          </div>
+          <button onClick="{{ goNotifs }}" style="width:44px;height:44px;border-radius:999px;background:#FFFFFF;border:none;display:grid;place-items:center;cursor:pointer;position:relative;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3D4A5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+            <span style="position:absolute;top:10px;right:11px;width:7px;height:7px;border-radius:999px;background:#2563EB;border:1.5px solid #fff"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero: navy summary panel + quiet stats strip -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px">
+        <div style="background:#0E2350;border-radius:24px;padding:32px 34px;color:#fff;display:flex;flex-direction:column;position:relative;overflow:hidden">
+          <div style="position:absolute;right:-70px;top:-90px;width:280px;height:280px;border-radius:999px;background:rgba(255,255,255,.045)"></div>
+          <div style="position:absolute;right:60px;bottom:-110px;width:200px;height:200px;border-radius:999px;background:rgba(255,255,255,.035)"></div>
+          <div style="font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8FA3C7">This week</div>
+          <div style="font-size:24px;font-weight:500;line-height:1.35;letter-spacing:-0.01em;margin-top:14px;max-width:420px;position:relative">Emma is <span style="font-weight:700;border-bottom:2px solid #2DD4BF">on track for B2</span> and Lucas improved reading by 9% since May.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px 24px;margin-top:auto;padding-top:28px;position:relative">
+            <div style="flex:none"><div style="font-size:24px;font-weight:700;letter-spacing:-0.02em">7</div><div style="font-size:12px;color:#8FA3C7;margin-top:3px">tests completed</div></div>
+            <div style="width:1px;background:rgba(255,255,255,.12)"></div>
+            <div style="flex:none"><div style="font-size:24px;font-weight:700;letter-spacing:-0.02em">2</div><div style="font-size:12px;color:#8FA3C7;margin-top:3px">coming up</div></div>
+            <div style="width:1px;background:rgba(255,255,255,.12)"></div>
+            <div style="flex:none"><div style="font-size:24px;font-weight:700;letter-spacing:-0.02em">4h 20m</div><div style="font-size:12px;color:#8FA3C7;margin-top:3px">practice this week</div></div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04);display:flex;flex-direction:column">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Practice minutes</h2>
+            <span style="font-size:12.5px;color:#7C8698">last 7 days</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:flex-end;gap:14px;margin-top:20px;min-height:120px">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:34px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">M</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:52px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">T</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:42px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">W</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:88px;background:#0E2350;border-radius:8px"></div><span style="font-size:11px;font-weight:600;color:#0E2350">T</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:60px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">F</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:26px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">S</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:14px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">S</span></div>
+          </div>
+          <div style="margin-top:16px;font-size:13px;color:#7C8698">Thursday was the strongest day — <span style="color:#0E2350;font-weight:600">88 min</span>, mostly Emma's speaking drills.</div>
+        </div>
+      </div>
+
+      <!-- Children -->
+      <div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
+          <h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em;color:#0E2350">My children</h2>
+          <span onClick="{{ goKids }}" style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">See details →</span>
+        </div>
+        <div style="background:#FFFFFF;border-radius:24px;padding:6px 28px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <sc-for list="{{ dashKids }}" as="dk" hint-placeholder-count="2">
+            <div onClick="{{ dk.open }}" style="display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid {{ dk.divider }};cursor:pointer">
+              <span style="width:44px;height:44px;border-radius:999px;background:#EEF1F6;color:#0E2350;display:grid;place-items:center;font-weight:600;font-size:15px;flex:none">{{ dk.initial }}</span>
+              <div style="width:190px;flex:none;min-width:0">
+                <div style="font-size:15px;font-weight:600;color:#0E2350">{{ dk.name }}</div>
+                <div style="font-size:12.5px;color:#7C8698;margin-top:2px">{{ dk.school }}</div>
+              </div>
+              <div style="flex:1;display:flex;align-items:center;gap:6px;min-width:120px">
+                <sc-for list="{{ dk.dots }}" as="d" hint-placeholder-count="6">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;max-width:52px">
+                    <span style="width:100%;height:5px;border-radius:99px;background:{{ d.bg }}"></span>
+                    <span style="font-size:10px;font-weight:{{ d.w }};color:{{ d.fg }}">{{ d.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <span style="font-size:12px;font-weight:600;color:#2563EB;background:#EEF3FE;padding:6px 13px;border-radius:999px;flex:none">Focus: {{ dk.focus }}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA6B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- Teacher note + recommendations -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px">
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04);display:flex;flex-direction:column">
+          <div style="font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9AA6B8">Note from school</div>
+          <div style="font-size:16.5px;font-weight:450;line-height:1.6;color:#0E2350;margin-top:14px;flex:1">"Emma volunteered to present in front of the class this week — a big step. Ten minutes of speaking practice at home before Friday would set her up beautifully."</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:18px;border-top:1px solid #EEF1F6">
+            <span style="width:38px;height:38px;border-radius:999px;background:#EEF1F6;color:#0E2350;display:grid;place-items:center;font-weight:600;font-size:13px;flex:none">A</span>
+            <div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:#0E2350">Ms. Alvarez</div><div style="font-size:12px;color:#7C8698">EAL/D coordinator · Riverside College</div></div>
+            <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer">Reply</span>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Recommended this week</h2>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:14px">
+            <div style="display:flex;align-items:center;gap:14px;padding:11px 0">
+              <span style="width:26px;height:26px;border-radius:999px;border:1.5px solid #D8DFEA;display:grid;place-items:center;font-size:11px;font-weight:700;color:#7C8698;flex:none">1</span>
+              <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#0E2350">Speaking drill — describe your day</div><div style="font-size:12.5px;color:#7C8698;margin-top:1px">Emma · 10 min · builds toward Friday's presentation</div></div>
+              <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">Assign</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;padding:11px 0">
+              <span style="width:26px;height:26px;border-radius:999px;border:1.5px solid #D8DFEA;display:grid;place-items:center;font-size:11px;font-weight:700;color:#7C8698;flex:none">2</span>
+              <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#0E2350">Picture words — around the house</div><div style="font-size:12.5px;color:#7C8698;margin-top:1px">Lucas · 8 min · writing foundations</div></div>
+              <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">Assign</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;padding:11px 0">
+              <span style="width:26px;height:26px;border-radius:999px;border:1.5px solid #D8DFEA;display:grid;place-items:center;font-size:11px;font-weight:700;color:#7C8698;flex:none">3</span>
+              <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#0E2350">Read together — 15 minutes, any book</div><div style="font-size:12.5px;color:#7C8698;margin-top:1px">Both · reading aloud in English or Vietnamese counts</div></div>
+              <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">Done ✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coming up: quiet list, no boxes -->
+      <div style="background:#FFFFFF;border-radius:24px;padding:8px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:22px 0 6px">
+          <h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em;color:#0E2350">Coming up</h2>
+          <span style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">Full calendar →</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid #EEF1F6">
+          <div style="width:56px;flex:none;text-align:center"><div style="font-size:21px;font-weight:700;color:#0E2350;line-height:1">25</div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#9AA6B8;margin-top:3px">JUL</div></div>
+          <div style="width:1px;height:34px;background:#EEF1F6"></div>
+          <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#0E2350">English placement — all four skills</div><div style="font-size:13px;color:#7C8698;margin-top:2px">Emma · one sitting, about 55 minutes · headset needed</div></div>
+          <span style="font-size:12px;font-weight:600;color:#2563EB;flex:none">Due Friday</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid #EEF1F6">
+          <div style="width:56px;flex:none;text-align:center"><div style="font-size:21px;font-weight:700;color:#0E2350;line-height:1">29</div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#9AA6B8;margin-top:3px">JUL</div></div>
+          <div style="width:1px;height:34px;background:#EEF1F6"></div>
+          <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#0E2350">Reading &amp; listening check-in</div><div style="font-size:13px;color:#7C8698;margin-top:2px">Lucas · about 25 minutes · can pause and resume</div></div>
+          <span style="font-size:12px;font-weight:500;color:#7C8698;flex:none">Window open</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;padding:18px 0 24px">
+          <div style="width:56px;flex:none;text-align:center"><div style="font-size:21px;font-weight:700;color:#0E2350;line-height:1">04</div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#9AA6B8;margin-top:3px">AUG</div></div>
+          <div style="width:1px;height:34px;background:#EEF1F6"></div>
+          <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#0E2350">Parent–teacher review call</div><div style="font-size:13px;color:#7C8698;margin-top:2px">Both children · 20 minutes · with Ms. Alvarez</div></div>
+          <span style="font-size:12px;font-weight:500;color:#7C8698;flex:none">Scheduled</span>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:20px;padding:8px 4px 8px 8px;height:100%;min-height:0;box-sizing:border-box">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <div>
+          <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Find a school</h1>
+          <p style="margin:6px 0 0;font-size:14px;color:#7C8698">{{ filteredCount }} schools across Australia accept SchoolTest placement</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#FFFFFF;border-radius:999px;height:48px;padding:0 8px 0 20px;width:360px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C8698" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input placeholder="Search schools or suburbs" style="border:none;outline:none;background:none;font-size:14px;flex:1;color:#0E2350" />
+          <button style="height:36px;padding:0 18px;border-radius:999px;background:#0E2350;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer" style-hover="background:#16326E">Search</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <button onClick="{{ openFilters }}" style="display:inline-flex;align-items:center;gap:7px;background:#0E2350;color:#fff;font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>All filters</button>
+        <span style="width:1px;height:22px;background:#D8DFEA;margin:0 4px"></span>
+        <sc-for list="{{ filterChips }}" as="fc" hint-placeholder-count="2">
+          <button onClick="{{ fc.remove }}" style="background:#FFFFFF;color:#0E2350;font-size:13px;font-weight:500;padding:9px 16px;border-radius:999px;border:1px solid #0E2350;cursor:pointer">{{ fc.label }} ✕</button>
+        </sc-for>
+        <span style="font-size:13px;color:#9AA6B8;display:{{ noChipsDisplay }}">No filters applied — showing all schools</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:340px 1fr;gap:20px;flex:1;min-height:0">
+        <!-- List -->
+        <div style="display:flex;flex-direction:column;gap:14px;overflow-y:auto;min-height:0;padding:2px 4px 8px 2px">
+          <sc-for list="{{ schools }}" as="s" hint-placeholder-count="4">
+            <div onClick="{{ s.select }}" style="background:#FFFFFF;border-radius:20px;padding:20px 22px;cursor:pointer;box-shadow:{{ s.shadow }};border:1.5px solid {{ s.borderColor }}">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+                <div style="min-width:0">
+                  <div style="font-size:15.5px;font-weight:600;color:#0E2350">{{ s.name }}</div>
+                  <div style="font-size:13px;color:#7C8698;margin-top:3px">{{ s.meta }}</div>
+                </div>
+                <span style="display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:#0E2350;flex:none;margin-top:1px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#0E2350" stroke="none"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>{{ s.rating }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid #EEF1F6;font-size:12.5px;color:#7C8698">
+                <span style="display:inline-flex;align-items:center;gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Accepts SchoolTest placement</span>
+                <span>·</span><span>{{ s.tag }}</span>
+                <span style="margin-left:auto;font-weight:600;color:{{ s.noteColor }}">{{ s.note }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- Map (Leaflet) -->
+        <div style="background:#FFFFFF;border-radius:24px;box-shadow:0 1px 2px rgba(14,35,80,.04);position:relative;overflow:hidden;min-height:420px">
+          <div ref="{{ setMapEl }}" style="position:absolute;inset:0;background:#F4F6FA"></div>
+          <div style="position:absolute;left:20px;bottom:20px;background:#FFFFFF;border-radius:16px;box-shadow:0 8px 24px rgba(14,35,80,.14);padding:14px 18px;display:flex;align-items:center;gap:14px;max-width:340px;z-index:900">
+            <span style="width:40px;height:40px;border-radius:12px;background:#0E2350;color:#fff;display:grid;place-items:center;flex:none;font-weight:700;font-size:13px">{{ selectedRating }}</span>
+            <div style="min-width:0">
+              <div style="font-size:14px;font-weight:600;color:#0E2350">{{ selectedName }}</div>
+              <div style="font-size:12.5px;color:#7C8698;margin-top:1px">{{ selectedMeta }}</div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">View →</span>
+          </div>
+          <div style="position:absolute;right:20px;top:20px;display:flex;flex-direction:column;gap:8px;z-index:900">
+            <button onClick="{{ zoomIn }}" style="width:40px;height:40px;border-radius:12px;background:#FFFFFF;border:none;box-shadow:0 2px 10px rgba(14,35,80,.12);font-size:18px;font-weight:500;color:#0E2350;cursor:pointer">+</button>
+            <button onClick="{{ zoomOut }}" style="width:40px;height:40px;border-radius:12px;background:#FFFFFF;border:none;box-shadow:0 2px 10px rgba(14,35,80,.12);font-size:18px;font-weight:500;color:#0E2350;cursor:pointer">−</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters overlay -->
+      <sc-if value="{{ filtersOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeFilters }}" style="position:fixed;inset:0;background:rgba(14,35,80,.42);z-index:2000;display:grid;place-items:center;padding:24px">
+        <div onClick="{{ stopProp }}" style="background:#FFFFFF;border-radius:24px;width:560px;max-width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 28px 56px rgba(0,0,0,.22);display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 28px;border-bottom:1px solid #EEF1F6;position:sticky;top:0;background:#fff;border-radius:24px 24px 0 0">
+            <h2 style="margin:0;font-size:17px;font-weight:600;color:#0E2350">Filters</h2>
+            <button onClick="{{ closeFilters }}" style="width:34px;height:34px;border-radius:999px;background:#F4F6FA;border:none;display:grid;place-items:center;cursor:pointer;color:#0E2350;font-size:15px">✕</button>
+          </div>
+          <div style="padding:24px 28px;display:flex;flex-direction:column;gap:24px">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:9px">City</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ cityOpts }}" as="co" hint-placeholder-count="4">
+                  <button onClick="{{ co.toggle }}" style="height:42px;padding:0 17px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ co.bg }};color:{{ co.fg }};border:1.5px solid {{ co.border }}">{{ co.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:9px">School type</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ typeOpts }}" as="to" hint-placeholder-count="3">
+                  <button onClick="{{ to.toggle }}" style="height:42px;padding:0 17px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ to.bg }};color:{{ to.fg }};border:1.5px solid {{ to.border }}">{{ to.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:9px">Programs</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ programOpts }}" as="po" hint-placeholder-count="4">
+                  <button onClick="{{ po.toggle }}" style="height:42px;padding:0 17px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ po.bg }};color:{{ po.fg }};border:1.5px solid {{ po.border }}">{{ po.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:9px">Minimum rating</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ ratingOpts }}" as="ro" hint-placeholder-count="3">
+                  <button onClick="{{ ro.toggle }}" style="height:42px;padding:0 17px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ ro.bg }};color:{{ ro.fg }};border:1.5px solid {{ ro.border }}">{{ ro.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-top:1px solid #EEF1F6;position:sticky;bottom:0;background:#fff;border-radius:0 0 24px 24px">
+            <button onClick="{{ clearFilters }}" style="background:transparent;color:#3D4A5C;font-size:14px;font-weight:600;border:none;cursor:pointer;text-decoration:underline;padding:8px 4px">Clear all</button>
+            <button onClick="{{ closeFilters }}" style="background:#0E2350;color:#fff;font-size:14px;font-weight:600;padding:13px 26px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E">Show {{ filteredCount }} schools</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ===== MY CHILDREN — LIST ===== -->
+    <sc-if value="{{ isKids }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:24px;padding:8px 4px 8px 8px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <div>
+          <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">My children</h1>
+          <p style="margin:6px 0 0;font-size:14px;color:#7C8698">2 children · Family plan covers up to 4</p>
+        </div>
+        <button onClick="{{ goAdd }}" style="display:inline-flex;align-items:center;gap:8px;background:#0E2350;color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add a child</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px">
+        <sc-for list="{{ kids }}" as="k" hint-placeholder-count="2">
+          <div onClick="{{ k.open }}" style="background:#FFFFFF;border-radius:24px;padding:28px;box-shadow:0 1px 2px rgba(14,35,80,.04);cursor:pointer;display:flex;flex-direction:column;gap:22px" style-hover="box-shadow:0 10px 32px rgba(14,35,80,.10)">
+            <div style="display:flex;align-items:center;gap:15px">
+              <span style="width:52px;height:52px;border-radius:999px;background:#EEF1F6;color:#0E2350;display:grid;place-items:center;font-weight:600;font-size:18px;flex:none">{{ k.initial }}</span>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:18px;font-weight:600;color:#0E2350">{{ k.name }}</div>
+                <div style="font-size:13px;color:#7C8698;margin-top:2px">{{ k.meta }}</div>
+              </div>
+              <span style="font-size:12px;font-weight:600;color:#0E2350;border:1px solid #D8DFEA;padding:5px 12px;border-radius:999px;flex:none">Level {{ k.level }}</span>
+            </div>
+            <div style="display:flex;gap:0;border-top:1px solid #EEF1F6;padding-top:20px">
+              <div style="flex:1"><div style="font-size:20px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ k.progress }}%</div><div style="font-size:12px;color:#7C8698;margin-top:2px">to {{ k.nextLevel }}</div></div>
+              <div style="width:1px;background:#EEF1F6;margin:0 18px"></div>
+              <div style="flex:1"><div style="font-size:20px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ k.streak }}</div><div style="font-size:12px;color:#7C8698;margin-top:2px">day streak</div></div>
+              <div style="width:1px;background:#EEF1F6;margin:0 18px"></div>
+              <div style="flex:1"><div style="font-size:20px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ k.lastScore }}</div><div style="font-size:12px;color:#7C8698;margin-top:2px">last result</div></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#7C8698">
+              <span>{{ k.note }}</span>
+              <span style="font-weight:600;color:#2563EB">Details →</span>
+            </div>
+          </div>
+        </sc-for>
+        <div onClick="{{ goAdd }}" style="border:1.5px dashed #C4CEDC;border-radius:24px;min-height:220px;display:grid;place-items:center;cursor:pointer;color:#7C8698" style-hover="border-color:#2563EB;color:#2563EB">
+          <div style="text-align:center">
+            <div style="width:44px;height:44px;border-radius:999px;background:#FFFFFF;box-shadow:0 1px 2px rgba(14,35,80,.06);display:grid;place-items:center;margin:0 auto 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></div>
+            <div style="font-size:14px;font-weight:600">Add a child</div>
+            <div style="font-size:12.5px;margin-top:3px">Takes about 3 minutes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== CHILD DETAIL ===== -->
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:24px;padding:8px 4px 8px 8px">
+      <div>
+        <span onClick="{{ goKids }}" style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">← My children</span>
+        <div style="display:flex;align-items:center;gap:18px;margin-top:14px;flex-wrap:wrap">
+          <span style="width:60px;height:60px;border-radius:999px;background:#0E2350;color:#fff;display:grid;place-items:center;font-weight:600;font-size:21px;flex:none">{{ kid.initial }}</span>
+          <div style="flex:1;min-width:200px">
+            <h1 style="margin:0;font-size:28px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">{{ kid.name }}</h1>
+            <div style="font-size:14px;color:#7C8698;margin-top:3px">{{ kid.meta }} · Home language {{ kid.homeLang }}</div>
+          </div>
+          <button style="background:#FFFFFF;color:#0E2350;font-size:13.5px;font-weight:600;padding:11px 20px;border-radius:999px;border:1px solid #D8DFEA;cursor:pointer" style-hover="border-color:#0E2350">Share with teacher</button>
+          <button style="background:#0E2350;color:#fff;font-size:13.5px;font-weight:600;padding:11px 22px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E">Assign practice</button>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border-radius:24px;padding:24px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04);display:flex;flex-wrap:wrap;gap:20px 0">
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Overall level</div><div style="font-size:24px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ kid.level }}</div></div>
+        <div style="width:1px;background:#EEF1F6;margin:0 26px"></div>
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Progress to {{ kid.nextLevel }}</div><div style="font-size:24px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ kid.progress }}%</div></div>
+        <div style="width:1px;background:#EEF1F6;margin:0 26px"></div>
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Practice streak</div><div style="font-size:24px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ kid.streak }} days</div></div>
+        <div style="width:1px;background:#EEF1F6;margin:0 26px"></div>
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Last result</div><div style="font-size:24px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ kid.lastScore }}</div></div>
+        <div style="width:1px;background:#EEF1F6;margin:0 26px"></div>
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Since joining</div><div style="font-size:24px;font-weight:700;color:#2563EB;letter-spacing:-0.01em">{{ kid.growth }}</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px">
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Level journey</h2>
+          <div style="display:flex;align-items:center;gap:0;margin-top:26px">
+            <sc-for list="{{ kid.journey }}" as="j" hint-placeholder-count="6">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+                <div style="position:absolute;top:9px;left:{{ j.lineLeft }};right:{{ j.lineRight }};height:2px;background:{{ j.lineBg }}"></div>
+                <span style="width:20px;height:20px;border-radius:999px;background:{{ j.dotBg }};border:2px solid {{ j.dotBorder }};box-sizing:border-box;position:relative;display:grid;place-items:center">{{ j.dotInner }}</span>
+                <span style="font-size:12px;font-weight:{{ j.w }};color:{{ j.fg }}">{{ j.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:24px;padding-top:18px;border-top:1px solid #EEF1F6;font-size:13px;color:#7C8698;line-height:1.55">{{ kid.journeyNote }}</div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <h2 style="margin:0 0 20px;font-size:16px;font-weight:600;color:#0E2350">Skills</h2>
+          <div style="display:flex;flex-direction:column;gap:13px">
+            <sc-for list="{{ kid.skills }}" as="sk" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:76px 1fr 38px;align-items:center;gap:14px">
+                <span style="font-size:13px;color:#7C8698">{{ sk.name }}</span>
+                <div style="height:6px;background:#EEF1F6;border-radius:99px"><div style="width:{{ sk.pct }};height:100%;background:{{ sk.color }};border-radius:99px"></div></div>
+                <span style="font-size:12px;font-weight:600;color:{{ sk.color }};text-align:right">{{ sk.grade }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:22px;padding-top:18px;border-top:1px solid #EEF1F6;font-size:13px;color:#7C8698;line-height:1.55">{{ kid.skillNote }}</div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border-radius:24px;padding:8px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:22px 0 6px">
+          <h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em;color:#0E2350">Recent results</h2>
+          <span style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">All reports →</span>
+        </div>
+        <sc-for list="{{ kid.results }}" as="r" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:20px;padding:17px 0;border-bottom:1px solid #EEF1F6">
+            <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#0E2350">{{ r.name }}</div><div style="font-size:13px;color:#7C8698;margin-top:2px">{{ r.date }}</div></div>
+            <span style="font-size:14px;font-weight:700;color:#0E2350;flex:none">{{ r.score }}</span>
+            <span style="font-size:12px;font-weight:600;color:{{ r.deltaColor }};flex:none;width:90px;text-align:right">{{ r.delta }}</span>
+            <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">Report</span>
+          </div>
+        </sc-for>
+        <div style="padding:8px 0 14px"></div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== ADD CHILD — MULTI-STEP ===== -->
+    <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:24px;padding:8px 4px 8px 8px;height:100%;box-sizing:border-box">
+      <div>
+        <span onClick="{{ goKids }}" style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">← My children</span>
+        <h1 style="margin:12px 0 0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Add a child</h1>
+      </div>
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;flex:1;min-height:0">
+        <!-- Step rail -->
+        <div style="display:flex;flex-direction:column;gap:0;padding-top:8px">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+            <div onClick="{{ st.go }}" style="display:flex;gap:14px;cursor:pointer">
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <span style="width:30px;height:30px;border-radius:999px;background:{{ st.dotBg }};color:{{ st.dotFg }};border:1.5px solid {{ st.dotBorder }};box-sizing:border-box;display:grid;place-items:center;font-size:12.5px;font-weight:600;flex:none">{{ st.num }}</span>
+                <span style="width:1.5px;flex:1;background:{{ st.lineBg }};min-height:26px;display:{{ st.lineDisplay }}"></span>
+              </div>
+              <div style="padding:5px 0 22px">
+                <div style="font-size:14px;font-weight:{{ st.w }};color:{{ st.fg }}">{{ st.title }}</div>
+                <div style="font-size:12px;color:#9AA6B8;margin-top:2px">{{ st.sub }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- Step card -->
+        <div style="background:#FFFFFF;border-radius:24px;box-shadow:0 1px 2px rgba(14,35,80,.04);padding:34px 38px;display:flex;flex-direction:column;max-width:760px;overflow-y:auto">
+
+          <sc-if value="{{ step1 }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Personal details</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 1 of 5 · Who the student is</p></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Given name<span style="color:#2563EB">*</span></label><input placeholder="e.g. Minh" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Family name</label><input placeholder="e.g. Nguyen" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /><div style="font-size:12px;color:#9AA6B8;margin-top:6px">Optional — many students go by one name only.</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Date of birth</label><input placeholder="DD/MM/YYYY" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Email</label><input placeholder="student@example.com" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+            </div>
+            <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Gender</label><div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ genders }}" as="g" hint-placeholder-count="4"><button onClick="{{ g.toggle }}" style="height:44px;padding:0 18px;border-radius:12px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ g.bg }};color:{{ g.fg }};border:1.5px solid {{ g.border }}">{{ g.label }}</button></sc-for></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Nationality<span style="color:#2563EB">*</span></label><select style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 12px;font-size:14px;color:#0E2350;outline:none;background:#fff"><option>Australian</option><option>Vietnamese</option><option>Chinese</option><option>Indian</option><option>Korean</option><option>Filipino</option><option>Japanese</option><option>Indonesian</option><option>Other…</option></select></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Passport number</label><input placeholder="e.g. E12345678" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /><div style="font-size:12px;color:#9AA6B8;margin-top:6px">Optional — schools use this for enrolment paperwork.</div></div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ step2 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Education</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 2 of 5 · Current schooling and target entry</p></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Current school</label><input placeholder="e.g. Oakwood Primary" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Current year level</label><select style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 12px;font-size:14px;color:#0E2350;outline:none;background:#fff"><option>Foundation</option><option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option><option>Year 5</option><option>Year 6</option><option selected>Year 7</option><option>Year 8</option><option>Year 9</option><option>Year 10</option><option>Year 11</option><option>Year 12</option></select></div>
+            </div>
+            <div>
+              <label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Test year level (7–12)</label>
+              <div style="display:flex;gap:7px;flex-wrap:wrap">
+                <sc-for list="{{ testYears }}" as="ty" hint-placeholder-count="6">
+                  <button onClick="{{ ty.toggle }}" style="width:48px;height:44px;border-radius:12px;font-size:13.5px;font-weight:600;cursor:pointer;background:{{ ty.bg }};color:{{ ty.fg }};border:1.5px solid {{ ty.border }}">{{ ty.label }}</button>
+                </sc-for>
+              </div>
+              <div style="font-size:12px;color:#9AA6B8;margin-top:8px">The SchoolTest testing band — separate from the school year.</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Target entry year<span style="color:#2563EB">*</span></label><select style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 12px;font-size:14px;color:#0E2350;outline:none;background:#fff"><option>2026</option><option selected>2027</option><option>2028</option><option>2029</option></select></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Target entry term<span style="color:#2563EB">*</span></label><div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ terms }}" as="tm" hint-placeholder-count="4"><button onClick="{{ tm.toggle }}" style="height:44px;padding:0 15px;border-radius:12px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ tm.bg }};color:{{ tm.fg }};border:1.5px solid {{ tm.border }}">{{ tm.label }}</button></sc-for></div></div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ step3 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Parent or guardian</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 3 of 5 · Who we contact about results and enrolment</p></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Parent or guardian name<span style="color:#2563EB">*</span></label><input placeholder="e.g. Maria Rodriguez" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Phone<span style="color:#2563EB">*</span></label><input placeholder="0400 000 000" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Email</label><input placeholder="guardian@example.com" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">WeChat ID</label><input placeholder="e.g. wei_chen88" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+            </div>
+            <div>
+              <label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Preferred contact channel</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ channels }}" as="ch" hint-placeholder-count="4">
+                  <button onClick="{{ ch.toggle }}" style="height:44px;padding:0 18px;border-radius:12px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ ch.bg }};color:{{ ch.fg }};border:1.5px solid {{ ch.border }}">{{ ch.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ step4 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Photo &amp; voice</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 4 of 5 · Optional photo and voice introduction</p></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;background:#F4F6FA;border-radius:12px;padding:12px 16px;font-size:13px;color:#3D4A5C;line-height:1.5">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+              Both are optional. You can add or replace them later from the student's profile.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div>
+                <label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Student photo</label>
+                <div style="border:1.5px dashed #C4CEDC;border-radius:16px;padding:30px 20px;text-align:center;cursor:pointer" style-hover="border-color:#2563EB">
+                  <div style="width:46px;height:46px;border-radius:999px;background:#EEF1F6;display:grid;place-items:center;margin:0 auto 12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E2350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"></path></svg></div>
+                  <div style="font-size:14px;font-weight:600;color:#0E2350">Add a photo</div>
+                  <div style="font-size:12.5px;color:#7C8698;margin-top:3px">Drag &amp; drop or click to upload</div>
+                  <div style="font-size:11.5px;color:#9AA6B8;margin-top:8px">JPG or PNG, up to 15MB.</div>
+                </div>
+              </div>
+              <div>
+                <label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Voice introduction</label>
+                <div style="border:1.5px dashed #C4CEDC;border-radius:16px;padding:30px 20px;text-align:center;cursor:pointer" style-hover="border-color:#2563EB">
+                  <div style="width:46px;height:46px;border-radius:999px;background:#EEF1F6;display:grid;place-items:center;margin:0 auto 12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E2350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"></path></svg></div>
+                  <div style="font-size:14px;font-weight:600;color:#0E2350">Add a voice intro</div>
+                  <div style="font-size:12.5px;color:#7C8698;margin-top:3px">Drag &amp; drop or click to upload</div>
+                  <div style="font-size:11.5px;color:#9AA6B8;margin-top:8px">MP3 or M4A, up to 2 minutes.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ step5 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Review &amp; confirm</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 5 of 5 · You can change any of this later in the student's profile.</p></div>
+            <div style="border:1px solid #EEF1F6;border-radius:16px;overflow:hidden">
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:15px 20px;border-bottom:1px solid #EEF1F6"><span style="font-size:13px;color:#7C8698">Personal</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;text-align:right">Minh Nguyen · born 14/03/2013 · Vietnamese</span></div>
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:15px 20px;border-bottom:1px solid #EEF1F6"><span style="font-size:13px;color:#7C8698">Education</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;text-align:right">Year 7 · testing band 7 · entry Term 1, 2027</span></div>
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:15px 20px;border-bottom:1px solid #EEF1F6"><span style="font-size:13px;color:#7C8698">Guardian</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;text-align:right">Maria Rodriguez · 0400 000 000 · WhatsApp</span></div>
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:15px 20px"><span style="font-size:13px;color:#7C8698">Media</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;text-align:right">Photo added · voice intro skipped</span></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:11px;background:#F4F6FA;border-radius:14px;padding:15px 18px;font-size:13px;color:#3D4A5C;line-height:1.55">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+              Adding a third child costs <b style="color:#0E2350">A$9/month</b> on your Family plan. Your next invoice will be A$45 on 12 Aug.
+            </div>
+          </div>
+          </sc-if>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:30px">
+            <button onClick="{{ stepBack }}" style="background:transparent;color:{{ backColor }};font-size:14px;font-weight:600;padding:12px 10px;border:none;cursor:pointer">← Back</button>
+            <div style="display:flex;align-items:center;gap:16px">
+              <span style="font-size:12.5px;color:#9AA6B8">Step {{ stepNum }} of 5</span>
+              <button onClick="{{ stepNext }}" style="background:#0E2350;color:#fff;font-size:14px;font-weight:600;padding:13px 26px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E">{{ nextLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== NOTIFICATIONS ===== -->
+    <sc-if value="{{ isNotifs }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:22px;padding:8px 4px 8px 8px;max-width:820px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
+        <div>
+          <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Notifications</h1>
+          <p style="margin:6px 0 0;font-size:14px;color:#7C8698">2 unread</p>
+        </div>
+        <button style="background:transparent;color:#2563EB;font-size:13.5px;font-weight:600;border:none;cursor:pointer;padding:8px 4px">Mark all as read</button>
+      </div>
+      <div style="background:#FFFFFF;border-radius:24px;padding:6px 28px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+        <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9AA6B8;padding:20px 0 4px">Today</div>
+        <sc-for list="{{ notifsToday }}" as="n" hint-placeholder-count="2">
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:17px 0;border-bottom:1px solid #EEF1F6">
+            <span style="width:40px;height:40px;border-radius:12px;background:{{ n.iconBg }};color:{{ n.iconFg }};display:grid;place-items:center;flex:none;font-size:13px;font-weight:700">{{ n.glyph }}</span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14.5px;font-weight:600;color:#0E2350">{{ n.title }}</div>
+              <div style="font-size:13px;color:#7C8698;margin-top:2px;line-height:1.5">{{ n.text }}</div>
+              <div style="font-size:12px;color:#9AA6B8;margin-top:5px">{{ n.time }}</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:999px;background:{{ n.dot }};flex:none;margin-top:6px"></span>
+          </div>
+        </sc-for>
+        <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9AA6B8;padding:20px 0 4px">Earlier</div>
+        <sc-for list="{{ notifsEarlier }}" as="n" hint-placeholder-count="3">
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:17px 0;border-bottom:1px solid #EEF1F6">
+            <span style="width:40px;height:40px;border-radius:12px;background:{{ n.iconBg }};color:{{ n.iconFg }};display:grid;place-items:center;flex:none;font-size:13px;font-weight:700">{{ n.glyph }}</span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14.5px;font-weight:600;color:#0E2350">{{ n.title }}</div>
+              <div style="font-size:13px;color:#7C8698;margin-top:2px;line-height:1.5">{{ n.text }}</div>
+              <div style="font-size:12px;color:#9AA6B8;margin-top:5px">{{ n.time }}</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:999px;background:{{ n.dot }};flex:none;margin-top:6px"></span>
+          </div>
+        </sc-for>
+        <div style="padding:6px 0 14px"></div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== SETTINGS ===== -->
+    <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:22px;padding:8px 4px 8px 8px;max-width:820px">
+      <div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Settings</h1>
+        <p style="margin:6px 0 0;font-size:14px;color:#7C8698">Your account, language and notification preferences</p>
+      </div>
+      <div style="background:#FFFFFF;border-radius:24px;padding:26px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+        <h2 style="margin:0 0 18px;font-size:16px;font-weight:600;color:#0E2350">Account</h2>
+        <div style="display:flex;align-items:center;gap:16px">
+          <span style="width:54px;height:54px;border-radius:999px;background:#0E2350;color:#fff;display:grid;place-items:center;font-weight:600;font-size:18px;flex:none">M</span>
+          <div style="flex:1"><div style="font-size:15px;font-weight:600;color:#0E2350">Maria Rodriguez</div><div style="font-size:13px;color:#7C8698;margin-top:2px">maria.r@gmail.com · +61 4 1234 5678</div></div>
+          <button style="background:#FFFFFF;color:#0E2350;font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;border:1px solid #D8DFEA;cursor:pointer" style-hover="border-color:#0E2350">Edit</button>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border-radius:24px;padding:26px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+        <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Language</h2>
+        <p style="margin:5px 0 16px;font-size:13px;color:#7C8698">Reports and emails can arrive in your preferred language alongside English.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ reportLangs }}" as="rl" hint-placeholder-count="5">
+            <button onClick="{{ rl.toggle }}" style="height:42px;padding:0 18px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ rl.bg }};color:{{ rl.fg }};border:1.5px solid {{ rl.border }}">{{ rl.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border-radius:24px;padding:8px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+        <h2 style="margin:0;padding:22px 0 8px;font-size:16px;font-weight:600;color:#0E2350">Notifications</h2>
+        <sc-for list="{{ prefs }}" as="pf" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid #EEF1F6">
+            <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#0E2350">{{ pf.label }}</div><div style="font-size:12.5px;color:#7C8698;margin-top:2px">{{ pf.sub }}</div></div>
+            <div onClick="{{ pf.toggle }}" style="width:46px;height:27px;border-radius:999px;background:{{ pf.trackBg }};position:relative;cursor:pointer;flex:none;transition:background .2s">
+              <span style="position:absolute;top:3px;left:{{ pf.knobLeft }};width:21px;height:21px;border-radius:999px;background:#fff;box-shadow:0 1px 3px rgba(14,35,80,.25);transition:left .2s"></span>
+            </div>
+          </div>
+        </sc-for>
+        <div style="padding:6px 0 14px"></div>
+      </div>
+      <div style="background:#FFFFFF;border-radius:24px;padding:22px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04);display:flex;align-items:center;gap:16px">
+        <div style="flex:1"><div style="font-size:14px;font-weight:600;color:#0E2350">Password &amp; security</div><div style="font-size:12.5px;color:#7C8698;margin-top:2px">Last changed 4 months ago · two-step sign-in on</div></div>
+        <button style="background:#FFFFFF;color:#0E2350;font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;border:1px solid #D8DFEA;cursor:pointer" style-hover="border-color:#0E2350">Manage</button>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== BILLING ===== -->
+    <sc-if value="{{ isBilling }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:24px;padding:8px 4px 8px 8px">
+      <div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Billing</h1>
+        <p style="margin:6px 0 0;font-size:14px;color:#7C8698">Family plan · next invoice A$36 on 12 August</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="background:#0E2350;border-radius:24px;padding:30px 32px;color:#fff;position:relative;overflow:hidden">
+            <div style="position:absolute;right:-60px;top:-80px;width:240px;height:240px;border-radius:999px;background:rgba(255,255,255,.045)"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
+              <div style="font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8FA3C7">Family plan</div>
+              <span style="font-size:11.5px;font-weight:600;color:#0E2350;background:#fff;padding:4px 12px;border-radius:999px">Active</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-top:18px;position:relative"><span style="font-size:36px;font-weight:700;letter-spacing:-0.02em">A$36</span><span style="font-size:14px;color:#8FA3C7">/ month</span></div>
+            <div style="font-size:13.5px;color:#8FA3C7;margin-top:6px;position:relative">2 children · A$18 each · unlimited practice &amp; reports</div>
+            <div style="display:flex;gap:10px;margin-top:24px;position:relative">
+              <button style="background:#fff;color:#0E2350;font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;border:none;cursor:pointer">Change plan</button>
+              <button style="background:transparent;color:#fff;font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.3);cursor:pointer" style-hover="border-color:#fff">Pause</button>
+            </div>
+          </div>
+          <div style="background:#FFFFFF;border-radius:24px;padding:26px 28px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Payment method</h2>
+              <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer">Update</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:18px">
+              <span style="width:52px;height:36px;border-radius:8px;background:#F4F6FA;border:1px solid #EEF1F6;display:grid;place-items:center;font-size:11px;font-weight:700;color:#0E2350;letter-spacing:.02em;flex:none">VISA</span>
+              <div style="flex:1"><div style="font-size:14px;font-weight:600;color:#0E2350">Visa ending 4242</div><div style="font-size:12.5px;color:#7C8698;margin-top:1px">Expires 09/27 · Maria Rodriguez</div></div>
+              <span style="font-size:12px;font-weight:600;color:#7C8698;border:1px solid #EEF1F6;padding:4px 10px;border-radius:999px">Default</span>
+            </div>
+            <div style="margin-top:18px;padding-top:16px;border-top:1px solid #EEF1F6;font-size:12.5px;color:#9AA6B8;display:flex;align-items:center;gap:8px">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Charged in AUD · cancel anytime · GST included
+            </div>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:24px;padding:8px 28px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;padding:20px 0 4px">
+            <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Invoices</h2>
+            <span style="font-size:13px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">Download all</span>
+          </div>
+          <sc-for list="{{ invoices }}" as="inv" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid #EEF1F6">
+              <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#0E2350">{{ inv.label }}</div><div style="font-size:12.5px;color:#7C8698;margin-top:1px">{{ inv.date }}</div></div>
+              <span style="font-size:14px;font-weight:600;color:#0E2350;flex:none">{{ inv.amount }}</span>
+              <span style="font-size:11.5px;font-weight:600;color:#0E2350;background:#EEF1F6;padding:4px 11px;border-radius:999px;flex:none">Paid</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C8698" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;flex:none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+            </div>
+          </sc-for>
+          <div style="padding:6px 0 12px"></div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startView&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;dashboard&quot;, &quot;search&quot;], &quot;default&quot;: &quot;dashboard&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Screen&quot;}}">
+class Component extends DCLogic {
+  state = {
+    view: null, selected: 1, kidIdx: 0, addStep: 1,
+    gender: 'Male', testYear: '7', term: 'Term 1', channel: 'WhatsApp',
+    filtersOpen: false, fCity: 'All', fTypes: {}, fPrograms: {}, fRating: 'Any',
+    reportLang: 'Tiếng Việt', prefsOn: { 'Test results': true, 'Weekly summary': true, 'Test reminders': true, 'Product news': false },
+  };
+  componentDidMount() { this.initMap(); }
+  componentDidUpdate() {
+    if (!this.map && this.mapEl) { this.initMap(); return; }
+    if (this.map) {
+      const sig = JSON.stringify([this.state.selected, this.state.fCity, this.state.fTypes, this.state.fPrograms, this.state.fRating]);
+      if (sig !== this.lastSig) { this.lastSig = sig; this.refreshMarkers(); }
+      setTimeout(() => this.map && this.map.invalidateSize(), 60);
+    }
+  }
+  pinIcon(i) {
+    const L = window.L;
+    const sel = i === this.state.selected;
+    const s = this.schoolDefs[i];
+    const label = sel ? s.rating + ' · ' + s.name : s.rating;
+    const html = '<div style="display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-100%);width:max-content"><span style="font-family:\'Google Sans\',sans-serif;background:' + (sel ? '#0E2350' : '#FFFFFF') + ';color:' + (sel ? '#FFFFFF' : '#0E2350') + ';font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:999px;box-shadow:0 2px 10px rgba(14,35,80,.25);white-space:nowrap;border:1.5px solid ' + (sel ? '#0E2350' : '#D8DFEA') + '">' + label + '</span><span style="width:2px;height:7px;background:' + (sel ? '#0E2350' : '#9AA6B8') + '"></span></div>';
+    return L.divIcon({ html, className: '', iconSize: [0, 0], iconAnchor: [0, 0] });
+  }
+  clusterIcon(count) {
+    const L = window.L;
+    const inner = count > 1
+      ? count
+      : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 10-10-5L2 10l10 5 10-5Z"></path><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"></path></svg>';
+    const html = '<div style="width:38px;height:38px;border-radius:999px;background:#2563EB;border:3px solid #fff;box-shadow:0 2px 10px rgba(14,35,80,.3);display:grid;place-items:center;color:#fff;font-family:\'Google Sans\',sans-serif;font-size:14px;font-weight:700">' + inner + '</div>';
+    return L.divIcon({ html, className: '', iconSize: [38, 38], iconAnchor: [19, 19] });
+  }
+  refreshMarkers() {
+    if (!this.map || !window.L) return;
+    const L = window.L;
+    if (this.markerLayer) { this.markerLayer.remove(); }
+    this.markerLayer = L.layerGroup().addTo(this.map);
+    const idx = this.filteredIdx();
+    if (this.map.getZoom() >= 9) {
+      idx.forEach(i => {
+        L.marker(this.schoolDefs[i].coords, { icon: this.pinIcon(i), zIndexOffset: i === this.state.selected ? 500 : 0 })
+          .addTo(this.markerLayer)
+          .on('click', () => { this.setState({ selected: i }); this.map.panTo(this.schoolDefs[i].coords, { animate: true }); });
+      });
+    } else {
+      this.cityDefs.forEach(c => {
+        const count = idx.filter(i => this.schoolDefs[i].city === c.name).length;
+        if (!count) return;
+        L.marker(c.coords, { icon: this.clusterIcon(count) })
+          .addTo(this.markerLayer)
+          .on('click', () => this.map.setView(c.coords, 11, { animate: true }));
+      });
+    }
+  }
+  initMap() {
+    if (this.map || !this.mapEl) return;
+    if (!window.L) { setTimeout(() => this.initMap(), 250); return; }
+    const L = window.L;
+    this.map = L.map(this.mapEl, { zoomControl: false, attributionControl: false, scrollWheelZoom: true }).setView([-28.6, 134.3], 4);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd' }).addTo(this.map);
+    this.map.on('zoomend', () => this.refreshMarkers());
+    this.refreshMarkers();
+    setTimeout(() => this.map && this.map.invalidateSize(), 100);
+  }
+  nav(active) {
+    return active
+      ? { w: 600, bg: '#0E2350', fg: '#FFFFFF' }
+      : { w: 500, bg: 'transparent', fg: '#7C8698' };
+  }
+  chip(on) {
+    return on
+      ? { bg: '#0E2350', fg: '#FFFFFF', border: '#0E2350' }
+      : { bg: '#FFFFFF', fg: '#3D4A5C', border: '#D8DFEA' };
+  }
+  schoolDefs = [
+    { name: 'Westbrook Grammar', city: 'Sydney', type: 'Independent', meta: 'Independent · Years 7–12 · Chatswood NSW', rating: '4.9', programs: ['Scholarships', 'Selective entry'], tag: 'Scholarships', note: 'Applications open', noteColor: '#2563EB', coords: [-33.796, 151.183] },
+    { name: 'Riverside College', city: 'Sydney', type: 'Public', meta: 'Public · Years 7–12 · Parramatta NSW', rating: '4.8', programs: ['EAL/D support'], tag: 'EAL/D support', note: "Emma's school", noteColor: '#7C8698', coords: [-33.815, 151.001] },
+    { name: 'Northgate Preparatory', city: 'Sydney', type: 'Independent', meta: 'Independent · Years K–12 · North Sydney NSW', rating: '4.7', programs: ['Boarding', 'Scholarships'], tag: 'Boarding', note: 'Waitlist', noteColor: '#7C8698', coords: [-33.839, 151.207] },
+    { name: 'Oakwood Public School', city: 'Sydney', type: 'Public', meta: 'Public · Years K–6 · Strathfield NSW', rating: '4.6', programs: ['EAL/D support'], tag: 'EAL/D support', note: "Lucas's school", noteColor: '#7C8698', coords: [-33.872, 151.094] },
+    { name: 'Southbank Secondary College', city: 'Melbourne', type: 'Public', meta: 'Public · Years 7–12 · Southbank VIC', rating: '4.7', programs: ['EAL/D support', 'Selective entry'], tag: 'Selective entry', note: 'Transfers open', noteColor: '#2563EB', coords: [-37.823, 144.965] },
+    { name: 'Glen Waverley Grammar', city: 'Melbourne', type: 'Independent', meta: 'Independent · Years 7–12 · Glen Waverley VIC', rating: '4.8', programs: ['Scholarships'], tag: 'Scholarships', note: 'Applications open', noteColor: '#2563EB', coords: [-37.878, 145.164] },
+    { name: "St Malachy's College", city: 'Brisbane', type: 'Catholic', meta: 'Catholic · Years 7–12 · Kelvin Grove QLD', rating: '4.6', programs: ['Scholarships'], tag: 'Scholarships', note: 'Open day 9 Aug', noteColor: '#7C8698', coords: [-27.448, 153.014] },
+    { name: 'Sunnybank State High', city: 'Brisbane', type: 'Public', meta: 'Public · Years 7–12 · Sunnybank QLD', rating: '4.5', programs: ['EAL/D support'], tag: 'EAL/D support', note: 'Transfers open', noteColor: '#7C8698', coords: [-27.578, 153.062] },
+  ];
+  cityDefs = [
+    { name: 'Sydney', coords: [-33.84, 151.12] },
+    { name: 'Melbourne', coords: [-37.85, 145.05] },
+    { name: 'Brisbane', coords: [-27.51, 153.04] },
+  ];
+  filteredIdx() {
+    const { fCity, fTypes, fPrograms, fRating } = this.state;
+    const types = Object.keys(fTypes).filter(k => fTypes[k]);
+    const progs = Object.keys(fPrograms).filter(k => fPrograms[k]);
+    const minR = fRating === 'Any' ? 0 : parseFloat(fRating);
+    return this.schoolDefs.map((s, i) => i).filter(i => {
+      const s = this.schoolDefs[i];
+      return (fCity === 'All' || s.city === fCity)
+        && (!types.length || types.includes(s.type))
+        && (!progs.length || progs.some(p => s.programs.includes(p)))
+        && parseFloat(s.rating) >= minR;
+    });
+  }
+  renderVals() {
+    const view = this.state.view ?? this.props.startView ?? 'dashboard';
+    const set = (v) => () => this.setState({ view: v });
+    const schoolData = this.schoolDefs;
+    const sel = this.state.selected;
+    const selectSchool = (i) => {
+      this.setState({ selected: i });
+      if (this.map) {
+        if (this.map.getZoom() < 9) this.map.setView(this.schoolDefs[i].coords, 11, { animate: true });
+        else this.map.panTo(this.schoolDefs[i].coords, { animate: true });
+      }
+    };
+    const visibleIdx = this.filteredIdx();
+    const schools = visibleIdx.map(i => ({
+      ...schoolData[i],
+      select: () => selectSchool(i),
+      borderColor: i === sel ? '#0E2350' : 'transparent',
+      shadow: i === sel ? '0 8px 24px rgba(14,35,80,.12)' : '0 1px 2px rgba(14,35,80,.04)',
+    }));
+    const setMapEl = (el) => {
+      if (el === this.mapEl) return;
+      if (!el && this.map) { this.map.remove(); this.map = null; this.markers = null; }
+      this.mapEl = el;
+      if (el) this.initMap();
+    };
+    const kidData = [
+      {
+        name: 'Emma', initial: 'E', meta: 'Year 7 · Riverside College, Parramatta', homeLang: 'Vietnamese',
+        level: 'B1', nextLevel: 'B2', progress: 68, streak: 12, lastScore: '74%', growth: '+2 levels',
+        note: 'Speaking is the current growth area', journeyStage: 3,
+        journeyNote: 'Emma started at A1 in 2024 and reached B1 this May — roughly one level every 8 months. At this pace, B2 is likely by early 2027.',
+        skillNote: 'Speaking lags about half a level behind — short daily drills close this gap fastest.',
+        skills: [
+          { name: 'Reading', pct: '78%', color: '#0E2350', grade: 'B1+' },
+          { name: 'Listening', pct: '70%', color: '#0E2350', grade: 'B1' },
+          { name: 'Speaking', pct: '52%', color: '#2563EB', grade: 'A2+' },
+          { name: 'Writing', pct: '64%', color: '#0E2350', grade: 'B1' },
+        ],
+        results: [
+          { name: 'Listening check-in', date: 'Jul 14, 2026', score: 'B1 · 74%', delta: '+6% vs May', deltaColor: '#2563EB' },
+          { name: 'Speaking practice set', date: 'Jul 8, 2026', score: 'A2+ · 58%', delta: '+3% vs Jun', deltaColor: '#2563EB' },
+          { name: 'Reading check-in', date: 'Jun 20, 2026', score: 'B1+ · 79%', delta: '+4% vs May', deltaColor: '#2563EB' },
+        ],
+      },
+      {
+        name: 'Lucas', initial: 'L', meta: 'Year 3 · Oakwood Public School, Strathfield', homeLang: 'Vietnamese',
+        level: 'A2', nextLevel: 'B1', progress: 34, streak: 5, lastScore: '61%', growth: '+1 level',
+        note: 'Reading improved 9% since May', journeyStage: 2,
+        journeyNote: 'Lucas moved from A1 to A2 in about 10 months. Steady practice in reading is carrying his momentum.',
+        skillNote: 'Writing is the youngest skill — normal at this age; picture-prompt practice helps.',
+        skills: [
+          { name: 'Reading', pct: '48%', color: '#0E2350', grade: 'A2' },
+          { name: 'Listening', pct: '56%', color: '#0E2350', grade: 'A2+' },
+          { name: 'Speaking', pct: '40%', color: '#0E2350', grade: 'A2' },
+          { name: 'Writing', pct: '34%', color: '#2563EB', grade: 'A1+' },
+        ],
+        results: [
+          { name: 'Reading check-in', date: 'Jul 10, 2026', score: 'A2 · 61%', delta: '+9% vs May', deltaColor: '#2563EB' },
+          { name: 'Listening practice set', date: 'Jun 28, 2026', score: 'A2+ · 64%', delta: '+2% vs May', deltaColor: '#2563EB' },
+          { name: 'Writing check-in', date: 'Jun 12, 2026', score: 'A1+ · 52%', delta: 'first attempt', deltaColor: '#9AA6B8' },
+        ],
+      },
+    ];
+    const kids = kidData.map((k, i) => ({ ...k, open: () => this.setState({ view: 'detail', kidIdx: i }) }));
+    const rawKid = kidData[this.state.kidIdx];
+    const cefr = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const kid = {
+      ...rawKid,
+      journey: cefr.map((label, i) => {
+        const stage = rawKid.journeyStage; // 1-based reached count
+        const done = i < stage - 1, cur = i === stage - 1;
+        return {
+          label,
+          dotBg: done || cur ? '#0E2350' : '#FFFFFF',
+          dotBorder: done || cur ? '#0E2350' : '#D8DFEA',
+          dotInner: cur ? React.createElement('span', { style: { width: 6, height: 6, borderRadius: 99, background: '#fff' } }) : null,
+          fg: done || cur ? '#0E2350' : '#9AA6B8',
+          w: cur ? 700 : 500,
+          lineLeft: i === 0 ? '50%' : '0',
+          lineRight: i === cefr.length - 1 ? '50%' : '0',
+          lineBg: i <= stage - 1 ? '#0E2350' : '#EEF1F6',
+        };
+      }),
+    };
+
+    // ----- Add-child form -----
+    const step = this.state.addStep;
+    const stepDefs = [
+      { title: 'Personal', sub: 'Who the student is' },
+      { title: 'Education', sub: 'School & target entry' },
+      { title: 'Guardian', sub: 'Contact details' },
+      { title: 'Media', sub: 'Photo & voice intro' },
+      { title: 'Review', sub: 'Confirm details' },
+    ];
+    const steps = stepDefs.map((d, i) => {
+      const n = i + 1, done = n < step, cur = n === step;
+      return {
+        num: done ? '✓' : String(n), title: d.title, sub: d.sub,
+        go: () => this.setState({ addStep: n }),
+        dotBg: done || cur ? '#0E2350' : '#FFFFFF',
+        dotFg: done || cur ? '#FFFFFF' : '#9AA6B8',
+        dotBorder: done || cur ? '#0E2350' : '#D8DFEA',
+        lineBg: done ? '#0E2350' : '#E4E9F2',
+        lineDisplay: n === 5 ? 'none' : 'block',
+        fg: cur ? '#0E2350' : done ? '#3D4A5C' : '#9AA6B8',
+        w: cur ? 600 : 500,
+      };
+    });
+    const toggleKey = (mapKey, val) => () => this.setState(s => ({ [mapKey]: { ...s[mapKey], [val]: !s[mapKey][val] } }));
+    const pickKey = (key, val) => () => this.setState({ [key]: val });
+    const genders = ['Male', 'Female', 'Other', 'Prefer not to say'].map(g => ({ label: g, toggle: pickKey('gender', g), ...this.chip(this.state.gender === g) }));
+    const testYears = ['7', '8', '9', '10', '11', '12'].map(y => ({ label: y, toggle: pickKey('testYear', y), ...this.chip(this.state.testYear === y) }));
+    const terms = ['Term 1', 'Term 2', 'Term 3', 'Term 4'].map(t => ({ label: t, toggle: pickKey('term', t), ...this.chip(this.state.term === t) }));
+    const channels = ['WhatsApp', 'WeChat', 'Email', 'SMS'].map(c => ({ label: c, toggle: pickKey('channel', c), ...this.chip(this.state.channel === c) }));
+
+    // ----- Search filters -----
+    const cityOpts = ['All', 'Sydney', 'Melbourne', 'Brisbane'].map(c => ({ label: c, toggle: pickKey('fCity', c), ...this.chip(this.state.fCity === c) }));
+    const typeOpts = ['Public', 'Catholic', 'Independent'].map(t => ({ label: t, toggle: toggleKey('fTypes', t), ...this.chip(!!this.state.fTypes[t]) }));
+    const programOpts = ['EAL/D support', 'Selective entry', 'Scholarships', 'Boarding'].map(p => ({ label: p, toggle: toggleKey('fPrograms', p), ...this.chip(!!this.state.fPrograms[p]) }));
+    const ratingOpts = ['Any', '4.6', '4.8'].map(r => ({ label: r === 'Any' ? 'Any rating' : r + '+', toggle: pickKey('fRating', r), ...this.chip(this.state.fRating === r) }));
+    const filterChips = [];
+    if (this.state.fCity !== 'All') filterChips.push({ label: this.state.fCity, remove: pickKey('fCity', 'All') });
+    Object.keys(this.state.fTypes).filter(k => this.state.fTypes[k]).forEach(k => filterChips.push({ label: k, remove: toggleKey('fTypes', k) }));
+    Object.keys(this.state.fPrograms).filter(k => this.state.fPrograms[k]).forEach(k => filterChips.push({ label: k, remove: toggleKey('fPrograms', k) }));
+    if (this.state.fRating !== 'Any') filterChips.push({ label: 'Rating ' + this.state.fRating + '+', remove: pickKey('fRating', 'Any') });
+
+    const invoices = [
+      { label: 'July 2026', date: 'Paid 12 Jul · Visa ··4242', amount: 'A$36.00' },
+      { label: 'June 2026', date: 'Paid 12 Jun · Visa ··4242', amount: 'A$36.00' },
+      { label: 'May 2026', date: 'Paid 12 May · Visa ··4242', amount: 'A$36.00' },
+      { label: 'April 2026', date: 'Paid 12 Apr · Visa ··4242', amount: 'A$18.00' },
+    ];
+
+    const cefrShort = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const dashKids = kidData.map((k, i) => ({
+      initial: k.initial, name: k.name, school: k.meta,
+      open: () => this.setState({ view: 'detail', kidIdx: i }),
+      divider: i === kidData.length - 1 ? 'transparent' : '#EEF1F6',
+      focus: k.skills.reduce((a, b) => parseInt(a.pct) < parseInt(b.pct) ? a : b).name,
+      dots: cefrShort.map((label, j) => ({
+        label,
+        bg: j < k.journeyStage ? '#0E2350' : '#EEF1F6',
+        fg: j === k.journeyStage - 1 ? '#0E2350' : '#9AA6B8',
+        w: j === k.journeyStage - 1 ? 700 : 500,
+      })),
+    }));
+
+    const mkNotif = (glyph, title, text, time, unread) => ({
+      glyph, title, text, time,
+      iconBg: unread ? '#0E2350' : '#EEF1F6', iconFg: unread ? '#FFFFFF' : '#0E2350',
+      dot: unread ? '#2563EB' : 'transparent',
+    });
+    const notifsToday = [
+      mkNotif('B1', 'Emma finished her Listening check-in', 'Scored B1 · 74% — up 6% since May. The full report is ready.', '2 hours ago', true),
+      mkNotif('!', 'Placement test due Friday', "Emma's English placement closes 25 July. She needs a quiet 55 minutes and a headset.", '5 hours ago', true),
+    ];
+    const notifsEarlier = [
+      mkNotif('A', 'New note from Ms. Alvarez', 'About Emma volunteering to present in class this week.', 'Monday', false),
+      mkNotif('$', 'Invoice paid — A$36.00', 'Your July Family plan invoice was charged to Visa ··4242.', '12 July', false),
+      mkNotif('5', 'Lucas hit a 5-day practice streak', 'Mostly reading sets — his strongest run so far.', '10 July', false),
+    ];
+
+    const reportLangs = ['English only', 'Tiếng Việt', '简体中文', '한국어', 'हिन्दी'].map(l => ({ label: l, toggle: pickKey('reportLang', l), ...this.chip(this.state.reportLang === l) }));
+    const prefDefs = [
+      { label: 'Test results', sub: 'Email + push as soon as a report is ready' },
+      { label: 'Weekly summary', sub: 'One digest every Sunday evening' },
+      { label: 'Test reminders', sub: '48 hours and 2 hours before a deadline' },
+      { label: 'Product news', sub: 'New features and tips, about once a month' },
+    ];
+    const prefs = prefDefs.map(p => {
+      const on = !!this.state.prefsOn[p.label];
+      return { ...p, toggle: toggleKey('prefsOn', p.label), trackBg: on ? '#0E2350' : '#D8DFEA', knobLeft: on ? '22px' : '3px' };
+    });
+
+    return {
+      isDash: view === 'dashboard',
+      isSearch: view === 'search',
+      isKids: view === 'children',
+      isDetail: view === 'detail',
+      isAdd: view === 'add',
+      isBilling: view === 'billing',
+      isNotifs: view === 'notifications',
+      isSettings: view === 'settings',
+      goDash: set('dashboard'), goKids: set('children'), goSearch: set('search'), goSettings: set('settings'), goBilling: set('billing'), goNotifs: set('notifications'),
+      goAdd: () => this.setState({ view: 'add', addStep: 1 }),
+      navDash: this.nav(view === 'dashboard'),
+      navKids: this.nav(view === 'children' || view === 'detail' || view === 'add'),
+      navSearch: this.nav(view === 'search'),
+      navSettings: this.nav(view === 'settings'),
+      navBilling: this.nav(view === 'billing'),
+      schools, setMapEl,
+      zoomIn: () => this.map && this.map.zoomIn(),
+      zoomOut: () => this.map && this.map.zoomOut(),
+      genders, testYears, terms, channels,
+      cityOpts, typeOpts, programOpts, ratingOpts, filterChips,
+      filteredCount: visibleIdx.length,
+      noChipsDisplay: filterChips.length ? 'none' : 'inline',
+      filtersOpen: this.state.filtersOpen,
+      openFilters: () => this.setState({ filtersOpen: true }),
+      closeFilters: () => this.setState({ filtersOpen: false }),
+      clearFilters: () => this.setState({ fCity: 'All', fTypes: {}, fPrograms: {}, fRating: 'Any' }),
+      stopProp: (e) => e.stopPropagation(),
+      dashKids, notifsToday, notifsEarlier, reportLangs, prefs,
+      selectedName: schoolData[sel].name,
+      selectedMeta: schoolData[sel].meta,
+      selectedRating: schoolData[sel].rating,
+      kids, kid,
+      steps, stepNum: step,
+      step1: step === 1, step2: step === 2, step3: step === 3, step4: step === 4, step5: step === 5,
+      stepBack: () => step > 1 ? this.setState({ addStep: step - 1 }) : this.setState({ view: 'children' }),
+      stepNext: () => step < 5 ? this.setState({ addStep: step + 1 }) : this.setState({ view: 'children' }),
+      backColor: step > 1 ? '#3D4A5C' : '#9AA6B8',
+      nextLabel: step === 5 ? 'Confirm & add child' : 'Continue',
+      invoices,
+    };
+  }
+}
+</script>
+</body>
+</html>

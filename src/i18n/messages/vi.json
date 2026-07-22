@@ -444,7 +444,123 @@
     "primitiveToggleResultsLabel": "Thông báo cho tôi khi có kết quả mới",
     "primitiveToggleShuffleLabel": "Xáo trộn thứ tự câu hỏi",
     "primitiveToggleResultsHint": "Gửi email và thông báo ngay khi có kết quả",
-    "primitiveToggleShuffleHint": "Mỗi học sinh thấy một thứ tự câu hỏi khác nhau"
+    "primitiveToggleShuffleHint": "Mỗi học sinh thấy một thứ tự câu hỏi khác nhau",
+    "sectionChoices": "Điều khiển lựa chọn",
+    "sectionMedia": "Ảnh & thẻ kết quả",
+    "sectionRecords": "Hồ sơ & hàng dữ liệu",
+    "choicesIntro": "Mỗi hình thái lựa chọn có một điều khiển riêng — thanh phân đoạn cho hai ba từ, chip cho nhãn ngắn, thẻ lựa chọn khi phương án cần mô tả, và ô chọn khi danh sách dài.",
+    "mediaIntro": "Thẻ kết quả có khe ảnh thật, thanh bộ lọc tự cuộn bên trong, và khung chứa bản đồ.",
+    "recordsIntro": "Những bảng và hàng tạo nên trang hồ sơ, để không màn hình nào phải lặp lại một loại thẻ.",
+    "choiceRelationshipLabel": "Quan hệ với trẻ",
+    "choiceRelationshipHelper": "Hiển thị cho mọi trường bạn nộp hồ sơ.",
+    "choiceRelationshipParent": "Cha mẹ",
+    "choiceRelationshipGuardian": "Người giám hộ",
+    "choiceRelationshipOther": "Khác",
+    "choiceTermLabel": "Học kỳ nhập học mong muốn",
+    "choiceTermOne": "Học kỳ 1",
+    "choiceTermTwo": "Học kỳ 2",
+    "choiceTermThree": "Học kỳ 3",
+    "choiceSubjectsLabel": "Môn học bao gồm",
+    "choiceSubjectScience": "Khoa học",
+    "choiceErrorRequired": "Hãy chọn một phương án để tiếp tục.",
+    "choicePackLabel": "Gói lượt kiểm tra",
+    "choicePackFamily": "Gói gia đình · 10 lượt",
+    "choicePackFamilyNote": "Tiết kiệm 25% · phổ biến nhất",
+    "choicePackFamilyPrice": "369 kr",
+    "choicePackSingle": "Một lượt",
+    "choicePackSingleNote": "Chỉ cho bài kiểm tra này",
+    "choicePackSinglePrice": "49 kr",
+    "choicePackSchool": "Gói cho trường",
+    "choicePackSchoolNote": "Liên hệ để kích hoạt",
+    "choiceCountryLabel": "Quốc gia",
+    "choiceCountryPlaceholder": "Chọn quốc gia",
+    "choiceCountryValue": "Đan Mạch",
+    "mediaCardTitle": "Trường Nørrebro Heights",
+    "mediaCardBadge": "Công lập",
+    "mediaCardMeta": "Copenhagen · 640 học sinh",
+    "mediaCardDescription": "Trường tiểu học và trung học cơ sở công lập, có lớp song ngữ từ lớp 4.",
+    "mediaCardOpen": "Đang tuyển sinh",
+    "mediaCoverAlt": "Ảnh bìa SchoolTest",
+    "mediaCardNoImageTitle": "Trường St. Anne's Grammar",
+    "mediaCardNoImageMeta": "Aarhus · 410 học sinh",
+    "mediaCardNoImageDescription": "Trường này chưa cung cấp ảnh.",
+    "mediaCoverEmptyAlt": "Chưa có ảnh",
+    "mediaCardFlatTitle": "Kết quả đã chọn",
+    "mediaCardFlatDescription": "Vẫn là thẻ đó nhưng không có ảnh bìa — ảnh là một khe cắm, không phải một thành phần khác.",
+    "filterRailTitle": "Lọc trường",
+    "filterRailClear": "Xóa lọc",
+    "filterRailSector": "Loại hình",
+    "filterRailStage": "Cấp học",
+    "filterRailApply": "Áp dụng bộ lọc",
+    "filterSectorPublic": "Công lập",
+    "filterSectorPrivate": "Tư thục",
+    "filterStagePrimary": "Tiểu học",
+    "filterStageSecondary": "Trung học",
+    "mapPanelLabel": "Bản đồ kết quả tìm trường",
+    "mapPanelEmptyTitle": "Khung bản đồ",
+    "mapPanelEmptyBody": "Khung chịu trách nhiệm về bề mặt và giới hạn chiều cao; bản đồ hiển thị bên trong.",
+    "recordEnrolmentTitle": "Thông tin nhập học",
+    "recordEnrolmentDescription": "Những thông tin trường nhìn thấy trong mọi hồ sơ.",
+    "recordEnrolmentAction": "Sửa",
+    "recordYearLevel": "Khối lớp",
+    "recordYearLevelValue": "Lớp 7",
+    "recordNationality": "Quốc tịch",
+    "recordNationalityValue": "Đan Mạch",
+    "recordTargetEntry": "Dự kiến nhập học",
+    "recordTargetEntryValue": "2027 · Học kỳ 1",
+    "recordCreditsEyebrow": "Lượt kiểm tra",
+    "recordCreditsValue": "12",
+    "recordCreditsCaption": "Đủ cho bốn bài đánh giá nữa.",
+    "recordCreditsAction": "Mua thêm lượt",
+    "recordGlassCorrect": "Câu đúng",
+    "recordGlassCorrectValue": "38/45",
+    "recordGlassBand": "Bậc",
+    "recordGlassBandValue": "B2",
+    "recordPromoTitle": "Sắp hết lượt kiểm tra",
+    "recordPromoBody": "Nạp một lần là mọi trẻ trong tài khoản của bạn đều làm được bài tiếp theo.",
+    "recordPromoAction": "Nạp thêm",
+    "recordCalloutBody": "Kết quả được công bố cho phụ huynh 24 giờ sau khi đóng chấm.",
+    "recordTintInset": "Nền lõm — vùng thụt vào bên trong bảng trắng.",
+    "recordTintWell": "Nền trang — dùng cho ô nhỏ đặt trên thẻ.",
+    "recordTintBrand": "Màu thương hiệu — xanh nhạt cho ô thông tin.",
+    "recordTintAccent": "Màu nhấn — xanh ngọc cho ô kết quả tích cực.",
+    "recordNoteTitle": "Ghi chú của giáo viên",
+    "recordNoteBody": "Emma đọc tốt hơn nhiều so với trình độ lớp nhưng hay vội ở hai câu cuối. Hãy cho em thêm năm phút.",
+    "recordNoteAuthor": "Mette Sørensen",
+    "recordNoteTime": "12 tháng 5",
+    "recordActivityTitle": "Hoạt động gần đây",
+    "recordActivity": "Emma đã hoàn thành bài kiểm tra đọc lớp 7.",
+    "recordActivitySecond": "Lucas được mời làm bài kiểm tra xếp lớp môn Toán.",
+    "recordActivityTime": "2 giờ trước",
+    "recordDotActivity": "Ba hồ sơ đã được cập nhật trong tuần này.",
+    "recordDotActivitySecond": "Một hồ sơ đang chờ bổ sung giấy tờ.",
+    "recordRankTitle": "Thành tích cao nhất",
+    "recordRankTwo": "Lucas Hansen",
+    "recordRankThree": "Maja Andersen",
+    "recordScoreTitle": "Điểm số & kỹ năng",
+    "recordSkillListening": "Nghe",
+    "recordSkillReading": "Đọc",
+    "recordSkillWriting": "Viết",
+    "recordVerdictMastered": "Thành thạo",
+    "recordVerdictEmerging": "Đang tiến bộ",
+    "recordVerdictNotAssessed": "Chưa đánh giá",
+    "recordRosterTitle": "Thành phần hàng danh sách",
+    "recordCompletionLabel": "Số câu đã trả lời",
+    "recordCompletionValue": "17/24",
+    "recordStackLabel": "Đã phân công năm học sinh",
+    "recordEventMonth": "Th5",
+    "recordEventDay": "24",
+    "recordEventTitle": "Bài kiểm tra đầu vào lớp 7",
+    "recordEventMeta": "09:00 · Hội trường lớn",
+    "recordChartTitle": "Điểm trung bình theo tháng",
+    "recordMonthMar": "Th3",
+    "recordMonthApr": "Th4",
+    "recordMonthMay": "Th5",
+    "recordMonthJun": "Th6",
+    "recordMonthJul": "Th7",
+    "recordTrendLabel": "Xu hướng điểm trung bình",
+    "recordScrollTitle": "Vùng cuộn",
+    "recordScrollBody": "Nội dung dài cuộn bên trong hộp của chính nó với thanh cuộn mảnh chuẩn — bản thân trang không bao giờ cuộn ngang."
   },
   "Dashboard": {
     "meta": {
@@ -558,7 +674,50 @@
     "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
     "addFirstStudent": "Thêm học sinh đầu tiên",
     "promoTitle": "Nhận hỗ trợ từ chuyên gia",
-    "promoDescription": "Kết nối với chuyên gia giáo dục am hiểu những trường bạn quan tâm."
+    "promoDescription": "Kết nối với chuyên gia giáo dục am hiểu những trường bạn quan tâm.",
+    "readinessCellLabel": "Mức hoàn thiện hồ sơ của {name}",
+    "activityEmpty": "Chưa có hồ sơ nào được thêm.",
+    "activityAdded": "<strong>{name}</strong> đã được thêm vào danh sách con của bạn.",
+    "activityUpdated": "Thông tin của <strong>{name}</strong> đã được cập nhật.",
+    "activityTitle": "Hoạt động gần đây",
+    "heroEyebrow": "Your family",
+    "heroHeadlineEmpty": "Add your first child to start <mark>planning their school entry</mark>.",
+    "heroHeadlinePlanned": "Every profile has <mark>a target entry plan</mark> — the next step is comparing schools.",
+    "heroHeadlineNeedsPlan": "<mark>{missing} of {total} profiles</mark> still need a target entry year and term.",
+    "readinessChartTitle": "Profile readiness",
+    "readinessChartRange": "{count, plural, one {# child} other {# children}}",
+    "readinessChartEmpty": "Add a child to see how complete their profile is.",
+    "readinessChartCaption": "{name} has the most left to add — <strong>{percent} complete</strong>.",
+    "readinessChartAllDone": "Every profile here is <strong>complete</strong> — nothing left to fill in.",
+    "childrenSeeDetails": "See details",
+    "childRowLabel": "{name} — {filled} of {total} profile details added",
+    "childRowPlan": "Entry {plan}",
+    "childRowPlanNeeded": "Plan needed",
+    "readinessFieldFamilyName": "Name",
+    "readinessFieldEmail": "Email",
+    "readinessFieldNationality": "Country",
+    "readinessFieldYearLevel": "Year",
+    "readinessFieldEntryYear": "Entry",
+    "readinessFieldEntryTerm": "Term",
+    "focusEyebrow": "Where to look next",
+    "focusBodyEmpty": "Nothing to review yet. Add a child and their profile readiness shows up here.",
+    "focusBodyComplete": "{name}’s profile is fully filled in — every child you have added is ready for school matching.",
+    "focusBodyIncomplete": "{name}’s profile is {percent}% filled in. {missing, plural, one {# planning detail is} other {# planning details are}} still blank, and those details decide which schools and entry terms can be matched.",
+    "recommendedTitle": "Recommended next",
+    "recommendAddChildTitle": "Add your first child",
+    "recommendAddChildMeta": "Their profile is what schools and entry terms are matched against.",
+    "recommendAddChildAction": "Add",
+    "recommendSetPlanTitle": "Set a target entry plan for {name}",
+    "recommendSetPlanMeta": "A target year and term narrows the schools worth shortlisting.",
+    "recommendCompleteProfileTitle": "Finish {name}’s profile",
+    "recommendCompleteProfileMeta": "{percent}% filled in — the rest sharpens the school match.",
+    "recommendOpenAction": "Open",
+    "recommendExploreSchoolsTitle": "Compare schools that fit your plans",
+    "recommendExploreSchoolsMeta": "Search by state, sector and school type.",
+    "recommendExploreSchoolsAction": "Explore",
+    "recommendActionLabel": "{action}: {title}",
+    "activityAddedDetail": "Profile added to your children",
+    "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
     "nav": {
@@ -590,7 +749,8 @@
     },
     "userMenu": {
       "settings": "Cài đặt",
-      "signOut": "Đăng xuất"
+      "signOut": "Đăng xuất",
+      "role": "Parent account"
     }
   },
   "Settings": {
@@ -605,6 +765,7 @@
     "account": {
       "title": "Tài khoản",
       "description": "Thông tin SchoolTest dùng để đăng nhập cho bạn.",
+      "signedInAs": "Đang đăng nhập bằng",
       "emailLabel": "Email đăng nhập",
       "confirmedLabel": "Xác nhận email",
       "confirmed": "Đã xác nhận",
@@ -625,7 +786,8 @@
     "defaultSectors": "Khu vực trường mặc định",
     "defaultSort": "Thứ tự sắp xếp mặc định",
     "defaultPageSize": "Kết quả mỗi trang",
-    "pageSizeOption": "{count} kết quả mỗi trang",
+    "searchResultsViewTitle": "Hiển thị kết quả",
+    "searchResultsViewDescription": "Chọn cách sắp xếp kết quả trường học và số lượng hiển thị trên mỗi trang.",
     "defaultFeeRange": "Khoảng học phí hằng năm mặc định",
     "defaultFeeMinimum": "Học phí tối thiểu (AUD)",
     "defaultFeeMaximum": "Học phí tối đa (AUD)",
@@ -692,7 +854,6 @@
         }
       },
       "lockedTitle": "Cập nhật luôn bật",
-      "lockedHelper": "Luôn bật — không thể tắt.",
       "digest": {
         "title": "Tần suất email",
         "description": "Chọn thời điểm gửi các cập nhật email phù hợp. Cảnh báo tài khoản và bảo mật luôn được gửi, dù bạn chọn gì.",
@@ -734,6 +895,10 @@
       "saveError": "Không thể lưu tùy chọn thông báo của bạn.",
       "loadErrorTitle": "Không thể tải tùy chọn thông báo của bạn.",
       "loadErrorDescription": "Vui lòng thử lại để tải các cài đặt thông báo đã lưu."
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose the language SchoolTest uses across the app."
     }
   },
   "SchoolSearch": {
@@ -747,19 +912,26 @@
     "searchPlaceholder": "Tìm theo trường hoặc khu vực",
     "loading": "Đang tải trường học",
     "resultsCount": "{count, plural, other {# trường}}",
+    "resultsRegion": "Kết quả tìm kiếm trường học",
     "aria": {
       "filters": "Bộ lọc trường học"
     },
     "filterPanel": {
-      "trigger": "Bộ lọc",
+      "trigger": "Tất cả bộ lọc",
       "title": "Lọc trường học",
-      "clear": "Xóa bộ lọc",
+      "clear": "Xóa tất cả",
+      "activeCount": "{count, plural, other {Đã áp dụng # bộ lọc}}",
       "location": "Vị trí",
       "schoolProfile": "Thông tin trường",
       "features": "Đặc điểm",
       "state": "Bang hoặc vùng lãnh thổ",
       "sector": "Loại hình",
-      "schoolType": "Loại trường"
+      "schoolType": "Loại trường",
+      "close": "Đóng bộ lọc",
+      "description": "Thu hẹp kết quả trường theo khu vực, loại hình, tiện ích và học phí.",
+      "apply": "Xem {count, plural, other {# trường}}",
+      "noFilters": "Chưa áp dụng bộ lọc — hiển thị tất cả trường",
+      "remove": "Bỏ bộ lọc {label}"
     },
     "states": {
       "QLD": "QLD",
@@ -821,7 +993,9 @@
     },
     "card": {
       "tuition": "Từ <strong>{amount}</strong>/năm",
-      "coverImageAlt": "Hình ảnh khuôn viên {name}"
+      "coverImageAlt": "Hình ảnh khuôn viên {name}",
+      "select": "Chọn {name}",
+      "tuitionUnknown": "Chưa có học phí"
     },
     "map": {
       "region": "Bản đồ kết quả trường học",
@@ -831,28 +1005,46 @@
       "showMap": "Hiện bản đồ",
       "showList": "Hiện danh sách",
       "ctrlScrollHint": "Nhấn Ctrl + cuộn để phóng to bản đồ",
-      "markerCount": "{count, plural, =0 {Không có trường nào hiển thị trên bản đồ} other {# trường hiển thị trên bản đồ}}"
+      "markerCount": "{count, plural, =0 {Không có trường nào hiển thị trên bản đồ} other {# trường hiển thị trên bản đồ}}",
+      "clearSelection": "Bỏ chọn trường"
+    },
+    "facts": {
+      "scholarships": "Học bổng",
+      "elicos": "ELICOS",
+      "atar": "Lộ trình ATAR",
+      "cricos": "CRICOS"
     }
   },
   "AgentSearch": {
     "loading": "Đang tải đại lý",
     "resultsCount": "{count, plural, other {# đại lý}}",
+    "resultsRegion": "Kết quả tìm kiếm đại lý",
     "verified": "Đã xác minh",
     "aria": {
       "filters": "Bộ lọc đại lý"
     },
     "filterPanel": {
-      "trigger": "Bộ lọc",
+      "trigger": "Tất cả bộ lọc",
       "title": "Lọc đại lý",
-      "clear": "Xóa bộ lọc",
+      "clear": "Xóa tất cả",
+      "activeCount": "{count, plural, other {Đã áp dụng # bộ lọc}}",
       "countries": "Quốc gia phục vụ",
       "languages": "Ngôn ngữ sử dụng",
-      "services": "Dịch vụ cung cấp"
+      "services": "Dịch vụ cung cấp",
+      "close": "Đóng bộ lọc",
+      "description": "Thu hẹp kết quả đại lý theo quốc gia, ngôn ngữ và dịch vụ.",
+      "apply": "Xem {count, plural, other {# đại lý}}",
+      "noFilters": "Chưa áp dụng bộ lọc — hiển thị tất cả đại lý",
+      "remove": "Bỏ bộ lọc {label}"
     },
     "chipGroups": {
       "countries": "Quốc gia phục vụ",
       "languages": "Ngôn ngữ sử dụng",
       "services": "Dịch vụ cung cấp"
+    },
+    "card": {
+      "countries": "Quốc gia phục vụ",
+      "languages": "Ngôn ngữ sử dụng"
     },
     "services": {
       "counselling": "Tư vấn",
@@ -910,7 +1102,8 @@
     "meta": {
       "title": "Tìm kiếm — SchoolTest",
       "description": "Tìm kiếm các trường học tại Úc và tư vấn du học trong một công cụ thống nhất."
-    }
+    },
+    "searchAction": "Tìm kiếm"
   },
   "StudentWizard": {
     "meta": {
@@ -923,26 +1116,37 @@
     "saveChanges": "Lưu thay đổi",
     "stepPlaceholder": "Các trường của bước này sẽ được thêm ở phần sau.",
     "stepCaption": "Bước {current} trên {total} · {title}",
+    "stepsLabel": "Tiến độ thiết lập học sinh",
     "steps": {
       "personal": {
         "label": "Cá nhân",
-        "title": "Thông tin cá nhân"
+        "title": "Thông tin cá nhân",
+        "description": "Học sinh này là ai",
+        "railHint": "Học sinh là ai"
       },
       "education": {
         "label": "Học vấn",
-        "title": "Học vấn"
+        "title": "Học vấn",
+        "description": "Nơi học hiện tại và định hướng sắp tới",
+        "railHint": "Trường học & mục tiêu nhập học"
       },
       "guardian": {
         "label": "Người giám hộ",
-        "title": "Cha mẹ hoặc người giám hộ"
+        "title": "Cha mẹ hoặc người giám hộ",
+        "description": "Người chúng tôi liên hệ về học sinh này",
+        "railHint": "Thông tin liên hệ"
       },
       "media": {
         "label": "Phương tiện",
-        "title": "Ảnh & giọng nói"
+        "title": "Ảnh & giọng nói",
+        "description": "Ảnh và giới thiệu bằng giọng nói là tùy chọn",
+        "railHint": "Ảnh & giới thiệu bằng giọng nói"
       },
       "review": {
         "label": "Xem lại",
-        "title": "Xem lại & gửi"
+        "title": "Xem lại & gửi",
+        "description": "Hãy kiểm tra mọi thông tin trước khi tạo học sinh này",
+        "railHint": "Xác nhận thông tin"
       }
     },
     "personal": {
@@ -1020,11 +1224,11 @@
         "previewAlt": "Xem trước giới thiệu bằng giọng nói",
         "invalidType": "Hãy chọn tệp âm thanh (MP3 hoặc WAV).",
         "tooLarge": "Âm thanh vượt quá 10MB. Hãy chọn tệp nhỏ hơn."
-      }
+      },
+      "optionalNote": "Cả hai đều là tùy chọn. Bạn có thể thêm hoặc thay thế sau trong hồ sơ học sinh."
     },
     "toastCreated": "Đã tạo học sinh",
     "review": {
-      "intro": "Hãy kiểm tra mọi thông tin trước khi tạo học sinh này.",
       "edit": "Chỉnh sửa",
       "empty": "—",
       "photo": "Ảnh",
@@ -1045,7 +1249,24 @@
         "offlineTitle": "Bạn đang ngoại tuyến",
         "offlineBody": "Hãy kiểm tra kết nối và thử lại.",
         "dismiss": "Đóng"
-      }
+      },
+      "summaryEyebrow": "Sẵn sàng tạo",
+      "noPhoto": "Chưa thêm ảnh",
+      "noVoice": "Chưa thêm giới thiệu bằng giọng nói",
+      "born": "sinh {date}",
+      "testingBand": "nhóm kiểm tra {n}",
+      "entry": "nhập học {term}, {year}",
+      "photoAdded": "Đã thêm ảnh",
+      "voiceAdded": "Đã thêm giới thiệu bằng giọng nói"
+    },
+    "pageTitle": "Thêm con",
+    "editTitle": "Chỉnh sửa thông tin con",
+    "backToChildren": "Con của tôi",
+    "stepCounter": "Bước {current} trên {total}",
+    "success": {
+      "createdTitle": "Đã thêm học sinh",
+      "savedTitle": "Đã lưu thay đổi",
+      "body": "Đang chuyển đến Con của tôi…"
     }
   },
   "StudentWizardSchema": {
@@ -1192,11 +1413,38 @@
     "skillLadderLabel": "{skill}: CEFR {band}, bậc {rank} trên {total}",
     "skillsPendingTitle": "Chưa đánh giá",
     "skillsPendingDescription": "Chưa có kết quả chính thức nào được công bố cho các kỹ năng này.",
+    "sessionsCompleted": "Buổi đã hoàn thành",
+    "recordFraction": "{recorded}/{total}",
+    "recordCompletionLabel": "Thông tin đã ghi nhận của {name}",
+    "skillNotAssessed": "Chưa đánh giá",
+    "tabRecord": "Hồ sơ",
+    "tabProgress": "Tiến độ",
+    "tabsLabel": "Các phần hồ sơ của con",
     "pagerLabel": "Trang danh sách",
     "pagerPage": "Trang {page} trên {pages}",
     "pagerPrevious": "Trang trước",
     "pagerNext": "Trang sau",
-    "pagerGoTo": "Đến trang {page}"
+    "pagerGoTo": "Đến trang {page}",
+    "addChild": "Add a child",
+    "addChildHint": "Set up a new learner profile.",
+    "cardOpenHint": "Open the profile for progress and results.",
+    "cardDetails": "Details",
+    "levelJourneyHeading": "Level journey",
+    "journeyNote": "Each rail shows the highest CEFR band published for that skill on the six-band ladder this system uses, Pre-A1 through C1.",
+    "journeyUnknown": "No CEFR band has been published for any skill yet.",
+    "skillsUnknown": "No readiness has been published for any skill yet.",
+    "skillsNote": "Readiness is published per skill with each official result. No overall level is calculated.",
+    "focusSkillNote": "{skill} is the current focus area — readiness {readiness}.",
+    "skillLadderEmptyLabel": "{skill}: no CEFR band published yet",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "cardAdded": "Added {date}"
   },
   "Notifications": {
     "meta": {
@@ -1215,6 +1463,7 @@
     "unread": "Chưa đọc",
     "read": "Đã đọc",
     "today": "Hôm nay",
+    "earlier": "Earlier",
     "yesterday": "Hôm qua",
     "unreadCount": "{count, plural, =0 {Không có thông báo chưa đọc} one {# thông báo chưa đọc} other {# thông báo chưa đọc}}",
     "emptyTitle": "Bạn đã cập nhật mọi thứ",
@@ -1233,6 +1482,10 @@
       "children": "Con em",
       "testActivity": "Hoạt động kiểm tra",
       "testResults": "Kết quả kiểm tra"
+    },
+    "filterLabel": "Filter notifications by category",
+    "filters": {
+      "all": "All"
     }
   },
   "QueryError": {

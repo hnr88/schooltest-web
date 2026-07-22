@@ -63,4 +63,7 @@ export const AU_MAP_MAX_BOUNDS: [[number, number], [number, number]] = [
   [-8, 160],
 ];
 export const CLUSTER_MAX_RADIUS = 60;
-export const CLUSTER_DISABLE_AT_ZOOM = 15;
+// Spec 01 §8.5: the design swaps city cluster bubbles for individual pins at zoom 9,
+// and every camera move that "opens" a place lands on zoom 11.
+export const CLUSTER_DISABLE_AT_ZOOM = 9;
+export const PLACE_FOCUS_ZOOM = 11;

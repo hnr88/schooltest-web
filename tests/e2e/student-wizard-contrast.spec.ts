@@ -74,9 +74,11 @@ test('student wizard options remain readable and a selected student persists aft
     await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
 
     await chooseFirstOption(page, cat(en, 'StudentWizard.education.targetEntryYear'));
+    // Term is now the canonical pill radiogroup (a required answer, not a view
+    // switcher) — same field label, same localized option, stronger role assertion.
     await page
-      .getByRole('group', { name: cat(en, 'StudentWizard.education.targetEntryTerm') })
-      .getByText(icu(cat(en, 'StudentWizard.education.term'), { n: '1' }), { exact: true })
+      .getByRole('radiogroup', { name: cat(en, 'StudentWizard.education.targetEntryTerm') })
+      .getByRole('radio', { name: icu(cat(en, 'StudentWizard.education.term'), { n: '1' }) })
       .click();
     await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
     await page.getByLabel(cat(en, 'StudentWizard.guardian.name')).fill('Contrast Guardian');

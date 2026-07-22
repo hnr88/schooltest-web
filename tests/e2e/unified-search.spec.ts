@@ -48,7 +48,13 @@ const searchBar = (page: Page) =>
   page.getByLabel(cat(en, 'UnifiedSearch.searchPlaceholderSchools'));
 const schoolsTab = (page: Page) =>
   page.getByRole('tab', { name: cat(en, 'UnifiedSearch.modeSchools'), exact: true });
-const schoolFilters = (page: Page) =>
+// The schools filters live in the §8.6 "All filters" overlay at EVERY width — the
+// design draws no persistent rail on "Find a school". The panel is only in the DOM
+// while the dialog is open, so `school-filter-panel` is hidden/detached until the
+// `filterPanel.trigger` button opens it. Both the desktop journey below and the
+// dedicated 375px leg drive it through that trigger.
+const schoolFilterRail = (page: Page) => page.locator('[data-slot="school-filter-panel"]');
+const schoolFiltersTrigger = (page: Page) =>
   page.getByRole('button', { name: cat(en, 'SchoolSearch.filterPanel.trigger'), exact: true });
 
 async function expectAxeClean(page: Page, label: string): Promise<void> {
@@ -117,15 +123,20 @@ test('schools: sidebar nav → default corpus, one-debounced request, chip filte
     ),
   ).toBe(false);
 
-  // Clear q + QLD chip → count drops to 74, chip aria-pressed=true.
+  // Clear q + QLD chip → count drops to 74, chip aria-pressed=true. The design has no
+  // persistent rail — filters open in the §8.6 "All filters" overlay at every width.
   await searchBar(page).fill('');
-  await schoolFilters(page).click();
-  const qld = page
-    .locator('[data-slot="popover-content"]')
-    .getByRole('button', { name: cat(en, 'SchoolSearch.states.QLD'), exact: true });
+  await schoolFiltersTrigger(page).click();
+  const filtersDialog = page.getByRole('dialog');
+  await expect(filtersDialog).toBeVisible();
+  const qld = filtersDialog.getByRole('button', {
+    name: cat(en, 'SchoolSearch.states.QLD'),
+    exact: true,
+  });
   await qld.click();
   await expect(page.getByText(resultsCount(74, 'SchoolSearch'))).toBeVisible();
   await expect(qld).toHaveAttribute('aria-pressed', 'true');
+  await page.keyboard.press('Escape');
 
   // Reload clears the in-memory store → page 2 differs, "Showing 13–24 of 312".
   await page.reload();
@@ -190,6 +201,34 @@ test('zh: /zh/dashboard/search renders the zh catalog title in both modes', asyn
   await expect(
     page.getByRole('heading', { level: 1, name: cat(zh, 'UnifiedSearch.titleAgents') }),
   ).toBeVisible();
+});
+
+test('375: the Filters trigger opens the same controls in the overlay', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await loginAsParent(page);
+  await page.goto('/dashboard/search');
+  await expect(schoolCards(page).first()).toBeVisible();
+
+  // The filter panel is only in the DOM while the §8.6 overlay is open, so it is
+  // detached until `SchoolSearch.filterPanel.trigger` opens the dialog that hosts it.
+  await expect(schoolFilterRail(page)).toBeHidden();
+  const trigger = schoolFiltersTrigger(page);
+  await expect(trigger).toBeVisible();
+  await trigger.click();
+
+  const sheet = page.getByRole('dialog');
+  await expect(sheet).toBeVisible();
+  const qld = sheet.getByRole('button', { name: cat(en, 'SchoolSearch.states.QLD'), exact: true });
+  await qld.click();
+  await expect(qld).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByText(resultsCount(74, 'SchoolSearch'))).toBeVisible();
+
+  // Clearing from inside the overlay restores the full corpus.
+  await sheet.getByRole('button', { name: cat(en, 'SchoolSearch.filterPanel.clear'), exact: true }).click();
+  await expect(qld).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.getByText(resultsCount(312, 'SchoolSearch'))).toBeVisible();
 });
 
 // D-SEARCH-PREF: a saved Search-pref (`default_states:['QLD']`) must pre-filter the

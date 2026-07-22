@@ -20,7 +20,7 @@ interface MediaPreviewProps {
 // not in images.remotePatterns, so the thumbnail is served `unoptimized`.
 export function MediaPreview({ media, isImage, previewAlt, removeLabel, onRemove }: MediaPreviewProps) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border bg-muted duration-300 ease-out animate-in fade-in zoom-in-95 motion-reduce:animate-none">
+    <div className="relative overflow-hidden rounded-panel border border-portal-input bg-muted duration-300 ease-out animate-in fade-in zoom-in-95 motion-reduce:animate-none">
       {isImage ? (
         <Image
           src={media.url}

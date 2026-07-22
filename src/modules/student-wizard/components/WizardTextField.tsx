@@ -3,8 +3,10 @@
 import type { HTMLInputTypeAttribute } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
-import { Input } from '@/modules/design-system';
+import { cn } from '@/lib/utils';
+import { describedBy, Input } from '@/modules/design-system';
 import { WizardField } from '@/modules/student-wizard/components/WizardField';
+import { WIZARD_CONTROL } from '@/modules/student-wizard/constants/wizard-control.constants';
 
 interface WizardTextFieldProps {
   id: string;
@@ -14,13 +16,13 @@ interface WizardTextFieldProps {
   helper?: string;
   error?: string;
   max?: string;
+  required?: boolean;
   autoComplete?: string;
   inputMode?: 'text' | 'email' | 'tel' | 'numeric';
   registration: UseFormRegisterReturn;
 }
 
-// Label + §5.1 Input + helper/error, wired to a RHF `register()` return. Baked
-// error messages (StudentWizardSchema namespace) are already localized upstream.
+// Portal field stack (spec 03 §1.4) over the 48px `PortalInput` box.
 export function WizardTextField({
   id,
   label,
@@ -29,14 +31,13 @@ export function WizardTextField({
   helper,
   error,
   max,
+  required,
   autoComplete,
   inputMode,
   registration,
 }: WizardTextFieldProps) {
-  const describedBy = error ? `${id}-error` : helper ? `${id}-helper` : undefined;
-
   return (
-    <WizardField htmlFor={id} label={label} helper={helper} error={error}>
+    <WizardField id={id} label={label} helper={helper} error={error} required={required}>
       <Input
         id={id}
         type={type}
@@ -44,9 +45,9 @@ export function WizardTextField({
         placeholder={placeholder}
         autoComplete={autoComplete}
         inputMode={inputMode}
-        className="h-11"
+        className={cn(WIZARD_CONTROL, error && 'border-destructive')}
         aria-invalid={error ? true : undefined}
-        aria-describedby={describedBy}
+        aria-describedby={describedBy(id, helper, error)}
         {...registration}
       />
     </WizardField>

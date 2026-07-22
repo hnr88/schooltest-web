@@ -1,24 +1,10 @@
-import { CircleCheckBig, Info, TimerReset } from 'lucide-react';
+import type { ChildProgressMetrics } from '@/modules/children/types/children.types';
 
-import type {
-  ChildProgressMetrics,
-  CompletionInsight,
-} from '@/modules/children/types/children.types';
-
+// null, not 0, when the API reported no sessions: the hero drops the completion
+// line entirely rather than drawing an empty track over "0/0", because "started
+// and got nowhere" and "never started" are different facts.
 export function getCompletionPercent(metrics: ChildProgressMetrics): number | null {
   if (metrics.totalSessions === 0) return null;
 
   return Math.min(100, Math.round((metrics.completedSessions / metrics.totalSessions) * 100));
-}
-
-// Which callout the learning panel shows: nothing started yet, everything done,
-// or work in flight. Tone + icon travel with the message so the panel stays dumb.
-export function getCompletionInsight(metrics: ChildProgressMetrics): CompletionInsight {
-  if (metrics.totalSessions === 0) {
-    return { tone: 'info', icon: TimerReset, messageKey: 'noSessionProgress' };
-  }
-  if (metrics.completedSessions >= metrics.totalSessions) {
-    return { tone: 'success', icon: CircleCheckBig, messageKey: 'completionDescription' };
-  }
-  return { tone: 'info', icon: Info, messageKey: 'completionDescription' };
 }

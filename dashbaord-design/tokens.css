@@ -1,0 +1,129 @@
+/* ============================================================
+   SchoolTest Design Tokens — shadcn/ui compatible
+   Drop into app/globals.css (Tailwind v4 / shadcn "new-york")
+   Font: Google Sans (variable) — fonts/GoogleSans-Variable.ttf
+   ============================================================ */
+
+:root {
+  --font-sans: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+  /* Brand scales */
+  --navy-950: #0A1A3C;
+  --navy-900: #0E2350;   /* brand navy — logo, headings */
+  --navy-800: #16326E;
+  --blue-700: #1D4ED8;
+  --blue-600: #2563EB;   /* primary */
+  --blue-500: #3B82F6;
+  --blue-100: #DBEAFE;
+  --blue-50:  #EFF5FF;
+  --teal-600: #0D9488;
+  --teal-500: #14B8A6;   /* accent */
+  --teal-100: #CCFBF1;
+  --teal-50:  #F0FDFA;
+
+  /* shadcn semantic tokens — light */
+  --background: #F7F9FC;
+  --foreground: #0E2350;
+  --card: #FFFFFF;
+  --card-foreground: #0E2350;
+  --popover: #FFFFFF;
+  --popover-foreground: #0E2350;
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EFF5FF;
+  --secondary-foreground: #16326E;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --accent: #14B8A6;
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --success: #16A34A;
+  --success-foreground: #FFFFFF;
+  --warning: #D97706;
+  --warning-foreground: #FFFFFF;
+  --border: #E3E8F0;
+  --input: #CBD5E1;
+  --ring: rgba(37, 99, 235, 0.35);
+  --radius: 0.625rem; /* 10px */
+
+  /* Charts */
+  --chart-1: #2563EB;
+  --chart-2: #14B8A6;
+  --chart-3: #0E2350;
+  --chart-4: #93C5FD;
+  --chart-5: #5EEAD4;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #475569;
+  --sidebar-primary: #2563EB;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EFF5FF;
+  --sidebar-accent-foreground: #16326E;
+  --sidebar-border: #E3E8F0;
+  --sidebar-ring: rgba(37, 99, 235, 0.35);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(14, 35, 80, 0.06);
+  --shadow-md: 0 2px 8px rgba(14, 35, 80, 0.08);
+  --shadow-lg: 0 8px 24px rgba(14, 35, 80, 0.12);
+  --shadow-xl: 0 20px 48px rgba(14, 35, 80, 0.18);
+}
+
+.dark {
+  --background: #0B1226;
+  --foreground: #E6ECF7;
+  --card: #111B33;
+  --card-foreground: #E6ECF7;
+  --popover: #16224080;
+  --popover: #162240;
+  --popover-foreground: #E6ECF7;
+  --primary: #3B82F6;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1A2A4E;
+  --secondary-foreground: #C7D6F2;
+  --muted: #17233F;
+  --muted-foreground: #8FA3C7;
+  --accent: #2DD4BF;
+  --accent-foreground: #06251F;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --success: #22C55E;
+  --success-foreground: #06250F;
+  --warning: #F59E0B;
+  --warning-foreground: #2A1B02;
+  --border: #223154;
+  --input: #2C3D66;
+  --ring: rgba(59, 130, 246, 0.45);
+
+  --chart-1: #60A5FA;
+  --chart-2: #2DD4BF;
+  --chart-3: #93C5FD;
+  --chart-4: #1D4ED8;
+  --chart-5: #0D9488;
+
+  --sidebar: #0E1830;
+  --sidebar-foreground: #A9BADC;
+  --sidebar-primary: #3B82F6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1A2A4E;
+  --sidebar-accent-foreground: #DBEAFE;
+  --sidebar-border: #223154;
+  --sidebar-ring: rgba(59, 130, 246, 0.45);
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  src: url('fonts/GoogleSans-Variable.ttf') format('truetype');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Google Sans';
+  src: url('fonts/GoogleSans-Italic-Variable.ttf') format('truetype');
+  font-weight: 400 800;
+  font-style: italic;
+  font-display: swap;
+}

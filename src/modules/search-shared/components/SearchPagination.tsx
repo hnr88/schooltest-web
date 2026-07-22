@@ -7,10 +7,14 @@ import { cn } from '@/lib/utils';
 import { getPaginationRange } from '@/modules/search-shared/lib/pagination-range';
 import type { SearchPaginationProps } from '@/modules/search-shared/types/search-shared.types';
 
+// The DRAWN pager button stays at the canonical 36px square; the 44px pointer target
+// comes from the ::after expansion. The 6px inset exactly meets the 12px sibling gap,
+// so the boxes tile to 48x48 with no overlap stealing a neighbour's hits — an
+// expansion WIDER than the gap makes the later sibling swallow its neighbour's edge.
 const pageButtonBase =
-  'inline-flex size-8 items-center justify-center rounded-md text-caption font-medium transition-colors duration-150 ease-out focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40 active:scale-95 motion-reduce:transition-none motion-reduce:active:scale-100';
+  'relative inline-flex size-9 items-center justify-center rounded-md text-meta font-medium transition-colors duration-200 ease-out-expo after:absolute after:-inset-1.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40 active:scale-95 motion-reduce:transition-none motion-reduce:active:scale-100';
 
-const stepButton = 'border border-input bg-card text-slate-600 hover:bg-muted';
+const stepButton = 'border border-input bg-card text-body hover:bg-muted';
 
 function SearchPagination({
   page,
@@ -29,10 +33,10 @@ function SearchPagination({
   return (
     <nav
       aria-label={t('paginationLabel')}
-      className="flex items-center justify-between gap-4 px-5 py-3.5"
+      className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3"
     >
-      <p className="text-caption text-body">{t('showing', { from, to, total })}</p>
-      <div className="flex items-center gap-1.5">
+      <p className="text-meta text-body">{t('showing', { from, to, total })}</p>
+      <div className="flex items-center gap-3">
         <button
           type="button"
           aria-label={t('prevPage')}

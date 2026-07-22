@@ -11,11 +11,11 @@ async function TrustedByStrip() {
     <section data-slot="trusted-by" className="py-10">
       <ScrollReveal>
         <Container className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-          <span className="text-xs font-semibold tracking-widest text-slate-600 uppercase dark:text-slate-400">
+          <span className="text-meta font-semibold tracking-overline text-slate-600 uppercase dark:text-slate-400">
             {t('trustedBy.label')}
           </span>
           {TRUSTED_WORDMARKS.map((key) => (
-            <span key={key} className="text-lg font-semibold text-slate-600 dark:text-slate-400">
+            <span key={key} className="text-body-lg font-bold text-slate-600 dark:text-slate-400">
               {t(key)}
             </span>
           ))}

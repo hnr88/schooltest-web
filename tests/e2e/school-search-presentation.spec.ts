@@ -15,17 +15,24 @@ test('school search: persistent filters, real Strapi media, and an expanded desk
   await page.setViewportSize(DESKTOP);
   await gotoSchoolsMap(page);
 
-  const filterRail = page.locator('[data-slot="school-filter-panel"]');
-  await expect(filterRail).toBeVisible();
+  // Filters now live in the §8.6 "All filters" overlay, not a persistent rail. Open
+  // it, assert the same grouped controls, then close it before measuring the split.
+  await page
+    .getByRole('button', { name: cat(en, 'SchoolSearch.filterPanel.trigger'), exact: true })
+    .click();
+  const filterDialog = page.getByRole('dialog');
+  await expect(filterDialog).toBeVisible();
   await expect(
-    filterRail.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.location') }),
+    filterDialog.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.location') }),
   ).toBeVisible();
   await expect(
-    filterRail.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.schoolProfile') }),
+    filterDialog.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.schoolProfile') }),
   ).toBeVisible();
   await expect(
-    filterRail.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.features') }),
+    filterDialog.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.features') }),
   ).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(filterDialog).toBeHidden();
 
   const firstCard = schoolCards(page).first();
   await expect(firstCard).toBeVisible();

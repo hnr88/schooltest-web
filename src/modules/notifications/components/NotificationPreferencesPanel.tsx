@@ -2,9 +2,9 @@
 
 import { useTranslations } from 'next-intl';
 
-import { Alert, Button, Skeleton } from '@/modules/design-system';
-import { NotificationCard } from '@/modules/notifications/components/NotificationCard';
+import { Alert, Button, SkeletonCard } from '@/modules/design-system';
 import { NotificationPreferencesForm } from '@/modules/notifications/components/NotificationPreferencesForm';
+import { PortalPanel } from '@/modules/notifications/components/PortalPanel';
 import { PushSubscriptionControl } from '@/modules/notifications/components/PushSubscriptionControl';
 import { useNotificationPreferenceForm } from '@/modules/notifications/hooks/use-notification-preference-form';
 
@@ -15,28 +15,22 @@ function NotificationPreferencesPanel() {
 
   if (isLoading) {
     return (
-      <div className="grid items-start gap-5 lg:grid-cols-2">
-        <NotificationCard>
-          <div aria-hidden="true" className="flex flex-col gap-4">
-            <Skeleton className="h-8 w-52" />
-            <Skeleton className="h-64 w-full" />
-          </div>
-        </NotificationCard>
-        <NotificationCard>
-          <Skeleton aria-hidden="true" className="h-40 w-full" />
-        </NotificationCard>
+      <div className="flex flex-col gap-5.5">
+        <SkeletonCard rows={2} className="rounded-card border-0" />
+        <SkeletonCard rows={7} className="rounded-card border-0" />
+        <SkeletonCard rows={3} className="rounded-card border-0" />
       </div>
     );
   }
 
-  // The preference query and the push registration are independent surfaces. A
-  // failed preference load must not swallow the device control: it keeps its real
-  // status and stays disabled when it cannot act, so the feature is never silently
-  // absent. Same two-column composition as the loaded state.
+  // The preference query and the push registration are independent surfaces. A failed
+  // preference load must not swallow the device control: it keeps its real status and
+  // stays disabled when it cannot act.
   if (isError) {
     return (
-      <div className="grid items-start gap-5 lg:grid-cols-2">
-        <NotificationCard
+      <div className="flex flex-col gap-5.5">
+        <PushSubscriptionControl />
+        <PortalPanel
           id="settings-notifications"
           title={t('notificationPreferences.title')}
           description={t('notificationPreferences.description')}
@@ -48,7 +42,7 @@ function NotificationPreferencesPanel() {
               <Button
                 type="button"
                 variant="outline"
-                className="min-h-11 px-4"
+                className="min-h-11 rounded-full px-4"
                 onClick={() => refetch()}
               >
                 {t('retry')}
@@ -57,8 +51,7 @@ function NotificationPreferencesPanel() {
           >
             {t('notificationPreferences.loadErrorDescription')}
           </Alert>
-        </NotificationCard>
-        <PushSubscriptionControl />
+        </PortalPanel>
       </div>
     );
   }

@@ -1,77 +1,85 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import type { ReviewSectionModel, StudentWizardValues } from '@/modules/student-wizard/types/student-wizard.types';
+import { useWizardMediaStore } from '@/modules/student-wizard/stores/use-wizard-media-store';
+import type {
+  ReviewModel,
+  StudentWizardValues,
+} from '@/modules/student-wizard/types/student-wizard.types';
 
 function text(value: string | null | undefined): string | null {
   const trimmed = value?.trim();
   return trimmed ? trimmed : null;
 }
 
-// Builds the Step 5 text sections (Personal/Education/Guardian) from the live RHF
-// values, reusing the step namespaces for labels and resolving enum values to
-// their localized display strings. Media (thumb/audio) is rendered separately in
-// StepReview from the wizard media store. Empty optionals stay `null` → "—".
-export function useReviewModel(): ReviewSectionModel[] {
+function join(segments: (string | null)[], separator = ' · '): string | null {
+  const kept = segments.filter((segment): segment is string => Boolean(segment));
+  return kept.length > 0 ? kept.join(separator) : null;
+}
+
+// Step-5 summary table (spec 03 §2.8): four rows — Personal, Education, Guardian,
+// Media — each a ` · `-joined sentence built from the live RHF values, with every
+// enum resolved to its localized label. Nothing is composed that was not entered:
+// a missing segment is dropped from the join, and a row with no segments at all
+// returns null so the table prints the em-dash rather than inventing a fact.
+export function useReviewModel(): ReviewModel {
   const t = useTranslations('StudentWizard');
+  const format = useFormatter();
   const { control } = useFormContext<StudentWizardValues>();
   const values = useWatch({ control }) as StudentWizardValues;
+  const photo = useWizardMediaStore((state) => state.media.photo);
+  const voice = useWizardMediaStore((state) => state.media.voice_intro);
 
-  const gender = values.gender ? t(`personal.gender.${values.gender}`) : null;
+  const born = values.date_of_birth
+    ? t('review.born', {
+        date: format.dateTime(new Date(`${values.date_of_birth}T00:00:00`), { dateStyle: 'medium' }),
+      })
+    : null;
   const currentYearLevel = values.current_year_level
     ? values.current_year_level === 'Prep'
       ? t('education.prep')
       : t('education.yearOption', { n: Number(values.current_year_level.slice(5)) })
     : null;
-  const yearLevel =
-    typeof values.year_level === 'number' ? t('education.yearOption', { n: values.year_level }) : null;
-  const term = values.target_entry_term
-    ? t('education.term', { n: Number(values.target_entry_term.slice(5)) })
-    : null;
+  const band =
+    typeof values.year_level === 'number' ? t('review.testingBand', { n: values.year_level }) : null;
+  const entry =
+    values.target_entry_term && values.target_entry_year
+      ? t('review.entry', {
+          term: t('education.term', { n: Number(values.target_entry_term.slice(5)) }),
+          year: values.target_entry_year,
+        })
+      : null;
   const channel = values.preferred_contact_channel
     ? t(`guardian.channel.${values.preferred_contact_channel}`)
     : null;
 
-  return [
-    {
-      id: 'personal',
-      title: t('review.section.personal'),
-      step: 0,
-      rows: [
-        { label: t('personal.givenName'), value: text(values.given_name) },
-        { label: t('personal.familyName'), value: text(values.family_name) },
-        { label: t('personal.email'), value: text(values.email) },
-        { label: t('personal.dateOfBirth'), value: text(values.date_of_birth) },
-        { label: t('personal.gender.label'), value: gender },
-        { label: t('personal.nationality'), value: text(values.nationality) },
-        { label: t('personal.passportNumber'), value: text(values.passport_number) },
-      ],
-    },
-    {
-      id: 'education',
-      title: t('review.section.education'),
-      step: 1,
-      rows: [
-        { label: t('education.currentSchool'), value: text(values.current_school) },
-        { label: t('education.currentYearLevel'), value: currentYearLevel },
-        { label: t('education.yearLevel'), value: yearLevel },
-        { label: t('education.targetEntryYear'), value: text(values.target_entry_year) },
-        { label: t('education.targetEntryTerm'), value: term },
-      ],
-    },
-    {
-      id: 'guardian',
-      title: t('review.section.guardian'),
-      step: 2,
-      rows: [
-        { label: t('guardian.name'), value: text(values.parent_guardian_name) },
-        { label: t('guardian.phone'), value: text(values.parent_guardian_phone) },
-        { label: t('guardian.email'), value: text(values.parent_guardian_email) },
-        { label: t('guardian.wechat'), value: text(values.parent_guardian_wechat) },
-        { label: t('guardian.preferredContact'), value: channel },
-      ],
-    },
-  ];
+  return {
+    rows: [
+      {
+        label: t('steps.personal.label'),
+        value: join([
+          join([text(values.given_name), text(values.family_name)], ' '),
+          born,
+          text(values.nationality),
+        ]),
+      },
+      {
+        label: t('steps.education.label'),
+        value: join([text(values.current_school), currentYearLevel, band, entry]),
+      },
+      {
+        label: t('steps.guardian.label'),
+        value: join([text(values.parent_guardian_name), text(values.parent_guardian_phone), channel]),
+      },
+      {
+        label: t('steps.media.label'),
+        value: join([
+          photo ? t('review.photoAdded') : t('review.noPhoto'),
+          voice ? t('review.voiceAdded') : t('review.noVoice'),
+        ]),
+      },
+    ],
+  };
 }

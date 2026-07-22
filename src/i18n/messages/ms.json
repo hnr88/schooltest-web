@@ -444,7 +444,123 @@
     "primitiveToggleResultsLabel": "Beritahu saya tentang keputusan baharu",
     "primitiveToggleShuffleLabel": "Rawakkan susunan soalan",
     "primitiveToggleResultsHint": "E-mel dan tolakan sebaik sahaja keputusan tiba",
-    "primitiveToggleShuffleHint": "Setiap murid melihat susunan soalan yang berbeza"
+    "primitiveToggleShuffleHint": "Setiap murid melihat susunan soalan yang berbeza",
+    "sectionChoices": "Kawalan pilihan",
+    "sectionMedia": "Media & kad keputusan",
+    "sectionRecords": "Rekod & baris",
+    "choicesIntro": "Satu kawalan bagi setiap bentuk pilihan — bersegmen untuk dua atau tiga perkataan, cip untuk label pendek, kad apabila pilihan perlu penerangan, dan senarai pilihan apabila senarainya panjang.",
+    "mediaIntro": "Kad keputusan dengan slot imej sebenar, rel penapis yang menatal di dalam dirinya sendiri, dan bingkai tempat peta dipaparkan.",
+    "recordsIntro": "Panel dan baris yang membina halaman rekod, supaya tiada skrin perlu mengulang satu kad sahaja.",
+    "choiceRelationshipLabel": "Hubungan dengan anak",
+    "choiceRelationshipHelper": "Dipaparkan kepada setiap sekolah yang anda mohon.",
+    "choiceRelationshipParent": "Ibu bapa",
+    "choiceRelationshipGuardian": "Penjaga",
+    "choiceRelationshipOther": "Lain-lain",
+    "choiceTermLabel": "Penggal kemasukan disasarkan",
+    "choiceTermOne": "Penggal 1",
+    "choiceTermTwo": "Penggal 2",
+    "choiceTermThree": "Penggal 3",
+    "choiceSubjectsLabel": "Mata pelajaran disertakan",
+    "choiceSubjectScience": "Sains",
+    "choiceErrorRequired": "Pilih satu pilihan untuk meneruskan.",
+    "choicePackLabel": "Pakej kredit",
+    "choicePackFamily": "Pakej keluarga · 10 kredit",
+    "choicePackFamilyNote": "Jimat 25% · paling popular",
+    "choicePackFamilyPrice": "369 kr",
+    "choicePackSingle": "Satu kredit",
+    "choicePackSingleNote": "Untuk ujian ini sahaja",
+    "choicePackSinglePrice": "49 kr",
+    "choicePackSchool": "Pelan sekolah",
+    "choicePackSchoolNote": "Hubungi kami untuk mengaktifkan",
+    "choiceCountryLabel": "Negara",
+    "choiceCountryPlaceholder": "Pilih negara",
+    "choiceCountryValue": "Denmark",
+    "mediaCardTitle": "Sekolah Nørrebro Heights",
+    "mediaCardBadge": "Kerajaan",
+    "mediaCardMeta": "Copenhagen · 640 murid",
+    "mediaCardDescription": "Sekolah rendah dan menengah rendah kerajaan dengan aliran dwibahasa mulai tahun 4.",
+    "mediaCardOpen": "Dibuka",
+    "mediaCoverAlt": "Fotografi kulit SchoolTest",
+    "mediaCardNoImageTitle": "St. Anne's Grammar",
+    "mediaCardNoImageMeta": "Aarhus · 410 murid",
+    "mediaCardNoImageDescription": "Tiada foto dibekalkan untuk sekolah ini lagi.",
+    "mediaCoverEmptyAlt": "Tiada foto dibekalkan",
+    "mediaCardFlatTitle": "Keputusan dipilih",
+    "mediaCardFlatDescription": "Kad yang sama tanpa kulit — imej ialah slot, bukan komponen kedua.",
+    "filterRailTitle": "Tapis sekolah",
+    "filterRailClear": "Kosongkan",
+    "filterRailSector": "Sektor",
+    "filterRailStage": "Peringkat",
+    "filterRailApply": "Guna penapis",
+    "filterSectorPublic": "Kerajaan",
+    "filterSectorPrivate": "Swasta",
+    "filterStagePrimary": "Rendah",
+    "filterStageSecondary": "Menengah",
+    "mapPanelLabel": "Peta keputusan sekolah",
+    "mapPanelEmptyTitle": "Bingkai peta",
+    "mapPanelEmptyBody": "Bingkai memiliki permukaan dan had tinggi; peta dipaparkan di dalamnya.",
+    "recordEnrolmentTitle": "Pendaftaran",
+    "recordEnrolmentDescription": "Maklumat yang dilihat sekolah pada setiap permohonan.",
+    "recordEnrolmentAction": "Sunting",
+    "recordYearLevel": "Tahun persekolahan",
+    "recordYearLevelValue": "Tahun 7",
+    "recordNationality": "Kewarganegaraan",
+    "recordNationalityValue": "Denmark",
+    "recordTargetEntry": "Kemasukan disasarkan",
+    "recordTargetEntryValue": "2027 · Penggal 1",
+    "recordCreditsEyebrow": "Kredit ujian",
+    "recordCreditsValue": "12",
+    "recordCreditsCaption": "Cukup untuk empat pentaksiran lagi.",
+    "recordCreditsAction": "Beli kredit",
+    "recordGlassCorrect": "Betul",
+    "recordGlassCorrectValue": "38/45",
+    "recordGlassBand": "Band",
+    "recordGlassBandValue": "B2",
+    "recordPromoTitle": "Kredit hampir habis",
+    "recordPromoBody": "Tambah nilai sekali dan setiap anak dalam akaun anda boleh menduduki ujian seterusnya.",
+    "recordPromoAction": "Tambah nilai",
+    "recordCalloutBody": "Keputusan dikeluarkan kepada ibu bapa 24 jam selepas pemarkahan ditutup.",
+    "recordTintInset": "Inset — ruang lekuk di dalam panel putih.",
+    "recordTintWell": "Ton halaman — untuk jubin di atas kad.",
+    "recordTintBrand": "Jenama — biru lembut untuk jubin maklumat.",
+    "recordTintAccent": "Aksen — biru kehijauan untuk jubin positif.",
+    "recordNoteTitle": "Nota guru",
+    "recordNoteBody": "Emma membaca jauh melebihi tahapnya tetapi tergesa-gesa pada dua soalan terakhir. Beri dia lima minit tambahan.",
+    "recordNoteAuthor": "Mette Sørensen",
+    "recordNoteTime": "12 Mei",
+    "recordActivityTitle": "Aktiviti terkini",
+    "recordActivity": "Emma telah menyelesaikan semakan bacaan Tahun 7.",
+    "recordActivitySecond": "Lucas dijemput menduduki ujian penempatan matematik.",
+    "recordActivityTime": "2 jam lalu",
+    "recordDotActivity": "Tiga profil dikemas kini minggu ini.",
+    "recordDotActivitySecond": "Satu permohonan sedang menunggu dokumen.",
+    "recordRankTitle": "Pencapaian terbaik",
+    "recordRankTwo": "Lucas Hansen",
+    "recordRankThree": "Maja Andersen",
+    "recordScoreTitle": "Skor & kemahiran",
+    "recordSkillListening": "Mendengar",
+    "recordSkillReading": "Membaca",
+    "recordSkillWriting": "Menulis",
+    "recordVerdictMastered": "Dikuasai",
+    "recordVerdictEmerging": "Sedang berkembang",
+    "recordVerdictNotAssessed": "Belum dinilai",
+    "recordRosterTitle": "Bahagian baris senarai",
+    "recordCompletionLabel": "Soalan dijawab",
+    "recordCompletionValue": "17/24",
+    "recordStackLabel": "Lima murid ditugaskan",
+    "recordEventMonth": "Mei",
+    "recordEventDay": "24",
+    "recordEventTitle": "Ujian kemasukan Tahun 7",
+    "recordEventMeta": "09:00 · Dewan utama",
+    "recordChartTitle": "Skor purata mengikut bulan",
+    "recordMonthMar": "Mac",
+    "recordMonthApr": "Apr",
+    "recordMonthMay": "Mei",
+    "recordMonthJun": "Jun",
+    "recordMonthJul": "Jul",
+    "recordTrendLabel": "Aliran skor purata",
+    "recordScrollTitle": "Ruang tatal",
+    "recordScrollBody": "Kandungan panjang menatal di dalam kotaknya sendiri dengan bar tatal nipis yang seragam — halaman itu sendiri tidak pernah menatal ke tepi."
   },
   "Dashboard": {
     "meta": {
@@ -558,7 +674,50 @@
     "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
     "addFirstStudent": "Tambah pelajar pertama anda",
     "promoTitle": "Dapatkan bantuan pakar",
-    "promoDescription": "Hubungi pakar pendidikan yang mengenali sekolah dalam senarai anda."
+    "promoDescription": "Hubungi pakar pendidikan yang mengenali sekolah dalam senarai anda.",
+    "readinessCellLabel": "Kesiapan profil untuk {name}",
+    "activityEmpty": "Belum ada profil ditambahkan.",
+    "activityAdded": "<strong>{name}</strong> telah ditambahkan ke senarai anak anda.",
+    "activityUpdated": "Butiran <strong>{name}</strong> telah dikemas kini.",
+    "activityTitle": "Aktiviti terkini",
+    "heroEyebrow": "Your family",
+    "heroHeadlineEmpty": "Add your first child to start <mark>planning their school entry</mark>.",
+    "heroHeadlinePlanned": "Every profile has <mark>a target entry plan</mark> — the next step is comparing schools.",
+    "heroHeadlineNeedsPlan": "<mark>{missing} of {total} profiles</mark> still need a target entry year and term.",
+    "readinessChartTitle": "Profile readiness",
+    "readinessChartRange": "{count, plural, one {# child} other {# children}}",
+    "readinessChartEmpty": "Add a child to see how complete their profile is.",
+    "readinessChartCaption": "{name} has the most left to add — <strong>{percent} complete</strong>.",
+    "readinessChartAllDone": "Every profile here is <strong>complete</strong> — nothing left to fill in.",
+    "childrenSeeDetails": "See details",
+    "childRowLabel": "{name} — {filled} of {total} profile details added",
+    "childRowPlan": "Entry {plan}",
+    "childRowPlanNeeded": "Plan needed",
+    "readinessFieldFamilyName": "Name",
+    "readinessFieldEmail": "Email",
+    "readinessFieldNationality": "Country",
+    "readinessFieldYearLevel": "Year",
+    "readinessFieldEntryYear": "Entry",
+    "readinessFieldEntryTerm": "Term",
+    "focusEyebrow": "Where to look next",
+    "focusBodyEmpty": "Nothing to review yet. Add a child and their profile readiness shows up here.",
+    "focusBodyComplete": "{name}’s profile is fully filled in — every child you have added is ready for school matching.",
+    "focusBodyIncomplete": "{name}’s profile is {percent}% filled in. {missing, plural, one {# planning detail is} other {# planning details are}} still blank, and those details decide which schools and entry terms can be matched.",
+    "recommendedTitle": "Recommended next",
+    "recommendAddChildTitle": "Add your first child",
+    "recommendAddChildMeta": "Their profile is what schools and entry terms are matched against.",
+    "recommendAddChildAction": "Add",
+    "recommendSetPlanTitle": "Set a target entry plan for {name}",
+    "recommendSetPlanMeta": "A target year and term narrows the schools worth shortlisting.",
+    "recommendCompleteProfileTitle": "Finish {name}’s profile",
+    "recommendCompleteProfileMeta": "{percent}% filled in — the rest sharpens the school match.",
+    "recommendOpenAction": "Open",
+    "recommendExploreSchoolsTitle": "Compare schools that fit your plans",
+    "recommendExploreSchoolsMeta": "Search by state, sector and school type.",
+    "recommendExploreSchoolsAction": "Explore",
+    "recommendActionLabel": "{action}: {title}",
+    "activityAddedDetail": "Profile added to your children",
+    "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
     "nav": {
@@ -590,7 +749,8 @@
     },
     "userMenu": {
       "settings": "Tetapan",
-      "signOut": "Log keluar"
+      "signOut": "Log keluar",
+      "role": "Parent account"
     }
   },
   "Settings": {
@@ -605,6 +765,7 @@
     "account": {
       "title": "Akaun",
       "description": "Butiran yang digunakan SchoolTest untuk log masuk anda.",
+      "signedInAs": "Log masuk sebagai",
       "emailLabel": "E-mel log masuk",
       "confirmedLabel": "Pengesahan e-mel",
       "confirmed": "Disahkan",
@@ -625,7 +786,8 @@
     "defaultSectors": "Sektor sekolah lalai",
     "defaultSort": "Susunan lalai",
     "defaultPageSize": "Keputusan setiap halaman",
-    "pageSizeOption": "{count} keputusan setiap halaman",
+    "searchResultsViewTitle": "Paparan keputusan",
+    "searchResultsViewDescription": "Pilih cara keputusan sekolah disusun dan berapa banyak dipaparkan pada setiap halaman.",
     "defaultFeeRange": "Julat yuran tahunan lalai",
     "defaultFeeMinimum": "Yuran minimum (AUD)",
     "defaultFeeMaximum": "Yuran maksimum (AUD)",
@@ -692,7 +854,6 @@
         }
       },
       "lockedTitle": "Kemas kini yang sentiasa aktif",
-      "lockedHelper": "Sentiasa aktif — ini tidak boleh dimatikan.",
       "digest": {
         "title": "Kekerapan e-mel",
         "description": "Pilih bila kemas kini e-mel yang layak dihantar. Amaran akaun dan keselamatan sentiasa dihantar, apa pun pilihan anda.",
@@ -734,6 +895,10 @@
       "saveError": "Kami tidak dapat menyimpan keutamaan pemberitahuan anda.",
       "loadErrorTitle": "Kami tidak dapat memuatkan keutamaan pemberitahuan anda.",
       "loadErrorDescription": "Cuba semula untuk memuatkan tetapan pemberitahuan yang disimpan."
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose the language SchoolTest uses across the app."
     }
   },
   "SchoolSearch": {
@@ -747,19 +912,26 @@
     "searchPlaceholder": "Cari mengikut sekolah atau daerah",
     "loading": "Memuatkan sekolah",
     "resultsCount": "{count, plural, other {# sekolah}}",
+    "resultsRegion": "Keputusan carian sekolah",
     "aria": {
       "filters": "Penapis sekolah"
     },
     "filterPanel": {
-      "trigger": "Penapis",
+      "trigger": "Semua penapis",
       "title": "Tapis sekolah",
-      "clear": "Kosongkan penapis",
+      "clear": "Kosongkan semua",
+      "activeCount": "{count, plural, other {# penapis digunakan}}",
       "location": "Lokasi",
       "schoolProfile": "Profil sekolah",
       "features": "Ciri-ciri",
       "state": "Negeri atau wilayah",
       "sector": "Sektor",
-      "schoolType": "Jenis sekolah"
+      "schoolType": "Jenis sekolah",
+      "close": "Tutup penapis",
+      "description": "Tapis keputusan sekolah mengikut lokasi, profil, ciri dan yuran.",
+      "apply": "Tunjukkan {count, plural, other {# sekolah}}",
+      "noFilters": "Tiada penapis — memaparkan semua sekolah",
+      "remove": "Buang penapis {label}"
     },
     "states": {
       "QLD": "QLD",
@@ -821,7 +993,9 @@
     },
     "card": {
       "tuition": "Dari <strong>{amount}</strong>/tahun",
-      "coverImageAlt": "Imej kampus {name}"
+      "coverImageAlt": "Imej kampus {name}",
+      "select": "Pilih {name}",
+      "tuitionUnknown": "Yuran tidak disenaraikan"
     },
     "map": {
       "region": "Peta keputusan sekolah",
@@ -831,28 +1005,46 @@
       "showMap": "Tunjuk peta",
       "showList": "Tunjuk senarai",
       "ctrlScrollHint": "Tekan Ctrl + tatal untuk zum peta",
-      "markerCount": "{count, plural, =0 {Tiada sekolah dipaparkan pada peta} other {# sekolah dipaparkan pada peta}}"
+      "markerCount": "{count, plural, =0 {Tiada sekolah dipaparkan pada peta} other {# sekolah dipaparkan pada peta}}",
+      "clearSelection": "Kosongkan sekolah dipilih"
+    },
+    "facts": {
+      "scholarships": "Biasiswa",
+      "elicos": "ELICOS",
+      "atar": "Laluan ATAR",
+      "cricos": "CRICOS"
     }
   },
   "AgentSearch": {
     "loading": "Memuatkan ejen",
     "resultsCount": "{count, plural, other {# ejen}}",
+    "resultsRegion": "Keputusan carian ejen",
     "verified": "Disahkan",
     "aria": {
       "filters": "Penapis ejen"
     },
     "filterPanel": {
-      "trigger": "Penapis",
+      "trigger": "Semua penapis",
       "title": "Tapis ejen",
-      "clear": "Kosongkan penapis",
+      "clear": "Kosongkan semua",
+      "activeCount": "{count, plural, other {# penapis digunakan}}",
       "countries": "Negara dikhidmati",
       "languages": "Bahasa dituturkan",
-      "services": "Perkhidmatan ditawarkan"
+      "services": "Perkhidmatan ditawarkan",
+      "close": "Tutup penapis",
+      "description": "Tapis keputusan ejen mengikut negara, bahasa dan perkhidmatan.",
+      "apply": "Tunjukkan {count, plural, other {# ejen}}",
+      "noFilters": "Tiada penapis — memaparkan semua ejen",
+      "remove": "Buang penapis {label}"
     },
     "chipGroups": {
       "countries": "Negara dikhidmati",
       "languages": "Bahasa dituturkan",
       "services": "Perkhidmatan ditawarkan"
+    },
+    "card": {
+      "countries": "Negara dikhidmati",
+      "languages": "Bahasa dituturkan"
     },
     "services": {
       "counselling": "Kaunseling",
@@ -910,7 +1102,8 @@
     "meta": {
       "title": "Carian — SchoolTest",
       "description": "Cari sekolah Australia dan ejen pendidikan dalam satu carian bersatu."
-    }
+    },
+    "searchAction": "Cari"
   },
   "StudentWizard": {
     "meta": {
@@ -923,26 +1116,37 @@
     "saveChanges": "Simpan perubahan",
     "stepPlaceholder": "Medan langkah ini akan ditambah dalam bahagian akan datang.",
     "stepCaption": "Langkah {current} daripada {total} · {title}",
+    "stepsLabel": "Kemajuan penyediaan pelajar",
     "steps": {
       "personal": {
         "label": "Peribadi",
-        "title": "Butiran peribadi"
+        "title": "Butiran peribadi",
+        "description": "Siapa pelajar ini",
+        "railHint": "Siapa pelajar ini"
       },
       "education": {
         "label": "Pendidikan",
-        "title": "Pendidikan"
+        "title": "Pendidikan",
+        "description": "Tempat belajar sekarang dan hala tuju seterusnya",
+        "railHint": "Sekolah & kemasukan sasaran"
       },
       "guardian": {
         "label": "Penjaga",
-        "title": "Ibu bapa atau penjaga"
+        "title": "Ibu bapa atau penjaga",
+        "description": "Siapa yang kami hubungi tentang pelajar ini",
+        "railHint": "Butiran hubungan"
       },
       "media": {
         "label": "Media",
-        "title": "Foto & suara"
+        "title": "Foto & suara",
+        "description": "Foto dan pengenalan suara adalah pilihan",
+        "railHint": "Foto & pengenalan suara"
       },
       "review": {
         "label": "Semak",
-        "title": "Semak & hantar"
+        "title": "Semak & hantar",
+        "description": "Pastikan semua maklumat betul sebelum mencipta pelajar ini",
+        "railHint": "Sahkan butiran"
       }
     },
     "personal": {
@@ -1020,11 +1224,11 @@
         "previewAlt": "Pratonton pengenalan suara",
         "invalidType": "Pilih fail audio (MP3 atau WAV).",
         "tooLarge": "Audio itu melebihi 10MB. Pilih fail lebih kecil."
-      }
+      },
+      "optionalNote": "Kedua-duanya adalah pilihan. Anda boleh menambah atau menggantikannya kemudian daripada profil pelajar."
     },
     "toastCreated": "Pelajar dicipta",
     "review": {
-      "intro": "Pastikan semua maklumat betul sebelum mencipta pelajar ini.",
       "edit": "Sunting",
       "empty": "—",
       "photo": "Foto",
@@ -1045,7 +1249,24 @@
         "offlineTitle": "Anda di luar talian",
         "offlineBody": "Semak sambungan anda dan cuba lagi.",
         "dismiss": "Tutup"
-      }
+      },
+      "summaryEyebrow": "Sedia untuk dicipta",
+      "noPhoto": "Tiada foto ditambah",
+      "noVoice": "Tiada pengenalan suara ditambah",
+      "born": "lahir {date}",
+      "testingBand": "band ujian {n}",
+      "entry": "kemasukan {term}, {year}",
+      "photoAdded": "Foto ditambah",
+      "voiceAdded": "Pengenalan suara ditambah"
+    },
+    "pageTitle": "Tambah anak",
+    "editTitle": "Edit anak",
+    "backToChildren": "Anak saya",
+    "stepCounter": "Langkah {current} daripada {total}",
+    "success": {
+      "createdTitle": "Pelajar ditambah",
+      "savedTitle": "Perubahan disimpan",
+      "body": "Membawa anda ke Anak saya…"
     }
   },
   "StudentWizardSchema": {
@@ -1192,11 +1413,38 @@
     "skillLadderLabel": "{skill}: CEFR {band}, tahap {rank} daripada {total}",
     "skillsPendingTitle": "Belum dinilai",
     "skillsPendingDescription": "Belum ada keputusan rasmi diterbitkan untuk kemahiran ini.",
+    "sessionsCompleted": "Sesi selesai",
+    "recordFraction": "{recorded}/{total}",
+    "recordCompletionLabel": "Butiran direkodkan untuk {name}",
+    "skillNotAssessed": "Belum dinilai",
+    "tabRecord": "Rekod",
+    "tabProgress": "Kemajuan",
+    "tabsLabel": "Bahagian profil anak",
     "pagerLabel": "Halaman senarai",
     "pagerPage": "Halaman {page} daripada {pages}",
     "pagerPrevious": "Halaman sebelumnya",
     "pagerNext": "Halaman seterusnya",
-    "pagerGoTo": "Pergi ke halaman {page}"
+    "pagerGoTo": "Pergi ke halaman {page}",
+    "addChild": "Add a child",
+    "addChildHint": "Set up a new learner profile.",
+    "cardOpenHint": "Open the profile for progress and results.",
+    "cardDetails": "Details",
+    "levelJourneyHeading": "Level journey",
+    "journeyNote": "Each rail shows the highest CEFR band published for that skill on the six-band ladder this system uses, Pre-A1 through C1.",
+    "journeyUnknown": "No CEFR band has been published for any skill yet.",
+    "skillsUnknown": "No readiness has been published for any skill yet.",
+    "skillsNote": "Readiness is published per skill with each official result. No overall level is calculated.",
+    "focusSkillNote": "{skill} is the current focus area — readiness {readiness}.",
+    "skillLadderEmptyLabel": "{skill}: no CEFR band published yet",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "cardAdded": "Added {date}"
   },
   "Notifications": {
     "meta": {
@@ -1215,6 +1463,7 @@
     "unread": "Belum dibaca",
     "read": "Dibaca",
     "today": "Hari ini",
+    "earlier": "Earlier",
     "yesterday": "Semalam",
     "unreadCount": "{count, plural, =0 {Tiada pemberitahuan belum dibaca} one {# pemberitahuan belum dibaca} other {# pemberitahuan belum dibaca}}",
     "emptyTitle": "Anda sudah mengikuti semua kemas kini",
@@ -1233,6 +1482,10 @@
       "children": "Anak",
       "testActivity": "Aktiviti ujian",
       "testResults": "Keputusan ujian"
+    },
+    "filterLabel": "Filter notifications by category",
+    "filters": {
+      "all": "All"
     }
   },
   "QueryError": {

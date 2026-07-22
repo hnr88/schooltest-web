@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { env } from '@/lib/env';
+import { cn } from '@/lib/utils';
 import { GoogleMark } from '@/modules/auth/components/GoogleMark';
 import { Button } from '@/modules/design-system';
 
@@ -23,7 +24,10 @@ export function GoogleButton({ className }: GoogleButtonProps) {
       size="lg"
       href={`${env.NEXT_PUBLIC_API_BASE_URL}/api/connect/google`}
       title={t('googleTitle')}
-      className={className}
+      className={cn(
+        'gap-2.5 rounded-lg text-body-md font-semibold text-navy-800 shadow-none transition-[transform,background-color,border-color] duration-150 ease-out-expo hover:-translate-y-0.5 hover:border-slate-400 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0',
+        className,
+      )}
     >
       <GoogleMark />
       {t('googleButton')}

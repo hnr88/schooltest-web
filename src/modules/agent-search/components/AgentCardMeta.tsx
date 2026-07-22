@@ -3,49 +3,44 @@
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/utils';
-import { getAgentServices, splitCountries } from '@/modules/agent-search/lib/agent-card.helpers';
+import { getAgentServices } from '@/modules/agent-search/lib/agent-card.helpers';
 import type { AgentHit } from '@/modules/agent-search/types/agent-search.types';
-
-// Neutral pill (spec §6): slate-100 surface, slate-600 label.
-const NEUTRAL_PILL =
-  'inline-flex shrink-0 items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap text-navy-800 dark:bg-navy-800 dark:text-blue-100';
+import { KeyValueList, KeyValueRow } from '@/modules/design-system';
 
 function bold(chunks: ReactNode) {
-  return <strong className="font-bold text-navy-900 dark:text-blue-100">{chunks}</strong>;
+  return <strong className="font-bold">{chunks}</strong>;
 }
 
-// Country pills + optional services row + dot-separated meta footer for AgentCard.
+// Countries and languages are the facts that actually DIFFER between the seeded
+// agents, so they belong in the canonical KeyValueRow (Inventory §02.15) rather than
+// in yet another wall of pills — the audit counted 16 Badges rendering two repeated
+// strings across 8 cards. Empty arrays render nothing at all: an agent with no
+// declared language shows no Languages row rather than an invented one.
 function AgentCardMeta({ hit }: { hit: AgentHit }) {
   const t = useTranslations('AgentSearch');
-  const { visible, overflow } = splitCountries(hit.countriesServed);
   const services = getAgentServices(hit);
 
   return (
-    <>
-      {visible.length > 0 ? (
-        <div className="flex flex-wrap gap-1.5">
-          {visible.map((country) => (
-            <span key={country} className={NEUTRAL_PILL}>
-              {country}
-            </span>
-          ))}
-          {overflow > 0 ? <span className={cn(NEUTRAL_PILL, 'text-slate-500')}>+{overflow}</span> : null}
-        </div>
+    <div className="flex flex-col gap-3">
+      {services.length > 0 ? (
+        <p className="line-clamp-1 text-meta text-muted-foreground">{services.join(' · ')}</p>
       ) : null}
-
-      {services.length > 0 ? <p className="line-clamp-1 text-xs text-navy-800 dark:text-blue-100">{services.join(' · ')}</p> : null}
-
-      <p className="mt-auto flex flex-wrap items-center gap-x-1.5 text-xs text-navy-800 dark:text-blue-100">
+      <KeyValueList>
+        {hit.countriesServed.length > 0 ? (
+          <KeyValueRow label={t('card.countries')}>{hit.countriesServed.join(', ')}</KeyValueRow>
+        ) : null}
+        {hit.languages.length > 0 ? (
+          <KeyValueRow label={t('card.languages')}>{hit.languages.join(', ')}</KeyValueRow>
+        ) : null}
+      </KeyValueList>
+      <p className="flex flex-wrap items-center gap-x-1.5 text-meta text-muted-foreground">
         {hit.yearsExperience !== null ? (
           <span>{t.rich('footer.yearsExperience', { years: hit.yearsExperience, b: bold })}</span>
         ) : null}
-        {hit.yearsExperience !== null ? (
-          <span aria-hidden="true">·</span>
-        ) : null}
+        {hit.yearsExperience !== null ? <span aria-hidden="true">·</span> : null}
         <span>{t.rich('footer.partnerSchools', { count: hit.partnerSchoolsCount, b: bold })}</span>
       </p>
-    </>
+    </div>
   );
 }
 

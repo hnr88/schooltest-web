@@ -63,9 +63,11 @@ async function fillToStep4(page: Page, m: Messages, locale: AnyLocale = 'en') {
     .getByRole('combobox', { name: cat(m, 'StudentWizard.education.targetEntryYear') })
     .click();
   await page.getByRole('option').first().click();
+  // Term is now the canonical pill radiogroup (a required answer, not a view
+  // switcher) — same field label, same localized option, stronger role assertion.
   await page
-    .getByRole('group', { name: cat(m, 'StudentWizard.education.targetEntryTerm') })
-    .getByText(icu(cat(m, 'StudentWizard.education.term'), { n: '1' }), { exact: true })
+    .getByRole('radiogroup', { name: cat(m, 'StudentWizard.education.targetEntryTerm') })
+    .getByRole('radio', { name: icu(cat(m, 'StudentWizard.education.term'), { n: '1' }) })
     .click();
   await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
   await page.getByLabel(cat(m, 'StudentWizard.guardian.name')).fill('Wei Chen');

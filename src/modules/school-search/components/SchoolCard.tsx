@@ -1,80 +1,74 @@
 'use client';
 
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import {
-  SchoolCardBadges,
-  SchoolSectorPill,
-  SchoolStateBadge,
-} from '@/modules/school-search/components/SchoolCardBadges';
 import { SchoolCardCover } from '@/modules/school-search/components/SchoolCardCover';
-import { TUITION_CURRENCY } from '@/modules/school-search/constants/school-search.constants';
-import { getSchoolLocation } from '@/modules/school-search/lib/school-card.helpers';
+import { SchoolCardFacts } from '@/modules/school-search/components/SchoolCardFacts';
+import { SECTOR_LABEL_KEYS } from '@/modules/school-search/constants/school-search.constants';
+import { getSchoolMetaParts } from '@/modules/school-search/lib/school-card.helpers';
 import { useSchoolSearchStore } from '@/modules/school-search/stores/use-school-search-store';
 import type { SchoolHit } from '@/modules/school-search/types/school-search.types';
 
+// The design's result card (spec 01 §8.4): r20 white panel, name over a `·` meta
+// line, a hairline rule and a fact row — grown the image slot the brief asks for,
+// which is a REAL `coverImage` when the record carries one and the canonical
+// medallion when it does not.
+// Selection is a CLICK (navy border + lift + the map camera); hover keeps the
+// existing card↔pin sync. The click target is a stretched button rather than a
+// clickable <article>, so the title stays a real <h3> in the a11y tree and the card
+// keeps one tab stop with the visible focus ring the design never specified.
 function SchoolCard({ hit }: { hit: SchoolHit }) {
   const t = useTranslations('SchoolSearch');
-  const format = useFormatter();
-  const location = getSchoolLocation(hit.suburb, hit.state);
-  // Boolean equality selector (REQUIRED, M2 §4): only the two cards whose active
-  // state flips re-render on hover — never the whole grid.
+  // Boolean equality selectors (REQUIRED, M2 §4): only the cards whose state flips
+  // re-render on hover or selection — never the whole grid.
   const isActive = useSchoolSearchStore((s) => s.activeSchoolId === hit.documentId);
+  const isSelected = useSchoolSearchStore((s) => s.selectedSchoolId === hit.documentId);
   const setActiveSchoolId = useSchoolSearchStore((s) => s.setActiveSchoolId);
+  const setSelectedSchoolId = useSchoolSearchStore((s) => s.setSelectedSchoolId);
+  const sectorLabel = hit.sector ? t(`sectors.${SECTOR_LABEL_KEYS[hit.sector]}`) : null;
+  const typeLabel = hit.schoolType ? t(`schoolTypes.${hit.schoolType}`) : null;
+  const meta = getSchoolMetaParts(hit, sectorLabel, typeLabel);
+  const coverAlt = hit.coverImage?.alternativeText ?? t('card.coverImageAlt', { name: hit.name });
 
   return (
     <article
       data-slot="school-card"
       data-active={isActive}
+      data-selected={isSelected}
       onMouseEnter={() => setActiveSchoolId(hit.documentId)}
       onMouseLeave={() => setActiveSchoolId(null)}
-      onFocus={() => setActiveSchoolId(hit.documentId)}
-      onBlur={() => setActiveSchoolId(null)}
       className={cn(
-        'group flex flex-col gap-3 rounded-2xl border bg-card p-3 transition duration-150 ease-out hover:border-input motion-reduce:transition-none',
-        isActive
-          ? '-translate-y-0.5 border-primary shadow-md ring-2 ring-primary motion-reduce:translate-y-0'
-          : 'border-border',
+        'group relative flex min-w-0 flex-col rounded-result border bg-card p-2 pb-5 transition duration-200 ease-out-expo hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0',
+        isSelected
+          ? 'border-navy-900 shadow-lg ring-1 ring-navy-900 ring-inset'
+          : 'border-transparent shadow-sm hover:shadow-md',
       )}
     >
-      <div className="flex items-start gap-3">
-        <SchoolCardCover
-          coverImage={hit.coverImage}
-          alt={hit.coverImage?.alternativeText ?? t('card.coverImageAlt', { name: hit.name })}
-          state={hit.state}
-        />
-        <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <SchoolSectorPill sector={hit.sector} />
-            <SchoolStateBadge state={hit.state} />
-          </div>
-          <div className="flex min-w-0 flex-col gap-1">
-            <h3 className="line-clamp-2 text-sm font-bold text-navy-950">{hit.name}</h3>
-            {location ? (
-              <p className="line-clamp-1 text-sm text-muted-foreground">{location}</p>
+      {hit.coverImage ? <SchoolCardCover coverImage={hit.coverImage} alt={coverAlt} /> : null}
+      <div className="flex min-w-0 flex-1 flex-col gap-3.5 px-3.5 pt-3">
+        <div className="flex min-w-0 items-start gap-3">
+          {hit.coverImage ? null : <SchoolCardCover coverImage={null} alt={coverAlt} />}
+          <div className="min-w-0 flex-1">
+            <h3 className="text-body-lg leading-snug font-semibold text-balance text-foreground">
+              {hit.name}
+            </h3>
+            {meta.length > 0 ? (
+              <p className="mt-1 text-body-sm text-muted-foreground">{meta.join(' · ')}</p>
             ) : null}
           </div>
-          <p className="mt-auto text-xs text-muted-foreground">
-            {hit.annualTuitionFrom === null ? (
-              <span>—</span>
-            ) : (
-              t.rich('card.tuition', {
-                amount: format.number(hit.annualTuitionFrom, {
-                  style: 'currency',
-                  currency: TUITION_CURRENCY,
-                  maximumFractionDigits: 0,
-                  currencyDisplay: 'narrowSymbol',
-                }),
-                strong: (chunks) => (
-                  <strong className="font-bold text-muted-foreground">{chunks}</strong>
-                ),
-              })
-            )}
-          </p>
         </div>
+        <SchoolCardFacts hit={hit} />
       </div>
-      <SchoolCardBadges hit={hit} />
+      <button
+        type="button"
+        aria-pressed={isSelected}
+        aria-label={t('card.select', { name: hit.name })}
+        onFocus={() => setActiveSchoolId(hit.documentId)}
+        onBlur={() => setActiveSchoolId(null)}
+        onClick={() => setSelectedSchoolId(isSelected ? null : hit.documentId)}
+        className="absolute inset-0 rounded-result focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+      />
     </article>
   );
 }

@@ -1,86 +1,55 @@
 'use client';
 
-import { Controller, type UseFormReturn } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
+import type { UseFormReturn } from 'react-hook-form';
 
+import { SCHOOL_TYPES, SECTORS } from '@/modules/school-search';
 import {
   SEARCH_PREFERENCE_SECTOR_LABEL_KEYS,
   SEARCH_PREFERENCE_STATES,
 } from '@/modules/settings/constants/settings.constants';
-import { toggleSettingValue } from '@/modules/settings/lib/search-preferences';
-import { SettingsCheckboxGroup } from '@/modules/settings/components/SettingsCheckboxGroup';
-import { SearchPreferenceDetailsFields } from '@/modules/settings/components/SearchPreferenceDetailsFields';
+import { SearchPreferenceChoiceField } from '@/modules/settings/components/SearchPreferenceChoiceField';
 import type { SearchPreferenceFormValues } from '@/modules/settings/types/settings.types';
-import { SCHOOL_TYPES, SECTORS } from '@/modules/school-search';
 
 interface SearchPreferenceFieldsProps {
   form: UseFormReturn<SearchPreferenceFormValues>;
 }
 
+// The three "what to look for" fields of the canonical Profile-card field stack:
+// one FieldShell per field on the canonical field rhythm, no per-field card.
 export function SearchPreferenceFields({ form }: SearchPreferenceFieldsProps) {
   const t = useTranslations('Settings');
   const tSearch = useTranslations('SchoolSearch');
-  const stateOptions = SEARCH_PREFERENCE_STATES.map((value) => ({
-    value,
-    label: tSearch(`states.${value}`),
-  }));
-  const typeOptions = SCHOOL_TYPES.map((value) => ({
-    value,
-    label: tSearch(`schoolTypes.${value}`),
-  }));
-  const sectorOptions = SECTORS.map((value) => ({
-    value,
-    label: tSearch(`sectors.${SEARCH_PREFERENCE_SECTOR_LABEL_KEYS[value]}`),
-  }));
 
   return (
-    <div className="flex flex-col gap-6">
-      <Controller
+    <div className="flex flex-col gap-5">
+      <SearchPreferenceChoiceField
         control={form.control}
         name="default_states"
-        render={({ field }) => (
-          <SettingsCheckboxGroup
-            id="search-preference-states"
-            label={t('defaultStates')}
-            options={stateOptions}
-            values={field.value}
-            onCheckedChange={(value, checked) =>
-              field.onChange(toggleSettingValue(field.value, value, checked))
-            }
-          />
-        )}
+        label={t('defaultStates')}
+        options={SEARCH_PREFERENCE_STATES.map((value) => ({
+          value,
+          label: tSearch(`states.${value}`),
+        }))}
       />
-      <Controller
+      <SearchPreferenceChoiceField
         control={form.control}
         name="default_school_types"
-        render={({ field }) => (
-          <SettingsCheckboxGroup
-            id="search-preference-types"
-            label={t('defaultSchoolTypes')}
-            options={typeOptions}
-            values={field.value}
-            onCheckedChange={(value, checked) =>
-              field.onChange(toggleSettingValue(field.value, value, checked))
-            }
-          />
-        )}
+        label={t('defaultSchoolTypes')}
+        options={SCHOOL_TYPES.map((value) => ({
+          value,
+          label: tSearch(`schoolTypes.${value}`),
+        }))}
       />
-      <Controller
+      <SearchPreferenceChoiceField
         control={form.control}
         name="default_sectors"
-        render={({ field }) => (
-          <SettingsCheckboxGroup
-            id="search-preference-sectors"
-            label={t('defaultSectors')}
-            options={sectorOptions}
-            values={field.value}
-            onCheckedChange={(value, checked) =>
-              field.onChange(toggleSettingValue(field.value, value, checked))
-            }
-          />
-        )}
+        label={t('defaultSectors')}
+        options={SECTORS.map((value) => ({
+          value,
+          label: tSearch(`sectors.${SEARCH_PREFERENCE_SECTOR_LABEL_KEYS[value]}`),
+        }))}
       />
-      <SearchPreferenceDetailsFields form={form} />
     </div>
   );
 }

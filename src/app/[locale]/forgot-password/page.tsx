@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { AuthSplitLayout, ForgotPasswordCard } from '@/modules/auth';
+import { AuthCenteredLayout, ForgotPasswordCard } from '@/modules/auth';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Auth.forgotMeta');
@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function ForgotPasswordPage() {
   return (
-    <AuthSplitLayout>
+    <AuthCenteredLayout>
       <ForgotPasswordCard />
-    </AuthSplitLayout>
+    </AuthCenteredLayout>
   );
 }

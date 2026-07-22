@@ -19,17 +19,24 @@ async function LandingHeader() {
             <a
               key={key}
               href={href}
-              className="rounded-lg px-3.5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex min-h-11 items-center rounded-lg px-3.5 text-body-md font-medium text-body transition-colors duration-150 hover:bg-surface-inset hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {t(key)}
             </a>
           ))}
         </nav>
         <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" href="/sign-in" className="h-11 px-4">
+          <Button
+            variant="ghost"
+            href="/sign-in"
+            className="h-11 rounded-lg px-4 font-semibold text-navy-800 transition-colors duration-150 hover:bg-surface-inset"
+          >
             {t('nav.signIn')}
           </Button>
-          <Button href="/sign-up" className="h-11 px-5">
+          <Button
+            href="/sign-up"
+            className="h-11 rounded-lg px-5 shadow-primary-glow transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+          >
             {t('nav.startFree')}
           </Button>
         </div>

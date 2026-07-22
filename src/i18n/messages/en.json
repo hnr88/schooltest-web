@@ -444,7 +444,123 @@
     "primitiveToggleResultsLabel": "Notify me about new results",
     "primitiveToggleShuffleLabel": "Randomise question order",
     "primitiveToggleResultsHint": "Email and push as soon as a result arrives",
-    "primitiveToggleShuffleHint": "Every student sees a different question order"
+    "primitiveToggleShuffleHint": "Every student sees a different question order",
+    "sectionChoices": "Choice controls",
+    "sectionMedia": "Media & result surfaces",
+    "sectionRecords": "Records & rows",
+    "choicesIntro": "One control per shape of choice — segmented for two or three words, pills for short labels, cards when an option needs a description, a select when the list is long.",
+    "mediaIntro": "Result cards with a real image slot, the filter rail that scrolls inside itself, and the frame a map sits in.",
+    "recordsIntro": "The panels and rows a record page is built from, so no screen has to repeat one card.",
+    "choiceRelationshipLabel": "Relationship to child",
+    "choiceRelationshipHelper": "Shown to every school you apply to.",
+    "choiceRelationshipParent": "Parent",
+    "choiceRelationshipGuardian": "Guardian",
+    "choiceRelationshipOther": "Other",
+    "choiceTermLabel": "Target entry term",
+    "choiceTermOne": "Term 1",
+    "choiceTermTwo": "Term 2",
+    "choiceTermThree": "Term 3",
+    "choiceSubjectsLabel": "Subjects to include",
+    "choiceSubjectScience": "Science",
+    "choiceErrorRequired": "Pick an option to continue.",
+    "choicePackLabel": "Credit pack",
+    "choicePackFamily": "Family pack · 10 credits",
+    "choicePackFamilyNote": "Save 25% · most popular",
+    "choicePackFamilyPrice": "369 kr",
+    "choicePackSingle": "Single credit",
+    "choicePackSingleNote": "Just this test",
+    "choicePackSinglePrice": "49 kr",
+    "choicePackSchool": "School plan",
+    "choicePackSchoolNote": "Contact us to enable",
+    "choiceCountryLabel": "Country",
+    "choiceCountryPlaceholder": "Choose a country",
+    "choiceCountryValue": "Denmark",
+    "mediaCardTitle": "Nørrebro Heights School",
+    "mediaCardBadge": "Public",
+    "mediaCardMeta": "Copenhagen · 640 students",
+    "mediaCardDescription": "State primary and lower secondary with a bilingual stream from year 4.",
+    "mediaCardOpen": "Open",
+    "mediaCoverAlt": "SchoolTest cover photography",
+    "mediaCardNoImageTitle": "St. Anne's Grammar",
+    "mediaCardNoImageMeta": "Aarhus · 410 students",
+    "mediaCardNoImageDescription": "No photo has been supplied for this school yet.",
+    "mediaCoverEmptyAlt": "No photo supplied",
+    "mediaCardFlatTitle": "Selected result",
+    "mediaCardFlatDescription": "The same card without a cover — the image is a slot, not a second component.",
+    "filterRailTitle": "Filter schools",
+    "filterRailClear": "Clear",
+    "filterRailSector": "Sector",
+    "filterRailStage": "Stage",
+    "filterRailApply": "Apply filters",
+    "filterSectorPublic": "Public",
+    "filterSectorPrivate": "Private",
+    "filterStagePrimary": "Primary",
+    "filterStageSecondary": "Secondary",
+    "mapPanelLabel": "School results map",
+    "mapPanelEmptyTitle": "Map frame",
+    "mapPanelEmptyBody": "The frame owns the surface and the height budget; the map renders inside it.",
+    "recordEnrolmentTitle": "Enrolment",
+    "recordEnrolmentDescription": "Facts the school sees on every application.",
+    "recordEnrolmentAction": "Edit",
+    "recordYearLevel": "Year level",
+    "recordYearLevelValue": "Year 7",
+    "recordNationality": "Nationality",
+    "recordNationalityValue": "Danish",
+    "recordTargetEntry": "Target entry",
+    "recordTargetEntryValue": "2027 · Term 1",
+    "recordCreditsEyebrow": "Test credits",
+    "recordCreditsValue": "12",
+    "recordCreditsCaption": "Enough for four more assessments.",
+    "recordCreditsAction": "Buy credits",
+    "recordGlassCorrect": "Correct",
+    "recordGlassCorrectValue": "38/45",
+    "recordGlassBand": "Band",
+    "recordGlassBandValue": "B2",
+    "recordPromoTitle": "Running low on credits",
+    "recordPromoBody": "Top up once and every child on your account can sit their next test.",
+    "recordPromoAction": "Top up",
+    "recordCalloutBody": "Results are released to parents 24 hours after marking closes.",
+    "recordTintInset": "Inset — a recess inside a white panel.",
+    "recordTintWell": "Well — the page tint, for a tile on a card.",
+    "recordTintBrand": "Brand — soft blue for an informational tile.",
+    "recordTintAccent": "Accent — teal for a positive tile.",
+    "recordNoteTitle": "Teacher note",
+    "recordNoteBody": "Emma reads well above level but rushes the last two questions. Give her the extra five minutes.",
+    "recordNoteAuthor": "Mette Sørensen",
+    "recordNoteTime": "12 May",
+    "recordActivityTitle": "Recent activity",
+    "recordActivity": "Emma finished the year 7 reading check.",
+    "recordActivitySecond": "Lucas was invited to sit the maths placement test.",
+    "recordActivityTime": "2 hours ago",
+    "recordDotActivity": "Three profiles were updated this week.",
+    "recordDotActivitySecond": "One application is waiting on a document.",
+    "recordRankTitle": "Top performers",
+    "recordRankTwo": "Lucas Hansen",
+    "recordRankThree": "Maja Andersen",
+    "recordScoreTitle": "Scores & skills",
+    "recordSkillListening": "Listening",
+    "recordSkillReading": "Reading",
+    "recordSkillWriting": "Writing",
+    "recordVerdictMastered": "Mastered",
+    "recordVerdictEmerging": "Emerging",
+    "recordVerdictNotAssessed": "Not assessed",
+    "recordRosterTitle": "Roster row parts",
+    "recordCompletionLabel": "Questions answered",
+    "recordCompletionValue": "17/24",
+    "recordStackLabel": "Five students assigned",
+    "recordEventMonth": "May",
+    "recordEventDay": "24",
+    "recordEventTitle": "Year 7 entry test",
+    "recordEventMeta": "09:00 · Main hall",
+    "recordChartTitle": "Average score by month",
+    "recordMonthMar": "Mar",
+    "recordMonthApr": "Apr",
+    "recordMonthMay": "May",
+    "recordMonthJun": "Jun",
+    "recordMonthJul": "Jul",
+    "recordTrendLabel": "Average score trend",
+    "recordScrollTitle": "Scroll affordance",
+    "recordScrollBody": "Long content scrolls inside its own box, with the canonical thin bar — the page itself never scrolls sideways."
   },
   "Dashboard": {
     "meta": {
@@ -558,7 +674,50 @@
     "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
     "addFirstStudent": "Add your first student",
     "promoTitle": "Get expert help",
-    "promoDescription": "Connect with an education specialist who knows the schools on your shortlist."
+    "promoDescription": "Connect with an education specialist who knows the schools on your shortlist.",
+    "readinessCellLabel": "Profile readiness for {name}",
+    "activityEmpty": "No profiles have been added yet.",
+    "activityAdded": "<strong>{name}</strong> was added to your children.",
+    "activityUpdated": "<strong>{name}</strong>’s details were updated.",
+    "activityTitle": "Recent activity",
+    "heroEyebrow": "Your family",
+    "heroHeadlineEmpty": "Add your first child to start <mark>planning their school entry</mark>.",
+    "heroHeadlinePlanned": "Every profile has <mark>a target entry plan</mark> — the next step is comparing schools.",
+    "heroHeadlineNeedsPlan": "<mark>{missing} of {total} profiles</mark> still need a target entry year and term.",
+    "readinessChartTitle": "Profile readiness",
+    "readinessChartRange": "{count, plural, one {# child} other {# children}}",
+    "readinessChartEmpty": "Add a child to see how complete their profile is.",
+    "readinessChartCaption": "{name} has the most left to add — <strong>{percent} complete</strong>.",
+    "readinessChartAllDone": "Every profile here is <strong>complete</strong> — nothing left to fill in.",
+    "childrenSeeDetails": "See details",
+    "childRowLabel": "{name} — {filled} of {total} profile details added",
+    "childRowPlan": "Entry {plan}",
+    "childRowPlanNeeded": "Plan needed",
+    "readinessFieldFamilyName": "Name",
+    "readinessFieldEmail": "Email",
+    "readinessFieldNationality": "Country",
+    "readinessFieldYearLevel": "Year",
+    "readinessFieldEntryYear": "Entry",
+    "readinessFieldEntryTerm": "Term",
+    "focusEyebrow": "Where to look next",
+    "focusBodyEmpty": "Nothing to review yet. Add a child and their profile readiness shows up here.",
+    "focusBodyComplete": "{name}’s profile is fully filled in — every child you have added is ready for school matching.",
+    "focusBodyIncomplete": "{name}’s profile is {percent}% filled in. {missing, plural, one {# planning detail is} other {# planning details are}} still blank, and those details decide which schools and entry terms can be matched.",
+    "recommendedTitle": "Recommended next",
+    "recommendAddChildTitle": "Add your first child",
+    "recommendAddChildMeta": "Their profile is what schools and entry terms are matched against.",
+    "recommendAddChildAction": "Add",
+    "recommendSetPlanTitle": "Set a target entry plan for {name}",
+    "recommendSetPlanMeta": "A target year and term narrows the schools worth shortlisting.",
+    "recommendCompleteProfileTitle": "Finish {name}’s profile",
+    "recommendCompleteProfileMeta": "{percent}% filled in — the rest sharpens the school match.",
+    "recommendOpenAction": "Open",
+    "recommendExploreSchoolsTitle": "Compare schools that fit your plans",
+    "recommendExploreSchoolsMeta": "Search by state, sector and school type.",
+    "recommendExploreSchoolsAction": "Explore",
+    "recommendActionLabel": "{action}: {title}",
+    "activityAddedDetail": "Profile added to your children",
+    "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
     "nav": {
@@ -590,7 +749,8 @@
     },
     "userMenu": {
       "settings": "Settings",
-      "signOut": "Sign out"
+      "signOut": "Sign out",
+      "role": "Parent account"
     }
   },
   "Settings": {
@@ -605,6 +765,7 @@
     "account": {
       "title": "Account",
       "description": "The details SchoolTest uses to sign you in.",
+      "signedInAs": "Signed in as",
       "emailLabel": "Sign-in email",
       "confirmedLabel": "Email confirmation",
       "confirmed": "Confirmed",
@@ -625,7 +786,8 @@
     "defaultSectors": "Default school sectors",
     "defaultSort": "Default sort order",
     "defaultPageSize": "Results per page",
-    "pageSizeOption": "{count} results per page",
+    "searchResultsViewTitle": "Results view",
+    "searchResultsViewDescription": "Choose how school results are sorted and how many appear on each page.",
     "defaultFeeRange": "Default annual tuition range",
     "defaultFeeMinimum": "Minimum tuition (AUD)",
     "defaultFeeMaximum": "Maximum tuition (AUD)",
@@ -692,7 +854,6 @@
         }
       },
       "lockedTitle": "Always-on updates",
-      "lockedHelper": "Always on — this cannot be switched off.",
       "digest": {
         "title": "Email frequency",
         "description": "Choose when eligible email updates are sent. Account and security alerts always arrive, whatever you pick.",
@@ -734,6 +895,10 @@
       "saveError": "We couldn't save your notification preferences.",
       "loadErrorTitle": "We couldn't load your notification preferences.",
       "loadErrorDescription": "Please retry to load your saved notification settings."
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose the language SchoolTest uses across the app."
     }
   },
   "SchoolSearch": {
@@ -747,19 +912,26 @@
     "searchPlaceholder": "Search by school or suburb",
     "loading": "Loading schools",
     "resultsCount": "{count, plural, one {# result} other {# results}}",
+    "resultsRegion": "School results",
     "aria": {
       "filters": "School filters"
     },
     "filterPanel": {
-      "trigger": "Filters",
+      "trigger": "All filters",
       "title": "Filter schools",
-      "clear": "Clear filters",
+      "clear": "Clear all",
+      "activeCount": "{count, plural, one {# filter applied} other {# filters applied}}",
       "location": "Location",
       "schoolProfile": "School profile",
       "features": "Features",
       "state": "State or territory",
       "sector": "Sector",
-      "schoolType": "School type"
+      "schoolType": "School type",
+      "close": "Close filters",
+      "description": "Narrow the school results by location, profile, features and tuition.",
+      "apply": "Show {count, plural, one {# school} other {# schools}}",
+      "noFilters": "No filters applied — showing all schools",
+      "remove": "Remove filter {label}"
     },
     "states": {
       "QLD": "QLD",
@@ -821,7 +993,9 @@
     },
     "card": {
       "tuition": "From <strong>{amount}</strong>/yr",
-      "coverImageAlt": "{name} campus image"
+      "coverImageAlt": "{name} campus image",
+      "select": "Select {name}",
+      "tuitionUnknown": "Tuition not listed"
     },
     "map": {
       "region": "School results map",
@@ -831,28 +1005,46 @@
       "showMap": "Show map",
       "showList": "Show list",
       "ctrlScrollHint": "Use Ctrl + scroll to zoom the map",
-      "markerCount": "{count, plural, =0 {No schools shown on the map} one {# school shown on the map} other {# schools shown on the map}}"
+      "markerCount": "{count, plural, =0 {No schools shown on the map} one {# school shown on the map} other {# schools shown on the map}}",
+      "clearSelection": "Clear selected school"
+    },
+    "facts": {
+      "scholarships": "Scholarships",
+      "elicos": "ELICOS support",
+      "atar": "ATAR pathway",
+      "cricos": "CRICOS registered"
     }
   },
   "AgentSearch": {
     "loading": "Loading agents",
     "resultsCount": "{count, plural, one {# result} other {# results}}",
+    "resultsRegion": "Agent results",
     "verified": "Verified",
     "aria": {
       "filters": "Agent filters"
     },
     "filterPanel": {
-      "trigger": "Filters",
+      "trigger": "All filters",
       "title": "Filter agents",
-      "clear": "Clear filters",
+      "clear": "Clear all",
+      "activeCount": "{count, plural, one {# filter applied} other {# filters applied}}",
       "countries": "Countries served",
       "languages": "Languages spoken",
-      "services": "Services offered"
+      "services": "Services offered",
+      "close": "Close filters",
+      "description": "Narrow the agent results by country served, language and service.",
+      "apply": "Show {count, plural, one {# agent} other {# agents}}",
+      "noFilters": "No filters applied — showing all agents",
+      "remove": "Remove filter {label}"
     },
     "chipGroups": {
       "countries": "Countries served",
       "languages": "Languages spoken",
       "services": "Services offered"
+    },
+    "card": {
+      "countries": "Countries served",
+      "languages": "Languages spoken"
     },
     "services": {
       "counselling": "Counselling",
@@ -910,7 +1102,8 @@
     "meta": {
       "title": "Search — SchoolTest",
       "description": "Search Australian schools and education agents from one unified search."
-    }
+    },
+    "searchAction": "Search"
   },
   "StudentWizard": {
     "meta": {
@@ -919,30 +1112,41 @@
     },
     "back": "Back",
     "continue": "Continue",
-    "createStudent": "Create student",
+    "createStudent": "Confirm & add child",
     "saveChanges": "Save changes",
     "stepPlaceholder": "This step's fields are added in an upcoming slice.",
     "stepCaption": "Step {current} of {total} · {title}",
+    "stepsLabel": "Student setup progress",
     "steps": {
       "personal": {
         "label": "Personal",
-        "title": "Personal details"
+        "title": "Personal details",
+        "description": "Who the student is",
+        "railHint": "Who the student is"
       },
       "education": {
         "label": "Education",
-        "title": "Education"
+        "title": "Education",
+        "description": "Current schooling and target entry",
+        "railHint": "School & target entry"
       },
       "guardian": {
         "label": "Guardian",
-        "title": "Parent or guardian"
+        "title": "Parent or guardian",
+        "description": "Who we contact about results and enrolment",
+        "railHint": "Contact details"
       },
       "media": {
         "label": "Media",
-        "title": "Photo & voice"
+        "title": "Photo & voice",
+        "description": "Optional photo and voice introduction",
+        "railHint": "Photo & voice intro"
       },
       "review": {
         "label": "Review",
-        "title": "Review & submit"
+        "title": "Review & confirm",
+        "description": "You can change any of this later in the student's profile.",
+        "railHint": "Confirm details"
       }
     },
     "personal": {
@@ -1020,11 +1224,11 @@
         "previewAlt": "Voice introduction preview",
         "invalidType": "Choose an audio file (MP3 or WAV).",
         "tooLarge": "That audio is over 10MB. Choose a smaller file."
-      }
+      },
+      "optionalNote": "Both are optional. You can add or replace them later from the student’s profile."
     },
     "toastCreated": "Student created",
     "review": {
-      "intro": "Check everything is correct before creating this student.",
       "edit": "Edit",
       "empty": "—",
       "photo": "Photo",
@@ -1045,7 +1249,24 @@
         "offlineTitle": "You’re offline",
         "offlineBody": "Check your connection and try again.",
         "dismiss": "Dismiss"
-      }
+      },
+      "summaryEyebrow": "Ready to create",
+      "noPhoto": "No photo added",
+      "noVoice": "No voice introduction added",
+      "born": "born {date}",
+      "testingBand": "testing band {n}",
+      "entry": "entry {term}, {year}",
+      "photoAdded": "Photo added",
+      "voiceAdded": "Voice introduction added"
+    },
+    "pageTitle": "Add a child",
+    "editTitle": "Edit child",
+    "backToChildren": "My children",
+    "stepCounter": "Step {current} of {total}",
+    "success": {
+      "createdTitle": "Student added",
+      "savedTitle": "Changes saved",
+      "body": "Taking you to My children…"
     }
   },
   "StudentWizardSchema": {
@@ -1192,11 +1413,38 @@
     "skillLadderLabel": "{skill}: CEFR {band}, level {rank} of {total}",
     "skillsPendingTitle": "Not assessed yet",
     "skillsPendingDescription": "No official result has been published for these skills yet.",
+    "sessionsCompleted": "Sessions completed",
+    "recordFraction": "{recorded}/{total}",
+    "recordCompletionLabel": "Recorded details for {name}",
+    "skillNotAssessed": "Not assessed",
+    "tabRecord": "Record",
+    "tabProgress": "Progress",
+    "tabsLabel": "Child profile sections",
     "pagerLabel": "Roster pages",
     "pagerPage": "Page {page} of {pages}",
     "pagerPrevious": "Previous page",
     "pagerNext": "Next page",
-    "pagerGoTo": "Go to page {page}"
+    "pagerGoTo": "Go to page {page}",
+    "addChild": "Add a child",
+    "addChildHint": "Set up a new learner profile.",
+    "cardOpenHint": "Open the profile for progress and results.",
+    "cardDetails": "Details",
+    "levelJourneyHeading": "Level journey",
+    "journeyNote": "Each rail shows the highest CEFR band published for that skill on the six-band ladder this system uses, Pre-A1 through C1.",
+    "journeyUnknown": "No CEFR band has been published for any skill yet.",
+    "skillsUnknown": "No readiness has been published for any skill yet.",
+    "skillsNote": "Readiness is published per skill with each official result. No overall level is calculated.",
+    "focusSkillNote": "{skill} is the current focus area — readiness {readiness}.",
+    "skillLadderEmptyLabel": "{skill}: no CEFR band published yet",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "cardAdded": "Added {date}"
   },
   "Notifications": {
     "meta": {
@@ -1215,6 +1463,7 @@
     "unread": "Unread",
     "read": "Read",
     "today": "Today",
+    "earlier": "Earlier",
     "yesterday": "Yesterday",
     "unreadCount": "{count, plural, =0 {No unread notifications} one {# unread notification} other {# unread notifications}}",
     "emptyTitle": "You're all caught up",
@@ -1233,6 +1482,10 @@
       "children": "Children",
       "testActivity": "Test activity",
       "testResults": "Test results"
+    },
+    "filterLabel": "Filter notifications by category",
+    "filters": {
+      "all": "All"
     }
   },
   "QueryError": {

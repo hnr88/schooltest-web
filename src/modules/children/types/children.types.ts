@@ -1,7 +1,6 @@
-import type { LucideIcon } from 'lucide-react';
 import type { z } from 'zod';
 
-import type { InsightCalloutTone, SubjectProgressTone } from '@/modules/design-system';
+import type { SubjectProgressTone } from '@/modules/design-system';
 import type {
   childProgressDataSchema,
   childProgressMetricsSchema,
@@ -19,19 +18,10 @@ export type ChildProgressStudent = z.infer<typeof childProgressStudentSchema>;
 export type ChildProgressMetrics = z.infer<typeof childProgressMetricsSchema>;
 export type ChildProgressResult = z.infer<typeof childProgressResultSchema>;
 
-export type ResultBadgeVariant = 'accent' | 'success' | 'warning';
-
 // Pill styling metadata for a student status (C-UI-MYCHILDREN §6 uppercase pill).
 export interface StatusMeta {
   labelKey: string;
   className: string;
-}
-
-// The learning panel's callout: tone, icon and message key for one session state.
-export interface CompletionInsight {
-  tone: InsightCalloutTone;
-  icon: LucideIcon;
-  messageKey: 'noSessionProgress' | 'completionDescription';
 }
 
 // The two API fields any year-level label is derived from. Structural so the
@@ -54,11 +44,11 @@ export interface ChildProfileFact {
   value: string | null;
 }
 
-// Roster meta cells — null means "not recorded", rendered as the canonical "—".
-export interface RosterFacts {
-  yearLevel: string | null;
-  targetEntry: string | null;
-  nationality: string | null;
+// One cell of the child card's MetricStrip (§A.5). `value: null` means the API
+// never recorded the fact, so the cell prints the em dash rather than a zero.
+export interface ChildCardMetric {
+  label: string;
+  value: string | null;
 }
 
 // One §5.3 subject card, derived from the official results the API returned.
@@ -67,9 +57,20 @@ export interface RosterFacts {
 export interface ChildSkillSummary {
   skill: ChildProgressResult['skill'];
   band: NonNullable<ChildProgressResult['cefrBand']> | null;
+  readiness: ChildProgressResult['readiness'];
   value: number;
   count: number;
   tone: SubjectProgressTone;
+}
+
+// One rung of the §B.4 level-journey rail. `state` is what the dot paints:
+// `done`/`current` are the navy filled dots (current carries the 6px white pip),
+// `future` is the hollow one. A skill with no official result has NO current rung.
+export type ChildJourneyState = 'done' | 'current' | 'future';
+
+export interface ChildJourneyRung {
+  band: NonNullable<ChildProgressResult['cefrBand']>;
+  state: ChildJourneyState;
 }
 
 // Roster pager state: the visible slice plus the canonical footer readout.

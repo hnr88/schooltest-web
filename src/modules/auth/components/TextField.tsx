@@ -2,6 +2,12 @@
 
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
+import { AuthFieldError } from '@/modules/auth/components/AuthFieldError';
+import {
+  AUTH_FIELD_CLASS,
+  AUTH_INPUT_CLASS,
+  AUTH_LABEL_CLASS,
+} from '@/modules/auth/constants/auth-field.constants';
 import { Input, Label } from '@/modules/design-system';
 
 interface TextFieldProps {
@@ -26,8 +32,10 @@ export function TextField({
   registration,
 }: TextFieldProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
+    <div className={AUTH_FIELD_CLASS}>
+      <Label htmlFor={id} className={AUTH_LABEL_CLASS}>
+        {label}
+      </Label>
       <Input
         id={id}
         type={type}
@@ -35,14 +43,10 @@ export function TextField({
         placeholder={placeholder}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
-        className="h-11"
+        className={AUTH_INPUT_CLASS}
         {...registration}
       />
-      {error ? (
-        <p id={`${id}-error`} className="text-sm text-destructive">
-          {error}
-        </p>
-      ) : null}
+      {error ? <AuthFieldError id={`${id}-error`} message={error} /> : null}
     </div>
   );
 }

@@ -30,8 +30,12 @@ interface ChildrenToolbarProps {
 // beside a white sibling button. Canonical form fields carry a fill (Students
 // search `background:#FFFFFF;border:1px solid #CBD5E1`); #F7F9FC, the other
 // canonical fill, is 1.03:1 on this well.
+// `rounded-full` on the field and the chip: the portal chrome is a pill language
+// (spec 02 §A.3/§A.5 — every button, pill and badge on these two screens is
+// border-radius:999px), so a 10px rectangle beside the pill CTA reads as a
+// different design system.
 const SEARCH_FIELD =
-  'contents [&_[data-slot=input-group]]:h-10 [&_[data-slot=input-group]]:bg-card [&_[data-slot=input-group]_input]:min-h-11 [&_[data-slot=input-group]_button]:relative [&_[data-slot=input-group]_button]:after:absolute [&_[data-slot=input-group]_button]:after:-inset-2.75';
+  'contents [&_[data-slot=input-group]]:h-10 [&_[data-slot=input-group]]:rounded-full [&_[data-slot=input-group]]:bg-card [&_[data-slot=input-group]_input]:min-h-11 [&_[data-slot=input-group]_button]:relative [&_[data-slot=input-group]_button]:after:absolute [&_[data-slot=input-group]_button]:after:-inset-2.75';
 
 // Canonical list toolbar — search, filter triggers, then the result readout,
 // sitting ABOVE the panel (never inside it): the existing debounced student
@@ -60,10 +64,10 @@ export function ChildrenToolbar({
           // ::after (measured from the 35.6px PADDING box, inside the 1px border)
           // carries the target to 47.6 on every pointer type. The chip keeps its
           // canonical 40px-family box.
-          'relative inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-body-sm font-medium transition duration-200 ease-out-expo after:absolute after:inset-x-0 after:-inset-y-1.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none pointer-coarse:min-h-11',
+          'relative inline-flex items-center gap-2 rounded-full border px-4 py-2 text-body-sm font-medium transition duration-200 ease-out-expo after:absolute after:inset-x-0 after:-inset-y-1.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none pointer-coarse:min-h-11',
           includeArchived
             ? 'border-primary bg-blue-50 text-secondary-foreground'
-            : 'border-input bg-card text-muted-foreground hover:bg-background hover:text-foreground',
+            : 'border-portal-input bg-card text-muted-foreground hover:border-foreground hover:text-foreground',
         )}
       >
         {includeArchived ? (

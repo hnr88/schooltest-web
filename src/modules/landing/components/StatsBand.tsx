@@ -13,12 +13,12 @@ const STATS = [
   {
     valueKey: 'stats.accuracyValue',
     labelKey: 'stats.accuracyLabel',
-    valueClassName: 'text-teal-300',
+    valueClassName: 'text-chart-5',
   },
   {
     valueKey: 'stats.savedValue',
     labelKey: 'stats.savedLabel',
-    valueClassName: 'text-blue-300',
+    valueClassName: 'text-chart-4',
   },
 ] as const;
 
@@ -42,7 +42,7 @@ async function StatsBand() {
                   <p className={cn('text-5xl font-bold', stat.valueClassName)}>
                     {t(stat.valueKey)}
                   </p>
-                  <p className="mt-2 text-sm text-slate-400">{t(stat.labelKey)}</p>
+                  <p className="mt-2 text-body-md text-navy-muted">{t(stat.labelKey)}</p>
                 </div>
               ))}
             </div>

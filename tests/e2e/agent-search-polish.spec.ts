@@ -28,12 +28,13 @@ test('agent search: a relevant real query and grouped filters return polished ve
   await expect(agentCards(page).first().locator('[data-slot="agent-card-profile"]')).toBeVisible();
 
   await query.fill('');
-  const trigger = page.getByRole('button', {
-    name: cat(en, 'AgentSearch.filterPanel.trigger'),
-    exact: true,
-  });
-  await trigger.click();
-  const panel = page.locator('[data-slot="popover-content"]');
+  // The agents filters open in the SAME §8.6 "All filters" overlay the schools pane
+  // uses (the popover this asserted is gone) — one page, one filter surface.
+  await page
+    .getByRole('button', { name: cat(en, 'AgentSearch.filterPanel.trigger'), exact: true })
+    .click();
+  const panel = page.getByRole('dialog');
+  await expect(panel).toBeVisible();
   for (const key of ['countries', 'languages', 'services'] as const) {
     await expect(panel.getByRole('heading', { name: cat(en, `AgentSearch.filterPanel.${key}`) })).toBeVisible();
   }

@@ -49,6 +49,10 @@ export const VOICE_INTRO_MAX_MB = 10;
 export const PHOTO_MAX_BYTES = PHOTO_MAX_MB * 1024 * 1024;
 export const VOICE_INTRO_MAX_BYTES = VOICE_INTRO_MAX_MB * 1024 * 1024;
 
+// How long the success panel holds before the wizard leaves for the roster — one
+// beat past the 180ms pop-in, so the confirmation is read rather than glimpsed.
+export const WIZARD_SUCCESS_DWELL_MS = 1100;
+
 export const WIZARD_STEP_COUNT = 5;
 export const WIZARD_STEP_KEYS = [
   'personal',

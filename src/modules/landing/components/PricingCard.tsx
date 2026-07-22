@@ -13,22 +13,23 @@ async function PricingCard({ tier }: { tier: PricingTier }) {
   return (
     <div className="relative h-full">
       {tier.badgeKey ? (
-        <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-teal-300 px-3.5 py-1.5 text-micro font-bold tracking-wider text-teal-950 uppercase">
+        <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-accent-on-dark px-3.5 py-1.5 text-micro font-bold tracking-overline text-teal-950 uppercase">
           {t(tier.badgeKey)}
         </span>
       ) : null}
       <Card
         className={cn(
-          'h-full p-8',
-          tier.featured && 'relative border-navy-900 bg-navy-900 text-white shadow-xl',
+          'h-full rounded-3xl p-8 transition-[transform,box-shadow] duration-200 ease-out-expo hover:-translate-y-1 hover:shadow-lg motion-reduce:transition-none motion-reduce:hover:translate-y-0',
+          tier.featured &&
+            'relative border-navy-900 bg-navy-900 text-white shadow-dark-lift hover:shadow-dark-lift',
         )}
       >
-        <h3 className="font-bold">{t(tier.nameKey)}</h3>
+        <h3 className="text-button font-bold">{t(tier.nameKey)}</h3>
         <p className="mt-3 flex items-baseline gap-1.5">
-          <span className="text-4xl font-bold tracking-tight">{t(tier.priceKey)}</span>
+          <span className="text-h1 font-bold">{t(tier.priceKey)}</span>
           {tier.suffixKey ? (
             <span
-              className={cn('text-sm', tier.featured ? 'text-slate-400' : 'text-muted-foreground')}
+              className={cn('text-caption', tier.featured ? 'text-navy-muted' : 'text-slate-400')}
             >
               {t(tier.suffixKey)}
             </span>
@@ -42,10 +43,12 @@ async function PricingCard({ tier }: { tier: PricingTier }) {
                 strokeWidth={2.75}
                 className={cn(
                   'size-3.5 shrink-0',
-                  tier.featured ? 'text-teal-300' : 'text-green-600 dark:text-green-400',
+                  tier.featured ? 'text-accent-on-dark' : 'text-success dark:text-green-400',
                 )}
               />
-              <span className={cn(tier.featured && 'text-blue-200')}>{t(featureKey)}</span>
+              <span className={cn('text-body-md', tier.featured ? 'text-navy-soft' : 'text-body')}>
+                {t(featureKey)}
+              </span>
             </li>
           ))}
           {tier.excludedFeatureKeys.map((featureKey) => (
@@ -53,16 +56,16 @@ async function PricingCard({ tier }: { tier: PricingTier }) {
               <X
                 aria-hidden="true"
                 strokeWidth={2.75}
-                className="size-3.5 shrink-0 text-slate-300"
+                className="size-3.5 shrink-0 text-input"
               />
-              <span className="text-muted-foreground line-through">{t(featureKey)}</span>
+              <span className="text-body-md text-slate-400">{t(featureKey)}</span>
             </li>
           ))}
         </ul>
         <Button
           variant={tier.featured ? 'default' : 'outline'}
           href="#cta"
-          className="mt-auto h-11 w-full"
+          className="mt-auto h-11 w-full rounded-lg transition-[transform,background-color,border-color] duration-150 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
         >
           {t(tier.ctaKey)}
         </Button>

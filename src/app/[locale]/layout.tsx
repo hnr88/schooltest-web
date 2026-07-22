@@ -25,6 +25,7 @@ const googleSans = localFont({
   ],
   variable: '--font-sans',
   display: 'swap',
+  fallback: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'sans-serif'],
 });
 
 export const metadata: Metadata = {

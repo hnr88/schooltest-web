@@ -21,8 +21,13 @@ import { getShellRouteMeta } from '@/modules/shell/lib/route-meta';
 // dead-ending at the section and forcing a second breadcrumb into <main>.
 // Links keep their 20px canonical text box; the ::after inset takes the pointer
 // target to 44px.
+//
+// The trail now sits on the WELL (#EEF2F7), not on a white topbar — the detached
+// frame has no white chrome behind it. --muted-foreground measures 4.23:1 there and
+// drops under AA, so the crumb ink steps to --color-body (#475569, 6.74:1). The
+// separator keeps --input and stays aria-hidden, exactly as the primitive marks it.
 const CRUMB_LINK_CLASSES =
-  'relative inline-flex rounded-sm text-muted-foreground transition-colors duration-200 ease-out after:absolute after:inset-x-0 after:-inset-y-3 hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none';
+  'relative inline-flex rounded-sm text-body transition-colors duration-200 ease-out after:absolute after:inset-x-0 after:-inset-y-3 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none';
 
 function TopbarBreadcrumb() {
   const t = useTranslations('Shell');

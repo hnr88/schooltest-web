@@ -444,7 +444,123 @@
     "primitiveToggleResultsLabel": "有新成绩时通知我",
     "primitiveToggleShuffleLabel": "随机排列题目顺序",
     "primitiveToggleResultsHint": "成绩一出来就通过邮件和推送通知",
-    "primitiveToggleShuffleHint": "每位学生看到的题目顺序都不同"
+    "primitiveToggleShuffleHint": "每位学生看到的题目顺序都不同",
+    "sectionChoices": "选择控件",
+    "sectionMedia": "媒体与结果卡片",
+    "sectionRecords": "记录与数据行",
+    "choicesIntro": "按选项的形态挑选控件：两三个词用分段控件，短标签用胶囊，需要说明文字时用选择卡片，列表很长时用下拉选择。",
+    "mediaIntro": "带真实图片位的结果卡片、可在自身区域内滚动的筛选栏，以及地图所在的面板框架。",
+    "recordsIntro": "构成记录页面的面板与数据行，让任何页面都不必重复同一张卡片。",
+    "choiceRelationshipLabel": "与孩子的关系",
+    "choiceRelationshipHelper": "会显示给你申请的每一所学校。",
+    "choiceRelationshipParent": "父母",
+    "choiceRelationshipGuardian": "监护人",
+    "choiceRelationshipOther": "其他",
+    "choiceTermLabel": "目标入学学期",
+    "choiceTermOne": "第一学期",
+    "choiceTermTwo": "第二学期",
+    "choiceTermThree": "第三学期",
+    "choiceSubjectsLabel": "包含的科目",
+    "choiceSubjectScience": "科学",
+    "choiceErrorRequired": "请选择一项后继续。",
+    "choicePackLabel": "测评点数套餐",
+    "choicePackFamily": "家庭套餐 · 10 个点数",
+    "choicePackFamilyNote": "省 25% · 最受欢迎",
+    "choicePackFamilyPrice": "369 克朗",
+    "choicePackSingle": "单个点数",
+    "choicePackSingleNote": "仅用于本次测评",
+    "choicePackSinglePrice": "49 克朗",
+    "choicePackSchool": "学校方案",
+    "choicePackSchoolNote": "请联系我们开通",
+    "choiceCountryLabel": "国家或地区",
+    "choiceCountryPlaceholder": "请选择国家或地区",
+    "choiceCountryValue": "丹麦",
+    "mediaCardTitle": "诺雷布罗高地学校",
+    "mediaCardBadge": "公立",
+    "mediaCardMeta": "哥本哈根 · 640 名学生",
+    "mediaCardDescription": "公立小学与初中，从四年级起设双语班。",
+    "mediaCardOpen": "开放报名",
+    "mediaCoverAlt": "SchoolTest 封面照片",
+    "mediaCardNoImageTitle": "圣安妮文法学校",
+    "mediaCardNoImageMeta": "奥胡斯 · 410 名学生",
+    "mediaCardNoImageDescription": "这所学校尚未提供照片。",
+    "mediaCoverEmptyAlt": "未提供照片",
+    "mediaCardFlatTitle": "已选中的结果",
+    "mediaCardFlatDescription": "同一张卡片，只是没有封面——图片是一个插槽，而不是另一个组件。",
+    "filterRailTitle": "筛选学校",
+    "filterRailClear": "清除",
+    "filterRailSector": "办学性质",
+    "filterRailStage": "学段",
+    "filterRailApply": "应用筛选",
+    "filterSectorPublic": "公立",
+    "filterSectorPrivate": "私立",
+    "filterStagePrimary": "小学",
+    "filterStageSecondary": "中学",
+    "mapPanelLabel": "学校结果地图",
+    "mapPanelEmptyTitle": "地图框架",
+    "mapPanelEmptyBody": "框架负责表面样式与高度上限，地图在框架内渲染。",
+    "recordEnrolmentTitle": "入学信息",
+    "recordEnrolmentDescription": "学校在每份申请中都会看到的信息。",
+    "recordEnrolmentAction": "编辑",
+    "recordYearLevel": "年级",
+    "recordYearLevelValue": "七年级",
+    "recordNationality": "国籍",
+    "recordNationalityValue": "丹麦",
+    "recordTargetEntry": "目标入学",
+    "recordTargetEntryValue": "2027 年 · 第一学期",
+    "recordCreditsEyebrow": "测评点数",
+    "recordCreditsValue": "12",
+    "recordCreditsCaption": "还够再安排四次测评。",
+    "recordCreditsAction": "购买点数",
+    "recordGlassCorrect": "答对",
+    "recordGlassCorrectValue": "38/45",
+    "recordGlassBand": "等级",
+    "recordGlassBandValue": "B2",
+    "recordPromoTitle": "点数快用完了",
+    "recordPromoBody": "一次充值，账户下的每个孩子都能参加下一次测评。",
+    "recordPromoAction": "去充值",
+    "recordCalloutBody": "成绩会在阅卷结束 24 小时后向家长公布。",
+    "recordTintInset": "凹陷底色——白色面板内的内嵌区块。",
+    "recordTintWell": "页面底色——用于卡片上的小块。",
+    "recordTintBrand": "品牌浅蓝——用于信息类小块。",
+    "recordTintAccent": "青绿强调色——用于正向结果小块。",
+    "recordNoteTitle": "教师备注",
+    "recordNoteBody": "艾玛的阅读水平远超年级要求，但最后两道题总是做得太急。请给她多五分钟。",
+    "recordNoteAuthor": "梅特·瑟伦森",
+    "recordNoteTime": "5月12日",
+    "recordActivityTitle": "最近动态",
+    "recordActivity": "艾玛完成了七年级阅读测评。",
+    "recordActivitySecond": "卢卡斯已受邀参加数学分班测试。",
+    "recordActivityTime": "2 小时前",
+    "recordDotActivity": "本周有三份档案更新。",
+    "recordDotActivitySecond": "有一份申请正在等待材料。",
+    "recordRankTitle": "成绩排名",
+    "recordRankTwo": "卢卡斯·汉森",
+    "recordRankThree": "玛雅·安徒生",
+    "recordScoreTitle": "分数与技能",
+    "recordSkillListening": "听力",
+    "recordSkillReading": "阅读",
+    "recordSkillWriting": "写作",
+    "recordVerdictMastered": "已掌握",
+    "recordVerdictEmerging": "发展中",
+    "recordVerdictNotAssessed": "未测评",
+    "recordRosterTitle": "名单行组件",
+    "recordCompletionLabel": "已作答题数",
+    "recordCompletionValue": "17/24",
+    "recordStackLabel": "已分配五名学生",
+    "recordEventMonth": "5月",
+    "recordEventDay": "24",
+    "recordEventTitle": "七年级入学测评",
+    "recordEventMeta": "09:00 · 大礼堂",
+    "recordChartTitle": "各月平均分",
+    "recordMonthMar": "3月",
+    "recordMonthApr": "4月",
+    "recordMonthMay": "5月",
+    "recordMonthJun": "6月",
+    "recordMonthJul": "7月",
+    "recordTrendLabel": "平均分趋势",
+    "recordScrollTitle": "滚动区域",
+    "recordScrollBody": "较长的内容在自身区域内滚动，并使用统一的细滚动条——页面本身永远不会横向滚动。"
   },
   "Dashboard": {
     "meta": {
@@ -558,7 +674,50 @@
     "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
     "addFirstStudent": "添加第一位学生",
     "promoTitle": "获取专业帮助",
-    "promoDescription": "联系了解您候选学校的教育顾问。"
+    "promoDescription": "联系了解您候选学校的教育顾问。",
+    "readinessCellLabel": "{name} 的档案完成度",
+    "activityEmpty": "尚未添加任何档案。",
+    "activityAdded": "<strong>{name}</strong> 已添加到您的孩子列表。",
+    "activityUpdated": "<strong>{name}</strong> 的资料已更新。",
+    "activityTitle": "最近动态",
+    "heroEyebrow": "Your family",
+    "heroHeadlineEmpty": "Add your first child to start <mark>planning their school entry</mark>.",
+    "heroHeadlinePlanned": "Every profile has <mark>a target entry plan</mark> — the next step is comparing schools.",
+    "heroHeadlineNeedsPlan": "<mark>{missing} of {total} profiles</mark> still need a target entry year and term.",
+    "readinessChartTitle": "Profile readiness",
+    "readinessChartRange": "{count, plural, one {# child} other {# children}}",
+    "readinessChartEmpty": "Add a child to see how complete their profile is.",
+    "readinessChartCaption": "{name} has the most left to add — <strong>{percent} complete</strong>.",
+    "readinessChartAllDone": "Every profile here is <strong>complete</strong> — nothing left to fill in.",
+    "childrenSeeDetails": "See details",
+    "childRowLabel": "{name} — {filled} of {total} profile details added",
+    "childRowPlan": "Entry {plan}",
+    "childRowPlanNeeded": "Plan needed",
+    "readinessFieldFamilyName": "Name",
+    "readinessFieldEmail": "Email",
+    "readinessFieldNationality": "Country",
+    "readinessFieldYearLevel": "Year",
+    "readinessFieldEntryYear": "Entry",
+    "readinessFieldEntryTerm": "Term",
+    "focusEyebrow": "Where to look next",
+    "focusBodyEmpty": "Nothing to review yet. Add a child and their profile readiness shows up here.",
+    "focusBodyComplete": "{name}’s profile is fully filled in — every child you have added is ready for school matching.",
+    "focusBodyIncomplete": "{name}’s profile is {percent}% filled in. {missing, plural, one {# planning detail is} other {# planning details are}} still blank, and those details decide which schools and entry terms can be matched.",
+    "recommendedTitle": "Recommended next",
+    "recommendAddChildTitle": "Add your first child",
+    "recommendAddChildMeta": "Their profile is what schools and entry terms are matched against.",
+    "recommendAddChildAction": "Add",
+    "recommendSetPlanTitle": "Set a target entry plan for {name}",
+    "recommendSetPlanMeta": "A target year and term narrows the schools worth shortlisting.",
+    "recommendCompleteProfileTitle": "Finish {name}’s profile",
+    "recommendCompleteProfileMeta": "{percent}% filled in — the rest sharpens the school match.",
+    "recommendOpenAction": "Open",
+    "recommendExploreSchoolsTitle": "Compare schools that fit your plans",
+    "recommendExploreSchoolsMeta": "Search by state, sector and school type.",
+    "recommendExploreSchoolsAction": "Explore",
+    "recommendActionLabel": "{action}: {title}",
+    "activityAddedDetail": "Profile added to your children",
+    "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
     "nav": {
@@ -590,7 +749,8 @@
     },
     "userMenu": {
       "settings": "设置",
-      "signOut": "退出登录"
+      "signOut": "退出登录",
+      "role": "Parent account"
     }
   },
   "Settings": {
@@ -605,6 +765,7 @@
     "account": {
       "title": "账户",
       "description": "SchoolTest 用于登录您账户的信息。",
+      "signedInAs": "当前登录账号",
       "emailLabel": "登录邮箱",
       "confirmedLabel": "邮箱验证",
       "confirmed": "已验证",
@@ -625,7 +786,8 @@
     "defaultSectors": "默认学校部门",
     "defaultSort": "默认排序方式",
     "defaultPageSize": "每页结果数",
-    "pageSizeOption": "每页 {count} 条结果",
+    "searchResultsViewTitle": "结果显示方式",
+    "searchResultsViewDescription": "选择学校结果的排序方式以及每页显示的数量。",
     "defaultFeeRange": "默认年度学费范围",
     "defaultFeeMinimum": "最低学费 (AUD)",
     "defaultFeeMaximum": "最高学费 (AUD)",
@@ -692,7 +854,6 @@
         }
       },
       "lockedTitle": "始终开启的更新",
-      "lockedHelper": "始终开启——无法关闭。",
       "digest": {
         "title": "电子邮件频率",
         "description": "选择何时发送符合条件的电子邮件更新。无论如何选择，账户和安全提醒都会送达。",
@@ -734,6 +895,10 @@
       "saveError": "无法保存您的通知偏好设置。",
       "loadErrorTitle": "无法加载您的通知偏好设置。",
       "loadErrorDescription": "请重试以加载已保存的通知设置。"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose the language SchoolTest uses across the app."
     }
   },
   "SchoolSearch": {
@@ -747,19 +912,26 @@
     "searchPlaceholder": "按学校或城区搜索",
     "loading": "正在加载学校",
     "resultsCount": "{count, plural, other {# 所学校}}",
+    "resultsRegion": "学校搜索结果",
     "aria": {
       "filters": "学校筛选"
     },
     "filterPanel": {
-      "trigger": "筛选",
+      "trigger": "全部筛选",
       "title": "筛选学校",
-      "clear": "清除筛选",
+      "clear": "全部清除",
+      "activeCount": "{count, plural, other {已应用 # 项筛选}}",
       "location": "地点",
       "schoolProfile": "学校概况",
       "features": "特色",
       "state": "州或领地",
       "sector": "办学性质",
-      "schoolType": "学校类型"
+      "schoolType": "学校类型",
+      "close": "关闭筛选",
+      "description": "按地区、类型、特色和学费缩小学校结果范围。",
+      "apply": "显示 {count, plural, other {# 所学校}}",
+      "noFilters": "未应用筛选 — 显示所有学校",
+      "remove": "移除筛选 {label}"
     },
     "states": {
       "QLD": "QLD",
@@ -821,7 +993,9 @@
     },
     "card": {
       "tuition": "每年 <strong>{amount}</strong> 起",
-      "coverImageAlt": "{name} 校园图片"
+      "coverImageAlt": "{name} 校园图片",
+      "select": "选择 {name}",
+      "tuitionUnknown": "未列出学费"
     },
     "map": {
       "region": "学校结果地图",
@@ -831,28 +1005,46 @@
       "showMap": "显示地图",
       "showList": "显示列表",
       "ctrlScrollHint": "按住 Ctrl 并滚动以缩放地图",
-      "markerCount": "{count, plural, =0 {地图上未显示学校} other {地图上显示 # 所学校}}"
+      "markerCount": "{count, plural, =0 {地图上未显示学校} other {地图上显示 # 所学校}}",
+      "clearSelection": "清除所选学校"
+    },
+    "facts": {
+      "scholarships": "奖学金",
+      "elicos": "ELICOS",
+      "atar": "ATAR 升学路径",
+      "cricos": "CRICOS"
     }
   },
   "AgentSearch": {
     "loading": "正在加载中介",
     "resultsCount": "{count, plural, other {# 家中介}}",
+    "resultsRegion": "中介搜索结果",
     "verified": "已认证",
     "aria": {
       "filters": "中介筛选"
     },
     "filterPanel": {
-      "trigger": "筛选",
+      "trigger": "全部筛选",
       "title": "筛选中介",
-      "clear": "清除筛选",
+      "clear": "全部清除",
+      "activeCount": "{count, plural, other {已应用 # 项筛选}}",
       "countries": "服务国家/地区",
       "languages": "使用语言",
-      "services": "提供的服务"
+      "services": "提供的服务",
+      "close": "关闭筛选",
+      "description": "按服务国家、语言和服务项目缩小中介结果范围。",
+      "apply": "显示 {count, plural, other {# 位中介}}",
+      "noFilters": "未应用筛选 — 显示所有中介",
+      "remove": "移除筛选 {label}"
     },
     "chipGroups": {
       "countries": "服务国家/地区",
       "languages": "使用语言",
       "services": "提供的服务"
+    },
+    "card": {
+      "countries": "服务国家/地区",
+      "languages": "使用语言"
     },
     "services": {
       "counselling": "咨询辅导",
@@ -910,7 +1102,8 @@
     "meta": {
       "title": "搜索 — SchoolTest",
       "description": "在一处统一搜索澳大利亚学校和留学中介。"
-    }
+    },
+    "searchAction": "搜索"
   },
   "StudentWizard": {
     "meta": {
@@ -923,26 +1116,37 @@
     "saveChanges": "保存更改",
     "stepPlaceholder": "此步骤的字段将在后续环节中添加。",
     "stepCaption": "第 {current} 步，共 {total} 步 · {title}",
+    "stepsLabel": "学生资料填写进度",
     "steps": {
       "personal": {
         "label": "个人",
-        "title": "个人信息"
+        "title": "个人信息",
+        "description": "学生的基本信息",
+        "railHint": "学生基本情况"
       },
       "education": {
         "label": "教育",
-        "title": "教育情况"
+        "title": "教育情况",
+        "description": "目前就读情况与目标学校",
+        "railHint": "学校与目标入学"
       },
       "guardian": {
         "label": "监护人",
-        "title": "家长或监护人"
+        "title": "家长或监护人",
+        "description": "关于该学生的联系人",
+        "railHint": "联系方式"
       },
       "media": {
         "label": "媒体",
-        "title": "照片和语音"
+        "title": "照片和语音",
+        "description": "可选的照片与语音介绍",
+        "railHint": "照片与语音介绍"
       },
       "review": {
         "label": "核对",
-        "title": "核对并提交"
+        "title": "核对并提交",
+        "description": "创建此学生前，请确认所有信息无误",
+        "railHint": "确认信息"
       }
     },
     "personal": {
@@ -1020,11 +1224,11 @@
         "previewAlt": "语音介绍预览",
         "invalidType": "请选择音频文件（MP3 或 WAV）。",
         "tooLarge": "该音频超过 10MB，请选择较小的文件。"
-      }
+      },
+      "optionalNote": "两项均为可选。日后可在学生资料中添加或替换。"
     },
     "toastCreated": "学生已创建",
     "review": {
-      "intro": "创建此学生前，请确认所有信息无误。",
       "edit": "编辑",
       "empty": "—",
       "photo": "照片",
@@ -1045,7 +1249,24 @@
         "offlineTitle": "您已离线",
         "offlineBody": "请检查网络连接后重试。",
         "dismiss": "关闭"
-      }
+      },
+      "summaryEyebrow": "即将创建",
+      "noPhoto": "未添加照片",
+      "noVoice": "未添加语音介绍",
+      "born": "出生于 {date}",
+      "testingBand": "测试级别 {n}",
+      "entry": "入学 {term}，{year}",
+      "photoAdded": "已添加照片",
+      "voiceAdded": "已添加语音介绍"
+    },
+    "pageTitle": "添加孩子",
+    "editTitle": "编辑孩子",
+    "backToChildren": "我的孩子",
+    "stepCounter": "第 {current} 步，共 {total} 步",
+    "success": {
+      "createdTitle": "学生已添加",
+      "savedTitle": "更改已保存",
+      "body": "正在返回“我的孩子”…"
     }
   },
   "StudentWizardSchema": {
@@ -1192,11 +1413,38 @@
     "skillLadderLabel": "{skill}：CEFR {band}，共 {total} 级中的第 {rank} 级",
     "skillsPendingTitle": "尚未测评",
     "skillsPendingDescription": "这些技能尚未发布正式结果。",
+    "sessionsCompleted": "已完成的测评",
+    "recordFraction": "{recorded}/{total}",
+    "recordCompletionLabel": "{name} 已记录的资料",
+    "skillNotAssessed": "尚未评估",
+    "tabRecord": "档案资料",
+    "tabProgress": "学习进度",
+    "tabsLabel": "孩子档案分区",
     "pagerLabel": "名单分页",
     "pagerPage": "第 {page} 页，共 {pages} 页",
     "pagerPrevious": "上一页",
     "pagerNext": "下一页",
-    "pagerGoTo": "转到第 {page} 页"
+    "pagerGoTo": "转到第 {page} 页",
+    "addChild": "Add a child",
+    "addChildHint": "Set up a new learner profile.",
+    "cardOpenHint": "Open the profile for progress and results.",
+    "cardDetails": "Details",
+    "levelJourneyHeading": "Level journey",
+    "journeyNote": "Each rail shows the highest CEFR band published for that skill on the six-band ladder this system uses, Pre-A1 through C1.",
+    "journeyUnknown": "No CEFR band has been published for any skill yet.",
+    "skillsUnknown": "No readiness has been published for any skill yet.",
+    "skillsNote": "Readiness is published per skill with each official result. No overall level is calculated.",
+    "focusSkillNote": "{skill} is the current focus area — readiness {readiness}.",
+    "skillLadderEmptyLabel": "{skill}: no CEFR band published yet",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "cardAdded": "Added {date}"
   },
   "Notifications": {
     "meta": {
@@ -1215,6 +1463,7 @@
     "unread": "未读",
     "read": "已读",
     "today": "今天",
+    "earlier": "Earlier",
     "yesterday": "昨天",
     "unreadCount": "{count, plural, =0 {没有未读通知} other {# 条未读通知}}",
     "emptyTitle": "您已了解所有更新",
@@ -1233,6 +1482,10 @@
       "children": "孩子",
       "testActivity": "测试活动",
       "testResults": "测试结果"
+    },
+    "filterLabel": "Filter notifications by category",
+    "filters": {
+      "all": "All"
     }
   },
   "QueryError": {

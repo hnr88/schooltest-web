@@ -21,8 +21,11 @@ const DS_SECTION_KEYS = [
   'sectionAlerts',
   'sectionCards',
   'sectionForms',
+  'sectionChoices',
   'sectionOverlays',
   'sectionData',
+  'sectionRecords',
+  'sectionMedia',
   'sectionFeedback',
 ] as const;
 
@@ -133,8 +136,37 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
   );
   await expect(page.locator('#ds-select')).toBeVisible();
   await expect(page.locator('#ds-native-select')).toBeVisible();
-  for (const role of ['checkbox', 'radio'] as const)
-    await expect(page.getByRole(role)).toHaveCount(2);
+  await expect(page.getByRole('checkbox')).toHaveCount(2);
+  // 13 radios, not 2. #choices exhibits the three canonical single-choice controls —
+  // SelectionCardGroup (3), ChoicePillGroup (3) and SegmentedChoice (3) — and the
+  // FilterRail in #media adds a fourth group (2). All four ARE radiogroups by spec:
+  // a mutually-exclusive answer is radiogroup/radio, never a listbox and never a
+  // pressed-toggle. So the number is raised to the real count and each group is
+  // pinned where it lives, rather than the new exhibits being dropped.
+  await expect(page.locator('#forms').getByRole('radio')).toHaveCount(2);
+  await expect(page.locator('#choices').getByRole('radio')).toHaveCount(9);
+  await expect(page.locator('#media').getByRole('radio')).toHaveCount(2);
+  await expect(page.getByRole('radio')).toHaveCount(13);
+  await expect(page.getByRole('radiogroup')).toHaveCount(5);
+  // A radiogroup with no accessible name is an axe "aria-input-field-name" failure and
+  // a screen reader dead end; every one of them must be named in SERVER markup.
+  expect(
+    await page.evaluate(
+      () =>
+        [...document.querySelectorAll('[role="radiogroup"]')].filter(
+          (group) => !group.getAttribute('aria-label') && !group.getAttribute('aria-labelledby'),
+        ).length,
+    ),
+  ).toBe(0);
+  // Media: the cover slot renders a REAL image when there is one and the canonical
+  // empty medallion when there is not — never a placeholder photo.
+  await expect(page.locator('[data-slot="media-cover"] img')).toHaveCount(1);
+  await expect(page.locator('[data-slot="media-cover"][data-empty]')).toHaveCount(1);
+  // The filter rail body is the scroll region, not the page.
+  const railBody = page.locator('[data-slot="filter-rail-body"]');
+  await expect(railBody).toHaveCSS('overflow-y', 'auto');
+  await expect(railBody).toHaveCSS('overscroll-behavior-y', 'contain');
+  await expect(page.locator('[data-slot="map-panel-frame"]')).toHaveAttribute('aria-label', /.+/);
   // 4 switches, not 2: ChoiceControls exhibits the vendored primitive twice (enabled +
   // disabled) and PrimitivesSection exhibits the ToggleRow wrapper twice (on + off).
   // The ToggleRow pair is the DS §36 settings row — a real showcase entry, not a

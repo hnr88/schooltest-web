@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-print-defaults>
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family: 'Google Sans'; src: url('fonts/GoogleSans-Variable.ttf') format('truetype'); font-weight: 400 800; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Google Sans'; src: url('fonts/GoogleSans-Italic-Variable.ttf') format('truetype'); font-weight: 400 800; font-style: italic; font-display: swap; }
+body { margin: 0; background: #FFFFFF; font-family: 'Google Sans', -apple-system, 'Segoe UI', system-ui, sans-serif; color: #475569; -webkit-font-smoothing: antialiased; }
+a { color: #2563EB; text-decoration: none; }
+a:hover { color: #1D4ED8; }
+input::placeholder, textarea::placeholder { color: #94A3B8; }
+input, textarea, button, select { font-family: inherit; }
+</style>
+</helmet>
+
+<!-- ===== ANNOUNCEMENT ===== -->
+<sc-if value="{{ showAnnouncement }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#0E2350;padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+    <span style="font-size:13px;color:#A9BADC">New: AI speaking feedback is now available on every plan</span>
+    <a href="#" style="font-size:13px;font-weight:600;color:#5EEAD4">Learn more →</a>
+  </div>
+</sc-if>
+
+<!-- ===== NAV ===== -->
+<header data-screen-label="Nav" style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid #EEF2F7">
+  <div style="max-width:1200px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:28px">
+    <img src="assets/logo.png" alt="SchoolTest" style="height:30px;width:auto" />
+    <nav style="display:flex;gap:4px">
+      <a href="#" style="font-size:14px;font-weight:500;color:#475569;padding:8px 14px;border-radius:9px" style-hover="background:#F1F5F9;color:#0E2350">Product</a>
+      <a href="#" style="font-size:14px;font-weight:500;color:#475569;padding:8px 14px;border-radius:9px" style-hover="background:#F1F5F9;color:#0E2350">For schools</a>
+      <a href="#" style="font-size:14px;font-weight:500;color:#475569;padding:8px 14px;border-radius:9px" style-hover="background:#F1F5F9;color:#0E2350">Pricing</a>
+      <a href="#" style="font-size:14px;font-weight:500;color:#475569;padding:8px 14px;border-radius:9px" style-hover="background:#F1F5F9;color:#0E2350">Resources</a>
+    </nav>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+      <a href="#" style="font-size:14px;font-weight:600;color:#16326E;padding:9px 16px;border-radius:10px" style-hover="background:#F1F5F9">Sign in</a>
+      <button style="display:inline-flex;align-items:center;gap:8px;background:#2563EB;color:#FFFFFF;border:none;font-size:14px;font-weight:600;padding:10px 18px;border-radius:10px;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,.25)" style-hover="background:#1D4ED8">Start free</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section data-screen-label="Hero" style="background:linear-gradient(#FFFFFF,#F7F9FC);overflow:hidden">
+  <div style="max-width:1360px;margin:20px auto 0;padding:0 20px">
+    <div style="position:relative;border-radius:32px;overflow:hidden;box-shadow:0 30px 70px rgba(14,35,80,.22);background:#0E2350">
+      <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="hero-field" shape="rect" fit="cover" placeholder=" " hint-size="100%,600px" style="position:absolute;inset:0;width:100%;height:100%"></x-import>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,60,.55) 0%,rgba(10,26,60,.18) 45%,rgba(10,26,60,.42) 88%,rgba(10,26,60,.10) 100%);pointer-events:none"></div>
+      <span style="position:absolute;top:18px;right:20px;z-index:3;display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#FFFFFF;background:rgba(10,26,60,.45);border:1px dashed rgba(255,255,255,.4);backdrop-filter:blur(6px);padding:6px 13px;border-radius:999px;pointer-events:none"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"></path></svg>Drop a photo here — e.g. a sunny grass field</span>
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:600px;padding:72px 32px;pointer-events:none">
+        <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#FFFFFF;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(8px);padding:7px 17px;border-radius:999px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#2DD4BF"></span>Trusted by 1,200+ schools and language centers
+        </span>
+        <h1 style="margin:28px auto 0;max-width:780px;font-size:68px;line-height:1.03;font-weight:700;letter-spacing:-0.032em;color:#FFFFFF;text-wrap:balance;text-shadow:0 2px 24px rgba(10,26,60,.35)">Smarter tests.<br />Better results.</h1>
+        <p style="margin:22px auto 0;max-width:520px;font-size:18px;line-height:1.6;color:rgba(255,255,255,.88);text-wrap:pretty;text-shadow:0 1px 12px rgba(10,26,60,.4)">Build language tests in minutes, deliver them with one link, and let AI draft the grading — you stay in control.</p>
+        <div style="display:flex;justify-content:center;gap:12px;margin-top:34px;pointer-events:auto">
+          <button style="display:inline-flex;align-items:center;gap:9px;background:#2563EB;color:#FFFFFF;border:none;font-size:15.5px;font-weight:600;padding:14px 28px;border-radius:12px;cursor:pointer;box-shadow:0 8px 24px rgba(10,26,60,.35)" style-hover="background:#1D4ED8">Start free trial<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+          <button style="display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.92);color:#0E2350;border:none;font-size:15.5px;font-weight:600;padding:14px 27px;border-radius:12px;cursor:pointer;backdrop-filter:blur(8px)" style-hover="background:#FFFFFF"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-left:1px"><path d="M7 5.5v13a1 1 0 0 0 1.52.86l10.4-6.5a1 1 0 0 0 0-1.72L8.52 4.64A1 1 0 0 0 7 5.5Z"></path></svg>Watch demo</button>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,.75);margin-top:16px">Free for up to 30 students · No credit card required</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:88px auto 0;padding:0 32px 8px">
+    <div style="border-radius:28px;background:linear-gradient(135deg,#0E2350 0%,#16326E 55%,#1D4ED8 130%);padding:18px;box-shadow:0 40px 90px rgba(14,35,80,.30)">
+      <div style="background:#F7F9FC;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:220px minmax(0,1fr)">
+        <div style="background:#FFFFFF;border-right:1px solid #EEF2F7;padding:18px 12px;display:flex;flex-direction:column;gap:2px">
+          <img src="assets/logo.png" alt="" style="height:22px;width:auto;align-self:flex-start;margin:4px 10px 16px" />
+          <span style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#FFFFFF;background:#2563EB;padding:9px 12px;border-radius:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>Dashboard</span>
+          <span style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:#475569;padding:9px 12px;border-radius:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg>Tests</span>
+          <span style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:#475569;padding:9px 12px;border-radius:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>Analytics</span>
+          <span style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:#475569;padding:9px 12px;border-radius:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>Students</span>
+        </div>
+        <div style="padding:22px 26px;text-align:left">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <div style="font-size:18px;font-weight:700;color:#0E2350">Dashboard</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button style="display:inline-flex;align-items:center;gap:6px;background:#2563EB;color:#FFFFFF;border:none;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:9px;cursor:default"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>Create test</button>
+              <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#14B8A6;color:#fff;font-size:11.5px;font-weight:700">MK</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px">
+            <div style="background:#FFFFFF;border:1px solid #EEF2F7;border-radius:12px;padding:14px 16px"><div style="font-size:12px;color:#64748B">Tests created</div><div style="font-size:24px;font-weight:700;color:#0E2350;margin-top:4px">12</div><div style="font-size:11.5px;font-weight:600;color:#15803D;margin-top:2px">+3 this week</div></div>
+            <div style="background:#FFFFFF;border:1px solid #EEF2F7;border-radius:12px;padding:14px 16px"><div style="font-size:12px;color:#64748B">Students</div><div style="font-size:24px;font-weight:700;color:#0E2350;margin-top:4px">230</div><div style="font-size:11.5px;font-weight:600;color:#15803D;margin-top:2px">+12 enrolled</div></div>
+            <div style="background:#FFFFFF;border:1px solid #EEF2F7;border-radius:12px;padding:14px 16px"><div style="font-size:12px;color:#64748B">Average score</div><div style="font-size:24px;font-weight:700;color:#0E2350;margin-top:4px">85%</div><div style="margin-top:8px;height:5px;border-radius:999px;background:#EEF2F7"><div style="width:85%;height:100%;border-radius:999px;background:linear-gradient(90deg,#2563EB,#14B8A6)"></div></div></div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #EEF2F7;border-radius:12px;margin-top:14px;overflow:hidden">
+            <div style="display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #F1F5F9"><span style="font-size:13.5px;font-weight:600;color:#0E2350">Recent tests</span><span style="font-size:12px;font-weight:600;color:#2563EB">View all</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid #F8FAFD"><span style="font-size:13px;font-weight:600;color:#0E2350;flex:1">Math Quiz</span><span style="font-size:12px;color:#94A3B8">Apr 15</span><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#15803D;background:#DCFCE7;padding:2px 9px;border-radius:999px"><span style="width:5px;height:5px;border-radius:50%;background:#16A34A"></span>Live</span><span style="font-size:12.5px;font-weight:700;color:#0E2350;width:34px;text-align:right">88%</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid #F8FAFD"><span style="font-size:13px;font-weight:600;color:#0E2350;flex:1">Science Test</span><span style="font-size:12px;color:#94A3B8">Apr 10</span><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#475569;background:#F1F5F9;padding:2px 9px;border-radius:999px"><span style="width:5px;height:5px;border-radius:50%;background:#94A3B8"></span>Closed</span><span style="font-size:12.5px;font-weight:700;color:#0E2350;width:34px;text-align:right">76%</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 16px"><span style="font-size:13px;font-weight:600;color:#0E2350;flex:1">History Exam</span><span style="font-size:12px;color:#94A3B8">Apr 19</span><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#16326E;background:#EFF5FF;padding:2px 9px;border-radius:999px"><span style="width:5px;height:5px;border-radius:50%;background:#2563EB"></span>Scheduled</span><span style="font-size:12.5px;font-weight:700;color:#94A3B8;width:34px;text-align:right">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:36px 32px 72px;display:flex;align-items:center;justify-content:center;gap:44px;flex-wrap:wrap">
+    <span style="font-size:12px;font-weight:600;color:#94A3B8;letter-spacing:.06em">TRUSTED BY</span>
+    <span style="font-size:16px;font-weight:700;color:#CBD5E1">Northfield Academy</span>
+    <span style="font-size:16px;font-weight:700;color:#CBD5E1">LinguaLab</span>
+    <span style="font-size:16px;font-weight:700;color:#CBD5E1">Prep&amp;Go</span>
+    <span style="font-size:16px;font-weight:700;color:#CBD5E1">EduCore</span>
+    <span style="font-size:16px;font-weight:700;color:#CBD5E1">Wexford Schools</span>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section data-screen-label="Features" style="background:#FFFFFF">
+  <div style="max-width:1200px;margin:0 auto;padding:88px 32px 0">
+    <div style="text-align:center">
+      <div style="font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563EB">Everything in one place</div>
+      <h2 style="margin:14px auto 0;max-width:560px;font-size:40px;line-height:1.12;font-weight:700;letter-spacing:-0.025em;color:#0E2350;text-wrap:balance">From first question to final grade</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:48px">
+      <div style="background:#F7F9FC;border:1px solid #EEF2F7;border-radius:20px;padding:30px;transition:box-shadow .2s, transform .2s" style-hover="box-shadow:0 16px 40px rgba(14,35,80,.10);transform:translateY(-3px)">
+        <span style="display:inline-grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#EFF5FF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg></span>
+        <div style="font-size:18px;font-weight:700;color:#0E2350;margin-top:18px">20 question types</div>
+        <div style="font-size:14.5px;line-height:1.6;color:#64748B;margin-top:8px">Multiple choice, drag-and-drop, dictation, speaking, essays — every PTE-style task, ready to use.</div>
+      </div>
+      <div style="background:#0E2350;border-radius:20px;padding:30px;transition:box-shadow .2s, transform .2s" style-hover="box-shadow:0 16px 40px rgba(14,35,80,.28);transform:translateY(-3px)">
+        <span style="display:inline-grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#16326E"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"></path><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9Z"></path></svg></span>
+        <div style="font-size:18px;font-weight:700;color:#FFFFFF;margin-top:18px">AI grading &amp; feedback</div>
+        <div style="font-size:14.5px;line-height:1.6;color:#A9BADC;margin-top:8px">Speaking and writing scored in seconds against your rubric. You review, adjust, and release.</div>
+      </div>
+      <div style="background:#F7F9FC;border:1px solid #EEF2F7;border-radius:20px;padding:30px;transition:box-shadow .2s, transform .2s" style-hover="box-shadow:0 16px 40px rgba(14,35,80,.10);transform:translateY(-3px)">
+        <span style="display:inline-grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#F0FDFA"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></span>
+        <div style="font-size:18px;font-weight:700;color:#0E2350;margin-top:18px">Per-skill analytics</div>
+        <div style="font-size:14.5px;line-height:1.6;color:#64748B;margin-top:8px">Listening, reading, writing, speaking — see exactly where each student and class stands.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE ROW ===== -->
+<section data-screen-label="Feature detail" style="background:#FFFFFF">
+  <div style="max-width:1200px;margin:0 auto;padding:88px 32px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:56px;align-items:center">
+    <div>
+      <div style="font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0D9488">AI feedback students actually read</div>
+      <h3 style="margin:14px 0 0;font-size:32px;line-height:1.18;font-weight:700;letter-spacing:-0.02em;color:#0E2350;text-wrap:balance">Grading that used to take a weekend now takes a coffee break</h3>
+      <p style="margin:16px 0 0;font-size:15.5px;line-height:1.65;color:#64748B;text-wrap:pretty">Every speaking and writing answer gets a rubric score and a concrete suggestion. Teachers approve each one before students see it.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:22px">
+        <span style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#0E2350"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Grammar, vocabulary, and coherence scores</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#0E2350"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>One-click "apply suggestion" for students</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#0E2350"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Teacher review before anything is released</span>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,#EFF5FF 0%,#F0FDFA 100%);border:1px solid #BFDBFE;border-radius:24px;padding:28px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#0E2350"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"></path></svg></span>
+        <span style="font-size:15px;font-weight:700;color:#0E2350">AI writing feedback</span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.05em;color:#0D9488;background:#CCFBF1;padding:3px 8px;border-radius:999px;margin-left:auto">BETA</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px">
+        <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;padding:13px 14px"><div style="font-size:12px;color:#64748B">Grammar</div><div style="font-size:20px;font-weight:700;color:#0E2350;margin-top:2px">8.5</div><div style="margin-top:7px;height:5px;border-radius:999px;background:#EEF2F7"><div style="width:85%;height:100%;border-radius:999px;background:#2563EB"></div></div></div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;padding:13px 14px"><div style="font-size:12px;color:#64748B">Vocabulary</div><div style="font-size:20px;font-weight:700;color:#0E2350;margin-top:2px">7.0</div><div style="margin-top:7px;height:5px;border-radius:999px;background:#EEF2F7"><div style="width:70%;height:100%;border-radius:999px;background:#14B8A6"></div></div></div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;padding:13px 14px"><div style="font-size:12px;color:#64748B">Coherence</div><div style="font-size:20px;font-weight:700;color:#0E2350;margin-top:2px">6.5</div><div style="margin-top:7px;height:5px;border-radius:999px;background:#EEF2F7"><div style="width:65%;height:100%;border-radius:999px;background:#0E2350"></div></div></div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;padding:14px 15px;margin-top:12px">
+        <div style="font-size:13px;line-height:1.6;color:#475569">Try linking your second and third paragraphs — <span style="font-weight:600;color:#0E2350;background:#CCFBF1;padding:1px 6px;border-radius:5px">"on the other hand"</span> would make the contrast clearer.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS BAND ===== -->
+<section data-screen-label="Stats" style="max-width:1200px;margin:88px auto 0;padding:0 32px">
+  <div style="background:#0E2350;border-radius:28px;padding:56px 40px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;text-align:center;position:relative;overflow:hidden">
+    <img src="assets/logo-mark.png" alt="" style="position:absolute;right:-40px;bottom:-46px;height:220px;opacity:.10;filter:brightness(0) invert(1)" />
+    <div><div style="font-size:48px;font-weight:700;letter-spacing:-0.03em;color:#FFFFFF">2.4M</div><div style="font-size:14px;color:#8FA3C7;margin-top:6px">tests delivered</div></div>
+    <div><div style="font-size:48px;font-weight:700;letter-spacing:-0.03em;color:#5EEAD4">98%</div><div style="font-size:14px;color:#8FA3C7;margin-top:6px">grading accuracy</div></div>
+    <div><div style="font-size:48px;font-weight:700;letter-spacing:-0.03em;color:#93C5FD">6 hrs</div><div style="font-size:14px;color:#8FA3C7;margin-top:6px">saved per teacher, weekly</div></div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS + TESTIMONIAL ===== -->
+<section data-screen-label="How it works" style="max-width:1200px;margin:0 auto;padding:88px 32px 0">
+  <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:stretch">
+    <div style="background:#F7F9FC;border:1px solid #EEF2F7;border-radius:24px;padding:36px">
+      <div style="font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563EB">How it works</div>
+      <div style="display:flex;flex-direction:column;gap:26px;margin-top:26px">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#2563EB;color:#fff;font-size:15px;font-weight:700;flex:none">1</span>
+          <div><div style="font-size:16.5px;font-weight:700;color:#0E2350">Create your test</div><div style="font-size:14px;line-height:1.6;color:#64748B;margin-top:4px">Pick from 20 question types or start with a template. Import existing questions from CSV or DOCX.</div></div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#2563EB;color:#fff;font-size:15px;font-weight:700;flex:none">2</span>
+          <div><div style="font-size:16.5px;font-weight:700;color:#0E2350">Share one link</div><div style="font-size:14px;line-height:1.6;color:#64748B;margin-top:4px">Students join with their name — no accounts, no installs. Works on any device.</div></div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#2563EB;color:#fff;font-size:15px;font-weight:700;flex:none">3</span>
+          <div><div style="font-size:16.5px;font-weight:700;color:#0E2350">Review &amp; release results</div><div style="font-size:14px;line-height:1.6;color:#64748B;margin-top:4px">AI drafts scores and feedback as students finish. Approve, adjust, and send — same day.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #EEF2F7;border-radius:24px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 2px 8px rgba(14,35,80,.05)">
+      <div>
+        <div style="display:flex;gap:2px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+        </div>
+        <div style="font-size:19px;line-height:1.55;color:#0E2350;margin-top:18px;text-wrap:pretty">"I stopped spending Sundays grading. The AI drafts the feedback, I approve it, and my students get results the same day."</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:24px">
+        <span style="display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#14B8A6;color:#fff;font-size:14px;font-weight:700">LP</span>
+        <div><div style="font-size:14.5px;font-weight:600;color:#0E2350">Lena Petrova</div><div style="font-size:13px;color:#94A3B8">English teacher, Lyceum 14</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<sc-if value="{{ showPricing }}" hint-placeholder-val="{{ true }}">
+<section data-screen-label="Pricing" style="max-width:1200px;margin:0 auto;padding:88px 32px 0">
+  <div style="text-align:center">
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563EB">Pricing</div>
+    <h2 style="margin:14px auto 0;font-size:40px;line-height:1.12;font-weight:700;letter-spacing:-0.025em;color:#0E2350">Start free, grow when you're ready</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:48px;align-items:stretch">
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:20px;padding:30px;display:flex;flex-direction:column">
+      <div style="font-size:15px;font-weight:700;color:#0E2350">Free</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-top:12px"><span style="font-size:40px;font-weight:700;letter-spacing:-0.02em;color:#0E2350">$0</span><span style="font-size:13.5px;color:#94A3B8">/ month</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;font-size:14px;color:#475569;flex:1">
+        <span style="display:flex;align-items:center;gap:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Up to 30 students</span>
+        <span style="display:flex;align-items:center;gap:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>5 tests per month</span>
+        <span style="display:flex;align-items:center;gap:9px;color:#94A3B8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>AI feedback</span>
+      </div>
+      <button style="margin-top:24px;background:#FFFFFF;color:#16326E;border:1px solid #CBD5E1;font-size:14px;font-weight:600;padding:11px;border-radius:11px;cursor:pointer;width:100%" style-hover="background:#F7F9FC">Get started</button>
+    </div>
+    <div style="background:#0E2350;border-radius:20px;padding:30px;display:flex;flex-direction:column;position:relative;box-shadow:0 24px 56px rgba(14,35,80,.28)">
+      <span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#06251F;background:#2DD4BF;padding:5px 13px;border-radius:999px">Most popular</span>
+      <div style="font-size:15px;font-weight:700;color:#FFFFFF">Pro</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-top:12px"><span style="font-size:40px;font-weight:700;letter-spacing:-0.02em;color:#FFFFFF">$29</span><span style="font-size:13.5px;color:#8FA3C7">/ teacher / month</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;font-size:14px;color:#C7D6F2;flex:1">
+        <span style="display:flex;align-items:center;gap:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2DD4BF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Unlimited students &amp; tests</span>
+        <span style="display:flex;align-items:center;gap:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2DD4BF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>AI speaking &amp; writing feedback</span>
+        <span style="display:flex;align-items:center;gap:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2DD4BF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Full per-skill analytics</span>
+      </div>
+      <button style="margin-top:24px;background:#2563EB;color:#FFFFFF;border:none;font-size:14px;font-weight:600;padding:12px;border-radius:11px;cursor:pointer;width:100%" style-hover="background:#1D4ED8">Start free trial</button>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:20px;padding:30px;display:flex;flex-direction:column">
+      <div style="font-size:15px;font-weight:700;color:#0E2350">School</div>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-top:12px"><span style="font-size:40px;font-weight:700;letter-spacing:-0.02em;color:#0E2350">Custom</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;font-size:14px;color:#475569;flex:1">
+        <span style="display:flex;align-items:center;gap:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>SSO &amp; roster sync</span>
+        <span style="display:flex;align-items:center;gap:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>District-level reporting</span>
+        <span style="display:flex;align-items:center;gap:9px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Dedicated support</span>
+      </div>
+      <button style="margin-top:24px;background:#FFFFFF;color:#16326E;border:1px solid #CBD5E1;font-size:14px;font-weight:600;padding:11px;border-radius:11px;cursor:pointer;width:100%" style-hover="background:#F7F9FC">Talk to sales</button>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<!-- ===== FAQ ===== -->
+<section data-screen-label="FAQ" style="max-width:760px;margin:0 auto;padding:88px 32px 0">
+  <div style="text-align:center">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.02em;color:#0E2350">Questions, answered</h2>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:18px;padding:8px 4px;margin-top:36px">
+    <sc-for list="{{ faqItems }}" as="f" hint-placeholder-count="4">
+      <div style="border-top:1px solid #F1F5F9">
+        <div onClick="{{ f.click }}" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 22px;cursor:pointer;user-select:none">
+          <span style="font-size:15.5px;font-weight:600;color:#0E2350">{{ f.q }}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:{{ f.rot }};transition:transform .2s"><path d="m6 9 6 6 6-6"></path></svg>
+        </div>
+        <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 22px 20px;font-size:14.5px;line-height:1.65;color:#64748B">{{ f.a }}</div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section data-screen-label="CTA" style="max-width:1200px;margin:0 auto;padding:88px 32px">
+  <div style="background:linear-gradient(135deg,#0E2350 0%,#16326E 60%,#1D4ED8 140%);border-radius:28px;padding:72px 40px;text-align:center;position:relative;overflow:hidden">
+    <img src="assets/logo-mark.png" alt="" style="position:absolute;left:-50px;top:-40px;height:240px;opacity:.10;filter:brightness(0) invert(1)" />
+    <h2 style="margin:0 auto;max-width:520px;font-size:42px;line-height:1.12;font-weight:700;letter-spacing:-0.025em;color:#FFFFFF;text-wrap:balance">Ready to give your class a better test day?</h2>
+    <p style="margin:16px auto 0;max-width:400px;font-size:15.5px;line-height:1.6;color:#A9BADC">Set up your first test in under five minutes. Free for up to 30 students.</p>
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:30px">
+      <button style="display:inline-flex;align-items:center;gap:9px;background:#FFFFFF;color:#0E2350;border:none;font-size:15px;font-weight:600;padding:13px 26px;border-radius:12px;cursor:pointer" style-hover="background:#DBEAFE">Start free trial<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+      <button style="display:inline-flex;align-items:center;gap:9px;background:transparent;color:#FFFFFF;border:1px solid rgba(255,255,255,.35);font-size:15px;font-weight:600;padding:12px 25px;border-radius:12px;cursor:pointer" style-hover="background:rgba(255,255,255,.08)">Talk to sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer data-screen-label="Footer" style="background:#0E2350">
+  <div style="max-width:1200px;margin:0 auto;padding:56px 32px 0;display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:36px">
+    <div>
+      <img src="assets/logo.png" alt="SchoolTest" style="height:30px;width:auto;filter:brightness(0) invert(1)" />
+      <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#8FA3C7;max-width:240px">Smarter tests and better results for teachers, students, and schools.</p>
+      <div style="display:flex;gap:10px;margin-top:18px">
+        <a href="#" aria-label="X" style="display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#16326E;color:#A9BADC" style-hover="color:#FFFFFF"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1.2 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L7 3.7H5.1L17.8 20Z"></path></svg></a>
+        <a href="#" aria-label="YouTube" style="display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#16326E;color:#A9BADC" style-hover="color:#FFFFFF"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg></a>
+        <a href="#" aria-label="LinkedIn" style="display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#16326E;color:#A9BADC" style-hover="color:#FFFFFF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8FA3C7">Product</div>
+      <div style="display:flex;flex-direction:column;gap:11px;margin-top:16px">
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Test builder</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">AI feedback</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Analytics</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Pricing</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8FA3C7">For schools</div>
+      <div style="display:flex;flex-direction:column;gap:11px;margin-top:16px">
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Districts</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Language centers</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Universities</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Case studies</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8FA3C7">Company</div>
+      <div style="display:flex;flex-direction:column;gap:11px;margin-top:16px">
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">About</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Blog</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Careers</a>
+        <a href="#" style="font-size:13.5px;color:#C7D6F2" style-hover="color:#FFFFFF">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:36px auto 0;padding:18px 32px;border-top:1px solid #1A2A4E;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+    <span style="font-size:12.5px;color:#8FA3C7">© 2026 SchoolTest, Inc.</span>
+    <a href="#" style="font-size:12.5px;color:#8FA3C7" style-hover="color:#FFFFFF">Privacy</a>
+    <a href="#" style="font-size:12.5px;color:#8FA3C7" style-hover="color:#FFFFFF">Terms</a>
+    <a href="#" style="font-size:12.5px;color:#8FA3C7" style-hover="color:#FFFFFF">Security</a>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#5EEAD4;margin-left:auto"><span style="width:7px;height:7px;border-radius:50%;background:#2DD4BF"></span>All systems operational</span>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showAnnouncement&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Sections&quot;}, &quot;showPricing&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Sections&quot;}}">
+class Component extends DCLogic {
+  state = { faqOpen: 0 };
+
+  renderVals() {
+    const s = this.state;
+    return {
+      showAnnouncement: this.props.showAnnouncement ?? true,
+      showPricing: this.props.showPricing ?? true,
+      faqItems: [
+        { q: 'Do students need an account?', a: 'No — share one link and students join with their name. Accounts are optional for tracking progress across tests.' },
+        { q: 'How does AI grading work?', a: 'Speaking and writing answers are scored instantly against your rubric. Teachers see every score and can adjust before results are released.' },
+        { q: 'Can I import my existing tests?', a: 'Yes — upload a CSV or DOCX and we map your questions to the right types automatically.' },
+        { q: 'Is SchoolTest suitable for PTE / IELTS prep?', a: 'Yes. All 20 PTE Academic task types are built in — from Read Aloud to Write from Dictation — with realistic timing and scoring.' },
+      ].map((f, i) => ({
+        ...f,
+        open: s.faqOpen === i,
+        rot: s.faqOpen === i ? 'rotate(180deg)' : 'rotate(0deg)',
+        click: () => this.setState(p => ({ faqOpen: p.faqOpen === i ? -1 : i })),
+      })),
+    };
+  }
+}
+</script>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "SchoolTest Landing";
+  // rAF raced with a short timeout: inside a cross-origin iframe (PrintMode),
+  // rAF can be throttled or paused even while the tab is focused, which would
+  // hang the scroll loop and never reach print(). Same pattern as
+  // buildExportSettleScript (export/shared.ts).
+  var raf = function () {
+    return Promise.race([
+      new Promise(function (r) { requestAnimationFrame(r); }),
+      new Promise(function (r) { setTimeout(r, 50); }),
+    ]);
+  };
+  var t0 = performance.now();
+  var mark = function (phase) {
+    var ms = Math.round(performance.now() - t0);
+    console.info('[autoprint]', phase, ms + 'ms');
+    try { parent.postMessage({ __omelette_autoprint: { phase: phase, ms: ms } }, '*'); } catch (e) {}
+  };
+  mark('start');
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    // A placeholder whose fetch failed (.sc-placeholder-error inside) keeps
+    // .sc-placeholder forever — don't wait on it. JS loop, not :has(), so an
+    // engine without :has() support can't throw out of the while and skip
+    // print() entirely.
+    var pendingPlaceholders = function () {
+      var all = settleRoot.querySelectorAll('.sc-placeholder'), n = 0;
+      for (var i = 0; i < all.length; i++)
+        if (!all[i].querySelector('.sc-placeholder-error')) n++;
+      return n;
+    };
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        pendingPlaceholders() === 0;
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  mark('settle-done' + (settleRoot ? ' (errs=' + settleRoot.querySelectorAll('.sc-placeholder-error').length + ' pending=' + pendingPlaceholders() + ')' : ''));
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    var scrollDeadline = Date.now() + 4000;
+    for (let y = 0; y <= full && Date.now() < scrollDeadline; y += step) {
+      window.scrollTo(0, y);
+      await raf();
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  mark('scroll-done');
+  try { await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 3000))]); } catch (e) {}
+  mark('fonts-done');
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await raf();
+    sweep();
+    await raf();
+  } catch (e) {}
+  // A document that owns its print CSS (the doc-page starter injects the
+  // meta at runtime; hand-rolled print designs author it) gets no automatic
+  // page geometry and keeps its forced breaks: strip the injected default
+  // @page — write time cannot see a runtime-injected meta — skip the frame
+  // override below, and skip the fakepage-flattening further down. What
+  // still applies: the print baseline and break-hygiene defaults (no @page
+  // in either; low specificity, so the document's own print CSS wins) and
+  // the break-inside relaxation on >page elements (avoid on those cannot
+  // be honored whoever authored it).
+  var ownsPrint = !!document.querySelector('meta[name="omelette-owns-print" i]');
+  if (ownsPrint) {
+    var dst = document.querySelector('style[data-omelette-print-defaults]');
+    if (dst && dst.textContent) {
+      dst.textContent = dst.textContent.replace(/@page\b[^{}]*\{[^}]*\}/, '');
+    }
+  }
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…} or declared print ownership
+  // via the meta above. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+  // Name-presence check, case-insensitive — the same contract as the
+  // instant-PDF path's runtime check in deck-stage-export.ts. The name is
+  // a string literal here because that file interpolates this script into
+  // its print script, so importing a shared constant from it would be a
+  // cycle; measure.test.ts pins the literal so the two cannot drift apart
+  // silently.
+  var ownsPrint = !!document.querySelector('meta[name="omelette-owns-print" i]');
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false, ownsPrint: ownsPrint } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false, ownsPrint: ownsPrint } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage, ownsPrint: ownsPrint };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: off unless the page opts in via data-om-multi-frame on the
+  // stop element — the explicit opt-in is what guards against card grids
+  // and pricing tables that match the geometry but aren't separate
+  // canvases. Two ways to name the frames, explicit first:
+  // 1. Descendants marked data-om-frame-export (the social-frames starter
+  //    marks each asset frame; shells/panels around them are presentation,
+  //    so nesting is expected). Document order.
+  // 2. Fallback, no marked descendants: direct children with an authored px
+  //    width AND height (the original geometry heuristic).
+  // Frames may be different sizes (a gallery mixes 1080×1920 stories with
+  // 728×90 banners); data-om-frame-label rides along for export filenames.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var visOk = function (e) {
+      var cs; try { cs = getComputedStyle(e); } catch (err) { return false; }
+      return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.position !== 'fixed';
+    };
+    // A frame's crop is its VISUAL box — never the scrollHeight-inflated
+    // rect that rectOf computes for page roots. Shadow-DOM hover controls
+    // (image-slot's Replace bar parks 29px below its host) and similar
+    // escaping UI contribute scrollable overflow to the frame, and the
+    // inflated height both squashes the nominal-size resize and drags
+    // content below the frame into the crop. Zoom-independent; bit every
+    // slot-bearing frame.
+    var frameRectOf = function (e) {
+      var r = e.getBoundingClientRect();
+      return { left: r.left + sx, top: r.top + sy, width: r.width, height: r.height };
+    };
+    var pushCand = function (list, e) {
+      if (!visOk(e)) return;
+      var rc = frameRectOf(e);
+      if (rc.width < 2 || rc.height < 2) return;
+      var lbl = e.getAttribute('data-om-frame-label');
+      if (lbl) rc.label = lbl;
+      list.push(rc);
+    };
+    var cands = [];
+    var marked = el.querySelectorAll('[data-om-frame-export]');
+    if (marked.length) {
+      for (var mk = 0; mk < marked.length; mk++) pushCand(cands, marked[mk]);
+    } else {
+      for (var k = 0; k < el.children.length; k++) {
+        var ch = el.children[k];
+        if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+        pushCand(cands, ch);
+      }
+    }
+    if (cands.length >= 2) {
+      return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (!ownsPrint && __m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          // An owns-print doc's forced breaks are intentional sheet
+          // boundaries, never fake-paged simulation — don't strip them.
+          // The break-inside relaxation above still applies: avoid on a
+          // >page element is impossible to honor whoever authored it.
+          if (
+            !ownsPrint &&
+            (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always')
+          ) {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  mark('print-calling');
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>

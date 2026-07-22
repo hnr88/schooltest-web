@@ -12,7 +12,7 @@ interface ChildrenRosterPagerProps {
 }
 
 const PAGE_BUTTON =
-  'relative inline-grid size-8 place-items-center rounded-md text-meta font-semibold tabular-nums transition-colors duration-200 ease-out-expo after:absolute after:-inset-1.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none';
+  'relative inline-grid size-8 place-items-center rounded-full text-meta font-semibold tabular-nums transition-colors duration-200 ease-out-expo after:absolute after:-inset-1.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none';
 
 // Canonical table footer strip (DS §09, Students screen): page readout on the
 // left, 32px prev / numbered / next squares on the right, on the page-tint band
@@ -26,7 +26,7 @@ export function ChildrenRosterPager({ pagination }: ChildrenRosterPagerProps) {
     <nav
       data-slot="children-roster-pager"
       aria-label={t('pagerLabel')}
-      className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-background px-4 py-3 sm:px-5"
+      className="flex flex-wrap items-center justify-between gap-3 rounded-card bg-card px-5 py-3 shadow-sm"
     >
       <p className="text-meta text-secondary-foreground tabular-nums">
         {t('pagerPage', { page, pages: pageCount })}

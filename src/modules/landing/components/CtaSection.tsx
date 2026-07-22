@@ -17,13 +17,23 @@ async function CtaSection() {
             </div>
             <div className="relative mx-auto max-w-2xl text-center">
               <h2 className="text-cta-title font-bold text-balance text-white">{t('cta.title')}</h2>
-              <p className="mt-4 text-base text-blue-100/85">{t('cta.subtitle')}</p>
+              <p className="mt-4 text-body-lg text-navy-body">{t('cta.subtitle')}</p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                <Button variant="white" size="xl" href="#pricing">
+                <Button
+                  variant="white"
+                  size="xl"
+                  href="#pricing"
+                  className="rounded-xl transition-[transform,background-color] duration-150 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                >
                   {t('cta.primary')}
                   <ArrowRight aria-hidden="true" />
                 </Button>
-                <Button variant="outline-white" size="xl" href="#pricing">
+                <Button
+                  variant="outline-white"
+                  size="xl"
+                  href="#pricing"
+                  className="rounded-xl transition-[transform,background-color] duration-150 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                >
                   {t('cta.secondary')}
                 </Button>
               </div>

@@ -9,9 +9,11 @@ import type {
 
 interface AgentSearchStore extends AgentSearchFilters {
   setQ: (q: string) => void;
-  toggleCountry: (country: string) => void;
-  toggleLanguage: (language: string) => void;
-  toggleService: (service: AgentServiceValue) => void;
+  // The canonical multi-select control (ChoicePillGroup) emits the WHOLE next
+  // selection, so these replace the previous one-value toggle actions.
+  setCountries: (countries: readonly string[]) => void;
+  setLanguages: (languages: readonly string[]) => void;
+  setServices: (services: readonly string[]) => void;
   setSort: (sort: AgentSortBy) => void;
   setPage: (page: number) => void;
   clearFilters: () => void;
@@ -27,33 +29,15 @@ const INITIAL: AgentSearchFilters = {
   page: 1,
 };
 
-function toggleValue<T>(values: T[], value: T): T[] {
-  return values.includes(value)
-    ? values.filter((current) => current !== value)
-    : [...values, value];
-}
-
 // In-memory only (legacy model): resets on reload, no persist middleware, no localStorage.
 // Every filter mutation resets `page` to 1; `reset()` clears `q` too — the shared
 // UnifiedSearchBar reflects this store's `q`, so reset must blank it (085 dependency).
 export const useAgentSearchStore = create<AgentSearchStore>((set) => ({
   ...INITIAL,
   setQ: (q) => set({ q, page: 1 }),
-  toggleCountry: (country) =>
-    set((current) => ({
-      countriesServed: toggleValue(current.countriesServed, country),
-      page: 1,
-    })),
-  toggleLanguage: (language) =>
-    set((current) => ({
-      languages: toggleValue(current.languages, language),
-      page: 1,
-    })),
-  toggleService: (service) =>
-    set((current) => ({
-      services: toggleValue(current.services, service),
-      page: 1,
-    })),
+  setCountries: (countries) => set({ countriesServed: [...countries], page: 1 }),
+  setLanguages: (languages) => set({ languages: [...languages], page: 1 }),
+  setServices: (services) => set({ services: [...services] as AgentServiceValue[], page: 1 }),
   setSort: (sort) => set({ sort, page: 1 }),
   setPage: (page) => set({ page }),
   clearFilters: () =>

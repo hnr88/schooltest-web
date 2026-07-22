@@ -58,7 +58,13 @@ test.describe('shell — desktop (1280)', () => {
     await loginAsParent(page);
     const aside = sidebar(page);
     await expect(aside).toBeVisible();
-    await expect(aside).toHaveCSS('width', '248px');
+    // RE-TARGETED for the DETACHED rail (.qa/design/spec/01 §1.2). The 248px rail is
+    // now a floating CARD inside a 24px gutter, so [data-slot="sidebar"] measures the
+    // whole left footprint (24 + 248 + 24 = 296) and the 248 lives on the element that
+    // actually paints the rail — the same element this test already samples for the
+    // canonical white below. Both halves are pinned so neither can drift alone.
+    await expect(aside).toHaveCSS('width', '296px');
+    await expect(page.locator('[data-slot="sidebar-inner"]')).toHaveCSS('width', '248px');
     // The canonical parent rail is WHITE (tokens.css light --sidebar: #FFFFFF);
     // the navy rail belongs to the school/admin persona and had been pasted into
     // :root. This used to read backgroundColor off [data-slot="sidebar"], which is
@@ -100,17 +106,22 @@ test.describe('shell — desktop (1280)', () => {
     const overview = navLink(page, cat(en, 'Shell.nav.overview'));
     const idle = navLink(page, cat(en, 'Shell.nav.myChildren'));
     await expect(overview).toHaveAttribute('data-active', /.*/);
-    await expect(overview).toHaveClass(/data-active:bg-sidebar-primary/);
-    await expect(overview).toHaveClass(/data-active:text-sidebar-primary-foreground/);
+    // The detached rail specifies its OWN active pair, and it is not the blue one:
+    // `Parent Portal.dc.html:797-801` gives active `background:#0E2350; color:#FFFFFF;
+    // font-weight:600` against inactive `transparent / #7C8698 / 500`. White on navy
+    // is 15.4:1 — a full grade above the #2563EB slab this used to pin.
+    await expect(overview).toHaveClass(/data-active:bg-navy-900/);
+    await expect(overview).toHaveClass(/data-active:text-white/);
     await expect(idle).not.toHaveAttribute('data-active', /.*/);
     await expect(overview).toHaveCSS('font-weight', '600');
     const activeBg = await overview.evaluate((el) => getComputedStyle(el).backgroundColor);
     const idleBg = await idle.evaluate((el) => getComputedStyle(el).backgroundColor);
     expect(idleBg).toBe('rgba(0, 0, 0, 0)');
     expect(activeBg).not.toBe(idleBg);
-    // geometry must NOT move with the colour — canonical keeps 10px radius, 10/12 pad
-    await expect(overview).toHaveCSS('border-radius', '10px');
-    await expect(overview).toHaveCSS('padding', '10px 12px');
+    // geometry is the detached slice's nav item verbatim (portal--detached-sidebar.html:6):
+    // `padding:11px 14px; border-radius:12px`
+    await expect(overview).toHaveCSS('border-radius', '12px');
+    await expect(overview).toHaveCSS('padding', '11px 14px');
     // label + icon on the active slab must clear AA (WCAG 2.1 SC 1.4.3, 4.5:1)
     const activeRatio = await overview.evaluate((el) => {
       const canvas = document.createElement('canvas');
@@ -162,7 +173,10 @@ test.describe('shell — desktop (1280)', () => {
 
     await expect(trigger).toBeVisible();
     await trigger.click();
-    await expect(aside).toHaveCSS('width', '48px');
+    // Same re-target as above: the icon rail is a 48px CARD inside the frame's 24px
+    // gutter, so the reserved footprint is 96px.
+    await expect(aside).toHaveCSS('width', '96px');
+    await expect(page.locator('[data-slot="sidebar-inner"]')).toHaveCSS('width', '48px');
     await expect(aside.getByRole('img', { name: cat(en, 'Shell.sidebar.logoAlt') })).toBeVisible();
     await page.screenshot({ path: path.join(SCREENSHOTS, 'shell-desktop-collapsed.png') });
     await expect(navLink(page, cat(en, 'Shell.nav.overview'))).toHaveAttribute(
@@ -171,7 +185,8 @@ test.describe('shell — desktop (1280)', () => {
     );
 
     await page.keyboard.press('Control+b');
-    await expect(aside).toHaveCSS('width', '248px');
+    await expect(aside).toHaveCSS('width', '296px');
+    await expect(page.locator('[data-slot="sidebar-inner"]')).toHaveCSS('width', '248px');
   });
 
   test('header left side shows the current breadcrumb and title', async ({ page }) => {
@@ -207,10 +222,7 @@ test.describe('shell — desktop (1280)', () => {
       await expect(navLink(page, cat(en, item.labelKey))).toBeVisible();
     }
     // Back on /dashboard the exact-match overview item is active again.
-    await expect(navLink(page, cat(en, 'Shell.nav.overview'))).toHaveAttribute(
-      'data-active',
-      /.*/,
-    );
+    await expect(navLink(page, cat(en, 'Shell.nav.overview'))).toHaveAttribute('data-active', /.*/);
   });
 
   test('user chip menu → Sign out lands on /sign-in with the token cleared', async ({ page }) => {
@@ -257,7 +269,9 @@ test.describe('shell — mobile (375, Sheet nav)', () => {
     // the resting open state, not a mid-transition frame.
     await sheet.evaluate(async (el) => {
       await Promise.all(
-        el.getAnimations({ subtree: true }).map((animation) => animation.finished.catch(() => null)),
+        el
+          .getAnimations({ subtree: true })
+          .map((animation) => animation.finished.catch(() => null)),
       );
     });
     await page.screenshot({ path: path.join(SCREENSHOTS, 'shell-mobile-sheet-open.png') });

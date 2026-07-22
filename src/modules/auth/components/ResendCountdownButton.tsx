@@ -49,7 +49,7 @@ export function ResendCountdownButton({
       disabled={isCounting}
       loading={isPending}
       onClick={handleClick}
-      className="w-full"
+      className="w-full rounded-lg text-body-md font-semibold text-navy-800 transition-[transform,background-color,border-color] duration-150 ease-out-expo not-disabled:hover:-translate-y-0.5 not-disabled:hover:border-slate-400 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       {isCounting ? t(countdownLabelKey, { time: formatCountdown(remaining) }) : t(labelKey)}
     </Button>

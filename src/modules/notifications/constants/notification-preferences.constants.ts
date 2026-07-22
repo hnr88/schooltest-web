@@ -11,6 +11,14 @@ import type {
 export const NOTIFICATION_SECTION_LABEL_CLASS =
   'mb-2 text-overline font-bold tracking-rail text-slate-600 uppercase';
 
+// PortalSelect (.qa/design/spec/03 §1.4): 48px tall, radius 12, #D8DFEA border,
+// 12px side padding, 14px navy ink on #FFFFFF, focus border #2563EB. The
+// `data-[size=default]` variant is repeated on purpose — the vendored trigger
+// declares its 32px height behind that variant, so a plain `h-12` loses on
+// specificity and silently does nothing.
+export const NOTIFICATION_SELECT_TRIGGER_CLASS =
+  'min-h-12 w-full justify-between rounded-tile border-portal-input bg-card px-3 text-body-md font-medium text-foreground transition-colors duration-200 ease-out-expo hover:border-foreground data-[size=default]:h-12 motion-reduce:transition-none';
+
 export const NOTIFICATION_DIGEST_FREQUENCIES = ['immediate', 'daily', 'weekly', 'off'] as const;
 
 export const NOTIFICATION_DIGEST_SELECTABLE_FREQUENCIES = ['immediate', 'off'] as const;

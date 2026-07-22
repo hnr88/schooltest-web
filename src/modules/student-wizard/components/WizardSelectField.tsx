@@ -1,8 +1,8 @@
 'use client';
 
-import type { Ref } from 'react';
-
+import { cn } from '@/lib/utils';
 import {
+  describedBy,
   Select,
   SelectContent,
   SelectItem,
@@ -10,31 +10,22 @@ import {
   SelectValue,
 } from '@/modules/design-system';
 import { WizardField } from '@/modules/student-wizard/components/WizardField';
+import { WIZARD_TRIGGER } from '@/modules/student-wizard/constants/wizard-control.constants';
+import type { WizardSelectFieldProps } from '@/modules/student-wizard/types/student-wizard.types';
 
-type WizardSelectValue = string | number;
-
-interface WizardSelectOption {
-  value: WizardSelectValue;
-  label: string;
-}
-
-interface WizardSelectFieldProps {
-  id: string;
-  label: string;
-  placeholder: string;
-  options: readonly WizardSelectOption[];
-  value: WizardSelectValue | null;
-  helper?: string;
-  error?: string;
-  triggerRef?: Ref<HTMLButtonElement>;
-  onValueChange: (value: WizardSelectValue) => void;
-  onBlur?: () => void;
-}
-
-// Label + §5.5 Select + helper/error, wired to a RHF Controller field. `items`
-// feeds base-ui the localized option label so the trigger shows the translated
-// text (not the raw enum value) in every locale; `triggerRef` receives the RHF
-// field ref so Continue's shouldFocus lands on this control when it is invalid.
+// `PortalSelect` (spec 03 §1.4) — the same 48px box as the input at 12px inline
+// padding. Composed from the vendored base-ui Select rather than the design
+// system's own `SelectField`, because that component's API exposes neither
+// `items` — without which base-ui's `Select.Value` prints the RAW value, i.e. "7"
+// instead of "Year 7" and an English "Year 1" in zh/ko/ms/vi/th — nor a trigger
+// ref, which RHF's `trigger(..., { shouldFocus })` needs to land on this field
+// when it is the first invalid one.
+// The RHF field's `onBlur` is deliberately NOT wired to the trigger. Base-ui moves
+// focus into the popup when it opens, so the trigger blurs the instant the user
+// starts answering — under `mode: 'onBlur'` that painted "Target entry year is
+// required" underneath a field the user was in the middle of filling. A select
+// cannot hold a malformed value, so "nothing chosen" is a Continue-time check
+// (`form.trigger(STEP_FIELDS[step])`), which is where it was already enforced.
 export function WizardSelectField({
   id,
   label,
@@ -43,15 +34,13 @@ export function WizardSelectField({
   value,
   helper,
   error,
+  required,
   triggerRef,
   onValueChange,
-  onBlur,
 }: WizardSelectFieldProps) {
-  const describedBy = error ? `${id}-error` : helper ? `${id}-helper` : undefined;
-
   return (
-    <WizardField htmlFor={id} label={label} helper={helper} error={error}>
-      <Select<WizardSelectValue, false>
+    <WizardField id={id} label={label} helper={helper} error={error} required={required}>
+      <Select<string | number, false>
         items={options}
         value={value}
         onValueChange={(next) => {
@@ -63,10 +52,9 @@ export function WizardSelectField({
         <SelectTrigger
           id={id}
           ref={triggerRef}
-          className="min-h-11 w-full"
           aria-invalid={error ? true : undefined}
-          aria-describedby={describedBy}
-          onBlur={onBlur}
+          aria-describedby={describedBy(id, helper, error)}
+          className={cn(WIZARD_TRIGGER, error && 'border-destructive')}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -75,7 +63,10 @@ export function WizardSelectField({
             <SelectItem
               key={String(option.value)}
               value={option.value}
-              className="focus:bg-muted focus:text-foreground data-highlighted:bg-muted data-highlighted:text-foreground data-selected:bg-muted data-selected:text-foreground"
+              // 46px, not 44: a pointer walk out of the row centre resolves 43.5 on a
+              // drawn 44 because device-pixel rounding eats the boundary half-pixel —
+              // the same 2px-over-minimum idiom IconButton documents.
+              className="min-h-11.5 px-2.5 text-body-md focus:bg-muted focus:text-foreground data-highlighted:bg-muted data-highlighted:text-foreground data-selected:bg-muted data-selected:text-foreground"
             >
               {option.label}
             </SelectItem>

@@ -444,7 +444,123 @@
     "primitiveToggleResultsLabel": "แจ้งเตือนฉันเมื่อมีผลลัพธ์ใหม่",
     "primitiveToggleShuffleLabel": "สุ่มลำดับคำถาม",
     "primitiveToggleResultsHint": "ส่งอีเมลและการแจ้งเตือนทันทีที่ผลออก",
-    "primitiveToggleShuffleHint": "นักเรียนแต่ละคนจะเห็นลำดับคำถามต่างกัน"
+    "primitiveToggleShuffleHint": "นักเรียนแต่ละคนจะเห็นลำดับคำถามต่างกัน",
+    "sectionChoices": "ตัวควบคุมการเลือก",
+    "sectionMedia": "สื่อและการ์ดผลลัพธ์",
+    "sectionRecords": "ระเบียนและแถวข้อมูล",
+    "choicesIntro": "เลือกตัวควบคุมตามรูปแบบของตัวเลือก — ปุ่มแบ่งส่วนสำหรับสองถึงสามคำ ชิปสำหรับป้ายสั้น การ์ดเมื่อแต่ละตัวเลือกต้องมีคำอธิบาย และดรอปดาวน์เมื่อรายการยาว",
+    "mediaIntro": "การ์ดผลลัพธ์ที่มีช่องใส่รูปจริง แถบตัวกรองที่เลื่อนภายในตัวเอง และกรอบสำหรับวางแผนที่",
+    "recordsIntro": "แผงและแถวที่ประกอบขึ้นเป็นหน้าระเบียน เพื่อให้ไม่มีหน้าจอใดต้องใช้การ์ดแบบเดียวซ้ำ ๆ",
+    "choiceRelationshipLabel": "ความสัมพันธ์กับเด็ก",
+    "choiceRelationshipHelper": "จะแสดงต่อทุกโรงเรียนที่คุณสมัคร",
+    "choiceRelationshipParent": "บิดามารดา",
+    "choiceRelationshipGuardian": "ผู้ปกครอง",
+    "choiceRelationshipOther": "อื่น ๆ",
+    "choiceTermLabel": "ภาคเรียนที่ต้องการเข้าเรียน",
+    "choiceTermOne": "ภาคเรียนที่ 1",
+    "choiceTermTwo": "ภาคเรียนที่ 2",
+    "choiceTermThree": "ภาคเรียนที่ 3",
+    "choiceSubjectsLabel": "วิชาที่รวมอยู่",
+    "choiceSubjectScience": "วิทยาศาสตร์",
+    "choiceErrorRequired": "โปรดเลือกหนึ่งรายการเพื่อดำเนินการต่อ",
+    "choicePackLabel": "แพ็กเครดิตทดสอบ",
+    "choicePackFamily": "แพ็กครอบครัว · 10 เครดิต",
+    "choicePackFamilyNote": "ประหยัด 25% · ได้รับความนิยมสูงสุด",
+    "choicePackFamilyPrice": "369 โครน",
+    "choicePackSingle": "เครดิตเดียว",
+    "choicePackSingleNote": "สำหรับแบบทดสอบนี้เท่านั้น",
+    "choicePackSinglePrice": "49 โครน",
+    "choicePackSchool": "แผนสำหรับโรงเรียน",
+    "choicePackSchoolNote": "ติดต่อเราเพื่อเปิดใช้งาน",
+    "choiceCountryLabel": "ประเทศ",
+    "choiceCountryPlaceholder": "เลือกประเทศ",
+    "choiceCountryValue": "เดนมาร์ก",
+    "mediaCardTitle": "โรงเรียนเนอเรอโบรไฮตส์",
+    "mediaCardBadge": "รัฐบาล",
+    "mediaCardMeta": "โคเปนเฮเกน · นักเรียน 640 คน",
+    "mediaCardDescription": "โรงเรียนประถมและมัธยมต้นของรัฐ มีห้องเรียนสองภาษาตั้งแต่ชั้นปีที่ 4",
+    "mediaCardOpen": "เปิดรับสมัคร",
+    "mediaCoverAlt": "ภาพปกของ SchoolTest",
+    "mediaCardNoImageTitle": "โรงเรียนเซนต์แอนน์แกรมมาร์",
+    "mediaCardNoImageMeta": "ออร์ฮูส · นักเรียน 410 คน",
+    "mediaCardNoImageDescription": "ยังไม่มีการส่งรูปภาพของโรงเรียนนี้",
+    "mediaCoverEmptyAlt": "ไม่มีรูปภาพ",
+    "mediaCardFlatTitle": "ผลลัพธ์ที่เลือกไว้",
+    "mediaCardFlatDescription": "การ์ดเดิมแต่ไม่มีภาพปก — รูปภาพเป็นช่องเสียบ ไม่ใช่คอมโพเนนต์อีกตัว",
+    "filterRailTitle": "กรองโรงเรียน",
+    "filterRailClear": "ล้าง",
+    "filterRailSector": "ประเภทสถานศึกษา",
+    "filterRailStage": "ระดับชั้น",
+    "filterRailApply": "ใช้ตัวกรอง",
+    "filterSectorPublic": "รัฐบาล",
+    "filterSectorPrivate": "เอกชน",
+    "filterStagePrimary": "ประถมศึกษา",
+    "filterStageSecondary": "มัธยมศึกษา",
+    "mapPanelLabel": "แผนที่ผลการค้นหาโรงเรียน",
+    "mapPanelEmptyTitle": "กรอบแผนที่",
+    "mapPanelEmptyBody": "กรอบเป็นผู้กำหนดพื้นผิวและความสูง ส่วนแผนที่แสดงอยู่ภายใน",
+    "recordEnrolmentTitle": "ข้อมูลการเข้าเรียน",
+    "recordEnrolmentDescription": "ข้อมูลที่โรงเรียนเห็นในทุกใบสมัคร",
+    "recordEnrolmentAction": "แก้ไข",
+    "recordYearLevel": "ระดับชั้นปี",
+    "recordYearLevelValue": "ชั้นปีที่ 7",
+    "recordNationality": "สัญชาติ",
+    "recordNationalityValue": "เดนมาร์ก",
+    "recordTargetEntry": "กำหนดเข้าเรียน",
+    "recordTargetEntryValue": "2027 · ภาคเรียนที่ 1",
+    "recordCreditsEyebrow": "เครดิตทดสอบ",
+    "recordCreditsValue": "12",
+    "recordCreditsCaption": "เพียงพอสำหรับการประเมินอีกสี่ครั้ง",
+    "recordCreditsAction": "ซื้อเครดิต",
+    "recordGlassCorrect": "ตอบถูก",
+    "recordGlassCorrectValue": "38/45",
+    "recordGlassBand": "ระดับ",
+    "recordGlassBandValue": "B2",
+    "recordPromoTitle": "เครดิตใกล้หมดแล้ว",
+    "recordPromoBody": "เติมเครดิตครั้งเดียว เด็กทุกคนในบัญชีของคุณก็สอบครั้งถัดไปได้",
+    "recordPromoAction": "เติมเครดิต",
+    "recordCalloutBody": "ผลคะแนนจะเผยแพร่ให้ผู้ปกครอง 24 ชั่วโมงหลังปิดการตรวจ",
+    "recordTintInset": "พื้นเว้า — พื้นที่จมอยู่ภายในแผงสีขาว",
+    "recordTintWell": "สีพื้นหน้า — สำหรับไทล์ที่วางบนการ์ด",
+    "recordTintBrand": "สีแบรนด์ — ฟ้าอ่อนสำหรับไทล์ข้อมูล",
+    "recordTintAccent": "สีเน้น — เขียวน้ำทะเลสำหรับไทล์เชิงบวก",
+    "recordNoteTitle": "บันทึกของครู",
+    "recordNoteBody": "เอมมาอ่านได้เหนือระดับชั้นมาก แต่มักรีบทำสองข้อสุดท้าย ขอให้เวลาเพิ่มอีกห้านาที",
+    "recordNoteAuthor": "เมตเทอ เซอเรนเซน",
+    "recordNoteTime": "12 พ.ค.",
+    "recordActivityTitle": "กิจกรรมล่าสุด",
+    "recordActivity": "เอมมาทำแบบทดสอบการอ่านชั้นปีที่ 7 เสร็จแล้ว",
+    "recordActivitySecond": "ลูคัสได้รับเชิญให้ทำแบบทดสอบจัดระดับวิชาคณิตศาสตร์",
+    "recordActivityTime": "2 ชั่วโมงที่แล้ว",
+    "recordDotActivity": "มีสามโปรไฟล์ได้รับการอัปเดตในสัปดาห์นี้",
+    "recordDotActivitySecond": "มีใบสมัครหนึ่งฉบับรอเอกสารเพิ่มเติม",
+    "recordRankTitle": "ผู้ทำคะแนนสูงสุด",
+    "recordRankTwo": "ลูคัส แฮนเซน",
+    "recordRankThree": "มายา แอนเดอร์เซน",
+    "recordScoreTitle": "คะแนนและทักษะ",
+    "recordSkillListening": "การฟัง",
+    "recordSkillReading": "การอ่าน",
+    "recordSkillWriting": "การเขียน",
+    "recordVerdictMastered": "เชี่ยวชาญ",
+    "recordVerdictEmerging": "กำลังพัฒนา",
+    "recordVerdictNotAssessed": "ยังไม่ประเมิน",
+    "recordRosterTitle": "ส่วนประกอบแถวรายชื่อ",
+    "recordCompletionLabel": "จำนวนข้อที่ตอบแล้ว",
+    "recordCompletionValue": "17/24",
+    "recordStackLabel": "มอบหมายให้นักเรียนห้าคน",
+    "recordEventMonth": "พ.ค.",
+    "recordEventDay": "24",
+    "recordEventTitle": "การสอบเข้าชั้นปีที่ 7",
+    "recordEventMeta": "09:00 · หอประชุมใหญ่",
+    "recordChartTitle": "คะแนนเฉลี่ยรายเดือน",
+    "recordMonthMar": "มี.ค.",
+    "recordMonthApr": "เม.ย.",
+    "recordMonthMay": "พ.ค.",
+    "recordMonthJun": "มิ.ย.",
+    "recordMonthJul": "ก.ค.",
+    "recordTrendLabel": "แนวโน้มคะแนนเฉลี่ย",
+    "recordScrollTitle": "พื้นที่เลื่อน",
+    "recordScrollBody": "เนื้อหาที่ยาวจะเลื่อนอยู่ภายในกล่องของตัวเองพร้อมแถบเลื่อนบางตามมาตรฐาน หน้าเว็บจึงไม่เลื่อนตามแนวนอน"
   },
   "Dashboard": {
     "meta": {
@@ -558,7 +674,50 @@
     "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
     "addFirstStudent": "เพิ่มนักเรียนคนแรก",
     "promoTitle": "รับความช่วยเหลือจากผู้เชี่ยวชาญ",
-    "promoDescription": "ติดต่อผู้เชี่ยวชาญด้านการศึกษาที่รู้จักโรงเรียนในรายการของคุณ"
+    "promoDescription": "ติดต่อผู้เชี่ยวชาญด้านการศึกษาที่รู้จักโรงเรียนในรายการของคุณ",
+    "readinessCellLabel": "ความสมบูรณ์ของโปรไฟล์ {name}",
+    "activityEmpty": "ยังไม่มีการเพิ่มโปรไฟล์",
+    "activityAdded": "เพิ่ม <strong>{name}</strong> ลงในรายชื่อบุตรหลานของคุณแล้ว",
+    "activityUpdated": "อัปเดตข้อมูลของ <strong>{name}</strong> แล้ว",
+    "activityTitle": "ความเคลื่อนไหวล่าสุด",
+    "heroEyebrow": "Your family",
+    "heroHeadlineEmpty": "Add your first child to start <mark>planning their school entry</mark>.",
+    "heroHeadlinePlanned": "Every profile has <mark>a target entry plan</mark> — the next step is comparing schools.",
+    "heroHeadlineNeedsPlan": "<mark>{missing} of {total} profiles</mark> still need a target entry year and term.",
+    "readinessChartTitle": "Profile readiness",
+    "readinessChartRange": "{count, plural, one {# child} other {# children}}",
+    "readinessChartEmpty": "Add a child to see how complete their profile is.",
+    "readinessChartCaption": "{name} has the most left to add — <strong>{percent} complete</strong>.",
+    "readinessChartAllDone": "Every profile here is <strong>complete</strong> — nothing left to fill in.",
+    "childrenSeeDetails": "See details",
+    "childRowLabel": "{name} — {filled} of {total} profile details added",
+    "childRowPlan": "Entry {plan}",
+    "childRowPlanNeeded": "Plan needed",
+    "readinessFieldFamilyName": "Name",
+    "readinessFieldEmail": "Email",
+    "readinessFieldNationality": "Country",
+    "readinessFieldYearLevel": "Year",
+    "readinessFieldEntryYear": "Entry",
+    "readinessFieldEntryTerm": "Term",
+    "focusEyebrow": "Where to look next",
+    "focusBodyEmpty": "Nothing to review yet. Add a child and their profile readiness shows up here.",
+    "focusBodyComplete": "{name}’s profile is fully filled in — every child you have added is ready for school matching.",
+    "focusBodyIncomplete": "{name}’s profile is {percent}% filled in. {missing, plural, one {# planning detail is} other {# planning details are}} still blank, and those details decide which schools and entry terms can be matched.",
+    "recommendedTitle": "Recommended next",
+    "recommendAddChildTitle": "Add your first child",
+    "recommendAddChildMeta": "Their profile is what schools and entry terms are matched against.",
+    "recommendAddChildAction": "Add",
+    "recommendSetPlanTitle": "Set a target entry plan for {name}",
+    "recommendSetPlanMeta": "A target year and term narrows the schools worth shortlisting.",
+    "recommendCompleteProfileTitle": "Finish {name}’s profile",
+    "recommendCompleteProfileMeta": "{percent}% filled in — the rest sharpens the school match.",
+    "recommendOpenAction": "Open",
+    "recommendExploreSchoolsTitle": "Compare schools that fit your plans",
+    "recommendExploreSchoolsMeta": "Search by state, sector and school type.",
+    "recommendExploreSchoolsAction": "Explore",
+    "recommendActionLabel": "{action}: {title}",
+    "activityAddedDetail": "Profile added to your children",
+    "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
     "nav": {
@@ -590,7 +749,8 @@
     },
     "userMenu": {
       "settings": "การตั้งค่า",
-      "signOut": "ออกจากระบบ"
+      "signOut": "ออกจากระบบ",
+      "role": "Parent account"
     }
   },
   "Settings": {
@@ -605,6 +765,7 @@
     "account": {
       "title": "บัญชี",
       "description": "ข้อมูลที่ SchoolTest ใช้ในการเข้าสู่ระบบของคุณ",
+      "signedInAs": "ลงชื่อเข้าใช้ในชื่อ",
       "emailLabel": "อีเมลสำหรับเข้าสู่ระบบ",
       "confirmedLabel": "การยืนยันอีเมล",
       "confirmed": "ยืนยันแล้ว",
@@ -625,7 +786,8 @@
     "defaultSectors": "ภาคส่วนโรงเรียนเริ่มต้น",
     "defaultSort": "ลำดับการเรียงเริ่มต้น",
     "defaultPageSize": "ผลลัพธ์ต่อหน้า",
-    "pageSizeOption": "{count} ผลลัพธ์ต่อหน้า",
+    "searchResultsViewTitle": "มุมมองผลลัพธ์",
+    "searchResultsViewDescription": "เลือกวิธีเรียงลำดับผลลัพธ์โรงเรียนและจำนวนที่แสดงต่อหน้า",
     "defaultFeeRange": "ช่วงค่าเล่าเรียนรายปีเริ่มต้น",
     "defaultFeeMinimum": "ค่าเล่าเรียนขั้นต่ำ (AUD)",
     "defaultFeeMaximum": "ค่าเล่าเรียนสูงสุด (AUD)",
@@ -692,7 +854,6 @@
         }
       },
       "lockedTitle": "การอัปเดตที่เปิดอยู่เสมอ",
-      "lockedHelper": "เปิดอยู่เสมอ — ไม่สามารถปิดได้",
       "digest": {
         "title": "ความถี่ของอีเมล",
         "description": "เลือกเวลาที่จะส่งการอัปเดตอีเมลที่เกี่ยวข้อง ไม่ว่าคุณจะเลือกแบบใด การแจ้งเตือนบัญชีและความปลอดภัยจะถูกส่งเสมอ",
@@ -734,6 +895,10 @@
       "saveError": "ไม่สามารถบันทึกการตั้งค่าการแจ้งเตือนได้",
       "loadErrorTitle": "ไม่สามารถโหลดการตั้งค่าการแจ้งเตือนได้",
       "loadErrorDescription": "โปรดลองโหลดการตั้งค่าการแจ้งเตือนที่บันทึกไว้อีกครั้ง"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose the language SchoolTest uses across the app."
     }
   },
   "SchoolSearch": {
@@ -747,19 +912,26 @@
     "searchPlaceholder": "ค้นหาตามโรงเรียนหรือย่าน",
     "loading": "กำลังโหลดโรงเรียน",
     "resultsCount": "{count, plural, other {# โรงเรียน}}",
+    "resultsRegion": "ผลการค้นหาโรงเรียน",
     "aria": {
       "filters": "ตัวกรองโรงเรียน"
     },
     "filterPanel": {
-      "trigger": "ตัวกรอง",
+      "trigger": "ตัวกรองทั้งหมด",
       "title": "กรองโรงเรียน",
-      "clear": "ล้างตัวกรอง",
+      "clear": "ล้างทั้งหมด",
+      "activeCount": "{count, plural, other {ใช้ตัวกรอง # รายการ}}",
       "location": "สถานที่",
       "schoolProfile": "ข้อมูลโรงเรียน",
       "features": "คุณลักษณะ",
       "state": "รัฐหรือดินแดน",
       "sector": "ประเภทการบริหาร",
-      "schoolType": "ประเภทโรงเรียน"
+      "schoolType": "ประเภทโรงเรียน",
+      "close": "ปิดตัวกรอง",
+      "description": "จำกัดผลการค้นหาโรงเรียนตามพื้นที่ ประเภท จุดเด่น และค่าเล่าเรียน",
+      "apply": "แสดง {count, plural, other {# โรงเรียน}}",
+      "noFilters": "ยังไม่มีตัวกรอง — แสดงโรงเรียนทั้งหมด",
+      "remove": "ลบตัวกรอง {label}"
     },
     "states": {
       "QLD": "QLD",
@@ -821,7 +993,9 @@
     },
     "card": {
       "tuition": "เริ่มต้น <strong>{amount}</strong>/ปี",
-      "coverImageAlt": "ภาพวิทยาเขตของ {name}"
+      "coverImageAlt": "ภาพวิทยาเขตของ {name}",
+      "select": "เลือก {name}",
+      "tuitionUnknown": "ไม่ระบุค่าเล่าเรียน"
     },
     "map": {
       "region": "แผนที่ผลการค้นหาโรงเรียน",
@@ -831,28 +1005,46 @@
       "showMap": "แสดงแผนที่",
       "showList": "แสดงรายการ",
       "ctrlScrollHint": "กด Ctrl ค้างไว้แล้วเลื่อนเพื่อซูมแผนที่",
-      "markerCount": "{count, plural, =0 {ไม่มีโรงเรียนแสดงบนแผนที่} other {แสดง # โรงเรียนบนแผนที่}}"
+      "markerCount": "{count, plural, =0 {ไม่มีโรงเรียนแสดงบนแผนที่} other {แสดง # โรงเรียนบนแผนที่}}",
+      "clearSelection": "ล้างโรงเรียนที่เลือก"
+    },
+    "facts": {
+      "scholarships": "ทุนการศึกษา",
+      "elicos": "ELICOS",
+      "atar": "เส้นทาง ATAR",
+      "cricos": "CRICOS"
     }
   },
   "AgentSearch": {
     "loading": "กำลังโหลดตัวแทน",
     "resultsCount": "{count, plural, other {ตัวแทน # ราย}}",
+    "resultsRegion": "ผลการค้นหาตัวแทน",
     "verified": "ยืนยันแล้ว",
     "aria": {
       "filters": "ตัวกรองตัวแทน"
     },
     "filterPanel": {
-      "trigger": "ตัวกรอง",
+      "trigger": "ตัวกรองทั้งหมด",
       "title": "กรองตัวแทน",
-      "clear": "ล้างตัวกรอง",
+      "clear": "ล้างทั้งหมด",
+      "activeCount": "{count, plural, other {ใช้ตัวกรอง # รายการ}}",
       "countries": "ประเทศที่ให้บริการ",
       "languages": "ภาษาที่ใช้",
-      "services": "บริการที่นำเสนอ"
+      "services": "บริการที่นำเสนอ",
+      "close": "ปิดตัวกรอง",
+      "description": "จำกัดผลการค้นหาตัวแทนตามประเทศ ภาษา และบริการ",
+      "apply": "แสดง {count, plural, other {# ตัวแทน}}",
+      "noFilters": "ยังไม่มีตัวกรอง — แสดงตัวแทนทั้งหมด",
+      "remove": "ลบตัวกรอง {label}"
     },
     "chipGroups": {
       "countries": "ประเทศที่ให้บริการ",
       "languages": "ภาษาที่ใช้",
       "services": "บริการที่มี"
+    },
+    "card": {
+      "countries": "ประเทศที่ให้บริการ",
+      "languages": "ภาษาที่ใช้"
     },
     "services": {
       "counselling": "การให้คำปรึกษา",
@@ -910,7 +1102,8 @@
     "meta": {
       "title": "ค้นหา — SchoolTest",
       "description": "ค้นหาโรงเรียนในออสเตรเลียและตัวแทนการศึกษาในการค้นหาเดียว"
-    }
+    },
+    "searchAction": "ค้นหา"
   },
   "StudentWizard": {
     "meta": {
@@ -923,26 +1116,37 @@
     "saveChanges": "บันทึกการเปลี่ยนแปลง",
     "stepPlaceholder": "ฟิลด์ของขั้นตอนนี้จะถูกเพิ่มในส่วนถัดไป",
     "stepCaption": "ขั้นตอนที่ {current} จาก {total} · {title}",
+    "stepsLabel": "ความคืบหน้าการเพิ่มนักเรียน",
     "steps": {
       "personal": {
         "label": "ส่วนตัว",
-        "title": "ข้อมูลส่วนตัว"
+        "title": "ข้อมูลส่วนตัว",
+        "description": "นักเรียนคนนี้คือใคร",
+        "railHint": "ข้อมูลนักเรียน"
       },
       "education": {
         "label": "การศึกษา",
-        "title": "การศึกษา"
+        "title": "การศึกษา",
+        "description": "ที่เรียนปัจจุบันและเป้าหมายต่อไป",
+        "railHint": "โรงเรียนและเป้าหมายการเข้าเรียน"
       },
       "guardian": {
         "label": "ผู้ปกครอง",
-        "title": "บิดามารดาหรือผู้ปกครอง"
+        "title": "บิดามารดาหรือผู้ปกครอง",
+        "description": "ผู้ที่เราจะติดต่อเกี่ยวกับนักเรียนคนนี้",
+        "railHint": "ข้อมูลการติดต่อ"
       },
       "media": {
         "label": "สื่อ",
-        "title": "รูปภาพและเสียง"
+        "title": "รูปภาพและเสียง",
+        "description": "รูปภาพและการแนะนำตัวด้วยเสียงเป็นตัวเลือกเสริม",
+        "railHint": "รูปภาพและการแนะนำตัวด้วยเสียง"
       },
       "review": {
         "label": "ตรวจสอบ",
-        "title": "ตรวจสอบและส่ง"
+        "title": "ตรวจสอบและส่ง",
+        "description": "โปรดตรวจสอบข้อมูลทั้งหมดให้ถูกต้องก่อนสร้างนักเรียนคนนี้",
+        "railHint": "ยืนยันข้อมูล"
       }
     },
     "personal": {
@@ -1020,11 +1224,11 @@
         "previewAlt": "ตัวอย่างการแนะนำตัวด้วยเสียง",
         "invalidType": "โปรดเลือกไฟล์เสียง (MP3 หรือ WAV)",
         "tooLarge": "เสียงเกิน 10MB โปรดเลือกไฟล์ที่เล็กกว่า"
-      }
+      },
+      "optionalNote": "ทั้งสองรายการเป็นตัวเลือกเสริม คุณสามารถเพิ่มหรือเปลี่ยนภายหลังได้จากโปรไฟล์นักเรียน"
     },
     "toastCreated": "สร้างนักเรียนแล้ว",
     "review": {
-      "intro": "โปรดตรวจสอบข้อมูลทั้งหมดให้ถูกต้องก่อนสร้างนักเรียนคนนี้",
       "edit": "แก้ไข",
       "empty": "—",
       "photo": "รูปภาพ",
@@ -1045,7 +1249,24 @@
         "offlineTitle": "คุณออฟไลน์อยู่",
         "offlineBody": "โปรดตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
         "dismiss": "ปิด"
-      }
+      },
+      "summaryEyebrow": "พร้อมสร้าง",
+      "noPhoto": "ยังไม่ได้เพิ่มรูปภาพ",
+      "noVoice": "ยังไม่ได้เพิ่มการแนะนำตัวด้วยเสียง",
+      "born": "เกิด {date}",
+      "testingBand": "ระดับการทดสอบ {n}",
+      "entry": "เข้าเรียน {term}, {year}",
+      "photoAdded": "เพิ่มรูปภาพแล้ว",
+      "voiceAdded": "เพิ่มการแนะนำตัวด้วยเสียงแล้ว"
+    },
+    "pageTitle": "เพิ่มบุตรหลาน",
+    "editTitle": "แก้ไขข้อมูลบุตรหลาน",
+    "backToChildren": "บุตรหลานของฉัน",
+    "stepCounter": "ขั้นตอนที่ {current} จาก {total}",
+    "success": {
+      "createdTitle": "เพิ่มนักเรียนแล้ว",
+      "savedTitle": "บันทึกการเปลี่ยนแปลงแล้ว",
+      "body": "กำลังพาคุณไปที่ บุตรหลานของฉัน…"
     }
   },
   "StudentWizardSchema": {
@@ -1192,11 +1413,38 @@
     "skillLadderLabel": "{skill}: CEFR {band} ระดับที่ {rank} จาก {total}",
     "skillsPendingTitle": "ยังไม่ได้ประเมิน",
     "skillsPendingDescription": "ยังไม่มีการเผยแพร่ผลอย่างเป็นทางการสำหรับทักษะเหล่านี้",
+    "sessionsCompleted": "เซสชันที่เสร็จสิ้น",
+    "recordFraction": "{recorded}/{total}",
+    "recordCompletionLabel": "ข้อมูลที่บันทึกไว้ของ {name}",
+    "skillNotAssessed": "ยังไม่ประเมิน",
+    "tabRecord": "ข้อมูลบันทึก",
+    "tabProgress": "ความคืบหน้า",
+    "tabsLabel": "ส่วนต่าง ๆ ของโปรไฟล์บุตรหลาน",
     "pagerLabel": "หน้ารายชื่อ",
     "pagerPage": "หน้า {page} จาก {pages}",
     "pagerPrevious": "หน้าก่อนหน้า",
     "pagerNext": "หน้าถัดไป",
-    "pagerGoTo": "ไปที่หน้า {page}"
+    "pagerGoTo": "ไปที่หน้า {page}",
+    "addChild": "Add a child",
+    "addChildHint": "Set up a new learner profile.",
+    "cardOpenHint": "Open the profile for progress and results.",
+    "cardDetails": "Details",
+    "levelJourneyHeading": "Level journey",
+    "journeyNote": "Each rail shows the highest CEFR band published for that skill on the six-band ladder this system uses, Pre-A1 through C1.",
+    "journeyUnknown": "No CEFR band has been published for any skill yet.",
+    "skillsUnknown": "No readiness has been published for any skill yet.",
+    "skillsNote": "Readiness is published per skill with each official result. No overall level is calculated.",
+    "focusSkillNote": "{skill} is the current focus area — readiness {readiness}.",
+    "skillLadderEmptyLabel": "{skill}: no CEFR band published yet",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "cardAdded": "Added {date}"
   },
   "Notifications": {
     "meta": {
@@ -1215,6 +1463,7 @@
     "unread": "ยังไม่อ่าน",
     "read": "อ่านแล้ว",
     "today": "วันนี้",
+    "earlier": "Earlier",
     "yesterday": "เมื่อวาน",
     "unreadCount": "{count, plural, =0 {ไม่มีการแจ้งเตือนที่ยังไม่อ่าน} other {การแจ้งเตือนที่ยังไม่อ่าน # รายการ}}",
     "emptyTitle": "คุณติดตามทุกอย่างแล้ว",
@@ -1233,6 +1482,10 @@
       "children": "บุตรหลาน",
       "testActivity": "กิจกรรมการทดสอบ",
       "testResults": "ผลการทดสอบ"
+    },
+    "filterLabel": "Filter notifications by category",
+    "filters": {
+      "all": "All"
     }
   },
   "QueryError": {

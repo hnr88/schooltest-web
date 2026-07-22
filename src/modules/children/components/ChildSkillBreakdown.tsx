@@ -2,10 +2,13 @@
 
 import { useTranslations } from 'next-intl';
 
-import { cn } from '@/lib/utils';
-import { ChildSkillPendingTile } from '@/modules/children/components/ChildSkillPendingTile';
-import { ChildSkillTile } from '@/modules/children/components/ChildSkillTile';
-import { getSkillSummaries, getUnassessedSkills } from '@/modules/children/lib/child-skills';
+import { PanelHeaderRow, SkillBreakdownRow } from '@/modules/design-system';
+import { getReadinessTone, getReadinessValue } from '@/modules/children/lib/child-readiness';
+import {
+  getFocusSkill,
+  getSkillSummaries,
+  getUnassessedSkills,
+} from '@/modules/children/lib/child-skills';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
 
 interface ChildSkillBreakdownProps {
@@ -13,57 +16,65 @@ interface ChildSkillBreakdownProps {
   officialResultCount: number;
 }
 
-// The row is sized to the tiles that actually exist, so it never opens columns
-// it cannot fill. Canonical §5.3 is `1fr 1fr 1fr` because the canonical child
-// HAS three subjects; with one real tile a fixed 3-up leaves two-thirds of the
-// row empty, and with two it leaves a third. Four is the ceiling: the contract
-// bands four skills, and the pending tile only exists when at least one of them
-// is missing, so cards + pending can never exceed four.
-const GRID_COLUMNS: Record<number, string> = {
-  1: 'sm:max-w-lg',
-  2: 'sm:grid-cols-2',
-  3: 'sm:grid-cols-2 xl:grid-cols-3',
-  4: 'sm:grid-cols-2 xl:grid-cols-4',
-};
-
-// DS §5.3 subject tiles (Child profile): one tile per skill the child has an
-// official result for, plus — only when the API's result window was complete
-// enough to prove it — one honest "not assessed yet" slot naming the skills that
-// have none. Nothing is invented: a skill with no proven state gets no tile, and
-// the whole section is omitted when there are no results at all.
+// §B.5 SkillsCard — one row per skill: label, track, verdict. The design's track is
+// a mastery PERCENTAGE and its right column a letter-ish grade (`B1+`); the parent
+// contract publishes neither, so the track encodes READINESS — the real three-step
+// ordinal (not_yet → approaching → met) — and the verdict prints that word. An
+// unmeasured skill gets an EMPTY track, never a zero bar.
+// The design's blue "focus skill" tint becomes the note line: `focusSkill` is
+// derived by ranking readiness alone (CONTRACTS), never by averaging probabilities.
 export function ChildSkillBreakdown({ results, officialResultCount }: ChildSkillBreakdownProps) {
   const t = useTranslations('Children');
   const summaries = getSkillSummaries(results);
-
-  if (summaries.length === 0) {
-    return null;
-  }
-
-  const pending = getUnassessedSkills(results, officialResultCount);
-  const tileCount = summaries.length + (pending.length > 0 ? 1 : 0);
+  const unassessed = getUnassessedSkills(results, officialResultCount);
+  const focus = getFocusSkill(summaries);
 
   return (
     <section
-      data-slot="child-skill-breakdown"
       aria-labelledby="child-skill-breakdown-title"
-      className="flex flex-col gap-4"
+      data-slot="child-skill-breakdown"
+      className="flex flex-col gap-5 rounded-card bg-card px-6 py-6 shadow-sm sm:px-7.5"
     >
-      <h2
-        id="child-skill-breakdown-title"
-        className="text-panel-title font-semibold text-foreground"
-      >
-        {t('skillBreakdownHeading')}
-      </h2>
-      <div className={cn('grid gap-4', GRID_COLUMNS[tileCount] ?? GRID_COLUMNS[4])}>
-        {summaries.map((summary) => (
-          <ChildSkillTile
-            key={summary.skill}
-            summary={summary}
-            skillLabel={t(`resultSkills.${summary.skill}`)}
-          />
-        ))}
-        {pending.length > 0 ? <ChildSkillPendingTile skills={pending} /> : null}
-      </div>
+      <PanelHeaderRow
+        as="h2"
+        titleId="child-skill-breakdown-title"
+        title={t('skillBreakdownHeading')}
+        className="pb-0"
+      />
+
+      {summaries.length === 0 && unassessed.length === 0 ? (
+        <p className="text-caption text-muted-foreground">{t('skillsUnknown')}</p>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {summaries.map((summary) => (
+            <SkillBreakdownRow
+              key={summary.skill}
+              label={t(`resultSkills.${summary.skill}`)}
+              value={getReadinessValue(summary.readiness)}
+              verdict={t(`resultReadinessValues.${summary.readiness ?? 'not_assessed'}`)}
+              tone={getReadinessTone(summary.readiness)}
+            />
+          ))}
+          {unassessed.map((skill) => (
+            <SkillBreakdownRow
+              key={skill}
+              label={t(`resultSkills.${skill}`)}
+              value={null}
+              verdict={t('skillNotAssessed')}
+              tone="notAssessed"
+            />
+          ))}
+        </div>
+      )}
+
+      <p className="mt-auto border-t border-divider pt-4.5 text-caption leading-relaxed text-muted-foreground">
+        {focus
+          ? t('focusSkillNote', {
+              skill: t(`resultSkills.${focus.skill}`),
+              readiness: t(`resultReadinessValues.${focus.readiness ?? 'not_assessed'}`),
+            })
+          : t('skillsNote')}
+      </p>
     </section>
   );
 }

@@ -36,20 +36,20 @@ export function ForgotPasswordSentState({ email }: ForgotPasswordSentStateProps)
     <div className="flex flex-col gap-5 animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
       <span
         aria-hidden="true"
-        className="flex size-11 items-center justify-center rounded-xl bg-teal-50 text-teal-600"
+        className="flex size-11 items-center justify-center rounded-tile bg-teal-50 text-teal-600"
       >
         <Mail className="size-5" />
       </span>
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">{t('sentTitle')}</h1>
-        <p className="text-sm text-muted-foreground">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-h3 font-bold text-foreground">{t('sentTitle')}</h1>
+        <p className="text-body-md text-muted-foreground">
           {t.rich('sentBody', {
             email,
             strong: (chunks) => <strong className="font-semibold text-foreground">{chunks}</strong>,
           })}
         </p>
       </div>
-      <p className="flex items-center gap-2 rounded-lg border border-teal-100 bg-teal-50 px-4 py-3 text-sm text-teal-600">
+      <p className="flex items-center gap-2 rounded-lg border border-teal-100 bg-teal-50 px-3.5 py-3 text-body-sm text-teal-600">
         <CircleCheck aria-hidden="true" className="size-4 shrink-0" />
         {t('sentSuccess')}
       </p>

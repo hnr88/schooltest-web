@@ -4,34 +4,42 @@ import { ParentGuard } from '@/modules/auth';
 import { SidebarInset, SidebarProvider } from '@/modules/design-system';
 import { AppSidebar, AppTopbar } from '@/modules/shell';
 
-// C-UI-SHELL: fixed 248px sidebar (primitive default 16rem is wrong — override).
-// ParentGuard hoisted here (task 012) so every current and future /dashboard/*
-// route is parent-guarded exactly once: skeleton while the auth store hydrates,
-// then /sign-in redirect without a token. No middleware/proxy involved.
+// THE PORTAL FRAME (.qa/design/spec/01 §1.1, Parent Portal.dc.html:25):
+// `display:flex; gap:24px; padding:24px; height:100vh; max-width:1600px; margin:0 auto`
+// over a `#EEF1F6` page — a DETACHED rail card beside a bare scroll column, not the
+// flush white "L" of chrome this shell used to paint.
 //
-// The WELL (.qa/CONTRAST-SPEC.md → sidebarSpec §2): canonical never tints the rail
-// — 33 asides resolve to #FFFFFF or #0E2350 and nothing in between. The rail and
-// the 64px topbar are one continuous white chrome "L", so the way to give that L
-// an edge is to deepen the field it frames, not to tint the frame. bg-surface-well
-// (#EEF2F7) lands on the scroll container ONLY; --background stays #F7F9FC because
-// ~12 "recess inside white" usages (segmented-control thumb, outline-button hover,
-// DashboardActionLink hover, ChildrenRosterSkeleton) depend on that value and would
-// silently invert. One class, five of the nine measured 1.05:1 boundaries.
+// The 24px frame padding is split where the primitive can carry it:
+//   · left gutter + rail↔main gap live INSIDE --sidebar-width (296px = 24 + 248 + 24),
+//     because the rail is position:fixed and only the gap div reserves flow space;
+//   · top / bottom / right live on the inset.
+// --sidebar-width-icon follows the same arithmetic (24 + 48 + 24), so collapsing the
+// rail never moves the gutter.
+//
+// The 1600px cap lands on the SCROLL COLUMN rather than the whole frame: the vendored
+// rail is pinned to the VIEWPORT, so capping the flex wrapper would centre <main>
+// while leaving the rail at x=0 and tear a hole between them above 1600px.
+//
+// ParentGuard stays hoisted here (task 012) so every current and future /dashboard/*
+// route is parent-guarded exactly once. The well moved from the scroll container to
+// the frame itself — with the rail detached, the background has to run BEHIND it.
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <ParentGuard>
       <SidebarProvider
-        className="h-svh min-h-0 overflow-hidden"
-        style={{ '--sidebar-width': '248px' } as CSSProperties}
+        className="h-svh min-h-0 overflow-hidden bg-surface-well"
+        style={{ '--sidebar-width': '296px', '--sidebar-width-icon': '96px' } as CSSProperties}
       >
         <AppSidebar />
-        <SidebarInset className="min-h-0 min-w-0 overflow-hidden">
-          <AppTopbar />
-          <div
-            data-slot="dashboard-content"
-            className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scroll-smooth bg-surface-well motion-reduce:scroll-auto"
-          >
-            {children}
+        <SidebarInset className="min-h-0 min-w-0 overflow-hidden bg-transparent py-4 md:py-6 md:pr-6">
+          <div className="mx-auto flex min-h-0 w-full max-w-shell flex-1 flex-col gap-4">
+            <AppTopbar />
+            <div
+              data-slot="dashboard-content"
+              className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scroll-smooth motion-reduce:scroll-auto"
+            >
+              {children}
+            </div>
           </div>
         </SidebarInset>
       </SidebarProvider>

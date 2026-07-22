@@ -6,18 +6,22 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --text-display: clamp(3rem, 6vw, 4.25rem);
-  --text-display--line-height: 1.03;
-  --text-display--letter-spacing: -0.032em;
-  --text-h1: 2.5rem;
+  /* DS type scale — the eight steps the design's typography board publishes
+     (.qa/design/screens/ds--typography.html, spec §3.1). Provenance form:
+     "<step> <size>/<line-height>/<tracking>". Display is the one fluid step: its
+     clamp maximum is the board's published 3.5rem exactly. */
+  --text-display: clamp(2.25rem, 1.25rem + 3.2vw, 3.5rem); /* Display 56/1.05/-0.03em */
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.03em;
+  --text-h1: 2.5rem; /* H1 40/1.15/-0.02em */
   --text-h1--line-height: 1.15;
   --text-h1--letter-spacing: -0.02em;
-  --text-h2: 2rem;
+  --text-h2: 2rem; /* H2 32/1.2/-0.015em */
   --text-h2--line-height: 1.2;
   --text-h2--letter-spacing: -0.015em;
-  --text-h3: 1.5rem;
+  --text-h3: 1.5rem; /* H3 24/1.3/normal */
   --text-h3--line-height: 1.3;
-  --text-h4: 1.125rem;
+  --text-h4: 1.125rem; /* H4 18/1.4/normal */
   --text-h4--line-height: 1.4;
   --text-flow: 2.125rem;
   --text-flow--line-height: 1.25;
@@ -38,14 +42,36 @@
   --text-page-title: 1.625rem;
   --text-page-title--line-height: 1.2;
   --text-page-title--letter-spacing: -0.015em;
+  /* Auth screen h2 (spec 06 §1.1/§1.2: 28/1.2/-0.015em) — the login, register
+     and 404 headline step, between --text-page-title (26) and --text-h2 (32). */
+  --text-auth-title: 1.75rem;
+  --text-auth-title--line-height: 1.2;
+  --text-auth-title--letter-spacing: -0.015em;
   --text-panel-title: 1.0625rem;
   --text-panel-title--line-height: 1.35;
   --text-lede: 0.90625rem;
   --text-lede--line-height: 1.5;
+  /* The design's Body (16/1.6) and Body-sm (14/1.55) steps. NEITHER can land on its
+     board name, so both move one rung up a single ladder: 16 = body-lg, 14 = body-md,
+     13.5 = body-sm.
+     1. `--text-body` is unreachable. Tailwind v4 resolves the --color-* namespace
+        BEFORE --text-* for a `text-<name>` utility, and `--color-body` (#475569) already
+        owns `text-body` at 47 call sites — verified in the running app: a `text-body`
+        probe computes line-height 24px, not 25.6px, and takes --color-body as its ink.
+        Registering `body` as a font-size would also make tailwind-merge treat the 30+
+        `text-meta text-body` / `text-body-sm text-body` pairs as two competing sizes and
+        drop the real one.
+     2. `--text-body-sm` is already the design's Form-label step (13.5/600, §3.2) with 43
+        consumers, a tailwind-merge entry and a live 13.5px assertion in
+        tests/e2e/design-tokens.spec.ts. CLAUDE.md law 1 bans the rename. */
+  --text-body-lg: 1rem; /* Body 16/1.6/normal */
+  --text-body-lg--line-height: 1.6;
+  --text-body-md: 0.875rem; /* Body sm 14/1.55/normal */
+  --text-body-md--line-height: 1.55;
   --text-body-sm: 0.84375rem;
   --text-body-sm--line-height: 1.45;
-  --text-meta: 0.78125rem;
-  --text-meta--line-height: 1.4;
+  --text-meta: 0.78125rem; /* Caption 12.5/1.5/normal */
+  --text-meta--line-height: 1.5;
   --text-overline: 0.71875rem;
   --text-overline--line-height: 1.2;
   --text-stat-xl: 2.125rem;
@@ -58,6 +84,25 @@
   --text-stat-md--line-height: 1.1;
   --text-stat-sm: 1.375rem;
   --text-stat-sm--line-height: 1.15;
+  /* Parent-portal type steps (.qa/design/spec/02-portal-children.md §A.3, §B.1,
+     §B.2, §A.5, §B.6). The portal chrome draws five sizes the app scale has no
+     slot for — 30 list title, 28 detail title, 24 KPI value, 20 card metric
+     value, 19 panel title — each with the design's own tracking. */
+  --text-portal-title: 1.875rem; /* 30/1.2/-0.02em — "My children" */
+  --text-portal-title--line-height: 1.2;
+  --text-portal-title--letter-spacing: -0.02em;
+  --text-portal-heading: 1.75rem; /* 28/1.2/-0.02em — child detail h1 */
+  --text-portal-heading--line-height: 1.2;
+  --text-portal-heading--letter-spacing: -0.02em;
+  --text-portal-kpi: 1.5rem; /* 24/1.2/-0.01em — KPI strip value */
+  --text-portal-kpi--line-height: 1.2;
+  --text-portal-kpi--letter-spacing: -0.01em;
+  --text-portal-stat: 1.25rem; /* 20/1.15/-0.01em — child-card metric value */
+  --text-portal-stat--line-height: 1.15;
+  --text-portal-stat--letter-spacing: -0.01em;
+  --text-portal-panel: 1.1875rem; /* 19/1.3/-0.01em — "Recent results" */
+  --text-portal-panel--line-height: 1.3;
+  --text-portal-panel--letter-spacing: -0.01em;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --tracking-eyebrow: 0.1em;
   --tracking-overline: 0.06em;
@@ -83,19 +128,26 @@
   /* Canonical surface/state tints used verbatim by the app screens. Fixed brand
      values (the design ships one light palette for these), declared here so
      components never need a raw hex or an arbitrary value. */
-  --color-slate-400: oklch(0.7107 0.0351 256.7878);
-  --color-divider: oklch(0.9595 0.008 253.8534);
+  --color-slate-400: oklch(
+    0.7107 0.0351 256.7878
+  ); /* #94A3B8 — placeholder / helper / disabled ink */
+  --color-portal-input: oklch(
+    0.9016 0.0168 259.4191
+  ); /* #D8DFEA — portal input & chip border, toggle-off track, ghost-button border (spec 03 §1.2) */
+  --color-divider: oklch(
+    0.9595 0.008 253.8534
+  ); /* #EEF2F7 — hairline divider, toast progress track */
   --color-surface-hover: oklch(0.9844 0.0045 258.3244);
   --color-success-soft: oklch(0.9819 0.0181 155.8263);
-  --color-success-soft-2: oklch(0.9624 0.0434 156.7426);
-  --color-success-strong: oklch(0.5273 0.1371 150.0693);
+  --color-success-soft-2: oklch(0.9624 0.0434 156.7426); /* #DCFCE7 — success tint */
+  --color-success-strong: oklch(0.5273 0.1371 150.0693); /* #15803D — success text */
   --color-success-ink: oklch(0.4479 0.1083 151.3277);
-  --color-warning-soft: oklch(0.9619 0.058 95.6174);
-  --color-warning-strong: oklch(0.5553 0.1455 48.9975);
+  --color-warning-soft: oklch(0.9619 0.058 95.6174); /* #FEF3C7 — warning tint */
+  --color-warning-strong: oklch(0.5553 0.1455 48.9975); /* #B45309 — warning text */
   --color-warning-ink: oklch(0.4732 0.1247 46.2007);
   --color-danger-soft: oklch(0.9705 0.0129 17.3797);
-  --color-danger-soft-2: oklch(0.9356 0.0309 17.7172);
-  --color-danger-strong: oklch(0.5054 0.1905 27.5181);
+  --color-danger-soft-2: oklch(0.9356 0.0309 17.7172); /* #FEE2E2 — destructive tint */
+  --color-danger-strong: oklch(0.5054 0.1905 27.5181); /* #B91C1C — destructive text */
   --color-danger-ink: oklch(0.4437 0.1613 26.8994);
   /* Contrast system (.qa/CONTRAST-SPEC.md). Role names, not new hues: the well and
      the inset repeat values already in this file so a future divider/muted change
@@ -108,15 +160,31 @@
   --color-body: oklch(0.4455 0.0374 257.2808); /* #475569 — DS Body ink, 6.74:1 on the well */
   --color-accent-on-dark: oklch(0.7845 0.1325 181.912); /* #2DD4BF — 8.21:1 on #0E2350 */
   --color-accent-on-dark-hover: oklch(0.8549 0.1251 181.0707); /* #5EEAD4 — 10.32:1 on #0E2350 */
-  --color-navy-muted: oklch(0.7127 0.0574 262.1235);
-  --color-navy-body: oklch(0.7873 0.0521 264.2139);
+  --color-navy-muted: oklch(0.7127 0.0574 262.1235); /* #8FA3C7 — dark-toast dismiss */
+  --color-navy-body: oklch(0.7873 0.0521 264.2139); /* #A9BADC — dark-toast body */
   --color-navy-label: oklch(0.554 0.0729 265.2879);
+  --color-navy-soft: oklch(0.8736 0.0421 263.0004); /* #C7D6F2 — benefit/feature ink on navy */
   --color-avatar-pink-bg: oklch(0.9482 0.0276 342.2585);
   --color-avatar-pink-fg: oklch(0.5246 0.199 3.9582);
   --color-avatar-violet-bg: oklch(0.9433 0.0284 294.5878);
   --color-avatar-violet-fg: oklch(0.4907 0.2412 292.5809);
-  --color-skeleton-base: oklch(0.9683 0.0069 247.8956);
-  --color-skeleton-sheen: oklch(0.9473 0.0108 256.6959);
+  --color-skeleton-base: oklch(0.9683 0.0069 247.8956); /* #F1F5F9 */
+  --color-skeleton-sheen: oklch(0.9473 0.0108 256.6959); /* #E9EEF5 — skeleton sheen */
+  /* Canonical note-taking textarea surface (DS §06 "Textarea — note-taking
+     variant": #FFFDF5 behind a dashed #CBD5E1 rule). Foreground stays --foreground
+     (15.0:1) / --color-body (7.4:1) — both clear AA on this near-white cream. */
+  --color-note-surface: oklch(0.9934 0.0107 95.1592);
+  /* GlassStatTile on a navy hero (Result detail): rgba(255,255,255,.07). Declared
+     as a token so the tile never needs an arbitrary `bg-white/[.07]`. */
+  --color-surface-glass: oklch(1 0 89.8756 / 7%);
+  /* The two decorative discs bled into the portal hero (spec 01 §3:
+     rgba(255,255,255,.045) and rgba(255,255,255,.035)) — one shared 4% white so
+     neither needs an arbitrary `bg-white/[.045]`. */
+  --color-surface-glass-soft: oklch(1 0 89.8756 / 4%);
+  /* Hairline BETWEEN cells on a navy surface (spec 01 §3: the two
+     rgba(255,255,255,.12) rules in the portal hero's stat row). --color-divider
+     is the light-surface equivalent and is invisible on #0E2350. */
+  --color-divider-on-dark: oklch(1 0 89.8756 / 12%);
   --font-sans: var(--font-sans);
   --font-mono:
     ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New',
@@ -128,6 +196,9 @@
     var(--navy-800) 60%,
     var(--blue-700) 140%
   );
+  /* NavyGradientPromo (Parent overview "Running low on credits", Landing CTA):
+     linear-gradient(135deg,#0E2350,#16326E). */
+  --background-image-navy-promo: linear-gradient(135deg, var(--navy-900), var(--navy-800));
   --background-image-hero-scrim: linear-gradient(
     180deg,
     oklch(0.227 0.0691 263.0857 / 55%) 0%,
@@ -144,6 +215,16 @@
      its light siblings to stay visible (Landing dark feature card carries .28
      where the two light cards carry .10 at the same geometry). */
   --shadow-dark-lift: 0 16px 40px oklch(0.2692 0.0871 263.0388 / 28%);
+  /* Portal switch knob (.qa/design/spec/03 §1.4 `PortalToggle`):
+     box-shadow: 0 1px 3px rgba(14,35,80,.25) under the 21px white circle. Nothing
+     on the sm/md/lg/xl ladder is this tight-and-dark, so the knob owns a token. */
+  --shadow-knob: 0 1px 3px oklch(0.2692 0.0871 263.0388 / 25%);
+  /* The DETACHED portal rail / floating chrome (.qa/design/spec/01 §1.2, verbatim:
+     `0 1px 2px rgba(14,35,80,.04), 0 8px 32px rgba(14,35,80,.06)`). It is a wide,
+     very soft two-stop lift — the sm/md/lg ladder tops out at a 24px blur at 12%,
+     which reads as a hard drop under a 248px-tall card, so the frame owns a token. */
+  --shadow-float:
+    0 1px 2px oklch(0.2692 0.0871 263.0388 / 4%), 0 8px 32px oklch(0.2692 0.0871 263.0388 / 6%);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -181,72 +262,108 @@
      canonical screens and absent from the 8/10/14/18 scale below. */
   --radius-tile: 0.75rem;
   --radius-panel: 1rem;
+  /* 24px — the ONE card radius the portal dashboard draws (.qa/design/spec/01
+     §3, §4.4, §5, §6: `border-radius:24px` on the navy hero, every white card and
+     the "My children" list). It lands nowhere on the calc() ladder below
+     (2.2 × 10px = 22px, 2.6 × 10px = 26px), so it is declared literally. */
+  --radius-card: 1.5rem;
+  /* 20px — the school-search result card (.qa/design/spec/01 §8.4:
+     `border-radius:20px` on every card in the "Find a school" list rail). It sits
+     between --radius-panel (16) and --radius-card (24) and lands nowhere on the
+     calc() ladder below, so it is declared literally. */
+  --radius-result: 1.25rem;
+  /* 11px segmented-control track (DS §10) and 13px selection card / payment row
+     (App Screens "Not enough credits", Checkout) — neither lands on the
+     6/8/10/12/14/16 scale above. */
+  --radius-segment: 0.6875rem;
+  --radius-selection: 0.8125rem;
   --radius-xl: calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   --container-landing: 1200px;
   --container-hero: 1360px;
+  /* Auth column widths (spec 06 §1.6): 420px form/card column, 560px register
+     column and login brand panel. */
+  --container-auth: 420px;
+  --container-auth-wide: 560px;
+  /* 820px — the portal's single-column measure cap. `.qa/design/spec/03` §4.1 and
+     §5.1 both open with `max-width:820px` on the Settings and Notifications
+     containers; it sits between max-w-3xl (768) and max-w-4xl (896). */
+  --container-portal: 51.25rem;
+  /* The portal FRAME cap (.qa/design/spec/01 §1.1: `max-width:1600px; margin:0 auto`
+     on the outer flex frame). The scroll column is what carries it in the shell. */
+  --container-shell: 1600px;
 }
 
+/* PROVENANCE (D-DESIGN-2). Every declaration below records the design hex it was
+   converted from — dashbaord-design/tokens.css for the shadcn layer, the swatch board
+   .qa/design/screens/ds--colors.html for the group name. The hex is the authority for
+   the COLOUR; the OKLCH is the value that ships, per .claude/rules/tailwind.md:11.
+   Board colour `slate-900 #0F172A` is deliberately absent: no component in the eight DS
+   slices consumes it, so no token is created for it (CLAUDE.md law 1). */
 :root {
-  --background: oklch(0.9814 0.0045 258.3244);
-  --foreground: oklch(0.2692 0.0871 263.0388);
-  --navy-950: oklch(0.227 0.0691 263.0857);
-  --navy-900: oklch(0.2692 0.0871 263.0388);
-  --navy-800: oklch(0.3341 0.1099 263.0016);
-  --blue-700: oklch(0.4882 0.2172 264.3763);
-  --blue-600: oklch(0.5461 0.2152 262.8809);
-  --blue-500: oklch(0.6231 0.188 259.8145);
-  --blue-100: oklch(0.9319 0.0316 255.5855);
-  --blue-50: oklch(0.9685 0.0148 260.7297);
-  --teal-600: oklch(0.6002 0.1038 184.704);
-  --teal-500: oklch(0.7038 0.123 182.5025);
-  --teal-100: oklch(0.9527 0.0498 180.8012);
-  --teal-50: oklch(0.9836 0.0142 180.72);
-  --card: oklch(1 0 89.8756);
-  --card-foreground: oklch(0.2692 0.0871 263.0388);
-  --popover: oklch(1 0 89.8756);
-  --popover-foreground: oklch(0.2692 0.0871 263.0388);
-  --primary: oklch(0.5461 0.2152 262.8809);
-  --primary-foreground: oklch(1 0 89.8756);
-  --secondary: oklch(0.9685 0.0148 260.7297);
-  --secondary-foreground: oklch(0.3341 0.1099 263.0016);
-  --muted: oklch(0.9683 0.0069 247.8956);
-  --muted-foreground: oklch(0.5544 0.0407 257.4166);
-  --accent: oklch(0.7038 0.123 182.5025);
-  --accent-foreground: oklch(1 0 89.8756);
-  --destructive: oklch(0.5771 0.2152 27.325);
-  --destructive-foreground: oklch(1 0 89.8756);
-  --success: oklch(0.6271 0.1699 149.2138);
-  --success-foreground: oklch(1 0 89.8756);
-  --warning: oklch(0.6658 0.1574 58.3183);
-  --warning-foreground: oklch(1 0 89.8756);
-  --border: oklch(0.9295 0.0121 259.823);
-  --input: oklch(0.869 0.0198 252.8943);
-  --ring: oklch(0.5461 0.2152 262.8809 / 35%);
-  --chart-1: oklch(0.5461 0.2152 262.8809);
-  --chart-2: oklch(0.7038 0.123 182.5025);
-  --chart-3: oklch(0.2692 0.0871 263.0388);
-  --chart-4: oklch(0.8091 0.0956 251.8128);
-  --chart-5: oklch(0.8549 0.1251 181.0707);
+  --background: oklch(0.9814 0.0045 258.3244); /* #F7F9FC — background */
+  --foreground: oklch(0.2692 0.0871 263.0388); /* #0E2350 — navy-900 */
+  --navy-950: oklch(0.227 0.0691 263.0857); /* #0A1A3C — navy-950 */
+  --navy-900: oklch(0.2692 0.0871 263.0388); /* #0E2350 — navy-900 */
+  --navy-800: oklch(0.3341 0.1099 263.0016); /* #16326E — navy-800 */
+  --blue-700: oklch(0.4882 0.2172 264.3763); /* #1D4ED8 — blue-700 */
+  --blue-600: oklch(0.5461 0.2152 262.8809); /* #2563EB — blue-600 */
+  --blue-500: oklch(0.6231 0.188 259.8145); /* #3B82F6 — blue-500 */
+  --blue-100: oklch(0.9319 0.0316 255.5855); /* #DBEAFE — blue-100 */
+  --blue-50: oklch(0.9685 0.0148 260.7297); /* #EFF5FF — blue-50 */
+  --teal-600: oklch(0.6002 0.1038 184.704); /* #0D9488 — teal-600 */
+  --teal-500: oklch(0.7038 0.123 182.5025); /* #14B8A6 — teal-500 */
+  --teal-100: oklch(0.9527 0.0498 180.8012); /* #CCFBF1 — teal-100 */
+  --teal-50: oklch(0.9836 0.0142 180.72); /* #F0FDFA — teal-50 */
+  /* The design ships literal #FFFFFF for every card, popover and on-colour foreground.
+     Spec UNKNOWN 9 flags this against CLAUDE.md §5 pitfall 12 and proposes a tinted
+     substitute, but labels it "a proposal, not a design decision" — D-DESIGN-2 makes the
+     design hex authoritative, so pure white stands and the conflict is recorded here. */
+  --card: oklch(1 0 89.8756); /* #FFFFFF */
+  --card-foreground: oklch(0.2692 0.0871 263.0388); /* #0E2350 — navy-900 */
+  --popover: oklch(1 0 89.8756); /* #FFFFFF */
+  --popover-foreground: oklch(0.2692 0.0871 263.0388); /* #0E2350 — navy-900 */
+  --primary: oklch(0.5461 0.2152 262.8809); /* #2563EB — blue-600 */
+  --primary-foreground: oklch(1 0 89.8756); /* #FFFFFF */
+  --secondary: oklch(0.9685 0.0148 260.7297); /* #EFF5FF — blue-50 */
+  --secondary-foreground: oklch(0.3341 0.1099 263.0016); /* #16326E — navy-800 */
+  --muted: oklch(0.9683 0.0069 247.8956); /* #F1F5F9 */
+  --muted-foreground: oklch(0.5544 0.0407 257.4166); /* #64748B — slate-500 */
+  --accent: oklch(0.7038 0.123 182.5025); /* #14B8A6 — teal-500 */
+  --accent-foreground: oklch(1 0 89.8756); /* #FFFFFF */
+  --destructive: oklch(0.5771 0.2152 27.325); /* #DC2626 — destructive */
+  --destructive-foreground: oklch(1 0 89.8756); /* #FFFFFF */
+  --success: oklch(0.6271 0.1699 149.2138); /* #16A34A — success */
+  --success-foreground: oklch(1 0 89.8756); /* #FFFFFF */
+  --warning: oklch(0.6658 0.1574 58.3183); /* #D97706 — warning */
+  --warning-foreground: oklch(1 0 89.8756); /* #FFFFFF */
+  --border: oklch(0.9295 0.0121 259.823); /* #E3E8F0 — border */
+  --input: oklch(0.869 0.0198 252.8943); /* #CBD5E1 — slate-300 */
+  --ring: oklch(0.5461 0.2152 262.8809 / 35%); /* rgba(37,99,235,.35) */
+  --chart-1: oklch(0.5461 0.2152 262.8809); /* #2563EB — blue-600 */
+  --chart-2: oklch(0.7038 0.123 182.5025); /* #14B8A6 — teal-500 */
+  --chart-3: oklch(0.2692 0.0871 263.0388); /* #0E2350 — navy-900 */
+  --chart-4: oklch(0.8091 0.0956 251.8128); /* #93C5FD */
+  --chart-5: oklch(0.8549 0.1251 181.0707); /* #5EEAD4 */
   --radius: 0.625rem;
   /* Canonical LIGHT sidebar (design-system-and-components/tokens.css L58-65).
      These eight had carried the canonical DARK palette verbatim — the app is
      forced-light, so the navy rail was what shipped. Restored to the white rail
      the parent screens are drawn against; the .dark block below is untouched. */
-  --sidebar: oklch(1 0 89.8756);
-  --sidebar-foreground: oklch(0.4455 0.0374 257.2808);
-  --sidebar-primary: oklch(0.5461 0.2152 262.8809);
-  --sidebar-primary-foreground: oklch(1 0 89.8756);
-  --sidebar-accent: oklch(0.9685 0.0148 260.7297);
-  --sidebar-accent-foreground: oklch(0.3341 0.1099 263.0016);
-  --sidebar-border: oklch(0.9295 0.0121 259.823);
-  --sidebar-ring: oklch(0.5461 0.2152 262.8809 / 35%);
-  --shadow-sm: 0 1px 2px oklch(0.2692 0.0871 263.0388 / 6%);
-  --shadow-md: 0 2px 8px oklch(0.2692 0.0871 263.0388 / 8%);
-  --shadow-lg: 0 8px 24px oklch(0.2692 0.0871 263.0388 / 12%);
-  --shadow-xl: 0 20px 48px oklch(0.2692 0.0871 263.0388 / 18%);
+  --sidebar: oklch(1 0 89.8756); /* #FFFFFF */
+  --sidebar-foreground: oklch(0.4455 0.0374 257.2808); /* #475569 — slate-600 */
+  --sidebar-primary: oklch(0.5461 0.2152 262.8809); /* #2563EB — blue-600 */
+  --sidebar-primary-foreground: oklch(1 0 89.8756); /* #FFFFFF */
+  --sidebar-accent: oklch(0.9685 0.0148 260.7297); /* #EFF5FF — blue-50 */
+  --sidebar-accent-foreground: oklch(0.3341 0.1099 263.0016); /* #16326E — navy-800 */
+  --sidebar-border: oklch(0.9295 0.0121 259.823); /* #E3E8F0 — border */
+  --sidebar-ring: oklch(0.5461 0.2152 262.8809 / 35%); /* rgba(37,99,235,.35) */
+  --shadow-sm: 0 1px 2px oklch(0.2692 0.0871 263.0388 / 6%); /* rgba(14,35,80,.06) */
+  --shadow-md: 0 2px 8px oklch(0.2692 0.0871 263.0388 / 8%); /* rgba(14,35,80,.08) */
+  --shadow-lg: 0 8px 24px oklch(0.2692 0.0871 263.0388 / 12%); /* rgba(14,35,80,.12) */
+  --shadow-xl: 0 20px 48px oklch(0.2692 0.0871 263.0388 / 18%); /* rgba(14,35,80,.18) */
 }
 
 .dark {
@@ -325,9 +442,69 @@
   grid-template-columns: minmax(0, 2.2fr) repeat(3, minmax(0, 1fr)) auto;
 }
 
+/* Canonical ScoreProgressRow (§07): 90px label · flexible track · 44px value. */
+@utility grid-cols-score-row {
+  grid-template-columns: 5.625rem minmax(0, 1fr) 2.75rem;
+}
+
+/* Canonical SkillBreakdownRow (§07, Admissions skill panel): 118px label ·
+   flexible 9px track · 76px verdict. */
+@utility grid-cols-skill-row {
+  grid-template-columns: 7.375rem minmax(0, 1fr) 4.75rem;
+}
+
+/* Parent-portal ChildCardGrid (spec 02 §A.4): auto-fit tracks with a 360px floor —
+   the ONLY responsive mechanism on the "My children" list, no media query. The
+   `min(…, 100%)` guard is what stops the 360px floor overflowing a 375px viewport. */
+@utility grid-cols-child-cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(22.5rem, 100%), 1fr));
+}
+
+/* Parent-portal TwoUpCardGrid (spec 02 §B.3): the same idiom at a 380px floor —
+   "Level journey" beside "Skills" above ~780px, stacked below. */
+@utility grid-cols-portal-two-up {
+  grid-template-columns: repeat(auto-fit, minmax(min(23.75rem, 100%), 1fr));
+}
+
 /* Same row, collapsed for narrow viewports: identity + trailing action only. */
 @utility grid-cols-row-compact {
   grid-template-columns: minmax(0, 1fr) auto;
+}
+
+/* Canonical Parent-overview bottom row (App Screens 2a §3): the table panel takes
+   1.6fr against a 1fr side stack. A bracket value would be an arbitrary size, so
+   the canonical ratio lives here as a named track. */
+@utility grid-cols-overview-split {
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+}
+
+/* Search workspace. The rail takes 15.5rem = 248px, the ONLY thin rail width the
+   canonical screens use (`grid-template-columns: 248px 1fr` on 29 of 80 screens).
+   Canonical has no map screen at all, so the remaining track is split per the
+   requested arrangement: the results column at 1fr and the map at 1.2fr, which
+   keeps the map the widest pane at every viewport from 1024px up. */
+@utility grid-cols-search-workspace {
+  grid-template-columns: 15.5rem minmax(0, 1fr) minmax(0, 1.2fr);
+}
+
+/* Same workspace with the map column collapsed (Map/List toggle) or absent (agents). */
+@utility grid-cols-search-list {
+  grid-template-columns: 15.5rem minmax(0, 1fr);
+}
+
+/* "Find a school" two-column body (.qa/design/spec/01 §8.3:
+   `grid-template-columns:340px 1fr`) — a fixed 340px result rail against a fluid
+   map. The filter rail is gone from this surface (the design puts filters in the
+   §8.6 overlay), so the workspace is two tracks, not three. */
+@utility grid-cols-search-split {
+  grid-template-columns: 21.25rem minmax(0, 1fr);
+}
+
+/* Overlay dialog height budget (.qa/design/spec/01 §8.6: `max-height:88vh` on the
+   filters panel). dvh, not vh, so a mobile URL bar cannot push the sticky footer
+   out of reach. */
+@utility overlay-viewport {
+  max-height: 88dvh;
 }
 
 /* Canonical loading sweep (`st-shimmer`, 1.4s ease infinite) — a moving sheen on
@@ -358,6 +535,146 @@
   }
 }
 
+/* Column entrance for a bar chart. A bar's LENGTH is its data, so the only honest
+   way to animate it in is to scale the drawn column from its own baseline —
+   `scaleY` on `transform-origin:bottom`, never an animated `height` (banned) and
+   never opacity (which would leave the label mid-fade under an axe contrast pass).
+   `backwards` holds the 0-scale frame through the stagger delay. */
+@keyframes st-bar-grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@utility bar-grow {
+  transform-origin: bottom;
+  animation: st-bar-grow 600ms var(--ease-out-expo) backwards;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+/* ── SCROLL AFFORDANCE ────────────────────────────────────────────────────────
+   The app scrolls in ONE element (`[data-slot="dashboard-content"]`); every other
+   long region is supposed to scroll inside its own box. These three utilities are
+   the canonical way to make such a box, so no surface hand-rolls its own overflow
+   and no surface ships the platform's default 15px grey scrollbar.
+
+   Colours come from existing tokens only — the resting thumb is --input (#CBD5E1,
+   the canonical input border) and the hover thumb is --color-slate-400 (#94A3B8,
+   the canonical meta ink). The track is transparent so the thumb reads as a hairline
+   ON the surface rather than a second-colour gutter beside it.
+
+   A11y contract for every consumer: if the region's CONTENT holds no focusable
+   element, the region itself needs `tabIndex={0}` plus a role/name, or a keyboard
+   user can never reach the overflow (axe: scrollable-region-focusable, serious).
+   A rail full of chips or links already satisfies this and needs no tabindex. */
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--input) transparent;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* The 3px transparent border + background-clip is what makes a 10px gutter draw a
+     4px thumb: there is no `width` on a webkit thumb, only inset. */
+  &::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-color: var(--input);
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-slate-400);
+  }
+}
+
+/* An internal vertical scroll region. `min-height:0` is not optional — a flex/grid
+   child defaults to min-height:auto and will grow past its parent instead of
+   scrolling, which is how a "sticky" rail ends up taller than its own scrollport.
+   `overscroll-behavior:contain` stops the wheel from chaining to the page once the
+   region bottoms out; `scrollbar-gutter:stable` stops the 10px gutter appearing and
+   disappearing (a horizontal reflow) as content crosses the overflow threshold. */
+@utility scroll-region {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--input) transparent;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-color: var(--input);
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-slate-400);
+  }
+}
+
+@utility scroll-region-x {
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--input) transparent;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-color: var(--input);
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-slate-400);
+  }
+}
+
+/* Height budget for a sticky rail / map frame: the visible scrollport is the window
+   MINUS the 64px topbar and the 24px main padding at both ends, so a rail sized to
+   100svh is 112px too tall and clips its own header permanently. Consumers can
+   retune the subtraction per surface with `--rail-offset`. */
+@utility rail-viewport {
+  max-height: calc(100svh - var(--rail-offset, 7rem));
+}
+
 /* ── Leaflet map design-token skin (ported from schoolgo globals.css ~L486-632,
    C-UI-SEARCH-MAP / M1 §3-§8). Unlayered so these win over leaflet/dist/leaflet.css
    defaults by source order. Raw hex from the legacy port is translated to the
@@ -386,7 +703,8 @@
   color: var(--primary-foreground);
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 0.8125rem;
+  /* 14px — the design's cluster bubble type (.qa/design/spec/01 §8.5). */
+  font-size: 0.875rem;
   border: 3px solid var(--card);
   box-shadow: var(--shadow-lg), var(--shadow-md);
   cursor: pointer;
@@ -432,6 +750,19 @@
     0 0 0 4px color-mix(in oklab, var(--primary) 32%, transparent),
     var(--shadow-xl),
     var(--shadow-lg);
+}
+
+/* SELECTED pin (.qa/design/spec/01 §8.5: the chosen school's marker flips to the
+   navy fill while every other pin stays the light default). Selection is a click,
+   hover is `--active` above; the two can coexist on one pin. */
+.school-map-marker--selected .school-map-marker__pin {
+  background: var(--navy-900);
+  transform: scale(1.12);
+  box-shadow: var(--shadow-xl), var(--shadow-lg);
+}
+
+.school-map-marker--selected.school-map-marker--active .school-map-marker__pin {
+  transform: scale(1.22);
 }
 
 .school-map-marker__pin::after {
@@ -493,7 +824,9 @@
     transition: none;
   }
   .school-map-cluster__circle:hover,
-  .school-map-marker--active .school-map-marker__pin {
+  .school-map-marker--active .school-map-marker__pin,
+  .school-map-marker--selected .school-map-marker__pin,
+  .school-map-marker--selected.school-map-marker--active .school-map-marker__pin {
     transform: none;
   }
 }

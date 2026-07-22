@@ -1,5 +1,6 @@
 export { WizardScreen } from './components/WizardScreen';
-export { WizardStepper } from './components/WizardStepper';
+export { WizardStepRail } from './components/WizardStepRail';
+export { WizardPageHeader } from './components/WizardPageHeader';
 export { WizardNav } from './components/WizardNav';
 export { StepPersonal } from './components/StepPersonal';
 export { StepEducation } from './components/StepEducation';
@@ -7,8 +8,12 @@ export { StepGuardian } from './components/StepGuardian';
 export { StepMedia } from './components/StepMedia';
 export { StepReview } from './components/StepReview';
 export { MediaUpload } from './components/MediaUpload';
-export { ContactChannelCards } from './components/ContactChannelCards';
 export { NationalityCombobox } from './components/NationalityCombobox';
+export { WizardChoiceField } from './components/WizardChoiceField';
+export { WizardSelectField } from './components/WizardSelectField';
+export { WizardTextField } from './components/WizardTextField';
+export { WizardChipGroup } from './components/WizardChipGroup';
+export { WizardField } from './components/WizardField';
 
 export { useUploadMediaMutation } from './queries/use-upload-media.mutation';
 export { useCreateStudentFullMutation } from './queries/use-create-student-full.mutation';
@@ -66,9 +71,16 @@ export type {
   ContactChannelOption,
   CurrentYearLevel,
   Gender,
+  ReviewModel,
   ReviewRowModel,
-  ReviewSectionModel,
   StudentCreatePayload,
+  WizardChipGroupProps,
+  WizardChipSize,
+  WizardChoiceFieldProps,
+  WizardFieldProps,
+  WizardRailStep,
+  WizardSelectFieldProps,
+  WizardSelectOption,
   Term,
   WizardMediaKey,
   WizardMode,

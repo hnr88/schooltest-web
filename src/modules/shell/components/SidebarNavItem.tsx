@@ -1,59 +1,47 @@
 'use client';
 
-import {
-  NavCountBadge,
-  SidebarMenuBadge,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/modules/design-system';
+import { SidebarMenuButton, SidebarMenuItem } from '@/modules/design-system';
 import { Link } from '@/i18n/navigation';
 import type { NavItem } from '@/modules/shell/types/shell.types';
 
-// Canonical parent-rail item (Parent overview aside, DS §12 Navigation card):
-// gap 11px, 14px label, 10px/12px padding, radius 10, 17px icon at stroke-width 2.
-// Idle #475569 on transparent, hover #F1F5F9 with the label darkening to navy.
-// The 40px visual box keeps the rail's rhythm; the ::after inset grows the hit
-// area to 46px instead of inflating the padding. The inset is symmetric because
-// the COLLAPSED rail squares the same item to 40x40 — a vertical-only expansion
-// left it 41px WIDE there, failing in the other dimension.
+// Nav item, verbatim from the DETACHED rail slice (.qa/design/spec/01 §1.2,
+// portal--detached-sidebar.html:6): `gap:12px; padding:11px 14px; border-radius:12px;
+// font-size:14.5px`, an 18px icon at stroke-width 1.8, and two states —
+// active `600 / #0E2350 / #FFFFFF`, inactive `500 / transparent / #7C8698`.
 //
-// `overflow-visible` is LOAD-BEARING, not tidying. The vendored primitive's base
+// ONE substitution, recorded: inactive ink is --muted-foreground (#64748B, 4.76:1
+// on the white card) instead of the slice's #7C8698, which measures 3.67:1 and
+// fails WCAG AA 1.4.3 for a 14.5px label. Active white-on-navy is 15.4:1.
+//
+// The slice declares NO hover and NO focus state (spec §11.3: "the sidebar nav has
+// no hover style at all"; UNKNOWNS: "no :focus … anywhere"). Both are authored here
+// from tokens: hover is the canonical recess (--color-surface-inset) with the label
+// darkening to --foreground, press is a 2% scale-down. Only transform and colour move.
+//
+// FOCUS RING: --ring / --sidebar-ring both ship at 35% alpha, which composites to
+// ~#B3C8F8 on the white card — 1.68:1, below the 3:1 WCAG 2.1 SC 1.4.11 floor for a
+// focus indicator. The ring is therefore drawn from --primary: the SAME hue at full
+// alpha, 5.17:1. Every focusable surface in this module uses that one ring.
+//
+// `overflow-visible` is LOAD-BEARING, not tidying: the vendored primitive's base
 // (src/components/ui/sidebar.tsx, sidebarMenuButtonVariants) sets `overflow-hidden`
-// together with `[&>span:last-child]:truncate`, and overflow-hidden CLIPS the
-// pseudo-element: the CSS said 44 while a real elementFromPoint scan measured
-// 40.5. The vendored file is read-only, so the override lands here and the
-// truncation moves onto the label span itself (`min-w-0 truncate`), where it
-// belongs — the span, not the button, is what must clip a long label.
+// with `[&>span:last-child]:truncate`, and overflow-hidden CLIPS the ::after that
+// carries the 46px pointer target. The vendored file is read-only, so the override
+// lands here and the truncation moves onto the label span itself.
 //
-// ACTIVE = SOLID PRIMARY (.qa/CONTRAST-SPEC.md → sidebarSpec §5, the single biggest
-// fix in that spec). ds-Navigation.html specifies the active rail item verbatim as
-// `color:#FFFFFF;background:#2563EB;padding:10px 12px;border-radius:10px;font-weight:600`.
-// This is a choice between two canonical variants, not an invention: the App-Screens
-// soft pill (#2563EB on #EFF5FF) measured 1.10:1 against the white rail, so the
-// shell's most important state was carried by a 9% luminance step with no border,
-// no shadow and no left rule. White on #2563EB is 5.17:1. Same radius, same padding,
-// same 600 weight — only the two colours move. No left bar, no shadow, no border on
-// the active item: canonical has zero of all three.
-// Collapsed rail (no canonical state exists — defined here once): the same solid
-// active, squared to 40x40 with the 17px icon centred, so the rail keeps its
-// rhythm instead of shrinking to the primitive's 32px default.
+// Collapsed rail (the slice has no collapsed state at all — defined here once): the
+// same solid active slab squared to 40x40 with the 18px icon centred.
 const NAV_ITEM_CLASSES =
-  'relative h-auto gap-2.75 overflow-visible rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition-colors duration-200 ease-out after:absolute after:-inset-0.75 hover:bg-muted hover:text-foreground data-active:bg-sidebar-primary data-active:font-semibold data-active:text-sidebar-primary-foreground data-active:hover:bg-sidebar-primary data-active:hover:text-sidebar-primary-foreground motion-reduce:transition-none group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! [&_svg]:size-4.25';
-
-// The badge sits ON the active slab, so it inverts: #FFFFFF fill / #2563EB ink
-// (8.59:1). Idle keeps the canonical #EFF5FF / #2563EB (4.72:1). The inversion
-// idiom is canonical — white-on-navy CTA band, #2DD4BF status pill on navy.
-const ACTIVE_BADGE_CLASSES = 'bg-card text-sidebar-primary';
+  'relative h-auto gap-3 overflow-visible rounded-tile px-3.5 py-2.75 text-lede leading-tight font-medium text-muted-foreground transition-[color,background-color,transform] duration-200 ease-out after:absolute after:-inset-0.75 hover:bg-surface-inset hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary active:scale-98 active:bg-surface-inset active:text-foreground data-active:bg-navy-900 data-active:font-semibold data-active:text-white data-active:hover:bg-navy-900 data-active:hover:text-white data-active:active:bg-navy-900 data-active:active:text-white motion-reduce:transition-none motion-reduce:active:scale-100 group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! [&_svg]:size-4.5';
 
 interface SidebarNavItemProps {
   item: NavItem;
   label: string;
   isActive: boolean;
-  count?: number;
   onNavigate: () => void;
 }
 
-function SidebarNavItem({ item, label, isActive, count, onNavigate }: SidebarNavItemProps) {
+function SidebarNavItem({ item, label, isActive, onNavigate }: SidebarNavItemProps) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -63,14 +51,9 @@ function SidebarNavItem({ item, label, isActive, count, onNavigate }: SidebarNav
         className={NAV_ITEM_CLASSES}
         render={<Link href={item.href} onClick={onNavigate} />}
       >
-        <item.icon aria-hidden="true" strokeWidth={2} />
+        <item.icon aria-hidden="true" strokeWidth={1.8} />
         <span className="min-w-0 truncate group-data-[collapsible=icon]:hidden">{label}</span>
       </SidebarMenuButton>
-      {count !== undefined && count > 0 ? (
-        <SidebarMenuBadge className="top-2.5 right-3 h-5 p-0">
-          <NavCountBadge count={count} className={isActive ? ACTIVE_BADGE_CLASSES : undefined} />
-        </SidebarMenuBadge>
-      ) : null}
     </SidebarMenuItem>
   );
 }

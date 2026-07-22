@@ -40,9 +40,13 @@ async function fillToStep3(page: Page, m: Messages, locale: AnyLocale = 'en') {
     .getByRole('combobox', { name: cat(m, 'StudentWizard.education.targetEntryYear') })
     .click();
   await page.getByRole('option').first().click();
+  // `target_entry_term` is a required single-choice ANSWER, so it is now the
+  // canonical pill radiogroup (role=radiogroup / role=radio / aria-checked) rather
+  // than the aria-pressed SegmentedControl view switcher it shipped as. Same lookup
+  // by localized field label, same click on the localized "Term 1" option.
   await page
-    .getByRole('group', { name: cat(m, 'StudentWizard.education.targetEntryTerm') })
-    .getByText(icu(cat(m, 'StudentWizard.education.term'), { n: '1' }), { exact: true })
+    .getByRole('radiogroup', { name: cat(m, 'StudentWizard.education.targetEntryTerm') })
+    .getByRole('radio', { name: icu(cat(m, 'StudentWizard.education.term'), { n: '1' }) })
     .click();
   await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
   // Step 3 — the ContactChannelCards radiogroup is unique to this step
@@ -107,7 +111,10 @@ test('EN: step 3 cards render, default whatsapp, click/keyboard select, validati
   await expect(phoneInput).toHaveValue('+44 7700 900000');
   await phoneInput.blur();
   await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
-  await expect(page.getByText('Step 4 of 5', { exact: false })).toBeVisible();
+  // The portal wizard prints the step position TWICE (spec 03 §2.3 + §2.9): the
+  // card's sub-line "Step 4 of 5 · Optional photo…" and the footer's bare counter.
+  // `exact` pins the assertion to the footer counter instead of matching both.
+  await expect(page.getByText('Step 4 of 5', { exact: true })).toBeVisible();
   // Step 4 now renders StepMedia (task 052 swapped the placeholder heading for the
   // MediaUpload dropzones); assert the photo drop-zone copy instead of the old h2.
   await expect(page.getByText(cat(en, 'StudentWizard.media.photo.dropTitle'))).toBeVisible();

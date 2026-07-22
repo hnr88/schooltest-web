@@ -11,7 +11,7 @@ async function TestimonialCard() {
   const t = await getTranslations('Home');
 
   return (
-    <Card className="p-8">
+    <Card className="rounded-3xl p-8 shadow-md sm:p-9">
       <div role="img" aria-label={t('testimonial.ratingLabel')} className="flex gap-0.5">
         {Array.from({ length: TESTIMONIAL_STAR_COUNT }, (_, index) => (
           <Star key={index} aria-hidden="true" className="size-4 fill-amber-500 text-amber-500" />
@@ -27,7 +27,7 @@ async function TestimonialCard() {
         </span>
         <div>
           <p className="text-sm font-semibold">{t('testimonial.name')}</p>
-          <p className="text-sm text-muted-foreground">{t('testimonial.role')}</p>
+          <p className="text-caption text-muted-foreground">{t('testimonial.role')}</p>
         </div>
       </div>
     </Card>

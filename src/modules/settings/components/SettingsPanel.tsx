@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
+import { DataPanel } from '@/modules/design-system';
+import { PORTAL_CARD_CLASS } from '@/modules/settings/constants/settings.constants';
 
-// Canonical Parent-settings card (App Screens → "Parent settings"): one white
-// surface, hairline border, 16px radius, 26px padding and a single soft shadow
-// on the card itself. The heading is 17px/600 navy over a 13.5px slate lede,
-// and the body starts 16px below it — exactly the Profile / Notifications /
-// Security cards on that screen.
+// PortalCard + section head (.qa/design/spec/03 §4.1): a 24px-radius white card with
+// 26px/30px padding, a 16/600 navy h2 and an optional 13px lede under it.
+// `overflow-visible` keeps the ::after pointer expansions of the pills and switches
+// inside the card clickable.
 interface SettingsPanelProps {
   id: string;
   title: string;
@@ -25,23 +26,21 @@ export function SettingsPanel({
   className,
 }: SettingsPanelProps) {
   return (
-    <section
+    <DataPanel
       data-slot="settings-panel"
       aria-labelledby={`${id}-title`}
-      className={cn('rounded-panel border border-border bg-card p-6.5 shadow-sm', className)}
+      className={cn(PORTAL_CARD_CLASS, 'flex flex-col px-7.5 py-6.5', className)}
     >
-      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-        <div className="flex min-w-0 flex-col gap-1">
-          <h2 id={`${id}-title`} className="text-panel-title font-semibold text-foreground">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex min-w-0 flex-col">
+          <h2 id={`${id}-title`} className="text-body-lg font-semibold text-foreground">
             {title}
           </h2>
-          {description ? (
-            <p className="text-body-sm text-muted-foreground">{description}</p>
-          ) : null}
+          {description ? <p className="mt-1.25 text-caption text-body">{description}</p> : null}
         </div>
-        {action}
+        {action ? <div className="shrink-0">{action}</div> : null}
       </div>
-      <div className="mt-4">{children}</div>
-    </section>
+      <div className="mt-4 min-w-0">{children}</div>
+    </DataPanel>
   );
 }

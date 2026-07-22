@@ -126,10 +126,13 @@ export interface SegmentedControlOption {
   label: string;
 }
 
+export type SegmentedControlSize = 'md' | 'sm';
+
 export interface SegmentedControlProps {
   options: SegmentedControlOption[];
   value: string;
   onValueChange: (value: string) => void;
   ariaLabel: string;
+  size?: SegmentedControlSize;
   className?: string;
 }

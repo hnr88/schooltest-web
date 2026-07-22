@@ -17,3 +17,14 @@ export type NotificationListParams = z.infer<typeof notificationListParamsSchema
 export type NotificationListResponse = z.infer<typeof notificationListResponseSchema>;
 export type NotificationReadResponse = z.infer<typeof notificationReadResponseSchema>;
 export type NotificationReadAllResponse = z.infer<typeof notificationReadAllResponseSchema>;
+
+export type NotificationCategoryFilterValue = NotificationCategory | 'all';
+
+export type NotificationRecencyKey = 'today' | 'earlier';
+
+export interface NotificationRecencyGroup {
+  key: NotificationRecencyKey;
+  notifications: Notification[];
+}
+
+export type NotificationTimeTier = 'relative' | 'weekday' | 'date';

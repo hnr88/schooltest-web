@@ -82,29 +82,38 @@ export function SignUpForm({ onRegistered }: SignUpFormProps) {
         error={errors.email?.message ? t(errors.email.message) : undefined}
         registration={register('email')}
       />
-      <PasswordField
-        id="sign-up-password"
-        label={t('passwordLabel')}
-        placeholder={t('passwordPlaceholder')}
-        autoComplete="new-password"
-        visible={showPassword}
-        onToggleVisible={() => setShowPassword((current) => !current)}
-        toggleLabel={t(showPassword ? 'hidePassword' : 'showPassword')}
-        error={errors.password?.message ? t(errors.password.message) : undefined}
-        registration={register('password')}
-      />
-      <PasswordField
-        id="sign-up-confirm-password"
-        label={t('confirmPasswordLabel')}
-        placeholder={t('confirmPasswordPlaceholder')}
-        autoComplete="new-password"
-        visible={showConfirmPassword}
-        onToggleVisible={() => setShowConfirmPassword((current) => !current)}
-        toggleLabel={t(showConfirmPassword ? 'hideConfirmPassword' : 'showConfirmPassword')}
-        error={errors.confirmPassword?.message ? t(errors.confirmPassword.message) : undefined}
-        registration={register('confirmPassword')}
-      />
-      <Button type="submit" size="lg" loading={signUp.isPending} className="mt-1 w-full">
+      {/* §1.2 row 4: password + confirm sit side by side from sm up. DOM order is
+          unchanged, so a11y-auth.spec's focus order still holds. */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <PasswordField
+          id="sign-up-password"
+          label={t('passwordLabel')}
+          placeholder={t('passwordPlaceholder')}
+          autoComplete="new-password"
+          visible={showPassword}
+          onToggleVisible={() => setShowPassword((current) => !current)}
+          toggleLabel={t(showPassword ? 'hidePassword' : 'showPassword')}
+          error={errors.password?.message ? t(errors.password.message) : undefined}
+          registration={register('password')}
+        />
+        <PasswordField
+          id="sign-up-confirm-password"
+          label={t('confirmPasswordLabel')}
+          placeholder={t('confirmPasswordPlaceholder')}
+          autoComplete="new-password"
+          visible={showConfirmPassword}
+          onToggleVisible={() => setShowConfirmPassword((current) => !current)}
+          toggleLabel={t(showConfirmPassword ? 'hideConfirmPassword' : 'showConfirmPassword')}
+          error={errors.confirmPassword?.message ? t(errors.confirmPassword.message) : undefined}
+          registration={register('confirmPassword')}
+        />
+      </div>
+      <Button
+        type="submit"
+        size="xl"
+        loading={signUp.isPending}
+        className="mt-1 w-full rounded-lg shadow-sm transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      >
         {signUp.isPending ? t('signingUp') : t('signUpButton')}
       </Button>
     </form>

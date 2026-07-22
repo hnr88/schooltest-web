@@ -82,31 +82,69 @@ test('en: child cards open a real persisted profile with metrics and an honest r
 
   await expect(page.getByRole('heading', { level: 1, name: 'Mia Keller' })).toBeVisible();
   await expect(page.locator('[data-surface="child-learning-dashboard"]')).toBeVisible();
-  await expect(page.locator('[data-slot="child-learning-summary"]')).toBeVisible();
   await expect(page.locator('[data-slot="child-results-timeline"]')).toBeVisible();
-  await expect(
-    page.getByRole('region', { name: cat(en, 'Children.metricsHeading') }),
-  ).toBeVisible();
-  for (const key of [
-    'metricTotalSessions',
-    'metricCompletedSessions',
-    'metricActiveSessions',
-    'metricOfficialResults',
-  ]) {
-    await expect(page.getByRole('article', { name: cat(en, `Children.${key}`) })).toContainText(
-      '0',
+
+  // The four counts moved OUT of a white metrics panel of MiniStatTiles and into
+  // the canonical hero stat strip (App Screens 2h:2938 renders them as unboxed
+  // text). Same four labels, same four values — but asserted against the metrics
+  // THIS response actually carried instead of the literal "0" the seed happened to
+  // hold when this test was written, so a data drift can no longer make the
+  // no-fabricated-data guarantee pass by coincidence.
+  const progress = (await response.json()) as {
+    data: { metrics: Record<string, number> };
+  };
+  const strip = page.locator('[data-slot="child-learning-hero"] [data-slot="stat-strip"]');
+  await expect(strip).toHaveAttribute('aria-label', cat(en, 'Children.metricsHeading'));
+  const expected: [string, number][] = [
+    ['metricTotalSessions', progress.data.metrics.totalSessions],
+    ['metricCompletedSessions', progress.data.metrics.completedSessions],
+    ['metricActiveSessions', progress.data.metrics.activeSessions],
+    ['metricOfficialResults', progress.data.metrics.officialResults],
+  ];
+  await expect(strip.locator('dt')).toHaveText(expected.map(([key]) => cat(en, `Children.${key}`)));
+  await expect(strip.locator('dd')).toHaveText(expected.map(([, value]) => String(value)));
+
+  // The gauge that printed "—" over "0/0" is gone; when the API reports sessions
+  // its ratio is the hero's canonical CompletionCell, and when it reports none the
+  // line is absent rather than drawn empty.
+  const sessions = page.locator('[data-slot="child-learning-summary"]');
+  if (progress.data.metrics.totalSessions > 0) {
+    await expect(sessions).toBeVisible();
+    await expect(sessions.locator('[data-slot="completion-cell"]')).toHaveAttribute(
+      'aria-valuetext',
+      `${progress.data.metrics.completedSessions}/${progress.data.metrics.totalSessions}`,
     );
+  } else {
+    await expect(sessions).toHaveCount(0);
   }
+
   await expect(
     page.getByRole('heading', { level: 2, name: cat(en, 'Children.recentResultsHeading') }),
   ).toBeVisible();
   await expect(page.getByText(cat(en, 'Children.emptyResults'), { exact: true })).toBeVisible();
 
+  // RE-TARGETED for the portal design: the child detail has NO tabs
+  // (.qa/design/spec/02-portal-children.md §B — "There are NO tabs on this
+  // screen"), so the progress blocks and the enrolment/guardian record are ONE
+  // vertical stack. Same guarantee as before — the record is reachable — asserted
+  // without a tab click.
+  await expect(page.locator('[data-slot="child-progress-panel"]')).toBeVisible();
+  await expect(page.locator('[data-slot="child-level-journey"]')).toBeVisible();
+  await expect(page.locator('[data-slot="child-skill-breakdown"]')).toBeVisible();
+  await expect(page.getByRole('tab', { name: cat(en, 'Children.tabRecord') })).toHaveCount(0);
+  await expect(page.locator('[data-slot="child-record-panel"]')).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: cat(en, 'Children.enrolmentHeading') }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: cat(en, 'Children.guardianHeading') }),
+  ).toBeVisible();
+
   await page.reload();
   await expect(page.getByRole('heading', { level: 1, name: 'Mia Keller' })).toBeVisible();
-  await expect(
-    page.getByRole('article', { name: cat(en, 'Children.metricOfficialResults') }),
-  ).toContainText('0');
+  await expect(strip.locator('dd').last()).toHaveText(
+    String(progress.data.metrics.officialResults),
+  );
   await page.screenshot({ path: path.join(SCREENSHOTS, 'child-profile-en.png') });
 
   const results = await new AxeBuilder({ page }).analyze();
@@ -128,7 +166,10 @@ test('en: child cards remain usable at mobile width', async ({ page, request }) 
     })
     .click();
   await expect(page.locator('[data-surface="child-learning-dashboard"]')).toBeVisible();
-  await expect(page.locator('[data-slot="child-learning-summary"]')).toBeVisible();
+  // Same surface, asserted through the blocks the portal design stacks it from.
+  await expect(page.locator('[data-slot="child-learning-hero"]')).toBeVisible();
+  await expect(page.locator('[data-slot="child-level-journey"]')).toBeVisible();
+  await expect(page.locator('[data-slot="child-progress-panel"]')).toBeVisible();
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
   ).toBeTruthy();

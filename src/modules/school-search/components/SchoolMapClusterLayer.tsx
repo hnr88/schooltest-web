@@ -10,6 +10,7 @@ import { SchoolMapMarker } from '@/modules/school-search/components/SchoolMapMar
 import {
   CLUSTER_DISABLE_AT_ZOOM,
   CLUSTER_MAX_RADIUS,
+  PLACE_FOCUS_ZOOM,
 } from '@/modules/school-search/constants/school-search.constants';
 import {
   createClusterIcon,
@@ -17,26 +18,21 @@ import {
 } from '@/modules/school-search/lib/school-map-utils';
 import type { GeoSchoolHit } from '@/modules/school-search/types/school-search.types';
 
-const FOCUS_PADDING_TOP_LEFT: [number, number] = [24, 24];
-const FOCUS_PADDING_BOTTOM_RIGHT: [number, number] = [24, 24];
-
-function isMarkerCluster(
-  layer: unknown,
-): layer is { getBounds: () => L.LatLngBounds; spiderfy: () => void } {
+function isMarkerCluster(layer: unknown): layer is { getBounds: () => L.LatLngBounds } {
   return (
     typeof layer === 'object' &&
     layer !== null &&
     'getBounds' in layer &&
-    'spiderfy' in layer &&
-    typeof (layer as { getBounds?: unknown }).getBounds === 'function' &&
-    typeof (layer as { spiderfy?: unknown }).spiderfy === 'function'
+    typeof (layer as { getBounds?: unknown }).getBounds === 'function'
   );
 }
 
-// "Zoom grouping": react-leaflet-cluster MarkerClusterGroup with the legacy config.
-// Custom click: already zoomed in → spiderfy the overlapping pins; else flyToBounds
-// the cluster inside the dedicated map column. animate:false is the sanctioned
-// de-jitter — smoothness comes from the flyToBounds camera, not morphing.
+// Spec 01 §8.5: below zoom 9 the map draws CLUSTER BUBBLES, at zoom 9 and above it
+// draws individual pins — `disableClusteringAtZoom` is that exact threshold.
+// Clicking a bubble opens its place with an animated `setView(centre, 11)`, which is
+// the design's cluster behaviour verbatim; reduced motion keeps the destination and
+// drops the tween. `animate:false` on the group itself is the sanctioned de-jitter —
+// smoothness comes from the camera, not from morphing the bubbles.
 function SchoolMapClusterLayer({ geoHits }: { geoHits: GeoSchoolHit[] }) {
   const map = useMap();
 
@@ -48,20 +44,10 @@ function SchoolMapClusterLayer({ geoHits }: { geoHits: GeoSchoolHit[] }) {
       event.originalEvent.preventDefault();
       event.originalEvent.stopPropagation();
 
-      if (map.getZoom() >= CLUSTER_DISABLE_AT_ZOOM) {
-        layer.spiderfy();
-        return;
-      }
-
       const bounds = layer.getBounds();
       if (!bounds.isValid()) return;
 
-      map.flyToBounds(bounds, {
-        paddingTopLeft: FOCUS_PADDING_TOP_LEFT,
-        paddingBottomRight: FOCUS_PADDING_BOTTOM_RIGHT,
-        maxZoom: CLUSTER_DISABLE_AT_ZOOM,
-        animate: !prefersReducedMotion(),
-      });
+      map.setView(bounds.getCenter(), PLACE_FOCUS_ZOOM, { animate: !prefersReducedMotion() });
     },
     [map],
   );

@@ -43,10 +43,7 @@ interface DetailLabels {
 // The enrolment panel. Every row is a field the parent detail read (GET
 // /api/my/students/:documentId) actually returns; rows the API left null are
 // dropped by the panel, never rendered as "—".
-export function getEnrolmentFacts(
-  detail: StudentDetail,
-  labels: DetailLabels,
-): ChildProfileFact[] {
+export function getEnrolmentFacts(detail: StudentDetail, labels: DetailLabels): ChildProfileFact[] {
   return [
     { label: labels.yearLevel, value: formatYearLevel(detail, labels.formatYear) },
     { label: labels.dateOfBirth, value: labels.born },

@@ -85,9 +85,15 @@ test('en: seeded parent session renders the real guarded dashboard shell, axe cl
   await expect(firstProfileLink).toBeVisible();
   const firstProfileHref = await firstProfileLink.getAttribute('href');
   if (!firstProfileHref) throw new Error('Expected a persisted child dashboard route.');
-  const actionHub = overview.locator('[data-slot="dashboard-action-hub"]');
-  await expect(actionHub.locator('a[href="/dashboard/search?mode=schools"]')).toBeVisible();
-  await expect(actionHub.locator('a[href="/dashboard/search?mode=agents"]')).toBeVisible();
+  // Canonical Parent overview (App Screens 2a) has no "Explore next" action-hub
+  // panel: its three destinations are the header buttons, the roster panel link and
+  // the gradient promo's CTA. Same two hrefs, same visibility, asserted where they
+  // now live — plus the promo panel itself, which the old assertion never covered.
+  await expect(overview.locator('a[href="/dashboard/search?mode=schools"]')).toBeVisible();
+  const promo = overview.locator('[data-slot="navy-promo-card"]');
+  await expect(promo).toBeVisible();
+  await expect(promo.locator('a[href="/dashboard/search?mode=agents"]')).toBeVisible();
+  await expect(overview.locator('[data-slot="dashboard-activity-feed"]')).toBeVisible();
   await page.reload();
   await expect(
     page.locator('[data-slot="dashboard-profile-roster"] a[href^="/dashboard/children/"]').first(),
@@ -172,7 +178,10 @@ test('en: parent overview is usable on mobile and routes to the real children ro
 
   const overview = page.locator('[data-slot="dashboard-overview"]');
   await expect(overview).toHaveAttribute('data-surface', 'parent-overview');
-  await expect(overview.locator('[data-slot="dashboard-action-hub"]')).toBeVisible();
+  // The action hub is gone (canonical 2a has none); the bottom row's ledger list
+  // and gradient promo are the block that now closes the screen on mobile.
+  await expect(overview.locator('[data-slot="dashboard-activity-feed"]')).toBeVisible();
+  await expect(overview.locator('[data-slot="navy-promo-card"]')).toBeVisible();
   await expect(
     page.locator('[data-slot="dashboard-family-summary"] a[href="/dashboard/children"]'),
   ).toBeVisible();
@@ -180,10 +189,10 @@ test('en: parent overview is usable on mobile and routes to the real children ro
     await page.locator('html').evaluate((element) => element.scrollWidth > element.clientWidth),
   ).toBe(false);
 
-  const actionHub = overview.locator('[data-slot="dashboard-action-hub"]');
-  await actionHub.scrollIntoViewIfNeeded();
+  const roster = overview.locator('[data-slot="dashboard-profile-roster"]');
+  await roster.scrollIntoViewIfNeeded();
   await page.screenshot({ path: path.join(SCREENSHOTS, 'dashboard-mobile-actions-en.png') });
-  await actionHub.locator('a[href="/dashboard/children"]').click();
+  await roster.locator('a[href="/dashboard/children"]').click();
   await expect(page).toHaveURL(/\/dashboard\/children$/);
   await expect(page.locator('[data-surface="children-roster"]')).toBeVisible();
   expect(errors, errors.join('\n')).toEqual([]);

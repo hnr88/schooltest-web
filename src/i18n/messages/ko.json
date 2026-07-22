@@ -444,7 +444,123 @@
     "primitiveToggleResultsLabel": "새 결과가 나오면 알림 받기",
     "primitiveToggleShuffleLabel": "문항 순서 무작위 배열",
     "primitiveToggleResultsHint": "결과가 나오는 즉시 이메일과 푸시로 알림",
-    "primitiveToggleShuffleHint": "학생마다 문항 순서가 다르게 표시됩니다"
+    "primitiveToggleShuffleHint": "학생마다 문항 순서가 다르게 표시됩니다",
+    "sectionChoices": "선택 컨트롤",
+    "sectionMedia": "미디어 및 결과 카드",
+    "sectionRecords": "레코드와 행",
+    "choicesIntro": "선택지의 형태에 맞는 컨트롤을 씁니다. 두세 단어는 세그먼트, 짧은 라벨은 칩, 설명이 필요한 항목은 선택 카드, 목록이 길면 셀렉트를 사용합니다.",
+    "mediaIntro": "실제 이미지 슬롯이 있는 결과 카드, 자체 영역 안에서 스크롤되는 필터 레일, 그리고 지도가 놓이는 패널 프레임입니다.",
+    "recordsIntro": "레코드 화면을 구성하는 패널과 행 모음입니다. 어떤 화면도 카드 하나를 반복할 필요가 없습니다.",
+    "choiceRelationshipLabel": "자녀와의 관계",
+    "choiceRelationshipHelper": "지원하는 모든 학교에 표시됩니다.",
+    "choiceRelationshipParent": "부모",
+    "choiceRelationshipGuardian": "보호자",
+    "choiceRelationshipOther": "기타",
+    "choiceTermLabel": "목표 입학 학기",
+    "choiceTermOne": "1학기",
+    "choiceTermTwo": "2학기",
+    "choiceTermThree": "3학기",
+    "choiceSubjectsLabel": "포함할 과목",
+    "choiceSubjectScience": "과학",
+    "choiceErrorRequired": "계속하려면 하나를 선택하세요.",
+    "choicePackLabel": "크레딧 패키지",
+    "choicePackFamily": "패밀리 팩 · 크레딧 10개",
+    "choicePackFamilyNote": "25% 절약 · 가장 인기",
+    "choicePackFamilyPrice": "369 크로네",
+    "choicePackSingle": "크레딧 1개",
+    "choicePackSingleNote": "이번 시험만",
+    "choicePackSinglePrice": "49 크로네",
+    "choicePackSchool": "학교 플랜",
+    "choicePackSchoolNote": "문의 후 활성화",
+    "choiceCountryLabel": "국가",
+    "choiceCountryPlaceholder": "국가를 선택하세요",
+    "choiceCountryValue": "덴마크",
+    "mediaCardTitle": "뇌레브로 하이츠 학교",
+    "mediaCardBadge": "공립",
+    "mediaCardMeta": "코펜하겐 · 학생 640명",
+    "mediaCardDescription": "4학년부터 이중언어 과정을 운영하는 공립 초·중등 학교입니다.",
+    "mediaCardOpen": "모집 중",
+    "mediaCoverAlt": "SchoolTest 커버 사진",
+    "mediaCardNoImageTitle": "세인트앤 그래머 스쿨",
+    "mediaCardNoImageMeta": "오르후스 · 학생 410명",
+    "mediaCardNoImageDescription": "아직 이 학교의 사진이 등록되지 않았습니다.",
+    "mediaCoverEmptyAlt": "사진 없음",
+    "mediaCardFlatTitle": "선택된 결과",
+    "mediaCardFlatDescription": "커버가 없는 같은 카드입니다. 이미지는 슬롯이지 별도의 컴포넌트가 아닙니다.",
+    "filterRailTitle": "학교 필터",
+    "filterRailClear": "지우기",
+    "filterRailSector": "설립 유형",
+    "filterRailStage": "학교급",
+    "filterRailApply": "필터 적용",
+    "filterSectorPublic": "공립",
+    "filterSectorPrivate": "사립",
+    "filterStagePrimary": "초등",
+    "filterStageSecondary": "중등",
+    "mapPanelLabel": "학교 검색 결과 지도",
+    "mapPanelEmptyTitle": "지도 프레임",
+    "mapPanelEmptyBody": "프레임이 표면 스타일과 높이를 책임지고, 지도는 그 안에서 렌더링됩니다.",
+    "recordEnrolmentTitle": "재학 정보",
+    "recordEnrolmentDescription": "모든 지원서에서 학교가 보게 되는 정보입니다.",
+    "recordEnrolmentAction": "수정",
+    "recordYearLevel": "학년",
+    "recordYearLevelValue": "7학년",
+    "recordNationality": "국적",
+    "recordNationalityValue": "덴마크",
+    "recordTargetEntry": "목표 입학",
+    "recordTargetEntryValue": "2027년 · 1학기",
+    "recordCreditsEyebrow": "시험 크레딧",
+    "recordCreditsValue": "12",
+    "recordCreditsCaption": "앞으로 네 번 더 응시할 수 있습니다.",
+    "recordCreditsAction": "크레딧 구매",
+    "recordGlassCorrect": "정답",
+    "recordGlassCorrectValue": "38/45",
+    "recordGlassBand": "등급",
+    "recordGlassBandValue": "B2",
+    "recordPromoTitle": "크레딧이 부족합니다",
+    "recordPromoBody": "한 번 충전하면 계정에 등록된 모든 자녀가 다음 시험에 응시할 수 있습니다.",
+    "recordPromoAction": "충전하기",
+    "recordCalloutBody": "성적은 채점 마감 24시간 후 학부모에게 공개됩니다.",
+    "recordTintInset": "인셋 — 흰색 패널 안쪽의 오목한 영역.",
+    "recordTintWell": "페이지 톤 — 카드 위에 놓는 타일.",
+    "recordTintBrand": "브랜드 — 정보 타일에 쓰는 연한 파랑.",
+    "recordTintAccent": "액센트 — 긍정 지표에 쓰는 청록.",
+    "recordNoteTitle": "교사 메모",
+    "recordNoteBody": "엠마는 학년 수준보다 훨씬 잘 읽지만 마지막 두 문제를 서두릅니다. 5분을 더 주세요.",
+    "recordNoteAuthor": "메테 쇠렌센",
+    "recordNoteTime": "5월 12일",
+    "recordActivityTitle": "최근 활동",
+    "recordActivity": "엠마가 7학년 읽기 평가를 마쳤습니다.",
+    "recordActivitySecond": "루카스가 수학 배치 시험에 초대되었습니다.",
+    "recordActivityTime": "2시간 전",
+    "recordDotActivity": "이번 주에 프로필 세 개가 업데이트되었습니다.",
+    "recordDotActivitySecond": "지원서 한 건이 서류를 기다리고 있습니다.",
+    "recordRankTitle": "상위 응시자",
+    "recordRankTwo": "루카스 한센",
+    "recordRankThree": "마야 안데르센",
+    "recordScoreTitle": "점수와 역량",
+    "recordSkillListening": "듣기",
+    "recordSkillReading": "읽기",
+    "recordSkillWriting": "쓰기",
+    "recordVerdictMastered": "숙달",
+    "recordVerdictEmerging": "발전 중",
+    "recordVerdictNotAssessed": "미평가",
+    "recordRosterTitle": "명단 행 구성요소",
+    "recordCompletionLabel": "답변한 문항",
+    "recordCompletionValue": "17/24",
+    "recordStackLabel": "배정된 학생 5명",
+    "recordEventMonth": "5월",
+    "recordEventDay": "24",
+    "recordEventTitle": "7학년 입학 시험",
+    "recordEventMeta": "09:00 · 대강당",
+    "recordChartTitle": "월별 평균 점수",
+    "recordMonthMar": "3월",
+    "recordMonthApr": "4월",
+    "recordMonthMay": "5월",
+    "recordMonthJun": "6월",
+    "recordMonthJul": "7월",
+    "recordTrendLabel": "평균 점수 추이",
+    "recordScrollTitle": "스크롤 영역",
+    "recordScrollBody": "긴 내용은 자체 영역 안에서 스크롤되며 얇은 표준 스크롤바를 사용합니다. 페이지 자체는 가로로 스크롤되지 않습니다."
   },
   "Dashboard": {
     "meta": {
@@ -558,7 +674,50 @@
     "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
     "addFirstStudent": "첫 학생 추가하기",
     "promoTitle": "전문가의 도움을 받으세요",
-    "promoDescription": "관심 학교를 잘 아는 교육 전문가와 상담해 보세요."
+    "promoDescription": "관심 학교를 잘 아는 교육 전문가와 상담해 보세요.",
+    "readinessCellLabel": "{name} 님의 프로필 완성도",
+    "activityEmpty": "아직 추가된 프로필이 없습니다.",
+    "activityAdded": "<strong>{name}</strong> 님이 자녀 목록에 추가되었습니다.",
+    "activityUpdated": "<strong>{name}</strong> 님의 정보가 수정되었습니다.",
+    "activityTitle": "최근 활동",
+    "heroEyebrow": "Your family",
+    "heroHeadlineEmpty": "Add your first child to start <mark>planning their school entry</mark>.",
+    "heroHeadlinePlanned": "Every profile has <mark>a target entry plan</mark> — the next step is comparing schools.",
+    "heroHeadlineNeedsPlan": "<mark>{missing} of {total} profiles</mark> still need a target entry year and term.",
+    "readinessChartTitle": "Profile readiness",
+    "readinessChartRange": "{count, plural, one {# child} other {# children}}",
+    "readinessChartEmpty": "Add a child to see how complete their profile is.",
+    "readinessChartCaption": "{name} has the most left to add — <strong>{percent} complete</strong>.",
+    "readinessChartAllDone": "Every profile here is <strong>complete</strong> — nothing left to fill in.",
+    "childrenSeeDetails": "See details",
+    "childRowLabel": "{name} — {filled} of {total} profile details added",
+    "childRowPlan": "Entry {plan}",
+    "childRowPlanNeeded": "Plan needed",
+    "readinessFieldFamilyName": "Name",
+    "readinessFieldEmail": "Email",
+    "readinessFieldNationality": "Country",
+    "readinessFieldYearLevel": "Year",
+    "readinessFieldEntryYear": "Entry",
+    "readinessFieldEntryTerm": "Term",
+    "focusEyebrow": "Where to look next",
+    "focusBodyEmpty": "Nothing to review yet. Add a child and their profile readiness shows up here.",
+    "focusBodyComplete": "{name}’s profile is fully filled in — every child you have added is ready for school matching.",
+    "focusBodyIncomplete": "{name}’s profile is {percent}% filled in. {missing, plural, one {# planning detail is} other {# planning details are}} still blank, and those details decide which schools and entry terms can be matched.",
+    "recommendedTitle": "Recommended next",
+    "recommendAddChildTitle": "Add your first child",
+    "recommendAddChildMeta": "Their profile is what schools and entry terms are matched against.",
+    "recommendAddChildAction": "Add",
+    "recommendSetPlanTitle": "Set a target entry plan for {name}",
+    "recommendSetPlanMeta": "A target year and term narrows the schools worth shortlisting.",
+    "recommendCompleteProfileTitle": "Finish {name}’s profile",
+    "recommendCompleteProfileMeta": "{percent}% filled in — the rest sharpens the school match.",
+    "recommendOpenAction": "Open",
+    "recommendExploreSchoolsTitle": "Compare schools that fit your plans",
+    "recommendExploreSchoolsMeta": "Search by state, sector and school type.",
+    "recommendExploreSchoolsAction": "Explore",
+    "recommendActionLabel": "{action}: {title}",
+    "activityAddedDetail": "Profile added to your children",
+    "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
     "nav": {
@@ -590,7 +749,8 @@
     },
     "userMenu": {
       "settings": "설정",
-      "signOut": "로그아웃"
+      "signOut": "로그아웃",
+      "role": "Parent account"
     }
   },
   "Settings": {
@@ -605,6 +765,7 @@
     "account": {
       "title": "계정",
       "description": "SchoolTest 로그인에 사용되는 정보입니다.",
+      "signedInAs": "로그인 계정",
       "emailLabel": "로그인 이메일",
       "confirmedLabel": "이메일 인증",
       "confirmed": "인증됨",
@@ -625,7 +786,8 @@
     "defaultSectors": "기본 학교 부문",
     "defaultSort": "기본 정렬 순서",
     "defaultPageSize": "페이지당 결과",
-    "pageSizeOption": "페이지당 결과 {count}개",
+    "searchResultsViewTitle": "결과 보기",
+    "searchResultsViewDescription": "학교 결과의 정렬 순서와 한 페이지에 표시할 개수를 선택하세요.",
     "defaultFeeRange": "기본 연간 학비 범위",
     "defaultFeeMinimum": "최소 학비 (AUD)",
     "defaultFeeMaximum": "최대 학비 (AUD)",
@@ -692,7 +854,6 @@
         }
       },
       "lockedTitle": "항상 켜져 있는 업데이트",
-      "lockedHelper": "항상 켜짐 — 끌 수 없습니다.",
       "digest": {
         "title": "이메일 수신 빈도",
         "description": "해당 이메일 업데이트를 언제 보낼지 선택하세요. 어떤 설정을 선택하든 계정 및 보안 알림은 항상 발송됩니다.",
@@ -734,6 +895,10 @@
       "saveError": "알림 설정을 저장할 수 없습니다.",
       "loadErrorTitle": "알림 설정을 불러올 수 없습니다.",
       "loadErrorDescription": "저장된 알림 설정을 다시 불러오세요."
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose the language SchoolTest uses across the app."
     }
   },
   "SchoolSearch": {
@@ -747,19 +912,26 @@
     "searchPlaceholder": "학교 또는 지역으로 검색",
     "loading": "학교를 불러오는 중",
     "resultsCount": "{count, plural, other {학교 #곳}}",
+    "resultsRegion": "학교 검색 결과",
     "aria": {
       "filters": "학교 필터"
     },
     "filterPanel": {
-      "trigger": "필터",
+      "trigger": "모든 필터",
       "title": "학교 필터",
-      "clear": "필터 지우기",
+      "clear": "모두 지우기",
+      "activeCount": "{count, plural, other {필터 #개 적용됨}}",
       "location": "위치",
       "schoolProfile": "학교 정보",
       "features": "특징",
       "state": "주 또는 준주",
       "sector": "설립 유형",
-      "schoolType": "학교 유형"
+      "schoolType": "학교 유형",
+      "close": "필터 닫기",
+      "description": "지역, 유형, 특징, 학비로 학교 결과를 좁힙니다.",
+      "apply": "{count, plural, other {학교 #곳}} 보기",
+      "noFilters": "적용된 필터 없음 — 모든 학교 표시",
+      "remove": "{label} 필터 제거"
     },
     "states": {
       "QLD": "QLD",
@@ -821,7 +993,9 @@
     },
     "card": {
       "tuition": "연 <strong>{amount}</strong>부터",
-      "coverImageAlt": "{name} 캠퍼스 이미지"
+      "coverImageAlt": "{name} 캠퍼스 이미지",
+      "select": "{name} 선택",
+      "tuitionUnknown": "학비 미표기"
     },
     "map": {
       "region": "학교 결과 지도",
@@ -831,28 +1005,46 @@
       "showMap": "지도 보기",
       "showList": "목록 보기",
       "ctrlScrollHint": "Ctrl 키를 누른 채 스크롤하여 지도를 확대/축소하세요",
-      "markerCount": "{count, plural, =0 {지도에 표시된 학교가 없습니다} other {지도에 학교 #곳 표시}}"
+      "markerCount": "{count, plural, =0 {지도에 표시된 학교가 없습니다} other {지도에 학교 #곳 표시}}",
+      "clearSelection": "선택한 학교 지우기"
+    },
+    "facts": {
+      "scholarships": "장학금",
+      "elicos": "ELICOS",
+      "atar": "ATAR 진학 과정",
+      "cricos": "CRICOS"
     }
   },
   "AgentSearch": {
     "loading": "중개사를 불러오는 중",
     "resultsCount": "{count, plural, other {중개사 #곳}}",
+    "resultsRegion": "중개사 검색 결과",
     "verified": "인증됨",
     "aria": {
       "filters": "중개사 필터"
     },
     "filterPanel": {
-      "trigger": "필터",
+      "trigger": "모든 필터",
       "title": "중개사 필터",
-      "clear": "필터 지우기",
+      "clear": "모두 지우기",
+      "activeCount": "{count, plural, other {필터 #개 적용됨}}",
       "countries": "지원 국가",
       "languages": "사용 언어",
-      "services": "제공 서비스"
+      "services": "제공 서비스",
+      "close": "필터 닫기",
+      "description": "담당 국가, 언어, 서비스로 중개사 결과를 좁힙니다.",
+      "apply": "{count, plural, other {중개사 #곳}} 보기",
+      "noFilters": "적용된 필터 없음 — 모든 중개사 표시",
+      "remove": "{label} 필터 제거"
     },
     "chipGroups": {
       "countries": "지원 국가",
       "languages": "사용 언어",
       "services": "제공 서비스"
+    },
+    "card": {
+      "countries": "지원 국가",
+      "languages": "사용 언어"
     },
     "services": {
       "counselling": "상담",
@@ -910,7 +1102,8 @@
     "meta": {
       "title": "검색 — SchoolTest",
       "description": "호주 학교와 유학원을 하나의 통합 검색에서 찾아보세요."
-    }
+    },
+    "searchAction": "검색"
   },
   "StudentWizard": {
     "meta": {
@@ -923,26 +1116,37 @@
     "saveChanges": "변경 사항 저장",
     "stepPlaceholder": "이 단계의 입력 항목은 다음 단계에서 추가됩니다.",
     "stepCaption": "{total}단계 중 {current}단계 · {title}",
+    "stepsLabel": "학생 등록 진행 상황",
     "steps": {
       "personal": {
         "label": "인적사항",
-        "title": "인적사항"
+        "title": "인적사항",
+        "description": "학생의 기본 정보",
+        "railHint": "학생 정보"
       },
       "education": {
         "label": "학력",
-        "title": "학력"
+        "title": "학력",
+        "description": "현재 학교와 목표 입학 시기",
+        "railHint": "학교 및 목표 입학"
       },
       "guardian": {
         "label": "보호자",
-        "title": "부모 또는 보호자"
+        "title": "부모 또는 보호자",
+        "description": "이 학생에 대해 연락할 사람",
+        "railHint": "연락처 정보"
       },
       "media": {
         "label": "미디어",
-        "title": "사진 및 음성"
+        "title": "사진 및 음성",
+        "description": "선택 사항인 사진과 음성 소개",
+        "railHint": "사진 및 음성 소개"
       },
       "review": {
         "label": "검토",
-        "title": "검토 및 제출"
+        "title": "검토 및 제출",
+        "description": "이 학생을 생성하기 전에 모든 정보가 올바른지 확인하세요",
+        "railHint": "정보 확인"
       }
     },
     "personal": {
@@ -1020,11 +1224,11 @@
         "previewAlt": "음성 소개 미리보기",
         "invalidType": "오디오 파일(MP3 또는 WAV)을 선택하세요.",
         "tooLarge": "오디오가 10MB를 초과합니다. 더 작은 파일을 선택하세요."
-      }
+      },
+      "optionalNote": "두 항목 모두 선택 사항입니다. 나중에 학생 프로필에서 추가하거나 교체할 수 있습니다."
     },
     "toastCreated": "학생이 생성되었습니다",
     "review": {
-      "intro": "이 학생을 생성하기 전에 모든 정보가 올바른지 확인하세요.",
       "edit": "수정",
       "empty": "—",
       "photo": "사진",
@@ -1045,7 +1249,24 @@
         "offlineTitle": "오프라인 상태입니다",
         "offlineBody": "네트워크 연결을 확인한 후 다시 시도하세요.",
         "dismiss": "닫기"
-      }
+      },
+      "summaryEyebrow": "생성 준비 완료",
+      "noPhoto": "추가된 사진 없음",
+      "noVoice": "추가된 음성 소개 없음",
+      "born": "{date} 출생",
+      "testingBand": "테스트 밴드 {n}",
+      "entry": "{year} {term} 입학",
+      "photoAdded": "사진 추가됨",
+      "voiceAdded": "음성 소개 추가됨"
+    },
+    "pageTitle": "자녀 추가",
+    "editTitle": "자녀 정보 수정",
+    "backToChildren": "내 자녀",
+    "stepCounter": "{total}단계 중 {current}단계",
+    "success": {
+      "createdTitle": "학생이 추가되었습니다",
+      "savedTitle": "변경사항이 저장되었습니다",
+      "body": "‘내 자녀’로 이동합니다…"
     }
   },
   "StudentWizardSchema": {
@@ -1192,11 +1413,38 @@
     "skillLadderLabel": "{skill}: CEFR {band}, {total}단계 중 {rank}단계",
     "skillsPendingTitle": "아직 평가 없음",
     "skillsPendingDescription": "이 영역에는 아직 공식 결과가 발표되지 않았습니다.",
+    "sessionsCompleted": "완료한 세션",
+    "recordFraction": "{recorded}/{total}",
+    "recordCompletionLabel": "{name} 님의 기록된 정보",
+    "skillNotAssessed": "미평가",
+    "tabRecord": "기록",
+    "tabProgress": "학습 현황",
+    "tabsLabel": "자녀 프로필 섹션",
     "pagerLabel": "명단 페이지",
     "pagerPage": "{pages}페이지 중 {page}페이지",
     "pagerPrevious": "이전 페이지",
     "pagerNext": "다음 페이지",
-    "pagerGoTo": "{page}페이지로 이동"
+    "pagerGoTo": "{page}페이지로 이동",
+    "addChild": "Add a child",
+    "addChildHint": "Set up a new learner profile.",
+    "cardOpenHint": "Open the profile for progress and results.",
+    "cardDetails": "Details",
+    "levelJourneyHeading": "Level journey",
+    "journeyNote": "Each rail shows the highest CEFR band published for that skill on the six-band ladder this system uses, Pre-A1 through C1.",
+    "journeyUnknown": "No CEFR band has been published for any skill yet.",
+    "skillsUnknown": "No readiness has been published for any skill yet.",
+    "skillsNote": "Readiness is published per skill with each official result. No overall level is calculated.",
+    "focusSkillNote": "{skill} is the current focus area — readiness {readiness}.",
+    "skillLadderEmptyLabel": "{skill}: no CEFR band published yet",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "cardAdded": "Added {date}"
   },
   "Notifications": {
     "meta": {
@@ -1215,6 +1463,7 @@
     "unread": "읽지 않음",
     "read": "읽음",
     "today": "오늘",
+    "earlier": "Earlier",
     "yesterday": "어제",
     "unreadCount": "{count, plural, =0 {읽지 않은 알림 없음} other {읽지 않은 알림 #개}}",
     "emptyTitle": "모두 확인했습니다",
@@ -1233,6 +1482,10 @@
       "children": "자녀",
       "testActivity": "시험 활동",
       "testResults": "시험 결과"
+    },
+    "filterLabel": "Filter notifications by category",
+    "filters": {
+      "all": "All"
     }
   },
   "QueryError": {

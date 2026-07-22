@@ -3,9 +3,8 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { Controller, useFormContext, useFormState } from 'react-hook-form';
 
-import { SegmentedControl } from '@/modules/design-system';
 import { NationalityCombobox } from '@/modules/student-wizard/components/NationalityCombobox';
-import { WizardField } from '@/modules/student-wizard/components/WizardField';
+import { WizardChoiceField } from '@/modules/student-wizard/components/WizardChoiceField';
 import { WizardTextField } from '@/modules/student-wizard/components/WizardTextField';
 import { GENDER_VALUES } from '@/modules/student-wizard/constants/student-wizard.constants';
 import type { StudentWizardValues } from '@/modules/student-wizard/types/student-wizard.types';
@@ -14,7 +13,11 @@ function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-// C-UI-STUDENT-WIZARD step 1 — 7 personal fields on the shared RHF form (048).
+// Step 1 — Personal (spec 03 §2.4). Row grouping is the design's, verbatim:
+// [given | family], [date of birth | email], [gender full-width], [nationality |
+// passport], two-up rows at `1fr 1fr / gap:16px` and 22px between them.
+// Date of birth stays a native date input, not the design's DD/MM/YYYY text box:
+// the schema this field is bound to accepts ISO only.
 export function StepPersonal() {
   const t = useTranslations('StudentWizard.personal');
   const locale = useLocale();
@@ -27,11 +30,12 @@ export function StepPersonal() {
   const genderOptions = GENDER_VALUES.map((value) => ({ value, label: t(`gender.${value}`) }));
 
   return (
-    <div className="flex flex-col gap-4 duration-300 ease-out animate-in fade-in slide-in-from-bottom-1 motion-reduce:animate-none">
-      <div className="grid grid-cols-2 gap-3.5">
+    <div className="flex flex-col gap-5.5 duration-300 ease-out animate-in fade-in slide-in-from-bottom-1 motion-reduce:animate-none">
+      <div className="grid gap-4 sm:grid-cols-2">
         <WizardTextField
           id="wizard-given-name"
           label={t('givenName')}
+          required
           autoComplete="given-name"
           placeholder={t('givenNamePlaceholder')}
           error={errors.given_name?.message}
@@ -47,17 +51,7 @@ export function StepPersonal() {
           registration={register('family_name')}
         />
       </div>
-      <WizardTextField
-        id="wizard-email"
-        type="email"
-        inputMode="email"
-        label={t('email')}
-        autoComplete="email"
-        placeholder={t('emailPlaceholder')}
-        error={errors.email?.message}
-        registration={register('email')}
-      />
-      <div className="grid grid-cols-2 gap-3.5">
+      <div className="grid gap-4 sm:grid-cols-2">
         <WizardTextField
           id="wizard-dob"
           type="date"
@@ -66,50 +60,59 @@ export function StepPersonal() {
           error={errors.date_of_birth?.message}
           registration={register('date_of_birth')}
         />
-        <Controller
-          control={control}
-          name="gender"
-          render={({ field }) => (
-            <WizardField label={t('gender.label')} error={errors.gender?.message}>
-              <SegmentedControl
-                className="w-full flex-wrap"
-                ariaLabel={t('gender.label')}
-                options={genderOptions}
-                value={field.value ?? ''}
-                onValueChange={field.onChange}
-              />
-            </WizardField>
-          )}
+        <WizardTextField
+          id="wizard-email"
+          type="email"
+          inputMode="email"
+          label={t('email')}
+          autoComplete="email"
+          placeholder={t('emailPlaceholder')}
+          error={errors.email?.message}
+          registration={register('email')}
         />
       </div>
       <Controller
         control={control}
-        name="nationality"
-        render={({ field, fieldState }) => (
-          <WizardField htmlFor="wizard-nationality" label={t('nationality')} error={fieldState.error?.message}>
+        name="gender"
+        render={({ field }) => (
+          <WizardChoiceField
+            id="wizard-gender"
+            label={t('gender.label')}
+            options={genderOptions}
+            value={field.value ?? ''}
+            error={errors.gender?.message}
+            onValueChange={field.onChange}
+          />
+        )}
+      />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Controller
+          control={control}
+          name="nationality"
+          render={({ field, fieldState }) => (
             <NationalityCombobox
               id="wizard-nationality"
+              label={t('nationality')}
+              required
               locale={locale}
               value={field.value ?? ''}
               placeholder={t('nationalityPlaceholder')}
               emptyLabel={t('nationalityEmpty')}
-              ariaLabel={t('nationality')}
-              ariaDescribedBy={fieldState.error ? 'wizard-nationality-error' : undefined}
-              invalid={Boolean(fieldState.error)}
+              error={fieldState.error?.message}
               onValueChange={field.onChange}
               onBlur={field.onBlur}
             />
-          </WizardField>
-        )}
-      />
-      <WizardTextField
-        id="wizard-passport"
-        label={t('passportNumber')}
-        helper={t('passportHelper')}
-        placeholder={t('passportPlaceholder')}
-        error={errors.passport_number?.message}
-        registration={register('passport_number')}
-      />
+          )}
+        />
+        <WizardTextField
+          id="wizard-passport"
+          label={t('passportNumber')}
+          helper={t('passportHelper')}
+          placeholder={t('passportPlaceholder')}
+          error={errors.passport_number?.message}
+          registration={register('passport_number')}
+        />
+      </div>
     </div>
   );
 }

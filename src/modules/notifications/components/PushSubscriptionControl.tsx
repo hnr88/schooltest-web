@@ -1,12 +1,17 @@
 'use client';
 
-import { BellRing } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { Badge, Button } from '@/modules/design-system';
+import { cn } from '@/lib/utils';
+import { Button, DataPanel, StatusPill } from '@/modules/design-system';
+import { PORTAL_CARD_CLASS } from '@/modules/notifications/constants/notification.constants';
 import { PUSH_STATUS_CONFIG } from '@/modules/notifications/constants/push-subscription.constants';
 import { useBrowserPushSubscription } from '@/modules/notifications/hooks/use-browser-push-subscription';
 
+// The "Password & security" card shape (.qa/design/spec/03 §4.1 section 4): a 22px/30px
+// card that is ONE row — 14/600 title over a 12.5px caption, ghost button pinned right.
+// The control is ALWAYS rendered with its real status: when it cannot act it stays
+// visible and disabled. It must never disappear, and never become an enabled no-op.
 function PushSubscriptionControl() {
   const t = useTranslations('Settings');
   const push = useBrowserPushSubscription();
@@ -21,34 +26,29 @@ function PushSubscriptionControl() {
       : t('notificationPreferences.push.enable');
 
   return (
-    <section
+    <DataPanel
       aria-labelledby="notification-push-title"
       data-surface="push-subscription-control"
-      className="flex flex-col gap-4 rounded-panel border border-border bg-card p-6.5 shadow-sm"
+      className={cn(
+        PORTAL_CARD_CLASS,
+        'flex flex-wrap items-center gap-4 px-7.5 py-5.5 sm:flex-nowrap',
+      )}
     >
-      <div className="flex min-w-0 items-start gap-3">
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-tile bg-primary text-primary-foreground">
-          <BellRing aria-hidden="true" className="size-5" />
-        </span>
-        <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3
-              id="notification-push-title"
-              className="text-panel-title font-semibold text-foreground"
-            >
-              {t('notificationPreferences.push.title')}
-            </h3>
-            <Badge variant={config.variant}>{t(config.labelKey)}</Badge>
-          </div>
-          <p id="notification-push-description" className="text-body-sm text-muted-foreground">
-            {t('notificationPreferences.push.description')}
-          </p>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <h2 id="notification-push-title" className="text-body-md font-semibold text-foreground">
+            {t('notificationPreferences.push.title')}
+          </h2>
+          <StatusPill tone={config.tone}>{t(config.labelKey)}</StatusPill>
         </div>
+        <p id="notification-push-description" className="mt-1 text-meta text-body">
+          {t('notificationPreferences.push.description')}
+        </p>
       </div>
       <Button
         type="button"
         variant={push.isSubscribed ? 'outline' : 'default'}
-        className="min-h-11 shrink-0 self-start px-4 disabled:bg-muted disabled:text-foreground disabled:opacity-100"
+        className="min-h-11 shrink-0 rounded-full px-4.5 disabled:bg-muted disabled:text-foreground disabled:opacity-100"
         aria-describedby="notification-push-description"
         disabled={isDisabled}
         loading={push.isActionPending}
@@ -56,7 +56,7 @@ function PushSubscriptionControl() {
       >
         {actionLabel}
       </Button>
-    </section>
+    </DataPanel>
   );
 }
 

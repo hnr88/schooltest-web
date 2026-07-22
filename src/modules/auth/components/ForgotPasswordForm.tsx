@@ -48,13 +48,13 @@ export function ForgotPasswordForm({ onSent }: ForgotPasswordFormProps) {
     <div className="flex flex-col gap-5">
       <span
         aria-hidden="true"
-        className="flex size-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
+        className="flex size-11 items-center justify-center rounded-tile bg-blue-50 text-blue-600"
       >
         <Lock className="size-5" />
       </span>
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">{t('forgotTitle')}</h1>
-        <p className="text-sm text-muted-foreground">{t('forgotSubtitle')}</p>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-h3 font-bold text-foreground">{t('forgotTitle')}</h1>
+        <p className="text-body-md text-muted-foreground">{t('forgotSubtitle')}</p>
       </div>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
         {formError ? (
@@ -71,7 +71,12 @@ export function ForgotPasswordForm({ onSent }: ForgotPasswordFormProps) {
           error={errors.email?.message ? t(errors.email.message) : undefined}
           registration={register('email')}
         />
-        <Button type="submit" size="lg" loading={forgotPassword.isPending} className="w-full">
+        <Button
+          type="submit"
+          size="xl"
+          loading={forgotPassword.isPending}
+          className="w-full rounded-lg shadow-sm transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+        >
           {forgotPassword.isPending ? t('sendingResetLink') : t('sendResetLink')}
         </Button>
       </form>

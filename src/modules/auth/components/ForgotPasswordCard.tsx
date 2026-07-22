@@ -1,20 +1,20 @@
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-import { Link, useRouter } from '@/i18n/navigation';
+import { useRouter } from '@/i18n/navigation';
+import { AuthBackLink } from '@/modules/auth/components/AuthBackLink';
+import { AuthCard } from '@/modules/auth/components/AuthCard';
 import { ForgotPasswordForm } from '@/modules/auth/components/ForgotPasswordForm';
 import { ForgotPasswordSentState } from '@/modules/auth/components/ForgotPasswordSentState';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
-import { Card, CardContent, Logo } from '@/modules/design-system';
 
-// §14.3 forgot-password card: centered logo lockup above a 420px card whose
-// content swaps between the request form and the enumeration-safe sent state.
+// Forgot-password screen (design spec 06 §1.3): the centred logo lockup above a
+// 420px card whose content swaps between the request form (card A) and the
+// enumeration-safe sent state (card B) — the design draws both side by side.
 export function ForgotPasswordCard() {
   const t = useTranslations('Auth');
-  const tHome = useTranslations('Home');
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
@@ -31,26 +31,13 @@ export function ForgotPasswordCard() {
   }, [hydrated, token, router]);
 
   return (
-    <Card className="w-full animate-in rounded-2xl shadow-lg duration-300 [--card-spacing:--spacing(8)] fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
-      <CardContent className="flex flex-col">
-        <Link href="/" className="self-start rounded-sm lg:hidden">
-          <Logo alt={tHome('footer.logoAlt')} height={26} />
-        </Link>
-        <div className="mt-5 flex flex-col gap-5">
-          {sentEmail ? (
-            <ForgotPasswordSentState email={sentEmail} />
-          ) : (
-            <ForgotPasswordForm onSent={setSentEmail} />
-          )}
-          <Link
-            href="/sign-in"
-            className="inline-flex items-center justify-center gap-1.5 self-center text-sm font-semibold text-foreground transition-colors hover:text-blue-600"
-          >
-            <ArrowLeft aria-hidden="true" className="size-4" />
-            {t('backToSignIn')}
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+    <AuthCard>
+      {sentEmail ? (
+        <ForgotPasswordSentState email={sentEmail} />
+      ) : (
+        <ForgotPasswordForm onSent={setSentEmail} />
+      )}
+      <AuthBackLink label={t('backToSignIn')} />
+    </AuthCard>
   );
 }

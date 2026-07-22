@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { AuthSplitLayout, SignUpCard } from '@/modules/auth';
+import { AuthCenteredLayout, SignUpCard } from '@/modules/auth';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Auth.signUpMeta');
@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function SignUpPage() {
   return (
-    <AuthSplitLayout>
+    <AuthCenteredLayout width="wide">
       <SignUpCard />
-    </AuthSplitLayout>
+    </AuthCenteredLayout>
   );
 }

@@ -38,8 +38,11 @@ export const THEME_CLASS_GROUPS = {
     'button',
     'error-code',
     'page-title',
+    'auth-title',
     'panel-title',
     'lede',
+    'body-lg',
+    'body-md',
     'body-sm',
     'meta',
     'overline',
@@ -47,17 +50,36 @@ export const THEME_CLASS_GROUPS = {
     'stat-lg',
     'stat-md',
     'stat-sm',
+    'portal-title',
+    'portal-heading',
+    'portal-kpi',
+    'portal-stat',
+    'portal-panel',
   ],
   // --radius-* → rounded-<name>
-  rounded: ['sm', 'md', 'lg', 'tile', 'panel', 'xl', '2xl', '3xl', '4xl'],
+  rounded: [
+    'sm',
+    'md',
+    'lg',
+    'tile',
+    'panel',
+    'card',
+    'result',
+    'segment',
+    'selection',
+    'xl',
+    '2xl',
+    '3xl',
+    '4xl',
+  ],
   // --ease-* → ease-<name>
   ease: ['out-expo'],
   // --tracking-* → tracking-<name>
   tracking: ['eyebrow', 'overline', 'rail'],
   // --shadow-* → shadow-<name>
-  shadow: ['sm', 'md', 'lg', 'xl', 'primary-glow', 'dark-lift'],
+  shadow: ['sm', 'md', 'lg', 'xl', 'primary-glow', 'dark-lift', 'knob', 'float'],
   // --container-* → max-w-<name>
-  'max-w': ['landing', 'hero'],
+  'max-w': ['landing', 'hero', 'auth', 'auth-wide', 'portal', 'shell'],
 } as const;
 
 /** The utility prefix each classGroup's tokens are written with. */

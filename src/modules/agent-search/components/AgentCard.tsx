@@ -2,14 +2,22 @@
 
 import { useTranslations } from 'next-intl';
 
-import { Avatar, AvatarFallback, AvatarImage, Badge } from '@/modules/design-system';
 import { AgentCardMeta } from '@/modules/agent-search/components/AgentCardMeta';
-import { getAgentInitials, getAgentSubtitle } from '@/modules/agent-search/lib/agent-card.helpers';
+import { getAgentSubtitle } from '@/modules/agent-search/lib/agent-card.helpers';
 import type { AgentHit } from '@/modules/agent-search/types/agent-search.types';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  AvatarTint,
+  StatusPill,
+  getAvatarTone,
+  getInitials,
+} from '@/modules/design-system';
 
-// Informational agent card (spec §13 card). No contact/"Talk" dialog. The Base UI
-// Avatar swaps to the initials fallback automatically when photoUrl is absent or
-// its image errors (§8 avatar pairs). Hover lifts the border + shadow (motion baseline).
+// `photoUrl` is a REAL API field, so a populated one still renders the photo through
+// the Base UI Avatar. 0 of the 8 live agents carry one, so what actually renders is
+// the canonical AvatarTint identity disc — never a stock portrait, never a service.
 function AgentCard({ hit }: { hit: AgentHit }) {
   const t = useTranslations('AgentSearch');
   const subtitle = getAgentSubtitle(hit);
@@ -17,33 +25,32 @@ function AgentCard({ hit }: { hit: AgentHit }) {
   return (
     <article
       data-slot="agent-card"
-      className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 transition duration-150 ease-out hover:border-input hover:shadow-md motion-reduce:transition-none"
+      className="flex flex-col gap-4 rounded-result border border-transparent bg-card p-5.5 shadow-sm transition duration-200 ease-out-expo hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       <div data-slot="agent-card-profile" className="flex items-start gap-3">
-        <Avatar size="lg" className="size-12">
-          {hit.photoUrl ? <AvatarImage src={hit.photoUrl} alt="" /> : null}
-          <AvatarFallback className="bg-navy-950 text-base font-bold text-white dark:bg-blue-100 dark:text-navy-950">
-            {getAgentInitials(hit.name)}
-          </AvatarFallback>
-        </Avatar>
+        {hit.photoUrl ? (
+          <Avatar size="lg" className="size-11">
+            <AvatarImage src={hit.photoUrl} alt="" />
+            <AvatarFallback>{getInitials(hit.name)}</AvatarFallback>
+          </Avatar>
+        ) : (
+          <AvatarTint
+            size="md"
+            initials={getInitials(hit.name)}
+            tone={getAvatarTone(hit.name)}
+          />
+        )}
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-base font-bold text-navy-950 dark:text-blue-100">{hit.name}</h3>
-            {hit.verified ? (
-              <Badge variant="success" className="shrink-0 bg-navy-950 text-white dark:bg-blue-100 dark:text-navy-950">
-                {t('verified')}
-              </Badge>
-            ) : null}
+            <h3 className="text-panel-title font-bold text-foreground">{hit.name}</h3>
+            {hit.verified ? <StatusPill tone="success">{t('verified')}</StatusPill> : null}
           </div>
           {subtitle ? (
-            <p className="line-clamp-2 text-sm text-navy-800 dark:text-blue-100">{subtitle}</p>
+            <p className="line-clamp-2 text-body-sm text-muted-foreground">{subtitle}</p>
           ) : null}
         </div>
       </div>
-
-      <div className="border-t border-border pt-3">
-        <AgentCardMeta hit={hit} />
-      </div>
+      <AgentCardMeta hit={hit} />
     </article>
   );
 }

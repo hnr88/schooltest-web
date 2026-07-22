@@ -10,7 +10,13 @@ test('school search: grouped filter panel changes the real result request', asyn
   await page.setViewportSize(DESKTOP);
   await gotoSchoolsMap(page);
 
-  const panel = page.locator('[data-slot="school-filter-panel"]');
+  // The design has no persistent rail on "Find a school" — filters live in the §8.6
+  // "All filters" overlay at every width. Open it, then assert the same grouped
+  // controls inside the dialog.
+  await page
+    .getByRole('button', { name: cat(en, 'SchoolSearch.filterPanel.trigger'), exact: true })
+    .click();
+  const panel = page.getByRole('dialog');
   await expect(panel).toBeVisible();
   await expect(panel.getByRole('heading', { name: cat(en, 'SchoolSearch.filterPanel.location') })).toBeVisible();
   await expect(

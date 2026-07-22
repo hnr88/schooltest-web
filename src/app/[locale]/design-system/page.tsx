@@ -7,11 +7,14 @@ import {
   BrandSection,
   ButtonsSection,
   CardsSection,
+  ChoicesSection,
   Container,
   DataSection,
   FeedbackSection,
   FormsSection,
+  MediaSection,
   OverlaysSection,
+  RecordsSection,
 } from '@/modules/design-system';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,8 +45,11 @@ export default async function DesignSystemPage() {
         <AlertsSection />
         <CardsSection />
         <FormsSection />
+        <ChoicesSection />
         <OverlaysSection />
         <DataSection />
+        <RecordsSection />
+        <MediaSection />
         <FeedbackSection />
       </Container>
     </main>

@@ -13,6 +13,7 @@ interface UnifiedSearchField {
   value: string;
   setValue: (next: string) => void;
   clear: () => void;
+  commit: () => void;
   hasValue: boolean;
 }
 
@@ -56,5 +57,12 @@ export function useUnifiedSearchField(mode: UnifiedSearchMode): UnifiedSearchFie
     setStoreQRef.current('');
   }, []);
 
-  return { value, setValue, clear, hasValue: value.length > 0 };
+  // The design's pill ends in a real "Search" button (spec 01 §8.1). Typing is
+  // already debounced, so the button's job is to SKIP the remaining debounce window
+  // and commit what is in the field right now — never a second, competing query path.
+  const commit = useCallback(() => {
+    setStoreQRef.current(value);
+  }, [value]);
+
+  return { value, setValue, clear, commit, hasValue: value.length > 0 };
 }

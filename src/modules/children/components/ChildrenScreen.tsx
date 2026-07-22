@@ -11,15 +11,15 @@ import { ChildrenToolbar } from '@/modules/children/components/ChildrenToolbar';
 import { useChildrenList } from '@/modules/children/hooks/use-children-list';
 import { useRosterPagination } from '@/modules/children/hooks/use-roster-pagination';
 
-// C-UI-MYCHILDREN — the roster panel screen. Canonical list rhythm: 24/32 page
-// padding and a 16px section gap, tighter than the dashboard's 28/32 and 24.
+// §A.2 page container — a single vertical stack at the portal's 24px block rhythm:
+// PageHeader, the toolbar the design has no slot for but the archive/search wiring
+// needs, then the ChildCardGrid.
 export function ChildrenScreen() {
   const t = useTranslations('Children');
   const tCommon = useTranslations('Common');
   const {
     rows,
     totalCount,
-    allProfileCount,
     activeCount,
     archivedCount,
     hasAnyChildren,
@@ -35,13 +35,9 @@ export function ChildrenScreen() {
   return (
     <main
       data-surface="children-roster"
-      className="flex flex-1 animate-in flex-col gap-4 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8"
+      className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8"
     >
-      <ChildrenRosterSummary
-        activeCount={activeCount}
-        archivedCount={archivedCount}
-        totalCount={allProfileCount}
-      />
+      <ChildrenRosterSummary activeCount={activeCount} archivedCount={archivedCount} />
 
       {isLoading ? (
         <ChildrenRosterSkeleton />
@@ -54,7 +50,7 @@ export function ChildrenScreen() {
               type="button"
               variant="outline"
               size="sm"
-              className="h-11 px-4"
+              className="h-11 rounded-full px-4"
               loading={isFetching}
               onClick={() => refetch()}
             >

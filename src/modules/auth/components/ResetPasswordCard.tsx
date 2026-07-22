@@ -1,61 +1,52 @@
 'use client';
 
-import { ArrowLeft, TriangleAlert } from 'lucide-react';
+import { TriangleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { Link } from '@/i18n/navigation';
+import { AuthBackLink } from '@/modules/auth/components/AuthBackLink';
+import { AuthCard } from '@/modules/auth/components/AuthCard';
 import { ResetPasswordForm } from '@/modules/auth/components/ResetPasswordForm';
-import { Button, Card, CardContent, Logo } from '@/modules/design-system';
+import { Button } from '@/modules/design-system';
 
 interface ResetPasswordCardProps {
   code?: string;
 }
 
-// §14.3 card reuse: centered logo lockup above a 420px card that swaps between
+// §1.3 card reuse: the centred logo lockup above a 420px card that swaps between
 // the new-password form and ONE generic invalid/expired error state (missing
 // code OR any reset 400). Deliberately NO authed redirect — a user may reset
 // while a stale token exists (C-UI-AUTH-PAGES keeps SignInCard's redirect off).
 export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
   const t = useTranslations('Auth');
-  const tHome = useTranslations('Home');
   const [isInvalid, setIsInvalid] = useState(false);
 
   return (
-    <Card className="w-full animate-in rounded-2xl shadow-lg duration-300 [--card-spacing:--spacing(8)] fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
-      <CardContent className="flex flex-col">
-        <Link href="/" className="self-start rounded-sm lg:hidden">
-          <Logo alt={tHome('footer.logoAlt')} height={26} />
-        </Link>
-        <div className="mt-5 flex flex-col gap-5">
-          {!code || isInvalid ? (
-            <div className="flex animate-in flex-col gap-5 duration-300 fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
-              <span
-                aria-hidden="true"
-                className="flex size-11 items-center justify-center rounded-xl bg-red-100 text-red-600"
-              >
-                <TriangleAlert className="size-5" />
-              </span>
-              <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold">{t('invalidLinkTitle')}</h1>
-                <p className="text-sm text-muted-foreground">{t('invalidLinkBody')}</p>
-              </div>
-              <Button href="/forgot-password" size="lg" className="w-full">
-                {t('requestNewLink')}
-              </Button>
-            </div>
-          ) : (
-            <ResetPasswordForm code={code} onInvalidCode={() => setIsInvalid(true)} />
-          )}
-          <Link
-            href="/sign-in"
-            className="inline-flex items-center justify-center gap-1.5 self-center text-sm font-semibold text-foreground transition-colors hover:text-blue-600"
+    <AuthCard>
+      {!code || isInvalid ? (
+        <div className="flex animate-in flex-col gap-5 duration-300 fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
+          <span
+            aria-hidden="true"
+            className="flex size-11 items-center justify-center rounded-tile bg-danger-soft-2 text-danger-strong"
           >
-            <ArrowLeft aria-hidden="true" className="size-4" />
-            {t('backToSignIn')}
-          </Link>
+            <TriangleAlert className="size-5" />
+          </span>
+          <div className="flex flex-col gap-2">
+            <h1 className="text-h3 font-bold text-foreground">{t('invalidLinkTitle')}</h1>
+            <p className="text-body-md text-muted-foreground">{t('invalidLinkBody')}</p>
+          </div>
+          <Button
+            href="/forgot-password"
+            size="xl"
+            className="w-full rounded-lg shadow-sm transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+          >
+            {t('requestNewLink')}
+          </Button>
         </div>
-      </CardContent>
-    </Card>
+      ) : (
+        <ResetPasswordForm code={code} onInvalidCode={() => setIsInvalid(true)} />
+      )}
+      <AuthBackLink label={t('backToSignIn')} />
+    </AuthCard>
   );
 }

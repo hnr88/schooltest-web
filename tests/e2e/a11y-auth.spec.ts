@@ -175,6 +175,11 @@ test.describe('sign-in — a11y + responsive + focus order', () => {
     page,
   }) => {
     const errors = watchErrors(page);
+    // AuthSplitLayout's benefit list (D-UI-2) staggers each <li>'s fade-in up to
+    // 1080ms out, and axe can sample color-contrast mid-fade on the desktop pass.
+    // Same fix as the google-callback / dashboard-search describes above: reduced
+    // motion disables the animate-in variants (all honor motion-reduce:animate-none).
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const viewport of [MOBILE, DESKTOP]) {
       await page.setViewportSize(viewport);
       await page.goto('/sign-in');
@@ -418,10 +423,13 @@ test.describe('dashboard (authed, seeded parent) — a11y + responsive + focus o
     expect(errors, errors.join('\n')).toEqual([]);
   });
 
-  test('focus order (children): user menu → add student → search', async ({ page, request }) => {
-    // The children table + search relocated to /dashboard/children (task 054,
-    // C-UI-MYCHILDREN). DOM order there is topbar user chip → header "Add
-    // student" link → toolbar search combobox.
+  test('focus order (children): user menu → add child → search', async ({ page, request }) => {
+    // The children table + search live at /dashboard/children. The dashbaord-design
+    // redesign moved the user menu into the detached sidebar rail (its footer user
+    // card is the Sign-out trigger) and renamed the primary CTA to "Add a child"
+    // (Children.addChild). Forward tab order is still user-menu trigger → add-child
+    // link → search combobox; expectForwardFocusOrder checks reachability in order,
+    // not adjacency, so the sidebar preceding <main> in the DOM keeps the sequence.
     await loginAsSeededParent(page, request);
     await page.setViewportSize(DESKTOP);
     await page.goto('/dashboard/children');
@@ -430,8 +438,6 @@ test.describe('dashboard (authed, seeded parent) — a11y + responsive + focus o
     ).toBeVisible();
     await expectForwardFocusOrder(page, [
       {
-        // Sign-out moved into the topbar user chip menu (task 011) — the chip
-        // trigger is the tab stop that precedes the dashboard content now.
         label: 'user menu trigger',
         locator: page.getByRole('button', {
           name: cat(en, 'Shell.topbar.userMenuLabel'),
@@ -439,8 +445,8 @@ test.describe('dashboard (authed, seeded parent) — a11y + responsive + focus o
         }),
       },
       {
-        label: 'add student link',
-        locator: page.getByRole('link', { name: cat(en, 'Children.addStudent'), exact: true }),
+        label: 'add child link',
+        locator: page.getByRole('link', { name: cat(en, 'Children.addChild'), exact: true }),
       },
       {
         label: 'search combobox',

@@ -1,16 +1,15 @@
 'use client';
 
-import { Controller, type UseFormReturn } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
+import { Controller, type UseFormReturn } from 'react-hook-form';
 
-import { Input, Label } from '@/modules/design-system';
+import { FieldShell, SegmentedChoice } from '@/modules/design-system';
 import {
   SEARCH_PREFERENCE_PAGE_SIZES,
   SEARCH_PREFERENCE_SORT_LABEL_KEYS,
   SEARCH_PREFERENCE_SORT_OPTIONS,
-  SETTINGS_SECTION_LABEL_CLASS,
 } from '@/modules/settings/constants/settings.constants';
-import { parseNullableNumber } from '@/modules/settings/lib/search-preferences';
+import { SettingsPanel } from '@/modules/settings/components/SettingsPanel';
 import { SettingsSelectField } from '@/modules/settings/components/SettingsSelectField';
 import type { SearchPreferenceFormValues } from '@/modules/settings/types/settings.types';
 
@@ -18,18 +17,22 @@ interface SearchPreferenceDetailsFieldsProps {
   form: UseFormReturn<SearchPreferenceFormValues>;
 }
 
+// "Results view" — the short second-column panel. It pairs the one field canonical
+// still gives a dropdown with a SegmentedChoice: canonical's equal-width row for a
+// 3-value enum inside a narrow panel (App Screens L1730 "Points 1 | 2 | 3"), which
+// is what a page size is. The segment labels are the numbers themselves; the field
+// label above the group is what names them, exactly as canonical draws it.
 export function SearchPreferenceDetailsFields({ form }: SearchPreferenceDetailsFieldsProps) {
   const t = useTranslations('Settings');
   const tSearch = useTranslations('SchoolSearch');
-  const { errors } = form.formState;
-  const sortOptions = SEARCH_PREFERENCE_SORT_OPTIONS.map((value) => ({
-    value,
-    label: tSearch(`sortOptions.${SEARCH_PREFERENCE_SORT_LABEL_KEYS[value]}`),
-  }));
 
   return (
-    <>
-      <div className="grid gap-4 sm:grid-cols-2">
+    <SettingsPanel
+      id="settings-search-results"
+      title={t('searchResultsViewTitle')}
+      description={t('searchResultsViewDescription')}
+    >
+      <div className="flex flex-col gap-5">
         <Controller
           control={form.control}
           name="default_sort"
@@ -37,7 +40,10 @@ export function SearchPreferenceDetailsFields({ form }: SearchPreferenceDetailsF
             <SettingsSelectField
               id="search-preference-sort"
               label={t('defaultSort')}
-              options={sortOptions}
+              options={SEARCH_PREFERENCE_SORT_OPTIONS.map((value) => ({
+                value,
+                label: tSearch(`sortOptions.${SEARCH_PREFERENCE_SORT_LABEL_KEYS[value]}`),
+              }))}
               value={field.value}
               onValueChange={field.onChange}
             />
@@ -47,53 +53,24 @@ export function SearchPreferenceDetailsFields({ form }: SearchPreferenceDetailsF
           control={form.control}
           name="default_page_size"
           render={({ field }) => (
-            <SettingsSelectField
+            <FieldShell
               id="search-preference-page-size"
+              labelId="search-preference-page-size-label"
               label={t('defaultPageSize')}
-              options={SEARCH_PREFERENCE_PAGE_SIZES.map((value) => ({
-                value,
-                label: t('pageSizeOption', { count: value }),
-              }))}
-              value={field.value}
-              onValueChange={field.onChange}
-            />
+            >
+              <SegmentedChoice
+                options={SEARCH_PREFERENCE_PAGE_SIZES.map((value) => ({
+                  value: String(value),
+                  label: String(value),
+                }))}
+                value={String(field.value)}
+                onValueChange={(next) => field.onChange(Number(next))}
+                ariaLabelledBy="search-preference-page-size-label"
+              />
+            </FieldShell>
           )}
         />
       </div>
-      <fieldset className="flex flex-col gap-2.5">
-        <legend className={SETTINGS_SECTION_LABEL_CLASS}>{t('defaultFeeRange')}</legend>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="search-preference-fee-min">{t('defaultFeeMinimum')}</Label>
-            <Input
-              id="search-preference-fee-min"
-              type="number"
-              min="0"
-              max="1000000"
-              inputMode="numeric"
-              className="h-11"
-              aria-invalid={errors.default_fee_min ? true : undefined}
-              {...form.register('default_fee_min', { setValueAs: parseNullableNumber })}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="search-preference-fee-max">{t('defaultFeeMaximum')}</Label>
-            <Input
-              id="search-preference-fee-max"
-              type="number"
-              min="0"
-              max="1000000"
-              inputMode="numeric"
-              className="h-11"
-              aria-invalid={errors.default_fee_max ? true : undefined}
-              {...form.register('default_fee_max', { setValueAs: parseNullableNumber })}
-            />
-          </div>
-        </div>
-        {errors.default_fee_min?.message ? (
-          <p className="text-sm text-destructive">{t(errors.default_fee_min.message)}</p>
-        ) : null}
-      </fieldset>
-    </>
+    </SettingsPanel>
   );
 }
