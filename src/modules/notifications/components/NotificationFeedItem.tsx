@@ -1,10 +1,11 @@
 'use client';
 
-import { Check, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, Check } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
-import { Button, Badge } from '@/modules/design-system';
+import { Button } from '@/modules/design-system';
 import { NotificationCategoryIcon } from '@/modules/notifications/components/NotificationCategoryIcon';
 import { getNotificationTileClass } from '@/modules/notifications/lib/notification-display';
 import type { Notification } from '@/modules/notifications/types/notification.types';
@@ -21,7 +22,6 @@ function NotificationFeedItem({
   const format = useFormatter();
   const t = useTranslations('Notifications');
   const isUnread = notification.readAt === null;
-  const title = notification.title;
 
   return (
     <li>
@@ -30,70 +30,76 @@ function NotificationFeedItem({
         data-notification-id={notification.documentId}
         data-read={String(!isUnread)}
         className={cn(
-          'flex gap-3 rounded-xl border p-4',
-          isUnread ? 'border-blue-100 bg-blue-50 dark:border-blue-950' : 'border-border bg-card',
+          'flex gap-3 rounded-xl border border-border p-4 transition-colors duration-200 ease-out-expo motion-reduce:transition-none',
+          isUnread ? 'bg-card shadow-sm' : 'bg-muted/40',
         )}
       >
         <span
           aria-hidden="true"
           className={cn(
-            'flex size-10 shrink-0 items-center justify-center rounded-lg',
+            'flex size-10 shrink-0 items-center justify-center rounded-xl',
             getNotificationTileClass(notification.category),
           )}
         >
           <NotificationCategoryIcon category={notification.category} />
         </span>
-        <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <div className="flex flex-wrap items-start justify-between gap-2">
-            <div className="flex min-w-0 flex-col gap-1">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+            <h3 className="flex min-w-0 items-center gap-2 font-semibold text-foreground">
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'size-2 shrink-0 rounded-full bg-primary transition duration-200 ease-out-expo motion-reduce:transition-none',
+                  isUnread ? 'scale-100 opacity-100' : 'scale-0 opacity-0',
+                )}
+              />
+              {isUnread ? <span className="sr-only">{t('unread')}</span> : null}
               {notification.linkUrl ? (
-                <Button
+                <Link
                   href={notification.linkUrl}
-                  variant="ghost"
-                  className="h-auto min-h-11 justify-start p-0 text-left font-semibold text-foreground hover:bg-transparent"
+                  className="inline-flex items-center gap-1 rounded-sm underline-offset-4 transition-colors duration-200 ease-out-expo hover:text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
                 >
-                  {title}
-                  <ExternalLink aria-hidden="true" className="size-4" />
+                  {notification.title}
+                  <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
+                </Link>
+              ) : (
+                notification.title
+              )}
+            </h3>
+            <div className="ml-auto flex shrink-0 items-center gap-2">
+              {isUnread && onMarkRead ? (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  loading={isMarking}
+                  onClick={() => onMarkRead(notification.documentId)}
+                  className="min-h-9 font-semibold text-primary hover:bg-blue-100 dark:hover:bg-blue-950"
+                >
+                  <Check aria-hidden="true" className="size-4" />
+                  {t('markRead')}
                 </Button>
               ) : (
-                <h3 className="font-semibold text-foreground">{title}</h3>
+                <p className="inline-flex min-h-9 items-center gap-1.5 text-caption font-medium text-muted-foreground">
+                  <Check aria-hidden="true" className="size-4 text-teal-600 dark:text-teal-500" />
+                  {t('read')}
+                </p>
               )}
-              {notification.body ? (
-                <p className="text-sm text-muted-foreground">{notification.body}</p>
-              ) : null}
             </div>
-            {isUnread ? <Badge variant="accent">{t('unread')}</Badge> : null}
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
-              <span>{t(`categories.${notification.category}`)}</span>
-              <span aria-hidden="true">·</span>
-              <time dateTime={notification.createdAt}>
-                {format.dateTime(new Date(notification.createdAt), {
-                  dateStyle: 'medium',
-                  timeStyle: 'short',
-                })}
-              </time>
-            </div>
-            {isUnread && onMarkRead ? (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                loading={isMarking}
-                onClick={() => onMarkRead(notification.documentId)}
-                className="min-h-11 text-primary hover:bg-blue-50 dark:hover:bg-blue-950"
-              >
-                <Check aria-hidden="true" className="size-4" />
-                {t('markRead')}
-              </Button>
-            ) : (
-              <span className="inline-flex min-h-11 items-center gap-2 text-caption text-muted-foreground">
-                <Check aria-hidden="true" className="size-4 text-teal-600" />
-                {t('read')}
-              </span>
-            )}
-          </div>
+          {notification.body ? (
+            <p className="text-sm text-muted-foreground">{notification.body}</p>
+          ) : null}
+          <p className="flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
+            <span className="font-medium">{t(`categories.${notification.category}`)}</span>
+            <span aria-hidden="true">·</span>
+            <time dateTime={notification.createdAt}>
+              {format.dateTime(new Date(notification.createdAt), {
+                dateStyle: 'medium',
+                timeStyle: 'short',
+              })}
+            </time>
+          </p>
         </div>
       </article>
     </li>

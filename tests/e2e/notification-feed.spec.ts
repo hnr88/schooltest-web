@@ -108,16 +108,27 @@ test('parent sees a real activity notification, marks it read, and persists the 
   const item = bellFeed.locator(`[data-notification-id="${notification.documentId}"]`);
   await expect(item).toHaveAttribute('data-read', 'false');
   await expect(item).toContainText(createdStudent.name);
+  await expect(item).toHaveAccessibleName(new RegExp(cat(en, 'Notifications.unread')));
   await page.waitForTimeout(150);
   await page.screenshot({ path: path.join(SCREENSHOTS, 'notification-bell-en.png') });
-  await item.getByRole('button', { name: cat(en, 'Notifications.markRead') }).click();
-  await expect(item).toHaveAttribute('data-read', 'true');
+
+  const popoverResults = await new AxeBuilder({ page })
+    .include('[data-slot="notification-popover"]')
+    .analyze();
+  expect(
+    popoverResults.violations
+      .filter((violation) => violation.impact === 'serious' || violation.impact === 'critical')
+      .map((violation) => `${violation.impact}:${violation.id}`),
+    'notification popover en',
+  ).toEqual([]);
 
   const notificationFeedNavigation = page.waitForURL(/\/dashboard\/notifications$/);
   await bellFeed.getByRole('link', { name: cat(en, 'Notifications.viewAll') }).click();
   await notificationFeedNavigation;
   await expect(page.getByRole('heading', { level: 1, name: cat(en, 'Notifications.title') })).toBeVisible();
   const feedItem = page.locator(`[data-notification-id="${notification.documentId}"]`);
+  await expect(feedItem).toHaveAttribute('data-read', 'false');
+  await feedItem.getByRole('button', { name: cat(en, 'Notifications.markRead') }).click();
   await expect(feedItem).toHaveAttribute('data-read', 'true');
   await page.reload();
   await expect(page.locator(`[data-notification-id="${notification.documentId}"]`)).toHaveAttribute(
@@ -132,6 +143,28 @@ test('parent sees a real activity notification, marks it read, and persists the 
     page.locator(`[data-notification-id="${secondNotification.documentId}"]`),
   ).toHaveAttribute('data-read', 'false');
 
+  await bell.click();
+  const secondPreview = bellFeed.locator(`[data-notification-id="${secondNotification.documentId}"]`);
+  const markReadResponsePromise = page.waitForResponse(
+    (response) =>
+      response.request().method() === 'PUT' &&
+      response.url().endsWith(`/api/notifications/${secondNotification.documentId}/read`),
+  );
+  await secondPreview.click();
+  const markReadResponse = await markReadResponsePromise;
+  expect(markReadResponse.ok(), await markReadResponse.text()).toBeTruthy();
+  await page.waitForURL(new RegExp(`/dashboard/children/${secondStudent.documentId}$`));
+
+  const thirdStudent = await createStudentNotification(request, token);
+  const thirdNotification = await findStudentNotification(request, token, thirdStudent.name);
+  await page.goto('/dashboard/notifications');
+  await expect(
+    page.locator(`[data-notification-id="${secondNotification.documentId}"]`),
+  ).toHaveAttribute('data-read', 'true');
+  await expect(
+    page.locator(`[data-notification-id="${thirdNotification.documentId}"]`),
+  ).toHaveAttribute('data-read', 'false');
+
   const markAllResponsePromise = page.waitForResponse(
     (response) =>
       response.request().method() === 'POST' &&
@@ -144,7 +177,7 @@ test('parent sees a real activity notification, marks it read, and persists the 
   expect(markAllBody.data.updated).toBeGreaterThan(0);
   await page.reload();
   await expect(
-    page.locator(`[data-notification-id="${secondNotification.documentId}"]`),
+    page.locator(`[data-notification-id="${thirdNotification.documentId}"]`),
   ).toHaveAttribute('data-read', 'true');
   await page.screenshot({ path: path.join(SCREENSHOTS, 'notification-feed-en.png') });
 
