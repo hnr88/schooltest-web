@@ -591,6 +591,15 @@
         "inApp": {
           "title": "In-app updates",
           "description": "Show eligible updates in your SchoolTest notification feed."
+        },
+        "push": {
+          "title": "Push notifications",
+          "description": "Send eligible updates to browsers where device notifications are switched on."
+        },
+        "sms": {
+          "title": "Text messages",
+          "description": "Send eligible updates as SMS.",
+          "blocked": "SMS needs a phone number and provider credentials — delivery is unavailable for now."
         }
       },
       "categories": {
@@ -605,17 +614,29 @@
         "testResults": {
           "title": "Test results",
           "description": "When new assessment results are ready to review."
+        },
+        "security": {
+          "title": "Security alerts",
+          "description": "Sign-in, password and account-security notices."
+        },
+        "account": {
+          "title": "Account updates",
+          "description": "Email confirmation and other account changes."
         }
       },
+      "lockedTitle": "Always-on updates",
+      "lockedHelper": "Always on — this cannot be switched off.",
       "digest": {
         "title": "Email frequency",
-        "description": "Choose how eligible email updates are grouped.",
+        "description": "Choose when eligible email updates are sent. Account and security alerts always arrive, whatever you pick.",
         "options": {
           "immediate": "Send immediately",
           "daily": "Daily digest",
           "weekly": "Weekly digest",
-          "off": "Do not send a digest"
-        }
+          "off": "Do not send email updates"
+        },
+        "deferredOption": "{label} — coming soon",
+        "emailOffNotice": "No optional email will be sent while this is selected. Account and security alerts still arrive."
       },
       "alwaysOnTitle": "Account and security updates stay on",
       "alwaysOnDescription": "Important account and security notices cannot be switched off.",

@@ -591,6 +591,15 @@
         "inApp": {
           "title": "앱 내 업데이트",
           "description": "받을 수 있는 업데이트를 SchoolTest 알림 피드에 표시합니다."
+        },
+        "push": {
+          "title": "푸시 알림",
+          "description": "기기 알림을 켠 브라우저로 해당 업데이트를 보냅니다."
+        },
+        "sms": {
+          "title": "문자 메시지",
+          "description": "해당 업데이트를 SMS로 보냅니다.",
+          "blocked": "SMS에는 전화번호와 제공업체 자격 증명이 필요합니다 — 현재 발송할 수 없습니다."
         }
       },
       "categories": {
@@ -605,17 +614,29 @@
         "testResults": {
           "title": "시험 결과",
           "description": "새 평가 결과를 확인할 수 있을 때 알립니다."
+        },
+        "security": {
+          "title": "보안 알림",
+          "description": "로그인, 비밀번호 및 계정 보안 안내입니다."
+        },
+        "account": {
+          "title": "계정 업데이트",
+          "description": "이메일 확인 및 기타 계정 변경 사항입니다."
         }
       },
+      "lockedTitle": "항상 켜져 있는 업데이트",
+      "lockedHelper": "항상 켜짐 — 끌 수 없습니다.",
       "digest": {
         "title": "이메일 수신 빈도",
-        "description": "받을 수 있는 이메일 업데이트를 묶는 방식을 선택하세요.",
+        "description": "해당 이메일 업데이트를 언제 보낼지 선택하세요. 어떤 설정을 선택하든 계정 및 보안 알림은 항상 발송됩니다.",
         "options": {
           "immediate": "즉시 보내기",
           "daily": "매일 요약",
           "weekly": "매주 요약",
-          "off": "요약 이메일 보내지 않기"
-        }
+          "off": "이메일 업데이트 보내지 않기"
+        },
+        "deferredOption": "{label} — 준비 중",
+        "emailOffNotice": "이 설정에서는 선택 이메일이 발송되지 않습니다. 계정 및 보안 알림은 계속 발송됩니다."
       },
       "alwaysOnTitle": "계정 및 보안 업데이트는 항상 켜져 있습니다",
       "alwaysOnDescription": "중요한 계정 및 보안 알림은 끌 수 없습니다.",

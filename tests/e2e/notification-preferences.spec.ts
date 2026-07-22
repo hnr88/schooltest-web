@@ -17,7 +17,9 @@ interface LoginResponse {
 
 interface NotificationPreference {
   emailEnabled: boolean;
+  smsEnabled: boolean;
   inAppEnabled: boolean;
+  pushEnabled: boolean;
   children: boolean;
   testActivity: boolean;
   testResults: boolean;
@@ -120,7 +122,7 @@ test('notification settings save a real parent preference and persist after relo
     await digest.click();
     await page
       .getByRole('option', {
-        name: cat(en, 'Settings.notificationPreferences.digest.options.daily'),
+        name: cat(en, 'Settings.notificationPreferences.digest.options.off'),
       })
       .click();
     const updatePromise = page.waitForResponse(
@@ -133,25 +135,22 @@ test('notification settings save a real parent preference and persist after relo
       .click();
     const update = await updatePromise;
     expect(update.status(), await update.text()).toBe(200);
-    expect(Object.keys(update.request().postDataJSON() as Record<string, unknown>).sort()).toEqual([
-      'children',
-      'digestFrequency',
-      'emailEnabled',
-      'inAppEnabled',
-      'testActivity',
-      'testResults',
-    ]);
+    const sentKeys = Object.keys(update.request().postDataJSON() as Record<string, unknown>);
+    // Exactly the C-PREF-UPDATE whitelist — no field the server would silently drop.
+    expect(sentKeys.sort().join()).toBe(
+      'children,digestFrequency,emailEnabled,inAppEnabled,pushEnabled,smsEnabled,testActivity,testResults',
+    );
     await expect(page.getByText(cat(en, 'Settings.notificationPreferences.saved'))).toBeVisible();
 
     const persisted = await readPreferences(request, token);
     expect(persisted.emailEnabled).toBe(emailEnabled);
     expect(persisted.children).toBe(childrenEnabled);
-    expect(persisted.digestFrequency).toBe('daily');
+    expect(persisted.digestFrequency).toBe('off');
     await page.reload();
     await expect(email).toHaveAttribute('aria-checked', String(emailEnabled));
     await expect(childUpdates).toHaveAttribute('aria-checked', String(childrenEnabled));
     await expect(digest).toContainText(
-      cat(en, 'Settings.notificationPreferences.digest.options.daily'),
+      cat(en, 'Settings.notificationPreferences.digest.options.off'),
     );
 
     const axe = await new AxeBuilder({ page }).analyze();

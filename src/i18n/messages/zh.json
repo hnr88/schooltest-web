@@ -591,6 +591,15 @@
         "inApp": {
           "title": "应用内更新",
           "description": "在 SchoolTest 通知动态中显示符合条件的更新。"
+        },
+        "push": {
+          "title": "推送通知",
+          "description": "向已开启设备通知的浏览器发送符合条件的更新。"
+        },
+        "sms": {
+          "title": "短信",
+          "description": "以短信方式发送符合条件的更新。",
+          "blocked": "短信需要电话号码和服务商凭据——目前无法送达。"
         }
       },
       "categories": {
@@ -605,17 +614,29 @@
         "testResults": {
           "title": "测试结果",
           "description": "有新的评估结果可供查看时通知您。"
+        },
+        "security": {
+          "title": "安全提醒",
+          "description": "登录、密码和账户安全通知。"
+        },
+        "account": {
+          "title": "账户更新",
+          "description": "电子邮件确认及其他账户变更。"
         }
       },
+      "lockedTitle": "始终开启的更新",
+      "lockedHelper": "始终开启——无法关闭。",
       "digest": {
         "title": "电子邮件频率",
-        "description": "选择符合条件的电子邮件更新的汇总方式。",
+        "description": "选择何时发送符合条件的电子邮件更新。无论如何选择，账户和安全提醒都会送达。",
         "options": {
           "immediate": "立即发送",
           "daily": "每日摘要",
           "weekly": "每周摘要",
-          "off": "不发送摘要"
-        }
+          "off": "不发送电子邮件更新"
+        },
+        "deferredOption": "{label}——即将推出",
+        "emailOffNotice": "选择此项时不会发送任何可选电子邮件。账户和安全提醒仍会送达。"
       },
       "alwaysOnTitle": "账户和安全更新始终开启",
       "alwaysOnDescription": "重要的账户和安全通知无法关闭。",

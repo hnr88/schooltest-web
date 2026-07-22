@@ -39,6 +39,7 @@ function useNotificationPreferenceForm() {
   return {
     form,
     onSubmit,
+    preferences: query.data,
     isLoading: query.isLoading,
     isError: query.isError,
     isSaving: update.isPending,

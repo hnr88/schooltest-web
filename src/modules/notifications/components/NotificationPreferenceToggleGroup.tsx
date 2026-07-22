@@ -36,6 +36,7 @@ function NotificationPreferenceToggleGroup({
                 id={`${id}-${item.field}`}
                 title={t(item.titleKey)}
                 description={t(item.descriptionKey)}
+                helper={item.helperKey === undefined ? undefined : t(item.helperKey)}
                 checked={field.value}
                 onCheckedChange={field.onChange}
               />

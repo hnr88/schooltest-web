@@ -6,7 +6,9 @@ export const notificationDigestFrequencySchema = z.enum(NOTIFICATION_DIGEST_FREQ
 
 export const notificationPreferenceFormSchema = z.strictObject({
   emailEnabled: z.boolean(),
+  smsEnabled: z.boolean(),
   inAppEnabled: z.boolean(),
+  pushEnabled: z.boolean(),
   children: z.boolean(),
   testActivity: z.boolean(),
   testResults: z.boolean(),
@@ -15,8 +17,6 @@ export const notificationPreferenceFormSchema = z.strictObject({
 
 export const notificationPreferenceSchema = notificationPreferenceFormSchema.extend({
   documentId: z.string().min(1),
-  smsEnabled: z.boolean(),
-  pushEnabled: z.boolean(),
   account: z.boolean(),
   security: z.boolean(),
   createdAt: z.iso.datetime(),

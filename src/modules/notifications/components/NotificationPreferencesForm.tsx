@@ -8,7 +8,8 @@ import { useNotificationPreferenceForm } from '@/modules/notifications/hooks/use
 
 function NotificationPreferencesForm() {
   const t = useTranslations('Settings');
-  const { form, onSubmit, isError, isLoading, isSaving, refetch } = useNotificationPreferenceForm();
+  const { form, onSubmit, preferences, isError, isLoading, isSaving, refetch } =
+    useNotificationPreferenceForm();
 
   if (isLoading) {
     return (
@@ -43,7 +44,7 @@ function NotificationPreferencesForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
-      <NotificationPreferenceFields form={form} />
+      <NotificationPreferenceFields form={form} preferences={preferences} />
       <div className="flex justify-end">
         <Button type="submit" className="min-h-11 px-4" loading={isSaving}>
           {isSaving ? t('notificationPreferences.saving') : t('notificationPreferences.save')}

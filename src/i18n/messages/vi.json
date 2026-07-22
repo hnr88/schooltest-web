@@ -591,6 +591,15 @@
         "inApp": {
           "title": "Cập nhật trong ứng dụng",
           "description": "Hiển thị các cập nhật phù hợp trong nguồn cấp thông báo SchoolTest."
+        },
+        "push": {
+          "title": "Thông báo đẩy",
+          "description": "Gửi các cập nhật phù hợp tới những trình duyệt đã bật thông báo thiết bị."
+        },
+        "sms": {
+          "title": "Tin nhắn SMS",
+          "description": "Gửi các cập nhật phù hợp dưới dạng SMS.",
+          "blocked": "SMS cần số điện thoại và thông tin xác thực của nhà cung cấp — hiện chưa gửi được."
         }
       },
       "categories": {
@@ -605,17 +614,29 @@
         "testResults": {
           "title": "Kết quả kiểm tra",
           "description": "Khi có kết quả đánh giá mới để xem lại."
+        },
+        "security": {
+          "title": "Cảnh báo bảo mật",
+          "description": "Thông báo về đăng nhập, mật khẩu và bảo mật tài khoản."
+        },
+        "account": {
+          "title": "Cập nhật tài khoản",
+          "description": "Xác nhận email và các thay đổi tài khoản khác."
         }
       },
+      "lockedTitle": "Cập nhật luôn bật",
+      "lockedHelper": "Luôn bật — không thể tắt.",
       "digest": {
         "title": "Tần suất email",
-        "description": "Chọn cách nhóm các cập nhật email phù hợp.",
+        "description": "Chọn thời điểm gửi các cập nhật email phù hợp. Cảnh báo tài khoản và bảo mật luôn được gửi, dù bạn chọn gì.",
         "options": {
           "immediate": "Gửi ngay",
           "daily": "Tổng hợp hằng ngày",
           "weekly": "Tổng hợp hằng tuần",
-          "off": "Không gửi bản tổng hợp"
-        }
+          "off": "Không gửi cập nhật qua email"
+        },
+        "deferredOption": "{label} — sắp có",
+        "emailOffNotice": "Sẽ không có email tùy chọn nào được gửi khi bạn chọn mục này. Cảnh báo tài khoản và bảo mật vẫn được gửi."
       },
       "alwaysOnTitle": "Cập nhật tài khoản và bảo mật luôn bật",
       "alwaysOnDescription": "Không thể tắt các thông báo quan trọng về tài khoản và bảo mật.",

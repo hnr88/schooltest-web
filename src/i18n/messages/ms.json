@@ -591,6 +591,15 @@
         "inApp": {
           "title": "Kemas kini dalam aplikasi",
           "description": "Paparkan kemas kini yang layak dalam suapan pemberitahuan SchoolTest."
+        },
+        "push": {
+          "title": "Pemberitahuan push",
+          "description": "Hantar kemas kini yang layak ke pelayar yang mengaktifkan pemberitahuan peranti."
+        },
+        "sms": {
+          "title": "Mesej teks",
+          "description": "Hantar kemas kini yang layak sebagai SMS.",
+          "blocked": "SMS memerlukan nombor telefon dan kelayakan penyedia — penghantaran belum tersedia buat masa ini."
         }
       },
       "categories": {
@@ -605,17 +614,29 @@
         "testResults": {
           "title": "Keputusan ujian",
           "description": "Apabila keputusan penilaian baharu sedia untuk disemak."
+        },
+        "security": {
+          "title": "Amaran keselamatan",
+          "description": "Notis log masuk, kata laluan dan keselamatan akaun."
+        },
+        "account": {
+          "title": "Kemas kini akaun",
+          "description": "Pengesahan e-mel dan perubahan akaun yang lain."
         }
       },
+      "lockedTitle": "Kemas kini yang sentiasa aktif",
+      "lockedHelper": "Sentiasa aktif — ini tidak boleh dimatikan.",
       "digest": {
         "title": "Kekerapan e-mel",
-        "description": "Pilih cara kemas kini e-mel yang layak dikumpulkan.",
+        "description": "Pilih bila kemas kini e-mel yang layak dihantar. Amaran akaun dan keselamatan sentiasa dihantar, apa pun pilihan anda.",
         "options": {
           "immediate": "Hantar segera",
           "daily": "Ringkasan harian",
           "weekly": "Ringkasan mingguan",
-          "off": "Jangan hantar ringkasan"
-        }
+          "off": "Jangan hantar kemas kini e-mel"
+        },
+        "deferredOption": "{label} — akan datang",
+        "emailOffNotice": "Tiada e-mel pilihan akan dihantar semasa pilihan ini aktif. Amaran akaun dan keselamatan tetap dihantar."
       },
       "alwaysOnTitle": "Kemas kini akaun dan keselamatan sentiasa aktif",
       "alwaysOnDescription": "Notis akaun dan keselamatan penting tidak boleh dimatikan.",
