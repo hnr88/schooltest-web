@@ -1,0 +1,43 @@
+<div data-screen-label="Export preview" style="width:1440px;height:900px;background:#F7F9FC;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(14,35,80,.12);position:relative">
+        <div style="position:absolute;inset:0;filter:blur(2px);opacity:.5;display:flex;flex-direction:column"><div style="height:64px;background:#FFFFFF;border-bottom:1px solid #E3E8F0"></div><div style="padding:28px 36px;display:grid;grid-template-columns:1fr 1fr;gap:16px"><div style="height:300px;background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px"></div><div style="height:300px;background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px"></div></div></div>
+        <div style="position:absolute;inset:0;background:rgba(14,35,80,.45);display:grid;place-items:center">
+          <div style="width:860px;background:#FFFFFF;border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.3);display:flex;flex-direction:column">
+            <div style="padding:20px 28px;border-bottom:1px solid #E3E8F0;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:2px"><h2 style="margin:0;font-size:19px;font-weight:700;color:#0E2350">Export diagnostic bundle</h2><span style="font-size:12.5px;color:#64748B">Student S-4B-017 (pseudonymised) · placement · May 14</span></div><span style="font-size:20px;color:#94A3B8;cursor:pointer;line-height:1">×</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+              <div style="padding:20px 24px;border-right:1px solid #E3E8F0;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#94A3B8">JSON bundle</span>
+                <pre style="margin:0;background:#0E2350;border-radius:12px;padding:16px 18px;font-size:11.5px;line-height:1.7;color:#93C5FD;overflow:hidden;font-family:ui-monospace,monospace">{
+  "student": "S-4B-017",
+  "sitting": "placement",
+  "skills": {
+    "reading": {
+      "phase": "consolidating",
+      "cefr": "A2",
+      "attributes": {
+        "main_idea": 0.91,
+        "detail": 0.58,
+        "inference": 0.31
+      }
+    },
+    "speaking": "pending"
+  }
+}</pre>
+              </div>
+              <div style="padding:20px 24px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#94A3B8">Plain-language rendering</span>
+                <p style="margin:0;font-size:13.5px;color:#475569;line-height:1.65">Student S-4B-017 completed a full placement sitting. Reading is at a consolidating phase (CEFR A2): main-idea comprehension is strong (0.91), detail is emerging (0.58), inference is not yet established (0.31). Speaking scores are pending human review.</p>
+                <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:12px 15px;display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:700;color:#92400E">⚠ Read before sharing</span>
+                  <span style="font-size:12.5px;color:#92400E;line-height:1.55">• Speaking is <strong>not yet scored</strong> — this bundle is partial.<br />• Names are replaced with codes; keep the key file separate.<br />• Probabilities are estimates, not grades. Don't convert them to marks.</span>
+                </div>
+              </div>
+            </div>
+            <div style="padding:16px 28px;border-top:1px solid #E3E8F0;display:flex;justify-content:space-between;align-items:center;background:#F7F9FC"><label style="display:flex;align-items:center;gap:9px;font-size:13px;color:#475569;cursor:pointer"><span style="width:18px;height:18px;border-radius:5px;background:#2563EB;display:grid;place-items:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>I understand this export is partial (Speaking pending)</label><button style="display:inline-flex;align-items:center;gap:8px;background:#2563EB;color:#fff;border:none;font-size:14px;font-weight:600;padding:11px 22px;border-radius:11px;cursor:pointer" style-hover="background:#1D4ED8"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="M7 10l5 5 5-5"></path><path d="M12 15V3"></path></svg>Download bundle (.zip)</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 9e ASSIGN TEST WIZARD -->
+    <div id="9e" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="background:#D97706;color:#fff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:6px">9e</span><span style="font-size:13.5px;font-weight:600;color:#16326E">Teacher — assign test wizard with retest context + validation</span></div>
+      

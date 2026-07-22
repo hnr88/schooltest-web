@@ -1,0 +1,318 @@
+<section data-screen-label="Test components" style="max-width:1240px;margin:0 auto;padding:64px 48px 0">
+  <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563EB;margin-bottom:8px">13 · Test patterns</div>
+  <h2 style="margin:0 0 24px;font-size:26px;font-weight:700;color:#0E2350">Test-taking components</h2>
+
+  <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:20px;align-items:start">
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <span style="font-size:12.5px;font-weight:600;color:#16326E;background:#EFF5FF;padding:4px 11px;border-radius:999px">Question 3 of 10</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#475569;background:#F1F5F9;padding:4px 11px;border-radius:999px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>12:04</span>
+      </div>
+      <div style="font-size:17px;font-weight:600;color:#0E2350;line-height:1.45;margin-top:16px">Which sentence uses the past perfect correctly?</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+        <sc-for list="{{ mcqOptions }}" as="opt" hint-placeholder-count="4">
+          <div onClick="{{ opt.pick }}" style="display:flex;align-items:center;gap:12px;border:1.5px solid {{ opt.border }};background:{{ opt.bg }};border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .15s;user-select:none">
+            <span style="display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:{{ opt.letterBg }};color:{{ opt.letterColor }};font-size:12.5px;font-weight:700;flex:none;transition:all .15s">{{ opt.letter }}</span>
+            <span style="font-size:14px;color:#0E2350;flex:1;line-height:1.45">{{ opt.text }}</span>
+            <sc-if value="{{ opt.showCorrect }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg></sc-if>
+            <sc-if value="{{ opt.showWrong }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.4" stroke-linecap="round" style="flex:none"><circle cx="12" cy="12" r="10"></circle><path d="M15 9l-6 6"></path><path d="m9 9 6 6"></path></svg></sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ mcqCorrectShown }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:13px 15px;margin-top:14px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+          <div><div style="font-size:13.5px;font-weight:600;color:#14532D">Correct!</div><div style="font-size:13px;line-height:1.5;color:#3F6212;margin-top:1px">"Had finished" places one past action before another — well spotted.</div></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ mcqWrongShown }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:13px 15px;margin-top:14px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+          <div><div style="font-size:13.5px;font-weight:600;color:#991B1B">Not quite</div><div style="font-size:13px;line-height:1.5;color:#B91C1C;margin-top:1px">The correct answer is B — the past perfect needs "had" + past participle.</div></div>
+        </div>
+      </sc-if>
+      <div style="display:flex;gap:10px;margin-top:18px">
+        <button onClick="{{ checkMcq }}" style="display:inline-flex;align-items:center;gap:7px;background:#2563EB;color:#FFFFFF;border:none;font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:9px;cursor:pointer" style-hover="background:#1D4ED8">Check answer</button>
+        <button onClick="{{ resetMcq }}" style="display:inline-flex;align-items:center;gap:7px;background:transparent;color:#64748B;border:none;font-size:13.5px;font-weight:600;padding:9px 14px;border-radius:9px;cursor:pointer" style-hover="background:#F1F5F9">Reset</button>
+      </div>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <span style="font-size:12.5px;font-weight:600;color:#0D9488;background:#F0FDFA;padding:4px 11px;border-radius:999px">Listening · Part 2</span>
+        <span style="font-size:12px;color:#94A3B8;font-weight:500">2 plays left</span>
+      </div>
+      <div style="font-size:15px;font-weight:600;color:#0E2350;margin-top:14px">Listen and answer questions 6–8</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:18px;background:#F8FAFD;border:1px solid #EEF2F7;border-radius:14px;padding:16px">
+        <button onClick="{{ togglePlay }}" style="display:inline-grid;place-items:center;width:46px;height:46px;border-radius:50%;border:none;background:#2563EB;color:#FFFFFF;cursor:pointer;flex:none;box-shadow:0 4px 12px rgba(37,99,235,.32)" style-hover="background:#1D4ED8" aria-label="Play">
+          <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg></sc-if>
+          <sc-if value="{{ notPlaying }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-left:2px"><path d="M7 5.5v13a1 1 0 0 0 1.52.86l10.4-6.5a1 1 0 0 0 0-1.72L8.52 4.64A1 1 0 0 0 7 5.5Z"></path></svg></sc-if>
+        </button>
+        <div style="flex:1;display:flex;align-items:center;gap:3px;height:44px">
+          <sc-for list="{{ waveBars }}" as="bar" hint-placeholder-count="26">
+            <span style="width:3px;height:{{ bar.h }}px;border-radius:2px;background:{{ bar.bg }};flex:none"></span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+        <span style="font-size:12.5px;color:#64748B;font-variant-numeric:tabular-nums">0:42 / 1:30</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button style="background:#FFFFFF;color:#16326E;border:1px solid #CBD5E1;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;cursor:pointer" style-hover="background:#F7F9FC">1.0×</button>
+          <button style="display:inline-flex;align-items:center;gap:5px;background:#FFFFFF;color:#16326E;border:1px solid #CBD5E1;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;cursor:pointer" style-hover="background:#F7F9FC"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Replay</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;background:#EFF5FF;border:1px solid #BFDBFE;border-radius:12px;padding:12px 14px;margin-top:16px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        <div style="font-size:12.5px;line-height:1.5;color:#16326E">Audio plays automatically when the section starts. You can replay it twice.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:20px;align-items:start;margin-top:20px">
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05);display:flex;flex-direction:column;align-items:center;text-align:center">
+      <span style="align-self:flex-start;font-size:12.5px;font-weight:600;color:#FFFFFF;background:#0E2350;padding:4px 11px;border-radius:999px">Speaking · Task 1</span>
+      <div style="font-size:15px;font-weight:600;color:#0E2350;line-height:1.45;margin-top:16px;max-width:240px">Describe your favorite place to study and explain why you like it.</div>
+      <button onClick="{{ toggleRec }}" style="display:inline-grid;place-items:center;width:64px;height:64px;border-radius:50%;border:none;background:{{ recBg }};color:#FFFFFF;cursor:pointer;margin-top:22px;transition:background .2s;animation:{{ recPulse }}" aria-label="Record">
+        <sc-if value="{{ recOn }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="7" width="10" height="10" rx="2"></rect></svg></sc-if>
+        <sc-if value="{{ recOff }}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></sc-if>
+      </button>
+      <div style="font-size:13.5px;font-weight:600;color:{{ recLabelColor }};margin-top:14px;transition:color .2s">{{ recLabel }}</div>
+      <div style="font-size:12.5px;color:#94A3B8;margin-top:6px">Prep 0:30 · Answer 1:00</div>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <span style="font-size:12.5px;font-weight:600;color:#16326E;background:#EFF5FF;padding:4px 11px;border-radius:999px">Writing · Task 2</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#15803D"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Saved</span>
+      </div>
+      <div style="font-size:15px;font-weight:600;color:#0E2350;line-height:1.45;margin-top:14px">Some people think homework should be optional. Do you agree or disagree?</div>
+      <textarea rows="5" onInput="{{ onWrite }}" placeholder="Write at least 150 words…" style="width:100%;box-sizing:border-box;margin-top:12px;padding:12px 13px;border-radius:10px;border:1px solid #CBD5E1;font-size:14px;color:#0E2350;background:#FFFFFF;outline:none;resize:vertical;line-height:1.6;transition:border-color .15s, box-shadow .15s" style-focus="border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.16)"></textarea>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+        <span style="font-size:12.5px;color:#64748B;font-variant-numeric:tabular-nums"><span style="font-weight:700;color:#0E2350">{{ wordCount }}</span> / 150 words</span>
+        <span style="font-size:12.5px;color:#94A3B8">Autosaves every 10s</span>
+      </div>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <span style="display:inline-block;font-size:12.5px;font-weight:600;color:#0D9488;background:#F0FDFA;padding:4px 11px;border-radius:999px">Reading · Diagram</span>
+      <div style="font-size:15px;font-weight:600;color:#0E2350;line-height:1.45;margin-top:14px">Label the part of the cell marked X.</div>
+      <div style="width:100%;height:150px;margin-top:12px">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="q-diagram" shape="rounded" radius="12" placeholder="Drop question image" hint-size="100%,150px" style="width:100%;height:150px"></x-import>
+      </div>
+      <input type="text" placeholder="Type your answer…" style="width:100%;box-sizing:border-box;margin-top:12px;padding:10px 13px;border-radius:10px;border:1px solid #CBD5E1;font-size:14px;color:#0E2350;background:#FFFFFF;outline:none;transition:border-color .15s, box-shadow .15s" style-focus="border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.16)" />
+    </div>
+  </div>
+
+  <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:22px 24px;box-shadow:0 1px 2px rgba(14,35,80,.05);margin-top:20px;display:flex;align-items:center;gap:22px;flex-wrap:wrap">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;flex:none">Question navigator</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#16A34A;color:#fff;font-size:12.5px;font-weight:700">1</span>
+      <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#16A34A;color:#fff;font-size:12.5px;font-weight:700">2</span>
+      <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#2563EB;color:#fff;font-size:12.5px;font-weight:700;box-shadow:0 0 0 3px rgba(37,99,235,.22)">3</span>
+      <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#FFFFFF;border:1px solid #CBD5E1;color:#475569;font-size:12.5px;font-weight:700">4</span>
+      <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#FFFFFF;border:1px solid #CBD5E1;color:#475569;font-size:12.5px;font-weight:700">5</span>
+      <span style="position:relative;display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#FEF3C7;border:1px solid #FDE68A;color:#B45309;font-size:12.5px;font-weight:700">6<span style="position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#D97706;border:1.5px solid #fff"></span></span>
+      <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#FFFFFF;border:1px solid #CBD5E1;color:#475569;font-size:12.5px;font-weight:700">7</span>
+      <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#FFFFFF;border:1px solid #CBD5E1;color:#475569;font-size:12.5px;font-weight:700">8</span>
+    </div>
+    <div style="display:flex;gap:16px;align-items:center;margin-left:auto;font-size:12.5px;color:#64748B;flex-wrap:wrap">
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#16A34A"></span>Answered</span>
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#2563EB"></span>Current</span>
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#FEF3C7;border:1px solid #FDE68A"></span>Flagged</span>
+    </div>
+  </div>
+  <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin:32px 0 14px">More question types</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start">
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <span style="display:inline-block;font-size:12.5px;font-weight:600;color:#16326E;background:#EFF5FF;padding:4px 11px;border-radius:999px">Fill in the blank</span>
+      <div style="font-size:15px;line-height:2.1;color:#0E2350;margin-top:14px">By the time we arrived, the lecture <input type="text" placeholder="answer" style="display:inline-block;width:110px;box-sizing:border-box;padding:4px 10px;border:none;border-bottom:2px solid #2563EB;border-radius:6px 6px 0 0;background:#EFF5FF;font-size:14.5px;font-weight:600;color:#0E2350;text-align:center;outline:none" style-focus="background:#DBEAFE" /> (already / begin).</div>
+      <div style="font-size:12.5px;color:#94A3B8;margin-top:10px">Use the past perfect form of the verb.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <span style="display:inline-block;font-size:12.5px;font-weight:600;color:#16326E;background:#EFF5FF;padding:4px 11px;border-radius:999px">True / False</span>
+      <div style="font-size:15px;font-weight:600;color:#0E2350;line-height:1.5;margin-top:14px">The speaker moved to Berlin for work.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+        <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid #2563EB;background:#EFF5FF;color:#16326E;font-size:14px;font-weight:600;padding:11px 12px;border-radius:12px;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>True</button>
+        <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid #E3E8F0;background:#FFFFFF;color:#475569;font-size:14px;font-weight:600;padding:11px 12px;border-radius:12px;cursor:pointer" style-hover="border-color:#CBD5E1;background:#F8FAFD"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>False</button>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#94A3B8;margin-top:12px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>Based on audio clip 4</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <span style="display:inline-block;font-size:12.5px;font-weight:600;color:#0D9488;background:#F0FDFA;padding:4px 11px;border-radius:999px">Word bank</span>
+      <div style="font-size:15px;color:#0E2350;line-height:2;margin-top:14px">Build the sentence:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;padding:12px;border:1.5px dashed #CBD5E1;border-radius:12px;min-height:44px;box-sizing:border-box;align-items:center">
+        <span style="font-size:13.5px;font-weight:600;color:#FFFFFF;background:#2563EB;padding:6px 13px;border-radius:999px">She</span>
+        <span style="font-size:13.5px;font-weight:600;color:#FFFFFF;background:#2563EB;padding:6px 13px;border-radius:999px">has been</span>
+        <span style="font-size:13.5px;font-weight:600;color:#FFFFFF;background:#2563EB;padding:6px 13px;border-radius:999px">studying</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+        <span style="font-size:13.5px;font-weight:600;color:#16326E;background:#FFFFFF;border:1px solid #CBD5E1;padding:6px 13px;border-radius:999px;cursor:pointer">since</span>
+        <span style="font-size:13.5px;font-weight:600;color:#16326E;background:#FFFFFF;border:1px solid #CBD5E1;padding:6px 13px;border-radius:999px;cursor:pointer">English</span>
+        <span style="font-size:13.5px;font-weight:600;color:#94A3B8;background:#F1F5F9;border:1px solid #F1F5F9;padding:6px 13px;border-radius:999px;text-decoration:line-through">studying</span>
+        <span style="font-size:13.5px;font-weight:600;color:#16326E;background:#FFFFFF;border:1px solid #CBD5E1;padding:6px 13px;border-radius:999px;cursor:pointer">2022</span>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <span style="display:inline-block;font-size:12.5px;font-weight:600;color:#16326E;background:#EFF5FF;padding:4px 11px;border-radius:999px">Matching</span>
+      <div style="font-size:13.5px;color:#64748B;margin-top:12px">Match each word to its definition.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <span style="display:flex;align-items:center;font-size:13.5px;font-weight:600;color:#FFFFFF;background:#2563EB;padding:9px 13px;border-radius:10px">reluctant</span>
+          <span style="display:flex;align-items:center;font-size:13px;color:#16326E;background:#EFF5FF;border:1.5px solid #2563EB;padding:9px 13px;border-radius:10px">unwilling to act</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <span style="display:flex;align-items:center;font-size:13.5px;font-weight:600;color:#0E2350;background:#F1F5F9;padding:9px 13px;border-radius:10px">thorough</span>
+          <span style="display:flex;align-items:center;font-size:13px;color:#475569;background:#FFFFFF;border:1.5px solid #E3E8F0;padding:9px 13px;border-radius:10px">complete and careful</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <span style="display:flex;align-items:center;font-size:13.5px;font-weight:600;color:#0E2350;background:#F1F5F9;padding:9px 13px;border-radius:10px">viable</span>
+          <span style="display:flex;align-items:center;font-size:13px;color:#475569;background:#FFFFFF;border:1.5px solid #E3E8F0;padding:9px 13px;border-radius:10px">capable of working</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <span style="display:inline-block;font-size:12.5px;font-weight:600;color:#16326E;background:#EFF5FF;padding:4px 11px;border-radius:999px">Ordering</span>
+      <div style="font-size:13.5px;color:#64748B;margin-top:12px">Put the paragraph in the correct order.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+        <div style="display:flex;align-items:center;gap:11px;border:1px solid #E3E8F0;background:#FFFFFF;border-radius:10px;padding:10px 12px;cursor:grab"><svg width="13" height="13" viewBox="0 0 24 24" fill="#94A3B8"><circle cx="9" cy="6" r="1.5"></circle><circle cx="15" cy="6" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="15" cy="12" r="1.5"></circle><circle cx="9" cy="18" r="1.5"></circle><circle cx="15" cy="18" r="1.5"></circle></svg><span style="display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#EFF5FF;color:#2563EB;font-size:11.5px;font-weight:700;flex:none">1</span><span style="font-size:13.5px;color:#0E2350">First, the researchers collected samples.</span></div>
+        <div style="display:flex;align-items:center;gap:11px;border:1.5px solid #2563EB;background:#EFF5FF;border-radius:10px;padding:10px 12px;cursor:grabbing;box-shadow:0 6px 16px rgba(37,99,235,.18)"><svg width="13" height="13" viewBox="0 0 24 24" fill="#2563EB"><circle cx="9" cy="6" r="1.5"></circle><circle cx="15" cy="6" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="15" cy="12" r="1.5"></circle><circle cx="9" cy="18" r="1.5"></circle><circle cx="15" cy="18" r="1.5"></circle></svg><span style="display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#2563EB;color:#fff;font-size:11.5px;font-weight:700;flex:none">2</span><span style="font-size:13.5px;font-weight:600;color:#0E2350">Next, the data was analyzed.</span></div>
+        <div style="display:flex;align-items:center;gap:11px;border:1px solid #E3E8F0;background:#FFFFFF;border-radius:10px;padding:10px 12px;cursor:grab"><svg width="13" height="13" viewBox="0 0 24 24" fill="#94A3B8"><circle cx="9" cy="6" r="1.5"></circle><circle cx="15" cy="6" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="15" cy="12" r="1.5"></circle><circle cx="9" cy="18" r="1.5"></circle><circle cx="15" cy="18" r="1.5"></circle></svg><span style="display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#EFF5FF;color:#2563EB;font-size:11.5px;font-weight:700;flex:none">3</span><span style="font-size:13.5px;color:#0E2350">Finally, results were published.</span></div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <span style="display:inline-block;font-size:12.5px;font-weight:600;color:#0D9488;background:#F0FDFA;padding:4px 11px;border-radius:999px">Dictation</span>
+      <div style="font-size:15px;font-weight:600;color:#0E2350;margin-top:14px">Type exactly what you hear.</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:14px">
+        <button style="display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;border:none;background:#0E2350;color:#FFFFFF;cursor:pointer;flex:none" style-hover="background:#16326E" aria-label="Play sentence"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-left:2px"><path d="M7 5.5v13a1 1 0 0 0 1.52.86l10.4-6.5a1 1 0 0 0 0-1.72L8.52 4.64A1 1 0 0 0 7 5.5Z"></path></svg></button>
+        <span style="font-size:12.5px;color:#64748B">Sentence 2 of 5 · normal speed</span>
+        <button style="margin-left:auto;background:none;border:none;color:#2563EB;font-size:12.5px;font-weight:600;cursor:pointer;padding:4px" style-hover="text-decoration:underline">Slow speed</button>
+      </div>
+      <textarea rows="2" placeholder="Type the sentence…" style="width:100%;box-sizing:border-box;margin-top:12px;padding:11px 13px;border-radius:10px;border:1px solid #CBD5E1;font-size:14px;color:#0E2350;background:#FFFFFF;outline:none;resize:none;line-height:1.5;transition:border-color .15s, box-shadow .15s" style-focus="border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.16)"></textarea>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin:32px 0 14px">Timers &amp; progress</div>
+  <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:22px 24px;box-shadow:0 1px 2px rgba(14,35,80,.05);display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#475569;background:#F1F5F9;padding:7px 14px;border-radius:999px;font-variant-numeric:tabular-nums"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>24:10</span>
+    <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#B45309;background:#FEF3C7;padding:7px 14px;border-radius:999px;font-variant-numeric:tabular-nums"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>4:32 left</span>
+    <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:#FFFFFF;background:#DC2626;padding:7px 14px;border-radius:999px;font-variant-numeric:tabular-nums;animation:st-rec-pulse 1.5s ease-out infinite"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>0:45</span>
+    <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:7px">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px"><span style="font-weight:600;color:#0E2350">Section 2 of 4 · Reading</span><span style="color:#94A3B8">18 of 40 questions</span></div>
+      <div style="height:8px;border-radius:999px;background:#EEF2F7;overflow:hidden"><div style="width:45%;height:100%;border-radius:999px;background:linear-gradient(90deg,#2563EB,#14B8A6)"></div></div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin:32px 0 14px">AI assistance</div>
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start">
+    <div style="background:linear-gradient(135deg,#EFF5FF 0%,#F0FDFA 100%);border:1px solid #BFDBFE;border-radius:16px;padding:24px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#0E2350;flex:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"></path><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9Z"></path></svg></span>
+        <span style="font-size:15px;font-weight:700;color:#0E2350">AI writing feedback</span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.05em;color:#0D9488;background:#CCFBF1;padding:3px 8px;border-radius:999px;margin-left:auto">BETA</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px">
+        <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;padding:13px 14px"><div style="font-size:12px;color:#64748B">Grammar</div><div style="font-size:20px;font-weight:700;color:#0E2350;margin-top:2px">8.5</div><div style="margin-top:7px;height:5px;border-radius:999px;background:#EEF2F7"><div style="width:85%;height:100%;border-radius:999px;background:#2563EB"></div></div></div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;padding:13px 14px"><div style="font-size:12px;color:#64748B">Vocabulary</div><div style="font-size:20px;font-weight:700;color:#0E2350;margin-top:2px">7.0</div><div style="margin-top:7px;height:5px;border-radius:999px;background:#EEF2F7"><div style="width:70%;height:100%;border-radius:999px;background:#14B8A6"></div></div></div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;padding:13px 14px"><div style="font-size:12px;color:#64748B">Coherence</div><div style="font-size:20px;font-weight:700;color:#0E2350;margin-top:2px">6.5</div><div style="margin-top:7px;height:5px;border-radius:999px;background:#EEF2F7"><div style="width:65%;height:100%;border-radius:999px;background:#0E2350"></div></div></div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;padding:14px 15px;margin-top:12px">
+        <div style="font-size:13px;line-height:1.6;color:#475569">Try linking your second and third paragraphs — a phrase like <span style="font-weight:600;color:#0E2350;background:#CCFBF1;padding:1px 6px;border-radius:5px">"on the other hand"</span> would make the contrast clearer.</div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button style="background:#0E2350;color:#FFFFFF;border:none;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:8px;cursor:pointer" style-hover="background:#16326E">Apply suggestion</button>
+          <button style="background:transparent;color:#64748B;border:none;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:8px;cursor:pointer" style-hover="background:#F1F5F9">Show more</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <div style="display:flex;align-items:center;gap:9px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"></path></svg>
+          <span style="font-size:13.5px;font-weight:700;color:#0E2350">AI hint</span>
+          <span style="font-size:11.5px;color:#94A3B8;margin-left:auto">1 of 2 hints used</span>
+        </div>
+        <div style="font-size:13px;line-height:1.6;color:#475569;margin-top:10px;border-left:none;background:#F8FAFD;border:1px solid #EEF2F7;border-radius:10px;padding:11px 13px">Listen for the word the speaker stresses right after the question — it usually signals the answer.</div>
+        <button style="margin-top:12px;background:#EFF5FF;color:#16326E;border:none;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:8px;cursor:pointer" style-hover="background:#DBEAFE">Get another hint</button>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <div style="display:flex;align-items:center;gap:9px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"></path></svg>
+          <span style="font-size:13.5px;font-weight:700;color:#0E2350">Grading in progress</span>
+        </div>
+        <div style="font-size:13px;line-height:1.55;color:#64748B;margin-top:8px">Your speaking answer is being scored by AI. A teacher reviews every score before release.</div>
+        <div style="margin-top:12px;height:6px;border-radius:999px;background:#EEF2F7;overflow:hidden"><div style="width:40%;height:100%;border-radius:999px;background:#14B8A6"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin:32px 0 14px">Edge &amp; error states</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start">
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:26px;box-shadow:0 1px 2px rgba(14,35,80,.05);display:flex;flex-direction:column;align-items:center;text-align:center">
+      <span style="display:inline-grid;place-items:center;width:52px;height:52px;border-radius:16px;background:#FEF3C7"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
+      <div style="font-size:16px;font-weight:700;color:#0E2350;margin-top:14px">Time's up</div>
+      <div style="font-size:13.5px;line-height:1.55;color:#64748B;margin-top:6px;max-width:250px">Your answers were submitted automatically. 34 of 40 questions answered.</div>
+      <button style="margin-top:16px;background:#2563EB;color:#FFFFFF;border:none;font-size:13.5px;font-weight:600;padding:9px 18px;border-radius:9px;cursor:pointer" style-hover="background:#1D4ED8">View results</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;gap:13px;align-items:flex-start;background:#FFFFFF;border:1px solid #E3E8F0;border-radius:14px;padding:15px 16px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#FEE2E2;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20"></path><path d="M18.89 13.23A7.12 7.12 0 0 0 19 12v-2"></path><path d="M5 10v2a7 7 0 0 0 12 5"></path><path d="M15 9.34V5a3 3 0 0 0-5.68-1.33"></path><path d="M9 9v3a3 3 0 0 0 5.12 2.12"></path><path d="M12 19v3"></path></svg></span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:#0E2350">Microphone blocked</div>
+          <div style="font-size:13px;line-height:1.5;color:#64748B;margin-top:2px">The speaking task needs mic access to record your answer.</div>
+          <button style="margin-top:10px;background:#DC2626;color:#FFFFFF;border:none;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer" style-hover="background:#B91C1C">Allow microphone</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start;background:#FFFFFF;border:1px solid #E3E8F0;border-radius:14px;padding:15px 16px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#FEE2E2;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M22 9l-6 6"></path><path d="m16 9 6 6"></path></svg></span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:#0E2350">Audio failed to load</div>
+          <div style="font-size:13px;line-height:1.5;color:#64748B;margin-top:2px">This won't count as one of your plays.</div>
+          <button style="margin-top:10px;background:#EFF5FF;color:#16326E;border:none;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer" style-hover="background:#DBEAFE">Try again</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;gap:13px;align-items:center;background:#FFFFFF;border:1px solid #FDE68A;border-radius:14px;padding:14px 16px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#FEF3C7;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20"></path><path d="M8.5 16.5a5 5 0 0 1 7 0"></path><path d="M2 8.82a15 15 0 0 1 4.17-2.65"></path><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"></path><path d="M16.85 11.25a10 10 0 0 1 2.22 1.68"></path><path d="M5 13a10 10 0 0 1 5.24-2.76"></path><circle cx="12" cy="20" r="1" fill="#D97706" stroke="none"></circle></svg></span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:#0E2350">You're offline</div>
+          <div style="font-size:13px;line-height:1.5;color:#64748B;margin-top:2px">Answers are saved on this device and will sync when you reconnect.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:center;background:#FFFFFF;border:1px solid #E3E8F0;border-radius:14px;padding:14px 16px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#FEF3C7;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 20h16a2 2 0 0 0 1.73-2Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:#0E2350">Question 6 skipped</div>
+          <div style="font-size:13px;line-height:1.5;color:#64748B;margin-top:2px">You flagged this question. Review it before submitting.</div>
+        </div>
+        <button style="background:#EFF5FF;color:#16326E;border:none;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;flex:none" style-hover="background:#DBEAFE">Go to Q6</button>
+      </div>
+      <div style="display:flex;gap:13px;align-items:center;background:#FFFFFF;border:1px solid #E3E8F0;border-radius:14px;padding:14px 16px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#EFF5FF;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:#0E2350">Section locked</div>
+          <div style="font-size:13px;line-height:1.5;color:#64748B;margin-top:2px">Speaking opens after you finish the listening section.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin:32px 0 14px">Results</div>
+  <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;align-items:stretch">
+    <div style="background:#0E2350;border-radius:16px;padding:26px;color:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden">
+      <img src="assets/logo-mark.png" alt="" style="position:absolute;left:-30px;top:-24px;height:130px;opacity:.12;filter:brightness(0) invert(1)" />
+      <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8FA3C7">Overall level</div>
+      <div style="font-size:64px;font-weight:700;letter-spacing:-0.03em;line-height:1;margin-top:10px">B2</div>
+      <div style="font-size:14px;color:#A9BADC;margin-top:8px">Upper intermediate · 76 / 100</div>
+      <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#5EEAD4;background:rgba(45,212,191,.14);padding:5px 12px;border-radius:999px;margin-top:14px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7" transform="rotate(-45 12 12)"></path></svg>Up from B1 in March</span>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(14,35,80,.05);display:flex;flex-direction:column;justify-content:center;gap:16px">
+      <div style="display:grid;grid-template-columns:90px 1fr 44px;align-items:center;gap:14px"><span style="font-size:13.5px;font-weight:600;color:#0E2350">Listening</span><div style="height:8px;border-radius:999px;background:#EEF2F7;overflow:hidden"><div style="width:82%;height:100%;border-radius:999px;background:#2563EB"></div></div><span style="font-size:13.5px;font-weight:700;color:#0E2350;text-align:right">82</span></div>
+      <div style="display:grid;grid-template-columns:90px 1fr 44px;align-items:center;gap:14px"><span style="font-size:13.5px;font-weight:600;color:#0E2350">Reading</span><div style="height:8px;border-radius:999px;background:#EEF2F7;overflow:hidden"><div style="width:76%;height:100%;border-radius:999px;background:#2563EB"></div></div><span style="font-size:13.5px;font-weight:700;color:#0E2350;text-align:right">76</span></div>
+      <div style="display:grid;grid-template-columns:90px 1fr 44px;align-items:center;gap:14px"><span style="font-size:13.5px;font-weight:600;color:#0E2350">Writing</span><div style="height:8px;border-radius:999px;background:#EEF2F7;overflow:hidden"><div style="width:68%;height:100%;border-radius:999px;background:#14B8A6"></div></div><span style="font-size:13.5px;font-weight:700;color:#0E2350;text-align:right">68</span></div>
+      <div style="display:grid;grid-template-columns:90px 1fr 44px;align-items:center;gap:14px"><span style="font-size:13.5px;font-weight:600;color:#0E2350">Speaking</span><div style="height:8px;border-radius:999px;background:#EEF2F7;overflow:hidden"><div style="width:74%;height:100%;border-radius:999px;background:#14B8A6"></div></div><span style="font-size:13.5px;font-weight:700;color:#0E2350;text-align:right">74</span></div>
+      <div style="font-size:12.5px;color:#94A3B8">Writing is your biggest opportunity — practice linking words and paragraph structure.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PTE TASK LIBRARY ============ -->

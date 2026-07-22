@@ -1,0 +1,25 @@
+<section data-screen-label="Tabs" style="max-width:1240px;margin:0 auto;padding:64px 48px 0">
+  <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563EB;margin-bottom:8px">10 · Components</div>
+  <h2 style="margin:0 0 24px;font-size:26px;font-weight:700;color:#0E2350">Tabs &amp; segmented control</h2>
+  <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:28px">
+    <div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:14px">Underline tabs — try it</div>
+      <div style="display:flex;gap:26px;border-bottom:1px solid #E3E8F0">
+        <button onClick="{{ setTabO }}" style="background:none;border:none;cursor:pointer;font-size:14px;font-weight:600;padding:0 2px 12px;color:{{ tabOColor }};border-bottom:2px solid {{ tabOBorder }};margin-bottom:-1px;transition:color .15s">Overview</button>
+        <button onClick="{{ setTabQ }}" style="background:none;border:none;cursor:pointer;font-size:14px;font-weight:600;padding:0 2px 12px;color:{{ tabQColor }};border-bottom:2px solid {{ tabQBorder }};margin-bottom:-1px;transition:color .15s">Questions</button>
+        <button onClick="{{ setTabR }}" style="background:none;border:none;cursor:pointer;font-size:14px;font-weight:600;padding:0 2px 12px;color:{{ tabRColor }};border-bottom:2px solid {{ tabRBorder }};margin-bottom:-1px;transition:color .15s">Results</button>
+      </div>
+      <div style="padding:16px 2px 0;font-size:14px;color:#64748B">{{ tabContent }}</div>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:14px">Segmented — try it</div>
+      <div style="display:inline-flex;gap:4px;background:#F1F5F9;padding:4px;border-radius:11px">
+        <button onClick="{{ setSegW }}" style="border:none;cursor:pointer;font-size:13px;font-weight:600;padding:7px 16px;border-radius:8px;background:{{ segWBg }};color:{{ segWColor }};box-shadow:{{ segWShadow }};transition:all .15s">Week</button>
+        <button onClick="{{ setSegM }}" style="border:none;cursor:pointer;font-size:13px;font-weight:600;padding:7px 16px;border-radius:8px;background:{{ segMBg }};color:{{ segMColor }};box-shadow:{{ segMShadow }};transition:all .15s">Month</button>
+        <button onClick="{{ setSegY }}" style="border:none;cursor:pointer;font-size:13px;font-weight:600;padding:7px 16px;border-radius:8px;background:{{ segYBg }};color:{{ segYColor }};box-shadow:{{ segYShadow }};transition:all .15s">Year</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OVERLAYS ============ -->

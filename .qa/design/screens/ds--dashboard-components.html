@@ -1,0 +1,146 @@
+<section data-screen-label="Dashboard components" style="max-width:1240px;margin:0 auto;padding:64px 48px 0">
+  <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563EB;margin-bottom:8px">16 · Dashboard</div>
+  <h2 style="margin:0 0 24px;font-size:26px;font-weight:700;color:#0E2350">Dashboard components</h2>
+
+  <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+    <div style="position:relative;flex:1;min-width:200px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+      <input type="text" placeholder="Search students, tests…" style="width:100%;box-sizing:border-box;padding:9px 13px 9px 36px;border-radius:10px;border:1px solid #CBD5E1;font-size:13.5px;color:#0E2350;background:#FFFFFF;outline:none;transition:border-color .15s, box-shadow .15s" style-focus="border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.16)" />
+    </div>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#FFFFFF;background:#2563EB;padding:6px 6px 6px 13px;border-radius:999px">Grade 7<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#FFFFFF;background:#2563EB;padding:6px 6px 6px 13px;border-radius:999px">Live<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span>
+    <button style="display:inline-flex;align-items:center;gap:6px;background:#FFFFFF;color:#16326E;border:1px dashed #CBD5E1;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:999px;cursor:pointer" style-hover="background:#F7F9FC"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>Add filter</button>
+    <div style="display:inline-flex;gap:4px;background:#F1F5F9;padding:4px;border-radius:10px;margin-left:auto">
+      <button style="border:none;cursor:pointer;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:7px;background:#FFFFFF;color:#0E2350;box-shadow:0 1px 3px rgba(14,35,80,.12)">30 days</button>
+      <button style="border:none;cursor:pointer;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:7px;background:transparent;color:#64748B">Quarter</button>
+      <button style="border:none;cursor:pointer;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:7px;background:transparent;color:#64748B">Year</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:20px;align-items:stretch">
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:22px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:15px;font-weight:600;color:#0E2350">Average score by week</span><span style="font-size:12px;color:#94A3B8">Grade 7</span></div>
+      <div style="display:flex;align-items:flex-end;gap:14px;height:140px;margin-top:20px">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end"><div style="width:100%;max-width:38px;height:52%;border-radius:8px 8px 3px 3px;background:#DBEAFE"></div><span style="font-size:11.5px;color:#94A3B8">W1</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end"><div style="width:100%;max-width:38px;height:64%;border-radius:8px 8px 3px 3px;background:#DBEAFE"></div><span style="font-size:11.5px;color:#94A3B8">W2</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end"><div style="width:100%;max-width:38px;height:58%;border-radius:8px 8px 3px 3px;background:#DBEAFE"></div><span style="font-size:11.5px;color:#94A3B8">W3</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end"><div style="width:100%;max-width:38px;height:78%;border-radius:8px 8px 3px 3px;background:#93C5FD"></div><span style="font-size:11.5px;color:#94A3B8">W4</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end"><div style="width:100%;max-width:38px;height:88%;border-radius:8px 8px 3px 3px;background:#2563EB;box-shadow:0 4px 12px rgba(37,99,235,.3)"></div><span style="font-size:11.5px;font-weight:600;color:#2563EB">W5</span></div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:22px;box-shadow:0 1px 2px rgba(14,35,80,.05);display:flex;flex-direction:column">
+      <span style="font-size:13px;font-weight:500;color:#64748B">Completion rate</span>
+      <div style="display:grid;place-items:center;flex:1;margin-top:8px">
+        <div style="position:relative;width:120px;height:120px">
+          <svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="#EEF2F7" stroke-width="11"></circle><circle cx="60" cy="60" r="52" fill="none" stroke="#14B8A6" stroke-width="11" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="62" transform="rotate(-90 60 60)"></circle></svg>
+          <div style="position:absolute;inset:0;display:grid;place-items:center"><div style="text-align:center"><div style="font-size:26px;font-weight:700;color:#0E2350;line-height:1">81%</div><div style="font-size:11px;color:#94A3B8;margin-top:3px">this term</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:22px;box-shadow:0 1px 2px rgba(14,35,80,.05);display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:500;color:#64748B">Active students</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:#15803D">+8%</span></div>
+      <div style="font-size:30px;font-weight:700;letter-spacing:-0.02em;color:#0E2350;margin-top:8px">186</div>
+      <div style="flex:1;display:flex;align-items:flex-end;margin-top:10px">
+        <svg width="100%" height="52" viewBox="0 0 200 52" preserveAspectRatio="none"><path d="M0 40 L25 34 L50 38 L75 26 L100 30 L125 18 L150 22 L175 10 L200 14 L200 52 L0 52 Z" fill="#EFF5FF"></path><path d="M0 40 L25 34 L50 38 L75 26 L100 30 L125 18 L150 22 L175 10 L200 14" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:20px;align-items:start">
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:20px 22px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <div style="font-size:15px;font-weight:600;color:#0E2350;margin-bottom:14px">Recent activity</div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;gap:11px;align-items:flex-start"><span style="display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#DCFCE7;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><div style="font-size:13px;line-height:1.5;color:#475569"><span style="font-weight:600;color:#0E2350">Amara K.</span> finished Midterm Algebra — 92%<div style="font-size:11.5px;color:#94A3B8;margin-top:2px">4 min ago</div></div></div>
+        <div style="display:flex;gap:11px;align-items:flex-start"><span style="display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#EFF5FF;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg></span><div style="font-size:13px;line-height:1.5;color:#475569"><span style="font-weight:600;color:#0E2350">You</span> published Science Quiz to 7B<div style="font-size:11.5px;color:#94A3B8;margin-top:2px">1 hr ago</div></div></div>
+        <div style="display:flex;gap:11px;align-items:flex-start"><span style="display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#FEF3C7;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 20h16a2 2 0 0 0 1.73-2Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></span><div style="font-size:13px;line-height:1.5;color:#475569"><span style="font-weight:600;color:#0E2350">3 students</span> haven't started History Exam<div style="font-size:11.5px;color:#94A3B8;margin-top:2px">2 hrs ago</div></div></div>
+      </div>
+      <button style="margin-top:14px;width:100%;background:transparent;color:#2563EB;border:none;font-size:12.5px;font-weight:600;padding:7px;border-radius:8px;cursor:pointer" style-hover="background:#EFF5FF">View all activity</button>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:20px 22px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <div style="font-size:15px;font-weight:600;color:#0E2350;margin-bottom:14px">Upcoming</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px;border:1px solid #EEF2F7;border-radius:12px;padding:11px 13px">
+          <div style="display:flex;flex-direction:column;align-items:center;width:40px;flex:none;background:#EFF5FF;border-radius:9px;padding:5px 0"><span style="font-size:10px;font-weight:700;color:#2563EB;text-transform:uppercase">Apr</span><span style="font-size:16px;font-weight:700;color:#0E2350;line-height:1.1">19</span></div>
+          <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;color:#0E2350">History Exam</div><div style="font-size:12px;color:#94A3B8">9:00 AM · Grade 7B</div></div>
+          <span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#16326E;background:#EFF5FF;padding:3px 9px;border-radius:999px;flex:none">Scheduled</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;border:1px solid #EEF2F7;border-radius:12px;padding:11px 13px">
+          <div style="display:flex;flex-direction:column;align-items:center;width:40px;flex:none;background:#F0FDFA;border-radius:9px;padding:5px 0"><span style="font-size:10px;font-weight:700;color:#0D9488;text-transform:uppercase">Apr</span><span style="font-size:16px;font-weight:700;color:#0E2350;line-height:1.1">22</span></div>
+          <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;color:#0E2350">Reading Check</div><div style="font-size:12px;color:#94A3B8">11:30 AM · Grade 7A</div></div>
+          <span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#475569;background:#F1F5F9;padding:3px 9px;border-radius:999px;flex:none">Draft</span>
+        </div>
+      </div>
+      <div style="font-size:15px;font-weight:600;color:#0E2350;margin:18px 0 12px">Top performers</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;font-size:12.5px;font-weight:700;color:#D97706;flex:none">1</span><span style="display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#0E2350;color:#fff;font-size:10.5px;font-weight:700;flex:none">AK</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;flex:1">Amara Khan</span><span style="font-size:13px;font-weight:700;color:#0E2350">96%</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;font-size:12.5px;font-weight:700;color:#94A3B8;flex:none">2</span><span style="display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#2563EB;color:#fff;font-size:10.5px;font-weight:700;flex:none">JM</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;flex:1">Jonas Meyer</span><span style="font-size:13px;font-weight:700;color:#0E2350">93%</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:20px;font-size:12.5px;font-weight:700;color:#B45309;flex:none">3</span><span style="display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#14B8A6;color:#fff;font-size:10.5px;font-weight:700;flex:none">RS</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;flex:1">Rosa Silva</span><span style="font-size:13px;font-weight:700;color:#0E2350">91%</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="background:#FFFFFF;border:1.5px dashed #CBD5E1;border-radius:16px;padding:26px;display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;transition:border-color .15s, background .15s" style-hover="border-color:#2563EB;background:#FBFCFE">
+        <span style="display:inline-grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#EFF5FF"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m17 8-5-5-5 5"></path><path d="M12 3v12"></path></svg></span>
+        <div style="font-size:14px;font-weight:600;color:#0E2350;margin-top:12px">Import questions</div>
+        <div style="font-size:12.5px;color:#94A3B8;margin-top:3px">Drop a CSV or DOCX here, or <span style="color:#2563EB;font-weight:600">browse</span></div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:18px 20px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:12px">Invite a co-teacher</div>
+        <div style="display:flex;gap:8px">
+          <input type="email" placeholder="colleague@school.edu" style="flex:1;min-width:0;box-sizing:border-box;padding:9px 12px;border-radius:9px;border:1px solid #CBD5E1;font-size:13px;color:#0E2350;background:#FFFFFF;outline:none" style-focus="border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.16)" />
+          <div style="position:relative;flex:none">
+            <select style="appearance:none;padding:9px 30px 9px 12px;border-radius:9px;border:1px solid #CBD5E1;font-size:13px;font-weight:600;color:#16326E;background:#FFFFFF;outline:none;cursor:pointer"><option>Editor</option><option>Viewer</option></select>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none"><path d="m6 9 6 6 6-6"></path></svg>
+          </div>
+          <button style="background:#2563EB;color:#FFFFFF;border:none;font-size:13px;font-weight:600;padding:9px 15px;border-radius:9px;cursor:pointer;flex:none" style-hover="background:#1D4ED8">Send</button>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="display:inline-block;width:38px;height:38px;border-radius:50%;background:linear-gradient(90deg,#F1F5F9 25%,#E9EEF5 37%,#F1F5F9 63%);background-size:400px 100%;animation:st-shimmer 1.4s ease infinite;flex:none"></span>
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+            <span style="display:block;height:11px;width:60%;border-radius:6px;background:linear-gradient(90deg,#F1F5F9 25%,#E9EEF5 37%,#F1F5F9 63%);background-size:400px 100%;animation:st-shimmer 1.4s ease infinite"></span>
+            <span style="display:block;height:11px;width:85%;border-radius:6px;background:linear-gradient(90deg,#F1F5F9 25%,#E9EEF5 37%,#F1F5F9 63%);background-size:400px 100%;animation:st-shimmer 1.4s ease infinite"></span>
+          </div>
+        </div>
+        <span style="display:block;height:11px;width:100%;border-radius:6px;background:linear-gradient(90deg,#F1F5F9 25%,#E9EEF5 37%,#F1F5F9 63%);background-size:400px 100%;animation:st-shimmer 1.4s ease infinite;margin-top:14px"></span>
+        <span style="display:block;height:11px;width:70%;border-radius:6px;background:linear-gradient(90deg,#F1F5F9 25%,#E9EEF5 37%,#F1F5F9 63%);background-size:400px 100%;animation:st-shimmer 1.4s ease infinite;margin-top:8px"></span>
+        <div style="font-size:11px;color:#94A3B8;margin-top:12px;text-align:center">Skeleton loading state</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;margin-top:20px;align-items:start">
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:6px;box-shadow:0 16px 40px rgba(14,35,80,.12)">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #F1F5F9">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        <span style="font-size:14px;color:#94A3B8;flex:1">Type a command or search…</span>
+        <span style="font-size:11px;font-weight:600;color:#64748B;background:#F1F5F9;padding:3px 7px;border-radius:6px;font-family:ui-monospace,Menlo,monospace">⌘K</span>
+      </div>
+      <div style="padding:8px 6px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#94A3B8;padding:6px 10px">Quick actions</div>
+        <div style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;background:#EFF5FF;cursor:pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg><span style="font-size:13.5px;font-weight:600;color:#0E2350;flex:1">Create new test</span><span style="font-size:11px;font-weight:600;color:#64748B;background:#FFFFFF;border:1px solid #E3E8F0;padding:2px 6px;border-radius:5px;font-family:ui-monospace,Menlo,monospace">N</span></div>
+        <div style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;cursor:pointer" style-hover="background:#F8FAFD"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg><span style="font-size:13.5px;color:#0E2350;flex:1">Add student to 7B</span></div>
+        <div style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;cursor:pointer" style-hover="background:#F8FAFD"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg><span style="font-size:13.5px;color:#0E2350;flex:1">Export results as CSV</span></div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:8px 20px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid #F1F5F9">
+        <div><div style="font-size:13.5px;font-weight:600;color:#0E2350">Email results to students</div><div style="font-size:12px;color:#94A3B8;margin-top:2px">Sent as soon as you approve grades</div></div>
+        <span style="position:relative;display:inline-block;width:40px;height:22px;border-radius:999px;background:#2563EB;flex:none;cursor:pointer"><span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(14,35,80,.25);transform:translateX(18px)"></span></span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid #F1F5F9">
+        <div><div style="font-size:13.5px;font-weight:600;color:#0E2350">Lock tests after due date</div><div style="font-size:12px;color:#94A3B8;margin-top:2px">Late submissions need your approval</div></div>
+        <span style="position:relative;display:inline-block;width:40px;height:22px;border-radius:999px;background:#CBD5E1;flex:none;cursor:pointer"><span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(14,35,80,.25)"></span></span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0">
+        <div><div style="font-size:13.5px;font-weight:600;color:#0E2350">Passing threshold</div><div style="font-size:12px;color:#94A3B8;margin-top:2px">Scores below this show as at-risk</div></div>
+        <div style="display:flex;align-items:center;gap:10px;flex:none">
+          <div style="position:relative;width:120px;height:6px;border-radius:999px;background:#EEF2F7"><div style="width:60%;height:100%;border-radius:999px;background:#2563EB"></div><span style="position:absolute;left:60%;top:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:#FFFFFF;border:2px solid #2563EB;box-shadow:0 1px 4px rgba(14,35,80,.2);cursor:grab"></span></div>
+          <span style="font-size:13px;font-weight:700;color:#0E2350;width:36px">60%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTERS & PAGE FURNITURE ============ -->

@@ -1,0 +1,20 @@
+<section data-screen-label="FAQ" style="max-width:760px;margin:0 auto;padding:88px 32px 0">
+  <div style="text-align:center">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.02em;color:#0E2350">Questions, answered</h2>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:18px;padding:8px 4px;margin-top:36px">
+    <sc-for list="{{ faqItems }}" as="f" hint-placeholder-count="4">
+      <div style="border-top:1px solid #F1F5F9">
+        <div onClick="{{ f.click }}" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 22px;cursor:pointer;user-select:none">
+          <span style="font-size:15.5px;font-weight:600;color:#0E2350">{{ f.q }}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:{{ f.rot }};transition:transform .2s"><path d="m6 9 6 6 6-6"></path></svg>
+        </div>
+        <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 22px 20px;font-size:14.5px;line-height:1.65;color:#64748B">{{ f.a }}</div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->

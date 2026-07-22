@@ -1,0 +1,89 @@
+<section data-screen-label="Forms" style="max-width:1240px;margin:0 auto;padding:64px 48px 0">
+  <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563EB;margin-bottom:8px">05 · Components</div>
+  <h2 style="margin:0 0 24px;font-size:26px;font-weight:700;color:#0E2350">Forms &amp; inputs</h2>
+  <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:28px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <label style="font-size:13.5px;font-weight:600;color:#0E2350">Test name</label>
+        <input type="text" placeholder="e.g. Midterm Algebra" style="width:100%;box-sizing:border-box;padding:10px 13px;border-radius:10px;border:1px solid #CBD5E1;font-size:14px;color:#0E2350;background:#FFFFFF;outline:none;transition:border-color .15s, box-shadow .15s" style-focus="border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.16)" />
+        <span style="font-size:12.5px;color:#94A3B8">Visible to students on the cover page.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <label style="font-size:13.5px;font-weight:600;color:#0E2350">Email <span style="color:#DC2626">*</span></label>
+        <input type="text" value="mia@schooltest" style="width:100%;box-sizing:border-box;padding:10px 13px;border-radius:10px;border:1px solid #DC2626;font-size:14px;color:#0E2350;background:#FFFFFF;outline:none;box-shadow:0 0 0 3px rgba(220,38,38,.10)" />
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:#DC2626"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>Enter a valid email address.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <label style="font-size:13.5px;font-weight:600;color:#94A3B8">Class code</label>
+        <input type="text" value="7B-2026" disabled="{{ true }}" style="width:100%;box-sizing:border-box;padding:10px 13px;border-radius:10px;border:1px solid #E3E8F0;font-size:14px;color:#94A3B8;background:#F1F5F9;outline:none;cursor:not-allowed" />
+        <span style="font-size:12.5px;color:#94A3B8">Disabled — assigned by your school.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <label style="font-size:13.5px;font-weight:600;color:#0E2350">Search</label>
+        <div style="position:relative">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+          <input type="text" placeholder="Search tests…" style="width:100%;box-sizing:border-box;padding:10px 13px 10px 38px;border-radius:10px;border:1px solid #CBD5E1;font-size:14px;color:#0E2350;background:#FFFFFF;outline:none;transition:border-color .15s, box-shadow .15s" style-focus="border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.16)" />
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <label style="font-size:13.5px;font-weight:600;color:#0E2350">Subject</label>
+        <div style="position:relative">
+          <select style="appearance:none;width:100%;box-sizing:border-box;padding:10px 36px 10px 13px;border-radius:10px;border:1px solid #CBD5E1;font-size:14px;color:#0E2350;background:#FFFFFF;outline:none;cursor:pointer">
+            <option>Mathematics</option><option>Science</option><option>History</option><option>English</option>
+          </select>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none"><path d="m6 9 6 6 6-6"></path></svg>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <label style="font-size:13.5px;font-weight:600;color:#0E2350">Instructions</label>
+        <textarea rows="3" placeholder="Optional notes shown before the test starts…" style="width:100%;box-sizing:border-box;padding:10px 13px;border-radius:10px;border:1px solid #CBD5E1;font-size:14px;color:#0E2350;background:#FFFFFF;outline:none;resize:vertical;line-height:1.5;transition:border-color .15s, box-shadow .15s" style-focus="border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.16)"></textarea>
+      </div>
+    </div>
+    <div style="height:1px;background:#EEF2F7"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8">Checkbox — try it</div>
+        <div onClick="{{ toggleCb1 }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none">
+          <span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;border:1.5px solid {{ cb1Border }};background:{{ cb1Bg }};transition:all .15s">
+            <sc-if value="{{ cb1 }}" hint-placeholder-val="{{ true }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+          </span>
+          <span style="font-size:14px;color:#0E2350">Shuffle question order</span>
+        </div>
+        <div onClick="{{ toggleCb2 }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none">
+          <span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;border:1.5px solid {{ cb2Border }};background:{{ cb2Bg }};transition:all .15s">
+            <sc-if value="{{ cb2 }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+          </span>
+          <span style="font-size:14px;color:#0E2350">Show results immediately</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;opacity:.5;cursor:not-allowed">
+          <span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;border:1.5px solid #CBD5E1;background:#F1F5F9"></span>
+          <span style="font-size:14px;color:#64748B">Disabled option</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8">Radio — try it</div>
+        <div onClick="{{ setRadioA }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none">
+          <span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ raBorder }};transition:all .15s"><span style="width:8px;height:8px;border-radius:50%;background:{{ raDot }};transition:all .15s"></span></span>
+          <span style="font-size:14px;color:#0E2350">Multiple choice</span>
+        </div>
+        <div onClick="{{ setRadioB }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none">
+          <span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ rbBorder }};transition:all .15s"><span style="width:8px;height:8px;border-radius:50%;background:{{ rbDot }};transition:all .15s"></span></span>
+          <span style="font-size:14px;color:#0E2350">Open answer</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8">Switch — try it</div>
+        <div onClick="{{ toggleSw1 }}" style="display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none">
+          <span style="position:relative;display:inline-block;width:40px;height:22px;border-radius:999px;background:{{ sw1Bg }};transition:background .18s"><span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(14,35,80,.25);transform:{{ sw1Knob }};transition:transform .18s"></span></span>
+          <span style="font-size:14px;color:#0E2350">Timed test</span>
+        </div>
+        <div onClick="{{ toggleSw2 }}" style="display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none">
+          <span style="position:relative;display:inline-block;width:40px;height:22px;border-radius:999px;background:{{ sw2Bg }};transition:background .18s"><span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(14,35,80,.25);transform:{{ sw2Knob }};transition:transform .18s"></span></span>
+          <span style="font-size:14px;color:#0E2350">Email me results</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BADGES ============ -->

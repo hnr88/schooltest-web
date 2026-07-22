@@ -1,0 +1,76 @@
+<!-- ===== CHILD DETAIL ===== -->
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:24px;padding:8px 4px 8px 8px">
+      <div>
+        <span onClick="{{ goKids }}" style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">← My children</span>
+        <div style="display:flex;align-items:center;gap:18px;margin-top:14px;flex-wrap:wrap">
+          <span style="width:60px;height:60px;border-radius:999px;background:#0E2350;color:#fff;display:grid;place-items:center;font-weight:600;font-size:21px;flex:none">{{ kid.initial }}</span>
+          <div style="flex:1;min-width:200px">
+            <h1 style="margin:0;font-size:28px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">{{ kid.name }}</h1>
+            <div style="font-size:14px;color:#7C8698;margin-top:3px">{{ kid.meta }} · Home language {{ kid.homeLang }}</div>
+          </div>
+          <button style="background:#FFFFFF;color:#0E2350;font-size:13.5px;font-weight:600;padding:11px 20px;border-radius:999px;border:1px solid #D8DFEA;cursor:pointer" style-hover="border-color:#0E2350">Share with teacher</button>
+          <button style="background:#0E2350;color:#fff;font-size:13.5px;font-weight:600;padding:11px 22px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E">Assign practice</button>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border-radius:24px;padding:24px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04);display:flex;flex-wrap:wrap;gap:20px 0">
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Overall level</div><div style="font-size:24px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ kid.level }}</div></div>
+        <div style="width:1px;background:#EEF1F6;margin:0 26px"></div>
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Progress to {{ kid.nextLevel }}</div><div style="font-size:24px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ kid.progress }}%</div></div>
+        <div style="width:1px;background:#EEF1F6;margin:0 26px"></div>
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Practice streak</div><div style="font-size:24px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ kid.streak }} days</div></div>
+        <div style="width:1px;background:#EEF1F6;margin:0 26px"></div>
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Last result</div><div style="font-size:24px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ kid.lastScore }}</div></div>
+        <div style="width:1px;background:#EEF1F6;margin:0 26px"></div>
+        <div style="flex:1;min-width:140px"><div style="font-size:12px;color:#9AA6B8;margin-bottom:6px">Since joining</div><div style="font-size:24px;font-weight:700;color:#2563EB;letter-spacing:-0.01em">{{ kid.growth }}</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px">
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Level journey</h2>
+          <div style="display:flex;align-items:center;gap:0;margin-top:26px">
+            <sc-for list="{{ kid.journey }}" as="j" hint-placeholder-count="6">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+                <div style="position:absolute;top:9px;left:{{ j.lineLeft }};right:{{ j.lineRight }};height:2px;background:{{ j.lineBg }}"></div>
+                <span style="width:20px;height:20px;border-radius:999px;background:{{ j.dotBg }};border:2px solid {{ j.dotBorder }};box-sizing:border-box;position:relative;display:grid;place-items:center">{{ j.dotInner }}</span>
+                <span style="font-size:12px;font-weight:{{ j.w }};color:{{ j.fg }}">{{ j.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:24px;padding-top:18px;border-top:1px solid #EEF1F6;font-size:13px;color:#7C8698;line-height:1.55">{{ kid.journeyNote }}</div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <h2 style="margin:0 0 20px;font-size:16px;font-weight:600;color:#0E2350">Skills</h2>
+          <div style="display:flex;flex-direction:column;gap:13px">
+            <sc-for list="{{ kid.skills }}" as="sk" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:76px 1fr 38px;align-items:center;gap:14px">
+                <span style="font-size:13px;color:#7C8698">{{ sk.name }}</span>
+                <div style="height:6px;background:#EEF1F6;border-radius:99px"><div style="width:{{ sk.pct }};height:100%;background:{{ sk.color }};border-radius:99px"></div></div>
+                <span style="font-size:12px;font-weight:600;color:{{ sk.color }};text-align:right">{{ sk.grade }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:22px;padding-top:18px;border-top:1px solid #EEF1F6;font-size:13px;color:#7C8698;line-height:1.55">{{ kid.skillNote }}</div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border-radius:24px;padding:8px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:22px 0 6px">
+          <h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em;color:#0E2350">Recent results</h2>
+          <span style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">All reports →</span>
+        </div>
+        <sc-for list="{{ kid.results }}" as="r" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:20px;padding:17px 0;border-bottom:1px solid #EEF1F6">
+            <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#0E2350">{{ r.name }}</div><div style="font-size:13px;color:#7C8698;margin-top:2px">{{ r.date }}</div></div>
+            <span style="font-size:14px;font-weight:700;color:#0E2350;flex:none">{{ r.score }}</span>
+            <span style="font-size:12px;font-weight:600;color:{{ r.deltaColor }};flex:none;width:90px;text-align:right">{{ r.delta }}</span>
+            <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">Report</span>
+          </div>
+        </sc-for>
+        <div style="padding:8px 0 14px"></div>
+      </div>
+    </div>
+    </sc-if>
+
+    

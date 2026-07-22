@@ -299,3 +299,224 @@ details? } }` shape.
   Children/Search actions. No made-up activity, score, or notification count is rendered.
 - Errors/persistence: existing loading/error/retry behavior is retained; data remains visible
   after a normal live reload.
+
+---
+
+# MISSION `st-portal-redesign` — contract addendum (2026-07-22, append-only)
+
+Everything above remains binding. This section adds ONLY the surfaces the
+`dashbaord-design` metrics genuinely require and cannot already reach.
+
+Design source of truth: `.qa/design/screens/*.html` (114 slices) + `.qa/design/spec/*.md`.
+Product vocabulary source of truth: `docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md` §3 and
+`docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md`, digested in `.qa/intake/docs-constraints.md`.
+
+## Governing rules for every entry below
+
+- **Strapi v5 envelope.** Success `{ "data": ..., "meta": {...} }`, flat entities carrying
+  `documentId` (never a numeric `id`, never an `attributes` wrapper).
+- **Error envelope.** `{ "data": null, "error": { "status", "name", "message", "details" } }`
+  via `@strapi/utils` error classes.
+- **Auth.** `Authorization: Bearer <users-permissions JWT>`. Parent role required. Ownership is
+  `student.parent.documentId === caller.documentId`; a foreign or unknown child is **404**, never
+  403, so the endpoint cannot be used to enumerate other families' children.
+- **No composite scores.** `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25,46,193` forbid cut scores,
+  cross-skill composites and any computed CEFR score. No field below returns one.
+- **Single source of truth.** Every shape is defined once as a Zod schema in
+  `schooltest-api/src/contracts/` and imported by the controller AND mirrored 1:1 by a Zod schema
+  in the web module's `schemas/`. Neither side re-types a shape by hand.
+
+---
+
+## C-DASH-HOUSEHOLD — GET /api/my/progress
+
+Household + per-child dashboard aggregate. Exists because `/my/students/:documentId/progress` is
+strictly per-child (gap **G1**), so the design's dashboard would otherwise need 1+N requests
+against a 120 req/min/IP limiter.
+
+**Implements design metrics** (`.qa/design/spec/01-portal-dashboard.md` §10): #1 tests completed,
+#3 practice this week, #4 practice-minutes 7-day chart, #5 strongest day, #6 per-child CEFR
+journey stage, #7 per-child focus skill; and `.qa/design/spec/02-portal-children.md` `day streak`
+and `Level {band}`.
+
+- **Transport:** `GET /api/my/progress`
+- **Route file:** `schooltest-api/src/api/student/routes/01-custom-parent-students.ts` (append;
+  MUST precede the `/my/students/:documentId` wildcard — it does, different path root)
+- **Handler:** `api::student.parent-dashboard.getHouseholdProgress`
+- **Auth:** parent JWT required. Grant `parent-dashboard.getHouseholdProgress` → `parent` only,
+  registered in `src/bootstrap/permissions-actions.ts`.
+- **Request:** no path params. Query: **none accepted** — any query key ⇒ `400 ValidationError`
+  (`'household progress does not accept query parameters'`), matching the existing
+  `getParentProgress` convention.
+- **Success:** `200`
+
+```jsonc
+{
+  "data": {
+    "household": {
+      "childCount": 3,                    // active + enrolled children of this parent
+      "testsCompleted": 41,               // sessions.status='complete', all children, all time
+      "testsCompletedThisWeek": 7,        // same, started_at within the current ISO week (Mon 00:00 local)
+      "resultsPublished": 18,             // results.destination='official', all children
+      "practiceSecondsThisWeek": 15600,   // SUM(ended_at - started_at), mode='practice', status='complete', current ISO week
+      "practiceByDay": [                  // EXACTLY 7 entries, oldest -> newest, trailing 7 days incl. today
+        { "date": "2026-07-16", "weekday": "M", "seconds": 2040 }
+      ],
+      "strongestDay": { "date": "2026-07-19", "weekday": "T", "seconds": 5280 }  // argmax of practiceByDay, null when every day is 0
+    },
+    "children": [
+      {
+        "documentId": "abc123…",
+        "givenName": "Emma",
+        "familyName": "Chen",              // nullable — mononyms exist
+        "yearLevel": 7,                    // nullable
+        "status": "active",                // active | archived | enrolled
+        "testsCompleted": 14,
+        "practiceSecondsThisWeek": 5400,
+        "practiceDayStreak": 12,           // consecutive calendar days back from today with >=1 complete practice session
+        "lastActivityAt": "2026-07-22T08:28:04.544Z",  // max(sessions.ended_at, results.published_at_field); nullable
+        "cefrBand": "B1",                  // latest OFFICIAL result band; nullable when never assessed
+        "cefrStageIndex": 3,               // 0-based index into CEFR_LADDER; null when cefrBand is null
+        "acaraPhase": "Consolidating",     // nullable
+        "focusSkill": "speaking",          // see derivation below; null when no skill has an official result
+        "skills": [                        // one entry per skill that HAS an official result; never padded
+          {
+            "skill": "reading",            // reading | listening | speaking | writing
+            "cefrBand": "B2",
+            "readiness": "met",            // met | approaching | not_yet | not_assessed
+            "acaraPhase": "Consolidating",
+            "displayLabel": "Critical Reader",   // nullable
+            "publishedAt": "2026-07-22T08:28:04.544Z",  // nullable
+            "resultDocumentId": "amkb…"    // for deep-linking to C-PARENT-RESULT-VIEW
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {}
+}
+```
+
+- **`CEFR_LADDER`** is exactly the API enum, in order:
+  `["pre_A1","A1","A2","B1","B2","C1"]` (`result/content-types/result/schema.json`,
+  `docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:43-53`). **The design draws six ticks labelled
+  `A1 A2 B1 B2 C1 C2`; `C2` does not exist in this system and `pre_A1` does.** The UI renders the
+  real ladder with the design's tick visual. Recorded as a design↔data conflict, not silently reconciled.
+- **`focusSkill` derivation** (design says "the weakest skill"; the docs forbid a composite %):
+  rank each skill's latest official result by `readiness` — `not_yet`(0) < `approaching`(1) <
+  `met`(2), `not_assessed` excluded — and take the lowest. Ties break on the lower mean of that
+  result's per-attribute `prob` values in `attributes` (the primary datum per
+  `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:45`). Still tied ⇒ the skill enum's declaration order.
+  No percentage is ever surfaced to the user.
+- **Errors:**
+  | Status | name | When |
+  |---|---|---|
+  | `400` | `ValidationError` | any query parameter present |
+  | `401` | `UnauthorizedError` | absent/invalid JWT |
+  | `403` | `ForbiddenError` | caller role is not `parent` (message: `'Only parents can view household progress'`) |
+- **Persistence effect:** none — read-only. Reads `students`, `students_parent_lnk`, `sessions`,
+  `results`. No write, no side effect.
+- **Implementation constraints:** `strapi.documents()` only; explicit `fields`, never
+  `populate:'*'`; one grouped query per aggregate via `Promise.all`, never a per-child loop with
+  `await` inside it; `sanitizeOutput` + `transformResponse` in the controller; the response is
+  parsed through its own Zod schema before returning, exactly like `getParentProgress` does.
+
+---
+
+## C-PARENT-RESULT-VIEW — GET /api/results/:documentId (parent branch)
+
+**Additive change to an existing endpoint.** Today `result-view.ts` has student/teacher/admin
+branches and a parent falls through to `403 'role may not read results (C-4)'` (gap **G2**), so a
+parent cannot reach `attributes` — the per-attribute mastery map that the design's "Skills"
+section needs.
+
+**Implements** `.qa/design/spec/02-portal-children.md` screen B "Skills" (per-skill bars + grade)
+and the child-detail "Recent results" rows.
+
+- **Transport:** `GET /api/results/:documentId` (route already exists; no new route file)
+- **Auth:** parent JWT. New grant: `result.getResult` → `parent`.
+- **Ownership:** the result's `student.parent.documentId` MUST equal the caller's `documentId`
+  **and** `destination` MUST be `official`. Anything else ⇒ `404 NotFoundError` (never 403 — a
+  parent must not be able to probe which result ids exist).
+- **Success:** `200` with the EXISTING `ResultView` shape from
+  `schooltest-api/src/contracts/results.ts` — no new shape, no parent-specific variant. Fields the
+  UI consumes: `scope`, `skill`, `attributes` (`{status, prob, prob_se?, items, delta}` per
+  attribute code), `display_label`, `acara_phase`, `cefr_band`, `readiness`, `low_confidence`,
+  `effort_valid`, `supplementary`, `productive_scores`, `status`, `published_at`.
+- **Errors:** `401` no/invalid JWT · `403` role not permitted · `404` unknown id, foreign child,
+  or `destination='transient'`.
+- **Persistence effect:** none.
+- **Security note:** this widens who can read a result row. The verify task for it MUST prove, with
+  real requests: parent reads own child's official result → 200; parent reads ANOTHER parent's
+  child's result → 404; parent reads own child's transient result → 404; no JWT → 401.
+
+---
+
+## C-CHILD-RESULT-HISTORY — GET /api/my/students/:documentId/results
+
+`recentResults` is hard-capped at 5 with no pagination and no filters (gap **G4**), so the design's
+child-detail "Recent results" list and its `Since joining` band delta cannot be built from it.
+
+**Implements** `.qa/design/spec/02-portal-children.md` screen B "Recent results" + `Since joining`.
+
+- **Transport:** `GET /api/my/students/:documentId/results`
+- **Route file:** `01-custom-parent-students.ts`, placed **before** `/my/students/:documentId`
+  (the wildcard would otherwise swallow it — Strapi v5 GOTCHA 2).
+- **Handler:** `api::student.parent-results.listChildResults`
+- **Auth:** parent JWT; grant → `parent`. Ownership: unknown/foreign child ⇒ `404`.
+- **Request query** (all optional, strictly validated — unknown keys ⇒ `400`):
+  | Param | Type | Default | Rule |
+  |---|---|---|---|
+  | `page` | int ≥ 1 | `1` | |
+  | `pageSize` | int 1..50 | `10` | >50 ⇒ `400 ValidationError` |
+  | `skill` | enum reading/listening/speaking/writing | — | filters to that skill |
+- **Success:** `200`
+
+```jsonc
+{
+  "data": [
+    {
+      "documentId": "amkb…",
+      "scope": "skill",                    // skill | combined
+      "skill": "reading",                  // null when scope='combined'
+      "displayLabel": "Critical Reader",   // nullable
+      "cefrBand": "B2",                    // nullable
+      "acaraPhase": "Consolidating",       // nullable
+      "readiness": "met",                  // nullable
+      "lowConfidence": false,
+      "effortValid": true,
+      "status": "complete",                // scoring | partial_pending | complete
+      "publishedAt": "2026-07-22T08:28:04.544Z",  // nullable
+      "createdAt": "2026-07-22T08:27:51.101Z",    // ALWAYS present — fixes G5's unorderable rows
+      "previousResultDocumentId": "x9k…",  // nullable — enables the design's "+N vs {month}" delta
+      "sessionDocumentId": "s2z6…"         // nullable — fixes G12
+    }
+  ],
+  "meta": { "pagination": { "page": 1, "pageSize": 10, "pageCount": 4, "total": 37 } }
+}
+```
+
+- **Scope:** `destination='official'` ONLY. Practice/transient results stay invisible to parents
+  (preserves the existing `getParentProgress` boundary; gap **G8** is left open deliberately).
+- **Sort:** `published_at_field:desc, createdAt:desc` — same as the existing progress read.
+- **Errors:** `400` bad/unknown query · `401` no JWT · `403` non-parent role · `404` unknown or
+  foreign child.
+- **Persistence effect:** none.
+
+---
+
+## BLOCKED — design metrics with no honest data source
+
+Recorded here so they are visibly refused rather than quietly faked. Each gets a task file whose
+terminal state is BLOCKED with this reason.
+
+| id | Design metric | Slice | Why blocked |
+|---|---|---|---|
+| **B-1** | `coming up` hero stat (`2`) | `portal--main.html:34` | No scheduling model exists anywhere: no `scheduled_at`/`due_at`/`assignment`/`sitting` field on any content-type; `class` is only `{name, year_band, teacher, students}`. Nothing to count. |
+| **B-2** | "Coming up" list (3 dated rows) | `portal--main.html:120-140` | Same as B-1. |
+| **B-3** | `last result` `74%` | `portal--my-children-list.html:27` | A single percentage across a sitting is a composite score. `DOC0_PLATFORM_PRD_V2.md:25,46` — "no cut scores", "no cross-skill composite score anywhere in the system". The slot renders CEFR band + readiness + date instead. |
+| **B-4** | `Progress to {next} 68%` | `portal--my-children-list.html:23`, `portal--child-detail.html:20` | Requires band-entry thresholds and a CEFR score. `DOC0_PLATFORM_PRD_V2.md:193` — "Do not build a CEFR scorer". CEFR is a Crosswalk lookup, not a scale. |
+| **B-5** | `Avg. score 86%`, `Trend +4%`, `Of grade Top 15%` | `app--child-profile.html:29-31` | Composite + cohort percentile. No cohort/percentile data is parent-reachable and composites are forbidden. |
+| **B-6** | Subject bars Math/Danish/English, class average, letter grade | `app--child-profile.html`, `app--result-detail.html` | These slices are a generic school-test composition, not SchoolTest's domain. The product measures four English skills (reading/listening/speaking/writing) against CEFR/ACARA — there are no subjects, no letter grades, no class averages in the data model. |
+| **B-7** | `Family plan covers up to 4`, all billing/credits/invoices | `portal--billing.html`, `app--buy-credits/checkout/receipt/auto-top-up` | No payment, credit, invoice, plan or subscription content-type exists and no payment provider is configured. |
+| **B-8** | Per-child unread notification count | `portal--notifications.html` | `unread-count` is a single global scalar and the feed deliberately withholds `studentDocumentId` (gap **G13**). |

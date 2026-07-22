@@ -1,0 +1,47 @@
+{
+  "instance_name": "schooltest-m2-auth",
+  "detected_at": "2026-07-18T07:30:00Z",
+  "stack": {
+    "backend": {
+      "path": "schooltest-api",
+      "framework": "Strapi v5.50.1 (TypeScript, Document Service)",
+      "datastore": "PostgreSQL @ 127.0.0.1:5540, db 'schooltest' (docker-compose.dev.yml)",
+      "run": "ALREADY RUNNING on :5500 (dev, /api/health 200); restart path: pnpm dev",
+      "auth": "users-permissions JWT 7d + AUTH_RATELIMIT; roles student/teacher/admin (bootstrap)",
+      "package_manager": "pnpm"
+    },
+    "frontend_parent_portal": {
+      "path": "schooltest-web",
+      "framework": "Next.js 16.2.10 App Router + React 19 + Tailwind v4 + shadcn-on-Base-UI",
+      "design": "SchoolTest design system (src/modules/design-system), en/de next-intl",
+      "data": "TanStack Query v5 + typed axios src/lib/axios/strapi.ts, JWT localStorage",
+      "port": 3100
+    },
+    "frontend_student_desktop": {
+      "path": "schooltest-app",
+      "framework": "Electron 41 + Next.js 16.2.6 static export",
+      "auth": "magic-link client flow COMPLETE (request/verify/me + deep link schooltest://)",
+      "port_renderer": 3002
+    },
+    "infra": {
+      "postgres": "127.0.0.1:5540 (running)",
+      "mailpit (ours)": "docker schooltest-api-st1-mailpit — SMTP 127.0.0.1:1125, HTTP API /api/v1 on 127.0.0.1:8125 (docker-compose.dev.yml); neighbor mailhog on 1025/8025 untouched; staging/prod docker-compose.yml carries in-stack mailpit (deployment-infra agent)"
+    }
+  },
+  "api_base_urls": {
+    "schooltest-web": "http://localhost:5500 (was :1337 default — must repoint NEXT_PUBLIC_API_BASE_URL + API_BASE_URL)",
+    "schooltest-app": "http://localhost:5500 (NEXT_PUBLIC_API_URL)"
+  },
+  "blocked_external_dependencies": {
+    "google_oauth": "needs GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET (exist nowhere) — provider config will be env-gated; e2e for Google login is BLOCKED-with-reason until credentials are supplied"
+  },
+  "test_credentials": {
+    "parent": "parent@schooltest.local (seeded via bootstrap; password in .qa/DECISIONS.md only)",
+    "existing": "SEED_*_PASSWORD env in schooltest-api/.env (teacher/student/admin users, bootstrap-seeded)"
+  },
+  "verification": {
+    "e2e_tool": "@playwright/test (schooltest-web config, webServer on :3100; schooltest-app renderer on :3002)",
+    "email_assertions": "Mailhog HTTP API on :8025",
+    "screenshots": ".qa/screenshots/"
+  }
+}

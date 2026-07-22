@@ -1,0 +1,262 @@
+<!-- ===== MAIN ===== -->
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto">
+
+    <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;gap:28px;padding:8px 4px 8px 8px">
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:13px;color:#7C8698;margin-bottom:6px">Tuesday, July 22</div>
+          <h1 style="margin:0;font-size:32px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Good morning, Maria</h1>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px;background:#FFFFFF;border-radius:999px;height:44px;padding:0 18px;width:240px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C8698" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input placeholder="Search" style="border:none;outline:none;background:none;font-size:14px;flex:1;color:#0E2350" />
+          </div>
+          <button onClick="{{ goNotifs }}" style="width:44px;height:44px;border-radius:999px;background:#FFFFFF;border:none;display:grid;place-items:center;cursor:pointer;position:relative;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3D4A5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+            <span style="position:absolute;top:10px;right:11px;width:7px;height:7px;border-radius:999px;background:#2563EB;border:1.5px solid #fff"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero: navy summary panel + quiet stats strip -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px">
+        <div style="background:#0E2350;border-radius:24px;padding:32px 34px;color:#fff;display:flex;flex-direction:column;position:relative;overflow:hidden">
+          <div style="position:absolute;right:-70px;top:-90px;width:280px;height:280px;border-radius:999px;background:rgba(255,255,255,.045)"></div>
+          <div style="position:absolute;right:60px;bottom:-110px;width:200px;height:200px;border-radius:999px;background:rgba(255,255,255,.035)"></div>
+          <div style="font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8FA3C7">This week</div>
+          <div style="font-size:24px;font-weight:500;line-height:1.35;letter-spacing:-0.01em;margin-top:14px;max-width:420px;position:relative">Emma is <span style="font-weight:700;border-bottom:2px solid #2DD4BF">on track for B2</span> and Lucas improved reading by 9% since May.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px 24px;margin-top:auto;padding-top:28px;position:relative">
+            <div style="flex:none"><div style="font-size:24px;font-weight:700;letter-spacing:-0.02em">7</div><div style="font-size:12px;color:#8FA3C7;margin-top:3px">tests completed</div></div>
+            <div style="width:1px;background:rgba(255,255,255,.12)"></div>
+            <div style="flex:none"><div style="font-size:24px;font-weight:700;letter-spacing:-0.02em">2</div><div style="font-size:12px;color:#8FA3C7;margin-top:3px">coming up</div></div>
+            <div style="width:1px;background:rgba(255,255,255,.12)"></div>
+            <div style="flex:none"><div style="font-size:24px;font-weight:700;letter-spacing:-0.02em">4h 20m</div><div style="font-size:12px;color:#8FA3C7;margin-top:3px">practice this week</div></div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04);display:flex;flex-direction:column">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Practice minutes</h2>
+            <span style="font-size:12.5px;color:#7C8698">last 7 days</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:flex-end;gap:14px;margin-top:20px;min-height:120px">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:34px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">M</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:52px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">T</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:42px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">W</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:88px;background:#0E2350;border-radius:8px"></div><span style="font-size:11px;font-weight:600;color:#0E2350">T</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:60px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">F</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:26px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">S</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;max-width:30px;height:14px;background:#E4E9F2;border-radius:8px"></div><span style="font-size:11px;color:#9AA6B8">S</span></div>
+          </div>
+          <div style="margin-top:16px;font-size:13px;color:#7C8698">Thursday was the strongest day — <span style="color:#0E2350;font-weight:600">88 min</span>, mostly Emma's speaking drills.</div>
+        </div>
+      </div>
+
+      <!-- Children -->
+      <div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
+          <h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em;color:#0E2350">My children</h2>
+          <span onClick="{{ goKids }}" style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">See details →</span>
+        </div>
+        <div style="background:#FFFFFF;border-radius:24px;padding:6px 28px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <sc-for list="{{ dashKids }}" as="dk" hint-placeholder-count="2">
+            <div onClick="{{ dk.open }}" style="display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid {{ dk.divider }};cursor:pointer">
+              <span style="width:44px;height:44px;border-radius:999px;background:#EEF1F6;color:#0E2350;display:grid;place-items:center;font-weight:600;font-size:15px;flex:none">{{ dk.initial }}</span>
+              <div style="width:190px;flex:none;min-width:0">
+                <div style="font-size:15px;font-weight:600;color:#0E2350">{{ dk.name }}</div>
+                <div style="font-size:12.5px;color:#7C8698;margin-top:2px">{{ dk.school }}</div>
+              </div>
+              <div style="flex:1;display:flex;align-items:center;gap:6px;min-width:120px">
+                <sc-for list="{{ dk.dots }}" as="d" hint-placeholder-count="6">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;max-width:52px">
+                    <span style="width:100%;height:5px;border-radius:99px;background:{{ d.bg }}"></span>
+                    <span style="font-size:10px;font-weight:{{ d.w }};color:{{ d.fg }}">{{ d.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <span style="font-size:12px;font-weight:600;color:#2563EB;background:#EEF3FE;padding:6px 13px;border-radius:999px;flex:none">Focus: {{ dk.focus }}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA6B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- Teacher note + recommendations -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px">
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04);display:flex;flex-direction:column">
+          <div style="font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9AA6B8">Note from school</div>
+          <div style="font-size:16.5px;font-weight:450;line-height:1.6;color:#0E2350;margin-top:14px;flex:1">"Emma volunteered to present in front of the class this week — a big step. Ten minutes of speaking practice at home before Friday would set her up beautifully."</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:18px;border-top:1px solid #EEF1F6">
+            <span style="width:38px;height:38px;border-radius:999px;background:#EEF1F6;color:#0E2350;display:grid;place-items:center;font-weight:600;font-size:13px;flex:none">A</span>
+            <div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:#0E2350">Ms. Alvarez</div><div style="font-size:12px;color:#7C8698">EAL/D coordinator · Riverside College</div></div>
+            <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer">Reply</span>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:24px;padding:28px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+          <h2 style="margin:0;font-size:16px;font-weight:600;color:#0E2350">Recommended this week</h2>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:14px">
+            <div style="display:flex;align-items:center;gap:14px;padding:11px 0">
+              <span style="width:26px;height:26px;border-radius:999px;border:1.5px solid #D8DFEA;display:grid;place-items:center;font-size:11px;font-weight:700;color:#7C8698;flex:none">1</span>
+              <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#0E2350">Speaking drill — describe your day</div><div style="font-size:12.5px;color:#7C8698;margin-top:1px">Emma · 10 min · builds toward Friday's presentation</div></div>
+              <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">Assign</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;padding:11px 0">
+              <span style="width:26px;height:26px;border-radius:999px;border:1.5px solid #D8DFEA;display:grid;place-items:center;font-size:11px;font-weight:700;color:#7C8698;flex:none">2</span>
+              <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#0E2350">Picture words — around the house</div><div style="font-size:12.5px;color:#7C8698;margin-top:1px">Lucas · 8 min · writing foundations</div></div>
+              <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">Assign</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;padding:11px 0">
+              <span style="width:26px;height:26px;border-radius:999px;border:1.5px solid #D8DFEA;display:grid;place-items:center;font-size:11px;font-weight:700;color:#7C8698;flex:none">3</span>
+              <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#0E2350">Read together — 15 minutes, any book</div><div style="font-size:12.5px;color:#7C8698;margin-top:1px">Both · reading aloud in English or Vietnamese counts</div></div>
+              <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">Done ✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coming up: quiet list, no boxes -->
+      <div style="background:#FFFFFF;border-radius:24px;padding:8px 30px;box-shadow:0 1px 2px rgba(14,35,80,.04)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;padding:22px 0 6px">
+          <h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em;color:#0E2350">Coming up</h2>
+          <span style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">Full calendar →</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid #EEF1F6">
+          <div style="width:56px;flex:none;text-align:center"><div style="font-size:21px;font-weight:700;color:#0E2350;line-height:1">25</div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#9AA6B8;margin-top:3px">JUL</div></div>
+          <div style="width:1px;height:34px;background:#EEF1F6"></div>
+          <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#0E2350">English placement — all four skills</div><div style="font-size:13px;color:#7C8698;margin-top:2px">Emma · one sitting, about 55 minutes · headset needed</div></div>
+          <span style="font-size:12px;font-weight:600;color:#2563EB;flex:none">Due Friday</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid #EEF1F6">
+          <div style="width:56px;flex:none;text-align:center"><div style="font-size:21px;font-weight:700;color:#0E2350;line-height:1">29</div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#9AA6B8;margin-top:3px">JUL</div></div>
+          <div style="width:1px;height:34px;background:#EEF1F6"></div>
+          <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#0E2350">Reading &amp; listening check-in</div><div style="font-size:13px;color:#7C8698;margin-top:2px">Lucas · about 25 minutes · can pause and resume</div></div>
+          <span style="font-size:12px;font-weight:500;color:#7C8698;flex:none">Window open</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;padding:18px 0 24px">
+          <div style="width:56px;flex:none;text-align:center"><div style="font-size:21px;font-weight:700;color:#0E2350;line-height:1">04</div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#9AA6B8;margin-top:3px">AUG</div></div>
+          <div style="width:1px;height:34px;background:#EEF1F6"></div>
+          <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#0E2350">Parent–teacher review call</div><div style="font-size:13px;color:#7C8698;margin-top:2px">Both children · 20 minutes · with Ms. Alvarez</div></div>
+          <span style="font-size:12px;font-weight:500;color:#7C8698;flex:none">Scheduled</span>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:20px;padding:8px 4px 8px 8px;height:100%;min-height:0;box-sizing:border-box">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <div>
+          <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Find a school</h1>
+          <p style="margin:6px 0 0;font-size:14px;color:#7C8698">{{ filteredCount }} schools across Australia accept SchoolTest placement</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#FFFFFF;border-radius:999px;height:48px;padding:0 8px 0 20px;width:360px;box-shadow:0 1px 2px rgba(14,35,80,.05)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C8698" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input placeholder="Search schools or suburbs" style="border:none;outline:none;background:none;font-size:14px;flex:1;color:#0E2350" />
+          <button style="height:36px;padding:0 18px;border-radius:999px;background:#0E2350;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer" style-hover="background:#16326E">Search</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <button onClick="{{ openFilters }}" style="display:inline-flex;align-items:center;gap:7px;background:#0E2350;color:#fff;font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>All filters</button>
+        <span style="width:1px;height:22px;background:#D8DFEA;margin:0 4px"></span>
+        <sc-for list="{{ filterChips }}" as="fc" hint-placeholder-count="2">
+          <button onClick="{{ fc.remove }}" style="background:#FFFFFF;color:#0E2350;font-size:13px;font-weight:500;padding:9px 16px;border-radius:999px;border:1px solid #0E2350;cursor:pointer">{{ fc.label }} ✕</button>
+        </sc-for>
+        <span style="font-size:13px;color:#9AA6B8;display:{{ noChipsDisplay }}">No filters applied — showing all schools</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:340px 1fr;gap:20px;flex:1;min-height:0">
+        <!-- List -->
+        <div style="display:flex;flex-direction:column;gap:14px;overflow-y:auto;min-height:0;padding:2px 4px 8px 2px">
+          <sc-for list="{{ schools }}" as="s" hint-placeholder-count="4">
+            <div onClick="{{ s.select }}" style="background:#FFFFFF;border-radius:20px;padding:20px 22px;cursor:pointer;box-shadow:{{ s.shadow }};border:1.5px solid {{ s.borderColor }}">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+                <div style="min-width:0">
+                  <div style="font-size:15.5px;font-weight:600;color:#0E2350">{{ s.name }}</div>
+                  <div style="font-size:13px;color:#7C8698;margin-top:3px">{{ s.meta }}</div>
+                </div>
+                <span style="display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:#0E2350;flex:none;margin-top:1px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#0E2350" stroke="none"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>{{ s.rating }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid #EEF1F6;font-size:12.5px;color:#7C8698">
+                <span style="display:inline-flex;align-items:center;gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Accepts SchoolTest placement</span>
+                <span>·</span><span>{{ s.tag }}</span>
+                <span style="margin-left:auto;font-weight:600;color:{{ s.noteColor }}">{{ s.note }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- Map (Leaflet) -->
+        <div style="background:#FFFFFF;border-radius:24px;box-shadow:0 1px 2px rgba(14,35,80,.04);position:relative;overflow:hidden;min-height:420px">
+          <div ref="{{ setMapEl }}" style="position:absolute;inset:0;background:#F4F6FA"></div>
+          <div style="position:absolute;left:20px;bottom:20px;background:#FFFFFF;border-radius:16px;box-shadow:0 8px 24px rgba(14,35,80,.14);padding:14px 18px;display:flex;align-items:center;gap:14px;max-width:340px;z-index:900">
+            <span style="width:40px;height:40px;border-radius:12px;background:#0E2350;color:#fff;display:grid;place-items:center;flex:none;font-weight:700;font-size:13px">{{ selectedRating }}</span>
+            <div style="min-width:0">
+              <div style="font-size:14px;font-weight:600;color:#0E2350">{{ selectedName }}</div>
+              <div style="font-size:12.5px;color:#7C8698;margin-top:1px">{{ selectedMeta }}</div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:#2563EB;cursor:pointer;flex:none">View →</span>
+          </div>
+          <div style="position:absolute;right:20px;top:20px;display:flex;flex-direction:column;gap:8px;z-index:900">
+            <button onClick="{{ zoomIn }}" style="width:40px;height:40px;border-radius:12px;background:#FFFFFF;border:none;box-shadow:0 2px 10px rgba(14,35,80,.12);font-size:18px;font-weight:500;color:#0E2350;cursor:pointer">+</button>
+            <button onClick="{{ zoomOut }}" style="width:40px;height:40px;border-radius:12px;background:#FFFFFF;border:none;box-shadow:0 2px 10px rgba(14,35,80,.12);font-size:18px;font-weight:500;color:#0E2350;cursor:pointer">−</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters overlay -->
+      <sc-if value="{{ filtersOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeFilters }}" style="position:fixed;inset:0;background:rgba(14,35,80,.42);z-index:2000;display:grid;place-items:center;padding:24px">
+        <div onClick="{{ stopProp }}" style="background:#FFFFFF;border-radius:24px;width:560px;max-width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 28px 56px rgba(0,0,0,.22);display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 28px;border-bottom:1px solid #EEF1F6;position:sticky;top:0;background:#fff;border-radius:24px 24px 0 0">
+            <h2 style="margin:0;font-size:17px;font-weight:600;color:#0E2350">Filters</h2>
+            <button onClick="{{ closeFilters }}" style="width:34px;height:34px;border-radius:999px;background:#F4F6FA;border:none;display:grid;place-items:center;cursor:pointer;color:#0E2350;font-size:15px">✕</button>
+          </div>
+          <div style="padding:24px 28px;display:flex;flex-direction:column;gap:24px">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:9px">City</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ cityOpts }}" as="co" hint-placeholder-count="4">
+                  <button onClick="{{ co.toggle }}" style="height:42px;padding:0 17px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ co.bg }};color:{{ co.fg }};border:1.5px solid {{ co.border }}">{{ co.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:9px">School type</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ typeOpts }}" as="to" hint-placeholder-count="3">
+                  <button onClick="{{ to.toggle }}" style="height:42px;padding:0 17px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ to.bg }};color:{{ to.fg }};border:1.5px solid {{ to.border }}">{{ to.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:9px">Programs</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ programOpts }}" as="po" hint-placeholder-count="4">
+                  <button onClick="{{ po.toggle }}" style="height:42px;padding:0 17px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ po.bg }};color:{{ po.fg }};border:1.5px solid {{ po.border }}">{{ po.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#0E2350;margin-bottom:9px">Minimum rating</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ ratingOpts }}" as="ro" hint-placeholder-count="3">
+                  <button onClick="{{ ro.toggle }}" style="height:42px;padding:0 17px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ ro.bg }};color:{{ ro.fg }};border:1.5px solid {{ ro.border }}">{{ ro.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-top:1px solid #EEF1F6;position:sticky;bottom:0;background:#fff;border-radius:0 0 24px 24px">
+            <button onClick="{{ clearFilters }}" style="background:transparent;color:#3D4A5C;font-size:14px;font-weight:600;border:none;cursor:pointer;text-decoration:underline;padding:8px 4px">Clear all</button>
+            <button onClick="{{ closeFilters }}" style="background:#0E2350;color:#fff;font-size:14px;font-weight:600;padding:13px 26px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E">Show {{ filteredCount }} schools</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    

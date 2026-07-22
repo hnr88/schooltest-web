@@ -1,47 +1,171 @@
 {
-  "instance_name": "schooltest-m2-auth",
-  "detected_at": "2026-07-18T07:30:00Z",
-  "stack": {
-    "backend": {
-      "path": "schooltest-api",
-      "framework": "Strapi v5.50.1 (TypeScript, Document Service)",
-      "datastore": "PostgreSQL @ 127.0.0.1:5540, db 'schooltest' (docker-compose.dev.yml)",
-      "run": "ALREADY RUNNING on :5500 (dev, /api/health 200); restart path: pnpm dev",
-      "auth": "users-permissions JWT 7d + AUTH_RATELIMIT; roles student/teacher/admin (bootstrap)",
-      "package_manager": "pnpm"
+  "mission": "st-portal-redesign",
+  "mission_title": "Parent portal redesign to dashbaord-design + live dashboard metrics",
+  "started": "2026-07-22",
+  "supersedes": ".qa/archive-mission2-20260722/ (mission 2: auth + parent dashboard + search)",
+  "INSTANCE_NAME": "st1",
+  "instance_note": "Reusing the EXISTING st1 dev namespace rather than allocating a new one: the full stack (api, web, postgres, redis, mailpit, minio, r-scoring) was already up and healthy at intake, and standing up a parallel stack would fork the datastore this mission must persist to. Port probe recorded under 'infra'.",
+  "repos": {
+    "root": {
+      "path": "/home/hnr/Code/schooltest",
+      "is_git_repo": false,
+      "note": "Plain directory holding three independent git repos + shared docs/ and root .qa/ (Agent D mission st-mvp-d)."
     },
-    "frontend_parent_portal": {
-      "path": "schooltest-web",
-      "framework": "Next.js 16.2.10 App Router + React 19 + Tailwind v4 + shadcn-on-Base-UI",
-      "design": "SchoolTest design system (src/modules/design-system), en/de next-intl",
-      "data": "TanStack Query v5 + typed axios src/lib/axios/strapi.ts, JWT localStorage",
-      "port": 3100
+    "web": {
+      "path": "/home/hnr/Code/schooltest/schooltest-web",
+      "is_git_repo": true,
+      "branch": "main",
+      "head_at_intake": "3ad82d8",
+      "role": "FRONTEND — this mission's primary package"
     },
-    "frontend_student_desktop": {
-      "path": "schooltest-app",
-      "framework": "Electron 41 + Next.js 16.2.6 static export",
-      "auth": "magic-link client flow COMPLETE (request/verify/me + deep link schooltest://)",
-      "port_renderer": 3002
+    "api": {
+      "path": "/home/hnr/Code/schooltest/schooltest-api",
+      "is_git_repo": true,
+      "branch": "main",
+      "role": "BACKEND — touched only where a design metric needs an aggregate the API cannot already serve"
     },
-    "infra": {
-      "postgres": "127.0.0.1:5540 (running)",
-      "mailpit (ours)": "docker schooltest-api-st1-mailpit — SMTP 127.0.0.1:1125, HTTP API /api/v1 on 127.0.0.1:8125 (docker-compose.dev.yml); neighbor mailhog on 1025/8025 untouched; staging/prod docker-compose.yml carries in-stack mailpit (deployment-infra agent)"
+    "app": {
+      "path": "/home/hnr/Code/schooltest/schooltest-app",
+      "is_git_repo": true,
+      "role": "Electron student client — OUT OF SCOPE for this mission"
     }
   },
-  "api_base_urls": {
-    "schooltest-web": "http://localhost:5500 (was :1337 default — must repoint NEXT_PUBLIC_API_BASE_URL + API_BASE_URL)",
-    "schooltest-app": "http://localhost:5500 (NEXT_PUBLIC_API_URL)"
+  "frontend": {
+    "framework": "Next.js 16.2.10 (App Router, Turbopack, standalone output, reactCompiler: true)",
+    "react": "19.2.7",
+    "language": "TypeScript 5.9.3 (strict)",
+    "rendering_model": "React Server Components by default; 'use client' on leaves only",
+    "styling": "Tailwind CSS v4.3.2, CSS-first @theme in src/app/globals.css, OKLCH tokens",
+    "ui_kit": "shadcn 4.13.0 (style: base-nova) built on @base-ui/react 1.6.0 — NOT Radix",
+    "ui_primitives_dir": "src/components/ui (READ-ONLY per CLAUDE.md law 11)",
+    "server_state": "@tanstack/react-query 5.101.2",
+    "client_state": "zustand 5.0.14",
+    "http": "axios 1.18.1 via src/lib/axios/strapi.ts (typed, interceptors)",
+    "forms": "react-hook-form 7.81.0 + @hookform/resolvers 5.4.0 + zod 4.4.3",
+    "i18n": "next-intl 4.13.1, locales en/zh/ko/ms/vi/th, localePrefix 'as-needed', defaultLocale en, 1151 keys per catalog",
+    "charts": "recharts 3.9.2",
+    "maps": "leaflet 1.9.4 + react-leaflet 5.0.0 + react-leaflet-cluster 4.1.3",
+    "animation": "tw-animate-css 1.4.0 + Tailwind v4 transitions (NO new animation dependency permitted)",
+    "icons": "lucide-react 1.23.0",
+    "toasts": "sonner 2.0.7",
+    "theme": "next-themes 0.4.6",
+    "other": [
+      "cmdk 1.1.1",
+      "vaul 1.1.2",
+      "embla-carousel-react 8.6.0",
+      "input-otp 1.4.2",
+      "react-day-picker 10.0.1",
+      "react-resizable-panels 4.12.1",
+      "date-fns 4.4.0",
+      "class-variance-authority 0.7.1",
+      "clsx 2.1.1",
+      "tailwind-merge 3.6.0"
+    ],
+    "env_layer": "@t3-oss/env-nextjs 0.13.11 via src/lib/env.ts",
+    "port": 3100,
+    "start_command": "pnpm exec next dev -p 3100 — started by Playwright's webServer block; CLAUDE.md law 12 forbids running dev/build/start by hand",
+    "source_of_facts": "schooltest-web/package.json, next.config.ts, components.json, src/i18n/routing.ts, src/proxy.ts"
   },
-  "blocked_external_dependencies": {
-    "google_oauth": "needs GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET (exist nowhere) — provider config will be env-gated; e2e for Google login is BLOCKED-with-reason until credentials are supplied"
+  "backend": {
+    "framework": "Strapi 5.50.1 (TypeScript)",
+    "data_access": "Strapi Document Service — strapi.documents(), documentId (never numeric id), explicit populate",
+    "datastore": "PostgreSQL via pg 8.22.0",
+    "auth": "@strapi/plugin-users-permissions 5.50.1 — JWT bearer",
+    "queue": "bullmq 5.80.2 + ioredis 5.11.1",
+    "object_storage": "minio 8.0.7",
+    "email": "@strapi/provider-email-nodemailer -> mailpit (dev)",
+    "push": "web-push 3.6.7 (VAPID)",
+    "validation": "zod 4.4.3",
+    "port": 5500,
+    "start_command": "pnpm develop (in schooltest-api) — already running, kept alive by the watchdog",
+    "content_types": [
+      "agent", "auth-email-request", "calibration-run", "class", "config", "crosswalk",
+      "export", "form", "item", "item-template", "media", "notification",
+      "notification-preference", "push-subscription", "response", "result", "rubric",
+      "school", "search", "search-preference", "session", "student", "student-magic-link"
+    ],
+    "parent_reachable_routes_at_intake": [
+      "POST /api/auth/local",
+      "GET /api/my/students",
+      "GET /api/my/students/:documentId",
+      "GET /api/my/students/:documentId/progress",
+      "POST /api/students",
+      "PUT /api/students/:documentId",
+      "POST /api/students/:documentId/archive",
+      "POST /api/students/:documentId/unarchive",
+      "GET /api/results/:documentId",
+      "notification / notification-preference / push-subscription customs",
+      "search + search-preference customs"
+    ],
+    "source_of_facts": "schooltest-api/package.json, src/api/**/routes/*.ts, src/api/**/content-types/*/schema.json"
   },
-  "test_credentials": {
-    "parent": "parent@schooltest.local (seeded via bootstrap; password in .qa/DECISIONS.md only)",
-    "existing": "SEED_*_PASSWORD env in schooltest-api/.env (teacher/student/admin users, bootstrap-seeded)"
+  "infra": {
+    "postgres": { "host": "127.0.0.1", "port": 5540, "db": "schooltest", "user": "schooltest", "probe": "BUSY (ours — st1)" },
+    "redis": { "port": 6390, "probe": "BUSY (ours — st1)" },
+    "mailpit": { "smtp": 1125, "http": 8125, "probe": "BUSY (ours — st1)" },
+    "minio": { "port": 9010, "probe": "BUSY (ours — st1)" },
+    "r_scoring": { "port": 8790, "probe": "BUSY (ours — st1)", "note": "Docker IMAGE, not a restartable process (root .qa OP-16)" },
+    "api": { "port": 5500, "probe": "BUSY (ours)" },
+    "web": { "port": 3100, "probe": "BUSY (ours)" },
+    "neighbors_avoided": [
+      "3000 — a neighbouring app; playwright.config.ts already documents this",
+      "1337 — Strapi default, unused here",
+      "1025/8025 — a neighbour's mailhog; ours is mailpit on 1125/8125"
+    ]
   },
-  "verification": {
-    "e2e_tool": "@playwright/test (schooltest-web config, webServer on :3100; schooltest-app renderer on :3002)",
-    "email_assertions": "Mailhog HTTP API on :8025",
-    "screenshots": ".qa/screenshots/"
+  "api_base_url": {
+    "client": "NEXT_PUBLIC_API_BASE_URL (schooltest-web/.env.local) -> http://127.0.0.1:5500",
+    "server": "API_BASE_URL (schooltest-web/.env.local)"
+  },
+  "auth": {
+    "mechanism": "Strapi users-permissions JWT held in localStorage under key 'app.auth.token'",
+    "plumbing": "src/lib/axios/strapi.ts — readClientToken/writeClientToken, request interceptor sets Authorization: Bearer, 401 interceptor clears the token",
+    "cookies": "NONE — the JWT is never a cookie and is never read in src/proxy.ts",
+    "route_guarding": "client-side redirect to /sign-in when there is no token",
+    "security_boundary": "Strapi users-permissions roles + grants (src/bootstrap/permissions*.ts). Verified live: GET /api/my/students with no token -> 403",
+    "test_credentials": "Seeded parent — tests/e2e/helpers/auth.ts SEEDED_PARENT (parent@schooltest.local). Other role passwords live in schooltest-api/.env as SEED_ADMIN_PASSWORD / SEED_APIADMIN_PASSWORD / SEED_TEACHER_PASSWORD / SEED_STUDENT_PASSWORD. Never committed here.",
+    "account_creation_policy": "Accounts come ONLY from the Strapi bootstrap seed / CLI. Never from a signup form, never from the admin UI."
+  },
+  "e2e": {
+    "tool": "@playwright/test 1.61.1",
+    "a11y": "@axe-core/playwright 4.12.1",
+    "config": "schooltest-web/playwright.config.ts — testDir tests/e2e, baseURL http://localhost:3100, webServer boots next dev and reuses an existing server",
+    "command": "pnpm exec playwright test",
+    "helpers": [
+      "tests/e2e/helpers/auth.ts (loginAsParent, SEEDED_PARENT)",
+      "tests/e2e/helpers/auth-db.ts (real psql probes against 127.0.0.1:5540)",
+      "tests/e2e/helpers/i18n.ts (catalog-driven selectors — copy drift fails loud)",
+      "tests/e2e/helpers/mailpit.ts",
+      "tests/e2e/helpers/throwaway-parent.ts",
+      "tests/e2e/helpers/student-cleanup.ts",
+      "tests/e2e/helpers/ui.ts",
+      "tests/e2e/helpers/school-map.ts"
+    ],
+    "specs_at_intake": 48
+  },
+  "package_manager": "pnpm (exclusively — npm/yarn/bun forbidden by CLAUDE.md law 6)",
+  "gates": {
+    "typecheck": "pnpm tsc --noEmit (per package)",
+    "lint": "pnpm lint (per package)",
+    "e2e": "pnpm exec playwright test"
+  },
+  "design_source": {
+    "path": "schooltest-web/dashbaord-design/",
+    "note": "Static HTML design export — the inline styles ARE the spec. Plus tokens.css, Google Sans variable fonts, and logo assets. The folder name is misspelled in the repo; kept as-is so @-references resolve.",
+    "tokens": "dashbaord-design/tokens.css — shadcn-compatible light + dark token set, brand navy/blue/teal, Google Sans, shadow scale",
+    "slices": ".qa/design/screens/ — 114 addressable per-screen slices; index at .qa/design/screens-index.json",
+    "specs": ".qa/design/spec/*.md"
+  },
+  "boot_gate": {
+    "passed": true,
+    "at": "2026-07-22T21:00+10:00",
+    "checks": [
+      "postgres 127.0.0.1:5540 accepts a real connection — 1542 rows in up_users",
+      "POST /api/auth/local with the seeded parent -> 200 + a real 139-char JWT (user id 49, confirmed: true)",
+      "GET /api/my/students with that JWT -> 200 + 10 real seeded student rows",
+      "GET /api/my/students with NO token -> 403 (auth boundary live)",
+      "web http://127.0.0.1:3100/ -> 200; localePrefix 'as-needed' means / IS the en route and /en -> 307 back to /",
+      "real data present: 382 students, 2358 results, 2611 sessions, 1570 notifications, 312 schools, 8 agents"
+    ]
   }
 }

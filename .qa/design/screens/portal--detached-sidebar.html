@@ -1,0 +1,33 @@
+<!-- ===== DETACHED SIDEBAR ===== -->
+  <aside style="width:248px;flex:none;background:#FFFFFF;border-radius:24px;box-shadow:0 1px 2px rgba(14,35,80,.04), 0 8px 32px rgba(14,35,80,.06);display:flex;flex-direction:column;padding:28px 16px 16px;box-sizing:border-box">
+    <img src="assets/logo.png" alt="SchoolTest" style="height:26px;width:auto;align-self:flex-start;margin:0 12px 36px" />
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9AA6B8;padding:0 14px 8px">Manage</div>
+    <nav style="display:flex;flex-direction:column;gap:2px">
+      <div onClick="{{ goDash }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navDash.w }};background:{{ navDash.bg }};color:{{ navDash.fg }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="2"></rect><rect x="14" y="3" width="7" height="5" rx="2"></rect><rect x="14" y="12" width="7" height="9" rx="2"></rect><rect x="3" y="16" width="7" height="5" rx="2"></rect></svg>Overview
+      </div>
+      <div onClick="{{ goKids }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navKids.w }};background:{{ navKids.bg }};color:{{ navKids.fg }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>My children
+      </div>
+      <div onClick="{{ goSearch }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navSearch.w }};background:{{ navSearch.bg }};color:{{ navSearch.fg }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Search
+      </div>
+    </nav>
+    <div style="flex:1"></div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9AA6B8;padding:0 14px 8px">Account</div>
+    <div onClick="{{ goBilling }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navBilling.w }};background:{{ navBilling.bg }};color:{{ navBilling.fg }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"></rect><path d="M2 10h20"></path></svg>Billing
+    </div>
+    <div onClick="{{ goSettings }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14.5px;cursor:pointer;font-weight:{{ navSettings.w }};background:{{ navSettings.bg }};color:{{ navSettings.fg }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M3.5 5.5 5.6 7.6M18.4 16.4l2.1 2.1M2 12h3M19 12h3M3.5 18.5l2.1-2.1M18.4 7.6l2.1-2.1"></path></svg>Settings
+    </div>
+    <div style="margin-top:14px;background:#F4F6FA;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:11px">
+      <span style="width:36px;height:36px;border-radius:999px;background:#0E2350;color:#fff;display:grid;place-items:center;font-weight:600;font-size:13px;flex:none">M</span>
+      <div style="display:flex;flex-direction:column;gap:1px;min-width:0">
+        <span style="font-size:13.5px;font-weight:600;color:#0E2350">Maria Rodriguez</span>
+        <span style="font-size:12px;color:#7C8698">Parent account</span>
+      </div>
+    </div>
+  </aside>
+
+  

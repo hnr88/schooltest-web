@@ -1,0 +1,150 @@
+<!-- ===== ADD CHILD — MULTI-STEP ===== -->
+    <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:24px;padding:8px 4px 8px 8px;height:100%;box-sizing:border-box">
+      <div>
+        <span onClick="{{ goKids }}" style="font-size:13.5px;font-weight:500;color:#7C8698;cursor:pointer" style-hover="color:#2563EB">← My children</span>
+        <h1 style="margin:12px 0 0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">Add a child</h1>
+      </div>
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;flex:1;min-height:0">
+        <!-- Step rail -->
+        <div style="display:flex;flex-direction:column;gap:0;padding-top:8px">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+            <div onClick="{{ st.go }}" style="display:flex;gap:14px;cursor:pointer">
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <span style="width:30px;height:30px;border-radius:999px;background:{{ st.dotBg }};color:{{ st.dotFg }};border:1.5px solid {{ st.dotBorder }};box-sizing:border-box;display:grid;place-items:center;font-size:12.5px;font-weight:600;flex:none">{{ st.num }}</span>
+                <span style="width:1.5px;flex:1;background:{{ st.lineBg }};min-height:26px;display:{{ st.lineDisplay }}"></span>
+              </div>
+              <div style="padding:5px 0 22px">
+                <div style="font-size:14px;font-weight:{{ st.w }};color:{{ st.fg }}">{{ st.title }}</div>
+                <div style="font-size:12px;color:#9AA6B8;margin-top:2px">{{ st.sub }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- Step card -->
+        <div style="background:#FFFFFF;border-radius:24px;box-shadow:0 1px 2px rgba(14,35,80,.04);padding:34px 38px;display:flex;flex-direction:column;max-width:760px;overflow-y:auto">
+
+          <sc-if value="{{ step1 }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Personal details</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 1 of 5 · Who the student is</p></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Given name<span style="color:#2563EB">*</span></label><input placeholder="e.g. Minh" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Family name</label><input placeholder="e.g. Nguyen" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /><div style="font-size:12px;color:#9AA6B8;margin-top:6px">Optional — many students go by one name only.</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Date of birth</label><input placeholder="DD/MM/YYYY" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Email</label><input placeholder="student@example.com" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+            </div>
+            <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Gender</label><div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ genders }}" as="g" hint-placeholder-count="4"><button onClick="{{ g.toggle }}" style="height:44px;padding:0 18px;border-radius:12px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ g.bg }};color:{{ g.fg }};border:1.5px solid {{ g.border }}">{{ g.label }}</button></sc-for></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Nationality<span style="color:#2563EB">*</span></label><select style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 12px;font-size:14px;color:#0E2350;outline:none;background:#fff"><option>Australian</option><option>Vietnamese</option><option>Chinese</option><option>Indian</option><option>Korean</option><option>Filipino</option><option>Japanese</option><option>Indonesian</option><option>Other…</option></select></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Passport number</label><input placeholder="e.g. E12345678" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /><div style="font-size:12px;color:#9AA6B8;margin-top:6px">Optional — schools use this for enrolment paperwork.</div></div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ step2 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Education</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 2 of 5 · Current schooling and target entry</p></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Current school</label><input placeholder="e.g. Oakwood Primary" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Current year level</label><select style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 12px;font-size:14px;color:#0E2350;outline:none;background:#fff"><option>Foundation</option><option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option><option>Year 5</option><option>Year 6</option><option selected>Year 7</option><option>Year 8</option><option>Year 9</option><option>Year 10</option><option>Year 11</option><option>Year 12</option></select></div>
+            </div>
+            <div>
+              <label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Test year level (7–12)</label>
+              <div style="display:flex;gap:7px;flex-wrap:wrap">
+                <sc-for list="{{ testYears }}" as="ty" hint-placeholder-count="6">
+                  <button onClick="{{ ty.toggle }}" style="width:48px;height:44px;border-radius:12px;font-size:13.5px;font-weight:600;cursor:pointer;background:{{ ty.bg }};color:{{ ty.fg }};border:1.5px solid {{ ty.border }}">{{ ty.label }}</button>
+                </sc-for>
+              </div>
+              <div style="font-size:12px;color:#9AA6B8;margin-top:8px">The SchoolTest testing band — separate from the school year.</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Target entry year<span style="color:#2563EB">*</span></label><select style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 12px;font-size:14px;color:#0E2350;outline:none;background:#fff"><option>2026</option><option selected>2027</option><option>2028</option><option>2029</option></select></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Target entry term<span style="color:#2563EB">*</span></label><div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ terms }}" as="tm" hint-placeholder-count="4"><button onClick="{{ tm.toggle }}" style="height:44px;padding:0 15px;border-radius:12px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ tm.bg }};color:{{ tm.fg }};border:1.5px solid {{ tm.border }}">{{ tm.label }}</button></sc-for></div></div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ step3 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Parent or guardian</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 3 of 5 · Who we contact about results and enrolment</p></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Parent or guardian name<span style="color:#2563EB">*</span></label><input placeholder="e.g. Maria Rodriguez" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Phone<span style="color:#2563EB">*</span></label><input placeholder="0400 000 000" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Email</label><input placeholder="guardian@example.com" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+              <div><label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">WeChat ID</label><input placeholder="e.g. wei_chen88" style="width:100%;box-sizing:border-box;height:48px;border:1.5px solid #D8DFEA;border-radius:12px;padding:0 15px;font-size:14px;color:#0E2350;outline:none" style-focus="border-color:#2563EB" /></div>
+            </div>
+            <div>
+              <label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Preferred contact channel</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ channels }}" as="ch" hint-placeholder-count="4">
+                  <button onClick="{{ ch.toggle }}" style="height:44px;padding:0 18px;border-radius:12px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ ch.bg }};color:{{ ch.fg }};border:1.5px solid {{ ch.border }}">{{ ch.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ step4 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Photo &amp; voice</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 4 of 5 · Optional photo and voice introduction</p></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;background:#F4F6FA;border-radius:12px;padding:12px 16px;font-size:13px;color:#3D4A5C;line-height:1.5">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+              Both are optional. You can add or replace them later from the student's profile.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div>
+                <label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Student photo</label>
+                <div style="border:1.5px dashed #C4CEDC;border-radius:16px;padding:30px 20px;text-align:center;cursor:pointer" style-hover="border-color:#2563EB">
+                  <div style="width:46px;height:46px;border-radius:999px;background:#EEF1F6;display:grid;place-items:center;margin:0 auto 12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E2350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"></path></svg></div>
+                  <div style="font-size:14px;font-weight:600;color:#0E2350">Add a photo</div>
+                  <div style="font-size:12.5px;color:#7C8698;margin-top:3px">Drag &amp; drop or click to upload</div>
+                  <div style="font-size:11.5px;color:#9AA6B8;margin-top:8px">JPG or PNG, up to 15MB.</div>
+                </div>
+              </div>
+              <div>
+                <label style="display:block;font-size:12.5px;font-weight:600;color:#0E2350;margin-bottom:7px">Voice introduction</label>
+                <div style="border:1.5px dashed #C4CEDC;border-radius:16px;padding:30px 20px;text-align:center;cursor:pointer" style-hover="border-color:#2563EB">
+                  <div style="width:46px;height:46px;border-radius:999px;background:#EEF1F6;display:grid;place-items:center;margin:0 auto 12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E2350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"></path></svg></div>
+                  <div style="font-size:14px;font-weight:600;color:#0E2350">Add a voice intro</div>
+                  <div style="font-size:12.5px;color:#7C8698;margin-top:3px">Drag &amp; drop or click to upload</div>
+                  <div style="font-size:11.5px;color:#9AA6B8;margin-top:8px">MP3 or M4A, up to 2 minutes.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ step5 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <div><h2 style="margin:0;font-size:20px;font-weight:600;color:#0E2350">Review &amp; confirm</h2><p style="margin:6px 0 0;font-size:13.5px;color:#7C8698">Step 5 of 5 · You can change any of this later in the student's profile.</p></div>
+            <div style="border:1px solid #EEF1F6;border-radius:16px;overflow:hidden">
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:15px 20px;border-bottom:1px solid #EEF1F6"><span style="font-size:13px;color:#7C8698">Personal</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;text-align:right">Minh Nguyen · born 14/03/2013 · Vietnamese</span></div>
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:15px 20px;border-bottom:1px solid #EEF1F6"><span style="font-size:13px;color:#7C8698">Education</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;text-align:right">Year 7 · testing band 7 · entry Term 1, 2027</span></div>
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:15px 20px;border-bottom:1px solid #EEF1F6"><span style="font-size:13px;color:#7C8698">Guardian</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;text-align:right">Maria Rodriguez · 0400 000 000 · WhatsApp</span></div>
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:15px 20px"><span style="font-size:13px;color:#7C8698">Media</span><span style="font-size:13.5px;font-weight:600;color:#0E2350;text-align:right">Photo added · voice intro skipped</span></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:11px;background:#F4F6FA;border-radius:14px;padding:15px 18px;font-size:13px;color:#3D4A5C;line-height:1.55">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+              Adding a third child costs <b style="color:#0E2350">A$9/month</b> on your Family plan. Your next invoice will be A$45 on 12 Aug.
+            </div>
+          </div>
+          </sc-if>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:30px">
+            <button onClick="{{ stepBack }}" style="background:transparent;color:{{ backColor }};font-size:14px;font-weight:600;padding:12px 10px;border:none;cursor:pointer">← Back</button>
+            <div style="display:flex;align-items:center;gap:16px">
+              <span style="font-size:12.5px;color:#9AA6B8">Step {{ stepNum }} of 5</span>
+              <button onClick="{{ stepNext }}" style="background:#0E2350;color:#fff;font-size:14px;font-weight:600;padding:13px 26px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E">{{ nextLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    

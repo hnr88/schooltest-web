@@ -1,0 +1,800 @@
+[
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Header",
+    "slice": ".qa/design/screens/ds--header.html",
+    "bytes": 1551,
+    "lines": 15
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Logo",
+    "slice": ".qa/design/screens/ds--logo.html",
+    "bytes": 1199,
+    "lines": 12
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Colors",
+    "slice": ".qa/design/screens/ds--colors.html",
+    "bytes": 6827,
+    "lines": 55
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Typography",
+    "slice": ".qa/design/screens/ds--typography.html",
+    "bytes": 2788,
+    "lines": 17
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Buttons",
+    "slice": ".qa/design/screens/ds--buttons.html",
+    "bytes": 6429,
+    "lines": 35
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Forms",
+    "slice": ".qa/design/screens/ds--forms.html",
+    "bytes": 9474,
+    "lines": 90
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Badges",
+    "slice": ".qa/design/screens/ds--badges.html",
+    "bytes": 3336,
+    "lines": 27
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Alerts",
+    "slice": ".qa/design/screens/ds--alerts.html",
+    "bytes": 9047,
+    "lines": 61
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Cards",
+    "slice": ".qa/design/screens/ds--cards.html",
+    "bytes": 8328,
+    "lines": 57
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Table",
+    "slice": ".qa/design/screens/ds--table.html",
+    "bytes": 5107,
+    "lines": 37
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Tabs",
+    "slice": ".qa/design/screens/ds--tabs.html",
+    "bytes": 2729,
+    "lines": 26
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Overlays",
+    "slice": ".qa/design/screens/ds--overlays.html",
+    "bytes": 8823,
+    "lines": 59
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Navigation",
+    "slice": ".qa/design/screens/ds--navigation.html",
+    "bytes": 10444,
+    "lines": 58
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Test components",
+    "slice": ".qa/design/screens/ds--test-components.html",
+    "bytes": 45385,
+    "lines": 319
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "PTE task library",
+    "slice": ".qa/design/screens/ds--pte-task-library.html",
+    "bytes": 35251,
+    "lines": 204
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Landing components",
+    "slice": ".qa/design/screens/ds--landing-components.html",
+    "bytes": 19065,
+    "lines": 144
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Dashboard components",
+    "slice": ".qa/design/screens/ds--dashboard-components.html",
+    "bytes": 23032,
+    "lines": 147
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Footers",
+    "slice": ".qa/design/screens/ds--footers.html",
+    "bytes": 13084,
+    "lines": 106
+  },
+  {
+    "file": "SchoolTest Design System.dc.html",
+    "label": "Dark mode",
+    "slice": ".qa/design/screens/ds--dark-mode.html",
+    "bytes": 7595,
+    "lines": 54
+  },
+  {
+    "file": "SchoolTest Landing.dc.html",
+    "label": "Hero",
+    "slice": ".qa/design/screens/landing--hero.html",
+    "bytes": 6442,
+    "lines": 44
+  },
+  {
+    "file": "SchoolTest Landing.dc.html",
+    "label": "Features",
+    "slice": ".qa/design/screens/landing--features.html",
+    "bytes": 3477,
+    "lines": 28
+  },
+  {
+    "file": "SchoolTest Landing.dc.html",
+    "label": "Feature detail",
+    "slice": ".qa/design/screens/landing--feature-detail.html",
+    "bytes": 4558,
+    "lines": 32
+  },
+  {
+    "file": "SchoolTest Landing.dc.html",
+    "label": "Stats",
+    "slice": ".qa/design/screens/landing--stats.html",
+    "bytes": 1075,
+    "lines": 11
+  },
+  {
+    "file": "SchoolTest Landing.dc.html",
+    "label": "How it works",
+    "slice": ".qa/design/screens/landing--how-it-works.html",
+    "bytes": 4187,
+    "lines": 41
+  },
+  {
+    "file": "SchoolTest Landing.dc.html",
+    "label": "Pricing",
+    "slice": ".qa/design/screens/landing--pricing.html",
+    "bytes": 5763,
+    "lines": 43
+  },
+  {
+    "file": "SchoolTest Landing.dc.html",
+    "label": "FAQ",
+    "slice": ".qa/design/screens/landing--faq.html",
+    "bytes": 1276,
+    "lines": 21
+  },
+  {
+    "file": "SchoolTest Landing.dc.html",
+    "label": "CTA",
+    "slice": ".qa/design/screens/landing--cta.html",
+    "bytes": 6487,
+    "lines": 61
+  },
+  {
+    "file": "dashbaord-design/Parent Portal.dc.html",
+    "label": "DETACHED SIDEBAR",
+    "slice": ".qa/design/screens/portal--detached-sidebar.html",
+    "bytes": 4144,
+    "lines": 33
+  },
+  {
+    "file": "dashbaord-design/Parent Portal.dc.html",
+    "label": "MAIN",
+    "slice": ".qa/design/screens/portal--main.html",
+    "bytes": 25646,
+    "lines": 262
+  },
+  {
+    "file": "dashbaord-design/Parent Portal.dc.html",
+    "label": "MY CHILDREN — LIST",
+    "slice": ".qa/design/screens/portal--my-children-list.html",
+    "bytes": 4190,
+    "lines": 46
+  },
+  {
+    "file": "dashbaord-design/Parent Portal.dc.html",
+    "label": "CHILD DETAIL",
+    "slice": ".qa/design/screens/portal--child-detail.html",
+    "bytes": 6826,
+    "lines": 76
+  },
+  {
+    "file": "dashbaord-design/Parent Portal.dc.html",
+    "label": "ADD CHILD — MULTI-STEP",
+    "slice": ".qa/design/screens/portal--add-child-multi-step.html",
+    "bytes": 18352,
+    "lines": 150
+  },
+  {
+    "file": "dashbaord-design/Parent Portal.dc.html",
+    "label": "NOTIFICATIONS",
+    "slice": ".qa/design/screens/portal--notifications.html",
+    "bytes": 3021,
+    "lines": 41
+  },
+  {
+    "file": "dashbaord-design/Parent Portal.dc.html",
+    "label": "SETTINGS",
+    "slice": ".qa/design/screens/portal--settings.html",
+    "bytes": 3930,
+    "lines": 44
+  },
+  {
+    "file": "dashbaord-design/Parent Portal.dc.html",
+    "label": "BILLING",
+    "slice": ".qa/design/screens/portal--billing.html",
+    "bytes": 5451,
+    "lines": 60
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Student home",
+    "slice": ".qa/design/screens/app--student-home.html",
+    "bytes": 7023,
+    "lines": 36
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Practice setup",
+    "slice": ".qa/design/screens/app--practice-setup.html",
+    "bytes": 7120,
+    "lines": 37
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Placement start",
+    "slice": ".qa/design/screens/app--placement-start.html",
+    "bytes": 4526,
+    "lines": 19
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "System check",
+    "slice": ".qa/design/screens/app--system-check.html",
+    "bytes": 5122,
+    "lines": 20
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Microphone check",
+    "slice": ".qa/design/screens/app--microphone-check.html",
+    "bytes": 4794,
+    "lines": 23
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Headphones check",
+    "slice": ".qa/design/screens/app--headphones-check.html",
+    "bytes": 4024,
+    "lines": 22
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Camera check",
+    "slice": ".qa/design/screens/app--camera-check.html",
+    "bytes": 5357,
+    "lines": 27
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Identity confirm",
+    "slice": ".qa/design/screens/app--identity-confirm.html",
+    "bytes": 2986,
+    "lines": 25
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Accessibility panel",
+    "slice": ".qa/design/screens/app--accessibility-panel.html",
+    "bytes": 4394,
+    "lines": 22
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Resume prompt",
+    "slice": ".qa/design/screens/app--resume-prompt.html",
+    "bytes": 2968,
+    "lines": 20
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Stage gate",
+    "slice": ".qa/design/screens/app--stage-gate.html",
+    "bytes": 3909,
+    "lines": 23
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Connection lost",
+    "slice": ".qa/design/screens/app--connection-lost.html",
+    "bytes": 2378,
+    "lines": 17
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Proctoring warning",
+    "slice": ".qa/design/screens/app--proctoring-warning.html",
+    "bytes": 2926,
+    "lines": 17
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Session end",
+    "slice": ".qa/design/screens/app--session-end.html",
+    "bytes": 3944,
+    "lines": 29
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item mc_text",
+    "slice": ".qa/design/screens/app--item-mc-text.html",
+    "bytes": 5444,
+    "lines": 30
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item mc_image",
+    "slice": ".qa/design/screens/app--item-mc-image.html",
+    "bytes": 5676,
+    "lines": 31
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item mc_text_passage",
+    "slice": ".qa/design/screens/app--item-mc-text-passage.html",
+    "bytes": 6371,
+    "lines": 36
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item mc_audio_passage",
+    "slice": ".qa/design/screens/app--item-mc-audio-passage.html",
+    "bytes": 6932,
+    "lines": 35
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item mc_image_audio",
+    "slice": ".qa/design/screens/app--item-mc-image-audio.html",
+    "bytes": 4605,
+    "lines": 30
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item phrase_to_image",
+    "slice": ".qa/design/screens/app--item-phrase-to-image.html",
+    "bytes": 5133,
+    "lines": 34
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item yn_block",
+    "slice": ".qa/design/screens/app--item-yn-block.html",
+    "bytes": 4904,
+    "lines": 31
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item speaker_match",
+    "slice": ".qa/design/screens/app--item-speaker-match.html",
+    "bytes": 7096,
+    "lines": 47
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item type_short",
+    "slice": ".qa/design/screens/app--item-type-short.html",
+    "bytes": 3668,
+    "lines": 26
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item type_gap",
+    "slice": ".qa/design/screens/app--item-type-gap.html",
+    "bytes": 3756,
+    "lines": 25
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item reorder_tokens",
+    "slice": ".qa/design/screens/app--item-reorder-tokens.html",
+    "bytes": 5554,
+    "lines": 36
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item type_transform",
+    "slice": ".qa/design/screens/app--item-type-transform.html",
+    "bytes": 3866,
+    "lines": 28
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item audio_capture",
+    "slice": ".qa/design/screens/app--item-audio-capture.html",
+    "bytes": 4939,
+    "lines": 33
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item dialogue_capture",
+    "slice": ".qa/design/screens/app--item-dialogue-capture.html",
+    "bytes": 5601,
+    "lines": 32
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item text_compose",
+    "slice": ".qa/design/screens/app--item-text-compose.html",
+    "bytes": 5892,
+    "lines": 38
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Practice feedback",
+    "slice": ".qa/design/screens/app--practice-feedback.html",
+    "bytes": 5914,
+    "lines": 47
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Admissions profile",
+    "slice": ".qa/design/screens/app--admissions-profile.html",
+    "bytes": 11534,
+    "lines": 59
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Glance report",
+    "slice": ".qa/design/screens/app--glance-report.html",
+    "bytes": 6475,
+    "lines": 34
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Progress report",
+    "slice": ".qa/design/screens/app--progress-report.html",
+    "bytes": 8225,
+    "lines": 43
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Export preview",
+    "slice": ".qa/design/screens/app--export-preview.html",
+    "bytes": 5087,
+    "lines": 43
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Assign test",
+    "slice": ".qa/design/screens/app--assign-test.html",
+    "bytes": 6859,
+    "lines": 38
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Live monitor",
+    "slice": ".qa/design/screens/app--live-monitor.html",
+    "bytes": 11666,
+    "lines": 36
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Reports list",
+    "slice": ".qa/design/screens/app--reports-list.html",
+    "bytes": 8949,
+    "lines": 40
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Item bank",
+    "slice": ".qa/design/screens/app--item-bank.html",
+    "bytes": 10287,
+    "lines": 47
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "All results",
+    "slice": ".qa/design/screens/app--all-results.html",
+    "bytes": 10366,
+    "lines": 47
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Notifications",
+    "slice": ".qa/design/screens/app--notifications.html",
+    "bytes": 7574,
+    "lines": 53
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Progress report",
+    "slice": ".qa/design/screens/app--progress-report-2.html",
+    "bytes": 10261,
+    "lines": 63
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Empty state",
+    "slice": ".qa/design/screens/app--empty-state.html",
+    "bytes": 4898,
+    "lines": 38
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Not enough credits",
+    "slice": ".qa/design/screens/app--not-enough-credits.html",
+    "bytes": 4846,
+    "lines": 42
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Payment failed",
+    "slice": ".qa/design/screens/app--payment-failed.html",
+    "bytes": 3182,
+    "lines": 25
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Invite co-parent",
+    "slice": ".qa/design/screens/app--invite-co-parent.html",
+    "bytes": 6034,
+    "lines": 47
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Remove child",
+    "slice": ".qa/design/screens/app--remove-child.html",
+    "bytes": 4673,
+    "lines": 38
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Receipt",
+    "slice": ".qa/design/screens/app--receipt.html",
+    "bytes": 6235,
+    "lines": 39
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Auto top-up",
+    "slice": ".qa/design/screens/app--auto-top-up.html",
+    "bytes": 10744,
+    "lines": 83
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Question editor",
+    "slice": ".qa/design/screens/app--question-editor.html",
+    "bytes": 16484,
+    "lines": 66
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Publish test",
+    "slice": ".qa/design/screens/app--publish-test.html",
+    "bytes": 8958,
+    "lines": 49
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Grading",
+    "slice": ".qa/design/screens/app--grading.html",
+    "bytes": 11564,
+    "lines": 72
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Class detail",
+    "slice": ".qa/design/screens/app--class-detail.html",
+    "bytes": 12935,
+    "lines": 65
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Student detail",
+    "slice": ".qa/design/screens/app--student-detail.html",
+    "bytes": 10203,
+    "lines": 60
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Message parents",
+    "slice": ".qa/design/screens/app--message-parents.html",
+    "bytes": 6786,
+    "lines": 52
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Test calendar",
+    "slice": ".qa/design/screens/app--test-calendar.html",
+    "bytes": 11553,
+    "lines": 64
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Student test taking",
+    "slice": ".qa/design/screens/app--student-test-taking.html",
+    "bytes": 7979,
+    "lines": 48
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Test submitted",
+    "slice": ".qa/design/screens/app--test-submitted.html",
+    "bytes": 3275,
+    "lines": 23
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Loading skeleton",
+    "slice": ".qa/design/screens/app--loading-skeleton.html",
+    "bytes": 7349,
+    "lines": 43
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "404",
+    "slice": ".qa/design/screens/app--404.html",
+    "bytes": 2937,
+    "lines": 33
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Login",
+    "slice": ".qa/design/screens/app--login.html",
+    "bytes": 6877,
+    "lines": 48
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Register",
+    "slice": ".qa/design/screens/app--register.html",
+    "bytes": 6443,
+    "lines": 43
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Forgot password",
+    "slice": ".qa/design/screens/app--forgot-password.html",
+    "bytes": 4154,
+    "lines": 31
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Onboarding add child",
+    "slice": ".qa/design/screens/app--onboarding-add-child.html",
+    "bytes": 5955,
+    "lines": 61
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Parent overview",
+    "slice": ".qa/design/screens/app--parent-overview.html",
+    "bytes": 18307,
+    "lines": 103
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Add child",
+    "slice": ".qa/design/screens/app--add-child.html",
+    "bytes": 6885,
+    "lines": 57
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Buy credits",
+    "slice": ".qa/design/screens/app--buy-credits.html",
+    "bytes": 12606,
+    "lines": 68
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Checkout",
+    "slice": ".qa/design/screens/app--checkout.html",
+    "bytes": 10147,
+    "lines": 68
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Payment success",
+    "slice": ".qa/design/screens/app--payment-success.html",
+    "bytes": 3637,
+    "lines": 27
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Test catalog",
+    "slice": ".qa/design/screens/app--test-catalog.html",
+    "bytes": 13642,
+    "lines": 99
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Result detail",
+    "slice": ".qa/design/screens/app--result-detail.html",
+    "bytes": 11553,
+    "lines": 75
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Child profile",
+    "slice": ".qa/design/screens/app--child-profile.html",
+    "bytes": 10692,
+    "lines": 59
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Billing",
+    "slice": ".qa/design/screens/app--billing.html",
+    "bytes": 9272,
+    "lines": 44
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Parent settings",
+    "slice": ".qa/design/screens/app--parent-settings.html",
+    "bytes": 11267,
+    "lines": 68
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "School overview",
+    "slice": ".qa/design/screens/app--school-overview.html",
+    "bytes": 17206,
+    "lines": 66
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Students",
+    "slice": ".qa/design/screens/app--students.html",
+    "bytes": 18574,
+    "lines": 55
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Parents",
+    "slice": ".qa/design/screens/app--parents.html",
+    "bytes": 13004,
+    "lines": 59
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "Create test",
+    "slice": ".qa/design/screens/app--create-test.html",
+    "bytes": 11476,
+    "lines": 69
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "School analytics",
+    "slice": ".qa/design/screens/app--school-analytics.html",
+    "bytes": 11257,
+    "lines": 64
+  },
+  {
+    "file": "dashbaord-design/SchoolTest App Screens.dc.html",
+    "label": "School settings",
+    "slice": ".qa/design/screens/app--school-settings.html",
+    "bytes": 13764,
+    "lines": 73
+  }
+]

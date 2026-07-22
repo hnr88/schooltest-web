@@ -367,3 +367,170 @@ instead, not deleted and not a fake pass.
   Playwright's documented notification grant. The app therefore renders the real blocked state
   and disables opt-in; it does not fake a browser subscription or delivery receipt. API-level
   persistence and web-push dispatch remain proven against the running Strapi/PostgreSQL stack.
+
+---
+
+# MISSION `st-portal-redesign` — DECISIONS (2026-07-22, append-only)
+
+Prior mission-2 decisions above this line remain binding history; a copy of the pre-mission
+state is at `.qa/archive-mission2-20260722/`. Nothing above was edited or deleted.
+
+## D-SCOPE-1 — What the operator asked for (decoded, authoritative)
+
+The instruction, decoded from its typos and taken as the spec:
+
+> Follow `schooltest-web/dashbaord-design` and implement every single [screen], but do NOT
+> invent. Make sure everything is connected to the API and follow the docs. Only add design
+> that is functional. Add all the metrics for the dashboard — those specifically must be the
+> ones from the design. The rest is just a redesign. Prioritise the design from
+> `dashbaord-design`. Drop the [cosmetic work] created until now and keep only functional
+> existing behaviour, and add the new design with nice animations. Do not break anything.
+> Add every feature with care, super detailed, handle all cases, and do good mobile.
+> Create at least 200-300 tasks and run overnight.
+
+Binding reading:
+1. `dashbaord-design/` is the visual source of truth and OUTRANKS the current UI.
+2. Every surface that is functional today gets REDESIGNED to it, with behaviour preserved.
+3. The dashboard's METRICS are a hard requirement: exactly the metrics the design shows,
+   computed from real API data.
+4. "Do not invent" is absolute. A design screen with no data behind it is not to be faked.
+
+## D-SCOPE-2 — In scope / out of scope
+
+IN: the parent portal (dashboard, children list, child detail, add-child wizard, notifications,
+settings, school + agent search), the auth screens, the landing page, the shared design-system
+layer (tokens, primitives, motion), mobile, accessibility, and the e2e proof for all of it.
+
+OUT — recorded, not silently dropped:
+- The Electron student client screens in the export (`app--item-*`, `app--system-check`,
+  `app--placement-start`, `app--student-test-taking`, …). Different package, out of mission.
+- The teacher/school portal screens (`app--school-overview`, `app--students`, `app--parents`,
+  `app--create-test`, `app--grading`, `app--class-detail`, `app--live-monitor`, …). Root
+  `.qa/HANDOFF.md` records that `schooltest-web` has zero teacher surfaces and that those waves
+  (W10-W22 of mission `st-mvp-d`) are unbuilt. Building them here would be inventing a product
+  surface, and would collide with another agent's mission.
+- Billing / credits / checkout / receipts / auto-top-up (`portal--billing`, `app--buy-credits`,
+  `app--checkout`, `app--payment-*`, `app--receipt`, `app--not-enough-credits`,
+  `app--auto-top-up`). There is NO payment, credit, invoice or subscription content-type in the
+  Strapi API and no payment provider is configured anywhere in the repo. Per the no-invention
+  rule these are BLOCKED-NO-API, not built with placeholder numbers.
+
+## D-SCOPE-3 — "Drop what you created till now"
+
+Read as: the recent purely-cosmetic UI work may be SUPERSEDED by the new design. It is NOT read
+as permission to revert commits, delete user data, or discard functional wiring — the same
+instruction says "do not break anything", and the rules of engagement forbid reverting.
+Concretely: where an existing component only carries styling, it is rewritten to the new design;
+where it carries data wiring (query hooks, mutations, auth, i18n keys, form validation), that
+wiring is preserved and re-dressed. No `git revert`, no branch, no history rewrite.
+
+## D-OPS-1 — Reuse the existing `st1` namespace, allocate nothing new
+
+The full dev stack was already up and healthy at intake (api :5500, web :3100, postgres :5540,
+redis :6390, mailpit :1125/:8125, minio :9010, r-scoring :8790). A second namespace would fork
+the datastore this mission must persist to. Ports were probed with `ss -ltn`; every one above is
+BUSY-and-ours. Neighbour ports 3000, 1337 and 1025/8025 are avoided.
+
+## D-OPS-2 — Server run policy
+
+`schooltest-web/CLAUDE.md` law 12 forbids running `pnpm dev`/`build`/`start` by hand. Servers are
+started and kept alive by the watchdog and by Playwright's own `webServer` block
+(`reuseExistingServer: true`). Verification therefore runs through `pnpm exec playwright test`,
+which is explicitly allowed.
+
+## D-OPS-3 — Task files live in `.thellmspace/tasks/`, surfaced at `.qa/tasks`
+
+Mission parameters put per-task markdown at `{project}/.thellmspace/tasks/NN-slug.md`; the
+orchestration section reads them from `.qa/tasks/`. Resolved with a symlink
+`.qa/tasks -> ../.thellmspace/tasks` so both paths address the same files — the same convention
+the root mission uses.
+
+## D-DESIGN-1 — The export is sliced, and every task cites a slice
+
+`dashbaord-design/*.dc.html` is one huge inline-styled export. It has been split, losslessly and
+read-only, into 114 addressable per-screen slices under `.qa/design/screens/` (index:
+`.qa/design/screens-index.json`) by `.qa/design/split.mjs` + `split2.mjs`. Every build task cites
+the exact slice it implements, so "follow the design" is checkable rather than a matter of taste.
+The original export files are untouched.
+
+## D-DESIGN-2 — Tokens become OKLCH `@theme` entries, not raw hex
+
+`dashbaord-design/tokens.css` ships hex. `.claude/rules/tailwind.md` bans raw hex and arbitrary
+values and requires OKLCH via `@theme`. Resolution: the design's hex values are the authority for
+the COLOUR; they are converted to OKLCH and land as `@theme` tokens in `src/app/globals.css`. The
+hex is recorded next to each token as provenance. Rule and design are both satisfied.
+
+## D-DESIGN-3 — Motion uses what already ships
+
+The design's keyframes (`st-toast-in`, `st-fade-in`, `st-pop-in`, `st-spin`, `st-shimmer`,
+`st-rec-pulse`) are implemented with Tailwind v4 + `tw-animate-css`, which the repo already
+depends on. No new animation dependency. Every animation ships a `prefers-reduced-motion`
+variant. Motion is part of the definition of done for every UI slice, not a follow-up.
+
+## D-DESIGN-4 — Google Sans
+
+The design specifies Google Sans (variable TTFs are in `dashbaord-design/fonts/`). This is
+self-hosted through `next/font/local` per `.claude/rules/quality.md`. Note that
+`.claude/rules/tailwind.md` bans Inter/Roboto/Arial/Open Sans/Lato/Montserrat — Google Sans is
+not on that ban list, and the design is explicit, so the design wins.
+
+## D-AUTH-1 — Accounts come only from the seed
+
+The e2e suite already logs in as the bootstrap-seeded `parent@schooltest.local`
+(`tests/e2e/helpers/auth.ts`). No account is ever created through a signup form or the Strapi
+admin UI. Other roles' passwords stay in `schooltest-api/.env` as `SEED_*_PASSWORD` and are never
+copied into a committed file.
+
+## D-CONTRACT-1 — Code is authoritative over contract docs
+
+Where `.qa/CONTRACTS.md` (this package's, or the root mission's) disagrees with the running
+Strapi code, the CODE is the contract and the doc is corrected. Every disagreement found is
+recorded rather than silently reconciled.
+
+## D-VERIFY-1 — Proof standard
+
+A slice is DONE only when: `pnpm tsc --noEmit` and `pnpm lint` are clean; a real Playwright run
+against the running app exercises it; anything that writes shows a real Postgres row that
+survives a reload; and an independent verifier — never the builder — reproduces that evidence.
+The 48 pre-existing e2e specs are a regression baseline that must stay green.
+
+
+## D-DATA-1 — What the real seeded data actually looks like (verified 2026-07-22)
+
+Builders and verifiers must expect these numbers, and must NOT pad a sparse screen to make it
+look like the design's example data. Verified directly against Postgres:
+
+| Fact | Value |
+|---|---|
+| sessions total | 2611 — **all 2611 have `started_at`**, 2449 have `ended_at`, 2208 are `complete` with both |
+| session modes | `placement` 1641 · `progress` 785 · **`practice` 185** |
+| median session duration | **5 seconds** — this is seeded/synthetic data, not realistic sittings |
+| results | 2358 total · `scope='skill'` 1668 · `scope='combined'` 690 |
+| the e2e parent (`parent@schooltest.local`, user id 49) | 10 children · 18 sessions, all `complete` · 3 official results · 3 children carrying a `cefr_band` |
+
+Two consequences, both binding:
+
+1. **The practice-time metrics will render near-zero against this data.** The design's `4h 20m`
+   and its 7-bar chart are design example values. Rendering the true small numbers is CORRECT;
+   inflating them, seeding fake sittings, or falling back to the design's sample values is a
+   fake-green violation. The empty/near-empty state must therefore be designed properly rather
+   than avoided — the operator's "handle all cases" applies exactly here.
+2. **The seeded student list is polluted with e2e debris** (rows like `Notification 1784701715686`,
+   `T101PrefOff`). That is pre-existing test residue, not this mission's to clean up, and it is
+   NOT a reason to filter the list — the UI shows what the API returns.
+
+## D-OPS-4 — The design export is excluded from lint, not from the repo
+
+`pnpm lint` failed at intake with 2 errors, both inside `dashbaord-design/support.js` — a
+third-party viewer script bundled with the design export (`ReactDOM.render` deprecation and an
+assignment to `module`). It is a read-only reference asset, not app source. Resolution: added
+`dashbaord-design/**` and `.qa/**` to the `ignores` block in `eslint.config.mjs`. The lint gate
+now passes with **0 errors** (1 pre-existing warning in `CreateArticleForm.tsx` remains, which is
+a warning and not a gate failure). The export itself is untouched.
+
+## D-OPS-5 — Mission-2 task files archived, not deleted
+
+`.thellmspace/tasks/` held 45 completed mission-2 task files with 2-digit ids. This mission uses
+3-digit ids (001-339), so they would not collide, but a mixed directory makes the DAG's
+orphan-detection meaningless. Moved verbatim to `.thellmspace/tasks-archive-mission2/`. Nothing
+deleted, nothing edited.

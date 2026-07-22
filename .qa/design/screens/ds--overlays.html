@@ -1,0 +1,58 @@
+<section data-screen-label="Overlays" style="max-width:1240px;margin:0 auto;padding:64px 48px 0">
+  <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563EB;margin-bottom:8px">11 · Components</div>
+  <h2 style="margin:0 0 24px;font-size:26px;font-weight:700;color:#0E2350">Overlays</h2>
+  <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start">
+    <div style="background:#EEF2F7;border:1px solid #E3E8F0;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:16px;align-items:center">
+      <div style="align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8">Dialog — try it live</div>
+      <div style="background:#FFFFFF;border-radius:16px;box-shadow:0 20px 48px rgba(14,35,80,.18);padding:24px;width:100%;max-width:360px;box-sizing:border-box">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between"><span style="font-size:17px;font-weight:700;color:#0E2350">Delete this test?</span><button style="display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;border:none;background:transparent;color:#64748B;cursor:pointer" style-hover="background:#F1F5F9" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div>
+        <p style="margin:8px 0 0;font-size:14px;line-height:1.55;color:#64748B">"History Exam" and its 26 responses will be permanently removed. This can't be undone.</p>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+          <button style="background:#FFFFFF;color:#16326E;border:1px solid #CBD5E1;font-size:13.5px;font-weight:600;padding:8px 15px;border-radius:9px;cursor:pointer" style-hover="background:#F7F9FC">Cancel</button>
+          <button style="background:#DC2626;color:#FFFFFF;border:none;font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:9px;cursor:pointer" style-hover="background:#B91C1C">Delete test</button>
+        </div>
+      </div>
+      <button onClick="{{ openDialog }}" style="display:inline-flex;align-items:center;gap:8px;background:#0E2350;color:#FFFFFF;border:none;font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:9px;cursor:pointer" style-hover="background:#16326E">Open as modal</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="background:#EEF2F7;border:1px solid #E3E8F0;border-radius:16px;padding:24px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:14px">Dropdown menu</div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:12px;box-shadow:0 8px 24px rgba(14,35,80,.12);padding:6px;width:200px">
+          <button style="display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;text-align:left;font-size:13.5px;font-weight:500;color:#0E2350;padding:9px 10px;border-radius:8px;cursor:pointer" style-hover="background:#F1F5F9"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path></svg>Edit test</button>
+          <button style="display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;text-align:left;font-size:13.5px;font-weight:500;color:#0E2350;padding:9px 10px;border-radius:8px;cursor:pointer" style-hover="background:#F1F5F9"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="14" height="14" rx="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>Duplicate</button>
+          <button style="display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;text-align:left;font-size:13.5px;font-weight:500;color:#0E2350;padding:9px 10px;border-radius:8px;cursor:pointer" style-hover="background:#F1F5F9"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>Share by email</button>
+          <div style="height:1px;background:#EEF2F7;margin:5px 8px"></div>
+          <button style="display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;text-align:left;font-size:13.5px;font-weight:500;color:#DC2626;padding:9px 10px;border-radius:8px;cursor:pointer" style-hover="background:#FEF2F2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Delete</button>
+        </div>
+      </div>
+      <div style="background:#EEF2F7;border:1px solid #E3E8F0;border-radius:16px;padding:24px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:14px">Tooltip</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+          <span style="background:#0E2350;color:#FFFFFF;font-size:12.5px;font-weight:500;padding:6px 11px;border-radius:8px;box-shadow:0 4px 12px rgba(14,35,80,.25)">Copy share link</span>
+          <button style="display:inline-grid;place-items:center;width:36px;height:36px;background:#FFFFFF;color:#16326E;border:1px solid #CBD5E1;border-radius:10px;cursor:pointer" style-hover="background:#F7F9FC" aria-label="Copy link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="14" height="14" rx="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button>
+        </div>
+      </div>
+    </div>
+    <div style="background:#EEF2F7;border:1px solid #E3E8F0;border-radius:16px;padding:24px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:14px">Popover</div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8F0;border-radius:14px;box-shadow:0 8px 24px rgba(14,35,80,.12);padding:18px;width:100%;max-width:250px;box-sizing:border-box">
+        <div style="font-size:14.5px;font-weight:700;color:#0E2350">Share "Science Quiz"</div>
+        <p style="margin:5px 0 0;font-size:13px;line-height:1.5;color:#64748B">Anyone with the link can take this test.</p>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <input type="text" value="schooltest.app/t/8fk2" readOnly="{{ true }}" style="flex:1;min-width:0;box-sizing:border-box;padding:8px 11px;border-radius:9px;border:1px solid #CBD5E1;font-size:12.5px;color:#64748B;background:#F8FAFD;outline:none" />
+          <button style="background:#2563EB;color:#FFFFFF;border:none;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:9px;cursor:pointer;flex:none" style-hover="background:#1D4ED8">Copy</button>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin:22px 0 14px">Avatars</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#EFF5FF;color:#2563EB;font-size:9.5px;font-weight:700">MK</span>
+        <span style="display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#2563EB;color:#fff;font-size:12px;font-weight:700">JM</span>
+        <span style="display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#0E2350;color:#fff;font-size:14px;font-weight:700">AK</span>
+        <span style="position:relative;display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#14B8A6;color:#fff;font-size:14px;font-weight:700">RS<span style="position:absolute;right:0;bottom:0;width:11px;height:11px;border-radius:50%;background:#16A34A;border:2px solid #EEF2F7"></span></span>
+        <span style="display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:#DBEAFE;color:#16326E;font-size:18px;font-weight:700">ST</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NAVIGATION ============ -->

@@ -1,0 +1,46 @@
+<!-- ===== MY CHILDREN — LIST ===== -->
+    <sc-if value="{{ isKids }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:24px;padding:8px 4px 8px 8px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <div>
+          <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.02em;color:#0E2350">My children</h1>
+          <p style="margin:6px 0 0;font-size:14px;color:#7C8698">2 children · Family plan covers up to 4</p>
+        </div>
+        <button onClick="{{ goAdd }}" style="display:inline-flex;align-items:center;gap:8px;background:#0E2350;color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:999px;border:none;cursor:pointer" style-hover="background:#16326E"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add a child</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px">
+        <sc-for list="{{ kids }}" as="k" hint-placeholder-count="2">
+          <div onClick="{{ k.open }}" style="background:#FFFFFF;border-radius:24px;padding:28px;box-shadow:0 1px 2px rgba(14,35,80,.04);cursor:pointer;display:flex;flex-direction:column;gap:22px" style-hover="box-shadow:0 10px 32px rgba(14,35,80,.10)">
+            <div style="display:flex;align-items:center;gap:15px">
+              <span style="width:52px;height:52px;border-radius:999px;background:#EEF1F6;color:#0E2350;display:grid;place-items:center;font-weight:600;font-size:18px;flex:none">{{ k.initial }}</span>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:18px;font-weight:600;color:#0E2350">{{ k.name }}</div>
+                <div style="font-size:13px;color:#7C8698;margin-top:2px">{{ k.meta }}</div>
+              </div>
+              <span style="font-size:12px;font-weight:600;color:#0E2350;border:1px solid #D8DFEA;padding:5px 12px;border-radius:999px;flex:none">Level {{ k.level }}</span>
+            </div>
+            <div style="display:flex;gap:0;border-top:1px solid #EEF1F6;padding-top:20px">
+              <div style="flex:1"><div style="font-size:20px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ k.progress }}%</div><div style="font-size:12px;color:#7C8698;margin-top:2px">to {{ k.nextLevel }}</div></div>
+              <div style="width:1px;background:#EEF1F6;margin:0 18px"></div>
+              <div style="flex:1"><div style="font-size:20px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ k.streak }}</div><div style="font-size:12px;color:#7C8698;margin-top:2px">day streak</div></div>
+              <div style="width:1px;background:#EEF1F6;margin:0 18px"></div>
+              <div style="flex:1"><div style="font-size:20px;font-weight:700;color:#0E2350;letter-spacing:-0.01em">{{ k.lastScore }}</div><div style="font-size:12px;color:#7C8698;margin-top:2px">last result</div></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#7C8698">
+              <span>{{ k.note }}</span>
+              <span style="font-weight:600;color:#2563EB">Details →</span>
+            </div>
+          </div>
+        </sc-for>
+        <div onClick="{{ goAdd }}" style="border:1.5px dashed #C4CEDC;border-radius:24px;min-height:220px;display:grid;place-items:center;cursor:pointer;color:#7C8698" style-hover="border-color:#2563EB;color:#2563EB">
+          <div style="text-align:center">
+            <div style="width:44px;height:44px;border-radius:999px;background:#FFFFFF;box-shadow:0 1px 2px rgba(14,35,80,.06);display:grid;place-items:center;margin:0 auto 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></div>
+            <div style="font-size:14px;font-weight:600">Add a child</div>
+            <div style="font-size:12.5px;margin-top:3px">Takes about 3 minutes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    
