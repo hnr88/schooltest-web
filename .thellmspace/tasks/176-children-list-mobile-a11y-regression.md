@@ -45,8 +45,10 @@ same test — never a hardcoded literal (the standard `children-profile.spec.ts`
 ## Steps
 
 1. Log in as the seeded parent (`tests/e2e/helpers/auth.ts`), capture `GET /api/my/students` and
-   `GET /api/my/progress`, then assert per card: name, `Year {n}`, status pill, `Level {band}` (or
-   `notBanded`), streak, tests completed, last-assessed date, focus note — each against the captured body.
+   `GET /api/my/progress`, then assert per card: name, `Year {n}`, status pill, streak, tests
+   completed, last-assessed date, focus note — each against the captured body. **No `Level {band}`
+   pill is asserted** — AMENDMENT A1 blocks it as **B-9** (per-child single level is a cross-skill
+   composite); assert instead that no card renders one (`page.getByText(/^Level /)` → count 0).
 2. Assert the grid's computed `grid-template-columns` yields 1 track at 375, 2 at 900, 3 at 1440.
 3. Hover the first card and assert the elevation layer's `opacity` transitions (non-zero
    `getAnimations()` before reduced motion, zero after `emulateMedia({ reducedMotion: 'reduce' })`).

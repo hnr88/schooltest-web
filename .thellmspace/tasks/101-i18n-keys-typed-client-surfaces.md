@@ -23,7 +23,10 @@ No HTTP operation. The strings enumerated below are the exact rendering vocabula
 contracts, and two of them exist BECAUSE a design string is refused:
 
 - **C-DASH-HOUSEHOLD** — `practiceSecondsThisWeek`, `practiceByDay` (7), `strongestDay` (nullable),
-  `cefrBand` / `cefrStageIndex` / `focusSkill` / `practiceDayStreak` per child.
+  `focusSkill` / `practiceDayStreak` per child; `cefrBand` / `readiness` per SKILL
+  (`children[].skills[]`, always four entries, `not_assessed` when unassessed). **AMENDMENT A1**
+  (`.qa/CONTRACTS.md`) deletes the per-child `cefrBand` / `cefrStageIndex` this task's v1 assumed —
+  there is no per-child level string to author (BLOCKED **B-9**).
 - **C-CHILD-RESULT-HISTORY** — `previousResultDocumentId` (nullable) drives the delta phrasing;
   `meta.pagination` drives the pager copy.
 - **C-PARENT-RESULT-VIEW** — `attributes` items counts and the `not_assessed` literal.
@@ -45,7 +48,7 @@ Exact copy from the export, and what each becomes:
 | `Thursday was the strongest day — 88 min, mostly Emma's speaking drills.` | §4.4 caption `13px/#7C8698` | `Dashboard.practiceStrongestDay` | `{weekday} was the strongest day — {minutes, plural, one {# min} other {# min}}` |
 | *(undesigned)* zero-practice week | — | `Dashboard.practiceChartEmpty` | `No practice recorded in the last 7 days.` |
 | `Focus: Speaking` | §4.6 / `.qa/design/spec/02-portal-children.md` | `Dashboard.focusSkillPill` | `Focus: {skill}` |
-| `Level B1` pill (`12px/600/#0E2350`, `1px solid #D8DFEA`, `5px 12px`, `999px`) | `.qa/design/spec/02-portal-children.md` §A.5 L20 | `Dashboard.levelPill` | `Level {band}` |
+| `Level B1` pill (`12px/600/#0E2350`, `1px solid #D8DFEA`, `5px 12px`, `999px`) | `.qa/design/spec/02-portal-children.md` §A.5 L20 | **refused (B-9, AMENDMENT A1)** → no key; a single per-child level is a cross-skill composite | — |
 | `12` + `day streak` (value `20px/700/-0.01em`, label `12px/#7C8698`) | §A.5 cell 2 | `Dashboard.dayStreakLabel` | `{count, plural, one {# day streak} other {# day streak}}` |
 | `Since joining` / `+2 levels` (blue `#2563EB`) | §B.2 row 5, L26 | `Children.sinceJoiningLabel` / `Children.sinceJoiningValue` | `Since joining` / `{steps, plural, one {+# level} other {+# levels}}` |
 | `+6% vs May` | §B.6 L67 | **refused (B-4)** → `Children.resultDeltaUp` + `Children.resultDeltaSince` | `{steps, plural, one {+# band} other {+# bands}}` / `vs {date}` |
@@ -94,10 +97,14 @@ Do NOT touch `src/i18n/messages/home/*.json` (landing namespace, W10's surface).
    - `Dashboard`: `householdTestsCompletedLabel`, `householdPracticeLabel`, `practiceDuration`,
      `practiceChartTitle`, `practiceChartRange`, `practiceChartEmpty`, `practiceStrongestDay`,
      `practiceBarLabel` (`{weekday}: {minutes, plural, one {# min} other {# min}}` — the accessible
-     name for one bar), `focusSkillPill`, `focusSkillNone` (`No focus skill yet`), `levelPill`,
-     `levelPillNone` (`Not banded yet`), `dayStreakLabel`, `cefrJourneyLabel`
-     (`CEFR journey: {band}, step {step} of {total}`), `cefrJourneyNotAssessed`,
-     `householdLoading`, `householdError`, `householdErrorDescription`.
+     name for one bar), `focusSkillPill`, `focusSkillNone` (`No focus skill yet`), `dayStreakLabel`,
+     `cefrJourneyLabel` (`{skill} journey: {band}, step {step} of {total}` — the `{skill}`
+     placeholder is new: AMENDMENT A1 makes this **one rail per skill**, not one per child, so the
+     accessible name must name which skill's journey it is), `cefrJourneyNotAssessed`
+     (`{skill}: no official result yet`), `householdLoading`, `householdError`,
+     `householdErrorDescription`. **`levelPill` and `levelPillNone` are NOT added** — the per-child
+     `Level {band}` pill they would have served is BLOCKED **B-9** (a single per-child band is a
+     cross-skill composite); adding either key would give a home to a forbidden string.
    - `Children`: `sinceJoiningLabel`, `sinceJoiningValue`, `sinceJoiningUnknown`
      (`Not enough results yet`), `resultDeltaUp`, `resultDeltaDown`, `resultDeltaFlat`,
      `resultDeltaFirst`, `resultDeltaUnknown`, `resultDeltaSince`, `resultsPagerLabel`,
@@ -143,6 +150,7 @@ Do NOT touch `src/i18n/messages/home/*.json` (landing namespace, W10's surface).
 - `grep -rn "TODO\|FIXME\|xxx" src/i18n/messages/*.json` → zero hits.
 - `python3 -c "import json;[json.load(open(f'src/i18n/messages/{l}.json')) for l in ['en','zh','ko','ms','vi','th']]"` exits 0 (all six are valid JSON).
 - `grep -n "coming up\|comingUp" src/i18n/messages/en.json` → zero hits (B-1 stays refused).
+- `grep -n "levelPill" src/i18n/messages/en.json` → zero hits (B-9 stays refused, AMENDMENT A1).
 - `grep -nE "\{[a-z]+\}%" src/i18n/messages/en.json` returns only the pre-existing
   `Dashboard.percentValue` / `Children.completionPercent` keys — no NEW percent-formatted string.
 - No existing key is renamed, moved or deleted: `git diff` on the six catalogs shows additions only.

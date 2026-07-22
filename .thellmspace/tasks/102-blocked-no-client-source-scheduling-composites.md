@@ -41,6 +41,14 @@ And the governing rule that forecloses a client-side workaround, quoted from the
 Deriving any of B-3 … B-6 **on the client** from data the parent CAN reach would produce exactly the
 forbidden composite, one layer further from review. That is the specific temptation this task blocks.
 
+**Cross-reference: `.qa/CONTRACTS.md` AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2** applies the identical
+logic to the endpoint itself: v1 of C-DASH-HOUSEHOLD served a per-child `cefrBand`/
+`cefrStageIndex`/`acaraPhase`, which is the same forbidden cross-skill composite one layer up (a
+per-child LEVEL rather than a per-sitting PERCENTAGE). AMENDMENT A1 deletes those three fields and
+records the refusal as new BLOCKED row **B-9**. The client-side temptation this task blocks
+(deriving B-3…B-6 from reachable data) extends to B-9 too: no client helper may reduce a child's
+`skills[]` back down to one band.
+
 ## Design source
 
 - `.qa/design/screens/portal--main.html:34` — hero stat cell 2: value `2`, label `coming up`,
@@ -87,9 +95,13 @@ other task in this mission.
      removes the cell rather than rendering a zero (a `0` is a claim that nothing is scheduled; the
      truth is that scheduling does not exist).
    - B-3 → `cefrBand` + `readiness` + `publishedAt` from C-CHILD-RESULT-HISTORY (task 097).
-   - B-4 → the six-step ladder position from `cefrStageIndex` (task 091), with no "progress to next".
+   - B-4 → the six-step ladder position, computed client-side PER SKILL via `getCefrStageIndex`
+     (task 091) over each `children[].skills[]` entry's own `cefrBand` — not a per-child
+     `cefrStageIndex`, which AMENDMENT A1 deletes — with no "progress to next".
    - B-5/B-6 → out of scope entirely (`.qa/DECISIONS.md` D-SCOPE-2: `app--child-profile` and
      `app--result-detail` are the teacher/school and generic-school compositions).
+   - B-9 (per-child `Level {band}` pill, AMENDMENT A1) → superseded by the per-skill bands in
+     `skills[]`; no client helper collapses them back to one value.
 5. Write the outcome into Evidence, then set `status: BLOCKED` in the fragment. Do not open a
    follow-up task, do not add a placeholder hook, do not add a feature flag.
 

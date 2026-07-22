@@ -60,6 +60,12 @@ flips to `archived` / `active`.**
 > **B-6** | Subject bars Math/Danish/English, class average, letter grade | These slices are a
 > generic school-test composition, not SchoolTest's domain.
 
+**AMENDMENT A1 addition** (`.qa/CONTRACTS.md` "BLOCKED — additions from the reconciliation pass"):
+
+> **B-9** | Per-child single `Level B1` pill | `portal--my-children-list.html:20`,
+> `portal--child-detail.html:18` | Cross-skill composite — `DOC1:304`, `DOC0:46`. Superseded by
+> per-skill bands (Amendment A1).
+
 ## Design source
 
 `.qa/design/screens/portal--my-children-list.html` + `portal--child-detail.html`, digested in
@@ -68,8 +74,9 @@ flips to `archived` / `active`.**
 - Child row card: base shell `background:#FFFFFF; border:1px solid #E3E8F0` → `--color-border`;
   `border-radius:16px` → `--radius-panel`; `padding:22px`;
   `box-shadow:0 1px 2px rgba(14,35,80,.05)` → `--shadow-sm`.
-- `day streak` and `Level {band}` come from C-DASH-HOUSEHOLD `children[].practiceDayStreak`
-  and `children[].cefrBand`.
+- `day streak` comes from C-DASH-HOUSEHOLD `children[].practiceDayStreak`. The design's
+  per-child `Level {band}` pill has **no field to render it from** — AMENDMENT A1 deletes the
+  per-child `cefrBand`; it is BLOCKED **B-9** and must not appear anywhere on this screen.
 - Row hover: `background:#F8FAFD`, `transition: background .12s` → authored at
   `var(--duration-fast, 150ms) var(--ease-out-quart)`.
 - Tabs (`05-ds-components.md:246`): tab button `padding:0 2px 12px; font-size:14px;
@@ -132,11 +139,13 @@ flips to `archived` / `active`.**
    row's deep link (lands on the result view backed by C-PARENT-RESULT-VIEW), the
    archive/unarchive action, and the edit link (lands on
    `/dashboard/children/<documentId>/edit`).
-9. **B-3…B-6 refusal proof:** assert count 0 for each of — any `%` rendered as a "last result"
+9. **B-3…B-6, B-9 refusal proof:** assert count 0 for each of — any `%` rendered as a "last result"
    or "progress to next band" value, `Avg. score`, `Trend`, `Of grade`, `Top 15%`, any subject
-   name (`Math`, `Danish`, `English` as a subject bar), any class average, and any letter grade.
-   Assert the B-3 slot instead renders the sanctioned trio (CEFR band + readiness + date) read
-   from the live response body.
+   name (`Math`, `Danish`, `English` as a subject bar), any class average, any letter grade, and
+   any per-child `Level {band}` pill (`page.getByText(/^Level /)` → count 0, both the list and the
+   detail page). Assert the B-3 slot instead renders the sanctioned trio (CEFR band + readiness +
+   date) read from the live response body, and that any per-skill band shown on the detail page is
+   read from that skill's own `children[].skills[]` entry, never from a per-child field.
 10. Repeat 1-9 at **375×812**: no horizontal scroll, every control ≥44×44, the row grid
     collapses to a stack, the tabs remain operable, the confirm dialog traps focus and closes
     on `Escape` returning focus to its trigger.
@@ -153,7 +162,7 @@ flips to `archived` / `active`.**
   state only).
 - `.claude/rules/tailwind.md`, `.claude/rules/quality.md`, `.claude/rules/i18n.md`,
   `.claude/rules/testing.md`, D-VERIFY-1.
-- `.qa/CONTRACTS.md` B-3/B-4/B-5/B-6 — binding refusals.
+- `.qa/CONTRACTS.md` B-3/B-4/B-5/B-6/B-9 — binding refusals.
 
 ## Done criteria
 
@@ -164,8 +173,8 @@ flips to `archived` / `active`.**
   `tests/e2e/helpers/auth-db.ts`. The fixture is restored at the end of the run.
 - Pagination and the `skill` filter proven against real request query strings and real response
   bodies; `?pageSize=51`, `?bogus=1`, foreign id and no-JWT negatives all proven live.
-- B-3/B-4/B-5/B-6 refusals asserted with count-0 locators; the B-3 slot renders the sanctioned
-  CEFR band + readiness + date from the live body.
+- B-3/B-4/B-5/B-6/B-9 refusals asserted with count-0 locators; the B-3 slot renders the sanctioned
+  CEFR band + readiness + date from the live body; no per-child `Level {band}` pill renders anywhere.
 - Error path asserted with no lost rollback and `watchErrors(page)` empty.
 - No horizontal scroll at 375; every control ≥44×44; dialog traps focus, `Escape` closes and
   restores focus.

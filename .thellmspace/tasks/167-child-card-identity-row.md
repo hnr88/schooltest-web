@@ -18,10 +18,13 @@ avatar, name, meta line, CEFR band pill. The whole card opens the child, without
 
 ## Contract
 
-`C-DASH-HOUSEHOLD` → `children[].cefrBand` is "latest OFFICIAL result band; **nullable when never
-assessed**", drawn from `CEFR_LADDER = ["pre_A1","A1","A2","B1","B2","C1"]`. The pill renders
-`Level {band}` when a band exists and the honest `Children.notBanded` ("Not banded yet", already in
-all six catalogs) when it is `null`. No band is ever inferred, defaulted or rounded up.
+**AMENDMENT A1 (`.qa/CONTRACTS.md` "AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2") BLOCKS the level pill
+this task originally built.** v1 fed the pill from a per-child `children[].cefrBand`; a single
+per-child band is a cross-skill composite (`DOC1:304`, `DOC0:46`) and is now BLOCKED **B-9** — "Per-
+child single `Level B1` pill … Superseded by per-skill bands." **The `Level {band}` pill is REMOVED
+from the identity row, not rendered null-safe.** There is no field left to feed it: `cefrBand` no
+longer exists on the child object, only inside each `children[].skills[]` entry. The identity row
+this task builds is otherwise unaffected (avatar, name, meta line, hover elevation, keyboard link).
 
 ## Design source
 
@@ -42,16 +45,17 @@ all six catalogs) when it is `null`. No band is ever inferred, defaulted or roun
   `grid place-items-center`, `flex-none`.
 - Name (L17): 18px / 600 / `#0E2350` → `text-lg font-semibold text-navy-900`, `truncate`.
 - Meta (L18): 13px / `#7C8698` / `margin-top:2px` → `text-caption text-portal-muted mt-0.5`.
-- Level pill (L20): 12px / 600 / `#0E2350`, `border:1px solid #D8DFEA` (W0 `--color-portal-border`,
-  `oklch(0.9016 0.0168 259.42)`), `padding:5px 12px`, `rounded-full`, transparent background,
-  `flex-none`.
+- Level pill (L20): **BLOCKED B-9, not built.** The design's pixels (12px / 600 / `#0E2350`,
+  `border:1px solid #D8DFEA`, `padding:5px 12px`, `rounded-full`, transparent background,
+  `flex-none`) are recorded here only so a future reader knows the slot was seen and refused, not
+  missed.
 
 ## Files
 
 - `src/modules/children/components/ChildCard.tsx` (new, <=120 lines).
 - `ChildrenRoster.tsx` — grid instead of `DataPanel`; keep `aria-label={t('cardListLabel')}`.
 - `src/app/globals.css` — `@utility grid-cols-child-cards` (the file already owns nine such utilities).
-- Catalogs: `Children.levelPill` = `Level {band}`.
+- Catalogs: none for the level pill — `Children.levelPill` is NOT added; the slot is BLOCKED B-9.
 
 ## Depends on
 
@@ -87,9 +91,9 @@ all six catalogs) when it is `null`. No band is ever inferred, defaulted or roun
 ## Done criteria
 
 - `pnpm tsc --noEmit` + `pnpm lint` clean.
-- Playwright: the seeded parent sees `article` cards for `Mia Keller` and `Jonas Keller`; each shows
-  `Level {band}` matching that child's `cefrBand` from the live `GET /api/my/progress` body, or
-  `Children.notBanded` when the API returned `null` — asserted against the parsed response, not a literal.
+- Playwright: the seeded parent sees `article` cards for `Mia Keller` and `Jonas Keller`; neither
+  card renders a `Level {band}` pill or `Children.notBanded` string anywhere — B-9 stays refused
+  (`grep -rn "levelPill\|Level {" src/modules/children/` → zero hits in the diff).
 - Keyboard: `Tab` reaches exactly one focusable per card, `Enter` navigates to
   `/dashboard/children/{documentId}`, focus ring visible in the screenshot.
 - Motion: hover elevation transitions 200ms and is inert under reduced motion.

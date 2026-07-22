@@ -24,9 +24,11 @@ skill filtering, the zero-practice week, the childless parent).
 - Parent JWT; **no query parameters accepted** — any query key ⇒ `400 ValidationError`
   (`'household progress does not accept query parameters'`).
 - `200 { data: { household, children }, meta: {} }`; `practiceByDay` EXACTLY 7 entries, oldest →
-  newest, trailing 7 days incl. today; `strongestDay` = argmax, **null when every day is 0**;
-  `cefrStageIndex` null iff `cefrBand` null; `skills` has one entry per skill that HAS an official
-  result, never padded.
+  newest, trailing 7 days incl. today; `strongestDay` = argmax, **null when every day is 0**.
+  **Per AMENDMENT A1 (`.qa/CONTRACTS.md`), there is no per-child `cefrBand`/`cefrStageIndex`/
+  `acaraPhase` — those are DELETED (BLOCKED B-9).** `skills` has **exactly four entries always**
+  (one per skill, `SKILL_ORDER`), padded with `readiness: "not_assessed"` / `cefrBand: null` /
+  `resultDocumentId: null` when a skill has no official result — never fewer than four.
 - `401 UnauthorizedError` absent/invalid JWT · `403 ForbiddenError` non-parent role.
 - Read-only.
 
@@ -44,9 +46,10 @@ skill filtering, the zero-practice week, the childless parent).
 `.qa/design/spec/01-portal-dashboard.md` §10 METRIC INVENTORY is the checklist this spec walks:
 metric **#1** `tests completed`, **#3** `practice this week` (`{H}h {MM}m`), **#4** the seven bars
 with the max day highlighted navy `#0E2350` (`--color-navy-900`) against `#E4E9F2`, **#5** the
-strongest-day caption, **#6** the six-tick journey stage, **#7** `Focus: {skill}`; plus
-`.qa/design/spec/02-portal-children.md` `day streak`, `Level {band}` and §B.6's result rows.
-Metric **#2 `coming up`** is asserted ABSENT (B-1, task 102).
+strongest-day caption, **#6** the six-tick journey stage — **per AMENDMENT A1, one rail per skill,
+not one per child** — **#7** `Focus: {skill}`; plus `.qa/design/spec/02-portal-children.md`
+`day streak` and §B.6's result rows. Metric **#2 `coming up`** is asserted ABSENT (B-1, task 102).
+The design's per-child `Level {band}` pill is asserted ABSENT (B-9, AMENDMENT A1).
 
 This spec asserts the DATA behind each of those, not their pixels — the pixels are W5/W6. Its value
 is that when W5 starts, every number it needs is already known to exist, parse and derive.
@@ -79,12 +82,16 @@ not to this file.
      `getStrongestBar(model)?.date === body.data.household.strongestDay?.date ?? null`.
    - `toPracticeDuration(practiceSecondsThisWeek)` → `{hours, minutes}` that reconstruct the seconds
      to within 59s (truncation), and `minutesLabel.length === 2`.
-   - For every child: `cefrStageIndex === null` **iff** `cefrBand === null`;
-     `getCefrStageIndex(cefrBand) === cefrStageIndex` (imported from `@/modules/results`);
-     every `skills[].skill` is unique and drawn from `SKILL_ORDER`; `skills` never contains a skill
-     with no `resultDocumentId`.
-   - `focusSkill`, when non-null, is a member of the child's `skills[].skill` set — proving the
-     server's derivation is internally consistent with what it returned.
+   - For every child: `skills.length === 4`; every `skills[].skill` is unique and drawn from
+     `SKILL_ORDER`; for each skill, `skill.cefrBand === null` **iff**
+     `skill.resultDocumentId === null` **iff** `skill.readiness === 'not_assessed'`; and
+     `getCefrStageIndex(skill.cefrBand)` (imported from `@/modules/results`) agrees with
+     `CEFR_LADDER.indexOf(skill.cefrBand)` for every skill.
+   - No child object exposes a `cefrBand`, `cefrStageIndex` or `acaraPhase` key at all —
+     `Object.keys(child)` contains none of the three (AMENDMENT A1, B-9 stays refused on the wire).
+   - `focusSkill`, when non-null, is a member of the child's `skills[].skill` set — trivially true
+     now that `skills[]` always carries all four, but still proves the value is a real skill enum
+     member and not a stray string.
    - Assert `'comingUp' in body.data.household === false` (B-1 stays refused on the wire, too).
 3. **Result-history chain**, one `test()`:
    - first child from `GET /api/my/students`;
@@ -144,7 +151,8 @@ not to this file.
 ## Assumptions
 
 - The seeded parent's children have at least one official result each; where they do not, the spec
-  asserts the honest empty shape (`skills: []`, `total: 0`) rather than skipping, and Evidence says so.
+  asserts the honest empty shape (`skills` = four `not_assessed` entries, result-history `total: 0`)
+  rather than skipping, and Evidence says so.
 
 ## Evidence
 

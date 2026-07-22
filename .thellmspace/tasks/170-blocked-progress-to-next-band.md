@@ -32,6 +32,14 @@ Supporting clauses:
 - `.qa/CONTRACTS.md` C-DASH-HOUSEHOLD: `cefrStageIndex` is "0-based index into CEFR_LADDER" — a
   position, deliberately not a distance.
 
+**Cross-reference: `.qa/CONTRACTS.md` AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2.** The per-child
+`cefrBand`/`cefrStageIndex` this row's honest carrier (task 183) used to read is **DELETED** — a
+single per-child level is itself the same forbidden composite, now BLOCKED row **B-9**. The honest
+carrier is unaffected in kind (still a discrete band position, never a distance) but is now **one
+ladder per skill**, sourced from each `children[].skills[]` entry's own `cefrBand`, with the stage
+index computed client-side via `getCefrStageIndex` (task 091) rather than served as a per-child
+field.
+
 ## Design source
 
 `portal--my-children-list.html` L23 (`{{k.progress}}%` / `to {{k.nextLevel}}`, seeds 68/34) and
@@ -51,8 +59,9 @@ None.
 
 ## Steps
 
-1. Confirm the honest carriers are live: the six-tick ladder (task `183`) shows the band the child is
-   at, with future bands rendered as future — the discrete truth the percentage was approximating.
+1. Confirm the honest carriers are live: the six-tick ladder (task `183`), now rendered once per
+   skill (AMENDMENT A1), shows the band each skill is at, with future bands rendered as future —
+   the discrete truth the percentage was approximating.
 2. Confirm no client helper computes a band distance: grep for `nextLevel`, `nextBand`,
    `progressToNext`, `bandProgress` across `src/` and expect zero hits.
 3. Terminal state stays `BLOCKED`.
@@ -66,7 +75,8 @@ None.
 
 - Zero hits for `nextLevel|nextBand|progressTo|bandProgress` in `src/`.
 - Playwright: neither `/dashboard/children` nor a child detail page renders a `%` next to a band.
-- The ladder from task `183` is visible on the detail page in the same screenshot.
+- The four per-skill ladders from task `183` are visible on the detail page in the same screenshot
+  (not a single per-child ladder — AMENDMENT A1).
 
 ## Assumptions
 

@@ -13,8 +13,9 @@ depends_on: ["177", "178"]
 
 ## Objective
 
-Ship the design's six-tick ladder using the ladder this system actually has, and replace the design's
-invented pace narrative with a one-line statement of the band, the phase and where it came from.
+Ship the design's six-tick ladder using the ladder this system actually has — **once per skill**,
+per AMENDMENT A1 — and replace the design's invented pace narrative with a one-line statement of
+the band, the phase and where it came from.
 
 ## Contract
 
@@ -26,15 +27,33 @@ invented pace narrative with a one-line statement of the band, the phase and whe
 > `pre_A1` does.** The UI renders the real ladder with the design's tick visual. Recorded as a
 > design↔data conflict, not silently reconciled.
 
-`cefrStageIndex` is the 0-based index into that ladder and is `null` when `cefrBand` is null.
-Both are Crosswalk lookups (`docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:192`), never computed.
+**AMENDMENT A1 (`.qa/CONTRACTS.md` "AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2") supersedes the v1 shape
+this card was designed against.** v1 fed ONE journey from a per-child `cefrBand`/`cefrStageIndex`;
+that pair is **DELETED** — a single per-child level is a cross-skill composite (`DOC1:304`,
+`DOC0:46`; BLOCKED **B-9**). There is no per-child journey. Quoted verbatim, the UI consequence:
+
+> The design's per-child CEFR tick rail becomes **one rail per skill** (reading, listening,
+> speaking, writing), each over the real ladder `pre_A1 → A1 → A2 → B1 → B2 → C1`.
+
+So `ChildLevelJourney` renders **four journeys, one per `children[].skills[]` entry**, each keyed
+by that skill's own `cefrBand`. `cefrStageIndex` is no longer served by the API — each journey's
+stage is computed client-side as `getCefrStageIndex(skill.cefrBand)` (task 091), `null` when that
+skill's `cefrBand` is null (i.e. `readiness: "not_assessed"`). Both the band and the stage index
+are Crosswalk lookups (`docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:192`), never computed.
 
 ## Design source
 
-`portal--child-detail.html` L30-42:
-- Card: `bg-card rounded-3xl`, `padding:28px 30px`, `--shadow-portal-card`.
-- `h2` (L31): 16px / 600 / `#0E2350` → `text-base font-semibold text-navy-900`.
-- Track (L32): `flex items-center gap-0 mt-6.5` (26px → `mt-6`).
+`portal--child-detail.html` L30-42 draws ONE card with ONE track; AMENDMENT A1 requires FOUR
+tracks in that one card, one per skill, each with its own heading naming the skill
+(`Children.resultSkills.*`, already in all six catalogs — reuse, do not add a second skill
+vocabulary):
+- Card: `bg-card rounded-3xl`, `padding:28px 30px`, `--shadow-portal-card` — unchanged, still one
+  card; it now stacks four skill sections inside it.
+- `h2` (L31): 16px / 600 / `#0E2350` → `text-base font-semibold text-navy-900` — the card-level
+  heading (`Children.levelJourneyHeading`, e.g. "Level journey"); each of the four skill sections
+  additionally carries its own skill-name sub-heading above its track.
+- Track (L32): `flex items-center gap-0 mt-6.5` (26px → `mt-6`) — repeated four times, once per
+  skill, in `SKILL_ORDER`.
 - Step (L34): `flex-1 flex flex-col items-center gap-2 relative`.
 - Connector (L35): `absolute top-[9px] h-0.5`, `left: 50%` for the first step else `0`,
   `right: 50%` for the last step else `0`; `background` `#0E2350` when `i <= stage-1` else `#EEF1F6`
@@ -49,12 +68,18 @@ Both are Crosswalk lookups (`docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:192`), nev
 
 ## Files
 
-- `src/modules/children/components/ChildLevelJourney.tsx` (new).
-- `child-metrics.constants.ts` — `CEFR_LADDER` as the single ordered constant (six entries).
+- `src/modules/children/components/ChildLevelJourney.tsx` (new) — renders the card and loops
+  `children[].skills[]` (always four entries, `SKILL_ORDER`), rendering one track per skill inside
+  it. No new file is needed for the per-skill loop — one component, four tracks.
+- `child-metrics.constants.ts` — `CEFR_LADDER` as the single ordered constant (six entries),
+  unchanged by AMENDMENT A1 — the ladder itself is still real, just consumed per skill now.
 - Catalogs: `Children.levelJourneyHeading`, `Children.cefrBands.{pre_A1,A1,A2,B1,B2,C1}`,
-  `Children.journeyNote` = `Currently {band} ({phase}), from the official result published {date}.`,
+  `Children.journeyNote` = `Currently {band} ({phase}), from the official result published {date}.`
+  (rendered once per skill, using that skill's own band/phase/date),
   `Children.journeyNoteUnassessed` = `No official result has been published yet, so no level is shown.`,
-  `Children.journeyStepLabel` = `{band}, step {index} of {total}`.
+  `Children.journeyStepLabel` = `{skill}, {band}, step {index} of {total}` (the `{skill}` placeholder
+  is new — AMENDMENT A1 makes the accessible name ambiguous across four tracks without it; reuse
+  `Children.resultSkills.*` to fill it, do not add a second skill vocabulary).
 
 ## Depends on
 
@@ -62,13 +87,16 @@ Both are Crosswalk lookups (`docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:192`), nev
 
 ## Steps
 
-1. Render the six REAL bands. `pre_A1` displays as `Pre-A1`. Never render `C2`; record the conflict
-   in Evidence with the contract quote.
-2. `cefrStageIndex === null` → every dot is future, no pip, and the note is `journeyNoteUnassessed`.
-   Do not default the child to `pre_A1`.
-3. Semantics: the track is an `<ol>`; each step's accessible name is `Children.journeyStepLabel`;
-   the current step carries `aria-current="step"`. Colour is not the only signal (the pip + the
-   `aria-current` + the bold label carry it) — WCAG 1.4.1.
+1. Render the six REAL bands, once per skill. `pre_A1` displays as `Pre-A1`. Never render `C2`;
+   record the conflict in Evidence with the contract quote.
+2. For each skill: `getCefrStageIndex(skill.cefrBand) === null` (i.e.
+   `readiness === 'not_assessed'`) → every dot in THAT skill's track is future, no pip, and its note
+   is `journeyNoteUnassessed`. Do not default any skill to `pre_A1`. A child may show some skills
+   reached and others unassessed in the same card — that is the correct, honest rendering.
+3. Semantics: each skill's track is its own `<ol>`; each step's accessible name is
+   `Children.journeyStepLabel` (now including the skill name); each track's current step carries
+   `aria-current="step"`. Colour is not the only signal (the pip + the `aria-current` + the bold
+   label carry it) — WCAG 1.4.1.
 4. Motion (the spec's own suggestion, §ANIMATIONS "Motion opportunities"): connectors draw
    left-to-right via `transform: scaleX(0) → scaleX(1)` with `transform-origin: left`, 180ms,
    `--ease-out-quart`, staggered 60ms per completed step; the current pip enters with `st-pop-in`
@@ -87,20 +115,26 @@ Both are Crosswalk lookups (`docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:192`), nev
 ## Done criteria
 
 - `pnpm tsc --noEmit` + `pnpm lint` clean.
-- Playwright: exactly six steps with labels `Pre-A1, A1, A2, B1, B2, C1`; **no `C2` anywhere**
-  (`expect(page.getByText('C2')).toHaveCount(0)`); the step carrying `aria-current="step"` is at
-  index `cefrStageIndex` from the live `GET /api/my/progress`; when that field is null no step is current.
-- The note text equals the ICU render for the live band/phase/date, or the unassessed branch.
+- Playwright: **four tracks per child, one per skill**, each with exactly six steps labelled
+  `Pre-A1, A1, A2, B1, B2, C1`; **no `C2` anywhere** (`expect(page.getByText('C2')).toHaveCount(0)`);
+  in each track, the step carrying `aria-current="step"` is at index
+  `getCefrStageIndex(skill.cefrBand)` for that skill from the live `GET /api/my/progress`; when
+  that skill's `cefrBand` is null no step in its track is current. There is no per-child
+  `cefrStageIndex` to assert against (AMENDMENT A1 deleted it).
+- Each track's note text equals the ICU render for that skill's own live band/phase/date, or the
+  unassessed branch for that skill alone.
 - Motion: connectors animate `transform` (assert `getAnimations()` non-empty and that no animation
   targets `width`); under `reducedMotion: 'reduce'` the final state renders with zero animations.
-- 375px: six ticks fit the 343px content box (12px labels, longest `Pre-A1`), no h-scroll;
-  1280px: side by side with the Skills card.
+- 375px: six ticks fit the 343px content box (12px labels, longest `Pre-A1`), no h-scroll, and all
+  four tracks stack without overflow; 1280px: the card sits side by side with the Skills card.
 - axe zero serious/critical; six catalogs key-identical.
+- No component receives a per-child `cefrBand`/`cefrStageIndex`/`acaraPhase` prop — grep the diff
+  for any of the three on a child (not skill) object and find nothing (B-9 stays refused).
 
 ## Assumptions
 
-`acaraPhase` may be null while `cefrBand` is present; the note then omits the phase clause via a
-separate ICU message rather than printing an empty parenthesis.
+A skill's `acaraPhase` may be null while its `cefrBand` is present; that skill's note then omits
+the phase clause via a separate ICU message rather than printing an empty parenthesis.
 
 ## Evidence
 

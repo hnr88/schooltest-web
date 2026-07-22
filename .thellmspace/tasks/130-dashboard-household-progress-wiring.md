@@ -25,8 +25,11 @@ Success `200`:
 resultsPublished:int, practiceSecondsThisWeek:int, practiceByDay:[7 × {date,weekday,seconds}]
 oldest→newest, strongestDay: {date,weekday,seconds} | null }`
 `data.children[] = { documentId, givenName, familyName|null, yearLevel|null, status, testsCompleted,
-practiceSecondsThisWeek, practiceDayStreak, lastActivityAt|null, cefrBand|null, cefrStageIndex|null,
-acaraPhase|null, focusSkill|null, skills[] }`
+practiceSecondsThisWeek, practiceDayStreak, lastActivityAt|null, focusSkill|null, skills[] }` —
+**per AMENDMENT A1 (`.qa/CONTRACTS.md`) there is no per-child `cefrBand`/`cefrStageIndex`/
+`acaraPhase`; those are DELETED (cross-skill composite, BLOCKED B-9). A band exists only inside
+each `skills[]` entry, which always has four entries (one per skill), padded with
+`readiness: "not_assessed"` when a skill has no official result.**
 
 Errors: `400` ValidationError (query param present) · `401` UnauthorizedError · `403` ForbiddenError
 `'Only parents can view household progress'`. Read-only — no persistence effect.

@@ -44,9 +44,6 @@ number to a parent. Schema + types + barrel only — the hook is task 095.
       "status": "active",                                                    // active | archived | enrolled
       "testsCompleted": 14, "practiceSecondsThisWeek": 5400, "practiceDayStreak": 12,
       "lastActivityAt": "2026-07-22T08:28:04.544Z",                          // nullable
-      "cefrBand": "B1",                                                      // nullable
-      "cefrStageIndex": 3,                                                   // null when cefrBand is null
-      "acaraPhase": "Consolidating",                                         // nullable
       "focusSkill": "speaking",                                              // null when no skill has an official result
       "skills": [ { "skill": "reading", "cefrBand": "B2", "readiness": "met",
                     "acaraPhase": "Consolidating", "displayLabel": "Critical Reader",
@@ -55,7 +52,13 @@ number to a parent. Schema + types + barrel only — the hook is task 095.
   "meta": {} }
 ```
 
-- `skills` carries **one entry per skill that HAS an official result; never padded.**
+**AMENDMENT A1 (`.qa/CONTRACTS.md` "AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2") supersedes v1 above:**
+the per-child `cefrBand` / `cefrStageIndex` / `acaraPhase` triple is **DELETED** — a single
+per-child level is a cross-skill composite (`DOC1:304`, `DOC0:46`; BLOCKED **B-9**). A band exists
+ONLY inside `skills[]`. `skills` MUST carry **exactly four entries, always** (one per
+`reading|listening|speaking|writing`) — a skill with no official result still gets an entry with
+`readiness: "not_assessed"`, `cefrBand: null` and `resultDocumentId: null`; never omitted, never
+padded to fewer than four.
 - Errors: `400 ValidationError` (any query parameter present) · `401 UnauthorizedError` (absent/invalid
   JWT) · `403 ForbiddenError` (caller role is not `parent`; message
   `'Only parents can view household progress'`).
@@ -72,10 +75,10 @@ services, with the values the design shows:
 | #3 practice this week | `practice this week` / `4h 20m`, format `{H}h {MM}m` | `household.practiceSecondsThisWeek` |
 | #4 practice minutes | card `h2` "Practice minutes" `16px/600/#0E2350`, range label "last 7 days" `12.5px/#7C8698`, 7 bars `max-width:30px; border-radius:8px`, plot `min-height:120px; gap:14px` | `household.practiceByDay` (exactly 7) |
 | #5 strongest day | caption `13px/#7C8698`, `margin-top:16px`; the minutes span `#0E2350/600` | `household.strongestDay` |
-| #6 CEFR journey stage | six ticks, `20px` dots, `2px` rail | `children[].cefrStageIndex` |
+| #6 CEFR journey stage | six ticks, `20px` dots, `2px` rail — **one rail per skill** (AMENDMENT A1), not one per child | `children[].skills[].cefrBand` |
 | #7 focus skill | `Focus: {skill}` pill | `children[].focusSkill` |
 | children `day streak` (`.qa/design/spec/02-portal-children.md` A.5 cell 2, value `20px/700/-0.01em/#0E2350`, label `12px/#7C8698`) | `12` | `children[].practiceDayStreak` |
-| children `Level {band}` pill (`12px/600/#0E2350`, `1px solid #D8DFEA`, `padding:5px 12px`, `border-radius:999px`) | `Level B1` | `children[].cefrBand` |
+| children `Level {band}` pill (`12px/600/#0E2350`, `1px solid #D8DFEA`, `padding:5px 12px`, `border-radius:999px`) | `Level B1` | **BLOCKED B-9** — no field; a single per-child band is a cross-skill composite. See `children[].skills[]` for the sanctioned per-skill substitute. |
 
 Colour tokens named above map per `.qa/design/spec/04-ds-foundations.md` TAILWIND V4 MAPPING:
 `#0E2350` → `--color-navy-900`, `#2563EB` → `--color-brand-600`, `#8FA3C7` → the dark-mode
@@ -119,24 +122,26 @@ Do NOT touch `src/modules/dashboard/schemas/student.schema.ts` — `C-STUDENT-LI
    - `householdChildSkillSchema = z.strictObject({ skill: skillSchema, cefrBand: cefrBandSchema.nullable(),
      readiness: readinessSchema.nullable(), acaraPhase: z.string().nullable(),
      displayLabel: z.string().nullable(), publishedAt: z.iso.datetime().nullable(),
-     resultDocumentId: z.string().min(1) })`.
+     resultDocumentId: z.string().min(1).nullable() })` — `resultDocumentId` is now `.nullable()`
+     because a `readiness: 'not_assessed'` entry (AMENDMENT A1) has no result to link to.
    - `householdChildSchema = z.strictObject({ documentId: z.string().min(1), givenName: z.string(),
      familyName: z.string().nullable(), yearLevel: z.number().int().nullable(),
      status: studentStatusSchema, testsCompleted, practiceSecondsThisWeek, practiceDayStreak (all
-     int nonnegative), lastActivityAt: z.iso.datetime().nullable(), cefrBand: cefrBandSchema.nullable(),
-     cefrStageIndex: z.number().int().min(0).max(5).nullable(), acaraPhase: z.string().nullable(),
-     focusSkill: skillSchema.nullable(), skills: z.array(householdChildSkillSchema) })`.
-     `givenName` is non-nullable and `familyName` nullable for the same reason
-     `student.schema.ts` documents (mononyms are ordinary; rendering goes through
+     int nonnegative), lastActivityAt: z.iso.datetime().nullable(),
+     focusSkill: skillSchema.nullable(), skills: z.array(householdChildSkillSchema).length(4) })`.
+     **No `cefrBand`, `cefrStageIndex` or `acaraPhase` field on this object — AMENDMENT A1 deletes
+     the per-child level (BLOCKED B-9); a `z.strictObject` correctly rejects them if the API ever
+     regresses and sends them.** `givenName` is non-nullable and `familyName` nullable for the same
+     reason `student.schema.ts` documents (mononyms are ordinary; rendering goes through
      `@/lib/student-name`).
    - `householdProgressDataSchema = z.strictObject({ household: householdSchema, children: z.array(householdChildSchema) })`.
    - `householdProgressResponseSchema = z.strictObject({ data: householdProgressDataSchema, meta: z.record(z.string(), z.unknown()) })`
      — mirrors `StrapiSingleResponse<T>` (`src/lib/axios/strapi.ts:76-79`), same as
      `childProgressResponseSchema` does.
-   - Add a `.superRefine` (or equivalent) asserting the two cross-field invariants the contract states:
-     `cefrStageIndex === null` iff `cefrBand === null`; and `strongestDay` is `null` iff every
-     `practiceByDay[].seconds === 0`. These are contract text, so they are contract checks — not
-     invented validation.
+   - Add a `.superRefine` (or equivalent) asserting the cross-field invariants AMENDMENT A1 states:
+     for every skill entry, `cefrBand === null` iff `resultDocumentId === null` (a `not_assessed`
+     entry has neither); and `strongestDay` is `null` iff every `practiceByDay[].seconds === 0`.
+     These are contract text, so they are contract checks — not invented validation.
 2. `types/household-progress.types.ts` — `z.infer` re-exports only:
    `HouseholdProgress`, `HouseholdSummary`, `HouseholdPracticeDay`, `HouseholdChild`,
    `HouseholdChildSkill`, `HouseholdProgressResponse`.

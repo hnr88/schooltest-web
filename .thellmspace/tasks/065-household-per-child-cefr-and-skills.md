@@ -13,32 +13,40 @@ depends_on: [060, 064]
 
 ## Objective
 
-Serve the CEFR journey position and the per-skill picture for every child, using ONLY the
-sanctioned vocabulary — band lookup, ACARA phase, readiness — and never a computed CEFR score or a
-cross-skill composite, both of which `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25,46,193` forbid.
+Serve the per-skill picture for every child, using ONLY the sanctioned vocabulary — band lookup,
+ACARA phase, readiness — and never a computed CEFR score or a cross-skill composite, both of which
+`docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25,46,193` forbid.
 
 ## Contract
 
-`.qa/CONTRACTS.md` → **C-DASH-HOUSEHOLD**. Keys this task adds to each `data.children[]` entry:
+`.qa/CONTRACTS.md` → **C-DASH-HOUSEHOLD**, corrected by **AMENDMENT A1** (`.qa/CONTRACTS.md`
+"AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2"). v1 of this task added a per-child `cefrBand` /
+`cefrStageIndex` / `acaraPhase` triple; that is a cross-skill composite
+(`docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:304`, `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:46`) and
+is now BLOCKED as **B-9**. **This task adds ONLY `skills[]`** — there is no per-child level at all:
 
 ```jsonc
-"cefrBand": "B1",          // latest OFFICIAL result band; null when never assessed
-"cefrStageIndex": 3,       // 0-based index into CEFR_LADDER; null when cefrBand is null
-"acaraPhase": "Consolidating",   // nullable
-"skills": [                // one entry per skill that HAS an official result; NEVER padded
+"skills": [                // ALWAYS one entry per skill (reading, listening, speaking, writing) —
+                            // never omitted, never padded to fewer than four
   { "skill": "reading", "cefrBand": "B2", "readiness": "met",
     "acaraPhase": "Consolidating", "displayLabel": "Critical Reader",
-    "publishedAt": "2026-07-22T08:28:04.544Z", "resultDocumentId": "amkb…" }
+    "publishedAt": "2026-07-22T08:28:04.544Z", "resultDocumentId": "amkb…" },
+  { "skill": "listening", "cefrBand": null, "readiness": "not_assessed",
+    "acaraPhase": null, "displayLabel": null, "publishedAt": null, "resultDocumentId": null }
 ]
 ```
 
 - `CEFR_LADDER` (from task 060) is exactly `["pre_A1","A1","A2","B1","B2","C1"]` — six entries,
-  the `result/schema.json` `cefr_band` enum, `docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:43-53`.
+  the `result/schema.json` `cefr_band` enum, `docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:43-53`. It
+  is now consumed PER SKILL (each skill's `cefrBand` indexes into it independently), never per
+  child — the design's single tick rail becomes one rail per skill (AMENDMENT A1 "UI consequence").
 - Scope: `destination = 'official'` only. Practice/transient results stay invisible to parents
   (gap **G8** is left open deliberately).
-- `skills[]` carries one entry per skill that HAS an official result. **It is never padded to
-  four.** A skill with no official result is simply absent — the UI decides how to show
-  "not assessed"; the API does not fabricate a row.
+- `skills[]` MUST be built from a proper `GROUP BY skill` over ALL official results
+  (`latestBySkill`) — never from a lossy 5-row window. It carries **exactly four entries, always,
+  in `SKILL_ORDER`.** A skill with no official result still gets an entry:
+  `readiness: "not_assessed"`, `cefrBand: null`, `acaraPhase: null`, `displayLabel: null`,
+  `publishedAt: null`, `resultDocumentId: null`. Never omitted, never inferred as weak.
 - `readiness` values are the API enum `met | approaching | not_yet | not_assessed`
   (`src/contracts/vocab.ts:104`).
 - Unchanged: parent JWT, 400/403 behaviour, read-only, `Promise.all`, explicit `fields`.
@@ -50,16 +58,19 @@ cross-skill composite, both of which `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25
   `gap:6px; min-width:120px`, each tick `max-width:52px`, label `10px`. Rendering rule
   (`Parent Portal.dc.html:976-978`): `bg = j < journeyStage ? '#0E2350' : '#EEF1F6'`;
   label `fg = j === journeyStage-1 ? '#0E2350' : '#9AA6B8'`; `font-weight = 700` on the current
-  tick else `500`. `#0E2350` → `--color-navy-900`.
+  tick else `500`. `#0E2350` → `--color-navy-900`. **AMENDMENT A1:** the design draws ONE such
+  strip per child; this endpoint instead supplies the per-skill `cefrBand` that lets W5 draw ONE
+  STRIP PER SKILL (four per child), each independently indexed into `CEFR_LADDER`.
 - **`.qa/design/spec/02-portal-children.md` §B.4 LevelJourney** (`portal--child-detail.html` L30-42):
   6 steps, dot `20×20`, `border:2px solid`, connector `height:2px; top:9px`, current dot carries an
   inner pip `6×6` white; label `12px`, current `700/#0E2350`, done `500/#0E2350`, future
-  `500/#9AA6B8`.
+  `500/#9AA6B8`. Per AMENDMENT A1 this single rail is built four times, once per `skills[]` entry
+  (task 183), never once per child from a per-child band.
 - **DESIGN ↔ DATA CONFLICT, recorded not reconciled:** the design draws **`C2`**, which does not
-  exist in this system, and omits **`pre_A1`**, which does. The API returns the real six-entry
-  ladder and a 0-based `cefrStageIndex` into it. The UI (W5/W6) renders the real ladder with the
-  design's tick visual. Per `.qa/CONTRACTS.md` C-DASH-HOUSEHOLD this is logged as a conflict; do
-  not add a fake `C2` and do not drop `pre_A1`.
+  exist in this system, and omits **`pre_A1`**, which does. Each skill's `cefrBand` indexes into
+  the real six-entry ladder (client-side, task 091); the UI (W5/W6) renders the real ladder with
+  the design's tick visual, once per skill. Per `.qa/CONTRACTS.md` C-DASH-HOUSEHOLD this is logged
+  as a conflict; do not add a fake `C2` and do not drop `pre_A1`.
 - **§B.5 SkillsCard** (L43-55): SkillRow is `grid-template-columns:76px 1fr 38px; gap:14px`; name
   `13px/#7C8698`; track `height:6px; background:#EEF1F6; border-radius:99px`; grade
   `12px/600`, right-aligned. `sk.color` is `#0E2350` normally and **`#2563EB`**
@@ -69,6 +80,9 @@ cross-skill composite, both of which `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25
   `cefrBand` + `readiness` + `acaraPhase` + `displayLabel` in that slot instead, which is the
   sanctioned vocabulary. **Do not emit a percentage field.**
 - `displayLabel` maps to the design's grade cell text (`B1+`, `A2+`, `Critical Reader`).
+- **The design's per-child `Level {{k.level}}` pill (`portal--my-children-list.html:20`) is BLOCKED
+  B-9** — a single per-child band is the same forbidden composite. This task emits no field for it;
+  `skills[]` is the only sanctioned carrier of a band.
 
 ## Files
 
@@ -96,20 +110,25 @@ cross-skill composite, both of which `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25
      `getParentProgress` uses (`services/parent-progress.ts:142`), so ordering never disagrees
      between the two parent surfaces.
    - explicit `limit` cap with a comment. The live `results` table holds 2222 official rows total.
+   - This is the `GROUP BY skill` read AMENDMENT A1 requires — it must scan ALL official rows per
+     child, never the 5-row `recentResults` window (gap **G4** makes that window lossy).
 2. In `src/utils/household-child.ts`, reduce to "latest official result per (child, skill)" — first
-   row wins under the sort above. `scope='combined'` rows have `skill: null`; they are the source
-   for the child-level `cefrBand`/`acaraPhase` when present, and they are **excluded from
-   `skills[]`** (a combined row is not a skill row).
-3. Child-level `cefrBand` = the band of the child's latest official result overall (combined or
-   skill, whichever is newest under the sort). `cefrStageIndex = CEFR_LADDER.indexOf(cefrBand)`;
-   assert `>= 0` and throw `ApplicationError` if not — an unknown band must be a 500, never a
-   silent `-1` on the wire. `null` band ⇒ `null` index.
-4. `skills[]` = one entry per skill present, ordered by the skill enum's declaration order
-   (`reading, listening, speaking, writing` — `src/contracts/vocab.ts:8`) so the array is
-   deterministic. Never padded, never sorted by value.
+   row wins under the sort above. `scope='combined'` rows have `skill: null`; they carry no
+   per-child level (per-child bands are DELETED, AMENDMENT A1) and are **excluded from `skills[]`**
+   (a combined row is not a skill row) — combined rows contribute nothing to this task's output.
+3. **No child-level band is computed.** AMENDMENT A1 deletes the per-child `cefrBand` /
+   `cefrStageIndex` / `acaraPhase` entirely — do not derive them from "whichever result is newest".
+4. `skills[]` = **one entry per skill in `SKILL_ORDER`, ALWAYS four entries.** For each of
+   `reading, listening, speaking, writing` (`src/contracts/vocab.ts:8`): if an official result
+   exists for that (child, skill), emit its `cefrBand`/`readiness`/`acaraPhase`/`displayLabel`/
+   `publishedAt`/`resultDocumentId`; if none exists, emit
+   `{ skill, cefrBand: null, readiness: 'not_assessed', acaraPhase: null, displayLabel: null,
+   publishedAt: null, resultDocumentId: null }`. Never fewer than four, never sorted by band.
 5. Extend the Zod schemas: `householdChildSkillSchema` as a `z.strictObject` reusing
-   `skillSchema`, `cefrBandSchema`, `readinessSchema` from `./vocab`; `skills:
-   z.array(householdChildSkillSchema)`; `cefrStageIndex: z.number().int().min(0).max(5).nullable()`.
+   `skillSchema`, `cefrBandSchema`, `readinessSchema` from `./vocab`; `cefrBand` and
+   `resultDocumentId` are BOTH `.nullable()` (a `not_assessed` entry has neither); `skills:
+   z.array(householdChildSkillSchema).length(4)`. No `cefrStageIndex` field is added anywhere on
+   the child object — that key no longer exists (AMENDMENT A1).
 6. `cd schooltest-api && pnpm tsc --noEmit && pnpm lint`.
 
 ## Project rules
@@ -124,17 +143,18 @@ cross-skill composite, both of which `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25
 
 - `cd schooltest-api && pnpm tsc --noEmit` and `pnpm lint` clean.
 - `pnpm exec playwright test tests/e2e/household-progress.spec.ts` passes with new assertions:
-  - every `children[].cefrBand` is `null` or a member of `CEFR_LADDER`; **no response anywhere
-    contains the string `C2`**;
-  - `cefrStageIndex === CEFR_LADDER.indexOf(cefrBand)` for every non-null band, and both are
-    `null` together;
-  - `skills[]` length `<= 4`, every `skill` unique, ordered `reading, listening, speaking, writing`
-    filtered to those present, and **never padded** — a child with 1 official skill result returns
-    a 1-element array;
-  - for the seeded parent's child `funvimlj3yeh8mada2bkbt7x` (1 official result live), the returned
-    `resultDocumentId` and `cefrBand` equal the row read directly by `runSql` from `results`;
-  - a never-assessed child (`ol10bd2bui8jf2mjzziol1iq`) returns `cefrBand: null`,
-    `cefrStageIndex: null`, `acaraPhase: null`, `skills: []`;
+  - every `children[].skills[].cefrBand` is `null` or a member of `CEFR_LADDER`; **no response
+    anywhere contains the string `C2`**;
+  - **no per-child `cefrBand`, `cefrStageIndex` or `acaraPhase` key exists anywhere on
+    `children[]`** — `Object.keys` on a child entry never contains any of the three;
+  - `skills[]` length is **exactly 4** for every child, one per `SKILL_ORDER` entry, and a skill
+    with no official result has `readiness: 'not_assessed'`, `cefrBand: null` and
+    `resultDocumentId: null` — never omitted from the array;
+  - for the seeded parent's child `funvimlj3yeh8mada2bkbt7x` (1 official result live), the matching
+    `skills[]` entry's `resultDocumentId` and `cefrBand` equal the row read directly by `runSql`
+    from `results`, and the other three entries are `not_assessed`;
+  - a never-assessed child (`ol10bd2bui8jf2mjzziol1iq`) returns `skills` as four `not_assessed`
+    entries, all bands `null` — never `skills: []`;
   - **no percentage, no score, no composite:** `JSON.stringify(body)` matched against
     `/\b(score|percent|pct|avg|average|composite|progressTo)\b/i` finds NOTHING;
   - transient results are invisible: pick a transient result documentId for one of this parent's
@@ -145,9 +165,9 @@ cross-skill composite, both of which `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25
 
 ## Assumptions
 
-- When a child's newest official row is `scope='combined'`, its `cefr_band`/`acara_phase` become the
-  child-level values; the addendum says "latest OFFICIAL result band" without qualifying scope.
-  Record which rows drove each child's values in Evidence.
+- AMENDMENT A1 supersedes the earlier assumption that a `scope='combined'` row drives a child-level
+  value — there is no child-level value to drive. Combined rows are read (so the query need not
+  change) but contribute nothing to `skills[]`; record this in Evidence.
 - `acara_phase` is a free string on the schema (1073 of 2358 live rows non-null); it is passed
   through verbatim, never normalised or title-cased.
 

@@ -59,8 +59,11 @@ Against live data, with the API response fetched in-test and used as the oracle:
 - Metric 4: 7 bars; each bar's height ratio === the normalised percentage; the tallest bar is the
   argmax day; **explicitly assert px ≠ minutes** with a stubbed known week.
 - Metric 5: caption weekday+minutes === `strongestDay`; null branch renders `practice.noPractice`.
-- Metric 6: 6 ticks per child, `data-band` sequence `pre_A1,A1,A2,B1,B2,C1`, reached count ===
-  `cefrStageIndex + 1`, **no `C2` anywhere in the DOM**.
+- Metric 6 (**AMENDMENT A1: one rail per skill, not one per child** — the per-child `cefrBand`/
+  `cefrStageIndex` this metric used to read is DELETED, BLOCKED B-9): **four** tick rails per
+  child (one per `children[].skills[]` entry), each 6 ticks, `data-band` sequence
+  `pre_A1,A1,A2,B1,B2,C1`, reached count === `getCefrStageIndex(skill.cefrBand) + 1` for that
+  skill, **no `C2` anywhere in the DOM**, and no single per-child `Level {band}` pill anywhere.
 - Metric 7: focus pill present iff `focusSkill !== null`, `data-skill` matches, no `%` in the row.
 - Metric 8 (headline): the sentence equals the branch recomputed from the response; no
   "on track for"/"since May" anywhere.

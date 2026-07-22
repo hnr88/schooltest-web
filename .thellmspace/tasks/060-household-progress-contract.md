@@ -36,14 +36,22 @@ only; the endpoint arrives in 062. The module must express EXACTLY the addendum'
       "yearLevel": 7|null, "status": "active"|"archived"|"enrolled",
       "testsCompleted": 14, "practiceSecondsThisWeek": 5400, "practiceDayStreak": 12,
       "lastActivityAt": "2026-07-22T08:28:04.544Z"|null,
-      "cefrBand": "B1"|null, "cefrStageIndex": 3|null, "acaraPhase": "Consolidating"|null,
       "focusSkill": "speaking"|null,
-      "skills": [ { "skill": "reading", "cefrBand": "B2", "readiness": "met",
+      "skills": [ { "skill": "reading", "cefrBand": "B2"|null, "readiness": "met"|"not_assessed",
                     "acaraPhase": "Consolidating"|null, "displayLabel": "Critical Reader"|null,
-                    "publishedAt": "…"|null, "resultDocumentId": "amkb…" } ]
+                    "publishedAt": "…"|null, "resultDocumentId": "amkb…"|null } ]  // ALWAYS 4 entries — one per skill, "not_assessed" when no official result
     } ] },
   "meta": {} }
 ```
+
+**AMENDMENT A1 supersedes v1 of this contract** (`.qa/CONTRACTS.md` "AMENDMENT A1 —
+`C-DASH-HOUSEHOLD` v2"). v1 put a single per-child `cefrBand` / `cefrStageIndex` / `acaraPhase`
+directly on `children[]`; that is a cross-skill composite, forbidden by
+`docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:304` and `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:46`.
+**Those three per-child fields are DELETED — do not author them.** A band exists ONLY inside
+`skills[]`, one entry per skill, and `skills[]` MUST cover all four skills always (a skill with no
+official result gets `readiness: "not_assessed"` and a null band — never omitted). This also closes
+BLOCKED row **B-9** (per-child `Level {band}` pill).
 
 Errors are the controller's job (067); this module only exports the DATA schema plus the two
 shared constants below.
@@ -52,8 +60,10 @@ shared constants below.
 so every intermediate state is a truthful description of what the endpoint actually returns.
 This task lands ONLY the keys task 062 computes — `household.{childCount,testsCompleted,
 resultsPublished}` and `children[].{documentId,givenName,familyName,yearLevel,status}` — as
-`z.strictObject`s. Tasks 063-066 add their own keys. Task 066 asserts the finished key set equals
-the addendum's byte-for-byte. No key is ever present in the schema before the service computes it.
+`z.strictObject`s. Tasks 063-066 add their own keys, and none of them may reintroduce a per-child
+`cefrBand`/`cefrStageIndex`/`acaraPhase`. Task 066 asserts the finished key set equals AMENDMENT
+A1's key set byte-for-byte — NOT v1's superseded shape above it in `.qa/CONTRACTS.md`. No key is
+ever present in the schema before the service computes it.
 
 ## Design source
 
@@ -62,7 +72,9 @@ the addendum's byte-for-byte. No key is ever present in the schema before the se
   **4** (`Practice minutes` / `last 7 days`, **7** bars, weekday letters `M T W T F S S`),
   **5** (strongest-day caption), **6** (six CEFR ticks), **7** (`Focus: {skill}`).
 - `.qa/design/spec/02-portal-children.md` §A.5 ChildCard metric strip — cell 2 value `{{k.streak}}`
-  label `day streak` (`12` / `5`), level pill copy `Level {{k.level}}` → `Level B1`.
+  label `day streak` (`12` / `5`) IS servable from `children[].practiceDayStreak`. The same cell's
+  level pill copy `Level {{k.level}}` → `Level B1` is **BLOCKED B-9** (per-child single level is a
+  cross-skill composite, AMENDMENT A1) — this schema exports no field for it.
 - The design draws **six** ticks labelled `A1 A2 B1 B2 C1 C2`
   (`.qa/design/spec/01-portal-dashboard.md:335-336`). `C2` does not exist in this system and
   `pre_A1` does. This module exports the REAL ladder and nothing else:
@@ -71,7 +83,10 @@ the addendum's byte-for-byte. No key is ever present in the schema before the se
   export const CEFR_LADDER = ['pre_A1', 'A1', 'A2', 'B1', 'B2', 'C1'] as const;  // 6 entries
   ```
   Source: `schooltest-api/src/api/result/content-types/result/schema.json` `cefr_band` enum and
-  `src/contracts/vocab.ts:58`. `cefrStageIndex` is the **0-based** index into this array.
+  `src/contracts/vocab.ts:58`. `cefrStageIndex` is the **0-based** index into this array, computed
+  PER SKILL client-side from a skill's `cefrBand` (`results` module, task 091) — AMENDMENT A1
+  removed the per-child `cefrStageIndex` field this module used to export; the ladder itself is
+  unchanged and still the single source of truth for that lookup.
 - `export const READINESS_RANK = { not_yet: 0, approaching: 1, met: 2 } as const;` — the
   focus-skill ordering from the addendum (`not_assessed` excluded, never ranked).
 - No colour, size or spacing value is in scope here: this task ships no UI. The navy `#0E2350`

@@ -137,8 +137,15 @@ independent cross-cutting re-proof over the whole surface.
    is unaffected (run this test **serially**, `test.describe.serial`, and last in the file).
 9. Assert the C-DASH-HOUSEHOLD and C-CHILD-RESULT-HISTORY responses contain **no composite
    score**: no field whose value is a percentage of a cross-skill aggregate, no computed CEFR
-   score — only `cefrBand`, `cefrStageIndex`, `acaraPhase`, `readiness`, and per-attribute data
-   (`docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25,46,193`, quoted in `.qa/CONTRACTS.md`).
+   score — only `cefrBand`, `acaraPhase`, `readiness`, and per-attribute data
+   (`docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25,46,193`, quoted in `.qa/CONTRACTS.md`). **Per
+   AMENDMENT A1** (`.qa/CONTRACTS.md` "AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2"), a per-child
+   `cefrBand`/`cefrStageIndex`/`acaraPhase` is ITSELF the forbidden composite (BLOCKED **B-9**):
+   assert every `data.children[]` entry has **no** `cefrBand`, `cefrStageIndex` or `acaraPhase` key
+   at all (`Object.keys` excludes all three), and that `cefrBand`/`acaraPhase`/`readiness` appear
+   ONLY inside each entry's `skills[]` array — which itself must have exactly four entries per
+   child, never fewer, never a `cefrStageIndex` field on any skill either (that index is computed
+   client-side, never served).
 10. If any refusal is missing, fix it in the API service/controller with a typed error from
     `@strapi/utils` — never a bare throw, never a policy relaxation.
 
@@ -169,7 +176,9 @@ independent cross-cutting re-proof over the whole surface.
   reach the DB — proven by a direct `select parent…, status from students` read.
 - `passport_number` proven absent from every response body even when set.
 - `429` proven with a real burst and a `Retry-After` header, run serially and last.
-- Zero composite score / computed CEFR score in either new aggregate's payload.
+- Zero composite score / computed CEFR score in either new aggregate's payload, INCLUDING zero
+  per-child `cefrBand`/`cefrStageIndex`/`acaraPhase` keys on any `data.children[]` entry (B-9,
+  AMENDMENT A1) — the band lives only inside each entry's four-item `skills[]`.
 - Every fixture (throwaway parent B, its child, A's temporary child, the temporary
   `passport_number`) removed; `select count(*)` on `students` returns to its pre-run value.
 - Zero banned-pattern grep hits in the diff.

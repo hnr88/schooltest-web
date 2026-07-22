@@ -81,7 +81,8 @@ skill"; the docs forbid a composite %):
    object.
 4. **Close the contract.** Add an exported `HOUSEHOLD_CONTRACT_KEYS` map (household keys + child
    keys + skill keys) derived from the Zod shapes, so the e2e spec can assert the delivered key set
-   equals the addendum's key set exactly — no missing key, no extra key.
+   equals AMENDMENT A1's key set exactly — no missing key, no extra key, and specifically no
+   `cefrBand`/`cefrStageIndex`/`acaraPhase` on the child map (those are DELETED, B-9).
 5. `cd schooltest-api && pnpm tsc --noEmit && pnpm lint`.
 
 ## Project rules
@@ -107,14 +108,18 @@ skill"; the docs forbid a composite %):
   - a full three-way tie resolves to the earliest skill in `reading, listening, speaking, writing`.
 - `pnpm exec playwright test tests/e2e/household-progress.spec.ts` passes with:
   - `focusSkill` is `null` or one of the four skill enum values, and when non-null it is always a
-    member of `skills[].skill`;
-  - **contract completeness:** the delivered key set equals C-DASH-HOUSEHOLD's exactly — household
-    `{childCount, testsCompleted, testsCompletedThisWeek, resultsPublished, practiceSecondsThisWeek,
-    practiceByDay, strongestDay}`, child `{documentId, givenName, familyName, yearLevel, status,
-    testsCompleted, practiceSecondsThisWeek, practiceDayStreak, lastActivityAt, cefrBand,
-    cefrStageIndex, acaraPhase, focusSkill, skills}`, skill `{skill, cefrBand, readiness,
-    acaraPhase, displayLabel, publishedAt, resultDocumentId}`. Assert both directions (no missing,
-    no extra);
+    member of `skills[].skill` (trivially true now that `skills[]` always carries all four);
+  - **contract completeness, against AMENDMENT A1 (not v1):** the delivered key set equals
+    C-DASH-HOUSEHOLD **v2**'s exactly — household `{childCount, testsCompleted,
+    testsCompletedThisWeek, resultsPublished, practiceSecondsThisWeek, practiceByDay,
+    strongestDay}`, child `{documentId, givenName, familyName, yearLevel, status, testsCompleted,
+    practiceSecondsThisWeek, practiceDayStreak, lastActivityAt, focusSkill, skills}` — **no
+    `cefrBand`, `cefrStageIndex` or `acaraPhase` key on the child object; those three are DELETED
+    by AMENDMENT A1 (B-9)** — skill `{skill, cefrBand, readiness, acaraPhase, displayLabel,
+    publishedAt, resultDocumentId}` with `cefrBand` and `resultDocumentId` both nullable for a
+    `not_assessed` entry. Assert both directions (no missing, no extra) AND assert the three deleted
+    keys are absent from every child object;
+  - every child's `skills` array has length exactly 4;
   - `JSON.stringify(body)` still matches nothing in `/\b(score|percent|pct|avg|average|composite)\b/i`.
 - `grep -n "strapi" schooltest-api/src/utils/focus-skill.ts` returns nothing (pure module).
 - No i18n change. No UI → motion / 375px / axe **n/a**.

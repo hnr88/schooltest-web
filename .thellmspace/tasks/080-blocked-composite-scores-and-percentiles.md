@@ -35,6 +35,14 @@ And the addendum's governing rule for **every** W2 surface:
 > **No composite scores.** `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:25,46,193` forbid cut scores,
 > cross-skill composites and any computed CEFR score. No field below returns one.
 
+**Cross-reference: `.qa/CONTRACTS.md` AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2** extends this same
+governing rule to a case B-3…B-6 did not originally name: v1 of C-DASH-HOUSEHOLD shipped a
+per-child `cefrBand`/`cefrStageIndex`/`acaraPhase` triple, which is itself the same forbidden
+cross-skill composite one layer up (a single per-child LEVEL rather than a single per-sitting
+PERCENTAGE). AMENDMENT A1 deletes those three fields and records the refusal as new BLOCKED row
+**B-9**. This task's refusal and B-9 are the same class of defect; the substitute table below is
+corrected accordingly.
+
 **Terminal state: BLOCKED.** No percentage field exists in C-DASH-HOUSEHOLD or
 C-CHILD-RESULT-HISTORY, and none may be added.
 
@@ -67,8 +75,8 @@ served by tasks 060-077 and to be rendered in the same geometry:
 
 | Blocked slot | Renders instead | Served by |
 |---|---|---|
-| `last result` `74%` | `cefrBand` + `readiness` + `publishedAt` | 065 (`children[].skills[]`), 070 (history rows) |
-| `Progress to B2` `68%` | `cefrStageIndex` position on the real 6-tick ladder, no percentage | 065 |
+| `last result` `74%` | `cefrBand` + `readiness` + `publishedAt`, read from `children[].skills[]` (per-skill; the per-child fields these once meant are DELETED, AMENDMENT A1) | 065 (`children[].skills[]`), 070 (history rows) |
+| `Progress to B2` `68%` | client-derived stage-index position on the real 6-tick ladder, no percentage — computed PER SKILL from `skills[].cefrBand` (task 091's `getCefrStageIndex`), never from a per-child field | 065, 091, 183 |
 | `Avg. score 86%` | nothing — the cell is removed, not zeroed | — |
 | `Trend +4%` | band-to-band change via `previousResultDocumentId` (`first attempt` when null) | 072 |
 | `Of grade Top 15%` | nothing — no cohort data is parent-reachable | — |

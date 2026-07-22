@@ -134,9 +134,12 @@ Touch:
   `'CEFR ladder constant matches the API result enum'` case run against the LIVE API.
 - `getCefrStageIndex` agrees with the live data: the same spec asserts, for every official result
   the seeded parent can reach, that `CEFR_LADDER[getCefrStageIndex(view.cefr_band)!] === view.cefr_band`
-  whenever `cefr_band` is non-null. (The stronger client↔server drift alarm —
-  `getCefrStageIndex(child.cefrBand) === child.cefrStageIndex` against `GET /api/my/progress` — is
-  owned by task 095, which is where that endpoint's hook lands.)
+  whenever `cefr_band` is non-null. (The stronger client↔server drift alarm is owned by task 095,
+  which is where `GET /api/my/progress`'s hook lands — but per **AMENDMENT A1**
+  [`.qa/CONTRACTS.md`], that endpoint no longer has a per-child `cefrBand`/`cefrStageIndex` to
+  compare: 095's check runs `getCefrStageIndex(skill.cefrBand)` PER SKILL over `children[].skills[]`
+  instead. This module's exports are unaffected — it is a pure ladder lookup, agnostic to whether
+  the caller applies it per child or per skill.)
 - `grep -rn "'C2'" src/ --include=*.tsx` → zero hits (the design label array is exported from a
   `.ts` constant for the sweep to assert against, and never rendered).
 - `grep -rn "as any\|: any\|@ts-ignore" src/modules/results/` → zero hits.

@@ -111,9 +111,14 @@ Touch:
      running API answers — assert what the RUNNING API does and record it in Evidence, per
      `.qa/DECISIONS.md` D-CONTRACT-1, flagging any divergence from the contract text rather than
      silently accepting it).
-   - Client↔server drift alarm (deferred here from task 091): for every child in the live payload,
-     assert `getCefrStageIndex(child.cefrBand) === child.cefrStageIndex`, importing
-     `getCefrStageIndex` from `@/modules/results` (barrel — cross-module import rule).
+   - Client↔server drift alarm (deferred here from task 091, corrected by AMENDMENT A1 — there is
+     no per-child `cefrBand`/`cefrStageIndex` to compare anymore): for every child in the live
+     payload and every one of its **`skills[]`** entries, assert
+     `getCefrStageIndex(skill.cefrBand)` is consistent with `CEFR_LADDER.indexOf(skill.cefrBand)`
+     (both `null` together), importing `getCefrStageIndex` from `@/modules/results` (barrel —
+     cross-module import rule). Also assert no child object exposes a `cefrBand`, `cefrStageIndex`
+     or `acaraPhase` key at all (`Object.keys(child)` excludes all three — B-9 stays refused on the
+     wire).
 
 ## Project rules
 
@@ -132,8 +137,9 @@ Touch:
 - `pnpm tsc --noEmit` and `pnpm lint` clean.
 - `pnpm exec playwright test tests/e2e/w3-household-contract.spec.ts` passes: live `200` parses,
   key is `['dashboard','household-progress']`, `?page=1` ⇒ `400 ValidationError`, unauthenticated ⇒
-  the running API's documented rejection, and `cefrStageIndex` agrees with the client ladder for
-  every child.
+  the running API's documented rejection, and the client ladder lookup agrees with the server's
+  per-skill `cefrBand` for every skill of every child (no per-child `cefrStageIndex` exists to
+  compare — AMENDMENT A1).
 - `grep -n "params" src/modules/dashboard/queries/use-household-progress.query.ts` → zero hits
   (proves no query string can ever be sent).
 - `grep -rn "as any\|: any\|@ts-ignore" src/modules/dashboard/queries/use-household-progress.query.ts` → zero hits.

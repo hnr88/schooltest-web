@@ -22,10 +22,14 @@ standing in for "unknown".
 
 `.qa/CONTRACTS.md` → **C-DASH-HOUSEHOLD**. The behaviours this task pins:
 
+Per **AMENDMENT A1** (`.qa/CONTRACTS.md`), there is no per-child `cefrBand`/`cefrStageIndex`/
+`acaraPhase` to null out — those keys are DELETED (B-9). The degenerate shape for a child is
+`skills[]` with all four entries `readiness: "not_assessed"`, never `skills: []`.
+
 | Situation | Required response |
 |---|---|
 | Parent with **0 children** | `200`, `household` all zeros, `practiceByDay` still **7 entries** all `seconds: 0`, `strongestDay: null`, `children: []` |
-| Child with no sessions and no results | child row present with `testsCompleted: 0`, `practiceSecondsThisWeek: 0`, `practiceDayStreak: 0`, `lastActivityAt: null`, `cefrBand: null`, `cefrStageIndex: null`, `acaraPhase: null`, `focusSkill: null`, `skills: []` |
+| Child with no sessions and no results | child row present with `testsCompleted: 0`, `practiceSecondsThisWeek: 0`, `practiceDayStreak: 0`, `lastActivityAt: null`, `focusSkill: null`, `skills: [4 entries, all `readiness: "not_assessed"`, `cefrBand: null`, `resultDocumentId: null`]` |
 | Week with zero practice | `practiceSecondsThisWeek: 0`, all 7 buckets `0`, `strongestDay: **null**` (never a 0-second "strongest" day) |
 | `archived` / `enrolled` children | **included** in `children[]` with their real `status`; `childCount` counts them |
 | `family_name` null (mononym) | `familyName: null`, never `""` — `M-CT-STUDENT-NAME` |
@@ -95,7 +99,9 @@ standing in for "unknown".
   - a freshly registered, confirmed, childless parent → `200` with the exact zero-shape, including
     `practiceByDay.length === 7` and `strongestDay === null`;
   - the seeded parent's zero-activity child `ol10bd2bui8jf2mjzziol1iq` returns the full null/zero
-    child row (assert every one of the 15 child keys present);
+    child row (assert every one of the 11 A1 child keys present — `documentId, givenName,
+    familyName, yearLevel, status, testsCompleted, practiceSecondsThisWeek, practiceDayStreak,
+    lastActivityAt, focusSkill, skills` — and that `skills` is 4 `not_assessed` entries, not `[]`);
   - `?page=1`, `?foo=1` and `?pagination[page]=1` each → `400` `ValidationError` with the exact
     message;
   - a **teacher** JWT (`teacher@schooltest.local`, password read from `schooltest-api/.env` via

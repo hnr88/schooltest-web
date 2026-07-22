@@ -32,7 +32,10 @@ than faked. The dashboard is the mission's headline surface — its metrics are 
   strongestDay ({date, weekday, seconds} | null when every day is 0) }`;
   `data.children[] = { documentId, givenName, familyName|null, yearLevel|null, status,
   testsCompleted, practiceSecondsThisWeek, practiceDayStreak, lastActivityAt|null,
-  cefrBand|null, cefrStageIndex|null, acaraPhase|null, focusSkill|null, skills[] }`.
+  focusSkill|null, skills[] }`. **Per AMENDMENT A1 (`.qa/CONTRACTS.md`), there is no per-child
+  `cefrBand`/`cefrStageIndex`/`acaraPhase` — those are DELETED (cross-skill composite, BLOCKED
+  **B-9**). A band exists only inside each `skills[]` entry, which always has four entries (one per
+  skill), padded with `readiness: "not_assessed"` when a skill has no official result.**
 - Errors: `400 ValidationError` (any query param) · `401 UnauthorizedError` (absent/invalid JWT)
   · `403 ForbiddenError 'Only parents can view household progress'` (non-parent role).
 - Persistence effect: **none** — read-only over `students`, `students_parent_lnk`, `sessions`,
@@ -64,8 +67,9 @@ than faked. The dashboard is the mission's headline surface — its metrics are 
 - Practice-minutes chart (row #4): exactly 7 bars, one per `household.practiceByDay[]` entry,
   oldest→newest, weekday letter beneath; inactive bars `#E4E9F2` → `--color-rule`, the argmax
   bar navy `--color-navy-900`. Caption (row #5) names `strongestDay.weekday` + its minutes.
-- "My children" rows (rows #6, #7): CEFR tick rail + `Focus: {skill}` pill on
-  `#EEF3FE` → `--color-brand-50` with `#2563EB` → `--color-primary` text.
+- "My children" rows (rows #6, #7): **one CEFR tick rail per skill** (four per child, AMENDMENT
+  A1 — not one per child) + `Focus: {skill}` pill on `#EEF3FE` → `--color-brand-50` with
+  `#2563EB` → `--color-primary` text. No per-child `Level {band}` pill (BLOCKED **B-9**).
 - Base card shell (`05-ds-components.md#1.0`): `background:#FFFFFF; border:1px solid #E3E8F0`
   → `--color-border`; `border-radius:16px` → `--radius-panel`; `padding:22px`;
   `box-shadow:0 1px 2px rgba(14,35,80,.05)` → `--shadow-sm`.
@@ -101,8 +105,10 @@ than faked. The dashboard is the mission's headline surface — its metrics are 
    body's order, and that the highlighted bar's index equals the index of
    `data.household.strongestDay.date` within `practiceByDay` (or that no bar is highlighted
    when `strongestDay` is `null`).
-4. Assert the CEFR tick rail renders exactly **six** ticks labelled
-   `pre_A1 A1 A2 B1 B2 C1` — and assert `page.getByText('C2')` has count 0 anywhere on the page.
+4. Assert each child row renders **four** CEFR tick rails (one per skill, `SKILL_ORDER`), each with
+   exactly **six** ticks labelled `pre_A1 A1 A2 B1 B2 C1` — and assert `page.getByText('C2')` has
+   count 0 anywhere on the page. Assert no child row renders a single per-child `Level {band}` pill
+   (BLOCKED **B-9**, AMENDMENT A1) — `page.getByText(/^Level /)` count 0.
 5. **B-1 / B-2 refusal proof:** assert `page.getByText(/coming up/i)` has count 0 and that no
    element renders a scheduled/dated upcoming row; assert the page body text contains no
    standalone `2` presented as a "coming up" stat. Record the refusal in the spec's own comment

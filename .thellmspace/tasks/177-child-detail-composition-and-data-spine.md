@@ -24,9 +24,12 @@ the tab control the design does not have while keeping the record content reacha
   `{ totalSessions, completedSessions, activeSessions, officialResults }` (non-negative integers) and
   `student` is the parent-safe projection (no passport, guardian relation ids, teacher or class).
   Already consumed by `useChildProgressQuery` — keep it.
-- `C-DASH-HOUSEHOLD` — `GET /api/my/progress` supplies this child's `cefrBand`, `cefrStageIndex`,
-  `acaraPhase`, `practiceDayStreak`, `testsCompleted`, `focusSkill`, `skills[]`. No query parameters
-  are accepted (any key ⇒ `400`).
+- `C-DASH-HOUSEHOLD` — `GET /api/my/progress` supplies this child's `practiceDayStreak`,
+  `testsCompleted`, `focusSkill`, `skills[]`. **Per AMENDMENT A1 (`.qa/CONTRACTS.md`), there is no
+  per-child `cefrBand`/`cefrStageIndex`/`acaraPhase` — those are DELETED (cross-skill composite,
+  BLOCKED B-9). A band exists only inside each `skills[]` entry**, which always has four entries
+  (one per skill), padded with `readiness: "not_assessed"` when a skill has no official result.
+  No query parameters are accepted (any key ⇒ `400`).
 - `C-CHILD-RESULT-HISTORY` — `GET /api/my/students/:documentId/results?page=&pageSize=&skill=`,
   `pageSize` 1..50 (default 10, >50 ⇒ `400`), sorted `published_at_field:desc, createdAt:desc`,
   `destination='official'` only, `200 { data: [...], meta: { pagination } }`.
@@ -64,7 +67,10 @@ portal chrome (`rounded-3xl`, `p-7`, `--shadow-portal-card`).
 1. Add the household + result-history hooks alongside the two existing queries; fire them in parallel
    (TanStack Query does this by default) — never sequentially, never one request per skill.
 2. Build `child-detail-view-model.ts` returning `{ student, metrics, householdChild | null,
-   results, pagination }` with explicit nulls; no default band, no zero-filled skill list.
+   results, pagination }` with explicit nulls; no default per-child band (none exists, AMENDMENT
+   A1). `householdChild.skills` is passed through unchanged — the API already returns it fully
+   populated (four entries, `not_assessed` padding included); this view model does not re-pad or
+   strip it.
 3. Replace the tab shell with the stack. Keep `data-slot="child-progress-panel"` on the progress
    region so the existing spec's region assertion still resolves.
 4. Retarget the two tab assertions in `children-profile.spec.ts` to assert the record card is present

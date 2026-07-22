@@ -29,18 +29,25 @@ with keys `['dashboard','students',{includeArchived}]` — REUSE it, do not add 
 `C-DASH-HOUSEHOLD` — `GET /api/my/progress` (parent JWT, **no query parameters accepted — any query
 key ⇒ `400 ValidationError`**). `200 { data: { household: {...}, children: [ { documentId, givenName,
 familyName, yearLevel, status, testsCompleted, practiceSecondsThisWeek, practiceDayStreak,
-lastActivityAt, cefrBand, cefrStageIndex, acaraPhase, focusSkill, skills[] } ] }, meta: {} }`.
+lastActivityAt, focusSkill, skills[] } ] }, meta: {} }`.
 `401` absent/invalid JWT · `403` non-parent (`'Only parents can view household progress'`).
-`cefrBand`, `cefrStageIndex`, `acaraPhase`, `focusSkill` are **nullable**; `skills` carries one entry
-per skill that HAS an official result and is **never padded**.
+**Per AMENDMENT A1 (`.qa/CONTRACTS.md`), there is no per-child `cefrBand`/`cefrStageIndex`/
+`acaraPhase` — those are DELETED (cross-skill composite, BLOCKED B-9).** `focusSkill` is
+**nullable**; `skills` always carries **exactly four entries** (one per skill), padded with
+`readiness: "not_assessed"` / `cefrBand: null` / `resultDocumentId: null` when a skill has no
+official result — never fewer than four.
 
 `C-UI-CHILD-LEARNING-SURFACE`: "When no metrics or results exist, the UI states that honestly rather
 than synthesizing a score, chart, or recommendation."
 
 ## Design source
 
-`.qa/design/spec/02-portal-children.md` §A.5 lists the four card data slots: `k.level` (→ `cefrBand`),
-`k.streak` (→ `practiceDayStreak`), `k.meta`, `k.note` (→ `focusSkill`). §METRIC INVENTORY row
+`.qa/design/spec/02-portal-children.md` §A.5 lists the four card data slots: `k.level` (→ per-child
+`cefrBand`), `k.streak` (→ `practiceDayStreak`), `k.meta`, `k.note` (→ `focusSkill`).
+**`k.level` is now BLOCKED B-9** — a single per-child level is the same forbidden composite as
+`last result`/`Progress to next`; this view model exposes NO field for it. `skills[]` remains
+available on the row for any per-skill rendering elsewhere (e.g. the per-skill CEFR strips,
+task 146), but nothing plays the role of a single-value "Level" cell. §METRIC INVENTORY row
 "A card · `day streak`" = "Consecutive calendar days with >=1 completed practice session" — exactly
 `practiceDayStreak`. Rows `to {nextLevel}` and `last result` are BLOCKED (tasks 170 / 169); this view
 model must NOT expose a field for either.
@@ -49,8 +56,9 @@ model must NOT expose a field for either.
 
 - `src/modules/children/lib/children-list-view-model.ts` — pure `buildChildrenListRows(students, household)`.
 - `src/modules/children/types/children.types.ts` — `ChildrenListRow` (documentId, name, initials,
-  yearLevel, status, createdAt, cefrBand, cefrStageIndex, acaraPhase, practiceDayStreak,
-  testsCompleted, lastActivityAt, focusSkill, focusReadiness, skills).
+  yearLevel, status, createdAt, practiceDayStreak, testsCompleted, lastActivityAt, focusSkill,
+  focusReadiness, skills). **No `cefrBand`/`cefrStageIndex`/`acaraPhase` fields — AMENDMENT A1
+  deletes the per-child level (B-9); `skills[]` is the only carrier of a band.**
 - `src/modules/children/hooks/use-children-list.ts` — add the household query, keep the existing
   `includeArchived` re-query, the `useDashboardSearchStore` name filter and every returned counter.
 - `src/modules/children/index.ts` — export the row type only if a sibling module needs it.
@@ -66,8 +74,10 @@ model must NOT expose a field for either.
 1. Read the W3 household query hook + Zod schema; import the hook, never re-type the response.
 2. Write `buildChildrenListRows`: index `data.children` by `documentId` into a `Map`, then map the
    student rows (order preserved) onto `ChildrenListRow`. A student with no household entry gets
-   `cefrBand: null, cefrStageIndex: null, acaraPhase: null, practiceDayStreak: 0, testsCompleted: 0,
-   lastActivityAt: null, focusSkill: null, skills: []` — never a default band, never `-`.
+   `practiceDayStreak: 0, testsCompleted: 0, lastActivityAt: null, focusSkill: null, skills: [4
+   entries, all readiness: 'not_assessed', cefrBand: null]` — matching the same all-`not_assessed`
+   shape the API itself returns for a never-assessed child (AMENDMENT A1); never a default band,
+   never `-`, never `skills: []`.
 3. Name via the existing `getStudentDisplayName` / `getStudentInitials` from `src/lib/student-name.ts`.
 4. Surface `isLoading` / `isError` / `isFetching` as the OR of both queries and `refetch` as the
    `Promise.all` of both (the existing hook's contract).
