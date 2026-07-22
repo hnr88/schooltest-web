@@ -184,3 +184,58 @@ The navy hero ships **1 of its 3 stats** truthfully today.
   state instead.
 - Intake committed as **`b83fe9b`**. The 210 pre-existing uncommitted working-tree entries were
   deliberately left untouched.
+
+---
+
+## UPDATE 2026-07-22 ~22:45 — DAG complete, build loop proven, session handing off
+
+### Where the run actually is
+
+| Item | State |
+|---|---|
+| Intake | **COMPLETE** — 9 extraction docs + `RECONCILIATION.md` |
+| Boot-gate | **PASSED** |
+| Watchdog | **RUNNING** (stuck-checker only; root watchdog owns servers) |
+| Task DAG | **COMPLETE + VALIDATED** — 286 tasks, 12 waves, 19 BLOCKED, 0 DAG errors |
+| Build loop | **PROVEN** — task **060 DONE**, independently verified |
+| Commits | web `b83fe9b`, `e96aa9d`, `d3bad8c`, `50b9394` · api `c76e093` |
+| Remaining | **285 tasks.** 37 ready now — run `node .qa/gen-state.mjs` and read `.qa/STATE.md` |
+
+### Start here next session
+
+1. `node .qa/gen-state.mjs` → prints the ready set and rewrites `STATE.md`.
+2. Pick from the ready set. **W2 is the critical path** — the dashboard cannot be verified without
+   it. Next in sequence: **061** (pure ISO-week / trailing-7-day / practice-streak helpers), then
+   **062** (the endpoint skeleton: service + controller + route + grant).
+3. Run the loop exactly as task 060 did — that run is the template:
+   BUILD subagent (task file verbatim + contract + design slice + rule files, no git writes, never
+   restarts a server) → **INDEPENDENT VERIFY** subagent that never built it → mark DONE with the
+   verifier's evidence → commit → re-derive readiness.
+
+### Two corrections this session made to its own artifacts
+
+- **`.qa/CONTRACTS.md` v1 of `C-DASH-HOUSEHOLD` is a footgun** if read top-down. It now carries a
+  `SUPERSEDED IN PART BY AMENDMENT A1` banner. **A1 wins.** 23 task files were rippled to A1
+  (commit `d3bad8c`); no status changed.
+- **`D-VERIFY-2` — the regression gate is the PASSED COUNT, never the failing spec's name.** Three
+  full-suite runs produced three different failure sets, all passing in isolation. Gate on
+  157 (+1 per new test) and re-run any failure in isolation before calling it a regression.
+
+### Findings task 060 surfaced for later waves
+
+1. **Task 062 must keep its query parent-scoped.** `students.given_name` is nullable in Postgres
+   and 30 rows are NULL, though 0 of 337 parent-linked students are. A non-parent-scoped query
+   would throw on the Zod parse.
+2. **`src/modules/children/lib/child-skills.ts:30` hand-declares a duplicate `CEFR_LADDER`** —
+   a single-source-of-truth violation predating this mission. W3/W5 must collapse it onto the
+   exported constant.
+3. **The suite's flakiness and the W9 SMS bug may be the same defect class** — shared mutable seed
+   state across parallel workers. W9/W11 should consider per-worker isolation of the seeded parent
+   rather than only patching one spec.
+
+### Honest statement of scale
+
+286 tasks at build + independent verify each is a multi-session run. One task consumed ~340k
+subagent tokens end to end. Nothing has been faked to make progress look faster: 19 tasks are
+BLOCKED on purpose because the data or the product docs forbid them, and that number should be
+expected to hold rather than shrink.
