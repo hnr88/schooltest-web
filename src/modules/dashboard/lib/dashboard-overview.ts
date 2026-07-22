@@ -6,12 +6,6 @@ export function hasEntryPlan(student: StudentListRow): boolean {
   return Boolean(student.target_entry_year && student.target_entry_term);
 }
 
-export function getStudentInitials(student: StudentListRow): string {
-  const initials = `${student.given_name.trim().charAt(0)}${student.family_name.trim().charAt(0)}`;
-
-  return initials.toUpperCase() || '?';
-}
-
 export function getDashboardEntryPlan(student: StudentListRow): string | null {
   if (!student.target_entry_year) return null;
 

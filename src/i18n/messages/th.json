@@ -883,6 +883,7 @@
       "givenNamePlaceholder": "เช่น Mia",
       "familyName": "นามสกุล",
       "familyNamePlaceholder": "เช่น Chen",
+      "familyNameHelper": "ไม่บังคับ — นักเรียนหลายคนใช้ชื่อเดียว",
       "email": "อีเมล",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "วันเกิด",
@@ -983,7 +984,6 @@
   "StudentWizardSchema": {
     "givenNameRequired": "กรุณากรอกชื่อ",
     "givenNameTooLong": "ชื่อยาวเกินไป",
-    "familyNameRequired": "กรุณากรอกนามสกุล",
     "familyNameTooLong": "นามสกุลยาวเกินไป",
     "emailInvalid": "กรุณากรอกอีเมลที่ถูกต้อง",
     "dobInvalid": "กรุณากรอกวันเกิดที่ถูกต้อง",

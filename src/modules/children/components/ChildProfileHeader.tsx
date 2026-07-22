@@ -3,6 +3,7 @@
 import { ArrowLeft, CalendarDays, GraduationCap, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { getStudentInitials } from '@/lib/student-name';
 import { cn } from '@/lib/utils';
 import { Badge, Button, Eyebrow, PresenceAvatar } from '@/modules/design-system';
 import {
@@ -10,7 +11,7 @@ import {
   getChildProfileTarget,
   getChildProfileYear,
 } from '@/modules/children/lib/child-profile-display';
-import { getInitials, getStatusMeta } from '@/modules/children/lib/student-display';
+import { getStatusMeta } from '@/modules/children/lib/student-display';
 import type { ChildProgressStudent } from '@/modules/children/types/children.types';
 
 interface ChildProfileHeaderProps {
@@ -33,10 +34,7 @@ export function ChildProfileHeader({ student }: ChildProfileHeaderProps) {
       </Button>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex min-w-0 items-center gap-4">
-          <PresenceAvatar
-            initials={getInitials(student.given_name ?? '', student.family_name ?? '')}
-            size="xl"
-          />
+          <PresenceAvatar initials={getStudentInitials(student)} size="xl" />
           <div className="min-w-0">
             <Eyebrow tone="teal" className="text-teal-300">
               {t('learningDashboardEyebrow')}

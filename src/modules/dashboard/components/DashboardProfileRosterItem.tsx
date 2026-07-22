@@ -4,11 +4,11 @@ import { ArrowUpRight, CalendarDays, GraduationCap } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
+import { getStudentDisplayName, getStudentInitials } from '@/lib/student-name';
 import { Badge, PresenceAvatar } from '@/modules/design-system';
 import {
   getDashboardEntryPlan,
   getDashboardYearLevel,
-  getStudentInitials,
   hasEntryPlan,
 } from '@/modules/dashboard/lib/dashboard-overview';
 import type { StudentListRow } from '@/modules/dashboard/types/student.types';
@@ -17,7 +17,7 @@ function DashboardProfileRosterItem({ student }: { student: StudentListRow }) {
   const format = useFormatter();
   const t = useTranslations('Dashboard');
   const tChildren = useTranslations('Children');
-  const name = `${student.given_name} ${student.family_name}`;
+  const name = getStudentDisplayName(student, tChildren('unknownStudent'));
   const entryPlan = getDashboardEntryPlan(student);
   const yearLevel = getDashboardYearLevel(student);
   const entryPlanReady = hasEntryPlan(student);

@@ -15,8 +15,10 @@ const studentMediaSchema = z.object({
 // so it is deliberately absent from this schema (the edit wizard renders it empty).
 export const studentDetailSchema = z.object({
   documentId: z.string(),
+  // M-CT-STUDENT-NAME — CT-1: given_name required, family_name optional/nullable
+  // (spec E2.1 paste-a-list produces single-token names; mononyms are ordinary).
   given_name: z.string(),
-  family_name: z.string(),
+  family_name: z.string().nullable(),
   year_level: z.number().nullable(),
   email: z.string().nullable(),
   date_of_birth: z.string().nullable(),

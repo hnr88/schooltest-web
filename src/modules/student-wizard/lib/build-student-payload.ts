@@ -16,7 +16,6 @@ function text(value: string | undefined): string | undefined {
 export function buildStudentPayload(values: StudentWizardOutput): StudentCreatePayload {
   const payload: StudentCreatePayload = {
     given_name: values.given_name.trim(),
-    family_name: values.family_name.trim(),
     nationality: values.nationality.trim(),
     target_entry_year: values.target_entry_year.trim(),
     target_entry_term: values.target_entry_term,
@@ -26,6 +25,11 @@ export function buildStudentPayload(values: StudentWizardOutput): StudentCreateP
     photo: values.photo ?? null,
     voice_intro: values.voice_intro ?? null,
   };
+
+  // M-CT-STUDENT-NAME: family_name is optional server-side — a mononym submits
+  // WITHOUT the key rather than with an empty string.
+  const familyName = text(values.family_name);
+  if (familyName) payload.family_name = familyName;
 
   const email = text(values.email);
   if (email) payload.email = email;

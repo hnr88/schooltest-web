@@ -4,11 +4,11 @@ import { ArrowUpRight, CalendarDays, GraduationCap, MapPin } from 'lucide-react'
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
+import { getStudentDisplayName, getStudentInitials } from '@/lib/student-name';
 import { cn } from '@/lib/utils';
 import { Badge, Card, CardContent, CardFooter, PresenceAvatar } from '@/modules/design-system';
 import { ChildrenRowActions } from '@/modules/children/components/ChildrenRowActions';
 import {
-  getInitials,
   getStatusMeta,
   getTargetEntry,
   getYearLevelLabel,
@@ -21,7 +21,7 @@ interface ChildCardProps {
 
 export function ChildCard({ student }: ChildCardProps) {
   const t = useTranslations('Children');
-  const name = `${student.given_name} ${student.family_name}`;
+  const name = getStudentDisplayName(student, t('unknownStudent'));
   const status = getStatusMeta(student.status);
   const yearLevel = getYearLevelLabel(student) ?? t('notAvailable');
   const targetEntry = getTargetEntry(student) ?? t('notAvailable');
@@ -32,10 +32,7 @@ export function ChildCard({ student }: ChildCardProps) {
         <CardContent className="flex flex-1 flex-col gap-5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3">
-              <PresenceAvatar
-                initials={getInitials(student.given_name, student.family_name)}
-                size="lg"
-              />
+              <PresenceAvatar initials={getStudentInitials(student)} size="lg" />
               <div className="min-w-0">
                 <h2 className="truncate text-lg font-bold text-foreground">{name}</h2>
                 <p className="truncate text-sm text-muted-foreground">

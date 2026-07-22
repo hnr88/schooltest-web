@@ -51,12 +51,10 @@ export function createStudentWizardSchema(t: WizardSchemaTranslator) {
 
   return z.object({
     // Step 1 — Personal
+    // M-CT-STUDENT-NAME — mirrors the server whitelist: given_name required,
+    // family_name OPTIONAL (mononyms must be enrollable; spec E2.1 roster).
     given_name: z.string().trim().min(1, t('givenNameRequired')).max(100, t('givenNameTooLong')),
-    family_name: z
-      .string()
-      .trim()
-      .min(1, t('familyNameRequired'))
-      .max(100, t('familyNameTooLong')),
+    family_name: z.string().trim().max(100, t('familyNameTooLong')).optional(),
     email: optionalEmail,
     date_of_birth: z
       .string()

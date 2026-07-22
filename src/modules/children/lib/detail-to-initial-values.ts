@@ -8,7 +8,7 @@ import type { StudentDetail } from '@/modules/children/types/children.types';
 export function detailToInitialValues(detail: StudentDetail): Partial<StudentWizardValues> {
   return {
     given_name: detail.given_name,
-    family_name: detail.family_name,
+    family_name: detail.family_name ?? '',
     email: detail.email ?? '',
     date_of_birth: detail.date_of_birth ?? '',
     gender: (detail.gender ?? undefined) as StudentWizardValues['gender'],

@@ -26,12 +26,6 @@ export function getStatusMeta(status: string | null | undefined): StatusMeta {
   return (status && STATUS_META[status]) || FALLBACK_STATUS;
 }
 
-// 34px avatar initials (given + family first letters).
-export function getInitials(givenName: string, familyName: string): string {
-  const initials = `${givenName.trim().charAt(0)}${familyName.trim().charAt(0)}`.toUpperCase();
-  return initials || '?';
-}
-
 // Year-level column: current_year_level string, fallback to the int year_level,
 // else null (rendered as "—" by the row).
 export function getYearLevelLabel(student: StudentListRow): string | null {

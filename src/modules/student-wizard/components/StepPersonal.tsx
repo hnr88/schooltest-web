@@ -42,6 +42,7 @@ export function StepPersonal() {
           label={t('familyName')}
           autoComplete="family-name"
           placeholder={t('familyNamePlaceholder')}
+          helper={t('familyNameHelper')}
           error={errors.family_name?.message}
           registration={register('family_name')}
         />

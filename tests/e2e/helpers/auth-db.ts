@@ -15,8 +15,8 @@ const API_ENV_PATH = path.resolve(process.cwd(), '..', 'schooltest-api', '.env')
 
 let cachedEnv: Record<string, string> | null = null;
 
-/** Read one DATABASE_* value from schooltest-api/.env; throws when missing. */
-function apiEnv(key: string): string {
+/** Read one value from schooltest-api/.env (DATABASE_*, SEED_*); throws when missing. */
+export function apiEnv(key: string): string {
   if (!cachedEnv) {
     cachedEnv = {};
     for (const line of readFileSync(API_ENV_PATH, 'utf8').split('\n')) {

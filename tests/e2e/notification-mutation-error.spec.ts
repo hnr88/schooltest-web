@@ -1,6 +1,7 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { deleteStudents } from './helpers/student-cleanup';
 
 const en = loadMessages('en');
 const API_BASE_URL = 'http://localhost:5500';
@@ -18,7 +19,12 @@ async function getParentToken(request: APIRequestContext): Promise<string> {
   return (await response.json() as LoginResponse).jwt;
 }
 
-async function createUnreadNotification(request: APIRequestContext, token: string): Promise<void> {
+// Returns the created documentId so the test can delete it again in a `finally`
+// — this child hangs off the SEEDED parent, whose roster other specs assert on.
+async function createUnreadNotification(
+  request: APIRequestContext,
+  token: string,
+): Promise<string> {
   const suffix = Date.now().toString();
   const response = await request.post(`${API_BASE_URL}/api/students`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -38,6 +44,8 @@ async function createUnreadNotification(request: APIRequestContext, token: strin
     },
   });
   expect(response.ok(), await response.text()).toBeTruthy();
+  const body = (await response.json()) as { data: { documentId: string } };
+  return body.data.documentId;
 }
 
 async function loadFeed(page: Page, token: string): Promise<void> {
@@ -50,19 +58,25 @@ test('notification mutations show a localized error when the real API refuses th
   request,
 }) => {
   const token = await getParentToken(request);
-  await createUnreadNotification(request, token);
-  await loadFeed(page, token);
+  const studentDocumentId = await createUnreadNotification(request, token);
+  try {
+    await loadFeed(page, token);
 
-  const markAll = page.getByRole('button', { name: cat(en, 'Notifications.markAllRead') });
-  await expect(markAll).toBeEnabled();
-  await page.evaluate(() => window.localStorage.setItem('app.auth.token', 'invalid-notification-token'));
-  const failedRequest = page.waitForResponse(
-    (response) =>
-      response.request().method() === 'POST' &&
-      response.url().endsWith('/api/notifications/read-all') &&
-      !response.ok(),
-  );
-  await markAll.click();
-  expect((await failedRequest).status()).toBeGreaterThanOrEqual(400);
-  await expect(page.getByText(cat(en, 'Notifications.actionError'))).toBeVisible();
+    const markAll = page.getByRole('button', { name: cat(en, 'Notifications.markAllRead') });
+    await expect(markAll).toBeEnabled();
+    await page.evaluate(() =>
+      window.localStorage.setItem('app.auth.token', 'invalid-notification-token'),
+    );
+    const failedRequest = page.waitForResponse(
+      (response) =>
+        response.request().method() === 'POST' &&
+        response.url().endsWith('/api/notifications/read-all') &&
+        !response.ok(),
+    );
+    await markAll.click();
+    expect((await failedRequest).status()).toBeGreaterThanOrEqual(400);
+    await expect(page.getByText(cat(en, 'Notifications.actionError'))).toBeVisible();
+  } finally {
+    await deleteStudents(request, [studentDocumentId]);
+  }
 });

@@ -883,6 +883,7 @@
       "givenNamePlaceholder": "cth. Mia",
       "familyName": "Nama keluarga",
       "familyNamePlaceholder": "cth. Chen",
+      "familyNameHelper": "Pilihan — ramai pelajar hanya menggunakan satu nama.",
       "email": "E-mel",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "Tarikh lahir",
@@ -983,7 +984,6 @@
   "StudentWizardSchema": {
     "givenNameRequired": "Nama pertama diperlukan",
     "givenNameTooLong": "Nama pertama terlalu panjang",
-    "familyNameRequired": "Nama keluarga diperlukan",
     "familyNameTooLong": "Nama keluarga terlalu panjang",
     "emailInvalid": "Masukkan alamat e-mel yang sah",
     "dobInvalid": "Masukkan tarikh lahir yang sah",

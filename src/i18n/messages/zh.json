@@ -883,6 +883,7 @@
       "givenNamePlaceholder": "例如 Mia",
       "familyName": "姓氏",
       "familyNamePlaceholder": "例如 Chen",
+      "familyNameHelper": "可选 —— 许多学生只有一个名字。",
       "email": "电子邮箱",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "出生日期",
@@ -983,7 +984,6 @@
   "StudentWizardSchema": {
     "givenNameRequired": "请填写名字",
     "givenNameTooLong": "名字过长",
-    "familyNameRequired": "请填写姓氏",
     "familyNameTooLong": "姓氏过长",
     "emailInvalid": "请输入有效的电子邮箱",
     "dobInvalid": "请输入有效的出生日期",

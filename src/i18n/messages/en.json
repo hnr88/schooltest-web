@@ -883,6 +883,7 @@
       "givenNamePlaceholder": "e.g. Mia",
       "familyName": "Family name",
       "familyNamePlaceholder": "e.g. Chen",
+      "familyNameHelper": "Optional — many students go by one name only.",
       "email": "Email",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "Date of birth",
@@ -983,7 +984,6 @@
   "StudentWizardSchema": {
     "givenNameRequired": "First name is required",
     "givenNameTooLong": "First name is too long",
-    "familyNameRequired": "Last name is required",
     "familyNameTooLong": "Last name is too long",
     "emailInvalid": "Enter a valid email address",
     "dobInvalid": "Enter a valid date of birth",

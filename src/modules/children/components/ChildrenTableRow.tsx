@@ -2,11 +2,11 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 
+import { getStudentDisplayName, getStudentInitials } from '@/lib/student-name';
 import { cn } from '@/lib/utils';
 import { Badge, PresenceAvatar, TableCell, TableRow } from '@/modules/design-system';
 import { ChildrenRowActions } from '@/modules/children/components/ChildrenRowActions';
 import {
-  getInitials,
   getStatusMeta,
   getTargetEntry,
   getYearLevelLabel,
@@ -22,6 +22,7 @@ interface ChildrenTableRowProps {
 export function ChildrenTableRow({ student }: ChildrenTableRowProps) {
   const t = useTranslations('Children');
   const format = useFormatter();
+  const name = getStudentDisplayName(student, t('unknownStudent'));
   const status = getStatusMeta(student.status);
   const yearLevel = getYearLevelLabel(student);
   const targetEntry = getTargetEntry(student);
@@ -30,10 +31,8 @@ export function ChildrenTableRow({ student }: ChildrenTableRowProps) {
     <TableRow className="transition-colors duration-150 ease-out hover:bg-muted/60 motion-reduce:transition-none">
       <TableCell>
         <div className="flex items-center gap-2.5">
-          <PresenceAvatar initials={getInitials(student.given_name, student.family_name)} />
-          <span className="font-semibold text-foreground">
-            {student.given_name} {student.family_name}
-          </span>
+          <PresenceAvatar initials={getStudentInitials(student)} />
+          <span className="font-semibold text-foreground">{name}</span>
         </div>
       </TableCell>
       <TableCell className={student.nationality ? undefined : 'text-muted-foreground'}>

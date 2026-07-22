@@ -2,6 +2,7 @@ import { expect, type Locator, type Page, test } from '@playwright/test';
 
 import { loginAsParent } from './helpers/auth';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { deleteStudents } from './helpers/student-cleanup';
 import { watchErrors } from './helpers/ui';
 
 const en = loadMessages('en');
@@ -47,47 +48,63 @@ async function chooseFirstOption(page: Page, label: string) {
 
 test('student wizard options remain readable and a selected student persists after reload', async ({
   page,
+  request,
 }) => {
   const errors = watchErrors(page);
   const suffix = String(Date.now()).slice(-7);
   const familyName = `Contrast${suffix}`;
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await loginAsParent(page);
-  await page.goto('/dashboard/children/new');
+  // The wizard runs as the SEEDED parent, so the child it creates joins the roster
+  // dashboard/settings assert on — delete it again in the `finally` (test hygiene).
+  const created: string[] = [];
+  try {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await loginAsParent(page);
+    await page.goto('/dashboard/children/new');
 
-  const nationality = cat(en, 'StudentWizard.personal.nationality');
-  await chooseFirstOption(page, nationality);
-  await page.getByRole('combobox', { name: nationality }).click();
-  const selectedNationality = page.locator('[role="option"][data-selected]').first();
-  await expect(selectedNationality).toBeVisible();
-  await expectReadableOption(selectedNationality);
-  await page.keyboard.press('Escape');
+    const nationality = cat(en, 'StudentWizard.personal.nationality');
+    await chooseFirstOption(page, nationality);
+    await page.getByRole('combobox', { name: nationality }).click();
+    const selectedNationality = page.locator('[role="option"][data-selected]').first();
+    await expect(selectedNationality).toBeVisible();
+    await expectReadableOption(selectedNationality);
+    await page.keyboard.press('Escape');
 
-  await page.getByLabel(cat(en, 'StudentWizard.personal.givenName')).fill('Contrast');
-  await page.getByLabel(cat(en, 'StudentWizard.personal.familyName')).fill(familyName);
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
+    await page.getByLabel(cat(en, 'StudentWizard.personal.givenName')).fill('Contrast');
+    await page.getByLabel(cat(en, 'StudentWizard.personal.familyName')).fill(familyName);
+    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
 
-  await chooseFirstOption(page, cat(en, 'StudentWizard.education.targetEntryYear'));
-  await page
-    .getByRole('group', { name: cat(en, 'StudentWizard.education.targetEntryTerm') })
-    .getByText(icu(cat(en, 'StudentWizard.education.term'), { n: '1' }), { exact: true })
-    .click();
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
-  await page.getByLabel(cat(en, 'StudentWizard.guardian.name')).fill('Contrast Guardian');
-  await page.getByLabel(cat(en, 'StudentWizard.guardian.phone')).fill('+61400000000');
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
+    await chooseFirstOption(page, cat(en, 'StudentWizard.education.targetEntryYear'));
+    await page
+      .getByRole('group', { name: cat(en, 'StudentWizard.education.targetEntryTerm') })
+      .getByText(icu(cat(en, 'StudentWizard.education.term'), { n: '1' }), { exact: true })
+      .click();
+    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
+    await page.getByLabel(cat(en, 'StudentWizard.guardian.name')).fill('Contrast Guardian');
+    await page.getByLabel(cat(en, 'StudentWizard.guardian.phone')).fill('+61400000000');
+    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
+    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
 
-  const created = page.waitForResponse(
-    (response) =>
-      response.url().includes('/api/students') && response.request().method() === 'POST',
-  );
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.createStudent') }).click();
-  expect((await created).status()).toBe(200);
-  await expect(page).toHaveURL(/\/dashboard\/children$/);
-  await expect(page.getByRole('row', { name: new RegExp(`Contrast ${familyName}`) })).toBeVisible();
-  await page.reload();
-  await expect(page.getByRole('row', { name: new RegExp(`Contrast ${familyName}`) })).toBeVisible();
+    const createResponse = page.waitForResponse(
+      (response) =>
+        response.url().includes('/api/students') && response.request().method() === 'POST',
+    );
+    await page.getByRole('button', { name: cat(en, 'StudentWizard.createStudent') }).click();
+    const createdStudent = await createResponse;
+    expect(createdStudent.status()).toBe(200);
+    created.push(
+      ((await createdStudent.json()) as { data: { documentId: string } }).data.documentId,
+    );
+    await expect(page).toHaveURL(/\/dashboard\/children$/);
+    await expect(
+      page.getByRole('row', { name: new RegExp(`Contrast ${familyName}`) }),
+    ).toBeVisible();
+    await page.reload();
+    await expect(
+      page.getByRole('row', { name: new RegExp(`Contrast ${familyName}`) }),
+    ).toBeVisible();
 
-  expect(errors, errors.join('\n')).toEqual([]);
+    expect(errors, errors.join('\n')).toEqual([]);
+  } finally {
+    await deleteStudents(request, created);
+  }
 });

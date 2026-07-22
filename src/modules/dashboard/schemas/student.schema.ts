@@ -3,10 +3,16 @@ import { z } from 'zod';
 // C-STUDENT-LIST base shape (CONTRACTS.md): the frozen 7-field row shared by the
 // search endpoint. Parsed at the query boundary — a malformed/tampered response
 // fails here instead of reaching the UI as bad data.
+//
+// M-CT-STUDENT-NAME: `given_name` is non-nullable because CT-1 declares it
+// `required: true`; `family_name` IS nullable because CT-1 declares it optional —
+// spec E2.1's paste-a-list roster (one NAME per line) produces single-token names
+// by design and mononyms are ordinary. Rendering goes through
+// `@/lib/student-name` so a null family name never reaches the DOM.
 export const studentSchema = z.object({
   documentId: z.string(),
   given_name: z.string(),
-  family_name: z.string(),
+  family_name: z.string().nullable(),
   year_level: z.number().nullable(),
   email: z.string().nullable(),
   createdAt: z.string(),

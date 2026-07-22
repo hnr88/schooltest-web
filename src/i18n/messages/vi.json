@@ -883,6 +883,7 @@
       "givenNamePlaceholder": "ví dụ: Mia",
       "familyName": "Họ",
       "familyNamePlaceholder": "ví dụ: Chen",
+      "familyNameHelper": "Tùy chọn — nhiều học sinh chỉ dùng một tên.",
       "email": "Email",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "Ngày sinh",
@@ -983,7 +984,6 @@
   "StudentWizardSchema": {
     "givenNameRequired": "Vui lòng nhập tên",
     "givenNameTooLong": "Tên quá dài",
-    "familyNameRequired": "Vui lòng nhập họ",
     "familyNameTooLong": "Họ quá dài",
     "emailInvalid": "Nhập địa chỉ email hợp lệ",
     "dobInvalid": "Nhập ngày sinh hợp lệ",

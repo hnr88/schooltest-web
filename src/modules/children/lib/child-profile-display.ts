@@ -1,3 +1,4 @@
+import { getStudentDisplayName } from '@/lib/student-name';
 import type {
   ChildProgressResult,
   ChildProgressStudent,
@@ -11,7 +12,7 @@ const RESULT_BADGE_VARIANTS: Record<ChildProgressResult['status'], ResultBadgeVa
 };
 
 export function getChildProfileName(student: ChildProgressStudent, fallback: string): string {
-  return [student.given_name, student.family_name].filter(Boolean).join(' ').trim() || fallback;
+  return getStudentDisplayName(student, fallback);
 }
 
 export function getChildProfileYear(student: ChildProgressStudent, fallback: string): string {

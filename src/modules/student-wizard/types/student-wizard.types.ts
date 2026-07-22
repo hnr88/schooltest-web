@@ -50,7 +50,6 @@ export interface WizardScreenProps {
 // numeric file id or explicit null.
 export interface StudentCreatePayload {
   given_name: string;
-  family_name: string;
   nationality: string;
   target_entry_year: string;
   target_entry_term: Term;
@@ -59,6 +58,7 @@ export interface StudentCreatePayload {
   preferred_contact_channel: ContactChannel;
   photo: number | null;
   voice_intro: number | null;
+  family_name?: string;
   email?: string;
   date_of_birth?: string;
   gender?: Gender;

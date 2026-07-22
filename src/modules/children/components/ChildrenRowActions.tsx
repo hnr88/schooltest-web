@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { useRouter } from '@/i18n/navigation';
+import { getStudentDisplayName } from '@/lib/student-name';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,7 +35,7 @@ export function ChildrenRowActions({ student }: ChildrenRowActionsProps) {
   const unarchive = useUnarchiveStudentMutation();
 
   const isArchived = student.status === 'archived';
-  const name = `${student.given_name} ${student.family_name}`;
+  const name = getStudentDisplayName(student, t('unknownStudent'));
 
   const handleArchive = async () => {
     try {

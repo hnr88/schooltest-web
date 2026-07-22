@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { getStudentDisplayName } from '@/lib/student-name';
 import { cn } from '@/lib/utils';
 import type { Student } from '@/modules/dashboard/types/student.types';
 
@@ -27,6 +28,7 @@ export function DashboardSearchResults({
 }: DashboardSearchResultsProps) {
   const t = useTranslations('Dashboard');
   const tCommon = useTranslations('Common');
+  const tChildren = useTranslations('Children');
 
   return (
     <div
@@ -66,9 +68,7 @@ export function DashboardSearchResults({
                   index === activeIndex && 'bg-muted',
                 )}
               >
-                <span>
-                  {student.given_name} {student.family_name}
-                </span>
+                <span>{getStudentDisplayName(student, tChildren('unknownStudent'))}</span>
                 <span className="text-xs font-normal text-muted-foreground">
                   {[
                     student.year_level ? t('yearLevelOption', { level: student.year_level }) : null,
