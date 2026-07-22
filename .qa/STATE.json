@@ -7081,5 +7081,24 @@
       "verdict": null,
       "evidence": null
     }
-  ]
+  ],
+  "redesign_landed": {
+    "commit": "01d398c",
+    "at": "2026-07-23",
+    "modules": [
+      "shell",
+      "dashboard",
+      "children",
+      "student-wizard",
+      "school-search",
+      "agent-search",
+      "search-shared",
+      "notifications",
+      "settings",
+      "auth",
+      "landing"
+    ],
+    "gates": "tsc 0, lint 0, i18n 1248x6, e2e 175 passed / 1 isolation-flake / 2 skipped",
+    "note": "Screens re-skinned to dashbaord-design against existing query hooks; the 3 metric endpoints remain contract-only (not yet wired)."
+  }
 }
