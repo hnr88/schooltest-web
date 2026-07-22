@@ -96,11 +96,11 @@ test('student wizard options remain readable and a selected student persists aft
     );
     await expect(page).toHaveURL(/\/dashboard\/children$/);
     await expect(
-      page.getByRole('row', { name: new RegExp(`Contrast ${familyName}`) }),
+      page.getByRole('article', { name: new RegExp(`Contrast ${familyName}`) }),
     ).toBeVisible();
     await page.reload();
     await expect(
-      page.getByRole('row', { name: new RegExp(`Contrast ${familyName}`) }),
+      page.getByRole('article', { name: new RegExp(`Contrast ${familyName}`) }),
     ).toBeVisible();
 
     expect(errors, errors.join('\n')).toEqual([]);

@@ -17,7 +17,11 @@ function ProgressBar({ value, tone = 'solid', ariaLabel, className }: ProgressBa
     <Progress
       value={value}
       aria-label={ariaLabel}
-      className={cn('h-1.5', TONE_CLASSES[tone], className)}
+      className={cn(
+        'h-1.5 [&_[data-slot=progress-indicator]]:rounded-full [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-divider',
+        TONE_CLASSES[tone],
+        className,
+      )}
     />
   );
 }

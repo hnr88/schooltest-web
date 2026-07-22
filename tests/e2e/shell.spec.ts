@@ -52,14 +52,20 @@ async function readToken(page: Page): Promise<string | null> {
 test.describe('shell — desktop (1280)', () => {
   test.use({ viewport: DESKTOP });
 
-  test('sidebar: visible at 248px with the 4 catalog-labelled links, soft active overview', async ({
+  test('sidebar: visible at 248px with the 4 catalog-labelled links, solid active overview', async ({
     page,
   }) => {
     await loginAsParent(page);
     const aside = sidebar(page);
     await expect(aside).toBeVisible();
     await expect(aside).toHaveCSS('width', '248px');
-    const sidebarRgb = await aside.evaluate((element) => {
+    // The canonical parent rail is WHITE (tokens.css light --sidebar: #FFFFFF);
+    // the navy rail belongs to the school/admin persona and had been pasted into
+    // :root. This used to read backgroundColor off [data-slot="sidebar"], which is
+    // the unpainted positioning wrapper — it is always rgba(0,0,0,0), so the old
+    // "must be dark" assertion passed vacuously and never saw the drift. Read the
+    // element that actually paints the surface, and require the canonical white.
+    const railRgb = await page.locator('[data-slot="sidebar-inner"]').evaluate((element) => {
       const canvas = document.createElement('canvas');
       canvas.width = 1;
       canvas.height = 1;
@@ -69,7 +75,7 @@ test.describe('shell — desktop (1280)', () => {
       context.fillRect(0, 0, 1, 1);
       return [...context.getImageData(0, 0, 1, 1).data.slice(0, 3)];
     });
-    expect(Math.max(...sidebarRgb)).toBeLessThan(100);
+    expect(Math.min(...railRgb)).toBeGreaterThan(250);
 
     const links = aside.locator('nav a');
     await expect(links).toHaveCount(NAV_MODEL.length);
@@ -78,18 +84,60 @@ test.describe('shell — desktop (1280)', () => {
       await expect(links.nth(index)).toHaveAttribute('href', item.href);
     }
 
-    // C6 soft active: on /dashboard only the exact-match overview item is
-    // active — data-active set, carrying the accent bg class and actually
+    // C6 SOLID active: on /dashboard only the exact-match overview item is
+    // active — data-active set, carrying the primary bg class and actually
     // painting a bg the idle items (transparent) don't.
+    //
+    // This assertion used to require `data-active:bg-sidebar-accent` (the App
+    // Screens soft #EFF5FF pill). .qa/CONTRAST-SPEC.md → sidebarSpec §5 replaces it
+    // with the Design System's own Navigation active state (ds-Navigation.html,
+    // `color:#FFFFFF;background:#2563EB;font-weight:600`, same 10px radius and
+    // 10/12 padding) because the soft pill measured 1.10:1 against the white rail —
+    // the shell's single most important state carried by a 9% luminance step. Same
+    // specificity as before (class + computed bg), strengthened: the class name is
+    // still pinned, and the pair is now measured rather than merely "not equal", so
+    // this leg fails if a future change quietly walks the active state back under AA.
     const overview = navLink(page, cat(en, 'Shell.nav.overview'));
     const idle = navLink(page, cat(en, 'Shell.nav.myChildren'));
     await expect(overview).toHaveAttribute('data-active', /.*/);
-    await expect(overview).toHaveClass(/data-active:bg-sidebar-accent/);
+    await expect(overview).toHaveClass(/data-active:bg-sidebar-primary/);
+    await expect(overview).toHaveClass(/data-active:text-sidebar-primary-foreground/);
     await expect(idle).not.toHaveAttribute('data-active', /.*/);
+    await expect(overview).toHaveCSS('font-weight', '600');
     const activeBg = await overview.evaluate((el) => getComputedStyle(el).backgroundColor);
     const idleBg = await idle.evaluate((el) => getComputedStyle(el).backgroundColor);
     expect(idleBg).toBe('rgba(0, 0, 0, 0)');
     expect(activeBg).not.toBe(idleBg);
+    // geometry must NOT move with the colour — canonical keeps 10px radius, 10/12 pad
+    await expect(overview).toHaveCSS('border-radius', '10px');
+    await expect(overview).toHaveCSS('padding', '10px 12px');
+    // label + icon on the active slab must clear AA (WCAG 2.1 SC 1.4.3, 4.5:1)
+    const activeRatio = await overview.evaluate((el) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1;
+      canvas.height = 1;
+      const context = canvas.getContext('2d');
+      if (!context) throw new Error('2d canvas context unavailable');
+      const rgb = (value: string) => {
+        context.fillStyle = '#000';
+        context.fillStyle = value;
+        context.globalCompositeOperation = 'copy';
+        context.fillRect(0, 0, 1, 1);
+        context.globalCompositeOperation = 'source-over';
+        return [...context.getImageData(0, 0, 1, 1).data].slice(0, 3);
+      };
+      const channel = (c: number) => {
+        const x = c / 255;
+        return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+      };
+      const luminance = ([r, g, b]: number[]) =>
+        0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+      const style = getComputedStyle(el);
+      const a = luminance(rgb(style.color));
+      const b = luminance(rgb(style.backgroundColor));
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    });
+    expect(activeRatio).toBeGreaterThanOrEqual(4.5);
 
     // D-UI-2 motion baseline: nav recolors transition (~200ms), never snap.
     const motion = await overview.evaluate((el) => {

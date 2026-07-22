@@ -31,7 +31,7 @@ function SearchPagination({
       aria-label={t('paginationLabel')}
       className="flex items-center justify-between gap-4 px-5 py-3.5"
     >
-      <p className="text-caption text-muted-foreground">{t('showing', { from, to, total })}</p>
+      <p className="text-caption text-body">{t('showing', { from, to, total })}</p>
       <div className="flex items-center gap-1.5">
         <button
           type="button"

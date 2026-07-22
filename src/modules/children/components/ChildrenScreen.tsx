@@ -2,22 +2,23 @@
 
 import { useTranslations } from 'next-intl';
 
-import { Alert, Button, Skeleton } from '@/modules/design-system';
+import { Alert, Button } from '@/modules/design-system';
 import { ChildrenEmptyState } from '@/modules/children/components/ChildrenEmptyState';
-import { ChildrenGrid } from '@/modules/children/components/ChildrenGrid';
+import { ChildrenRoster } from '@/modules/children/components/ChildrenRoster';
+import { ChildrenRosterSkeleton } from '@/modules/children/components/ChildrenRosterSkeleton';
 import { ChildrenRosterSummary } from '@/modules/children/components/ChildrenRosterSummary';
 import { ChildrenToolbar } from '@/modules/children/components/ChildrenToolbar';
 import { useChildrenList } from '@/modules/children/hooks/use-children-list';
+import { useRosterPagination } from '@/modules/children/hooks/use-roster-pagination';
 
-// C-UI-MYCHILDREN — parent-owned child cards with the existing search, archive,
-// and edit actions retained. Every card links to C-PARENT-CHILD-PROGRESS detail.
+// C-UI-MYCHILDREN — the roster panel screen. Canonical list rhythm: 24/32 page
+// padding and a 16px section gap, tighter than the dashboard's 28/32 and 24.
 export function ChildrenScreen() {
   const t = useTranslations('Children');
   const tCommon = useTranslations('Common');
   const {
     rows,
     totalCount,
-    visibleCount,
     allProfileCount,
     activeCount,
     archivedCount,
@@ -29,11 +30,12 @@ export function ChildrenScreen() {
     isFetching,
     refetch,
   } = useChildrenList();
+  const pagination = useRosterPagination(rows);
 
   return (
     <main
       data-surface="children-roster"
-      className="flex flex-1 animate-in flex-col gap-6 px-8 py-7 duration-300 ease-out slide-in-from-bottom-2 motion-reduce:animate-none"
+      className="flex flex-1 animate-in flex-col gap-4 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8"
     >
       <ChildrenRosterSummary
         activeCount={activeCount}
@@ -42,11 +44,7 @@ export function ChildrenScreen() {
       />
 
       {isLoading ? (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3" aria-hidden="true">
-          <Skeleton className="h-64 w-full" />
-          <Skeleton className="h-64 w-full" />
-          <Skeleton className="h-64 w-full" />
-        </div>
+        <ChildrenRosterSkeleton />
       ) : isError ? (
         <Alert
           variant="error"
@@ -71,12 +69,13 @@ export function ChildrenScreen() {
       ) : (
         <>
           <ChildrenToolbar
-            visibleCount={visibleCount}
+            from={pagination.from}
+            to={pagination.to}
             totalCount={totalCount}
             includeArchived={includeArchived}
             onIncludeArchivedChange={setIncludeArchived}
           />
-          <ChildrenGrid rows={rows} />
+          <ChildrenRoster pagination={pagination} />
         </>
       )}
     </main>

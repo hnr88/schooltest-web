@@ -15,17 +15,6 @@ export function getChildProfileName(student: ChildProgressStudent, fallback: str
   return getStudentDisplayName(student, fallback);
 }
 
-export function getChildProfileYear(student: ChildProgressStudent, fallback: string): string {
-  return student.current_year_level ?? student.year_level?.toString() ?? fallback;
-}
-
-export function getChildProfileTarget(student: ChildProgressStudent, fallback: string): string {
-  if (!student.target_entry_year) return fallback;
-  return student.target_entry_term
-    ? `${student.target_entry_year} · ${student.target_entry_term}`
-    : student.target_entry_year;
-}
-
 export function getChildResultTitle(result: ChildProgressResult, fallback: string): string {
   return result.displayLabel ?? fallback;
 }

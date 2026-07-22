@@ -68,7 +68,7 @@ function AgentResultsGrid({
 
   return (
     <div className="flex flex-col gap-4 duration-300 ease-out animate-in fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
-      <p aria-live="polite" className="text-caption text-muted-foreground">
+      <p aria-live="polite" className="text-caption text-body">
         {t('resultsCount', { count: total })}
       </p>
       <div

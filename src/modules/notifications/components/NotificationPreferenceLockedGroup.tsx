@@ -2,10 +2,15 @@
 
 import { useTranslations } from 'next-intl';
 
-import { NOTIFICATION_LOCKED_CATEGORIES } from '@/modules/notifications/constants/notification-preferences.constants';
+import {
+  NOTIFICATION_LOCKED_CATEGORIES,
+  NOTIFICATION_SECTION_LABEL_CLASS,
+} from '@/modules/notifications/constants/notification-preferences.constants';
 import { NotificationPreferenceToggle } from '@/modules/notifications/components/NotificationPreferenceToggle';
 import type { NotificationPreference } from '@/modules/notifications/types/notification-preference.types';
 
+// Always-on rows stay rendered, checked and disabled — they mirror server state
+// and never enter the form or the PUT payload.
 function NotificationPreferenceLockedGroup({
   preferences,
 }: {
@@ -14,11 +19,11 @@ function NotificationPreferenceLockedGroup({
   const t = useTranslations('Settings');
 
   return (
-    <fieldset className="flex flex-col gap-3">
-      <legend className="text-sm font-semibold text-foreground">
+    <fieldset className="flex flex-col gap-1.5">
+      <legend className={NOTIFICATION_SECTION_LABEL_CLASS}>
         {t('notificationPreferences.lockedTitle')}
       </legend>
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className="flex flex-col">
         {NOTIFICATION_LOCKED_CATEGORIES.map((item) => (
           <NotificationPreferenceToggle
             key={item.field}

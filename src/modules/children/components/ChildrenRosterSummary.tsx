@@ -1,10 +1,13 @@
 'use client';
 
-import { Archive, Plus, UsersRound } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 
-import { Button, Eyebrow } from '@/modules/design-system';
+import { Button } from '@/modules/design-system';
 
+// Canonical list page header — title, count pill, one-line roster readout and the
+// primary action. Flat on the page background: no navy hero, no stat cards; the
+// numbers live in the pill and the readout so the panel below stays the subject.
 function ChildrenRosterSummary({
   activeCount,
   archivedCount,
@@ -20,47 +23,28 @@ function ChildrenRosterSummary({
   return (
     <header
       data-slot="children-roster-summary"
-      className="flex flex-col gap-6 rounded-2xl bg-navy-950 p-6 text-white shadow-lg sm:p-8"
+      className="flex flex-wrap items-end justify-between gap-4"
     >
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-        <div className="max-w-2xl">
-          <Eyebrow tone="teal" className="text-teal-300">
-            {t('rosterEyebrow')}
-          </Eyebrow>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight">{t('heading')}</h1>
-          <p className="mt-2 text-sm leading-relaxed text-blue-100/80">{t('rosterDescription')}</p>
+      <div className="flex min-w-0 flex-col gap-1">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-page-title font-bold text-foreground">{t('heading')}</h1>
+          <span className="rounded-full bg-muted px-2.5 py-1 text-meta font-semibold text-secondary-foreground tabular-nums">
+            {format.number(totalCount)}
+          </span>
         </div>
-        <Button href="/dashboard/children/new" variant="white" size="lg" className="shrink-0">
-          <Plus aria-hidden="true" className="size-4" />
-          {t('addStudent')}
-        </Button>
+        {/* on the well, not on a card: #64748B is 4.23:1 there (axe-serious) —
+            the DS Body ink #475569 is 6.74:1. CONTRAST-SPEC, --color-body. */}
+        <p className="text-lede text-body">
+          {t('rosterCounts', {
+            active: format.number(activeCount),
+            archived: format.number(archivedCount),
+          })}
+        </p>
       </div>
-      <dl
-        aria-label={t('rosterSummaryLabel')}
-        className="grid gap-3 sm:grid-cols-3"
-      >
-        <div className="rounded-xl bg-white/10 p-4">
-          <dt className="flex items-center gap-2 text-sm text-blue-100/80">
-            <UsersRound aria-hidden="true" className="size-4 text-teal-300" />
-            {t('rosterActive')}
-          </dt>
-          <dd className="mt-2 text-2xl font-bold">{format.number(activeCount)}</dd>
-        </div>
-        <div className="rounded-xl bg-white/10 p-4">
-          <dt className="flex items-center gap-2 text-sm text-blue-100/80">
-            <Archive aria-hidden="true" className="size-4 text-teal-300" />
-            {t('rosterArchived')}
-          </dt>
-          <dd className="mt-2 text-2xl font-bold">{format.number(archivedCount)}</dd>
-        </div>
-        <div className="rounded-xl bg-white/10 p-4">
-          <dt className="flex items-center gap-2 text-sm text-blue-100/80">
-            <UsersRound aria-hidden="true" className="size-4 text-teal-300" />
-            {t('rosterTotal')}
-          </dt>
-          <dd className="mt-2 text-2xl font-bold">{format.number(totalCount)}</dd>
-        </div>
-      </dl>
+      <Button href="/dashboard/children/new" className="h-11 rounded-lg">
+        <Plus aria-hidden="true" className="size-4" />
+        {t('addStudent')}
+      </Button>
     </header>
   );
 }

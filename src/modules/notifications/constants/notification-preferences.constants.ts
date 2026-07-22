@@ -4,6 +4,13 @@ import type {
   NotificationPreferenceToggleConfig,
 } from '@/modules/notifications/types/notification-preference.types';
 
+// Canonical in-card section label (DS component sheets): 11.5px/700 uppercase,
+// .08em tracking. Drawn at slate-600, not the canonical slate-400: axe flags
+// #94A3B8 label text on white as a serious contrast failure. The margin is
+// explicit because a <legend> is not a flex item — the fieldset gap skips it.
+export const NOTIFICATION_SECTION_LABEL_CLASS =
+  'mb-2 text-overline font-bold tracking-rail text-slate-600 uppercase';
+
 export const NOTIFICATION_DIGEST_FREQUENCIES = ['immediate', 'daily', 'weekly', 'off'] as const;
 
 export const NOTIFICATION_DIGEST_SELECTABLE_FREQUENCIES = ['immediate', 'off'] as const;

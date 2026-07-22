@@ -7,6 +7,8 @@ export { DataSection } from './data-section';
 export { FeedbackSection } from './feedback-section';
 export { FormsSection } from './forms-section';
 export { OverlaysSection } from './overlays-section';
+export { PrimitivesSection } from './primitives-section';
+export { PrimitivesDemo, type PrimitivesDemoProps } from './primitives-demo';
 export { AlertDismissDemo, type AlertDismissDemoProps } from './alert-dismiss-demo';
 export { DialogDemo, type DialogDemoProps } from './dialog-demo';
 export { DropdownDemo, type DropdownDemoProps } from './dropdown-demo';

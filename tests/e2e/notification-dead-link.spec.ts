@@ -2,10 +2,11 @@ import path from 'node:path';
 
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { apiEnv } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { API_BASE_URL } from './helpers/mailpit';
 import { deleteStudents } from './helpers/student-cleanup';
-import { watchErrors } from './helpers/ui';
+import { waitForAnimationsSettled, watchErrors } from './helpers/ui';
 
 // A notification is a permanent record; its target is deletable. This spec builds
 // that state for real (create child → notification → delete child through the admin
@@ -13,6 +14,7 @@ import { watchErrors } from './helpers/ui';
 // not-found, while a genuine fault (5xx, transport, response-shape drift) is still
 // reported as an error and still logged.
 const en = loadMessages('en');
+const zh = loadMessages('zh');
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const PROGRESS_ROUTE = '**/api/my/students/*/progress';
@@ -132,6 +134,7 @@ test('en: a notification whose child was deleted lands on a calm not-found, neve
     ).toBeVisible();
     await expect(page.locator('[data-slot="alert"]')).toHaveCount(0);
     await expect(page.getByRole('button', { name: cat(en, 'QueryError.retry') })).toHaveCount(0);
+    await waitForAnimationsSettled(page);
     await page.screenshot({ path: path.join(SCREENSHOTS, 'child-dead-link-gone-en.png') });
 
     await page.goto(`/dashboard/children/${child.documentId}/edit`);
@@ -165,6 +168,16 @@ test('en: a malformed notification link degrades to the same calm not-found', as
     'gone',
   );
   await expect(page.getByRole('link', { name: cat(en, 'Children.backToList') })).toBeVisible();
+
+  await page.goto('/zh/dashboard/children/abc123');
+  await expect(page.locator('[data-slot="query-error-fallback"]')).toHaveAttribute(
+    'data-query-error',
+    'gone',
+  );
+  await expect(page.getByText(cat(zh, 'Children.profileGoneTitle'), { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(cat(zh, 'Children.profileGoneDescription'), { exact: true }),
+  ).toBeVisible();
 });
 
 const FAULTS = [
@@ -228,11 +241,40 @@ for (const fault of FAULTS) {
       errors.some((entry) => entry.includes(fault.log)),
       errors.join('\n'),
     ).toBeTruthy();
+    await waitForAnimationsSettled(page);
     await page.screenshot({
       path: path.join(SCREENSHOTS, `child-broken-${fault.cause}-en.png`),
     });
   });
 }
+
+// The API reserves 403 for the ROLE check ("wrong kind of account"); ownership
+// failures are 404 by design so the client can never tell "exists but not yours"
+// from "gone". The two must therefore never share a message.
+test('en: a non-parent account gets its own message, never "removed"', async ({
+  page,
+  request,
+}) => {
+  const token = await parentToken(request);
+  const documentId = await firstLiveChild(request, token);
+  const admin = await request.post(`${API_BASE_URL}/api/auth/local`, {
+    data: {
+      identifier: 'apiadmin@schooltest.local',
+      password: apiEnv('SEED_APIADMIN_PASSWORD'),
+    },
+  });
+  expect(admin.ok(), await admin.text()).toBeTruthy();
+  await signedInPage(page, ((await admin.json()) as { jwt: string }).jwt);
+  await page.goto(`/dashboard/children/${documentId}`);
+
+  const fallback = page.locator('[data-slot="query-error-fallback"]');
+  await expect(fallback).toHaveAttribute('data-query-error', 'forbidden');
+  await expect(page.getByText(cat(en, 'QueryError.forbiddenTitle'), { exact: true })).toBeVisible();
+  await expect(page.getByText(cat(en, 'Children.profileGoneTitle'))).toHaveCount(0);
+  await expect(page.getByText(cat(en, 'QueryError.goneTitle'))).toHaveCount(0);
+  await waitForAnimationsSettled(page);
+  await page.screenshot({ path: path.join(SCREENSHOTS, 'child-forbidden-en.png') });
+});
 
 test('en: every notification link shape in the feed reaches a usable page', async ({
   page,

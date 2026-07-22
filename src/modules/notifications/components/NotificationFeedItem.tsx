@@ -57,7 +57,7 @@ function NotificationFeedItem({
               {notification.linkUrl ? (
                 <Link
                   href={notification.linkUrl}
-                  className="inline-flex items-center gap-1 rounded-sm underline-offset-4 transition-colors duration-200 ease-out-expo hover:text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
+                  className="relative inline-flex items-center gap-1 rounded-sm underline-offset-4 transition-colors duration-200 ease-out-expo after:absolute after:inset-x-0 after:-inset-y-3 hover:text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
                 >
                   {notification.title}
                   <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />

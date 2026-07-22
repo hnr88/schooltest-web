@@ -355,6 +355,11 @@
     "statTestsDelta": "+3 this week",
     "statStudents": "Students",
     "statStudentsDelta": "+12 enrolled",
+    "metricAccountLabel": "Anak yang dipautkan",
+    "metricAccountAction": "Lihat anak saya",
+    "metricPlansLabel": "Pelan kemasukan ditetapkan",
+    "metricPlansDelta": "50% selesai",
+    "metricReadyLabel": "Profil sedia",
     "statScore": "Average score",
     "featureDemoTitle": "AI grading & feedback",
     "featureDemoBody": "Speaking and writing scored in seconds, with teacher review built in.",
@@ -426,8 +431,20 @@
     "dialogCloseLabel": "Close",
     "breadcrumbNavAria": "Breadcrumb navigation",
     "sheetTrigger": "Open sheet",
-    "sheetTitle": "Share \"Science Quiz\"",
-    "sheetBody": "Anyone with the link can take this test."
+    "sheetTitle": "Tetapan Kuiz Sains",
+    "sheetBody": "Ubah had masa, permarkahan dan keterlihatan ujian ini.",
+    "sectionPrimitives": "Komponen asas",
+    "primitivePersonName": "Emma Hansen",
+    "primitivePersonRole": "Darjah 4B · Sekolah Nørrebro Heights",
+    "primitiveSubjectMath": "Matematik",
+    "primitiveSubjectEnglish": "Bahasa Inggeris",
+    "primitiveSubjectMeta": "6 ujian · subjek terkuat",
+    "primitiveTimelineDate": "12 Mei",
+    "primitivePercent": "{percent}%",
+    "primitiveToggleResultsLabel": "Beritahu saya tentang keputusan baharu",
+    "primitiveToggleShuffleLabel": "Rawakkan susunan soalan",
+    "primitiveToggleResultsHint": "E-mel dan tolakan sebaik sahaja keputusan tiba",
+    "primitiveToggleShuffleHint": "Setiap murid melihat susunan soalan yang berbeza"
   },
   "Dashboard": {
     "meta": {
@@ -437,7 +454,7 @@
     "title": "Pelajar anda",
     "subtitle": "Add your students and follow their test progress.",
     "welcomeTitle": "Welcome back, {name}!",
-    "welcomeSubtitle": "You're signed in to your SchoolTest parent account.",
+    "welcomeSubtitle": "Inilah perkembangan profil dan pelan sekolah anak-anak anda.",
     "addStudent": "Tambah Pelajar",
     "studentsEmptyTitle": "Belum ada pelajar",
     "studentsEmptySubtitle": "Tambah pelajar pertama anda untuk mula membina profil dan memohon ke sekolah.",
@@ -476,7 +493,7 @@
     "overviewEyebrow": "Gambaran profil",
     "overviewTitle": "Laluan yang lebih jelas untuk setiap pelajar",
     "overviewSubtitle": "Kumpulkan butiran profil penting, kemudian terokai pilihan sekolah dan ejen yang sesuai.",
-    "familySummaryTitle": "Ringkasan pelan keluarga anda",
+    "familySummaryTitle": "Anak saya",
     "familySummaryDescription": "Semak kesediaan profil setiap pelajar dan jelaskan tindakan perancangan sekolah seterusnya.",
     "planningTitle": "Kesediaan perancangan",
     "planningDescription": "Butiran kemasukan sasaran dikira daripada profil keluarga semasa.",
@@ -510,7 +527,38 @@
     "findSchools": "Cari sekolah",
     "findSchoolsDescription": "Bandingkan sekolah yang sesuai dengan rancangan anda.",
     "findAgents": "Cari ejen",
-    "findAgentsDescription": "Berhubung dengan pakar pendidikan."
+    "findAgentsDescription": "Berhubung dengan pakar pendidikan.",
+    "unknownProfile": "Pelajar",
+    "valueMissing": "—",
+    "percentValue": "{percent}%",
+    "viewProfile": "Lihat profil",
+    "profileReadiness": "Profil siap",
+    "profileMetaMissing": "Butiran profil belum ditambah",
+    "entryPlanScheduled": "Kemasukan sasaran {plan}",
+    "entryPlanPill": "Dirancang",
+    "entryPlanNeededPill": "Diperlukan",
+    "entryPlanMissingHint": "Tambah tahun dan penggal kemasukan sasaran.",
+    "summaryProfilesChip": "{count} profil",
+    "summaryActiveChip": "{count} aktif",
+    "summaryPlansChip": "{completed}/{total} pelan kemasukan",
+    "addedThisWeek": "+{count} minggu ini",
+    "noneAddedThisWeek": "Tiada profil baharu minggu ini",
+    "percentComplete": "{percent}% lengkap",
+    "needsAttention": "Perlu perhatian",
+    "allProfilesPlanned": "Semua profil dirancang",
+    "needingPlanShort": "Perlu pelan",
+    "profileReadinessTitle": "Kesiapan profil",
+    "profileReadinessDescription": "Purata butiran perancangan yang diisi bagi anak-anak anda.",
+    "acrossProfiles": "merentas {count} profil",
+    "readinessGaugeLabel": "Kesiapan profil: {percent}%",
+    "allProfiles": "Semua profil",
+    "rosterColumnProfile": "Profil",
+    "rosterColumnAction": "Tindakan",
+    "rosterView": "Lihat",
+    "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
+    "addFirstStudent": "Tambah pelajar pertama anda",
+    "promoTitle": "Dapatkan bantuan pakar",
+    "promoDescription": "Hubungi pakar pendidikan yang mengenali sekolah dalam senarai anda."
   },
   "Shell": {
     "nav": {
@@ -521,14 +569,24 @@
       "settings": "Tetapan"
     },
     "sidebar": {
-      "logoAlt": "SchoolTest"
+      "logoAlt": "SchoolTest",
+      "groups": {
+        "manage": "Urus",
+        "account": "Akaun"
+      },
+      "promo": {
+        "overline": "Anak dipautkan",
+        "cta": "Tambah anak"
+      }
     },
     "topbar": {
       "openNav": "Buka navigasi",
       "toggleNav": "Togol navigasi",
       "breadcrumbLabel": "Jejak navigasi",
       "dashboard": "Papan pemuka",
-      "userMenuLabel": "Buka menu pengguna"
+      "userMenuLabel": "Buka menu pengguna",
+      "searchPlaceholder": "Cari sekolah dan ejen…",
+      "searchLabel": "Buka carian"
     },
     "userMenu": {
       "settings": "Tetapan",
@@ -544,6 +602,15 @@
     "subtitle": "Urus keutamaan akaun dan keselamatan anda.",
     "changePasswordTitle": "Tukar kata laluan",
     "changePasswordSubtitle": "Kata laluan baharu anda mestilah sekurang-kurangnya 6 aksara.",
+    "account": {
+      "title": "Akaun",
+      "description": "Butiran yang digunakan SchoolTest untuk log masuk anda.",
+      "emailLabel": "E-mel log masuk",
+      "confirmedLabel": "Pengesahan e-mel",
+      "confirmed": "Disahkan",
+      "unconfirmed": "Belum disahkan",
+      "memberSinceLabel": "Ahli sejak"
+    },
     "tabsLabel": "Bahagian tetapan",
     "tabs": {
       "auth": "Pengesahan",
@@ -1013,6 +1080,7 @@
     "heading": "Anak saya",
     "rosterEyebrow": "Ruang pembelajaran keluarga",
     "rosterDescription": "Simpan profil, laluan dan aktiviti pembelajaran setiap pelajar di satu tempat.",
+    "rosterCounts": "{active} aktif · {archived} diarkibkan",
     "rosterSummaryLabel": "Ringkasan profil",
     "rosterActive": "Pelajar aktif",
     "rosterArchived": "Profil diarkibkan",
@@ -1033,6 +1101,7 @@
     "columnYearLevel": "Tahun persekolahan",
     "columnTargetEntry": "Kemasukan sasaran",
     "columnStatus": "Status",
+    "columnResult": "Keputusan",
     "columnAdded": "Ditambah",
     "columnActions": "Tindakan",
     "actionsLabel": "Tindakan untuk {name}",
@@ -1043,6 +1112,7 @@
     "statusArchived": "Diarkib",
     "statusEnrolled": "Didaftarkan",
     "noMatches": "Tiada anak sepadan dengan carian anda.",
+    "noMatchesDescription": "Kosongkan carian, atau sertakan profil yang diarkibkan untuk melihat lebih banyak.",
     "emptyTitle": "Belum ada anak",
     "emptyDescription": "Tambah anak pertama anda untuk mula menjejaki perjalanan persekolahan mereka.",
     "errorTitle": "Tidak dapat memuatkan anak anda.",
@@ -1087,6 +1157,7 @@
       "complete": "Selesai"
     },
     "resultSkill": "Kemahiran",
+    "filterAll": "Semua",
     "resultSkills": {
       "reading": "Membaca",
       "listening": "Mendengar",
@@ -1104,7 +1175,28 @@
     "resultPublished": "Diterbitkan",
     "notPublished": "Belum diterbitkan",
     "profileGoneTitle": "Profil anak ini tidak lagi tersedia",
-    "profileGoneDescription": "Ia mungkin telah dialih keluar. Anak-anak anda yang lain masih ada dalam senarai."
+    "profileGoneDescription": "Ia mungkin telah dialih keluar. Anak-anak anda yang lain masih ada dalam senarai.",
+    "heroNoDetails": "Belum ada butiran kemasukan direkodkan.",
+    "heroSessionsPill": "{count} sesi ujian",
+    "enrolmentHeading": "Butiran kemasukan",
+    "enrolmentEmpty": "Setakat ini hanya nama anak ini yang direkodkan.",
+    "signInEmail": "E-mel log masuk",
+    "addedOn": "Ditambah pada",
+    "guardianHeading": "Maklumat hubungan penjaga",
+    "guardianEmpty": "Belum ada maklumat hubungan penjaga direkodkan.",
+    "guardianRole": "Penjaga",
+    "skillBreakdownHeading": "Pecahan kemahiran",
+    "skillResultCount": "{count} keputusan rasmi",
+    "skillProgressLabel": "Tahap CEFR {skill}",
+    "notBanded": "Belum ditahap",
+    "skillLadderLabel": "{skill}: CEFR {band}, tahap {rank} daripada {total}",
+    "skillsPendingTitle": "Belum dinilai",
+    "skillsPendingDescription": "Belum ada keputusan rasmi diterbitkan untuk kemahiran ini.",
+    "pagerLabel": "Halaman senarai",
+    "pagerPage": "Halaman {page} daripada {pages}",
+    "pagerPrevious": "Halaman sebelumnya",
+    "pagerNext": "Halaman seterusnya",
+    "pagerGoTo": "Pergi ke halaman {page}"
   },
   "Notifications": {
     "meta": {

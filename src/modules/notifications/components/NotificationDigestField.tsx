@@ -43,7 +43,7 @@ function NotificationDigestField({
           <Label htmlFor="notification-digest-frequency">
             {t('notificationPreferences.digest.title')}
           </Label>
-          <p id="notification-digest-description" className="text-sm text-muted-foreground">
+          <p id="notification-digest-description" className="text-body-sm text-muted-foreground">
             {t('notificationPreferences.digest.description')}
           </p>
           <Select<NotificationDigestFrequency, false>
@@ -70,7 +70,7 @@ function NotificationDigestField({
               ))}
             </SelectContent>
           </Select>
-          <p role="status" className="text-xs font-medium text-amber-700">
+          <p role="status" className="text-meta font-medium text-warning-ink">
             {field.value === 'immediate' ? '' : t('notificationPreferences.digest.emailOffNotice')}
           </p>
         </div>

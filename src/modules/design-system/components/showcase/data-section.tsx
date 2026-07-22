@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { Section } from '@/modules/design-system/components/layout';
 import { DataTable } from './data-table';
+import { PrimitivesSection } from './primitives-section';
 import { SegmentedDemo } from './segmented-demo';
 
 const TABS = [
@@ -92,6 +93,8 @@ async function DataSection() {
           </AccordionItem>
         ))}
       </Accordion>
+      <Separator className="my-8" />
+      <PrimitivesSection />
     </Section>
   );
 }

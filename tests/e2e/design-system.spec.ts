@@ -100,6 +100,22 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
   for (const key of ['statTests', 'statStudents', 'statScore', 'emptyTitle'] as const)
     await expect(cards.getByText(ds(en, key), { exact: true })).toBeVisible();
   await expect(cards.getByText(ds(en, 'featureDemoTitle'), { exact: true })).toHaveCount(2);
+  // MetricCard row: exactly one navy card, and it is the only one carrying a CTA link.
+  await expect(cards.locator('[data-slot="metric-card"]')).toHaveCount(3);
+  const navyMetric = cards.locator('[data-slot="metric-card"][data-tone="navy"]');
+  await expect(navyMetric).toHaveCount(1);
+  await expect(navyMetric).toHaveClass(/bg-navy-900/);
+  await expect(
+    navyMetric.getByRole('link', { name: new RegExp(escapeRegExp(ds(en, 'metricAccountAction'))) }),
+  ).toBeVisible();
+  // Navy drops the border rather than recolouring it, and carries no delta / progress.
+  await expect(navyMetric).toHaveCSS('border-top-width', '0px');
+  await expect(cards.locator('[data-slot="metric-card"][data-tone="light"]').first()).toHaveCSS(
+    'border-top-width',
+    '1px',
+  );
+  await expect(navyMetric.locator('[data-slot="trend-delta"]')).toHaveCount(0);
+  await expect(navyMetric.getByRole('progressbar')).toHaveCount(0);
   await expect(
     cards.getByRole('button', { name: ds(en, 'emptyAction'), exact: true }),
   ).toBeVisible();
@@ -117,25 +133,51 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
   );
   await expect(page.locator('#ds-select')).toBeVisible();
   await expect(page.locator('#ds-native-select')).toBeVisible();
-  for (const role of ['checkbox', 'radio', 'switch'] as const)
+  for (const role of ['checkbox', 'radio'] as const)
     await expect(page.getByRole(role)).toHaveCount(2);
+  // 4 switches, not 2: ChoiceControls exhibits the vendored primitive twice (enabled +
+  // disabled) and PrimitivesSection exhibits the ToggleRow wrapper twice (on + off).
+  // The ToggleRow pair is the DS §36 settings row — a real showcase entry, not a
+  // duplicate — so the number is raised to the real count rather than the demo removed.
+  await expect(page.getByRole('switch')).toHaveCount(4);
+  await expect(page.locator('[data-slot="toggle-row"] [role="switch"]')).toHaveCount(2);
+  // Every switch must carry an accessible name in the SERVER-rendered markup —
+  // base-ui's post-hydration label fallback is a race axe loses (aria-toggle-field-name).
+  for (const name of [
+    ds(en, 'switchShuffle'),
+    ds(en, 'switchResults'),
+    ds(en, 'primitiveToggleResultsLabel'),
+    ds(en, 'primitiveToggleShuffleLabel'),
+  ])
+    await expect(page.getByRole('switch', { name, exact: true })).toHaveCount(1);
 
   // Data display: tabs, segmented control, table + status pills, pagination, breadcrumb.
   const data = page.locator('#data');
-  for (const key of ['tabsOverview', 'tabsQuestions', 'tabsResults'] as const)
-    await expect(data.getByRole('tab', { name: ds(en, key), exact: true })).toBeVisible();
+  // #data holds TWO tablists — the vendored Tabs demo and the UnderlineTabs primitive
+  // nested in PrimitivesSection — and both exhibit the same three labels. They are
+  // separately named tablists (axe is clean), so the exhibits are kept and each is
+  // asserted in its own list rather than page-wide.
+  const tabsDemo = data.locator('[data-slot="tabs"] [data-slot="tabs-list"]');
+  const underlineTabs = data.locator('[data-slot="underline-tabs"] [data-slot="tabs-list"]');
+  for (const key of ['tabsOverview', 'tabsQuestions', 'tabsResults'] as const) {
+    await expect(tabsDemo.getByRole('tab', { name: ds(en, key), exact: true })).toBeVisible();
+    await expect(underlineTabs.getByRole('tab', { name: ds(en, key), exact: true })).toBeVisible();
+  }
   const segmented = data.locator('[data-slot="segmented-control"]');
   for (const key of ['segmentedWeek', 'segmentedMonth', 'segmentedYear'] as const)
     await expect(segmented.getByRole('button', { name: ds(en, key), exact: true })).toBeVisible();
   await expect(data.locator('[data-slot="table-caption"]')).toHaveText(ds(en, 'tableCaption'));
+  // Scoped to the table: the TimelineRow exhibits below re-use the same two test names
+  // as row titles, which is deliberate showcase copy, not a duplicated row.
+  const table = data.locator('[data-slot="table"]');
   for (const key of [
     'tableRowMath',
     'tableRowScience',
     'tableRowHistory',
     'tableRowReading',
   ] as const)
-    await expect(data.getByText(ds(en, key), { exact: true })).toBeVisible();
-  await expect(data.locator('[data-slot="table"] [data-slot="status-badge"]')).toHaveCount(4);
+    await expect(table.getByText(ds(en, key), { exact: true })).toBeVisible();
+  await expect(table.locator('[data-slot="status-badge"]')).toHaveCount(4);
   await expect(data.getByText(ds(en, 'tableShowing'), { exact: true })).toBeVisible();
   await expect(data.getByRole('link', { name: ds(en, 'paginationPreviousAria') })).toBeVisible();
   await expect(data.getByRole('link', { name: ds(en, 'paginationNextAria') })).toBeVisible();

@@ -30,8 +30,19 @@ export function QueryErrorFallback({
 
   if (state.kind === 'gone' || state.kind === 'forbidden') {
     const isGone = state.kind === 'gone';
+    // `gone` and `forbidden` swap a whole record view for an EmptyState, which
+    // carries no implicit role — a screen-reader user landed on a silent page.
+    // The polite live region announces the swap without hijacking focus; the
+    // `broken` arm already announces through Alert's role="alert".
     return (
-      <div data-slot="query-error-fallback" data-query-error={state.kind} className={wrapperClass}>
+      <div
+        data-slot="query-error-fallback"
+        data-query-error={state.kind}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={wrapperClass}
+      >
         <EmptyState
           icon={isGone ? (goneIcon ?? SearchX) : UserRoundCog}
           title={isGone ? (goneTitle ?? t('goneTitle')) : t('forbiddenTitle')}

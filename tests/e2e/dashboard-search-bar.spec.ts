@@ -60,17 +60,20 @@ test('en: search filters, selects, clears, no-results, Escape, axe clean', async
 
   await page.screenshot({ path: path.join(SCREENSHOTS, 'dashboard-search-results-en.png') });
 
-  // Click the result — StudentsSection's table narrows to Mia only.
+  // Click the result — the children roster narrows to Mia only.
+  // The roster is the canonical CSS-grid panel: each child is an <article>
+  // labelled "Child card for <name>", not a <table> row (the dead ChildrenTable
+  // this was written against had no importer and is now deleted).
   await miaOption.click();
   await expect(page.getByRole('option', { name: /Mia Keller/ })).toHaveCount(0);
-  await expect(page.getByRole('row', { name: /Mia Keller/ })).toBeVisible();
-  await expect(page.getByRole('row', { name: /Jonas Keller/ })).toHaveCount(0);
+  await expect(page.getByRole('article', { name: /Mia Keller/ })).toBeVisible();
+  await expect(page.getByRole('article', { name: /Jonas Keller/ })).toHaveCount(0);
 
   // Clear — both the query and the table filter reset together.
   await page.getByRole('button', { name: cat(en, 'Dashboard.clearSearch') }).click();
   await expect(search).toHaveValue('');
-  await expect(page.getByRole('row', { name: /Mia Keller/ })).toBeVisible();
-  await expect(page.getByRole('row', { name: /Jonas Keller/ })).toBeVisible();
+  await expect(page.getByRole('article', { name: /Mia Keller/ })).toBeVisible();
+  await expect(page.getByRole('article', { name: /Jonas Keller/ })).toBeVisible();
 
   // Real no-match query — the translated empty row, not a silent blank panel.
   await search.fill('zzz');
@@ -102,7 +105,11 @@ test('en: arrow keys navigate results and Enter selects the active option', asyn
   await search.press('Enter');
 
   await expect(page.locator('[data-slot="dashboard-search-panel"]')).toHaveCount(0);
-  const table = page.getByRole('table');
-  await expect(table).toBeVisible();
-  await expect(table.getByRole('row')).toHaveCount(2); // header + exactly one matched student
+  // The roster is the canonical CSS-grid panel, not a <table> (design system:
+  // every list surface uses grid rows). The dead ChildrenTable this assertion
+  // was written against had no importer and is now deleted, so the selection is
+  // verified on the panel it actually filters: exactly one child row survives.
+  const roster = page.locator('[data-slot="children-roster-panel"]');
+  await expect(roster).toBeVisible();
+  await expect(roster.getByRole('article')).toHaveCount(1); // exactly one matched student
 });

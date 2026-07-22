@@ -8,6 +8,7 @@ import {
   SEARCH_PREFERENCE_PAGE_SIZES,
   SEARCH_PREFERENCE_SORT_LABEL_KEYS,
   SEARCH_PREFERENCE_SORT_OPTIONS,
+  SETTINGS_SECTION_LABEL_CLASS,
 } from '@/modules/settings/constants/settings.constants';
 import { parseNullableNumber } from '@/modules/settings/lib/search-preferences';
 import { SettingsSelectField } from '@/modules/settings/components/SettingsSelectField';
@@ -59,8 +60,8 @@ export function SearchPreferenceDetailsFields({ form }: SearchPreferenceDetailsF
           )}
         />
       </div>
-      <fieldset className="flex flex-col gap-3">
-        <legend className="text-sm font-semibold text-foreground">{t('defaultFeeRange')}</legend>
+      <fieldset className="flex flex-col gap-2.5">
+        <legend className={SETTINGS_SECTION_LABEL_CLASS}>{t('defaultFeeRange')}</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
             <Label htmlFor="search-preference-fee-min">{t('defaultFeeMinimum')}</Label>

@@ -20,41 +20,7 @@ import {
 
 import { Button } from '@/modules/design-system/components/button';
 import { StatusBadge } from '@/modules/design-system/components/status-badge';
-
-const ROWS = [
-  {
-    nameKey: 'tableRowMath',
-    date: '02.07',
-    questions: 12,
-    avg: '8.5',
-    status: 'live',
-    labelKey: 'badgeLive',
-  },
-  {
-    nameKey: 'tableRowScience',
-    date: '05.07',
-    questions: 20,
-    avg: '7.9',
-    status: 'scheduled',
-    labelKey: 'badgeScheduled',
-  },
-  {
-    nameKey: 'tableRowHistory',
-    date: '09.07',
-    questions: 26,
-    avg: '8.8',
-    status: 'live',
-    labelKey: 'badgeLive',
-  },
-  {
-    nameKey: 'tableRowReading',
-    date: '12.07',
-    questions: 18,
-    avg: '9.1',
-    status: 'draft',
-    labelKey: 'badgeDraft',
-  },
-] as const;
+import { SHOWCASE_TABLE_ROWS } from '@/modules/design-system/constants/showcase-table.constants';
 
 async function DataTable() {
   const t = await getTranslations('DesignSystem');
@@ -72,7 +38,7 @@ async function DataTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {ROWS.map((row) => (
+          {SHOWCASE_TABLE_ROWS.map((row) => (
             <TableRow key={row.nameKey}>
               <TableCell className="font-medium">{t(row.nameKey)}</TableCell>
               <TableCell>{row.date}</TableCell>

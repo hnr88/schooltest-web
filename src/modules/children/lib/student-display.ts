@@ -1,5 +1,17 @@
-import type { StudentListRow } from '@/modules/dashboard';
-import type { StatusMeta } from '@/modules/children/types/children.types';
+import type { StatusPillTone } from '@/modules/design-system';
+import type { StatusMeta, TargetEntrySource } from '@/modules/children/types/children.types';
+
+// Canonical roster pill tones: green for a live profile, blue for an enrolled
+// one, neutral grey once archived.
+const STATUS_TONES: Record<string, StatusPillTone> = {
+  active: 'success',
+  archived: 'neutral',
+  enrolled: 'info',
+};
+
+export function getStatusTone(status: string | null | undefined): StatusPillTone {
+  return (status && STATUS_TONES[status]) || 'neutral';
+}
 
 // C-UI-MYCHILDREN §6 status pills — light-bg token pairs (uppercased at render).
 const STATUS_META: Record<string, StatusMeta> = {
@@ -26,21 +38,9 @@ export function getStatusMeta(status: string | null | undefined): StatusMeta {
   return (status && STATUS_META[status]) || FALLBACK_STATUS;
 }
 
-// Year-level column: current_year_level string, fallback to the int year_level,
-// else null (rendered as "—" by the row).
-export function getYearLevelLabel(student: StudentListRow): string | null {
-  if (student.current_year_level) {
-    return student.current_year_level;
-  }
-  if (typeof student.year_level === 'number') {
-    return String(student.year_level);
-  }
-  return null;
-}
-
 // Target-entry column: "{target_entry_year} · {target_entry_term}" (year alone
 // if the term is missing; null when there is no year at all).
-export function getTargetEntry(student: StudentListRow): string | null {
+export function getTargetEntry(student: TargetEntrySource): string | null {
   if (!student.target_entry_year) {
     return null;
   }

@@ -1,9 +1,9 @@
 'use client';
 
-import { Building2, Handshake, Plus, UsersRound } from 'lucide-react';
+import { Building2, Plus, UsersRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/modules/design-system';
+import { Button } from '@/modules/design-system';
 import { DashboardActionLink } from '@/modules/dashboard/components/DashboardActionLink';
 
 export function DashboardExploreOptions() {
@@ -13,15 +13,19 @@ export function DashboardExploreOptions() {
     <section
       data-slot="dashboard-action-hub"
       aria-labelledby="dashboard-action-hub-title"
+      className="grid grid-cols-1 gap-4 xl:grid-cols-12"
     >
-      <Card className="h-full rounded-2xl border-border bg-card shadow-sm">
-        <CardHeader>
-          <CardTitle id="dashboard-action-hub-title" role="heading" aria-level={2}>
+      <div className="flex flex-col gap-2 rounded-panel border border-border bg-card p-5.5 shadow-md xl:col-span-8">
+        <div className="flex flex-col gap-1 pb-1">
+          <h2
+            id="dashboard-action-hub-title"
+            className="text-panel-title font-semibold text-foreground"
+          >
             {t('exploreTitle')}
-          </CardTitle>
-          <CardDescription>{t('exploreSubtitle')}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3">
+          </h2>
+          <p className="text-meta text-muted-foreground">{t('exploreSubtitle')}</p>
+        </div>
+        <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
           <DashboardActionLink
             href="/dashboard/children/new"
             icon={Plus}
@@ -40,14 +44,16 @@ export function DashboardExploreOptions() {
             title={t('findSchools')}
             description={t('findSchoolsDescription')}
           />
-          <DashboardActionLink
-            href="/dashboard/search?mode=agents"
-            icon={Handshake}
-            title={t('findAgents')}
-            description={t('findAgentsDescription')}
-          />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-start justify-center gap-2.5 rounded-panel bg-cta-gradient p-5.5 shadow-md xl:col-span-4">
+        <p className="text-base font-bold text-white">{t('promoTitle')}</p>
+        <p className="text-body-sm text-navy-body">{t('promoDescription')}</p>
+        <Button href="/dashboard/search?mode=agents" variant="accent" size="sm" className="mt-1">
+          {t('findAgents')}
+        </Button>
+      </div>
     </section>
   );
 }

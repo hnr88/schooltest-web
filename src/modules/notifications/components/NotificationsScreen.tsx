@@ -38,7 +38,7 @@ function NotificationsScreen() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h1 className="text-h3 font-bold text-foreground">{t('title')}</h1>
-          <p className="text-sm text-muted-foreground">{t('subtitle')}</p>
+          <p className="text-sm text-body">{t('subtitle')}</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <span className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-blue-50 px-4 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-300">

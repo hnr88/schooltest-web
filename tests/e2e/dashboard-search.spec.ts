@@ -94,17 +94,20 @@ test('en: search debounces to one settled request per contract, filters, clears,
   expect(searchRequestQueries).not.toContain('m');
   expect(searchRequestQueries).not.toContain('mi');
 
-  // Click the result — StudentsSection's table narrows to Mia only.
+  // Click the result — the children roster narrows to Mia only.
+  // The roster is the canonical CSS-grid panel: each child is an <article>
+  // labelled "Child card for <name>", not a <table> row (the dead ChildrenTable
+  // this was written against had no importer and is now deleted).
   await miaOption.click();
   await expect(page.getByRole('option', { name: /Mia Keller/ })).toHaveCount(0);
-  await expect(page.getByRole('row', { name: /Mia Keller/ })).toBeVisible();
-  await expect(page.getByRole('row', { name: /Jonas Keller/ })).toHaveCount(0);
+  await expect(page.getByRole('article', { name: /Mia Keller/ })).toBeVisible();
+  await expect(page.getByRole('article', { name: /Jonas Keller/ })).toHaveCount(0);
 
   // Clear — both the query and the table filter reset together.
   await page.getByRole('button', { name: cat(en, 'Dashboard.clearSearch') }).click();
   await expect(search).toHaveValue('');
-  await expect(page.getByRole('row', { name: /Mia Keller/ })).toBeVisible();
-  await expect(page.getByRole('row', { name: /Jonas Keller/ })).toBeVisible();
+  await expect(page.getByRole('article', { name: /Mia Keller/ })).toBeVisible();
+  await expect(page.getByRole('article', { name: /Jonas Keller/ })).toBeVisible();
 
   // Real no-match query — the watcher confirms the wire truth (count 0) and
   // the UI renders the translated empty row, not a silent blank panel.

@@ -39,9 +39,7 @@ function UserMenu() {
         className="group flex items-center gap-2.5 rounded-full py-1 pr-2 pl-1 transition-colors duration-200 ease-out hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
       >
         <PresenceAvatar initials={getUserInitials(user.username)} className="size-9.5" />
-        <span className="text-sm font-semibold text-foreground max-md:hidden">
-          {user.username}
-        </span>
+        <span className="text-sm font-semibold text-foreground max-md:hidden">{user.username}</span>
         <ChevronDown
           aria-hidden="true"
           className="size-4 text-muted-foreground transition-transform duration-200 ease-out group-data-popup-open:rotate-180 motion-reduce:transition-none"

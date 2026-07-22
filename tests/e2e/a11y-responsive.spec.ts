@@ -4,7 +4,7 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
 import { home, loadMessages, type Locale, type Messages } from './helpers/i18n';
-import { collectSmallTargets, watchErrors } from './helpers/ui';
+import { collectSmallTargets, waitForAnimationsSettled, watchErrors } from './helpers/ui';
 
 // Assertions derive from the catalogs at runtime — no copy is duplicated into this spec.
 const catalogs: Record<Locale, Messages> = { en: loadMessages('en'), zh: loadMessages('zh') };
@@ -12,8 +12,19 @@ const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const MOBILE = { width: 375, height: 812 };
 
-/** Asserts zero serious/critical axe violations; moderate/minor are logged, not asserted. */
+/**
+ * Asserts zero serious/critical axe violations; moderate/minor are logged, not asserted.
+ *
+ * The landing runs `motion-safe` entrance reveals from `opacity-0`. Running axe before
+ * they finish measures text that is mid-fade, and axe then reports colour-contrast
+ * against a partially blended background for EVERY text node on the page — including
+ * white-on-navy, which is 15:1 once settled. Waiting for the finite animations makes the
+ * scan evaluate the state a user actually sees; it does not skip or relax any rule.
+ * (Proved: with the settle, `/` reports 0 serious/critical; without it, ~100.)
+ */
 async function expectAxeClean(page: Page, label: string): Promise<void> {
+  await page.waitForLoadState('networkidle');
+  await waitForAnimationsSettled(page);
   const results = await new AxeBuilder({ page }).analyze();
   const blockers = results.violations.filter(
     (violation) => violation.impact === 'serious' || violation.impact === 'critical',

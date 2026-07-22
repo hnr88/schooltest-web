@@ -355,6 +355,11 @@
     "statTestsDelta": "+3 this week",
     "statStudents": "Students",
     "statStudentsDelta": "+12 enrolled",
+    "metricAccountLabel": "Trẻ đã liên kết",
+    "metricAccountAction": "Xem con của tôi",
+    "metricPlansLabel": "Kế hoạch nhập học đã đặt",
+    "metricPlansDelta": "Hoàn thành 50%",
+    "metricReadyLabel": "Hồ sơ đã sẵn sàng",
     "statScore": "Average score",
     "featureDemoTitle": "AI grading & feedback",
     "featureDemoBody": "Speaking and writing scored in seconds, with teacher review built in.",
@@ -426,8 +431,20 @@
     "dialogCloseLabel": "Close",
     "breadcrumbNavAria": "Breadcrumb navigation",
     "sheetTrigger": "Open sheet",
-    "sheetTitle": "Share \"Science Quiz\"",
-    "sheetBody": "Anyone with the link can take this test."
+    "sheetTitle": "Cài đặt Bài kiểm tra Khoa học",
+    "sheetBody": "Thay đổi thời gian làm bài, cách chấm điểm và chế độ hiển thị của bài kiểm tra này.",
+    "sectionPrimitives": "Thành phần cơ bản",
+    "primitivePersonName": "Emma Hansen",
+    "primitivePersonRole": "Lớp 4B · Trường Nørrebro Heights",
+    "primitiveSubjectMath": "Toán",
+    "primitiveSubjectEnglish": "Tiếng Anh",
+    "primitiveSubjectMeta": "6 bài kiểm tra · môn mạnh nhất",
+    "primitiveTimelineDate": "Ngày 12 tháng 5",
+    "primitivePercent": "{percent}%",
+    "primitiveToggleResultsLabel": "Thông báo cho tôi khi có kết quả mới",
+    "primitiveToggleShuffleLabel": "Xáo trộn thứ tự câu hỏi",
+    "primitiveToggleResultsHint": "Gửi email và thông báo ngay khi có kết quả",
+    "primitiveToggleShuffleHint": "Mỗi học sinh thấy một thứ tự câu hỏi khác nhau"
   },
   "Dashboard": {
     "meta": {
@@ -437,7 +454,7 @@
     "title": "Học sinh của bạn",
     "subtitle": "Add your students and follow their test progress.",
     "welcomeTitle": "Welcome back, {name}!",
-    "welcomeSubtitle": "You're signed in to your SchoolTest parent account.",
+    "welcomeSubtitle": "Đây là tiến độ hồ sơ và kế hoạch nhập học của các con bạn.",
     "addStudent": "Thêm Học Sinh",
     "studentsEmptyTitle": "Chưa có học sinh",
     "studentsEmptySubtitle": "Thêm học sinh đầu tiên để bắt đầu xây dựng hồ sơ và nộp đơn vào trường.",
@@ -476,7 +493,7 @@
     "overviewEyebrow": "Tổng quan hồ sơ",
     "overviewTitle": "Lộ trình rõ ràng hơn cho mỗi học sinh",
     "overviewSubtitle": "Tập hợp các thông tin hồ sơ quan trọng, sau đó khám phá lựa chọn trường học và tư vấn phù hợp.",
-    "familySummaryTitle": "Tổng quan kế hoạch gia đình",
+    "familySummaryTitle": "Con của tôi",
     "familySummaryDescription": "Xem mức độ sẵn sàng của từng hồ sơ học sinh và làm rõ bước lập kế hoạch trường học tiếp theo.",
     "planningTitle": "Mức độ sẵn sàng lập kế hoạch",
     "planningDescription": "Thông tin nhập học mục tiêu được tính từ các hồ sơ gia đình hiện tại.",
@@ -510,7 +527,38 @@
     "findSchools": "Tìm trường học",
     "findSchoolsDescription": "So sánh các trường phù hợp với kế hoạch của bạn.",
     "findAgents": "Tìm tư vấn viên",
-    "findAgentsDescription": "Kết nối với chuyên gia giáo dục."
+    "findAgentsDescription": "Kết nối với chuyên gia giáo dục.",
+    "unknownProfile": "Học sinh",
+    "valueMissing": "—",
+    "percentValue": "{percent}%",
+    "viewProfile": "Xem hồ sơ",
+    "profileReadiness": "Hồ sơ hoàn thiện",
+    "profileMetaMissing": "Chưa thêm thông tin hồ sơ",
+    "entryPlanScheduled": "Nhập học mục tiêu {plan}",
+    "entryPlanPill": "Đã lên kế hoạch",
+    "entryPlanNeededPill": "Cần bổ sung",
+    "entryPlanMissingHint": "Hãy thêm năm và học kỳ nhập học mục tiêu.",
+    "summaryProfilesChip": "{count} hồ sơ",
+    "summaryActiveChip": "{count} đang hoạt động",
+    "summaryPlansChip": "{completed}/{total} kế hoạch nhập học",
+    "addedThisWeek": "+{count} trong tuần này",
+    "noneAddedThisWeek": "Không có hồ sơ mới trong tuần này",
+    "percentComplete": "Hoàn thành {percent}%",
+    "needsAttention": "Cần chú ý",
+    "allProfilesPlanned": "Mọi hồ sơ đã có kế hoạch",
+    "needingPlanShort": "Cần kế hoạch",
+    "profileReadinessTitle": "Mức hoàn thiện hồ sơ",
+    "profileReadinessDescription": "Mức thông tin kế hoạch trung bình đã điền cho các con bạn.",
+    "acrossProfiles": "trên {count} hồ sơ",
+    "readinessGaugeLabel": "Mức hoàn thiện hồ sơ: {percent}%",
+    "allProfiles": "Tất cả hồ sơ",
+    "rosterColumnProfile": "Hồ sơ",
+    "rosterColumnAction": "Hành động",
+    "rosterView": "Xem",
+    "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
+    "addFirstStudent": "Thêm học sinh đầu tiên",
+    "promoTitle": "Nhận hỗ trợ từ chuyên gia",
+    "promoDescription": "Kết nối với chuyên gia giáo dục am hiểu những trường bạn quan tâm."
   },
   "Shell": {
     "nav": {
@@ -521,14 +569,24 @@
       "settings": "Cài đặt"
     },
     "sidebar": {
-      "logoAlt": "SchoolTest"
+      "logoAlt": "SchoolTest",
+      "groups": {
+        "manage": "Quản lý",
+        "account": "Tài khoản"
+      },
+      "promo": {
+        "overline": "Con đã liên kết",
+        "cta": "Thêm con"
+      }
     },
     "topbar": {
       "openNav": "Mở điều hướng",
       "toggleNav": "Chuyển điều hướng",
       "breadcrumbLabel": "Đường dẫn điều hướng",
       "dashboard": "Bảng điều khiển",
-      "userMenuLabel": "Mở menu người dùng"
+      "userMenuLabel": "Mở menu người dùng",
+      "searchPlaceholder": "Tìm trường học và đại lý…",
+      "searchLabel": "Mở tìm kiếm"
     },
     "userMenu": {
       "settings": "Cài đặt",
@@ -544,6 +602,15 @@
     "subtitle": "Quản lý tuỳ chọn tài khoản và bảo mật của bạn.",
     "changePasswordTitle": "Đổi mật khẩu",
     "changePasswordSubtitle": "Mật khẩu mới của bạn phải có ít nhất 6 ký tự.",
+    "account": {
+      "title": "Tài khoản",
+      "description": "Thông tin SchoolTest dùng để đăng nhập cho bạn.",
+      "emailLabel": "Email đăng nhập",
+      "confirmedLabel": "Xác nhận email",
+      "confirmed": "Đã xác nhận",
+      "unconfirmed": "Chưa xác nhận",
+      "memberSinceLabel": "Thành viên từ"
+    },
     "tabsLabel": "Các phần cài đặt",
     "tabs": {
       "auth": "Xác thực",
@@ -1013,6 +1080,7 @@
     "heading": "Con của tôi",
     "rosterEyebrow": "Không gian học tập gia đình",
     "rosterDescription": "Quản lý hồ sơ, lộ trình và hoạt động học tập của từng học viên tại một nơi.",
+    "rosterCounts": "{active} đang hoạt động · {archived} đã lưu trữ",
     "rosterSummaryLabel": "Tóm tắt hồ sơ",
     "rosterActive": "Học viên đang hoạt động",
     "rosterArchived": "Hồ sơ đã lưu trữ",
@@ -1033,6 +1101,7 @@
     "columnYearLevel": "Khối lớp",
     "columnTargetEntry": "Nhập học mục tiêu",
     "columnStatus": "Trạng thái",
+    "columnResult": "Kết quả",
     "columnAdded": "Đã thêm",
     "columnActions": "Thao tác",
     "actionsLabel": "Thao tác cho {name}",
@@ -1043,6 +1112,7 @@
     "statusArchived": "Đã lưu trữ",
     "statusEnrolled": "Đã ghi danh",
     "noMatches": "Không có con nào khớp với tìm kiếm của bạn.",
+    "noMatchesDescription": "Xóa tìm kiếm hoặc bao gồm hồ sơ đã lưu trữ để xem thêm.",
     "emptyTitle": "Chưa có con nào",
     "emptyDescription": "Thêm con đầu tiên của bạn để bắt đầu theo dõi hành trình học tập của chúng.",
     "errorTitle": "Không thể tải danh sách con của bạn.",
@@ -1087,6 +1157,7 @@
       "complete": "Hoàn tất"
     },
     "resultSkill": "Kỹ năng",
+    "filterAll": "Tất cả",
     "resultSkills": {
       "reading": "Đọc",
       "listening": "Nghe",
@@ -1104,7 +1175,28 @@
     "resultPublished": "Đã công bố",
     "notPublished": "Chưa công bố",
     "profileGoneTitle": "Hồ sơ của con này không còn nữa",
-    "profileGoneDescription": "Hồ sơ có thể đã bị xóa. Những con khác của bạn vẫn còn trong danh sách."
+    "profileGoneDescription": "Hồ sơ có thể đã bị xóa. Những con khác của bạn vẫn còn trong danh sách.",
+    "heroNoDetails": "Chưa ghi nhận thông tin nhập học nào.",
+    "heroSessionsPill": "{count} buổi làm bài",
+    "enrolmentHeading": "Thông tin nhập học",
+    "enrolmentEmpty": "Hiện chỉ mới ghi nhận tên của trẻ.",
+    "signInEmail": "Email đăng nhập",
+    "addedOn": "Ngày thêm",
+    "guardianHeading": "Liên hệ người giám hộ",
+    "guardianEmpty": "Chưa ghi nhận thông tin liên hệ người giám hộ.",
+    "guardianRole": "Người giám hộ",
+    "skillBreakdownHeading": "Phân tích kỹ năng",
+    "skillResultCount": "{count} kết quả chính thức",
+    "skillProgressLabel": "Bậc CEFR {skill}",
+    "notBanded": "Chưa xếp bậc",
+    "skillLadderLabel": "{skill}: CEFR {band}, bậc {rank} trên {total}",
+    "skillsPendingTitle": "Chưa đánh giá",
+    "skillsPendingDescription": "Chưa có kết quả chính thức nào được công bố cho các kỹ năng này.",
+    "pagerLabel": "Trang danh sách",
+    "pagerPage": "Trang {page} trên {pages}",
+    "pagerPrevious": "Trang trước",
+    "pagerNext": "Trang sau",
+    "pagerGoTo": "Đến trang {page}"
   },
   "Notifications": {
     "meta": {

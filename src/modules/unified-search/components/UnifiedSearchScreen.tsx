@@ -24,7 +24,7 @@ function UnifiedSearchScreen() {
         <h1 className="text-2xl font-bold text-navy-950">
           {isSchools ? t('titleSchools') : t('titleAgents')}
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-body">
           {isSchools ? t('subtitleSchools') : t('subtitleAgents')}
         </p>
       </header>

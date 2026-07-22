@@ -7,5 +7,8 @@ export interface DashboardOverview {
   studentsWithEntryPlan: number;
   studentsMissingEntryPlan: number;
   entryPlanCompletion: number;
+  addedRecently: number;
+  profileCompletionAverage: number;
+  featuredStudents: StudentListRow[];
   recentStudents: StudentListRow[];
 }

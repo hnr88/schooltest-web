@@ -1,6 +1,3 @@
-import { Bell, KeyRound, Search, Users } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-
 import { SORT_OPTIONS, STATES } from '@/modules/school-search';
 import type {
   SearchPreferenceFormValues,
@@ -15,16 +12,23 @@ export const SETTINGS_TABS: readonly SettingsTab[] = [
   'children',
 ];
 
+// DS §5.6 underline tabs are label-only — the canonical row carries no glyphs.
 export const SETTINGS_TAB_CONFIG: readonly {
   value: SettingsTab;
   labelKey: string;
-  icon: LucideIcon;
 }[] = [
-  { value: 'auth', labelKey: 'tabs.auth', icon: KeyRound },
-  { value: 'search', labelKey: 'tabs.search', icon: Search },
-  { value: 'notifications', labelKey: 'tabs.notifications', icon: Bell },
-  { value: 'children', labelKey: 'tabs.children', icon: Users },
+  { value: 'auth', labelKey: 'tabs.auth' },
+  { value: 'search', labelKey: 'tabs.search' },
+  { value: 'notifications', labelKey: 'tabs.notifications' },
+  { value: 'children', labelKey: 'tabs.children' },
 ];
+
+// Canonical in-card section label (DS component sheets): 11.5px/700 uppercase,
+// .08em tracking. Drawn at slate-600, not the canonical slate-400: axe flags
+// #94A3B8 label text on white as a serious contrast failure. The margin is
+// explicit because a <legend> is not a flex item — the fieldset gap skips it.
+export const SETTINGS_SECTION_LABEL_CLASS =
+  'mb-2 text-overline font-bold tracking-rail text-slate-600 uppercase';
 
 export const SEARCH_PREFERENCE_DEFAULTS: SearchPreferenceFormValues = {
   default_states: [],

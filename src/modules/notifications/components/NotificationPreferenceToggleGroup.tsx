@@ -4,6 +4,7 @@ import { Controller, type UseFormReturn } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 
 import { NotificationPreferenceToggle } from '@/modules/notifications/components/NotificationPreferenceToggle';
+import { NOTIFICATION_SECTION_LABEL_CLASS } from '@/modules/notifications/constants/notification-preferences.constants';
 import type {
   NotificationPreferenceFormValues,
   NotificationPreferenceToggleConfig,
@@ -23,9 +24,9 @@ function NotificationPreferenceToggleGroup({
   const t = useTranslations('Settings');
 
   return (
-    <fieldset className="flex flex-col gap-3">
-      <legend className="text-sm font-semibold text-foreground">{title}</legend>
-      <div className="grid gap-3 lg:grid-cols-2">
+    <fieldset className="flex flex-col gap-1.5">
+      <legend className={NOTIFICATION_SECTION_LABEL_CLASS}>{title}</legend>
+      <div className="flex flex-col">
         {items.map((item) => (
           <Controller
             key={item.field}

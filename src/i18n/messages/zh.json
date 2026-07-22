@@ -355,6 +355,11 @@
     "statTestsDelta": "+3 this week",
     "statStudents": "Students",
     "statStudentsDelta": "+12 enrolled",
+    "metricAccountLabel": "已关联的孩子",
+    "metricAccountAction": "查看我的孩子",
+    "metricPlansLabel": "已设置入学计划",
+    "metricPlansDelta": "完成 50%",
+    "metricReadyLabel": "资料已就绪",
     "statScore": "Average score",
     "featureDemoTitle": "AI grading & feedback",
     "featureDemoBody": "Speaking and writing scored in seconds, with teacher review built in.",
@@ -426,8 +431,20 @@
     "dialogCloseLabel": "Close",
     "breadcrumbNavAria": "Breadcrumb navigation",
     "sheetTrigger": "Open sheet",
-    "sheetTitle": "Share \"Science Quiz\"",
-    "sheetBody": "Anyone with the link can take this test."
+    "sheetTitle": "《科学测验》设置",
+    "sheetBody": "更改本测验的时间限制、评分方式和可见范围。",
+    "sectionPrimitives": "基础组件",
+    "primitivePersonName": "艾玛·汉森",
+    "primitivePersonRole": "四年级B班 · 诺雷布罗高地学校",
+    "primitiveSubjectMath": "数学",
+    "primitiveSubjectEnglish": "英语",
+    "primitiveSubjectMeta": "6 次测试 · 最强科目",
+    "primitiveTimelineDate": "5月12日",
+    "primitivePercent": "{percent}%",
+    "primitiveToggleResultsLabel": "有新成绩时通知我",
+    "primitiveToggleShuffleLabel": "随机排列题目顺序",
+    "primitiveToggleResultsHint": "成绩一出来就通过邮件和推送通知",
+    "primitiveToggleShuffleHint": "每位学生看到的题目顺序都不同"
   },
   "Dashboard": {
     "meta": {
@@ -437,7 +454,7 @@
     "title": "您的学生",
     "subtitle": "Add your students and follow their test progress.",
     "welcomeTitle": "Welcome back, {name}!",
-    "welcomeSubtitle": "You're signed in to your SchoolTest parent account.",
+    "welcomeSubtitle": "这是您孩子的档案与升学计划的最新进展。",
     "addStudent": "添加学生",
     "studentsEmptyTitle": "暂无学生",
     "studentsEmptySubtitle": "添加第一位学生，开始创建档案并申请学校。",
@@ -476,7 +493,7 @@
     "overviewEyebrow": "档案概览",
     "overviewTitle": "为每位学生规划更清晰的路径",
     "overviewSubtitle": "集中管理关键档案信息，再探索合适的学校和顾问选择。",
-    "familySummaryTitle": "家庭计划一目了然",
+    "familySummaryTitle": "我的孩子",
     "familySummaryDescription": "查看每位学习者的档案准备情况，明确下一步的学校规划行动。",
     "planningTitle": "规划准备度",
     "planningDescription": "目标入学信息根据您当前的家庭档案计算得出。",
@@ -510,7 +527,38 @@
     "findSchools": "查找学校",
     "findSchoolsDescription": "比较符合您计划的学校。",
     "findAgents": "查找顾问",
-    "findAgentsDescription": "联系教育专业顾问。"
+    "findAgentsDescription": "联系教育专业顾问。",
+    "unknownProfile": "学生",
+    "valueMissing": "—",
+    "percentValue": "{percent}%",
+    "viewProfile": "查看档案",
+    "profileReadiness": "档案完成度",
+    "profileMetaMissing": "尚未填写档案信息",
+    "entryPlanScheduled": "目标入学 {plan}",
+    "entryPlanPill": "已计划",
+    "entryPlanNeededPill": "待完善",
+    "entryPlanMissingHint": "请填写目标入学年份和学期。",
+    "summaryProfilesChip": "{count} 份档案",
+    "summaryActiveChip": "{count} 份在用",
+    "summaryPlansChip": "{completed}/{total} 份入学计划",
+    "addedThisWeek": "本周新增 {count} 份",
+    "noneAddedThisWeek": "本周没有新增档案",
+    "percentComplete": "已完成 {percent}%",
+    "needsAttention": "需要关注",
+    "allProfilesPlanned": "所有档案均已计划",
+    "needingPlanShort": "待填计划",
+    "profileReadinessTitle": "档案完善度",
+    "profileReadinessDescription": "所有孩子档案信息的平均完善程度。",
+    "acrossProfiles": "共 {count} 份档案",
+    "readinessGaugeLabel": "档案完善度：{percent}%",
+    "allProfiles": "全部档案",
+    "rosterColumnProfile": "档案",
+    "rosterColumnAction": "操作",
+    "rosterView": "查看",
+    "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
+    "addFirstStudent": "添加第一位学生",
+    "promoTitle": "获取专业帮助",
+    "promoDescription": "联系了解您候选学校的教育顾问。"
   },
   "Shell": {
     "nav": {
@@ -521,14 +569,24 @@
       "settings": "设置"
     },
     "sidebar": {
-      "logoAlt": "SchoolTest"
+      "logoAlt": "SchoolTest",
+      "groups": {
+        "manage": "管理",
+        "account": "账户"
+      },
+      "promo": {
+        "overline": "已关联的孩子",
+        "cta": "添加孩子"
+      }
     },
     "topbar": {
       "openNav": "打开导航",
       "toggleNav": "切换导航",
       "breadcrumbLabel": "导航路径",
       "dashboard": "控制面板",
-      "userMenuLabel": "打开用户菜单"
+      "userMenuLabel": "打开用户菜单",
+      "searchPlaceholder": "搜索学校和留学顾问…",
+      "searchLabel": "打开搜索"
     },
     "userMenu": {
       "settings": "设置",
@@ -544,6 +602,15 @@
     "subtitle": "管理您的账户偏好与安全设置。",
     "changePasswordTitle": "修改密码",
     "changePasswordSubtitle": "新密码长度至少为 6 个字符。",
+    "account": {
+      "title": "账户",
+      "description": "SchoolTest 用于登录您账户的信息。",
+      "emailLabel": "登录邮箱",
+      "confirmedLabel": "邮箱验证",
+      "confirmed": "已验证",
+      "unconfirmed": "未验证",
+      "memberSinceLabel": "注册时间"
+    },
     "tabsLabel": "设置部分",
     "tabs": {
       "auth": "身份验证",
@@ -1013,6 +1080,7 @@
     "heading": "我的孩子",
     "rosterEyebrow": "家庭学习空间",
     "rosterDescription": "在一个地方管理每位学习者的档案、路径和学习活动。",
+    "rosterCounts": "{active} 位在读 · {archived} 位已归档",
     "rosterSummaryLabel": "档案摘要",
     "rosterActive": "活跃学习者",
     "rosterArchived": "已归档档案",
@@ -1033,6 +1101,7 @@
     "columnYearLevel": "年级",
     "columnTargetEntry": "目标入学",
     "columnStatus": "状态",
+    "columnResult": "结果",
     "columnAdded": "添加时间",
     "columnActions": "操作",
     "actionsLabel": "{name} 的操作",
@@ -1043,6 +1112,7 @@
     "statusArchived": "已归档",
     "statusEnrolled": "已入学",
     "noMatches": "没有符合搜索条件的孩子。",
+    "noMatchesDescription": "清除搜索条件，或包含已归档的档案以查看更多。",
     "emptyTitle": "还没有孩子",
     "emptyDescription": "添加您的第一个孩子，开始追踪他们的求学历程。",
     "errorTitle": "无法加载您的孩子。",
@@ -1087,6 +1157,7 @@
       "complete": "已完成"
     },
     "resultSkill": "技能",
+    "filterAll": "全部",
     "resultSkills": {
       "reading": "阅读",
       "listening": "听力",
@@ -1104,7 +1175,28 @@
     "resultPublished": "发布日期",
     "notPublished": "尚未发布",
     "profileGoneTitle": "该孩子的档案已不存在",
-    "profileGoneDescription": "该档案可能已被删除。您的其他孩子仍在列表中。"
+    "profileGoneDescription": "该档案可能已被删除。您的其他孩子仍在列表中。",
+    "heroNoDetails": "尚未记录入学信息。",
+    "heroSessionsPill": "{count} 次测试场次",
+    "enrolmentHeading": "入学信息",
+    "enrolmentEmpty": "目前仅记录了该孩子的姓名。",
+    "signInEmail": "登录邮箱",
+    "addedOn": "添加日期",
+    "guardianHeading": "监护人联系方式",
+    "guardianEmpty": "尚未记录监护人联系方式。",
+    "guardianRole": "监护人",
+    "skillBreakdownHeading": "技能分布",
+    "skillResultCount": "{count} 项正式结果",
+    "skillProgressLabel": "{skill} CEFR 等级",
+    "notBanded": "尚未评级",
+    "skillLadderLabel": "{skill}：CEFR {band}，共 {total} 级中的第 {rank} 级",
+    "skillsPendingTitle": "尚未测评",
+    "skillsPendingDescription": "这些技能尚未发布正式结果。",
+    "pagerLabel": "名单分页",
+    "pagerPage": "第 {page} 页，共 {pages} 页",
+    "pagerPrevious": "上一页",
+    "pagerNext": "下一页",
+    "pagerGoTo": "转到第 {page} 页"
   },
   "Notifications": {
     "meta": {

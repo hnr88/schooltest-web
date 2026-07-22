@@ -20,7 +20,7 @@ function SearchEmptyState({ icon: Icon, title, sub, onReset }: SearchEmptyStateP
         <Icon className="size-5.5" />
       </span>
       <p className="text-button font-semibold text-navy-950">{title}</p>
-      <p className="max-w-70 text-caption text-muted-foreground">{sub}</p>
+      <p className="max-w-70 text-caption text-body">{sub}</p>
       <Button variant="outline" size="sm" onClick={onReset}>
         <RotateCcw aria-hidden="true" />
         {t('resetFilters')}

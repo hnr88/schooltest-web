@@ -355,6 +355,11 @@
     "statTestsDelta": "+3 this week",
     "statStudents": "Students",
     "statStudentsDelta": "+12 enrolled",
+    "metricAccountLabel": "Linked children",
+    "metricAccountAction": "View my children",
+    "metricPlansLabel": "Entry plans set",
+    "metricPlansDelta": "50% complete",
+    "metricReadyLabel": "Profiles ready",
     "statScore": "Average score",
     "featureDemoTitle": "AI grading & feedback",
     "featureDemoBody": "Speaking and writing scored in seconds, with teacher review built in.",
@@ -426,8 +431,20 @@
     "dialogCloseLabel": "Close",
     "breadcrumbNavAria": "Breadcrumb navigation",
     "sheetTrigger": "Open sheet",
-    "sheetTitle": "Share \"Science Quiz\"",
-    "sheetBody": "Anyone with the link can take this test."
+    "sheetTitle": "Science Quiz settings",
+    "sheetBody": "Change the time limit, marking and visibility for this test.",
+    "sectionPrimitives": "Primitives",
+    "primitivePersonName": "Emma Hansen",
+    "primitivePersonRole": "Grade 4B · Nørrebro Heights School",
+    "primitiveSubjectMath": "Math",
+    "primitiveSubjectEnglish": "English",
+    "primitiveSubjectMeta": "6 tests · strongest subject",
+    "primitiveTimelineDate": "May 12",
+    "primitivePercent": "{percent}%",
+    "primitiveToggleResultsLabel": "Notify me about new results",
+    "primitiveToggleShuffleLabel": "Randomise question order",
+    "primitiveToggleResultsHint": "Email and push as soon as a result arrives",
+    "primitiveToggleShuffleHint": "Every student sees a different question order"
   },
   "Dashboard": {
     "meta": {
@@ -437,7 +454,7 @@
     "title": "Your students",
     "subtitle": "Add your students and follow their test progress.",
     "welcomeTitle": "Welcome back, {name}!",
-    "welcomeSubtitle": "You're signed in to your SchoolTest parent account.",
+    "welcomeSubtitle": "Here's how your children's profiles and school plans are tracking.",
     "addStudent": "Add student",
     "studentsEmptyTitle": "No students yet",
     "studentsEmptySubtitle": "Add your first student to give them a sign-in link for the test app.",
@@ -476,7 +493,7 @@
     "overviewEyebrow": "Profile overview",
     "overviewTitle": "A clearer path for every student",
     "overviewSubtitle": "Keep key profile details together, then explore the right school and agent options.",
-    "familySummaryTitle": "Your family plan at a glance",
+    "familySummaryTitle": "Your children",
     "familySummaryDescription": "See each learner's profile readiness and keep the next school-planning action clear.",
     "planningTitle": "Planning readiness",
     "planningDescription": "Target entry details are calculated from your current family profiles.",
@@ -510,7 +527,38 @@
     "findSchools": "Find schools",
     "findSchoolsDescription": "Compare schools that fit your plans.",
     "findAgents": "Find agents",
-    "findAgentsDescription": "Connect with education specialists."
+    "findAgentsDescription": "Connect with education specialists.",
+    "unknownProfile": "Student",
+    "valueMissing": "—",
+    "percentValue": "{percent}%",
+    "viewProfile": "View profile",
+    "profileReadiness": "Profile ready",
+    "profileMetaMissing": "Profile details not added yet",
+    "entryPlanScheduled": "Target entry {plan}",
+    "entryPlanPill": "Planned",
+    "entryPlanNeededPill": "Needed",
+    "entryPlanMissingHint": "Add a target entry year and term.",
+    "summaryProfilesChip": "{count, plural, one {# profile} other {# profiles}}",
+    "summaryActiveChip": "{count} active",
+    "summaryPlansChip": "{completed}/{total} entry plans",
+    "addedThisWeek": "+{count} this week",
+    "noneAddedThisWeek": "No new profiles this week",
+    "percentComplete": "{percent}% complete",
+    "needsAttention": "Needs attention",
+    "allProfilesPlanned": "All profiles planned",
+    "needingPlanShort": "Needs a plan",
+    "profileReadinessTitle": "Profile readiness",
+    "profileReadinessDescription": "Average planning detail filled in across your children.",
+    "acrossProfiles": "across {count} profiles",
+    "readinessGaugeLabel": "Profile readiness: {percent}%",
+    "allProfiles": "All profiles",
+    "rosterColumnProfile": "Profile",
+    "rosterColumnAction": "Actions",
+    "rosterView": "View",
+    "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
+    "addFirstStudent": "Add your first student",
+    "promoTitle": "Get expert help",
+    "promoDescription": "Connect with an education specialist who knows the schools on your shortlist."
   },
   "Shell": {
     "nav": {
@@ -521,14 +569,24 @@
       "settings": "Settings"
     },
     "sidebar": {
-      "logoAlt": "SchoolTest"
+      "logoAlt": "SchoolTest",
+      "groups": {
+        "manage": "Manage",
+        "account": "Account"
+      },
+      "promo": {
+        "overline": "Linked children",
+        "cta": "Add a child"
+      }
     },
     "topbar": {
       "openNav": "Open navigation",
       "toggleNav": "Toggle navigation",
       "breadcrumbLabel": "Breadcrumb",
       "dashboard": "Dashboard",
-      "userMenuLabel": "Open user menu"
+      "userMenuLabel": "Open user menu",
+      "searchPlaceholder": "Search schools and agents…",
+      "searchLabel": "Open search"
     },
     "userMenu": {
       "settings": "Settings",
@@ -544,6 +602,15 @@
     "subtitle": "Manage your account preferences and security.",
     "changePasswordTitle": "Change password",
     "changePasswordSubtitle": "Your new password must be at least 6 characters long.",
+    "account": {
+      "title": "Account",
+      "description": "The details SchoolTest uses to sign you in.",
+      "emailLabel": "Sign-in email",
+      "confirmedLabel": "Email confirmation",
+      "confirmed": "Confirmed",
+      "unconfirmed": "Not confirmed",
+      "memberSinceLabel": "Member since"
+    },
     "tabsLabel": "Settings sections",
     "tabs": {
       "auth": "Authentication",
@@ -1013,6 +1080,7 @@
     "heading": "My children",
     "rosterEyebrow": "Family learning space",
     "rosterDescription": "Keep each learner's profile, pathway and learning activity in one place.",
+    "rosterCounts": "{active} active · {archived} archived",
     "rosterSummaryLabel": "Profile summary",
     "rosterActive": "Active learners",
     "rosterArchived": "Archived profiles",
@@ -1033,6 +1101,7 @@
     "columnYearLevel": "Year level",
     "columnTargetEntry": "Target entry",
     "columnStatus": "Status",
+    "columnResult": "Result",
     "columnAdded": "Added",
     "columnActions": "Actions",
     "actionsLabel": "Actions for {name}",
@@ -1043,6 +1112,7 @@
     "statusArchived": "Archived",
     "statusEnrolled": "Enrolled",
     "noMatches": "No children match your search.",
+    "noMatchesDescription": "Clear the search, or include archived profiles to see more.",
     "emptyTitle": "No children yet",
     "emptyDescription": "Add your first child to start tracking their school journey.",
     "errorTitle": "Could not load your children.",
@@ -1087,6 +1157,7 @@
       "complete": "Complete"
     },
     "resultSkill": "Skill",
+    "filterAll": "All",
     "resultSkills": {
       "reading": "Reading",
       "listening": "Listening",
@@ -1104,7 +1175,28 @@
     "resultPublished": "Published",
     "notPublished": "Not published yet",
     "profileGoneTitle": "This child's profile is no longer available",
-    "profileGoneDescription": "It may have been removed. Your other children are still in your list."
+    "profileGoneDescription": "It may have been removed. Your other children are still in your list.",
+    "heroNoDetails": "No enrolment details recorded yet.",
+    "heroSessionsPill": "{count, plural, one {# test session} other {# test sessions}}",
+    "enrolmentHeading": "Enrolment details",
+    "enrolmentEmpty": "Only this child’s name has been recorded so far.",
+    "signInEmail": "Sign-in email",
+    "addedOn": "Added on",
+    "guardianHeading": "Guardian contact",
+    "guardianEmpty": "No guardian contact has been recorded yet.",
+    "guardianRole": "Guardian",
+    "skillBreakdownHeading": "Skill breakdown",
+    "skillResultCount": "{count, plural, one {# official result} other {# official results}}",
+    "skillProgressLabel": "{skill} CEFR band",
+    "notBanded": "Not banded yet",
+    "skillLadderLabel": "{skill}: CEFR {band}, level {rank} of {total}",
+    "skillsPendingTitle": "Not assessed yet",
+    "skillsPendingDescription": "No official result has been published for these skills yet.",
+    "pagerLabel": "Roster pages",
+    "pagerPage": "Page {page} of {pages}",
+    "pagerPrevious": "Previous page",
+    "pagerNext": "Next page",
+    "pagerGoTo": "Go to page {page}"
   },
   "Notifications": {
     "meta": {

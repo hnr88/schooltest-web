@@ -355,6 +355,11 @@
     "statTestsDelta": "+3 this week",
     "statStudents": "Students",
     "statStudentsDelta": "+12 enrolled",
+    "metricAccountLabel": "บุตรที่เชื่อมโยง",
+    "metricAccountAction": "ดูบุตรของฉัน",
+    "metricPlansLabel": "ตั้งแผนเข้าเรียนแล้ว",
+    "metricPlansDelta": "เสร็จสิ้น 50%",
+    "metricReadyLabel": "โปรไฟล์พร้อมแล้ว",
     "statScore": "Average score",
     "featureDemoTitle": "AI grading & feedback",
     "featureDemoBody": "Speaking and writing scored in seconds, with teacher review built in.",
@@ -426,8 +431,20 @@
     "dialogCloseLabel": "Close",
     "breadcrumbNavAria": "Breadcrumb navigation",
     "sheetTrigger": "Open sheet",
-    "sheetTitle": "Share \"Science Quiz\"",
-    "sheetBody": "Anyone with the link can take this test."
+    "sheetTitle": "การตั้งค่าแบบทดสอบวิทยาศาสตร์",
+    "sheetBody": "เปลี่ยนเวลาจำกัด การให้คะแนน และการมองเห็นของแบบทดสอบนี้",
+    "sectionPrimitives": "องค์ประกอบพื้นฐาน",
+    "primitivePersonName": "เอมมา แฮนเซน",
+    "primitivePersonRole": "ชั้น 4B · โรงเรียนเนอเรอบรอไฮทส์",
+    "primitiveSubjectMath": "คณิตศาสตร์",
+    "primitiveSubjectEnglish": "ภาษาอังกฤษ",
+    "primitiveSubjectMeta": "ทดสอบ 6 ครั้ง · วิชาที่เก่งที่สุด",
+    "primitiveTimelineDate": "12 พ.ค.",
+    "primitivePercent": "{percent}%",
+    "primitiveToggleResultsLabel": "แจ้งเตือนฉันเมื่อมีผลลัพธ์ใหม่",
+    "primitiveToggleShuffleLabel": "สุ่มลำดับคำถาม",
+    "primitiveToggleResultsHint": "ส่งอีเมลและการแจ้งเตือนทันทีที่ผลออก",
+    "primitiveToggleShuffleHint": "นักเรียนแต่ละคนจะเห็นลำดับคำถามต่างกัน"
   },
   "Dashboard": {
     "meta": {
@@ -437,7 +454,7 @@
     "title": "นักเรียนของคุณ",
     "subtitle": "Add your students and follow their test progress.",
     "welcomeTitle": "Welcome back, {name}!",
-    "welcomeSubtitle": "You're signed in to your SchoolTest parent account.",
+    "welcomeSubtitle": "นี่คือความคืบหน้าของโปรไฟล์และแผนการเข้าเรียนของบุตรหลานคุณ",
     "addStudent": "เพิ่มนักเรียน",
     "studentsEmptyTitle": "ยังไม่มีนักเรียน",
     "studentsEmptySubtitle": "เพิ่มนักเรียนคนแรกของคุณเพื่อเริ่มสร้างโปรไฟล์และสมัครเข้าโรงเรียน",
@@ -476,7 +493,7 @@
     "overviewEyebrow": "ภาพรวมโปรไฟล์",
     "overviewTitle": "เส้นทางที่ชัดเจนขึ้นสำหรับนักเรียนทุกคน",
     "overviewSubtitle": "รวบรวมรายละเอียดโปรไฟล์สำคัญไว้ด้วยกัน แล้วค้นหาโรงเรียนและเอเจนต์ที่เหมาะสม",
-    "familySummaryTitle": "แผนครอบครัวของคุณโดยสรุป",
+    "familySummaryTitle": "บุตรหลานของฉัน",
     "familySummaryDescription": "ดูความพร้อมของโปรไฟล์ผู้เรียนแต่ละคน และทำให้ขั้นตอนวางแผนโรงเรียนถัดไปชัดเจน",
     "planningTitle": "ความพร้อมในการวางแผน",
     "planningDescription": "รายละเอียดการเข้าเรียนเป้าหมายคำนวณจากโปรไฟล์ครอบครัวปัจจุบันของคุณ",
@@ -510,7 +527,38 @@
     "findSchools": "ค้นหาโรงเรียน",
     "findSchoolsDescription": "เปรียบเทียบโรงเรียนที่เหมาะกับแผนของคุณ",
     "findAgents": "ค้นหาเอเจนต์",
-    "findAgentsDescription": "เชื่อมต่อกับผู้เชี่ยวชาญด้านการศึกษา"
+    "findAgentsDescription": "เชื่อมต่อกับผู้เชี่ยวชาญด้านการศึกษา",
+    "unknownProfile": "นักเรียน",
+    "valueMissing": "—",
+    "percentValue": "{percent}%",
+    "viewProfile": "ดูโปรไฟล์",
+    "profileReadiness": "ความสมบูรณ์",
+    "profileMetaMissing": "ยังไม่ได้เพิ่มรายละเอียดโปรไฟล์",
+    "entryPlanScheduled": "การเข้าเรียนเป้าหมาย {plan}",
+    "entryPlanPill": "วางแผนแล้ว",
+    "entryPlanNeededPill": "ต้องระบุ",
+    "entryPlanMissingHint": "เพิ่มปีและภาคเรียนที่ต้องการเข้าเรียน",
+    "summaryProfilesChip": "{count} โปรไฟล์",
+    "summaryActiveChip": "ใช้งาน {count}",
+    "summaryPlansChip": "แผนการเข้าเรียน {completed}/{total}",
+    "addedThisWeek": "+{count} สัปดาห์นี้",
+    "noneAddedThisWeek": "ไม่มีโปรไฟล์ใหม่ในสัปดาห์นี้",
+    "percentComplete": "เสร็จแล้ว {percent}%",
+    "needsAttention": "ต้องดำเนินการ",
+    "allProfilesPlanned": "ทุกโปรไฟล์มีแผนแล้ว",
+    "needingPlanShort": "ต้องมีแผน",
+    "profileReadinessTitle": "ความพร้อมของโปรไฟล์",
+    "profileReadinessDescription": "ค่าเฉลี่ยของรายละเอียดการวางแผนที่กรอกไว้ของบุตรหลานคุณ",
+    "acrossProfiles": "จาก {count} โปรไฟล์",
+    "readinessGaugeLabel": "ความพร้อมของโปรไฟล์: {percent}%",
+    "allProfiles": "โปรไฟล์ทั้งหมด",
+    "rosterColumnProfile": "โปรไฟล์",
+    "rosterColumnAction": "การดำเนินการ",
+    "rosterView": "ดู",
+    "rosterMobileMeta": "{yearLevel} · {entryPlan} · {added}",
+    "addFirstStudent": "เพิ่มนักเรียนคนแรก",
+    "promoTitle": "รับความช่วยเหลือจากผู้เชี่ยวชาญ",
+    "promoDescription": "ติดต่อผู้เชี่ยวชาญด้านการศึกษาที่รู้จักโรงเรียนในรายการของคุณ"
   },
   "Shell": {
     "nav": {
@@ -521,14 +569,24 @@
       "settings": "การตั้งค่า"
     },
     "sidebar": {
-      "logoAlt": "SchoolTest"
+      "logoAlt": "SchoolTest",
+      "groups": {
+        "manage": "จัดการ",
+        "account": "บัญชี"
+      },
+      "promo": {
+        "overline": "บุตรหลานที่เชื่อมโยง",
+        "cta": "เพิ่มบุตรหลาน"
+      }
     },
     "topbar": {
       "openNav": "เปิดเมนูนำทาง",
       "toggleNav": "สลับการนำทาง",
       "breadcrumbLabel": "เส้นทางการนำทาง",
       "dashboard": "แดชบอร์ด",
-      "userMenuLabel": "เปิดเมนูผู้ใช้"
+      "userMenuLabel": "เปิดเมนูผู้ใช้",
+      "searchPlaceholder": "ค้นหาโรงเรียนและตัวแทน…",
+      "searchLabel": "เปิดการค้นหา"
     },
     "userMenu": {
       "settings": "การตั้งค่า",
@@ -544,6 +602,15 @@
     "subtitle": "จัดการการตั้งค่าบัญชีและความปลอดภัยของคุณ",
     "changePasswordTitle": "เปลี่ยนรหัสผ่าน",
     "changePasswordSubtitle": "รหัสผ่านใหม่ของคุณต้องมีอย่างน้อย 6 ตัวอักษร",
+    "account": {
+      "title": "บัญชี",
+      "description": "ข้อมูลที่ SchoolTest ใช้ในการเข้าสู่ระบบของคุณ",
+      "emailLabel": "อีเมลสำหรับเข้าสู่ระบบ",
+      "confirmedLabel": "การยืนยันอีเมล",
+      "confirmed": "ยืนยันแล้ว",
+      "unconfirmed": "ยังไม่ยืนยัน",
+      "memberSinceLabel": "เป็นสมาชิกตั้งแต่"
+    },
     "tabsLabel": "ส่วนการตั้งค่า",
     "tabs": {
       "auth": "การยืนยันตัวตน",
@@ -1013,6 +1080,7 @@
     "heading": "บุตรหลานของฉัน",
     "rosterEyebrow": "พื้นที่การเรียนรู้ของครอบครัว",
     "rosterDescription": "เก็บโปรไฟล์ เส้นทาง และกิจกรรมการเรียนรู้ของผู้เรียนแต่ละคนไว้ในที่เดียว",
+    "rosterCounts": "ใช้งาน {active} คน · เก็บถาวร {archived} คน",
     "rosterSummaryLabel": "สรุปโปรไฟล์",
     "rosterActive": "ผู้เรียนที่ใช้งานอยู่",
     "rosterArchived": "โปรไฟล์ที่เก็บถาวร",
@@ -1033,6 +1101,7 @@
     "columnYearLevel": "ระดับชั้น",
     "columnTargetEntry": "การเข้าเรียนเป้าหมาย",
     "columnStatus": "สถานะ",
+    "columnResult": "ผลการทดสอบ",
     "columnAdded": "เพิ่มเมื่อ",
     "columnActions": "การดำเนินการ",
     "actionsLabel": "การดำเนินการสำหรับ {name}",
@@ -1043,6 +1112,7 @@
     "statusArchived": "เก็บถาวรแล้ว",
     "statusEnrolled": "ลงทะเบียนแล้ว",
     "noMatches": "ไม่มีบุตรหลานที่ตรงกับการค้นหาของคุณ",
+    "noMatchesDescription": "ล้างการค้นหา หรือรวมโปรไฟล์ที่เก็บถาวรเพื่อดูเพิ่มเติม",
     "emptyTitle": "ยังไม่มีบุตรหลาน",
     "emptyDescription": "เพิ่มบุตรหลานคนแรกของคุณเพื่อเริ่มติดตามเส้นทางการเรียน",
     "errorTitle": "ไม่สามารถโหลดบุตรหลานของคุณได้",
@@ -1087,6 +1157,7 @@
       "complete": "เสร็จสิ้น"
     },
     "resultSkill": "ทักษะ",
+    "filterAll": "ทั้งหมด",
     "resultSkills": {
       "reading": "การอ่าน",
       "listening": "การฟัง",
@@ -1104,7 +1175,28 @@
     "resultPublished": "เผยแพร่แล้ว",
     "notPublished": "ยังไม่เผยแพร่",
     "profileGoneTitle": "ไม่มีโปรไฟล์ของบุตรหลานคนนี้แล้ว",
-    "profileGoneDescription": "โปรไฟล์อาจถูกลบไปแล้ว บุตรหลานคนอื่นของคุณยังอยู่ในรายการ"
+    "profileGoneDescription": "โปรไฟล์อาจถูกลบไปแล้ว บุตรหลานคนอื่นของคุณยังอยู่ในรายการ",
+    "heroNoDetails": "ยังไม่มีการบันทึกข้อมูลการเข้าเรียน",
+    "heroSessionsPill": "{count} เซสชันการทดสอบ",
+    "enrolmentHeading": "รายละเอียดการเข้าเรียน",
+    "enrolmentEmpty": "ขณะนี้บันทึกไว้เพียงชื่อของบุตรหลานเท่านั้น",
+    "signInEmail": "อีเมลสำหรับเข้าสู่ระบบ",
+    "addedOn": "วันที่เพิ่ม",
+    "guardianHeading": "ข้อมูลติดต่อผู้ปกครอง",
+    "guardianEmpty": "ยังไม่มีการบันทึกข้อมูลติดต่อผู้ปกครอง",
+    "guardianRole": "ผู้ปกครอง",
+    "skillBreakdownHeading": "รายละเอียดตามทักษะ",
+    "skillResultCount": "ผลอย่างเป็นทางการ {count} รายการ",
+    "skillProgressLabel": "ระดับ CEFR {skill}",
+    "notBanded": "ยังไม่จัดระดับ",
+    "skillLadderLabel": "{skill}: CEFR {band} ระดับที่ {rank} จาก {total}",
+    "skillsPendingTitle": "ยังไม่ได้ประเมิน",
+    "skillsPendingDescription": "ยังไม่มีการเผยแพร่ผลอย่างเป็นทางการสำหรับทักษะเหล่านี้",
+    "pagerLabel": "หน้ารายชื่อ",
+    "pagerPage": "หน้า {page} จาก {pages}",
+    "pagerPrevious": "หน้าก่อนหน้า",
+    "pagerNext": "หน้าถัดไป",
+    "pagerGoTo": "ไปที่หน้า {page}"
   },
   "Notifications": {
     "meta": {

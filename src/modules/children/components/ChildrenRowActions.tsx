@@ -12,6 +12,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  IconButton,
 } from '@/modules/design-system';
 import { ArchiveConfirmDialog } from '@/modules/children/components/ArchiveConfirmDialog';
 import {
@@ -60,11 +61,8 @@ export function ChildrenRowActions({ student }: ChildrenRowActionsProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
-          aria-label={t('actionsLabel', { name })}
-          className="inline-flex size-11 items-center justify-center rounded-md text-muted-foreground transition-colors duration-150 ease-out hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none"
-        >
-          <MoreHorizontal aria-hidden="true" className="size-4" />
-        </DropdownMenuTrigger>
+          render={<IconButton icon={MoreHorizontal} label={t('actionsLabel', { name })} />}
+        />
         <DropdownMenuContent align="end">
           <DropdownMenuItem
             className="min-h-11"
