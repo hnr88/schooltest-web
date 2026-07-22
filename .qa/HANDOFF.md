@@ -124,3 +124,63 @@ read-back defect.
 - Task DAG: authored into `.thellmspace/tasks/` across 12 waves, ids `001-339`, ~286 tasks.
 - Build: **NOT STARTED** — W2 (backend metric surfaces) and W0 (tokens) are the two entry points;
   they have no dependencies on each other and W2 gates the dashboard.
+
+---
+
+## UPDATE 2026-07-22 ~22:15 — reconciliation landed and CORRECTED the contract
+
+`.qa/intake/RECONCILIATION.md` (534 lines) is now on disk and is the authoritative design↔API↔docs
+map. Read it before building anything. Three things changed since this file was first written:
+
+### 1. `C-DASH-HOUSEHOLD` v1 was WRONG and is superseded by Amendment A1
+
+v1 returned a single per-child `cefrBand` / `cefrStageIndex` / `acaraPhase`. That is a
+**cross-skill composite**, forbidden outright by `DOC1:304` and `DOC0:46`. Corrected in
+`.qa/CONTRACTS.md` → **AMENDMENT A1**: no per-child level exists; bands live **only** in
+`skills[]`, one entry per skill, built from a real `GROUP BY skill` over all official results
+(not the lossy 5-row window), with absent skills rendered explicitly as `not_assessed`.
+
+**UI consequence:** the design's single CEFR tick rail becomes **one rail per skill**, over the
+real ladder `pre_A1 → A1 → A2 → B1 → B2 → C1`. The design's `A1…C2` rail is not buildable — wrong
+ladder AND a composite.
+
+Any task file authored against v1 must be reconciled to v2 before it is built.
+
+### 2. The BLOCKED list grew to 12 — the servability roll-up is 22 / 7 / 27
+
+**22 SERVABLE · 7 NEEDS-BACKEND (all collapsing into the one new endpoint) · 27 BLOCKED.**
+New blockers: **B-9** per-child single level · **B-10** hero prose projections and percent deltas ·
+**B-11** school `rating` (no field, and `SchoolHit` is a strict schema so an extra key 500s) ·
+**B-12** the "accept SchoolTest placement" copy claim (count is servable, claim is not).
+
+The navy hero ships **1 of its 3 stats** truthfully today.
+
+### 3. The in-flight uncommitted work is mostly SAFE and partly LOAD-BEARING
+
+`.qa/intake/RECONCILIATION.md` §4 — and `.qa/DECISIONS.md` **D-SCOPE-3a** — replace the coarse
+"drop what was created" reading:
+
+- **§4.1 hard guarantee:** nothing under `src/lib/axios/**`, `*/queries/**` or `src/modules/auth`
+  was touched. Data fetching, auth and route guarding are intact.
+- **§4.4 lists 10 items of FUNCTIONAL wiring that must be preserved**, notably
+  `src/modules/dashboard/lib/dashboard-overview.ts` — the only place dashboard metrics are derived
+  today, and therefore **the seam where `C-DASH-HOUSEHOLD` lands** — and the search-store setter
+  refactors whose outgoing request shape is unchanged and must not be "fixed" back.
+- **§4.3 flags three coupled pairs**: `globals.css` ↔ `src/lib/utils.ts` `THEME_CLASS_GROUPS`
+  (a renamed token silently breaks `cn()` merging, and `design-tokens.spec.ts` asserts it in the
+  real DOM); the `design-system/index.ts` barrel; and the six i18n catalogues where copy is
+  cosmetic but **key shape is not**.
+
+**Read `.qa/intake/RECONCILIATION.md` §4.4 before deleting or rewriting anything.**
+
+### Also done since the first handoff
+
+- `eslint.config.mjs` ignores `dashbaord-design/**` and `.qa/**`; **`pnpm lint` is now 0 errors**
+  (was 2, both from a vendored viewer script in the design export). — `.qa/DECISIONS.md` D-OPS-4
+- 45 mission-2 task files archived to `.thellmspace/tasks-archive-mission2/`. — D-OPS-5
+- Real-data reality recorded in **D-DATA-1**: practice sessions have real timestamps but a
+  **5-second median duration** (synthetic seed). The dashboard will render honestly small numbers.
+  Padding them to resemble the design's `4h 20m` is a fake-green violation — design the sparse
+  state instead.
+- Intake committed as **`b83fe9b`**. The 210 pre-existing uncommitted working-tree entries were
+  deliberately left untouched.

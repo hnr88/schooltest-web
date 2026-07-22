@@ -1,0 +1,245 @@
+[
+  {
+    "id": "001",
+    "file": ".qa/tasks/001-oklch-light-colour-foundation.md",
+    "title": "Land the design's 21 swatch-board colours as OKLCH `@theme` tokens with hex provenance (light)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--colors.html",
+      ".qa/design/spec/04-ds-foundations.md#2-colour-system",
+      ".qa/design/spec/04-ds-foundations.md#TAILWIND-V4-MAPPING"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "002",
+    "file": ".qa/tasks/002-interaction-state-colour-tokens.md",
+    "title": "Author the hover / disabled colour role tokens from the design's `style-hover` attributes",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--buttons.html",
+      ".qa/design/screens/ds--alerts.html",
+      ".qa/design/spec/04-ds-foundations.md#4-buttons"
+    ],
+    "depends_on": ["001"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "003",
+    "file": ".qa/tasks/003-dark-mode-token-layer.md",
+    "title": "Complete and prove the `.dark` token layer, including the dark-only component tints the board shows",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--dark-mode.html",
+      ".qa/design/spec/04-ds-foundations.md#2-5-dark-mode"
+    ],
+    "depends_on": ["001"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "004",
+    "file": ".qa/tasks/004-spacing-and-frame-foundation.md",
+    "title": "Settle the spacing scale against the design's off-4pt values and land the 1240px page frame token",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--header.html",
+      ".qa/design/spec/04-ds-foundations.md#9-responsive-behaviour-present-in-the-markup",
+      ".qa/design/spec/04-ds-foundations.md#10-radius-spacing-and-size-inventory"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "005",
+    "file": ".qa/tasks/005-type-scale-eight-published-steps.md",
+    "title": "Land the design's eight published type steps as `--text-*` tokens with exact line-height and tracking",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--typography.html",
+      ".qa/design/spec/04-ds-foundations.md#3-1-the-eight-published-steps"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "006",
+    "file": ".qa/tasks/006-chrome-type-steps.md",
+    "title": "Land the seven chrome type steps the typography board omits (masthead, section, eyebrow, group label, form label, count, inline code)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--header.html",
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/screens/ds--badges.html",
+      ".qa/design/spec/04-ds-foundations.md#3-2-additional-type-steps-used-by-the-ds-chrome-but-absent-from-the-board"
+    ],
+    "depends_on": ["005"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "007",
+    "file": ".qa/tasks/007-radius-scale.md",
+    "title": "Complete the radius scale with the design's 5px, 7px and 9px steps and publish the design-name→token map",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/screens/ds--alerts.html",
+      ".qa/design/spec/04-ds-foundations.md#10-radius-spacing-and-size-inventory"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "008",
+    "file": ".qa/tasks/008-shadow-scale.md",
+    "title": "Confirm the four-step shadow scale and add the seven component elevations the design actually paints",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--alerts.html",
+      ".qa/design/screens/ds--dark-mode.html",
+      ".qa/design/spec/04-ds-foundations.md#2-4"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "009",
+    "file": ".qa/tasks/009-google-sans-font-provenance.md",
+    "title": "Prove and correct the self-hosted Google Sans stack — provenance, variable axis, and the design's exact fallback chain",
+    "layer": "ui",
+    "kind": "fix",
+    "wave": "W0",
+    "contract": [],
+    "design": [".qa/design/spec/04-ds-foundations.md#0-1-global-stylesheet"],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "010",
+    "file": ".qa/tasks/010-motion-easing-duration-tokens.md",
+    "title": "Land the exponential easing tokens and publish the design's five canonical transition durations",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/screens/ds--buttons.html",
+      ".qa/design/spec/04-ds-foundations.md#0-2-keyframes-the-complete-animation-inventory"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "011",
+    "file": ".qa/tasks/011-four-design-keyframes.md",
+    "title": "Land `st-fade-in`, `st-pop-in`, `st-toast-in` and `st-spin` as `--animate-*` tokens with a reduced-motion variant, and wire the dialog panel to `st-pop-in`",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--dark-mode.html",
+      ".qa/design/spec/04-ds-foundations.md#0-2-keyframes-the-complete-animation-inventory"
+    ],
+    "depends_on": ["010"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "012",
+    "file": ".qa/tasks/012-shimmer-and-pulse-rule-compliant.md",
+    "title": "Re-author `st-shimmer` and `st-rec-pulse` to animate transform/opacity only, preserving the shipped skeleton visual",
+    "layer": "ui",
+    "kind": "fix",
+    "wave": "W0",
+    "contract": [],
+    "design": [".qa/design/spec/04-ds-foundations.md#0-2-keyframes-the-complete-animation-inventory"],
+    "depends_on": ["010", "011"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "013",
+    "file": ".qa/tasks/013-focus-ring-foundation.md",
+    "title": "Author the focus-ring foundation from `--ring` — a WCAG-conformant `focus-ring` utility, the design's input halo, and the error ring",
+    "layer": "a11y",
+    "kind": "implement",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/screens/ds--dark-mode.html",
+      ".qa/design/spec/04-ds-foundations.md#5-1-text-input"
+    ],
+    "depends_on": ["001", "008"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "014",
+    "file": ".qa/tasks/014-design-token-e2e-sweep.md",
+    "title": "Consolidate the W0 foundation into one table-driven design-token e2e across light, dark, reduced-motion and both viewports",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W0",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--colors.html",
+      ".qa/design/screens/ds--typography.html",
+      ".qa/design/screens/ds--dark-mode.html",
+      ".qa/design/spec/04-ds-foundations.md#TAILWIND-V4-MAPPING"
+    ],
+    "depends_on": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013"
+    ],
+    "status": "TODO",
+    "started_at": null
+  }
+]

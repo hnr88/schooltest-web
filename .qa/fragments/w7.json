@@ -1,0 +1,419 @@
+[
+  {
+    "id": "200",
+    "file": ".qa/tasks/200-wizard-portal-frame-tokens.md",
+    "title": "Add the portal wizard token block and rebuild /dashboard/children/new as the portal two-column frame",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#21-page-layout",
+      ".qa/design/spec/04-ds-foundations.md#tailwind-v4-mapping"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "201",
+    "file": ".qa/tasks/201-wizard-step-rail.md",
+    "title": "Build the 230px vertical step rail with the done/current/upcoming state matrix and gated jumps",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#22-step-rail"
+    ],
+    "depends_on": ["200"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "202",
+    "file": ".qa/tasks/202-wizard-step-card.md",
+    "title": "Build the portal step card with the per-step heading block and the step-change transition",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#23-step-card"
+    ],
+    "depends_on": ["200"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "203",
+    "file": ".qa/tasks/203-wizard-nav-footer.md",
+    "title": "Build the wizard nav footer — Back, the Step n of 5 counter, and Continue / Confirm & add child",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#29-wizard-navigation-footer"
+    ],
+    "depends_on": ["202"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "204",
+    "file": ".qa/tasks/204-portal-field-text-input.md",
+    "title": "Re-skin the wizard text field to the portal label + 48px input + help text stack",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#14-shared-portal-primitives"
+    ],
+    "depends_on": ["200"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "205",
+    "file": ".qa/tasks/205-portal-select-skin.md",
+    "title": "Re-skin the wizard select trigger and popup to the portal 48px box, keeping localized item labels",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#14-shared-portal-primitives"
+    ],
+    "depends_on": ["200", "204"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "206",
+    "file": ".qa/tasks/206-portal-chip-radiogroup.md",
+    "title": "Add the portal chip variant to ChoicePillGroup — wide, medium and square sizes at 44px",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#14-shared-portal-primitives"
+    ],
+    "depends_on": ["200"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "207",
+    "file": ".qa/tasks/207-wizard-field-validation-display.md",
+    "title": "Author the wizard's per-field invalid state — border, message, icon and ARIA — that the design omits",
+    "layer": "a11y",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/spec/03-portal-forms.md#unknowns",
+      ".qa/design/spec/04-ds-foundations.md#unknowns"
+    ],
+    "depends_on": ["204"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "208",
+    "file": ".qa/tasks/208-step1-personal-text-fields.md",
+    "title": "Rebuild step 1 Personal — given/family name, email and passport in the design's row grouping",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#24-step-1--personal-details"
+    ],
+    "depends_on": ["204", "207"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "209",
+    "file": ".qa/tasks/209-step1-date-of-birth.md",
+    "title": "Ship step 1's Date of birth field and resolve the design's DD/MM/YYYY text input against the ISO wire format",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#24-step-1--personal-details"
+    ],
+    "depends_on": ["204", "207"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "210",
+    "file": ".qa/tasks/210-step1-gender-chip-group.md",
+    "title": "Ship step 1's Gender chip group as a full-width portal wide-chip radiogroup",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#24-step-1--personal-details"
+    ],
+    "depends_on": ["206"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "211",
+    "file": ".qa/tasks/211-step1-nationality-control.md",
+    "title": "Re-skin the Nationality control to the portal select box and keep the full country list",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#24-step-1--personal-details"
+    ],
+    "depends_on": ["204", "205"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "212",
+    "file": ".qa/tasks/212-step2-school-and-year-level.md",
+    "title": "Rebuild step 2's Current school and Current year level row in the portal dialect",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#25-step-2--education"
+    ],
+    "depends_on": ["204", "205"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "213",
+    "file": ".qa/tasks/213-step2-test-year-level.md",
+    "title": "Ship step 2's Test year level field with the design's help text, and resolve the square-chip conflict",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#25-step-2--education"
+    ],
+    "depends_on": ["205"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "214",
+    "file": ".qa/tasks/214-step2-target-entry-year-and-term.md",
+    "title": "Ship step 2's required Target entry year select and Target entry term medium-chip row",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#25-step-2--education"
+    ],
+    "depends_on": ["205", "206"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "215",
+    "file": ".qa/tasks/215-step3-guardian-fields.md",
+    "title": "Rebuild step 3 Parent or guardian — name, phone, email and WeChat ID in the design's row grouping",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#26-step-3--parent-or-guardian"
+    ],
+    "depends_on": ["204", "207"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "216",
+    "file": ".qa/tasks/216-step3-contact-channel-chips.md",
+    "title": "Ship step 3's Preferred contact channel as a full-width portal wide-chip radiogroup",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#26-step-3--parent-or-guardian"
+    ],
+    "depends_on": ["206"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "217",
+    "file": ".qa/tasks/217-step4-media-dropzones.md",
+    "title": "Rebuild step 4 Photo & voice — the info panel and the two portal dropzones",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["C-UPLOAD-PARENT"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#27-step-4--photo--voice"
+    ],
+    "depends_on": ["202", "204"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "218",
+    "file": ".qa/tasks/218-step4-media-filled-states.md",
+    "title": "Author step 4's uploading, uploaded-preview and remove states in the portal dialect",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["C-UPLOAD-PARENT"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#unknowns"
+    ],
+    "depends_on": ["217"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "219",
+    "file": ".qa/tasks/219-step5-review-summary-table.md",
+    "title": "Rebuild step 5 Review & confirm as the design's four-row summary table",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#28-step-5--review--confirm"
+    ],
+    "depends_on": ["202"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "220",
+    "file": ".qa/tasks/220-step5-cost-notice-blocked.md",
+    "title": "BLOCKED — step 5's per-child cost notice has no pricing, plan or invoice data source",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["B-7"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#28-step-5--review--confirm"
+    ],
+    "depends_on": ["219"],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "221",
+    "file": ".qa/tasks/221-wizard-submit-success.md",
+    "title": "Wire Confirm & add child to the real create mutation with the st-pop-in success confirmation",
+    "layer": "integration",
+    "kind": "wire",
+    "wave": "W7",
+    "contract": ["C-STUDENT-CREATE"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#a4-not-present-in-the-design"
+    ],
+    "depends_on": ["203", "219"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "222",
+    "file": ".qa/tasks/222-wizard-submit-error-path.md",
+    "title": "Re-skin the wizard submit error path — offline, validation and server faults on step 5",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W7",
+    "contract": ["C-STUDENT-CREATE"],
+    "design": [
+      ".qa/design/spec/03-portal-forms.md#unknowns",
+      ".qa/design/spec/04-ds-foundations.md#unknowns"
+    ],
+    "depends_on": ["221"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "223",
+    "file": ".qa/tasks/223-wizard-375-composition.md",
+    "title": "Compose the whole wizard at 375px — horizontal rail, stacked rows, reachable footer",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W7",
+    "contract": ["n/a"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#responsive"
+    ],
+    "depends_on": ["201", "202", "203", "217", "219"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "224",
+    "file": ".qa/tasks/224-wizard-edit-mode-parity.md",
+    "title": "Carry the re-skinned wizard through edit mode without breaking the prefill or the PUT",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W7",
+    "contract": ["C-STUDENT-UPDATE"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#21-page-layout"
+    ],
+    "depends_on": ["203", "219"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "225",
+    "file": ".qa/tasks/225-wizard-regression-a11y-sweep.md",
+    "title": "Sweep the re-skinned wizard — full regression, axe at 375 and 1280, motion audit, six-catalog parity",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W7",
+    "contract": ["C-STUDENT-CREATE", "C-UPLOAD-PARENT"],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#2-add-child-wizard-portal--the-canonical-multi-step-form"
+    ],
+    "depends_on": ["221", "222", "223", "224"],
+    "status": "TODO",
+    "started_at": null
+  }
+]

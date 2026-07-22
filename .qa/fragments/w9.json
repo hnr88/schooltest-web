@@ -1,0 +1,560 @@
+[
+  {
+    "id": "260",
+    "file": ".qa/tasks/260-fix-sms-optout-roundtrip-race.md",
+    "title": "Fix the red notification-preference-controls round-trip — the SMS opt-out is clobbered by a concurrent spec writing the same parent's preference row",
+    "layer": "regression",
+    "kind": "fix",
+    "wave": "W9",
+    "contract": [
+      "C-PREF-GET",
+      "C-PREF-UPDATE"
+    ],
+    "design": [
+      "n/a (defect fix — no design surface changes)"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "261",
+    "file": ".qa/tasks/261-notifications-feed-shell.md",
+    "title": "Recut the notifications page to the portal shell — 820px column, 30px title, live unread subtitle, single 24px feed card",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST"
+    ],
+    "design": [
+      ".qa/design/screens/portal--notifications.html L3-L11, L36-L38",
+      ".qa/design/spec/03-portal-forms.md#51-notification-feed--portal-canonical"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "013",
+      "035",
+      "110"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "262",
+    "file": ".qa/tasks/262-notification-row-read-unread.md",
+    "title": "Rebuild the notification row to the design — 40px glyph tile, hairline rows, and the unread/read tile+dot state pair",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST"
+    ],
+    "design": [
+      ".qa/design/screens/portal--notifications.html L14-L22",
+      ".qa/design/spec/03-portal-forms.md#51-notification-feed--portal-canonical (row + row states)"
+    ],
+    "depends_on": [
+      "001",
+      "006",
+      "007",
+      "010",
+      "013",
+      "261"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "263",
+    "file": ".qa/tasks/263-notification-relative-timestamps.md",
+    "title": "Ship the design's three-tier notification timestamp — relative hours, weekday name, then D MMMM",
+    "layer": "frontend",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST"
+    ],
+    "design": [
+      ".qa/design/screens/portal--notifications.html L19",
+      ".qa/design/spec/03-portal-forms.md#7-data-inventory (row timestamp)"
+    ],
+    "depends_on": [
+      "262"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "264",
+    "file": ".qa/tasks/264-notification-today-earlier-groups.md",
+    "title": "Group the feed into the design's TODAY / EARLIER sections with the 12px uppercase group header",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST"
+    ],
+    "design": [
+      ".qa/design/screens/portal--notifications.html L12, L24",
+      ".qa/design/spec/03-portal-forms.md#51-notification-feed--portal-canonical (group header)"
+    ],
+    "depends_on": [
+      "006",
+      "262"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "265",
+    "file": ".qa/tasks/265-notification-mark-read.md",
+    "title": "Recut per-row mark-as-read to the design's dot affordance with a real optimistic write that survives reload",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-READ"
+    ],
+    "design": [
+      ".qa/design/screens/portal--notifications.html L21",
+      ".qa/design/spec/03-portal-forms.md#51 (row states) + #A4 (mark-as-read transition)"
+    ],
+    "depends_on": [
+      "010",
+      "013",
+      "020",
+      "262"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "266",
+    "file": ".qa/tasks/266-notification-mark-all-read.md",
+    "title": "Build the header \"Mark all as read\" text action with its real bulk write and honest disabled state",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-READ-ALL"
+    ],
+    "design": [
+      ".qa/design/screens/portal--notifications.html L4-L10",
+      ".qa/design/spec/03-portal-forms.md#51 (header)"
+    ],
+    "depends_on": [
+      "010",
+      "020",
+      "034",
+      "261",
+      "265"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "267",
+    "file": ".qa/tasks/267-notification-category-filters.md",
+    "title": "Add the category + unread filter chips over the real ?category= and ?read= query parameters",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L19-L23 (Pill chip primitive)",
+      ".qa/design/spec/03-portal-forms.md#14-shared-portal-primitives (PortalChip Pill) + #51 (feed)"
+    ],
+    "depends_on": [
+      "013",
+      "032",
+      "261",
+      "264"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "268",
+    "file": ".qa/tasks/268-notification-deep-links.md",
+    "title": "Make the whole notification row its deep link, preserving every calm not-found path",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST"
+    ],
+    "design": [
+      ".qa/design/screens/portal--notifications.html L14-L22 (row is one target)",
+      ".qa/design/spec/03-portal-forms.md#51"
+    ],
+    "depends_on": [
+      "013",
+      "262"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "269",
+    "file": ".qa/tasks/269-notification-feed-pagination.md",
+    "title": "Recut feed pagination to the portal dialect over the real server pagination meta",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST"
+    ],
+    "design": [
+      ".qa/design/spec/05-ds-components.md (pagination) + .qa/design/screens/portal--notifications.html L36 (card foot)",
+      ".qa/design/spec/03-portal-forms.md#14-shared-portal-primitives (PortalGhostButton)"
+    ],
+    "depends_on": [
+      "041",
+      "261"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "270",
+    "file": ".qa/tasks/270-notification-feed-states.md",
+    "title": "Give the feed its three honest states — shimmer skeleton, empty card, and a retryable error inside the card",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST"
+    ],
+    "design": [
+      ".qa/design/spec/03-portal-forms.md#a3-declared--keyframes-present-in-the-export-but-not-used-by-these-screens (st-shimmer)",
+      ".qa/design/spec/06-auth-states-landing.md (skeletons + empty states)",
+      ".qa/design/screens/portal--notifications.html L11-L37"
+    ],
+    "depends_on": [
+      "012",
+      "033",
+      "049",
+      "050",
+      "261"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "271",
+    "file": ".qa/tasks/271-notification-bell-popover.md",
+    "title": "Rebuild the topbar bell popover to the app dropdown panel — 420px, semantic icon tiles, NEW count badge, unread tint",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST",
+      "C-NOTIF-READ",
+      "C-NOTIF-READ-ALL"
+    ],
+    "design": [
+      ".qa/design/screens/app--notifications.html L12-L45",
+      ".qa/design/spec/03-portal-forms.md#52-notification-panel--app-variant-app--notificationshtml"
+    ],
+    "depends_on": [
+      "031",
+      "047",
+      "121",
+      "262",
+      "263"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "272",
+    "file": ".qa/tasks/272-settings-shell-tabs.md",
+    "title": "Recut the settings shell to the portal column — 30px title, portal subtitle, and the URL-addressable tab row re-dressed",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-UI-SHELL-NAV"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L3-L7",
+      ".qa/design/spec/03-portal-forms.md#41-settings--portal-canonical",
+      ".qa/design/spec/05-ds-components.md (underline tabs)"
+    ],
+    "depends_on": [
+      "042",
+      "110",
+      "261"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "273",
+    "file": ".qa/tasks/273-settings-account-card.md",
+    "title": "Rebuild the settings Account card to the design's avatar row over the real /api/users/me payload",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-AUTH-ME"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L8-L15",
+      ".qa/design/spec/03-portal-forms.md#section-1--account-l8-15"
+    ],
+    "depends_on": [
+      "035",
+      "038",
+      "272"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "274",
+    "file": ".qa/tasks/274-settings-language-card.md",
+    "title": "Build the settings Language card as the real locale switcher in the design's pill chips",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-UI-SHELL-NAV"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L16-L24",
+      ".qa/design/spec/03-portal-forms.md#section-2--language-l16-24"
+    ],
+    "depends_on": [
+      "032",
+      "272"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "275",
+    "file": ".qa/tasks/275-settings-password-security-card.md",
+    "title": "Rebuild the Password & security card in the portal dialect over the real change-password flow, without the two facts that have no data",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-AUTH-CHANGE",
+      "C-AUTH-ME"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L37-L40",
+      ".qa/design/spec/03-portal-forms.md#section-4--password--security-l37-40"
+    ],
+    "depends_on": [
+      "013",
+      "020",
+      "022",
+      "272"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "276",
+    "file": ".qa/tasks/276-notification-channel-toggles.md",
+    "title": "Rebuild the four delivery-channel toggle rows to the portal switch — 46×27 track, 19px transform travel, SMS caveat intact",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-PREF-GET",
+      "C-PREF-UPDATE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L25-L36",
+      ".qa/design/spec/03-portal-forms.md#14-shared-portal-primitives (PortalToggle) + #section-3--notifications-l25-36 + #a1-declared--settings-toggle"
+    ],
+    "depends_on": [
+      "010",
+      "028",
+      "260",
+      "272"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "277",
+    "file": ".qa/tasks/277-notification-category-locked-toggles.md",
+    "title": "Recut the category toggles and give the non-suppressible account/security rows a truthful locked state",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-PREF-GET",
+      "C-PREF-UPDATE",
+      "C-NOTIF-EVENTS"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L25-L36",
+      ".qa/design/spec/03-portal-forms.md#section-3--notifications-l25-36"
+    ],
+    "depends_on": [
+      "031",
+      "276"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "278",
+    "file": ".qa/tasks/278-notification-digest-field.md",
+    "title": "Recut the email-frequency digest field to the portal select, keeping the deferred options honestly unselectable",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-PREF-GET",
+      "C-PREF-UPDATE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L25-L36 (card + row rhythm)",
+      ".qa/design/spec/03-portal-forms.md#14-shared-portal-primitives (PortalSelect)"
+    ],
+    "depends_on": [
+      "013",
+      "025",
+      "272"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "279",
+    "file": ".qa/tasks/279-notification-preferences-save-states.md",
+    "title": "Recut the preference save affordance and its four states — idle, saving, saved, refused — in the portal dialect",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-PREF-GET",
+      "C-PREF-UPDATE"
+    ],
+    "design": [
+      ".qa/design/spec/03-portal-forms.md#14-shared-portal-primitives (PortalPrimaryButton) + #a3 (shimmer for async surfaces)",
+      ".qa/design/screens/portal--settings.html L25-L36"
+    ],
+    "depends_on": [
+      "020",
+      "033",
+      "034",
+      "049",
+      "276",
+      "277",
+      "278"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "280",
+    "file": ".qa/tasks/280-push-subscription-control.md",
+    "title": "Recut the device-notification control to the portal card, keeping every real push status and both real endpoints",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-PUSH-VAPID-CONFIG",
+      "C-PUSH-SUBSCRIBE",
+      "C-PUSH-UNSUBSCRIBE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--settings.html L37-L40 (row + ghost action)",
+      ".qa/design/spec/03-portal-forms.md#42-settings--app-variant (Security card row shape)"
+    ],
+    "depends_on": [
+      "020",
+      "031",
+      "272"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "281",
+    "file": ".qa/tasks/281-notifications-settings-mobile-375.md",
+    "title": "Compose notifications and settings at 375px — the mobile rules the design never wrote",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W9",
+    "contract": [
+      "C-NOTIF-LIST",
+      "C-PREF-GET",
+      "C-PREF-UPDATE"
+    ],
+    "design": [
+      ".qa/design/spec/03-portal-forms.md#responsive",
+      ".qa/design/screens/portal--notifications.html L3",
+      ".qa/design/screens/portal--settings.html L3",
+      ".qa/design/screens/app--notifications.html L12"
+    ],
+    "depends_on": [
+      "125",
+      "267",
+      "270",
+      "271",
+      "279",
+      "280"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "282",
+    "file": ".qa/tasks/282-blocked-billing-plan-invoices.md",
+    "title": "BLOCKED — the portal Billing screen and every plan/credit/invoice surface has no data model to build against",
+    "layer": "frontend",
+    "kind": "verify",
+    "wave": "W9",
+    "contract": [
+      "B-7"
+    ],
+    "design": [
+      ".qa/design/screens/portal--billing.html",
+      ".qa/design/spec/03-portal-forms.md#6-billing-portal"
+    ],
+    "depends_on": [
+      "116",
+      "272"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "283",
+    "file": ".qa/tasks/283-blocked-per-child-unread-count.md",
+    "title": "BLOCKED — a per-child unread notification count cannot be derived; the feed deliberately withholds the child id",
+    "layer": "frontend",
+    "kind": "verify",
+    "wave": "W9",
+    "contract": [
+      "B-8"
+    ],
+    "design": [
+      ".qa/design/screens/portal--notifications.html L7",
+      ".qa/design/spec/03-portal-forms.md#7-data-inventory"
+    ],
+    "depends_on": [
+      "266"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  }
+]

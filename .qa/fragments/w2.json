@@ -1,0 +1,346 @@
+[
+  {
+    "id": "060",
+    "file": ".qa/tasks/060-household-progress-contract.md",
+    "title": "Author the C-DASH-HOUSEHOLD Zod contract module and prove it against real Postgres rows",
+    "layer": "backend",
+    "kind": "scaffold",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#10-metric-inventory",
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/spec/02-portal-children.md#a5-component-childcard"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "061",
+    "file": ".qa/tasks/061-household-time-window-utils.md",
+    "title": "Author the pure ISO-week / trailing-7-day / practice-streak helpers for the household aggregate",
+    "layer": "backend",
+    "kind": "build",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#44-metric-4--practice-minutes-last-7-days-bar-chart-card",
+      ".qa/design/screens/portal--main.html"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "062",
+    "file": ".qa/tasks/062-my-progress-endpoint-household-counts.md",
+    "title": "Stand up GET /api/my/progress end-to-end returning the four household count aggregates",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#41-metric-1--tests-completed",
+      ".qa/design/screens/portal--main.html"
+    ],
+    "depends_on": ["060"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "063",
+    "file": ".qa/tasks/063-household-practice-minutes-series.md",
+    "title": "Add practiceSecondsThisWeek, the 7-day practiceByDay series and strongestDay to /api/my/progress",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#43-metric-3--practice-this-week",
+      ".qa/design/spec/01-portal-dashboard.md#44-metric-4--practice-minutes-last-7-days-bar-chart-card",
+      ".qa/design/screens/portal--main.html"
+    ],
+    "depends_on": ["061", "062"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "064",
+    "file": ".qa/tasks/064-household-per-child-activity-metrics.md",
+    "title": "Add per-child testsCompleted, practiceSecondsThisWeek, practiceDayStreak and lastActivityAt",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#a5-component-childcard",
+      ".qa/design/spec/01-portal-dashboard.md#5-my-children-section"
+    ],
+    "depends_on": ["061", "063"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "065",
+    "file": ".qa/tasks/065-household-per-child-cefr-and-skills.md",
+    "title": "Add per-child cefrBand, cefrStageIndex, acaraPhase and the skills[] array to /api/my/progress",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#45-metric-5--per-child-cefr-journey-stage-dots",
+      ".qa/design/spec/02-portal-children.md#b4-component-leveljourney",
+      ".qa/design/spec/02-portal-children.md#b5-component-skillscard"
+    ],
+    "depends_on": ["060", "064"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "066",
+    "file": ".qa/tasks/066-household-focus-skill-derivation.md",
+    "title": "Derive focusSkill from readiness rank with the attribute-probability tiebreak, and close the C-DASH-HOUSEHOLD shape",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#46-metric-6--per-child-focus-skill",
+      ".qa/design/spec/02-portal-children.md#b5-component-skillscard"
+    ],
+    "depends_on": ["065"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "067",
+    "file": ".qa/tasks/067-household-progress-edge-cases.md",
+    "title": "Harden /api/my/progress edge cases — zero children, archived children, empty week, unknown enum",
+    "layer": "backend",
+    "kind": "fix",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#a7-true-empty-state",
+      ".qa/design/spec/06-auth-states-landing.md"
+    ],
+    "depends_on": ["066"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "068",
+    "file": ".qa/tasks/068-household-progress-security.md",
+    "title": "SECURITY — prove /api/my/progress leaks no other household and no private column",
+    "layer": "security",
+    "kind": "verify",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [],
+    "depends_on": ["067"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "069",
+    "file": ".qa/tasks/069-child-result-history-contract.md",
+    "title": "Author the C-CHILD-RESULT-HISTORY Zod contract module and prove it against real result rows",
+    "layer": "backend",
+    "kind": "scaffold",
+    "wave": "W2",
+    "contract": ["C-CHILD-RESULT-HISTORY"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#b6-component-recentresults",
+      ".qa/design/screens/portal--child-detail.html"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "070",
+    "file": ".qa/tasks/070-child-result-history-endpoint.md",
+    "title": "Stand up GET /api/my/students/:documentId/results with ownership, official-only scope and pagination",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-CHILD-RESULT-HISTORY"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#b6-component-recentresults",
+      ".qa/design/screens/portal--child-detail.html"
+    ],
+    "depends_on": ["069"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "071",
+    "file": ".qa/tasks/071-child-result-history-query-validation.md",
+    "title": "Enforce the strict query contract on /api/my/students/:documentId/results — page, pageSize, skill, unknown keys",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-CHILD-RESULT-HISTORY"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#b5-component-skillscard",
+      ".qa/design/spec/02-portal-children.md#b6-component-recentresults"
+    ],
+    "depends_on": ["070"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "072",
+    "file": ".qa/tasks/072-child-result-history-linkage-fields.md",
+    "title": "Add previousResultDocumentId and sessionDocumentId to the child result history (closes G12/G5)",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-CHILD-RESULT-HISTORY"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#b6-component-recentresults",
+      ".qa/design/spec/02-portal-children.md#b2-component-kpistrip"
+    ],
+    "depends_on": ["070"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "073",
+    "file": ".qa/tasks/073-child-result-history-pagination-sort.md",
+    "title": "Prove pagination arithmetic and sort determinism on the child result history",
+    "layer": "backend",
+    "kind": "fix",
+    "wave": "W2",
+    "contract": ["C-CHILD-RESULT-HISTORY"],
+    "design": [".qa/design/spec/02-portal-children.md#b6-component-recentresults"],
+    "depends_on": ["071", "072"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "074",
+    "file": ".qa/tasks/074-child-result-history-security.md",
+    "title": "SECURITY — prove the child result history refuses foreign children, transient results and bad queries",
+    "layer": "security",
+    "kind": "verify",
+    "wave": "W2",
+    "contract": ["C-CHILD-RESULT-HISTORY"],
+    "design": [],
+    "depends_on": ["073"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "075",
+    "file": ".qa/tasks/075-parent-result-view-branch.md",
+    "title": "Add the parent branch to the result-view ownership matrix and grant getResult to parent",
+    "layer": "backend",
+    "kind": "implement",
+    "wave": "W2",
+    "contract": ["C-PARENT-RESULT-VIEW"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#b5-component-skillscard",
+      ".qa/design/screens/portal--child-detail.html"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "076",
+    "file": ".qa/tasks/076-parent-result-view-404-discipline.md",
+    "title": "Enforce 404-only failure and combined-scope child gating on the parent result read",
+    "layer": "backend",
+    "kind": "fix",
+    "wave": "W2",
+    "contract": ["C-PARENT-RESULT-VIEW"],
+    "design": [".qa/design/spec/02-portal-children.md#b6-component-recentresults"],
+    "depends_on": ["075"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "077",
+    "file": ".qa/tasks/077-parent-result-view-security.md",
+    "title": "SECURITY — prove the widened result read leaks no PII, no artefacts and no other family's data",
+    "layer": "security",
+    "kind": "verify",
+    "wave": "W2",
+    "contract": ["C-PARENT-RESULT-VIEW"],
+    "design": [],
+    "depends_on": ["076"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "078",
+    "file": ".qa/tasks/078-w2-types-and-regression-gate.md",
+    "title": "Regenerate Strapi types, typecheck both packages, and prove W2 changed no existing endpoint",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD", "C-PARENT-RESULT-VIEW", "C-CHILD-RESULT-HISTORY"],
+    "design": [],
+    "depends_on": ["068", "074", "077"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "079",
+    "file": ".qa/tasks/079-blocked-scheduling-coming-up.md",
+    "title": "BLOCKED — no backend can serve the \"coming up\" hero stat or the \"Coming up\" list (B-1, B-2)",
+    "layer": "backend",
+    "kind": "verify",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/spec/01-portal-dashboard.md#42-metric-2--coming-up",
+      ".qa/design/spec/01-portal-dashboard.md#7-coming-up"
+    ],
+    "depends_on": [],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "080",
+    "file": ".qa/tasks/080-blocked-composite-scores-and-percentiles.md",
+    "title": "BLOCKED — no backend may serve composite scores, band-progress percentages or cohort percentiles (B-3, B-4, B-5, B-6)",
+    "layer": "backend",
+    "kind": "verify",
+    "wave": "W2",
+    "contract": ["C-DASH-HOUSEHOLD", "C-CHILD-RESULT-HISTORY"],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/screens/app--child-profile.html",
+      ".qa/design/screens/app--result-detail.html"
+    ],
+    "depends_on": [],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "081",
+    "file": ".qa/tasks/081-blocked-billing-and-per-child-unread.md",
+    "title": "BLOCKED — no content-type backs billing/credits or a per-child unread notification count (B-7, B-8)",
+    "layer": "backend",
+    "kind": "verify",
+    "wave": "W2",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--billing.html",
+      ".qa/design/screens/app--buy-credits.html",
+      ".qa/design/screens/app--checkout.html",
+      ".qa/design/screens/app--receipt.html",
+      ".qa/design/screens/app--auto-top-up.html",
+      ".qa/design/screens/portal--notifications.html"
+    ],
+    "depends_on": [],
+    "status": "BLOCKED",
+    "started_at": null
+  }
+]

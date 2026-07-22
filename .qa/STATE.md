@@ -1,364 +1,677 @@
-# STATE.md — mission 2 board (mirror of STATE.json)
+# STATE — mission `st-portal-redesign` (human mirror of STATE.json)
 
-Mission: parent auth (password + Google-wired), student passwordless magic-link API,
-parent dashboard (list/add students), global search — borrowed from schoolgo.
-Contracts: .qa/CONTRACTS.md · Tasks: .thellmspace/tasks/ (27) · Plan: .qa/PLAN.md
+Implement the `dashbaord-design` export across the SchoolTest parent portal, wired to the real
+Strapi API, inventing nothing, preserving existing behaviour, with real motion and mobile.
+Plan: `.qa/PLAN.md` · Contracts: `.qa/CONTRACTS.md` · Resume: `.qa/HANDOFF.md`
 
-## Board
-(resynced from STATE.json 2026-07-18T23:11:00.000Z, during task 25's build pass —
-this table had gone stale early in the mission; statuses below are pulled directly
-from the authoritative STATE.json, task-by-task, with no additions ahead of it)
+**Totals:** 286 tasks · DONE 0 · DOING 0 · TODO 267 · BLOCKED 19
 
-| # | Task | Depends | Status | Verify |
-|---|------|---------|--------|--------|
-| 01 | Email provider (SMTP→Mailhog) | — | DONE | PASS |
-| 02 | Student schema +email +parent | — | DONE | PASS |
-| 03 | Parent role + grants | 02 | DONE | PASS |
-| 04 | Magic-link model + service | 01,02 | DONE | PASS |
-| 05 | request/verify/me endpoints | 04 | DONE | PASS |
-| 06 | Parent-issue endpoint | 03,04 | DONE | PASS |
-| 07 | Seed parent + students | 02,03 | DONE | PASS |
-| 08 | Register→parent role ext | 03 | DONE | PASS |
-| 09 | Google provider config | — | DONE | PASS |
-| 10 | Parent students CRUD | 02,03 | DONE | PASS |
-| 11 | Search endpoint | 10 | DONE | PASS |
-| 12 | Sign-in page + errors | — | DONE | PASS |
-| 13 | Sign-up page | 08,12 | DONE | PASS |
-| 14 | Google button + callback | 09,12 | DONE | PASS |
-| 15 | Dashboard route + guard | — | DONE | PASS |
-| 16 | Students list | 10,15 | DONE | PASS |
-| 17 | Add-student dialog | 16 | DONE | PASS |
-| 18 | Search bar UI | 11,16 | DONE | PASS |
-| 19 | E2E parent login | 07,16 | DONE | PASS |
-| 20 | E2E invalid creds | 12 | DONE | PASS |
-| 21 | E2E add student | 17 | DONE | PASS |
-| 22 | E2E search | 18 | DONE | PASS |
-| 23 | E2E magic-link flow | 05,07 | DONE | PASS |
-| 24 | E2E a11y + regression | 19–23 | DONE | PASS |
-| 25 | Critic ×2 + REPORT | 24 | DONE | PASS |
-| 26 | Mailpit service in docker-compose.dev.yml | 01 | DONE | PASS |
-| 27 | Adopt schoolgo locale set (en/zh/ko/ms/vi/th), drop de | — | DONE | PASS |
+## Waves
 
----
+| # | Slice | Tasks | Done | Blocked |
+|---|---|---|---|---|
+| W0 | Foundations — tokens, font, motion, dark mode | 14 | 0/14 | 0 |
+| W1 | Design-system primitives | 38 | 0/38 | 0 |
+| W2 | Backend metric surfaces (Strapi) | 22 | 0/22 | 3 |
+| W3 | Typed client + query layer | 16 | 0/16 | 1 |
+| W4 | App shell | 18 | 0/18 | 1 |
+| W5 | Dashboard | 30 | 0/30 | 4 |
+| W6 | Children list + child detail | 30 | 0/30 | 5 |
+| W7 | Add-child wizard | 26 | 0/26 | 1 |
+| W8 | Search — schools + agents | 24 | 0/24 | 1 |
+| W9 | Notifications + settings | 24 | 0/24 | 2 |
+| W10 | Auth screens + landing | 24 | 0/24 | 1 |
+| W11 | Sweep — UI, a11y, security, regression | 20 | 0/20 | 0 |
 
-## UI polish + parent notifications board (2026-07-20)
+## Per layer
 
-Contracts: `.qa/CONTRACTS.md` addendum · Task files: `.thellmspace/tasks/28-*.md` through
-`45-*.md` · authoritative machine state: `STATE.json.ui_polish_20260720`.
+| Layer | Tasks | Done |
+|---|---|---|
+| a11y | 8 | 0 |
+| backend | 18 | 0 |
+| data | 16 | 0 |
+| frontend | 15 | 0 |
+| integration | 18 | 0 |
+| regression | 10 | 0 |
+| security | 8 | 0 |
+| ui | 193 | 0 |
 
-| # | Task | Depends | Status | Verify |
-|---|------|---------|--------|--------|
-| 28 | Single logo on auth screens | — | DONE | PASS — live 6/6 auth/a11y |
-| 29 | Dark primary sidebar | 28 | DONE | PASS — live desktop/mobile shell |
-| 30 | School cards and larger map | 29 | DONE | PASS — live map/data 8/8 |
-| 31 | Grouped school filters | 30 | DONE | PASS — live filter/map 12/12 |
-| 32 | Agent search polish | 31 | DONE | PASS — live query/filter/a11y |
-| 33 | Student selection contrast | 32 | DONE | PASS — live contrast + persisted child |
-| 34 | Parent child progress API | 33 | DONE | PASS — live persisted API/security |
-| 35 | Child cards and profile metrics | 34 | DONE | PASS — live profile/card/archive/mobile/a11y 13/13 |
-| 36 | Separated settings tabs | 35 | DONE | PASS — live tabs/preferences/auth restore 3/3 |
-| 42 | Dark sidebar toggle + contextual header | 36 | DONE | PASS — live desktop/mobile/header/axe |
-| 43 | Search workspace + Strapi cover media | 42 | DONE | PASS — live API 19/19 + browser 9/9 |
-| 44 | My Children + learning dashboard redesign | 43 | DONE | PASS — live children/profile 13/13 + axe |
-| 45 | Parent dashboard overview redesign | 44 | DONE | PASS — live parent data/reload/mobile/axe + critic |
-| 37 | In-app notification bell and feed | 45 | DONE | PASS — live notification contract/feed/error path 4/4 + critic |
-| 38 | Notification preferences settings | 37 | DONE | PASS — live preference persistence/error/mobile 6/6 + critic |
-| 39 | Browser push subscription | 38 | DONE | PASS — live VAPID/ownership/worker/UI 5/5 + critic |
-| 40 | Notification delivery and SMS preparation proof | 39 | DOING | — |
-| 41 | Independent critic and final regression | 40 | TODO | — |
+## Ready now (deps satisfied, status TODO)
 
-Task 15 ("/dashboard route + client guard") is now DONE — verified 2026-07-18 by an
-independent explore verifier against its own Done Criteria (not assumed correct just
-because task 12's D19 stopgap had already built the files): real incognito redirect to
-/sign-in, real seeded-parent session rendering the guarded shell with a live
-GET /api/users/me username + working sign-out, axe clean, tsc/lint zero, full 6-locale
-key parity, 14/14 e2e green (dashboard.spec.ts + sign-in.spec.ts + google-callback.spec.ts).
-Full evidence recorded in STATE.json task 15's `verify` object.
+- **001** Land the design's 21 swatch-board colours as OKLCH `@theme` tokens with hex provenance (light) _(W0, ui)_
+- **004** Settle the spacing scale against the design's off-4pt values and land the 1240px page frame token _(W0, ui)_
+- **005** Land the design's eight published type steps as `--text-*` tokens with exact line-height and tracking _(W0, ui)_
+- **007** Complete the radius scale with the design's 5px, 7px and 9px steps and publish the design-name→token map _(W0, ui)_
+- **008** Confirm the four-step shadow scale and add the seven component elevations the design actually paints _(W0, ui)_
+- **009** Prove and correct the self-hosted Google Sans stack — provenance, variable axis, and the design's exact fallback chain _(W0, ui)_
+- **010** Land the exponential easing tokens and publish the design's five canonical transition durations _(W0, ui)_
+- **060** Author the C-DASH-HOUSEHOLD Zod contract module and prove it against real Postgres rows _(W2, backend)_
+- **061** Author the pure ISO-week / trailing-7-day / practice-streak helpers for the household aggregate _(W2, backend)_
+- **069** Author the C-CHILD-RESULT-HISTORY Zod contract module and prove it against real result rows _(W2, backend)_
+- **075** Add the parent branch to the result-view ownership matrix and grant getResult to parent _(W2, backend)_
+- **100** Add one typed loading / empty / ready / error view-state contract over TanStack results _(W3, data)_
+- **110** Portal shell frame — 24px detached gutter, 1600px cap, and the four @theme tokens the shell is missing _(W4, ui)_
+- **200** Add the portal wizard token block and rebuild /dashboard/children/new as the portal two-column frame _(W7, ui)_
+- **230** Re-skin the Find-a-school header band and the 48px search pill to the design _(W8, ui)_
+- **237** Re-skin the school result card frame, typography and hover state to the design _(W8, ui)_
+- **241** Re-skin the map panel frame and move the zoom controls to the design's top-right stack _(W8, ui)_
+- **260** Fix the red notification-preference-controls round-trip — the SMS opt-out is clobbered by a concurrent spec writing the same parent's preference row _(W9, regression)_
+- **290** Rebuild the auth split layout to the login brand panel (560px navy / 1fr form column) _(W10, ui)_
+- **291** Rebuild the auth text/password field to the DS field states, incl. the error affordance _(W10, ui)_
+- **300** Build the app-shell route skeleton from the design's shimmer system _(W10, ui)_
+- **302** Rebuild the 404 page as the design's full-page numeral-plus-badge composition _(W10, ui)_
+- **303** Rebuild the page-level empty-state pattern to app--empty-state.html and prove it on the real children empty state _(W10, ui)_
+- **304** Re-skin the landing announcement bar and sticky nav, incl. the 375px sheet composition _(W10, ui)_
+- **305** Re-skin the landing hero — media card, scrim, eyebrow pill, 68px h1, CTA row, value strip, logo wall _(W10, ui)_
+- **306** Re-skin the landing features grid, including the navy highlighted card and the hover lift _(W10, ui)_
+- **307** Re-skin the feature-detail split and its AI-feedback mock panel with real meter semantics _(W10, ui)_
+- **308** Re-skin the navy stats band with its logo watermark and three coloured figures _(W10, ui)_
+- **309** Re-skin the how-it-works steps card and the testimonial card beside it _(W10, ui)_
+- **310** Re-skin the pricing grid — Free, the shadowed navy Pro card with its ribbon, and School _(W10, ui)_
+- **311** Re-skin the FAQ accordion, with the chevron rotation the design actually declares _(W10, ui)_
+- **312** Re-skin the closing CTA panel — three-stop navy gradient, watermark, white and ghost buttons _(W10, ui)_
+- **320** UI sweep the app shell — every sidebar/topbar/user-menu/mobile-nav control at 375 and 1280 _(W11, ui)_
+- **326** UI sweep auth, landing, 404 and loading states — every control at 375 and 1280 _(W11, ui)_
+- **333** API security — the parent student surface and the two new aggregates refuse every unauthorized and forged request _(W11, security)_
+- **334** API security — the widened result read refuses foreign, transient and forged requests _(W11, security)_
+- **335** API security — search, search preferences, identity and upload refuse every unauthorized and forged request _(W11, security)_
+- **336** API security — notifications, notification preferences and push subscriptions refuse every unauthorized and forged request _(W11, security)_
 
-Task 16 ("Students list") is now DONE — independently re-verified 2026-07-18 on the
-build agent's attempt-2 (attempt-1's blocking gap was 5 locales carrying a stale generic
-"Dashboard" label instead of "your students" for `Dashboard.title`). Confirmed the fix is
-real, not cosmetic: grep-proved zero collision with the separately-scoped
-`Dashboard.meta.title` and `welcomeTitle` keys, full 358-key/6-locale parity. Live curl
-against :5500 confirms C-STUDENT-LIST's exact contracted shape for the seeded parent
-(Mia + Jonas, sort/pagination params honored). Own throwaway schema-tamper script proves
-the zod schema genuinely rejects a malformed payload. Browser screenshots confirm both
-the populated table and the real EmptyState render correctly. 8/8 students-list.spec.ts +
-27/27 broader regression green, axe clean twice, tsc/lint 0, prettier clean, zero mock/
-fake/stub hits. Own diagnostic route-intercepted spec (deleted after use) proves the
-Alert+Retry error branch is genuinely wired and recovers with real data. Full evidence in
-STATE.json task 16's `verify` object.
+## BLOCKED
 
-Task 17 ("Add-student dialog") is now DONE — independently verified 2026-07-18. Live
-curl against :5500 with the seeded parent's real JWT proves C-STUDENT-CREATE's exact
-200 shape ({data:Student}, server-injected parent, client-supplied parent/student_key
-overrides silently stripped) and all three documented 400 paths (year_level<7,
-missing given_name, invalid email) with the exact {error:{details:{issues}}} envelope
-that classify-add-student-error.ts reads; unauth 403 (pre-existing masked-403 install
-quirk, non-blocking — dialog only mounts behind ParentGuard). Two curl-created
-throwaway students were cleaned up via direct Postgres delete (no DELETE grant exists
-for the parent role — 403 confirmed) and the seeded parent's list re-confirmed at
-exactly Mia (8) + Jonas (10) afterward, zero pollution. tests/e2e/add-student-dialog.spec.ts
-run live: 4/4 passed (real create with no-manual-reload list update via query
-invalidation, persistence after a real page reload, axe-clean open dialog with focus
-landing inside it, required-field block, invalid-email block, Cancel-discards). Full
-suite re-run: 52/52 passed, including students-list.spec.ts's own "exactly Mia+Jonas"
-assertion (proves the curl testing left no residue). tsc/lint 0 (1 pre-existing
-unrelated warning, confirmed untouched), prettier clean, i18n parity independently
-recomputed at 360 keys × 6 locales, grep for mock/fake/stub/dummy/placeholder/hardcoded
-across every touched file returned zero fixture hits. Full evidence in STATE.json
-task 17's `verify` object.
+- **079** BLOCKED — no backend can serve the "coming up" hero stat or the "Coming up" list (B-1, B-2) — see task file
+- **080** BLOCKED — no backend may serve composite scores, band-progress percentages or cohort percentiles (B-3, B-4, B-5, B-6) — see task file
+- **081** BLOCKED — no content-type backs billing/credits or a per-child unread notification count (B-7, B-8) — see task file
+- **102** BLOCKED — no query hook may be authored for the scheduling and composite-score metrics — see task file
+- **116** Rail Billing nav entry — BLOCKED (B-7, no billing surface exists to link to) — see task file
+- **138** BLOCKED — "coming up" hero stat has no data source (B-1) — see task file
+- **151** BLOCKED — the teacher-authored "Note from school" with named author and Reply has no data source — see task file
+- **152** BLOCKED — "Recommended this week" has neither a recommendation source nor an Assign action — see task file
+- **153** BLOCKED — the "Coming up" list has no scheduling data source (B-2) — see task file
+- **169** BLOCKED — the design's `last result 74%` metric has no honest data source — see task file
+- **170** BLOCKED — `Progress to {nextLevel} 68%` requires a CEFR scorer the product forbids — see task file
+- **180** BLOCKED — "Share with teacher" and "Assign practice" have no model, no endpoint and no handler — see task file
+- **188** BLOCKED — `Avg. score`, `Trend` and `Of grade Top 15%` are a composite and a cohort percentile — see task file
+- **189** BLOCKED — subject bars, letter grades and class averages are not this product's domain — see task file
+- **220** BLOCKED — step 5's per-child cost notice has no pricing, plan or invoice data source — see task file
+- **246** BLOCKED — school star rating, tag, note and placement claim have no data source — see task file
+- **282** BLOCKED — the portal Billing screen and every plan/credit/invoice surface has no data model to build against — see task file
+- **283** BLOCKED — a per-child unread notification count cannot be derived; the feed deliberately withholds the child id — see task file
+- **299** BLOCKED — the login Parent/School segmented control and the register role cards — see task file
 
-Task 18 ("Search bar UI") is now DONE — independently verified 2026-07-18. Live curl
-against :5500 with the seeded parent's real JWT proves C-STUDENT-SEARCH's exact shape
-for q=mia (only Mia, count 1), q= empty (both students, createdAt desc — the recents
-contract), and q=zzz (empty data, count 0); unauth 403 (pre-existing D15 masked-403
-quirk, non-blocking). Own live Playwright run (not the builder's self-report) confirms
-focusing the empty input genuinely shows real recents before any typing — the "always
-enabled" query behavior is real, not just claimed. tests/e2e/dashboard-search-bar.spec.ts
-run myself: 2/2 passed, 10/10 on --repeat-each=5 (zero flakes): type "mia" → only Mia,
-zero axe violations of any severity on the open panel; click Mia → table narrows, Jonas
-absent; Clear → both back; type "zzz" → real translated no-results row; Escape → panel
-unmounts, text preserved; separate keyboard-only ArrowDown+Enter selection test. Full
-suite re-run: 54/54 passed, zero regressions. tsc/lint 0 (1 pre-existing unrelated
-warning), prettier clean, i18n parity 360×6 zero diff (independently confirmed the
-search-related keys pre-existed in the last commit before this task touched anything).
-grep for mock/fake/stub/dummy/placeholder/hardcoded across every touched file: zero
-fixture hits. No write path in this task (search read-only, click-select is client-only
-Zustand state) so no DB-persistence check applies. Non-blocking nit documented in
-STATE.json: StudentsSection.tsx is 128 lines (8 over CLAUDE.md's 120-line component
-cap after this task's filter wiring) — not lint-enforced, not a Done Criterion, flagged
-for a future tidy-up pass. Full evidence in STATE.json task 18's `verify` object.
+## DAG (adjacency list)
 
-Boot-gate: api :5500 healthy ✓ (running), web :3100 healthy ✓ (running), mailpit
-1125/8125 ✓ (this mission's own instance, D14 — do not confuse with the neighbor
-Mailhog on 1025/8025), postgres :5540 ✓, seeded parent parent@schooltest.local /
-Parent1234! (D9) confirmed live via real POST /api/auth/local during task-12 verify.
-
-Task 19 ("E2E parent login") is now DONE — independently verified 2026-07-18. Live curl
-against :5500 confirms C-AUTH-LOGIN's real 200 {jwt,user} for the seeded parent and a
-follow-up GET /api/my/students returning both Jonas Keller and Mia Keller. Own run of
-tests/e2e/parent-auth.spec.ts (not the builder's self-report) against the live
-web:3100/api:5500 stack: 1/1 passed, --repeat-each=5 → 5/5 passed, zero flakes. The test
-drives the real /sign-in form via catalog-driven labels, asserts network truth on the
-real POST /api/auth/local and GET /api/my/students responses, UI truth (Dashboard.title
-heading + both student rows in the real table), a genuine JWT in localStorage under the
-app's actual AUTH_TOKEN_KEY, and zero console/page errors. tsc/lint 0 (1 pre-existing
-unrelated CreateArticleForm.tsx warning), prettier clean, grep for mock/fake/stub/dummy/
-placeholder/hardcoded across both new files returned zero fixture hits. Full suite
-re-run: 54/55 with the same pre-existing design-system.spec.ts:158 intermittent overlay
-flake already documented independently in tasks 12/13/14/18's own evidence (reproduced
-it again in isolation on this pass: failed once, passed twice more) — confirmed
-unrelated to either file this task touches. Full evidence in STATE.json task 19's
-`verify` object.
-
-Task 20 ("E2E invalid creds") is now DONE — independently verified 2026-07-18. Live curl
-against :5500 confirms C-AUTH-LOGIN's error path exactly as CONTRACTS.md documents:
-wrong-password and unknown-email both return the byte-identical real 400
-{error:{status:400,name:"ValidationError",message:"Invalid identifier or password"}} —
-no enumeration signal — with correct creds still returning a real 200 {jwt,user}. Own run
-(not the builder's self-report) of the extended tests/e2e/parent-auth.spec.ts: 4/4
-passed; --repeat-each=3 → 12/12 passed, zero flakes. Confirmed by reading SignInForm.tsx
-that classifyError maps any 400 to one translated `loginError` key regardless of body
-content, and the tests prove this end to end: the real network response carries the raw
-Strapi string while the DOM's styled Alert shows only the translated Auth.loginError
-value with the raw string appearing zero times on the page (enumeration-safe in the UI,
-not just the API). Empty-submit case verified to fire zero network requests and show
-translated Auth.emailRequired/Auth.passwordRequired with aria-invalid on both fields.
-Each login case makes exactly one submit (zero-tolerance, no retry loops). axe scan on
-the wrong-password errored page ran for real inside the test: zero serious/critical
-violations. watchErrors is deliberately skipped only on the two error-case tests, an
-already-established pattern (sign-in.spec.ts's own wrong-password test does the same,
-because Chromium logs every non-2xx response as a console.error regardless of app
-handling). tsc/lint 0 (same 1 pre-existing unrelated CreateArticleForm.tsx warning),
-prettier clean, full suite re-run 58/58 with zero regressions, grep for mock/fake/stub/
-dummy/placeholder/hardcoded across the touched file returned zero fixture hits (only a
-benign "no hardcoded copy" comment). No write path in this task (failed/blocked logins
-only) so no DB-persistence check applies. Full evidence in STATE.json task 20's `verify`
-object.
-
-Task 21 ("E2E add student persists + reload") is now DONE — independently verified
-2026-07-18. tests/e2e/dashboard-students.spec.ts (2 tests, pure test-authoring slice —
-schema/backend/typed-client/UI were already DONE by task 17) run live by me: 2/2 passed.
-Verified DB-truth myself via direct psql against the live Postgres, not just API/UI
-truth: the created rows genuinely persisted (ids 872/873) and students_parent_lnk rows
-tie each to its OWN distinct throwaway parent, proving real per-caller ownership. The
-spec's documented deviation (task-21 text says "prove via direct api GET /api/students";
-the file uses GET /api/my/students instead) is confirmed real, not fabricated — I curled
-GET /api/students and GET /api/students/:id with the seeded parent's own JWT and got a
-genuine 403 PolicyError both times (D16's IS_TEACHER policy on the core route), so
-C-STUDENT-LIST's GET /api/my/students (which forces filters[parent]=<caller>
-server-side) is the correct current parent-read route and inherently supplies the
-ownership proof the task asks for. Ran my own curl probes covering every documented
-C-STUDENT-CREATE path (200 with parent-override-attempt silently stripped; three 400
-paths byte-matching CONTRACTS.md's envelope; unauth 403) against a fresh throwaway
-parent, cleaned up the one curl-created student via direct Postgres delete afterward,
-and reconfirmed via a real GET /api/my/students call that the seeded parent's fixture is
-still exactly Mia(8)+Jonas(10) — zero pollution. tsc/lint 0 (1 pre-existing unrelated
-warning), prettier clean, grep for mock/fake/stub/dummy/placeholder/hardcoded on the new
-file returned zero hits. Full-suite re-run 6x live: 5/6 fully green (60/60); the other
-run hit the SAME already-documented design-system.spec.ts:158 popover/dialog overlay
-flake independently logged in tasks 12/13/14/18/19's own evidence — unrelated to this
-task's file, which was green in every single run (6 full-suite + 2 standalone). Also
-independently re-ran add-student-dialog.spec.ts's axe assertion 3x (12/12 green) after a
-false-positive color-contrast finding from my OWN ad-hoc verification script turned out
-to be a self-inflicted measurement artifact (an extra pre-dialog full-page axe scan in my
-script, not present in the official test or the app itself) — root-caused and ruled out,
-not a real accessibility regression. Full evidence in STATE.json task 21's `verify`
-object.
-
-Task 22 ("E2E search") is now DONE — independently verified 2026-07-18. Pure
-test-authoring slice (tests/e2e/dashboard-search.spec.ts, new — schema/backend/
-typed-client/UI were already DONE by task 18; git status confirmed zero backend or
-other web source edits). C-STUDENT-SEARCH curl-verified live against :5500 with the
-seeded parent's own fresh JWT: q=mia -> exact {data:[Mia Keller],meta:{query:{q:'mia',
-count:1}}}; q= (empty) -> both students desc by createdAt; q=zzz ->
-{data:[],meta:{query:{q:'zzz',count:0}}}; unauth -> 403 (pre-existing D15 masked-403
-quirk, same as tasks 15-21, non-blocking). Ran the spec myself (not the builder's
-self-report): 1/1 passed; --repeat-each=8 -> 8/8 passed zero flakes across 8 concurrent
-workers against the same seeded parent (read-only, no interference). Full suite re-run:
-61/61 passed, zero regressions, matching the self-report exactly. The spec's own route
-watcher independently proves the debounce contract: 3 fast keystrokes ("m"/"mi"/"mia")
-at 50ms delay collapse into exactly ONE settled request for "mia" on the wire, never one
-for an intermediate value; click narrows the real table to Mia (Jonas absent); Clear
-resets both query and filter; "zzz" round-trips the real zero-result response and
-renders the translated no-results row; Escape unmounts the panel while preserving the
-typed text; zero console/page errors. Supplementary own throwaway axe spec (deleted
-after use) additionally covered the no-results panel state, which task 18's own axe
-coverage had not explicitly exercised -> zero violations of any severity. tsc/lint 0
-(1 pre-existing unrelated warning), prettier clean, grep for
-mock/fake/stub/dummy/placeholder/hardcoded returned zero fixture hits (only benign hit
-is the existing `Dashboard.searchPlaceholder` i18n key name). No new write path in this
-task, so no DB-persistence-across-reload check applies. Full evidence in STATE.json
-task 22's `verify` object.
-
-Task 23 ("E2E magic-link flow") is now DONE — independently verified 2026-07-18.
-Personally re-ran the live spec (not just trusted the self-report):
-`pnpm exec playwright test --config=tests/e2e-live/playwright.live.config.ts` inside
-schooltest-app -> 1 passed (32.5s) against the real :5500 api, real dockerized Mailpit
-(:8125/api/v1), and real Postgres. Confirmed via direct psql that a fresh
-`student_magic_links` row (id 25, used=true) landed from my own run, matching api.log's
-real POST request->200, GET verify->200, GET me->200x2 sequence at 22:44:01-06; Mailpit's
-own search count for mia.keller@schooltest.local moved 9->10 across the run. Both
-environmental findings behind D21 were independently reproduced, not just read: port 3002
-is genuinely held by an unrelated neighbor (`/proc/<pid>/cwd` -> `RCS/park-rcs`, left
-untouched); the CORS preflight now echoes `Access-Control-Allow-Origin` for
-`:3003` (re-probed myself) while `:3100` still works; the api process's start time lines
-up with the claimed restart, and `schooltest-api/.env`'s `FRONTEND_ORIGIN` change is
-confirmed gitignored/untracked (zero tracked diff). Confirmed the app strings the spec
-asserts on (sign-in title, "Check your inbox", "You're signed in",
-"What would you like to work on today?", "Hi {firstName}!") are real pre-existing i18n
-keys and the verify/home pages are real pre-existing routes, not fabricated. tsc zero
-(scoped tests/e2e-live/tsconfig.json + root), eslint zero on tests/e2e-live/, full
-`pnpm lint` shows only the same 4 pre-existing errors/5 warnings outside
-tests/e2e-live/ (line-for-line confirmed pre-existing). grep for
-mock/fake/stub/dummy/placeholder/hardcoded across tests/e2e-live/ returns only a
-descriptive comment, zero fixture code. Spot-checked that the CORS/env change caused no
-backend contract regression: unknown-email request 200 {ok:true}, malformed token 400,
-reused token 401 reason:used, unauthenticated /me 401 — all matching CONTRACTS.md
-C-ML-REQUEST/VERIFY/ME exactly. :3100/:5500 both healthy afterward; port 3003 torn down
-cleanly. Axe scan skipped: not a Done Criterion here and no new UI shipped in this task
-(pure integration e2e against pages already axe-covered by their own owning tasks). Full
-evidence in STATE.json task 23's `verify` object.
-
-Task 24 ("E2E a11y + regression") is now DONE — independently verified 2026-07-18.
-Personally ran `tests/e2e/a11y-auth.spec.ts` (not the builder's self-report) against the
-real :3100/:5500/Postgres/Mailpit stack: 10/10 passed + 1 skipped, then
-`--repeat-each=3` → 30/30 passed + 3 skipped, zero flakes. Full suite re-run twice by
-me: both runs 71/71 passed + 1 skipped (72 total, zero failures), including the
-pre-existing M1 landing/design-system specs, completely untouched. axe is genuinely
-zero serious/critical on /sign-in, /sign-up, /auth/google/callback (error state), and
-every swept /dashboard state (welcome, students table, search panel, add-student
-dialog open) at 375px and 1280px, modulo the one named, logged, non-blocking exemption
-(`scrollable-region-focusable` on shadcn's vendored table-container div,
-`TABLE_SCROLL_EXEMPTION`) — observed firing in my own run's console, correctly not
-silently dropped. Zero horizontal scroll anywhere swept; forward-tab focus order
-verified for /sign-in, /sign-up, /dashboard; hard ≥43px regression assertions passed
-for every task-12/13 primary control at both viewports; everything else undersized is
-advisory-logged only, matching `a11y-responsive.spec.ts`'s pre-existing (git-diff
-confirmed untouched) "(see D22)" comment — which genuinely predated this task and had
-no matching DECISIONS.md entry until now (verified via `git show HEAD:...`, not
-fabricated after the fact). Google OAuth BLOCKED reasoning (D5) re-verified myself:
-`GET /api/connect/google` → real 400 `{message:"This provider is disabled"}`; grepped
-`schooltest-api/.env*` and the live api process env for `GOOGLE_CLIENT_ID`/`SECRET` —
-none exist anywhere (only commented placeholders in `.env.example`); the spec's
-`test.skip` names the exact reason, never a fake pass. Contract conformance re-curled
-live: `POST /api/auth/local` (seeded parent) → 200 jwt; `GET /api/my/students` → 200
-`{data:[Jonas(10),Mia(8)],meta.pagination.total:2}`, checked both before and after the
-full suite ran — zero pollution from the add-student-dialog tests' fresh throwaway
-parent registrations. tsc 0 errors, lint 0 errors (1 pre-existing unrelated
-`CreateArticleForm.tsx` warning, same as every prior task), prettier clean on the
-actual touched code file (the `DECISIONS.md` formatting warning is pre-existing,
-confirmed via `git stash`/`pop` to fire identically on the pre-D22 version too — not
-introduced by this task, and it's a builder-log file, not code). grep for
-mock/fake/stub/dummy/placeholder/hardcoded across the new spec file: zero fixture hits
-(only a comment referencing the pre-existing, already-established `stub-jwt`
-literal-string pattern shared with sign-in/sign-up/google-callback/dashboard specs).
-No new write/persistence path in this task, so no new DB-persistence check applies.
-All 6 named screenshots (a11y-sign-in-en/-mobile, a11y-sign-up-en/-mobile,
-a11y-dashboard-en, dashboard-mobile-en) freshly regenerated by my own run in
-`.qa/screenshots/`. Full evidence in STATE.json task 24's `verify` object.
-
-Task 26 ("Mailpit service in docker-compose.dev.yml") is DONE — verified by
-orchestrator live proof: the `schooltest-api-st1-mailpit` container is healthy on
-1125 (SMTP)/8125 (HTTP API), the api was restarted after the compose change, and a
-real send round-tripped 250-queued and became searchable via `GET /api/v1/search` in
-THIS mission's own Mailpit — the staging/prod docker-compose topology (a separate
-deployment agent's surface) was left untouched. Full evidence in STATE.json task 26's
-`verify` object.
-
-Task 27 ("Adopt schoolgo locale set, drop de") is DONE — verified by an independent
-explore verifier + fix: 336 keys × 6 locales (en/zh/ko/ms/vi/th) parity, 38 real
-schoolgo-sourced translations per locale (verbatim-checked and brand-fixed
-SchoolGo→SchoolTest, zero remaining "SchoolGo" hits), live zh/ko/th render with the
-correct `lang` attribute and translated chrome, English-fallback confirmed honest
-(not machine pseudo-translation) for unmapped keys, full suite 19/19 green. The
-verifier found and fixed 10 borrowed `[TODO:]` placeholders inherited from schoolgo's
-`Errors` namespace, replacing them with an honest English fallback (zero remaining),
-then re-confirmed the suite green. Full evidence in STATE.json task 27's `verify`
-object.
-
-Task 25 ("Critic ×2 + REPORT") is now DONE — independently verified 2026-07-18,
-fresh evidence gathered personally against the live stack (not reused from the
-builder's self-report). `.qa/REPORT.md` (322 lines) and the STATE.md resync were
-confirmed on disk exactly as claimed. Re-curled every CONTRACTS.md endpoint against
-live :5500 myself: login success/enumeration-safe-failure, `/users/me` role,
-`/my/students` (exactly Mia+Jonas), `/search/students` (q=mia/empty/zzz), create
-400-validation paths, and a fresh ownership-override probe (server-injected caller
-documentId, client's spoofed `parent` silently stripped) — confirmed the created row
-(id 948) genuinely PERSISTED in Postgres via `docker exec psql`, confirmed parent
-DELETE is 403, cleaned up via direct psql delete, re-confirmed the seeded parent's
-list back to exactly Mia+Jonas with zero residue. Ran the full magic-link round trip
-myself end-to-end: request→real Mailpit delivery (fetched via `/api/v1/search` +
-`/api/v1/message`)→extracted the raw 64-hex token→computed sha256 locally and
-matched the `student_magic_links.token` DB column exactly→verify (200, exp-iat
-28800s)→`/auth/student/me` (200)→token reuse (401 reason:"used"); unknown-email
-request also 200 `{ok:true}` (enumeration-safe); malformed token 400. Read
-`src/api/student/controllers/student.ts` directly and confirmed the ownership
-filter/injection genuinely happens AFTER `sanitizeQuery`/`sanitizeInput`, matching
-the report's security claims (not just probed). CORS preflight: `:3100`/`:3003`
-both echo `Access-Control-Allow-Origin`, an arbitrary unlisted origin gets no CORS
-header (no wildcard leak). `pnpm tsc --noEmit`: 0 errors in all three packages
-(root + `tests/e2e-live/tsconfig.json`), run myself. `pnpm lint`: 0 errors in
-schooltest-web (1 pre-existing warning) and schooltest-api (0/0); schooltest-app's
-`tests/e2e-live/` scoped lint 0/0, full-repo lint shows the same 4 pre-existing
-errors confirmed untouched via git status. Grepped every touched file in both repos
-myself (mock|fake|stub|dummy|placeholder|TODO|FIXME|lorem|hardcod): zero fixture
-hits, only benign matches. i18n parity recomputed with my own script: 360 keys × 6
-locales, zero diff. Full Playwright suite (schooltest-web) run 3× by me: 2 of 3 runs
-71 passed/1 skipped/0 failed exactly matching the report; the 1 flake reproduced was
-`design-system.spec.ts:158`'s pre-existing overlay-close timing race, already
-independently documented as non-blocking/unrelated in tasks 12/13/14/18/19/21/24's
-own verify evidence — never touched by any auth/dashboard/task-25 file.
-`schooltest-app/tests/e2e-live/magic-link.spec.ts`: my first run hit a 429 that I
-root-caused to MY OWN prior curl testing having exhausted the shared 5/60min
-rate-limit budget on `mia.keller@schooltest.local` (confirmed via psql: exactly 5
-rows in the trailing window); polled the DB read-only until a slot aged out, then
-re-ran once cleanly → 1 passed (2.0m), `:3003` torn down cleanly afterward — a
-self-inflicted collision, not a real defect, and consistent with the report's own
-claim once accounted for. Prettier confirms both flagged cosmetic-drift files
-really do have formatting warnings while `pnpm lint` stays 0 errors for both,
-exactly as claimed. git status confirmed zero source pollution from this
-verification pass (schooltest-api clean; schooltest-web's uncommitted set unchanged
-before/after, 55 porcelain lines both times) and the seeded parent's list re-checked
-exactly Mia+Jonas at the end. Full evidence in STATE.json task 25's `verify` object.
+```
+001 [TODO] Land the design's 21 swatch-board colours as OKLCH `@theme` tokens with hex provenance (light)
+      deps: (none)
+002 [TODO] Author the hover / disabled colour role tokens from the design's `style-hover` attributes
+      deps: 001
+003 [TODO] Complete and prove the `.dark` token layer, including the dark-only component tints the board shows
+      deps: 001
+004 [TODO] Settle the spacing scale against the design's off-4pt values and land the 1240px page frame token
+      deps: (none)
+005 [TODO] Land the design's eight published type steps as `--text-*` tokens with exact line-height and tracking
+      deps: (none)
+006 [TODO] Land the seven chrome type steps the typography board omits (masthead, section, eyebrow, group label, form label, count, inline code)
+      deps: 005
+007 [TODO] Complete the radius scale with the design's 5px, 7px and 9px steps and publish the design-name→token map
+      deps: (none)
+008 [TODO] Confirm the four-step shadow scale and add the seven component elevations the design actually paints
+      deps: (none)
+009 [TODO] Prove and correct the self-hosted Google Sans stack — provenance, variable axis, and the design's exact fallback chain
+      deps: (none)
+010 [TODO] Land the exponential easing tokens and publish the design's five canonical transition durations
+      deps: (none)
+011 [TODO] Land `st-fade-in`, `st-pop-in`, `st-toast-in` and `st-spin` as `--animate-*` tokens with a reduced-motion variant, and wire the dialog panel to `st-pop-in`
+      deps: 010
+012 [TODO] Re-author `st-shimmer` and `st-rec-pulse` to animate transform/opacity only, preserving the shipped skeleton visual
+      deps: 010, 011
+013 [TODO] Author the focus-ring foundation from `--ring` — a WCAG-conformant `focus-ring` utility, the design's input halo, and the error ring
+      deps: 001, 008
+014 [TODO] Consolidate the W0 foundation into one table-driven design-token e2e across light, dark, reduced-motion and both viewports
+      deps: 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013
+020 [TODO] Rebuild the design-system Button to the export's 8 variants, 5 sizes and 7 states
+      deps: 001, 002, 004, 005, 006, 007, 008, 010, 011, 013
+021 [TODO] Cut the IconButton family to the export's five square sizes and three tones
+      deps: 001, 002, 004, 007, 010, 013, 020
+022 [TODO] Rebuild the text Field shell — label, required marker, helper, inline error, disabled
+      deps: 001, 004, 006, 007, 008, 010, 013
+023 [TODO] Build the SearchInput primitive — leading magnifier, 38px inset, clear affordance
+      deps: 001, 004, 006, 007, 008, 010, 013, 022
+024 [TODO] Build the Textarea field — 3 rows, vertical resize, 1.5 line-height, focus + error rings
+      deps: 001, 004, 006, 007, 008, 010, 013, 022
+025 [TODO] Rebuild SelectField and SelectRow — custom chevron, three sizes, listbox popup animation
+      deps: 001, 002, 004, 006, 007, 008, 010, 011, 013, 022
+026 [TODO] Rebuild the Checkbox — 18px box, 5px radius, 1.5px border, white tick, disabled row
+      deps: 001, 004, 007, 010, 011, 013, 022
+027 [TODO] Rebuild the RadioGroup — 18px ring, 8px dot, roving focus, disabled state
+      deps: 001, 004, 010, 011, 013, 022, 026
+028 [TODO] Rebuild the Switch (40×22 track, 18px travel) and the settings ToggleRow it sits in
+      deps: 001, 004, 006, 007, 008, 010, 013, 026
+029 [TODO] Build the Slider control — 120px track, 16px thumb, fixed-width value readout
+      deps: 001, 004, 007, 008, 010, 013, 028
+030 [TODO] Rebuild the Badge — nine colour variants at 12.5px/600, pill radius, outline compensation
+      deps: 001, 003, 006, 007
+031 [TODO] Rebuild the status-dot pills and the count badges (notification, nav, avatar overflow)
+      deps: 001, 006, 007, 010, 011, 030
+032 [TODO] Rebuild the removable Tag and the filter chips (active, removable, dashed "Add filter")
+      deps: 001, 002, 006, 007, 010, 011, 021, 030
+033 [TODO] Rebuild the Alert — four variants, 36px icon chip, dismiss and action rows
+      deps: 001, 003, 006, 007, 008, 010, 011, 020, 021, 030
+034 [TODO] Skin sonner to the export's toast — navy surface, st-toast-in, 4s auto-dismiss, progress rail
+      deps: 001, 003, 006, 007, 008, 010, 011, 021
+035 [TODO] Rebuild the card shell family — 16px radius, 1px border, .05-alpha shadow, four paddings
+      deps: 001, 003, 004, 006, 007, 008, 010, 011
+036 [TODO] Rebuild the StatCard with icon chip and delta row (34px value, diagonal arrow)
+      deps: 001, 003, 005, 006, 007, 035
+037 [TODO] Rebuild ProgressBar (6px rail, gradient + solid fills) and the progress StatCard variant
+      deps: 001, 003, 007, 010, 035, 036
+038 [TODO] Rebuild the Avatar family — five sizes, presence dot, overlapping stack with overflow chip
+      deps: 001, 006, 007, 010, 011
+039 [TODO] Rebuild the navy featured card and the NavyPanel surface (watermark, eyebrow, white CTA)
+      deps: 001, 004, 006, 007, 010, 020, 035
+040 [TODO] Rebuild the Table — clipped card shell, toolbar, uppercase head row, hover row transition
+      deps: 001, 004, 006, 007, 008, 010, 021, 031, 035
+041 [TODO] Rebuild Pagination — range caption, chevron buttons, active/inactive pages, ellipsis
+      deps: 001, 006, 007, 010, 021, 040
+042 [TODO] Rebuild UnderlineTabs — 2px indicator over the 1px rule, 150ms colour transition
+      deps: 001, 004, 005, 007, 010, 011, 013
+043 [TODO] Rebuild the SegmentedControl in both documented sizes (11px and 10px tracks)
+      deps: 001, 006, 007, 008, 010, 013, 027
+044 [TODO] Rebuild the Dialog — blurred navy scrim (st-fade-in) and a pop-in panel, focus-trapped
+      deps: 001, 003, 005, 006, 007, 008, 010, 011, 020, 021
+045 [TODO] Build the Sheet — side/bottom drawer with Base UI starting/ending-style slide
+      deps: 003, 007, 008, 010, 011, 021, 044
+046 [TODO] Rebuild the DropdownMenu — 200px surface, 8px items, destructive item, separator
+      deps: 001, 003, 006, 007, 008, 010, 011, 021
+047 [TODO] Rebuild the Popover — 14px radius, 250px cap, readonly input + copy row
+      deps: 001, 003, 006, 007, 008, 010, 011, 020, 022
+048 [TODO] Rebuild the Tooltip — navy bubble, 12.5px/500, 8px offset, keyboard-reachable
+      deps: 001, 006, 007, 008, 010, 011, 021
+049 [TODO] Rebuild Skeleton + st-shimmer as a transform sweep, and the SkeletonCard composition
+      deps: 001, 003, 007, 010, 012, 035
+050 [TODO] Rebuild the EmptyState — 52px tinted icon tile, 280px measure, primary CTA
+      deps: 001, 006, 007, 010, 011, 020, 035
+051 [TODO] Rebuild the 404 block — 64px numeral with the logo mark as the zero
+      deps: 001, 006, 007, 010, 011, 020, 035, 039
+052 [TODO] Build the DropzoneCard — dashed 1.5px border, hover-transitioned shell, browse fallback
+      deps: 001, 002, 004, 006, 007, 010, 013, 020, 035
+053 [TODO] Build the navigation primitives — sidebar NavItem, topbar link and Breadcrumbs
+      deps: 001, 003, 004, 005, 007, 010, 013, 031, 038
+054 [TODO] Rebuild the BarChart primitive on recharts — 140px plot, 3-tier recency ramp, 38px cap
+      deps: 001, 003, 006, 007, 008, 010, 035
+055 [TODO] Rebuild the Sparkline (area + polyline) and the donut GaugeRing (dashoffset maths)
+      deps: 001, 003, 006, 007, 010, 035, 036
+056 [TODO] Rebuild the dashboard list rows — activity feed, upcoming event, rank row
+      deps: 001, 003, 006, 007, 010, 011, 020, 031, 035, 038
+057 [TODO] Rebuild the footer family — navy marketing footer, light app footer, cookie banner
+      deps: 001, 003, 006, 007, 008, 010, 011, 020, 025, 039
+060 [TODO] Author the C-DASH-HOUSEHOLD Zod contract module and prove it against real Postgres rows
+      deps: (none)
+061 [TODO] Author the pure ISO-week / trailing-7-day / practice-streak helpers for the household aggregate
+      deps: (none)
+062 [TODO] Stand up GET /api/my/progress end-to-end returning the four household count aggregates
+      deps: 060
+063 [TODO] Add practiceSecondsThisWeek, the 7-day practiceByDay series and strongestDay to /api/my/progress
+      deps: 061, 062
+064 [TODO] Add per-child testsCompleted, practiceSecondsThisWeek, practiceDayStreak and lastActivityAt
+      deps: 061, 063
+065 [TODO] Add per-child cefrBand, cefrStageIndex, acaraPhase and the skills[] array to /api/my/progress
+      deps: 060, 064
+066 [TODO] Derive focusSkill from readiness rank with the attribute-probability tiebreak, and close the C-DASH-HOUSEHOLD shape
+      deps: 065
+067 [TODO] Harden /api/my/progress edge cases — zero children, archived children, empty week, unknown enum
+      deps: 066
+068 [TODO] SECURITY — prove /api/my/progress leaks no other household and no private column
+      deps: 067
+069 [TODO] Author the C-CHILD-RESULT-HISTORY Zod contract module and prove it against real result rows
+      deps: (none)
+070 [TODO] Stand up GET /api/my/students/:documentId/results with ownership, official-only scope and pagination
+      deps: 069
+071 [TODO] Enforce the strict query contract on /api/my/students/:documentId/results — page, pageSize, skill, unknown keys
+      deps: 070
+072 [TODO] Add previousResultDocumentId and sessionDocumentId to the child result history (closes G12/G5)
+      deps: 070
+073 [TODO] Prove pagination arithmetic and sort determinism on the child result history
+      deps: 071, 072
+074 [TODO] SECURITY — prove the child result history refuses foreign children, transient results and bad queries
+      deps: 073
+075 [TODO] Add the parent branch to the result-view ownership matrix and grant getResult to parent
+      deps: (none)
+076 [TODO] Enforce 404-only failure and combined-scope child gating on the parent result read
+      deps: 075
+077 [TODO] SECURITY — prove the widened result read leaks no PII, no artefacts and no other family's data
+      deps: 076
+078 [TODO] Regenerate Strapi types, typecheck both packages, and prove W2 changed no existing endpoint
+      deps: 068, 074, 077
+079 [BLOCKED] BLOCKED — no backend can serve the "coming up" hero stat or the "Coming up" list (B-1, B-2)
+      deps: (none)
+080 [BLOCKED] BLOCKED — no backend may serve composite scores, band-progress percentages or cohort percentiles (B-3, B-4, B-5, B-6)
+      deps: (none)
+081 [BLOCKED] BLOCKED — no content-type backs billing/credits or a per-child unread notification count (B-7, B-8)
+      deps: (none)
+090 [TODO] Create the `results` module and mirror the C-PARENT-RESULT-VIEW body as a strict Zod schema
+      deps: 071
+091 [TODO] Encode the real CEFR ladder, skill order and readiness rank as shared constants + pure lookups
+      deps: 090
+092 [TODO] Add `useParentResultQuery` — the TanStack hook for one parent-readable official result
+      deps: 090, 071
+093 [TODO] Turn the raw `attributes` map into an ordered per-attribute mastery view model
+      deps: 090, 091
+094 [TODO] Mirror C-DASH-HOUSEHOLD (`GET /api/my/progress`) as a strict Zod schema + types
+      deps: 065
+095 [TODO] Add `useHouseholdProgressQuery` with an explicit loading / no-children / error contract
+      deps: 094, 065
+096 [TODO] Derive the practice duration, the 7-bar chart model and the strongest-day model from the household payload
+      deps: 094
+097 [TODO] Mirror C-CHILD-RESULT-HISTORY request params + paginated response as strict Zod schemas
+      deps: 077
+098 [TODO] Add `useChildResultHistoryQuery` — paginated, skill-filterable, with a real empty state
+      deps: 097, 077
+099 [TODO] Derive the honest band delta ("Since joining", per-row change) from the result history
+      deps: 097, 091
+100 [TODO] Add one typed loading / empty / ready / error view-state contract over TanStack results
+      deps: (none)
+101 [TODO] Add the household / result-history / delta i18n keys to all six catalogs, with a parity guard
+      deps: 093, 096, 099, 100
+102 [BLOCKED] BLOCKED — no query hook may be authored for the scheduling and composite-score metrics
+      deps: (none)
+103 [TODO] Make the three student mutations invalidate the new household and result-history caches
+      deps: 095, 098
+104 [TODO] Prove the household + result-history round-trip end to end against the running API
+      deps: 095, 096, 098, 099
+105 [TODO] Prove the C-PARENT-RESULT-VIEW ownership and error matrix from the client boundary
+      deps: 092, 093
+110 [TODO] Portal shell frame — 24px detached gutter, 1600px cap, and the four @theme tokens the shell is missing
+      deps: (none)
+111 [TODO] Detach the sidebar into the design's 248px floating card (24px radius, two-layer shadow, 28/16/16 padding)
+      deps: 110
+112 [TODO] Sidebar logo lockup — 26px, flush left, 36px breathing room, focus ring the design never drew
+      deps: 111
+113 [TODO] Rail groups — Manage/Account overlines, 2px nav gap, and the flex spacer that pins Account to the bottom
+      deps: 111
+114 [TODO] Nav item base — 11/14 padding, 12px radius, 14.5px label, 18px icon, plus the hover and focus the design never drew
+      deps: 113
+115 [TODO] Nav item ACTIVE state — the design's navy #0E2350 slab, 600 weight, white ink, and the e2e re-baseline that keeps it honest
+      deps: 114
+116 [BLOCKED] Rail Billing nav entry — BLOCKED (B-7, no billing surface exists to link to)
+      deps: 113
+117 [TODO] Rail user card — the design's #F4F6FA account card, carrying the existing user menu and Sign out
+      deps: 111
+118 [TODO] Top row — drop the 64px white bar for the design's chrome-less row over the page well
+      deps: 110
+119 [TODO] Breadcrumb — the design system's 13.5px trail with a 13px chevron separator, replacing the / text
+      deps: 118
+120 [TODO] Search pill — the design's 240x44 white capsule with a 16px magnifier, on the well
+      deps: 118
+121 [TODO] Notification bell — the design's 44px white circle, keeping the real unread count
+      deps: 118
+122 [TODO] Mobile nav Sheet — the detached rail's contents inside the 288px off-canvas panel at 375px
+      deps: 115, 117
+123 [TODO] Shell keyboard path — Ctrl+B, a complete visible focus ring set, and a proven Sheet focus trap
+      deps: 115, 117, 118, 122
+124 [TODO] Collapsed icon rail — keep the working Ctrl+B feature the export omits, re-skinned to the detached card
+      deps: 115
+125 [TODO] The shell at 375 — one composition pass over the frame, row and drawer with real measurements
+      deps: 118, 119, 120, 121, 122
+126 [TODO] Shell motion — one audited set of transitions from the design system's six keyframes, each with a reduced-motion variant
+      deps: 115, 122, 124
+127 [TODO] Shell wave close-out — full regression, six-locale parity, axe sweep, and the re-baseline record
+      deps: 116, 123, 125, 126
+130 [TODO] Wire the dashboard screen to GET /api/my/progress and define its page-level query contract
+      deps: 090, 091, 110
+131 [TODO] Rebuild the dashboard page composition — 28px section stack and the two auto-fit 2-up grids
+      deps: 130
+132 [TODO] Build the dashboard greeting row — date line and time-of-day H1
+      deps: 131
+133 [TODO] Build the navy hero panel shell — 24px navy card, two decorative circles, "This week" eyebrow
+      deps: 131
+134 [TODO] Render the hero headline sentence from real household data — no projection, no percentage
+      deps: 133, 130
+135 [TODO] Build the hero stat row with the servable stats only — two cells, one separator, no third slot
+      deps: 133, 130
+136 [TODO] Metric 1 — "tests completed" hero stat from household.testsCompletedThisWeek
+      deps: 135
+137 [TODO] Metric 3 — "practice this week" hero stat, {H}h {MM}m from practiceSecondsThisWeek
+      deps: 135
+138 [BLOCKED] BLOCKED — "coming up" hero stat has no data source (B-1)
+      deps: 135
+139 [TODO] Dashboard zero-children state — honest hero, add-a-child CTA, suppressed child sections
+      deps: 133, 134, 144
+140 [TODO] Build the "Practice minutes" card shell — header, range label, 120px plot area
+      deps: 131
+141 [TODO] Metric 4 — seven practice bars with heights NORMALISED from the week's max, not px==minutes
+      deps: 140, 130
+142 [TODO] Metric 5 — strongest-day caption from household.strongestDay, without the unservable clause
+      deps: 140, 130
+143 [TODO] Practice-minutes card loading, zero-week and error states
+      deps: 141, 142
+144 [TODO] Build the "My children" section — header, "See details" link, 24px list card
+      deps: 131
+145 [TODO] Build the "My children" row — avatar, name block, chevron, whole-row link to the child
+      deps: 144, 130
+146 [TODO] Metric 6 — per-child CEFR tick row rendering the REAL ladder pre_A1..C1, not the design's A1..C2
+      deps: 145, 130
+147 [TODO] Metric 7 — per-child "Focus: {skill}" pill from children[].focusSkill
+      deps: 145, 130
+148 [TODO] "My children" list loading, single-child and error behaviour
+      deps: 145, 146, 147
+149 [TODO] Child-row interaction states — hover, visible focus ring, keyboard traversal, contrast
+      deps: 145, 146, 147
+150 [TODO] Build the "Latest update" card in the design's note-card shell, fed by the real notification feed
+      deps: 131
+151 [BLOCKED] BLOCKED — the teacher-authored "Note from school" with named author and Reply has no data source
+      deps: 150
+152 [BLOCKED] BLOCKED — "Recommended this week" has neither a recommendation source nor an Assign action
+      deps: 131
+153 [BLOCKED] BLOCKED — the "Coming up" list has no scheduling data source (B-2)
+      deps: 131
+154 [TODO] Whole-page dashboard loading skeleton matching the final composition
+      deps: 133, 140, 144, 150
+155 [TODO] Dashboard page error state — real classification, real retry, no stale metrics
+      deps: 130, 154
+156 [TODO] Dashboard entrance motion — staggered section reveal with a full reduced-motion path
+      deps: 133, 140, 144, 150, 154
+157 [TODO] 375px composition of the whole dashboard — row reflow, collapsed grids, no fixed widths
+      deps: 132, 135, 141, 142, 145, 146, 147, 150
+158 [TODO] Every dashboard string in all six locale catalogs, key-identical, with correct ICU and formats
+      deps: 132, 134, 136, 137, 139, 140, 141, 142, 144, 145, 146, 147, 150, 155
+159 [TODO] Rewrite the dashboard e2e suite for the redesign, keeping every functional assertion green
+      deps: 135, 136, 137, 139, 141, 142, 145, 146, 147, 149, 150, 154, 155, 156, 157, 158
+165 [TODO] Join C-STUDENT-LIST with C-DASH-HOUSEHOLD into one children-list view model
+      deps: 090, 110
+166 [TODO] Rebuild the "My children" page header to the portal slice with an honest count subline
+      deps: 165
+167 [TODO] Build the ChildCard shell, auto-fit grid and identity row with the CEFR level pill
+      deps: 165, 166
+168 [TODO] Build the ChildCard metric strip from real household metrics (streak, tests, last assessed)
+      deps: 167
+169 [BLOCKED] BLOCKED — the design's `last result 74%` metric has no honest data source
+      deps: 168
+170 [BLOCKED] BLOCKED — `Progress to {nextLevel} 68%` requires a CEFR scorer the product forbids
+      deps: 168, 181
+171 [TODO] Build the child card footer — focus-skill note line and the "Details →" affordance
+      deps: 167
+172 [TODO] Build the dashed "Add a child" tile and the portal zero-children state
+      deps: 166, 167
+173 [TODO] Build the children-list shimmer skeleton and the error/retry state
+      deps: 167
+174 [TODO] Preserve archive/unarchive on the redesigned child card (menu, confirm dialog, toasts, DB proof)
+      deps: 167
+175 [TODO] Keep the archived filter and roster paging working on the card grid
+      deps: 167, 174
+176 [TODO] Prove the redesigned children list at 375/1280 — motion, axe, six locales, and the e2e regression
+      deps: 166, 167, 168, 171, 172, 173, 174, 175
+177 [TODO] Recompose the child detail route as the design's single vertical stack and join its three reads
+      deps: 090, 110
+178 [TODO] Build the child detail header — back link, 60px navy avatar, name and meta line
+      deps: 177
+179 [TODO] Ship the detail header's two pill actions as Edit and Archive/Unarchive
+      deps: 178, 174
+180 [BLOCKED] BLOCKED — "Share with teacher" and "Assign practice" have no model, no endpoint and no handler
+      deps: 179
+181 [TODO] Build the child-detail KPI strip from real household metrics
+      deps: 177, 178
+182 [TODO] Build the "Since joining" cell as an honest per-skill CEFR band movement
+      deps: 181
+183 [TODO] Build the "Level journey" six-tick CEFR ladder on the real API ladder, with its note
+      deps: 177, 178
+184 [TODO] Re-dress the activity snapshot and session-completion block into the portal card
+      deps: 181
+185 [TODO] Build the "Skills" card as four readiness rows in the sanctioned vocabulary
+      deps: 177, 178
+186 [TODO] Expand a skill row into its per-attribute mastery map from C-PARENT-RESULT-VIEW
+      deps: 185
+187 [TODO] Render not_assessed, low_confidence and effort_valid as first-class states on the Skills card
+      deps: 185, 186
+188 [BLOCKED] BLOCKED — `Avg. score`, `Trend` and `Of grade Top 15%` are a composite and a cohort percentile
+      deps: 181, 185
+189 [BLOCKED] BLOCKED — subject bars, letter grades and class averages are not this product's domain
+      deps: 186, 190
+190 [TODO] Build the "Recent results" rows from C-CHILD-RESULT-HISTORY
+      deps: 177, 178
+191 [TODO] Wire real pagination and the skill filter into Recent results
+      deps: 190
+192 [TODO] Open a full official-result report from a result row (C-PARENT-RESULT-VIEW)
+      deps: 190, 186
+193 [TODO] Build the child-detail skeleton, error and gone states
+      deps: 178, 181, 185, 190
+194 [TODO] Prove the redesigned child detail at 375/1280 — motion, axe, six locales, security and regression
+      deps: 178, 179, 181, 182, 183, 184, 185, 186, 187, 190, 191, 192, 193
+200 [TODO] Add the portal wizard token block and rebuild /dashboard/children/new as the portal two-column frame
+      deps: (none)
+201 [TODO] Build the 230px vertical step rail with the done/current/upcoming state matrix and gated jumps
+      deps: 200
+202 [TODO] Build the portal step card with the per-step heading block and the step-change transition
+      deps: 200
+203 [TODO] Build the wizard nav footer — Back, the Step n of 5 counter, and Continue / Confirm & add child
+      deps: 202
+204 [TODO] Re-skin the wizard text field to the portal label + 48px input + help text stack
+      deps: 200
+205 [TODO] Re-skin the wizard select trigger and popup to the portal 48px box, keeping localized item labels
+      deps: 200, 204
+206 [TODO] Add the portal chip variant to ChoicePillGroup — wide, medium and square sizes at 44px
+      deps: 200
+207 [TODO] Author the wizard's per-field invalid state — border, message, icon and ARIA — that the design omits
+      deps: 204
+208 [TODO] Rebuild step 1 Personal — given/family name, email and passport in the design's row grouping
+      deps: 204, 207
+209 [TODO] Ship step 1's Date of birth field and resolve the design's DD/MM/YYYY text input against the ISO wire format
+      deps: 204, 207
+210 [TODO] Ship step 1's Gender chip group as a full-width portal wide-chip radiogroup
+      deps: 206
+211 [TODO] Re-skin the Nationality control to the portal select box and keep the full country list
+      deps: 204, 205
+212 [TODO] Rebuild step 2's Current school and Current year level row in the portal dialect
+      deps: 204, 205
+213 [TODO] Ship step 2's Test year level field with the design's help text, and resolve the square-chip conflict
+      deps: 205
+214 [TODO] Ship step 2's required Target entry year select and Target entry term medium-chip row
+      deps: 205, 206
+215 [TODO] Rebuild step 3 Parent or guardian — name, phone, email and WeChat ID in the design's row grouping
+      deps: 204, 207
+216 [TODO] Ship step 3's Preferred contact channel as a full-width portal wide-chip radiogroup
+      deps: 206
+217 [TODO] Rebuild step 4 Photo & voice — the info panel and the two portal dropzones
+      deps: 202, 204
+218 [TODO] Author step 4's uploading, uploaded-preview and remove states in the portal dialect
+      deps: 217
+219 [TODO] Rebuild step 5 Review & confirm as the design's four-row summary table
+      deps: 202
+220 [BLOCKED] BLOCKED — step 5's per-child cost notice has no pricing, plan or invoice data source
+      deps: 219
+221 [TODO] Wire Confirm & add child to the real create mutation with the st-pop-in success confirmation
+      deps: 203, 219
+222 [TODO] Re-skin the wizard submit error path — offline, validation and server faults on step 5
+      deps: 221
+223 [TODO] Compose the whole wizard at 375px — horizontal rail, stacked rows, reachable footer
+      deps: 201, 202, 203, 217, 219
+224 [TODO] Carry the re-skinned wizard through edit mode without breaking the prefill or the PUT
+      deps: 203, 219
+225 [TODO] Sweep the re-skinned wizard — full regression, axe at 375 and 1280, motion audit, six-catalog parity
+      deps: 221, 222, 223, 224
+230 [TODO] Re-skin the Find-a-school header band and the 48px search pill to the design
+      deps: (none)
+231 [TODO] Render the school result count from the real pagination total in the header sub-line
+      deps: 230
+232 [TODO] Build the filter bar row — All-filters pill, divider, no-filters hint
+      deps: 230
+233 [TODO] Derive and render the applied-filter chip row with per-chip removal
+      deps: 232
+234 [TODO] Build the Filters overlay dialog shell with enter/exit motion and a focus trap
+      deps: 232
+235 [TODO] Re-skin the filter groups to the design's 42px on/off chips, shared by rail and dialog
+      deps: 234
+236 [TODO] Wire the filters dialog footer — Clear all and the live "Show N schools" action
+      deps: 234, 235
+237 [TODO] Re-skin the school result card frame, typography and hover state to the design
+      deps: (none)
+238 [TODO] Build the school card's divider footer from real hit fields only
+      deps: 237, 246
+239 [TODO] Add click-to-select on school cards with the design's selected border and shadow
+      deps: 237
+240 [TODO] Implement the design's animated map camera — setView below zoom 9, panTo above
+      deps: 239, 241
+241 [TODO] Re-skin the map panel frame and move the zoom controls to the design's top-right stack
+      deps: (none)
+242 [TODO] Adopt the design's CARTO Light basemap and whole-Australia initial view
+      deps: 241
+243 [TODO] Re-skin the map pins to the design's label pill and stem, with a selected variant
+      deps: 239
+244 [TODO] Re-skin the cluster bubbles and move the clustering threshold to zoom 9
+      deps: 242
+245 [TODO] Add the floating selected-school card to the map panel
+      deps: 239, 246
+246 [BLOCKED] BLOCKED — school star rating, tag, note and placement claim have no data source
+      deps: (none)
+247 [TODO] Lay out the desktop list/map split on the design's fixed 340px list rail
+      deps: 237, 241
+248 [TODO] Compose the search surface at 375px — the map collapses, filters go to the overlay
+      deps: 247, 234
+249 [TODO] Match the search loading skeleton to the new card geometry with a shimmer
+      deps: 237
+250 [TODO] Re-skin the search empty and error states to the redesigned surface
+      deps: 237
+251 [TODO] Bring the agents tab onto the redesigned search surface
+      deps: 230, 237, 253
+252 [TODO] Apply the parent's saved search preferences to the school search, and let them save the current filters
+      deps: 235
+253 [TODO] Re-skin the sort control as the design's dropdown chip and keep both panes on one component
+      deps: 231
+260 [TODO] Fix the red notification-preference-controls round-trip — the SMS opt-out is clobbered by a concurrent spec writing the same parent's preference row
+      deps: (none)
+261 [TODO] Recut the notifications page to the portal shell — 820px column, 30px title, live unread subtitle, single 24px feed card
+      deps: 001, 004, 005, 006, 007, 008, 010, 011, 013, 035, 110
+262 [TODO] Rebuild the notification row to the design — 40px glyph tile, hairline rows, and the unread/read tile+dot state pair
+      deps: 001, 006, 007, 010, 013, 261
+263 [TODO] Ship the design's three-tier notification timestamp — relative hours, weekday name, then D MMMM
+      deps: 262
+264 [TODO] Group the feed into the design's TODAY / EARLIER sections with the 12px uppercase group header
+      deps: 006, 262
+265 [TODO] Recut per-row mark-as-read to the design's dot affordance with a real optimistic write that survives reload
+      deps: 010, 013, 020, 262
+266 [TODO] Build the header "Mark all as read" text action with its real bulk write and honest disabled state
+      deps: 010, 020, 034, 261, 265
+267 [TODO] Add the category + unread filter chips over the real ?category= and ?read= query parameters
+      deps: 013, 032, 261, 264
+268 [TODO] Make the whole notification row its deep link, preserving every calm not-found path
+      deps: 013, 262
+269 [TODO] Recut feed pagination to the portal dialect over the real server pagination meta
+      deps: 041, 261
+270 [TODO] Give the feed its three honest states — shimmer skeleton, empty card, and a retryable error inside the card
+      deps: 012, 033, 049, 050, 261
+271 [TODO] Rebuild the topbar bell popover to the app dropdown panel — 420px, semantic icon tiles, NEW count badge, unread tint
+      deps: 031, 047, 121, 262, 263
+272 [TODO] Recut the settings shell to the portal column — 30px title, portal subtitle, and the URL-addressable tab row re-dressed
+      deps: 042, 110, 261
+273 [TODO] Rebuild the settings Account card to the design's avatar row over the real /api/users/me payload
+      deps: 035, 038, 272
+274 [TODO] Build the settings Language card as the real locale switcher in the design's pill chips
+      deps: 032, 272
+275 [TODO] Rebuild the Password & security card in the portal dialect over the real change-password flow, without the two facts that have no data
+      deps: 013, 020, 022, 272
+276 [TODO] Rebuild the four delivery-channel toggle rows to the portal switch — 46×27 track, 19px transform travel, SMS caveat intact
+      deps: 010, 028, 260, 272
+277 [TODO] Recut the category toggles and give the non-suppressible account/security rows a truthful locked state
+      deps: 031, 276
+278 [TODO] Recut the email-frequency digest field to the portal select, keeping the deferred options honestly unselectable
+      deps: 013, 025, 272
+279 [TODO] Recut the preference save affordance and its four states — idle, saving, saved, refused — in the portal dialect
+      deps: 020, 033, 034, 049, 276, 277, 278
+280 [TODO] Recut the device-notification control to the portal card, keeping every real push status and both real endpoints
+      deps: 020, 031, 272
+281 [TODO] Compose notifications and settings at 375px — the mobile rules the design never wrote
+      deps: 125, 267, 270, 271, 279, 280
+282 [BLOCKED] BLOCKED — the portal Billing screen and every plan/credit/invoice surface has no data model to build against
+      deps: 116, 272
+283 [BLOCKED] BLOCKED — a per-child unread notification count cannot be derived; the feed deliberately withholds the child id
+      deps: 266
+290 [TODO] Rebuild the auth split layout to the login brand panel (560px navy / 1fr form column)
+      deps: (none)
+291 [TODO] Rebuild the auth text/password field to the DS field states, incl. the error affordance
+      deps: (none)
+292 [TODO] Re-skin the sign-in screen to app--login.html without reordering a single focusable node
+      deps: 290, 291
+293 [TODO] Build the auth status/error banner set (invalid credentials, unconfirmed, google, session, confirmed)
+      deps: 292
+294 [TODO] Re-skin the sign-up screen to the register form card, with only the fields the API accepts
+      deps: 290, 291
+295 [TODO] Re-skin the "check your inbox" confirm state and its resend countdown button
+      deps: 294
+296 [TODO] Re-skin the forgot-password screen — request card and sent card as two states of one screen
+      deps: 290, 291
+297 [TODO] Re-skin the reset-password screen, including the missing/garbage-code invalid-link state
+      deps: 290, 291
+298 [TODO] Re-skin the Google social button and the callback screen, keeping the flow env-gated
+      deps: 292, 294
+299 [BLOCKED] BLOCKED — the login Parent/School segmented control and the register role cards
+      deps: 292, 294
+300 [TODO] Build the app-shell route skeleton from the design's shimmer system
+      deps: (none)
+301 [TODO] Build the public/auth route loading skeleton and wire every auth submit to st-spin
+      deps: 300
+302 [TODO] Rebuild the 404 page as the design's full-page numeral-plus-badge composition
+      deps: (none)
+303 [TODO] Rebuild the page-level empty-state pattern to app--empty-state.html and prove it on the real children empty state
+      deps: (none)
+304 [TODO] Re-skin the landing announcement bar and sticky nav, incl. the 375px sheet composition
+      deps: (none)
+305 [TODO] Re-skin the landing hero — media card, scrim, eyebrow pill, 68px h1, CTA row, value strip, logo wall
+      deps: (none)
+306 [TODO] Re-skin the landing features grid, including the navy highlighted card and the hover lift
+      deps: (none)
+307 [TODO] Re-skin the feature-detail split and its AI-feedback mock panel with real meter semantics
+      deps: (none)
+308 [TODO] Re-skin the navy stats band with its logo watermark and three coloured figures
+      deps: (none)
+309 [TODO] Re-skin the how-it-works steps card and the testimonial card beside it
+      deps: (none)
+310 [TODO] Re-skin the pricing grid — Free, the shadowed navy Pro card with its ribbon, and School
+      deps: (none)
+311 [TODO] Re-skin the FAQ accordion, with the chevron rotation the design actually declares
+      deps: (none)
+312 [TODO] Re-skin the closing CTA panel — three-stop navy gradient, watermark, white and ghost buttons
+      deps: (none)
+313 [TODO] Re-skin the marketing footer — 1.4fr brand column, three link columns, bottom bar and status chip
+      deps: 312
+320 [TODO] UI sweep the app shell — every sidebar/topbar/user-menu/mobile-nav control at 375 and 1280
+      deps: (none)
+321 [TODO] UI sweep /dashboard — every hero/chart/child-row/note control at 375 and 1280, plus the B-1/B-2 refusal
+      deps: 320
+322 [TODO] UI sweep the children list and child detail — archive/unarchive/pagination/tabs at 375 and 1280
+      deps: 320
+323 [TODO] UI sweep the add-child wizard and edit mode — every field, step, upload and submit at 375 and 1280
+      deps: 320
+324 [TODO] UI sweep unified search — schools, agents, map, filter rail and sort at 375 and 1280
+      deps: 320
+325 [TODO] UI sweep notifications and settings — feed, mark-read, all four settings tabs and push at 375 and 1280
+      deps: 320
+326 [TODO] UI sweep auth, landing, 404 and loading states — every control at 375 and 1280
+      deps: (none)
+327 [TODO] axe — zero serious/critical on the dashboard shell, /dashboard, children list and child detail
+      deps: 321, 322
+328 [TODO] axe — zero serious/critical on the add-child wizard, edit form, all four settings tabs and the notification feed
+      deps: 323, 325
+329 [TODO] axe — zero serious/critical on unified search (incl. map), the five auth screens, landing, 404 and /design-system
+      deps: 324, 326
+330 [TODO] Motion audit — every interactive element has a 150-200ms transition and a prefers-reduced-motion variant
+      deps: 320, 321, 322, 323, 324, 325, 326
+331 [TODO] Touch-target audit — every interactive control is at least 44x44 CSS px at 375 and 1280
+      deps: 320, 321, 322, 323, 324, 325, 326
+332 [TODO] No-broken-UI audit — zero horizontal scroll, overflow, clipping, FOUC or console errors at 375 and 1280
+      deps: 320, 321, 322, 323, 324, 325, 326
+333 [TODO] API security — the parent student surface and the two new aggregates refuse every unauthorized and forged request
+      deps: (none)
+334 [TODO] API security — the widened result read refuses foreign, transient and forged requests
+      deps: (none)
+335 [TODO] API security — search, search preferences, identity and upload refuse every unauthorized and forged request
+      deps: (none)
+336 [TODO] API security — notifications, notification preferences and push subscriptions refuse every unauthorized and forged request
+      deps: (none)
+337 [TODO] i18n parity sweep — all six catalogs key-identical and zero hardcoded user-facing strings in the mission diff
+      deps: 320, 321, 322, 323, 324, 325, 326
+338 [TODO] Banned-pattern grep gate — zero mock/fake/stub/dummy/placeholder/TODO/FIXME and zero hardcoded array standing in for a query
+      deps: 330, 331, 332, 333, 334, 335, 336, 337
+339 [TODO] FINAL REGRESSION — the whole Playwright suite green, at or above the 157-passing baseline, with the one known red fixed
+      deps: 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338
+```

@@ -534,3 +534,33 @@ a warning and not a gate failure). The export itself is untouched.
 3-digit ids (001-339), so they would not collide, but a mixed directory makes the DAG's
 orphan-detection meaningless. Moved verbatim to `.thellmspace/tasks-archive-mission2/`. Nothing
 deleted, nothing edited.
+
+## D-SCOPE-3a — Refinement of D-SCOPE-3 after the reconciliation pass
+
+`.qa/intake/RECONCILIATION.md` §4 analysed the 219 uncommitted working-tree entries left by the
+previous agent and produced a hard guarantee plus a preservation list. This supersedes the
+coarse reading in D-SCOPE-3:
+
+- **§4.1 Hard guarantee:** no file under `src/lib/axios/**`, no file under any `*/queries/**`, and
+  no file in `src/modules/auth` was modified or deleted. All 33 query/mutation hooks, the token
+  plumbing, `ParentGuard`, `useRequireParent` and `useAuthStore` are exactly as committed. **The
+  in-flight redesign cannot have broken data fetching, auth or route guarding.**
+- **§4.2 Purely cosmetic (safe to supersede):** 28 new design-system components, 9 showcase files,
+  the presentational rewrites, and all 35 deleted files — every deletion is a presentation
+  component or class-variant helper; no query, schema, store, guard or axios file was deleted.
+- **§4.3 Cosmetic but COUPLED — supersede only with a matching change elsewhere:**
+  `globals.css` ↔ `src/lib/utils.ts` `THEME_CLASS_GROUPS` (a renamed token silently breaks `cn()`
+  merging, and `design-tokens.spec.ts` asserts the parity in the real DOM);
+  `design-system/index.ts` barrel exports (removing one breaks a consumer's compile);
+  all six i18n catalogues (copy is cosmetic, **key shape is not** — deleting a key a kept
+  component uses is a runtime crash).
+- **§4.4 Functional wiring — must be preserved:** 10 numbered items, including the agent-search
+  and school-search store setter refactors (`setCountries`/`setStates`… replaced the old
+  `toggle*` API; the outgoing request shape is unchanged — do NOT "fix" it back),
+  `dashboard/lib/dashboard-overview.ts` (**the only place dashboard metrics are derived today —
+  this is the seam where `C-DASH-HOUSEHOLD` lands**), `use-school-search-pane.ts`,
+  `active-filter-count.ts`, the view-model type modules, the module barrels, and the 13 e2e specs
+  that form the regression net. Those specs are **re-targeted at the new markup, never deleted.**
+
+Practical rule for every W4-W10 task: read `.qa/intake/RECONCILIATION.md` §4.4 before deleting or
+rewriting anything in the module you are touching.

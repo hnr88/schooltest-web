@@ -1,0 +1,665 @@
+[
+  {
+    "id": "130",
+    "file": ".qa/tasks/130-dashboard-household-progress-wiring.md",
+    "title": "Wire the dashboard screen to GET /api/my/progress and define its page-level query contract",
+    "layer": "data",
+    "kind": "wire",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#10 (metric inventory)",
+      ".qa/design/screens/portal--main.html"
+    ],
+    "depends_on": [
+      "090",
+      "091",
+      "110"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "131",
+    "file": ".qa/tasks/131-dashboard-page-composition.md",
+    "title": "Rebuild the dashboard page composition — 28px section stack and the two auto-fit 2-up grids",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W5",
+    "contract": [
+      "n/a (presentation)"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:5",
+      "25",
+      "88",
+      ".qa/design/spec/01-portal-dashboard.md#1.3 #3 #6"
+    ],
+    "depends_on": [
+      "130"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "132",
+    "file": ".qa/tasks/132-dashboard-greeting-row.md",
+    "title": "Build the dashboard greeting row — date line and time-of-day H1",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "n/a (reads GET /api/users/me via the existing useAuth)"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:7-11",
+      ".qa/design/spec/01-portal-dashboard.md#2"
+    ],
+    "depends_on": [
+      "131"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "133",
+    "file": ".qa/tasks/133-dashboard-hero-panel.md",
+    "title": "Build the navy hero panel shell — 24px navy card, two decorative circles, \"This week\" eyebrow",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W5",
+    "contract": [
+      "n/a (presentation)"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:26-29",
+      ".qa/design/spec/01-portal-dashboard.md#3"
+    ],
+    "depends_on": [
+      "131"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "134",
+    "file": ".qa/tasks/134-dashboard-hero-headline.md",
+    "title": "Render the hero headline sentence from real household data — no projection, no percentage",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:30",
+      ".qa/design/spec/01-portal-dashboard.md#3 #10 (row 8)"
+    ],
+    "depends_on": [
+      "133",
+      "130"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "135",
+    "file": ".qa/tasks/135-dashboard-hero-stat-row.md",
+    "title": "Build the hero stat row with the servable stats only — two cells, one separator, no third slot",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:31-37",
+      ".qa/design/spec/01-portal-dashboard.md#3 #4.1 #4.2 #4.3"
+    ],
+    "depends_on": [
+      "133",
+      "130"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "136",
+    "file": ".qa/tasks/136-metric-tests-completed.md",
+    "title": "Metric 1 — \"tests completed\" hero stat from household.testsCompletedThisWeek",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:32",
+      ".qa/design/spec/01-portal-dashboard.md#4.1 #10 (row 1)"
+    ],
+    "depends_on": [
+      "135"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "137",
+    "file": ".qa/tasks/137-metric-practice-this-week.md",
+    "title": "Metric 3 — \"practice this week\" hero stat, {H}h {MM}m from practiceSecondsThisWeek",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:36",
+      ".qa/design/spec/01-portal-dashboard.md#4.3 #10 (row 3)"
+    ],
+    "depends_on": [
+      "135"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "138",
+    "file": ".qa/tasks/138-metric-coming-up-blocked.md",
+    "title": "BLOCKED — \"coming up\" hero stat has no data source (B-1)",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD (does not carry this field)",
+      "BLOCKED B-1"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:34",
+      ".qa/design/spec/01-portal-dashboard.md#4.2 #10 (row 2)"
+    ],
+    "depends_on": [
+      "135"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "139",
+    "file": ".qa/tasks/139-dashboard-zero-children-state.md",
+    "title": "Dashboard zero-children state — honest hero, add-a-child CTA, suppressed child sections",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/spec/06-auth-states-landing.md (empty states)",
+      ".qa/design/spec/01-portal-dashboard.md#UNKNOWNS"
+    ],
+    "depends_on": [
+      "133",
+      "134",
+      "144"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "140",
+    "file": ".qa/tasks/140-practice-chart-card.md",
+    "title": "Build the \"Practice minutes\" card shell — header, range label, 120px plot area",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W5",
+    "contract": [
+      "n/a (presentation)"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:40-45",
+      ".qa/design/spec/01-portal-dashboard.md#4.4"
+    ],
+    "depends_on": [
+      "131"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "141",
+    "file": ".qa/tasks/141-practice-chart-bars.md",
+    "title": "Metric 4 — seven practice bars with heights NORMALISED from the week's max, not px==minutes",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:45-52",
+      ".qa/design/spec/01-portal-dashboard.md#4.4 #10 (row 4)"
+    ],
+    "depends_on": [
+      "140",
+      "130"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "142",
+    "file": ".qa/tasks/142-strongest-day-caption.md",
+    "title": "Metric 5 — strongest-day caption from household.strongestDay, without the unservable clause",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:54",
+      ".qa/design/spec/01-portal-dashboard.md#4.4 #10 (row 5)"
+    ],
+    "depends_on": [
+      "140",
+      "130"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "143",
+    "file": ".qa/tasks/143-practice-chart-states.md",
+    "title": "Practice-minutes card loading, zero-week and error states",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/spec/06-auth-states-landing.md (skeletons)",
+      ".qa/design/spec/01-portal-dashboard.md#11.5 #UNKNOWNS"
+    ],
+    "depends_on": [
+      "141",
+      "142"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "144",
+    "file": ".qa/tasks/144-my-children-section.md",
+    "title": "Build the \"My children\" section — header, \"See details\" link, 24px list card",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W5",
+    "contract": [
+      "n/a (presentation)"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:59-64",
+      ".qa/design/spec/01-portal-dashboard.md#5"
+    ],
+    "depends_on": [
+      "131"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "145",
+    "file": ".qa/tasks/145-child-row-composition.md",
+    "title": "Build the \"My children\" row — avatar, name block, chevron, whole-row link to the child",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:65-71",
+      "81",
+      ".qa/design/spec/01-portal-dashboard.md#5"
+    ],
+    "depends_on": [
+      "144",
+      "130"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "146",
+    "file": ".qa/tasks/146-child-cefr-tick-row.md",
+    "title": "Metric 6 — per-child CEFR tick row rendering the REAL ladder pre_A1..C1, not the design's A1..C2",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:72-79",
+      ".qa/design/spec/01-portal-dashboard.md#4.5 #10 (row 6)"
+    ],
+    "depends_on": [
+      "145",
+      "130"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "147",
+    "file": ".qa/tasks/147-child-focus-skill-pill.md",
+    "title": "Metric 7 — per-child \"Focus: {skill}\" pill from children[].focusSkill",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:80",
+      ".qa/design/spec/01-portal-dashboard.md#4.6 #10 (row 7)"
+    ],
+    "depends_on": [
+      "145",
+      "130"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "148",
+    "file": ".qa/tasks/148-my-children-states.md",
+    "title": "\"My children\" list loading, single-child and error behaviour",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#UNKNOWNS",
+      ".qa/design/spec/06-auth-states-landing.md"
+    ],
+    "depends_on": [
+      "145",
+      "146",
+      "147"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "149",
+    "file": ".qa/tasks/149-child-row-interaction-a11y.md",
+    "title": "Child-row interaction states — hover, visible focus ring, keyboard traversal, contrast",
+    "layer": "a11y",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "n/a (a11y)"
+    ],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#UNKNOWNS #11.3",
+      ".qa/design/screens/portal--main.html:66"
+    ],
+    "depends_on": [
+      "145",
+      "146",
+      "147"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "150",
+    "file": ".qa/tasks/150-school-note-card.md",
+    "title": "Build the \"Latest update\" card in the design's note-card shell, fed by the real notification feed",
+    "layer": "frontend",
+    "kind": "wire",
+    "wave": "W5",
+    "contract": [
+      "existing GET /api/notifications (api-inventory #14)"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:89-97",
+      ".qa/design/spec/01-portal-dashboard.md#6.1"
+    ],
+    "depends_on": [
+      "131"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "151",
+    "file": ".qa/tasks/151-teacher-note-blocked.md",
+    "title": "BLOCKED — the teacher-authored \"Note from school\" with named author and Reply has no data source",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W5",
+    "contract": [
+      "n/a — no content-type",
+      "no endpoint"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:89-97",
+      ".qa/design/spec/01-portal-dashboard.md#6.1"
+    ],
+    "depends_on": [
+      "150"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "152",
+    "file": ".qa/tasks/152-recommended-this-week-blocked.md",
+    "title": "BLOCKED — \"Recommended this week\" has neither a recommendation source nor an Assign action",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W5",
+    "contract": [
+      "n/a — no content-type",
+      "and the implied action is not granted to parents"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:98-117",
+      ".qa/design/spec/01-portal-dashboard.md#6.2"
+    ],
+    "depends_on": [
+      "131"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "153",
+    "file": ".qa/tasks/153-coming-up-list-blocked.md",
+    "title": "BLOCKED — the \"Coming up\" list has no scheduling data source (B-2)",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W5",
+    "contract": [
+      "BLOCKED B-2"
+    ],
+    "design": [
+      ".qa/design/screens/portal--main.html:120-144",
+      ".qa/design/spec/01-portal-dashboard.md#7"
+    ],
+    "depends_on": [
+      "131"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "154",
+    "file": ".qa/tasks/154-dashboard-loading-skeleton.md",
+    "title": "Whole-page dashboard loading skeleton matching the final composition",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/spec/06-auth-states-landing.md (skeletons)",
+      ".qa/design/spec/01-portal-dashboard.md#11.5"
+    ],
+    "depends_on": [
+      "133",
+      "140",
+      "144",
+      "150"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "155",
+    "file": ".qa/tasks/155-dashboard-error-state.md",
+    "title": "Dashboard page error state — real classification, real retry, no stale metrics",
+    "layer": "frontend",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/spec/06-auth-states-landing.md",
+      ".qa/design/spec/01-portal-dashboard.md#UNKNOWNS"
+    ],
+    "depends_on": [
+      "130",
+      "154"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "156",
+    "file": ".qa/tasks/156-dashboard-entrance-motion.md",
+    "title": "Dashboard entrance motion — staggered section reveal with a full reduced-motion path",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "n/a (motion)"
+    ],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#11",
+      ".qa/design/spec/04-ds-foundations.md#I"
+    ],
+    "depends_on": [
+      "133",
+      "140",
+      "144",
+      "150",
+      "154"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "157",
+    "file": ".qa/tasks/157-dashboard-mobile-375.md",
+    "title": "375px composition of the whole dashboard — row reflow, collapsed grids, no fixed widths",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "n/a (responsive)"
+    ],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#9",
+      ".qa/design/screens/portal--main.html"
+    ],
+    "depends_on": [
+      "132",
+      "135",
+      "141",
+      "142",
+      "145",
+      "146",
+      "147",
+      "150"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "158",
+    "file": ".qa/tasks/158-dashboard-i18n-catalogs.md",
+    "title": "Every dashboard string in all six locale catalogs, key-identical, with correct ICU and formats",
+    "layer": "frontend",
+    "kind": "implement",
+    "wave": "W5",
+    "contract": [
+      "n/a (i18n)"
+    ],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md (every literal string on the screen)"
+    ],
+    "depends_on": [
+      "132",
+      "134",
+      "136",
+      "137",
+      "139",
+      "140",
+      "141",
+      "142",
+      "144",
+      "145",
+      "146",
+      "147",
+      "150",
+      "155"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "159",
+    "file": ".qa/tasks/159-dashboard-e2e-axe.md",
+    "title": "Rewrite the dashboard e2e suite for the redesign, keeping every functional assertion green",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W5",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#10 (the full metric inventory)"
+    ],
+    "depends_on": [
+      "135",
+      "136",
+      "137",
+      "139",
+      "141",
+      "142",
+      "145",
+      "146",
+      "147",
+      "149",
+      "150",
+      "154",
+      "155",
+      "156",
+      "157",
+      "158"
+    ],
+    "status": "TODO",
+    "started_at": null
+  }
+]

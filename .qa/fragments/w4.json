@@ -1,0 +1,292 @@
+[
+  {
+    "id": "110",
+    "file": ".qa/tasks/110-portal-shell-frame-tokens.md",
+    "title": "Portal shell frame — 24px detached gutter, 1600px cap, and the four @theme tokens the shell is missing",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#1-page-shell",
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/04-ds-foundations.md#tailwind-v4-mapping"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "111",
+    "file": ".qa/tasks/111-detached-sidebar-card.md",
+    "title": "Detach the sidebar into the design's 248px floating card (24px radius, two-layer shadow, 28/16/16 padding)",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#12-detached-sidebar"
+    ],
+    "depends_on": ["110"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "112",
+    "file": ".qa/tasks/112-sidebar-logo-lockup.md",
+    "title": "Sidebar logo lockup — 26px, flush left, 36px breathing room, focus ring the design never drew",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#12-detached-sidebar"
+    ],
+    "depends_on": ["111"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "113",
+    "file": ".qa/tasks/113-sidebar-nav-groups.md",
+    "title": "Rail groups — Manage/Account overlines, 2px nav gap, and the flex spacer that pins Account to the bottom",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#12-detached-sidebar"
+    ],
+    "depends_on": ["111"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "114",
+    "file": ".qa/tasks/114-sidebar-nav-item-idle.md",
+    "title": "Nav item base — 11/14 padding, 12px radius, 14.5px label, 18px icon, plus the hover and focus the design never drew",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#12-detached-sidebar",
+      ".qa/design/spec/05-ds-components.md#51-sidebar"
+    ],
+    "depends_on": ["113"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "115",
+    "file": ".qa/tasks/115-sidebar-nav-item-active.md",
+    "title": "Nav item ACTIVE state — the design's navy #0E2350 slab, 600 weight, white ink, and the e2e re-baseline that keeps it honest",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#12-detached-sidebar"
+    ],
+    "depends_on": ["114"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "116",
+    "file": ".qa/tasks/116-sidebar-billing-entry-blocked.md",
+    "title": "Rail Billing nav entry — BLOCKED (B-7, no billing surface exists to link to)",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": ["B-7"],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#12-detached-sidebar"
+    ],
+    "depends_on": ["113"],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "117",
+    "file": ".qa/tasks/117-sidebar-user-card-menu.md",
+    "title": "Rail user card — the design's #F4F6FA account card, carrying the existing user menu and Sign out",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#12-detached-sidebar"
+    ],
+    "depends_on": ["111"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "118",
+    "file": ".qa/tasks/118-topbar-chromeless-row.md",
+    "title": "Top row — drop the 64px white bar for the design's chrome-less row over the page well",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/spec/01-portal-dashboard.md#2-dashboard--top-bar-greeting-row"
+    ],
+    "depends_on": ["110"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "119",
+    "file": ".qa/tasks/119-topbar-breadcrumb-reskin.md",
+    "title": "Breadcrumb — the design system's 13.5px trail with a 13px chevron separator, replacing the / text",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--navigation.html",
+      ".qa/design/spec/05-ds-components.md#53-breadcrumbs"
+    ],
+    "depends_on": ["118"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "120",
+    "file": ".qa/tasks/120-topbar-search-pill.md",
+    "title": "Search pill — the design's 240x44 white capsule with a 16px magnifier, on the well",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/spec/01-portal-dashboard.md#2-dashboard--top-bar-greeting-row"
+    ],
+    "depends_on": ["118"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "121",
+    "file": ".qa/tasks/121-topbar-notification-bell.md",
+    "title": "Notification bell — the design's 44px white circle, keeping the real unread count",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/spec/01-portal-dashboard.md#2-dashboard--top-bar-greeting-row"
+    ],
+    "depends_on": ["118"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "122",
+    "file": ".qa/tasks/122-mobile-sheet-nav.md",
+    "title": "Mobile nav Sheet — the detached rail's contents inside the 288px off-canvas panel at 375px",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#9-responsive-hints-present-in-the-markup"
+    ],
+    "depends_on": ["115", "117"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "123",
+    "file": ".qa/tasks/123-shell-keyboard-and-focus.md",
+    "title": "Shell keyboard path — Ctrl+B, a complete visible focus ring set, and a proven Sheet focus trap",
+    "layer": "a11y",
+    "kind": "implement",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#unknowns",
+      ".qa/design/spec/04-ds-foundations.md#unknowns"
+    ],
+    "depends_on": ["115", "117", "118", "122"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "124",
+    "file": ".qa/tasks/124-collapsed-icon-rail.md",
+    "title": "Collapsed icon rail — keep the working Ctrl+B feature the export omits, re-skinned to the detached card",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#unknowns",
+      ".qa/design/screens/portal--detached-sidebar.html"
+    ],
+    "depends_on": ["115"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "125",
+    "file": ".qa/tasks/125-shell-375-composition.md",
+    "title": "The shell at 375 — one composition pass over the frame, row and drawer with real measurements",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#9-responsive-hints-present-in-the-markup",
+      ".qa/design/screens/portal--main.html"
+    ],
+    "depends_on": ["118", "119", "120", "121", "122"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "126",
+    "file": ".qa/tasks/126-shell-motion-audit.md",
+    "title": "Shell motion — one audited set of transitions from the design system's six keyframes, each with a reduced-motion variant",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#11-animations",
+      ".qa/design/spec/04-ds-foundations.md#i-motion--animate----ease-"
+    ],
+    "depends_on": ["115", "122", "124"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "127",
+    "file": ".qa/tasks/127-shell-regression-i18n-axe.md",
+    "title": "Shell wave close-out — full regression, six-locale parity, axe sweep, and the re-baseline record",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W4",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/spec/01-portal-dashboard.md#1-page-shell"
+    ],
+    "depends_on": ["116", "123", "125", "126"],
+    "status": "TODO",
+    "started_at": null
+  }
+]

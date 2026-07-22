@@ -1,0 +1,676 @@
+[
+  {
+    "id": "165",
+    "file": ".qa/tasks/165-children-list-data-spine.md",
+    "title": "Join C-STUDENT-LIST with C-DASH-HOUSEHOLD into one children-list view model",
+    "layer": "data",
+    "kind": "wire",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-LIST",
+      "C-DASH-HOUSEHOLD",
+      "C-UI-CHILD-LEARNING-SURFACE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/spec/02-portal-children.md#a5-component-childcard"
+    ],
+    "depends_on": [
+      "090",
+      "110"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "166",
+    "file": ".qa/tasks/166-children-list-page-header.md",
+    "title": "Rebuild the \"My children\" page header to the portal slice with an honest count subline",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-LIST",
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/spec/02-portal-children.md#a2-page-container",
+      ".qa/design/spec/02-portal-children.md#a3-component-pageheader"
+    ],
+    "depends_on": [
+      "165"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "167",
+    "file": ".qa/tasks/167-child-card-identity-row.md",
+    "title": "Build the ChildCard shell, auto-fit grid and identity row with the CEFR level pill",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-LIST",
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/spec/02-portal-children.md#a4-layout-childcardgrid",
+      ".qa/design/spec/02-portal-children.md#a5-component-childcard"
+    ],
+    "depends_on": [
+      "165",
+      "166"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "168",
+    "file": ".qa/tasks/168-child-card-metric-strip.md",
+    "title": "Build the ChildCard metric strip from real household metrics (streak, tests, last assessed)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/spec/02-portal-children.md#a5-component-childcard"
+    ],
+    "depends_on": [
+      "167"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "169",
+    "file": ".qa/tasks/169-blocked-last-result-percentage.md",
+    "title": "BLOCKED \u2014 the design's `last result 74%` metric has no honest data source",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W6",
+    "contract": [
+      "B-3"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#metric-inventory"
+    ],
+    "depends_on": [
+      "168"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "170",
+    "file": ".qa/tasks/170-blocked-progress-to-next-band.md",
+    "title": "BLOCKED \u2014 `Progress to {nextLevel} 68%` requires a CEFR scorer the product forbids",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W6",
+    "contract": [
+      "B-4"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#metric-inventory"
+    ],
+    "depends_on": [
+      "168",
+      "181"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "171",
+    "file": ".qa/tasks/171-child-card-focus-note-footer.md",
+    "title": "Build the child card footer \u2014 focus-skill note line and the \"Details \u2192\" affordance",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/spec/02-portal-children.md#a5-component-childcard"
+    ],
+    "depends_on": [
+      "167"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "172",
+    "file": ".qa/tasks/172-children-empty-state-and-add-tile.md",
+    "title": "Build the dashed \"Add a child\" tile and the portal zero-children state",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-LIST",
+      "C-STUDENT-CREATE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/screens/app--empty-state.html",
+      ".qa/design/spec/02-portal-children.md#a6-component-addchildtile",
+      ".qa/design/spec/02-portal-children.md#a7-true-empty-state"
+    ],
+    "depends_on": [
+      "166",
+      "167"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "173",
+    "file": ".qa/tasks/173-children-list-skeleton-and-error.md",
+    "title": "Build the children-list shimmer skeleton and the error/retry state",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-LIST",
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/app--loading-skeleton.html",
+      ".qa/design/spec/02-portal-children.md#animations"
+    ],
+    "depends_on": [
+      "167"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "174",
+    "file": ".qa/tasks/174-children-list-archive-unarchive.md",
+    "title": "Preserve archive/unarchive on the redesigned child card (menu, confirm dialog, toasts, DB proof)",
+    "layer": "integration",
+    "kind": "wire",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-ARCHIVE",
+      "C-STUDENT-UNARCHIVE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/spec/02-portal-children.md#a5-component-childcard"
+    ],
+    "depends_on": [
+      "167"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "175",
+    "file": ".qa/tasks/175-children-list-archived-filter-and-paging.md",
+    "title": "Keep the archived filter and roster paging working on the card grid",
+    "layer": "ui",
+    "kind": "wire",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-LIST"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/spec/02-portal-children.md#a4-layout-childcardgrid"
+    ],
+    "depends_on": [
+      "167",
+      "174"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "176",
+    "file": ".qa/tasks/176-children-list-mobile-a11y-regression.md",
+    "title": "Prove the redesigned children list at 375/1280 \u2014 motion, axe, six locales, and the e2e regression",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-LIST",
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/spec/02-portal-children.md#animations",
+      ".qa/design/spec/02-portal-children.md#responsive-summary"
+    ],
+    "depends_on": [
+      "166",
+      "167",
+      "168",
+      "171",
+      "172",
+      "173",
+      "174",
+      "175"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "177",
+    "file": ".qa/tasks/177-child-detail-composition-and-data-spine.md",
+    "title": "Recompose the child detail route as the design's single vertical stack and join its three reads",
+    "layer": "integration",
+    "kind": "wire",
+    "wave": "W6",
+    "contract": [
+      "C-PARENT-CHILD-PROGRESS",
+      "C-DASH-HOUSEHOLD",
+      "C-CHILD-RESULT-HISTORY",
+      "C-UI-CHILD-LEARNING-SURFACE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b-child-detail-parent-portal"
+    ],
+    "depends_on": [
+      "090",
+      "110"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "178",
+    "file": ".qa/tasks/178-child-detail-header-identity.md",
+    "title": "Build the child detail header \u2014 back link, 60px navy avatar, name and meta line",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-PARENT-CHILD-PROGRESS"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b1-component-detailheader"
+    ],
+    "depends_on": [
+      "177"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "179",
+    "file": ".qa/tasks/179-child-detail-header-actions.md",
+    "title": "Ship the detail header's two pill actions as Edit and Archive/Unarchive",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-STUDENT-UPDATE",
+      "C-STUDENT-ARCHIVE",
+      "C-STUDENT-UNARCHIVE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b1-component-detailheader"
+    ],
+    "depends_on": [
+      "178",
+      "174"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "180",
+    "file": ".qa/tasks/180-blocked-share-and-assign-actions.md",
+    "title": "BLOCKED \u2014 \"Share with teacher\" and \"Assign practice\" have no model, no endpoint and no handler",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W6",
+    "contract": [
+      "B-1"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#unknowns"
+    ],
+    "depends_on": [
+      "179"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "181",
+    "file": ".qa/tasks/181-child-detail-kpi-strip.md",
+    "title": "Build the child-detail KPI strip from real household metrics",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-DASH-HOUSEHOLD",
+      "C-CHILD-RESULT-HISTORY"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b2-component-kpistrip"
+    ],
+    "depends_on": [
+      "177",
+      "178"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "182",
+    "file": ".qa/tasks/182-child-detail-band-movement.md",
+    "title": "Build the \"Since joining\" cell as an honest per-skill CEFR band movement",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-CHILD-RESULT-HISTORY",
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b2-component-kpistrip",
+      ".qa/design/spec/02-portal-children.md#metric-inventory"
+    ],
+    "depends_on": [
+      "181"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "183",
+    "file": ".qa/tasks/183-level-journey-cefr-ladder.md",
+    "title": "Build the \"Level journey\" six-tick CEFR ladder on the real API ladder, with its note",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b4-component-leveljourney"
+    ],
+    "depends_on": [
+      "177",
+      "178"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "184",
+    "file": ".qa/tasks/184-child-activity-snapshot-block.md",
+    "title": "Re-dress the activity snapshot and session-completion block into the portal card",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-PARENT-CHILD-PROGRESS",
+      "C-UI-CHILD-LEARNING-SURFACE"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b2-component-kpistrip"
+    ],
+    "depends_on": [
+      "181"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "185",
+    "file": ".qa/tasks/185-skills-card-readiness-rows.md",
+    "title": "Build the \"Skills\" card as four readiness rows in the sanctioned vocabulary",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b5-component-skillscard"
+    ],
+    "depends_on": [
+      "177",
+      "178"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "186",
+    "file": ".qa/tasks/186-skill-attribute-mastery-map.md",
+    "title": "Expand a skill row into its per-attribute mastery map from C-PARENT-RESULT-VIEW",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-PARENT-RESULT-VIEW"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b5-component-skillscard"
+    ],
+    "depends_on": [
+      "185"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "187",
+    "file": ".qa/tasks/187-skills-not-assessed-and-caveats.md",
+    "title": "Render not_assessed, low_confidence and effort_valid as first-class states on the Skills card",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-DASH-HOUSEHOLD",
+      "C-PARENT-RESULT-VIEW"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/screens/app--empty-state.html",
+      ".qa/design/spec/02-portal-children.md#b5-component-skillscard"
+    ],
+    "depends_on": [
+      "185",
+      "186"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "188",
+    "file": ".qa/tasks/188-blocked-avg-trend-percentile.md",
+    "title": "BLOCKED \u2014 `Avg. score`, `Trend` and `Of grade Top 15%` are a composite and a cohort percentile",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W6",
+    "contract": [
+      "B-5"
+    ],
+    "design": [
+      ".qa/design/screens/app--child-profile.html",
+      ".qa/design/spec/02-portal-children.md#c2-component-profilehero"
+    ],
+    "depends_on": [
+      "181",
+      "185"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "189",
+    "file": ".qa/tasks/189-blocked-subjects-grades-class-average.md",
+    "title": "BLOCKED \u2014 subject bars, letter grades and class averages are not this product's domain",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W6",
+    "contract": [
+      "B-6"
+    ],
+    "design": [
+      ".qa/design/screens/app--child-profile.html",
+      ".qa/design/screens/app--result-detail.html",
+      ".qa/design/spec/02-portal-children.md#c3-component-subjectcard",
+      ".qa/design/spec/02-portal-children.md#d2-component-resulthero"
+    ],
+    "depends_on": [
+      "186",
+      "190"
+    ],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "190",
+    "file": ".qa/tasks/190-recent-results-rows.md",
+    "title": "Build the \"Recent results\" rows from C-CHILD-RESULT-HISTORY",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-CHILD-RESULT-HISTORY"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b6-component-recentresults"
+    ],
+    "depends_on": [
+      "177",
+      "178"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "191",
+    "file": ".qa/tasks/191-recent-results-pagination-and-skill-filter.md",
+    "title": "Wire real pagination and the skill filter into Recent results",
+    "layer": "integration",
+    "kind": "implement",
+    "wave": "W6",
+    "contract": [
+      "C-CHILD-RESULT-HISTORY"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#b6-component-recentresults",
+      ".qa/design/spec/02-portal-children.md#unknowns"
+    ],
+    "depends_on": [
+      "190"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "192",
+    "file": ".qa/tasks/192-result-report-surface.md",
+    "title": "Open a full official-result report from a result row (C-PARENT-RESULT-VIEW)",
+    "layer": "integration",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-PARENT-RESULT-VIEW"
+    ],
+    "design": [
+      ".qa/design/screens/app--result-detail.html",
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#d-result-detail-app-chrome"
+    ],
+    "depends_on": [
+      "190",
+      "186"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "193",
+    "file": ".qa/tasks/193-child-detail-skeleton-and-error-states.md",
+    "title": "Build the child-detail skeleton, error and gone states",
+    "layer": "ui",
+    "kind": "build",
+    "wave": "W6",
+    "contract": [
+      "C-PARENT-CHILD-PROGRESS",
+      "C-DASH-HOUSEHOLD",
+      "C-CHILD-RESULT-HISTORY"
+    ],
+    "design": [
+      ".qa/design/screens/app--loading-skeleton.html",
+      ".qa/design/screens/app--404.html",
+      ".qa/design/spec/02-portal-children.md#animations"
+    ],
+    "depends_on": [
+      "178",
+      "181",
+      "185",
+      "190"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "194",
+    "file": ".qa/tasks/194-child-detail-regression-and-mobile-proof.md",
+    "title": "Prove the redesigned child detail at 375/1280 \u2014 motion, axe, six locales, security and regression",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W6",
+    "contract": [
+      "C-PARENT-CHILD-PROGRESS",
+      "C-DASH-HOUSEHOLD",
+      "C-CHILD-RESULT-HISTORY",
+      "C-PARENT-RESULT-VIEW"
+    ],
+    "design": [
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md#animations",
+      ".qa/design/spec/02-portal-children.md#responsive-summary"
+    ],
+    "depends_on": [
+      "178",
+      "179",
+      "181",
+      "182",
+      "183",
+      "184",
+      "185",
+      "186",
+      "187",
+      "190",
+      "191",
+      "192",
+      "193"
+    ],
+    "status": "TODO",
+    "started_at": null
+  }
+]

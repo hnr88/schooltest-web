@@ -1,0 +1,990 @@
+[
+  {
+    "id": "020",
+    "file": ".qa/tasks/020-ds-button-variants-sizes-states.md",
+    "title": "Rebuild the design-system Button to the export's 8 variants, 5 sizes and 7 states",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--buttons.html",
+      ".qa/design/spec/04-ds-foundations.md#4-buttons",
+      ".qa/design/spec/04-ds-foundations.md#0-2-keyframes-the-complete-animation-inventory",
+      ".qa/design/spec/04-ds-foundations.md#TAILWIND-V4-MAPPING"
+    ],
+    "depends_on": [
+      "001",
+      "002",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "013"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "021",
+    "file": ".qa/tasks/021-ds-icon-button-family.md",
+    "title": "Cut the IconButton family to the export's five square sizes and three tones",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--buttons.html",
+      ".qa/design/screens/ds--alerts.html",
+      ".qa/design/screens/ds--cards.html",
+      ".qa/design/screens/ds--table.html",
+      ".qa/design/screens/ds--navigation.html",
+      ".qa/design/spec/04-ds-foundations.md#4.4",
+      ".qa/design/spec/05-ds-components.md#1.3,#2.4,#4.1,#5.2"
+    ],
+    "depends_on": [
+      "001",
+      "002",
+      "004",
+      "007",
+      "010",
+      "013",
+      "020"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "022",
+    "file": ".qa/tasks/022-ds-text-field-shell.md",
+    "title": "Rebuild the text Field shell — label, required marker, helper, inline error, disabled",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/spec/04-ds-foundations.md#5.1"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "006",
+      "007",
+      "008",
+      "010",
+      "013"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "023",
+    "file": ".qa/tasks/023-ds-search-input.md",
+    "title": "Build the SearchInput primitive — leading magnifier, 38px inset, clear affordance",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/04-ds-foundations.md#5.2",
+      ".qa/design/spec/05-ds-components.md#6.1a"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "006",
+      "007",
+      "008",
+      "010",
+      "013",
+      "022"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "024",
+    "file": ".qa/tasks/024-ds-textarea.md",
+    "title": "Build the Textarea field — 3 rows, vertical resize, 1.5 line-height, focus + error rings",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/spec/04-ds-foundations.md#5.4"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "006",
+      "007",
+      "008",
+      "010",
+      "013",
+      "022"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "025",
+    "file": ".qa/tasks/025-ds-select-field.md",
+    "title": "Rebuild SelectField and SelectRow — custom chevron, three sizes, listbox popup animation",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/screens/ds--footers.html",
+      ".qa/design/spec/04-ds-foundations.md#5.3",
+      ".qa/design/spec/05-ds-components.md#6.8,#7.1"
+    ],
+    "depends_on": [
+      "001",
+      "002",
+      "004",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "013",
+      "022"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "026",
+    "file": ".qa/tasks/026-ds-checkbox.md",
+    "title": "Rebuild the Checkbox — 18px box, 5px radius, 1.5px border, white tick, disabled row",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/spec/04-ds-foundations.md#5.5"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "007",
+      "010",
+      "011",
+      "013",
+      "022"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "027",
+    "file": ".qa/tasks/027-ds-radio-group.md",
+    "title": "Rebuild the RadioGroup — 18px ring, 8px dot, roving focus, disabled state",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/spec/04-ds-foundations.md#5.6"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "010",
+      "011",
+      "013",
+      "022",
+      "026"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "028",
+    "file": ".qa/tasks/028-ds-switch-toggle-row.md",
+    "title": "Rebuild the Switch (40×22 track, 18px travel) and the settings ToggleRow it sits in",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/04-ds-foundations.md#5.7",
+      ".qa/design/spec/05-ds-components.md#6.11a"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "006",
+      "007",
+      "008",
+      "010",
+      "013",
+      "026"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "029",
+    "file": ".qa/tasks/029-ds-slider.md",
+    "title": "Build the Slider control — 120px track, 16px thumb, fixed-width value readout",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#6.11b"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "007",
+      "008",
+      "010",
+      "013",
+      "028"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "030",
+    "file": ".qa/tasks/030-ds-badge-variants.md",
+    "title": "Rebuild the Badge — nine colour variants at 12.5px/600, pill radius, outline compensation",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--badges.html",
+      ".qa/design/spec/04-ds-foundations.md#6.1,#6.2",
+      ".qa/design/spec/05-ds-components.md#8.2"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "031",
+    "file": ".qa/tasks/031-ds-status-pill-count-badge.md",
+    "title": "Rebuild the status-dot pills and the count badges (notification, nav, avatar overflow)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--badges.html",
+      ".qa/design/screens/ds--table.html",
+      ".qa/design/screens/ds--cards.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/screens/ds--navigation.html",
+      ".qa/design/spec/04-ds-foundations.md#6.3,#6.5",
+      ".qa/design/spec/05-ds-components.md#2.4,#5.1,#6.6a"
+    ],
+    "depends_on": [
+      "001",
+      "006",
+      "007",
+      "010",
+      "011",
+      "030"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "032",
+    "file": ".qa/tasks/032-ds-tag-filter-chip.md",
+    "title": "Rebuild the removable Tag and the filter chips (active, removable, dashed \"Add filter\")",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--badges.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/04-ds-foundations.md#6.4",
+      ".qa/design/spec/05-ds-components.md#6.1b,#6.1c"
+    ],
+    "depends_on": [
+      "001",
+      "002",
+      "006",
+      "007",
+      "010",
+      "011",
+      "021",
+      "030"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "033",
+    "file": ".qa/tasks/033-ds-alert-family.md",
+    "title": "Rebuild the Alert — four variants, 36px icon chip, dismiss and action rows",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--alerts.html",
+      ".qa/design/spec/04-ds-foundations.md#7.1,#7.2",
+      ".qa/design/spec/05-ds-components.md#8.6"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "020",
+      "021",
+      "030"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "034",
+    "file": ".qa/tasks/034-ds-toast-sonner.md",
+    "title": "Skin sonner to the export's toast — navy surface, st-toast-in, 4s auto-dismiss, progress rail",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--alerts.html",
+      ".qa/design/screens/ds--dark-mode.html",
+      ".qa/design/spec/04-ds-foundations.md#7.3",
+      ".qa/design/spec/05-ds-components.md#4.5"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "021"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "035",
+    "file": ".qa/tasks/035-ds-card-shell-family.md",
+    "title": "Rebuild the card shell family — 16px radius, 1px border, .05-alpha shadow, four paddings",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--cards.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#1.0,#6.5,#6.8,#6.11",
+      ".qa/design/spec/05-ds-components.md#8.5"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "004",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "036",
+    "file": ".qa/tasks/036-ds-stat-card-delta.md",
+    "title": "Rebuild the StatCard with icon chip and delta row (34px value, diagonal arrow)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/ds--cards.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#1.1,#6.4,#8.5"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "005",
+      "006",
+      "007",
+      "035"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "037",
+    "file": ".qa/tasks/037-ds-progress-bar-stat-card.md",
+    "title": "Rebuild ProgressBar (6px rail, gradient + solid fills) and the progress StatCard variant",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--cards.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#1.2,#1.3,#6.11b,#8.5"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "007",
+      "010",
+      "035",
+      "036"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "038",
+    "file": ".qa/tasks/038-ds-avatar-family.md",
+    "title": "Rebuild the Avatar family — five sizes, presence dot, overlapping stack with overflow chip",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--overlays.html",
+      ".qa/design/screens/ds--cards.html",
+      ".qa/design/screens/ds--navigation.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#4.6,#1.3,#5.1,#6.6b"
+    ],
+    "depends_on": [
+      "001",
+      "006",
+      "007",
+      "010",
+      "011"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "039",
+    "file": ".qa/tasks/039-ds-navy-promo-card.md",
+    "title": "Rebuild the navy featured card and the NavyPanel surface (watermark, eyebrow, white CTA)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--cards.html",
+      ".qa/design/spec/05-ds-components.md#1.4"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "006",
+      "007",
+      "010",
+      "020",
+      "035"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "040",
+    "file": ".qa/tasks/040-ds-table-family.md",
+    "title": "Rebuild the Table — clipped card shell, toolbar, uppercase head row, hover row transition",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [
+      "C-CHILD-RESULT-HISTORY"
+    ],
+    "design": [
+      ".qa/design/screens/ds--table.html",
+      ".qa/design/spec/05-ds-components.md#2.1,#2.2,#2.3,#2.4"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "006",
+      "007",
+      "008",
+      "010",
+      "021",
+      "031",
+      "035"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "041",
+    "file": ".qa/tasks/041-ds-pagination.md",
+    "title": "Rebuild Pagination — range caption, chevron buttons, active/inactive pages, ellipsis",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [
+      "C-CHILD-RESULT-HISTORY"
+    ],
+    "design": [
+      ".qa/design/screens/ds--table.html",
+      ".qa/design/spec/05-ds-components.md#2.5"
+    ],
+    "depends_on": [
+      "001",
+      "006",
+      "007",
+      "010",
+      "021",
+      "040"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "042",
+    "file": ".qa/tasks/042-ds-underline-tabs.md",
+    "title": "Rebuild UnderlineTabs — 2px indicator over the 1px rule, 150ms colour transition",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--tabs.html",
+      ".qa/design/spec/05-ds-components.md#3.1"
+    ],
+    "depends_on": [
+      "001",
+      "004",
+      "005",
+      "007",
+      "010",
+      "011",
+      "013"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "043",
+    "file": ".qa/tasks/043-ds-segmented-control.md",
+    "title": "Rebuild the SegmentedControl in both documented sizes (11px and 10px tracks)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--tabs.html",
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#3.2,#6.1d"
+    ],
+    "depends_on": [
+      "001",
+      "006",
+      "007",
+      "008",
+      "010",
+      "013",
+      "027"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "044",
+    "file": ".qa/tasks/044-ds-dialog.md",
+    "title": "Rebuild the Dialog — blurred navy scrim (st-fade-in) and a pop-in panel, focus-trapped",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--overlays.html",
+      ".qa/design/screens/ds--dark-mode.html",
+      ".qa/design/spec/05-ds-components.md#4.1"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "005",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "020",
+      "021"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "045",
+    "file": ".qa/tasks/045-ds-sheet.md",
+    "title": "Build the Sheet — side/bottom drawer with Base UI starting/ending-style slide",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--overlays.html",
+      ".qa/design/screens/ds--dark-mode.html",
+      ".qa/design/spec/05-ds-components.md#4.1",
+      ".qa/design/spec/05-ds-components.md#RESPONSIVE-HINTS"
+    ],
+    "depends_on": [
+      "003",
+      "007",
+      "008",
+      "010",
+      "011",
+      "021",
+      "044"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "046",
+    "file": ".qa/tasks/046-ds-dropdown-menu.md",
+    "title": "Rebuild the DropdownMenu — 200px surface, 8px items, destructive item, separator",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--overlays.html",
+      ".qa/design/spec/05-ds-components.md#4.2"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "021"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "047",
+    "file": ".qa/tasks/047-ds-popover.md",
+    "title": "Rebuild the Popover — 14px radius, 250px cap, readonly input + copy row",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--overlays.html",
+      ".qa/design/spec/05-ds-components.md#4.4"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "020",
+      "022"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "048",
+    "file": ".qa/tasks/048-ds-tooltip.md",
+    "title": "Rebuild the Tooltip — navy bubble, 12.5px/500, 8px offset, keyboard-reachable",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--overlays.html",
+      ".qa/design/spec/05-ds-components.md#4.3"
+    ],
+    "depends_on": [
+      "001",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "021"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "049",
+    "file": ".qa/tasks/049-ds-skeleton-shimmer.md",
+    "title": "Rebuild Skeleton + st-shimmer as a transform sweep, and the SkeletonCard composition",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#6.9",
+      ".qa/design/spec/04-ds-foundations.md#0.2"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "007",
+      "010",
+      "012",
+      "035"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "050",
+    "file": ".qa/tasks/050-ds-empty-state.md",
+    "title": "Rebuild the EmptyState — 52px tinted icon tile, 280px measure, primary CTA",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--navigation.html",
+      ".qa/design/spec/05-ds-components.md#5.4"
+    ],
+    "depends_on": [
+      "001",
+      "006",
+      "007",
+      "010",
+      "011",
+      "020",
+      "035"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "051",
+    "file": ".qa/tasks/051-ds-not-found-block.md",
+    "title": "Rebuild the 404 block — 64px numeral with the logo mark as the zero",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--footers.html",
+      ".qa/design/spec/05-ds-components.md#7.4",
+      ".qa/design/spec/06-auth-states-landing.md"
+    ],
+    "depends_on": [
+      "001",
+      "006",
+      "007",
+      "010",
+      "011",
+      "020",
+      "035",
+      "039"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "052",
+    "file": ".qa/tasks/052-ds-dropzone-card.md",
+    "title": "Build the DropzoneCard — dashed 1.5px border, hover-transitioned shell, browse fallback",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#6.7"
+    ],
+    "depends_on": [
+      "001",
+      "002",
+      "004",
+      "006",
+      "007",
+      "010",
+      "013",
+      "020",
+      "035"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "053",
+    "file": ".qa/tasks/053-ds-nav-primitives.md",
+    "title": "Build the navigation primitives — sidebar NavItem, topbar link and Breadcrumbs",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--navigation.html",
+      ".qa/design/spec/05-ds-components.md#5.1,#5.2,#5.3"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "004",
+      "005",
+      "007",
+      "010",
+      "013",
+      "031",
+      "038"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "054",
+    "file": ".qa/tasks/054-ds-bar-chart.md",
+    "title": "Rebuild the BarChart primitive on recharts — 140px plot, 3-tier recency ramp, 38px cap",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [
+      "C-DASH-HOUSEHOLD"
+    ],
+    "design": [
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#6.2"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007",
+      "008",
+      "010",
+      "035"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "055",
+    "file": ".qa/tasks/055-ds-sparkline-gauge.md",
+    "title": "Rebuild the Sparkline (area + polyline) and the donut GaugeRing (dashoffset maths)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [
+      "C-DASH-HOUSEHOLD",
+      "C-PARENT-RESULT-VIEW"
+    ],
+    "design": [
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#6.3,#6.4"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007",
+      "010",
+      "035",
+      "036"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "056",
+    "file": ".qa/tasks/056-ds-dashboard-list-rows.md",
+    "title": "Rebuild the dashboard list rows — activity feed, upcoming event, rank row",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [
+      "B-1",
+      "B-2"
+    ],
+    "design": [
+      ".qa/design/screens/ds--dashboard-components.html",
+      ".qa/design/spec/05-ds-components.md#6.5,#6.6"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007",
+      "010",
+      "011",
+      "020",
+      "031",
+      "035",
+      "038"
+    ],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "057",
+    "file": ".qa/tasks/057-ds-footer-family.md",
+    "title": "Rebuild the footer family — navy marketing footer, light app footer, cookie banner",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W1",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--footers.html",
+      ".qa/design/spec/05-ds-components.md#7.1,#7.2,#7.3"
+    ],
+    "depends_on": [
+      "001",
+      "003",
+      "006",
+      "007",
+      "008",
+      "010",
+      "011",
+      "020",
+      "025",
+      "039"
+    ],
+    "status": "TODO",
+    "started_at": null
+  }
+]

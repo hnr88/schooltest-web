@@ -1,0 +1,343 @@
+[
+  {
+    "id": "320",
+    "file": ".qa/tasks/320-ui-sweep-app-shell.md",
+    "title": "UI sweep the app shell — every sidebar/topbar/user-menu/mobile-nav control at 375 and 1280",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--detached-sidebar.html",
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/spec/01-portal-dashboard.md#1-page-shell",
+      ".qa/design/spec/05-ds-components.md#navigation"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "321",
+    "file": ".qa/tasks/321-ui-sweep-dashboard.md",
+    "title": "UI sweep /dashboard — every hero/chart/child-row/note control at 375 and 1280, plus the B-1/B-2 refusal",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": ["C-DASH-HOUSEHOLD", "B-1", "B-2"],
+    "design": [
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/spec/01-portal-dashboard.md#10-metric-inventory",
+      ".qa/design/spec/05-ds-components.md"
+    ],
+    "depends_on": ["320"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "322",
+    "file": ".qa/tasks/322-ui-sweep-children.md",
+    "title": "UI sweep the children list and child detail — archive/unarchive/pagination/tabs at 375 and 1280",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [
+      "C-CHILD-RESULT-HISTORY",
+      "C-PARENT-RESULT-VIEW",
+      "C-DASH-HOUSEHOLD",
+      "B-3",
+      "B-4",
+      "B-5",
+      "B-6"
+    ],
+    "design": [
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/spec/02-portal-children.md"
+    ],
+    "depends_on": ["320"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "323",
+    "file": ".qa/tasks/323-ui-sweep-add-child-wizard.md",
+    "title": "UI sweep the add-child wizard and edit mode — every field, step, upload and submit at 375 and 1280",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--add-child-multi-step.html",
+      ".qa/design/spec/03-portal-forms.md#2-add-child-wizard-portal"
+    ],
+    "depends_on": ["320"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "324",
+    "file": ".qa/tasks/324-ui-sweep-search.md",
+    "title": "UI sweep unified search — schools, agents, map, filter rail and sort at 375 and 1280",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/spec/01-portal-dashboard.md",
+      ".qa/design/spec/05-ds-components.md#navigation"
+    ],
+    "depends_on": ["320"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "325",
+    "file": ".qa/tasks/325-ui-sweep-notifications-settings.md",
+    "title": "UI sweep notifications and settings — feed, mark-read, all four settings tabs and push at 375 and 1280",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": ["B-8"],
+    "design": [
+      ".qa/design/screens/portal--notifications.html",
+      ".qa/design/screens/portal--settings.html",
+      ".qa/design/spec/03-portal-forms.md"
+    ],
+    "depends_on": ["320"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "326",
+    "file": ".qa/tasks/326-ui-sweep-auth-landing.md",
+    "title": "UI sweep auth, landing, 404 and loading states — every control at 375 and 1280",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--login.html",
+      ".qa/design/screens/app--register.html",
+      ".qa/design/screens/app--forgot-password.html",
+      ".qa/design/screens/app--404.html",
+      ".qa/design/screens/app--loading-skeleton.html",
+      ".qa/design/spec/06-auth-states-landing.md"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "327",
+    "file": ".qa/tasks/327-axe-dashboard-and-children-pages.md",
+    "title": "axe — zero serious/critical on the dashboard shell, /dashboard, children list and child detail",
+    "layer": "a11y",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/04-ds-foundations.md#unknowns",
+      ".qa/design/spec/05-ds-components.md#navigation"
+    ],
+    "depends_on": ["321", "322"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "328",
+    "file": ".qa/tasks/328-axe-wizard-settings-notifications-pages.md",
+    "title": "axe — zero serious/critical on the add-child wizard, edit form, all four settings tabs and the notification feed",
+    "layer": "a11y",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/03-portal-forms.md",
+      ".qa/design/spec/04-ds-foundations.md#5-form-controls"
+    ],
+    "depends_on": ["323", "325"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "329",
+    "file": ".qa/tasks/329-axe-search-auth-landing-pages.md",
+    "title": "axe — zero serious/critical on unified search (incl. map), the five auth screens, landing, 404 and /design-system",
+    "layer": "a11y",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/06-auth-states-landing.md",
+      ".qa/design/spec/05-ds-components.md",
+      ".qa/design/spec/04-ds-foundations.md#unknowns"
+    ],
+    "depends_on": ["324", "326"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "330",
+    "file": ".qa/tasks/330-motion-and-reduced-motion-audit.md",
+    "title": "Motion audit — every interactive element has a 150-200ms transition and a prefers-reduced-motion variant",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/04-ds-foundations.md#i-motion",
+      ".qa/design/spec/05-ds-components.md#animation-inventory",
+      ".qa/design/spec/01-portal-dashboard.md#11-animations"
+    ],
+    "depends_on": ["320", "321", "322", "323", "324", "325", "326"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "331",
+    "file": ".qa/tasks/331-touch-target-audit.md",
+    "title": "Touch-target audit — every interactive control is at least 44x44 CSS px at 375 and 1280",
+    "layer": "a11y",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/04-ds-foundations.md#4-buttons",
+      ".qa/design/spec/04-ds-foundations.md#5-form-controls",
+      ".qa/design/spec/05-ds-components.md#navigation"
+    ],
+    "depends_on": ["320", "321", "322", "323", "324", "325", "326"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "332",
+    "file": ".qa/tasks/332-no-broken-ui-audit.md",
+    "title": "No-broken-UI audit — zero horizontal scroll, overflow, clipping, FOUC or console errors at 375 and 1280",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [
+      ".qa/design/spec/04-ds-foundations.md#unknowns",
+      ".qa/design/spec/05-ds-components.md#responsive-inventory",
+      ".qa/design/spec/01-portal-dashboard.md#9-responsive-hints"
+    ],
+    "depends_on": ["320", "321", "322", "323", "324", "325", "326"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "333",
+    "file": ".qa/tasks/333-api-security-parent-student-surface.md",
+    "title": "API security — the parent student surface and the two new aggregates refuse every unauthorized and forged request",
+    "layer": "security",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": ["C-DASH-HOUSEHOLD", "C-CHILD-RESULT-HISTORY"],
+    "design": [],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "334",
+    "file": ".qa/tasks/334-api-security-result-view.md",
+    "title": "API security — the widened result read refuses foreign, transient and forged requests",
+    "layer": "security",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": ["C-PARENT-RESULT-VIEW"],
+    "design": [],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "335",
+    "file": ".qa/tasks/335-api-security-search-identity-upload.md",
+    "title": "API security — search, search preferences, identity and upload refuse every unauthorized and forged request",
+    "layer": "security",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "336",
+    "file": ".qa/tasks/336-api-security-notifications-push.md",
+    "title": "API security — notifications, notification preferences and push subscriptions refuse every unauthorized and forged request",
+    "layer": "security",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": ["B-8"],
+    "design": [],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "337",
+    "file": ".qa/tasks/337-i18n-catalog-parity-sweep.md",
+    "title": "i18n parity sweep — all six catalogs key-identical and zero hardcoded user-facing strings in the mission diff",
+    "layer": "frontend",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [],
+    "depends_on": ["320", "321", "322", "323", "324", "325", "326"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "338",
+    "file": ".qa/tasks/338-banned-pattern-grep-gate.md",
+    "title": "Banned-pattern grep gate — zero mock/fake/stub/dummy/placeholder/TODO/FIXME and zero hardcoded array standing in for a query",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": ["B-1", "B-2", "B-3", "B-4", "B-5", "B-6", "B-7", "B-8"],
+    "design": [],
+    "depends_on": ["330", "331", "332", "333", "334", "335", "336", "337"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "339",
+    "file": ".qa/tasks/339-final-regression-playwright-suite.md",
+    "title": "FINAL REGRESSION — the whole Playwright suite green, at or above the 157-passing baseline, with the one known red fixed",
+    "layer": "regression",
+    "kind": "verify",
+    "wave": "W11",
+    "contract": [],
+    "design": [],
+    "depends_on": [
+      "320",
+      "321",
+      "322",
+      "323",
+      "324",
+      "325",
+      "326",
+      "327",
+      "328",
+      "329",
+      "330",
+      "331",
+      "332",
+      "333",
+      "334",
+      "335",
+      "336",
+      "337",
+      "338"
+    ],
+    "status": "TODO",
+    "started_at": null
+  }
+]

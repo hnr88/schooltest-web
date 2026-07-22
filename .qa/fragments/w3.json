@@ -1,0 +1,252 @@
+[
+  {
+    "id": "090",
+    "file": ".qa/tasks/090-results-module-result-view-schema.md",
+    "title": "Create the `results` module and mirror the C-PARENT-RESULT-VIEW body as a strict Zod schema",
+    "layer": "data",
+    "kind": "scaffold",
+    "wave": "W3",
+    "contract": ["C-PARENT-RESULT-VIEW"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#B.5",
+      ".qa/design/screens/portal--child-detail.html"
+    ],
+    "depends_on": ["071"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "091",
+    "file": ".qa/tasks/091-cefr-vocabulary-constants.md",
+    "title": "Encode the real CEFR ladder, skill order and readiness rank as shared constants + pure lookups",
+    "layer": "data",
+    "kind": "build",
+    "wave": "W3",
+    "contract": ["C-DASH-HOUSEHOLD", "C-CHILD-RESULT-HISTORY", "C-PARENT-RESULT-VIEW"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#B.4",
+      ".qa/design/spec/01-portal-dashboard.md#4.5"
+    ],
+    "depends_on": ["090"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "092",
+    "file": ".qa/tasks/092-parent-result-query-hook.md",
+    "title": "Add `useParentResultQuery` — the TanStack hook for one parent-readable official result",
+    "layer": "data",
+    "kind": "wire",
+    "wave": "W3",
+    "contract": ["C-PARENT-RESULT-VIEW"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#B.5",
+      ".qa/design/spec/02-portal-children.md#B.6"
+    ],
+    "depends_on": ["090", "071"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "093",
+    "file": ".qa/tasks/093-result-attribute-view-model.md",
+    "title": "Turn the raw `attributes` map into an ordered per-attribute mastery view model",
+    "layer": "data",
+    "kind": "build",
+    "wave": "W3",
+    "contract": ["C-PARENT-RESULT-VIEW"],
+    "design": [".qa/design/spec/02-portal-children.md#B.5"],
+    "depends_on": ["090", "091"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "094",
+    "file": ".qa/tasks/094-household-progress-schema.md",
+    "title": "Mirror C-DASH-HOUSEHOLD (`GET /api/my/progress`) as a strict Zod schema + types",
+    "layer": "data",
+    "kind": "build",
+    "wave": "W3",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#10",
+      ".qa/design/screens/portal--main.html"
+    ],
+    "depends_on": ["065"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "095",
+    "file": ".qa/tasks/095-household-progress-query-hook.md",
+    "title": "Add `useHouseholdProgressQuery` with an explicit loading / no-children / error contract",
+    "layer": "data",
+    "kind": "wire",
+    "wave": "W3",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#3",
+      ".qa/design/spec/01-portal-dashboard.md#4"
+    ],
+    "depends_on": ["094", "065"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "096",
+    "file": ".qa/tasks/096-household-practice-derivations.md",
+    "title": "Derive the practice duration, the 7-bar chart model and the strongest-day model from the household payload",
+    "layer": "data",
+    "kind": "build",
+    "wave": "W3",
+    "contract": ["C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#4.3",
+      ".qa/design/spec/01-portal-dashboard.md#4.4"
+    ],
+    "depends_on": ["094"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "097",
+    "file": ".qa/tasks/097-child-result-history-schema.md",
+    "title": "Mirror C-CHILD-RESULT-HISTORY request params + paginated response as strict Zod schemas",
+    "layer": "data",
+    "kind": "build",
+    "wave": "W3",
+    "contract": ["C-CHILD-RESULT-HISTORY"],
+    "design": [".qa/design/spec/02-portal-children.md#B.6"],
+    "depends_on": ["077"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "098",
+    "file": ".qa/tasks/098-child-result-history-query-hook.md",
+    "title": "Add `useChildResultHistoryQuery` — paginated, skill-filterable, with a real empty state",
+    "layer": "data",
+    "kind": "wire",
+    "wave": "W3",
+    "contract": ["C-CHILD-RESULT-HISTORY"],
+    "design": [".qa/design/spec/02-portal-children.md#B.6"],
+    "depends_on": ["097", "077"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "099",
+    "file": ".qa/tasks/099-result-history-band-delta.md",
+    "title": "Derive the honest band delta (\"Since joining\", per-row change) from the result history",
+    "layer": "data",
+    "kind": "build",
+    "wave": "W3",
+    "contract": ["C-CHILD-RESULT-HISTORY", "C-DASH-HOUSEHOLD"],
+    "design": [
+      ".qa/design/spec/02-portal-children.md#B.2",
+      ".qa/design/spec/02-portal-children.md#B.6"
+    ],
+    "depends_on": ["097", "091"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "100",
+    "file": ".qa/tasks/100-query-view-state-contract.md",
+    "title": "Add one typed loading / empty / ready / error view-state contract over TanStack results",
+    "layer": "data",
+    "kind": "build",
+    "wave": "W3",
+    "contract": ["C-DASH-HOUSEHOLD", "C-CHILD-RESULT-HISTORY", "C-PARENT-RESULT-VIEW"],
+    "design": [
+      ".qa/design/screens/app--loading-skeleton.html",
+      ".qa/design/screens/app--empty-state.html",
+      ".qa/design/spec/06-auth-states-landing.md"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "101",
+    "file": ".qa/tasks/101-i18n-keys-typed-client-surfaces.md",
+    "title": "Add the household / result-history / delta i18n keys to all six catalogs, with a parity guard",
+    "layer": "integration",
+    "kind": "build",
+    "wave": "W3",
+    "contract": ["C-DASH-HOUSEHOLD", "C-CHILD-RESULT-HISTORY", "C-PARENT-RESULT-VIEW"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#4",
+      ".qa/design/spec/02-portal-children.md#A.5",
+      ".qa/design/spec/02-portal-children.md#B.2",
+      ".qa/design/spec/02-portal-children.md#B.6"
+    ],
+    "depends_on": ["093", "096", "099", "100"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "102",
+    "file": ".qa/tasks/102-blocked-no-client-source-scheduling-composites.md",
+    "title": "BLOCKED — no query hook may be authored for the scheduling and composite-score metrics",
+    "layer": "data",
+    "kind": "verify",
+    "wave": "W3",
+    "contract": ["B-1", "B-2", "B-3", "B-4", "B-5", "B-6"],
+    "design": [
+      ".qa/design/screens/portal--main.html",
+      ".qa/design/screens/portal--my-children-list.html",
+      ".qa/design/screens/portal--child-detail.html",
+      ".qa/design/screens/app--child-profile.html",
+      ".qa/design/screens/app--result-detail.html"
+    ],
+    "depends_on": [],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "103",
+    "file": ".qa/tasks/103-query-key-invalidation-wiring.md",
+    "title": "Make the three student mutations invalidate the new household and result-history caches",
+    "layer": "data",
+    "kind": "wire",
+    "wave": "W3",
+    "contract": ["C-DASH-HOUSEHOLD", "C-STUDENT-CREATE", "C-CHILD-RESULT-HISTORY"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#4.1",
+      ".qa/design/spec/02-portal-children.md#A.5"
+    ],
+    "depends_on": ["095", "098"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "104",
+    "file": ".qa/tasks/104-e2e-typed-client-roundtrip.md",
+    "title": "Prove the household + result-history round-trip end to end against the running API",
+    "layer": "integration",
+    "kind": "verify",
+    "wave": "W3",
+    "contract": ["C-DASH-HOUSEHOLD", "C-CHILD-RESULT-HISTORY"],
+    "design": [
+      ".qa/design/spec/01-portal-dashboard.md#10",
+      ".qa/design/spec/02-portal-children.md#B.6"
+    ],
+    "depends_on": ["095", "096", "098", "099"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "105",
+    "file": ".qa/tasks/105-e2e-parent-result-view-security.md",
+    "title": "Prove the C-PARENT-RESULT-VIEW ownership and error matrix from the client boundary",
+    "layer": "security",
+    "kind": "verify",
+    "wave": "W3",
+    "contract": ["C-PARENT-RESULT-VIEW"],
+    "design": [".qa/design/spec/02-portal-children.md#B.5"],
+    "depends_on": ["092", "093"],
+    "status": "TODO",
+    "started_at": null
+  }
+]

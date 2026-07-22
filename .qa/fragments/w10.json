@@ -1,0 +1,394 @@
+[
+  {
+    "id": "290",
+    "file": ".qa/tasks/290-auth-split-layout.md",
+    "title": "Rebuild the auth split layout to the login brand panel (560px navy / 1fr form column)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--login.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.1"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "291",
+    "file": ".qa/tasks/291-auth-field-kit-error-affordance.md",
+    "title": "Rebuild the auth text/password field to the DS field states, incl. the error affordance",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/screens/app--login.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.5"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "292",
+    "file": ".qa/tasks/292-sign-in-screen-redesign.md",
+    "title": "Re-skin the sign-in screen to app--login.html without reordering a single focusable node",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--login.html",
+      ".qa/design/screens/ds--footers.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.1"
+    ],
+    "depends_on": ["290", "291"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "293",
+    "file": ".qa/tasks/293-sign-in-status-and-error-banners.md",
+    "title": "Build the auth status/error banner set (invalid credentials, unconfirmed, google, session, confirmed)",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--forgot-password.html",
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.5"
+    ],
+    "depends_on": ["292"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "294",
+    "file": ".qa/tasks/294-sign-up-screen-redesign.md",
+    "title": "Re-skin the sign-up screen to the register form card, with only the fields the API accepts",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--register.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.2"
+    ],
+    "depends_on": ["290", "291"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "295",
+    "file": ".qa/tasks/295-sign-up-confirm-and-resend.md",
+    "title": "Re-skin the \"check your inbox\" confirm state and its resend countdown button",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--forgot-password.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.3"
+    ],
+    "depends_on": ["294"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "296",
+    "file": ".qa/tasks/296-forgot-password-screen-redesign.md",
+    "title": "Re-skin the forgot-password screen — request card and sent card as two states of one screen",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--forgot-password.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.3"
+    ],
+    "depends_on": ["290", "291"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "297",
+    "file": ".qa/tasks/297-reset-password-screen-redesign.md",
+    "title": "Re-skin the reset-password screen, including the missing/garbage-code invalid-link state",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--forgot-password.html",
+      ".qa/design/screens/ds--forms.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.3"
+    ],
+    "depends_on": ["290", "291"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "298",
+    "file": ".qa/tasks/298-google-auth-button-and-callback.md",
+    "title": "Re-skin the Google social button and the callback screen, keeping the flow env-gated",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--login.html",
+      ".qa/design/screens/ds--footers.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.1"
+    ],
+    "depends_on": ["292", "294"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "299",
+    "file": ".qa/tasks/299-blocked-auth-role-selector.md",
+    "title": "BLOCKED — the login Parent/School segmented control and the register role cards",
+    "layer": "ui",
+    "kind": "verify",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--login.html",
+      ".qa/design/screens/app--register.html",
+      ".qa/design/spec/06-auth-states-landing.md#1.6"
+    ],
+    "depends_on": ["292", "294"],
+    "status": "BLOCKED",
+    "started_at": null
+  },
+  {
+    "id": "300",
+    "file": ".qa/tasks/300-dashboard-shell-loading-skeleton.md",
+    "title": "Build the app-shell route skeleton from the design's shimmer system",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--loading-skeleton.html",
+      ".qa/design/spec/06-auth-states-landing.md#2"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "301",
+    "file": ".qa/tasks/301-public-auth-loading-and-submit-spinner.md",
+    "title": "Build the public/auth route loading skeleton and wire every auth submit to st-spin",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--loading-skeleton.html",
+      ".qa/design/spec/06-auth-states-landing.md#6.1"
+    ],
+    "depends_on": ["300"],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "302",
+    "file": ".qa/tasks/302-not-found-page-redesign.md",
+    "title": "Rebuild the 404 page as the design's full-page numeral-plus-badge composition",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--404.html",
+      ".qa/design/spec/06-auth-states-landing.md#3.1"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "303",
+    "file": ".qa/tasks/303-empty-state-pattern.md",
+    "title": "Rebuild the page-level empty-state pattern to app--empty-state.html and prove it on the real children empty state",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/app--empty-state.html",
+      ".qa/design/spec/06-auth-states-landing.md#4"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "304",
+    "file": ".qa/tasks/304-landing-nav-and-announcement.md",
+    "title": "Re-skin the landing announcement bar and sticky nav, incl. the 375px sheet composition",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/ds--landing-components.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.0",
+      ".qa/design/spec/06-auth-states-landing.md#5.1"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "305",
+    "file": ".qa/tasks/305-landing-hero-section.md",
+    "title": "Re-skin the landing hero — media card, scrim, eyebrow pill, 68px h1, CTA row, value strip, logo wall",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/landing--hero.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.2"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "306",
+    "file": ".qa/tasks/306-landing-features-section.md",
+    "title": "Re-skin the landing features grid, including the navy highlighted card and the hover lift",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/landing--features.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.3"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "307",
+    "file": ".qa/tasks/307-landing-feature-detail-section.md",
+    "title": "Re-skin the feature-detail split and its AI-feedback mock panel with real meter semantics",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/landing--feature-detail.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.4"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "308",
+    "file": ".qa/tasks/308-landing-stats-band.md",
+    "title": "Re-skin the navy stats band with its logo watermark and three coloured figures",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/landing--stats.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.5"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "309",
+    "file": ".qa/tasks/309-landing-how-it-works-section.md",
+    "title": "Re-skin the how-it-works steps card and the testimonial card beside it",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/landing--how-it-works.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.6"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "310",
+    "file": ".qa/tasks/310-landing-pricing-section.md",
+    "title": "Re-skin the pricing grid — Free, the shadowed navy Pro card with its ribbon, and School",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": ["B-7"],
+    "design": [
+      ".qa/design/screens/landing--pricing.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.7"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "311",
+    "file": ".qa/tasks/311-landing-faq-accordion.md",
+    "title": "Re-skin the FAQ accordion, with the chevron rotation the design actually declares",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/landing--faq.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.8"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "312",
+    "file": ".qa/tasks/312-landing-cta-panel.md",
+    "title": "Re-skin the closing CTA panel — three-stop navy gradient, watermark, white and ghost buttons",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": ["B-7"],
+    "design": [
+      ".qa/design/screens/landing--cta.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.9"
+    ],
+    "depends_on": [],
+    "status": "TODO",
+    "started_at": null
+  },
+  {
+    "id": "313",
+    "file": ".qa/tasks/313-landing-footer.md",
+    "title": "Re-skin the marketing footer — 1.4fr brand column, three link columns, bottom bar and status chip",
+    "layer": "ui",
+    "kind": "implement",
+    "wave": "W10",
+    "contract": [],
+    "design": [
+      ".qa/design/screens/landing--cta.html",
+      ".qa/design/screens/ds--footers.html",
+      ".qa/design/spec/06-auth-states-landing.md#5.10"
+    ],
+    "depends_on": ["312"],
+    "status": "TODO",
+    "started_at": null
+  }
+]

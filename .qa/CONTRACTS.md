@@ -520,3 +520,63 @@ terminal state is BLOCKED with this reason.
 | **B-6** | Subject bars Math/Danish/English, class average, letter grade | `app--child-profile.html`, `app--result-detail.html` | These slices are a generic school-test composition, not SchoolTest's domain. The product measures four English skills (reading/listening/speaking/writing) against CEFR/ACARA — there are no subjects, no letter grades, no class averages in the data model. |
 | **B-7** | `Family plan covers up to 4`, all billing/credits/invoices | `portal--billing.html`, `app--buy-credits/checkout/receipt/auto-top-up` | No payment, credit, invoice, plan or subscription content-type exists and no payment provider is configured. |
 | **B-8** | Per-child unread notification count | `portal--notifications.html` | `unread-count` is a single global scalar and the feed deliberately withholds `studentDocumentId` (gap **G13**). |
+
+---
+
+## AMENDMENT A1 — `C-DASH-HOUSEHOLD` v2 (2026-07-22, before any implementation)
+
+`.qa/intake/RECONCILIATION.md` §2.3 row 22 and §2.7 identified a **product-law violation in v1 of
+this contract, authored above**. Correcting it now, while zero code depends on it.
+
+**The defect.** v1 returned, per child, a single top-level `cefrBand` + `cefrStageIndex` +
+`acaraPhase`. A single per-child level is a **cross-skill composite**, which
+`docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md:304` forbids outright — *"There are no cross-skill
+composite fields. The combined placement report renders the four skill Results side by side"* —
+and `docs/SCHOOLTEST_DOC0_PLATFORM_PRD_V2.md:46` restates: *"there is no cross-skill composite
+score anywhere in the system."* v1 would have shipped exactly the number the product forbids,
+which is the same defect class as faking data.
+
+**The correction — v2 is authoritative; v1 above is superseded:**
+
+1. **DELETE** the per-child `cefrBand`, `cefrStageIndex` and `acaraPhase` fields. There is no
+   per-child level. Full stop.
+2. **KEEP** `skills[]`, which already carries `cefrBand` / `readiness` / `acaraPhase` **per
+   skill** — the sanctioned shape. It is now the ONLY place a band appears.
+3. `skills[]` MUST be built from a proper `GROUP BY skill` over all official results
+   (`latestBySkill`), **not** from the 5-row `recentResults` window — gap **G4** makes that
+   window lossy, so a skill can silently vanish.
+4. **ADD** an explicit entry for every skill with no official result, carrying
+   `readiness: "not_assessed"` and null band. `docs/SCHOOLTEST_DOC1_DATA_CONTRACT_V2.md`
+   §3.16/3.18 make `not_assessed` a first-class value — a missing skill must render as
+   "not assessed", never be omitted and never be inferred as weak.
+5. `focusSkill` **stays**, and is computed ONLY by ranking the ordinal `readiness` enum
+   (`not_yet` < `approaching` < `met`; `not_assessed` excluded). It performs no probability
+   arithmetic and surfaces no number. Rationale, recorded so a human can overrule it: the
+   forbidden thing is averaging probabilities into a precise-looking composite
+   (`DIAGNOSTIQ_CONSTRUCT_MAPPING_V2:394`); comparing two ordinal enums to name a focus area is
+   not that, and the design explicitly specifies the metric.
+
+**UI consequence for W5/W6.** The design's per-child CEFR tick rail becomes **one rail per skill**
+(reading, listening, speaking, writing), each over the real ladder
+`pre_A1 → A1 → A2 → B1 → B2 → C1`. The design's single rail labelled `A1…C2` is not buildable:
+it is both a composite and a wrong ladder (the system has `pre_A1` and has no `C2`).
+
+## BLOCKED — additions from the reconciliation pass
+
+| id | Design metric | Slice | Why blocked |
+|---|---|---|---|
+| **B-9** | Per-child single `Level B1` pill | `portal--my-children-list.html:20`, `portal--child-detail.html:18` | Cross-skill composite — `DOC1:304`, `DOC0:46`. Superseded by per-skill bands (Amendment A1). |
+| **B-10** | Hero prose `on track for B2`, `improved reading by 9% since May` | `portal--main.html` hero | Forward projection has no field, and a percent delta is raw probability arithmetic that `DIAGNOSTIQ_CONSTRUCT_MAPPING_V2:72` replaces with factual transition statements. Honest substitute: a per-skill band transition between two same-skill results. |
+| **B-11** | School `rating` `4.9` (cards + map tile) | `portal--main.html` school cards | `SchoolHit` (`schooltest-api/src/contracts/search-domains.ts:60-91`) has no rating/review field and there is no `reviews` content-type. The schema is **strict**, so an extra key fails contract validation and 500s (`search-schools.ts:145`). |
+| **B-12** | Copy `{n} schools across Australia **accept SchoolTest placement**` | `portal--main.html` search header | No school attribute records placement acceptance. The count is servable; the claim is not. The copy must state only what the field supports. |
+
+## Servability roll-up (from `.qa/intake/RECONCILIATION.md` §2.7)
+
+**22 SERVABLE · 7 NEEDS-BACKEND (all collapsing into `C-DASH-HOUSEHOLD`) · 27 BLOCKED.**
+
+The design's parent dashboard is drawn on an average-score / percent-progress / credits /
+scheduling model that SchoolTest does not have and, for the score parts, explicitly forbids. The
+navy hero can ship **1 of its 3 stats** truthfully today (`tests completed`; `practice this week`
+arrives with `C-DASH-HOUSEHOLD`; `coming up` is B-1). Every other slot is re-expressed in the
+sanctioned vocabulary: `display_label`, `cefr_band`, `readiness`, `attribute_status`,
+`not_assessed`, and evidence counts.
