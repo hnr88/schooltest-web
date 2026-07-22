@@ -34,6 +34,11 @@ export interface CountBadgeProps {
   className?: string;
 }
 
+export interface NavCountBadgeProps {
+  count: number;
+  className?: string;
+}
+
 export interface ContainerProps {
   children: ReactNode;
   className?: string;

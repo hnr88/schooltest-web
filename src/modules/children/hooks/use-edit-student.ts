@@ -19,7 +19,8 @@ import { useUpdateStudentMutation } from '@/modules/children/queries/use-update-
 export function useEditStudent(documentId: string) {
   const t = useTranslations('Children');
   const router = useRouter();
-  const { data, isLoading, isError } = useStudentDetailQuery(documentId);
+  const { data, error, isFetching, isLoading, isError, refetch } =
+    useStudentDetailQuery(documentId);
   const update = useUpdateStudentMutation();
   const setMedia = useWizardMediaStore((state) => state.setMedia);
 
@@ -59,5 +60,5 @@ export function useEditStudent(documentId: string) {
     [documentId, router, t, update],
   );
 
-  return { initialValues, isLoading, isError, handleSubmit };
+  return { initialValues, error, isFetching, isLoading, isError, refetch, handleSubmit };
 }

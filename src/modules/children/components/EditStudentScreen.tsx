@@ -2,7 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 
-import { Alert, Button, Skeleton } from '@/modules/design-system';
+import { UserRoundX } from 'lucide-react';
+
+import { Button, Skeleton } from '@/modules/design-system';
+import { QueryErrorFallback } from '@/modules/query-errors';
 import { WizardScreen } from '@/modules/student-wizard';
 import { useEditStudent } from '@/modules/children/hooks/use-edit-student';
 
@@ -11,11 +14,13 @@ interface EditStudentScreenProps {
 }
 
 // C-UI-MYCHILDREN edit: mounts the C-UI-STUDENT-WIZARD in edit mode once the
-// detail read resolves (prefilled from it; passport_number stays empty). 403/404
-// → error state with a back-to-list CTA; loading → skeleton.
+// detail read resolves (prefilled from it; passport_number stays empty). The read
+// failure is classified (gone / forbidden / broken) rather than collapsed into one
+// alert; loading → skeleton.
 export function EditStudentScreen({ documentId }: EditStudentScreenProps) {
   const t = useTranslations('Children');
-  const { initialValues, isLoading, isError, handleSubmit } = useEditStudent(documentId);
+  const { initialValues, error, isFetching, isLoading, isError, refetch, handleSubmit } =
+    useEditStudent(documentId);
 
   if (isLoading) {
     return (
@@ -30,19 +35,21 @@ export function EditStudentScreen({ documentId }: EditStudentScreenProps) {
 
   if (isError || !initialValues) {
     return (
-      <main className="flex flex-1 flex-col px-8 py-7 duration-300 ease-out animate-in fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
+      <main className="flex flex-1 flex-col px-8 py-7">
         <div className="mx-auto w-full max-w-160">
-          <Alert
-            variant="error"
-            title={t('editErrorTitle')}
+          <QueryErrorFallback
+            error={error}
+            goneIcon={UserRoundX}
+            goneTitle={t('editGoneTitle')}
+            goneDescription={t('editGoneDescription')}
+            isRetrying={isFetching}
+            onRetry={() => refetch()}
             action={
-              <Button href="/dashboard/children" variant="outline" size="sm">
+              <Button href="/dashboard/children" variant="outline" size="sm" className="h-11 px-4">
                 {t('backToList')}
               </Button>
             }
-          >
-            {t('editErrorDescription')}
-          </Alert>
+          />
         </div>
       </main>
     );

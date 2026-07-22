@@ -1055,8 +1055,8 @@
     "unarchivedToast": "{name} was restored.",
     "actionError": "Something went wrong. Please try again.",
     "updatedToast": "Changes saved.",
-    "editErrorTitle": "We couldn't load this child.",
-    "editErrorDescription": "They may have been removed, or you don't have access.",
+    "editGoneTitle": "This child's profile is no longer available",
+    "editGoneDescription": "It may have been removed, so there is nothing to edit here.",
     "backToList": "Back to my children",
     "profileMeta": {
       "title": "Child progress — SchoolTest",
@@ -1103,8 +1103,8 @@
     },
     "resultPublished": "Published",
     "notPublished": "Not published yet",
-    "profileErrorTitle": "We couldn't load this child's progress.",
-    "profileErrorDescription": "They may have been removed, or you don't have access to their profile."
+    "profileGoneTitle": "This child's profile is no longer available",
+    "profileGoneDescription": "It may have been removed. Your other children are still in your list."
   },
   "Notifications": {
     "meta": {
@@ -1142,5 +1142,20 @@
       "testActivity": "Test activity",
       "testResults": "Test results"
     }
+  },
+  "QueryError": {
+    "goneTitle": "This page is no longer available",
+    "goneDescription": "It may have been removed, or the link may be out of date.",
+    "forbiddenTitle": "This page needs a parent account",
+    "forbiddenDescription": "Your account type cannot open this page. Sign in with the parent account for this family.",
+    "httpTitle": "Something went wrong on our side",
+    "httpDescription": "We could not load this just now. Please try again in a moment.",
+    "networkTitle": "We could not reach SchoolTest",
+    "networkDescription": "Check your connection, then try again.",
+    "contractTitle": "This page could not be read",
+    "contractDescription": "The server sent something we did not expect, so we stopped instead of showing you the wrong thing.",
+    "unknownTitle": "Something went wrong",
+    "unknownDescription": "We could not load this just now. Please try again.",
+    "retry": "Try again"
   }
 }

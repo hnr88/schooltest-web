@@ -1055,8 +1055,8 @@
     "unarchivedToast": "{name} 已恢复。",
     "actionError": "出了点问题，请重试。",
     "updatedToast": "更改已保存。",
-    "editErrorTitle": "无法加载此孩子。",
-    "editErrorDescription": "他们可能已被删除，或您没有访问权限。",
+    "editGoneTitle": "该孩子的档案已不存在",
+    "editGoneDescription": "该档案可能已被删除，因此这里没有可编辑的内容。",
     "backToList": "返回我的孩子",
     "profileMeta": {
       "title": "孩子进度 — SchoolTest",
@@ -1103,8 +1103,8 @@
     },
     "resultPublished": "发布日期",
     "notPublished": "尚未发布",
-    "profileErrorTitle": "无法加载这名孩子的学习进度。",
-    "profileErrorDescription": "他们可能已被删除，或您没有访问其档案的权限。"
+    "profileGoneTitle": "该孩子的档案已不存在",
+    "profileGoneDescription": "该档案可能已被删除。您的其他孩子仍在列表中。"
   },
   "Notifications": {
     "meta": {
@@ -1142,5 +1142,20 @@
       "testActivity": "测试活动",
       "testResults": "测试结果"
     }
+  },
+  "QueryError": {
+    "goneTitle": "此页面已不存在",
+    "goneDescription": "内容可能已被删除，或此链接已失效。",
+    "forbiddenTitle": "此页面需要家长账户",
+    "forbiddenDescription": "您的账户类型无法打开此页面。请使用该家庭的家长账户登录。",
+    "httpTitle": "我们这边出了点问题",
+    "httpDescription": "暂时无法加载此内容，请稍后再试。",
+    "networkTitle": "无法连接到 SchoolTest",
+    "networkDescription": "请检查您的网络连接，然后重试。",
+    "contractTitle": "无法读取此页面",
+    "contractDescription": "服务器返回了意外的数据，为避免显示错误的信息，我们已停止加载。",
+    "unknownTitle": "出了点问题",
+    "unknownDescription": "暂时无法加载此内容，请重试。",
+    "retry": "再试一次"
   }
 }

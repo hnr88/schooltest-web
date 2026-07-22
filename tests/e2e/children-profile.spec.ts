@@ -153,8 +153,10 @@ test('en: a foreign child profile remains unavailable to another real parent', a
   await page.goto(`/dashboard/children/${child.documentId}`);
   const response = await responsePromise;
   expect(response.status(), await response.text()).toBe(404);
-  await expect(
-    page.getByText(cat(en, 'Children.profileErrorTitle'), { exact: true }),
-  ).toBeVisible();
+  await expect(page.locator('[data-slot="query-error-fallback"]')).toHaveAttribute(
+    'data-query-error',
+    'gone',
+  );
+  await expect(page.getByText(cat(en, 'Children.profileGoneTitle'), { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: cat(en, 'Children.backToList') })).toBeVisible();
 });

@@ -1055,8 +1055,8 @@
     "unarchivedToast": "{name} đã được khôi phục.",
     "actionError": "Đã xảy ra lỗi. Vui lòng thử lại.",
     "updatedToast": "Đã lưu thay đổi.",
-    "editErrorTitle": "Chúng tôi không thể tải con này.",
-    "editErrorDescription": "Có thể chúng đã bị xóa, hoặc bạn không có quyền truy cập.",
+    "editGoneTitle": "Hồ sơ của con này không còn nữa",
+    "editGoneDescription": "Hồ sơ có thể đã bị xóa nên không còn gì để chỉnh sửa ở đây.",
     "backToList": "Quay lại con của tôi",
     "profileMeta": {
       "title": "Tiến độ của con — SchoolTest",
@@ -1103,8 +1103,8 @@
     },
     "resultPublished": "Đã công bố",
     "notPublished": "Chưa công bố",
-    "profileErrorTitle": "Chúng tôi không thể tải tiến độ của con này.",
-    "profileErrorDescription": "Có thể các em đã bị xóa, hoặc bạn không có quyền truy cập hồ sơ của các em."
+    "profileGoneTitle": "Hồ sơ của con này không còn nữa",
+    "profileGoneDescription": "Hồ sơ có thể đã bị xóa. Những con khác của bạn vẫn còn trong danh sách."
   },
   "Notifications": {
     "meta": {
@@ -1142,5 +1142,20 @@
       "testActivity": "Hoạt động kiểm tra",
       "testResults": "Kết quả kiểm tra"
     }
+  },
+  "QueryError": {
+    "goneTitle": "Trang này không còn nữa",
+    "goneDescription": "Nội dung có thể đã bị xóa, hoặc liên kết đã cũ.",
+    "forbiddenTitle": "Trang này cần tài khoản phụ huynh",
+    "forbiddenDescription": "Loại tài khoản của bạn không mở được trang này. Hãy đăng nhập bằng tài khoản phụ huynh của gia đình.",
+    "httpTitle": "Đã xảy ra lỗi từ phía chúng tôi",
+    "httpDescription": "Hiện chưa tải được nội dung này. Vui lòng thử lại sau giây lát.",
+    "networkTitle": "Không kết nối được tới SchoolTest",
+    "networkDescription": "Hãy kiểm tra kết nối mạng rồi thử lại.",
+    "contractTitle": "Không đọc được trang này",
+    "contractDescription": "Máy chủ trả về dữ liệu không như mong đợi, nên chúng tôi đã dừng lại thay vì hiển thị sai.",
+    "unknownTitle": "Đã xảy ra lỗi",
+    "unknownDescription": "Hiện chưa tải được nội dung này. Vui lòng thử lại.",
+    "retry": "Thử lại"
   }
 }

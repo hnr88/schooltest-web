@@ -3,6 +3,7 @@ export { Badge, type BadgeProps } from './components/badge';
 export { StatusBadge } from './components/status-badge';
 export { Tag } from './components/tag';
 export { CountBadge } from './components/count-badge';
+export { NavCountBadge } from './components/nav-count-badge';
 export { Logo } from './components/logo';
 export { Eyebrow } from './components/eyebrow';
 export { Container, Section } from './components/layout';
@@ -19,6 +20,7 @@ export type {
   StatusBadgeProps,
   TagProps,
   CountBadgeProps,
+  NavCountBadgeProps,
   ContainerProps,
   SectionProps,
   AlertVariant,

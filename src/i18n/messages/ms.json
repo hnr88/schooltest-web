@@ -1055,8 +1055,8 @@
     "unarchivedToast": "{name} telah dipulihkan.",
     "actionError": "Sesuatu tidak kena. Sila cuba lagi.",
     "updatedToast": "Perubahan disimpan.",
-    "editErrorTitle": "Kami tidak dapat memuatkan anak ini.",
-    "editErrorDescription": "Mereka mungkin telah dialih keluar, atau anda tiada akses.",
+    "editGoneTitle": "Profil anak ini tidak lagi tersedia",
+    "editGoneDescription": "Ia mungkin telah dialih keluar, jadi tiada apa-apa untuk disunting di sini.",
     "backToList": "Kembali ke anak saya",
     "profileMeta": {
       "title": "Kemajuan anak — SchoolTest",
@@ -1103,8 +1103,8 @@
     },
     "resultPublished": "Diterbitkan",
     "notPublished": "Belum diterbitkan",
-    "profileErrorTitle": "Kami tidak dapat memuatkan kemajuan anak ini.",
-    "profileErrorDescription": "Mereka mungkin telah dialih keluar, atau anda tiada akses kepada profil mereka."
+    "profileGoneTitle": "Profil anak ini tidak lagi tersedia",
+    "profileGoneDescription": "Ia mungkin telah dialih keluar. Anak-anak anda yang lain masih ada dalam senarai."
   },
   "Notifications": {
     "meta": {
@@ -1142,5 +1142,20 @@
       "testActivity": "Aktiviti ujian",
       "testResults": "Keputusan ujian"
     }
+  },
+  "QueryError": {
+    "goneTitle": "Halaman ini tidak lagi tersedia",
+    "goneDescription": "Ia mungkin telah dialih keluar, atau pautan itu sudah lapuk.",
+    "forbiddenTitle": "Halaman ini memerlukan akaun ibu bapa",
+    "forbiddenDescription": "Jenis akaun anda tidak boleh membuka halaman ini. Log masuk dengan akaun ibu bapa untuk keluarga ini.",
+    "httpTitle": "Sesuatu tidak kena di pihak kami",
+    "httpDescription": "Kami tidak dapat memuatkannya sekarang. Sila cuba lagi sebentar lagi.",
+    "networkTitle": "Kami tidak dapat menghubungi SchoolTest",
+    "networkDescription": "Semak sambungan anda, kemudian cuba lagi.",
+    "contractTitle": "Halaman ini tidak dapat dibaca",
+    "contractDescription": "Pelayan menghantar sesuatu yang tidak dijangka, jadi kami berhenti dan tidak memaparkan maklumat yang salah.",
+    "unknownTitle": "Sesuatu tidak kena",
+    "unknownDescription": "Kami tidak dapat memuatkannya sekarang. Sila cuba lagi.",
+    "retry": "Cuba lagi"
   }
 }

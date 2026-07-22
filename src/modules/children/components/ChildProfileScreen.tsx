@@ -1,6 +1,9 @@
 'use client';
 
-import { Alert, Button, Skeleton } from '@/modules/design-system';
+import { UserRoundX } from 'lucide-react';
+
+import { Button, Skeleton } from '@/modules/design-system';
+import { QueryErrorFallback } from '@/modules/query-errors';
 import { ChildLearningSummary } from '@/modules/children/components/ChildLearningSummary';
 import { ChildMetrics } from '@/modules/children/components/ChildMetrics';
 import { ChildProfileHeader } from '@/modules/children/components/ChildProfileHeader';
@@ -14,7 +17,8 @@ interface ChildProfileScreenProps {
 
 export function ChildProfileScreen({ documentId }: ChildProfileScreenProps) {
   const t = useTranslations('Children');
-  const { data, isError, isFetching, isLoading, refetch } = useChildProgressQuery(documentId);
+  const { data, error, isError, isFetching, isLoading, refetch } =
+    useChildProgressQuery(documentId);
 
   if (isLoading) {
     return (
@@ -35,34 +39,19 @@ export function ChildProfileScreen({ documentId }: ChildProfileScreenProps) {
     return (
       <main className="flex flex-1 flex-col px-8 py-7">
         <div className="mx-auto w-full max-w-160">
-          <Alert
-            variant="error"
-            title={t('profileErrorTitle')}
+          <QueryErrorFallback
+            error={error}
+            goneIcon={UserRoundX}
+            goneTitle={t('profileGoneTitle')}
+            goneDescription={t('profileGoneDescription')}
+            isRetrying={isFetching}
+            onRetry={() => refetch()}
             action={
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  href="/dashboard/children"
-                  variant="outline"
-                  size="sm"
-                  className="h-11 px-4"
-                >
-                  {t('backToList')}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="h-11 px-4"
-                  loading={isFetching}
-                  onClick={() => refetch()}
-                >
-                  {t('retry')}
-                </Button>
-              </div>
+              <Button href="/dashboard/children" variant="outline" size="sm" className="h-11 px-4">
+                {t('backToList')}
+              </Button>
             }
-          >
-            {t('profileErrorDescription')}
-          </Alert>
+          />
         </div>
       </main>
     );
