@@ -39,7 +39,7 @@ export function ChildProfileScreen({ documentId }: ChildProfileScreenProps) {
   if (isError || !data) {
     return (
       <main className="flex flex-1 flex-col px-4 py-7 sm:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-160">
+        <div className="w-full max-w-160">
           <QueryErrorFallback
             error={error}
             goneIcon={UserRoundX}

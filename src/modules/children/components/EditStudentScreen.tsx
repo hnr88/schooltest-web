@@ -25,7 +25,7 @@ export function EditStudentScreen({ documentId }: EditStudentScreenProps) {
   if (isLoading) {
     return (
       <main className="flex flex-1 flex-col px-8 py-7">
-        <div className="mx-auto flex w-full max-w-160 flex-col gap-6" aria-hidden="true">
+        <div className="flex w-full max-w-160 flex-col gap-6" aria-hidden="true">
           <Skeleton className="h-8 w-2/3" />
           <Skeleton className="h-96 w-full" />
         </div>
@@ -36,7 +36,7 @@ export function EditStudentScreen({ documentId }: EditStudentScreenProps) {
   if (isError || !initialValues) {
     return (
       <main className="flex flex-1 flex-col px-8 py-7">
-        <div className="mx-auto w-full max-w-160">
+        <div className="w-full max-w-160">
           <QueryErrorFallback
             error={error}
             goneIcon={UserRoundX}
