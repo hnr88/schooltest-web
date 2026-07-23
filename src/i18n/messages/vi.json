@@ -723,6 +723,7 @@
     "nav": {
       "overview": "Tổng quan",
       "myChildren": "Con của tôi",
+      "reports": "Báo cáo",
       "notifications": "Thông báo",
       "search": "Tìm kiếm",
       "settings": "Cài đặt"
@@ -1502,5 +1503,48 @@
     "unknownTitle": "Đã xảy ra lỗi",
     "unknownDescription": "Hiện chưa tải được nội dung này. Vui lòng thử lại.",
     "retry": "Thử lại"
+  },
+  "Report": {
+    "listMeta": {
+      "title": "Báo cáo học sinh — SchoolTest",
+      "description": "Mở báo cáo chẩn đoán cho lượt làm bài đã hoàn tất của học sinh bạn phụ trách."
+    },
+    "reportMeta": {
+      "title": "Báo cáo học sinh — SchoolTest",
+      "description": "Hồ sơ chẩn đoán của một lượt làm bài đã hoàn tất."
+    },
+    "listTitle": "Báo cáo",
+    "listDescription": "Kết quả chính thức của học sinh trong lớp bạn.",
+    "listPanelHeading": "Kết quả đã công bố",
+    "listPanelDescription": "{count, plural, =0 {Chưa có kết quả} other {# kết quả}}",
+    "listEmptyTitle": "Chưa có kết quả nào được công bố",
+    "listEmptyDescription": "Báo cáo xuất hiện ở đây khi học sinh của bạn hoàn tất một lượt làm bài chính thức và việc chấm điểm kết thúc.",
+    "listGoneTitle": "Danh sách báo cáo này không còn khả dụng",
+    "listGoneDescription": "Tài khoản của bạn không còn mở được danh sách này.",
+    "reportGoneTitle": "Báo cáo này không còn khả dụng",
+    "reportGoneDescription": "Báo cáo có thể đã bị xóa hoặc liên kết đã cũ.",
+    "backToList": "Quay lại danh sách báo cáo",
+    "displayLabelEyebrow": "Nhãn hiển thị",
+    "displayLabelPending": "Chưa được suy ra",
+    "displayLabelPendingDescription": "Nhãn hiển thị xuất hiện khi việc chấm điểm cho lượt làm bài này hoàn tất.",
+    "displayLabelNotApplicable": "Kỹ năng này không có nhãn hiển thị",
+    "displayLabelNotApplicableDescription": "Thang nhãn chỉ được định nghĩa cho kỹ năng đọc và nghe. Nói, viết và bản tóm tắt xếp lớp vốn không có nhãn — đây không phải là dữ liệu bị thiếu.",
+    "displayLabelSource": "Được suy ra từ bảng đối chiếu đang áp dụng cho kỹ năng này. Không dùng điểm sàn và không dùng điểm tổng hợp giữa các kỹ năng.",
+    "skillLabel": "Kỹ năng",
+    "skillCombined": "Xếp lớp",
+    "publishedLabel": "Đã công bố",
+    "notPublished": "Chưa công bố",
+    "statusLabel": "Trạng thái",
+    "skills": {
+      "reading": "Đọc",
+      "listening": "Nghe",
+      "speaking": "Nói",
+      "writing": "Viết"
+    },
+    "resultStatus": {
+      "scoring": "Đang chấm",
+      "partial_pending": "Chờ một phần",
+      "complete": "Hoàn tất"
+    }
   }
 }

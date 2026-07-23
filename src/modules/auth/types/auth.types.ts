@@ -1,3 +1,13 @@
+// users-permissions returns the role inline on GET /api/users/me (no populate
+// needed) — `type` is the machine slug the API's own role gates read
+// ('parent' | 'teacher' | 'student' | 'admin' | 'authenticated' | 'public').
+export interface AuthUserRole {
+  id: number;
+  name: string;
+  type: string;
+  description?: string | null;
+}
+
 export interface AuthUser {
   id: number;
   documentId?: string;
@@ -7,6 +17,7 @@ export interface AuthUser {
   blocked?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  role?: AuthUserRole | null;
 }
 
 export interface AuthResponse {

@@ -11,12 +11,14 @@ import {
   useSidebar,
 } from '@/modules/design-system';
 import { usePathname } from '@/i18n/navigation';
+import { useAuth } from '@/modules/auth';
 import { RailSectionLabel } from '@/modules/shell/components/RailSectionLabel';
 import { SidebarLogoLink } from '@/modules/shell/components/SidebarLogoLink';
 import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
 import { PRIMARY_NAV_ITEMS, SYSTEM_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
+import { filterNavByRole } from '@/modules/shell/lib/nav-visible';
 
 // THE DETACHED RAIL (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:2):
 // `width:248px; background:#FFFFFF; border-radius:24px; box-shadow:0 1px 2px
@@ -43,7 +45,9 @@ const RAIL_CLASSES =
 function AppSidebar() {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();
+  const { user } = useAuth();
   const t = useTranslations('Shell');
+  const primaryNavItems = filterNavByRole(PRIMARY_NAV_ITEMS, user?.role?.type ?? null);
 
   // collapsible="none" returns before the primitive's isMobile Sheet branch, so it
   // must stay "icon"; max-md:hidden guards the pre-hydration frame (isMobile is false
@@ -63,7 +67,7 @@ function AppSidebar() {
         <nav className="flex flex-1 flex-col">
           <RailSectionLabel>{t('sidebar.groups.manage')}</RailSectionLabel>
           <SidebarMenu className="gap-0.5">
-            {PRIMARY_NAV_ITEMS.map((item) => (
+            {primaryNavItems.map((item) => (
               <SidebarNavItem
                 key={item.href}
                 item={item}

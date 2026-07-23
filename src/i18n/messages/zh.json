@@ -723,6 +723,7 @@
     "nav": {
       "overview": "概览",
       "myChildren": "我的孩子",
+      "reports": "报告",
       "notifications": "通知",
       "search": "搜索",
       "settings": "设置"
@@ -1502,5 +1503,48 @@
     "unknownTitle": "出了点问题",
     "unknownDescription": "暂时无法加载此内容，请重试。",
     "retry": "再试一次"
+  },
+  "Report": {
+    "listMeta": {
+      "title": "学生报告 — SchoolTest",
+      "description": "打开你所教学生任一已完成测评的诊断报告。"
+    },
+    "reportMeta": {
+      "title": "学生报告 — SchoolTest",
+      "description": "一次已完成测评的诊断概况。"
+    },
+    "listTitle": "报告",
+    "listDescription": "你所教班级学生的正式结果。",
+    "listPanelHeading": "已发布的结果",
+    "listPanelDescription": "{count, plural, =0 {暂无结果} other {# 项结果}}",
+    "listEmptyTitle": "暂无已发布的结果",
+    "listEmptyDescription": "当你的学生完成一次正式测评且评分结束后，报告会显示在这里。",
+    "listGoneTitle": "该报告列表已不可用",
+    "listGoneDescription": "你的账号已无法打开此列表。",
+    "reportGoneTitle": "该报告已不可用",
+    "reportGoneDescription": "它可能已被删除，或链接已过期。",
+    "backToList": "返回报告列表",
+    "displayLabelEyebrow": "显示标签",
+    "displayLabelPending": "尚未生成",
+    "displayLabelPendingDescription": "该次测评评分完成后，显示标签才会出现。",
+    "displayLabelNotApplicable": "该技能没有显示标签",
+    "displayLabelNotApplicableDescription": "标签阶梯仅为阅读和听力定义。口语、写作以及分级测评汇总本就没有标签，这不是数据缺失。",
+    "displayLabelSource": "由该技能当前启用的对照表推导得出。不使用分数线，也不使用跨技能综合分。",
+    "skillLabel": "技能",
+    "skillCombined": "分级测评",
+    "publishedLabel": "发布时间",
+    "notPublished": "尚未发布",
+    "statusLabel": "状态",
+    "skills": {
+      "reading": "阅读",
+      "listening": "听力",
+      "speaking": "口语",
+      "writing": "写作"
+    },
+    "resultStatus": {
+      "scoring": "评分中",
+      "partial_pending": "部分待定",
+      "complete": "已完成"
+    }
   }
 }

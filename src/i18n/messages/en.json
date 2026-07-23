@@ -723,6 +723,7 @@
     "nav": {
       "overview": "Overview",
       "myChildren": "My children",
+      "reports": "Reports",
       "notifications": "Notifications",
       "search": "Search",
       "settings": "Settings"
@@ -1502,5 +1503,48 @@
     "unknownTitle": "Something went wrong",
     "unknownDescription": "We could not load this just now. Please try again.",
     "retry": "Try again"
+  },
+  "Report": {
+    "listMeta": {
+      "title": "Student reports — SchoolTest",
+      "description": "Open the diagnostic report for any completed sitting by one of your students."
+    },
+    "reportMeta": {
+      "title": "Student report — SchoolTest",
+      "description": "The diagnostic profile for one completed sitting."
+    },
+    "listTitle": "Reports",
+    "listDescription": "Official results for the students in your classes.",
+    "listPanelHeading": "Published results",
+    "listPanelDescription": "{count, plural, =0 {No results yet} one {# result} other {# results}}",
+    "listEmptyTitle": "No published results yet",
+    "listEmptyDescription": "A report appears here once one of your students completes an official sitting and scoring finishes.",
+    "listGoneTitle": "This report list is no longer available",
+    "listGoneDescription": "Your account can no longer open this list.",
+    "reportGoneTitle": "This report is no longer available",
+    "reportGoneDescription": "It may have been removed, or the link may be out of date.",
+    "backToList": "Back to reports",
+    "displayLabelEyebrow": "Display label",
+    "displayLabelPending": "Not derived yet",
+    "displayLabelPendingDescription": "The display label appears once scoring completes for this sitting.",
+    "displayLabelNotApplicable": "No display label for this skill",
+    "displayLabelNotApplicableDescription": "The label ladder is defined for reading and listening only. Speaking, writing and the placement summary carry none — by design, not as a missing value.",
+    "displayLabelSource": "Derived from the active crosswalk for this skill. No cut score and no cross-skill composite is used.",
+    "skillLabel": "Skill",
+    "skillCombined": "Placement",
+    "publishedLabel": "Published",
+    "notPublished": "Not published",
+    "statusLabel": "Status",
+    "skills": {
+      "reading": "Reading",
+      "listening": "Listening",
+      "speaking": "Speaking",
+      "writing": "Writing"
+    },
+    "resultStatus": {
+      "scoring": "Scoring",
+      "partial_pending": "Partially pending",
+      "complete": "Complete"
+    }
   }
 }

@@ -723,6 +723,7 @@
     "nav": {
       "overview": "Ringkasan",
       "myChildren": "Anak saya",
+      "reports": "Laporan",
       "notifications": "Pemberitahuan",
       "search": "Carian",
       "settings": "Tetapan"
@@ -1502,5 +1503,48 @@
     "unknownTitle": "Sesuatu tidak kena",
     "unknownDescription": "Kami tidak dapat memuatkannya sekarang. Sila cuba lagi.",
     "retry": "Cuba lagi"
+  },
+  "Report": {
+    "listMeta": {
+      "title": "Laporan pelajar — SchoolTest",
+      "description": "Buka laporan diagnostik bagi sesi ujian pelajar anda yang telah selesai."
+    },
+    "reportMeta": {
+      "title": "Laporan pelajar — SchoolTest",
+      "description": "Profil diagnostik bagi satu sesi ujian yang telah selesai."
+    },
+    "listTitle": "Laporan",
+    "listDescription": "Keputusan rasmi bagi pelajar dalam kelas anda.",
+    "listPanelHeading": "Keputusan diterbitkan",
+    "listPanelDescription": "{count, plural, =0 {Belum ada keputusan} other {# keputusan}}",
+    "listEmptyTitle": "Belum ada keputusan diterbitkan",
+    "listEmptyDescription": "Laporan muncul di sini apabila pelajar anda menyelesaikan sesi ujian rasmi dan pemarkahan selesai.",
+    "listGoneTitle": "Senarai laporan ini tidak lagi tersedia",
+    "listGoneDescription": "Akaun anda tidak lagi boleh membuka senarai ini.",
+    "reportGoneTitle": "Laporan ini tidak lagi tersedia",
+    "reportGoneDescription": "Ia mungkin telah dibuang, atau pautan sudah lapuk.",
+    "backToList": "Kembali ke laporan",
+    "displayLabelEyebrow": "Label paparan",
+    "displayLabelPending": "Belum dijana",
+    "displayLabelPendingDescription": "Label paparan muncul sebaik pemarkahan sesi ujian ini selesai.",
+    "displayLabelNotApplicable": "Tiada label paparan bagi kemahiran ini",
+    "displayLabelNotApplicableDescription": "Tangga label hanya ditakrifkan untuk membaca dan mendengar. Bertutur, menulis dan ringkasan penempatan memang tidak mempunyainya — bukan nilai yang hilang.",
+    "displayLabelSource": "Dijana daripada crosswalk aktif bagi kemahiran ini. Tiada skor pemotongan dan tiada skor gabungan merentas kemahiran digunakan.",
+    "skillLabel": "Kemahiran",
+    "skillCombined": "Penempatan",
+    "publishedLabel": "Diterbitkan",
+    "notPublished": "Belum diterbitkan",
+    "statusLabel": "Status",
+    "skills": {
+      "reading": "Membaca",
+      "listening": "Mendengar",
+      "speaking": "Bertutur",
+      "writing": "Menulis"
+    },
+    "resultStatus": {
+      "scoring": "Sedang dimarkah",
+      "partial_pending": "Sebahagian tertunda",
+      "complete": "Selesai"
+    }
   }
 }

@@ -1,5 +1,6 @@
 export { useAuth } from './hooks/use-auth';
 export { useRequireParent } from './hooks/use-require-parent';
+export { useRequireTeacher } from './hooks/use-require-teacher';
 export { useMeQuery } from './queries/use-me.query';
 export { useLoginMutation } from './queries/use-login.mutation';
 export { useRegisterMutation } from './queries/use-register.mutation';
@@ -20,6 +21,8 @@ export { ResendCountdownButton } from './components/ResendCountdownButton';
 export { SignUpCard } from './components/SignUpCard';
 export { SignUpForm } from './components/SignUpForm';
 export { ParentGuard } from './components/ParentGuard';
+export { TeacherGuard } from './components/TeacherGuard';
+export { TEACHER_ROLE_TYPE } from './constants/role.constants';
 export { ChangePasswordForm } from './components/ChangePasswordForm';
 export { GoogleCallbackScreen } from './components/GoogleCallbackScreen';
 export { GOOGLE_ENABLED } from './constants/auth.constants';
@@ -50,6 +53,7 @@ export {
 export { useChangePasswordMutation } from './queries/use-change-password.mutation';
 export type {
   AuthUser,
+  AuthUserRole,
   AuthResponse,
   RegisterResponse,
   ResendConfirmationResponse,

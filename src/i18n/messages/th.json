@@ -723,6 +723,7 @@
     "nav": {
       "overview": "ภาพรวม",
       "myChildren": "บุตรหลานของฉัน",
+      "reports": "รายงาน",
       "notifications": "การแจ้งเตือน",
       "search": "ค้นหา",
       "settings": "การตั้งค่า"
@@ -1502,5 +1503,48 @@
     "unknownTitle": "เกิดข้อผิดพลาด",
     "unknownDescription": "ขณะนี้ยังโหลดข้อมูลไม่ได้ กรุณาลองอีกครั้ง",
     "retry": "ลองอีกครั้ง"
+  },
+  "Report": {
+    "listMeta": {
+      "title": "รายงานนักเรียน — SchoolTest",
+      "description": "เปิดรายงานเชิงวินิจฉัยของการสอบที่เสร็จสิ้นแล้วของนักเรียนในความดูแลของคุณ"
+    },
+    "reportMeta": {
+      "title": "รายงานนักเรียน — SchoolTest",
+      "description": "โปรไฟล์เชิงวินิจฉัยของการสอบหนึ่งครั้งที่เสร็จสิ้นแล้ว"
+    },
+    "listTitle": "รายงาน",
+    "listDescription": "ผลอย่างเป็นทางการของนักเรียนในชั้นเรียนของคุณ",
+    "listPanelHeading": "ผลที่เผยแพร่แล้ว",
+    "listPanelDescription": "{count, plural, =0 {ยังไม่มีผล} other {# รายการ}}",
+    "listEmptyTitle": "ยังไม่มีผลที่เผยแพร่",
+    "listEmptyDescription": "รายงานจะปรากฏที่นี่เมื่อนักเรียนของคุณทำการสอบอย่างเป็นทางการเสร็จและตรวจให้คะแนนเรียบร้อยแล้ว",
+    "listGoneTitle": "รายการรายงานนี้ไม่พร้อมใช้งานแล้ว",
+    "listGoneDescription": "บัญชีของคุณไม่สามารถเปิดรายการนี้ได้อีกต่อไป",
+    "reportGoneTitle": "รายงานนี้ไม่พร้อมใช้งานแล้ว",
+    "reportGoneDescription": "อาจถูกลบไปแล้ว หรือลิงก์อาจล้าสมัย",
+    "backToList": "กลับไปที่รายงาน",
+    "displayLabelEyebrow": "ป้ายกำกับที่แสดง",
+    "displayLabelPending": "ยังไม่ได้สรุป",
+    "displayLabelPendingDescription": "ป้ายกำกับจะปรากฏเมื่อการตรวจให้คะแนนของการสอบครั้งนี้เสร็จสิ้น",
+    "displayLabelNotApplicable": "ทักษะนี้ไม่มีป้ายกำกับที่แสดง",
+    "displayLabelNotApplicableDescription": "ลำดับป้ายกำกับกำหนดไว้สำหรับการอ่านและการฟังเท่านั้น การพูด การเขียน และสรุปการจัดระดับไม่มีป้ายกำกับตั้งแต่แรก ไม่ใช่ข้อมูลที่ขาดหาย",
+    "displayLabelSource": "สรุปจากตารางเทียบที่ใช้งานอยู่ของทักษะนี้ ไม่มีการใช้คะแนนตัดสินและไม่มีคะแนนรวมข้ามทักษะ",
+    "skillLabel": "ทักษะ",
+    "skillCombined": "จัดระดับ",
+    "publishedLabel": "เผยแพร่เมื่อ",
+    "notPublished": "ยังไม่เผยแพร่",
+    "statusLabel": "สถานะ",
+    "skills": {
+      "reading": "การอ่าน",
+      "listening": "การฟัง",
+      "speaking": "การพูด",
+      "writing": "การเขียน"
+    },
+    "resultStatus": {
+      "scoring": "กำลังตรวจ",
+      "partial_pending": "รอบางส่วน",
+      "complete": "เสร็จสิ้น"
+    }
   }
 }

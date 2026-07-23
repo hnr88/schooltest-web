@@ -723,6 +723,7 @@
     "nav": {
       "overview": "개요",
       "myChildren": "내 자녀",
+      "reports": "리포트",
       "notifications": "알림",
       "search": "검색",
       "settings": "설정"
@@ -1502,5 +1503,48 @@
     "unknownTitle": "문제가 발생했습니다",
     "unknownDescription": "지금은 불러올 수 없습니다. 다시 시도해 주세요.",
     "retry": "다시 시도"
+  },
+  "Report": {
+    "listMeta": {
+      "title": "학생 리포트 — SchoolTest",
+      "description": "담당 학생이 마친 응시의 진단 리포트를 엽니다."
+    },
+    "reportMeta": {
+      "title": "학생 리포트 — SchoolTest",
+      "description": "완료된 응시 한 건의 진단 프로필입니다."
+    },
+    "listTitle": "리포트",
+    "listDescription": "담당 학급 학생들의 공식 결과입니다.",
+    "listPanelHeading": "게시된 결과",
+    "listPanelDescription": "{count, plural, =0 {아직 결과 없음} other {결과 #건}}",
+    "listEmptyTitle": "아직 게시된 결과가 없습니다",
+    "listEmptyDescription": "담당 학생이 공식 응시를 마치고 채점이 끝나면 여기에 리포트가 표시됩니다.",
+    "listGoneTitle": "이 리포트 목록을 더 이상 볼 수 없습니다",
+    "listGoneDescription": "현재 계정으로는 이 목록을 열 수 없습니다.",
+    "reportGoneTitle": "이 리포트는 더 이상 제공되지 않습니다",
+    "reportGoneDescription": "삭제되었거나 링크가 오래되었을 수 있습니다.",
+    "backToList": "리포트 목록으로",
+    "displayLabelEyebrow": "표시 라벨",
+    "displayLabelPending": "아직 산출되지 않음",
+    "displayLabelPendingDescription": "이번 응시의 채점이 끝나면 표시 라벨이 나타납니다.",
+    "displayLabelNotApplicable": "이 영역에는 표시 라벨이 없습니다",
+    "displayLabelNotApplicableDescription": "라벨 사다리는 읽기와 듣기에만 정의되어 있습니다. 말하기, 쓰기, 배치 평가 요약에는 처음부터 라벨이 없으며 누락된 값이 아닙니다.",
+    "displayLabelSource": "해당 영역의 활성 크로스워크에서 산출됩니다. 커트라인이나 영역 통합 점수는 사용하지 않습니다.",
+    "skillLabel": "영역",
+    "skillCombined": "배치 평가",
+    "publishedLabel": "게시일",
+    "notPublished": "게시되지 않음",
+    "statusLabel": "상태",
+    "skills": {
+      "reading": "읽기",
+      "listening": "듣기",
+      "speaking": "말하기",
+      "writing": "쓰기"
+    },
+    "resultStatus": {
+      "scoring": "채점 중",
+      "partial_pending": "일부 대기 중",
+      "complete": "완료"
+    }
   }
 }
