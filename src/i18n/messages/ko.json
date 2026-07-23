@@ -1530,6 +1530,34 @@
     "displayLabelNotApplicable": "이 영역에는 표시 라벨이 없습니다",
     "displayLabelNotApplicableDescription": "라벨 사다리는 읽기와 듣기에만 정의되어 있습니다. 말하기, 쓰기, 배치 평가 요약에는 처음부터 라벨이 없으며 누락된 값이 아닙니다.",
     "displayLabelSource": "해당 영역의 활성 크로스워크에서 산출됩니다. 커트라인이나 영역 통합 점수는 사용하지 않습니다.",
+    "crosswalkEyebrow": "크로스워크 조회 값",
+    "acaraPhaseLabel": "ACARA 단계",
+    "cefrBandLabel": "CEFR 등급",
+    "readinessLabel": "준비도",
+    "confidenceLabel": "측정 신뢰도",
+    "crosswalkPending": "아직 산출되지 않음",
+    "crosswalkNotApplicable": "이 영역에는 해당하지 않음",
+    "provisionalFieldTest": "이 응시에는 예비 문항이 포함되었습니다. 해당 문항의 모수가 아직 보정되지 않아 이 결과는 잠정적이며 변경될 수 있습니다.",
+    "confidenceLowNote": "채점이 낮은 사후 확률로 이 속성 패턴을 확정했습니다. 라벨을 근거로 조치하기 전에 속성별 결과를 확인하세요.",
+    "crosswalkSource": "ACARA 단계, CEFR 등급, 준비도는 활성 크로스워크가 이 결과에 담아 보내는 조회 값입니다. 커트라인이나 영역 통합 점수는 사용하지 않습니다.",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "readinessValues": {
+      "met": "충족",
+      "approaching": "근접",
+      "not_yet": "아직 아님",
+      "not_assessed": "평가되지 않음"
+    },
+    "confidence": {
+      "true": "낮음",
+      "false": "표시 없음"
+    },
     "skillLabel": "영역",
     "skillCombined": "배치 평가",
     "publishedLabel": "게시일",

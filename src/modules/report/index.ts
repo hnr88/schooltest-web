@@ -4,7 +4,12 @@ export { DisplayLabelPanel } from './components/DisplayLabelPanel';
 export { ReportSkeleton } from './components/ReportSkeleton';
 export { useResultQuery } from './queries/use-result.query';
 export { useMyStudentResultsQuery } from './queries/use-my-student-results.query';
-export { splitDisplayLabel, getDisplayLabelState } from './lib/display-label';
+export {
+  splitDisplayLabel,
+  getDisplayLabelState,
+  getCrosswalkFieldState,
+  resolveDisplayLabel,
+} from './lib/display-label';
 export { getResultStatusTone } from './lib/report-status';
 export {
   resultViewSchema,
@@ -23,4 +28,5 @@ export type {
   AttributeStatus,
   DisplayLabelParts,
   DisplayLabelState,
+  ResolvedDisplayLabel,
 } from './types/report.types';

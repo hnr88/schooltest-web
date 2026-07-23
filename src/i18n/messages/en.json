@@ -1530,6 +1530,34 @@
     "displayLabelNotApplicable": "No display label for this skill",
     "displayLabelNotApplicableDescription": "The label ladder is defined for reading and listening only. Speaking, writing and the placement summary carry none — by design, not as a missing value.",
     "displayLabelSource": "Derived from the active crosswalk for this skill. No cut score and no cross-skill composite is used.",
+    "crosswalkEyebrow": "Crosswalk lookups",
+    "acaraPhaseLabel": "ACARA phase",
+    "cefrBandLabel": "CEFR band",
+    "readinessLabel": "Readiness",
+    "confidenceLabel": "Measurement confidence",
+    "crosswalkPending": "Not derived yet",
+    "crosswalkNotApplicable": "Not applicable to this skill",
+    "provisionalFieldTest": "This sitting included field-test items. Their parameters are not calibrated yet, so this result is provisional and may change.",
+    "confidenceLowNote": "Scoring settled on this attribute pattern with a low posterior probability. Read the attribute detail before acting on the label.",
+    "crosswalkSource": "ACARA phase, CEFR band and readiness are lookups the active crosswalk carries on this result. No cut score and no cross-skill composite is used.",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "readinessValues": {
+      "met": "Met",
+      "approaching": "Approaching",
+      "not_yet": "Not yet",
+      "not_assessed": "Not assessed"
+    },
+    "confidence": {
+      "true": "Low",
+      "false": "Not flagged"
+    },
     "skillLabel": "Skill",
     "skillCombined": "Placement",
     "publishedLabel": "Published",

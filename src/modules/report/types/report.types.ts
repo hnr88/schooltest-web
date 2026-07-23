@@ -35,3 +35,11 @@ export interface DisplayLabelParts {
 // 'pending' = a laddered (receptive) result whose scoring has not produced a
 // label yet; 'not_applicable' = a result whose skill has no ladder at all.
 export type DisplayLabelState = 'derived' | 'pending' | 'not_applicable';
+
+// The resolved display_label as every surface must render it: either the
+// server's string, or the ONE absent state that applies — never both, and never
+// a stand-in string chosen at the render site.
+export type ResolvedDisplayLabel =
+  | { state: 'derived'; label: string }
+  | { state: 'pending'; label: null; absentKey: 'displayLabelPending' }
+  | { state: 'not_applicable'; label: null; absentKey: 'displayLabelNotApplicable' };

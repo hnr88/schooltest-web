@@ -1530,6 +1530,34 @@
     "displayLabelNotApplicable": "Kỹ năng này không có nhãn hiển thị",
     "displayLabelNotApplicableDescription": "Thang nhãn chỉ được định nghĩa cho kỹ năng đọc và nghe. Nói, viết và bản tóm tắt xếp lớp vốn không có nhãn — đây không phải là dữ liệu bị thiếu.",
     "displayLabelSource": "Được suy ra từ bảng đối chiếu đang áp dụng cho kỹ năng này. Không dùng điểm sàn và không dùng điểm tổng hợp giữa các kỹ năng.",
+    "crosswalkEyebrow": "Giá trị tra từ bảng đối chiếu",
+    "acaraPhaseLabel": "Giai đoạn ACARA",
+    "cefrBandLabel": "Bậc CEFR",
+    "readinessLabel": "Mức sẵn sàng",
+    "confidenceLabel": "Độ tin cậy của phép đo",
+    "crosswalkPending": "Chưa suy ra",
+    "crosswalkNotApplicable": "Không áp dụng cho kỹ năng này",
+    "provisionalFieldTest": "Lần thi này có chứa câu hỏi thử nghiệm. Tham số của những câu đó chưa được hiệu chuẩn, nên kết quả này là tạm thời và có thể thay đổi.",
+    "confidenceLowNote": "Việc chấm điểm chốt mẫu thuộc tính này với xác suất hậu nghiệm thấp. Hãy xem chi tiết từng thuộc tính trước khi dựa vào nhãn này.",
+    "crosswalkSource": "Giai đoạn ACARA, bậc CEFR và mức sẵn sàng là các giá trị tra cứu mà bảng đối chiếu đang áp dụng gắn kèm kết quả này. Không dùng điểm sàn và không dùng điểm tổng hợp giữa các kỹ năng.",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "readinessValues": {
+      "met": "Đạt",
+      "approaching": "Đang tiến gần",
+      "not_yet": "Chưa đạt",
+      "not_assessed": "Chưa đánh giá"
+    },
+    "confidence": {
+      "true": "Thấp",
+      "false": "Không gắn cờ"
+    },
     "skillLabel": "Kỹ năng",
     "skillCombined": "Xếp lớp",
     "publishedLabel": "Đã công bố",

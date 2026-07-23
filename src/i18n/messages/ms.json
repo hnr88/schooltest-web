@@ -1530,6 +1530,34 @@
     "displayLabelNotApplicable": "Tiada label paparan bagi kemahiran ini",
     "displayLabelNotApplicableDescription": "Tangga label hanya ditakrifkan untuk membaca dan mendengar. Bertutur, menulis dan ringkasan penempatan memang tidak mempunyainya — bukan nilai yang hilang.",
     "displayLabelSource": "Dijana daripada crosswalk aktif bagi kemahiran ini. Tiada skor pemotongan dan tiada skor gabungan merentas kemahiran digunakan.",
+    "crosswalkEyebrow": "Rujukan crosswalk",
+    "acaraPhaseLabel": "Fasa ACARA",
+    "cefrBandLabel": "Tahap CEFR",
+    "readinessLabel": "Kesediaan",
+    "confidenceLabel": "Keyakinan pengukuran",
+    "crosswalkPending": "Belum dijana",
+    "crosswalkNotApplicable": "Tidak berkenaan bagi kemahiran ini",
+    "provisionalFieldTest": "Sesi ini mengandungi item ujian rintis. Parameternya belum ditentukurkan, jadi keputusan ini bersifat sementara dan boleh berubah.",
+    "confidenceLowNote": "Pemarkahan menetapkan corak atribut ini dengan kebarangkalian posterior yang rendah. Semak butiran atribut sebelum bertindak atas label ini.",
+    "crosswalkSource": "Fasa ACARA, tahap CEFR dan kesediaan ialah nilai rujukan yang dibawa oleh crosswalk aktif pada keputusan ini. Tiada skor pemotongan dan tiada skor gabungan merentas kemahiran digunakan.",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "readinessValues": {
+      "met": "Dicapai",
+      "approaching": "Menghampiri",
+      "not_yet": "Belum lagi",
+      "not_assessed": "Belum dinilai"
+    },
+    "confidence": {
+      "true": "Rendah",
+      "false": "Tiada penanda"
+    },
     "skillLabel": "Kemahiran",
     "skillCombined": "Penempatan",
     "publishedLabel": "Diterbitkan",

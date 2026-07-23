@@ -1530,6 +1530,34 @@
     "displayLabelNotApplicable": "该技能没有显示标签",
     "displayLabelNotApplicableDescription": "标签阶梯仅为阅读和听力定义。口语、写作以及分级测评汇总本就没有标签，这不是数据缺失。",
     "displayLabelSource": "由该技能当前启用的对照表推导得出。不使用分数线，也不使用跨技能综合分。",
+    "crosswalkEyebrow": "对照表查得值",
+    "acaraPhaseLabel": "ACARA 阶段",
+    "cefrBandLabel": "CEFR 等级",
+    "readinessLabel": "准备度",
+    "confidenceLabel": "测量置信度",
+    "crosswalkPending": "尚未推导",
+    "crosswalkNotApplicable": "不适用于该技能",
+    "provisionalFieldTest": "本次作答包含试测题。这些题目的参数尚未校准，因此本结果为暂定结果，可能会发生变化。",
+    "confidenceLowNote": "评分以较低的后验概率确定了该属性组合。在依据该标签采取行动前，请先查看各属性的详细结果。",
+    "crosswalkSource": "ACARA 阶段、CEFR 等级和准备度是当前启用的对照表随本结果一并给出的查得值。不使用分数线，也不使用跨技能综合分。",
+    "cefrBands": {
+      "pre_A1": "Pre-A1",
+      "A1": "A1",
+      "A2": "A2",
+      "B1": "B1",
+      "B2": "B2",
+      "C1": "C1"
+    },
+    "readinessValues": {
+      "met": "已达到",
+      "approaching": "接近达到",
+      "not_yet": "尚未达到",
+      "not_assessed": "未评估"
+    },
+    "confidence": {
+      "true": "偏低",
+      "false": "未标记"
+    },
     "skillLabel": "技能",
     "skillCombined": "分级测评",
     "publishedLabel": "发布时间",
