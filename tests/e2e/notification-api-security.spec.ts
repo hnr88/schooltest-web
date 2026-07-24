@@ -1,9 +1,14 @@
 import { expect, test, type APIRequestContext, type APIResponse } from '@playwright/test';
 
+import { paceRateWindow } from './helpers/pace';
+
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
 const PRIMARY_PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const FOREIGN_PARENT = { email: 'parent-t06@schooltest.local', password: 'Parent1234!' };
 const UNKNOWN_NOTIFICATION_ID = 'nonexistentdoc000000000';
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 interface LoginResponse {
   jwt: string;

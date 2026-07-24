@@ -6,6 +6,8 @@ import { apiEnv } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { API_BASE_URL } from './helpers/mailpit';
 import { deleteStudents } from './helpers/student-cleanup';
+import { paceRateWindow } from './helpers/pace';
+import { uploadStudentMedia } from './helpers/wizard-fill';
 import { waitForAnimationsSettled, watchErrors } from './helpers/ui';
 
 // A notification is a permanent record; its target is deletable. This spec builds
@@ -18,6 +20,9 @@ const zh = loadMessages('zh');
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const PROGRESS_ROUTE = '**/api/my/students/*/progress';
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 interface StudentRow {
   documentId: string;
@@ -49,20 +54,29 @@ async function createChild(
   created: string[],
 ): Promise<{ documentId: string; name: string }> {
   const suffix = Date.now().toString();
+  // C-STUDENT-CREATE mandates the full wizard whitelist incl. both media ids.
+  const media = await uploadStudentMedia(request, token);
   const response = await request.post(`${API_BASE_URL}/api/students`, {
     headers: { Authorization: `Bearer ${token}` },
     data: {
       data: {
         given_name: 'Deadlink',
         family_name: suffix,
+        email: `deadlink-${suffix}@example.com`,
+        date_of_birth: '2014-01-15',
+        gender: 'female',
         nationality: 'Australian',
+        passport_number: 'P1234567',
+        current_school: 'Seed Primary',
         current_year_level: 'Year 7',
         year_level: 7,
         target_entry_year: '2027',
         target_entry_term: 'Term 1',
         parent_guardian_name: 'Deadlink Parent',
+        parent_guardian_email: 'guardian@example.com',
         parent_guardian_phone: '0400000000',
         preferred_contact_channel: 'email',
+        ...media,
       },
     },
   });

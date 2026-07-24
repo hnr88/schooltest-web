@@ -1,6 +1,8 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
+import { uploadStudentMedia } from './helpers/wizard-fill';
 import { deleteStudents } from './helpers/student-cleanup';
 
 const en = loadMessages('en');
@@ -26,20 +28,29 @@ async function createUnreadNotification(
   token: string,
 ): Promise<string> {
   const suffix = Date.now().toString();
+  // C-STUDENT-CREATE mandates the full wizard whitelist incl. both media ids.
+  const media = await uploadStudentMedia(request, token);
   const response = await request.post(`${API_BASE_URL}/api/students`, {
     headers: { Authorization: `Bearer ${token}` },
     data: {
       data: {
         given_name: 'Notification failure',
         family_name: suffix,
+        email: `notification-failure-${suffix}@example.com`,
+        date_of_birth: '2014-01-15',
+        gender: 'female',
         nationality: 'Australian',
+        passport_number: 'P1234567',
+        current_school: 'Seed Primary',
         current_year_level: 'Year 7',
         year_level: 7,
         target_entry_year: '2027',
         target_entry_term: 'Term 1',
         parent_guardian_name: 'Notification Parent',
+        parent_guardian_email: 'guardian@example.com',
         parent_guardian_phone: '0400000000',
         preferred_contact_channel: 'email',
+        ...media,
       },
     },
   });
@@ -52,6 +63,9 @@ async function loadFeed(page: Page, token: string): Promise<void> {
   await page.addInitScript((jwt) => window.localStorage.setItem('app.auth.token', jwt), token);
   await page.goto('/dashboard/notifications');
 }
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 test('notification mutations show a localized error when the real API refuses the request', async ({
   page,

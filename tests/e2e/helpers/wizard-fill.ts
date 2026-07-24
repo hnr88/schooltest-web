@@ -9,9 +9,10 @@
  * Media helpers upload REAL files through the real POST /api/upload (the
  * 1px PNG / empty-WAV mechanism 052 established) — no mocks, no route stubs.
  */
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect, type APIRequestContext, type Locator, type Page } from '@playwright/test';
 
 import { cat, icu, type AnyLocale, type Messages } from './i18n';
+import { API_BASE_URL } from './mailpit';
 
 /**
  * Click a chip-radio until RHF actually holds the selection. A plain click can
@@ -222,4 +223,32 @@ export async function attachWizardVoice(page: Page, m: Messages): Promise<void> 
   ]);
   expect(uploadRes.status()).toBe(201);
   await expect(page.locator('audio')).toBeVisible();
+}
+
+/**
+ * API-level photo + voice_intro upload pair (real POST /api/upload): the
+ * C-STUDENT-CREATE whitelist mandates both media ids, so specs that seed a
+ * student through POST /api/students directly need the two uploads first —
+ * the request-context twin of attachWizardPhoto/attachWizardVoice.
+ */
+export async function uploadStudentMedia(
+  request: APIRequestContext,
+  token: string,
+): Promise<{ photo: number; voice_intro: number }> {
+  async function upload(file: { name: string; mimeType: string; buffer: Buffer }): Promise<number> {
+    const res = await request.post(`${API_BASE_URL}/api/upload`, {
+      headers: { Authorization: `Bearer ${token}` },
+      multipart: { files: file },
+    });
+    expect(res.status(), await res.text()).toBe(201);
+    return ((await res.json()) as { id: number }[])[0].id;
+  }
+
+  const photo = await upload({ name: 'seed-photo.png', mimeType: 'image/png', buffer: PNG_1PX });
+  const voiceIntro = await upload({
+    name: 'seed-voice.wav',
+    mimeType: 'audio/wav',
+    buffer: wavBuffer(),
+  });
+  return { photo, voice_intro: voiceIntro };
 }

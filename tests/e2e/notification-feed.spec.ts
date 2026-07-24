@@ -4,6 +4,8 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
+import { uploadStudentMedia } from './helpers/wizard-fill';
 import { deleteStudents } from './helpers/student-cleanup';
 import { watchErrors } from './helpers/ui';
 
@@ -52,20 +54,29 @@ async function createStudentNotification(
 ): Promise<{ documentId: string; name: string }> {
   const suffix = Date.now().toString();
   const name = `Notification ${suffix}`;
+  // C-STUDENT-CREATE mandates the full wizard whitelist incl. both media ids.
+  const media = await uploadStudentMedia(request, token);
   const response = await request.post(`${API_BASE_URL}/api/students`, {
     headers: { Authorization: `Bearer ${token}` },
     data: {
       data: {
         given_name: 'Notification',
         family_name: suffix,
+        email: `notification-${suffix}@example.com`,
+        date_of_birth: '2014-01-15',
+        gender: 'female',
         nationality: 'Australian',
+        passport_number: 'P1234567',
+        current_school: 'Seed Primary',
         current_year_level: 'Year 7',
         year_level: 7,
         target_entry_year: '2027',
         target_entry_term: 'Term 1',
         parent_guardian_name: 'Notification Parent',
+        parent_guardian_email: 'guardian@example.com',
         parent_guardian_phone: '0400000000',
         preferred_contact_channel: 'email',
+        ...media,
       },
     },
   });
@@ -96,6 +107,9 @@ async function loadParentDashboard(page: Page, token: string): Promise<void> {
   }, token);
   await page.goto('/dashboard');
 }
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 test('parent sees a real activity notification, marks it read, and persists the feed state', async ({
   page,

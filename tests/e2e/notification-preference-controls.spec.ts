@@ -5,6 +5,7 @@ import { expect, test } from '@playwright/test';
 import type { APIRequestContext, Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
@@ -83,6 +84,9 @@ const ROUND_TRIP_TOGGLES = [
 type RoundTripField = (typeof ROUND_TRIP_TOGGLES)[number]['field'];
 
 test.describe.configure({ mode: 'serial' });
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 test('sms and push opt-outs round-trip through the real preference endpoint', async ({
   page,

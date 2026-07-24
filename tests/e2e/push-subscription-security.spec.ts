@@ -3,6 +3,7 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import { expect, test, type APIRequestContext } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
 
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
 const APP_ORIGIN =
@@ -45,6 +46,9 @@ function createSubscription() {
     expirationTime: null,
   };
 }
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 test("a parent cannot claim another parent's existing browser endpoint", async ({ request }) => {
   const [ownerToken, foreignToken] = await Promise.all([

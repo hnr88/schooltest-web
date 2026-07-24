@@ -5,6 +5,7 @@ import { expect, test } from '@playwright/test';
 import type { APIRequestContext, APIResponse, Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
@@ -79,6 +80,9 @@ async function expectForbidden(response: APIResponse): Promise<void> {
 }
 
 test.describe.configure({ mode: 'serial' });
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 test('notification preference endpoints refuse anonymous requests', async ({ request }) => {
   const getResponse = await request.get(`${API_BASE_URL}/api/notification-preferences/me`);

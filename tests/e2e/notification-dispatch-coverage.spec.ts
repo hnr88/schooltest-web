@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import type { APIRequestContext, Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
 import {
   CATEGORY_EVENTS,
   cleanupSeededNotifications,
@@ -109,6 +110,9 @@ function prefKey(name: string): string {
 }
 
 test.describe.configure({ mode: 'serial' });
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 let token: string;
 let tag: string;
