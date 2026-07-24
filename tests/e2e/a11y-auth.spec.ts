@@ -23,10 +23,10 @@ import { collectSmallTargets, watchErrors } from './helpers/ui';
 // zero mocked auth state beyond the `stub-jwt` client-redirect-only pattern
 // already established and accepted by tasks 12-14's own specs.
 const en = loadMessages('en');
-const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
+const SCREENSHOTS = path.resolve(process.cwd(), '..', '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const MOBILE = { width: 375, height: 812 };
-const API_BASE_URL = 'http://localhost:5500';
+const API_BASE_URL = process.env.E2E_API_BASE_URL ?? 'http://localhost:5510';
 
 /**
  * Asserts zero serious/critical axe violations; moderate/minor are always
@@ -359,6 +359,193 @@ test.describe('sign-up — a11y + responsive + focus order', () => {
       {
         label: 'sign-in link',
         locator: page.getByRole('link', { name: cat(en, 'Auth.signInLink'), exact: true }),
+      },
+    ]);
+  });
+});
+
+test.describe('forgot-password — a11y + responsive + focus order', () => {
+  test('axe clean, no h-scroll, primary 44px targets regression-checked at 375 & 1280', async ({
+    page,
+  }) => {
+    const errors = watchErrors(page);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const viewport of [MOBILE, DESKTOP]) {
+      await page.setViewportSize(viewport);
+      await page.goto('/forgot-password');
+      await page.waitForLoadState('networkidle');
+      await expectAxeClean(page, `/forgot-password @ ${viewport.width}px`);
+      await expectNoHorizontalScroll(page, `/forgot-password @ ${viewport.width}px`);
+      await logSmallTargets(page, `/forgot-password @ ${viewport.width}px`);
+      await expectAtLeast44px(
+        page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }),
+        `/forgot-password @ ${viewport.width}px email input`,
+      );
+      await expectAtLeast44px(
+        page.getByRole('button', { name: cat(en, 'Auth.sendResetLink'), exact: true }),
+        `/forgot-password @ ${viewport.width}px submit button`,
+      );
+      await expectAtLeast44px(
+        page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+        `/forgot-password @ ${viewport.width}px back link`,
+      );
+      await page.screenshot({
+        path: path.join(
+          SCREENSHOTS,
+          viewport === MOBILE ? 'a11y-forgot-password-mobile-en.png' : 'a11y-forgot-password-en.png',
+        ),
+        fullPage: true,
+      });
+    }
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('focus order: logo → email → submit → back link', async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await page.goto('/forgot-password');
+    await expectForwardFocusOrder(page, [
+      {
+        label: 'logo home link',
+        locator: page.getByRole('link', { name: home(en, 'footer.logoAlt'), exact: true }),
+      },
+      {
+        label: 'email input',
+        locator: page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }),
+      },
+      {
+        label: 'send-reset-link submit',
+        locator: page.getByRole('button', { name: cat(en, 'Auth.sendResetLink'), exact: true }),
+      },
+      {
+        label: 'back-to-sign-in link',
+        locator: page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+      },
+    ]);
+  });
+});
+
+test.describe('reset-password — a11y + responsive + focus order', () => {
+  test('form state: axe clean, no h-scroll, primary 44px targets at 375 & 1280', async ({
+    page,
+  }) => {
+    const errors = watchErrors(page);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const viewport of [MOBILE, DESKTOP]) {
+      await page.setViewportSize(viewport);
+      await page.goto('/reset-password?code=axe-test-code');
+      await page.waitForLoadState('networkidle');
+      await expect(
+        page.getByRole('heading', { level: 1, name: cat(en, 'Auth.resetTitle'), exact: true }),
+      ).toBeVisible();
+      await expectAxeClean(page, `/reset-password?code=... @ ${viewport.width}px`);
+      await expectNoHorizontalScroll(page, `/reset-password?code=... @ ${viewport.width}px`);
+      await logSmallTargets(page, `/reset-password?code=... @ ${viewport.width}px`);
+      await expectAtLeast44px(
+        page.getByLabel(cat(en, 'Auth.newPasswordLabel'), { exact: true }),
+        `/reset-password form @ ${viewport.width}px new-password input`,
+      );
+      await expectAtLeast44px(
+        page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }).first(),
+        `/reset-password form @ ${viewport.width}px show-password toggle`,
+      );
+      await expectAtLeast44px(
+        page.getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true }),
+        `/reset-password form @ ${viewport.width}px confirm-password input`,
+      );
+      await expectAtLeast44px(
+        page.getByRole('button', { name: cat(en, 'Auth.showConfirmPassword'), exact: true }).first(),
+        `/reset-password form @ ${viewport.width}px show-confirm-password toggle`,
+      );
+      await expectAtLeast44px(
+        page.getByRole('button', { name: cat(en, 'Auth.resetButton'), exact: true }),
+        `/reset-password form @ ${viewport.width}px submit button`,
+      );
+      await expectAtLeast44px(
+        page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+        `/reset-password form @ ${viewport.width}px back link`,
+      );
+      await page.screenshot({
+        path: path.join(
+          SCREENSHOTS,
+          viewport === MOBILE ? 'a11y-reset-password-mobile-en.png' : 'a11y-reset-password-en.png',
+        ),
+        fullPage: true,
+      });
+    }
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('invalid state: axe clean, no h-scroll, primary 44px targets at 375 & 1280', async ({
+    page,
+  }) => {
+    const errors = watchErrors(page);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const viewport of [MOBILE, DESKTOP]) {
+      await page.setViewportSize(viewport);
+      await page.goto('/reset-password');
+      await page.waitForLoadState('networkidle');
+      await expect(
+        page.getByRole('heading', { level: 1, name: cat(en, 'Auth.invalidLinkTitle'), exact: true }),
+      ).toBeVisible();
+      await expectAxeClean(page, `/reset-password (invalid) @ ${viewport.width}px`);
+      await expectNoHorizontalScroll(page, `/reset-password (invalid) @ ${viewport.width}px`);
+      await logSmallTargets(page, `/reset-password (invalid) @ ${viewport.width}px`);
+      await expectAtLeast44px(
+        page.getByRole('link', { name: cat(en, 'Auth.requestNewLink'), exact: true }),
+        `/reset-password invalid @ ${viewport.width}px request-new-link link`,
+      );
+      await expectAtLeast44px(
+        page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+        `/reset-password invalid @ ${viewport.width}px back link`,
+      );
+      await page.screenshot({
+        path: path.join(
+          SCREENSHOTS,
+          viewport === MOBILE
+            ? 'a11y-reset-password-invalid-mobile-en.png'
+            : 'a11y-reset-password-invalid-en.png',
+        ),
+        fullPage: true,
+      });
+    }
+    expect(errors, errors.join('\n')).toEqual([]);
+  });
+
+  test('focus order: logo → new password → toggle → confirm → toggle → submit → back link', async ({
+    page,
+  }) => {
+    await page.setViewportSize(DESKTOP);
+    await page.goto('/reset-password?code=axe-test-code');
+    await expectForwardFocusOrder(page, [
+      {
+        label: 'logo home link',
+        locator: page.getByRole('link', { name: home(en, 'footer.logoAlt'), exact: true }),
+      },
+      {
+        label: 'new-password input',
+        locator: page.getByLabel(cat(en, 'Auth.newPasswordLabel'), { exact: true }),
+      },
+      {
+        label: 'show-password toggle',
+        locator: page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }).first(),
+      },
+      {
+        label: 'confirm-password input',
+        locator: page.getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true }),
+      },
+      {
+        label: 'show-confirm-password toggle',
+        locator: page
+          .getByRole('button', { name: cat(en, 'Auth.showConfirmPassword'), exact: true })
+          .first(),
+      },
+      {
+        label: 'reset-password submit',
+        locator: page.getByRole('button', { name: cat(en, 'Auth.resetButton'), exact: true }),
+      },
+      {
+        label: 'back-to-sign-in link',
+        locator: page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
       },
     ]);
   });

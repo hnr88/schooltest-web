@@ -13,7 +13,7 @@ export function AuthBackLink({ label }: AuthBackLinkProps) {
   return (
     <Link
       href="/sign-in"
-      className="group inline-flex items-center justify-center gap-1.5 self-center rounded-sm text-body-md font-semibold text-primary transition-colors duration-150 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      className="group inline-flex min-h-11 items-center justify-center gap-1.5 self-center rounded-sm px-1 text-body-md font-semibold text-primary transition-colors duration-150 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
     >
       <ArrowLeft
         aria-hidden="true"

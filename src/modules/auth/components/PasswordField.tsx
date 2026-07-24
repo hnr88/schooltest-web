@@ -42,7 +42,7 @@ export function PasswordField({
 }: PasswordFieldProps) {
   return (
     <div className={AUTH_FIELD_CLASS}>
-      <div className="flex items-baseline justify-between gap-3">
+      <div className="flex items-center justify-between gap-3">
         <Label htmlFor={id} className={AUTH_LABEL_CLASS}>
           {label}
         </Label>

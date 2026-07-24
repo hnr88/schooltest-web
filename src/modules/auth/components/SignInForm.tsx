@@ -80,7 +80,7 @@ export function SignInForm() {
         labelAccessory={
           <Link
             href="/forgot-password"
-            className="rounded-sm text-caption font-semibold text-primary transition-colors duration-150 hover:text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="inline-flex min-h-11 items-center rounded-sm px-1 text-caption font-semibold text-primary transition-colors duration-150 hover:text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             {t('forgotPasswordLink')}
           </Link>

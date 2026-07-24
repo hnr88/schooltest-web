@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 
+import { DashboardOnboardingGuard } from '@/app/[locale]/dashboard/DashboardOnboardingGuard';
 import { ParentGuard } from '@/modules/auth';
 import { SidebarInset, SidebarProvider } from '@/modules/design-system';
 import { AppSidebar, AppTopbar } from '@/modules/shell';
@@ -26,23 +27,25 @@ import { AppSidebar, AppTopbar } from '@/modules/shell';
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <ParentGuard>
-      <SidebarProvider
-        className="h-svh min-h-0 overflow-hidden bg-surface-well"
-        style={{ '--sidebar-width': '296px', '--sidebar-width-icon': '96px' } as CSSProperties}
-      >
-        <AppSidebar />
-        <SidebarInset className="min-h-0 min-w-0 overflow-hidden bg-transparent py-4 md:py-6 md:pr-6">
-          <div className="flex min-h-0 w-full flex-1 flex-col gap-4">
-            <AppTopbar />
-            <div
-              data-slot="dashboard-content"
-              className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scroll-smooth motion-reduce:scroll-auto"
-            >
-              {children}
+      <DashboardOnboardingGuard>
+        <SidebarProvider
+          className="h-svh min-h-0 overflow-hidden bg-surface-well"
+          style={{ '--sidebar-width': '296px', '--sidebar-width-icon': '96px' } as CSSProperties}
+        >
+          <AppSidebar />
+          <SidebarInset className="min-h-0 min-w-0 overflow-hidden bg-transparent py-4 md:py-6 md:pr-6">
+            <div className="flex min-h-0 w-full flex-1 flex-col gap-4">
+              <AppTopbar />
+              <div
+                data-slot="dashboard-content"
+                className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scroll-smooth motion-reduce:scroll-auto"
+              >
+                {children}
+              </div>
             </div>
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
+          </SidebarInset>
+        </SidebarProvider>
+      </DashboardOnboardingGuard>
     </ParentGuard>
   );
 }

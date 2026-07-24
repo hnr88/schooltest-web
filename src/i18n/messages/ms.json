@@ -1455,17 +1455,33 @@
     "cardAdded": "Added {date}"
   },
   "Onboarding": {
+    "meta": {
+      "title": "Welcome — SchoolTest",
+      "description": "Get started with SchoolTest and set up your parent account."
+    },
     "pageTitle": "Welcome to SchoolTest",
     "stepWelcomeTitle": "Welcome",
     "stepWelcomeBody": "We're glad you're here. SchoolTest helps you understand your child's reading and language progress.",
+    "stepFeaturesTitle": "What you can do",
+    "stepFeaturesBody": "Track tests, view AI feedback, and manage school plans for every child — all from one dashboard.",
     "stepAddChildTitle": "Add your child",
     "stepAddChildBody": "Add a student profile so you can track their progress and receive recommendations.",
     "stepCompleteTitle": "You're all set",
     "stepCompleteBody": "You can always add more children later from the dashboard.",
+    "finishTitle": "Ready to start?",
+    "finishBody": "You're one tap away from your dashboard. Get started whenever you're ready.",
     "continue": "Continue",
     "skip": "Skip for now",
     "complete": "Get started",
-    "addChild": "Add a child"
+    "addChild": "Add a child",
+    "goToDashboard": "Go to dashboard",
+    "progressLabel": "Onboarding step {current} of {total}",
+    "stepCounter": "Step {current} of {total}",
+    "errorLoadingTitle": "Couldn't load onboarding",
+    "errorLoadingDescription": "Something went wrong while loading your onboarding details. Please try again.",
+    "errorRetry": "Try again",
+    "completed": "Onboarding complete",
+    "skipped": "Onboarding skipped"
   },
   "Notifications": {
     "meta": {
