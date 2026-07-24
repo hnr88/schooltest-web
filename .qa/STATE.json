@@ -102,7 +102,7 @@
       "title": "Remove children settings tab",
       "layer": "frontend",
       "depends_on": [],
-      "status": "DOING",
+      "status": "DONE",
       "started_at": null
     },
     {
@@ -111,7 +111,7 @@
       "title": "Settings into primary sidebar group",
       "layer": "ui",
       "depends_on": [],
-      "status": "DOING",
+      "status": "DONE",
       "started_at": null
     },
     {
@@ -120,7 +120,7 @@
       "title": "Rewrite search settings + consume defaults",
       "layer": "frontend",
       "depends_on": [],
-      "status": "DOING",
+      "status": "DONE",
       "started_at": null
     },
     {
@@ -129,7 +129,7 @@
       "title": "Notification toggles round-trip",
       "layer": "integration",
       "depends_on": [],
-      "status": "TODO",
+      "status": "DOING",
       "started_at": null
     },
     {

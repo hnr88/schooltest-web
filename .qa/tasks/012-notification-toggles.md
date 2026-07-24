@@ -6,7 +6,7 @@ kind: fix
 slice: settings > notifications toggles all persist
 target: schooltest-web/src/modules/notifications + schooltest-api notification-preference
 contract: C-PREF-GET, C-PREF-PUT
-status: TODO
+status: DOING
 depends_on: []
 ---
 ## Objective

@@ -49,10 +49,14 @@ async function readPreferences(
   return ((await response.json()) as NotificationPreferenceResponse).data;
 }
 
+// Delta restore: PUT back ONLY the fields this spec changed. A full-row restore
+// silently re-writes fields other specs own — the historical sms read-back red was
+// this spec's full-snapshot restore clobbering notification-preference-controls'
+// in-flight sms/push opt-out on the shared parent row.
 async function restorePreferences(
   request: APIRequestContext,
   token: string,
-  preferences: NotificationPreference,
+  preferences: Partial<NotificationPreference>,
 ): Promise<void> {
   const response = await request.put(`${API_BASE_URL}/api/notification-preferences/me`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -172,7 +176,11 @@ test('notification settings save a real parent preference and persist after relo
       path: path.join(SCREENSHOTS, 'notification-preferences-mobile-en.png'),
     });
   } finally {
-    await restorePreferences(request, token, original);
+    await restorePreferences(request, token, {
+      emailEnabled: original.emailEnabled,
+      children: original.children,
+      digestFrequency: original.digestFrequency,
+    });
   }
 });
 

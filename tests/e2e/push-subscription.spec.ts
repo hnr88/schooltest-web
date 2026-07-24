@@ -8,7 +8,8 @@ import { cat, loadMessages } from './helpers/i18n';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
-const APP_ORIGIN = 'http://localhost:3100';
+const APP_ORIGIN =
+  process.env.E2E_BASE_URL ?? `http://localhost:${process.env.E2E_PORT ?? 3100}`;
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const FOREIGN_PARENT = { email: 'parent-t06@schooltest.local', password: 'Parent1234!' };
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');

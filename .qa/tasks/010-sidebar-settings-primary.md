@@ -6,7 +6,7 @@ kind: fix
 slice: sidebar Settings aligned like all other nav items
 target: schooltest-web/src/modules/shell
 contract: n/a
-status: DOING
+status: DONE
 depends_on: []
 ---
 ## Objective

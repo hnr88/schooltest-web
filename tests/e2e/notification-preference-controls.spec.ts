@@ -70,6 +70,18 @@ function key(name: string): string {
   return `Settings.notificationPreferences.${name}`;
 }
 
+// The five toggles NOT covered by the sms/push round-trip test below — every one
+// gets the full cycle: UI toggle -> PUT payload -> GET read-back -> reload state.
+const ROUND_TRIP_TOGGLES = [
+  { field: 'emailEnabled', titleKey: 'channels.email.title' },
+  { field: 'inAppEnabled', titleKey: 'channels.inApp.title' },
+  { field: 'children', titleKey: 'categories.children.title' },
+  { field: 'testActivity', titleKey: 'categories.testActivity.title' },
+  { field: 'testResults', titleKey: 'categories.testResults.title' },
+] as const;
+
+type RoundTripField = (typeof ROUND_TRIP_TOGGLES)[number]['field'];
+
 test.describe.configure({ mode: 'serial' });
 
 test('sms and push opt-outs round-trip through the real preference endpoint', async ({
@@ -119,7 +131,103 @@ test('sms and push opt-outs round-trip through the real preference endpoint', as
     await expect(sms).toHaveAttribute('aria-checked', 'false');
     await expect(push).toHaveAttribute('aria-checked', 'false');
   } finally {
-    await writePreferences(request, token, original);
+    // Delta restore — only the fields this spec owns (the full-row restore was
+    // the cross-spec clobber behind the historical sms read-back red).
+    await writePreferences(request, token, {
+      smsEnabled: original.smsEnabled,
+      pushEnabled: original.pushEnabled,
+    });
+  }
+});
+
+test('every toggle and the digest select round-trip through save, GET, and reload', async ({
+  page,
+  request,
+}) => {
+  const token = await getParentToken(request);
+  const original = await readPreferences(request, token);
+  const changedFields: RoundTripField[] = [];
+  let digestChanged = false;
+
+  try {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openNotificationSettings(page, token);
+
+    for (const { field, titleKey } of ROUND_TRIP_TOGGLES) {
+      const expected = !original[field];
+      const toggle = page.getByRole('switch', { name: cat(en, key(titleKey)) });
+      await expect(toggle).toHaveAttribute('aria-checked', String(original[field]));
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-checked', String(expected));
+
+      const updatePromise = page.waitForResponse(
+        (response) =>
+          response.url().endsWith('/api/notification-preferences/me') &&
+          response.request().method() === 'PUT',
+      );
+      await page.getByRole('button', { name: cat(en, key('save')) }).click();
+      const update = await updatePromise;
+      expect(update.status(), await update.text()).toBe(200);
+      const payload = update.request().postDataJSON() as Record<string, unknown>;
+      expect(payload[field]).toBe(expected);
+      changedFields.push(field);
+
+      const persisted = await readPreferences(request, token);
+      expect(persisted[field]).toBe(expected);
+
+      // Gate on the refetched GET so the aria-checked assertion can never match
+      // the pre-load defaults by accident.
+      const preferencesPromise = page.waitForResponse(
+        (response) =>
+          response.url().endsWith('/api/notification-preferences/me') &&
+          response.request().method() === 'GET',
+      );
+      await page.reload();
+      await preferencesPromise;
+      await expect(
+        page.getByRole('switch', { name: cat(en, key(titleKey)) }),
+      ).toHaveAttribute('aria-checked', String(expected));
+    }
+
+    // Digest select: only immediate/off are selectable (daily/weekly deferred).
+    const nextDigest = original.digestFrequency === 'off' ? 'immediate' : 'off';
+    const digest = page.getByRole('combobox', { name: cat(en, key('digest.title')) });
+    await digest.click();
+    await page
+      .getByRole('option', { name: cat(en, key(`digest.options.${nextDigest}`)) })
+      .click();
+
+    const digestUpdatePromise = page.waitForResponse(
+      (response) =>
+        response.url().endsWith('/api/notification-preferences/me') &&
+        response.request().method() === 'PUT',
+    );
+    await page.getByRole('button', { name: cat(en, key('save')) }).click();
+    const digestUpdate = await digestUpdatePromise;
+    expect(digestUpdate.status(), await digestUpdate.text()).toBe(200);
+    const digestPayload = digestUpdate.request().postDataJSON() as Record<string, unknown>;
+    expect(digestPayload.digestFrequency).toBe(nextDigest);
+    digestChanged = true;
+
+    const persistedDigest = await readPreferences(request, token);
+    expect(persistedDigest.digestFrequency).toBe(nextDigest);
+
+    const digestGetPromise = page.waitForResponse(
+      (response) =>
+        response.url().endsWith('/api/notification-preferences/me') &&
+        response.request().method() === 'GET',
+    );
+    await page.reload();
+    await digestGetPromise;
+    await expect(
+      page.getByRole('combobox', { name: cat(en, key('digest.title')) }),
+    ).toContainText(cat(en, key(`digest.options.${nextDigest}`)));
+  } finally {
+    // Delta restore: only the fields this test actually flipped.
+    const restore: Partial<NotificationPreference> = {};
+    for (const field of changedFields) restore[field] = original[field];
+    if (digestChanged) restore.digestFrequency = original.digestFrequency;
+    if (Object.keys(restore).length > 0) await writePreferences(request, token, restore);
   }
 });
 
