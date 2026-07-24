@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 
 import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
+import { waitForAnimationsSettled } from './helpers/ui';
 
 const en = loadMessages('en');
 const DESKTOP = { width: 1280, height: 800 };
@@ -39,6 +40,8 @@ test('en: wrong password stays on /sign-in with the styled translated error, no 
   await expect(page).toHaveURL(/\/sign-in$/);
   const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
   expect(token).toBeNull();
+  await page.waitForLoadState('networkidle');
+  await waitForAnimationsSettled(page);
 
   const results = await new AxeBuilder({ page }).analyze();
   const blockers = results.violations.filter(

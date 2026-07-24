@@ -31,12 +31,7 @@ export function DashboardOnboardingGuard({ children }: DashboardOnboardingGuardP
   const isPending = onboarding?.status === 'pending';
   const isChecking = isAuthLoading || isOnboardingLoading;
 
-  // eslint-disable-next-line no-console
-  console.log('[DashboardOnboardingGuard]', { isAuthLoading, isOnboardingLoading, isParent, status: onboarding?.status, userRole: user?.role?.type });
-
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('[DashboardOnboardingGuard effect]', { isChecking, isParent, isPending });
     if (!isChecking && isParent && isPending) {
       router.replace('/onboarding');
     }

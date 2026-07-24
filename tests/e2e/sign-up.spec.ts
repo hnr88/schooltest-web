@@ -5,7 +5,7 @@ import { expect, test } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
 import { freshParent } from './helpers/sign-up-form';
-import { watchErrors } from './helpers/ui';
+import { waitForAnimationsSettled, watchErrors } from './helpers/ui';
 
 // Task 017: /sign-up structure, validation, and error legs against the real
 // api on :5500. With email confirmation ON (D-AUTH-1/C-AUTH-REGISTER) the
@@ -52,6 +52,8 @@ test('en: renders the DS sign-up card structure, axe clean', async ({ page }) =>
   await expect(signIn).toHaveAttribute('href', '/sign-in');
 
   await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-up-en.png') });
+  await page.waitForLoadState('networkidle');
+  await waitForAnimationsSettled(page);
 
   const results = await new AxeBuilder({ page }).analyze();
   const blockers = results.violations.filter(

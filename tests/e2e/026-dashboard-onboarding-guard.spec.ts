@@ -69,7 +69,6 @@ test.afterAll(() => {
 
 test('task 026: pending parent is redirected to /onboarding after login', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
-  page.on('console', (msg) => console.log(`[browser:${msg.type()}]`, msg.text()));
 
   await submitSignInForm(page);
   await page.waitForURL('**/onboarding');
