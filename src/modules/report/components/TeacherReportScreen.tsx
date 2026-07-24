@@ -2,12 +2,16 @@
 
 import { FileSearch, FlaskConical, TriangleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 import { BorderedCallout, Button, Eyebrow, InsightCallout } from '@/modules/design-system';
 import { QueryErrorFallback } from '@/modules/query-errors';
+import { AttributePanel } from '@/modules/report/components/AttributePanel';
 import { DisplayLabelPanel } from '@/modules/report/components/DisplayLabelPanel';
+import { EvidenceSummary } from '@/modules/report/components/EvidenceSummary';
 import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
+import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { getCrosswalkFieldState, resolveDisplayLabel } from '@/modules/report/lib/display-label';
 import { useResultQuery } from '@/modules/report/queries/use-result.query';
 import type { DisplayLabelState } from '@/modules/report/types/report.types';
@@ -21,10 +25,12 @@ function CrosswalkFact({
   label,
   state,
   value,
+  hint,
 }: {
   label: string;
   state: DisplayLabelState;
   value: string | null;
+  hint?: ReactNode;
 }) {
   const t = useTranslations('Report');
   return (
@@ -41,6 +47,7 @@ function CrosswalkFact({
         {value === null
           ? t(state === 'pending' ? 'crosswalkPending' : 'crosswalkNotApplicable')
           : value}
+        {hint}
       </dd>
     </div>
   );
@@ -49,8 +56,9 @@ function CrosswalkFact({
 // E11-01 — the teacher individual report: the route, the guard (mounted by the
 // page) and the C-4 read. E11-02 adds the ACARA phase and CEFR band, E11-08 the
 // readiness, the receptive confidence flag and the field-test provisional
-// banner. The attribute bars, the supplementary strand and the observations are
-// separate backlog rows, so they are absent here rather than filled in blind.
+// banner, and E11-03/04/09 the attribute bars with their evidence counts. The
+// supplementary strand and the observations are separate backlog rows, so they
+// are absent here rather than filled in blind.
 export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: string }) {
   const t = useTranslations('Report');
   const { data, error, isError, isFetching, isLoading, refetch } = useResultQuery(resultDocumentId);
@@ -85,6 +93,8 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
   }
 
   const displayLabel = resolveDisplayLabel(data);
+  const attributes = buildAttributePanel(data);
+  const evidence = attributes.state === 'rows' ? attributes.evidence : null;
 
   return (
     <main
@@ -101,7 +111,7 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
         </div>
       ) : null}
 
-      <DisplayLabelPanel result={data} />
+      <DisplayLabelPanel result={data} evidence={evidence} />
 
       <section
         data-slot="report-crosswalk-facts"
@@ -125,6 +135,11 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
             label={t('readinessLabel')}
             state={getCrosswalkFieldState(data, data.readiness)}
             value={data.readiness === null ? null : t(`readinessValues.${data.readiness}`)}
+            hint={
+              evidence === null ? null : (
+                <EvidenceSummary evidence={evidence} className="mt-1 block font-normal" />
+              )
+            }
           />
           <CrosswalkFact
             label={t('confidenceLabel')}
@@ -143,6 +158,8 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
 
         <p className="text-caption text-muted-foreground">{t('crosswalkSource')}</p>
       </section>
+
+      <AttributePanel view={attributes} />
     </main>
   );
 }

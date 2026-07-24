@@ -3,15 +3,23 @@
 import { useFormatter, useTranslations } from 'next-intl';
 
 import { Eyebrow, StatusPill } from '@/modules/design-system';
+import { EvidenceSummary } from '@/modules/report/components/EvidenceSummary';
 import { getDisplayLabelState, splitDisplayLabel } from '@/modules/report/lib/display-label';
 import { getResultStatusTone } from '@/modules/report/lib/report-status';
+import type { AttributeEvidence } from '@/modules/report/types/attribute.types';
 import type { ResultView } from '@/modules/report/types/report.types';
 
 // E11-01 — the primary teacher-facing claim: the Crosswalk `display_label`
 // (Doc 2a s.9), shown as the ladder rung plus its jaggedness qualifiers. Both
 // halves are SERVER-derived; this only pulls the composed string apart so the
 // qualifier reads as a qualifier instead of disappearing into the label.
-export function DisplayLabelPanel({ result }: { result: ResultView }) {
+export function DisplayLabelPanel({
+  result,
+  evidence,
+}: {
+  result: ResultView;
+  evidence: AttributeEvidence | null;
+}) {
   const t = useTranslations('Report');
   const format = useFormatter();
   const state = getDisplayLabelState(result);
@@ -58,6 +66,8 @@ export function DisplayLabelPanel({ result }: { result: ResultView }) {
           <p className="text-body-md text-muted-foreground">{t(`${absentKey}Description`)}</p>
         </div>
       )}
+
+      {evidence !== null ? <EvidenceSummary evidence={evidence} /> : null}
 
       <dl className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-divider pt-4 text-body-md">
         <div className="flex items-center gap-2">
