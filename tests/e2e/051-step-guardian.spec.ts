@@ -3,9 +3,15 @@ import path from 'node:path';
 import { expect, type Page, test } from '@playwright/test';
 
 import { deleteAuthEmailRows } from './helpers/auth-db';
-import { cat, icu, loadMessages, type AnyLocale, type Messages } from './helpers/i18n';
-import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
+import { cat, loadMessages, type AnyLocale, type Messages } from './helpers/i18n';
+import { loginParentJwt, registerAndConfirmParent, skipOnboarding } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
+import {
+  fillEducationStep,
+  fillPersonalStep,
+  gotoNewChildWizard,
+  wizardContinue,
+} from './helpers/wizard-fill';
 
 // Task 051 evidence — Step 3 Guardian + §5.12 ContactChannelCards driven through
 // the REAL wizard on :3100 with a throwaway parent JWT (never the seeded parent).
@@ -19,36 +25,22 @@ async function authAndGoto(page: Page, request: import('@playwright/test').APIRe
   const parent = await registerAndConfirmParent(request, 'step-guardian');
   usedEmails.push(parent.email);
   const jwt = await loginParentJwt(request, parent);
+  // Fresh parents start onboarding-pending; the dashboard guard would redirect
+  // /dashboard/* to /onboarding, so resolve it through the real endpoint first.
+  await skipOnboarding(request, jwt);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
 }
 
+// Steps 1–2 are gated and every field is mandatory (task 005) — reaching step 3
+// means filling each earlier step VALIDLY via the shared helpers.
 async function fillToStep3(page: Page, m: Messages, locale: AnyLocale = 'en') {
-  await page.goto(
-    locale === 'en' ? '/dashboard/children/new' : `/${locale}/dashboard/children/new`,
-  );
-  // Step 1 — Personal (required: given, family, nationality)
-  await page.getByLabel(cat(m, 'StudentWizard.personal.givenName')).fill('Mia');
-  await page.getByLabel(cat(m, 'StudentWizard.personal.familyName')).fill('Chen');
-  await page.getByRole('combobox', { name: cat(m, 'StudentWizard.personal.nationality') }).click();
-  await page.keyboard.press('ArrowDown');
-  await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
-  // Step 2 — Education (required: target entry year, target entry term)
-  await page
-    .getByRole('combobox', { name: cat(m, 'StudentWizard.education.targetEntryYear') })
-    .click();
-  await page.getByRole('option').first().click();
-  // `target_entry_term` is a required single-choice ANSWER, so it is now the
-  // canonical pill radiogroup (role=radiogroup / role=radio / aria-checked) rather
-  // than the aria-pressed SegmentedControl view switcher it shipped as. Same lookup
-  // by localized field label, same click on the localized "Term 1" option.
-  await page
-    .getByRole('radiogroup', { name: cat(m, 'StudentWizard.education.targetEntryTerm') })
-    .getByRole('radio', { name: icu(cat(m, 'StudentWizard.education.term'), { n: '1' }) })
-    .click();
-  await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
+  await gotoNewChildWizard(page, locale);
+  await fillPersonalStep(page, m);
+  await wizardContinue(page, m);
+  await fillEducationStep(page, m);
+  await wizardContinue(page, m);
   // Step 3 — the ContactChannelCards radiogroup is unique to this step
   await expect(
     page.getByRole('radiogroup', { name: cat(m, 'StudentWizard.guardian.preferredContact') }),
@@ -94,10 +86,11 @@ test('EN: step 3 cards render, default whatsapp, click/keyboard select, validati
   await page.keyboard.press('ArrowLeft');
   await expect(wechat).toHaveAttribute('aria-checked', 'true');
 
-  // Validation: empty name/phone → required errors + focus first invalid (name)
+  // Validation: empty name/phone/email → required errors + focus first invalid (name)
   await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
   await expect(page.getByText(cat(en, 'StudentWizardSchema.guardianNameRequired'))).toBeVisible();
   await expect(page.getByText(cat(en, 'StudentWizardSchema.guardianPhoneRequired'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'StudentWizardSchema.guardianEmailRequired'))).toBeVisible();
   await expect(page.getByLabel(cat(en, 'StudentWizard.guardian.name'))).toBeFocused();
   // Still on step 3 (radiogroup still present, not advanced)
   await expect(group).toBeVisible();
@@ -107,6 +100,7 @@ test('EN: step 3 cards render, default whatsapp, click/keyboard select, validati
   const phoneInput = page.getByLabel(cat(en, 'StudentWizard.guardian.phone'));
   await nameInput.fill('Wei Chen');
   await phoneInput.fill('+44 7700 900000');
+  await page.getByLabel(cat(en, 'StudentWizard.guardian.email')).fill('wei.chen@example.com');
   await expect(nameInput).toHaveValue('Wei Chen');
   await expect(phoneInput).toHaveValue('+44 7700 900000');
   await phoneInput.blur();

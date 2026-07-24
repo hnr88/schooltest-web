@@ -95,3 +95,20 @@ export async function loginParentJwt(
   if (!body.jwt) throw new Error(`[e2e] login ${account.email}: no jwt in response`);
   return body.jwt;
 }
+
+/**
+ * A freshly registered parent starts with onboarding status `pending`, and the
+ * dashboard guard (task 026) redirects pending parents from /dashboard/* to
+ * /onboarding. Specs whose subject is a dashboard screen (wizard, children
+ * list, profiles) resolve it through the REAL POST /api/users/me/onboarding —
+ * the same endpoint the Onboarding screen's Skip button calls.
+ */
+export async function skipOnboarding(request: APIRequestContext, jwt: string): Promise<void> {
+  const res = await request.post(`${API_BASE_URL}/api/users/me/onboarding`, {
+    headers: { Authorization: `Bearer ${jwt}` },
+    data: { status: 'skipped' },
+  });
+  if (!res.ok()) {
+    throw new Error(`[e2e] skip onboarding failed: ${res.status()} ${await res.text()}`);
+  }
+}

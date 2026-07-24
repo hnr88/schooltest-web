@@ -6,7 +6,7 @@ kind: fix
 slice: add-child wizard step gating
 target: schooltest-web/src/modules/student-wizard
 contract: n/a
-status: TODO
+status: DONE
 depends_on: []
 ---
 ## Objective
@@ -31,3 +31,6 @@ schooltest-web/CLAUDE.md + .claude/rules/{module-pattern,state-data,i18n,quality
 - Clicking Continue with empty step 1 does NOT advance (validation errors shown).
 - Rail button for step 2+ cannot be activated before step 1 is valid.
 - Completing step 1 unlocks step 2; pnpm tsc --noEmit + pnpm lint clean.
+## Verification evidence
+Builder: tsc/lint 0 errors both repos. Orchestrator: rail gating code reviewed in diff;
+e2e proof delegated to task 005 specs. Committed web 2366c4b.

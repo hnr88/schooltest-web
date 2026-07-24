@@ -2,8 +2,10 @@ import { expect, type APIRequestContext, type Page, test } from '@playwright/tes
 
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
-import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
+import { API_BASE_URL } from './helpers/mailpit';
+import { loginParentJwt, registerAndConfirmParent, skipOnboarding } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
+import { PNG_1PX, wavBuffer } from './helpers/wizard-fill';
 
 // Task 054 (C-UI-MYCHILDREN): the add-student DIALOG is gone (D-UI-1 — replaced by
 // the wizard, covered by student-wizard.spec.ts). This file now exercises the
@@ -13,7 +15,6 @@ import { watchErrors } from './helpers/ui';
 // throwaway parent through the real register → Mailpit confirm → login round-trip
 // (never the seeded parent), so it never perturbs the Mia/Jonas fixtures.
 const en = loadMessages('en');
-const API_BASE_URL = 'http://localhost:5500';
 const usedEmails: string[] = [];
 
 // Serial: each test registers its own throwaway parent (D20 register race).
@@ -27,6 +28,25 @@ interface ApiStudentsResponse {
   data: { documentId: string; status: string }[];
 }
 
+/**
+ * Real C-UPLOAD-PARENT POST /api/upload as the parent (multipart part `files`) —
+ * the create whitelist now mandates photo + voice_intro ids, so every seeded
+ * student needs two real uploads first.
+ */
+async function uploadMediaId(
+  request: APIRequestContext,
+  jwt: string,
+  file: { name: string; mimeType: string; buffer: Buffer },
+): Promise<number> {
+  const res = await request.post(`${API_BASE_URL}/api/upload`, {
+    headers: { Authorization: `Bearer ${jwt}` },
+    multipart: { files: file },
+  });
+  expect(res.status(), await res.text()).toBe(201);
+  const body = (await res.json()) as { id: number }[];
+  return body[0].id;
+}
+
 async function seedParentWithStudent(
   page: Page,
   request: APIRequestContext,
@@ -36,9 +56,36 @@ async function seedParentWithStudent(
   const parent = await registerAndConfirmParent(request, flow);
   usedEmails.push(parent.email);
   const jwt = await loginParentJwt(request, parent);
+  // Fresh parents start onboarding-pending; the dashboard guard would redirect
+  // /dashboard/* to /onboarding, so resolve it through the real endpoint first.
+  await skipOnboarding(request, jwt);
+  const photo = await uploadMediaId(request, jwt, {
+    name: 'seed-photo.png',
+    mimeType: 'image/png',
+    buffer: PNG_1PX,
+  });
+  const voiceIntro = await uploadMediaId(request, jwt, {
+    name: 'seed-voice.wav',
+    mimeType: 'audio/wav',
+    buffer: wavBuffer(),
+  });
+  // C-STUDENT-CREATE 400s on ANY missing mandated field — the seed payload is
+  // the full whitelist set; per-test keys override the defaults.
   const res = await request.post(`${API_BASE_URL}/api/students`, {
     headers: { Authorization: `Bearer ${jwt}` },
-    data: { data: student },
+    data: {
+      data: {
+        email: `student-${Date.now().toString(36)}@example.com`,
+        date_of_birth: '2014-01-15',
+        gender: 'female',
+        passport_number: 'P1234567',
+        current_school: 'Seed Primary',
+        parent_guardian_email: 'guardian@example.com',
+        photo,
+        voice_intro: voiceIntro,
+        ...student,
+      },
+    },
   });
   expect(res.ok(), await res.text()).toBeTruthy();
   const { data } = (await res.json()) as { data: { documentId: string } };
@@ -164,6 +211,11 @@ test('en: edit opens the wizard prefilled (passport empty) and Save changes PUTs
   await expect(page.locator('input[name="given_name"]')).toHaveValue('Edith');
   await expect(page.locator('input[name="family_name"]')).toHaveValue('Prefill');
   await expect(page.locator('input[name="passport_number"]')).toHaveValue('');
+
+  // Edit mode unlocks every rail step immediately, but Continue still validates:
+  // the blank passport (API-private, never prefilled) must be re-entered or the
+  // step-1 gate bounces.
+  await page.getByLabel(cat(en, 'StudentWizard.personal.passportNumber')).fill('X1234567');
 
   // Advance through the 5 steps (all prefilled valid) to Review and Save.
   for (let step = 0; step < 4; step += 1) {

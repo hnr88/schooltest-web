@@ -6,7 +6,7 @@ kind: build
 slice: e2e proof for wizard gating and mandatory uploads
 target: schooltest-web/tests/e2e
 contract: n/a
-status: TODO
+status: DOING
 depends_on: [002, 003, 004]
 ---
 ## Objective

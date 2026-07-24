@@ -3,40 +3,26 @@ import path from 'node:path';
 import { expect, type APIRequestContext, type Page, test } from '@playwright/test';
 
 import { deleteAuthEmailRows } from './helpers/auth-db';
-import { cat, icu, loadMessages, type AnyLocale, type Messages } from './helpers/i18n';
-import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
+import { cat, loadMessages, type AnyLocale, type Messages } from './helpers/i18n';
+import { loginParentJwt, registerAndConfirmParent, skipOnboarding } from './helpers/throwaway-parent';
 import { waitForAnimationsSettled, watchErrors } from './helpers/ui';
+import {
+  PNG_1PX,
+  fillEducationStep,
+  fillGuardianStep,
+  fillPersonalStep,
+  gotoNewChildWizard,
+  wavBuffer,
+  wizardContinue,
+} from './helpers/wizard-fill';
 
 // Task 052 evidence — Step 4 Media (MediaUpload) driven through the REAL wizard on
-// :3100 with a throwaway parent JWT (never the seeded parent). Uploads hit the REAL
+// :3110 with a throwaway parent JWT (never the seeded parent). Uploads hit the REAL
 // C-UPLOAD-PARENT POST /api/upload; error paths (invalid-type / too-large) must fire
 // NO request. Emails are cleaned up in afterAll.
 const en = loadMessages('en');
 const EVIDENCE = path.resolve(process.cwd(), '..', '.qa', 'evidence');
 const usedEmails: string[] = [];
-
-const PNG_1PX = Buffer.from(
-  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
-  'base64',
-);
-
-function wavBuffer(): Buffer {
-  const b = Buffer.alloc(44);
-  b.write('RIFF', 0);
-  b.writeUInt32LE(36, 4);
-  b.write('WAVE', 8);
-  b.write('fmt ', 12);
-  b.writeUInt32LE(16, 16);
-  b.writeUInt16LE(1, 20);
-  b.writeUInt16LE(1, 22);
-  b.writeUInt32LE(8000, 24);
-  b.writeUInt32LE(8000, 28);
-  b.writeUInt16LE(1, 32);
-  b.writeUInt16LE(8, 34);
-  b.write('data', 36);
-  b.writeUInt32LE(0, 40);
-  return b;
-}
 
 test.describe.configure({ mode: 'serial' });
 
@@ -44,37 +30,24 @@ async function authAndGoto(page: Page, request: APIRequestContext) {
   const parent = await registerAndConfirmParent(request, 'step-media');
   usedEmails.push(parent.email);
   const jwt = await loginParentJwt(request, parent);
+  // Fresh parents start onboarding-pending; the dashboard guard would redirect
+  // /dashboard/* to /onboarding, so resolve it through the real endpoint first.
+  await skipOnboarding(request, jwt);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
 }
 
+// Steps 1–3 are gated and every field is mandatory (task 005) — reaching step 4
+// means filling each earlier step VALIDLY via the shared helpers.
 async function fillToStep4(page: Page, m: Messages, locale: AnyLocale = 'en') {
-  await page.goto(
-    locale === 'en' ? '/dashboard/children/new' : `/${locale}/dashboard/children/new`,
-  );
-  await page.getByLabel(cat(m, 'StudentWizard.personal.givenName')).fill('Mia');
-  await page.getByLabel(cat(m, 'StudentWizard.personal.familyName')).fill('Chen');
-  await page.getByRole('combobox', { name: cat(m, 'StudentWizard.personal.nationality') }).click();
-  await page.keyboard.press('ArrowDown');
-  await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
-  await page
-    .getByRole('combobox', { name: cat(m, 'StudentWizard.education.targetEntryYear') })
-    .click();
-  await page.getByRole('option').first().click();
-  // Term is now the canonical pill radiogroup (a required answer, not a view
-  // switcher) — same field label, same localized option, stronger role assertion.
-  await page
-    .getByRole('radiogroup', { name: cat(m, 'StudentWizard.education.targetEntryTerm') })
-    .getByRole('radio', { name: icu(cat(m, 'StudentWizard.education.term'), { n: '1' }) })
-    .click();
-  await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
-  await page.getByLabel(cat(m, 'StudentWizard.guardian.name')).fill('Wei Chen');
-  const phone = page.getByLabel(cat(m, 'StudentWizard.guardian.phone'));
-  await phone.fill('+44 7700 900000');
-  await phone.blur();
-  await page.getByRole('button', { name: cat(m, 'StudentWizard.continue') }).click();
+  await gotoNewChildWizard(page, locale);
+  await fillPersonalStep(page, m);
+  await wizardContinue(page, m);
+  await fillEducationStep(page, m);
+  await wizardContinue(page, m);
+  await fillGuardianStep(page, m);
+  await wizardContinue(page, m);
   // Locale-safe step-4 confirmation: the photo dropzone copy is unique to StepMedia.
   await expect(page.getByText(cat(m, 'StudentWizard.media.photo.dropTitle'))).toBeVisible();
 }

@@ -2,8 +2,9 @@ import { expect, type APIRequestContext, type Locator, type Page, test } from '@
 
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
-import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
+import { loginParentJwt, registerAndConfirmParent, skipOnboarding } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
+import { fillPersonalStep, wizardContinue } from './helpers/wizard-fill';
 
 // Wizard CONTROL contract. The wizard's small enums (gender, target entry term,
 // preferred contact channel) are canonical pill radiogroups, not the aria-pressed
@@ -58,6 +59,9 @@ async function authAndGoto(page: Page, request: APIRequestContext) {
   const parent = await registerAndConfirmParent(request, 'wizctl');
   usedEmails.push(parent.email);
   const jwt = await loginParentJwt(request, parent);
+  // Fresh parents start onboarding-pending; the dashboard guard would redirect
+  // /dashboard/* to /onboarding, so resolve it through the real endpoint first.
+  await skipOnboarding(request, jwt);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
@@ -137,11 +141,9 @@ test('education selects show the LOCALIZED option label, and term/channel are ra
   const errors = watchErrors(page);
   await authAndGoto(page, request);
 
-  await page.getByLabel(cat(en, 'StudentWizard.personal.givenName')).fill('Ada');
-  await page.getByRole('combobox', { name: cat(en, 'StudentWizard.personal.nationality') }).click();
-  await page.keyboard.press('ArrowDown');
-  await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue'), exact: true }).click();
+  // Step 1 is gated and fully mandatory (task 005) — fill it VALIDLY to advance.
+  await fillPersonalStep(page, en, { givenName: 'Ada' });
+  await wizardContinue(page, en);
 
   // `year_level` submits the INT 9 but must display "Year 9" — the base-ui trigger
   // renders the raw value unless the select is given its item labels.
@@ -159,12 +161,19 @@ test('education selects show the LOCALIZED option label, and term/channel are ra
   await expect(term.getByRole('radio')).toHaveCount(4);
   await expectHitTarget(term.getByRole('radio').first(), 'term option');
 
+  // current_school / current_year_level are mandatory too — the gated Continue
+  // would bounce without them.
+  await page.getByLabel(cat(en, 'StudentWizard.education.currentSchool')).fill('Oakwood Primary');
+  await page
+    .getByRole('combobox', { name: cat(en, 'StudentWizard.education.currentYearLevel') })
+    .click();
+  await page.getByRole('option').first().click();
   await page
     .getByRole('combobox', { name: cat(en, 'StudentWizard.education.targetEntryYear') })
     .click();
   await page.getByRole('option').first().click();
   await term.getByRole('radio').first().click();
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue'), exact: true }).click();
+  await wizardContinue(page, en);
 
   const channel = page.getByRole('radiogroup', {
     name: cat(en, 'StudentWizard.guardian.preferredContact'),

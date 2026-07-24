@@ -6,7 +6,7 @@ kind: fix
 slice: POST /api/students rejects missing required fields/media
 target: schooltest-api/src/api/student
 contract: C-STUDENT-CREATE (parent)
-status: TODO
+status: DONE
 depends_on: []
 ---
 ## Objective
@@ -27,3 +27,7 @@ missing media for parent creates.
 ## Done criteria
 - POST /api/students (parent JWT) missing photo or voice_intro -> 400; missing any mandated
   field -> 400; complete payload -> 200/201 and the row persists with both media linked.
+## Verification evidence
+Live (orchestrator, 2026-07-24): POST /api/students {given_name only} -> 400
+ValidationError listing all 15 mandated fields incl. photo/voice_intro; complete-minus-media
+-> 400 listing photo + voice_intro. Committed api 51d759f.

@@ -5,7 +5,8 @@ import { expect, test } from '@playwright/test';
 
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { type AnyLocale, cat, icu, loadMessages } from './helpers/i18n';
-import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
+import { API_BASE_URL } from './helpers/mailpit';
+import { loginParentJwt, registerAndConfirmParent, skipOnboarding } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
 
 // C-UI-MYCHILDREN: parent-owned child cards are fed by the real
@@ -16,7 +17,6 @@ const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
-const API_BASE_URL = 'http://localhost:5500';
 const ALL_LOCALES: readonly AnyLocale[] = ['en', 'ko', 'ms', 'th', 'vi', 'zh'];
 
 const usedEmails: string[] = [];
@@ -122,6 +122,8 @@ test('en: a freshly-registered parent with zero children sees the real empty sta
   const parent = await registerAndConfirmParent(request, 'children-empty');
   usedEmails.push(parent.email);
   const jwt = await loginParentJwt(request, parent);
+  // Fresh parents start onboarding-pending; skip it or the guard redirects to /onboarding.
+  await skipOnboarding(request, jwt);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);

@@ -4,6 +4,13 @@ import { loginAsParent } from './helpers/auth';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { deleteStudents } from './helpers/student-cleanup';
 import { watchErrors } from './helpers/ui';
+import {
+  attachWizardPhoto,
+  attachWizardVoice,
+  fillGuardianStep,
+  selectRadioChip,
+  wizardContinue,
+} from './helpers/wizard-fill';
 
 const en = loadMessages('en');
 
@@ -69,22 +76,41 @@ test('student wizard options remain readable and a selected student persists aft
     await expectReadableOption(selectedNationality);
     await page.keyboard.press('Escape');
 
+    // Every step-1 field is mandatory (task 005): the two contrast-measured
+    // interactions above covered nationality; the rest are filled here.
     await page.getByLabel(cat(en, 'StudentWizard.personal.givenName')).fill('Contrast');
     await page.getByLabel(cat(en, 'StudentWizard.personal.familyName')).fill(familyName);
-    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
+    await page.getByLabel(cat(en, 'StudentWizard.personal.dateOfBirth')).fill('2014-05-20');
+    await page.getByLabel(cat(en, 'StudentWizard.personal.email')).fill('contrast@example.com');
+    await selectRadioChip(
+      page.getByRole('radiogroup', { name: cat(en, 'StudentWizard.personal.gender.label') }),
+      cat(en, 'StudentWizard.personal.gender.female'),
+    );
+    await page.getByLabel(cat(en, 'StudentWizard.personal.passportNumber')).fill('E12345678');
+    await wizardContinue(page, en);
 
+    // Step 2 — current school + current year level are mandatory too.
+    await page
+      .getByLabel(cat(en, 'StudentWizard.education.currentSchool'))
+      .fill('Oakwood Primary');
+    await page
+      .getByRole('combobox', { name: cat(en, 'StudentWizard.education.currentYearLevel') })
+      .click();
+    await page.getByRole('option').first().click();
     await chooseFirstOption(page, cat(en, 'StudentWizard.education.targetEntryYear'));
     // Term is now the canonical pill radiogroup (a required answer, not a view
     // switcher) — same field label, same localized option, stronger role assertion.
-    await page
-      .getByRole('radiogroup', { name: cat(en, 'StudentWizard.education.targetEntryTerm') })
-      .getByRole('radio', { name: icu(cat(en, 'StudentWizard.education.term'), { n: '1' }) })
-      .click();
-    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
-    await page.getByLabel(cat(en, 'StudentWizard.guardian.name')).fill('Contrast Guardian');
-    await page.getByLabel(cat(en, 'StudentWizard.guardian.phone')).fill('+61400000000');
-    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
-    await page.getByRole('button', { name: cat(en, 'StudentWizard.continue') }).click();
+    await selectRadioChip(
+      page.getByRole('radiogroup', { name: cat(en, 'StudentWizard.education.targetEntryTerm') }),
+      icu(cat(en, 'StudentWizard.education.term'), { n: '1' }),
+    );
+    await wizardContinue(page, en);
+    await fillGuardianStep(page, en, { name: 'Contrast Guardian', phone: '+61400000000' });
+    await wizardContinue(page, en);
+    // Step 4 is gated on the two MANDATORY uploads — real files, real uploads.
+    await attachWizardPhoto(page, en);
+    await attachWizardVoice(page, en);
+    await wizardContinue(page, en);
 
     const createResponse = page.waitForResponse(
       (response) =>

@@ -5,11 +5,11 @@ import { expect, test } from '@playwright/test';
 
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
-import { loginParentJwt, registerAndConfirmParent } from './helpers/throwaway-parent';
+import { API_BASE_URL } from './helpers/mailpit';
+import { loginParentJwt, registerAndConfirmParent, skipOnboarding } from './helpers/throwaway-parent';
 import { watchErrors } from './helpers/ui';
 
 const en = loadMessages('en');
-const API_BASE_URL = 'http://localhost:5500';
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const usedEmails: string[] = [];
@@ -184,6 +184,8 @@ test('en: a foreign child profile remains unavailable to another real parent', a
   const foreignParent = await registerAndConfirmParent(request, 'child-profile-foreign');
   usedEmails.push(foreignParent.email);
   const foreignJwt = await loginParentJwt(request, foreignParent);
+  // Fresh parents start onboarding-pending; skip it or the guard redirects to /onboarding.
+  await skipOnboarding(request, foreignJwt);
   await page.addInitScript((token) => {
     window.localStorage.setItem('app.auth.token', token);
   }, foreignJwt);

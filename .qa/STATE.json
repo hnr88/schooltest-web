@@ -15,19 +15,149 @@
     "e2e": "E2E_PORT=3110 pnpm exec playwright test"
   },
   "tasks": [
-    { "id": "001", "file": ".qa/tasks/001-seed-directory-data.md", "title": "Seed 312 schools + 8 agents", "layer": "data", "depends_on": [], "status": "DONE", "started_at": null },
-    { "id": "002", "file": ".qa/tasks/002-wizard-step-gating.md", "title": "Wizard step gating", "layer": "frontend", "depends_on": [], "status": "TODO", "started_at": null },
-    { "id": "003", "file": ".qa/tasks/003-wizard-mandatory-fields.md", "title": "All wizard fields + media mandatory", "layer": "frontend", "depends_on": [], "status": "TODO", "started_at": null },
-    { "id": "004", "file": ".qa/tasks/004-api-parent-create-validation.md", "title": "Backend parent-create validation", "layer": "backend", "depends_on": [], "status": "TODO", "started_at": null },
-    { "id": "005", "file": ".qa/tasks/005-wizard-e2e.md", "title": "Wizard e2e gating + media", "layer": "integration", "depends_on": ["002", "003", "004"], "status": "TODO", "started_at": null },
-    { "id": "006", "file": ".qa/tasks/006-search-compact-cards.md", "title": "Compact result cards", "layer": "ui", "depends_on": [], "status": "TODO", "started_at": null },
-    { "id": "007", "file": ".qa/tasks/007-school-cover-images.md", "title": "School cover images into Strapi", "layer": "data", "depends_on": ["001"], "status": "TODO", "started_at": null },
-    { "id": "008", "file": ".qa/tasks/008-search-e2e.md", "title": "Search e2e", "layer": "integration", "depends_on": ["006", "007"], "status": "TODO", "started_at": null },
-    { "id": "009", "file": ".qa/tasks/009-settings-remove-children-tab.md", "title": "Remove children settings tab", "layer": "frontend", "depends_on": [], "status": "TODO", "started_at": null },
-    { "id": "010", "file": ".qa/tasks/010-sidebar-settings-primary.md", "title": "Settings into primary sidebar group", "layer": "ui", "depends_on": [], "status": "TODO", "started_at": null },
-    { "id": "011", "file": ".qa/tasks/011-search-settings-rewrite.md", "title": "Rewrite search settings + consume defaults", "layer": "frontend", "depends_on": [], "status": "TODO", "started_at": null },
-    { "id": "012", "file": ".qa/tasks/012-notification-toggles.md", "title": "Notification toggles round-trip", "layer": "integration", "depends_on": [], "status": "TODO", "started_at": null },
-    { "id": "013", "file": ".qa/tasks/013-notification-coverage.md", "title": "Notification coverage e2e", "layer": "integration", "depends_on": ["012"], "status": "TODO", "started_at": null },
-    { "id": "014", "file": ".qa/tasks/014-regression-critic-report.md", "title": "Regression + critic + report", "layer": "regression", "depends_on": ["005", "008", "009", "010", "011", "013"], "status": "TODO", "started_at": null }
+    {
+      "id": "001",
+      "file": ".qa/tasks/001-seed-directory-data.md",
+      "title": "Seed 312 schools + 8 agents",
+      "layer": "data",
+      "depends_on": [],
+      "status": "DONE",
+      "started_at": null
+    },
+    {
+      "id": "002",
+      "file": ".qa/tasks/002-wizard-step-gating.md",
+      "title": "Wizard step gating",
+      "layer": "frontend",
+      "depends_on": [],
+      "status": "DONE",
+      "started_at": null
+    },
+    {
+      "id": "003",
+      "file": ".qa/tasks/003-wizard-mandatory-fields.md",
+      "title": "All wizard fields + media mandatory",
+      "layer": "frontend",
+      "depends_on": [],
+      "status": "DONE",
+      "started_at": null
+    },
+    {
+      "id": "004",
+      "file": ".qa/tasks/004-api-parent-create-validation.md",
+      "title": "Backend parent-create validation",
+      "layer": "backend",
+      "depends_on": [],
+      "status": "DONE",
+      "started_at": null
+    },
+    {
+      "id": "005",
+      "file": ".qa/tasks/005-wizard-e2e.md",
+      "title": "Wizard e2e gating + media",
+      "layer": "integration",
+      "depends_on": [
+        "002",
+        "003",
+        "004"
+      ],
+      "status": "DOING",
+      "started_at": null
+    },
+    {
+      "id": "006",
+      "file": ".qa/tasks/006-search-compact-cards.md",
+      "title": "Compact result cards",
+      "layer": "ui",
+      "depends_on": [],
+      "status": "TODO",
+      "started_at": null
+    },
+    {
+      "id": "007",
+      "file": ".qa/tasks/007-school-cover-images.md",
+      "title": "School cover images into Strapi",
+      "layer": "data",
+      "depends_on": [
+        "001"
+      ],
+      "status": "TODO",
+      "started_at": null
+    },
+    {
+      "id": "008",
+      "file": ".qa/tasks/008-search-e2e.md",
+      "title": "Search e2e",
+      "layer": "integration",
+      "depends_on": [
+        "006",
+        "007"
+      ],
+      "status": "TODO",
+      "started_at": null
+    },
+    {
+      "id": "009",
+      "file": ".qa/tasks/009-settings-remove-children-tab.md",
+      "title": "Remove children settings tab",
+      "layer": "frontend",
+      "depends_on": [],
+      "status": "TODO",
+      "started_at": null
+    },
+    {
+      "id": "010",
+      "file": ".qa/tasks/010-sidebar-settings-primary.md",
+      "title": "Settings into primary sidebar group",
+      "layer": "ui",
+      "depends_on": [],
+      "status": "TODO",
+      "started_at": null
+    },
+    {
+      "id": "011",
+      "file": ".qa/tasks/011-search-settings-rewrite.md",
+      "title": "Rewrite search settings + consume defaults",
+      "layer": "frontend",
+      "depends_on": [],
+      "status": "TODO",
+      "started_at": null
+    },
+    {
+      "id": "012",
+      "file": ".qa/tasks/012-notification-toggles.md",
+      "title": "Notification toggles round-trip",
+      "layer": "integration",
+      "depends_on": [],
+      "status": "TODO",
+      "started_at": null
+    },
+    {
+      "id": "013",
+      "file": ".qa/tasks/013-notification-coverage.md",
+      "title": "Notification coverage e2e",
+      "layer": "integration",
+      "depends_on": [
+        "012"
+      ],
+      "status": "TODO",
+      "started_at": null
+    },
+    {
+      "id": "014",
+      "file": ".qa/tasks/014-regression-critic-report.md",
+      "title": "Regression + critic + report",
+      "layer": "regression",
+      "depends_on": [
+        "005",
+        "008",
+        "009",
+        "010",
+        "011",
+        "013"
+      ],
+      "status": "TODO",
+      "started_at": null
+    }
   ]
 }

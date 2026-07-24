@@ -6,7 +6,7 @@ kind: fix
 slice: add-child wizard required fields
 target: schooltest-web/src/modules/student-wizard
 contract: n/a
-status: TODO
+status: DONE
 depends_on: []
 ---
 ## Objective
