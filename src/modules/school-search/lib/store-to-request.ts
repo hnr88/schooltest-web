@@ -9,10 +9,13 @@ import type {
   SchoolSearchRequest,
 } from '@/modules/school-search/types/school-search.types';
 
-export function storeToRequest(filters: SchoolSearchFilters): SchoolSearchRequest {
+export function storeToRequest(
+  filters: SchoolSearchFilters,
+  pageSize: number = PAGE_SIZE,
+): SchoolSearchRequest {
   const request: SchoolSearchRequest = {
     page: filters.page ?? 1,
-    pageSize: PAGE_SIZE,
+    pageSize,
   };
 
   const q = filters.q?.trim();

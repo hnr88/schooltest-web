@@ -6,8 +6,8 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { Alert, Button } from '@/modules/design-system';
 import { SchoolCard } from '@/modules/school-search/components/SchoolCard';
-import { PAGE_SIZE } from '@/modules/school-search/constants/school-search.constants';
 import type { useSchoolSearchQuery } from '@/modules/school-search/queries/use-school-search.query';
+import { useSchoolSearchStore } from '@/modules/school-search/stores/use-school-search-store';
 import {
   SearchCardSkeletonList,
   SearchEmptyState,
@@ -36,6 +36,7 @@ function SchoolResults({
 }) {
   const t = useTranslations('SchoolSearch');
   const { data, isPending, isError } = query;
+  const pageSize = useSchoolSearchStore((s) => s.pageSize);
 
   if (isError) {
     return (
@@ -67,7 +68,7 @@ function SchoolResults({
             page={pagination.page}
             pageCount={pagination.pageCount}
             total={pagination.total}
-            pageSize={PAGE_SIZE}
+            pageSize={pageSize}
             onPageChange={onPageChange}
           />
         ) : null

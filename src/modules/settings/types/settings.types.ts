@@ -5,15 +5,10 @@ import type {
   searchPreferenceSchema,
 } from '@/modules/settings/schemas/search-preferences.schema';
 
-export type SettingsTab = 'auth' | 'search' | 'notifications' | 'children';
+export type SettingsTab = 'auth' | 'search' | 'notifications';
 
 export type SearchPreference = z.infer<typeof searchPreferenceSchema>;
 export type SearchPreferenceFormValues = z.infer<typeof searchPreferenceFormSchema>;
-
-export type SearchPreferenceArrayField =
-  | 'default_states'
-  | 'default_school_types'
-  | 'default_sectors';
 
 export interface SettingsChoice<T extends string = string> {
   value: T;

@@ -162,7 +162,9 @@ test('notification settings save a real parent preference and persist after relo
     await page.screenshot({ path: path.join(SCREENSHOTS, 'notification-preferences-en.png') });
     await page.setViewportSize({ width: 375, height: 800 });
     await page.evaluate(() => window.scrollTo(0, 0));
-    await expect(page.getByRole('tab', { name: cat(en, 'Settings.tabs.children') })).toBeVisible();
+    await expect(
+      page.getByRole('tab', { name: cat(en, 'Settings.tabs.notifications') }),
+    ).toBeVisible();
     expect(
       await page.locator('html').evaluate((element) => element.scrollWidth > element.clientWidth),
     ).toBe(false);

@@ -6,7 +6,7 @@ kind: fix
 slice: settings menu without children settings
 target: schooltest-web/src/modules/settings
 contract: n/a
-status: TODO
+status: DOING
 depends_on: []
 ---
 ## Objective

@@ -3,14 +3,11 @@
 import { Controller, type Control } from 'react-hook-form';
 
 import { ChoicePillGroup, FieldShell, type ChoiceOption } from '@/modules/design-system';
-import type {
-  SearchPreferenceArrayField,
-  SearchPreferenceFormValues,
-} from '@/modules/settings/types/settings.types';
+import type { SearchPreferenceFormValues } from '@/modules/settings/types/settings.types';
 
 interface SearchPreferenceChoiceFieldProps {
   control: Control<SearchPreferenceFormValues>;
-  name: SearchPreferenceArrayField;
+  name: 'default_states';
   label: string;
   options: readonly ChoiceOption[];
 }

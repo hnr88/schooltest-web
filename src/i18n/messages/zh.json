@@ -737,8 +737,7 @@
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "管理",
-        "account": "账户"
+        "manage": "管理"
       },
       "promo": {
         "overline": "已关联的孩子",
@@ -783,23 +782,15 @@
     "tabs": {
       "auth": "身份验证",
       "search": "搜索",
-      "notifications": "通知",
-      "children": "孩子"
+      "notifications": "通知"
     },
-    "searchPreferencesTitle": "学校搜索偏好",
-    "searchPreferencesDescription": "选择开始学校搜索时要使用的筛选条件和结果视图。",
-    "defaultStates": "默认州和领地",
-    "defaultSchoolTypes": "默认学校类型",
-    "defaultSectors": "默认学校部门",
-    "defaultSort": "默认排序方式",
+    "searchPreferencesTitle": "学校搜索默认设置",
+    "searchPreferencesDescription": "每次打开学校搜索时都会应用这些默认设置,搜索过程中仍可随时更改筛选条件。",
+    "defaultStates": "默认州/领地",
+    "defaultSort": "默认排序",
     "defaultPageSize": "每页结果数",
     "searchResultsViewTitle": "结果显示方式",
     "searchResultsViewDescription": "选择学校结果的排序方式以及每页显示的数量。",
-    "defaultFeeRange": "默认年度学费范围",
-    "defaultFeeMinimum": "最低学费 (AUD)",
-    "defaultFeeMaximum": "最高学费 (AUD)",
-    "feeInvalid": "请输入 0 到 1,000,000 之间的整数。",
-    "feeRangeInvalid": "最低学费不能超过最高学费。",
     "saveSearchPreferences": "保存搜索偏好",
     "savingSearchPreferences": "正在保存偏好",
     "searchPreferencesSaved": "搜索偏好已保存。",
@@ -807,13 +798,6 @@
     "searchPreferencesLoadErrorTitle": "无法加载您的搜索偏好。",
     "searchPreferencesLoadErrorDescription": "请重试以加载保存的学校搜索默认值。",
     "retry": "重试",
-    "childrenSettingsTitle": "孩子管理",
-    "childrenSettingsDescription": "打开孩子的学习进度档案或管理所有孩子信息。",
-    "manageChildren": "管理我的孩子",
-    "childrenSettingsLoadErrorTitle": "无法加载您的孩子。",
-    "childrenSettingsLoadErrorDescription": "请重试以加载孩子的档案。",
-    "childrenSettingsEmpty": "添加孩子以开始管理他们的求学旅程。",
-    "addChild": "添加孩子",
     "notificationPreferences": {
       "title": "通知偏好设置",
       "description": "选择您要接收的更新及其发送方式。",

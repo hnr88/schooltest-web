@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { NotificationPreferencesPanel } from '@/modules/notifications';
 import { AuthSettingsPanel } from '@/modules/settings/components/AuthSettingsPanel';
-import { ChildrenSettingsPanel } from '@/modules/settings/components/ChildrenSettingsPanel';
 import { SearchPreferencesForm } from '@/modules/settings/components/SearchPreferencesForm';
 import { SettingsTabs } from '@/modules/settings/components/SettingsTabs';
 import { PORTAL_SCREEN_CLASS } from '@/modules/settings/constants/settings.constants';
@@ -17,14 +16,13 @@ const SETTINGS_PANELS: Record<SettingsTab, () => JSX.Element> = {
   auth: AuthSettingsPanel,
   search: SearchPreferencesForm,
   notifications: NotificationPreferencesPanel,
-  children: ChildrenSettingsPanel,
 };
 
 // Portal Settings (.qa/design/spec/03 §4.1): a 30/500 h1 over a 14px lede, then one
 // 820px column of stacked PortalCards on a 22px rhythm. The design has no tabs, but
-// this app's settings carry four independent surfaces (auth, search, notifications,
-// children) that the portal export never had, so the DS underline tab row stays as
-// the section switch. The panel is keyed on the tab so switching replays the rise.
+// this app's settings carry three independent surfaces (auth, search, notifications)
+// that the portal export never had, so the DS underline tab row stays as the
+// section switch. The panel is keyed on the tab so switching replays the rise.
 export function SettingsScreen() {
   const t = useTranslations('Settings');
   const { tab, setTab } = useSettingsTabSync();

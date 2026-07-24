@@ -737,8 +737,7 @@
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "Urus",
-        "account": "Akaun"
+        "manage": "Urus"
       },
       "promo": {
         "overline": "Anak dipautkan",
@@ -783,23 +782,15 @@
     "tabs": {
       "auth": "Pengesahan",
       "search": "Carian",
-      "notifications": "Pemberitahuan",
-      "children": "Anak"
+      "notifications": "Pemberitahuan"
     },
-    "searchPreferencesTitle": "Keutamaan carian sekolah",
-    "searchPreferencesDescription": "Pilih penapis dan paparan keputusan yang digunakan apabila memulakan carian sekolah.",
-    "defaultStates": "Negeri dan wilayah lalai",
-    "defaultSchoolTypes": "Jenis sekolah lalai",
-    "defaultSectors": "Sektor sekolah lalai",
-    "defaultSort": "Susunan lalai",
+    "searchPreferencesTitle": "Lalai carian sekolah",
+    "searchPreferencesDescription": "Lalai ini digunakan setiap kali anda membuka carian sekolah. Anda masih boleh mengubah penapis semasa mencari.",
+    "defaultStates": "Negeri lalai",
+    "defaultSort": "Isihan lalai",
     "defaultPageSize": "Keputusan setiap halaman",
     "searchResultsViewTitle": "Paparan keputusan",
     "searchResultsViewDescription": "Pilih cara keputusan sekolah disusun dan berapa banyak dipaparkan pada setiap halaman.",
-    "defaultFeeRange": "Julat yuran tahunan lalai",
-    "defaultFeeMinimum": "Yuran minimum (AUD)",
-    "defaultFeeMaximum": "Yuran maksimum (AUD)",
-    "feeInvalid": "Masukkan jumlah bulat dari 0 hingga 1,000,000.",
-    "feeRangeInvalid": "Yuran minimum tidak boleh melebihi yuran maksimum.",
     "saveSearchPreferences": "Simpan keutamaan carian",
     "savingSearchPreferences": "Menyimpan keutamaan",
     "searchPreferencesSaved": "Keutamaan carian disimpan.",
@@ -807,13 +798,6 @@
     "searchPreferencesLoadErrorTitle": "Kami tidak dapat memuatkan keutamaan carian anda.",
     "searchPreferencesLoadErrorDescription": "Sila cuba lagi untuk memuatkan lalai carian sekolah yang disimpan.",
     "retry": "Cuba lagi",
-    "childrenSettingsTitle": "Pengurusan anak",
-    "childrenSettingsDescription": "Buka profil kemajuan anak atau urus semua butiran anak.",
-    "manageChildren": "Urus anak saya",
-    "childrenSettingsLoadErrorTitle": "Kami tidak dapat memuatkan anak anda.",
-    "childrenSettingsLoadErrorDescription": "Sila cuba lagi untuk memuatkan profil anak anda.",
-    "childrenSettingsEmpty": "Tambah anak untuk mula mengurus perjalanan sekolah mereka.",
-    "addChild": "Tambah anak",
     "notificationPreferences": {
       "title": "Keutamaan pemberitahuan",
       "description": "Pilih kemas kini yang anda terima dan cara ia dihantar.",

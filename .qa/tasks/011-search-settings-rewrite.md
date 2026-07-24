@@ -6,7 +6,7 @@ kind: fix
 slice: settings > search tab rewrite
 target: schooltest-web/src/modules/settings + school-search/agent-search stores
 contract: C-SEARCH-PREFS (GET/PUT /api/search-preferences/me)
-status: TODO
+status: DOING
 depends_on: []
 ---
 ## Objective

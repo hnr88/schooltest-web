@@ -40,9 +40,8 @@ export const NAV_ITEMS: readonly NavItem[] = [
     href: '/dashboard/settings',
     icon: Settings,
     exact: false,
-    group: 'system',
+    group: 'primary',
   },
 ];
 
 export const PRIMARY_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'primary');
-export const SYSTEM_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'system');

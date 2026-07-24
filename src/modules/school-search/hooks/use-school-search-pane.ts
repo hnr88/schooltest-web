@@ -22,6 +22,7 @@ export function useSchoolSearchPane() {
   const feeMax = useSchoolSearchStore((s) => s.feeMax);
   const sortBy = useSchoolSearchStore((s) => s.sortBy);
   const page = useSchoolSearchStore((s) => s.page);
+  const pageSize = useSchoolSearchStore((s) => s.pageSize);
 
   const filters = useMemo(
     () => ({
@@ -54,7 +55,9 @@ export function useSchoolSearchPane() {
     ],
   );
 
-  const query = useSchoolSearchQuery(useMemo(() => storeToRequest(filters), [filters]));
+  const query = useSchoolSearchQuery(
+    useMemo(() => storeToRequest(filters, pageSize), [filters, pageSize]),
+  );
 
   return { query, activeFilterCount: countActiveSchoolFilters(filters) };
 }

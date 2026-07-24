@@ -1,7 +1,7 @@
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-import { cat, icu, loadMessages } from './helpers/i18n';
+import { cat, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
 
 const en = loadMessages('en');
@@ -65,7 +65,7 @@ function preferencePayload(preferences: SearchPreference): SearchPreference {
 
 test.describe.configure({ mode: 'serial' });
 
-test('en: settings tabs are URL-addressable, keyboard-operable, and expose real child management', async ({
+test('en: settings tabs are URL-addressable and keyboard-operable; a removed tab falls back', async ({
   page,
   request,
 }) => {
@@ -74,6 +74,7 @@ test('en: settings tabs are URL-addressable, keyboard-operable, and expose real 
   await signInAs(page, request, PARENT);
   await page.goto('/dashboard/settings?tab=auth');
 
+  await expect(page.getByRole('tab')).toHaveCount(3);
   const authTab = page.getByRole('tab', { name: cat(en, 'Settings.tabs.auth') });
   const searchTab = page.getByRole('tab', { name: cat(en, 'Settings.tabs.search') });
   const notificationsTab = page.getByRole('tab', { name: cat(en, 'Settings.tabs.notifications') });
@@ -90,20 +91,21 @@ test('en: settings tabs are URL-addressable, keyboard-operable, and expose real 
   await expect(page).toHaveURL(/\/dashboard\/settings\?tab=notifications$/);
   await expect(notificationsTab).toHaveAttribute('aria-selected', 'true');
 
-  await page.getByRole('tab', { name: cat(en, 'Settings.tabs.children') }).click();
-  await expect(page).toHaveURL(/\/dashboard\/settings\?tab=children$/);
-  await expect(page.getByRole('link', { name: cat(en, 'Settings.manageChildren') })).toBeVisible();
-  await expect(
-    page.getByRole('link', {
-      name: icu(cat(en, 'Children.viewProfileLabel'), { name: 'Mia Keller' }),
-    }),
-  ).toBeVisible();
+  // The children tab is gone; its old URL coerces to the default (auth) tab.
+  await page.goto('/dashboard/settings?tab=children');
+  await expect(authTab).toHaveAttribute('aria-selected', 'true');
+  // The goto remounts the shell, so the rail and the tab panel are mid fade-in —
+  // settle every running animation before axe samples contrast (a mid-fade frame
+  // composites the ink below AA and fails hundreds of nodes).
+  await page.evaluate(async () => {
+    await Promise.all(document.getAnimations().map((a) => a.finished.catch(() => null)));
+  });
 
   const results = await new AxeBuilder({ page }).analyze();
   const blockers = results.violations.filter(
     (violation) => violation.impact === 'serious' || violation.impact === 'critical',
   );
-  expect(blockers, 'settings children tab accessibility').toEqual([]);
+  expect(blockers, 'settings tab accessibility').toEqual([]);
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
@@ -118,19 +120,26 @@ test('en: search preferences write to the real API and survive a settings reload
 
   try {
     await page.goto('/dashboard/settings?tab=search');
-    // The multi-select filter groups now render the canonical ChoicePill group
-    // (App Screens Create-test "Assign to classes" L3290-3293) instead of a bordered
-    // checkbox slab, which canonical has nowhere. Its ARIA contract is role=group +
-    // aria-pressed toggle buttons, so the assertion moves to the equivalent state
-    // attribute at the same specificity — role + accessible name + toggle state —
-    // and additionally pins the group's own accessible name, which the checkbox
-    // version never asserted.
+    // The panel is now the sensible three: default states (ChoicePill group),
+    // default sort (select) and results per page (segmented radiogroup).
     const states = page.getByRole('group', { name: cat(en, 'Settings.defaultStates') });
     await expect(states).toBeVisible();
     const queensland = states.getByRole('button', { name: 'QLD', exact: true });
-    const expectedPressed = String((await queensland.getAttribute('aria-pressed')) !== 'true');
-    await queensland.click();
-    await expect(queensland).toHaveAttribute('aria-pressed', expectedPressed);
+    if ((await queensland.getAttribute('aria-pressed')) !== 'true') {
+      await queensland.click();
+    }
+    await expect(queensland).toHaveAttribute('aria-pressed', 'true');
+
+    const pageSizes = page.getByRole('radiogroup', { name: cat(en, 'Settings.defaultPageSize') });
+    await pageSizes.getByRole('radio', { name: '24', exact: true }).click();
+
+    const sort = page.getByRole('combobox', { name: cat(en, 'Settings.defaultSort') });
+    await sort.click();
+    await page
+      .getByRole('option', { name: cat(en, 'SchoolSearch.sortOptions.nameDesc'), exact: true })
+      .click();
+    await expect(sort).toContainText(cat(en, 'SchoolSearch.sortOptions.nameDesc'));
+
     const updatePromise = page.waitForResponse(
       (response) =>
         response.url().endsWith('/api/search-preferences/me') &&
@@ -141,7 +150,9 @@ test('en: search preferences write to the real API and survive a settings reload
     expect(update.status(), await update.text()).toBe(200);
 
     await page.reload();
-    await expect(queensland).toHaveAttribute('aria-pressed', expectedPressed);
+    await expect(queensland).toHaveAttribute('aria-pressed', 'true');
+    await expect(pageSizes.getByRole('radio', { name: '24', exact: true })).toBeChecked();
+    await expect(sort).toContainText(cat(en, 'SchoolSearch.sortOptions.nameDesc'));
   } finally {
     const restore = await request.put(`${API_BASE_URL}/api/search-preferences/me`, {
       headers: { Authorization: `Bearer ${jwt}` },

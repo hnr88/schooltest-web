@@ -5,12 +5,7 @@ import type {
 } from '@/modules/settings/types/settings.types';
 
 export const SETTINGS_TAB_PARAM = 'tab';
-export const SETTINGS_TABS: readonly SettingsTab[] = [
-  'auth',
-  'search',
-  'notifications',
-  'children',
-];
+export const SETTINGS_TABS: readonly SettingsTab[] = ['auth', 'search', 'notifications'];
 
 // DS §5.6 underline tabs are label-only — the canonical row carries no glyphs.
 export const SETTINGS_TAB_CONFIG: readonly {
@@ -20,7 +15,6 @@ export const SETTINGS_TAB_CONFIG: readonly {
   { value: 'auth', labelKey: 'tabs.auth' },
   { value: 'search', labelKey: 'tabs.search' },
   { value: 'notifications', labelKey: 'tabs.notifications' },
-  { value: 'children', labelKey: 'tabs.children' },
 ];
 
 // PortalCard (.qa/design/spec/03 §1.4): #FFFFFF, radius 24 and a single
@@ -53,11 +47,6 @@ export const PORTAL_GHOST_BUTTON_CLASS =
 export const SETTINGS_SELECT_TRIGGER_CLASS =
   'min-h-12 w-full justify-between rounded-tile border-portal-input bg-card px-3 text-body-md font-medium text-foreground transition-colors duration-200 ease-out-expo hover:border-foreground data-[size=default]:h-12 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-100 motion-reduce:transition-none';
 
-// PortalInput (§1.4): the same box as the select above so a numeric field and a
-// dropdown sitting in one grid line up to the pixel.
-export const SETTINGS_INPUT_CLASS =
-  'min-h-12 rounded-tile border-portal-input px-3 text-body-md';
-
 // CONTRAST. `--muted-foreground` resolves to #64748B — 4.76:1 on #FFFFFF, which
 // clears AA only while nothing composites over it. This screen's tab panel mounts
 // under `animate-in fade-in-0`, so for the length of that transition the ink is
@@ -74,23 +63,13 @@ export const SETTINGS_LEDE_INK = '[&_[data-slot=panel-header-row]_p]:text-body';
 
 export const SEARCH_PREFERENCE_DEFAULTS: SearchPreferenceFormValues = {
   default_states: [],
-  default_school_types: [],
-  default_sectors: [],
   default_sort: 'relevance',
   default_page_size: 12,
-  default_fee_min: null,
-  default_fee_max: null,
 };
 
 export const SEARCH_PREFERENCE_PAGE_SIZES = [12, 24, 50] as const;
 export const SEARCH_PREFERENCE_STATES = STATES;
 export const SEARCH_PREFERENCE_SORT_OPTIONS = SORT_OPTIONS;
-
-export const SEARCH_PREFERENCE_SECTOR_LABEL_KEYS = {
-  government: 'government',
-  'non-government': 'nonGovernment',
-  catholic: 'catholic',
-} as const;
 
 export const SEARCH_PREFERENCE_SORT_LABEL_KEYS = {
   relevance: 'relevance',

@@ -737,8 +737,7 @@
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "Manage",
-        "account": "Account"
+        "manage": "Manage"
       },
       "promo": {
         "overline": "Linked children",
@@ -783,23 +782,15 @@
     "tabs": {
       "auth": "Authentication",
       "search": "Search",
-      "notifications": "Notifications",
-      "children": "Children"
+      "notifications": "Notifications"
     },
-    "searchPreferencesTitle": "School search preferences",
-    "searchPreferencesDescription": "Choose the filters and results view to use when starting a school search.",
-    "defaultStates": "Default states and territories",
-    "defaultSchoolTypes": "Default school types",
-    "defaultSectors": "Default school sectors",
-    "defaultSort": "Default sort order",
+    "searchPreferencesTitle": "School search defaults",
+    "searchPreferencesDescription": "These defaults are applied every time you open School search. You can still change the filters while you search.",
+    "defaultStates": "Default states",
+    "defaultSort": "Default sort",
     "defaultPageSize": "Results per page",
     "searchResultsViewTitle": "Results view",
     "searchResultsViewDescription": "Choose how school results are sorted and how many appear on each page.",
-    "defaultFeeRange": "Default annual tuition range",
-    "defaultFeeMinimum": "Minimum tuition (AUD)",
-    "defaultFeeMaximum": "Maximum tuition (AUD)",
-    "feeInvalid": "Enter a whole amount from 0 to 1,000,000.",
-    "feeRangeInvalid": "Minimum tuition cannot exceed maximum tuition.",
     "saveSearchPreferences": "Save search preferences",
     "savingSearchPreferences": "Saving preferences",
     "searchPreferencesSaved": "Search preferences saved.",
@@ -807,13 +798,6 @@
     "searchPreferencesLoadErrorTitle": "We couldn't load your search preferences.",
     "searchPreferencesLoadErrorDescription": "Please retry to load your saved school search defaults.",
     "retry": "Retry",
-    "childrenSettingsTitle": "Child management",
-    "childrenSettingsDescription": "Open a child's progress profile or manage all child details.",
-    "manageChildren": "Manage my children",
-    "childrenSettingsLoadErrorTitle": "We couldn't load your children.",
-    "childrenSettingsLoadErrorDescription": "Please retry to load your child profiles.",
-    "childrenSettingsEmpty": "Add a child to start managing their school journey.",
-    "addChild": "Add child",
     "notificationPreferences": {
       "title": "Notification preferences",
       "description": "Choose which updates reach you and how they are delivered.",

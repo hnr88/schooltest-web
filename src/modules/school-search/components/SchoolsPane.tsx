@@ -11,6 +11,7 @@ import { SchoolResults } from '@/modules/school-search/components/SchoolResults'
 // Direct import (never the module barrel) so next/dynamic(ssr:false) is preserved.
 import { SchoolResultsMapPanel } from '@/modules/school-search/components/SchoolResultsMapPanel';
 import { SchoolSortMenu } from '@/modules/school-search/components/SchoolSortMenu';
+import { useApplySearchDefaults } from '@/modules/school-search/hooks/use-apply-search-defaults';
 import { useSchoolFilterChips } from '@/modules/school-search/hooks/use-school-filter-chips';
 import { useSchoolSearchPane } from '@/modules/school-search/hooks/use-school-search-pane';
 import { useSchoolSearchStore } from '@/modules/school-search/stores/use-school-search-store';
@@ -27,6 +28,7 @@ import { SearchAppliedChips, SearchToolbar } from '@/modules/search-shared';
 // other <aside> — axe flags unnamed duplicate landmarks.
 function SchoolsPane() {
   const t = useTranslations('SchoolSearch');
+  useApplySearchDefaults();
   const { query, activeFilterCount } = useSchoolSearchPane();
   const chips = useSchoolFilterChips();
   const isMapOpen = useSchoolSearchStore((s) => s.isMapOpen);

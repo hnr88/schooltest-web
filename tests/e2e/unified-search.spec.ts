@@ -238,8 +238,3 @@ test('375: the Filters trigger opens the same controls in the overlay', async ({
   await expect(qld).toHaveAttribute('aria-pressed', 'false');
   await expect(page.getByText(resultsCount(312, 'SchoolSearch'))).toBeVisible();
 });
-
-// D-SEARCH-PREF: a saved Search-pref (`default_states:['QLD']`) must pre-filter the
-// first Schools render to QLD. Search-prefs (086) + the seeding wiring (087) land in
-// later waves, so this leg is OWNED by 087's settings-tabs.spec.ts, NOT this W7 spec.
-test.fixme('schools first render is pre-filtered to a saved QLD Search-pref (D-SEARCH-PREF → 087)', () => {});

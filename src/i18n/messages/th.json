@@ -737,8 +737,7 @@
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "จัดการ",
-        "account": "บัญชี"
+        "manage": "จัดการ"
       },
       "promo": {
         "overline": "บุตรหลานที่เชื่อมโยง",
@@ -783,23 +782,15 @@
     "tabs": {
       "auth": "การยืนยันตัวตน",
       "search": "ค้นหา",
-      "notifications": "การแจ้งเตือน",
-      "children": "บุตรหลาน"
+      "notifications": "การแจ้งเตือน"
     },
-    "searchPreferencesTitle": "การตั้งค่าการค้นหาโรงเรียน",
-    "searchPreferencesDescription": "เลือกตัวกรองและมุมมองผลลัพธ์ที่จะใช้เมื่อเริ่มค้นหาโรงเรียน",
-    "defaultStates": "รัฐและเขตแดนเริ่มต้น",
-    "defaultSchoolTypes": "ประเภทโรงเรียนเริ่มต้น",
-    "defaultSectors": "ภาคส่วนโรงเรียนเริ่มต้น",
-    "defaultSort": "ลำดับการเรียงเริ่มต้น",
+    "searchPreferencesTitle": "ค่าเริ่มต้นการค้นหาโรงเรียน",
+    "searchPreferencesDescription": "ระบบจะใช้ค่าเริ่มต้นเหล่านี้ทุกครั้งที่คุณเปิดการค้นหาโรงเรียน คุณยังสามารถเปลี่ยนตัวกรองขณะค้นหาได้",
+    "defaultStates": "รัฐเริ่มต้น",
+    "defaultSort": "การเรียงลำดับเริ่มต้น",
     "defaultPageSize": "ผลลัพธ์ต่อหน้า",
     "searchResultsViewTitle": "มุมมองผลลัพธ์",
     "searchResultsViewDescription": "เลือกวิธีเรียงลำดับผลลัพธ์โรงเรียนและจำนวนที่แสดงต่อหน้า",
-    "defaultFeeRange": "ช่วงค่าเล่าเรียนรายปีเริ่มต้น",
-    "defaultFeeMinimum": "ค่าเล่าเรียนขั้นต่ำ (AUD)",
-    "defaultFeeMaximum": "ค่าเล่าเรียนสูงสุด (AUD)",
-    "feeInvalid": "กรอกจำนวนเต็มตั้งแต่ 0 ถึง 1,000,000",
-    "feeRangeInvalid": "ค่าเล่าเรียนขั้นต่ำต้องไม่มากกว่าค่าเล่าเรียนสูงสุด",
     "saveSearchPreferences": "บันทึกการตั้งค่าการค้นหา",
     "savingSearchPreferences": "กำลังบันทึกการตั้งค่า",
     "searchPreferencesSaved": "บันทึกการตั้งค่าการค้นหาแล้ว",
@@ -807,13 +798,6 @@
     "searchPreferencesLoadErrorTitle": "เราไม่สามารถโหลดการตั้งค่าการค้นหาของคุณได้",
     "searchPreferencesLoadErrorDescription": "โปรดลองอีกครั้งเพื่อโหลดค่าเริ่มต้นการค้นหาโรงเรียนที่บันทึกไว้",
     "retry": "ลองอีกครั้ง",
-    "childrenSettingsTitle": "การจัดการบุตรหลาน",
-    "childrenSettingsDescription": "เปิดโปรไฟล์ความก้าวหน้าของบุตรหลานหรือจัดการรายละเอียดทั้งหมดของพวกเขา",
-    "manageChildren": "จัดการบุตรหลานของฉัน",
-    "childrenSettingsLoadErrorTitle": "เราไม่สามารถโหลดบุตรหลานของคุณได้",
-    "childrenSettingsLoadErrorDescription": "โปรดลองอีกครั้งเพื่อโหลดโปรไฟล์บุตรหลานของคุณ",
-    "childrenSettingsEmpty": "เพิ่มบุตรหลานเพื่อเริ่มจัดการเส้นทางการเรียนของพวกเขา",
-    "addChild": "เพิ่มบุตรหลาน",
     "notificationPreferences": {
       "title": "การตั้งค่าการแจ้งเตือน",
       "description": "เลือกการอัปเดตที่คุณต้องการรับและวิธีส่งให้คุณ",

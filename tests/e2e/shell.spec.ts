@@ -85,6 +85,9 @@ test.describe('shell — desktop (1280)', () => {
 
     const links = aside.locator('nav a');
     await expect(links).toHaveCount(NAV_MODEL.length);
+    // Task 010: Settings sits in the ONE primary list with the other destinations —
+    // the bottom-pinned "Account" section (its own list + label) is gone.
+    await expect(aside.locator('nav ul')).toHaveCount(1);
     for (const [index, item] of NAV_MODEL.entries()) {
       await expect(links.nth(index)).toHaveText(cat(en, item.labelKey));
       await expect(links.nth(index)).toHaveAttribute('href', item.href);

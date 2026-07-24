@@ -10,33 +10,28 @@ export const searchPreferenceSortSchema = z.enum([
   'fee-desc',
 ]);
 
-const feeSchema = z
-  .number({ error: 'feeInvalid' })
-  .int('feeInvalid')
-  .min(0, 'feeInvalid')
-  .max(1_000_000, 'feeInvalid')
-  .nullable();
+const feeSchema = z.number().int().min(0).max(1_000_000).nullable();
 
-export const searchPreferenceFormSchema = z
-  .strictObject({
-    default_states: z.array(schoolStateSchema).max(8),
-    default_school_types: z.array(schoolTypeSchema).max(3),
-    default_sectors: z.array(schoolSectorSchema).max(3),
-    default_sort: searchPreferenceSortSchema,
-    default_page_size: z.number().int().min(1).max(50),
-    default_fee_min: feeSchema,
-    default_fee_max: feeSchema,
-  })
-  .refine(
-    (value) =>
-      value.default_fee_min === null ||
-      value.default_fee_max === null ||
-      value.default_fee_min <= value.default_fee_max,
-    { message: 'feeRangeInvalid', path: ['default_fee_min'] },
-  );
+// The panel edits THREE defaults — states, sort, results per page. The backend
+// (C-SEARCHPREF-UPDATE) accepts a partial strict body, so the PUT sends exactly
+// these keys and the untouched ones keep their server-side values.
+export const searchPreferenceFormSchema = z.strictObject({
+  default_states: z.array(schoolStateSchema).max(8),
+  default_sort: searchPreferenceSortSchema,
+  default_page_size: z.number().int().min(1).max(50),
+});
 
-export const searchPreferenceSchema = searchPreferenceFormSchema.extend({
+// The GET view carries the full row (school types, sectors and fee bounds stay
+// server-side defaults; the panel no longer edits them).
+export const searchPreferenceSchema = z.strictObject({
   documentId: z.string().min(1),
+  default_states: z.array(schoolStateSchema).max(8),
+  default_school_types: z.array(schoolTypeSchema).max(3),
+  default_sectors: z.array(schoolSectorSchema).max(3),
+  default_sort: searchPreferenceSortSchema,
+  default_page_size: z.number().int().min(1).max(50),
+  default_fee_min: feeSchema,
+  default_fee_max: feeSchema,
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });

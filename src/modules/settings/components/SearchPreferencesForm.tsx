@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 
 import { Alert, Button, SkeletonCard } from '@/modules/design-system';
 import { SearchPreferenceDetailsFields } from '@/modules/settings/components/SearchPreferenceDetailsFields';
-import { SearchPreferenceFeeFields } from '@/modules/settings/components/SearchPreferenceFeeFields';
 import { SearchPreferenceFields } from '@/modules/settings/components/SearchPreferenceFields';
 import { SettingsPanel } from '@/modules/settings/components/SettingsPanel';
 import { PORTAL_GHOST_BUTTON_CLASS } from '@/modules/settings/constants/settings.constants';
@@ -20,7 +19,6 @@ export function SearchPreferencesForm() {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-5.5">
-        <SkeletonCard rows={5} className="rounded-card border-0" />
         <SkeletonCard rows={3} className="rounded-card border-0" />
         <SkeletonCard rows={2} className="rounded-card border-0" />
       </div>
@@ -64,7 +62,6 @@ export function SearchPreferencesForm() {
         <SearchPreferenceFields form={form} />
       </SettingsPanel>
       <SearchPreferenceDetailsFields form={form} />
-      <SearchPreferenceFeeFields form={form} />
       <Button type="submit" className="min-h-11 self-start rounded-full px-6" loading={isSaving}>
         {isSaving ? t('savingSearchPreferences') : t('saveSearchPreferences')}
       </Button>

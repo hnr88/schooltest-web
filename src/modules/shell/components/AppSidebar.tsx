@@ -16,7 +16,7 @@ import { RailSectionLabel } from '@/modules/shell/components/RailSectionLabel';
 import { SidebarLogoLink } from '@/modules/shell/components/SidebarLogoLink';
 import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
-import { PRIMARY_NAV_ITEMS, SYSTEM_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
+import { PRIMARY_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
 import { filterNavByRole } from '@/modules/shell/lib/nav-visible';
 
@@ -68,21 +68,6 @@ function AppSidebar() {
           <RailSectionLabel>{t('sidebar.groups.manage')}</RailSectionLabel>
           <SidebarMenu className="gap-0.5">
             {primaryNavItems.map((item) => (
-              <SidebarNavItem
-                key={item.href}
-                item={item}
-                label={t(`nav.${item.labelKey}`)}
-                isActive={isNavItemActive(pathname, item)}
-                onNavigate={() => setOpenMobile(false)}
-              />
-            ))}
-          </SidebarMenu>
-          {/* portal--detached-sidebar.html:16 — `<div style="flex:1">` is what pushes
-              the account group to the bottom. The slice has no divider. */}
-          <span aria-hidden="true" className="min-h-6 flex-1" />
-          <RailSectionLabel>{t('sidebar.groups.account')}</RailSectionLabel>
-          <SidebarMenu className="gap-0.5">
-            {SYSTEM_NAV_ITEMS.map((item) => (
               <SidebarNavItem
                 key={item.href}
                 item={item}

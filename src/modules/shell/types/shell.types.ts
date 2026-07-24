@@ -3,9 +3,9 @@ import type { LucideIcon } from 'lucide-react';
 export type NavLabelKey =
   'overview' | 'myChildren' | 'reports' | 'notifications' | 'search' | 'settings';
 
-// Canonical rail grouping (DS §12 Navigation card): the primary destinations sit
-// above a hairline divider, the account-level ones below it.
-export type NavGroup = 'primary' | 'system';
+// Canonical rail grouping (DS §12 Navigation card): every destination of the
+// parent rail sits in the one primary list.
+export type NavGroup = 'primary';
 
 export interface ShellRouteMeta {
   labelKey: NavLabelKey;
