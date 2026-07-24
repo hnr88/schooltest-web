@@ -181,7 +181,9 @@ test('axe: both modes have zero serious/critical violations', async ({ page }) =
   await page.setViewportSize(DESKTOP);
   await loginAsParent(page);
   await page.goto('/dashboard/search');
-  await expect(page.getByText(resultsCount(312, 'SchoolSearch'))).toBeVisible();
+  // Generous timeout: a transient 429 (global API limiter) self-heals through the
+  // query's retry backoff (~7s), which outlives the 5s default.
+  await expect(page.getByText(resultsCount(312, 'SchoolSearch'))).toBeVisible({ timeout: 15_000 });
   await expectAxeClean(page, '/dashboard/search?mode=schools @ 1280px');
 
   await page.getByRole('tab', { name: cat(en, 'UnifiedSearch.modeAgents'), exact: true }).click();

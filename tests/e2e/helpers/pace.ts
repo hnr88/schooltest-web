@@ -7,9 +7,9 @@ import type { Page } from '@playwright/test';
 // ~6-tests/min suite exceeds the window; once tripped, every request — auth
 // included — 429s and the client amplifies the trip into a retry storm (task 008
 // evidence: ~1900 requests in one minute, cascading into later tests). A fixed
-// per-test pace caps the suite at ~4 tests/min (~95 req/min) so the limiter never
-// trips. No route interception, no mocks — just pacing.
-export const SEARCH_SUITE_PACE_MS = 10_000;
+// per-test pace caps the suite at ~3 tests/min (~80 req/min) so the limiter never
+// trips even when short tests bunch up. No route interception, no mocks — just pacing.
+export const SEARCH_SUITE_PACE_MS = 16_000;
 
 /** Sleeps the fixed per-test pace; call from a `test.beforeEach` in search suites. */
 export async function paceRateWindow(page: Page): Promise<void> {
