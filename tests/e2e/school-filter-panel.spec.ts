@@ -2,9 +2,13 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
 import { DESKTOP, gotoSchoolsMap, schoolCards } from './helpers/school-map';
 
 const en = loadMessages('en');
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 test('school search: grouped filter panel changes the real result request', async ({ page }) => {
   await page.setViewportSize(DESKTOP);

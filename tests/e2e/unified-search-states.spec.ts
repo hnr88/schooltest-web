@@ -4,13 +4,14 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { loginAsParent } from './helpers/auth';
 import { cat, escapeRegExp, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
 import { watchErrors } from './helpers/ui';
 
 // Task 039, part 2 (see unified-search.spec.ts): the C-UI-SEARCH-UNIFIED mode
 // switch (?mode persistence), the agents corpus (C-UI-SEARCH-AGENTS), the C10
 // service-enum network pin, the 308→unified redirects for the retired standalone
 // routes, and the schools error state. Everything is real network truth against
-// the live api on :5500 except the (final) intercepted 500.
+// the live api on :5510 except the (final) intercepted 500.
 const en = loadMessages('en');
 // Repo-root .qa/screenshots/wave7 (Playwright runs from the web package, one down).
 const SCREENSHOTS = path.resolve(process.cwd(), '..', '.qa', 'screenshots', 'wave7');
@@ -30,6 +31,9 @@ function resultsCount(count: number, ns: 'SchoolSearch' | 'AgentSearch'): string
 
 const agentCards = (page: Page) => page.locator('[data-slot="agent-card"]');
 const schoolCards = (page: Page) => page.locator('[data-slot="school-card"]');
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 const tab = (page: Page, key: 'modeSchools' | 'modeAgents') =>
   page.getByRole('tab', { name: cat(en, `UnifiedSearch.${key}`), exact: true });
 
@@ -51,7 +55,9 @@ test('mode switch persists to ?mode; agents corpus renders verified, no paginati
   await page.waitForURL('**mode=agents**');
   expect(new URL(page.url()).searchParams.get('mode')).toBe('agents');
   await expect(tab(page, 'modeAgents')).toHaveAttribute('aria-selected', 'true');
-  await expect(page.getByText(resultsCount(8, 'AgentSearch'))).toBeVisible();
+  // Generous timeout: a transient 429 (global API limiter) self-heals through the
+  // query's retry backoff (~7s), which outlives the 5s default.
+  await expect(page.getByText(resultsCount(8, 'AgentSearch'))).toBeVisible({ timeout: 15_000 });
   await expect(agentCards(page)).toHaveCount(8);
   await expect(agentCards(page).first().locator('h3')).toHaveText('Pacific Bridge Education');
   const verifiedBadges = page.getByText(cat(en, 'AgentSearch.verified'), { exact: true });

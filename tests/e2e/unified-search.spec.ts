@@ -5,11 +5,12 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { loginAsParent } from './helpers/auth';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { paceRateWindow } from './helpers/pace';
 import { watchErrors } from './helpers/ui';
 
 // Task 039 (depends on 038, 029): the C-UI-SEARCH-UNIFIED e2e gate. SUBSUMES the
 // retired school-search.spec.ts navigation — the panes no longer have standalone
-// routes. Real login (SEEDED_PARENT) → the live api on :5500 answers every
+// routes. Real login (SEEDED_PARENT) → the live api on :5510 answers every
 // POST /api/search/{schools,agents} with the seeded corpus (312 schools / 74 QLD /
 // 1 Paterson, server-verified in 025). Counts + copy derive from the live catalogs
 // so a copy/seed drift fails loud. Only the (Test 5) error case intercepts a route.
@@ -46,6 +47,9 @@ function resultsCount(
 const schoolCards = (page: Page) => page.locator('[data-slot="school-card"]');
 const searchBar = (page: Page) =>
   page.getByLabel(cat(en, 'UnifiedSearch.searchPlaceholderSchools'));
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 const schoolsTab = (page: Page) =>
   page.getByRole('tab', { name: cat(en, 'UnifiedSearch.modeSchools'), exact: true });
 // The schools filters live in the §8.6 "All filters" overlay at EVERY width — the
@@ -182,7 +186,9 @@ test('axe: both modes have zero serious/critical violations', async ({ page }) =
 
   await page.getByRole('tab', { name: cat(en, 'UnifiedSearch.modeAgents'), exact: true }).click();
   await page.waitForURL('**mode=agents**');
-  await expect(page.getByText(resultsCount(8, 'AgentSearch'))).toBeVisible();
+  // Generous timeout: a transient 429 (global API limiter) self-heals through the
+  // query's retry backoff (~7s), which outlives the 5s default.
+  await expect(page.getByText(resultsCount(8, 'AgentSearch'))).toBeVisible({ timeout: 15_000 });
   await expectAxeClean(page, '/dashboard/search?mode=agents @ 1280px');
 });
 

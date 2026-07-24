@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
-import { watchErrors } from './helpers/ui';
+import { paceRateWindow } from './helpers/pace';
 import {
   activePins,
   clusterBadges,
@@ -19,14 +19,20 @@ import {
   MOBILE,
   schoolCards,
 } from './helpers/school-map';
+import { watchErrors } from './helpers/ui';
 
 // Task 094 — the C-UI-SEARCH-MAP e2e anchor. Drives the live Schools-pane Leaflet map
-// against the real api on :5500 and real OSM tiles (no route interception). The seeded
-// 312-school corpus is deterministic: page 1 (name-asc) is 12 cards, 3 of which are
-// null-coord "umbrella" rows (ACT Education Directorate, Acknowledge Education,
-// Adelaide Institute) → exactly 9 geo pins. Two page-1 pairs (Gold Coast, Melbourne)
-// sit pixels apart at zoom 5, so grouping always produces ≥1 cluster badge. Assertions
-// count DOM (markers/badges), never tile imagery (external-host dependency, M2 §8).
+// against the real api on :5510 and real OSM tiles (no route interception). The map
+// now defaults CLOSED (compact layout): gotoSchoolsMap opens the split via the real
+// desktop MapToggle before any map assertion. The seeded 312-school corpus is
+// deterministic: page 1 (name-asc) is 12 cards, 3 of which are null-coord "umbrella"
+// rows (ACT Education Directorate, Acknowledge Education, Adelaide Institute) →
+// exactly 9 geo pins. Two page-1 pairs (Gold Coast, Melbourne) sit pixels apart at
+// zoom 5, so grouping always produces ≥1 cluster badge. Assertions count DOM
+// (markers/badges), never tile imagery (external-host dependency, M2 §8).
+
+// Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 test('renders clusters at zoom 5, de-clusters into every geo pin on zoom-in; umbrella rows get no pin', async ({
   page,
@@ -80,22 +86,33 @@ test('(3) card ↔ pin hover-sync flips the active class in both directions', as
   await expect(activePins(page)).toHaveCount(1);
 });
 
-test('(4) Map/List toggle hides the map and widens the results grid', async ({ page }) => {
+test('(4) Map/List toggle hides the map and relaxes the rail into the compact grid', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
   await gotoSchoolsMap(page);
   await expect(mapContainer(page)).toBeVisible();
 
-  const withMap = await schoolCards(page).first().boundingBox();
+  // With the map open the results are the fixed 340px rail → cards stack in ONE column.
+  const [rail0, rail1] = await Promise.all([
+    schoolCards(page).nth(0).boundingBox(),
+    schoolCards(page).nth(1).boundingBox(),
+  ]);
+  expect(rail0 && rail1).toBeTruthy();
+  expect(rail1!.y, 'the rail stacks cards in one column').toBeGreaterThan(rail0!.y + 1);
+
   // With the map open the toggle offers "Show list"; clicking it collapses the split.
   await page.getByRole('button', { name: mapMsg('showList'), exact: true }).click();
   await expect(mapContainer(page)).toHaveCount(0);
   await expect(page.getByRole('button', { name: mapMsg('showMap'), exact: true })).toBeVisible();
 
-  const noMap = await schoolCards(page).first().boundingBox();
-  expect(withMap && noMap).toBeTruthy();
-  expect(noMap!.width, 'the grid widens once the map column drops out').toBeGreaterThan(
-    withMap!.width,
-  );
+  // Map closed → the compact `sm:grid-cols-2 xl:grid-cols-3` grid: the first two cards
+  // share a row (same y, increasing x) instead of stacking.
+  const [grid0, grid1] = await Promise.all([
+    schoolCards(page).nth(0).boundingBox(),
+    schoolCards(page).nth(1).boundingBox(),
+  ]);
+  expect(grid0 && grid1).toBeTruthy();
+  expect(Math.abs(grid1!.y - grid0!.y), 'the compact grid lays cards out in columns').toBeLessThan(2);
+  expect(grid1!.x).toBeGreaterThan(grid0!.x);
 });
 
 test('(6) mobile (375px): the desktop map column is hidden and the toggle opens the map sheet', async ({

@@ -2,7 +2,7 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { expect, type Page } from '@playwright/test';
 
 import { loginAsParent } from './auth';
-import { cat, loadMessages } from './i18n';
+import { cat, escapeRegExp, loadMessages } from './i18n';
 
 const en = loadMessages('en');
 
@@ -22,15 +22,27 @@ export const activePins = (page: Page) => page.locator('.school-map-marker--acti
 export const schoolCards = (page: Page) => page.locator('[data-slot="school-card"]');
 export const searchBar = (page: Page) => page.getByLabel(SEARCH_LABEL);
 
-/** Seeded-parent login → the Schools split with the sticky desktop map mounted + grouping on. */
+/**
+ * Seeded-parent login → the Schools split with the sticky desktop map mounted + grouping on.
+ * The map now defaults CLOSED (the compact layout): this helper drives the real desktop
+ * MapToggle ("Show map") to open the split before asserting the map is live.
+ */
 export async function gotoSchoolsMap(page: Page): Promise<void> {
   await loginAsParent(page);
   await page.goto('/dashboard/search');
   await expect(schoolCards(page).first()).toBeVisible();
+  // Map default-closed: the toggle is the only desktop control that mounts the column.
+  await mapToggle(page).click();
   await expect(mapContainer(page)).toBeVisible();
   // The ssr:false map chunk + query hits mount the cluster layer asynchronously.
   await expect.poll(() => clusterBadges(page).count()).toBeGreaterThan(0);
 }
+
+/** The desktop MapToggle — its visible label flips showMap ↔ showList with `isMapOpen`. */
+export const mapToggle = (page: Page) =>
+  page.getByRole('button', {
+    name: new RegExp(`^${escapeRegExp(mapMsg('showMap'))}$|^${escapeRegExp(mapMsg('showList'))}$`),
+  });
 
 /** Seeded-parent login → the Schools pane at a mobile viewport (the desktop map stays hidden). */
 export async function gotoSchoolsMobile(page: Page): Promise<void> {
