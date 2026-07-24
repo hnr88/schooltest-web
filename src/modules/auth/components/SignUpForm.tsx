@@ -5,6 +5,7 @@ import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { PasswordField } from '@/modules/auth/components/PasswordField';
 import { TextField } from '@/modules/auth/components/TextField';
@@ -51,8 +52,15 @@ export function SignUpForm({ onRegistered }: SignUpFormProps) {
       {
         // D-AUTH-1 (C-AUTH-REGISTER): register returns {user} with NO jwt —
         // the card swaps to the check-your-email state instead of navigating.
-        onSuccess: () => onRegistered(values.email),
-        onError: (error) => setFormError(classifyError(error)),
+        onSuccess: () => {
+          toast.success(t('confirmEmailSent'));
+          onRegistered(values.email);
+        },
+        onError: (error) => {
+          const key = classifyError(error);
+          setFormError(key);
+          toast.error(t(key));
+        },
       },
     );
   });

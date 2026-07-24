@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { Link, useRouter } from '@/i18n/navigation';
 import { PasswordField } from '@/modules/auth/components/PasswordField';
@@ -34,8 +35,15 @@ export function SignInForm() {
     login.mutate(
       { identifier: values.email, password: values.password },
       {
-        onSuccess: () => router.push('/dashboard'),
-        onError: (error) => setFormError(classifySignInError(error)),
+        onSuccess: () => {
+          toast.success(t('signedIn'));
+          router.push('/dashboard');
+        },
+        onError: (error) => {
+          const formError = classifySignInError(error);
+          setFormError(formError);
+          toast.error(t(formError));
+        },
       },
     );
   });

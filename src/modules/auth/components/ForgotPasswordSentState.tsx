@@ -41,7 +41,7 @@ export function ForgotPasswordSentState({ email }: ForgotPasswordSentStateProps)
         <Mail className="size-5" />
       </span>
       <div className="flex flex-col gap-2">
-        <h1 className="text-h3 font-bold text-foreground">{t('sentTitle')}</h1>
+        <h1 className="text-auth-title font-bold text-foreground">{t('sentTitle')}</h1>
         <p className="text-body-md text-muted-foreground">
           {t.rich('sentBody', {
             email,

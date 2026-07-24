@@ -223,6 +223,11 @@
     "googleConnecting": "Đang kết nối tài khoản Google của bạn…",
     "loginSuccess": "Chào mừng trở lại!",
     "registerSuccess": "Tài khoản của bạn đã sẵn sàng. Chào mừng!",
+    "signedIn": "Signed in successfully",
+    "confirmEmailSent": "Check your email to confirm your account",
+    "resetLinkSent": "Reset link sent",
+    "passwordReset": "Password reset successfully",
+    "genericError": "Something went wrong",
     "close": "Đóng",
     "signUpMeta": {
       "title": "Đăng ký — SchoolTest",
@@ -291,7 +296,8 @@
       "benefitScores": "Xem điểm ngay khi được chấm",
       "benefitFeedback": "Nắm bắt tiến bộ qua phản hồi AI",
       "legal": "© 2026 SchoolTest. Bảo lưu mọi quyền."
-    }
+    },
+    "wizardStepSkipped": "Step skipped"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -1116,6 +1122,7 @@
     "createStudent": "Tạo học sinh",
     "saveChanges": "Lưu thay đổi",
     "stepPlaceholder": "Các trường của bước này sẽ được thêm ở phần sau.",
+    "stepSkipped": "Step skipped",
     "stepCaption": "Bước {current} trên {total} · {title}",
     "stepsLabel": "Tiến độ thiết lập học sinh",
     "steps": {
@@ -1447,6 +1454,19 @@
     },
     "cardAdded": "Added {date}"
   },
+  "Onboarding": {
+    "pageTitle": "Welcome to SchoolTest",
+    "stepWelcomeTitle": "Welcome",
+    "stepWelcomeBody": "We're glad you're here. SchoolTest helps you understand your child's reading and language progress.",
+    "stepAddChildTitle": "Add your child",
+    "stepAddChildBody": "Add a student profile so you can track their progress and receive recommendations.",
+    "stepCompleteTitle": "You're all set",
+    "stepCompleteBody": "You can always add more children later from the dashboard.",
+    "continue": "Continue",
+    "skip": "Skip for now",
+    "complete": "Get started",
+    "addChild": "Add a child"
+  },
   "Notifications": {
     "meta": {
       "title": "Thông báo — SchoolTest",
@@ -1617,6 +1637,42 @@
     "errorPatternsRetry": "Thử lại",
     "errorPatternsLoading": "Đang tải ghi chú mẫu lỗi…",
     "deltaSincePrevious": "{delta} so với lượt làm bài trước",
+    "viewToggleLabel": "Chế độ xem báo cáo",
+    "viewModes": {
+      "teacher": "Giáo viên",
+      "parent": "Phụ huynh"
+    },
+    "viewModeHint": {
+      "teacher": "Toàn bộ hồ sơ chẩn đoán: các giá trị tra cứu của bảng đối chiếu, bằng chứng theo từng thuộc tính và ghi chú ở mức câu trả lời.",
+      "parent": "Đúng những gì gia đình nhìn thấy. Mã thuộc tính, bậc CEFR, giai đoạn ACARA, kết luận về mức sẵn sàng và mọi xác suất đều không có trong chế độ xem này."
+    },
+    "parentEyebrow": "Bài kiểm tra này cho thấy điều gì",
+    "parentHeadlinePending": "Kết quả này vẫn đang được chuẩn bị",
+    "parentHeadlinePendingDescription": "Phần mô tả cách con bạn đọc hoặc nghe sẽ xuất hiện ở đây khi việc chấm cho lượt làm bài này hoàn tất.",
+    "parentHeadlineNotApplicable": "Phần này của bài kiểm tra được mô tả theo cách khác",
+    "parentHeadlineNotApplicableDescription": "Mô tả kiểu này chỉ được viết cho kỹ năng đọc và nghe. Nói, viết và bản tóm tắt xếp lớp không có — ở đây không thiếu gì cả.",
+    "parentReportSource": "Chỉ dựa trên những câu hỏi con bạn đã trả lời trong lượt làm bài này. Không có điểm trên thang mười, không có xếp loại và không so sánh với học sinh khác.",
+    "parentSubskillsEyebrow": "Những mảng bài kiểm tra này xem xét",
+    "parentSubskillsDescription": "Mỗi mảng là một phần riêng của kỹ năng đọc hoặc nghe. Chúng được nhóm theo mức độ vững vàng trong lượt làm bài này, vững nhất xếp trước.",
+    "parentSubskillsSummary": "{total, plural, other {Lượt làm bài này đã xem xét # mảng.}}",
+    "parentSubskillCount": "{count, plural, other {# mảng}}",
+    "parentSubskillStates": {
+      "secure": "Vững vàng",
+      "getting_there": "Đang tiến bộ",
+      "not_yet": "Chưa tới",
+      "not_assessed": "Lần này chưa xem xét"
+    },
+    "parentSubskillStateNote": {
+      "secure": "Con bạn trả lời tốt và đều đặn ở những mảng này trong suốt lượt làm bài.",
+      "getting_there": "Con bạn đang tiến bộ ở những mảng này: một số câu đã đúng.",
+      "not_yet": "Đây là những mảng giáo viên sẽ cùng làm việc tiếp theo.",
+      "not_assessed": "Không câu hỏi nào trong lượt làm bài này chạm tới những mảng đó, nên bài kiểm tra không nói gì về chúng."
+    },
+    "parentSubskillsNotDerived": "Các mảng vẫn đang được chuẩn bị",
+    "parentSubskillsNotDerivedDescription": "Chúng sẽ xuất hiện ở đây khi việc chấm cho lượt làm bài này hoàn tất.",
+    "parentSubskillsNotApplicable": "Phần này của bài kiểm tra không được tách theo mảng",
+    "parentSubskillsNotApplicableDescription": "Chỉ đọc và nghe mới được tách như vậy. Nói, viết và bản tóm tắt xếp lớp thì không — ở đây không thiếu gì cả.",
+    "parentSubskillsSource": "Mỗi mảng chỉ được đếm một lần. Không mảng nào được chấm điểm, xếp hạng hay cộng gộp với mảng khác.",
     "cefrBands": {
       "pre_A1": "Pre-A1",
       "A1": "A1",

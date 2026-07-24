@@ -223,6 +223,12 @@
     "googleConnecting": "Connecting your Google account…",
     "loginSuccess": "Welcome back!",
     "registerSuccess": "Your account is ready. Welcome!",
+    "signedIn": "Signed in successfully",
+    "confirmEmailSent": "Check your email to confirm your account",
+    "resetLinkSent": "Reset link sent",
+    "passwordReset": "Password reset successfully",
+    "genericError": "Something went wrong",
+    "wizardStepSkipped": "Step skipped",
     "close": "Close",
     "signUpMeta": {
       "title": "Sign up — SchoolTest",
@@ -1116,6 +1122,7 @@
     "createStudent": "Confirm & add child",
     "saveChanges": "Save changes",
     "stepPlaceholder": "This step's fields are added in an upcoming slice.",
+    "stepSkipped": "Step skipped",
     "stepCaption": "Step {current} of {total} · {title}",
     "stepsLabel": "Student setup progress",
     "steps": {
@@ -1447,6 +1454,19 @@
     },
     "cardAdded": "Added {date}"
   },
+  "Onboarding": {
+    "pageTitle": "Welcome to SchoolTest",
+    "stepWelcomeTitle": "Welcome",
+    "stepWelcomeBody": "We're glad you're here. SchoolTest helps you understand your child's reading and language progress.",
+    "stepAddChildTitle": "Add your child",
+    "stepAddChildBody": "Add a student profile so you can track their progress and receive recommendations.",
+    "stepCompleteTitle": "You're all set",
+    "stepCompleteBody": "You can always add more children later from the dashboard.",
+    "continue": "Continue",
+    "skip": "Skip for now",
+    "complete": "Get started",
+    "addChild": "Add a child"
+  },
   "Notifications": {
     "meta": {
       "title": "Notifications — SchoolTest",
@@ -1617,6 +1637,42 @@
     "errorPatternsRetry": "Try again",
     "errorPatternsLoading": "Loading error pattern notes…",
     "deltaSincePrevious": "{delta} since the previous sitting",
+    "viewToggleLabel": "Report view",
+    "viewModes": {
+      "teacher": "Teacher",
+      "parent": "Parent"
+    },
+    "viewModeHint": {
+      "teacher": "The full diagnostic record: the crosswalk lookups, the per-attribute evidence and the response-level notes.",
+      "parent": "Exactly what a family is shown. The attribute codes, the CEFR band, the ACARA phase, the readiness call and every probability are not part of this view."
+    },
+    "parentEyebrow": "What this test showed",
+    "parentHeadlinePending": "This result is still being prepared",
+    "parentHeadlinePendingDescription": "The description of how your child read or listened appears here once the marking for this sitting is finished.",
+    "parentHeadlineNotApplicable": "This part of the test is described in another way",
+    "parentHeadlineNotApplicableDescription": "Descriptions of this kind are written for reading and listening only. Speaking, writing and the placement summary carry none — nothing is missing here.",
+    "parentReportSource": "Based only on the questions your child answered in this sitting. There is no mark out of ten, no grade, and no comparison with other students.",
+    "parentSubskillsEyebrow": "Areas this test looked at",
+    "parentSubskillsDescription": "Each area is one separate part of reading or listening. They are grouped by how settled each one looked in this sitting, most settled first.",
+    "parentSubskillsSummary": "{total, plural, one {# area was looked at in this sitting.} other {# areas were looked at in this sitting.}}",
+    "parentSubskillCount": "{count, plural, one {# area} other {# areas}}",
+    "parentSubskillStates": {
+      "secure": "Secure",
+      "getting_there": "Getting there",
+      "not_yet": "Not yet",
+      "not_assessed": "Not covered this time"
+    },
+    "parentSubskillStateNote": {
+      "secure": "Your child answered these consistently well throughout this sitting.",
+      "getting_there": "Your child is on the way with these: they came right some of the time.",
+      "not_yet": "These are the areas the teachers will work on next.",
+      "not_assessed": "No question in this sitting covered these areas, so this test says nothing about them."
+    },
+    "parentSubskillsNotDerived": "The areas are still being prepared",
+    "parentSubskillsNotDerivedDescription": "They appear here once the marking for this sitting is finished.",
+    "parentSubskillsNotApplicable": "This part of the test is not split into areas",
+    "parentSubskillsNotApplicableDescription": "Only reading and listening are broken down this way. Speaking, writing and the placement summary are not — nothing is missing here.",
+    "parentSubskillsSource": "Each area is counted once. No area is scored, ranked, or added together with any other.",
     "cefrBands": {
       "pre_A1": "Pre-A1",
       "A1": "A1",

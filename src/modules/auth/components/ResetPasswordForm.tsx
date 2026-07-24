@@ -5,6 +5,7 @@ import { KeyRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { useRouter } from '@/i18n/navigation';
 import { PasswordField } from '@/modules/auth/components/PasswordField';
@@ -50,11 +51,19 @@ export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProp
     resetPassword.mutate(
       { code, ...values },
       {
-        onSuccess: () => router.replace('/dashboard'),
+        onSuccess: () => {
+          toast.success(t('passwordReset'));
+          router.replace('/dashboard');
+        },
         onError: (error) => {
           const key = classifyResetPasswordError(error);
-          if (key === 'invalidOrExpired') onInvalidCode();
-          else setFormError(key);
+          if (key === 'invalidOrExpired') {
+            toast.error(t('invalidLinkTitle'));
+            onInvalidCode();
+          } else {
+            setFormError(key);
+            toast.error(t(key));
+          }
         },
       },
     );
@@ -69,8 +78,8 @@ export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProp
         <KeyRound className="size-5" />
       </span>
       <div className="flex flex-col gap-2">
-        <h1 className="text-h3 font-bold text-foreground">{t('resetTitle')}</h1>
-        <p className="text-body-md text-muted-foreground">{t('resetSubtitle')}</p>
+        <h1 className="text-auth-title font-bold text-foreground">{t('resetTitle')}</h1>
+        <p className="text-body-md text-body">{t('resetSubtitle')}</p>
       </div>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
         {formError ? (

@@ -223,6 +223,11 @@
     "googleConnecting": "Menyambungkan akaun Google anda…",
     "loginSuccess": "Selamat kembali!",
     "registerSuccess": "Akaun anda sudah sedia. Selamat datang!",
+    "signedIn": "Signed in successfully",
+    "confirmEmailSent": "Check your email to confirm your account",
+    "resetLinkSent": "Reset link sent",
+    "passwordReset": "Password reset successfully",
+    "genericError": "Something went wrong",
     "close": "Tutup",
     "signUpMeta": {
       "title": "Daftar — SchoolTest",
@@ -291,7 +296,8 @@
       "benefitScores": "Lihat markah sebaik sahaja selesai digredkan",
       "benefitFeedback": "Fahami kemajuan dengan maklum balas AI",
       "legal": "© 2026 SchoolTest. Hak cipta terpelihara."
-    }
+    },
+    "wizardStepSkipped": "Step skipped"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -1116,6 +1122,7 @@
     "createStudent": "Cipta pelajar",
     "saveChanges": "Simpan perubahan",
     "stepPlaceholder": "Medan langkah ini akan ditambah dalam bahagian akan datang.",
+    "stepSkipped": "Step skipped",
     "stepCaption": "Langkah {current} daripada {total} · {title}",
     "stepsLabel": "Kemajuan penyediaan pelajar",
     "steps": {
@@ -1447,6 +1454,19 @@
     },
     "cardAdded": "Added {date}"
   },
+  "Onboarding": {
+    "pageTitle": "Welcome to SchoolTest",
+    "stepWelcomeTitle": "Welcome",
+    "stepWelcomeBody": "We're glad you're here. SchoolTest helps you understand your child's reading and language progress.",
+    "stepAddChildTitle": "Add your child",
+    "stepAddChildBody": "Add a student profile so you can track their progress and receive recommendations.",
+    "stepCompleteTitle": "You're all set",
+    "stepCompleteBody": "You can always add more children later from the dashboard.",
+    "continue": "Continue",
+    "skip": "Skip for now",
+    "complete": "Get started",
+    "addChild": "Add a child"
+  },
   "Notifications": {
     "meta": {
       "title": "Pemberitahuan — SchoolTest",
@@ -1617,6 +1637,42 @@
     "errorPatternsRetry": "Cuba lagi",
     "errorPatternsLoading": "Memuatkan nota corak kesilapan…",
     "deltaSincePrevious": "{delta} sejak sesi sebelumnya",
+    "viewToggleLabel": "Paparan laporan",
+    "viewModes": {
+      "teacher": "Guru",
+      "parent": "Ibu bapa"
+    },
+    "viewModeHint": {
+      "teacher": "Rekod diagnostik penuh: nilai rujukan crosswalk, bukti bagi setiap atribut dan nota peringkat jawapan.",
+      "parent": "Inilah yang dilihat oleh keluarga. Kod atribut, tahap CEFR, fasa ACARA, penilaian kesediaan dan setiap kebarangkalian tiada dalam paparan ini."
+    },
+    "parentEyebrow": "Apa yang ditunjukkan oleh ujian ini",
+    "parentHeadlinePending": "Keputusan ini masih disediakan",
+    "parentHeadlinePendingDescription": "Huraian tentang cara anak anda membaca atau mendengar akan muncul di sini setelah pemarkahan sesi ini selesai.",
+    "parentHeadlineNotApplicable": "Bahagian ujian ini dihuraikan dengan cara lain",
+    "parentHeadlineNotApplicableDescription": "Huraian seperti ini ditulis untuk membaca dan mendengar sahaja. Bertutur, menulis dan ringkasan penempatan tidak membawanya — tiada apa yang hilang di sini.",
+    "parentReportSource": "Berdasarkan soalan yang dijawab oleh anak anda dalam sesi ini sahaja. Tiada markah daripada sepuluh, tiada gred dan tiada perbandingan dengan pelajar lain.",
+    "parentSubskillsEyebrow": "Bidang yang dilihat oleh ujian ini",
+    "parentSubskillsDescription": "Setiap bidang ialah satu bahagian membaca atau mendengar yang berasingan. Ia dikumpulkan mengikut betapa mantapnya bidang itu kelihatan dalam sesi ini, yang paling mantap dahulu.",
+    "parentSubskillsSummary": "{total, plural, other {# bidang dilihat dalam sesi ini.}}",
+    "parentSubskillCount": "{count, plural, other {# bidang}}",
+    "parentSubskillStates": {
+      "secure": "Mantap",
+      "getting_there": "Semakin hampir",
+      "not_yet": "Belum lagi",
+      "not_assessed": "Tidak disentuh kali ini"
+    },
+    "parentSubskillStateNote": {
+      "secure": "Anak anda menjawab bidang ini dengan baik dan konsisten sepanjang sesi ini.",
+      "getting_there": "Anak anda sedang menuju ke sana dalam bidang ini: sebahagiannya sudah betul.",
+      "not_yet": "Inilah bidang yang akan diusahakan oleh guru seterusnya.",
+      "not_assessed": "Tiada soalan dalam sesi ini menyentuh bidang ini, jadi ujian ini tidak mengatakan apa-apa mengenainya."
+    },
+    "parentSubskillsNotDerived": "Bidang-bidang ini masih disediakan",
+    "parentSubskillsNotDerivedDescription": "Ia akan muncul di sini setelah pemarkahan sesi ini selesai.",
+    "parentSubskillsNotApplicable": "Bahagian ujian ini tidak dipecahkan kepada bidang",
+    "parentSubskillsNotApplicableDescription": "Hanya membaca dan mendengar dipecahkan begini. Bertutur, menulis dan ringkasan penempatan tidak — tiada apa yang hilang di sini.",
+    "parentSubskillsSource": "Setiap bidang dikira sekali. Tiada bidang diberi skor, disusun kedudukan atau dijumlahkan dengan bidang lain.",
     "cefrBands": {
       "pre_A1": "Pre-A1",
       "A1": "A1",

@@ -223,6 +223,11 @@
     "googleConnecting": "กำลังเชื่อมต่อบัญชี Google ของคุณ…",
     "loginSuccess": "ยินดีต้อนรับกลับ!",
     "registerSuccess": "บัญชีของคุณพร้อมแล้ว ยินดีต้อนรับ!",
+    "signedIn": "Signed in successfully",
+    "confirmEmailSent": "Check your email to confirm your account",
+    "resetLinkSent": "Reset link sent",
+    "passwordReset": "Password reset successfully",
+    "genericError": "Something went wrong",
     "close": "ปิด",
     "signUpMeta": {
       "title": "สมัครสมาชิก — SchoolTest",
@@ -291,7 +296,8 @@
       "benefitScores": "ดูคะแนนทันทีที่ตรวจเสร็จ",
       "benefitFeedback": "เข้าใจความก้าวหน้าด้วยฟีดแบ็ก AI",
       "legal": "© 2026 SchoolTest สงวนลิขสิทธิ์"
-    }
+    },
+    "wizardStepSkipped": "Step skipped"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -1116,6 +1122,7 @@
     "createStudent": "สร้างนักเรียน",
     "saveChanges": "บันทึกการเปลี่ยนแปลง",
     "stepPlaceholder": "ฟิลด์ของขั้นตอนนี้จะถูกเพิ่มในส่วนถัดไป",
+    "stepSkipped": "Step skipped",
     "stepCaption": "ขั้นตอนที่ {current} จาก {total} · {title}",
     "stepsLabel": "ความคืบหน้าการเพิ่มนักเรียน",
     "steps": {
@@ -1447,6 +1454,19 @@
     },
     "cardAdded": "Added {date}"
   },
+  "Onboarding": {
+    "pageTitle": "Welcome to SchoolTest",
+    "stepWelcomeTitle": "Welcome",
+    "stepWelcomeBody": "We're glad you're here. SchoolTest helps you understand your child's reading and language progress.",
+    "stepAddChildTitle": "Add your child",
+    "stepAddChildBody": "Add a student profile so you can track their progress and receive recommendations.",
+    "stepCompleteTitle": "You're all set",
+    "stepCompleteBody": "You can always add more children later from the dashboard.",
+    "continue": "Continue",
+    "skip": "Skip for now",
+    "complete": "Get started",
+    "addChild": "Add a child"
+  },
   "Notifications": {
     "meta": {
       "title": "การแจ้งเตือน — SchoolTest",
@@ -1617,6 +1637,42 @@
     "errorPatternsRetry": "ลองอีกครั้ง",
     "errorPatternsLoading": "กำลังโหลดบันทึกรูปแบบข้อผิดพลาด…",
     "deltaSincePrevious": "{delta} เทียบกับการสอบครั้งก่อน",
+    "viewToggleLabel": "มุมมองรายงาน",
+    "viewModes": {
+      "teacher": "ครู",
+      "parent": "ผู้ปกครอง"
+    },
+    "viewModeHint": {
+      "teacher": "บันทึกเชิงวินิจฉัยฉบับเต็ม ทั้งค่าที่ได้จากตารางเทียบ หลักฐานรายคุณลักษณะ และบันทึกระดับคำตอบ",
+      "parent": "นี่คือสิ่งที่ผู้ปกครองเห็นจริง ๆ รหัสคุณลักษณะ ระดับ CEFR ระยะ ACARA การตัดสินความพร้อม และค่าความน่าจะเป็นทั้งหมดไม่อยู่ในมุมมองนี้"
+    },
+    "parentEyebrow": "สิ่งที่การสอบครั้งนี้แสดงให้เห็น",
+    "parentHeadlinePending": "กำลังจัดเตรียมผลนี้อยู่",
+    "parentHeadlinePendingDescription": "คำอธิบายว่าบุตรหลานของคุณอ่านหรือฟังอย่างไรจะปรากฏที่นี่เมื่อการตรวจของการสอบครั้งนี้เสร็จสิ้น",
+    "parentHeadlineNotApplicable": "ส่วนนี้ของการสอบอธิบายด้วยวิธีอื่น",
+    "parentHeadlineNotApplicableDescription": "คำอธิบายแบบนี้เขียนไว้สำหรับการอ่านและการฟังเท่านั้น การพูด การเขียน และสรุปการจัดระดับไม่มีคำอธิบายแบบนี้ ไม่ได้ขาดหายไปแต่อย่างใด",
+    "parentReportSource": "อ้างอิงจากข้อที่บุตรหลานของคุณตอบในการสอบครั้งนี้เท่านั้น ไม่มีคะแนนเต็มสิบ ไม่มีเกรด และไม่มีการเปรียบเทียบกับนักเรียนคนอื่น",
+    "parentSubskillsEyebrow": "ด้านที่การสอบครั้งนี้ดู",
+    "parentSubskillsDescription": "แต่ละด้านคือส่วนหนึ่งของการอ่านหรือการฟังที่แยกจากกัน จัดกลุ่มตามความมั่นคงที่เห็นในการสอบครั้งนี้ โดยเรียงจากมั่นคงที่สุดก่อน",
+    "parentSubskillsSummary": "{total, plural, other {การสอบครั้งนี้ดูทั้งหมด # ด้าน}}",
+    "parentSubskillCount": "{count, plural, other {# ด้าน}}",
+    "parentSubskillStates": {
+      "secure": "มั่นคง",
+      "getting_there": "กำลังไปได้ดี",
+      "not_yet": "ยังไม่ถึง",
+      "not_assessed": "ครั้งนี้ยังไม่ได้ดู"
+    },
+    "parentSubskillStateNote": {
+      "secure": "บุตรหลานของคุณตอบด้านเหล่านี้ได้ดีอย่างสม่ำเสมอตลอดการสอบครั้งนี้",
+      "getting_there": "บุตรหลานของคุณกำลังไปได้ดีในด้านเหล่านี้ บางข้อตอบถูกแล้ว",
+      "not_yet": "ด้านเหล่านี้คือสิ่งที่ครูจะทำงานร่วมกันต่อไป",
+      "not_assessed": "ไม่มีข้อใดในการสอบครั้งนี้ที่ครอบคลุมด้านเหล่านี้ การสอบครั้งนี้จึงไม่ได้บอกอะไรเกี่ยวกับด้านเหล่านี้"
+    },
+    "parentSubskillsNotDerived": "กำลังจัดเตรียมข้อมูลรายด้านอยู่",
+    "parentSubskillsNotDerivedDescription": "ข้อมูลจะปรากฏที่นี่เมื่อการตรวจของการสอบครั้งนี้เสร็จสิ้น",
+    "parentSubskillsNotApplicable": "ส่วนนี้ของการสอบไม่ได้แยกเป็นรายด้าน",
+    "parentSubskillsNotApplicableDescription": "มีเพียงการอ่านและการฟังเท่านั้นที่แยกแบบนี้ การพูด การเขียน และสรุปการจัดระดับไม่แยก ไม่ได้ขาดหายไปแต่อย่างใด",
+    "parentSubskillsSource": "แต่ละด้านนับเพียงครั้งเดียว ไม่มีการให้คะแนน จัดอันดับ หรือนำด้านใดไปรวมกับด้านอื่น",
     "cefrBands": {
       "pre_A1": "Pre-A1",
       "A1": "A1",

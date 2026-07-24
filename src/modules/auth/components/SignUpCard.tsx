@@ -9,15 +9,16 @@ import { GoogleButton } from '@/modules/auth/components/GoogleButton';
 import { SignUpConfirmState } from '@/modules/auth/components/SignUpConfirmState';
 import { SignUpForm } from '@/modules/auth/components/SignUpForm';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { Logo } from '@/modules/design-system';
 
-// Register screen (design spec 06 §1.2): centred 560px column — heading block,
-// then the white r16 form card on a 1px --border rule with --shadow-sm, then the
-// "already have an account" line. Submitting goes through the register endpoint
-// (C-AUTH-REGISTER); on 200 the card swaps to the check-your-email state (§14.2,
-// D-AUTH-1 — no jwt, no redirect) holding the submitted email for the resend
-// flow. Google keeps its DOM slot above the fields (a11y-auth.spec focus order).
+// Right-hand form column of the sign-up split (design spec 06 §1.1): a bare
+// 420px stack on the page background — no card chrome — at a 24px rhythm.
+// Google keeps its DOM position ABOVE the credential fields (the §1.4
+// compact-card ordering) because tests/e2e/a11y-auth.spec.ts pins the focus
+// order logo → Google → username.
 export function SignUpCard() {
   const t = useTranslations('Auth');
+  const tHome = useTranslations('Home');
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
@@ -35,24 +36,28 @@ export function SignUpCard() {
 
   if (registeredEmail !== null) {
     return (
-      <div className="rounded-panel border border-border bg-card p-7 shadow-sm sm:p-8">
+      <div className="flex w-full flex-col gap-6">
         <SignUpConfirmState email={registeredEmail} />
       </div>
     );
   }
 
   return (
-    <div className="flex animate-in flex-col gap-6 duration-500 ease-out-expo fade-in slide-in-from-bottom-3 motion-reduce:animate-none">
-      <div className="flex flex-col gap-2 text-center">
+    <div className="flex w-full animate-in flex-col gap-6 duration-500 ease-out-expo fade-in slide-in-from-bottom-3 motion-reduce:animate-none">
+      <Link
+        href="/"
+        className="self-start rounded-sm transition-transform duration-200 ease-out-expo hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring motion-reduce:transition-none motion-reduce:hover:translate-y-0 lg:hidden"
+      >
+        <Logo alt={tHome('footer.logoAlt')} height={30} />
+      </Link>
+      <div className="flex flex-col gap-2">
         <h1 className="text-auth-title font-bold text-foreground">{t('signUpTitle')}</h1>
-        <p className="text-body-md text-muted-foreground">{t('signUpSubtitle')}</p>
+        <p className="text-body-md text-body">{t('signUpSubtitle')}</p>
       </div>
-      <div className="flex flex-col gap-4 rounded-panel border border-border bg-card p-7 shadow-sm sm:p-8">
-        <GoogleButton className="w-full" />
-        <AuthDivider label={t('orDivider')} />
-        <SignUpForm onRegistered={setRegisteredEmail} />
-      </div>
-      <p className="text-center text-body-md text-muted-foreground">
+      <GoogleButton className="w-full" />
+      <AuthDivider label={t('orDivider')} />
+      <SignUpForm onRegistered={setRegisteredEmail} />
+      <p className="text-center text-body-md text-body">
         {t('hasAccount')}{' '}
         <Link
           href="/sign-in"

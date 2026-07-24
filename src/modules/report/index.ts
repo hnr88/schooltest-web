@@ -1,4 +1,9 @@
 export { TeacherReportScreen } from './components/TeacherReportScreen';
+export { TeacherReportBody } from './components/TeacherReportBody';
+export { CrosswalkFactPanel } from './components/CrosswalkFactPanel';
+export { ViewToggle } from './components/ViewToggle';
+export { ParentReportView } from './components/ParentReportView';
+export { ParentSubskillList } from './components/ParentSubskillList';
 export { ReportListScreen } from './components/ReportListScreen';
 export { DisplayLabelPanel } from './components/DisplayLabelPanel';
 export { AttributePanel } from './components/AttributePanel';
@@ -28,6 +33,13 @@ export {
   orderAttributeCodes,
 } from './lib/attribute-view-model';
 export { buildSupplementaryStrand } from './lib/supplementary-view-model';
+export { buildParentReport } from './lib/parent-view-model';
+export {
+  PARENT_SUBSKILL_ORDER,
+  PARENT_TONE_BY_STATUS,
+  PARENT_TONE_SURFACE,
+  PARENT_TONE_FILL,
+} from './lib/parent-tone';
 export { buildObservations } from './lib/observations';
 export { observationValues } from './lib/observation-message';
 export { buildErrorPatterns, hasDiagnosticBundle } from './lib/error-patterns-view-model';
@@ -69,6 +81,14 @@ export type {
   SupplementaryStrandView,
 } from './types/supplementary.types';
 export type { Observation, ObservationKey, ObservationsView } from './types/observation.types';
+export type {
+  ReportViewMode,
+  ParentSubskillState,
+  ParentSubskillGroup,
+  ParentHeadline,
+  ParentSubskillsView,
+  ParentReportView as ParentReportViewModel,
+} from './types/report-view.types';
 export type {
   DiagnosticBundle,
   DiagnosticSkillEntry,

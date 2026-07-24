@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { AuthCenteredLayout, ResetPasswordCard } from '@/modules/auth';
+import { AuthSplitLayout, ResetPasswordCard } from '@/modules/auth';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Auth.resetMeta');
@@ -20,8 +20,8 @@ export default async function ResetPasswordPage({ searchParams }: ResetPasswordP
   const { code } = await searchParams;
 
   return (
-    <AuthCenteredLayout>
+    <AuthSplitLayout>
       <ResetPasswordCard code={code} />
-    </AuthCenteredLayout>
+    </AuthSplitLayout>
   );
 }

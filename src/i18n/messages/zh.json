@@ -223,6 +223,11 @@
     "googleConnecting": "正在连接您的 Google 账户…",
     "loginSuccess": "欢迎回来！",
     "registerSuccess": "您的账户已就绪，欢迎！",
+    "signedIn": "Signed in successfully",
+    "confirmEmailSent": "Check your email to confirm your account",
+    "resetLinkSent": "Reset link sent",
+    "passwordReset": "Password reset successfully",
+    "genericError": "Something went wrong",
     "close": "关闭",
     "signUpMeta": {
       "title": "注册 — SchoolTest",
@@ -291,7 +296,8 @@
       "benefitScores": "评分完成即刻查看成绩",
       "benefitFeedback": "通过 AI 反馈了解学习进度",
       "legal": "© 2026 SchoolTest。保留所有权利。"
-    }
+    },
+    "wizardStepSkipped": "Step skipped"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -1116,6 +1122,7 @@
     "createStudent": "创建学生",
     "saveChanges": "保存更改",
     "stepPlaceholder": "此步骤的字段将在后续环节中添加。",
+    "stepSkipped": "Step skipped",
     "stepCaption": "第 {current} 步，共 {total} 步 · {title}",
     "stepsLabel": "学生资料填写进度",
     "steps": {
@@ -1447,6 +1454,19 @@
     },
     "cardAdded": "Added {date}"
   },
+  "Onboarding": {
+    "pageTitle": "Welcome to SchoolTest",
+    "stepWelcomeTitle": "Welcome",
+    "stepWelcomeBody": "We're glad you're here. SchoolTest helps you understand your child's reading and language progress.",
+    "stepAddChildTitle": "Add your child",
+    "stepAddChildBody": "Add a student profile so you can track their progress and receive recommendations.",
+    "stepCompleteTitle": "You're all set",
+    "stepCompleteBody": "You can always add more children later from the dashboard.",
+    "continue": "Continue",
+    "skip": "Skip for now",
+    "complete": "Get started",
+    "addChild": "Add a child"
+  },
   "Notifications": {
     "meta": {
       "title": "通知 — SchoolTest",
@@ -1617,6 +1637,42 @@
     "errorPatternsRetry": "重试",
     "errorPatternsLoading": "正在加载错误模式记录…",
     "deltaSincePrevious": "较上次作答 {delta}",
+    "viewToggleLabel": "报告视图",
+    "viewModes": {
+      "teacher": "教师视图",
+      "parent": "家长视图"
+    },
+    "viewModeHint": {
+      "teacher": "完整的诊断记录：对照表查得值、各属性证据以及作答层面的说明。",
+      "parent": "家长看到的就是这些。属性代码、CEFR 等级、ACARA 阶段、准备度判断以及各项概率都不在此视图中。"
+    },
+    "parentEyebrow": "本次测评显示了什么",
+    "parentHeadlinePending": "该结果仍在整理中",
+    "parentHeadlinePendingDescription": "关于孩子如何阅读或聆听的描述，将在本次作答评分完成后显示在这里。",
+    "parentHeadlineNotApplicable": "这部分测评以另一种方式描述",
+    "parentHeadlineNotApplicableDescription": "此类描述仅为阅读和听力撰写。口语、写作和分级测评汇总没有这类描述，并非缺失。",
+    "parentReportSource": "仅依据孩子在本次作答中回答的题目。没有满分几分的分数，没有等第，也不与其他学生比较。",
+    "parentSubskillsEyebrow": "本次测评考察的方面",
+    "parentSubskillsDescription": "每个方面都是阅读或听力中相对独立的一部分。它们按本次作答中表现得有多稳固来分组，最稳固的排在前面。",
+    "parentSubskillsSummary": "{total, plural, other {本次作答共考察了 # 个方面。}}",
+    "parentSubskillCount": "{count, plural, other {# 个方面}}",
+    "parentSubskillStates": {
+      "secure": "已稳固",
+      "getting_there": "正在接近",
+      "not_yet": "尚未达到",
+      "not_assessed": "本次未考察"
+    },
+    "parentSubskillStateNote": {
+      "secure": "孩子在本次作答中对这些方面始终答得很好。",
+      "getting_there": "孩子在这些方面正在接近：有一部分已经答对了。",
+      "not_yet": "这些是老师接下来会一起努力的方面。",
+      "not_assessed": "本次作答没有题目涉及这些方面，因此这次测评对它们不作任何说明。"
+    },
+    "parentSubskillsNotDerived": "各方面的内容仍在整理中",
+    "parentSubskillsNotDerivedDescription": "本次作答评分完成后，内容会显示在这里。",
+    "parentSubskillsNotApplicable": "这部分测评不按方面拆分",
+    "parentSubskillsNotApplicableDescription": "只有阅读和听力会这样拆分。口语、写作和分级测评汇总不会，并非缺失。",
+    "parentSubskillsSource": "每个方面只计一次。任何方面都不打分、不排名，也不与其他方面相加。",
     "cefrBands": {
       "pre_A1": "Pre-A1",
       "A1": "A1",

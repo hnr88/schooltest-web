@@ -5,6 +5,7 @@ import { Lock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { TextField } from '@/modules/auth/components/TextField';
 import { classifyForgotPasswordError } from '@/modules/auth/lib/classify-forgot-password-error';
@@ -39,8 +40,15 @@ export function ForgotPasswordForm({ onSent }: ForgotPasswordFormProps) {
   const onSubmit = handleSubmit((values) => {
     setFormError(null);
     forgotPassword.mutate(values, {
-      onSuccess: () => onSent(values.email),
-      onError: (error) => setFormError(classifyForgotPasswordError(error)),
+      onSuccess: () => {
+        toast.success(t('resetLinkSent'));
+        onSent(values.email);
+      },
+      onError: (error) => {
+        const key = classifyForgotPasswordError(error);
+        setFormError(key);
+        toast.error(t(key));
+      },
     });
   });
 
@@ -53,8 +61,8 @@ export function ForgotPasswordForm({ onSent }: ForgotPasswordFormProps) {
         <Lock className="size-5" />
       </span>
       <div className="flex flex-col gap-2">
-        <h1 className="text-h3 font-bold text-foreground">{t('forgotTitle')}</h1>
-        <p className="text-body-md text-muted-foreground">{t('forgotSubtitle')}</p>
+        <h1 className="text-auth-title font-bold text-foreground">{t('forgotTitle')}</h1>
+        <p className="text-body-md text-body">{t('forgotSubtitle')}</p>
       </div>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
         {formError ? (

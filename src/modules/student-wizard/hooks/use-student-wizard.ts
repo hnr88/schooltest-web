@@ -11,7 +11,6 @@ import {
 } from '@/modules/student-wizard/constants/student-wizard.constants';
 import {
   createStudentWizardSchema,
-  STEP_FIELDS,
   type StudentWizardOutput,
   type StudentWizardValues,
 } from '@/modules/student-wizard/schemas/student-wizard.schema';
@@ -23,8 +22,7 @@ interface UseStudentWizardParams {
 }
 
 // Step-state machinery for the 5-step wizard (C-UI-STUDENT-WIZARD Navigation):
-// RHF `onBlur` validation, Continue runs `trigger(STEP_FIELDS[step])` and
-// focuses the first invalid field (shouldFocus) before advancing.
+// Continue simply advances the step; full-schema validation runs on final submit.
 export function useStudentWizard({ mode, initialValues }: UseStudentWizardParams) {
   const t = useTranslations('StudentWizardSchema');
   const schema = useMemo(() => createStudentWizardSchema(t), [t]);
@@ -44,14 +42,9 @@ export function useStudentWizard({ mode, initialValues }: UseStudentWizardParams
     setStep(Math.min(WIZARD_STEP_COUNT - 1, Math.max(0, target)));
   }, []);
 
-  const next = useCallback(async () => {
-    const valid = await form.trigger([...STEP_FIELDS[step]], { shouldFocus: true });
-    if (!valid) {
-      return false;
-    }
+  const next = useCallback(() => {
     setStep((current) => Math.min(WIZARD_STEP_COUNT - 1, current + 1));
-    return true;
-  }, [form, step]);
+  }, []);
 
   return {
     form,

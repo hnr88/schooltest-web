@@ -63,6 +63,7 @@ export function useChangePasswordForm() {
           return;
         }
         setFormError(key);
+        toast.error(t(key));
       },
     });
   });
