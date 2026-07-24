@@ -19,7 +19,6 @@ import {
   stockStrapiMessagesSince,
 } from './helpers/mailpit';
 import { freshEmail, registerAndConfirmParent } from './helpers/throwaway-parent';
-import { waitForAnimationsSettled } from './helpers/ui';
 
 // Task 020 flows 2+3 (C-UI-AUTH-PAGES / C-AUTH-FORGOT / C-AUTH-RESET): wrong
 // creds → forgot path → enumeration-safe sent state; the full reset round-trip
@@ -148,8 +147,6 @@ test.describe('reset round-trips against registered parents (serial, D20)', () =
     expect(oldLogin.status()).toBe(400);
 
     // Real user-menu sign out, then the NEW password signs in through the UI.
-    await page.waitForLoadState('networkidle');
-    await waitForAnimationsSettled(page);
     await page
       .getByRole('button', { name: cat(en, 'Shell.topbar.userMenuLabel'), exact: true })
       .click();

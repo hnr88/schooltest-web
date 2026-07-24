@@ -4,7 +4,6 @@ import { loginAsParent } from './helpers/auth';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { registerAndConfirmParent } from './helpers/throwaway-parent';
-import { waitForAnimationsSettled } from './helpers/ui';
 
 // Task 020 flow 4 (C-UI-AUTH-PAGES / C-AUTH-CHANGE): a throwaway parent (the
 // shared seeded parent's password is never touched) logs in through the real
@@ -69,8 +68,6 @@ test('en: flow 4 — change password in settings → toast → sign out → old 
   await expect(alert).toContainText(cat(en, 'Auth.wrongCurrentPassword'));
 
   // Real change: success toast, fields reset, fresh jwt kept in localStorage.
-  await page.waitForLoadState('networkidle');
-  await waitForAnimationsSettled(page);
   await fillChangeForm(page, parent.password, CHANGED_PASSWORD);
   await expect(page.getByText(cat(en, 'Auth.passwordUpdated'), { exact: true })).toBeVisible();
   await expect(
