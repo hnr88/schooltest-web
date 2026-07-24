@@ -6,7 +6,7 @@ kind: build
 slice: e2e proof for school + agent search
 target: schooltest-web/tests/e2e
 contract: C-SEARCH-SCHOOLS, C-SEARCH-AGENTS
-status: TODO
+status: DOING
 depends_on: [006, 007]
 ---
 ## Objective

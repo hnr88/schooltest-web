@@ -6,7 +6,7 @@ kind: fix
 slice: search result density
 target: schooltest-web/src/modules/school-search, agent-search
 contract: n/a
-status: TODO
+status: DONE
 depends_on: []
 ---
 ## Objective

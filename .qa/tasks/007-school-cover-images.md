@@ -6,7 +6,7 @@ kind: build
 slice: every school has a coverImage served by Strapi
 target: schooltest-api (upload + school.coverImage)
 contract: C-SEARCH-SCHOOLS (coverImage populated)
-status: TODO
+status: DONE
 depends_on: [001]
 ---
 ## Objective
@@ -26,3 +26,7 @@ real Strapi upload pipeline + school.coverImage relation.
 ## Done criteria
 - >=312 files rows; every school search hit has coverImage.url that serves 200 from the API;
   card covers render in the web UI (screenshot).
+## Evidence
+files=371 (312 new); files_related_mph field='coverImage' = 312; all 312 search hits carry
+coverImage.url (1200x675 PNG); GET one uploaded cover -> 200 image/png. Auto-committed by the
+external sweep as api 4a9dfa3. OP-36 in schooltest-api/.qa/DECISIONS.md.

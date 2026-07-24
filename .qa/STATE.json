@@ -70,7 +70,7 @@
       "title": "Compact result cards",
       "layer": "ui",
       "depends_on": [],
-      "status": "TODO",
+      "status": "DONE",
       "started_at": null
     },
     {
@@ -81,7 +81,7 @@
       "depends_on": [
         "001"
       ],
-      "status": "TODO",
+      "status": "DONE",
       "started_at": null
     },
     {
@@ -93,7 +93,7 @@
         "006",
         "007"
       ],
-      "status": "TODO",
+      "status": "DOING",
       "started_at": null
     },
     {
