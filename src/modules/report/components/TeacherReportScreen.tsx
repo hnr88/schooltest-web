@@ -9,10 +9,15 @@ import { BorderedCallout, Button, Eyebrow, InsightCallout } from '@/modules/desi
 import { QueryErrorFallback } from '@/modules/query-errors';
 import { AttributePanel } from '@/modules/report/components/AttributePanel';
 import { DisplayLabelPanel } from '@/modules/report/components/DisplayLabelPanel';
+import { ErrorPatternNotes } from '@/modules/report/components/ErrorPatternNotes';
 import { EvidenceSummary } from '@/modules/report/components/EvidenceSummary';
+import { ObservationList } from '@/modules/report/components/ObservationList';
 import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
+import { SupplementaryStrand } from '@/modules/report/components/SupplementaryStrand';
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { getCrosswalkFieldState, resolveDisplayLabel } from '@/modules/report/lib/display-label';
+import { buildObservations } from '@/modules/report/lib/observations';
+import { buildSupplementaryStrand } from '@/modules/report/lib/supplementary-view-model';
 import { useResultQuery } from '@/modules/report/queries/use-result.query';
 import type { DisplayLabelState } from '@/modules/report/types/report.types';
 import { RecordCrumb } from '@/modules/shell';
@@ -56,9 +61,9 @@ function CrosswalkFact({
 // E11-01 — the teacher individual report: the route, the guard (mounted by the
 // page) and the C-4 read. E11-02 adds the ACARA phase and CEFR band, E11-08 the
 // readiness, the receptive confidence flag and the field-test provisional
-// banner, and E11-03/04/09 the attribute bars with their evidence counts. The
-// supplementary strand and the observations are separate backlog rows, so they
-// are absent here rather than filled in blind.
+// banner, and E11-03/04/09 the attribute bars with their evidence counts.
+// E11-05 adds the out-of-model vocabulary strand, E11-06 the teaching observations
+// generated from the attribute contrast and E11-07 the C-5 error-pattern notes.
 export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: string }) {
   const t = useTranslations('Report');
   const { data, error, isError, isFetching, isLoading, refetch } = useResultQuery(resultDocumentId);
@@ -160,6 +165,12 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
       </section>
 
       <AttributePanel view={attributes} />
+
+      <SupplementaryStrand view={buildSupplementaryStrand(data)} />
+
+      <ObservationList view={buildObservations(data)} />
+
+      <ErrorPatternNotes result={data} />
     </main>
   );
 }
