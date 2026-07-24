@@ -125,27 +125,28 @@ export interface WizardScreenProps {
 
 // C-STUDENT-CREATE whitelist payload — the ONLY keys the client may send. Built
 // by construction (build-student-payload) so `parent`/`status`/`student_key`/
-// `teacher`/`class`/`user` can never appear. Empty optionals omitted; media as
-// numeric file id or explicit null.
+// `teacher`/`class`/`user` can never appear. Everything the wizard renders is
+// required except `year_level`/`parent_guardian_wechat`; media keep `| null`
+// only for the edit path's explicit clear semantics (create never sends null).
 export interface StudentCreatePayload {
   given_name: string;
+  family_name: string;
+  email: string;
+  date_of_birth: string;
+  gender: Gender;
   nationality: string;
+  passport_number: string;
+  current_school: string;
+  current_year_level: CurrentYearLevel;
   target_entry_year: string;
   target_entry_term: Term;
   parent_guardian_name: string;
   parent_guardian_phone: string;
+  parent_guardian_email: string;
   preferred_contact_channel: ContactChannel;
   photo: number | null;
   voice_intro: number | null;
-  family_name?: string;
-  email?: string;
-  date_of_birth?: string;
-  gender?: Gender;
-  passport_number?: string;
-  current_school?: string;
-  current_year_level?: CurrentYearLevel;
   year_level?: number;
-  parent_guardian_email?: string;
   parent_guardian_wechat?: string;
 }
 

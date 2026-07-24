@@ -52,6 +52,7 @@ export function StepGuardian() {
           type="email"
           inputMode="email"
           label={t('email')}
+          required
           autoComplete="email"
           placeholder={t('emailPlaceholder')}
           error={errors.parent_guardian_email?.message}
@@ -72,6 +73,7 @@ export function StepGuardian() {
           <WizardChoiceField
             id="wizard-contact-channel"
             label={t('preferredContact')}
+            required
             options={channelOptions}
             value={field.value ?? 'whatsapp'}
             error={fieldState.error?.message}

@@ -44,9 +44,9 @@ export function StepPersonal() {
         <WizardTextField
           id="wizard-family-name"
           label={t('familyName')}
+          required
           autoComplete="family-name"
           placeholder={t('familyNamePlaceholder')}
-          helper={t('familyNameHelper')}
           error={errors.family_name?.message}
           registration={register('family_name')}
         />
@@ -57,6 +57,7 @@ export function StepPersonal() {
           type="date"
           max={todayIso()}
           label={t('dateOfBirth')}
+          required
           error={errors.date_of_birth?.message}
           registration={register('date_of_birth')}
         />
@@ -65,6 +66,7 @@ export function StepPersonal() {
           type="email"
           inputMode="email"
           label={t('email')}
+          required
           autoComplete="email"
           placeholder={t('emailPlaceholder')}
           error={errors.email?.message}
@@ -78,6 +80,7 @@ export function StepPersonal() {
           <WizardChoiceField
             id="wizard-gender"
             label={t('gender.label')}
+            required
             options={genderOptions}
             value={field.value ?? ''}
             error={errors.gender?.message}
@@ -107,7 +110,7 @@ export function StepPersonal() {
         <WizardTextField
           id="wizard-passport"
           label={t('passportNumber')}
-          helper={t('passportHelper')}
+          required
           placeholder={t('passportPlaceholder')}
           error={errors.passport_number?.message}
           registration={register('passport_number')}

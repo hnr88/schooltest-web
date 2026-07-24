@@ -1147,7 +1147,7 @@
       "media": {
         "label": "Phương tiện",
         "title": "Ảnh & giọng nói",
-        "description": "Ảnh và giới thiệu bằng giọng nói là tùy chọn",
+        "description": "Ảnh và giới thiệu bằng giọng nói của học sinh",
         "railHint": "Ảnh & giới thiệu bằng giọng nói"
       },
       "review": {
@@ -1162,7 +1162,6 @@
       "givenNamePlaceholder": "ví dụ: Mia",
       "familyName": "Họ",
       "familyNamePlaceholder": "ví dụ: Chen",
-      "familyNameHelper": "Tùy chọn — nhiều học sinh chỉ dùng một tên.",
       "email": "Email",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "Ngày sinh",
@@ -1177,8 +1176,7 @@
       "nationalityPlaceholder": "Tìm quốc gia…",
       "nationalityEmpty": "Không có quốc gia phù hợp.",
       "passportNumber": "Số hộ chiếu",
-      "passportPlaceholder": "ví dụ: E12345678",
-      "passportHelper": "Tùy chọn — trường dùng cho hồ sơ nhập học."
+      "passportPlaceholder": "ví dụ: E12345678"
     },
     "education": {
       "currentSchool": "Trường hiện tại",
@@ -1232,8 +1230,7 @@
         "previewAlt": "Xem trước giới thiệu bằng giọng nói",
         "invalidType": "Hãy chọn tệp âm thanh (MP3 hoặc WAV).",
         "tooLarge": "Âm thanh vượt quá 10MB. Hãy chọn tệp nhỏ hơn."
-      },
-      "optionalNote": "Cả hai đều là tùy chọn. Bạn có thể thêm hoặc thay thế sau trong hồ sơ học sinh."
+      }
     },
     "toastCreated": "Đã tạo học sinh",
     "review": {
@@ -1280,13 +1277,20 @@
   "StudentWizardSchema": {
     "givenNameRequired": "Vui lòng nhập tên",
     "givenNameTooLong": "Tên quá dài",
+    "familyNameRequired": "Vui lòng nhập họ",
     "familyNameTooLong": "Họ quá dài",
+    "emailRequired": "Vui lòng nhập email",
     "emailInvalid": "Nhập địa chỉ email hợp lệ",
+    "dobRequired": "Vui lòng nhập ngày sinh",
     "dobInvalid": "Nhập ngày sinh hợp lệ",
+    "genderRequired": "Chọn giới tính",
     "nationalityRequired": "Vui lòng nhập quốc tịch",
     "nationalityTooLong": "Quốc tịch quá dài",
+    "passportRequired": "Vui lòng nhập số hộ chiếu",
     "passportTooLong": "Số hộ chiếu quá dài",
+    "currentSchoolRequired": "Vui lòng nhập trường hiện tại",
     "currentSchoolTooLong": "Tên trường quá dài",
+    "currentYearLevelRequired": "Chọn khối lớp hiện tại",
     "yearLevelInvalid": "Chọn khối lớp từ 7 đến 12",
     "targetYearRequired": "Vui lòng nhập năm nhập học mục tiêu",
     "targetYearInvalid": "Nhập năm bốn chữ số hợp lệ",
@@ -1295,7 +1299,10 @@
     "guardianNameTooLong": "Tên người giám hộ quá dài",
     "guardianPhoneRequired": "Vui lòng nhập số điện thoại người giám hộ",
     "guardianPhoneTooLong": "Số điện thoại người giám hộ quá dài",
-    "wechatTooLong": "ID WeChat quá dài"
+    "guardianEmailRequired": "Vui lòng nhập email ngườii giám hộ",
+    "wechatTooLong": "ID WeChat quá dài",
+    "photoRequired": "Hãy thêm ảnh học sinh",
+    "voiceIntroRequired": "Hãy thêm giới thiệu bằng giọng nói"
   },
   "Children": {
     "meta": {

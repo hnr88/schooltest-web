@@ -1147,7 +1147,7 @@
       "media": {
         "label": "媒体",
         "title": "照片和语音",
-        "description": "可选的照片与语音介绍",
+        "description": "照片与语音介绍",
         "railHint": "照片与语音介绍"
       },
       "review": {
@@ -1162,7 +1162,6 @@
       "givenNamePlaceholder": "例如 Mia",
       "familyName": "姓氏",
       "familyNamePlaceholder": "例如 Chen",
-      "familyNameHelper": "可选 —— 许多学生只有一个名字。",
       "email": "电子邮箱",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "出生日期",
@@ -1177,8 +1176,7 @@
       "nationalityPlaceholder": "搜索国家/地区…",
       "nationalityEmpty": "未找到匹配的国家/地区。",
       "passportNumber": "护照号码",
-      "passportPlaceholder": "例如 E12345678",
-      "passportHelper": "可选 —— 学校将用于入学材料。"
+      "passportPlaceholder": "例如 E12345678"
     },
     "education": {
       "currentSchool": "就读学校",
@@ -1232,8 +1230,7 @@
         "previewAlt": "语音介绍预览",
         "invalidType": "请选择音频文件（MP3 或 WAV）。",
         "tooLarge": "该音频超过 10MB，请选择较小的文件。"
-      },
-      "optionalNote": "两项均为可选。日后可在学生资料中添加或替换。"
+      }
     },
     "toastCreated": "学生已创建",
     "review": {
@@ -1280,13 +1277,20 @@
   "StudentWizardSchema": {
     "givenNameRequired": "请填写名字",
     "givenNameTooLong": "名字过长",
+    "familyNameRequired": "请填写姓氏",
     "familyNameTooLong": "姓氏过长",
+    "emailRequired": "请填写电子邮箱",
     "emailInvalid": "请输入有效的电子邮箱",
+    "dobRequired": "请填写出生日期",
     "dobInvalid": "请输入有效的出生日期",
+    "genderRequired": "请选择性别",
     "nationalityRequired": "请填写国籍",
     "nationalityTooLong": "国籍过长",
+    "passportRequired": "请填写护照号码",
     "passportTooLong": "护照号码过长",
+    "currentSchoolRequired": "请填写就读学校",
     "currentSchoolTooLong": "学校名称过长",
+    "currentYearLevelRequired": "请选择当前年级",
     "yearLevelInvalid": "请选择 7 至 12 之间的年级",
     "targetYearRequired": "请填写目标入学年份",
     "targetYearInvalid": "请输入有效的四位数年份",
@@ -1295,7 +1299,10 @@
     "guardianNameTooLong": "监护人姓名过长",
     "guardianPhoneRequired": "请填写监护人电话",
     "guardianPhoneTooLong": "监护人电话过长",
-    "wechatTooLong": "微信号过长"
+    "guardianEmailRequired": "请填写监护人邮箱",
+    "wechatTooLong": "微信号过长",
+    "photoRequired": "请添加学生照片",
+    "voiceIntroRequired": "请添加语音介绍"
   },
   "Children": {
     "meta": {

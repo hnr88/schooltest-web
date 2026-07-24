@@ -1147,7 +1147,7 @@
       "media": {
         "label": "สื่อ",
         "title": "รูปภาพและเสียง",
-        "description": "รูปภาพและการแนะนำตัวด้วยเสียงเป็นตัวเลือกเสริม",
+        "description": "รูปภาพและการแนะนำตัวด้วยเสียงของนักเรียน",
         "railHint": "รูปภาพและการแนะนำตัวด้วยเสียง"
       },
       "review": {
@@ -1162,7 +1162,6 @@
       "givenNamePlaceholder": "เช่น Mia",
       "familyName": "นามสกุล",
       "familyNamePlaceholder": "เช่น Chen",
-      "familyNameHelper": "ไม่บังคับ — นักเรียนหลายคนใช้ชื่อเดียว",
       "email": "อีเมล",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "วันเกิด",
@@ -1177,8 +1176,7 @@
       "nationalityPlaceholder": "ค้นหาประเทศ…",
       "nationalityEmpty": "ไม่พบประเทศที่ตรงกัน",
       "passportNumber": "หมายเลขหนังสือเดินทาง",
-      "passportPlaceholder": "เช่น E12345678",
-      "passportHelper": "ไม่บังคับ — โรงเรียนใช้สำหรับเอกสารการรับสมัคร"
+      "passportPlaceholder": "เช่น E12345678"
     },
     "education": {
       "currentSchool": "โรงเรียนปัจจุบัน",
@@ -1232,8 +1230,7 @@
         "previewAlt": "ตัวอย่างการแนะนำตัวด้วยเสียง",
         "invalidType": "โปรดเลือกไฟล์เสียง (MP3 หรือ WAV)",
         "tooLarge": "เสียงเกิน 10MB โปรดเลือกไฟล์ที่เล็กกว่า"
-      },
-      "optionalNote": "ทั้งสองรายการเป็นตัวเลือกเสริม คุณสามารถเพิ่มหรือเปลี่ยนภายหลังได้จากโปรไฟล์นักเรียน"
+      }
     },
     "toastCreated": "สร้างนักเรียนแล้ว",
     "review": {
@@ -1280,13 +1277,20 @@
   "StudentWizardSchema": {
     "givenNameRequired": "กรุณากรอกชื่อ",
     "givenNameTooLong": "ชื่อยาวเกินไป",
+    "familyNameRequired": "กรุณากรอกนามสกุล",
     "familyNameTooLong": "นามสกุลยาวเกินไป",
+    "emailRequired": "กรุณากรอกอีเมล",
     "emailInvalid": "กรุณากรอกอีเมลที่ถูกต้อง",
+    "dobRequired": "กรุณากรอกวันเกิด",
     "dobInvalid": "กรุณากรอกวันเกิดที่ถูกต้อง",
+    "genderRequired": "เลือกเพศ",
     "nationalityRequired": "กรุณากรอกสัญชาติ",
     "nationalityTooLong": "สัญชาติยาวเกินไป",
+    "passportRequired": "กรุณากรอกหมายเลขหนังสือเดินทาง",
     "passportTooLong": "หมายเลขหนังสือเดินทางยาวเกินไป",
+    "currentSchoolRequired": "กรุณากรอกโรงเรียนปัจจุบัน",
     "currentSchoolTooLong": "ชื่อโรงเรียนยาวเกินไป",
+    "currentYearLevelRequired": "เลือกระดับชั้นปัจจุบัน",
     "yearLevelInvalid": "เลือกระดับชั้นปีระหว่าง 7 ถึง 12",
     "targetYearRequired": "กรุณากรอกปีที่ต้องการเข้าเรียน",
     "targetYearInvalid": "กรุณากรอกปีสี่หลักที่ถูกต้อง",
@@ -1295,7 +1299,10 @@
     "guardianNameTooLong": "ชื่อผู้ปกครองยาวเกินไป",
     "guardianPhoneRequired": "กรุณากรอกเบอร์โทรผู้ปกครอง",
     "guardianPhoneTooLong": "เบอร์โทรผู้ปกครองยาวเกินไป",
-    "wechatTooLong": "ไอดี WeChat ยาวเกินไป"
+    "guardianEmailRequired": "กรุณากรอกอีเมลผู้ปกครอง",
+    "wechatTooLong": "ไอดี WeChat ยาวเกินไป",
+    "photoRequired": "โปรดเพิ่มรูปภาพนักเรียน",
+    "voiceIntroRequired": "โปรดเพิ่มการแนะนำตัวด้วยเสียง"
   },
   "Children": {
     "meta": {

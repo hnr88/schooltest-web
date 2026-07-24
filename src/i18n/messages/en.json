@@ -1147,7 +1147,7 @@
       "media": {
         "label": "Media",
         "title": "Photo & voice",
-        "description": "Optional photo and voice introduction",
+        "description": "A photo and a short voice introduction",
         "railHint": "Photo & voice intro"
       },
       "review": {
@@ -1162,7 +1162,6 @@
       "givenNamePlaceholder": "e.g. Mia",
       "familyName": "Family name",
       "familyNamePlaceholder": "e.g. Chen",
-      "familyNameHelper": "Optional — many students go by one name only.",
       "email": "Email",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "Date of birth",
@@ -1177,8 +1176,7 @@
       "nationalityPlaceholder": "Search countries…",
       "nationalityEmpty": "No matching country.",
       "passportNumber": "Passport number",
-      "passportPlaceholder": "e.g. E12345678",
-      "passportHelper": "Optional — schools use this for enrolment paperwork."
+      "passportPlaceholder": "e.g. E12345678"
     },
     "education": {
       "currentSchool": "Current school",
@@ -1232,8 +1230,7 @@
         "previewAlt": "Voice introduction preview",
         "invalidType": "Choose an audio file (MP3 or WAV).",
         "tooLarge": "That audio is over 10MB. Choose a smaller file."
-      },
-      "optionalNote": "Both are optional. You can add or replace them later from the student’s profile."
+      }
     },
     "toastCreated": "Student created",
     "review": {
@@ -1280,13 +1277,20 @@
   "StudentWizardSchema": {
     "givenNameRequired": "First name is required",
     "givenNameTooLong": "First name is too long",
+    "familyNameRequired": "Family name is required",
     "familyNameTooLong": "Last name is too long",
+    "emailRequired": "Email is required",
     "emailInvalid": "Enter a valid email address",
+    "dobRequired": "Date of birth is required",
     "dobInvalid": "Enter a valid date of birth",
+    "genderRequired": "Select a gender",
     "nationalityRequired": "Nationality is required",
     "nationalityTooLong": "Nationality is too long",
+    "passportRequired": "Passport number is required",
     "passportTooLong": "Passport number is too long",
+    "currentSchoolRequired": "Current school is required",
     "currentSchoolTooLong": "School name is too long",
+    "currentYearLevelRequired": "Select the current year level",
     "yearLevelInvalid": "Select a year level between 7 and 12",
     "targetYearRequired": "Target entry year is required",
     "targetYearInvalid": "Enter a valid four-digit year",
@@ -1295,7 +1299,10 @@
     "guardianNameTooLong": "Guardian name is too long",
     "guardianPhoneRequired": "Guardian phone is required",
     "guardianPhoneTooLong": "Guardian phone is too long",
-    "wechatTooLong": "WeChat ID is too long"
+    "guardianEmailRequired": "Guardian email is required",
+    "wechatTooLong": "WeChat ID is too long",
+    "photoRequired": "Add a student photo",
+    "voiceIntroRequired": "Add a voice introduction"
   },
   "Children": {
     "meta": {

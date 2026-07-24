@@ -8,18 +8,21 @@ import type { WizardRailStep } from '@/modules/student-wizard/types/student-wiza
 interface WizardStepRailProps {
   steps: readonly WizardRailStep[];
   current: number;
+  maxReached: number;
   ariaLabel: string;
   onSelect: (step: number) => void;
 }
 
 // Step rail (spec 03 §2.2): a 230px column of 30px dots joined by a 1.5px
-// connector, each row a free-navigation jump (`st.go` → `addStep: n`, §2.2).
+// connector, each row a jump BACK to any reached step — navigation is gated:
+// a step past `maxReached` (the furthest validly completed step + 1) renders
+// disabled, dimmed and unclickable (`disabled` + aria-disabled).
 // State matrix, verbatim: done = navy dot + check + navy connector + #3D4A5C/500
 // title; current = navy dot + number + #E4E9F2 connector + #0E2350/600; upcoming =
 // white dot + #D8DFEA rule + #9AA6B8/500. The last step drops its connector.
 // Below `lg` the same list lays out horizontally as a five-dot progress bar — the
 // design has no breakpoint at all, and a fixed 230px rail cannot survive 375px.
-export function WizardStepRail({ steps, current, ariaLabel, onSelect }: WizardStepRailProps) {
+export function WizardStepRail({ steps, current, maxReached, ariaLabel, onSelect }: WizardStepRailProps) {
   return (
     <nav aria-label={ariaLabel} className="lg:w-57.5 lg:shrink-0 lg:pt-2">
       <ol className="flex lg:flex-col">
@@ -27,18 +30,26 @@ export function WizardStepRail({ steps, current, ariaLabel, onSelect }: WizardSt
           const isDone = index < current;
           const isCurrent = index === current;
           const isLast = index === steps.length - 1;
+          const isLocked = index > maxReached;
           return (
             <li key={step.key} className={cn('flex min-w-0', !isLast && 'flex-1 lg:flex-none')}>
               <button
                 type="button"
                 onClick={() => onSelect(index)}
+                disabled={isLocked}
+                aria-disabled={isLocked || undefined}
                 aria-current={isCurrent ? 'step' : undefined}
-                className="group flex w-full min-w-0 items-center gap-3.5 rounded-tile text-left focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none lg:items-stretch"
+                className={cn(
+                  'group flex w-full min-w-0 items-center gap-3.5 rounded-tile text-left focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none lg:items-stretch',
+                  isLocked && 'cursor-not-allowed opacity-50',
+                )}
               >
                 <span className="flex flex-1 items-center self-stretch lg:flex-none lg:flex-col">
                   <span
                     className={cn(
-                      'grid size-7.5 shrink-0 place-items-center rounded-full border text-meta font-semibold transition duration-200 ease-out-expo group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100',
+                      'grid size-7.5 shrink-0 place-items-center rounded-full border text-meta font-semibold transition duration-200 ease-out-expo motion-reduce:transition-none',
+                      !isLocked &&
+                        'group-hover:scale-105 motion-reduce:group-hover:scale-100',
                       isDone || isCurrent
                         ? 'border-foreground bg-foreground text-card'
                         : 'border-portal-input bg-card text-muted-foreground',

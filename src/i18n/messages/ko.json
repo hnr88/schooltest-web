@@ -1147,7 +1147,7 @@
       "media": {
         "label": "미디어",
         "title": "사진 및 음성",
-        "description": "선택 사항인 사진과 음성 소개",
+        "description": "학생 사진과 음성 소개",
         "railHint": "사진 및 음성 소개"
       },
       "review": {
@@ -1162,7 +1162,6 @@
       "givenNamePlaceholder": "예: Mia",
       "familyName": "성",
       "familyNamePlaceholder": "예: Chen",
-      "familyNameHelper": "선택 사항 — 이름 하나만 사용하는 학생도 많습니다.",
       "email": "이메일",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "생년월일",
@@ -1177,8 +1176,7 @@
       "nationalityPlaceholder": "국가 검색…",
       "nationalityEmpty": "일치하는 국가가 없습니다.",
       "passportNumber": "여권 번호",
-      "passportPlaceholder": "예: E12345678",
-      "passportHelper": "선택 사항 — 학교에서 입학 서류에 사용합니다."
+      "passportPlaceholder": "예: E12345678"
     },
     "education": {
       "currentSchool": "재학 중인 학교",
@@ -1232,8 +1230,7 @@
         "previewAlt": "음성 소개 미리보기",
         "invalidType": "오디오 파일(MP3 또는 WAV)을 선택하세요.",
         "tooLarge": "오디오가 10MB를 초과합니다. 더 작은 파일을 선택하세요."
-      },
-      "optionalNote": "두 항목 모두 선택 사항입니다. 나중에 학생 프로필에서 추가하거나 교체할 수 있습니다."
+      }
     },
     "toastCreated": "학생이 생성되었습니다",
     "review": {
@@ -1280,13 +1277,20 @@
   "StudentWizardSchema": {
     "givenNameRequired": "이름을 입력하세요",
     "givenNameTooLong": "이름이 너무 깁니다",
+    "familyNameRequired": "성을 입력하세요",
     "familyNameTooLong": "성이 너무 깁니다",
+    "emailRequired": "이메일을 입력하세요",
     "emailInvalid": "유효한 이메일 주소를 입력하세요",
+    "dobRequired": "생년월일을 입력하세요",
     "dobInvalid": "유효한 생년월일을 입력하세요",
+    "genderRequired": "성별을 선택하세요",
     "nationalityRequired": "국적을 입력하세요",
     "nationalityTooLong": "국적이 너무 깁니다",
+    "passportRequired": "여권 번호를 입력하세요",
     "passportTooLong": "여권 번호가 너무 깁니다",
+    "currentSchoolRequired": "재학 중인 학교를 입력하세요",
     "currentSchoolTooLong": "학교 이름이 너무 깁니다",
+    "currentYearLevelRequired": "현재 학년을 선택하세요",
     "yearLevelInvalid": "7~12학년 중에서 선택하세요",
     "targetYearRequired": "목표 입학 연도를 입력하세요",
     "targetYearInvalid": "유효한 네 자리 연도를 입력하세요",
@@ -1295,7 +1299,10 @@
     "guardianNameTooLong": "보호자 이름이 너무 깁니다",
     "guardianPhoneRequired": "보호자 전화번호를 입력하세요",
     "guardianPhoneTooLong": "보호자 전화번호가 너무 깁니다",
-    "wechatTooLong": "위챗 ID가 너무 깁니다"
+    "guardianEmailRequired": "보호자 이메일을 입력하세요",
+    "wechatTooLong": "위챗 ID가 너무 깁니다",
+    "photoRequired": "학생 사진을 추가하세요",
+    "voiceIntroRequired": "음성 소개를 추가하세요"
   },
   "Children": {
     "meta": {

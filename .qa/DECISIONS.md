@@ -599,3 +599,28 @@ a product defect.
    same class of defect as the wider flakiness: shared mutable seed state across parallel workers.
    W9/W11 should consider whether the suite needs per-worker isolation of the seeded parent rather
    than only fixing one spec.
+
+## Mission st-portal-fixes (Agent G, 2026-07-24)
+
+- **D-G-1 — "audio + video upload mandatory":** the add-child form has exactly two upload
+  controls — photo (image) and voice_intro (audio); no video field exists in either repo's
+  data model. The mandatory pair IS those two controls. No new video field is invented
+  (zero-tolerance: no invented features).
+- **D-G-2 — "everything mandatory":** every field the wizard renders becomes required
+  client-side (Zod) and server-side (parentStudentCreateSchema + media gate rejects null).
+  Content-type schema.json NOT touched (would break the item-bank seed cohort).
+- **D-G-3 — "test all notifications and add more":** "add more" = more e2e coverage across
+  all categories, not new backend event types (9 already exist; inventing more is scope creep).
+- **D-G-4 — search "no results" root cause:** st-portal postgres had 0 schools / 0 agents;
+  code + contract were intact. Seeded via strapi console dist imports (PORT=5599 override),
+  never SEED=true (OP-35). 312 schools + 8 agents, verified live.
+- **D-G-5 — search settings rewrite:** the old tab saved write-only preferences nothing
+  consumed. Rewrite = small sensible set (default states / default sort / results per page)
+  that the school + agent search stores actually hydrate from. Backend contract unchanged.
+- **D-G-6 — school cover images:** 312 branded PNG covers generated (school name +
+  deterministic brand-palette variant) and uploaded through the real Strapi upload service,
+  linked via school.coverImage. Recorded as generated seed content, not photography.
+- **D-G-7 — ports:** api :5510, web :3110, postgres :5550 (st-portal-* containers, docker
+  context `default`). E2E runs with E2E_PORT=3110 (config default 3100 is stale).
+- **D-G-8 — map default:** school search map defaults CLOSED so results get the full width
+  (compact multi-column cards); the map remains one toggle away.

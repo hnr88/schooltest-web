@@ -45,31 +45,54 @@ function isValidTargetYear(value: string): boolean {
 // C-UI-STUDENT-WIZARD / C-STUDENT-CREATE — the per-step field rules 1:1 with the
 // server whitelist. NEVER includes parent/status/student_key/teacher/class/user.
 export function createStudentWizardSchema(t: WizardSchemaTranslator) {
-  const optionalEmail = z
-    .union([z.literal(''), z.string().trim().pipe(z.email(t('emailInvalid')))])
-    .optional();
+  const requiredEmail = (requiredMessage: string) =>
+    z.string().trim().min(1, requiredMessage).pipe(z.email(t('emailInvalid')));
+
+  // Upload ids stay `number | null` on the form (RHF default + remove resets to
+  // null) but must parse to a present id — null is the "not uploaded yet" state.
+  const requiredUploadId = (requiredMessage: string) =>
+    z
+      .number()
+      .int()
+      .positive()
+      .nullable()
+      .refine((value): value is number => value !== null, { message: requiredMessage });
 
   return z.object({
     // Step 1 — Personal
-    // M-CT-STUDENT-NAME — mirrors the server whitelist: given_name required,
-    // family_name OPTIONAL (mononyms must be enrollable; spec E2.1 roster).
+    // Every field the wizard renders is mandatory (parent requirement), so the
+    // per-field rules 1:1 the server whitelist's required set.
     given_name: z.string().trim().min(1, t('givenNameRequired')).max(100, t('givenNameTooLong')),
-    family_name: z.string().trim().max(100, t('familyNameTooLong')).optional(),
-    email: optionalEmail,
+    family_name: z
+      .string()
+      .trim()
+      .min(1, t('familyNameRequired'))
+      .max(100, t('familyNameTooLong')),
+    email: requiredEmail(t('emailRequired')),
     date_of_birth: z
       .string()
-      .refine((value) => value === '' || isValidDateOfBirth(value), t('dobInvalid'))
-      .optional(),
-    gender: z.enum(GENDER_VALUES).optional(),
+      .min(1, t('dobRequired'))
+      .refine(isValidDateOfBirth, t('dobInvalid')),
+    gender: z.enum(GENDER_VALUES, { error: t('genderRequired') }),
     nationality: z
       .string()
       .trim()
       .min(1, t('nationalityRequired'))
       .max(100, t('nationalityTooLong')),
-    passport_number: z.string().trim().max(50, t('passportTooLong')).optional(),
+    passport_number: z
+      .string()
+      .trim()
+      .min(1, t('passportRequired'))
+      .max(50, t('passportTooLong')),
     // Step 2 — Education
-    current_school: z.string().trim().max(255, t('currentSchoolTooLong')).optional(),
-    current_year_level: z.enum(CURRENT_YEAR_LEVEL_VALUES).optional(),
+    current_school: z
+      .string()
+      .trim()
+      .min(1, t('currentSchoolRequired'))
+      .max(255, t('currentSchoolTooLong')),
+    current_year_level: z.enum(CURRENT_YEAR_LEVEL_VALUES, {
+      error: t('currentYearLevelRequired'),
+    }),
     year_level: z
       .number()
       .int()
@@ -93,12 +116,13 @@ export function createStudentWizardSchema(t: WizardSchemaTranslator) {
       .trim()
       .min(1, t('guardianPhoneRequired'))
       .max(50, t('guardianPhoneTooLong')),
-    parent_guardian_email: optionalEmail,
+    parent_guardian_email: requiredEmail(t('guardianEmailRequired')),
     parent_guardian_wechat: z.string().trim().max(100, t('wechatTooLong')).optional(),
     preferred_contact_channel: z.enum(CONTACT_CHANNEL_VALUES).default('whatsapp'),
-    // Step 4 — Media (upload file ids from C-UPLOAD-PARENT)
-    photo: z.number().int().positive().nullable().optional(),
-    voice_intro: z.number().int().positive().nullable().optional(),
+    // Step 4 — Media (upload file ids from C-UPLOAD-PARENT): both uploads are
+    // mandatory — a missing id (null) fails the step with the required message.
+    photo: requiredUploadId(t('photoRequired')),
+    voice_intro: requiredUploadId(t('voiceIntroRequired')),
   });
 }
 

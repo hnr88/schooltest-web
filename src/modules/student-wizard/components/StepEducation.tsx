@@ -44,6 +44,7 @@ export function StepEducation() {
         <WizardTextField
           id="wizard-current-school"
           label={t('currentSchool')}
+          required
           placeholder={t('currentSchoolPlaceholder')}
           error={errors.current_school?.message}
           registration={register('current_school')}
@@ -55,10 +56,12 @@ export function StepEducation() {
             <WizardSelectField
               id="wizard-current-year-level"
               label={t('currentYearLevel')}
+              required
               placeholder={t('currentYearLevelPlaceholder')}
               options={currentYearLevelOptions}
               value={field.value ?? null}
               error={fieldState.error?.message}
+              triggerRef={field.ref}
               onValueChange={field.onChange}
             />
           )}

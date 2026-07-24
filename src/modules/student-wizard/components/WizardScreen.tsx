@@ -15,22 +15,25 @@ import { useStepScroll } from '@/modules/student-wizard/hooks/use-step-scroll';
 import { useStudentWizard } from '@/modules/student-wizard/hooks/use-student-wizard';
 import { useWizardSubmit } from '@/modules/student-wizard/hooks/use-wizard-submit';
 import { firstInvalidStep } from '@/modules/student-wizard/lib/first-invalid-step';
+import { STEP_FIELDS } from '@/modules/student-wizard/schemas/student-wizard.schema';
 import { useWizardMediaStore } from '@/modules/student-wizard/stores/use-wizard-media-store';
 import type { WizardScreenProps } from '@/modules/student-wizard/types/student-wizard.types';
 
 // C-UI-STUDENT-WIZARD shell, drawn to `portal--add-child-multi-step.html`: a
-// 30/500 page title over a `230px 1fr` split — the free-navigation step rail on the
-// left, ONE 24px-radius white card on the right (max 760px, 34/38 padding) holding
+// 30/500 page title over a `230px 1fr` split — the gated step rail on the
+// left (a step past the furthest validly completed one is disabled), ONE
+// 24px-radius white card on the right (max 760px, 34/38 padding) holding
 // the step heading, the fields and the footer. Step 5 review + submit
 // (C-STUDENT-CREATE) are wired here; edit mode (054) passes `onSubmit` to override
 // the create mutation with the PUT path.
 export function WizardScreen({ initialValues, mode = 'create', onSubmit }: WizardScreenProps) {
   const t = useTranslations('StudentWizard');
   const router = useRouter();
-  const { form, step, back, next, goToStep, isFirstStep, isLastStep } = useStudentWizard({
-    mode,
-    initialValues,
-  });
+  const { form, step, back, next, goToStep, maxReached, isFirstStep, isLastStep } =
+    useStudentWizard({
+      mode,
+      initialValues,
+    });
   const { submit, error, dismissError, isSucceeded } = useWizardSubmit({ onSubmit });
   const resetMedia = useWizardMediaStore((state) => state.reset);
 
@@ -46,19 +49,26 @@ export function WizardScreen({ initialValues, mode = 'create', onSubmit }: Wizar
     hint: t(`steps.${key}.railHint`),
   }));
 
-  // The rail is free navigation, so a full-schema rejection can belong to a step
-  // the parent is no longer on — land them back on it instead of failing silently.
+  // A full-schema rejection can belong to a step the parent is no longer on
+  // (edit mode starts with every step reachable; a revisited step can also be
+  // broken after the fact) — land them back on it instead of failing silently.
   const handleSubmit = form.handleSubmit(submit, (errors) => {
     const invalidStep = firstInvalidStep(errors);
     if (invalidStep !== null) goToStep(invalidStep);
   });
 
-  const handleContinue = () => {
+  // Gate: the current step must validate before advancing (STEP_FIELDS maps
+  // step → its field names). On failure RHF shows the errors and focuses the
+  // first invalid field; on success `next` also unlocks the step just reached.
+  const handleContinue = async () => {
     if (isLastStep) {
       void handleSubmit();
       return;
     }
-    void next();
+    const isStepValid = await form.trigger([...STEP_FIELDS[step]], { shouldFocus: true });
+    if (isStepValid) {
+      next();
+    }
   };
 
   // §2.9: Back at step 1 is not disabled — it leaves the wizard for the roster.
@@ -83,6 +93,7 @@ export function WizardScreen({ initialValues, mode = 'create', onSubmit }: Wizar
         <WizardStepRail
           steps={railSteps}
           current={step}
+          maxReached={maxReached}
           ariaLabel={t('stepsLabel')}
           onSelect={goToStep}
         />

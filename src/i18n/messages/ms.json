@@ -1147,7 +1147,7 @@
       "media": {
         "label": "Media",
         "title": "Foto & suara",
-        "description": "Foto dan pengenalan suara adalah pilihan",
+        "description": "Foto dan pengenalan suara pelajar",
         "railHint": "Foto & pengenalan suara"
       },
       "review": {
@@ -1162,7 +1162,6 @@
       "givenNamePlaceholder": "cth. Mia",
       "familyName": "Nama keluarga",
       "familyNamePlaceholder": "cth. Chen",
-      "familyNameHelper": "Pilihan — ramai pelajar hanya menggunakan satu nama.",
       "email": "E-mel",
       "emailPlaceholder": "student@example.com",
       "dateOfBirth": "Tarikh lahir",
@@ -1177,8 +1176,7 @@
       "nationalityPlaceholder": "Cari negara…",
       "nationalityEmpty": "Tiada negara sepadan.",
       "passportNumber": "Nombor pasport",
-      "passportPlaceholder": "cth. E12345678",
-      "passportHelper": "Pilihan — sekolah menggunakannya untuk dokumen pendaftaran."
+      "passportPlaceholder": "cth. E12345678"
     },
     "education": {
       "currentSchool": "Sekolah semasa",
@@ -1232,8 +1230,7 @@
         "previewAlt": "Pratonton pengenalan suara",
         "invalidType": "Pilih fail audio (MP3 atau WAV).",
         "tooLarge": "Audio itu melebihi 10MB. Pilih fail lebih kecil."
-      },
-      "optionalNote": "Kedua-duanya adalah pilihan. Anda boleh menambah atau menggantikannya kemudian daripada profil pelajar."
+      }
     },
     "toastCreated": "Pelajar dicipta",
     "review": {
@@ -1280,13 +1277,20 @@
   "StudentWizardSchema": {
     "givenNameRequired": "Nama pertama diperlukan",
     "givenNameTooLong": "Nama pertama terlalu panjang",
+    "familyNameRequired": "Nama keluarga diperlukan",
     "familyNameTooLong": "Nama keluarga terlalu panjang",
+    "emailRequired": "E-mel diperlukan",
     "emailInvalid": "Masukkan alamat e-mel yang sah",
+    "dobRequired": "Tarikh lahir diperlukan",
     "dobInvalid": "Masukkan tarikh lahir yang sah",
+    "genderRequired": "Pilih jantina",
     "nationalityRequired": "Kewarganegaraan diperlukan",
     "nationalityTooLong": "Kewarganegaraan terlalu panjang",
+    "passportRequired": "Nombor pasport diperlukan",
     "passportTooLong": "Nombor pasport terlalu panjang",
+    "currentSchoolRequired": "Sekolah semasa diperlukan",
     "currentSchoolTooLong": "Nama sekolah terlalu panjang",
+    "currentYearLevelRequired": "Pilih tahap tahun semasa",
     "yearLevelInvalid": "Pilih tahap tahun antara 7 dan 12",
     "targetYearRequired": "Tahun kemasukan sasaran diperlukan",
     "targetYearInvalid": "Masukkan tahun empat digit yang sah",
@@ -1295,7 +1299,10 @@
     "guardianNameTooLong": "Nama penjaga terlalu panjang",
     "guardianPhoneRequired": "Telefon penjaga diperlukan",
     "guardianPhoneTooLong": "Telefon penjaga terlalu panjang",
-    "wechatTooLong": "ID WeChat terlalu panjang"
+    "guardianEmailRequired": "E-mel penjaga diperlukan",
+    "wechatTooLong": "ID WeChat terlalu panjang",
+    "photoRequired": "Tambah foto pelajar",
+    "voiceIntroRequired": "Tambah pengenalan suara"
   },
   "Children": {
     "meta": {
