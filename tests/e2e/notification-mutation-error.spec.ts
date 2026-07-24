@@ -4,7 +4,7 @@ import { cat, loadMessages } from './helpers/i18n';
 import { deleteStudents } from './helpers/student-cleanup';
 
 const en = loadMessages('en');
-const API_BASE_URL = 'http://localhost:5500';
+const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 
 interface LoginResponse {

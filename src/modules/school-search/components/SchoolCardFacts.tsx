@@ -19,7 +19,7 @@ function SchoolCardFacts({ hit }: { hit: SchoolHit }) {
   const facts = getSchoolFactKeys(hit);
 
   return (
-    <div className="mt-auto flex flex-wrap items-center gap-x-3.5 gap-y-1 border-t border-divider pt-3.5 text-meta text-muted-foreground">
+    <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-divider pt-2.5 text-meta text-muted-foreground">
       {facts.map((key) => (
         <span key={key} className="inline-flex min-w-0 items-center gap-1.5">
           <Check aria-hidden="true" className="size-3.25 shrink-0 stroke-3 text-primary" />

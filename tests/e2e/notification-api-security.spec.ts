@@ -1,6 +1,6 @@
 import { expect, test, type APIRequestContext, type APIResponse } from '@playwright/test';
 
-const API_BASE_URL = 'http://localhost:5500';
+const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
 const PRIMARY_PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const FOREIGN_PARENT = { email: 'parent-t06@schooltest.local', password: 'Parent1234!' };
 const UNKNOWN_NOTIFICATION_ID = 'nonexistentdoc000000000';

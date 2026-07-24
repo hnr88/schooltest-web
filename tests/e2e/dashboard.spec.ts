@@ -17,7 +17,7 @@ const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
-const API_BASE_URL = 'http://localhost:5500';
+const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
 
 test('en: incognito visit to /dashboard redirects to /sign-in (no JWT, real client guard)', async ({
   page,

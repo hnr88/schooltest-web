@@ -7,7 +7,7 @@ import { expect, test, type APIRequestContext, type APIResponse } from '@playwri
 import { cat, loadMessages } from './helpers/i18n';
 
 const en = loadMessages('en');
-const API_BASE_URL = 'http://localhost:5500';
+const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
 const APP_ORIGIN = 'http://localhost:3100';
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const FOREIGN_PARENT = { email: 'parent-t06@schooltest.local', password: 'Parent1234!' };

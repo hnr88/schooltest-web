@@ -59,7 +59,7 @@ export const useSchoolSearchStore = create<SchoolSearchStore>((set) => ({
   ...INITIAL,
   activeSchoolId: null,
   selectedSchoolId: null,
-  isMapOpen: true,
+  isMapOpen: false,
   setQ: (q) => set({ q, page: 1 }),
   setStates: (states) => set({ states: [...states] as StateCode[], page: 1 }),
   setSectors: (sectors) => set({ sectors: [...sectors] as SectorValue[], page: 1 }),

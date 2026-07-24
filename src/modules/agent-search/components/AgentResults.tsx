@@ -15,7 +15,7 @@ import {
   SearchResultsPanel,
 } from '@/modules/search-shared';
 
-const GRID_CLASS = 'grid grid-cols-1 gap-3.5 md:grid-cols-2 2xl:grid-cols-3';
+const GRID_CLASS = 'grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3';
 
 // Same shared SearchResultsPanel the schools column uses.
 function AgentResults({

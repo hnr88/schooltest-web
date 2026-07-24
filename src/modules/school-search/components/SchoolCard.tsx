@@ -39,14 +39,14 @@ function SchoolCard({ hit }: { hit: SchoolHit }) {
       onMouseEnter={() => setActiveSchoolId(hit.documentId)}
       onMouseLeave={() => setActiveSchoolId(null)}
       className={cn(
-        'group relative flex min-w-0 flex-col rounded-result border bg-card p-2 pb-5 transition duration-200 ease-out-expo hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0',
+        'group relative flex min-w-0 flex-col rounded-result border bg-card p-2 pb-3 transition duration-200 ease-out-expo hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0',
         isSelected
           ? 'border-navy-900 shadow-lg ring-1 ring-navy-900 ring-inset'
           : 'border-transparent shadow-sm hover:shadow-md',
       )}
     >
       {hit.coverImage ? <SchoolCardCover coverImage={hit.coverImage} alt={coverAlt} /> : null}
-      <div className="flex min-w-0 flex-1 flex-col gap-3.5 px-3.5 pt-3">
+      <div className="flex min-w-0 flex-1 flex-col gap-2.5 px-3 pt-2.5">
         <div className="flex min-w-0 items-start gap-3">
           {hit.coverImage ? null : <SchoolCardCover coverImage={null} alt={coverAlt} />}
           <div className="min-w-0 flex-1">

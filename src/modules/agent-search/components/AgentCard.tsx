@@ -25,7 +25,7 @@ function AgentCard({ hit }: { hit: AgentHit }) {
   return (
     <article
       data-slot="agent-card"
-      className="flex flex-col gap-4 rounded-result border border-transparent bg-card p-5.5 shadow-sm transition duration-200 ease-out-expo hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      className="flex flex-col gap-3 rounded-result border border-transparent bg-card p-4 shadow-sm transition duration-200 ease-out-expo hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       <div data-slot="agent-card-profile" className="flex items-start gap-3">
         {hit.photoUrl ? (

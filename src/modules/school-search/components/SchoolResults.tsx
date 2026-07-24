@@ -19,8 +19,8 @@ import {
 // query states and the pinned pager inside the shared SearchResultsPanel, so schools
 // and agents render one component and not two.
 // The list is ONE column while the map holds the other track (the design's 340px
-// rail) and relaxes to two columns once the map is collapsed — never three, or a card
-// would end up narrower than the rail it replaced.
+// rail). With the map collapsed (the default) the full-width results panel relaxes
+// to two columns from `sm` and three from `xl`.
 function SchoolResults({
   query,
   onRetry,
@@ -55,7 +55,7 @@ function SchoolResults({
 
   const pagination = data?.meta.pagination;
   const hits = data?.data ?? [];
-  const gridClass = cn('grid grid-cols-1 gap-3.5', !isMapOpen && 'md:grid-cols-2');
+  const gridClass = cn('grid grid-cols-1 gap-3', !isMapOpen && 'sm:grid-cols-2 xl:grid-cols-3');
 
   return (
     <SearchResultsPanel
