@@ -129,7 +129,7 @@
       "title": "Notification toggles round-trip",
       "layer": "integration",
       "depends_on": [],
-      "status": "DOING",
+      "status": "DONE",
       "started_at": null
     },
     {
@@ -140,7 +140,7 @@
       "depends_on": [
         "012"
       ],
-      "status": "TODO",
+      "status": "DONE",
       "started_at": null
     },
     {
@@ -156,7 +156,7 @@
         "011",
         "013"
       ],
-      "status": "TODO",
+      "status": "DOING",
       "started_at": null
     }
   ]

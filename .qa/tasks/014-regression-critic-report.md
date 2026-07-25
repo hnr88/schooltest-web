@@ -6,7 +6,7 @@ kind: verify
 slice: whole-mission proof
 target: schooltest-web + schooltest-api
 contract: all
-status: TODO
+status: DOING
 depends_on: [005, 008, 009, 010, 011, 013]
 ---
 ## Objective

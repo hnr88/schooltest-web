@@ -4,7 +4,8 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { loginAsParent, SEEDED_PARENT } from './helpers/auth';
 import { deleteAuthEmailRows } from './helpers/auth-db';
-import { cat, icu, loadMessages } from './helpers/i18n';
+import { cat, loadMessages } from './helpers/i18n';
+import { deleteStudents } from './helpers/student-cleanup';
 import {
   extractToken,
   fetchConfirmationLink,
@@ -16,6 +17,15 @@ import {
   STACK_E2E_PASSWORD,
 } from './helpers/verify-stack';
 import { waitForAnimationsSettled } from './helpers/ui';
+import {
+  attachWizardPhoto,
+  attachWizardVoice,
+  fillEducationStep,
+  fillGuardianStep,
+  fillPersonalStep,
+  wizardContinue,
+  wizardRail,
+} from './helpers/wizard-fill';
 
 // Task 027: end-to-end auth/onboarding verifier for st-portal.
 // Covers Zod validation + sonner toasts on all four auth forms, unified auth UI
@@ -354,91 +364,98 @@ test.describe('password reset round-trip (serial, API-seeded parent)', () => {
 });
 
 // ------------------------------------------------------------------
-// 5. Add child from sidebar: wizard can be skipped at any step.
+// 5. Add child from sidebar: the rail gates on completed steps.
 // ------------------------------------------------------------------
 
-test('wizard skip from sidebar: jump steps, final submit validates, student persists', async ({
+test('wizard from sidebar: rail review locked until steps 1-4 valid, real submit persists', async ({
   page,
+  request,
 }) => {
   test.slow();
   const unique = `WZ-${Date.now().toString(36)}`;
+  const created: string[] = [];
   await page.setViewportSize(DESKTOP);
 
-  await loginAsParent(page);
-  await page.getByRole('link', { name: cat(en, 'Shell.nav.myChildren') }).click();
-  await page.waitForURL('**/dashboard/children');
-  await page.getByRole('link', { name: cat(en, 'Children.addChild') }).click();
-  await page.waitForURL('**/dashboard/children/new');
-  await expect(
-    page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.personal.title') }),
-  ).toBeVisible();
-  await page.screenshot({ path: path.join(SCREENSHOTS, '027-wizard-start.png'), fullPage: true });
+  try {
+    await loginAsParent(page);
+    await page.getByRole('link', { name: cat(en, 'Shell.nav.myChildren') }).click();
+    await page.waitForURL('**/dashboard/children');
+    await page.getByRole('link', { name: cat(en, 'Children.addChild') }).click();
+    await page.waitForURL('**/dashboard/children/new');
+    await expect(
+      page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.personal.title') }),
+    ).toBeVisible();
 
-  // Skip straight to review via the step rail (step 5, index 4).
-  const rail = page.getByRole('navigation', { name: cat(en, 'StudentWizard.stepsLabel') });
-  await rail.getByRole('button').nth(4).click();
-  await expect(
-    page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.review.title') }),
-  ).toBeVisible();
-  await page.screenshot({ path: path.join(SCREENSHOTS, '027-wizard-review-empty.png'), fullPage: true });
+    // Free navigation is gone: the review step (rail index 4) stays disabled
+    // until steps 1–4 are each validly completed.
+    const rail = wizardRail(page, en);
+    await expect(rail.getByRole('button').nth(4)).toBeDisabled();
+    await page.screenshot({ path: path.join(SCREENSHOTS, '027-wizard-start.png'), fullPage: true });
 
-  // Submit from review with invalid data → jump to first invalid step and show Zod errors.
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.createStudent'), exact: true }).click();
-  await expect(
-    page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.personal.title') }),
-  ).toBeVisible();
-  await expect(page.getByText(cat(en, 'StudentWizardSchema.givenNameRequired'))).toBeVisible();
-  await expect(page.getByText(cat(en, 'StudentWizardSchema.nationalityRequired'))).toBeVisible();
-  await page.screenshot({ path: path.join(SCREENSHOTS, '027-wizard-step1-errors.png'), fullPage: true });
+    await fillPersonalStep(page, en, { givenName: unique });
+    await wizardContinue(page, en);
+    await expect(
+      page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.education.title') }),
+    ).toBeVisible();
+    await expect(rail.getByRole('button').nth(4)).toBeDisabled();
 
-  // Fill valid data step-by-step.
-  await page.getByLabel(cat(en, 'StudentWizard.personal.givenName')).fill(unique);
-  await page.getByLabel(cat(en, 'StudentWizard.personal.familyName')).fill('E2E');
-  await page.getByRole('combobox', { name: cat(en, 'StudentWizard.personal.nationality') }).click();
-  await page.keyboard.press('ArrowDown');
-  await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue'), exact: true }).click();
+    await fillEducationStep(page, en);
+    await wizardContinue(page, en);
+    await expect(
+      page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.guardian.title') }),
+    ).toBeVisible();
 
-  // Education.
-  await expect(
-    page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.education.title') }),
-  ).toBeVisible();
-  await page.getByRole('combobox', { name: cat(en, 'StudentWizard.education.targetEntryYear') }).click();
-  await page.getByRole('option').first().click();
-  await page
-    .getByRole('radiogroup', { name: cat(en, 'StudentWizard.education.targetEntryTerm') })
-    .getByRole('radio', { name: icu(cat(en, 'StudentWizard.education.term'), { n: '1' }) })
-    .click();
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue'), exact: true }).click();
+    await fillGuardianStep(page, en);
+    await wizardContinue(page, en);
 
-  // Guardian.
-  await expect(
-    page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.guardian.title') }),
-  ).toBeVisible();
-  await page.getByLabel(cat(en, 'StudentWizard.guardian.name')).fill('E2E Guardian');
-  await page.getByLabel(cat(en, 'StudentWizard.guardian.phone')).fill('+61 400 000 000');
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue'), exact: true }).click();
+    // Media is mandatory too: an empty step 4 fails validation and keeps the
+    // review step locked on the rail.
+    await expect(
+      page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.media.title') }),
+    ).toBeVisible();
+    await wizardContinue(page, en);
+    await expect(page.locator('#wizard-photo-error')).toHaveText(
+      cat(en, 'StudentWizardSchema.photoRequired'),
+    );
+    await expect(rail.getByRole('button').nth(4)).toBeDisabled();
 
-  // Media (optional) → review.
-  await expect(
-    page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.media.title') }),
-  ).toBeVisible();
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.continue'), exact: true }).click();
+    await attachWizardPhoto(page, en);
+    await attachWizardVoice(page, en);
+    await wizardContinue(page, en);
 
-  await expect(
-    page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.review.title') }),
-  ).toBeVisible();
-  await expect(page.getByText(unique)).toBeVisible();
-  await page.screenshot({ path: path.join(SCREENSHOTS, '027-wizard-review-filled.png'), fullPage: true });
+    // All four steps valid → review reached, rail step 5 unlocked.
+    await expect(
+      page.getByRole('heading', { name: cat(en, 'StudentWizard.steps.review.title') }),
+    ).toBeVisible();
+    await expect(rail.getByRole('button').nth(4)).toBeEnabled();
+    await expect(page.getByText(unique)).toBeVisible();
+    await page.screenshot({
+      path: path.join(SCREENSHOTS, '027-wizard-review-filled.png'),
+      fullPage: true,
+    });
 
-  // Submit and prove persistence.
-  await page.getByRole('button', { name: cat(en, 'StudentWizard.createStudent'), exact: true }).click();
-  await page.waitForURL('**/dashboard/children');
-  await expect(page.getByRole('heading', { name: cat(en, 'Children.heading') })).toBeVisible();
-  await expect(page.getByText(unique)).toBeVisible();
+    // Real submit persists (documentId captured for the admin-route cleanup).
+    const createResponse = page.waitForResponse(
+      (res) => res.url().includes('/api/students') && res.request().method() === 'POST',
+    );
+    await page
+      .getByRole('button', { name: cat(en, 'StudentWizard.createStudent'), exact: true })
+      .click();
+    const createdResponse = await createResponse;
+    expect(createdResponse.status(), await createdResponse.text()).toBe(200);
+    created.push(
+      ((await createdResponse.json()) as { data: { documentId: string } }).data.documentId,
+    );
 
-  await page.reload();
-  await expect(page.getByRole('heading', { name: cat(en, 'Children.heading') })).toBeVisible();
-  await expect(page.getByText(unique)).toBeVisible();
-  await page.screenshot({ path: path.join(SCREENSHOTS, '027-wizard-persisted.png'), fullPage: true });
+    await page.waitForURL('**/dashboard/children');
+    await expect(page.getByRole('heading', { name: cat(en, 'Children.heading') })).toBeVisible();
+    await expect(page.getByText(unique)).toBeVisible();
+
+    await page.reload();
+    await expect(page.getByRole('heading', { name: cat(en, 'Children.heading') })).toBeVisible();
+    await expect(page.getByText(unique)).toBeVisible();
+    await page.screenshot({ path: path.join(SCREENSHOTS, '027-wizard-persisted.png'), fullPage: true });
+  } finally {
+    await deleteStudents(request, created);
+  }
 });

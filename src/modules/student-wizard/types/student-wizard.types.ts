@@ -114,10 +114,9 @@ export interface WizardRailStep {
 }
 
 // Reused for both /dashboard/children/new (create) and the edit route (054):
-// documentId + initialValues + mode are reserved for the edit wiring. `onSubmit`
-// overrides the create mutation with the edit `PUT` path (wired in 054).
+// `mode` + `initialValues` prefill the wizard from the detail read, and
+// `onSubmit` overrides the create mutation with the edit `PUT` path.
 export interface WizardScreenProps {
-  documentId?: string;
   initialValues?: Partial<StudentWizardValues>;
   mode?: WizardMode;
   onSubmit?: (values: StudentWizardOutput) => Promise<void>;

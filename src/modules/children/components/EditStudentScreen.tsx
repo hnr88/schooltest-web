@@ -56,11 +56,6 @@ export function EditStudentScreen({ documentId }: EditStudentScreenProps) {
   }
 
   return (
-    <WizardScreen
-      mode="edit"
-      documentId={documentId}
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-    />
+    <WizardScreen mode="edit" initialValues={initialValues} onSubmit={handleSubmit} />
   );
 }
