@@ -1,6 +1,7 @@
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+import { skipOnboardingViaUi } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
 
@@ -168,6 +169,10 @@ test('en: authentication settings change and restore the dedicated seeded parent
 }) => {
   let changedJwt: string | null = null;
   await signInAs(page, request, SETTINGS_PARENT);
+  // parent-t06 is onboarding-pending: the dashboard guard would yank the
+  // settings screen to /onboarding mid-submit. Skip once via the real UI
+  // (the skipped status persists, so this is a no-op gate on later runs).
+  await skipOnboardingViaUi(page);
 
   try {
     await page.goto('/dashboard/settings?tab=auth');

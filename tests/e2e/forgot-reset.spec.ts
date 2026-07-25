@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-import { SEEDED_PARENT } from './helpers/auth';
+import { SEEDED_PARENT, skipOnboardingViaUi } from './helpers/auth';
 import {
   backdateResetIssuance,
   deleteAuthEmailRows,
@@ -139,6 +139,9 @@ test.describe('reset round-trips against registered parents (serial, D20)', () =
     await page.waitForURL('**/dashboard');
     const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
     expect(token).toMatch(/^eyJ/);
+    // Onboarding-pending parent: skip the mandatory gate now or the dashboard
+    // guard redirects mid-click during the sign-out below (see helpers/auth).
+    await skipOnboardingViaUi(page);
 
     // Network truth: the OLD password is dead against the live login endpoint.
     const oldLogin = await request.post(`${API_BASE_URL}/api/auth/local`, {

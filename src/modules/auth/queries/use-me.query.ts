@@ -18,14 +18,16 @@ export function useMeQuery(enabled: boolean) {
     enabled,
     retry: false,
     // An errored me query (e.g. expired JWT) re-fetches on EVERY new observer
-    // mount unless retryOnMount is false (refetchOnMount only gates queries that
-    // already hold data). Each refetch flips status back to pending, the
-    // dashboard onboarding guard re-enters its skeleton and unmounts the tree,
-    // the settle remounts it — a mount/fetch loop firing ~400 req/s that blanks
-    // the dashboard and storms the API rate limiter. The query is fresh by
-    // staleTime and explicitly set/removed on login/logout, so mounts reuse it.
+    // mount unless retryOnMount is false. Each refetch flips status back to
+    // pending, the dashboard onboarding guard re-enters its skeleton and
+    // unmounts the tree, the settle remounts it — a mount/fetch loop firing
+    // ~400 req/s that blanks the dashboard and storms the API rate limiter.
+    // refetchOnMount must STAY on for stale queries though: login seeds the
+    // cache with the /api/auth/local user, which carries no `role` — only the
+    // populated GET /api/users/me does, and the onboarding guard's parent
+    // check depends on it. Stale-data refetches are one-shot (staleTime keeps
+    // the result fresh), so they cannot loop like the error path did.
     retryOnMount: false,
-    refetchOnMount: false,
     staleTime: 5 * 60 * 1000,
   });
 }

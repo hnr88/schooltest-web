@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import { expect, test, type Page } from '@playwright/test';
 
-import { SEEDED_PARENT } from './helpers/auth';
+import { SEEDED_PARENT, skipOnboardingViaUi } from './helpers/auth';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import {
@@ -148,6 +148,9 @@ test('017: change-password form → toast.success and toast.error on wrong curre
   await page.setViewportSize(DESKTOP);
   await signIn(page, parent.email, parent.password);
   await page.waitForURL('**/dashboard');
+  // Onboarding-pending parent: skip the mandatory gate before the settings
+  // screen, or the guard redirects mid-click (see helpers/auth).
+  await skipOnboardingViaUi(page);
   await page.goto('/dashboard/settings');
   await expect(
     page.getByText(cat(en, 'Settings.changePasswordTitle'), { exact: true }),

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
@@ -53,10 +53,49 @@ function resultsCount(count: number): string {
   return branch.replace(/#/g, new Intl.NumberFormat('en').format(count));
 }
 
+/** Leaves exactly `only` pressed in the Default states group (any previously
+ * saved state must be UNpressed, or the save carries it into the assertion).
+ * Click-verify-retry per pill: a late `form.reset` (the preferences query
+ * landing AFTER the interaction) reverts toggles — the same swallow the
+ * wizard chips needed selectRadioChip for (observed live: the QLD press was
+ * reverted and the save persisted states: []). */
+async function setOnlyState(page: Page, only: string): Promise<void> {
+  const states = page.getByRole('group', { name: cat(en, 'Settings.defaultStates') });
+  for (const button of await states.getByRole('button').all()) {
+    const name = (await button.textContent())?.trim();
+    if (!name) continue;
+    const want = name === only ? 'true' : 'false';
+    await expect(async () => {
+      if ((await button.getAttribute('aria-pressed')) !== want) await button.click();
+      await expect(button).toHaveAttribute('aria-pressed', want, { timeout: 1000 });
+    }).toPass({ timeout: 10_000 });
+  }
+}
+
+/**
+ * Waits until the settings form reflects `saved`. The form mounts with blank
+ * defaults and is `form.reset` from the preferences query in an effect — any
+ * click made before that reset lands is silently clobbered, so interacting
+ * before hydration is a lost-update race (observed live: the NSW unpress was
+ * reverted and the save re-persisted [NSW, QLD]).
+ */
+async function waitForPreferencesForm(page: Page, saved: SearchPreference): Promise<void> {
+  const states = page.getByRole('group', { name: cat(en, 'Settings.defaultStates') });
+  for (const button of await states.getByRole('button').all()) {
+    const name = (await button.textContent())?.trim();
+    if (!name) continue;
+    await expect(button).toHaveAttribute(
+      'aria-pressed',
+      saved.default_states.includes(name) ? 'true' : 'false',
+    );
+  }
+}
+
 test('en: saved search defaults apply to the first school search render', async ({
   page,
   request,
 }) => {
+  test.slow(); // the 16s rate-window pace in beforeEach eats half the default budget
   const errors = watchErrors(page);
   await page.setViewportSize({ width: 1280, height: 800 });
   const login = await request.post(`${API_BASE_URL}/api/auth/local`, {
@@ -74,14 +113,20 @@ test('en: saved search defaults apply to the first school search render', async 
   }, jwt);
 
   try {
+    // Gate on the preferences GET: the form mounts with blank defaults and is
+    // `form.reset` once the query lands — clicking before that reset is a
+    // lost-update race (see waitForPreferencesForm). Waiting for the response
+    // makes the reset land BEFORE any interaction, warm or cold dev server.
+    const prefsGet = page.waitForResponse(
+      (res) =>
+        res.url().includes('/api/search-preferences/me') && res.request().method() === 'GET',
+    );
     await page.goto('/dashboard/settings?tab=search');
-    const states = page.getByRole('group', { name: cat(en, 'Settings.defaultStates') });
-    const queensland = states.getByRole('button', { name: 'QLD', exact: true });
-    await expect(queensland).toBeVisible();
-    if ((await queensland.getAttribute('aria-pressed')) !== 'true') {
-      await queensland.click();
-    }
-    await expect(queensland).toHaveAttribute('aria-pressed', 'true');
+    await prefsGet;
+    await waitForPreferencesForm(page, original);
+    // Exactly QLD — a previously saved state still pressed would otherwise
+    // ride along into the save and break the 74-results assertion below.
+    await setOnlyState(page, 'QLD');
     const pageSizes = page.getByRole('radiogroup', { name: cat(en, 'Settings.defaultPageSize') });
     await pageSizes.getByRole('radio', { name: '24', exact: true }).click();
     const sort = page.getByRole('combobox', { name: cat(en, 'Settings.defaultSort') });
@@ -161,16 +206,6 @@ test('en: re-saved search defaults re-apply on SPA return to school search', asy
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
 
-  /** Leaves exactly `only` pressed in the Default states group. */
-  async function setOnlyState(only: string): Promise<void> {
-    const states = page.getByRole('group', { name: cat(en, 'Settings.defaultStates') });
-    for (const button of await states.getByRole('button').all()) {
-      const name = await button.textContent();
-      const pressed = (await button.getAttribute('aria-pressed')) === 'true';
-      if (name !== null && pressed !== (name.trim() === only)) await button.click();
-    }
-  }
-
   /** Saves the search tab and waits for the real PUT to land. */
   async function savePreferences(): Promise<void> {
     const updatePromise = page.waitForResponse(
@@ -182,7 +217,9 @@ test('en: re-saved search defaults re-apply on SPA return to school search', asy
     expect((await updatePromise).status()).toBe(200);
   }
 
-  /** The NEXT search request whose body carries the given defaults. */
+  /** The NEXT search request whose body carries the given defaults. Note:
+   * storeToRequest OMITS sortBy when it is the app default (name-asc), so an
+   * absent sortBy on the wire means name-asc, not "no sort". */
   function searchRequestWith(states: string[], sortBy: string, pageSize: number) {
     return page.waitForResponse((response) => {
       if (response.request().method() !== 'POST') return false;
@@ -194,7 +231,7 @@ test('en: re-saved search defaults re-apply on SPA return to school search', asy
       };
       return (
         states.every((state) => body.states?.includes(state)) &&
-        body.sortBy === sortBy &&
+        (body.sortBy ?? 'name-asc') === sortBy &&
         body.pageSize === pageSize
       );
     });
@@ -202,8 +239,14 @@ test('en: re-saved search defaults re-apply on SPA return to school search', asy
 
   try {
     // Defaults A: QLD / 24 per page / name Z→A, saved through the real form.
+    const prefsGet = page.waitForResponse(
+      (res) =>
+        res.url().includes('/api/search-preferences/me') && res.request().method() === 'GET',
+    );
     await page.goto('/dashboard/settings?tab=search');
-    await setOnlyState('QLD');
+    await prefsGet;
+    await waitForPreferencesForm(page, original);
+    await setOnlyState(page, 'QLD');
     const pageSizes = page.getByRole('radiogroup', { name: cat(en, 'Settings.defaultPageSize') });
     await pageSizes.getByRole('radio', { name: '24', exact: true }).click();
     const sort = page.getByRole('combobox', { name: cat(en, 'Settings.defaultSort') });
@@ -233,7 +276,10 @@ test('en: re-saved search defaults re-apply on SPA return to school search', asy
     await page.waitForURL('**/dashboard/settings**');
     await page.getByRole('tab', { name: cat(en, 'Settings.tabs.search') }).click();
     await expect(page).toHaveURL(/\/dashboard\/settings\?tab=search$/);
-    await setOnlyState('NSW');
+    // The tab remounts the form with blank defaults; wait for the reset from
+    // the (cached) query — which now holds defaults A — before touching NSW.
+    await waitForPreferencesForm(page, { ...original, default_states: ['QLD'] });
+    await setOnlyState(page, 'NSW');
     await pageSizes.getByRole('radio', { name: '12', exact: true }).click();
     await sort.click();
     await page

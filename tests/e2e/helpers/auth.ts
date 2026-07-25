@@ -38,3 +38,31 @@ export async function loginAsParent(page: Page): Promise<void> {
   lastLoginSubmittedAt = Date.now();
   await page.waitForURL('**/dashboard');
 }
+
+/**
+ * Freshly registered parents sit behind the mandatory-onboarding gate: once
+ * users/me resolves with the parent role, DashboardOnboardingGuard replaces any
+ * /dashboard route with /onboarding — ASYNCHRONOUSLY, mid-test, detaching
+ * whatever element is being clicked (observed as a 30s "element is not
+ * stable / detached" click timeout on the settings Update-password button).
+ * Walk the real skip path (Skip → Go to dashboard) so the guard stands down
+ * before the test touches dashboard screens.
+ */
+export async function skipOnboardingViaUi(page: Page): Promise<void> {
+  const en = loadMessages('en');
+  await page.goto('/onboarding');
+  const skip = page.getByRole('button', { name: cat(en, 'Onboarding.skip'), exact: true });
+  // A parent who already skipped/completed has nothing to skip — tolerate that
+  // so the helper is safe to call on every run, not just the first.
+  const canSkip = await skip
+    .waitFor({ state: 'visible', timeout: 5000 })
+    .then(() => true, () => false);
+  if (canSkip) {
+    await skip.click();
+    await page
+      .getByRole('link', { name: cat(en, 'Onboarding.goToDashboard'), exact: true })
+      .click();
+  }
+  await page.goto('/dashboard');
+  await page.waitForURL('**/dashboard');
+}

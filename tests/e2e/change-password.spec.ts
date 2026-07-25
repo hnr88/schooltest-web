@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-import { loginAsParent } from './helpers/auth';
+import { loginAsParent, skipOnboardingViaUi } from './helpers/auth';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { registerAndConfirmParent } from './helpers/throwaway-parent';
@@ -54,6 +54,9 @@ test('en: flow 4 — change password in settings → toast → sign out → old 
 
   await signIn(page, parent.email, parent.password);
   await page.waitForURL('**/dashboard');
+  // The throwaway parent is onboarding-pending: the dashboard guard would
+  // yank /dashboard/settings to /onboarding mid-click. Skip first (task 025).
+  await skipOnboardingViaUi(page);
 
   await page.goto('/dashboard/settings');
   // CardTitle renders a div (DS card primitive), so match by exact text.
