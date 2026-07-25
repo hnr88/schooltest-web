@@ -9,7 +9,7 @@ import { GoogleButton } from '@/modules/auth/components/GoogleButton';
 import { SignUpConfirmState } from '@/modules/auth/components/SignUpConfirmState';
 import { SignUpForm } from '@/modules/auth/components/SignUpForm';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
-import { Logo } from '@/modules/design-system';
+import { Logo, Skeleton } from '@/modules/design-system';
 
 // Right-hand form column of the sign-up split (design spec 06 §1.1): a bare
 // 420px stack on the page background — no card chrome — at a 24px rhythm.
@@ -33,6 +33,19 @@ export function SignUpCard() {
   useEffect(() => {
     if (hydrated && token) router.replace('/dashboard');
   }, [hydrated, token, router]);
+
+  // Session unresolved, or signed in and the effect above is redirecting: never
+  // paint the form for a session that is about to leave (no sign-up flash/jump).
+  if (!hydrated || token) {
+    return (
+      <div aria-busy="true" className="flex w-full flex-col gap-6">
+        <Skeleton className="h-9 w-2/3" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-11 w-full" />
+      </div>
+    );
+  }
 
   if (registeredEmail !== null) {
     return (

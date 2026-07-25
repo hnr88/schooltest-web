@@ -143,6 +143,9 @@ test('en: seeded parent login stores the JWT and lands on a real /dashboard', as
 test('en: an existing token redirects the card to /dashboard', async ({ context, page }) => {
   await context.addInitScript(() => window.localStorage.setItem('app.auth.token', 'stub-jwt'));
   await page.goto('/sign-in');
+  // No flash: the sign-in form is never painted for a session that is about to
+  // be redirected — the card renders its session-checking skeleton instead.
+  await expect(page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })).toHaveCount(0);
   await page.waitForURL('**/dashboard');
 });
 

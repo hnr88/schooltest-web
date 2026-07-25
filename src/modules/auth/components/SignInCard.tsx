@@ -9,7 +9,7 @@ import { AuthDivider } from '@/modules/auth/components/AuthDivider';
 import { GoogleButton } from '@/modules/auth/components/GoogleButton';
 import { SignInForm } from '@/modules/auth/components/SignInForm';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
-import { Alert, Logo } from '@/modules/design-system';
+import { Alert, Logo, Skeleton } from '@/modules/design-system';
 
 interface SignInCardProps {
   hasGoogleError?: boolean;
@@ -41,6 +41,19 @@ export function SignInCard({
   useEffect(() => {
     if (hydrated && token) router.replace('/dashboard');
   }, [hydrated, token, router]);
+
+  // Session unresolved, or signed in and the effect above is redirecting: never
+  // paint the form for a session that is about to leave (no login flash/jump).
+  if (!hydrated || token) {
+    return (
+      <div aria-busy="true" className="flex w-full flex-col gap-6">
+        <Skeleton className="h-9 w-2/3" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-11 w-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex w-full animate-in flex-col gap-6 duration-500 ease-out-expo fade-in slide-in-from-bottom-3 motion-reduce:animate-none">
