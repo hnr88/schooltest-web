@@ -26,8 +26,6 @@ interface SchoolSearchStore extends SchoolSearchFilters {
   // The defaults the last hydration applied — kept so `reset()` returns to the
   // SAVED defaults instead of the blank INITIAL. Null until the first hydration.
   savedDefaults: SchoolSearchDefaults | null;
-  // True once saved defaults have been seeded this session.
-  hasHydratedDefaults: boolean;
   // Per-field "the user chose this" flags for the three hydratable fields — set
   // ONLY by the explicit setters below, never by hydration. They are what lets a
   // LATER hydration (the user saved NEW defaults in settings mid-session) re-seed
@@ -80,7 +78,6 @@ export const useSchoolSearchStore = create<SchoolSearchStore>((set) => ({
   ...INITIAL,
   pageSize: PAGE_SIZE,
   savedDefaults: null,
-  hasHydratedDefaults: false,
   defaultsTouched: { states: false, sortBy: false, pageSize: false },
   activeSchoolId: null,
   selectedSchoolId: null,
@@ -132,7 +129,6 @@ export const useSchoolSearchStore = create<SchoolSearchStore>((set) => ({
         states.length !== current.states.length ||
         states.some((state, index) => state !== current.states[index]);
       return {
-        hasHydratedDefaults: true,
         savedDefaults: defaults,
         states,
         sortBy,
@@ -165,7 +161,6 @@ export const useSchoolSearchStore = create<SchoolSearchStore>((set) => ({
       sortBy: current.savedDefaults?.sortBy ?? INITIAL.sortBy,
       pageSize: current.savedDefaults?.pageSize ?? PAGE_SIZE,
       savedDefaults: current.savedDefaults,
-      hasHydratedDefaults: current.hasHydratedDefaults,
       defaultsTouched: { states: false, sortBy: false, pageSize: false },
       selectedSchoolId: null,
       activeSchoolId: null,
