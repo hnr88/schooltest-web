@@ -22,9 +22,10 @@ export const SETTINGS_TAB_CONFIG: readonly {
 // ::after pointer expansions of the pills and switches inside it clickable.
 export const PORTAL_CARD_CLASS = 'overflow-visible rounded-card border-0 shadow-sm';
 
-// Portal screen container (§4.1): one 820px column on a 22px rhythm.
+// Portal screen container: full-width, left-aligned on a 22px rhythm — the same
+// container contract as dashboard/children/search (no centered 820px column).
 export const PORTAL_SCREEN_CLASS =
-  'mx-auto flex w-full max-w-portal flex-1 flex-col gap-5.5 px-4 py-6 sm:px-6 lg:px-8';
+  'flex w-full flex-1 flex-col gap-5.5 px-4 py-6 sm:px-6 lg:px-8';
 
 // PortalChip, Pill variant (§1.4): 42px tall, 18px side padding, 13.5/500, r999.
 export const PORTAL_PILL_CLASS =
