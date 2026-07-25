@@ -30,14 +30,19 @@ export function DashboardOnboardingGuard({ children }: DashboardOnboardingGuardP
 
   const isPending = onboarding?.status === 'pending';
   const isChecking = isAuthLoading || isOnboardingLoading;
+  // A known-pending parent IS leaving for /onboarding — painting children here
+  // (even for the single frame before the effect fires) flashes the real
+  // dashboard under the onboarding redirect. Render the skeleton instead;
+  // completed/skipped/non-parent outcomes still render children unchanged.
+  const willRedirect = isParent && isPending;
 
   useEffect(() => {
-    if (!isChecking && isParent && isPending) {
+    if (!isChecking && willRedirect) {
       router.replace('/onboarding');
     }
-  }, [isChecking, isParent, isPending, router]);
+  }, [isChecking, willRedirect, router]);
 
-  if (isChecking) {
+  if (isChecking || willRedirect) {
     return (
       <div className="flex h-svh w-full items-center justify-center bg-surface-well">
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 px-6 py-16">

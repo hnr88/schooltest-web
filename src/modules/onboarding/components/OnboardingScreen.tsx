@@ -6,20 +6,20 @@ import { useState } from 'react';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRouter } from '@/i18n/navigation';
+import { useAuth } from '@/modules/auth';
 import { Button, ProgressBar } from '@/modules/design-system';
-import {
-  OnboardingStep,
-  type OnboardingStepKey,
-} from '@/modules/onboarding/components/OnboardingStep';
+import { OnboardingProfileForm } from '@/modules/onboarding/components/OnboardingProfileForm';
+import { OnboardingStep } from '@/modules/onboarding/components/OnboardingStep';
 import { useOnboardingStateQuery } from '@/modules/onboarding/queries/use-onboarding-state.query';
 import { useUpdateOnboardingMutation } from '@/modules/onboarding/queries/use-update-onboarding.mutation';
 
-const STEPS: OnboardingStepKey[] = ['welcome', 'features', 'addChild', 'finish'];
+type WizardStepKey = 'welcome' | 'profile' | 'finish';
+
+const STEPS: WizardStepKey[] = ['welcome', 'profile', 'finish'];
 
 export function OnboardingScreen() {
   const t = useTranslations('Onboarding');
-  const router = useRouter();
+  const { user, isLoading: isAuthLoading } = useAuth();
   const [stepIndex, setStepIndex] = useState(0);
   const { data, isLoading, isError, refetch } = useOnboardingStateQuery();
   const updateOnboarding = useUpdateOnboardingMutation();
@@ -29,15 +29,15 @@ export function OnboardingScreen() {
 
   const status = data?.status;
   const isDone = status === 'completed' || status === 'skipped';
+  // The finish step unlocks once the profile is complete — either saved this
+  // session (the PUT merges profileCompleted into the me cache) or already
+  // complete on the server.
+  const profileCompleted = user?.profileCompleted === true;
 
   const handleNext = () => {
     if (stepIndex < STEPS.length - 1) {
       setStepIndex((prev) => prev + 1);
     }
-  };
-
-  const handleAddChild = () => {
-    router.push('/dashboard/children/new');
   };
 
   const handleSkip = () => {
@@ -48,7 +48,10 @@ export function OnboardingScreen() {
     updateOnboarding.mutate({ status: 'completed' });
   };
 
-  if (isLoading) {
+  // Hold the skeleton until GET /users/me resolves too: the profile step's
+  // form defaults are captured at mount, so the prefill (C-PAR-ME fields)
+  // must be settled before the wizard renders.
+  if (isLoading || isAuthLoading) {
     return (
       <div className="flex flex-1 items-center justify-center px-6 py-12 sm:px-10 lg:px-14">
         <Card className="w-full max-w-auth">
@@ -124,14 +127,24 @@ export function OnboardingScreen() {
             ariaLabel={t('progressLabel', { current: stepIndex + 1, total: STEPS.length })}
             tone="gradient"
           />
-          <OnboardingStep
-            step={step}
-            onContinue={handleNext}
-            onAddChild={handleAddChild}
-            onComplete={handleComplete}
-            onSkip={handleSkip}
-            isPending={updateOnboarding.isPending}
-          />
+          {step === 'profile' ? (
+            <OnboardingProfileForm
+              user={user}
+              onSaved={handleNext}
+              onSkip={handleSkip}
+              isSkipPending={updateOnboarding.isPending}
+            />
+          ) : (
+            <OnboardingStep
+              step={step}
+              onContinue={handleNext}
+              onComplete={handleComplete}
+              onSkip={handleSkip}
+              isPending={updateOnboarding.isPending}
+              completeDisabled={!profileCompleted}
+              completeHint={t('finishProfileHint')}
+            />
+          )}
           <p className="text-center text-caption text-muted-foreground">
             {t('stepCounter', { current: stepIndex + 1, total: STEPS.length })}
           </p>

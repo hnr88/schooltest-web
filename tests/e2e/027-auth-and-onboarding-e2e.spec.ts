@@ -226,9 +226,13 @@ test('auth pages share the split-panel layout and brand panel', async ({ page })
 test('sign-up UI matches sign-in styling', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
   await page.goto('/sign-in');
+  // The card paints a skeleton until the auth store hydrates — wait for the
+  // real form before sampling classes (the skeleton has no animate-in).
+  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).waitFor();
   const signInClasses = await (await authCard(page)).getAttribute('class');
 
   await page.goto('/sign-up');
+  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).waitFor();
   const signUpClasses = await (await authCard(page)).getAttribute('class');
 
   // Both form columns use the same animate-in entrance and flex column rhythm.

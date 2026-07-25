@@ -1,42 +1,42 @@
 'use client';
 
-import { BookOpen, CircleCheck, UserPlus, Users } from 'lucide-react';
+import { CircleCheck, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/modules/design-system';
 
-export type OnboardingStepKey = 'welcome' | 'features' | 'addChild' | 'finish';
+export type OnboardingStepKey = 'welcome' | 'finish';
 
 interface OnboardingStepProps {
   step: OnboardingStepKey;
   onContinue: () => void;
-  onAddChild: () => void;
   onComplete: () => void;
   onSkip: () => void;
   isPending: boolean;
+  // The finish step's "Get started" stays locked until the parent profile is
+  // complete (saved this session or already complete on the server).
+  completeDisabled?: boolean;
+  completeHint?: string;
 }
 
 const STEP_ICONS: Record<OnboardingStepKey, React.ReactNode> = {
   welcome: <Users className="size-6" />,
-  features: <BookOpen className="size-6" />,
-  addChild: <UserPlus className="size-6" />,
   finish: <CircleCheck className="size-6" />,
 };
 
 const STEP_KEY_PREFIX: Record<OnboardingStepKey, string> = {
   welcome: 'stepWelcome',
-  features: 'stepFeatures',
-  addChild: 'stepAddChild',
   finish: 'finish',
 };
 
 export function OnboardingStep({
   step,
   onContinue,
-  onAddChild,
   onComplete,
   onSkip,
   isPending,
+  completeDisabled = false,
+  completeHint,
 }: OnboardingStepProps) {
   const t = useTranslations('Onboarding');
   const prefix = STEP_KEY_PREFIX[step];
@@ -57,26 +57,21 @@ export function OnboardingStep({
       </div>
 
       <div className="flex w-full flex-col gap-3">
-        {step === 'addChild' && (
-          <Button
-            size="xl"
-            className="w-full"
-            onClick={onAddChild}
-            disabled={isPending}
-          >
-            {t('addChild')}
-          </Button>
-        )}
-
         {step === 'finish' ? (
-          <Button
-            size="xl"
-            className="w-full"
-            onClick={onComplete}
-            loading={isPending}
-          >
-            {t('complete')}
-          </Button>
+          <>
+            <Button
+              size="xl"
+              className="w-full"
+              onClick={onComplete}
+              loading={isPending}
+              disabled={completeDisabled}
+            >
+              {t('complete')}
+            </Button>
+            {completeDisabled && completeHint ? (
+              <p className="text-caption text-muted-foreground">{completeHint}</p>
+            ) : null}
+          </>
         ) : (
           <Button
             size="xl"

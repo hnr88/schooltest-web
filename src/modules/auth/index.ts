@@ -65,4 +65,6 @@ export type {
   ResetPasswordRequest,
   ResetPasswordErrorKey,
   ChangePasswordErrorKey,
+  ParentRelationship,
+  PreferredContactMethod,
 } from './types/auth.types';

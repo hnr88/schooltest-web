@@ -8,6 +8,13 @@ export interface AuthUserRole {
   description?: string | null;
 }
 
+// C-PAR-ME / C-PAR-UPDATE-ME whitelist values (schooltest-api
+// src/extensions/users-permissions/update-me.ts) — the enums the server accepts
+// on PUT /api/users/me.
+export type ParentRelationship = 'mother' | 'father' | 'guardian' | 'grandparent' | 'other';
+
+export type PreferredContactMethod = 'email' | 'phone' | 'whatsapp' | 'wechat';
+
 export interface AuthUser {
   id: number;
   documentId?: string;
@@ -18,6 +25,26 @@ export interface AuthUser {
   createdAt?: string;
   updatedAt?: string;
   role?: AuthUserRole | null;
+  // Parent self-service profile (C-PAR-UPDATE-ME 16-field whitelist). Returned
+  // on both GET and PUT /api/users/me; all nullable — a fresh parent has none.
+  first_name?: string | null;
+  last_name?: string | null;
+  relationship_to_student?: ParentRelationship | null;
+  occupation?: string | null;
+  phone?: string | null;
+  secondary_phone?: string | null;
+  preferred_contact_method?: PreferredContactMethod | null;
+  address_line?: string | null;
+  city?: string | null;
+  state_region?: string | null;
+  postal_code?: string | null;
+  country_of_residence?: string | null;
+  emergency_contact_name?: string | null;
+  emergency_contact_phone?: string | null;
+  emergency_contact_relationship?: string | null;
+  // Parents only: true when all 10 completion-rule fields are non-empty
+  // (schooltest-api profile-completion.ts). Absent for non-parents.
+  profileCompleted?: boolean;
 }
 
 export interface AuthResponse {
