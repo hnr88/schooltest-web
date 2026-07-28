@@ -16,4 +16,4 @@ services:
       PORT: ${PORT_INTERNAL:-28721}
       HOSTNAME: 0.0.0.0
     ports:
-      - "127.0.0.1:${PORT_INTERNAL:-28721}:${PORT_INTERNAL:-28721}"
+      - "${PORT_INTERNAL:-28721}:${PORT_INTERNAL:-28721}"
