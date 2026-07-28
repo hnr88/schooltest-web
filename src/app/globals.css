@@ -300,7 +300,7 @@
   /* The portal FRAME cap (.qa/design/spec/01 §1.1: `max-width:1600px; margin:0 auto`
      on the outer flex frame). The scroll column is what carries it in the shell. */
   --container-shell: 1600px;
-  --container-eald: 70rem;
+  --container-eald: 75rem;
 }
 
 /* PROVENANCE (D-DESIGN-2). Every declaration below records the design hex it was

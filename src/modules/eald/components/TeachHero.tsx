@@ -7,7 +7,7 @@ async function TeachHero() {
   const t = await getTranslations('Eald');
 
   return (
-    <Section className="bg-gradient-to-b from-white to-background pb-0 pt-16 sm:pt-20">
+    <Section className="bg-gradient-to-b from-white to-background pt-16 sm:pt-20">
       <Container className="max-w-eald">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
@@ -23,7 +23,7 @@ async function TeachHero() {
               {t('teach.hero.body')}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Button size="xl" href="/eald#register">
+              <Button size="xl" href="/#register">
                 {t('teach.hero.primaryCta')}
               </Button>
               <Button variant="outline" size="xl" href="/eald/diagnose">

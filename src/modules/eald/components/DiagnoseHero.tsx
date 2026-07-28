@@ -7,8 +7,8 @@ async function DiagnoseHero() {
   const t = await getTranslations('Eald');
 
   return (
-    <Section className="bg-gradient-to-b from-white to-background py-0 sm:py-0">
-      <Container className="max-w-eald pt-16 text-center">
+    <Section className="bg-gradient-to-b from-white to-background pb-8 pt-16 sm:pb-12 sm:pt-20">
+      <Container className="max-w-eald text-center">
         <Eyebrow>{t('diagnose.hero.eyebrow')}</Eyebrow>
 
         <h1 className="mx-auto mt-4 max-w-3xl text-display font-bold text-balance text-foreground">

@@ -1,15 +1,15 @@
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
-import { Badge, Container, Eyebrow } from '@/modules/design-system';
+import { Badge, Container, Eyebrow, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 
 async function ProblemSection() {
   const t = await getTranslations('Eald');
 
   return (
-    <section data-slot="problem">
-      <Container className="max-w-eald pt-10 sm:pt-16">
+    <Section>
+      <Container className="max-w-eald">
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <ScrollReveal>
             <div>
@@ -59,7 +59,7 @@ async function ProblemSection() {
           </ScrollReveal>
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }
 

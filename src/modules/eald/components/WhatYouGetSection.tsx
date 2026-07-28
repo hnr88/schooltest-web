@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
-import { Container, Eyebrow } from '@/modules/design-system';
+import { Container, Eyebrow, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 
 const CARDS = [
@@ -49,7 +49,7 @@ async function WhatYouGetSection() {
   const t = await getTranslations('Eald');
 
   return (
-    <section data-slot="what-you-get" className="pt-16 sm:pt-20">
+    <Section>
       <Container className="max-w-eald">
         <div className="text-center">
           <Eyebrow>{t('home.whatYouGet.eyebrow')}</Eyebrow>
@@ -110,7 +110,7 @@ async function WhatYouGetSection() {
           })}
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }
 

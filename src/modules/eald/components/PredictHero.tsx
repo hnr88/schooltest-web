@@ -7,7 +7,7 @@ async function PredictHero() {
   const t = await getTranslations('Eald');
 
   return (
-    <Section className="bg-gradient-to-b from-white to-background pb-0 pt-16 sm:pt-20">
+    <Section className="bg-gradient-to-b from-white to-background pt-16 sm:pt-20">
       <Container className="max-w-eald">
         <div className="grid items-end gap-12 lg:grid-cols-2">
           <div>

@@ -1,13 +1,13 @@
 import { getTranslations } from 'next-intl/server';
 
-import { Container, Logo } from '@/modules/design-system';
+import { Container, Logo, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 
 async function SolutionBand() {
   const t = await getTranslations('Eald');
 
   return (
-    <section data-slot="solution-band" className="pt-16 sm:pt-20">
+    <Section>
       <Container className="max-w-eald">
         <ScrollReveal variant="scale">
           <div className="relative overflow-hidden rounded-4xl bg-navy-900 p-12 text-center sm:p-16">
@@ -26,7 +26,7 @@ async function SolutionBand() {
           </div>
         </ScrollReveal>
       </Container>
-    </section>
+    </Section>
   );
 }
 

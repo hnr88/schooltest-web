@@ -18,7 +18,7 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/88 backdrop-blur">
       <Container className="flex h-16 max-w-eald items-center gap-7">
-        <Link href="/eald" className="shrink-0 py-2">
+        <Link href="/" className="shrink-0 py-2">
           <Logo alt={t('footer.logoAlt')} />
         </Link>
 

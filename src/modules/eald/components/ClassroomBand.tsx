@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
-import { Container } from '@/modules/design-system';
+import { Container, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 
 async function ClassroomBand() {
   const t = await getTranslations('Eald');
 
   return (
-    <section data-slot="classroom-band" className="pt-16">
+    <Section>
       <Container className="max-w-eald">
         <ScrollReveal variant="scale">
           <div className="relative flex min-h-80 items-end overflow-hidden rounded-4xl bg-navy-900 sm:min-h-96">
@@ -34,7 +34,7 @@ async function ClassroomBand() {
           </div>
         </ScrollReveal>
       </Container>
-    </section>
+    </Section>
   );
 }
 

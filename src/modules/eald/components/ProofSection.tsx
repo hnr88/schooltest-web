@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { Badge, Container } from '@/modules/design-system';
+import { Badge, Container, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 
 const STATS = [
@@ -14,7 +14,7 @@ async function ProofSection() {
   const t = await getTranslations('Eald');
 
   return (
-    <section data-slot="proof" className="pt-16 sm:pt-20">
+    <Section>
       <Container className="max-w-eald">
         <ScrollReveal>
           <div className="rounded-4xl border border-border bg-surface-inset p-10 sm:p-12">
@@ -39,7 +39,7 @@ async function ProofSection() {
           </div>
         </ScrollReveal>
       </Container>
-    </section>
+    </Section>
   );
 }
 

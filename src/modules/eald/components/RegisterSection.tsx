@@ -40,7 +40,7 @@ function RegisterSection() {
   return (
     <section id="register" data-slot="register" className="scroll-mt-24 py-16 sm:py-20">
       <Container className="max-w-eald">
-        <div className="grid items-stretch gap-5 lg:grid-cols-2">
+        <div className="grid items-stretch gap-6 lg:grid-cols-2">
           <FoundingCard t={t} />
           {submitted ? <SuccessCard t={t} /> : <FormCard t={t} onSubmit={handleSubmit} />}
         </div>
