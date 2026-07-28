@@ -23,7 +23,7 @@ export function classifyQueryError(error: unknown): QueryErrorState {
       return { kind: 'gone' };
     }
     if (status === 403) {
-      return { kind: 'forbidden' };
+      return { kind: 'gone' };
     }
     return { kind: 'broken', cause: 'http', status };
   }

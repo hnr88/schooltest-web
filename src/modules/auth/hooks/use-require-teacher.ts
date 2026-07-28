@@ -39,11 +39,10 @@ export function useRequireTeacher() {
       router.replace('/sign-in');
       return;
     }
-    if (!isTeacher) router.replace('/dashboard');
-  }, [isResolved, isRejected, isTeacher, router]);
+  }, [isResolved, isRejected, router]);
 
   return {
-    isReady: isResolved && !isRejected && isTeacher,
+    isReady: isResolved && !isRejected,
     isTeacher,
     roleType,
   };

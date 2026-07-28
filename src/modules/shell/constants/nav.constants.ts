@@ -1,6 +1,5 @@
 import { FileChartColumn, LayoutDashboard, Search, Settings, Users } from 'lucide-react';
 
-import { TEACHER_ROLE_TYPE } from '@/modules/auth';
 import type { NavItem } from '@/modules/shell/types/shell.types';
 
 // The one reachable search surface (unified search). The topbar trigger pill points
@@ -32,7 +31,6 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: FileChartColumn,
     exact: false,
     group: 'primary',
-    roles: [TEACHER_ROLE_TYPE],
   },
   { labelKey: 'search', href: SEARCH_HREF, icon: Search, exact: false, group: 'primary' },
   {
