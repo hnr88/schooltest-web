@@ -1871,7 +1871,13 @@
         "submitButton": "Register interest",
         "privacyNote": "Pseudonymised data handling. No student names in any export.",
         "successTitle": "Thanks for your interest",
-        "successBody": "We'll be in touch within a week with a sample report."
+        "successBody": "We'll be in touch within a week with a sample report.",
+        "nameRequired": "Please enter your full name.",
+        "schoolRequired": "Please enter your school name.",
+        "roleRequired": "Please select your role.",
+        "emailRequired": "Please enter your email address.",
+        "emailInvalid": "Please enter a valid email address.",
+        "studentsRequired": "Please select the number of EAL/D students."
       }
     },
     "diagnose": {

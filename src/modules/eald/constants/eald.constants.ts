@@ -20,10 +20,10 @@ const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
   {
     titleKey: 'footer.moreTitle',
     links: [
-      { href: '#', labelKey: 'footer.schoolSearch' },
-      { href: '#register', labelKey: 'footer.foundingPilot' },
+      { href: '/dashboard/search', labelKey: 'footer.schoolSearch' },
+      { href: '/#register', labelKey: 'footer.foundingPilot' },
       { href: '/privacy', labelKey: 'footer.privacy' },
-      { href: '#register', labelKey: 'footer.contact' },
+      { href: '/#register', labelKey: 'footer.contact' },
     ],
   },
 ] as const;

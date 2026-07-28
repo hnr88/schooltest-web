@@ -40,13 +40,13 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
         <div className="ml-auto hidden items-center gap-2 lg:flex">
           <Button
             variant="ghost"
-            href="/search"
+            href="/dashboard/search"
             className="h-11 rounded-lg px-4 font-semibold text-navy-800 transition-colors duration-150 hover:bg-surface-inset"
           >
             {t('nav.schoolSearch')}
           </Button>
           <Button
-            href="#register"
+            href="/#register"
             className="h-11 rounded-lg px-5 shadow-primary-glow transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
             {t('nav.registerInterest')}

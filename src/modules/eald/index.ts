@@ -28,6 +28,10 @@ export { GenerateSection } from '@/modules/eald/components/GenerateSection';
 export { ClassroomSection } from '@/modules/eald/components/ClassroomSection';
 export { ThreeMoreSection } from '@/modules/eald/components/ThreeMoreSection';
 
+// Schemas
+export { registerSchema } from '@/modules/eald/schemas/register.schema';
+export type { RegisterInput } from '@/modules/eald/schemas/register.schema';
+
 // Types
 export type {
   EaldPage,

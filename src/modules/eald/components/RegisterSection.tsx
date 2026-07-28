@@ -1,11 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { Button, Container, Eyebrow } from '@/modules/design-system';
+import { registerSchema } from '@/modules/eald/schemas/register.schema';
+import type { RegisterInput } from '@/modules/eald/schemas/register.schema';
 
 const BENEFITS = [
   'home.register.benefitEarlyAccess',
@@ -32,17 +36,16 @@ function RegisterSection() {
   const t = useTranslations('Eald');
   const [submitted, setSubmitted] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSubmitted(true);
-  }
-
   return (
     <section id="register" data-slot="register" className="scroll-mt-24 py-16 sm:py-20">
       <Container className="max-w-eald">
         <div className="grid items-stretch gap-6 lg:grid-cols-2">
           <FoundingCard t={t} />
-          {submitted ? <SuccessCard t={t} /> : <FormCard t={t} onSubmit={handleSubmit} />}
+          {submitted ? (
+            <SuccessCard t={t} />
+          ) : (
+            <FormCard t={t} onSuccess={() => setSubmitted(true)} />
+          )}
         </div>
       </Container>
     </section>
@@ -76,14 +79,27 @@ function FoundingCard({ t }: { t: ReturnType<typeof useTranslations<'Eald'>> }) 
 
 function FormCard({
   t,
-  onSubmit,
+  onSuccess,
 }: {
   t: ReturnType<typeof useTranslations<'Eald'>>;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSuccess: () => void;
 }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterInput>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { name: '', school: '', role: '', email: '', students: '' },
+  });
+
+  function onValid(_data: RegisterInput) {
+    onSuccess();
+  }
+
   const fieldLabel = 'text-xs font-bold tracking-eyebrow text-slate-400 uppercase';
-  const fieldInput = cn(
-    'h-11 w-full rounded-xl border border-slate-300 bg-transparent px-3.5',
+  const fieldBase = cn(
+    'h-11 w-full rounded-xl border bg-transparent px-3.5',
     'text-body-md text-foreground placeholder:text-slate-400',
     'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
   );
@@ -95,58 +111,92 @@ function FormCard({
       </h3>
       <p className="mt-2 text-body-md text-body">{t('home.register.formSubtitle')}</p>
 
-      <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-3.5">
-        <label className="flex flex-col gap-1.5">
-          <span className={fieldLabel}>{t('home.register.nameLabel')}</span>
+      <form onSubmit={handleSubmit(onValid)} className="mt-6 flex flex-col gap-3.5">
+        <FieldWrapper label={t('home.register.nameLabel')} error={errors.name?.message} t={t}>
           <input
+            {...register('name')}
             type="text"
-            required
             placeholder={t('home.register.namePlaceholder')}
-            className={fieldInput}
+            className={cn(fieldBase, errors.name ? 'border-red-500' : 'border-slate-300')}
           />
-        </label>
-        <label className="flex flex-col gap-1.5">
-          <span className={fieldLabel}>{t('home.register.schoolLabel')}</span>
+        </FieldWrapper>
+
+        <FieldWrapper label={t('home.register.schoolLabel')} error={errors.school?.message} t={t}>
           <input
+            {...register('school')}
             type="text"
-            required
             placeholder={t('home.register.schoolPlaceholder')}
-            className={fieldInput}
+            className={cn(fieldBase, errors.school ? 'border-red-500' : 'border-slate-300')}
           />
-        </label>
-        <label className="flex flex-col gap-1.5">
-          <span className={fieldLabel}>{t('home.register.roleLabel')}</span>
-          <select required className={fieldInput}>
+        </FieldWrapper>
+
+        <FieldWrapper label={t('home.register.roleLabel')} error={errors.role?.message} t={t}>
+          <select
+            {...register('role')}
+            className={cn(fieldBase, errors.role ? 'border-red-500' : 'border-slate-300')}
+          >
             <option value="">{t('home.register.selectPlaceholder')}</option>
             {ROLE_KEYS.map((key) => (
               <option key={key} value={t(key)}>{t(key)}</option>
             ))}
           </select>
-        </label>
-        <label className="flex flex-col gap-1.5">
-          <span className={fieldLabel}>{t('home.register.emailLabel')}</span>
+        </FieldWrapper>
+
+        <FieldWrapper label={t('home.register.emailLabel')} error={errors.email?.message} t={t}>
           <input
+            {...register('email')}
             type="email"
-            required
             placeholder={t('home.register.emailPlaceholder')}
-            className={fieldInput}
+            className={cn(fieldBase, errors.email ? 'border-red-500' : 'border-slate-300')}
           />
-        </label>
-        <label className="flex flex-col gap-1.5">
-          <span className={fieldLabel}>{t('home.register.studentsLabel')}</span>
-          <select required className={fieldInput}>
+        </FieldWrapper>
+
+        <FieldWrapper label={t('home.register.studentsLabel')} error={errors.students?.message} t={t}>
+          <select
+            {...register('students')}
+            className={cn(fieldBase, errors.students ? 'border-red-500' : 'border-slate-300')}
+          >
             <option value="">{t('home.register.selectPlaceholder')}</option>
             {STUDENT_KEYS.map((key) => (
               <option key={key} value={t(key)}>{t(key)}</option>
             ))}
           </select>
-        </label>
-        <Button type="submit" className="mt-1.5 h-12 w-full rounded-xl shadow-primary-glow">
+        </FieldWrapper>
+
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="mt-1.5 h-12 w-full rounded-xl shadow-primary-glow"
+        >
           {t('home.register.submitButton')}
         </Button>
       </form>
       <p className="mt-3.5 text-meta text-slate-400">{t('home.register.privacyNote')}</p>
     </div>
+  );
+}
+
+function FieldWrapper({
+  label,
+  error,
+  t,
+  children,
+}: {
+  label: string;
+  error: string | undefined;
+  t: ReturnType<typeof useTranslations<'Eald'>>;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="flex flex-col gap-1.5">
+      <span className="text-xs font-bold tracking-eyebrow text-slate-400 uppercase">{label}</span>
+      {children}
+      {error ? (
+        <span className="text-xs text-red-500" role="alert">
+          {t(`home.register.${error}`)}
+        </span>
+      ) : null}
+    </label>
   );
 }
 
