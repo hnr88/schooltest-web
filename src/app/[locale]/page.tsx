@@ -44,6 +44,7 @@ export default async function Home() {
           primaryCta={{ label: t('home.hero.primaryCta'), href: '#register' }}
           secondaryCta={{ label: t('home.hero.secondaryCta'), href: '/eald/diagnose' }}
           subText={t('home.hero.microcopy')}
+          imageSrc="/images/kaleb-tapp-1deQbU6DhBg-unsplash.jpg"
         />
         <EaldTrustedBy />
         <ProblemSection />

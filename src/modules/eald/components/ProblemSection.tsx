@@ -45,7 +45,7 @@ async function ProblemSection() {
           <ScrollReveal delay={120}>
             <div className="relative min-h-80 overflow-hidden rounded-4xl bg-navy-900 lg:min-h-96">
               <Image
-                src="/images/zachary-keimig-nxJgmZfLcJI-unsplash.jpg"
+                src="/images/university-of-mobile-ZPkG0EdWQa8-unsplash.jpg"
                 alt=""
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"

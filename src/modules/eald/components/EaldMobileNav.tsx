@@ -73,8 +73,22 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
               {t(key)}
             </Link>
           ))}
+          <Link
+            href="/dashboard/search"
+            onClick={close}
+            className="rounded-lg px-3 py-3 text-sm font-medium text-body hover:bg-muted"
+          >
+            {t('nav.schoolSearch')}
+          </Link>
         </nav>
         <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
+          <Link
+            href="/sign-in"
+            onClick={close}
+            className="inline-flex h-11 items-center justify-center rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted"
+          >
+            {t('nav.signIn')}
+          </Link>
           <Link
             href="/#register"
             onClick={close}

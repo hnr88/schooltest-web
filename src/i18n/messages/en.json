@@ -1780,6 +1780,8 @@
       "predict": "Predict",
       "schoolSearch": "SchoolSearch",
       "registerInterest": "Register interest",
+      "signIn": "Sign in",
+      "startFree": "Start free",
       "openMenu": "Open menu",
       "closeMenu": "Close menu"
     },
