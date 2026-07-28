@@ -62,7 +62,7 @@ For a host Nginx proxy, use `http://127.0.0.1:28721`.
 ### Staging
 
 ```dotenv
-NEXT_PUBLIC_API_BASE_URL=https://stagingapi.schooltest.com.au
+NEXT_PUBLIC_API_BASE_URL=https://staging-api.schooltest.com.au
 NEXT_PUBLIC_APP_URL=https://staging.schooltest.com.au
 PORT_INTERNAL=28821
 ```
@@ -80,7 +80,7 @@ Point only these DNS records at the corresponding Coolify resources:
 | Environment | Web | API |
 |---|---|---|
 | Production | `schooltest.com.au` | `api.schooltest.com.au` |
-| Staging | `staging.schooltest.com.au` | `stagingapi.schooltest.com.au` |
+| Staging | `staging.schooltest.com.au` | `staging-api.schooltest.com.au` |
 
 No portal, audience, or other application subdomains are part of this setup.
 
@@ -88,7 +88,7 @@ DNS state and cutover: `api.schooltest.com.au` already serves the live API. The
 apex `schooltest.com.au` currently routes to the API as well — after the first
 successful production deploy of this web resource (healthcheck green on `/`),
 repoint the apex at the web resource and verify the landing page loads over
-HTTPS. `staging.schooltest.com.au` and `stagingapi.schooltest.com.au` records
+HTTPS. `staging.schooltest.com.au` and `staging-api.schooltest.com.au` records
 must be created in Cloudflare (proxied, SSL Full strict).
 
 Related infrastructure — mail catch (Mailpit), status monitoring (Gatus), and
