@@ -110,6 +110,7 @@ const FOOTER_COLUMNS = [
       { href: '#for-schools', labelKey: 'footer.schoolsLanguageCenters' },
       { href: '#for-schools', labelKey: 'footer.schoolsUniversities' },
       { href: '#for-schools', labelKey: 'footer.schoolsCaseStudies' },
+      { href: '/eald', labelKey: 'footer.schoolsEald' },
     ],
   },
   {

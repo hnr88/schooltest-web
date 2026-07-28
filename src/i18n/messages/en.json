@@ -158,6 +158,7 @@
       "schoolsLanguageCenters": "Language centers",
       "schoolsUniversities": "Universities",
       "schoolsCaseStudies": "Case studies",
+      "schoolsEald": "EAL/D",
       "copyright": "© 2026 SchoolTest, Inc.",
       "status": "All systems operational",
       "socialX": "X",
@@ -1756,6 +1757,304 @@
       "scoring": "Scoring",
       "partial_pending": "Partially pending",
       "complete": "Complete"
+    }
+  },
+  "Eald": {
+    "meta": {
+      "homeTitle": "SchoolTest — A different type of English test",
+      "homeDescription": "See exactly what each EAL/D student can and can't do, subskill by subskill, in 30 minutes per skill.",
+      "diagnoseTitle": "Diagnose — SchoolTest EAL/D",
+      "diagnoseDescription": "SchoolTest breaks a single score into 25 subskills across all four domains — so you know where to start teaching before you've taught a single lesson.",
+      "predictTitle": "Predict mainstream readiness — SchoolTest EAL/D",
+      "predictDescription": "One readiness indicator, aggregated from every subskill across all four domains. The exit call stays yours — the evidence behind it stops being a hunch.",
+      "teachTitle": "Plan and teach — SchoolTest EAL/D",
+      "teachDescription": "Export a privacy-safe class set and hand it to ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into materials your class can actually use.",
+      "trackTitle": "Track progress — SchoolTest EAL/D",
+      "trackDescription": "Every result lands on the same ACARA scale, so growth shows up subskill by subskill instead of as a total that wobbled three points."
+    },
+    "nav": {
+      "label": "EALD navigation",
+      "diagnose": "Diagnose",
+      "teach": "Teach",
+      "track": "Track",
+      "predict": "Predict",
+      "schoolSearch": "SchoolSearch",
+      "registerInterest": "Register interest",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "home": {
+      "hero": {
+        "badge": "For Australian EAL/D classrooms",
+        "title": "A different type of English test.",
+        "subtitle": "See exactly what each EAL/D student can and can't do, subskill by subskill, in 30 minutes per skill.",
+        "primaryCta": "Register your interest",
+        "secondaryCta": "See a sample profile",
+        "microcopy": "Join the founding schools pilot"
+      },
+      "trustedBy": {
+        "label": "Field testing with",
+        "one": "Riverview Grammar",
+        "two": "St Aidan's College",
+        "three": "Brisbane International",
+        "four": "Kingsford Anglican",
+        "five": "Melbourne EAL Centre"
+      },
+      "problem": {
+        "eyebrow": "The problem",
+        "title": "You can't teach<br></br>what you can't see.",
+        "bodyOne": "Every EAL/D student arrives as a number — a placement score, a CEFR band, a phase judgement. It says roughly where they sit, nothing about what's underneath.",
+        "bodyTwo": "So what to teach Monday, who to group with whom, whether it worked, whether they're ready to exit — all of it runs on intuition.",
+        "badgeScore": "65",
+        "badgeCefr": "CEFR B1",
+        "badgePhase": "Developing"
+      },
+      "solution": {
+        "intro": "SchoolTest is a diagnostic and progress English test for Years 7–12.",
+        "body": "It measures 25 subskills across reading, listening, speaking and writing — 30 minutes per skill, reported on the ACARA scale, every time you test.",
+        "tagline": "Assessment stops being a summary and starts being a map."
+      },
+      "whatYouGet": {
+        "eyebrow": "What you get",
+        "title": "Test once. Then diagnose, teach, track and predict.",
+        "diagnoseTitle": "See strengths and weaknesses",
+        "diagnoseDescription": "25 subskills from a 30-minute test. Six weeks of diagnostic testing, done on day one.",
+        "teachTitle": "Plan and teach",
+        "teachDescription": "Export a privacy-safe class set into any AI. Differentiation stops being a Sunday night job.",
+        "trackTitle": "Track progress over time",
+        "trackDescription": "Every result on the same ACARA scale. If it worked, it shows up.",
+        "predictTitle": "Predict mainstream readiness",
+        "predictDescription": "One readiness score across all four domains. Exit calls you can defend."
+      },
+      "classroom": {
+        "quote": "Assessment stops being a summary and starts being a map.",
+        "subtext": "Years 7–12 · Reading, listening, speaking and writing"
+      },
+      "proof": {
+        "badge": "Built on 40+ years of psychometric research",
+        "skillsValue": "4 skills",
+        "skillsLabel": "Reading, listening, speaking, writing",
+        "yearsValue": "Years 7–12",
+        "yearsLabel": "Age-appropriate and Australian contexts",
+        "scalesValue": "ACARA + CEFR",
+        "scalesLabel": "Phases and bands, side by side",
+        "durationValue": "30 minutes",
+        "durationLabel": "Per skill, as often as you need"
+      },
+      "register": {
+        "foundingEyebrow": "Founding schools",
+        "foundingTitle": "We're building this with founding schools.",
+        "foundingBody": "We're heading into field testing. We need schools willing to try it with real students and tell us what we got wrong.",
+        "benefitEarlyAccess": "Early access as it's built",
+        "benefitDirectInput": "Direct input into the reports",
+        "benefitFoundingTerms": "Founding terms at launch",
+        "formTitle": "Register your interest",
+        "formSubtitle": "We'll be in touch within a week with a sample report.",
+        "nameLabel": "Your name",
+        "namePlaceholder": "Jane Smith",
+        "schoolLabel": "School",
+        "schoolPlaceholder": "School name",
+        "roleLabel": "Your role",
+        "selectPlaceholder": "Select…",
+        "roleCoordinator": "EAL/D coordinator",
+        "roleHod": "Head of department",
+        "roleTeacher": "Classroom teacher",
+        "rolePrincipal": "Principal / leadership",
+        "roleOther": "Other",
+        "emailLabel": "Work email",
+        "emailPlaceholder": "name@school.edu.au",
+        "studentsLabel": "Number of EAL/D students",
+        "students1to20": "1–20",
+        "students21to50": "21–50",
+        "students51to100": "51–100",
+        "students100plus": "100+",
+        "submitButton": "Register interest",
+        "privacyNote": "Pseudonymised data handling. No student names in any export.",
+        "successTitle": "Thanks for your interest",
+        "successBody": "We'll be in touch within a week with a sample report."
+      }
+    },
+    "diagnose": {
+      "hero": {
+        "eyebrow": "See strengths and weaknesses",
+        "title": "One 30-minute sitting. <blue>All is revealed.</blue>",
+        "body": "A student arrives with a “65” or a “B1”. SchoolTest breaks that single score into 25 subskills across all four domains — so you know where to start teaching before you've taught a single lesson."
+      },
+      "unpack": {
+        "eyebrow": "Unpack the placement score",
+        "title": "Unpack placement test scores",
+        "body": "A placement score tells you roughly where a student sits and nothing about what's underneath. SchoolTest reports each subskill against the same ACARA phase scale, so the gaps are named, not guessed at.",
+        "callout": "<strong>What this means for you:</strong> six weeks of diagnostic testing, done on day one."
+      },
+      "profile": {
+        "domain": "Reading",
+        "score": "65",
+        "cefrBand": "CEFR B1",
+        "phase": "Developing",
+        "decoding": "Decoding",
+        "vocabulary": "Vocabulary",
+        "grammar": "Grammar",
+        "gist": "Gist",
+        "detail": "Detail",
+        "inference": "Inference",
+        "critical": "Critical",
+        "phaseConsolidating": "Cons.",
+        "phaseBeginning": "Beg.",
+        "phaseDeveloping": "Dev.",
+        "phaseEmerging": "Emg.",
+        "moreSubskills": "+ 18 more across listening, speaking and writing"
+      },
+      "sameScore": {
+        "eyebrow": "Two students, one score",
+        "title": "Same score.<br></br>Different students.",
+        "body": "Two students arrive with the same CEFR B1. Are they the same? No. One is strong on decoding and lost on vocabulary; the other is the reverse. Each student has a unique linguistic profile — now you can see it.",
+        "callout": "<strong>What this means for you:</strong> two students you'd have taught together, taught properly."
+      },
+      "quote": "A score is a summary.<br></br>A subskill profile is a map."
+    },
+    "predict": {
+      "hero": {
+        "eyebrow": "Predict mainstream readiness",
+        "title": "Know when a student is ready, <blue>and prove it.</blue>",
+        "body": "One readiness indicator, aggregated from every subskill across all four domains. The exit call stays yours — the evidence behind it stops being a hunch.",
+        "domainsValue": "4 domains",
+        "domainsLabel": "Aggregated into one indicator",
+        "termValue": "Every term",
+        "termLabel": "Forecast exits before the timetable"
+      },
+      "individual": {
+        "eyebrow": "The individual",
+        "title": "Data-informed exit decisions",
+        "body": "See how close a student actually is, and what is still standing in the way — not a gut feel formed across a busy term.",
+        "callout": "<strong>What this means for you:</strong> tell a parent, a principal and a student exactly when they are ready for mainstream classes, and why.",
+        "readinessLabel": "Mainstream readiness",
+        "term1Label": "Term 1",
+        "term1Value": "34%",
+        "term3Label": "Term 3",
+        "term3Value": "81%",
+        "readinessFooter": "Aggregated from every subskill in all four domains."
+      },
+      "cohort": {
+        "eyebrow": "The cohort",
+        "title": "Plan the program",
+        "body": "See the whole cohort's readiness in one view and forecast next term's exits and intakes before you set the timetable.",
+        "cohortBadge": "Cohort readiness · 22 students",
+        "exitBadge": "4 projected to exit next term",
+        "callout": "<strong>What this means for you:</strong> answer “how many are leaving us next term” with a number instead of an estimate."
+      },
+      "quote": "Teacher intuition plus SchoolTest empiricism.<br></br>That is the difference."
+    },
+    "teach": {
+      "hero": {
+        "eyebrow": "Plan and teach",
+        "title": "Paste the profile into AI. <blue>Get a week of teaching materials out.</blue>",
+        "body": "Export a privacy-safe class set and hand it to ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into materials your class can actually use.",
+        "primaryCta": "Register your interest",
+        "secondaryCta": "See a sample profile"
+      },
+      "generate": {
+        "eyebrow": "Generate the materials",
+        "title": "Generate the teaching materials",
+        "body": "Ask for one passage pitched at the class's vocabulary band, with question sets matched to their gaps, and you have it before the kettle boils.",
+        "callout": "<strong>What this means for you:</strong> differentiation stops being a Sunday night job.",
+        "classSetLabel": "Class set · 22 profiles",
+        "exportBadge": "EXPORT",
+        "promptText": "“Write one passage at the class’s vocabulary band, with question sets matched to their gaps.”",
+        "outputTitle": "Reading passage + questions",
+        "targetBadge": "Targets: inference, vocabulary"
+      },
+      "classroom": {
+        "eyebrow": "Classroom management",
+        "title": "Who to pair with whom, and how to split the room.",
+        "body": "Who to pair with whom, on which skill, and how to split the room into groups that each need something different. The data makes it defensible; the AI makes it fast.",
+        "groupA": "Group A",
+        "groupB": "Group B",
+        "groupC": "Group C",
+        "groupD": "Group D",
+        "groupCaption": "Four groups. Four question sets.",
+        "callout": "<strong>What this means for you:</strong> let the data do the planning so you can do the teaching."
+      },
+      "threeMore": {
+        "title": "And three more things it makes possible.",
+        "groupByGapTitle": "Group by gap, not by band",
+        "groupByGapDescription": "Split the room by shared weakness rather than overall level. Four groups, four genuinely different needs.",
+        "pairBySkillTitle": "Pair on the skill, not the level",
+        "pairBySkillDescription": "Two students both stuck on inference get further together. Or pair strong with struggling, skill by skill, so both have a reason to be there.",
+        "parentUpdatesTitle": "Parent updates in a minute",
+        "parentUpdatesDescription": "Turn a profile into plain language: what their child can do now, and what's next."
+      },
+      "note": "No AI in your school? The subskill data still tells you who to pair and how to group. You just do the sorting yourself.",
+      "quote": "A generic prompt gives you a worksheet.<br></br>Real data gives you a lesson."
+    },
+    "track": {
+      "hero": {
+        "eyebrow": "Track progress over time",
+        "title": "Watch every subskill move, term after term.",
+        "body": "Sit all four skills or re-test a single one — 30 minutes each. Every result lands on the same ACARA scale, so growth shows up subskill by subskill instead of as a total that wobbled three points."
+      },
+      "evidence": {
+        "eyebrow": "The evidence trail",
+        "title": "Data-driven progress tracking",
+        "body": "Once a term, once a month, whatever your cycle needs. Growth reads as “reading inference, emerging to developing” — a sentence a parent understands and a principal can act on.",
+        "callout": "<strong>What this means for you:</strong> an evidence trail that works in a parent meeting and in a report to leadership.",
+        "skill": "Reading inference",
+        "currentPhase": "Consolidating",
+        "term1Label": "Term 1",
+        "term1Phase": "Beginning",
+        "term2Label": "Term 2",
+        "term2Phase": "Emerging",
+        "term3Label": "Term 3",
+        "term3Phase": "Developing",
+        "term4Label": "Term 4",
+        "term4Phase": "Consolidating",
+        "footer": "ACARA EAL/D phases. Same scale every time."
+      },
+      "teachEmpirical": {
+        "eyebrow": "Feedback on your teaching",
+        "title": "Teach empirically",
+        "body": "Six weeks of targeted vocabulary work either shows up in the vocabulary line or it does not. You find out in week six, while you can still change course.",
+        "focusBadge": "Vocabulary focus, weeks 3–8",
+        "resultBadge": "Vocabulary +2 phases",
+        "callout": "<strong>What this means for you:</strong> feedback on your teaching, not just on your students."
+      },
+      "quote": "If it worked, it shows up.<br></br>If it didn't, that shows up too."
+    },
+    "shared": {
+      "cta": {
+        "title": "We're building this with founding schools.",
+        "body": "Field testing now. Early access, direct input into the reports, founding terms at launch.",
+        "button": "Register your interest"
+      },
+      "nextLabel": "Next",
+      "nextStep01": "01",
+      "nextStep02": "02",
+      "nextStep03": "03",
+      "nextStep04": "04",
+      "nextDiagnoseTitle": "See strengths and weaknesses",
+      "nextDiagnoseDescription": "25 subskills from one test.",
+      "nextTeachTitle": "Plan and teach",
+      "nextTeachDescription": "Turn the profile into materials.",
+      "nextTrackTitle": "Track progress",
+      "nextTrackDescription": "Watch every subskill move.",
+      "nextPredictTitle": "Predict readiness",
+      "nextPredictDescription": "Know when they're ready to exit.",
+      "readMore": "Read more →"
+    },
+    "footer": {
+      "tagline": "Diagnostic English assessment for Australian EAL/D classrooms. Years 7–12, ACARA phases and CEFR bands.",
+      "productTitle": "Product",
+      "diagnose": "See strengths and weaknesses",
+      "teach": "Plan and teach",
+      "track": "Track progress over time",
+      "predict": "Predict mainstream readiness",
+      "moreTitle": "More",
+      "schoolSearch": "SchoolSearch",
+      "foundingPilot": "Founding pilot",
+      "privacy": "Privacy",
+      "contact": "Contact",
+      "copyright": "© 2026 SchoolTest",
+      "status": "Field testing with founding schools",
+      "logoAlt": "SchoolTest logo"
     }
   }
 }
