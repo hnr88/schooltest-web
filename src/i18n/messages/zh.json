@@ -1758,5 +1758,94 @@
       "partial_pending": "部分待定",
       "complete": "已完成"
     }
+  },
+  "SchoolOnboarding": {
+    "meta": {
+      "title": "学校入驻 - SchoolTest",
+      "description": "完成您学校的 SchoolTest 设置：学校信息、教师和管理员账户。"
+    },
+    "loading": "正在加载您的入驻链接...",
+    "stepLabel": "第 {current} 步，共 {total} 步",
+    "steps": {
+      "school": "学校信息",
+      "teachers": "教师",
+      "review": "检查确认",
+      "admin": "管理员账户"
+    },
+    "school": {
+      "title": "确认学校信息",
+      "description": "请核对我们持有的学校信息，并更正任何过时的内容。",
+      "name": "学校名称",
+      "suburb": "城区",
+      "state": "州或领地",
+      "statePlaceholder": "请选择州或领地",
+      "postcode": "邮政编码",
+      "sector": "学校类别",
+      "sectorPlaceholder": "请选择学校类别",
+      "sectors": {
+        "government": "公立",
+        "non-government": "非公立",
+        "catholic": "天主教"
+      },
+      "continue": "保存并继续"
+    },
+    "teachers": {
+      "title": "添加教师",
+      "description": "每位教师都会收到加入 SchoolTest 的电子邮件邀请。您也可以稍后再添加教师。",
+      "firstName": "名字",
+      "lastName": "姓氏",
+      "email": "电子邮箱",
+      "role": "角色",
+      "roles": {
+        "teacher": "教师",
+        "school_admin": "学校管理员"
+      },
+      "rowLabel": "教师 {index}",
+      "add": "再添加一位教师",
+      "remove": "移除",
+      "empty": "尚未添加教师。您可以跳过此步骤，稍后邀请教师。",
+      "back": "返回",
+      "continue": "保存并继续"
+    },
+    "review": {
+      "title": "检查并确认",
+      "description": "在创建管理员账户之前，请检查以下所有内容。",
+      "schoolHeading": "学校信息",
+      "teachersHeading": "教师",
+      "noTeachers": "未添加教师。您可以在完成设置后邀请教师。",
+      "back": "返回",
+      "confirm": "确认并继续"
+    },
+    "admin": {
+      "title": "创建管理员账户",
+      "description": "此账户用于管理学校的 SchoolTest 设置、教师和班级。",
+      "firstName": "名字",
+      "lastName": "姓氏",
+      "email": "电子邮箱",
+      "password": "密码",
+      "passwordHint": "至少 8 个字符。",
+      "back": "返回",
+      "submit": "创建账户并完成",
+      "submitting": "正在创建您的账户..."
+    },
+    "validation": {
+      "required": "此字段为必填项",
+      "tooLong": "输入内容过长",
+      "emailInvalid": "请输入有效的电子邮箱地址",
+      "postcodeInvalid": "请输入 4 位邮政编码",
+      "passwordTooShort": "密码至少需要 8 个字符"
+    },
+    "errors": {
+      "saveFailed": "无法保存您的进度。您填写的内容已保留在此设备上。",
+      "completeFailed": "无法完成设置。请重试，如果问题仍然存在，请联系 SchoolTest。",
+      "unavailableTitle": "出现问题",
+      "unavailableMessage": "我们无法加载您的入驻链接。请检查网络连接后重试。",
+      "invalidTitle": "此入驻链接无效",
+      "invalidMessage": "链接可能输入有误或已被替换。请向 SchoolTest 索取新链接。",
+      "expiredTitle": "此入驻链接已过期",
+      "expiredMessage": "入驻链接有效期为 14 天。请向 SchoolTest 索取新链接。",
+      "usedTitle": "此入驻链接已被使用",
+      "usedMessage": "该校的管理员账户已创建。请登录继续，或联系 SchoolTest 寻求帮助。"
+    }
   }
 }

@@ -1758,5 +1758,94 @@
       "partial_pending": "Sebahagian tertunda",
       "complete": "Selesai"
     }
+  },
+  "SchoolOnboarding": {
+    "meta": {
+      "title": "Pengenalan sekolah - SchoolTest",
+      "description": "Lengkapkan persediaan SchoolTest sekolah anda: butiran sekolah, guru dan akaun pentadbir."
+    },
+    "loading": "Memuatkan pautan pengenalan anda...",
+    "stepLabel": "Langkah {current} daripada {total}",
+    "steps": {
+      "school": "Butiran sekolah",
+      "teachers": "Guru",
+      "review": "Semakan",
+      "admin": "Akaun pentadbir"
+    },
+    "school": {
+      "title": "Sahkan butiran sekolah anda",
+      "description": "Semak butiran yang kami simpan untuk sekolah anda dan betulkan apa-apa yang lapuk.",
+      "name": "Nama sekolah",
+      "suburb": "Suburb",
+      "state": "Negeri atau wilayah",
+      "statePlaceholder": "Pilih negeri atau wilayah",
+      "postcode": "Poskod",
+      "sector": "Sektor",
+      "sectorPlaceholder": "Pilih sektor",
+      "sectors": {
+        "government": "Kerajaan",
+        "non-government": "Bukan kerajaan",
+        "catholic": "Katolik"
+      },
+      "continue": "Simpan dan teruskan"
+    },
+    "teachers": {
+      "title": "Tambah guru anda",
+      "description": "Setiap guru akan menerima jemputan e-mel untuk menyertai SchoolTest. Anda juga boleh menambah guru kemudian.",
+      "firstName": "Nama pertama",
+      "lastName": "Nama keluarga",
+      "email": "Alamat e-mel",
+      "role": "Peranan",
+      "roles": {
+        "teacher": "Guru",
+        "school_admin": "Pentadbir sekolah"
+      },
+      "rowLabel": "Guru {index}",
+      "add": "Tambah guru lain",
+      "remove": "Alih keluar",
+      "empty": "Tiada guru ditambah lagi. Anda boleh melangkau langkah ini dan menjemput guru kemudian.",
+      "back": "Kembali",
+      "continue": "Simpan dan teruskan"
+    },
+    "review": {
+      "title": "Semak dan sahkan",
+      "description": "Semak semua maklumat di bawah sebelum mencipta akaun pentadbir anda.",
+      "schoolHeading": "Butiran sekolah",
+      "teachersHeading": "Guru",
+      "noTeachers": "Tiada guru ditambah. Anda boleh menjemput guru selepas persediaan.",
+      "back": "Kembali",
+      "confirm": "Sahkan dan teruskan"
+    },
+    "admin": {
+      "title": "Cipta akaun pentadbir anda",
+      "description": "Akaun ini menguruskan persediaan SchoolTest, guru dan kelas sekolah.",
+      "firstName": "Nama pertama",
+      "lastName": "Nama keluarga",
+      "email": "Alamat e-mel",
+      "password": "Kata laluan",
+      "passwordHint": "Sekurang-kurangnya 8 aksara.",
+      "back": "Kembali",
+      "submit": "Cipta akaun dan selesai",
+      "submitting": "Sedang mencipta akaun anda..."
+    },
+    "validation": {
+      "required": "Ruangan ini diperlukan",
+      "tooLong": "Entri ini terlalu panjang",
+      "emailInvalid": "Masukkan alamat e-mel yang sah",
+      "postcodeInvalid": "Masukkan poskod 4 digit",
+      "passwordTooShort": "Kata laluan mesti sekurang-kurangnya 8 aksara"
+    },
+    "errors": {
+      "saveFailed": "Tidak dapat menyimpan kemajuan anda. Entri anda disimpan pada peranti ini.",
+      "completeFailed": "Tidak dapat melengkapkan persediaan. Cuba lagi, atau hubungi SchoolTest jika masalah berterusan.",
+      "unavailableTitle": "Sesuatu telah berlaku",
+      "unavailableMessage": "Kami tidak dapat memuatkan pautan pengenalan anda. Semak sambungan anda dan cuba lagi.",
+      "invalidTitle": "Pautan pengenalan ini tidak sah",
+      "invalidMessage": "Pautan mungkin tersilap taip atau telah digantikan. Minta SchoolTest menghantar pautan baharu.",
+      "expiredTitle": "Pautan pengenalan ini telah tamat tempoh",
+      "expiredMessage": "Pautan pengenalan sah selama 14 hari. Minta SchoolTest menghantar pautan baharu.",
+      "usedTitle": "Pautan pengenalan ini telah digunakan",
+      "usedMessage": "Akaun pentadbir untuk sekolah ini telah dicipta. Log masuk untuk meneruskan, atau hubungi SchoolTest jika anda memerlukan bantuan."
+    }
   }
 }

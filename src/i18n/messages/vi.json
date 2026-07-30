@@ -1758,5 +1758,94 @@
       "partial_pending": "Chờ một phần",
       "complete": "Hoàn tất"
     }
+  },
+  "SchoolOnboarding": {
+    "meta": {
+      "title": "Thiết lập trường học - SchoolTest",
+      "description": "Hoàn tất thiết lập SchoolTest cho trường của bạn: thông tin trường, giáo viên và tài khoản quản trị viên."
+    },
+    "loading": "Đang tải liên kết thiết lập của bạn...",
+    "stepLabel": "Bước {current} trong tổng số {total}",
+    "steps": {
+      "school": "Thông tin trường",
+      "teachers": "Giáo viên",
+      "review": "Xem lại",
+      "admin": "Tài khoản quản trị"
+    },
+    "school": {
+      "title": "Xác nhận thông tin trường",
+      "description": "Kiểm tra thông tin chúng tôi đang lưu về trường của bạn và sửa mọi nội dung đã lỗi thời.",
+      "name": "Tên trường",
+      "suburb": "Vùng ngoại ô",
+      "state": "Bang hoặc lãnh thổ",
+      "statePlaceholder": "Chọn bang hoặc lãnh thổ",
+      "postcode": "Mã bưu chính",
+      "sector": "Khu vực",
+      "sectorPlaceholder": "Chọn khu vực",
+      "sectors": {
+        "government": "Công lập",
+        "non-government": "Ngoài công lập",
+        "catholic": "Công giáo"
+      },
+      "continue": "Lưu và tiếp tục"
+    },
+    "teachers": {
+      "title": "Thêm giáo viên",
+      "description": "Mỗi giáo viên sẽ nhận được email mời tham gia SchoolTest. Bạn cũng có thể thêm giáo viên sau.",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "email": "Địa chỉ email",
+      "role": "Vai trò",
+      "roles": {
+        "teacher": "Giáo viên",
+        "school_admin": "Quản trị viên trường"
+      },
+      "rowLabel": "Giáo viên {index}",
+      "add": "Thêm giáo viên khác",
+      "remove": "Xoá",
+      "empty": "Chưa có giáo viên nào. Bạn có thể bỏ qua bước này và mời giáo viên sau.",
+      "back": "Quay lại",
+      "continue": "Lưu và tiếp tục"
+    },
+    "review": {
+      "title": "Xem lại và xác nhận",
+      "description": "Kiểm tra mọi thông tin bên dưới trước khi tạo tài khoản quản trị viên.",
+      "schoolHeading": "Thông tin trường",
+      "teachersHeading": "Giáo viên",
+      "noTeachers": "Chưa thêm giáo viên. Bạn có thể mời giáo viên sau khi thiết lập.",
+      "back": "Quay lại",
+      "confirm": "Xác nhận và tiếp tục"
+    },
+    "admin": {
+      "title": "Tạo tài khoản quản trị viên",
+      "description": "Tài khoản này quản lý thiết lập SchoolTest, giáo viên và lớp học của trường.",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "email": "Địa chỉ email",
+      "password": "Mật khẩu",
+      "passwordHint": "Ít nhất 8 ký tự.",
+      "back": "Quay lại",
+      "submit": "Tạo tài khoản và hoàn tất",
+      "submitting": "Đang tạo tài khoản của bạn..."
+    },
+    "validation": {
+      "required": "Trường này là bắt buộc",
+      "tooLong": "Nội dung nhập quá dài",
+      "emailInvalid": "Nhập địa chỉ email hợp lệ",
+      "postcodeInvalid": "Nhập mã bưu chính gồm 4 chữ số",
+      "passwordTooShort": "Mật khẩu phải có ít nhất 8 ký tự"
+    },
+    "errors": {
+      "saveFailed": "Không thể lưu tiến trình của bạn. Nội dung đã nhập được giữ trên thiết bị này.",
+      "completeFailed": "Không thể hoàn tất thiết lập. Hãy thử lại, hoặc liên hệ SchoolTest nếu sự cố vẫn tiếp diễn.",
+      "unavailableTitle": "Đã xảy ra sự cố",
+      "unavailableMessage": "Chúng tôi không thể tải liên kết thiết lập của bạn. Kiểm tra kết nối và thử lại.",
+      "invalidTitle": "Liên kết thiết lập không hợp lệ",
+      "invalidMessage": "Liên kết có thể đã bị nhập sai hoặc thay thế. Hãy yêu cầu SchoolTest gửi liên kết mới.",
+      "expiredTitle": "Liên kết thiết lập đã hết hạn",
+      "expiredMessage": "Liên kết thiết lập có hiệu lực trong 14 ngày. Hãy yêu cầu SchoolTest gửi liên kết mới.",
+      "usedTitle": "Liên kết thiết lập đã được sử dụng",
+      "usedMessage": "Tài khoản quản trị của trường này đã được tạo. Đăng nhập để tiếp tục, hoặc liên hệ SchoolTest nếu bạn cần trợ giúp."
+    }
   }
 }

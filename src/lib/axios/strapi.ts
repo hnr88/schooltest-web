@@ -36,9 +36,15 @@ export const strapi = axios.create({
 // stays in localStorage (never a cookie) — it is simply not attached here.
 const PUBLIC_AUTH_PATH = /^\/api\/auth\/(local|forgot-password|reset-password|email-confirmation|send-email-confirmation)(\/|$)/;
 
+// The guest school-onboarding endpoints (C-ONB-01/02/03) are public for the
+// same reason: a signed-in user who opens an onboarding link must get the
+// public 404/410/409 link states, not a role-scoped 403.
+const PUBLIC_ONBOARDING_PATH = /^\/api\/school-onboarding(\/|$)/;
+
 strapi.interceptors.request.use((config) => {
   const token = readClientToken();
-  if (token && !PUBLIC_AUTH_PATH.test(config.url ?? '')) {
+  const url = config.url ?? '';
+  if (token && !PUBLIC_AUTH_PATH.test(url) && !PUBLIC_ONBOARDING_PATH.test(url)) {
     const headers =
       config.headers instanceof AxiosHeaders
         ? config.headers

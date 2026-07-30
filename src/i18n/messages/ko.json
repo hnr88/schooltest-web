@@ -1758,5 +1758,94 @@
       "partial_pending": "일부 대기 중",
       "complete": "완료"
     }
+  },
+  "SchoolOnboarding": {
+    "meta": {
+      "title": "학교 온볼링 - SchoolTest",
+      "description": "학교의 SchoolTest 설정을 완료하세요: 학교 정보, 교사 및 관리자 계정."
+    },
+    "loading": "온볼링 링크를 불러오는 중...",
+    "stepLabel": "{total}단계 중 {current}단계",
+    "steps": {
+      "school": "학교 정보",
+      "teachers": "교사",
+      "review": "검토",
+      "admin": "관리자 계정"
+    },
+    "school": {
+      "title": "학교 정보 확인",
+      "description": "보유하고 있는 학교 정보를 확인하고 오래된 내용을 수정해 주세요.",
+      "name": "학교 이름",
+      "suburb": "교외 지역",
+      "state": "주 또는 준주",
+      "statePlaceholder": "주 또는 준주를 선택하세요",
+      "postcode": "우편번호",
+      "sector": "학교 유형",
+      "sectorPlaceholder": "학교 유형을 선택하세요",
+      "sectors": {
+        "government": "공립",
+        "non-government": "사립",
+        "catholic": "가톨릭"
+      },
+      "continue": "저장하고 계속"
+    },
+    "teachers": {
+      "title": "교사 추가",
+      "description": "각 교사에게 SchoolTest 참여 이메일 초대장이 발송됩니다. 나중에 교사를 추가할 수도 있습니다.",
+      "firstName": "이름",
+      "lastName": "성",
+      "email": "이메일 주소",
+      "role": "역할",
+      "roles": {
+        "teacher": "교사",
+        "school_admin": "학교 관리자"
+      },
+      "rowLabel": "교사 {index}",
+      "add": "교사 추가",
+      "remove": "삭제",
+      "empty": "아직 추가된 교사가 없습니다. 이 단계를 건너뛰고 나중에 교사를 초대할 수 있습니다.",
+      "back": "뒤로",
+      "continue": "저장하고 계속"
+    },
+    "review": {
+      "title": "검토 및 확인",
+      "description": "관리자 계정을 만들기 전에 아래 내용을 모두 확인해 주세요.",
+      "schoolHeading": "학교 정보",
+      "teachersHeading": "교사",
+      "noTeachers": "추가된 교사가 없습니다. 설정 후 교사를 초대할 수 있습니다.",
+      "back": "뒤로",
+      "confirm": "확인하고 계속"
+    },
+    "admin": {
+      "title": "관리자 계정 만들기",
+      "description": "이 계정은 학교의 SchoolTest 설정, 교사 및 학급을 관리합니다.",
+      "firstName": "이름",
+      "lastName": "성",
+      "email": "이메일 주소",
+      "password": "비밀번호",
+      "passwordHint": "8자 이상.",
+      "back": "뒤로",
+      "submit": "계정 만들기 및 완료",
+      "submitting": "계정을 만드는 중..."
+    },
+    "validation": {
+      "required": "필수 입력 항목입니다",
+      "tooLong": "입력 내용이 너무 깁니다",
+      "emailInvalid": "유효한 이메일 주소를 입력하세요",
+      "postcodeInvalid": "4자리 우편번호를 입력하세요",
+      "passwordTooShort": "비밀번호는 8자 이상이어야 합니다"
+    },
+    "errors": {
+      "saveFailed": "진행 상황을 저장할 수 없습니다. 입력한 내용은 이 기기에 보관됩니다.",
+      "completeFailed": "설정을 완료할 수 없습니다. 다시 시도하거나 문제가 계속되면 SchoolTest에 문의하세요.",
+      "unavailableTitle": "문제가 발생했습니다",
+      "unavailableMessage": "온볼링 링크를 불러올 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+      "invalidTitle": "유효하지 않은 온볼링 링크입니다",
+      "invalidMessage": "링크가 잘못 입력되었거나 교체되었을 수 있습니다. SchoolTest에 새 링크를 요청하세요.",
+      "expiredTitle": "온볼링 링크가 만료되었습니다",
+      "expiredMessage": "온볼링 링크는 14일 동안 유효합니다. SchoolTest에 새 링크를 요청하세요.",
+      "usedTitle": "이미 사용된 온볼링 링크입니다",
+      "usedMessage": "이 학교의 관리자 계정이 이미 생성되었습니다. 로그인하여 계속하거나 도움이 필요하면 SchoolTest에 문의하세요."
+    }
   }
 }
