@@ -2186,6 +2186,30 @@
       "submitted": "Submitted",
       "complete": "Complete"
     },
+    "entitlement": {
+      "title": "Plan and seats",
+      "seatsExplainer": "A seat is one child using SchoolTest at your school.",
+      "seatsLabel": "Seats",
+      "seatsUsed": "{used} of {total} seats used",
+      "seatsRemaining": "{count, plural, one {# seat remaining} other {# seats remaining}}",
+      "seatCapTitle": "Your school has no seats left",
+      "seatCapReached": "Contact SchoolTest to add seats.",
+      "planLabel": "Plan",
+      "renewalLabel": "Renewal date",
+      "renewalNotSet": "Not set",
+      "allowanceTitle": "Progress Test allowance",
+      "allowanceUsed": "{used} of {total} used",
+      "allowanceRemaining": "{count} remaining",
+      "errorTitle": "We could not load your plan and seats",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "testType": {
+        "reading": "Reading",
+        "listening": "Listening",
+        "writing": "Writing",
+        "speaking": "Speaking"
+      }
+    },
     "sections": {
       "classes": {
         "metaTitle": "Classes - SchoolTest",
@@ -2335,6 +2359,172 @@
       "revokeTitle": "Revoke the invitation for {name}?",
       "revokeDescription": "The invitation link will stop working. You can send a new invitation later.",
       "revokeConfirm": "Revoke invitation"
+    }
+  },
+  "Classes": {
+    "meta": {
+      "title": "Classes - SchoolTest",
+      "description": "The classes at your school, their teachers and student counts."
+    },
+    "title": "Classes",
+    "description": "Every class at your school, in one place.",
+    "addButton": "Add class",
+    "errorTitle": "We could not load your classes",
+    "errorDescription": "Check your connection and try again.",
+    "retry": "Try again",
+    "table": {
+      "columnName": "Name",
+      "columnYearBand": "Year band",
+      "columnTeachers": "Teachers",
+      "columnStudents": "Students",
+      "columnActions": "Actions",
+      "empty": "No classes yet. Add your first class to get started.",
+      "teachersNone": "No teachers assigned",
+      "yearBandNone": "Not set"
+    },
+    "yearBands": {
+      "7_9": "Years 7-9",
+      "10_12": "Years 10-12"
+    },
+    "form": {
+      "createTitle": "Add a class",
+      "editTitle": "Edit {name}",
+      "createDescription": "Name the class and choose its year band. You can assign teachers now or later.",
+      "editDescription": "Rename the class, change its year band, or update who belongs to it.",
+      "name": "Class name",
+      "yearBand": "Year band",
+      "teachers": "Teachers",
+      "teachersEmpty": "No staff available yet.",
+      "students": "Students",
+      "studentsEmpty": "No children at your school yet.",
+      "studentsHint": "Unticking a child removes them from this class. They stay on your children list.",
+      "cancel": "Cancel",
+      "submitCreate": "Add class",
+      "submitEdit": "Save changes",
+      "submitting": "Saving...",
+      "createdToast": "{name} was added.",
+      "updatedToast": "{name} was updated.",
+      "errorToast": "That did not work. Try again.",
+      "forbiddenToast": "You do not have permission to change classes.",
+      "loadError": "We could not load the staff and children lists. Close and try again.",
+      "loadErrorDescription": "Check your connection, then close this and try again."
+    },
+    "validation": {
+      "required": "This field is required.",
+      "tooLong": "That is too long."
+    },
+    "actions": {
+      "menuLabel": "Actions for {name}",
+      "edit": "Edit class",
+      "delete": "Delete class"
+    },
+    "deleteDialog": {
+      "title": "Delete {name}?",
+      "description": "The students in this class are not deleted. They stay on your children list and can be assigned to another class.",
+      "cancel": "Cancel",
+      "confirm": "Delete class",
+      "successToast": "{name} was deleted. Its students stay on your children list.",
+      "errorToast": "That did not work. Try again."
+    }
+  },
+  "SchoolChildren": {
+    "meta": {
+      "title": "Children - SchoolTest",
+      "description": "The children at your school, their classes and status."
+    },
+    "newMeta": {
+      "title": "Add a child - SchoolTest",
+      "description": "Add a child to your school's SchoolTest roster."
+    },
+    "title": "Children",
+    "description": "Every child at your school, in one place.",
+    "addButton": "Add child",
+    "errorTitle": "We could not load your children",
+    "errorDescription": "Check your connection and try again.",
+    "retry": "Try again",
+    "filters": {
+      "searchLabel": "Search by name",
+      "searchPlaceholder": "Type a name",
+      "statusLabel": "Status",
+      "statusAll": "All statuses",
+      "statusActive": "Active",
+      "statusArchived": "Archived",
+      "classLabel": "Class",
+      "classAll": "All classes"
+    },
+    "table": {
+      "columnName": "Name",
+      "columnClass": "Class",
+      "columnStatus": "Status",
+      "columnActions": "Actions",
+      "empty": "No children yet. Add your first child to get started.",
+      "emptyFiltered": "No children match these filters.",
+      "classNone": "No class",
+      "statusActive": "Active",
+      "statusArchived": "Archived"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {pageCount}"
+    },
+    "actions": {
+      "menuLabel": "Actions for {name}",
+      "edit": "Edit child",
+      "archive": "Archive child"
+    },
+    "archiveDialog": {
+      "title": "Archive {name}?",
+      "description": "Archiving frees their seat straight away. Their record and results stay on file, and they move to the archived list.",
+      "cancel": "Cancel",
+      "confirm": "Archive child",
+      "successToast": "{name} was archived. Their seat is free again.",
+      "forbiddenToast": "You do not have permission to archive children.",
+      "genericToast": "That did not work. Try again."
+    },
+    "form": {
+      "createTitle": "Add a child",
+      "createDescription": "Only what the school needs: name, year level, class and language background.",
+      "editTitle": "Edit {name}",
+      "editDescription": "Update the child's details.",
+      "givenName": "Given name",
+      "familyName": "Family name",
+      "dateOfBirth": "Date of birth",
+      "yearLevel": "Year level",
+      "yearOption": "Year {level}",
+      "classLabel": "Class",
+      "classNone": "No class",
+      "notSet": "Not set",
+      "ealdTitle": "Language background",
+      "ealdDescription": "The EAL/D background the school uses to plan support. Every field is optional.",
+      "firstLanguage": "First language",
+      "otherLanguages": "Other languages",
+      "otherLanguagesHint": "Separate languages with commas.",
+      "l1Literate": "Literate in first language",
+      "timeLearningEnglish": "Time learning English (years)",
+      "timeInAustralia": "Time in Australia (months)",
+      "priorSchoolingInterrupted": "Interrupted prior schooling",
+      "yes": "Yes",
+      "no": "No",
+      "keepHint": "Leave a field blank to keep its current value.",
+      "back": "Back to children",
+      "cancel": "Cancel",
+      "submitCreate": "Add child",
+      "submitEdit": "Save changes",
+      "submitting": "Saving...",
+      "createdToast": "{name} was added to your children.",
+      "updatedToast": "{name} was updated.",
+      "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
+      "schoolInactiveToast": "Your school account is not active, so children cannot be added right now.",
+      "forbiddenToast": "You do not have permission to change children.",
+      "genericToast": "That did not work. Try again."
+    },
+    "validation": {
+      "givenNameRequired": "Enter the child's given name.",
+      "tooLong": "That is too long.",
+      "dobInvalid": "Enter a valid date of birth.",
+      "yearsInvalid": "Enter a number of years, for example 2.5.",
+      "monthsInvalid": "Enter whole months only."
     }
   }
 }

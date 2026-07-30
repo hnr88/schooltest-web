@@ -1880,6 +1880,30 @@
       "submitted": "Đã gửi",
       "complete": "Hoàn tất"
     },
+    "entitlement": {
+      "title": "Gói và chỗ",
+      "seatsExplainer": "Một chỗ là một học sinh sử dụng SchoolTest tại trường của bạn.",
+      "seatsLabel": "Chỗ",
+      "seatsUsed": "Đã dùng {used} trong {total} chỗ",
+      "seatsRemaining": "Còn lại {count} chỗ",
+      "seatCapTitle": "Trường của bạn đã hết chỗ",
+      "seatCapReached": "Liên hệ SchoolTest để thêm chỗ.",
+      "planLabel": "Gói",
+      "renewalLabel": "Ngày gia hạn",
+      "renewalNotSet": "Chưa đặt",
+      "allowanceTitle": "Hạn mức Progress Test",
+      "allowanceUsed": "Đã dùng {used} trong {total}",
+      "allowanceRemaining": "Còn lại {count}",
+      "errorTitle": "Chúng tôi không thể tải gói và chỗ của bạn",
+      "errorDescription": "Kiểm tra kết nối của bạn và thử lại.",
+      "retry": "Thử lại",
+      "testType": {
+        "reading": "Đọc",
+        "listening": "Nghe",
+        "writing": "Viết",
+        "speaking": "Nói"
+      }
+    },
     "sections": {
       "classes": {
         "metaTitle": "Lớp học - SchoolTest",
@@ -2029,6 +2053,172 @@
       "revokeTitle": "Thu hồi lời mời của {name}?",
       "revokeDescription": "Liên kết lời mời sẽ ngừng hoạt động. Bạn có thể gửi lời mời mới sau.",
       "revokeConfirm": "Thu hồi lời mời"
+    }
+  },
+  "Classes": {
+    "meta": {
+      "title": "Lớp học - SchoolTest",
+      "description": "Các lớp học tại trường của bạn, giáo viên và sĩ số."
+    },
+    "title": "Lớp học",
+    "description": "Mọi lớp học tại trường của bạn, ở một nơi.",
+    "addButton": "Thêm lớp",
+    "errorTitle": "Chúng tôi không thể tải danh sách lớp học",
+    "errorDescription": "Kiểm tra kết nối và thử lại.",
+    "retry": "Thử lại",
+    "table": {
+      "columnName": "Tên",
+      "columnYearBand": "Khối năm học",
+      "columnTeachers": "Giáo viên",
+      "columnStudents": "Học sinh",
+      "columnActions": "Thao tác",
+      "empty": "Chưa có lớp học nào. Thêm lớp đầu tiên để bắt đầu.",
+      "teachersNone": "Chưa phân công giáo viên",
+      "yearBandNone": "Chưa đặt"
+    },
+    "yearBands": {
+      "7_9": "Năm học 7-9",
+      "10_12": "Năm học 10-12"
+    },
+    "form": {
+      "createTitle": "Thêm lớp học",
+      "editTitle": "Chỉnh sửa {name}",
+      "createDescription": "Đặt tên lớp và chọn khối năm học. Bạn có thể phân công giáo viên ngay hoặc sau.",
+      "editDescription": "Đổi tên lớp, thay đổi khối năm học hoặc cập nhật thành viên của lớp.",
+      "name": "Tên lớp",
+      "yearBand": "Khối năm học",
+      "teachers": "Giáo viên",
+      "teachersEmpty": "Chưa có nhân viên nào.",
+      "students": "Học sinh",
+      "studentsEmpty": "Trường của bạn chưa có học sinh nào.",
+      "studentsHint": "Bỏ chọn sẽ đưa học sinh ra khỏi lớp này. Học sinh vẫn ở trong danh sách học sinh của bạn.",
+      "cancel": "Huỷ",
+      "submitCreate": "Thêm lớp",
+      "submitEdit": "Lưu thay đổi",
+      "submitting": "Đang lưu...",
+      "createdToast": "Đã thêm {name}.",
+      "updatedToast": "Đã cập nhật {name}.",
+      "errorToast": "Thao tác không thành công. Hãy thử lại.",
+      "forbiddenToast": "Bạn không có quyền thay đổi lớp học.",
+      "loadError": "Chúng tôi không thể tải danh sách nhân viên và học sinh. Hãy đóng và thử lại.",
+      "loadErrorDescription": "Kiểm tra kết nối, sau đó đóng hộp này và thử lại."
+    },
+    "validation": {
+      "required": "Trường này là bắt buộc.",
+      "tooLong": "Nội dung quá dài."
+    },
+    "actions": {
+      "menuLabel": "Thao tác cho {name}",
+      "edit": "Chỉnh sửa lớp",
+      "delete": "Xoá lớp"
+    },
+    "deleteDialog": {
+      "title": "Xoá {name}?",
+      "description": "Học sinh của lớp này sẽ không bị xoá. Các em vẫn ở trong danh sách học sinh và có thể được phân công sang lớp khác.",
+      "cancel": "Huỷ",
+      "confirm": "Xoá lớp",
+      "successToast": "Đã xoá {name}. Học sinh của lớp vẫn ở trong danh sách học sinh của bạn.",
+      "errorToast": "Thao tác không thành công. Hãy thử lại."
+    }
+  },
+  "SchoolChildren": {
+    "meta": {
+      "title": "Học sinh - SchoolTest",
+      "description": "Học sinh của trường bạn, lớp và trạng thái của các em."
+    },
+    "newMeta": {
+      "title": "Thêm học sinh - SchoolTest",
+      "description": "Thêm học sinh vào danh sách SchoolTest của trường bạn."
+    },
+    "title": "Học sinh",
+    "description": "Tất cả học sinh của trường bạn, ở một nơi.",
+    "addButton": "Thêm học sinh",
+    "errorTitle": "Chúng tôi không tải được danh sách học sinh",
+    "errorDescription": "Kiểm tra kết nối rồi thử lại.",
+    "retry": "Thử lại",
+    "filters": {
+      "searchLabel": "Tìm theo tên",
+      "searchPlaceholder": "Nhập tên",
+      "statusLabel": "Trạng thái",
+      "statusAll": "Mọi trạng thái",
+      "statusActive": "Đang học",
+      "statusArchived": "Đã lưu trữ",
+      "classLabel": "Lớp",
+      "classAll": "Mọi lớp"
+    },
+    "table": {
+      "columnName": "Tên",
+      "columnClass": "Lớp",
+      "columnStatus": "Trạng thái",
+      "columnActions": "Thao tác",
+      "empty": "Chưa có học sinh nào. Thêm học sinh đầu tiên để bắt đầu.",
+      "emptyFiltered": "Không có học sinh nào khớp với bộ lọc này.",
+      "classNone": "Chưa có lớp",
+      "statusActive": "Đang học",
+      "statusArchived": "Đã lưu trữ"
+    },
+    "pagination": {
+      "previous": "Trước",
+      "next": "Sau",
+      "pageOf": "Trang {page} / {pageCount}"
+    },
+    "actions": {
+      "menuLabel": "Thao tác cho {name}",
+      "edit": "Sửa học sinh",
+      "archive": "Lưu trữ học sinh"
+    },
+    "archiveDialog": {
+      "title": "Lưu trữ {name}?",
+      "description": "Lưu trữ sẽ giải phóng chỗ của em ngay lập tức. Hồ sơ và kết quả vẫn được giữ lại, và em chuyển sang danh sách đã lưu trữ.",
+      "cancel": "Huỷ",
+      "confirm": "Lưu trữ học sinh",
+      "successToast": "Đã lưu trữ {name}. Chỗ của em đã được giải phóng.",
+      "forbiddenToast": "Bạn không có quyền lưu trữ học sinh.",
+      "genericToast": "Thao tác không thành công. Hãy thử lại."
+    },
+    "form": {
+      "createTitle": "Thêm học sinh",
+      "createDescription": "Chỉ những gì nhà trường cần: tên, khối lớp, lớp và nền tảng ngôn ngữ.",
+      "editTitle": "Sửa {name}",
+      "editDescription": "Cập nhật thông tin học sinh.",
+      "givenName": "Tên",
+      "familyName": "Họ",
+      "dateOfBirth": "Ngày sinh",
+      "yearLevel": "Khối lớp",
+      "yearOption": "Lớp {level}",
+      "classLabel": "Lớp",
+      "classNone": "Không có lớp",
+      "notSet": "Chưa đặt",
+      "ealdTitle": "Nền tảng ngôn ngữ",
+      "ealdDescription": "Nền tảng EAL/D nhà trường dùng để lên kế hoạch hỗ trợ. Mọi trường đều không bắt buộc.",
+      "firstLanguage": "Ngôn ngữ thứ nhất",
+      "otherLanguages": "Ngôn ngữ khác",
+      "otherLanguagesHint": "Ngăn cách các ngôn ngữ bằng dấu phẩy.",
+      "l1Literate": "Biết đọc viết ngôn ngữ thứ nhất",
+      "timeLearningEnglish": "Thời gian học tiếng Anh (năm)",
+      "timeInAustralia": "Thời gian ở Úc (tháng)",
+      "priorSchoolingInterrupted": "Từng gián đoạn học tập",
+      "yes": "Có",
+      "no": "Không",
+      "keepHint": "Để trống một trường để giữ nguyên giá trị hiện tại.",
+      "back": "Quay lại danh sách học sinh",
+      "cancel": "Huỷ",
+      "submitCreate": "Thêm học sinh",
+      "submitEdit": "Lưu thay đổi",
+      "submitting": "Đang lưu...",
+      "createdToast": "Đã thêm {name} vào danh sách học sinh của bạn.",
+      "updatedToast": "Đã cập nhật {name}.",
+      "seatCapToast": "Trường bạn đã hết chỗ. Hãy liên hệ SchoolTest để thêm chỗ.",
+      "schoolInactiveToast": "Tài khoản trường của bạn chưa hoạt động nên hiện chưa thể thêm học sinh.",
+      "forbiddenToast": "Bạn không có quyền thay đổi học sinh.",
+      "genericToast": "Thao tác không thành công. Hãy thử lại."
+    },
+    "validation": {
+      "givenNameRequired": "Nhập tên của học sinh.",
+      "tooLong": "Nội dung quá dài.",
+      "dobInvalid": "Nhập ngày sinh hợp lệ.",
+      "yearsInvalid": "Nhập số năm, ví dụ 2.5.",
+      "monthsInvalid": "Chỉ nhập số tháng nguyên."
     }
   }
 }

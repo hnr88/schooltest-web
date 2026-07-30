@@ -1880,6 +1880,30 @@
       "submitted": "제출됨",
       "complete": "완료"
     },
+    "entitlement": {
+      "title": "플랜 및 시트",
+      "seatsExplainer": "시트 1개는 학교에서 SchoolTest를 사용하는 학생 1명을 의미합니다.",
+      "seatsLabel": "시트",
+      "seatsUsed": "{total}석 중 {used}석 사용 중",
+      "seatsRemaining": "남은 시트 {count}석",
+      "seatCapTitle": "남은 시트가 없습니다",
+      "seatCapReached": "시트를 추가하려면 SchoolTest에 문의하세요.",
+      "planLabel": "플랜",
+      "renewalLabel": "갱신일",
+      "renewalNotSet": "설정되지 않음",
+      "allowanceTitle": "Progress Test 사용량",
+      "allowanceUsed": "{total}회 중 {used}회 사용",
+      "allowanceRemaining": "{count}회 남음",
+      "errorTitle": "플랜 및 시트 정보를 불러올 수 없습니다",
+      "errorDescription": "연결을 확인하고 다시 시도하세요.",
+      "retry": "다시 시도",
+      "testType": {
+        "reading": "읽기",
+        "listening": "듣기",
+        "writing": "쓰기",
+        "speaking": "말하기"
+      }
+    },
     "sections": {
       "classes": {
         "metaTitle": "학급 - SchoolTest",
@@ -2029,6 +2053,172 @@
       "revokeTitle": "{name}의 초대를 취소할까요?",
       "revokeDescription": "초대 링크가 더 이상 작동하지 않습니다. 나중에 새 초대를 보낼 수 있습니다.",
       "revokeConfirm": "초대 취소"
+    }
+  },
+  "Classes": {
+    "meta": {
+      "title": "학급 - SchoolTest",
+      "description": "학교의 모든 학급, 담당 교사 및 학생 수입니다."
+    },
+    "title": "학급",
+    "description": "학교의 모든 학급을 한곳에서 확인하세요.",
+    "addButton": "학급 추가",
+    "errorTitle": "학급을 불러올 수 없습니다",
+    "errorDescription": "연결을 확인하고 다시 시도하세요.",
+    "retry": "다시 시도",
+    "table": {
+      "columnName": "이름",
+      "columnYearBand": "학년대",
+      "columnTeachers": "교사",
+      "columnStudents": "학생",
+      "columnActions": "작업",
+      "empty": "아직 학급이 없습니다. 첫 학급을 추가해 시작하세요.",
+      "teachersNone": "배정된 교사 없음",
+      "yearBandNone": "설정되지 않음"
+    },
+    "yearBands": {
+      "7_9": "7-9학년",
+      "10_12": "10-12학년"
+    },
+    "form": {
+      "createTitle": "학급 추가",
+      "editTitle": "{name} 편집",
+      "createDescription": "학급 이름을 지정하고 학년대를 선택하세요. 교사는 지금 또는 나중에 배정할 수 있습니다.",
+      "editDescription": "학급 이름을 바꾸거나 학년대를 변경하거나 소속 인원을 업데이트하세요.",
+      "name": "학급 이름",
+      "yearBand": "학년대",
+      "teachers": "교사",
+      "teachersEmpty": "아직 사용 가능한 교직원이 없습니다.",
+      "students": "학생",
+      "studentsEmpty": "아직 학교에 학생이 없습니다.",
+      "studentsHint": "선택을 해제하면 해당 학생이 이 학급에서 제외됩니다. 학생은 학생 명단에 그대로 남습니다.",
+      "cancel": "취소",
+      "submitCreate": "학급 추가",
+      "submitEdit": "변경 사항 저장",
+      "submitting": "저장 중...",
+      "createdToast": "{name}을(를) 추가했습니다.",
+      "updatedToast": "{name}을(를) 업데이트했습니다.",
+      "errorToast": "작업이 실패했습니다. 다시 시도하세요.",
+      "forbiddenToast": "학급을 변경할 권한이 없습니다.",
+      "loadError": "교직원 및 학생 목록을 불러올 수 없습니다. 닫은 후 다시 시도하세요.",
+      "loadErrorDescription": "연결을 확인한 후 닫고 다시 시도하세요."
+    },
+    "validation": {
+      "required": "필수 입력 항목입니다.",
+      "tooLong": "입력 내용이 너무 깁니다."
+    },
+    "actions": {
+      "menuLabel": "{name} 작업",
+      "edit": "학급 편집",
+      "delete": "학급 삭제"
+    },
+    "deleteDialog": {
+      "title": "{name}을(를) 삭제하시겠습니까?",
+      "description": "이 학급의 학생은 삭제되지 않습니다. 학생 명단에 그대로 남아 다른 학급에 배정할 수 있습니다.",
+      "cancel": "취소",
+      "confirm": "학급 삭제",
+      "successToast": "{name}을(를) 삭제했습니다. 해당 학급의 학생은 학생 명단에 남아 있습니다.",
+      "errorToast": "작업이 실패했습니다. 다시 시도하세요."
+    }
+  },
+  "SchoolChildren": {
+    "meta": {
+      "title": "학생 - SchoolTest",
+      "description": "학교의 학생, 학급 및 상태입니다."
+    },
+    "newMeta": {
+      "title": "학생 추가 - SchoolTest",
+      "description": "학교의 SchoolTest 명단에 학생을 추가합니다."
+    },
+    "title": "학생",
+    "description": "학교의 모든 학생을 한곳에서 확인하세요.",
+    "addButton": "학생 추가",
+    "errorTitle": "학생 목록을 불러오지 못했습니다",
+    "errorDescription": "연결을 확인하고 다시 시도하세요.",
+    "retry": "다시 시도",
+    "filters": {
+      "searchLabel": "이름으로 검색",
+      "searchPlaceholder": "이름 입력",
+      "statusLabel": "상태",
+      "statusAll": "모든 상태",
+      "statusActive": "재학",
+      "statusArchived": "보관됨",
+      "classLabel": "학급",
+      "classAll": "모든 학급"
+    },
+    "table": {
+      "columnName": "이름",
+      "columnClass": "학급",
+      "columnStatus": "상태",
+      "columnActions": "작업",
+      "empty": "아직 학생이 없습니다. 첫 학생을 추가해 시작하세요.",
+      "emptyFiltered": "이 필터에 맞는 학생이 없습니다.",
+      "classNone": "학급 없음",
+      "statusActive": "재학",
+      "statusArchived": "보관됨"
+    },
+    "pagination": {
+      "previous": "이전",
+      "next": "다음",
+      "pageOf": "{pageCount}페이지 중 {page}페이지"
+    },
+    "actions": {
+      "menuLabel": "{name} 작업",
+      "edit": "학생 편집",
+      "archive": "학생 보관"
+    },
+    "archiveDialog": {
+      "title": "{name}을(를) 보관하시겠습니까?",
+      "description": "보관하면 즉시 좌석이 해제됩니다. 기록과 결과는 그대로 보존되며 보관 목록으로 이동합니다.",
+      "cancel": "취소",
+      "confirm": "학생 보관",
+      "successToast": "{name}을(를) 보관했습니다. 좌석이 다시 비워졌습니다.",
+      "forbiddenToast": "학생을 보관할 권한이 없습니다.",
+      "genericToast": "작업이 실패했습니다. 다시 시도하세요."
+    },
+    "form": {
+      "createTitle": "학생 추가",
+      "createDescription": "학교에 필요한 정보만 입력하세요: 이름, 학년, 학급, 언어 배경.",
+      "editTitle": "{name} 편집",
+      "editDescription": "학생 정보를 업데이트합니다.",
+      "givenName": "이름",
+      "familyName": "성",
+      "dateOfBirth": "생년월일",
+      "yearLevel": "학년",
+      "yearOption": "{level}학년",
+      "classLabel": "학급",
+      "classNone": "학급 없음",
+      "notSet": "설정 안 함",
+      "ealdTitle": "언어 배경",
+      "ealdDescription": "학교가 지원을 계획하는 데 사용하는 EAL/D 배경입니다. 모든 항목은 선택 사항입니다.",
+      "firstLanguage": "제1언어",
+      "otherLanguages": "기타 언어",
+      "otherLanguagesHint": "여러 언어는 쉼표로 구분하세요.",
+      "l1Literate": "제1언어 읽기·쓰기 가능",
+      "timeLearningEnglish": "영어 학습 기간(년)",
+      "timeInAustralia": "호주 거주 기간(개월)",
+      "priorSchoolingInterrupted": "이전 학업 중단 경험",
+      "yes": "예",
+      "no": "아니요",
+      "keepHint": "현재 값을 유지하려면 필드를 비워 두세요.",
+      "back": "학생 목록으로 돌아가기",
+      "cancel": "취소",
+      "submitCreate": "학생 추가",
+      "submitEdit": "변경 사항 저장",
+      "submitting": "저장 중...",
+      "createdToast": "{name}을(를) 학생 명단에 추가했습니다.",
+      "updatedToast": "{name}을(를) 업데이트했습니다.",
+      "seatCapToast": "학교의 남은 좌석이 없습니다. SchoolTest에 문의하여 좌석을 추가하세요.",
+      "schoolInactiveToast": "학교 계정이 활성 상태가 아니어서 지금은 학생을 추가할 수 없습니다.",
+      "forbiddenToast": "학생을 변경할 권한이 없습니다.",
+      "genericToast": "작업이 실패했습니다. 다시 시도하세요."
+    },
+    "validation": {
+      "givenNameRequired": "학생의 이름을 입력하세요.",
+      "tooLong": "내용이 너무 깁니다.",
+      "dobInvalid": "올바른 생년월일을 입력하세요.",
+      "yearsInvalid": "연수를 입력하세요. 예: 2.5.",
+      "monthsInvalid": "개월 수는 정수만 입력하세요."
     }
   }
 }

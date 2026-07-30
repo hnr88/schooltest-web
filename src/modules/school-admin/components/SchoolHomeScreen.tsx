@@ -4,15 +4,16 @@ import { useTranslations } from 'next-intl';
 
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
+import { SchoolEntitlementSection } from '@/modules/school-admin/components/SchoolEntitlementSection';
 import {
   ACCOUNT_STATUS_VARIANTS,
   ONBOARDING_STATUS_VARIANTS,
 } from '@/modules/school-admin/lib/school-status';
 import { useMySchoolQuery } from '@/modules/school-admin/queries/use-my-school.query';
 
-// School administrator section index (task 27, st-mvp-pivot): the caller's own
-// school from C-SCH-01 — name, location line, and the two lifecycle chips.
-// Seats/plan panels deliberately absent; task 28 adds them.
+// School administrator section index (tasks 27-28, st-mvp-pivot): the caller's
+// own school from C-SCH-01 — name, location line, the two lifecycle chips —
+// plus the C-ENT-01 plan/seats/allowance panel.
 export function SchoolHomeScreen() {
   const t = useTranslations('SchoolAdmin');
   const token = useAuthStore((state) => state.token);
@@ -83,6 +84,7 @@ export function SchoolHomeScreen() {
           </Badge>
         </span>
       </div>
+      <SchoolEntitlementSection />
     </main>
   );
 }

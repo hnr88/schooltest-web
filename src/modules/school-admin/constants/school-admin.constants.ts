@@ -16,3 +16,6 @@ export const SCHOOL_ONBOARDING_STATUSES = [
   'submitted',
   'complete',
 ] as const;
+
+// C-ENT-01 allowance test_type values (D-02/Q3), in display order.
+export const TEST_TYPES = ['reading', 'listening', 'writing', 'speaking'] as const;
