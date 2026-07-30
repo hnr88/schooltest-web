@@ -9,16 +9,22 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from '@/modules/design-system';
+import {
+  ACARA_PHASE_OPTIONS,
+  FIRST_LANGUAGE_OPTIONS,
+} from '@/modules/school-children/constants/child-picklists.constants';
 import type { SchoolChildFormValues } from '@/modules/school-children/schemas/school-child.schema';
 
 interface ChildEaldFieldsProps {
   form: UseFormReturn<SchoolChildFormValues>;
+  showAcaraPhase: boolean;
 }
 
 // The school-relevant EAL/D background block (spec section 7) — the flat
-// C-CHD-02 fields. All optional; tri-state selects keep "Not set" as the
-// blank/keep-current choice.
-export function ChildEaldFields({ form }: ChildEaldFieldsProps) {
+// C-CHD-02 v2 fields. All optional; tri-state selects keep "Not set" as the
+// blank/keep-current choice. The ACARA phase select renders for school_admin
+// callers only (D-10): it never appears on a teacher-facing surface.
+export function ChildEaldFields({ form, showAcaraPhase }: ChildEaldFieldsProps) {
   const t = useTranslations('SchoolChildren.form');
   const {
     register,
@@ -30,8 +36,32 @@ export function ChildEaldFields({ form }: ChildEaldFieldsProps) {
       <legend className="px-1 text-sm font-semibold text-foreground">{t('ealdTitle')}</legend>
       <p className="text-meta text-body">{t('ealdDescription')}</p>
       <FieldShell id="child-first-language" label={t('firstLanguage')} errorText={errors.first_language?.message}>
-        <Input id="child-first-language" autoComplete="off" {...register('first_language')} />
+        <NativeSelect id="child-first-language" className="w-full" {...register('first_language')}>
+          <NativeSelectOption value="">{t('notSet')}</NativeSelectOption>
+          {FIRST_LANGUAGE_OPTIONS.map((option) => (
+            <NativeSelectOption key={option} value={option}>
+              {t(`firstLanguageOption.${option}`)}
+            </NativeSelectOption>
+          ))}
+        </NativeSelect>
       </FieldShell>
+      {showAcaraPhase ? (
+        <FieldShell
+          id="child-acara-phase"
+          label={t('acaraPhase')}
+          helperText={t('acaraPhaseHint')}
+          errorText={errors.acara_phase?.message}
+        >
+          <NativeSelect id="child-acara-phase" className="w-full" {...register('acara_phase')}>
+            <NativeSelectOption value="">{t('notSet')}</NativeSelectOption>
+            {ACARA_PHASE_OPTIONS.map((option) => (
+              <NativeSelectOption key={option} value={option}>
+                {t(`acaraPhaseOption.${option}`)}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </FieldShell>
+      ) : null}
       <FieldShell
         id="child-other-languages"
         label={t('otherLanguages')}

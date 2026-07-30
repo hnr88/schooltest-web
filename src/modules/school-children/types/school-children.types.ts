@@ -16,10 +16,13 @@ export interface SchoolChild {
   class: SchoolChildClassRef | null;
 }
 
-// C-CHD-02/03 write response: the list shape plus dob/year_level/school.
+// C-CHD-02/03 write response: the list shape plus the v2 detail fields.
 export interface SchoolChildDetail extends SchoolChild {
   date_of_birth: string | null;
   year_level: number | null;
+  email: string | null;
+  first_language: string | null;
+  acara_phase: string | null;
   school: { documentId: string } | null;
 }
 
@@ -36,20 +39,25 @@ export interface SchoolChildrenPage {
 }
 
 // The roster filter state, mapped 1:1 onto the C-CHD-01 query params.
+// pageSize defaults to the roster page size; picker consumers (class detail
+// assignment) pass the contract maximum of 100 to list every active child.
 export interface SchoolChildrenQuery {
   status: SchoolChildStatusFilter;
   classId: string;
   q: string;
   page: number;
+  pageSize?: number;
 }
 
-// C-CHD-02/03 request body: only the contract fields, never guardian/media.
+// C-CHD-02 v2/03 request body: only the contract fields, never guardian/media.
 export interface ChildWriteBody {
   given_name?: string;
   family_name?: string | null;
+  email?: string | null;
   date_of_birth?: string | null;
   year_level?: number | null;
   first_language?: string | null;
+  acara_phase?: string | null;
   other_languages?: string[] | null;
   l1_literate?: boolean | null;
   time_learning_english_yrs?: number | null;

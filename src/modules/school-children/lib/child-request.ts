@@ -25,9 +25,11 @@ function triState(value: string): boolean | null {
 function optionalEntries(values: SchoolChildFormValues): ChildWriteBody {
   return {
     family_name: values.family_name === '' ? null : values.family_name,
+    email: values.email === '' ? null : values.email,
     date_of_birth: values.date_of_birth === '' ? null : values.date_of_birth,
     year_level: values.year_level === '' ? null : Number(values.year_level),
     first_language: values.first_language === '' ? null : values.first_language,
+    acara_phase: values.acara_phase === '' ? null : values.acara_phase,
     other_languages:
       values.other_languages === '' ? null : parseLanguages(values.other_languages),
     l1_literate: values.l1_literate === '' ? null : triState(values.l1_literate),
@@ -57,20 +59,24 @@ export function buildChildCreateBody(values: SchoolChildFormValues): ChildWriteB
   return body;
 }
 
-// C-CHD-03: partial write of changed fields only. A cleared field the admin
-// touched sends null (the server's "clear it"), an untouched field sends
-// nothing (the server's "keep it").
+// C-CHD-03: partial write of the fields whose value differs from the form's
+// initial values. A cleared field the admin changed sends null (the server's
+// "clear it"), an untouched field sends nothing (the server's "keep it").
+// Diffed against the initial values rather than RHF dirtyFields: inside the
+// base-ui edit dialog the dirty-field map comes back empty even when values
+// changed, which silently dropped every edit.
 export function buildChildUpdateBody(
   values: SchoolChildFormValues,
-  dirtyFields: Partial<Record<keyof SchoolChildFormValues, boolean>>,
+  initial: SchoolChildFormValues,
 ): ChildWriteBody {
   const body: ChildWriteBody = {};
-  if (dirtyFields.given_name) {
+  if (values.given_name !== initial.given_name) {
     body.given_name = values.given_name;
   }
   const optional = optionalEntries(values);
+  const baseline = optionalEntries(initial);
   for (const [key, value] of Object.entries(optional)) {
-    if (dirtyFields[key as keyof SchoolChildFormValues]) {
+    if (JSON.stringify(value) !== JSON.stringify(baseline[key as keyof ChildWriteBody])) {
       (body as Record<string, unknown>)[key] = value;
     }
   }

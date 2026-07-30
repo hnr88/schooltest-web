@@ -4,6 +4,8 @@ import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Link, useRouter } from '@/i18n/navigation';
+import { SCHOOL_ADMIN_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
+import { useMeQuery } from '@/modules/auth/queries/use-me.query';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { useSchoolClassesQuery } from '@/modules/classes';
 import { Skeleton } from '@/modules/design-system';
@@ -11,15 +13,19 @@ import { SchoolChildForm } from '@/modules/school-children/components/SchoolChil
 
 const BACK_CLASSES = 'inline-flex w-fit items-center gap-1.5 text-sm font-medium text-body hover:text-foreground';
 
-// Add-child page (task 30, st-mvp-pivot): the single-purpose C-CHD-02 form —
-// name, date of birth, year level, class and EAL/D background. Guardian and
-// media steps from the parent wizard are not present in the school flow.
+// Add-child page (task 30, st-mvp-pivot): the single-purpose C-CHD-02 v2 form
+// — name, email, year level, class, first-language picklist and the optional
+// ACARA phase (school_admin only, D-10). Guardian and media steps from the
+// parent wizard are not present in the school flow.
 export function SchoolChildNewScreen() {
   const t = useTranslations('SchoolChildren.form');
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
-  const classesQuery = useSchoolClassesQuery(hydrated && Boolean(token));
+  const enabled = hydrated && Boolean(token);
+  const classesQuery = useSchoolClassesQuery(enabled);
+  const meQuery = useMeQuery(enabled);
+  const showAcaraPhase = meQuery.data?.role?.type === SCHOOL_ADMIN_ROLE_TYPE;
   const backToRoster = () => router.push('/dashboard/school/children');
 
   return (
@@ -47,6 +53,7 @@ export function SchoolChildNewScreen() {
           <SchoolChildForm
             target={{ mode: 'create' }}
             classes={classesQuery.data ?? []}
+            showAcaraPhase={showAcaraPhase}
             onCancel={backToRoster}
             onDone={backToRoster}
           />

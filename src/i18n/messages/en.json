@@ -2366,6 +2366,29 @@
       "title": "Classes - SchoolTest",
       "description": "The classes at your school, their teachers and student counts."
     },
+    "detailMeta": {
+      "title": "Class - SchoolTest",
+      "description": "Assign the teachers and students who belong to a class."
+    },
+    "detail": {
+      "backLink": "Back to classes",
+      "notFoundTitle": "We could not find this class",
+      "notFoundDescription": "It may have been deleted. Head back to your classes list.",
+      "errorTitle": "We could not load this class",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "teachersTitle": "Teachers",
+      "teachersDescription": "The teachers who own this class.",
+      "teachersEmpty": "No staff available yet.",
+      "studentsTitle": "Students",
+      "studentsDescription": "Unticking a child removes them from this class. They stay on your children list.",
+      "studentsEmpty": "No active children at your school yet.",
+      "save": "Save changes",
+      "saving": "Saving...",
+      "savedToast": "{name} was updated.",
+      "forbiddenToast": "You do not have permission to change this class.",
+      "errorToast": "That did not work. Try again."
+    },
     "title": "Classes",
     "description": "Every class at your school, in one place.",
     "addButton": "Add class",
@@ -2489,6 +2512,8 @@
       "editDescription": "Update the child's details.",
       "givenName": "Given name",
       "familyName": "Family name",
+      "email": "Email",
+      "emailHint": "Used with the class access code on test day.",
       "dateOfBirth": "Date of birth",
       "yearLevel": "Year level",
       "yearOption": "Year {level}",
@@ -2498,6 +2523,25 @@
       "ealdTitle": "Language background",
       "ealdDescription": "The EAL/D background the school uses to plan support. Every field is optional.",
       "firstLanguage": "First language",
+      "firstLanguageOption": {
+        "mandarin_chinese": "Mandarin Chinese",
+        "korean": "Korean",
+        "japanese": "Japanese",
+        "malay": "Malay",
+        "thai": "Thai",
+        "vietnamese": "Vietnamese",
+        "indonesian": "Indonesian",
+        "english": "English",
+        "other": "Another language"
+      },
+      "acaraPhase": "ACARA EAL/D phase",
+      "acaraPhaseHint": "Optional. Only school administrators see this.",
+      "acaraPhaseOption": {
+        "beginning": "Beginning",
+        "emerging": "Emerging",
+        "developing": "Developing",
+        "consolidating": "Consolidating"
+      },
       "otherLanguages": "Other languages",
       "otherLanguagesHint": "Separate languages with commas.",
       "l1Literate": "Literate in first language",
@@ -2521,6 +2565,7 @@
     },
     "validation": {
       "givenNameRequired": "Enter the child's given name.",
+      "emailInvalid": "Enter a valid email address.",
       "tooLong": "That is too long.",
       "dobInvalid": "Enter a valid date of birth.",
       "yearsInvalid": "Enter a number of years, for example 2.5.",

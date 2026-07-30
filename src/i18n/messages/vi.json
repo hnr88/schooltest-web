@@ -2060,6 +2060,29 @@
       "title": "Lớp học - SchoolTest",
       "description": "Các lớp học tại trường của bạn, giáo viên và sĩ số."
     },
+    "detailMeta": {
+      "title": "Lớp học - SchoolTest",
+      "description": "Phân công giáo viên và học sinh của một lớp học."
+    },
+    "detail": {
+      "backLink": "Quay lại danh sách lớp",
+      "notFoundTitle": "Chúng tôi không tìm thấy lớp này",
+      "notFoundDescription": "Lớp có thể đã bị xoá. Hãy quay lại danh sách lớp của bạn.",
+      "errorTitle": "Chúng tôi không tải được lớp này",
+      "errorDescription": "Kiểm tra kết nối của bạn rồi thử lại.",
+      "retry": "Thử lại",
+      "teachersTitle": "Giáo viên",
+      "teachersDescription": "Các giáo viên phụ trách lớp này.",
+      "teachersEmpty": "Chưa có nhân viên nào.",
+      "studentsTitle": "Học sinh",
+      "studentsDescription": "Bỏ chọn sẽ đưa học sinh ra khỏi lớp này. Học sinh vẫn ở trong danh sách học sinh của bạn.",
+      "studentsEmpty": "Trường của bạn chưa có học sinh đang học nào.",
+      "save": "Lưu thay đổi",
+      "saving": "Đang lưu...",
+      "savedToast": "Đã cập nhật {name}.",
+      "forbiddenToast": "Bạn không có quyền thay đổi lớp này.",
+      "errorToast": "Thao tác không thành công. Hãy thử lại."
+    },
     "title": "Lớp học",
     "description": "Mọi lớp học tại trường của bạn, ở một nơi.",
     "addButton": "Thêm lớp",
@@ -2183,6 +2206,8 @@
       "editDescription": "Cập nhật thông tin học sinh.",
       "givenName": "Tên",
       "familyName": "Họ",
+      "email": "Email",
+      "emailHint": "Dùng cùng mã truy cập của lớp vào ngày kiểm tra.",
       "dateOfBirth": "Ngày sinh",
       "yearLevel": "Khối lớp",
       "yearOption": "Lớp {level}",
@@ -2192,6 +2217,25 @@
       "ealdTitle": "Nền tảng ngôn ngữ",
       "ealdDescription": "Nền tảng EAL/D nhà trường dùng để lên kế hoạch hỗ trợ. Mọi trường đều không bắt buộc.",
       "firstLanguage": "Ngôn ngữ thứ nhất",
+      "firstLanguageOption": {
+        "mandarin_chinese": "Tiếng Trung (Quan thoại)",
+        "korean": "Tiếng Hàn",
+        "japanese": "Tiếng Nhật",
+        "malay": "Tiếng Mã Lai",
+        "thai": "Tiếng Thái",
+        "vietnamese": "Tiếng Việt",
+        "indonesian": "Tiếng Indonesia",
+        "english": "Tiếng Anh",
+        "other": "Ngôn ngữ khác"
+      },
+      "acaraPhase": "Giai đoạn ACARA EAL/D",
+      "acaraPhaseHint": "Không bắt buộc. Chỉ quản trị viên nhà trường mới thấy.",
+      "acaraPhaseOption": {
+        "beginning": "Bắt đầu",
+        "emerging": "Mới hình thành",
+        "developing": "Đang phát triển",
+        "consolidating": "Củng cố"
+      },
       "otherLanguages": "Ngôn ngữ khác",
       "otherLanguagesHint": "Ngăn cách các ngôn ngữ bằng dấu phẩy.",
       "l1Literate": "Biết đọc viết ngôn ngữ thứ nhất",
@@ -2215,6 +2259,7 @@
     },
     "validation": {
       "givenNameRequired": "Nhập tên của học sinh.",
+      "emailInvalid": "Nhập một địa chỉ email hợp lệ.",
       "tooLong": "Nội dung quá dài.",
       "dobInvalid": "Nhập ngày sinh hợp lệ.",
       "yearsInvalid": "Nhập số năm, ví dụ 2.5.",

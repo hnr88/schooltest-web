@@ -20,7 +20,7 @@ async function fetchSchoolChildren(query: SchoolChildrenQuery): Promise<SchoolCh
   const res = await strapi.get<unknown>('/api/schools/me/children', {
     params: {
       page: query.page,
-      pageSize: SCHOOL_CHILDREN_PAGE_SIZE,
+      pageSize: query.pageSize ?? SCHOOL_CHILDREN_PAGE_SIZE,
       ...(query.status !== 'all' ? { status: query.status } : {}),
       ...(query.classId !== 'all' ? { class: query.classId } : {}),
       ...(query.q !== '' ? { q: query.q } : {}),

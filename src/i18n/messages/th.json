@@ -2060,6 +2060,29 @@
       "title": "ชั้นเรียน - SchoolTest",
       "description": "ชั้นเรียนทั้งหมดในโรงเรียนของคุณ ครูผู้สอน และจำนวนนักเรียน"
     },
+    "detailMeta": {
+      "title": "ชั้นเรียน - SchoolTest",
+      "description": "มอบหมายครูและนักเรียนที่สังกัดชั้นเรียน"
+    },
+    "detail": {
+      "backLink": "กลับไปที่รายชื่อชั้นเรียน",
+      "notFoundTitle": "เราไม่พบชั้นเรียนนี้",
+      "notFoundDescription": "อาจถูกลบไปแล้ว กลับไปที่รายชื่อชั้นเรียนของคุณ",
+      "errorTitle": "เราไม่สามารถโหลดชั้นเรียนนี้ได้",
+      "errorDescription": "ตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง",
+      "retry": "ลองอีกครั้ง",
+      "teachersTitle": "ครู",
+      "teachersDescription": "ครูที่รับผิดชอบชั้นเรียนนี้",
+      "teachersEmpty": "ยังไม่มีบุคลากรที่ใช้ได้",
+      "studentsTitle": "นักเรียน",
+      "studentsDescription": "การยกเลิกการเลือกจะนำนักเรียนออกจากชั้นเรียนนี้ นักเรียนยังคงอยู่ในรายชื่อนักเรียนของคุณ",
+      "studentsEmpty": "โรงเรียนของคุณยังไม่มีนักเรียนที่กำลังศึกษาอยู่",
+      "save": "บันทึกการเปลี่ยนแปลง",
+      "saving": "กำลังบันทึก...",
+      "savedToast": "อัปเดต {name} แล้ว",
+      "forbiddenToast": "คุณไม่มีสิทธิ์เปลี่ยนแปลงชั้นเรียนนี้",
+      "errorToast": "การดำเนินการไม่สำเร็จ ลองอีกครั้ง"
+    },
     "title": "ชั้นเรียน",
     "description": "ทุกชั้นเรียนในโรงเรียนของคุณ รวมอยู่ในที่เดียว",
     "addButton": "เพิ่มชั้นเรียน",
@@ -2183,6 +2206,8 @@
       "editDescription": "อัปเดตรายละเอียดของนักเรียน",
       "givenName": "ชื่อ",
       "familyName": "นามสกุล",
+      "email": "อีเมล",
+      "emailHint": "ใช้ร่วมกับรหัสเข้าชั้นเรียนในวันสอบ",
       "dateOfBirth": "วันเกิด",
       "yearLevel": "ระดับชั้น",
       "yearOption": "ปีที่ {level}",
@@ -2192,6 +2217,25 @@
       "ealdTitle": "ภูมิหลังทางภาษา",
       "ealdDescription": "ภูมิหลัง EAL/D ที่โรงเรียนใช้วางแผนการสนับสนุน ทุกช่องเป็นตัวเลือก",
       "firstLanguage": "ภาษาแรก",
+      "firstLanguageOption": {
+        "mandarin_chinese": "จีนกลาง",
+        "korean": "เกาหลี",
+        "japanese": "ญี่ปุ่น",
+        "malay": "มาเลย์",
+        "thai": "ไทย",
+        "vietnamese": "เวียดนาม",
+        "indonesian": "อินโดนีเซีย",
+        "english": "อังกฤษ",
+        "other": "ภาษาอื่น"
+      },
+      "acaraPhase": "ระดับ ACARA EAL/D",
+      "acaraPhaseHint": "ไม่บังคับ เฉพาะผู้ดูแลโรงเรียนเท่านั้นที่เห็น",
+      "acaraPhaseOption": {
+        "beginning": "เริ่มต้น",
+        "emerging": "เริ่มก่อตัว",
+        "developing": "กำลังพัฒนา",
+        "consolidating": "มั่นคง"
+      },
       "otherLanguages": "ภาษาอื่นๆ",
       "otherLanguagesHint": "คั่นภาษาด้วยเครื่องหมายจุลภาค",
       "l1Literate": "อ่านเขียนภาษาแรกได้",
@@ -2215,6 +2259,7 @@
     },
     "validation": {
       "givenNameRequired": "กรอกชื่อของนักเรียน",
+      "emailInvalid": "กรุณากรอกอีเมลที่ถูกต้อง",
       "tooLong": "ยาวเกินไป",
       "dobInvalid": "กรอกวันเกิดที่ถูกต้อง",
       "yearsInvalid": "กรอกจำนวนปี เช่น 2.5",

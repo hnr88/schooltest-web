@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
 import { ClassRowActions } from '@/modules/classes/components/ClassRowActions';
 import { isYearBand } from '@/modules/classes/constants/year-bands.constants';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
@@ -47,7 +48,14 @@ export function ClassesTable({ rows, onEdit }: ClassesTableProps) {
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.documentId}>
-              <TableCell className="font-medium">{row.name}</TableCell>
+              <TableCell className="font-medium">
+                <Link
+                  href={`/dashboard/school/classes/${row.documentId}`}
+                  className="rounded-sm underline-offset-4 transition-colors duration-150 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                >
+                  {row.name}
+                </Link>
+              </TableCell>
               <TableCell>
                 {row.year_band
                   ? isYearBand(row.year_band)

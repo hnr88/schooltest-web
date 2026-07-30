@@ -24,9 +24,11 @@ export type ChildFormTarget = { mode: 'create' } | { mode: 'edit'; child: School
 const BLANK_VALUES: SchoolChildFormValues = {
   given_name: '',
   family_name: '',
+  email: '',
   date_of_birth: '',
   year_level: '',
   first_language: '',
+  acara_phase: '',
   other_languages: '',
   l1_literate: '',
   time_learning_english_yrs: '',
@@ -76,7 +78,7 @@ export function useChildForm(target: ChildFormTarget, onDone: () => void) {
         await create.mutateAsync(buildChildCreateBody(values));
         toast.success(t('createdToast', { name: displayName(values) }));
       } else {
-        const body = buildChildUpdateBody(values, form.formState.dirtyFields);
+        const body = buildChildUpdateBody(values, initialValues(target));
         if (Object.keys(body).length > 0) {
           await update.mutateAsync({ documentId: target.child.documentId, body });
           toast.success(t('updatedToast', { name: displayName(values) }));

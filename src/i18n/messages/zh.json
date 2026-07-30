@@ -2060,6 +2060,29 @@
       "title": "班级 - SchoolTest",
       "description": "您学校的所有班级、任课教师和学生人数。"
     },
+    "detailMeta": {
+      "title": "班级 - SchoolTest",
+      "description": "分配班级的任课教师和学生。"
+    },
+    "detail": {
+      "backLink": "返回班级列表",
+      "notFoundTitle": "找不到该班级",
+      "notFoundDescription": "它可能已被删除。请返回您的班级列表。",
+      "errorTitle": "无法加载该班级",
+      "errorDescription": "请检查网络连接，然后重试。",
+      "retry": "重试",
+      "teachersTitle": "教师",
+      "teachersDescription": "负责本班的教师。",
+      "teachersEmpty": "暂无可用员工。",
+      "studentsTitle": "学生",
+      "studentsDescription": "取消勾选会将该学生移出本班。学生仍保留在您的学生名单中。",
+      "studentsEmpty": "您的学校还没有在读学生。",
+      "save": "保存更改",
+      "saving": "正在保存...",
+      "savedToast": "已更新 {name}。",
+      "forbiddenToast": "您没有权限更改该班级。",
+      "errorToast": "操作失败，请重试。"
+    },
     "title": "班级",
     "description": "您学校的所有班级，集中在一处。",
     "addButton": "添加班级",
@@ -2183,6 +2206,8 @@
       "editDescription": "更新该学生的信息。",
       "givenName": "名字",
       "familyName": "姓氏",
+      "email": "电子邮箱",
+      "emailHint": "测试当天与班级访问码一起使用。",
       "dateOfBirth": "出生日期",
       "yearLevel": "年级",
       "yearOption": "{level} 年级",
@@ -2192,6 +2217,25 @@
       "ealdTitle": "语言背景",
       "ealdDescription": "学校用于规划支持的 EAL/D 背景信息。所有字段均为选填。",
       "firstLanguage": "第一语言",
+      "firstLanguageOption": {
+        "mandarin_chinese": "中文（普通话）",
+        "korean": "韩语",
+        "japanese": "日语",
+        "malay": "马来语",
+        "thai": "泰语",
+        "vietnamese": "越南语",
+        "indonesian": "印尼语",
+        "english": "英语",
+        "other": "其他语言"
+      },
+      "acaraPhase": "ACARA EAL/D 阶段",
+      "acaraPhaseHint": "可选。只有学校管理员可以看到。",
+      "acaraPhaseOption": {
+        "beginning": "起步",
+        "emerging": "初显",
+        "developing": "发展中",
+        "consolidating": "巩固"
+      },
       "otherLanguages": "其他语言",
       "otherLanguagesHint": "多种语言请用逗号分隔。",
       "l1Literate": "具备第一语言读写能力",
@@ -2215,6 +2259,7 @@
     },
     "validation": {
       "givenNameRequired": "请输入学生的名字。",
+      "emailInvalid": "请输入有效的电子邮箱地址。",
       "tooLong": "内容过长。",
       "dobInvalid": "请输入有效的出生日期。",
       "yearsInvalid": "请输入年数，例如 2.5。",

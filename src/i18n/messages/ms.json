@@ -2060,6 +2060,29 @@
       "title": "Kelas - SchoolTest",
       "description": "Kelas di sekolah anda, guru dan bilangan muridnya."
     },
+    "detailMeta": {
+      "title": "Kelas - SchoolTest",
+      "description": "Tugaskan guru dan murid yang tergolong dalam sesebuah kelas."
+    },
+    "detail": {
+      "backLink": "Kembali ke senarai kelas",
+      "notFoundTitle": "Kami tidak dapat menemukan kelas ini",
+      "notFoundDescription": "Ia mungkin telah dipadam. Kembali ke senarai kelas anda.",
+      "errorTitle": "Kami tidak dapat memuatkan kelas ini",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi",
+      "teachersTitle": "Guru",
+      "teachersDescription": "Guru yang memiliki kelas ini.",
+      "teachersEmpty": "Belum ada kakitangan tersedia.",
+      "studentsTitle": "Murid",
+      "studentsDescription": "Membuang tanda akan mengeluarkan murid itu daripada kelas ini. Mereka kekal dalam senarai murid anda.",
+      "studentsEmpty": "Belum ada murid aktif di sekolah anda.",
+      "save": "Simpan perubahan",
+      "saving": "Menyimpan...",
+      "savedToast": "{name} telah dikemas kini.",
+      "forbiddenToast": "Anda tidak mempunyai kebenaran untuk mengubah kelas ini.",
+      "errorToast": "Itu tidak berjaya. Cuba lagi."
+    },
     "title": "Kelas",
     "description": "Setiap kelas di sekolah anda, dalam satu tempat.",
     "addButton": "Tambah kelas",
@@ -2183,6 +2206,8 @@
       "editDescription": "Kemas kini maklumat murid.",
       "givenName": "Nama diberi",
       "familyName": "Nama keluarga",
+      "email": "E-mel",
+      "emailHint": "Digunakan dengan kod akses kelas pada hari ujian.",
       "dateOfBirth": "Tarikh lahir",
       "yearLevel": "Tahap tahun",
       "yearOption": "Tahun {level}",
@@ -2192,6 +2217,25 @@
       "ealdTitle": "Latar belakang bahasa",
       "ealdDescription": "Latar belakang EAL/D yang digunakan sekolah untuk merancang sokongan. Semua medan adalah pilihan.",
       "firstLanguage": "Bahasa pertama",
+      "firstLanguageOption": {
+        "mandarin_chinese": "Bahasa Cina Mandarin",
+        "korean": "Bahasa Korea",
+        "japanese": "Bahasa Jepun",
+        "malay": "Bahasa Melayu",
+        "thai": "Bahasa Thai",
+        "vietnamese": "Bahasa Vietnam",
+        "indonesian": "Bahasa Indonesia",
+        "english": "Bahasa Inggeris",
+        "other": "Bahasa lain"
+      },
+      "acaraPhase": "Fasa ACARA EAL/D",
+      "acaraPhaseHint": "Pilihan. Hanya pentadbir sekolah dapat melihatnya.",
+      "acaraPhaseOption": {
+        "beginning": "Permulaan",
+        "emerging": "Peralihan",
+        "developing": "Berkembang",
+        "consolidating": "Mantap"
+      },
       "otherLanguages": "Bahasa lain",
       "otherLanguagesHint": "Asingkan bahasa dengan koma.",
       "l1Literate": "Literat dalam bahasa pertama",
@@ -2215,6 +2259,7 @@
     },
     "validation": {
       "givenNameRequired": "Masukkan nama diberi murid.",
+      "emailInvalid": "Masukkan alamat e-mel yang sah.",
       "tooLong": "Itu terlalu panjang.",
       "dobInvalid": "Masukkan tarikh lahir yang sah.",
       "yearsInvalid": "Masukkan bilangan tahun, contohnya 2.5.",

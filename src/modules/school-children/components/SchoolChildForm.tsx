@@ -17,15 +17,17 @@ import { YEAR_LEVEL_OPTIONS } from '@/modules/school-children/schemas/school-chi
 interface SchoolChildFormProps {
   target: ChildFormTarget;
   classes: SchoolClass[];
+  showAcaraPhase: boolean;
   onCancel: () => void;
   onDone: () => void;
 }
 
-// The C-CHD-02/03 form body: name, date of birth, year level, class and the
-// EAL/D block. No guardian, media or parent fields exist here — the server
-// rejects them with a 400, and the parent wizard keeps them behind its own
-// routes. Mounted fresh per target, so default values always match.
-export function SchoolChildForm({ target, classes, onCancel, onDone }: SchoolChildFormProps) {
+// The C-CHD-02 v2/03 form body: name, email, date of birth, year level, class
+// and the EAL/D block (first-language picklist, admin-only ACARA phase). No
+// guardian, media or parent fields exist here — the server rejects them with
+// a 400, and the parent wizard keeps them behind its own routes. Mounted
+// fresh per target, so default values always match.
+export function SchoolChildForm({ target, classes, showAcaraPhase, onCancel, onDone }: SchoolChildFormProps) {
   const t = useTranslations('SchoolChildren.form');
   const editing = target.mode === 'edit';
   const { form, submit, pending } = useChildForm(target, onDone);
@@ -41,6 +43,14 @@ export function SchoolChildForm({ target, classes, onCancel, onDone }: SchoolChi
       </FieldShell>
       <FieldShell id="child-family-name" label={t('familyName')} errorText={errors.family_name?.message}>
         <Input id="child-family-name" autoComplete="off" {...register('family_name')} />
+      </FieldShell>
+      <FieldShell
+        id="child-email"
+        label={t('email')}
+        helperText={t('emailHint')}
+        errorText={errors.email?.message}
+      >
+        <Input id="child-email" type="email" autoComplete="off" {...register('email')} />
       </FieldShell>
       <FieldShell id="child-dob" label={t('dateOfBirth')} errorText={errors.date_of_birth?.message}>
         <Input id="child-dob" type="date" {...register('date_of_birth')} />
@@ -65,7 +75,7 @@ export function SchoolChildForm({ target, classes, onCancel, onDone }: SchoolChi
         </NativeSelect>
       </FieldShell>
       {editing ? <p className="text-meta text-body">{t('keepHint')}</p> : null}
-      <ChildEaldFields form={form} />
+      <ChildEaldFields form={form} showAcaraPhase={showAcaraPhase} />
       <div className="flex justify-end gap-3">
         <Button type="button" variant="outline" onClick={onCancel} disabled={pending}>
           {t('cancel')}
