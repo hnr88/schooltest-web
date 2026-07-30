@@ -11,7 +11,8 @@ export type NavLabelKey =
   | 'classes'
   | 'children'
   | 'teachers'
-  | 'teach';
+  | 'teach'
+  | 'ops';
 
 // Canonical rail grouping (DS §12 Navigation card): every destination of the
 // parent rail sits in the one primary list.

@@ -841,3 +841,23 @@
     transform: none;
   }
 }
+
+/* Print (task 65 test-day run sheet — teachers print it, mvp-updates §4.5):
+   strip the portal chrome (detached rail + topbar) and release the screen-only
+   fixed-height scroll frame, so a long page flows onto paper instead of
+   clipping at one viewport. Content stays legible in black and white — no
+   meaning is carried by colour alone. */
+@media print {
+  [data-slot='sidebar-gap'],
+  [data-slot='sidebar-container'],
+  [data-slot='sidebar-inset'] > div > header {
+    display: none;
+  }
+
+  [data-slot='sidebar-wrapper'],
+  [data-slot='sidebar-inset'],
+  [data-slot='dashboard-content'] {
+    height: auto;
+    overflow: visible;
+  }
+}

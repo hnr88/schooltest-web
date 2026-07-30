@@ -24,6 +24,8 @@ export { ParentGuard } from './components/ParentGuard';
 export { TeacherGuard } from './components/TeacherGuard';
 export { SchoolAdminGuard } from './components/SchoolAdminGuard';
 export { useRequireSchoolAdmin } from './hooks/use-require-school-admin';
+export { OpsGuard } from './components/OpsGuard';
+export { useRequireOps } from './hooks/use-require-ops';
 export {
   TEACHER_ROLE_TYPE,
   SCHOOL_ADMIN_ROLE_TYPE,
@@ -41,21 +43,12 @@ export {
 } from './schemas/auth.schema';
 export { signInSchema, type SignInInput } from './schemas/sign-in.schema';
 export { signUpSchema, type SignUpInput } from './schemas/sign-up.schema';
-export {
-  forgotPasswordSchema,
-  type ForgotPasswordInput,
-} from './schemas/forgot-password.schema';
+export { forgotPasswordSchema, type ForgotPasswordInput } from './schemas/forgot-password.schema';
 export { useForgotPasswordMutation } from './queries/use-forgot-password.mutation';
-export {
-  resetPasswordSchema,
-  type ResetPasswordInput,
-} from './schemas/reset-password.schema';
+export { resetPasswordSchema, type ResetPasswordInput } from './schemas/reset-password.schema';
 export { useResetPasswordMutation } from './queries/use-reset-password.mutation';
 export { useResendConfirmationMutation } from './queries/use-resend-confirmation.mutation';
-export {
-  changePasswordSchema,
-  type ChangePasswordInput,
-} from './schemas/change-password.schema';
+export { changePasswordSchema, type ChangePasswordInput } from './schemas/change-password.schema';
 export { useChangePasswordMutation } from './queries/use-change-password.mutation';
 export type {
   AuthUser,

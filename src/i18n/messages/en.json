@@ -738,7 +738,8 @@
       "classes": "Classes",
       "children": "Children",
       "teachers": "Teachers",
-      "teach": "Teaching"
+      "teach": "Teaching",
+      "ops": "Ops"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -2245,8 +2246,92 @@
     "home": {
       "title": "Teacher dashboard",
       "subtitle": "Reports for your classes are ready under Reports.",
-      "reportsCta": "Open reports"
+      "reportsCta": "Open reports",
+      "classesTitle": "Your classes",
+      "classesLoading": "Loading your classes...",
+      "classesEmpty": "You are not assigned to a class yet. Your school administrator can add you to one.",
+      "rosterLink": "Roster",
+      "testDayLink": "Test day",
+      "runSheetLink": "Test-day run sheet"
+    },
+    "roster": {
+      "meta": {
+        "title": "Class roster - SchoolTest",
+        "description": "Check your class roster ahead of test day: names, status and sign-in emails."
+      },
+      "title": "Class roster",
+      "subtitle": "Check every student can sign in on test day. Email fixes are made by your school administrator.",
+      "backLink": "Back to your classes",
+      "loading": "Loading the roster...",
+      "loadError": "The roster could not be loaded. Try again.",
+      "emptyTitle": "No students to show",
+      "emptyBody": "There are no students in this class yet, or you are not assigned to it.",
+      "columnName": "Name",
+      "columnStatus": "Status",
+      "columnEmail": "Email",
+      "statusActive": "Active",
+      "statusArchived": "Archived",
+      "emailMissing": "Email needed before test day",
+      "emailMissingHint": "Students without an email cannot sign in on test day. Ask your school administrator to add the missing emails.",
+      "testDayLink": "Go to test day"
     }
+  },
+  "TestDay": {
+    "meta": {
+      "title": "Test day - SchoolTest",
+      "description": "Start the sitting, reveal the access code and watch your class live."
+    },
+    "title": "Test day",
+    "titleWithClass": "Test day: {className}",
+    "subtitle": "Start the sitting, reveal the access code and follow each student's progress live.",
+    "backLink": "Back to the roster",
+    "loading": "Loading the sitting...",
+    "loadError": "The sitting could not be loaded. Try again.",
+    "emptyTitle": "No sitting started",
+    "emptyBody": "Start a sitting to get an access code for this class.",
+    "startCta": "Start a sitting",
+    "startError": "The sitting could not be started. Try again.",
+    "closedStartHint": "This sitting is closed. Start a new sitting when this class sits the next test.",
+    "status": {
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "code": {
+      "title": "Access code",
+      "formLine": "Form {formCode}",
+      "hint": "Students enter this code and their school email to start.",
+      "revealCta": "Reveal code",
+      "hideCta": "Hide code",
+      "closedNote": "This sitting is closed. Reopen it to let students join."
+    },
+    "monitor": {
+      "title": "Class progress",
+      "liveNote": "Updates automatically while the sitting is open.",
+      "loading": "Loading the class...",
+      "loadError": "The class progress could not be loaded. Try again.",
+      "columnName": "Name",
+      "columnEmail": "Email",
+      "columnStatus": "Status",
+      "columnAction": "Re-sit",
+      "emailMissing": "No email",
+      "state": {
+        "not_joined": "Not joined",
+        "joined": "Joined",
+        "in_progress": "In progress",
+        "submitted": "Submitted",
+        "stalled": "Stalled"
+      },
+      "closeCta": "Close sitting",
+      "reopenCta": "Reopen sitting"
+    },
+    "resit": {
+      "cta": "Re-sit",
+      "confirmTitle": "Re-sit {name}?",
+      "confirmBody": "Their current attempt ends and they can join again with the access code.",
+      "cancel": "Cancel",
+      "confirm": "Yes, re-sit"
+    },
+    "runSheetLink": "Open the run sheet"
   },
   "Invite": {
     "meta": {
@@ -2570,6 +2655,117 @@
       "dobInvalid": "Enter a valid date of birth.",
       "yearsInvalid": "Enter a number of years, for example 2.5.",
       "monthsInvalid": "Enter whole months only."
+    }
+  },
+  "Ops": {
+    "schools": {
+      "meta": {
+        "title": "Schools - SchoolTest ops",
+        "description": "Every school on SchoolTest, with live teacher, class, student and result counts."
+      },
+      "title": "Schools",
+      "description": "Every school on SchoolTest, with live counts.",
+      "columnName": "School",
+      "columnAccountStatus": "Account status",
+      "columnOnboarding": "Onboarding",
+      "columnTeachers": "Teachers",
+      "columnClasses": "Classes",
+      "columnStudents": "Students",
+      "columnResults": "Results",
+      "empty": "No schools yet.",
+      "errorTitle": "We could not load schools",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "accountStatus": {
+        "prospect": "Prospect",
+        "invoiced": "Invoiced",
+        "active": "Active",
+        "suspended": "Suspended",
+        "closed": "Closed"
+      },
+      "onboardingStatus": {
+        "not_started": "Not started",
+        "link_sent": "Link sent",
+        "in_progress": "In progress",
+        "submitted": "Submitted",
+        "complete": "Complete"
+      }
+    },
+    "detail": {
+      "meta": {
+        "title": "School detail - SchoolTest ops",
+        "description": "One school on SchoolTest, with live teacher, class, student and result counts."
+      },
+      "backToSchools": "Back to schools",
+      "teachersLabel": "Teachers",
+      "classesLabel": "Classes",
+      "studentsLabel": "Students",
+      "resultsLabel": "Results",
+      "notFoundTitle": "School not found",
+      "notFoundDescription": "This school does not exist.",
+      "errorTitle": "We could not load this school",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "accountStatus": {
+        "prospect": "Prospect",
+        "invoiced": "Invoiced",
+        "active": "Active",
+        "suspended": "Suspended",
+        "closed": "Closed"
+      },
+      "onboardingStatus": {
+        "not_started": "Not started",
+        "link_sent": "Link sent",
+        "in_progress": "In progress",
+        "submitted": "Submitted",
+        "complete": "Complete"
+      }
+    }
+  },
+  "RunSheet": {
+    "meta": {
+      "title": "Test-day run sheet - SchoolTest",
+      "description": "What to say and do before, during and after the sitting."
+    },
+    "title": "Test-day run sheet",
+    "subtitle": "Everything you need to run the sitting, step by step. Print it out and keep it close by.",
+    "backLink": "Back to your classes",
+    "printCta": "Print this sheet",
+    "before": {
+      "title": "Before the day",
+      "itemOne": "Check your class list ahead of time: every student needs their correct school email to log in. Fix any wrong emails before test day.",
+      "itemTwo": "On the day, open the test-day screen for your class and start a sitting.",
+      "rosterLink": "Open your classes"
+    },
+    "start": {
+      "title": "When you start",
+      "itemOne": "Reveal the access code on the test-day screen and write it on the board.",
+      "itemTwo": "Students open the SchoolTest app, enter the code and their school email, and begin."
+    },
+    "say": {
+      "title": "What to tell your students",
+      "intro": "Say this to the class before they begin:",
+      "lineOne": "The test has three parts.",
+      "lineTwo": "Each part gets a bit harder, so do not worry if it feels that way.",
+      "lineThree": "If you do not know an answer, have your best guess and move on.",
+      "lineFour": "When the time runs out, the app moves you on by itself.",
+      "lineFive": "Between the parts you can take a moment, and tap continue when you are ready."
+    },
+    "during": {
+      "title": "During the test",
+      "itemOne": "Walk the room and supervise as you normally would.",
+      "itemTwo": "The class progress list on the test-day screen shows who has joined, who is working and who has submitted.",
+      "itemThree": "You cannot pause or change the test, and you do not need to start the breaks. Each student taps continue when they are ready."
+    },
+    "trouble": {
+      "title": "If something goes wrong",
+      "itemOne": "A student who is away sits later. Keep the sitting open or start a new one when they are back, and reveal the code for them.",
+      "itemTwo": "If the app crashes or a laptop goes flat, choose Re-sit next to the student's name on the test-day screen. The student joins again with the code and their school email."
+    },
+    "after": {
+      "title": "After the test",
+      "itemOne": "When every student has submitted, close the sitting on the test-day screen.",
+      "itemTwo": "Results appear on your dashboard once the scoring has finished."
     }
   }
 }

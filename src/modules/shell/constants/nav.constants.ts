@@ -6,11 +6,12 @@ import {
   School,
   Search,
   Settings,
+  ShieldCheck,
   Users,
   UsersRound,
 } from 'lucide-react';
 
-import { SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE } from '@/modules/auth';
+import { OPS_ROLE_TYPE, SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE } from '@/modules/auth';
 import type { NavItem } from '@/modules/shell/types/shell.types';
 
 // The one reachable search surface (unified search). The topbar trigger pill points
@@ -24,6 +25,10 @@ export const REPORTS_HREF = '/dashboard/reports';
 // School admin home (task 27 builds the page; the school-scoped API routes
 // answer 403 to every other role, so the whole section is role-scoped).
 export const SCHOOL_HREF = '/dashboard/school';
+
+// Ops console home (task 66; the /api/ops routes answer 403 to every non-ops
+// role, so the entry is role-scoped like the school admin entries).
+export const OPS_HREF = '/dashboard/ops';
 
 export const NAV_ITEMS: readonly NavItem[] = [
   {
@@ -87,6 +92,14 @@ export const NAV_ITEMS: readonly NavItem[] = [
     exact: false,
     group: 'primary',
     roles: [SCHOOL_ADMIN_ROLE_TYPE],
+  },
+  {
+    labelKey: 'ops',
+    href: OPS_HREF,
+    icon: ShieldCheck,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
   },
 ];
 

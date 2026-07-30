@@ -738,7 +738,8 @@
       "classes": "Lớp học",
       "children": "Học sinh",
       "teachers": "Giáo viên",
-      "teach": "Giảng dạy"
+      "teach": "Giảng dạy",
+      "ops": "Vận hành"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1939,8 +1940,92 @@
     "home": {
       "title": "Bảng điều khiển giáo viên",
       "subtitle": "Báo cáo cho các lớp của bạn đã sẵn sàng trong mục Báo cáo.",
-      "reportsCta": "Mở báo cáo"
+      "reportsCta": "Mở báo cáo",
+      "classesTitle": "Các lớp của bạn",
+      "classesLoading": "Đang tải các lớp...",
+      "classesEmpty": "Bạn chưa được phân công vào lớp nào. Quản trị viên trường có thể thêm bạn vào lớp.",
+      "rosterLink": "Danh sách",
+      "testDayLink": "Ngày kiểm tra",
+      "runSheetLink": "Phiếu hướng dẫn ngày kiểm tra"
+    },
+    "roster": {
+      "meta": {
+        "title": "Danh sách lớp - SchoolTest",
+        "description": "Kiểm tra danh sách lớp trước ngày kiểm tra: tên, trạng thái và email đăng nhập."
+      },
+      "title": "Danh sách lớp",
+      "subtitle": "Đảm bảo mọi học sinh đều đăng nhập được vào ngày kiểm tra. Việc sửa email do quản trị viên trường thực hiện.",
+      "backLink": "Quay lại các lớp của bạn",
+      "loading": "Đang tải danh sách...",
+      "loadError": "Không thể tải danh sách. Hãy thử lại.",
+      "emptyTitle": "Không có học sinh nào",
+      "emptyBody": "Lớp này chưa có học sinh, hoặc bạn chưa được phân công vào lớp.",
+      "columnName": "Tên",
+      "columnStatus": "Trạng thái",
+      "columnEmail": "Email",
+      "statusActive": "Đang học",
+      "statusArchived": "Đã lưu trữ",
+      "emailMissing": "Cần email trước ngày kiểm tra",
+      "emailMissingHint": "Học sinh không có email sẽ không đăng nhập được vào ngày kiểm tra. Hãy nhờ quản trị viên trường thêm các email còn thiếu.",
+      "testDayLink": "Đi đến ngày kiểm tra"
     }
+  },
+  "TestDay": {
+    "meta": {
+      "title": "Ngày kiểm tra - SchoolTest",
+      "description": "Bắt đầu buổi kiểm tra, công bố mã truy cập và theo dõi tiến độ của lớp theo thời gian thực."
+    },
+    "title": "Ngày kiểm tra",
+    "titleWithClass": "Ngày kiểm tra: {className}",
+    "subtitle": "Bắt đầu buổi kiểm tra, công bố mã truy cập và theo dõi tiến độ của từng học sinh theo thời gian thực.",
+    "backLink": "Quay lại danh sách lớp",
+    "loading": "Đang tải buổi kiểm tra...",
+    "loadError": "Không thể tải buổi kiểm tra. Hãy thử lại.",
+    "emptyTitle": "Chưa có buổi kiểm tra nào",
+    "emptyBody": "Bắt đầu một buổi kiểm tra để nhận mã truy cập cho lớp này.",
+    "startCta": "Bắt đầu kiểm tra",
+    "startError": "Không thể bắt đầu buổi kiểm tra. Hãy thử lại.",
+    "closedStartHint": "Buổi kiểm tra này đã đóng. Bắt đầu buổi mới khi lớp làm bài kiểm tra tiếp theo.",
+    "status": {
+      "open": "Đang mở",
+      "closed": "Đã đóng"
+    },
+    "code": {
+      "title": "Mã truy cập",
+      "formLine": "Đề {formCode}",
+      "hint": "Học sinh nhập mã này và email của trường để bắt đầu.",
+      "revealCta": "Công bố mã",
+      "hideCta": "Ẩn mã",
+      "closedNote": "Buổi kiểm tra này đã đóng. Mở lại để học sinh có thể tham gia."
+    },
+    "monitor": {
+      "title": "Tiến độ của lớp",
+      "liveNote": "Tự động cập nhật khi buổi kiểm tra đang mở.",
+      "loading": "Đang tải danh sách lớp...",
+      "loadError": "Không thể tải tiến độ của lớp. Hãy thử lại.",
+      "columnName": "Tên",
+      "columnEmail": "Email",
+      "columnStatus": "Trạng thái",
+      "columnAction": "Thi lại",
+      "emailMissing": "Chưa có email",
+      "state": {
+        "not_joined": "Chưa tham gia",
+        "joined": "Đã tham gia",
+        "in_progress": "Đang làm bài",
+        "submitted": "Đã nộp",
+        "stalled": "Bị gián đoạn"
+      },
+      "closeCta": "Đóng buổi kiểm tra",
+      "reopenCta": "Mở lại"
+    },
+    "resit": {
+      "cta": "Thi lại",
+      "confirmTitle": "Cho {name} thi lại?",
+      "confirmBody": "Bài làm hiện tại của học sinh sẽ kết thúc và học sinh có thể tham gia lại bằng mã truy cập.",
+      "cancel": "Huỷ",
+      "confirm": "Đồng ý, cho thi lại"
+    },
+    "runSheetLink": "Mở phiếu hướng dẫn"
   },
   "Invite": {
     "meta": {
@@ -2264,6 +2349,117 @@
       "dobInvalid": "Nhập ngày sinh hợp lệ.",
       "yearsInvalid": "Nhập số năm, ví dụ 2.5.",
       "monthsInvalid": "Chỉ nhập số tháng nguyên."
+    }
+  },
+  "Ops": {
+    "schools": {
+      "meta": {
+        "title": "Trường học - Vận hành SchoolTest",
+        "description": "Mọi trường trên SchoolTest, với số liệu trực tiếp về giáo viên, lớp, học sinh và kết quả."
+      },
+      "title": "Trường học",
+      "description": "Mọi trường trên SchoolTest, với số liệu trực tiếp.",
+      "columnName": "Trường học",
+      "columnAccountStatus": "Trạng thái tài khoản",
+      "columnOnboarding": "Thiết lập",
+      "columnTeachers": "Giáo viên",
+      "columnClasses": "Lớp học",
+      "columnStudents": "Học sinh",
+      "columnResults": "Kết quả",
+      "empty": "Chưa có trường nào.",
+      "errorTitle": "Chúng tôi không thể tải danh sách trường",
+      "errorDescription": "Kiểm tra kết nối của bạn và thử lại.",
+      "retry": "Thử lại",
+      "accountStatus": {
+        "prospect": "Tiềm năng",
+        "invoiced": "Đã lập hoá đơn",
+        "active": "Đang hoạt động",
+        "suspended": "Bị tạm ngưng",
+        "closed": "Đã đóng"
+      },
+      "onboardingStatus": {
+        "not_started": "Chưa bắt đầu",
+        "link_sent": "Đã gửi liên kết",
+        "in_progress": "Đang tiến hành",
+        "submitted": "Đã gửi",
+        "complete": "Hoàn tất"
+      }
+    },
+    "detail": {
+      "meta": {
+        "title": "Chi tiết trường - Vận hành SchoolTest",
+        "description": "Một trường trên SchoolTest, với số liệu trực tiếp về giáo viên, lớp, học sinh và kết quả."
+      },
+      "backToSchools": "Quay lại danh sách trường",
+      "teachersLabel": "Giáo viên",
+      "classesLabel": "Lớp học",
+      "studentsLabel": "Học sinh",
+      "resultsLabel": "Kết quả",
+      "notFoundTitle": "Không tìm thấy trường",
+      "notFoundDescription": "Trường này không tồn tại.",
+      "errorTitle": "Chúng tôi không thể tải trường này",
+      "errorDescription": "Kiểm tra kết nối của bạn và thử lại.",
+      "retry": "Thử lại",
+      "accountStatus": {
+        "prospect": "Tiềm năng",
+        "invoiced": "Đã lập hoá đơn",
+        "active": "Đang hoạt động",
+        "suspended": "Bị tạm ngưng",
+        "closed": "Đã đóng"
+      },
+      "onboardingStatus": {
+        "not_started": "Chưa bắt đầu",
+        "link_sent": "Đã gửi liên kết",
+        "in_progress": "Đang tiến hành",
+        "submitted": "Đã gửi",
+        "complete": "Hoàn tất"
+      }
+    }
+  },
+  "RunSheet": {
+    "meta": {
+      "title": "Phiếu hướng dẫn ngày kiểm tra - SchoolTest",
+      "description": "Những điều cần nói và làm trước, trong và sau buổi kiểm tra."
+    },
+    "title": "Phiếu hướng dẫn ngày kiểm tra",
+    "subtitle": "Tất cả những gì bạn cần để tổ chức buổi kiểm tra, theo từng bước. Hãy in ra và để gần bạn.",
+    "backLink": "Quay lại các lớp của bạn",
+    "printCta": "In phiếu này",
+    "before": {
+      "title": "Trước ngày kiểm tra",
+      "itemOne": "Kiểm tra danh sách lớp từ trước: mỗi học sinh cần đúng email của trường để đăng nhập. Hãy sửa mọi email sai trước ngày kiểm tra.",
+      "itemTwo": "Vào ngày kiểm tra, mở màn hình ngày kiểm tra của lớp và bắt đầu một buổi kiểm tra.",
+      "rosterLink": "Mở các lớp của bạn"
+    },
+    "start": {
+      "title": "Khi bắt đầu",
+      "itemOne": "Công bố mã truy cập trên màn hình ngày kiểm tra và viết mã lên bảng.",
+      "itemTwo": "Học sinh mở ứng dụng SchoolTest, nhập mã và email của trường, rồi bắt đầu."
+    },
+    "say": {
+      "title": "Những điều cần nói với học sinh",
+      "intro": "Hãy nói với cả lớp trước khi các em bắt đầu:",
+      "lineOne": "Bài kiểm tra có ba phần.",
+      "lineTwo": "Mỗi phần sẽ khó hơn một chút, nên đừng lo nếu các em thấy vậy.",
+      "lineThree": "Nếu không biết câu trả lời, hãy chọn đáp án mà em nghĩ là đúng nhất rồi làm tiếp.",
+      "lineFour": "Khi hết giờ, ứng dụng sẽ tự chuyển em sang phần tiếp theo.",
+      "lineFive": "Giữa các phần, em có thể nghỉ một chút và bấm tiếp tục khi đã sẵn sàng."
+    },
+    "during": {
+      "title": "Trong khi kiểm tra",
+      "itemOne": "Đi quanh lớp và giám sát như bình thường.",
+      "itemTwo": "Danh sách tiến độ của lớp trên màn hình ngày kiểm tra cho biết ai đã tham gia, ai đang làm bài và ai đã nộp bài.",
+      "itemThree": "Bạn không thể tạm dừng hay thay đổi bài kiểm tra, và không cần bắt đầu thời gian nghỉ. Mỗi học sinh tự bấm tiếp tục khi sẵn sàng."
+    },
+    "trouble": {
+      "title": "Nếu có sự cố",
+      "itemOne": "Học sinh vắng mặt có thể kiểm tra sau. Giữ buổi kiểm tra mở hoặc bắt đầu buổi mới khi em quay lại, và công bố mã cho em.",
+      "itemTwo": "Nếu ứng dụng bị lỗi hoặc máy tính hết pin, chọn Thi lại bên cạnh tên học sinh trên màn hình ngày kiểm tra. Học sinh tham gia lại bằng mã và email của trường."
+    },
+    "after": {
+      "title": "Sau khi kiểm tra",
+      "itemOne": "Khi tất cả học sinh đã nộp bài, hãy đóng buổi kiểm tra trên màn hình ngày kiểm tra.",
+      "itemTwo": "Kết quả sẽ xuất hiện trên bảng điều khiển của bạn khi việc chấm điểm hoàn tất."
     }
   }
 }

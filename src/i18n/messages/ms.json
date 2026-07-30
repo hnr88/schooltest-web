@@ -738,7 +738,8 @@
       "classes": "Kelas",
       "children": "Murid",
       "teachers": "Guru",
-      "teach": "Mengajar"
+      "teach": "Mengajar",
+      "ops": "Operasi"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1939,8 +1940,92 @@
     "home": {
       "title": "Papan pemuka guru",
       "subtitle": "Laporan untuk kelas anda sedia di bawah Laporan.",
-      "reportsCta": "Buka laporan"
+      "reportsCta": "Buka laporan",
+      "classesTitle": "Kelas anda",
+      "classesLoading": "Memuatkan kelas anda...",
+      "classesEmpty": "Anda belum ditugaskan ke mana-mana kelas. Pentadbir sekolah anda boleh menambah anda ke kelas.",
+      "rosterLink": "Senarai nama",
+      "testDayLink": "Hari ujian",
+      "runSheetLink": "Lembaran panduan hari ujian"
+    },
+    "roster": {
+      "meta": {
+        "title": "Senarai nama kelas - SchoolTest",
+        "description": "Semak senarai nama kelas sebelum hari ujian: nama, status dan e-mel log masuk."
+      },
+      "title": "Senarai nama kelas",
+      "subtitle": "Pastikan setiap murid boleh log masuk pada hari ujian. Pembetulan e-mel dilakukan oleh pentadbir sekolah anda.",
+      "backLink": "Kembali ke kelas anda",
+      "loading": "Memuatkan senarai nama...",
+      "loadError": "Senarai nama tidak dapat dimuatkan. Cuba lagi.",
+      "emptyTitle": "Tiada murid untuk dipaparkan",
+      "emptyBody": "Belum ada murid dalam kelas ini, atau anda tidak ditugaskan ke kelas ini.",
+      "columnName": "Nama",
+      "columnStatus": "Status",
+      "columnEmail": "E-mel",
+      "statusActive": "Aktif",
+      "statusArchived": "Diarkibkan",
+      "emailMissing": "E-mel diperlukan sebelum hari ujian",
+      "emailMissingHint": "Murid tanpa e-mel tidak dapat log masuk pada hari ujian. Minta pentadbir sekolah anda menambah e-mel yang tiada.",
+      "testDayLink": "Pergi ke hari ujian"
     }
+  },
+  "TestDay": {
+    "meta": {
+      "title": "Hari ujian - SchoolTest",
+      "description": "Mulakan sesi ujian, dedahkan kod akses dan pantau kemajuan kelas secara langsung."
+    },
+    "title": "Hari ujian",
+    "titleWithClass": "Hari ujian: {className}",
+    "subtitle": "Mulakan ujian, dedahkan kod akses dan ikuti kemajuan setiap murid secara langsung.",
+    "backLink": "Kembali ke senarai nama",
+    "loading": "Memuatkan sesi ujian...",
+    "loadError": "Sesi ujian tidak dapat dimuatkan. Cuba lagi.",
+    "emptyTitle": "Tiada sesi ujian dimulakan",
+    "emptyBody": "Mulakan sesi ujian untuk mendapatkan kod akses bagi kelas ini.",
+    "startCta": "Mulakan ujian",
+    "startError": "Sesi ujian tidak dapat dimulakan. Cuba lagi.",
+    "closedStartHint": "Sesi ujian ini ditutup. Mulakan sesi baharu apabila kelas ini menduduki ujian seterusnya.",
+    "status": {
+      "open": "Dibuka",
+      "closed": "Ditutup"
+    },
+    "code": {
+      "title": "Kod akses",
+      "formLine": "Borang {formCode}",
+      "hint": "Murid memasukkan kod ini dan e-mel sekolah mereka untuk bermula.",
+      "revealCta": "Dedahkan kod",
+      "hideCta": "Sembunyikan kod",
+      "closedNote": "Sesi ujian ini ditutup. Buka semula untuk membenarkan murid menyertai."
+    },
+    "monitor": {
+      "title": "Kemajuan kelas",
+      "liveNote": "Dikemas kini secara automatik semasa sesi ujian dibuka.",
+      "loading": "Memuatkan kelas...",
+      "loadError": "Kemajuan kelas tidak dapat dimuatkan. Cuba lagi.",
+      "columnName": "Nama",
+      "columnEmail": "E-mel",
+      "columnStatus": "Status",
+      "columnAction": "Ujian semula",
+      "emailMissing": "Tiada e-mel",
+      "state": {
+        "not_joined": "Belum menyertai",
+        "joined": "Telah menyertai",
+        "in_progress": "Sedang berjalan",
+        "submitted": "Telah diserahkan",
+        "stalled": "Terhenti"
+      },
+      "closeCta": "Tutup sesi ujian",
+      "reopenCta": "Buka semula"
+    },
+    "resit": {
+      "cta": "Ujian semula",
+      "confirmTitle": "Ujian semula untuk {name}?",
+      "confirmBody": "Percubaan semasa mereka akan ditamatkan dan mereka boleh menyertai semula dengan kod akses.",
+      "cancel": "Batal",
+      "confirm": "Ya, ujian semula"
+    },
+    "runSheetLink": "Buka lembaran panduan"
   },
   "Invite": {
     "meta": {
@@ -2264,6 +2349,117 @@
       "dobInvalid": "Masukkan tarikh lahir yang sah.",
       "yearsInvalid": "Masukkan bilangan tahun, contohnya 2.5.",
       "monthsInvalid": "Masukkan bulan penuh sahaja."
+    }
+  },
+  "Ops": {
+    "schools": {
+      "meta": {
+        "title": "Sekolah - Operasi SchoolTest",
+        "description": "Setiap sekolah di SchoolTest, dengan bilangan guru, kelas, murid dan keputusan secara langsung."
+      },
+      "title": "Sekolah",
+      "description": "Setiap sekolah di SchoolTest, dengan bilangan secara langsung.",
+      "columnName": "Sekolah",
+      "columnAccountStatus": "Status akaun",
+      "columnOnboarding": "Pendaftaran",
+      "columnTeachers": "Guru",
+      "columnClasses": "Kelas",
+      "columnStudents": "Murid",
+      "columnResults": "Keputusan",
+      "empty": "Belum ada sekolah.",
+      "errorTitle": "Kami tidak dapat memuatkan sekolah",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi",
+      "accountStatus": {
+        "prospect": "Prospek",
+        "invoiced": "Dinvois",
+        "active": "Aktif",
+        "suspended": "Digantung",
+        "closed": "Ditutup"
+      },
+      "onboardingStatus": {
+        "not_started": "Belum bermula",
+        "link_sent": "Pautan dihantar",
+        "in_progress": "Sedang berjalan",
+        "submitted": "Dihantar",
+        "complete": "Selesai"
+      }
+    },
+    "detail": {
+      "meta": {
+        "title": "Butiran sekolah - Operasi SchoolTest",
+        "description": "Satu sekolah di SchoolTest, dengan bilangan guru, kelas, murid dan keputusan secara langsung."
+      },
+      "backToSchools": "Kembali ke senarai sekolah",
+      "teachersLabel": "Guru",
+      "classesLabel": "Kelas",
+      "studentsLabel": "Murid",
+      "resultsLabel": "Keputusan",
+      "notFoundTitle": "Sekolah tidak dijumpai",
+      "notFoundDescription": "Sekolah ini tidak wujud.",
+      "errorTitle": "Kami tidak dapat memuatkan sekolah ini",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi",
+      "accountStatus": {
+        "prospect": "Prospek",
+        "invoiced": "Dinvois",
+        "active": "Aktif",
+        "suspended": "Digantung",
+        "closed": "Ditutup"
+      },
+      "onboardingStatus": {
+        "not_started": "Belum bermula",
+        "link_sent": "Pautan dihantar",
+        "in_progress": "Sedang berjalan",
+        "submitted": "Dihantar",
+        "complete": "Selesai"
+      }
+    }
+  },
+  "RunSheet": {
+    "meta": {
+      "title": "Lembaran panduan hari ujian - SchoolTest",
+      "description": "Apa yang perlu diucapkan dan dilakukan sebelum, semasa dan selepas ujian."
+    },
+    "title": "Lembaran panduan hari ujian",
+    "subtitle": "Semua yang anda perlukan untuk menjalankan ujian, langkah demi langkah. Cetak dan simpan di sisi anda.",
+    "backLink": "Kembali ke kelas anda",
+    "printCta": "Cetak lembaran ini",
+    "before": {
+      "title": "Sebelum hari ujian",
+      "itemOne": "Semak senarai kelas anda lebih awal: setiap murid memerlukan e-mel sekolah yang betul untuk log masuk. Baiki sebarang e-mel yang salah sebelum hari ujian.",
+      "itemTwo": "Pada hari ujian, buka skrin hari ujian untuk kelas anda dan mulakan sesi ujian.",
+      "rosterLink": "Buka kelas anda"
+    },
+    "start": {
+      "title": "Semasa memulakan",
+      "itemOne": "Dedahkan kod akses pada skrin hari ujian dan tuliskannya di papan.",
+      "itemTwo": "Murid membuka aplikasi SchoolTest, memasukkan kod dan e-mel sekolah mereka, kemudian mula."
+    },
+    "say": {
+      "title": "Apa yang perlu diberitahu kepada murid",
+      "intro": "Ucapkan ini kepada kelas sebelum mereka mula:",
+      "lineOne": "Ujian ini mempunyai tiga bahagian.",
+      "lineTwo": "Setiap bahagian menjadi lebih sukar sedikit, jadi jangan risau jika ia terasa begitu.",
+      "lineThree": "Jika anda tidak tahu jawapan, cuba teka sebaik mungkin dan teruskan.",
+      "lineFour": "Apabila masa tamat, aplikasi akan mengalihkan anda dengan sendirinya.",
+      "lineFive": "Di antara bahagian, anda boleh berehat sebentar dan tekan sambung apabila sudah bersedia."
+    },
+    "during": {
+      "title": "Semasa ujian",
+      "itemOne": "Berjalan di sekitar kelas dan mengawasi seperti biasa.",
+      "itemTwo": "Senarai kemajuan kelas pada skrin hari ujian menunjukkan siapa yang telah menyertai, siapa yang sedang menjawab dan siapa yang telah menghantar.",
+      "itemThree": "Anda tidak boleh menjeda atau mengubah ujian, dan anda tidak perlu memulakan waktu rehat. Setiap murid menekan sambung apabila mereka bersedia."
+    },
+    "trouble": {
+      "title": "Jika berlaku masalah",
+      "itemOne": "Murid yang tidak hadir boleh menduduki ujian kemudian. Biarkan sesi terbuka atau mulakan sesi baharu apabila mereka kembali, dan dedahkan kod untuk mereka.",
+      "itemTwo": "Jika aplikasi terhenti atau bateri komputer riba habis, pilih Ujian semula di sebelah nama murid pada skrin hari ujian. Murid menyertai semula dengan kod dan e-mel sekolah mereka."
+    },
+    "after": {
+      "title": "Selepas ujian",
+      "itemOne": "Apabila semua murid telah menghantar, tutup sesi pada skrin hari ujian.",
+      "itemTwo": "Keputusan akan muncul pada papan pemuka anda setelah pemarkahan selesai."
     }
   }
 }

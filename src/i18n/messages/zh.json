@@ -738,7 +738,8 @@
       "classes": "班级",
       "children": "学生",
       "teachers": "教师",
-      "teach": "教学"
+      "teach": "教学",
+      "ops": "运维"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1939,8 +1940,92 @@
     "home": {
       "title": "教师控制面板",
       "subtitle": "您班级的报告可在“报告”中查看。",
-      "reportsCta": "打开报告"
+      "reportsCta": "打开报告",
+      "classesTitle": "您的班级",
+      "classesLoading": "正在加载班级...",
+      "classesEmpty": "您还没有被分配到班级。学校管理员可以将您加入班级。",
+      "rosterLink": "名册",
+      "testDayLink": "测试日",
+      "runSheetLink": "测验日流程单"
+    },
+    "roster": {
+      "meta": {
+        "title": "班级名册 - SchoolTest",
+        "description": "在测试日前查看班级名册：姓名、状态和登录邮箱。"
+      },
+      "title": "班级名册",
+      "subtitle": "确认每位学生都能在测试日登录。邮箱修改由学校管理员负责。",
+      "backLink": "返回您的班级",
+      "loading": "正在加载名册...",
+      "loadError": "无法加载名册，请重试。",
+      "emptyTitle": "暂无学生",
+      "emptyBody": "该班级还没有学生，或者您未被分配到该班级。",
+      "columnName": "姓名",
+      "columnStatus": "状态",
+      "columnEmail": "邮箱",
+      "statusActive": "在读",
+      "statusArchived": "已归档",
+      "emailMissing": "测试日前需要添加邮箱",
+      "emailMissingHint": "没有邮箱的学生将无法在测试日登录。请联系学校管理员添加缺失的邮箱。",
+      "testDayLink": "前往测试日"
     }
+  },
+  "TestDay": {
+    "meta": {
+      "title": "测试日 - SchoolTest",
+      "description": "开始测验、公布访问码并实时查看班级进度。"
+    },
+    "title": "测试日",
+    "titleWithClass": "测试日：{className}",
+    "subtitle": "开始测验，公布访问码，并实时跟进每位学生的进度。",
+    "backLink": "返回名册",
+    "loading": "正在加载测验场次...",
+    "loadError": "无法加载测验场次，请重试。",
+    "emptyTitle": "尚未开始测验场次",
+    "emptyBody": "开始一场测验，为这个班级获取访问码。",
+    "startCta": "开始测验",
+    "startError": "无法开始测验，请重试。",
+    "closedStartHint": "本场测验已关闭。班级下次测验时，请开始新的测验场次。",
+    "status": {
+      "open": "开放中",
+      "closed": "已关闭"
+    },
+    "code": {
+      "title": "访问码",
+      "formLine": "试卷 {formCode}",
+      "hint": "学生输入此访问码和学校邮箱即可开始。",
+      "revealCta": "公布访问码",
+      "hideCta": "隐藏访问码",
+      "closedNote": "本场测验已关闭。重新开放后学生才能加入。"
+    },
+    "monitor": {
+      "title": "班级进度",
+      "liveNote": "测验开放期间会自动更新。",
+      "loading": "正在加载班级名单...",
+      "loadError": "无法加载班级进度，请重试。",
+      "columnName": "姓名",
+      "columnEmail": "邮箱",
+      "columnStatus": "状态",
+      "columnAction": "重考",
+      "emailMissing": "无邮箱",
+      "state": {
+        "not_joined": "未加入",
+        "joined": "已加入",
+        "in_progress": "进行中",
+        "submitted": "已提交",
+        "stalled": "停滞"
+      },
+      "closeCta": "关闭测验",
+      "reopenCta": "重新开放"
+    },
+    "resit": {
+      "cta": "重考",
+      "confirmTitle": "让{name}重考？",
+      "confirmBody": "当前的作答将结束，学生可以使用访问码重新加入。",
+      "cancel": "取消",
+      "confirm": "确认重考"
+    },
+    "runSheetLink": "打开流程单"
   },
   "Invite": {
     "meta": {
@@ -2264,6 +2349,117 @@
       "dobInvalid": "请输入有效的出生日期。",
       "yearsInvalid": "请输入年数，例如 2.5。",
       "monthsInvalid": "请输入整月数。"
+    }
+  },
+  "Ops": {
+    "schools": {
+      "meta": {
+        "title": "学校 - SchoolTest 运维",
+        "description": "SchoolTest 上的所有学校，附教师、班级、学生和成绩的实时数量。"
+      },
+      "title": "学校",
+      "description": "SchoolTest 上的所有学校，附实时数量。",
+      "columnName": "学校",
+      "columnAccountStatus": "账户状态",
+      "columnOnboarding": "入驻进度",
+      "columnTeachers": "教师",
+      "columnClasses": "班级",
+      "columnStudents": "学生",
+      "columnResults": "成绩",
+      "empty": "暂无学校。",
+      "errorTitle": "无法加载学校列表",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试",
+      "accountStatus": {
+        "prospect": "潜在客户",
+        "invoiced": "已开票",
+        "active": "已激活",
+        "suspended": "已暂停",
+        "closed": "已关闭"
+      },
+      "onboardingStatus": {
+        "not_started": "未开始",
+        "link_sent": "链接已发送",
+        "in_progress": "进行中",
+        "submitted": "已提交",
+        "complete": "已完成"
+      }
+    },
+    "detail": {
+      "meta": {
+        "title": "学校详情 - SchoolTest 运维",
+        "description": "SchoolTest 上的一所学校，附教师、班级、学生和成绩的实时数量。"
+      },
+      "backToSchools": "返回学校列表",
+      "teachersLabel": "教师",
+      "classesLabel": "班级",
+      "studentsLabel": "学生",
+      "resultsLabel": "成绩",
+      "notFoundTitle": "未找到学校",
+      "notFoundDescription": "该学校不存在。",
+      "errorTitle": "无法加载该学校",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试",
+      "accountStatus": {
+        "prospect": "潜在客户",
+        "invoiced": "已开票",
+        "active": "已激活",
+        "suspended": "已暂停",
+        "closed": "已关闭"
+      },
+      "onboardingStatus": {
+        "not_started": "未开始",
+        "link_sent": "链接已发送",
+        "in_progress": "进行中",
+        "submitted": "已提交",
+        "complete": "已完成"
+      }
+    }
+  },
+  "RunSheet": {
+    "meta": {
+      "title": "测验日流程单 - SchoolTest",
+      "description": "测验开始前、进行中和结束后要说的每一句话和要做的每一件事。"
+    },
+    "title": "测验日流程单",
+    "subtitle": "按步骤完成本场测验所需的全部内容。把它打印出来放在手边。",
+    "backLink": "返回您的班级",
+    "printCta": "打印此流程单",
+    "before": {
+      "title": "测验日之前",
+      "itemOne": "提前核对您的班级名单：每位学生都需要正确的学校邮箱才能登录。请在测验日之前改好所有填错的邮箱。",
+      "itemTwo": "当天，打开您班级的测验日页面并开始一场测验。",
+      "rosterLink": "打开您的班级"
+    },
+    "start": {
+      "title": "开始时",
+      "itemOne": "在测验日页面公布访问码，并把它写在黑板上。",
+      "itemTwo": "学生打开 SchoolTest 应用，输入访问码和学校邮箱，然后开始作答。"
+    },
+    "say": {
+      "title": "对学生说的话",
+      "intro": "在学生开始之前，对全班说：",
+      "lineOne": "测验分为三个部分。",
+      "lineTwo": "每个部分会难一点，感觉变难是正常的，不用担心。",
+      "lineThree": "如果不知道答案，凭感觉选一个最合适的，然后继续做下一题。",
+      "lineFour": "时间到了，应用会自动带你进入下一部分。",
+      "lineFive": "每个部分之间可以休息一下，准备好了就点继续。"
+    },
+    "during": {
+      "title": "测验进行中",
+      "itemOne": "像平时一样在教室里巡视、监考。",
+      "itemTwo": "测验日页面上的班级进度列表会显示谁已加入、谁在作答、谁已提交。",
+      "itemThree": "您不能暂停或更改测验，也不需要开始休息环节。每位学生准备好后自己点继续。"
+    },
+    "trouble": {
+      "title": "如果出现问题",
+      "itemOne": "缺席的学生可以稍后补考。保持本场测验开放，或等他们回来后开始新的一场，并为他们公布访问码。",
+      "itemTwo": "如果应用崩溃或笔记本电脑没电，在测验日页面该学生姓名旁选择“重考”。学生用访问码和学校邮箱重新加入。"
+    },
+    "after": {
+      "title": "测验结束后",
+      "itemOne": "所有学生都提交后，在测验日页面关闭本场测验。",
+      "itemTwo": "评分完成后，结果会显示在您的仪表盘上。"
     }
   }
 }
