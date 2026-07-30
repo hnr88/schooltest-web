@@ -1,4 +1,13 @@
 export { OpsSchoolsTable } from './components/OpsSchoolsTable';
 export { OpsSchoolDetail } from './components/OpsSchoolDetail';
+export { OpsStudentImport } from './components/OpsStudentImport';
+export { OpsSectionTimers } from './components/OpsSectionTimers';
+export { OpsFormWindow } from './components/OpsFormWindow';
+export { OpsPipelineHealth } from './components/OpsPipelineHealth';
+export { OpsSittingRecovery } from './components/OpsSittingRecovery';
+export { OpsFormInspection } from './components/OpsFormInspection';
+export { OpsRawExport } from './components/OpsRawExport';
+export { OpsViewAsTeacher } from './components/OpsViewAsTeacher';
 export { useOpsSchoolsQuery } from './queries/use-ops-schools.query';
 export type { OpsSchool, OpsSchoolsResponse } from './types/ops.types';
+export type { ImportCommitResult, ImportPreview } from './schemas/import.schema';

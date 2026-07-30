@@ -5,6 +5,9 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
+import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
+import { OpsSittingRecovery } from '@/modules/ops/components/OpsSittingRecovery';
+import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
 import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
 import { ACCOUNT_STATUS_VARIANTS, ONBOARDING_STATUS_VARIANTS } from '@/modules/school-admin';
 
@@ -108,6 +111,9 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
           </div>
         ))}
       </dl>
+      <OpsFormWindow documentId={documentId} />
+      <OpsSittingRecovery schoolDocumentId={documentId} />
+      <OpsStudentImport documentId={documentId} />
     </main>
   );
 }

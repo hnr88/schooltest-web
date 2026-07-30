@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import {
   Alert,
@@ -71,6 +72,18 @@ export function OpsSchoolsTable() {
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
         <p className="text-sm text-body">{t('description')}</p>
+        <Link
+          href="/dashboard/ops/timers"
+          className="w-fit text-sm text-body underline-offset-4 hover:underline"
+        >
+          {t('timersLink')}
+        </Link>
+        <Link
+          href="/dashboard/ops/pipeline"
+          className="w-fit text-sm text-body underline-offset-4 hover:underline"
+        >
+          {t('pipelineLink')}
+        </Link>
       </div>
       <div className="rounded-xl border border-border bg-card">
         <Table>
