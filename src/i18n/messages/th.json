@@ -733,7 +733,12 @@
       "reports": "รายงาน",
       "notifications": "การแจ้งเตือน",
       "search": "ค้นหา",
-      "settings": "การตั้งค่า"
+      "settings": "การตั้งค่า",
+      "school": "โรงเรียน",
+      "classes": "ชั้นเรียน",
+      "children": "นักเรียน",
+      "teachers": "ครู",
+      "teach": "การสอน"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1846,6 +1851,184 @@
       "expiredMessage": "ลิงก์ตั้งค่ามีอายุ 14 วัน โปรดขอลิงก์ใหม่จาก SchoolTest",
       "usedTitle": "ลิงก์ตั้งค่านี้ถูกใช้แล้ว",
       "usedMessage": "บัญชีผู้ดูแลของโรงเรียนนี้ถูกสร้างแล้ว โปรดเข้าสู่ระบบเพื่อดำเนินการต่อ หรือติดต่อ SchoolTest หากต้องการความช่วยเหลือ"
+    }
+  },
+  "SchoolAdmin": {
+    "meta": {
+      "title": "แดชบอร์ดโรงเรียน - SchoolTest",
+      "description": "บัญชี SchoolTest ของโรงเรียนคุณ สถานะ และความคืบหน้าการเริ่มใช้งานในที่เดียว"
+    },
+    "home": {
+      "subtitle": "ภาพรวมบัญชี SchoolTest ของโรงเรียนคุณ",
+      "accountStatusLabel": "สถานะบัญชี",
+      "onboardingStatusLabel": "การเริ่มใช้งาน",
+      "errorTitle": "เราไม่สามารถโหลดข้อมูลโรงเรียนของคุณได้",
+      "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+      "retry": "ลองอีกครั้ง"
+    },
+    "accountStatus": {
+      "prospect": "ผู้สนใจ",
+      "invoiced": "ออกใบแจ้งหนี้แล้ว",
+      "active": "ใช้งานอยู่",
+      "suspended": "ถูกระงับ",
+      "closed": "ปิดแล้ว"
+    },
+    "onboardingStatus": {
+      "not_started": "ยังไม่เริ่ม",
+      "link_sent": "ส่งลิงก์แล้ว",
+      "in_progress": "กำลังดำเนินการ",
+      "submitted": "ส่งแล้ว",
+      "complete": "เสร็จสมบูรณ์"
+    },
+    "sections": {
+      "classes": {
+        "metaTitle": "ชั้นเรียน - SchoolTest",
+        "metaDescription": "ชั้นเรียนทั้งหมดในโรงเรียนของคุณ",
+        "title": "ชั้นเรียน",
+        "description": "ทุกชั้นเรียนในโรงเรียนของคุณ รวมอยู่ในที่เดียว",
+        "emptyTitle": "ยังไม่มีชั้นเรียน",
+        "emptyDescription": "ชั้นเรียนที่คุณเพิ่มให้โรงเรียนจะแสดงที่นี่"
+      },
+      "children": {
+        "metaTitle": "นักเรียน - SchoolTest",
+        "metaDescription": "นักเรียนทั้งหมดในโรงเรียนของคุณ",
+        "title": "นักเรียน",
+        "description": "นักเรียนทุกคนในโรงเรียนของคุณ รวมอยู่ในที่เดียว",
+        "emptyTitle": "ยังไม่มีนักเรียน",
+        "emptyDescription": "นักเรียนที่เชื่อมโยงกับโรงเรียนของคุณจะแสดงที่นี่"
+      },
+      "teachers": {
+        "metaTitle": "ครู - SchoolTest",
+        "metaDescription": "ครูในโรงเรียนของคุณ",
+        "title": "ครู",
+        "description": "ครูทุกคนในโรงเรียนของคุณ รวมอยู่ในที่เดียว",
+        "emptyTitle": "ยังไม่มีครู",
+        "emptyDescription": "ครูที่เข้าร่วมโรงเรียนของคุณจะแสดงที่นี่"
+      }
+    }
+  },
+  "Teach": {
+    "meta": {
+      "title": "แดชบอร์ดครู - SchoolTest",
+      "description": "หน้าหลักการสอนของคุณ: ชั้นเรียนและรายงาน"
+    },
+    "home": {
+      "title": "แดชบอร์ดครู",
+      "subtitle": "รายงานสำหรับชั้นเรียนของคุณพร้อมแล้วในหัวข้อรายงาน",
+      "reportsCta": "เปิดรายงาน"
+    }
+  },
+  "Invite": {
+    "meta": {
+      "title": "ยอมรับคำเชิญของคุณ - SchoolTest",
+      "description": "เปิดใช้งานบัญชีบุคลากร SchoolTest ของคุณ: ยืนยันข้อมูลและตั้งรหัสผ่าน"
+    },
+    "loading": "กำลังตรวจสอบคำเชิญของคุณ...",
+    "welcomeTitle": "ยินดีต้อนรับสู่ {school}",
+    "welcomeBody": "คุณได้รับเชิญให้เข้าร่วม {school} ด้วยบัญชี {email} ตั้งรหัสผ่านเพื่อเปิดใช้งานบัญชีและเริ่มต้นใช้งาน",
+    "expires": "คำเชิญนี้หมดอายุในวันที่ {date}",
+    "roles": {
+      "teacher": "ครู",
+      "school_admin": "ผู้ดูแลโรงเรียน"
+    },
+    "form": {
+      "firstName": "ชื่อ",
+      "lastName": "นามสกุล",
+      "password": "รหัสผ่าน",
+      "passwordHint": "อย่างน้อย 8 ตัวอักษร",
+      "confirmPassword": "ยืนยันรหัสผ่าน",
+      "submit": "เปิดใช้งานบัญชี",
+      "submitting": "กำลังเปิดใช้งาน...",
+      "acceptFailed": "เราไม่สามารถเปิดใช้งานบัญชีของคุณได้ ลองอีกครั้ง หรือขอให้ผู้ดูแลโรงเรียนส่งคำเชิญใหม่"
+    },
+    "validation": {
+      "required": "จำเป็นต้องกรอกช่องนี้",
+      "tooLong": "ยาวเกินไป",
+      "passwordTooShort": "ใช้อย่างน้อย 8 ตัวอักษร",
+      "passwordMismatch": "รหัสผ่านไม่ตรงกัน"
+    },
+    "errors": {
+      "unavailableTitle": "เกิดข้อผิดพลาด",
+      "unavailableMessage": "เราไม่สามารถโหลดคำเชิญของคุณได้ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+      "invalidTitle": "ลิงก์คำเชิญนี้ไม่ถูกต้อง",
+      "invalidMessage": "ลิงก์อาจพิมพ์ผิดหรือถูกแทนที่ ขอให้ผู้ดูแลโรงเรียนส่งคำเชิญใหม่",
+      "expiredTitle": "คำเชิญนี้หมดอายุแล้ว",
+      "expiredMessage": "ขอให้ผู้ดูแลโรงเรียนส่งคำเชิญใหม่",
+      "usedTitle": "คำเชิญนี้ถูกยอมรับแล้ว",
+      "usedMessage": "บัญชีสำหรับคำเชิญนี้ถูกเปิดใช้งานแล้ว เข้าสู่ระบบเพื่อดำเนินการต่อ",
+      "usedAction": "ไปที่เข้าสู่ระบบ"
+    }
+  },
+  "Teachers": {
+    "meta": {
+      "title": "ครู - SchoolTest",
+      "description": "ครูและผู้ดูแลในโรงเรียนของคุณ พร้อมคำเชิญที่คุณส่งไปแล้ว"
+    },
+    "title": "ครู",
+    "description": "บัญชีบุคลากรทั้งหมดในโรงเรียนของคุณ พร้อมคำเชิญที่คุณส่งไปแล้ว",
+    "inviteButton": "เชิญบุคลากร",
+    "errorTitle": "เราไม่สามารถโหลดรายชื่อบุคลากรของคุณได้",
+    "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+    "retry": "ลองอีกครั้ง",
+    "invite": {
+      "title": "เชิญบุคลากร",
+      "description": "พวกเขาจะได้รับอีเมลพร้อมลิงก์สำหรับเปิดใช้งานบัญชี",
+      "firstName": "ชื่อ",
+      "lastName": "นามสกุล",
+      "email": "อีเมล",
+      "role": "บทบาท",
+      "roleTeacher": "ครู",
+      "roleSchoolAdmin": "ผู้ดูแลโรงเรียน",
+      "cancel": "ยกเลิก",
+      "submit": "ส่งคำเชิญ",
+      "submitting": "กำลังส่ง...",
+      "successToast": "ส่งคำเชิญไปยัง {email} แล้ว",
+      "errorToast": "เราไม่สามารถส่งคำเชิญได้ ลองอีกครั้ง",
+      "alreadyInSchool": "มีบัญชีที่ใช้งานอยู่ด้วยอีเมลนี้ในโรงเรียนของคุณแล้ว"
+    },
+    "validation": {
+      "required": "จำเป็นต้องกรอกช่องนี้",
+      "tooLong": "ยาวเกินไป",
+      "emailInvalid": "กรอกที่อยู่อีเมลที่ถูกต้อง"
+    },
+    "table": {
+      "columnName": "ชื่อ",
+      "columnEmail": "อีเมล",
+      "columnClasses": "ชั้นเรียน",
+      "columnStatus": "สถานะ",
+      "columnActions": "การดำเนินการ",
+      "empty": "ยังไม่มีบุคลากรหรือคำเชิญ ส่งคำเชิญแรกของคุณเพื่อเริ่มต้น",
+      "classesPending": "มอบหมายหลังจากเข้าร่วม",
+      "classesNone": "ยังไม่มีชั้นเรียน",
+      "expiresOn": "หมดอายุ {date}",
+      "status": {
+        "active": "ใช้งานอยู่",
+        "deactivated": "ปิดใช้งานแล้ว",
+        "invited": "เชิญแล้ว",
+        "expired": "หมดอายุแล้ว"
+      }
+    },
+    "actions": {
+      "menuLabel": "การดำเนินการสำหรับ {name}",
+      "reissue": "ส่งคำเชิญอีกครั้ง",
+      "revoke": "เพิกถอนคำเชิญ",
+      "deactivate": "ปิดใช้งาน",
+      "reactivate": "เปิดใช้งานอีกครั้ง",
+      "cancel": "ยกเลิก",
+      "reissuedToast": "ส่งคำเชิญใหม่ไปยัง {email} แล้ว",
+      "revokedToast": "เพิกถอนคำเชิญของ {email} แล้ว",
+      "deactivatedToast": "ปิดใช้งาน {name} แล้ว",
+      "reactivatedToast": "เปิดใช้งาน {name} อีกครั้งแล้ว",
+      "errorToast": "ดำเนินการไม่สำเร็จ ลองอีกครั้ง",
+      "deactivateTitle": "ปิดใช้งาน {name}?",
+      "deactivateDescription": "พวกเขาจะไม่สามารถเข้าสู่ระบบได้อีก ชั้นเรียนและบันทึกของพวกเขาจะยังคงอยู่",
+      "deactivateConfirm": "ปิดใช้งาน",
+      "reactivateTitle": "เปิดใช้งาน {name} อีกครั้ง?",
+      "reactivateDescription": "พวกเขาจะสามารถเข้าสู่ระบบได้อีกครั้งทันที",
+      "reactivateConfirm": "เปิดใช้งานอีกครั้ง",
+      "revokeTitle": "เพิกถอนคำเชิญของ {name}?",
+      "revokeDescription": "ลิงก์คำเชิญจะหยุดทำงาน คุณสามารถส่งคำเชิญใหม่ได้ภายหลัง",
+      "revokeConfirm": "เพิกถอนคำเชิญ"
     }
   }
 }

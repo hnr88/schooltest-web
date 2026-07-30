@@ -733,7 +733,12 @@
       "reports": "Laporan",
       "notifications": "Pemberitahuan",
       "search": "Carian",
-      "settings": "Tetapan"
+      "settings": "Tetapan",
+      "school": "Sekolah",
+      "classes": "Kelas",
+      "children": "Murid",
+      "teachers": "Guru",
+      "teach": "Mengajar"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1846,6 +1851,184 @@
       "expiredMessage": "Pautan pengenalan sah selama 14 hari. Minta SchoolTest menghantar pautan baharu.",
       "usedTitle": "Pautan pengenalan ini telah digunakan",
       "usedMessage": "Akaun pentadbir untuk sekolah ini telah dicipta. Log masuk untuk meneruskan, atau hubungi SchoolTest jika anda memerlukan bantuan."
+    }
+  },
+  "SchoolAdmin": {
+    "meta": {
+      "title": "Papan pemuka sekolah - SchoolTest",
+      "description": "Akaun SchoolTest sekolah anda, status dan kemajuan penyediaan sekilas pandang."
+    },
+    "home": {
+      "subtitle": "Akaun SchoolTest sekolah anda sekilas pandang.",
+      "accountStatusLabel": "Status akaun",
+      "onboardingStatusLabel": "Penyediaan",
+      "errorTitle": "Kami tidak dapat memuatkan sekolah anda",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi"
+    },
+    "accountStatus": {
+      "prospect": "Prospek",
+      "invoiced": "Dinvois",
+      "active": "Aktif",
+      "suspended": "Digantung",
+      "closed": "Ditutup"
+    },
+    "onboardingStatus": {
+      "not_started": "Belum bermula",
+      "link_sent": "Pautan dihantar",
+      "in_progress": "Sedang berjalan",
+      "submitted": "Dihantar",
+      "complete": "Selesai"
+    },
+    "sections": {
+      "classes": {
+        "metaTitle": "Kelas - SchoolTest",
+        "metaDescription": "Kelas di sekolah anda.",
+        "title": "Kelas",
+        "description": "Setiap kelas di sekolah anda, dalam satu tempat.",
+        "emptyTitle": "Belum ada kelas",
+        "emptyDescription": "Kelas yang anda tambah untuk sekolah anda akan muncul di sini."
+      },
+      "children": {
+        "metaTitle": "Murid - SchoolTest",
+        "metaDescription": "Murid di sekolah anda.",
+        "title": "Murid",
+        "description": "Setiap murid di sekolah anda, dalam satu tempat.",
+        "emptyTitle": "Belum ada murid",
+        "emptyDescription": "Murid yang dipautkan ke sekolah anda akan muncul di sini."
+      },
+      "teachers": {
+        "metaTitle": "Guru - SchoolTest",
+        "metaDescription": "Guru di sekolah anda.",
+        "title": "Guru",
+        "description": "Setiap guru di sekolah anda, dalam satu tempat.",
+        "emptyTitle": "Belum ada guru",
+        "emptyDescription": "Guru yang menyertai sekolah anda akan muncul di sini."
+      }
+    }
+  },
+  "Teach": {
+    "meta": {
+      "title": "Papan pemuka guru - SchoolTest",
+      "description": "Laman mengajar anda: kelas dan laporan."
+    },
+    "home": {
+      "title": "Papan pemuka guru",
+      "subtitle": "Laporan untuk kelas anda sedia di bawah Laporan.",
+      "reportsCta": "Buka laporan"
+    }
+  },
+  "Invite": {
+    "meta": {
+      "title": "Terima jemputan anda - SchoolTest",
+      "description": "Aktifkan akaun kakitangan SchoolTest anda: sahkan butiran anda dan pilih kata laluan."
+    },
+    "loading": "Menyemak jemputan anda...",
+    "welcomeTitle": "Selamat datang ke {school}",
+    "welcomeBody": "Anda dijemput menyertai {school} dengan akaun {email}. Pilih kata laluan untuk mengaktifkan akaun anda dan bermula.",
+    "expires": "Jemputan ini luput pada {date}.",
+    "roles": {
+      "teacher": "Guru",
+      "school_admin": "Pentadbir sekolah"
+    },
+    "form": {
+      "firstName": "Nama pertama",
+      "lastName": "Nama keluarga",
+      "password": "Kata laluan",
+      "passwordHint": "Sekurang-kurangnya 8 aksara.",
+      "confirmPassword": "Sahkan kata laluan",
+      "submit": "Aktifkan akaun",
+      "submitting": "Mengaktifkan...",
+      "acceptFailed": "Kami tidak dapat mengaktifkan akaun anda. Cuba lagi, atau minta pentadbir sekolah anda menghantar jemputan baharu."
+    },
+    "validation": {
+      "required": "Ruangan ini wajib diisi.",
+      "tooLong": "Itu terlalu panjang.",
+      "passwordTooShort": "Gunakan sekurang-kurangnya 8 aksara.",
+      "passwordMismatch": "Kata laluan tidak sepadan."
+    },
+    "errors": {
+      "unavailableTitle": "Sesuatu telah berlaku",
+      "unavailableMessage": "Kami tidak dapat memuatkan jemputan anda. Semak sambungan anda dan cuba lagi.",
+      "invalidTitle": "Pautan jemputan ini tidak sah",
+      "invalidMessage": "Pautan mungkin tersilap taip atau telah digantikan. Minta pentadbir sekolah anda menghantar jemputan baharu.",
+      "expiredTitle": "Jemputan ini telah luput",
+      "expiredMessage": "Minta pentadbir sekolah anda menghantar jemputan baharu.",
+      "usedTitle": "Jemputan ini telah diterima",
+      "usedMessage": "Akaun untuk jemputan ini telah diaktifkan. Log masuk untuk meneruskan.",
+      "usedAction": "Pergi ke log masuk"
+    }
+  },
+  "Teachers": {
+    "meta": {
+      "title": "Guru - SchoolTest",
+      "description": "Guru dan pentadbir di sekolah anda, serta jemputan yang telah anda hantar."
+    },
+    "title": "Guru",
+    "description": "Setiap akaun kakitangan di sekolah anda, serta jemputan yang telah anda hantar.",
+    "inviteButton": "Jemput kakitangan",
+    "errorTitle": "Kami tidak dapat memuatkan senarai kakitangan anda",
+    "errorDescription": "Semak sambungan anda dan cuba lagi.",
+    "retry": "Cuba lagi",
+    "invite": {
+      "title": "Jemput ahli kakitangan",
+      "description": "Mereka akan menerima e-mel dengan pautan untuk mengaktifkan akaun mereka.",
+      "firstName": "Nama pertama",
+      "lastName": "Nama keluarga",
+      "email": "E-mel",
+      "role": "Peranan",
+      "roleTeacher": "Guru",
+      "roleSchoolAdmin": "Pentadbir sekolah",
+      "cancel": "Batal",
+      "submit": "Hantar jemputan",
+      "submitting": "Menghantar...",
+      "successToast": "Jemputan dihantar kepada {email}.",
+      "errorToast": "Kami tidak dapat menghantar jemputan itu. Cuba lagi.",
+      "alreadyInSchool": "Akaun aktif dengan e-mel ini sudah tergolong dalam sekolah anda."
+    },
+    "validation": {
+      "required": "Ruangan ini wajib diisi.",
+      "tooLong": "Itu terlalu panjang.",
+      "emailInvalid": "Masukkan alamat e-mel yang sah."
+    },
+    "table": {
+      "columnName": "Nama",
+      "columnEmail": "E-mel",
+      "columnClasses": "Kelas",
+      "columnStatus": "Status",
+      "columnActions": "Tindakan",
+      "empty": "Belum ada kakitangan atau jemputan. Hantar jemputan pertama anda untuk bermula.",
+      "classesPending": "Ditetapkan selepas menyertai",
+      "classesNone": "Belum ada kelas",
+      "expiresOn": "Luput {date}",
+      "status": {
+        "active": "Aktif",
+        "deactivated": "Dinyahaktifkan",
+        "invited": "Dijemput",
+        "expired": "Luput"
+      }
+    },
+    "actions": {
+      "menuLabel": "Tindakan untuk {name}",
+      "reissue": "Hantar semula jemputan",
+      "revoke": "Batalkan jemputan",
+      "deactivate": "Nyahaktifkan",
+      "reactivate": "Aktifkan semula",
+      "cancel": "Batal",
+      "reissuedToast": "Jemputan baharu telah dihantar kepada {email}.",
+      "revokedToast": "Jemputan untuk {email} telah dibatalkan.",
+      "deactivatedToast": "{name} telah dinyahaktifkan.",
+      "reactivatedToast": "{name} telah diaktifkan semula.",
+      "errorToast": "Tindakan itu tidak berjaya. Cuba lagi.",
+      "deactivateTitle": "Nyahaktifkan {name}?",
+      "deactivateDescription": "Mereka tidak lagi dapat log masuk. Kelas dan rekod mereka kekal.",
+      "deactivateConfirm": "Nyahaktifkan",
+      "reactivateTitle": "Aktifkan semula {name}?",
+      "reactivateDescription": "Mereka akan dapat log masuk semula dengan segera.",
+      "reactivateConfirm": "Aktifkan semula",
+      "revokeTitle": "Batalkan jemputan untuk {name}?",
+      "revokeDescription": "Pautan jemputan akan berhenti berfungsi. Anda boleh menghantar jemputan baharu kemudian.",
+      "revokeConfirm": "Batalkan jemputan"
     }
   }
 }

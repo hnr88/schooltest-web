@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactCompiler: true,
+  // Local QA runs drive the app over 127.0.0.1 as well as localhost.
+  allowedDevOrigins: ['127.0.0.1'],
   async headers() {
     return [
       {

@@ -5,6 +5,8 @@ const REPORTS_PATH = '/dashboard/reports';
 const NOTIFICATIONS_PATH = '/dashboard/notifications';
 const SEARCH_PATH = '/dashboard/search';
 const SETTINGS_PATH = '/dashboard/settings';
+const SCHOOL_PATH = '/dashboard/school';
+const TEACH_PATH = '/dashboard/teach';
 const DASHBOARD_PATH = '/dashboard';
 
 // Section-level meta for the topbar trail. `href` lets the section crumb become a
@@ -19,5 +21,7 @@ export function getShellRouteMeta(pathname: string): ShellRouteMeta {
   }
   if (pathname.startsWith(SEARCH_PATH)) return { labelKey: 'search', href: SEARCH_PATH };
   if (pathname.startsWith(SETTINGS_PATH)) return { labelKey: 'settings', href: SETTINGS_PATH };
+  if (pathname.startsWith(SCHOOL_PATH)) return { labelKey: 'school', href: SCHOOL_PATH };
+  if (pathname.startsWith(TEACH_PATH)) return { labelKey: 'teach', href: TEACH_PATH };
   return { labelKey: 'overview', href: DASHBOARD_PATH };
 }

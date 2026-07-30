@@ -733,7 +733,12 @@
       "reports": "Báo cáo",
       "notifications": "Thông báo",
       "search": "Tìm kiếm",
-      "settings": "Cài đặt"
+      "settings": "Cài đặt",
+      "school": "Trường học",
+      "classes": "Lớp học",
+      "children": "Học sinh",
+      "teachers": "Giáo viên",
+      "teach": "Giảng dạy"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1846,6 +1851,184 @@
       "expiredMessage": "Liên kết thiết lập có hiệu lực trong 14 ngày. Hãy yêu cầu SchoolTest gửi liên kết mới.",
       "usedTitle": "Liên kết thiết lập đã được sử dụng",
       "usedMessage": "Tài khoản quản trị của trường này đã được tạo. Đăng nhập để tiếp tục, hoặc liên hệ SchoolTest nếu bạn cần trợ giúp."
+    }
+  },
+  "SchoolAdmin": {
+    "meta": {
+      "title": "Bảng điều khiển trường học - SchoolTest",
+      "description": "Tài khoản SchoolTest của trường bạn, trạng thái và tiến trình thiết lập trong một chế độ xem."
+    },
+    "home": {
+      "subtitle": "Tổng quan tài khoản SchoolTest của trường bạn.",
+      "accountStatusLabel": "Trạng thái tài khoản",
+      "onboardingStatusLabel": "Thiết lập",
+      "errorTitle": "Chúng tôi không thể tải trường của bạn",
+      "errorDescription": "Kiểm tra kết nối của bạn và thử lại.",
+      "retry": "Thử lại"
+    },
+    "accountStatus": {
+      "prospect": "Tiềm năng",
+      "invoiced": "Đã lập hoá đơn",
+      "active": "Đang hoạt động",
+      "suspended": "Bị tạm ngưng",
+      "closed": "Đã đóng"
+    },
+    "onboardingStatus": {
+      "not_started": "Chưa bắt đầu",
+      "link_sent": "Đã gửi liên kết",
+      "in_progress": "Đang tiến hành",
+      "submitted": "Đã gửi",
+      "complete": "Hoàn tất"
+    },
+    "sections": {
+      "classes": {
+        "metaTitle": "Lớp học - SchoolTest",
+        "metaDescription": "Các lớp học tại trường của bạn.",
+        "title": "Lớp học",
+        "description": "Mọi lớp học tại trường của bạn, ở một nơi.",
+        "emptyTitle": "Chưa có lớp học nào",
+        "emptyDescription": "Các lớp học bạn thêm cho trường sẽ xuất hiện ở đây."
+      },
+      "children": {
+        "metaTitle": "Học sinh - SchoolTest",
+        "metaDescription": "Học sinh tại trường của bạn.",
+        "title": "Học sinh",
+        "description": "Mọi học sinh tại trường của bạn, ở một nơi.",
+        "emptyTitle": "Chưa có học sinh nào",
+        "emptyDescription": "Học sinh được liên kết với trường của bạn sẽ xuất hiện ở đây."
+      },
+      "teachers": {
+        "metaTitle": "Giáo viên - SchoolTest",
+        "metaDescription": "Giáo viên tại trường của bạn.",
+        "title": "Giáo viên",
+        "description": "Mọi giáo viên tại trường của bạn, ở một nơi.",
+        "emptyTitle": "Chưa có giáo viên nào",
+        "emptyDescription": "Giáo viên tham gia trường của bạn sẽ xuất hiện ở đây."
+      }
+    }
+  },
+  "Teach": {
+    "meta": {
+      "title": "Bảng điều khiển giáo viên - SchoolTest",
+      "description": "Trang giảng dạy của bạn: lớp học và báo cáo."
+    },
+    "home": {
+      "title": "Bảng điều khiển giáo viên",
+      "subtitle": "Báo cáo cho các lớp của bạn đã sẵn sàng trong mục Báo cáo.",
+      "reportsCta": "Mở báo cáo"
+    }
+  },
+  "Invite": {
+    "meta": {
+      "title": "Chấp nhận lời mời - SchoolTest",
+      "description": "Kích hoạt tài khoản nhân viên SchoolTest của bạn: xác nhận thông tin và chọn mật khẩu."
+    },
+    "loading": "Đang kiểm tra lời mời của bạn...",
+    "welcomeTitle": "Chào mừng bạn đến với {school}",
+    "welcomeBody": "Bạn được mời tham gia {school} với tài khoản {email}. Chọn mật khẩu để kích hoạt tài khoản và bắt đầu.",
+    "expires": "Lời mời này hết hạn vào {date}.",
+    "roles": {
+      "teacher": "Giáo viên",
+      "school_admin": "Quản trị viên trường"
+    },
+    "form": {
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "password": "Mật khẩu",
+      "passwordHint": "Ít nhất 8 ký tự.",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "submit": "Kích hoạt tài khoản",
+      "submitting": "Đang kích hoạt...",
+      "acceptFailed": "Chúng tôi không thể kích hoạt tài khoản của bạn. Hãy thử lại hoặc nhờ quản trị viên trường gửi lời mời mới."
+    },
+    "validation": {
+      "required": "Trường này là bắt buộc.",
+      "tooLong": "Nội dung quá dài.",
+      "passwordTooShort": "Sử dụng ít nhất 8 ký tự.",
+      "passwordMismatch": "Mật khẩu không khớp."
+    },
+    "errors": {
+      "unavailableTitle": "Đã xảy ra lỗi",
+      "unavailableMessage": "Chúng tôi không thể tải lời mời của bạn. Kiểm tra kết nối và thử lại.",
+      "invalidTitle": "Liên kết lời mời này không hợp lệ",
+      "invalidMessage": "Liên kết có thể bị nhập sai hoặc đã được thay thế. Hãy nhờ quản trị viên trường gửi lời mời mới.",
+      "expiredTitle": "Lời mời này đã hết hạn",
+      "expiredMessage": "Hãy nhờ quản trị viên trường gửi lời mời mới.",
+      "usedTitle": "Lời mời này đã được chấp nhận",
+      "usedMessage": "Tài khoản của lời mời này đã được kích hoạt. Đăng nhập để tiếp tục.",
+      "usedAction": "Đến trang đăng nhập"
+    }
+  },
+  "Teachers": {
+    "meta": {
+      "title": "Giáo viên - SchoolTest",
+      "description": "Giáo viên và quản trị viên tại trường của bạn, cùng các lời mời bạn đã gửi."
+    },
+    "title": "Giáo viên",
+    "description": "Mọi tài khoản nhân viên tại trường của bạn, cùng các lời mời bạn đã gửi.",
+    "inviteButton": "Mời nhân viên",
+    "errorTitle": "Chúng tôi không thể tải danh sách nhân viên",
+    "errorDescription": "Kiểm tra kết nối và thử lại.",
+    "retry": "Thử lại",
+    "invite": {
+      "title": "Mời một nhân viên",
+      "description": "Họ sẽ nhận được email kèm liên kết để kích hoạt tài khoản.",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "email": "Email",
+      "role": "Vai trò",
+      "roleTeacher": "Giáo viên",
+      "roleSchoolAdmin": "Quản trị viên trường",
+      "cancel": "Huỷ",
+      "submit": "Gửi lời mời",
+      "submitting": "Đang gửi...",
+      "successToast": "Đã gửi lời mời đến {email}.",
+      "errorToast": "Chúng tôi không thể gửi lời mời. Hãy thử lại.",
+      "alreadyInSchool": "Một tài khoản đang hoạt động với email này đã thuộc trường của bạn."
+    },
+    "validation": {
+      "required": "Trường này là bắt buộc.",
+      "tooLong": "Nội dung quá dài.",
+      "emailInvalid": "Nhập địa chỉ email hợp lệ."
+    },
+    "table": {
+      "columnName": "Tên",
+      "columnEmail": "Email",
+      "columnClasses": "Lớp",
+      "columnStatus": "Trạng thái",
+      "columnActions": "Thao tác",
+      "empty": "Chưa có nhân viên hay lời mời nào. Gửi lời mời đầu tiên để bắt đầu.",
+      "classesPending": "Được phân công sau khi tham gia",
+      "classesNone": "Chưa có lớp",
+      "expiresOn": "Hết hạn {date}",
+      "status": {
+        "active": "Đang hoạt động",
+        "deactivated": "Đã vô hiệu hoá",
+        "invited": "Đã mời",
+        "expired": "Đã hết hạn"
+      }
+    },
+    "actions": {
+      "menuLabel": "Thao tác cho {name}",
+      "reissue": "Gửi lại lời mời",
+      "revoke": "Thu hồi lời mời",
+      "deactivate": "Vô hiệu hoá",
+      "reactivate": "Kích hoạt lại",
+      "cancel": "Huỷ",
+      "reissuedToast": "Đã gửi lời mời mới đến {email}.",
+      "revokedToast": "Đã thu hồi lời mời của {email}.",
+      "deactivatedToast": "{name} đã bị vô hiệu hoá.",
+      "reactivatedToast": "{name} đã được kích hoạt lại.",
+      "errorToast": "Thao tác không thành công. Hãy thử lại.",
+      "deactivateTitle": "Vô hiệu hoá {name}?",
+      "deactivateDescription": "Họ sẽ không thể đăng nhập nữa. Lớp học và hồ sơ của họ vẫn được giữ lại.",
+      "deactivateConfirm": "Vô hiệu hoá",
+      "reactivateTitle": "Kích hoạt lại {name}?",
+      "reactivateDescription": "Họ sẽ có thể đăng nhập lại ngay lập tức.",
+      "reactivateConfirm": "Kích hoạt lại",
+      "revokeTitle": "Thu hồi lời mời của {name}?",
+      "revokeDescription": "Liên kết lời mời sẽ ngừng hoạt động. Bạn có thể gửi lời mời mới sau.",
+      "revokeConfirm": "Thu hồi lời mời"
     }
   }
 }

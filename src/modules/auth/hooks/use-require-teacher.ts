@@ -39,10 +39,13 @@ export function useRequireTeacher() {
       router.replace('/sign-in');
       return;
     }
-  }, [isResolved, isRejected, router]);
+    // Security finding 3: a signed-in non-teacher must not see the content
+    // while nothing redirects — send them somewhere their role can open.
+    if (!isTeacher) router.replace('/dashboard');
+  }, [isResolved, isRejected, isTeacher, router]);
 
   return {
-    isReady: isResolved && !isRejected,
+    isReady: isResolved && !isRejected && isTeacher,
     isTeacher,
     roleType,
   };

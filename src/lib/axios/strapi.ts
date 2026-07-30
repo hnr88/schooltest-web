@@ -41,10 +41,20 @@ const PUBLIC_AUTH_PATH = /^\/api\/auth\/(local|forgot-password|reset-password|em
 // public 404/410/409 link states, not a role-scoped 403.
 const PUBLIC_ONBOARDING_PATH = /^\/api\/school-onboarding(\/|$)/;
 
+// The guest invitation endpoints (C-INV-05/06) follow the same rule: the
+// /invite/<token> page must see the public link states. The school-scoped
+// /api/schools/me/invitations routes keep the bearer token (a different path).
+const PUBLIC_INVITATION_PATH = /^\/api\/invitations(\/|$)/;
+
 strapi.interceptors.request.use((config) => {
   const token = readClientToken();
   const url = config.url ?? '';
-  if (token && !PUBLIC_AUTH_PATH.test(url) && !PUBLIC_ONBOARDING_PATH.test(url)) {
+  if (
+    token &&
+    !PUBLIC_AUTH_PATH.test(url) &&
+    !PUBLIC_ONBOARDING_PATH.test(url) &&
+    !PUBLIC_INVITATION_PATH.test(url)
+  ) {
     const headers =
       config.headers instanceof AxiosHeaders
         ? config.headers

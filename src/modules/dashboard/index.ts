@@ -1,4 +1,5 @@
 export { DashboardScreen } from './components/DashboardScreen';
+export { DashboardRoleGate } from './components/DashboardRoleGate';
 export { DashboardSearch } from './components/DashboardSearch';
 export { useStudentsQuery } from './queries/use-students.query';
 export { useSearchStudentsQuery } from './queries/use-search-students.query';

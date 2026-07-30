@@ -733,7 +733,12 @@
       "reports": "리포트",
       "notifications": "알림",
       "search": "검색",
-      "settings": "설정"
+      "settings": "설정",
+      "school": "학교",
+      "classes": "학급",
+      "children": "학생",
+      "teachers": "교사",
+      "teach": "교사 홈"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1846,6 +1851,184 @@
       "expiredMessage": "온볼링 링크는 14일 동안 유효합니다. SchoolTest에 새 링크를 요청하세요.",
       "usedTitle": "이미 사용된 온볼링 링크입니다",
       "usedMessage": "이 학교의 관리자 계정이 이미 생성되었습니다. 로그인하여 계속하거나 도움이 필요하면 SchoolTest에 문의하세요."
+    }
+  },
+  "SchoolAdmin": {
+    "meta": {
+      "title": "학교 대시보드 - SchoolTest",
+      "description": "학교의 SchoolTest 계정, 상태 및 온볼딩 진행 상황을 한눈에 확인하세요."
+    },
+    "home": {
+      "subtitle": "학교의 SchoolTest 계정을 한눈에 확인하세요.",
+      "accountStatusLabel": "계정 상태",
+      "onboardingStatusLabel": "온볼딩",
+      "errorTitle": "학교 정보를 불러올 수 없습니다",
+      "errorDescription": "연결을 확인하고 다시 시도하세요.",
+      "retry": "다시 시도"
+    },
+    "accountStatus": {
+      "prospect": "잠재",
+      "invoiced": "청구됨",
+      "active": "활성",
+      "suspended": "일시 중지",
+      "closed": "종료"
+    },
+    "onboardingStatus": {
+      "not_started": "시작 전",
+      "link_sent": "링크 전송됨",
+      "in_progress": "진행 중",
+      "submitted": "제출됨",
+      "complete": "완료"
+    },
+    "sections": {
+      "classes": {
+        "metaTitle": "학급 - SchoolTest",
+        "metaDescription": "학교의 모든 학급.",
+        "title": "학급",
+        "description": "학교의 모든 학급을 한곳에서.",
+        "emptyTitle": "아직 학급이 없습니다",
+        "emptyDescription": "학교에 추가한 학급이 여기에 표시됩니다."
+      },
+      "children": {
+        "metaTitle": "학생 - SchoolTest",
+        "metaDescription": "학교의 모든 학생.",
+        "title": "학생",
+        "description": "학교의 모든 학생을 한곳에서.",
+        "emptyTitle": "아직 학생이 없습니다",
+        "emptyDescription": "학교에 연결된 학생이 여기에 표시됩니다."
+      },
+      "teachers": {
+        "metaTitle": "교사 - SchoolTest",
+        "metaDescription": "학교의 교사.",
+        "title": "교사",
+        "description": "학교의 모든 교사를 한곳에서.",
+        "emptyTitle": "아직 교사가 없습니다",
+        "emptyDescription": "학교에 합류한 교사가 여기에 표시됩니다."
+      }
+    }
+  },
+  "Teach": {
+    "meta": {
+      "title": "교사 대시보드 - SchoolTest",
+      "description": "교사 홈: 학급과 리포트."
+    },
+    "home": {
+      "title": "교사 대시보드",
+      "subtitle": "학급 리포트는 리포트 메뉴에서 확인할 수 있습니다.",
+      "reportsCta": "리포트 열기"
+    }
+  },
+  "Invite": {
+    "meta": {
+      "title": "초대 수락 - SchoolTest",
+      "description": "SchoolTest 교직원 계정을 활성화하세요: 정보를 확인하고 비밀번호를 설정합니다."
+    },
+    "loading": "초대를 확인하는 중...",
+    "welcomeTitle": "{school}에 오신 것을 환영합니다",
+    "welcomeBody": "{email} 계정으로 {school}에 함께하도록 초대되었습니다. 비밀번호를 설정해 계정을 활성화하고 시작하세요.",
+    "expires": "이 초대는 {date}에 만료됩니다.",
+    "roles": {
+      "teacher": "교사",
+      "school_admin": "학교 관리자"
+    },
+    "form": {
+      "firstName": "이름",
+      "lastName": "성",
+      "password": "비밀번호",
+      "passwordHint": "8자 이상 입력하세요.",
+      "confirmPassword": "비밀번호 확인",
+      "submit": "계정 활성화",
+      "submitting": "활성화 중...",
+      "acceptFailed": "계정을 활성화할 수 없습니다. 다시 시도하거나 학교 관리자에게 새 초대를 요청하세요."
+    },
+    "validation": {
+      "required": "필수 입력 항목입니다.",
+      "tooLong": "입력 내용이 너무 깁니다.",
+      "passwordTooShort": "8자 이상 사용하세요.",
+      "passwordMismatch": "비밀번호가 일치하지 않습니다."
+    },
+    "errors": {
+      "unavailableTitle": "문제가 발생했습니다",
+      "unavailableMessage": "초대를 불러올 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+      "invalidTitle": "유효하지 않은 초대 링크입니다",
+      "invalidMessage": "링크가 잘못 입력되었거나 교체되었을 수 있습니다. 학교 관리자에게 새 초대를 요청하세요.",
+      "expiredTitle": "만료된 초대입니다",
+      "expiredMessage": "학교 관리자에게 새 초대를 요청하세요.",
+      "usedTitle": "이미 수락된 초대입니다",
+      "usedMessage": "이 초대의 계정은 이미 활성화되었습니다. 로그인해 계속하세요.",
+      "usedAction": "로그인으로 이동"
+    }
+  },
+  "Teachers": {
+    "meta": {
+      "title": "교사 - SchoolTest",
+      "description": "학교의 교사와 관리자, 그리고 보낸 초대입니다."
+    },
+    "title": "교사",
+    "description": "학교의 모든 교직원 계정과 보낸 초대입니다.",
+    "inviteButton": "교직원 초대",
+    "errorTitle": "교직원 목록을 불러올 수 없습니다",
+    "errorDescription": "연결을 확인하고 다시 시도하세요.",
+    "retry": "다시 시도",
+    "invite": {
+      "title": "교직원 초대",
+      "description": "계정을 활성화할 수 있는 링크가 담긴 이메일을 받게 됩니다.",
+      "firstName": "이름",
+      "lastName": "성",
+      "email": "이메일",
+      "role": "역할",
+      "roleTeacher": "교사",
+      "roleSchoolAdmin": "학교 관리자",
+      "cancel": "취소",
+      "submit": "초대 보내기",
+      "submitting": "보내는 중...",
+      "successToast": "{email}(으)로 초대를 보냈습니다.",
+      "errorToast": "초대를 보낼 수 없습니다. 다시 시도하세요.",
+      "alreadyInSchool": "이 이메일의 활성 계정이 이미 학교에 속해 있습니다."
+    },
+    "validation": {
+      "required": "필수 입력 항목입니다.",
+      "tooLong": "입력 내용이 너무 깁니다.",
+      "emailInvalid": "유효한 이메일 주소를 입력하세요."
+    },
+    "table": {
+      "columnName": "이름",
+      "columnEmail": "이메일",
+      "columnClasses": "학급",
+      "columnStatus": "상태",
+      "columnActions": "작업",
+      "empty": "아직 교직원이나 초대가 없습니다. 첫 초대를 보내 시작하세요.",
+      "classesPending": "합류 후 배정",
+      "classesNone": "아직 학급 없음",
+      "expiresOn": "{date} 만료",
+      "status": {
+        "active": "재직",
+        "deactivated": "비활성화됨",
+        "invited": "초대됨",
+        "expired": "만료됨"
+      }
+    },
+    "actions": {
+      "menuLabel": "{name} 작업",
+      "reissue": "초대 다시 보내기",
+      "revoke": "초대 취소",
+      "deactivate": "비활성화",
+      "reactivate": "다시 활성화",
+      "cancel": "취소",
+      "reissuedToast": "{email}(으)로 새 초대를 보냈습니다.",
+      "revokedToast": "{email}의 초대를 취소했습니다.",
+      "deactivatedToast": "{name}을(를) 비활성화했습니다.",
+      "reactivatedToast": "{name}을(를) 다시 활성화했습니다.",
+      "errorToast": "작업에 실패했습니다. 다시 시도하세요.",
+      "deactivateTitle": "{name}을(를) 비활성화할까요?",
+      "deactivateDescription": "더 이상 로그인할 수 없게 됩니다. 학급과 기록은 그대로 유지됩니다.",
+      "deactivateConfirm": "비활성화",
+      "reactivateTitle": "{name}을(를) 다시 활성화할까요?",
+      "reactivateDescription": "바로 다시 로그인할 수 있게 됩니다.",
+      "reactivateConfirm": "다시 활성화",
+      "revokeTitle": "{name}의 초대를 취소할까요?",
+      "revokeDescription": "초대 링크가 더 이상 작동하지 않습니다. 나중에 새 초대를 보낼 수 있습니다.",
+      "revokeConfirm": "초대 취소"
     }
   }
 }

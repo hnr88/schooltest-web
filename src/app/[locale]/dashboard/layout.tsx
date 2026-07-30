@@ -1,7 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
 
-import { DashboardOnboardingGuard } from '@/app/[locale]/dashboard/DashboardOnboardingGuard';
-import { ParentGuard } from '@/modules/auth';
 import { SidebarInset, SidebarProvider } from '@/modules/design-system';
 import { AppSidebar, AppTopbar } from '@/modules/shell';
 
@@ -21,31 +19,30 @@ import { AppSidebar, AppTopbar } from '@/modules/shell';
 // rail is pinned to the VIEWPORT, so capping the flex wrapper would centre <main>
 // while leaving the rail at x=0 and tear a hole between them above 1600px.
 //
-// ParentGuard stays hoisted here (task 012) so every current and future /dashboard/*
-// route is parent-guarded exactly once. The well moved from the scroll container to
-// the frame itself — with the rail detached, the background has to run BEHIND it.
+// This layout is the shared SHELL ONLY (task 27, st-mvp-pivot): role guards live
+// per section — ParentGuard + the onboarding guard wrap the parent portal tree
+// under (portal)/, while /dashboard/school and /dashboard/teach mount
+// SchoolAdminGuard / TeacherGuard in their own layouts. The well moved from the
+// scroll container to the frame itself — with the rail detached, the background
+// has to run BEHIND it.
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <ParentGuard>
-      <DashboardOnboardingGuard>
-        <SidebarProvider
-          className="h-svh min-h-0 overflow-hidden bg-surface-well"
-          style={{ '--sidebar-width': '296px', '--sidebar-width-icon': '96px' } as CSSProperties}
-        >
-          <AppSidebar />
-          <SidebarInset className="min-h-0 min-w-0 overflow-hidden bg-transparent py-4 md:py-6 md:pr-6">
-            <div className="flex min-h-0 w-full flex-1 flex-col gap-4">
-              <AppTopbar />
-              <div
-                data-slot="dashboard-content"
-                className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scroll-smooth motion-reduce:scroll-auto"
-              >
-                {children}
-              </div>
-            </div>
-          </SidebarInset>
-        </SidebarProvider>
-      </DashboardOnboardingGuard>
-    </ParentGuard>
+    <SidebarProvider
+      className="h-svh min-h-0 overflow-hidden bg-surface-well"
+      style={{ '--sidebar-width': '296px', '--sidebar-width-icon': '96px' } as CSSProperties}
+    >
+      <AppSidebar />
+      <SidebarInset className="min-h-0 min-w-0 overflow-hidden bg-transparent py-4 md:py-6 md:pr-6">
+        <div className="flex min-h-0 w-full flex-1 flex-col gap-4">
+          <AppTopbar />
+          <div
+            data-slot="dashboard-content"
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scroll-smooth motion-reduce:scroll-auto"
+          >
+            {children}
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

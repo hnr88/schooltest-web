@@ -1,7 +1,17 @@
 import type { LucideIcon } from 'lucide-react';
 
 export type NavLabelKey =
-  'overview' | 'myChildren' | 'reports' | 'notifications' | 'search' | 'settings';
+  | 'overview'
+  | 'myChildren'
+  | 'reports'
+  | 'notifications'
+  | 'search'
+  | 'settings'
+  | 'school'
+  | 'classes'
+  | 'children'
+  | 'teachers'
+  | 'teach';
 
 // Canonical rail grouping (DS §12 Navigation card): every destination of the
 // parent rail sits in the one primary list.

@@ -22,7 +22,13 @@ export { SignUpCard } from './components/SignUpCard';
 export { SignUpForm } from './components/SignUpForm';
 export { ParentGuard } from './components/ParentGuard';
 export { TeacherGuard } from './components/TeacherGuard';
-export { TEACHER_ROLE_TYPE } from './constants/role.constants';
+export { SchoolAdminGuard } from './components/SchoolAdminGuard';
+export { useRequireSchoolAdmin } from './hooks/use-require-school-admin';
+export {
+  TEACHER_ROLE_TYPE,
+  SCHOOL_ADMIN_ROLE_TYPE,
+  OPS_ROLE_TYPE,
+} from './constants/role.constants';
 export { ChangePasswordForm } from './components/ChangePasswordForm';
 export { GoogleCallbackScreen } from './components/GoogleCallbackScreen';
 export { GOOGLE_ENABLED } from './constants/auth.constants';

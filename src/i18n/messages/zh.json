@@ -733,7 +733,12 @@
       "reports": "报告",
       "notifications": "通知",
       "search": "搜索",
-      "settings": "设置"
+      "settings": "设置",
+      "school": "学校",
+      "classes": "班级",
+      "children": "学生",
+      "teachers": "教师",
+      "teach": "教学"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1846,6 +1851,184 @@
       "expiredMessage": "入驻链接有效期为 14 天。请向 SchoolTest 索取新链接。",
       "usedTitle": "此入驻链接已被使用",
       "usedMessage": "该校的管理员账户已创建。请登录继续，或联系 SchoolTest 寻求帮助。"
+    }
+  },
+  "SchoolAdmin": {
+    "meta": {
+      "title": "学校控制面板 - SchoolTest",
+      "description": "一目了然地查看您学校的 SchoolTest 账户、状态和入驻进度。"
+    },
+    "home": {
+      "subtitle": "您学校的 SchoolTest 账户概览。",
+      "accountStatusLabel": "账户状态",
+      "onboardingStatusLabel": "入驻进度",
+      "errorTitle": "无法加载您的学校信息",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试"
+    },
+    "accountStatus": {
+      "prospect": "潜在客户",
+      "invoiced": "已开票",
+      "active": "已激活",
+      "suspended": "已暂停",
+      "closed": "已关闭"
+    },
+    "onboardingStatus": {
+      "not_started": "未开始",
+      "link_sent": "链接已发送",
+      "in_progress": "进行中",
+      "submitted": "已提交",
+      "complete": "已完成"
+    },
+    "sections": {
+      "classes": {
+        "metaTitle": "班级 - SchoolTest",
+        "metaDescription": "您学校的所有班级。",
+        "title": "班级",
+        "description": "您学校的所有班级，集中在一处。",
+        "emptyTitle": "还没有班级",
+        "emptyDescription": "您为学校添加的班级将显示在这里。"
+      },
+      "children": {
+        "metaTitle": "学生 - SchoolTest",
+        "metaDescription": "您学校的所有学生。",
+        "title": "学生",
+        "description": "您学校的所有学生，集中在一处。",
+        "emptyTitle": "还没有学生",
+        "emptyDescription": "与您学校关联的学生将显示在这里。"
+      },
+      "teachers": {
+        "metaTitle": "教师 - SchoolTest",
+        "metaDescription": "您学校的教师。",
+        "title": "教师",
+        "description": "您学校的所有教师，集中在一处。",
+        "emptyTitle": "还没有教师",
+        "emptyDescription": "加入您学校的教师将显示在这里。"
+      }
+    }
+  },
+  "Teach": {
+    "meta": {
+      "title": "教师控制面板 - SchoolTest",
+      "description": "您的教学主页：班级和报告。"
+    },
+    "home": {
+      "title": "教师控制面板",
+      "subtitle": "您班级的报告可在“报告”中查看。",
+      "reportsCta": "打开报告"
+    }
+  },
+  "Invite": {
+    "meta": {
+      "title": "接受邀请 - SchoolTest",
+      "description": "激活您的 SchoolTest 教职员工账户：确认信息并设置密码。"
+    },
+    "loading": "正在检查您的邀请...",
+    "welcomeTitle": "欢迎加入{school}",
+    "welcomeBody": "您受邀以 {email} 账户加入{school}。设置密码即可激活账户并开始使用。",
+    "expires": "此邀请将于 {date} 到期。",
+    "roles": {
+      "teacher": "教师",
+      "school_admin": "学校管理员"
+    },
+    "form": {
+      "firstName": "名字",
+      "lastName": "姓氏",
+      "password": "密码",
+      "passwordHint": "至少 8 个字符。",
+      "confirmPassword": "确认密码",
+      "submit": "激活账户",
+      "submitting": "正在激活...",
+      "acceptFailed": "无法激活您的账户。请重试，或请学校管理员重新发送邀请。"
+    },
+    "validation": {
+      "required": "此字段为必填项。",
+      "tooLong": "内容过长。",
+      "passwordTooShort": "请使用至少 8 个字符。",
+      "passwordMismatch": "两次输入的密码不一致。"
+    },
+    "errors": {
+      "unavailableTitle": "出现问题",
+      "unavailableMessage": "无法加载您的邀请。请检查网络连接后重试。",
+      "invalidTitle": "此邀请链接无效",
+      "invalidMessage": "链接可能输入有误或已被替换。请让学校管理员重新发送邀请。",
+      "expiredTitle": "此邀请已过期",
+      "expiredMessage": "请让学校管理员重新发送邀请。",
+      "usedTitle": "此邀请已被接受",
+      "usedMessage": "此邀请对应的账户已激活。请登录继续。",
+      "usedAction": "前往登录"
+    }
+  },
+  "Teachers": {
+    "meta": {
+      "title": "教师 - SchoolTest",
+      "description": "您学校的教师和管理员，以及已发送的邀请。"
+    },
+    "title": "教师",
+    "description": "您学校的所有教职员工账户，以及已发送的邀请。",
+    "inviteButton": "邀请员工",
+    "errorTitle": "无法加载员工列表",
+    "errorDescription": "请检查网络连接后重试。",
+    "retry": "重试",
+    "invite": {
+      "title": "邀请教职员工",
+      "description": "对方将收到一封包含账户激活链接的邮件。",
+      "firstName": "名字",
+      "lastName": "姓氏",
+      "email": "电子邮箱",
+      "role": "角色",
+      "roleTeacher": "教师",
+      "roleSchoolAdmin": "学校管理员",
+      "cancel": "取消",
+      "submit": "发送邀请",
+      "submitting": "正在发送...",
+      "successToast": "邀请已发送至 {email}。",
+      "errorToast": "无法发送邀请，请重试。",
+      "alreadyInSchool": "使用该邮箱的活跃账户已属于您的学校。"
+    },
+    "validation": {
+      "required": "此字段为必填项。",
+      "tooLong": "内容过长。",
+      "emailInvalid": "请输入有效的电子邮箱地址。"
+    },
+    "table": {
+      "columnName": "姓名",
+      "columnEmail": "电子邮箱",
+      "columnClasses": "班级",
+      "columnStatus": "状态",
+      "columnActions": "操作",
+      "empty": "暂无员工或邀请。发送第一份邀请即可开始。",
+      "classesPending": "加入后分配",
+      "classesNone": "暂无班级",
+      "expiresOn": "{date} 到期",
+      "status": {
+        "active": "在职",
+        "deactivated": "已停用",
+        "invited": "已邀请",
+        "expired": "已过期"
+      }
+    },
+    "actions": {
+      "menuLabel": "{name} 的操作",
+      "reissue": "重新发送邀请",
+      "revoke": "撤销邀请",
+      "deactivate": "停用",
+      "reactivate": "重新启用",
+      "cancel": "取消",
+      "reissuedToast": "新邀请已发送至 {email}。",
+      "revokedToast": "{email} 的邀请已撤销。",
+      "deactivatedToast": "{name} 已被停用。",
+      "reactivatedToast": "{name} 已被重新启用。",
+      "errorToast": "操作失败，请重试。",
+      "deactivateTitle": "停用 {name}？",
+      "deactivateDescription": "对方将无法再登录。其班级和记录会保留。",
+      "deactivateConfirm": "停用",
+      "reactivateTitle": "重新启用 {name}？",
+      "reactivateDescription": "对方将可以立即重新登录。",
+      "reactivateConfirm": "重新启用",
+      "revokeTitle": "撤销 {name} 的邀请？",
+      "revokeDescription": "邀请链接将失效。您可以稍后重新发送邀请。",
+      "revokeConfirm": "撤销邀请"
     }
   }
 }
