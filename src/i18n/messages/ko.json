@@ -184,6 +184,10 @@
     "createTitle": "Create article"
   },
   "Auth": {
+    "parentViewsUnavailable": {
+      "title": "이번 릴리스에는 포함되지 않습니다",
+      "body": "이번 SchoolTest 릴리스에서는 학부모 포털을 이용할 수 없습니다. 계정은 그대로 유지되며, 포털은 이후 업데이트에서 다시 제공됩니다."
+    },
     "meta": {
       "title": "로그인 — SchoolTest",
       "description": "SchoolTest 학부모 계정에 로그인하여 학생을 관리하세요."

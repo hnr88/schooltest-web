@@ -184,6 +184,10 @@
     "createTitle": "Create article"
   },
   "Auth": {
+    "parentViewsUnavailable": {
+      "title": "Chưa có trong bản phát hành này",
+      "body": "Cổng phụ huynh chưa khả dụng trong bản phát hành SchoolTest này. Tài khoản của bạn không thay đổi và cổng sẽ trở lại trong một bản cập nhật sau."
+    },
     "meta": {
       "title": "Đăng nhập — SchoolTest",
       "description": "Đăng nhập vào tài khoản phụ huynh SchoolTest để quản lý học sinh của bạn."

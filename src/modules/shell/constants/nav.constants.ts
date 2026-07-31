@@ -39,6 +39,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: LayoutDashboard,
     exact: true,
     group: 'primary',
+    parentViews: true,
   },
   {
     labelKey: 'myChildren',
@@ -46,6 +47,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: Users,
     exact: false,
     group: 'primary',
+    parentViews: true,
   },
   {
     labelKey: 'reports',
@@ -55,13 +57,14 @@ export const NAV_ITEMS: readonly NavItem[] = [
     group: 'primary',
     roles: [TEACHER_ROLE_TYPE],
   },
-  { labelKey: 'search', href: SEARCH_HREF, icon: Search, exact: false, group: 'primary' },
+  { labelKey: 'search', href: SEARCH_HREF, icon: Search, exact: false, group: 'primary', parentViews: true },
   {
     labelKey: 'settings',
     href: '/dashboard/settings',
     icon: Settings,
     exact: false,
     group: 'primary',
+    parentViews: true,
   },
   {
     labelKey: 'school',

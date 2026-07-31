@@ -184,6 +184,10 @@
     "createTitle": "Create article"
   },
   "Auth": {
+    "parentViewsUnavailable": {
+      "title": "Tidak termasuk dalam keluaran ini",
+      "body": "Portal ibu bapa tidak tersedia dalam keluaran SchoolTest ini. Akaun anda tidak berubah, dan portal akan kembali dalam kemas kini akan datang."
+    },
     "meta": {
       "title": "Log masuk — SchoolTest",
       "description": "Log masuk ke akaun ibu bapa SchoolTest anda untuk mengurus pelajar anda."

@@ -1,9 +1,11 @@
 import { Mail, MessageCircle, MessageSquare, Smartphone } from 'lucide-react';
 import type { DefaultValues } from 'react-hook-form';
 
+import { parentViewsEnabled } from '@/modules/flags';
 import type {
   ContactChannelOption,
   StudentWizardValues,
+  WizardStepKey,
 } from '@/modules/student-wizard/types/student-wizard.types';
 
 // Enum value tuples — the single source of truth the zod schema (`z.enum`) and
@@ -61,6 +63,17 @@ export const WIZARD_STEP_KEYS = [
   'media',
   'review',
 ] as const;
+
+// Task 47 (st-mvp-pivot, D-02 Q7): with the parent portal masked the wizard
+// ships as three steps — Guardian and Media are hidden (never deleted) behind
+// the same PARENT_VIEWS_ENABLED flag. The full five-key list above stays the
+// source of truth; only the ACTIVE list is flag-conditional, so flag ON
+// restores the legacy flow byte-for-byte.
+export const WIZARD_STEP_KEYS_MASKED = ['personal', 'education', 'review'] as const;
+
+export function activeWizardStepKeys(): readonly WizardStepKey[] {
+  return parentViewsEnabled() ? WIZARD_STEP_KEYS : WIZARD_STEP_KEYS_MASKED;
+}
 
 // preferred_contact_channel selection-card icons (§5.12).
 export const CONTACT_CHANNELS: readonly ContactChannelOption[] = [

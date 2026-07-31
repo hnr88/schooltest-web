@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
+import { parentViewsEnabled } from '@/modules/flags';
 import {
+  activeWizardStepKeys,
   CONTACT_CHANNEL_VALUES,
   CURRENT_YEAR,
   CURRENT_YEAR_LEVEL_VALUES,
@@ -9,6 +11,7 @@ import {
   TARGET_YEAR_MAX_OFFSET,
   TARGET_YEAR_MIN,
   TERM_VALUES,
+  WIZARD_STEP_KEYS,
 } from '@/modules/student-wizard/constants/student-wizard.constants';
 
 // Baked-message factory: messages are resolved up-front from the
@@ -58,6 +61,12 @@ export function createStudentWizardSchema(t: WizardSchemaTranslator) {
       .nullable()
       .refine((value): value is number => value !== null, { message: requiredMessage });
 
+  // Task 47 (st-mvp-pivot): guardian/media steps are masked with the parent
+  // portal, so their fields must not gate submit while hidden. The masked
+  // variants keep the exact same wire types (string / number | null) and only
+  // drop the required refinements — flag ON parses with the legacy rules.
+  const masked = !parentViewsEnabled();
+
   return z.object({
     // Step 1 — Personal
     // Every field the wizard renders is mandatory (parent requirement), so the
@@ -106,23 +115,23 @@ export function createStudentWizardSchema(t: WizardSchemaTranslator) {
       .refine(isValidTargetYear, t('targetYearInvalid')),
     target_entry_term: z.enum(TERM_VALUES, { error: t('termRequired') }),
     // Step 3 — Guardian
-    parent_guardian_name: z
-      .string()
-      .trim()
-      .min(1, t('guardianNameRequired'))
-      .max(200, t('guardianNameTooLong')),
-    parent_guardian_phone: z
-      .string()
-      .trim()
-      .min(1, t('guardianPhoneRequired'))
-      .max(50, t('guardianPhoneTooLong')),
-    parent_guardian_email: requiredEmail(t('guardianEmailRequired')),
+    parent_guardian_name: masked
+      ? z.string().trim().max(200, t('guardianNameTooLong'))
+      : z.string().trim().min(1, t('guardianNameRequired')).max(200, t('guardianNameTooLong')),
+    parent_guardian_phone: masked
+      ? z.string().trim().max(50, t('guardianPhoneTooLong'))
+      : z.string().trim().min(1, t('guardianPhoneRequired')).max(50, t('guardianPhoneTooLong')),
+    parent_guardian_email: masked
+      ? z.string().trim().max(255)
+      : requiredEmail(t('guardianEmailRequired')),
     parent_guardian_wechat: z.string().trim().max(100, t('wechatTooLong')).optional(),
     preferred_contact_channel: z.enum(CONTACT_CHANNEL_VALUES).default('whatsapp'),
     // Step 4 — Media (upload file ids from C-UPLOAD-PARENT): both uploads are
     // mandatory — a missing id (null) fails the step with the required message.
-    photo: requiredUploadId(t('photoRequired')),
-    voice_intro: requiredUploadId(t('voiceIntroRequired')),
+    photo: masked ? z.number().int().positive().nullable() : requiredUploadId(t('photoRequired')),
+    voice_intro: masked
+      ? z.number().int().positive().nullable()
+      : requiredUploadId(t('voiceIntroRequired')),
   });
 }
 
@@ -145,3 +154,10 @@ export const STEP_FIELDS = [
   ['photo', 'voice_intro'],
   [],
 ] as const satisfies readonly (readonly (keyof StudentWizardValues)[])[];
+
+// Task 47: STEP_FIELDS indexed by the ACTIVE step list — masked mode drops the
+// guardian/media entries so step gates and error redirects track the rendered
+// steps. Flag ON returns the same five entries as STEP_FIELDS.
+export function activeStepFields(): readonly (readonly (keyof StudentWizardValues)[])[] {
+  return activeWizardStepKeys().map((key) => STEP_FIELDS[WIZARD_STEP_KEYS.indexOf(key)]);
+}

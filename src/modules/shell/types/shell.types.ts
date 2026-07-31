@@ -39,4 +39,8 @@ export interface NavItem {
   // users-permissions role slugs, because the destination's API answers 403 to
   // everyone else (F-WEB-TEACHER-REPORT).
   roles?: readonly string[];
+  // Task 46 (st-mvp-pivot): the destination lives in the parent portal, which is
+  // masked while PARENT_VIEWS_ENABLED is off. nav-visible drops these items for
+  // every role until the flag flips on; nothing is deleted.
+  parentViews?: boolean;
 }

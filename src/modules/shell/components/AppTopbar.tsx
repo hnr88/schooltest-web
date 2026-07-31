@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { SidebarTrigger, TopbarSearchTrigger } from '@/modules/design-system';
+import { parentViewsEnabled } from '@/modules/flags';
 import { TopbarBreadcrumb } from '@/modules/shell/components/TopbarBreadcrumb';
 import { SEARCH_HREF } from '@/modules/shell/constants/nav.constants';
 import { NotificationBell } from '@/modules/notifications';
@@ -33,12 +34,16 @@ function AppTopbar() {
       <SidebarTrigger aria-label={t('topbar.toggleNav')} className={CONTROL_CLASSES} />
       <TopbarBreadcrumb />
       <span aria-hidden="true" className="flex-1" />
-      <TopbarSearchTrigger
-        href={SEARCH_HREF}
-        placeholder={t('topbar.searchPlaceholder')}
-        label={t('topbar.searchLabel')}
-        className="h-11 w-60 shrink-0 rounded-full bg-card px-4.5 shadow-sm transition-[transform,color,background-color] hover:-translate-y-px hover:bg-card focus-visible:ring-primary motion-reduce:hover:translate-y-0 max-lg:hidden"
-      />
+      {/* Task 46: the pill points into the masked parent search surface, so it
+          hides with the flag rather than stranding a dead control. */}
+      {parentViewsEnabled() && (
+        <TopbarSearchTrigger
+          href={SEARCH_HREF}
+          placeholder={t('topbar.searchPlaceholder')}
+          label={t('topbar.searchLabel')}
+          className="h-11 w-60 shrink-0 rounded-full bg-card px-4.5 shadow-sm transition-[transform,color,background-color] hover:-translate-y-px hover:bg-card focus-visible:ring-primary motion-reduce:hover:translate-y-0 max-lg:hidden"
+        />
+      )}
       <div data-slot="topbar-actions" className={BELL_SKIN_CLASSES}>
         <NotificationBell />
       </div>

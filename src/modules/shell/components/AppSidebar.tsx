@@ -18,7 +18,7 @@ import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
 import { PRIMARY_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
-import { filterNavByRole } from '@/modules/shell/lib/nav-visible';
+import { filterNavByParentViews, filterNavByRole } from '@/modules/shell/lib/nav-visible';
 
 // THE DETACHED RAIL (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:2):
 // `width:248px; background:#FFFFFF; border-radius:24px; box-shadow:0 1px 2px
@@ -47,7 +47,10 @@ function AppSidebar() {
   const { setOpenMobile } = useSidebar();
   const { user } = useAuth();
   const t = useTranslations('Shell');
-  const primaryNavItems = filterNavByRole(PRIMARY_NAV_ITEMS, user?.role?.type ?? null);
+  const primaryNavItems = filterNavByRole(
+    filterNavByParentViews(PRIMARY_NAV_ITEMS),
+    user?.role?.type ?? null,
+  );
 
   // collapsible="none" returns before the primitive's isMobile Sheet branch, so it
   // must stay "icon"; max-md:hidden guards the pre-hydration frame (isMobile is false

@@ -4,11 +4,11 @@ import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/modules/design-system';
-import { WIZARD_STEP_COUNT } from '@/modules/student-wizard/constants/student-wizard.constants';
 import type { WizardMode } from '@/modules/student-wizard/types/student-wizard.types';
 
 interface WizardNavProps {
   step: number;
+  stepCount: number;
   isLastStep: boolean;
   mode: WizardMode;
   pending: boolean;
@@ -20,8 +20,10 @@ interface WizardNavProps {
 // `margin-top:auto`, a borderless "← Back" on the left and the step counter beside
 // the navy pill on the right. Back is NEVER disabled — at step 1 it leaves the
 // wizard for the roster, which is what the design's `stepNext/stepBack` pair does.
-// The pill's label is "Continue" on steps 1–4 and the confirm label on step 5.
-export function WizardNav({ step, isLastStep, mode, pending, onBack, onContinue }: WizardNavProps) {
+// The pill's label is "Continue" until the last active step, then the confirm
+// label. `stepCount` is the ACTIVE step count (task 47) — three while
+// guardian/media are masked, five with the flag on.
+export function WizardNav({ step, stepCount, isLastStep, mode, pending, onBack, onContinue }: WizardNavProps) {
   const t = useTranslations('StudentWizard');
   const finalLabel = mode === 'edit' ? t('saveChanges') : t('createStudent');
 
@@ -41,7 +43,7 @@ export function WizardNav({ step, isLastStep, mode, pending, onBack, onContinue 
       </Button>
       <div className="flex items-center gap-4">
         <span className="text-meta text-muted-foreground">
-          {t('stepCounter', { current: step + 1, total: WIZARD_STEP_COUNT })}
+          {t('stepCounter', { current: step + 1, total: stepCount })}
         </span>
         <Button
           type="button"

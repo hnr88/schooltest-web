@@ -149,6 +149,20 @@ export interface StudentCreatePayload {
   parent_guardian_wechat?: string;
 }
 
+// Task 47 (st-mvp-pivot): with guardian/media steps masked the submit body
+// carries only the personal/education keys — C-CHD-02 400s on guardian/media
+// fields, so they are absent by construction, never emptied.
+export type StudentCreatePayloadMasked = Omit<
+  StudentCreatePayload,
+  | 'parent_guardian_name'
+  | 'parent_guardian_phone'
+  | 'parent_guardian_email'
+  | 'parent_guardian_wechat'
+  | 'preferred_contact_channel'
+  | 'photo'
+  | 'voice_intro'
+>;
+
 // CONTRACTS.md typed-error envelope: { error: { status, name, message, details? } }.
 export interface WizardSubmitErrorPayload {
   error?: {

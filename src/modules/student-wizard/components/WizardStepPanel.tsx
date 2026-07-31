@@ -2,29 +2,31 @@
 
 import { useTranslations } from 'next-intl';
 
-import {
-  WIZARD_STEP_COUNT,
-  WIZARD_STEP_KEYS,
-} from '@/modules/student-wizard/constants/student-wizard.constants';
 import { StepEducation } from '@/modules/student-wizard/components/StepEducation';
 import { StepGuardian } from '@/modules/student-wizard/components/StepGuardian';
 import { StepMedia } from '@/modules/student-wizard/components/StepMedia';
 import { StepPersonal } from '@/modules/student-wizard/components/StepPersonal';
 import { StepReview } from '@/modules/student-wizard/components/StepReview';
-import type { WizardSubmitError } from '@/modules/student-wizard/types/student-wizard.types';
+import type {
+  WizardStepKey,
+  WizardSubmitError,
+} from '@/modules/student-wizard/types/student-wizard.types';
 
 interface WizardStepPanelProps {
   step: number;
+  stepKey: WizardStepKey;
+  stepCount: number;
   error: WizardSubmitError | null;
   onDismissError: () => void;
 }
 
 // The card's body (spec 03 §2.3): every step opens with the same heading block —
-// a 20/600 h2 over the 13.5px "Step n of 5 · <what this step is for>" line — and
-// stacks its fields under it at a 22px rhythm.
-export function WizardStepPanel({ step, error, onDismissError }: WizardStepPanelProps) {
+// a 20/600 h2 over the 13.5px "Step n of N · <what this step is for>" line — and
+// stacks its fields under it at a 22px rhythm. Steps are rendered by KEY from
+// the active step list (task 47), so a masked guardian/media step is never
+// mounted; all five components stay in the repo for the flag-on flow.
+export function WizardStepPanel({ step, stepKey, stepCount, error, onDismissError }: WizardStepPanelProps) {
   const t = useTranslations('StudentWizard');
-  const stepKey = WIZARD_STEP_KEYS[step];
 
   return (
     <div className="flex flex-col gap-5.5">
@@ -33,18 +35,18 @@ export function WizardStepPanel({ step, error, onDismissError }: WizardStepPanel
         <p className="text-body-sm text-body">
           {t('stepCaption', {
             current: step + 1,
-            total: WIZARD_STEP_COUNT,
+            total: stepCount,
             title: t(`steps.${stepKey}.description`),
           })}
         </p>
       </header>
-      {step === 0 ? (
+      {stepKey === 'personal' ? (
         <StepPersonal />
-      ) : step === 1 ? (
+      ) : stepKey === 'education' ? (
         <StepEducation />
-      ) : step === 2 ? (
+      ) : stepKey === 'guardian' ? (
         <StepGuardian />
-      ) : step === 3 ? (
+      ) : stepKey === 'media' ? (
         <StepMedia />
       ) : (
         <StepReview error={error} onDismissError={onDismissError} />

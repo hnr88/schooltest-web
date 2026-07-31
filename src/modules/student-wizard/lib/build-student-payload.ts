@@ -1,5 +1,9 @@
+import { parentViewsEnabled } from '@/modules/flags';
 import type { StudentWizardOutput } from '@/modules/student-wizard/schemas/student-wizard.schema';
-import type { StudentCreatePayload } from '@/modules/student-wizard/types/student-wizard.types';
+import type {
+  StudentCreatePayload,
+  StudentCreatePayloadMasked,
+} from '@/modules/student-wizard/types/student-wizard.types';
 
 // Trim, then keep only non-empty text (empty optionals are OMITTED, never `''`).
 function text(value: string | undefined): string | undefined {
@@ -14,8 +18,14 @@ function text(value: string | undefined): string | undefined {
 // `year_level`/`parent_guardian_wechat` is required by the schema, so only those
 // two are omitted-when-empty; `photo`/`voice_intro` are the numeric upload id
 // (the payload type keeps `| null` for the edit path's clear-media semantics).
-export function buildStudentPayload(values: StudentWizardOutput): StudentCreatePayload {
-  const payload: StudentCreatePayload = {
+//
+// Task 47 (st-mvp-pivot): with guardian/media steps masked the payload omits
+// every guardian/media key entirely — C-CHD-02 400s on unknown fields, so an
+// empty-string guardian key would break child creation, not just look untidy.
+export function buildStudentPayload(
+  values: StudentWizardOutput,
+): StudentCreatePayload | StudentCreatePayloadMasked {
+  const base = {
     given_name: values.given_name.trim(),
     family_name: values.family_name.trim(),
     email: values.email.trim(),
@@ -27,6 +37,16 @@ export function buildStudentPayload(values: StudentWizardOutput): StudentCreateP
     current_year_level: values.current_year_level,
     target_entry_year: values.target_entry_year.trim(),
     target_entry_term: values.target_entry_term,
+  };
+
+  if (!parentViewsEnabled()) {
+    const payload: StudentCreatePayloadMasked = { ...base };
+    if (typeof values.year_level === 'number') payload.year_level = values.year_level;
+    return payload;
+  }
+
+  const payload: StudentCreatePayload = {
+    ...base,
     parent_guardian_name: values.parent_guardian_name.trim(),
     parent_guardian_phone: values.parent_guardian_phone.trim(),
     parent_guardian_email: values.parent_guardian_email.trim(),

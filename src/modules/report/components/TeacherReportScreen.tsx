@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Button } from '@/modules/design-system';
+import { parentViewsEnabled } from '@/modules/flags';
 import { QueryErrorFallback } from '@/modules/query-errors';
 import { ParentReportView } from '@/modules/report/components/ParentReportView';
 import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
@@ -28,6 +29,10 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
   const t = useTranslations('Report');
   const [view, setView] = useState<ReportViewMode>('teacher');
   const { data, error, isError, isFetching, isLoading, refetch } = useResultQuery(resultDocumentId);
+  // Task 46 (st-mvp-pivot): the parent audience toggle is masked, not deleted,
+  // while PARENT_VIEWS_ENABLED is off — the report stays in teacher mode and
+  // the toggle leaves the DOM until the flag flips on.
+  const parentViews = parentViewsEnabled();
 
   if (isLoading) return <ReportSkeleton />;
 
@@ -79,11 +84,11 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
       data-view={view}
       className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
     >
-      <RecordCrumb label={view === 'parent' ? parentCrumb : teacherCrumb} />
+      <RecordCrumb label={parentViews && view === 'parent' ? parentCrumb : teacherCrumb} />
 
-      <ViewToggle value={view} onChange={setView} />
+      {parentViews && <ViewToggle value={view} onChange={setView} />}
 
-      {view === 'parent' ? (
+      {parentViews && view === 'parent' ? (
         <ParentReportView view={parent} />
       ) : (
         <TeacherReportBody result={data} attributes={attributes} evidence={evidence} />

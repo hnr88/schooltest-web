@@ -5,7 +5,6 @@ import { useEffect, useRef } from 'react';
 import { FormProvider } from 'react-hook-form';
 
 import { useRouter } from '@/i18n/navigation';
-import { WIZARD_STEP_KEYS } from '@/modules/student-wizard/constants/student-wizard.constants';
 import { WizardNav } from '@/modules/student-wizard/components/WizardNav';
 import { WizardPageHeader } from '@/modules/student-wizard/components/WizardPageHeader';
 import { WizardStepPanel } from '@/modules/student-wizard/components/WizardStepPanel';
@@ -15,7 +14,7 @@ import { useStepScroll } from '@/modules/student-wizard/hooks/use-step-scroll';
 import { useStudentWizard } from '@/modules/student-wizard/hooks/use-student-wizard';
 import { useWizardSubmit } from '@/modules/student-wizard/hooks/use-wizard-submit';
 import { firstInvalidStep } from '@/modules/student-wizard/lib/first-invalid-step';
-import { STEP_FIELDS } from '@/modules/student-wizard/schemas/student-wizard.schema';
+import { activeStepFields } from '@/modules/student-wizard/schemas/student-wizard.schema';
 import { useWizardMediaStore } from '@/modules/student-wizard/stores/use-wizard-media-store';
 import type { WizardScreenProps } from '@/modules/student-wizard/types/student-wizard.types';
 
@@ -29,7 +28,7 @@ import type { WizardScreenProps } from '@/modules/student-wizard/types/student-w
 export function WizardScreen({ initialValues, mode = 'create', onSubmit }: WizardScreenProps) {
   const t = useTranslations('StudentWizard');
   const router = useRouter();
-  const { form, step, back, next, goToStep, maxReached, isFirstStep, isLastStep } =
+  const { form, step, stepKeys, stepCount, back, next, goToStep, maxReached, isFirstStep, isLastStep } =
     useStudentWizard({
       mode,
       initialValues,
@@ -43,7 +42,9 @@ export function WizardScreen({ initialValues, mode = 'create', onSubmit }: Wizar
   useEffect(() => resetMedia(), [resetMedia]);
   useStepScroll(screenRef, step);
 
-  const railSteps = WIZARD_STEP_KEYS.map((key) => ({
+  // Task 47: the rail renders the ACTIVE steps only — guardian/media never
+  // appear while the parent views flag is off.
+  const railSteps = stepKeys.map((key) => ({
     key,
     title: t(`steps.${key}.label`),
     hint: t(`steps.${key}.railHint`),
@@ -65,7 +66,7 @@ export function WizardScreen({ initialValues, mode = 'create', onSubmit }: Wizar
       void handleSubmit();
       return;
     }
-    const isStepValid = await form.trigger([...STEP_FIELDS[step]], { shouldFocus: true });
+    const isStepValid = await form.trigger([...activeStepFields()[step]], { shouldFocus: true });
     if (isStepValid) {
       next();
     }
@@ -110,9 +111,16 @@ export function WizardScreen({ initialValues, mode = 'create', onSubmit }: Wizar
               />
             ) : (
               <>
-                <WizardStepPanel step={step} error={error} onDismissError={dismissError} />
+                <WizardStepPanel
+                  step={step}
+                  stepKey={stepKeys[step]}
+                  stepCount={stepCount}
+                  error={error}
+                  onDismissError={dismissError}
+                />
                 <WizardNav
                   step={step}
+                  stepCount={stepCount}
                   isLastStep={isLastStep}
                   mode={mode}
                   pending={form.formState.isSubmitting}

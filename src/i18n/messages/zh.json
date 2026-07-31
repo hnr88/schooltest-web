@@ -184,6 +184,10 @@
     "createTitle": "Create article"
   },
   "Auth": {
+    "parentViewsUnavailable": {
+      "title": "本次发布暂未开放",
+      "body": "SchoolTest 本次发布暂未提供家长门户。您的账户保持不变，家长门户将在后续更新中恢复。"
+    },
     "meta": {
       "title": "登录 — SchoolTest",
       "description": "登录您的 SchoolTest 家长账户，管理您的学生。"

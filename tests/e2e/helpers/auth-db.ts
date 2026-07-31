@@ -2,16 +2,25 @@
  * Postgres probe helpers (task 020) — DB-side proof via the real `psql` CLI
  * (execFileSync) against the dev database on 127.0.0.1:5540, mirroring the
  * api-side task-008 helper. Connection values are read at runtime from
- * `schooltest-api/.env` (never hardcoded guesses). Scope discipline: reads
+ * `schooltest-api/.env.dev` (falling back to `.env`; never hardcoded guesses). Scope discipline: reads
  * everywhere; writes ONLY the sanctioned test-hygiene paths on
  * `auth_email_requests` (expiry backdate + throwaway-email cleanup).
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
-const API_ENV_PATH = path.resolve(process.cwd(), '..', 'schooltest-api', '.env');
+// Stacks whose local dev env lives in schooltest-api/.env.dev (st-mvp-pivot
+// STACK.json: `.env` there belongs to the Coolify staging deployment, never to
+// be touched) are honoured first; the original single-`.env` layout is the
+// fallback so older stacks keep working unchanged.
+const API_ENV_CANDIDATES = [
+  path.resolve(process.cwd(), '..', 'schooltest-api', '.env.dev'),
+  path.resolve(process.cwd(), '..', 'schooltest-api', '.env'),
+];
+const API_ENV_PATH =
+  API_ENV_CANDIDATES.find((candidate) => existsSync(candidate)) ?? API_ENV_CANDIDATES[1];
 
 let cachedEnv: Record<string, string> | null = null;
 
@@ -41,27 +50,57 @@ function literal(value: string): string {
 
 /** Run one SQL statement through psql; returns trimmed tuples-only output. */
 export function runSql(sql: string): string {
-  const out = execFileSync(
-    'psql',
-    [
-      '-h',
-      apiEnv('DATABASE_HOST'),
-      '-p',
-      apiEnv('DATABASE_PORT'),
-      '-U',
-      apiEnv('DATABASE_USERNAME'),
-      '-d',
-      apiEnv('DATABASE_NAME'),
-      '-v',
-      'ON_ERROR_STOP=1',
-      '-t',
-      '-A',
-      '-c',
-      sql,
-    ],
-    { env: { ...process.env, PGPASSWORD: apiEnv('DATABASE_PASSWORD') }, encoding: 'utf8' },
-  );
-  return out.trim();
+  const args = [
+    '-h',
+    apiEnv('DATABASE_HOST'),
+    '-p',
+    apiEnv('DATABASE_PORT'),
+    '-U',
+    apiEnv('DATABASE_USERNAME'),
+    '-d',
+    apiEnv('DATABASE_NAME'),
+    '-v',
+    'ON_ERROR_STOP=1',
+    '-t',
+    '-A',
+    '-c',
+    sql,
+  ];
+  const env = { ...process.env, PGPASSWORD: apiEnv('DATABASE_PASSWORD') };
+  try {
+    return execFileSync('psql', args, { env, encoding: 'utf8' }).trim();
+  } catch (error) {
+    // Hosts without a psql client (st-mvp-pivot sandbox) reach the same dev
+    // database through the compose postgres container's own psql instead.
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    const container = apiEnv('DATABASE_PORT') === '5540' ? 'schooltest-api-st1-postgres' : '';
+    if (!container) throw error;
+    return execFileSync(
+      'docker',
+      [
+        'exec',
+        '-e',
+        `PGPASSWORD=${apiEnv('DATABASE_PASSWORD')}`,
+        container,
+        'psql',
+        '-h',
+        '127.0.0.1',
+        '-p',
+        '5432',
+        '-U',
+        apiEnv('DATABASE_USERNAME'),
+        '-d',
+        apiEnv('DATABASE_NAME'),
+        '-v',
+        'ON_ERROR_STOP=1',
+        '-t',
+        '-A',
+        '-c',
+        sql,
+      ],
+      { encoding: 'utf8' },
+    ).trim();
+  }
 }
 
 /**

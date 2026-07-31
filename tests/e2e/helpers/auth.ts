@@ -3,10 +3,13 @@ import type { Page } from '@playwright/test';
 import { cat, loadMessages } from './i18n';
 
 // D9: seeded parent test user (code-only, never created via the UI in this helper —
-// this drives the REAL /sign-in form against it).
+// this drives the REAL /sign-in form against it). Credentials default to the
+// original sandbox seed; stacks whose bootstrap seeds a different password
+// (st-mvp-pivot D-04: SEED_PARENT_PASSWORD in schooltest-api/.env.dev) override
+// via E2E_PARENT_EMAIL / E2E_PARENT_PASSWORD without touching this file.
 export const SEEDED_PARENT = {
-  email: 'parent@schooltest.local',
-  password: 'Parent1234!',
+  email: process.env.E2E_PARENT_EMAIL ?? 'parent@schooltest.local',
+  password: process.env.E2E_PARENT_PASSWORD ?? 'Parent1234!',
 } as const;
 
 // The API's brute-force guard allows 20 POST /api/auth/local per minute per IP

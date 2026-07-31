@@ -184,6 +184,10 @@
     "createTitle": "Create article"
   },
   "Auth": {
+    "parentViewsUnavailable": {
+      "title": "Not part of this release",
+      "body": "The parent portal is not available in this release of SchoolTest. Your account is unchanged, and the portal will be back in a future update."
+    },
     "meta": {
       "title": "Sign in — SchoolTest",
       "description": "Sign in to your SchoolTest parent account to manage your students."

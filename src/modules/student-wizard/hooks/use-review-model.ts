@@ -3,6 +3,7 @@
 import { useFormatter, useTranslations } from 'next-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
 
+import { activeWizardStepKeys } from '@/modules/student-wizard/constants/student-wizard.constants';
 import { useWizardMediaStore } from '@/modules/student-wizard/stores/use-wizard-media-store';
 import type {
   ReviewModel,
@@ -19,11 +20,14 @@ function join(segments: (string | null)[], separator = ' · '): string | null {
   return kept.length > 0 ? kept.join(separator) : null;
 }
 
-// Step-5 summary table (spec 03 §2.8): four rows — Personal, Education, Guardian,
-// Media — each a ` · `-joined sentence built from the live RHF values, with every
-// enum resolved to its localized label. Nothing is composed that was not entered:
-// a missing segment is dropped from the join, and a row with no segments at all
-// returns null so the table prints the em-dash rather than inventing a fact.
+// Step-5 summary table (spec 03 §2.8): up to four rows — Personal, Education,
+// Guardian, Media — each a ` · `-joined sentence built from the live RHF values,
+// with every enum resolved to its localized label. Nothing is composed that was
+// not entered: a missing segment is dropped from the join, and a row with no
+// segments at all returns null so the table prints the em-dash rather than
+// inventing a fact. Task 47: rows for masked steps (guardian/media while the
+// parent views flag is off) are omitted entirely — the review shows only what
+// the active steps collect.
 export function useReviewModel(): ReviewModel {
   const t = useTranslations('StudentWizard');
   const format = useFormatter();
@@ -31,6 +35,7 @@ export function useReviewModel(): ReviewModel {
   const values = useWatch({ control }) as StudentWizardValues;
   const photo = useWizardMediaStore((state) => state.media.photo);
   const voice = useWizardMediaStore((state) => state.media.voice_intro);
+  const activeKeys = activeWizardStepKeys();
 
   const born = values.date_of_birth
     ? t('review.born', {
@@ -69,17 +74,29 @@ export function useReviewModel(): ReviewModel {
         label: t('steps.education.label'),
         value: join([text(values.current_school), currentYearLevel, band, entry]),
       },
-      {
-        label: t('steps.guardian.label'),
-        value: join([text(values.parent_guardian_name), text(values.parent_guardian_phone), channel]),
-      },
-      {
-        label: t('steps.media.label'),
-        value: join([
-          photo ? t('review.photoAdded') : t('review.noPhoto'),
-          voice ? t('review.voiceAdded') : t('review.noVoice'),
-        ]),
-      },
+      ...(activeKeys.includes('guardian')
+        ? [
+            {
+              label: t('steps.guardian.label'),
+              value: join([
+                text(values.parent_guardian_name),
+                text(values.parent_guardian_phone),
+                channel,
+              ]),
+            },
+          ]
+        : []),
+      ...(activeKeys.includes('media')
+        ? [
+            {
+              label: t('steps.media.label'),
+              value: join([
+                photo ? t('review.photoAdded') : t('review.noPhoto'),
+                voice ? t('review.voiceAdded') : t('review.noVoice'),
+              ]),
+            },
+          ]
+        : []),
     ],
   };
 }
