@@ -2252,7 +2252,8 @@
       "classesEmpty": "You are not assigned to a class yet. Your school administrator can add you to one.",
       "rosterLink": "Roster",
       "testDayLink": "Test day",
-      "runSheetLink": "Test-day run sheet"
+      "runSheetLink": "Test-day run sheet",
+      "resultsLink": "Results"
     },
     "roster": {
       "meta": {
@@ -2274,6 +2275,65 @@
       "emailMissing": "Email needed before test day",
       "emailMissingHint": "Students without an email cannot sign in on test day. Ask your school administrator to add the missing emails.",
       "testDayLink": "Go to test day"
+    },
+    "diagnostic": {
+      "meta": {
+        "title": "Class diagnostic - SchoolTest",
+        "description": "Reading profiles for your class, with the item evidence underneath."
+      },
+      "backLink": "Back to your classes",
+      "title": "Class diagnostic",
+      "subtitle": "What your class can do in reading, with the test evidence underneath.",
+      "loading": "Loading the class diagnostic...",
+      "loadError": "The class diagnostic could not be loaded. Try again.",
+      "summary": "{sat} of {roster} students have completed the test",
+      "formLabel": "Form {code}",
+      "masteryTitle": "Class reading profile",
+      "masteryDescription": "Each reading area is marked mastered, emerging, not mastered, or not yet assessed. Select a student to see their profile.",
+      "emptyMasteryTitle": "Diagnostic data coming",
+      "emptyMasteryBody": "Once your students complete Test A, each student's reading profile appears here.",
+      "heatmapTitle": "Item evidence (whole class)",
+      "heatmapDescription": "What happened on the test, by item code and section. Shown as items correct out of responses - the evidence behind the reading profile, not another grade.",
+      "emptyHeatmapTitle": "Item evidence coming",
+      "emptyHeatmapBody": "Once your students complete Test A, item-by-item results appear here.",
+      "sectionHeading": "Section {section}",
+      "heatmapLegend": "Colour guide: green {secure}% or above, orange {floor}% to {secure}%, red below {floor}% (near guessing).",
+      "drilldownTitle": "{student} - reading profile",
+      "drilldownClose": "Close student profile",
+      "notAssessedNote": "Not yet assessed means no items in that area were administered. It is an absence, never a zero.",
+      "areas": {
+        "R1": "Decoding",
+        "R2": "Vocabulary",
+        "R3": "Grammar",
+        "R4": "Gist",
+        "R5": "Detail",
+        "R6": "Inference",
+        "R7": "Critical reading"
+      },
+      "status": {
+        "mastered": "Mastered",
+        "emerging": "Emerging",
+        "not_mastered": "Not mastered",
+        "not_assessed": "Not yet assessed"
+      }
+    },
+    "progress": {
+      "title": "Progress - Test B against Test A",
+      "description": "How each student's reading moved between Test A, the benchmark, and Test B.",
+      "loading": "Loading progress...",
+      "loadError": "Progress could not be loaded. Try again.",
+      "formsLine": "Benchmark {benchmark} · Progress {progress}",
+      "emptyTitle": "Progress data coming once Test B has been completed",
+      "emptyBody": "Test A is the benchmark. Once your students complete Test B, movement in each reading area appears here.",
+      "weeksBetween": "{weeks} weeks between the two tests",
+      "transition": "{area}: {from} to {to}",
+      "transitionSteady": "{area}: steady at {status}",
+      "statusWord": {
+        "mastered": "mastered",
+        "emerging": "emerging",
+        "not_mastered": "not mastered"
+      },
+      "notAssessedLine": "Not assessed on one or both tests: {areas}"
     }
   },
   "TestDay": {

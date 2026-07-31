@@ -1946,7 +1946,8 @@
       "classesEmpty": "Anda belum ditugaskan ke mana-mana kelas. Pentadbir sekolah anda boleh menambah anda ke kelas.",
       "rosterLink": "Senarai nama",
       "testDayLink": "Hari ujian",
-      "runSheetLink": "Lembaran panduan hari ujian"
+      "runSheetLink": "Lembaran panduan hari ujian",
+      "resultsLink": "Keputusan"
     },
     "roster": {
       "meta": {
@@ -1968,6 +1969,65 @@
       "emailMissing": "E-mel diperlukan sebelum hari ujian",
       "emailMissingHint": "Murid tanpa e-mel tidak dapat log masuk pada hari ujian. Minta pentadbir sekolah anda menambah e-mel yang tiada.",
       "testDayLink": "Pergi ke hari ujian"
+    },
+    "diagnostic": {
+      "meta": {
+        "title": "Diagnostik kelas - SchoolTest",
+        "description": "Profil membaca kelas anda, dengan bukti item di bawahnya."
+      },
+      "backLink": "Kembali ke kelas anda",
+      "title": "Diagnostik kelas",
+      "subtitle": "Apa yang kelas anda mampu dalam membaca, dengan bukti ujian di bawahnya.",
+      "loading": "Memuatkan diagnostik kelas...",
+      "loadError": "Diagnostik kelas tidak dapat dimuatkan. Cuba lagi.",
+      "summary": "{sat} daripada {roster} murid telah melengkapkan ujian",
+      "formLabel": "Borang {code}",
+      "masteryTitle": "Profil membaca kelas",
+      "masteryDescription": "Setiap bidang membaca ditandai sebagai dikuasai, sedang berkembang, belum dikuasai, atau belum dinilai. Pilih seorang murid untuk melihat profilnya.",
+      "emptyMasteryTitle": "Data diagnostik akan datang",
+      "emptyMasteryBody": "Sebaik sahaja murid anda melengkapkan Ujian A, profil membaca setiap murid akan muncul di sini.",
+      "heatmapTitle": "Bukti item (seluruh kelas)",
+      "heatmapDescription": "Apa yang berlaku semasa ujian, mengikut kod item dan bahagian. Ditunjukkan sebagai item betul daripada respons - bukti di sebalik profil membaca, bukan gred lain.",
+      "emptyHeatmapTitle": "Bukti item akan datang",
+      "emptyHeatmapBody": "Sebaik sahaja murid anda melengkapkan Ujian A, keputusan item demi item akan muncul di sini.",
+      "sectionHeading": "Bahagian {section}",
+      "heatmapLegend": "Panduan warna: hijau {secure}% ke atas, jingga {floor}% hingga {secure}%, merah bawah {floor}% (hampir meneka).",
+      "drilldownTitle": "{student} - profil membaca",
+      "drilldownClose": "Tutup profil murid",
+      "notAssessedNote": "Belum dinilai bermaksud tiada item dalam bidang itu diberikan. Ia adalah ketiadaan, bukan sekali-kali sifar.",
+      "areas": {
+        "R1": "Pengekodan",
+        "R2": "Perbendaharaan kata",
+        "R3": "Tatabahasa",
+        "R4": "Intipati",
+        "R5": "Perincian",
+        "R6": "Inferens",
+        "R7": "Membaca kritis"
+      },
+      "status": {
+        "mastered": "Dikuasai",
+        "emerging": "Sedang berkembang",
+        "not_mastered": "Belum dikuasai",
+        "not_assessed": "Belum dinilai"
+      }
+    },
+    "progress": {
+      "title": "Kemajuan - Test B berbanding Test A",
+      "description": "Perubahan bacaan setiap murid antara Test A, penanda aras, dan Test B.",
+      "loading": "Memuatkan kemajuan...",
+      "loadError": "Kemajuan tidak dapat dimuatkan. Cuba lagi.",
+      "formsLine": "Penanda aras {benchmark} · Kemajuan {progress}",
+      "emptyTitle": "Data kemajuan akan muncul setelah Test B selesai",
+      "emptyBody": "Test A ialah penanda aras. Setelah murid anda menyelesaikan Test B, perubahan setiap bidang bacaan akan muncul di sini.",
+      "weeksBetween": "{weeks} minggu antara kedua-dua ujian",
+      "transition": "{area}: {from} kepada {to}",
+      "transitionSteady": "{area}: kekal pada {status}",
+      "statusWord": {
+        "mastered": "dikuasai",
+        "emerging": "sedang berkembang",
+        "not_mastered": "belum dikuasai"
+      },
+      "notAssessedLine": "Tidak dinilai pada salah satu atau kedua-dua ujian: {areas}"
     }
   },
   "TestDay": {

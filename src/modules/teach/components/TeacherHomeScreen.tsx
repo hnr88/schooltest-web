@@ -43,6 +43,12 @@ export function TeacherHomeScreen() {
                 <span className="text-sm font-medium text-foreground">{row.name}</span>
                 <span className="flex items-center gap-2">
                   <Link
+                    href={`/dashboard/teach/results/${row.documentId}`}
+                    className="inline-flex min-h-11 items-center rounded-lg border border-border bg-card px-4 text-sm font-semibold text-foreground transition-colors duration-150 hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  >
+                    {t('home.resultsLink')}
+                  </Link>
+                  <Link
                     href={`/dashboard/teach/classes/${row.documentId}/test-day`}
                     className="inline-flex min-h-11 items-center rounded-lg border border-border bg-card px-4 text-sm font-semibold text-foreground transition-colors duration-150 hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >

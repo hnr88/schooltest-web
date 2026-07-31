@@ -1946,7 +1946,8 @@
       "classesEmpty": "您还没有被分配到班级。学校管理员可以将您加入班级。",
       "rosterLink": "名册",
       "testDayLink": "测试日",
-      "runSheetLink": "测验日流程单"
+      "runSheetLink": "测验日流程单",
+      "resultsLink": "结果"
     },
     "roster": {
       "meta": {
@@ -1968,6 +1969,65 @@
       "emailMissing": "测试日前需要添加邮箱",
       "emailMissingHint": "没有邮箱的学生将无法在测试日登录。请联系学校管理员添加缺失的邮箱。",
       "testDayLink": "前往测试日"
+    },
+    "diagnostic": {
+      "meta": {
+        "title": "班级诊断 - SchoolTest",
+        "description": "班级的阅读概况，以及背后的题目证据。"
+      },
+      "backLink": "返回你的班级",
+      "title": "班级诊断",
+      "subtitle": "班级在每个阅读领域的表现，以及背后的测试证据。",
+      "loading": "正在加载班级诊断...",
+      "loadError": "无法加载班级诊断，请重试。",
+      "summary": "{roster} 名学生中已有 {sat} 名完成测试",
+      "formLabel": "试卷 {code}",
+      "masteryTitle": "班级阅读概况",
+      "masteryDescription": "每个阅读领域标记为已掌握、发展中、未掌握或尚未评估。选择一名学生即可查看其个人概况。",
+      "emptyMasteryTitle": "诊断数据即将提供",
+      "emptyMasteryBody": "学生完成测试 A 后，每名学生的阅读概况将显示在这里。",
+      "heatmapTitle": "题目证据（全班）",
+      "heatmapDescription": "按题目代码和部分展示测试答题情况，以答对题数/作答数表示 - 这是阅读概况背后的证据，而不是另一个成绩。",
+      "emptyHeatmapTitle": "题目证据即将提供",
+      "emptyHeatmapBody": "学生完成测试 A 后，逐题结果将显示在这里。",
+      "sectionHeading": "第 {section} 部分",
+      "heatmapLegend": "颜色说明：绿色 {secure}% 及以上，橙色 {floor}% 至 {secure}%，红色低于 {floor}%（接近猜测）。",
+      "drilldownTitle": "{student} - 阅读概况",
+      "drilldownClose": "关闭学生概况",
+      "notAssessedNote": "尚未评估表示该领域没有安排任何题目。这代表缺失，绝不是零分。",
+      "areas": {
+        "R1": "解码",
+        "R2": "词汇",
+        "R3": "语法",
+        "R4": "主旨",
+        "R5": "细节",
+        "R6": "推理",
+        "R7": "批判性阅读"
+      },
+      "status": {
+        "mastered": "已掌握",
+        "emerging": "发展中",
+        "not_mastered": "未掌握",
+        "not_assessed": "尚未评估"
+      }
+    },
+    "progress": {
+      "title": "进度 - Test B 对照 Test A",
+      "description": "每个学生从 Test A(基准)到 Test B 之间各项阅读技能的变化。",
+      "loading": "正在加载进度...",
+      "loadError": "无法加载进度,请重试。",
+      "formsLine": "基准 {benchmark} · 进度 {progress}",
+      "emptyTitle": "完成 Test B 后,这里将显示进度数据",
+      "emptyBody": "Test A 是基准。学生完成 Test B 后,各项阅读技能的变化将显示在这里。",
+      "weeksBetween": "两次测试相隔 {weeks} 周",
+      "transition": "{area}:{from}到{to}",
+      "transitionSteady": "{area}:保持{status}",
+      "statusWord": {
+        "mastered": "已掌握",
+        "emerging": "发展中",
+        "not_mastered": "未掌握"
+      },
+      "notAssessedLine": "在一次或两次测试中未评估:{areas}"
     }
   },
   "TestDay": {

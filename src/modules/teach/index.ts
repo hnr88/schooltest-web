@@ -1,5 +1,11 @@
 export { TeacherHomeScreen } from './components/TeacherHomeScreen';
 export { RosterScreen } from './components/RosterScreen';
 export { RosterTable } from './components/RosterTable';
+export { DiagnosticDashboard } from './components/DiagnosticDashboard';
+export { ProgressPanel } from './components/ProgressPanel';
 export { useClassRosterQuery } from './queries/use-class-roster.query';
+export { useClassDiagnosticQuery } from './queries/use-class-diagnostic.query';
+export { useClassProgressQuery } from './queries/use-class-progress.query';
 export type { RosterChild } from './types/roster.types';
+export type { ClassDiagnostic, DiagnosticMasteryRow } from './types/diagnostic.types';
+export type { ClassProgress, ProgressStudent, ProgressTransition } from './types/progress.types';
