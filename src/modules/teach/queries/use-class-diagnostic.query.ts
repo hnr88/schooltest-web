@@ -19,9 +19,16 @@ async function fetchClassDiagnostic(classDocumentId: string): Promise<ClassDiagn
   return classDiagnosticSchema.parse(res.data.data);
 }
 
-export function useClassDiagnosticQuery(classDocumentId: string) {
-  return useQuery({
+// Shared options factory (task 78): the school-admin analytics aggregate runs
+// the same per-class diagnostic reads through useQueries - identical queryKey
+// and queryFn, so the two surfaces share the TanStack cache.
+export function classDiagnosticQueryOptions(classDocumentId: string) {
+  return {
     queryKey: [...CLASS_DIAGNOSTIC_QUERY_KEY, classDocumentId],
     queryFn: () => fetchClassDiagnostic(classDocumentId),
-  });
+  } as const;
+}
+
+export function useClassDiagnosticQuery(classDocumentId: string) {
+  return useQuery(classDiagnosticQueryOptions(classDocumentId));
 }

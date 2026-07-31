@@ -739,7 +739,9 @@
       "children": "Học sinh",
       "teachers": "Giáo viên",
       "teach": "Giảng dạy",
-      "ops": "Vận hành"
+      "ops": "Vận hành",
+      "participation": "Tham gia",
+      "analytics": "Phân tích"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1683,6 +1685,7 @@
     },
     "errorPatternsEyebrow": "Ghi chú mẫu lỗi",
     "errorPatternsOutOfModel": "Mức phản hồi",
+    "effortInvalidNote": "Các câu trả lời trong lượt làm bài này có dấu hiệu vội vàng, vì vậy kết quả có thể đánh giá thấp năng lực của học sinh. Hãy đọc cùng với bằng chứng trên lớp.",
     "errorPatternsDescription": "Các loại phương án gây nhiễu mà học sinh này chọn lặp lại, tổng hợp từ các phản hồi trong lượt làm bài này. Chúng mô tả cách lựa chọn sai được đưa ra, không phải đạt bao nhiêu điểm.",
     "errorPatternsSource": "Do bản xuất chẩn đoán soạn ra từ các phản hồi được ghi trong lượt làm bài này. Một cụm chỉ xuất hiện khi cùng một loại phương án gây nhiễu được chọn ở ít nhất hai câu của một thuộc tính. Không nội dung nào ở đây đi vào mô hình thành thạo hay bất kỳ điểm số nào.",
     "errorPatternsNoneObserved": "Không quan sát thấy mẫu lỗi lặp lại",
@@ -1930,6 +1933,60 @@
         "emptyTitle": "Chưa có giáo viên nào",
         "emptyDescription": "Giáo viên tham gia trường của bạn sẽ xuất hiện ở đây."
       }
+    },
+    "participation": {
+      "meta": {
+        "title": "Tham gia - SchoolTest",
+        "description": "Các lớp đã hoàn thành Test A và Test B - trạng thái hoàn thành, không phải kết quả."
+      },
+      "title": "Tham gia",
+      "subtitle": "Ai đã hoàn thành Test A và Test B, theo từng lớp. Chỉ hiển thị trạng thái hoàn thành - kết quả nằm trong mục Phân tích.",
+      "errorTitle": "Không thể tải dữ liệu tham gia",
+      "errorDescription": "Kiểm tra kết nối của bạn và thử lại.",
+      "retry": "Thử lại",
+      "emptyTitle": "Chưa có lớp học nào",
+      "emptyDescription": "Khi trường có lớp học, trạng thái hoàn thành Test A và Test B sẽ xuất hiện tại đây.",
+      "columns": {
+        "class": "Lớp học",
+        "teacher": "Giáo viên",
+        "roster": "Học sinh",
+        "testA": "Test A",
+        "testB": "Test B"
+      },
+      "buckets": {
+        "submitted": "Đã nộp",
+        "inProgress": "Đang làm",
+        "notStarted": "Chưa bắt đầu"
+      },
+      "unnamedClass": "Lớp chưa đặt tên",
+      "noTeacher": "Chưa phân công giáo viên"
+    },
+    "analytics": {
+      "meta": {
+        "title": "Phân tích trường học - SchoolTest",
+        "description": "Kết quả đọc của toàn trường: tổng quan trường, xem chi tiết theo lớp và hồ sơ học sinh."
+      },
+      "title": "Phân tích",
+      "subtitle": "Kết quả đọc của toàn trường. Chọn một lớp để xem chi tiết, sau đó chọn một học sinh.",
+      "errorTitle": "Không thể tải dữ liệu phân tích",
+      "errorDescription": "Kiểm tra kết nối của bạn và thử lại.",
+      "retry": "Thử lại",
+      "emptyTitle": "Chưa có lớp học nào",
+      "emptyDescription": "Khi trường có lớp học, kết quả đọc sẽ xuất hiện tại đây.",
+      "aggregateTitle": "Tổng quan trường",
+      "aggregateDescription": "Tất cả các lớp kết hợp: số học sinh đã hoàn thành bài kiểm tra và vị thế của trường trong từng lĩnh vực đọc.",
+      "aggregateSummary": "{sat} trong {roster} học sinh đã hoàn thành bài kiểm tra",
+      "columns": {
+        "area": "Lĩnh vực đọc"
+      },
+      "classesTitle": "Lớp học",
+      "classStudentsLine": "{count} học sinh",
+      "loadError": "Không thể tải tổng quan trường. Thử lại.",
+      "export": {
+        "cta": "Xuất kết quả của trường (CSV)",
+        "downloading": "Đang chuẩn bị xuất...",
+        "error": "Không thể tải xuống bản xuất. Thử lại."
+      }
     }
   },
   "Teach": {
@@ -2009,6 +2066,11 @@
         "emerging": "Đang phát triển",
         "not_mastered": "Chưa thành thạo",
         "not_assessed": "Chưa đánh giá"
+      },
+      "export": {
+        "cta": "Xuất cho trợ lý AI của bạn",
+        "downloading": "Đang chuẩn bị bản xuất...",
+        "error": "Không thể tải xuống bản xuất. Hãy thử lại."
       }
     },
     "progress": {

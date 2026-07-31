@@ -739,7 +739,9 @@
       "children": "Children",
       "teachers": "Teachers",
       "teach": "Teaching",
-      "ops": "Ops"
+      "ops": "Ops",
+      "participation": "Participation",
+      "analytics": "Analytics"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1683,6 +1685,7 @@
     },
     "errorPatternsEyebrow": "Error pattern notes",
     "errorPatternsOutOfModel": "Response-level",
+    "effortInvalidNote": "Responses in this sitting show signs of rushing, so this result may understate what the student can do. Read it alongside classroom evidence.",
     "errorPatternsDescription": "Distractor types this student chose repeatedly, aggregated from the responses in this sitting. They describe how the wrong options were chosen, not how much was scored.",
     "errorPatternsSource": "Composed by the diagnostic export from the responses recorded in this sitting. A phrase appears only where the same distractor type was chosen on at least two items of an attribute. Nothing here enters the mastery model or any score.",
     "errorPatternsNoneObserved": "No repeated error pattern was observed",
@@ -2236,6 +2239,60 @@
         "emptyTitle": "No teachers yet",
         "emptyDescription": "Teachers who join your school will appear here."
       }
+    },
+    "participation": {
+      "meta": {
+        "title": "Participation - SchoolTest",
+        "description": "Which classes have completed Test A and Test B - completion status, not results."
+      },
+      "title": "Participation",
+      "subtitle": "Who has completed Test A and Test B, class by class. Completion status only - results live under Analytics.",
+      "errorTitle": "We could not load participation",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "emptyTitle": "No classes yet",
+      "emptyDescription": "Once your school has classes, their Test A and Test B completion appears here.",
+      "columns": {
+        "class": "Class",
+        "teacher": "Teacher",
+        "roster": "Students",
+        "testA": "Test A",
+        "testB": "Test B"
+      },
+      "buckets": {
+        "submitted": "Submitted",
+        "inProgress": "In progress",
+        "notStarted": "Not started"
+      },
+      "unnamedClass": "Unnamed class",
+      "noTeacher": "No teacher assigned"
+    },
+    "analytics": {
+      "meta": {
+        "title": "School analytics - SchoolTest",
+        "description": "Reading results for your whole school: school overview, class drill-down and student profiles."
+      },
+      "title": "Analytics",
+      "subtitle": "Reading results across your school. Pick a class to drill down, then a student.",
+      "errorTitle": "We could not load analytics",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "emptyTitle": "No classes yet",
+      "emptyDescription": "Once your school has classes, their reading results appear here.",
+      "aggregateTitle": "School overview",
+      "aggregateDescription": "All classes combined: how many students have completed the test, and where the school sits in each reading area.",
+      "aggregateSummary": "{sat} of {roster} students have completed the test",
+      "columns": {
+        "area": "Reading area"
+      },
+      "classesTitle": "Classes",
+      "classStudentsLine": "{count, plural, one {# student} other {# students}}",
+      "loadError": "The school overview could not be loaded. Try again.",
+      "export": {
+        "cta": "Export school results (CSV)",
+        "downloading": "Preparing the export...",
+        "error": "The export could not be downloaded. Try again."
+      }
     }
   },
   "Teach": {
@@ -2315,6 +2372,11 @@
         "emerging": "Emerging",
         "not_mastered": "Not mastered",
         "not_assessed": "Not yet assessed"
+      },
+      "export": {
+        "cta": "Export for your AI assistant",
+        "downloading": "Preparing the export...",
+        "error": "The export could not be downloaded. Try again."
       }
     },
     "progress": {

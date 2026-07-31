@@ -1,9 +1,9 @@
 'use client';
 
-import { FlaskConical } from 'lucide-react';
+import { FlaskConical, TriangleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { BorderedCallout } from '@/modules/design-system';
+import { BorderedCallout, InsightCallout } from '@/modules/design-system';
 import { AttributePanel } from '@/modules/report/components/AttributePanel';
 import { CrosswalkFactPanel } from '@/modules/report/components/CrosswalkFactPanel';
 import { DisplayLabelPanel } from '@/modules/report/components/DisplayLabelPanel';
@@ -34,6 +34,17 @@ export function TeacherReportBody({
       {result.provisional === 'field_test' ? (
         <div data-slot="report-provisional">
           <BorderedCallout icon={FlaskConical}>{t('provisionalFieldTest')}</BorderedCallout>
+        </div>
+      ) : null}
+
+      {/* Effort-validity caveat — surfaced, never hidden (Doc 1 s.10). The
+          server sets `effort_valid` at scoring time; false means the response
+          pattern suggests rushing, and only false is a claim worth a caveat. */}
+      {result.effort_valid === false ? (
+        <div data-slot="report-effort-invalid">
+          <InsightCallout icon={TriangleAlert} tone="warning">
+            {t('effortInvalidNote')}
+          </InsightCallout>
         </div>
       ) : null}
 

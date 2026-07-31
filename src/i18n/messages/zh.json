@@ -739,7 +739,9 @@
       "children": "学生",
       "teachers": "教师",
       "teach": "教学",
-      "ops": "运维"
+      "ops": "运维",
+      "participation": "完成情况",
+      "analytics": "分析"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1683,6 +1685,7 @@
     },
     "errorPatternsEyebrow": "错误模式记录",
     "errorPatternsOutOfModel": "作答层面",
+    "effortInvalidNote": "本次测评的作答有仓促迹象，因此该结果可能低估学生的实际水平。请结合课堂表现一并解读。",
     "errorPatternsDescription": "本次测评作答中反复选中的干扰项类型汇总。它们描述的是错误选项如何被选中，而非得分多少。",
     "errorPatternsSource": "由诊断导出根据本次测评记录的作答汇总而成。只有当同一干扰项类型在某属性上至少被选中两次时才会出现。这些内容不进入掌握模型，也不进入任何分数。",
     "errorPatternsNoneObserved": "未观察到反复出现的错误模式",
@@ -1930,6 +1933,60 @@
         "emptyTitle": "还没有教师",
         "emptyDescription": "加入您学校的教师将显示在这里。"
       }
+    },
+    "participation": {
+      "meta": {
+        "title": "完成情况 - SchoolTest",
+        "description": "各班级 Test A 和 Test B 的完成情况 - 仅完成状态,不含成绩。"
+      },
+      "title": "完成情况",
+      "subtitle": "按班级查看 Test A 和 Test B 的完成情况。仅显示完成状态,成绩请前往分析页查看。",
+      "errorTitle": "无法加载完成情况",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试",
+      "emptyTitle": "还没有班级",
+      "emptyDescription": "学校添加班级后,Test A 和 Test B 的完成情况将显示在这里。",
+      "columns": {
+        "class": "班级",
+        "teacher": "教师",
+        "roster": "学生人数",
+        "testA": "Test A",
+        "testB": "Test B"
+      },
+      "buckets": {
+        "submitted": "已提交",
+        "inProgress": "进行中",
+        "notStarted": "未开始"
+      },
+      "unnamedClass": "未命名班级",
+      "noTeacher": "尚未分配教师"
+    },
+    "analytics": {
+      "meta": {
+        "title": "学校分析 - SchoolTest",
+        "description": "全校阅读成绩:学校概览、班级下钻和学生个人档案。"
+      },
+      "title": "分析",
+      "subtitle": "全校阅读成绩概览。选择一个班级下钻,再选择一名学生。",
+      "errorTitle": "无法加载分析数据",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试",
+      "emptyTitle": "还没有班级",
+      "emptyDescription": "学校添加班级后,阅读成绩将显示在这里。",
+      "aggregateTitle": "学校概览",
+      "aggregateDescription": "所有班级汇总:完成测试的学生人数,以及全校在各阅读领域的整体表现。",
+      "aggregateSummary": "{roster} 名学生中已有 {sat} 名完成测试",
+      "columns": {
+        "area": "阅读领域"
+      },
+      "classesTitle": "班级",
+      "classStudentsLine": "{count} 名学生",
+      "loadError": "无法加载学校概览,请重试。",
+      "export": {
+        "cta": "导出全校成绩 (CSV)",
+        "downloading": "正在准备导出...",
+        "error": "导出下载失败,请重试。"
+      }
     }
   },
   "Teach": {
@@ -2009,6 +2066,11 @@
         "emerging": "发展中",
         "not_mastered": "未掌握",
         "not_assessed": "尚未评估"
+      },
+      "export": {
+        "cta": "导出以用于您的 AI 助手",
+        "downloading": "正在准备导出...",
+        "error": "无法下载导出文件，请重试。"
       }
     },
     "progress": {

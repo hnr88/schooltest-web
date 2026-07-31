@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
@@ -12,6 +12,10 @@ import { useClassDiagnosticQuery } from '@/modules/teach/queries/use-class-diagn
 
 interface DiagnosticDashboardProps {
   classId: string;
+  actions?: ReactNode;
+  // Task 78: the school-admin analytics reuses this dashboard verbatim at
+  // school scope; the back link defaults to the teacher home it always had.
+  backHref?: string;
 }
 
 // Teacher diagnostic dashboard (task 75, mvp-updates §4.9): class mastery
@@ -19,8 +23,9 @@ interface DiagnosticDashboardProps {
 // underneath as the evidence, plus a one-click drill-down per student. The
 // heat map data is class-aggregated per C-RPT-01, so it renders once, nested
 // under the class mastery view. ACARA phase is never on the wire and never
-// rendered here (mvp spec 4.4).
-export function DiagnosticDashboard({ classId }: DiagnosticDashboardProps) {
+// rendered here (mvp spec 4.4). The `actions` slot carries the page-level
+// affordances (task 77: the C-RPT-03 markdown export button).
+export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/teach' }: DiagnosticDashboardProps) {
   const t = useTranslations('Teach.diagnostic');
   const query = useClassDiagnosticQuery(classId);
   const [selectedRef, setSelectedRef] = useState<string | null>(null);
@@ -35,23 +40,26 @@ export function DiagnosticDashboard({ classId }: DiagnosticDashboardProps) {
       data-surface="teacher-diagnostic"
       className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-col gap-2">
-        <Link
-          href="/dashboard/teach"
-          className="w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-        >
-          {t('backLink')}
-        </Link>
-        <h1 className="text-2xl font-semibold text-foreground">
-          {data?.class.name ?? t('title')}
-        </h1>
-        <p className="max-w-xl text-sm text-body">{t('subtitle')}</p>
-        {data ? (
-          <p className="text-sm font-medium text-foreground">
-            {t('summary', { sat: data.sat_count, roster: data.roster_count })}
-            {data.form_code ? ` · ${t('formLabel', { code: data.form_code })}` : ''}
-          </p>
-        ) : null}
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex flex-col gap-2">
+          <Link
+            href={backHref}
+            className="w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            {t('backLink')}
+          </Link>
+          <h1 className="text-2xl font-semibold text-foreground">
+            {data?.class.name ?? t('title')}
+          </h1>
+          <p className="max-w-xl text-sm text-body">{t('subtitle')}</p>
+          {data ? (
+            <p className="text-sm font-medium text-foreground">
+              {t('summary', { sat: data.sat_count, roster: data.roster_count })}
+              {data.form_code ? ` · ${t('formLabel', { code: data.form_code })}` : ''}
+            </p>
+          ) : null}
+        </div>
+        {actions ?? null}
       </div>
 
       {query.isPending ? (

@@ -739,7 +739,9 @@
       "children": "학생",
       "teachers": "교사",
       "teach": "교사 홈",
-      "ops": "운영"
+      "ops": "운영",
+      "participation": "응시 현황",
+      "analytics": "분석"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1683,6 +1685,7 @@
     },
     "errorPatternsEyebrow": "오답 패턴 기록",
     "errorPatternsOutOfModel": "응답 수준",
+    "effortInvalidNote": "이번 응시의 응답에서 서둘러 답한 징후가 보이므로, 이 결과는 학생의 실제 실력을 과소평가했을 수 있습니다. 교실에서의 근거와 함께 해석하세요.",
     "errorPatternsDescription": "이번 응시의 응답에서 반복적으로 선택된 오답지 유형을 집계한 것입니다. 얼마나 득점했는지가 아니라 오답이 어떻게 선택되었는지를 설명합니다.",
     "errorPatternsSource": "이번 응시에 기록된 응답으로부터 진단 내보내기가 구성합니다. 동일한 오답지 유형이 한 속성에서 최소 두 문항에 선택된 경우에만 나타납니다. 여기의 내용은 숙달 모형이나 어떤 점수에도 들어가지 않습니다.",
     "errorPatternsNoneObserved": "반복되는 오답 패턴이 관찰되지 않았습니다",
@@ -1930,6 +1933,60 @@
         "emptyTitle": "아직 교사가 없습니다",
         "emptyDescription": "학교에 합류한 교사가 여기에 표시됩니다."
       }
+    },
+    "participation": {
+      "meta": {
+        "title": "응시 현황 - SchoolTest",
+        "description": "학급별 Test A 및 Test B 완료 현황 - 결과가 아닌 완료 상태입니다."
+      },
+      "title": "응시 현황",
+      "subtitle": "학급별로 Test A와 Test B 완료 현황을 확인하세요. 완료 상태만 표시되며 결과는 분석 페이지에 있습니다.",
+      "errorTitle": "응시 현황을 불러올 수 없습니다",
+      "errorDescription": "연결을 확인하고 다시 시도하세요.",
+      "retry": "다시 시도",
+      "emptyTitle": "아직 학급이 없습니다",
+      "emptyDescription": "학교에 학급이 추가되면 Test A와 Test B 완료 현황이 여기에 표시됩니다.",
+      "columns": {
+        "class": "학급",
+        "teacher": "담당 교사",
+        "roster": "학생 수",
+        "testA": "Test A",
+        "testB": "Test B"
+      },
+      "buckets": {
+        "submitted": "제출됨",
+        "inProgress": "진행 중",
+        "notStarted": "시작 전"
+      },
+      "unnamedClass": "이름 없는 학급",
+      "noTeacher": "담당 교사 없음"
+    },
+    "analytics": {
+      "meta": {
+        "title": "학교 분석 - SchoolTest",
+        "description": "학교 전체의 읽기 결과: 학교 개요, 학급별 상세 보기, 학생별 프로필."
+      },
+      "title": "분석",
+      "subtitle": "학교 전체의 읽기 결과입니다. 학급을 선택해 상세히 보고, 이어서 학생을 선택하세요.",
+      "errorTitle": "분석을 불러올 수 없습니다",
+      "errorDescription": "연결을 확인하고 다시 시도하세요.",
+      "retry": "다시 시도",
+      "emptyTitle": "아직 학급이 없습니다",
+      "emptyDescription": "학교에 학급이 추가되면 읽기 결과가 여기에 표시됩니다.",
+      "aggregateTitle": "학교 개요",
+      "aggregateDescription": "모든 학급을 합한 결과입니다: 시험을 완료한 학생 수와 각 읽기 영역에서 학교가 놓인 위치입니다.",
+      "aggregateSummary": "학생 {roster}명 중 {sat}명이 시험을 완료했습니다",
+      "columns": {
+        "area": "읽기 영역"
+      },
+      "classesTitle": "학급",
+      "classStudentsLine": "학생 {count}명",
+      "loadError": "학교 개요를 불러올 수 없습니다. 다시 시도하세요.",
+      "export": {
+        "cta": "학교 결과 내보내기 (CSV)",
+        "downloading": "내보내기 준비 중...",
+        "error": "내보내기 파일을 다운로드할 수 없습니다. 다시 시도하세요."
+      }
     }
   },
   "Teach": {
@@ -2009,6 +2066,11 @@
         "emerging": "발전 중",
         "not_mastered": "미달성",
         "not_assessed": "아직 평가되지 않음"
+      },
+      "export": {
+        "cta": "AI 어시스턴트용으로 내보내기",
+        "downloading": "내보내기 준비 중...",
+        "error": "내보내기를 다운로드할 수 없습니다. 다시 시도하세요."
       }
     },
     "progress": {

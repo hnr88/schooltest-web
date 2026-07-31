@@ -12,6 +12,8 @@ export type NavLabelKey =
   | 'children'
   | 'teachers'
   | 'teach'
+  | 'participation'
+  | 'analytics'
   | 'ops';
 
 // Canonical rail grouping (DS §12 Navigation card): every destination of the

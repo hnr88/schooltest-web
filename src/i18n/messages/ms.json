@@ -739,7 +739,9 @@
       "children": "Murid",
       "teachers": "Guru",
       "teach": "Mengajar",
-      "ops": "Operasi"
+      "ops": "Operasi",
+      "participation": "Penyertaan",
+      "analytics": "Analitik"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1683,6 +1685,7 @@
     },
     "errorPatternsEyebrow": "Nota corak kesilapan",
     "errorPatternsOutOfModel": "Peringkat jawapan",
+    "effortInvalidNote": "Jawapan dalam sesi ini menunjukkan tanda-tanda tergesa-gesa, jadi keputusan ini mungkin memandang rendah keupayaan murid. Baca bersama bukti bilik darjah.",
     "errorPatternsDescription": "Jenis pengganggu yang dipilih berulang kali oleh pelajar ini, dikumpulkan daripada jawapan dalam sesi ujian ini. Ia menerangkan cara pilihan salah dibuat, bukan berapa banyak markah diperoleh.",
     "errorPatternsSource": "Disusun oleh eksport diagnostik daripada jawapan yang direkodkan dalam sesi ujian ini. Satu frasa muncul hanya apabila jenis pengganggu yang sama dipilih pada sekurang-kurangnya dua item bagi sesuatu atribut. Tiada apa-apa di sini masuk ke dalam model penguasaan atau sebarang skor.",
     "errorPatternsNoneObserved": "Tiada corak kesilapan berulang diperhatikan",
@@ -1930,6 +1933,60 @@
         "emptyTitle": "Belum ada guru",
         "emptyDescription": "Guru yang menyertai sekolah anda akan muncul di sini."
       }
+    },
+    "participation": {
+      "meta": {
+        "title": "Penyertaan - SchoolTest",
+        "description": "Kelas yang telah melengkapkan Test A dan Test B - status penyertaan, bukan keputusan."
+      },
+      "title": "Penyertaan",
+      "subtitle": "Siapa yang telah melengkapkan Test A dan Test B, mengikut kelas. Status penyertaan sahaja - keputusan berada di bawah Analitik.",
+      "errorTitle": "Kami tidak dapat memuatkan penyertaan",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi",
+      "emptyTitle": "Belum ada kelas",
+      "emptyDescription": "Setelah sekolah anda mempunyai kelas, penyertaan Test A dan Test B akan dipaparkan di sini.",
+      "columns": {
+        "class": "Kelas",
+        "teacher": "Guru",
+        "roster": "Murid",
+        "testA": "Test A",
+        "testB": "Test B"
+      },
+      "buckets": {
+        "submitted": "Dihantar",
+        "inProgress": "Sedang berjalan",
+        "notStarted": "Belum mula"
+      },
+      "unnamedClass": "Kelas tanpa nama",
+      "noTeacher": "Tiada guru ditugaskan"
+    },
+    "analytics": {
+      "meta": {
+        "title": "Analitik sekolah - SchoolTest",
+        "description": "Keputusan membaca untuk seluruh sekolah anda: ringkasan sekolah, perincian kelas dan profil murid."
+      },
+      "title": "Analitik",
+      "subtitle": "Keputusan membaca seluruh sekolah anda. Pilih kelas untuk perincian, kemudian pilih murid.",
+      "errorTitle": "Kami tidak dapat memuatkan analitik",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi",
+      "emptyTitle": "Belum ada kelas",
+      "emptyDescription": "Setelah sekolah anda mempunyai kelas, keputusan membaca akan dipaparkan di sini.",
+      "aggregateTitle": "Ringkasan sekolah",
+      "aggregateDescription": "Semua kelas digabungkan: bilangan murid yang telah melengkapkan ujian, dan kedudukan sekolah dalam setiap bidang membaca.",
+      "aggregateSummary": "{sat} daripada {roster} murid telah melengkapkan ujian",
+      "columns": {
+        "area": "Bidang membaca"
+      },
+      "classesTitle": "Kelas",
+      "classStudentsLine": "{count} murid",
+      "loadError": "Ringkasan sekolah tidak dapat dimuatkan. Cuba lagi.",
+      "export": {
+        "cta": "Eksport keputusan sekolah (CSV)",
+        "downloading": "Menyediakan eksport...",
+        "error": "Eksport tidak dapat dimuat turun. Cuba lagi."
+      }
     }
   },
   "Teach": {
@@ -2009,6 +2066,11 @@
         "emerging": "Sedang berkembang",
         "not_mastered": "Belum dikuasai",
         "not_assessed": "Belum dinilai"
+      },
+      "export": {
+        "cta": "Eksport untuk pembantu AI anda",
+        "downloading": "Menyediakan eksport...",
+        "error": "Eksport tidak dapat dimuat turun. Cuba lagi."
       }
     },
     "progress": {
