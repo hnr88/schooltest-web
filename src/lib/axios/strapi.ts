@@ -67,9 +67,21 @@ strapi.interceptors.request.use((config) => {
 
 strapi.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
     if (error.response?.status === 401) {
       writeClientToken(null);
+    }
+    // The API's fixed-window rate limiter (120 req/60s/IP) answers 429 +
+    // Retry-After. Ride the window out instead of erroring the whole page —
+    // a retry never re-executes the rejected request, so POSTs are safe too.
+    const config = error.config as (typeof error.config & { __rideOut429?: number }) | undefined;
+    if (error.response?.status === 429 && config && (config.__rideOut429 ?? 0) < 3) {
+      config.__rideOut429 = (config.__rideOut429 ?? 0) + 1;
+      const retryAfter = Number(error.response.headers['retry-after'] ?? '3');
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.min(Number.isFinite(retryAfter) ? retryAfter : 3, 20) * 1000 + 250),
+      );
+      return strapi.request(config);
     }
     return Promise.reject(error);
   }

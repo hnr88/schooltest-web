@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 
 // Task 64 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -21,11 +22,7 @@ async function login(
   request: APIRequestContext,
   credentials: { email: string; password: string },
 ): Promise<string> {
-  const res = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: credentials.email, password: credentials.password },
-  });
-  expect(res.ok()).toBeTruthy();
-  return ((await res.json()) as { jwt: string }).jwt;
+  return loginCached(request, API, credentials);
 }
 
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
@@ -35,7 +32,10 @@ async function signIn(page: Page, credentials: { email: string; password: string
     .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
     .fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL('**/dashboard', { timeout: 30_000 });
+  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
+  // late role redirect can never hijack the goto that follows. The axios
+  // layer rides out any 429 on the auth POST, so allow for that here.
+  await page.waitForURL('**/dashboard/teach**', { timeout: 90_000 });
 }
 
 interface SittingRow {
@@ -44,9 +44,11 @@ interface SittingRow {
 }
 
 async function listClassSittings(request: APIRequestContext, jwt: string): Promise<SittingRow[]> {
-  const res = await request.get(
-    `${API}/api/sittings?filters[class][documentId][$eq]=${CLASS_ID}&sort=createdAt:desc`,
-    { headers: { Authorization: `Bearer ${jwt}` } },
+  const res = await fetchWithRetry(() =>
+    request.get(
+      `${API}/api/sittings?filters[class][documentId][$eq]=${CLASS_ID}&sort=createdAt:desc`,
+      { headers: { Authorization: `Bearer ${jwt}` } },
+    ),
   );
   expect(res.ok()).toBeTruthy();
   return ((await res.json()) as { data: SittingRow[] }).data;
@@ -57,22 +59,27 @@ async function closeSitting(
   jwt: string,
   documentId: string,
 ): Promise<void> {
-  const res = await request.post(`${API}/api/sittings/${documentId}/close`, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+  const res = await fetchWithRetry(() =>
+    request.post(`${API}/api/sittings/${documentId}/close`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
+  );
   expect(res.ok()).toBeTruthy();
 }
 
 function joinAsSofia(request: APIRequestContext, code: string) {
   // C-SIT-01 v2 public join: code + school email.
-  return request.post(`${API}/api/sittings/join`, {
-    data: { code, email: SOFIA_EMAIL },
-  });
+  return fetchWithRetry(() =>
+    request.post(`${API}/api/sittings/join`, {
+      data: { code, email: SOFIA_EMAIL },
+    }),
+  );
 }
 
 test.describe('task 64: teacher test-day screen vs live C-SIT-01/02/03', () => {
-  // Serial: one sitting lifecycle driven end to end through the real UI.
-  test.describe.configure({ mode: 'serial' });
+  // Serial: one sitting lifecycle driven end to end through the real UI. The
+  // timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
+  test.describe.configure({ mode: 'serial', timeout: 120_000 });
 
   test('start -> reveal -> live join -> re-sit -> close/reopen', async ({ page, request }) => {
     const jwt = await login(request, TEACHER);

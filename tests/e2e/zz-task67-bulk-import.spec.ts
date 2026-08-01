@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 
 // Task 67 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -38,17 +39,15 @@ function buildCsv(stamp: number): { csv: string; alpha: string; beta: string } {
 }
 
 async function opsJwt(request: APIRequestContext): Promise<string> {
-  const login = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: OPS.email, password: OPS.password },
-  });
-  expect(login.ok()).toBeTruthy();
-  return ((await login.json()) as { jwt: string }).jwt;
+  return loginCached(request, API, OPS);
 }
 
 async function apiPreview(request: APIRequestContext, jwt: string, csv: string) {
-  const res = await request.post(
-    `${API}/api/ops/schools/${SCHOOL_DOCUMENT_ID}/import-students/preview`,
-    { headers: { Authorization: `Bearer ${jwt}` }, data: { csv } },
+  const res = await fetchWithRetry(() =>
+    request.post(`${API}/api/ops/schools/${SCHOOL_DOCUMENT_ID}/import-students/preview`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+      data: { csv },
+    }),
   );
   expect(res.ok()).toBeTruthy();
   return ((await res.json()) as PreviewBody).data;
@@ -59,7 +58,10 @@ async function signInAsOps(page: Page): Promise<void> {
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(OPS.email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(OPS.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL('**/dashboard/ops/schools', { timeout: 30_000 });
+  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
+  // late role redirect can never hijack the goto that follows. The axios
+  // layer rides out any 429 on the auth POST, so allow for that here.
+  await page.waitForURL('**/dashboard/ops/schools', { timeout: 90_000 });
   await page.goto(`/dashboard/ops/schools/${SCHOOL_DOCUMENT_ID}`);
   await expect(page.locator('[data-surface="ops-student-import"]')).toBeVisible({
     timeout: 20_000,
@@ -67,6 +69,8 @@ async function signInAsOps(page: Page): Promise<void> {
 }
 
 test.describe('task 67: ops bulk student import vs live C-IMP-01/02', () => {
+  // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
+  test.describe.configure({ timeout: 120_000 });
   test('paste csv -> preview matches the API -> commit -> add-only on re-upload', async ({
     page,
     request,

@@ -47,7 +47,7 @@ async function apiClasses(request: APIRequestContext, jwt: string): Promise<Scho
 }
 
 async function apiChildren(request: APIRequestContext, jwt: string): Promise<ChildRow[]> {
-  const res = await request.get(`${API}/api/schools/me/children`, {
+  const res = await request.get(`${API}/api/schools/me/children?pageSize=100`, {
     headers: { Authorization: `Bearer ${jwt}` },
   });
   expect(res.ok()).toBeTruthy();

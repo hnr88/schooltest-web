@@ -24,8 +24,11 @@ export function DashboardOnboardingGuard({ children }: DashboardOnboardingGuardP
   const { user, isLoading: isAuthLoading } = useAuth();
   const isParent = user?.role?.type === PARENT_ROLE_TYPE;
 
+  // Only a parent has an onboarding state: the API scopes C-ONBOARD-GET to the
+  // parent role (task 56), so firing it for staff earns a 403 that TanStack
+  // retries three times — a multi-second skeleton on every staff page here.
   const { data: onboarding, isLoading: isOnboardingLoading } = useOnboardingStateQuery({
-    enabled: !isAuthLoading && Boolean(user),
+    enabled: !isAuthLoading && isParent,
   });
 
   const isPending = onboarding?.status === 'pending';

@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 
 // Task 66 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -26,14 +27,12 @@ interface OpsSchool {
 }
 
 async function fetchOpsSchools(request: APIRequestContext): Promise<OpsSchool[]> {
-  const login = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: OPS.email, password: OPS.password },
-  });
-  expect(login.ok()).toBeTruthy();
-  const { jwt } = (await login.json()) as { jwt: string };
-  const res = await request.get(`${API}/api/ops/schools`, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+  const jwt = await loginCached(request, API, OPS);
+  const res = await fetchWithRetry(() =>
+    request.get(`${API}/api/ops/schools`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
+  );
   expect(res.ok()).toBeTruthy();
   const body = (await res.json()) as { data: OpsSchool[] };
   return body.data;
@@ -44,10 +43,15 @@ async function signIn(page: Page, email: string, password: string, landing: stri
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL(`**${landing}`, { timeout: 30_000 });
+  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
+  // late role redirect can never hijack the goto that follows. The axios
+  // layer rides out any 429 on the auth POST, so allow for that here.
+  await page.waitForURL(`**${landing}`, { timeout: 90_000 });
 }
 
 test.describe('task 66: ops console vs live C-OPS-01', () => {
+  // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
+  test.describe.configure({ timeout: 120_000 });
   test('ops sign-in lands on /dashboard/ops/schools with the live rows and counts', async ({
     page,
     request,

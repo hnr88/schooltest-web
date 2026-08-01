@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 
 // Task 79 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -8,7 +9,8 @@ import { cat, icu, loadMessages } from './helpers/i18n';
 // carries no percentage anywhere, labels/bands/readiness match the API JSON
 // exactly, the provisional and low-confidence caveats render, the effort_valid
 // caveat renders on an effort-invalid result and is absent on an effort-valid
-// one, and the parent toggle still swaps to the allow-list parent view.
+// one, and the parent audience toggle honours the W11 mask (flag OFF: no
+// toggle in the DOM, the report stays in teacher mode).
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
@@ -43,17 +45,15 @@ const percent = (prob: number) =>
   new Intl.NumberFormat('en', { style: 'percent', maximumFractionDigits: 1 }).format(prob);
 
 async function login(request: APIRequestContext): Promise<string> {
-  const res = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: TEACHER.email, password: TEACHER.password },
-  });
-  expect(res.ok()).toBeTruthy();
-  return ((await res.json()) as { jwt: string }).jwt;
+  return loginCached(request, API, TEACHER);
 }
 
 async function fetchResult(request: APIRequestContext, jwt: string, id: string) {
-  const res = await request.get(`${API}/api/results/${id}`, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+  const res = await fetchWithRetry(() =>
+    request.get(`${API}/api/results/${id}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
+  );
   expect(res.ok()).toBeTruthy();
   return (await res.json()) as ResultPayload;
 }
@@ -63,7 +63,10 @@ async function signIn(page: Page): Promise<void> {
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(TEACHER.email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(TEACHER.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL('**/dashboard', { timeout: 30_000 });
+  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
+  // late role redirect can never hijack the goto that follows. The axios
+  // layer rides out any 429 on the auth POST, so allow for that here.
+  await page.waitForURL('**/dashboard/teach**', { timeout: 90_000 });
 }
 
 function row(page: Page, code: string) {
@@ -71,7 +74,8 @@ function row(page: Page, code: string) {
 }
 
 test.describe('task 79: report module vs live C-4 payloads', () => {
-  test.describe.configure({ mode: 'serial' });
+  // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
+  test.describe.configure({ mode: 'serial', timeout: 120_000 });
 
   test('mixed-evidence result: not_assessed explicit, values equal payload', async ({
     page,
@@ -180,23 +184,24 @@ test.describe('task 79: report module vs live C-4 payloads', () => {
     ).toBeVisible();
   });
 
-  test('parent toggle intact: allow-list parent view of the same read', async ({ page }) => {
+  test('parent toggle masked flag-OFF: the report stays in teacher mode', async ({ page }) => {
     await signIn(page);
     await page.goto(`/en/dashboard/reports/${MIXED}`);
 
-    await expect(page.locator('[data-slot="report-view-toggle"]')).toBeVisible();
-    await page.getByText(cat(en, 'Report.viewModes.parent'), { exact: true }).click();
-
-    await expect(page.locator('[data-slot="report-parent-view"]')).toBeVisible();
-    await expect(page.locator('[data-slot="report-parent-headline-value"]')).toHaveText(
-      'Sentence Reader',
+    // W11 task 46 (NEXT_PUBLIC_PARENT_VIEWS_ENABLED=false): the parent
+    // audience toggle is masked, not deleted — it leaves the DOM entirely and
+    // the report renders in teacher mode until the flag flips on (the same
+    // masked contract the zz-25/27 parent-portal checks assert).
+    await expect(page.locator('[data-surface="teacher-report"]')).toBeVisible({
+      timeout: 20_000,
+    });
+    await expect(page.locator('[data-surface="teacher-report"]')).toHaveAttribute(
+      'data-view',
+      'teacher',
     );
-    // Teacher blocks are removed from the DOM, not hidden: no codes, no percents.
-    await expect(page.locator('[data-slot="report-attribute-row"]')).toHaveCount(0);
-    await expect(page.locator('[data-slot="report-crosswalk-facts"]')).toHaveCount(0);
-    await expect(page.locator('[data-slot="report-parent-view"]').getByText(/[0-9]+%/)).toHaveCount(
-      0,
-    );
-    await expect(page.locator('[data-slot="report-parent-view"]').getByText('R1')).toHaveCount(0);
+    await expect(page.locator('[data-slot="report-view-toggle"]')).toHaveCount(0);
+    await expect(page.locator('[data-slot="report-parent-view"]')).toHaveCount(0);
+    // Teacher blocks stay fully rendered: the seven attribute rows.
+    await expect(page.locator('[data-slot="report-attribute-row"]')).toHaveCount(7);
   });
 });

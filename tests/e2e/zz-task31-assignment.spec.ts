@@ -42,37 +42,63 @@ interface ChildRow {
   class: { documentId: string } | null;
 }
 
+// The API's fixed-window rate limit (120 req/60s/IP) can trip under a UI-heavy
+// spec: the dashboard's own queries plus these helpers. Retry 429s against the
+// Retry-After signal instead of flaking (same discipline as the desktop live
+// spec's apiFetch).
+async function fetchWithRetry<
+  T extends { status: () => number; headers: () => Record<string, string> },
+>(call: () => Promise<T>): Promise<T> {
+  let last: T | undefined;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const res = await call();
+    if (res.status() !== 429) return res;
+    last = res;
+    const retryAfter = Number(res.headers()['retry-after'] ?? '3');
+    await new Promise((resolve) => setTimeout(resolve, Math.min(retryAfter, 65) * 1000 + 250));
+  }
+  return last as T;
+}
+
 async function login(
   request: APIRequestContext,
   credentials: { email: string; password: string },
 ): Promise<string> {
-  const res = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: credentials.email, password: credentials.password },
-  });
+  const res = await fetchWithRetry(() =>
+    request.post(`${API}/api/auth/local`, {
+      data: { identifier: credentials.email, password: credentials.password },
+    }),
+  );
   expect(res.ok()).toBeTruthy();
   return ((await res.json()) as { jwt: string }).jwt;
 }
 
 async function apiClasses(request: APIRequestContext, jwt: string): Promise<SchoolClassRow[]> {
-  const res = await request.get(`${API}/api/schools/me/classes`, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+  const res = await fetchWithRetry(() =>
+    request.get(`${API}/api/schools/me/classes`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
+  );
   expect(res.ok()).toBeTruthy();
   return ((await res.json()) as { data: SchoolClassRow[] }).data;
 }
 
 async function apiTeachers(request: APIRequestContext, jwt: string): Promise<TeacherRow[]> {
-  const res = await request.get(`${API}/api/schools/me/teachers`, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+  const res = await fetchWithRetry(() =>
+    request.get(`${API}/api/schools/me/teachers`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
+  );
   expect(res.ok()).toBeTruthy();
   return ((await res.json()) as { data: TeacherRow[] }).data;
 }
 
 async function apiChildren(request: APIRequestContext, jwt: string): Promise<ChildRow[]> {
-  const res = await request.get(`${API}/api/schools/me/children?pageSize=100`, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+  const res = await fetchWithRetry(() =>
+    request.get(`${API}/api/schools/me/children?pageSize=100`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
+  );
   expect(res.ok()).toBeTruthy();
   return ((await res.json()) as { data: ChildRow[] }).data;
 }
@@ -176,6 +202,9 @@ test.describe('task 31: class detail assignment round-trip vs live C-CLS-03', ()
     expect(current?.teachers.map((row) => row.documentId)).toEqual([kept?.documentId]);
 
     // MOVE A CHILD IN: an unassigned active child joins the class.
+    // Expected counts are computed from the live API (the fixture class grew
+    // past the original 2 members via the bulk-import wave), never hardcoded.
+    const countBeforeMove = current?.student_count ?? 0;
     await studentCheckbox(page, CHILD_MOVE).click();
     await saveAndExpectToast(page);
     // The list count updates after save.
@@ -183,14 +212,14 @@ test.describe('task 31: class detail assignment round-trip vs live C-CLS-03', ()
     await page.waitForURL('**/dashboard/school/classes');
     const row = listScreen.getByRole('row', { name: new RegExp(CLASS_NAME.replace('/', '\\/')) });
     await expect(row).toBeVisible();
-    expect(await row.getByRole('cell').allTextContents()).toContain('3');
+    expect(await row.getByRole('cell').allTextContents()).toContain(String(countBeforeMove + 1));
     await row.getByRole('link', { name: CLASS_NAME, exact: true }).click();
     await page.waitForURL(`**/dashboard/school/classes/${fixture?.documentId ?? ''}`);
     await expect(studentCheckbox(page, CHILD_MOVE)).toBeChecked();
 
     classes = await apiClasses(request, jwt);
     current = classes.find((entry) => entry.documentId === fixture?.documentId);
-    expect(current?.student_count).toBe(3);
+    expect(current?.student_count).toBe(countBeforeMove + 1);
     let children = await apiChildren(request, jwt);
     const moved = children.find(
       (entry) => `${entry.given_name} ${entry.family_name}` === CHILD_MOVE,
@@ -205,7 +234,7 @@ test.describe('task 31: class detail assignment round-trip vs live C-CLS-03', ()
     await expect(studentCheckbox(page, CHILD_MOVE)).not.toBeChecked();
     classes = await apiClasses(request, jwt);
     current = classes.find((entry) => entry.documentId === fixture?.documentId);
-    expect(current?.student_count).toBe(2);
+    expect(current?.student_count).toBe(countBeforeMove);
     children = await apiChildren(request, jwt);
     expect(
       children.find((entry) => `${entry.given_name} ${entry.family_name}` === CHILD_MOVE)?.class,

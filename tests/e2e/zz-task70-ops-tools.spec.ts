@@ -1,5 +1,6 @@
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expect, test, type APIRequestContext, type APIResponse, type Page } from '@playwright/test';
 
+import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 
 // Task 70 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -19,28 +20,35 @@ const TEACHER_DOCUMENT_ID = 'be0x1qfrblrirppvstnsa468';
 const SESSION_DOCUMENT_ID = 'ymd2oc6zp5r3g2vdntey2agy';
 
 async function login(request: APIRequestContext, email: string, password: string): Promise<string> {
-  const res = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: email, password },
-  });
-  expect(res.ok()).toBeTruthy();
-  const { jwt } = (await res.json()) as { jwt: string };
-  return jwt;
+  return loginCached(request, API, { email, password });
 }
+
+// Every request-context call rides out the API's fixed-window 429 (helpers/http.ts).
+const apiGet = (
+  request: APIRequestContext,
+  url: string,
+  options?: Parameters<APIRequestContext['get']>[1],
+): Promise<APIResponse> => fetchWithRetry(() => request.get(url, options));
 
 async function signIn(page: Page, email: string, password: string, landing: string): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL(`**${landing}`, { timeout: 30_000 });
+  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
+  // late role redirect can never hijack the goto that follows. The axios
+  // layer rides out any 429 on the auth POST, so allow for that here.
+  await page.waitForURL(`**${landing}`, { timeout: 90_000 });
 }
 
 test.describe('task 70: ops data surfaces (C-OPS-04)', () => {
+  // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
+  test.describe.configure({ timeout: 120_000 });
   test('API: inspection, responses.csv and view-as-teacher conform', async ({ request }) => {
     const jwt = await login(request, OPS.email, OPS.password);
     const auth = { Authorization: `Bearer ${jwt}` };
 
-    const inspection = await request.get(
+    const inspection = await apiGet(request, 
       `${API}/api/ops/forms/${FORM_DOCUMENT_ID}/inspection`,
       { headers: auth },
     );
@@ -58,13 +66,13 @@ test.describe('task 70: ops data surfaces (C-OPS-04)', () => {
     expect(data.items[0].item_code).toBe('RDG-1A-001');
     expect(data.locked).toBe(true);
 
-    const wrongParam = await request.get(
+    const wrongParam = await apiGet(request, 
       `${API}/api/ops/responses.csv?session_document_id=${SESSION_DOCUMENT_ID}`,
       { headers: auth },
     );
     expect(wrongParam.status()).toBe(400);
 
-    const csv = await request.get(
+    const csv = await apiGet(request, 
       `${API}/api/ops/responses.csv?session_documentId=${SESSION_DOCUMENT_ID}`,
       { headers: auth },
     );
@@ -76,7 +84,7 @@ test.describe('task 70: ops data surfaces (C-OPS-04)', () => {
     );
     expect(lines.length - 1).toBe(53);
 
-    const view = await request.get(`${API}/api/ops/view-as-teacher/${TEACHER_DOCUMENT_ID}`, {
+    const view = await apiGet(request, `${API}/api/ops/view-as-teacher/${TEACHER_DOCUMENT_ID}`, {
       headers: auth,
     });
     expect(view.ok()).toBeTruthy();

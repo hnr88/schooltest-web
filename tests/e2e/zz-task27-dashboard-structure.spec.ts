@@ -68,25 +68,37 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     await expect(page.locator('[data-surface="school-admin-home"]')).toHaveCount(0);
   });
 
-  test('parent: portal unchanged; school + teach sections bounce to /dashboard', async ({
+  test('parent: portal masked flag-OFF; school + teach sections bounce to /dashboard', async ({
     page,
   }) => {
     await signIn(page, PARENT.email, PARENT.password, '/dashboard');
-    await expect(page.locator('[data-surface="parent-overview"]')).toBeVisible({ timeout: 20_000 });
+    // Flag OFF (NEXT_PUBLIC_PARENT_VIEWS_ENABLED=false): the parent portal is
+    // masked behind the not-available state (W11). The (portal) routes still
+    // resolve; they render the mask, not the old parent surfaces.
+    await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible({
+      timeout: 20_000,
+    });
     expect(page.url()).not.toContain('/dashboard/school');
     expect(page.url()).not.toContain('/dashboard/teach');
 
     await page.goto('/dashboard/school');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
-    await expect(page.locator('[data-surface="parent-overview"]')).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible({
+      timeout: 20_000,
+    });
 
     await page.goto('/dashboard/teach');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
-    await expect(page.locator('[data-surface="parent-overview"]')).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible({
+      timeout: 20_000,
+    });
 
-    // Existing parent routes still load under the (portal) route group.
+    // Existing parent routes still load under the (portal) route group, masked.
     await page.goto('/dashboard/children');
     await expect(page).toHaveURL(/\/dashboard\/children/, { timeout: 20_000 });
+    await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible({
+      timeout: 20_000,
+    });
     await page.goto('/dashboard/settings');
     await expect(page).toHaveURL(/\/dashboard\/settings/, { timeout: 20_000 });
   });

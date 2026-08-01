@@ -51,16 +51,21 @@ test.describe('task 25: role nav wiring + guard fixes', () => {
     await expect(page.locator('[data-surface="teacher-report-list"]')).toHaveCount(0);
   });
 
-  test('parent: dashboard renders; reports + school items absent; reports route bounces', async ({
+  test('parent: masked state renders; reports + school items absent; reports route bounces', async ({
     page,
   }) => {
     await signIn(page, PARENT.email, PARENT.password);
-    await expect(navLink(page, 'overview')).toBeVisible({ timeout: 20_000 });
+    // Flag OFF (NEXT_PUBLIC_PARENT_VIEWS_ENABLED=false): the parent portal is
+    // masked, so a parent sees the not-available state, not the overview (W11).
+    await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible({
+      timeout: 20_000,
+    });
+    await expect(navLink(page, 'overview')).toHaveCount(0);
     await expect(navLink(page, 'reports')).toHaveCount(0);
     await expect(navLink(page, 'school')).toHaveCount(0);
 
     await page.goto('/dashboard/reports');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
-    await expect(navLink(page, 'overview')).toBeVisible();
+    await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible();
   });
 });

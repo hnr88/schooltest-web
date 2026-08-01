@@ -1,5 +1,6 @@
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expect, test, type APIRequestContext, type APIResponse, type Page } from '@playwright/test';
 
+import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 
 // Task 69 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -26,26 +27,38 @@ interface QueueHealth {
 }
 
 async function login(request: APIRequestContext, email: string, password: string): Promise<string> {
-  const res = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: email, password },
-  });
-  expect(res.ok()).toBeTruthy();
-  const { jwt } = (await res.json()) as { jwt: string };
-  return jwt;
+  return loginCached(request, API, { email, password });
 }
+
+// Every request-context call rides out the API's fixed-window 429 (helpers/http.ts).
+const apiGet = (
+  request: APIRequestContext,
+  url: string,
+  options?: Parameters<APIRequestContext['get']>[1],
+): Promise<APIResponse> => fetchWithRetry(() => request.get(url, options));
+const apiPost = (
+  request: APIRequestContext,
+  url: string,
+  options?: Parameters<APIRequestContext['post']>[1],
+): Promise<APIResponse> => fetchWithRetry(() => request.post(url, options));
 
 async function signIn(page: Page, email: string, password: string, landing: string): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL(`**${landing}`, { timeout: 30_000 });
+  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
+  // late role redirect can never hijack the goto that follows. The axios
+  // layer rides out any 429 on the auth POST, so allow for that here.
+  await page.waitForURL(`**${landing}`, { timeout: 90_000 });
 }
 
 test.describe('task 69: ops pipeline health + sitting recovery', () => {
+  // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
+  test.describe.configure({ timeout: 120_000 });
   test('pipeline page renders the live queue counts and R badge', async ({ page, request }) => {
     const jwt = await login(request, OPS.email, OPS.password);
-    const res = await request.get(`${API}/api/ops/pipeline/health`, {
+    const res = await apiGet(request, `${API}/api/ops/pipeline/health`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
     expect(res.ok()).toBeTruthy();
@@ -77,7 +90,7 @@ test.describe('task 69: ops pipeline health + sitting recovery', () => {
   }) => {
     // Arrange a real open sitting as the seeded teacher (same path as test day).
     const teacherJwt = await login(request, TEACHER.email, TEACHER.password);
-    const created = await request.post(`${API}/api/sittings`, {
+    const created = await apiPost(request, `${API}/api/sittings`, {
       headers: { Authorization: `Bearer ${teacherJwt}` },
       data: {
         data: {
@@ -89,7 +102,7 @@ test.describe('task 69: ops pipeline health + sitting recovery', () => {
     });
     expect(created.status()).toBe(201);
     const sitting = ((await created.json()) as { data: { documentId: string } }).data;
-    const minted = await request.post(`${API}/api/sittings/${sitting.documentId}/code`, {
+    const minted = await apiPost(request, `${API}/api/sittings/${sitting.documentId}/code`, {
       headers: { Authorization: `Bearer ${teacherJwt}` },
     });
     expect(minted.ok()).toBeTruthy();
@@ -117,7 +130,7 @@ test.describe('task 69: ops pipeline health + sitting recovery', () => {
 
     // The API confirms the sitting is closed (C-OPS-02 effect).
     const opsJwt = await login(request, OPS.email, OPS.password);
-    const check = await request.get(`${API}/api/sittings/${sitting.documentId}`, {
+    const check = await apiGet(request, `${API}/api/sittings/${sitting.documentId}`, {
       headers: { Authorization: `Bearer ${opsJwt}` },
     });
     expect(check.ok()).toBeTruthy();

@@ -19,10 +19,15 @@ async function signIn(page: Page): Promise<void> {
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(TEACHER.email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(TEACHER.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL('**/dashboard', { timeout: 30_000 });
+  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
+  // late role redirect can never hijack the goto that follows. The axios
+  // layer rides out any 429 on the auth POST, so allow for that here.
+  await page.waitForURL('**/dashboard/teach**', { timeout: 90_000 });
 }
 
 test.describe('task 65: test-day run sheet', () => {
+  // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
+  test.describe.configure({ timeout: 120_000 });
   test('renders every block, jargon-free, and prints', async ({ page }) => {
     await signIn(page);
     await page.goto(RUN_SHEET_URL);

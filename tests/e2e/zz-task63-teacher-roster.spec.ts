@@ -1,5 +1,6 @@
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expect, test, type APIRequestContext, type APIResponse, type Page } from '@playwright/test';
 
+import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 
 // Task 63 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -26,19 +27,27 @@ async function login(
   request: APIRequestContext,
   credentials: { email: string; password: string },
 ): Promise<string> {
-  const res = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: credentials.email, password: credentials.password },
-  });
-  expect(res.ok()).toBeTruthy();
-  return ((await res.json()) as { jwt: string }).jwt;
+  return loginCached(request, API, credentials);
 }
+
+// Every request-context call rides out the API's fixed-window 429 (helpers/http.ts).
+const apiGet = (
+  request: APIRequestContext,
+  url: string,
+  options?: Parameters<APIRequestContext['get']>[1],
+): Promise<APIResponse> => fetchWithRetry(() => request.get(url, options));
+const apiPatch = (
+  request: APIRequestContext,
+  url: string,
+  options?: Parameters<APIRequestContext['patch']>[1],
+): Promise<APIResponse> => fetchWithRetry(() => request.patch(url, options));
 
 async function patchSofiaEmail(
   request: APIRequestContext,
   jwt: string,
   email: string | null,
 ): Promise<void> {
-  const res = await request.patch(`${API}/api/schools/me/children/${SOFIA_ID}`, {
+  const res = await apiPatch(request, `${API}/api/schools/me/children/${SOFIA_ID}`, {
     headers: { Authorization: `Bearer ${jwt}` },
     data: { email },
   });
@@ -51,13 +60,20 @@ async function signIn(page: Page, credentials: { email: string; password: string
   await page
     .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
     .fill(credentials.password);
+  const landing = credentials.email.startsWith('schooladmin')
+    ? '**/dashboard/school**'
+    : '**/dashboard/teach**';
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL('**/dashboard', { timeout: 30_000 });
+  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
+  // late role redirect can never hijack the goto that follows. The axios
+  // layer rides out any 429 on the auth POST, so allow for that here.
+  await page.waitForURL(landing, { timeout: 90_000 });
 }
 
 test.describe('task 63: teacher roster with email flags vs live C-CHD-01/03', () => {
   // Serial: the first test mutates Sofia's email through the admin fix path.
-  test.describe.configure({ mode: 'serial' });
+  // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
+  test.describe.configure({ mode: 'serial', timeout: 120_000 });
 
   test('roster flags missing emails; admin fix clears the flag on reload', async ({
     page,
@@ -108,12 +124,12 @@ test.describe('task 63: teacher roster with email flags vs live C-CHD-01/03', ()
     // Negative probes as the teacher: PATCH is 403 (school_admin-only), and
     // a class the teacher does not own returns an empty page (never a leak).
     const teacherJwt = await login(request, TEACHER);
-    const forbidden = await request.patch(`${API}/api/schools/me/children/${SOFIA_ID}`, {
+    const forbidden = await apiPatch(request, `${API}/api/schools/me/children/${SOFIA_ID}`, {
       headers: { Authorization: `Bearer ${teacherJwt}` },
       data: { email: 'teacher-edit@example.com' },
     });
     expect(forbidden.status()).toBe(403);
-    const foreign = await request.get(
+    const foreign = await apiGet(request, 
       `${API}/api/schools/me/children?class=${FOREIGN_CLASS}&pageSize=100`,
       { headers: { Authorization: `Bearer ${teacherJwt}` } },
     );
