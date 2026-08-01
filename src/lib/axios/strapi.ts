@@ -72,8 +72,13 @@ strapi.interceptors.response.use(
       writeClientToken(null);
     }
     // The API's fixed-window rate limiter (120 req/60s/IP) answers 429 +
-    // Retry-After. Ride the window out instead of erroring the whole page —
-    // a retry never re-executes the rejected request, so POSTs are safe too.
+    // Retry-After. Ride the window out instead of erroring the whole page.
+    // SAFETY INVARIANT (pinned 2026-08-01, critic M5): every 429 in this API
+    // is a PRE-CONTROLLER rejection (global::rate-limit registered before
+    // routing in config/middlewares.ts + src/middlewares/rate-limit.ts throws
+    // before next()), so the request never executed and retrying is safe even
+    // for non-idempotent POSTs. If any handler ever 429s from inside a
+    // controller/service, this ride-out MUST be restricted to GET/HEAD first.
     const config = error.config as (typeof error.config & { __rideOut429?: number }) | undefined;
     if (error.response?.status === 429 && config && (config.__rideOut429 ?? 0) < 3) {
       config.__rideOut429 = (config.__rideOut429 ?? 0) + 1;
