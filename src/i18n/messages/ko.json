@@ -769,7 +769,12 @@
     "userMenu": {
       "settings": "설정",
       "signOut": "로그아웃",
-      "role": "Parent account"
+      "roles": {
+        "school_admin": "학교 관리자",
+        "teacher": "교사",
+        "ops": "운영",
+        "parent": "학부모"
+      }
     }
   },
   "Settings": {

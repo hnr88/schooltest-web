@@ -769,7 +769,12 @@
     "userMenu": {
       "settings": "การตั้งค่า",
       "signOut": "ออกจากระบบ",
-      "role": "Parent account"
+      "roles": {
+        "school_admin": "ผู้ดูแลโรงเรียน",
+        "teacher": "ครู",
+        "ops": "ฝ่ายปฏิบัติการ",
+        "parent": "ผู้ปกครอง"
+      }
     }
   },
   "Settings": {

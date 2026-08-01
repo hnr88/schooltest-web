@@ -61,7 +61,7 @@ export function ProgressPanel({ classId }: ProgressPanelProps) {
               const notAssessed = notAssessedFor(student.student_ref);
               return (
                 <li
-                  key={student.student_ref}
+                  key={student.student_document_id}
                   data-slot="progress-student"
                   className="flex flex-col gap-3 rounded-xl border border-border bg-card px-4 py-3"
                 >

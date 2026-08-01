@@ -769,7 +769,12 @@
     "userMenu": {
       "settings": "Tetapan",
       "signOut": "Log keluar",
-      "role": "Parent account"
+      "roles": {
+        "school_admin": "Pentadbir sekolah",
+        "teacher": "Guru",
+        "ops": "Ops",
+        "parent": "Ibu bapa"
+      }
     }
   },
   "Settings": {

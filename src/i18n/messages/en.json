@@ -769,7 +769,12 @@
     "userMenu": {
       "settings": "Settings",
       "signOut": "Sign out",
-      "role": "Parent account"
+      "roles": {
+        "school_admin": "School administrator",
+        "teacher": "Teacher",
+        "ops": "Ops",
+        "parent": "Parent"
+      }
     }
   },
   "Settings": {

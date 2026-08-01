@@ -33,7 +33,7 @@ export function MasteryTable({ rows, selectedRef, onSelect }: MasteryTableProps)
       {rows.map((row) => {
         const selected = row.student_ref === selectedRef;
         return (
-          <li key={row.student_ref}>
+          <li key={row.student_document_id}>
             <button
               type="button"
               aria-pressed={selected}

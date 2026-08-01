@@ -17,6 +17,8 @@ export interface ProgressTransition {
 
 export interface ProgressStudent {
   student_ref: string;
+  // Stable React key — student_ref collides on real rosters.
+  student_document_id: string;
   transitions: ProgressTransition[];
   weeks_between: number;
 }

@@ -11,6 +11,7 @@ export const diagnosticAttributeSchema = z.object({
 
 export const diagnosticMasteryRowSchema = z.object({
   student_ref: z.string(),
+  student_document_id: z.string(),
   attributes: z.array(diagnosticAttributeSchema),
 });
 

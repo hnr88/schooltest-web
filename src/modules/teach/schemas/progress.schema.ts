@@ -12,6 +12,7 @@ export const progressTransitionSchema = z.object({
 
 export const progressStudentSchema = z.object({
   student_ref: z.string(),
+  student_document_id: z.string(),
   transitions: z.array(progressTransitionSchema),
   weeks_between: z.number(),
 });

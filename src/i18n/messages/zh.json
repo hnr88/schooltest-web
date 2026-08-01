@@ -769,7 +769,12 @@
     "userMenu": {
       "settings": "设置",
       "signOut": "退出登录",
-      "role": "Parent account"
+      "roles": {
+        "school_admin": "学校管理员",
+        "teacher": "教师",
+        "ops": "运营",
+        "parent": "家长"
+      }
     }
   },
   "Settings": {

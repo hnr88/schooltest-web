@@ -16,6 +16,8 @@ export interface DiagnosticAttribute {
 
 export interface DiagnosticMasteryRow {
   student_ref: string;
+  // Stable React key — student_ref collides on real rosters ("Zz67 A." twice).
+  student_document_id: string;
   attributes: DiagnosticAttribute[];
 }
 

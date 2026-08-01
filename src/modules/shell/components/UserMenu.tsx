@@ -4,7 +4,7 @@ import { LogOut, Settings } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { useRouter } from '@/i18n/navigation';
-import { useAuth } from '@/modules/auth';
+import { OPS_ROLE_TYPE, SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE, useAuth } from '@/modules/auth';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +25,12 @@ import { getUserInitials } from '@/modules/shell/lib/user-initials';
 const USER_CARD_CLASSES =
   'relative flex w-full items-center gap-2.75 rounded-panel bg-surface-inset px-3.5 py-3 text-left transition-[transform,background-color] duration-200 ease-out hover:-translate-y-px hover:bg-divider focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:hover:translate-y-0';
 
+// Role slugs with a user-menu label (i18n userMenu.roles.*). Anything else —
+// including a missing role while the me query settles — renders no label,
+// never a wrong one (the hardcoded "Parent account" mislabelled every staff
+// role).
+const LABELLED_ROLE_TYPES = [SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE, OPS_ROLE_TYPE, 'parent'];
+
 function UserMenu() {
   const t = useTranslations('Shell');
   const router = useRouter();
@@ -33,6 +39,10 @@ function UserMenu() {
   if (!user) {
     return <Skeleton className="h-15 w-full rounded-panel" />;
   }
+
+  const roleType = user.role?.type ?? null;
+  const roleLabel =
+    roleType !== null && LABELLED_ROLE_TYPES.includes(roleType) ? t(`userMenu.roles.${roleType}`) : null;
 
   const handleSignOut = () => {
     logout();
@@ -52,7 +62,7 @@ function UserMenu() {
           <span className="truncate text-body-sm font-semibold text-foreground">
             {user.username}
           </span>
-          <span className="truncate text-xs text-body">{t('userMenu.role')}</span>
+          {roleLabel !== null ? <span className="truncate text-xs text-body">{roleLabel}</span> : null}
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="top" sideOffset={8} className="w-56">

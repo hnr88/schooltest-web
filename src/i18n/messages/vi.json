@@ -769,7 +769,12 @@
     "userMenu": {
       "settings": "Cài đặt",
       "signOut": "Đăng xuất",
-      "role": "Parent account"
+      "roles": {
+        "school_admin": "Quản trị viên trường",
+        "teacher": "Giáo viên",
+        "ops": "Vận hành",
+        "parent": "Phụ huynh"
+      }
     }
   },
   "Settings": {
