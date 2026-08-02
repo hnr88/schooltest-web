@@ -2009,11 +2009,35 @@
       "reportsCta": "เปิดรายงาน",
       "classesTitle": "ชั้นเรียนของคุณ",
       "classesLoading": "กำลังโหลดชั้นเรียน...",
+      "classesError": "ไม่สามารถโหลดชั้นเรียนของคุณได้ โปรดลองอีกครั้ง",
       "classesEmpty": "คุณยังไม่ได้รับมอบหมายชั้นเรียน ผู้ดูแลโรงเรียนของคุณสามารถเพิ่มคุณเข้าชั้นเรียนได้",
       "rosterLink": "บัญชีรายชื่อ",
       "testDayLink": "วันสอบ",
       "runSheetLink": "ใบคู่มือวันสอบ",
-      "resultsLink": "ผลลัพธ์"
+      "resultsLink": "ผลลัพธ์",
+      "panels": {
+        "diagnostic": {
+          "title": "การวินิจฉัย",
+          "satLabel": "สอบแล้ว",
+          "satValue": "{sat} จาก {roster} คน",
+          "latestFormLabel": "แบบสอบล่าสุด",
+          "latestFormMissing": "ยังไม่ได้สอบ",
+          "masteredLabel": "ด้านการอ่านที่เชี่ยวชาญแล้ว",
+          "masteredValue": "{pct}% ของชั้นเรียน",
+          "empty": "ข้อมูลการวินิจฉัยกำลังจะมา แผงจะแสดงข้อมูลเมื่อนักเรียนสอบ Test A แล้ว"
+        },
+        "monitor": {
+          "title": "รอบการสอบปัจจุบัน",
+          "states": {
+            "not_joined": "ยังไม่เข้าร่วม",
+            "joined": "เข้าร่วมแล้ว",
+            "in_progress": "กำลังสอบ",
+            "submitted": "ส่งแล้ว",
+            "stalled": "หยุดชะงัก"
+          },
+          "empty": "ขณะนี้ไม่มีรอบการสอบที่กำลังดำเนินอยู่"
+        }
+      }
     },
     "roster": {
       "meta": {

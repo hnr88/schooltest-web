@@ -2313,11 +2313,35 @@
       "reportsCta": "Open reports",
       "classesTitle": "Your classes",
       "classesLoading": "Loading your classes...",
+      "classesError": "Your classes could not be loaded. Try again.",
       "classesEmpty": "You are not assigned to a class yet. Your school administrator can add you to one.",
       "rosterLink": "Roster",
       "testDayLink": "Test day",
       "runSheetLink": "Test-day run sheet",
-      "resultsLink": "Results"
+      "resultsLink": "Results",
+      "panels": {
+        "diagnostic": {
+          "title": "Diagnostic",
+          "satLabel": "Sat the test",
+          "satValue": "{sat} of {roster} students",
+          "latestFormLabel": "Latest form",
+          "latestFormMissing": "Not sat yet",
+          "masteredLabel": "Reading areas mastered",
+          "masteredValue": "{pct}% of the class",
+          "empty": "Diagnostic data coming - panels fill in once students have sat Test A."
+        },
+        "monitor": {
+          "title": "Live sitting",
+          "states": {
+            "not_joined": "Not joined",
+            "joined": "Joined",
+            "in_progress": "In progress",
+            "submitted": "Submitted",
+            "stalled": "Stalled"
+          },
+          "empty": "No sitting running right now."
+        }
+      }
     },
     "roster": {
       "meta": {

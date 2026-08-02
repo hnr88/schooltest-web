@@ -2009,11 +2009,35 @@
       "reportsCta": "Buka laporan",
       "classesTitle": "Kelas anda",
       "classesLoading": "Memuatkan kelas anda...",
+      "classesError": "Kelas anda tidak dapat dimuatkan. Cuba lagi.",
       "classesEmpty": "Anda belum ditugaskan ke mana-mana kelas. Pentadbir sekolah anda boleh menambah anda ke kelas.",
       "rosterLink": "Senarai nama",
       "testDayLink": "Hari ujian",
       "runSheetLink": "Lembaran panduan hari ujian",
-      "resultsLink": "Keputusan"
+      "resultsLink": "Keputusan",
+      "panels": {
+        "diagnostic": {
+          "title": "Diagnostik",
+          "satLabel": "Telah menduduki ujian",
+          "satValue": "{sat} daripada {roster} murid",
+          "latestFormLabel": "Borang terkini",
+          "latestFormMissing": "Belum menduduki",
+          "masteredLabel": "Bidang membaca yang dikuasai",
+          "masteredValue": "{pct}% daripada kelas",
+          "empty": "Data diagnostik akan datang - panel akan diisi sebaik sahaja murid menduduki Ujian A."
+        },
+        "monitor": {
+          "title": "Sesi ujian langsung",
+          "states": {
+            "not_joined": "Belum menyertai",
+            "joined": "Telah menyertai",
+            "in_progress": "Sedang berjalan",
+            "submitted": "Telah diserahkan",
+            "stalled": "Terhenti"
+          },
+          "empty": "Tiada sesi ujian sedang berjalan buat masa ini."
+        }
+      }
     },
     "roster": {
       "meta": {

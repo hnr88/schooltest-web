@@ -2009,11 +2009,35 @@
       "reportsCta": "리포트 열기",
       "classesTitle": "내 학급",
       "classesLoading": "학급을 불러오는 중...",
+      "classesError": "학급을 불러올 수 없습니다. 다시 시도하세요.",
       "classesEmpty": "아직 학급에 배정되지 않았습니다. 학교 관리자가 학급에 추가해 줄 수 있습니다.",
       "rosterLink": "명단",
       "testDayLink": "테스트 데이",
       "runSheetLink": "시험 당일 진행표",
-      "resultsLink": "결과"
+      "resultsLink": "결과",
+      "panels": {
+        "diagnostic": {
+          "title": "진단",
+          "satLabel": "시험 응시",
+          "satValue": "{roster}명 중 {sat}명",
+          "latestFormLabel": "최신 폼",
+          "latestFormMissing": "아직 응시하지 않음",
+          "masteredLabel": "마스터한 읽기 영역",
+          "masteredValue": "학급의 {pct}%",
+          "empty": "진단 데이터가 곧 제공됩니다. 학생들이 Test A를 응시하면 패널이 채워집니다."
+        },
+        "monitor": {
+          "title": "실시간 시험",
+          "states": {
+            "not_joined": "미참여",
+            "joined": "참여함",
+            "in_progress": "진행 중",
+            "submitted": "제출됨",
+            "stalled": "멈춤"
+          },
+          "empty": "현재 진행 중인 시험이 없습니다."
+        }
+      }
     },
     "roster": {
       "meta": {

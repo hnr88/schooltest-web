@@ -2009,11 +2009,35 @@
       "reportsCta": "Mở báo cáo",
       "classesTitle": "Các lớp của bạn",
       "classesLoading": "Đang tải các lớp...",
+      "classesError": "Không thể tải lớp của bạn. Hãy thử lại.",
       "classesEmpty": "Bạn chưa được phân công vào lớp nào. Quản trị viên trường có thể thêm bạn vào lớp.",
       "rosterLink": "Danh sách",
       "testDayLink": "Ngày kiểm tra",
       "runSheetLink": "Phiếu hướng dẫn ngày kiểm tra",
-      "resultsLink": "Kết quả"
+      "resultsLink": "Kết quả",
+      "panels": {
+        "diagnostic": {
+          "title": "Chẩn đoán",
+          "satLabel": "Đã làm bài kiểm tra",
+          "satValue": "{sat} trong {roster} học sinh",
+          "latestFormLabel": "Đề mới nhất",
+          "latestFormMissing": "Chưa làm bài",
+          "masteredLabel": "Lĩnh vực đọc đã thành thạo",
+          "masteredValue": "{pct}% của lớp",
+          "empty": "Dữ liệu chẩn đoán sắp có - bảng sẽ hiển thị khi học sinh làm Bài kiểm tra A."
+        },
+        "monitor": {
+          "title": "Buổi kiểm tra trực tiếp",
+          "states": {
+            "not_joined": "Chưa tham gia",
+            "joined": "Đã tham gia",
+            "in_progress": "Đang làm bài",
+            "submitted": "Đã nộp",
+            "stalled": "Bị gián đoạn"
+          },
+          "empty": "Hiện không có buổi kiểm tra nào đang diễn ra."
+        }
+      }
     },
     "roster": {
       "meta": {

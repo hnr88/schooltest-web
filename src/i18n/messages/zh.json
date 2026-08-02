@@ -2009,11 +2009,35 @@
       "reportsCta": "打开报告",
       "classesTitle": "您的班级",
       "classesLoading": "正在加载班级...",
+      "classesError": "无法加载您的班级，请重试。",
       "classesEmpty": "您还没有被分配到班级。学校管理员可以将您加入班级。",
       "rosterLink": "名册",
       "testDayLink": "测试日",
       "runSheetLink": "测验日流程单",
-      "resultsLink": "结果"
+      "resultsLink": "结果",
+      "panels": {
+        "diagnostic": {
+          "title": "诊断",
+          "satLabel": "已参加测试",
+          "satValue": "{roster} 名学生中的 {sat} 名",
+          "latestFormLabel": "最新试卷",
+          "latestFormMissing": "尚未参加",
+          "masteredLabel": "已掌握的阅读领域",
+          "masteredValue": "全班的 {pct}%",
+          "empty": "诊断数据即将提供，学生参加测试 A 后面板将显示内容。"
+        },
+        "monitor": {
+          "title": "实时测验",
+          "states": {
+            "not_joined": "未加入",
+            "joined": "已加入",
+            "in_progress": "进行中",
+            "submitted": "已提交",
+            "stalled": "停滞"
+          },
+          "empty": "当前没有正在进行的测验。"
+        }
+      }
     },
     "roster": {
       "meta": {
