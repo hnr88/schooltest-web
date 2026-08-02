@@ -2165,13 +2165,28 @@
       "emailMissing": "无邮箱",
       "state": {
         "not_joined": "未加入",
+        "code_shown": "已出示访问码",
         "joined": "已加入",
         "in_progress": "进行中",
         "submitted": "已提交",
         "stalled": "停滞"
       },
+      "codeShownCount": "已向 {count} 人出示访问码",
       "closeCta": "关闭测验",
       "reopenCta": "重新开放"
+    },
+    "studentReveal": {
+      "title": "把访问码交给 {name}",
+      "intro": "{name} 输入此访问码和学校邮箱即可开始。",
+      "onlyThisStudent": "请只把访问码交给 {name}。",
+      "copyCta": "复制访问码",
+      "copiedToast": "访问码已复制",
+      "copyErrorToast": "无法复制访问码，请重试。",
+      "emailMissingNote": "名册上没有学校邮箱。请先补全邮箱，再公布访问码。",
+      "closedNote": "本场测验已关闭。重新开放后才能公布访问码。",
+      "unmintedNote": "请先公布班级访问码。",
+      "closeCta": "关闭",
+      "actionLabel": "向 {name} 公布访问码"
     },
     "resit": {
       "cta": "重考",

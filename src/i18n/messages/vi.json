@@ -2165,13 +2165,28 @@
       "emailMissing": "Chưa có email",
       "state": {
         "not_joined": "Chưa tham gia",
+        "code_shown": "Đã hiện mã",
         "joined": "Đã tham gia",
         "in_progress": "Đang làm bài",
         "submitted": "Đã nộp",
         "stalled": "Bị gián đoạn"
       },
+      "codeShownCount": "Đã hiện mã cho {count}",
       "closeCta": "Đóng buổi kiểm tra",
       "reopenCta": "Mở lại"
+    },
+    "studentReveal": {
+      "title": "Đưa mã truy cập cho {name}",
+      "intro": "{name} nhập mã này cùng email của trường để bắt đầu.",
+      "onlyThisStudent": "Chỉ đưa mã này cho {name}.",
+      "copyCta": "Sao chép mã",
+      "copiedToast": "Đã sao chép mã",
+      "copyErrorToast": "Không sao chép được mã. Thử lại.",
+      "emailMissingNote": "Danh sách lớp chưa có email của trường - hãy bổ sung email trước khi công bố mã.",
+      "closedNote": "Buổi kiểm tra này đã đóng. Mở lại để công bố mã.",
+      "unmintedNote": "Hãy công bố mã của lớp trước.",
+      "closeCta": "Đóng",
+      "actionLabel": "Công bố mã cho {name}"
     },
     "resit": {
       "cta": "Thi lại",

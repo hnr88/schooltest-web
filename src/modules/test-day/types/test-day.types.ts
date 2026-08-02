@@ -12,6 +12,11 @@ export type SittingStudentState =
   | 'submitted'
   | 'stalled';
 
+// C-SIT-05 derived row state (task 90, mvp-updates §4.5.3): the backend enum
+// is unchanged; the monitor intersects not_joined with the UI-only reveal
+// audit to show who has the code but has not joined yet.
+export type MonitorRowState = SittingStudentState | 'code_shown';
+
 // One row of the teacher-scoped GET /api/sittings list (core route, the owning
 // teacher filter is forced server-side).
 export interface ClassSitting {

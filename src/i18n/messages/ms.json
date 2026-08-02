@@ -2165,13 +2165,28 @@
       "emailMissing": "Tiada e-mel",
       "state": {
         "not_joined": "Belum menyertai",
+        "code_shown": "Kod ditunjukkan",
         "joined": "Telah menyertai",
         "in_progress": "Sedang berjalan",
         "submitted": "Telah diserahkan",
         "stalled": "Terhenti"
       },
+      "codeShownCount": "Kod ditunjukkan kepada {count}",
       "closeCta": "Tutup sesi ujian",
       "reopenCta": "Buka semula"
+    },
+    "studentReveal": {
+      "title": "Beri {name} kod akses",
+      "intro": "{name} memasukkan kod ini dengan e-mel sekolah mereka untuk bermula.",
+      "onlyThisStudent": "Beri kod ini kepada {name} sahaja.",
+      "copyCta": "Salin kod",
+      "copiedToast": "Kod disalin",
+      "copyErrorToast": "Kod tidak dapat disalin. Cuba lagi.",
+      "emailMissingNote": "Tiada e-mel sekolah dalam senarai - betulkan e-mel sebelum mendedahkan kod.",
+      "closedNote": "Sesi ujian ini ditutup. Buka semula untuk mendedahkan kod.",
+      "unmintedNote": "Dedahkan kod kelas dahulu.",
+      "closeCta": "Tutup",
+      "actionLabel": "Dedahkan kod kepada {name}"
     },
     "resit": {
       "cta": "Ujian semula",

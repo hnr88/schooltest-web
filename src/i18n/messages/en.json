@@ -2469,13 +2469,28 @@
       "emailMissing": "No email",
       "state": {
         "not_joined": "Not joined",
+        "code_shown": "Code shown",
         "joined": "Joined",
         "in_progress": "In progress",
         "submitted": "Submitted",
         "stalled": "Stalled"
       },
+      "codeShownCount": "Code shown to {count}",
       "closeCta": "Close sitting",
       "reopenCta": "Reopen sitting"
+    },
+    "studentReveal": {
+      "title": "Give {name} the access code",
+      "intro": "{name} enters this code with their school email to start.",
+      "onlyThisStudent": "Give this code to {name} only.",
+      "copyCta": "Copy code",
+      "copiedToast": "Code copied",
+      "copyErrorToast": "The code could not be copied. Try again.",
+      "emailMissingNote": "No school email on the roster - fix the email before revealing the code.",
+      "closedNote": "This sitting is closed. Reopen it to reveal the code.",
+      "unmintedNote": "Reveal the class code first.",
+      "closeCta": "Close",
+      "actionLabel": "Reveal the code to {name}"
     },
     "resit": {
       "cta": "Re-sit",

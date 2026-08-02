@@ -11,3 +11,6 @@ export const RESITTABLE_STATES: readonly SittingStudentState[] = [
   'in_progress',
   'stalled',
 ];
+
+// Zustand persist key for the C-SIT-05 per-student reveal audit store.
+export const REVEAL_AUDIT_STORAGE_KEY = 'schooltest-test-day-reveal-audit';
