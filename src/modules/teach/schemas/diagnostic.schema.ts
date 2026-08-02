@@ -12,7 +12,14 @@ export const diagnosticAttributeSchema = z.object({
 export const diagnosticMasteryRowSchema = z.object({
   student_ref: z.string(),
   student_document_id: z.string(),
+  latest_result_document_id: z.string().nullable(),
   attributes: z.array(diagnosticAttributeSchema),
+});
+
+export const diagnosticGroupSchema = z.object({
+  limiting_attribute: z.string(),
+  student_refs: z.array(z.string()),
+  count: z.number(),
 });
 
 export const diagnosticHeatmapRowSchema = z.object({
@@ -33,5 +40,6 @@ export const classDiagnosticSchema = z.object({
   sat_count: z.number(),
   roster_count: z.number(),
   mastery: z.array(diagnosticMasteryRowSchema),
+  groups: z.array(diagnosticGroupSchema),
   heatmap: z.array(diagnosticHeatmapRowSchema),
 });

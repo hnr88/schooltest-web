@@ -2074,6 +2074,9 @@
       "formLabel": "试卷 {code}",
       "masteryTitle": "班级阅读概况",
       "masteryDescription": "每个阅读领域标记为已掌握、发展中、未掌握或尚未评估。选择一名学生即可查看其个人概况。",
+      "groupsTitle": "为全班分组",
+      "groupsDescription": "按当前最需要加强的阅读领域为学生分组，方便您安排学生结对，并为每个小组设计不同的学习活动。选择一名学生即可查看其个人概况。",
+      "groupCount": "{count} 名学生",
       "emptyMasteryTitle": "诊断数据即将提供",
       "emptyMasteryBody": "学生完成测试 A 后，每名学生的阅读概况将显示在这里。",
       "heatmapTitle": "题目证据（全班）",
@@ -2085,6 +2088,7 @@
       "drilldownTitle": "{student} - 阅读概况",
       "drilldownClose": "关闭学生概况",
       "notAssessedNote": "尚未评估表示该领域没有安排任何题目。这代表缺失，绝不是零分。",
+      "reportLink": "打开完整报告",
       "areas": {
         "R1": "解码",
         "R2": "词汇",
@@ -2092,7 +2096,8 @@
         "R4": "主旨",
         "R5": "细节",
         "R6": "推理",
-        "R7": "批判性阅读"
+        "R7": "批判性阅读",
+        "not_yet_assessed": "尚未评估"
       },
       "status": {
         "mastered": "已掌握",

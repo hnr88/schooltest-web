@@ -2378,6 +2378,9 @@
       "formLabel": "Form {code}",
       "masteryTitle": "Class reading profile",
       "masteryDescription": "Each reading area is marked mastered, emerging, not mastered, or not yet assessed. Select a student to see their profile.",
+      "groupsTitle": "Group the class",
+      "groupsDescription": "Students grouped by the reading area currently holding them back, so you can see who to pair with whom and plan different work for each group. Select a student to see their profile.",
+      "groupCount": "{count, plural, one {# student} other {# students}}",
       "emptyMasteryTitle": "Diagnostic data coming",
       "emptyMasteryBody": "Once your students complete Test A, each student's reading profile appears here.",
       "heatmapTitle": "Item evidence (whole class)",
@@ -2389,6 +2392,7 @@
       "drilldownTitle": "{student} - reading profile",
       "drilldownClose": "Close student profile",
       "notAssessedNote": "Not yet assessed means no items in that area were administered. It is an absence, never a zero.",
+      "reportLink": "Open the full report",
       "areas": {
         "R1": "Decoding",
         "R2": "Vocabulary",
@@ -2396,7 +2400,8 @@
         "R4": "Gist",
         "R5": "Detail",
         "R6": "Inference",
-        "R7": "Critical reading"
+        "R7": "Critical reading",
+        "not_yet_assessed": "Not yet assessed"
       },
       "status": {
         "mastered": "Mastered",

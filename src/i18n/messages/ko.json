@@ -2074,6 +2074,9 @@
       "formLabel": "폼 {code}",
       "masteryTitle": "학급 읽기 프로필",
       "masteryDescription": "각 읽기 영역은 마스터, 발전 중, 미달성 또는 아직 평가되지 않음으로 표시됩니다. 학생을 선택하면 개별 프로필을 볼 수 있습니다.",
+      "groupsTitle": "학급 그룹 나누기",
+      "groupsDescription": "현재 가장 어려움을 겪고 있는 읽기 영역을 기준으로 학생들을 그룹으로 묶어, 누구와 누구를 짝지을지 확인하고 그룹별로 다른 학습 활동을 계획할 수 있습니다. 학생을 선택하면 개별 프로필을 볼 수 있습니다.",
+      "groupCount": "학생 {count}명",
       "emptyMasteryTitle": "진단 데이터가 곧 제공됩니다",
       "emptyMasteryBody": "학생들이 Test A를 완료하면 각 학생의 읽기 프로필이 여기에 표시됩니다.",
       "heatmapTitle": "문항 증거 (학급 전체)",
@@ -2085,6 +2088,7 @@
       "drilldownTitle": "{student} - 읽기 프로필",
       "drilldownClose": "학생 프로필 닫기",
       "notAssessedNote": "아직 평가되지 않음은 해당 영역의 문항이 출제되지 않았다는 뜻입니다. 결측이지 결코 0점이 아닙니다.",
+      "reportLink": "전체 리포트 열기",
       "areas": {
         "R1": "디코딩",
         "R2": "어휘",
@@ -2092,7 +2096,8 @@
         "R4": "요지",
         "R5": "세부 정보",
         "R6": "추론",
-        "R7": "비판적 읽기"
+        "R7": "비판적 읽기",
+        "not_yet_assessed": "아직 평가되지 않음"
       },
       "status": {
         "mastered": "마스터",

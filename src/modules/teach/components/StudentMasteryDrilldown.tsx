@@ -3,7 +3,9 @@
 import { useTranslations } from 'next-intl';
 import { X } from 'lucide-react';
 
+import { Link } from '@/i18n/navigation';
 import { StatusPill, type StatusPillTone } from '@/modules/design-system';
+import { REPORTS_HREF } from '@/modules/shell';
 import type { DiagnosticMasteryRow, DiagnosticStatus } from '@/modules/teach/types/diagnostic.types';
 
 const STATUS_TONE: Record<DiagnosticStatus, StatusPillTone> = {
@@ -18,9 +20,13 @@ interface StudentMasteryDrilldownProps {
   onClose: () => void;
 }
 
-// Individual level, one click down from the class view (task 75, mvp-updates
-// §4.9): the selected student's seven reading areas as a list (never a grid).
-// A null prob renders as "not yet assessed" — an absence, never 0%.
+// Individual level, one click down from the class view (tasks 75 and 96,
+// mvp-updates §4.9): the selected student's seven reading areas as a list
+// (never a grid). A null prob renders as "not yet assessed" - an absence,
+// never 0%. When the student has a finished result behind the row
+// (C-RPT-01 v2 latest_result_document_id), the drill links one click further
+// to the full teacher report for that result; students with no result yet get
+// the not-assessed note instead, never a dead link.
 export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldownProps) {
   const t = useTranslations('Teach.diagnostic');
 
@@ -58,7 +64,17 @@ export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldow
           </li>
         ))}
       </ul>
-      <p className="max-w-xl text-xs text-muted-foreground">{t('notAssessedNote')}</p>
+      {row.latest_result_document_id ? (
+        <Link
+          data-slot="drilldown-report-link"
+          href={`${REPORTS_HREF}/${row.latest_result_document_id}`}
+          className="w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        >
+          {t('reportLink')}
+        </Link>
+      ) : (
+        <p className="max-w-xl text-xs text-muted-foreground">{t('notAssessedNote')}</p>
+      )}
     </section>
   );
 }

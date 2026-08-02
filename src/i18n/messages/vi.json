@@ -2074,6 +2074,9 @@
       "formLabel": "Đề {code}",
       "masteryTitle": "Hồ sơ đọc của lớp",
       "masteryDescription": "Mỗi lĩnh vực đọc được đánh dấu là đã thành thạo, đang phát triển, chưa thành thạo hoặc chưa đánh giá. Chọn một học sinh để xem hồ sơ của em.",
+      "groupsTitle": "Chia nhóm cả lớp",
+      "groupsDescription": "Học sinh được chia nhóm theo lĩnh vực đọc đang kìm hãm các em, để cô thấy nên ghép em nào với em nào và lên kế hoạch hoạt động khác nhau cho từng nhóm. Chọn một học sinh để xem hồ sơ của em.",
+      "groupCount": "{count} học sinh",
       "emptyMasteryTitle": "Dữ liệu chẩn đoán sắp có",
       "emptyMasteryBody": "Khi học sinh hoàn thành Bài kiểm tra A, hồ sơ đọc của từng em sẽ xuất hiện ở đây.",
       "heatmapTitle": "Bằng chứng câu hỏi (cả lớp)",
@@ -2085,6 +2088,7 @@
       "drilldownTitle": "{student} - hồ sơ đọc",
       "drilldownClose": "Đóng hồ sơ học sinh",
       "notAssessedNote": "Chưa đánh giá nghĩa là không có câu hỏi nào ở lĩnh vực đó được giao. Đó là sự vắng mặt, không bao giờ là số không.",
+      "reportLink": "Mở báo cáo đầy đủ",
       "areas": {
         "R1": "Giải mã",
         "R2": "Từ vựng",
@@ -2092,7 +2096,8 @@
         "R4": "Ý chính",
         "R5": "Chi tiết",
         "R6": "Suy luận",
-        "R7": "Đọc phê bình"
+        "R7": "Đọc phê bình",
+        "not_yet_assessed": "Chưa đánh giá"
       },
       "status": {
         "mastered": "Đã thành thạo",

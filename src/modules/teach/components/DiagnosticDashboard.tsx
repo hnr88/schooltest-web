@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
 import { DiagnosticEmptyState } from '@/modules/teach/components/DiagnosticEmptyState';
+import { GroupPanel } from '@/modules/teach/components/GroupPanel';
 import { ItemTypeHeatmap } from '@/modules/teach/components/ItemTypeHeatmap';
 import { MasteryTable } from '@/modules/teach/components/MasteryTable';
 import { StudentMasteryDrilldown } from '@/modules/teach/components/StudentMasteryDrilldown';
@@ -33,6 +34,10 @@ export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/t
   const data = query.data ?? null;
   const selectedRow = data?.mastery.find((row) => row.student_ref === selectedRef) ?? null;
   const populated = data !== null && data.sat_count > 0;
+  // One selection source for both drill entries (task 96): the mastery table
+  // row and the group member button toggle the same student drilldown.
+  const toggleSelected = (ref: string) =>
+    setSelectedRef((current) => (current === ref ? null : ref));
 
   return (
     <main
@@ -81,11 +86,16 @@ export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/t
             <MasteryTable
               rows={data.mastery}
               selectedRef={selectedRef}
-              onSelect={(ref) => setSelectedRef((current) => (current === ref ? null : ref))}
+              onSelect={toggleSelected}
             />
             {selectedRow ? (
               <StudentMasteryDrilldown row={selectedRow} onClose={() => setSelectedRef(null)} />
             ) : null}
+            {/* Tasks 95-96 (spec 4.9/4.10): the differentiation groups sit below
+                the mastery list and above the heat map, so mastery stays the
+                headline and the heat map stays the nested evidence. Each group
+                member is a click target into the same student drilldown. */}
+            <GroupPanel groups={data.groups} onSelectStudent={toggleSelected} />
             {data.heatmap.length > 0 ? (
               <section
                 className="flex flex-col gap-3 rounded-xl border border-border bg-muted/40 px-4 py-4"

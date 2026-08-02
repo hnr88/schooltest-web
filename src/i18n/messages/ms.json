@@ -2074,6 +2074,9 @@
       "formLabel": "Borang {code}",
       "masteryTitle": "Profil membaca kelas",
       "masteryDescription": "Setiap bidang membaca ditandai sebagai dikuasai, sedang berkembang, belum dikuasai, atau belum dinilai. Pilih seorang murid untuk melihat profilnya.",
+      "groupsTitle": "Kumpulkan kelas",
+      "groupsDescription": "Murid dikumpulkan mengikut bidang membaca yang sedang menghalang kemajuan mereka, supaya anda dapat melihat siapa perlu dipasangkan dengan siapa dan merancang tugasan berbeza untuk setiap kumpulan. Pilih seorang murid untuk melihat profilnya.",
+      "groupCount": "{count} orang murid",
       "emptyMasteryTitle": "Data diagnostik akan datang",
       "emptyMasteryBody": "Sebaik sahaja murid anda melengkapkan Ujian A, profil membaca setiap murid akan muncul di sini.",
       "heatmapTitle": "Bukti item (seluruh kelas)",
@@ -2085,6 +2088,7 @@
       "drilldownTitle": "{student} - profil membaca",
       "drilldownClose": "Tutup profil murid",
       "notAssessedNote": "Belum dinilai bermaksud tiada item dalam bidang itu diberikan. Ia adalah ketiadaan, bukan sekali-kali sifar.",
+      "reportLink": "Buka laporan penuh",
       "areas": {
         "R1": "Pengekodan",
         "R2": "Perbendaharaan kata",
@@ -2092,7 +2096,8 @@
         "R4": "Intipati",
         "R5": "Perincian",
         "R6": "Inferens",
-        "R7": "Membaca kritis"
+        "R7": "Membaca kritis",
+        "not_yet_assessed": "Belum dinilai"
       },
       "status": {
         "mastered": "Dikuasai",

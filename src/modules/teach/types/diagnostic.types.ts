@@ -18,7 +18,19 @@ export interface DiagnosticMasteryRow {
   student_ref: string;
   // Stable React key — student_ref collides on real rosters ("Zz67 A." twice).
   student_document_id: string;
+  // Drill link target: the latest complete Result behind this row (null when the
+  // student has none).
+  latest_result_document_id: string | null;
   attributes: DiagnosticAttribute[];
+}
+
+// C-RPT-01 v2 (task 94): one differentiation group - children sharing a
+// limiting area (weakest assessed area per student; 'not_yet_assessed' always
+// sorts last). Rendered by GroupPanel (task 95) with friendly area labels only.
+export interface DiagnosticGroup {
+  limiting_attribute: string;
+  student_refs: string[];
+  count: number;
 }
 
 export interface DiagnosticHeatmapRow {
@@ -35,5 +47,6 @@ export interface ClassDiagnostic {
   sat_count: number;
   roster_count: number;
   mastery: DiagnosticMasteryRow[];
+  groups: DiagnosticGroup[];
   heatmap: DiagnosticHeatmapRow[];
 }
