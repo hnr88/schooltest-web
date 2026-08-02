@@ -2303,6 +2303,14 @@
     }
   },
   "Teach": {
+    "CycleBanner": {
+      "label": "Test cycle for this class",
+      "testA": "This class is working on Test A",
+      "testB": "This class is working on Test B",
+      "window": "Test window: {opens} to {closes}",
+      "formCode": "Form {code}",
+      "unscheduled": "No test is scheduled for this class yet. The dates will appear here once a test window opens."
+    },
     "meta": {
       "title": "Teacher dashboard - SchoolTest",
       "description": "Your teaching home: classes and reports."

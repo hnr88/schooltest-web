@@ -1999,6 +1999,14 @@
     }
   },
   "Teach": {
+    "CycleBanner": {
+      "label": "Chu kỳ kiểm tra của lớp này",
+      "testA": "Lớp này đang làm Test A",
+      "testB": "Lớp này đang làm Test B",
+      "window": "Thời gian kiểm tra: {opens} đến {closes}",
+      "formCode": "Mẫu {code}",
+      "unscheduled": "Lớp này chưa có bài kiểm tra nào được lên lịch. Ngày kiểm tra sẽ xuất hiện ở đây khi đợt kiểm tra mở."
+    },
     "meta": {
       "title": "Bảng điều khiển giáo viên - SchoolTest",
       "description": "Trang giảng dạy của bạn: lớp học và báo cáo."

@@ -1999,6 +1999,14 @@
     }
   },
   "Teach": {
+    "CycleBanner": {
+      "label": "本班测试周期",
+      "testA": "本班正在进行 Test A",
+      "testB": "本班正在进行 Test B",
+      "window": "测试时间:{opens} 至 {closes}",
+      "formCode": "表单 {code}",
+      "unscheduled": "本班暂未安排测试。测试窗口开放后,日期将显示在这里。"
+    },
     "meta": {
       "title": "教师控制面板 - SchoolTest",
       "description": "您的教学主页：班级和报告。"

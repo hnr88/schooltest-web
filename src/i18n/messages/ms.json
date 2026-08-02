@@ -1999,6 +1999,14 @@
     }
   },
   "Teach": {
+    "CycleBanner": {
+      "label": "Kitaran ujian untuk kelas ini",
+      "testA": "Kelas ini sedang menduduki Test A",
+      "testB": "Kelas ini sedang menduduki Test B",
+      "window": "Tetingkap ujian: {opens} hingga {closes}",
+      "formCode": "Borang {code}",
+      "unscheduled": "Tiada ujian dijadualkan untuk kelas ini lagi. Tarikh akan muncul di sini apabila tetingkap ujian dibuka."
+    },
     "meta": {
       "title": "Papan pemuka guru - SchoolTest",
       "description": "Laman mengajar anda: kelas dan laporan."

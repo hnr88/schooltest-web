@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { RosterScreen } from '@/modules/teach';
+import { CycleBanner, RosterScreen } from '@/modules/teach';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Teach.roster.meta');
@@ -21,5 +21,12 @@ interface TeachRosterPageProps {
 // layout keeps this teacher-only; C-CHD-01 scoping keeps it own-classes-only.
 export default async function TeachRosterPage({ params }: TeachRosterPageProps) {
   const { documentId } = await params;
-  return <RosterScreen documentId={documentId} />;
+  return (
+    <>
+      <div className="px-4 pt-6 sm:px-6 lg:px-8">
+        <CycleBanner documentId={documentId} />
+      </div>
+      <RosterScreen documentId={documentId} />
+    </>
+  );
 }

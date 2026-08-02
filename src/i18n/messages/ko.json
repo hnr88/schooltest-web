@@ -1999,6 +1999,14 @@
     }
   },
   "Teach": {
+    "CycleBanner": {
+      "label": "학급 테스트 주기",
+      "testA": "이 학급은 Test A를 진행 중입니다",
+      "testB": "이 학급은 Test B를 진행 중입니다",
+      "window": "시험 기간: {opens} ~ {closes}",
+      "formCode": "폼 {code}",
+      "unscheduled": "이 학급에는 아직 예정된 테스트가 없습니다. 시험 기간이 열리면 날짜가 여기에 표시됩니다."
+    },
     "meta": {
       "title": "교사 대시보드 - SchoolTest",
       "description": "교사 홈: 학급과 리포트."
