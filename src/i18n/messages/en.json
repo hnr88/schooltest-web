@@ -2358,10 +2358,15 @@
       "columnName": "Name",
       "columnStatus": "Status",
       "columnEmail": "Email",
+      "columnActions": "Actions",
       "statusActive": "Active",
       "statusArchived": "Archived",
       "emailMissing": "Email needed before test day",
       "emailMissingHint": "Students without an email cannot sign in on test day. Ask your school administrator to add the missing emails.",
+      "emailFixAction": "Report email for fixing",
+      "emailFixPending": "Fix requested",
+      "emailFixSuccessToast": "Your school administrator has been asked to fix this email.",
+      "emailFixErrorToast": "The email fix could not be requested. Try again.",
       "testDayLink": "Go to test day"
     },
     "diagnostic": {
@@ -2742,7 +2747,8 @@
       "emptyFiltered": "No children match these filters.",
       "classNone": "No class",
       "statusActive": "Active",
-      "statusArchived": "Archived"
+      "statusArchived": "Archived",
+      "emailFixRequested": "Email fix requested"
     },
     "pagination": {
       "previous": "Previous",

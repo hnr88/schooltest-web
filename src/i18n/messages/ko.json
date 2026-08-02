@@ -2054,10 +2054,15 @@
       "columnName": "이름",
       "columnStatus": "상태",
       "columnEmail": "이메일",
+      "columnActions": "작업",
       "statusActive": "재적",
       "statusArchived": "보관됨",
       "emailMissing": "시험일 전에 이메일 필요",
       "emailMissingHint": "이메일이 없는 학생은 시험일에 로그인할 수 없습니다. 학교 관리자에게 누락된 이메일을 추가해 달라고 요청하세요.",
+      "emailFixAction": "이메일 수정 요청",
+      "emailFixPending": "수정 요청됨",
+      "emailFixSuccessToast": "학교 관리자에게 이 이메일 수정을 요청했습니다.",
+      "emailFixErrorToast": "이메일 수정을 요청할 수 없습니다. 다시 시도하세요.",
       "testDayLink": "테스트 데이로 이동"
     },
     "diagnostic": {
@@ -2438,7 +2443,8 @@
       "emptyFiltered": "이 필터에 맞는 학생이 없습니다.",
       "classNone": "학급 없음",
       "statusActive": "재학",
-      "statusArchived": "보관됨"
+      "statusArchived": "보관됨",
+      "emailFixRequested": "이메일 수정 요청됨"
     },
     "pagination": {
       "previous": "이전",

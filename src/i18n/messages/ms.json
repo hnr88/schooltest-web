@@ -2054,10 +2054,15 @@
       "columnName": "Nama",
       "columnStatus": "Status",
       "columnEmail": "E-mel",
+      "columnActions": "Tindakan",
       "statusActive": "Aktif",
       "statusArchived": "Diarkibkan",
       "emailMissing": "E-mel diperlukan sebelum hari ujian",
       "emailMissingHint": "Murid tanpa e-mel tidak dapat log masuk pada hari ujian. Minta pentadbir sekolah anda menambah e-mel yang tiada.",
+      "emailFixAction": "Laporkan e-mel untuk dibetulkan",
+      "emailFixPending": "Pembetulan diminta",
+      "emailFixSuccessToast": "Pentadbir sekolah anda telah diminta untuk membetulkan e-mel ini.",
+      "emailFixErrorToast": "Pembetulan e-mel tidak dapat diminta. Cuba lagi.",
       "testDayLink": "Pergi ke hari ujian"
     },
     "diagnostic": {
@@ -2438,7 +2443,8 @@
       "emptyFiltered": "Tiada murid yang sepadan dengan penapis ini.",
       "classNone": "Tiada kelas",
       "statusActive": "Aktif",
-      "statusArchived": "Diarkibkan"
+      "statusArchived": "Diarkibkan",
+      "emailFixRequested": "Pembetulan e-mel diminta"
     },
     "pagination": {
       "previous": "Sebelumnya",

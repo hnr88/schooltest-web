@@ -2054,10 +2054,15 @@
       "columnName": "姓名",
       "columnStatus": "状态",
       "columnEmail": "邮箱",
+      "columnActions": "操作",
       "statusActive": "在读",
       "statusArchived": "已归档",
       "emailMissing": "测试日前需要添加邮箱",
       "emailMissingHint": "没有邮箱的学生将无法在测试日登录。请联系学校管理员添加缺失的邮箱。",
+      "emailFixAction": "报告需要修改的邮箱",
+      "emailFixPending": "已请求修改",
+      "emailFixSuccessToast": "已请学校管理员修改此邮箱。",
+      "emailFixErrorToast": "无法请求修改邮箱，请重试。",
       "testDayLink": "前往测试日"
     },
     "diagnostic": {
@@ -2438,7 +2443,8 @@
       "emptyFiltered": "没有符合这些筛选条件的学生。",
       "classNone": "未分班",
       "statusActive": "在读",
-      "statusArchived": "已归档"
+      "statusArchived": "已归档",
+      "emailFixRequested": "已请求修改邮箱"
     },
     "pagination": {
       "previous": "上一页",

@@ -23,6 +23,10 @@ interface ChildrenTableProps {
 
 // C-CHD-01 roster: name, class, status pill and the row actions. Dumb
 // renderer — edit/archive wiring lives in ChildRowActions and the screen.
+// Rows with the C-CHD-05 flag set show the email-fix badge (task 103) beside
+// the name — the table has no email column, so the name cell is the identity
+// anchor. Driven by the server flag only; editing the email (C-CHD-03)
+// auto-clears it server-side.
 export function ChildrenTable({ rows, filtered, onEdit }: ChildrenTableProps) {
   const t = useTranslations('SchoolChildren.table');
 
@@ -42,7 +46,14 @@ export function ChildrenTable({ rows, filtered, onEdit }: ChildrenTableProps) {
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.documentId}>
-              <TableCell className="font-medium">{childDisplayName(row)}</TableCell>
+              <TableCell className="font-medium">
+                <span className="flex flex-wrap items-center gap-2">
+                  {childDisplayName(row)}
+                  {row.email_fix_requested ? (
+                    <StatusPill tone="warning">{t('emailFixRequested')}</StatusPill>
+                  ) : null}
+                </span>
+              </TableCell>
               <TableCell>
                 {row.class?.name ?? (
                   <span className="text-muted-foreground">{t('classNone')}</span>

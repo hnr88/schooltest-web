@@ -2054,10 +2054,15 @@
       "columnName": "Tên",
       "columnStatus": "Trạng thái",
       "columnEmail": "Email",
+      "columnActions": "Thao tác",
       "statusActive": "Đang học",
       "statusArchived": "Đã lưu trữ",
       "emailMissing": "Cần email trước ngày kiểm tra",
       "emailMissingHint": "Học sinh không có email sẽ không đăng nhập được vào ngày kiểm tra. Hãy nhờ quản trị viên trường thêm các email còn thiếu.",
+      "emailFixAction": "Báo email cần sửa",
+      "emailFixPending": "Đã yêu cầu sửa",
+      "emailFixSuccessToast": "Đã yêu cầu quản trị viên trường sửa email này.",
+      "emailFixErrorToast": "Không thể gửi yêu cầu sửa email. Hãy thử lại.",
       "testDayLink": "Đi đến ngày kiểm tra"
     },
     "diagnostic": {
@@ -2438,7 +2443,8 @@
       "emptyFiltered": "Không có học sinh nào khớp với bộ lọc này.",
       "classNone": "Chưa có lớp",
       "statusActive": "Đang học",
-      "statusArchived": "Đã lưu trữ"
+      "statusArchived": "Đã lưu trữ",
+      "emailFixRequested": "Đã yêu cầu sửa email"
     },
     "pagination": {
       "previous": "Trước",

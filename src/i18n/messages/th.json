@@ -2054,10 +2054,15 @@
       "columnName": "ชื่อ",
       "columnStatus": "สถานะ",
       "columnEmail": "อีเมล",
+      "columnActions": "การดำเนินการ",
       "statusActive": "กำลังเรียน",
       "statusArchived": "จัดเก็บแล้ว",
       "emailMissing": "ต้องมีอีเมลก่อนวันสอบ",
       "emailMissingHint": "นักเรียนที่ไม่มีอีเมลจะเข้าสู่ระบบในวันสอบไม่ได้ โปรดขอให้ผู้ดูแลโรงเรียนของคุณเพิ่มอีเมลที่ขาดหายไป",
+      "emailFixAction": "รายงานอีเมลที่ต้องแก้ไข",
+      "emailFixPending": "ขอแก้ไขแล้ว",
+      "emailFixSuccessToast": "ได้ขอให้ผู้ดูแลโรงเรียนของคุณแก้ไขอีเมลนี้แล้ว",
+      "emailFixErrorToast": "ไม่สามารถขอแก้ไขอีเมลได้ โปรดลองอีกครั้ง",
       "testDayLink": "ไปที่วันสอบ"
     },
     "diagnostic": {
@@ -2438,7 +2443,8 @@
       "emptyFiltered": "ไม่มีนักเรียนที่ตรงกับตัวกรองเหล่านี้",
       "classNone": "ไม่มีชั้นเรียน",
       "statusActive": "กำลังเรียน",
-      "statusArchived": "จัดเก็บแล้ว"
+      "statusArchived": "จัดเก็บแล้ว",
+      "emailFixRequested": "มีการขอแก้ไขอีเมล"
     },
     "pagination": {
       "previous": "ก่อนหน้า",

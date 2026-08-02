@@ -17,6 +17,7 @@ export const schoolChildSchema = z.object({
   given_name: z.string().nullable(),
   family_name: z.string().nullable(),
   status: z.string().nullable(),
+  email_fix_requested: z.boolean(),
   class: z
     .object({ documentId: z.string(), name: z.string().nullable() })
     .nullable(),

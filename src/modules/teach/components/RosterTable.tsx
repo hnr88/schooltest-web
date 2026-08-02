@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import {
+  Button,
   StatusPill,
   Table,
   TableBody,
@@ -11,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/modules/design-system';
+import { useFlagEmailFixMutation } from '@/modules/teach/queries/use-flag-email-fix.mutation';
 import type { RosterChild } from '@/modules/teach/types/roster.types';
 
 function rosterDisplayName(row: RosterChild): string {
@@ -21,13 +23,17 @@ interface RosterTableProps {
   rows: RosterChild[];
 }
 
-// Teacher roster (task 63, mvp-updates §4.4): read-only name/status/email.
-// A null email renders the "needed before test day" warning pill — the fix
-// itself stays with the school administrator (C-CHD-03 is school_admin-only),
-// so there is deliberately no inline edit here. Dumb renderer; fetching lives
-// in useClassRosterQuery.
+// Teacher roster (task 63, mvp-updates §4.4): name/status/email plus the
+// C-CHD-05 email-fix action (task 102) that flags a wrong or missing email for
+// the school administrator. The fix itself stays with the administrator
+// (C-CHD-03 is school_admin-only), so there is deliberately no inline edit.
+// Once flagged, the action swaps to a pending badge; task 106 closes the D-18
+// gap so the badge comes from the server flag on the row (with the
+// mutation-session state covering the moment before the invalidated roster
+// query refetches). Fetching lives in useClassRosterQuery.
 export function RosterTable({ rows }: RosterTableProps) {
   const t = useTranslations('Teach.roster');
+  const { flagEmailFix, isFlagged, pendingDocumentId } = useFlagEmailFixMutation();
 
   return (
     <div className="rounded-xl border border-border bg-card">
@@ -37,6 +43,7 @@ export function RosterTable({ rows }: RosterTableProps) {
             <TableHead>{t('columnName')}</TableHead>
             <TableHead>{t('columnStatus')}</TableHead>
             <TableHead>{t('columnEmail')}</TableHead>
+            <TableHead>{t('columnActions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -53,6 +60,21 @@ export function RosterTable({ rows }: RosterTableProps) {
                   row.email
                 ) : (
                   <StatusPill tone="warning">{t('emailMissing')}</StatusPill>
+                )}
+              </TableCell>
+              <TableCell>
+                {row.email_fix_requested || isFlagged(row.documentId) ? (
+                  <StatusPill tone="info">{t('emailFixPending')}</StatusPill>
+                ) : (
+                  <Button
+                    data-slot="email-fix-action"
+                    variant="outline"
+                    size="sm"
+                    disabled={pendingDocumentId === row.documentId}
+                    onClick={() => flagEmailFix(row.documentId)}
+                  >
+                    {t('emailFixAction')}
+                  </Button>
                 )}
               </TableCell>
             </TableRow>

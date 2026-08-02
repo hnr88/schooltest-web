@@ -5,6 +5,7 @@ export { DiagnosticDashboard } from './components/DiagnosticDashboard';
 export { ExportMarkdownButton } from './components/ExportMarkdownButton';
 export { ProgressPanel } from './components/ProgressPanel';
 export { useClassRosterQuery } from './queries/use-class-roster.query';
+export { useFlagEmailFixMutation } from './queries/use-flag-email-fix.mutation';
 export { useClassDiagnosticQuery, classDiagnosticQueryOptions } from './queries/use-class-diagnostic.query';
 export { useClassProgressQuery } from './queries/use-class-progress.query';
 export { TeachHomeClassCard } from './components/TeachHomeClassCard';

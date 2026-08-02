@@ -13,6 +13,7 @@ export interface SchoolChild {
   given_name: string | null;
   family_name: string | null;
   status: string | null;
+  email_fix_requested: boolean;
   class: SchoolChildClassRef | null;
 }
 
