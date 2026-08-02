@@ -1575,6 +1575,14 @@
     "filterLabel": "Filter notifications by category",
     "filters": {
       "all": "All"
+    },
+    "teacherFeed": {
+      "meta": {
+        "title": "Notifications - SchoolTest",
+        "description": "Review results-ready updates and school notices in one place."
+      },
+      "emptyTitle": "No notifications yet",
+      "emptyDescription": "When results are ready or your school sends an update, it will appear here."
     }
   },
   "QueryError": {

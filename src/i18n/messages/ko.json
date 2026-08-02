@@ -1575,6 +1575,14 @@
     "filterLabel": "Filter notifications by category",
     "filters": {
       "all": "All"
+    },
+    "teacherFeed": {
+      "meta": {
+        "title": "알림 - SchoolTest",
+        "description": "결과 준비 알림과 학교 공지를 한곳에서 확인하세요."
+      },
+      "emptyTitle": "아직 알림이 없습니다",
+      "emptyDescription": "결과가 준비되거나 학교에서 업데이트를 보낼 때 여기에 표시됩니다."
     }
   },
   "QueryError": {

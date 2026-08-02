@@ -24,6 +24,8 @@ export { ParentGuard } from './components/ParentGuard';
 export { TeacherGuard } from './components/TeacherGuard';
 export { SchoolAdminGuard } from './components/SchoolAdminGuard';
 export { useRequireSchoolAdmin } from './hooks/use-require-school-admin';
+export { SchoolStaffGuard } from './components/SchoolStaffGuard';
+export { useRequireSchoolStaff } from './hooks/use-require-school-staff';
 export { OpsGuard } from './components/OpsGuard';
 export { useRequireOps } from './hooks/use-require-ops';
 export {

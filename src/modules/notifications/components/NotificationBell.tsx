@@ -4,6 +4,7 @@ import { ArrowRight, Bell } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
+import { SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE, useAuth } from '@/modules/auth';
 import {
   Button,
   CountBadge,
@@ -29,6 +30,13 @@ function NotificationBell() {
   const actions = useNotificationActions();
   const notifications = notificationsQuery.data?.data ?? [];
   const unreadCount = notificationsQuery.data?.meta.unreadCount ?? 0;
+
+  // C-NOT-01 (D-16a): school staff (teacher + school_admin) get the teach feed
+  // as the view-all target; everyone else keeps the parent feed unchanged.
+  const { user } = useAuth();
+  const roleType = user?.role?.type ?? null;
+  const isSchoolStaff = roleType === TEACHER_ROLE_TYPE || roleType === SCHOOL_ADMIN_ROLE_TYPE;
+  const viewAllHref = isSchoolStaff ? '/dashboard/teach/notifications' : '/dashboard/notifications';
 
   function handleActivate(notification: Notification) {
     if (notification.readAt === null) actions.markRead(notification.documentId);
@@ -83,7 +91,7 @@ function NotificationBell() {
         />
         <div className="border-t border-border p-1.5">
           <Button
-            href="/dashboard/notifications"
+            href={viewAllHref}
             variant="ghost"
             onClick={() => setIsOpen(false)}
             className="h-auto min-h-11 w-full justify-center gap-1.5 text-caption font-semibold text-primary hover:bg-blue-50 dark:hover:bg-blue-950"

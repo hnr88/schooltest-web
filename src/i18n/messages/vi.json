@@ -1575,6 +1575,14 @@
     "filterLabel": "Filter notifications by category",
     "filters": {
       "all": "All"
+    },
+    "teacherFeed": {
+      "meta": {
+        "title": "Thông báo - SchoolTest",
+        "description": "Xem các cập nhật kết quả đã sẵn sàng và thông báo của trường ở một nơi."
+      },
+      "emptyTitle": "Chưa có thông báo nào",
+      "emptyDescription": "Khi kết quả sẵn sàng hoặc trường của bạn gửi cập nhật, nội dung đó sẽ xuất hiện ở đây."
     }
   },
   "QueryError": {

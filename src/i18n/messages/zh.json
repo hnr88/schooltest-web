@@ -1575,6 +1575,14 @@
     "filterLabel": "Filter notifications by category",
     "filters": {
       "all": "All"
+    },
+    "teacherFeed": {
+      "meta": {
+        "title": "通知 - SchoolTest",
+        "description": "在一个地方查看成绩就绪更新和学校通知。"
+      },
+      "emptyTitle": "暂无通知",
+      "emptyDescription": "当成绩就绪或学校发送更新时，将显示在这里。"
     }
   },
   "QueryError": {
