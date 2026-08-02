@@ -2503,7 +2503,16 @@
       },
       "codeShownCount": "Code shown to {count}",
       "closeCta": "Close sitting",
-      "reopenCta": "Reopen sitting"
+      "reopenCta": "Reopen sitting",
+      "absentLabel": "Absent",
+      "markAbsentLabel": "Mark {name} as absent",
+      "clearAbsentLabel": "Mark {name} as present",
+      "absentErrorToast": "The absent mark could not be saved. Try again."
+    },
+    "needsToSit": {
+      "title": "Still to sit",
+      "count": "{count, plural, =0 {No one still to sit} one {# student still to sit} other {# students still to sit}}",
+      "empty": "Everyone has joined or submitted. Students marked absent can sit later."
     },
     "studentReveal": {
       "title": "Give {name} the access code",

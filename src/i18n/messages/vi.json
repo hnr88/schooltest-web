@@ -2199,7 +2199,16 @@
       },
       "codeShownCount": "Đã hiện mã cho {count}",
       "closeCta": "Đóng buổi kiểm tra",
-      "reopenCta": "Mở lại"
+      "reopenCta": "Mở lại",
+      "absentLabel": "Vắng mặt",
+      "markAbsentLabel": "Đánh dấu {name} vắng mặt",
+      "clearAbsentLabel": "Đánh dấu {name} có mặt",
+      "absentErrorToast": "Không lưu được đánh dấu vắng mặt. Vui lòng thử lại."
+    },
+    "needsToSit": {
+      "title": "Chưa làm bài",
+      "count": "{count, plural, other {Còn # học sinh chưa làm bài}}",
+      "empty": "Mọi học sinh đã tham gia hoặc nộp bài. Học sinh được đánh dấu vắng mặt có thể làm bài sau."
     },
     "studentReveal": {
       "title": "Đưa mã truy cập cho {name}",

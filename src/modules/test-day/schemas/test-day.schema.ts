@@ -42,6 +42,8 @@ export const sittingMonitorSchema = z.object({
       email: z.string().nullable(),
       state: sittingStudentStateSchema,
       session_documentId: z.string().nullable(),
+      absent: z.boolean(),
+      needs_to_sit: z.boolean(),
     }),
   ),
 });

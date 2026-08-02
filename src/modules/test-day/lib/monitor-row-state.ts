@@ -1,6 +1,10 @@
 import type { RevealAuditEntry } from '../stores/use-reveal-audit-store';
 import type { MonitorRowState, MonitorStudent, SittingStatus } from '../types/test-day.types';
 
+export function studentDisplayName(row: MonitorStudent): string {
+  return [row.given_name, row.family_name].filter(Boolean).join(' ');
+}
+
 // C-SIT-05 (task 90, mvp-updates §4.5.3): code_shown is a pure client
 // derivation over the monitor payload and the UI-only reveal audit store.
 // The backend state enum is unchanged and no server data is mutated.

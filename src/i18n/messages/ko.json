@@ -2199,7 +2199,16 @@
       },
       "codeShownCount": "{count}명에게 코드 표시됨",
       "closeCta": "시험 닫기",
-      "reopenCta": "다시 열기"
+      "reopenCta": "다시 열기",
+      "absentLabel": "결석",
+      "markAbsentLabel": "{name} 학생을 결석으로 표시",
+      "clearAbsentLabel": "{name} 학생을 출석으로 표시",
+      "absentErrorToast": "결석 표시를 저장하지 못했습니다. 다시 시도해 주세요."
+    },
+    "needsToSit": {
+      "title": "아직 응시하지 않은 학생",
+      "count": "{count, plural, other {아직 응시하지 않은 학생 #명}}",
+      "empty": "모든 학생이 참여했거나 제출했습니다. 결석으로 표시된 학생은 나중에 응시할 수 있습니다."
     },
     "studentReveal": {
       "title": "{name} 학생에게 접속 코드 알려 주기",

@@ -7,28 +7,34 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/modules/design-system';
 import { effectiveRevealedIds, summarizeRowStates } from '../lib/monitor-row-state';
 import { useCloseReopenMutation } from '../mutations/use-close-reopen.mutation';
+import { useMarkAbsentMutation } from '../mutations/use-mark-absent.mutation';
 import { useResitMutation } from '../mutations/use-resit.mutation';
 import { useSittingMonitorQuery } from '../queries/use-sitting-monitor.query';
 import { useRevealAuditStore } from '../stores/use-reveal-audit-store';
 import type { ClassSitting } from '../types/test-day.types';
 import { MonitorSummary } from './MonitorSummary';
 import { MonitorTable } from './MonitorTable';
+import { NeedsToSitPanel } from './NeedsToSitPanel';
 
 interface MonitorSectionProps {
   sitting: ClassSitting;
 }
 
 // The live monitor section (C-SIT-02 polling + E2-11 close/reopen + C-SIT-03
-// re-sit wiring). Kept out of TestDayScreen to respect the component size
-// limit; the table itself is a dumb renderer. The summary line (task 90)
-// counts the derived row states including code_shown so a staggered sitting
-// visibly sums to the roster.
+// re-sit + C-SIT-06 absent wiring). Kept out of TestDayScreen to respect the
+// component size limit; the table itself is a dumb renderer. The summary line
+// (task 90) counts the derived row states including code_shown so a staggered
+// sitting visibly sums to the roster.
 export function MonitorSection({ sitting }: MonitorSectionProps) {
   const t = useTranslations('TestDay.monitor');
   const monitor = useSittingMonitorQuery(sitting.documentId);
   const closeReopen = useCloseReopenMutation();
   const resit = useResitMutation();
+  const markAbsent = useMarkAbsentMutation();
   const resitPendingId = resit.isPending ? (resit.variables?.studentDocumentId ?? null) : null;
+  const absentPendingId = markAbsent.isPending
+    ? (markAbsent.variables?.studentDocumentId ?? null)
+    : null;
   const revealEntries = useRevealAuditStore((state) => state.entries[sitting.documentId]);
   const summary = useMemo(() => {
     if (!monitor.data) return null;
@@ -69,13 +75,18 @@ export function MonitorSection({ sitting }: MonitorSectionProps) {
         </p>
       ) : null}
       {summary ? <MonitorSummary counts={summary} /> : null}
+      {monitor.isSuccess ? <NeedsToSitPanel students={monitor.data.students} /> : null}
       {monitor.isSuccess ? (
         <MonitorTable
           sitting={monitor.data.sitting}
           students={monitor.data.students}
           resitPendingId={resitPendingId}
+          absentPendingId={absentPendingId}
           onResit={(studentDocumentId) =>
             resit.mutate({ sittingDocumentId: sitting.documentId, studentDocumentId })
+          }
+          onToggleAbsent={(studentDocumentId, absent) =>
+            markAbsent.mutate({ sittingDocumentId: sitting.documentId, studentDocumentId, absent })
           }
         />
       ) : null}

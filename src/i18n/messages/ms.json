@@ -2199,7 +2199,16 @@
       },
       "codeShownCount": "Kod ditunjukkan kepada {count}",
       "closeCta": "Tutup sesi ujian",
-      "reopenCta": "Buka semula"
+      "reopenCta": "Buka semula",
+      "absentLabel": "Tidak hadir",
+      "markAbsentLabel": "Tandakan {name} sebagai tidak hadir",
+      "clearAbsentLabel": "Tandakan {name} sebagai hadir",
+      "absentErrorToast": "Tanda tidak hadir tidak dapat disimpan. Cuba lagi."
+    },
+    "needsToSit": {
+      "title": "Belum menduduki ujian",
+      "count": "{count, plural, other {# pelajar belum menduduki ujian}}",
+      "empty": "Semua pelajar telah menyertai atau menghantar. Pelajar yang ditandakan tidak hadir boleh menduduki ujian kemudian."
     },
     "studentReveal": {
       "title": "Beri {name} kod akses",

@@ -1,5 +1,7 @@
 export { RunSheetScreen } from './components/RunSheetScreen';
+export { AbsentToggle } from './components/AbsentToggle';
 export { StudentRevealDialog } from './components/StudentRevealDialog';
+export { NeedsToSitPanel } from './components/NeedsToSitPanel';
 export { TestDayScreen } from './components/TestDayScreen';
 export { useRevealAuditStore } from './stores/use-reveal-audit-store';
 export type { RevealAuditEntry } from './stores/use-reveal-audit-store';

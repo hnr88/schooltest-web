@@ -2199,7 +2199,16 @@
       },
       "codeShownCount": "已向 {count} 人出示访问码",
       "closeCta": "关闭测验",
-      "reopenCta": "重新开放"
+      "reopenCta": "重新开放",
+      "absentLabel": "缺席",
+      "markAbsentLabel": "将 {name} 标记为缺席",
+      "clearAbsentLabel": "将 {name} 标记为出席",
+      "absentErrorToast": "无法保存缺席标记，请重试。"
+    },
+    "needsToSit": {
+      "title": "尚未参加",
+      "count": "{count, plural, other {还有 # 名学生尚未参加}}",
+      "empty": "所有学生都已加入或提交。标记为缺席的学生可以稍后补考。"
     },
     "studentReveal": {
       "title": "把访问码交给 {name}",

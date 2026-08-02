@@ -30,7 +30,10 @@ export interface ClassSitting {
   class: { documentId: string; name: string } | null;
 }
 
-// C-SIT-02 monitor student row.
+// C-SIT-02 monitor student row. absent/needs_to_sit are the C-SIT-06 fields
+// (task 119, mvp-updates §4.5.6): absent is the teacher-set flag persisted on
+// the sitting; needs_to_sit is the server derivation (not_joined or stalled,
+// never absent).
 export interface MonitorStudent {
   documentId: string;
   given_name: string;
@@ -38,6 +41,8 @@ export interface MonitorStudent {
   email: string | null;
   state: SittingStudentState;
   session_documentId: string | null;
+  absent: boolean;
+  needs_to_sit: boolean;
 }
 
 // C-SIT-02 monitor payload.
