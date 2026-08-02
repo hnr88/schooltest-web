@@ -32,8 +32,6 @@ const EALD_TRUSTED_SCHOOLS = [
   'trustedBy.one',
   'trustedBy.two',
   'trustedBy.three',
-  'trustedBy.four',
-  'trustedBy.five',
 ] as const;
 
 const DIAGNOSE_NEXT_SECTIONS: readonly NextSectionCard[] = [

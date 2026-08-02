@@ -2790,5 +2790,309 @@
       "itemOne": "Khi tất cả học sinh đã nộp bài, hãy đóng buổi kiểm tra trên màn hình ngày kiểm tra.",
       "itemTwo": "Kết quả sẽ xuất hiện trên bảng điều khiển của bạn khi việc chấm điểm hoàn tất."
     }
+  },
+  "Eald": {
+    "meta": {
+      "homeTitle": "SchoolTest: Một dạng bài kiểm tra tiếng Anh khác",
+      "homeDescription": "Xem chính xác từng học sinh EAL/D làm được và chưa làm được gì, theo từng vi kỹ năng, trong 30 phút mỗi kỹ năng.",
+      "diagnoseTitle": "Chẩn đoán: SchoolTest EAL/D",
+      "diagnoseDescription": "SchoolTest chia mỗi vĩ kỹ năng thành các vi kỹ năng thành phần, để bạn thấy chính xác người học đang ở đâu và nên dạy gì trước.",
+      "predictTitle": "Dự đoán mức sẵn sàng vào lớp chính: SchoolTest EAL/D",
+      "predictDescription": "Một chỉ số sẵn sàng được xây dựng từ mọi vi kỹ năng trên cả bốn kỹ năng. Khi cho học sinh chuyển lớp, bạn sẽ biết họ đã sẵn sàng. Không phải vì cảm giác đúng, mà vì dữ liệu nói vậy.",
+      "teachTitle": "Lên kế hoạch và giảng dạy: SchoolTest EAL/D",
+      "teachDescription": "Xuất dữ liệu cá nhân hoặc cả lớp an toàn về quyền riêng tư và đưa cho ChatGPT, Gemini hoặc Claude. Dữ liệu vi kỹ năng thực biến một câu lệnh chung chung thành nội dung giảng dạy cá nhân hoá.",
+      "trackTitle": "Theo dõi tiến bộ: SchoolTest EAL/D",
+      "trackDescription": "Kiểm tra lại bất kỳ kỹ năng nào trong 30 phút, thường xuyên theo chu kỳ giảng dạy của bạn. Mọi kết quả đều nằm trên cùng một thang đo, nên bạn luôn biết cái gì đã thay đổi và thay đổi bao nhiêu."
+    },
+    "nav": {
+      "label": "Điều hướng EALD",
+      "diagnose": "Chẩn đoán",
+      "teach": "Giảng dạy",
+      "track": "Theo dõi",
+      "predict": "Dự đoán",
+      "schoolSearch": "SchoolSearch",
+      "registerInterest": "Đăng ký quan tâm",
+      "signIn": "Đăng nhập",
+      "startFree": "Bắt đầu miễn phí",
+      "openMenu": "Mở menu",
+      "closeMenu": "Đóng menu"
+    },
+    "home": {
+      "hero": {
+        "badge": "Dành cho lớp học EAL/D tại Úc",
+        "title": "Một dạng bài kiểm tra tiếng Anh khác.",
+        "subtitle": "Xem chính xác từng học sinh EAL/D làm được và chưa làm được gì, theo từng vi kỹ năng, trong 30 phút mỗi kỹ năng.",
+        "primaryCta": "Đăng ký quan tâm",
+        "secondaryCta": "Xem hồ sơ mẫu",
+        "microcopy": "Tham gia chương trình thí điểm trường sáng lập"
+      },
+      "trustedBy": {
+        "label": "Đang thí điểm cùng",
+        "one": "John Paul College",
+        "two": "Ivanhoe Grammar",
+        "three": "Moreton Bay College"
+      },
+      "problem": {
+        "eyebrow": "Vấn đề",
+        "title": "Nếu bạn có thể nhìn vào tâm trí các em thì sao?",
+        "bodyOne": "Mỗi học sinh EAL/D đến lớp chỉ là một con số thô: điểm xếp lớp, điểm stanine, bậc CEFR. Các em tiến qua các giai đoạn ACARA rộng lớn. Không cái nào cho bạn cái nhìn thực chứng về hồ sơ ngôn ngữ thực sự của các em.",
+        "bodyTwo": "Vậy thứ Hai dạy gì, ai ghép nhóm với ai, bài giảng có hiệu quả không, các em đã sẵn sàng vào lớp chính chưa. Tất cả đều dựa vào trực giác. Nếu bạn có dữ liệu tâm lý trắc hỗ trợ thì sao?",
+        "badgeScore": "65",
+        "badgeCefr": "CEFR B1",
+        "badgePhase": "Phát triển"
+      },
+      "solution": {
+        "intro": "Bài kiểm tra chẩn đoán và tiến bộ dành cho lớp EAL/D, Khối 7–12.",
+        "body": "SchoolTest đo 4 kỹ năng và 27 vi kỹ năng trên đọc, nghe, nói và viết. 30 phút mỗi kỹ năng, hiển thị tiến trình ACARA mỗi lần kiểm tra.",
+        "tagline": "Đánh giá không còn là bản tóm tắt mà trở thành tấm bản đồ."
+      },
+      "whatYouGet": {
+        "eyebrow": "Bạn nhận được gì",
+        "title": "Bài kiểm tra 30 phút trong lớp. Chẩn đoán, giảng dạy, theo dõi và dự đoán.",
+        "diagnoseTitle": "Thấy điểm mạnh và điểm yếu",
+        "diagnoseDescription": "27 vi kỹ năng từ một bài kiểm tra 30 phút. Sáu tuần kiểm tra chẩn đoán, xong ngay ngày đầu tiên.",
+        "teachTitle": "Lên kế hoạch và giảng dạy",
+        "teachDescription": "Xuất dữ liệu cả lớp an toàn quyền riêng tư vào bất kỳ AI nào. Việc phân hoá không còn là việc của tối Chủ nhật.",
+        "trackTitle": "Theo dõi tiến bộ theo thời gian",
+        "trackDescription": "Mọi kết quả trên cùng thang ACARA. Nếu có hiệu quả, nó sẽ hiện ra.",
+        "predictTitle": "Dự đoán mức sẵn sàng vào lớp chính",
+        "predictDescription": "Một điểm sẵn sàng trên cả bốn lĩnh vực. Quyết định chuyển lớp mà bạn có thể bảo vệ."
+      },
+      "classroom": {
+        "quote": "Đánh giá không còn là bản tóm tắt mà trở thành tấm bản đồ.",
+        "subtext": "Khối 7–12 · Đọc, nghe, nói và viết"
+      },
+      "proof": {
+        "badge": "Xây dựng trên hơn 40 năm nghiên cứu tâm lý trắc",
+        "skillsValue": "4 kỹ năng",
+        "skillsLabel": "Đọc, nghe, nói, viết",
+        "yearsValue": "Khối 7–12",
+        "yearsLabel": "Nội dung phù hợp độ tuổi và bối cảnh Úc",
+        "scalesValue": "ACARA + CEFR",
+        "scalesLabel": "Giai đoạn và bậc, đặt cạnh nhau",
+        "durationValue": "30 phút",
+        "durationLabel": "Mỗi kỹ năng, thường xuyên tuỳ ý"
+      },
+      "register": {
+        "foundingEyebrow": "Trường sáng lập",
+        "foundingTitle": "Chúng tôi đang xây dựng điều này cùng các trường sáng lập.",
+        "foundingBody": "Chúng tôi sắp bước vào thử nghiệm thực địa. Chúng tôi cần các trường sẵn sàng thử với học sinh thật và cho chúng tôi biết chỗ nào còn sai.",
+        "benefitEarlyAccess": "Trải nghiệm sớm trong quá trình xây dựng",
+        "benefitDirectInput": "Góp ý trực tiếp vào các báo cáo",
+        "benefitFoundingTerms": "Điều kiện sáng lập khi ra mắt",
+        "formTitle": "Đăng ký quan tâm",
+        "formSubtitle": "Chúng tôi sẽ liên hệ trong vòng một tuần kèm báo cáo mẫu.",
+        "nameLabel": "Họ tên",
+        "namePlaceholder": "Nguyễn Văn A",
+        "schoolLabel": "Trường",
+        "schoolPlaceholder": "Tên trường",
+        "roleLabel": "Vai trò của bạn",
+        "selectPlaceholder": "Chọn…",
+        "roleCoordinator": "Điều phối viên EAL/D",
+        "roleHod": "Trưởng bộ môn",
+        "roleTeacher": "Giáo viên chủ nhiệm",
+        "rolePrincipal": "Hiệu trưởng / ban lãnh đạo",
+        "roleOther": "Khác",
+        "emailLabel": "Email công việc",
+        "emailPlaceholder": "ten@truong.edu.au",
+        "studentsLabel": "Số học sinh EAL/D",
+        "students1to20": "1–20",
+        "students21to50": "21–50",
+        "students51to100": "51–100",
+        "students100plus": "100+",
+        "submitButton": "Đăng ký quan tâm",
+        "privacyNote": "Xử lý dữ liệu giả danh. Không có tên học sinh trong bất kỳ bản xuất nào.",
+        "successTitle": "Cảm ơn sự quan tâm của bạn",
+        "successBody": "Chúng tôi sẽ liên hệ trong vòng một tuần kèm báo cáo mẫu.",
+        "nameRequired": "Vui lòng nhập họ tên đầy đủ.",
+        "schoolRequired": "Vui lòng nhập tên trường.",
+        "roleRequired": "Vui lòng chọn vai trò của bạn.",
+        "emailRequired": "Vui lòng nhập địa chỉ email.",
+        "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ.",
+        "studentsRequired": "Vui lòng chọn số lượng học sinh EAL/D."
+      }
+    },
+    "diagnose": {
+      "hero": {
+        "eyebrow": "Thấy điểm mạnh và điểm yếu",
+        "title": "Một bài kiểm tra 30 phút. <blue>Một hồ sơ chẩn đoán hoàn chỉnh.</blue>",
+        "body": "SchoolTest chia mỗi vĩ kỹ năng thành các vi kỹ năng thành phần, để bạn thấy chính xác người học đang ở đâu và nên dạy gì trước."
+      },
+      "unpack": {
+        "eyebrow": "Ngày đầu tiên",
+        "title": "Sáu tuần tìm hiểu các em, gọn trong 30 phút.",
+        "body": "Học sinh mới đến với một điểm xếp lớp hoặc một điểm stanine. Nhưng bên trong thực sự là gì? SchoolTest cho bạn hồ sơ vi kỹ năng hoàn chỉnh trong một buổi kiểm tra 30 phút, được chuẩn theo các giai đoạn ACARA.",
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> bước vào tiết hai khi đã biết chính xác cần dạy gì."
+      },
+      "profile": {
+        "domain": "Đọc",
+        "score": "65",
+        "cefrBand": "CEFR B1",
+        "phase": "Phát triển",
+        "decoding": "Giải mã",
+        "vocabulary": "Từ vựng",
+        "grammar": "Ngữ pháp",
+        "gist": "Ý chính",
+        "detail": "Chi tiết",
+        "inference": "Suy luận",
+        "critical": "Phản biện",
+        "phaseConsolidating": "Củng cố",
+        "phaseBeginning": "Bắt đầu",
+        "phaseDeveloping": "Phát triển",
+        "phaseEmerging": "Manh nha",
+        "moreSubskills": "+ 18 vi kỹ năng nữa ở nghe, nói và viết"
+      },
+      "sameScore": {
+        "eyebrow": "Hai học sinh",
+        "title": "Cùng một điểm.<br></br>Năng lực khác nhau.",
+        "body": "Hai học sinh đến với cùng một mức điểm tổng. Họ giống nhau không? Hoàn toàn không. Một em giỏi ngữ pháp nhưng yếu suy luận; em kia ngược lại. Mỗi học sinh có một hồ sơ ngôn ngữ riêng mà bài kiểm tra xếp lớp không hé lộ. Giờ bạn đã thấy.",
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> hai học sinh lẽ ra được dạy chung, nay được dạy đúng cách."
+      },
+      "quote": "Điểm số là bản tóm tắt.<br></br>Hồ sơ vi kỹ năng là tấm bản đồ."
+    },
+    "predict": {
+      "hero": {
+        "eyebrow": "Dự đoán mức sẵn sàng vào lớp chính",
+        "title": "Biết khi nào học sinh sẵn sàng vào lớp chính, <blue>và chứng minh được.</blue>",
+        "body": "Một chỉ số sẵn sàng được xây dựng từ mọi vi kỹ năng trên cả bốn kỹ năng. Khi cho học sinh chuyển lớp, bạn sẽ biết họ đã sẵn sàng. Không phải vì cảm giác đúng, mà vì dữ liệu nói vậy.",
+        "domainsValue": "4 lĩnh vực",
+        "domainsLabel": "Tổng hợp thành một chỉ số",
+        "termValue": "Mỗi học kỳ",
+        "termLabel": "Dự báo chuyển lớp trước khi xếp thời khoá biểu"
+      },
+      "individual": {
+        "eyebrow": "Cá nhân",
+        "title": "Quyết định chuyển lớp dựa trên dữ liệu",
+        "body": "Xem học sinh thực sự sẵn sàng đến đâu cho các lớp chính, và những lỗ hổng nào đang cản đường các em.",
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> nói chính xác cho phụ huynh, hiệu trưởng và học sinh biết khi nào các em sẵn sàng vào lớp chính, và vì sao.",
+        "readinessLabel": "Mức sẵn sàng vào lớp chính",
+        "term1Label": "Học kỳ 1",
+        "term1Value": "34%",
+        "term3Label": "Học kỳ 3",
+        "term3Value": "81%",
+        "readinessFooter": "Tổng hợp từ mọi vi kỹ năng trong cả bốn lĩnh vực."
+      },
+      "cohort": {
+        "eyebrow": "Cả nhóm",
+        "title": "Lên kế hoạch chương trình",
+        "body": "Xem mức sẵn sàng của toàn nhóm trong một khung và dự báo số ra vào học kỳ tới trước khi xếp thời khoá biểu.",
+        "cohortBadge": "Mức sẵn sàng nhóm · 22 học sinh",
+        "exitBadge": "Dự kiến 4 em chuyển lớp học kỳ tới",
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> trả lời “học kỳ tới có bao nhiêu em rời đi” bằng một con số thay vì ước chừng."
+      },
+      "quote": "Trực giác của giáo viên cộng với thực chứng của SchoolTest.<br></br>Đó chính là khác biệt."
+    },
+    "teach": {
+      "hero": {
+        "eyebrow": "Lên kế hoạch và giảng dạy",
+        "title": "Dán hồ sơ vào AI. <blue>Nhận về nội dung cho cả tuần.</blue>",
+        "body": "Xuất dữ liệu cá nhân hoặc cả lớp an toàn về quyền riêng tư và đưa cho ChatGPT, Gemini hoặc Claude. Dữ liệu vi kỹ năng thực biến một câu lệnh chung chung thành nội dung giảng dạy cá nhân hoá.",
+        "primaryCta": "Đăng ký quan tâm",
+        "secondaryCta": "Xem hồ sơ mẫu"
+      },
+      "generate": {
+        "eyebrow": "AI tạo nội dung",
+        "title": "Từ hồ sơ chẩn đoán đến tài liệu bài học trong vài phút.",
+        "body": "Học tập cá nhân hoá cần dữ liệu chẩn đoán. Thả hồ sơ học sinh hoặc cả lớp vào ChatGPT, Gemini hoặc Claude và yêu cầu một bài đọc nhóm với các bộ câu hỏi phân hoá. Bạn sẽ có nó trước khi ấm nước sôi.",
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> phân hoá không còn là việc của tối Chủ nhật.",
+        "classSetLabel": "Bộ dữ liệu lớp · 22 hồ sơ",
+        "exportBadge": "XUẤT",
+        "promptText": "“Viết một bài đọc ở dải từ vựng của lớp, kèm bộ câu hỏi khớp với các lỗ hổng của các em.”",
+        "outputTitle": "Bài đọc + câu hỏi",
+        "targetBadge": "Mục tiêu: suy luận, từ vựng"
+      },
+      "classroom": {
+        "eyebrow": "Quản lý lớp học thông minh hơn",
+        "title": "Ai ghép với ai, và chia lớp thế nào.",
+        "body": "Mỗi học sinh và nhóm nhỏ cần một thứ hơi khác nhau. Dữ liệu chẩn đoán khiến việc quản lý lớp của bạn có căn cứ, chứ không chỉ là bản năng.",
+        "groupA": "Nhóm A",
+        "groupB": "Nhóm B",
+        "groupC": "Nhóm C",
+        "groupD": "Nhóm D",
+        "groupCaption": "Bốn nhóm. Bốn bộ câu hỏi.",
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> để dữ liệu lo việc lên kế hoạch để bạn lo việc giảng dạy."
+      },
+      "threeMore": {
+        "title": "Và ba điều nữa mà nó làm được.",
+        "groupByGapTitle": "Nhóm theo lỗ hổng, không theo bậc",
+        "groupByGapDescription": "Chia lớp theo điểm yếu chung thay vì trình độ tổng thể. Bốn nhóm, bốn nhu cầu thực sự khác nhau.",
+        "pairBySkillTitle": "Ghép đôi theo kỹ năng, không theo trình độ",
+        "pairBySkillDescription": "Hai học sinh cùng vướng ở suy luận sẽ tiến xa hơn khi học cùng nhau. Hoặc ghép em mạnh với em yếu, theo từng kỹ năng, để cả hai đều có lý do tham gia.",
+        "parentUpdatesTitle": "Cập nhật cho phụ huynh trong một phút",
+        "parentUpdatesDescription": "Biến hồ sơ thành ngôn ngữ đời thường: con họ làm được gì bây giờ, và bước tiếp theo là gì."
+      },
+      "note": "Trường bạn không dùng AI? Dữ liệu vi kỹ năng vẫn cho bạn biết ai ghép với ai và chia nhóm thế nào. Bạn chỉ tự sắp xếp thôi.",
+      "quote": "Câu lệnh chung chung cho bạn một phiếu bài tập.<br></br>Dữ liệu thực cho bạn một tiết học."
+    },
+    "track": {
+      "hero": {
+        "eyebrow": "Theo dõi tiến bộ theo thời gian",
+        "title": "Tiến bộ đo được, không chỉ cảm nhận được.",
+        "body": "Kiểm tra lại bất kỳ kỹ năng nào trong 30 phút, thường xuyên theo chu kỳ giảng dạy của bạn. Mọi kết quả đều nằm trên cùng một thang đo, nên bạn luôn biết cái gì đã thay đổi và thay đổi bao nhiêu."
+      },
+      "evidence": {
+        "eyebrow": "Dấu vết bằng chứng",
+        "title": "Theo dõi tiến bộ dựa trên dữ liệu",
+        "body": "Mỗi tuần một lần, mỗi tháng một lần, tuỳ chu kỳ giảng dạy của bạn. Sự tiến bộ được gắn với dải liên tục ACARA. Kiểu dữ liệu mà phụ huynh hiểu được và hiệu trưởng có thể hành động.",
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> một dấu vết bằng chứng dùng được trong họp phụ huynh và báo cáo lên ban lãnh đạo.",
+        "skill": "Suy luận đọc",
+        "currentPhase": "Củng cố",
+        "term1Label": "Học kỳ 1",
+        "term1Phase": "Bắt đầu",
+        "term2Label": "Học kỳ 2",
+        "term2Phase": "Manh nha",
+        "term3Label": "Học kỳ 3",
+        "term3Phase": "Phát triển",
+        "term4Label": "Học kỳ 4",
+        "term4Phase": "Củng cố",
+        "footer": "Các giai đoạn EAL/D của ACARA. Cùng một thang mỗi lần."
+      },
+      "teachEmpirical": {
+        "eyebrow": "Phản hồi về việc giảng dạy của bạn",
+        "title": "Dạy như một nhà khoa học.",
+        "body": "Ba tuần luyện từ vựng có mục tiêu hoặc sẽ hiện trong dữ liệu, hoặc không. Bạn biết sớm hơn là muộn.",
+        "focusBadge": "Tập trung từ vựng, tuần 3–8",
+        "resultBadge": "Từ vựng +2 giai đoạn",
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> phản hồi về việc dạy của bạn, không chỉ về học sinh."
+      },
+      "quote": "Tiến bộ mà bạn có thể chỉ ra."
+    },
+    "shared": {
+      "cta": {
+        "title": "Chúng tôi đang xây dựng điều này cùng các trường sáng lập.",
+        "body": "Đang thử nghiệm thực địa. Trải nghiệm sớm, góp ý trực tiếp vào báo cáo, điều kiện sáng lập khi ra mắt.",
+        "button": "Đăng ký quan tâm"
+      },
+      "nextLabel": "Tiếp theo",
+      "nextStep01": "01",
+      "nextStep02": "02",
+      "nextStep03": "03",
+      "nextStep04": "04",
+      "nextDiagnoseTitle": "Thấy điểm mạnh và điểm yếu",
+      "nextDiagnoseDescription": "27 vi kỹ năng từ một bài kiểm tra.",
+      "nextTeachTitle": "Lên kế hoạch và giảng dạy",
+      "nextTeachDescription": "Biến hồ sơ thành tài liệu.",
+      "nextTrackTitle": "Theo dõi tiến bộ",
+      "nextTrackDescription": "Xem từng vi kỹ năng tiến lên.",
+      "nextPredictTitle": "Dự đoán mức sẵn sàng",
+      "nextPredictDescription": "Biết khi nào các em sẵn sàng chuyển lớp.",
+      "readMore": "Đọc thêm →"
+    },
+    "footer": {
+      "tagline": "Đánh giá chẩn đoán tiếng Anh cho lớp EAL/D tại Úc. Khối 7–12, giai đoạn ACARA và bậc CEFR.",
+      "productTitle": "Sản phẩm",
+      "diagnose": "Thấy điểm mạnh và điểm yếu",
+      "teach": "Lên kế hoạch và giảng dạy",
+      "track": "Theo dõi tiến bộ theo thời gian",
+      "predict": "Dự đoán mức sẵn sàng vào lớp chính",
+      "moreTitle": "Thêm",
+      "schoolSearch": "SchoolSearch",
+      "foundingPilot": "Thí điểm sáng lập",
+      "privacy": "Quyền riêng tư",
+      "contact": "Liên hệ",
+      "copyright": "© 2026 SchoolTest",
+      "status": "Đang thí điểm cùng các trường sáng lập",
+      "logoAlt": "Logo SchoolTest"
+    }
   }
 }

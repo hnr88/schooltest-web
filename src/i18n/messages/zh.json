@@ -2790,5 +2790,309 @@
       "itemOne": "所有学生都提交后，在测验日页面关闭本场测验。",
       "itemTwo": "评分完成后，结果会显示在您的仪表盘上。"
     }
+  },
+  "Eald": {
+    "meta": {
+      "homeTitle": "SchoolTest：一种不一样的英语测试",
+      "homeDescription": "30 分钟测一项技能，逐个微技能看清每位 EAL/D 学生能做什么、还不能做什么。",
+      "diagnoseTitle": "诊断：SchoolTest EAL/D",
+      "diagnoseDescription": "SchoolTest 将每个宏观技能拆解为若干微技能，让你准确了解学习者的水平，以及先教什么。",
+      "predictTitle": "预测主流班就绪度：SchoolTest EAL/D",
+      "predictDescription": "一个就绪度指标，由全部四项技能的每个微技能构建而成。当学生转出时，你会确知他们已就绪。不是因为感觉对了，而是数据说了算。",
+      "teachTitle": "规划与教学：SchoolTest EAL/D",
+      "teachDescription": "导出保护隐私的个人或班级数据，交给 ChatGPT、Gemini 或 Claude。真实的微技能数据能把泛泛的提示词变成个性化的教学内容。",
+      "trackTitle": "追踪进度：SchoolTest EAL/D",
+      "trackDescription": "任何技能都可在 30 分钟内重测，频率随你的教学周期而定。每次结果都落在同一量表上，你始终知道哪里进步了、进步了多少。"
+    },
+    "nav": {
+      "label": "EALD 导航",
+      "diagnose": "诊断",
+      "teach": "教学",
+      "track": "追踪",
+      "predict": "预测",
+      "schoolSearch": "SchoolSearch",
+      "registerInterest": "登记意向",
+      "signIn": "登录",
+      "startFree": "免费开始",
+      "openMenu": "打开菜单",
+      "closeMenu": "关闭菜单"
+    },
+    "home": {
+      "hero": {
+        "badge": "专为澳大利亚 EAL/D 课堂打造",
+        "title": "一种不一样的英语测试。",
+        "subtitle": "30 分钟测一项技能，逐个微技能看清每位 EAL/D 学生能做什么、还不能做什么。",
+        "primaryCta": "登记意向",
+        "secondaryCta": "查看示例档案",
+        "microcopy": "加入创始学校试点"
+      },
+      "trustedBy": {
+        "label": "试点合作学校",
+        "one": "John Paul College",
+        "two": "Ivanhoe Grammar",
+        "three": "Moreton Bay College"
+      },
+      "problem": {
+        "eyebrow": "问题所在",
+        "title": "如果你能看清他们的内心呢？",
+        "bodyOne": "每位 EAL/D 学生到来时只是一个粗略的数字：分班分数、stanine 等级或 CEFR 级别。他们在宽泛的 ACARA 阶段中推进，而这些都无法让你实证地了解他们真正的语言能力画像。",
+        "bodyTwo": "所以，周一教什么、谁和谁分组、你的课是否有效、他们是否准备好进入主流班，全都靠直觉。如果你有心理测量数据支持呢？",
+        "badgeScore": "65",
+        "badgeCefr": "CEFR B1",
+        "badgePhase": "发展中"
+      },
+      "solution": {
+        "intro": "专为 EAL/D 课堂打造的诊断与进度测试，适用于 7–12 年级。",
+        "body": "SchoolTest 围绕阅读、听力、口语和写作，测量 4 项技能和 27 个微技能。每项技能 30 分钟，每次测试都显示 ACARA 进阶情况。",
+        "tagline": "评估不再只是总结，而是成为一幅地图。"
+      },
+      "whatYouGet": {
+        "eyebrow": "你的收获",
+        "title": "30 分钟课堂测试。诊断、教学、追踪、预测。",
+        "diagnoseTitle": "看清优势与弱项",
+        "diagnoseDescription": "一次 30 分钟测试，产出 27 个微技能。六周的诊断工作，第一天就完成。",
+        "teachTitle": "规划与教学",
+        "teachDescription": "把保护隐私的班级数据导出到任意 AI。因材施教不再是周日晚上的工作。",
+        "trackTitle": "长期追踪进度",
+        "trackDescription": "每次结果都在同一 ACARA 量表上。有效，就会显现。",
+        "predictTitle": "预测主流班就绪度",
+        "predictDescription": "四大领域汇成一个就绪分数。转出决定，有据可依。"
+      },
+      "classroom": {
+        "quote": "评估不再只是总结，而是成为一幅地图。",
+        "subtext": "7–12 年级 · 阅读、听力、口语和写作"
+      },
+      "proof": {
+        "badge": "基于 40 多年的心理测量研究",
+        "skillsValue": "4 项技能",
+        "skillsLabel": "阅读、听力、口语、写作",
+        "yearsValue": "7–12 年级",
+        "yearsLabel": "适龄内容与澳大利亚情境",
+        "scalesValue": "ACARA + CEFR",
+        "scalesLabel": "阶段与级别，并列呈现",
+        "durationValue": "30 分钟",
+        "durationLabel": "每项技能，随需随测"
+      },
+      "register": {
+        "foundingEyebrow": "创始学校",
+        "foundingTitle": "我们正在与创始学校共同打造。",
+        "foundingBody": "我们即将进入实地测试。我们需要愿意让真实学生试用、并告诉我们哪里做得不对的学校。",
+        "benefitEarlyAccess": "在产品构建过程中抢先体验",
+        "benefitDirectInput": "直接参与报告设计",
+        "benefitFoundingTerms": "上线时享创始优惠条件",
+        "formTitle": "登记意向",
+        "formSubtitle": "我们会在一周内联系你，并附上示例报告。",
+        "nameLabel": "你的姓名",
+        "namePlaceholder": "张三",
+        "schoolLabel": "学校",
+        "schoolPlaceholder": "学校名称",
+        "roleLabel": "你的职务",
+        "selectPlaceholder": "请选择…",
+        "roleCoordinator": "EAL/D 协调员",
+        "roleHod": "系主任",
+        "roleTeacher": "任课教师",
+        "rolePrincipal": "校长 / 管理层",
+        "roleOther": "其他",
+        "emailLabel": "工作邮箱",
+        "emailPlaceholder": "name@school.edu.au",
+        "studentsLabel": "EAL/D 学生人数",
+        "students1to20": "1–20",
+        "students21to50": "21–50",
+        "students51to100": "51–100",
+        "students100plus": "100+",
+        "submitButton": "登记意向",
+        "privacyNote": "数据经假名化处理。任何导出中都不含学生姓名。",
+        "successTitle": "感谢你的关注",
+        "successBody": "我们会在一周内联系你，并附上示例报告。",
+        "nameRequired": "请输入你的全名。",
+        "schoolRequired": "请输入你的学校名称。",
+        "roleRequired": "请选择你的职务。",
+        "emailRequired": "请输入你的邮箱地址。",
+        "emailInvalid": "请输入有效的邮箱地址。",
+        "studentsRequired": "请选择 EAL/D 学生人数。"
+      }
+    },
+    "diagnose": {
+      "hero": {
+        "eyebrow": "看清优势与弱项",
+        "title": "一次 30 分钟测试。<blue>一份完整的诊断画像。</blue>",
+        "body": "SchoolTest 将每个宏观技能拆解为若干微技能，让你准确了解学习者的水平，以及先教什么。"
+      },
+      "unpack": {
+        "eyebrow": "第一天",
+        "title": "六周的摸索，30 分钟完成。",
+        "body": "新生到来时只有一个分班分数或一个 stanine 等级。但背后究竟是什么？SchoolTest 让你在短短 30 分钟内获得完整的微技能画像，并对标 ACARA 阶段。",
+        "callout": "<strong>对你而言：</strong>走进第二节课时就确切知道该教什么。"
+      },
+      "profile": {
+        "domain": "阅读",
+        "score": "65",
+        "cefrBand": "CEFR B1",
+        "phase": "发展中",
+        "decoding": "解码",
+        "vocabulary": "词汇",
+        "grammar": "语法",
+        "gist": "主旨",
+        "detail": "细节",
+        "inference": "推断",
+        "critical": "批判性理解",
+        "phaseConsolidating": "巩固",
+        "phaseBeginning": "起步",
+        "phaseDeveloping": "发展",
+        "phaseEmerging": "萌芽",
+        "moreSubskills": "+ 听力、口语和写作还有 18 项"
+      },
+      "sameScore": {
+        "eyebrow": "两名学生",
+        "title": "同样的分数。<br></br>不同的能力。",
+        "body": "两名学生带着相同的总分到来。他们一样吗？完全不是。一个语法强但推断弱，另一个正好相反。每个学生都有独特的语言画像，而分班测试无法揭示。现在你能看清了。",
+        "callout": "<strong>对你而言：</strong>两名你原本会一起教的学生，如今各得其所。"
+      },
+      "quote": "分数是总结。<br></br>微技能画像是地图。"
+    },
+    "predict": {
+      "hero": {
+        "eyebrow": "预测主流班就绪度",
+        "title": "知道学生何时准备好进入主流班，<blue>并能证明。</blue>",
+        "body": "一个就绪度指标，由全部四项技能的每个微技能构建而成。当学生转出时，你会确知他们已就绪。不是因为感觉对了，而是数据说了算。",
+        "domainsValue": "4 大领域",
+        "domainsLabel": "汇总为一个指标",
+        "termValue": "每个学期",
+        "termLabel": "排课之前预判转出"
+      },
+      "individual": {
+        "eyebrow": "个体",
+        "title": "数据支持的转出决定",
+        "body": "看清学生为主流课程实际准备到了什么程度，以及哪些短板仍在挡路。",
+        "callout": "<strong>对你而言：</strong>明确告诉家长、校长和学生，他们何时准备好加入主流班，以及为什么。",
+        "readinessLabel": "主流班就绪度",
+        "term1Label": "第 1 学期",
+        "term1Value": "34%",
+        "term3Label": "第 3 学期",
+        "term3Value": "81%",
+        "readinessFooter": "由四大领域中的每个微技能汇总而成。"
+      },
+      "cohort": {
+        "eyebrow": "学生群体",
+        "title": "规划课程方案",
+        "body": "在一个视图中看到整个群体的就绪度，在排课之前预测下学期的转出和转入。",
+        "cohortBadge": "群体就绪度 · 22 名学生",
+        "exitBadge": "预计下学期 4 人转出",
+        "callout": "<strong>对你而言：</strong>用一个数字而不是估计来回答“下学期有多少人会离开”。"
+      },
+      "quote": "教师直觉加上 SchoolTest 实证。<br></br>这就是差别所在。"
+    },
+    "teach": {
+      "hero": {
+        "eyebrow": "规划与教学",
+        "title": "把画像粘贴进 AI。<blue>换出一周的教学内容。</blue>",
+        "body": "导出保护隐私的个人或班级数据，交给 ChatGPT、Gemini 或 Claude。真实的微技能数据能把泛泛的提示词变成个性化的教学内容。",
+        "primaryCta": "登记意向",
+        "secondaryCta": "查看示例档案"
+      },
+      "generate": {
+        "eyebrow": "AI 内容生成",
+        "title": "从诊断画像到课堂材料，只需几分钟。",
+        "body": "个性化学习需要诊断数据。把学生或班级画像放进 ChatGPT、Gemini 或 Claude，让它生成一篇小组阅读文章并配差异化题组。水还没烧开，材料就好了。",
+        "callout": "<strong>对你而言：</strong>因材施教不再是周日晚上的工作。",
+        "classSetLabel": "班级数据 · 22 份画像",
+        "exportBadge": "导出",
+        "promptText": "“写一篇符合全班词汇水平的文章，并配与弱项对应的题组。”",
+        "outputTitle": "阅读文章 + 题目",
+        "targetBadge": "目标：推断、词汇"
+      },
+      "classroom": {
+        "eyebrow": "更智慧的课堂管理",
+        "title": "谁和谁结对，教室怎么分组。",
+        "body": "每个学生和每个小组需要的都略有不同。诊断数据让你的课堂管理有据可依，而不仅仅是凭直觉。",
+        "groupA": "A 组",
+        "groupB": "B 组",
+        "groupC": "C 组",
+        "groupD": "D 组",
+        "groupCaption": "四个小组。四套题组。",
+        "callout": "<strong>对你而言：</strong>让数据做规划，你来做教学。"
+      },
+      "threeMore": {
+        "title": "还有三件它能做到的事。",
+        "groupByGapTitle": "按短板分组，而不是按等级",
+        "groupByGapDescription": "按共同弱项而不是整体水平来分组。四个小组，四种真正不同的需求。",
+        "pairBySkillTitle": "按技能结对，而不是按水平",
+        "pairBySkillDescription": "两个都卡在推断上的学生一起进步更快。或者让强项与弱项按技能结对，双方都有参与的理由。",
+        "parentUpdatesTitle": "一分钟写好家长反馈",
+        "parentUpdatesDescription": "把画像变成平实的语言：孩子现在能做什么，下一步是什么。"
+      },
+      "note": "学校不能用 AI？微技能数据依然能告诉你谁和谁结对、怎么分组，只是排序由你自己完成。",
+      "quote": "泛泛的提示词给你一张练习卷。<br></br>真实数据给你一堂课。"
+    },
+    "track": {
+      "hero": {
+        "eyebrow": "长期追踪进度",
+        "title": "可以衡量的进步，而不只是感觉。",
+        "body": "任何技能都可在 30 分钟内重测，频率随你的教学周期而定。每次结果都落在同一量表上，你始终知道哪里进步了、进步了多少。"
+      },
+      "evidence": {
+        "eyebrow": "证据轨迹",
+        "title": "数据驱动的进度追踪",
+        "body": "一周一次、一月一次，随你的教学周期而定。进步对应到 ACARA 连续体。这是家长听得懂、校长能据此行动的数据。",
+        "callout": "<strong>对你而言：</strong>一条在家长会和对领导的汇报中都管用的证据轨迹。",
+        "skill": "阅读推断",
+        "currentPhase": "巩固",
+        "term1Label": "第 1 学期",
+        "term1Phase": "起步",
+        "term2Label": "第 2 学期",
+        "term2Phase": "萌芽",
+        "term3Label": "第 3 学期",
+        "term3Phase": "发展",
+        "term4Label": "第 4 学期",
+        "term4Phase": "巩固",
+        "footer": "ACARA EAL/D 阶段。每次同一量表。"
+      },
+      "teachEmpirical": {
+        "eyebrow": "对你教学的反馈",
+        "title": "像科学家一样教学。",
+        "body": "三周的词汇强化训练，要么在数据中显现，要么没有。你会更早知道，而不是更晚。",
+        "focusBadge": "词汇重点，第 3–8 周",
+        "resultBadge": "词汇 +2 个阶段",
+        "callout": "<strong>对你而言：</strong>不仅是对学生的反馈，也是对你教学的反馈。"
+      },
+      "quote": "可以指给人看的进步。"
+    },
+    "shared": {
+      "cta": {
+        "title": "我们正在与创始学校共同打造。",
+        "body": "实地测试进行中。抢先体验、直接参与报告设计、上线时享创始条件。",
+        "button": "登记意向"
+      },
+      "nextLabel": "接下来",
+      "nextStep01": "01",
+      "nextStep02": "02",
+      "nextStep03": "03",
+      "nextStep04": "04",
+      "nextDiagnoseTitle": "看清优势与弱项",
+      "nextDiagnoseDescription": "一次测试，27 个微技能。",
+      "nextTeachTitle": "规划与教学",
+      "nextTeachDescription": "把画像变成教学材料。",
+      "nextTrackTitle": "追踪进度",
+      "nextTrackDescription": "看每个微技能的进步。",
+      "nextPredictTitle": "预测就绪度",
+      "nextPredictDescription": "知道他们何时可以转出。",
+      "readMore": "了解更多 →"
+    },
+    "footer": {
+      "tagline": "面向澳大利亚 EAL/D 课堂的诊断性英语评估。7–12 年级，ACARA 阶段与 CEFR 级别。",
+      "productTitle": "产品",
+      "diagnose": "看清优势与弱项",
+      "teach": "规划与教学",
+      "track": "长期追踪进度",
+      "predict": "预测主流班就绪度",
+      "moreTitle": "更多",
+      "schoolSearch": "SchoolSearch",
+      "foundingPilot": "创始试点",
+      "privacy": "隐私",
+      "contact": "联系我们",
+      "copyright": "© 2026 SchoolTest",
+      "status": "正与创始学校试点合作",
+      "logoAlt": "SchoolTest 标志"
+    }
   }
 }

@@ -1779,16 +1779,16 @@
   },
   "Eald": {
     "meta": {
-      "homeTitle": "SchoolTest — A different type of English test",
+      "homeTitle": "SchoolTest: A different type of English test",
       "homeDescription": "See exactly what each EAL/D student can and can't do, subskill by subskill, in 30 minutes per skill.",
-      "diagnoseTitle": "Diagnose — SchoolTest EAL/D",
-      "diagnoseDescription": "SchoolTest breaks a single score into 25 subskills across all four domains — so you know where to start teaching before you've taught a single lesson.",
-      "predictTitle": "Predict mainstream readiness — SchoolTest EAL/D",
-      "predictDescription": "One readiness indicator, aggregated from every subskill across all four domains. The exit call stays yours — the evidence behind it stops being a hunch.",
-      "teachTitle": "Plan and teach — SchoolTest EAL/D",
-      "teachDescription": "Export a privacy-safe class set and hand it to ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into materials your class can actually use.",
-      "trackTitle": "Track progress — SchoolTest EAL/D",
-      "trackDescription": "Every result lands on the same ACARA scale, so growth shows up subskill by subskill instead of as a total that wobbled three points."
+      "diagnoseTitle": "Diagnose: SchoolTest EAL/D",
+      "diagnoseDescription": "SchoolTest breaks each macroskill into its component subskills, so you see exactly where a learner is and what to teach first.",
+      "predictTitle": "Predict mainstream readiness: SchoolTest EAL/D",
+      "predictDescription": "One readiness indicator built from every subskill across all four skills. When you exit a student, you'll know they're ready. Not because it feels right, but because the data says so.",
+      "teachTitle": "Plan and teach: SchoolTest EAL/D",
+      "teachDescription": "Export a privacy-safe individual or class set and hand it to ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into personalised teaching content.",
+      "trackTitle": "Track progress: SchoolTest EAL/D",
+      "trackDescription": "Re-test any skill in 30 minutes, as often as your teaching cycle needs. Every result sits on the same scale, so you always know what moved and by how much."
     },
     "nav": {
       "label": "EALD navigation",
@@ -1813,32 +1813,30 @@
         "microcopy": "Join the founding schools pilot"
       },
       "trustedBy": {
-        "label": "Field testing with",
-        "one": "Riverview Grammar",
-        "two": "St Aidan's College",
-        "three": "Brisbane International",
-        "four": "Kingsford Anglican",
-        "five": "Melbourne EAL Centre"
+        "label": "Piloting with",
+        "one": "John Paul College",
+        "two": "Ivanhoe Grammar",
+        "three": "Moreton Bay College"
       },
       "problem": {
         "eyebrow": "The problem",
-        "title": "You can't teach<br></br>what you can't see.",
-        "bodyOne": "Every EAL/D student arrives as a number — a placement score, a CEFR band, a phase judgement. It says roughly where they sit, nothing about what's underneath.",
-        "bodyTwo": "So what to teach Monday, who to group with whom, whether it worked, whether they're ready to exit — all of it runs on intuition.",
+        "title": "What if you could see inside their minds?",
+        "bodyOne": "Every EAL/D student arrives as a blunt number: a placement score, a stanine, a CEFR band. They progress through broad ACARA phases. None of it gives you empirical insight into their actual linguistic profile.",
+        "bodyTwo": "So what to teach Monday, who to group with whom, whether your lessons are working, whether they're ready for mainstream. All of it comes down to intuition. What if you had psychometric data to support you?",
         "badgeScore": "65",
         "badgeCefr": "CEFR B1",
         "badgePhase": "Developing"
       },
       "solution": {
-        "intro": "SchoolTest is a diagnostic and progress English test for Years 7–12.",
-        "body": "It measures 25 subskills across reading, listening, speaking and writing — 30 minutes per skill, reported on the ACARA scale, every time you test.",
+        "intro": "A diagnostic and progress test built for EAL/D classrooms, Years 7–12.",
+        "body": "SchoolTest measures 4 skills and 27 subskills across reading, listening, speaking and writing. 30 minutes per skill, showing ACARA progression every time you test.",
         "tagline": "Assessment stops being a summary and starts being a map."
       },
       "whatYouGet": {
         "eyebrow": "What you get",
-        "title": "Test once. Then diagnose, teach, track and predict.",
+        "title": "30-minute in-class tests. Diagnose, teach, track and predict.",
         "diagnoseTitle": "See strengths and weaknesses",
-        "diagnoseDescription": "25 subskills from a 30-minute test. Six weeks of diagnostic testing, done on day one.",
+        "diagnoseDescription": "27 subskills from a 30-minute test. Six weeks of diagnostic testing, done on day one.",
         "teachTitle": "Plan and teach",
         "teachDescription": "Export a privacy-safe class set into any AI. Differentiation stops being a Sunday night job.",
         "trackTitle": "Track progress over time",
@@ -1903,14 +1901,14 @@
     "diagnose": {
       "hero": {
         "eyebrow": "See strengths and weaknesses",
-        "title": "One 30-minute sitting. <blue>All is revealed.</blue>",
-        "body": "A student arrives with a “65” or a “B1”. SchoolTest breaks that single score into 25 subskills across all four domains — so you know where to start teaching before you've taught a single lesson."
+        "title": "One 30-minute test. <blue>A complete diagnostic profile.</blue>",
+        "body": "SchoolTest breaks each macroskill into its component subskills, so you see exactly where a learner is and what to teach first."
       },
       "unpack": {
-        "eyebrow": "Unpack the placement score",
-        "title": "Unpack placement test scores",
-        "body": "A placement score tells you roughly where a student sits and nothing about what's underneath. SchoolTest reports each subskill against the same ACARA phase scale, so the gaps are named, not guessed at.",
-        "callout": "<strong>What this means for you:</strong> six weeks of diagnostic testing, done on day one."
+        "eyebrow": "Day one",
+        "title": "Six weeks of figuring them out, done in 30 minutes.",
+        "body": "A new student arrives with a placement score or a stanine. But what's really going on? SchoolTest gives you the complete subskill profile in a single 30-minute sitting, benchmarked to ACARA phases.",
+        "callout": "<strong>What this means for you:</strong> walk into period two knowing exactly what to teach."
       },
       "profile": {
         "domain": "Reading",
@@ -1931,9 +1929,9 @@
         "moreSubskills": "+ 18 more across listening, speaking and writing"
       },
       "sameScore": {
-        "eyebrow": "Two students, one score",
-        "title": "Same score.<br></br>Different students.",
-        "body": "Two students arrive with the same CEFR B1. Are they the same? No. One is strong on decoding and lost on vocabulary; the other is the reverse. Each student has a unique linguistic profile — now you can see it.",
+        "eyebrow": "Two students",
+        "title": "Same score.<br></br>Different abilities.",
+        "body": "Two students arrive with the same broad scores. Are they the same? Not at all. One is strong in grammar but weak in inference; the other is the reverse. Each student has a unique linguistic profile that placement tests don't reveal. Now you see it.",
         "callout": "<strong>What this means for you:</strong> two students you'd have taught together, taught properly."
       },
       "quote": "A score is a summary.<br></br>A subskill profile is a map."
@@ -1941,8 +1939,8 @@
     "predict": {
       "hero": {
         "eyebrow": "Predict mainstream readiness",
-        "title": "Know when a student is ready, <blue>and prove it.</blue>",
-        "body": "One readiness indicator, aggregated from every subskill across all four domains. The exit call stays yours — the evidence behind it stops being a hunch.",
+        "title": "Know when a student is ready for mainstream, <blue>and prove it.</blue>",
+        "body": "One readiness indicator built from every subskill across all four skills. When you exit a student, you'll know they're ready. Not because it feels right, but because the data says so.",
         "domainsValue": "4 domains",
         "domainsLabel": "Aggregated into one indicator",
         "termValue": "Every term",
@@ -1951,8 +1949,8 @@
       "individual": {
         "eyebrow": "The individual",
         "title": "Data-informed exit decisions",
-        "body": "See how close a student actually is, and what is still standing in the way — not a gut feel formed across a busy term.",
-        "callout": "<strong>What this means for you:</strong> tell a parent, a principal and a student exactly when they are ready for mainstream classes, and why.",
+        "body": "See how ready a student actually is for mainstream classes, and the deficits that are standing in their way.",
+        "callout": "<strong>What this means for you:</strong> tell a parent, a principal and a student exactly when they are ready to join mainstream, and why.",
         "readinessLabel": "Mainstream readiness",
         "term1Label": "Term 1",
         "term1Value": "34%",
@@ -1973,15 +1971,15 @@
     "teach": {
       "hero": {
         "eyebrow": "Plan and teach",
-        "title": "Paste the profile into AI. <blue>Get a week of teaching materials out.</blue>",
-        "body": "Export a privacy-safe class set and hand it to ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into materials your class can actually use.",
+        "title": "Paste the profile into AI. <blue>Get a week of content out.</blue>",
+        "body": "Export a privacy-safe individual or class set and hand it to ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into personalised teaching content.",
         "primaryCta": "Register your interest",
         "secondaryCta": "See a sample profile"
       },
       "generate": {
-        "eyebrow": "Generate the materials",
-        "title": "Generate the teaching materials",
-        "body": "Ask for one passage pitched at the class's vocabulary band, with question sets matched to their gaps, and you have it before the kettle boils.",
+        "eyebrow": "AI content generation",
+        "title": "From diagnostic profile to lesson materials in minutes.",
+        "body": "Personalised learning needs diagnostic data. Drop a student or class profile into ChatGPT, Gemini or Claude and ask for a group reading passage with differentiated question sets. You'll have it before the kettle boils.",
         "callout": "<strong>What this means for you:</strong> differentiation stops being a Sunday night job.",
         "classSetLabel": "Class set · 22 profiles",
         "exportBadge": "EXPORT",
@@ -1990,9 +1988,9 @@
         "targetBadge": "Targets: inference, vocabulary"
       },
       "classroom": {
-        "eyebrow": "Classroom management",
+        "eyebrow": "Smarter classroom management",
         "title": "Who to pair with whom, and how to split the room.",
-        "body": "Who to pair with whom, on which skill, and how to split the room into groups that each need something different. The data makes it defensible; the AI makes it fast.",
+        "body": "Each student and small group needs something slightly different. The diagnostic data makes your classroom management defensible, not just instinctive.",
         "groupA": "Group A",
         "groupB": "Group B",
         "groupC": "Group C",
@@ -2015,14 +2013,14 @@
     "track": {
       "hero": {
         "eyebrow": "Track progress over time",
-        "title": "Watch every subskill move, term after term.",
-        "body": "Sit all four skills or re-test a single one — 30 minutes each. Every result lands on the same ACARA scale, so growth shows up subskill by subskill instead of as a total that wobbled three points."
+        "title": "Progress you can measure, not just feel.",
+        "body": "Re-test any skill in 30 minutes, as often as your teaching cycle needs. Every result sits on the same scale, so you always know what moved and by how much."
       },
       "evidence": {
         "eyebrow": "The evidence trail",
         "title": "Data-driven progress tracking",
-        "body": "Once a term, once a month, whatever your cycle needs. Growth reads as “reading inference, emerging to developing” — a sentence a parent understands and a principal can act on.",
-        "callout": "<strong>What this means for you:</strong> an evidence trail that works in a parent meeting and in a report to leadership.",
+        "body": "Once a week, once a month, whatever your teaching cycle needs. Growth maps to the ACARA continuum. The kind of data parents understand and a principal can act on.",
+        "callout": "<strong>What this means for you:</strong> an evidence trail that works in parent meetings and in reports to leadership.",
         "skill": "Reading inference",
         "currentPhase": "Consolidating",
         "term1Label": "Term 1",
@@ -2037,13 +2035,13 @@
       },
       "teachEmpirical": {
         "eyebrow": "Feedback on your teaching",
-        "title": "Teach empirically",
-        "body": "Six weeks of targeted vocabulary work either shows up in the vocabulary line or it does not. You find out in week six, while you can still change course.",
+        "title": "Teach like a scientist.",
+        "body": "Three weeks of targeted vocabulary work either shows up in the data or it doesn't. You find out sooner rather than later.",
         "focusBadge": "Vocabulary focus, weeks 3–8",
         "resultBadge": "Vocabulary +2 phases",
         "callout": "<strong>What this means for you:</strong> feedback on your teaching, not just on your students."
       },
-      "quote": "If it worked, it shows up.<br></br>If it didn't, that shows up too."
+      "quote": "Progress you can point to."
     },
     "shared": {
       "cta": {
@@ -2057,7 +2055,7 @@
       "nextStep03": "03",
       "nextStep04": "04",
       "nextDiagnoseTitle": "See strengths and weaknesses",
-      "nextDiagnoseDescription": "25 subskills from one test.",
+      "nextDiagnoseDescription": "27 subskills from one test.",
       "nextTeachTitle": "Plan and teach",
       "nextTeachDescription": "Turn the profile into materials.",
       "nextTrackTitle": "Track progress",
@@ -2079,7 +2077,7 @@
       "privacy": "Privacy",
       "contact": "Contact",
       "copyright": "© 2026 SchoolTest",
-      "status": "Field testing with founding schools",
+      "status": "Piloting with founding schools",
       "logoAlt": "SchoolTest logo"
     }
   },

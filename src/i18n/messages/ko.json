@@ -2790,5 +2790,309 @@
       "itemOne": "모든 학생이 제출하면 시험 당일 화면에서 시험을 종료하세요.",
       "itemTwo": "채점이 끝나면 대시보드에서 결과를 확인할 수 있습니다."
     }
+  },
+  "Eald": {
+    "meta": {
+      "homeTitle": "SchoolTest: 다른 종류의 영어 테스트",
+      "homeDescription": "각 EAL/D 학생이 무엇을 할 수 있고 아직 할 수 없는지, 스킬당 30분 만에 서브스킬별로 정확히 확인하세요.",
+      "diagnoseTitle": "진단: SchoolTest EAL/D",
+      "diagnoseDescription": "SchoolTest는 각 매크로스킬을 구성 서브스킬로 나누어, 학습자가 정확히 어디에 있는지와 무엇을 먼저 가르쳐야 할지 보여줍니다.",
+      "predictTitle": "주류 학급 준비도 예측: SchoolTest EAL/D",
+      "predictDescription": "네 가지 스킬 전반의 모든 서브스킬로 만든 하나의 준비도 지표. 학생을 전출할 때 준비가 됐다는 것을 알 수 있습니다. 느낌이 아니라 데이터가 말해주니까요.",
+      "teachTitle": "계획과 수업: SchoolTest EAL/D",
+      "teachDescription": "개인정보가 보호되는 개인 또는 학급 데이터를 내보내 ChatGPT, Gemini 또는 Claude에 전달하세요. 실제 서브스킬 데이터가 일반적인 프롬프트를 개인화된 수업 콘텐츠로 바꿔줍니다.",
+      "trackTitle": "진도 추적: SchoolTest EAL/D",
+      "trackDescription": "어떤 스킬이든 30분 만에 재시험하고, 수업 주기에 맞춰 원하는 만큼 자주. 모든 결과가 같은 척도에 놓이므로 무엇이 얼마나 변했는지 항상 알 수 있습니다."
+    },
+    "nav": {
+      "label": "EALD 남비게이션",
+      "diagnose": "진단",
+      "teach": "수업",
+      "track": "추적",
+      "predict": "예측",
+      "schoolSearch": "SchoolSearch",
+      "registerInterest": "관심 등록",
+      "signIn": "로그인",
+      "startFree": "무료 시작",
+      "openMenu": "메뉴 열기",
+      "closeMenu": "메뉴 닫기"
+    },
+    "home": {
+      "hero": {
+        "badge": "호주 EAL/D 교실을 위해",
+        "title": "다른 종류의 영어 테스트.",
+        "subtitle": "각 EAL/D 학생이 무엇을 할 수 있고 아직 할 수 없는지, 스킬당 30분 만에 서브스킬별로 정확히 확인하세요.",
+        "primaryCta": "관심 등록",
+        "secondaryCta": "샘플 프로필 보기",
+        "microcopy": "창립 학교 파일럿에 참여하세요"
+      },
+      "trustedBy": {
+        "label": "파일럿 진행 학교",
+        "one": "John Paul College",
+        "two": "Ivanhoe Grammar",
+        "three": "Moreton Bay College"
+      },
+      "problem": {
+        "eyebrow": "문제",
+        "title": "그들의 마음속을 들여다볼 수 있다면?",
+        "bodyOne": "모든 EAL/D 학생은 무든 숫자 하나로 도착합니다: 배치 점수, 스테나인, CEFR 밴드. 학생들은 넓은 ACARA 단계를 지나갑니다. 그 어느 것도 실제 언어 프로필에 대한 경험적 통찰을 주지 못합니다.",
+        "bodyTwo": "그래서 월요일에 무엇을 가르칠지, 누구와 누구를 묶을지, 수업이 효과가 있는지, 주류 학급에 갈 준비가 됐는지. 전부 직관에 의존합니다. 심리측정 데이터가 뒷받침해준다면 어떨까요?",
+        "badgeScore": "65",
+        "badgeCefr": "CEFR B1",
+        "badgePhase": "발전"
+      },
+      "solution": {
+        "intro": "EAL/D 교실을 위해 만들어진 진단 및 진도 테스트, 7–12학년.",
+        "body": "SchoolTest는 읽기, 듣기, 말하기, 쓰기에 걸쳐 4개 스킬과 27개 서브스킬을 측정합니다. 스킬당 30분, 시험을 볼 때마다 ACARA 진전을 보여줍니다.",
+        "tagline": "평가는 요약에서 지도로 바뀝니다."
+      },
+      "whatYouGet": {
+        "eyebrow": "얻게 되는 것",
+        "title": "30분 교실 테스트. 진단, 수업, 추적, 예측.",
+        "diagnoseTitle": "강점과 약점 파악",
+        "diagnoseDescription": "30분 테스트로 27개 서브스킬. 6주치 진단 테스트가 첫날에 끝내니다.",
+        "teachTitle": "계획과 수업",
+        "teachDescription": "개인정보 보호된 학급 데이터를 어떤 AI로든 내보내세요. 차별화는 더 이상 일요일 밤의 일이 아닙니다.",
+        "trackTitle": "시간에 따른 진도 추적",
+        "trackDescription": "모든 결과가 같은 ACARA 척도 위에. 효과가 있었다면 드러내니다.",
+        "predictTitle": "주류 학급 준비도 예측",
+        "predictDescription": "네 영역을 아우르는 하나의 준비도 점수. 방어 가능한 전출 판단."
+      },
+      "classroom": {
+        "quote": "평가는 요약에서 지도로 바뀝니다.",
+        "subtext": "7–12학년 · 읽기, 듣기, 말하기, 쓰기"
+      },
+      "proof": {
+        "badge": "40년 이상의 심리측정 연구 기반",
+        "skillsValue": "4개 스킬",
+        "skillsLabel": "읽기, 듣기, 말하기, 쓰기",
+        "yearsValue": "7–12학년",
+        "yearsLabel": "연령에 맞는 호주 맥락",
+        "scalesValue": "ACARA + CEFR",
+        "scalesLabel": "단계와 밴드를 나란히",
+        "durationValue": "30분",
+        "durationLabel": "스킬당, 필요할 때마다"
+      },
+      "register": {
+        "foundingEyebrow": "창립 학교",
+        "foundingTitle": "창립 학교들과 함께 만들고 있습니다.",
+        "foundingBody": "현장 테스트를 앞두고 있습니다. 실제 학생들과 함께 시험해보고 무엇이 틀렸는지 알려줄 학교가 필요합니다.",
+        "benefitEarlyAccess": "개발 중 얼리 액세스",
+        "benefitDirectInput": "리포트에 직접 의견 반영",
+        "benefitFoundingTerms": "출시 시 창립 혜택",
+        "formTitle": "관심 등록",
+        "formSubtitle": "일주일 안에 샘플 리포트와 함께 연락드리겠습니다.",
+        "nameLabel": "이름",
+        "namePlaceholder": "홍길동",
+        "schoolLabel": "학교",
+        "schoolPlaceholder": "학교명",
+        "roleLabel": "직책",
+        "selectPlaceholder": "선택…",
+        "roleCoordinator": "EAL/D 코디네이터",
+        "roleHod": "학과장",
+        "roleTeacher": "담당 교사",
+        "rolePrincipal": "교장 / 관리자",
+        "roleOther": "기타",
+        "emailLabel": "직장 이메일",
+        "emailPlaceholder": "name@school.edu.au",
+        "studentsLabel": "EAL/D 학생 수",
+        "students1to20": "1–20",
+        "students21to50": "21–50",
+        "students51to100": "51–100",
+        "students100plus": "100+",
+        "submitButton": "관심 등록",
+        "privacyNote": "가명 처리된 데이터 관리. 어떤 내보내기에도 학생 이름이 없습니다.",
+        "successTitle": "관심을 가져주셔서 감사합니다",
+        "successBody": "일주일 안에 샘플 리포트와 함께 연락드리겠습니다.",
+        "nameRequired": "성명을 입력해 주세요.",
+        "schoolRequired": "학교명을 입력해 주세요.",
+        "roleRequired": "직책을 선택해 주세요.",
+        "emailRequired": "이메일 주소를 입력해 주세요.",
+        "emailInvalid": "유효한 이메일 주소를 입력해 주세요.",
+        "studentsRequired": "EAL/D 학생 수를 선택해 주세요."
+      }
+    },
+    "diagnose": {
+      "hero": {
+        "eyebrow": "강점과 약점 파악",
+        "title": "30분 테스트 하나. <blue>완전한 진단 프로필.</blue>",
+        "body": "SchoolTest는 각 매크로스킬을 구성 서브스킬로 나누어, 학습자가 정확히 어디에 있는지와 무엇을 먼저 가르쳐야 할지 보여줍니다."
+      },
+      "unpack": {
+        "eyebrow": "첫날",
+        "title": "6주 걸리던 파악이 30분 만에.",
+        "body": "새 학생이 배치 점수나 스테나인 하나를 들고 옵니다. 하지만 실제로는 어떤 상태일까요? SchoolTest는 단 한 번의 30분 시험으로 ACARA 단계에 벤치마크된 완전한 서브스킬 프로필을 제공합니다.",
+        "callout": "<strong>의미하는 바:</strong> 두 번째 수업에 들어갈 때 무엇을 가르쳐야 할지 정확히 알 수 있습니다."
+      },
+      "profile": {
+        "domain": "읽기",
+        "score": "65",
+        "cefrBand": "CEFR B1",
+        "phase": "발전",
+        "decoding": "디코딩",
+        "vocabulary": "어휘",
+        "grammar": "문법",
+        "gist": "요지",
+        "detail": "세부",
+        "inference": "추론",
+        "critical": "비판적 읽기",
+        "phaseConsolidating": "통합",
+        "phaseBeginning": "시작",
+        "phaseDeveloping": "발전",
+        "phaseEmerging": "초기",
+        "moreSubskills": "+ 듣기, 말하기, 쓰기에 18개 더"
+      },
+      "sameScore": {
+        "eyebrow": "두 명의 학생",
+        "title": "같은 점수.<br></br>다른 능력.",
+        "body": "두 학생이 같은 총점을 들고 옵니다. 둘은 같을까요? 전혀 아닙니다. 한 명은 문법은 강하지만 추론이 약하고, 다른 한 명은 정반대입니다. 모든 학생은 배치 테스트가 드러내지 못하는 고유한 언어 프로필을 가지고 있습니다. 이제는 보입니다.",
+        "callout": "<strong>의미하는 바:</strong> 함께 가르쳤을 두 학생을 제대로 가르칠 수 있습니다."
+      },
+      "quote": "점수는 요약입니다.<br></br>서브스킬 프로필은 지도입니다."
+    },
+    "predict": {
+      "hero": {
+        "eyebrow": "주류 학급 준비도 예측",
+        "title": "학생이 주류 학급에 갈 준비가 됐는지 알고, <blue>증명하세요.</blue>",
+        "body": "네 가지 스킬 전반의 모든 서브스킬로 만든 하나의 준비도 지표. 학생을 전출할 때 준비가 됐다는 것을 알 수 있습니다. 느낌이 아니라 데이터가 말해주니까요.",
+        "domainsValue": "4개 영역",
+        "domainsLabel": "하나의 지표로 집계",
+        "termValue": "매 학기",
+        "termLabel": "시간표 전에 전출 예측"
+      },
+      "individual": {
+        "eyebrow": "개인",
+        "title": "데이터에 기반한 전출 결정",
+        "body": "학생이 주류 수업에 실제로 얼마나 준비됐는지, 그리고 어떤 결함이 발목을 잡고 있는지 확인하세요.",
+        "callout": "<strong>의미하는 바:</strong> 학부모, 교장, 학생에게 언제 주류 학급에 합류할 준비가 되는지, 그리고 왜인지 정확히 말할 수 있습니다.",
+        "readinessLabel": "주류 학급 준비도",
+        "term1Label": "1학기",
+        "term1Value": "34%",
+        "term3Label": "3학기",
+        "term3Value": "81%",
+        "readinessFooter": "네 영역의 모든 서브스킬에서 집계됨."
+      },
+      "cohort": {
+        "eyebrow": "코호트",
+        "title": "프로그램 계획",
+        "body": "전체 코호트의 준비도를 한눈에 보고, 시간표를 짜기 전에 다음 학기의 전출과 전입을 예측하세요.",
+        "cohortBadge": "코호트 준비도 · 학생 22명",
+        "exitBadge": "다음 학기 전출 예상 4명",
+        "callout": "<strong>의미하는 바:</strong> “다음 학기에 몇 명이 떠나나요”라는 질문에 추정이 아닌 숫자로 답하세요."
+      },
+      "quote": "교사의 직관과 SchoolTest의 실증.<br></br>그것이 차이입니다."
+    },
+    "teach": {
+      "hero": {
+        "eyebrow": "계획과 수업",
+        "title": "프로필을 AI에 붙여넣으세요. <blue>일주일치 콘텐츠가 나옵니다.</blue>",
+        "body": "개인정보가 보호되는 개인 또는 학급 데이터를 내보내 ChatGPT, Gemini 또는 Claude에 전달하세요. 실제 서브스킬 데이터가 일반적인 프롬프트를 개인화된 수업 콘텐츠로 바꿔줍니다.",
+        "primaryCta": "관심 등록",
+        "secondaryCta": "샘플 프로필 보기"
+      },
+      "generate": {
+        "eyebrow": "AI 콘텐츠 생성",
+        "title": "진단 프로필에서 수업 자료까지, 몇 분이면 충분합니다.",
+        "body": "개인화 학습에는 진단 데이터가 필요합니다. 학생 또는 학급 프로필을 ChatGPT, Gemini 또는 Claude에 넣고 차별화된 문제 세트가 있는 그룹 읽기 지문을 요청하세요. 주전자 물이 끓기도 전에 완성됩니다.",
+        "callout": "<strong>의미하는 바:</strong> 차별화는 더 이상 일요일 밤의 일이 아닙니다.",
+        "classSetLabel": "학급 세트 · 프로필 22개",
+        "exportBadge": "내보내기",
+        "promptText": "“학급의 어휘 수준에 맞는 지문 하나를 쓰고, 약점에 맞춘 문제 세트를 만들어줘.”",
+        "outputTitle": "읽기 지문 + 문제",
+        "targetBadge": "대상: 추론, 어휘"
+      },
+      "classroom": {
+        "eyebrow": "더 스마트한 교실 관리",
+        "title": "누구와 누구를 짝 지을지, 교실을 어떻게 나눌지.",
+        "body": "각 학생과 소그룹은 조금씩 다른 것을 필요로 합니다. 진단 데이터는 교실 관리를 직관이 아닌 근거 있게 만듭니다.",
+        "groupA": "A조",
+        "groupB": "B조",
+        "groupC": "C조",
+        "groupD": "D조",
+        "groupCaption": "네 개의 조. 네 개의 문제 세트.",
+        "callout": "<strong>의미하는 바:</strong> 계획은 데이터가 하게 하고, 수업은 당신이 하세요."
+      },
+      "threeMore": {
+        "title": "그리고 가능해지는 세 가지.",
+        "groupByGapTitle": "밴드가 아닌 약점으로 그룹화",
+        "groupByGapDescription": "전체 수준이 아닌 공통 약점으로 교실을 나누세요. 네 그룹, 정말 다른 네 가지 필요.",
+        "pairBySkillTitle": "수준이 아닌 스킬로 짝짓기",
+        "pairBySkillDescription": "추론에서 막힌 두 학생은 함께할 때 더 멀리 갑니다. 또는 스킬별로 강한 학생과 어려워하는 학생을 짝 지어 둘 다 있을 이유를 만드세요.",
+        "parentUpdatesTitle": "1분 만에 학부모 소식",
+        "parentUpdatesDescription": "프로필을 쉬운 말로 바꾸세요: 자녀가 지금 할 수 있는 것과 다음 단계."
+      },
+      "note": "학교에 AI가 없나요? 서브스킬 데이터는 여전히 누구와 짝 지을지, 어떻게 그룹을 나눌지 알려줍니다. 분류만 직접 하면 됩니다.",
+      "quote": "일반적인 프롬프트는 워크시트를 줍니다.<br></br>실제 데이터는 수업을 줍니다."
+    },
+    "track": {
+      "hero": {
+        "eyebrow": "시간에 따른 진도 추적",
+        "title": "느낌이 아니라 측정할 수 있는 진보.",
+        "body": "어떤 스킬이든 30분 만에 재시험하고, 수업 주기에 맞춰 원하는 만큼 자주. 모든 결과가 같은 척도에 놓이므로 무엇이 얼마나 변했는지 항상 알 수 있습니다."
+      },
+      "evidence": {
+        "eyebrow": "증거의 궤적",
+        "title": "데이터 기반 진도 추적",
+        "body": "일주일에 한 번, 한 달에 한 번, 수업 주기에 맞춰. 성장은 ACARA 연속체에 매핑됩니다. 학부모가 이해하고 교장이 행동할 수 있는 데이터입니다.",
+        "callout": "<strong>의미하는 바:</strong> 학부모 상담과 리더십 보고에서 모두 통하는 증거 궤적.",
+        "skill": "읽기 추론",
+        "currentPhase": "통합",
+        "term1Label": "1학기",
+        "term1Phase": "시작",
+        "term2Label": "2학기",
+        "term2Phase": "초기",
+        "term3Label": "3학기",
+        "term3Phase": "발전",
+        "term4Label": "4학기",
+        "term4Phase": "통합",
+        "footer": "ACARA EAL/D 단계. 매번 같은 척도."
+      },
+      "teachEmpirical": {
+        "eyebrow": "수업에 대한 피드백",
+        "title": "과학자처럼 가르치세요.",
+        "body": "3주간의 집중 어휘 학습은 데이터에 나타나거나 나타나지 않습니다. 늦기보다 일찍 알게 됩니다.",
+        "focusBadge": "어휘 집중, 3–8주차",
+        "resultBadge": "어휘 +2단계",
+        "callout": "<strong>의미하는 바:</strong> 학생뿐 아니라 당신의 수업에 대한 피드백."
+      },
+      "quote": "가리켜 보일 수 있는 진보."
+    },
+    "shared": {
+      "cta": {
+        "title": "창립 학교들과 함께 만들고 있습니다.",
+        "body": "현장 테스트 진행 중. 얼리 액세스, 리포트에 직접 의견 반영, 출시 시 창립 혜택.",
+        "button": "관심 등록"
+      },
+      "nextLabel": "다음",
+      "nextStep01": "01",
+      "nextStep02": "02",
+      "nextStep03": "03",
+      "nextStep04": "04",
+      "nextDiagnoseTitle": "강점과 약점 파악",
+      "nextDiagnoseDescription": "한 번의 테스트로 27개 서브스킬.",
+      "nextTeachTitle": "계획과 수업",
+      "nextTeachDescription": "프로필을 자료로 바꾸세요.",
+      "nextTrackTitle": "진도 추적",
+      "nextTrackDescription": "모든 서브스킬의 변화를 지켜보세요.",
+      "nextPredictTitle": "준비도 예측",
+      "nextPredictDescription": "전출 준비가 됐는지 아세요.",
+      "readMore": "더 보기 →"
+    },
+    "footer": {
+      "tagline": "호주 EAL/D 교실을 위한 진단 영어 평가. 7–12학년, ACARA 단계와 CEFR 밴드.",
+      "productTitle": "제품",
+      "diagnose": "강점과 약점 파악",
+      "teach": "계획과 수업",
+      "track": "시간에 따른 진도 추적",
+      "predict": "주류 학급 준비도 예측",
+      "moreTitle": "더 보기",
+      "schoolSearch": "SchoolSearch",
+      "foundingPilot": "창립 파일럿",
+      "privacy": "개인정보",
+      "contact": "문의",
+      "copyright": "© 2026 SchoolTest",
+      "status": "창립 학교와 파일럿 진행 중",
+      "logoAlt": "SchoolTest 로고"
+    }
   }
 }

@@ -21,10 +21,13 @@ async function GenerateSection() {
               {t('body')}
             </p>
             <div className="mt-5 rounded-2xl border border-teal-100 bg-teal-50 p-4">
-              <p
-                className="text-sm leading-relaxed text-foreground"
-                dangerouslySetInnerHTML={{ __html: t('callout') }}
-              />
+              <p className="text-sm leading-relaxed text-foreground">
+                {t.rich('callout', {
+                  strong: (chunks) => (
+                    <strong className="font-bold">{chunks}</strong>
+                  ),
+                })}
+              </p>
             </div>
           </ScrollReveal>
 

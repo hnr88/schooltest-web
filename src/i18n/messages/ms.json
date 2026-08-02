@@ -2790,5 +2790,309 @@
       "itemOne": "Apabila semua murid telah menghantar, tutup sesi pada skrin hari ujian.",
       "itemTwo": "Keputusan akan muncul pada papan pemuka anda setelah pemarkahan selesai."
     }
+  },
+  "Eald": {
+    "meta": {
+      "homeTitle": "SchoolTest: Ujian bahasa Inggeris yang berbeza",
+      "homeDescription": "Lihat dengan tepat apa yang setiap murid EAL/D boleh dan belum boleh lakukan, subkemahiran demi subkemahiran, dalam 30 minit setiap kemahiran.",
+      "diagnoseTitle": "Diagnosis: SchoolTest EAL/D",
+      "diagnoseDescription": "SchoolTest memecahkan setiap makrokemahiran kepada subkemahirannya, supaya anda dapat melihat dengan tepat di mana kedudukan pelajar dan apa yang perlu diajar dahulu.",
+      "predictTitle": "Ramal kesediaan arus perdana: SchoolTest EAL/D",
+      "predictDescription": "Satu penunjuk kesediaan yang dibina daripada setiap subkemahiran merentasi keempat-empat kemahiran. Apabila anda mengeluarkan murid, anda akan tahu mereka sudah bersedia. Bukan kerana rasa, tetapi kerana data mengatakannya.",
+      "teachTitle": "Rancang dan ajar: SchoolTest EAL/D",
+      "teachDescription": "Eksport set individu atau kelas yang selamat privasi dan serahkan kepada ChatGPT, Gemini atau Claude. Data subkemahiran sebenar menukar prompt generik kepada kandungan pengajaran diperibadikan.",
+      "trackTitle": "Jejak kemajuan: SchoolTest EAL/D",
+      "trackDescription": "Uji semula mana-mana kemahiran dalam 30 minit, sekerap yang diperlukan kitaran pengajaran anda. Setiap keputusan berada pada skala yang sama, jadi anda sentiasa tahu apa yang berubah dan berapa banyak."
+    },
+    "nav": {
+      "label": "Navigasi EALD",
+      "diagnose": "Diagnosis",
+      "teach": "Ajar",
+      "track": "Jejak",
+      "predict": "Ramal",
+      "schoolSearch": "SchoolSearch",
+      "registerInterest": "Daftar minat",
+      "signIn": "Log masuk",
+      "startFree": "Mula percuma",
+      "openMenu": "Buka menu",
+      "closeMenu": "Tutup menu"
+    },
+    "home": {
+      "hero": {
+        "badge": "Untuk bilik darjah EAL/D Australia",
+        "title": "Ujian bahasa Inggeris yang berbeza jenisnya.",
+        "subtitle": "Lihat dengan tepat apa yang setiap murid EAL/D boleh dan belum boleh lakukan, subkemahiran demi subkemahiran, dalam 30 minit setiap kemahiran.",
+        "primaryCta": "Daftar minat anda",
+        "secondaryCta": "Lihat profil contoh",
+        "microcopy": "Sertai perintis sekolah pengasas"
+      },
+      "trustedBy": {
+        "label": "Sedang diperintis dengan",
+        "one": "John Paul College",
+        "two": "Ivanhoe Grammar",
+        "three": "Moreton Bay College"
+      },
+      "problem": {
+        "eyebrow": "Masalahnya",
+        "title": "Bagaimana jika anda dapat melihat ke dalam minda mereka?",
+        "bodyOne": "Setiap murid EAL/D tiba sebagai satu nombor yang kasar: skor penempatan, stanin, jalur CEFR. Mereka maju melalui fasa ACARA yang luas. Semuanya tidak memberi anda pandangan empirikal tentang profil linguistik sebenar mereka.",
+        "bodyTwo": "Jadi apa yang hendak diajar pada Isnin, siapa dikumpulkan dengan siapa, sama ada pelajaran anda berkesan, sama ada mereka sudah bersedia untuk arus perdana. Semuanya bergantung pada intuisi. Bagaimana jika anda mempunyai data psikometrik untuk menyokong anda?",
+        "badgeScore": "65",
+        "badgeCefr": "CEFR B1",
+        "badgePhase": "Membangun"
+      },
+      "solution": {
+        "intro": "Ujian diagnostik dan kemajuan yang dibina untuk bilik darjah EAL/D, Tahun 7–12.",
+        "body": "SchoolTest mengukur 4 kemahiran dan 27 subkemahiran merentasi membaca, mendengar, bertutur dan menulis. 30 minit setiap kemahiran, menunjukkan perkembangan ACARA setiap kali anda menguji.",
+        "tagline": "Penilaian bukan lagi ringkasan, ia menjadi peta."
+      },
+      "whatYouGet": {
+        "eyebrow": "Apa yang anda peroleh",
+        "title": "Ujian dalam kelas 30 minit. Diagnosis, ajar, jejak dan ramal.",
+        "diagnoseTitle": "Lihat kekuatan dan kelemahan",
+        "diagnoseDescription": "27 subkemahiran daripada ujian 30 minit. Enam minggu ujian diagnostik, selesai pada hari pertama.",
+        "teachTitle": "Rancang dan ajar",
+        "teachDescription": "Eksport set kelas selamat privasi ke mana-mana AI. Pembezaan bukan lagi tugas malam Ahad.",
+        "trackTitle": "Jejak kemajuan dari semasa ke semasa",
+        "trackDescription": "Setiap keputusan pada skala ACARA yang sama. Jika ia berkesan, ia akan kelihatan.",
+        "predictTitle": "Ramal kesediaan arus perdana",
+        "predictDescription": "Satu skor kesediaan merentasi kesemua empat domain. Keputusan keluar yang boleh anda pertahankan."
+      },
+      "classroom": {
+        "quote": "Penilaian bukan lagi ringkasan, ia menjadi peta.",
+        "subtext": "Tahun 7–12 · Membaca, mendengar, bertutur dan menulis"
+      },
+      "proof": {
+        "badge": "Dibina atas 40+ tahun penyelidikan psikometrik",
+        "skillsValue": "4 kemahiran",
+        "skillsLabel": "Membaca, mendengar, bertutur, menulis",
+        "yearsValue": "Tahun 7–12",
+        "yearsLabel": "Konteks Australia yang sesuai usia",
+        "scalesValue": "ACARA + CEFR",
+        "scalesLabel": "Fasa dan jalur, sebelah menyebelah",
+        "durationValue": "30 minit",
+        "durationLabel": "Setiap kemahiran, sekerap yang anda perlukan"
+      },
+      "register": {
+        "foundingEyebrow": "Sekolah pengasas",
+        "foundingTitle": "Kami membina ini bersama sekolah pengasas.",
+        "foundingBody": "Kami sedang menuju ke ujian lapangan. Kami perlukan sekolah yang sanggup mencubanya dengan murid sebenar dan memberitahu kami apa yang salah.",
+        "benefitEarlyAccess": "Akses awal semasa ia dibina",
+        "benefitDirectInput": "Input langsung ke dalam laporan",
+        "benefitFoundingTerms": "Terma pengasas semasa pelancaran",
+        "formTitle": "Daftar minat anda",
+        "formSubtitle": "Kami akan menghubungi anda dalam masa seminggu dengan laporan contoh.",
+        "nameLabel": "Nama anda",
+        "namePlaceholder": "Ahmad Ali",
+        "schoolLabel": "Sekolah",
+        "schoolPlaceholder": "Nama sekolah",
+        "roleLabel": "Peranan anda",
+        "selectPlaceholder": "Pilih…",
+        "roleCoordinator": "Penyelaras EAL/D",
+        "roleHod": "Ketua jabatan",
+        "roleTeacher": "Guru kelas",
+        "rolePrincipal": "Pengetua / kepimpinan",
+        "roleOther": "Lain-lain",
+        "emailLabel": "E-mel kerja",
+        "emailPlaceholder": "nama@sekolah.edu.au",
+        "studentsLabel": "Bilangan murid EAL/D",
+        "students1to20": "1–20",
+        "students21to50": "21–50",
+        "students51to100": "51–100",
+        "students100plus": "100+",
+        "submitButton": "Daftar minat",
+        "privacyNote": "Pengendalian data nama samaran. Tiada nama murid dalam sebarang eksport.",
+        "successTitle": "Terima kasih atas minat anda",
+        "successBody": "Kami akan menghubungi anda dalam masa seminggu dengan laporan contoh.",
+        "nameRequired": "Sila masukkan nama penuh anda.",
+        "schoolRequired": "Sila masukkan nama sekolah anda.",
+        "roleRequired": "Sila pilih peranan anda.",
+        "emailRequired": "Sila masukkan alamat e-mel anda.",
+        "emailInvalid": "Sila masukkan alamat e-mel yang sah.",
+        "studentsRequired": "Sila pilih bilangan murid EAL/D."
+      }
+    },
+    "diagnose": {
+      "hero": {
+        "eyebrow": "Lihat kekuatan dan kelemahan",
+        "title": "Satu ujian 30 minit. <blue>Profil diagnostik yang lengkap.</blue>",
+        "body": "SchoolTest memecahkan setiap makrokemahiran kepada subkemahirannya, supaya anda dapat melihat dengan tepat di mana kedudukan pelajar dan apa yang perlu diajar dahulu."
+      },
+      "unpack": {
+        "eyebrow": "Hari pertama",
+        "title": "Enam minggu memahami mereka, selesai dalam 30 minit.",
+        "body": "Murid baharu tiba dengan skor penempatan atau stanin. Tetapi apa yang sebenarnya berlaku? SchoolTest memberi anda profil subkemahiran lengkap dalam satu sesi 30 minit, ditanda aras kepada fasa ACARA.",
+        "callout": "<strong>Maksudnya untuk anda:</strong> masuk ke waktu kedua dengan tahu tepat apa yang perlu diajar."
+      },
+      "profile": {
+        "domain": "Membaca",
+        "score": "65",
+        "cefrBand": "CEFR B1",
+        "phase": "Membangun",
+        "decoding": "Penyahkodan",
+        "vocabulary": "Kosa kata",
+        "grammar": "Tatabahasa",
+        "gist": "Inti",
+        "detail": "Perincian",
+        "inference": "Inferens",
+        "critical": "Kritis",
+        "phaseConsolidating": "Kukuh",
+        "phaseBeginning": "Mula",
+        "phaseDeveloping": "Berkembang",
+        "phaseEmerging": "Baharu",
+        "moreSubskills": "+ 18 lagi merentasi mendengar, bertutur dan menulis"
+      },
+      "sameScore": {
+        "eyebrow": "Dua murid",
+        "title": "Skor sama.<br></br>Keupayaan berbeza.",
+        "body": "Dua murid tiba dengan skor umum yang sama. Adakah mereka sama? Tidak langsung. Seorang kuat dalam tatabahasa tetapi lemah dalam inferens; seorang lagi sebaliknya. Setiap murid mempunyai profil linguistik unik yang tidak didedahkan oleh ujian penempatan. Kini anda dapat melihatnya.",
+        "callout": "<strong>Maksudnya untuk anda:</strong> dua murid yang akan anda ajar bersama, diajar dengan sewajarnya."
+      },
+      "quote": "Skor ialah ringkasan.<br></br>Profil subkemahiran ialah peta."
+    },
+    "predict": {
+      "hero": {
+        "eyebrow": "Ramal kesediaan arus perdana",
+        "title": "Ketahui bila murid bersedia untuk arus perdana, <blue>dan buktikan.</blue>",
+        "body": "Satu penunjuk kesediaan yang dibina daripada setiap subkemahiran merentasi keempat-empat kemahiran. Apabila anda mengeluarkan murid, anda akan tahu mereka sudah bersedia. Bukan kerana rasa, tetapi kerana data mengatakannya.",
+        "domainsValue": "4 domain",
+        "domainsLabel": "Diagregatkan kepada satu penunjuk",
+        "termValue": "Setiap penggal",
+        "termLabel": "Ramal keluar sebelum jadual"
+      },
+      "individual": {
+        "eyebrow": "Individu",
+        "title": "Keputusan keluar berdasarkan data",
+        "body": "Lihat sejauh mana kesediaan sebenar murid untuk kelas arus perdana, dan kekurangan yang masih menghalang mereka.",
+        "callout": "<strong>Maksudnya untuk anda:</strong> beritahu ibu bapa, pengetua dan murid dengan tepat bila mereka bersedia untuk menyertai arus perdana, dan mengapa.",
+        "readinessLabel": "Kesediaan arus perdana",
+        "term1Label": "Penggal 1",
+        "term1Value": "34%",
+        "term3Label": "Penggal 3",
+        "term3Value": "81%",
+        "readinessFooter": "Diagregatkan daripada setiap subkemahiran dalam kesemua empat domain."
+      },
+      "cohort": {
+        "eyebrow": "Kohort",
+        "title": "Rancang program",
+        "body": "Lihat kesediaan keseluruhan kohort dalam satu paparan dan ramalkan keluar dan masuk penggal depan sebelum anda menyusun jadual.",
+        "cohortBadge": "Kesediaan kohort · 22 murid",
+        "exitBadge": "4 diunjurkan keluar penggal depan",
+        "callout": "<strong>Maksudnya untuk anda:</strong> jawab “berapa ramai yang akan meninggalkan kita penggal depan” dengan angka dan bukan anggaran."
+      },
+      "quote": "Intuisi guru campur empirikalisme SchoolTest.<br></br>Itulah perbezaannya."
+    },
+    "teach": {
+      "hero": {
+        "eyebrow": "Rancang dan ajar",
+        "title": "Tampal profil ke dalam AI. <blue>Dapatkan kandungan seminggu.</blue>",
+        "body": "Eksport set individu atau kelas yang selamat privasi dan serahkan kepada ChatGPT, Gemini atau Claude. Data subkemahiran sebenar menukar prompt generik kepada kandungan pengajaran diperibadikan.",
+        "primaryCta": "Daftar minat anda",
+        "secondaryCta": "Lihat profil contoh"
+      },
+      "generate": {
+        "eyebrow": "Penjanaan kandungan AI",
+        "title": "Daripada profil diagnostik kepada bahan pelajaran dalam beberapa minit.",
+        "body": "Pembelajaran diperibadikan memerlukan data diagnostik. Masukkan profil murid atau kelas ke dalam ChatGPT, Gemini atau Claude dan minta petikan bacaan berkumpulan dengan set soalan terbeza. Anda akan mendapatnya sebelum cerek mendidih.",
+        "callout": "<strong>Maksudnya untuk anda:</strong> pembezaan bukan lagi tugas malam Ahad.",
+        "classSetLabel": "Set kelas · 22 profil",
+        "exportBadge": "EKSPORT",
+        "promptText": "“Tulis satu petikan pada tahap kosa kata kelas, dengan set soalan yang sepadan dengan jurang mereka.”",
+        "outputTitle": "Petikan bacaan + soalan",
+        "targetBadge": "Sasaran: inferens, kosa kata"
+      },
+      "classroom": {
+        "eyebrow": "Pengurusan bilik darjah yang lebih bijak",
+        "title": "Siapa dipasangkan dengan siapa, dan cara membahagikan kelas.",
+        "body": "Setiap murid dan kumpulan kecil memerlukan sesuatu yang sedikit berbeza. Data diagnostik menjadikan pengurusan bilik darjah anda boleh dipertahankan, bukan sekadar insting.",
+        "groupA": "Kumpulan A",
+        "groupB": "Kumpulan B",
+        "groupC": "Kumpulan C",
+        "groupD": "Kumpulan D",
+        "groupCaption": "Empat kumpulan. Empat set soalan.",
+        "callout": "<strong>Maksudnya untuk anda:</strong> biar data yang merancang supaya anda boleh mengajar."
+      },
+      "threeMore": {
+        "title": "Dan tiga lagi perkara yang ia mungkinkan.",
+        "groupByGapTitle": "Kumpulkan mengikut jurang, bukan jalur",
+        "groupByGapDescription": "Bahagikan kelas mengikut kelemahan bersama dan bukan tahap keseluruhan. Empat kumpulan, empat keperluan yang benar-benar berbeza.",
+        "pairBySkillTitle": "Pasangkan mengikut kemahiran, bukan tahap",
+        "pairBySkillDescription": "Dua murid yang sama-sama tersekat pada inferens maju lebih jauh bersama. Atau pasangkan yang kuat dengan yang lemah, kemahiran demi kemahiran, supaya kedua-duanya ada alasan untuk berada di situ.",
+        "parentUpdatesTitle": "Maklumat ibu bapa dalam seminit",
+        "parentUpdatesDescription": "Tukar profil kepada bahasa mudah: apa yang anak mereka boleh lakukan sekarang, dan apa yang seterusnya."
+      },
+      "note": "Tiada AI di sekolah anda? Data subkemahiran masih memberitahu anda siapa hendak dipasangkan dan cara mengumpul. Anda hanya menyusun sendiri.",
+      "quote": "Prompt generik memberi anda lembaran kerja.<br></br>Data sebenar memberi anda satu pelajaran."
+    },
+    "track": {
+      "hero": {
+        "eyebrow": "Jejak kemajuan dari semasa ke semasa",
+        "title": "Kemajuan yang boleh diukur, bukan sekadar dirasa.",
+        "body": "Uji semula mana-mana kemahiran dalam 30 minit, sekerap yang diperlukan kitaran pengajaran anda. Setiap keputusan berada pada skala yang sama, jadi anda sentiasa tahu apa yang berubah dan berapa banyak."
+      },
+      "evidence": {
+        "eyebrow": "Jejak bukti",
+        "title": "Penjejakan kemajuan berasaskan data",
+        "body": "Seminggu sekali, sebulan sekali, mengikut keperluan kitaran pengajaran anda. Pertumbuhan dipetakan kepada kontinuum ACARA. Data yang difahami ibu bapa dan boleh ditindakkan oleh pengetua.",
+        "callout": "<strong>Maksudnya untuk anda:</strong> jejak bukti yang berfungsi dalam mesyuarat ibu bapa dan dalam laporan kepada kepimpinan.",
+        "skill": "Inferens membaca",
+        "currentPhase": "Pengukuhan",
+        "term1Label": "Penggal 1",
+        "term1Phase": "Permulaan",
+        "term2Label": "Penggal 2",
+        "term2Phase": "Kemunculan",
+        "term3Label": "Penggal 3",
+        "term3Phase": "Pembangunan",
+        "term4Label": "Penggal 4",
+        "term4Phase": "Pengukuhan",
+        "footer": "Fasa EAL/D ACARA. Skala yang sama setiap masa."
+      },
+      "teachEmpirical": {
+        "eyebrow": "Maklum balas tentang pengajaran anda",
+        "title": "Ajar seperti saintis.",
+        "body": "Tiga minggu kerja kosa kata yang disasarkan sama ada muncul dalam data atau tidak. Anda mengetahuinya lebih awal dan bukan lewat.",
+        "focusBadge": "Fokus kosa kata, minggu 3–8",
+        "resultBadge": "Kosa kata +2 fasa",
+        "callout": "<strong>Maksudnya untuk anda:</strong> maklum balas tentang pengajaran anda, bukan hanya murid anda."
+      },
+      "quote": "Kemajuan yang boleh anda tunjukkan."
+    },
+    "shared": {
+      "cta": {
+        "title": "Kami membina ini bersama sekolah pengasas.",
+        "body": "Ujian lapangan sedang berjalan. Akses awal, input langsung ke dalam laporan, terma pengasas semasa pelancaran.",
+        "button": "Daftar minat anda"
+      },
+      "nextLabel": "Seterusnya",
+      "nextStep01": "01",
+      "nextStep02": "02",
+      "nextStep03": "03",
+      "nextStep04": "04",
+      "nextDiagnoseTitle": "Lihat kekuatan dan kelemahan",
+      "nextDiagnoseDescription": "27 subkemahiran daripada satu ujian.",
+      "nextTeachTitle": "Rancang dan ajar",
+      "nextTeachDescription": "Tukar profil menjadi bahan.",
+      "nextTrackTitle": "Jejak kemajuan",
+      "nextTrackDescription": "Lihat setiap subkemahiran bergerak.",
+      "nextPredictTitle": "Ramal kesediaan",
+      "nextPredictDescription": "Ketahui bila mereka bersedia untuk keluar.",
+      "readMore": "Baca lagi →"
+    },
+    "footer": {
+      "tagline": "Penilaian diagnostik bahasa Inggeris untuk bilik darjah EAL/D Australia. Tahun 7–12, fasa ACARA dan jalur CEFR.",
+      "productTitle": "Produk",
+      "diagnose": "Lihat kekuatan dan kelemahan",
+      "teach": "Rancang dan ajar",
+      "track": "Jejak kemajuan dari semasa ke semasa",
+      "predict": "Ramal kesediaan arus perdana",
+      "moreTitle": "Lagi",
+      "schoolSearch": "SchoolSearch",
+      "foundingPilot": "Perintis pengasas",
+      "privacy": "Privasi",
+      "contact": "Hubungi",
+      "copyright": "© 2026 SchoolTest",
+      "status": "Memperintis dengan sekolah pengasas",
+      "logoAlt": "Logo SchoolTest"
+    }
   }
 }

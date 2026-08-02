@@ -52,7 +52,11 @@ async function ClassroomSection() {
               </div>
 
               <p className="mt-5 text-sm font-bold leading-relaxed text-white">
-                <span dangerouslySetInnerHTML={{ __html: t('callout') }} />
+                {t.rich('callout', {
+                  strong: (chunks) => (
+                    <strong className="font-bold">{chunks}</strong>
+                  ),
+                })}
               </p>
             </div>
           </div>
