@@ -50,6 +50,14 @@ export const NAV_ITEMS: readonly NavItem[] = [
     parentViews: true,
   },
   {
+    labelKey: 'teach',
+    href: '/dashboard/teach',
+    icon: GraduationCap,
+    exact: false,
+    group: 'primary',
+    roles: [TEACHER_ROLE_TYPE],
+  },
+  {
     labelKey: 'reports',
     href: REPORTS_HREF,
     icon: FileChartColumn,
