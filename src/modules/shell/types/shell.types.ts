@@ -20,11 +20,6 @@ export type NavLabelKey =
 // parent rail sits in the one primary list.
 export type NavGroup = 'primary';
 
-export interface ShellRouteMeta {
-  labelKey: NavLabelKey;
-  href: string;
-}
-
 export interface RecordCrumbProps {
   label: string;
 }

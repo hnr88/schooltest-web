@@ -1,5 +1,6 @@
 'use client';
 
+import { Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Link, usePathname } from '@/i18n/navigation';
@@ -11,67 +12,54 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/modules/design-system';
+import { buildTrail } from '@/modules/navigation';
+import { CRUMB_LINK_CLASSES } from '@/modules/shell/constants/crumb.constants';
 import { useRecordCrumbLabel } from '@/modules/shell/hooks/use-record-crumb';
-import { getShellRouteMeta } from '@/modules/shell/lib/route-meta';
 
-// The app's ONLY breadcrumb (canonical Child profile header: "My children /
-// Emma Hansen" — one row, "/" separator in #CBD5E1, the record in 600). Route meta
-// gives the section; a record page appends the last crumb through
-// useRecordCrumb / <RecordCrumb />, so the trail ends at the record instead of
-// dead-ending at the section and forcing a second breadcrumb into <main>.
-// Links keep their 20px canonical text box; the ::after inset takes the pointer
-// target to 44px.
+// The app's ONLY dashboard breadcrumb (canonical Child profile header:
+// "My children / Emma Hansen" — one row, "/" separator in #CBD5E1, the current
+// page in 600). The trail now comes from the SHARED buildTrail registry
+// (@/modules/navigation) instead of a two-level section lookup, so a deep route
+// such as /dashboard/school/classes/<id> renders every level instead of
+// dead-ending at "School". The record segment still takes its human label from
+// useRecordCrumb / <RecordCrumb />, so a raw documentId is never shown.
 //
-// The trail now sits on the WELL (#EEF2F7), not on a white topbar — the detached
-// frame has no white chrome behind it. --muted-foreground measures 4.23:1 there and
-// drops under AA, so the crumb ink steps to --color-body (#475569, 6.74:1). The
-// separator keeps --input and stays aria-hidden, exactly as the primitive marks it.
-const CRUMB_LINK_CLASSES =
-  'relative inline-flex rounded-sm text-body transition-colors duration-200 ease-out after:absolute after:inset-x-0 after:-inset-y-3 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none';
-
+// Middle crumbs hide below `sm` so a four-level trail never makes the page
+// scroll sideways at 375px; the first and current crumbs always survive.
 function TopbarBreadcrumb() {
-  const t = useTranslations('Shell');
+  const t = useTranslations();
   const pathname = usePathname();
-  const route = getShellRouteMeta(pathname);
-  const sectionLabel = t(`nav.${route.labelKey}`);
   const recordLabel = useRecordCrumbLabel(pathname);
+  const { crumbs } = buildTrail(pathname, { recordLabel, includeRoot: false });
 
   return (
-    <Breadcrumb aria-label={t('topbar.breadcrumbLabel')} className="min-w-0">
+    <Breadcrumb aria-label={t('Shell.topbar.breadcrumbLabel')} className="min-w-0">
       <BreadcrumbList className="flex-nowrap gap-2 text-sm">
-        <BreadcrumbItem className="max-sm:hidden">
-          <BreadcrumbLink render={<Link href="/dashboard" />} className={CRUMB_LINK_CLASSES}>
-            {t('topbar.dashboard')}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator className="text-input max-sm:hidden">/</BreadcrumbSeparator>
-        <BreadcrumbItem className="min-w-0">
-          {recordLabel ? (
-            <BreadcrumbLink render={<Link href={route.href} />} className={CRUMB_LINK_CLASSES}>
-              {sectionLabel}
-            </BreadcrumbLink>
-          ) : (
-            <BreadcrumbPage
-              data-slot="topbar-page-title"
-              className="truncate font-semibold text-foreground"
-            >
-              {sectionLabel}
-            </BreadcrumbPage>
-          )}
-        </BreadcrumbItem>
-        {recordLabel ? (
-          <>
-            <BreadcrumbSeparator className="text-input">/</BreadcrumbSeparator>
-            <BreadcrumbItem className="min-w-0">
-              <BreadcrumbPage
-                data-slot="topbar-page-title"
-                className="truncate font-semibold text-foreground"
+        {crumbs.map((crumb, index) => (
+          <Fragment key={crumb.href}>
+            {index > 0 ? (
+              <BreadcrumbSeparator
+                className={crumb.isCurrent ? 'text-input' : 'text-input max-sm:hidden'}
               >
-                {recordLabel}
-              </BreadcrumbPage>
+                /
+              </BreadcrumbSeparator>
+            ) : null}
+            <BreadcrumbItem className={crumb.isCurrent ? 'min-w-0' : 'min-w-0 max-sm:hidden'}>
+              {crumb.isCurrent ? (
+                <BreadcrumbPage
+                  data-slot="topbar-page-title"
+                  className="truncate font-semibold text-foreground"
+                >
+                  {crumb.isRecord ? recordLabel : t(crumb.labelKey)}
+                </BreadcrumbPage>
+              ) : (
+                <BreadcrumbLink render={<Link href={crumb.href} />} className={CRUMB_LINK_CLASSES}>
+                  {crumb.isRecord ? recordLabel : t(crumb.labelKey)}
+                </BreadcrumbLink>
+              )}
             </BreadcrumbItem>
-          </>
-        ) : null}
+          </Fragment>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );

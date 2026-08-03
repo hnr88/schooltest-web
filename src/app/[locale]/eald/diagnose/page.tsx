@@ -12,6 +12,8 @@ import {
   UnpackSection,
   DIAGNOSE_NEXT_SECTIONS,
 } from '@/modules/eald';
+import { PublicBreadcrumb } from '@/modules/navigation';
+import { BreadcrumbJsonLd } from '@/modules/seo';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Eald.meta');
@@ -22,12 +24,19 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function DiagnosePage() {
+interface DiagnosePageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function DiagnosePage({ params }: DiagnosePageProps) {
+  const { locale } = await params;
   const t = await getTranslations('Eald');
 
   return (
     <div className="min-h-screen bg-white text-foreground">
       <EaldHeader activePage="diagnose" />
+      <BreadcrumbJsonLd pathname="/eald/diagnose" locale={locale} />
+      <PublicBreadcrumb pathname="/eald/diagnose" />
       <main>
         <DiagnoseHero />
         <UnpackSection />

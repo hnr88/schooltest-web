@@ -9,6 +9,8 @@ import {
   QuoteBand,
   TRACK_NEXT_SECTIONS,
 } from '@/modules/eald';
+import { PublicBreadcrumb } from '@/modules/navigation';
+import { BreadcrumbJsonLd } from '@/modules/seo';
 import { EvidenceSection } from '@/modules/eald/components/EvidenceSection';
 import { TeachEmpiricalSection } from '@/modules/eald/components/TeachEmpiricalSection';
 import { TrackHero } from '@/modules/eald/components/TrackHero';
@@ -22,12 +24,19 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function TrackPage() {
+interface TrackPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function TrackPage({ params }: TrackPageProps) {
+  const { locale } = await params;
   const t = await getTranslations('Eald');
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <EaldHeader activePage="track" />
+      <BreadcrumbJsonLd pathname="/eald/track" locale={locale} />
+      <PublicBreadcrumb pathname="/eald/track" />
       <main>
         <TrackHero />
         <EvidenceSection />

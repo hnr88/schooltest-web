@@ -9,6 +9,8 @@ import {
   QuoteBand,
   TEACH_NEXT_SECTIONS,
 } from '@/modules/eald';
+import { PublicBreadcrumb } from '@/modules/navigation';
+import { BreadcrumbJsonLd } from '@/modules/seo';
 import { ClassroomSection } from '@/modules/eald/components/ClassroomSection';
 import { GenerateSection } from '@/modules/eald/components/GenerateSection';
 import { TeachHero } from '@/modules/eald/components/TeachHero';
@@ -23,12 +25,19 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function TeachPage() {
+interface TeachPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function TeachPage({ params }: TeachPageProps) {
+  const { locale } = await params;
   const t = await getTranslations('Eald');
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <EaldHeader activePage="teach" />
+      <BreadcrumbJsonLd pathname="/eald/teach" locale={locale} />
+      <PublicBreadcrumb pathname="/eald/teach" />
       <main>
         <TeachHero />
         <GenerateSection />

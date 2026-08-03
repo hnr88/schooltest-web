@@ -7,6 +7,8 @@ import {
   EaldHeader,
   EaldHero,
 } from '@/modules/eald';
+import { PublicBreadcrumb } from '@/modules/navigation';
+import { BreadcrumbJsonLd } from '@/modules/seo';
 import { ClassroomBand } from '@/modules/eald/components/ClassroomBand';
 import { EaldTrustedBy } from '@/modules/eald/components/EaldTrustedBy';
 import { ProblemSection } from '@/modules/eald/components/ProblemSection';
@@ -24,7 +26,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function Home() {
+interface HomeProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function Home({ params }: HomeProps) {
+  const { locale } = await params;
   const t = await getTranslations('Eald');
 
   return (
@@ -36,6 +43,8 @@ export default async function Home() {
         {t('nav.label')}
       </a>
       <EaldHeader activePage="home" />
+      <BreadcrumbJsonLd pathname="/" locale={locale} />
+      <PublicBreadcrumb pathname="/" />
       <main id="main-content">
         <EaldHero
           badge={t('home.hero.badge')}

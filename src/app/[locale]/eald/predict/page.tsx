@@ -12,6 +12,8 @@ import {
   QuoteBand,
   PREDICT_NEXT_SECTIONS,
 } from '@/modules/eald';
+import { PublicBreadcrumb } from '@/modules/navigation';
+import { BreadcrumbJsonLd } from '@/modules/seo';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Eald.meta');
@@ -22,12 +24,19 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function PredictPage() {
+interface PredictPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function PredictPage({ params }: PredictPageProps) {
+  const { locale } = await params;
   const t = await getTranslations('Eald');
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <EaldHeader activePage="predict" />
+      <BreadcrumbJsonLd pathname="/eald/predict" locale={locale} />
+      <PublicBreadcrumb pathname="/eald/predict" />
       <main>
         <PredictHero />
         <IndividualSection />
