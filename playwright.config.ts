@@ -1,8 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// Port 3100 is allocated to this instance (port 3000 belongs to a neighbor — see
-// .qa/STACK.json). Override with E2E_BASE_URL / E2E_PORT when targeting another stack.
-const port = Number(process.env.E2E_PORT ?? 3100);
+// This instance's web app runs on :3101 (see .qa/STACK.json). Ports 3000 and 3100
+// belong to NEIGHBOURING stacks and must never be bound by this suite.
+//
+// The host is `localhost`, not `127.0.0.1`, on purpose: the API's CORS allow-list
+// is FRONTEND_ORIGIN=http://localhost:3101, so a suite driven at 127.0.0.1 gets a
+// CORS preflight failure the moment a page calls the API (observed as a silent
+// "You appear to be offline" on the sign-in form). Override with
+// E2E_BASE_URL / E2E_PORT when targeting another stack.
+const port = Number(process.env.E2E_PORT ?? 3101);
 const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${port}`;
 
 export default defineConfig({

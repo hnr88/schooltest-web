@@ -40,7 +40,11 @@ function EaldHero({
             )}
           >
             {badge ? (
-              <Badge className="h-auto gap-2 bg-white/10 px-4 py-1.5 text-white ring-1 ring-white/20">
+              // The vendored Badge is `w-fit` + nowrap, so a long badge string
+              // overflowed the 375px viewport by 8px and made the whole page
+              // scroll sideways. Wrapping is a consumer-side override; the
+              // primitive itself stays untouched.
+              <Badge className="h-auto max-w-full gap-2 bg-white/10 px-4 py-1.5 text-center whitespace-normal text-white ring-1 ring-white/20">
                 <span aria-hidden="true" className="size-1.5 rounded-full bg-teal-400" />
                 {badge}
               </Badge>

@@ -20,7 +20,10 @@ async function ProofSection() {
           <div className="rounded-4xl border border-border bg-surface-inset p-10 sm:p-12">
             <Badge
               variant="outline"
-              className="rounded-full px-4 py-1.5 text-body-sm font-semibold text-navy-800"
+              // `max-w-full whitespace-normal` overrides the primitive's nowrap
+              // + w-fit: at 375px this badge's copy is wider than the column and
+              // pushed the whole page 8px sideways.
+              className="h-auto max-w-full rounded-full px-4 py-1.5 text-body-sm font-semibold whitespace-normal text-navy-800"
             >
               {t('home.proof.badge')}
             </Badge>
