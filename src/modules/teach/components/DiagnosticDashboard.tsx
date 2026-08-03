@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
 import { DiagnosticEmptyState } from '@/modules/teach/components/DiagnosticEmptyState';
+import { DiagnosticPrintHeader } from '@/modules/teach/components/DiagnosticPrintHeader';
 import { GroupPanel } from '@/modules/teach/components/GroupPanel';
 import { ItemTypeHeatmap } from '@/modules/teach/components/ItemTypeHeatmap';
 import { MasteryTable } from '@/modules/teach/components/MasteryTable';
@@ -45,11 +46,16 @@ export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/t
       data-surface="teacher-diagnostic"
       className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
     >
+      <DiagnosticPrintHeader
+        classLabel={data?.class.name ?? t('title')}
+        formCode={data?.form_code ?? null}
+      />
+
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-2">
           <Link
             href={backHref}
-            className="w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="print-hidden w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             {t('backLink')}
           </Link>
@@ -64,7 +70,7 @@ export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/t
             </p>
           ) : null}
         </div>
-        {actions ?? null}
+        {actions ? <div className="print-hidden">{actions}</div> : null}
       </div>
 
       {query.isPending ? (

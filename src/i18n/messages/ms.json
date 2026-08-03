@@ -2093,6 +2093,7 @@
       "loadError": "Diagnostik kelas tidak dapat dimuatkan. Cuba lagi.",
       "summary": "{sat} daripada {roster} murid telah melengkapkan ujian",
       "formLabel": "Borang {code}",
+      "printDate": "Dicetak pada {date}",
       "masteryTitle": "Profil membaca kelas",
       "masteryDescription": "Setiap bidang membaca ditandai sebagai dikuasai, sedang berkembang, belum dikuasai, atau belum dinilai. Pilih seorang murid untuk melihat profilnya.",
       "groupsTitle": "Kumpulkan kelas",

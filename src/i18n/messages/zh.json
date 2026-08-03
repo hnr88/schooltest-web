@@ -2093,6 +2093,7 @@
       "loadError": "无法加载班级诊断，请重试。",
       "summary": "{roster} 名学生中已有 {sat} 名完成测试",
       "formLabel": "试卷 {code}",
+      "printDate": "打印日期：{date}",
       "masteryTitle": "班级阅读概况",
       "masteryDescription": "每个阅读领域标记为已掌握、发展中、未掌握或尚未评估。选择一名学生即可查看其个人概况。",
       "groupsTitle": "为全班分组",

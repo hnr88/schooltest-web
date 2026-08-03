@@ -70,7 +70,7 @@ export function MasteryTable({ rows, selectedRef, onSelect }: MasteryTableProps)
                 data-slot="mastery-report-link"
                 href={`${REPORTS_HREF}/${row.latest_result_document_id}`}
                 aria-label={t('mastery.viewFullReport', { student: row.student_ref })}
-                className="w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                className="print-hidden w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
                 {t('mastery.viewFullReport', { student: row.student_ref })}
               </Link>

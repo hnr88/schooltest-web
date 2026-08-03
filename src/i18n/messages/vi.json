@@ -2093,6 +2093,7 @@
       "loadError": "Không thể tải chẩn đoán lớp học. Vui lòng thử lại.",
       "summary": "{sat} trong {roster} học sinh đã hoàn thành bài kiểm tra",
       "formLabel": "Đề {code}",
+      "printDate": "Ngày in: {date}",
       "masteryTitle": "Hồ sơ đọc của lớp",
       "masteryDescription": "Mỗi lĩnh vực đọc được đánh dấu là đã thành thạo, đang phát triển, chưa thành thạo hoặc chưa đánh giá. Chọn một học sinh để xem hồ sơ của em.",
       "groupsTitle": "Chia nhóm cả lớp",

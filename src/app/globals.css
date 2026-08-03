@@ -846,7 +846,18 @@
    strip the portal chrome (detached rail + topbar) and release the screen-only
    fixed-height scroll frame, so a long page flows onto paper instead of
    clipping at one viewport. Content stays legible in black and white — no
-   meaning is carried by colour alone. */
+   meaning is carried by colour alone.
+
+   Task 140 (mvp-updates §4.9) extends the same block for the class diagnostic
+   dashboard: a shared .print-hidden / .print-only pair marks interactive
+   affordances off paper and the dated class header off screen, mastery rows
+   and heat-map cells never split across pages, and the heat-map tints hold
+   their colour where the engine supports it (the fraction text carries the
+   meaning regardless). */
+.print-only {
+  display: none;
+}
+
 @media print {
   [data-slot='sidebar-gap'],
   [data-slot='sidebar-container'],
@@ -859,5 +870,26 @@
   [data-slot='dashboard-content'] {
     height: auto;
     overflow: visible;
+  }
+
+  .print-hidden,
+  [data-slot='student-mastery-drilldown'] {
+    display: none;
+  }
+
+  .print-only {
+    display: block;
+  }
+
+  [data-slot='mastery-table'] > li,
+  [data-slot='group-panel'] li,
+  [data-slot='item-type-heatmap'] section,
+  [data-slot='heatmap-cell'] {
+    break-inside: avoid;
+  }
+
+  [data-slot='heatmap-cell'] {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }

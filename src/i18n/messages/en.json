@@ -2397,6 +2397,7 @@
       "loadError": "The class diagnostic could not be loaded. Try again.",
       "summary": "{sat} of {roster} students have completed the test",
       "formLabel": "Form {code}",
+      "printDate": "Printed {date}",
       "masteryTitle": "Class reading profile",
       "masteryDescription": "Each reading area is marked mastered, emerging, not mastered, or not yet assessed. Select a student to see their profile.",
       "groupsTitle": "Group the class",
