@@ -2082,11 +2082,11 @@
       "moreTitle": "More",
       "schoolSearch": "SchoolSearch",
       "foundingPilot": "Founding pilot",
-      "privacy": "Privacy",
       "contact": "Contact",
       "copyright": "© 2026 SchoolTest",
       "status": "Piloting with founding schools",
-      "logoAlt": "SchoolTest logo"
+      "logoAlt": "SchoolTest logo",
+      "legalTitle": "Legal"
     }
   },
   "SchoolOnboarding": {
@@ -3224,6 +3224,7 @@
     "gdpr": "GDPR Compliance",
     "home": "Home",
     "invite": "Invitation",
+    "legalNavLabel": "Legal",
     "newChild": "New student",
     "onboarding": "Onboarding",
     "opsAudit": "Audit & security",
@@ -3249,5 +3250,11 @@
     "signUp": "Sign up",
     "termsOfService": "Terms of Service",
     "testDay": "Test day"
+  },
+  "Legal": {
+    "contents": "Contents",
+    "contentsLabel": "Document contents",
+    "effectiveDate": "Effective",
+    "version": "Version"
   }
 }

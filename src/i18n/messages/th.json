@@ -3205,11 +3205,11 @@
       "moreTitle": "เพิ่มเติม",
       "schoolSearch": "SchoolSearch",
       "foundingPilot": "การนำร่องก่อตั้ง",
-      "privacy": "ความเป็นส่วนตัว",
       "contact": "ติดต่อ",
       "copyright": "© 2026 SchoolTest",
       "status": "กำลังนำร่องกับโรงเรียนก่อตั้ง",
-      "logoAlt": "โลโก้ SchoolTest"
+      "logoAlt": "โลโก้ SchoolTest",
+      "legalTitle": "ข้อกำหนดทางกฎหมาย"
     }
   },
   "Navigation": {
@@ -3224,6 +3224,7 @@
     "gdpr": "การปฏิบัติตาม GDPR",
     "home": "หน้าแรก",
     "invite": "คำเชิญ",
+    "legalNavLabel": "การนำทางข้อกำหนดทางกฎหมาย",
     "newChild": "นักเรียนใหม่",
     "onboarding": "เริ่มต้นใช้งาน",
     "opsAudit": "การตรวจสอบและความปลอดภัย",
@@ -3249,5 +3250,11 @@
     "signUp": "สมัครใช้งาน",
     "termsOfService": "ข้อกำหนดการให้บริการ",
     "testDay": "วันสอบ"
+  },
+  "Legal": {
+    "contents": "สารบัญ",
+    "contentsLabel": "สารบัญเอกสาร",
+    "effectiveDate": "มีผลบังคับใช้",
+    "version": "เวอร์ชัน"
   }
 }

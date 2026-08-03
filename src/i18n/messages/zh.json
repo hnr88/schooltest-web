@@ -3205,11 +3205,11 @@
       "moreTitle": "更多",
       "schoolSearch": "SchoolSearch",
       "foundingPilot": "创始试点",
-      "privacy": "隐私",
       "contact": "联系我们",
       "copyright": "© 2026 SchoolTest",
       "status": "正与创始学校试点合作",
-      "logoAlt": "SchoolTest 标志"
+      "logoAlt": "SchoolTest 标志",
+      "legalTitle": "法律条款"
     }
   },
   "Navigation": {
@@ -3224,6 +3224,7 @@
     "gdpr": "GDPR 合规",
     "home": "首页",
     "invite": "邀请",
+    "legalNavLabel": "法律条款导航",
     "newChild": "新增学生",
     "onboarding": "入门引导",
     "opsAudit": "审计与安全",
@@ -3249,5 +3250,11 @@
     "signUp": "注册",
     "termsOfService": "服务条款",
     "testDay": "测试日"
+  },
+  "Legal": {
+    "contents": "目录",
+    "contentsLabel": "文档目录",
+    "effectiveDate": "生效日期",
+    "version": "版本"
   }
 }

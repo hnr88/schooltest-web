@@ -3205,11 +3205,11 @@
       "moreTitle": "Thêm",
       "schoolSearch": "SchoolSearch",
       "foundingPilot": "Thí điểm sáng lập",
-      "privacy": "Quyền riêng tư",
       "contact": "Liên hệ",
       "copyright": "© 2026 SchoolTest",
       "status": "Đang thí điểm cùng các trường sáng lập",
-      "logoAlt": "Logo SchoolTest"
+      "logoAlt": "Logo SchoolTest",
+      "legalTitle": "Pháp lý"
     }
   },
   "Navigation": {
@@ -3224,6 +3224,7 @@
     "gdpr": "Tuân thủ GDPR",
     "home": "Trang chủ",
     "invite": "Lời mời",
+    "legalNavLabel": "Điều hướng pháp lý",
     "newChild": "Học sinh mới",
     "onboarding": "Bắt đầu",
     "opsAudit": "Kiểm toán & bảo mật",
@@ -3249,5 +3250,11 @@
     "signUp": "Đăng ký",
     "termsOfService": "Điều khoản dịch vụ",
     "testDay": "Ngày kiểm tra"
+  },
+  "Legal": {
+    "contents": "Mục lục",
+    "contentsLabel": "Mục lục tài liệu",
+    "effectiveDate": "Hiệu lực",
+    "version": "Phiên bản"
   }
 }

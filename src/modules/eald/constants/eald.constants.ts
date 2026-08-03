@@ -9,24 +9,42 @@ const EALD_NAV_LINKS: readonly EaldNavLink[] = [
 
 const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
   {
-    titleKey: 'footer.productTitle',
+    titleKey: 'Eald.footer.productTitle',
     links: [
-      { href: '/eald/diagnose', labelKey: 'footer.diagnose' },
-      { href: '/eald/teach', labelKey: 'footer.teach' },
-      { href: '/eald/track', labelKey: 'footer.track' },
-      { href: '/eald/predict', labelKey: 'footer.predict' },
+      { href: '/eald/diagnose', labelKey: 'Eald.footer.diagnose' },
+      { href: '/eald/teach', labelKey: 'Eald.footer.teach' },
+      { href: '/eald/track', labelKey: 'Eald.footer.track' },
+      { href: '/eald/predict', labelKey: 'Eald.footer.predict' },
     ],
   },
   {
-    titleKey: 'footer.moreTitle',
+    titleKey: 'Eald.footer.moreTitle',
     links: [
-      { href: '/dashboard/search', labelKey: 'footer.schoolSearch' },
-      { href: '/#register', labelKey: 'footer.foundingPilot' },
-      { href: '/privacy', labelKey: 'footer.privacy' },
-      { href: '/#register', labelKey: 'footer.contact' },
+      { href: '/dashboard/search', labelKey: 'Eald.footer.schoolSearch' },
+      { href: '/#register', labelKey: 'Eald.footer.foundingPilot' },
+      { href: '/#register', labelKey: 'Eald.footer.contact' },
+    ],
+  },
+  // C-LEG-02 (mission st-legal-seo-ops, task 206). Replaces the single
+  // `/privacy` entry, which pointed at a route that never existed and 404'd.
+  {
+    titleKey: 'Eald.footer.legalTitle',
+    links: [
+      { href: '/privacy-policy', labelKey: 'Navigation.privacyPolicy' },
+      { href: '/terms-of-service', labelKey: 'Navigation.termsOfService' },
+      { href: '/cookie-policy', labelKey: 'Navigation.cookiePolicy' },
+      { href: '/gdpr', labelKey: 'Navigation.gdpr' },
     ],
   },
 ] as const;
+
+/** The legal links the public header and mobile nav expose (C-LEG-02). */
+export const EALD_LEGAL_LINKS: readonly { readonly href: string; readonly labelKey: string }[] = [
+  { href: '/privacy-policy', labelKey: 'Navigation.privacyPolicy' },
+  { href: '/terms-of-service', labelKey: 'Navigation.termsOfService' },
+  { href: '/cookie-policy', labelKey: 'Navigation.cookiePolicy' },
+  { href: '/gdpr', labelKey: 'Navigation.gdpr' },
+];
 
 const EALD_TRUSTED_SCHOOLS = [
   'trustedBy.one',

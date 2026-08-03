@@ -16,7 +16,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/modules/design-system';
-import { EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
+import { EALD_LEGAL_LINKS, EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
 import type { EaldPage } from '@/modules/eald/types/eald.types';
 
 interface EaldMobileNavProps {
@@ -24,7 +24,9 @@ interface EaldMobileNavProps {
 }
 
 function EaldMobileNav({ activePage }: EaldMobileNavProps) {
-  const t = useTranslations('Eald');
+  // Root-scoped: the sheet mixes Eald.* copy with the shared Navigation.* legal
+  // labels rather than duplicating them into a second catalog.
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
 
@@ -35,7 +37,7 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
           <Button
             variant="ghost"
             size="icon-lg"
-            aria-label={t('nav.openMenu')}
+            aria-label={t('Eald.nav.openMenu')}
             className="ml-auto size-11 lg:hidden"
           />
         }
@@ -44,14 +46,14 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
       </SheetTrigger>
       <SheetContent showCloseButton={false} className="gap-0 p-0">
         <SheetHeader className="flex-row items-center justify-between border-b border-border">
-          <Logo alt={t('footer.logoAlt')} />
-          <SheetTitle className="sr-only">{t('nav.label')}</SheetTitle>
+          <Logo alt={t('Eald.footer.logoAlt')} />
+          <SheetTitle className="sr-only">{t('Eald.nav.label')}</SheetTitle>
           <SheetClose
             render={
               <Button
                 variant="ghost"
                 size="icon-lg"
-                aria-label={t('nav.closeMenu')}
+                aria-label={t('Eald.nav.closeMenu')}
                 className="size-11"
               />
             }
@@ -59,7 +61,7 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
             <X aria-hidden="true" className="size-5" />
           </SheetClose>
         </SheetHeader>
-        <nav aria-label={t('nav.label')} className="flex flex-col gap-1 p-4">
+        <nav aria-label={t('Eald.nav.label')} className="flex flex-col gap-1 p-4">
           {EALD_NAV_LINKS.map(({ href, key, page }) => (
             <Link
               key={key}
@@ -70,7 +72,7 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
                 activePage === page && 'bg-blue-50 font-semibold',
               )}
             >
-              {t(key)}
+              {t(`Eald.${key}`)}
             </Link>
           ))}
           <Link
@@ -78,8 +80,23 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
             onClick={close}
             className="rounded-lg px-3 py-3 text-sm font-medium text-body hover:bg-muted"
           >
-            {t('nav.schoolSearch')}
+            {t('Eald.nav.schoolSearch')}
           </Link>
+        </nav>
+        <nav
+          aria-label={t('Navigation.legalNavLabel')}
+          className="flex flex-col gap-1 border-t border-border p-4"
+        >
+          {EALD_LEGAL_LINKS.map(({ href, labelKey }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={close}
+              className="rounded-lg px-3 py-3 text-sm font-medium text-body hover:bg-muted"
+            >
+              {t(labelKey)}
+            </Link>
+          ))}
         </nav>
         <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
           <Link
@@ -87,14 +104,14 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
             onClick={close}
             className="inline-flex h-11 items-center justify-center rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted"
           >
-            {t('nav.signIn')}
+            {t('Eald.nav.signIn')}
           </Link>
           <Link
             href="/#register"
             onClick={close}
             className="inline-flex h-11 items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/80"
           >
-            {t('nav.registerInterest')}
+            {t('Eald.nav.registerInterest')}
           </Link>
         </div>
       </SheetContent>

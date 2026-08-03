@@ -3205,11 +3205,11 @@
       "moreTitle": "Lagi",
       "schoolSearch": "SchoolSearch",
       "foundingPilot": "Perintis pengasas",
-      "privacy": "Privasi",
       "contact": "Hubungi",
       "copyright": "© 2026 SchoolTest",
       "status": "Memperintis dengan sekolah pengasas",
-      "logoAlt": "Logo SchoolTest"
+      "logoAlt": "Logo SchoolTest",
+      "legalTitle": "Undang-undang"
     }
   },
   "Navigation": {
@@ -3224,6 +3224,7 @@
     "gdpr": "Pematuhan GDPR",
     "home": "Laman utama",
     "invite": "Jemputan",
+    "legalNavLabel": "Navigasi undang-undang",
     "newChild": "Pelajar baharu",
     "onboarding": "Permulaan",
     "opsAudit": "Audit & keselamatan",
@@ -3249,5 +3250,11 @@
     "signUp": "Daftar",
     "termsOfService": "Terma Perkhidmatan",
     "testDay": "Hari ujian"
+  },
+  "Legal": {
+    "contents": "Kandungan",
+    "contentsLabel": "Kandungan dokumen",
+    "effectiveDate": "Berkuat kuasa",
+    "version": "Versi"
   }
 }

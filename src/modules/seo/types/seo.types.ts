@@ -10,3 +10,18 @@ export interface BreadcrumbJsonLdItem {
   readonly name: string;
   readonly url: string;
 }
+
+/** Input for the shared public-page metadata builder (C-SET-01 supplies the defaults). */
+export interface BuildPageMetadataInput {
+  readonly title: string;
+  readonly description: string;
+  /** Locale-less pathname, e.g. `/privacy-policy`. */
+  readonly pathname: string;
+  readonly locale: string;
+  readonly siteName?: string;
+  readonly ogType?: 'website' | 'article';
+  /** Private surfaces set this so robots stay out of the dashboard. */
+  readonly noindex?: boolean;
+  readonly publishedTime?: string;
+  readonly modifiedTime?: string;
+}

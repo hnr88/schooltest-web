@@ -124,10 +124,13 @@ const FOOTER_COLUMNS = [
   },
 ] as const;
 
+// The legacy landing module is not mounted by any route, but its legal hrefs
+// pointed at /privacy, /terms and /security — none of which exist. Repointed at
+// the real C-LEG-02 routes so no dead link survives anywhere in src; the
+// unbacked `/security` entry is dropped rather than aimed at an unrelated page.
 const FOOTER_LEGAL = [
-  { href: '/privacy', labelKey: 'footer.privacy' },
-  { href: '/terms', labelKey: 'footer.terms' },
-  { href: '/security', labelKey: 'footer.security' },
+  { href: '/privacy-policy', labelKey: 'footer.privacy' },
+  { href: '/terms-of-service', labelKey: 'footer.terms' },
 ] as const;
 
 export {

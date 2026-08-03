@@ -3205,11 +3205,11 @@
       "moreTitle": "더 보기",
       "schoolSearch": "SchoolSearch",
       "foundingPilot": "창립 파일럿",
-      "privacy": "개인정보",
       "contact": "문의",
       "copyright": "© 2026 SchoolTest",
       "status": "창립 학교와 파일럿 진행 중",
-      "logoAlt": "SchoolTest 로고"
+      "logoAlt": "SchoolTest 로고",
+      "legalTitle": "법적 고지"
     }
   },
   "Navigation": {
@@ -3224,6 +3224,7 @@
     "gdpr": "GDPR 준수",
     "home": "홈",
     "invite": "초대",
+    "legalNavLabel": "법적 고지 탐색",
     "newChild": "학생 추가",
     "onboarding": "온보딩",
     "opsAudit": "감사 및 보안",
@@ -3249,5 +3250,11 @@
     "signUp": "회원가입",
     "termsOfService": "서비스 이용약관",
     "testDay": "시험일"
+  },
+  "Legal": {
+    "contents": "목차",
+    "contentsLabel": "문서 목차",
+    "effectiveDate": "시행일",
+    "version": "버전"
   }
 }
