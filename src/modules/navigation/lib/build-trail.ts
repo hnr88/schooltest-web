@@ -46,7 +46,7 @@ function patternFor(parts: readonly string[]): string | null {
  * acceptable crumb.
  */
 export function buildTrail(pathname: string, options: BuildTrailOptions = {}): Trail {
-  const { recordLabel = null, includeRoot = true } = options;
+  const { recordLabel = null, currentLabel = null, includeRoot = true } = options;
 
   const segments = pathname.split('?')[0].split('/').filter((s) => s && !IGNORED.has(s));
   const crumbs: TrailCrumb[] = [];
@@ -73,6 +73,13 @@ export function buildTrail(pathname: string, options: BuildTrailOptions = {}): T
   }
 
   const last = crumbs[crumbs.length - 1];
-  if (last) last.isCurrent = true;
+  if (last) {
+    last.isCurrent = true;
+    // A data-driven page title wins over the catalog label for its own crumb.
+    if (currentLabel) {
+      last.labelKey = '';
+      last.isRecord = true;
+    }
+  }
   return { crumbs };
 }

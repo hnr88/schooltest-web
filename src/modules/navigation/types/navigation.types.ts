@@ -21,6 +21,13 @@ export interface Trail {
 export interface BuildTrailOptions {
   /** Label for the trailing dynamic segment (class name, school name, …). */
   recordLabel?: string | null;
+  /**
+   * Overrides the LAST crumb's label with a literal string. Used by pages whose
+   * heading comes from data rather than the catalog (a legal document an ops
+   * user has renamed), so the crumb and the JSON-LD follow the page instead of
+   * drifting from it.
+   */
+  currentLabel?: string | null;
   /** Include the site-root crumb. Public pages do; the dashboard starts at `/dashboard`. */
   includeRoot?: boolean;
 }

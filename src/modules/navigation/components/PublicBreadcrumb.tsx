@@ -20,6 +20,8 @@ interface PublicBreadcrumbProps {
   readonly pathname: string;
   /** Human label for a trailing dynamic segment (article title, …). */
   readonly recordLabel?: string | null;
+  /** Overrides the current page's crumb with a data-driven title. */
+  readonly currentLabel?: string | null;
   readonly className?: string;
 }
 
@@ -28,9 +30,14 @@ interface PublicBreadcrumbProps {
 // visible crumbs and the structured data can never disagree.
 // The row sits directly under the public header; it wraps rather than scrolls
 // so a long trail never makes the page scroll sideways at 375px.
-async function PublicBreadcrumb({ pathname, recordLabel = null, className }: PublicBreadcrumbProps) {
+async function PublicBreadcrumb({
+  pathname,
+  recordLabel = null,
+  currentLabel = null,
+  className,
+}: PublicBreadcrumbProps) {
   const t = await getTranslations();
-  const { crumbs } = buildTrail(pathname, { recordLabel, includeRoot: true });
+  const { crumbs } = buildTrail(pathname, { recordLabel, currentLabel, includeRoot: true });
 
   return (
     <Container className={cn('max-w-eald py-3', className)}>
@@ -42,14 +49,14 @@ async function PublicBreadcrumb({ pathname, recordLabel = null, className }: Pub
               <BreadcrumbItem>
                 {crumb.isCurrent ? (
                   <BreadcrumbPage className="font-semibold text-foreground">
-                    {crumb.isRecord ? recordLabel : t(crumb.labelKey)}
+                    {crumb.isRecord ? (crumb.isCurrent ? (currentLabel ?? recordLabel) : recordLabel) : t(crumb.labelKey)}
                   </BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink
                     render={<Link href={crumb.href} />}
                     className={PUBLIC_CRUMB_LINK_CLASSES}
                   >
-                    {crumb.isRecord ? recordLabel : t(crumb.labelKey)}
+                    {crumb.isRecord ? (crumb.isCurrent ? (currentLabel ?? recordLabel) : recordLabel) : t(crumb.labelKey)}
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>

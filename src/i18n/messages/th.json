@@ -316,7 +316,8 @@
     "backToDashboard": "กลับหน้าหลัก",
     "reportProblem": "Report a problem",
     "errorDescription": "An unexpected error occurred while loading this page.",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "backToHome": "กลับสู่หน้าแรก"
   },
   "DesignSystem": {
     "meta": {

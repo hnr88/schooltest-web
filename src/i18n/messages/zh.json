@@ -316,7 +316,8 @@
     "backToDashboard": "回到首页",
     "reportProblem": "Report a problem",
     "errorDescription": "An unexpected error occurred while loading this page.",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "backToHome": "返回首页"
   },
   "DesignSystem": {
     "meta": {

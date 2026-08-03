@@ -1,4 +1,13 @@
+import type { Metadata } from 'next';
+
+import { NOINDEX_ROBOTS } from '@/modules/seo';
+
 import { ArticlesList, ArticleStatsCards, CreateArticleForm } from '@/modules/articles';
+
+// Not a public product page (.qa/DECISIONS.md D-27): robots.txt disallows it,
+// and this declaration keeps it out of the index under EVERY locale prefix,
+// which a bare robots Disallow line cannot express.
+export const metadata: Metadata = { robots: NOINDEX_ROBOTS };
 
 export default function ArticlesPage() {
   return (

@@ -16,7 +16,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/modules/design-system';
-import { EALD_LEGAL_LINKS, EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
+import { EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
+import { EaldLegalLinks } from '@/modules/eald/components/EaldLegalLinks';
 import type { EaldPage } from '@/modules/eald/types/eald.types';
 
 interface EaldMobileNavProps {
@@ -83,21 +84,7 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
             {t('Eald.nav.schoolSearch')}
           </Link>
         </nav>
-        <nav
-          aria-label={t('Navigation.legalNavLabel')}
-          className="flex flex-col gap-1 border-t border-border p-4"
-        >
-          {EALD_LEGAL_LINKS.map(({ href, labelKey }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={close}
-              className="rounded-lg px-3 py-3 text-sm font-medium text-body hover:bg-muted"
-            >
-              {t(labelKey)}
-            </Link>
-          ))}
-        </nav>
+        <EaldLegalLinks onNavigate={close} />
         <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
           <Link
             href="/sign-in"

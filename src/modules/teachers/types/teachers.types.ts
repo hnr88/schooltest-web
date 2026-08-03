@@ -15,7 +15,7 @@ export interface SchoolTeacher {
   classes: SchoolTeacherClass[];
 }
 
-export type InvitationStatus = 'invited' | 'expired' | 'accepted';
+export type InvitationStatus = 'invited' | 'expired' | 'accepted' | 'revoked';
 
 export interface SchoolInvitation {
   documentId: string;
@@ -30,7 +30,8 @@ export interface SchoolInvitation {
 
 // One merged table row: a live staff account (C-TCH-01) or an open invitation
 // (C-INV-02 invited/expired). Accepted invitations are covered by the staff
-// account itself, so they never render as separate rows.
+// account itself, and REVOKED ones are withdrawn access, so neither renders as
+// a separate row.
 export type StaffRowStatus = 'active' | 'deactivated' | 'invited' | 'expired';
 
 export interface StaffRow {
@@ -42,4 +43,13 @@ export interface StaffRow {
   status: StaffRowStatus;
   classes: SchoolTeacherClass[];
   expires_at: string | null;
+}
+
+// C-TCH-03 response: the account is blocked and unlinked, never deleted, so the
+// counts describe what was severed.
+export interface RemoveTeacherResult {
+  documentId: string;
+  removed: true;
+  classes_unassigned: number;
+  invitations_revoked: number;
 }

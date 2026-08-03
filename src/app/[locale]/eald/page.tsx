@@ -24,10 +24,16 @@ interface EaldHomeProps {
 export async function generateMetadata({ params }: EaldHomeProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations('Eald.meta');
+  // /eald renders the SAME sections as the site root (only the hero image
+  // differs), so it canonicalises to `/` rather than competing with it for the
+  // same query. It stays crawlable and linked — it is the EAL/D section root in
+  // the breadcrumb trail — but it is not a second indexable original, and it is
+  // deliberately absent from PUBLIC_ROUTES so the sitemap lists one URL, not two.
   return buildPageMetadata({
     title: t('homeTitle'),
     description: t('homeDescription'),
     pathname: '/eald',
+    canonicalPath: '/',
     locale,
   });
 }

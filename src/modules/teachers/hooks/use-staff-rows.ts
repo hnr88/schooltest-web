@@ -30,7 +30,9 @@ function teacherRow(teacher: SchoolTeacher): StaffRow {
 }
 
 function invitationRow(invitation: SchoolInvitation): StaffRow | null {
-  if (invitation.status === 'accepted') return null;
+  // Accepted invitations are represented by the staff account itself; revoked
+  // ones are withdrawn access kept only for the audit trail (C-INV-07).
+  if (invitation.status === 'accepted' || invitation.status === 'revoked') return null;
   return {
     kind: 'invitation',
     documentId: invitation.documentId,

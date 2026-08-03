@@ -316,7 +316,8 @@
     "backToDashboard": "Back to dashboard",
     "reportProblem": "Report a problem",
     "errorDescription": "An unexpected error occurred while loading this page.",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "backToHome": "Back to home"
   },
   "DesignSystem": {
     "meta": {

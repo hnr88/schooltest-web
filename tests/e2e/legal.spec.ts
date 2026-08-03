@@ -10,7 +10,13 @@
 import { expect, test } from '@playwright/test';
 
 import { loadMessages } from './helpers/i18n';
-import { LEGAL_PAGES, fetchLegalDocument, runSql } from './helpers/legal';
+import {
+  LEGAL_PAGES,
+  fetchLegalDocument,
+  opsUpdateLegal,
+  revalidateLegal,
+  runSql,
+} from './helpers/legal';
 
 const en = loadMessages('en');
 
@@ -29,18 +35,25 @@ test.describe('legal pages', () => {
       expect(dbTitle).toBe(document.title);
       await expect(page.getByRole('heading', { level: 1, name: document.title })).toBeVisible();
 
-      // Every section heading from the API is on the page, in order.
+      // Exactly one h1 — the document title.
+      await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+
+      // Every section heading from the API is on the page IN ORDER. The page
+      // also renders the table of contents, so the h2 list is compared as a
+      // subsequence rather than by presence alone.
       const headings = await page.getByRole('heading', { level: 2 }).allInnerTexts();
-      for (const section of document.sections) {
-        expect(headings, `${slug} missing section "${section.heading}"`).toContain(section.heading);
-      }
+      const expected = document.sections.map((section) => section.heading);
+      const found = headings.filter((heading) => expected.includes(heading.trim()));
+      expect(found.map((h) => h.trim()), `${slug} section order`).toEqual(expected);
 
       // The first paragraph of the first section proves the BODY rendered too.
       await expect(page.getByText(document.sections[0].paragraphs[0], { exact: false }).first())
         .toBeVisible();
 
-      // Version + effective date metadata.
-      await expect(page.getByText(document.version, { exact: false }).first()).toBeVisible();
+      // Version + effective date metadata, matched exactly inside their own
+      // <dd> rather than by a loose text search that any "1.0" would satisfy.
+      await expect(page.getByRole('definition').filter({ hasText: document.version }).first())
+        .toBeVisible();
       await expect(page.locator(`time[datetime="${document.effective_date}"]`)).toBeVisible();
     });
   }
@@ -67,12 +80,40 @@ test.describe('legal pages', () => {
     }
   });
 
-  test('flow: the retired /privacy link is gone and no longer 404s from the site', async ({
+  test('flow: the retired /privacy link is gone while the real legal links remain', async ({
     page,
   }) => {
     await page.goto('/');
+    // Guard against a vacuous pass on a page with no links at all: the real
+    // legal links must be present in the same breath as the dead ones absent.
     await expect(page.locator('a[href="/privacy"]')).toHaveCount(0);
     await expect(page.locator('a[href="/terms"]')).toHaveCount(0);
+    for (const { path } of LEGAL_PAGES) {
+      expect(await page.locator(`a[href="${path}"]`).count(), `link to ${path}`).toBeGreaterThan(0);
+    }
+  });
+
+  test('flow: an ops edit reaches the public page once revalidated (the DB→page path)', async ({
+    page,
+  }) => {
+    const slug = 'terms-of-service';
+    const original = runSql(
+      `select title from legal_documents where slug='${slug}' and locale_code='en'`,
+    );
+    const probe = `${original} E2E-${Date.now()}`;
+    try {
+      await opsUpdateLegal(slug, { title: probe });
+      await revalidateLegal();
+      await page.goto(`/${slug}`);
+      await page.reload();
+      await expect(page.getByRole('heading', { level: 1, name: probe })).toBeVisible();
+    } finally {
+      await opsUpdateLegal(slug, { title: original });
+      await revalidateLegal();
+    }
+    await page.goto(`/${slug}`);
+    await page.reload();
+    await expect(page.getByRole('heading', { level: 1, name: original })).toBeVisible();
   });
 
   test('flow: legal pages are reachable from the mobile navigation at 375px', async ({ page }) => {

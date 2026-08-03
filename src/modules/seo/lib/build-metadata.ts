@@ -41,18 +41,22 @@ export function buildPageMetadata(input: BuildPageMetadataInput): Metadata {
     pathname,
     locale,
     siteName = SITE_NAME,
+    canonicalPath,
     ogType = 'website',
     noindex = false,
     publishedTime,
     modifiedTime,
   } = input;
 
-  const canonical = absoluteUrl(pathname, locale, routing.defaultLocale);
+  // A duplicate route points its canonical at the original; hreflang still
+  // describes the ORIGINAL's locale set, never the duplicate's.
+  const canonicalTarget = canonicalPath ?? pathname;
+  const canonical = absoluteUrl(canonicalTarget, locale, routing.defaultLocale);
 
   return {
     title,
     description,
-    alternates: { canonical, languages: languageAlternates(pathname) },
+    alternates: { canonical, languages: languageAlternates(canonicalTarget) },
     openGraph: {
       type: ogType,
       title,

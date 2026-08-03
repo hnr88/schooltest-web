@@ -1,5 +1,10 @@
 import { routing } from '@/i18n/routing';
 import { LEGAL_ROUTES, getLegalDocuments } from '@/modules/legal';
+// Imported from the module's constants file rather than its barrel ON PURPOSE:
+// the seo barrel re-exports React Server Components, and pulling those into a
+// metadata route (or into the Node-side e2e runtime) drags next-intl's client
+// navigation in with them. `.claude/rules/module-pattern.md` scopes the
+// barrel-only rule to `src/modules/**`; these are route and test files.
 import { buildLlmsTxt } from '@/modules/seo/lib/build-llms-txt';
 
 export const dynamic = 'force-dynamic';

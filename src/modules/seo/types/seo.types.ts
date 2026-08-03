@@ -19,6 +19,11 @@ export interface BuildPageMetadataInput {
   readonly pathname: string;
   readonly locale: string;
   readonly siteName?: string;
+  /**
+   * Points the canonical at a DIFFERENT path. Used where two routes render the
+   * same content and only one should be the indexed original.
+   */
+  readonly canonicalPath?: string;
   readonly ogType?: 'website' | 'article';
   /** Private surfaces set this so robots stay out of the dashboard. */
   readonly noindex?: boolean;

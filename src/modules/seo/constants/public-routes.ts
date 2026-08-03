@@ -7,10 +7,13 @@ import type { PublicRoute } from '@/modules/seo/types/seo.types';
  *
  * Legal routes are appended at runtime from C-LEG-01 rather than listed here,
  * so publishing a new legal document surfaces in all three without a code edit.
+ *
+ * `/eald` is deliberately ABSENT: it renders the same sections as `/` and
+ * canonicalises to it, so listing both would put duplicate content in the
+ * sitemap. It remains crawlable and is still a breadcrumb link.
  */
 export const PUBLIC_ROUTES: readonly PublicRoute[] = [
   { pathname: '/', changeFrequency: 'weekly', priority: 1, llmsLabelKey: 'Navigation.home' },
-  { pathname: '/eald', changeFrequency: 'weekly', priority: 0.9, llmsLabelKey: 'Navigation.eald' },
   { pathname: '/eald/diagnose', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.diagnose' },
   { pathname: '/eald/teach', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.teach' },
   { pathname: '/eald/track', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.track' },
@@ -37,8 +40,11 @@ export const DISALLOWED_PATHS: readonly string[] = [
   '/invite',
   '/articles',
   '/design-system',
-  '/opengraph-image',
 ];
+
+// NOT disallowed on purpose: `/opengraph-image` is the URL every page advertises
+// as its `og:image`, so blocking it tells crawlers the social card is
+// off-limits and the card stops rendering in shares.
 
 /** True when a path is one the sitemap/llms.txt must never contain. */
 export function isDisallowed(pathname: string): boolean {

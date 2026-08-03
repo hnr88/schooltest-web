@@ -52,3 +52,46 @@ export async function fetchLegalDocument(slug: string, locale = 'en'): Promise<L
   const body = (await res.json()) as { data: LegalDocument };
   return body.data;
 }
+
+/** Ops JWT from the seeded ops account — minted live, never stored in the repo. */
+async function opsJwt(): Promise<string> {
+  const identifier = process.env.E2E_OPS_EMAIL ?? 'admin@schooltest.local';
+  const password = process.env.E2E_OPS_PASSWORD ?? 'TBUaS2yS6D9FJMZP!A1';
+  const res = await fetch(`${API_BASE_URL}/api/auth/local`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ identifier, password }),
+  });
+  if (!res.ok) throw new Error(`[e2e] ops login failed with ${res.status}`);
+  return ((await res.json()) as { jwt: string }).jwt;
+}
+
+/** Edit a legal document through the REAL C-LEG-03 write path. */
+export async function opsUpdateLegal(
+  slug: string,
+  patch: Record<string, unknown>,
+): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/api/ops/legal-documents/${slug}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await opsJwt()}` },
+    body: JSON.stringify(patch),
+  });
+  if (res.status !== 200) throw new Error(`[e2e] ops legal update failed with ${res.status}`);
+}
+
+/**
+ * Publish a legal change immediately through C-WEB-04. `revalidateTag` is
+ * stale-while-revalidate, so the first read after it still serves stale and
+ * triggers the refresh — callers reload once before asserting.
+ */
+export async function revalidateLegal(): Promise<void> {
+  const secret = process.env.REVALIDATE_SECRET;
+  if (!secret) throw new Error('[e2e] REVALIDATE_SECRET is not set');
+  const base = process.env.E2E_BASE_URL ?? 'http://localhost:3101';
+  const res = await fetch(`${base}/api/revalidate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-revalidate-secret': secret },
+    body: JSON.stringify({ tags: ['legal-documents'] }),
+  });
+  if (!res.ok) throw new Error(`[e2e] revalidate failed with ${res.status}`);
+}

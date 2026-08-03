@@ -2,8 +2,13 @@ import type { MetadataRoute } from 'next';
 
 import { routing } from '@/i18n/routing';
 import { LEGAL_ROUTES, getLegalDocuments } from '@/modules/legal';
+// Imported from the module's constants file rather than its barrel ON PURPOSE:
+// the seo barrel re-exports React Server Components, and pulling those into a
+// metadata route (or into the Node-side e2e runtime) drags next-intl's client
+// navigation in with them. `.claude/rules/module-pattern.md` scopes the
+// barrel-only rule to `src/modules/**`; these are route and test files.
 import { PUBLIC_ROUTES, isDisallowed } from '@/modules/seo/constants/public-routes';
-import { absoluteUrl } from '@/modules/seo';
+import { absoluteUrl } from '@/modules/seo/lib/breadcrumb-json-ld';
 
 // C-WEB-03. One <url> per public route x locale, each carrying the full
 // hreflang alternate set. The route list is the SHARED registry plus the legal
@@ -36,9 +41,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: entry.changeFrequency,
       priority: entry.priority,
       alternates: {
-        languages: Object.fromEntries(
-          routing.locales.map((alt) => [alt, absoluteUrl(entry.pathname, alt, base)]),
-        ),
+        // `x-default` alongside the six locales, matching the page-level
+        // hreflang set exactly — the two artefacts must agree on the default.
+        languages: Object.fromEntries([
+          ...routing.locales.map((alt) => [alt, absoluteUrl(entry.pathname, alt, base)]),
+          ['x-default', absoluteUrl(entry.pathname, base, base)],
+        ]),
       },
     })),
   );

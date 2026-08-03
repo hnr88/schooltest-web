@@ -8,9 +8,32 @@ export {
   buildWebPageJsonLd,
   buildWebSiteJsonLd,
 } from '@/modules/seo/lib/json-ld';
-export { NOINDEX_ROBOTS, SITE_NAME } from '@/modules/seo/constants/seo.constants';
+export {
+  NOINDEX_ROBOTS,
+  OG_ACCENT,
+  OG_BACKGROUND,
+  OG_FOREGROUND,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_PATH,
+  OG_IMAGE_WIDTH,
+  SITE_NAME,
+} from '@/modules/seo/constants/seo.constants';
+export {
+  DISALLOWED_PATHS,
+  PUBLIC_ROUTES,
+  isDisallowed,
+} from '@/modules/seo/constants/public-routes';
+export { buildLlmsTxt } from '@/modules/seo/lib/build-llms-txt';
+export {
+  REVALIDATE_TAGS,
+  revalidateRequestSchema,
+  type RevalidateTag,
+} from '@/modules/seo/schemas/revalidate.schema';
+export { OgCard } from '@/modules/seo/components/OgCard';
 export type {
   BreadcrumbJsonLdItem,
+  BuildLlmsTxtInput,
+  PublicRoute,
   BuildPageMetadataInput,
   JsonLdNode,
   JsonLdValue,

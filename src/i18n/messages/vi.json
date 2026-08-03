@@ -316,7 +316,8 @@
     "backToDashboard": "Về trang chủ",
     "reportProblem": "Report a problem",
     "errorDescription": "An unexpected error occurred while loading this page.",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "backToHome": "Về trang chủ"
   },
   "DesignSystem": {
     "meta": {

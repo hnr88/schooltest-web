@@ -30,7 +30,7 @@ async function LegalDocumentScreen({ document, pathname, locale }: LegalDocument
   return (
     <div className="min-h-screen bg-background text-foreground">
       <EaldHeader />
-      <BreadcrumbJsonLd pathname={pathname} locale={locale} />
+      <BreadcrumbJsonLd pathname={pathname} locale={locale} currentLabel={document.title} />
       <PublicPageJsonLd
         pathname={pathname}
         locale={locale}
@@ -39,7 +39,7 @@ async function LegalDocumentScreen({ document, pathname, locale }: LegalDocument
         datePublished={document.effective_date}
         dateModified={document.updatedAt}
       />
-      <PublicBreadcrumb pathname={pathname} />
+      <PublicBreadcrumb pathname={pathname} currentLabel={document.title} />
       <main id="main-content">
         <Container className="max-w-3xl pt-4 pb-16">
           <header className="border-b border-border pb-6">

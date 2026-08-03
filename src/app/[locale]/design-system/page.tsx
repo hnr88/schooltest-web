@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
+import { NOINDEX_ROBOTS } from '@/modules/seo';
+
 import {
   AlertsSection,
   BadgesSection,
@@ -27,6 +29,10 @@ export async function generateMetadata(): Promise<Metadata> {
       description: t('meta.description'),
       url: '/design-system',
     },
+    // Not a public product page (.qa/DECISIONS.md D-27): robots.txt disallows
+    // it, and this keeps it out of the index under EVERY locale prefix, which a
+    // bare robots Disallow line cannot express.
+    robots: NOINDEX_ROBOTS,
   };
 }
 

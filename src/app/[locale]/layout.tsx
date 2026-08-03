@@ -9,6 +9,7 @@ import { Providers } from '@/components/providers';
 import { Toaster } from '@/components/ui/sonner';
 import { isLocale } from '@/i18n/routing';
 import { env } from '@/lib/env';
+import { SITE_NAME } from '@/modules/seo';
 
 const googleSans = localFont({
   src: [
@@ -30,16 +31,18 @@ const googleSans = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+  // The brand is `SchoolTest` (see SITE_NAME) — the lowercase `Schooltest` here
+  // disagreed with `og:site_name` and the generated card on every page.
   title: {
-    default: 'Schooltest',
-    template: '%s · Schooltest',
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
   },
-  description: 'Schooltest web application.',
+  description: 'Diagnostic English assessment for Australian EAL/D classrooms.',
   openGraph: {
     type: 'website',
     url: '/',
-    title: 'Schooltest',
-    description: 'Schooltest web application.',
+    title: SITE_NAME,
+    description: 'Diagnostic English assessment for Australian EAL/D classrooms.',
   },
 };
 

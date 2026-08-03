@@ -3,6 +3,7 @@
 import { CircleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { usePathname } from '@/i18n/navigation';
 import { Button } from '@/modules/design-system';
 
 export default function ErrorPage({
@@ -13,6 +14,11 @@ export default function ErrorPage({
   unstable_retry: () => void;
 }) {
   const t = useTranslations('Common');
+  // This boundary is shared by public and private routes. Offering "Back to
+  // dashboard" to an anonymous visitor whose privacy policy failed to load is a
+  // dead end — the CTA follows the route the error happened on.
+  const pathname = usePathname();
+  const isDashboard = pathname.startsWith('/dashboard');
 
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-16">
@@ -30,8 +36,8 @@ export default function ErrorPage({
         ) : null}
         <div className="mt-4.5 flex gap-2.5">
           <Button onClick={() => unstable_retry()}>{t('retry')}</Button>
-          <Button variant="outline" href="/">
-            {t('backToDashboard')}
+          <Button variant="outline" href={isDashboard ? '/dashboard' : '/'}>
+            {isDashboard ? t('backToDashboard') : t('backToHome')}
           </Button>
         </div>
       </div>
