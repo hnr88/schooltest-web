@@ -25,3 +25,36 @@ export interface BuildPageMetadataInput {
   readonly publishedTime?: string;
   readonly modifiedTime?: string;
 }
+
+/** One entry of the shared public-route registry (sitemap + llms.txt + robots). */
+export interface PublicRoute {
+  /** Locale-less pathname, e.g. `/eald/diagnose`. */
+  readonly pathname: string;
+  readonly changeFrequency: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  readonly priority: number;
+  /** Full next-intl key for the llms.txt label. */
+  readonly llmsLabelKey: string;
+}
+
+/** Input for the llms.txt generator: the live legal index plus the locale. */
+export interface BuildLlmsTxtInput {
+  readonly locale: string;
+  readonly legal: readonly { path: string; title: string; summary: string | null }[];
+}
+
+/** Publisher-level facts shared by the Organization and WebSite nodes. */
+export interface OrganizationInput {
+  readonly siteName: string;
+  readonly description: string;
+  readonly locale: string;
+}
+
+/** One public page's WebPage node. */
+export interface WebPageInput {
+  readonly title: string;
+  readonly description: string;
+  readonly pathname: string;
+  readonly locale: string;
+  readonly datePublished?: string;
+  readonly dateModified?: string;
+}

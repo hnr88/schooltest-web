@@ -3256,5 +3256,14 @@
     "contentsLabel": "Mục lục tài liệu",
     "effectiveDate": "Hiệu lực",
     "version": "Phiên bản"
+  },
+  "Seo": {
+    "llmsIntro": "SchoolTest là nền tảng đánh giá chẩn đoán tiếng Anh dành cho các trường học tại Úc. Nhà trường cấp phép nền tảng, mời nhân sự của mình và ghi danh học sinh của mình; giáo viên tổ chức đánh giá và đọc hồ sơ kỹ năng thu được. Các trang dưới đây là phần công khai được lập chỉ mục — mọi nội dung khác đều cần tài khoản.",
+    "llmsLegal": "Pháp lý",
+    "llmsNoteLocales": "Mỗi trang được xuất bản bằng các ngôn ngữ: {locales}. Ngôn ngữ mặc định không có tiền tố URL.",
+    "llmsNotePrivate": "Bảng điều khiển, các luồng xác thực và liên kết mời/thiết lập là riêng tư và bị chặn trong robots.txt. Chúng chứa dữ liệu học sinh và không được thu thập.",
+    "llmsNoteSitemap": "Chỉ mục máy đọc được của mọi URL công khai nằm tại {url}.",
+    "llmsNotes": "Ghi chú",
+    "llmsPages": "Trang"
   }
 }

@@ -13,19 +13,21 @@ import {
   PREDICT_NEXT_SECTIONS,
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
-import { BreadcrumbJsonLd } from '@/modules/seo';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('Eald.meta');
-  return {
-    title: t('predictTitle'),
-    description: t('predictDescription'),
-    openGraph: { title: t('predictTitle'), description: t('predictDescription') },
-  };
-}
+import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 
 interface PredictPageProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: PredictPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations('Eald.meta');
+  return buildPageMetadata({
+    title: t('predictTitle'),
+    description: t('predictDescription'),
+    pathname: '/eald/predict',
+    locale,
+  });
 }
 
 export default async function PredictPage({ params }: PredictPageProps) {
@@ -36,6 +38,12 @@ export default async function PredictPage({ params }: PredictPageProps) {
     <div className="min-h-screen bg-background text-foreground">
       <EaldHeader activePage="predict" />
       <BreadcrumbJsonLd pathname="/eald/predict" locale={locale} />
+      <PublicPageJsonLd
+        pathname="/eald/predict"
+        locale={locale}
+        title={t('meta.predictTitle')}
+        description={t('meta.predictDescription')}
+      />
       <PublicBreadcrumb pathname="/eald/predict" />
       <main>
         <PredictHero />

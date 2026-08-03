@@ -13,19 +13,21 @@ import {
   DIAGNOSE_NEXT_SECTIONS,
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
-import { BreadcrumbJsonLd } from '@/modules/seo';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('Eald.meta');
-  return {
-    title: t('diagnoseTitle'),
-    description: t('diagnoseDescription'),
-    openGraph: { title: t('diagnoseTitle'), description: t('diagnoseDescription') },
-  };
-}
+import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 
 interface DiagnosePageProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: DiagnosePageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations('Eald.meta');
+  return buildPageMetadata({
+    title: t('diagnoseTitle'),
+    description: t('diagnoseDescription'),
+    pathname: '/eald/diagnose',
+    locale,
+  });
 }
 
 export default async function DiagnosePage({ params }: DiagnosePageProps) {
@@ -36,6 +38,12 @@ export default async function DiagnosePage({ params }: DiagnosePageProps) {
     <div className="min-h-screen bg-white text-foreground">
       <EaldHeader activePage="diagnose" />
       <BreadcrumbJsonLd pathname="/eald/diagnose" locale={locale} />
+      <PublicPageJsonLd
+        pathname="/eald/diagnose"
+        locale={locale}
+        title={t('meta.diagnoseTitle')}
+        description={t('meta.diagnoseDescription')}
+      />
       <PublicBreadcrumb pathname="/eald/diagnose" />
       <main>
         <DiagnoseHero />

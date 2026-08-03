@@ -10,22 +10,24 @@ import {
   TRACK_NEXT_SECTIONS,
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
-import { BreadcrumbJsonLd } from '@/modules/seo';
+import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { EvidenceSection } from '@/modules/eald/components/EvidenceSection';
 import { TeachEmpiricalSection } from '@/modules/eald/components/TeachEmpiricalSection';
 import { TrackHero } from '@/modules/eald/components/TrackHero';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('Eald.meta');
-  return {
-    title: t('trackTitle'),
-    description: t('trackDescription'),
-    openGraph: { title: t('trackTitle'), description: t('trackDescription') },
-  };
-}
-
 interface TrackPageProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: TrackPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations('Eald.meta');
+  return buildPageMetadata({
+    title: t('trackTitle'),
+    description: t('trackDescription'),
+    pathname: '/eald/track',
+    locale,
+  });
 }
 
 export default async function TrackPage({ params }: TrackPageProps) {
@@ -36,6 +38,12 @@ export default async function TrackPage({ params }: TrackPageProps) {
     <div className="min-h-screen bg-background text-foreground">
       <EaldHeader activePage="track" />
       <BreadcrumbJsonLd pathname="/eald/track" locale={locale} />
+      <PublicPageJsonLd
+        pathname="/eald/track"
+        locale={locale}
+        title={t('meta.trackTitle')}
+        description={t('meta.trackDescription')}
+      />
       <PublicBreadcrumb pathname="/eald/track" />
       <main>
         <TrackHero />

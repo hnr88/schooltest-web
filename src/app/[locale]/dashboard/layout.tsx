@@ -1,7 +1,14 @@
+import type { Metadata } from 'next';
 import type { CSSProperties, ReactNode } from 'react';
 
 import { SidebarInset, SidebarProvider } from '@/modules/design-system';
 import { AppSidebar, AppTopbar } from '@/modules/shell';
+import { NOINDEX_ROBOTS } from '@/modules/seo';
+
+// The whole dashboard tree is private: robots.txt disallows it, and this
+// declaration keeps every nested route noindex even if a crawler reaches one
+// by a route robots.txt does not cover.
+export const metadata: Metadata = { robots: NOINDEX_ROBOTS };
 
 // THE PORTAL FRAME (.qa/design/spec/01 §1.1, Parent Portal.dc.html:25):
 // `display:flex; gap:24px; padding:24px; height:100vh; max-width:1600px; margin:0 auto`

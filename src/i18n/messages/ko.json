@@ -3256,5 +3256,14 @@
     "contentsLabel": "문서 목차",
     "effectiveDate": "시행일",
     "version": "버전"
+  },
+  "Seo": {
+    "llmsIntro": "SchoolTest는 호주 학교를 위한 영어 진단 평가 플랫폼입니다. 학교가 플랫폼을 라이선스하여 교직원을 초대하고 학생을 등록하며, 교사는 평가를 실시하고 생성된 역량 프로파일을 확인합니다. 아래 페이지는 공개적으로 색인되는 영역이며 그 외에는 계정이 필요합니다.",
+    "llmsLegal": "법적 고지",
+    "llmsNoteLocales": "모든 페이지는 다음 언어로 제공됩니다: {locales}. 기본 언어에는 URL 접두사가 없습니다.",
+    "llmsNotePrivate": "대시보드, 인증 절차, 초대/온보딩 링크는 비공개이며 robots.txt에서 차단됩니다. 학생 데이터를 포함하므로 크롤링해서는 안 됩니다.",
+    "llmsNoteSitemap": "모든 공개 URL의 기계 판독용 색인은 {url}에 있습니다.",
+    "llmsNotes": "참고",
+    "llmsPages": "페이지"
   }
 }

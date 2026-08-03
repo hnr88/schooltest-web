@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { OnboardingScreen } from '@/modules/onboarding';
+import { NOINDEX_ROBOTS } from '@/modules/seo';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Onboarding.meta');
@@ -9,6 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t('title'),
     description: t('description'),
     openGraph: { title: t('title'), description: t('description') },
+    robots: NOINDEX_ROBOTS,
   };
 }
 

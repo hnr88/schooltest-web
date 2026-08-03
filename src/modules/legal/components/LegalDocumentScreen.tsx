@@ -5,7 +5,7 @@ import { EaldFooter, EaldHeader } from '@/modules/eald';
 import { LegalSection } from '@/modules/legal/components/LegalSection';
 import { LegalTableOfContents } from '@/modules/legal/components/LegalTableOfContents';
 import { PublicBreadcrumb } from '@/modules/navigation';
-import { BreadcrumbJsonLd } from '@/modules/seo';
+import { BreadcrumbJsonLd, PublicPageJsonLd } from '@/modules/seo';
 import type { LegalDocument } from '@/modules/legal/types/legal.types';
 
 interface LegalDocumentScreenProps {
@@ -31,6 +31,14 @@ async function LegalDocumentScreen({ document, pathname, locale }: LegalDocument
     <div className="min-h-screen bg-background text-foreground">
       <EaldHeader />
       <BreadcrumbJsonLd pathname={pathname} locale={locale} />
+      <PublicPageJsonLd
+        pathname={pathname}
+        locale={locale}
+        title={document.title}
+        description={document.summary ?? document.title}
+        datePublished={document.effective_date}
+        dateModified={document.updatedAt}
+      />
       <PublicBreadcrumb pathname={pathname} />
       <main id="main-content">
         <Container className="max-w-3xl pt-4 pb-16">

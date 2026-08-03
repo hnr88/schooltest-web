@@ -16,3 +16,19 @@ export const OG_IMAGE_HEIGHT = 630;
 export const OG_BACKGROUND = '#0E2350';
 export const OG_FOREGROUND = '#FFFFFF';
 export const OG_ACCENT = '#2DD4BF';
+
+/** The real brand lockup shipped in `public/brand` — used by the Organization node. */
+export const LOGO_PATH = '/brand/logo.png';
+export const LOGO_WIDTH = 503;
+export const LOGO_HEIGHT = 160;
+
+/**
+ * Metadata for every private surface. robots.txt already disallows these paths,
+ * but a page reachable by any other route (a shared link, a referrer) would
+ * otherwise still be indexable — belt and braces, and asserted by the SEO e2e.
+ */
+export const NOINDEX_ROBOTS = {
+  index: false,
+  follow: false,
+  googleBot: { index: false, follow: false },
+} as const;

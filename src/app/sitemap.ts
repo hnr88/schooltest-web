@@ -1,29 +1,45 @@
 import type { MetadataRoute } from 'next';
 
 import { routing } from '@/i18n/routing';
-import { env } from '@/lib/env';
+import { LEGAL_ROUTES, getLegalDocuments } from '@/modules/legal';
+import { PUBLIC_ROUTES, isDisallowed } from '@/modules/seo/constants/public-routes';
+import { absoluteUrl } from '@/modules/seo';
 
-const PUBLIC_ROUTES = [
-  { pathname: '', changeFrequency: 'weekly' as const, priority: 1 },
-  { pathname: '/articles', changeFrequency: 'daily' as const, priority: 0.8 },
-  { pathname: '/design-system', changeFrequency: 'monthly' as const, priority: 0.5 },
-];
+// C-WEB-03. One <url> per public route x locale, each carrying the full
+// hreflang alternate set. The route list is the SHARED registry plus the legal
+// documents read live from C-LEG-01, so publishing a new policy surfaces here
+// without a code change. Nothing on the Disallow list can appear: the guard
+// below is asserted by the SEO e2e, not merely intended.
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const base = routing.defaultLocale;
+  const legal = await getLegalDocuments(base);
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const base = env.NEXT_PUBLIC_APP_URL;
-  const lastModified = new Date();
+  const entries = [
+    ...PUBLIC_ROUTES.map((route) => ({
+      pathname: route.pathname,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+      lastModified: new Date(),
+    })),
+    ...legal.map((document) => ({
+      pathname: LEGAL_ROUTES[document.slug],
+      changeFrequency: 'yearly' as const,
+      priority: 0.4,
+      lastModified: new Date(document.updatedAt),
+    })),
+  ].filter((entry) => !isDisallowed(entry.pathname));
 
-  return PUBLIC_ROUTES.flatMap((route) =>
-    routing.locales.map((locale) => {
-      const prefix = locale === routing.defaultLocale ? '' : `/${locale}`;
-      const pathname = `${prefix}${route.pathname}` || '/';
-
-      return {
-        url: new URL(pathname, base).toString(),
-        lastModified,
-        changeFrequency: route.changeFrequency,
-        priority: route.priority,
-      };
-    }),
+  return entries.flatMap((entry) =>
+    routing.locales.map((locale) => ({
+      url: absoluteUrl(entry.pathname, locale, base),
+      lastModified: entry.lastModified,
+      changeFrequency: entry.changeFrequency,
+      priority: entry.priority,
+      alternates: {
+        languages: Object.fromEntries(
+          routing.locales.map((alt) => [alt, absoluteUrl(entry.pathname, alt, base)]),
+        ),
+      },
+    })),
   );
 }

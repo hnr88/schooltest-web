@@ -8,7 +8,7 @@ import {
   EaldHero,
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
-import { BreadcrumbJsonLd } from '@/modules/seo';
+import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { ClassroomBand } from '@/modules/eald/components/ClassroomBand';
 import { EaldTrustedBy } from '@/modules/eald/components/EaldTrustedBy';
 import { ProblemSection } from '@/modules/eald/components/ProblemSection';
@@ -17,17 +17,19 @@ import { RegisterSection } from '@/modules/eald/components/RegisterSection';
 import { SolutionBand } from '@/modules/eald/components/SolutionBand';
 import { WhatYouGetSection } from '@/modules/eald/components/WhatYouGetSection';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('Eald.meta');
-  return {
-    title: t('homeTitle'),
-    description: t('homeDescription'),
-    openGraph: { title: t('homeTitle'), description: t('homeDescription') },
-  };
-}
-
 interface EaldHomeProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: EaldHomeProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations('Eald.meta');
+  return buildPageMetadata({
+    title: t('homeTitle'),
+    description: t('homeDescription'),
+    pathname: '/eald',
+    locale,
+  });
 }
 
 export default async function EaldHome({ params }: EaldHomeProps) {
@@ -44,6 +46,12 @@ export default async function EaldHome({ params }: EaldHomeProps) {
       </a>
       <EaldHeader activePage="home" />
       <BreadcrumbJsonLd pathname="/eald" locale={locale} />
+      <PublicPageJsonLd
+        pathname="/eald"
+        locale={locale}
+        title={t('meta.homeTitle')}
+        description={t('meta.homeDescription')}
+      />
       <PublicBreadcrumb pathname="/eald" />
       <main id="main-content">
         <EaldHero

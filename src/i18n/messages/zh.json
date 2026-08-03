@@ -3256,5 +3256,14 @@
     "contentsLabel": "文档目录",
     "effectiveDate": "生效日期",
     "version": "版本"
+  },
+  "Seo": {
+    "llmsIntro": "SchoolTest 是面向澳大利亚学校的英语诊断评估平台。学校获得授权后邀请本校教职工并录入本校学生；教师开展评估并查看生成的技能画像。以下页面为可公开索引的部分，其余内容均需登录账户。",
+    "llmsLegal": "法律条款",
+    "llmsNoteLocales": "每个页面均以下列语言发布：{locales}。默认语言的网址不带前缀。",
+    "llmsNotePrivate": "控制台、身份验证流程以及邀请/入驻链接均为私有内容，已在 robots.txt 中禁止抓取。这些页面包含学生数据，不得抓取。",
+    "llmsNoteSitemap": "所有公开网址的机器可读索引位于 {url}。",
+    "llmsNotes": "说明",
+    "llmsPages": "页面"
   }
 }

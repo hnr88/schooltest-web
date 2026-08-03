@@ -3256,5 +3256,14 @@
     "contentsLabel": "Kandungan dokumen",
     "effectiveDate": "Berkuat kuasa",
     "version": "Versi"
+  },
+  "Seo": {
+    "llmsIntro": "SchoolTest ialah platform pentaksiran diagnostik Bahasa Inggeris untuk sekolah di Australia. Sekolah melesenkan platform ini, menjemput kakitangan sendiri dan mendaftarkan pelajar sendiri; guru menjalankan pentaksiran dan membaca profil kemahiran yang terhasil. Halaman di bawah ialah permukaan awam yang boleh diindeks — selebihnya memerlukan akaun.",
+    "llmsLegal": "Undang-undang",
+    "llmsNoteLocales": "Setiap halaman diterbitkan dalam bahasa berikut: {locales}. Bahasa lalai tidak membawa awalan URL.",
+    "llmsNotePrivate": "Papan pemuka, aliran pengesahan dan pautan jemputan/permulaan adalah peribadi dan dihalang dalam robots.txt. Ia mengandungi data pelajar dan tidak boleh dirangkak.",
+    "llmsNoteSitemap": "Indeks boleh baca mesin bagi setiap URL awam berada di {url}.",
+    "llmsNotes": "Nota",
+    "llmsPages": "Halaman"
   }
 }

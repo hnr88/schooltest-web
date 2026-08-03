@@ -3256,5 +3256,14 @@
     "contentsLabel": "Document contents",
     "effectiveDate": "Effective",
     "version": "Version"
+  },
+  "Seo": {
+    "llmsIntro": "SchoolTest is a diagnostic English assessment platform for Australian schools. Schools license the platform, invite their own staff and enrol their own students; teachers run assessments and read the resulting skill profiles. The pages below are the public, indexable surface — everything else requires an account.",
+    "llmsLegal": "Legal",
+    "llmsNoteLocales": "Every page is published in these locales: {locales}. The default locale carries no URL prefix.",
+    "llmsNotePrivate": "The dashboard, the authentication flows and the invitation/onboarding links are private and are disallowed in robots.txt. They hold student data and must not be crawled.",
+    "llmsNoteSitemap": "The machine-readable index of every public URL is at {url}.",
+    "llmsNotes": "Notes",
+    "llmsPages": "Pages"
   }
 }
