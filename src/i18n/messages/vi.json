@@ -2385,7 +2385,12 @@
       "reactivateConfirm": "Kích hoạt lại",
       "revokeTitle": "Thu hồi lời mời của {name}?",
       "revokeDescription": "Liên kết lời mời sẽ ngừng hoạt động. Bạn có thể gửi lời mời mới sau.",
-      "revokeConfirm": "Thu hồi lời mời"
+      "revokeConfirm": "Thu hồi lời mời",
+      "remove": "Xoá khỏi trường",
+      "removeTitle": "Xoá {name} khỏi trường của bạn?",
+      "removeDescription": "Không thể hoàn tác. Tài khoản sẽ bị chặn, gỡ liên kết với trường, xoá phân công lớp và thu hồi mọi lời mời đang mở. Kết quả đã lưu vẫn được giữ lại. Hãy dùng “Vô hiệu hoá” nếu bạn chỉ muốn tạm dừng quyền truy cập.",
+      "removeConfirm": "Xoá vĩnh viễn",
+      "removedToast": "Đã xoá {name} khỏi trường ({classes} phân công lớp được gỡ)."
     }
   },
   "Classes": {

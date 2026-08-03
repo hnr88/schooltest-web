@@ -2385,7 +2385,12 @@
       "reactivateConfirm": "다시 활성화",
       "revokeTitle": "{name}의 초대를 취소할까요?",
       "revokeDescription": "초대 링크가 더 이상 작동하지 않습니다. 나중에 새 초대를 보낼 수 있습니다.",
-      "revokeConfirm": "초대 취소"
+      "revokeConfirm": "초대 취소",
+      "remove": "학교에서 제거",
+      "removeTitle": "{name} 님을 학교에서 제거할까요?",
+      "removeDescription": "되돌릴 수 없습니다. 계정이 차단되고 학교 연결이 해제되며 학급 배정이 지워지고 미수락 초대는 취소됩니다. 과거 결과 기록은 그대로 유지됩니다. 접근만 일시 중지하려면 비활성화를 사용하세요.",
+      "removeConfirm": "영구 제거",
+      "removedToast": "{name} 님을 학교에서 제거했습니다(학급 배정 {classes}건 해제)."
     }
   },
   "Classes": {

@@ -2689,7 +2689,12 @@
       "reactivateConfirm": "Reactivate",
       "revokeTitle": "Revoke the invitation for {name}?",
       "revokeDescription": "The invitation link will stop working. You can send a new invitation later.",
-      "revokeConfirm": "Revoke invitation"
+      "revokeConfirm": "Revoke invitation",
+      "remove": "Remove from school",
+      "removeTitle": "Remove {name} from your school?",
+      "removeDescription": "This cannot be undone. Their account is blocked, they are unlinked from the school, their class assignments are cleared and any open invitation for them is revoked. Their past results stay in the records. Deactivate instead if you only need to pause access.",
+      "removeConfirm": "Remove permanently",
+      "removedToast": "{name} was removed from the school ({classes} class assignments cleared)."
     }
   },
   "Classes": {

@@ -2385,7 +2385,12 @@
       "reactivateConfirm": "重新启用",
       "revokeTitle": "撤销 {name} 的邀请？",
       "revokeDescription": "邀请链接将失效。您可以稍后重新发送邀请。",
-      "revokeConfirm": "撤销邀请"
+      "revokeConfirm": "撤销邀请",
+      "remove": "移出学校",
+      "removeTitle": "确定将 {name} 移出学校？",
+      "removeDescription": "此操作无法撤销。该账户将被停用并解除与学校的关联，其班级分配将被清除，尚未接受的邀请也会被撤销。既往成绩记录仍会保留。若只需暂停访问，请改用“停用”。",
+      "removeConfirm": "永久移除",
+      "removedToast": "{name} 已移出学校（清除了 {classes} 项班级分配）。"
     }
   },
   "Classes": {

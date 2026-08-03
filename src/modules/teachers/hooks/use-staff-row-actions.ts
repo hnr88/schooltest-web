@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { useReissueInvitationMutation } from '@/modules/teachers/mutations/use-reissue-invitation.mutation';
+import { useRemoveTeacherMutation } from '@/modules/teachers/mutations/use-remove-teacher.mutation';
 import { useRevokeInvitationMutation } from '@/modules/teachers/mutations/use-revoke-invitation.mutation';
 import {
   useDeactivateTeacherMutation,
@@ -12,11 +13,23 @@ import {
 } from '@/modules/teachers/mutations/use-toggle-teacher.mutation';
 import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 
-export type StaffConfirmAction = 'deactivate' | 'reactivate' | 'revoke';
+export type StaffConfirmAction = 'deactivate' | 'reactivate' | 'revoke' | 'remove';
 
 // Mutation + toast wiring for StaffRowActions (keeps the component under the
-// line cap): reissue (C-INV-03), revoke (C-INV-04), deactivate/reactivate
-// (C-TCH-02). The confirm dialog drives handleConfirm via confirmAction.
+// line cap): reissue (C-INV-03), revoke (C-INV-04/07), deactivate/reactivate
+// (C-TCH-02) and permanent removal (C-TCH-03). The confirm dialog drives
+// handleConfirm via confirmAction.
+//
+// Server refusals are surfaced VERBATIM rather than as a generic failure: the
+// 400 guards ("you cannot remove your own account", "…the last active school
+// administrator") are the only way the admin learns why nothing happened.
+/** The API's own refusal message, when it sent one — never a swallowed error. */
+function serverMessage(error: unknown): string | null {
+  const message = (error as { response?: { data?: { error?: { message?: unknown } } } })?.response
+    ?.data?.error?.message;
+  return typeof message === 'string' && message.trim().length > 0 ? message : null;
+}
+
 export function useStaffRowActions(row: StaffRow) {
   const t = useTranslations('Teachers.actions');
   const [confirmAction, setConfirmAction] = useState<StaffConfirmAction | null>(null);
@@ -24,12 +37,14 @@ export function useStaffRowActions(row: StaffRow) {
   const revoke = useRevokeInvitationMutation();
   const deactivate = useDeactivateTeacherMutation();
   const reactivate = useReactivateTeacherMutation();
+  const remove = useRemoveTeacherMutation();
 
   const name = `${row.first_name} ${row.last_name}`.trim() || row.email;
   const confirmPending =
     (confirmAction === 'revoke' && revoke.isPending) ||
     (confirmAction === 'deactivate' && deactivate.isPending) ||
-    (confirmAction === 'reactivate' && reactivate.isPending);
+    (confirmAction === 'reactivate' && reactivate.isPending) ||
+    (confirmAction === 'remove' && remove.isPending);
 
   const handleReissue = async () => {
     try {
@@ -51,10 +66,15 @@ export function useStaffRowActions(row: StaffRow) {
       } else if (confirmAction === 'reactivate') {
         await reactivate.mutateAsync(row.documentId);
         toast.success(t('reactivatedToast', { name }));
+      } else if (confirmAction === 'remove') {
+        const result = await remove.mutateAsync(row.documentId);
+        toast.success(
+          t('removedToast', { name, classes: result.classes_unassigned }),
+        );
       }
       setConfirmAction(null);
-    } catch {
-      toast.error(t('errorToast'));
+    } catch (error) {
+      toast.error(serverMessage(error) ?? t('errorToast'));
     }
   };
 

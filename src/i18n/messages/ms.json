@@ -2385,7 +2385,12 @@
       "reactivateConfirm": "Aktifkan semula",
       "revokeTitle": "Batalkan jemputan untuk {name}?",
       "revokeDescription": "Pautan jemputan akan berhenti berfungsi. Anda boleh menghantar jemputan baharu kemudian.",
-      "revokeConfirm": "Batalkan jemputan"
+      "revokeConfirm": "Batalkan jemputan",
+      "remove": "Buang daripada sekolah",
+      "removeTitle": "Buang {name} daripada sekolah anda?",
+      "removeDescription": "Tindakan ini tidak boleh dibatalkan. Akaun mereka disekat, pautan sekolah diputuskan, tugasan kelas dikosongkan dan sebarang jemputan terbuka dibatalkan. Rekod keputusan lalu kekal. Gunakan nyahaktif jika anda hanya perlu menjeda akses.",
+      "removeConfirm": "Buang secara kekal",
+      "removedToast": "{name} telah dibuang daripada sekolah ({classes} tugasan kelas dikosongkan)."
     }
   },
   "Classes": {

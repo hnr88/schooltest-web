@@ -18,8 +18,10 @@ interface StaffRowActionsProps {
 }
 
 // Row actions for the merged staff table: reissue (C-INV-03) + revoke
-// (C-INV-04) on open invitations, deactivate/reactivate (C-TCH-02) on staff
-// accounts. Access-changing actions confirm first; reissue is immediate.
+// (C-INV-04/07) on open invitations, deactivate/reactivate (C-TCH-02) and
+// permanent removal (C-TCH-03) on staff accounts. Access-changing actions
+// confirm first; reissue is immediate. Removal is offered for both active and
+// deactivated accounts — deactivation is reversible, removal is not.
 export function StaffRowActions({ row }: StaffRowActionsProps) {
   const {
     t,
@@ -51,18 +53,32 @@ export function StaffRowActions({ row }: StaffRowActionsProps) {
                 {t('revoke')}
               </DropdownMenuItem>
             </>
-          ) : row.status === 'deactivated' ? (
-            <DropdownMenuItem className="min-h-11" onClick={() => setConfirmAction('reactivate')}>
-              {t('reactivate')}
-            </DropdownMenuItem>
           ) : (
-            <DropdownMenuItem
-              variant="destructive"
-              className="min-h-11"
-              onClick={() => setConfirmAction('deactivate')}
-            >
-              {t('deactivate')}
-            </DropdownMenuItem>
+            <>
+              {row.status === 'deactivated' ? (
+                <DropdownMenuItem
+                  className="min-h-11"
+                  onClick={() => setConfirmAction('reactivate')}
+                >
+                  {t('reactivate')}
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  variant="destructive"
+                  className="min-h-11"
+                  onClick={() => setConfirmAction('deactivate')}
+                >
+                  {t('deactivate')}
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem
+                variant="destructive"
+                className="min-h-11"
+                onClick={() => setConfirmAction('remove')}
+              >
+                {t('remove')}
+              </DropdownMenuItem>
+            </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
