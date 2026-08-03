@@ -2456,6 +2456,30 @@
         "not_mastered": "not mastered"
       },
       "notAssessedLine": "Not assessed on one or both tests: {areas}"
+    },
+    "testDay": {
+      "history": {
+        "title": "Sitting history",
+        "loading": "Loading sitting history...",
+        "loadError": "The sitting history could not be loaded. Try again.",
+        "emptyTitle": "No sittings yet for this class",
+        "emptyBody": "When you start a sitting it will appear here, so you can look back at who joined and submitted.",
+        "missingValue": "-",
+        "columns": {
+          "opened": "Opened",
+          "code": "Code",
+          "form": "Form",
+          "status": "Status",
+          "joined": "Joined",
+          "submitted": "Submitted"
+        },
+        "status": {
+          "open": "Open",
+          "closed": "Closed"
+        },
+        "joinedCount": "{joined}/{total}",
+        "submittedCount": "{submitted}/{total}"
+      }
     }
   },
   "TestDay": {

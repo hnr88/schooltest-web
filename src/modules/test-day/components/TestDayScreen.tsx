@@ -7,6 +7,7 @@ import { Link } from '@/i18n/navigation';
 import { Button, EmptyState, StatusPill } from '@/modules/design-system';
 import { CodeRevealCard } from '../components/CodeRevealCard';
 import { MonitorSection } from '../components/MonitorSection';
+import { SittingHistoryTable } from '../components/SittingHistoryTable';
 import { useCreateSittingMutation } from '../mutations/use-create-sitting.mutation';
 import { useRevealCodeMutation } from '../mutations/use-reveal-code.mutation';
 import { useClassSittingsQuery } from '../queries/use-class-sittings.query';
@@ -117,6 +118,7 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
           <MonitorSection sitting={current} />
         </>
       ) : null}
+      <SittingHistoryTable classDocumentId={classDocumentId} />
     </main>
   );
 }

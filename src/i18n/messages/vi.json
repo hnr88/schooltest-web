@@ -2152,6 +2152,30 @@
         "not_mastered": "chưa thành thạo"
       },
       "notAssessedLine": "Chưa được đánh giá trong một hoặc cả hai bài kiểm tra: {areas}"
+    },
+    "testDay": {
+      "history": {
+        "title": "Lịch sử buổi kiểm tra",
+        "loading": "Đang tải lịch sử buổi kiểm tra...",
+        "loadError": "Không thể tải lịch sử buổi kiểm tra. Hãy thử lại.",
+        "emptyTitle": "Lớp này chưa có buổi kiểm tra nào",
+        "emptyBody": "Khi bạn bắt đầu một buổi kiểm tra, buổi đó sẽ xuất hiện ở đây để bạn xem lại số học sinh đã tham gia và đã nộp bài.",
+        "missingValue": "-",
+        "columns": {
+          "opened": "Thời gian mở",
+          "code": "Mã",
+          "form": "Đề thi",
+          "status": "Trạng thái",
+          "joined": "Đã tham gia",
+          "submitted": "Đã nộp"
+        },
+        "status": {
+          "open": "Đang mở",
+          "closed": "Đã đóng"
+        },
+        "joinedCount": "{joined}/{total}",
+        "submittedCount": "{submitted}/{total}"
+      }
     }
   },
   "TestDay": {

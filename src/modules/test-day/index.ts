@@ -3,6 +3,8 @@ export { AbsentToggle } from './components/AbsentToggle';
 export { StudentRevealDialog } from './components/StudentRevealDialog';
 export { NeedsToSitPanel } from './components/NeedsToSitPanel';
 export { TestDayScreen } from './components/TestDayScreen';
+export { SittingHistoryTable } from './components/SittingHistoryTable';
 export { useRevealAuditStore } from './stores/use-reveal-audit-store';
 export type { RevealAuditEntry } from './stores/use-reveal-audit-store';
 export type { ClassSitting, SittingMonitor, MonitorStudent } from './types/test-day.types';
+export type { SittingHistoryRow } from './types/sitting-history.types';

@@ -27,6 +27,21 @@ export const classSittingSchema = z.object({
   class: z.object({ documentId: z.string(), name: z.string() }).nullable(),
 });
 
+// C-SIT-07 sitting history row (summary mode on the teacher-scoped sitting
+// list). The lifecycle fields are nullable on the content-type, so the
+// boundary keeps them nullable rather than trusting the fixture data.
+export const sittingHistoryRowSchema = z.object({
+  documentId: z.string(),
+  code: z.string().nullable(),
+  form_code: z.string().nullable(),
+  status: sittingStatusSchema,
+  opened_at: z.string().nullable(),
+  closed_at: z.string().nullable(),
+  joined: z.number(),
+  submitted: z.number(),
+  total: z.number(),
+});
+
 // C-SIT-02 monitor payload.
 export const sittingMonitorSchema = z.object({
   sitting: z.object({
