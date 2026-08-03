@@ -2110,6 +2110,9 @@
       "drilldownClose": "关闭学生概况",
       "notAssessedNote": "尚未评估表示该领域没有安排任何题目。这代表缺失，绝不是零分。",
       "reportLink": "打开完整报告",
+      "mastery": {
+        "viewFullReport": "查看 {student} 的完整报告"
+      },
       "areas": {
         "R1": "解码",
         "R2": "词汇",

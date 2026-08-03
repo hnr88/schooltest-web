@@ -2414,6 +2414,9 @@
       "drilldownClose": "Close student profile",
       "notAssessedNote": "Not yet assessed means no items in that area were administered. It is an absence, never a zero.",
       "reportLink": "Open the full report",
+      "mastery": {
+        "viewFullReport": "View full report for {student}"
+      },
       "areas": {
         "R1": "Decoding",
         "R2": "Vocabulary",

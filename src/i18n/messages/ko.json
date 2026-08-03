@@ -2110,6 +2110,9 @@
       "drilldownClose": "학생 프로필 닫기",
       "notAssessedNote": "아직 평가되지 않음은 해당 영역의 문항이 출제되지 않았다는 뜻입니다. 결측이지 결코 0점이 아닙니다.",
       "reportLink": "전체 리포트 열기",
+      "mastery": {
+        "viewFullReport": "{student}의 전체 리포트 보기"
+      },
       "areas": {
         "R1": "디코딩",
         "R2": "어휘",

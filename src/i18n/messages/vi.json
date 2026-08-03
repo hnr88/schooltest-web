@@ -2110,6 +2110,9 @@
       "drilldownClose": "Đóng hồ sơ học sinh",
       "notAssessedNote": "Chưa đánh giá nghĩa là không có câu hỏi nào ở lĩnh vực đó được giao. Đó là sự vắng mặt, không bao giờ là số không.",
       "reportLink": "Mở báo cáo đầy đủ",
+      "mastery": {
+        "viewFullReport": "Xem báo cáo đầy đủ của {student}"
+      },
       "areas": {
         "R1": "Giải mã",
         "R2": "Từ vựng",
