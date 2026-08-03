@@ -2175,6 +2175,20 @@
         },
         "joinedCount": "{joined}/{total}",
         "submittedCount": "{submitted}/{total}"
+      },
+      "summary": {
+        "title": "Ringkasan sesi ujian",
+        "loading": "Memuatkan ringkasan sesi ujian...",
+        "loadError": "Ringkasan sesi ujian tidak dapat dimuatkan. Cuba lagi.",
+        "codeLine": "Kod {code}",
+        "counts": {
+          "sat": "Menduduki",
+          "absent": "Tidak hadir",
+          "needsResit": "Perlu ujian semula",
+          "resultsPending": "Keputusan belum siap",
+          "resultsReady": "Keputusan sudah siap"
+        },
+        "pendingNote": "{count, plural, other {# keputusan masih disediakan dan akan muncul di sini apabila siap.}}"
       }
     }
   },

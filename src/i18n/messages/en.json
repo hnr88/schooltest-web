@@ -2479,6 +2479,20 @@
         },
         "joinedCount": "{joined}/{total}",
         "submittedCount": "{submitted}/{total}"
+      },
+      "summary": {
+        "title": "Sitting summary",
+        "loading": "Loading the sitting summary...",
+        "loadError": "The sitting summary could not be loaded. Try again.",
+        "codeLine": "Code {code}",
+        "counts": {
+          "sat": "Sat",
+          "absent": "Absent",
+          "needsResit": "Needs a re-sit",
+          "resultsPending": "Results pending",
+          "resultsReady": "Results ready"
+        },
+        "pendingNote": "{count, plural, one {# result is still on its way and will appear here when it is ready.} other {# results are still on their way and will appear here when they are ready.}}"
       }
     }
   },

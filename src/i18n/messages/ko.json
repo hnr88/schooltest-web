@@ -2175,6 +2175,20 @@
         },
         "joinedCount": "{joined}/{total}",
         "submittedCount": "{submitted}/{total}"
+      },
+      "summary": {
+        "title": "시험 세션 요약",
+        "loading": "시험 세션 요약을 불러오는 중...",
+        "loadError": "시험 세션 요약을 불러올 수 없습니다. 다시 시도하세요.",
+        "codeLine": "코드 {code}",
+        "counts": {
+          "sat": "응시",
+          "absent": "결석",
+          "needsResit": "재응시 필요",
+          "resultsPending": "결과 대기 중",
+          "resultsReady": "결과 준비됨"
+        },
+        "pendingNote": "{count, plural, other {결과 #건이 아직 준비 중이며 완료되면 여기에 표시됩니다.}}"
       }
     }
   },

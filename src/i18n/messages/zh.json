@@ -2175,6 +2175,20 @@
         },
         "joinedCount": "{joined}/{total}",
         "submittedCount": "{submitted}/{total}"
+      },
+      "summary": {
+        "title": "测验场次摘要",
+        "loading": "正在加载测验场次摘要...",
+        "loadError": "无法加载测验场次摘要，请重试。",
+        "codeLine": "访问码 {code}",
+        "counts": {
+          "sat": "已参加",
+          "absent": "缺席",
+          "needsResit": "需要重考",
+          "resultsPending": "成绩待出",
+          "resultsReady": "成绩已出"
+        },
+        "pendingNote": "{count, plural, other {# 份成绩仍在生成中，就绪后会显示在这里。}}"
       }
     }
   },

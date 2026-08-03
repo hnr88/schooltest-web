@@ -2175,6 +2175,20 @@
         },
         "joinedCount": "{joined}/{total}",
         "submittedCount": "{submitted}/{total}"
+      },
+      "summary": {
+        "title": "Tóm tắt buổi kiểm tra",
+        "loading": "Đang tải tóm tắt buổi kiểm tra...",
+        "loadError": "Không thể tải tóm tắt buổi kiểm tra. Hãy thử lại.",
+        "codeLine": "Mã {code}",
+        "counts": {
+          "sat": "Đã dự thi",
+          "absent": "Vắng mặt",
+          "needsResit": "Cần thi lại",
+          "resultsPending": "Kết quả đang chờ",
+          "resultsReady": "Kết quả đã có"
+        },
+        "pendingNote": "{count, plural, other {# kết quả vẫn đang được chuẩn bị và sẽ xuất hiện ở đây khi sẵn sàng.}}"
       }
     }
   },

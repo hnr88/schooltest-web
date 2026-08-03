@@ -2175,6 +2175,20 @@
         },
         "joinedCount": "{joined}/{total}",
         "submittedCount": "{submitted}/{total}"
+      },
+      "summary": {
+        "title": "สรุปรอบการสอบ",
+        "loading": "กำลังโหลดสรุปรอบการสอบ...",
+        "loadError": "ไม่สามารถโหลดสรุปรอบการสอบได้ โปรดลองอีกครั้ง",
+        "codeLine": "รหัส {code}",
+        "counts": {
+          "sat": "เข้าสอบแล้ว",
+          "absent": "ขาด",
+          "needsResit": "ต้องสอบใหม่",
+          "resultsPending": "รอผลสอบ",
+          "resultsReady": "ผลสอบพร้อมแล้ว"
+        },
+        "pendingNote": "{count, plural, other {ยังมีผลสอบอีก # รายการที่กำลังจัดเตรียม และจะแสดงที่นี่เมื่อพร้อม}}"
       }
     }
   },

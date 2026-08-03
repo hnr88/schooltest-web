@@ -42,6 +42,20 @@ export const sittingHistoryRowSchema = z.object({
   total: z.number(),
 });
 
+// C-SIT-08 end-of-test-day summary payload (task 136).
+export const sittingSummarySchema = z.object({
+  sitting: z.object({
+    documentId: z.string(),
+    code: z.string().nullable(),
+    status: sittingStatusSchema,
+  }),
+  sat: z.number(),
+  absent: z.number(),
+  needs_resit: z.number(),
+  results_pending: z.number(),
+  results_ready: z.number(),
+});
+
 // C-SIT-02 monitor payload.
 export const sittingMonitorSchema = z.object({
   sitting: z.object({

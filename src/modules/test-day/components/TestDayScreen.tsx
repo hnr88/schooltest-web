@@ -4,10 +4,12 @@ import { useTranslations } from 'next-intl';
 import { PlayCircle } from 'lucide-react';
 
 import { Link } from '@/i18n/navigation';
-import { Button, EmptyState, StatusPill } from '@/modules/design-system';
+import { EmptyState, StatusPill } from '@/modules/design-system';
 import { CodeRevealCard } from '../components/CodeRevealCard';
 import { MonitorSection } from '../components/MonitorSection';
 import { SittingHistoryTable } from '../components/SittingHistoryTable';
+import { SittingSummaryPanel } from '../components/SittingSummaryPanel';
+import { StartSittingControls } from '../components/StartSittingControls';
 import { useCreateSittingMutation } from '../mutations/use-create-sitting.mutation';
 import { useRevealCodeMutation } from '../mutations/use-reveal-code.mutation';
 import { useClassSittingsQuery } from '../queries/use-class-sittings.query';
@@ -75,19 +77,11 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
       {sittings.isSuccess && !current ? (
         <div className="flex max-w-xl flex-col gap-4">
           <EmptyState icon={PlayCircle} title={t('emptyTitle')} description={t('emptyBody')} />
-          <Button
-            type="button"
-            className="min-h-11 w-fit px-4"
-            loading={createSitting.isPending}
-            onClick={() => createSitting.mutate()}
-          >
-            {t('startCta')}
-          </Button>
-          {createSitting.isError ? (
-            <p role="alert" className="text-sm text-danger-ink">
-              {t('startError')}
-            </p>
-          ) : null}
+          <StartSittingControls
+            pending={createSitting.isPending}
+            error={createSitting.isError}
+            onStart={() => createSitting.mutate()}
+          />
         </div>
       ) : null}
       {current ? (
@@ -95,19 +89,11 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
           {current.status === 'closed' ? (
             <div className="flex max-w-xl flex-col gap-3 rounded-xl border border-border bg-card px-4 py-4">
               <p className="max-w-md text-sm text-body">{t('closedStartHint')}</p>
-              <Button
-                type="button"
-                className="min-h-11 w-fit px-4"
-                loading={createSitting.isPending}
-                onClick={() => createSitting.mutate()}
-              >
-                {t('startCta')}
-              </Button>
-              {createSitting.isError ? (
-                <p role="alert" className="text-sm text-danger-ink">
-                  {t('startError')}
-                </p>
-              ) : null}
+              <StartSittingControls
+                pending={createSitting.isPending}
+                error={createSitting.isError}
+                onStart={() => createSitting.mutate()}
+              />
             </div>
           ) : null}
           <CodeRevealCard
@@ -116,6 +102,7 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
             onReveal={() => revealCode.mutate(current.documentId)}
           />
           <MonitorSection sitting={current} />
+          <SittingSummaryPanel sitting={current} />
         </>
       ) : null}
       <SittingHistoryTable classDocumentId={classDocumentId} />
