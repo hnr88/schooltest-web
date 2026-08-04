@@ -2626,6 +2626,7 @@
       "retry": "다시 시도",
       "accountStatus": {
         "prospect": "잠재",
+        "invited": "초대됨",
         "invoiced": "청구됨",
         "active": "활성",
         "suspended": "일시 중지",
@@ -2633,7 +2634,7 @@
       },
       "onboardingStatus": {
         "not_started": "시작 전",
-        "link_sent": "링크 전송됨",
+        "link_sent": "초대장 발송됨",
         "in_progress": "진행 중",
         "submitted": "제출됨",
         "complete": "완료"
@@ -2658,6 +2659,7 @@
       "retry": "다시 시도",
       "accountStatus": {
         "prospect": "잠재",
+        "invited": "초대됨",
         "invoiced": "청구됨",
         "active": "활성",
         "suspended": "일시 중지",
@@ -2665,10 +2667,37 @@
       },
       "onboardingStatus": {
         "not_started": "시작 전",
-        "link_sent": "링크 전송됨",
+        "link_sent": "초대장 발송됨",
         "in_progress": "진행 중",
         "submitted": "제출됨",
         "complete": "완료"
+      }
+    },
+    "onboard": {
+      "button": "학교 온보딩",
+      "dialogTitle": "학교 온보딩",
+      "dialogDescription": "학교의 주 관리자 담당자에게 매직 링크 초대장을 보냅니다.",
+      "firstName": "이름",
+      "lastName": "성",
+      "email": "이메일 주소",
+      "submit": "온보딩 초대장 보내기",
+      "submitting": "보내는 중",
+      "cancel": "취소",
+      "successToast": "{email}(으)로 초대장을 보냈습니다",
+      "errorToast": "초대장을 보내지 못했습니다. 다시 시도해 주세요.",
+      "conflict": "이 학교에는 이미 유효한 초대장이 있습니다.",
+      "sentIndicator": "{email}(으)로 초대장을 보냈습니다",
+      "resend": "초대장 다시 보내기",
+      "revoke": "초대장 철회",
+      "resendSuccess": "{email}(으)로 새 초대장을 보냈습니다",
+      "revokeSuccess": "초대장을 철회했습니다",
+      "loadError": "이 학교의 초대장을 불러오지 못했습니다.",
+      "loadErrorDescription": "연결 상태를 확인하고 다시 시도해 주세요.",
+      "retry": "다시 시도",
+      "validation": {
+        "required": "필수 항목입니다",
+        "tooLong": "100자 이내로 입력해 주세요",
+        "emailInvalid": "유효한 이메일 주소를 입력해 주세요"
       }
     },
     "import": {

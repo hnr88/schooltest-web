@@ -32,7 +32,9 @@ export const schoolOnboardingResponseSchema = z.object({
       state: z.enum(['suggested', 'confirmed']),
     }),
   ),
-  expires_at: z.string(),
+  // C-ONB-01 (v2), mission st-ops-onboarding: null means the magic link never
+  // expires — it stays valid until it is used or the invitation is revoked.
+  expires_at: z.string().nullable(),
 });
 
 export const saveProgressResponseSchema = z.object({

@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
 import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
+import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
 import { OpsSittingRecovery } from '@/modules/ops/components/OpsSittingRecovery';
 import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
 import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
@@ -99,6 +100,9 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             {t(`onboardingStatus.${school.onboarding_status}`)}
           </Badge>
         </div>
+        {/* Spec: the Onboard School control sits near the status badges and
+            above the summary cards. */}
+        <OpsSchoolInvitationPanel documentId={documentId} enabled={hydrated && Boolean(token)} />
       </div>
       <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {counts.map((count) => (

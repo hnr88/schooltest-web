@@ -67,7 +67,8 @@ export interface SchoolOnboardingData {
   current_step: number;
   payload: Record<string, unknown>;
   provenance: ProvenanceMap;
-  expires_at: string;
+  // C-ONB-01 (v2): null = the link never expires (mission st-ops-onboarding).
+  expires_at: string | null;
 }
 
 // C-ONB-02 data payload.

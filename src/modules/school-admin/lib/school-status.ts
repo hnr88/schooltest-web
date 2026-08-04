@@ -10,6 +10,7 @@ type BadgeVariant = NonNullable<BadgeProps['variant']>;
 // good news; suspended/closed stay loud because they block usage.
 export const ACCOUNT_STATUS_VARIANTS: Record<SchoolAccountStatus, BadgeVariant> = {
   active: 'success',
+  invited: 'accent',
   invoiced: 'accent',
   prospect: 'secondary',
   suspended: 'warning',

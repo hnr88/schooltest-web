@@ -2626,6 +2626,7 @@
       "retry": "Thử lại",
       "accountStatus": {
         "prospect": "Tiềm năng",
+        "invited": "Đã mời",
         "invoiced": "Đã lập hoá đơn",
         "active": "Đang hoạt động",
         "suspended": "Bị tạm ngưng",
@@ -2633,7 +2634,7 @@
       },
       "onboardingStatus": {
         "not_started": "Chưa bắt đầu",
-        "link_sent": "Đã gửi liên kết",
+        "link_sent": "Đã gửi lời mời",
         "in_progress": "Đang tiến hành",
         "submitted": "Đã gửi",
         "complete": "Hoàn tất"
@@ -2658,6 +2659,7 @@
       "retry": "Thử lại",
       "accountStatus": {
         "prospect": "Tiềm năng",
+        "invited": "Đã mời",
         "invoiced": "Đã lập hoá đơn",
         "active": "Đang hoạt động",
         "suspended": "Bị tạm ngưng",
@@ -2665,10 +2667,37 @@
       },
       "onboardingStatus": {
         "not_started": "Chưa bắt đầu",
-        "link_sent": "Đã gửi liên kết",
+        "link_sent": "Đã gửi lời mời",
         "in_progress": "Đang tiến hành",
         "submitted": "Đã gửi",
         "complete": "Hoàn tất"
+      }
+    },
+    "onboard": {
+      "button": "Mời trường tham gia",
+      "dialogTitle": "Mời trường tham gia",
+      "dialogDescription": "Gửi lời mời kèm liên kết đăng nhập nhanh tới người quản trị chính của trường.",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "email": "Địa chỉ email",
+      "submit": "Gửi lời mời tham gia",
+      "submitting": "Đang gửi",
+      "cancel": "Huỷ",
+      "successToast": "Đã gửi lời mời tới {email}",
+      "errorToast": "Chúng tôi không gửi được lời mời. Hãy thử lại.",
+      "conflict": "Trường này đã có một lời mời đang hoạt động.",
+      "sentIndicator": "Đã gửi lời mời tới {email}",
+      "resend": "Gửi lại lời mời",
+      "revoke": "Thu hồi lời mời",
+      "resendSuccess": "Đã gửi lời mời mới tới {email}",
+      "revokeSuccess": "Đã thu hồi lời mời",
+      "loadError": "Chúng tôi không tải được lời mời của trường này.",
+      "loadErrorDescription": "Kiểm tra kết nối của bạn và thử lại.",
+      "retry": "Thử lại",
+      "validation": {
+        "required": "Trường này là bắt buộc",
+        "tooLong": "Dùng tối đa 100 ký tự",
+        "emailInvalid": "Nhập địa chỉ email hợp lệ"
       }
     },
     "import": {

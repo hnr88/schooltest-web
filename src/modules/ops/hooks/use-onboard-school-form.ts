@@ -1,0 +1,62 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { isAxiosError } from 'axios';
+import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
+import { useOnboardSchoolMutation } from '@/modules/ops/queries/use-onboard-school.mutation';
+import {
+  createOnboardSchoolSchema,
+  type OnboardSchoolValues,
+} from '@/modules/ops/schemas/school-invitation.schema';
+
+const DEFAULT_VALUES: OnboardSchoolValues = {
+  first_name: '',
+  last_name: '',
+  contact_email: '',
+};
+
+interface UseOnboardSchoolFormInput {
+  schoolDocumentId: string;
+  onDone: () => void;
+}
+
+/**
+ * C-SCH-04 (v2) submit handling for the Onboard School modal. Keeps the dialog
+ * dumb: the form wiring, the 409 mapping and the toasts live here.
+ */
+export function useOnboardSchoolForm({ schoolDocumentId, onDone }: UseOnboardSchoolFormInput) {
+  const t = useTranslations('Ops.onboard');
+  const tv = useTranslations('Ops.onboard.validation');
+  const schema = useMemo(() => createOnboardSchoolSchema(tv), [tv]);
+  const onboard = useOnboardSchoolMutation();
+
+  const form = useForm<OnboardSchoolValues, unknown, OnboardSchoolValues>({
+    resolver: zodResolver(schema),
+    defaultValues: DEFAULT_VALUES,
+  });
+
+  const reset = () => form.reset(DEFAULT_VALUES);
+
+  const submit = form.handleSubmit(async (values) => {
+    try {
+      await onboard.mutateAsync({ schoolDocumentId, ...values });
+      toast.success(t('successToast', { email: values.contact_email }));
+      reset();
+      onDone();
+    } catch (error) {
+      // 409 = the school already holds an active invitation. It belongs on the
+      // form, not in a toast, because the ops user has to revoke first.
+      if (isAxiosError(error) && error.response?.status === 409) {
+        form.setError('contact_email', { message: t('conflict') });
+        return;
+      }
+      toast.error(t('errorToast'));
+    }
+  });
+
+  return { form, submit, reset, isPending: onboard.isPending };
+}

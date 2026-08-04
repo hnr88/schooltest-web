@@ -2930,6 +2930,7 @@
       "retry": "Try again",
       "accountStatus": {
         "prospect": "Prospect",
+        "invited": "Invited",
         "invoiced": "Invoiced",
         "active": "Active",
         "suspended": "Suspended",
@@ -2937,7 +2938,7 @@
       },
       "onboardingStatus": {
         "not_started": "Not started",
-        "link_sent": "Link sent",
+        "link_sent": "Invitation sent",
         "in_progress": "In progress",
         "submitted": "Submitted",
         "complete": "Complete"
@@ -2962,6 +2963,7 @@
       "retry": "Try again",
       "accountStatus": {
         "prospect": "Prospect",
+        "invited": "Invited",
         "invoiced": "Invoiced",
         "active": "Active",
         "suspended": "Suspended",
@@ -2969,10 +2971,37 @@
       },
       "onboardingStatus": {
         "not_started": "Not started",
-        "link_sent": "Link sent",
+        "link_sent": "Invitation sent",
         "in_progress": "In progress",
         "submitted": "Submitted",
         "complete": "Complete"
+      }
+    },
+    "onboard": {
+      "button": "Onboard School",
+      "dialogTitle": "Onboard School",
+      "dialogDescription": "Send a magic link invitation to the school's primary admin contact.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email address",
+      "submit": "Send Invitation to Onboard",
+      "submitting": "Sending",
+      "cancel": "Cancel",
+      "successToast": "Invitation sent to {email}",
+      "errorToast": "We could not send the invitation. Try again.",
+      "conflict": "This school already has an active invitation.",
+      "sentIndicator": "Invitation sent to {email}",
+      "resend": "Resend invitation",
+      "revoke": "Revoke invitation",
+      "resendSuccess": "A new invitation was sent to {email}",
+      "revokeSuccess": "Invitation revoked",
+      "loadError": "We could not load the invitation for this school.",
+      "loadErrorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "validation": {
+        "required": "This field is required",
+        "tooLong": "Use 100 characters or fewer",
+        "emailInvalid": "Enter a valid email address"
       }
     },
     "import": {

@@ -3,6 +3,9 @@
 // returns them verbatim, so the portal maps them to chips without translation.
 export const SCHOOL_ACCOUNT_STATUSES = [
   'prospect',
+  // `invited` (mission st-ops-onboarding): the ops user has sent the school its
+  // onboarding magic link and nobody has redeemed it yet.
+  'invited',
   'invoiced',
   'active',
   'suspended',

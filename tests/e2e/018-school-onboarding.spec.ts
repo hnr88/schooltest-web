@@ -31,9 +31,19 @@ async function mintOnboardingLink(request: APIRequestContext, runId: string) {
   expect(school.status()).toBe(201);
   const schoolBody = (await school.json()) as { data: { documentId: string } };
 
+  // C-SCH-04 (v2), mission st-ops-onboarding: the ops Onboard School action now
+  // takes the primary admin contact's first and last name alongside the email,
+  // and mints a link with no expiry.
   const link = await request.post(
     `${API}/api/schools/${schoolBody.data.documentId}/onboarding-link`,
-    { headers: auth, data: { contact_email: `ops-${runId}@example.au` } },
+    {
+      headers: auth,
+      data: {
+        first_name: 'Ops',
+        last_name: 'Fixture',
+        contact_email: `ops-${runId}@example.au`,
+      },
+    },
   );
   expect(link.status()).toBe(201);
   const linkBody = (await link.json()) as { data: { token: string } };

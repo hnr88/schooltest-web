@@ -2626,6 +2626,7 @@
       "retry": "重试",
       "accountStatus": {
         "prospect": "潜在客户",
+        "invited": "已邀请",
         "invoiced": "已开票",
         "active": "已激活",
         "suspended": "已暂停",
@@ -2633,7 +2634,7 @@
       },
       "onboardingStatus": {
         "not_started": "未开始",
-        "link_sent": "链接已发送",
+        "link_sent": "邀请已发送",
         "in_progress": "进行中",
         "submitted": "已提交",
         "complete": "已完成"
@@ -2658,6 +2659,7 @@
       "retry": "重试",
       "accountStatus": {
         "prospect": "潜在客户",
+        "invited": "已邀请",
         "invoiced": "已开票",
         "active": "已激活",
         "suspended": "已暂停",
@@ -2665,10 +2667,37 @@
       },
       "onboardingStatus": {
         "not_started": "未开始",
-        "link_sent": "链接已发送",
+        "link_sent": "邀请已发送",
         "in_progress": "进行中",
         "submitted": "已提交",
         "complete": "已完成"
+      }
+    },
+    "onboard": {
+      "button": "邀请学校入驻",
+      "dialogTitle": "邀请学校入驻",
+      "dialogDescription": "向学校的主要管理员联系人发送快捷登录链接邀请。",
+      "firstName": "名字",
+      "lastName": "姓氏",
+      "email": "电子邮件地址",
+      "submit": "发送入驻邀请",
+      "submitting": "发送中",
+      "cancel": "取消",
+      "successToast": "邀请已发送至 {email}",
+      "errorToast": "我们无法发送邀请，请重试。",
+      "conflict": "该学校已有一个有效的邀请。",
+      "sentIndicator": "邀请已发送至 {email}",
+      "resend": "重新发送邀请",
+      "revoke": "撤销邀请",
+      "resendSuccess": "新的邀请已发送至 {email}",
+      "revokeSuccess": "邀请已撤销",
+      "loadError": "我们无法加载该学校的邀请。",
+      "loadErrorDescription": "请检查网络连接后重试。",
+      "retry": "重试",
+      "validation": {
+        "required": "此字段为必填项",
+        "tooLong": "请使用 100 个字符以内",
+        "emailInvalid": "请输入有效的电子邮件地址"
       }
     },
     "import": {

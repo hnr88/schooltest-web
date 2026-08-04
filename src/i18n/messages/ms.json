@@ -2626,6 +2626,7 @@
       "retry": "Cuba lagi",
       "accountStatus": {
         "prospect": "Prospek",
+        "invited": "Dijemput",
         "invoiced": "Dinvois",
         "active": "Aktif",
         "suspended": "Digantung",
@@ -2633,7 +2634,7 @@
       },
       "onboardingStatus": {
         "not_started": "Belum bermula",
-        "link_sent": "Pautan dihantar",
+        "link_sent": "Jemputan dihantar",
         "in_progress": "Sedang berjalan",
         "submitted": "Dihantar",
         "complete": "Selesai"
@@ -2658,6 +2659,7 @@
       "retry": "Cuba lagi",
       "accountStatus": {
         "prospect": "Prospek",
+        "invited": "Dijemput",
         "invoiced": "Dinvois",
         "active": "Aktif",
         "suspended": "Digantung",
@@ -2665,10 +2667,37 @@
       },
       "onboardingStatus": {
         "not_started": "Belum bermula",
-        "link_sent": "Pautan dihantar",
+        "link_sent": "Jemputan dihantar",
         "in_progress": "Sedang berjalan",
         "submitted": "Dihantar",
         "complete": "Selesai"
+      }
+    },
+    "onboard": {
+      "button": "Daftarkan Sekolah",
+      "dialogTitle": "Daftarkan Sekolah",
+      "dialogDescription": "Hantar jemputan pautan log masuk pantas kepada kenalan pentadbir utama sekolah.",
+      "firstName": "Nama pertama",
+      "lastName": "Nama akhir",
+      "email": "Alamat e-mel",
+      "submit": "Hantar Jemputan untuk Mendaftar",
+      "submitting": "Menghantar",
+      "cancel": "Batal",
+      "successToast": "Jemputan dihantar kepada {email}",
+      "errorToast": "Kami tidak dapat menghantar jemputan. Cuba lagi.",
+      "conflict": "Sekolah ini sudah mempunyai jemputan yang aktif.",
+      "sentIndicator": "Jemputan dihantar kepada {email}",
+      "resend": "Hantar semula jemputan",
+      "revoke": "Batalkan jemputan",
+      "resendSuccess": "Jemputan baharu dihantar kepada {email}",
+      "revokeSuccess": "Jemputan dibatalkan",
+      "loadError": "Kami tidak dapat memuatkan jemputan untuk sekolah ini.",
+      "loadErrorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi",
+      "validation": {
+        "required": "Medan ini diperlukan",
+        "tooLong": "Gunakan 100 aksara atau kurang",
+        "emailInvalid": "Masukkan alamat e-mel yang sah"
       }
     },
     "import": {
