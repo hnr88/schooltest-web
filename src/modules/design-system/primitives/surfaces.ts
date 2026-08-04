@@ -76,7 +76,7 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuCheckboxItem,
   DropdownMenuRadioItem,
-} from '../components/menu';
+} from '@/modules/design-system/components/menu';
 export { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 export {
   Popover,

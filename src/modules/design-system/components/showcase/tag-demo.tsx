@@ -4,10 +4,8 @@ import { useState } from 'react';
 
 import { Tag } from '@/modules/design-system/components/tag';
 
-interface TagDemoProps {
-  label: string;
-  removeLabel: string;
-}
+import type { TagDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function TagDemo({ label, removeLabel }: TagDemoProps) {
   const [isVisible, setIsVisible] = useState(true);

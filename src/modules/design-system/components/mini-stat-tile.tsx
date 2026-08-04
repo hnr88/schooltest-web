@@ -1,16 +1,7 @@
 import { cn } from '@/lib/utils';
+import { VALUE_TONES } from '@/modules/design-system/constants/mini-stat-tile.constants';
 
-import type {
-  MiniStatTileProps,
-  MiniStatTileTone,
-} from '@/modules/design-system/types/design-system.types';
-
-const VALUE_TONES: Record<MiniStatTileTone, string> = {
-  default: 'text-foreground',
-  positive: 'text-success-strong',
-  negative: 'text-destructive',
-  muted: 'text-muted-foreground',
-};
+import type { MiniStatTileProps } from '@/modules/design-system/types/design-system.types';
 
 function MiniStatTile({ value, label, tone = 'default', className }: MiniStatTileProps) {
   return (

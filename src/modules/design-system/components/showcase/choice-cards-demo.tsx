@@ -8,19 +8,8 @@ import { SelectionCardGroup } from '@/modules/design-system/components/selection
 import { SelectRow } from '@/modules/design-system/components/select-row';
 import type { ChoiceOption } from '@/modules/design-system/types/choice.types';
 
-interface ChoiceCardsDemoProps {
-  packLabel: string;
-  packOptions: readonly ChoiceOption[];
-  selectLabel: string;
-  selectPlaceholder: string;
-  selectOptions: readonly ChoiceOption[];
-  selectHelper: string;
-  errorText: string;
-  countryLabel: string;
-  countryPlaceholder: string;
-  countryValue: string;
-  disabledLabel: string;
-}
+import type { ChoiceCardsDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function ChoiceCardsDemo({
   packLabel,

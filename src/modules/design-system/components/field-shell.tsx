@@ -1,6 +1,7 @@
 import { AlertCircle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { errorId, helperId } from '@/modules/design-system/lib/field-ids';
 
 import type { FieldShellProps } from '@/modules/design-system/types/choice.types';
 
@@ -11,19 +12,6 @@ import type { FieldShellProps } from '@/modules/design-system/types/choice.types
 // pointing at a group is not a real label and axe rejects it).
 // Canonical helper ink is #94A3B8 — 2.56:1, a straight AA failure — so helper text
 // takes --muted-foreground (#64748B, 4.76:1 on white) instead.
-
-function helperId(id: string) {
-  return `${id}-helper`;
-}
-
-function errorId(id: string) {
-  return `${id}-error`;
-}
-
-function describedBy(id: string, helperText?: string, errorText?: string) {
-  const ids = [helperText ? helperId(id) : null, errorText ? errorId(id) : null].filter(Boolean);
-  return ids.length > 0 ? ids.join(' ') : undefined;
-}
 
 function FieldShell({
   id,
@@ -76,4 +64,4 @@ function FieldShell({
   );
 }
 
-export { FieldShell, describedBy };
+export { FieldShell };

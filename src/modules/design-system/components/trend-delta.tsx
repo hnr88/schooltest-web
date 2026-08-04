@@ -1,23 +1,12 @@
 import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { TONE_CLASSES, TONE_ICONS } from '@/modules/design-system/constants/trend-delta.constants';
 
 import type {
   TrendDeltaProps,
   TrendDeltaTone,
 } from '@/modules/design-system/types/design-system.types';
-
-const TONE_CLASSES: Record<TrendDeltaTone, string> = {
-  positive: 'text-success-strong',
-  neutral: 'text-muted-foreground',
-  negative: 'text-destructive',
-};
-
-const TONE_ICONS = {
-  positive: ArrowUpRight,
-  neutral: Minus,
-  negative: ArrowDownRight,
-} as const;
 
 function TrendDelta({ label, tone = 'neutral', showIcon = true, className }: TrendDeltaProps) {
   const Icon = TONE_ICONS[tone];

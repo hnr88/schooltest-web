@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { HEIGHT, WIDTH } from '@/modules/design-system/constants/sparkline.constants';
 
 import type { SparklineProps } from '@/modules/design-system/types/record.types';
 
@@ -6,9 +7,6 @@ import type { SparklineProps } from '@/modules/design-system/types/record.types'
 // (preserveAspectRatio="none"), #EFF5FF area under a 2.5px #2563EB round-capped line.
 // Two points are the minimum that draws a trend; below that the component renders
 // nothing rather than a flat line implying data it does not have.
-const WIDTH = 200;
-const HEIGHT = 52;
-
 function Sparkline({ points, ariaLabel, className }: SparklineProps) {
   if (points.length < 2) return null;
   const max = Math.max(...points);

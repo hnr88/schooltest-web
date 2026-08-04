@@ -1,29 +1,8 @@
-import type { ComponentProps } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-
-import { Badge as BadgePrimitive, badgeVariants } from '@/components/ui/badge';
+import { Badge as BadgePrimitive } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { extendedBadgeVariants } from '@/modules/design-system/lib/badge-variants';
 
-const extendedBadgeVariants = cva('', {
-  variants: {
-    variant: {
-      navy: 'bg-navy-900 text-white',
-      accent: 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300',
-      success: 'bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300',
-      warning: 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300',
-      error: 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300',
-    },
-  },
-});
-
-type UiBadgeVariant = NonNullable<VariantProps<typeof badgeVariants>['variant']>;
-type ExtendedBadgeVariant = NonNullable<VariantProps<typeof extendedBadgeVariants>['variant']>;
-
-type BadgeVariant = Exclude<UiBadgeVariant, 'destructive'> | ExtendedBadgeVariant;
-
-interface BadgeProps extends Omit<ComponentProps<typeof BadgePrimitive>, 'variant'> {
-  variant?: BadgeVariant;
-}
+import type { BadgeProps } from '@/modules/design-system/types/badge.types';
 
 function Badge({ className, variant = 'default', ...props }: BadgeProps) {
   const isExtendedVariant =
@@ -44,4 +23,4 @@ function Badge({ className, variant = 'default', ...props }: BadgeProps) {
   );
 }
 
-export { Badge, type BadgeProps };
+export { Badge };

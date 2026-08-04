@@ -1,5 +1,6 @@
-import { AvatarTint } from '@/modules/design-system/components/avatar-tint';
 import { cn } from '@/lib/utils';
+import { AvatarTint } from '@/modules/design-system/components/avatar-tint';
+import { RANK_TONES } from '@/modules/design-system/constants/rank-row.constants';
 
 import type { RankRowProps } from '@/modules/design-system/types/record.types';
 
@@ -10,12 +11,6 @@ import type { RankRowProps } from '@/modules/design-system/types/record.types';
 // 5.02:1 on white. The two failures are replaced with their AA-safe same-hue
 // siblings (--color-warning-strong, --muted-foreground); rank is also a NUMBER, so
 // the ordering never depends on the colour.
-const RANK_TONES = [
-  'text-warning-strong',
-  'text-muted-foreground',
-  'text-warning-ink',
-] as const;
-
 function RankRow({ rank, name, initials, score, tone = 'blue', className }: RankRowProps) {
   return (
     <div data-slot="rank-row" className={cn('flex items-center gap-2.5 py-2', className)}>

@@ -24,19 +24,8 @@ import {
 
 import { Button } from '@/modules/design-system/components/button';
 
-interface DropdownDemoProps {
-  triggerLabel: string;
-  editLabel: string;
-  duplicateLabel: string;
-  shareLabel: string;
-  copyLinkLabel: string;
-  copyLabel: string;
-  deleteLabel: string;
-  checkboxLabel: string;
-  radioGroupLabel: string;
-  radioMcqLabel: string;
-  radioOpenLabel: string;
-}
+import type { DropdownDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function DropdownDemo({
   triggerLabel,

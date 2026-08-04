@@ -6,14 +6,8 @@ import { ToggleRow } from '@/modules/design-system/components/toggle-row';
 import { UnderlineTabs } from '@/modules/design-system/components/underline-tabs';
 import type { UnderlineTabOption } from '@/modules/design-system/types/primitives.types';
 
-interface PrimitivesDemoProps {
-  tabs: readonly UnderlineTabOption[];
-  tabsAriaLabel: string;
-  resultsLabel: string;
-  resultsHint: string;
-  shuffleLabel: string;
-  shuffleHint: string;
-}
+import type { PrimitivesDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function PrimitivesDemo({
   tabs,

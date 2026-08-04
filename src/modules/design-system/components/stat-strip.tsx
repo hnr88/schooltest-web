@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { VALUE_SIZES, VALUE_TONES } from '@/modules/design-system/constants/stat-strip.constants';
 
 import type {
   StatStripProps,
@@ -8,18 +9,6 @@ import type {
 
 // Canonical detail-hero stat strip: bare value/label pairs, no card, no icon —
 // the contrast against the bordered hero is what makes the composition read.
-const VALUE_TONES: Record<StatStripTone, string> = {
-  default: 'text-foreground',
-  positive: 'text-success-strong',
-  negative: 'text-destructive',
-  muted: 'text-muted-foreground',
-};
-
-const VALUE_SIZES: Record<StatStripSize, string> = {
-  md: 'text-stat-md',
-  sm: 'text-stat-sm',
-};
-
 function StatStrip({ items, size = 'md', ariaLabel, className }: StatStripProps) {
   return (
     <dl

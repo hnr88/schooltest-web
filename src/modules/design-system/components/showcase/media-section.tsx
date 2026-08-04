@@ -9,8 +9,7 @@ import { MediaCover } from '@/modules/design-system/components/media-cover';
 import { Badge } from '@/modules/design-system/components/badge';
 import { StatusPill } from '@/modules/design-system/components/status-pill';
 import { FilterRailDemo } from './filter-rail-demo';
-
-const COVER_SIZES = '(min-width: 1024px) 22rem, 100vw';
+import { COVER_SIZES } from '@/modules/design-system/constants/showcase.constants';
 
 async function MediaSection() {
   const t = await getTranslations('DesignSystem');

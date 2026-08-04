@@ -8,15 +8,8 @@ import { FilterRail } from '@/modules/design-system/components/filter-rail';
 import { FilterRailSection } from '@/modules/design-system/components/filter-rail-section';
 import type { ChoiceOption } from '@/modules/design-system/types/choice.types';
 
-interface FilterRailDemoProps {
-  title: string;
-  clearLabel: string;
-  sectorLabel: string;
-  sectorOptions: readonly ChoiceOption[];
-  stageLabel: string;
-  stageOptions: readonly ChoiceOption[];
-  applyLabel: string;
-}
+import type { FilterRailDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function FilterRailDemo({
   title,

@@ -1,23 +1,10 @@
-import {
-  CircleAlert,
-  CircleCheck,
-  Info,
-  TriangleAlert,
-  XIcon,
-  type LucideIcon,
-} from 'lucide-react';
+import { XIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { VARIANT_CONFIG } from '@/modules/design-system/constants/alert.constants';
 
 import { Button } from './button';
-import type { AlertProps, AlertVariant } from '@/modules/design-system/types/design-system.types';
-
-const VARIANT_CONFIG: Record<AlertVariant, { icon: LucideIcon; tile: string }> = {
-  info: { icon: Info, tile: 'bg-blue-50 text-blue-600' },
-  success: { icon: CircleCheck, tile: 'bg-green-100 text-green-600' },
-  warning: { icon: TriangleAlert, tile: 'bg-amber-100 text-amber-600' },
-  error: { icon: CircleAlert, tile: 'bg-red-100 text-red-600' },
-};
+import type { AlertProps } from '@/modules/design-system/types/design-system.types';
 
 function Alert({
   variant = 'info',

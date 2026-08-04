@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { TAG_CLASSES } from '@/modules/design-system/constants/timeline-row.constants';
 
 import type {
   TimelineRowProps,
@@ -13,15 +14,6 @@ import type {
 // date takes the same-hue AA-safe slate at 4.9:1.
 // Sizes use the default scale because 12px/14px ARE the canonical values here —
 // there is no custom --text-* token at either size to prefer.
-const TAG_CLASSES: Record<TimelineTagTone, string> = {
-  blue: 'bg-blue-100 text-blue-700',
-  teal: 'bg-teal-100 text-teal-700',
-  amber: 'bg-warning-soft text-warning-ink',
-  violet: 'bg-avatar-violet-bg text-avatar-violet-fg',
-  pink: 'bg-avatar-pink-bg text-avatar-pink-fg',
-  neutral: 'bg-muted text-secondary-foreground',
-};
-
 function TimelineRow({
   date,
   title,

@@ -7,16 +7,8 @@ import { FieldShell } from '@/modules/design-system/components/field-shell';
 import { SegmentedChoice } from '@/modules/design-system/components/segmented-choice';
 import type { ChoiceOption } from '@/modules/design-system/types/choice.types';
 
-interface ChoiceFieldsDemoProps {
-  relationshipLabel: string;
-  relationshipHelper: string;
-  relationshipOptions: readonly ChoiceOption[];
-  termLabel: string;
-  termOptions: readonly ChoiceOption[];
-  subjectsLabel: string;
-  subjectsOptions: readonly ChoiceOption[];
-  errorText: string;
-}
+import type { ChoiceFieldsDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function ChoiceFieldsDemo({
   relationshipLabel,

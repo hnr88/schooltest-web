@@ -4,7 +4,7 @@ import { useId } from 'react';
 import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { useRovingRadio } from '@/modules/design-system/lib/use-roving-radio';
+import { useRovingRadio } from '@/modules/design-system/hooks/use-roving-radio';
 
 import type { SelectionCardGroupProps } from '@/modules/design-system/types/choice.types';
 

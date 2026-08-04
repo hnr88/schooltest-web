@@ -12,14 +12,8 @@ import {
 
 import { Button } from '@/modules/design-system/components/button';
 
-interface PopoverDemoProps {
-  triggerLabel: string;
-  title: string;
-  body: string;
-  copyLabel: string;
-  inputAriaLabel: string;
-  linkUrl: string;
-}
+import type { PopoverDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function PopoverDemo({
   triggerLabel,

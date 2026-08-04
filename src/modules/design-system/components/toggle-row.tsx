@@ -5,6 +5,7 @@ import { useId } from 'react';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
+import { SWITCH_CLASSES } from '@/modules/design-system/constants/toggle-row.constants';
 
 import type { ToggleRowProps } from '@/modules/design-system/types/primitives.types';
 
@@ -20,9 +21,6 @@ import type { ToggleRowProps } from '@/modules/design-system/types/primitives.ty
 // 24 + 12 + 12 = 48px tall, and the primitive's -inset-x-3 on a 42px track is
 // 42 + 12 + 12 = 66px wide. Both clear 44px with headroom, and the VISUAL 42x24 box
 // is untouched.
-const SWITCH_CLASSES =
-  'h-6! w-10.5! px-0.75 after:-inset-y-3 [&_[data-slot=switch-thumb]]:size-4.5! [&_[data-slot=switch-thumb]]:bg-card [&_[data-slot=switch-thumb]]:shadow-sm';
-
 function ToggleRow({
   label,
   description,

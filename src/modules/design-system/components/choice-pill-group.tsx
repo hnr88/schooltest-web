@@ -3,12 +3,12 @@
 import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { useRovingRadio } from '@/modules/design-system/lib/use-roving-radio';
+import { useRovingRadio } from '@/modules/design-system/hooks/use-roving-radio';
+import { pillClass } from '@/modules/design-system/lib/choice-pill-class';
 
 import type {
   ChoiceOption,
   ChoicePillGroupProps,
-  ChoicePillSize,
 } from '@/modules/design-system/types/choice.types';
 
 // Canonical ChoicePill (App Screens — Add child "Relationship", Create test "Assign
@@ -21,22 +21,6 @@ import type {
 // 44px POINTER target comes from an ::after expansion (the group never clips).
 // Canonical idle ink #475569 is kept verbatim (8.6:1); #64748B was NOT used because
 // it is 4.34:1 on the #F7F9FC hover fill — below AA.
-
-const SIZE: Record<ChoicePillSize, string> = {
-  md: 'gap-2 px-4 py-1.75 text-body-sm after:-inset-y-1.5',
-  sm: 'gap-1.5 px-3.5 py-1.25 text-meta after:-inset-y-2',
-};
-
-function pillClass(size: ChoicePillSize, selected: boolean, disabled?: boolean) {
-  return cn(
-    'relative inline-flex min-w-0 items-center rounded-full border transition-colors duration-200 ease-out-expo after:absolute after:inset-x-0 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none',
-    SIZE[size],
-    selected
-      ? 'border-primary bg-blue-50 font-semibold text-primary'
-      : 'border-input bg-card font-medium text-body hover:bg-background',
-    disabled && 'cursor-not-allowed opacity-55 hover:bg-card',
-  );
-}
 
 function PillBody({ option, selected }: { option: ChoiceOption; selected: boolean }) {
   const Icon = option.icon;

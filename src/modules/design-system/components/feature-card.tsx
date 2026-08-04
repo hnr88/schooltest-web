@@ -1,20 +1,11 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import {
+  DESCRIPTION_TONES,
+  TILE_TONES,
+} from '@/modules/design-system/constants/feature-card.constants';
 
-import type {
-  FeatureCardProps,
-  FeatureCardTone,
-} from '@/modules/design-system/types/design-system.types';
-
-const TILE_TONES: Record<FeatureCardTone, string> = {
-  light: 'bg-blue-50 text-blue-600',
-  navy: 'bg-white/10 text-teal-300',
-};
-
-const DESCRIPTION_TONES: Record<FeatureCardTone, string> = {
-  light: 'text-muted-foreground',
-  navy: 'text-blue-100/80',
-};
+import type { FeatureCardProps } from '@/modules/design-system/types/design-system.types';
 
 function FeatureCard({
   icon: Icon,

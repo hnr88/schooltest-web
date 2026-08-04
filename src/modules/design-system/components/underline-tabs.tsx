@@ -2,6 +2,7 @@
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { LIST_CLASSES, ROOT_CLASSES, TRIGGER_CLASSES } from '@/modules/design-system/constants/underline-tabs.constants';
 
 import type { UnderlineTabsProps } from '@/modules/design-system/types/primitives.types';
 
@@ -21,14 +22,6 @@ import type { UnderlineTabsProps } from '@/modules/design-system/types/primitive
 // the pseudo 1px of room to spare INSIDE the clip rectangle and the matching
 // negative margin hands the space straight back, so nothing in the surrounding
 // column moves a pixel.
-const ROOT_CLASSES = 'gap-0 py-2 -my-2';
-
-const LIST_CLASSES =
-  'w-full justify-start gap-6.5 rounded-none border-b border-border bg-transparent p-0 group-data-horizontal/tabs:h-auto';
-
-const TRIGGER_CLASSES =
-  'relative h-auto flex-none rounded-none border-0 px-0.5 pt-0 pb-3 text-sm font-semibold whitespace-nowrap text-muted-foreground transition-colors duration-200 ease-out before:absolute before:inset-x-0 before:-inset-y-1.75 hover:text-foreground data-active:text-primary after:bg-primary group-data-horizontal/tabs:after:-bottom-px motion-reduce:transition-none dark:text-muted-foreground dark:data-active:text-primary';
-
 function UnderlineTabs({
   options,
   value,

@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 
-import { AvatarTint, getAvatarTone } from '@/modules/design-system/components/avatar-tint';
+import { AvatarTint } from '@/modules/design-system/components/avatar-tint';
+import { getAvatarTone } from '@/modules/design-system/lib/avatar-tone';
 import { getInitials } from '@/modules/design-system/lib/initials';
 import type { PersonCellProps } from '@/modules/design-system/types/primitives.types';
 

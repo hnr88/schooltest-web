@@ -1,5 +1,6 @@
 export { Button, type ButtonProps } from './components/button';
-export { Badge, type BadgeProps } from './components/badge';
+export { Badge } from './components/badge';
+export type { BadgeProps } from './types/badge.types';
 export { StatusBadge } from './components/status-badge';
 export { Tag } from './components/tag';
 export { CountBadge } from './components/count-badge';
@@ -15,7 +16,8 @@ export { MiniStatTile } from './components/mini-stat-tile';
 export { TrendDelta } from './components/trend-delta';
 export { GaugeRing } from './components/gauge-ring';
 export { InsightCallout } from './components/insight-callout';
-export { AvatarTint, getAvatarTone } from './components/avatar-tint';
+export { AvatarTint } from './components/avatar-tint';
+export { getAvatarTone } from './lib/avatar-tone';
 export { FeatureCard } from './components/feature-card';
 export { EmptyState } from './components/empty-state';
 export { PresenceAvatar } from './components/presence-avatar';
@@ -33,9 +35,11 @@ export { ToggleRow } from './components/toggle-row';
 export { TimelineRow } from './components/timeline-row';
 export { SubjectProgressCard } from './components/subject-progress-card';
 export { PersonCell } from './components/person-cell';
-export { ScoreText, getScoreTone } from './components/score-text';
+export { ScoreText } from './components/score-text';
+export { getScoreTone } from './lib/score-tone';
 // Choice / select family — the canonical small-enum controls.
-export { FieldShell, describedBy } from './components/field-shell';
+export { FieldShell } from './components/field-shell';
+export { describedBy } from './lib/field-ids';
 export { SelectionCardGroup } from './components/selection-card';
 export { ChoicePillGroup } from './components/choice-pill-group';
 export { SegmentedChoice } from './components/segmented-choice';
@@ -190,9 +194,5 @@ export type {
   SegmentedControlProps,
   SegmentedControlSize,
 } from './types/design-system.types';
-
-// read-only ui primitives (single import surface)
-export * from './primitives';
-
-// showcase
-export * from './components/showcase';
+export * from './primitives'; // read-only ui primitives (single import surface)
+export * from './components/showcase'; // showcase

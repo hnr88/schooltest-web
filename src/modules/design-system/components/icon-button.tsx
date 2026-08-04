@@ -1,11 +1,12 @@
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
+import {
+  BASE_CLASSES,
+  SIZE_CLASSES,
+  TONE_CLASSES,
+} from '@/modules/design-system/constants/icon-button.constants';
 
-import type {
-  IconButtonProps,
-  IconButtonSize,
-  IconButtonTone,
-} from '@/modules/design-system/types/primitives.types';
+import type { IconButtonProps } from '@/modules/design-system/types/primitives.types';
 
 // Canonical icon square (Students roster actions 30px / topbar chrome 38px, DS
 // §2.4 + §14): a bordered white tile, 8-10px radius, muted 15-17px glyph.
@@ -17,23 +18,6 @@ import type {
 // fractional x/y loses ~1px to device-pixel rounding at the boundary, and a real
 // pointer hit test then measures 42-43. The extra pixel per side is what makes the
 // target 44 in practice rather than only on paper.
-const SIZE_CLASSES: Record<IconButtonSize, string> = {
-  sm: 'size-7.5 rounded-md after:-inset-2 [&_svg]:size-3.5',
-  md: 'size-8 rounded-md after:-inset-1.75 [&_svg]:size-3.75',
-  lg: 'size-9.5 rounded-lg after:-inset-1 [&_svg]:size-4.25',
-};
-
-const TONE_CLASSES: Record<IconButtonTone, string> = {
-  outline:
-    'border border-border bg-card text-sidebar-foreground hover:bg-muted hover:text-foreground',
-  ghost: 'text-muted-foreground hover:bg-muted hover:text-foreground',
-  soft: 'bg-blue-50 text-secondary-foreground hover:bg-blue-100',
-  danger: 'text-danger-strong hover:bg-danger-soft hover:text-danger-ink',
-};
-
-const BASE_CLASSES =
-  'relative inline-grid shrink-0 place-items-center transition-colors duration-200 ease-out after:absolute focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 motion-reduce:transition-none';
-
 function IconButton({
   icon: Icon,
   label,

@@ -14,12 +14,8 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/modules/design-system/components/button';
 
-interface SheetDemoProps {
-  triggerLabel: string;
-  title: string;
-  body: string;
-  closeLabel: string;
-}
+import type { SheetDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function SheetDemo({ triggerLabel, title, body, closeLabel }: SheetDemoProps) {
   return (

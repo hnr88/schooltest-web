@@ -5,8 +5,7 @@ import { PanelHeaderRow } from '@/modules/design-system/components/panel-header-
 import { ScoreProgressRow } from '@/modules/design-system/components/score-progress-row';
 import { SkillBreakdownRow } from '@/modules/design-system/components/skill-breakdown-row';
 import { Sparkline } from '@/modules/design-system/components/sparkline';
-
-const PANEL = 'flex flex-col gap-3 rounded-panel border border-border bg-card p-5.5 shadow-sm';
+import { PANEL } from '@/modules/design-system/constants/showcase.constants';
 
 async function RecordCharts() {
   const t = await getTranslations('DesignSystem');

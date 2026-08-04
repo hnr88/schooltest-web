@@ -22,12 +22,7 @@ import { Section } from '@/modules/design-system/components/layout';
 import { DataTable } from './data-table';
 import { PrimitivesSection } from './primitives-section';
 import { SegmentedDemo } from './segmented-demo';
-
-const TABS = [
-  { value: 'overview', labelKey: 'tabsOverview', panelKey: 'tabsOverviewPanel' },
-  { value: 'questions', labelKey: 'tabsQuestions', panelKey: 'tabsQuestionsPanel' },
-  { value: 'results', labelKey: 'tabsResults', panelKey: 'tabsResultsPanel' },
-] as const;
+import { TABS } from '@/modules/design-system/constants/showcase.constants';
 
 async function DataSection() {
   const t = await getTranslations('DesignSystem');

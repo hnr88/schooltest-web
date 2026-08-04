@@ -3,7 +3,8 @@
 import { ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { describedBy, FieldShell } from '@/modules/design-system/components/field-shell';
+import { FieldShell } from '@/modules/design-system/components/field-shell';
+import { describedBy } from '@/modules/design-system/lib/field-ids';
 
 import type { SelectRowProps } from '@/modules/design-system/types/choice.types';
 

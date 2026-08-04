@@ -2,8 +2,10 @@
 
 import { Select, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { describedBy, FieldShell } from '@/modules/design-system/components/field-shell';
+import { FieldShell } from '@/modules/design-system/components/field-shell';
+import { describedBy } from '@/modules/design-system/lib/field-ids';
 import { SelectContent, SelectItem } from '@/modules/design-system/components/select-wrappers';
+import { TRIGGER } from '@/modules/design-system/constants/select-field.constants';
 
 import type { SelectFieldProps } from '@/modules/design-system/types/choice.types';
 
@@ -14,9 +16,6 @@ import type { SelectFieldProps } from '@/modules/design-system/types/choice.type
 // fill; both are corrected HERE, from the wrapper, never in components/ui. The
 // height override has to repeat the `data-[size=default]` variant or it loses on
 // specificity to the primitive's own rule — a plain `h-11` silently does nothing.
-const TRIGGER =
-  'min-h-11 w-full justify-between rounded-lg border-input bg-card px-3.5 text-lede font-medium text-foreground data-[size=default]:h-11 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-100';
-
 function SelectField({
   id,
   label,

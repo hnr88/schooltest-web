@@ -14,14 +14,8 @@ import { XIcon } from 'lucide-react';
 
 import { Button } from '@/modules/design-system/components/button';
 
-interface DialogDemoProps {
-  triggerLabel: string;
-  title: string;
-  body: string;
-  cancelLabel: string;
-  confirmLabel: string;
-  closeLabel: string;
-}
+import type { DialogDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function DialogDemo({
   triggerLabel,

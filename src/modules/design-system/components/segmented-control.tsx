@@ -2,6 +2,7 @@
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
+import { ITEM, TRACK } from '@/modules/design-system/constants/segmented-control.constants';
 
 import type {
   SegmentedControlProps,
@@ -18,16 +19,6 @@ import type {
 // which is a real radiogroup.
 // Idle ink is --color-body (#475569, 6.92:1 on the #F1F5F9 track); the canonical
 // #64748B is 4.34:1 there and fails AA.
-const TRACK: Record<SegmentedControlSize, string> = {
-  md: 'rounded-segment p-1',
-  sm: 'rounded-lg p-1',
-};
-
-const ITEM: Record<SegmentedControlSize, string> = {
-  md: 'min-h-8.5 rounded-md px-4 py-1.75 text-caption after:-inset-y-1.5',
-  sm: 'min-h-8 rounded-sm px-3.25 py-1.5 text-meta after:-inset-y-1.5',
-};
-
 function SegmentedControl({
   options,
   value,

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { BAR_WIDTHS } from '@/modules/design-system/constants/skeleton-card.constants';
 
 import type { SkeletonCardProps } from '@/modules/design-system/types/record.types';
 
@@ -8,8 +9,6 @@ import type { SkeletonCardProps } from '@/modules/design-system/types/record.typ
 // prefers-reduced-motion, so the loading state never animates for users who opt out.
 // aria-hidden + a live `status` wrapper is the consumer's job; the card itself is
 // purely presentational.
-const BAR_WIDTHS = ['w-3/5', 'w-11/12', 'w-full', 'w-8/12', 'w-9/12'];
-
 function SkeletonCard({ rows = 4, className }: SkeletonCardProps) {
   return (
     <div

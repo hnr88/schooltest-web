@@ -1,16 +1,8 @@
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
+import { TONE_CLASSES } from '@/modules/design-system/constants/progress-bar.constants';
 
-import type {
-  ProgressBarProps,
-  ProgressBarTone,
-} from '@/modules/design-system/types/design-system.types';
-
-const TONE_CLASSES: Record<ProgressBarTone, string> = {
-  solid: '',
-  gradient:
-    '[&_[data-slot=progress-indicator]]:bg-gradient-to-r [&_[data-slot=progress-indicator]]:from-blue-600 [&_[data-slot=progress-indicator]]:to-teal-500',
-};
+import type { ProgressBarProps } from '@/modules/design-system/types/design-system.types';
 
 function ProgressBar({ value, tone = 'solid', ariaLabel, className }: ProgressBarProps) {
   return (

@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
+import {
+  CIRCUMFERENCE,
+  RADIUS,
+} from '@/modules/design-system/constants/gauge-ring.constants';
 
 import type { GaugeRingProps } from '@/modules/design-system/types/design-system.types';
-
-const RADIUS = 52;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 function GaugeRing({ value, display, caption, ariaLabel, className }: GaugeRingProps) {
   const [drawn, setDrawn] = useState(false);

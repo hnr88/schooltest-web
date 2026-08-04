@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 
 import { ProgressBar } from '@/modules/design-system/components/progress-bar';
+import { FILL_CLASSES, VALUE_CLASSES } from '@/modules/design-system/constants/subject-progress-card.constants';
 import type {
   SubjectProgressCardProps,
   SubjectProgressTone,
@@ -11,22 +12,6 @@ import type {
 // the tone-coloured score, then a 7px #F1F5F9 track with the tone fill, then a
 // 12.5px meta line. Canonical meta is #94A3B8 (2.6:1, axe-serious) so it takes the
 // AA-safe slate of the same family.
-const FILL_CLASSES: Record<SubjectProgressTone, string> = {
-  primary: '[&_[data-slot=progress-indicator]]:bg-primary',
-  accent: '[&_[data-slot=progress-indicator]]:bg-accent',
-  warning: '[&_[data-slot=progress-indicator]]:bg-warning',
-  success: '[&_[data-slot=progress-indicator]]:bg-success',
-  danger: '[&_[data-slot=progress-indicator]]:bg-destructive',
-};
-
-const VALUE_CLASSES: Record<SubjectProgressTone, string> = {
-  primary: 'text-primary',
-  accent: 'text-teal-600',
-  warning: 'text-warning-ink',
-  success: 'text-success-ink',
-  danger: 'text-danger-ink',
-};
-
 function SubjectProgressCard({
   subject,
   value,

@@ -1,8 +1,11 @@
 import { cn } from '@/lib/utils';
+import {
+  DISC_TONES,
+  DOT_TONES,
+} from '@/modules/design-system/constants/activity-feed-row.constants';
 
 import type {
   ActivityFeedRowProps,
-  ActivityTone,
   DotActivityRowProps,
 } from '@/modules/design-system/types/record.types';
 
@@ -13,20 +16,6 @@ import type {
 // coloured dot instead of the disc. Both live here because choosing between them is
 // one decision, and neither is a Card — a feed rendered as cards is the pattern the
 // dashboard is being rejected for.
-const DISC_TONES: Record<ActivityTone, string> = {
-  brand: 'bg-blue-50 text-primary',
-  success: 'bg-success-soft-2 text-success-ink',
-  warning: 'bg-warning-soft text-warning-ink',
-  accent: 'bg-teal-100 text-teal-700',
-};
-
-const DOT_TONES: Record<ActivityTone, string> = {
-  brand: 'bg-primary',
-  success: 'bg-success',
-  warning: 'bg-warning',
-  accent: 'bg-accent',
-};
-
 function ActivityFeedRow({
   icon: Icon,
   tone = 'brand',

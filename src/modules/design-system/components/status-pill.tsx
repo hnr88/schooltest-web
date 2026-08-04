@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { TONE_CLASSES } from '@/modules/design-system/constants/status-pill.constants';
 
 import type {
   StatusPillProps,
@@ -9,14 +10,6 @@ import type {
 // from Badge (which carries the wider marketing variants).
 // Ink (not the 500-level) foregrounds: the canonical pills sit at ~3:1 on their
 // soft tints, which axe flags as serious — same hue, AA-safe darkness.
-const TONE_CLASSES: Record<StatusPillTone, string> = {
-  success: 'bg-success-soft text-success-ink',
-  warning: 'bg-warning-soft text-warning-ink',
-  danger: 'bg-danger-soft text-danger-ink',
-  info: 'bg-blue-50 text-secondary-foreground',
-  neutral: 'bg-muted text-secondary-foreground',
-};
-
 function StatusPill({ tone = 'neutral', children, className }: StatusPillProps) {
   return (
     <span

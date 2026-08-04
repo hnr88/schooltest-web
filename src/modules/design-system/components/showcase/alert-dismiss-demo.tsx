@@ -5,12 +5,8 @@ import { useState } from 'react';
 import { Alert } from '@/modules/design-system/components/alert';
 import { Button } from '@/modules/design-system/components/button';
 
-interface AlertDismissDemoProps {
-  title: string;
-  body: string;
-  actionLabel: string;
-  dismissLabel: string;
-}
+import type { AlertDismissDemoProps } from '@/modules/design-system/types/showcase.types';
+
 
 function AlertDismissDemo({ title, body, actionLabel, dismissLabel }: AlertDismissDemoProps) {
   const [isVisible, setIsVisible] = useState(true);

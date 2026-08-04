@@ -2,22 +2,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 import { ProgressBar } from './progress-bar';
+import { DELTA_TONES, TILE_TONES } from '@/modules/design-system/constants/stat-card.constants';
 import type {
   StatCardDeltaTone,
   StatCardIconTone,
   StatCardProps,
 } from '@/modules/design-system/types/design-system.types';
-
-const TILE_TONES: Record<StatCardIconTone, string> = {
-  blue: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-500',
-  teal: 'bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-500',
-  navy: 'bg-navy-900 text-white dark:bg-white/10',
-};
-
-const DELTA_TONES: Record<StatCardDeltaTone, string> = {
-  positive: 'text-green-700 dark:text-green-400',
-  neutral: 'text-muted-foreground',
-};
 
 function StatCard({
   icon: Icon,

@@ -15,8 +15,7 @@ import { StatusPill } from '@/modules/design-system/components/status-pill';
 import { UpcomingEventRow } from '@/modules/design-system/components/upcoming-event-row';
 import { RecordCharts } from './record-charts';
 import { ScrollAffordanceDemo } from './scroll-affordance-demo';
-
-const PANEL = 'flex flex-col gap-3 rounded-panel border border-border bg-card p-5.5 shadow-sm';
+import { PANEL } from '@/modules/design-system/constants/showcase.constants';
 
 async function RecordRows() {
   const t = await getTranslations('DesignSystem');

@@ -1,23 +1,13 @@
 import { cn } from '@/lib/utils';
+import { FILL_TONES } from '@/modules/design-system/constants/score-progress-row.constants';
 
-import type {
-  ScoreProgressRowProps,
-  ScoreProgressTone,
-} from '@/modules/design-system/types/record.types';
+import type { ScoreProgressRowProps } from '@/modules/design-system/types/record.types';
 
 // Canonical ScoreProgressRow (§07): grid 90px | 1fr | 44px, 14px gap — name 13.5/600,
 // an 8px track on #EEF2F7, value 13.5/700 right-aligned. The `stacked` variant is the
 // canonical "Performance by topic" shape: a space-between header over a full-width
 // track.
 // This is the row the child profile should use instead of a card per subject.
-const FILL_TONES: Record<ScoreProgressTone, string> = {
-  primary: 'bg-primary',
-  accent: 'bg-accent',
-  success: 'bg-success',
-  warning: 'bg-warning',
-  danger: 'bg-destructive',
-};
-
 function ScoreProgressRow({
   label,
   value,

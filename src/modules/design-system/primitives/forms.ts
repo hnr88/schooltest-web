@@ -17,7 +17,7 @@ export {
   SelectValue,
 } from '@/components/ui/select';
 // spec-styled select surfaces (muted hovers, spec container) — wrappers over ui
-export { SelectContent, SelectItem } from '../components/select-wrappers';
+export { SelectContent, SelectItem } from '@/modules/design-system/components/select-wrappers';
 export {
   NativeSelect,
   NativeSelectOptGroup,

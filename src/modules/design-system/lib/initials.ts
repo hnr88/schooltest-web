@@ -1,4 +1,4 @@
-const MAX_INITIALS = 2;
+import { MAX_INITIALS } from '@/modules/design-system/constants/initials.constants';
 
 // Two-letter initials for the canonical tinted avatar (EH, LH, AS). Falls back to
 // the first two characters for mononyms, and to an empty string for blank input.

@@ -2,8 +2,9 @@ import Image from 'next/image';
 import { ImageOff } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { RATIO } from '@/modules/design-system/constants/media-cover.constants';
 
-import type { MediaCoverProps, MediaRatio } from '@/modules/design-system/types/media.types';
+import type { MediaCoverProps } from '@/modules/design-system/types/media.types';
 
 // The image slot the result cards were missing. Geometry follows the canonical card
 // family: 12px inner radius (TintTile), flush to the card's own 16px panel radius
@@ -13,11 +14,6 @@ import type { MediaCoverProps, MediaRatio } from '@/modules/design-system/types/
 // canonical EmptyState medallion (52px rounded-panel #EFF5FF field, 22px #2563EB
 // glyph, DS §03 "EmptyState (in-panel)") on a recessed field — never a stock photo,
 // never a coloured rectangle pretending to be one.
-const RATIO: Record<MediaRatio, string> = {
-  video: 'aspect-video',
-  square: 'aspect-square',
-};
-
 function MediaCover({
   src,
   alt,

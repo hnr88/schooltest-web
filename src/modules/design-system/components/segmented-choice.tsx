@@ -1,7 +1,8 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useRovingRadio } from '@/modules/design-system/lib/use-roving-radio';
+import { useRovingRadio } from '@/modules/design-system/hooks/use-roving-radio';
+import { COLUMNS } from '@/modules/design-system/constants/segmented-choice.constants';
 
 import type { SegmentedChoiceProps } from '@/modules/design-system/types/choice.types';
 
@@ -18,12 +19,6 @@ import type { SegmentedChoiceProps } from '@/modules/design-system/types/choice.
 // view switcher there is exactly the mismatch the wizard shipped.
 // Idle ink is --color-body (#475569, 6.92:1 on the #F1F5F9 track) rather than the
 // canonical #64748B, which is 4.34:1 there — an AA failure.
-
-const COLUMNS: Record<number, string> = {
-  2: 'grid-cols-2',
-  3: 'grid-cols-3',
-  4: 'grid-cols-4',
-};
 
 function SegmentedChoice({
   options,

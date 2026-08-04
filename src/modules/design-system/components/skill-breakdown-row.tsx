@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { VERDICTS } from '@/modules/design-system/constants/skill-breakdown-row.constants';
 
 import type {
   SkillBreakdownRowProps,
@@ -12,13 +13,6 @@ import type {
 // verdict, never a zero bar, because "0%" and "we never measured this" are different
 // facts. Verdict inks are the AA-safe strong/ink tokens, not the 3.2:1 canonical
 // #16A34A / #D97706.
-const VERDICTS: Record<SkillVerdictTone, { fill: string; ink: string }> = {
-  mastered: { fill: 'bg-success', ink: 'text-success-strong' },
-  emerging: { fill: 'bg-warning', ink: 'text-warning-strong' },
-  notYet: { fill: 'bg-destructive', ink: 'text-danger-strong' },
-  notAssessed: { fill: 'bg-transparent', ink: 'text-muted-foreground' },
-};
-
 function SkillBreakdownRow({
   label,
   value,

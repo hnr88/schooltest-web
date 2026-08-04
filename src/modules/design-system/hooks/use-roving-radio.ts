@@ -2,10 +2,12 @@
 
 import { useCallback, useRef, type KeyboardEvent } from 'react';
 
-import type { RovingRadioOptions, RovingRadioApi } from '@/modules/design-system/types/choice.types';
+import {
+  NEXT_KEYS,
+  PREV_KEYS,
+} from '@/modules/design-system/constants/roving-radio.constants';
 
-const PREV_KEYS = ['ArrowLeft', 'ArrowUp'];
-const NEXT_KEYS = ['ArrowRight', 'ArrowDown'];
+import type { RovingRadioOptions, RovingRadioApi } from '@/modules/design-system/types/choice.types';
 
 // WAI-ARIA radiogroup keyboard contract, shared by every single-choice control in
 // this module (selection cards, choice pills, the form-scoped segmented control).

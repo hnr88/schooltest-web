@@ -3,27 +3,12 @@ import { getTranslations } from 'next-intl/server';
 import { KeyValueList, KeyValueRow } from '@/modules/design-system/components/key-value-row';
 import { PanelHeaderRow } from '@/modules/design-system/components/panel-header-row';
 import { TintTile } from '@/modules/design-system/components/tint-tile';
+import { FACT_KEYS, MONTH_KEYS } from '@/modules/design-system/constants/showcase.constants';
 
 // The three scroll utilities, rendered so a reviewer can see the bar rather than
 // read about it. `scroll-region-x` / `scroll-region` are the full recipe (min-size 0,
 // contained overscroll, stable gutter, thin bar); `scrollbar-thin` is the bar alone,
 // for a region that already owns its own overflow.
-const MONTH_KEYS = [
-  'recordMonthMar',
-  'recordMonthApr',
-  'recordMonthMay',
-  'recordMonthJun',
-  'recordMonthJul',
-] as const;
-
-const FACT_KEYS = [
-  ['recordYearLevel', 'recordYearLevelValue'],
-  ['recordNationality', 'recordNationalityValue'],
-  ['recordTargetEntry', 'recordTargetEntryValue'],
-  ['recordGlassCorrect', 'recordGlassCorrectValue'],
-  ['recordGlassBand', 'recordGlassBandValue'],
-] as const;
-
 async function ScrollAffordanceDemo() {
   const t = await getTranslations('DesignSystem');
   // `min-w-0` on the GRID ITEM is what actually lets the strip below scroll: a grid
