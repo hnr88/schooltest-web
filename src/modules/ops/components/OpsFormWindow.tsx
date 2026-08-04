@@ -8,9 +8,7 @@ import { OpsFormWindowEditor } from '@/modules/ops/components/OpsFormWindowEdito
 import { useFormWindowData } from '@/modules/ops/hooks/use-form-window';
 import type { FormWindow } from '@/modules/ops/schemas/form-window.schema';
 
-interface OpsFormWindowProps {
-  documentId: string;
-}
+import type { OpsFormWindowProps } from '@/modules/ops/types/components.types';
 
 const DATE_TIME = 'd MMM yyyy, HH:mm';
 

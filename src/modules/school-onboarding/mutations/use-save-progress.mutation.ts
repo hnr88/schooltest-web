@@ -12,12 +12,7 @@ import type {
   SchoolOnboardingPayload,
 } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-export interface SaveProgressInput {
-  token: string;
-  current_step: number;
-  payload: SchoolOnboardingPayload;
-  provenance: ProvenanceMap;
-}
+import type { SaveProgressInput } from '@/modules/school-onboarding/types/queries.types';
 
 // C-ONB-02: mirror of the localStorage progress to the API after each step.
 async function saveProgressRequest(input: SaveProgressInput): Promise<SaveProgressResult> {

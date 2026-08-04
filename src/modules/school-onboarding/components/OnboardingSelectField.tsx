@@ -4,15 +4,7 @@ import { Controller, type Control, type FieldValues, type Path } from 'react-hoo
 
 import { SelectField, type ChoiceOption } from '@/modules/design-system';
 
-interface OnboardingSelectFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name: Path<T>;
-  id: string;
-  label: string;
-  options: readonly ChoiceOption[];
-  placeholder: string;
-  error?: string;
-}
+import type { OnboardingSelectFieldProps } from '@/modules/school-onboarding/types/components.types';
 
 // Controller bridge between RHF and the controlled DS SelectField.
 export function OnboardingSelectField<T extends FieldValues>({

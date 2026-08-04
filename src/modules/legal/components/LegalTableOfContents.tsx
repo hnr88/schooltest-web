@@ -2,9 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import type { LegalSection } from '@/modules/legal/types/legal.types';
 
-interface LegalTableOfContentsProps {
-  readonly sections: readonly LegalSection[];
-}
+import type { LegalTableOfContentsProps } from '@/modules/legal/types/components.types';
 
 // In-page navigation for a long document. Plain anchors on purpose: these are
 // same-document fragment jumps, not route navigations, so <Link> would be wrong.

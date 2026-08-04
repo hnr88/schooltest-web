@@ -1,13 +1,4 @@
-// Landing icons rendered from the exact SVG paths shipped in the authoritative spec
-// (`SchoolTest Landing.dc.html`) — lucide's nearest glyphs differ (sparkle shape,
-// file-text line count, play triangle, bar-chart axis). Check/X/Star/ArrowRight are
-// path-identical to lucide, so those stay on lucide-react. Always decorative:
-// the parent carries the accessible name or the text sits alongside.
-
-type LandingIconProps = {
-  className?: string;
-  strokeWidth?: number;
-};
+import type { LandingIconProps } from '@/modules/landing/types/components.types';
 
 function FileTextIcon({ className, strokeWidth = 2 }: LandingIconProps) {
   return (

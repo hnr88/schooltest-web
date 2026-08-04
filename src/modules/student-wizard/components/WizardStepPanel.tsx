@@ -12,13 +12,7 @@ import type {
   WizardSubmitError,
 } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface WizardStepPanelProps {
-  step: number;
-  stepKey: WizardStepKey;
-  stepCount: number;
-  error: WizardSubmitError | null;
-  onDismissError: () => void;
-}
+import type { WizardStepPanelProps } from '@/modules/student-wizard/types/components.types';
 
 // The card's body (spec 03 §2.3): every step opens with the same heading block —
 // a 20/600 h2 over the 13.5px "Step n of N · <what this step is for>" line — and

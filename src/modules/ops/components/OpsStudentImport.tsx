@@ -6,9 +6,7 @@ import { Button, Input, Label, Textarea } from '@/modules/design-system';
 import { OpsImportPreviewTables } from '@/modules/ops/components/OpsImportPreviewTables';
 import { useStudentImport } from '@/modules/ops/hooks/use-student-import';
 
-interface OpsStudentImportProps {
-  documentId: string;
-}
+import type { OpsStudentImportProps } from '@/modules/ops/types/components.types';
 
 // Ops bulk student import panel (task 67, C-IMP-01/02, mvp-updates section
 // 4.1.5): pick the completed template spreadsheet or paste the CSV, preview

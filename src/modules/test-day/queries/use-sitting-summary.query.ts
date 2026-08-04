@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { MONITOR_REFETCH_INTERVAL_MS } from '../constants/test-day.constants';
-import { sittingSummarySchema } from '../schemas/test-day.schema';
-import type { SittingSummary } from '../types/sitting-summary.types';
+import { MONITOR_REFETCH_INTERVAL_MS } from '@/modules/test-day/constants/test-day.constants';
+import { sittingSummarySchema } from '@/modules/test-day/schemas/test-day.schema';
+import type { SittingSummary } from '@/modules/test-day/types/sitting-summary.types';
 
 export const SITTING_SUMMARY_QUERY_KEY = ['test-day', 'sitting-summary'] as const;
 

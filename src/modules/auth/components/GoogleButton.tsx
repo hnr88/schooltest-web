@@ -7,9 +7,7 @@ import { cn } from '@/lib/utils';
 import { GoogleMark } from '@/modules/auth/components/GoogleMark';
 import { Button } from '@/modules/design-system';
 
-interface GoogleButtonProps {
-  className?: string;
-}
+import type { GoogleButtonProps } from '@/modules/auth/types/components.types';
 
 // Continue-with-Google entry point (C-AUTH-GOOGLE), shared by SignInCard and
 // SignUpCard: a plain anchor to the api's connect route, visible always (D18

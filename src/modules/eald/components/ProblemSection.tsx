@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
 import { Badge, Container, Eyebrow, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
+import { ScrollReveal } from '@/modules/landing';
 
 async function ProblemSection() {
   const t = await getTranslations('Eald');

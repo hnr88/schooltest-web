@@ -13,7 +13,7 @@ import { OnboardingStep } from '@/modules/onboarding/components/OnboardingStep';
 import { useOnboardingStateQuery } from '@/modules/onboarding/queries/use-onboarding-state.query';
 import { useUpdateOnboardingMutation } from '@/modules/onboarding/queries/use-update-onboarding.mutation';
 
-type WizardStepKey = 'welcome' | 'profile' | 'finish';
+import type { WizardStepKey } from '@/modules/onboarding/types/components.types';
 
 const STEPS: WizardStepKey[] = ['welcome', 'profile', 'finish'];
 

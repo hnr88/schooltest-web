@@ -19,9 +19,7 @@ import {
 import { EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
 import type { EaldPage } from '@/modules/eald/types/eald.types';
 
-interface EaldMobileNavProps {
-  readonly activePage?: EaldPage;
-}
+import type { EaldMobileNavProps } from '@/modules/eald/types/components.types';
 
 function EaldMobileNav({ activePage }: EaldMobileNavProps) {
   const t = useTranslations();

@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 import { useRouter } from '@/i18n/navigation';
-import { useAuth } from '@/modules/auth/hooks/use-auth';
+import { useAuth } from '@/modules/auth';
 import { Skeleton } from '@/modules/design-system';
-import { useOnboardingStateQuery } from '@/modules/onboarding/queries/use-onboarding-state.query';
+import { useOnboardingStateQuery } from '@/modules/onboarding';
 
 interface DashboardOnboardingGuardProps {
   children: ReactNode;

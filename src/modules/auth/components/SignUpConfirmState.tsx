@@ -12,9 +12,7 @@ import { useResendConfirmationMutation } from '@/modules/auth/queries/use-resend
 import type { ResendConfirmationErrorKey } from '@/modules/auth/types/auth.types';
 import { Alert } from '@/modules/design-system';
 
-interface SignUpConfirmStateProps {
-  email: string;
-}
+import type { SignUpConfirmStateProps } from '@/modules/auth/types/components.types';
 
 // Post-register "check your email" state (§14.2, C-AUTH-REGISTER/D-AUTH-1):
 // no jwt exists, so there is NO auto-login and NO redirect — the card swaps

@@ -4,7 +4,7 @@ import type {
   SchoolOnboardingStatus,
 } from '@/modules/school-admin/types/school-admin.types';
 
-type BadgeVariant = NonNullable<BadgeProps['variant']>;
+import type { BadgeVariant } from '@/modules/school-admin/types/lib.types';
 
 // Lifecycle enums -> chip colour. Green only for states a school would read as
 // good news; suspended/closed stay loud because they block usage.

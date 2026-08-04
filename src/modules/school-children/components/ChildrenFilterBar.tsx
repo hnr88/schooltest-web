@@ -11,15 +11,7 @@ import {
 } from '@/modules/design-system';
 import type { SchoolChildStatusFilter } from '@/modules/school-children/types/school-children.types';
 
-interface ChildrenFilterBarProps {
-  search: string;
-  status: SchoolChildStatusFilter;
-  classId: string;
-  classes: SchoolClass[];
-  onSearch: (value: string) => void;
-  onStatus: (value: SchoolChildStatusFilter) => void;
-  onClass: (value: string) => void;
-}
+import type { ChildrenFilterBarProps } from '@/modules/school-children/types/components.types';
 
 // The C-CHD-01 filter controls: debounced name search (q), status and class.
 // Values map 1:1 onto the contract query params; 'all' omits the param.

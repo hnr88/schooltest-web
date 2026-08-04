@@ -3,10 +3,7 @@
 import { cn } from '@/lib/utils';
 import type { ReviewRowModel } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface ReviewSummaryTableProps {
-  rows: readonly ReviewRowModel[];
-  emptyLabel: string;
-}
+import type { ReviewSummaryTableProps } from '@/modules/student-wizard/types/components.types';
 
 // Summary table (spec 03 §2.8): a 16px-radius box hairlined with #EEF1F6, each row
 // `15px 20px` with a 13px key on the left and the 13.5/600 composed value pushed

@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
 import { SchoolEntitlementSection } from '@/modules/school-admin/components/SchoolEntitlementSection';
 import {

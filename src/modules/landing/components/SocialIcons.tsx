@@ -1,11 +1,4 @@
-// Brand icons for the footer social row. lucide-react@1.x dropped brand icons
-// (Twitter/Youtube/Linkedin), so these render the exact SVG paths shipped in the
-// authoritative spec (`SchoolTest Landing.dc.html` footer). Always decorative:
-// the wrapping link carries the accessible name.
-
-type SocialIconProps = {
-  className?: string;
-};
+import type { SocialIconProps } from '@/modules/landing/types/components.types';
 
 function XIcon({ className }: SocialIconProps) {
   return (

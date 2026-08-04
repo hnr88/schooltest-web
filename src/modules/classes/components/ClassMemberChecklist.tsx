@@ -2,19 +2,7 @@
 
 import { Checkbox } from '@/modules/design-system';
 
-export interface ClassMemberOption {
-  value: string;
-  label: string;
-  hint?: string;
-}
-
-interface ClassMemberChecklistProps {
-  idPrefix: string;
-  options: ClassMemberOption[];
-  value: string[];
-  onChange: (next: string[]) => void;
-  emptyText: string;
-}
+import type { ClassMemberChecklistProps, ClassMemberOption } from '@/modules/classes/types/components.types';
 
 // Checkbox list backing the teacher/student pickers (documentId arrays). The
 // Base UI checkbox is a button, so each row wires the label span by id.

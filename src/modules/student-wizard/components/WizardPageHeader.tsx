@@ -4,10 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 
 import { Link } from '@/i18n/navigation';
 
-interface WizardPageHeaderProps {
-  title: string;
-  backLabel: string;
-}
+import type { WizardPageHeaderProps } from '@/modules/student-wizard/types/components.types';
 
 // Page header (spec 03 §2.1): a 13.5/500 "← My children" back link that goes
 // #2563EB on hover, then the 30/500/-0.02em portal h1 12px under it. The design

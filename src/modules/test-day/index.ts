@@ -6,7 +6,7 @@ export { TestDayScreen } from './components/TestDayScreen';
 export { SittingHistoryTable } from './components/SittingHistoryTable';
 export { SittingSummaryPanel } from './components/SittingSummaryPanel';
 export { useRevealAuditStore } from './stores/use-reveal-audit-store';
-export type { RevealAuditEntry } from './stores/use-reveal-audit-store';
+export type { RevealAuditEntry } from './types/stores.types';
 export type { ClassSitting, SittingMonitor, MonitorStudent } from './types/test-day.types';
 export type { SittingHistoryRow } from './types/sitting-history.types';
 export type { SittingSummary } from './types/sitting-summary.types';

@@ -1,5 +1,5 @@
-import type { RevealAuditEntry } from '../stores/use-reveal-audit-store';
-import type { MonitorRowState, MonitorStudent, SittingStatus } from '../types/test-day.types';
+import type { RevealAuditEntry } from '@/modules/test-day/types/stores.types';
+import type { MonitorRowState, MonitorStudent, SittingStatus } from '@/modules/test-day/types/test-day.types';
 
 export function studentDisplayName(row: MonitorStudent): string {
   return [row.given_name, row.family_name].filter(Boolean).join(' ');

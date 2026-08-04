@@ -8,9 +8,7 @@ import { useRequireParent } from '@/modules/auth/hooks/use-require-parent';
 import { Skeleton } from '@/modules/design-system';
 import { parentViewsEnabled } from '@/modules/flags';
 
-interface ParentGuardProps {
-  children: ReactNode;
-}
+import type { ParentGuardProps } from '@/modules/auth/types/components.types';
 
 function GuardSkeleton() {
   return (

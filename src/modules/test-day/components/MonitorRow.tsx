@@ -5,24 +5,15 @@ import { KeyRound } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge, IconButton, TableCell, TableRow } from '@/modules/design-system';
-import { RESITTABLE_STATES } from '../constants/test-day.constants';
-import { deriveRowState, studentDisplayName } from '../lib/monitor-row-state';
-import { useRevealAuditStore } from '../stores/use-reveal-audit-store';
-import type { MonitorStudent } from '../types/test-day.types';
+import { RESITTABLE_STATES } from '@/modules/test-day/constants/test-day.constants';
+import { deriveRowState, studentDisplayName } from '@/modules/test-day/lib/monitor-row-state';
+import { useRevealAuditStore } from '@/modules/test-day/stores/use-reveal-audit-store';
+import type { MonitorStudent } from '@/modules/test-day/types/test-day.types';
 import { AbsentToggle } from './AbsentToggle';
 import { MonitorStatePill } from './MonitorStatePill';
 import { ResitButton } from './ResitButton';
 
-interface MonitorRowProps {
-  sittingDocumentId: string;
-  student: MonitorStudent;
-  revealedIds: ReadonlySet<string>;
-  resitPendingId: string | null;
-  absentPendingId: string | null;
-  onReveal: (student: MonitorStudent) => void;
-  onResit: (studentDocumentId: string) => void;
-  onToggleAbsent: (studentDocumentId: string, absent: boolean) => void;
-}
+import type { MonitorRowProps } from '@/modules/test-day/types/components.types';
 
 // One C-SIT-02 monitor row: state pill, per-student reveal (C-SIT-05), re-sit
 // (C-SIT-03) and the absent toggle (C-SIT-06, task 120). An absent row reads

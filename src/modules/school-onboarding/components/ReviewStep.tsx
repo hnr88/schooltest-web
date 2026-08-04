@@ -5,11 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/modules/design-system';
 import type { SchoolOnboardingPayload } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface ReviewStepProps {
-  payload: SchoolOnboardingPayload;
-  onConfirm: () => void;
-  onBack: () => void;
-}
+import type { ReviewStepProps } from '@/modules/school-onboarding/types/components.types';
 
 // Step 3: read-only review of everything the wizard will submit (spec section
 // 4: "Review and confirm all submitted information").

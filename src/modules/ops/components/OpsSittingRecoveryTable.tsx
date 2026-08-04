@@ -11,13 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/modules/design-system';
-import type { RecoveryMonitorStudent } from '@/modules/ops/schemas/recovery.schema';
+import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
 
-interface OpsSittingRecoveryTableProps {
-  students: RecoveryMonitorStudent[];
-  resitting: boolean;
-  onResit: (studentDocumentId: string, studentName: string) => void;
-}
+import type { OpsSittingRecoveryTableProps } from '@/modules/ops/types/components.types';
 
 // The roster table of the recovery panel (C-OPS-02, task 69): live C-SIT-02
 // states with a per-student re-sit through the ops passthrough.

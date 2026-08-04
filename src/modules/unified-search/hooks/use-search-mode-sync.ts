@@ -10,10 +10,7 @@ import {
 } from '@/modules/unified-search/constants/unified-search.constants';
 import type { UnifiedSearchMode } from '@/modules/unified-search/types/unified-search.types';
 
-interface SearchModeSync {
-  mode: UnifiedSearchMode;
-  setMode: (next: UnifiedSearchMode) => void;
-}
+import type { SearchModeSync } from '@/modules/unified-search/types/hooks.types';
 
 function coerceMode(raw: string | null): UnifiedSearchMode {
   return SEARCH_MODES.find((candidate) => candidate === raw) ?? 'schools';

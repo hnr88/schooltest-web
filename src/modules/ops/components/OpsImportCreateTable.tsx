@@ -12,9 +12,7 @@ import {
 } from '@/modules/design-system';
 import type { ImportPreview } from '@/modules/ops/schemas/import.schema';
 
-interface OpsImportCreateTableProps {
-  rows: ImportPreview['create'];
-}
+import type { OpsImportCreateTableProps } from '@/modules/ops/types/components.types';
 
 // The C-IMP-01 create bucket (task 67): every row the commit would add, with
 // the normalised picklist values the server resolved (display spellings from

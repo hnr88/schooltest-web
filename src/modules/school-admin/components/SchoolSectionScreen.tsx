@@ -1,10 +1,4 @@
-interface SchoolSectionScreenProps {
-  surface: string;
-  title: string;
-  description: string;
-  emptyTitle: string;
-  emptyDescription: string;
-}
+import type { SchoolSectionScreenProps } from '@/modules/school-admin/types/components.types';
 
 // Thin school-admin section page (classes / children / teachers): header plus
 // an honest empty state. The real lists land in tasks 29/30/23/31 — this

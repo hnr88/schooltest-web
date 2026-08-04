@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
 import { Button, Container, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
+import { ScrollReveal } from '@/modules/landing';
 
 async function EaldCtaBand() {
   const t = await getTranslations('Eald');

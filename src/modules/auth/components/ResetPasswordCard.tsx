@@ -9,9 +9,7 @@ import { AuthBackLink } from '@/modules/auth/components/AuthBackLink';
 import { ResetPasswordForm } from '@/modules/auth/components/ResetPasswordForm';
 import { Button, Logo } from '@/modules/design-system';
 
-interface ResetPasswordCardProps {
-  code?: string;
-}
+import type { ResetPasswordCardProps } from '@/modules/auth/types/components.types';
 
 // Split-layout reset column (design spec 06 §1.1): bare 420px stack on the page
 // background that swaps between the new-password form and ONE generic

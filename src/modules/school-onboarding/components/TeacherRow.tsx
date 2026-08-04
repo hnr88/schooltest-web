@@ -8,22 +8,7 @@ import { OnboardingSelectField } from '@/modules/school-onboarding/components/On
 import { OnboardingTextField } from '@/modules/school-onboarding/components/OnboardingTextField';
 import type { TeacherEntry } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface TeacherRowProps {
-  control: Control<{ teachers: TeacherEntry[] }>;
-  register: UseFormRegister<{ teachers: TeacherEntry[] }>;
-  index: number;
-  errors: FieldErrors<{ teachers: TeacherEntry[] }>;
-  roleOptions: readonly ChoiceOption[];
-  labels: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: string;
-    rowLabel: string;
-    remove: string;
-  };
-  onRemove: () => void;
-}
+import type { TeacherRowProps } from '@/modules/school-onboarding/types/components.types';
 
 // One teacher invitation row (extracted so TeachersStep stays under the
 // 120-line component cap).

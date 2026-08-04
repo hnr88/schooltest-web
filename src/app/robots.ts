@@ -7,7 +7,7 @@ import { env } from '@/lib/env';
 // metadata route (or into the Node-side e2e runtime) drags next-intl's client
 // navigation in with them. `.claude/rules/module-pattern.md` scopes the
 // barrel-only rule to `src/modules/**`; these are route and test files.
-import { DISALLOWED_PATHS } from '@/modules/seo/constants/public-routes';
+import { DISALLOWED_PATHS } from '@/modules/seo';
 
 // C-WEB-01. The Disallow list is the SHARED registry the sitemap and llms.txt
 // are built from, so a route can never be public in one and private in another.

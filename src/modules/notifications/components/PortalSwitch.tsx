@@ -3,6 +3,8 @@
 import { cn } from '@/lib/utils';
 import { Switch } from '@/modules/design-system';
 
+import type { PortalSwitchProps } from '@/modules/notifications/types/components.types';
+
 // PortalToggle (.qa/design/spec/03 §1.4): a 46×27 r999 track whose background
 // transitions over .2s between #D8DFEA and #0E2350, carrying a 21px white knob at a
 // 3px inset with box-shadow 0 1px 3px rgba(14,35,80,.25) and 19px of travel.
@@ -17,15 +19,6 @@ const TRACK_CLASS =
 
 const KNOB_CLASS =
   '[&_[data-slot=switch-thumb]]:size-5.25! [&_[data-slot=switch-thumb]]:bg-card [&_[data-slot=switch-thumb]]:shadow-knob [&_[data-slot=switch-thumb]]:duration-200 [&_[data-slot=switch-thumb]]:ease-out-expo [&_[data-slot=switch-thumb]]:motion-reduce:transition-none';
-
-interface PortalSwitchProps {
-  id: string;
-  checked: boolean;
-  disabled?: boolean;
-  labelledById: string;
-  describedById?: string;
-  onCheckedChange: (checked: boolean) => void;
-}
 
 export function PortalSwitch({
   id,

@@ -19,19 +19,7 @@ import { WizardField } from '@/modules/student-wizard/components/WizardField';
 import { getCountryNames } from '@/modules/student-wizard/constants/countries.constants';
 import { WIZARD_CONTROL } from '@/modules/student-wizard/constants/wizard-control.constants';
 
-interface NationalityComboboxProps {
-  id: string;
-  label: string;
-  value: string;
-  locale: string;
-  placeholder: string;
-  emptyLabel: string;
-  helper?: string;
-  error?: string;
-  required?: boolean;
-  onValueChange: (value: string) => void;
-  onBlur?: () => void;
-}
+import type { NationalityComboboxProps } from '@/modules/student-wizard/types/components.types';
 
 // Canonical §1.5: the app screens ship no combobox, and the note is explicit — if
 // one is needed (nationality), build it as the §1.4 trigger box plus the dropdown

@@ -4,10 +4,7 @@ import { CircleAlert } from 'lucide-react';
 
 import { AUTH_ERROR_CLASS } from '@/modules/auth/constants/auth-field.constants';
 
-interface AuthFieldErrorProps {
-  id: string;
-  message: string;
-}
+import type { AuthFieldErrorProps } from '@/modules/auth/types/components.types';
 
 export function AuthFieldError({ id, message }: AuthFieldErrorProps) {
   return (

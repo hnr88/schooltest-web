@@ -13,9 +13,7 @@ import {
 } from '@/modules/design-system';
 import type { ViewAsTeacher } from '@/modules/ops/schemas/surfaces.schema';
 
-interface OpsViewAsTeacherDataProps {
-  view: ViewAsTeacher;
-}
+import type { OpsViewAsTeacherDataProps } from '@/modules/ops/types/components.types';
 
 /** Display name for the banner: "Vee Twentyone", falling back to the email. */
 function teacherName(view: ViewAsTeacher): string {

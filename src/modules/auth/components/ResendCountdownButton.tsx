@@ -6,13 +6,7 @@ import { useEffect, useState } from 'react';
 import { formatCountdown } from '@/modules/auth/lib/format-countdown';
 import { Button } from '@/modules/design-system';
 
-interface ResendCountdownButtonProps {
-  onResend: () => void;
-  seconds?: number;
-  isPending?: boolean;
-  labelKey?: string;
-  countdownLabelKey?: string;
-}
+import type { ResendCountdownButtonProps } from '@/modules/auth/types/components.types';
 
 // Shared by the forgot-password sent state and the sign-up confirm state
 // (task 017). Counts down from `seconds` on mount, stays disabled while

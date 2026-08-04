@@ -21,9 +21,7 @@ import {
 } from '@/modules/children/queries/use-archive-student.mutation';
 import type { StudentListRow } from '@/modules/dashboard';
 
-interface ChildrenRowActionsProps {
-  student: StudentListRow;
-}
+import type { ChildrenRowActionsProps } from '@/modules/children/types/components.types';
 
 // C-UI-MYCHILDREN row actions: `⋯` ghost dropdown → Edit (navigate to the edit
 // wizard) + Archive/Unarchive (C-STUDENT-UPDATE). Archive is confirmed via the

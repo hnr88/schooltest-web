@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
 import { Container, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
+import { ScrollReveal } from '@/modules/landing';
 
 async function ClassroomBand() {
   const t = await getTranslations('Eald');

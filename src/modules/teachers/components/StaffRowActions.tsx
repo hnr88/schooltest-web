@@ -13,9 +13,7 @@ import { ConfirmStaffActionDialog } from '@/modules/teachers/components/ConfirmS
 import { useStaffRowActions } from '@/modules/teachers/hooks/use-staff-row-actions';
 import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 
-interface StaffRowActionsProps {
-  row: StaffRow;
-}
+import type { StaffRowActionsProps } from '@/modules/teachers/types/components.types';
 
 // Row actions for the merged staff table: reissue (C-INV-03) + revoke
 // (C-INV-04/07) on open invitations, deactivate/reactivate (C-TCH-02) and

@@ -7,6 +7,8 @@ import type { Observation, ObservationsView } from '@/modules/report/types/obser
 import type { ResultView } from '@/modules/report/types/report.types';
 import type { SupplementaryStrandView } from '@/modules/report/types/supplementary.types';
 
+import type { AssessedRow, PlacedRow } from '@/modules/report/types/lib.types';
+
 // Doc 2a s.2, verbatim: "Foundation (Stage 1, A1-A2): decoding (R1/L1),
 // vocabulary (R2/L2), grammar (R3/L3). Comprehension (Stages 2-3, B1-B2): gist
 // (R4/L4), detail (R5/L5), propositional inference (R6/L6), critical/pragmatic
@@ -16,9 +18,6 @@ import type { SupplementaryStrandView } from '@/modules/report/types/supplementa
 // code — the same chip the attribute bars already render.
 const FOUNDATION_MAX_LADDER_INDEX = 3;
 const VOCABULARY_LADDER_INDEX = 2;
-
-type AssessedRow = Extract<AttributeRowView, { state: 'assessed' }>;
-type PlacedRow = { row: AssessedRow; index: number };
 
 function ladderIndex(code: string): number | null {
   const match = ATTRIBUTE_CODE_PATTERN.exec(code);

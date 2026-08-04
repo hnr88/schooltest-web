@@ -2,9 +2,9 @@
 
 import { useTranslations } from 'next-intl';
 
-import { SCHOOL_ADMIN_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
-import { useMeQuery } from '@/modules/auth/queries/use-me.query';
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { SCHOOL_ADMIN_ROLE_TYPE } from '@/modules/auth';
+import { useMeQuery } from '@/modules/auth';
+import { useAuthStore } from '@/modules/auth';
 import type { SchoolClass } from '@/modules/classes';
 import {
   Dialog,
@@ -17,11 +17,7 @@ import { SchoolChildForm } from '@/modules/school-children/components/SchoolChil
 import { childDisplayName } from '@/modules/school-children/hooks/use-child-row-actions';
 import type { SchoolChild } from '@/modules/school-children/types/school-children.types';
 
-interface SchoolChildEditDialogProps {
-  child: SchoolChild;
-  classes: SchoolClass[];
-  onClose: () => void;
-}
+import type { SchoolChildEditDialogProps } from '@/modules/school-children/types/components.types';
 
 // Edit shell (C-CHD-03): mounts the form fresh per child so its defaults
 // always match the row being edited. The ACARA phase control stays behind the

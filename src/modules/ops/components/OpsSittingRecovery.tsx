@@ -3,14 +3,12 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { SelectField } from '@/modules/design-system';
 import { OpsSittingRecoveryDetail } from '@/modules/ops/components/OpsSittingRecoveryDetail';
 import { useSchoolSittingsQuery } from '@/modules/ops/queries/use-school-sittings.query';
 
-interface OpsSittingRecoveryProps {
-  schoolDocumentId: string;
-}
+import type { OpsSittingRecoveryProps } from '@/modules/ops/types/components.types';
 
 // Ops sitting-recovery panel (task 69, C-OPS-02, mvp-updates 4.2): pick one of
 // the school's sittings (existing core sittings read, school-filtered), then

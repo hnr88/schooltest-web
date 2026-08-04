@@ -11,11 +11,7 @@ import { SignInForm } from '@/modules/auth/components/SignInForm';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { Alert, Logo, Skeleton } from '@/modules/design-system';
 
-interface SignInCardProps {
-  hasGoogleError?: boolean;
-  hasSessionExpired?: boolean;
-  showConfirmedBanner?: boolean;
-}
+import type { SignInCardProps } from '@/modules/auth/types/components.types';
 
 // Right-hand form column of the login split (design spec 06 §1.1): a bare 420px
 // stack on the page background — no card chrome — at a 24px rhythm. Google keeps

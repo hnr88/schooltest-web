@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { OpsSectionTimersForm } from '@/modules/ops/components/OpsSectionTimersForm';
 import { useSectionTimersQuery } from '@/modules/ops/queries/use-section-timers.query';

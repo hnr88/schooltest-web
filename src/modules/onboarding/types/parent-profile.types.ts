@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
-import type {
-  ParentProfileSchema,
-  updateMeResponseSchema,
-} from '@/modules/onboarding/schemas/parent-profile.schema';
+import type { updateMeResponseSchema } from '@/modules/onboarding/schemas/parent-profile.schema';
+import type { ParentProfileSchema } from '@/modules/onboarding/types/schemas.types';
 
 export type ParentProfileValues = z.input<ParentProfileSchema>;
 

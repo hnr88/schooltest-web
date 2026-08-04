@@ -15,11 +15,7 @@ import {
   Button,
 } from '@/modules/design-system';
 
-interface ResitButtonProps {
-  studentName: string;
-  pending: boolean;
-  onConfirm: () => void;
-}
+import type { ResitButtonProps } from '@/modules/test-day/types/components.types';
 
 // Per-row C-SIT-03 re-sit with a confirm dialog (absent or crashed students
 // get another go; the description carries that promise in plain language).

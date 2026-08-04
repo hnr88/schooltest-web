@@ -3,12 +3,10 @@
 import { useTranslations } from 'next-intl';
 
 import { StatusPill } from '@/modules/design-system';
-import { useSittingSummaryQuery } from '../queries/use-sitting-summary.query';
-import type { ClassSitting } from '../types/test-day.types';
+import { useSittingSummaryQuery } from '@/modules/test-day/queries/use-sitting-summary.query';
+import type { ClassSitting } from '@/modules/test-day/types/test-day.types';
 
-interface SittingSummaryPanelProps {
-  sitting: ClassSitting;
-}
+import type { SittingSummaryPanelProps } from '@/modules/test-day/types/components.types';
 
 // Count label keys mapped to the SittingSummary fields (C-SIT-08 contract
 // names are snake_case; the i18n labels stay camelCase like the monitor's).

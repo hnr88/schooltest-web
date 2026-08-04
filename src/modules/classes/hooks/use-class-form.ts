@@ -15,7 +15,7 @@ import {
 } from '@/modules/classes/schemas/class.schema';
 import type { ClassChildOption, SchoolClass } from '@/modules/classes/types/classes.types';
 
-export type ClassFormTarget = { mode: 'create' } | { mode: 'edit'; schoolClass: SchoolClass };
+import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
 
 function initialValues(target: ClassFormTarget, children: ClassChildOption[]): ClassFormValues {
   if (target.mode === 'create') {

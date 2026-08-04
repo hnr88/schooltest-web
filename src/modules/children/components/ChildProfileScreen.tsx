@@ -17,9 +17,7 @@ import { getChildProfileName } from '@/modules/children/lib/child-profile-displa
 import { useChildProgressQuery } from '@/modules/children/queries/use-child-progress.query';
 import { useStudentDetailQuery } from '@/modules/children/queries/use-student-detail.query';
 
-interface ChildProfileScreenProps {
-  documentId: string;
-}
+import type { ChildProfileScreenProps } from '@/modules/children/types/components.types';
 
 // §B — the portal child detail is ONE vertical stack at a 24px rhythm and carries
 // NO tabs (spec 02 §B). Blocks in order: DetailHeader, KpiStrip, the two-up

@@ -10,9 +10,7 @@ import { useForgotPasswordMutation } from '@/modules/auth/queries/use-forgot-pas
 import type { ForgotPasswordErrorKey } from '@/modules/auth/types/auth.types';
 import { Alert } from '@/modules/design-system';
 
-interface ForgotPasswordSentStateProps {
-  email: string;
-}
+import type { ForgotPasswordSentStateProps } from '@/modules/auth/types/components.types';
 
 // Sent state of the forgot-password card (§14.3): teal mail tile, expiry copy
 // (30 min = D-AUTH-2), success strip, 60s resend countdown. A resend 429

@@ -13,16 +13,13 @@ import type {
   UpdateMeErrorPayload,
 } from '@/modules/onboarding/types/parent-profile.types';
 
+import type { UseUpdateMeMutationOptions } from '@/modules/onboarding/types/queries.types';
+
 // C-PAR-UPDATE-ME: bare JSON body (NO {data} envelope); the response is the
 // bare sanitized user + `profileCompleted` for parents.
 async function updateMeRequest(input: ParentProfileOutput) {
   const res = await strapi.put('/api/users/me', input);
   return updateMeResponseSchema.parse(res.data);
-}
-
-interface UseUpdateMeMutationOptions {
-  // Receives the server's 400 details.fields so the form can mark those inputs.
-  onInvalidFields?: (fields: string[]) => void;
 }
 
 export function useUpdateMeMutation(options?: UseUpdateMeMutationOptions) {

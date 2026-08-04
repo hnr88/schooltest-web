@@ -5,11 +5,7 @@ import { useTranslations } from 'next-intl';
 import { StatusPill, type StatusPillTone } from '@/modules/design-system';
 import type { TeachHomeMonitorSummary } from '@/modules/teach/types/teach-home.types';
 
-interface MonitorSummaryPanelProps {
-  monitor: TeachHomeMonitorSummary | null;
-}
-
-type MonitorStateKey = keyof TeachHomeMonitorSummary;
+import type { MonitorStateKey, MonitorSummaryPanelProps } from '@/modules/teach/types/components.types';
 
 const MONITOR_STATE_ORDER: readonly MonitorStateKey[] = [
   'not_joined',

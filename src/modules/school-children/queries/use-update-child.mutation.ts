@@ -10,10 +10,7 @@ import type {
   SchoolChildDetail,
 } from '@/modules/school-children/types/school-children.types';
 
-export interface UpdateChildInput {
-  documentId: string;
-  body: ChildWriteBody;
-}
+import type { UpdateChildInput } from '@/modules/school-children/types/queries.types';
 
 // C-CHD-03: partial whitelist write-back; class_documentId: null unassigns.
 async function updateChildRequest({ documentId, body }: UpdateChildInput): Promise<SchoolChildDetail> {

@@ -17,7 +17,7 @@ import {
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import type { ChangePasswordErrorKey } from '@/modules/auth/types/auth.types';
 
-type VisibilityKey = 'current' | 'next' | 'confirm';
+import type { VisibilityKey } from '@/modules/auth/types/hooks.types';
 
 // A 401 (C-AUTH-CHANGE: present-but-invalid/expired Bearer) means the session
 // itself is dead: clear it and leave for /sign-in?error=session via a full

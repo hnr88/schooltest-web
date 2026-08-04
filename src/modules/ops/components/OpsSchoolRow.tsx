@@ -7,9 +7,7 @@ import { Badge, TableCell, TableRow } from '@/modules/design-system';
 import type { OpsSchool } from '@/modules/ops/types/ops.types';
 import { ACCOUNT_STATUS_VARIANTS, ONBOARDING_STATUS_VARIANTS } from '@/modules/school-admin';
 
-interface OpsSchoolRowProps {
-  school: OpsSchool;
-}
+import type { OpsSchoolRowProps } from '@/modules/ops/types/components.types';
 
 // One C-OPS-01 row: the school name (linking to the detail page), the two
 // lifecycle chips and the live teacher/class/student/result counts.

@@ -4,12 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/modules/design-system';
 
-interface AbsentToggleProps {
-  studentName: string;
-  absent: boolean;
-  pending: boolean;
-  onToggle: (absent: boolean) => void;
-}
+import type { AbsentToggleProps } from '@/modules/test-day/types/components.types';
 
 // C-SIT-06 (task 120, mvp-updates §4.5.6): per-row absent toggle. The pressed
 // state mirrors the server flag on the monitor row; the mutation hook owns

@@ -9,11 +9,7 @@ import type {
   RevokeInvitationResult,
 } from '@/modules/ops/types/school-invitation.types';
 
-interface UseInvitationActionsInput {
-  documentId: string;
-  resend: UseMutationResult<OnboardingLinkResult, unknown, string>;
-  revoke: UseMutationResult<RevokeInvitationResult, unknown, string>;
-}
+import type { UseInvitationActionsInput } from '@/modules/ops/types/hooks.types';
 
 /**
  * C-SCH-05 / C-SCH-06 click handling for the invitation panel — the toasts and

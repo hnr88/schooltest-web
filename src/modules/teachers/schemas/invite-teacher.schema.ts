@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-// Baked-message factory (same convention as the school-onboarding schemas):
-// messages resolve up-front from the `Teachers.validation` namespace.
-type InviteSchemaTranslator = (key: string) => string;
+import type { InviteSchemaTranslator } from '@/modules/teachers/types/schemas.types';
 
 // Invite form schema (client mirror of the C-INV-01 validation).
 export function createInviteTeacherSchema(t: InviteSchemaTranslator) {

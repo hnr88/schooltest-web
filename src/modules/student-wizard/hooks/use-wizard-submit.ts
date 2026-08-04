@@ -11,9 +11,7 @@ import { useCreateStudentFullMutation } from '@/modules/student-wizard/queries/u
 import type { StudentWizardOutput } from '@/modules/student-wizard/schemas/student-wizard.schema';
 import type { WizardSubmitError } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface UseWizardSubmitParams {
-  onSubmit?: (values: StudentWizardOutput) => Promise<void>;
-}
+import type { UseWizardSubmitParams } from '@/modules/student-wizard/types/hooks.types';
 
 // Step 5 submit flow (C-UI-STUDENT-WIZARD): the caller passes the zod-parsed
 // output (RHF handleSubmit = the full-schema parse). Create path → POST mutation

@@ -8,10 +8,7 @@ import { SETTINGS_TAB_CONFIG } from '@/modules/settings/constants/settings.const
 import { isSettingsTab } from '@/modules/settings/lib/settings-tab';
 import type { SettingsTab } from '@/modules/settings/types/settings.types';
 
-interface SettingsTabsProps {
-  value: SettingsTab;
-  onValueChange: (tab: SettingsTab) => void;
-}
+import type { SettingsTabsProps } from '@/modules/settings/types/components.types';
 
 // DS §5.6 underline tabs: a hairline rule with 26px-gapped 14/600 labels and a
 // 2px active underline — not the stretched full-width segmented slab this screen

@@ -2,12 +2,7 @@ import { create } from 'zustand';
 
 import { readClientToken, writeClientToken } from '@/lib/axios/strapi';
 
-interface AuthState {
-  token: string | null;
-  hydrated: boolean;
-  hydrate: () => void;
-  setToken: (token: string | null) => void;
-}
+import type { AuthState } from '@/modules/auth/types/stores.types';
 
 // Client state only: the JWT (persisted in localStorage via the axios helpers).
 // The authenticated user itself is server state, owned by useMeQuery.

@@ -7,12 +7,7 @@ import { useWizardMediaStore } from '@/modules/student-wizard/stores/use-wizard-
 import type { MediaAccept, MediaUploadLabels } from '@/modules/student-wizard/types/media.types';
 import type { WizardMediaKey } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface UseMediaFieldParams {
-  accept: MediaAccept;
-  maxBytes: number;
-  messages: Pick<MediaUploadLabels, 'invalidType' | 'tooLarge' | 'uploadFailed'>;
-  onChange: (value: number | null) => void;
-}
+import type { UseMediaFieldParams } from '@/modules/student-wizard/types/hooks.types';
 
 // C-UPLOAD-PARENT client gate + upload orchestration for MediaUpload: validates
 // type/size BEFORE any network call (no request when it fails), uploads

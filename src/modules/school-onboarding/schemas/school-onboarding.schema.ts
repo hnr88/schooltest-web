@@ -8,10 +8,7 @@ import {
   TEACHER_ROLE_VALUES,
 } from '@/modules/school-onboarding/constants/school-onboarding.constants';
 
-// Baked-message factory (same convention as the parent profile and student
-// wizard schemas): messages resolve up-front from the
-// `SchoolOnboarding.validation` namespace.
-type OnboardingSchemaTranslator = (key: string) => string;
+import type { OnboardingSchemaTranslator } from '@/modules/school-onboarding/types/schemas.types';
 
 // --- Server response schemas (C-ONB-01/02/03 data payloads) ---
 

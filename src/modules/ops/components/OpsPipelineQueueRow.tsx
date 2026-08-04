@@ -6,9 +6,7 @@ import { Button, Input, TableCell, TableRow } from '@/modules/design-system';
 import { usePipelineRetryForm } from '@/modules/ops/hooks/use-pipeline-retry-form';
 import type { PipelineQueue } from '@/modules/ops/schemas/pipeline.schema';
 
-interface OpsPipelineQueueRowProps {
-  queue: PipelineQueue;
-}
+import type { OpsPipelineQueueRowProps } from '@/modules/ops/types/components.types';
 
 // One queue row of the C-OPS-03 panel (task 69): live BullMQ counts plus the
 // failed-job retry control. The health payload carries no job ids, so the

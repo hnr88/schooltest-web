@@ -4,18 +4,7 @@ import { useMemo } from 'react';
 
 import { getCountryOptions, NationalityCombobox, type CountryCode } from '@/modules/student-wizard';
 
-interface CountryComboboxProps {
-  id: string;
-  label: string;
-  value: string;
-  locale: string;
-  placeholder: string;
-  emptyLabel: string;
-  error?: string;
-  required?: boolean;
-  onValueChange: (code: string) => void;
-  onBlur?: () => void;
-}
+import type { CountryComboboxProps } from '@/modules/onboarding/types/components.types';
 
 // ISO-code-valued country picker: the NationalityCombobox stores the localized
 // display NAME, but C-PAR-UPDATE-ME wants the 2-letter code, so this adapter

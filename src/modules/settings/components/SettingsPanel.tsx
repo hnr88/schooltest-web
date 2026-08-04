@@ -4,18 +4,7 @@ import { cn } from '@/lib/utils';
 import { DataPanel } from '@/modules/design-system';
 import { PORTAL_CARD_CLASS } from '@/modules/settings/constants/settings.constants';
 
-// PortalCard + section head (.qa/design/spec/03 §4.1): a 24px-radius white card with
-// 26px/30px padding, a 16/600 navy h2 and an optional 13px lede under it.
-// `overflow-visible` keeps the ::after pointer expansions of the pills and switches
-// inside the card clickable.
-interface SettingsPanelProps {
-  id: string;
-  title: string;
-  description?: string;
-  action?: ReactNode;
-  children: ReactNode;
-  className?: string;
-}
+import type { SettingsPanelProps } from '@/modules/settings/types/components.types';
 
 export function SettingsPanel({
   id,

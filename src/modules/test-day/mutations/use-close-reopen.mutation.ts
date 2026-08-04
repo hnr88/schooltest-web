@@ -3,13 +3,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { CLASS_SITTINGS_QUERY_KEY } from '../queries/use-class-sittings.query';
-import { SITTING_MONITOR_QUERY_KEY } from '../queries/use-sitting-monitor.query';
+import { CLASS_SITTINGS_QUERY_KEY } from '@/modules/test-day/queries/use-class-sittings.query';
+import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/queries/use-sitting-monitor.query';
 
-export interface CloseReopenInput {
-  sittingDocumentId: string;
-  action: 'close' | 'reopen';
-}
+import type { CloseReopenInput } from '@/modules/test-day/types/queries.types';
 
 // E2-11 close/reopen: a closed sitting blocks join (C-SIT-01 400) and disables
 // reveal on the screen; reopen restores it.

@@ -12,13 +12,7 @@ import { MasteryTable } from '@/modules/teach/components/MasteryTable';
 import { StudentMasteryDrilldown } from '@/modules/teach/components/StudentMasteryDrilldown';
 import { useClassDiagnosticQuery } from '@/modules/teach/queries/use-class-diagnostic.query';
 
-interface DiagnosticDashboardProps {
-  classId: string;
-  actions?: ReactNode;
-  // Task 78: the school-admin analytics reuses this dashboard verbatim at
-  // school scope; the back link defaults to the teacher home it always had.
-  backHref?: string;
-}
+import type { DiagnosticDashboardProps } from '@/modules/teach/types/components.types';
 
 // Teacher diagnostic dashboard (task 75, mvp-updates §4.9): class mastery
 // profiles across the seven reading areas with the item-type heat map nested

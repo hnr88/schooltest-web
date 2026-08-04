@@ -4,7 +4,7 @@ import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { Alert, Button, SelectField } from '@/modules/design-system';
 import { OpsViewAsTeacherData } from '@/modules/ops/components/OpsViewAsTeacherData';
 import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';

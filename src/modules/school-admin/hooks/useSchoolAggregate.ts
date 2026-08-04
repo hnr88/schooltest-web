@@ -5,21 +5,7 @@ import { useQueries } from '@tanstack/react-query';
 import type { SchoolClass } from '@/modules/classes';
 import { classDiagnosticQueryOptions, type DiagnosticStatus } from '@/modules/teach';
 
-export interface AreaAggregate {
-  code: string;
-  mastered: number;
-  emerging: number;
-  not_mastered: number;
-  not_assessed: number;
-}
-
-export interface SchoolAggregate {
-  rosterTotal: number;
-  satTotal: number;
-  areas: AreaAggregate[];
-  isPending: boolean;
-  isError: boolean;
-}
+import type { AreaAggregate, SchoolAggregate } from '@/modules/school-admin/types/hooks.types';
 
 // School-level analytics aggregate (task 78, mvp spec 4.3 level 1): the same
 // C-RPT-01 per-class diagnostic payloads the teacher dashboard renders,

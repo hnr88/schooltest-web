@@ -5,13 +5,7 @@ import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { WizardRailStep } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface WizardStepRailProps {
-  steps: readonly WizardRailStep[];
-  current: number;
-  maxReached: number;
-  ariaLabel: string;
-  onSelect: (step: number) => void;
-}
+import type { WizardStepRailProps } from '@/modules/student-wizard/types/components.types';
 
 // Step rail (spec 03 §2.2): a 230px column of 30px dots joined by a 1.5px
 // connector, each row a jump BACK to any reached step — navigation is gated:

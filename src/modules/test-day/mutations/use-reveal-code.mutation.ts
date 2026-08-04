@@ -3,8 +3,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { CLASS_SITTINGS_QUERY_KEY } from '../queries/use-class-sittings.query';
-import { SITTING_MONITOR_QUERY_KEY } from '../queries/use-sitting-monitor.query';
+import { CLASS_SITTINGS_QUERY_KEY } from '@/modules/test-day/queries/use-class-sittings.query';
+import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/queries/use-sitting-monitor.query';
 
 // POST /api/sittings/:documentId/code — mints the access code (or returns the
 // existing one). Revealing the code is the teacher's only start control

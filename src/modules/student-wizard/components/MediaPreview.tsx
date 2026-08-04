@@ -6,13 +6,7 @@ import Image from 'next/image';
 import { Button } from '@/modules/design-system';
 import type { UploadedMedia } from '@/modules/student-wizard/types/media.types';
 
-interface MediaPreviewProps {
-  media: UploadedMedia;
-  isImage: boolean;
-  previewAlt: string;
-  removeLabel: string;
-  onRemove: () => void;
-}
+import type { MediaPreviewProps } from '@/modules/student-wizard/types/components.types';
 
 // C-UI-STUDENT-WIZARD §5.2 preview surface: image thumbnail or <audio controls>
 // from the absolutized upload url, with a remove control that clears the field

@@ -4,9 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import type { TeachHomeDiagnosticSummary } from '@/modules/teach/types/teach-home.types';
 
-interface DiagnosticSummaryPanelProps {
-  diagnostic: TeachHomeDiagnosticSummary | null;
-}
+import type { DiagnosticSummaryPanelProps } from '@/modules/teach/types/components.types';
 
 // Teach home diagnostic summary (task 83, mvp-updates §4.9 states table): a
 // compact per-class digest of the Test A diagnostic - how many sat, the

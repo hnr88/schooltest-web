@@ -2,11 +2,7 @@ import type { ReactElement } from 'react';
 
 import { OG_ACCENT, OG_BACKGROUND, OG_FOREGROUND } from '@/modules/seo/constants/seo.constants';
 
-interface OgCardProps {
-  readonly siteName: string;
-  readonly title: string;
-  readonly tagline: string;
-}
+import type { OgCardProps } from '@/modules/seo/types/components.types';
 
 // The Open Graph / Twitter card body, rendered by next/og's ImageResponse.
 // Satori supports only a flexbox subset of CSS and no Tailwind classes, so the

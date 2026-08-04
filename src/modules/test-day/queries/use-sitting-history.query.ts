@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
-import { sittingHistoryRowSchema } from '../schemas/test-day.schema';
-import type { SittingHistoryRow } from '../types/sitting-history.types';
+import { sittingHistoryRowSchema } from '@/modules/test-day/schemas/test-day.schema';
+import type { SittingHistoryRow } from '@/modules/test-day/types/sitting-history.types';
 
 export const SITTING_HISTORY_QUERY_KEY = ['test-day', 'sitting-history'] as const;
 

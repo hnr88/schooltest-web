@@ -2,6 +2,8 @@ import { getTranslations } from 'next-intl/server';
 
 import { Container, Eyebrow, Section } from '@/modules/design-system';
 
+import type { ReadinessCardProps } from '@/modules/eald/types/components.types';
+
 async function IndividualSection() {
   const t = await getTranslations('Eald');
 
@@ -38,15 +40,6 @@ async function IndividualSection() {
       </Container>
     </Section>
   );
-}
-
-interface ReadinessCardProps {
-  readonly label: string;
-  readonly term1Label: string;
-  readonly term1Value: string;
-  readonly term3Label: string;
-  readonly term3Value: string;
-  readonly footer: string;
 }
 
 function ReadinessCard({

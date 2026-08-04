@@ -5,13 +5,9 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/modules/design-system';
-import type { ClassSitting } from '../types/test-day.types';
+import type { ClassSitting } from '@/modules/test-day/types/test-day.types';
 
-interface CodeRevealCardProps {
-  sitting: ClassSitting;
-  revealPending: boolean;
-  onReveal: () => void;
-}
+import type { CodeRevealCardProps } from '@/modules/test-day/types/components.types';
 
 // The access code card (mvp-updates §4.5): hidden by default, the reveal
 // action is the teacher's only start control. First reveal mints the code via

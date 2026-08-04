@@ -7,11 +7,7 @@ import { CLASSES_QUERY_KEY } from '@/modules/classes/queries/use-school-classes.
 import { schoolClassSchema } from '@/modules/classes/schemas/class.schema';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 
-export interface CreateClassInput {
-  name: string;
-  year_band: string;
-  teacher_documentIds: string[];
-}
+import type { CreateClassInput } from '@/modules/classes/types/queries.types';
 
 // C-CLS-02: create the class inside the caller's own school (the school comes
 // from the session server-side, never from the body).

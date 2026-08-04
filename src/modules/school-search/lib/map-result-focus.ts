@@ -1,19 +1,9 @@
 import type { GeoSchoolHit } from '@/modules/school-search/types/school-search.types';
 
+import type { MapResultFocusTarget } from '@/modules/school-search/types/lib.types';
+
 export const SINGLE_SCHOOL_FOCUS_ZOOM = 14;
 export const MULTI_SCHOOL_MAX_FIT_ZOOM = 12;
-
-// Camera target the map should fly to for the current result set (ported from
-// schoolgo lib/map-result-focus): one hit → centre + close zoom; many → fit their
-// bounds. Pure (no Leaflet) so it stays testable and out of the hook.
-export type MapResultFocusTarget =
-  | { type: 'school'; key: string; center: [number, number]; zoom: number }
-  | {
-      type: 'bounds';
-      key: string;
-      bounds: [[number, number], [number, number]];
-      maxZoom: number;
-    };
 
 export function getMapResultFocusTarget(
   schools: GeoSchoolHit[],

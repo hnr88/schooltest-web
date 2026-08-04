@@ -13,9 +13,7 @@ import {
 import { OpsImportCreateTable } from '@/modules/ops/components/OpsImportCreateTable';
 import type { ImportPreview } from '@/modules/ops/schemas/import.schema';
 
-interface OpsImportPreviewTablesProps {
-  preview: ImportPreview;
-}
+import type { OpsImportPreviewTablesProps } from '@/modules/ops/types/components.types';
 
 // The C-IMP-01 preview read-out (task 67): the summary sentence plus one table
 // per outcome bucket - will be created, already in this school (email match,

@@ -13,10 +13,7 @@ import {
 } from '@/modules/children/lib/child-skills';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
 
-interface ChildLevelJourneyProps {
-  results: ChildProgressResult[];
-  officialResultCount: number;
-}
+import type { ChildLevelJourneyProps } from '@/modules/children/types/components.types';
 
 // §B.4 LevelJourney card. Rails are drawn for every skill we can make a TRUE
 // statement about: one per banded skill, plus one per skill the ≤5-row window

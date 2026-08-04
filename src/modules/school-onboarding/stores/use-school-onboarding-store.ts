@@ -9,7 +9,7 @@ import {
   SCHOOL_FIELD_KEYS,
   STORAGE_KEY_PREFIX,
 } from '@/modules/school-onboarding/constants/school-onboarding.constants';
-import type { OnboardingProgressState } from '@/modules/school-onboarding/lib/merge-onboarding-state';
+import type { OnboardingProgressState } from '@/modules/school-onboarding/types/lib.types';
 import type {
   AdminDetails,
   ProvenanceMap,
@@ -18,14 +18,7 @@ import type {
   TeacherEntry,
 } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface SchoolOnboardingStoreState extends OnboardingProgressState {
-  setStep: (step: number) => void;
-  applyServerState: (state: OnboardingProgressState) => void;
-  setSchool: (school: SchoolDetails) => void;
-  setTeachers: (teachers: TeacherEntry[]) => void;
-  setAdmin: (admin: AdminDetails) => void;
-  reset: () => void;
-}
+import type { SchoolOnboardingStore, SchoolOnboardingStoreState } from '@/modules/school-onboarding/types/stores.types';
 
 function confirmedMarks(keys: string[]): ProvenanceMap {
   const marks: ProvenanceMap = {};
@@ -33,7 +26,7 @@ function confirmedMarks(keys: string[]): ProvenanceMap {
   return marks;
 }
 
-function createSchoolOnboardingStore(token: string) {
+export function createSchoolOnboardingStore(token: string) {
   return create<SchoolOnboardingStoreState>()(
     persist(
       (set) => ({
@@ -81,8 +74,6 @@ function createSchoolOnboardingStore(token: string) {
     ),
   );
 }
-
-type SchoolOnboardingStore = ReturnType<typeof createSchoolOnboardingStore>;
 
 // One persisted store per onboarding token (`school-onboarding.<token>`), so a
 // school with several links never shares progress between them.

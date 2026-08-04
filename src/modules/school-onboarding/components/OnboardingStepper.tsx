@@ -6,10 +6,7 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import type { OnboardingStepDefinition } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface OnboardingStepperProps {
-  steps: readonly OnboardingStepDefinition[];
-  current: number;
-}
+import type { OnboardingStepperProps } from '@/modules/school-onboarding/types/components.types';
 
 // Four-step indicator (school, teachers, review, admin). Display only —
 // navigation happens through each step's Back/Continue buttons.

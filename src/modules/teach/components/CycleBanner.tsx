@@ -4,9 +4,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 
 import { useClassCycleQuery } from '@/modules/teach/queries/use-class-cycle.query';
 
-interface CycleBannerProps {
-  documentId: string;
-}
+import type { CycleBannerProps } from '@/modules/teach/types/components.types';
 
 // Teacher cycle banner (task 108, mvp-updates 4.5): which test the class is
 // working on (Test A or Test B) plus the live form window dates, at the top

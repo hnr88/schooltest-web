@@ -13,6 +13,8 @@ import { useParentProfileForm } from '@/modules/onboarding/hooks/use-parent-prof
 import { useUpdateMeMutation } from '@/modules/onboarding/queries/use-update-me.mutation';
 import type { ParentProfileValues } from '@/modules/onboarding/types/parent-profile.types';
 
+import type { OnboardingProfileFormProps } from '@/modules/onboarding/types/components.types';
+
 const PROFILE_FIELDS = new Set<string>([
   'first_name',
   'last_name',
@@ -30,13 +32,6 @@ const PROFILE_FIELDS = new Set<string>([
   'emergency_contact_phone',
   'emergency_contact_relationship',
 ]);
-
-interface OnboardingProfileFormProps {
-  user: AuthUser | null;
-  onSaved: () => void;
-  onSkip: () => void;
-  isSkipPending: boolean;
-}
 
 // Step 2 of the onboarding wizard: the parent-profile form (C-PAR-UPDATE-ME).
 // Saving advances to the finish step; the 400 field list from the server is

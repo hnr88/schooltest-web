@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { MONITOR_REFETCH_INTERVAL_MS } from '../constants/test-day.constants';
-import { sittingMonitorSchema } from '../schemas/test-day.schema';
-import type { SittingMonitor } from '../types/test-day.types';
+import { MONITOR_REFETCH_INTERVAL_MS } from '@/modules/test-day/constants/test-day.constants';
+import { sittingMonitorSchema } from '@/modules/test-day/schemas/test-day.schema';
+import type { SittingMonitor } from '@/modules/test-day/types/test-day.types';
 
 export const SITTING_MONITOR_QUERY_KEY = ['test-day', 'monitor'] as const;
 

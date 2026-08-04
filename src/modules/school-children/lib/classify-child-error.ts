@@ -1,22 +1,6 @@
 import { isAxiosError } from 'axios';
 
-// Maps a failed C-CHD call onto the copy keys the form/row actions show. The
-// 403 contract states ride in error.details.code (the seat gate rethrows as a
-// PolicyError so the identifiers survive the compose-endpoint middleware):
-// SEAT_CAP carries the contracted "Contact SchoolTest to add seats" message,
-// SCHOOL_INACTIVE means the school account is not active. Any other 403 is a
-// plain permission failure; everything else is generic.
-
-export type ChildErrorKind = 'seatCap' | 'schoolInactive' | 'forbidden' | 'generic';
-
-interface StrapiErrorEnvelope {
-  error?: {
-    status?: number;
-    name?: string;
-    message?: string;
-    details?: { code?: string };
-  };
-}
+import type { ChildErrorKind, StrapiErrorEnvelope } from '@/modules/school-children/types/lib.types';
 
 export function classifyChildError(error: unknown): ChildErrorKind {
   if (!isAxiosError(error)) {

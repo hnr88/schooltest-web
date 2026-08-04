@@ -10,12 +10,9 @@ import {
   type TimerSection,
 } from '@/modules/ops/schemas/section-timers.schema';
 
-export const SECTION_TIMERS_QUERY_KEY = ['ops', 'section-timers'] as const;
+import type { SectionTimersState } from '@/modules/ops/types/queries.types';
 
-export interface SectionTimersState {
-  sections: TimerSection[];
-  meta: SectionTimersMeta | null;
-}
+export const SECTION_TIMERS_QUERY_KEY = ['ops', 'section-timers'] as const;
 
 // C-TMR-01: the values come from the contract GET; the who/when/version come
 // from the active Config row via its core find (ops holds the CONFIG read

@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useAuth } from '@/modules/auth/hooks/use-auth';
 
+import type { ParentViewsGate } from '@/modules/auth/types/hooks.types';
+
 // The parent slug the API gates on; role.constants.ts ships only the staff
 // slugs, and DashboardOnboardingGuard reads the parent slug the same way.
 const PARENT_ROLE_TYPE = 'parent';
@@ -13,8 +15,6 @@ const PARENT_ROLE_TYPE = 'parent';
 // locally: the shell barrel already imports the auth barrel (role constants),
 // so an auth -> shell import would close a circular module pair.
 const TEACHER_REPORTS_PATH = '/dashboard/reports';
-
-export type ParentViewsGate = 'loading' | 'pass' | 'unavailable' | 'redirect';
 
 // Task 46 (st-mvp-pivot): with PARENT_VIEWS_ENABLED off the parent portal is
 // masked, not deleted. A resolved parent gets the not-available state wherever

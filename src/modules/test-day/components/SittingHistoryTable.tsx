@@ -15,14 +15,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/modules/design-system';
-import { useSittingHistoryQuery } from '../queries/use-sitting-history.query';
+import { useSittingHistoryQuery } from '@/modules/test-day/queries/use-sitting-history.query';
+
+import type { SittingHistoryTableProps } from '@/modules/test-day/types/components.types';
 
 // Same date pattern the staff table uses for its timestamps.
 const OPENED_AT_PATTERN = 'd MMM yyyy';
-
-interface SittingHistoryTableProps {
-  classDocumentId: string;
-}
 
 // C-SIT-07 sitting history (task 131, mvp-updates 4.5/4.6): every sitting the
 // class has run, newest first, with joined/submitted counts so staggered and

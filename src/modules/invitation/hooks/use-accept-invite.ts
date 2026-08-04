@@ -10,9 +10,7 @@ import { useAcceptInvitationMutation } from '@/modules/invitation/mutations/use-
 import { dashboardHrefForRole } from '@/modules/invitation/lib/role-dashboard';
 import type { InviteAcceptValues } from '@/modules/invitation/schemas/invite-accept.schema';
 
-interface StrapiErrorBody {
-  error?: { message?: string };
-}
+import type { StrapiErrorBody } from '@/modules/invitation/types/hooks.types';
 
 // Accept-submit flow for the /invite/<token> form (C-INV-06): on success the
 // returned JWT is stored exactly like a sign-in and the new staff member lands

@@ -10,13 +10,13 @@ import {
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings } from '@/modules/settings';
-import { ClassroomBand } from '@/modules/eald/components/ClassroomBand';
-import { EaldTrustedBy } from '@/modules/eald/components/EaldTrustedBy';
-import { ProblemSection } from '@/modules/eald/components/ProblemSection';
-import { ProofSection } from '@/modules/eald/components/ProofSection';
-import { RegisterSection } from '@/modules/eald/components/RegisterSection';
-import { SolutionBand } from '@/modules/eald/components/SolutionBand';
-import { WhatYouGetSection } from '@/modules/eald/components/WhatYouGetSection';
+import { ClassroomBand } from '@/modules/eald';
+import { EaldTrustedBy } from '@/modules/eald';
+import { ProblemSection } from '@/modules/eald';
+import { ProofSection } from '@/modules/eald';
+import { RegisterSection } from '@/modules/eald';
+import { SolutionBand } from '@/modules/eald';
+import { WhatYouGetSection } from '@/modules/eald';
 
 interface EaldHomeProps {
   params: Promise<{ locale: string }>;

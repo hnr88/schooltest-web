@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Button, Card } from '@/modules/design-system';
 import type { PRICING_TIERS } from '@/modules/landing/constants/landing.constants';
 
-type PricingTier = (typeof PRICING_TIERS)[number];
+import type { PricingTier } from '@/modules/landing/types/components.types';
 
 async function PricingCard({ tier }: { tier: PricingTier }) {
   const t = await getTranslations('Home');

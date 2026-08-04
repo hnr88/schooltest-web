@@ -2,17 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 
-import {
-  ClassMemberChecklist,
-  type ClassMemberOption,
-} from '@/modules/classes/components/ClassMemberChecklist';
+import { ClassMemberChecklist } from '@/modules/classes/components/ClassMemberChecklist';
+import type { ClassMemberOption } from '@/modules/classes/types/components.types';
 import type { SchoolTeacher } from '@/modules/teachers';
 
-interface ClassTeacherPickerProps {
-  teachers: SchoolTeacher[];
-  value: string[];
-  onChange: (next: string[]) => void;
-}
+import type { ClassTeacherPickerProps } from '@/modules/classes/types/components.types';
 
 function toOption(teacher: SchoolTeacher): ClassMemberOption {
   const name = `${teacher.first_name ?? ''} ${teacher.last_name ?? ''}`.trim();

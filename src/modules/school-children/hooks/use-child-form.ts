@@ -19,7 +19,7 @@ import {
 } from '@/modules/school-children/schemas/school-child.schema';
 import type { SchoolChild } from '@/modules/school-children/types/school-children.types';
 
-export type ChildFormTarget = { mode: 'create' } | { mode: 'edit'; child: SchoolChild };
+import type { ChildFormTarget } from '@/modules/school-children/types/hooks.types';
 
 const BLANK_VALUES: SchoolChildFormValues = {
   given_name: '',

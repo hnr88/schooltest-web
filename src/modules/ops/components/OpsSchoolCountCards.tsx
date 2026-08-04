@@ -4,9 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import type { OpsSchool } from '@/modules/ops/types/ops.types';
 
-interface OpsSchoolCountCardsProps {
-  school: OpsSchool;
-}
+import type { OpsSchoolCountCardsProps } from '@/modules/ops/types/components.types';
 
 // The C-OPS-01 summary cards on the ops school detail page. Split out of
 // OpsSchoolDetail so that component stays under the 120-line cap.

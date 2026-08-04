@@ -11,17 +11,7 @@ import {
   Button,
 } from '@/modules/design-system';
 
-interface ConfirmStaffActionDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  title: string;
-  description: string;
-  cancelLabel: string;
-  confirmLabel: string;
-  destructive: boolean;
-  pending: boolean;
-  onConfirm: () => void;
-}
+import type { ConfirmStaffActionDialogProps } from '@/modules/teachers/types/components.types';
 
 // Shared confirm dialog for the staff row actions (deactivate/reactivate,
 // revoke invitation). Copy arrives fully translated via props so the one

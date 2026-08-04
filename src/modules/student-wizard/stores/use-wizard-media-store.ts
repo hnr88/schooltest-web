@@ -3,12 +3,7 @@ import { create } from 'zustand';
 import type { UploadedMedia } from '@/modules/student-wizard/types/media.types';
 import type { WizardMediaKey } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface WizardMediaState {
-  media: Record<WizardMediaKey, UploadedMedia | null>;
-  setMedia: (key: WizardMediaKey, media: UploadedMedia) => void;
-  clearMedia: (key: WizardMediaKey) => void;
-  reset: () => void;
-}
+import type { WizardMediaState } from '@/modules/student-wizard/types/stores.types';
 
 const EMPTY_MEDIA: Record<WizardMediaKey, UploadedMedia | null> = {
   photo: null,

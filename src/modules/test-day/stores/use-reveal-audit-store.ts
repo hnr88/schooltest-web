@@ -3,19 +3,9 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { REVEAL_AUDIT_STORAGE_KEY } from '../constants/test-day.constants';
+import { REVEAL_AUDIT_STORAGE_KEY } from '@/modules/test-day/constants/test-day.constants';
 
-// One audit entry per per-student reveal (C-SIT-05): the code is class-wide,
-// so the only thing to remember is WHO the teacher revealed it to and when.
-export interface RevealAuditEntry {
-  student_documentId: string;
-  revealed_at: string;
-}
-
-interface RevealAuditState {
-  entries: Record<string, RevealAuditEntry[]>;
-  recordReveal: (sittingDocumentId: string, studentDocumentId: string) => void;
-}
+import type { RevealAuditEntry, RevealAuditState } from '@/modules/test-day/types/stores.types';
 
 // UI-only audit trail for C-SIT-05 (mvp-updates §4.5.3): no backend call, the
 // entry is appended when the teacher opens the reveal dialog for a student and

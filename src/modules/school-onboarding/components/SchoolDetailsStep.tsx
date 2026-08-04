@@ -18,10 +18,7 @@ import {
 } from '@/modules/school-onboarding/schemas/school-onboarding.schema';
 import type { SchoolDetails } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface SchoolDetailsStepProps {
-  defaultValues: SchoolDetails;
-  onSubmit: (values: SchoolDetailsValues) => void;
-}
+import type { SchoolDetailsStepProps } from '@/modules/school-onboarding/types/components.types';
 
 // Step 1: school details, prefilled from the ops-entered school record.
 export function SchoolDetailsStep({ defaultValues, onSubmit }: SchoolDetailsStepProps) {

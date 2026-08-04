@@ -10,9 +10,7 @@ import {
 import { HeatmapCell } from '@/modules/teach/components/HeatmapCell';
 import type { DiagnosticHeatmapRow } from '@/modules/teach/types/diagnostic.types';
 
-interface ItemTypeHeatmapProps {
-  rows: DiagnosticHeatmapRow[];
-}
+import type { ItemTypeHeatmapProps } from '@/modules/teach/types/components.types';
 
 // The class item-type heat map (task 75, mvp-updates §4.9): a grid of cells
 // keyed by item code + section only, nested under the mastery view as the

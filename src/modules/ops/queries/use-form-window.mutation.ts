@@ -6,12 +6,7 @@ import { strapi } from '@/lib/axios/strapi';
 import { formWindowQueryKey } from '@/modules/ops/queries/use-form-window.query';
 import { formWindowSchema, type FormWindow } from '@/modules/ops/schemas/form-window.schema';
 
-export interface PutFormWindowInput {
-  schoolDocumentId: string;
-  form_documentId: string;
-  opens_at: string;
-  closes_at: string;
-}
+import type { PutFormWindowInput } from '@/modules/ops/types/queries.types';
 
 // C-WIN-01 (ops only): replace the school's one active form window. The 400s
 // (FORM_LOCKED, inverted range, non-reading form) are surfaced by the caller.

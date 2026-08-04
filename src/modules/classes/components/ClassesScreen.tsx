@@ -4,8 +4,8 @@ import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
-import type { ClassFormTarget } from '@/modules/classes/hooks/use-class-form';
+import { useAuthStore } from '@/modules/auth';
+import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
 import { ClassFormDialog } from '@/modules/classes/components/ClassFormDialog';
 import { ClassesTable } from '@/modules/classes/components/ClassesTable';
 import { useSchoolClassesQuery } from '@/modules/classes/queries/use-school-classes.query';

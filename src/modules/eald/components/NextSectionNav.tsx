@@ -4,9 +4,7 @@ import { Link } from '@/i18n/navigation';
 import { Container, Eyebrow, Section } from '@/modules/design-system';
 import type { NextSectionCard } from '@/modules/eald/types/eald.types';
 
-interface NextSectionNavProps {
-  readonly sections: readonly NextSectionCard[];
-}
+import type { NextSectionNavProps } from '@/modules/eald/types/components.types';
 
 async function NextSectionNav({ sections }: NextSectionNavProps) {
   const t = await getTranslations('Eald');

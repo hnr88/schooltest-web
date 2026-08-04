@@ -15,9 +15,7 @@ import {
 import type { AdminAccountValues } from '@/modules/school-onboarding/schemas/school-onboarding.schema';
 import type { OnboardingLinkState } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface StrapiErrorBody {
-  error?: { message?: string };
-}
+import type { StrapiErrorBody } from '@/modules/school-onboarding/types/hooks.types';
 
 /**
  * Final-step orchestration (C-ONB-03): persists the admin details, posts the

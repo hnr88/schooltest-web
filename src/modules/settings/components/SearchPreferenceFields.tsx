@@ -7,9 +7,7 @@ import { SEARCH_PREFERENCE_STATES } from '@/modules/settings/constants/settings.
 import { SearchPreferenceChoiceField } from '@/modules/settings/components/SearchPreferenceChoiceField';
 import type { SearchPreferenceFormValues } from '@/modules/settings/types/settings.types';
 
-interface SearchPreferenceFieldsProps {
-  form: UseFormReturn<SearchPreferenceFormValues>;
-}
+import type { SearchPreferenceFieldsProps } from '@/modules/settings/types/components.types';
 
 // The "where to look" field of the canonical Profile-card field stack: one
 // FieldShell on the canonical field rhythm, no per-field card.

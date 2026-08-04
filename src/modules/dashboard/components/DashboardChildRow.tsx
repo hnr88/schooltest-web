@@ -15,10 +15,7 @@ import {
 } from '@/modules/dashboard/lib/dashboard-overview';
 import type { StudentListRow } from '@/modules/dashboard/types/student.types';
 
-interface DashboardChildRowProps {
-  student: StudentListRow;
-  last: boolean;
-}
+import type { DashboardChildRowProps } from '@/modules/dashboard/types/components.types';
 
 // One "My children" row (spec 01 §5): 44px avatar · 190px name block · the
 // readiness rail on the flexible middle · a pill · a chevron, all on a 20px

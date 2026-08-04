@@ -3,9 +3,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
-import { CLASS_SITTINGS_QUERY_KEY } from '../queries/use-class-sittings.query';
-import { classSittingSchema } from '../schemas/test-day.schema';
-import type { ClassSitting } from '../types/test-day.types';
+import { CLASS_SITTINGS_QUERY_KEY } from '@/modules/test-day/queries/use-class-sittings.query';
+import { classSittingSchema } from '@/modules/test-day/schemas/test-day.schema';
+import type { ClassSitting } from '@/modules/test-day/types/test-day.types';
 
 // POST /api/sittings (teacher create): the server forces status open + null
 // code and resolves the form itself (D-10 — the teacher never picks one).

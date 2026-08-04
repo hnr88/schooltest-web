@@ -13,7 +13,7 @@ import { useRegisterMutation } from '@/modules/auth/queries/use-register.mutatio
 import { signUpSchema, type SignUpInput } from '@/modules/auth/schemas/sign-up.schema';
 import { Alert, Button } from '@/modules/design-system';
 
-type FormErrorKey = 'takenError' | 'offlineError' | 'registerError';
+import type { FormErrorKey, SignUpFormProps } from '@/modules/auth/types/components.types';
 
 // Status-only mapping (C-AUTH-REGISTER): 400 covers taken email/username, no
 // response means offline, anything else is a server fault. Raw Strapi error
@@ -24,10 +24,6 @@ function classifyError(error: unknown): FormErrorKey {
     if (error.response === undefined) return 'offlineError';
   }
   return 'registerError';
-}
-
-interface SignUpFormProps {
-  onRegistered: (email: string) => void;
 }
 
 export function SignUpForm({ onRegistered }: SignUpFormProps) {

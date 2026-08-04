@@ -4,12 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import type { DiagnosticGroup } from '@/modules/teach/types/diagnostic.types';
 
-interface GroupPanelProps {
-  groups: DiagnosticGroup[];
-  // Task 96: each student ref is a click target into the same drilldown the
-  // mastery table opens - the parent dashboard owns the one selection state.
-  onSelectStudent: (studentRef: string) => void;
-}
+import type { GroupPanelProps } from '@/modules/teach/types/components.types';
 
 // "Group the class" panel (tasks 95-96, mvp-updates §4.9/§4.10): children
 // clustered by the reading area currently holding them back, so the teacher

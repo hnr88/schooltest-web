@@ -6,10 +6,7 @@ import { strapi } from '@/lib/axios/strapi';
 import { buildStudentPayload } from '@/modules/student-wizard';
 import type { StudentWizardOutput } from '@/modules/student-wizard';
 
-interface UpdateStudentVars {
-  documentId: string;
-  values: StudentWizardOutput;
-}
+import type { UpdateStudentVars } from '@/modules/children/types/queries.types';
 
 // C-STUDENT-UPDATE: PUT /api/students/:documentId { data } — the parent write
 // path (owner asserted server-side, `status` stripped). The edit wizard reuses

@@ -13,11 +13,7 @@ import {
 import { useFormWindowForm } from '@/modules/ops/hooks/use-form-window-form';
 import type { FormWindow, OpsForm } from '@/modules/ops/schemas/form-window.schema';
 
-interface OpsFormWindowEditorProps {
-  schoolDocumentId: string;
-  currentWindow: FormWindow | null;
-  forms: OpsForm[];
-}
+import type { OpsFormWindowEditorProps } from '@/modules/ops/types/components.types';
 
 export function OpsFormWindowEditor({
   schoolDocumentId,

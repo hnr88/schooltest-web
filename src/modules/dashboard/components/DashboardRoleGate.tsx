@@ -8,9 +8,9 @@ import {
   OPS_ROLE_TYPE,
   SCHOOL_ADMIN_ROLE_TYPE,
   TEACHER_ROLE_TYPE,
-} from '@/modules/auth/constants/role.constants';
-import { useMeQuery } from '@/modules/auth/queries/use-me.query';
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+} from '@/modules/auth';
+import { useMeQuery } from '@/modules/auth';
+import { useAuthStore } from '@/modules/auth';
 import { DashboardSkeleton } from '@/modules/dashboard/components/DashboardSkeleton';
 
 // Spec §15 + mvp-updates §4.2: school administrators, teachers and ops get

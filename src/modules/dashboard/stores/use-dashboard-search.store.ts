@@ -1,12 +1,6 @@
 import { create } from 'zustand';
 
-interface DashboardSearchState {
-  query: string;
-  selectedStudentId: string | null;
-  setQuery: (query: string) => void;
-  selectStudent: (documentId: string) => void;
-  clear: () => void;
-}
+import type { DashboardSearchState } from '@/modules/dashboard/types/stores.types';
 
 const INITIAL_STATE = { query: '', selectedStudentId: null as string | null };
 

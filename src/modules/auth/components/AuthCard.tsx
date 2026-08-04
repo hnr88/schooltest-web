@@ -2,10 +2,7 @@ import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
-interface AuthCardProps {
-  children: ReactNode;
-  className?: string;
-}
+import type { AuthCardProps } from '@/modules/auth/types/components.types';
 
 // The 420px auth card (design spec 06 §1.3): white surface, 1px --border rule,
 // 16px radius, 36px padding, --shadow-md, 20px inner rhythm.

@@ -14,13 +14,7 @@ import {
   Button,
 } from '@/modules/design-system';
 
-interface ClassDeleteDialogProps {
-  schoolClass: SchoolClass;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  pending: boolean;
-  onConfirm: () => void;
-}
+import type { ClassDeleteDialogProps } from '@/modules/classes/types/components.types';
 
 // C-CLS-04 confirm. The description carries the contract promise in plain
 // language: students are unlinked, never deleted.

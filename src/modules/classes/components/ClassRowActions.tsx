@@ -14,10 +14,7 @@ import {
   IconButton,
 } from '@/modules/design-system';
 
-interface ClassRowActionsProps {
-  schoolClass: SchoolClass;
-  onEdit: () => void;
-}
+import type { ClassRowActionsProps } from '@/modules/classes/types/components.types';
 
 // Row actions for the class roster: edit (opens the screen-level form dialog)
 // and delete behind the C-CLS-04 confirm dialog.

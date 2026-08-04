@@ -5,11 +5,9 @@ import type { ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
 import { Logo } from '@/modules/design-system';
 
-const BENEFIT_KEYS = ['benefitTests', 'benefitScores', 'benefitFeedback'] as const;
+import type { AuthSplitLayoutProps } from '@/modules/auth/types/components.types';
 
-interface AuthSplitLayoutProps {
-  children: ReactNode;
-}
+const BENEFIT_KEYS = ['benefitTests', 'benefitScores', 'benefitFeedback'] as const;
 
 // Login split layout (design spec 06 §1.1): a 560px navy brand panel pinning its
 // logo / copy / legal line top-centre-bottom, beside the 420px form column

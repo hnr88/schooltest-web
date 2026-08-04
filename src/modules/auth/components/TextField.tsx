@@ -10,15 +10,7 @@ import {
 } from '@/modules/auth/constants/auth-field.constants';
 import { Input, Label } from '@/modules/design-system';
 
-interface TextFieldProps {
-  id: string;
-  label: string;
-  type: string;
-  autoComplete: string;
-  placeholder: string;
-  error?: string;
-  registration: UseFormRegisterReturn;
-}
+import type { TextFieldProps } from '@/modules/auth/types/components.types';
 
 // Shared label + input + field-level error, extracted so SignUpForm (username,
 // email, password, confirm password) stays under the 120-line component cap.

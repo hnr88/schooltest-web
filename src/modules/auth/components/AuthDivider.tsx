@@ -1,8 +1,6 @@
 import { Separator } from '@/modules/design-system';
 
-interface AuthDividerProps {
-  label: string;
-}
+import type { AuthDividerProps } from '@/modules/auth/types/components.types';
 
 // "or" rule between the social button and the credential form (spec 06 §1.1:4).
 export function AuthDivider({ label }: AuthDividerProps) {

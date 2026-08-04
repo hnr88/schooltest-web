@@ -9,9 +9,7 @@ import type { EaldPage } from '@/modules/eald/types/eald.types';
 
 import { EaldMobileNav } from './EaldMobileNav';
 
-interface EaldHeaderProps {
-  readonly activePage?: EaldPage;
-}
+import type { EaldHeaderProps } from '@/modules/eald/types/components.types';
 
 async function EaldHeader({ activePage }: EaldHeaderProps) {
   const t = await getTranslations();

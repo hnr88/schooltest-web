@@ -13,18 +13,7 @@ import {
 } from '@/modules/auth/constants/auth-field.constants';
 import { Button, Input, Label } from '@/modules/design-system';
 
-interface PasswordFieldProps {
-  id: string;
-  label: string;
-  placeholder: string;
-  autoComplete: string;
-  visible: boolean;
-  onToggleVisible: () => void;
-  toggleLabel: string;
-  error?: string;
-  registration: UseFormRegisterReturn;
-  labelAccessory?: ReactNode;
-}
+import type { PasswordFieldProps } from '@/modules/auth/types/components.types';
 
 // Shared password input + show/hide toggle, extracted so SignUpForm (username,
 // email, password, confirm password) stays under the 120-line component cap.

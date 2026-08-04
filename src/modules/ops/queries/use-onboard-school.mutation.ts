@@ -10,9 +10,7 @@ import {
 } from '@/modules/ops/schemas/school-invitation.schema';
 import type { OnboardingLinkResult } from '@/modules/ops/types/school-invitation.types';
 
-export interface OnboardSchoolInput extends OnboardSchoolValues {
-  schoolDocumentId: string;
-}
+import type { OnboardSchoolInput } from '@/modules/ops/types/queries.types';
 
 // C-SCH-04 (v2) — the spec's "Onboard School" action. A 409 (the school already
 // holds an active invitation) is surfaced inline by the dialog, so the hook only

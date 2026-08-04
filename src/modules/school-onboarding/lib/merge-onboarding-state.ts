@@ -11,12 +11,7 @@ import type {
   SchoolOnboardingPayload,
 } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-// The slice of wizard state that persists (localStorage + C-ONB-02 body).
-export interface OnboardingProgressState {
-  step: number;
-  payload: SchoolOnboardingPayload;
-  provenance: ProvenanceMap;
-}
+import type { OnboardingProgressState } from '@/modules/school-onboarding/types/lib.types';
 
 function clampStep(step: number): number {
   if (!Number.isFinite(step) || step < 0) return 0;

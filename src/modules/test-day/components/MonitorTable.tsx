@@ -5,20 +5,13 @@ import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/modules/design-system';
-import { effectiveRevealedIds, studentDisplayName } from '../lib/monitor-row-state';
-import { useRevealAuditStore } from '../stores/use-reveal-audit-store';
-import type { MonitorStudent, SittingMonitor } from '../types/test-day.types';
+import { effectiveRevealedIds, studentDisplayName } from '@/modules/test-day/lib/monitor-row-state';
+import { useRevealAuditStore } from '@/modules/test-day/stores/use-reveal-audit-store';
+import type { MonitorStudent, SittingMonitor } from '@/modules/test-day/types/test-day.types';
 import { MonitorRow } from './MonitorRow';
 import { StudentRevealDialog } from './StudentRevealDialog';
 
-interface MonitorTableProps {
-  sitting: SittingMonitor['sitting'];
-  students: MonitorStudent[];
-  resitPendingId: string | null;
-  absentPendingId: string | null;
-  onResit: (studentDocumentId: string) => void;
-  onToggleAbsent: (studentDocumentId: string, absent: boolean) => void;
-}
+import type { MonitorTableProps } from '@/modules/test-day/types/components.types';
 
 // C-SIT-02 live board: one row per roster student (MonitorRow carries the
 // state pill, the C-SIT-05 reveal action, the C-SIT-03 re-sit and the C-SIT-06

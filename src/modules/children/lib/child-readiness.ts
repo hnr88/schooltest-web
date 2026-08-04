@@ -1,7 +1,7 @@
 import type { SkillVerdictTone } from '@/modules/design-system';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
 
-type Readiness = NonNullable<ChildProgressResult['readiness']>;
+import type { Readiness } from '@/modules/children/types/lib.types';
 
 // The ordinal the parent contract publishes (DOC1 §3.16/3.18). `not_assessed` is a
 // first-class value, NOT a zero — it is excluded from every ranking rather than

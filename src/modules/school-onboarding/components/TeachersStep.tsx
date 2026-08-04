@@ -15,11 +15,7 @@ import {
 } from '@/modules/school-onboarding/schemas/school-onboarding.schema';
 import type { TeacherEntry } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface TeachersStepProps {
-  defaultValues: TeacherEntry[];
-  onSubmit: (teachers: TeacherEntry[]) => void;
-  onBack: () => void;
-}
+import type { TeachersStepProps } from '@/modules/school-onboarding/types/components.types';
 
 const EMPTY_TEACHER: TeacherEntry = { first_name: '', last_name: '', email: '', role: 'teacher' };
 

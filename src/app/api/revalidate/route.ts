@@ -10,7 +10,7 @@ import { env } from '@/lib/env';
 import {
   REVALIDATE_TAGS,
   revalidateRequestSchema,
-} from '@/modules/seo/schemas/revalidate.schema';
+} from '@/modules/seo';
 
 // C-WEB-04 — POST /api/revalidate. The ONLY way to publish a content change
 // before its cache window lapses: without it a corrected legal clause stays

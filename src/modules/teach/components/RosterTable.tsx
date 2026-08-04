@@ -15,12 +15,10 @@ import {
 import { useFlagEmailFixMutation } from '@/modules/teach/queries/use-flag-email-fix.mutation';
 import type { RosterChild } from '@/modules/teach/types/roster.types';
 
+import type { RosterTableProps } from '@/modules/teach/types/components.types';
+
 function rosterDisplayName(row: RosterChild): string {
   return [row.given_name, row.family_name].filter(Boolean).join(' ');
-}
-
-interface RosterTableProps {
-  rows: RosterChild[];
 }
 
 // Teacher roster (task 63, mvp-updates §4.4): name/status/email plus the

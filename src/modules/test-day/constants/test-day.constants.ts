@@ -1,4 +1,4 @@
-import type { SittingStudentState } from '../types/test-day.types';
+import type { SittingStudentState } from '@/modules/test-day/types/test-day.types';
 
 // Test-day constants (task 64). The poll cadence is the "live" in the live
 // monitor: about 5 s while the sitting is open, stopped once it closes.

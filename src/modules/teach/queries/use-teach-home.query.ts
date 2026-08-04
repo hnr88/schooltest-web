@@ -6,6 +6,8 @@ import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
 import { teachHomeSchema } from '@/modules/teach/schemas/teach-home.schema';
 import type { TeachHome } from '@/modules/teach/types/teach-home.types';
 
+import type { UseTeachHomeQueryOptions } from '@/modules/teach/types/queries.types';
+
 export const TEACH_HOME_QUERY_KEY = ['teach', 'home'] as const;
 
 // C-TEACH-01 teach home (task 83): the server enforces the role gate
@@ -16,12 +18,6 @@ export const TEACH_HOME_QUERY_KEY = ['teach', 'home'] as const;
 async function fetchTeachHome(): Promise<TeachHome> {
   const res = await strapi.get<StrapiSingleResponse<unknown>>('/api/schools/me/teach/home');
   return teachHomeSchema.parse(res.data.data);
-}
-
-interface UseTeachHomeQueryOptions {
-  // Data-aware cadence (task 84): receives the cached payload so the landing
-  // can poll only while a sitting is running; return false to stop polling.
-  refetchInterval?: (data: TeachHome | undefined) => number | false;
 }
 
 export function useTeachHomeQuery(options?: UseTeachHomeQueryOptions) {

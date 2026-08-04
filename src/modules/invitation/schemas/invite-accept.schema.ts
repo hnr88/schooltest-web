@@ -2,9 +2,7 @@ import { z } from 'zod';
 
 import { INVITE_PASSWORD_MIN_LENGTH } from '@/modules/invitation/constants/invitation.constants';
 
-// Baked-message factory (same convention as the school-onboarding schemas):
-// messages resolve up-front from the `Invite.validation` namespace.
-type InviteSchemaTranslator = (key: string) => string;
+import type { InviteSchemaTranslator } from '@/modules/invitation/types/schemas.types';
 
 // --- Server response schemas (C-INV-05/06 data payloads) ---
 

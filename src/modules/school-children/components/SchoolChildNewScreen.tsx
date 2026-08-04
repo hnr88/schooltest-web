@@ -4,9 +4,9 @@ import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Link, useRouter } from '@/i18n/navigation';
-import { SCHOOL_ADMIN_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
-import { useMeQuery } from '@/modules/auth/queries/use-me.query';
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { SCHOOL_ADMIN_ROLE_TYPE } from '@/modules/auth';
+import { useMeQuery } from '@/modules/auth';
+import { useAuthStore } from '@/modules/auth';
 import { useSchoolClassesQuery } from '@/modules/classes';
 import { Skeleton } from '@/modules/design-system';
 import { SchoolChildForm } from '@/modules/school-children/components/SchoolChildForm';

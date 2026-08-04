@@ -4,7 +4,7 @@ import { UserRoundPlus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { InviteTeacherDialog } from '@/modules/teachers/components/InviteTeacherDialog';
 import { TeachersTable } from '@/modules/teachers/components/TeachersTable';

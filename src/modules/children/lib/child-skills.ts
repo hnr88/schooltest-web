@@ -6,8 +6,7 @@ import type {
   ChildSkillSummary,
 } from '@/modules/children/types/children.types';
 
-type Skill = NonNullable<ChildProgressResult['skill']>;
-type Band = NonNullable<ChildProgressResult['cefrBand']>;
+import type { Band, Skill } from '@/modules/children/types/lib.types';
 
 // Categorical, stable per skill — the canonical subject tiles colour by SUBJECT
 // (Math blue, Danish teal, English amber), never by score.

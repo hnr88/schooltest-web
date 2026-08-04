@@ -7,10 +7,7 @@ import { ReviewSummaryTable } from '@/modules/student-wizard/components/ReviewSu
 import { useReviewModel } from '@/modules/student-wizard/hooks/use-review-model';
 import type { WizardSubmitError } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface StepReviewProps {
-  error: WizardSubmitError | null;
-  onDismissError: () => void;
-}
+import type { StepReviewProps } from '@/modules/student-wizard/types/components.types';
 
 // Step 5 — Review & confirm (spec 03 §2.8): the four-row summary table, composed
 // from what the parent typed. The design's cost notice under it is B-7 (no plan,

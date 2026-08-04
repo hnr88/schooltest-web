@@ -6,10 +6,7 @@ import {
   RELATIONSHIP_VALUES,
 } from '@/modules/onboarding/constants/parent-profile.constants';
 
-// Baked-message factory (same convention as the student wizard): messages
-// resolve up-front from the `Onboarding.schema` namespace, so
-// `errors.<field>.message` is already localized where the form renders it.
-type ProfileSchemaTranslator = (key: string) => string;
+import type { ParentProfileSchema, ProfileSchemaTranslator } from '@/modules/onboarding/types/schemas.types';
 
 // Client mirror of the C-PAR-UPDATE-ME whitelist rules (schooltest-api
 // update-me.ts). The 10 completion-rule fields are required here; the 5
@@ -46,8 +43,6 @@ export function createParentProfileSchema(t: ProfileSchemaTranslator) {
     emergency_contact_relationship: z.string().trim().max(80, t('tooLong')),
   });
 }
-
-export type ParentProfileSchema = ReturnType<typeof createParentProfileSchema>;
 
 // PUT /api/users/me responds with the bare sanitized user (no envelope, no
 // role) plus `profileCompleted` for parents. Loose schema: the form relies only

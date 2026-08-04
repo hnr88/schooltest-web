@@ -26,10 +26,7 @@ import {
   type InviteTeacherValues,
 } from '@/modules/teachers/schemas/invite-teacher.schema';
 
-interface InviteTeacherDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+import type { InviteTeacherDialogProps } from '@/modules/teachers/types/components.types';
 
 const DEFAULT_VALUES: InviteTeacherValues = {
   first_name: '',

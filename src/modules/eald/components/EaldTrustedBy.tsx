@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Container } from '@/modules/design-system';
 import { EALD_TRUSTED_SCHOOLS } from '@/modules/eald/constants/eald.constants';
-import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
+import { ScrollReveal } from '@/modules/landing';
 
 async function EaldTrustedBy() {
   const t = await getTranslations('Eald');

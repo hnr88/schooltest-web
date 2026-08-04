@@ -9,9 +9,7 @@ import { useUpdateClassMutation } from '@/modules/classes/mutations/use-update-c
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 import type { SchoolChild } from '@/modules/school-children';
 
-interface StrapiErrorEnvelope {
-  error?: { message?: string };
-}
+import type { StrapiErrorEnvelope } from '@/modules/classes/types/hooks.types';
 
 function sameMembers(first: string[], second: string[]): boolean {
   return first.length === second.length && first.every((entry) => second.includes(entry));

@@ -6,19 +6,7 @@ import { cn } from '@/lib/utils';
 import { Label } from '@/modules/design-system';
 import { PortalSwitch } from '@/modules/notifications/components/PortalSwitch';
 
-// Settings → Notifications row (.qa/design/spec/03 §4.1 section 3): align-items
-// centre, 16px gap, 16px vertical padding, a #EEF1F6 hairline between siblings, a
-// 14/600 navy label over a 12.5px caption, and the PortalToggle pinned right.
-interface PortalToggleRowProps {
-  title: string;
-  description: string;
-  helper?: string;
-  helperTone?: 'warning' | 'muted';
-  describedById?: string;
-  checked: boolean;
-  disabled?: boolean;
-  onCheckedChange: (checked: boolean) => void;
-}
+import type { PortalToggleRowProps } from '@/modules/notifications/types/components.types';
 
 const HELPER_CLASSES = {
   warning: 'text-warning-ink',

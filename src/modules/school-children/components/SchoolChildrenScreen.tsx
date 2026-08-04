@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Link } from '@/i18n/navigation';
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { useSchoolClassesQuery } from '@/modules/classes';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { ChildrenFilterBar } from '@/modules/school-children/components/ChildrenFilterBar';

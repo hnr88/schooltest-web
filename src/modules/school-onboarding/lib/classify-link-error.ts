@@ -2,14 +2,7 @@ import { isAxiosError } from 'axios';
 
 import type { OnboardingLinkState } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-// C-ONB-01/02/03 share the same error contract: 404 invalid token, 410 gone,
-// 409 already used. A 410 carries `details.reason` — `revoked` (ops pulled the
-// invitation back) or `expired` (the clock ran out) — so the two get their own
-// screens. Anything else (network down, 500) renders the generic unavailable
-// screen.
-interface GoneErrorBody {
-  error?: { details?: { reason?: string } };
-}
+import type { GoneErrorBody } from '@/modules/school-onboarding/types/lib.types';
 
 export function classifyLinkError(error: unknown): OnboardingLinkState {
   if (isAxiosError(error)) {

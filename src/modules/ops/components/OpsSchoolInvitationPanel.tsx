@@ -10,10 +10,7 @@ import { useRevokeInvitationMutation } from '@/modules/ops/queries/use-revoke-in
 import { useSchoolInvitationQuery } from '@/modules/ops/queries/use-school-invitation.query';
 import { useInvitationActions } from '@/modules/ops/hooks/use-invitation-actions';
 
-interface OpsSchoolInvitationPanelProps {
-  documentId: string;
-  enabled: boolean;
-}
+import type { OpsSchoolInvitationPanelProps } from '@/modules/ops/types/components.types';
 
 /**
  * The spec's Onboard School control and its state table, driven by

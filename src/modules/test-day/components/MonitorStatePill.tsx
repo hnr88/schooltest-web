@@ -1,9 +1,9 @@
 import { useTranslations } from 'next-intl';
 
 import { StatusPill } from '@/modules/design-system';
-import type { MonitorRowState, SittingStudentState } from '../types/test-day.types';
+import type { MonitorRowState, SittingStudentState } from '@/modules/test-day/types/test-day.types';
 
-type PillTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral';
+import type { PillTone } from '@/modules/test-day/types/components.types';
 
 const STATE_TONES: Record<SittingStudentState, PillTone> = {
   not_joined: 'neutral',

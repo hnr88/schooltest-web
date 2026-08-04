@@ -8,10 +8,7 @@ import {
   type ImportPreview,
 } from '@/modules/ops/schemas/import.schema';
 
-export interface ImportStudentsInput {
-  schoolDocumentId: string;
-  csv: string;
-}
+import type { ImportStudentsInput } from '@/modules/ops/types/queries.types';
 
 // C-IMP-01: validate the csv against the school's classes, emails and the
 // picklists - nothing is written. The route is ops-only (global::is-ops + the

@@ -10,13 +10,7 @@ import {
 import { settingsInputValue } from '@/modules/ops/lib/settings-input-value';
 import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
 
-interface OpsSettingsControlProps {
-  readonly form: UseFormReturn<PlatformSettingsForm>;
-  readonly field: keyof PlatformSettingsForm;
-  readonly label: string;
-  readonly helperText?: string;
-  readonly optionLabel: (option: string) => string;
-}
+import type { OpsSettingsControlProps } from '@/modules/ops/types/components.types';
 
 // One settings field, rendered with the DS control its value shape needs.
 // EVERY kind is driven by `Controller`: useController re-registers from an

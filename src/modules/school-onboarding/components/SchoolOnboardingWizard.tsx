@@ -10,10 +10,7 @@ import { useCompleteOnboarding } from '@/modules/school-onboarding/hooks/use-com
 import { useOnboardingSteps } from '@/modules/school-onboarding/hooks/useOnboardingSteps';
 import type { SchoolOnboardingData } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface SchoolOnboardingWizardProps {
-  token: string;
-  data: SchoolOnboardingData;
-}
+import type { SchoolOnboardingWizardProps } from '@/modules/school-onboarding/types/components.types';
 
 // Wizard shell: stepper plus the active step. All orchestration (state sync,
 // progress saves, completion) lives in the two hooks; the steps are dumb.

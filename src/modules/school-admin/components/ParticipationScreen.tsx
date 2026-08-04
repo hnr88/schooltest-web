@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { ParticipationClassRow } from '@/modules/school-admin/components/ParticipationClassRow';
 import { useParticipationQuery } from '@/modules/school-admin/queries/use-participation.query';

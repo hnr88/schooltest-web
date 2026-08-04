@@ -16,11 +16,7 @@ import {
 } from '@/modules/design-system';
 import { useOnboardSchoolForm } from '@/modules/ops/hooks/use-onboard-school-form';
 
-interface OpsOnboardSchoolDialogProps {
-  schoolDocumentId: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+import type { OpsOnboardSchoolDialogProps } from '@/modules/ops/types/components.types';
 
 // C-SCH-04 (v2) — the spec's Onboard School modal: First name, Last name, Email
 // address, all required, with "Send Invitation to Onboard" as the CTA. `noValidate`

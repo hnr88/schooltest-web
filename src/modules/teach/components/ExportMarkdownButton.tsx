@@ -6,9 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/modules/design-system';
 import { downloadClassExportMarkdown } from '@/modules/teach/lib/download-export';
 
-interface ExportMarkdownButtonProps {
-  classId: string;
-}
+import type { ExportMarkdownButtonProps } from '@/modules/teach/types/components.types';
 
 // C-RPT-03 export affordance (task 77, mvp spec 4.10): a visible button on the
 // results page that downloads the class markdown export, ready to paste into

@@ -5,12 +5,7 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import type { ChildJourneyRung } from '@/modules/children/types/children.types';
 
-interface ChildJourneyRailProps {
-  label: string;
-  verdict: string;
-  rungs: ChildJourneyRung[];
-  railLabel: string;
-}
+import type { ChildJourneyRailProps } from '@/modules/children/types/components.types';
 
 const DOT_CLASSES: Record<ChildJourneyRung['state'], string> = {
   done: 'border-foreground bg-foreground',

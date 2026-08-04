@@ -1,10 +1,7 @@
 import { cn } from '@/lib/utils';
 import type { ChildCardMetric as ChildCardMetricModel } from '@/modules/children/types/children.types';
 
-interface ChildCardMetricProps {
-  metric: ChildCardMetricModel;
-  divided: boolean;
-}
+import type { ChildCardMetricProps } from '@/modules/children/types/components.types';
 
 // One MetricStrip cell (§A.5 row 2): a 20/700 value over a 12.5px label, with the
 // 1px hairline the design draws BETWEEN cells as a left border rather than a

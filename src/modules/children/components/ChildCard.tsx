@@ -12,9 +12,7 @@ import { getChildCardMeta, getChildCardMetrics } from '@/modules/children/lib/ch
 import { getStatusMeta, getStatusTone } from '@/modules/children/lib/student-display';
 import type { StudentListRow } from '@/modules/dashboard';
 
-interface ChildCardProps {
-  student: StudentListRow;
-}
+import type { ChildCardProps } from '@/modules/children/types/components.types';
 
 // §A.5 ChildCard — r24 white card, 28px padding, 22px stack: identity row (52px
 // avatar · name · meta · trailing pill), the hairline-topped MetricStrip, then the

@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { useFormLockQuery } from '@/modules/ops/queries/use-form-lock.query';
 import { useFormWindowQuery } from '@/modules/ops/queries/use-form-window.query';
 import { useFormsQuery } from '@/modules/ops/queries/use-forms.query';

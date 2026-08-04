@@ -15,10 +15,7 @@ import {
 } from '@/modules/school-children/constants/child-picklists.constants';
 import type { SchoolChildFormValues } from '@/modules/school-children/schemas/school-child.schema';
 
-interface ChildEaldFieldsProps {
-  form: UseFormReturn<SchoolChildFormValues>;
-  showAcaraPhase: boolean;
-}
+import type { ChildEaldFieldsProps } from '@/modules/school-children/types/components.types';
 
 // The school-relevant EAL/D background block (spec section 7) — the flat
 // C-CHD-02 v2 fields. All optional; tri-state selects keep "Not set" as the

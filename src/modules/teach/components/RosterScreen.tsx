@@ -8,9 +8,7 @@ import { EmptyState } from '@/modules/design-system';
 import { RosterTable } from '@/modules/teach/components/RosterTable';
 import { useClassRosterQuery } from '@/modules/teach/queries/use-class-roster.query';
 
-interface RosterScreenProps {
-  documentId: string;
-}
+import type { RosterScreenProps } from '@/modules/teach/types/components.types';
 
 // Teacher roster screen (task 63, mvp-updates §4.4): the read-only class
 // roster ahead of test day. An unowned class yields an empty page from

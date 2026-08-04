@@ -4,16 +4,7 @@ import { cn } from '@/lib/utils';
 import { DataPanel } from '@/modules/design-system';
 import { PORTAL_CARD_CLASS } from '@/modules/notifications/constants/notification.constants';
 
-// PortalCard + section head (.qa/design/spec/03 §4.1): 26px/30px padding, a 16/600
-// navy h2 and an optional 13px lede under it, then the card's own composition.
-interface PortalPanelProps {
-  id: string;
-  title: string;
-  description?: string;
-  action?: ReactNode;
-  children: ReactNode;
-  className?: string;
-}
+import type { PortalPanelProps } from '@/modules/notifications/types/components.types';
 
 export function PortalPanel({
   id,

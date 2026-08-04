@@ -4,15 +4,7 @@ import type { UseFormRegisterReturn } from 'react-hook-form';
 
 import { describedBy, FieldShell, Input } from '@/modules/design-system';
 
-interface OnboardingTextFieldProps {
-  id: string;
-  label: string;
-  type?: string;
-  autoComplete?: string;
-  helperText?: string;
-  error?: string;
-  registration: UseFormRegisterReturn;
-}
+import type { OnboardingTextFieldProps } from '@/modules/school-onboarding/types/components.types';
 
 // Shared label + input + field-level error for the wizard steps (canonical
 // DS field stack via FieldShell).

@@ -13,9 +13,7 @@ import {
 import { StaffTableRow } from '@/modules/teachers/components/StaffTableRow';
 import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 
-interface TeachersTableProps {
-  rows: StaffRow[];
-}
+import type { TeachersTableProps } from '@/modules/teachers/types/components.types';
 
 // Merged staff table (C-TCH-01 accounts + C-INV-02 open invitations). Dumb
 // renderer — merging/sorting lives in useStaffRows, actions in StaffRowActions.

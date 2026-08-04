@@ -5,9 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useGoogleCallback } from '@/modules/auth/hooks/use-google-callback';
 import { Skeleton } from '@/modules/design-system';
 
-interface GoogleCallbackScreenProps {
-  queryString: string;
-}
+import type { GoogleCallbackScreenProps } from '@/modules/auth/types/components.types';
 
 // Bridge screen for the C-AUTH-GOOGLE post-consent redirect (D18): the query
 // forwarding + jwt/error routing lives in useGoogleCallback, so this always

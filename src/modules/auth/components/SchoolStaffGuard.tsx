@@ -5,9 +5,7 @@ import type { ReactNode } from 'react';
 import { useRequireSchoolStaff } from '@/modules/auth/hooks/use-require-school-staff';
 import { Skeleton } from '@/modules/design-system';
 
-interface SchoolStaffGuardProps {
-  children: ReactNode;
-}
+import type { SchoolStaffGuardProps } from '@/modules/auth/types/components.types';
 
 // Gate for school-staff routes (D-16a, task 113 - today only
 // /dashboard/teach/notifications, which C-NOT-01 serves to both teacher and

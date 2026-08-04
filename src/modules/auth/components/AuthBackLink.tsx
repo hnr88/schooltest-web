@@ -4,9 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 
 import { Link } from '@/i18n/navigation';
 
-interface AuthBackLinkProps {
-  label: string;
-}
+import type { AuthBackLinkProps } from '@/modules/auth/types/components.types';
 
 // "← Back to sign in" (design spec 06 §1.3:12) — centred, 14/600, primary ink.
 export function AuthBackLink({ label }: AuthBackLinkProps) {

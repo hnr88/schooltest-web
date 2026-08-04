@@ -3,11 +3,10 @@
 import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
 
-import {
-  ClassMemberChecklist,
-  type ClassMemberOption,
-} from '@/modules/classes/components/ClassMemberChecklist';
-import { useClassForm, type ClassFormTarget } from '@/modules/classes/hooks/use-class-form';
+import { ClassMemberChecklist } from '@/modules/classes/components/ClassMemberChecklist';
+import type { ClassMemberOption } from '@/modules/classes/types/components.types';
+import { useClassForm } from '@/modules/classes/hooks/use-class-form';
+import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
 import type { ClassChildOption } from '@/modules/classes/types/classes.types';
 import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
 import {
@@ -20,12 +19,7 @@ import {
 } from '@/modules/design-system';
 import type { SchoolTeacher } from '@/modules/teachers';
 
-interface ClassFormProps {
-  target: ClassFormTarget;
-  teachers: SchoolTeacher[];
-  childOptions: ClassChildOption[];
-  onClose: () => void;
-}
+import type { ClassFormProps } from '@/modules/classes/types/components.types';
 
 function teacherOption(teacher: SchoolTeacher): ClassMemberOption {
   const name = `${teacher.first_name ?? ''} ${teacher.last_name ?? ''}`.trim();

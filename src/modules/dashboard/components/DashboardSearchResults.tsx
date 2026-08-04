@@ -6,16 +6,10 @@ import { getStudentDisplayName } from '@/lib/student-name';
 import { cn } from '@/lib/utils';
 import type { Student } from '@/modules/dashboard/types/student.types';
 
+import type { DashboardSearchResultsProps } from '@/modules/dashboard/types/components.types';
+
 export const DASHBOARD_SEARCH_LISTBOX_ID = 'dashboard-search-listbox';
 export const dashboardSearchOptionId = (index: number) => `dashboard-search-option-${index}`;
-
-interface DashboardSearchResultsProps {
-  isLoading: boolean;
-  isError: boolean;
-  results: Student[];
-  activeIndex: number;
-  onSelect: (documentId: string) => void;
-}
 
 // The dropdown panel DashboardSearch renders below its input — split out to
 // keep DashboardSearch itself under the module's component line cap.

@@ -1,5 +1,5 @@
 import { Container, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
+import { ScrollReveal } from '@/modules/landing';
 import type { QuoteBandProps } from '@/modules/eald/types/eald.types';
 
 function QuoteBand({ quote }: QuoteBandProps) {

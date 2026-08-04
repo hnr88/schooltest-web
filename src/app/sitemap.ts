@@ -8,8 +8,8 @@ import { LEGAL_ROUTES, getLegalDocuments } from '@/modules/legal';
 // metadata route (or into the Node-side e2e runtime) drags next-intl's client
 // navigation in with them. `.claude/rules/module-pattern.md` scopes the
 // barrel-only rule to `src/modules/**`; these are route and test files.
-import { PUBLIC_ROUTES, isDisallowed } from '@/modules/seo/constants/public-routes';
-import { absoluteUrl } from '@/modules/seo/lib/breadcrumb-json-ld';
+import { PUBLIC_ROUTES, isDisallowed } from '@/modules/seo';
+import { absoluteUrl } from '@/modules/seo';
 
 // C-WEB-03. One <url> per public route x locale, each carrying the full
 // hreflang alternate set. The route list is the SHARED registry plus the legal

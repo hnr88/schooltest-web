@@ -7,17 +7,9 @@ import type {
   SchoolChildrenQuery,
 } from '@/modules/school-children/types/school-children.types';
 
-const SEARCH_DEBOUNCE_MS = 300;
+import type { ChildrenFilters } from '@/modules/school-children/types/hooks.types';
 
-export interface ChildrenFilters {
-  query: SchoolChildrenQuery;
-  search: string;
-  setSearch: (value: string) => void;
-  selectStatus: (value: SchoolChildStatusFilter) => void;
-  selectClass: (value: string) => void;
-  setPage: (page: number) => void;
-  filtered: boolean;
-}
+const SEARCH_DEBOUNCE_MS = 300;
 
 // The roster filter state: status, class, a debounced name search and the
 // page. Any filter change resets to page 1 so a narrowed result set never

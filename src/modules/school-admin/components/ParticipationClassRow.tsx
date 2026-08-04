@@ -4,9 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import type { ParticipationClassRow as ParticipationClassRowData } from '@/modules/school-admin/types/participation.types';
 
-interface ParticipationClassRowProps {
-  row: ParticipationClassRowData;
-}
+import type { ParticipationClassRowProps } from '@/modules/school-admin/types/components.types';
 
 // One class row of the C-RPT-04 participation monitor (task 78): roster size
 // plus the Test A / Test B completion buckets. Completion status ONLY - no

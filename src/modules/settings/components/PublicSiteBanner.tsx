@@ -4,9 +4,7 @@ import { cn } from '@/lib/utils';
 import { Container } from '@/modules/design-system';
 import type { PublicSettings } from '@/modules/settings/types/settings.types';
 
-interface PublicSiteBannerProps {
-  readonly settings: PublicSettings;
-}
+import type { PublicSiteBannerProps } from '@/modules/settings/types/components.types';
 
 const LEVEL_STYLES = {
   info: 'bg-blue-50 text-navy-800',

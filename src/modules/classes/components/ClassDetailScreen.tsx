@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { ClassAssignmentPanel } from '@/modules/classes/components/ClassAssignmentPanel';
 import { isYearBand } from '@/modules/classes/constants/year-bands.constants';
 import { useClassDetailQuery } from '@/modules/classes/queries/use-class-detail.query';
@@ -13,9 +13,7 @@ import { useSchoolChildrenQuery } from '@/modules/school-children';
 import { RecordCrumb } from '@/modules/shell';
 import { useTeachersQuery } from '@/modules/teachers';
 
-interface ClassDetailScreenProps {
-  documentId: string;
-}
+import type { ClassDetailScreenProps } from '@/modules/classes/types/components.types';
 
 // School admin class detail (task 31, st-mvp-pivot): one class's teachers and
 // students with pickers saved through C-CLS-03. The panel mounts only once

@@ -5,12 +5,7 @@ import { Controller, type Control } from 'react-hook-form';
 import { ChoicePillGroup, FieldShell, type ChoiceOption } from '@/modules/design-system';
 import type { SearchPreferenceFormValues } from '@/modules/settings/types/settings.types';
 
-interface SearchPreferenceChoiceFieldProps {
-  control: Control<SearchPreferenceFormValues>;
-  name: 'default_states';
-  label: string;
-  options: readonly ChoiceOption[];
-}
+import type { SearchPreferenceChoiceFieldProps } from '@/modules/settings/types/components.types';
 
 // Canonical multi-select for SHORT labels: the ChoicePill group (App Screens
 // "Assign to classes" L3290-3293, Invite co-parent "Can see" L1493-1494) — an

@@ -14,12 +14,7 @@ import {
   WIZARD_STEP_KEYS,
 } from '@/modules/student-wizard/constants/student-wizard.constants';
 
-// Baked-message factory: messages are resolved up-front from the
-// `StudentWizardSchema` namespace, so `errors.<field>.message` is already
-// localized when steps 049–052 render it (no per-field `t()` wrapping).
-// No message augmentation exists, so next-intl's `t` accepts string keys and is
-// assignable to this structural type.
-type WizardSchemaTranslator = (key: string) => string;
+import type { StudentWizardSchema, WizardSchemaTranslator } from '@/modules/student-wizard/types/schemas.types';
 
 function isValidDateOfBirth(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
@@ -134,8 +129,6 @@ export function createStudentWizardSchema(t: WizardSchemaTranslator) {
       : requiredUploadId(t('voiceIntroRequired')),
   });
 }
-
-export type StudentWizardSchema = ReturnType<typeof createStudentWizardSchema>;
 export type StudentWizardValues = z.input<StudentWizardSchema>;
 export type StudentWizardOutput = z.output<StudentWizardSchema>;
 

@@ -18,10 +18,7 @@ import {
 import type { ResetPasswordErrorKey } from '@/modules/auth/types/auth.types';
 import { Alert, Button } from '@/modules/design-system';
 
-interface ResetPasswordFormProps {
-  code: string;
-  onInvalidCode: () => void;
-}
+import type { ResetPasswordFormProps } from '@/modules/auth/types/components.types';
 
 // Form state of the reset-password card (§14.3 reuse): blue key tile, title +
 // helper copy, two PasswordFields, primary submit. A 400 (invalid/expired

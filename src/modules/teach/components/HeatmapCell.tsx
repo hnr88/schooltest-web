@@ -6,9 +6,7 @@ import {
 } from '@/modules/teach/lib/heatmap-view-model';
 import type { DiagnosticHeatmapRow } from '@/modules/teach/types/diagnostic.types';
 
-interface HeatmapCellProps {
-  row: DiagnosticHeatmapRow;
-}
+import type { HeatmapCellProps } from '@/modules/teach/types/components.types';
 
 // One heat-map cell (task 75, mvp-updates §4.9): labelled by item code only,
 // valued as items correct / responses with the percentage beside it, colour

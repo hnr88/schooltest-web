@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import type { ImportStudentsInput } from '@/modules/ops/queries/use-import-preview.mutation';
+import type { ImportStudentsInput } from '@/modules/ops/types/queries.types';
 import {
   importCommitResultSchema,
   type ImportCommitResult,

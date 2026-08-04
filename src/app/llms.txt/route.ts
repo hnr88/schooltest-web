@@ -5,7 +5,7 @@ import { LEGAL_ROUTES, getLegalDocuments } from '@/modules/legal';
 // metadata route (or into the Node-side e2e runtime) drags next-intl's client
 // navigation in with them. `.claude/rules/module-pattern.md` scopes the
 // barrel-only rule to `src/modules/**`; these are route and test files.
-import { buildLlmsTxt } from '@/modules/seo/lib/build-llms-txt';
+import { buildLlmsTxt } from '@/modules/seo';
 
 export const dynamic = 'force-dynamic';
 

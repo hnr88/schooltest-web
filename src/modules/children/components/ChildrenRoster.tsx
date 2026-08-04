@@ -10,9 +10,7 @@ import { ChildrenRosterPager } from '@/modules/children/components/ChildrenRoste
 import type { RosterPagination } from '@/modules/children/types/children.types';
 import type { StudentListRow } from '@/modules/dashboard';
 
-interface ChildrenRosterProps {
-  pagination: RosterPagination<StudentListRow>;
-}
+import type { ChildrenRosterProps } from '@/modules/children/types/components.types';
 
 // §A.4 ChildCardGrid — the portal list is a GRID OF CARDS, not a table: one
 // auto-fit track per card at a 360px floor, 20px gutters, and the dashed

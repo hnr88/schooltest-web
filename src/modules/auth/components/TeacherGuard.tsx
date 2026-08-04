@@ -5,9 +5,7 @@ import type { ReactNode } from 'react';
 import { useRequireTeacher } from '@/modules/auth/hooks/use-require-teacher';
 import { Skeleton } from '@/modules/design-system';
 
-interface TeacherGuardProps {
-  children: ReactNode;
-}
+import type { TeacherGuardProps } from '@/modules/auth/types/components.types';
 
 // Gate for teacher-only routes (F-WEB-TEACHER-REPORT): a loading skeleton while
 // the token hydrates and /api/users/me resolves, then either the guarded content

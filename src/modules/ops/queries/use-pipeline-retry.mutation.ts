@@ -6,10 +6,7 @@ import { strapi } from '@/lib/axios/strapi';
 import { pipelineRetryResultSchema } from '@/modules/ops/schemas/pipeline.schema';
 import { PIPELINE_HEALTH_QUERY_KEY } from '@/modules/ops/queries/use-pipeline-health.query';
 
-export interface PipelineRetryInput {
-  queue: string;
-  jobId: string;
-}
+import type { PipelineRetryInput } from '@/modules/ops/types/queries.types';
 
 // C-OPS-03 (task 69): re-runs a failed scoring job. 400 bad queue / blank job
 // id, 404 unknown job - the hook surfaces those to the caller for the toast.

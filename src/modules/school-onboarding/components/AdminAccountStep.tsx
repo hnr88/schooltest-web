@@ -13,13 +13,7 @@ import {
 } from '@/modules/school-onboarding/schemas/school-onboarding.schema';
 import type { AdminDetails } from '@/modules/school-onboarding/types/school-onboarding.types';
 
-interface AdminAccountStepProps {
-  defaultValues: AdminDetails;
-  serverError: string | null;
-  pending: boolean;
-  onSubmit: (values: AdminAccountValues) => void;
-  onBack: () => void;
-}
+import type { AdminAccountStepProps } from '@/modules/school-onboarding/types/components.types';
 
 // Step 4: the first school_admin account. The password never enters the
 // wizard store — it goes straight from this form into the C-ONB-03 body.

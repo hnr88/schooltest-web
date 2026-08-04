@@ -6,12 +6,12 @@ import { getTranslations } from 'next-intl/server';
 // metadata route (or into the Node-side e2e runtime) drags next-intl's client
 // navigation in with them. `.claude/rules/module-pattern.md` scopes the
 // barrel-only rule to `src/modules/**`; these are route and test files.
-import { OgCard } from '@/modules/seo/components/OgCard';
+import { OgCard } from '@/modules/seo';
 import {
   OG_IMAGE_HEIGHT,
   OG_IMAGE_WIDTH,
   SITE_NAME,
-} from '@/modules/seo/constants/seo.constants';
+} from '@/modules/seo';
 
 export const alt = SITE_NAME;
 export const size = { width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT };

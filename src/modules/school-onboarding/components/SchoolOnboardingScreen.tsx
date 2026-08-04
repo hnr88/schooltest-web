@@ -9,9 +9,7 @@ import { useStoreHydration } from '@/modules/school-onboarding/hooks/use-store-h
 import { classifyLinkError } from '@/modules/school-onboarding/lib/classify-link-error';
 import { useSchoolOnboardingQuery } from '@/modules/school-onboarding/queries/use-school-onboarding.query';
 
-interface SchoolOnboardingScreenProps {
-  token: string;
-}
+import type { SchoolOnboardingScreenProps } from '@/modules/school-onboarding/types/components.types';
 
 // Guest entry point for the tokenised onboarding link (spec section 4). The
 // wizard renders only after the link state is known AND the persisted store

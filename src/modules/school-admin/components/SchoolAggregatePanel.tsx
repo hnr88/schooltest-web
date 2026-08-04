@@ -6,10 +6,7 @@ import type { SchoolClass } from '@/modules/classes';
 import { Skeleton } from '@/modules/design-system';
 import { useSchoolAggregate } from '@/modules/school-admin/hooks/useSchoolAggregate';
 
-interface SchoolAggregatePanelProps {
-  classes: SchoolClass[];
-  onSelectClass: (classDocumentId: string) => void;
-}
+import type { SchoolAggregatePanelProps } from '@/modules/school-admin/types/components.types';
 
 // School overview (task 78, mvp spec 4.3 level 1): all classes combined into
 // one view - sat totals plus the per-area status distribution across the

@@ -7,16 +7,14 @@ import { Badge, type BadgeProps, TableCell, TableRow } from '@/modules/design-sy
 import { StaffRowActions } from '@/modules/teachers/components/StaffRowActions';
 import type { StaffRow, StaffRowStatus } from '@/modules/teachers/types/teachers.types';
 
+import type { StaffTableRowProps } from '@/modules/teachers/types/components.types';
+
 const STATUS_VARIANTS: Record<StaffRowStatus, BadgeProps['variant']> = {
   active: 'success',
   deactivated: 'error',
   invited: 'accent',
   expired: 'warning',
 };
-
-interface StaffTableRowProps {
-  row: StaffRow;
-}
 
 // One merged staff row: a live account (classes listed) or an open invitation
 // (join note + expiry under the status badge).

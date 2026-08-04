@@ -18,9 +18,7 @@ import { OpsSittingRecoveryTable } from '@/modules/ops/components/OpsSittingReco
 import { useSittingRecovery } from '@/modules/ops/hooks/use-sitting-recovery';
 import { useOpsSittingMonitorQuery } from '@/modules/ops/queries/use-ops-sitting-monitor.query';
 
-interface OpsSittingRecoveryDetailProps {
-  sittingDocumentId: string;
-}
+import type { OpsSittingRecoveryDetailProps } from '@/modules/ops/types/components.types';
 
 // The selected sitting's recovery surface (C-OPS-02, task 69): the live C-SIT-02
 // roster, per-student re-sits and the invalidate action behind a confirm

@@ -9,9 +9,7 @@ import { QueryErrorFallback } from '@/modules/query-errors';
 import { WizardScreen } from '@/modules/student-wizard';
 import { useEditStudent } from '@/modules/children/hooks/use-edit-student';
 
-interface EditStudentScreenProps {
-  documentId: string;
-}
+import type { EditStudentScreenProps } from '@/modules/children/types/components.types';
 
 // C-UI-MYCHILDREN edit: mounts the C-UI-STUDENT-WIZARD in edit mode once the
 // detail read resolves (prefilled from it; passport_number stays empty). The read

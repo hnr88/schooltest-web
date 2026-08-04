@@ -8,11 +8,7 @@ import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd } from '@/modules/seo';
 import type { LegalDocument } from '@/modules/legal/types/legal.types';
 
-interface LegalDocumentScreenProps {
-  readonly document: LegalDocument;
-  readonly pathname: string;
-  readonly locale: string;
-}
+import type { LegalDocumentScreenProps } from '@/modules/legal/types/components.types';
 
 // Public legal page shell: the same header/footer chrome as the marketing
 // surface, the shared breadcrumb + BreadcrumbList JSON-LD, then the document

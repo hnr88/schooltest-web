@@ -13,16 +13,13 @@ import {
   type OnboardSchoolValues,
 } from '@/modules/ops/schemas/school-invitation.schema';
 
+import type { UseOnboardSchoolFormInput } from '@/modules/ops/types/hooks.types';
+
 const DEFAULT_VALUES: OnboardSchoolValues = {
   first_name: '',
   last_name: '',
   contact_email: '',
 };
-
-interface UseOnboardSchoolFormInput {
-  schoolDocumentId: string;
-  onDone: () => void;
-}
 
 /**
  * C-SCH-04 (v2) submit handling for the Onboard School modal. Keeps the dialog

@@ -5,11 +5,7 @@ import type {
   StudentDetail,
 } from '@/modules/children/types/children.types';
 
-interface HeroLabels {
-  formatYear: (year: number) => string;
-  school: string | null;
-  born: string | null;
-}
+import type { DetailLabels, GuardianLabels, HeroLabels } from '@/modules/children/types/lib.types';
 
 // The canonical hero meta line ("Grade 4B · Nørrebro Heights School · Born
 // 03.06.2016") — real enrolment facts about THIS child, joined in reading order.
@@ -22,22 +18,6 @@ export function getHeroMetaFacts(
   return [formatYearLevel(student, formatYear), school, born, student.nationality].filter(
     (fact): fact is string => Boolean(fact),
   );
-}
-
-interface DetailLabels {
-  formatYear: (year: number) => string;
-  yearLevel: string;
-  dateOfBirth: string;
-  gender: string;
-  genderValue: string | null;
-  nationality: string;
-  currentSchool: string;
-  targetEntry: string;
-  signInEmail: string;
-  addedOn: string;
-  born: string | null;
-  added: string;
-  targetEntryValue: string | null;
 }
 
 // The enrolment panel. Every row is a field the parent detail read (GET
@@ -54,14 +34,6 @@ export function getEnrolmentFacts(detail: StudentDetail, labels: DetailLabels): 
     { label: labels.signInEmail, value: detail.email },
     { label: labels.addedOn, value: labels.added },
   ];
-}
-
-interface GuardianLabels {
-  email: string;
-  phone: string;
-  wechat: string;
-  preferredContact: string;
-  channelValue: string | null;
 }
 
 // The canonical "Linked parents" panel, fed by the guardian block the detail read

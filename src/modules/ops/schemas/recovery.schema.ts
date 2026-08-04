@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
+
 // C-OPS-02 (task 69, st-mvp-pivot): the ops sitting-recovery boundary schemas.
 // The sitting picker reads the EXISTING core GET /api/sittings (ops holds full
 // visibility) filtered to the school's classes; the student list reuses the
@@ -37,7 +39,6 @@ export const recoveryMonitorSchema = z.object({
 });
 
 export type RecoveryMonitor = z.infer<typeof recoveryMonitorSchema>;
-export type RecoveryMonitorStudent = RecoveryMonitor['students'][number];
 
 // C-OPS-02 invalidate response (`{ data: { documentId, status: "closed" } }`).
 export const invalidateResultSchema = z.object({

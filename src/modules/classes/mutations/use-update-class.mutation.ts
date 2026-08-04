@@ -9,9 +9,7 @@ import { schoolClassSchema, type ClassFormValues } from '@/modules/classes/schem
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 import { SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-children';
 
-export interface UpdateClassInput extends ClassFormValues {
-  documentId: string;
-}
+import type { UpdateClassInput } from '@/modules/classes/types/queries.types';
 
 // C-CLS-03: rename / re-band / re-assign. student_documentIds is REPLACE
 // semantics server-side: unlisted members are unlinked, never deleted.

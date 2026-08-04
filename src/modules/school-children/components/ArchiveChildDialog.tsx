@@ -15,13 +15,7 @@ import {
 import { childDisplayName } from '@/modules/school-children/hooks/use-child-row-actions';
 import type { SchoolChild } from '@/modules/school-children/types/school-children.types';
 
-interface ArchiveChildDialogProps {
-  child: SchoolChild;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  pending: boolean;
-  onConfirm: () => void;
-}
+import type { ArchiveChildDialogProps } from '@/modules/school-children/types/components.types';
 
 // C-CHD-04 confirm. The description carries the contract promise in plain
 // language: the seat is freed, the record and results stay on file.

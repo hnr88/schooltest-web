@@ -5,10 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { strapi } from '@/lib/axios/strapi';
 import { OPS_SITTING_MONITOR_QUERY_KEY } from '@/modules/ops/queries/use-ops-sitting-monitor.query';
 
-export interface OpsResitInput {
-  sittingDocumentId: string;
-  studentDocumentId: string;
-}
+import type { OpsResitInput } from '@/modules/ops/types/queries.types';
 
 // C-OPS-02 re-sit passthrough (task 69): the ops-side twin of C-SIT-03 -
 // terminates the student's in-flight session in this sitting so a fresh join

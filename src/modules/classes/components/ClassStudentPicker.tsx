@@ -2,17 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 
-import {
-  ClassMemberChecklist,
-  type ClassMemberOption,
-} from '@/modules/classes/components/ClassMemberChecklist';
+import { ClassMemberChecklist } from '@/modules/classes/components/ClassMemberChecklist';
+import type { ClassMemberOption } from '@/modules/classes/types/components.types';
 import { childDisplayName, type SchoolChild } from '@/modules/school-children';
 
-interface ClassStudentPickerProps {
-  students: SchoolChild[];
-  value: string[];
-  onChange: (next: string[]) => void;
-}
+import type { ClassStudentPickerProps } from '@/modules/classes/types/components.types';
 
 function toOption(child: SchoolChild): ClassMemberOption {
   return {

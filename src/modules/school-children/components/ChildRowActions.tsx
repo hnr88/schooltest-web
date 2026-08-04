@@ -17,10 +17,7 @@ import {
 } from '@/modules/school-children/hooks/use-child-row-actions';
 import type { SchoolChild } from '@/modules/school-children/types/school-children.types';
 
-interface ChildRowActionsProps {
-  child: SchoolChild;
-  onEdit: () => void;
-}
+import type { ChildRowActionsProps } from '@/modules/school-children/types/components.types';
 
 // Row actions for the children roster: edit (opens the screen-level edit
 // dialog) and, for active children, archive behind the C-CHD-04 confirm.

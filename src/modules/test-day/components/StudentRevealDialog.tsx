@@ -12,16 +12,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/modules/design-system';
-import type { SittingStatus } from '../types/test-day.types';
+import type { SittingStatus } from '@/modules/test-day/types/test-day.types';
 
-interface StudentRevealDialogProps {
-  open: boolean;
-  onClose: () => void;
-  code: string | null;
-  status: SittingStatus;
-  studentName: string;
-  studentEmail: string | null;
-}
+import type { StudentRevealDialogProps } from '@/modules/test-day/types/components.types';
 
 // C-SIT-05 per-student reveal (mvp-updates §4.5.3): the code is class-wide, so
 // revealing it to one student is purely a UI flow over the already-loaded

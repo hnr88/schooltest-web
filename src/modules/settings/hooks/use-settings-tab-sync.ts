@@ -8,10 +8,7 @@ import { SETTINGS_TAB_PARAM } from '@/modules/settings/constants/settings.consta
 import { coerceSettingsTab } from '@/modules/settings/lib/settings-tab';
 import type { SettingsTab } from '@/modules/settings/types/settings.types';
 
-interface SettingsTabSync {
-  tab: SettingsTab;
-  setTab: (tab: SettingsTab) => void;
-}
+import type { SettingsTabSync } from '@/modules/settings/types/hooks.types';
 
 export function useSettingsTabSync(): SettingsTabSync {
   const router = useRouter();

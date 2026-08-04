@@ -12,10 +12,10 @@ import {
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings } from '@/modules/settings';
-import { ClassroomSection } from '@/modules/eald/components/ClassroomSection';
-import { GenerateSection } from '@/modules/eald/components/GenerateSection';
-import { TeachHero } from '@/modules/eald/components/TeachHero';
-import { ThreeMoreSection } from '@/modules/eald/components/ThreeMoreSection';
+import { ClassroomSection } from '@/modules/eald';
+import { GenerateSection } from '@/modules/eald';
+import { TeachHero } from '@/modules/eald';
+import { ThreeMoreSection } from '@/modules/eald';
 
 interface TeachPageProps {
   params: Promise<{ locale: string }>;

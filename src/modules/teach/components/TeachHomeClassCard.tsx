@@ -7,9 +7,7 @@ import { DiagnosticSummaryPanel } from '@/modules/teach/components/DiagnosticSum
 import { MonitorSummaryPanel } from '@/modules/teach/components/MonitorSummaryPanel';
 import type { TeachHomeClass } from '@/modules/teach/types/teach-home.types';
 
-interface TeachHomeClassCardProps {
-  classSummary: TeachHomeClass;
-}
+import type { TeachHomeClassCardProps } from '@/modules/teach/types/components.types';
 
 // Teach home class card (task 83, mvp-updates §4.9): one card per class on
 // the teacher landing dashboard - class name, the diagnostic and live monitor

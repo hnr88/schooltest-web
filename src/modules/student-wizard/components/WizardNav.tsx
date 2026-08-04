@@ -6,15 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/modules/design-system';
 import type { WizardMode } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface WizardNavProps {
-  step: number;
-  stepCount: number;
-  isLastStep: boolean;
-  mode: WizardMode;
-  pending: boolean;
-  onBack: () => void;
-  onContinue: () => void;
-}
+import type { WizardNavProps } from '@/modules/student-wizard/types/components.types';
 
 // Wizard footer (spec 03 §2.9): pinned to the bottom of the card with
 // `margin-top:auto`, a borderless "← Back" on the left and the step counter beside

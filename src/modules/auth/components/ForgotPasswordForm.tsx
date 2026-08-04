@@ -17,9 +17,7 @@ import {
 import type { ForgotPasswordErrorKey } from '@/modules/auth/types/auth.types';
 import { Alert, Button } from '@/modules/design-system';
 
-interface ForgotPasswordFormProps {
-  onSent: (email: string) => void;
-}
+import type { ForgotPasswordFormProps } from '@/modules/auth/types/components.types';
 
 // Request state of the forgot-password card (§14.3): blue lock tile, title +
 // helper copy, email field, primary submit. Success is enumeration-safe — the

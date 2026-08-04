@@ -16,10 +16,7 @@ import {
   Tag,
 } from '@/modules/design-system';
 
-interface ClassesTableProps {
-  rows: SchoolClass[];
-  onEdit: (schoolClass: SchoolClass) => void;
-}
+import type { ClassesTableProps } from '@/modules/classes/types/components.types';
 
 function teacherName(firstName: string | null, lastName: string | null): string {
   return `${firstName ?? ''} ${lastName ?? ''}`.trim();

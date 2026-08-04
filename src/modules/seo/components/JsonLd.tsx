@@ -1,8 +1,6 @@
 import type { JsonLdNode } from '@/modules/seo/types/seo.types';
 
-interface JsonLdProps {
-  readonly data: JsonLdNode;
-}
+import type { JsonLdProps } from '@/modules/seo/types/components.types';
 
 // Server Component. Emits one schema.org graph node as a JSON-LD script tag.
 // The payload is a typed object built by `@/modules/seo/lib/json-ld` and

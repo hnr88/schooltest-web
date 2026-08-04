@@ -5,19 +5,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/modules/design-system';
 
-export type OnboardingStepKey = 'welcome' | 'finish';
-
-interface OnboardingStepProps {
-  step: OnboardingStepKey;
-  onContinue: () => void;
-  onComplete: () => void;
-  onSkip: () => void;
-  isPending: boolean;
-  // The finish step's "Get started" stays locked until the parent profile is
-  // complete (saved this session or already complete on the server).
-  completeDisabled?: boolean;
-  completeHint?: string;
-}
+import type { OnboardingStepKey, OnboardingStepProps } from '@/modules/onboarding/types/components.types';
 
 const STEP_ICONS: Record<OnboardingStepKey, React.ReactNode> = {
   welcome: <Users className="size-6" />,

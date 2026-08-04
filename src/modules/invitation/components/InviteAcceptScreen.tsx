@@ -9,9 +9,7 @@ import { InviteStatusScreen } from '@/modules/invitation/components/InviteStatus
 import { classifyInviteError } from '@/modules/invitation/lib/classify-invite-error';
 import { useInvitationQuery } from '@/modules/invitation/queries/use-invitation.query';
 
-interface InviteAcceptScreenProps {
-  token: string;
-}
+import type { InviteAcceptScreenProps } from '@/modules/invitation/types/components.types';
 
 // Guest entry point for the /invite/<token> link (spec section 6): the page
 // shows who was invited, to which school and in which role, then collects a

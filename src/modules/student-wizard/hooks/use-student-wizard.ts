@@ -16,10 +16,7 @@ import {
 } from '@/modules/student-wizard/schemas/student-wizard.schema';
 import type { WizardMode } from '@/modules/student-wizard/types/student-wizard.types';
 
-interface UseStudentWizardParams {
-  mode: WizardMode;
-  initialValues?: Partial<StudentWizardValues>;
-}
+import type { UseStudentWizardParams } from '@/modules/student-wizard/types/hooks.types';
 
 // Step-state machinery for the wizard (C-UI-STUDENT-WIZARD Navigation):
 // Continue validates the current step (WizardScreen runs form.trigger first);

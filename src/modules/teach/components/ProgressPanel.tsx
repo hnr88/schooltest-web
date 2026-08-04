@@ -6,9 +6,7 @@ import { ProgressEmptyState } from '@/modules/teach/components/ProgressEmptyStat
 import { ProgressTransitionRow } from '@/modules/teach/components/ProgressTransitionRow';
 import { useClassProgressQuery } from '@/modules/teach/queries/use-class-progress.query';
 
-interface ProgressPanelProps {
-  classId: string;
-}
+import type { ProgressPanelProps } from '@/modules/teach/types/components.types';
 
 // Teacher progress panel (task 76, mvp-updates §4.9, C-RPT-02): Test B
 // measured against Test A as the benchmark. The empty state is a first-class

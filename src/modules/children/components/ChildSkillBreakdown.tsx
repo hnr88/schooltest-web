@@ -11,10 +11,7 @@ import {
 } from '@/modules/children/lib/child-skills';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
 
-interface ChildSkillBreakdownProps {
-  results: ChildProgressResult[];
-  officialResultCount: number;
-}
+import type { ChildSkillBreakdownProps } from '@/modules/children/types/components.types';
 
 // §B.5 SkillsCard — one row per skill: label, track, verdict. The design's track is
 // a mastery PERCENTAGE and its right column a letter-ish grade (`B1+`); the parent

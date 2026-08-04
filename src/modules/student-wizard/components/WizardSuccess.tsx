@@ -2,10 +2,7 @@
 
 import { Check } from 'lucide-react';
 
-interface WizardSuccessProps {
-  title: string;
-  body: string;
-}
+import type { WizardSuccessProps } from '@/modules/student-wizard/types/components.types';
 
 // Submit confirmation. `st-pop-in` is the design's own entrance primitive
 // (spec 04 §2: `opacity 0→1, scale .96→1, 180ms ease`) — expressed here with

@@ -3,11 +3,7 @@ import { formatYearLevel } from '@/modules/children/lib/year-level';
 import type { ChildCardMetric } from '@/modules/children/types/children.types';
 import type { StudentListRow } from '@/modules/dashboard';
 
-interface CardLabels {
-  formatYear: (year: number) => string;
-  yearLevel: string;
-  targetEntry: string;
-}
+import type { CardLabels } from '@/modules/children/types/lib.types';
 
 // The design's MetricStrip (§A.5 row 2) is three cells: "% to {next level}"
 // (B-4), "day streak" (no streak field is modelled anywhere) and "last result %"

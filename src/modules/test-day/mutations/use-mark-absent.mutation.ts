@@ -5,14 +5,10 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { strapi } from '@/lib/axios/strapi';
-import { SITTING_MONITOR_QUERY_KEY } from '../queries/use-sitting-monitor.query';
-import type { MonitorStudent, SittingMonitor } from '../types/test-day.types';
+import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/queries/use-sitting-monitor.query';
+import type { MonitorStudent, SittingMonitor } from '@/modules/test-day/types/test-day.types';
 
-export interface MarkAbsentInput {
-  sittingDocumentId: string;
-  studentDocumentId: string;
-  absent: boolean;
-}
+import type { MarkAbsentInput } from '@/modules/test-day/types/queries.types';
 
 // C-SIT-06 (task 120, mvp-updates §4.5.6): toggle a roster student's absent
 // flag on the sitting - "a student who was away sits later".

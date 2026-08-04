@@ -27,7 +27,6 @@ export { buildLlmsTxt } from '@/modules/seo/lib/build-llms-txt';
 export {
   REVALIDATE_TAGS,
   revalidateRequestSchema,
-  type RevalidateTag,
 } from '@/modules/seo/schemas/revalidate.schema';
 export { OgCard } from '@/modules/seo/components/OgCard';
 export type {
@@ -40,3 +39,4 @@ export type {
   OrganizationInput,
   WebPageInput,
 } from '@/modules/seo/types/seo.types';
+export type { RevalidateTag } from './types/schemas.types';

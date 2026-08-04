@@ -3,12 +3,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { SITTING_MONITOR_QUERY_KEY } from '../queries/use-sitting-monitor.query';
+import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/queries/use-sitting-monitor.query';
 
-export interface ResitInput {
-  sittingDocumentId: string;
-  studentDocumentId: string;
-}
+import type { ResitInput } from '@/modules/test-day/types/queries.types';
 
 // C-SIT-03: terminates the student's in-flight session in this sitting so
 // they can join again fresh (absent earlier, crashed laptop, and the like).

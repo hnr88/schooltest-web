@@ -6,13 +6,7 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { DashboardSearch } from '@/modules/dashboard';
 
-interface ChildrenToolbarProps {
-  from: number;
-  to: number;
-  totalCount: number;
-  includeArchived: boolean;
-  onIncludeArchivedChange: (value: boolean) => void;
-}
+import type { ChildrenToolbarProps } from '@/modules/children/types/components.types';
 
 // The canonical filter field is a 40px VISUAL box (9/14 padding on 14px text,
 // DS Question bank / Students screens) — so the painted rounded rect stays at

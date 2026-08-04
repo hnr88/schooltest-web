@@ -5,15 +5,7 @@ import { buildTrail } from '@/modules/navigation';
 import { JsonLd } from '@/modules/seo/components/JsonLd';
 import { absoluteUrl, buildBreadcrumbJsonLd } from '@/modules/seo/lib/breadcrumb-json-ld';
 
-interface BreadcrumbJsonLdProps {
-  /** Locale-less pathname, e.g. `/privacy-policy`. */
-  readonly pathname: string;
-  readonly locale: string;
-  /** Human label for a trailing dynamic segment (article title, …). */
-  readonly recordLabel?: string | null;
-  /** Overrides the current page's crumb with a data-driven title. */
-  readonly currentLabel?: string | null;
-}
+import type { BreadcrumbJsonLdProps } from '@/modules/seo/types/components.types';
 
 // Server Component. Emits schema.org BreadcrumbList for a public page from the
 // SAME buildTrail derivation that renders <PublicBreadcrumb>, so the structured

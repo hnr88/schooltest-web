@@ -5,18 +5,16 @@ import { PlayCircle } from 'lucide-react';
 
 import { Link } from '@/i18n/navigation';
 import { EmptyState, StatusPill } from '@/modules/design-system';
-import { CodeRevealCard } from '../components/CodeRevealCard';
-import { MonitorSection } from '../components/MonitorSection';
-import { SittingHistoryTable } from '../components/SittingHistoryTable';
-import { SittingSummaryPanel } from '../components/SittingSummaryPanel';
-import { StartSittingControls } from '../components/StartSittingControls';
-import { useCreateSittingMutation } from '../mutations/use-create-sitting.mutation';
-import { useRevealCodeMutation } from '../mutations/use-reveal-code.mutation';
-import { useClassSittingsQuery } from '../queries/use-class-sittings.query';
+import { CodeRevealCard } from '@/modules/test-day/components/CodeRevealCard';
+import { MonitorSection } from '@/modules/test-day/components/MonitorSection';
+import { SittingHistoryTable } from '@/modules/test-day/components/SittingHistoryTable';
+import { SittingSummaryPanel } from '@/modules/test-day/components/SittingSummaryPanel';
+import { StartSittingControls } from '@/modules/test-day/components/StartSittingControls';
+import { useCreateSittingMutation } from '@/modules/test-day/mutations/use-create-sitting.mutation';
+import { useRevealCodeMutation } from '@/modules/test-day/mutations/use-reveal-code.mutation';
+import { useClassSittingsQuery } from '@/modules/test-day/queries/use-class-sittings.query';
 
-interface TestDayScreenProps {
-  classDocumentId: string;
-}
+import type { TestDayScreenProps } from '@/modules/test-day/types/components.types';
 
 // Teacher test-day screen (task 64, mvp-updates §4.5): start a sitting, reveal
 // the access code, watch the class live, handle re-sits, close/reopen. The

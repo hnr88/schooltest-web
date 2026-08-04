@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
-import { classSittingSchema } from '../schemas/test-day.schema';
-import type { ClassSitting } from '../types/test-day.types';
+import { classSittingSchema } from '@/modules/test-day/schemas/test-day.schema';
+import type { ClassSitting } from '@/modules/test-day/types/test-day.types';
 
 export const CLASS_SITTINGS_QUERY_KEY = ['test-day', 'sittings'] as const;
 

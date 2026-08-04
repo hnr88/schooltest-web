@@ -18,9 +18,7 @@ import {
 } from '@/modules/school-admin/lib/entitlement-view';
 import type { Entitlement } from '@/modules/school-admin/types/school-admin.types';
 
-interface SchoolEntitlementPanelProps {
-  entitlement: Entitlement;
-}
+import type { SchoolEntitlementPanelProps } from '@/modules/school-admin/types/components.types';
 
 // Dumb panel for C-ENT-01: seats usage, plan code, renewal date and one row
 // per Progress Test allowance. The seat-cap message appears only when the

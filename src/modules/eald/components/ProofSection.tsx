@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
 import { Badge, Container, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
+import { ScrollReveal } from '@/modules/landing';
 
 const STATS = [
   { valueKey: 'home.proof.skillsValue', labelKey: 'home.proof.skillsLabel' },

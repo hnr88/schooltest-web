@@ -10,12 +10,7 @@ import { Button } from '@/modules/design-system';
 import type { SchoolChild } from '@/modules/school-children';
 import type { SchoolTeacher } from '@/modules/teachers';
 
-interface ClassAssignmentPanelProps {
-  schoolClass: SchoolClass;
-  members: SchoolChild[];
-  teachers: SchoolTeacher[];
-  activeChildren: SchoolChild[];
-}
+import type { ClassAssignmentPanelProps } from '@/modules/classes/types/components.types';
 
 // The assignment working area (task 31): teacher and student pickers over a
 // local working set, saved as full-replacement lists through C-CLS-03. The

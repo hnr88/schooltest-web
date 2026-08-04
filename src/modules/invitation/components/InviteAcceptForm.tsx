@@ -12,10 +12,7 @@ import {
   type InviteAcceptValues,
 } from '@/modules/invitation/schemas/invite-accept.schema';
 
-interface InviteAcceptFormProps {
-  token: string;
-  defaultValues: { first_name: string; last_name: string };
-}
+import type { InviteAcceptFormProps } from '@/modules/invitation/types/components.types';
 
 // The accept form (C-INV-06): names prefilled from the invitation, password +
 // confirmation collected here. The password never leaves this form except in

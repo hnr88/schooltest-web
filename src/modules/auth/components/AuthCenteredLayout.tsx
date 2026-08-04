@@ -5,11 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/modules/design-system';
 
-interface AuthCenteredLayoutProps {
-  children: ReactNode;
-  /** `wide` is the 560px register column; `narrow` the 420px card screens. */
-  width?: 'narrow' | 'wide';
-}
+import type { AuthCenteredLayoutProps } from '@/modules/auth/types/components.types';
 
 // Centred auth frame (design spec 06 §1.2 register / §1.3 forgot-password): the
 // full-colour logo lockup sits alone at the top of the padded frame with the

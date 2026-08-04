@@ -13,7 +13,7 @@ import {
 } from '@/modules/teachers/mutations/use-toggle-teacher.mutation';
 import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 
-export type StaffConfirmAction = 'deactivate' | 'reactivate' | 'revoke' | 'remove';
+import type { StaffConfirmAction } from '@/modules/teachers/types/hooks.types';
 
 // Mutation + toast wiring for StaffRowActions (keeps the component under the
 // line cap): reissue (C-INV-03), revoke (C-INV-04/07), deactivate/reactivate

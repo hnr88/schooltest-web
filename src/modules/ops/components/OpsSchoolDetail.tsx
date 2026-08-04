@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
-import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+import { useAuthStore } from '@/modules/auth';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
 import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
@@ -13,9 +13,7 @@ import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
 import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
 import { ACCOUNT_STATUS_VARIANTS, ONBOARDING_STATUS_VARIANTS } from '@/modules/school-admin';
 
-interface OpsSchoolDetailProps {
-  documentId: string;
-}
+import type { OpsSchoolDetailProps } from '@/modules/ops/types/components.types';
 
 // Ops console school detail (task 66, st-mvp-pivot): one C-OPS-01 row —
 // lifecycle chips plus the live teacher/class/student/result counts. The W8

@@ -5,9 +5,7 @@ import type { ReactNode } from 'react';
 import { useRequireSchoolAdmin } from '@/modules/auth/hooks/use-require-school-admin';
 import { Skeleton } from '@/modules/design-system';
 
-interface SchoolAdminGuardProps {
-  children: ReactNode;
-}
+import type { SchoolAdminGuardProps } from '@/modules/auth/types/components.types';
 
 // Gate for school_admin-only routes (/dashboard/school/*): a loading skeleton
 // while the token hydrates and /api/users/me resolves, then either the guarded

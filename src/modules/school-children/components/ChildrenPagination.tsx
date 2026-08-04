@@ -5,10 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/modules/design-system';
 import type { SchoolChildrenPagination } from '@/modules/school-children/types/school-children.types';
 
-interface ChildrenPaginationProps {
-  pagination: SchoolChildrenPagination;
-  onPage: (page: number) => void;
-}
+import type { ChildrenPaginationProps } from '@/modules/school-children/types/components.types';
 
 // C-CHD-01 pager: previous/next within meta.pagination bounds. Rendered only
 // when more than one page exists.

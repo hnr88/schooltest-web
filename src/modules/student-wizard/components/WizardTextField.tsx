@@ -8,19 +8,7 @@ import { describedBy, Input } from '@/modules/design-system';
 import { WizardField } from '@/modules/student-wizard/components/WizardField';
 import { WIZARD_CONTROL } from '@/modules/student-wizard/constants/wizard-control.constants';
 
-interface WizardTextFieldProps {
-  id: string;
-  label: string;
-  type?: HTMLInputTypeAttribute;
-  placeholder?: string;
-  helper?: string;
-  error?: string;
-  max?: string;
-  required?: boolean;
-  autoComplete?: string;
-  inputMode?: 'text' | 'email' | 'tel' | 'numeric';
-  registration: UseFormRegisterReturn;
-}
+import type { WizardTextFieldProps } from '@/modules/student-wizard/types/components.types';
 
 // Portal field stack (spec 03 §1.4) over the 48px `PortalInput` box.
 export function WizardTextField({

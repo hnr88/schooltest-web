@@ -13,13 +13,7 @@ import {
   Button,
 } from '@/modules/design-system';
 
-interface ArchiveConfirmDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  name: string;
-  pending: boolean;
-  onConfirm: () => void;
-}
+import type { ArchiveConfirmDialogProps } from '@/modules/children/types/components.types';
 
 // C-UI-MYCHILDREN §11 confirm dialog for archive only (unarchive is immediate).
 // Base UI AlertDialog carries the data-state open/close animations (D-UI-2).

@@ -1,8 +1,6 @@
 import type { LegalSection as LegalSectionData } from '@/modules/legal/types/legal.types';
 
-interface LegalSectionProps {
-  readonly section: LegalSectionData;
-}
+import type { LegalSectionProps } from '@/modules/legal/types/components.types';
 
 // One body section of a legal document. Headings are h2 under the document's
 // single h1, so the outline stays ordered for screen readers and for the

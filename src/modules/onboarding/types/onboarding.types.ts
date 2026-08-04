@@ -4,7 +4,7 @@ import {
   onboardingStateSchema,
   onboardingStatusSchema,
   onboardingUpdateInputSchema,
-} from '../schemas/onboarding.schema';
+} from '@/modules/onboarding/schemas/onboarding.schema';
 
 export type OnboardingStatus = z.infer<typeof onboardingStatusSchema>;
 

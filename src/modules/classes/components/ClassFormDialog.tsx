@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { ClassForm } from '@/modules/classes/components/ClassForm';
-import type { ClassFormTarget } from '@/modules/classes/hooks/use-class-form';
+import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
 import { useClassChildrenQuery } from '@/modules/classes/queries/use-class-children.query';
 import {
   Alert,
@@ -16,10 +16,7 @@ import {
 } from '@/modules/design-system';
 import { useTeachersQuery } from '@/modules/teachers';
 
-interface ClassFormDialogProps {
-  target: ClassFormTarget;
-  onClose: () => void;
-}
+import type { ClassFormDialogProps } from '@/modules/classes/types/components.types';
 
 // Shell around ClassForm (C-CLS-02 create / C-CLS-03 edit): loads the teacher
 // options (C-TCH-01) and, for edit, the children options (C-CHD-01) before the

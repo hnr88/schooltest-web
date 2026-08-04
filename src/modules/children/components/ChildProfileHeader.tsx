@@ -10,10 +10,7 @@ import { getChildProfileName } from '@/modules/children/lib/child-profile-displa
 import { getHeroMetaFacts } from '@/modules/children/lib/child-profile-facts';
 import type { ChildProgressStudent, StudentDetail } from '@/modules/children/types/children.types';
 
-interface ChildProfileHeaderProps {
-  student: ChildProgressStudent;
-  detail?: StudentDetail;
-}
+import type { ChildProfileHeaderProps } from '@/modules/children/types/components.types';
 
 // §B.1 DetailHeader — the back link, then the identity row: a 60px NAVY avatar
 // (inverted against the list card's neutral one), the 28/500 name and the meta

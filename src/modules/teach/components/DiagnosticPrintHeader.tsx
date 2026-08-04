@@ -2,10 +2,7 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 
-interface DiagnosticPrintHeaderProps {
-  classLabel: string;
-  formCode: string | null;
-}
+import type { DiagnosticPrintHeaderProps } from '@/modules/teach/types/components.types';
 
 // Task 140 (mvp-updates §4.9): the printed report's document header - class
 // name, form code and the print date, all localised. Screen rendering is

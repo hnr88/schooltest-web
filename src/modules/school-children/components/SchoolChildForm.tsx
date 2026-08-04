@@ -11,16 +11,11 @@ import {
   NativeSelectOption,
 } from '@/modules/design-system';
 import { ChildEaldFields } from '@/modules/school-children/components/ChildEaldFields';
-import { useChildForm, type ChildFormTarget } from '@/modules/school-children/hooks/use-child-form';
+import { useChildForm } from '@/modules/school-children/hooks/use-child-form';
+import type { ChildFormTarget } from '@/modules/school-children/types/hooks.types';
 import { YEAR_LEVEL_OPTIONS } from '@/modules/school-children/schemas/school-child.schema';
 
-interface SchoolChildFormProps {
-  target: ChildFormTarget;
-  classes: SchoolClass[];
-  showAcaraPhase: boolean;
-  onCancel: () => void;
-  onDone: () => void;
-}
+import type { SchoolChildFormProps } from '@/modules/school-children/types/components.types';
 
 // The C-CHD-02 v2/03 form body: name, email, date of birth, year level, class
 // and the EAL/D block (first-language picklist, admin-only ACARA phase). No

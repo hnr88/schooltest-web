@@ -8,16 +8,7 @@ import {
   buildWebSiteJsonLd,
 } from '@/modules/seo/lib/json-ld';
 
-interface PublicPageJsonLdProps {
-  readonly pathname: string;
-  readonly locale: string;
-  readonly title: string;
-  readonly description: string;
-  /** The site root additionally publishes the Organization + WebSite nodes. */
-  readonly isSiteRoot?: boolean;
-  readonly datePublished?: string;
-  readonly dateModified?: string;
-}
+import type { PublicPageJsonLdProps } from '@/modules/seo/types/components.types';
 
 // Server Component. Emits the structured-data set for one public page: WebPage
 // always, plus Organization and WebSite on the site root. The nodes reference

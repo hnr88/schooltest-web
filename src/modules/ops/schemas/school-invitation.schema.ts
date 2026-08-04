@@ -1,14 +1,6 @@
 import { z } from 'zod';
 
-// C-SCH-04 (v2) / C-SCH-05 / C-SCH-06 / C-SCH-07 (mission st-ops-onboarding).
-// Client mirror of the server's shared contract
-// (schooltest-api/src/contracts/school-onboarding-invitation.ts). Every object
-// is STRICT, so a server that starts returning an extra field — a numeric id, a
-// token, a timestamp — fails the parse here instead of leaking into the UI.
-
-// Baked-message factory (the createInviteTeacherSchema convention): messages
-// resolve up-front from the `Ops.onboard.validation` namespace.
-type OnboardSchemaTranslator = (key: string) => string;
+import type { OnboardSchemaTranslator } from '@/modules/ops/types/schemas.types';
 
 /** The Onboard School modal — the spec's three required fields. */
 export function createOnboardSchoolSchema(t: OnboardSchemaTranslator) {

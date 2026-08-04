@@ -5,20 +5,18 @@ import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/modules/design-system';
-import { effectiveRevealedIds, summarizeRowStates } from '../lib/monitor-row-state';
-import { useCloseReopenMutation } from '../mutations/use-close-reopen.mutation';
-import { useMarkAbsentMutation } from '../mutations/use-mark-absent.mutation';
-import { useResitMutation } from '../mutations/use-resit.mutation';
-import { useSittingMonitorQuery } from '../queries/use-sitting-monitor.query';
-import { useRevealAuditStore } from '../stores/use-reveal-audit-store';
-import type { ClassSitting } from '../types/test-day.types';
+import { effectiveRevealedIds, summarizeRowStates } from '@/modules/test-day/lib/monitor-row-state';
+import { useCloseReopenMutation } from '@/modules/test-day/mutations/use-close-reopen.mutation';
+import { useMarkAbsentMutation } from '@/modules/test-day/mutations/use-mark-absent.mutation';
+import { useResitMutation } from '@/modules/test-day/mutations/use-resit.mutation';
+import { useSittingMonitorQuery } from '@/modules/test-day/queries/use-sitting-monitor.query';
+import { useRevealAuditStore } from '@/modules/test-day/stores/use-reveal-audit-store';
+import type { ClassSitting } from '@/modules/test-day/types/test-day.types';
 import { MonitorSummary } from './MonitorSummary';
 import { MonitorTable } from './MonitorTable';
 import { NeedsToSitPanel } from './NeedsToSitPanel';
 
-interface MonitorSectionProps {
-  sitting: ClassSitting;
-}
+import type { MonitorSectionProps } from '@/modules/test-day/types/components.types';
 
 // The live monitor section (C-SIT-02 polling + E2-11 close/reopen + C-SIT-03
 // re-sit + C-SIT-06 absent wiring). Kept out of TestDayScreen to respect the

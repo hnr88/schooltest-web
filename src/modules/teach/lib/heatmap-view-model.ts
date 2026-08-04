@@ -1,3 +1,4 @@
+import type { HeatmapTone } from '@/modules/teach/types/lib.types';
 // Item-type heat map view model (task 75, mvp-updates §4.9 + §5): the heat map
 // is evidence, not a second score — cells are keyed by item code + section
 // only, framed as items correct / responses, and colour-bucketed relative to
@@ -9,8 +10,6 @@ export const HEATMAP_CHANCE_FLOOR = 0.25;
 
 /** At or above this the cell reads as secure; between the floor and this it reads as mixed. */
 export const HEATMAP_SECURE_CUT = 0.6;
-
-export type HeatmapTone = 'success' | 'warning' | 'danger';
 
 export function heatmapTone(fraction: number): HeatmapTone {
   if (fraction < HEATMAP_CHANCE_FLOOR) return 'danger';

@@ -9,9 +9,7 @@ import { ChildResultRow } from '@/modules/children/components/ChildResultRow';
 import { filterResultsBySkill, getResultSkills } from '@/modules/children/lib/child-results';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
 
-interface ChildResultsProps {
-  results: ChildProgressResult[];
-}
+import type { ChildResultsProps } from '@/modules/children/types/components.types';
 
 // §B.6 RecentResults — the wide r24 card that closes the stack: a 19/600 heading
 // over hairline-separated rows. The design's trailing "All reports →" link is

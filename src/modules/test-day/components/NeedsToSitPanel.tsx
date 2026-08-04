@@ -2,12 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 
-import { studentDisplayName } from '../lib/monitor-row-state';
-import type { MonitorStudent } from '../types/test-day.types';
+import { studentDisplayName } from '@/modules/test-day/lib/monitor-row-state';
+import type { MonitorStudent } from '@/modules/test-day/types/test-day.types';
 
-interface NeedsToSitPanelProps {
-  students: MonitorStudent[];
-}
+import type { NeedsToSitPanelProps } from '@/modules/test-day/types/components.types';
 
 // Who still needs to sit (task 121, mvp-updates §4.5.6, contract C-SIT-02):
 // a pure projection of the monitor payload the screen already polls, so no

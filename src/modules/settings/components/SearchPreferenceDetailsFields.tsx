@@ -13,9 +13,7 @@ import { SettingsPanel } from '@/modules/settings/components/SettingsPanel';
 import { SettingsSelectField } from '@/modules/settings/components/SettingsSelectField';
 import type { SearchPreferenceFormValues } from '@/modules/settings/types/settings.types';
 
-interface SearchPreferenceDetailsFieldsProps {
-  form: UseFormReturn<SearchPreferenceFormValues>;
-}
+import type { SearchPreferenceDetailsFieldsProps } from '@/modules/settings/types/components.types';
 
 // "Results view" — the short second-column panel. It pairs the one field canonical
 // still gives a dropdown with a SegmentedChoice: canonical's equal-width row for a

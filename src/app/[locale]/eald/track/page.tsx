@@ -12,9 +12,9 @@ import {
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings } from '@/modules/settings';
-import { EvidenceSection } from '@/modules/eald/components/EvidenceSection';
-import { TeachEmpiricalSection } from '@/modules/eald/components/TeachEmpiricalSection';
-import { TrackHero } from '@/modules/eald/components/TrackHero';
+import { EvidenceSection } from '@/modules/eald';
+import { TeachEmpiricalSection } from '@/modules/eald';
+import { TrackHero } from '@/modules/eald';
 
 interface TrackPageProps {
   params: Promise<{ locale: string }>;
