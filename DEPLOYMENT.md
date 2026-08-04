@@ -45,11 +45,29 @@ loudly instead of shipping a bundle that calls `http://localhost:1337`. Local
 dev images opt out by setting `ALLOW_LOCALHOST_PUBLIC_URLS=true` in `.env`
 (see `.env.example`); never set that variable in Coolify.
 
+## Coolify runtime environment
+
+These are **not** build args. The builder stage has no network access to the API
+and must never receive a secret (a build arg is recorded in the image history),
+so they are read from the container environment at request time. The compose
+file forwards them to the running container.
+
+| Variable | Required | Effect if unset |
+|---|---|---|
+| `API_BASE_URL` | yes | Falls back to `http://localhost:1337` inside the container, so every server-rendered public page (home, `/eald/*`, the legal pages, `sitemap.xml`, `llms.txt`) fails. |
+| `REVALIDATE_SECRET` | yes (min 16 chars) | `POST /api/revalidate` answers `401` to every request — it fails closed, never open — so the ops cache-clear and sitemap-regenerate actions cannot publish a content change early. |
+
+Every public page is server-rendered on demand: nothing that reads the API is
+prerendered, because the API is unreachable from the Docker builder. Adding a
+`generateStaticParams` to a public route would reintroduce that build failure.
+
 ### Production
 
 ```dotenv
 NEXT_PUBLIC_API_BASE_URL=https://api.schooltest.com.au
 NEXT_PUBLIC_APP_URL=https://schooltest.com.au
+API_BASE_URL=https://api.schooltest.com.au
+REVALIDATE_SECRET=<32+ random chars, matches the ops caller>
 PORT_INTERNAL=28721
 ```
 
@@ -64,6 +82,8 @@ For a host Nginx proxy, use `http://127.0.0.1:28721`.
 ```dotenv
 NEXT_PUBLIC_API_BASE_URL=https://staging-api.schooltest.com.au
 NEXT_PUBLIC_APP_URL=https://staging.schooltest.com.au
+API_BASE_URL=https://staging-api.schooltest.com.au
+REVALIDATE_SECRET=<32+ random chars, matches the ops caller>
 PORT_INTERNAL=28821
 ```
 

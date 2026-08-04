@@ -5,9 +5,10 @@ export const env = createEnv({
   server: {
     API_BASE_URL: z.url().default('http://localhost:1337'),
     // Shared secret for C-WEB-04 (POST /api/revalidate). Server-only: it must
-    // never reach the browser. No default — an unset secret must fail loudly
-    // at boot rather than leave the hook open.
-    REVALIDATE_SECRET: z.string().min(16),
+    // never reach the browser. Optional so an image can BUILD without it (the
+    // Docker builder has no runtime secrets); never defaulted, so an unset
+    // secret leaves the route closed at runtime rather than guessable.
+    REVALIDATE_SECRET: z.string().min(16).optional(),
   },
   client: {
     NEXT_PUBLIC_API_BASE_URL: z.url().default('http://localhost:1337'),

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { connection } from 'next/server';
 
 import { routing } from '@/i18n/routing';
 import { LEGAL_ROUTES, getLegalDocuments } from '@/modules/legal';
@@ -16,6 +17,12 @@ import { absoluteUrl } from '@/modules/seo/lib/breadcrumb-json-ld';
 // without a code change. Nothing on the Disallow list can appear: the guard
 // below is asserted by the SEO e2e, not merely intended.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Request-time, never prerendered: the legal index is read from the API, and
+  // the API is unreachable from the Docker builder. `connection()` ties the
+  // render to the incoming request without forcing `no-store` on the fetch, so
+  // the C-LEG-01 read keeps its 300s window and its revalidate tag.
+  await connection();
+
   const base = routing.defaultLocale;
   const legal = await getLegalDocuments(base);
 

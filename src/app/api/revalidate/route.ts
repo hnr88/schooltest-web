@@ -22,7 +22,10 @@ import {
 // constant time and the route is disallowed in robots.txt like the rest of /api.
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const presented = request.headers.get('x-revalidate-secret') ?? '';
-  if (!timingSafeEqual(presented, env.REVALIDATE_SECRET)) {
+  // REVALIDATE_SECRET is optional at BUILD time (the Docker builder holds no
+  // runtime secrets). Unset at RUNTIME means the empty string here, which
+  // `timingSafeEqual` rejects for either side — the route fails closed.
+  if (!timingSafeEqual(presented, env.REVALIDATE_SECRET ?? '')) {
     return NextResponse.json({ error: 'invalid secret' }, { status: 401 });
   }
 
