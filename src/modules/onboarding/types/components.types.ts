@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import type { AuthUser } from '@/modules/auth';
 
 export interface CountryComboboxProps {
@@ -34,4 +36,13 @@ export interface OnboardingStepProps {
   // complete (saved this session or already complete on the server).
   completeDisabled?: boolean;
   completeHint?: string;
+}
+
+export interface OnboardingShellProps {
+  children: ReactNode;
+  contentClassName: string;
+}
+
+export interface OnboardingErrorStateProps {
+  onRetry: () => void;
 }

@@ -1,3 +1,5 @@
+import type { WizardScreenProps } from '@/modules/student-wizard/types/student-wizard.types';
+
 import type { StudentWizardOutput, StudentWizardValues } from '@/modules/student-wizard/schemas/student-wizard.schema';
 import type { MediaAccept, MediaUploadLabels } from '@/modules/student-wizard/types/media.types';
 import type { WizardMode } from '@/modules/student-wizard/types/student-wizard.types';
@@ -16,4 +18,10 @@ export interface UseStudentWizardParams {
 
 export interface UseWizardSubmitParams {
   onSubmit?: (values: StudentWizardOutput) => Promise<void>;
+}
+
+export interface UseWizardScreenOptions {
+  initialValues: WizardScreenProps['initialValues'];
+  mode: NonNullable<WizardScreenProps['mode']>;
+  onSubmit: WizardScreenProps['onSubmit'];
 }

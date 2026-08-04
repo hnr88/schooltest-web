@@ -1,15 +1,14 @@
 'use client';
 
-import { Inbox } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import { Alert, Button, DataPanel, EmptyState } from '@/modules/design-system';
+import { DataPanel } from '@/modules/design-system';
 import { NotificationCategoryFilter } from '@/modules/notifications/components/NotificationCategoryFilter';
-import { NotificationFeedList } from '@/modules/notifications/components/NotificationFeedList';
+import { NotificationFeedBody } from '@/modules/notifications/components/NotificationFeedBody';
+import { NotificationFeedHeader } from '@/modules/notifications/components/NotificationFeedHeader';
 import { NotificationFeedPagination } from '@/modules/notifications/components/NotificationFeedPagination';
-import { NotificationFeedSkeleton } from '@/modules/notifications/components/NotificationFeedSkeleton';
 import {
   NOTIFICATION_FEED_PAGE_SIZE,
   PORTAL_CARD_CLASS,
@@ -17,8 +16,8 @@ import {
 } from '@/modules/notifications/constants/notification.constants';
 import { useNotificationActions } from '@/modules/notifications/hooks/use-notification-actions';
 import { useNotificationsQuery } from '@/modules/notifications/queries/use-notifications.query';
+
 import type { NotificationCategoryFilterValue } from '@/modules/notifications/types/notification.types';
-import { MARK_ALL_CLASS } from '@/modules/notifications/constants/components.constants';
 
 function NotificationsScreen() {
   const t = useTranslations('Notifications');
@@ -50,61 +49,24 @@ function NotificationsScreen() {
         'animate-in duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none',
       )}
     >
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="min-w-0">
-          <h1 className="text-portal-title font-medium text-foreground">{t('title')}</h1>
-          <p className="mt-1.5 text-body-md text-body">{t('unreadCount', { count: unreadCount })}</p>
-        </div>
-        <button
-          type="button"
-          disabled={unreadCount === 0 || actions.isMarkingAll}
-          onClick={actions.markAllRead}
-          className={MARK_ALL_CLASS}
-        >
-          {t('markAllRead')}
-        </button>
-      </header>
+      <NotificationFeedHeader
+        unreadCount={unreadCount}
+        isMarkingAll={actions.isMarkingAll}
+        onMarkAllRead={actions.markAllRead}
+      />
       <NotificationCategoryFilter value={category} onValueChange={handleCategoryChange} />
       <DataPanel
         aria-label={t('recentTitle')}
         className={cn(PORTAL_CARD_CLASS, 'flex flex-col px-4 py-1.5 sm:px-7')}
       >
-        {notificationsQuery.isPending ? (
-          <NotificationFeedSkeleton />
-        ) : notificationsQuery.isError ? (
-          <Alert
-            variant="error"
-            className="my-4"
-            title={t('errorTitle')}
-            action={
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => notificationsQuery.refetch()}
-                className="min-h-11 rounded-full"
-              >
-                {t('retry')}
-              </Button>
-            }
-          >
-            {t('errorDescription')}
-          </Alert>
-        ) : notifications.length === 0 ? (
-          <EmptyState
-            tone="brand"
-            icon={Inbox}
-            title={t('emptyTitle')}
-            description={t('emptyDescription')}
-            className="my-4 border-divider [&>p+p]:text-body"
-          />
-        ) : (
-          <NotificationFeedList
-            notifications={notifications}
-            onMarkRead={actions.markRead}
-            isMarking={actions.isMarkingRead}
-          />
-        )}
+        <NotificationFeedBody
+          isPending={notificationsQuery.isPending}
+          isError={notificationsQuery.isError}
+          onRetry={() => notificationsQuery.refetch()}
+          notifications={notifications}
+          onMarkRead={actions.markRead}
+          isMarking={actions.isMarkingRead}
+        />
         <div className="pb-3.5" />
       </DataPanel>
       {pagination && pagination.pageCount > 1 ? (

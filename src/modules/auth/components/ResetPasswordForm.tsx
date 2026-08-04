@@ -1,70 +1,29 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
-import { useRouter } from '@/i18n/navigation';
 import { PasswordField } from '@/modules/auth/components/PasswordField';
-import { classifyResetPasswordError } from '@/modules/auth/lib/classify-reset-password-error';
-import { useResetPasswordMutation } from '@/modules/auth/queries/use-reset-password.mutation';
-import {
-  resetPasswordSchema,
-  type ResetPasswordInput,
-} from '@/modules/auth/schemas/reset-password.schema';
-import type { ResetPasswordErrorKey } from '@/modules/auth/types/auth.types';
+import { useResetPasswordForm } from '@/modules/auth/hooks/use-reset-password-form';
 import { Alert, Button } from '@/modules/design-system';
 
 import type { ResetPasswordFormProps } from '@/modules/auth/types/components.types';
 
 // Form state of the reset-password card (§14.3 reuse): blue key tile, title +
-// helper copy, two PasswordFields, primary submit. A 400 (invalid/expired
-// code) hands off to the parent's error state; success auto-logs-in (mutation
-// stores the fresh jwt) and lands on the dashboard.
+// helper copy, two PasswordFields, primary submit.
 export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProps) {
   const t = useTranslations('Auth');
-  const router = useRouter();
-  const resetPassword = useResetPasswordMutation();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formError, setFormError] = useState<Exclude<
-    ResetPasswordErrorKey,
-    'invalidOrExpired'
-  > | null>(null);
   const {
     register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ResetPasswordInput>({
-    resolver: zodResolver(resetPasswordSchema),
-    defaultValues: { password: '', passwordConfirmation: '' },
-  });
-
-  const onSubmit = handleSubmit((values) => {
-    setFormError(null);
-    resetPassword.mutate(
-      { code, ...values },
-      {
-        onSuccess: () => {
-          toast.success(t('passwordReset'));
-          router.replace('/dashboard');
-        },
-        onError: (error) => {
-          const key = classifyResetPasswordError(error);
-          if (key === 'invalidOrExpired') {
-            toast.error(t('invalidLinkTitle'));
-            onInvalidCode();
-          } else {
-            setFormError(key);
-            toast.error(t(key));
-          }
-        },
-      },
-    );
-  });
+    errors,
+    onSubmit,
+    formError,
+    isPending,
+    showPassword,
+    toggleShowPassword,
+    showConfirmPassword,
+    toggleShowConfirmPassword,
+  } = useResetPasswordForm({ code, onInvalidCode });
 
   return (
     <div className="flex flex-col gap-5">
@@ -90,7 +49,7 @@ export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProp
           placeholder={t('newPasswordPlaceholder')}
           autoComplete="new-password"
           visible={showPassword}
-          onToggleVisible={() => setShowPassword((current) => !current)}
+          onToggleVisible={toggleShowPassword}
           toggleLabel={t(showPassword ? 'hidePassword' : 'showPassword')}
           error={errors.password?.message ? t(errors.password.message) : undefined}
           registration={register('password')}
@@ -101,7 +60,7 @@ export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProp
           placeholder={t('confirmPasswordPlaceholder')}
           autoComplete="new-password"
           visible={showConfirmPassword}
-          onToggleVisible={() => setShowConfirmPassword((current) => !current)}
+          onToggleVisible={toggleShowConfirmPassword}
           toggleLabel={t(showConfirmPassword ? 'hideConfirmPassword' : 'showConfirmPassword')}
           error={
             errors.passwordConfirmation?.message ? t(errors.passwordConfirmation.message) : undefined
@@ -111,10 +70,10 @@ export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProp
         <Button
           type="submit"
           size="xl"
-          loading={resetPassword.isPending}
+          loading={isPending}
           className="w-full rounded-lg shadow-sm transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
         >
-          {resetPassword.isPending ? t('resettingPassword') : t('resetButton')}
+          {isPending ? t('resettingPassword') : t('resetButton')}
         </Button>
       </form>
     </div>

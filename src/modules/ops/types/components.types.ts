@@ -1,3 +1,5 @@
+import type { FormInspection } from '@/modules/ops/types/schemas.types';
+
 import type { FormWindow, OpsForm } from '@/modules/ops/schemas/form-window.schema';
 import type { ImportPreview } from '@/modules/ops/schemas/import.schema';
 import type { PipelineQueue } from '@/modules/ops/schemas/pipeline.schema';
@@ -86,4 +88,8 @@ export interface OpsStudentImportProps {
 
 export interface OpsViewAsTeacherDataProps {
   view: ViewAsTeacher;
+}
+
+export interface OpsFormInspectionResultProps {
+  inspection: FormInspection;
 }

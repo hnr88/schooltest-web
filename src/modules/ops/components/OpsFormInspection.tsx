@@ -4,18 +4,8 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useAuthStore } from '@/modules/auth';
-import {
-  Alert,
-  Badge,
-  Button,
-  SelectField,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/modules/design-system';
+import { Alert, Button, SelectField } from '@/modules/design-system';
+import { OpsFormInspectionResult } from '@/modules/ops/components/OpsFormInspectionResult';
 import { useFormInspectionQuery } from '@/modules/ops/queries/use-form-inspection.query';
 import { useFormsQuery } from '@/modules/ops/queries/use-forms.query';
 
@@ -75,46 +65,7 @@ export function OpsFormInspection() {
           {t('errorDescription')}
         </Alert>
       ) : null}
-      {inspection ? (
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-foreground">{inspection.form_code}</span>
-            <Badge
-              data-surface="ops-form-inspection-locked"
-              variant={inspection.locked ? 'warning' : 'success'}
-            >
-              {inspection.locked ? t('locked') : t('unlocked')}
-            </Badge>
-            <span className="text-sm text-body">
-              {t('anchors', { count: inspection.anchors.length })}
-            </span>
-          </div>
-          <div className="rounded-xl border border-border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t('columnItem')}</TableHead>
-                  <TableHead>{t('columnTaskType')}</TableHead>
-                  <TableHead>{t('columnStage')}</TableHead>
-                  <TableHead>{t('columnKey')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {inspection.items.map((item) => (
-                  <TableRow key={item.item_code}>
-                    <TableCell className="font-medium text-foreground">{item.item_code}</TableCell>
-                    <TableCell>{item.task_type ?? '-'}</TableCell>
-                    <TableCell>{item.stage ?? '-'}</TableCell>
-                    <TableCell className="font-mono text-xs">
-                      {JSON.stringify(item.key)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      ) : null}
+      {inspection ? <OpsFormInspectionResult inspection={inspection} /> : null}
     </section>
   );
 }

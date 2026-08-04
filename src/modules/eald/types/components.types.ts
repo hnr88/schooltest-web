@@ -1,3 +1,6 @@
+import type { ReactNode } from 'react';
+import type { useTranslations } from 'next-intl';
+
 import type { EaldPage, NextSectionCard } from '@/modules/eald/types/eald.types';
 
 export interface EaldHeaderProps {
@@ -19,4 +22,20 @@ export interface ReadinessCardProps {
 
 export interface NextSectionNavProps {
   readonly sections: readonly NextSectionCard[];
+}
+
+type EaldT = ReturnType<typeof useTranslations<'Eald'>>;
+
+export interface RegisterCardProps {
+  t: EaldT;
+}
+
+export interface RegisterFormCardProps extends RegisterCardProps {
+  onSuccess: () => void;
+}
+
+export interface RegisterFieldWrapperProps extends RegisterCardProps {
+  label: string;
+  error: string | undefined;
+  children: ReactNode;
 }

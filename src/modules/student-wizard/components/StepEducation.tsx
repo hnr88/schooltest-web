@@ -6,37 +6,20 @@ import { Controller, useFormContext, useFormState } from 'react-hook-form';
 import { WizardChoiceField } from '@/modules/student-wizard/components/WizardChoiceField';
 import { WizardSelectField } from '@/modules/student-wizard/components/WizardSelectField';
 import { WizardTextField } from '@/modules/student-wizard/components/WizardTextField';
-import {
-  CURRENT_YEAR_LEVEL_VALUES,
-  TARGET_ENTRY_YEARS,
-  TERM_VALUES,
-  YEAR_LEVEL_VALUES,
-} from '@/modules/student-wizard/constants/student-wizard.constants';
+import { useEducationOptions } from '@/modules/student-wizard/hooks/use-education-options';
+
 import type { StudentWizardValues } from '@/modules/student-wizard/types/student-wizard.types';
 
 // Step 2 — Education (spec 03 §2.5): [current school | current year level],
 // [test year level | target entry year], [target entry term, full width]. The
 // testing band stays the canonical select (INT the API validates; localized
-// "Year 9" label asserted by 053). D-C8: `current_year_level` is the school-year
-// string enum, `year_level` the int band (7–12) — never one field.
+// "Year 9" label asserted by 053).
 export function StepEducation() {
   const t = useTranslations('StudentWizard.education');
   const { register, control } = useFormContext<StudentWizardValues>();
   const { errors } = useFormState({ control });
-
-  const currentYearLevelOptions = CURRENT_YEAR_LEVEL_VALUES.map((value) => ({
-    value,
-    label: value === 'Prep' ? t('prep') : t('yearOption', { n: Number(value.slice(5)) }),
-  }));
-  const yearLevelOptions = YEAR_LEVEL_VALUES.map((value) => ({
-    value,
-    label: t('yearOption', { n: value }),
-  }));
-  const targetYearOptions = TARGET_ENTRY_YEARS.map((value) => ({ value, label: value }));
-  const termOptions = TERM_VALUES.map((value) => ({
-    value,
-    label: t('term', { n: Number(value.slice(5)) }),
-  }));
+  const { currentYearLevelOptions, yearLevelOptions, targetYearOptions, termOptions } =
+    useEducationOptions();
 
   return (
     <div className="flex flex-col gap-5.5 duration-300 ease-out animate-in fade-in slide-in-from-bottom-1 motion-reduce:animate-none">
