@@ -745,6 +745,11 @@
       "teachers": "教师",
       "teach": "教学",
       "ops": "运维",
+      "opsSchools": "学校",
+      "opsPipeline": "处理流程",
+      "opsTimers": "分段计时",
+      "opsTools": "工具",
+      "opsSettings": "平台设置",
       "participation": "完成情况",
       "analytics": "分析"
     },
@@ -2640,9 +2645,7 @@
         "in_progress": "进行中",
         "submitted": "已提交",
         "complete": "已完成"
-      },
-      "timersLink": "分节计时器",
-      "pipelineLink": "管道状态"
+      }
     },
     "detail": {
       "meta": {
@@ -3401,7 +3404,6 @@
     "gdpr": "GDPR 合规",
     "home": "首页",
     "invite": "邀请",
-    "legalNavLabel": "法律条款导航",
     "newChild": "新增学生",
     "onboarding": "入门引导",
     "opsAudit": "审计与安全",

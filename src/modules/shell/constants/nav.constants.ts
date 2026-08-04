@@ -3,14 +3,17 @@ import {
   ChartColumn,
   ClipboardCheck,
   FileChartColumn,
+  GitBranch,
   GraduationCap,
   LayoutDashboard,
   School,
   Search,
   Settings,
-  ShieldCheck,
+  SlidersHorizontal,
+  Timer,
   Users,
   UsersRound,
+  Wrench,
 } from 'lucide-react';
 
 import { OPS_ROLE_TYPE, SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE } from '@/modules/auth';
@@ -28,9 +31,18 @@ export const REPORTS_HREF = '/dashboard/reports';
 // answer 403 to every other role, so the whole section is role-scoped).
 export const SCHOOL_HREF = '/dashboard/school';
 
-// Ops console home (task 66; the /api/ops routes answer 403 to every non-ops
-// role, so the entry is role-scoped like the school admin entries).
+// Ops console section root (task 66; the /api/ops routes answer 403 to every
+// non-ops role, so every entry below is role-scoped like the school admin ones).
+// The root itself is NOT a rail destination: /dashboard/ops only redirects to
+// /dashboard/ops/schools, and an `exact: false` entry on it would read active on
+// every child route alongside the real one.
 export const OPS_HREF = '/dashboard/ops';
+
+export const OPS_SCHOOLS_HREF = `${OPS_HREF}/schools`;
+export const OPS_PIPELINE_HREF = `${OPS_HREF}/pipeline`;
+export const OPS_TIMERS_HREF = `${OPS_HREF}/timers`;
+export const OPS_TOOLS_HREF = `${OPS_HREF}/tools`;
+export const OPS_SETTINGS_HREF = `${OPS_HREF}/settings`;
 
 export const NAV_ITEMS: readonly NavItem[] = [
   {
@@ -123,9 +135,41 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: [SCHOOL_ADMIN_ROLE_TYPE],
   },
   {
-    labelKey: 'ops',
-    href: OPS_HREF,
-    icon: ShieldCheck,
+    labelKey: 'opsSchools',
+    href: OPS_SCHOOLS_HREF,
+    icon: School,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
+  },
+  {
+    labelKey: 'opsPipeline',
+    href: OPS_PIPELINE_HREF,
+    icon: GitBranch,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
+  },
+  {
+    labelKey: 'opsTimers',
+    href: OPS_TIMERS_HREF,
+    icon: Timer,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
+  },
+  {
+    labelKey: 'opsTools',
+    href: OPS_TOOLS_HREF,
+    icon: Wrench,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
+  },
+  {
+    labelKey: 'opsSettings',
+    href: OPS_SETTINGS_HREF,
+    icon: SlidersHorizontal,
     exact: false,
     group: 'primary',
     roles: [OPS_ROLE_TYPE],

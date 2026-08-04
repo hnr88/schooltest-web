@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -65,15 +64,15 @@ export function usePlatformSettingsForm() {
   const query = usePlatformSettingsQuery();
   const update = useUpdatePlatformSettingsMutation();
 
+  // `values` is the ONLY hydration path on purpose. RHF re-applies it with
+  // `keepFieldsRef: true`, so `control._fields` survives; a hand-written
+  // `form.reset(...)` in an effect defaults to `keepFieldsRef: false`, wipes
+  // `_fields`, and every later keystroke is silently dropped while the form
+  // keeps submitting the server values.
   const form = useForm<PlatformSettingsForm>({
     resolver: zodResolver(platformSettingsFormSchema),
     values: query.data ? toFormValues(query.data) : undefined,
   });
-
-  useEffect(() => {
-    if (query.data) form.reset(toFormValues(query.data));
-    // `form` is stable across renders; resetting on every render would fight typing.
-  }, [query.data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = form.handleSubmit(async (values) => {
     try {

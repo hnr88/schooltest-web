@@ -38,14 +38,6 @@ const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
   },
 ] as const;
 
-/** The legal links the public header and mobile nav expose (C-LEG-02). */
-export const EALD_LEGAL_LINKS: readonly { readonly href: string; readonly labelKey: string }[] = [
-  { href: '/privacy-policy', labelKey: 'Navigation.privacyPolicy' },
-  { href: '/terms-of-service', labelKey: 'Navigation.termsOfService' },
-  { href: '/cookie-policy', labelKey: 'Navigation.cookiePolicy' },
-  { href: '/gdpr', labelKey: 'Navigation.gdpr' },
-];
-
 const EALD_TRUSTED_SCHOOLS = [
   'trustedBy.one',
   'trustedBy.two',

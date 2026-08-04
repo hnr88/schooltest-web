@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { Button, Container, Logo } from '@/modules/design-system';
-import { EALD_LEGAL_LINKS, EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
+import { EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
 import { PublicSiteBanner, getPublicSettings } from '@/modules/settings';
 import type { EaldPage } from '@/modules/eald/types/eald.types';
 
@@ -14,8 +14,6 @@ interface EaldHeaderProps {
 }
 
 async function EaldHeader({ activePage }: EaldHeaderProps) {
-  // Root-scoped: the nav mixes Eald.* copy with the shared Navigation.* legal
-  // labels rather than duplicating them into a second catalog.
   const t = await getTranslations();
   // C-SET-01: the maintenance / announcement banner is part of the public
   // chrome, so it renders with the header on every public page rather than
@@ -42,21 +40,6 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
               )}
             >
               {t(`Eald.${key}`)}
-            </Link>
-          ))}
-        </nav>
-
-        <nav
-          aria-label={t('Navigation.legalNavLabel')}
-          className="hidden items-center gap-0.5 lg:flex"
-        >
-          {EALD_LEGAL_LINKS.map(({ href, labelKey }) => (
-            <Link
-              key={href}
-              href={href}
-              className="inline-flex min-h-11 items-center rounded-lg px-2.5 text-body-sm font-medium text-body transition-colors duration-150 hover:bg-surface-inset hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            >
-              {t(labelKey)}
             </Link>
           ))}
         </nav>

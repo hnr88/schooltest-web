@@ -745,6 +745,11 @@
       "teachers": "Giáo viên",
       "teach": "Giảng dạy",
       "ops": "Vận hành",
+      "opsSchools": "Trường học",
+      "opsPipeline": "Luồng xử lý",
+      "opsTimers": "Bộ đếm giờ",
+      "opsTools": "Công cụ",
+      "opsSettings": "Cài đặt nền tảng",
       "participation": "Tham gia",
       "analytics": "Phân tích"
     },
@@ -2640,9 +2645,7 @@
         "in_progress": "Đang tiến hành",
         "submitted": "Đã gửi",
         "complete": "Hoàn tất"
-      },
-      "timersLink": "Bộ hẹn giờ từng phần",
-      "pipelineLink": "Tình trạng pipeline"
+      }
     },
     "detail": {
       "meta": {
@@ -3401,7 +3404,6 @@
     "gdpr": "Tuân thủ GDPR",
     "home": "Trang chủ",
     "invite": "Lời mời",
-    "legalNavLabel": "Điều hướng pháp lý",
     "newChild": "Học sinh mới",
     "onboarding": "Bắt đầu",
     "opsAudit": "Kiểm toán & bảo mật",

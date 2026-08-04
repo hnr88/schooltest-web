@@ -745,6 +745,11 @@
       "teachers": "교사",
       "teach": "교사 홈",
       "ops": "운영",
+      "opsSchools": "학교",
+      "opsPipeline": "파이프라인",
+      "opsTimers": "섹션 타이머",
+      "opsTools": "도구",
+      "opsSettings": "플랫폼 설정",
       "participation": "응시 현황",
       "analytics": "분석"
     },
@@ -2640,9 +2645,7 @@
         "in_progress": "진행 중",
         "submitted": "제출됨",
         "complete": "완료"
-      },
-      "timersLink": "섹션 타이머",
-      "pipelineLink": "파이프라인 상태"
+      }
     },
     "detail": {
       "meta": {
@@ -3401,7 +3404,6 @@
     "gdpr": "GDPR 준수",
     "home": "홈",
     "invite": "초대",
-    "legalNavLabel": "법적 고지 탐색",
     "newChild": "학생 추가",
     "onboarding": "온보딩",
     "opsAudit": "감사 및 보안",

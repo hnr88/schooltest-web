@@ -745,6 +745,11 @@
       "teachers": "Teachers",
       "teach": "Teaching",
       "ops": "Ops",
+      "opsSchools": "Schools",
+      "opsPipeline": "Pipeline",
+      "opsTimers": "Section timers",
+      "opsTools": "Tools",
+      "opsSettings": "Platform settings",
       "participation": "Participation",
       "analytics": "Analytics"
     },
@@ -2944,9 +2949,7 @@
         "in_progress": "In progress",
         "submitted": "Submitted",
         "complete": "Complete"
-      },
-      "timersLink": "Section timers",
-      "pipelineLink": "Pipeline health"
+      }
     },
     "detail": {
       "meta": {
@@ -3401,7 +3404,6 @@
     "gdpr": "GDPR Compliance",
     "home": "Home",
     "invite": "Invitation",
-    "legalNavLabel": "Legal",
     "newChild": "New student",
     "onboarding": "Onboarding",
     "opsAudit": "Audit & security",

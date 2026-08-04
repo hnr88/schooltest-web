@@ -14,7 +14,11 @@ export type NavLabelKey =
   | 'teach'
   | 'participation'
   | 'analytics'
-  | 'ops';
+  | 'opsSchools'
+  | 'opsPipeline'
+  | 'opsTimers'
+  | 'opsTools'
+  | 'opsSettings';
 
 // Canonical rail grouping (DS §12 Navigation card): every destination of the
 // parent rail sits in the one primary list.

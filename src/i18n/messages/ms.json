@@ -745,6 +745,11 @@
       "teachers": "Guru",
       "teach": "Mengajar",
       "ops": "Operasi",
+      "opsSchools": "Sekolah",
+      "opsPipeline": "Saluran proses",
+      "opsTimers": "Pemasa bahagian",
+      "opsTools": "Alat",
+      "opsSettings": "Tetapan platform",
       "participation": "Penyertaan",
       "analytics": "Analitik"
     },
@@ -2640,9 +2645,7 @@
         "in_progress": "Sedang berjalan",
         "submitted": "Dihantar",
         "complete": "Selesai"
-      },
-      "timersLink": "Pemasa bahagian",
-      "pipelineLink": "Kesihatan saluran"
+      }
     },
     "detail": {
       "meta": {
@@ -3401,7 +3404,6 @@
     "gdpr": "Pematuhan GDPR",
     "home": "Laman utama",
     "invite": "Jemputan",
-    "legalNavLabel": "Navigasi undang-undang",
     "newChild": "Pelajar baharu",
     "onboarding": "Permulaan",
     "opsAudit": "Audit & keselamatan",

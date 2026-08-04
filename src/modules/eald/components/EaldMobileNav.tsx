@@ -17,7 +17,6 @@ import {
   SheetTrigger,
 } from '@/modules/design-system';
 import { EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
-import { EaldLegalLinks } from '@/modules/eald/components/EaldLegalLinks';
 import type { EaldPage } from '@/modules/eald/types/eald.types';
 
 interface EaldMobileNavProps {
@@ -25,8 +24,6 @@ interface EaldMobileNavProps {
 }
 
 function EaldMobileNav({ activePage }: EaldMobileNavProps) {
-  // Root-scoped: the sheet mixes Eald.* copy with the shared Navigation.* legal
-  // labels rather than duplicating them into a second catalog.
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
@@ -84,7 +81,6 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
             {t('Eald.nav.schoolSearch')}
           </Link>
         </nav>
-        <EaldLegalLinks onNavigate={close} />
         <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
           <Link
             href="/sign-in"

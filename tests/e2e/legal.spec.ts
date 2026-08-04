@@ -1,7 +1,7 @@
 /**
  * Mission st-legal-seo-ops E2E flows 1–6 (task 207): the four legal pages exist,
- * render the REAL persisted document from Postgres, and are linked from both the
- * public header and the public footer.
+ * render the REAL persisted document from Postgres, and are linked from the
+ * public footer ONLY — the header must never carry them.
  *
  * Every expected value is read at runtime — page copy from the live API
  * (C-LEG-02) and chrome labels from the shipped catalogs — so nothing is
@@ -69,15 +69,28 @@ test.describe('legal pages', () => {
     }
   });
 
-  test('flow: every legal page is linked in the website header navigation', async ({ page }) => {
+  test('flow: no legal page is linked in the header — the footer is their only home', async ({
+    page,
+  }) => {
     await page.goto('/');
-    const nav = page.getByRole('navigation', { name: en['Navigation.legalNavLabel'] });
-    await expect(nav.first()).toBeAttached();
+    const header = page.locator('header');
+    await expect(header, 'the header itself still renders').toBeVisible();
 
     for (const { path, labelKey } of LEGAL_PAGES) {
-      const link = nav.first().getByRole('link', { name: en[labelKey], exact: true });
-      await expect(link, `header link for ${path}`).toHaveAttribute('href', path);
+      await expect(
+        header.locator(`a[href="${path}"]`),
+        `header must not link ${path}`,
+      ).toHaveCount(0);
+      await expect(
+        header.getByRole('link', { name: en[labelKey], exact: true }),
+        `header must not carry the ${labelKey} label`,
+      ).toHaveCount(0);
     }
+
+    // Not a vacuous pass: the header still has its own product navigation.
+    await expect(
+      header.getByRole('navigation', { name: en['Eald.nav.label'] }),
+    ).toBeAttached();
   });
 
   test('flow: the retired /privacy link is gone while the real legal links remain', async ({
@@ -116,16 +129,39 @@ test.describe('legal pages', () => {
     await expect(page.getByRole('heading', { level: 1, name: original })).toBeVisible();
   });
 
-  test('flow: legal pages are reachable from the mobile navigation at 375px', async ({ page }) => {
+  test('flow: at 375px legal pages live in the footer, and NOT in the mobile menu', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/');
-    await page.getByRole('button', { name: en['Eald.nav.openMenu'] }).click();
 
+    // The mobile menu carries product navigation only.
+    await page.getByRole('button', { name: en['Eald.nav.openMenu'] }).click();
+    const sheet = page.getByRole('dialog');
+    await expect(sheet).toBeVisible();
     for (const { path, labelKey } of LEGAL_PAGES) {
       await expect(
-        page.getByRole('link', { name: en[labelKey], exact: true }).first(),
-        `mobile link for ${path}`,
-      ).toBeVisible();
+        sheet.locator(`a[href="${path}"]`),
+        `mobile menu must not link ${path}`,
+      ).toHaveCount(0);
+      await expect(
+        sheet.getByRole('link', { name: en[labelKey], exact: true }),
+        `mobile menu must not carry the ${labelKey} label`,
+      ).toHaveCount(0);
+    }
+
+    // Not a vacuous pass: the sheet still renders its own product navigation.
+    await expect(
+      sheet.getByRole('link', { name: en['Eald.nav.diagnose'], exact: true }),
+    ).toHaveAttribute('href', '/eald/diagnose');
+
+    await page.keyboard.press('Escape');
+
+    // They are still one scroll away, in the footer, at this width.
+    const footer = page.locator('footer');
+    for (const { path, labelKey } of LEGAL_PAGES) {
+      const link = footer.getByRole('link', { name: en[labelKey], exact: true });
+      await expect(link, `footer link for ${path} at 375px`).toHaveAttribute('href', path);
     }
   });
 });
