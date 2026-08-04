@@ -79,3 +79,9 @@ export const SEARCH_PREFERENCE_SORT_LABEL_KEYS = {
   'fee-asc': 'feeAsc',
   'fee-desc': 'feeDesc',
 } as const;
+
+/**
+ * Next cache tag for the C-SET-01 public read. C-WEB-04 accepts it, so an ops
+ * settings change can be published immediately rather than after the window.
+ */
+export const PUBLIC_SETTINGS_CACHE_TAG = 'platform-settings';

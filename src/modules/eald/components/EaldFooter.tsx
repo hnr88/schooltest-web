@@ -3,19 +3,24 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { Container, Logo } from '@/modules/design-system';
 import { EALD_FOOTER_COLUMNS } from '@/modules/eald/constants/eald.constants';
+import { getPublicSettings } from '@/modules/settings';
 
 async function EaldFooter() {
   // Root-scoped: the footer mixes Eald.* copy with the shared Navigation.*
   // legal labels, so the keys in EALD_FOOTER_COLUMNS are fully qualified.
   const t = await getTranslations();
+  // C-SET-01: the site name and tagline are ops-editable, so they come from the
+  // settings row. The catalog value is the fallback for the tagline only —
+  // site_name is required server-side and always present.
+  const settings = await getPublicSettings();
 
   return (
     <footer className="bg-navy-900 text-slate-400">
       <Container className="max-w-eald py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Logo theme="white" alt={t('Eald.footer.logoAlt')} />
-            <p className="mt-4 max-w-xs text-sm">{t('Eald.footer.tagline')}</p>
+            <Logo theme="white" alt={settings.site_name} />
+            <p className="mt-4 max-w-xs text-sm">{settings.site_tagline ?? t('Eald.footer.tagline')}</p>
           </div>
           {EALD_FOOTER_COLUMNS.map((column) => (
             <nav key={column.titleKey} aria-label={t(column.titleKey)}>

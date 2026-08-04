@@ -11,6 +11,7 @@ import {
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { getPublicSettings } from '@/modules/settings';
 import { ClassroomSection } from '@/modules/eald/components/ClassroomSection';
 import { GenerateSection } from '@/modules/eald/components/GenerateSection';
 import { TeachHero } from '@/modules/eald/components/TeachHero';
@@ -23,11 +24,13 @@ interface TeachPageProps {
 export async function generateMetadata({ params }: TeachPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations('Eald.meta');
+  const settings = await getPublicSettings();
   return buildPageMetadata({
     title: t('teachTitle'),
     description: t('teachDescription'),
     pathname: '/eald/teach',
     locale,
+    siteName: settings.site_name,
   });
 }
 

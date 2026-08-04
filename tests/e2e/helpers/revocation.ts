@@ -48,10 +48,21 @@ export function apiLogin(identifier: string, password: string): Promise<HttpResu
   });
 }
 
+
+/**
+ * The JWT is minted ONCE per worker. The API's brute-force guard allows 20
+ * logins per minute per IP, and a helper that logs in on every call blows
+ * through that in one spec — which surfaced as a bogus 429 mid-suite, not as a
+ * product defect.
+ */
+let cachedJwt: string | null = null;
+
 async function schoolAdminJwt(): Promise<string> {
+  if (cachedJwt) return cachedJwt;
   const res = await apiLogin(SCHOOL_ADMIN.email, SCHOOL_ADMIN.password);
   if (res.status !== 200) throw new Error(`[e2e] school_admin login failed: ${res.status}`);
-  return (res.body as { jwt: string }).jwt;
+  cachedJwt = (res.body as { jwt: string }).jwt;
+  return cachedJwt;
 }
 
 export interface Invitation {

@@ -9,6 +9,7 @@ import {
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { getPublicSettings } from '@/modules/settings';
 import { ClassroomBand } from '@/modules/eald/components/ClassroomBand';
 import { EaldTrustedBy } from '@/modules/eald/components/EaldTrustedBy';
 import { ProblemSection } from '@/modules/eald/components/ProblemSection';
@@ -24,11 +25,13 @@ interface HomeProps {
 export async function generateMetadata({ params }: HomeProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations('Eald.meta');
+  const settings = await getPublicSettings();
   return buildPageMetadata({
     title: t('homeTitle'),
     description: t('homeDescription'),
     pathname: '/',
     locale,
+    siteName: settings.site_name,
   });
 }
 

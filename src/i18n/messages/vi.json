@@ -2866,6 +2866,143 @@
         "errorDescription": "Kiểm tra kết nối và thử lại.",
         "retry": "Thử lại"
       }
+    },
+    "settings": {
+      "meta": {
+        "title": "Cài đặt nền tảng",
+        "description": "Nhận diện trang, mặc định SEO, email, giới hạn, bảo trì và thông báo."
+      },
+      "title": "Cài đặt nền tảng",
+      "description": "Cấu hình thời gian chạy cho toàn nền tảng. Thay đổi có hiệu lực ngay và được ghi nhật ký.",
+      "save": "Lưu cài đặt",
+      "saving": "Đang lưu…",
+      "unsaved": "Bạn có thay đổi chưa lưu.",
+      "savedToast": "Đã lưu cài đặt.",
+      "validationToast": "Một số giá trị bị từ chối. Kiểm tra các trường được đánh dấu.",
+      "errorToast": "Không lưu được cài đặt. Vui lòng thử lại.",
+      "errorTitle": "Không tải được cài đặt",
+      "errorDescription": "Endpoint cài đặt nền tảng không phản hồi. Hãy kiểm tra API có đang chạy không.",
+      "groups": {
+        "site": {
+          "title": "Nhận diện trang",
+          "description": "Tên và khẩu hiệu hiển thị trên toàn bộ trang công khai."
+        },
+        "seo": {
+          "title": "Mặc định SEO",
+          "description": "Tiêu đề và mô tả dự phòng cho trang không tự đặt."
+        },
+        "email": {
+          "title": "Email",
+          "description": "Cách thư giao dịch được gửi đi."
+        },
+        "limits": {
+          "title": "Giới hạn",
+          "description": "Giới hạn phiên, tải lên, phân trang và tần suất."
+        },
+        "maintenance": {
+          "title": "Bảo trì",
+          "description": "Đóng trang công khai và giải thích lý do."
+        },
+        "announcement": {
+          "title": "Thông báo",
+          "description": "Biểu ngữ hiển thị cho mọi khách truy cập trang công khai."
+        }
+      },
+      "options": {
+        "info": "Thông tin",
+        "warning": "Cảnh báo",
+        "critical": "Nghiêm trọng",
+        "smtp": "SMTP",
+        "console": "Console (chỉ ghi log)"
+      },
+      "fields": {
+        "site_name": {
+          "label": "Tên trang",
+          "helper": "Hiển thị trên tab trình duyệt, thẻ Open Graph và thẻ chia sẻ."
+        },
+        "site_tagline": {
+          "label": "Khẩu hiệu",
+          "helper": "Một dòng mô tả sản phẩm. Dùng ở chân trang và llms.txt."
+        },
+        "seo_default_title": {
+          "label": "Tiêu đề meta mặc định",
+          "helper": "Tối đa 70 ký tự. Dùng khi trang không tự đặt tiêu đề."
+        },
+        "seo_default_description": {
+          "label": "Mô tả meta mặc định",
+          "helper": "Tối đa 200 ký tự."
+        },
+        "maintenance_mode": {
+          "label": "Chế độ bảo trì",
+          "helper": "Hiển thị biểu ngữ bảo trì cho khách truy cập công khai."
+        },
+        "maintenance_message": {
+          "label": "Thông báo bảo trì",
+          "helper": "Hiển thị trong biểu ngữ. Nêu rõ điều gì đang diễn ra và khi nào kết thúc."
+        },
+        "announcement_enabled": {
+          "label": "Hiển thị thông báo",
+          "helper": "Hiển thị biểu ngữ thông báo trên các trang công khai."
+        },
+        "announcement_message": {
+          "label": "Nội dung thông báo",
+          "helper": "Văn bản biểu ngữ."
+        },
+        "announcement_level": {
+          "label": "Mức thông báo",
+          "helper": "Quyết định mức độ nhấn mạnh của biểu ngữ."
+        },
+        "session_timeout_minutes": {
+          "label": "Hết hạn phiên (phút)",
+          "helper": "Từ 5 đến 1440. Thời gian phiên đăng nhập còn hiệu lực."
+        },
+        "upload_max_size_mb": {
+          "label": "Kích thước tải lên tối đa (MB)",
+          "helper": "Từ 1 đến 100."
+        },
+        "pagination_default_page_size": {
+          "label": "Số mục mỗi trang mặc định",
+          "helper": "Từ 1 đến 100. Dùng cho danh sách không yêu cầu kích thước."
+        },
+        "pagination_max_page_size": {
+          "label": "Số mục mỗi trang tối đa",
+          "helper": "Từ 1 đến 200 và không nhỏ hơn giá trị mặc định."
+        },
+        "email_provider": {
+          "label": "Nhà cung cấp email",
+          "helper": "SMTP gửi thư thật; Console chỉ ghi log."
+        },
+        "email_from_name": {
+          "label": "Tên người gửi",
+          "helper": "Tên người gửi trên thư đi."
+        },
+        "email_from_address": {
+          "label": "Địa chỉ người gửi",
+          "helper": "Địa chỉ người gửi trên thư đi."
+        },
+        "email_reply_to": {
+          "label": "Địa chỉ trả lời",
+          "helper": "Nơi nhận thư trả lời, nếu khác người gửi."
+        },
+        "rate_limit_auth_max": {
+          "label": "Số lần xác thực mỗi khoảng",
+          "helper": "Từ 1 đến 1000."
+        },
+        "rate_limit_auth_window_ms": {
+          "label": "Khoảng xác thực (ms)",
+          "helper": "Từ 1000 đến 3600000."
+        }
+      },
+      "testEmail": {
+        "title": "Gửi email thử",
+        "description": "Gửi một thư thật qua nhà cung cấp đã cấu hình để xác nhận việc gửi.",
+        "label": "Gửi tới",
+        "placeholder": "you@example.com",
+        "send": "Gửi email thử",
+        "sending": "Đang gửi…",
+        "sentToast": "Đã gửi email thử tới {to} qua {provider}.",
+        "errorToast": "Nhà cung cấp đã từ chối thư."
+      }
     }
   },
   "RunSheet": {

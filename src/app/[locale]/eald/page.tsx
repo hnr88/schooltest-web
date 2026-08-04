@@ -9,6 +9,7 @@ import {
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { getPublicSettings } from '@/modules/settings';
 import { ClassroomBand } from '@/modules/eald/components/ClassroomBand';
 import { EaldTrustedBy } from '@/modules/eald/components/EaldTrustedBy';
 import { ProblemSection } from '@/modules/eald/components/ProblemSection';
@@ -24,6 +25,7 @@ interface EaldHomeProps {
 export async function generateMetadata({ params }: EaldHomeProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations('Eald.meta');
+  const settings = await getPublicSettings();
   // /eald renders the SAME sections as the site root (only the hero image
   // differs), so it canonicalises to `/` rather than competing with it for the
   // same query. It stays crawlable and linked — it is the EAL/D section root in
@@ -35,6 +37,7 @@ export async function generateMetadata({ params }: EaldHomeProps): Promise<Metad
     pathname: '/eald',
     canonicalPath: '/',
     locale,
+    siteName: settings.site_name,
   });
 }
 

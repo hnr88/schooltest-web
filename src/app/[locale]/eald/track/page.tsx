@@ -11,6 +11,7 @@ import {
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { getPublicSettings } from '@/modules/settings';
 import { EvidenceSection } from '@/modules/eald/components/EvidenceSection';
 import { TeachEmpiricalSection } from '@/modules/eald/components/TeachEmpiricalSection';
 import { TrackHero } from '@/modules/eald/components/TrackHero';
@@ -22,11 +23,13 @@ interface TrackPageProps {
 export async function generateMetadata({ params }: TrackPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations('Eald.meta');
+  const settings = await getPublicSettings();
   return buildPageMetadata({
     title: t('trackTitle'),
     description: t('trackDescription'),
     pathname: '/eald/track',
     locale,
+    siteName: settings.site_name,
   });
 }
 

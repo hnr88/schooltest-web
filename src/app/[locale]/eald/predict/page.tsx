@@ -14,6 +14,7 @@ import {
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
+import { getPublicSettings } from '@/modules/settings';
 
 interface PredictPageProps {
   params: Promise<{ locale: string }>;
@@ -22,11 +23,13 @@ interface PredictPageProps {
 export async function generateMetadata({ params }: PredictPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations('Eald.meta');
+  const settings = await getPublicSettings();
   return buildPageMetadata({
     title: t('predictTitle'),
     description: t('predictDescription'),
     pathname: '/eald/predict',
     locale,
+    siteName: settings.site_name,
   });
 }
 

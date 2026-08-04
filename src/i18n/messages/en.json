@@ -3170,6 +3170,143 @@
         "errorDescription": "Check your connection and try again.",
         "retry": "Try again"
       }
+    },
+    "settings": {
+      "meta": {
+        "title": "Platform settings",
+        "description": "Site identity, SEO defaults, email, limits, maintenance and announcements."
+      },
+      "title": "Platform settings",
+      "description": "Runtime configuration for the whole platform. Changes take effect immediately and are audited.",
+      "save": "Save settings",
+      "saving": "Saving…",
+      "unsaved": "You have unsaved changes.",
+      "savedToast": "Settings saved.",
+      "validationToast": "Some values were rejected. Check the highlighted fields.",
+      "errorToast": "Settings could not be saved. Try again.",
+      "errorTitle": "We could not load the settings",
+      "errorDescription": "The platform settings endpoint did not answer. Check that the API is running.",
+      "groups": {
+        "site": {
+          "title": "Site identity",
+          "description": "The name and tagline shown across the public site."
+        },
+        "seo": {
+          "title": "SEO defaults",
+          "description": "Fallback title and description for public pages that do not set their own."
+        },
+        "email": {
+          "title": "Email",
+          "description": "How transactional mail leaves the platform."
+        },
+        "limits": {
+          "title": "Limits",
+          "description": "Session, upload, pagination and rate-limit bounds."
+        },
+        "maintenance": {
+          "title": "Maintenance",
+          "description": "Close the public site and explain why."
+        },
+        "announcement": {
+          "title": "Announcement",
+          "description": "A banner shown to everyone on the public site."
+        }
+      },
+      "options": {
+        "info": "Info",
+        "warning": "Warning",
+        "critical": "Critical",
+        "smtp": "SMTP",
+        "console": "Console (log only)"
+      },
+      "fields": {
+        "site_name": {
+          "label": "Site name",
+          "helper": "Shown in the browser tab, Open Graph tags and the social card."
+        },
+        "site_tagline": {
+          "label": "Tagline",
+          "helper": "One line describing the product. Used in the footer and llms.txt."
+        },
+        "seo_default_title": {
+          "label": "Default meta title",
+          "helper": "Up to 70 characters. Used where a page sets no title of its own."
+        },
+        "seo_default_description": {
+          "label": "Default meta description",
+          "helper": "Up to 200 characters."
+        },
+        "maintenance_mode": {
+          "label": "Maintenance mode",
+          "helper": "Show a maintenance banner to public visitors."
+        },
+        "maintenance_message": {
+          "label": "Maintenance message",
+          "helper": "Shown in the banner. Say what is happening and when it ends."
+        },
+        "announcement_enabled": {
+          "label": "Show announcement",
+          "helper": "Display the announcement banner on public pages."
+        },
+        "announcement_message": {
+          "label": "Announcement",
+          "helper": "The banner text."
+        },
+        "announcement_level": {
+          "label": "Announcement level",
+          "helper": "Controls the banner's emphasis."
+        },
+        "session_timeout_minutes": {
+          "label": "Session timeout (minutes)",
+          "helper": "Between 5 and 1440. How long a signed-in session stays valid."
+        },
+        "upload_max_size_mb": {
+          "label": "Maximum upload size (MB)",
+          "helper": "Between 1 and 100."
+        },
+        "pagination_default_page_size": {
+          "label": "Default page size",
+          "helper": "Between 1 and 100. Used by lists that do not ask for a size."
+        },
+        "pagination_max_page_size": {
+          "label": "Maximum page size",
+          "helper": "Between 1 and 200, and never below the default."
+        },
+        "email_provider": {
+          "label": "Email provider",
+          "helper": "SMTP sends real mail; Console only logs it."
+        },
+        "email_from_name": {
+          "label": "From name",
+          "helper": "The sender name on outgoing mail."
+        },
+        "email_from_address": {
+          "label": "From address",
+          "helper": "The sender address on outgoing mail."
+        },
+        "email_reply_to": {
+          "label": "Reply-to address",
+          "helper": "Where replies go, if different from the sender."
+        },
+        "rate_limit_auth_max": {
+          "label": "Auth attempts per window",
+          "helper": "Between 1 and 1000."
+        },
+        "rate_limit_auth_window_ms": {
+          "label": "Auth window (ms)",
+          "helper": "Between 1000 and 3600000."
+        }
+      },
+      "testEmail": {
+        "title": "Send a test email",
+        "description": "Sends a real message through the configured provider so you can confirm delivery.",
+        "label": "Send to",
+        "placeholder": "you@example.com",
+        "send": "Send test email",
+        "sending": "Sending…",
+        "sentToast": "Test email sent to {to} via {provider}.",
+        "errorToast": "The provider rejected the message."
+      }
     }
   },
   "RunSheet": {

@@ -2866,6 +2866,143 @@
         "errorDescription": "请检查网络连接后重试。",
         "retry": "重试"
       }
+    },
+    "settings": {
+      "meta": {
+        "title": "平台设置",
+        "description": "站点标识、SEO 默认值、邮件、限额、维护与公告。"
+      },
+      "title": "平台设置",
+      "description": "面向整个平台的运行时配置。更改立即生效并记入审计日志。",
+      "save": "保存设置",
+      "saving": "保存中…",
+      "unsaved": "有未保存的更改。",
+      "savedToast": "设置已保存。",
+      "validationToast": "部分值被拒绝，请检查高亮的字段。",
+      "errorToast": "设置保存失败，请重试。",
+      "errorTitle": "无法加载设置",
+      "errorDescription": "平台设置接口没有响应，请确认 API 正在运行。",
+      "groups": {
+        "site": {
+          "title": "站点标识",
+          "description": "公开站点各处显示的名称与标语。"
+        },
+        "seo": {
+          "title": "SEO 默认值",
+          "description": "页面未自行设置时使用的标题与描述。"
+        },
+        "email": {
+          "title": "邮件",
+          "description": "事务性邮件的发送方式。"
+        },
+        "limits": {
+          "title": "限额",
+          "description": "会话、上传、分页与频率限制。"
+        },
+        "maintenance": {
+          "title": "维护",
+          "description": "关闭公开站点并说明原因。"
+        },
+        "announcement": {
+          "title": "公告",
+          "description": "向公开站点所有访客展示的横幅。"
+        }
+      },
+      "options": {
+        "info": "信息",
+        "warning": "警告",
+        "critical": "严重",
+        "smtp": "SMTP",
+        "console": "仅记录日志"
+      },
+      "fields": {
+        "site_name": {
+          "label": "站点名称",
+          "helper": "显示在浏览器标签、Open Graph 标签和社交卡片中。"
+        },
+        "site_tagline": {
+          "label": "标语",
+          "helper": "一句话描述产品，用于页脚和 llms.txt。"
+        },
+        "seo_default_title": {
+          "label": "默认元标题",
+          "helper": "最多 70 个字符，页面未设置标题时使用。"
+        },
+        "seo_default_description": {
+          "label": "默认元描述",
+          "helper": "最多 200 个字符。"
+        },
+        "maintenance_mode": {
+          "label": "维护模式",
+          "helper": "向公开访客显示维护横幅。"
+        },
+        "maintenance_message": {
+          "label": "维护说明",
+          "helper": "显示在横幅中，说明情况与结束时间。"
+        },
+        "announcement_enabled": {
+          "label": "显示公告",
+          "helper": "在公开页面显示公告横幅。"
+        },
+        "announcement_message": {
+          "label": "公告内容",
+          "helper": "横幅文本。"
+        },
+        "announcement_level": {
+          "label": "公告级别",
+          "helper": "控制横幅的强调程度。"
+        },
+        "session_timeout_minutes": {
+          "label": "会话超时（分钟）",
+          "helper": "5 至 1440。登录会话的有效时长。"
+        },
+        "upload_max_size_mb": {
+          "label": "最大上传大小（MB）",
+          "helper": "1 至 100。"
+        },
+        "pagination_default_page_size": {
+          "label": "默认每页条数",
+          "helper": "1 至 100，用于未指定条数的列表。"
+        },
+        "pagination_max_page_size": {
+          "label": "最大每页条数",
+          "helper": "1 至 200，且不得小于默认值。"
+        },
+        "email_provider": {
+          "label": "邮件服务商",
+          "helper": "SMTP 发送真实邮件；Console 仅记录日志。"
+        },
+        "email_from_name": {
+          "label": "发件人名称",
+          "helper": "外发邮件的发件人名称。"
+        },
+        "email_from_address": {
+          "label": "发件人地址",
+          "helper": "外发邮件的发件地址。"
+        },
+        "email_reply_to": {
+          "label": "回复地址",
+          "helper": "与发件人不同时，回复将发往此处。"
+        },
+        "rate_limit_auth_max": {
+          "label": "每个窗口的认证尝试次数",
+          "helper": "1 至 1000。"
+        },
+        "rate_limit_auth_window_ms": {
+          "label": "认证窗口（毫秒）",
+          "helper": "1000 至 3600000。"
+        }
+      },
+      "testEmail": {
+        "title": "发送测试邮件",
+        "description": "通过当前配置的服务商发送真实邮件，以确认送达。",
+        "label": "发送至",
+        "placeholder": "you@example.com",
+        "send": "发送测试邮件",
+        "sending": "发送中…",
+        "sentToast": "测试邮件已通过 {provider} 发送至 {to}。",
+        "errorToast": "服务商拒绝了该邮件。"
+      }
     }
   },
   "RunSheet": {

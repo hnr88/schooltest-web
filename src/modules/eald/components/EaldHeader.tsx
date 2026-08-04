@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { Button, Container, Logo } from '@/modules/design-system';
 import { EALD_LEGAL_LINKS, EALD_NAV_LINKS } from '@/modules/eald/constants/eald.constants';
+import { PublicSiteBanner, getPublicSettings } from '@/modules/settings';
 import type { EaldPage } from '@/modules/eald/types/eald.types';
 
 import { EaldMobileNav } from './EaldMobileNav';
@@ -16,9 +17,15 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
   // Root-scoped: the nav mixes Eald.* copy with the shared Navigation.* legal
   // labels rather than duplicating them into a second catalog.
   const t = await getTranslations();
+  // C-SET-01: the maintenance / announcement banner is part of the public
+  // chrome, so it renders with the header on every public page rather than
+  // being remembered per page.
+  const settings = await getPublicSettings();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/88 backdrop-blur">
+    <>
+      <PublicSiteBanner settings={settings} />
+      <header className="sticky top-0 z-50 border-b border-border bg-background/88 backdrop-blur">
       <Container className="flex h-16 max-w-eald items-center gap-5">
         <Link href="/" className="shrink-0 py-2">
           <Logo alt={t('Eald.footer.logoAlt')} />
@@ -80,7 +87,8 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
 
         <EaldMobileNav activePage={activePage} />
       </Container>
-    </header>
+      </header>
+    </>
   );
 }
 

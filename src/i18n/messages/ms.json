@@ -2866,6 +2866,143 @@
         "errorDescription": "Semak sambungan anda dan cuba lagi.",
         "retry": "Cuba lagi"
       }
+    },
+    "settings": {
+      "meta": {
+        "title": "Tetapan platform",
+        "description": "Identiti tapak, lalai SEO, e-mel, had, penyelenggaraan dan pengumuman."
+      },
+      "title": "Tetapan platform",
+      "description": "Konfigurasi masa jalan untuk seluruh platform. Perubahan berkuat kuasa serta-merta dan diaudit.",
+      "save": "Simpan tetapan",
+      "saving": "Menyimpan…",
+      "unsaved": "Anda mempunyai perubahan yang belum disimpan.",
+      "savedToast": "Tetapan disimpan.",
+      "validationToast": "Sebahagian nilai ditolak. Semak medan yang ditandakan.",
+      "errorToast": "Tetapan tidak dapat disimpan. Cuba lagi.",
+      "errorTitle": "Kami tidak dapat memuatkan tetapan",
+      "errorDescription": "Titik akhir tetapan platform tidak menjawab. Pastikan API sedang berjalan.",
+      "groups": {
+        "site": {
+          "title": "Identiti tapak",
+          "description": "Nama dan slogan yang dipaparkan di seluruh tapak awam."
+        },
+        "seo": {
+          "title": "Lalai SEO",
+          "description": "Tajuk dan penerangan sandaran bagi halaman yang tidak menetapkan sendiri."
+        },
+        "email": {
+          "title": "E-mel",
+          "description": "Cara mel transaksi dihantar."
+        },
+        "limits": {
+          "title": "Had",
+          "description": "Had sesi, muat naik, penomboran dan kadar."
+        },
+        "maintenance": {
+          "title": "Penyelenggaraan",
+          "description": "Tutup tapak awam dan terangkan sebabnya."
+        },
+        "announcement": {
+          "title": "Pengumuman",
+          "description": "Sepanduk yang dipaparkan kepada semua pelawat tapak awam."
+        }
+      },
+      "options": {
+        "info": "Maklumat",
+        "warning": "Amaran",
+        "critical": "Kritikal",
+        "smtp": "SMTP",
+        "console": "Konsol (log sahaja)"
+      },
+      "fields": {
+        "site_name": {
+          "label": "Nama tapak",
+          "helper": "Dipaparkan pada tab pelayar, tag Open Graph dan kad sosial."
+        },
+        "site_tagline": {
+          "label": "Slogan",
+          "helper": "Satu baris menerangkan produk. Digunakan dalam pengaki dan llms.txt."
+        },
+        "seo_default_title": {
+          "label": "Tajuk meta lalai",
+          "helper": "Sehingga 70 aksara. Digunakan apabila halaman tidak menetapkan tajuk sendiri."
+        },
+        "seo_default_description": {
+          "label": "Penerangan meta lalai",
+          "helper": "Sehingga 200 aksara."
+        },
+        "maintenance_mode": {
+          "label": "Mod penyelenggaraan",
+          "helper": "Paparkan sepanduk penyelenggaraan kepada pelawat awam."
+        },
+        "maintenance_message": {
+          "label": "Mesej penyelenggaraan",
+          "helper": "Dipaparkan dalam sepanduk. Nyatakan apa yang berlaku dan bila ia tamat."
+        },
+        "announcement_enabled": {
+          "label": "Papar pengumuman",
+          "helper": "Paparkan sepanduk pengumuman pada halaman awam."
+        },
+        "announcement_message": {
+          "label": "Pengumuman",
+          "helper": "Teks sepanduk."
+        },
+        "announcement_level": {
+          "label": "Tahap pengumuman",
+          "helper": "Mengawal penegasan sepanduk."
+        },
+        "session_timeout_minutes": {
+          "label": "Tamat sesi (minit)",
+          "helper": "Antara 5 dan 1440. Tempoh sesi log masuk kekal sah."
+        },
+        "upload_max_size_mb": {
+          "label": "Saiz muat naik maksimum (MB)",
+          "helper": "Antara 1 dan 100."
+        },
+        "pagination_default_page_size": {
+          "label": "Saiz halaman lalai",
+          "helper": "Antara 1 dan 100. Digunakan oleh senarai yang tidak meminta saiz."
+        },
+        "pagination_max_page_size": {
+          "label": "Saiz halaman maksimum",
+          "helper": "Antara 1 dan 200, dan tidak boleh kurang daripada lalai."
+        },
+        "email_provider": {
+          "label": "Pembekal e-mel",
+          "helper": "SMTP menghantar mel sebenar; Console hanya mencatat log."
+        },
+        "email_from_name": {
+          "label": "Nama pengirim",
+          "helper": "Nama pengirim pada mel keluar."
+        },
+        "email_from_address": {
+          "label": "Alamat pengirim",
+          "helper": "Alamat pengirim pada mel keluar."
+        },
+        "email_reply_to": {
+          "label": "Alamat balasan",
+          "helper": "Ke mana balasan pergi, jika berbeza daripada pengirim."
+        },
+        "rate_limit_auth_max": {
+          "label": "Cubaan pengesahan setiap tetingkap",
+          "helper": "Antara 1 dan 1000."
+        },
+        "rate_limit_auth_window_ms": {
+          "label": "Tetingkap pengesahan (ms)",
+          "helper": "Antara 1000 dan 3600000."
+        }
+      },
+      "testEmail": {
+        "title": "Hantar e-mel ujian",
+        "description": "Menghantar mesej sebenar melalui pembekal yang dikonfigurasikan untuk mengesahkan penghantaran.",
+        "label": "Hantar kepada",
+        "placeholder": "you@example.com",
+        "send": "Hantar e-mel ujian",
+        "sending": "Menghantar…",
+        "sentToast": "E-mel ujian dihantar kepada {to} melalui {provider}.",
+        "errorToast": "Pembekal menolak mesej itu."
+      }
     }
   },
   "RunSheet": {

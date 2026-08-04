@@ -1,5 +1,7 @@
 import type { z } from 'zod';
 
+import type { publicSettingsSchema } from '@/modules/settings/schemas/public-settings.schema';
+
 import type {
   searchPreferenceFormSchema,
   searchPreferenceSchema,
@@ -23,3 +25,6 @@ export interface SettingsSelectFieldProps<T extends string> {
   onValueChange: (value: T) => void;
   helperText?: string;
 }
+
+/** C-SET-01 — the settings the public site renders from. */
+export type PublicSettings = z.infer<typeof publicSettingsSchema>;

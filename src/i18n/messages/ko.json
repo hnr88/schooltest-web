@@ -2866,6 +2866,143 @@
         "errorDescription": "연결을 확인하고 다시 시도하세요.",
         "retry": "다시 시도"
       }
+    },
+    "settings": {
+      "meta": {
+        "title": "플랫폼 설정",
+        "description": "사이트 정보, SEO 기본값, 이메일, 제한, 점검 및 공지."
+      },
+      "title": "플랫폼 설정",
+      "description": "플랫폼 전체의 런타임 설정입니다. 변경 사항은 즉시 적용되고 감사 기록에 남습니다.",
+      "save": "설정 저장",
+      "saving": "저장 중…",
+      "unsaved": "저장하지 않은 변경 사항이 있습니다.",
+      "savedToast": "설정을 저장했습니다.",
+      "validationToast": "일부 값이 거부되었습니다. 강조된 항목을 확인하세요.",
+      "errorToast": "설정을 저장하지 못했습니다. 다시 시도하세요.",
+      "errorTitle": "설정을 불러오지 못했습니다",
+      "errorDescription": "플랫폼 설정 엔드포인트가 응답하지 않았습니다. API가 실행 중인지 확인하세요.",
+      "groups": {
+        "site": {
+          "title": "사이트 정보",
+          "description": "공개 사이트 전반에 표시되는 이름과 태그라인."
+        },
+        "seo": {
+          "title": "SEO 기본값",
+          "description": "페이지가 자체 값을 지정하지 않을 때 사용할 제목과 설명."
+        },
+        "email": {
+          "title": "이메일",
+          "description": "트랜잭션 메일 발송 방식."
+        },
+        "limits": {
+          "title": "제한",
+          "description": "세션, 업로드, 페이지네이션, 속도 제한."
+        },
+        "maintenance": {
+          "title": "점검",
+          "description": "공개 사이트를 닫고 사유를 안내합니다."
+        },
+        "announcement": {
+          "title": "공지",
+          "description": "공개 사이트의 모든 방문자에게 표시되는 배너."
+        }
+      },
+      "options": {
+        "info": "정보",
+        "warning": "경고",
+        "critical": "심각",
+        "smtp": "SMTP",
+        "console": "콘솔(기록만)"
+      },
+      "fields": {
+        "site_name": {
+          "label": "사이트 이름",
+          "helper": "브라우저 탭, Open Graph 태그, 소셜 카드에 표시됩니다."
+        },
+        "site_tagline": {
+          "label": "태그라인",
+          "helper": "제품을 한 줄로 설명합니다. 푸터와 llms.txt에 사용됩니다."
+        },
+        "seo_default_title": {
+          "label": "기본 메타 제목",
+          "helper": "최대 70자. 페이지가 제목을 지정하지 않을 때 사용됩니다."
+        },
+        "seo_default_description": {
+          "label": "기본 메타 설명",
+          "helper": "최대 200자."
+        },
+        "maintenance_mode": {
+          "label": "점검 모드",
+          "helper": "공개 방문자에게 점검 배너를 표시합니다."
+        },
+        "maintenance_message": {
+          "label": "점검 안내",
+          "helper": "배너에 표시됩니다. 상황과 종료 시점을 알려주세요."
+        },
+        "announcement_enabled": {
+          "label": "공지 표시",
+          "helper": "공개 페이지에 공지 배너를 표시합니다."
+        },
+        "announcement_message": {
+          "label": "공지 내용",
+          "helper": "배너 문구."
+        },
+        "announcement_level": {
+          "label": "공지 수준",
+          "helper": "배너의 강조 정도를 정합니다."
+        },
+        "session_timeout_minutes": {
+          "label": "세션 만료(분)",
+          "helper": "5~1440. 로그인 세션이 유지되는 시간."
+        },
+        "upload_max_size_mb": {
+          "label": "최대 업로드 크기(MB)",
+          "helper": "1~100."
+        },
+        "pagination_default_page_size": {
+          "label": "기본 페이지 크기",
+          "helper": "1~100. 크기를 지정하지 않은 목록에 사용됩니다."
+        },
+        "pagination_max_page_size": {
+          "label": "최대 페이지 크기",
+          "helper": "1~200이며 기본값보다 작을 수 없습니다."
+        },
+        "email_provider": {
+          "label": "이메일 공급자",
+          "helper": "SMTP는 실제 메일을 보내고 Console은 기록만 합니다."
+        },
+        "email_from_name": {
+          "label": "보내는 사람 이름",
+          "helper": "발신 메일에 표시되는 이름."
+        },
+        "email_from_address": {
+          "label": "보내는 주소",
+          "helper": "발신 메일의 주소."
+        },
+        "email_reply_to": {
+          "label": "회신 주소",
+          "helper": "발신 주소와 다를 경우 회신이 도착할 주소."
+        },
+        "rate_limit_auth_max": {
+          "label": "구간당 인증 시도 횟수",
+          "helper": "1~1000."
+        },
+        "rate_limit_auth_window_ms": {
+          "label": "인증 구간(ms)",
+          "helper": "1000~3600000."
+        }
+      },
+      "testEmail": {
+        "title": "테스트 이메일 보내기",
+        "description": "설정된 공급자를 통해 실제 메일을 보내 전달을 확인합니다.",
+        "label": "받는 사람",
+        "placeholder": "you@example.com",
+        "send": "테스트 이메일 보내기",
+        "sending": "보내는 중…",
+        "sentToast": "{provider}(으)로 {to}에 테스트 이메일을 보냈습니다.",
+        "errorToast": "공급자가 메일을 거부했습니다."
+      }
     }
   },
   "RunSheet": {
