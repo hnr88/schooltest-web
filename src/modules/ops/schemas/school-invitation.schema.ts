@@ -15,7 +15,12 @@ export function createOnboardSchoolSchema(t: OnboardSchemaTranslator) {
   return z.object({
     first_name: z.string().trim().min(1, t('required')).max(100, t('tooLong')),
     last_name: z.string().trim().min(1, t('required')).max(100, t('tooLong')),
-    contact_email: z.string().trim().min(1, t('required')).pipe(z.email(t('emailInvalid'))),
+    contact_email: z
+      .string()
+      .trim()
+      .min(1, t('required'))
+      .max(255, t('emailTooLong'))
+      .pipe(z.email(t('emailInvalid'))),
   });
 }
 
@@ -33,7 +38,8 @@ const onboardingContactSchema = z.strictObject({
  * must fail loudly rather than pass unnoticed.
  */
 export const onboardingLinkResultSchema = z.strictObject({
-  token: z.string(),
+  // Mirrors the server's constraint exactly: 256 bits of crypto-random hex.
+  token: z.string().regex(/^[0-9a-f]{64}$/),
   url: z.string(),
   expires_at: z.null(),
   contact: onboardingContactSchema,
@@ -42,7 +48,7 @@ export const onboardingLinkResultSchema = z.strictObject({
 /** C-SCH-06 200. */
 export const revokeInvitationResultSchema = z.strictObject({
   documentId: z.string(),
-  revoked_links: z.number().int(),
+  revoked_links: z.number().int().min(0),
   account_status: z.literal('prospect'),
   onboarding_status: z.literal('not_started'),
 });

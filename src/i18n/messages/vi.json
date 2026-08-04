@@ -1871,6 +1871,8 @@
       "invalidMessage": "Liên kết có thể đã bị nhập sai hoặc thay thế. Hãy yêu cầu SchoolTest gửi liên kết mới.",
       "expiredTitle": "Liên kết thiết lập đã hết hạn",
       "expiredMessage": "Liên kết thiết lập có hiệu lực trong 14 ngày. Hãy yêu cầu SchoolTest gửi liên kết mới.",
+      "revokedTitle": "Liên kết tham gia này không còn hiệu lực",
+      "revokedMessage": "SchoolTest đã thu hồi lời mời này. Hãy đề nghị SchoolTest gửi cho bạn liên kết mới.",
       "usedTitle": "Liên kết thiết lập đã được sử dụng",
       "usedMessage": "Tài khoản quản trị của trường này đã được tạo. Đăng nhập để tiếp tục, hoặc liên hệ SchoolTest nếu bạn cần trợ giúp."
     }
@@ -2690,13 +2692,16 @@
       "resend": "Gửi lại lời mời",
       "revoke": "Thu hồi lời mời",
       "resendSuccess": "Đã gửi lời mời mới tới {email}",
+      "resendError": "Chúng tôi không gửi lại được lời mời. Hãy thử lại.",
       "revokeSuccess": "Đã thu hồi lời mời",
+      "revokeError": "Chúng tôi không thu hồi được lời mời. Hãy thử lại.",
       "loadError": "Chúng tôi không tải được lời mời của trường này.",
       "loadErrorDescription": "Kiểm tra kết nối của bạn và thử lại.",
       "retry": "Thử lại",
       "validation": {
         "required": "Trường này là bắt buộc",
         "tooLong": "Dùng tối đa 100 ký tự",
+        "emailTooLong": "Dùng tối đa 255 ký tự",
         "emailInvalid": "Nhập địa chỉ email hợp lệ"
       }
     },

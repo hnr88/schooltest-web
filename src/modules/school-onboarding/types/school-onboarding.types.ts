@@ -89,5 +89,8 @@ export interface CompleteOnboardingResult {
   };
 }
 
-// The four guest-facing link states (404/410/409/network).
-export type OnboardingLinkState = 'invalid' | 'expired' | 'used' | 'unavailable';
+// The guest-facing terminal link states (404 / 410 / 409 / network). `revoked`
+// and `expired` are both 410 and are told apart by `error.details.reason`
+// (mission st-ops-onboarding): a link ops pulled back must not be described to
+// the recipient as one that timed out.
+export type OnboardingLinkState = 'invalid' | 'expired' | 'revoked' | 'used' | 'unavailable';

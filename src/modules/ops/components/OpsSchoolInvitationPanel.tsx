@@ -59,50 +59,55 @@ export function OpsSchoolInvitationPanel({ documentId, enabled }: OpsSchoolInvit
 
   const status = invitation.data.onboarding_status;
 
-  if (status === 'not_started') {
-    return (
-      <div data-slot="ops-onboard-actions" className="flex flex-wrap items-center gap-3">
-        <Button type="button" onClick={() => setDialogOpen(true)}>
-          {t('button')}
-        </Button>
-        <OpsOnboardSchoolDialog
-          schoolDocumentId={documentId}
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-        />
-      </div>
-    );
-  }
-
-  if (status !== 'link_sent') return null;
-
   return (
-    <div
-      data-slot="ops-onboard-actions"
-      data-invitation="sent"
-      className="flex flex-wrap items-center gap-x-4 gap-y-3"
-    >
-      <p className="text-sm text-body">
-        {t('sentIndicator', { email: invitation.data.contact_email ?? '' })}
-      </p>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        loading={resend.isPending}
-        onClick={actions.resend}
-      >
-        {t('resend')}
-      </Button>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        loading={revoke.isPending}
-        onClick={actions.revoke}
-      >
-        {t('revoke')}
-      </Button>
-    </div>
+    <>
+      {status === 'not_started' ? (
+        <div data-slot="ops-onboard-actions" className="flex flex-wrap items-center gap-3">
+          <Button type="button" onClick={() => setDialogOpen(true)}>
+            {t('button')}
+          </Button>
+        </div>
+      ) : null}
+
+      {status === 'link_sent' ? (
+        <div
+          data-slot="ops-onboard-actions"
+          data-invitation="sent"
+          className="flex flex-wrap items-center gap-x-4 gap-y-3"
+        >
+          <p className="text-sm text-body">
+            {t('sentIndicator', { email: invitation.data.contact_email ?? '' })}
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            loading={resend.isPending}
+            onClick={actions.resend}
+          >
+            {t('resend')}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            loading={revoke.isPending}
+            onClick={actions.revoke}
+          >
+            {t('revoke')}
+          </Button>
+        </div>
+      ) : null}
+
+      {/* Mounted OUTSIDE the status branches on purpose: a successful send
+          invalidates this query and flips the branch, and unmounting a dialog
+          that is still open would skip the primitive's close cleanup and leave
+          the page's pointer-events locked. */}
+      <OpsOnboardSchoolDialog
+        schoolDocumentId={documentId}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
+    </>
   );
 }

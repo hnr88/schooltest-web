@@ -29,8 +29,10 @@ export function SchoolOnboardingWizard({ token, data }: SchoolOnboardingWizardPr
   } = useOnboardingSteps(token, data);
   const completion = useCompleteOnboarding(token);
 
-  if (completion.linkUsed) {
-    return <OnboardingStatusScreen state="used" />;
+  // `used` (409), `revoked` or `expired` (410, told apart by details.reason):
+  // whichever terminal state the submit hit, the guest sees its own screen.
+  if (completion.linkState) {
+    return <OnboardingStatusScreen state={completion.linkState} />;
   }
 
   return (

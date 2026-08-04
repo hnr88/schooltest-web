@@ -1871,6 +1871,8 @@
       "invalidMessage": "链接可能输入有误或已被替换。请向 SchoolTest 索取新链接。",
       "expiredTitle": "此入驻链接已过期",
       "expiredMessage": "入驻链接有效期为 14 天。请向 SchoolTest 索取新链接。",
+      "revokedTitle": "此入驻链接已失效",
+      "revokedMessage": "SchoolTest 已撤回此邀请。请联系 SchoolTest 重新发送链接。",
       "usedTitle": "此入驻链接已被使用",
       "usedMessage": "该校的管理员账户已创建。请登录继续，或联系 SchoolTest 寻求帮助。"
     }
@@ -2690,13 +2692,16 @@
       "resend": "重新发送邀请",
       "revoke": "撤销邀请",
       "resendSuccess": "新的邀请已发送至 {email}",
+      "resendError": "我们无法重新发送邀请，请重试。",
       "revokeSuccess": "邀请已撤销",
+      "revokeError": "我们无法撤销邀请，请重试。",
       "loadError": "我们无法加载该学校的邀请。",
       "loadErrorDescription": "请检查网络连接后重试。",
       "retry": "重试",
       "validation": {
         "required": "此字段为必填项",
         "tooLong": "请使用 100 个字符以内",
+        "emailTooLong": "请使用 255 个字符以内",
         "emailInvalid": "请输入有效的电子邮件地址"
       }
     },

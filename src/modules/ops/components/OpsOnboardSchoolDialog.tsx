@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import {
   Button,
+  describedBy,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -36,6 +37,13 @@ export function OpsOnboardSchoolDialog({
   });
   const { errors } = form.formState;
 
+  // FieldShell renders the error paragraph but leaves the wiring to the
+  // consumer, so each control carries its own aria-describedby + aria-invalid.
+  const aria = (id: string, error?: string) => ({
+    'aria-describedby': describedBy(id, undefined, error),
+    'aria-invalid': error ? true : undefined,
+  });
+
   const close = (next: boolean) => {
     if (!next) reset();
     onOpenChange(next);
@@ -56,7 +64,12 @@ export function OpsOnboardSchoolDialog({
               errorText={errors.first_name?.message}
               required
             >
-              <Input id="onboard-first-name" autoComplete="off" {...form.register('first_name')} />
+              <Input
+                id="onboard-first-name"
+                autoComplete="off"
+                {...aria('onboard-first-name', errors.first_name?.message)}
+                {...form.register('first_name')}
+              />
             </FieldShell>
             <FieldShell
               id="onboard-last-name"
@@ -64,7 +77,12 @@ export function OpsOnboardSchoolDialog({
               errorText={errors.last_name?.message}
               required
             >
-              <Input id="onboard-last-name" autoComplete="off" {...form.register('last_name')} />
+              <Input
+                id="onboard-last-name"
+                autoComplete="off"
+                {...aria('onboard-last-name', errors.last_name?.message)}
+                {...form.register('last_name')}
+              />
             </FieldShell>
           </div>
           <FieldShell
@@ -77,6 +95,7 @@ export function OpsOnboardSchoolDialog({
               id="onboard-email"
               type="email"
               autoComplete="off"
+              {...aria('onboard-email', errors.contact_email?.message)}
               {...form.register('contact_email')}
             />
           </FieldShell>

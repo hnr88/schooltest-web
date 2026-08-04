@@ -1871,6 +1871,8 @@
       "invalidMessage": "링크가 잘못 입력되었거나 교체되었을 수 있습니다. SchoolTest에 새 링크를 요청하세요.",
       "expiredTitle": "온볼링 링크가 만료되었습니다",
       "expiredMessage": "온볼링 링크는 14일 동안 유효합니다. SchoolTest에 새 링크를 요청하세요.",
+      "revokedTitle": "이 온보딩 링크는 더 이상 유효하지 않습니다",
+      "revokedMessage": "SchoolTest가 이 초대를 철회했습니다. SchoolTest에 새 링크를 요청해 주세요.",
       "usedTitle": "이미 사용된 온볼링 링크입니다",
       "usedMessage": "이 학교의 관리자 계정이 이미 생성되었습니다. 로그인하여 계속하거나 도움이 필요하면 SchoolTest에 문의하세요."
     }
@@ -2690,13 +2692,16 @@
       "resend": "초대장 다시 보내기",
       "revoke": "초대장 철회",
       "resendSuccess": "{email}(으)로 새 초대장을 보냈습니다",
+      "resendError": "초대장을 다시 보내지 못했습니다. 다시 시도해 주세요.",
       "revokeSuccess": "초대장을 철회했습니다",
+      "revokeError": "초대장을 철회하지 못했습니다. 다시 시도해 주세요.",
       "loadError": "이 학교의 초대장을 불러오지 못했습니다.",
       "loadErrorDescription": "연결 상태를 확인하고 다시 시도해 주세요.",
       "retry": "다시 시도",
       "validation": {
         "required": "필수 항목입니다",
         "tooLong": "100자 이내로 입력해 주세요",
+        "emailTooLong": "255자 이내로 입력해 주세요",
         "emailInvalid": "유효한 이메일 주소를 입력해 주세요"
       }
     },

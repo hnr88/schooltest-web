@@ -6,12 +6,14 @@ import { useState } from 'react';
 
 import { useRouter } from '@/i18n/navigation';
 import { writeClientToken } from '@/lib/axios/strapi';
+import { classifyLinkError } from '@/modules/school-onboarding/lib/classify-link-error';
 import { useCompleteOnboardingMutation } from '@/modules/school-onboarding/mutations/use-complete-onboarding.mutation';
 import {
   destroySchoolOnboardingStore,
   getSchoolOnboardingStore,
 } from '@/modules/school-onboarding/stores/use-school-onboarding-store';
 import type { AdminAccountValues } from '@/modules/school-onboarding/schemas/school-onboarding.schema';
+import type { OnboardingLinkState } from '@/modules/school-onboarding/types/school-onboarding.types';
 
 interface StrapiErrorBody {
   error?: { message?: string };
@@ -28,7 +30,11 @@ export function useCompleteOnboarding(token: string) {
   const router = useRouter();
   const mutation = useCompleteOnboardingMutation();
   const [serverError, setServerError] = useState<string | null>(null);
-  const [linkUsed, setLinkUsed] = useState(false);
+  // The terminal link state the SUBMIT discovered, if any. A guest can be
+  // holding the wizard open when ops revokes the invitation (mission
+  // st-ops-onboarding), so 410 has to land on the right screen rather than on
+  // the generic "could not finish setup" message.
+  const [linkState, setLinkState] = useState<OnboardingLinkState | null>(null);
 
   const submit = (values: AdminAccountValues) => {
     const store = getSchoolOnboardingStore(token);
@@ -63,8 +69,8 @@ export function useCompleteOnboarding(token: string) {
         onError: (error) => {
           if (isAxiosError<StrapiErrorBody>(error)) {
             const status = error.response?.status;
-            if (status === 409) {
-              setLinkUsed(true);
+            if (status === 409 || status === 410) {
+              setLinkState(classifyLinkError(error));
               return;
             }
             if (status === 400) {
@@ -78,5 +84,5 @@ export function useCompleteOnboarding(token: string) {
     );
   };
 
-  return { submit, pending: mutation.isPending, serverError, linkUsed };
+  return { submit, pending: mutation.isPending, serverError, linkState };
 }

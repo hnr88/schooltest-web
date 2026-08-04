@@ -28,7 +28,7 @@ export function useInvitationActions({ documentId, resend, revoke }: UseInvitati
         const result = await resend.mutateAsync(documentId);
         toast.success(t('resendSuccess', { email: result.contact.email }));
       } catch {
-        toast.error(t('errorToast'));
+        toast.error(t('resendError'));
       }
     },
     async revoke() {
@@ -36,7 +36,7 @@ export function useInvitationActions({ documentId, resend, revoke }: UseInvitati
         await revoke.mutateAsync(documentId);
         toast.success(t('revokeSuccess'));
       } catch {
-        toast.error(t('errorToast'));
+        toast.error(t('revokeError'));
       }
     },
   };

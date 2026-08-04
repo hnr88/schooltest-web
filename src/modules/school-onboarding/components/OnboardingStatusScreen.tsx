@@ -8,6 +8,7 @@ import type { OnboardingLinkState } from '@/modules/school-onboarding/types/scho
 const STATE_ICONS: Record<OnboardingLinkState, LucideIcon> = {
   invalid: Link2Off,
   expired: Clock,
+  revoked: Link2Off,
   used: CircleCheck,
   unavailable: TriangleAlert,
 };

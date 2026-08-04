@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
 import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
+import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
 import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
 import { OpsSittingRecovery } from '@/modules/ops/components/OpsSittingRecovery';
 import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
@@ -71,13 +72,6 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
     );
   }
 
-  const counts = [
-    { label: t('teachersLabel'), value: school.teacher_count },
-    { label: t('classesLabel'), value: school.class_count },
-    { label: t('studentsLabel'), value: school.student_count },
-    { label: t('resultsLabel'), value: school.results_count },
-  ];
-
   return (
     <main
       data-slot="ops-school-detail"
@@ -104,17 +98,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             above the summary cards. */}
         <OpsSchoolInvitationPanel documentId={documentId} enabled={hydrated && Boolean(token)} />
       </div>
-      <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {counts.map((count) => (
-          <div
-            key={count.label}
-            className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4"
-          >
-            <dt className="text-sm text-body">{count.label}</dt>
-            <dd className="text-2xl font-semibold text-foreground">{count.value}</dd>
-          </div>
-        ))}
-      </dl>
+      <OpsSchoolCountCards school={school} />
       <OpsFormWindow documentId={documentId} />
       <OpsSittingRecovery schoolDocumentId={documentId} />
       <OpsStudentImport documentId={documentId} />

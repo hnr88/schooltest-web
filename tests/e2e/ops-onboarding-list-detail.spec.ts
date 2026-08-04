@@ -79,11 +79,13 @@ test('flow 2: the prospect cohort reads Prospect / Not started, and no school is
   await expect(prospectCells.first()).toBeVisible();
   expect(await prospectCells.count()).toBeGreaterThanOrEqual(300);
 
-  const notStarted = page.getByRole('cell', {
-    name: cat(en, 'Ops.schools.onboardingStatus.not_started'),
-    exact: true,
-  });
-  expect(await notStarted.count()).toBeGreaterThanOrEqual(300);
+  // The PAIRING, not two independent counts: a row showing Prospect must show
+  // Not started in the same row.
+  const pairedRows = page
+    .getByRole('row')
+    .filter({ has: page.getByRole('cell', { name: cat(en, 'Ops.schools.accountStatus.prospect'), exact: true }) })
+    .filter({ has: page.getByRole('cell', { name: cat(en, 'Ops.schools.onboardingStatus.not_started'), exact: true }) });
+  expect(await pairedRows.count(), 'rows showing BOTH Prospect and Not started').toBeGreaterThanOrEqual(300);
 });
 
 test('flow 25: the list renders every school, and the last row is reachable by scrolling', async ({

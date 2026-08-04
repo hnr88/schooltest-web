@@ -43,6 +43,9 @@ export function useOnboardSchoolForm({ schoolDocumentId, onDone }: UseOnboardSch
 
   const submit = form.handleSubmit(async (values) => {
     try {
+      // Awaited, so a 409 can still land inline on the open form. The panel
+      // keeps the dialog mounted across the status flip this triggers, so
+      // closing afterwards still runs the primitive's own close cleanup.
       await onboard.mutateAsync({ schoolDocumentId, ...values });
       toast.success(t('successToast', { email: values.contact_email }));
       reset();

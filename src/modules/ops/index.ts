@@ -1,6 +1,7 @@
 export { OpsSchoolsTable } from './components/OpsSchoolsTable';
 export { OpsSchoolDetail } from './components/OpsSchoolDetail';
 export { OpsSchoolInvitationPanel } from './components/OpsSchoolInvitationPanel';
+export { OpsSchoolCountCards } from './components/OpsSchoolCountCards';
 export { OpsOnboardSchoolDialog } from './components/OpsOnboardSchoolDialog';
 export { OpsStudentImport } from './components/OpsStudentImport';
 export { OpsSectionTimers } from './components/OpsSectionTimers';

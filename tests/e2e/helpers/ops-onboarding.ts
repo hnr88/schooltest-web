@@ -126,11 +126,24 @@ export function revokeViaApi(documentId: string) {
   );
 }
 
+/** C-OPSU-08 — removes a staff account a completed onboarding created. */
+export async function deleteUserByEmail(email: string): Promise<void> {
+  const found = await opsFetch<{ data: { documentId: string }[] }>(
+    `/api/ops/users?q=${encodeURIComponent(email)}&pageSize=5`,
+  );
+  for (const row of found.body.data ?? []) {
+    await opsFetch(`/api/ops/users/${row.documentId}`, { method: 'DELETE' });
+  }
+}
+
 /**
  * Removes the fixture school. A failed delete is LOGGED, never swallowed — a
  * fixture that cannot be cleaned up is information, not something to hide.
+ * `staffEmails` are removed first, because C-OPSS-05 refuses (correctly) to
+ * delete a school that still holds accounts.
  */
-export async function cleanupSchool(documentId: string): Promise<void> {
+export async function cleanupSchool(documentId: string, staffEmails: string[] = []): Promise<void> {
+  for (const email of staffEmails) await deleteUserByEmail(email);
   await revokeViaApi(documentId);
   const res = await opsFetch(`/api/ops/schools/${documentId}`, { method: 'DELETE' });
   if (res.status !== 200) {

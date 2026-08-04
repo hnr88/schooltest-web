@@ -1871,6 +1871,8 @@
       "invalidMessage": "Pautan mungkin tersilap taip atau telah digantikan. Minta SchoolTest menghantar pautan baharu.",
       "expiredTitle": "Pautan pengenalan ini telah tamat tempoh",
       "expiredMessage": "Pautan pengenalan sah selama 14 hari. Minta SchoolTest menghantar pautan baharu.",
+      "revokedTitle": "Pautan pendaftaran ini tidak lagi sah",
+      "revokedMessage": "SchoolTest telah menarik balik jemputan ini. Minta SchoolTest menghantar pautan baharu kepada anda.",
       "usedTitle": "Pautan pengenalan ini telah digunakan",
       "usedMessage": "Akaun pentadbir untuk sekolah ini telah dicipta. Log masuk untuk meneruskan, atau hubungi SchoolTest jika anda memerlukan bantuan."
     }
@@ -2690,13 +2692,16 @@
       "resend": "Hantar semula jemputan",
       "revoke": "Batalkan jemputan",
       "resendSuccess": "Jemputan baharu dihantar kepada {email}",
+      "resendError": "Kami tidak dapat menghantar semula jemputan. Cuba lagi.",
       "revokeSuccess": "Jemputan dibatalkan",
+      "revokeError": "Kami tidak dapat membatalkan jemputan. Cuba lagi.",
       "loadError": "Kami tidak dapat memuatkan jemputan untuk sekolah ini.",
       "loadErrorDescription": "Semak sambungan anda dan cuba lagi.",
       "retry": "Cuba lagi",
       "validation": {
         "required": "Medan ini diperlukan",
         "tooLong": "Gunakan 100 aksara atau kurang",
+        "emailTooLong": "Gunakan 255 aksara atau kurang",
         "emailInvalid": "Masukkan alamat e-mel yang sah"
       }
     },

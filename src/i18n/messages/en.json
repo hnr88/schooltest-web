@@ -2175,6 +2175,8 @@
       "invalidMessage": "The link may have been mistyped or replaced. Ask SchoolTest to send you a new link.",
       "expiredTitle": "This onboarding link has expired",
       "expiredMessage": "Onboarding links are valid for 14 days. Ask SchoolTest to send you a new link.",
+      "revokedTitle": "This onboarding link is no longer valid",
+      "revokedMessage": "SchoolTest withdrew this invitation. Ask SchoolTest to send you a new link.",
       "usedTitle": "This onboarding link has already been used",
       "usedMessage": "The administrator account for this school was already created. Sign in to continue, or contact SchoolTest if you need help."
     }
@@ -2994,13 +2996,16 @@
       "resend": "Resend invitation",
       "revoke": "Revoke invitation",
       "resendSuccess": "A new invitation was sent to {email}",
+      "resendError": "We could not resend the invitation. Try again.",
       "revokeSuccess": "Invitation revoked",
+      "revokeError": "We could not revoke the invitation. Try again.",
       "loadError": "We could not load the invitation for this school.",
       "loadErrorDescription": "Check your connection and try again.",
       "retry": "Try again",
       "validation": {
         "required": "This field is required",
         "tooLong": "Use 100 characters or fewer",
+        "emailTooLong": "Use 255 characters or fewer",
         "emailInvalid": "Enter a valid email address"
       }
     },
