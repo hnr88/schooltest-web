@@ -3,11 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/modules/design-system';
-
-// PortalGhostButton (.qa/design/spec/03 §1.4): white pill, 1px #D8DFEA, 13/600 navy,
-// hover moves the border to #0E2350.
-const GHOST_BUTTON_CLASS =
-  'min-h-11 rounded-full border-portal-input bg-card px-4.5 text-caption font-semibold text-foreground transition duration-200 ease-out-expo hover:border-foreground hover:bg-card active:scale-95 motion-reduce:transition-none motion-reduce:active:scale-100';
+import { GHOST_BUTTON_CLASS } from '@/modules/notifications/constants/components.constants';
 
 function NotificationFeedPagination({
   page,

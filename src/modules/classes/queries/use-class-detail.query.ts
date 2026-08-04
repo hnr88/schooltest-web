@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
 import { schoolClassSchema } from '@/modules/classes/schemas/class.schema';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
-
-export const CLASS_DETAIL_QUERY_KEY = ['classes', 'school', 'detail'] as const;
+import { CLASS_DETAIL_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
 
 // C-CLS-01 has no single-class read, so the detail is the caller's class list
 // filtered by documentId; null when the class is not in the caller's school.

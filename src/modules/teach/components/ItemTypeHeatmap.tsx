@@ -2,11 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 
-import {
-  groupBySection,
-  HEATMAP_CHANCE_FLOOR,
-  HEATMAP_SECURE_CUT,
-} from '@/modules/teach/lib/heatmap-view-model';
+import { groupBySection } from '@/modules/teach/lib/heatmap-view-model';
+import { HEATMAP_CHANCE_FLOOR, HEATMAP_SECURE_CUT } from '@/modules/teach/constants/lib.constants';
 import { HeatmapCell } from '@/modules/teach/components/HeatmapCell';
 import type { DiagnosticHeatmapRow } from '@/modules/teach/types/diagnostic.types';
 

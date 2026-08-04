@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
 import { rosterChildSchema } from '@/modules/teach/schemas/roster.schema';
 import type { RosterChild } from '@/modules/teach/types/roster.types';
-
-export const CLASS_ROSTER_QUERY_KEY = ['teach', 'roster'] as const;
+import { CLASS_ROSTER_QUERY_KEY } from '@/modules/teach/constants/queries.constants';
 
 // C-CHD-01 teacher-scoped roster for one class: the server intersects the
 // class filter with class.teacher = caller, so a class the teacher does not

@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
-import type { AvatarTintSize, AvatarTintTone } from './design-system.types';
+import type { AvatarTintSize, AvatarTintTone } from '@/modules/design-system/types/metrics.types';
 
 export type IconButtonSize = 'sm' | 'md' | 'lg';
 export type IconButtonTone = 'outline' | 'ghost' | 'soft' | 'danger';

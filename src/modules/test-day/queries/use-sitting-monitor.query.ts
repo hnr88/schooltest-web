@@ -6,8 +6,7 @@ import { strapi } from '@/lib/axios/strapi';
 import { MONITOR_REFETCH_INTERVAL_MS } from '@/modules/test-day/constants/test-day.constants';
 import { sittingMonitorSchema } from '@/modules/test-day/schemas/test-day.schema';
 import type { SittingMonitor } from '@/modules/test-day/types/test-day.types';
-
-export const SITTING_MONITOR_QUERY_KEY = ['test-day', 'monitor'] as const;
+import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
 
 // C-SIT-02: the owning teacher's live board. A foreign sitting 404s (object
 // rule), which the screen renders as its error state.

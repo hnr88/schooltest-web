@@ -5,14 +5,12 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { Eyebrow } from '@/modules/design-system';
 import { useBarReveal } from '@/modules/report/hooks/useBarReveal';
-import { PARENT_TONE_FILL, PARENT_TONE_SURFACE } from '@/modules/report/lib/parent-tone';
+import { PARENT_TONE_FILL, PARENT_TONE_SURFACE } from '@/modules/report/constants/lib.constants';
 import type {
   ParentSubskillGroup,
   ParentSubskillsView,
 } from '@/modules/report/types/report-view.types';
-
-const SECTION_CLASS =
-  'flex animate-in flex-col gap-4 rounded-card bg-card px-6 py-6 shadow-sm delay-100 duration-300 ease-out-expo fade-in slide-in-from-bottom-2 motion-reduce:animate-none sm:px-7.5';
+import { PARENT_SUBSKILL_SECTION_CLASS } from '@/modules/report/constants/components.constants';
 
 // One dot per subskill in the group — never a bar and never a share, so nothing
 // on this surface is a percentage of anything (E11-14).
@@ -78,7 +76,7 @@ export function ParentSubskillList({ view }: { view: ParentSubskillsView }) {
     const key =
       view.state === 'not_derived' ? 'parentSubskillsNotDerived' : 'parentSubskillsNotApplicable';
     return (
-      <section data-slot="report-parent-subskills" data-state={view.state} className={SECTION_CLASS}>
+      <section data-slot="report-parent-subskills" data-state={view.state} className={PARENT_SUBSKILL_SECTION_CLASS}>
         <Eyebrow>{t('parentSubskillsEyebrow')}</Eyebrow>
         <p
           data-slot="report-parent-subskills-absent"
@@ -96,7 +94,7 @@ export function ParentSubskillList({ view }: { view: ParentSubskillsView }) {
       data-slot="report-parent-subskills"
       data-state="groups"
       aria-label={t('parentSubskillsEyebrow')}
-      className={SECTION_CLASS}
+      className={PARENT_SUBSKILL_SECTION_CLASS}
     >
       <div className="flex flex-col gap-1.5">
         <Eyebrow>{t('parentSubskillsEyebrow')}</Eyebrow>

@@ -4,14 +4,7 @@ import { StatusPill } from '@/modules/design-system';
 import type { MonitorRowState, SittingStudentState } from '@/modules/test-day/types/test-day.types';
 
 import type { PillTone } from '@/modules/test-day/types/components.types';
-
-const STATE_TONES: Record<SittingStudentState, PillTone> = {
-  not_joined: 'neutral',
-  joined: 'info',
-  in_progress: 'warning',
-  submitted: 'success',
-  stalled: 'danger',
-};
+import { STATE_TONES } from '@/modules/test-day/constants/components.constants';
 
 // One status chip per monitor row. The five backend states render exactly as
 // before; code_shown (C-SIT-05: the teacher revealed the code to this student

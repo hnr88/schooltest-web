@@ -9,15 +9,7 @@ import { REPORTS_HREF } from '@/modules/shell';
 import type { DiagnosticMasteryRow, DiagnosticStatus } from '@/modules/teach/types/diagnostic.types';
 
 import type { MasteryTableProps } from '@/modules/teach/types/components.types';
-
-// The wire status drives the pill tone directly — no re-thresholding of prob
-// on this surface (the scoring engine already applied the cuts, task 50).
-const STATUS_TONE: Record<DiagnosticStatus, StatusPillTone> = {
-  mastered: 'success',
-  emerging: 'warning',
-  not_mastered: 'danger',
-  not_assessed: 'neutral',
-};
+import { STATUS_TONE } from '@/modules/teach/constants/components.constants';
 
 // Class mastery list (task 75, mvp-updates §4.9): deliberately NOT a grid —
 // one row per student with the seven reading areas as labelled pills, so the

@@ -4,13 +4,8 @@ import { useTranslations } from 'next-intl';
 
 import { PanelHeaderRow } from '@/modules/design-system';
 import { ChildJourneyRail } from '@/modules/children/components/ChildJourneyRail';
-import {
-  CEFR_LADDER_SIZE,
-  getBandRank,
-  getJourneyRungs,
-  getSkillSummaries,
-  getUnassessedSkills,
-} from '@/modules/children/lib/child-skills';
+import { getBandRank, getJourneyRungs, getSkillSummaries, getUnassessedSkills } from '@/modules/children/lib/child-skills';
+import { CEFR_LADDER_SIZE } from '@/modules/children/constants/lib.constants';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
 
 import type { ChildLevelJourneyProps } from '@/modules/children/types/components.types';

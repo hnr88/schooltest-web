@@ -5,8 +5,7 @@ import { z } from 'zod';
 
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
 import { opsFormSchema, type OpsForm } from '@/modules/ops/schemas/form-window.schema';
-
-export const OPS_FORMS_QUERY_KEY = ['ops', 'forms'] as const;
+import { OPS_FORMS_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 // Form picker source (C-WIN-01, task 68): the core GET /api/forms list - a
 // core route, not a new endpoint. Phase 1 serves only active reading forms

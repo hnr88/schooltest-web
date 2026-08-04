@@ -1,8 +1,5 @@
 import type { YearLevelSource } from '@/modules/children/types/children.types';
-
-// "Year 7" / "year 7" / "7" → 7. Anything else (e.g. "Prep") is real free text
-// that must survive verbatim, so it returns null and the caller renders it as-is.
-const NUMERIC_YEAR = /^(?:year\s*)?(\d{1,2})$/i;
+import { NUMERIC_YEAR } from '@/modules/children/constants/lib.constants';
 
 export function parseYearLevel(value: string): number | null {
   const match = NUMERIC_YEAR.exec(value.trim());

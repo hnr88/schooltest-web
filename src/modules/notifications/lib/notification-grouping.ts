@@ -2,8 +2,7 @@ import type {
   Notification,
   NotificationRecencyGroup,
 } from '@/modules/notifications/types/notification.types';
-
-const DAY_MS = 86_400_000;
+import { DAY_MS } from '@/modules/notifications/constants/lib.constants';
 
 function startOfDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());

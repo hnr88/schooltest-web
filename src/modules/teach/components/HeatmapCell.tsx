@@ -1,9 +1,6 @@
 import { cn } from '@/lib/utils';
-import {
-  formatHeatmapValue,
-  HEATMAP_TONE_CLASSES,
-  heatmapTone,
-} from '@/modules/teach/lib/heatmap-view-model';
+import { formatHeatmapValue, heatmapTone } from '@/modules/teach/lib/heatmap-view-model';
+import { HEATMAP_TONE_CLASSES } from '@/modules/teach/constants/lib.constants';
 import type { DiagnosticHeatmapRow } from '@/modules/teach/types/diagnostic.types';
 
 import type { HeatmapCellProps } from '@/modules/teach/types/components.types';

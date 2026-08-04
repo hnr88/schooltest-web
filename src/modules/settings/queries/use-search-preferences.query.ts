@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi } from '@/lib/axios/strapi';
 import { searchPreferenceResponseSchema } from '@/modules/settings/schemas/search-preferences.schema';
 import type { SearchPreference } from '@/modules/settings/types/settings.types';
-
-export const SEARCH_PREFERENCES_QUERY_KEY = ['settings', 'search-preferences'] as const;
+import { SEARCH_PREFERENCES_QUERY_KEY } from '@/modules/settings/constants/queries.constants';
 
 async function fetchSearchPreferences(): Promise<SearchPreference> {
   const response = await strapi.get('/api/search-preferences/me');

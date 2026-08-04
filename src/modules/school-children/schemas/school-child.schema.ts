@@ -4,6 +4,7 @@ import {
   ACARA_PHASE_OPTIONS,
   FIRST_LANGUAGE_OPTIONS,
 } from '@/modules/school-children/constants/child-picklists.constants';
+import { DOB_MIN_YEAR, TRI_STATE_VALUES, YEAR_LEVEL_OPTIONS } from '@/modules/school-children/constants/schemas.constants';
 
 // Server response schemas for the C-CHD-01..04 school children endpoints plus
 // the add/edit form schema, which mirrors the C-CHD-02 v2 body exactly: name,
@@ -44,8 +45,6 @@ export const schoolChildrenResponseSchema = z.object({
   }),
 });
 
-const DOB_MIN_YEAR = 1900;
-
 function isValidDateOfBirth(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     return false;
@@ -66,11 +65,6 @@ function isValidYears(value: string): boolean {
   const parsed = Number(value);
   return !Number.isNaN(parsed) && parsed >= 0 && parsed <= 80;
 }
-
-// Tri-state selects keep '' as the "not set / keep current" option; the body
-// builder in lib/child-request.ts maps it to omit (create) or null (edit).
-export const TRI_STATE_VALUES = ['', 'yes', 'no'] as const;
-export const YEAR_LEVEL_OPTIONS = ['', '7', '8', '9', '10', '11', '12'] as const;
 
 // The add/edit form (C-CHD-02 v2 create / C-CHD-03 edit). Text controls stay
 // strings on the form; numeric/boolean coercion happens at the boundary. The

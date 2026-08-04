@@ -4,11 +4,7 @@ import type { UploadedMedia } from '@/modules/student-wizard/types/media.types';
 import type { WizardMediaKey } from '@/modules/student-wizard/types/student-wizard.types';
 
 import type { WizardMediaState } from '@/modules/student-wizard/types/stores.types';
-
-const EMPTY_MEDIA: Record<WizardMediaKey, UploadedMedia | null> = {
-  photo: null,
-  voice_intro: null,
-};
+import { EMPTY_MEDIA } from '@/modules/student-wizard/constants/stores.constants';
 
 // The RHF form holds only the numeric photo/voice_intro id; the absolutized
 // upload url/mime/name (052) live here so the Step 5 review can render the

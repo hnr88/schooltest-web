@@ -5,7 +5,7 @@ export {
   LEGAL_LINK_ORDER,
   LEGAL_ROUTES,
 } from '@/modules/legal/constants/legal.constants';
-export { LEGAL_SLUGS } from '@/modules/legal/schemas/legal-document.schema';
+export { LEGAL_SLUGS } from '@/modules/legal/constants/schemas.constants';
 export type {
   LegalDocument,
   LegalDocumentSummary,

@@ -7,10 +7,7 @@ import { studentsResponseSchema } from '@/modules/dashboard/schemas/student.sche
 import type { StudentListRow, StudentsResponse } from '@/modules/dashboard/types/student.types';
 
 import type { UseStudentsOptions } from '@/modules/dashboard/types/queries.types';
-
-// Every status, used by the "Include archived" chip (C-UI-MYCHILDREN) to widen
-// past the server's default `status $ne 'archived'` filter.
-const ALL_STATUSES = ['active', 'archived', 'enrolled'] as const;
+import { ALL_STATUSES } from '@/modules/dashboard/constants/queries.constants';
 
 // C-STUDENT-LIST-EXT: the /my/* convention route — the controller forces
 // filters[parent][documentId][$eq]=<caller> server-side, so this always returns

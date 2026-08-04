@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
-import { CLASS_SITTINGS_QUERY_KEY } from '@/modules/test-day/queries/use-class-sittings.query';
+import { CLASS_SITTINGS_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
 import { classSittingSchema } from '@/modules/test-day/schemas/test-day.schema';
 import type { ClassSitting } from '@/modules/test-day/types/test-day.types';
 

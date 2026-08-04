@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
 import { classChildOptionSchema } from '@/modules/classes/schemas/class.schema';
 import type { ClassChildOption } from '@/modules/classes/types/classes.types';
-
-export const CLASS_CHILDREN_QUERY_KEY = ['classes', 'school', 'children'] as const;
+import { CLASS_CHILDREN_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
 
 // C-CHD-01: children of the caller's school, backing the edit-dialog student
 // picker. Fetched without a status filter so children already in the class

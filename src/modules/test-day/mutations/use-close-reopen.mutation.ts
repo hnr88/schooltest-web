@@ -3,8 +3,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { CLASS_SITTINGS_QUERY_KEY } from '@/modules/test-day/queries/use-class-sittings.query';
-import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/queries/use-sitting-monitor.query';
+import { CLASS_SITTINGS_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
+import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
 
 import type { CloseReopenInput } from '@/modules/test-day/types/queries.types';
 

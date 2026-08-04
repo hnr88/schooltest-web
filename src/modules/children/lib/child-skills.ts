@@ -1,5 +1,5 @@
 import type { SubjectProgressTone } from '@/modules/design-system';
-import { READINESS_RANK } from '@/modules/children/lib/child-readiness';
+import { READINESS_RANK } from '@/modules/children/constants/lib.constants';
 import type {
   ChildJourneyRung,
   ChildProgressResult,
@@ -7,30 +7,7 @@ import type {
 } from '@/modules/children/types/children.types';
 
 import type { Band, Skill } from '@/modules/children/types/lib.types';
-
-// Categorical, stable per skill — the canonical subject tiles colour by SUBJECT
-// (Math blue, Danish teal, English amber), never by score.
-const SKILL_TONES: Record<Skill, SubjectProgressTone> = {
-  reading: 'primary',
-  listening: 'accent',
-  speaking: 'warning',
-  writing: 'success',
-};
-
-// The API exposes NO percentage score anywhere in the parent contract. The only
-// ordinal it publishes is the CEFR band, so the §5.3 bar encodes the band's rank
-// on the real six-band ladder and the card's value label prints the band itself.
-// Nothing here is invented: a skill with no banded result simply never appears.
-//
-// The design's rail is labelled `A1 A2 B1 B2 C1 C2` (spec 02 §B.4). `C2` does not
-// exist in this system and `pre_A1` does, so the rail ships the REAL six rungs with
-// the design's tick visual — recorded in CONTRACTS.md as a design↔data conflict.
-export const CEFR_LADDER: readonly Band[] = ['pre_A1', 'A1', 'A2', 'B1', 'B2', 'C1'];
-
-// The four skills the progress contract can band (child-progress.schema).
-const ASSESSABLE_SKILLS: Skill[] = ['reading', 'listening', 'speaking', 'writing'];
-
-export const CEFR_LADDER_SIZE = CEFR_LADDER.length;
+import { ASSESSABLE_SKILLS, CEFR_LADDER, CEFR_LADDER_SIZE, SKILL_TONES } from '@/modules/children/constants/lib.constants';
 
 export function getBandProgress(band: Band): number {
   return Math.round(((CEFR_LADDER.indexOf(band) + 1) / CEFR_LADDER.length) * 100);

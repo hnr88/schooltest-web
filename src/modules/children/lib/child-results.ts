@@ -1,11 +1,6 @@
 import type { StatusPillTone } from '@/modules/design-system';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
-
-const RESULT_STATUS_TONES: Record<ChildProgressResult['status'], StatusPillTone> = {
-  scoring: 'warning',
-  partial_pending: 'info',
-  complete: 'success',
-};
+import { RESULT_STATUS_TONES } from '@/modules/children/constants/lib.constants';
 
 export function getResultStatusTone(status: ChildProgressResult['status']): StatusPillTone {
   return RESULT_STATUS_TONES[status];

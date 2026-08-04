@@ -5,14 +5,7 @@ import { Container } from '@/modules/design-system';
 import type { PublicSettings } from '@/modules/settings/types/settings.types';
 
 import type { PublicSiteBannerProps } from '@/modules/settings/types/components.types';
-
-const LEVEL_STYLES = {
-  info: 'bg-blue-50 text-navy-800',
-  warning: 'bg-amber-50 text-amber-900',
-  critical: 'bg-red-50 text-red-900',
-} as const;
-
-const LEVEL_ICONS = { info: Info, warning: AlertTriangle, critical: OctagonAlert } as const;
+import { LEVEL_ICONS, LEVEL_STYLES } from '@/modules/settings/constants/components.constants';
 
 // Renders the maintenance notice and/or the announcement from C-SET-01 above the
 // public header. Server Component: the copy comes from the settings row, so an

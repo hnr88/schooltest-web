@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
-import { SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-children/queries/use-school-children.query';
+import { SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-children/constants/queries.constants';
 import { schoolChildDetailSchema } from '@/modules/school-children/schemas/school-child.schema';
 import type {
   ChildWriteBody,

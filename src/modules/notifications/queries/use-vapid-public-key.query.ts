@@ -4,8 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
 import { pushVapidConfigResponseSchema } from '@/modules/notifications/schemas/push-subscription.schema';
-
-export const VAPID_PUBLIC_KEY_QUERY_KEY = ['push-subscriptions', 'vapid-public-key'] as const;
+import { VAPID_PUBLIC_KEY_QUERY_KEY } from '@/modules/notifications/constants/queries.constants';
 
 async function fetchVapidPublicKey(): Promise<string | null> {
   const response = await strapi.get('/api/push-subscriptions/vapid-public-key');

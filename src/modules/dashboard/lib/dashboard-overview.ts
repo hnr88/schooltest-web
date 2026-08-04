@@ -15,8 +15,7 @@ import type {
   ReadinessFieldKey,
 } from '@/modules/dashboard/types/dashboard-overview.types';
 import type { StudentListRow } from '@/modules/dashboard/types/student.types';
-
-const DAY_IN_MS = 86_400_000;
+import { DAY_IN_MS, READINESS_FIELD_KEYS } from '@/modules/dashboard/constants/lib.constants';
 
 export function hasEntryPlan(student: StudentListRow): boolean {
   return Boolean(student.target_entry_year && student.target_entry_term);
@@ -45,20 +44,6 @@ export function getDashboardYearLabel(
 
   return student.year_level === null ? null : formatLevel(student.year_level);
 }
-
-// The design's per-child rail is six ticks (spec 01 §4.5). Its own six labels are
-// a CEFR ladder, which Amendment A1 forbids as a cross-skill composite — so the
-// rail is re-pointed at the six planning fields that already define readiness
-// below. Same shape, same "how far along is this child" reading, and every tick
-// is a field GET /api/my/students really returned.
-const READINESS_FIELD_KEYS: readonly ReadinessFieldKey[] = [
-  'familyName',
-  'email',
-  'nationality',
-  'yearLevel',
-  'entryYear',
-  'entryTerm',
-];
 
 export function getReadinessFields(student: StudentListRow): ReadinessField[] {
   const values: Record<ReadinessFieldKey, string | null> = {

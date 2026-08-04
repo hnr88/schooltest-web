@@ -16,8 +16,7 @@ import {
 import type { TeacherEntry } from '@/modules/school-onboarding/types/school-onboarding.types';
 
 import type { TeachersStepProps } from '@/modules/school-onboarding/types/components.types';
-
-const EMPTY_TEACHER: TeacherEntry = { first_name: '', last_name: '', email: '', role: 'teacher' };
+import { EMPTY_TEACHER } from '@/modules/school-onboarding/constants/components.constants';
 
 // Step 2: teacher invitations. Zero teachers is valid — the school can invite
 // staff later (spec section 5 ordering).

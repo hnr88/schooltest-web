@@ -3,8 +3,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Container, Eyebrow, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing';
-
-const GROUP_KEYS = ['groupA', 'groupB', 'groupC', 'groupD'] as const;
+import { GROUP_KEYS } from '@/modules/eald/constants/components.constants';
 
 async function ClassroomSection() {
   const t = await getTranslations('Eald.teach.classroom');

@@ -3,8 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-
-export const RESULTS_EXPORT_QUERY_KEY = ['school-admin', 'results-export'] as const;
+import { RESULTS_EXPORT_QUERY_KEY } from '@/modules/school-admin/constants/queries.constants';
 
 // C-RPT-05 (task 78, mvp spec 4.3): the school-level results export for
 // sharing upward (exec, HOD). The query is LAZY (enabled: false) - the

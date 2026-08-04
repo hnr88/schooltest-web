@@ -8,16 +8,7 @@ import type { ResultView } from '@/modules/report/types/report.types';
 import type { SupplementaryStrandView } from '@/modules/report/types/supplementary.types';
 
 import type { AssessedRow, PlacedRow } from '@/modules/report/types/lib.types';
-
-// Doc 2a s.2, verbatim: "Foundation (Stage 1, A1-A2): decoding (R1/L1),
-// vocabulary (R2/L2), grammar (R3/L3). Comprehension (Stages 2-3, B1-B2): gist
-// (R4/L4), detail (R5/L5), propositional inference (R6/L6), critical/pragmatic
-// (R7/L7)." These two integers are the ONLY structural constants here. There is
-// deliberately no per-code table: a client-side attribute dictionary is exactly
-// the codebook Doc 1 s.11.4 forbids, so attributes are named by their contract
-// code — the same chip the attribute bars already render.
-const FOUNDATION_MAX_LADDER_INDEX = 3;
-const VOCABULARY_LADDER_INDEX = 2;
+import { FOUNDATION_MAX_LADDER_INDEX, VOCABULARY_LADDER_INDEX } from '@/modules/report/constants/lib.constants';
 
 function ladderIndex(code: string): number | null {
   const match = ATTRIBUTE_CODE_PATTERN.exec(code);

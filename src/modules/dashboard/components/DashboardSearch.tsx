@@ -3,11 +3,8 @@
 import { Search, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import {
-  DASHBOARD_SEARCH_LISTBOX_ID,
-  DashboardSearchResults,
-  dashboardSearchOptionId,
-} from '@/modules/dashboard/components/DashboardSearchResults';
+import { DashboardSearchResults, dashboardSearchOptionId } from '@/modules/dashboard/components/DashboardSearchResults';
+import { DASHBOARD_SEARCH_LISTBOX_ID } from '@/modules/dashboard/constants/components.constants';
 import { useDashboardSearch } from '@/modules/dashboard/hooks/use-dashboard-search';
 import {
   InputGroup,

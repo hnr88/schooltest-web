@@ -1,11 +1,7 @@
 import type { z } from 'zod';
 
-import type {
-  LEGAL_SLUGS,
-  legalDocumentSchema,
-  legalDocumentSummarySchema,
-  legalSectionSchema,
-} from '@/modules/legal/schemas/legal-document.schema';
+import type { legalDocumentSchema, legalDocumentSummarySchema, legalSectionSchema } from '@/modules/legal/schemas/legal-document.schema';
+import type { LEGAL_SLUGS } from '@/modules/legal/constants/schemas.constants';
 
 export type LegalSlug = (typeof LEGAL_SLUGS)[number];
 export type LegalSection = z.infer<typeof legalSectionSchema>;

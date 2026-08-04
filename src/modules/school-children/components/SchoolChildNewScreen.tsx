@@ -10,8 +10,7 @@ import { useAuthStore } from '@/modules/auth';
 import { useSchoolClassesQuery } from '@/modules/classes';
 import { Skeleton } from '@/modules/design-system';
 import { SchoolChildForm } from '@/modules/school-children/components/SchoolChildForm';
-
-const BACK_CLASSES = 'inline-flex w-fit items-center gap-1.5 text-sm font-medium text-body hover:text-foreground';
+import { BACK_CLASSES } from '@/modules/school-children/constants/components.constants';
 
 // Add-child page (task 30, st-mvp-pivot): the single-purpose C-CHD-02 v2 form
 // — name, email, year level, class, first-language picklist and the optional

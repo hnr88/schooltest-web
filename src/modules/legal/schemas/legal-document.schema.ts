@@ -1,12 +1,5 @@
 import { z } from 'zod';
-
-/** The four documents C-LEG-02 serves. Mirrors the server's slug enum exactly. */
-export const LEGAL_SLUGS = [
-  'privacy-policy',
-  'terms-of-service',
-  'cookie-policy',
-  'gdpr',
-] as const;
+import { LEGAL_SLUGS } from '@/modules/legal/constants/schemas.constants';
 
 export const legalSectionSchema = z.object({
   id: z.string().min(1),

@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
 import { schoolInvitationSchema } from '@/modules/teachers/schemas/teachers.schema';
 import type { SchoolInvitation } from '@/modules/teachers/types/teachers.types';
-
-export const INVITATIONS_QUERY_KEY = ['school', 'invitations'] as const;
+import { INVITATIONS_QUERY_KEY } from '@/modules/teachers/constants/queries.constants';
 
 // C-INV-02: invitation rows of the caller's school (invited/expired/accepted),
 // school-scoped server-side.

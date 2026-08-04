@@ -11,12 +11,7 @@ import { SettingsTabs } from '@/modules/settings/components/SettingsTabs';
 import { PORTAL_SCREEN_CLASS } from '@/modules/settings/constants/settings.constants';
 import { useSettingsTabSync } from '@/modules/settings/hooks/use-settings-tab-sync';
 import type { SettingsTab } from '@/modules/settings/types/settings.types';
-
-const SETTINGS_PANELS: Record<SettingsTab, () => JSX.Element> = {
-  auth: AuthSettingsPanel,
-  search: SearchPreferencesForm,
-  notifications: NotificationPreferencesPanel,
-};
+import { SETTINGS_PANELS } from '@/modules/settings/constants/components.constants';
 
 // Portal Settings (.qa/design/spec/03 §4.1): a 30/500 h1 over a 14px lede, then one
 // 820px column of stacked PortalCards on a 22px rhythm. The design has no tabs, but

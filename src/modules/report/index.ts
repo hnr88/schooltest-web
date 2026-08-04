@@ -34,12 +34,7 @@ export {
 } from './lib/attribute-view-model';
 export { buildSupplementaryStrand } from './lib/supplementary-view-model';
 export { buildParentReport } from './lib/parent-view-model';
-export {
-  PARENT_SUBSKILL_ORDER,
-  PARENT_TONE_BY_STATUS,
-  PARENT_TONE_SURFACE,
-  PARENT_TONE_FILL,
-} from './lib/parent-tone';
+export { PARENT_SUBSKILL_ORDER, PARENT_TONE_BY_STATUS, PARENT_TONE_FILL, PARENT_TONE_SURFACE } from '@/modules/report/constants/lib.constants';
 export { buildObservations } from './lib/observations';
 export { observationValues } from './lib/observation-message';
 export { buildErrorPatterns, hasDiagnosticBundle } from './lib/error-patterns-view-model';
@@ -49,11 +44,8 @@ export {
   resultViewBaseSchema,
   myStudentsResultsResponseSchema,
 } from './schemas/result-view.schema';
-export {
-  diagnosticBundleSchema,
-  diagnosticSkillEntrySchema,
-  DIAGNOSTIC_JSON_FORMAT,
-} from './schemas/diagnostic-bundle.schema';
+export { diagnosticBundleSchema, diagnosticSkillEntrySchema } from './schemas/diagnostic-bundle.schema';
+export { DIAGNOSTIC_JSON_FORMAT } from '@/modules/report/constants/schemas.constants';
 export type {
   ResultView,
   ResultViewBase,

@@ -6,18 +6,7 @@ import { cn } from '@/lib/utils';
 import type { ChildJourneyRung } from '@/modules/children/types/children.types';
 
 import type { ChildJourneyRailProps } from '@/modules/children/types/components.types';
-
-const DOT_CLASSES: Record<ChildJourneyRung['state'], string> = {
-  done: 'border-foreground bg-foreground',
-  current: 'border-foreground bg-foreground',
-  future: 'border-portal-input bg-card',
-};
-
-const LABEL_CLASSES: Record<ChildJourneyRung['state'], string> = {
-  done: 'font-medium text-foreground',
-  current: 'font-bold text-foreground',
-  future: 'font-medium text-muted-foreground',
-};
+import { DOT_CLASSES, LABEL_CLASSES } from '@/modules/children/constants/components.constants';
 
 // §B.4 rail, one per skill. The design draws ONE rail for the child; a single
 // per-child level is a cross-skill composite the product forbids (CONTRACTS

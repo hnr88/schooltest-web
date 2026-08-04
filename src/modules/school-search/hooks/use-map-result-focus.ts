@@ -7,11 +7,7 @@ import L, { type LatLng, type Map as LeafletMap } from 'leaflet';
 import { getMapResultFocusTarget } from '@/modules/school-search/lib/map-result-focus';
 import { prefersReducedMotion } from '@/modules/school-search/lib/school-map-utils';
 import type { GeoSchoolHit } from '@/modules/school-search/types/school-search.types';
-
-const FOCUS_PADDING_TOP_LEFT: [number, number] = [24, 24];
-const FOCUS_PADDING_BOTTOM_RIGHT: [number, number] = [24, 24];
-const CAMERA_DISTANCE_TOLERANCE_METERS = 75;
-const CAMERA_ZOOM_TOLERANCE = 0.25;
+import { CAMERA_DISTANCE_TOLERANCE_METERS, CAMERA_ZOOM_TOLERANCE, FOCUS_PADDING_BOTTOM_RIGHT, FOCUS_PADDING_TOP_LEFT } from '@/modules/school-search/constants/hooks.constants';
 
 function isAlreadyFocused(map: LeafletMap, center: LatLng, zoom: number): boolean {
   return (

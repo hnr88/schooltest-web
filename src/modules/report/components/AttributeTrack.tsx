@@ -4,11 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { ATTRIBUTE_STATUS_FILL } from '@/modules/report/constants/mastery.constants';
 import type { AttributeRowView } from '@/modules/report/types/attribute.types';
-
-// A hatch rather than an empty grey track: an unfilled solid bar reads as "zero
-// probability", which is a measurement claim. Hatching reads as "nothing was
-// measured here" (E11-09).
-const HATCH = 'repeating-linear-gradient(135deg, currentColor 0 1.5px, transparent 1.5px 6px)';
+import { HATCH } from '@/modules/report/constants/components.constants';
 
 export function AttributeTrack({
   row,

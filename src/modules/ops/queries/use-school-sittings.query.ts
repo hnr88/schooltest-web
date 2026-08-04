@@ -7,11 +7,7 @@ import {
   recoverySittingSchema,
   type RecoverySitting,
 } from '@/modules/ops/schemas/recovery.schema';
-
-export const SCHOOL_SITTINGS_QUERY_KEY = ['ops', 'school-sittings'] as const;
-
-/** The picker never needs more than the school's recent sittings. */
-const SITTING_LIMIT = 50;
+import { SCHOOL_SITTINGS_QUERY_KEY, SITTING_LIMIT } from '@/modules/ops/constants/queries.constants';
 
 // C-OPS-02 (task 69): the sitting picker reads the EXISTING core
 // GET /api/sittings (ops holds full visibility) filtered to the school's

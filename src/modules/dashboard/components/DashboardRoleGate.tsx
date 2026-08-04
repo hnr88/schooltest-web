@@ -12,16 +12,7 @@ import {
 import { useMeQuery } from '@/modules/auth';
 import { useAuthStore } from '@/modules/auth';
 import { DashboardSkeleton } from '@/modules/dashboard/components/DashboardSkeleton';
-
-// Spec §15 + mvp-updates §4.2: school administrators, teachers and ops get
-// dedicated dashboards, so a resolved staff/ops role never sees the parent
-// portal — /dashboard hands them straight to their own section. Parents keep
-// the existing parent portal unchanged.
-const ROLE_DESTINATIONS: Record<string, string> = {
-  [SCHOOL_ADMIN_ROLE_TYPE]: '/dashboard/school',
-  [TEACHER_ROLE_TYPE]: '/dashboard/teach',
-  [OPS_ROLE_TYPE]: '/dashboard/ops',
-};
+import { ROLE_DESTINATIONS } from '@/modules/dashboard/constants/components.constants';
 
 export function DashboardRoleGate({ children }: { children: ReactNode }) {
   const token = useAuthStore((state) => state.token);

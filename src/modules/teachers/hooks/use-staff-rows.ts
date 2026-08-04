@@ -8,13 +8,7 @@ import type {
   StaffRow,
   StaffRowStatus,
 } from '@/modules/teachers/types/teachers.types';
-
-const STATUS_ORDER: Record<StaffRowStatus, number> = {
-  invited: 0,
-  expired: 1,
-  active: 2,
-  deactivated: 3,
-};
+import { STATUS_ORDER } from '@/modules/teachers/constants/hooks.constants';
 
 function teacherRow(teacher: SchoolTeacher): StaffRow {
   return {

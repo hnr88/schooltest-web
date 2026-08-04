@@ -3,9 +3,7 @@
 import { useCallback, useRef, type KeyboardEvent } from 'react';
 
 import type { WizardChoiceItemProps } from '@/modules/student-wizard/types/student-wizard.types';
-
-const PREV_KEYS = ['ArrowLeft', 'ArrowUp'];
-const NEXT_KEYS = ['ArrowRight', 'ArrowDown'];
+import { NEXT_KEYS, PREV_KEYS } from '@/modules/student-wizard/constants/hooks.constants';
 
 // WAI-ARIA radiogroup keyboard contract for the portal chip row (spec 03 §1.4).
 // A radiogroup is ONE tab stop: arrows move AND select, Home/End jump to the ends,

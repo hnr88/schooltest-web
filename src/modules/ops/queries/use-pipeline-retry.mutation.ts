@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
 import { pipelineRetryResultSchema } from '@/modules/ops/schemas/pipeline.schema';
-import { PIPELINE_HEALTH_QUERY_KEY } from '@/modules/ops/queries/use-pipeline-health.query';
+import { PIPELINE_HEALTH_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 import type { PipelineRetryInput } from '@/modules/ops/types/queries.types';
 

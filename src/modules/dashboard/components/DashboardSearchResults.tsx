@@ -7,8 +7,7 @@ import { cn } from '@/lib/utils';
 import type { Student } from '@/modules/dashboard/types/student.types';
 
 import type { DashboardSearchResultsProps } from '@/modules/dashboard/types/components.types';
-
-export const DASHBOARD_SEARCH_LISTBOX_ID = 'dashboard-search-listbox';
+import { DASHBOARD_SEARCH_LISTBOX_ID } from '@/modules/dashboard/constants/components.constants';
 export const dashboardSearchOptionId = (index: number) => `dashboard-search-option-${index}`;
 
 // The dropdown panel DashboardSearch renders below its input — split out to

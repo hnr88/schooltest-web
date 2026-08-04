@@ -8,9 +8,7 @@ import type {
   SchoolChildrenPage,
   SchoolChildrenQuery,
 } from '@/modules/school-children/types/school-children.types';
-
-export const SCHOOL_CHILDREN_QUERY_KEY = ['school-children'] as const;
-export const SCHOOL_CHILDREN_PAGE_SIZE = 25;
+import { SCHOOL_CHILDREN_PAGE_SIZE, SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-children/constants/queries.constants';
 
 // C-CHD-01: children of the caller's school. The filter state maps 1:1 onto
 // the contract query params — 'all' simply omits the param. keepPreviousData

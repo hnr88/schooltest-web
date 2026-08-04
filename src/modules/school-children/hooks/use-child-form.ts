@@ -20,22 +20,7 @@ import {
 import type { SchoolChild } from '@/modules/school-children/types/school-children.types';
 
 import type { ChildFormTarget } from '@/modules/school-children/types/hooks.types';
-
-const BLANK_VALUES: SchoolChildFormValues = {
-  given_name: '',
-  family_name: '',
-  email: '',
-  date_of_birth: '',
-  year_level: '',
-  first_language: '',
-  acara_phase: '',
-  other_languages: '',
-  l1_literate: '',
-  time_learning_english_yrs: '',
-  time_in_australia_months: '',
-  prior_schooling_interrupted: '',
-  class_documentId: '',
-};
+import { BLANK_VALUES } from '@/modules/school-children/constants/hooks.constants';
 
 function initialValues(target: ChildFormTarget): SchoolChildFormValues {
   if (target.mode === 'create') {

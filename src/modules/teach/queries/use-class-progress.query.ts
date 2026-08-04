@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
 import { classProgressSchema } from '@/modules/teach/schemas/progress.schema';
 import type { ClassProgress } from '@/modules/teach/types/progress.types';
-
-export const CLASS_PROGRESS_QUERY_KEY = ['teach', 'progress'] as const;
+import { CLASS_PROGRESS_QUERY_KEY } from '@/modules/teach/constants/queries.constants';
 
 // C-RPT-02 school-scoped class progress (task 76): the server enforces the
 // role gate (teacher | school_admin | ops) and the object scope (teacher must

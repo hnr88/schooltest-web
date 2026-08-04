@@ -6,24 +6,7 @@ import { StatusPill, type StatusPillTone } from '@/modules/design-system';
 import type { TeachHomeMonitorSummary } from '@/modules/teach/types/teach-home.types';
 
 import type { MonitorStateKey, MonitorSummaryPanelProps } from '@/modules/teach/types/components.types';
-
-const MONITOR_STATE_ORDER: readonly MonitorStateKey[] = [
-  'not_joined',
-  'joined',
-  'in_progress',
-  'submitted',
-  'stalled',
-];
-
-// Same tone mapping as the test-day live board (MonitorTable) so a state
-// reads identically on the landing dashboard and on test day.
-const MONITOR_STATE_TONES: Record<MonitorStateKey, StatusPillTone> = {
-  not_joined: 'neutral',
-  joined: 'info',
-  in_progress: 'warning',
-  submitted: 'success',
-  stalled: 'danger',
-};
+import { MONITOR_STATE_ORDER, MONITOR_STATE_TONES } from '@/modules/teach/constants/components.constants';
 
 // Teach home monitor summary (task 83, mvp-updates §4.9): the live sitting at
 // a glance as five state chips with counts. When monitor is null no sitting

@@ -1,5 +1,4 @@
-const CARDS = [0, 1, 2, 3];
-const CELLS = [0, 1, 2];
+import { CARDS, CELLS } from '@/modules/children/constants/components.constants';
 
 // AN-1 shaped for the card grid it becomes: a 52px avatar circle, 60%/40% name and
 // meta bars, then three metric tiles — the shapes the design's own loading note

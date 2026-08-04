@@ -2,7 +2,7 @@
 // GET /api/sittings?class=<documentId>&summary=true returns these rows newest
 // first. code/form_code/opened_at/closed_at are nullable server-side (a
 // sitting exists before its code is generated and before it is opened).
-import type { SittingStatus } from './test-day.types';
+import type { SittingStatus } from '@/modules/test-day/types/test-day.types';
 
 export interface SittingHistoryRow {
   documentId: string;

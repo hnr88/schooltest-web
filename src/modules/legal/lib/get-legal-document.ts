@@ -5,19 +5,7 @@ import {
 } from '@/modules/legal/schemas/legal-document.schema';
 import { LEGAL_CACHE_TAG } from '@/modules/legal/constants/legal.constants';
 import type { LegalDocument, LegalDocumentSummary, LegalSlug } from '@/modules/legal/types/legal.types';
-
-// SERVER ONLY. `env.API_BASE_URL` is a server variable — @t3-oss/env-nextjs
-// throws if this module is ever pulled into a Client Component, which is the
-// guard. Reads use `fetch` (not the browser Axios instance) so the Server
-// Component can attach Next cache tags.
-//
-// The tag is invalidated on demand by C-WEB-04 (`POST /api/revalidate` with the
-// shared secret), which the ops cache/sitemap actions call. Without that hook
-// the tag was inert and a corrected legal clause stayed stale for the whole
-// revalidate window with no way to publish it early — the reason the hook
-// exists rather than the window simply being shortened.
-
-const LEGAL_PATH = '/api/legal-documents';
+import { LEGAL_PATH } from '@/modules/legal/constants/lib.constants';
 
 /**
  * C-LEG-02 — one legal document, parsed through the shared schema. Returns null

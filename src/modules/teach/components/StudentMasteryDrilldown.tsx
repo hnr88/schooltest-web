@@ -9,13 +9,7 @@ import { REPORTS_HREF } from '@/modules/shell';
 import type { DiagnosticMasteryRow, DiagnosticStatus } from '@/modules/teach/types/diagnostic.types';
 
 import type { StudentMasteryDrilldownProps } from '@/modules/teach/types/components.types';
-
-const STATUS_TONE: Record<DiagnosticStatus, StatusPillTone> = {
-  mastered: 'success',
-  emerging: 'warning',
-  not_mastered: 'danger',
-  not_assessed: 'neutral',
-};
+import { STATUS_TONE } from '@/modules/teach/constants/components.constants';
 
 // Individual level, one click down from the class view (tasks 75 and 96,
 // mvp-updates §4.9): the selected student's seven reading areas as a list

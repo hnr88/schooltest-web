@@ -11,8 +11,7 @@ import type {
   NotificationListParams,
   NotificationListResponse,
 } from '@/modules/notifications/types/notification.types';
-
-export const NOTIFICATIONS_QUERY_KEY = ['notifications'] as const;
+import { NOTIFICATIONS_QUERY_KEY } from '@/modules/notifications/constants/queries.constants';
 
 async function fetchNotifications(params: NotificationListParams): Promise<NotificationListResponse> {
   const validated = notificationListParamsSchema.parse(params);

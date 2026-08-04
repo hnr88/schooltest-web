@@ -8,9 +8,7 @@ import { IconButton } from '@/modules/design-system';
 import type { RosterPagination } from '@/modules/children/types/children.types';
 
 import type { ChildrenRosterPagerProps } from '@/modules/children/types/components.types';
-
-const PAGE_BUTTON =
-  'relative inline-grid size-8 place-items-center rounded-full text-meta font-semibold tabular-nums transition-colors duration-200 ease-out-expo after:absolute after:-inset-1.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none';
+import { PAGE_BUTTON } from '@/modules/children/constants/components.constants';
 
 // Canonical table footer strip (DS §09, Students screen): page readout on the
 // left, 32px prev / numbered / next squares on the right, on the page-tint band

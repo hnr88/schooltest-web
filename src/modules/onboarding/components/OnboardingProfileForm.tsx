@@ -14,24 +14,7 @@ import { useUpdateMeMutation } from '@/modules/onboarding/queries/use-update-me.
 import type { ParentProfileValues } from '@/modules/onboarding/types/parent-profile.types';
 
 import type { OnboardingProfileFormProps } from '@/modules/onboarding/types/components.types';
-
-const PROFILE_FIELDS = new Set<string>([
-  'first_name',
-  'last_name',
-  'relationship_to_student',
-  'occupation',
-  'phone',
-  'secondary_phone',
-  'preferred_contact_method',
-  'address_line',
-  'city',
-  'state_region',
-  'postal_code',
-  'country_of_residence',
-  'emergency_contact_name',
-  'emergency_contact_phone',
-  'emergency_contact_relationship',
-]);
+import { PROFILE_FIELDS } from '@/modules/onboarding/constants/components.constants';
 
 // Step 2 of the onboarding wizard: the parent-profile form (C-PAR-UPDATE-ME).
 // Saving advances to the finish step; the 400 field list from the server is

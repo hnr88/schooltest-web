@@ -1,6 +1,5 @@
 import { z } from 'zod';
-
-export const ONBOARDING_STATUSES = ['pending', 'completed', 'skipped'] as const;
+import { ONBOARDING_STATUSES } from '@/modules/onboarding/constants/schemas.constants';
 
 export const onboardingStatusSchema = z.enum(ONBOARDING_STATUSES);
 

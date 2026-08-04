@@ -8,8 +8,7 @@ import type {
 } from '@/modules/school-children/types/school-children.types';
 
 import type { ChildrenFilters } from '@/modules/school-children/types/hooks.types';
-
-const SEARCH_DEBOUNCE_MS = 300;
+import { SEARCH_DEBOUNCE_MS } from '@/modules/school-children/constants/hooks.constants';
 
 // The roster filter state: status, class, a debounced name search and the
 // page. Any filter change resets to page 1 so a narrowed result set never

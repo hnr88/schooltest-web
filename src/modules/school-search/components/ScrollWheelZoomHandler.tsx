@@ -4,8 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { Map as LeafletMap } from 'leaflet';
 import { useTranslations } from 'next-intl';
-
-const HINT_DURATION_MS = 1500;
+import { HINT_DURATION_MS } from '@/modules/school-search/constants/components.constants';
 
 // Native scroll-zoom is off; the wheel only zooms while ctrl/⌘ is held. A plain
 // scroll surfaces a transient hint overlay instead of hijacking the page scroll.

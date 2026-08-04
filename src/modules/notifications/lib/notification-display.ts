@@ -3,17 +3,7 @@ import type {
   NotificationCategory,
   NotificationTimeTier,
 } from '@/modules/notifications/types/notification.types';
-
-const DAY_MS = 86_400_000;
-const WEEK_DAYS = 7;
-
-const CATEGORY_TILE_CLASSES: Record<NotificationCategory, string> = {
-  account: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
-  security: 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300',
-  children: 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300',
-  testActivity: 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300',
-  testResults: 'bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300',
-};
+import { CATEGORY_TILE_CLASSES, DAY_MS, WEEK_DAYS } from '@/modules/notifications/constants/lib.constants';
 
 export function getNotificationTileClass(category: NotificationCategory): string {
   return CATEGORY_TILE_CLASSES[category];

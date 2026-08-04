@@ -5,11 +5,7 @@ import { useNow, useTranslations } from 'next-intl';
 import { NotificationFeedItem } from '@/modules/notifications/components/NotificationFeedItem';
 import { groupNotificationsByRecency } from '@/modules/notifications/lib/notification-grouping';
 import type { Notification } from '@/modules/notifications/types/notification.types';
-
-// Group eyebrow (.qa/design/spec/03 §5.1): 12px/600 uppercase at .06em tracking with
-// 20px of air above and 4px below.
-const GROUP_HEADING_CLASS =
-  'pt-5 pb-1 text-meta font-semibold tracking-overline text-muted-foreground uppercase';
+import { GROUP_HEADING_CLASS } from '@/modules/notifications/constants/components.constants';
 
 function NotificationFeedList({
   notifications,

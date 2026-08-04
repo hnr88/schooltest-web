@@ -8,8 +8,7 @@ import { useSchoolSearchStore } from '@/modules/school-search';
 import type { UnifiedSearchMode } from '@/modules/unified-search/types/unified-search.types';
 
 import type { UnifiedSearchField } from '@/modules/unified-search/types/hooks.types';
-
-const DEBOUNCE_MS = 300;
+import { DEBOUNCE_MS } from '@/modules/unified-search/constants/hooks.constants';
 
 // Binds the shared §5.4 bar to the ACTIVE pane store's `q`. The store `q` is the
 // source of truth for what the field displays: a render-phase reconcile mirrors it

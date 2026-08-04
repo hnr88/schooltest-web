@@ -7,8 +7,7 @@ import { teachHomeSchema } from '@/modules/teach/schemas/teach-home.schema';
 import type { TeachHome } from '@/modules/teach/types/teach-home.types';
 
 import type { UseTeachHomeQueryOptions } from '@/modules/teach/types/queries.types';
-
-export const TEACH_HOME_QUERY_KEY = ['teach', 'home'] as const;
+import { TEACH_HOME_QUERY_KEY } from '@/modules/teach/constants/queries.constants';
 
 // C-TEACH-01 teach home (task 83): the server enforces the role gate
 // (teacher | school_admin) and the class scope (teacher sees own classes,

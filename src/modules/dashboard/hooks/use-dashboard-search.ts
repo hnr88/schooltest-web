@@ -5,8 +5,7 @@ import { type KeyboardEvent, useState } from 'react';
 import { useDebouncedValue } from '@/modules/dashboard/hooks/use-debounced-value';
 import { useSearchStudentsQuery } from '@/modules/dashboard/queries/use-search-students.query';
 import { useDashboardSearchStore } from '@/modules/dashboard/stores/use-dashboard-search.store';
-
-const DEBOUNCE_MS = 300;
+import { DEBOUNCE_MS } from '@/modules/dashboard/constants/hooks.constants';
 
 // Owns DashboardSearch's interactive state (open/closed, active option,
 // keyboard handling) so the component itself stays presentational. Clicking

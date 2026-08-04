@@ -13,7 +13,7 @@ import {
 import { ChildEaldFields } from '@/modules/school-children/components/ChildEaldFields';
 import { useChildForm } from '@/modules/school-children/hooks/use-child-form';
 import type { ChildFormTarget } from '@/modules/school-children/types/hooks.types';
-import { YEAR_LEVEL_OPTIONS } from '@/modules/school-children/schemas/school-child.schema';
+import { YEAR_LEVEL_OPTIONS } from '@/modules/school-children/constants/schemas.constants';
 
 import type { SchoolChildFormProps } from '@/modules/school-children/types/components.types';
 

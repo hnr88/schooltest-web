@@ -8,13 +8,7 @@ import { StaffRowActions } from '@/modules/teachers/components/StaffRowActions';
 import type { StaffRow, StaffRowStatus } from '@/modules/teachers/types/teachers.types';
 
 import type { StaffTableRowProps } from '@/modules/teachers/types/components.types';
-
-const STATUS_VARIANTS: Record<StaffRowStatus, BadgeProps['variant']> = {
-  active: 'success',
-  deactivated: 'error',
-  invited: 'accent',
-  expired: 'warning',
-};
+import { STATUS_VARIANTS } from '@/modules/teachers/constants/components.constants';
 
 // One merged staff row: a live account (classes listed) or an open invitation
 // (join note + expiry under the status badge).

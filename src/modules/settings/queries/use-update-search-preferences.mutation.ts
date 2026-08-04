@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { SEARCH_PREFERENCES_QUERY_KEY } from '@/modules/settings/queries/use-search-preferences.query';
+import { SEARCH_PREFERENCES_QUERY_KEY } from '@/modules/settings/constants/queries.constants';
 import {
   searchPreferenceFormSchema,
   searchPreferenceResponseSchema,

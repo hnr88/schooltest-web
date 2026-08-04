@@ -2,8 +2,7 @@ import { routing } from '@/i18n/routing';
 import { absoluteUrl } from '@/modules/seo/lib/breadcrumb-json-ld';
 import { LOGO_HEIGHT, LOGO_PATH, LOGO_WIDTH, SITE_NAME } from '@/modules/seo/constants/seo.constants';
 import type { JsonLdNode, OrganizationInput, WebPageInput } from '@/modules/seo/types/seo.types';
-
-const SCHEMA = 'https://schema.org';
+import { SCHEMA } from '@/modules/seo/constants/lib.constants';
 
 /**
  * schema.org Organization for the publisher. Only facts this repository can

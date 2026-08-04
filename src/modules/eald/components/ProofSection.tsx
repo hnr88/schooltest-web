@@ -2,13 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Badge, Container, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing';
-
-const STATS = [
-  { valueKey: 'home.proof.skillsValue', labelKey: 'home.proof.skillsLabel' },
-  { valueKey: 'home.proof.yearsValue', labelKey: 'home.proof.yearsLabel' },
-  { valueKey: 'home.proof.scalesValue', labelKey: 'home.proof.scalesLabel' },
-  { valueKey: 'home.proof.durationValue', labelKey: 'home.proof.durationLabel' },
-] as const;
+import { STATS } from '@/modules/eald/constants/components.constants';
 
 async function ProofSection() {
   const t = await getTranslations('Eald');

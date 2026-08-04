@@ -1,14 +1,4 @@
-// Canonical table footer (DS §09 "Table & pagination", Students screen): the
-// pager shows first/last and a window around the current page, with an ellipsis
-// standing in for the pages it skips.
-//
-// 25 mirrors the page size GET /api/my/students itself serves, and the list read
-// asks for 100 rows in one request — so client-side slicing is complete and the
-// pager turns real for parent #26 onward. A smaller, more "demonstrable" size was
-// rejected on purpose: it would hide children from a ten-child roster.
-export const ROSTER_PAGE_SIZE = 25;
-
-const WINDOW = 1;
+import { ROSTER_PAGE_SIZE, WINDOW } from '@/modules/children/constants/lib.constants';
 
 export function getPageCount(total: number, pageSize = ROSTER_PAGE_SIZE): number {
   return Math.max(1, Math.ceil(total / pageSize));

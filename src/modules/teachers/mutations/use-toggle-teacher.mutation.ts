@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
-import { TEACHERS_QUERY_KEY } from '@/modules/teachers/queries/use-teachers.query';
+import { TEACHERS_QUERY_KEY } from '@/modules/teachers/constants/queries.constants';
 import { toggleTeacherResponseSchema } from '@/modules/teachers/schemas/teachers.schema';
 
 // C-TCH-02: deactivate/reactivate toggles user.blocked. Deactivated teachers

@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { PLATFORM_SETTINGS_QUERY_KEY } from '@/modules/ops/queries/use-platform-settings.query';
+import { PLATFORM_SETTINGS_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 import {
   platformSettingsSchema,
   testEmailResultSchema,

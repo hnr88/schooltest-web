@@ -7,8 +7,7 @@ import {
   schoolStaffUserSchema,
   type SchoolStaffUser,
 } from '@/modules/ops/schemas/surfaces.schema';
-
-export const SCHOOL_STAFF_QUERY_KEY = ['ops', 'school-staff'] as const;
+import { SCHOOL_STAFF_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 // View-as-teacher picker source (task 70): the school's staff users from the
 // C-OPS-01 detail relations — the EXISTING core GET /api/schools/:documentId

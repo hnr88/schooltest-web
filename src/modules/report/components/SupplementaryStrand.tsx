@@ -6,9 +6,7 @@ import { Eyebrow, StatusPill } from '@/modules/design-system';
 import { SupplementaryBandRow } from '@/modules/report/components/SupplementaryBandRow';
 import { useBarReveal } from '@/modules/report/hooks/useBarReveal';
 import type { SupplementaryStrandView } from '@/modules/report/types/supplementary.types';
-
-const SECTION_CLASS =
-  'flex animate-in flex-col gap-4 rounded-card bg-card px-6 py-6 shadow-sm delay-200 duration-300 ease-out-expo fade-in slide-in-from-bottom-2 motion-reduce:animate-none sm:px-7.5';
+import { SUPPLEMENTARY_SECTION_CLASS } from '@/modules/report/constants/components.constants';
 
 // E11-05 — the vocabulary strand as a SEPARATE card outside the seven modelled
 // attribute bars, carrying its own "out of model" pill. Doc 2a s.5.2: the strand
@@ -21,7 +19,7 @@ export function SupplementaryStrand({ view }: { view: SupplementaryStrandView })
   if (view.state !== 'bands') {
     const key = view.state === 'pending' ? 'supplementaryPending' : 'supplementaryNotApplicable';
     return (
-      <section data-slot="report-supplementary" data-state={view.state} className={SECTION_CLASS}>
+      <section data-slot="report-supplementary" data-state={view.state} className={SUPPLEMENTARY_SECTION_CLASS}>
         <div className="flex flex-wrap items-center gap-3">
           <Eyebrow>{t('supplementaryEyebrow')}</Eyebrow>
           <StatusPill tone="info">{t('supplementaryOutOfModel')}</StatusPill>
@@ -42,7 +40,7 @@ export function SupplementaryStrand({ view }: { view: SupplementaryStrandView })
       data-slot="report-supplementary"
       data-state="bands"
       aria-label={t('supplementaryEyebrow')}
-      className={SECTION_CLASS}
+      className={SUPPLEMENTARY_SECTION_CLASS}
     >
       <div className="flex flex-col gap-1.5">
         <div className="flex flex-wrap items-center gap-3">

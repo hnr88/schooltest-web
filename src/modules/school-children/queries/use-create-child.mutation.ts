@@ -3,16 +3,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
-import { SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-children/queries/use-school-children.query';
+import { SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-children/constants/queries.constants';
 import { schoolChildDetailSchema } from '@/modules/school-children/schemas/school-child.schema';
 import type {
   ChildWriteBody,
   SchoolChildDetail,
 } from '@/modules/school-children/types/school-children.types';
-
-// The C-ENT-01 seat counters are computed at read; creating a child consumes
-// one, so the entitlement cache goes stale on every successful create.
-const ENTITLEMENT_QUERY_KEY = ['school-admin', 'entitlement'] as const;
+import { ENTITLEMENT_QUERY_KEY } from '@/modules/school-children/constants/queries.constants';
 
 // C-CHD-02: create the child inside the caller's own school (the school comes
 // from the session server-side, never from the body). The seat gate may 403

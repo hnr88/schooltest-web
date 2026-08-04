@@ -27,13 +27,7 @@ import {
 } from '@/modules/teachers/schemas/invite-teacher.schema';
 
 import type { InviteTeacherDialogProps } from '@/modules/teachers/types/components.types';
-
-const DEFAULT_VALUES: InviteTeacherValues = {
-  first_name: '',
-  last_name: '',
-  email: '',
-  role: 'teacher',
-};
+import { DEFAULT_VALUES } from '@/modules/teachers/constants/components.constants';
 
 // C-INV-01 invite form. A 409 (active user with that email already in this
 // school) lands inline on the email field; any other failure toasts.

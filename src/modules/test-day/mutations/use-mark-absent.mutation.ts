@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { strapi } from '@/lib/axios/strapi';
-import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/queries/use-sitting-monitor.query';
+import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
 import type { MonitorStudent, SittingMonitor } from '@/modules/test-day/types/test-day.types';
 
 import type { MarkAbsentInput } from '@/modules/test-day/types/queries.types';

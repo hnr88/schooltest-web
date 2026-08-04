@@ -7,13 +7,7 @@ import { Button } from '@/modules/design-system';
 import type { InviteLinkState } from '@/modules/invitation/types/invitation.types';
 
 import type { InviteStatusScreenProps } from '@/modules/invitation/types/components.types';
-
-const STATE_ICONS: Record<InviteLinkState, LucideIcon> = {
-  invalid: Link2Off,
-  expired: Clock,
-  used: CircleCheck,
-  unavailable: TriangleAlert,
-};
+import { STATE_ICONS } from '@/modules/invitation/constants/components.constants';
 
 // Terminal link states (C-INV-05 404/410/409 + network failure): each renders
 // its own screen instead of the accept form. The used state routes to sign-in.

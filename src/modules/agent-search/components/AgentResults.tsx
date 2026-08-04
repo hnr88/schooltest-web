@@ -14,8 +14,7 @@ import {
   SearchPagination,
   SearchResultsPanel,
 } from '@/modules/search-shared';
-
-const GRID_CLASS = 'grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3';
+import { GRID_CLASS } from '@/modules/agent-search/constants/components.constants';
 
 // Same shared SearchResultsPanel the schools column uses.
 function AgentResults({

@@ -6,14 +6,7 @@ import { useTranslations } from 'next-intl';
 import type { OnboardingLinkState } from '@/modules/school-onboarding/types/school-onboarding.types';
 
 import type { OnboardingStatusScreenProps } from '@/modules/school-onboarding/types/components.types';
-
-const STATE_ICONS: Record<OnboardingLinkState, LucideIcon> = {
-  invalid: Link2Off,
-  expired: Clock,
-  revoked: Link2Off,
-  used: CircleCheck,
-  unavailable: TriangleAlert,
-};
+import { STATE_ICONS } from '@/modules/school-onboarding/constants/components.constants';
 
 // Terminal link states (C-ONB-01 404/410/409 + network failure): each renders
 // its own screen instead of the wizard.

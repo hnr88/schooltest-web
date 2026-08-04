@@ -3,8 +3,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { INVITATIONS_QUERY_KEY } from '@/modules/teachers/queries/use-invitations.query';
-import { TEACHERS_QUERY_KEY } from '@/modules/teachers/queries/use-teachers.query';
+import { INVITATIONS_QUERY_KEY } from '@/modules/teachers/constants/queries.constants';
+import { TEACHERS_QUERY_KEY } from '@/modules/teachers/constants/queries.constants';
 import { removeTeacherResponseSchema } from '@/modules/teachers/schemas/teachers.schema';
 import type { RemoveTeacherResult } from '@/modules/teachers/types/teachers.types';
 

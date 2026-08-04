@@ -6,16 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/modules/design-system';
 
 import type { OnboardingStepKey, OnboardingStepProps } from '@/modules/onboarding/types/components.types';
-
-const STEP_ICONS: Record<OnboardingStepKey, React.ReactNode> = {
-  welcome: <Users className="size-6" />,
-  finish: <CircleCheck className="size-6" />,
-};
-
-const STEP_KEY_PREFIX: Record<OnboardingStepKey, string> = {
-  welcome: 'stepWelcome',
-  finish: 'finish',
-};
+import { STEP_ICONS, STEP_KEY_PREFIX } from '@/modules/onboarding/constants/components.constants';
 
 export function OnboardingStep({
   step,
@@ -28,11 +19,12 @@ export function OnboardingStep({
 }: OnboardingStepProps) {
   const t = useTranslations('Onboarding');
   const prefix = STEP_KEY_PREFIX[step];
+  const StepIcon = STEP_ICONS[step];
 
   return (
     <div className="flex flex-col items-center gap-6 text-center">
       <div className="flex size-14 items-center justify-center rounded-2xl bg-blue-50 text-primary">
-        {STEP_ICONS[step]}
+        <StepIcon className="size-6" />
       </div>
 
       <div className="flex flex-col gap-2">

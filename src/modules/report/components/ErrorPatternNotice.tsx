@@ -4,9 +4,7 @@ import { RefreshCw } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button, Eyebrow, StatusPill } from '@/modules/design-system';
-
-export const ERROR_PATTERN_SECTION_CLASS =
-  'flex animate-in flex-col gap-4 rounded-card bg-card px-6 py-6 shadow-sm delay-300 duration-300 ease-out-expo fade-in slide-in-from-bottom-2 motion-reduce:animate-none sm:px-7.5';
+import { ERROR_PATTERN_SECTION_CLASS } from '@/modules/report/constants/components.constants';
 
 export function ErrorPatternHeading() {
   const t = useTranslations('Report');

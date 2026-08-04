@@ -12,12 +12,7 @@ import type {
 } from '@/modules/ops/schemas/section-timers.schema';
 
 import type { OpsSectionTimersFormProps } from '@/modules/ops/types/components.types';
-
-const SECTION_FIELDS: ReadonlyArray<{ stage: number; name: keyof SectionTimersFormValues }> = [
-  { stage: 1, name: 'section1' },
-  { stage: 2, name: 'section2' },
-  { stage: 3, name: 'section3' },
-];
+import { SECTION_FIELDS } from '@/modules/ops/constants/components.constants';
 
 export function OpsSectionTimersForm({ sections, meta }: OpsSectionTimersFormProps) {
   const t = useTranslations('Ops.timers');

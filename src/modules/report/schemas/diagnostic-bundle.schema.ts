@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { readinessSchema } from '@/modules/report/schemas/result-view.schema';
+import { DIAGNOSTIC_JSON_FORMAT } from '@/modules/report/constants/schemas.constants';
 
 // C-5 `DiagnosticBundle` — mirrored field for field from the server contract
 // (schooltest-api/src/contracts/diagnostic-export.ts). Every object is STRICT:
@@ -44,6 +45,3 @@ export const diagnosticBundleSchema = z.strictObject({
   readiness: z.record(str, readinessSchema),
   caveats: z.array(str).min(1),
 });
-
-// The only accepted value of the C-5 `format` query param (400 on anything else).
-export const DIAGNOSTIC_JSON_FORMAT = 'diagnostic_json';

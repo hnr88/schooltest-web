@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
-import { CLASS_ROSTER_QUERY_KEY } from '@/modules/teach/queries/use-class-roster.query';
+import { CLASS_ROSTER_QUERY_KEY } from '@/modules/teach/constants/queries.constants';
 import { flagEmailFixResponseSchema } from '@/modules/teach/schemas/roster.schema';
 
 // C-CHD-05 (task 102, mvp-updates §4.4): the teacher flags a wrong or missing

@@ -1,6 +1,4 @@
-const KPI_CELLS = [0, 1, 2, 3];
-const RAILS = [0, 1, 2];
-const ROWS = [0, 1, 2];
+import { KPI_CELLS, RAILS, ROWS } from '@/modules/children/constants/components.constants';
 
 // Shaped like the five blocks it becomes: header, the r24 KPI card, the two-up
 // Journey/Skills grid and the results panel. Uses the canonical shimmer sweep,

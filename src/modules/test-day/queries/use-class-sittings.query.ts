@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
 import { classSittingSchema } from '@/modules/test-day/schemas/test-day.schema';
 import type { ClassSitting } from '@/modules/test-day/types/test-day.types';
-
-export const CLASS_SITTINGS_QUERY_KEY = ['test-day', 'sittings'] as const;
+import { CLASS_SITTINGS_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
 
 // Teacher-scoped sittings for one class (core GET /api/sittings forces the
 // owning-teacher filter server-side, newest first). The screen derives the

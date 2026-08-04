@@ -1,4 +1,5 @@
-export { Button, type ButtonProps } from './components/button';
+export { Button } from './components/button';
+export type { ButtonProps } from './types/button.types';
 export { Badge } from './components/badge';
 export type { BadgeProps } from './types/badge.types';
 export { StatusBadge } from './components/status-badge';

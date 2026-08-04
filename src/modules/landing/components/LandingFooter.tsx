@@ -10,12 +10,7 @@ import {
   FOOTER_LEGAL,
   FOOTER_SOCIALS,
 } from '@/modules/landing/constants/landing.constants';
-
-const SOCIAL_ICONS = {
-  x: XIcon,
-  youtube: YouTubeIcon,
-  linkedin: LinkedInIcon,
-} as const;
+import { SOCIAL_ICONS } from '@/modules/landing/constants/components.constants';
 
 async function LandingFooter() {
   const t = await getTranslations('Home');

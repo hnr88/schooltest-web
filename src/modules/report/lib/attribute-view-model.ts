@@ -7,8 +7,7 @@ import type {
   AttributeRowView,
 } from '@/modules/report/types/attribute.types';
 import type { ResultAttributeEntry, ResultView } from '@/modules/report/types/report.types';
-
-const NOT_ASSESSED = 'not_assessed';
+import { NOT_ASSESSED } from '@/modules/report/constants/lib.constants';
 
 function codeSortKey(code: string): [string, number] {
   const match = ATTRIBUTE_CODE_PATTERN.exec(code);

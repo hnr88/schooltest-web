@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { NOTIFICATION_PREFERENCES_QUERY_KEY } from '@/modules/notifications/queries/use-notification-preferences.query';
+import { NOTIFICATION_PREFERENCES_QUERY_KEY } from '@/modules/notifications/constants/queries.constants';
 import {
   notificationPreferenceFormSchema,
   notificationPreferenceResponseSchema,

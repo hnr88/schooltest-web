@@ -7,8 +7,7 @@ import {
   pipelineHealthSchema,
   type PipelineHealth,
 } from '@/modules/ops/schemas/pipeline.schema';
-
-export const PIPELINE_HEALTH_QUERY_KEY = ['ops', 'pipeline-health'] as const;
+import { PIPELINE_HEALTH_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 // C-OPS-03 (task 69): the route is ops-only (global::is-ops + the ops grant).
 // The endpoint degrades R to "down" without erroring, so a failed probe never

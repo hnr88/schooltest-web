@@ -2,13 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Container, Eyebrow, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing';
-
-const TERMS = [
-  { labelKey: 'term1Label', phaseKey: 'term1Phase', style: 'default' },
-  { labelKey: 'term2Label', phaseKey: 'term2Phase', style: 'default' },
-  { labelKey: 'term3Label', phaseKey: 'term3Phase', style: 'blue' },
-  { labelKey: 'term4Label', phaseKey: 'term4Phase', style: 'navy' },
-] as const;
+import { TERMS } from '@/modules/eald/constants/components.constants';
 
 async function EvidenceSection() {
   const t = await getTranslations('Eald.track.evidence');

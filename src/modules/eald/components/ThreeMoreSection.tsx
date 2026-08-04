@@ -2,12 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Container, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing';
-
-const CARDS = [
-  { titleKey: 'groupByGapTitle', descKey: 'groupByGapDescription', tone: 'light' },
-  { titleKey: 'pairBySkillTitle', descKey: 'pairBySkillDescription', tone: 'navy' },
-  { titleKey: 'parentUpdatesTitle', descKey: 'parentUpdatesDescription', tone: 'light' },
-] as const;
+import { THREE_MORE_CARDS } from '@/modules/eald/constants/components.constants';
 
 async function ThreeMoreSection() {
   const t = await getTranslations('Eald');
@@ -22,7 +17,7 @@ async function ThreeMoreSection() {
         </ScrollReveal>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {CARDS.map((card, i) => (
+          {THREE_MORE_CARDS.map((card, i) => (
             <ScrollReveal key={card.titleKey} delay={i * 90}>
               <div
                 className={

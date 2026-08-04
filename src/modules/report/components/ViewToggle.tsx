@@ -4,8 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { SegmentedControl } from '@/modules/design-system';
 import type { ReportViewMode } from '@/modules/report/types/report-view.types';
-
-const MODES: readonly ReportViewMode[] = ['teacher', 'parent'];
+import { MODES } from '@/modules/report/constants/components.constants';
 
 function isMode(value: string): value is ReportViewMode {
   return MODES.some((mode) => mode === value);

@@ -3,13 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { cn } from '@/lib/utils';
 import { DIAGNOSE_SUBSKILLS } from '@/modules/eald/constants/eald.constants';
 import type { SubskillPhase } from '@/modules/eald/types/eald.types';
-
-const PHASE_BAR_COLORS: Record<SubskillPhase, string> = {
-  consolidating: 'bg-teal-600',
-  developing: 'bg-blue-700',
-  emerging: 'bg-blue-500',
-  beginning: 'bg-chart-4',
-};
+import { PHASE_BAR_COLORS } from '@/modules/eald/constants/components.constants';
 
 async function SkillProfileCard() {
   const t = await getTranslations('Eald');

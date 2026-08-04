@@ -3,24 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { cn } from '@/lib/utils';
 import { Container, Logo, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
-
-const STATS = [
-  {
-    valueKey: 'stats.deliveredValue',
-    labelKey: 'stats.deliveredLabel',
-    valueClassName: 'text-white',
-  },
-  {
-    valueKey: 'stats.accuracyValue',
-    labelKey: 'stats.accuracyLabel',
-    valueClassName: 'text-chart-5',
-  },
-  {
-    valueKey: 'stats.savedValue',
-    labelKey: 'stats.savedLabel',
-    valueClassName: 'text-chart-4',
-  },
-] as const;
+import { STATS } from '@/modules/landing/constants/components.constants';
 
 async function StatsBand() {
   const t = await getTranslations('Home');

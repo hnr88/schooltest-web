@@ -7,9 +7,7 @@ import { AttributeTrack } from '@/modules/report/components/AttributeTrack';
 import { EvidenceCount } from '@/modules/report/components/EvidenceCount';
 import { ATTRIBUTE_STATUS_TONE } from '@/modules/report/constants/mastery.constants';
 import type { AttributeRowView } from '@/modules/report/types/attribute.types';
-
-const ROW_CLASS =
-  'flex flex-col gap-2 rounded-xl px-3 py-3 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none';
+import { ROW_CLASS } from '@/modules/report/constants/components.constants';
 
 // E11-03 / E11-09 — one attribute. The ASSESSED arm shows the mastery
 // probability, the wire status band, the evidence count and the delta; the

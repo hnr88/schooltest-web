@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { NOTIFICATIONS_QUERY_KEY } from '@/modules/notifications/queries/use-notifications.query';
+import { NOTIFICATIONS_QUERY_KEY } from '@/modules/notifications/constants/queries.constants';
 import {
   schoolNotificationListParamsSchema,
   schoolNotificationListResponseSchema,
@@ -12,14 +12,7 @@ import type {
   SchoolNotificationListParams,
   SchoolNotificationListResponse,
 } from '@/modules/notifications/types/school-notification.types';
-
-// Nested under NOTIFICATIONS_QUERY_KEY so the existing mark-read and
-// mark-all-read mutations (which invalidate the ['notifications'] prefix)
-// refresh this feed too - both surfaces read the same underlying rows.
-export const SCHOOL_NOTIFICATIONS_QUERY_KEY = [
-  ...NOTIFICATIONS_QUERY_KEY,
-  'school-feed',
-] as const;
+import { SCHOOL_NOTIFICATIONS_QUERY_KEY } from '@/modules/notifications/constants/queries.constants';
 
 async function fetchSchoolNotifications(
   params: SchoolNotificationListParams,

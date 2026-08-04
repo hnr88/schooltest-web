@@ -1,8 +1,7 @@
 // Agent-card presentation helpers (kept out of the components per module-pattern).
 
 import type { AgentHit } from '@/modules/agent-search/types/agent-search.types';
-
-const MAX_VISIBLE_SERVICES = 2;
+import { MAX_VISIBLE_SERVICES } from '@/modules/agent-search/constants/lib.constants';
 
 // Single muted subtitle line (spec: role/headline, line-clamp-2). Prefer the
 // descriptive headline, fall back to the role title, null when neither exists.

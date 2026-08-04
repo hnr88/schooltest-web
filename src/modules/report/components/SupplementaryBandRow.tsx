@@ -3,11 +3,7 @@
 import { useFormatter, useTranslations } from 'next-intl';
 
 import type { SupplementaryBandView } from '@/modules/report/types/supplementary.types';
-
-// The same hatch the modelled bars use for "nothing was measured here"
-// (E11-09), reused so one absence idiom runs across the whole report. An empty
-// solid track would read as zero, which is a different claim.
-const HATCH = 'repeating-linear-gradient(135deg, currentColor 0 1.5px, transparent 1.5px 6px)';
+import { HATCH } from '@/modules/report/constants/components.constants';
 
 // E11-05 — one out-of-model vocabulary band. The fill carries NO mastery status
 // colour: a success/warning/danger tint would imply the cut score this strand

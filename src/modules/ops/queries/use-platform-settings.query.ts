@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi } from '@/lib/axios/strapi';
 import { platformSettingsSchema } from '@/modules/ops/schemas/platform-settings.schema';
 import type { PlatformSettings } from '@/modules/ops/types/platform-settings.types';
-
-export const PLATFORM_SETTINGS_QUERY_KEY = ['ops', 'platform-settings'] as const;
+import { PLATFORM_SETTINGS_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 // C-SET-02 — ops-only (global::is-ops + the ops grant). The whole envelope is
 // parsed through the shared schema; a shape the contract never promised fails

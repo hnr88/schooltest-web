@@ -1,8 +1,7 @@
 import { create } from 'zustand';
 
 import type { DashboardSearchState } from '@/modules/dashboard/types/stores.types';
-
-const INITIAL_STATE = { query: '', selectedStudentId: null as string | null };
+import { INITIAL_STATE } from '@/modules/dashboard/constants/stores.constants';
 
 // Dashboard search bar state (task 18, D8): `query` is the raw input value
 // DashboardSearch binds to; `selectedStudentId` is the result the parent

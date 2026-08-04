@@ -3,13 +3,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
-import { SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-children/queries/use-school-children.query';
+import { SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-children/constants/queries.constants';
 
 import type { ArchiveChildResult } from '@/modules/school-children/types/queries.types';
-
-// The C-ENT-01 seat counters are computed at read; archiving releases the
-// child's seat immediately, so the entitlement cache goes stale on success.
-const ENTITLEMENT_QUERY_KEY = ['school-admin', 'entitlement'] as const;
+import { ENTITLEMENT_QUERY_KEY } from '@/modules/school-children/constants/queries.constants';
 
 // C-CHD-04: flips status to 'archived' only — the record is never deleted.
 async function archiveChildRequest(documentId: string): Promise<ArchiveChildResult> {

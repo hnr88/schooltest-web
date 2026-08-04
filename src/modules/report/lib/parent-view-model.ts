@@ -1,6 +1,6 @@
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { resolveDisplayLabel, splitDisplayLabel } from '@/modules/report/lib/display-label';
-import { PARENT_SUBSKILL_ORDER, PARENT_TONE_BY_STATUS } from '@/modules/report/lib/parent-tone';
+import { PARENT_SUBSKILL_ORDER, PARENT_TONE_BY_STATUS } from '@/modules/report/constants/lib.constants';
 import type { AttributeRowView } from '@/modules/report/types/attribute.types';
 import type {
   ParentHeadline,

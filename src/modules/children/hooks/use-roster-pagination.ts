@@ -2,12 +2,8 @@
 
 import { useState } from 'react';
 
-import {
-  clampPage,
-  getPageCount,
-  getPageNumbers,
-  ROSTER_PAGE_SIZE,
-} from '@/modules/children/lib/roster-pagination';
+import { clampPage, getPageCount, getPageNumbers } from '@/modules/children/lib/roster-pagination';
+import { ROSTER_PAGE_SIZE } from '@/modules/children/constants/lib.constants';
 import type { RosterPagination } from '@/modules/children/types/children.types';
 
 // Paginates the rows the roster query already holds (the list read asks for

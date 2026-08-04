@@ -7,8 +7,7 @@ import {
   recoveryMonitorSchema,
   type RecoveryMonitor,
 } from '@/modules/ops/schemas/recovery.schema';
-
-export const OPS_SITTING_MONITOR_QUERY_KEY = ['ops', 'sitting-monitor'] as const;
+import { OPS_SITTING_MONITOR_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 // C-SIT-02 (task 60) monitor read, reused ops-side (task 69): ops is allowed
 // alongside the owning teacher, so the recovery panel lists the roster with

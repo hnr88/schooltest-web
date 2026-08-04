@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { INVITATIONS_QUERY_KEY } from '@/modules/teachers/queries/use-invitations.query';
+import { INVITATIONS_QUERY_KEY } from '@/modules/teachers/constants/queries.constants';
 
 // C-INV-04: revoke an open invitation (invited/expired rows only). The API
 // answers 409 on an accepted invitation — the caller deactivates the user

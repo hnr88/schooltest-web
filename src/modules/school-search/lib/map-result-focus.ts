@@ -1,9 +1,7 @@
 import type { GeoSchoolHit } from '@/modules/school-search/types/school-search.types';
 
 import type { MapResultFocusTarget } from '@/modules/school-search/types/lib.types';
-
-export const SINGLE_SCHOOL_FOCUS_ZOOM = 14;
-export const MULTI_SCHOOL_MAX_FIT_ZOOM = 12;
+import { MULTI_SCHOOL_MAX_FIT_ZOOM, SINGLE_SCHOOL_FOCUS_ZOOM } from '@/modules/school-search/constants/lib.constants';
 
 export function getMapResultFocusTarget(
   schools: GeoSchoolHit[],

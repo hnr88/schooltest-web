@@ -9,9 +9,11 @@ export { useFlagEmailFixMutation } from './queries/use-flag-email-fix.mutation';
 export { useClassDiagnosticQuery, classDiagnosticQueryOptions } from './queries/use-class-diagnostic.query';
 export { useClassProgressQuery } from './queries/use-class-progress.query';
 export { CycleBanner } from './components/CycleBanner';
-export { useClassCycleQuery, CLASS_CYCLE_QUERY_KEY } from './queries/use-class-cycle.query';
+export { useClassCycleQuery } from './queries/use-class-cycle.query';
+export { CLASS_CYCLE_QUERY_KEY } from '@/modules/teach/constants/queries.constants';
 export { TeachHomeClassCard } from './components/TeachHomeClassCard';
-export { useTeachHomeQuery, TEACH_HOME_QUERY_KEY } from './queries/use-teach-home.query';
+export { useTeachHomeQuery } from './queries/use-teach-home.query';
+export { TEACH_HOME_QUERY_KEY } from '@/modules/teach/constants/queries.constants';
 export type {
   TeachHome,
   TeachHomeClass,

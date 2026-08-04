@@ -1,4 +1,4 @@
-const ROWS = [0, 1, 2, 3];
+import { ROWS } from '@/modules/notifications/constants/components.constants';
 
 // Loading placeholder drawn on the feed's own geometry — 40px tile, three text
 // lines, 8px trailing dot — so nothing jumps when the real rows arrive. The sweep is

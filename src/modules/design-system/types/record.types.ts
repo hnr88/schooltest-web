@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
-import type { AvatarTintTone } from './design-system.types';
+import type { AvatarTintTone } from '@/modules/design-system/types/metrics.types';
 
 export type PanelHeaderLevel = 'h2' | 'h3';
 

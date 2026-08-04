@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { OPS_SITTING_MONITOR_QUERY_KEY } from '@/modules/ops/queries/use-ops-sitting-monitor.query';
+import { OPS_SITTING_MONITOR_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 import type { OpsResitInput } from '@/modules/ops/types/queries.types';
 

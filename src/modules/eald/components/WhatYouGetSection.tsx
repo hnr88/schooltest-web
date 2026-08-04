@@ -5,45 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { Container, Eyebrow, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing';
-
-const CARDS = [
-  {
-    titleKey: 'home.whatYouGet.diagnoseTitle',
-    descKey: 'home.whatYouGet.diagnoseDescription',
-    href: '/eald/diagnose',
-    icon: BarChart3,
-    dark: false,
-    iconWrap: 'bg-blue-50',
-    iconColor: 'text-blue-600',
-  },
-  {
-    titleKey: 'home.whatYouGet.teachTitle',
-    descKey: 'home.whatYouGet.teachDescription',
-    href: '/eald/teach',
-    icon: Sparkles,
-    dark: true,
-    iconWrap: 'bg-navy-800',
-    iconColor: 'text-teal-400',
-  },
-  {
-    titleKey: 'home.whatYouGet.trackTitle',
-    descKey: 'home.whatYouGet.trackDescription',
-    href: '/eald/track',
-    icon: TrendingUp,
-    dark: false,
-    iconWrap: 'bg-teal-50',
-    iconColor: 'text-teal-700',
-  },
-  {
-    titleKey: 'home.whatYouGet.predictTitle',
-    descKey: 'home.whatYouGet.predictDescription',
-    href: '/eald/predict',
-    icon: Target,
-    dark: false,
-    iconWrap: 'bg-blue-50',
-    iconColor: 'text-blue-600',
-  },
-] as const;
+import { WHAT_YOU_GET_CARDS } from '@/modules/eald/constants/components.constants';
 
 async function WhatYouGetSection() {
   const t = await getTranslations('Eald');
@@ -59,7 +21,7 @@ async function WhatYouGetSection() {
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {CARDS.map((card, i) => {
+          {WHAT_YOU_GET_CARDS.map((card, i) => {
             const Icon = card.icon;
             return (
               <ScrollReveal key={card.href} delay={i * 90}>

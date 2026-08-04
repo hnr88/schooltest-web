@@ -5,10 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useAuthStore } from '@/modules/auth';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
 import { SchoolEntitlementSection } from '@/modules/school-admin/components/SchoolEntitlementSection';
-import {
-  ACCOUNT_STATUS_VARIANTS,
-  ONBOARDING_STATUS_VARIANTS,
-} from '@/modules/school-admin/lib/school-status';
+import { ACCOUNT_STATUS_VARIANTS, ONBOARDING_STATUS_VARIANTS } from '@/modules/school-admin/constants/lib.constants';
 import { useMySchoolQuery } from '@/modules/school-admin/queries/use-my-school.query';
 
 // School administrator section index (tasks 27-28, st-mvp-pivot): the caller's

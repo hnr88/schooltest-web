@@ -8,8 +8,7 @@ import { PortalPanel } from '@/modules/notifications/components/PortalPanel';
 import { PortalToggleRow } from '@/modules/notifications/components/PortalToggleRow';
 import { NOTIFICATION_LOCKED_CATEGORIES } from '@/modules/notifications/constants/notification-preferences.constants';
 import type { NotificationPreference } from '@/modules/notifications/types/notification-preference.types';
-
-const NOTE_ID = 'notification-locked-note';
+import { NOTE_ID } from '@/modules/notifications/constants/components.constants';
 
 // Always-on rows stay rendered, checked and disabled — they mirror server state and
 // never enter the form or the PUT payload. One callout carries the explanation for

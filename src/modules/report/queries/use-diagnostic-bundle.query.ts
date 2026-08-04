@@ -3,10 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import {
-  DIAGNOSTIC_JSON_FORMAT,
-  diagnosticBundleSchema,
-} from '@/modules/report/schemas/diagnostic-bundle.schema';
+import { diagnosticBundleSchema } from '@/modules/report/schemas/diagnostic-bundle.schema';
+import { DIAGNOSTIC_JSON_FORMAT } from '@/modules/report/constants/schemas.constants';
 import type { DiagnosticBundle } from '@/modules/report/types/error-pattern.types';
 
 // C-5: GET /api/results/:documentId/export?format=diagnostic_json answers a BARE

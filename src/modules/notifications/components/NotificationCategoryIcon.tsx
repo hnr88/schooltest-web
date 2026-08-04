@@ -9,14 +9,7 @@ import {
 
 import { cn } from '@/lib/utils';
 import type { NotificationCategory } from '@/modules/notifications/types/notification.types';
-
-const CATEGORY_ICONS: Record<NotificationCategory, LucideIcon> = {
-  account: Bell,
-  security: ShieldCheck,
-  children: UserRoundPlus,
-  testActivity: ClipboardCheck,
-  testResults: Trophy,
-};
+import { CATEGORY_ICONS } from '@/modules/notifications/constants/components.constants';
 
 function NotificationCategoryIcon({
   category,

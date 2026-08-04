@@ -9,8 +9,7 @@ import { useFormWindowData } from '@/modules/ops/hooks/use-form-window';
 import type { FormWindow } from '@/modules/ops/schemas/form-window.schema';
 
 import type { OpsFormWindowProps } from '@/modules/ops/types/components.types';
-
-const DATE_TIME = 'd MMM yyyy, HH:mm';
+import { DATE_TIME } from '@/modules/ops/constants/components.constants';
 
 // Remount key for the editor: the window's CONTENT (never its object
 // identity), so a background refetch returning the same window keeps the

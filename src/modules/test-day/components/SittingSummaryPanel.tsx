@@ -7,16 +7,7 @@ import { useSittingSummaryQuery } from '@/modules/test-day/queries/use-sitting-s
 import type { ClassSitting } from '@/modules/test-day/types/test-day.types';
 
 import type { SittingSummaryPanelProps } from '@/modules/test-day/types/components.types';
-
-// Count label keys mapped to the SittingSummary fields (C-SIT-08 contract
-// names are snake_case; the i18n labels stay camelCase like the monitor's).
-const SUMMARY_COUNTS = [
-  { key: 'sat', field: 'sat' },
-  { key: 'absent', field: 'absent' },
-  { key: 'needsResit', field: 'needs_resit' },
-  { key: 'resultsPending', field: 'results_pending' },
-  { key: 'resultsReady', field: 'results_ready' },
-] as const;
+import { SUMMARY_COUNTS } from '@/modules/test-day/constants/components.constants';
 
 // C-SIT-08 end-of-test-day summary (task 136, mvp-updates 4.5 steps 5-6): who
 // sat, who was absent, who needs a re-sit, and whether results are in. The

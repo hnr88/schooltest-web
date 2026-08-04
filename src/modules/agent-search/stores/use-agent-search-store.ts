@@ -8,15 +8,7 @@ import type {
 } from '@/modules/agent-search/types/agent-search.types';
 
 import type { AgentSearchStore } from '@/modules/agent-search/types/stores.types';
-
-const INITIAL: AgentSearchFilters = {
-  q: '',
-  countriesServed: [],
-  languages: [],
-  services: [],
-  sort: DEFAULT_SORT,
-  page: 1,
-};
+import { INITIAL } from '@/modules/agent-search/constants/stores.constants';
 
 // In-memory only (legacy model): resets on reload, no persist middleware, no localStorage.
 // Every filter mutation resets `page` to 1; `reset()` clears `q` too — the shared

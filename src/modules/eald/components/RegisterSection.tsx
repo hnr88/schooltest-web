@@ -10,27 +10,7 @@ import { cn } from '@/lib/utils';
 import { Button, Container, Eyebrow } from '@/modules/design-system';
 import { registerSchema } from '@/modules/eald/schemas/register.schema';
 import type { RegisterInput } from '@/modules/eald/schemas/register.schema';
-
-const BENEFITS = [
-  'home.register.benefitEarlyAccess',
-  'home.register.benefitDirectInput',
-  'home.register.benefitFoundingTerms',
-] as const;
-
-const ROLE_KEYS = [
-  'home.register.roleCoordinator',
-  'home.register.roleHod',
-  'home.register.roleTeacher',
-  'home.register.rolePrincipal',
-  'home.register.roleOther',
-] as const;
-
-const STUDENT_KEYS = [
-  'home.register.students1to20',
-  'home.register.students21to50',
-  'home.register.students51to100',
-  'home.register.students100plus',
-] as const;
+import { BENEFITS, ROLE_KEYS, STUDENT_KEYS } from '@/modules/eald/constants/components.constants';
 
 function RegisterSection() {
   const t = useTranslations('Eald');

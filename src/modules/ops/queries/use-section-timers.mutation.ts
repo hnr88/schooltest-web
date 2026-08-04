@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { SECTION_TIMERS_QUERY_KEY } from '@/modules/ops/queries/use-section-timers.query';
+import { SECTION_TIMERS_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 import {
   sectionTimersSchema,
   type SectionTimers,

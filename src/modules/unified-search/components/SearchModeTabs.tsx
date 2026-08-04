@@ -8,8 +8,7 @@ import { SEARCH_MODES } from '@/modules/unified-search/constants/unified-search.
 import type { UnifiedSearchMode } from '@/modules/unified-search/types/unified-search.types';
 
 import type { SearchModeTabsProps } from '@/modules/unified-search/types/components.types';
-
-const MODE_ICONS = { schools: Search, agents: UserSearch } as const;
+import { MODE_ICONS } from '@/modules/unified-search/constants/components.constants';
 
 // C-UI-SEARCH-UNIFIED §5.10: segmented pill built from the DS Tabs primitive.
 // value=mode; onValueChange routes through use-search-mode-sync (?mode=). Active

@@ -2,11 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 
-import {
-  ERROR_PATTERN_SECTION_CLASS,
-  ErrorPatternHeading,
-  ErrorPatternNotice,
-} from '@/modules/report/components/ErrorPatternNotice';
+import { ErrorPatternHeading, ErrorPatternNotice } from '@/modules/report/components/ErrorPatternNotice';
+import { ERROR_PATTERN_SECTION_CLASS } from '@/modules/report/constants/components.constants';
 import {
   buildErrorPatterns,
   hasDiagnosticBundle,

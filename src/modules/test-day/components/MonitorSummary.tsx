@@ -3,15 +3,7 @@ import { useTranslations } from 'next-intl';
 import type { MonitorRowState } from '@/modules/test-day/types/test-day.types';
 
 import type { MonitorSummaryProps } from '@/modules/test-day/types/components.types';
-
-const STATE_ORDER: readonly MonitorRowState[] = [
-  'not_joined',
-  'code_shown',
-  'joined',
-  'in_progress',
-  'submitted',
-  'stalled',
-];
+import { STATE_ORDER } from '@/modules/test-day/constants/components.constants';
 
 // Live-board summary (task 90): one count per row state including code_shown,
 // so the six buckets visibly sum to the roster during a staggered sitting.

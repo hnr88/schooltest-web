@@ -7,10 +7,7 @@ import { REPORTS_HREF } from '@/modules/shell';
 import { TeachHomeClassCard } from '@/modules/teach/components/TeachHomeClassCard';
 import { useTeachHomeQuery } from '@/modules/teach/queries/use-teach-home.query';
 import type { TeachHome } from '@/modules/teach/types/teach-home.types';
-
-// Monitor summaries go stale while a sitting runs; poll the landing at this
-// cadence only then (mvp-updates §4.9, task 84 step 5).
-const MONITOR_POLL_MS = 30_000;
+import { MONITOR_POLL_MS } from '@/modules/teach/constants/components.constants';
 
 function monitorAwareRefetchInterval(data: TeachHome | undefined): number | false {
   return data?.classes.some((cls) => cls.monitor !== null) ? MONITOR_POLL_MS : false;

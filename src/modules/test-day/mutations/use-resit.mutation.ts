@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/queries/use-sitting-monitor.query';
+import { SITTING_MONITOR_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
 
 import type { ResitInput } from '@/modules/test-day/types/queries.types';
 

@@ -3,8 +3,7 @@ import Image from 'next/image';
 
 import { toAbsoluteStrapiMediaUrl } from '@/lib/strapi-media';
 import type { SchoolCoverImage } from '@/modules/school-search/types/school-search.types';
-
-const SIZES = '(min-width: 1536px) 26rem, (min-width: 1024px) 22rem, 100vw';
+import { SIZES } from '@/modules/school-search/constants/components.constants';
 
 // REAL API MEDIA ONLY. `coverImage` is the school-search response field; all 312
 // live records carry one (seeded generated brand art, schooltest-api task 007) and

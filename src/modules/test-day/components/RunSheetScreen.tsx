@@ -11,9 +11,7 @@ import {
   RUN_SHEET_SECTIONS_BEFORE_SAY,
   type RunSheetListSection,
 } from '@/modules/test-day/constants/run-sheet.constants';
-
-const LINK_CLASSES =
-  'w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
+import { LINK_CLASSES } from '@/modules/test-day/constants/components.constants';
 
 function RunSheetListBlock({ section }: { section: RunSheetListSection }) {
   const t = useTranslations('RunSheet');

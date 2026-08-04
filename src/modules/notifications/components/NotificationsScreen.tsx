@@ -18,11 +18,7 @@ import {
 import { useNotificationActions } from '@/modules/notifications/hooks/use-notification-actions';
 import { useNotificationsQuery } from '@/modules/notifications/queries/use-notifications.query';
 import type { NotificationCategoryFilterValue } from '@/modules/notifications/types/notification.types';
-
-// Header action (.qa/design/spec/03 §5.1): a transparent 13.5/600 #2563EB button, not
-// a bordered control. The 44px target comes from min-h-11, the drawn box is the text.
-const MARK_ALL_CLASS =
-  'inline-flex min-h-11 items-center rounded-lg px-1 text-body-sm font-semibold text-primary transition duration-200 ease-out-expo hover:text-blue-700 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none active:scale-95 disabled:pointer-events-none disabled:opacity-45 motion-reduce:transition-none motion-reduce:active:scale-100';
+import { MARK_ALL_CLASS } from '@/modules/notifications/constants/components.constants';
 
 function NotificationsScreen() {
   const t = useTranslations('Notifications');

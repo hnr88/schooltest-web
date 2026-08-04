@@ -14,8 +14,7 @@ import { useOnboardingStateQuery } from '@/modules/onboarding/queries/use-onboar
 import { useUpdateOnboardingMutation } from '@/modules/onboarding/queries/use-update-onboarding.mutation';
 
 import type { WizardStepKey } from '@/modules/onboarding/types/components.types';
-
-const STEPS: WizardStepKey[] = ['welcome', 'profile', 'finish'];
+import { STEPS } from '@/modules/onboarding/constants/components.constants';
 
 export function OnboardingScreen() {
   const t = useTranslations('Onboarding');

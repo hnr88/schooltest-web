@@ -7,11 +7,7 @@ import { Label } from '@/modules/design-system';
 import { PortalSwitch } from '@/modules/notifications/components/PortalSwitch';
 
 import type { PortalToggleRowProps } from '@/modules/notifications/types/components.types';
-
-const HELPER_CLASSES = {
-  warning: 'text-warning-ink',
-  muted: 'text-body',
-} as const;
+import { HELPER_CLASSES } from '@/modules/notifications/constants/components.constants';
 
 export function PortalToggleRow({
   title,

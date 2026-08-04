@@ -15,21 +15,7 @@ import type {
 } from '@/modules/school-search/types/school-search.types';
 
 import type { SchoolSearchDefaults, SchoolSearchStore } from '@/modules/school-search/types/stores.types';
-
-const INITIAL: SchoolSearchFilters = {
-  q: '',
-  states: [],
-  schoolTypes: [],
-  sectors: [],
-  levels: [],
-  atarAvailable: false,
-  elicos: false,
-  scholarshipAvailable: false,
-  feeMin: FEE_MIN_BOUND,
-  feeMax: FEE_MAX_BOUND,
-  sortBy: DEFAULT_SORT_BY,
-  page: 1,
-};
+import { INITIAL } from '@/modules/school-search/constants/stores.constants';
 
 // In-memory only (legacy model): resets on reload, no persist middleware, no localStorage.
 // Every filter mutation resets `page` to 1 so results re-page from the top.

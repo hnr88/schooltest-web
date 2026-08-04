@@ -2,23 +2,7 @@ import type { SkillVerdictTone } from '@/modules/design-system';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
 
 import type { Readiness } from '@/modules/children/types/lib.types';
-
-// The ordinal the parent contract publishes (DOC1 §3.16/3.18). `not_assessed` is a
-// first-class value, NOT a zero — it is excluded from every ranking rather than
-// ranked last, so a skill that was never measured can never be reported as weak.
-export const READINESS_RANK: Record<Readiness, number> = {
-  not_yet: 0,
-  approaching: 1,
-  met: 2,
-  not_assessed: -1,
-};
-
-const READINESS_VERDICTS: Record<Readiness, SkillVerdictTone> = {
-  met: 'mastered',
-  approaching: 'emerging',
-  not_yet: 'notYet',
-  not_assessed: 'notAssessed',
-};
+import { READINESS_RANK, READINESS_VERDICTS } from '@/modules/children/constants/lib.constants';
 
 export function getReadinessTone(readiness: Readiness | null): SkillVerdictTone {
   return readiness ? READINESS_VERDICTS[readiness] : 'notAssessed';

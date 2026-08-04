@@ -3,8 +3,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { CLASS_CHILDREN_QUERY_KEY } from '@/modules/classes/queries/use-class-children.query';
-import { CLASSES_QUERY_KEY } from '@/modules/classes/queries/use-school-classes.query';
+import { CLASS_CHILDREN_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
+import { CLASSES_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
 
 // C-CLS-04: delete the class. Students are unlinked server-side, never
 // deleted — the confirm dialog copy says exactly that.

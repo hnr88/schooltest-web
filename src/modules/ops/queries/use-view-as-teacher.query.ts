@@ -7,8 +7,7 @@ import {
   viewAsTeacherSchema,
   type ViewAsTeacher,
 } from '@/modules/ops/schemas/surfaces.schema';
-
-export const VIEW_AS_TEACHER_QUERY_KEY = ['ops', 'view-as-teacher'] as const;
+import { VIEW_AS_TEACHER_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 // C-OPS-04 (task 70): the audited view-as-teacher read. Every call writes an
 // audit row server-side; the route is ops-only, so a wrong-role token answers

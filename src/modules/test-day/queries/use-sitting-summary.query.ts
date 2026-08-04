@@ -6,8 +6,7 @@ import { strapi } from '@/lib/axios/strapi';
 import { MONITOR_REFETCH_INTERVAL_MS } from '@/modules/test-day/constants/test-day.constants';
 import { sittingSummarySchema } from '@/modules/test-day/schemas/test-day.schema';
 import type { SittingSummary } from '@/modules/test-day/types/sitting-summary.types';
-
-export const SITTING_SUMMARY_QUERY_KEY = ['test-day', 'sitting-summary'] as const;
+import { SITTING_SUMMARY_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
 
 // C-SIT-08 (task 136): the owning teacher's end-of-test-day rollup. A foreign
 // sitting 404s (object rule), which the panel renders as its error state.

@@ -7,8 +7,7 @@ import {
   formInspectionSchema,
   type FormInspection,
 } from '@/modules/ops/schemas/surfaces.schema';
-
-export const FORM_INSPECTION_QUERY_KEY = ['ops', 'form-inspection'] as const;
+import { FORM_INSPECTION_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
 
 // C-OPS-04 (task 70): the form Q-matrix + key inspection. The route is
 // ops-only (global::is-ops + the ops grant); a wrong-role token answers 403.

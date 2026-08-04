@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { strapi, type StrapiCollectionResponse } from '@/lib/axios/strapi';
 import { sittingHistoryRowSchema } from '@/modules/test-day/schemas/test-day.schema';
 import type { SittingHistoryRow } from '@/modules/test-day/types/sitting-history.types';
-
-export const SITTING_HISTORY_QUERY_KEY = ['test-day', 'sitting-history'] as const;
+import { SITTING_HISTORY_QUERY_KEY } from '@/modules/test-day/constants/queries.constants';
 
 // C-SIT-07 (task 131): per-class sitting history via the summary mode of the
 // teacher-scoped sitting list. The server orders newest first and forces the

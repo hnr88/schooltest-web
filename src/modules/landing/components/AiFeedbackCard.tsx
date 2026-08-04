@@ -2,27 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Badge, ProgressBar } from '@/modules/design-system';
 import { SparkleIcon } from '@/modules/landing/components/LandingIcons';
-
-const SCORE_TILES = [
-  {
-    labelKey: 'featureDetail.card.grammar',
-    scoreKey: 'featureDetail.card.scoreGrammar',
-    value: 85,
-    indicatorClassName: '[&_[data-slot=progress-indicator]]:bg-blue-600',
-  },
-  {
-    labelKey: 'featureDetail.card.vocabulary',
-    scoreKey: 'featureDetail.card.scoreVocabulary',
-    value: 70,
-    indicatorClassName: '[&_[data-slot=progress-indicator]]:bg-teal-500',
-  },
-  {
-    labelKey: 'featureDetail.card.coherence',
-    scoreKey: 'featureDetail.card.scoreCoherence',
-    value: 65,
-    indicatorClassName: '[&_[data-slot=progress-indicator]]:bg-navy-900',
-  },
-] as const;
+import { SCORE_TILES } from '@/modules/landing/constants/components.constants';
 
 async function AiFeedbackCard() {
   const t = await getTranslations('Home');

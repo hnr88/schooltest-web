@@ -24,10 +24,8 @@ export {
   isDisallowed,
 } from '@/modules/seo/constants/public-routes';
 export { buildLlmsTxt } from '@/modules/seo/lib/build-llms-txt';
-export {
-  REVALIDATE_TAGS,
-  revalidateRequestSchema,
-} from '@/modules/seo/schemas/revalidate.schema';
+export { revalidateRequestSchema } from '@/modules/seo/schemas/revalidate.schema';
+export { REVALIDATE_TAGS } from '@/modules/seo/constants/schemas.constants';
 export { OgCard } from '@/modules/seo/components/OgCard';
 export type {
   BreadcrumbJsonLdItem,
