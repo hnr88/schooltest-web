@@ -59,7 +59,7 @@ export function OnboardingScreen() {
             <div className="flex flex-col items-center gap-4 py-4 text-center">
               <Skeleton className="size-14 rounded-2xl" />
               <Skeleton className="h-8 w-48" />
-              <Skeleton className="h-4 w-full max-w-[16rem]" />
+              <Skeleton className="h-4 w-full max-w-64" />
             </div>
             <Skeleton className="h-12 w-full" />
             <Skeleton className="h-10 w-full" />

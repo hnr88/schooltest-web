@@ -37,15 +37,13 @@ export {
   COUNTRY_CODES,
   getCountryOptions,
   getCountryNames,
-  type CountryCode,
-  type CountryOption,
 } from './constants/countries.constants';
+export type { CountryCode, CountryOption } from './types/constants.types';
 
 export { useStudentWizard } from './hooks/use-student-wizard';
 
 export {
   createStudentWizardSchema,
-  STEP_FIELDS,
   type StudentWizardValues,
   type StudentWizardOutput,
 } from './schemas/student-wizard.schema';
@@ -88,3 +86,4 @@ export type {
   WizardStepKey,
   WizardSubmitError,
 } from './types/student-wizard.types';
+export { STEP_FIELDS } from './constants/wizard-steps.constants';

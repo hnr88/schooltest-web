@@ -3,3 +3,5 @@ import type { createStudentWizardSchema } from '@/modules/student-wizard/schemas
 export type WizardSchemaTranslator = (key: string) => string;
 
 export type StudentWizardSchema = ReturnType<typeof createStudentWizardSchema>;
+
+export type { CreateStudentResponse } from '@/modules/student-wizard/schemas/student-create.schema';

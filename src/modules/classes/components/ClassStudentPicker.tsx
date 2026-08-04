@@ -7,15 +7,7 @@ import type { ClassMemberOption } from '@/modules/classes/types/components.types
 import { childDisplayName, type SchoolChild } from '@/modules/school-children';
 
 import type { ClassStudentPickerProps } from '@/modules/classes/types/components.types';
-
-function toOption(child: SchoolChild): ClassMemberOption {
-  return {
-    value: child.documentId,
-    label: childDisplayName(child),
-    // The child's current class, so a move in from another class is visible.
-    hint: child.class?.name ?? undefined,
-  };
-}
+import { toOption } from '@/modules/classes/lib/class-student-picker.helpers';
 
 // Active children (C-CHD-01) as a controlled multi-select for the class
 // roster. Archived members are not offered here; the assignment hook keeps

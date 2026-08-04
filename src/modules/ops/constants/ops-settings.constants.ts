@@ -1,11 +1,8 @@
+import type { SettingsGroup } from '@/modules/ops/types/constants.types';
+
 import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
 
 /** One settings group = one card on the ops screen. */
-export interface SettingsGroup {
-  readonly id: string;
-  readonly fields: readonly (keyof PlatformSettingsForm)[];
-}
-
 /**
  * The ops settings screen, grouped the way an operator thinks about it. Every
  * field here is writable through C-SET-03; read-only operational stamps

@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { useDeleteClassMutation } from '@/modules/classes/mutations/use-delete-class.mutation';
+import { useDeleteClassMutation } from '@/modules/classes/queries/use-delete-class.mutation';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 
 // Delete wiring for ClassRowActions (C-CLS-04, keeps the component under the

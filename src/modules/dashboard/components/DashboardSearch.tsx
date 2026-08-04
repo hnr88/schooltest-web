@@ -3,7 +3,8 @@
 import { Search, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { DashboardSearchResults, dashboardSearchOptionId } from '@/modules/dashboard/components/DashboardSearchResults';
+import { DashboardSearchResults } from '@/modules/dashboard/components/DashboardSearchResults';
+import { dashboardSearchOptionId } from '@/modules/dashboard/lib/dashboard-search-results.helpers';
 import { DASHBOARD_SEARCH_LISTBOX_ID } from '@/modules/dashboard/constants/components.constants';
 import { useDashboardSearch } from '@/modules/dashboard/hooks/use-dashboard-search';
 import {

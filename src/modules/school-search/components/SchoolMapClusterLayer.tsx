@@ -17,15 +17,7 @@ import {
   prefersReducedMotion,
 } from '@/modules/school-search/lib/school-map-utils';
 import type { GeoSchoolHit } from '@/modules/school-search/types/school-search.types';
-
-function isMarkerCluster(layer: unknown): layer is { getBounds: () => L.LatLngBounds } {
-  return (
-    typeof layer === 'object' &&
-    layer !== null &&
-    'getBounds' in layer &&
-    typeof (layer as { getBounds?: unknown }).getBounds === 'function'
-  );
-}
+import { isMarkerCluster } from '@/modules/school-search/lib/school-map-cluster-layer.helpers';
 
 // Spec 01 §8.5: below zoom 9 the map draws CLUSTER BUBBLES, at zoom 9 and above it
 // draws individual pins — `disableClusteringAtZoom` is that exact threshold.

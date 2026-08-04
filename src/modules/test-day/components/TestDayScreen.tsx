@@ -10,8 +10,8 @@ import { MonitorSection } from '@/modules/test-day/components/MonitorSection';
 import { SittingHistoryTable } from '@/modules/test-day/components/SittingHistoryTable';
 import { SittingSummaryPanel } from '@/modules/test-day/components/SittingSummaryPanel';
 import { StartSittingControls } from '@/modules/test-day/components/StartSittingControls';
-import { useCreateSittingMutation } from '@/modules/test-day/mutations/use-create-sitting.mutation';
-import { useRevealCodeMutation } from '@/modules/test-day/mutations/use-reveal-code.mutation';
+import { useCreateSittingMutation } from '@/modules/test-day/queries/use-create-sitting.mutation';
+import { useRevealCodeMutation } from '@/modules/test-day/queries/use-reveal-code.mutation';
 import { useClassSittingsQuery } from '@/modules/test-day/queries/use-class-sittings.query';
 
 import type { TestDayScreenProps } from '@/modules/test-day/types/components.types';

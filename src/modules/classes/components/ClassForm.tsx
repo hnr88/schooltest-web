@@ -20,19 +20,7 @@ import {
 import type { SchoolTeacher } from '@/modules/teachers';
 
 import type { ClassFormProps } from '@/modules/classes/types/components.types';
-
-function teacherOption(teacher: SchoolTeacher): ClassMemberOption {
-  const name = `${teacher.first_name ?? ''} ${teacher.last_name ?? ''}`.trim();
-  return { value: teacher.documentId, label: name || teacher.email };
-}
-
-function childOption(child: ClassChildOption): ClassMemberOption {
-  return {
-    value: child.documentId,
-    label: `${child.given_name} ${child.family_name}`.trim(),
-    hint: child.class?.name,
-  };
-}
+import { childOption, teacherOption } from '@/modules/classes/lib/class-form.helpers';
 
 // The C-CLS-02/03 form body. Student assignment is edit-only (C-CLS-02 takes
 // no student list); the PATCH replace semantics make unchecked members

@@ -17,10 +17,7 @@ import {
 } from '@/modules/design-system';
 
 import type { ClassesTableProps } from '@/modules/classes/types/components.types';
-
-function teacherName(firstName: string | null, lastName: string | null): string {
-  return `${firstName ?? ''} ${lastName ?? ''}`.trim();
-}
+import { teacherName } from '@/modules/classes/lib/classes-table.helpers';
 
 // C-CLS-01 roster: name, year band chip, teacher chips and the live student
 // count. Dumb renderer — edit/delete wiring lives in ClassRowActions.

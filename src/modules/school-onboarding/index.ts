@@ -8,8 +8,8 @@ export { ReviewStep } from './components/ReviewStep';
 export { AdminAccountStep } from './components/AdminAccountStep';
 
 export { useSchoolOnboardingQuery } from './queries/use-school-onboarding.query';
-export { useSaveProgressMutation } from './mutations/use-save-progress.mutation';
-export { useCompleteOnboardingMutation } from './mutations/use-complete-onboarding.mutation';
+export { useSaveProgressMutation } from './queries/use-save-progress.mutation';
+export { useCompleteOnboardingMutation } from './queries/use-complete-onboarding.mutation';
 
 export { useOnboardingSteps } from './hooks/useOnboardingSteps';
 export { useCompleteOnboarding } from './hooks/use-complete-onboarding';

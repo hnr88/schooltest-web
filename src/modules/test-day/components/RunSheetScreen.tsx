@@ -9,8 +9,8 @@ import {
   RUN_SHEET_SAY_LINES,
   RUN_SHEET_SECTIONS_AFTER_SAY,
   RUN_SHEET_SECTIONS_BEFORE_SAY,
-  type RunSheetListSection,
 } from '@/modules/test-day/constants/run-sheet.constants';
+import type { RunSheetListSection } from '@/modules/test-day/types/constants.types';
 import { LINK_CLASSES } from '@/modules/test-day/constants/components.constants';
 
 function RunSheetListBlock({ section }: { section: RunSheetListSection }) {

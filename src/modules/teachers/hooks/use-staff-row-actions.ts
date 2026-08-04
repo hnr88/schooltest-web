@@ -4,13 +4,13 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { useReissueInvitationMutation } from '@/modules/teachers/mutations/use-reissue-invitation.mutation';
-import { useRemoveTeacherMutation } from '@/modules/teachers/mutations/use-remove-teacher.mutation';
-import { useRevokeInvitationMutation } from '@/modules/teachers/mutations/use-revoke-invitation.mutation';
+import { useReissueInvitationMutation } from '@/modules/teachers/queries/use-reissue-invitation.mutation';
+import { useRemoveTeacherMutation } from '@/modules/teachers/queries/use-remove-teacher.mutation';
+import { useRevokeInvitationMutation } from '@/modules/teachers/queries/use-revoke-invitation.mutation';
 import {
   useDeactivateTeacherMutation,
   useReactivateTeacherMutation,
-} from '@/modules/teachers/mutations/use-toggle-teacher.mutation';
+} from '@/modules/teachers/queries/use-toggle-teacher.mutation';
 import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 
 import type { StaffConfirmAction } from '@/modules/teachers/types/hooks.types';

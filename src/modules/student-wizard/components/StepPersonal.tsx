@@ -8,10 +8,7 @@ import { WizardChoiceField } from '@/modules/student-wizard/components/WizardCho
 import { WizardTextField } from '@/modules/student-wizard/components/WizardTextField';
 import { GENDER_VALUES } from '@/modules/student-wizard/constants/student-wizard.constants';
 import type { StudentWizardValues } from '@/modules/student-wizard/types/student-wizard.types';
-
-function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
-}
+import { todayIso } from '@/modules/student-wizard/lib/step-personal.helpers';
 
 // Step 1 — Personal (spec 03 §2.4). Row grouping is the design's, verbatim:
 // [given | family], [date of birth | email], [gender full-width], [nationality |

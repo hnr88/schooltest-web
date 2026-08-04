@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { useUpdateClassMutation } from '@/modules/classes/mutations/use-update-class.mutation';
+import { useUpdateClassMutation } from '@/modules/classes/queries/use-update-class.mutation';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 import type { SchoolChild } from '@/modules/school-children';
 

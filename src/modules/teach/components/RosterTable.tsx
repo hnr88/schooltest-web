@@ -16,10 +16,7 @@ import { useFlagEmailFixMutation } from '@/modules/teach/queries/use-flag-email-
 import type { RosterChild } from '@/modules/teach/types/roster.types';
 
 import type { RosterTableProps } from '@/modules/teach/types/components.types';
-
-function rosterDisplayName(row: RosterChild): string {
-  return [row.given_name, row.family_name].filter(Boolean).join(' ');
-}
+import { rosterDisplayName } from '@/modules/teach/lib/roster-table.helpers';
 
 // Teacher roster (task 63, mvp-updates §4.4): name/status/email plus the
 // C-CHD-05 email-fix action (task 102) that flags a wrong or missing email for

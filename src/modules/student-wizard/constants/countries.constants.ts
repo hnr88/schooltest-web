@@ -1,3 +1,5 @@
+import type { CountryCode, CountryOption } from '@/modules/student-wizard/types/constants.types';
+
 // ISO 3166-1 alpha-2 codes — the single country source shared by the
 // NationalityCombobox (049) and the onboarding country combobox (055). Display
 // names are resolved at runtime via `Intl.DisplayNames` in the active locale, so
@@ -20,13 +22,6 @@ export const COUNTRY_CODES = [
   'TZ', 'UA', 'UG', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VN', 'VU', 'WS', 'XK',
   'YE', 'ZA', 'ZM', 'ZW',
 ] as const;
-
-export type CountryCode = (typeof COUNTRY_CODES)[number];
-
-export interface CountryOption {
-  code: CountryCode;
-  name: string;
-}
 
 // Localized, alphabetically-sorted country options for a locale. A code whose
 // name fails to resolve falls back to the raw code so the list never drops rows.

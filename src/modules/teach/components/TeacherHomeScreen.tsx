@@ -8,10 +8,7 @@ import { TeachHomeClassCard } from '@/modules/teach/components/TeachHomeClassCar
 import { useTeachHomeQuery } from '@/modules/teach/queries/use-teach-home.query';
 import type { TeachHome } from '@/modules/teach/types/teach-home.types';
 import { MONITOR_POLL_MS } from '@/modules/teach/constants/components.constants';
-
-function monitorAwareRefetchInterval(data: TeachHome | undefined): number | false {
-  return data?.classes.some((cls) => cls.monitor !== null) ? MONITOR_POLL_MS : false;
-}
+import { monitorAwareRefetchInterval } from '@/modules/teach/lib/teacher-home-screen.helpers';
 
 // Teacher dashboard home (task 84, st-mvp-pivot): the C-TEACH-01 teach-home
 // payload (teacher: own classes; school_admin: all school classes) rendered

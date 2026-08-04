@@ -14,14 +14,7 @@ import { CONTACT_CHANNEL_VALUES, GENDER_VALUES } from '@/modules/student-wizard'
 import { getEnrolmentFacts, getGuardianFacts } from '@/modules/children/lib/child-profile-facts';
 import { getTargetEntry } from '@/modules/children/lib/student-display';
 import type { ChildProfileFact, StudentDetail } from '@/modules/children/types/children.types';
-
-function isGender(value: string | null): value is (typeof GENDER_VALUES)[number] {
-  return value !== null && (GENDER_VALUES as readonly string[]).includes(value);
-}
-
-function isChannel(value: string | null): value is (typeof CONTACT_CHANNEL_VALUES)[number] {
-  return value !== null && (CONTACT_CHANNEL_VALUES as readonly string[]).includes(value);
-}
+import { isChannel, isGender } from '@/modules/children/lib/child-record-panel.helpers';
 
 function FactList({ facts }: { facts: ChildProfileFact[] }) {
   return (

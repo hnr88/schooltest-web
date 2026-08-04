@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { useRouter } from '@/i18n/navigation';
 import { writeClientToken } from '@/lib/axios/strapi';
-import { useAcceptInvitationMutation } from '@/modules/invitation/mutations/use-accept-invitation.mutation';
+import { useAcceptInvitationMutation } from '@/modules/invitation/queries/use-accept-invitation.mutation';
 import { dashboardHrefForRole } from '@/modules/invitation/lib/role-dashboard';
 import type { InviteAcceptValues } from '@/modules/invitation/schemas/invite-accept.schema';
 

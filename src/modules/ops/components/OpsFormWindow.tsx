@@ -10,14 +10,7 @@ import type { FormWindow } from '@/modules/ops/schemas/form-window.schema';
 
 import type { OpsFormWindowProps } from '@/modules/ops/types/components.types';
 import { DATE_TIME } from '@/modules/ops/constants/components.constants';
-
-// Remount key for the editor: the window's CONTENT (never its object
-// identity), so a background refetch returning the same window keeps the
-// operator's edits, while a real change (their own save) re-seeds the form.
-function windowKey(window: FormWindow | null): string {
-  if (!window) return 'none';
-  return `${window.documentId}:${window.form?.documentId ?? ''}:${window.opens_at}:${window.closes_at}`;
-}
+import { windowKey } from '@/modules/ops/lib/ops-form-window.helpers';
 
 // Ops form-window panel (task 68, C-WIN-01/02, mvp-updates 4.2): which prebuilt
 // form is live for this school's sittings, and when. The current window and

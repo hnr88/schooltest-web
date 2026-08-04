@@ -8,7 +8,7 @@ import {
   ONBOARDING_STEP_KEYS,
 } from '@/modules/school-onboarding/constants/school-onboarding.constants';
 import { mergeOnboardingState } from '@/modules/school-onboarding/lib/merge-onboarding-state';
-import { useSaveProgressMutation } from '@/modules/school-onboarding/mutations/use-save-progress.mutation';
+import { useSaveProgressMutation } from '@/modules/school-onboarding/queries/use-save-progress.mutation';
 import {
   getSchoolOnboardingStore,
   useSchoolOnboardingStore,

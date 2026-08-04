@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import { writeClientToken } from '@/lib/axios/strapi';
 import { classifyLinkError } from '@/modules/school-onboarding/lib/classify-link-error';
-import { useCompleteOnboardingMutation } from '@/modules/school-onboarding/mutations/use-complete-onboarding.mutation';
+import { useCompleteOnboardingMutation } from '@/modules/school-onboarding/queries/use-complete-onboarding.mutation';
 import {
   destroySchoolOnboardingStore,
   getSchoolOnboardingStore,

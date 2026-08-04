@@ -7,11 +7,7 @@ import type { ClassMemberOption } from '@/modules/classes/types/components.types
 import type { SchoolTeacher } from '@/modules/teachers';
 
 import type { ClassTeacherPickerProps } from '@/modules/classes/types/components.types';
-
-function toOption(teacher: SchoolTeacher): ClassMemberOption {
-  const name = `${teacher.first_name ?? ''} ${teacher.last_name ?? ''}`.trim();
-  return { value: teacher.documentId, label: name || teacher.email };
-}
+import { toOption } from '@/modules/classes/lib/class-teacher-picker.helpers';
 
 // C-TCH-01 staff as a controlled multi-select for the class's teacher owners
 // (documentId working set; saved as a full-replacement list through C-CLS-03).

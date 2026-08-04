@@ -20,7 +20,7 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from '@/modules/design-system';
-import { useInviteTeacherMutation } from '@/modules/teachers/mutations/use-invite-teacher.mutation';
+import { useInviteTeacherMutation } from '@/modules/teachers/queries/use-invite-teacher.mutation';
 import {
   createInviteTeacherSchema,
   type InviteTeacherValues,

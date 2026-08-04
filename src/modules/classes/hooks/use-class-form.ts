@@ -7,8 +7,8 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { useCreateClassMutation } from '@/modules/classes/mutations/use-create-class.mutation';
-import { useUpdateClassMutation } from '@/modules/classes/mutations/use-update-class.mutation';
+import { useCreateClassMutation } from '@/modules/classes/queries/use-create-class.mutation';
+import { useUpdateClassMutation } from '@/modules/classes/queries/use-update-class.mutation';
 import {
   createClassFormSchema,
   type ClassFormValues,

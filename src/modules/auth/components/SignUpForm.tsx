@@ -14,17 +14,7 @@ import { signUpSchema, type SignUpInput } from '@/modules/auth/schemas/sign-up.s
 import { Alert, Button } from '@/modules/design-system';
 
 import type { FormErrorKey, SignUpFormProps } from '@/modules/auth/types/components.types';
-
-// Status-only mapping (C-AUTH-REGISTER): 400 covers taken email/username, no
-// response means offline, anything else is a server fault. Raw Strapi error
-// strings are never rendered.
-function classifyError(error: unknown): FormErrorKey {
-  if (isAxiosError(error)) {
-    if (error.response?.status === 400) return 'takenError';
-    if (error.response === undefined) return 'offlineError';
-  }
-  return 'registerError';
-}
+import { classifyError } from '@/modules/auth/lib/sign-up-form.helpers';
 
 export function SignUpForm({ onRegistered }: SignUpFormProps) {
   const t = useTranslations('Auth');

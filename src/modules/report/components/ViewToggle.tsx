@@ -5,10 +5,7 @@ import { useTranslations } from 'next-intl';
 import { SegmentedControl } from '@/modules/design-system';
 import type { ReportViewMode } from '@/modules/report/types/report-view.types';
 import { MODES } from '@/modules/report/constants/components.constants';
-
-function isMode(value: string): value is ReportViewMode {
-  return MODES.some((mode) => mode === value);
-}
+import { isMode } from '@/modules/report/lib/view-toggle.helpers';
 
 // E11-10 — the audience switch. It swaps what this ONE result renders as; it
 // issues no request, changes no query key and navigates nowhere, so the two

@@ -14,14 +14,7 @@ import {
 import type { ViewAsTeacher } from '@/modules/ops/schemas/surfaces.schema';
 
 import type { OpsViewAsTeacherDataProps } from '@/modules/ops/types/components.types';
-
-/** Display name for the banner: "Vee Twentyone", falling back to the email. */
-function teacherName(view: ViewAsTeacher): string {
-  const name = [view.teacher.first_name, view.teacher.last_name]
-    .filter((part): part is string => Boolean(part))
-    .join(' ');
-  return name !== '' ? name : (view.teacher.email ?? view.teacher.documentId);
-}
+import { teacherName } from '@/modules/ops/lib/ops-view-as-teacher-data.helpers';
 
 // Read-only rendering of the view-as-teacher payload (task 70, C-OPS-04):
 // the recording banner, then the teacher's exact classes and sittings. The

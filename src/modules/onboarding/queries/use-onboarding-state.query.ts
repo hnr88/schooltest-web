@@ -4,7 +4,8 @@ import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 
 import { strapi, type StrapiSingleResponse } from '@/lib/axios/strapi';
 
-import { onboardingStateSchema, type OnboardingState } from '@/modules/onboarding';
+import { onboardingStateSchema } from '@/modules/onboarding/schemas/onboarding.schema';
+import type { OnboardingState } from '@/modules/onboarding/types/onboarding.types';
 
 async function fetchOnboardingState(): Promise<OnboardingState> {
   const res = await strapi.get<StrapiSingleResponse<OnboardingState>>(

@@ -10,11 +10,7 @@ import { OpsViewAsTeacherData } from '@/modules/ops/components/OpsViewAsTeacherD
 import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
 import { useSchoolStaffQuery } from '@/modules/ops/queries/use-school-staff.query';
 import { useViewAsTeacherQuery } from '@/modules/ops/queries/use-view-as-teacher.query';
-
-/** The API's 404 means "unknown or not a teacher" — a distinct, calmer state. */
-function isNotFound(error: unknown): boolean {
-  return isAxiosError(error) && error.response?.status === 404;
-}
+import { isNotFound } from '@/modules/ops/lib/ops-view-as-teacher.helpers';
 
 // Ops view-as-teacher panel (task 70, C-OPS-04, mvp-updates 4.2): pick the
 // school (C-OPS-01) then the teacher (the school's staff from the C-OPS-01
