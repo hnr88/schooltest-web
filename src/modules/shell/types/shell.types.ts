@@ -43,3 +43,17 @@ export interface NavItem {
   // every role until the flag flips on; nothing is deleted.
   parentViews?: boolean;
 }
+
+export interface SidebarNavItemProps {
+  item: NavItem;
+  label: string;
+  isActive: boolean;
+  onNavigate: () => void;
+}
+
+export interface RecordCrumbState {
+  label: string | null;
+  pathname: string | null;
+  setRecordCrumb: (pathname: string, label: string) => void;
+  clearRecordCrumb: (pathname: string) => void;
+}

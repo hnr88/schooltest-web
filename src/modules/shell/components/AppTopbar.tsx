@@ -7,6 +7,7 @@ import { parentViewsEnabled } from '@/modules/flags';
 import { TopbarBreadcrumb } from '@/modules/shell/components/TopbarBreadcrumb';
 import { SEARCH_HREF } from '@/modules/shell/constants/nav.constants';
 import { NotificationBell } from '@/modules/notifications';
+import { BELL_SKIN_CLASSES, CONTROL_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
 
 // The detached frame has NO 64px white topbar — the white "L" of chrome is gone with
 // the rail's border. What the design draws at the top of the scroll column
@@ -18,14 +19,8 @@ import { NotificationBell } from '@/modules/notifications';
 //
 // The rail toggle and the breadcrumb are app contracts the slice has no slot for; they
 // take the slice's own control geometry rather than inventing a second one.
-const CONTROL_CLASSES =
-  'relative size-11 rounded-full border-0 bg-card text-body shadow-sm transition-[transform,color] duration-200 ease-out after:absolute after:-inset-1 hover:bg-card hover:-translate-y-px hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 [&_svg]:size-4.5';
-
 // The bell lives in the notifications module (its own owner) — the shell skins it to
 // the frame's pill geometry from the outside instead of reaching into that module.
-const BELL_SKIN_CLASSES =
-  'flex items-center gap-2 [&_[data-slot=notification-bell]]:rounded-full [&_[data-slot=notification-bell]]:bg-card [&_[data-slot=notification-bell]]:shadow-sm';
-
 function AppTopbar() {
   const t = useTranslations('Shell');
 

@@ -13,6 +13,8 @@ import {
   Skeleton,
 } from '@/modules/design-system';
 import { getUserInitials } from '@/modules/shell/lib/user-initials';
+import { LABELLED_ROLE_TYPES } from '@/modules/shell/constants/nav.constants';
+import { USER_CARD_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
 
 // The rail's USER AREA (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:24-30):
 // `margin-top:14px; background:#F4F6FA; border-radius:16px; padding:12px 14px; gap:11px`
@@ -22,15 +24,10 @@ import { getUserInitials } from '@/modules/shell/lib/user-initials';
 // addition; the geometry is the slice's.
 // Role ink is --color-body (#475569, 6.9:1 on the card) instead of the slice's #7C8698,
 // which measures 3.4:1 on #F4F6FA and fails AA at 12px.
-const USER_CARD_CLASSES =
-  'relative flex w-full items-center gap-2.75 rounded-panel bg-surface-inset px-3.5 py-3 text-left transition-[transform,background-color] duration-200 ease-out hover:-translate-y-px hover:bg-divider focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:hover:translate-y-0';
-
 // Role slugs with a user-menu label (i18n userMenu.roles.*). Anything else —
 // including a missing role while the me query settles — renders no label,
 // never a wrong one (the hardcoded "Parent account" mislabelled every staff
 // role).
-const LABELLED_ROLE_TYPES = [SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE, OPS_ROLE_TYPE, 'parent'];
-
 function UserMenu() {
   const t = useTranslations('Shell');
   const router = useRouter();

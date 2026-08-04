@@ -14,16 +14,7 @@ import {
 } from '@/modules/design-system';
 import { buildTrail } from '@/modules/navigation/lib/build-trail';
 import { PUBLIC_CRUMB_LINK_CLASSES } from '@/modules/navigation/constants/crumb.constants';
-
-interface PublicBreadcrumbProps {
-  /** Locale-less pathname, e.g. `/eald/diagnose`. */
-  readonly pathname: string;
-  /** Human label for a trailing dynamic segment (article title, …). */
-  readonly recordLabel?: string | null;
-  /** Overrides the current page's crumb with a data-driven title. */
-  readonly currentLabel?: string | null;
-  readonly className?: string;
-}
+import type { PublicBreadcrumbProps } from '@/modules/navigation/types/navigation.types';
 
 // Server Component — zero client JS. The trail comes from the shared
 // buildTrail registry, the same derivation <BreadcrumbJsonLd> uses, so the

@@ -4,10 +4,8 @@ import {
   TRAIL_RECORD_PATTERNS,
   TRAIL_ROOT_KEY,
 } from '@/modules/navigation/constants/trail.constants';
+import { IGNORED, RECORD_PATTERNS } from '@/modules/navigation/constants/trail.constants';
 import type { BuildTrailOptions, Trail, TrailCrumb } from '@/modules/navigation/types/navigation.types';
-
-const RECORD_PATTERNS = new Set(TRAIL_RECORD_PATTERNS);
-const IGNORED = new Set(TRAIL_IGNORED_SEGMENTS);
 
 /** A path segment that looks like an opaque record id rather than a literal route. */
 function isDynamicSegment(segment: string): boolean {

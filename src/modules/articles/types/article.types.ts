@@ -42,3 +42,13 @@ export interface ArticleListResult {
 }
 
 export type { CreateArticleInput };
+
+export interface ArticlesFiltersState {
+  search: string;
+  category: ArticleCategory | 'all';
+  page: number;
+  setSearch: (search: string) => void;
+  setCategory: (category: ArticleCategory | 'all') => void;
+  setPage: (page: number) => void;
+  reset: () => void;
+}

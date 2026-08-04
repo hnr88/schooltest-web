@@ -5,7 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 
 import '../globals.css';
-import { Providers } from '@/components/providers';
+import { Providers } from '@/modules/providers';
 import { Toaster } from '@/components/ui/sonner';
 import { isLocale } from '@/i18n/routing';
 import { env } from '@/lib/env';

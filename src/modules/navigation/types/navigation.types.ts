@@ -31,3 +31,13 @@ export interface BuildTrailOptions {
   /** Include the site-root crumb. Public pages do; the dashboard starts at `/dashboard`. */
   includeRoot?: boolean;
 }
+
+export interface PublicBreadcrumbProps {
+  /** Locale-less pathname, e.g. `/eald/diagnose`. */
+  readonly pathname: string;
+  /** Human label for a trailing dynamic segment (article title, …). */
+  readonly recordLabel?: string | null;
+  /** Overrides the current page's crumb with a data-driven title. */
+  readonly currentLabel?: string | null;
+  readonly className?: string;
+}

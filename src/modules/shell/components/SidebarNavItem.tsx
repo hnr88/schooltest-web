@@ -3,6 +3,9 @@
 import { SidebarMenuButton, SidebarMenuItem } from '@/modules/design-system';
 import { Link } from '@/i18n/navigation';
 import type { NavItem } from '@/modules/shell/types/shell.types';
+import { NAV_ITEM_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
+
+import type { SidebarNavItemProps } from '@/modules/shell/types/shell.types';
 
 // Nav item, verbatim from the DETACHED rail slice (.qa/design/spec/01 §1.2,
 // portal--detached-sidebar.html:6): `gap:12px; padding:11px 14px; border-radius:12px;
@@ -31,16 +34,6 @@ import type { NavItem } from '@/modules/shell/types/shell.types';
 //
 // Collapsed rail (the slice has no collapsed state at all — defined here once): the
 // same solid active slab squared to 40x40 with the 18px icon centred.
-const NAV_ITEM_CLASSES =
-  'relative h-auto gap-3 overflow-visible rounded-tile px-3.5 py-2.75 text-lede leading-tight font-medium text-muted-foreground transition-[color,background-color,transform] duration-200 ease-out after:absolute after:-inset-0.75 hover:bg-surface-inset hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary active:scale-98 active:bg-surface-inset active:text-foreground data-active:bg-navy-900 data-active:font-semibold data-active:text-white data-active:hover:bg-navy-900 data-active:hover:text-white data-active:active:bg-navy-900 data-active:active:text-white motion-reduce:transition-none motion-reduce:active:scale-100 group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! [&_svg]:size-4.5';
-
-interface SidebarNavItemProps {
-  item: NavItem;
-  label: string;
-  isActive: boolean;
-  onNavigate: () => void;
-}
-
 function SidebarNavItem({ item, label, isActive, onNavigate }: SidebarNavItemProps) {
   return (
     <SidebarMenuItem>

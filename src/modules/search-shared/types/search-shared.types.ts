@@ -1,5 +1,11 @@
+import type { VariantProps } from 'class-variance-authority';
 import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
+
+import type {
+  chipVariants,
+  searchChipVariants,
+} from '@/modules/search-shared/lib/chip-variants';
 
 export type PageToken = number | 'ellipsis';
 
@@ -81,3 +87,6 @@ export interface SearchToolbarProps {
   chips: ReactNode;
   actions?: ReactNode;
 }
+
+export type ChipVariantProps = VariantProps<typeof chipVariants>;
+export type SearchChipVariantProps = VariantProps<typeof searchChipVariants>;

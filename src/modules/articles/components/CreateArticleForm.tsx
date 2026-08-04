@@ -16,8 +16,8 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useCreateArticleMutation } from '@/modules/articles/queries/use-create-article.mutation';
+import { ARTICLE_CATEGORIES } from '@/modules/articles/constants/article.constants';
 import {
-  ARTICLE_CATEGORIES,
   createArticleSchema,
   type CreateArticleInput,
 } from '@/modules/articles/schemas/article.schema';

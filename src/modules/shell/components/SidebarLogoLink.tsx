@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { Logo } from '@/modules/design-system';
 import { Link } from '@/i18n/navigation';
+import { LOGO_LINK_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
 
 // Detached-rail lockup (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:3):
 // `height:26px; width:auto; align-self:flex-start; margin:0 12px 36px`.
@@ -11,9 +12,6 @@ import { Link } from '@/i18n/navigation';
 // the one shell control with no hit-area idiom of its own. `relative` is what makes
 // the ::after idiom work: the anchor was position:static, so the pseudo would have
 // resolved against SidebarHeader and expanded nothing.
-const LOGO_LINK_CLASSES =
-  'relative mb-9 ml-3 self-start rounded-md transition-[opacity,transform] duration-200 ease-out after:absolute after:-inset-2.5 hover:-translate-y-px hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 group-data-[collapsible=icon]:mb-6 group-data-[collapsible=icon]:ml-0';
-
 function SidebarLogoLink() {
   const t = useTranslations('Shell');
 

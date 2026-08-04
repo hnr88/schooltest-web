@@ -8,15 +8,12 @@ export { SearchAppliedChips } from './components/SearchAppliedChips';
 export { SearchFiltersDialog } from './components/SearchFiltersDialog';
 
 export { getPaginationRange } from './lib/pagination-range';
-export {
-  chipVariants,
-  searchChipVariants,
-  type ChipVariantProps,
-  type SearchChipVariantProps,
-} from './lib/chip-variants';
+export { chipVariants, searchChipVariants } from './lib/chip-variants';
 
 export type {
   AppliedFilterChip,
+  ChipVariantProps,
+  SearchChipVariantProps,
   PageToken,
   SearchAppliedChipsProps,
   SearchCardSkeletonListProps,

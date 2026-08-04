@@ -177,3 +177,10 @@ export const NAV_ITEMS: readonly NavItem[] = [
 ];
 
 export const PRIMARY_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'primary');
+
+export const LABELLED_ROLE_TYPES = [
+  SCHOOL_ADMIN_ROLE_TYPE,
+  TEACHER_ROLE_TYPE,
+  OPS_ROLE_TYPE,
+  'parent',
+];

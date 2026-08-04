@@ -96,3 +96,6 @@ export const TRAIL_RECORD_PATTERNS: readonly string[] = [
 
 /** Segments that are route groups or catch-alls and never appear in a trail. */
 export const TRAIL_IGNORED_SEGMENTS: readonly string[] = ['(portal)', '(teacher)', '(legal)'];
+
+export const RECORD_PATTERNS = new Set(TRAIL_RECORD_PATTERNS);
+export const IGNORED = new Set(TRAIL_IGNORED_SEGMENTS);

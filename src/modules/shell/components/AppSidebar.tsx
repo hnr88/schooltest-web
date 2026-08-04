@@ -19,6 +19,7 @@ import { UserMenu } from '@/modules/shell/components/UserMenu';
 import { PRIMARY_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
 import { filterNavByParentViews, filterNavByRole } from '@/modules/shell/lib/nav-visible';
+import { RAIL_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
 
 // THE DETACHED RAIL (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:2):
 // `width:248px; background:#FFFFFF; border-radius:24px; box-shadow:0 1px 2px
@@ -39,9 +40,6 @@ import { filterNavByParentViews, filterNavByRole } from '@/modules/shell/lib/nav
 // The entrance is the shell's own (the slice has no motion at all, spec §11.1/§11.5):
 // the card fades and slides in from the frame edge once on mount — transform and
 // opacity only, and nothing at all under prefers-reduced-motion.
-const RAIL_CLASSES =
-  'h-svh shrink-0 p-6 group-data-[side=left]:border-r-0 max-md:hidden [&_[data-slot=sidebar-inner]]:animate-in [&_[data-slot=sidebar-inner]]:rounded-card [&_[data-slot=sidebar-inner]]:shadow-float [&_[data-slot=sidebar-inner]]:duration-300 [&_[data-slot=sidebar-inner]]:ease-out-expo [&_[data-slot=sidebar-inner]]:fade-in [&_[data-slot=sidebar-inner]]:slide-in-from-left-3 [&_[data-slot=sidebar-inner]]:motion-reduce:animate-none';
-
 function AppSidebar() {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();

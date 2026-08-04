@@ -2,12 +2,7 @@
 
 import { create } from 'zustand';
 
-interface RecordCrumbState {
-  label: string | null;
-  pathname: string | null;
-  setRecordCrumb: (pathname: string, label: string) => void;
-  clearRecordCrumb: (pathname: string) => void;
-}
+import type { RecordCrumbState } from '@/modules/shell/types/shell.types';
 
 // The topbar renders ABOVE {children} in the dashboard layout, so a record page
 // cannot hand its crumb up through React context without a provider wrapping both.
