@@ -22,7 +22,7 @@ import {
 import { watchErrors } from './helpers/ui';
 
 // Task 094 — the C-UI-SEARCH-MAP e2e anchor. Drives the live Schools-pane Leaflet map
-// against the real api on :5510 and real OSM tiles (no route interception). The map
+// against the real api on :5500 and real OSM tiles (no route interception). The map
 // now defaults CLOSED (compact layout): gotoSchoolsMap opens the split via the real
 // desktop MapToggle before any map assertion. The seeded 312-school corpus is
 // deterministic: page 1 (name-asc) is 12 cards, 3 of which are null-coord "umbrella"

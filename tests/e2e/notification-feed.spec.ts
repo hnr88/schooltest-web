@@ -10,7 +10,7 @@ import { deleteStudents } from './helpers/student-cleanup';
 import { watchErrors } from './helpers/ui';
 
 const en = loadMessages('en');
-const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
+const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };

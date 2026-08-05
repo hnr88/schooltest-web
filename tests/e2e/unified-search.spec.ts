@@ -10,7 +10,7 @@ import { watchErrors } from './helpers/ui';
 
 // Task 039 (depends on 038, 029): the C-UI-SEARCH-UNIFIED e2e gate. SUBSUMES the
 // retired school-search.spec.ts navigation — the panes no longer have standalone
-// routes. Real login (SEEDED_PARENT) → the live api on :5510 answers every
+// routes. Real login (SEEDED_PARENT) → the live api on :5500 answers every
 // POST /api/search/{schools,agents} with the seeded corpus (312 schools / 74 QLD /
 // 1 Paterson, server-verified in 025). Counts + copy derive from the live catalogs
 // so a copy/seed drift fails loud. Only the (Test 5) error case intercepts a route.

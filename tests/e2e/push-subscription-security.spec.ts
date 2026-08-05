@@ -5,7 +5,7 @@ import { expect, test, type APIRequestContext } from '@playwright/test';
 import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
 
-const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
+const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
 const APP_ORIGIN =
   process.env.E2E_BASE_URL ?? `http://localhost:${process.env.E2E_PORT ?? 3100}`;
 const OWNER = { email: 'parent@schooltest.local', password: 'Parent1234!' };

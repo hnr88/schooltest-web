@@ -11,7 +11,7 @@ import { watchErrors } from './helpers/ui';
 // switch (?mode persistence), the agents corpus (C-UI-SEARCH-AGENTS), the C10
 // service-enum network pin, the 308→unified redirects for the retired standalone
 // routes, and the schools error state. Everything is real network truth against
-// the live api on :5510 except the (final) intercepted 500.
+// the live api on :5500 except the (final) intercepted 500.
 const en = loadMessages('en');
 // Repo-root .qa/screenshots/wave7 (Playwright runs from the web package, one down).
 const SCREENSHOTS = path.resolve(process.cwd(), '..', '.qa', 'screenshots', 'wave7');

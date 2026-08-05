@@ -1,10 +1,7 @@
-import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
-
 import { expect, test, type Page } from '@playwright/test';
 
 import { SEEDED_PARENT } from './helpers/auth';
+import { runSql } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 
 // Task 026 verification: the dashboard onboarding guard redirects a parent with
@@ -17,16 +14,7 @@ import { cat, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 const DESKTOP = { width: 1280, height: 800 };
 
-function getApiDatabasePassword(): string {
-  const apiEnvPath = path.resolve(process.cwd(), '../schooltest-api/.env');
-  const raw = readFileSync(apiEnvPath, 'utf8');
-  const match = raw.match(/^DATABASE_PASSWORD=(.+)$/m);
-  if (!match) throw new Error('DATABASE_PASSWORD not found in schooltest-api/.env');
-  return match[1].trim();
-}
-
 function resetParentOnboarding(status: 'pending' | 'skipped' | 'completed'): void {
-  const password = getApiDatabasePassword();
   const skippedAt = status === 'skipped' ? 'NOW()' : 'NULL';
   const completedAt = status === 'completed' ? 'NOW()' : 'NULL';
   const sql = `
@@ -42,10 +30,11 @@ function resetParentOnboarding(status: 'pending' | 'skipped' | 'completed'): voi
       WHERE u.email = '${SEEDED_PARENT.email}'
     );
   `;
-  execSync(
-    `PGPASSWORD='${password}' psql -h 127.0.0.1 -p 5550 -U schooltest -d schooltest -c "${sql}"`,
-    { stdio: 'ignore' },
-  );
+  // Was a hardcoded 127.0.0.1:5550/schooltest connection, which pointed at a
+  // stack that is not this one. runSql resolves host/port/user/db/password from
+  // schooltest-api/.env.dev like every other spec, and falls back to the compose
+  // container's own psql on hosts without a client.
+  runSql(sql);
 }
 
 async function submitSignInForm(page: Page): Promise<void> {

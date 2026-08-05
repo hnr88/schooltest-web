@@ -8,10 +8,13 @@
  */
 import { expect, type APIRequestContext } from '@playwright/test';
 
+// Defaults match this stack's real ports (schooltest-api/.env.dev: api :5500,
+// mailpit HTTP :8125) and the docblock above, which already documented 8125
+// while the default said 8130. Other stacks still override via env.
 export const MAILPIT_API =
-  process.env.MAILPIT_API_URL ?? 'http://127.0.0.1:8130/api/v1';
+  process.env.MAILPIT_API_URL ?? 'http://127.0.0.1:8125/api/v1';
 export const API_BASE_URL =
-  process.env.API_BASE_URL ?? 'http://localhost:5510';
+  process.env.API_BASE_URL ?? 'http://localhost:5500';
 
 /** C-EMAIL-TEMPLATES link regexes (zero latitude — quoted from the contract). */
 export const RESET_LINK_RE = /reset-password\?code=([0-9a-f]{128})/;

@@ -1,4 +1,29 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
 import { defineConfig, devices } from '@playwright/test';
+
+// Load .env.local into the TEST process. Several helpers document overriding
+// their defaults there (E2E_PARENT_PASSWORD, API_BASE_URL, MAILPIT_API_URL),
+// but Playwright reads no dotenv of its own, so those values only ever reached
+// the spawned Next server and every spec silently fell back to a stale default.
+// An already-exported variable always wins, so a shell override still works.
+function loadEnvLocal(): void {
+  try {
+    const raw = readFileSync(path.resolve(process.cwd(), '.env.local'), 'utf8');
+    for (const line of raw.split('\n')) {
+      const match = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)$/);
+      if (!match) continue;
+      const [, key, rawValue] = match;
+      if (process.env[key] !== undefined) continue;
+      process.env[key] = rawValue.trim().replace(/^(['"])(.*)\1$/, '$2');
+    }
+  } catch {
+    // No .env.local (CI) — defaults and real env vars stand.
+  }
+}
+
+loadEnvLocal();
 
 // This instance's web app runs on :3101 (see .qa/STACK.json). Ports 3000 and 3100
 // belong to NEIGHBOURING stacks and must never be bound by this suite.

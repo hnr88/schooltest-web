@@ -14,7 +14,7 @@ import { paceRateWindow } from './helpers/pace';
 
 const en = loadMessages('en');
 // Shared API origin pattern (the live Strapi) — never a hardcoded port.
-const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
+const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
 const UPLOADS_SRC = new RegExp(`^${escapeRegExp(`${API_BASE_URL}/uploads/`)}.+\\.png$`);
 
 const cardImages = (page: Page) =>

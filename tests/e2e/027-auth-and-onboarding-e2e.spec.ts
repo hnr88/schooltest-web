@@ -31,7 +31,7 @@ import {
 // Covers Zod validation + sonner toasts on all four auth forms, unified auth UI
 // consistency, registration → Mailpit confirmation → mandatory onboarding → skip,
 // forgot-password → Mailpit reset → /dashboard, and sidebar-driven wizard skip.
-// Uses the stack-specific helpers (api :5510, mailpit :8130).
+// Uses the stack-specific helpers (api :5500, mailpit :8125).
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve('/home/hnr/Code/schooltest/.qa/screenshots');
 const DESKTOP = { width: 1280, height: 800 };

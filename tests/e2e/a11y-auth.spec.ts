@@ -26,7 +26,7 @@ const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '..', '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const MOBILE = { width: 375, height: 812 };
-const API_BASE_URL = process.env.E2E_API_BASE_URL ?? 'http://localhost:5510';
+const API_BASE_URL = process.env.E2E_API_BASE_URL ?? 'http://localhost:5500';
 
 /**
  * Asserts zero serious/critical axe violations; moderate/minor are always

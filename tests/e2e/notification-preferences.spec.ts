@@ -8,7 +8,7 @@ import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
 
 const en = loadMessages('en');
-const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
+const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 

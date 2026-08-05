@@ -4,7 +4,7 @@ import { cat, loadMessages } from './helpers/i18n';
 import { waitForAnimationsSettled } from './helpers/ui';
 
 const en = loadMessages('en');
-const API = process.env.API_BASE_URL ?? 'http://localhost:5510';
+const API = process.env.API_BASE_URL ?? 'http://localhost:5500';
 
 // Regression (user report 2026-07-25): with a JWT in localStorage, POSTing the
 // public auth endpoints 403'd — the axios interceptor attached the Bearer token,

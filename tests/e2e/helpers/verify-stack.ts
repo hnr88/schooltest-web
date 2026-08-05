@@ -1,8 +1,10 @@
 /**
  * Stack-specific helpers for the independent st-portal verification.
- * Defaults target the original sandbox (web :3110, api :5510, mailpit UI
- * :8130); stacks with different ports override via API_BASE_URL /
- * MAILPIT_API_URL (same convention as helpers/mailpit.ts).
+ * Defaults target THIS stack (schooltest-api/.env.dev: api :5500, mailpit HTTP
+ * :8125) — they used to point at the original sandbox (:5510/:8130), which no
+ * longer runs, so every spec routed through here failed on a refused
+ * connection. Other stacks override via API_BASE_URL / MAILPIT_API_URL (same
+ * convention as helpers/mailpit.ts).
  * These helpers mirror the shape of tests/e2e/helpers/mailpit.ts and
  * throwaway-parent.ts so the verifier spec can stay self-contained without
  * mutating the existing mission-2 helpers.
@@ -11,8 +13,8 @@ import { expect, type APIRequestContext } from '@playwright/test';
 
 import { userRoleType } from './auth-db';
 
-export const STACK_API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
-export const STACK_MAILPIT_API = process.env.MAILPIT_API_URL ?? 'http://127.0.0.1:8130/api/v1';
+export const STACK_API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
+export const STACK_MAILPIT_API = process.env.MAILPIT_API_URL ?? 'http://127.0.0.1:8125/api/v1';
 export const STACK_E2E_PASSWORD = 'E2eParent1234!';
 
 export const RESET_LINK_RE = /reset-password\?code=([0-9a-f]{128})/;
