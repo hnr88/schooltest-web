@@ -47,12 +47,27 @@ async function apiClasses(request: APIRequestContext, jwt: string): Promise<Scho
   return ((await res.json()) as { data: SchoolClassRow[] }).data;
 }
 
+// Pages through the WHOLE roster. C-CHD-01 caps pageSize at 100 and this school
+// has more students than that, so reading only page 1 silently missed anyone
+// past the cap — which is exactly the bug the edit-dialog picker had.
 async function apiChildren(request: APIRequestContext, jwt: string): Promise<ChildRow[]> {
-  const res = await request.get(`${API}/api/schools/me/children?pageSize=100`, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
-  expect(res.ok()).toBeTruthy();
-  return ((await res.json()) as { data: ChildRow[] }).data;
+  const rows: ChildRow[] = [];
+  let page = 1;
+  let pageCount = 1;
+  do {
+    const res = await request.get(`${API}/api/schools/me/children?page=${page}&pageSize=100`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+    expect(res.ok()).toBeTruthy();
+    const body = (await res.json()) as {
+      data: ChildRow[];
+      meta?: { pagination?: { pageCount?: number } };
+    };
+    rows.push(...body.data);
+    pageCount = body.meta?.pagination?.pageCount ?? 1;
+    page += 1;
+  } while (page <= pageCount);
+  return rows;
 }
 
 async function signIn(page: Page): Promise<void> {
