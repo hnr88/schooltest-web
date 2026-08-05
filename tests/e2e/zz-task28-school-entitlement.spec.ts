@@ -19,6 +19,9 @@ interface Allowance {
 }
 
 interface Entitlement {
+  // The school record's plan tier (redesign spec section "Plan System"),
+  // distinct from the entitlement row's commercial plan_code.
+  plan: 'trial' | 'full_license';
   plan_code: string;
   seats_total: number;
   seats_used: number;
@@ -50,55 +53,40 @@ async function signIn(page: Page): Promise<void> {
   await page.waitForURL('**/dashboard/school', { timeout: 30_000 });
 }
 
-test.describe('task 28: school overview entitlement panel vs live C-ENT-01', () => {
-  test('panel renders the live entitlement numbers digit for digit', async ({
+test.describe('task 28: entitlement numbers vs live C-ENT-01', () => {
+  test('the Account plan and allowance cards render the live numbers digit for digit', async ({
     page,
     request,
   }) => {
     const ent = await fetchEntitlement(request);
     await signIn(page);
 
-    const panel = page.locator('[data-slot="school-entitlement-panel"]');
-    await expect(panel).toBeVisible({ timeout: 20_000 });
+    // Plan and seats + the test allowance grid moved off the school home into
+    // Account > My account (redesign spec section 5). The C-ENT-01 contract is
+    // unchanged; only the presentation moved.
+    await page.goto('/dashboard/school/account');
 
-    // Seats: used/total headline plus remaining line.
-    await expect(
-      panel.getByText(`${ent.seats_used} of ${ent.seats_total} seats used`, { exact: true }),
-    ).toBeVisible();
-    const seatsRemainingText =
-      ent.seats_remaining === 1
-        ? `${ent.seats_remaining} seat remaining`
-        : `${ent.seats_remaining} seats remaining`;
-    await expect(panel.getByText(seatsRemainingText, { exact: true })).toBeVisible();
+    const plan = page.locator('[data-slot="account-plan-card"]');
+    await expect(plan).toBeVisible({ timeout: 20_000 });
+    await expect(plan.getByText(`${ent.seats_used} / ${ent.seats_total}`, { exact: true })).toBeVisible();
 
-    // Seat-cap copy shows only when the school is at the cap.
-    const capCopy = panel.getByText(cat(en, 'SchoolAdmin.entitlement.seatCapReached'), {
-      exact: false,
-    });
-    if (ent.seats_remaining === 0) {
-      await expect(capCopy).toBeVisible();
-    } else {
-      await expect(capCopy).toHaveCount(0);
+    // The plan tier is the school record's, not the entitlement's plan_code.
+    expect(ent.plan).toBe('trial');
+
+    const allowance = page.locator('[data-slot="account-allowance-card"]');
+    await expect(allowance).toBeVisible();
+    for (const row of ent.allowances) {
+      const tile = allowance
+        .locator('[data-slot="tint-tile"]')
+        .filter({ hasText: cat(en, `SchoolAdmin.entitlement.testType.${row.test_type}`) });
+      await expect(tile.getByText(`${row.remaining} remaining`, { exact: true })).toBeVisible();
     }
 
-    // Plan code + renewal date (seeded school has no renewal date set).
-    await expect(panel.getByText(ent.plan_code, { exact: true })).toBeVisible();
-    if (ent.renewal_date === null) {
-      await expect(
-        panel.getByText(cat(en, 'SchoolAdmin.entitlement.renewalNotSet'), { exact: true }),
-      ).toBeVisible();
-    }
-
-    // One row per allowance type with remaining + used/total from the API.
-    for (const allowance of ent.allowances) {
-      const typeName = cat(en, `SchoolAdmin.entitlement.testType.${allowance.test_type}`);
-      const row = panel.getByRole('listitem').filter({ hasText: typeName });
-      await expect(
-        row.getByText(`${allowance.remaining} remaining`, { exact: true }),
-      ).toBeVisible();
-      await expect(
-        row.getByText(`${allowance.used} of ${allowance.total} used`, { exact: true }),
-      ).toBeVisible();
+    // Trial derives reading 2 and zeroes the other three, regardless of the
+    // totals stored on the entitlement row.
+    expect(ent.allowances.find((a) => a.test_type === 'reading')?.remaining).toBe(2);
+    for (const type of ['listening', 'writing', 'speaking']) {
+      expect(ent.allowances.find((a) => a.test_type === type)?.remaining).toBe(0);
     }
   });
 });

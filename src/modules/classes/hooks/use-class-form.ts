@@ -13,11 +13,11 @@ import {
   createClassFormSchema,
   type ClassFormValues,
 } from '@/modules/classes/schemas/class.schema';
-import type { ClassChildOption, SchoolClass } from '@/modules/classes/types/classes.types';
+import type { ClassStudentOption, SchoolClass } from '@/modules/classes/types/classes.types';
 
 import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
 
-function initialValues(target: ClassFormTarget, children: ClassChildOption[]): ClassFormValues {
+function initialValues(target: ClassFormTarget, students: ClassStudentOption[]): ClassFormValues {
   if (target.mode === 'create') {
     return { name: '', year_band: '7_9', teacher_documentIds: [], student_documentIds: [] };
   }
@@ -27,10 +27,10 @@ function initialValues(target: ClassFormTarget, children: ClassChildOption[]): C
     year_band: schoolClass.year_band === '10_12' ? '10_12' : '7_9',
     teacher_documentIds: schoolClass.teachers.map((teacher) => teacher.documentId),
     // Pre-check the class's current members so the PATCH replace semantics
-    // keep them (including archived children hidden from no filter).
-    student_documentIds: children
-      .filter((child) => child.class?.documentId === schoolClass.documentId)
-      .map((child) => child.documentId),
+    // keep them (including archived students hidden from no filter).
+    student_documentIds: students
+      .filter((student) => student.class?.documentId === schoolClass.documentId)
+      .map((student) => student.documentId),
   };
 }
 
@@ -39,7 +39,7 @@ function initialValues(target: ClassFormTarget, children: ClassChildOption[]): C
 // role) gets its own toast; anything else is the generic failure.
 export function useClassForm(
   target: ClassFormTarget,
-  children: ClassChildOption[],
+  students: ClassStudentOption[],
   onClose: () => void,
 ) {
   const t = useTranslations('Classes.form');
@@ -49,7 +49,7 @@ export function useClassForm(
   const update = useUpdateClassMutation();
   const form = useForm<ClassFormValues>({
     resolver: zodResolver(schema),
-    defaultValues: initialValues(target, children),
+    defaultValues: initialValues(target, students),
   });
 
   const pending = create.isPending || update.isPending;

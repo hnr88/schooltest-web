@@ -7,7 +7,7 @@ import { ClassTeacherPicker } from '@/modules/classes/components/ClassTeacherPic
 import { useClassAssignment } from '@/modules/classes/hooks/use-class-assignment';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 import { Button } from '@/modules/design-system';
-import type { SchoolChild } from '@/modules/school-children';
+import type { SchoolStudent } from '@/modules/school-students';
 import type { SchoolTeacher } from '@/modules/teachers';
 
 import type { ClassAssignmentPanelProps } from '@/modules/classes/types/components.types';
@@ -19,7 +19,7 @@ export function ClassAssignmentPanel({
   schoolClass,
   members,
   teachers,
-  activeChildren,
+  activeStudents,
 }: ClassAssignmentPanelProps) {
   const t = useTranslations('Classes.detail');
   const assignment = useClassAssignment(schoolClass, members);
@@ -33,7 +33,7 @@ export function ClassAssignmentPanel({
           onChange={assignment.setTeachers}
         />
         <ClassStudentPicker
-          students={activeChildren}
+          students={activeStudents}
           value={assignment.studentValue}
           onChange={assignment.setStudents}
         />

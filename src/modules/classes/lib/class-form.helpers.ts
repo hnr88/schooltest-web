@@ -1,4 +1,4 @@
-import type { ClassChildOption } from '@/modules/classes/types/classes.types';
+import type { ClassStudentOption } from '@/modules/classes/types/classes.types';
 import type { ClassMemberOption } from '@/modules/classes/types/components.types';
 import type { SchoolTeacher } from '@/modules/teachers';
 
@@ -7,10 +7,10 @@ export function teacherOption(teacher: SchoolTeacher): ClassMemberOption {
   return { value: teacher.documentId, label: name || teacher.email };
 }
 
-export function childOption(child: ClassChildOption): ClassMemberOption {
+export function studentOption(student: ClassStudentOption): ClassMemberOption {
   return {
-    value: child.documentId,
-    label: `${child.given_name} ${child.family_name}`.trim(),
-    hint: child.class?.name,
+    value: student.documentId,
+    label: `${student.given_name} ${student.family_name}`.trim(),
+    hint: student.class?.name,
   };
 }

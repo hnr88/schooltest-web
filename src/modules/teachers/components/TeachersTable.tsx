@@ -11,12 +11,12 @@ import {
   TableRow,
 } from '@/modules/design-system';
 import { StaffTableRow } from '@/modules/teachers/components/StaffTableRow';
-import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 
 import type { TeachersTableProps } from '@/modules/teachers/types/components.types';
 
-// Merged staff table (C-TCH-01 accounts + C-INV-02 open invitations). Dumb
-// renderer — merging/sorting lives in useStaffRows, actions in StaffRowActions.
+// Merged staff table (C-TCH-01 accounts + C-INV-02 open invitations): name,
+// email, classes, actions. Dumb renderer — merging/sorting lives in
+// useStaffRows, actions in StaffRowActions.
 export function TeachersTable({ rows }: TeachersTableProps) {
   const t = useTranslations('Teachers.table');
 
@@ -28,7 +28,6 @@ export function TeachersTable({ rows }: TeachersTableProps) {
             <TableHead>{t('columnName')}</TableHead>
             <TableHead>{t('columnEmail')}</TableHead>
             <TableHead>{t('columnClasses')}</TableHead>
-            <TableHead>{t('columnStatus')}</TableHead>
             <TableHead className="text-right">
               <span className="sr-only">{t('columnActions')}</span>
             </TableHead>
@@ -40,7 +39,7 @@ export function TeachersTable({ rows }: TeachersTableProps) {
           ))}
           {rows.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={5} className="py-10 text-center text-muted-foreground">
+              <TableCell colSpan={4} className="py-10 text-center text-muted-foreground">
                 {t('empty')}
               </TableCell>
             </TableRow>

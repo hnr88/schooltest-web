@@ -741,7 +741,7 @@
       "settings": "Settings",
       "school": "School",
       "classes": "Classes",
-      "children": "Children",
+      "students": "Students",
       "teachers": "Teachers",
       "teach": "Teaching",
       "ops": "Ops",
@@ -750,8 +750,7 @@
       "opsTimers": "Section timers",
       "opsTools": "Tools",
       "opsSettings": "Platform settings",
-      "participation": "Participation",
-      "analytics": "Analytics"
+      "account": "Account"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -2197,14 +2196,33 @@
       "onboardingStatusLabel": "Onboarding",
       "errorTitle": "We could not load your school",
       "errorDescription": "Check your connection and try again.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "diagnosticsTitle": "Diagnostics",
+      "diagnosticsSubtitle": "Initial placement reading tests — aggregated across all classes",
+      "studentsTested": "Students tested",
+      "avgReadingLevel": "Avg. reading level",
+      "readingTestsCompleted": "Reading tests completed",
+      "progressTitle": "Progress",
+      "progressSubtitle": "Periodic reading tests to track growth over time",
+      "readingProgress": "Reading progress",
+      "testsThisCycle": "Tests this cycle",
+      "nextTestWindow": "Next test window",
+      "readinessTitle": "Mainstream readiness",
+      "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
+      "classesTitle": "Classes",
+      "classStudents": "{count, plural, one {# student} other {# students}}",
+      "classesEmptyTitle": "No classes yet",
+      "classesEmptyDescription": "Classes you add for your school will appear here.",
+      "testsCompletedValue": "{completed} / {total}",
+      "noValue": "—"
     },
     "accountStatus": {
       "prospect": "Prospect",
       "invoiced": "Invoiced",
       "active": "Active",
       "suspended": "Suspended",
-      "closed": "Closed"
+      "closed": "Closed",
+      "invited": "Invited"
     },
     "onboardingStatus": {
       "not_started": "Not started",
@@ -2316,6 +2334,43 @@
         "downloading": "Preparing the export...",
         "error": "The export could not be downloaded. Try again."
       }
+    },
+    "account": {
+      "meta": {
+        "title": "Account - SchoolTest",
+        "description": "Your school's details, plan, seats and test allowances."
+      },
+      "title": "Account",
+      "subtitle": "Your school's details, plan and test allowances.",
+      "tabsLabel": "Account sections",
+      "tabs": {
+        "account": "My account",
+        "settings": "Settings",
+        "signout": "Sign out"
+      },
+      "detailsTitle": "School details",
+      "schoolLabel": "School",
+      "locationLabel": "Location",
+      "adminLabel": "Admin",
+      "statusLabel": "Status",
+      "notSet": "Not set",
+      "planTitle": "Plan and seats",
+      "currentPlanLabel": "Current plan",
+      "planSubtitleTrial": "Reading tests only",
+      "plan": {
+        "trial": "Trial",
+        "full_license": "Full license"
+      },
+      "seatsUsedLabel": "Seats used",
+      "seatsValue": "{used} / {total}",
+      "fullLicenseLabel": "Full license",
+      "fullLicenseDescription": "All test types, unlimited cycles, full reporting",
+      "fullLicenseContact": "Contact SchoolTest",
+      "allowanceTitle": "Test allowance",
+      "settingsEmptyTitle": "Settings are coming",
+      "settingsEmptyDescription": "Notification preferences and other account settings will live here.",
+      "signOutTitle": "Signing you out",
+      "signOutDescription": "Taking you back to the sign-in page."
     }
   },
   "Teach": {
@@ -2674,7 +2729,8 @@
         "deactivated": "Deactivated",
         "invited": "Invited",
         "expired": "Expired"
-      }
+      },
+      "noValue": "—"
     },
     "actions": {
       "menuLabel": "Actions for {name}",
@@ -2701,7 +2757,24 @@
       "removeTitle": "Remove {name} from your school?",
       "removeDescription": "This cannot be undone. Their account is blocked, they are unlinked from the school, their class assignments are cleared and any open invitation for them is revoked. Their past results stay in the records. Deactivate instead if you only need to pause access.",
       "removeConfirm": "Remove permanently",
-      "removedToast": "{name} was removed from the school ({classes} class assignments cleared)."
+      "removedToast": "{name} was removed from the school ({classes} class assignments cleared).",
+      "editLabel": "Edit {name}",
+      "removeLabel": "Remove {name}"
+    },
+    "subtitle": "{count, plural, one {# teacher at your school} other {# teachers at your school}}",
+    "addButton": "Add teacher",
+    "edit": {
+      "title": "Edit teacher",
+      "description": "Update this staff member's name and email address.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "cancel": "Cancel",
+      "submit": "Save changes",
+      "submitting": "Saving...",
+      "successToast": "{name} was updated.",
+      "errorToast": "We could not save those changes. Try again.",
+      "emailInUse": "That email address is already in use by another user."
     }
   },
   "Classes": {
@@ -2746,7 +2819,12 @@
       "columnActions": "Actions",
       "empty": "No classes yet. Add your first class to get started.",
       "teachersNone": "No teachers assigned",
-      "yearBandNone": "Not set"
+      "yearBandNone": "Not set",
+      "columnClass": "Class",
+      "columnTeacher": "Teacher",
+      "columnTestsCompleted": "Tests completed",
+      "teacherNone": "—",
+      "unknown": "—"
     },
     "yearBands": {
       "7_9": "Years 7-9",
@@ -2791,21 +2869,43 @@
       "confirm": "Delete class",
       "successToast": "{name} was deleted. Its students stay on your children list.",
       "errorToast": "That did not work. Try again."
+    },
+    "addForm": {
+      "title": "Add a new class",
+      "description": "Name the class, assign a teacher, and optionally import students from a CSV.",
+      "name": "Class name",
+      "namePlaceholder": "e.g. Year 10 EAL/D",
+      "teacher": "Assign teacher",
+      "teacherPlaceholder": "Select a teacher",
+      "teacherLoadError": "We could not load your teachers",
+      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "importTitle": "Import students",
+      "importDescription": "Upload a CSV or paste student data below",
+      "importErrorsTitle": "Some rows could not be read",
+      "importErrorsDescription": "{count, plural, one {# row will be skipped} other {# rows will be skipped}}. Fix them in your CSV, or add those students later.",
+      "cancel": "Cancel",
+      "submit": "Create class",
+      "submitting": "Creating...",
+      "createdToast": "{name} was added.",
+      "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
+      "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
+      "forbiddenToast": "You do not have permission to add classes.",
+      "errorToast": "That did not work. Try again."
     }
   },
-  "SchoolChildren": {
+  "SchoolStudents": {
     "meta": {
-      "title": "Children - SchoolTest",
-      "description": "The children at your school, their classes and status."
+      "title": "Students - SchoolTest",
+      "description": "The students at your school, their classes and status."
     },
     "newMeta": {
-      "title": "Add a child - SchoolTest",
-      "description": "Add a child to your school's SchoolTest roster."
+      "title": "Add a student - SchoolTest",
+      "description": "Add a student to your school's SchoolTest roster."
     },
-    "title": "Children",
-    "description": "Every child at your school, in one place.",
-    "addButton": "Add child",
-    "errorTitle": "We could not load your children",
+    "title": "Students",
+    "description": "Every student at your school, in one place.",
+    "addButton": "Add student",
+    "errorTitle": "We could not load your students",
     "errorDescription": "Check your connection and try again.",
     "retry": "Try again",
     "filters": {
@@ -2816,19 +2916,25 @@
       "statusActive": "Active",
       "statusArchived": "Archived",
       "classLabel": "Class",
-      "classAll": "All classes"
+      "classAll": "All classes",
+      "levelLabel": "Level",
+      "levelAll": "All levels"
     },
     "table": {
       "columnName": "Name",
       "columnClass": "Class",
       "columnStatus": "Status",
       "columnActions": "Actions",
-      "empty": "No children yet. Add your first child to get started.",
-      "emptyFiltered": "No children match these filters.",
+      "empty": "No students yet. Add your first student to get started.",
+      "emptyFiltered": "No students match these filters.",
       "classNone": "No class",
       "statusActive": "Active",
       "statusArchived": "Archived",
-      "emailFixRequested": "Email fix requested"
+      "emailFixRequested": "Email fix requested",
+      "columnFirstLanguage": "First language",
+      "columnLevel": "Level",
+      "columnDiagnostic": "Diagnostic",
+      "notSet": "—"
     },
     "pagination": {
       "previous": "Previous",
@@ -2837,23 +2943,23 @@
     },
     "actions": {
       "menuLabel": "Actions for {name}",
-      "edit": "Edit child",
-      "archive": "Archive child"
+      "edit": "Edit student",
+      "archive": "Archive student"
     },
     "archiveDialog": {
       "title": "Archive {name}?",
       "description": "Archiving frees their seat straight away. Their record and results stay on file, and they move to the archived list.",
       "cancel": "Cancel",
-      "confirm": "Archive child",
+      "confirm": "Archive student",
       "successToast": "{name} was archived. Their seat is free again.",
-      "forbiddenToast": "You do not have permission to archive children.",
+      "forbiddenToast": "You do not have permission to archive students.",
       "genericToast": "That did not work. Try again."
     },
     "form": {
-      "createTitle": "Add a child",
+      "createTitle": "Add a student",
       "createDescription": "Only what the school needs: name, year level, class and language background.",
       "editTitle": "Edit {name}",
-      "editDescription": "Update the child's details.",
+      "editDescription": "Update the student's details.",
       "givenName": "Given name",
       "familyName": "Family name",
       "email": "Email",
@@ -2895,25 +3001,42 @@
       "yes": "Yes",
       "no": "No",
       "keepHint": "Leave a field blank to keep its current value.",
-      "back": "Back to children",
+      "back": "Back to students",
       "cancel": "Cancel",
-      "submitCreate": "Add child",
+      "submitCreate": "Add student",
       "submitEdit": "Save changes",
       "submitting": "Saving...",
-      "createdToast": "{name} was added to your children.",
+      "createdToast": "{name} was added to your students.",
       "updatedToast": "{name} was updated.",
       "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
-      "schoolInactiveToast": "Your school account is not active, so children cannot be added right now.",
-      "forbiddenToast": "You do not have permission to change children.",
+      "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
+      "forbiddenToast": "You do not have permission to change students.",
       "genericToast": "That did not work. Try again."
     },
     "validation": {
-      "givenNameRequired": "Enter the child's given name.",
+      "givenNameRequired": "Enter the student's given name.",
       "emailInvalid": "Enter a valid email address.",
       "tooLong": "That is too long.",
       "dobInvalid": "Enter a valid date of birth.",
       "yearsInvalid": "Enter a number of years, for example 2.5.",
       "monthsInvalid": "Enter whole months only."
+    },
+    "subtitle": "{studentCount, plural, one {# student} other {# students}} across {classCount, plural, one {# class} other {# classes}}",
+    "importButton": "Import students",
+    "import": {
+      "title": "Import students",
+      "description": "Upload or paste a CSV, then choose the class these students join.",
+      "readyCount": "{count, plural, =0 {No students ready to import yet} one {# student ready to import} other {# students ready to import}}",
+      "errorCount": "{count, plural, one {# row could not be read and will be skipped} other {# rows could not be read and will be skipped}}",
+      "cancel": "Cancel",
+      "submit": "Import students",
+      "submitting": "Importing...",
+      "successToast": "{count, plural, one {# student was imported} other {# students were imported}}.",
+      "partialToast": "{created} of {total} students were imported. Check the rest and try again.",
+      "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
+      "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
+      "forbiddenToast": "You do not have permission to add students.",
+      "genericToast": "No students were imported. Try again."
     }
   },
   "Ops": {
@@ -3393,6 +3516,7 @@
     }
   },
   "Navigation": {
+    "analytics": "Analytics",
     "article": "Article",
     "articles": "Articles",
     "breadcrumbLabel": "Breadcrumb",
@@ -3405,6 +3529,7 @@
     "home": "Home",
     "invite": "Invitation",
     "newChild": "New student",
+    "newStudent": "New student",
     "onboarding": "Onboarding",
     "opsAudit": "Audit & security",
     "opsComms": "Communications",
@@ -3418,6 +3543,7 @@
     "opsTimers": "Section timers",
     "opsTools": "Tools",
     "opsUsers": "Users",
+    "participation": "Participation",
     "privacyPolicy": "Privacy Policy",
     "resetPassword": "Reset password",
     "results": "Results",
@@ -3444,5 +3570,15 @@
     "llmsNoteSitemap": "The machine-readable index of every public URL is at {url}.",
     "llmsNotes": "Notes",
     "llmsPages": "Pages"
+  },
+  "StudentImport": {
+    "downloadTemplate": "Download CSV template",
+    "dropPrompt": "Drop a CSV file here or",
+    "browse": "browse",
+    "fileInputLabel": "Choose a CSV file",
+    "pasteLabel": "Or paste CSV data",
+    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "classLabel": "Class",
+    "classPlaceholder": "Select a class"
   }
 }

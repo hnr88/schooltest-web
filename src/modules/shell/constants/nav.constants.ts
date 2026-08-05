@@ -1,18 +1,17 @@
 import {
-  Backpack,
-  ChartColumn,
-  ClipboardCheck,
+  BarChart3,
   FileChartColumn,
   GitBranch,
   GraduationCap,
   LayoutDashboard,
+  LayoutGrid,
   School,
   Search,
   Settings,
   SlidersHorizontal,
   Timer,
+  User,
   Users,
-  UsersRound,
   Wrench,
 } from 'lucide-react';
 
@@ -30,6 +29,11 @@ export const REPORTS_HREF = '/dashboard/reports';
 // School admin home (task 27 builds the page; the school-scoped API routes
 // answer 403 to every other role, so the whole section is role-scoped).
 export const SCHOOL_HREF = '/dashboard/school';
+
+// School admin destinations (spec §Sidebar Navigation): School / Classes /
+// Teachers / Students, with Account pinned to the bottom behind a divider.
+export const STUDENTS_HREF = `${SCHOOL_HREF}/students`;
+export const ACCOUNT_HREF = `${SCHOOL_HREF}/account`;
 
 // Ops console section root (task 66; the /api/ops routes answer 403 to every
 // non-ops role, so every entry below is role-scoped like the school admin ones).
@@ -89,7 +93,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     labelKey: 'school',
     href: SCHOOL_HREF,
-    icon: School,
+    icon: BarChart3,
     exact: true,
     group: 'primary',
     roles: [SCHOOL_ADMIN_ROLE_TYPE],
@@ -97,31 +101,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     labelKey: 'classes',
     href: '/dashboard/school/classes',
-    icon: GraduationCap,
-    exact: false,
-    group: 'primary',
-    roles: [SCHOOL_ADMIN_ROLE_TYPE],
-  },
-  {
-    labelKey: 'participation',
-    href: '/dashboard/school/participation',
-    icon: ClipboardCheck,
-    exact: false,
-    group: 'primary',
-    roles: [SCHOOL_ADMIN_ROLE_TYPE],
-  },
-  {
-    labelKey: 'analytics',
-    href: '/dashboard/school/analytics',
-    icon: ChartColumn,
-    exact: false,
-    group: 'primary',
-    roles: [SCHOOL_ADMIN_ROLE_TYPE],
-  },
-  {
-    labelKey: 'children',
-    href: '/dashboard/school/children',
-    icon: Backpack,
+    icon: LayoutGrid,
     exact: false,
     group: 'primary',
     roles: [SCHOOL_ADMIN_ROLE_TYPE],
@@ -129,9 +109,28 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     labelKey: 'teachers',
     href: '/dashboard/school/teachers',
-    icon: UsersRound,
+    icon: Users,
     exact: false,
     group: 'primary',
+    roles: [SCHOOL_ADMIN_ROLE_TYPE],
+  },
+  {
+    labelKey: 'students',
+    href: STUDENTS_HREF,
+    icon: User,
+    exact: false,
+    group: 'primary',
+    roles: [SCHOOL_ADMIN_ROLE_TYPE],
+  },
+  {
+    // Pinned to the bottom of the rail behind a divider (spec §Sidebar
+    // Navigation) — rendered from ACCOUNT_NAV_ITEMS in the sidebar footer, not
+    // in the primary list.
+    labelKey: 'account',
+    href: ACCOUNT_HREF,
+    icon: Settings,
+    exact: false,
+    group: 'account',
     roles: [SCHOOL_ADMIN_ROLE_TYPE],
   },
   {
@@ -177,6 +176,9 @@ export const NAV_ITEMS: readonly NavItem[] = [
 ];
 
 export const PRIMARY_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'primary');
+
+// Rendered in the sidebar footer, above the user card and behind a divider.
+export const ACCOUNT_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'account');
 
 export const LABELLED_ROLE_TYPES = [
   SCHOOL_ADMIN_ROLE_TYPE,

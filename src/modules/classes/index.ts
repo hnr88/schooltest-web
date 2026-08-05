@@ -1,5 +1,6 @@
 export { ClassesScreen } from './components/ClassesScreen';
 export { ClassesTable } from './components/ClassesTable';
+export { AddClassDialog } from './components/AddClassDialog';
 export { ClassDetailScreen } from './components/ClassDetailScreen';
 export { ClassFormDialog } from './components/ClassFormDialog';
 export { ClassDeleteDialog } from './components/ClassDeleteDialog';
@@ -8,4 +9,4 @@ export { useClassDetailQuery } from './queries/use-class-detail.query';
 export { useCreateClassMutation } from './queries/use-create-class.mutation';
 export { useUpdateClassMutation } from './queries/use-update-class.mutation';
 export { useDeleteClassMutation } from './queries/use-delete-class.mutation';
-export type { ClassTeacher, SchoolClass, ClassChildOption } from './types/classes.types';
+export type { ClassTeacher, SchoolClass, ClassStudentOption } from './types/classes.types';

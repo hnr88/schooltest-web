@@ -1,6 +1,6 @@
 'use client';
 
-import { UserRoundPlus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -13,8 +13,10 @@ import { useInvitationsQuery } from '@/modules/teachers/queries/use-invitations.
 import { useTeachersQuery } from '@/modules/teachers/queries/use-teachers.query';
 
 // School admin Teachers screen (task 23, st-mvp-pivot): the merged staff +
-// invitations table (C-TCH-01 + C-INV-02) with the invite dialog (C-INV-01).
-// Row actions (reissue/revoke/deactivate/reactivate) live in the table rows.
+// invitations table (C-TCH-01 + C-INV-02) with the add dialog (C-INV-01). Row
+// actions (edit/remove/reissue/revoke/deactivate/reactivate) live in the rows.
+// The subtitle counts live staff ACCOUNTS only — an invitation is a person who
+// has not joined yet — and waits for the real count rather than showing a zero.
 export function TeachersScreen() {
   const t = useTranslations('Teachers');
   const token = useAuthStore((state) => state.token);
@@ -41,11 +43,16 @@ export function TeachersScreen() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
-          <p className="text-sm text-body">{t('description')}</p>
+          {isPending ? <Skeleton className="h-4 w-48" /> : null}
+          {!isPending && !isError ? (
+            <p className="text-sm text-body">
+              {t('subtitle', { count: teachersQuery.data?.length ?? 0 })}
+            </p>
+          ) : null}
         </div>
         <Button size="lg" onClick={() => setInviteOpen(true)}>
-          <UserRoundPlus className="size-4" aria-hidden />
-          {t('inviteButton')}
+          <Plus className="size-4" aria-hidden />
+          {t('addButton')}
         </Button>
       </div>
       {isPending ? (

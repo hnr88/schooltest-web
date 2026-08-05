@@ -1,6 +1,6 @@
 'use client';
 
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -8,18 +8,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   IconButton,
+  RowActionsCluster,
 } from '@/modules/design-system';
 import { ConfirmStaffActionDialog } from '@/modules/teachers/components/ConfirmStaffActionDialog';
+import { EditTeacherDialog } from '@/modules/teachers/components/EditTeacherDialog';
 import { useStaffRowActions } from '@/modules/teachers/hooks/use-staff-row-actions';
-import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 
 import type { StaffRowActionsProps } from '@/modules/teachers/types/components.types';
 
-// Row actions for the merged staff table: reissue (C-INV-03) + revoke
-// (C-INV-04/07) on open invitations, deactivate/reactivate (C-TCH-02) and
-// permanent removal (C-TCH-03) on staff accounts. Access-changing actions
-// confirm first; reissue is immediate. Removal is offered for both active and
-// deactivated accounts — deactivation is reversible, removal is not.
+// Row actions for the merged staff table. A live account gets the spec's two
+// icon buttons — edit (C-TCH-04) and remove (C-TCH-03) — with the reversible
+// access toggle (C-TCH-02) behind the overflow menu. An open invitation has no
+// account to edit or remove, so it keeps its own menu: reissue (C-INV-03) and
+// revoke (C-INV-04/07). Everything that changes access confirms first.
 export function StaffRowActions({ row }: StaffRowActionsProps) {
   const {
     t,
@@ -27,32 +28,36 @@ export function StaffRowActions({ row }: StaffRowActionsProps) {
     confirmAction,
     setConfirmAction,
     confirmPending,
+    editOpen,
+    setEditOpen,
     handleReissue,
     handleConfirm,
   } = useStaffRowActions(row);
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          render={<IconButton icon={MoreHorizontal} label={t('menuLabel', { name })} />}
-        />
-        <DropdownMenuContent align="end">
-          {row.kind === 'invitation' ? (
-            <>
-              <DropdownMenuItem className="min-h-11" onClick={handleReissue}>
-                {t('reissue')}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                variant="destructive"
-                className="min-h-11"
-                onClick={() => setConfirmAction('revoke')}
-              >
-                {t('revoke')}
-              </DropdownMenuItem>
-            </>
-          ) : (
-            <>
+    <RowActionsCluster className="justify-end">
+      {row.kind === 'teacher' ? (
+        <>
+          <IconButton
+            icon={Pencil}
+            size="sm"
+            label={t('editLabel', { name })}
+            onClick={() => setEditOpen(true)}
+          />
+          <IconButton
+            icon={Trash2}
+            size="sm"
+            tone="danger"
+            label={t('removeLabel', { name })}
+            onClick={() => setConfirmAction('remove')}
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <IconButton icon={MoreHorizontal} size="sm" label={t('menuLabel', { name })} />
+              }
+            />
+            <DropdownMenuContent align="end">
               {row.status === 'deactivated' ? (
                 <DropdownMenuItem
                   className="min-h-11"
@@ -69,17 +74,28 @@ export function StaffRowActions({ row }: StaffRowActionsProps) {
                   {t('deactivate')}
                 </DropdownMenuItem>
               )}
-              <DropdownMenuItem
-                variant="destructive"
-                className="min-h-11"
-                onClick={() => setConfirmAction('remove')}
-              >
-                {t('remove')}
-              </DropdownMenuItem>
-            </>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={<IconButton icon={MoreHorizontal} size="sm" label={t('menuLabel', { name })} />}
+          />
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem className="min-h-11" onClick={handleReissue}>
+              {t('reissue')}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              variant="destructive"
+              className="min-h-11"
+              onClick={() => setConfirmAction('revoke')}
+            >
+              {t('revoke')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
       <ConfirmStaffActionDialog
         open={confirmAction !== null}
         onOpenChange={(open) => {
@@ -93,6 +109,7 @@ export function StaffRowActions({ row }: StaffRowActionsProps) {
         pending={confirmPending}
         onConfirm={handleConfirm}
       />
-    </>
+      {editOpen ? <EditTeacherDialog row={row} onClose={() => setEditOpen(false)} /> : null}
+    </RowActionsCluster>
   );
 }

@@ -62,8 +62,9 @@ test('flow: a school admin removes a teacher, and that teacher is locked out', a
   const row = page.getByRole('row').filter({ hasText: teacher.email });
   await expect(row, 'the new teacher must appear in the staff table').toBeVisible();
 
-  await row.getByRole('button').last().click();
-  await page.getByRole('menuitem', { name: en['Teachers.actions.remove'] }).click();
+  // A staff row's action cluster is edit / remove / overflow — removal is the
+  // trash button between them, and it opens the C-TCH-03 confirm dialog.
+  await row.getByRole('button').nth(1).click();
   await page
     .getByRole('button', { name: en['Teachers.actions.removeConfirm'], exact: true })
     .click();

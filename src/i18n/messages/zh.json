@@ -741,7 +741,7 @@
       "settings": "设置",
       "school": "学校",
       "classes": "班级",
-      "children": "学生",
+      "students": "学生",
       "teachers": "教师",
       "teach": "教学",
       "ops": "运维",
@@ -750,8 +750,7 @@
       "opsTimers": "分段计时",
       "opsTools": "工具",
       "opsSettings": "平台设置",
-      "participation": "完成情况",
-      "analytics": "分析"
+      "account": "账户"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1893,14 +1892,33 @@
       "onboardingStatusLabel": "入驻进度",
       "errorTitle": "无法加载您的学校信息",
       "errorDescription": "请检查网络连接后重试。",
-      "retry": "重试"
+      "retry": "重试",
+      "diagnosticsTitle": "Diagnostics",
+      "diagnosticsSubtitle": "Initial placement reading tests — aggregated across all classes",
+      "studentsTested": "Students tested",
+      "avgReadingLevel": "Avg. reading level",
+      "readingTestsCompleted": "Reading tests completed",
+      "progressTitle": "Progress",
+      "progressSubtitle": "Periodic reading tests to track growth over time",
+      "readingProgress": "Reading progress",
+      "testsThisCycle": "Tests this cycle",
+      "nextTestWindow": "Next test window",
+      "readinessTitle": "Mainstream readiness",
+      "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
+      "classesTitle": "Classes",
+      "classStudents": "{count, plural, one {# student} other {# students}}",
+      "classesEmptyTitle": "No classes yet",
+      "classesEmptyDescription": "Classes you add for your school will appear here.",
+      "testsCompletedValue": "{completed} / {total}",
+      "noValue": "—"
     },
     "accountStatus": {
       "prospect": "潜在客户",
       "invoiced": "已开票",
       "active": "已激活",
       "suspended": "已暂停",
-      "closed": "已关闭"
+      "closed": "已关闭",
+      "invited": "Invited"
     },
     "onboardingStatus": {
       "not_started": "未开始",
@@ -2012,6 +2030,43 @@
         "downloading": "正在准备导出...",
         "error": "导出下载失败,请重试。"
       }
+    },
+    "account": {
+      "meta": {
+        "title": "Account - SchoolTest",
+        "description": "Your school's details, plan, seats and test allowances."
+      },
+      "title": "Account",
+      "subtitle": "Your school's details, plan and test allowances.",
+      "tabsLabel": "Account sections",
+      "tabs": {
+        "account": "My account",
+        "settings": "Settings",
+        "signout": "Sign out"
+      },
+      "detailsTitle": "School details",
+      "schoolLabel": "School",
+      "locationLabel": "Location",
+      "adminLabel": "Admin",
+      "statusLabel": "Status",
+      "notSet": "Not set",
+      "planTitle": "Plan and seats",
+      "currentPlanLabel": "Current plan",
+      "planSubtitleTrial": "Reading tests only",
+      "plan": {
+        "trial": "Trial",
+        "full_license": "Full license"
+      },
+      "seatsUsedLabel": "Seats used",
+      "seatsValue": "{used} / {total}",
+      "fullLicenseLabel": "Full license",
+      "fullLicenseDescription": "All test types, unlimited cycles, full reporting",
+      "fullLicenseContact": "Contact SchoolTest",
+      "allowanceTitle": "Test allowance",
+      "settingsEmptyTitle": "Settings are coming",
+      "settingsEmptyDescription": "Notification preferences and other account settings will live here.",
+      "signOutTitle": "Signing you out",
+      "signOutDescription": "Taking you back to the sign-in page."
     }
   },
   "Teach": {
@@ -2370,7 +2425,8 @@
         "deactivated": "已停用",
         "invited": "已邀请",
         "expired": "已过期"
-      }
+      },
+      "noValue": "—"
     },
     "actions": {
       "menuLabel": "{name} 的操作",
@@ -2397,7 +2453,24 @@
       "removeTitle": "确定将 {name} 移出学校？",
       "removeDescription": "此操作无法撤销。该账户将被停用并解除与学校的关联，其班级分配将被清除，尚未接受的邀请也会被撤销。既往成绩记录仍会保留。若只需暂停访问，请改用“停用”。",
       "removeConfirm": "永久移除",
-      "removedToast": "{name} 已移出学校（清除了 {classes} 项班级分配）。"
+      "removedToast": "{name} 已移出学校（清除了 {classes} 项班级分配）。",
+      "editLabel": "Edit {name}",
+      "removeLabel": "Remove {name}"
+    },
+    "subtitle": "{count, plural, one {# teacher at your school} other {# teachers at your school}}",
+    "addButton": "Add teacher",
+    "edit": {
+      "title": "Edit teacher",
+      "description": "Update this staff member's name and email address.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "cancel": "Cancel",
+      "submit": "Save changes",
+      "submitting": "Saving...",
+      "successToast": "{name} was updated.",
+      "errorToast": "We could not save those changes. Try again.",
+      "emailInUse": "That email address is already in use by another user."
     }
   },
   "Classes": {
@@ -2442,7 +2515,12 @@
       "columnActions": "操作",
       "empty": "还没有班级。添加第一个班级即可开始。",
       "teachersNone": "尚未分配教师",
-      "yearBandNone": "未设置"
+      "yearBandNone": "未设置",
+      "columnClass": "Class",
+      "columnTeacher": "Teacher",
+      "columnTestsCompleted": "Tests completed",
+      "teacherNone": "—",
+      "unknown": "—"
     },
     "yearBands": {
       "7_9": "7-9 年级",
@@ -2487,9 +2565,31 @@
       "confirm": "删除班级",
       "successToast": "已删除 {name}。该班学生仍保留在您的学生名单中。",
       "errorToast": "操作失败，请重试。"
+    },
+    "addForm": {
+      "title": "Add a new class",
+      "description": "Name the class, assign a teacher, and optionally import students from a CSV.",
+      "name": "Class name",
+      "namePlaceholder": "e.g. Year 10 EAL/D",
+      "teacher": "Assign teacher",
+      "teacherPlaceholder": "Select a teacher",
+      "teacherLoadError": "We could not load your teachers",
+      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "importTitle": "Import students",
+      "importDescription": "Upload a CSV or paste student data below",
+      "importErrorsTitle": "Some rows could not be read",
+      "importErrorsDescription": "{count, plural, one {# row will be skipped} other {# rows will be skipped}}. Fix them in your CSV, or add those students later.",
+      "cancel": "Cancel",
+      "submit": "Create class",
+      "submitting": "Creating...",
+      "createdToast": "{name} was added.",
+      "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
+      "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
+      "forbiddenToast": "You do not have permission to add classes.",
+      "errorToast": "That did not work. Try again."
     }
   },
-  "SchoolChildren": {
+  "SchoolStudents": {
     "meta": {
       "title": "学生 - SchoolTest",
       "description": "您学校的学生、所在班级和状态。"
@@ -2512,7 +2612,9 @@
       "statusActive": "在读",
       "statusArchived": "已归档",
       "classLabel": "班级",
-      "classAll": "所有班级"
+      "classAll": "所有班级",
+      "levelLabel": "Level",
+      "levelAll": "All levels"
     },
     "table": {
       "columnName": "姓名",
@@ -2524,7 +2626,11 @@
       "classNone": "未分班",
       "statusActive": "在读",
       "statusArchived": "已归档",
-      "emailFixRequested": "已请求修改邮箱"
+      "emailFixRequested": "已请求修改邮箱",
+      "columnFirstLanguage": "First language",
+      "columnLevel": "Level",
+      "columnDiagnostic": "Diagnostic",
+      "notSet": "—"
     },
     "pagination": {
       "previous": "上一页",
@@ -2610,6 +2716,23 @@
       "dobInvalid": "请输入有效的出生日期。",
       "yearsInvalid": "请输入年数，例如 2.5。",
       "monthsInvalid": "请输入整月数。"
+    },
+    "subtitle": "{studentCount, plural, one {# student} other {# students}} across {classCount, plural, one {# class} other {# classes}}",
+    "importButton": "Import students",
+    "import": {
+      "title": "Import students",
+      "description": "Upload or paste a CSV, then choose the class these students join.",
+      "readyCount": "{count, plural, =0 {No students ready to import yet} one {# student ready to import} other {# students ready to import}}",
+      "errorCount": "{count, plural, one {# row could not be read and will be skipped} other {# rows could not be read and will be skipped}}",
+      "cancel": "Cancel",
+      "submit": "Import students",
+      "submitting": "Importing...",
+      "successToast": "{count, plural, one {# student was imported} other {# students were imported}}.",
+      "partialToast": "{created} of {total} students were imported. Check the rest and try again.",
+      "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
+      "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
+      "forbiddenToast": "You do not have permission to add students.",
+      "genericToast": "No students were imported. Try again."
     }
   },
   "Ops": {
@@ -3393,6 +3516,7 @@
     }
   },
   "Navigation": {
+    "analytics": "分析",
     "article": "文章",
     "articles": "文章",
     "breadcrumbLabel": "面包屑导航",
@@ -3405,6 +3529,7 @@
     "home": "首页",
     "invite": "邀请",
     "newChild": "新增学生",
+    "newStudent": "新增学生",
     "onboarding": "入门引导",
     "opsAudit": "审计与安全",
     "opsComms": "通信",
@@ -3418,6 +3543,7 @@
     "opsTimers": "分段计时",
     "opsTools": "工具",
     "opsUsers": "用户",
+    "participation": "参与情况",
     "privacyPolicy": "隐私政策",
     "resetPassword": "重置密码",
     "results": "成绩",
@@ -3444,5 +3570,15 @@
     "llmsNoteSitemap": "所有公开网址的机器可读索引位于 {url}。",
     "llmsNotes": "说明",
     "llmsPages": "页面"
+  },
+  "StudentImport": {
+    "downloadTemplate": "Download CSV template",
+    "dropPrompt": "Drop a CSV file here or",
+    "browse": "browse",
+    "fileInputLabel": "Choose a CSV file",
+    "pasteLabel": "Or paste CSV data",
+    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "classLabel": "Class",
+    "classPlaceholder": "Select a class"
   }
 }

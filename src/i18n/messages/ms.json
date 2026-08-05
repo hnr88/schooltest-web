@@ -741,7 +741,7 @@
       "settings": "Tetapan",
       "school": "Sekolah",
       "classes": "Kelas",
-      "children": "Murid",
+      "students": "Murid",
       "teachers": "Guru",
       "teach": "Mengajar",
       "ops": "Operasi",
@@ -750,8 +750,7 @@
       "opsTimers": "Pemasa bahagian",
       "opsTools": "Alat",
       "opsSettings": "Tetapan platform",
-      "participation": "Penyertaan",
-      "analytics": "Analitik"
+      "account": "Akaun"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1893,14 +1892,33 @@
       "onboardingStatusLabel": "Penyediaan",
       "errorTitle": "Kami tidak dapat memuatkan sekolah anda",
       "errorDescription": "Semak sambungan anda dan cuba lagi.",
-      "retry": "Cuba lagi"
+      "retry": "Cuba lagi",
+      "diagnosticsTitle": "Diagnostics",
+      "diagnosticsSubtitle": "Initial placement reading tests — aggregated across all classes",
+      "studentsTested": "Students tested",
+      "avgReadingLevel": "Avg. reading level",
+      "readingTestsCompleted": "Reading tests completed",
+      "progressTitle": "Progress",
+      "progressSubtitle": "Periodic reading tests to track growth over time",
+      "readingProgress": "Reading progress",
+      "testsThisCycle": "Tests this cycle",
+      "nextTestWindow": "Next test window",
+      "readinessTitle": "Mainstream readiness",
+      "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
+      "classesTitle": "Classes",
+      "classStudents": "{count, plural, one {# student} other {# students}}",
+      "classesEmptyTitle": "No classes yet",
+      "classesEmptyDescription": "Classes you add for your school will appear here.",
+      "testsCompletedValue": "{completed} / {total}",
+      "noValue": "—"
     },
     "accountStatus": {
       "prospect": "Prospek",
       "invoiced": "Dinvois",
       "active": "Aktif",
       "suspended": "Digantung",
-      "closed": "Ditutup"
+      "closed": "Ditutup",
+      "invited": "Invited"
     },
     "onboardingStatus": {
       "not_started": "Belum bermula",
@@ -2012,6 +2030,43 @@
         "downloading": "Menyediakan eksport...",
         "error": "Eksport tidak dapat dimuat turun. Cuba lagi."
       }
+    },
+    "account": {
+      "meta": {
+        "title": "Account - SchoolTest",
+        "description": "Your school's details, plan, seats and test allowances."
+      },
+      "title": "Account",
+      "subtitle": "Your school's details, plan and test allowances.",
+      "tabsLabel": "Account sections",
+      "tabs": {
+        "account": "My account",
+        "settings": "Settings",
+        "signout": "Sign out"
+      },
+      "detailsTitle": "School details",
+      "schoolLabel": "School",
+      "locationLabel": "Location",
+      "adminLabel": "Admin",
+      "statusLabel": "Status",
+      "notSet": "Not set",
+      "planTitle": "Plan and seats",
+      "currentPlanLabel": "Current plan",
+      "planSubtitleTrial": "Reading tests only",
+      "plan": {
+        "trial": "Trial",
+        "full_license": "Full license"
+      },
+      "seatsUsedLabel": "Seats used",
+      "seatsValue": "{used} / {total}",
+      "fullLicenseLabel": "Full license",
+      "fullLicenseDescription": "All test types, unlimited cycles, full reporting",
+      "fullLicenseContact": "Contact SchoolTest",
+      "allowanceTitle": "Test allowance",
+      "settingsEmptyTitle": "Settings are coming",
+      "settingsEmptyDescription": "Notification preferences and other account settings will live here.",
+      "signOutTitle": "Signing you out",
+      "signOutDescription": "Taking you back to the sign-in page."
     }
   },
   "Teach": {
@@ -2370,7 +2425,8 @@
         "deactivated": "Dinyahaktifkan",
         "invited": "Dijemput",
         "expired": "Luput"
-      }
+      },
+      "noValue": "—"
     },
     "actions": {
       "menuLabel": "Tindakan untuk {name}",
@@ -2397,7 +2453,24 @@
       "removeTitle": "Buang {name} daripada sekolah anda?",
       "removeDescription": "Tindakan ini tidak boleh dibatalkan. Akaun mereka disekat, pautan sekolah diputuskan, tugasan kelas dikosongkan dan sebarang jemputan terbuka dibatalkan. Rekod keputusan lalu kekal. Gunakan nyahaktif jika anda hanya perlu menjeda akses.",
       "removeConfirm": "Buang secara kekal",
-      "removedToast": "{name} telah dibuang daripada sekolah ({classes} tugasan kelas dikosongkan)."
+      "removedToast": "{name} telah dibuang daripada sekolah ({classes} tugasan kelas dikosongkan).",
+      "editLabel": "Edit {name}",
+      "removeLabel": "Remove {name}"
+    },
+    "subtitle": "{count, plural, one {# teacher at your school} other {# teachers at your school}}",
+    "addButton": "Add teacher",
+    "edit": {
+      "title": "Edit teacher",
+      "description": "Update this staff member's name and email address.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "cancel": "Cancel",
+      "submit": "Save changes",
+      "submitting": "Saving...",
+      "successToast": "{name} was updated.",
+      "errorToast": "We could not save those changes. Try again.",
+      "emailInUse": "That email address is already in use by another user."
     }
   },
   "Classes": {
@@ -2442,7 +2515,12 @@
       "columnActions": "Tindakan",
       "empty": "Belum ada kelas. Tambah kelas pertama anda untuk bermula.",
       "teachersNone": "Tiada guru ditetapkan",
-      "yearBandNone": "Tidak ditetapkan"
+      "yearBandNone": "Tidak ditetapkan",
+      "columnClass": "Class",
+      "columnTeacher": "Teacher",
+      "columnTestsCompleted": "Tests completed",
+      "teacherNone": "—",
+      "unknown": "—"
     },
     "yearBands": {
       "7_9": "Tahun 7-9",
@@ -2487,9 +2565,31 @@
       "confirm": "Padam kelas",
       "successToast": "{name} telah dipadam. Muridnya kekal dalam senarai murid anda.",
       "errorToast": "Itu tidak berjaya. Cuba lagi."
+    },
+    "addForm": {
+      "title": "Add a new class",
+      "description": "Name the class, assign a teacher, and optionally import students from a CSV.",
+      "name": "Class name",
+      "namePlaceholder": "e.g. Year 10 EAL/D",
+      "teacher": "Assign teacher",
+      "teacherPlaceholder": "Select a teacher",
+      "teacherLoadError": "We could not load your teachers",
+      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "importTitle": "Import students",
+      "importDescription": "Upload a CSV or paste student data below",
+      "importErrorsTitle": "Some rows could not be read",
+      "importErrorsDescription": "{count, plural, one {# row will be skipped} other {# rows will be skipped}}. Fix them in your CSV, or add those students later.",
+      "cancel": "Cancel",
+      "submit": "Create class",
+      "submitting": "Creating...",
+      "createdToast": "{name} was added.",
+      "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
+      "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
+      "forbiddenToast": "You do not have permission to add classes.",
+      "errorToast": "That did not work. Try again."
     }
   },
-  "SchoolChildren": {
+  "SchoolStudents": {
     "meta": {
       "title": "Murid - SchoolTest",
       "description": "Murid di sekolah anda, kelas dan status mereka."
@@ -2512,7 +2612,9 @@
       "statusActive": "Aktif",
       "statusArchived": "Diarkibkan",
       "classLabel": "Kelas",
-      "classAll": "Semua kelas"
+      "classAll": "Semua kelas",
+      "levelLabel": "Level",
+      "levelAll": "All levels"
     },
     "table": {
       "columnName": "Nama",
@@ -2524,7 +2626,11 @@
       "classNone": "Tiada kelas",
       "statusActive": "Aktif",
       "statusArchived": "Diarkibkan",
-      "emailFixRequested": "Pembetulan e-mel diminta"
+      "emailFixRequested": "Pembetulan e-mel diminta",
+      "columnFirstLanguage": "First language",
+      "columnLevel": "Level",
+      "columnDiagnostic": "Diagnostic",
+      "notSet": "—"
     },
     "pagination": {
       "previous": "Sebelumnya",
@@ -2610,6 +2716,23 @@
       "dobInvalid": "Masukkan tarikh lahir yang sah.",
       "yearsInvalid": "Masukkan bilangan tahun, contohnya 2.5.",
       "monthsInvalid": "Masukkan bulan penuh sahaja."
+    },
+    "subtitle": "{studentCount, plural, one {# student} other {# students}} across {classCount, plural, one {# class} other {# classes}}",
+    "importButton": "Import students",
+    "import": {
+      "title": "Import students",
+      "description": "Upload or paste a CSV, then choose the class these students join.",
+      "readyCount": "{count, plural, =0 {No students ready to import yet} one {# student ready to import} other {# students ready to import}}",
+      "errorCount": "{count, plural, one {# row could not be read and will be skipped} other {# rows could not be read and will be skipped}}",
+      "cancel": "Cancel",
+      "submit": "Import students",
+      "submitting": "Importing...",
+      "successToast": "{count, plural, one {# student was imported} other {# students were imported}}.",
+      "partialToast": "{created} of {total} students were imported. Check the rest and try again.",
+      "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
+      "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
+      "forbiddenToast": "You do not have permission to add students.",
+      "genericToast": "No students were imported. Try again."
     }
   },
   "Ops": {
@@ -3393,6 +3516,7 @@
     }
   },
   "Navigation": {
+    "analytics": "Analitik",
     "article": "Artikel",
     "articles": "Artikel",
     "breadcrumbLabel": "Jejak navigasi",
@@ -3405,6 +3529,7 @@
     "home": "Laman utama",
     "invite": "Jemputan",
     "newChild": "Pelajar baharu",
+    "newStudent": "Pelajar baharu",
     "onboarding": "Permulaan",
     "opsAudit": "Audit & keselamatan",
     "opsComms": "Komunikasi",
@@ -3418,6 +3543,7 @@
     "opsTimers": "Pemasa bahagian",
     "opsTools": "Alat",
     "opsUsers": "Pengguna",
+    "participation": "Penyertaan",
     "privacyPolicy": "Dasar Privasi",
     "resetPassword": "Tetap semula kata laluan",
     "results": "Keputusan",
@@ -3444,5 +3570,15 @@
     "llmsNoteSitemap": "Indeks boleh baca mesin bagi setiap URL awam berada di {url}.",
     "llmsNotes": "Nota",
     "llmsPages": "Halaman"
+  },
+  "StudentImport": {
+    "downloadTemplate": "Download CSV template",
+    "dropPrompt": "Drop a CSV file here or",
+    "browse": "browse",
+    "fileInputLabel": "Choose a CSV file",
+    "pasteLabel": "Or paste CSV data",
+    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "classLabel": "Class",
+    "classPlaceholder": "Select a class"
   }
 }

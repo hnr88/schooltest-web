@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+import { serverMessage } from '@/modules/teachers/lib/server-message';
 import { useReissueInvitationMutation } from '@/modules/teachers/queries/use-reissue-invitation.mutation';
 import { useRemoveTeacherMutation } from '@/modules/teachers/queries/use-remove-teacher.mutation';
 import { useRevokeInvitationMutation } from '@/modules/teachers/queries/use-revoke-invitation.mutation';
@@ -16,23 +17,14 @@ import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 import type { StaffConfirmAction } from '@/modules/teachers/types/hooks.types';
 
 // Mutation + toast wiring for StaffRowActions (keeps the component under the
-// line cap): reissue (C-INV-03), revoke (C-INV-04/07), deactivate/reactivate
-// (C-TCH-02) and permanent removal (C-TCH-03). The confirm dialog drives
-// handleConfirm via confirmAction.
-//
-// Server refusals are surfaced VERBATIM rather than as a generic failure: the
-// 400 guards ("you cannot remove your own account", "…the last active school
-// administrator") are the only way the admin learns why nothing happened.
-/** The API's own refusal message, when it sent one — never a swallowed error. */
-function serverMessage(error: unknown): string | null {
-  const message = (error as { response?: { data?: { error?: { message?: unknown } } } })?.response
-    ?.data?.error?.message;
-  return typeof message === 'string' && message.trim().length > 0 ? message : null;
-}
-
+// line cap): edit (C-TCH-04), reissue (C-INV-03), revoke (C-INV-04/07),
+// deactivate/reactivate (C-TCH-02) and permanent removal (C-TCH-03). The
+// confirm dialog drives handleConfirm via confirmAction; the edit dialog is
+// mounted only while editOpen, so its default values match the row.
 export function useStaffRowActions(row: StaffRow) {
   const t = useTranslations('Teachers.actions');
   const [confirmAction, setConfirmAction] = useState<StaffConfirmAction | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
   const reissue = useReissueInvitationMutation();
   const revoke = useRevokeInvitationMutation();
   const deactivate = useDeactivateTeacherMutation();
@@ -78,5 +70,15 @@ export function useStaffRowActions(row: StaffRow) {
     }
   };
 
-  return { t, name, confirmAction, setConfirmAction, confirmPending, handleReissue, handleConfirm };
+  return {
+    t,
+    name,
+    confirmAction,
+    setConfirmAction,
+    confirmPending,
+    editOpen,
+    setEditOpen,
+    handleReissue,
+    handleConfirm,
+  };
 }

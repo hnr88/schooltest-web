@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import {
+  Separator,
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -16,7 +17,7 @@ import { RailSectionLabel } from '@/modules/shell/components/RailSectionLabel';
 import { SidebarLogoLink } from '@/modules/shell/components/SidebarLogoLink';
 import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
-import { PRIMARY_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
+import { ACCOUNT_NAV_ITEMS, PRIMARY_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
 import { filterNavByParentViews, filterNavByRole } from '@/modules/shell/lib/nav-visible';
 import { RAIL_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
@@ -45,10 +46,9 @@ function AppSidebar() {
   const { setOpenMobile } = useSidebar();
   const { user } = useAuth();
   const t = useTranslations('Shell');
-  const primaryNavItems = filterNavByRole(
-    filterNavByParentViews(PRIMARY_NAV_ITEMS),
-    user?.role?.type ?? null,
-  );
+  const roleType = user?.role?.type ?? null;
+  const primaryNavItems = filterNavByRole(filterNavByParentViews(PRIMARY_NAV_ITEMS), roleType);
+  const accountNavItems = filterNavByRole(filterNavByParentViews(ACCOUNT_NAV_ITEMS), roleType);
 
   // collapsible="none" returns before the primitive's isMobile Sheet branch, so it
   // must stay "icon"; max-md:hidden guards the pre-hydration frame (isMobile is false
@@ -80,7 +80,23 @@ function AppSidebar() {
           </SidebarMenu>
         </nav>
       </SidebarContent>
-      <SidebarFooter className="mt-auto shrink-0 px-4 pt-3.5 pb-4 group-data-[collapsible=icon]:px-1">
+      <SidebarFooter className="mt-auto shrink-0 gap-3.5 px-4 pt-3.5 pb-4 group-data-[collapsible=icon]:px-1">
+        {accountNavItems.length > 0 ? (
+          <nav aria-label={t('nav.account')} className="flex flex-col gap-3.5">
+            <Separator className="bg-divider" />
+            <SidebarMenu className="gap-0.5">
+              {accountNavItems.map((item) => (
+                <SidebarNavItem
+                  key={item.href}
+                  item={item}
+                  label={t(`nav.${item.labelKey}`)}
+                  isActive={isNavItemActive(pathname, item)}
+                  onNavigate={() => setOpenMobile(false)}
+                />
+              ))}
+            </SidebarMenu>
+          </nav>
+        ) : null}
         <UserMenu />
       </SidebarFooter>
     </Sidebar>

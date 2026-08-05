@@ -15,8 +15,8 @@ export interface SchoolClass {
   student_count: number;
 }
 
-// Child option for the edit-dialog student picker (C-CHD-01 row projection).
-export interface ClassChildOption {
+// Student option for the edit-dialog student picker (C-CHD-01 row projection).
+export interface ClassStudentOption {
   documentId: string;
   given_name: string;
   family_name: string;

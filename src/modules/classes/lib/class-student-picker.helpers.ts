@@ -1,12 +1,12 @@
-import { childDisplayName } from '@/modules/school-children';
+import { studentDisplayName } from '@/modules/school-students';
 import type { ClassMemberOption } from '@/modules/classes/types/components.types';
-import type { SchoolChild } from '@/modules/school-children';
+import type { SchoolStudent } from '@/modules/school-students';
 
-export function toOption(child: SchoolChild): ClassMemberOption {
+export function toOption(student: SchoolStudent): ClassMemberOption {
   return {
-    value: child.documentId,
-    label: childDisplayName(child),
-    // The child's current class, so a move in from another class is visible.
-    hint: child.class?.name ?? undefined,
+    value: student.documentId,
+    label: studentDisplayName(student),
+    // The student's current class, so a move in from another class is visible.
+    hint: student.class?.name ?? undefined,
   };
 }

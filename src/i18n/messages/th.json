@@ -741,7 +741,7 @@
       "settings": "การตั้งค่า",
       "school": "โรงเรียน",
       "classes": "ชั้นเรียน",
-      "children": "นักเรียน",
+      "students": "นักเรียน",
       "teachers": "ครู",
       "teach": "การสอน",
       "ops": "ปฏิบัติการ",
@@ -750,8 +750,7 @@
       "opsTimers": "ตัวจับเวลาแต่ละส่วน",
       "opsTools": "เครื่องมือ",
       "opsSettings": "การตั้งค่าแพลตฟอร์ม",
-      "participation": "การเข้าร่วมสอบ",
-      "analytics": "การวิเคราะห์"
+      "account": "บัญชี"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1893,14 +1892,33 @@
       "onboardingStatusLabel": "การเริ่มใช้งาน",
       "errorTitle": "เราไม่สามารถโหลดข้อมูลโรงเรียนของคุณได้",
       "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
-      "retry": "ลองอีกครั้ง"
+      "retry": "ลองอีกครั้ง",
+      "diagnosticsTitle": "Diagnostics",
+      "diagnosticsSubtitle": "Initial placement reading tests — aggregated across all classes",
+      "studentsTested": "Students tested",
+      "avgReadingLevel": "Avg. reading level",
+      "readingTestsCompleted": "Reading tests completed",
+      "progressTitle": "Progress",
+      "progressSubtitle": "Periodic reading tests to track growth over time",
+      "readingProgress": "Reading progress",
+      "testsThisCycle": "Tests this cycle",
+      "nextTestWindow": "Next test window",
+      "readinessTitle": "Mainstream readiness",
+      "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
+      "classesTitle": "Classes",
+      "classStudents": "{count, plural, one {# student} other {# students}}",
+      "classesEmptyTitle": "No classes yet",
+      "classesEmptyDescription": "Classes you add for your school will appear here.",
+      "testsCompletedValue": "{completed} / {total}",
+      "noValue": "—"
     },
     "accountStatus": {
       "prospect": "ผู้สนใจ",
       "invoiced": "ออกใบแจ้งหนี้แล้ว",
       "active": "ใช้งานอยู่",
       "suspended": "ถูกระงับ",
-      "closed": "ปิดแล้ว"
+      "closed": "ปิดแล้ว",
+      "invited": "Invited"
     },
     "onboardingStatus": {
       "not_started": "ยังไม่เริ่ม",
@@ -2012,6 +2030,43 @@
         "downloading": "กำลังเตรียมไฟล์ส่งออก...",
         "error": "ไม่สามารถดาวน์โหลดไฟล์ส่งออกได้ ลองอีกครั้ง"
       }
+    },
+    "account": {
+      "meta": {
+        "title": "Account - SchoolTest",
+        "description": "Your school's details, plan, seats and test allowances."
+      },
+      "title": "Account",
+      "subtitle": "Your school's details, plan and test allowances.",
+      "tabsLabel": "Account sections",
+      "tabs": {
+        "account": "My account",
+        "settings": "Settings",
+        "signout": "Sign out"
+      },
+      "detailsTitle": "School details",
+      "schoolLabel": "School",
+      "locationLabel": "Location",
+      "adminLabel": "Admin",
+      "statusLabel": "Status",
+      "notSet": "Not set",
+      "planTitle": "Plan and seats",
+      "currentPlanLabel": "Current plan",
+      "planSubtitleTrial": "Reading tests only",
+      "plan": {
+        "trial": "Trial",
+        "full_license": "Full license"
+      },
+      "seatsUsedLabel": "Seats used",
+      "seatsValue": "{used} / {total}",
+      "fullLicenseLabel": "Full license",
+      "fullLicenseDescription": "All test types, unlimited cycles, full reporting",
+      "fullLicenseContact": "Contact SchoolTest",
+      "allowanceTitle": "Test allowance",
+      "settingsEmptyTitle": "Settings are coming",
+      "settingsEmptyDescription": "Notification preferences and other account settings will live here.",
+      "signOutTitle": "Signing you out",
+      "signOutDescription": "Taking you back to the sign-in page."
     }
   },
   "Teach": {
@@ -2370,7 +2425,8 @@
         "deactivated": "ปิดใช้งานแล้ว",
         "invited": "เชิญแล้ว",
         "expired": "หมดอายุแล้ว"
-      }
+      },
+      "noValue": "—"
     },
     "actions": {
       "menuLabel": "การดำเนินการสำหรับ {name}",
@@ -2397,7 +2453,24 @@
       "removeTitle": "นำ {name} ออกจากโรงเรียนของคุณหรือไม่",
       "removeDescription": "ไม่สามารถย้อนกลับได้ บัญชีจะถูกระงับ ยกเลิกการเชื่อมโยงกับโรงเรียน ล้างการมอบหมายชั้นเรียน และเพิกถอนคำเชิญที่ยังไม่ได้ใช้ ผลการสอบที่บันทึกไว้จะยังคงอยู่ หากต้องการเพียงหยุดการเข้าใช้ชั่วคราว ให้ใช้การปิดใช้งานแทน",
       "removeConfirm": "นำออกถาวร",
-      "removedToast": "นำ {name} ออกจากโรงเรียนแล้ว (ล้างการมอบหมายชั้นเรียน {classes} รายการ)"
+      "removedToast": "นำ {name} ออกจากโรงเรียนแล้ว (ล้างการมอบหมายชั้นเรียน {classes} รายการ)",
+      "editLabel": "Edit {name}",
+      "removeLabel": "Remove {name}"
+    },
+    "subtitle": "{count, plural, one {# teacher at your school} other {# teachers at your school}}",
+    "addButton": "Add teacher",
+    "edit": {
+      "title": "Edit teacher",
+      "description": "Update this staff member's name and email address.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "cancel": "Cancel",
+      "submit": "Save changes",
+      "submitting": "Saving...",
+      "successToast": "{name} was updated.",
+      "errorToast": "We could not save those changes. Try again.",
+      "emailInUse": "That email address is already in use by another user."
     }
   },
   "Classes": {
@@ -2442,7 +2515,12 @@
       "columnActions": "การดำเนินการ",
       "empty": "ยังไม่มีชั้นเรียน เพิ่มชั้นเรียนแรกของคุณเพื่อเริ่มต้น",
       "teachersNone": "ยังไม่ได้มอบหมายครู",
-      "yearBandNone": "ยังไม่ได้ตั้งค่า"
+      "yearBandNone": "ยังไม่ได้ตั้งค่า",
+      "columnClass": "Class",
+      "columnTeacher": "Teacher",
+      "columnTestsCompleted": "Tests completed",
+      "teacherNone": "—",
+      "unknown": "—"
     },
     "yearBands": {
       "7_9": "ปีที่ 7-9",
@@ -2487,9 +2565,31 @@
       "confirm": "ลบชั้นเรียน",
       "successToast": "ลบ {name} แล้ว นักเรียนของชั้นเรียนยังคงอยู่ในรายชื่อนักเรียนของคุณ",
       "errorToast": "การดำเนินการไม่สำเร็จ ลองอีกครั้ง"
+    },
+    "addForm": {
+      "title": "Add a new class",
+      "description": "Name the class, assign a teacher, and optionally import students from a CSV.",
+      "name": "Class name",
+      "namePlaceholder": "e.g. Year 10 EAL/D",
+      "teacher": "Assign teacher",
+      "teacherPlaceholder": "Select a teacher",
+      "teacherLoadError": "We could not load your teachers",
+      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "importTitle": "Import students",
+      "importDescription": "Upload a CSV or paste student data below",
+      "importErrorsTitle": "Some rows could not be read",
+      "importErrorsDescription": "{count, plural, one {# row will be skipped} other {# rows will be skipped}}. Fix them in your CSV, or add those students later.",
+      "cancel": "Cancel",
+      "submit": "Create class",
+      "submitting": "Creating...",
+      "createdToast": "{name} was added.",
+      "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
+      "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
+      "forbiddenToast": "You do not have permission to add classes.",
+      "errorToast": "That did not work. Try again."
     }
   },
-  "SchoolChildren": {
+  "SchoolStudents": {
     "meta": {
       "title": "นักเรียน - SchoolTest",
       "description": "นักเรียนในโรงเรียนของคุณ ชั้นเรียนและสถานะของพวกเขา"
@@ -2512,7 +2612,9 @@
       "statusActive": "กำลังเรียน",
       "statusArchived": "จัดเก็บแล้ว",
       "classLabel": "ชั้นเรียน",
-      "classAll": "ทุกชั้นเรียน"
+      "classAll": "ทุกชั้นเรียน",
+      "levelLabel": "Level",
+      "levelAll": "All levels"
     },
     "table": {
       "columnName": "ชื่อ",
@@ -2524,7 +2626,11 @@
       "classNone": "ไม่มีชั้นเรียน",
       "statusActive": "กำลังเรียน",
       "statusArchived": "จัดเก็บแล้ว",
-      "emailFixRequested": "มีการขอแก้ไขอีเมล"
+      "emailFixRequested": "มีการขอแก้ไขอีเมล",
+      "columnFirstLanguage": "First language",
+      "columnLevel": "Level",
+      "columnDiagnostic": "Diagnostic",
+      "notSet": "—"
     },
     "pagination": {
       "previous": "ก่อนหน้า",
@@ -2610,6 +2716,23 @@
       "dobInvalid": "กรอกวันเกิดที่ถูกต้อง",
       "yearsInvalid": "กรอกจำนวนปี เช่น 2.5",
       "monthsInvalid": "กรอกจำนวนเดือนเต็มเท่านั้น"
+    },
+    "subtitle": "{studentCount, plural, one {# student} other {# students}} across {classCount, plural, one {# class} other {# classes}}",
+    "importButton": "Import students",
+    "import": {
+      "title": "Import students",
+      "description": "Upload or paste a CSV, then choose the class these students join.",
+      "readyCount": "{count, plural, =0 {No students ready to import yet} one {# student ready to import} other {# students ready to import}}",
+      "errorCount": "{count, plural, one {# row could not be read and will be skipped} other {# rows could not be read and will be skipped}}",
+      "cancel": "Cancel",
+      "submit": "Import students",
+      "submitting": "Importing...",
+      "successToast": "{count, plural, one {# student was imported} other {# students were imported}}.",
+      "partialToast": "{created} of {total} students were imported. Check the rest and try again.",
+      "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
+      "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
+      "forbiddenToast": "You do not have permission to add students.",
+      "genericToast": "No students were imported. Try again."
     }
   },
   "Ops": {
@@ -3393,6 +3516,7 @@
     }
   },
   "Navigation": {
+    "analytics": "การวิเคราะห์",
     "article": "บทความ",
     "articles": "บทความ",
     "breadcrumbLabel": "เส้นทางนำทาง",
@@ -3405,6 +3529,7 @@
     "home": "หน้าแรก",
     "invite": "คำเชิญ",
     "newChild": "นักเรียนใหม่",
+    "newStudent": "นักเรียนใหม่",
     "onboarding": "เริ่มต้นใช้งาน",
     "opsAudit": "การตรวจสอบและความปลอดภัย",
     "opsComms": "การสื่อสาร",
@@ -3418,6 +3543,7 @@
     "opsTimers": "ตัวจับเวลาแต่ละส่วน",
     "opsTools": "เครื่องมือ",
     "opsUsers": "ผู้ใช้",
+    "participation": "การเข้าร่วม",
     "privacyPolicy": "นโยบายความเป็นส่วนตัว",
     "resetPassword": "ตั้งรหัสผ่านใหม่",
     "results": "ผลลัพธ์",
@@ -3444,5 +3570,15 @@
     "llmsNoteSitemap": "ดัชนีที่เครื่องอ่านได้ของทุก URL สาธารณะอยู่ที่ {url}",
     "llmsNotes": "หมายเหตุ",
     "llmsPages": "หน้า"
+  },
+  "StudentImport": {
+    "downloadTemplate": "Download CSV template",
+    "dropPrompt": "Drop a CSV file here or",
+    "browse": "browse",
+    "fileInputLabel": "Choose a CSV file",
+    "pasteLabel": "Or paste CSV data",
+    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "classLabel": "Class",
+    "classPlaceholder": "Select a class"
   }
 }

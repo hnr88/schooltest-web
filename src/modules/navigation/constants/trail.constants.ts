@@ -50,9 +50,13 @@ export const TRAIL_LABELS: Readonly<Record<string, string>> = {
   '/dashboard/settings': 'Shell.nav.settings',
   // --- school admin ---------------------------------------------------------
   '/dashboard/school': 'Shell.nav.school',
-  '/dashboard/school/analytics': 'Shell.nav.analytics',
-  '/dashboard/school/children': 'Shell.nav.children',
-  '/dashboard/school/children/new': 'Navigation.newChild',
+  '/dashboard/school/account': 'Shell.nav.account',
+  // Reachable by URL only — both were dropped from the rail (spec §Sidebar
+  // Navigation), so their labels moved out of the Shell.nav catalog.
+  '/dashboard/school/analytics': 'Navigation.analytics',
+  '/dashboard/school/participation': 'Navigation.participation',
+  '/dashboard/school/students': 'Shell.nav.students',
+  '/dashboard/school/students/new': 'Navigation.newStudent',
   '/dashboard/school/classes': 'Shell.nav.classes',
   '/dashboard/school/teachers': 'Shell.nav.teachers',
   // --- teacher --------------------------------------------------------------

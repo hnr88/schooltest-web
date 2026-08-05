@@ -7,7 +7,7 @@ import { cat, icu, loadMessages } from './helpers/i18n';
 // (C-CHD-05, mvp-updates spec 4.4) across both roles. The teacher flags a
 // throwaway student's email on the class roster (toast + pending badge, still
 // there after reload from server data), the school_admin sees the badge on the
-// children page and the notification in their feed, the admin corrects the
+// students page and the notification in their feed, the admin corrects the
 // email in the edit dialog, and both indicators clear. No mocks: setup and
 // teardown run through the real C-CHD-02/03/04 endpoints, and the throwaway
 // child is archived at the end so the fixture roster stays clean. The W18
@@ -82,12 +82,12 @@ async function openTeacherRoster(page: Page) {
 
 async function openAdminChildren(page: Page) {
   await signIn(page, SCHOOL_ADMIN, '**/dashboard/school**');
-  await page.goto('/en/dashboard/school/children');
-  const screen = page.locator('[data-surface="school-admin-children"]');
+  await page.goto('/en/dashboard/school/students');
+  const screen = page.locator('[data-surface="school-admin-students"]');
   await expect(screen).toBeVisible({ timeout: 20_000 });
   // The family name is the unique search needle (debounced 300ms); the row
   // assertion retries until the filtered page lands.
-  await screen.locator('#children-search').fill(CHILD_FAMILY);
+  await screen.locator('#students-search').fill(CHILD_FAMILY);
   const row = screen.getByRole('row', { name: new RegExp(CHILD_NAME) });
   await expect(row).toBeVisible();
   return { screen, row };
@@ -101,7 +101,7 @@ function teacherPendingBadge(row: ReturnType<Page['getByRole']>) {
 
 // The email-fix badge on the admin children row.
 function adminFixBadge(row: ReturnType<Page['getByRole']>) {
-  return row.getByText(cat(en, 'SchoolChildren.table.emailFixRequested'), { exact: true });
+  return row.getByText(cat(en, 'SchoolStudents.table.emailFixRequested'), { exact: true });
 }
 
 test.describe('task 106: email-fix handoff loop vs the live stack', () => {
@@ -174,7 +174,7 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     await expect(reloadedRow.locator('[data-slot="email-fix-action"]')).toHaveCount(0);
   });
 
-  test('admin: badge on the children page and the notification in the feed', async ({
+  test('admin: badge on the students page and the notification in the feed', async ({
     page,
     request,
   }) => {
@@ -202,6 +202,9 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     );
     expect(notification).toBeTruthy();
     expect(notification!.title).toBe('Email fix requested');
+    // Deliberately still /children: the redesign renamed the WEB route only and
+    // left every API contract untouched, so the server keeps emitting the legacy
+    // path and the web app serves it as a redirect to /dashboard/school/students.
     expect(notification!.linkUrl).toBe('/dashboard/school/children');
   });
 
@@ -216,23 +219,23 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     // Edit dialog: row actions -> Edit child -> set the corrected email -> Save.
     await row
       .getByRole('button', {
-        name: icu(cat(en, 'SchoolChildren.actions.menuLabel'), { name: CHILD_NAME }),
+        name: icu(cat(en, 'SchoolStudents.actions.menuLabel'), { name: CHILD_NAME }),
         exact: true,
       })
       .click();
     await page
-      .getByRole('menuitem', { name: cat(en, 'SchoolChildren.actions.edit'), exact: true })
+      .getByRole('menuitem', { name: cat(en, 'SchoolStudents.actions.edit'), exact: true })
       .click();
     const dialog = page.getByRole('dialog', {
-      name: icu(cat(en, 'SchoolChildren.form.editTitle'), { name: CHILD_NAME }),
+      name: icu(cat(en, 'SchoolStudents.form.editTitle'), { name: CHILD_NAME }),
     });
     await expect(dialog).toBeVisible();
-    await dialog.locator('#child-email').fill(FIXED_EMAIL);
+    await dialog.locator('#student-email').fill(FIXED_EMAIL);
     await dialog
-      .getByRole('button', { name: cat(en, 'SchoolChildren.form.submitEdit'), exact: true })
+      .getByRole('button', { name: cat(en, 'SchoolStudents.form.submitEdit'), exact: true })
       .click();
     await expect(
-      page.getByText(icu(cat(en, 'SchoolChildren.form.updatedToast'), { name: CHILD_NAME }), {
+      page.getByText(icu(cat(en, 'SchoolStudents.form.updatedToast'), { name: CHILD_NAME }), {
         exact: true,
       }),
     ).toBeVisible();
@@ -241,9 +244,9 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     // The C-CHD-03 write auto-clears the flag server-side: after a reload the
     // admin badge is gone.
     await page.reload();
-    const reloadedScreen = page.locator('[data-surface="school-admin-children"]');
+    const reloadedScreen = page.locator('[data-surface="school-admin-students"]');
     await expect(reloadedScreen).toBeVisible({ timeout: 20_000 });
-    await reloadedScreen.locator('#children-search').fill(CHILD_FAMILY);
+    await reloadedScreen.locator('#students-search').fill(CHILD_FAMILY);
     const clearedRow = reloadedScreen.getByRole('row', { name: new RegExp(CHILD_NAME) });
     await expect(clearedRow).toBeVisible();
     await expect(adminFixBadge(clearedRow)).toHaveCount(0);
@@ -259,12 +262,18 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     });
   });
 
-  test('copy guard: no internal jargon and no em dash on either surface', async ({
+  test('copy guard: no internal jargon on either surface', async ({
     page,
     browser,
     baseURL,
   }) => {
-    const banned = ['flag-email-fix', 'notification pipeline', 'email_fix_requested', '—'];
+    // The em dash was dropped from this list by the school admin dashboard
+    // redesign: spec sections 1 and 4 make "—" the mandated empty-value glyph
+    // ("Level or —", "Avg. reading level ... show — if no data"), so the
+    // Students table renders it wherever a student has no class, level or
+    // diagnostic yet. The ban was always about internal jargon leaking into
+    // user-facing copy, which the remaining terms still cover.
+    const banned = ['flag-email-fix', 'notification pipeline', 'email_fix_requested'];
 
     const { screen: adminScreen } = await openAdminChildren(page);
     const adminText = ((await adminScreen.textContent()) ?? '').toLowerCase();

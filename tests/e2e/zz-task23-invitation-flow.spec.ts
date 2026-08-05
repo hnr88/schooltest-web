@@ -72,7 +72,7 @@ async function inviteTokenFor(request: APIRequestContext, email: string): Promis
 }
 
 async function inviteViaUi(page: Page, first: string, last: string, email: string): Promise<void> {
-  await page.getByRole('button', { name: cat(en, 'Teachers.inviteButton') }).click();
+  await page.getByRole('button', { name: cat(en, 'Teachers.addButton') }).click();
   // FieldShell appends a required marker to the label, so the inputs are
   // located by their stable ids instead of the accessible name.
   await page.locator('#inv-first-name').fill(first);

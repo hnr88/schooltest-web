@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { ClassForm } from '@/modules/classes/components/ClassForm';
 import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
-import { useClassChildrenQuery } from '@/modules/classes/queries/use-class-children.query';
+import { useClassStudentsQuery } from '@/modules/classes/queries/use-class-students.query';
 import {
   Alert,
   Dialog,
@@ -19,17 +19,17 @@ import { useTeachersQuery } from '@/modules/teachers';
 import type { ClassFormDialogProps } from '@/modules/classes/types/components.types';
 
 // Shell around ClassForm (C-CLS-02 create / C-CLS-03 edit): loads the teacher
-// options (C-TCH-01) and, for edit, the children options (C-CHD-01) before the
+// options (C-TCH-01) and, for edit, the students options (C-CHD-01) before the
 // form mounts, so its default checked state matches the server. Rendered only
 // while a target exists, so defaultValues are always fresh.
 export function ClassFormDialog({ target, onClose }: ClassFormDialogProps) {
   const t = useTranslations('Classes.form');
   const editing = target.mode === 'edit' ? target.schoolClass : null;
   const teachersQuery = useTeachersQuery(true);
-  const childrenQuery = useClassChildrenQuery(editing !== null);
+  const studentsQuery = useClassStudentsQuery(editing !== null);
 
-  const loading = teachersQuery.isPending || (editing !== null && childrenQuery.isPending);
-  const failed = teachersQuery.isError || (editing !== null && childrenQuery.isError);
+  const loading = teachersQuery.isPending || (editing !== null && studentsQuery.isPending);
+  const failed = teachersQuery.isError || (editing !== null && studentsQuery.isError);
 
   return (
     <Dialog
@@ -61,7 +61,7 @@ export function ClassFormDialog({ target, onClose }: ClassFormDialogProps) {
           <ClassForm
             target={target}
             teachers={teachersQuery.data ?? []}
-            childOptions={childrenQuery.data ?? []}
+            studentOptions={studentsQuery.data ?? []}
             onClose={onClose}
           />
         )}

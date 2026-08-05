@@ -22,3 +22,17 @@ export interface SchoolSectionScreenProps {
   emptyTitle: string;
   emptyDescription: string;
 }
+
+export interface SchoolDiagnosticsSectionProps {
+  studentsTested: number;
+  readingTestsCompleted: number;
+  readingTestsAllowed: number;
+}
+
+export interface SchoolProgressSectionProps {
+  readingTestsAllowed: number;
+}
+
+export interface SchoolClassesSectionProps {
+  classes: SchoolClass[];
+}

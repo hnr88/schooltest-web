@@ -20,6 +20,7 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from '@/modules/design-system';
+import { serverMessage } from '@/modules/teachers/lib/server-message';
 import { useInviteTeacherMutation } from '@/modules/teachers/queries/use-invite-teacher.mutation';
 import {
   createInviteTeacherSchema,
@@ -30,7 +31,9 @@ import type { InviteTeacherDialogProps } from '@/modules/teachers/types/componen
 import { DEFAULT_VALUES } from '@/modules/teachers/constants/components.constants';
 
 // C-INV-01 invite form. A 409 (active user with that email already in this
-// school) lands inline on the email field; any other failure toasts.
+// school, or an invitation already pending for it) lands inline on the email
+// field, carrying the API's OWN wording so the admin learns WHICH clash it was;
+// the generic warning is only the fallback. Any other failure toasts.
 export function InviteTeacherDialog({ open, onOpenChange }: InviteTeacherDialogProps) {
   const t = useTranslations('Teachers.invite');
   const tv = useTranslations('Teachers.validation');
@@ -59,10 +62,10 @@ export function InviteTeacherDialog({ open, onOpenChange }: InviteTeacherDialogP
       close(false);
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 409) {
-        setError('email', { message: t('alreadyInSchool') });
+        setError('email', { message: serverMessage(error) ?? t('alreadyInSchool') });
         return;
       }
-      toast.error(t('errorToast'));
+      toast.error(serverMessage(error) ?? t('errorToast'));
     }
   };
 

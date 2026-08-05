@@ -7,7 +7,7 @@ import { ClassMemberChecklist } from '@/modules/classes/components/ClassMemberCh
 import type { ClassMemberOption } from '@/modules/classes/types/components.types';
 import { useClassForm } from '@/modules/classes/hooks/use-class-form';
 import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
-import type { ClassChildOption } from '@/modules/classes/types/classes.types';
+import type { ClassStudentOption } from '@/modules/classes/types/classes.types';
 import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
 import {
   Button,
@@ -20,16 +20,16 @@ import {
 import type { SchoolTeacher } from '@/modules/teachers';
 
 import type { ClassFormProps } from '@/modules/classes/types/components.types';
-import { childOption, teacherOption } from '@/modules/classes/lib/class-form.helpers';
+import { studentOption, teacherOption } from '@/modules/classes/lib/class-form.helpers';
 
 // The C-CLS-02/03 form body. Student assignment is edit-only (C-CLS-02 takes
 // no student list); the PATCH replace semantics make unchecked members
 // unlink, which the students hint states plainly.
-export function ClassForm({ target, teachers, childOptions, onClose }: ClassFormProps) {
+export function ClassForm({ target, teachers, studentOptions, onClose }: ClassFormProps) {
   const t = useTranslations('Classes.form');
   const tb = useTranslations('Classes.yearBands');
   const editing = target.mode === 'edit';
-  const { form, submit, pending } = useClassForm(target, childOptions, onClose);
+  const { form, submit, pending } = useClassForm(target, studentOptions, onClose);
   const {
     register,
     control,
@@ -78,7 +78,7 @@ export function ClassForm({ target, teachers, childOptions, onClose }: ClassForm
             >
               <ClassMemberChecklist
                 idPrefix="class-student"
-                options={childOptions.map(childOption)}
+                options={studentOptions.map(studentOption)}
                 value={field.value}
                 onChange={field.onChange}
                 emptyText={t('studentsEmpty')}

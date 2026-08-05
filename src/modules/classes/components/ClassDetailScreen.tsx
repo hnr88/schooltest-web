@@ -9,7 +9,7 @@ import { ClassAssignmentPanel } from '@/modules/classes/components/ClassAssignme
 import { isYearBand } from '@/modules/classes/constants/year-bands.constants';
 import { useClassDetailQuery } from '@/modules/classes/queries/use-class-detail.query';
 import { Alert, Button, Skeleton, Tag } from '@/modules/design-system';
-import { useSchoolChildrenQuery } from '@/modules/school-children';
+import { useSchoolStudentsQuery } from '@/modules/school-students';
 import { RecordCrumb } from '@/modules/shell';
 import { useTeachersQuery } from '@/modules/teachers';
 
@@ -18,7 +18,7 @@ import type { ClassDetailScreenProps } from '@/modules/classes/types/components.
 // School admin class detail (task 31, st-mvp-pivot): one class's teachers and
 // students with pickers saved through C-CLS-03. The panel mounts only once
 // every source query has resolved, so its working state always starts from
-// fresh server data. The student picker lists active children; the roster
+// fresh server data. The student picker lists active students; the roster
 // query (any status, filtered to this class) seeds the checked state so
 // archived members survive the PATCH replace semantics.
 export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
@@ -30,11 +30,11 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
 
   const detailQuery = useClassDetailQuery(documentId, enabled);
   const teachersQuery = useTeachersQuery(enabled);
-  const activeChildrenQuery = useSchoolChildrenQuery(
+  const activeStudentsQuery = useSchoolStudentsQuery(
     { status: 'active', classId: 'all', q: '', page: 1, pageSize: 100 },
     enabled,
   );
-  const membersQuery = useSchoolChildrenQuery(
+  const membersQuery = useSchoolStudentsQuery(
     { status: 'all', classId: documentId, q: '', page: 1, pageSize: 100 },
     enabled,
   );
@@ -43,12 +43,12 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
     !enabled ||
     detailQuery.isPending ||
     teachersQuery.isPending ||
-    activeChildrenQuery.isPending ||
+    activeStudentsQuery.isPending ||
     membersQuery.isPending;
   const isError =
     detailQuery.isError ||
     teachersQuery.isError ||
-    activeChildrenQuery.isError ||
+    activeStudentsQuery.isError ||
     membersQuery.isError;
   const schoolClass = detailQuery.data ?? null;
   const band = schoolClass?.year_band ?? null;
@@ -106,7 +106,7 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
             schoolClass={schoolClass}
             members={membersQuery.data?.rows ?? []}
             teachers={teachersQuery.data ?? []}
-            activeChildren={activeChildrenQuery.data?.rows ?? []}
+            activeStudents={activeStudentsQuery.data?.rows ?? []}
           />
         </>
       )}

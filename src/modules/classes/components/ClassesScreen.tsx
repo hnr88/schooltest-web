@@ -5,24 +5,30 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useAuthStore } from '@/modules/auth';
-import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
+import { AddClassDialog } from '@/modules/classes/components/AddClassDialog';
 import { ClassFormDialog } from '@/modules/classes/components/ClassFormDialog';
 import { ClassesTable } from '@/modules/classes/components/ClassesTable';
+import { testsCompletedByClass } from '@/modules/classes/lib/classes-table.helpers';
 import { useSchoolClassesQuery } from '@/modules/classes/queries/use-school-classes.query';
+import type { SchoolClass } from '@/modules/classes/types/classes.types';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
+import { useParticipationQuery } from '@/modules/school-admin';
 
-// School admin Classes screen (task 29, st-mvp-pivot): the C-CLS-01 roster
-// with create (C-CLS-02), edit (C-CLS-03) and delete (C-CLS-04). The form
-// dialog mounts fresh per target so its default values always match.
+// School admin Classes screen (spec §2): the C-CLS-01 roster joined with the
+// C-RPT-04 per-test completion, plus create (the add-class modal), edit
+// (C-CLS-03) and delete (C-CLS-04). Participation failing is NOT fatal — the
+// roster still renders and the completion column falls back to the empty value.
 export function ClassesScreen() {
   const t = useTranslations('Classes');
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const enabled = hydrated && Boolean(token);
   const classesQuery = useSchoolClassesQuery(enabled);
-  const [formTarget, setFormTarget] = useState<ClassFormTarget | null>(null);
+  const participationQuery = useParticipationQuery(enabled);
+  const [addOpen, setAddOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<SchoolClass | null>(null);
 
-  const isPending = !enabled || classesQuery.isPending;
+  const isPending = !enabled || classesQuery.isPending || participationQuery.isPending;
 
   return (
     <main
@@ -35,7 +41,7 @@ export function ClassesScreen() {
           <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
           <p className="text-sm text-body">{t('description')}</p>
         </div>
-        <Button size="lg" onClick={() => setFormTarget({ mode: 'create' })}>
+        <Button variant="accent" size="lg" onClick={() => setAddOpen(true)}>
           <Plus className="size-4" aria-hidden />
           {t('addButton')}
         </Button>
@@ -67,11 +73,18 @@ export function ClassesScreen() {
       ) : (
         <ClassesTable
           rows={classesQuery.data ?? []}
-          onEdit={(schoolClass) => setFormTarget({ mode: 'edit', schoolClass })}
+          completions={
+            participationQuery.isError ? null : testsCompletedByClass(participationQuery.data)
+          }
+          onEdit={(schoolClass) => setEditTarget(schoolClass)}
         />
       )}
-      {formTarget ? (
-        <ClassFormDialog target={formTarget} onClose={() => setFormTarget(null)} />
+      {addOpen ? <AddClassDialog onClose={() => setAddOpen(false)} /> : null}
+      {editTarget ? (
+        <ClassFormDialog
+          target={{ mode: 'edit', schoolClass: editTarget }}
+          onClose={() => setEditTarget(null)}
+        />
       ) : null}
     </main>
   );

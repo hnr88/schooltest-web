@@ -9,20 +9,20 @@ export type NavLabelKey =
   | 'settings'
   | 'school'
   | 'classes'
-  | 'children'
+  | 'students'
   | 'teachers'
+  | 'account'
   | 'teach'
-  | 'participation'
-  | 'analytics'
   | 'opsSchools'
   | 'opsPipeline'
   | 'opsTimers'
   | 'opsTools'
   | 'opsSettings';
 
-// Canonical rail grouping (DS §12 Navigation card): every destination of the
-// parent rail sits in the one primary list.
-export type NavGroup = 'primary';
+// Rail grouping. `primary` is the main destination list under the "Manage"
+// overline; `account` is the single pinned-bottom entry the spec places behind
+// a divider (spec §Sidebar Navigation).
+export type NavGroup = 'primary' | 'account';
 
 export interface RecordCrumbProps {
   label: string;

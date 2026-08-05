@@ -82,12 +82,15 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     // CREATE (C-CLS-02) with a teacher picked from C-TCH-01.
     await screen.getByRole('button', { name: cat(en, 'Classes.addButton'), exact: true }).click();
     const createDialog = page.getByRole('dialog');
-    // FieldShell appends a required-marker "*" to the label text, so the
-    // accessible name is "Class name*" — match non-exact.
-    await createDialog.getByLabel(cat(en, 'Classes.form.name')).fill(className);
-    await createDialog.getByRole('checkbox', { name: TEACHER_NAME }).click();
+    // Redesign spec section 2: the Add class modal now takes the class name plus a
+    // SINGLE-teacher DROPDOWN (was a multi-select checkbox list), and its copy
+    // lives under Classes.addForm.*. FieldShell appends a required-marker "*" to
+    // the label text, so the accessible name is "Class name*" — match non-exact.
+    await createDialog.getByLabel(cat(en, 'Classes.addForm.name')).fill(className);
+    await createDialog.getByLabel(cat(en, 'Classes.addForm.teacher')).click();
+    await page.getByRole('option', { name: TEACHER_NAME }).click();
     await createDialog
-      .getByRole('button', { name: cat(en, 'Classes.form.submitCreate'), exact: true })
+      .getByRole('button', { name: cat(en, 'Classes.addForm.submit'), exact: true })
       .click();
     await expect(createDialog).toBeHidden();
     const row = screen.getByRole('row', { name: new RegExp(className) });
@@ -100,7 +103,9 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     expect(created).toBeDefined();
     expect(created?.teachers.length).toBe(1);
     expect(created?.student_count).toBe(0);
-    expect(created?.year_band).toBe('7_9');
+    // Redesign spec section 2: the Add class modal is class name + teacher +
+    // student import only, so a class created through it carries no year band.
+    expect(created?.year_band ?? null).toBeNull();
 
     // EDIT (C-CLS-03): year band -> 10_12, assign a child.
     await page
@@ -117,7 +122,9 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
       .getByRole('button', { name: cat(en, 'Classes.form.submitEdit'), exact: true })
       .click();
     await expect(editDialog).toBeHidden();
-    await expect(row.getByText(cat(en, 'Classes.yearBands.10_12'), { exact: true })).toBeVisible();
+    // Redesign spec section 2 replaced the "Year band" column with "Tests
+    // completed", so the band is no longer asserted in the row — the API
+    // cross-check below is now the only proof it round-tripped.
 
     // API cross-check: band changed, count 1.
     classes = await apiClasses(request, jwt);

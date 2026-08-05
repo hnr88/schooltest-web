@@ -32,7 +32,7 @@ test.describe('task 25: role nav wiring + guard fixes', () => {
     await expect(navLink(page, 'reports')).toBeVisible({ timeout: 20_000 });
     await expect(navLink(page, 'school')).toHaveCount(0);
     await expect(navLink(page, 'classes')).toHaveCount(0);
-    await expect(navLink(page, 'children')).toHaveCount(0);
+    await expect(navLink(page, 'students')).toHaveCount(0);
     await expect(navLink(page, 'teachers')).toHaveCount(0);
   });
 
@@ -42,8 +42,14 @@ test.describe('task 25: role nav wiring + guard fixes', () => {
     await signIn(page, SCHOOL_ADMIN.email, SCHOOL_ADMIN.password);
     await expect(navLink(page, 'school')).toBeVisible({ timeout: 20_000 });
     await expect(navLink(page, 'classes')).toBeVisible();
-    await expect(navLink(page, 'children')).toBeVisible();
     await expect(navLink(page, 'teachers')).toBeVisible();
+    await expect(navLink(page, 'students')).toBeVisible();
+    // Pinned to the rail footer behind a divider (spec §Sidebar Navigation).
+    await expect(navLink(page, 'account')).toBeVisible();
+    // Dropped from the rail by the same spec section. Located by href because
+    // their Shell.nav.* labels were removed along with the nav entries.
+    await expect(page.locator('a[data-sidebar="menu-button"][href$="/school/participation"]')).toHaveCount(0);
+    await expect(page.locator('a[data-sidebar="menu-button"][href$="/school/analytics"]')).toHaveCount(0);
     await expect(navLink(page, 'reports')).toHaveCount(0);
 
     await page.goto('/dashboard/reports');

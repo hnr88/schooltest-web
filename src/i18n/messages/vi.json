@@ -741,7 +741,7 @@
       "settings": "Cài đặt",
       "school": "Trường học",
       "classes": "Lớp học",
-      "children": "Học sinh",
+      "students": "Học sinh",
       "teachers": "Giáo viên",
       "teach": "Giảng dạy",
       "ops": "Vận hành",
@@ -750,8 +750,7 @@
       "opsTimers": "Bộ đếm giờ",
       "opsTools": "Công cụ",
       "opsSettings": "Cài đặt nền tảng",
-      "participation": "Tham gia",
-      "analytics": "Phân tích"
+      "account": "Tài khoản"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1893,14 +1892,33 @@
       "onboardingStatusLabel": "Thiết lập",
       "errorTitle": "Chúng tôi không thể tải trường của bạn",
       "errorDescription": "Kiểm tra kết nối của bạn và thử lại.",
-      "retry": "Thử lại"
+      "retry": "Thử lại",
+      "diagnosticsTitle": "Diagnostics",
+      "diagnosticsSubtitle": "Initial placement reading tests — aggregated across all classes",
+      "studentsTested": "Students tested",
+      "avgReadingLevel": "Avg. reading level",
+      "readingTestsCompleted": "Reading tests completed",
+      "progressTitle": "Progress",
+      "progressSubtitle": "Periodic reading tests to track growth over time",
+      "readingProgress": "Reading progress",
+      "testsThisCycle": "Tests this cycle",
+      "nextTestWindow": "Next test window",
+      "readinessTitle": "Mainstream readiness",
+      "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
+      "classesTitle": "Classes",
+      "classStudents": "{count, plural, one {# student} other {# students}}",
+      "classesEmptyTitle": "No classes yet",
+      "classesEmptyDescription": "Classes you add for your school will appear here.",
+      "testsCompletedValue": "{completed} / {total}",
+      "noValue": "—"
     },
     "accountStatus": {
       "prospect": "Tiềm năng",
       "invoiced": "Đã lập hoá đơn",
       "active": "Đang hoạt động",
       "suspended": "Bị tạm ngưng",
-      "closed": "Đã đóng"
+      "closed": "Đã đóng",
+      "invited": "Invited"
     },
     "onboardingStatus": {
       "not_started": "Chưa bắt đầu",
@@ -2012,6 +2030,43 @@
         "downloading": "Đang chuẩn bị xuất...",
         "error": "Không thể tải xuống bản xuất. Thử lại."
       }
+    },
+    "account": {
+      "meta": {
+        "title": "Account - SchoolTest",
+        "description": "Your school's details, plan, seats and test allowances."
+      },
+      "title": "Account",
+      "subtitle": "Your school's details, plan and test allowances.",
+      "tabsLabel": "Account sections",
+      "tabs": {
+        "account": "My account",
+        "settings": "Settings",
+        "signout": "Sign out"
+      },
+      "detailsTitle": "School details",
+      "schoolLabel": "School",
+      "locationLabel": "Location",
+      "adminLabel": "Admin",
+      "statusLabel": "Status",
+      "notSet": "Not set",
+      "planTitle": "Plan and seats",
+      "currentPlanLabel": "Current plan",
+      "planSubtitleTrial": "Reading tests only",
+      "plan": {
+        "trial": "Trial",
+        "full_license": "Full license"
+      },
+      "seatsUsedLabel": "Seats used",
+      "seatsValue": "{used} / {total}",
+      "fullLicenseLabel": "Full license",
+      "fullLicenseDescription": "All test types, unlimited cycles, full reporting",
+      "fullLicenseContact": "Contact SchoolTest",
+      "allowanceTitle": "Test allowance",
+      "settingsEmptyTitle": "Settings are coming",
+      "settingsEmptyDescription": "Notification preferences and other account settings will live here.",
+      "signOutTitle": "Signing you out",
+      "signOutDescription": "Taking you back to the sign-in page."
     }
   },
   "Teach": {
@@ -2370,7 +2425,8 @@
         "deactivated": "Đã vô hiệu hoá",
         "invited": "Đã mời",
         "expired": "Đã hết hạn"
-      }
+      },
+      "noValue": "—"
     },
     "actions": {
       "menuLabel": "Thao tác cho {name}",
@@ -2397,7 +2453,24 @@
       "removeTitle": "Xoá {name} khỏi trường của bạn?",
       "removeDescription": "Không thể hoàn tác. Tài khoản sẽ bị chặn, gỡ liên kết với trường, xoá phân công lớp và thu hồi mọi lời mời đang mở. Kết quả đã lưu vẫn được giữ lại. Hãy dùng “Vô hiệu hoá” nếu bạn chỉ muốn tạm dừng quyền truy cập.",
       "removeConfirm": "Xoá vĩnh viễn",
-      "removedToast": "Đã xoá {name} khỏi trường ({classes} phân công lớp được gỡ)."
+      "removedToast": "Đã xoá {name} khỏi trường ({classes} phân công lớp được gỡ).",
+      "editLabel": "Edit {name}",
+      "removeLabel": "Remove {name}"
+    },
+    "subtitle": "{count, plural, one {# teacher at your school} other {# teachers at your school}}",
+    "addButton": "Add teacher",
+    "edit": {
+      "title": "Edit teacher",
+      "description": "Update this staff member's name and email address.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "cancel": "Cancel",
+      "submit": "Save changes",
+      "submitting": "Saving...",
+      "successToast": "{name} was updated.",
+      "errorToast": "We could not save those changes. Try again.",
+      "emailInUse": "That email address is already in use by another user."
     }
   },
   "Classes": {
@@ -2442,7 +2515,12 @@
       "columnActions": "Thao tác",
       "empty": "Chưa có lớp học nào. Thêm lớp đầu tiên để bắt đầu.",
       "teachersNone": "Chưa phân công giáo viên",
-      "yearBandNone": "Chưa đặt"
+      "yearBandNone": "Chưa đặt",
+      "columnClass": "Class",
+      "columnTeacher": "Teacher",
+      "columnTestsCompleted": "Tests completed",
+      "teacherNone": "—",
+      "unknown": "—"
     },
     "yearBands": {
       "7_9": "Năm học 7-9",
@@ -2487,9 +2565,31 @@
       "confirm": "Xoá lớp",
       "successToast": "Đã xoá {name}. Học sinh của lớp vẫn ở trong danh sách học sinh của bạn.",
       "errorToast": "Thao tác không thành công. Hãy thử lại."
+    },
+    "addForm": {
+      "title": "Add a new class",
+      "description": "Name the class, assign a teacher, and optionally import students from a CSV.",
+      "name": "Class name",
+      "namePlaceholder": "e.g. Year 10 EAL/D",
+      "teacher": "Assign teacher",
+      "teacherPlaceholder": "Select a teacher",
+      "teacherLoadError": "We could not load your teachers",
+      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "importTitle": "Import students",
+      "importDescription": "Upload a CSV or paste student data below",
+      "importErrorsTitle": "Some rows could not be read",
+      "importErrorsDescription": "{count, plural, one {# row will be skipped} other {# rows will be skipped}}. Fix them in your CSV, or add those students later.",
+      "cancel": "Cancel",
+      "submit": "Create class",
+      "submitting": "Creating...",
+      "createdToast": "{name} was added.",
+      "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
+      "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
+      "forbiddenToast": "You do not have permission to add classes.",
+      "errorToast": "That did not work. Try again."
     }
   },
-  "SchoolChildren": {
+  "SchoolStudents": {
     "meta": {
       "title": "Học sinh - SchoolTest",
       "description": "Học sinh của trường bạn, lớp và trạng thái của các em."
@@ -2512,7 +2612,9 @@
       "statusActive": "Đang học",
       "statusArchived": "Đã lưu trữ",
       "classLabel": "Lớp",
-      "classAll": "Mọi lớp"
+      "classAll": "Mọi lớp",
+      "levelLabel": "Level",
+      "levelAll": "All levels"
     },
     "table": {
       "columnName": "Tên",
@@ -2524,7 +2626,11 @@
       "classNone": "Chưa có lớp",
       "statusActive": "Đang học",
       "statusArchived": "Đã lưu trữ",
-      "emailFixRequested": "Đã yêu cầu sửa email"
+      "emailFixRequested": "Đã yêu cầu sửa email",
+      "columnFirstLanguage": "First language",
+      "columnLevel": "Level",
+      "columnDiagnostic": "Diagnostic",
+      "notSet": "—"
     },
     "pagination": {
       "previous": "Trước",
@@ -2610,6 +2716,23 @@
       "dobInvalid": "Nhập ngày sinh hợp lệ.",
       "yearsInvalid": "Nhập số năm, ví dụ 2.5.",
       "monthsInvalid": "Chỉ nhập số tháng nguyên."
+    },
+    "subtitle": "{studentCount, plural, one {# student} other {# students}} across {classCount, plural, one {# class} other {# classes}}",
+    "importButton": "Import students",
+    "import": {
+      "title": "Import students",
+      "description": "Upload or paste a CSV, then choose the class these students join.",
+      "readyCount": "{count, plural, =0 {No students ready to import yet} one {# student ready to import} other {# students ready to import}}",
+      "errorCount": "{count, plural, one {# row could not be read and will be skipped} other {# rows could not be read and will be skipped}}",
+      "cancel": "Cancel",
+      "submit": "Import students",
+      "submitting": "Importing...",
+      "successToast": "{count, plural, one {# student was imported} other {# students were imported}}.",
+      "partialToast": "{created} of {total} students were imported. Check the rest and try again.",
+      "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
+      "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
+      "forbiddenToast": "You do not have permission to add students.",
+      "genericToast": "No students were imported. Try again."
     }
   },
   "Ops": {
@@ -3393,6 +3516,7 @@
     }
   },
   "Navigation": {
+    "analytics": "Phân tích",
     "article": "Bài viết",
     "articles": "Bài viết",
     "breadcrumbLabel": "Đường dẫn",
@@ -3405,6 +3529,7 @@
     "home": "Trang chủ",
     "invite": "Lời mời",
     "newChild": "Học sinh mới",
+    "newStudent": "Học sinh mới",
     "onboarding": "Bắt đầu",
     "opsAudit": "Kiểm toán & bảo mật",
     "opsComms": "Liên lạc",
@@ -3418,6 +3543,7 @@
     "opsTimers": "Bộ đếm giờ",
     "opsTools": "Công cụ",
     "opsUsers": "Người dùng",
+    "participation": "Tham gia",
     "privacyPolicy": "Chính sách quyền riêng tư",
     "resetPassword": "Đặt lại mật khẩu",
     "results": "Kết quả",
@@ -3444,5 +3570,15 @@
     "llmsNoteSitemap": "Chỉ mục máy đọc được của mọi URL công khai nằm tại {url}.",
     "llmsNotes": "Ghi chú",
     "llmsPages": "Trang"
+  },
+  "StudentImport": {
+    "downloadTemplate": "Download CSV template",
+    "dropPrompt": "Drop a CSV file here or",
+    "browse": "browse",
+    "fileInputLabel": "Choose a CSV file",
+    "pasteLabel": "Or paste CSV data",
+    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "classLabel": "Class",
+    "classPlaceholder": "Select a class"
   }
 }

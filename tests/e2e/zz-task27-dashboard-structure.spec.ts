@@ -34,15 +34,21 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     const home = page.locator('[data-surface="school-admin-home"]');
     await expect(home).toBeVisible({ timeout: 20_000 });
     await expect(home.getByRole('heading', { name: SCHOOL_NAME })).toBeVisible();
-    await expect(home.getByText(cat(en, 'SchoolAdmin.accountStatus.active'), { exact: true })).toBeVisible();
+
+    // The two lifecycle badges moved off the analytics home into
+    // Account > My account > School details (redesign spec section 5).
+    await page.goto('/dashboard/school/account');
+    const details = page.locator('[data-slot="account-details-card"]');
+    await expect(details).toBeVisible({ timeout: 20_000 });
+    await expect(details.getByText(cat(en, 'SchoolAdmin.accountStatus.active'), { exact: true })).toBeVisible();
     await expect(
-      home.getByText(cat(en, 'SchoolAdmin.onboardingStatus.not_started'), { exact: true }),
+      details.getByText(cat(en, 'SchoolAdmin.onboardingStatus.not_started'), { exact: true }),
     ).toBeVisible();
 
     // The thin section pages behind the task-25 nav items render, not 404.
     for (const [path, surface] of [
       ['/dashboard/school/classes', 'school-admin-classes'],
-      ['/dashboard/school/children', 'school-admin-children'],
+      ['/dashboard/school/students', 'school-admin-students'],
       ['/dashboard/school/teachers', 'school-admin-teachers'],
     ] as const) {
       await page.goto(path);

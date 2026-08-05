@@ -17,6 +17,12 @@ export interface InviteTeacherDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+// Mounted only while editing, so the row's values are always the defaults.
+export interface EditTeacherDialogProps {
+  row: StaffRow;
+  onClose: () => void;
+}
+
 export interface StaffRowActionsProps {
   row: StaffRow;
 }

@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 
 import { useUpdateClassMutation } from '@/modules/classes/queries/use-update-class.mutation';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
-import type { SchoolChild } from '@/modules/school-children';
+import type { SchoolStudent } from '@/modules/school-students';
 
 import type { StrapiErrorEnvelope } from '@/modules/classes/types/hooks.types';
 
@@ -19,9 +19,9 @@ function sameMembers(first: string[], second: string[]): boolean {
 // screen (task 31, C-CLS-03). Null state means "no local edits", so the
 // pickers mirror the server until the first change. `members` is the class's
 // full roster (any status): archived members stay in the replacement list
-// even though the student picker only offers active children, so a save
+// even though the student picker only offers active students, so a save
 // never silently unlinks them.
-export function useClassAssignment(schoolClass: SchoolClass, members: SchoolChild[]) {
+export function useClassAssignment(schoolClass: SchoolClass, members: SchoolStudent[]) {
   const t = useTranslations('Classes.detail');
   const update = useUpdateClassMutation();
   const [teacherIds, setTeacherIds] = useState<string[] | null>(null);

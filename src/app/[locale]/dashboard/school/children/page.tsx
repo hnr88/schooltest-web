@@ -1,20 +1,14 @@
-import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
 
-import { SchoolChildrenScreen } from '@/modules/school-children';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('SchoolChildren.meta');
-  return {
-    title: t('title'),
-    description: t('description'),
-    openGraph: { title: t('title'), description: t('description') },
-  };
-}
-
-// School admin Children page (task 30, st-mvp-pivot): the C-CHD-01 roster with
-// filters and pagination, plus edit/archive against C-CHD-03/04. The
-// SchoolAdminGuard in the section layout keeps this school_admin-only.
-export default function SchoolChildrenPage() {
-  return <SchoolChildrenScreen />;
+// The school roster moved from /children to /students (spec §General Notes:
+// "Children" -> "Students"). API-generated notification linkUrl values still
+// point at the old segment, so the path stays as a permanent redirect rather
+// than a 404.
+export default async function SchoolChildrenRedirectPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  redirect({ href: '/dashboard/school/students', locale });
 }

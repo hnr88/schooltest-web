@@ -2,14 +2,21 @@ import path from 'node:path';
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
-import { loginAsParent } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
+import { loginAs } from './helpers/roles';
 
 // Task 014: consolidated C-UI-SHELL regression (mission flow 8) against the
-// REAL app — Next on :3100 in front of the live api on :5500, with the seeded
-// parent driven through the real /sign-in form (loginAsParent). Labels always
-// resolve live from the en catalog, never duplicated here; the axe leg of the
-// same anchor lives in shell-a11y.spec.ts (split for the 200-line rule).
+// REAL app — Next in front of the live api on :5500, driven through the real
+// /sign-in form. Labels always resolve live from the en catalog, never
+// duplicated here; the axe leg of the same anchor lives in shell-a11y.spec.ts
+// (split for the 200-line rule).
+//
+// PERSONA: school_admin, not parent. Every parent-portal destination carries
+// `parentViews: true` in the nav catalog and NEXT_PUBLIC_PARENT_VIEWS_ENABLED
+// is off, so filterNavByParentViews strips the entire parent rail and this
+// spec could only ever assert an empty sidebar. The school admin rail is the
+// one that actually ships (redesign spec section "Sidebar Navigation"), so the
+// shell chrome is regressed against that.
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
@@ -22,16 +29,17 @@ const MOBILE = { width: 375, height: 812 };
 // layout guard bouncing to /sign-in, and skips content/active-state checks:
 // the dashboard layout (and with it the sidebar) does not wrap unmatched URLs.
 const NAV_MODEL = [
-  { labelKey: 'Shell.nav.overview', href: '/dashboard', missing: false },
-  { labelKey: 'Shell.nav.myChildren', href: '/dashboard/children', missing: false },
-  // W7/038 collapsed the two standalone search legs (schoolSearch + agentSearch)
-  // into ONE unified Search entry — /dashboard/search ships the C-UI-SEARCH-UNIFIED
-  // screen, so this leg is no longer a 404.
-  { labelKey: 'Shell.nav.search', href: '/dashboard/search', missing: false },
-  // /dashboard/settings shipped in W3 (C-UI-AUTH-PAGES change-password page) —
-  // no longer a 404 leg; its content assertions live in that task's own spec.
-  { labelKey: 'Shell.nav.settings', href: '/dashboard/settings', missing: false },
+  { labelKey: 'Shell.nav.school', href: '/dashboard/school', missing: false },
+  { labelKey: 'Shell.nav.classes', href: '/dashboard/school/classes', missing: false },
+  { labelKey: 'Shell.nav.teachers', href: '/dashboard/school/teachers', missing: false },
+  { labelKey: 'Shell.nav.students', href: '/dashboard/school/students', missing: false },
 ] as const;
+
+// Pinned to the rail footer behind a divider, in its own list.
+const ACCOUNT_NAV = { labelKey: 'Shell.nav.account', href: '/dashboard/school/account' } as const;
+
+// The school admin lands here from /dashboard (DashboardRoleGate).
+const HOME = '/dashboard/school';
 
 // The vendored primitive (ui/ read-only) renders the fixed shell sidebar as
 // div[data-slot="sidebar"] — that element IS the contract's "aside"; the
@@ -52,10 +60,10 @@ async function readToken(page: Page): Promise<string | null> {
 test.describe('shell — desktop (1280)', () => {
   test.use({ viewport: DESKTOP });
 
-  test('sidebar: visible at 248px with the 4 catalog-labelled links, solid active overview', async ({
+  test('sidebar: visible at 248px with the 4 catalog-labelled links, solid active School', async ({
     page,
   }) => {
-    await loginAsParent(page);
+    await loginAs(page, 'schoolAdmin');
     const aside = sidebar(page);
     await expect(aside).toBeVisible();
     // RE-TARGETED for the DETACHED rail (.qa/design/spec/01 §1.2). The 248px rail is
@@ -83,11 +91,16 @@ test.describe('shell — desktop (1280)', () => {
     });
     expect(Math.min(...railRgb)).toBeGreaterThan(250);
 
-    const links = aside.locator('nav a');
+    const links = aside.locator('[data-slot="sidebar-content"] nav a');
     await expect(links).toHaveCount(NAV_MODEL.length);
-    // Task 010: Settings sits in the ONE primary list with the other destinations —
-    // the bottom-pinned "Account" section (its own list + label) is gone.
-    await expect(aside.locator('nav ul')).toHaveCount(1);
+    // The redesign restored a bottom-pinned Account entry in its own list behind
+    // a divider (spec section "Sidebar Navigation"), so the rail carries exactly
+    // two lists: the primary destinations and the pinned account one.
+    await expect(aside.locator('nav ul')).toHaveCount(2);
+    const footer = aside.locator('[data-slot="sidebar-footer"]');
+    await expect(footer.locator('nav a')).toHaveCount(1);
+    await expect(footer.locator('nav a')).toHaveAttribute('href', ACCOUNT_NAV.href);
+    await expect(footer.locator('[data-slot="separator"]')).toHaveCount(1);
     for (const [index, item] of NAV_MODEL.entries()) {
       await expect(links.nth(index)).toHaveText(cat(en, item.labelKey));
       await expect(links.nth(index)).toHaveAttribute('href', item.href);
@@ -106,8 +119,8 @@ test.describe('shell — desktop (1280)', () => {
     // specificity as before (class + computed bg), strengthened: the class name is
     // still pinned, and the pair is now measured rather than merely "not equal", so
     // this leg fails if a future change quietly walks the active state back under AA.
-    const overview = navLink(page, cat(en, 'Shell.nav.overview'));
-    const idle = navLink(page, cat(en, 'Shell.nav.myChildren'));
+    const overview = navLink(page, cat(en, 'Shell.nav.school'));
+    const idle = navLink(page, cat(en, 'Shell.nav.classes'));
     await expect(overview).toHaveAttribute('data-active', /.*/);
     // The detached rail specifies its OWN active pair, and it is not the blue one:
     // `Parent Portal.dc.html:797-801` gives active `background:#0E2350; color:#FFFFFF;
@@ -167,7 +180,7 @@ test.describe('shell — desktop (1280)', () => {
   test('desktop navigation toggles to its branded icon rail and returns with Ctrl+B', async ({
     page,
   }) => {
-    await loginAsParent(page);
+    await loginAs(page, 'schoolAdmin');
     const aside = sidebar(page);
     const trigger = page.getByRole('button', {
       name: cat(en, 'Shell.topbar.toggleNav'),
@@ -182,9 +195,9 @@ test.describe('shell — desktop (1280)', () => {
     await expect(page.locator('[data-slot="sidebar-inner"]')).toHaveCSS('width', '48px');
     await expect(aside.getByRole('img', { name: cat(en, 'Shell.sidebar.logoAlt') })).toBeVisible();
     await page.screenshot({ path: path.join(SCREENSHOTS, 'shell-desktop-collapsed.png') });
-    await expect(navLink(page, cat(en, 'Shell.nav.overview'))).toHaveAttribute(
+    await expect(navLink(page, cat(en, 'Shell.nav.school'))).toHaveAttribute(
       'aria-label',
-      cat(en, 'Shell.nav.overview'),
+      cat(en, 'Shell.nav.school'),
     );
 
     await page.keyboard.press('Control+b');
@@ -193,23 +206,23 @@ test.describe('shell — desktop (1280)', () => {
   });
 
   test('header left side shows the current breadcrumb and title', async ({ page }) => {
-    await loginAsParent(page);
-    await page.goto('/dashboard/children');
+    await loginAs(page, 'schoolAdmin');
+    await page.goto('/dashboard/school/classes');
 
     const breadcrumb = page.getByRole('navigation', {
       name: cat(en, 'Shell.topbar.breadcrumbLabel'),
     });
     await expect(breadcrumb).toContainText(cat(en, 'Shell.topbar.dashboard'));
-    await expect(breadcrumb).toContainText(cat(en, 'Shell.nav.myChildren'));
+    await expect(breadcrumb).toContainText(cat(en, 'Shell.nav.classes'));
     await expect(page.locator('[data-slot="topbar-page-title"]')).toHaveText(
-      cat(en, 'Shell.nav.myChildren'),
+      cat(en, 'Shell.nav.classes'),
     );
   });
 
   test('each nav link lands on its contract URL; 404 routes never bounce the session', async ({
     page,
   }) => {
-    await loginAsParent(page);
+    await loginAs(page, 'schoolAdmin');
     for (const item of NAV_MODEL) {
       if (!item.missing) continue;
       await navLink(page, cat(en, item.labelKey)).click();
@@ -221,15 +234,15 @@ test.describe('shell — desktop (1280)', () => {
         page.getByRole('heading', { name: cat(en, 'Common.notFoundTitle'), exact: true }),
       ).toBeVisible();
       expect(await readToken(page)).not.toBeNull();
-      await page.goto('/dashboard');
+      await page.goto(HOME);
       await expect(navLink(page, cat(en, item.labelKey))).toBeVisible();
     }
-    // Back on /dashboard the exact-match overview item is active again.
-    await expect(navLink(page, cat(en, 'Shell.nav.overview'))).toHaveAttribute('data-active', /.*/);
+    // Back on the school home the exact-match School item is active again.
+    await expect(navLink(page, cat(en, 'Shell.nav.school'))).toHaveAttribute('data-active', /.*/);
   });
 
   test('user chip menu → Sign out lands on /sign-in with the token cleared', async ({ page }) => {
-    await loginAsParent(page);
+    await loginAs(page, 'schoolAdmin');
     expect(await readToken(page)).toMatch(/^eyJ/);
     await page
       .getByRole('button', { name: cat(en, 'Shell.topbar.userMenuLabel'), exact: true })
@@ -248,10 +261,10 @@ test.describe('shell — desktop (1280)', () => {
 test.describe('shell — mobile (375, Sheet nav)', () => {
   test.use({ viewport: MOBILE });
 
-  test('aside hidden, hamburger opens the Sheet with all 4 links, Escape closes it', async ({
+  test('aside hidden, hamburger opens the Sheet with every rail link, Escape closes it', async ({
     page,
   }) => {
-    await loginAsParent(page);
+    await loginAs(page, 'schoolAdmin');
     await expect(sidebar(page)).toBeHidden();
     const trigger = page.getByRole('button', {
       name: cat(en, 'Shell.topbar.toggleNav'),

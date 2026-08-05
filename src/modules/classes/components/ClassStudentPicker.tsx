@@ -4,12 +4,12 @@ import { useTranslations } from 'next-intl';
 
 import { ClassMemberChecklist } from '@/modules/classes/components/ClassMemberChecklist';
 import type { ClassMemberOption } from '@/modules/classes/types/components.types';
-import { childDisplayName, type SchoolChild } from '@/modules/school-children';
+import { studentDisplayName, type SchoolStudent } from '@/modules/school-students';
 
 import type { ClassStudentPickerProps } from '@/modules/classes/types/components.types';
 import { toOption } from '@/modules/classes/lib/class-student-picker.helpers';
 
-// Active children (C-CHD-01) as a controlled multi-select for the class
+// Active students (C-CHD-01) as a controlled multi-select for the class
 // roster. Archived members are not offered here; the assignment hook keeps
 // them in the replacement list so a save never unlinks them.
 export function ClassStudentPicker({ students, value, onChange }: ClassStudentPickerProps) {

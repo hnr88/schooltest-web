@@ -741,7 +741,7 @@
       "settings": "설정",
       "school": "학교",
       "classes": "학급",
-      "children": "학생",
+      "students": "학생",
       "teachers": "교사",
       "teach": "교사 홈",
       "ops": "운영",
@@ -750,8 +750,7 @@
       "opsTimers": "섹션 타이머",
       "opsTools": "도구",
       "opsSettings": "플랫폼 설정",
-      "participation": "응시 현황",
-      "analytics": "분석"
+      "account": "계정"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -1893,14 +1892,33 @@
       "onboardingStatusLabel": "온볼딩",
       "errorTitle": "학교 정보를 불러올 수 없습니다",
       "errorDescription": "연결을 확인하고 다시 시도하세요.",
-      "retry": "다시 시도"
+      "retry": "다시 시도",
+      "diagnosticsTitle": "Diagnostics",
+      "diagnosticsSubtitle": "Initial placement reading tests — aggregated across all classes",
+      "studentsTested": "Students tested",
+      "avgReadingLevel": "Avg. reading level",
+      "readingTestsCompleted": "Reading tests completed",
+      "progressTitle": "Progress",
+      "progressSubtitle": "Periodic reading tests to track growth over time",
+      "readingProgress": "Reading progress",
+      "testsThisCycle": "Tests this cycle",
+      "nextTestWindow": "Next test window",
+      "readinessTitle": "Mainstream readiness",
+      "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
+      "classesTitle": "Classes",
+      "classStudents": "{count, plural, one {# student} other {# students}}",
+      "classesEmptyTitle": "No classes yet",
+      "classesEmptyDescription": "Classes you add for your school will appear here.",
+      "testsCompletedValue": "{completed} / {total}",
+      "noValue": "—"
     },
     "accountStatus": {
       "prospect": "잠재",
       "invoiced": "청구됨",
       "active": "활성",
       "suspended": "일시 중지",
-      "closed": "종료"
+      "closed": "종료",
+      "invited": "Invited"
     },
     "onboardingStatus": {
       "not_started": "시작 전",
@@ -2012,6 +2030,43 @@
         "downloading": "내보내기 준비 중...",
         "error": "내보내기 파일을 다운로드할 수 없습니다. 다시 시도하세요."
       }
+    },
+    "account": {
+      "meta": {
+        "title": "Account - SchoolTest",
+        "description": "Your school's details, plan, seats and test allowances."
+      },
+      "title": "Account",
+      "subtitle": "Your school's details, plan and test allowances.",
+      "tabsLabel": "Account sections",
+      "tabs": {
+        "account": "My account",
+        "settings": "Settings",
+        "signout": "Sign out"
+      },
+      "detailsTitle": "School details",
+      "schoolLabel": "School",
+      "locationLabel": "Location",
+      "adminLabel": "Admin",
+      "statusLabel": "Status",
+      "notSet": "Not set",
+      "planTitle": "Plan and seats",
+      "currentPlanLabel": "Current plan",
+      "planSubtitleTrial": "Reading tests only",
+      "plan": {
+        "trial": "Trial",
+        "full_license": "Full license"
+      },
+      "seatsUsedLabel": "Seats used",
+      "seatsValue": "{used} / {total}",
+      "fullLicenseLabel": "Full license",
+      "fullLicenseDescription": "All test types, unlimited cycles, full reporting",
+      "fullLicenseContact": "Contact SchoolTest",
+      "allowanceTitle": "Test allowance",
+      "settingsEmptyTitle": "Settings are coming",
+      "settingsEmptyDescription": "Notification preferences and other account settings will live here.",
+      "signOutTitle": "Signing you out",
+      "signOutDescription": "Taking you back to the sign-in page."
     }
   },
   "Teach": {
@@ -2370,7 +2425,8 @@
         "deactivated": "비활성화됨",
         "invited": "초대됨",
         "expired": "만료됨"
-      }
+      },
+      "noValue": "—"
     },
     "actions": {
       "menuLabel": "{name} 작업",
@@ -2397,7 +2453,24 @@
       "removeTitle": "{name} 님을 학교에서 제거할까요?",
       "removeDescription": "되돌릴 수 없습니다. 계정이 차단되고 학교 연결이 해제되며 학급 배정이 지워지고 미수락 초대는 취소됩니다. 과거 결과 기록은 그대로 유지됩니다. 접근만 일시 중지하려면 비활성화를 사용하세요.",
       "removeConfirm": "영구 제거",
-      "removedToast": "{name} 님을 학교에서 제거했습니다(학급 배정 {classes}건 해제)."
+      "removedToast": "{name} 님을 학교에서 제거했습니다(학급 배정 {classes}건 해제).",
+      "editLabel": "Edit {name}",
+      "removeLabel": "Remove {name}"
+    },
+    "subtitle": "{count, plural, one {# teacher at your school} other {# teachers at your school}}",
+    "addButton": "Add teacher",
+    "edit": {
+      "title": "Edit teacher",
+      "description": "Update this staff member's name and email address.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "cancel": "Cancel",
+      "submit": "Save changes",
+      "submitting": "Saving...",
+      "successToast": "{name} was updated.",
+      "errorToast": "We could not save those changes. Try again.",
+      "emailInUse": "That email address is already in use by another user."
     }
   },
   "Classes": {
@@ -2442,7 +2515,12 @@
       "columnActions": "작업",
       "empty": "아직 학급이 없습니다. 첫 학급을 추가해 시작하세요.",
       "teachersNone": "배정된 교사 없음",
-      "yearBandNone": "설정되지 않음"
+      "yearBandNone": "설정되지 않음",
+      "columnClass": "Class",
+      "columnTeacher": "Teacher",
+      "columnTestsCompleted": "Tests completed",
+      "teacherNone": "—",
+      "unknown": "—"
     },
     "yearBands": {
       "7_9": "7-9학년",
@@ -2487,9 +2565,31 @@
       "confirm": "학급 삭제",
       "successToast": "{name}을(를) 삭제했습니다. 해당 학급의 학생은 학생 명단에 남아 있습니다.",
       "errorToast": "작업이 실패했습니다. 다시 시도하세요."
+    },
+    "addForm": {
+      "title": "Add a new class",
+      "description": "Name the class, assign a teacher, and optionally import students from a CSV.",
+      "name": "Class name",
+      "namePlaceholder": "e.g. Year 10 EAL/D",
+      "teacher": "Assign teacher",
+      "teacherPlaceholder": "Select a teacher",
+      "teacherLoadError": "We could not load your teachers",
+      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "importTitle": "Import students",
+      "importDescription": "Upload a CSV or paste student data below",
+      "importErrorsTitle": "Some rows could not be read",
+      "importErrorsDescription": "{count, plural, one {# row will be skipped} other {# rows will be skipped}}. Fix them in your CSV, or add those students later.",
+      "cancel": "Cancel",
+      "submit": "Create class",
+      "submitting": "Creating...",
+      "createdToast": "{name} was added.",
+      "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
+      "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
+      "forbiddenToast": "You do not have permission to add classes.",
+      "errorToast": "That did not work. Try again."
     }
   },
-  "SchoolChildren": {
+  "SchoolStudents": {
     "meta": {
       "title": "학생 - SchoolTest",
       "description": "학교의 학생, 학급 및 상태입니다."
@@ -2512,7 +2612,9 @@
       "statusActive": "재학",
       "statusArchived": "보관됨",
       "classLabel": "학급",
-      "classAll": "모든 학급"
+      "classAll": "모든 학급",
+      "levelLabel": "Level",
+      "levelAll": "All levels"
     },
     "table": {
       "columnName": "이름",
@@ -2524,7 +2626,11 @@
       "classNone": "학급 없음",
       "statusActive": "재학",
       "statusArchived": "보관됨",
-      "emailFixRequested": "이메일 수정 요청됨"
+      "emailFixRequested": "이메일 수정 요청됨",
+      "columnFirstLanguage": "First language",
+      "columnLevel": "Level",
+      "columnDiagnostic": "Diagnostic",
+      "notSet": "—"
     },
     "pagination": {
       "previous": "이전",
@@ -2610,6 +2716,23 @@
       "dobInvalid": "올바른 생년월일을 입력하세요.",
       "yearsInvalid": "연수를 입력하세요. 예: 2.5.",
       "monthsInvalid": "개월 수는 정수만 입력하세요."
+    },
+    "subtitle": "{studentCount, plural, one {# student} other {# students}} across {classCount, plural, one {# class} other {# classes}}",
+    "importButton": "Import students",
+    "import": {
+      "title": "Import students",
+      "description": "Upload or paste a CSV, then choose the class these students join.",
+      "readyCount": "{count, plural, =0 {No students ready to import yet} one {# student ready to import} other {# students ready to import}}",
+      "errorCount": "{count, plural, one {# row could not be read and will be skipped} other {# rows could not be read and will be skipped}}",
+      "cancel": "Cancel",
+      "submit": "Import students",
+      "submitting": "Importing...",
+      "successToast": "{count, plural, one {# student was imported} other {# students were imported}}.",
+      "partialToast": "{created} of {total} students were imported. Check the rest and try again.",
+      "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
+      "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
+      "forbiddenToast": "You do not have permission to add students.",
+      "genericToast": "No students were imported. Try again."
     }
   },
   "Ops": {
@@ -3393,6 +3516,7 @@
     }
   },
   "Navigation": {
+    "analytics": "분석",
     "article": "아티클",
     "articles": "아티클",
     "breadcrumbLabel": "탐색 경로",
@@ -3405,6 +3529,7 @@
     "home": "홈",
     "invite": "초대",
     "newChild": "학생 추가",
+    "newStudent": "새 학생",
     "onboarding": "온보딩",
     "opsAudit": "감사 및 보안",
     "opsComms": "커뮤니케이션",
@@ -3418,6 +3543,7 @@
     "opsTimers": "섹션 타이머",
     "opsTools": "도구",
     "opsUsers": "사용자",
+    "participation": "참여",
     "privacyPolicy": "개인정보 처리방침",
     "resetPassword": "비밀번호 재설정",
     "results": "결과",
@@ -3444,5 +3570,15 @@
     "llmsNoteSitemap": "모든 공개 URL의 기계 판독용 색인은 {url}에 있습니다.",
     "llmsNotes": "참고",
     "llmsPages": "페이지"
+  },
+  "StudentImport": {
+    "downloadTemplate": "Download CSV template",
+    "dropPrompt": "Drop a CSV file here or",
+    "browse": "browse",
+    "fileInputLabel": "Choose a CSV file",
+    "pasteLabel": "Or paste CSV data",
+    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "classLabel": "Class",
+    "classPlaceholder": "Select a class"
   }
 }

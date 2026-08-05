@@ -1,5 +1,7 @@
 // C-TCH-01 / C-INV-02 payload shapes (school admin Teachers screen).
 
+import type { EditTeacherValues } from '@/modules/teachers/schemas/edit-teacher.schema';
+
 export interface SchoolTeacherClass {
   documentId: string;
   name: string;
@@ -43,6 +45,12 @@ export interface StaffRow {
   status: StaffRowStatus;
   classes: SchoolTeacherClass[];
   expires_at: string | null;
+}
+
+// C-TCH-04 request: the three editable staff fields plus the target account.
+export interface UpdateTeacherInput {
+  documentId: string;
+  values: EditTeacherValues;
 }
 
 // C-TCH-03 response: the account is blocked and unlinked, never deleted, so the

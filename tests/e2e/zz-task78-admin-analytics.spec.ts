@@ -295,7 +295,21 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     expect(csvBody).not.toMatch(/petrov|@/i);
   });
 
-  test('UI: the notification bell surfaces the new admin events', async ({ page }) => {
+  test('UI: the notification bell surfaces the newest admin events', async ({ page, request }) => {
+    // The preview popover renders NOTIFICATION_PREVIEW_PAGE_SIZE (5) rows off the
+    // top of the live feed. Asserting two hardcoded titles made this test a
+    // hostage to fixture volume — any run that emits five newer notifications
+    // pushed them out. Assert the CONTRACT instead: the bell shows exactly the
+    // newest rows the API returns, whatever they happen to be.
+    const jwt = await login(request, ADMIN_A);
+    const feed = await apiGet(request, `${API}/api/schools/me/notifications`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+    expect(feed.status()).toBe(200);
+    const rows = ((await feed.json()) as { data: { title: string }[] }).data;
+    expect(rows.length).toBeGreaterThan(0);
+    const newest = rows.slice(0, 5).map((row) => row.title);
+
     await signIn(page, ADMIN_A);
     await page.goto('/en/dashboard/school/participation');
     await expect(page.locator('[data-surface="school-admin-participation"]')).toBeVisible({
@@ -304,10 +318,9 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     await page.locator('[data-slot="notification-bell"]').click();
     const popover = page.locator('[data-slot="notification-popover"]');
     await expect(popover).toBeVisible();
-    // The bell accumulates repeats of each event as the fixture evolves;
-    // .first() keeps the check strict-mode safe without assuming an empty bell.
-    await expect(popover.getByText('Test A window open').first()).toBeVisible();
-    await expect(popover.getByText('Results ready').first()).toBeVisible();
+    for (const title of new Set(newest)) {
+      await expect(popover.getByText(title).first()).toBeVisible();
+    }
   });
 
   test('UI: school B empty states', async ({ page }) => {

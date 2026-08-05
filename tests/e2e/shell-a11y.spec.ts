@@ -24,8 +24,14 @@ async function expectAxeClean(
   page: Page,
   label: string,
   knownExemptions: readonly string[] = [],
+  scope?: string,
 ): Promise<void> {
-  const results = await new AxeBuilder({ page }).analyze();
+  const builder = new AxeBuilder({ page });
+  // A modal dialog makes everything behind it inert and hidden from assistive
+  // tech, but axe still measures the scrim-composited pixels of that background
+  // and reports colour-contrast failures for copy nobody can read or reach.
+  // When a modal is open the audited surface IS the dialog, so scope to it.
+  const results = await (scope ? builder.include(scope) : builder).analyze();
   const isExempt = (violation: { id: string }) => knownExemptions.includes(violation.id);
   const severe = results.violations.filter(
     (violation) => violation.impact === 'serious' || violation.impact === 'critical',
@@ -96,6 +102,11 @@ test.describe('shell axe — mobile (375)', () => {
         el.getAnimations({ subtree: true }).map((animation) => animation.finished.catch(() => null)),
       );
     });
-    await expectAxeClean(page, 'shell /dashboard @ 375px Sheet open', TABLE_SCROLL_EXEMPTION);
+    await expectAxeClean(
+      page,
+      'shell /dashboard @ 375px Sheet open',
+      TABLE_SCROLL_EXEMPTION,
+      '[role="dialog"]',
+    );
   });
 });
