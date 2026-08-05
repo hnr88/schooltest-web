@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Alert,
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
@@ -14,13 +15,16 @@ import {
 import type { ConfirmStaffActionDialogProps } from '@/modules/teachers/types/components.types';
 
 // Shared confirm dialog for the staff row actions (deactivate/reactivate,
-// revoke invitation). Copy arrives fully translated via props so the one
-// component serves every action.
+// revoke invitation, remove). Copy arrives fully translated via props so the one
+// component serves every action. `warning` is the conditional consequence — the
+// caller passes it only when the data says it applies — and sits outside the
+// description, which renders a <p>.
 export function ConfirmStaffActionDialog({
   open,
   onOpenChange,
   title,
   description,
+  warning,
   cancelLabel,
   confirmLabel,
   destructive,
@@ -34,6 +38,11 @@ export function ConfirmStaffActionDialog({
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
+        {warning ? (
+          <Alert variant="warning" title={warning.title}>
+            {warning.body}
+          </Alert>
+        ) : null}
         <AlertDialogFooter>
           <AlertDialogCancel className="h-11 px-4" disabled={pending}>
             {cancelLabel}

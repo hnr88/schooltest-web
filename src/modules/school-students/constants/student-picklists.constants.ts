@@ -26,3 +26,9 @@ export const ACARA_PHASE_OPTIONS = [
   'consolidating',
 ] as const;
 
+// Read-only C-CHD-01 column: the diagnostic status the server computes per row.
+// Never written from this client. Labels live under
+// SchoolStudents.table.diagnosticOption.
+export const DIAGNOSTIC_STATUS_OPTIONS = ['not_started', 'in_progress', 'completed'] as const;
+
+export const DEFAULT_DIAGNOSTIC_STATUS = 'not_started';

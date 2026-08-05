@@ -15,6 +15,19 @@ export interface SchoolClass {
   student_count: number;
 }
 
+// Spec §2 "Tests completed": every student sits TWO reading tests, so a class
+// carries a submitted count per test slot, both read from C-RPT-04.
+export interface ClassTestCompletion {
+  testA: number;
+  testB: number;
+}
+
+// The rendered "X / Y" pair for that column, one fraction per test slot.
+export interface ClassTestCompletionDisplay {
+  testA: string;
+  testB: string;
+}
+
 // Student option for the edit-dialog student picker (C-CHD-01 row projection).
 export interface ClassStudentOption {
   documentId: string;

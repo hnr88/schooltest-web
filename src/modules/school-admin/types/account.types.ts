@@ -2,6 +2,7 @@ import type { ACCOUNT_TABS } from '@/modules/school-admin/constants/account.cons
 import type {
   Allowance,
   Entitlement,
+  SchoolAnalyticsSummary,
   SchoolMe,
 } from '@/modules/school-admin/types/school-admin.types';
 
@@ -12,8 +13,11 @@ export interface AccountDetailsCardProps {
   adminEmail: string | null;
 }
 
+// `analytics` is null while the C-RPT-06 read has not produced a payload, so
+// the seat tile renders the no-value dash instead of an unloaded figure.
 export interface AccountPlanCardProps {
   entitlement: Entitlement;
+  analytics: SchoolAnalyticsSummary | null;
 }
 
 export interface AccountAllowanceCardProps {

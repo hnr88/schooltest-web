@@ -11,9 +11,10 @@ import type {
 import { SCHOOL_CHILDREN_PAGE_SIZE, SCHOOL_CHILDREN_QUERY_KEY } from '@/modules/school-students/constants/queries.constants';
 
 // C-CHD-01: students of the caller's school. The filter state maps 1:1 onto
-// the contract query params — 'all' simply omits the param. keepPreviousData
-// holds the last page while a filter/page change refetches, so the table
-// never flashes empty.
+// the contract query params — 'all' simply omits the param, so status, class,
+// level and q compose additively and every one of them is applied before the
+// server paginates. keepPreviousData holds the last page while a filter/page
+// change refetches, so the table never flashes empty.
 async function fetchSchoolStudents(query: SchoolStudentsQuery): Promise<SchoolStudentsPage> {
   const res = await strapi.get<unknown>('/api/schools/me/children', {
     params: {
@@ -21,6 +22,7 @@ async function fetchSchoolStudents(query: SchoolStudentsQuery): Promise<SchoolSt
       pageSize: query.pageSize ?? SCHOOL_CHILDREN_PAGE_SIZE,
       ...(query.status !== 'all' ? { status: query.status } : {}),
       ...(query.classId !== 'all' ? { class: query.classId } : {}),
+      ...(query.level !== undefined && query.level !== 'all' ? { level: query.level } : {}),
       ...(query.q !== '' ? { q: query.q } : {}),
     },
   });

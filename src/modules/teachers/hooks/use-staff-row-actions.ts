@@ -14,6 +14,7 @@ import {
 } from '@/modules/teachers/queries/use-toggle-teacher.mutation';
 import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 
+import type { StaffActionWarning } from '@/modules/teachers/types/components.types';
 import type { StaffConfirmAction } from '@/modules/teachers/types/hooks.types';
 
 // Mutation + toast wiring for StaffRowActions (keeps the component under the
@@ -37,6 +38,17 @@ export function useStaffRowActions(row: StaffRow) {
     (confirmAction === 'deactivate' && deactivate.isPending) ||
     (confirmAction === 'reactivate' && reactivate.isPending) ||
     (confirmAction === 'remove' && remove.isPending);
+
+  // Spec section 3: only a removal that really touches sittings or results is
+  // warned about. `reportingClassCount` is null when C-RPT-04 could not be read,
+  // and an unknown count is never dressed up as a warning.
+  const confirmWarning: StaffActionWarning | undefined =
+    confirmAction === 'remove' && row.reportingClassCount !== null && row.reportingClassCount > 0
+      ? {
+          title: t('removeReportingWarningTitle'),
+          body: t('removeReportingWarning', { count: row.reportingClassCount }),
+        }
+      : undefined;
 
   const handleReissue = async () => {
     try {
@@ -76,6 +88,7 @@ export function useStaffRowActions(row: StaffRow) {
     confirmAction,
     setConfirmAction,
     confirmPending,
+    confirmWarning,
     editOpen,
     setEditOpen,
     handleReissue,

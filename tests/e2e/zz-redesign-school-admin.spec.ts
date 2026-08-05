@@ -262,6 +262,65 @@ test.describe('school admin dashboard redesign', () => {
     ).toBeVisible();
   });
 
+  test('School: the six metric cards render live figures, not placeholders', async ({ page }) => {
+    await signIn(page);
+    const home = page.locator('[data-slot="school-home"]');
+    await expect(home).toBeVisible({ timeout: 20_000 });
+
+    const a = (await apiJson('/api/schools/me/analytics')).data as {
+      students_tested: number;
+      avg_reading_level: string | null;
+      reading_tests_completed: number;
+      reading_tests_allowed: number;
+      reading_progress: string | null;
+      next_test_window: string | null;
+    };
+
+    // The two aggregate levels are DERIVED, not the "-" constants the cards
+    // used to hardcode. This school has results, so they must be real phases.
+    expect(a.avg_reading_level).not.toBeNull();
+    expect(a.reading_progress).not.toBeNull();
+    expect(a.next_test_window).not.toBeNull();
+
+    const diagnostics = home.locator('[data-slot="school-diagnostics"]');
+    await expect(diagnostics.getByText(String(a.students_tested), { exact: true }).first()).toBeVisible();
+    await expect(
+      diagnostics.getByText(`${a.reading_tests_completed} / ${a.reading_tests_allowed}`, { exact: true }),
+    ).toBeVisible();
+
+    // The phases render as translated labels, never the raw enum.
+    await expect(home.getByText(a.avg_reading_level as string, { exact: true })).toHaveCount(0);
+    await expect(home.getByText(a.reading_progress as string, { exact: true })).toHaveCount(0);
+  });
+
+  test('Students: level, first language and diagnostic render from the live roster', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.goto('/dashboard/school/students');
+    const screen = page.locator('[data-slot="school-students"]');
+    await expect(screen).toBeVisible({ timeout: 20_000 });
+
+    const roster = (await apiJson('/api/schools/me/children?pageSize=10')).data as {
+      given_name: string;
+      acara_phase: string | null;
+      first_language: string | null;
+      diagnostic_status: string;
+    }[];
+    expect(roster.length).toBeGreaterThan(0);
+
+    // The roster genuinely carries the three fields the columns need.
+    expect(roster.some((r) => r.acara_phase !== null)).toBeTruthy();
+    expect(roster.some((r) => r.first_language !== null)).toBeTruthy();
+    for (const row of roster) {
+      expect(['not_started', 'in_progress', 'completed']).toContain(row.diagnostic_status);
+    }
+
+    // A level badge is rendered for at least one student — the column used to
+    // be structurally unable to show anything.
+    await expect(screen.locator('[data-slot="student-level-badge"]').first()).toBeVisible();
+  });
+
   test('legacy /school/children deep links redirect to /school/students', async ({ page }) => {
     await signIn(page);
     await page.goto('/dashboard/school/children');

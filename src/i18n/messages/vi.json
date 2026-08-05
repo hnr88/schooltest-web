@@ -2455,7 +2455,9 @@
       "removeConfirm": "Xoá vĩnh viễn",
       "removedToast": "Đã xoá {name} khỏi trường ({classes} phân công lớp được gỡ).",
       "editLabel": "Edit {name}",
-      "removeLabel": "Remove {name}"
+      "removeLabel": "Remove {name}",
+      "removeReportingWarningTitle": "Removal may affect reporting",
+      "removeReportingWarning": "{count, plural, one {# of their classes already has test sittings or results} other {# of their classes already have test sittings or results}}. Removing them clears those class assignments, so those classes will no longer be reported under this teacher."
     },
     "subtitle": "{count, plural, one {# teacher at your school} other {# teachers at your school}}",
     "addButton": "Add teacher",
@@ -2630,7 +2632,12 @@
       "columnFirstLanguage": "First language",
       "columnLevel": "Level",
       "columnDiagnostic": "Diagnostic",
-      "notSet": "—"
+      "notSet": "—",
+      "diagnosticOption": {
+        "not_started": "Not started",
+        "in_progress": "In progress",
+        "completed": "Completed"
+      }
     },
     "pagination": {
       "previous": "Trước",

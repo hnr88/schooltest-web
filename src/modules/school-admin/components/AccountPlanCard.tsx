@@ -9,9 +9,12 @@ import { PLAN_SUBTITLE_KEYS } from '@/modules/school-admin/constants/account.con
 import type { AccountPlanCardProps } from '@/modules/school-admin/types/account.types';
 
 // Spec section 5 "Plan and seats card": three metric cards over the full
-// licence row. seats_used / seats_total are C-ENT-01's licensing seat cap —
-// the figure the API actually enforces — not a second, invented metric.
-export function AccountPlanCard({ entitlement }: AccountPlanCardProps) {
+// licence row. "Seats used" is the SPEC's metric — C-RPT-06's
+// students_with_sitting / students_total (students with at least one sitting
+// over total students) — and deliberately NOT C-ENT-01's licensing
+// seats_used / seats_total, which remains the cap the API enforces on student
+// create and is neither changed nor redefined by this card.
+export function AccountPlanCard({ entitlement, analytics }: AccountPlanCardProps) {
   const t = useTranslations('SchoolAdmin');
   const subtitleKey = PLAN_SUBTITLE_KEYS[entitlement.plan];
 
@@ -31,10 +34,14 @@ export function AccountPlanCard({ entitlement }: AccountPlanCardProps) {
           icon={Users}
           iconTone="teal"
           label={t('account.seatsUsedLabel')}
-          value={t('account.seatsValue', {
-            used: entitlement.seats_used,
-            total: entitlement.seats_total,
-          })}
+          value={
+            analytics === null
+              ? t('home.noValue')
+              : t('account.seatsValue', {
+                  used: analytics.students_with_sitting,
+                  total: analytics.students_total,
+                })
+          }
         />
         <MetricCard
           icon={CalendarDays}

@@ -22,6 +22,7 @@ export const SEARCH_DEBOUNCE_MS = 300;
 
 // Spec §4 gives the roster no status control, so the C-CHD-01 status param stays
 // omitted and archived students remain reachable (their row keeps its pill).
+// The header subtitle does NOT count this list — see ROSTER_COUNT_QUERY.
 export const ROSTER_STATUS: SchoolStudentStatusFilter = 'all';
 
 export const EMPTY_PARSED_CSV: ParsedStudentCsv = { rows: [], errors: [] };

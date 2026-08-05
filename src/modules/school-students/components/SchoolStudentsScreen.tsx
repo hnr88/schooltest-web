@@ -13,14 +13,16 @@ import { StudentsHeader } from '@/modules/school-students/components/StudentsHea
 import { StudentsPagination } from '@/modules/school-students/components/StudentsPagination';
 import { StudentsTable } from '@/modules/school-students/components/StudentsTable';
 import { useStudentsFilters } from '@/modules/school-students/hooks/use-students-filters';
-import { filterStudentsByLevel } from '@/modules/school-students/lib/student-level';
 import { useSchoolStudentsQuery } from '@/modules/school-students/queries/use-school-students.query';
 import type { SchoolStudent } from '@/modules/school-students/types/school-students.types';
+import { ROSTER_COUNT_QUERY } from '@/modules/school-students/constants/queries.constants';
 
 // School admin Students screen (spec §4): the C-CHD-01 roster reshaped to
-// Name | Class | First language | Level | Diagnostic, with the name search and
-// class filter running server-side and the level filter narrowing the rows they
-// returned. Import (C-CHD-02 per row) sits beside the single-student form.
+// Name | Class | First language | Level | Diagnostic. Search, class and level
+// all narrow server-side, so the table and its pager always agree. The subtitle
+// total comes from its own unfiltered active-only read — it is a school total,
+// not a count of what the current filters returned. Import (C-CHD-02 per row)
+// sits beside the single-student form.
 export function SchoolStudentsScreen() {
   const t = useTranslations('SchoolStudents');
   const token = useAuthStore((state) => state.token);
@@ -28,13 +30,14 @@ export function SchoolStudentsScreen() {
   const enabled = hydrated && Boolean(token);
   const filters = useStudentsFilters();
   const studentsQuery = useSchoolStudentsQuery(filters.query, enabled);
+  const rosterCountQuery = useSchoolStudentsQuery(ROSTER_COUNT_QUERY, enabled);
   const classesQuery = useSchoolClassesQuery(enabled);
   const [editTarget, setEditTarget] = useState<SchoolStudent | null>(null);
   const [importOpen, setImportOpen] = useState(false);
 
   const classes = classesQuery.data ?? [];
   const isPending = !enabled || studentsQuery.isPending;
-  const rows = filterStudentsByLevel(studentsQuery.data?.rows ?? [], filters.level);
+  const rows = studentsQuery.data?.rows ?? [];
 
   return (
     <main
@@ -43,7 +46,7 @@ export function SchoolStudentsScreen() {
       className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
     >
       <StudentsHeader
-        studentCount={studentsQuery.data?.pagination.total ?? 0}
+        studentCount={rosterCountQuery.data?.pagination.total ?? 0}
         classCount={classes.length}
         onImport={() => setImportOpen(true)}
       />

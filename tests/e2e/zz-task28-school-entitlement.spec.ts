@@ -31,12 +31,16 @@ interface Entitlement {
   account_status: string;
 }
 
-async function fetchEntitlement(request: APIRequestContext): Promise<Entitlement> {
-  const login = await request.post(`${API}/api/auth/local`, {
+async function login(request: APIRequestContext): Promise<string> {
+  const res = await request.post(`${API}/api/auth/local`, {
     data: { identifier: SCHOOL_ADMIN.email, password: SCHOOL_ADMIN.password },
   });
-  expect(login.ok()).toBeTruthy();
-  const { jwt } = (await login.json()) as { jwt: string };
+  expect(res.ok()).toBeTruthy();
+  return ((await res.json()) as { jwt: string }).jwt;
+}
+
+async function fetchEntitlement(request: APIRequestContext): Promise<Entitlement> {
+  const jwt = await login(request);
   const res = await request.get(`${API}/api/schools/me/entitlement`, {
     headers: { Authorization: `Bearer ${jwt}` },
   });
@@ -68,7 +72,21 @@ test.describe('task 28: entitlement numbers vs live C-ENT-01', () => {
 
     const plan = page.locator('[data-slot="account-plan-card"]');
     await expect(plan).toBeVisible({ timeout: 20_000 });
-    await expect(plan.getByText(`${ent.seats_used} / ${ent.seats_total}`, { exact: true })).toBeVisible();
+
+    // "Seats used" renders the REDESIGN spec's metric (section 5:
+    // X = students with at least one sitting, Y = total students) from
+    // C-RPT-06, NOT the entitlement's licensing seats_used / seats_total,
+    // which stay the seat-cap gate the API enforces on student create.
+    const analyticsRes = await request.get(`${API}/api/schools/me/analytics`, {
+      headers: { Authorization: `Bearer ${await login(request)}` },
+    });
+    expect(analyticsRes.ok()).toBeTruthy();
+    const analytics = ((await analyticsRes.json()) as {
+      data: { students_with_sitting: number; students_total: number };
+    }).data;
+    await expect(
+      plan.getByText(`${analytics.students_with_sitting} / ${analytics.students_total}`, { exact: true }),
+    ).toBeVisible();
 
     // The plan tier is the school record's, not the entitlement's plan_code.
     expect(ent.plan).toBe('trial');

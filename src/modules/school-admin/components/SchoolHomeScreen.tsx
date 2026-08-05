@@ -51,8 +51,7 @@ export function SchoolHomeScreen() {
     );
   }
 
-  const { school, classes, studentsTested, readingTestsCompleted, readingTestsAllowed, isTrial } =
-    analytics.data;
+  const { school, classes, summary, isTrial } = analytics.data;
   const location = [school.suburb, school.state, school.postcode]
     .filter((part): part is string => Boolean(part))
     .join(' ');
@@ -67,12 +66,8 @@ export function SchoolHomeScreen() {
         <h1 className="text-2xl font-semibold text-foreground">{school.name}</h1>
         {location ? <p className="text-sm text-body">{location}</p> : null}
       </div>
-      <SchoolDiagnosticsSection
-        studentsTested={studentsTested}
-        readingTestsCompleted={readingTestsCompleted}
-        readingTestsAllowed={readingTestsAllowed}
-      />
-      <SchoolProgressSection readingTestsAllowed={readingTestsAllowed} />
+      <SchoolDiagnosticsSection summary={summary} />
+      <SchoolProgressSection summary={summary} />
       {isTrial ? <SchoolReadinessSection /> : null}
       <SchoolClassesSection classes={classes} />
     </main>

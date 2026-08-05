@@ -1,5 +1,6 @@
 import type { SchoolClass } from '@/modules/classes';
 import type { ParticipationClassRow as ParticipationClassRowData } from '@/modules/school-admin/types/participation.types';
+import type { SchoolAnalyticsSummary } from '@/modules/school-admin/types/school-admin.types';
 
 export interface ParticipationClassRowProps {
   row: ParticipationClassRowData;
@@ -19,13 +20,11 @@ export interface SchoolSectionScreenProps {
 }
 
 export interface SchoolDiagnosticsSectionProps {
-  studentsTested: number;
-  readingTestsCompleted: number;
-  readingTestsAllowed: number;
+  summary: SchoolAnalyticsSummary;
 }
 
 export interface SchoolProgressSectionProps {
-  readingTestsAllowed: number;
+  summary: SchoolAnalyticsSummary;
 }
 
 export interface SchoolClassesSectionProps {

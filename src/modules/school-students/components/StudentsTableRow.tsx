@@ -6,26 +6,33 @@ import { StatusPill, TableCell, TableRow } from '@/modules/design-system';
 import { StudentLevelBadge } from '@/modules/school-students/components/StudentLevelBadge';
 import { StudentRowActions } from '@/modules/school-students/components/StudentRowActions';
 import { studentDisplayName } from '@/modules/school-students/hooks/use-student-row-actions';
-import { toFirstLanguage } from '@/modules/school-students/lib/student-level';
+import { toDiagnosticStatus, toFirstLanguage } from '@/modules/school-students/lib/student-level';
 
 import type { StudentsTableRowProps } from '@/modules/school-students/types/components.types';
 
 // One spec §4 roster row: Name | Class | First language | Level | Diagnostic.
-// The name is the row's own control and opens the student's detail/edit view.
-// The C-CHD-05 email-fix flag and the archived state keep their pills beside it
-// — the reshaped table has no status column left to carry them.
+// Spec §4 "each row is clickable": the name control is STRETCHED over the whole
+// row (`after:inset-0` against the relatively positioned row, the same idiom
+// ClassesTableRow uses), so a click anywhere in the row opens the per-student
+// view while the row still holds exactly ONE control — a real focusable button,
+// not a tr onClick and not a second nested target. It opens the student
+// detail/edit dialog: no /students/[documentId] route exists to navigate to.
+// The actions cell is positioned itself, so it paints above that overlay and
+// stays clickable. The C-CHD-05 email-fix flag and the archived state keep
+// their pills beside the name — the reshaped table has no status column left
+// to carry them.
 export function StudentsTableRow({ student, onOpen }: StudentsTableRowProps) {
   const t = useTranslations('SchoolStudents');
   const language = toFirstLanguage(student.first_language);
 
   return (
-    <TableRow>
+    <TableRow className="group relative">
       <TableCell className="font-medium">
         <span className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={onOpen}
-            className="rounded-sm text-left font-medium text-foreground underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            className="cursor-pointer rounded-sm text-left font-medium text-foreground underline-offset-4 transition-colors duration-150 group-hover:text-primary group-hover:underline after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             {studentDisplayName(student)}
           </button>
@@ -52,8 +59,10 @@ export function StudentsTableRow({ student, onOpen }: StudentsTableRowProps) {
       <TableCell>
         <StudentLevelBadge phase={student.acara_phase} />
       </TableCell>
-      <TableCell className="text-center text-muted-foreground">{t('table.notSet')}</TableCell>
-      <TableCell className="text-right">
+      <TableCell className="text-center text-muted-foreground">
+        {t(`table.diagnosticOption.${toDiagnosticStatus(student.diagnostic_status)}`)}
+      </TableCell>
+      <TableCell className="relative text-right">
         <StudentRowActions student={student} onEdit={onOpen} />
       </TableCell>
     </TableRow>

@@ -27,6 +27,7 @@ interface ChildRow {
   documentId: string;
   given_name: string;
   family_name: string;
+  status: string;
   class: { documentId: string; name: string } | null;
 }
 
@@ -126,11 +127,19 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     // completed", so the band is no longer asserted in the row — the API
     // cross-check below is now the only proof it round-tripped.
 
-    // API cross-check: band changed, count 1.
+    // API cross-check: band changed, and the class now carries the assigned
+    // child. `student_count` counts ACTIVE students only — it is the same
+    // quantity the entitlement seat count and the C-RPT-04 participation
+    // buckets use, so an archived child contributes 0 (api::class.class
+    // service countStudents). CHILD_NAME is an archived probe fixture, so the
+    // assertion is on the class holding the link, not on a raw headcount.
     classes = await apiClasses(request, jwt);
     created = classes.find((entry) => entry.name === className);
     expect(created?.year_band).toBe('10_12');
-    expect(created?.student_count).toBe(1);
+    const assignedIsActive = (await apiChildren(request, jwt)).some(
+      (row) => `${row.given_name} ${row.family_name}` === CHILD_NAME && row.status === 'active',
+    );
+    expect(created?.student_count).toBe(assignedIsActive ? 1 : 0);
 
     // DELETE (C-CLS-04): the confirm copy states children are not deleted.
     await page

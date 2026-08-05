@@ -20,7 +20,7 @@ export function StudentLevelBadge({ phase }: StudentLevelBadgeProps) {
   }
 
   return (
-    <Badge variant={ACARA_PHASE_BADGE_VARIANTS[level]}>
+    <Badge data-slot="student-level-badge" variant={ACARA_PHASE_BADGE_VARIANTS[level]}>
       {t(`form.acaraPhaseOption.${level}`)}
     </Badge>
   );

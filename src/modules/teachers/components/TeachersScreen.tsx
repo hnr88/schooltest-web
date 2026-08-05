@@ -5,7 +5,9 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useAuthStore } from '@/modules/auth';
+import { useSchoolClassesQuery } from '@/modules/classes';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
+import { useParticipationQuery } from '@/modules/school-admin';
 import { InviteTeacherDialog } from '@/modules/teachers/components/InviteTeacherDialog';
 import { TeachersTable } from '@/modules/teachers/components/TeachersTable';
 import { useStaffRows } from '@/modules/teachers/hooks/use-staff-rows';
@@ -17,6 +19,12 @@ import { useTeachersQuery } from '@/modules/teachers/queries/use-teachers.query'
 // actions (edit/remove/reissue/revoke/deactivate/reactivate) live in the rows.
 // The subtitle counts live staff ACCOUNTS only — an invitation is a person who
 // has not joined yet — and waits for the real count rather than showing a zero.
+//
+// Two supporting reads join the roster: C-CLS-01 completes the Classes column
+// (C-TCH-01 only groups by the singular class owner) and C-RPT-04 answers
+// whether removing someone touches reporting. Neither is fatal — only the staff
+// and invitation reads can empty this screen — but both are awaited so the
+// Classes column and the removal warning are right the first time they render.
 export function TeachersScreen() {
   const t = useTranslations('Teachers');
   const token = useAuthStore((state) => state.token);
@@ -24,14 +32,28 @@ export function TeachersScreen() {
   const enabled = hydrated && Boolean(token);
   const teachersQuery = useTeachersQuery(enabled);
   const invitationsQuery = useInvitationsQuery(enabled);
-  const rows = useStaffRows(teachersQuery.data, invitationsQuery.data);
+  const classesQuery = useSchoolClassesQuery(enabled);
+  const participationQuery = useParticipationQuery(enabled);
+  const rows = useStaffRows({
+    teachers: teachersQuery.data,
+    invitations: invitationsQuery.data,
+    classes: classesQuery.data,
+    participation: participationQuery.data,
+  });
   const [inviteOpen, setInviteOpen] = useState(false);
 
-  const isPending = !enabled || teachersQuery.isPending || invitationsQuery.isPending;
+  const isPending =
+    !enabled ||
+    teachersQuery.isPending ||
+    invitationsQuery.isPending ||
+    classesQuery.isPending ||
+    participationQuery.isPending;
   const isError = teachersQuery.isError || invitationsQuery.isError;
   const refetch = () => {
     void teachersQuery.refetch();
     void invitationsQuery.refetch();
+    void classesQuery.refetch();
+    void participationQuery.refetch();
   };
 
   return (

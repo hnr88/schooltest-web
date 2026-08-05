@@ -18,6 +18,11 @@ import type { ClassesTableProps } from '@/modules/classes/types/components.types
 // Spec §2 roster: class, assigned teacher, student count and the per-test
 // completion. Dumb renderer — edit/delete wiring lives in ClassRowActions and
 // the completion lookup in classes-table.helpers.
+// The fifth header is deliberately sr-only, not removed: renaming a class,
+// changing its year band (C-CLS-03) and deleting it (C-CLS-04) exist only
+// behind that kebab — the class detail screen assigns teachers/students but
+// cannot rename or delete — so dropping the column would strand working
+// features. Visually the table still reads as the spec's four columns.
 export function ClassesTable({ rows, completions, onEdit }: ClassesTableProps) {
   const t = useTranslations('Classes.table');
 
@@ -40,12 +45,7 @@ export function ClassesTable({ rows, completions, onEdit }: ClassesTableProps) {
             <ClassesTableRow
               key={row.documentId}
               row={row}
-              testsCompleted={formatTestsCompleted(
-                completions,
-                row.documentId,
-                row.student_count,
-                t('unknown'),
-              )}
+              testsCompleted={formatTestsCompleted(completions, row.documentId, row.student_count)}
               onEdit={() => onEdit(row)}
             />
           ))}

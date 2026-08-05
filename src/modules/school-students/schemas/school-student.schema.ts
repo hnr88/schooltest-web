@@ -19,11 +19,14 @@ export const schoolStudentSchema = z.object({
   family_name: z.string().nullable(),
   status: z.string().nullable(),
   email_fix_requested: z.boolean(),
-  // Absent and null are the same thing to the roster: the C-CHD-01 projection
-  // does not have to carry the EAL/D pair, and a missing key must not fail the
-  // whole page parse.
+  // Absent and null are the same thing to the roster: only the C-CHD-01 list
+  // projection carries the EAL/D pair and the computed diagnostic status (the
+  // C-CHD-02/03 detail response omits them), and a missing key must not fail
+  // the whole page parse. The three stay strings here and are narrowed to their
+  // contract values at the render boundary.
   first_language: z.string().nullish().transform((value) => value ?? null),
   acara_phase: z.string().nullish().transform((value) => value ?? null),
+  diagnostic_status: z.string().nullish().transform((value) => value ?? null),
   class: z
     .object({ documentId: z.string(), name: z.string().nullable() })
     .nullable(),

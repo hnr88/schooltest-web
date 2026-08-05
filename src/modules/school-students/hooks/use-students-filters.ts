@@ -10,11 +10,11 @@ import {
   SEARCH_DEBOUNCE_MS,
 } from '@/modules/school-students/constants/hooks.constants';
 
-// The spec §4 roster filters: a name search and a class, both C-CHD-01 query
-// params, plus the level. Search and class narrow server-side, level narrows the
-// returned rows (the contract has no level param), and the three compose — none
-// of them clears another. Any change resets to page 1 so a narrowed result set
-// never strands the user past its last page.
+// The spec §4 roster filters: a name search, a class and a level — all three
+// C-CHD-01 query params, so all three narrow server-side and compose with the
+// pagination rather than thinning the page already loaded. None of them clears
+// another. Any change resets to page 1 so a narrowed result set never strands
+// the user past its last page.
 export function useStudentsFilters(): StudentsFilters {
   const [classId, setClassId] = useState('all');
   const [level, setLevel] = useState<SchoolStudentLevelFilter>('all');
@@ -40,7 +40,7 @@ export function useStudentsFilters(): StudentsFilters {
   };
 
   return {
-    query: { status: ROSTER_STATUS, classId, q, page },
+    query: { status: ROSTER_STATUS, classId, q, page, level },
     search,
     level,
     setSearch,

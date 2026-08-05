@@ -4,18 +4,18 @@ import { BookOpenCheckIcon, GaugeIcon, UsersIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { MetricCard, PanelHeaderRow } from '@/modules/design-system';
+import { toAcaraPhase } from '@/modules/school-admin/lib/school-analytics';
 
 import type { SchoolDiagnosticsSectionProps } from '@/modules/school-admin/types/components.types';
 
 // Spec section 1, Diagnostics: the initial placement reading tests aggregated
-// across every class. "Avg. reading level" has no backing endpoint today, so it
-// renders the spec's empty value rather than an invented figure.
-export function SchoolDiagnosticsSection({
-  studentsTested,
-  readingTestsCompleted,
-  readingTestsAllowed,
-}: SchoolDiagnosticsSectionProps) {
+// across every class, read straight off C-RPT-06. "Avg. reading level" is an
+// ACARA phase, so it renders the school's own phase LABEL — never the raw enum
+// — and falls back to the spec's empty value when the school has no results.
+export function SchoolDiagnosticsSection({ summary }: SchoolDiagnosticsSectionProps) {
   const t = useTranslations('SchoolAdmin.home');
+  const tPhase = useTranslations('SchoolStudents.form.acaraPhaseOption');
+  const avgReadingLevel = toAcaraPhase(summary.avg_reading_level);
 
   return (
     <section
@@ -34,21 +34,21 @@ export function SchoolDiagnosticsSection({
           icon={UsersIcon}
           iconTone="blue"
           label={t('studentsTested')}
-          value={String(studentsTested)}
+          value={String(summary.students_tested)}
         />
         <MetricCard
           icon={GaugeIcon}
           iconTone="teal"
           label={t('avgReadingLevel')}
-          value={t('noValue')}
+          value={avgReadingLevel === null ? t('noValue') : tPhase(avgReadingLevel)}
         />
         <MetricCard
           icon={BookOpenCheckIcon}
           iconTone="amber"
           label={t('readingTestsCompleted')}
           value={t('testsCompletedValue', {
-            completed: readingTestsCompleted,
-            total: readingTestsAllowed,
+            completed: summary.reading_tests_completed,
+            total: summary.reading_tests_allowed,
           })}
         />
       </div>

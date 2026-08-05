@@ -1,4 +1,8 @@
-import type { ClassTeacher } from '@/modules/classes/types/classes.types';
+import type {
+  ClassTeacher,
+  ClassTestCompletion,
+  ClassTestCompletionDisplay,
+} from '@/modules/classes/types/classes.types';
 import type { SchoolParticipation } from '@/modules/school-admin';
 
 export function teacherName(firstName: string | null, lastName: string | null): string {
@@ -12,26 +16,35 @@ export function teacherNames(teachers: ClassTeacher[]): string {
     .join(', ');
 }
 
-// Spec §2 "Tests completed": per-test completion, so the numerator is the
-// number of students in the class who have SUBMITTED the reading test, read
-// from the C-RPT-04 participation payload (test_a is the diagnostic slot).
+// Spec §2 "Tests completed": each student sits TWO reading tests and the column
+// shows PER-TEST completion, so BOTH C-RPT-04 slots are carried per class. The
+// numerator of each is the number of students in the class who have SUBMITTED
+// that test; reading test_a alone dropped half of every class's completion.
 export function testsCompletedByClass(
   participation: SchoolParticipation | undefined,
-): Map<string, number> {
+): Map<string, ClassTestCompletion> {
   return new Map(
-    (participation?.classes ?? []).map((row) => [row.documentId, row.test_a.submitted]),
+    (participation?.classes ?? []).map((row) => [
+      row.documentId,
+      { testA: row.test_a.submitted, testB: row.test_b.submitted },
+    ]),
   );
 }
 
-// "X / Y" where Y is the class's own student count, so the column always agrees
-// with the Students column. A null map means participation could not be read -
-// the count is unknown, so the empty value renders instead of a made-up zero.
+// One "X / Y" per test, where Y is the class's own student count so both
+// fractions agree with the Students column (C-RPT-04 buckets the same active
+// roster, so its roster_count and student_count are the same number). A null
+// map means participation could not be read - the counts are unknown, so the
+// caller renders the empty value instead of a made-up zero.
 export function formatTestsCompleted(
-  completions: Map<string, number> | null,
+  completions: Map<string, ClassTestCompletion> | null,
   documentId: string,
   studentCount: number,
-  emptyValue: string,
-): string {
-  if (completions === null) return emptyValue;
-  return `${completions.get(documentId) ?? 0} / ${studentCount}`;
+): ClassTestCompletionDisplay | null {
+  if (completions === null) return null;
+  const counts = completions.get(documentId) ?? { testA: 0, testB: 0 };
+  return {
+    testA: `${counts.testA} / ${studentCount}`,
+    testB: `${counts.testB} / ${studentCount}`,
+  };
 }

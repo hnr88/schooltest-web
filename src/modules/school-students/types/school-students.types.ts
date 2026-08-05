@@ -12,9 +12,11 @@ export interface SchoolStudentClassRef {
   name: string | null;
 }
 
-// C-CHD-01 list-row projection. first_language and acara_phase are nullable
-// because the server projection may omit them entirely — the row keeps the key
-// so the Level and First language columns read one shape either way.
+// C-CHD-01 list-row projection. first_language, acara_phase and
+// diagnostic_status stay raw strings here and are narrowed at the render
+// boundary (lib/student-level), so a value the contract grows later shows its
+// fallback instead of failing the whole page parse. They are nullable because
+// only the list projection carries them — the C-CHD-02/03 detail omits them.
 export interface SchoolStudent {
   documentId: string;
   given_name: string | null;
@@ -23,6 +25,7 @@ export interface SchoolStudent {
   email_fix_requested: boolean;
   first_language: string | null;
   acara_phase: string | null;
+  diagnostic_status: string | null;
   class: SchoolStudentClassRef | null;
 }
 
@@ -49,12 +52,15 @@ export interface SchoolStudentsPage {
 // The roster filter state, mapped 1:1 onto the C-CHD-01 query params.
 // pageSize defaults to the roster page size; picker consumers (class detail
 // assignment) pass the contract maximum of 100 to list every active student.
+// level is optional so those picker callers, which never narrow by phase, keep
+// their existing call shape.
 export interface SchoolStudentsQuery {
   status: SchoolStudentStatusFilter;
   classId: string;
   q: string;
   page: number;
   pageSize?: number;
+  level?: SchoolStudentLevelFilter;
 }
 
 // C-CHD-02 v2/03 request body: only the contract fields, never guardian/media.

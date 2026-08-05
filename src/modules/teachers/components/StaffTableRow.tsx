@@ -10,10 +10,13 @@ import type { StaffTableRowProps } from '@/modules/teachers/types/components.typ
 import { STATUS_VARIANTS } from '@/modules/teachers/constants/components.constants';
 
 // One merged staff row: a live account (a class chip each) or an open
-// invitation (join note + expiry date). The spec's four columns are name /
-// email / classes / actions, so the status badge rides in the identity cell
-// rather than a column of its own — invited, expired and deactivated rows still
-// have to announce themselves, and active says so too.
+// invitation (join note + expiry date). The spec's Name column is avatar +
+// full name and its four columns are name / email / classes / actions, so an
+// ACTIVE teacher — the only row the spec's table describes — renders exactly
+// that. Rows the spec never contemplated (invited, expired, deactivated: the
+// C-INV-02 merge) keep a badge in the identity cell, because without it a
+// pending invitation is indistinguishable from a live account and the row's
+// destructive actions differ.
 export function StaffTableRow({ row }: StaffTableRowProps) {
   const t = useTranslations('Teachers.table');
   const name = `${row.first_name} ${row.last_name}`.trim() || row.email;
@@ -30,7 +33,9 @@ export function StaffTableRow({ row }: StaffTableRowProps) {
                 : undefined
             }
           />
-          <Badge variant={STATUS_VARIANTS[row.status]}>{t(`status.${row.status}`)}</Badge>
+          {row.status === 'active' ? null : (
+            <Badge variant={STATUS_VARIANTS[row.status]}>{t(`status.${row.status}`)}</Badge>
+          )}
         </div>
       </TableCell>
       <TableCell>{row.email}</TableCell>

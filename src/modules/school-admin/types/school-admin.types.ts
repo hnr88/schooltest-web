@@ -58,3 +58,24 @@ export interface Entitlement {
 export interface EntitlementResponse {
   data: Entitlement;
 }
+
+// C-RPT-06 (GET /api/schools/me/analytics) payload — every figure derived from
+// live data at read. `avg_reading_level` and `reading_progress` are an ACARA
+// phase string or null; `next_test_window` is an ISO-8601 instant or null.
+// `students_with_sitting` / `students_total` are the SPEC's seat pair (active
+// students who have sat something vs the active roster) and are a different
+// metric from the entitlement's licensing `seats_used` / `seats_total`.
+export interface SchoolAnalyticsSummary {
+  students_tested: number;
+  avg_reading_level: string | null;
+  reading_tests_completed: number;
+  reading_tests_allowed: number;
+  reading_progress: string | null;
+  next_test_window: string | null;
+  students_total: number;
+  students_with_sitting: number;
+}
+
+export interface SchoolAnalyticsSummaryResponse {
+  data: SchoolAnalyticsSummary;
+}

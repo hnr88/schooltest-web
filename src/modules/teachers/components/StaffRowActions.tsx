@@ -28,6 +28,7 @@ export function StaffRowActions({ row }: StaffRowActionsProps) {
     confirmAction,
     setConfirmAction,
     confirmPending,
+    confirmWarning,
     editOpen,
     setEditOpen,
     handleReissue,
@@ -103,6 +104,7 @@ export function StaffRowActions({ row }: StaffRowActionsProps) {
         }}
         title={confirmAction ? t(`${confirmAction}Title`, { name }) : ''}
         description={confirmAction ? t(`${confirmAction}Description`) : ''}
+        warning={confirmWarning}
         cancelLabel={t('cancel')}
         confirmLabel={confirmAction ? t(`${confirmAction}Confirm`) : ''}
         destructive={confirmAction !== 'reactivate'}

@@ -17,8 +17,6 @@ import {
   DialogTitle,
   FieldShell,
   Input,
-  NativeSelect,
-  NativeSelectOption,
 } from '@/modules/design-system';
 import { serverMessage } from '@/modules/teachers/lib/server-message';
 import { useInviteTeacherMutation } from '@/modules/teachers/queries/use-invite-teacher.mutation';
@@ -28,13 +26,23 @@ import {
 } from '@/modules/teachers/schemas/invite-teacher.schema';
 
 import type { InviteTeacherDialogProps } from '@/modules/teachers/types/components.types';
-import { DEFAULT_VALUES } from '@/modules/teachers/constants/components.constants';
+import {
+  DEFAULT_INVITE_ROLE,
+  DEFAULT_VALUES,
+} from '@/modules/teachers/constants/components.constants';
 
-// C-INV-01 invite form. A 409 (active user with that email already in this
-// school, or an invitation already pending for it) lands inline on the email
-// field, carrying the API's OWN wording so the admin learns WHICH clash it was;
-// the generic warning is only the fallback. Any other failure toasts.
-export function InviteTeacherDialog({ open, onOpenChange }: InviteTeacherDialogProps) {
+// C-INV-01 invite form. Spec section 3's field table is first name / last name /
+// email, so those are the only three fields the admin fills; the role C-INV-01
+// requires comes from the `role` prop (teacher unless a caller says otherwise).
+// A 409 (active user with that email already in this school, or an invitation
+// already pending for it) lands inline on the email field, carrying the API's
+// OWN wording so the admin learns WHICH clash it was; the generic warning is
+// only the fallback. Any other failure toasts.
+export function InviteTeacherDialog({
+  open,
+  onOpenChange,
+  role = DEFAULT_INVITE_ROLE,
+}: InviteTeacherDialogProps) {
   const t = useTranslations('Teachers.invite');
   const tv = useTranslations('Teachers.validation');
   const schema = useMemo(() => createInviteTeacherSchema(tv), [tv]);
@@ -57,7 +65,7 @@ export function InviteTeacherDialog({ open, onOpenChange }: InviteTeacherDialogP
 
   const submit = async (values: InviteTeacherValues) => {
     try {
-      await invite.mutateAsync(values);
+      await invite.mutateAsync({ values, role });
       toast.success(t('successToast', { email: values.email }));
       close(false);
     } catch (error) {
@@ -87,12 +95,6 @@ export function InviteTeacherDialog({ open, onOpenChange }: InviteTeacherDialogP
           </div>
           <FieldShell id="inv-email" label={t('email')} errorText={errors.email?.message} required>
             <Input id="inv-email" type="email" autoComplete="off" {...register('email')} />
-          </FieldShell>
-          <FieldShell id="inv-role" label={t('role')} errorText={errors.role?.message} required>
-            <NativeSelect id="inv-role" className="w-full" {...register('role')}>
-              <NativeSelectOption value="teacher">{t('roleTeacher')}</NativeSelectOption>
-              <NativeSelectOption value="school_admin">{t('roleSchoolAdmin')}</NativeSelectOption>
-            </NativeSelect>
           </FieldShell>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => close(false)} disabled={invite.isPending}>

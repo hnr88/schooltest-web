@@ -1,5 +1,10 @@
 import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
-import type { ClassStudentOption, SchoolClass } from '@/modules/classes/types/classes.types';
+import type {
+  ClassStudentOption,
+  ClassTestCompletion,
+  ClassTestCompletionDisplay,
+  SchoolClass,
+} from '@/modules/classes/types/classes.types';
 import type { SchoolStudent } from '@/modules/school-students';
 import type { SchoolTeacher } from '@/modules/teachers';
 
@@ -31,17 +36,18 @@ export interface ClassDetailScreenProps {
   documentId: string;
 }
 
-// `completions` is the C-RPT-04 submitted-count per class documentId, or null
-// when participation could not be read (the column then shows the empty value).
+// `completions` is the C-RPT-04 Test A / Test B submitted counts per class
+// documentId, or null when participation could not be read (the column then
+// shows the empty value).
 export interface ClassesTableProps {
   rows: SchoolClass[];
-  completions: Map<string, number> | null;
+  completions: Map<string, ClassTestCompletion> | null;
   onEdit: (schoolClass: SchoolClass) => void;
 }
 
 export interface ClassesTableRowProps {
   row: SchoolClass;
-  testsCompleted: string;
+  testsCompleted: ClassTestCompletionDisplay | null;
   onEdit: () => void;
 }
 

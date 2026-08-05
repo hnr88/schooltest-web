@@ -133,9 +133,10 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     await page.goto('/dashboard/school/teachers');
     const staffRow = surface.locator('tr', { hasText: INVITED.email });
     await expect(staffRow).toBeVisible({ timeout: 20_000 });
-    await expect(
-      staffRow.getByText(cat(en, 'Teachers.table.status.active'), { exact: true }),
-    ).toBeVisible();
+    // Spec section 3's Name column is avatar + full name, so an ACTIVE account
+    // carries no status badge; only the rows the spec does not describe
+    // (invited / expired / deactivated) do. `data-status` is the row's state.
+    await expect(staffRow).toHaveAttribute('data-status', 'active');
 
     // C-TCH-02 deactivate (confirmed), then reactivate (confirmed).
     const displayName = `${INVITED.first} ${INVITED.last}`;
@@ -161,9 +162,7 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     await page
       .getByRole('button', { name: cat(en, 'Teachers.actions.reactivateConfirm'), exact: true })
       .click();
-    await expect(
-      staffRow.getByText(cat(en, 'Teachers.table.status.active'), { exact: true }),
-    ).toBeVisible({ timeout: 20_000 });
+    await expect(staffRow).toHaveAttribute('data-status', 'active', { timeout: 20_000 });
 
     // C-INV-03 reissue on an invited row sends a fresh email; C-INV-04 revoke
     // (confirmed) removes the row.

@@ -2,6 +2,9 @@
 
 import { useMemo } from 'react';
 
+import type { SchoolClass } from '@/modules/classes';
+import { mergeTeacherClasses } from '@/modules/teachers/lib/staff-classes';
+import { countReportingClasses, reportingClassIds } from '@/modules/teachers/lib/staff-reporting';
 import type {
   SchoolInvitation,
   SchoolTeacher,
@@ -10,7 +13,14 @@ import type {
 } from '@/modules/teachers/types/teachers.types';
 import { STATUS_ORDER } from '@/modules/teachers/constants/hooks.constants';
 
-function teacherRow(teacher: SchoolTeacher): StaffRow {
+import type { StaffRowsInput } from '@/modules/teachers/types/hooks.types';
+
+function teacherRow(
+  teacher: SchoolTeacher,
+  schoolClasses: SchoolClass[] | undefined,
+  reportingIds: Set<string> | null,
+): StaffRow {
+  const classes = mergeTeacherClasses(teacher.classes, schoolClasses, teacher.documentId);
   return {
     kind: 'teacher',
     documentId: teacher.documentId,
@@ -18,7 +28,8 @@ function teacherRow(teacher: SchoolTeacher): StaffRow {
     first_name: teacher.first_name ?? '',
     last_name: teacher.last_name ?? '',
     status: teacher.blocked ? 'deactivated' : 'active',
-    classes: teacher.classes,
+    classes,
+    reportingClassCount: countReportingClasses(classes, reportingIds),
     expires_at: null,
   };
 }
@@ -35,6 +46,8 @@ function invitationRow(invitation: SchoolInvitation): StaffRow | null {
     last_name: invitation.last_name,
     status: invitation.status,
     classes: [],
+    // No account, so no class links and nothing reporting can be attached to.
+    reportingClassCount: null,
     expires_at: invitation.expires_at,
   };
 }
@@ -42,14 +55,19 @@ function invitationRow(invitation: SchoolInvitation): StaffRow | null {
 // Merges C-TCH-01 staff with C-INV-02 open invitations into one sorted table
 // model: pending invitations first, then active and deactivated accounts,
 // alphabetical inside each group. Accepted invitations are represented by the
-// staff account itself and drop out.
-export function useStaffRows(
-  teachers: SchoolTeacher[] | undefined,
-  invitations: SchoolInvitation[] | undefined,
-): StaffRow[] {
+// staff account itself and drop out. C-CLS-01 completes each account's class
+// list (C-TCH-01 only sees the singular owner) and C-RPT-04 says how many of
+// those classes carry sittings or results.
+export function useStaffRows({
+  teachers,
+  invitations,
+  classes,
+  participation,
+}: StaffRowsInput): StaffRow[] {
   return useMemo(() => {
+    const reportingIds = reportingClassIds(participation);
     const rows: StaffRow[] = [
-      ...(teachers ?? []).map(teacherRow),
+      ...(teachers ?? []).map((teacher) => teacherRow(teacher, classes, reportingIds)),
       ...(invitations ?? [])
         .map(invitationRow)
         .filter((row): row is StaffRow => row !== null),
@@ -61,5 +79,5 @@ export function useStaffRows(
       const nameB = `${b.last_name} ${b.first_name}`.toLowerCase();
       return nameA.localeCompare(nameB);
     });
-  }, [teachers, invitations]);
+  }, [teachers, invitations, classes, participation]);
 }
