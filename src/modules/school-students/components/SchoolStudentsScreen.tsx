@@ -22,7 +22,9 @@ import { ROSTER_COUNT_QUERY } from '@/modules/school-students/constants/queries.
 // all narrow server-side, so the table and its pager always agree. The subtitle
 // total comes from its own unfiltered active-only read — it is a school total,
 // not a count of what the current filters returned. Import (C-CHD-02 per row)
-// sits beside the single-student form.
+// sits beside the single-student form. Clicking a row navigates to the student
+// detail view; the edit dialog this screen owns is reached from the row's
+// actions menu.
 export function SchoolStudentsScreen() {
   const t = useTranslations('SchoolStudents');
   const token = useAuthStore((state) => state.token);
@@ -85,7 +87,7 @@ export function SchoolStudentsScreen() {
         </Alert>
       ) : (
         <>
-          <StudentsTable rows={rows} filtered={filters.filtered} onOpen={setEditTarget} />
+          <StudentsTable rows={rows} filtered={filters.filtered} onEdit={setEditTarget} />
           {studentsQuery.data ? (
             <StudentsPagination
               pagination={studentsQuery.data.pagination}

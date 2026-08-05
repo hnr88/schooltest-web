@@ -1,7 +1,7 @@
 import type { SchoolClass } from '@/modules/classes';
 import type { StudentFormTarget } from '@/modules/school-students/types/hooks.types';
 import type { SchoolStudentFormValues } from '@/modules/school-students/schemas/school-student.schema';
-import type { SchoolStudent, SchoolStudentLevelFilter, SchoolStudentsPagination } from '@/modules/school-students/types/school-students.types';
+import type { SchoolStudent, SchoolStudentLevelFilter, SchoolStudentRecord, SchoolStudentsPagination } from '@/modules/school-students/types/school-students.types';
 import type { UseFormReturn } from 'react-hook-form';
 
 export interface ArchiveStudentDialogProps {
@@ -41,12 +41,20 @@ export interface StudentsPaginationProps {
 export interface StudentsTableProps {
   rows: SchoolStudent[];
   filtered: boolean;
-  onOpen: (student: SchoolStudent) => void;
+  onEdit: (student: SchoolStudent) => void;
 }
 
 export interface StudentsTableRowProps {
   student: SchoolStudent;
-  onOpen: () => void;
+  onEdit: () => void;
+}
+
+export interface SchoolStudentDetailScreenProps {
+  documentId: string;
+}
+
+export interface StudentRecordPanelProps {
+  student: SchoolStudentRecord;
 }
 
 export interface StudentLevelBadgeProps {

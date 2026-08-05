@@ -14,9 +14,10 @@ import { StudentsTableRow } from '@/modules/school-students/components/StudentsT
 
 import type { StudentsTableProps } from '@/modules/school-students/types/components.types';
 
-// Spec §4 roster table. Dumb renderer — the row owns its cells, and the
-// edit/archive wiring lives in StudentRowActions and the screen.
-export function StudentsTable({ rows, filtered, onOpen }: StudentsTableProps) {
+// Spec §4 roster table. Dumb renderer — the row owns its cells and its own
+// link to the student detail view, and the edit/archive wiring lives in
+// StudentRowActions and the screen.
+export function StudentsTable({ rows, filtered, onEdit }: StudentsTableProps) {
   const t = useTranslations('SchoolStudents.table');
 
   return (
@@ -36,7 +37,7 @@ export function StudentsTable({ rows, filtered, onOpen }: StudentsTableProps) {
         </TableHeader>
         <TableBody>
           {rows.map((row) => (
-            <StudentsTableRow key={row.documentId} student={row} onOpen={() => onOpen(row)} />
+            <StudentsTableRow key={row.documentId} student={row} onEdit={() => onEdit(row)} />
           ))}
           {rows.length === 0 ? (
             <TableRow>

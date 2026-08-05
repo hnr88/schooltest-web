@@ -4,6 +4,10 @@ export const ENTITLEMENT_QUERY_KEY = ['school-admin', 'entitlement'] as const;
 
 export const SCHOOL_CHILDREN_QUERY_KEY = ['school-students'] as const;
 
+// Nested under SCHOOL_CHILDREN_QUERY_KEY so the create/update/archive
+// mutations' prefix invalidation refreshes an open detail view too.
+export const SCHOOL_CHILD_DETAIL_QUERY_KEY = [...SCHOOL_CHILDREN_QUERY_KEY, 'detail'] as const;
+
 export const SCHOOL_CHILDREN_PAGE_SIZE = 25;
 
 // Spec §4 subtitle "X students across Y classes": a school total, not a result

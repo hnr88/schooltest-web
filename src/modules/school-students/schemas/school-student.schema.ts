@@ -32,6 +32,13 @@ export const schoolStudentSchema = z.object({
     .nullable(),
 });
 
+// C-CHD-06 single read: the list row shape, plus the email the roster table
+// projects but does not render. Nullish for the same reason as the fields
+// above — an absent key reads as "not set", never as a parse failure.
+export const schoolStudentRecordSchema = schoolStudentSchema.extend({
+  email: z.string().nullish().transform((value) => value ?? null),
+});
+
 export const schoolStudentDetailSchema = schoolStudentSchema.extend({
   date_of_birth: z.string().nullable(),
   year_level: z.number().nullable(),

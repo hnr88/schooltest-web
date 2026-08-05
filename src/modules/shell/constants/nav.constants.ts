@@ -15,7 +15,12 @@ import {
   Wrench,
 } from 'lucide-react';
 
-import { OPS_ROLE_TYPE, SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE } from '@/modules/auth';
+import {
+  OPS_ROLE_TYPE,
+  PARENT_ROLE_TYPE,
+  SCHOOL_ADMIN_ROLE_TYPE,
+  TEACHER_ROLE_TYPE,
+} from '@/modules/auth';
 import type { NavItem } from '@/modules/shell/types/shell.types';
 
 // The one reachable search surface (unified search). The topbar trigger pill points
@@ -55,6 +60,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: LayoutDashboard,
     exact: true,
     group: 'primary',
+    roles: [PARENT_ROLE_TYPE],
     parentViews: true,
   },
   {
@@ -63,6 +69,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: Users,
     exact: false,
     group: 'primary',
+    roles: [PARENT_ROLE_TYPE],
     parentViews: true,
   },
   {
@@ -81,13 +88,22 @@ export const NAV_ITEMS: readonly NavItem[] = [
     group: 'primary',
     roles: [TEACHER_ROLE_TYPE],
   },
-  { labelKey: 'search', href: SEARCH_HREF, icon: Search, exact: false, group: 'primary', parentViews: true },
+  {
+    labelKey: 'search',
+    href: SEARCH_HREF,
+    icon: Search,
+    exact: false,
+    group: 'primary',
+    roles: [PARENT_ROLE_TYPE],
+    parentViews: true,
+  },
   {
     labelKey: 'settings',
     href: '/dashboard/settings',
     icon: Settings,
     exact: false,
     group: 'primary',
+    roles: [PARENT_ROLE_TYPE],
     parentViews: true,
   },
   {
@@ -179,10 +195,3 @@ export const PRIMARY_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'prim
 
 // Rendered in the sidebar footer, above the user card and behind a divider.
 export const ACCOUNT_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'account');
-
-export const LABELLED_ROLE_TYPES = [
-  SCHOOL_ADMIN_ROLE_TYPE,
-  TEACHER_ROLE_TYPE,
-  OPS_ROLE_TYPE,
-  'parent',
-];

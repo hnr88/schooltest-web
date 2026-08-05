@@ -29,6 +29,13 @@ export interface SchoolStudent {
   class: SchoolStudentClassRef | null;
 }
 
+// C-CHD-06 single-student read. The server answers with EXACTLY the C-CHD-01
+// row projection plus the class relation, so the record is the list row with
+// the one column the roster table has no room for: the student's email.
+export interface SchoolStudentRecord extends SchoolStudent {
+  email: string | null;
+}
+
 // C-CHD-02/03 write response: the list shape plus the v2 detail fields.
 export interface SchoolStudentDetail extends SchoolStudent {
   date_of_birth: string | null;

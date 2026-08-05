@@ -41,6 +41,12 @@ export interface NavItem {
   // Task 46 (st-mvp-pivot): the destination lives in the parent portal, which is
   // masked while PARENT_VIEWS_ENABLED is off. nav-visible drops these items for
   // every role until the flag flips on; nothing is deleted.
+  //
+  // ORTHOGONAL to `roles`, and neither may stand in for the other: a parent-portal
+  // entry carries BOTH, so the flag decides whether the portal exists yet and the
+  // role decides whose rail it belongs on. Flag off => hidden from everyone; flag
+  // on => visible to parents ONLY (never to a school admin, whose rail the redesign
+  // spec fixes at School/Classes/Teachers/Students + Account).
   parentViews?: boolean;
 }
 

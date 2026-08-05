@@ -1,5 +1,6 @@
 import type { OnboardSchoolValues } from '@/modules/ops/schemas/school-invitation.schema';
 import type { SectionTimersMeta, TimerSection } from '@/modules/ops/schemas/section-timers.schema';
+import type { SchoolPlan } from '@/modules/school-admin';
 
 export interface PutFormWindowInput {
   schoolDocumentId: string;
@@ -15,6 +16,11 @@ export interface ImportStudentsInput {
 
 export interface OnboardSchoolInput extends OnboardSchoolValues {
   schoolDocumentId: string;
+}
+
+export interface SchoolPlanInput {
+  schoolDocumentId: string;
+  plan: SchoolPlan;
 }
 
 export interface OpsResitInput {

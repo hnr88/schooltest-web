@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 
 // Task 25 (st-mvp-pivot) targeted live checks — NOT part of the suite.
 // Seeded credentials from .qa/DECISIONS.md D-04. Verifies:
@@ -73,5 +74,46 @@ test.describe('task 25: role nav wiring + guard fixes', () => {
     await page.goto('/dashboard/reports');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
     await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible();
+  });
+});
+
+// The four parent-portal destinations are scoped by ROLE, not by the release
+// flag. With NEXT_PUBLIC_PARENT_VIEWS_ENABLED off the whole portal is masked
+// from everyone, so the school admin rail happens to look right; the leak is
+// only observable with the flag ON, which is the state these legs pin. Run them
+// with the flag exported:
+//   NEXT_PUBLIC_PARENT_VIEWS_ENABLED=true pnpm exec playwright test \
+//     tests/e2e/zz-task25-role-nav.spec.ts --workers=1 --grep "flag ON"
+const PARENT_PORTAL_NAV_KEYS = ['overview', 'myChildren', 'search', 'settings'] as const;
+
+// The rail the redesign spec §Sidebar Navigation defines for a school admin:
+// School / Classes / Teachers / Students, with Account pinned in the footer.
+const SCHOOL_ADMIN_PRIMARY_KEYS = ['school', 'classes', 'teachers', 'students'] as const;
+
+test.describe('parent portal is role-scoped, not flag-scoped (flag ON)', () => {
+  skipWhenParentPortalMasked();
+
+  test('school_admin: no parent-portal entry reaches the rail', async ({ page }) => {
+    await signIn(page, SCHOOL_ADMIN.email, SCHOOL_ADMIN.password);
+    await expect(navLink(page, 'school')).toBeVisible({ timeout: 20_000 });
+    for (const key of PARENT_PORTAL_NAV_KEYS) {
+      await expect(navLink(page, key)).toHaveCount(0);
+    }
+    // Exactly the spec's four primary destinations — nothing appended above them.
+    await expect(page.locator('[data-slot="sidebar-content"] nav a')).toHaveCount(
+      SCHOOL_ADMIN_PRIMARY_KEYS.length,
+    );
+    await expect(navLink(page, 'account')).toBeVisible();
+  });
+
+  test('parent: the same entries are the rail', async ({ page }) => {
+    await signIn(page, PARENT.email, PARENT.password);
+    for (const key of PARENT_PORTAL_NAV_KEYS) {
+      await expect(navLink(page, key)).toBeVisible({ timeout: 20_000 });
+    }
+    for (const key of SCHOOL_ADMIN_PRIMARY_KEYS) {
+      await expect(navLink(page, key)).toHaveCount(0);
+    }
+    await expect(navLink(page, 'account')).toHaveCount(0);
   });
 });

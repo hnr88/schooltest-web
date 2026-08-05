@@ -8,6 +8,7 @@ import type { SectionTimersMeta, TimerSection } from '@/modules/ops/schemas/sect
 import type { ViewAsTeacher } from '@/modules/ops/schemas/surfaces.schema';
 import type { OpsSchool } from '@/modules/ops/types/ops.types';
 import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
+import type { SchoolPlan } from '@/modules/school-admin';
 import type { UseFormReturn } from 'react-hook-form';
 
 export interface OpsFormWindowEditorProps {
@@ -49,6 +50,11 @@ export interface OpsSchoolDetailProps {
 export interface OpsSchoolInvitationPanelProps {
   documentId: string;
   enabled: boolean;
+}
+
+export interface OpsSchoolPlanPanelProps {
+  documentId: string;
+  plan: SchoolPlan | null;
 }
 
 export interface OpsSchoolRowProps {

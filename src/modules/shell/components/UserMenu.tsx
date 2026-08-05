@@ -13,7 +13,7 @@ import {
   Skeleton,
 } from '@/modules/design-system';
 import { getUserInitials } from '@/modules/shell/lib/user-initials';
-import { LABELLED_ROLE_TYPES } from '@/modules/shell/constants/nav.constants';
+import { LABELLED_ROLE_TYPES } from '@/modules/shell/constants/role-label.constants';
 import { USER_CARD_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
 
 // The rail's USER AREA (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:24-30):

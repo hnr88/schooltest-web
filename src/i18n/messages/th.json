@@ -2740,6 +2740,16 @@
       "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
       "forbiddenToast": "You do not have permission to add students.",
       "genericToast": "No students were imported. Try again."
+    },
+    "detailMeta": {
+      "title": "Student - SchoolTest",
+      "description": "One student's record: class, language background, level and diagnostic status."
+    },
+    "detail": {
+      "panelTitle": "Student details",
+      "unnamed": "Unnamed student",
+      "notFoundTitle": "We could not find that student",
+      "notFoundDescription": "They may have been removed, or they belong to another school."
     }
   },
   "Ops": {
@@ -3170,6 +3180,22 @@
         "sentToast": "ส่งอีเมลทดสอบถึง {to} ผ่าน {provider} แล้ว",
         "errorToast": "ผู้ให้บริการปฏิเสธข้อความนี้"
       }
+    },
+    "plan": {
+      "title": "Plan",
+      "description": "The school's product tier. Ops assigns the full license here — a school can never switch itself.",
+      "current": "Current plan: {plan}",
+      "currentNone": "No plan is stored for this school yet.",
+      "label": "Plan",
+      "placeholder": "Choose a plan",
+      "helper": "Trial fixes the test allowances at 2 reading tests. Full license hands the allowance totals back to the entitlement you set for this school.",
+      "options": {
+        "trial": "Trial",
+        "full_license": "Full license"
+      },
+      "savedToast": "Plan set to {plan}",
+      "forbiddenToast": "Only an ops account can assign a plan.",
+      "errorToast": "We could not change the plan. Try again."
     }
   },
   "RunSheet": {

@@ -33,6 +33,7 @@ export {
   SCHOOL_ADMIN_ROLE_TYPE,
   OPS_ROLE_TYPE,
 } from './constants/role.constants';
+export { PARENT_ROLE_TYPE } from './constants/hooks.constants';
 export { ChangePasswordForm } from './components/ChangePasswordForm';
 export { GoogleCallbackScreen } from './components/GoogleCallbackScreen';
 export { GOOGLE_ENABLED } from './constants/auth.constants';

@@ -8,6 +8,7 @@ import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
 import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
 import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
+import { OpsSchoolPlanPanel } from '@/modules/ops/components/OpsSchoolPlanPanel';
 import { OpsSittingRecovery } from '@/modules/ops/components/OpsSittingRecovery';
 import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
 import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
@@ -97,6 +98,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
         <OpsSchoolInvitationPanel documentId={documentId} enabled={hydrated && Boolean(token)} />
       </div>
       <OpsSchoolCountCards school={school} />
+      <OpsSchoolPlanPanel documentId={documentId} plan={school.plan} />
       <OpsFormWindow documentId={documentId} />
       <OpsSittingRecovery schoolDocumentId={documentId} />
       <OpsStudentImport documentId={documentId} />
