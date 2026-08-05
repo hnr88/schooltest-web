@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import type { APIRequestContext, Page } from '@playwright/test';
 
+import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
 import {
@@ -12,7 +13,7 @@ import type { DispatchedNotification } from './helpers/notification-dispatch';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 
 // Two console boots per phase (seed, suppression dispatch, cleanup) — each boot
 // is a full Strapi startup, so this file needs a much larger budget than a

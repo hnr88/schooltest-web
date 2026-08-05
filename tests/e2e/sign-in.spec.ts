@@ -3,6 +3,7 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { waitForAnimationsSettled, watchErrors } from './helpers/ui';
 
@@ -18,7 +19,7 @@ const en = loadMessages('en');
 const zh = loadMessages('zh');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 
 test('en: renders the §14.1 split-panel sign-in with forgot link, axe clean', async ({ page }) => {
   const errors = watchErrors(page);

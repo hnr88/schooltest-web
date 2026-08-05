@@ -1,5 +1,6 @@
 import { expect, type APIRequestContext, type Page, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { deleteStudents } from './helpers/student-cleanup';
@@ -80,6 +81,9 @@ async function submitAndCapture(page: Page): Promise<string> {
   const body = (await created.json()) as { data: { documentId: string } };
   return body.data.documentId;
 }
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('no uploads → both media errors block; photo only → audio gate blocks; both → persists after reload', async ({
   page,

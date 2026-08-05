@@ -3,6 +3,7 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 import { loginAsParent } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { deleteStudents } from './helpers/student-cleanup';
@@ -36,6 +37,9 @@ async function fillStep1(page: Page) {
     gender: 'male',
   });
 }
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('wizard shots', async ({ page }) => {
   test.setTimeout(180_000);

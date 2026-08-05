@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 import { loginAsParent } from './helpers/auth';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { deleteStudents } from './helpers/student-cleanup';
@@ -52,6 +53,9 @@ async function chooseFirstOption(page: Page, label: string) {
   await expectReadableOption(highlighted);
   await page.keyboard.press('Enter');
 }
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('student wizard options remain readable and a selected student persists after reload', async ({
   page,

@@ -3,6 +3,8 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
+import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
 import { uploadStudentMedia } from './helpers/wizard-fill';
@@ -11,7 +13,7 @@ import { watchErrors } from './helpers/ui';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 
@@ -110,6 +112,9 @@ async function loadParentDashboard(page: Page, token: string): Promise<void> {
 
 // Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
 test.beforeEach(async ({ page }) => paceRateWindow(page));
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('parent sees a real activity notification, marks it read, and persists the feed state', async ({
   page,

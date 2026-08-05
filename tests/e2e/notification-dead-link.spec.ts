@@ -2,6 +2,8 @@ import path from 'node:path';
 
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
+import { SEEDED_PARENT } from './helpers/auth';
 import { apiEnv } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { API_BASE_URL } from './helpers/mailpit';
@@ -17,7 +19,7 @@ import { waitForAnimationsSettled, watchErrors } from './helpers/ui';
 // reported as an error and still logged.
 const en = loadMessages('en');
 const zh = loadMessages('zh');
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const PROGRESS_ROUTE = '**/api/my/students/*/progress';
 
@@ -110,6 +112,9 @@ async function firstLiveChild(request: APIRequestContext, token: string): Promis
   expect(data.length).toBeGreaterThan(0);
   return data[0].documentId;
 }
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('en: a notification whose child was deleted lands on a calm not-found, never an error', async ({
   page,

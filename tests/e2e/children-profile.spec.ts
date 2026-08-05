@@ -3,6 +3,8 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
+import { SEEDED_PARENT } from './helpers/auth';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { API_BASE_URL } from './helpers/mailpit';
@@ -10,7 +12,7 @@ import { loginParentJwt, registerAndConfirmParent, skipOnboarding } from './help
 import { watchErrors } from './helpers/ui';
 
 const en = loadMessages('en');
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const usedEmails: string[] = [];
 
@@ -53,6 +55,9 @@ async function firstChild(
 test.afterAll(() => {
   for (const email of usedEmails) deleteAuthEmailRows(email);
 });
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('en: child cards open a real persisted profile with metrics and an honest results state', async ({
   page,

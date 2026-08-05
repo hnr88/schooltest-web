@@ -1,13 +1,13 @@
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-import { skipOnboardingViaUi } from './helpers/auth';
+import { SEEDED_PARENT, skipOnboardingViaUi } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 const SETTINGS_PARENT = { email: 'parent-t06@schooltest.local', password: 'Parent1234!' };
 const CHANGED_PASSWORD = 'Settings1234!';
 

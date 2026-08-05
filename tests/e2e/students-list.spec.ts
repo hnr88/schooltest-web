@@ -3,6 +3,8 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
+import { SEEDED_PARENT } from './helpers/auth';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { type AnyLocale, cat, icu, loadMessages } from './helpers/i18n';
 import { API_BASE_URL } from './helpers/mailpit';
@@ -16,7 +18,7 @@ import { watchErrors } from './helpers/ui';
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 const ALL_LOCALES: readonly AnyLocale[] = ['en', 'ko', 'ms', 'th', 'vi', 'zh'];
 
 const usedEmails: string[] = [];
@@ -42,6 +44,9 @@ async function signInAs(
     window.localStorage.setItem('app.auth.token', token);
   }, jwt);
 }
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('en: seeded parent sees Mia and Jonas as active child cards, axe clean', async ({
   page,

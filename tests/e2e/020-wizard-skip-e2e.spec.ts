@@ -2,6 +2,7 @@ import path from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 import { loginAsParent } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { fillEducationStep, fillPersonalStep, wizardContinue, wizardRail } from './helpers/wizard-fill';
@@ -16,6 +17,9 @@ const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '..', '.qa', 'screenshots');
 
 test.describe.configure({ mode: 'serial' });
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('wizard gates every step: Continue validates, the rail locks steps past the furthest valid one', async ({
   page,

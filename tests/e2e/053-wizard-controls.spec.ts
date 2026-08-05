@@ -1,5 +1,6 @@
 import { expect, type APIRequestContext, type Locator, type Page, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { loginParentJwt, registerAndConfirmParent, skipOnboarding } from './helpers/throwaway-parent';
@@ -67,6 +68,9 @@ async function authAndGoto(page: Page, request: APIRequestContext) {
   }, jwt);
   await page.goto('/dashboard/children/new');
 }
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('gender is a real radiogroup: named, one tab stop, arrows move the answer, 44px targets', async ({
   page,

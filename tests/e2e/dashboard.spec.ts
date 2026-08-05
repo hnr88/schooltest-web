@@ -3,6 +3,8 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
+import { SEEDED_PARENT } from './helpers/auth';
 import { cat, escapeRegExp, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
 
@@ -16,8 +18,11 @@ import { watchErrors } from './helpers/ui';
 const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('en: incognito visit to /dashboard redirects to /sign-in (no JWT, real client guard)', async ({
   page,

@@ -1,9 +1,11 @@
 import { expect, test, type APIRequestContext, type APIResponse } from '@playwright/test';
 
+import { SEEDED_PARENT } from './helpers/auth';
+
 import { paceRateWindow } from './helpers/pace';
 
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
-const PRIMARY_PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PRIMARY_PARENT = SEEDED_PARENT;
 const FOREIGN_PARENT = { email: 'parent-t06@schooltest.local', password: 'Parent1234!' };
 const UNKNOWN_NOTIFICATION_ID = 'nonexistentdoc000000000';
 

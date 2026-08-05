@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 
+import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { waitForAnimationsSettled } from './helpers/ui';
 
@@ -16,7 +17,7 @@ test('forgot-password with a stored JWT sends no Authorization header and succee
   request,
 }) => {
   const login = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: 'parent@schooltest.local', password: 'Parent1234!' },
+    data: { identifier: SEEDED_PARENT.email, password: SEEDED_PARENT.password },
   });
   const { jwt } = (await login.json()) as { jwt: string };
 

@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
 import { uploadStudentMedia } from './helpers/wizard-fill';
@@ -7,7 +8,7 @@ import { deleteStudents } from './helpers/student-cleanup';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 
 interface LoginResponse {
   jwt: string;

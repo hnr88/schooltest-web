@@ -1,5 +1,6 @@
 import { expect, type APIRequestContext, type Page, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 import { deleteAuthEmailRows } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { API_BASE_URL } from './helpers/mailpit';
@@ -114,6 +115,9 @@ async function listStatuses(
   const body = (await res.json()) as ApiStudentsResponse;
   return body.data.filter((s) => s.documentId === documentId).map((s) => s.status);
 }
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('en: archive → confirm → card disappears; "Include archived" restores it; unarchive re-activates (DB-proven)', async ({
   page,

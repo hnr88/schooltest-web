@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 import { loginAsParent } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
@@ -29,6 +30,9 @@ function isSearchStudentsGet(url: URL, method: string, q: string): boolean {
     method === 'GET' && url.pathname === '/api/search/students' && url.searchParams.get('q') === q
   );
 }
+
+// Parent portal is masked on this stack — see helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('en: search debounces to one settled request per contract, filters, clears, no-results, Escape', async ({
   page,

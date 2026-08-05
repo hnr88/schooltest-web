@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
+import { SEEDED_PARENT } from './helpers/auth';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
 import { watchErrors } from './helpers/ui';
@@ -12,7 +13,7 @@ import { watchErrors } from './helpers/ui';
 // in `finally` so the suite stays order-independent.
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
-const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
+const PARENT = SEEDED_PARENT;
 
 interface SearchPreference {
   default_states: string[];

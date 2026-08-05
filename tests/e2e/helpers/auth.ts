@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 
+import { apiEnv } from './auth-db';
 import { cat, loadMessages } from './i18n';
 
 // D9: seeded parent test user (code-only, never created via the UI in this helper —
@@ -7,9 +8,13 @@ import { cat, loadMessages } from './i18n';
 // original sandbox seed; stacks whose bootstrap seeds a different password
 // (st-mvp-pivot D-04: SEED_PARENT_PASSWORD in schooltest-api/.env.dev) override
 // via E2E_PARENT_EMAIL / E2E_PARENT_PASSWORD without touching this file.
+// The default now resolves from schooltest-api/.env.dev's SEED_PARENT_PASSWORD —
+// the value the bootstrap actually seeds — the same source-of-truth discipline
+// helpers/auth-db.ts already applies to DATABASE_*. The old 'Parent1234!'
+// literal belonged to a retired sandbox and failed every login on this stack.
 export const SEEDED_PARENT = {
   email: process.env.E2E_PARENT_EMAIL ?? 'parent@schooltest.local',
-  password: process.env.E2E_PARENT_PASSWORD ?? 'Parent1234!',
+  password: process.env.E2E_PARENT_PASSWORD ?? apiEnv('SEED_PARENT_PASSWORD'),
 } as const;
 
 // The API's brute-force guard allows 20 POST /api/auth/local per minute per IP
