@@ -15,6 +15,7 @@ export type {
   SchoolMeResponse,
   SchoolAccountStatus,
   SchoolOnboardingStatus,
+  SchoolPlan,
   Entitlement,
   EntitlementResponse,
   Allowance,

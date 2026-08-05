@@ -22,3 +22,10 @@ export const SCHOOL_ONBOARDING_STATUSES = [
 
 // C-ENT-01 allowance test_type values (D-02/Q3), in display order.
 export const TEST_TYPES = ['reading', 'listening', 'writing', 'speaking'] as const;
+
+// Plan tiers exactly as the api::school.school schema declares them
+// (schooltest-api/src/api/school/content-types/school/schema.json). The plan is
+// stored on the SCHOOL record and drives test allowances, which analytics
+// sections are available and what the Account page shows. Distinct from the
+// entitlement's `plan_code`, which is the ops-facing commercial SKU string.
+export const SCHOOL_PLANS = ['trial', 'full_license'] as const;

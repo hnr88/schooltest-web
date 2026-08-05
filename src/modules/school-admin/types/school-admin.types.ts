@@ -1,11 +1,13 @@
 import type {
   SCHOOL_ACCOUNT_STATUSES,
   SCHOOL_ONBOARDING_STATUSES,
+  SCHOOL_PLANS,
   TEST_TYPES,
 } from '@/modules/school-admin/constants/school-admin.constants';
 
 export type SchoolAccountStatus = (typeof SCHOOL_ACCOUNT_STATUSES)[number];
 export type SchoolOnboardingStatus = (typeof SCHOOL_ONBOARDING_STATUSES)[number];
+export type SchoolPlan = (typeof SCHOOL_PLANS)[number];
 
 // C-SCH-01 (GET /api/schools/me) payload — the caller's own school, limited
 // server-side to ME_FIELDS in the api::school.school controller.
@@ -18,6 +20,7 @@ export interface SchoolMe {
   sector: string | null;
   account_status: SchoolAccountStatus;
   onboarding_status: SchoolOnboardingStatus;
+  plan: SchoolPlan;
 }
 
 // Strapi v5 transformResponse envelope for a single entity.
@@ -37,8 +40,12 @@ export interface Allowance {
 }
 
 // C-ENT-01 payload. seats_used is the live count of active students, never
-// stored. renewal_date is null until ops sets one.
+// stored. renewal_date is null until ops sets one. `plan` is the school
+// record's tier, projected here because it drives the allowance totals below:
+// on `trial` they are the plan's fixed profile (reading 2, others 0), on
+// `full_license` they are the stored totals ops configured.
 export interface Entitlement {
+  plan: SchoolPlan;
   plan_code: string;
   seats_total: number;
   seats_used: number;
