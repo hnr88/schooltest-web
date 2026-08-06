@@ -22,7 +22,7 @@ export function SubskillTile({ subskill, verdict }: SubskillTileProps) {
 
   return (
     <TintTile className={cn('text-center', mastered && 'bg-success-soft text-success-ink')}>
-      <p className={cn('text-meta', mastered ? 'text-success-ink' : 'text-muted-foreground')}>
+      <p className={cn('text-meta', mastered ? 'text-success-ink' : 'text-body')}>
         {t(`subskill.${subskill}`)}
       </p>
       <p

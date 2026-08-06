@@ -39,7 +39,7 @@ export function ClassStudentDetailScreen({
     >
       <Link
         href={`/dashboard/school/classes/${classDocumentId}`}
-        className="inline-flex w-fit items-center gap-1.5 rounded-sm text-sm font-semibold text-primary transition-colors duration-150 hover:text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        className="inline-flex min-h-11 w-fit items-center gap-1.5 rounded-sm py-2 text-sm font-semibold text-primary transition-colors duration-150 hover:text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
         <ArrowLeft className="size-4" aria-hidden />
         {student === null ? t('backLinkFallback') : t('backLink', { name: student.class.name ?? '' })}
@@ -84,7 +84,7 @@ export function ClassStudentDetailScreen({
               const test = testFor(student.tests, slot);
               if (test === null || test.status !== 'completed') {
                 return (
-                  <p key={slot} className="text-sm text-muted-foreground">
+                  <p key={slot} className="text-sm text-body">
                     {t('notCompleted', { slot })}
                   </p>
                 );

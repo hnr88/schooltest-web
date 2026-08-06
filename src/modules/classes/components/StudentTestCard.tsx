@@ -43,7 +43,7 @@ export function StudentTestCard({ test }: StudentTestCardProps) {
         </div>
       </div>
       {subskills === null ? (
-        <p className="text-sm text-muted-foreground">{t('noSubskills')}</p>
+        <p className="text-sm text-body">{t('noSubskills')}</p>
       ) : (
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
           {SUBSKILL_ORDER.map((subskill) => (

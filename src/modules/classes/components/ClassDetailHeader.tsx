@@ -36,11 +36,11 @@ export function ClassDetailHeader({
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
-        <Button type="button" variant="outline" onClick={onEdit}>
+        <Button type="button" size="lg" variant="outline" onClick={onEdit}>
           <PencilIcon className="size-4" aria-hidden />
           {t('editClass')}
         </Button>
-        <Button type="button" variant="accent" onClick={onImport}>
+        <Button type="button" size="lg" variant="accent" onClick={onImport}>
           <UploadIcon className="size-4" aria-hidden />
           {t('importStudents')}
         </Button>

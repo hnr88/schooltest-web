@@ -81,10 +81,10 @@ export function EditClassDialog({ schoolClass, onClose }: EditClassDialogProps) 
               </NativeSelect>
             </FieldShell>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={onClose} disabled={pending}>
+              <Button type="button" size="lg" variant="outline" onClick={onClose} disabled={pending}>
                 {t('cancel')}
               </Button>
-              <Button type="submit" loading={pending}>
+              <Button type="submit" size="lg" loading={pending}>
                 {pending ? t('saving') : t('save')}
               </Button>
             </DialogFooter>

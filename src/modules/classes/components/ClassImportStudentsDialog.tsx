@@ -50,11 +50,12 @@ export function ClassImportStudentsDialog({
           </p>
         ) : null}
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose} disabled={importState.pending}>
+          <Button type="button" size="lg" variant="outline" onClick={onClose} disabled={importState.pending}>
             {t('cancel')}
           </Button>
           <Button
             type="button"
+            size="lg"
             variant="accent"
             loading={importState.pending}
             disabled={!importState.canSubmit}
