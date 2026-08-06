@@ -10,10 +10,18 @@ import type { RecordCrumbState } from '@/modules/shell/types/shell.types';
 // The pathname is stored WITH the label so a stale crumb can never survive a route
 // change — the topbar only reads a label that was published for the route it is
 // currently rendering.
+const NO_ANCESTORS: Readonly<Record<string, string>> = {};
+
 export const useRecordCrumbStore = create<RecordCrumbState>((set) => ({
   label: null,
+  ancestors: NO_ANCESTORS,
   pathname: null,
-  setRecordCrumb: (pathname, label) => set({ pathname, label }),
+  setRecordCrumb: (pathname, label, ancestors = NO_ANCESTORS) =>
+    set({ pathname, label, ancestors }),
   clearRecordCrumb: (pathname) =>
-    set((state) => (state.pathname === pathname ? { pathname: null, label: null } : state)),
+    set((state) =>
+      state.pathname === pathname
+        ? { pathname: null, label: null, ancestors: NO_ANCESTORS }
+        : state,
+    ),
 }));

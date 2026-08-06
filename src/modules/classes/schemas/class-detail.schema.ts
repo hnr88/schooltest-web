@@ -4,6 +4,10 @@ import { z } from 'zod';
 // for both new reads: the query functions parse the server envelope here and
 // hand typed data inward, so a server shape change fails loudly at the boundary
 // instead of drifting through the components.
+//
+// Every object is STRICT on purpose. A permissive object would silently strip a
+// field the server started sending, which is the drift these schemas exist to
+// catch — an unexpected key is a contract change and must fail here.
 
 export const SUBSKILL_KEYS = [
   'decoding',
@@ -19,7 +23,7 @@ export const ACARA_PHASES = ['Beginning', 'Emerging', 'Developing', 'Consolidati
 
 export const subskillVerdictSchema = z.enum(['mastered', 'not_yet']);
 
-export const subskillsSchema = z.object({
+export const subskillsSchema = z.strictObject({
   decoding: subskillVerdictSchema,
   vocabulary: subskillVerdictSchema,
   grammar: subskillVerdictSchema,
@@ -35,7 +39,7 @@ export const subskillsSchema = z.object({
  * subskills are null on anything the backend has no evidence for — the UI
  * renders the em dash there, it never substitutes a zero or a phase.
  */
-export const studentTestResultSchema = z.object({
+export const studentTestResultSchema = z.strictObject({
   test_id: z.enum(['A', 'B']),
   status: z.enum(['not_started', 'in_progress', 'completed']),
   overall_score: z.number().int().min(0).max(100).nullable(),
@@ -43,27 +47,27 @@ export const studentTestResultSchema = z.object({
   subskills: subskillsSchema.nullable(),
 });
 
-export const classDetailTeacherSchema = z.object({
+export const classDetailTeacherSchema = z.strictObject({
   documentId: z.string(),
   first_name: z.string().nullable(),
   last_name: z.string().nullable(),
 });
 
-export const classDetailStudentSchema = z.object({
+export const classDetailStudentSchema = z.strictObject({
   documentId: z.string(),
   given_name: z.string().nullable(),
   family_name: z.string().nullable(),
   tests: z.array(studentTestResultSchema),
 });
 
-export const classDetailSummarySchema = z.object({
+export const classDetailSummarySchema = z.strictObject({
   students: z.number().int(),
   test_a_completed: z.number().int(),
   test_b_completed: z.number().int(),
-  avg_reading_score: z.number().nullable(),
+  avg_reading_score: z.number().int().nullable(),
 });
 
-export const classDetailSchema = z.object({
+export const classDetailSchema = z.strictObject({
   documentId: z.string(),
   name: z.string().nullable(),
   year_band: z.string().nullable(),
@@ -73,12 +77,15 @@ export const classDetailSchema = z.object({
   students: z.array(classDetailStudentSchema),
 });
 
-export const classStudentDetailSchema = z.object({
+export const classStudentDetailSchema = z.strictObject({
   documentId: z.string(),
   given_name: z.string().nullable(),
   family_name: z.string().nullable(),
   first_language: z.string().nullable(),
-  acara_phase: z.string().nullable(),
-  class: z.object({ documentId: z.string(), name: z.string().nullable() }),
+  // The STUDENT's own proficiency level (the lower-case enum on the student
+  // record), not a result phase — a different vocabulary from `acara_phase`
+  // inside `tests`.
+  acara_phase: z.enum(['beginning', 'emerging', 'developing', 'consolidating']).nullable(),
+  class: z.strictObject({ documentId: z.string(), name: z.string().nullable() }),
   tests: z.array(studentTestResultSchema),
 });

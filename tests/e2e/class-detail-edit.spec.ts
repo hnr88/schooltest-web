@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import {
+  API,
   apiClassDetail,
   FIXTURE_CLASS_ID,
   gotoClassDetail,
@@ -18,6 +19,39 @@ const PROBE_SUFFIX = ' (edit probe)';
 test.describe.configure({ mode: 'serial' });
 
 test.describe('edit class modal (spec §1)', () => {
+  // These flows MUTATE the seeded fixture class. Each restores what it changed
+  // through the same modal, but a failure mid-flow would leave the probe name
+  // (or a foreign teacher) live in the dev database for the next run and for
+  // anyone browsing the app — so the original state is captured once and put
+  // back unconditionally, whatever happened.
+  let original: { name: string; teacherDocumentId: string } | null = null;
+
+  test.beforeAll(async ({ request }) => {
+    const before = await apiClassDetail(request, await schoolAdminJwt(request));
+    original = {
+      name: before.name ?? '',
+      teacherDocumentId: before.teacher?.documentId ?? '',
+    };
+  });
+
+  test.afterAll(async ({ request }) => {
+    if (!original) return;
+    const jwt = await schoolAdminJwt(request);
+    const current = await apiClassDetail(request, jwt);
+    const dirty =
+      current.name !== original.name ||
+      (current.teacher?.documentId ?? '') !== original.teacherDocumentId;
+    if (!dirty) return;
+    const res = await request.patch(`${API}/api/schools/me/classes/${FIXTURE_CLASS_ID}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+      data: {
+        name: original.name,
+        teacher_documentIds: original.teacherDocumentId ? [original.teacherDocumentId] : [],
+      },
+    });
+    expect(res.status(), `fixture restore -> ${await res.text()}`).toBe(200);
+  });
+
   test('flow 6: the modal pre-fills the name and offers ONE teacher select', async ({ page }) => {
     await loginAs(page, 'schoolAdmin');
     const detail = await apiClassDetail(page.request, await schoolAdminJwt(page.request));

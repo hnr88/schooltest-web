@@ -37,11 +37,11 @@ export function ClassStudentsTableRow({ classDocumentId, student }: ClassStudent
 
   return (
     <TableRow className="group relative">
-      <TableCell className="font-medium">
+      <TableCell className="font-semibold">
         {clickable ? (
           <Link
             href={`/dashboard/school/classes/${classDocumentId}/students/${student.documentId}`}
-            className="cursor-pointer rounded-sm text-left font-medium text-foreground underline-offset-4 transition-colors duration-150 group-hover:text-primary group-hover:underline after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="cursor-pointer rounded-sm text-left font-semibold text-foreground underline-offset-4 transition-colors duration-150 group-hover:text-primary group-hover:underline after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             {name}
           </Link>
@@ -55,7 +55,7 @@ export function ClassStudentsTableRow({ classDocumentId, student }: ClassStudent
           <TableCell key={`${slot}-status`} className="text-center">
             {statusCell(test)}
           </TableCell>,
-          <TableCell key={`${slot}-score`} className="text-center font-medium">
+          <TableCell key={`${slot}-score`} className="text-center font-semibold">
             {scoreLabel(test)}
           </TableCell>,
           <TableCell key={`${slot}-acara`} className="text-center text-sm">

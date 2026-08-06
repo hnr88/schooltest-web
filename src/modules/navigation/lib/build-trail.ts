@@ -24,12 +24,18 @@ function patternFor(parts: readonly string[]): string | null {
   const last = parts[parts.length - 1];
   if (!last || !isDynamicSegment(last)) return null;
 
-  const head = parts.slice(0, -1).join('/');
+  // Every `[param]` part matches an id-shaped segment at the same position, so a
+  // record NESTED inside another record (a student inside a class) resolves too
+  // — matching only the head literally would drop it, because the head itself
+  // contains the class's id.
   for (const pattern of RECORD_PATTERNS) {
     const patternParts = pattern.split('/').filter(Boolean);
     if (patternParts.length !== parts.length) continue;
-    if (patternParts.slice(0, -1).join('/') !== head) continue;
-    if (patternParts[patternParts.length - 1].startsWith('[')) return pattern;
+    if (!patternParts[patternParts.length - 1].startsWith('[')) continue;
+    const matches = patternParts.every((part, index) =>
+      part.startsWith('[') ? isDynamicSegment(parts[index]) : part === parts[index],
+    );
+    if (matches) return pattern;
   }
   return null;
 }
@@ -44,7 +50,12 @@ function patternFor(parts: readonly string[]): string | null {
  * acceptable crumb.
  */
 export function buildTrail(pathname: string, options: BuildTrailOptions = {}): Trail {
-  const { recordLabel = null, currentLabel = null, includeRoot = true } = options;
+  const {
+    recordLabel = null,
+    recordLabels = null,
+    currentLabel = null,
+    includeRoot = true,
+  } = options;
 
   const segments = pathname.split('?')[0].split('/').filter((s) => s && !IGNORED.has(s));
   const crumbs: TrailCrumb[] = [];
@@ -59,11 +70,17 @@ export function buildTrail(pathname: string, options: BuildTrailOptions = {}): T
     const pattern = patternFor(walked);
     if (!pattern) continue;
 
+    const href = `/${walked.join('/')}`;
     const isRecord = pattern.split('/').pop()?.startsWith('[') ?? false;
-    if (isRecord && !recordLabel) continue;
+    // An ancestor record (the class a student sits in) takes its own name from
+    // `recordLabels`; the trailing one falls back to `recordLabel`. A record
+    // segment with no name is still dropped — a raw documentId is never a crumb.
+    const ownLabel = isRecord ? (recordLabels?.[href] ?? null) : null;
+    if (isRecord && !ownLabel && !recordLabel) continue;
 
     crumbs.push({
-      href: `/${walked.join('/')}`,
+      href,
+      ...(ownLabel ? { label: ownLabel } : {}),
       labelKey: isRecord ? '' : TRAIL_LABELS[pattern],
       isCurrent: false,
       isRecord,

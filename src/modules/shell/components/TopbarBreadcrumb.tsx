@@ -14,7 +14,10 @@ import {
 } from '@/modules/design-system';
 import { buildTrail } from '@/modules/navigation';
 import { CRUMB_LINK_CLASSES } from '@/modules/shell/constants/crumb.constants';
-import { useRecordCrumbLabel } from '@/modules/shell/hooks/use-record-crumb';
+import {
+  useRecordCrumbAncestors,
+  useRecordCrumbLabel,
+} from '@/modules/shell/hooks/use-record-crumb';
 
 // The app's ONLY dashboard breadcrumb (canonical Child profile header:
 // "My children / Emma Hansen" — one row, "/" separator in #CBD5E1, the current
@@ -30,7 +33,8 @@ function TopbarBreadcrumb() {
   const t = useTranslations();
   const pathname = usePathname();
   const recordLabel = useRecordCrumbLabel(pathname);
-  const { crumbs } = buildTrail(pathname, { recordLabel, includeRoot: false });
+  const recordLabels = useRecordCrumbAncestors(pathname);
+  const { crumbs } = buildTrail(pathname, { recordLabel, recordLabels, includeRoot: false });
 
   return (
     <Breadcrumb aria-label={t('Shell.topbar.breadcrumbLabel')} className="min-w-0">
@@ -50,11 +54,11 @@ function TopbarBreadcrumb() {
                   data-slot="topbar-page-title"
                   className="truncate font-semibold text-foreground"
                 >
-                  {crumb.isRecord ? recordLabel : t(crumb.labelKey)}
+                  {crumb.isRecord ? (crumb.label ?? recordLabel) : t(crumb.labelKey)}
                 </BreadcrumbPage>
               ) : (
                 <BreadcrumbLink render={<Link href={crumb.href} />} className={CRUMB_LINK_CLASSES}>
-                  {crumb.isRecord ? recordLabel : t(crumb.labelKey)}
+                  {crumb.isRecord ? (crumb.label ?? recordLabel) : t(crumb.labelKey)}
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>

@@ -12,6 +12,10 @@ import type { StudentTestCardProps } from '@/modules/classes/types/components.ty
 // the right, and the seven subskill tiles below in the spec's FIXED order
 // (decoding … critical, read from SUBSKILL_ORDER — never re-typed inline).
 // The phase is printed exactly as the backend returned it.
+//
+// The tile grid is the spec's own `repeat(auto-fit, minmax(120px, 1fr))`,
+// expressed as the `grid-cols-subskill-tiles` @utility in globals.css — the
+// project's named-grid pattern, not a banned arbitrary bracket value.
 export function StudentTestCard({ test }: StudentTestCardProps) {
   const t = useTranslations('Classes.studentDetail');
   const { subskills } = test;
@@ -45,7 +49,7 @@ export function StudentTestCard({ test }: StudentTestCardProps) {
       {subskills === null ? (
         <p className="text-sm text-body">{t('noSubskills')}</p>
       ) : (
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+        <div className="grid grid-cols-subskill-tiles gap-2">
           {SUBSKILL_ORDER.map((subskill) => (
             <SubskillTile
               key={subskill}

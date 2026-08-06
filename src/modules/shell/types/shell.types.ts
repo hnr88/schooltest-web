@@ -26,6 +26,8 @@ export type NavGroup = 'primary' | 'account';
 
 export interface RecordCrumbProps {
   label: string;
+  /** Names for record segments above this one, keyed by href. */
+  ancestors?: Readonly<Record<string, string>>;
 }
 
 export interface NavItem {
@@ -59,7 +61,13 @@ export interface SidebarNavItemProps {
 
 export interface RecordCrumbState {
   label: string | null;
+  /** Names for record segments ABOVE the trailing one, keyed by href. */
+  ancestors: Readonly<Record<string, string>>;
   pathname: string | null;
-  setRecordCrumb: (pathname: string, label: string) => void;
+  setRecordCrumb: (
+    pathname: string,
+    label: string,
+    ancestors?: Readonly<Record<string, string>>,
+  ) => void;
   clearRecordCrumb: (pathname: string) => void;
 }

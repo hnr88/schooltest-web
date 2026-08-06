@@ -58,6 +58,22 @@ test.describe('C-CLS-05 / C-CLS-06 contract', () => {
     }
     expect(detail.summary.test_a_completed).toBe(testACompleted);
     expect(detail.summary.test_b_completed).toBe(testBCompleted);
+
+    // The null-tolerant checks above would all pass against a server that
+    // returned nothing but nulls, so require the evidence to actually be there:
+    // at least one completed test carrying a score, a phase AND seven verdicts,
+    // and a summary average derived from them.
+    const evidenced = detail.students
+      .flatMap((student) => student.tests)
+      .filter(
+        (test) =>
+          test.status === 'completed' &&
+          test.overall_score !== null &&
+          test.acara_phase !== null &&
+          test.subskills !== null,
+      );
+    expect(evidenced.length, 'no completed test carries evidence').toBeGreaterThan(0);
+    expect(detail.summary.avg_reading_score).not.toBeNull();
   });
 
   test('flow 19: the drill-down agrees with the class row, field for field', async ({ request }) => {

@@ -9,8 +9,8 @@ import type { RecordCrumbProps } from '@/modules/shell/types/shell.types';
 //   <RecordCrumb label={child.full_name} />
 // Marked 'use client', but the props are serializable, so a Server Component may
 // render it directly.
-function RecordCrumb({ label }: RecordCrumbProps) {
-  useRecordCrumb(label);
+function RecordCrumb({ label, ancestors }: RecordCrumbProps) {
+  useRecordCrumb(label, ancestors);
   return null;
 }
 

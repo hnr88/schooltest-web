@@ -36,7 +36,7 @@ export function ClassDetailHeader({
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
-        <Button type="button" size="lg" variant="outline" onClick={onEdit}>
+        <Button type="button" size="lg" variant="secondary" onClick={onEdit}>
           <PencilIcon className="size-4" aria-hidden />
           {t('editClass')}
         </Button>

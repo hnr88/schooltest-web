@@ -74,7 +74,12 @@ export function ClassStudentDetailScreen({
         </Alert>
       ) : (
         <>
-          <RecordCrumb label={studentDisplayName(student)} />
+          <RecordCrumb
+            label={studentDisplayName(student)}
+            ancestors={{
+              [`/dashboard/school/classes/${classDocumentId}`]: student.class.name ?? '',
+            }}
+          />
           <div className="flex flex-col gap-1">
             <h1 className="text-xl font-semibold text-foreground">{studentDisplayName(student)}</h1>
             <StudentDetailSubtitle student={student} />

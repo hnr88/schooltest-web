@@ -24,7 +24,7 @@ export function ClassStudentsEmpty({ onImport }: ClassStudentsEmptyProps) {
           <Button type="button" size="lg" variant="accent" onClick={onImport}>
             {t('import')}
           </Button>
-          <Button size="lg" variant="outline" render={<Link href="/dashboard/school/students/new" />}>
+          <Button size="lg" variant="secondary" render={<Link href="/dashboard/school/students/new" />}>
             {t('addStudent')}
           </Button>
         </div>

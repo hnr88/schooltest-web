@@ -91,6 +91,7 @@ export const TRAIL_RECORD_PATTERNS: readonly string[] = [
   '/dashboard/children/[documentId]',
   '/dashboard/reports/[resultDocumentId]',
   '/dashboard/school/classes/[documentId]',
+  '/dashboard/school/classes/[documentId]/students/[studentDocumentId]',
   '/dashboard/teach/classes/[documentId]',
   '/dashboard/teach/results/[classId]',
   '/dashboard/ops/schools/[documentId]',

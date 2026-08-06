@@ -47,6 +47,16 @@ test.describe('student drill-down (spec §2)', () => {
     await expect(surface).toContainText(cat(en, 'Classes.studentDetail.firstLanguageLabel'));
     await expect(surface).toContainText(cat(en, 'Classes.studentDetail.levelLabel'));
 
+    // The spec's navigation trail: Classes / <Class Name> / <Student Name>. The
+    // class crumb must name the CLASS and link to it — not repeat the student.
+    const crumbs = (await page.locator('nav[aria-label] ol li').allInnerTexts())
+      .map((crumb) => crumb.trim())
+      .filter((crumb) => crumb !== '' && crumb !== '/');
+    expect(crumbs.slice(-2)).toEqual([student.class.name, fullName(student)]);
+    await expect(
+      page.locator('nav[aria-label]').getByRole('link', { name: student.class.name ?? '' }),
+    ).toHaveAttribute('href', new RegExp(`/classes/${student.class.documentId}$`));
+
     expect(errors).toEqual([]);
     await page.screenshot({
       path: path.join(SCREENSHOTS, 'student-drilldown-desktop.png'),
@@ -114,6 +124,23 @@ test.describe('student drill-down (spec §2)', () => {
     await expect(page.locator('[data-surface="school-admin-class-student-detail"]')).toContainText(
       cat(en, 'Classes.studentDetail.notCompleted').replace('{slot}', 'B'),
     );
+
+    // A completed test the scorer produced NO evidence for renders the card with
+    // em dashes and an explicit line instead of seven fabricated grey tiles.
+    const evidenceless = detail.students.find((student) =>
+      student.tests.some(
+        (test) => test.status === 'completed' && test.overall_score === null && test.subskills === null,
+      ),
+    );
+    if (evidenceless) {
+      await page.goto(
+        `/dashboard/school/classes/${detail.documentId}/students/${evidenceless.documentId}`,
+      );
+      const card = page.locator('section[aria-labelledby="test-A-heading"]');
+      await expect(card).toContainText('—');
+      await expect(card).toContainText(cat(en, 'Classes.studentDetail.noSubskills'));
+      await expect(card.locator('[data-slot="tint-tile"]')).toHaveCount(0);
+    }
 
     // A row with NEITHER test started is not a link (nothing to drill into).
     const untouched = detail.students.find((student) =>

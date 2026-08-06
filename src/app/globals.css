@@ -449,6 +449,12 @@
   grid-template-columns: minmax(0, 2.2fr) repeat(3, minmax(0, 1fr)) auto;
 }
 
+/* Student drill-down subskill tiles (class-detail spec §2): the grid the spec
+   names verbatim — as many 120px-minimum tiles as fit, wrapping naturally. */
+@utility grid-cols-subskill-tiles {
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+}
+
 /* Canonical ScoreProgressRow (§07): 90px label · flexible track · 44px value. */
 @utility grid-cols-score-row {
   grid-template-columns: 5.625rem minmax(0, 1fr) 2.75rem;

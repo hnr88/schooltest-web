@@ -8,6 +8,7 @@ import {
   fullName,
   gotoClassDetail,
   schoolAdminJwt,
+  studentWithEvidence,
 } from './helpers/class-detail';
 import { cat, loadMessages } from './helpers/i18n';
 import { loginAs } from './helpers/roles';
@@ -92,19 +93,27 @@ test.describe('class detail (spec §1)', () => {
     const rendered = await rows.locator('td:first-child').allInnerTexts();
     expect(rendered.map((value) => value.trim())).toEqual(detail.students.map(fullName));
 
-    // A completed test renders Done + its real score + its real phase.
-    const done = detail.students.find((student) =>
-      student.tests.some((test) => test.status === 'completed' && test.overall_score !== null),
-    );
-    expect(done, 'no student with a scored test — the fixture seed must run first').toBeTruthy();
-    const doneRow = rows.filter({ hasText: fullName(done!) }).first();
+    // A completed Test A renders Done + its real score + its real phase. The
+    // student is selected BECAUSE their Test A carries evidence, so every
+    // assertion below runs unconditionally — a row that lost its score or phase
+    // fails here rather than skipping.
+    const done = studentWithEvidence(detail, 'A');
+    expect(done, 'no student with a scored Test A — the fixture seed must run first').toBeTruthy();
     const testA = done!.tests.find((test) => test.test_id === 'A');
-    if (testA?.status === 'completed') {
-      await expect(doneRow).toContainText(cat(en, 'Classes.detail.table.statusDone'));
-      if (testA.overall_score !== null) {
-        await expect(doneRow).toContainText(String(testA.overall_score));
-      }
-      if (testA.acara_phase !== null) await expect(doneRow).toContainText(testA.acara_phase);
+    expect(testA?.status).toBe('completed');
+    const doneRow = rows.filter({ hasText: fullName(done!) }).first();
+    await expect(doneRow).toContainText(cat(en, 'Classes.detail.table.statusDone'));
+    await expect(doneRow).toContainText(String(testA!.overall_score));
+    await expect(doneRow).toContainText(testA!.acara_phase!);
+
+    // An in-progress sitting is its OWN state, never mislabelled "Not started".
+    const inProgress = detail.students.find((student) =>
+      student.tests.some((test) => test.status === 'in_progress'),
+    );
+    if (inProgress) {
+      await expect(rows.filter({ hasText: fullName(inProgress) }).first()).toContainText(
+        cat(en, 'Classes.detail.table.statusInProgress'),
+      );
     }
 
     expect(errors).toEqual([]);
@@ -116,9 +125,15 @@ test.describe('class detail (spec §1)', () => {
     await gotoClassDetail(page);
     const surface = page.locator('[data-surface="school-admin-class-detail"]');
 
-    // No teacher/student checkboxes, no bulk save button, no "children" copy.
+    // No teacher/student checkboxes and no bulk save on this surface. Asserted
+    // against the SURFACE's own buttons, not the document, so a dialog's Save
+    // (which is a different, legitimate control) cannot make this pass by
+    // being closed.
     await expect(surface.locator('input[type="checkbox"], [role="checkbox"]')).toHaveCount(0);
-    await expect(page.getByRole('button', { name: 'Save changes', exact: true })).toHaveCount(0);
+    const surfaceButtons = await surface.getByRole('button').allInnerTexts();
+    expect(surfaceButtons.map((label) => label.trim())).not.toContain(
+      cat(en, 'Classes.detail.edit.save'),
+    );
     const text = await surface.innerText();
     expect(text.toLowerCase()).not.toContain('children');
     expect(text).not.toContain('No active children');
