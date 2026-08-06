@@ -9,6 +9,12 @@ export interface CreateClassInput {
   teacher_documentIds: string[];
 }
 
-export interface UpdateClassInput extends ClassFormValues {
+// C-CLS-03 body. Every field is optional server-side except the class itself,
+// so a caller sends ONLY what it edits: the Classes-list dialog sends the whole
+// form, while the class-detail edit modal sends name + teacher and deliberately
+// omits `student_documentIds` (whose REPLACE semantics would otherwise unlink
+// the roster) and `year_band` (not on that modal).
+export interface UpdateClassInput extends Partial<ClassFormValues> {
   documentId: string;
+  name: string;
 }

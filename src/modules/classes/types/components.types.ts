@@ -1,11 +1,19 @@
 import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
 import type {
+  ClassDetail,
+  ClassDetailStudent,
+  ClassDetailSummary,
+  ClassStudentDetail,
+  StudentTestResult,
+  SubskillKey,
+  SubskillVerdict,
+} from '@/modules/classes/types/class-detail.types';
+import type {
   ClassStudentOption,
   ClassTestCompletion,
   ClassTestCompletionDisplay,
   SchoolClass,
 } from '@/modules/classes/types/classes.types';
-import type { SchoolStudent } from '@/modules/school-students';
 import type { SchoolTeacher } from '@/modules/teachers';
 
 export interface AddClassDialogProps {
@@ -15,13 +23,6 @@ export interface AddClassDialogProps {
 export interface AddClassFormProps {
   teachers: SchoolTeacher[];
   onClose: () => void;
-}
-
-export interface ClassAssignmentPanelProps {
-  schoolClass: SchoolClass;
-  members: SchoolStudent[];
-  teachers: SchoolTeacher[];
-  activeStudents: SchoolStudent[];
 }
 
 export interface ClassDeleteDialogProps {
@@ -82,14 +83,57 @@ export interface ClassRowActionsProps {
   onEdit: () => void;
 }
 
-export interface ClassStudentPickerProps {
-  students: SchoolStudent[];
-  value: string[];
-  onChange: (next: string[]) => void;
+// --- Class detail (spec §1) and student drill-down (spec §2) ---
+
+export interface ClassDetailHeaderProps {
+  schoolClass: ClassDetail;
+  onEdit: () => void;
+  onImport: () => void;
 }
 
-export interface ClassTeacherPickerProps {
-  teachers: SchoolTeacher[];
-  value: string[];
-  onChange: (next: string[]) => void;
+export interface ClassSummaryCardsProps {
+  summary: ClassDetailSummary;
+}
+
+export interface ClassStudentsTableProps {
+  classDocumentId: string;
+  students: ClassDetailStudent[];
+}
+
+export interface ClassStudentsTableRowProps {
+  classDocumentId: string;
+  student: ClassDetailStudent;
+}
+
+export interface ClassStudentsEmptyProps {
+  onImport: () => void;
+}
+
+export interface EditClassDialogProps {
+  schoolClass: ClassDetail;
+  onClose: () => void;
+}
+
+export interface ClassImportStudentsDialogProps {
+  classDocumentId: string;
+  className: string;
+  onClose: () => void;
+}
+
+export interface ClassStudentDetailScreenProps {
+  classDocumentId: string;
+  studentDocumentId: string;
+}
+
+export interface StudentTestCardProps {
+  test: StudentTestResult;
+}
+
+export interface SubskillTileProps {
+  subskill: SubskillKey;
+  verdict: SubskillVerdict;
+}
+
+export interface StudentDetailSubtitleProps {
+  student: ClassStudentDetail;
 }

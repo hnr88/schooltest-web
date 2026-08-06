@@ -2,57 +2,37 @@
 
 import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth';
-import { ClassAssignmentPanel } from '@/modules/classes/components/ClassAssignmentPanel';
-import { isYearBand } from '@/modules/classes/constants/year-bands.constants';
+import { ClassDetailHeader } from '@/modules/classes/components/ClassDetailHeader';
+import { ClassImportStudentsDialog } from '@/modules/classes/components/ClassImportStudentsDialog';
+import { ClassStudentsEmpty } from '@/modules/classes/components/ClassStudentsEmpty';
+import { ClassStudentsTable } from '@/modules/classes/components/ClassStudentsTable';
+import { ClassSummaryCards } from '@/modules/classes/components/ClassSummaryCards';
+import { EditClassDialog } from '@/modules/classes/components/EditClassDialog';
 import { useClassDetailQuery } from '@/modules/classes/queries/use-class-detail.query';
-import { Alert, Button, Skeleton, Tag } from '@/modules/design-system';
-import { useSchoolStudentsQuery } from '@/modules/school-students';
+import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { RecordCrumb } from '@/modules/shell';
-import { useTeachersQuery } from '@/modules/teachers';
 
 import type { ClassDetailScreenProps } from '@/modules/classes/types/components.types';
 
-// School admin class detail (task 31, st-mvp-pivot): one class's teachers and
-// students with pickers saved through C-CLS-03. The panel mounts only once
-// every source query has resolved, so its working state always starts from
-// fresh server data. The student picker lists active students; the roster
-// query (any status, filtered to this class) seeds the checked state so
-// archived members survive the PATCH replace semantics.
+// Spec §1 class detail: header, four summary cards and the student roster with
+// each student's Test A / Test B result — everything from ONE C-CLS-05 read.
+// Teacher assignment lives in the edit modal, so this surface carries no
+// checkbox and no save button, and a row click drills into the student.
 export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
   const t = useTranslations('Classes.detail');
-  const tb = useTranslations('Classes.yearBands');
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const enabled = hydrated && Boolean(token);
-
   const detailQuery = useClassDetailQuery(documentId, enabled);
-  const teachersQuery = useTeachersQuery(enabled);
-  const activeStudentsQuery = useSchoolStudentsQuery(
-    { status: 'active', classId: 'all', q: '', page: 1, pageSize: 100 },
-    enabled,
-  );
-  const membersQuery = useSchoolStudentsQuery(
-    { status: 'all', classId: documentId, q: '', page: 1, pageSize: 100 },
-    enabled,
-  );
+  const [editing, setEditing] = useState(false);
+  const [importing, setImporting] = useState(false);
 
-  const isPending =
-    !enabled ||
-    detailQuery.isPending ||
-    teachersQuery.isPending ||
-    activeStudentsQuery.isPending ||
-    membersQuery.isPending;
-  const isError =
-    detailQuery.isError ||
-    teachersQuery.isError ||
-    activeStudentsQuery.isError ||
-    membersQuery.isError;
+  const isPending = !enabled || detailQuery.isPending;
   const schoolClass = detailQuery.data ?? null;
-  const band = schoolClass?.year_band ?? null;
-  const bandLabel = band === null ? null : isYearBand(band) ? tb(band) : band;
 
   return (
     <main
@@ -70,10 +50,10 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
       {isPending ? (
         <div className="flex flex-col gap-3">
           <Skeleton className="h-8 w-64" />
-          <Skeleton className="h-40 w-full" />
-          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-64 w-full" />
         </div>
-      ) : isError ? (
+      ) : detailQuery.isError ? (
         <Alert
           variant="error"
           title={t('errorTitle')}
@@ -97,17 +77,39 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
         </Alert>
       ) : (
         <>
-          <RecordCrumb label={schoolClass.name} />
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-semibold text-foreground">{schoolClass.name}</h1>
-            {bandLabel !== null ? <Tag label={bandLabel} /> : null}
-          </div>
-          <ClassAssignmentPanel
+          <RecordCrumb label={schoolClass.name ?? ''} />
+          <ClassDetailHeader
             schoolClass={schoolClass}
-            members={membersQuery.data?.rows ?? []}
-            teachers={teachersQuery.data ?? []}
-            activeStudents={activeStudentsQuery.data?.rows ?? []}
+            onEdit={() => setEditing(true)}
+            onImport={() => setImporting(true)}
           />
+          <ClassSummaryCards summary={schoolClass.summary} />
+          <section aria-labelledby="class-detail-students-heading" className="flex flex-col gap-3">
+            <h2
+              id="class-detail-students-heading"
+              className="text-lg font-semibold text-foreground"
+            >
+              {t('studentsTitle')}
+            </h2>
+            {schoolClass.students.length === 0 ? (
+              <ClassStudentsEmpty onImport={() => setImporting(true)} />
+            ) : (
+              <ClassStudentsTable
+                classDocumentId={schoolClass.documentId}
+                students={schoolClass.students}
+              />
+            )}
+          </section>
+          {editing ? (
+            <EditClassDialog schoolClass={schoolClass} onClose={() => setEditing(false)} />
+          ) : null}
+          {importing ? (
+            <ClassImportStudentsDialog
+              classDocumentId={schoolClass.documentId}
+              className={schoolClass.name ?? ''}
+              onClose={() => setImporting(false)}
+            />
+          ) : null}
         </>
       )}
     </main>

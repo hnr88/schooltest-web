@@ -2482,26 +2482,74 @@
     },
     "detailMeta": {
       "title": "班级 - SchoolTest",
-      "description": "分配班级的任课教师和学生。"
+      "description": "班级学生的测试状态与阅读成绩。"
     },
     "detail": {
       "backLink": "返回班级列表",
       "notFoundTitle": "找不到该班级",
-      "notFoundDescription": "它可能已被删除。请返回您的班级列表。",
+      "notFoundDescription": "该班级可能已被删除。请返回班级列表。",
       "errorTitle": "无法加载该班级",
-      "errorDescription": "请检查网络连接，然后重试。",
+      "errorDescription": "请检查网络连接后重试。",
       "retry": "重试",
-      "teachersTitle": "教师",
-      "teachersDescription": "负责本班的教师。",
-      "teachersEmpty": "暂无可用员工。",
+      "teacherUnassigned": "未分配教师",
+      "studentCount": "{count, plural, other {# 名学生}}",
+      "editClass": "编辑班级",
+      "importStudents": "导入学生",
       "studentsTitle": "学生",
-      "studentsDescription": "取消勾选会将该学生移出本班。学生仍保留在您的学生名单中。",
-      "studentsEmpty": "您的学校还没有在读学生。",
-      "save": "保存更改",
-      "saving": "正在保存...",
-      "savedToast": "已更新 {name}。",
-      "forbiddenToast": "您没有权限更改该班级。",
-      "errorToast": "操作失败，请重试。"
+      "summary": {
+        "students": "学生人数",
+        "testACompleted": "测试 A 已完成",
+        "testBCompleted": "测试 B 已完成",
+        "completedFraction": "{completed} / {total}",
+        "avgReadingScore": "平均阅读分数"
+      },
+      "table": {
+        "caption": "本班学生及其测试 A 与测试 B 的成绩",
+        "columnStudent": "学生",
+        "columnTestA": "测试 A",
+        "columnTestB": "测试 B",
+        "columnScore": "分数",
+        "columnAcara": "ACARA 阶段",
+        "statusDone": "已完成",
+        "statusNotStarted": "未开始",
+        "statusInProgress": "进行中"
+      },
+      "empty": {
+        "title": "该班级还没有学生",
+        "description": "可以通过 CSV 导入学生，或逐个添加。",
+        "import": "导入学生",
+        "addStudent": "添加学生"
+      },
+      "edit": {
+        "title": "编辑班级",
+        "description": "重命名班级或更换任课教师。",
+        "nameLabel": "班级名称",
+        "teacherLabel": "分配教师",
+        "teacherUnassigned": "不分配教师",
+        "cancel": "取消",
+        "save": "保存更改",
+        "saving": "保存中...",
+        "savedToast": "{name} 已更新。",
+        "forbiddenToast": "您没有权限修改该班级。",
+        "errorToast": "操作未成功，请重试。",
+        "loadError": "无法加载教师名单",
+        "loadErrorDescription": "请检查网络连接，关闭后重试。"
+      },
+      "import": {
+        "title": "导入学生",
+        "description": "每一行都会添加到 {name}。",
+        "readyCount": "{count, plural, =0 {暂无可导入的行} other {# 行待导入}}",
+        "errorCount": "{count, plural, other {# 行无法读取}}",
+        "cancel": "取消",
+        "submit": "导入学生",
+        "submitting": "导入中...",
+        "successToast": "{count, plural, other {已导入 # 名学生}}。",
+        "partialToast": "已导入 {total} 名学生中的 {created} 名。",
+        "duplicateToast": "这些学生已存在，请检查邮箱后重试。",
+        "seatsToast": "您的方案已没有可用名额。",
+        "forbiddenToast": "您没有权限添加学生。",
+        "genericToast": "操作未成功，请重试。"
+      }
     },
     "title": "班级",
     "description": "您学校的所有班级，集中在一处。",
@@ -2589,6 +2637,38 @@
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again."
+    },
+    "studentDetailMeta": {
+      "title": "学生成绩 - SchoolTest",
+      "description": "单个学生的阅读测试成绩与分项技能明细。"
+    },
+    "studentDetail": {
+      "backLink": "返回 {name}",
+      "backLinkFallback": "返回班级",
+      "notFoundTitle": "找不到该学生",
+      "notFoundDescription": "该学生可能已被移出本班级。",
+      "errorTitle": "无法加载该学生",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试",
+      "firstLanguageLabel": "第一语言：",
+      "levelLabel": "水平：",
+      "cardTitle": "测试 {slot} — 阅读诊断",
+      "overallLabel": "总分：",
+      "overallValue": "{score} / 100",
+      "acaraLabel": "ACARA 阶段：",
+      "notCompleted": "测试 {slot} — 尚未完成。",
+      "noSubskills": "本次测试没有记录分项技能结果。",
+      "mastered": "已掌握",
+      "notYet": "尚未掌握",
+      "subskill": {
+        "decoding": "解码",
+        "vocabulary": "词汇",
+        "grammar": "语法",
+        "gist": "主旨",
+        "detail": "细节",
+        "inference": "推断",
+        "critical": "批判性阅读"
+      }
     }
   },
   "SchoolStudents": {

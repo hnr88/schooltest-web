@@ -2786,7 +2786,7 @@
     },
     "detailMeta": {
       "title": "Class - SchoolTest",
-      "description": "Assign the teachers and students who belong to a class."
+      "description": "A class's students, their test status and their reading results."
     },
     "detail": {
       "backLink": "Back to classes",
@@ -2795,17 +2795,65 @@
       "errorTitle": "We could not load this class",
       "errorDescription": "Check your connection and try again.",
       "retry": "Try again",
-      "teachersTitle": "Teachers",
-      "teachersDescription": "The teachers who own this class.",
-      "teachersEmpty": "No staff available yet.",
+      "teacherUnassigned": "No teacher assigned",
+      "studentCount": "{count, plural, one {# student} other {# students}}",
+      "editClass": "Edit class",
+      "importStudents": "Import students",
       "studentsTitle": "Students",
-      "studentsDescription": "Unticking a child removes them from this class. They stay on your children list.",
-      "studentsEmpty": "No active children at your school yet.",
-      "save": "Save changes",
-      "saving": "Saving...",
-      "savedToast": "{name} was updated.",
-      "forbiddenToast": "You do not have permission to change this class.",
-      "errorToast": "That did not work. Try again."
+      "summary": {
+        "students": "Students",
+        "testACompleted": "Test A completed",
+        "testBCompleted": "Test B completed",
+        "completedFraction": "{completed} / {total}",
+        "avgReadingScore": "Avg. reading score"
+      },
+      "table": {
+        "caption": "Students in this class with their Test A and Test B results",
+        "columnStudent": "Student",
+        "columnTestA": "Test A",
+        "columnTestB": "Test B",
+        "columnScore": "Score",
+        "columnAcara": "ACARA",
+        "statusDone": "Done",
+        "statusNotStarted": "Not started",
+        "statusInProgress": "In progress"
+      },
+      "empty": {
+        "title": "No students in this class yet",
+        "description": "Import students via CSV or add them individually.",
+        "import": "Import students",
+        "addStudent": "Add student"
+      },
+      "edit": {
+        "title": "Edit class",
+        "description": "Rename this class or assign a different teacher.",
+        "nameLabel": "Class name",
+        "teacherLabel": "Assign teacher",
+        "teacherUnassigned": "No teacher",
+        "cancel": "Cancel",
+        "save": "Save changes",
+        "saving": "Saving...",
+        "savedToast": "{name} was updated.",
+        "forbiddenToast": "You do not have permission to change this class.",
+        "errorToast": "That did not work. Try again.",
+        "loadError": "We could not load your staff list",
+        "loadErrorDescription": "Check your connection, then close this and try again."
+      },
+      "import": {
+        "title": "Import students",
+        "description": "Every row is added to {name}.",
+        "readyCount": "{count, plural, =0 {No rows ready yet} one {# row ready to import} other {# rows ready to import}}",
+        "errorCount": "{count, plural, one {# row could not be read} other {# rows could not be read}}",
+        "cancel": "Cancel",
+        "submit": "Import students",
+        "submitting": "Importing...",
+        "successToast": "{count, plural, one {# student was imported} other {# students were imported}}.",
+        "partialToast": "{created} of {total} students were imported.",
+        "duplicateToast": "Those students already exist. Check the emails and try again.",
+        "seatsToast": "Your plan has no seats left for these students.",
+        "forbiddenToast": "You do not have permission to add students.",
+        "genericToast": "That did not work. Try again."
+      }
     },
     "title": "Classes",
     "description": "Every class at your school, in one place.",
@@ -2842,8 +2890,8 @@
       "teachers": "Teachers",
       "teachersEmpty": "No staff available yet.",
       "students": "Students",
-      "studentsEmpty": "No children at your school yet.",
-      "studentsHint": "Unticking a child removes them from this class. They stay on your children list.",
+      "studentsEmpty": "No students at your school yet.",
+      "studentsHint": "Unticking a student removes them from this class. They stay on your students list.",
       "cancel": "Cancel",
       "submitCreate": "Add class",
       "submitEdit": "Save changes",
@@ -2852,7 +2900,7 @@
       "updatedToast": "{name} was updated.",
       "errorToast": "That did not work. Try again.",
       "forbiddenToast": "You do not have permission to change classes.",
-      "loadError": "We could not load the staff and children lists. Close and try again.",
+      "loadError": "We could not load the staff and student lists. Close and try again.",
       "loadErrorDescription": "Check your connection, then close this and try again."
     },
     "validation": {
@@ -2866,10 +2914,10 @@
     },
     "deleteDialog": {
       "title": "Delete {name}?",
-      "description": "The students in this class are not deleted. They stay on your children list and can be assigned to another class.",
+      "description": "The students in this class are not deleted. They stay on your students list and can be assigned to another class.",
       "cancel": "Cancel",
       "confirm": "Delete class",
-      "successToast": "{name} was deleted. Its students stay on your children list.",
+      "successToast": "{name} was deleted. Its students stay on your students list.",
       "errorToast": "That did not work. Try again."
     },
     "addForm": {
@@ -2893,6 +2941,38 @@
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again."
+    },
+    "studentDetailMeta": {
+      "title": "Student results - SchoolTest",
+      "description": "One student's reading test results and subskill breakdown."
+    },
+    "studentDetail": {
+      "backLink": "Back to {name}",
+      "backLinkFallback": "Back to the class",
+      "notFoundTitle": "We could not find this student",
+      "notFoundDescription": "They may have been moved out of this class.",
+      "errorTitle": "We could not load this student",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "firstLanguageLabel": "First language:",
+      "levelLabel": "Level:",
+      "cardTitle": "Test {slot} — Reading diagnostic",
+      "overallLabel": "Overall:",
+      "overallValue": "{score} / 100",
+      "acaraLabel": "ACARA:",
+      "notCompleted": "Test {slot} — not yet completed.",
+      "noSubskills": "No subskill results were recorded for this test.",
+      "mastered": "Mastered",
+      "notYet": "Not yet",
+      "subskill": {
+        "decoding": "Decoding",
+        "vocabulary": "Vocabulary",
+        "grammar": "Grammar",
+        "gist": "Gist",
+        "detail": "Detail",
+        "inference": "Inference",
+        "critical": "Critical"
+      }
     }
   },
   "SchoolStudents": {
