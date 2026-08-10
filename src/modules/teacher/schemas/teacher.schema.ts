@@ -90,6 +90,23 @@ export const teacherErrorSchema = z.strictObject({
   }),
 });
 
+/**
+ * The auth-failure statuses `/api/teacher/**` REALLY returns (.qa/CONTRACTS.md
+ * "AUTH-FAILURES", measured on the running Strapi — NOT the textbook 401/403
+ * split). A MISSING `Authorization` header authenticates as the Public role and
+ * fails the scope check ⇒ 403; a PRESENT but invalid bearer fails JWT
+ * verification ⇒ 401. Mirrors `TEACHER_AUTH_FAILURE_STATUS` in
+ * schooltest-api/src/contracts/teacher.ts; tests import it rather than hardcode
+ * a literal, so a drift in either direction fails an assertion.
+ */
+export const TEACHER_AUTH_FAILURE_STATUS = {
+  missing_authorization_header: 403,
+  invalid_bearer_token: 401,
+  wrong_role: 403,
+  foreign_object: 403,
+  unknown_object: 404,
+} as const;
+
 /* ── C-TD-1 · GET /api/teacher/dashboard ───────────────────────────────── */
 
 export const dashboardClassSchema = z.strictObject({

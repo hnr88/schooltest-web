@@ -15,6 +15,7 @@ import {
   testSessionMonitorResponseSchema,
 } from '@/modules/teacher/schemas/teacher-session.schema';
 import {
+  TEACHER_AUTH_FAILURE_STATUS,
   teacherDashboardResponseSchema,
   teacherErrorSchema,
   teacherTestsResponseSchema,
@@ -140,8 +141,21 @@ test.describe('teacher contract — the module paths against the REAL Strapi', (
     expect(identity.role?.type).toBe('teacher');
 
     // Same endpoint, no token: the JWT is load-bearing, not decoration.
+    // Task 029 — the EXACT contracted status, not a `[401, 403]` disjunction: a
+    // disjunction passes whichever way the platform behaves and so proves
+    // nothing. A missing Authorization header authenticates as Public and fails
+    // the route scope check ⇒ 403 (.qa/CONTRACTS.md "AUTH-FAILURES").
     const anonymous = await context.get(`${API_BASE}/api/users/me`);
-    expect([401, 403]).toContain(anonymous.status());
+    expect(anonymous.status()).toBe(TEACHER_AUTH_FAILURE_STATUS.missing_authorization_header);
+    expect(((await anonymous.json()) as { error?: { name?: string } }).error?.name).toBe(
+      'ForbiddenError',
+    );
+
+    // And a PRESENT but invalid bearer takes the other branch ⇒ 401.
+    const garbage = await context.get(`${API_BASE}/api/users/me`, {
+      headers: { Authorization: 'Bearer not-a-real-jwt.deadbeef.garbage' },
+    });
+    expect(garbage.status()).toBe(TEACHER_AUTH_FAILURE_STATUS.invalid_bearer_token);
     await context.dispose();
   });
 
