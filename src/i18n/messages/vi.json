@@ -732,12 +732,16 @@
       "reports": "Báo cáo",
       "notifications": "Thông báo",
       "search": "Tìm kiếm",
-      "settings": "Cài đặt"
+      "settings": "Cài đặt",
+      "teacherDashboard": "Bảng điều khiển",
+      "testSessions": "Phiên kiểm tra",
+      "results": "Kết quả"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "Quản lý"
+        "manage": "Quản lý",
+        "teach": "Giảng dạy"
       },
       "promo": {
         "overline": "Con đã liên kết",
@@ -756,7 +760,12 @@
     "userMenu": {
       "settings": "Cài đặt",
       "signOut": "Đăng xuất",
-      "role": "Parent account"
+      "roles": {
+        "parent": "Tài khoản phụ huynh",
+        "teacher": "Giáo viên",
+        "admin": "Quản trị viên",
+        "student": "Học sinh"
+      }
     }
   },
   "Settings": {
@@ -1756,6 +1765,28 @@
       "scoring": "Đang chấm",
       "partial_pending": "Chờ một phần",
       "complete": "Hoàn tất"
+    }
+  },
+  "Teacher": {
+    "testSessions": {
+      "meta": {
+        "title": "Phiên kiểm tra — SchoolTest",
+        "description": "Bắt đầu bài chẩn đoán đọc hiểu cho một lớp, chia sẻ mã tham gia và theo dõi phiên trực tiếp."
+      },
+      "title": "Phiên kiểm tra",
+      "description": "Bắt đầu một phiên cho lớp, chia sẻ mã tham gia và theo dõi trực tiếp.",
+      "placeholderTitle": "Công cụ phiên chưa có trên trang này",
+      "placeholderDescription": "Thiết lập phiên, mã tham gia và theo dõi trực tiếp sẽ có ở đây trong bước tiếp theo. Trang này chưa đọc dữ liệu phiên nào nên không đưa ra kết luận nào."
+    },
+    "results": {
+      "meta": {
+        "title": "Kết quả — SchoolTest",
+        "description": "Kết quả lớp, nhận định giảng dạy và tiến bộ giữa Bài A và Bài B."
+      },
+      "title": "Kết quả",
+      "description": "Kết quả lớp, nhận định giảng dạy và tiến bộ giữa hai bài kiểm tra.",
+      "placeholderTitle": "Kết quả chưa có trên trang này",
+      "placeholderDescription": "Bảng lớp, nhận định giảng dạy và so sánh Bài A với Bài B sẽ có ở đây trong bước tiếp theo. Trang này chưa đọc dữ liệu kết quả nào nên không đưa ra kết luận nào."
     }
   }
 }

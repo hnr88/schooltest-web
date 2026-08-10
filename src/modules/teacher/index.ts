@@ -1,3 +1,6 @@
+export { TestSessionsScreen } from './components/TestSessionsScreen';
+export { ResultsScreen } from './components/ResultsScreen';
+
 export { useTeacherDashboardQuery } from './queries/use-teacher-dashboard.query';
 export { useTeacherTestsQuery } from './queries/use-teacher-tests.query';
 export { useTestSessionsQuery } from './queries/use-test-sessions.query';

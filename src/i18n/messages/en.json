@@ -732,12 +732,16 @@
       "reports": "Reports",
       "notifications": "Notifications",
       "search": "Search",
-      "settings": "Settings"
+      "settings": "Settings",
+      "teacherDashboard": "Dashboard",
+      "testSessions": "Test sessions",
+      "results": "Results"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "Manage"
+        "manage": "Manage",
+        "teach": "Teach"
       },
       "promo": {
         "overline": "Linked children",
@@ -756,7 +760,12 @@
     "userMenu": {
       "settings": "Settings",
       "signOut": "Sign out",
-      "role": "Parent account"
+      "roles": {
+        "parent": "Parent account",
+        "teacher": "Teacher",
+        "admin": "Admin",
+        "student": "Student"
+      }
     }
   },
   "Settings": {
@@ -1756,6 +1765,28 @@
       "scoring": "Scoring",
       "partial_pending": "Partially pending",
       "complete": "Complete"
+    }
+  },
+  "Teacher": {
+    "testSessions": {
+      "meta": {
+        "title": "Test sessions — SchoolTest",
+        "description": "Start a reading diagnostic for a class, share the join code and follow the session live."
+      },
+      "title": "Test sessions",
+      "description": "Start a session for a class, share the join code, and follow it live.",
+      "placeholderTitle": "Session tools are not on this page yet",
+      "placeholderDescription": "Session setup, the join code and live monitoring land here next. This page reads no session data yet, so it reports none."
+    },
+    "results": {
+      "meta": {
+        "title": "Results — SchoolTest",
+        "description": "Class results, teaching insights and the progress between Test A and Test B."
+      },
+      "title": "Results",
+      "description": "Class results, teaching insights and progress between tests.",
+      "placeholderTitle": "Results are not on this page yet",
+      "placeholderDescription": "The class table, teaching insights and the Test A to Test B comparison land here next. This page reads no result data yet, so it reports none."
     }
   }
 }

@@ -1,23 +1,19 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
   useSidebar,
 } from '@/modules/design-system';
 import { usePathname } from '@/i18n/navigation';
 import { useAuth } from '@/modules/auth';
-import { RailSectionLabel } from '@/modules/shell/components/RailSectionLabel';
 import { SidebarLogoLink } from '@/modules/shell/components/SidebarLogoLink';
-import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
+import { SidebarNavGroup } from '@/modules/shell/components/SidebarNavGroup';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
-import { PRIMARY_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
-import { isNavItemActive } from '@/modules/shell/lib/nav-active';
+import { NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
+import { buildNavSections } from '@/modules/shell/lib/nav-sections';
 import { filterNavByRole } from '@/modules/shell/lib/nav-visible';
 
 // THE DETACHED RAIL (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:2):
@@ -46,8 +42,7 @@ function AppSidebar() {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();
   const { user } = useAuth();
-  const t = useTranslations('Shell');
-  const primaryNavItems = filterNavByRole(PRIMARY_NAV_ITEMS, user?.role?.type ?? null);
+  const navSections = buildNavSections(filterNavByRole(NAV_ITEMS, user?.role?.type ?? null));
 
   // collapsible="none" returns before the primitive's isMobile Sheet branch, so it
   // must stay "icon"; max-md:hidden guards the pre-hydration frame (isMobile is false
@@ -64,19 +59,15 @@ function AppSidebar() {
           3px of top padding gives the pseudo room inside the clip rectangle and the
           matching negative margin hands the space straight back. */}
       <SidebarContent className="overscroll-contain px-4 group-data-[collapsible=icon]:-mt-0.75 group-data-[collapsible=icon]:px-1 group-data-[collapsible=icon]:pt-0.75">
-        <nav className="flex flex-1 flex-col">
-          <RailSectionLabel>{t('sidebar.groups.manage')}</RailSectionLabel>
-          <SidebarMenu className="gap-0.5">
-            {primaryNavItems.map((item) => (
-              <SidebarNavItem
-                key={item.href}
-                item={item}
-                label={t(`nav.${item.labelKey}`)}
-                isActive={isNavItemActive(pathname, item)}
-                onNavigate={() => setOpenMobile(false)}
-              />
-            ))}
-          </SidebarMenu>
+        <nav className="flex flex-1 flex-col gap-4">
+          {navSections.map((section) => (
+            <SidebarNavGroup
+              key={section.group}
+              section={section}
+              pathname={pathname}
+              onNavigate={() => setOpenMobile(false)}
+            />
+          ))}
         </nav>
       </SidebarContent>
       <SidebarFooter className="mt-auto shrink-0 px-4 pt-3.5 pb-4 group-data-[collapsible=icon]:px-1">

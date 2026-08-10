@@ -732,12 +732,16 @@
       "reports": "리포트",
       "notifications": "알림",
       "search": "검색",
-      "settings": "설정"
+      "settings": "설정",
+      "teacherDashboard": "대시보드",
+      "testSessions": "테스트 세션",
+      "results": "결과"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "관리"
+        "manage": "관리",
+        "teach": "수업"
       },
       "promo": {
         "overline": "연결된 자녀",
@@ -756,7 +760,12 @@
     "userMenu": {
       "settings": "설정",
       "signOut": "로그아웃",
-      "role": "Parent account"
+      "roles": {
+        "parent": "학부모 계정",
+        "teacher": "교사",
+        "admin": "관리자",
+        "student": "학생"
+      }
     }
   },
   "Settings": {
@@ -1756,6 +1765,28 @@
       "scoring": "채점 중",
       "partial_pending": "일부 대기 중",
       "complete": "완료"
+    }
+  },
+  "Teacher": {
+    "testSessions": {
+      "meta": {
+        "title": "테스트 세션 — SchoolTest",
+        "description": "학급의 읽기 진단 세션을 시작하고 참여 코드를 공유하며 실시간으로 확인하세요."
+      },
+      "title": "테스트 세션",
+      "description": "학급 세션을 시작하고 참여 코드를 공유하며 실시간으로 확인합니다.",
+      "placeholderTitle": "세션 도구는 아직 이 페이지에 없습니다",
+      "placeholderDescription": "세션 설정, 참여 코드, 실시간 모니터링이 다음 순서로 이 페이지에 추가됩니다. 지금은 세션 데이터를 읽지 않으므로 아무것도 단정하지 않습니다."
+    },
+    "results": {
+      "meta": {
+        "title": "결과 — SchoolTest",
+        "description": "학급 결과, 수업 인사이트, 테스트 A와 테스트 B 사이의 향상도입니다."
+      },
+      "title": "결과",
+      "description": "학급 결과, 수업 인사이트, 두 시험 사이의 향상도입니다.",
+      "placeholderTitle": "결과는 아직 이 페이지에 없습니다",
+      "placeholderDescription": "학급 표, 수업 인사이트, 테스트 A와 테스트 B 비교가 다음 순서로 이 페이지에 추가됩니다. 지금은 결과 데이터를 읽지 않으므로 아무것도 단정하지 않습니다."
     }
   }
 }

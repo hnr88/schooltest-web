@@ -13,6 +13,7 @@ import {
   Skeleton,
 } from '@/modules/design-system';
 import { getUserInitials } from '@/modules/shell/lib/user-initials';
+import { getUserRoleLabelKey } from '@/modules/shell/lib/user-role';
 
 // The rail's USER AREA (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:24-30):
 // `margin-top:14px; background:#F4F6FA; border-radius:16px; padding:12px 14px; gap:11px`
@@ -29,6 +30,8 @@ function UserMenu() {
   const t = useTranslations('Shell');
   const router = useRouter();
   const { user, logout } = useAuth();
+
+  const roleLabelKey = getUserRoleLabelKey(user?.role?.type);
 
   if (!user) {
     return <Skeleton className="h-15 w-full rounded-panel" />;
@@ -52,7 +55,11 @@ function UserMenu() {
           <span className="truncate text-body-sm font-semibold text-foreground">
             {user.username}
           </span>
-          <span className="truncate text-xs text-body">{t('userMenu.role')}</span>
+          {roleLabelKey ? (
+            <span data-slot="user-role" className="truncate text-xs text-body">
+              {t(`userMenu.roles.${roleLabelKey}`)}
+            </span>
+          ) : null}
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="top" sideOffset={8} className="w-56">

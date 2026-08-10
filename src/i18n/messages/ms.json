@@ -732,12 +732,16 @@
       "reports": "Laporan",
       "notifications": "Pemberitahuan",
       "search": "Carian",
-      "settings": "Tetapan"
+      "settings": "Tetapan",
+      "teacherDashboard": "Papan pemuka",
+      "testSessions": "Sesi ujian",
+      "results": "Keputusan"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "Urus"
+        "manage": "Urus",
+        "teach": "Ajar"
       },
       "promo": {
         "overline": "Anak dipautkan",
@@ -756,7 +760,12 @@
     "userMenu": {
       "settings": "Tetapan",
       "signOut": "Log keluar",
-      "role": "Parent account"
+      "roles": {
+        "parent": "Akaun ibu bapa",
+        "teacher": "Guru",
+        "admin": "Pentadbir",
+        "student": "Pelajar"
+      }
     }
   },
   "Settings": {
@@ -1756,6 +1765,28 @@
       "scoring": "Sedang dimarkah",
       "partial_pending": "Sebahagian tertunda",
       "complete": "Selesai"
+    }
+  },
+  "Teacher": {
+    "testSessions": {
+      "meta": {
+        "title": "Sesi ujian — SchoolTest",
+        "description": "Mulakan diagnostik bacaan untuk sebuah kelas, kongsi kod sertai dan pantau sesi secara langsung."
+      },
+      "title": "Sesi ujian",
+      "description": "Mulakan sesi untuk sesebuah kelas, kongsi kod sertai dan pantau secara langsung.",
+      "placeholderTitle": "Alat sesi belum ada di halaman ini",
+      "placeholderDescription": "Persediaan sesi, kod sertai dan pemantauan langsung akan menyusul di sini. Halaman ini belum membaca sebarang data sesi, jadi ia tidak melaporkan apa-apa."
+    },
+    "results": {
+      "meta": {
+        "title": "Keputusan — SchoolTest",
+        "description": "Keputusan kelas, cerapan pengajaran dan kemajuan antara Ujian A dan Ujian B."
+      },
+      "title": "Keputusan",
+      "description": "Keputusan kelas, cerapan pengajaran dan kemajuan antara ujian.",
+      "placeholderTitle": "Keputusan belum ada di halaman ini",
+      "placeholderDescription": "Jadual kelas, cerapan pengajaran dan perbandingan Ujian A ke Ujian B akan menyusul di sini. Halaman ini belum membaca sebarang data keputusan, jadi ia tidak melaporkan apa-apa."
     }
   }
 }

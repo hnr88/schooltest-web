@@ -2,6 +2,8 @@ import type { ShellRouteMeta } from '@/modules/shell/types/shell.types';
 
 const CHILDREN_PATH = '/dashboard/children';
 const REPORTS_PATH = '/dashboard/reports';
+const TEST_SESSIONS_PATH = '/dashboard/test-sessions';
+const RESULTS_PATH = '/dashboard/results';
 const NOTIFICATIONS_PATH = '/dashboard/notifications';
 const SEARCH_PATH = '/dashboard/search';
 const SETTINGS_PATH = '/dashboard/settings';
@@ -14,6 +16,10 @@ const DASHBOARD_PATH = '/dashboard';
 export function getShellRouteMeta(pathname: string): ShellRouteMeta {
   if (pathname.startsWith(CHILDREN_PATH)) return { labelKey: 'myChildren', href: CHILDREN_PATH };
   if (pathname.startsWith(REPORTS_PATH)) return { labelKey: 'reports', href: REPORTS_PATH };
+  if (pathname.startsWith(TEST_SESSIONS_PATH)) {
+    return { labelKey: 'testSessions', href: TEST_SESSIONS_PATH };
+  }
+  if (pathname.startsWith(RESULTS_PATH)) return { labelKey: 'results', href: RESULTS_PATH };
   if (pathname.startsWith(NOTIFICATIONS_PATH)) {
     return { labelKey: 'notifications', href: NOTIFICATIONS_PATH };
   }

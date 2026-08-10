@@ -732,12 +732,16 @@
       "reports": "报告",
       "notifications": "通知",
       "search": "搜索",
-      "settings": "设置"
+      "settings": "设置",
+      "teacherDashboard": "控制面板",
+      "testSessions": "测验场次",
+      "results": "成绩"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
-        "manage": "管理"
+        "manage": "管理",
+        "teach": "教学"
       },
       "promo": {
         "overline": "已关联的孩子",
@@ -756,7 +760,12 @@
     "userMenu": {
       "settings": "设置",
       "signOut": "退出登录",
-      "role": "Parent account"
+      "roles": {
+        "parent": "家长账户",
+        "teacher": "教师",
+        "admin": "管理员",
+        "student": "学生"
+      }
     }
   },
   "Settings": {
@@ -1756,6 +1765,28 @@
       "scoring": "评分中",
       "partial_pending": "部分待定",
       "complete": "已完成"
+    }
+  },
+  "Teacher": {
+    "testSessions": {
+      "meta": {
+        "title": "测验场次 — SchoolTest",
+        "description": "为班级开启阅读诊断测验，分享加入码，并实时跟进场次进度。"
+      },
+      "title": "测验场次",
+      "description": "为班级开启测验场次，分享加入码，并实时跟进。",
+      "placeholderTitle": "此页面尚未提供场次工具",
+      "placeholderDescription": "场次设置、加入码与实时监控将在下一步上线。本页面目前不读取任何场次数据，因此不作任何数据陈述。"
+    },
+    "results": {
+      "meta": {
+        "title": "成绩 — SchoolTest",
+        "description": "班级成绩、教学洞察，以及测验 A 与测验 B 之间的进步情况。"
+      },
+      "title": "成绩",
+      "description": "班级成绩、教学洞察，以及两次测验之间的进步情况。",
+      "placeholderTitle": "此页面尚未提供成绩内容",
+      "placeholderDescription": "班级成绩表、教学洞察与测验 A 至测验 B 的对比将在下一步上线。本页面目前不读取任何成绩数据，因此不作任何数据陈述。"
     }
   }
 }
