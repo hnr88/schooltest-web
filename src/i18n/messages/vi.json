@@ -1795,6 +1795,18 @@
         "noTestsDescription": "Các đề chẩn đoán đọc hiểu chưa được xuất bản trên máy chủ này nên chưa thể mở phiên.",
         "generated": "Đã tạo mã tham gia cho {className}.",
         "generateError": "Không mở được phiên. Chưa có gì được tạo — hãy thử lại."
+      },
+      "joinCode": {
+        "caption": "Mã tham gia cho {className} — {testLabel}",
+        "captionClassOnly": "Mã tham gia cho {className}",
+        "helper": "Học sinh mở ứng dụng kiểm tra, nhập email, sau đó gõ mã này để vào phiên.",
+        "copy": "Sao chép mã",
+        "copied": "Đã sao chép",
+        "copyToast": "Đã sao chép mã tham gia {code} vào bộ nhớ tạm.",
+        "copyError": "Không sao chép được mã. Hãy đọc to hoặc chọn thủ công.",
+        "goLive": "Vào phiên trực tiếp",
+        "unavailableTitle": "Phiên đang mở này không có mã tham gia",
+        "unavailableBody": "Phiên đang mở của {className} không được bắt đầu từ trang này nên chưa bao giờ có mã. Hãy tạo phiên mới để có mã đọc cho học sinh."
       }
     },
     "results": {

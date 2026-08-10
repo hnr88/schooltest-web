@@ -1795,6 +1795,18 @@
         "noTestsDescription": "The reading diagnostic forms are not published on this server yet, so there is nothing to start a session with.",
         "generated": "Join code generated for {className}.",
         "generateError": "Could not start the session. Nothing was created — try again."
+      },
+      "joinCode": {
+        "caption": "Join code for {className} — {testLabel}",
+        "captionClassOnly": "Join code for {className}",
+        "helper": "Students open the test app, enter their email, then type this code to join the session.",
+        "copy": "Copy code",
+        "copied": "Copied",
+        "copyToast": "Join code {code} copied to your clipboard.",
+        "copyError": "Could not copy the code. Read it out or select it by hand.",
+        "goLive": "Go live",
+        "unavailableTitle": "This open session has no join code",
+        "unavailableBody": "The open session for {className} was not started from this page, so no code was ever minted for it. Generate a new session to get a code to read out."
       }
     },
     "results": {

@@ -1795,6 +1795,18 @@
         "noTestsDescription": "服务器上尚未发布阅读诊断卷，因此无法开启场次。",
         "generated": "已为 {className} 生成加入码。",
         "generateError": "无法开启场次。系统未创建任何内容，请重试。"
+      },
+      "joinCode": {
+        "caption": "{className} — {testLabel} 的加入码",
+        "captionClassOnly": "{className} 的加入码",
+        "helper": "学生打开测验应用，输入邮箱，然后键入此加入码即可进入场次。",
+        "copy": "复制加入码",
+        "copied": "已复制",
+        "copyToast": "已将加入码 {code} 复制到剪贴板。",
+        "copyError": "无法复制加入码。请朗读该码或手动选取。",
+        "goLive": "进入实时监看",
+        "unavailableTitle": "该进行中的场次没有加入码",
+        "unavailableBody": "{className} 的进行中场次并非从本页开启，因此从未生成加入码。请新建场次以获得可朗读的加入码。"
       }
     },
     "results": {

@@ -1795,6 +1795,18 @@
         "noTestsDescription": "Borang diagnostik bacaan belum diterbitkan pada pelayan ini, jadi tiada apa-apa untuk memulakan sesi.",
         "generated": "Kod sertai dijana untuk {className}.",
         "generateError": "Tidak dapat memulakan sesi. Tiada apa-apa dicipta — cuba lagi."
+      },
+      "joinCode": {
+        "caption": "Kod sertai untuk {className} — {testLabel}",
+        "captionClassOnly": "Kod sertai untuk {className}",
+        "helper": "Murid membuka apl ujian, memasukkan e-mel mereka, kemudian menaip kod ini untuk menyertai sesi.",
+        "copy": "Salin kod",
+        "copied": "Disalin",
+        "copyToast": "Kod sertai {code} disalin ke papan keratan anda.",
+        "copyError": "Tidak dapat menyalin kod. Bacakannya atau pilih secara manual.",
+        "goLive": "Pergi ke siaran langsung",
+        "unavailableTitle": "Sesi terbuka ini tiada kod sertai",
+        "unavailableBody": "Sesi terbuka untuk {className} tidak dimulakan dari halaman ini, jadi tiada kod pernah dijana untuknya. Jana sesi baharu untuk mendapatkan kod yang boleh dibacakan."
       }
     },
     "results": {

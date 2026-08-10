@@ -1795,6 +1795,18 @@
         "noTestsDescription": "이 서버에 읽기 진단 시험지가 아직 게시되지 않아 시작할 세션이 없습니다.",
         "generated": "{className} 학급의 참여 코드를 생성했습니다.",
         "generateError": "세션을 시작하지 못했습니다. 생성된 것은 없으니 다시 시도하세요."
+      },
+      "joinCode": {
+        "caption": "{className} — {testLabel} 참여 코드",
+        "captionClassOnly": "{className} 참여 코드",
+        "helper": "학생들은 테스트 앱을 열고 이메일을 입력한 뒤, 이 코드를 입력해 세션에 참여합니다.",
+        "copy": "코드 복사",
+        "copied": "복사됨",
+        "copyToast": "참여 코드 {code}를 클립보드에 복사했습니다.",
+        "copyError": "코드를 복사하지 못했습니다. 직접 읽어 주거나 손으로 선택하세요.",
+        "goLive": "라이브 보기",
+        "unavailableTitle": "이 진행 중인 세션에는 참여 코드가 없습니다",
+        "unavailableBody": "{className} 학급의 진행 중인 세션은 이 페이지에서 시작한 것이 아니어서 코드가 발급된 적이 없습니다. 읽어 줄 코드를 받으려면 새 세션을 생성하세요."
       }
     },
     "results": {

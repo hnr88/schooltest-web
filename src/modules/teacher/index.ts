@@ -3,8 +3,11 @@ export { ResultsScreen } from './components/ResultsScreen';
 export { StartTestSessionPanel } from './components/StartTestSessionPanel';
 export { StartTestSessionForm } from './components/StartTestSessionForm';
 export { TestSessionSelect } from './components/TestSessionSelect';
+export { JoinCodePanel } from './components/JoinCodePanel';
+export { JoinCodeDisplay } from './components/JoinCodeDisplay';
 
 export { useStartTestSessionForm } from './hooks/useStartTestSessionForm';
+export { useJoinCodePanel } from './hooks/useJoinCodePanel';
 
 export { useTeacherDashboardQuery } from './queries/use-teacher-dashboard.query';
 export { useTeacherTestsQuery } from './queries/use-teacher-tests.query';
@@ -20,12 +23,14 @@ export { useTeacherExportMutation } from './queries/use-teacher-export.mutation'
 
 export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-export';
 export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-setup';
+export { resolveJoinCodeView, testSessionMonitorHref } from './lib/join-code';
 
 export { MASTERY_BAND_TONE } from './constants/mastery.constants';
 export {
   TEST_SESSION_SELECT_TRIGGER_CLASS,
   START_TEST_SESSION_DEFAULTS,
 } from './constants/test-session-setup.constants';
+export { TEST_SESSIONS_PATH } from './constants/join-code.constants';
 
 export {
   masteryBandSchema,
@@ -122,6 +127,13 @@ export type {
   TestSessionSelectProps,
   StartTestSessionFormProps,
 } from './types/session-setup.types';
+export type {
+  JoinCodeReady,
+  JoinCodeUnavailable,
+  JoinCodeAbsent,
+  JoinCodeView,
+  JoinCodeDisplayProps,
+} from './types/join-code.types';
 export type {
   TeacherExportKind,
   TeacherExportDocument,
