@@ -101,7 +101,14 @@ test.describe('teacher rail scoping (A4)', () => {
     await expect(
       page.getByRole('heading', { level: 1, name: cat(en, 'Teacher.testSessions.title') }),
     ).toBeVisible();
-    await expect(page.getByText(cat(en, 'Teacher.testSessions.placeholderTitle'))).toBeVisible();
+    // Task 034 replaced this page's placeholder with the real "Start a test
+    // session" panel, so the discriminator moved to the panel's own heading.
+    await expect(
+      page.getByRole('heading', {
+        level: 2,
+        name: cat(en, 'Teacher.testSessions.setup.panelTitle'),
+      }),
+    ).toBeVisible();
     await expect(navLink(page, cat(en, 'Shell.nav.testSessions'))).toHaveAttribute(
       'data-active',
       /.*/,

@@ -1775,8 +1775,27 @@
       },
       "title": "Phiên kiểm tra",
       "description": "Bắt đầu một phiên cho lớp, chia sẻ mã tham gia và theo dõi trực tiếp.",
-      "placeholderTitle": "Công cụ phiên chưa có trên trang này",
-      "placeholderDescription": "Thiết lập phiên, mã tham gia và theo dõi trực tiếp sẽ có ở đây trong bước tiếp theo. Trang này chưa đọc dữ liệu phiên nào nên không đưa ra kết luận nào."
+      "setup": {
+        "panelTitle": "Bắt đầu phiên kiểm tra",
+        "panelDescription": "Chọn lớp và bài kiểm tra, sau đó tạo mã tham gia để đọc cho học sinh.",
+        "classLabel": "Lớp",
+        "classPlaceholder": "Chọn một lớp",
+        "testLabel": "Bài kiểm tra",
+        "testPlaceholder": "Chọn bài kiểm tra",
+        "submit": "Tạo mã tham gia",
+        "submitting": "Đang tạo mã tham gia…",
+        "classRequired": "Hãy chọn lớp cần kiểm tra.",
+        "testRequired": "Hãy chọn bài kiểm tra cho phiên này.",
+        "loadErrorTitle": "Không tải được danh sách lớp và bài kiểm tra",
+        "loadErrorBody": "Danh sách chọn để trống thay vì phỏng đoán. Hãy kiểm tra kết nối và thử lại.",
+        "retry": "Thử lại",
+        "noClassesTitle": "Bạn chưa được phân công lớp nào",
+        "noClassesDescription": "Phiên kiểm tra chạy cho một lớp của bạn. Hãy đề nghị quản trị viên phân công lớp rồi tải lại trang này.",
+        "noTestsTitle": "Không có bài kiểm tra nào để chạy",
+        "noTestsDescription": "Các đề chẩn đoán đọc hiểu chưa được xuất bản trên máy chủ này nên chưa thể mở phiên.",
+        "generated": "Đã tạo mã tham gia cho {className}.",
+        "generateError": "Không mở được phiên. Chưa có gì được tạo — hãy thử lại."
+      }
     },
     "results": {
       "meta": {

@@ -1775,8 +1775,27 @@
       },
       "title": "测验场次",
       "description": "为班级开启测验场次，分享加入码，并实时跟进。",
-      "placeholderTitle": "此页面尚未提供场次工具",
-      "placeholderDescription": "场次设置、加入码与实时监控将在下一步上线。本页面目前不读取任何场次数据，因此不作任何数据陈述。"
+      "setup": {
+        "panelTitle": "开启测验场次",
+        "panelDescription": "先选择班级与测验，再生成供你朗读的加入码。",
+        "classLabel": "班级",
+        "classPlaceholder": "选择班级",
+        "testLabel": "测验",
+        "testPlaceholder": "选择测验",
+        "submit": "生成加入码",
+        "submitting": "正在生成加入码…",
+        "classRequired": "请选择要测验的班级。",
+        "testRequired": "请选择本场次要进行的测验。",
+        "loadErrorTitle": "无法加载你的班级与测验",
+        "loadErrorBody": "选择器宁可留空也不会臆测。请检查网络连接后重试。",
+        "retry": "重试",
+        "noClassesTitle": "尚未为你分配班级",
+        "noClassesDescription": "测验场次需在你的某个班级中进行。请联系管理员为你分配班级，然后重新加载本页。",
+        "noTestsTitle": "暂无可进行的测验",
+        "noTestsDescription": "服务器上尚未发布阅读诊断卷，因此无法开启场次。",
+        "generated": "已为 {className} 生成加入码。",
+        "generateError": "无法开启场次。系统未创建任何内容，请重试。"
+      }
     },
     "results": {
       "meta": {

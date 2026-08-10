@@ -1775,8 +1775,27 @@
       },
       "title": "테스트 세션",
       "description": "학급 세션을 시작하고 참여 코드를 공유하며 실시간으로 확인합니다.",
-      "placeholderTitle": "세션 도구는 아직 이 페이지에 없습니다",
-      "placeholderDescription": "세션 설정, 참여 코드, 실시간 모니터링이 다음 순서로 이 페이지에 추가됩니다. 지금은 세션 데이터를 읽지 않으므로 아무것도 단정하지 않습니다."
+      "setup": {
+        "panelTitle": "테스트 세션 시작",
+        "panelDescription": "학급과 테스트를 고른 뒤, 학생들에게 읽어 줄 참여 코드를 생성하세요.",
+        "classLabel": "학급",
+        "classPlaceholder": "학급 선택",
+        "testLabel": "테스트",
+        "testPlaceholder": "테스트 선택",
+        "submit": "참여 코드 생성",
+        "submitting": "참여 코드 생성 중…",
+        "classRequired": "테스트할 학급을 선택하세요.",
+        "testRequired": "이 세션에서 진행할 테스트를 선택하세요.",
+        "loadErrorTitle": "학급과 테스트를 불러오지 못했습니다",
+        "loadErrorBody": "추측 대신 선택 목록을 비워 둡니다. 연결을 확인한 뒤 다시 시도하세요.",
+        "retry": "다시 시도",
+        "noClassesTitle": "배정된 학급이 없습니다",
+        "noClassesDescription": "테스트 세션은 담당 학급에서 진행됩니다. 관리자에게 학급 배정을 요청한 뒤 이 페이지를 새로고침하세요.",
+        "noTestsTitle": "진행할 수 있는 테스트가 없습니다",
+        "noTestsDescription": "이 서버에 읽기 진단 시험지가 아직 게시되지 않아 시작할 세션이 없습니다.",
+        "generated": "{className} 학급의 참여 코드를 생성했습니다.",
+        "generateError": "세션을 시작하지 못했습니다. 생성된 것은 없으니 다시 시도하세요."
+      }
     },
     "results": {
       "meta": {

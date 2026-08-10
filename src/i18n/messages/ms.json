@@ -1775,8 +1775,27 @@
       },
       "title": "Sesi ujian",
       "description": "Mulakan sesi untuk sesebuah kelas, kongsi kod sertai dan pantau secara langsung.",
-      "placeholderTitle": "Alat sesi belum ada di halaman ini",
-      "placeholderDescription": "Persediaan sesi, kod sertai dan pemantauan langsung akan menyusul di sini. Halaman ini belum membaca sebarang data sesi, jadi ia tidak melaporkan apa-apa."
+      "setup": {
+        "panelTitle": "Mulakan sesi ujian",
+        "panelDescription": "Pilih kelas dan ujian, kemudian jana kod sertai untuk dibacakan kepada murid.",
+        "classLabel": "Kelas",
+        "classPlaceholder": "Pilih kelas",
+        "testLabel": "Ujian",
+        "testPlaceholder": "Pilih ujian",
+        "submit": "Jana kod sertai",
+        "submitting": "Menjana kod sertai…",
+        "classRequired": "Pilih kelas yang hendak diuji.",
+        "testRequired": "Pilih ujian yang akan dijalankan dalam sesi ini.",
+        "loadErrorTitle": "Tidak dapat memuatkan kelas dan ujian anda",
+        "loadErrorBody": "Senarai pilihan dibiarkan kosong dan bukannya meneka. Semak sambungan anda dan cuba lagi.",
+        "retry": "Cuba lagi",
+        "noClassesTitle": "Tiada kelas diumpukkan kepada anda",
+        "noClassesDescription": "Sesi ujian dijalankan untuk salah satu kelas anda. Minta pentadbir mengumpukkan kelas, kemudian muat semula halaman ini.",
+        "noTestsTitle": "Tiada ujian tersedia untuk dijalankan",
+        "noTestsDescription": "Borang diagnostik bacaan belum diterbitkan pada pelayan ini, jadi tiada apa-apa untuk memulakan sesi.",
+        "generated": "Kod sertai dijana untuk {className}.",
+        "generateError": "Tidak dapat memulakan sesi. Tiada apa-apa dicipta — cuba lagi."
+      }
     },
     "results": {
       "meta": {

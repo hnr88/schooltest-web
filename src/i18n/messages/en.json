@@ -1775,8 +1775,27 @@
       },
       "title": "Test sessions",
       "description": "Start a session for a class, share the join code, and follow it live.",
-      "placeholderTitle": "Session tools are not on this page yet",
-      "placeholderDescription": "Session setup, the join code and live monitoring land here next. This page reads no session data yet, so it reports none."
+      "setup": {
+        "panelTitle": "Start a test session",
+        "panelDescription": "Pick the class and the test, then generate the join code you read out.",
+        "classLabel": "Class",
+        "classPlaceholder": "Select a class",
+        "testLabel": "Test",
+        "testPlaceholder": "Select a test",
+        "submit": "Generate join code",
+        "submitting": "Generating join code…",
+        "classRequired": "Select a class to test.",
+        "testRequired": "Select which test this session runs.",
+        "loadErrorTitle": "Could not load your classes and tests",
+        "loadErrorBody": "The pickers stay empty rather than guess. Check your connection and try again.",
+        "retry": "Try again",
+        "noClassesTitle": "No classes are assigned to you",
+        "noClassesDescription": "A test session runs for one of your classes. Ask an administrator to assign you a class, then reload this page.",
+        "noTestsTitle": "No test is available to run",
+        "noTestsDescription": "The reading diagnostic forms are not published on this server yet, so there is nothing to start a session with.",
+        "generated": "Join code generated for {className}.",
+        "generateError": "Could not start the session. Nothing was created — try again."
+      }
     },
     "results": {
       "meta": {
