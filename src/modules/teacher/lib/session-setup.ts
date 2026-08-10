@@ -1,14 +1,17 @@
 import type { ChoiceOption } from '@/modules/design-system';
-import type { TeacherClass } from '@/modules/teacher/types/teacher-class.types';
-import type { TeacherTest } from '@/modules/teacher/types/teacher.types';
+import type { DashboardClass, TeacherTest } from '@/modules/teacher/types/teacher.types';
 import type {
   TestSessionSetupCounts,
   TestSessionSetupStatus,
 } from '@/modules/teacher/types/session-setup.types';
 
-/** One option per class the API returned for THIS teacher — never a literal list. */
-export function toClassOptions(classes: readonly TeacherClass[]): ChoiceOption[] {
-  return classes.map((entry) => ({ value: entry.documentId, label: entry.name }));
+/**
+ * One option per class C-TD-1 returned for THIS teacher — never a literal list.
+ * The value is the `class_document_id` C-TS-1 expects as `class_document_id`,
+ * so what the teacher picked is what the create is told, with no re-lookup.
+ */
+export function toClassOptions(classes: readonly DashboardClass[]): ChoiceOption[] {
+  return classes.map((entry) => ({ value: entry.class_document_id, label: entry.name }));
 }
 
 /**

@@ -8,7 +8,6 @@ export { useStartTestSessionForm } from './hooks/useStartTestSessionForm';
 
 export { useTeacherDashboardQuery } from './queries/use-teacher-dashboard.query';
 export { useTeacherTestsQuery } from './queries/use-teacher-tests.query';
-export { useTeacherClassesQuery } from './queries/use-teacher-classes.query';
 export { useTestSessionsQuery } from './queries/use-test-sessions.query';
 export { useTestSessionMonitorQuery } from './queries/use-test-session-monitor.query';
 export { useCreateTestSessionMutation } from './queries/use-create-test-session.mutation';
@@ -24,7 +23,6 @@ export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-
 
 export { MASTERY_BAND_TONE } from './constants/mastery.constants';
 export {
-  TEACHER_CLASSES_PATH,
   TEST_SESSION_SELECT_TRIGGER_CLASS,
   START_TEST_SESSION_DEFAULTS,
 } from './constants/test-session-setup.constants';
@@ -52,7 +50,6 @@ export {
   classInsightsResponseSchema,
 } from './schemas/teacher-result.schema';
 export { classProgressResponseSchema } from './schemas/teacher-progress.schema';
-export { teacherClassSchema, teacherClassesResponseSchema } from './schemas/teacher-class.schema';
 export { startTestSessionFormSchema } from './schemas/session-setup.schema';
 export {
   teacherExportKindSchema,
@@ -118,7 +115,6 @@ export type {
   ProgressMover,
   ClassProgressResponse,
 } from './types/teacher-progress.types';
-export type { TeacherClass, TeacherClassesResponse } from './types/teacher-class.types';
 export type {
   StartTestSessionFormValues,
   TestSessionSetupStatus,
