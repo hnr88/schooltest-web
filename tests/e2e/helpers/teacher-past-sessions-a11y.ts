@@ -61,42 +61,24 @@ export interface KeyboardScrollFacts {
   bottomReached: boolean;
 }
 
-const scrollTop = (page: Page): Promise<number> =>
-  page.locator(SCROLLER).evaluate((node) => node.scrollTop);
-
-const atBottom = (page: Page): Promise<boolean> =>
-  page
-    .locator(SCROLLER)
-    .evaluate((node) => node.scrollTop + node.clientHeight >= node.scrollHeight - 1);
-
-/**
- * Chromium applies keyboard scrolling off the JS turn that dispatched the key, so a
- * fact read immediately after `press()` can still be the pre-scroll value. This
- * re-reads until the value settles and then returns WHAT IT LAST READ — if the key
- * genuinely moved nothing, the unchanged value is returned and the caller fails.
- */
-async function settle<T>(read: () => Promise<T>, done: (value: T) => boolean): Promise<T> {
-  let value = await read();
-  for (let attempt = 0; attempt < 20 && !done(value); attempt += 1) {
-    await new Promise((resolve) => {
-      setTimeout(resolve, 50);
-    });
-    value = await read();
-  }
-  return value;
+export interface TabIntoRegionFacts {
+  tabbedFrom: string | null;
+  focusedIsRegion: boolean;
+  focusRing: string;
 }
 
 /**
- * Drives the region the way a keyboard-only teacher does: focus the last focusable
- * element that PRECEDES it in tab order, press Tab once (so the browser's own tab
- * order decides whether the region is reachable), then page down through it.
+ * Focus the last focusable element that PRECEDES the region, then press Tab ONCE so
+ * the browser's own tab order decides whether the region is reachable — never
+ * `locator.focus()`, which would prove nothing about a keyboard-only teacher.
  */
-export async function keyboardScrollFacts(page: Page): Promise<KeyboardScrollFacts> {
+export async function tabIntoRegion(page: Page): Promise<TabIntoRegionFacts> {
   const tabbedFrom = await page.evaluate(
     ([sel, focusable]) => {
       const region = document.querySelector(sel);
       if (!(region instanceof HTMLElement)) throw new Error(`[e2e] no scroll region at ${sel}`);
       region.scrollTop = 0;
+      region.scrollLeft = 0;
       const preceding = Array.from(document.querySelectorAll(focusable)).filter(
         (node) =>
           node !== region &&
@@ -122,6 +104,38 @@ export async function keyboardScrollFacts(page: Page): Promise<KeyboardScrollFac
     SCROLLER,
   );
 
+  return { tabbedFrom, focusedIsRegion: focused.isRegion, focusRing: focused.ring };
+}
+
+const scrollTop = (page: Page): Promise<number> =>
+  page.locator(SCROLLER).evaluate((node) => node.scrollTop);
+
+const atBottom = (page: Page): Promise<boolean> =>
+  page
+    .locator(SCROLLER)
+    .evaluate((node) => node.scrollTop + node.clientHeight >= node.scrollHeight - 1);
+
+/**
+ * Chromium applies keyboard scrolling off the JS turn that dispatched the key, so a
+ * fact read immediately after `press()` can still be the pre-scroll value. This
+ * re-reads until the value settles and then returns WHAT IT LAST READ — if the key
+ * genuinely moved nothing, the unchanged value is returned and the caller fails.
+ */
+export async function settle<T>(read: () => Promise<T>, done: (value: T) => boolean): Promise<T> {
+  let value = await read();
+  for (let attempt = 0; attempt < 20 && !done(value); attempt += 1) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
+    value = await read();
+  }
+  return value;
+}
+
+/** Drives the region the way a keyboard-only teacher does: Tab in, then page down. */
+export async function keyboardScrollFacts(page: Page): Promise<KeyboardScrollFacts> {
+  const focused = await tabIntoRegion(page);
+
   const before = await scrollTop(page);
   await page.keyboard.press('PageDown');
   const after = await settle(
@@ -136,11 +150,11 @@ export async function keyboardScrollFacts(page: Page): Promise<KeyboardScrollFac
   );
 
   return {
-    reachableByTab: focused.isRegion,
-    tabbedFrom,
+    reachableByTab: focused.focusedIsRegion,
+    tabbedFrom: focused.tabbedFrom,
     before,
     after,
-    focusRing: focused.ring,
+    focusRing: focused.focusRing,
     bottomReached,
   };
 }
