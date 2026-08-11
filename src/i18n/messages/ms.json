@@ -1892,7 +1892,15 @@
         "loading": "Memuatkan sesi langsung",
         "errorTitle": "Tidak dapat memuatkan sesi langsung ini",
         "errorDescription": "Grid kekal kosong dan tidak meneka siapa telah sertai. Sesi ini mungkin milik guru lain atau sudah tidak ada.",
-        "retry": "Cuba lagi"
+        "retry": "Cuba lagi",
+        "endSession": "Tamatkan sesi",
+        "endDialogTitle": "Tamatkan sesi untuk {className}?",
+        "endDialogDescription": "Sesiapa yang masih menjawab akan dihantar seadanya, dan kod sertai berhenti berfungsi. Tindakan ini tidak boleh dibatalkan.",
+        "endDialogCancel": "Biarkan terbuka",
+        "endDialogConfirm": "Tamatkan sesi",
+        "endedToast": "Sesi telah ditamatkan. Kod sertai tidak lagi berfungsi.",
+        "alreadyClosedToast": "Sesi ini sudah ditutup. Halaman kini menunjukkan keadaan akhirnya.",
+        "endErrorToast": "Tidak dapat menamatkan sesi. Ia masih terbuka — cuba lagi."
       }
     },
     "results": {

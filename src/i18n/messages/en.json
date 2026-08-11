@@ -1892,7 +1892,15 @@
         "loading": "Loading the live session",
         "errorTitle": "Could not load this live session",
         "errorDescription": "The grid stays empty rather than guess who has joined. The session may belong to another teacher, or may no longer exist.",
-        "retry": "Try again"
+        "retry": "Try again",
+        "endSession": "End session",
+        "endDialogTitle": "End the session for {className}?",
+        "endDialogDescription": "Anyone still working has their test submitted as it stands, and the join code stops working. This cannot be undone.",
+        "endDialogCancel": "Keep it open",
+        "endDialogConfirm": "End session",
+        "endedToast": "Session ended. The join code no longer works.",
+        "alreadyClosedToast": "This session was already closed. The page now shows its final state.",
+        "endErrorToast": "Could not end the session. It is still open — try again."
       }
     },
     "results": {

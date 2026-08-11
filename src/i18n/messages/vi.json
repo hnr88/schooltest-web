@@ -1892,7 +1892,15 @@
         "loading": "Đang tải phiên trực tiếp",
         "errorTitle": "Không tải được phiên trực tiếp này",
         "errorDescription": "Lưới để trống thay vì đoán ai đã tham gia. Phiên có thể thuộc giáo viên khác hoặc không còn tồn tại.",
-        "retry": "Thử lại"
+        "retry": "Thử lại",
+        "endSession": "Kết thúc phiên",
+        "endDialogTitle": "Kết thúc phiên của {className}?",
+        "endDialogDescription": "Học sinh đang làm bài sẽ được nộp bài ở trạng thái hiện tại và mã tham gia sẽ ngừng hoạt động. Không thể hoàn tác.",
+        "endDialogCancel": "Vẫn mở",
+        "endDialogConfirm": "Kết thúc phiên",
+        "endedToast": "Đã kết thúc phiên. Mã tham gia không còn hiệu lực.",
+        "alreadyClosedToast": "Phiên này đã được đóng trước đó. Trang hiển thị trạng thái cuối cùng.",
+        "endErrorToast": "Không kết thúc được phiên. Phiên vẫn đang mở — hãy thử lại."
       }
     },
     "results": {

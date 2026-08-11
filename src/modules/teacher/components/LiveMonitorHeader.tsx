@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { StatusPill } from '@/modules/design-system';
+import { EndSessionControl } from '@/modules/teacher/components/EndSessionControl';
 import { SessionMissingValue } from '@/modules/teacher/components/SessionMissingValue';
 import type { LiveMonitorHeaderProps } from '@/modules/teacher/types/live-monitor.types';
 
@@ -13,7 +14,8 @@ import type { LiveMonitorHeaderProps } from '@/modules/teacher/types/live-monito
 // page was open reports CLOSED (in words, not by dropping a colour), a sitting
 // with no minted code shows the missing-value dash, and a sitting with no
 // `opened_at` simply omits the age line instead of guessing "0 min ago".
-// The "End session" control is task 038's and lands in this row.
+// The "End session" control (C-TS-4) sits at the end of this row and renders
+// itself only while the sitting is open.
 function LiveMonitorHeader({ sitting, testLabel, startedMinutesAgo }: LiveMonitorHeaderProps) {
   const t = useTranslations('Teacher.testSessions.live');
   const isOpen = sitting.status === 'open';
@@ -49,12 +51,15 @@ function LiveMonitorHeader({ sitting, testLabel, startedMinutesAgo }: LiveMonito
         </h1>
       </div>
 
-      <p
-        data-slot="live-monitor-code"
-        className="rounded-tile bg-surface-inset px-4 py-2 font-mono text-body-lg font-bold tracking-widest break-all text-foreground select-all"
-      >
-        {sitting.code === null ? <SessionMissingValue label={t('noCode')} /> : sitting.code}
-      </p>
+      <div className="flex flex-wrap items-center gap-3">
+        <p
+          data-slot="live-monitor-code"
+          className="rounded-tile bg-surface-inset px-4 py-2 font-mono text-body-lg font-bold tracking-widest break-all text-foreground select-all"
+        >
+          {sitting.code === null ? <SessionMissingValue label={t('noCode')} /> : sitting.code}
+        </p>
+        <EndSessionControl sitting={sitting} />
+      </div>
     </header>
   );
 }

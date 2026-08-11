@@ -1892,7 +1892,15 @@
         "loading": "正在加载实时场次",
         "errorTitle": "无法加载此实时场次",
         "errorDescription": "网格保持为空而不猜测谁已加入。该场次可能属于其他教师，或已不存在。",
-        "retry": "重试"
+        "retry": "重试",
+        "endSession": "结束场次",
+        "endDialogTitle": "确定结束 {className} 的场次吗？",
+        "endDialogDescription": "仍在作答的学生将按当前进度提交，加入码随即失效。此操作无法撤销。",
+        "endDialogCancel": "继续开放",
+        "endDialogConfirm": "结束场次",
+        "endedToast": "场次已结束，加入码已失效。",
+        "alreadyClosedToast": "该场次此前已结束，页面现在显示最终状态。",
+        "endErrorToast": "无法结束场次，它仍处于开放状态，请重试。"
       }
     },
     "results": {
