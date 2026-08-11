@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, Button, EmptyState } from '@/modules/design-system';
 import { TeacherClassCard } from '@/modules/teacher/components/TeacherClassCard';
 import { TeacherLiveSessionBanner } from '@/modules/teacher/components/TeacherLiveSessionBanner';
+import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
 import { deriveDashboardStatus } from '@/modules/teacher/lib/dashboard-cards';
 import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-dashboard.query';
 
@@ -30,8 +31,15 @@ function TeacherDashboardScreen() {
     classCount: classes.length,
   });
 
+  // A `<div>`, not a second `<main>`: the READ-ONLY `SidebarInset` primitive
+  // (src/components/ui/sidebar.tsx) already renders this route's `<main>`, and a
+  // screen-level `<main>` nested inside it made axe report
+  // landmark-no-duplicate-main + landmark-main-is-top-level + landmark-unique on
+  // every frame of this page (task 047, measured at 1280px and 375px). The
+  // landmark above still contains all of this content, so nothing leaves a
+  // landmark; `data-surface`/`data-status` stay where every spec reads them.
   return (
-    <main
+    <div
       data-surface="teacher-dashboard"
       data-status={status}
       className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
@@ -58,6 +66,7 @@ function TeacherDashboardScreen() {
             <Button
               variant="outline"
               size="sm"
+              className={TEACHER_RETRY_BUTTON_CLASS}
               loading={dashboard.isFetching}
               onClick={() => dashboard.refetch()}
             >
@@ -94,7 +103,7 @@ function TeacherDashboardScreen() {
           ))}
         </ul>
       ) : null}
-    </main>
+    </div>
   );
 }
 

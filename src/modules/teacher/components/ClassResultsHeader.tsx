@@ -19,7 +19,12 @@ function ClassResultsHeader({ className, studentCount, summary }: ClassResultsHe
     <header data-slot="class-results-header" className="flex flex-col gap-4">
       <div className="flex min-w-0 flex-col gap-1">
         <h1 className="text-portal-title font-bold break-words text-foreground">{className}</h1>
-        <p className="text-meta text-muted-foreground">{t('students', { count: studentCount })}</p>
+        {/*
+          `--color-body` (#475569), not `--muted-foreground` (#64748B): this line
+          sits on the dashboard well (#EEF2F7), where axe measured muted at
+          4.23:1 for 12.5px text — under the 4.5:1 floor. Body ink is 6.74:1.
+        */}
+        <p className="text-meta text-body">{t('students', { count: studentCount })}</p>
       </div>
 
       {/*

@@ -10,6 +10,7 @@ import { ClassResultsTabs } from '@/modules/teacher/components/ClassResultsTabs'
 import { ProgressTabPanel } from '@/modules/teacher/components/ProgressTabPanel';
 import { StudentsTabPanel } from '@/modules/teacher/components/StudentsTabPanel';
 import { TeachingInsightsPanel } from '@/modules/teacher/components/TeachingInsightsPanel';
+import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
 import { deriveResultsStatus } from '@/modules/teacher/lib/results-shell';
 import { useClassStudentsQuery } from '@/modules/teacher/queries/use-class-students.query';
 import type { ClassResultsScreenProps } from '@/modules/teacher/types/results-shell.types';
@@ -27,6 +28,7 @@ import type { ClassResultsScreenProps } from '@/modules/teacher/types/results-sh
 // insights from C-TR-3, Progress from C-TR-4 (task 045).
 function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
   const t = useTranslations('Teacher.results.detail');
+  const tSection = useTranslations('Teacher.results');
   const classResults = useClassStudentsQuery(classDocumentId);
   const data = classResults.data;
   const status = deriveResultsStatus({
@@ -38,8 +40,15 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
 
   useRecordCrumb(data?.class.name);
 
+  // A `<div>`, not a second `<main>`: the READ-ONLY `SidebarInset` primitive
+  // (src/components/ui/sidebar.tsx) already renders this route's `<main>`, and a
+  // screen-level `<main>` nested inside it made axe report
+  // landmark-no-duplicate-main + landmark-main-is-top-level + landmark-unique on
+  // every frame of this page (task 047, measured at 1280px and 375px). The
+  // landmark above still contains all of this content, so nothing leaves a
+  // landmark; `data-surface`/`data-status` stay where every spec reads them.
   return (
-    <main
+    <div
       data-surface="teacher-class-results"
       data-status={status}
       data-class-id={classDocumentId}
@@ -53,6 +62,16 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
         </div>
       ) : null}
 
+      {/*
+        The failed read has no class name, so the READY branch's h1 cannot render —
+        and axe measured `page-has-heading-one` on this exact frame (task 047). The
+        route's own section name is the honest level-one heading here: the page IS
+        Results, only this class could not be read.
+      */}
+      {status === 'error' || status === 'empty' ? (
+        <h1 className="text-portal-title font-bold text-foreground">{tSection('title')}</h1>
+      ) : null}
+
       {status === 'error' || status === 'empty' ? (
         <Alert
           variant="error"
@@ -61,6 +80,7 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
             <Button
               variant="outline"
               size="sm"
+              className={TEACHER_RETRY_BUTTON_CLASS}
               loading={classResults.isFetching}
               onClick={() => classResults.refetch()}
             >
@@ -88,7 +108,7 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
           />
         </>
       ) : null}
-    </main>
+    </div>
   );
 }
 

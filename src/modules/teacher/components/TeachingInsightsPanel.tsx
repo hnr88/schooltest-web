@@ -8,6 +8,7 @@ import { Alert, Button, EmptyState } from '@/modules/design-system';
 import { SubskillMasteryList } from '@/modules/teacher/components/SubskillMasteryList';
 import { SuggestedGroupsSection } from '@/modules/teacher/components/SuggestedGroupsSection';
 import { TeacherExportPanel } from '@/modules/teacher/components/TeacherExportPanel';
+import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
 import { deriveResultsStatus } from '@/modules/teacher/lib/results-shell';
 import { useClassInsightsQuery } from '@/modules/teacher/queries/use-class-insights.query';
 import type { TeachingInsightsPanelProps } from '@/modules/teacher/types/teaching-insights.types';
@@ -52,6 +53,7 @@ function TeachingInsightsPanel({ classDocumentId }: TeachingInsightsPanelProps) 
             <Button
               variant="outline"
               size="sm"
+              className={TEACHER_RETRY_BUTTON_CLASS}
               loading={insights.isFetching}
               onClick={() => insights.refetch()}
             >

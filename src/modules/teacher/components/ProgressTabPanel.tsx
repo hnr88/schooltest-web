@@ -10,6 +10,7 @@ import { ProgressShiftTable } from '@/modules/teacher/components/ProgressShiftTa
 import { ProgressSummarySection } from '@/modules/teacher/components/ProgressSummarySection';
 import { ProgressWatchSection } from '@/modules/teacher/components/ProgressWatchSection';
 import { TeacherExportPanel } from '@/modules/teacher/components/TeacherExportPanel';
+import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
 import { deriveProgressStatus, progressView } from '@/modules/teacher/lib/class-progress';
 import { useClassProgressQuery } from '@/modules/teacher/queries/use-class-progress.query';
 import type { ProgressTabPanelProps } from '@/modules/teacher/types/class-progress.types';
@@ -54,6 +55,7 @@ function ProgressTabPanel({ classDocumentId }: ProgressTabPanelProps) {
             <Button
               variant="outline"
               size="sm"
+              className={TEACHER_RETRY_BUTTON_CLASS}
               loading={progress.isFetching}
               onClick={() => progress.refetch()}
             >

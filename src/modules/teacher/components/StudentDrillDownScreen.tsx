@@ -8,6 +8,7 @@ import { Alert, Button, EmptyState } from '@/modules/design-system';
 import { useRecordCrumb } from '@/modules/shell';
 import { StudentDrillDownBody } from '@/modules/teacher/components/StudentDrillDownBody';
 import { StudentDrillDownHeader } from '@/modules/teacher/components/StudentDrillDownHeader';
+import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
 import { deriveResultsStatus } from '@/modules/teacher/lib/results-shell';
 import { useStudentDrillDownQuery } from '@/modules/teacher/queries/use-student-drill-down.query';
 import type { StudentDrillDownScreenProps } from '@/modules/teacher/types/student-drill-down.types';
@@ -28,6 +29,7 @@ function StudentDrillDownScreen({
   studentDocumentId,
 }: StudentDrillDownScreenProps) {
   const t = useTranslations('Teacher.results.drillDown');
+  const tSection = useTranslations('Teacher.results');
   const drillDown = useStudentDrillDownQuery(classDocumentId, studentDocumentId);
   const data = drillDown.data;
   const status = deriveResultsStatus({
@@ -39,8 +41,15 @@ function StudentDrillDownScreen({
 
   useRecordCrumb(data?.student.display_name);
 
+  // A `<div>`, not a second `<main>`: the READ-ONLY `SidebarInset` primitive
+  // (src/components/ui/sidebar.tsx) already renders this route's `<main>`, and a
+  // screen-level `<main>` nested inside it made axe report
+  // landmark-no-duplicate-main + landmark-main-is-top-level + landmark-unique on
+  // every frame of this page (task 047, measured at 1280px and 375px). The
+  // landmark above still contains all of this content, so nothing leaves a
+  // landmark; `data-surface`/`data-status` stay where every spec reads them.
   return (
-    <main
+    <div
       data-surface="teacher-student-drill-down"
       data-status={status}
       data-class-id={classDocumentId}
@@ -54,6 +63,15 @@ function StudentDrillDownScreen({
         </div>
       ) : null}
 
+      {/*
+        A failed read has no student name, so `StudentDrillDownHeader`'s h1 cannot
+        render — axe measured `page-has-heading-one` on that frame (task 047). The
+        route's section name is the honest level-one heading in its place.
+      */}
+      {status === 'error' ? (
+        <h1 className="text-portal-title font-bold text-foreground">{tSection('title')}</h1>
+      ) : null}
+
       {status === 'error' ? (
         <Alert
           variant="error"
@@ -62,6 +80,7 @@ function StudentDrillDownScreen({
             <Button
               variant="outline"
               size="sm"
+              className={TEACHER_RETRY_BUTTON_CLASS}
               loading={drillDown.isFetching}
               onClick={() => drillDown.refetch()}
             >
@@ -88,7 +107,7 @@ function StudentDrillDownScreen({
           )}
         </>
       ) : null}
-    </main>
+    </div>
   );
 }
 
