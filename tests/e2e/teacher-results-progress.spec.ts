@@ -7,6 +7,7 @@ import { classProgressResponseSchema } from '@/modules/teacher/schemas/teacher-p
 import type { ClassProgressResponse } from '@/modules/teacher/types/teacher-progress.types';
 
 import { cat, icu } from './helpers/i18n';
+import { comparableClasses, dbCohort, testAOnlyClass } from './helpers/teacher-progress-state';
 import { en, SCREENSHOTS } from './helpers/teacher-rail';
 import {
   openClassResults,
@@ -20,6 +21,15 @@ import {
 // expected value is read from C-TR-4 itself (parsed by the shipped Zod mirror), so
 // there is no expected-value literal here: a tab that printed its own numbers, or
 // a server whose body drifted, fails this spec instead of passing it.
+//
+// Task 063 — `available` is PER CLASS, and this spec used to assert `true` for
+// every class the teacher owns. That was a claim about the dataset dressed up as a
+// claim about the contract: C-TR-4 answers `false` for a class no student has
+// finished Test B in, and the blanket assertion is what blocked seeding the
+// Test-A-only class brief flow 22 needs. Each class's state is now DERIVED from
+// its own Postgres completion counts (`dbCompletedCount`, the probe that mirrors
+// `attemptOf`) and the tab is asserted against the state that implies — populated
+// or placeholder. Nothing here counts classes or assumes an order.
 
 test.describe.configure({ mode: 'serial' });
 
@@ -61,11 +71,14 @@ test.afterAll(async () => {
   await page.close();
 });
 
-async function openProgress(classDocumentId: string): Promise<Locator> {
+async function openProgress(
+  classDocumentId: string,
+  status: 'ready' | 'unavailable' | 'drift' = 'ready',
+): Promise<Locator> {
   await openClassResults(page, classDocumentId);
   await page.getByRole('tab', { name: cat(en, 'Teacher.results.tabs.progress') }).click();
   const panel = page.locator('[data-slot="class-progress"]');
-  await expect(panel).toHaveAttribute('data-status', 'ready', { timeout: 20_000 });
+  await expect(panel).toHaveAttribute('data-status', status, { timeout: 20_000 });
   return panel;
 }
 
@@ -137,14 +150,55 @@ async function assertPopulated(panel: Locator, body: ClassProgressResponse): Pro
   }
 }
 
+/**
+ * The placeholder state: the two REAL counts under it, and none of the populated
+ * blocks zero-filled in their place.
+ */
+async function assertPlaceholder(panel: Locator, body: ClassProgressResponse): Promise<void> {
+  const empty = panel.locator('[data-slot="progress-empty"]');
+  await expect(empty).toContainText(copy('emptyTitle'));
+  await expect(empty).toContainText(copy('emptyDescription'));
+  await expect(panel.locator('[data-slot="progress-empty-counts"]')).toHaveText(
+    icu(copy('emptyCounts'), {
+      testA: icu(copy('completionValue'), {
+        completed: num(body.cohort.test_a_completed),
+        total: num(body.cohort.total),
+      }),
+      testB: icu(copy('completionValue'), {
+        completed: num(body.cohort.test_b_completed),
+        total: num(body.cohort.total),
+      }),
+    }),
+  );
+  await expect(panel.locator('[data-slot="progress-summary"]')).toHaveCount(0);
+  await expect(panel.locator('[data-slot="progress-shift-table"]')).toHaveCount(0);
+  await expect(panel.locator('[data-slot="progress-acara-card"]')).toHaveCount(0);
+  await expect(panel.locator('[data-slot="progress-mover"]')).toHaveCount(0);
+}
+
 test.describe('Progress tab — populated state', () => {
   test('prints C-TR-4 verbatim for every class the teacher owns', async ({ playwright }) => {
     for (const classCard of live.classes) {
       const body = await readClassProgressLive(playwright, classCard.class_document_id);
-      expect(body.available, `${classCard.name} must have a comparison to show`).toBe(true);
+      const db = dbCohort(classCard.class_document_id);
 
-      const panel = await openProgress(classCard.class_document_id);
-      await assertPopulated(panel, body);
+      // The cohort counts are the class's OWN Postgres counts, not the body echoed
+      // back at itself — and `available` follows from them PER CLASS. A class with
+      // no both-tests pair has nothing to compare and must answer `false`; the
+      // equating gate (`RDG-DGNB-A-79.equating_status = 'equated'`, F-EQUATING-GATE)
+      // is what makes every pair on this dataset comparable, so `both > 0` is
+      // exactly the populated condition here.
+      expect(body.cohort.test_a_completed, `${classCard.name} Test A completions`).toBe(db.testA);
+      expect(body.cohort.test_b_completed, `${classCard.name} Test B completions`).toBe(db.testB);
+      expect(body.cohort.both_tests, `${classCard.name} both-tests cohort`).toBe(db.both);
+      expect(body.available, `${classCard.name} has ${db.both} comparable pair(s)`).toBe(db.both > 0);
+
+      const panel = await openProgress(
+        classCard.class_document_id,
+        body.available ? 'ready' : 'unavailable',
+      );
+      if (body.available) await assertPopulated(panel, body);
+      else await assertPlaceholder(panel, body);
 
       await page.screenshot({
         path: path.join(SCREENSHOTS, `task-045-progress-${classCard.class_document_id}.png`),
@@ -161,7 +215,7 @@ test.describe('Progress tab — populated state', () => {
   });
 
   test('carries the three bands in TEXT and real table semantics', async () => {
-    const panel = await openProgress(live.classes[0].class_document_id);
+    const panel = await openProgress(comparableClasses(live.classes)[0].class_document_id);
 
     // Every tinted pill prints a word: no band is conveyed by colour alone.
     const pills = panel.locator('[data-slot="status-pill"]');
@@ -199,78 +253,37 @@ test.describe('Progress tab — populated state', () => {
 });
 
 test.describe('Progress tab — empty state', () => {
-  // No seeded class can answer `available: false` (both carry Test-B results), so
-  // the branch is exercised by perturbing STRAPI'S OWN response in flight — the
-  // same technique helpers/teacher-dashboard-live.ts documents: the real request
-  // goes out, the real body comes back, and only the fields C-TR-4 itself pairs
-  // with `available: false` are set. `cohort` is left EXACTLY as the server sent
-  // it, which is what makes the assertion meaningful: the counts under the
-  // placeholder are real, and the panel branched on the flag rather than on an
-  // array it found empty.
+  // Task 063: this branch used to be reached by perturbing Strapi's own response in
+  // flight, because no seeded class could answer `available: false`. One now can —
+  // EAL/D 9A was seeded Test-A-only through .qa/seed-diagnostics.mjs and the live R
+  // engine — so the perturbation is GONE and the placeholder is asserted against
+  // the server's real body. Which class it is, is derived, never named.
   test('renders the placeholder with the real Test A / Test B counts', async ({ playwright }) => {
-    const classDocumentId = live.classes[0].class_document_id;
-    const body = await readClassProgressLive(playwright, classDocumentId);
+    const { class_document_id: id, name } = testAOnlyClass(live.classes);
+    const body = await readClassProgressLive(playwright, id);
+    const db = dbCohort(id);
 
-    await page.route('**/api/teacher/classes/*/progress', async (route: Route) => {
-      const response = await route.fetch();
-      const wire = classProgressResponseSchema.parse(await response.json());
-      await route.fulfill({
-        response,
-        json: {
-          ...wire,
-          available: false,
-          summary: null,
-          acara_movement: null,
-          subskill_shift: [],
-          most_improved: [],
-          needs_attention: [],
-        },
-      });
+    expect(body.available, `${name} has no Test B completion`).toBe(false);
+    expect(body.cohort.test_a_completed, `${name} Test A completions`).toBe(db.testA);
+    expect(body.cohort.test_b_completed, `${name} Test B completions`).toBe(0);
+    // Not an empty payload: an unavailable tab still carries the REAL counts.
+    expect(body.cohort.test_a_completed).toBeGreaterThan(0);
+
+    const panel = await openProgress(id, 'unavailable');
+    await assertPlaceholder(panel, body);
+
+    await page.screenshot({
+      path: path.join(SCREENSHOTS, 'task-045-progress-empty-state.png'),
+      animations: 'disabled',
+      fullPage: true,
     });
-
-    try {
-      await openClassResults(page, classDocumentId);
-      await page.getByRole('tab', { name: cat(en, 'Teacher.results.tabs.progress') }).click();
-      const panel = page.locator('[data-slot="class-progress"]');
-      await expect(panel).toHaveAttribute('data-status', 'unavailable', { timeout: 20_000 });
-
-      await expect(panel.locator('[data-slot="progress-empty"]')).toContainText(copy('emptyTitle'));
-      await expect(panel.locator('[data-slot="progress-empty"]')).toContainText(
-        copy('emptyDescription'),
-      );
-      await expect(panel.locator('[data-slot="progress-empty-counts"]')).toHaveText(
-        icu(copy('emptyCounts'), {
-          testA: icu(copy('completionValue'), {
-            completed: num(body.cohort.test_a_completed),
-            total: num(body.cohort.total),
-          }),
-          testB: icu(copy('completionValue'), {
-            completed: num(body.cohort.test_b_completed),
-            total: num(body.cohort.total),
-          }),
-        }),
-      );
-
-      // The populated blocks are absent — nothing is zero-filled in their place.
-      await expect(panel.locator('[data-slot="progress-summary"]')).toHaveCount(0);
-      await expect(panel.locator('[data-slot="progress-shift-table"]')).toHaveCount(0);
-      await expect(panel.locator('[data-slot="progress-acara-card"]')).toHaveCount(0);
-
-      await page.screenshot({
-        path: path.join(SCREENSHOTS, 'task-045-progress-empty-state.png'),
-        animations: 'disabled',
-        fullPage: true,
-      });
-    } finally {
-      await page.unroute('**/api/teacher/classes/*/progress');
-    }
   });
 
   // Same in-flight perturbation, used on the other half of the invariant: a body
   // that claims a comparison but carries no summary must FAIL LOUD, because zeros
   // in a stat row would read as "the class did not move".
   test('a summary-less available:true body is reported, never drawn as zeros', async () => {
-    const classDocumentId = live.classes[0].class_document_id;
+    const classDocumentId = comparableClasses(live.classes)[0].class_document_id;
 
     await page.route('**/api/teacher/classes/*/progress', async (route: Route) => {
       const response = await route.fetch();
@@ -291,7 +304,10 @@ test.describe('Progress tab — empty state', () => {
   });
 
   test('the view function branches on the flag, not on empty arrays', async ({ playwright }) => {
-    const body = await readClassProgressLive(playwright, live.classes[0].class_document_id);
+    const body = await readClassProgressLive(
+      playwright,
+      comparableClasses(live.classes)[0].class_document_id,
+    );
     expect(progressView(body).kind).toBe('ready');
 
     const unavailable = classProgressResponseSchema.parse({
