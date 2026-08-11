@@ -30,10 +30,18 @@ const directionText = (value: number, digits = 0): string => {
   return progressCopy('directionFlat');
 };
 
+const masteredText = (mastered: number, compared: number): string =>
+  icu(progressCopy('masteredCount'), { mastered: num(mastered), compared: num(compared) });
+
 /**
  * Brief flow 23a — "Subskill mastery shift": one row per C-TR-4 `subskill_shift`
  * entry with the Test A count, the Test B count and the server's own `change`,
  * each denominated by the COMPARED cohort (never the class roster).
+ *
+ * The two counts are bound to their COLUMNS, cell by cell (`td` 0 = Test A, 1 =
+ * Test B), against a header order asserted from the catalog — the A→B direction is
+ * the whole semantic content of flow 23, so a row-level substring check that would
+ * survive a transposition of the two cells is not an assertion of this flow.
  */
 export async function assertMasteryShift(
   panel: Locator,
@@ -41,6 +49,12 @@ export async function assertMasteryShift(
 ): Promise<void> {
   const table = panel.locator('[data-slot="progress-shift-table"]');
   await expect(table).toBeVisible();
+  await expect(table.locator('thead th'), 'shift table column order').toHaveText([
+    progressCopy('subskill'),
+    progressCopy('testA'),
+    progressCopy('testB'),
+    progressCopy('change'),
+  ]);
   await expect(panel.locator('[data-slot="progress-shift"]').getByRole('heading', { level: 2 })).toHaveText(
     progressCopy('shiftTitle'),
   );
@@ -54,15 +68,18 @@ export async function assertMasteryShift(
     const row = rows.nth(index);
     await expect(row).toHaveAttribute('data-attribute', entry.attribute);
     await expect(row.locator('th[scope="row"]')).toHaveText(entry.name);
-    for (const mastered of [entry.a_mastered, entry.b_mastered]) {
-      await expect(row).toContainText(
-        icu(progressCopy('masteredCount'), {
-          mastered: num(mastered),
-          compared: num(view.compared),
-        }),
-      );
-    }
-    await expect(row).toContainText(directionText(entry.change));
+
+    const cells = row.locator('td');
+    await expect(cells, `${entry.attribute} cell count`).toHaveCount(3);
+    await expect(cells.nth(0), `${entry.attribute} Test A column`).toHaveText(
+      masteredText(entry.a_mastered, view.compared),
+    );
+    await expect(cells.nth(1), `${entry.attribute} Test B column`).toHaveText(
+      masteredText(entry.b_mastered, view.compared),
+    );
+    await expect(cells.nth(2), `${entry.attribute} change column`).toHaveText(
+      directionText(entry.change),
+    );
   }
 }
 
@@ -82,7 +99,11 @@ export async function assertAcaraMovement(
   await expect(section.locator('[data-slot="progress-acara-card"]')).toHaveCount(cards.length);
   for (const card of cards) {
     const tile = section.locator(`[data-slot="progress-acara-card"][data-movement="${card.key}"]`);
-    await expect(tile).toContainText(num(card.count));
+    // The COUNT element, not a digit anywhere in the tile: `toContainText('3')` also
+    // passes on a tile reading 13, and these tiles carry other numbers.
+    await expect(tile.locator(':scope > span').first(), `${card.key} count`).toHaveText(
+      num(card.count),
+    );
     await expect(tile).toContainText(
       progressCopy(card.key === 'up' ? 'acaraUp' : card.key === 'down' ? 'acaraDown' : 'acaraSame'),
     );
