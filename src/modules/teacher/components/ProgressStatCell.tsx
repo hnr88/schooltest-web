@@ -23,6 +23,11 @@ function ProgressStatCell({ item }: ProgressStatCellProps) {
         {item.direction && item.change ? (
           <ProgressDeltaPill direction={item.direction} change={item.change} />
         ) : null}
+        {item.note ? (
+          <span data-slot="progress-stat-note" className="text-meta text-balance text-body">
+            {item.note}
+          </span>
+        ) : null}
       </dd>
     </div>
   );

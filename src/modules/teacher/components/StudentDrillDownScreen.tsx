@@ -6,8 +6,8 @@ import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, Button, EmptyState } from '@/modules/design-system';
 import { useRecordCrumb } from '@/modules/shell';
+import { StudentDrillDownBody } from '@/modules/teacher/components/StudentDrillDownBody';
 import { StudentDrillDownHeader } from '@/modules/teacher/components/StudentDrillDownHeader';
-import { StudentTestCard } from '@/modules/teacher/components/StudentTestCard';
 import { deriveResultsStatus } from '@/modules/teacher/lib/results-shell';
 import { useStudentDrillDownQuery } from '@/modules/teacher/queries/use-student-drill-down.query';
 import type { StudentDrillDownScreenProps } from '@/modules/teacher/types/student-drill-down.types';
@@ -20,8 +20,9 @@ import type { StudentDrillDownScreenProps } from '@/modules/teacher/types/studen
 // An EMPTY array is the server's own "no completed test yet" (the roster row
 // exists, no result does) — never a swallowed failure: a failed read renders the
 // error branch and nothing else, with no zeroed tiles and no grey grid standing in
-// for a 403 or a 404. The comparison strip, the Test A collapse and the per-tile
-// deltas are task 043; the export button is task 046.
+// for a 403 or a 404. The comparison strip, the older test's collapse and the
+// per-tile deltas live in `StudentDrillDownBody` (task 043); the export button is
+// task 046.
 function StudentDrillDownScreen({
   classDocumentId,
   studentDocumentId,
@@ -83,9 +84,7 @@ function StudentDrillDownScreen({
               description={t('emptyDescription')}
             />
           ) : (
-            data.tests.map((test) => (
-              <StudentTestCard key={test.variant} test={test} bands={data.bands} />
-            ))
+            <StudentDrillDownBody data={data} />
           )}
         </>
       ) : null}

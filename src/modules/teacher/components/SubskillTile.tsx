@@ -3,11 +3,12 @@
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { SubskillDeltaLine } from '@/modules/teacher/components/SubskillDeltaLine';
 import {
   MASTERY_BAND_LABEL_KEY,
   MASTERY_BAND_TILE_CLASS,
 } from '@/modules/teacher/constants/drill-down.constants';
-import { subskillTileView } from '@/modules/teacher/lib/student-drill-down';
+import { subskillDeltaView, subskillTileView } from '@/modules/teacher/lib/student-drill-down';
 import type { SubskillTileProps } from '@/modules/teacher/types/student-drill-down.types';
 
 // One tile of .qa/DESIGN.md §Student drill-down: the subskill's display NAME, the
@@ -21,9 +22,15 @@ import type { SubskillTileProps } from '@/modules/teacher/types/student-drill-do
 // WCAG 2.2 AA 1.4.1: the band word is real text on every tile, so the three
 // colours are never the only signal. The NOT-ASSESSED arm prints no percentage at
 // all — `0%` would claim a measurement this result does not hold.
+//
+// On the MOST RECENT test C-TR-2 also carries `previous_likelihood`/`delta`, and
+// the tile prints them as the wireframe's "was 62% ↑16" line (task 043). A `null`
+// there is the honest absence — no earlier test, or an A/B pair the platform may
+// not compare (F-EQUATING-GATE) — and renders NO line at all rather than a 0.
 function SubskillTile({ subskill }: SubskillTileProps) {
   const t = useTranslations('Teacher.results.drillDown');
   const view = subskillTileView(subskill);
+  const delta = subskillDeltaView(subskill);
 
   return (
     <li
@@ -52,6 +59,8 @@ function SubskillTile({ subskill }: SubskillTileProps) {
       >
         {t(MASTERY_BAND_LABEL_KEY[view.status])}
       </span>
+
+      {view.measured && delta ? <SubskillDeltaLine delta={delta} /> : null}
     </li>
   );
 }

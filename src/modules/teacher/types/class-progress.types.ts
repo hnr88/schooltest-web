@@ -66,6 +66,13 @@ export interface ProgressStatItem {
   value: string;
   direction: ProgressDirection | null;
   change: string | null;
+  /**
+   * Optional second line under the value. The drill-down's comparison strip
+   * (task 043) uses it for the ACARA phase's "Same phase" / "Phase changed"
+   * WORD — a string equality on the two names C-TR-2 sent, never a direction
+   * inferred from a client-side phase ladder.
+   */
+  note?: string | null;
 }
 
 export interface ProgressTabPanelProps {
