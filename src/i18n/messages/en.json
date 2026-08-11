@@ -1858,6 +1858,41 @@
         "retry": "Try again",
         "emptyTitle": "No sessions yet",
         "emptyDescription": "Generate a join code above and the session appears here with its completion count."
+      },
+      "live": {
+        "meta": {
+          "title": "Live session — SchoolTest",
+          "description": "Follow a reading diagnostic live: who has joined, who is working, who has submitted and who has stalled."
+        },
+        "title": "{className} — {testLabel}",
+        "badgeLive": "Live",
+        "badgeClosed": "Closed",
+        "startedAgo": "{minutes, plural, =0 {Session started just now} other {Session started # min ago}}",
+        "noCode": "No join code was minted for this session",
+        "summaryLabel": "Session counters",
+        "summaryExpected": "Expected",
+        "summaryJoined": "Joined",
+        "summaryInProgress": "In progress",
+        "summarySubmitted": "Submitted",
+        "summaryStalled": "Stalled",
+        "gridLabel": "Student status grid",
+        "legendLabel": "What each tile colour means",
+        "stateSubmitted": "Submitted",
+        "stateInProgress": "In progress",
+        "stateStalled": "Stalled",
+        "stateJoined": "Joined",
+        "stateNotJoined": "Not joined",
+        "stageOf": "Stage {stage} of {total}",
+        "noActivity": "No activity {minutes} min",
+        "tileAria": "{name}: {state}",
+        "tileAriaDetail": "{name}: {state} — {detail}",
+        "stallCaption": "{minutes, plural, one {A tile turns amber after # minute with no activity.} other {A tile turns amber after # minutes with no activity.}}",
+        "rosterEmptyTitle": "No students on this class roster",
+        "rosterEmptyDescription": "This session has no active students to monitor. Add students to the class, then reopen this page.",
+        "loading": "Loading the live session",
+        "errorTitle": "Could not load this live session",
+        "errorDescription": "The grid stays empty rather than guess who has joined. The session may belong to another teacher, or may no longer exist.",
+        "retry": "Try again"
       }
     },
     "results": {

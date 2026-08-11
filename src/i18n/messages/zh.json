@@ -1858,6 +1858,41 @@
         "retry": "重试",
         "emptyTitle": "还没有场次",
         "emptyDescription": "在上方生成加入码，场次就会带着提交数出现在这里。"
+      },
+      "live": {
+        "meta": {
+          "title": "实时场次 — SchoolTest",
+          "description": "实时跟踪阅读诊断：谁已加入、正在作答、已提交，以及谁停滞了。"
+        },
+        "title": "{className} — {testLabel}",
+        "badgeLive": "进行中",
+        "badgeClosed": "已结束",
+        "startedAgo": "{minutes, plural, =0 {场次刚刚开始} other {场次已开始 # 分钟}}",
+        "noCode": "此场次未生成加入码",
+        "summaryLabel": "场次统计",
+        "summaryExpected": "应参加",
+        "summaryJoined": "已加入",
+        "summaryInProgress": "作答中",
+        "summarySubmitted": "已提交",
+        "summaryStalled": "已停滞",
+        "gridLabel": "学生状态网格",
+        "legendLabel": "各色块的含义",
+        "stateSubmitted": "已提交",
+        "stateInProgress": "作答中",
+        "stateStalled": "已停滞",
+        "stateJoined": "已加入",
+        "stateNotJoined": "未加入",
+        "stageOf": "第 {stage} 阶段 / 共 {total} 阶段",
+        "noActivity": "已 {minutes} 分钟无活动",
+        "tileAria": "{name}: {state}",
+        "tileAriaDetail": "{name}: {state} — {detail}",
+        "stallCaption": "{minutes, plural, other {超过 # 分钟无活动后，色块变为琥珀色。}}",
+        "rosterEmptyTitle": "此班级名单暂无学生",
+        "rosterEmptyDescription": "此场次没有可监看的在读学生。请先向班级添加学生，然后重新打开本页。",
+        "loading": "正在加载实时场次",
+        "errorTitle": "无法加载此实时场次",
+        "errorDescription": "网格保持为空而不猜测谁已加入。该场次可能属于其他教师，或已不存在。",
+        "retry": "重试"
       }
     },
     "results": {

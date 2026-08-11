@@ -1858,6 +1858,41 @@
         "retry": "Thử lại",
         "emptyTitle": "Chưa có phiên nào",
         "emptyDescription": "Tạo mã tham gia ở trên, phiên sẽ xuất hiện tại đây kèm số lượt nộp."
+      },
+      "live": {
+        "meta": {
+          "title": "Phiên trực tiếp — SchoolTest",
+          "description": "Theo dõi bài kiểm tra đọc trực tiếp: ai đã tham gia, đang làm, đã nộp và ai bị dừng."
+        },
+        "title": "{className} — {testLabel}",
+        "badgeLive": "Trực tiếp",
+        "badgeClosed": "Đã đóng",
+        "startedAgo": "{minutes, plural, =0 {Phiên vừa bắt đầu} other {Phiên đã bắt đầu # phút trước}}",
+        "noCode": "Phiên này không được cấp mã tham gia",
+        "summaryLabel": "Số liệu của phiên",
+        "summaryExpected": "Dự kiến",
+        "summaryJoined": "Đã tham gia",
+        "summaryInProgress": "Đang làm",
+        "summarySubmitted": "Đã nộp",
+        "summaryStalled": "Bị dừng",
+        "gridLabel": "Lưới trạng thái học sinh",
+        "legendLabel": "Ý nghĩa màu của mỗi ô",
+        "stateSubmitted": "Đã nộp",
+        "stateInProgress": "Đang làm",
+        "stateStalled": "Bị dừng",
+        "stateJoined": "Đã tham gia",
+        "stateNotJoined": "Chưa tham gia",
+        "stageOf": "Chặng {stage} trên {total}",
+        "noActivity": "Không hoạt động {minutes} phút",
+        "tileAria": "{name}: {state}",
+        "tileAriaDetail": "{name}: {state} — {detail}",
+        "stallCaption": "{minutes, plural, other {Ô chuyển sang màu hổ phách sau # phút không hoạt động.}}",
+        "rosterEmptyTitle": "Danh sách lớp này chưa có học sinh",
+        "rosterEmptyDescription": "Phiên này không có học sinh đang hoạt động để theo dõi. Hãy thêm học sinh vào lớp rồi mở lại trang này.",
+        "loading": "Đang tải phiên trực tiếp",
+        "errorTitle": "Không tải được phiên trực tiếp này",
+        "errorDescription": "Lưới để trống thay vì đoán ai đã tham gia. Phiên có thể thuộc giáo viên khác hoặc không còn tồn tại.",
+        "retry": "Thử lại"
       }
     },
     "results": {

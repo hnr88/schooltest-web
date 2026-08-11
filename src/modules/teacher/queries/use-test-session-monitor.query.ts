@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
+import { MONITOR_POLL_INTERVAL_MS } from '@/modules/teacher/constants/live-monitor.constants';
 import { testSessionMonitorResponseSchema } from '@/modules/teacher/schemas/teacher-session.schema';
 import type { TestSessionMonitorResponse } from '@/modules/teacher/types/teacher-session.types';
 
@@ -23,5 +24,12 @@ export function useTestSessionMonitorQuery(documentId: string, enabled = true) {
     enabled: enabled && Boolean(documentId),
     staleTime: 0,
     retry: false,
+    // The grid is live: TanStack Query owns the cadence (task 037), so there is
+    // no hand-rolled timer and no socket. Polling STOPS once the sitting is
+    // closed — a closed sitting's grid is final, and a failed read must not
+    // become an infinite retry loop behind `retry: false`.
+    refetchInterval: (query) =>
+      query.state.data?.sitting.status === 'open' ? MONITOR_POLL_INTERVAL_MS : false,
+    refetchIntervalInBackground: false,
   });
 }

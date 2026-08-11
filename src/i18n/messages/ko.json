@@ -1858,6 +1858,41 @@
         "retry": "다시 시도",
         "emptyTitle": "아직 세션이 없습니다",
         "emptyDescription": "위에서 참여 코드를 생성하면 완료 현황과 함께 여기에 표시됩니다."
+      },
+      "live": {
+        "meta": {
+          "title": "실시간 세션 — SchoolTest",
+          "description": "읽기 진단을 실시간으로 확인하세요. 참여, 진행, 제출, 정지 상태가 한눈에 보입니다."
+        },
+        "title": "{className} — {testLabel}",
+        "badgeLive": "진행 중",
+        "badgeClosed": "종료",
+        "startedAgo": "{minutes, plural, =0 {세션이 방금 시작되었습니다} other {세션 시작 후 #분 경과}}",
+        "noCode": "이 세션에는 참여 코드가 발급되지 않았습니다",
+        "summaryLabel": "세션 집계",
+        "summaryExpected": "대상",
+        "summaryJoined": "참여",
+        "summaryInProgress": "진행 중",
+        "summarySubmitted": "제출",
+        "summaryStalled": "정지",
+        "gridLabel": "학생 상태 그리드",
+        "legendLabel": "타일 색상의 의미",
+        "stateSubmitted": "제출 완료",
+        "stateInProgress": "진행 중",
+        "stateStalled": "정지",
+        "stateJoined": "참여함",
+        "stateNotJoined": "미참여",
+        "stageOf": "{total}단계 중 {stage}단계",
+        "noActivity": "{minutes}분간 활동 없음",
+        "tileAria": "{name}: {state}",
+        "tileAriaDetail": "{name}: {state} — {detail}",
+        "stallCaption": "{minutes, plural, other {활동이 #분 이상 없으면 타일이 주황색으로 바뀝니다.}}",
+        "rosterEmptyTitle": "이 학급 명단에 학생이 없습니다",
+        "rosterEmptyDescription": "모니터링할 활성 학생이 없습니다. 학급에 학생을 추가한 뒤 이 페이지를 다시 열어 주세요.",
+        "loading": "실시간 세션을 불러오는 중",
+        "errorTitle": "이 실시간 세션을 불러오지 못했습니다",
+        "errorDescription": "누가 참여했는지 추측하지 않고 그리드를 비워 둡니다. 다른 교사의 세션이거나 더 이상 존재하지 않을 수 있습니다.",
+        "retry": "다시 시도"
       }
     },
     "results": {

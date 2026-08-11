@@ -1858,6 +1858,41 @@
         "retry": "Cuba lagi",
         "emptyTitle": "Belum ada sesi",
         "emptyDescription": "Jana kod sertai di atas dan sesi itu akan muncul di sini dengan kiraan penyiapannya."
+      },
+      "live": {
+        "meta": {
+          "title": "Sesi langsung — SchoolTest",
+          "description": "Ikuti diagnostik bacaan secara langsung: siapa telah sertai, sedang menjawab, telah hantar dan yang terhenti."
+        },
+        "title": "{className} — {testLabel}",
+        "badgeLive": "Langsung",
+        "badgeClosed": "Ditutup",
+        "startedAgo": "{minutes, plural, =0 {Sesi baru sahaja dimulakan} other {Sesi dimulakan # min lalu}}",
+        "noCode": "Tiada kod sertai dijana untuk sesi ini",
+        "summaryLabel": "Kiraan sesi",
+        "summaryExpected": "Dijangka",
+        "summaryJoined": "Sertai",
+        "summaryInProgress": "Sedang berjalan",
+        "summarySubmitted": "Dihantar",
+        "summaryStalled": "Terhenti",
+        "gridLabel": "Grid status murid",
+        "legendLabel": "Makna setiap warna petak",
+        "stateSubmitted": "Dihantar",
+        "stateInProgress": "Sedang berjalan",
+        "stateStalled": "Terhenti",
+        "stateJoined": "Sertai",
+        "stateNotJoined": "Belum sertai",
+        "stageOf": "Tahap {stage} daripada {total}",
+        "noActivity": "Tiada aktiviti {minutes} min",
+        "tileAria": "{name}: {state}",
+        "tileAriaDetail": "{name}: {state} — {detail}",
+        "stallCaption": "{minutes, plural, other {Petak bertukar kuning selepas # minit tiada aktiviti.}}",
+        "rosterEmptyTitle": "Tiada murid dalam senarai kelas ini",
+        "rosterEmptyDescription": "Sesi ini tiada murid aktif untuk dipantau. Tambah murid ke kelas, kemudian buka semula halaman ini.",
+        "loading": "Memuatkan sesi langsung",
+        "errorTitle": "Tidak dapat memuatkan sesi langsung ini",
+        "errorDescription": "Grid kekal kosong dan tidak meneka siapa telah sertai. Sesi ini mungkin milik guru lain atau sudah tidak ada.",
+        "retry": "Cuba lagi"
       }
     },
     "results": {

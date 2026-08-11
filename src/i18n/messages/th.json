@@ -1858,6 +1858,41 @@
         "retry": "ลองใหม่",
         "emptyTitle": "ยังไม่มีรอบสอบ",
         "emptyDescription": "สร้างรหัสเข้าร่วมด้านบน แล้วรอบสอบจะปรากฏที่นี่พร้อมจำนวนที่ส่งแล้ว"
+      },
+      "live": {
+        "meta": {
+          "title": "รอบสอบสด — SchoolTest",
+          "description": "ติดตามแบบทดสอบการอ่านแบบสด ใครเข้าร่วมแล้ว ใครกำลังทำ ใครส่งแล้ว และใครหยุดนิ่ง"
+        },
+        "title": "{className} — {testLabel}",
+        "badgeLive": "สด",
+        "badgeClosed": "ปิดแล้ว",
+        "startedAgo": "{minutes, plural, =0 {รอบสอบเริ่มเมื่อสักครู่} other {รอบสอบเริ่มมาแล้ว # นาที}}",
+        "noCode": "รอบสอบนี้ไม่มีการออกรหัสเข้าร่วม",
+        "summaryLabel": "ตัวเลขสรุปของรอบสอบ",
+        "summaryExpected": "คาดว่าเข้าสอบ",
+        "summaryJoined": "เข้าร่วมแล้ว",
+        "summaryInProgress": "กำลังทำ",
+        "summarySubmitted": "ส่งแล้ว",
+        "summaryStalled": "หยุดนิ่ง",
+        "gridLabel": "ตารางสถานะนักเรียน",
+        "legendLabel": "ความหมายของสีในแต่ละช่อง",
+        "stateSubmitted": "ส่งแล้ว",
+        "stateInProgress": "กำลังทำ",
+        "stateStalled": "หยุดนิ่ง",
+        "stateJoined": "เข้าร่วมแล้ว",
+        "stateNotJoined": "ยังไม่เข้าร่วม",
+        "stageOf": "ขั้นที่ {stage} จาก {total}",
+        "noActivity": "ไม่มีการเคลื่อนไหว {minutes} นาที",
+        "tileAria": "{name}: {state}",
+        "tileAriaDetail": "{name}: {state} — {detail}",
+        "stallCaption": "{minutes, plural, other {ช่องจะเปลี่ยนเป็นสีเหลืองอำพันเมื่อไม่มีการเคลื่อนไหวเกิน # นาที}}",
+        "rosterEmptyTitle": "ยังไม่มีนักเรียนในรายชื่อชั้นเรียนนี้",
+        "rosterEmptyDescription": "รอบสอบนี้ไม่มีนักเรียนที่ใช้งานอยู่ให้ติดตาม เพิ่มนักเรียนเข้าชั้นเรียนแล้วเปิดหน้านี้อีกครั้ง",
+        "loading": "กำลังโหลดรอบสอบสด",
+        "errorTitle": "ไม่สามารถโหลดรอบสอบสดนี้",
+        "errorDescription": "ตารางจะว่างไว้แทนการเดาว่าใครเข้าร่วมแล้ว รอบสอบนี้อาจเป็นของครูคนอื่นหรือไม่มีอยู่แล้ว",
+        "retry": "ลองอีกครั้ง"
       }
     },
     "results": {

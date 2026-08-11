@@ -256,3 +256,42 @@ export type {
   ProgressWatchVariant,
   ProgressTabPanelProps,
 } from './types/class-progress.types';
+
+// Live monitoring grid (task 037, C-TS-3).
+export { LiveMonitorScreen } from './components/LiveMonitorScreen';
+export { LiveMonitorHeader } from './components/LiveMonitorHeader';
+export { LiveMonitorSummary } from './components/LiveMonitorSummary';
+export { LiveMonitorGrid } from './components/LiveMonitorGrid';
+export { LiveMonitorTile } from './components/LiveMonitorTile';
+export { LiveMonitorLegend } from './components/LiveMonitorLegend';
+export { useLiveMonitor } from './hooks/useLiveMonitor';
+export {
+  deriveLiveMonitorStatus,
+  monitorSummaryItems,
+  monitorTileDetail,
+  sortMonitorStudents,
+  sessionElapsedMinutes,
+} from './lib/live-monitor';
+export {
+  MONITOR_POLL_INTERVAL_MS,
+  MONITOR_STATE_ORDER,
+  MONITOR_SUMMARY_ORDER,
+  MONITOR_STATE_THEME,
+  MONITOR_STATE_LABEL_KEY,
+  MONITOR_SUMMARY_LABEL_KEY,
+} from './constants/live-monitor.constants';
+export type {
+  MonitorSummaryKey,
+  MonitorTileTheme,
+  MonitorSummaryItem,
+  MonitorTileDetail,
+  LiveMonitorReadStatus,
+  LiveMonitorReadCounts,
+  LiveMonitorState,
+  LiveMonitorScreenProps,
+  LiveMonitorHeaderProps,
+  LiveMonitorSummaryProps,
+  LiveMonitorGridProps,
+  LiveMonitorTileProps,
+  LiveMonitorLegendProps,
+} from './types/live-monitor.types';
