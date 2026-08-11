@@ -218,22 +218,40 @@ test.describe('teacher contract — the module paths against the REAL Strapi', (
     await context.dispose();
   });
 
-  test('an absent route answers the error envelope the module mirrors', async ({ playwright }) => {
+  // An ABSENT RESOURCE, not an unbuilt route. This used to walk READ_OPERATIONS and parse
+  // whichever rows happened to answer 404 — i.e. it depended on some contract routes NOT
+  // BEING BUILT YET. Once the API lane landed all eleven, every row answered 200, the loop
+  // skipped everything, and `envelopesChecked > 0` failed. The guard was right; the premise
+  // had expired. Three separate verifiers (038, 042, 043) reported the red.
+  //
+  // These ids are absent BY CONSTRUCTION rather than by accident of build order, so this
+  // test cannot rot the same way again: a well-formed documentId that matches no row must
+  // answer 404 (existence before ownership — SF-5), and an unmounted path must answer
+  // 404/405 from the router. Both bodies must be the typed envelope the web module mirrors.
+  const ABSENT = [
+    ['unknown class', `/api/teacher/classes/${'z'.repeat(24)}/students`],
+    ['unknown student in a real class', `/api/teacher/classes/${CLASS_ID}/students/${'z'.repeat(24)}`],
+    ['unmounted teacher path', '/api/teacher/no-such-operation'],
+  ] as const;
+
+  test('an absent resource answers the error envelope the module mirrors', async ({
+    playwright,
+  }) => {
     const context = await playwright.request.newContext();
     let envelopesChecked = 0;
 
-    for (const [contract, routePath] of READ_OPERATIONS) {
+    for (const [label, routePath] of ABSENT) {
       const response = await context.get(`${API_BASE}${routePath}`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
-      if (response.status() !== 404) continue;
+      expect([404, 405], `${label} status`).toContain(response.status());
       const parsed = teacherErrorSchema.safeParse(await response.json());
-      expect(parsed.success, `${contract}: ${parsed.error?.message}`).toBe(true);
+      expect(parsed.success, `${label}: ${parsed.error?.message}`).toBe(true);
       envelopesChecked += 1;
     }
 
     // Guard the guard: a loop that skipped every row would otherwise pass.
-    expect(envelopesChecked).toBeGreaterThan(0);
+    expect(envelopesChecked).toBe(ABSENT.length);
     await context.dispose();
   });
 });
