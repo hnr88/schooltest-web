@@ -265,6 +265,30 @@ test.describe('Progress tab — empty state', () => {
     }
   });
 
+  // Same in-flight perturbation, used on the other half of the invariant: a body
+  // that claims a comparison but carries no summary must FAIL LOUD, because zeros
+  // in a stat row would read as "the class did not move".
+  test('a summary-less available:true body is reported, never drawn as zeros', async () => {
+    const classDocumentId = live.classes[0].class_document_id;
+
+    await page.route('**/api/teacher/classes/*/progress', async (route: Route) => {
+      const response = await route.fetch();
+      const wire = classProgressResponseSchema.parse(await response.json());
+      await route.fulfill({ response, json: { ...wire, summary: null } });
+    });
+
+    try {
+      await openClassResults(page, classDocumentId);
+      await page.getByRole('tab', { name: cat(en, 'Teacher.results.tabs.progress') }).click();
+      const panel = page.locator('[data-slot="class-progress"]');
+      await expect(panel).toHaveAttribute('data-status', 'drift', { timeout: 20_000 });
+      await expect(panel).toContainText(copy('driftTitle'));
+      await expect(panel.locator('[data-slot="progress-stat"]')).toHaveCount(0);
+    } finally {
+      await page.unroute('**/api/teacher/classes/*/progress');
+    }
+  });
+
   test('the view function branches on the flag, not on empty arrays', async ({ playwright }) => {
     const body = await readClassProgressLive(playwright, live.classes[0].class_document_id);
     expect(progressView(body).kind).toBe('ready');
