@@ -4,6 +4,9 @@ export { TeacherClassCard } from './components/TeacherClassCard';
 export { TeacherClassCompletionRow } from './components/TeacherClassCompletionRow';
 export { TestSessionsScreen } from './components/TestSessionsScreen';
 export { ResultsScreen } from './components/ResultsScreen';
+export { ClassResultsScreen } from './components/ClassResultsScreen';
+export { ClassResultsTabs } from './components/ClassResultsTabs';
+export { ExitPredictionsPanel } from './components/ExitPredictionsPanel';
 export { StartTestSessionPanel } from './components/StartTestSessionPanel';
 export { StartTestSessionForm } from './components/StartTestSessionForm';
 export { TestSessionSelect } from './components/TestSessionSelect';
@@ -29,6 +32,7 @@ export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-exp
 export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-setup';
 export { completionPercent, deriveDashboardStatus } from './lib/dashboard-cards';
 export { resolveJoinCodeView, testSessionMonitorHref } from './lib/join-code';
+export { classResultsHref, deriveResultsStatus, isResultsTabValue } from './lib/results-shell';
 
 export { MASTERY_BAND_TONE } from './constants/mastery.constants';
 export {
@@ -36,6 +40,11 @@ export {
   START_TEST_SESSION_DEFAULTS,
 } from './constants/test-session-setup.constants';
 export { TEST_SESSIONS_PATH } from './constants/join-code.constants';
+export {
+  RESULTS_PATH,
+  RESULTS_TAB_ORDER,
+  DEFAULT_RESULTS_TAB,
+} from './constants/results.constants';
 
 export {
   masteryBandSchema,
@@ -153,3 +162,15 @@ export type {
   TeacherExportRequest,
   TeacherExportFile,
 } from './types/teacher-export.types';
+export type {
+  ResultsTabValue,
+  ResultsReadStatus,
+  ResultsReadCounts,
+  ResultsClassRowProps,
+  ClassResultsHeaderProps,
+  ClassResultsStatItem,
+  ClassResultsStatProps,
+  ClassResultsTabsProps,
+  ClassResultsScreenProps,
+  ResultsTabPendingProps,
+} from './types/results-shell.types';

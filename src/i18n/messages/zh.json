@@ -1835,8 +1835,62 @@
       },
       "title": "成绩",
       "description": "班级成绩、教学洞察，以及两次测验之间的进步情况。",
-      "placeholderTitle": "此页面尚未提供成绩内容",
-      "placeholderDescription": "班级成绩表、教学洞察与测验 A 至测验 B 的对比将在下一步上线。本页面目前不读取任何成绩数据，因此不作任何数据陈述。"
+      "list": {
+        "loading": "正在加载你的班级",
+        "students": "{count, plural, other {# 名学生}}",
+        "completionValue": "{completed} / {total}",
+        "completion": "测验 A {testA} · 测验 B {testB} 已完成",
+        "emptyTitle": "尚未为你分配班级",
+        "emptyDescription": "成绩按班级逐一列出。请让管理员为你分配班级，然后重新加载本页面。",
+        "errorTitle": "无法加载你的班级",
+        "errorDescription": "此列表从服务器实时读取，宁可不显示也绝不猜测。请检查网络连接后重试。",
+        "retry": "重试"
+      },
+      "detail": {
+        "meta": {
+          "title": "班级成绩 — SchoolTest",
+          "description": "单个班级：每位学生的阅读诊断结果、其背后的教学洞察，以及测验 A 到测验 B 的进步情况。"
+        },
+        "loading": "正在加载该班级",
+        "errorTitle": "无法加载该班级",
+        "errorDescription": "本页面从服务器实时读取班级数据，宁可不显示也绝不猜测。若该班级不是你所教的班级，请联系管理员；否则请检查网络连接后重试。",
+        "retry": "重试",
+        "students": "{count, plural, other {# 名学生}}",
+        "summaryLabel": "班级概况",
+        "testA": "测验 A",
+        "testB": "测验 B",
+        "completionValue": "{completed} / {total}",
+        "completedNote": "名学生已完成",
+        "avgScore": "平均分",
+        "scoreValue": "{score} / 100",
+        "noValue": "—",
+        "avgScoreNone": "该班级还没有学生完成已评分的测验。",
+        "topGap": "主要薄弱项",
+        "notYetCount": "{count, plural, other {# 名尚未掌握}}",
+        "topGapNone": "该班级已完成的成绩中，没有任何子技能被标记为尚未掌握。",
+        "latestTestBasis": "依据每位学生最近一次完成的测验。"
+      },
+      "tabs": {
+        "listLabel": "班级成绩视图",
+        "students": "学生",
+        "insights": "教学洞察",
+        "progress": "进步情况",
+        "exit": "出口水平预测",
+        "comingSoon": "即将推出"
+      },
+      "pending": {
+        "studentsTitle": "学生成绩表将在下一步上线",
+        "studentsDescription": "每位学生测验 A 与测验 B 的状态、分数和 ACARA 阶段将列在此处。本面板目前不读取任何学生数据，因此不作任何数据陈述。",
+        "insightsTitle": "教学洞察将在下一步上线",
+        "insightsDescription": "全班阅读子技能掌握情况与用于针对性教学的建议分组将显示在此处。本面板目前不读取任何洞察数据，因此不作任何数据陈述。",
+        "progressTitle": "测验 A 与测验 B 的对比将在下一步上线",
+        "progressDescription": "分数变化、子技能掌握变化与 ACARA 阶段变动将显示在此处。本面板目前不读取任何进步数据，因此不作任何数据陈述。"
+      },
+      "exitPredictions": {
+        "title": "出口水平预测",
+        "badge": "即将推出",
+        "description": "SchoolTest 尚不预测出口水平，因此本标签页没有可执行的内容。由于没有测得任何预测值，此处不显示任何预测。"
+      }
     }
   }
 }

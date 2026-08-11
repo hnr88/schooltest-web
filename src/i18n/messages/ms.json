@@ -1835,8 +1835,62 @@
       },
       "title": "Keputusan",
       "description": "Keputusan kelas, cerapan pengajaran dan kemajuan antara ujian.",
-      "placeholderTitle": "Keputusan belum ada di halaman ini",
-      "placeholderDescription": "Jadual kelas, cerapan pengajaran dan perbandingan Ujian A ke Ujian B akan menyusul di sini. Halaman ini belum membaca sebarang data keputusan, jadi ia tidak melaporkan apa-apa."
+      "list": {
+        "loading": "Memuatkan kelas anda",
+        "students": "{count, plural, other {# pelajar}}",
+        "completionValue": "{completed} / {total}",
+        "completion": "Ujian A {testA} · Ujian B {testB} selesai",
+        "emptyTitle": "Tiada kelas ditugaskan kepada anda",
+        "emptyDescription": "Keputusan disenaraikan satu kelas pada satu masa. Minta pentadbir menugaskan kelas kepada anda, kemudian muat semula halaman ini.",
+        "errorTitle": "Tidak dapat memuatkan kelas anda",
+        "errorDescription": "Senarai ini dibaca secara langsung daripada pelayan dan tidak menunjukkan apa-apa dan bukannya meneka. Periksa sambungan anda dan cuba lagi.",
+        "retry": "Cuba lagi"
+      },
+      "detail": {
+        "meta": {
+          "title": "Keputusan kelas — SchoolTest",
+          "description": "Satu kelas: diagnostik bacaan setiap pelajar, cerapan pengajaran di sebaliknya dan kemajuan antara Ujian A dan Ujian B."
+        },
+        "loading": "Memuatkan kelas ini",
+        "errorTitle": "Tidak dapat memuatkan kelas ini",
+        "errorDescription": "Halaman ini membaca kelas secara langsung daripada pelayan dan tidak menunjukkan apa-apa dan bukannya meneka. Jika kelas ini bukan kelas anda, hubungi pentadbir; jika tidak, periksa sambungan anda dan cuba lagi.",
+        "retry": "Cuba lagi",
+        "students": "{count, plural, other {# pelajar}}",
+        "summaryLabel": "Ringkasan kelas",
+        "testA": "Ujian A",
+        "testB": "Ujian B",
+        "completionValue": "{completed} / {total}",
+        "completedNote": "pelajar selesai",
+        "avgScore": "Skor purata",
+        "scoreValue": "{score} / 100",
+        "noValue": "—",
+        "avgScoreNone": "Belum ada pelajar dalam kelas ini yang mempunyai ujian berskor.",
+        "topGap": "Jurang utama",
+        "notYetCount": "{count, plural, other {# belum menguasai}}",
+        "topGapNone": "Tiada keputusan selesai dalam kelas ini yang menandakan sesuatu subkemahiran sebagai belum dikuasai.",
+        "latestTestBasis": "Daripada ujian terkini yang diselesaikan setiap pelajar."
+      },
+      "tabs": {
+        "listLabel": "Paparan keputusan kelas",
+        "students": "Pelajar",
+        "insights": "Cerapan pengajaran",
+        "progress": "Kemajuan",
+        "exit": "Ramalan keluar",
+        "comingSoon": "Akan datang"
+      },
+      "pending": {
+        "studentsTitle": "Jadual pelajar akan menyusul di sini",
+        "studentsDescription": "Status, skor dan fasa ACARA Ujian A dan Ujian B setiap pelajar akan disenaraikan di sini. Panel ini belum membaca sebarang data pelajar, jadi ia tidak melaporkan apa-apa.",
+        "insightsTitle": "Cerapan pengajaran akan menyusul di sini",
+        "insightsDescription": "Penguasaan subkemahiran bacaan seluruh kelas dan kumpulan yang disarankan untuk pengajaran bersasar akan muncul di sini. Panel ini belum membaca sebarang data cerapan, jadi ia tidak melaporkan apa-apa.",
+        "progressTitle": "Perbandingan Ujian A ke Ujian B akan menyusul di sini",
+        "progressDescription": "Perubahan skor, peralihan penguasaan subkemahiran dan pergerakan fasa ACARA akan muncul di sini. Panel ini belum membaca sebarang data kemajuan, jadi ia tidak melaporkan apa-apa."
+      },
+      "exitPredictions": {
+        "title": "Ramalan keluar",
+        "badge": "Akan datang",
+        "description": "SchoolTest belum meramalkan tahap keluar, jadi tiada apa-apa untuk ditindaklanjuti dalam tab ini. Tiada ramalan ditunjukkan kerana tiada yang telah diukur."
+      }
     }
   }
 }

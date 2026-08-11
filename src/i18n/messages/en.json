@@ -1835,8 +1835,62 @@
       },
       "title": "Results",
       "description": "Class results, teaching insights and progress between tests.",
-      "placeholderTitle": "Results are not on this page yet",
-      "placeholderDescription": "The class table, teaching insights and the Test A to Test B comparison land here next. This page reads no result data yet, so it reports none."
+      "list": {
+        "loading": "Loading your classes",
+        "students": "{count, plural, one {# student} other {# students}}",
+        "completionValue": "{completed} / {total}",
+        "completion": "Test A {testA} · Test B {testB} completed",
+        "emptyTitle": "No classes are assigned to you",
+        "emptyDescription": "Results are listed one class at a time. Ask an administrator to assign you a class, then reload this page.",
+        "errorTitle": "Could not load your classes",
+        "errorDescription": "This list reads live from the server and shows nothing rather than guess. Check your connection and try again.",
+        "retry": "Try again"
+      },
+      "detail": {
+        "meta": {
+          "title": "Class results — SchoolTest",
+          "description": "One class: every student’s reading diagnostic, the teaching insights behind it and the progress between Test A and Test B."
+        },
+        "loading": "Loading this class",
+        "errorTitle": "Could not load this class",
+        "errorDescription": "This page reads the class live from the server and shows nothing rather than guess. If the class is not one you teach, ask an administrator; otherwise check your connection and try again.",
+        "retry": "Try again",
+        "students": "{count, plural, one {# student} other {# students}}",
+        "summaryLabel": "Class summary",
+        "testA": "Test A",
+        "testB": "Test B",
+        "completionValue": "{completed} / {total}",
+        "completedNote": "students completed",
+        "avgScore": "Avg score",
+        "scoreValue": "{score} / 100",
+        "noValue": "—",
+        "avgScoreNone": "No student in this class has a scored test yet.",
+        "topGap": "Top gap",
+        "notYetCount": "{count, plural, one {# not yet mastered} other {# not yet mastered}}",
+        "topGapNone": "No completed result in this class marks a subskill as not yet mastered.",
+        "latestTestBasis": "From each student’s most recent completed test."
+      },
+      "tabs": {
+        "listLabel": "Class results views",
+        "students": "Students",
+        "insights": "Teaching insights",
+        "progress": "Progress",
+        "exit": "Exit predictions",
+        "comingSoon": "Coming soon"
+      },
+      "pending": {
+        "studentsTitle": "The students table lands here next",
+        "studentsDescription": "Every student’s Test A and Test B status, score and ACARA phase will be listed here. This panel reads no student data yet, so it reports none.",
+        "insightsTitle": "Teaching insights land here next",
+        "insightsDescription": "Reading subskill mastery across the class and suggested groups for targeted instruction will appear here. This panel reads no insight data yet, so it reports none.",
+        "progressTitle": "The Test A to Test B comparison lands here next",
+        "progressDescription": "Score change, subskill mastery shift and ACARA phase movement will appear here. This panel reads no progress data yet, so it reports none."
+      },
+      "exitPredictions": {
+        "title": "Exit predictions",
+        "badge": "Coming soon",
+        "description": "SchoolTest does not predict exit levels yet, so there is nothing to act on in this tab. No prediction is shown, because none has been measured."
+      }
     }
   }
 }

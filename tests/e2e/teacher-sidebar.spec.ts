@@ -120,7 +120,11 @@ test.describe('teacher rail scoping (A4)', () => {
     await expect(
       page.getByRole('heading', { level: 1, name: cat(en, 'Teacher.results.title') }),
     ).toBeVisible();
-    await expect(page.getByText(cat(en, 'Teacher.results.placeholderTitle'))).toBeVisible();
+    // Task 040 replaced this page's placeholder with the real Results class list,
+    // so the discriminator moved to a live class row read from GET /api/teacher/dashboard.
+    await expect(page.locator('[data-slot="results-class-row"]').first()).toBeVisible({
+      timeout: 20_000,
+    });
     await expect(navLink(page, cat(en, 'Shell.nav.results'))).toHaveAttribute('data-active', /.*/);
 
     await page.screenshot({

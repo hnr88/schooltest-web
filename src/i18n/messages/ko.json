@@ -1835,8 +1835,62 @@
       },
       "title": "결과",
       "description": "학급 결과, 수업 인사이트, 두 시험 사이의 향상도입니다.",
-      "placeholderTitle": "결과는 아직 이 페이지에 없습니다",
-      "placeholderDescription": "학급 표, 수업 인사이트, 테스트 A와 테스트 B 비교가 다음 순서로 이 페이지에 추가됩니다. 지금은 결과 데이터를 읽지 않으므로 아무것도 단정하지 않습니다."
+      "list": {
+        "loading": "담당 학급을 불러오는 중",
+        "students": "{count, plural, other {학생 #명}}",
+        "completionValue": "{completed} / {total}",
+        "completion": "테스트 A {testA} · 테스트 B {testB} 완료",
+        "emptyTitle": "배정된 학급이 없습니다",
+        "emptyDescription": "결과는 학급 단위로 표시됩니다. 관리자에게 학급 배정을 요청한 뒤 이 페이지를 다시 불러오세요.",
+        "errorTitle": "담당 학급을 불러올 수 없습니다",
+        "errorDescription": "이 목록은 서버에서 실시간으로 읽어오며, 추측하지 않고 아무것도 표시하지 않습니다. 연결을 확인한 뒤 다시 시도하세요.",
+        "retry": "다시 시도"
+      },
+      "detail": {
+        "meta": {
+          "title": "학급 결과 — SchoolTest",
+          "description": "한 학급의 모든 학생 읽기 진단 결과와 수업 인사이트, 테스트 A에서 테스트 B까지의 향상도입니다."
+        },
+        "loading": "이 학급을 불러오는 중",
+        "errorTitle": "이 학급을 불러올 수 없습니다",
+        "errorDescription": "이 페이지는 학급 정보를 서버에서 실시간으로 읽어오며, 추측하지 않고 아무것도 표시하지 않습니다. 담당 학급이 아니라면 관리자에게 문의하고, 그렇지 않다면 연결을 확인한 뒤 다시 시도하세요.",
+        "retry": "다시 시도",
+        "students": "{count, plural, other {학생 #명}}",
+        "summaryLabel": "학급 요약",
+        "testA": "테스트 A",
+        "testB": "테스트 B",
+        "completionValue": "{completed} / {total}",
+        "completedNote": "명 완료",
+        "avgScore": "평균 점수",
+        "scoreValue": "{score} / 100",
+        "noValue": "—",
+        "avgScoreNone": "이 학급에는 아직 채점된 시험을 마친 학생이 없습니다.",
+        "topGap": "주요 취약 영역",
+        "notYetCount": "{count, plural, other {#명 미숙달}}",
+        "topGapNone": "이 학급의 완료된 결과 중 아직 숙달하지 못한 세부 기능으로 표시된 것이 없습니다.",
+        "latestTestBasis": "각 학생이 가장 최근에 완료한 시험을 기준으로 합니다."
+      },
+      "tabs": {
+        "listLabel": "학급 결과 보기",
+        "students": "학생",
+        "insights": "수업 인사이트",
+        "progress": "향상도",
+        "exit": "졸업 예측",
+        "comingSoon": "준비 중"
+      },
+      "pending": {
+        "studentsTitle": "학생 표가 다음 순서로 추가됩니다",
+        "studentsDescription": "모든 학생의 테스트 A·테스트 B 상태, 점수, ACARA 단계가 여기에 표시됩니다. 이 패널은 아직 학생 데이터를 읽지 않으므로 아무것도 단정하지 않습니다.",
+        "insightsTitle": "수업 인사이트가 다음 순서로 추가됩니다",
+        "insightsDescription": "학급 전체의 읽기 세부 기능 숙달도와 맞춤 지도를 위한 추천 그룹이 여기에 표시됩니다. 이 패널은 아직 인사이트 데이터를 읽지 않으므로 아무것도 단정하지 않습니다.",
+        "progressTitle": "테스트 A와 테스트 B 비교가 다음 순서로 추가됩니다",
+        "progressDescription": "점수 변화, 세부 기능 숙달도 변화, ACARA 단계 이동이 여기에 표시됩니다. 이 패널은 아직 향상도 데이터를 읽지 않으므로 아무것도 단정하지 않습니다."
+      },
+      "exitPredictions": {
+        "title": "졸업 예측",
+        "badge": "준비 중",
+        "description": "SchoolTest는 아직 졸업 수준을 예측하지 않으므로 이 탭에서 실행할 수 있는 것은 없습니다. 측정된 예측값이 없기 때문에 어떤 수치도 표시하지 않습니다."
+      }
     }
   }
 }
