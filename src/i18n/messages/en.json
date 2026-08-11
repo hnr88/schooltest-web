@@ -1768,6 +1768,25 @@
     }
   },
   "Teacher": {
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Your classes, how far each one is through Test A and Test B, and the subskill most students have not mastered yet.",
+      "loading": "Loading your classes",
+      "students": "{count, plural, one {# student} other {# students}}",
+      "testA": "Test A",
+      "testB": "Test B",
+      "completionValue": "{completed} / {total}",
+      "completionAria": "{label}: {completed} of {total} students completed",
+      "topGap": "Top gap",
+      "notYetCount": "{count, plural, one {# student not yet mastered} other {# students not yet mastered}}",
+      "noGap": "No gap to report yet",
+      "noGapHint": "No completed result in this class marks a subskill as not yet mastered.",
+      "emptyTitle": "No classes are assigned to you",
+      "emptyDescription": "Your dashboard lists the classes you teach. Ask an administrator to assign you a class, then reload this page.",
+      "errorTitle": "Could not load your classes",
+      "errorDescription": "The dashboard reads live from the server and shows nothing rather than guess. Check your connection and try again.",
+      "retry": "Try again"
+    },
     "testSessions": {
       "meta": {
         "title": "Test sessions — SchoolTest",

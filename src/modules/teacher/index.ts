@@ -1,3 +1,7 @@
+export { TeacherDashboardGate } from './components/TeacherDashboardGate';
+export { TeacherDashboardScreen } from './components/TeacherDashboardScreen';
+export { TeacherClassCard } from './components/TeacherClassCard';
+export { TeacherClassCompletionRow } from './components/TeacherClassCompletionRow';
 export { TestSessionsScreen } from './components/TestSessionsScreen';
 export { ResultsScreen } from './components/ResultsScreen';
 export { StartTestSessionPanel } from './components/StartTestSessionPanel';
@@ -23,6 +27,7 @@ export { useTeacherExportMutation } from './queries/use-teacher-export.mutation'
 
 export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-export';
 export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-setup';
+export { completionPercent, deriveDashboardStatus } from './lib/dashboard-cards';
 export { resolveJoinCodeView, testSessionMonitorHref } from './lib/join-code';
 
 export { MASTERY_BAND_TONE } from './constants/mastery.constants';
@@ -134,6 +139,13 @@ export type {
   JoinCodeView,
   JoinCodeDisplayProps,
 } from './types/join-code.types';
+export type {
+  TeacherDashboardStatus,
+  TeacherDashboardCounts,
+  TeacherClassCardProps,
+  TeacherClassCompletionRowProps,
+  TeacherDashboardGateProps,
+} from './types/teacher-dashboard.types';
 export type {
   TeacherExportKind,
   TeacherExportDocument,

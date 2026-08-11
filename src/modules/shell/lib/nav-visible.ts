@@ -1,19 +1,25 @@
 import type { NavItem } from '@/modules/shell/types/shell.types';
 
-// A role-scoped item stays hidden until the identity is known: showing it while
-// `role` is still loading would flash a link the account may not be able to open.
-// The `hiddenForRoles` subtraction is the mirror image and is deliberately NOT
-// applied while the role is unknown — the parent rail is what an unresolved
-// identity has always rendered, so nothing disappears mid-hydration.
+// WHILE THE ROLE IS UNKNOWN THE RAIL SHOWS NO ROLE-SCOPED ITEM AT ALL (task 062).
+// `roleType` is null in two real windows: a hard load before GET /api/users/me
+// answers, and the moment after sign-in when ['auth','me'] holds the
+// /api/auth/local user, which carries no `role`. An earlier version applied
+// `roles` immediately but deferred `hiddenForRoles` until the role resolved, so an
+// unresolved identity rendered the PARENT rail — a teacher signing in flashed
+// "Overview · My children · Search · Settings" for a frame, which brief flow 1
+// forbids outright. Defaulting to one specific role's nav when no role is known is
+// the defect; an empty rail that fills in is the honest answer. Both gates are
+// therefore withheld together: an item that names EITHER is role-scoped, and a
+// role-scoped item needs a resolved role before it can be shown or hidden.
 export function filterNavByRole(
   items: readonly NavItem[],
   roleType: string | null,
 ): readonly NavItem[] {
   return items.filter((item) => {
-    if (item.roles && (roleType === null || !item.roles.includes(roleType))) return false;
-    if (item.hiddenForRoles && roleType !== null && item.hiddenForRoles.includes(roleType)) {
-      return false;
-    }
+    const isRoleScoped = Boolean(item.roles ?? item.hiddenForRoles);
+    if (roleType === null) return !isRoleScoped;
+    if (item.roles && !item.roles.includes(roleType)) return false;
+    if (item.hiddenForRoles?.includes(roleType)) return false;
     return true;
   });
 }

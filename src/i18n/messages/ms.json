@@ -1768,6 +1768,25 @@
     }
   },
   "Teacher": {
+    "dashboard": {
+      "title": "Papan pemuka",
+      "description": "Kelas anda, sejauh mana setiap kelas menyelesaikan Ujian A dan Ujian B, dan subkemahiran yang paling ramai pelajar belum kuasai.",
+      "loading": "Memuatkan kelas anda",
+      "students": "{count, plural, other {# pelajar}}",
+      "testA": "Ujian A",
+      "testB": "Ujian B",
+      "completionValue": "{completed} / {total}",
+      "completionAria": "{label}: {completed} daripada {total} pelajar telah selesai",
+      "topGap": "Jurang utama",
+      "notYetCount": "{count, plural, other {# pelajar belum kuasai}}",
+      "noGap": "Belum ada jurang untuk dilaporkan",
+      "noGapHint": "Tiada keputusan lengkap dalam kelas ini yang menandakan sebarang subkemahiran sebagai belum dikuasai.",
+      "emptyTitle": "Tiada kelas ditugaskan kepada anda",
+      "emptyDescription": "Papan pemuka menyenaraikan kelas yang anda ajar. Minta pentadbir menugaskan kelas kepada anda, kemudian muat semula halaman ini.",
+      "errorTitle": "Tidak dapat memuatkan kelas anda",
+      "errorDescription": "Papan pemuka membaca terus daripada pelayan dan memilih untuk tidak memaparkan apa-apa daripada meneka. Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi"
+    },
     "testSessions": {
       "meta": {
         "title": "Sesi ujian — SchoolTest",

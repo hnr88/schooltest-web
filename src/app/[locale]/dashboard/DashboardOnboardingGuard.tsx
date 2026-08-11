@@ -24,8 +24,15 @@ export function DashboardOnboardingGuard({ children }: DashboardOnboardingGuardP
   const { user, isLoading: isAuthLoading } = useAuth();
   const isParent = user?.role?.type === PARENT_ROLE_TYPE;
 
+  // Only a PARENT has an onboarding state, and only `isParent && isPending` can
+  // redirect — so asking for it as any other role is a read whose answer is
+  // discarded. `GET /api/users/me/onboarding` is parent-only and answers 403 to a
+  // teacher, which TanStack then retried three times: the guard sat in
+  // `isChecking` for ~7.8s of exponential backoff and painted a BLANK dashboard
+  // for every teacher before their page could mount. Gating on `isParent` keeps
+  // the parent path byte-identical and stops the forbidden read being issued at all.
   const { data: onboarding, isLoading: isOnboardingLoading } = useOnboardingStateQuery({
-    enabled: !isAuthLoading && Boolean(user),
+    enabled: !isAuthLoading && isParent,
   });
 
   const isPending = onboarding?.status === 'pending';

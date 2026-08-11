@@ -1768,6 +1768,25 @@
     }
   },
   "Teacher": {
+    "dashboard": {
+      "title": "대시보드",
+      "description": "담당 학급, 각 학급의 테스트 A·테스트 B 진행 상황, 그리고 가장 많은 학생이 아직 숙달하지 못한 하위 기능입니다.",
+      "loading": "학급을 불러오는 중",
+      "students": "{count, plural, other {학생 #명}}",
+      "testA": "테스트 A",
+      "testB": "테스트 B",
+      "completionValue": "{completed} / {total}",
+      "completionAria": "{label}: 학생 {total}명 중 {completed}명 완료",
+      "topGap": "가장 큰 격차",
+      "notYetCount": "{count, plural, other {학생 #명 아직 숙달 못 함}}",
+      "noGap": "아직 보고할 격차 없음",
+      "noGapHint": "이 학급의 완료된 결과 가운데 아직 숙달하지 못한 것으로 표시된 하위 기능이 없습니다.",
+      "emptyTitle": "배정된 학급이 없습니다",
+      "emptyDescription": "대시보드에는 담당 학급이 표시됩니다. 관리자에게 학급 배정을 요청한 뒤 이 페이지를 새로고침하세요.",
+      "errorTitle": "학급을 불러오지 못했습니다",
+      "errorDescription": "대시보드는 서버에서 실시간으로 읽어오며, 추측하는 대신 아무것도 표시하지 않습니다. 연결을 확인한 뒤 다시 시도하세요.",
+      "retry": "다시 시도"
+    },
     "testSessions": {
       "meta": {
         "title": "테스트 세션 — SchoolTest",

@@ -1768,6 +1768,25 @@
     }
   },
   "Teacher": {
+    "dashboard": {
+      "title": "控制面板",
+      "description": "您任教的班级、每个班级完成测验 A 与测验 B 的进度，以及最多学生尚未掌握的子技能。",
+      "loading": "正在加载您的班级",
+      "students": "{count, plural, other {# 名学生}}",
+      "testA": "测验 A",
+      "testB": "测验 B",
+      "completionValue": "{completed} / {total}",
+      "completionAria": "{label}：{total} 名学生中已完成 {completed} 名",
+      "topGap": "最大差距",
+      "notYetCount": "{count, plural, other {# 名学生尚未掌握}}",
+      "noGap": "暂无可报告的差距",
+      "noGapHint": "该班级已完成的成绩中，没有任何子技能被标记为尚未掌握。",
+      "emptyTitle": "尚未为您分配班级",
+      "emptyDescription": "控制面板会列出您任教的班级。请联系管理员为您分配班级，然后重新加载此页面。",
+      "errorTitle": "无法加载您的班级",
+      "errorDescription": "控制面板直接从服务器读取数据，宁可不显示也不会猜测。请检查网络连接后重试。",
+      "retry": "重试"
+    },
     "testSessions": {
       "meta": {
         "title": "测验场次 — SchoolTest",

@@ -1768,6 +1768,25 @@
     }
   },
   "Teacher": {
+    "dashboard": {
+      "title": "Bảng điều khiển",
+      "description": "Các lớp của bạn, tiến độ Bài A và Bài B của từng lớp, và kỹ năng thành phần mà nhiều học sinh chưa thành thạo nhất.",
+      "loading": "Đang tải các lớp của bạn",
+      "students": "{count, plural, other {# học sinh}}",
+      "testA": "Bài A",
+      "testB": "Bài B",
+      "completionValue": "{completed} / {total}",
+      "completionAria": "{label}: {completed} trên {total} học sinh đã hoàn thành",
+      "topGap": "Khoảng hụt lớn nhất",
+      "notYetCount": "{count, plural, other {# học sinh chưa thành thạo}}",
+      "noGap": "Chưa có khoảng hụt nào để báo cáo",
+      "noGapHint": "Không có kết quả hoàn chỉnh nào của lớp này đánh dấu một kỹ năng thành phần là chưa thành thạo.",
+      "emptyTitle": "Bạn chưa được phân công lớp nào",
+      "emptyDescription": "Bảng điều khiển liệt kê các lớp bạn dạy. Hãy đề nghị quản trị viên phân công lớp cho bạn, rồi tải lại trang này.",
+      "errorTitle": "Không tải được các lớp của bạn",
+      "errorDescription": "Bảng điều khiển đọc trực tiếp từ máy chủ và không hiển thị gì thay vì đoán. Hãy kiểm tra kết nối rồi thử lại.",
+      "retry": "Thử lại"
+    },
     "testSessions": {
       "meta": {
         "title": "Phiên kiểm tra — SchoolTest",
