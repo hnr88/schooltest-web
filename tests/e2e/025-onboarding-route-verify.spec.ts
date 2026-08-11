@@ -1,7 +1,11 @@
+import path from 'node:path';
+
 import { expect, test } from '@playwright/test';
 
 import { loginAsParent } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
+
+const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 
 // Task 025 verification: the /onboarding route is reachable for an authenticated
 // parent and renders the onboarding screen (the seeded parent has skipped, so
@@ -24,7 +28,7 @@ test('task 025: /onboarding renders for authenticated parent', async ({ page }) 
 
   // Visual evidence for QA.
   await page.screenshot({
-    path: '/home/hnr/Code/schooltest/.qa/screenshots/025-onboarding-authenticated.png',
+    path: path.join(SCREENSHOTS, '025-onboarding-authenticated.png'),
     fullPage: true,
   });
 });
@@ -36,7 +40,7 @@ test('task 025: /onboarding redirects anonymous visitors to /sign-in', async ({ 
   await expect(page).toHaveURL(/\/sign-in$/);
 
   await page.screenshot({
-    path: '/home/hnr/Code/schooltest/.qa/screenshots/025-onboarding-anon-redirect.png',
+    path: path.join(SCREENSHOTS, '025-onboarding-anon-redirect.png'),
     fullPage: true,
   });
 });

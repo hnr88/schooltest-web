@@ -5,7 +5,10 @@ import path from 'node:path';
 import { expect, test, type Page } from '@playwright/test';
 
 import { SEEDED_PARENT } from './helpers/auth';
+import { apiEnv } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
+
+const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 
 // Task 026 verification: the dashboard onboarding guard redirects a parent with
 // pending onboarding to /onboarding, and lets parents with completed/skipped
@@ -43,7 +46,10 @@ function resetParentOnboarding(status: 'pending' | 'skipped' | 'completed'): voi
     );
   `;
   execSync(
-    `PGPASSWORD='${password}' psql -h 127.0.0.1 -p 5550 -U schooltest -d schooltest -c "${sql}"`,
+    // Port from schooltest-api/.env (the source helpers/auth-db.ts reads), not a literal:
+    // this was hardcoded to 5550 while this instance's Postgres is on 5540, so the cleanup
+    // silently failed on every run.
+    `PGPASSWORD='${password}' psql -h 127.0.0.1 -p ${apiEnv('DATABASE_PORT')} -U schooltest -d schooltest -c "${sql}"`,
     { stdio: 'ignore' },
   );
 }
@@ -76,7 +82,7 @@ test('task 026: pending parent is redirected to /onboarding after login', async 
   await expect(page.getByText(cat(en, 'Onboarding.skip'))).toBeVisible();
 
   await page.screenshot({
-    path: '/home/hnr/Code/schooltest/.qa/screenshots/026-onboarding-redirect.png',
+    path: path.join(SCREENSHOTS, '026-onboarding-redirect.png'),
     fullPage: true,
   });
 });
@@ -102,7 +108,7 @@ test('task 026: skipping onboarding lands on /dashboard', async ({ page }) => {
   await expect(page).toHaveURL(/\/dashboard$/);
 
   await page.screenshot({
-    path: '/home/hnr/Code/schooltest/.qa/screenshots/026-dashboard-after-skip.png',
+    path: path.join(SCREENSHOTS, '026-dashboard-after-skip.png'),
     fullPage: true,
   });
 });
@@ -115,7 +121,7 @@ test('task 026: skipped parent lands directly on /dashboard after login', async 
   await expect(page).toHaveURL(/\/dashboard$/);
 
   await page.screenshot({
-    path: '/home/hnr/Code/schooltest/.qa/screenshots/026-dashboard-direct.png',
+    path: path.join(SCREENSHOTS, '026-dashboard-direct.png'),
     fullPage: true,
   });
 });

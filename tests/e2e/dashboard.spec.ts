@@ -3,6 +3,7 @@ import path from 'node:path';
 import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+import { apiEnv } from './helpers/auth-db';
 import { cat, escapeRegExp, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
 
@@ -17,7 +18,12 @@ const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const PARENT = { email: 'parent@schooltest.local', password: 'Parent1234!' };
-const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5510';
+// Read from schooltest-api/.env, the same source helpers/auth-db.ts uses, rather than a
+// literal: the previous default was `http://localhost:5510`, which contradicted this file's
+// own comment ("the live api on :5500") and made the spec red on any instance that had not
+// exported API_BASE_URL by hand. 127.0.0.1 is deliberate for this NODE-side client — Strapi
+// binds IPv4 while Node's dns.lookup('localhost') can return ::1 first, giving ECONNREFUSED.
+const API_BASE_URL = process.env.API_BASE_URL ?? `http://127.0.0.1:${apiEnv('PORT')}`;
 
 test('en: incognito visit to /dashboard redirects to /sign-in (no JWT, real client guard)', async ({
   page,
