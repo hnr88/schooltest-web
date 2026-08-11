@@ -11,6 +11,7 @@ export { ExitPredictionsPanel } from './components/ExitPredictionsPanel';
 export { TeachingInsightsPanel } from './components/TeachingInsightsPanel';
 export { StudentsTabPanel } from './components/StudentsTabPanel';
 export { StudentsResultsTable } from './components/StudentsResultsTable';
+export { StudentDrillDownScreen } from './components/StudentDrillDownScreen';
 export { StartTestSessionPanel } from './components/StartTestSessionPanel';
 export { StartTestSessionForm } from './components/StartTestSessionForm';
 export { TestSessionSelect } from './components/TestSessionSelect';
