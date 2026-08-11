@@ -4,12 +4,12 @@ import { expect, test, type APIRequestContext } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
 import { apiLogin } from './helpers/teacher-auth-rail';
+import { readMonitor } from './helpers/teacher-live-monitor-api';
 import {
   answerFirstItem,
   joinAsStudent,
-  readMonitor,
   rosterEmails,
-} from './helpers/teacher-live-monitor-api';
+} from './helpers/teacher-live-monitor-join';
 import {
   closeSession,
   createSession,
