@@ -25,3 +25,12 @@ export interface TeacherDashboardGateProps {
   teacher: ReactNode;
   fallback: ReactNode;
 }
+
+/** Which persona `/dashboard` may mount, plus the "role not yet known" state. */
+export type DashboardPersona = 'pending' | 'teacher' | 'other';
+
+export interface DashboardPersonaInput {
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  roleType: string | null;
+}
