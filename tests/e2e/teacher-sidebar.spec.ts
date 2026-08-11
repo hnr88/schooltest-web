@@ -145,11 +145,13 @@ test.describe('teacher rail scoping (A4)', () => {
     await expect(groupLabels(page)).toHaveText(cat(en, 'Shell.sidebar.groups.manage'));
   });
 
-  // The seeded Admin cannot read GET /api/users/me today (the users-permissions
-  // grant is missing — it answers 403), so the portal never learns the slug and the
-  // rail falls back to the unscoped parent set. That is the correct fallback and it
-  // still satisfies the requirement; the RESOLVED non-teacher proof is the parent
-  // leg above. Recorded rather than papered over.
+  // Re-measured live for task 062: the seeded Admin DOES read GET /api/users/me on
+  // this instance (200, role.type "admin"), so this is a RESOLVED non-teacher rail,
+  // not a fallback — since 062 there is no unscoped-parent fallback to fall into. An
+  // admin is simply outside `hiddenForRoles: ['teacher']`, so the four Manage entries
+  // stay and the three Teach entries never appear. Were the grant to go missing again
+  // the slug would stay null and this rail would render EMPTY, which is the honest
+  // answer and would fail here loudly rather than quietly showing a parent's nav.
   test('the school admin keeps the same rail and gets none of the three', async ({ page }) => {
     await signIn(page, 'admin');
     await expect(navLinks(page).first()).toBeVisible({ timeout: 20_000 });
