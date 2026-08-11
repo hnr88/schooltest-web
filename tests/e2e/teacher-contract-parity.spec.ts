@@ -189,13 +189,31 @@ test.describe('teacher module — the data layer is the real typed Axios instanc
     const called = new Set<string>();
     for (const file of queryFiles) {
       const source = readFileSync(file, 'utf8');
-      expect(source.includes("import { strapi } from '@/lib/axios/strapi';"), file).toBe(true);
+      // ONE documented exception: the C-TR-5/6/7 export mutation. Those routes
+      // answer `text/markdown` with the filename in `Content-Disposition`, a
+      // header `strapi::cors` does not expose, so cross-origin browser JS reads
+      // it as null (measured in Chromium). Its GET therefore happens in the
+      // Server Function, which uses the SAME shared instance — asserted below.
+      const expected = file.endsWith('use-teacher-export.mutation.ts')
+        ? "import { downloadTeacherExport } from '@/modules/teacher/actions/teacher-export.action';"
+        : "import { strapi } from '@/lib/axios/strapi';";
+      expect(source.includes(expected), file).toBe(true);
       expect(/\bfetch\(|axios\.create|new XMLHttpRequest/.test(source), file).toBe(false);
       for (const [, url] of source.matchAll(/['"`](\/api\/[^'"`]*)['"`]/g)) {
         called.add(url.replaceAll(/\$\{[^}]+\}/g, ':param'));
       }
     }
     expect([...called].sort()).toEqual(CONTRACT_PATHS);
+
+    // The export hop is still the shared typed instance and still the contract's
+    // own path builder — no second HTTP client, no hand-written export URL.
+    const action = readFileSync(
+      path.join(TEACHER_MODULE_DIR, 'actions', 'teacher-export.action.ts'),
+      'utf8',
+    );
+    expect(action.includes("import { strapi } from '@/lib/axios/strapi';")).toBe(true);
+    expect(action.includes('teacherExportPath(request)')).toBe(true);
+    expect(/\bfetch\(|axios\.create|new XMLHttpRequest/.test(action)).toBe(false);
   });
 });
 

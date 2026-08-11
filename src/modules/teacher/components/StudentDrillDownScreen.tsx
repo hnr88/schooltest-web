@@ -21,8 +21,8 @@ import type { StudentDrillDownScreenProps } from '@/modules/teacher/types/studen
 // exists, no result does) — never a swallowed failure: a failed read renders the
 // error branch and nothing else, with no zeroed tiles and no grey grid standing in
 // for a 403 or a 404. The comparison strip, the older test's collapse and the
-// per-tile deltas live in `StudentDrillDownBody` (task 043); the export button is
-// task 046.
+// per-tile deltas live in `StudentDrillDownBody` (task 043); the C-TR-7 "Export for
+// AI" button lives in the header, which is why the class id is threaded to it.
 function StudentDrillDownScreen({
   classDocumentId,
   studentDocumentId,
@@ -75,7 +75,7 @@ function StudentDrillDownScreen({
 
       {data ? (
         <>
-          <StudentDrillDownHeader student={data.student} />
+          <StudentDrillDownHeader student={data.student} classDocumentId={classDocumentId} />
           {status === 'empty' ? (
             <EmptyState
               icon={ClipboardList}

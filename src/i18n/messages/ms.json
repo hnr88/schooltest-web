@@ -2045,6 +2045,20 @@
         "progressTitle": "Perbandingan Ujian A ke Ujian B akan menyusul di sini",
         "progressDescription": "Perubahan skor, peralihan penguasaan subkemahiran dan pergerakan fasa ACARA akan muncul di sini. Panel ini belum membaca sebarang data kemajuan, jadi ia tidak melaporkan apa-apa."
       },
+      "export": {
+        "insightsTitle": "Eksport untuk perancangan pengajaran berbantu AI",
+        "insightsDescription": "Eksport gambaran diagnostik kelas semasa untuk digunakan dengan alat AI pilihan anda (Claude, Gemini, ChatGPT) bagi perancangan pengajaran dan pengajaran terbeza.",
+        "insightsButton": "Eksport profil kelas + gesaan",
+        "insightsFootnote": "Data telah dinyahkenalan — nama pelajar diganti dengan ID anonim. Merangkumi penguasaan subkemahiran, fasa ACARA, cadangan kumpulan dan gesaan sedia tampal.",
+        "progressTitle": "Eksport data kemajuan untuk pengajaran terbeza berbantu AI",
+        "progressDescription": "Eksport data perbandingan Ujian A → B untuk menghasilkan pengajaran terbeza berdasarkan kemajuan setiap pelajar.",
+        "progressButton": "Eksport data kemajuan + gesaan",
+        "progressFootnote": "Data telah dinyahkenalan. Merangkumi perubahan subkemahiran setiap pelajar, pergerakan fasa ACARA dan gesaan sedia tampal untuk perancangan pengajaran terbeza.",
+        "studentButton": "Eksport untuk AI",
+        "studentFootnote": "Data telah dinyahkenalan — pelajar ini hanya muncul sebagai ID anonim.",
+        "pending": "Menyediakan muat turun anda",
+        "failed": "Eksport tidak dimuat turun, jadi tiada fail disimpan. Cuba lagi."
+      },
       "exitPredictions": {
         "title": "Ramalan keluar",
         "badge": "Akan datang",

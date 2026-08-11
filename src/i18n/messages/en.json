@@ -2045,6 +2045,20 @@
         "progressTitle": "The Test A to Test B comparison lands here next",
         "progressDescription": "Score change, subskill mastery shift and ACARA phase movement will appear here. This panel reads no progress data yet, so it reports none."
       },
+      "export": {
+        "insightsTitle": "Export for AI-powered lesson planning",
+        "insightsDescription": "Export current class diagnostic snapshot to use with your preferred AI tool (Claude, Gemini, ChatGPT) for lesson planning and differentiated instruction.",
+        "insightsButton": "Export class profile + prompt",
+        "insightsFootnote": "Data is de-identified — student names replaced with anonymised IDs. Includes subskill mastery, ACARA phases, suggested groupings, and a ready-to-paste prompt.",
+        "progressTitle": "Export progress data for AI-powered differentiation",
+        "progressDescription": "Export Test A → B comparison data to generate differentiated instruction based on how each student has progressed.",
+        "progressButton": "Export progress data + prompt",
+        "progressFootnote": "Data is de-identified. Includes per-student subskill deltas, ACARA phase movement, and a ready-to-paste prompt for differentiation planning.",
+        "studentButton": "Export for AI",
+        "studentFootnote": "Data is de-identified — this student appears as an anonymised ID only.",
+        "pending": "Preparing your download",
+        "failed": "The export did not download, so nothing was saved. Try again."
+      },
       "exitPredictions": {
         "title": "Exit predictions",
         "badge": "Coming soon",

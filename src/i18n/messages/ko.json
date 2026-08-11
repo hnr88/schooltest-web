@@ -2045,6 +2045,20 @@
         "progressTitle": "테스트 A와 테스트 B 비교가 다음 순서로 추가됩니다",
         "progressDescription": "점수 변화, 세부 기능 숙달도 변화, ACARA 단계 이동이 여기에 표시됩니다. 이 패널은 아직 향상도 데이터를 읽지 않으므로 아무것도 단정하지 않습니다."
       },
+      "export": {
+        "insightsTitle": "AI 기반 수업 설계용 내보내기",
+        "insightsDescription": "현재 학급 진단 스냅샷을 내보내 Claude, Gemini, ChatGPT 등 원하는 AI 도구에서 수업 설계와 맞춤 지도에 활용하세요.",
+        "insightsButton": "학급 프로필 + 프롬프트 내보내기",
+        "insightsFootnote": "데이터는 비식별화됩니다 — 학생 이름은 익명 ID로 대체됩니다. 하위 기능 숙달도, ACARA 단계, 추천 그룹, 바로 붙여넣을 수 있는 프롬프트가 포함됩니다.",
+        "progressTitle": "AI 기반 맞춤 지도용 성장 데이터 내보내기",
+        "progressDescription": "테스트 A → B 비교 데이터를 내보내 학생별 성장에 맞춘 지도 방안을 만들어 보세요.",
+        "progressButton": "성장 데이터 + 프롬프트 내보내기",
+        "progressFootnote": "데이터는 비식별화됩니다. 학생별 하위 기능 변화, ACARA 단계 이동, 맞춤 지도 계획용 프롬프트가 포함됩니다.",
+        "studentButton": "AI용 내보내기",
+        "studentFootnote": "데이터는 비식별화됩니다 — 이 학생은 익명 ID로만 표시됩니다.",
+        "pending": "다운로드를 준비하는 중",
+        "failed": "내보내기가 다운로드되지 않아 저장된 파일이 없습니다. 다시 시도해 주세요."
+      },
       "exitPredictions": {
         "title": "졸업 예측",
         "badge": "준비 중",

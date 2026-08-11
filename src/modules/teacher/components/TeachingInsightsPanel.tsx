@@ -7,19 +7,25 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, Button, EmptyState } from '@/modules/design-system';
 import { SubskillMasteryList } from '@/modules/teacher/components/SubskillMasteryList';
 import { SuggestedGroupsSection } from '@/modules/teacher/components/SuggestedGroupsSection';
+import { TeacherExportPanel } from '@/modules/teacher/components/TeacherExportPanel';
 import { deriveResultsStatus } from '@/modules/teacher/lib/results-shell';
 import { useClassInsightsQuery } from '@/modules/teacher/queries/use-class-insights.query';
 import type { TeachingInsightsPanelProps } from '@/modules/teacher/types/teaching-insights.types';
 
-// The Teaching insights tab: ONE live read of C-TR-3 feeding the mastery bars and
-// the suggested groups (.qa/DESIGN.md §Teaching insights 1 and 2). The tab's
-// export panel is task 046 and is deliberately absent here rather than stubbed.
+// The Teaching insights tab: ONE live read of C-TR-3 feeding the mastery bars, the
+// suggested groups and the AI export panel (.qa/DESIGN.md §Teaching insights 1-3).
+//
+// The export panel rides the READY branch only: C-TR-5 builds its document from the
+// same completed results these bars are drawn from, so offering the download while
+// the class has none — or while the read failed — would promise a file the server
+// would refuse.
 //
 // `empty` is C-TR-3's own `completed_count === 0` — an emptiness the server
 // asserted, never a swallowed failure: a failed read renders the error branch and
 // NOTHING else, with no zeroed bars and no "no gaps" card standing in for a 403.
 function TeachingInsightsPanel({ classDocumentId }: TeachingInsightsPanelProps) {
   const t = useTranslations('Teacher.results.insights');
+  const tExport = useTranslations('Teacher.results.export');
   const insights = useClassInsightsQuery(classDocumentId);
   const data = insights.data;
   const status = deriveResultsStatus({
@@ -70,6 +76,14 @@ function TeachingInsightsPanel({ classDocumentId }: TeachingInsightsPanelProps) 
         <>
           <SubskillMasteryList mastery={data.mastery} completedCount={data.completed_count} />
           <SuggestedGroupsSection groups={data.groups} />
+          <TeacherExportPanel
+            request={{ kind: 'insights', classDocumentId }}
+            headingId="teaching-insights-export-heading"
+            title={tExport('insightsTitle')}
+            description={tExport('insightsDescription')}
+            buttonLabel={tExport('insightsButton')}
+            footnote={tExport('insightsFootnote')}
+          />
         </>
       ) : null}
     </div>

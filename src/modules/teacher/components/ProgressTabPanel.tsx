@@ -9,6 +9,7 @@ import { ProgressEmptyState } from '@/modules/teacher/components/ProgressEmptySt
 import { ProgressShiftTable } from '@/modules/teacher/components/ProgressShiftTable';
 import { ProgressSummarySection } from '@/modules/teacher/components/ProgressSummarySection';
 import { ProgressWatchSection } from '@/modules/teacher/components/ProgressWatchSection';
+import { TeacherExportPanel } from '@/modules/teacher/components/TeacherExportPanel';
 import { deriveProgressStatus, progressView } from '@/modules/teacher/lib/class-progress';
 import { useClassProgressQuery } from '@/modules/teacher/queries/use-class-progress.query';
 import type { ProgressTabPanelProps } from '@/modules/teacher/types/class-progress.types';
@@ -24,6 +25,7 @@ import type { ProgressTabPanelProps } from '@/modules/teacher/types/class-progre
 // over the both-tests cohort with `Config.teacher_mastery_bands`.
 function ProgressTabPanel({ classDocumentId }: ProgressTabPanelProps) {
   const t = useTranslations('Teacher.results.progress');
+  const tExport = useTranslations('Teacher.results.export');
   const progress = useClassProgressQuery(classDocumentId);
   const status = deriveProgressStatus({
     isLoading: progress.isPending,
@@ -77,6 +79,20 @@ function ProgressTabPanel({ classDocumentId }: ProgressTabPanelProps) {
           <ProgressWatchSection
             mostImproved={view.mostImproved}
             needsAttention={view.needsAttention}
+          />
+          {/*
+            READY only. C-TR-6 answers 404 when no student has completed Test B, so
+            the export lives exactly where the server has a document to give — the
+            `available: false` placeholder offers no download rather than one that
+            would fail.
+          */}
+          <TeacherExportPanel
+            request={{ kind: 'progress', classDocumentId }}
+            headingId="class-progress-export-heading"
+            title={tExport('progressTitle')}
+            description={tExport('progressDescription')}
+            buttonLabel={tExport('progressButton')}
+            footnote={tExport('progressFootnote')}
           />
         </>
       ) : null}

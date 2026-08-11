@@ -32,7 +32,7 @@ import { en, navLink, signIn } from './teacher-rail';
  * `IPv4 *:5500` while Node's `localhost` resolves `::1` first (the measured
  * reason teacher-contract-live.spec.ts pins it too).
  */
-const API_BASE = (() => {
+export const API_BASE = (() => {
   const envPath = path.resolve(process.cwd(), '.env');
   for (const line of readFileSync(envPath, 'utf8').split('\n')) {
     const match = line.match(/^NEXT_PUBLIC_API_BASE_URL=(.*)$/);
@@ -57,7 +57,7 @@ export interface LiveResults {
   detail: ClassStudentsResponse;
 }
 
-async function bearer(request: APIRequestContext): Promise<string> {
+export async function bearer(request: APIRequestContext): Promise<string> {
   const response = await request.post(`${API_BASE}/api/auth/local`, {
     data: { identifier: TEACHER_EMAIL, password: apiEnv('SEED_TEACHER_PASSWORD') },
   });

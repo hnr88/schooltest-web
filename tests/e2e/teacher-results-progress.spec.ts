@@ -177,10 +177,11 @@ test.describe('Progress tab — populated state', () => {
     const rows = await panel.locator('[data-slot="progress-shift-row"]').count();
     await expect(table.locator('tbody th[scope="row"]')).toHaveCount(rows);
 
-    // Ordered headings: the four <h2> panels (summary, shift, ACARA, watch) sit
-    // under the page's own <h1>, and the two watch columns are their <h3>s.
+    // Ordered headings: the five <h2> panels (summary, shift, ACARA, watch and the
+    // task-046 AI export panel) sit under the page's own <h1>, and the two watch
+    // columns are their <h3>s.
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(panel.locator('h2')).toHaveCount(4);
+    await expect(panel.locator('h2')).toHaveCount(5);
     await expect(panel.locator('h3')).toHaveCount(2);
 
     // The panel scrolls its table, never the document.

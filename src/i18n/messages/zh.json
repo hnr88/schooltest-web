@@ -2045,6 +2045,20 @@
         "progressTitle": "测验 A 与测验 B 的对比将在下一步上线",
         "progressDescription": "分数变化、子技能掌握变化与 ACARA 阶段变动将显示在此处。本面板目前不读取任何进步数据，因此不作任何数据陈述。"
       },
+      "export": {
+        "insightsTitle": "导出用于 AI 备课",
+        "insightsDescription": "导出当前班级诊断快照，配合你惯用的 AI 工具（Claude、Gemini、ChatGPT）进行备课与分层教学。",
+        "insightsButton": "导出班级概况 + 提示词",
+        "insightsFootnote": "数据已去标识化——学生姓名以匿名 ID 替代。包含各子技能掌握情况、ACARA 阶段、建议分组，以及可直接粘贴的提示词。",
+        "progressTitle": "导出进步数据用于 AI 分层教学",
+        "progressDescription": "导出测试 A → B 的对比数据，按每位学生的进步情况生成分层教学方案。",
+        "progressButton": "导出进步数据 + 提示词",
+        "progressFootnote": "数据已去标识化。包含每位学生的子技能变化、ACARA 阶段移动，以及可直接粘贴的分层教学提示词。",
+        "studentButton": "导出给 AI",
+        "studentFootnote": "数据已去标识化——该学生仅以匿名 ID 出现。",
+        "pending": "正在准备下载",
+        "failed": "导出未能下载，因此没有保存任何文件。请重试。"
+      },
       "exitPredictions": {
         "title": "出口水平预测",
         "badge": "即将推出",

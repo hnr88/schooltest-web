@@ -22,6 +22,8 @@ export interface StudentDrillDownBodyProps {
 
 export interface StudentDrillDownHeaderProps {
   student: StudentDrillDownResponse['student'];
+  /** Owner of the C-TR-7 export route — the student's own id alone cannot address it. */
+  classDocumentId: string;
 }
 
 export interface StudentTestCardProps {

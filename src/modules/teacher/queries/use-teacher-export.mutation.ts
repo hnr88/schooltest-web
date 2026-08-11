@@ -2,38 +2,28 @@
 
 import { useMutation } from '@tanstack/react-query';
 
-import { strapi } from '@/lib/axios/strapi';
-import {
-  parseTeacherExportFilename,
-  teacherExportPath,
-} from '@/modules/teacher/lib/teacher-export';
-import {
-  teacherExportDocumentSchema,
-  teacherExportHeadersSchema,
-} from '@/modules/teacher/schemas/teacher-export.schema';
+import { readClientToken } from '@/lib/axios/strapi';
+import { downloadTeacherExport } from '@/modules/teacher/actions/teacher-export.action';
 import type {
   TeacherExportFile,
   TeacherExportRequest,
 } from '@/modules/teacher/types/teacher-export.types';
 
-// C-TR-5/6/7: the three export routes answer `text/markdown`, not JSON, so
-// `responseType: 'text'` stops Axios' default JSON pass. Transport AND body are
-// parsed: a wrong content type, a non-.md attachment or a document missing its
-// trailing `## Prompt` section throws instead of handing a teacher a broken
-// file. De-identification is server-side and is not re-done here.
+// C-TR-5/6/7: the three export routes answer `text/markdown`, not JSON, and their
+// filename lives in `Content-Disposition` — a header Strapi's CORS config does not
+// expose, so cross-origin browser JS reads it as `null` (measured in Chromium).
+// The request therefore goes through `downloadTeacherExport`, which performs the
+// SAME typed-client GET from the Next server, where the header is readable, and
+// parses transport AND body strictly: a wrong content type, a non-.md attachment or
+// a document missing its trailing `## Prompt` section throws instead of handing a
+// teacher a broken file. De-identification is server-side and is not re-done here.
 //
-// A useMutation (not useQuery): an export is an imperative act with a
-// side effect the user triggers, and it must never be cached or refetched.
+// A useMutation (not useQuery): an export is an imperative act the user triggers,
+// and it must never be cached, refetched or replayed on focus.
 async function fetchTeacherExport(request: TeacherExportRequest): Promise<TeacherExportFile> {
-  const response = await strapi.get(teacherExportPath(request), { responseType: 'text' });
-  const headers = teacherExportHeadersSchema.parse({
-    'content-type': response.headers['content-type'],
-    'content-disposition': response.headers['content-disposition'],
-  });
-  return {
-    filename: parseTeacherExportFilename(headers['content-disposition']),
-    body: teacherExportDocumentSchema.parse(response.data),
-  };
+  const token = readClientToken();
+  if (!token) throw new Error('teacher export requires a signed-in teacher token');
+  return downloadTeacherExport({ token, request });
 }
 
 export function useTeacherExportMutation() {

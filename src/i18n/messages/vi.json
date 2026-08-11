@@ -2045,6 +2045,20 @@
         "progressTitle": "So sánh Bài A với Bài B sẽ có ở đây trong bước tiếp theo",
         "progressDescription": "Thay đổi điểm, dịch chuyển mức thành thạo kỹ năng con và chuyển giai đoạn ACARA sẽ xuất hiện ở đây. Bảng này chưa đọc dữ liệu tiến bộ nào nên không đưa ra kết luận nào."
       },
+      "export": {
+        "insightsTitle": "Xuất dữ liệu để soạn bài với AI",
+        "insightsDescription": "Xuất ảnh chụp chẩn đoán hiện tại của lớp để dùng với công cụ AI bạn thích (Claude, Gemini, ChatGPT) cho việc soạn bài và dạy phân hóa.",
+        "insightsButton": "Xuất hồ sơ lớp + câu lệnh",
+        "insightsFootnote": "Dữ liệu đã được ẩn danh — tên học sinh được thay bằng mã ẩn danh. Bao gồm mức thành thạo từng kỹ năng, giai đoạn ACARA, nhóm được đề xuất và một câu lệnh dán là dùng được.",
+        "progressTitle": "Xuất dữ liệu tiến bộ để dạy phân hóa với AI",
+        "progressDescription": "Xuất dữ liệu so sánh Bài A → B để xây dựng hướng dẫn phân hóa dựa trên mức tiến bộ của từng học sinh.",
+        "progressButton": "Xuất dữ liệu tiến bộ + câu lệnh",
+        "progressFootnote": "Dữ liệu đã được ẩn danh. Bao gồm mức thay đổi từng kỹ năng của mỗi học sinh, dịch chuyển giai đoạn ACARA và một câu lệnh dán là dùng được cho kế hoạch phân hóa.",
+        "studentButton": "Xuất cho AI",
+        "studentFootnote": "Dữ liệu đã được ẩn danh — học sinh này chỉ xuất hiện dưới một mã ẩn danh.",
+        "pending": "Đang chuẩn bị tệp tải xuống",
+        "failed": "Bản xuất không tải xuống được nên không có tệp nào được lưu. Hãy thử lại."
+      },
       "exitPredictions": {
         "title": "Dự đoán đầu ra",
         "badge": "Sắp có",
