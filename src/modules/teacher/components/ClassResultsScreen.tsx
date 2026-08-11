@@ -1,6 +1,6 @@
 'use client';
 
-import { LineChart, Table2 } from 'lucide-react';
+import { LineChart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Skeleton } from '@/components/ui/skeleton';
@@ -9,6 +9,7 @@ import { useRecordCrumb } from '@/modules/shell';
 import { ClassResultsHeader } from '@/modules/teacher/components/ClassResultsHeader';
 import { ClassResultsTabs } from '@/modules/teacher/components/ClassResultsTabs';
 import { ResultsTabPending } from '@/modules/teacher/components/ResultsTabPending';
+import { StudentsTabPanel } from '@/modules/teacher/components/StudentsTabPanel';
 import { TeachingInsightsPanel } from '@/modules/teacher/components/TeachingInsightsPanel';
 import { deriveResultsStatus } from '@/modules/teacher/lib/results-shell';
 import { useClassStudentsQuery } from '@/modules/teacher/queries/use-class-students.query';
@@ -79,12 +80,7 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
           />
           <ClassResultsTabs
             students={
-              <ResultsTabPending
-                slot="students"
-                icon={Table2}
-                title={tabs('studentsTitle')}
-                description={tabs('studentsDescription')}
-              />
+              <StudentsTabPanel classDocumentId={classDocumentId} students={data.students} />
             }
             insights={<TeachingInsightsPanel classDocumentId={classDocumentId} />}
             progress={

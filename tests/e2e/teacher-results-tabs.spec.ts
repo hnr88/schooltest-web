@@ -129,14 +129,13 @@ test.describe('the four tabs', () => {
     });
   });
 
-  test('the three unfilled tabs state the tool is absent, never that the class is empty', async () => {
+  // Task 041 filled the Students tab (see teacher-results-students.spec.ts) and
+  // task 044 the Teaching insights tab, so Progress is the only panel still
+  // waiting for its tool. Each filled tab is proven by its OWN spec.
+  test('an unfilled tab states the tool is absent, never that the class is empty', async () => {
     const tabs = page.getByRole('tab');
 
-    for (const [index, slot] of [
-      [0, 'students'],
-      [1, 'insights'],
-      [2, 'progress'],
-    ] as const) {
+    for (const [index, slot] of [[2, 'progress']] as const) {
       await tabs.nth(index).click();
       const pending = page.locator(`[data-slot="results-tab-pending"][data-tab="${slot}"]`);
       await expect(pending).toBeVisible();

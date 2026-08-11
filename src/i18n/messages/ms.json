@@ -1916,8 +1916,6 @@
         "emptyDescription": "Kelas ini tiada pelajar aktif, jadi tiada keputusan untuk disenaraikan. Minta pentadbir menambah pelajar ke kelas ini, kemudian muat semula halaman."
       },
       "pending": {
-        "studentsTitle": "Jadual pelajar akan menyusul di sini",
-        "studentsDescription": "Status, skor dan fasa ACARA Ujian A dan Ujian B setiap pelajar akan disenaraikan di sini. Panel ini belum membaca sebarang data pelajar, jadi ia tidak melaporkan apa-apa.",
         "progressTitle": "Perbandingan Ujian A ke Ujian B akan menyusul di sini",
         "progressDescription": "Perubahan skor, peralihan penguasaan subkemahiran dan pergerakan fasa ACARA akan muncul di sini. Panel ini belum membaca sebarang data kemajuan, jadi ia tidak melaporkan apa-apa."
       },

@@ -1916,8 +1916,6 @@
         "emptyDescription": "本班没有处于活跃状态的学生，因此没有可列出的成绩。请联系管理员向本班添加学生，然后重新加载本页。"
       },
       "pending": {
-        "studentsTitle": "学生成绩表将在下一步上线",
-        "studentsDescription": "每位学生测验 A 与测验 B 的状态、分数和 ACARA 阶段将列在此处。本面板目前不读取任何学生数据，因此不作任何数据陈述。",
         "progressTitle": "测验 A 与测验 B 的对比将在下一步上线",
         "progressDescription": "分数变化、子技能掌握变化与 ACARA 阶段变动将显示在此处。本面板目前不读取任何进步数据，因此不作任何数据陈述。"
       },

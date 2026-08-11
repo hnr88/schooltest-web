@@ -1916,8 +1916,6 @@
         "emptyDescription": "This class has no active students, so there is no result to list. Ask an administrator to add students to the class, then reload this page."
       },
       "pending": {
-        "studentsTitle": "The students table lands here next",
-        "studentsDescription": "Every student’s Test A and Test B status, score and ACARA phase will be listed here. This panel reads no student data yet, so it reports none.",
         "progressTitle": "The Test A to Test B comparison lands here next",
         "progressDescription": "Score change, subskill mastery shift and ACARA phase movement will appear here. This panel reads no progress data yet, so it reports none."
       },

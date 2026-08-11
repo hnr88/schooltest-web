@@ -1916,8 +1916,6 @@
         "emptyDescription": "Lớp này không có học sinh đang hoạt động nên không có kết quả nào để liệt kê. Hãy đề nghị quản trị viên thêm học sinh vào lớp, rồi tải lại trang này."
       },
       "pending": {
-        "studentsTitle": "Bảng học sinh sẽ có ở đây trong bước tiếp theo",
-        "studentsDescription": "Trạng thái, điểm và giai đoạn ACARA của Bài A và Bài B của từng học sinh sẽ được liệt kê ở đây. Bảng này chưa đọc dữ liệu học sinh nào nên không đưa ra kết luận nào.",
         "progressTitle": "So sánh Bài A với Bài B sẽ có ở đây trong bước tiếp theo",
         "progressDescription": "Thay đổi điểm, dịch chuyển mức thành thạo kỹ năng con và chuyển giai đoạn ACARA sẽ xuất hiện ở đây. Bảng này chưa đọc dữ liệu tiến bộ nào nên không đưa ra kết luận nào."
       },

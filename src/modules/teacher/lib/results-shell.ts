@@ -15,6 +15,16 @@ export function classResultsHref(documentId: string): string {
 }
 
 /**
+ * The drill-down route for one student of that class (C-TR-2's own path shape,
+ * `classes/:documentId/students/:studentDocumentId`, mirrored in the URL). Both
+ * ids are the server's `document_id`s; the Students-tab row link is the only
+ * caller and assembles nothing itself.
+ */
+export function studentResultsHref(classDocumentId: string, studentDocumentId: string): string {
+  return `${classResultsHref(classDocumentId)}/students/${studentDocumentId}`;
+}
+
+/**
  * Error beats pending beats emptiness — the same precedence the teacher
  * dashboard already uses. `empty` is reported ONLY after the read really
  * succeeded, so "no classes" can never be a loading frame or a swallowed

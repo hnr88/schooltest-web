@@ -8,6 +8,8 @@ export { ClassResultsScreen } from './components/ClassResultsScreen';
 export { ClassResultsTabs } from './components/ClassResultsTabs';
 export { ExitPredictionsPanel } from './components/ExitPredictionsPanel';
 export { TeachingInsightsPanel } from './components/TeachingInsightsPanel';
+export { StudentsTabPanel } from './components/StudentsTabPanel';
+export { StudentsResultsTable } from './components/StudentsResultsTable';
 export { StartTestSessionPanel } from './components/StartTestSessionPanel';
 export { StartTestSessionForm } from './components/StartTestSessionForm';
 export { TestSessionSelect } from './components/TestSessionSelect';
@@ -33,10 +35,19 @@ export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-exp
 export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-setup';
 export { completionPercent, deriveDashboardStatus } from './lib/dashboard-cards';
 export { resolveJoinCodeView, testSessionMonitorHref } from './lib/join-code';
-export { classResultsHref, deriveResultsStatus, isResultsTabValue } from './lib/results-shell';
+export {
+  classResultsHref,
+  studentResultsHref,
+  deriveResultsStatus,
+  isResultsTabValue,
+} from './lib/results-shell';
 export { masteryBarView } from './lib/teaching-insights';
 
 export { MASTERY_BAND_TONE } from './constants/mastery.constants';
+export {
+  TEST_STATE_TONE,
+  TEST_STATE_LABEL_KEY,
+} from './constants/students-table.constants';
 export {
   TEST_SESSION_SELECT_TRIGGER_CLASS,
   START_TEST_SESSION_DEFAULTS,
@@ -176,6 +187,12 @@ export type {
   ClassResultsScreenProps,
   ResultsTabPendingProps,
 } from './types/results-shell.types';
+export type {
+  StudentsTabPanelProps,
+  StudentsResultsTableProps,
+  StudentResultsRowProps,
+  StudentTestCellsProps,
+} from './types/students-table.types';
 export type {
   TeachingInsightsPanelProps,
   SubskillMasteryListProps,

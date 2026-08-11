@@ -107,6 +107,27 @@ export async function readLiveResults(
   }
 }
 
+/**
+ * C-TR-1 for ONE named class, parsed through the same shipped mirror. Task 041
+ * uses it to compare the Students table of a SECOND class against the server —
+ * the seeded classes carry different per-cell states, and a spec that only ever
+ * read `classes[0]` could not see that.
+ */
+export async function readClassStudentsLive(
+  playwright: PlaywrightWorkerArgs['playwright'],
+  classDocumentId: string,
+): Promise<ClassStudentsResponse> {
+  const request = await playwright.request.newContext();
+  try {
+    const jwt = await bearer(request);
+    const detail = await readJson(request, jwt, `/api/teacher/classes/${classDocumentId}/students`);
+    if (detail.status !== 200) throw new Error(`[e2e] C-TR-1 answered ${detail.status}`);
+    return classStudentsResponseSchema.parse(detail.body);
+  } finally {
+    await request.dispose();
+  }
+}
+
 /** One class row of the Results list, and one cell of the class-detail header. */
 export const resultsRows = (page: Page): Locator => page.locator('[data-slot="results-class-row"]');
 export const headerStat = (page: Page, key: string): Locator =>
