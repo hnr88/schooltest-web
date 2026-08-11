@@ -1,6 +1,5 @@
 'use client';
 
-import { LineChart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Skeleton } from '@/components/ui/skeleton';
@@ -8,7 +7,7 @@ import { Alert, Button } from '@/modules/design-system';
 import { useRecordCrumb } from '@/modules/shell';
 import { ClassResultsHeader } from '@/modules/teacher/components/ClassResultsHeader';
 import { ClassResultsTabs } from '@/modules/teacher/components/ClassResultsTabs';
-import { ResultsTabPending } from '@/modules/teacher/components/ResultsTabPending';
+import { ProgressTabPanel } from '@/modules/teacher/components/ProgressTabPanel';
 import { StudentsTabPanel } from '@/modules/teacher/components/StudentsTabPanel';
 import { TeachingInsightsPanel } from '@/modules/teacher/components/TeachingInsightsPanel';
 import { deriveResultsStatus } from '@/modules/teacher/lib/results-shell';
@@ -23,9 +22,11 @@ import type { ClassResultsScreenProps } from '@/modules/teacher/types/results-sh
 // A failed read renders the error branch and NOTHING else — there is no cached
 // class name, no "0 / 0" stand-in and no empty-looking header standing in for a
 // 403 or a 404.
+//
+// Each tab owns its own live read: Students from this C-TR-1 body, Teaching
+// insights from C-TR-3, Progress from C-TR-4 (task 045).
 function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
   const t = useTranslations('Teacher.results.detail');
-  const tabs = useTranslations('Teacher.results.pending');
   const classResults = useClassStudentsQuery(classDocumentId);
   const data = classResults.data;
   const status = deriveResultsStatus({
@@ -83,14 +84,7 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
               <StudentsTabPanel classDocumentId={classDocumentId} students={data.students} />
             }
             insights={<TeachingInsightsPanel classDocumentId={classDocumentId} />}
-            progress={
-              <ResultsTabPending
-                slot="progress"
-                icon={LineChart}
-                title={tabs('progressTitle')}
-                description={tabs('progressDescription')}
-              />
-            }
+            progress={<ProgressTabPanel classDocumentId={classDocumentId} />}
           />
         </>
       ) : null}

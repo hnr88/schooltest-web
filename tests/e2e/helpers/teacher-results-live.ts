@@ -10,8 +10,10 @@ import {
   type PlaywrightWorkerArgs,
 } from '@playwright/test';
 
+import { classProgressResponseSchema } from '@/modules/teacher/schemas/teacher-progress.schema';
 import { classStudentsResponseSchema } from '@/modules/teacher/schemas/teacher-result.schema';
 import { teacherDashboardResponseSchema } from '@/modules/teacher/schemas/teacher.schema';
+import type { ClassProgressResponse } from '@/modules/teacher/types/teacher-progress.types';
 import type { ClassStudentsResponse } from '@/modules/teacher/types/teacher-result.types';
 import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
 
@@ -126,6 +128,36 @@ export async function readClassStudentsLive(
   } finally {
     await request.dispose();
   }
+}
+
+/**
+ * C-TR-4 for ONE class, parsed through the shipped mirror. Task 045's spec
+ * compares the Progress tab against this body, so every number the DOM shows has
+ * to be the server's own — and a body that drifts from CONTRACTS.md throws here.
+ */
+export async function readClassProgressLive(
+  playwright: PlaywrightWorkerArgs['playwright'],
+  classDocumentId: string,
+): Promise<ClassProgressResponse> {
+  const request = await playwright.request.newContext();
+  try {
+    const jwt = await bearer(request);
+    const progress = await readJson(request, jwt, `/api/teacher/classes/${classDocumentId}/progress`);
+    if (progress.status !== 200) throw new Error(`[e2e] C-TR-4 answered ${progress.status}`);
+    return classProgressResponseSchema.parse(progress.body);
+  } finally {
+    await request.dispose();
+  }
+}
+
+/** Opens ONE named class detail in-session and waits for the READY frame. */
+export async function openClassResults(page: Page, classDocumentId: string): Promise<void> {
+  await page.goto(`/dashboard/results/${classDocumentId}`);
+  await expect(page.locator('[data-surface="teacher-class-results"]')).toHaveAttribute(
+    'data-status',
+    'ready',
+    { timeout: 20_000 },
+  );
 }
 
 /** One class row of the Results list, and one cell of the class-detail header. */

@@ -221,3 +221,37 @@ export type {
   SuggestedGroupCardProps,
   MasteryBarView,
 } from './types/teaching-insights.types';
+
+// Progress tab (task 045, C-TR-4).
+export { ProgressTabPanel } from './components/ProgressTabPanel';
+export { ProgressEmptyState } from './components/ProgressEmptyState';
+export { ProgressSummarySection } from './components/ProgressSummarySection';
+export { ProgressShiftTable } from './components/ProgressShiftTable';
+export { ProgressAcaraSection } from './components/ProgressAcaraSection';
+export { ProgressWatchSection } from './components/ProgressWatchSection';
+export {
+  progressDirection,
+  progressDelta,
+  deriveProgressStatus,
+  progressView,
+  acaraMovementCards,
+} from './lib/class-progress';
+export {
+  PROGRESS_DIRECTION_TONE,
+  PROGRESS_DIRECTION_LABEL_KEY,
+  PROGRESS_ACARA_CARD_ORDER,
+  PROGRESS_ACARA_LABEL_KEY,
+  PROGRESS_WATCH_LABEL_KEY,
+  PROGRESS_WATCH_EMPTY_KEY,
+} from './constants/class-progress.constants';
+export type {
+  ProgressDirection,
+  ProgressReadStatus,
+  ProgressReadCounts,
+  ProgressView,
+  ProgressAcaraCardKey,
+  ProgressAcaraCard as ProgressAcaraCardData,
+  ProgressStatItem,
+  ProgressWatchVariant,
+  ProgressTabPanelProps,
+} from './types/class-progress.types';

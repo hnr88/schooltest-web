@@ -129,19 +129,15 @@ test.describe('the four tabs', () => {
     });
   });
 
-  // Task 041 filled the Students tab (see teacher-results-students.spec.ts) and
-  // task 044 the Teaching insights tab, so Progress is the only panel still
-  // waiting for its tool. Each filled tab is proven by its OWN spec.
-  test('an unfilled tab states the tool is absent, never that the class is empty', async () => {
+  // Task 041 filled the Students tab (teacher-results-students.spec.ts), 044 the
+  // Teaching insights tab and 045 the Progress tab (teacher-results-progress.spec.ts),
+  // so NO tab is a placeholder any more — each filled tab is proven by its OWN
+  // spec, and this one proves the frame carries no leftover stand-in.
+  test('no tab is left as a placeholder standing in for a real read', async () => {
     const tabs = page.getByRole('tab');
 
-    for (const [index, slot] of [[2, 'progress']] as const) {
-      await tabs.nth(index).click();
-      const pending = page.locator(`[data-slot="results-tab-pending"][data-tab="${slot}"]`);
-      await expect(pending).toBeVisible();
-      await expect(pending).toContainText(cat(en, `Teacher.results.pending.${slot}Title`));
-      // It issues no query, so it must make NO claim about this class's data.
-      await expect(pending).not.toContainText(/\d/);
-    }
+    await tabs.nth(2).click();
+    await expect(page.locator('[data-slot="class-progress"]')).toBeVisible();
+    await expect(page.locator('[data-slot="results-tab-pending"]')).toHaveCount(0);
   });
 });
