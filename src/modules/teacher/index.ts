@@ -7,6 +7,7 @@ export { ResultsScreen } from './components/ResultsScreen';
 export { ClassResultsScreen } from './components/ClassResultsScreen';
 export { ClassResultsTabs } from './components/ClassResultsTabs';
 export { ExitPredictionsPanel } from './components/ExitPredictionsPanel';
+export { TeachingInsightsPanel } from './components/TeachingInsightsPanel';
 export { StartTestSessionPanel } from './components/StartTestSessionPanel';
 export { StartTestSessionForm } from './components/StartTestSessionForm';
 export { TestSessionSelect } from './components/TestSessionSelect';
@@ -33,6 +34,7 @@ export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-
 export { completionPercent, deriveDashboardStatus } from './lib/dashboard-cards';
 export { resolveJoinCodeView, testSessionMonitorHref } from './lib/join-code';
 export { classResultsHref, deriveResultsStatus, isResultsTabValue } from './lib/results-shell';
+export { masteryBarView } from './lib/teaching-insights';
 
 export { MASTERY_BAND_TONE } from './constants/mastery.constants';
 export {
@@ -174,3 +176,11 @@ export type {
   ClassResultsScreenProps,
   ResultsTabPendingProps,
 } from './types/results-shell.types';
+export type {
+  TeachingInsightsPanelProps,
+  SubskillMasteryListProps,
+  SubskillMasteryRowProps,
+  SuggestedGroupsSectionProps,
+  SuggestedGroupCardProps,
+  MasteryBarView,
+} from './types/teaching-insights.types';

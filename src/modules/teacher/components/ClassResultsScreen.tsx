@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart3, LineChart, Table2 } from 'lucide-react';
+import { LineChart, Table2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Skeleton } from '@/components/ui/skeleton';
@@ -9,6 +9,7 @@ import { useRecordCrumb } from '@/modules/shell';
 import { ClassResultsHeader } from '@/modules/teacher/components/ClassResultsHeader';
 import { ClassResultsTabs } from '@/modules/teacher/components/ClassResultsTabs';
 import { ResultsTabPending } from '@/modules/teacher/components/ResultsTabPending';
+import { TeachingInsightsPanel } from '@/modules/teacher/components/TeachingInsightsPanel';
 import { deriveResultsStatus } from '@/modules/teacher/lib/results-shell';
 import { useClassStudentsQuery } from '@/modules/teacher/queries/use-class-students.query';
 import type { ClassResultsScreenProps } from '@/modules/teacher/types/results-shell.types';
@@ -85,14 +86,7 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
                 description={tabs('studentsDescription')}
               />
             }
-            insights={
-              <ResultsTabPending
-                slot="insights"
-                icon={BarChart3}
-                title={tabs('insightsTitle')}
-                description={tabs('insightsDescription')}
-              />
-            }
+            insights={<TeachingInsightsPanel classDocumentId={classDocumentId} />}
             progress={
               <ResultsTabPending
                 slot="progress"
