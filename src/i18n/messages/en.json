@@ -1769,6 +1769,14 @@
   },
   "Teacher": {
     "dashboard": {
+      "liveBanner": {
+        "live": "Live",
+        "title": "A test session is live right now",
+        "code": "Join code {code}",
+        "codeMissing": "No join code",
+        "opened": "Opened {time}",
+        "viewLive": "View live"
+      },
       "title": "Dashboard",
       "description": "Your classes, how far each one is through Test A and Test B, and the subskill most students have not mastered yet.",
       "loading": "Loading your classes",

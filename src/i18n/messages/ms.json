@@ -1769,6 +1769,14 @@
   },
   "Teacher": {
     "dashboard": {
+      "liveBanner": {
+        "live": "Langsung",
+        "title": "Satu sesi ujian sedang berjalan",
+        "code": "Kod sertai {code}",
+        "codeMissing": "Tiada kod sertai",
+        "opened": "Dibuka {time}",
+        "viewLive": "Lihat siaran langsung"
+      },
       "title": "Papan pemuka",
       "description": "Kelas anda, sejauh mana setiap kelas menyelesaikan Ujian A dan Ujian B, dan subkemahiran yang paling ramai pelajar belum kuasai.",
       "loading": "Memuatkan kelas anda",

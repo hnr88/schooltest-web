@@ -1769,6 +1769,14 @@
   },
   "Teacher": {
     "dashboard": {
+      "liveBanner": {
+        "live": "진행 중",
+        "title": "지금 진행 중인 테스트 세션이 있습니다",
+        "code": "참여 코드 {code}",
+        "codeMissing": "참여 코드 없음",
+        "opened": "{time} 시작",
+        "viewLive": "라이브 보기"
+      },
       "title": "대시보드",
       "description": "담당 학급, 각 학급의 테스트 A·테스트 B 진행 상황, 그리고 가장 많은 학생이 아직 숙달하지 못한 하위 기능입니다.",
       "loading": "학급을 불러오는 중",

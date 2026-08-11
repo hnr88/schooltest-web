@@ -1769,6 +1769,14 @@
   },
   "Teacher": {
     "dashboard": {
+      "liveBanner": {
+        "live": "Trực tiếp",
+        "title": "Một phiên kiểm tra đang diễn ra",
+        "code": "Mã tham gia {code}",
+        "codeMissing": "Không có mã tham gia",
+        "opened": "Bắt đầu {time}",
+        "viewLive": "Xem trực tiếp"
+      },
       "title": "Bảng điều khiển",
       "description": "Các lớp của bạn, tiến độ Bài A và Bài B của từng lớp, và kỹ năng thành phần mà nhiều học sinh chưa thành thạo nhất.",
       "loading": "Đang tải các lớp của bạn",

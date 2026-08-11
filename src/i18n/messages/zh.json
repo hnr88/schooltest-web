@@ -1769,6 +1769,14 @@
   },
   "Teacher": {
     "dashboard": {
+      "liveBanner": {
+        "live": "进行中",
+        "title": "当前有一场测验正在进行",
+        "code": "加入码 {code}",
+        "codeMissing": "没有加入码",
+        "opened": "{time} 开始",
+        "viewLive": "查看实时监看"
+      },
       "title": "控制面板",
       "description": "您任教的班级、每个班级完成测验 A 与测验 B 的进度，以及最多学生尚未掌握的子技能。",
       "loading": "正在加载您的班级",

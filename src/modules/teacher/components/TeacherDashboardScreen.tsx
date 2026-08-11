@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, Button, EmptyState } from '@/modules/design-system';
 import { TeacherClassCard } from '@/modules/teacher/components/TeacherClassCard';
+import { TeacherLiveSessionBanner } from '@/modules/teacher/components/TeacherLiveSessionBanner';
 import { deriveDashboardStatus } from '@/modules/teacher/lib/dashboard-cards';
 import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-dashboard.query';
 
@@ -16,7 +17,8 @@ import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-
 // Everything on the page comes from one live read of C-TD-1. There is no seed
 // list, no placeholder card and no "0 of 0" stand-in: a failed read renders the
 // error branch, and an empty `classes` array is only ever believed once the read
-// has actually succeeded. The live-session banner is task 033's slice.
+// has actually succeeded. The live-session banner reads the same C-TD-1 answer
+// (`live_session`) and sits at the top of the page.
 function TeacherDashboardScreen() {
   const t = useTranslations('Teacher.dashboard');
   const dashboard = useTeacherDashboardQuery();
@@ -34,6 +36,8 @@ function TeacherDashboardScreen() {
       data-status={status}
       className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
     >
+      <TeacherLiveSessionBanner />
+
       <div className="flex flex-col gap-1">
         <h1 className="text-portal-title font-bold text-foreground">{t('title')}</h1>
         <p className="text-lede text-body">{t('description')}</p>
