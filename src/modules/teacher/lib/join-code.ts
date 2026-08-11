@@ -18,7 +18,10 @@ export function testSessionMonitorHref(sittingDocumentId: string): string {
  * lands here untouched; an unmatched variant yields `null` rather than an
  * invented label.
  */
-function findTestLabel(tests: readonly TeacherTest[], variant: TestVariant | null): string | null {
+export function findTestLabel(
+  tests: readonly TeacherTest[],
+  variant: TestVariant | null,
+): string | null {
   if (variant === null) return null;
   return tests.find((test) => test.variant === variant)?.label ?? null;
 }

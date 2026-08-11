@@ -1834,6 +1834,29 @@
         "goLive": "进入实时监看",
         "unavailableTitle": "该进行中的场次没有加入码",
         "unavailableBody": "{className} 的进行中场次并非从本页开启，因此从未生成加入码。请新建场次以获得可朗读的加入码。"
+      },
+      "pastSessions": {
+        "panelTitle": "历史场次",
+        "panelDescription": "你开启过的所有场次，最新的排在最前。",
+        "countDescription": "{count, plural, other {你开启过 # 个场次，最新的排在最前。}}",
+        "caption": "你开启过的场次，含班级、加入码、测验、日期与完成情况",
+        "class": "班级",
+        "test": "测验",
+        "date": "日期",
+        "completed": "已提交",
+        "joinCodeLabel": "加入码",
+        "noCode": "此场次未生成加入码",
+        "noTest": "此场次未记录测验",
+        "noDate": "此场次未记录开启日期",
+        "statusLive": "进行中",
+        "statusClosed": "已结束",
+        "completedValue": "{completed} / {expected}",
+        "completedAria": "{className}：{expected} 名学生中已提交 {completed} 名",
+        "loadErrorTitle": "无法加载历史场次",
+        "loadErrorBody": "表格保持为空而不做猜测。请检查网络后重试。",
+        "retry": "重试",
+        "emptyTitle": "还没有场次",
+        "emptyDescription": "在上方生成加入码，场次就会带着提交数出现在这里。"
       }
     },
     "results": {
@@ -1922,6 +1945,36 @@
         "openStudent": "打开 {name} 的子技能明细",
         "emptyTitle": "本班名单中没有学生",
         "emptyDescription": "本班没有处于活跃状态的学生，因此没有可列出的成绩。请联系管理员向本班添加学生，然后重新加载本页。"
+      },
+      "drillDown": {
+        "meta": {
+          "title": "学生结果 — SchoolTest",
+          "description": "单个学生的阅读诊断：每项子技能的掌握可能性。"
+        },
+        "loading": "正在加载该学生",
+        "errorTitle": "无法加载该学生",
+        "errorDescription": "本页从服务器实时读取学生数据，不会做任何猜测。若该班级不由您任教，请联系管理员；否则请检查网络连接后重试。",
+        "retry": "重试",
+        "emptyTitle": "该学生尚未完成任何测验",
+        "emptyDescription": "子技能掌握情况由已完成的阅读结果生成，因此暂无内容可显示。该学生提交测验 A 或测验 B 后即会显示在此处。",
+        "metaSeparator": " · ",
+        "yearBand": "年级段 {band}",
+        "firstLanguage": "第一语言 {language}",
+        "testHeading": "测验 {variant} — 阅读诊断",
+        "completedOn": "完成于 {date}",
+        "scoreValue": "{score} / 100",
+        "scoreLabel": "总分",
+        "displayLabel": "阅读者类型：{label}",
+        "legendLabel": "掌握可能性",
+        "legendMastered": "{cut} 及以上为已掌握",
+        "legendApproaching": "{from} 至低于 {to} 为接近掌握",
+        "legendNotYet": "低于 {cut} 为尚未掌握",
+        "subskillsHeading": "阅读子技能",
+        "likelihoodValue": "{likelihood}%",
+        "bandMastered": "已掌握",
+        "bandApproaching": "接近掌握",
+        "bandNotYet": "尚未掌握",
+        "bandNotAssessed": "未评估"
       },
       "pending": {
         "progressTitle": "测验 A 与测验 B 的对比将在下一步上线",

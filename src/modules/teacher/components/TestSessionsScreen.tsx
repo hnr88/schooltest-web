@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
 import { JoinCodePanel } from '@/modules/teacher/components/JoinCodePanel';
+import { PastSessionsPanel } from '@/modules/teacher/components/PastSessionsPanel';
 import { StartTestSessionPanel } from '@/modules/teacher/components/StartTestSessionPanel';
 
 // /dashboard/test-sessions — the destination behind the teacher rail's "Test
@@ -23,6 +24,7 @@ export async function TestSessionsScreen() {
 
       <StartTestSessionPanel />
       <JoinCodePanel />
+      <PastSessionsPanel />
     </main>
   );
 }

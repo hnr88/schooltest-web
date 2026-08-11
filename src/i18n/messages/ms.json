@@ -1834,6 +1834,29 @@
         "goLive": "Pergi ke siaran langsung",
         "unavailableTitle": "Sesi terbuka ini tiada kod sertai",
         "unavailableBody": "Sesi terbuka untuk {className} tidak dimulakan dari halaman ini, jadi tiada kod pernah dijana untuknya. Jana sesi baharu untuk mendapatkan kod yang boleh dibacakan."
+      },
+      "pastSessions": {
+        "panelTitle": "Sesi lalu",
+        "panelDescription": "Setiap sesi yang anda mulakan, terkini di atas.",
+        "countDescription": "{count, plural, other {# sesi yang anda mulakan, terkini di atas.}}",
+        "caption": "Sesi yang anda mulakan, dengan kelas, kod sertai, ujian, tarikh dan penyiapan",
+        "class": "Kelas",
+        "test": "Ujian",
+        "date": "Tarikh",
+        "completed": "Selesai",
+        "joinCodeLabel": "Kod sertai",
+        "noCode": "Tiada kod sertai dijana untuk sesi ini",
+        "noTest": "Ujian tidak direkodkan untuk sesi ini",
+        "noDate": "Tarikh mula tidak direkodkan untuk sesi ini",
+        "statusLive": "Langsung",
+        "statusClosed": "Ditutup",
+        "completedValue": "{completed} / {expected}",
+        "completedAria": "{className}: {completed} daripada {expected} pelajar telah menghantar",
+        "loadErrorTitle": "Tidak dapat memuatkan sesi lalu anda",
+        "loadErrorBody": "Jadual kekal kosong dan tidak meneka. Periksa sambungan anda dan cuba lagi.",
+        "retry": "Cuba lagi",
+        "emptyTitle": "Belum ada sesi",
+        "emptyDescription": "Jana kod sertai di atas dan sesi itu akan muncul di sini dengan kiraan penyiapannya."
       }
     },
     "results": {
@@ -1922,6 +1945,36 @@
         "openStudent": "Buka pecahan subkemahiran {name}",
         "emptyTitle": "Tiada pelajar dalam senarai kelas ini",
         "emptyDescription": "Kelas ini tiada pelajar aktif, jadi tiada keputusan untuk disenaraikan. Minta pentadbir menambah pelajar ke kelas ini, kemudian muat semula halaman."
+      },
+      "drillDown": {
+        "meta": {
+          "title": "Keputusan pelajar — SchoolTest",
+          "description": "Diagnostik bacaan seorang pelajar: kebarangkalian penguasaan bagi setiap subkemahiran."
+        },
+        "loading": "Memuatkan pelajar ini",
+        "errorTitle": "Tidak dapat memuatkan pelajar ini",
+        "errorDescription": "Halaman ini membaca data pelajar secara langsung daripada pelayan dan tidak akan meneka. Jika kelas ini bukan kelas anda, hubungi pentadbir; jika tidak, periksa sambungan anda dan cuba lagi.",
+        "retry": "Cuba lagi",
+        "emptyTitle": "Pelajar ini belum menyelesaikan sebarang ujian",
+        "emptyDescription": "Penguasaan subkemahiran dibina daripada keputusan bacaan yang telah selesai, jadi belum ada apa-apa untuk ditunjukkan. Ia akan muncul di sini sebaik sahaja pelajar ini menghantar Ujian A atau Ujian B.",
+        "metaSeparator": " · ",
+        "yearBand": "Kumpulan tahun {band}",
+        "firstLanguage": "Bahasa pertama {language}",
+        "testHeading": "Ujian {variant} — diagnostik bacaan",
+        "completedOn": "Selesai {date}",
+        "scoreValue": "{score} / 100",
+        "scoreLabel": "Skor keseluruhan",
+        "displayLabel": "Profil pembaca: {label}",
+        "legendLabel": "Kebarangkalian penguasaan",
+        "legendMastered": "{cut} atau lebih dikuasai",
+        "legendApproaching": "{from} hingga bawah {to} menghampiri",
+        "legendNotYet": "Bawah {cut} belum dikuasai",
+        "subskillsHeading": "Subkemahiran bacaan",
+        "likelihoodValue": "{likelihood}%",
+        "bandMastered": "Dikuasai",
+        "bandApproaching": "Menghampiri",
+        "bandNotYet": "Belum dikuasai",
+        "bandNotAssessed": "Tidak dinilai"
       },
       "pending": {
         "progressTitle": "Perbandingan Ujian A ke Ujian B akan menyusul di sini",

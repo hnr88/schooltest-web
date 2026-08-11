@@ -16,9 +16,14 @@ export { StartTestSessionForm } from './components/StartTestSessionForm';
 export { TestSessionSelect } from './components/TestSessionSelect';
 export { JoinCodePanel } from './components/JoinCodePanel';
 export { JoinCodeDisplay } from './components/JoinCodeDisplay';
+export { PastSessionsPanel } from './components/PastSessionsPanel';
+export { PastSessionsTable } from './components/PastSessionsTable';
+export { PastSessionRow } from './components/PastSessionRow';
+export { SessionMissingValue } from './components/SessionMissingValue';
 
 export { useStartTestSessionForm } from './hooks/useStartTestSessionForm';
 export { useJoinCodePanel } from './hooks/useJoinCodePanel';
+export { usePastSessions } from './hooks/usePastSessions';
 
 export { useTeacherDashboardQuery } from './queries/use-teacher-dashboard.query';
 export { useTeacherTestsQuery } from './queries/use-teacher-tests.query';
@@ -35,7 +40,8 @@ export { useTeacherExportMutation } from './queries/use-teacher-export.mutation'
 export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-export';
 export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-setup';
 export { completionPercent, deriveDashboardStatus } from './lib/dashboard-cards';
-export { resolveJoinCodeView, testSessionMonitorHref } from './lib/join-code';
+export { resolveJoinCodeView, testSessionMonitorHref, findTestLabel } from './lib/join-code';
+export { derivePastSessionsStatus, sessionCompletionPercent } from './lib/past-sessions';
 export {
   classResultsHref,
   studentResultsHref,
@@ -54,6 +60,12 @@ export {
   START_TEST_SESSION_DEFAULTS,
 } from './constants/test-session-setup.constants';
 export { TEST_SESSIONS_PATH } from './constants/join-code.constants';
+export {
+  PAST_SESSION_STATUS_TONE,
+  PAST_SESSION_STATUS_LABEL_KEY,
+  PAST_SESSIONS_ROW_CLASS,
+  PAST_SESSIONS_SCROLL_CLASS,
+} from './constants/past-sessions.constants';
 export {
   RESULTS_PATH,
   RESULTS_TAB_ORDER,
@@ -162,6 +174,13 @@ export type {
   JoinCodeView,
   JoinCodeDisplayProps,
 } from './types/join-code.types';
+export type {
+  PastSessionsStatus,
+  PastSessionsReadCounts,
+  PastSessionsTableProps,
+  PastSessionRowProps,
+  SessionMissingValueProps,
+} from './types/past-sessions.types';
 export type {
   TeacherDashboardStatus,
   TeacherDashboardCounts,

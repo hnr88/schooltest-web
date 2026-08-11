@@ -1834,6 +1834,29 @@
         "goLive": "Vào phiên trực tiếp",
         "unavailableTitle": "Phiên đang mở này không có mã tham gia",
         "unavailableBody": "Phiên đang mở của {className} không được bắt đầu từ trang này nên chưa bao giờ có mã. Hãy tạo phiên mới để có mã đọc cho học sinh."
+      },
+      "pastSessions": {
+        "panelTitle": "Phiên đã qua",
+        "panelDescription": "Mọi phiên bạn đã bắt đầu, mới nhất trước.",
+        "countDescription": "{count, plural, other {# phiên bạn đã bắt đầu, mới nhất trước.}}",
+        "caption": "Các phiên bạn đã bắt đầu, kèm lớp, mã tham gia, bài kiểm tra, ngày và mức hoàn thành",
+        "class": "Lớp",
+        "test": "Bài kiểm tra",
+        "date": "Ngày",
+        "completed": "Đã hoàn thành",
+        "joinCodeLabel": "Mã tham gia",
+        "noCode": "Phiên này không được cấp mã tham gia",
+        "noTest": "Phiên này không ghi nhận bài kiểm tra",
+        "noDate": "Phiên này không ghi nhận ngày bắt đầu",
+        "statusLive": "Đang diễn ra",
+        "statusClosed": "Đã đóng",
+        "completedValue": "{completed} / {expected}",
+        "completedAria": "{className}: {completed} trên {expected} học sinh đã nộp",
+        "loadErrorTitle": "Không tải được các phiên đã qua",
+        "loadErrorBody": "Bảng để trống thay vì phỏng đoán. Kiểm tra kết nối rồi thử lại.",
+        "retry": "Thử lại",
+        "emptyTitle": "Chưa có phiên nào",
+        "emptyDescription": "Tạo mã tham gia ở trên, phiên sẽ xuất hiện tại đây kèm số lượt nộp."
       }
     },
     "results": {
@@ -1922,6 +1945,36 @@
         "openStudent": "Mở phần chi tiết kỹ năng con của {name}",
         "emptyTitle": "Lớp này chưa có học sinh nào",
         "emptyDescription": "Lớp này không có học sinh đang hoạt động nên không có kết quả nào để liệt kê. Hãy đề nghị quản trị viên thêm học sinh vào lớp, rồi tải lại trang này."
+      },
+      "drillDown": {
+        "meta": {
+          "title": "Kết quả học sinh — SchoolTest",
+          "description": "Bài đánh giá đọc của một học sinh: khả năng thành thạo từng kỹ năng con."
+        },
+        "loading": "Đang tải học sinh này",
+        "errorTitle": "Không tải được học sinh này",
+        "errorDescription": "Trang này đọc dữ liệu học sinh trực tiếp từ máy chủ và không phỏng đoán. Nếu đây không phải lớp bạn dạy, hãy liên hệ quản trị viên; nếu không, hãy kiểm tra kết nối rồi thử lại.",
+        "retry": "Thử lại",
+        "emptyTitle": "Học sinh này chưa hoàn thành bài nào",
+        "emptyDescription": "Mức thành thạo kỹ năng con được xây dựng từ một kết quả đọc đã hoàn thành, nên hiện chưa có gì để hiển thị. Nội dung sẽ xuất hiện ngay khi học sinh này nộp Bài A hoặc Bài B.",
+        "metaSeparator": " · ",
+        "yearBand": "Khối lớp {band}",
+        "firstLanguage": "Tiếng mẹ đẻ {language}",
+        "testHeading": "Bài {variant} — đánh giá đọc",
+        "completedOn": "Hoàn thành {date}",
+        "scoreValue": "{score} / 100",
+        "scoreLabel": "Điểm tổng",
+        "displayLabel": "Kiểu người đọc: {label}",
+        "legendLabel": "Khả năng thành thạo",
+        "legendMastered": "{cut} trở lên là thành thạo",
+        "legendApproaching": "{from} đến dưới {to} là gần thành thạo",
+        "legendNotYet": "Dưới {cut} là chưa thành thạo",
+        "subskillsHeading": "Kỹ năng đọc con",
+        "likelihoodValue": "{likelihood}%",
+        "bandMastered": "Thành thạo",
+        "bandApproaching": "Gần thành thạo",
+        "bandNotYet": "Chưa thành thạo",
+        "bandNotAssessed": "Chưa đánh giá"
       },
       "pending": {
         "progressTitle": "So sánh Bài A với Bài B sẽ có ở đây trong bước tiếp theo",

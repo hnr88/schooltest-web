@@ -1834,6 +1834,29 @@
         "goLive": "Go live",
         "unavailableTitle": "This open session has no join code",
         "unavailableBody": "The open session for {className} was not started from this page, so no code was ever minted for it. Generate a new session to get a code to read out."
+      },
+      "pastSessions": {
+        "panelTitle": "Past sessions",
+        "panelDescription": "Every session you have started, most recent first.",
+        "countDescription": "{count, plural, one {# session you have started, most recent first.} other {# sessions you have started, most recent first.}}",
+        "caption": "Sessions you have started, with class, join code, test, date and completion",
+        "class": "Class",
+        "test": "Test",
+        "date": "Date",
+        "completed": "Completed",
+        "joinCodeLabel": "Join code",
+        "noCode": "No join code was minted for this session",
+        "noTest": "Test not recorded for this session",
+        "noDate": "Start date not recorded for this session",
+        "statusLive": "Live",
+        "statusClosed": "Closed",
+        "completedValue": "{completed} / {expected}",
+        "completedAria": "{className}: {completed} of {expected} students submitted",
+        "loadErrorTitle": "Could not load your past sessions",
+        "loadErrorBody": "The table stays empty rather than guess. Check your connection and try again.",
+        "retry": "Try again",
+        "emptyTitle": "No sessions yet",
+        "emptyDescription": "Generate a join code above and the session appears here with its completion count."
       }
     },
     "results": {
@@ -1922,6 +1945,36 @@
         "openStudent": "Open {name}’s subskill breakdown",
         "emptyTitle": "No students on this class roster",
         "emptyDescription": "This class has no active students, so there is no result to list. Ask an administrator to add students to the class, then reload this page."
+      },
+      "drillDown": {
+        "meta": {
+          "title": "Student results — SchoolTest",
+          "description": "One student's reading diagnostic: the mastery likelihood behind every subskill."
+        },
+        "loading": "Loading this student",
+        "errorTitle": "Could not load this student",
+        "errorDescription": "This page reads the student live from the server and shows nothing rather than guess. If the class is not one you teach, ask an administrator; otherwise check your connection and try again.",
+        "retry": "Try again",
+        "emptyTitle": "No completed test for this student yet",
+        "emptyDescription": "Subskill mastery is built from a completed reading result, so there is nothing to show yet. It appears here as soon as this student submits Test A or Test B.",
+        "metaSeparator": " · ",
+        "yearBand": "Year band {band}",
+        "firstLanguage": "First language {language}",
+        "testHeading": "Test {variant} — Reading diagnostic",
+        "completedOn": "Completed {date}",
+        "scoreValue": "{score} / 100",
+        "scoreLabel": "Overall score",
+        "displayLabel": "Reader profile: {label}",
+        "legendLabel": "Mastery likelihood",
+        "legendMastered": "{cut} or higher mastered",
+        "legendApproaching": "{from} to under {to} approaching",
+        "legendNotYet": "Under {cut} not yet",
+        "subskillsHeading": "Reading subskills",
+        "likelihoodValue": "{likelihood}%",
+        "bandMastered": "Mastered",
+        "bandApproaching": "Approaching",
+        "bandNotYet": "Not yet",
+        "bandNotAssessed": "Not assessed"
       },
       "pending": {
         "progressTitle": "The Test A to Test B comparison lands here next",
