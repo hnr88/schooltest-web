@@ -27,5 +27,17 @@ export const DEFAULT_RESULTS_TAB = 'students';
 export const RESULTS_TABS_LIST_CLASS =
   'w-full justify-start gap-6 overflow-x-auto rounded-none border-b border-border bg-transparent p-0 group-data-horizontal/tabs:h-auto';
 
+/**
+ * Task 047, WCAG 2.2 AA 2.4.7 (Focus Visible). Base UI's `Tabs.Panel` takes
+ * `tabIndex=0`, so Tab from the selected trigger lands ON the panel — and the
+ * read-only `ui/tabs.tsx` wrapper hands it `outline-none` with NO replacement
+ * indicator (measured: the tab walk on /dashboard/results/<class> reported
+ * `DIV[tabs-content] … ring=false`). The primitive cannot be edited (Law 11), but
+ * the panel's `className` is the caller's, so the ring is restored here — the same
+ * `ring-ring`/`ring-offset` pair every other focusable on this surface uses.
+ */
+export const RESULTS_TAB_PANEL_CLASS =
+  'pt-6 focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-well';
+
 export const RESULTS_TAB_TRIGGER_CLASS =
   'h-11 flex-none rounded-none border-0 px-1 text-sm font-semibold whitespace-nowrap text-body transition-colors duration-200 ease-out hover:text-foreground data-active:text-primary after:bg-primary group-data-horizontal/tabs:after:-bottom-px motion-reduce:transition-none dark:text-muted-foreground dark:data-active:text-primary';

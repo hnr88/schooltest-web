@@ -8,6 +8,7 @@ import { ExitPredictionsPanel } from '@/modules/teacher/components/ExitPredictio
 import {
   DEFAULT_RESULTS_TAB,
   RESULTS_TABS_LIST_CLASS,
+  RESULTS_TAB_PANEL_CLASS,
   RESULTS_TAB_TRIGGER_CLASS,
 } from '@/modules/teacher/constants/results.constants';
 import { isResultsTabValue } from '@/modules/teacher/lib/results-shell';
@@ -58,16 +59,16 @@ function ClassResultsTabs({ students, insights, progress }: ClassResultsTabsProp
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="students" className="pt-6">
+      <TabsContent value="students" className={RESULTS_TAB_PANEL_CLASS}>
         {students}
       </TabsContent>
-      <TabsContent value="insights" className="pt-6">
+      <TabsContent value="insights" className={RESULTS_TAB_PANEL_CLASS}>
         {insights}
       </TabsContent>
-      <TabsContent value="progress" className="pt-6">
+      <TabsContent value="progress" className={RESULTS_TAB_PANEL_CLASS}>
         {progress}
       </TabsContent>
-      <TabsContent value="exit" className="pt-6">
+      <TabsContent value="exit" className={RESULTS_TAB_PANEL_CLASS}>
         <ExitPredictionsPanel />
       </TabsContent>
     </Tabs>
