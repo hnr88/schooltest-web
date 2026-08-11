@@ -1839,6 +1839,7 @@
         "panelTitle": "Sesi lalu",
         "panelDescription": "Setiap sesi yang anda mulakan, terkini di atas.",
         "countDescription": "{count, plural, other {# sesi yang anda mulakan, terkini di atas.}}",
+        "scrollRegionLabel": "Sejarah sesi, senarai boleh skrol",
         "caption": "Sesi yang anda mulakan, dengan kelas, kod sertai, ujian, tarikh dan penyiapan",
         "class": "Kelas",
         "test": "Ujian",

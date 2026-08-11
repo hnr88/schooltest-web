@@ -1839,6 +1839,7 @@
         "panelTitle": "지난 세션",
         "panelDescription": "시작한 모든 세션을 최신순으로 표시합니다.",
         "countDescription": "{count, plural, other {시작한 세션 #개, 최신순입니다.}}",
+        "scrollRegionLabel": "세션 기록, 스크롤 가능한 목록",
         "caption": "시작한 세션 목록: 학급, 참여 코드, 테스트, 날짜, 완료 현황",
         "class": "학급",
         "test": "테스트",

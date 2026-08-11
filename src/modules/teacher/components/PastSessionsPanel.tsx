@@ -65,7 +65,13 @@ function PastSessionsPanel() {
       ) : null}
 
       {status === 'ready' ? (
-        <div className={PAST_SESSIONS_SCROLL_CLASS}>
+        <div
+          data-slot="past-sessions-scroller"
+          role="group"
+          tabIndex={0}
+          aria-label={t('scrollRegionLabel')}
+          className={PAST_SESSIONS_SCROLL_CLASS}
+        >
           <PastSessionsTable sessions={sessions} tests={tests} />
         </div>
       ) : null}

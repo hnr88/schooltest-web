@@ -1839,6 +1839,7 @@
         "panelTitle": "历史场次",
         "panelDescription": "你开启过的所有场次，最新的排在最前。",
         "countDescription": "{count, plural, other {你开启过 # 个场次，最新的排在最前。}}",
+        "scrollRegionLabel": "场次历史，可滚动列表",
         "caption": "你开启过的场次，含班级、加入码、测验、日期与完成情况",
         "class": "班级",
         "test": "测验",

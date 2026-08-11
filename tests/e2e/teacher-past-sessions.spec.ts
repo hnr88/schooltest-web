@@ -8,6 +8,11 @@ import type { TeacherTest } from '@/modules/teacher/types/teacher.types';
 import { cat } from './helpers/i18n';
 import { apiLogin } from './helpers/teacher-auth-rail';
 import {
+  keyboardScrollFacts,
+  panelAxeViolations,
+  scrollRegionFacts,
+} from './helpers/teacher-past-sessions-a11y';
+import {
   closeSession,
   createSession,
   readClasses,
@@ -46,13 +51,14 @@ test.beforeAll(async ({ browser, playwright }) => {
   request = await playwright.request.newContext();
   jwt = await apiLogin(request, 'teacher');
   tests = await readTests(request, jwt);
-  page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  // A context, not browser.newPage(): axe-core injects through the context.
+  page = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
   await signIn(page, 'teacher');
   await openTestSessions(page);
 });
 
 test.afterAll(async () => {
-  await page.close();
+  await page.context().close();
   await request.dispose();
 });
 
@@ -153,6 +159,24 @@ test.describe('Past sessions table (C-TS-2)', () => {
     await pastSessionsPanel(page).screenshot({
       path: path.join(SCREENSHOTS, 'task-036-past-sessions-nullable.png'),
     });
+  });
+
+  test('the history scroller is keyboard-operable and the panel is axe-clean', async () => {
+    // A036-2 renders every sitting instead of "+ N more"; only ~7 rows fit the
+    // 384px region, so the rest reach a keyboard user ONLY if it takes focus.
+    const facts = await scrollRegionFacts(page);
+    expect(facts.tabIndex).toBe('0');
+    expect(facts.role).toBe('group');
+    expect(facts.ariaLabel).toBe(cat(en, `${NS}.scrollRegionLabel`));
+    expect(facts.scrollable, 'the region must actually overflow for this to matter').toBe(true);
+    expect(facts.totalRows).toBeGreaterThan(facts.visibleRows);
+    const keys = await keyboardScrollFacts(page);
+    expect(keys.reachableByTab, `Tab from ${keys.tabbedFrom} must land on the region`).toBe(true);
+    expect(keys.after, 'PageDown must move the region').toBeGreaterThan(keys.before);
+    expect(keys.bottomReached, 'End must reach the last sitting').toBe(true);
+    expect(keys.focusRing, 'the focused region must show a visible ring').not.toBe('none');
+    expect(await panelAxeViolations(page)).toEqual([]);
+    await pastSessionsPanel(page).screenshot({ path: path.join(SCREENSHOTS, 'task-036-kbd.png') });
   });
 
   test('a NULL opened_at renders as an explicit absence, not a crash or a guess', async () => {

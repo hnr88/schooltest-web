@@ -24,6 +24,13 @@ export const PAST_SESSIONS_ROW_CLASS = 'h-14 border-border';
  * The history is unbounded (this instance already holds 158 real sittings), so
  * the panel scrolls instead of truncating: every row the server sent stays
  * reachable, and no "+N more" device hides a session a teacher may need.
+ *
+ * A scroll region whose CONTENT is not focusable must be focusable ITSELF, or a
+ * keyboard user cannot reach the overflow at all (axe:
+ * scrollable-region-focusable, WCAG 2.1.1 / 2.1.3). The table rows hold no
+ * interactive element, so the panel gives this div `role="group"`,
+ * `tabIndex={0}` and an `aria-label`, and the ring below makes that focus
+ * visible (WCAG 2.4.7).
  */
 export const PAST_SESSIONS_SCROLL_CLASS =
-  'max-h-96 overflow-y-auto rounded-lg border border-border';
+  'max-h-96 overflow-y-auto rounded-lg border border-border focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none';

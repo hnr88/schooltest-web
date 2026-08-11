@@ -1839,6 +1839,7 @@
         "panelTitle": "Phiên đã qua",
         "panelDescription": "Mọi phiên bạn đã bắt đầu, mới nhất trước.",
         "countDescription": "{count, plural, other {# phiên bạn đã bắt đầu, mới nhất trước.}}",
+        "scrollRegionLabel": "Lịch sử phiên, danh sách có thể cuộn",
         "caption": "Các phiên bạn đã bắt đầu, kèm lớp, mã tham gia, bài kiểm tra, ngày và mức hoàn thành",
         "class": "Lớp",
         "test": "Bài kiểm tra",

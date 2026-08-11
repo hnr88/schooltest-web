@@ -1839,6 +1839,7 @@
         "panelTitle": "Past sessions",
         "panelDescription": "Every session you have started, most recent first.",
         "countDescription": "{count, plural, one {# session you have started, most recent first.} other {# sessions you have started, most recent first.}}",
+        "scrollRegionLabel": "Session history, scrollable list",
         "caption": "Sessions you have started, with class, join code, test, date and completion",
         "class": "Class",
         "test": "Test",
