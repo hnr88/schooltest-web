@@ -36,7 +36,7 @@ function TeacherDashboardScreen() {
     >
       <div className="flex flex-col gap-1">
         <h1 className="text-portal-title font-bold text-foreground">{t('title')}</h1>
-        <p className="text-lede text-muted-foreground">{t('description')}</p>
+        <p className="text-lede text-body">{t('description')}</p>
       </div>
 
       {status === 'loading' ? (

@@ -1,8 +1,15 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// Port 3100 is allocated to this instance (port 3000 belongs to a neighbor — see
-// .qa/STACK.json). Override with E2E_BASE_URL / E2E_PORT when targeting another stack.
-const port = Number(process.env.E2E_PORT ?? 3100);
+// Port 3000 is THIS instance's web port (.qa/STACK.json `ports.web`), and Strapi's
+// CORS allow-list is exactly `http://localhost:3000` (`FRONTEND_URL` in the local
+// api `.env`), so a suite pointed anywhere else cannot sign anyone in.
+//
+// The default used to be 3100. That is Codephant's port on this machine
+// (.qa/STACK.json `neighbors_to_avoid`), and with `reuseExistingServer` Playwright
+// treats a live listener as "the app is already up" — so an unqualified run
+// silently drove the whole suite against a NEIGHBOUR'S app instead of failing.
+// Override with E2E_BASE_URL / E2E_PORT only to target a genuinely different stack.
+const port = Number(process.env.E2E_PORT ?? 3000);
 const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${port}`;
 
 export default defineConfig({

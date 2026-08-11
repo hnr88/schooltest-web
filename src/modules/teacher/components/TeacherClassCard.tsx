@@ -43,7 +43,7 @@ function TeacherClassCard({ classCard }: TeacherClassCardProps) {
       </dl>
 
       <div className="flex min-w-0 flex-col gap-2 rounded-tile bg-surface-inset p-3.5">
-        <span className="text-meta font-semibold tracking-wide text-muted-foreground uppercase">
+        <span className="text-meta font-semibold tracking-wide text-body uppercase">
           {t('topGap')}
         </span>
         {topGap ? (
@@ -58,7 +58,7 @@ function TeacherClassCard({ classCard }: TeacherClassCardProps) {
         ) : (
           <>
             <span className="text-body-sm font-semibold text-foreground">{t('noGap')}</span>
-            <span className="text-meta text-balance text-muted-foreground">{t('noGapHint')}</span>
+            <span className="text-meta text-balance text-body">{t('noGapHint')}</span>
           </>
         )}
       </div>
