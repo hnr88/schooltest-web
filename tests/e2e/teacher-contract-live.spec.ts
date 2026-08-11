@@ -71,10 +71,23 @@ const [CLASS_ID, STUDENT_ID] = runSql(
   `select c.document_id, s.document_id from classes c, students s order by c.id, s.id limit 1`,
 ).split('|');
 
-// `sittings` has no rows yet, so the :documentId slot of the session route
-// carries a real Strapi documentId that is not a sitting. An unmounted route is
-// answered by the router before any lookup, which is what this sweep measures.
-const SITTING_ID = CLASS_ID;
+// A REAL sitting owned by that same teacher, resolved from the datastore.
+//
+// This used to be `const SITTING_ID = CLASS_ID`, justified by "`sittings` has no rows yet".
+// That comment fossilised: the instance now holds ~158 sittings. The consequence was a
+// GREEN BUT HOLLOW assertion — C-TS-3 was called with a CLASS documentId, answered 404, and
+// satisfied the sweep's "absence is honest" branch, so `testSessionMonitorResponseSchema`
+// was never once exercised against a real body even though the sweep claimed to cover C-TS-3.
+// With a real owned sitting the monitor contract is actually validated; if no sitting exists
+// the value is empty, the request 404s, and the absence branch legitimately applies again.
+const SITTING_ID =
+  runSql(
+    `select s.document_id from sittings s
+       join sittings_teacher_lnk l on l.sitting_id = s.id
+       join up_users u on u.id = l.user_id
+      where u.email = '${TEACHER_EMAIL}'
+      order by s.id desc limit 1`,
+  ) || CLASS_ID;
 
 interface ContractParser {
   safeParse: (value: unknown) => { success: boolean; error?: { message: string } };
@@ -176,12 +189,26 @@ test.describe('teacher contract — the module paths against the REAL Strapi', (
       expect([401, 403], `${contract} auth`).not.toContain(status);
       expect(status, `${contract} server error`).toBeLessThan(500);
 
-      if (status === 200 && schema) {
-        // The routes have landed: the live body MUST satisfy the web mirror.
-        const parsed = schema.safeParse(await response.json());
-        expect(parsed.success, `${contract}: ${parsed.error?.message}`).toBe(true);
+      if (status === 200) {
+        if (schema) {
+          // The routes have landed: the live body MUST satisfy the web mirror.
+          const parsed = schema.safeParse(await response.json());
+          expect(parsed.success, `${contract}: ${parsed.error?.message}`).toBe(true);
+        } else {
+          // C-TR-5/6/7 are the Markdown exports. They carry no Zod mirror because their
+          // body is text/markdown, not JSON — so for THEM the contract IS the transport,
+          // and that is what gets asserted. Reading "no schema" as "route absent" is what
+          // made this spec fail the moment the exports landed and started answering 200.
+          const headers = response.headers();
+          expect(headers['content-type'], `${contract} content-type`).toContain(
+            'text/markdown',
+          );
+          expect(headers['content-disposition'], `${contract} disposition`).toContain(
+            'attachment',
+          );
+        }
       } else {
-        // The routes have not landed: the only honest alternative is absence.
+        // The route has not landed: the only honest alternative is absence.
         expect([404, 405], contract).toContain(status);
       }
     }
