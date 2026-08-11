@@ -47,7 +47,7 @@ test.beforeAll(async ({ browser, playwright }) => {
 });
 
 test.afterAll(async () => {
-  await page.close();
+  await page?.close();
 });
 
 async function downloadTab(kind: Extract<TeacherExportKind, 'insights' | 'progress'>) {

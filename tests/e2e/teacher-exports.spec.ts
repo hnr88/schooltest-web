@@ -57,7 +57,7 @@ test.beforeAll(async ({ browser, playwright }) => {
 });
 
 test.afterAll(async () => {
-  await page.close();
+  await page?.close();
 });
 
 const exportButton = (kind: TeacherExportKind): Locator =>
