@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
   Container,
+  Eyebrow,
   Section,
 } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
@@ -18,7 +19,10 @@ async function FaqSection() {
     <Section id="resources">
       <ScrollReveal>
         <Container className="max-w-3xl">
-          <h2 className="text-center text-h2 font-bold text-balance">{t('faq.title')}</h2>
+          <div className="text-center">
+            <Eyebrow>{t('faq.pilotTitle')}</Eyebrow>
+            <h2 className="mt-3 text-h2 font-bold text-balance">{t('faq.title')}</h2>
+          </div>
           <div className="mt-10 rounded-2xl border border-border bg-card px-1 py-2">
             <Accordion defaultValue={[FAQ_ITEMS[0].value]}>
               {FAQ_ITEMS.map((item) => (

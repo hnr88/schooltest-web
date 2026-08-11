@@ -47,7 +47,7 @@ async function HeroSection() {
         </div>
         <Container>
           <ScrollReveal delay={80}>
-            <HeroFlow />
+            <HeroFlow className="pt-16 sm:pt-24" />
           </ScrollReveal>
         </Container>
       </div>

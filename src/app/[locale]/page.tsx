@@ -11,9 +11,11 @@ import {
   HowItWorksSection,
   LandingFooter,
   LandingHeader,
+  PilotPositioningSection,
   PricingSection,
   StatsBand,
   TrustedByStrip,
+  WhySchoolsSection,
 } from '@/modules/landing';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -40,8 +42,10 @@ export default async function Home() {
       <LandingHeader />
       <main id="main-content">
         <HeroSection />
+        <PilotPositioningSection />
         <TrustedByStrip />
         <FeaturesSection />
+        <WhySchoolsSection />
         <FeatureDetailSection />
         <StatsBand />
         <HowItWorksSection />
