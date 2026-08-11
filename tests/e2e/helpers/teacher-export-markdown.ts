@@ -22,20 +22,34 @@ const cellsOf = (line: string): string[] =>
     .map((cell) => cell.trim());
 
 /**
- * Data rows of every pipe table inside one `## <heading>` section. A row whose
- * NEXT line is the `|---|` separator is that table's header and is dropped, so a
- * section holding two tables parses correctly instead of leaking a header row.
+ * Every pipe table inside one `## <heading>` section, as its DATA rows — a row
+ * whose next line is the `|---|` separator is that table's header and opens a new
+ * table, so a section holding several tables (the ACARA movement section holds
+ * three) parses into separate tables instead of one merged blob.
  */
-export function sectionRows(body: string, heading: string): string[][] {
+export function sectionTables(body: string, heading: string): string[][][] {
   const start = body.indexOf(`\n## ${heading}\n`);
   expect(start, `the export must carry a "## ${heading}" section`).toBeGreaterThan(-1);
   const rest = body.slice(start + heading.length + 5);
   const end = rest.indexOf('\n## ');
   const lines = (end === -1 ? rest : rest.slice(0, end)).split('\n');
-  return lines.filter((line, index) => {
-    if (!line.trimStart().startsWith('|')) return false;
-    return !isSeparator(line) && !isSeparator(lines[index + 1] ?? '');
-  }).map(cellsOf);
+  const tables: string[][][] = [];
+  lines.forEach((line, index) => {
+    if (!line.trimStart().startsWith('|') || isSeparator(line)) return;
+    if (isSeparator(lines[index + 1] ?? '')) {
+      tables.push([]);
+      return;
+    }
+    if (tables.length === 0) return;
+    tables[tables.length - 1].push(cellsOf(line));
+  });
+  expect(tables.length, `"## ${heading}" must hold a table`).toBeGreaterThan(0);
+  return tables;
+}
+
+/** Data rows of the FIRST table in one `## <heading>` section. */
+export function sectionRows(body: string, heading: string): string[][] {
+  return sectionTables(body, heading)[0];
 }
 
 /** `+4` / `-10` / `0` — the sign convention the export writes deltas with. */
@@ -122,12 +136,18 @@ export function expectProgressNumbers(
     ]);
   }
 
-  const movement = sectionRows(body, 'ACARA phase movement');
-  expect(movement.map((cells) => cells[1])).toEqual([
+  const movement = sectionTables(body, 'ACARA phase movement');
+  expect(movement[0].map((cells) => cells[1])).toEqual([
     String(movementCounts.up),
     String(movementCounts.same),
     String(movementCounts.down),
   ]);
+  const transitions = movement.slice(1).flat();
+  const detail = [...movementCounts.up_detail, ...movementCounts.down_detail];
+  expect(transitions).toHaveLength(detail.length);
+  for (const move of detail) {
+    expectRow(transitions, [`${move.from} → ${move.to}`, String(move.count)]);
+  }
 
   expect(sectionRows(body, 'Per-student movement')).toHaveLength(progress.cohort.both_tests);
 
