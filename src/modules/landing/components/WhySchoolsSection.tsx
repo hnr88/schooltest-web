@@ -8,7 +8,7 @@ async function WhySchoolsSection() {
   return (
     <Section id="why-schools">
       <ScrollReveal>
-        <HeroFlow titleKey="pilot.whyTitle" steps={PILOT_FLOW_STEPS} />
+        <HeroFlow titleKey="pilot.whyTitle" steps={PILOT_FLOW_STEPS} wrap />
       </ScrollReveal>
       <Container className="mt-12 max-w-3xl">
         <ScrollReveal delay={100} variant="scale">

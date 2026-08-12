@@ -1,3 +1,12 @@
+// The pilot data lives in its own file so neither module exceeds the 200-line file cap
+// (CLAUDE.md §4); re-exported here so every landing constant keeps one import surface.
+export {
+  PILOT_CAPABILITIES,
+  PILOT_FLOW_STEPS,
+  PILOT_USPS,
+  PILOT_AUDIENCES,
+} from '@/modules/landing/constants/pilot.constants';
+
 const NAV_LINKS = [
   { href: '#product', key: 'nav.product' },
   { href: '#for-schools', key: 'nav.schools' },
@@ -30,65 +39,6 @@ const HOW_IT_WORKS_STEPS = [
 // Locale-invariant data — initials derive from the person, not the copy.
 const TESTIMONIAL_INITIALS = 'LP';
 const TESTIMONIAL_STAR_COUNT = 5;
-
-const PILOT_CAPABILITIES = [
-  'pilot.capabilityEald',
-  'pilot.capabilitySubskills',
-  'pilot.capabilityAcara',
-  'pilot.capabilityPsychometric',
-  'pilot.capabilityClassroom',
-] as const;
-
-// Diagnose → Teach → Track → Predict → Report. The flow labels are the USP names, so they
-// read from the USP keys instead of a duplicate set of five identical strings.
-const PILOT_FLOW_STEPS = [
-  'pilot.uspOneName',
-  'pilot.uspTwoName',
-  'pilot.uspThreeName',
-  'pilot.uspFourName',
-  'pilot.uspFiveName',
-] as const;
-
-// Locale-invariant data — the client numbers the five USPs 01-05.
-const PILOT_USPS = [
-  {
-    number: '01',
-    nameKey: 'pilot.uspOneName',
-    titleKey: 'pilot.uspOneTitle',
-    kickerKey: 'pilot.uspOneKicker',
-  },
-  {
-    number: '02',
-    nameKey: 'pilot.uspTwoName',
-    titleKey: 'pilot.uspTwoTitle',
-    kickerKey: 'pilot.uspTwoKicker',
-  },
-  {
-    number: '03',
-    nameKey: 'pilot.uspThreeName',
-    titleKey: 'pilot.uspThreeTitle',
-    kickerKey: 'pilot.uspThreeKicker',
-  },
-  {
-    number: '04',
-    nameKey: 'pilot.uspFourName',
-    titleKey: 'pilot.uspFourTitle',
-    kickerKey: 'pilot.uspFourKicker',
-  },
-  {
-    number: '05',
-    nameKey: 'pilot.uspFiveName',
-    titleKey: 'pilot.uspFiveTitle',
-    kickerKey: 'pilot.uspFiveKicker',
-  },
-] as const;
-
-// Presentation-only audience labels under USP 05 — no data source, no API.
-const PILOT_AUDIENCES = [
-  'pilot.audienceTeacher',
-  'pilot.audienceLeader',
-  'pilot.audienceFamily',
-] as const;
 
 const PRICING_TIERS = [
   {
@@ -199,10 +149,6 @@ export {
   HOW_IT_WORKS_STEPS,
   TESTIMONIAL_INITIALS,
   TESTIMONIAL_STAR_COUNT,
-  PILOT_CAPABILITIES,
-  PILOT_FLOW_STEPS,
-  PILOT_USPS,
-  PILOT_AUDIENCES,
   PRICING_TIERS,
   FAQ_ITEMS,
   FOOTER_SOCIALS,
