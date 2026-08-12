@@ -18,4 +18,12 @@ interface TestimonialCardProps {
   showRating?: boolean;
 }
 
-export type { HeroFlowProps, TestimonialCardProps };
+// Which illustrative block a USP card shows. 'llm' is USP 02's export row, 'audiences' is
+// USP 05's three audience views; every other USP shows none.
+type PilotUspDetailKind = 'llm' | 'audiences';
+
+interface PilotUspDetailProps {
+  detail: PilotUspDetailKind;
+}
+
+export type { HeroFlowProps, PilotUspDetailKind, PilotUspDetailProps, TestimonialCardProps };

@@ -22,9 +22,16 @@ async function TrustedByStrip() {
               </span>
             ))}
           </div>
-          <p className="max-w-2xl text-body-md text-muted-foreground">
-            {t('trustedBy.pilotCaption')}
-          </p>
+          {/* The client's draft marks this slot explicitly: real pilot evidence replaces it
+              once a partner school agrees to be named. Labelling it is deliberate — an
+              invented statistic here would be a fabricated claim on a real marketing page. */}
+          <span
+            data-slot="pilot-evidence-placeholder"
+            className="rounded-full bg-surface-inset px-3 py-1 text-meta font-semibold tracking-wide text-body uppercase"
+          >
+            {t('pilot.pilotEvidence')}
+          </span>
+          <p className="max-w-2xl text-body-md text-body">{t('trustedBy.pilotCaption')}</p>
         </Container>
       </ScrollReveal>
     </section>

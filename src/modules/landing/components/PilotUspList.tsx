@@ -1,8 +1,9 @@
 import { getTranslations } from 'next-intl/server';
 
 import { cn } from '@/lib/utils';
-import { Badge, Card, Eyebrow } from '@/modules/design-system';
-import { PILOT_AUDIENCES, PILOT_USPS } from '@/modules/landing/constants/landing.constants';
+import { Card, Eyebrow } from '@/modules/design-system';
+import { PilotUspDetail } from '@/modules/landing/components/PilotUspDetail';
+import { PILOT_USPS } from '@/modules/landing/constants/landing.constants';
 
 async function PilotUspList() {
   const t = await getTranslations('Home');
@@ -23,21 +24,12 @@ async function PilotUspList() {
             </div>
             <div>
               <h3 className="text-panel-title font-bold text-balance">{t(usp.titleKey)}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-2 text-sm leading-relaxed text-body">{t(usp.bodyKey)}</p>
+              <p className="mt-3 text-sm font-semibold text-balance text-foreground">
                 {t(usp.kickerKey)}
               </p>
             </div>
-            {index === PILOT_USPS.length - 1 ? (
-              <ul className="flex flex-wrap gap-2">
-                {PILOT_AUDIENCES.map((audienceKey) => (
-                  <li key={audienceKey}>
-                    <Badge variant="secondary" className="h-auto px-3 py-1 text-caption">
-                      {t(audienceKey)}
-                    </Badge>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
+            {usp.detail ? <PilotUspDetail detail={usp.detail} /> : null}
           </Card>
         </li>
       ))}
