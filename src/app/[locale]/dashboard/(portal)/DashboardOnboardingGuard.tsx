@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 import { useRouter } from '@/i18n/navigation';
-import { useAuth } from '@/modules/auth';
+import { useAuth } from '@/modules/auth/hooks/use-auth';
 import { Skeleton } from '@/modules/design-system';
-import { useOnboardingStateQuery } from '@/modules/onboarding';
+import { useOnboardingStateQuery } from '@/modules/onboarding/queries/use-onboarding-state.query';
 
 interface DashboardOnboardingGuardProps {
   children: ReactNode;
@@ -24,9 +24,13 @@ export function DashboardOnboardingGuard({ children }: DashboardOnboardingGuardP
   const { user, isLoading: isAuthLoading } = useAuth();
   const isParent = user?.role?.type === PARENT_ROLE_TYPE;
 
-  // Only a parent has an onboarding state: the API scopes C-ONBOARD-GET to the
-  // parent role (task 56), so firing it for staff earns a 403 that TanStack
-  // retries three times — a multi-second skeleton on every staff page here.
+  // Only a PARENT has an onboarding state, and only `isParent && isPending` can
+  // redirect — so asking for it as any other role is a read whose answer is
+  // discarded. `GET /api/users/me/onboarding` is parent-only and answers 403 to a
+  // teacher, which TanStack then retried three times: the guard sat in
+  // `isChecking` for ~7.8s of exponential backoff and painted a BLANK dashboard
+  // for every teacher before their page could mount. Gating on `isParent` keeps
+  // the parent path byte-identical and stops the forbidden read being issued at all.
   const { data: onboarding, isLoading: isOnboardingLoading } = useOnboardingStateQuery({
     enabled: !isAuthLoading && isParent,
   });

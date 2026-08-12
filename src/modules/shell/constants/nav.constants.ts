@@ -1,14 +1,15 @@
 import {
   BarChart3,
+  ClipboardList,
   FileChartColumn,
   GitBranch,
-  GraduationCap,
   LayoutDashboard,
   LayoutGrid,
   School,
   Search,
   Settings,
   SlidersHorizontal,
+  SquareCheckBig,
   Timer,
   User,
   Users,
@@ -21,11 +22,23 @@ import {
   SCHOOL_ADMIN_ROLE_TYPE,
   TEACHER_ROLE_TYPE,
 } from '@/modules/auth';
-import type { NavItem } from '@/modules/shell/types/shell.types';
+import type {
+  NavGroup,
+  NavGroupLabelKey,
+  NavItem,
+} from '@/modules/shell/types/shell.types';
 
 // The one reachable search surface (unified search). The topbar trigger pill points
 // here — no invented route, no dead control.
 export const SEARCH_HREF = '/dashboard/search';
+
+// The teacher section (.qa/DECISIONS.md A4). `/dashboard` serves two personas:
+// the rail's teacher Dashboard entry points here and the page branches on role.
+// These SUPERSEDE the older '/dashboard/teach' rail entry, which the brief caps
+// out — the route itself survives, it simply leaves the rail.
+export const TEACHER_DASHBOARD_HREF = '/dashboard';
+export const TEST_SESSIONS_HREF = '/dashboard/test-sessions';
+export const RESULTS_HREF = '/dashboard/results';
 
 // Teacher-only report surface (E11-01). Role-scoped rather than unconditional:
 // C-11/C-4 answer 403 to a parent, so an always-visible entry would be a dead link.
@@ -71,14 +84,6 @@ export const NAV_ITEMS: readonly NavItem[] = [
     group: 'primary',
     roles: [PARENT_ROLE_TYPE],
     parentViews: true,
-  },
-  {
-    labelKey: 'teach',
-    href: '/dashboard/teach',
-    icon: GraduationCap,
-    exact: false,
-    group: 'primary',
-    roles: [TEACHER_ROLE_TYPE],
   },
   {
     labelKey: 'reports',
@@ -189,9 +194,44 @@ export const NAV_ITEMS: readonly NavItem[] = [
     group: 'primary',
     roles: [OPS_ROLE_TYPE],
   },
+  {
+    labelKey: 'teacherDashboard',
+    href: TEACHER_DASHBOARD_HREF,
+    icon: LayoutDashboard,
+    exact: true,
+    group: 'teach',
+    roles: [TEACHER_ROLE_TYPE],
+  },
+  {
+    labelKey: 'testSessions',
+    href: TEST_SESSIONS_HREF,
+    icon: ClipboardList,
+    exact: false,
+    group: 'teach',
+    roles: [TEACHER_ROLE_TYPE],
+  },
+  {
+    labelKey: 'results',
+    href: RESULTS_HREF,
+    icon: SquareCheckBig,
+    exact: false,
+    group: 'teach',
+    roles: [TEACHER_ROLE_TYPE],
+  },
 ];
 
 export const PRIMARY_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'primary');
 
 // Rendered in the sidebar footer, above the user card and behind a divider.
 export const ACCOUNT_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'account');
+
+// Render order of the rail's sections, and the catalog key each overline reads.
+// `account` is excluded: it is pinned to the footer via ACCOUNT_NAV_ITEMS, not
+// rendered as a section.
+export const NAV_GROUP_ORDER: readonly NavGroup[] = ['primary', 'teach'];
+
+export const NAV_GROUP_LABEL_KEYS: Record<NavGroup, NavGroupLabelKey> = {
+  primary: 'manage',
+  teach: 'teach',
+  account: 'manage',
+};

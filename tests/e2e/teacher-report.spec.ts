@@ -60,15 +60,20 @@ test.describe('teacher report route guard + data layer', () => {
     ).toBeVisible();
   });
 
-  test('teacher sees the rail entry, the C-11 list and the C-4 report', async ({ page }) => {
+  // The rail entry MOVED, the route did not (.qa/DECISIONS.md A4): the teacher rail
+  // is capped at Dashboard · Test sessions · Results, so Reports left the sidebar
+  // while /dashboard/reports still answers for a teacher exactly as before.
+  test('teacher has no rail entry but the C-11 list and the C-4 report still answer', async ({
+    page,
+  }) => {
     const seeded = teacherOwnedResult();
     await signInAsTeacher(page);
 
-    const reportsNav = page.getByRole('link', { name: cat(en, 'Shell.nav.reports'), exact: true });
-    await expect(reportsNav).toBeVisible({ timeout: 20_000 });
-    await reportsNav.click();
-    await page.waitForURL('**/dashboard/reports');
+    await expect(
+      page.getByRole('link', { name: cat(en, 'Shell.nav.reports'), exact: true }),
+    ).toHaveCount(0);
 
+    await page.goto('/dashboard/reports');
     const rows = page.locator('[data-slot="report-list-row"]');
     await expect(rows.first()).toBeVisible({ timeout: 20_000 });
     expect(await rows.count()).toBeGreaterThan(0);

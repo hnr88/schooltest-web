@@ -1,8 +1,10 @@
-import { OPS_ROLE_TYPE, SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE } from '@/modules/auth';
+import { OPS_ROLE_TYPE, SCHOOL_ADMIN_ROLE_TYPE } from '@/modules/auth';
 
+// A4: a teacher is NOT redirected off /dashboard any more — that route IS their
+// Dashboard, and the page branches in place. Only sections with their own root
+// (school admin, ops) are listed here.
 export const ROLE_DESTINATIONS: Record<string, string> = {
   [SCHOOL_ADMIN_ROLE_TYPE]: '/dashboard/school',
-  [TEACHER_ROLE_TYPE]: '/dashboard/teach',
   [OPS_ROLE_TYPE]: '/dashboard/ops',
 };
 

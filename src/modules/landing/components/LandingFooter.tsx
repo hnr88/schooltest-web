@@ -23,6 +23,7 @@ async function LandingFooter() {
             <div>
               <Logo theme="white" alt={t('footer.logoAlt')} />
               <p className="mt-4 max-w-xs text-sm">{t('footer.tagline')}</p>
+              <p className="mt-2 max-w-xs text-sm">{t('footer.pilotTagline')}</p>
               <div className="mt-6 flex gap-2.5">
                 {FOOTER_SOCIALS.map((social) => {
                   const Icon = SOCIAL_ICONS[social.key];

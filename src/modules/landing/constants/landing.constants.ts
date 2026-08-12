@@ -1,3 +1,12 @@
+// The pilot data lives in its own file so neither module exceeds the 200-line file cap
+// (CLAUDE.md §4); re-exported here so every landing constant keeps one import surface.
+export {
+  PILOT_CAPABILITIES,
+  PILOT_FLOW_STEPS,
+  PILOT_USPS,
+  PILOT_AUDIENCES,
+} from '@/modules/landing/constants/pilot.constants';
+
 const NAV_LINKS = [
   { href: '#product', key: 'nav.product' },
   { href: '#for-schools', key: 'nav.schools' },
@@ -101,6 +110,9 @@ const FOOTER_COLUMNS = [
       { href: '#ai-feedback', labelKey: 'footer.productFeedback' },
       { href: '#product', labelKey: 'footer.productAnalytics' },
       { href: '#pricing', labelKey: 'footer.productPricing' },
+      { href: '#for-schools', labelKey: 'footer.productHowItWorks' },
+      { href: '#resources', labelKey: 'footer.productFaqs' },
+      { href: '#cta', labelKey: 'pilot.cta' },
     ],
   },
   {

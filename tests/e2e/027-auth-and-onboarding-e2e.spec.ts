@@ -33,7 +33,7 @@ import {
 // forgot-password → Mailpit reset → /dashboard, and sidebar-driven wizard skip.
 // Uses the stack-specific helpers (api :5500, mailpit :8125).
 const en = loadMessages('en');
-const SCREENSHOTS = path.resolve('/home/hnr/Code/schooltest/.qa/screenshots');
+const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const NEW_PASSWORD = 'NewPass1234!';
 const usedEmails: string[] = [];

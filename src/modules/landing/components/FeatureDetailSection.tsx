@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Container, Eyebrow, Section } from '@/modules/design-system';
 import { AiFeedbackCard } from '@/modules/landing/components/AiFeedbackCard';
+import { PilotUspList } from '@/modules/landing/components/PilotUspList';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
 import { FEATURE_CHECKLIST } from '@/modules/landing/constants/landing.constants';
 
@@ -33,6 +34,11 @@ async function FeatureDetailSection() {
         </ScrollReveal>
         <ScrollReveal delay={100} variant="scale">
           <AiFeedbackCard />
+        </ScrollReveal>
+      </Container>
+      <Container className="mt-16">
+        <ScrollReveal delay={80}>
+          <PilotUspList />
         </ScrollReveal>
       </Container>
     </Section>

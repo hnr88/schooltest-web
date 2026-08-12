@@ -1,5 +1,7 @@
 'use client';
 
+import { Fragment } from 'react';
+
 import { useTranslations } from 'next-intl';
 
 import {
@@ -19,6 +21,7 @@ import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
 import { ACCOUNT_NAV_ITEMS, PRIMARY_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
+import { buildNavSections } from '@/modules/shell/lib/nav-sections';
 import { filterNavByParentViews, filterNavByRole } from '@/modules/shell/lib/nav-visible';
 import { RAIL_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
 
@@ -47,7 +50,13 @@ function AppSidebar() {
   const { user } = useAuth();
   const t = useTranslations('Shell');
   const roleType = user?.role?.type ?? null;
-  const primaryNavItems = filterNavByRole(filterNavByParentViews(PRIMARY_NAV_ITEMS), roleType);
+  // ONE shell, role filtered (A4). The primary list is split into its rendered
+  // sections — "Manage" for the parent/school-admin/ops destinations, "Teach"
+  // for the teacher's three — and an empty group renders nothing at all, so a
+  // parent never sees a bare Teach overline nor a teacher a bare Manage one.
+  const navSections = buildNavSections(
+    filterNavByRole(filterNavByParentViews(PRIMARY_NAV_ITEMS), roleType),
+  );
   const accountNavItems = filterNavByRole(filterNavByParentViews(ACCOUNT_NAV_ITEMS), roleType);
 
   // collapsible="none" returns before the primitive's isMobile Sheet branch, so it
@@ -66,18 +75,22 @@ function AppSidebar() {
           matching negative margin hands the space straight back. */}
       <SidebarContent className="overscroll-contain px-4 group-data-[collapsible=icon]:-mt-0.75 group-data-[collapsible=icon]:px-1 group-data-[collapsible=icon]:pt-0.75">
         <nav className="flex flex-1 flex-col">
-          <RailSectionLabel>{t('sidebar.groups.manage')}</RailSectionLabel>
-          <SidebarMenu className="gap-0.5">
-            {primaryNavItems.map((item) => (
-              <SidebarNavItem
-                key={item.href}
-                item={item}
-                label={t(`nav.${item.labelKey}`)}
-                isActive={isNavItemActive(pathname, item)}
-                onNavigate={() => setOpenMobile(false)}
-              />
-            ))}
-          </SidebarMenu>
+          {navSections.map((section) => (
+            <Fragment key={section.group}>
+              <RailSectionLabel>{t(`sidebar.groups.${section.labelKey}`)}</RailSectionLabel>
+              <SidebarMenu className="gap-0.5">
+                {section.items.map((item) => (
+                  <SidebarNavItem
+                    key={item.href}
+                    item={item}
+                    label={t(`nav.${item.labelKey}`)}
+                    isActive={isNavItemActive(pathname, item)}
+                    onNavigate={() => setOpenMobile(false)}
+                  />
+                ))}
+              </SidebarMenu>
+            </Fragment>
+          ))}
         </nav>
       </SidebarContent>
       <SidebarFooter className="mt-auto shrink-0 gap-3.5 px-4 pt-3.5 pb-4 group-data-[collapsible=icon]:px-1">
