@@ -19,9 +19,23 @@ export const NOTIFICATION_SECTION_LABEL_CLASS =
 export const NOTIFICATION_SELECT_TRIGGER_CLASS =
   'min-h-12 w-full justify-between rounded-tile border-portal-input bg-card px-3 text-body-md font-medium text-foreground transition-colors duration-200 ease-out-expo hover:border-foreground data-[size=default]:h-12 motion-reduce:transition-none';
 
+// The wire enum — mirrors the backend DIGEST_FREQUENCIES contract
+// (schooltest-api/src/api/notification-preference/lib/notification-preference.constants.ts).
+// The schema rejects anything outside this set, so the two can never drift silently.
 export const NOTIFICATION_DIGEST_FREQUENCIES = ['immediate', 'daily', 'weekly', 'off'] as const;
 
-export const NOTIFICATION_DIGEST_SELECTABLE_FREQUENCIES = ['immediate', 'off'] as const;
+// Which of the wire values this deployment can actually HONOUR. The digest
+// sender landed with the notification-digest BullMQ queue (schooltest-api
+// src/services/notifications/digest.ts; daily 06:30 + weekly Mon 06:30
+// server-local, live-proven against Mailpit 2026-08-18), so every wire value
+// is honourable today. Keep this gate: it is what stops the UI ever offering
+// a frequency the backend would silently suppress (the original black hole).
+export const NOTIFICATION_DIGEST_SELECTABLE_FREQUENCIES = [
+  'immediate',
+  'daily',
+  'weekly',
+  'off',
+] as const;
 
 export const NOTIFICATION_PREFERENCE_DEFAULTS: NotificationPreferenceFormValues = {
   emailEnabled: true,

@@ -991,6 +991,10 @@
           "weekly": "Ringkasan mingguan",
           "off": "Jangan hantar kemas kini e-mel"
         },
+        "scheduleNote": {
+          "daily": "Satu e-mel ringkasan setiap pagi sekitar 6:30 pagi. Amaran akaun dan keselamatan tetap tiba serta-merta.",
+          "weekly": "Satu e-mel ringkasan setiap Isnin pagi sekitar 6:30 pagi. Amaran akaun dan keselamatan tetap tiba serta-merta."
+        },
         "deferredOption": "{label} — akan datang",
         "emailOffNotice": "Tiada e-mel pilihan akan dihantar semasa pilihan ini aktif. Amaran akaun dan keselamatan tetap dihantar."
       },

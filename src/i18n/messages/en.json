@@ -991,6 +991,10 @@
           "weekly": "Weekly digest",
           "off": "Do not send email updates"
         },
+        "scheduleNote": {
+          "daily": "One digest email every morning at about 6:30 am. Account and security alerts still arrive immediately.",
+          "weekly": "One digest email every Monday morning at about 6:30 am. Account and security alerts still arrive immediately."
+        },
         "deferredOption": "{label} — coming soon",
         "emailOffNotice": "No optional email will be sent while this is selected. Account and security alerts still arrive."
       },

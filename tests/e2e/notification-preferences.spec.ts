@@ -7,6 +7,7 @@ import type { APIRequestContext, APIResponse, Page } from '@playwright/test';
 import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
@@ -93,6 +94,13 @@ test('notification preference endpoints refuse anonymous requests', async ({ req
   });
   await expectForbidden(updateResponse);
 });
+
+// Parent portal is masked on this stack (NEXT_PUBLIC_PARENT_VIEWS_ENABLED off) —
+// every test below drives /dashboard/settings, a parent-portal route, so they
+// sit inside their own describe with the conventional guard (helpers/
+// parent-portal.ts) and run unchanged the moment the flag flips on.
+test.describe('parent portal settings surface', () => {
+  skipWhenParentPortalMasked();
 
 test('notification settings save a real parent preference and persist after reload', async ({
   page,
@@ -209,4 +217,67 @@ test('notification settings show a localized save error for a real refused mutat
   await save.click();
   expect((await failure).status()).toBeGreaterThanOrEqual(400);
   await expect(page.getByText(cat(en, 'Settings.notificationPreferences.saveError'))).toBeVisible();
+});
+
+// The digest black hole, UI half: daily/weekly were disabled ("coming soon")
+// while no sender existed. The notification-digest queue landed 2026-08-18
+// (live-proven against Mailpit from the api repo), so all four wire values
+// must now be offered, selectable, persisted, and honestly described.
+test('digest daily is selectable, persists, reloads, and shows the schedule note', async ({
+  page,
+  request,
+}) => {
+  const token = await getParentToken(request);
+  const original = await readPreferences(request, token);
+
+  try {
+    await loadNotificationSettings(page, token);
+    const digest = page.getByRole('combobox', {
+      name: cat(en, 'Settings.notificationPreferences.digest.title'),
+    });
+    await digest.click();
+
+    // Every wire value is offered and ENABLED — no "coming soon" deferrals.
+    for (const value of ['immediate', 'daily', 'weekly', 'off'] as const) {
+      const option = page.getByRole('option', {
+        name: cat(en, `Settings.notificationPreferences.digest.options.${value}`),
+      });
+      await expect(option).toBeVisible();
+      await expect(option, `digest option ${value} must be selectable`).toBeEnabled();
+    }
+
+    await page
+      .getByRole('option', {
+        name: cat(en, 'Settings.notificationPreferences.digest.options.daily'),
+      })
+      .click();
+    // The honest copy for a digest frequency — not the "no email at all" warning.
+    await expect(page.getByRole('status')).toHaveText(
+      cat(en, 'Settings.notificationPreferences.digest.scheduleNote.daily'),
+    );
+
+    const updatePromise = page.waitForResponse(
+      (response) =>
+        response.url().endsWith('/api/notification-preferences/me') &&
+        response.request().method() === 'PUT',
+    );
+    await page
+      .getByRole('button', { name: cat(en, 'Settings.notificationPreferences.save') })
+      .click();
+    expect((await updatePromise).status(), await (await updatePromise).text()).toBe(200);
+
+    const persisted = await readPreferences(request, token);
+    expect(persisted.digestFrequency).toBe('daily');
+    await page.reload();
+    await expect(
+      page.getByRole('combobox', {
+        name: cat(en, 'Settings.notificationPreferences.digest.title'),
+      }),
+    ).toContainText(cat(en, 'Settings.notificationPreferences.digest.options.daily'));
+  } finally {
+    await restorePreferences(request, token, {
+      digestFrequency: original.digestFrequency,
+    });
+  }
+});
 });

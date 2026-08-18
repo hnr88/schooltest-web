@@ -991,6 +991,10 @@
           "weekly": "Tổng hợp hằng tuần",
           "off": "Không gửi cập nhật qua email"
         },
+        "scheduleNote": {
+          "daily": "Một email tổng hợp mỗi sáng vào khoảng 6:30. Cảnh báo tài khoản và bảo mật vẫn đến ngay lập tức.",
+          "weekly": "Một email tổng hợp mỗi sáng thứ Hai vào khoảng 6:30. Cảnh báo tài khoản và bảo mật vẫn đến ngay lập tức."
+        },
         "deferredOption": "{label} — sắp có",
         "emailOffNotice": "Sẽ không có email tùy chọn nào được gửi khi bạn chọn mục này. Cảnh báo tài khoản và bảo mật vẫn được gửi."
       },

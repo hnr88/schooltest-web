@@ -71,7 +71,11 @@ function NotificationDigestField({
             </SelectContent>
           </Select>
           <p role="status" className="mt-2.5 text-meta font-medium text-warning-ink">
-            {field.value === 'immediate' ? '' : t('notificationPreferences.digest.emailOffNotice')}
+            {field.value === 'immediate'
+              ? ''
+              : field.value === 'off'
+                ? t('notificationPreferences.digest.emailOffNotice')
+                : t(`notificationPreferences.digest.scheduleNote.${field.value}`)}
           </p>
         </PortalPanel>
       )}

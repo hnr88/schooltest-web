@@ -7,6 +7,7 @@ import type { APIRequestContext, Page } from '@playwright/test';
 import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
@@ -88,6 +89,10 @@ test.describe.configure({ mode: 'serial' });
 
 // Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
 test.beforeEach(async ({ page }) => paceRateWindow(page));
+
+// Parent portal is masked on this stack — every test in this file drives
+// /dashboard/settings, a parent-portal route. See helpers/parent-portal.ts.
+skipWhenParentPortalMasked();
 
 test('sms and push opt-outs round-trip through the real preference endpoint', async ({
   page,
@@ -250,7 +255,7 @@ test('sms carries the blocked-delivery helper and links it to the switch', async
   expect(describedBy.split(' ')).toContain(await helper.getAttribute('id'));
 });
 
-test('non-suppressible categories render locked and deferred digests are unselectable', async ({
+test('non-suppressible categories render locked and every digest option is selectable', async ({
   page,
   request,
 }) => {
@@ -263,12 +268,16 @@ test('non-suppressible categories render locked and deferred digests are unselec
     await expect(locked).toBeDisabled();
   }
 
+  // The digest sender landed (notification-digest queue, live-proven against
+  // Mailpit 2026-08-18), so daily/weekly are no longer deferred "coming soon"
+  // options — all four wire values must be offered ENABLED.
   const digest = page.getByRole('combobox', { name: cat(en, key('digest.title')) });
   await digest.click();
-  for (const name of ['digest.options.daily', 'digest.options.weekly']) {
+  for (const name of ['digest.options.immediate', 'digest.options.daily', 'digest.options.weekly', 'digest.options.off']) {
     await expect(
       page.getByRole('option', { name: cat(en, key(name)), exact: false }),
-    ).toBeDisabled();
+      `digest option ${name} must be selectable`,
+    ).toBeEnabled();
   }
   await page.getByRole('option', { name: cat(en, key('digest.options.off')) }).click();
   await expect(page.getByRole('status')).toContainText(cat(en, key('digest.emailOffNotice')));
