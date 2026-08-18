@@ -16,12 +16,12 @@ import {
   Wrench,
 } from 'lucide-react';
 
+import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import {
   OPS_ROLE_TYPE,
-  PARENT_ROLE_TYPE,
   SCHOOL_ADMIN_ROLE_TYPE,
   TEACHER_ROLE_TYPE,
-} from '@/modules/auth';
+} from '@/modules/auth/constants/role.constants';
 import type {
   NavGroup,
   NavGroupLabelKey,
@@ -220,14 +220,16 @@ export const NAV_ITEMS: readonly NavItem[] = [
   },
 ];
 
-export const PRIMARY_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'primary');
-
 // Rendered in the sidebar footer, above the user card and behind a divider.
 export const ACCOUNT_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'account');
 
 // Render order of the rail's sections, and the catalog key each overline reads.
 // `account` is excluded: it is pinned to the footer via ACCOUNT_NAV_ITEMS, not
-// rendered as a section.
+// rendered as a section. The rail list itself is the UNFILTERED NAV_ITEMS —
+// buildNavSections restricts the render to the groups named here. Pre-filtering
+// the list upstream of it (the deleted PRIMARY_NAV_ITEMS, group === 'primary')
+// is what dropped the teacher's three 'teach' entries before render (B3, fixed
+// identically here and in upstream 5c0841e).
 export const NAV_GROUP_ORDER: readonly NavGroup[] = ['primary', 'teach'];
 
 export const NAV_GROUP_LABEL_KEYS: Record<NavGroup, NavGroupLabelKey> = {

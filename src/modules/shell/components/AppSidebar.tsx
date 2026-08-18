@@ -19,7 +19,7 @@ import { RailSectionLabel } from '@/modules/shell/components/RailSectionLabel';
 import { SidebarLogoLink } from '@/modules/shell/components/SidebarLogoLink';
 import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
-import { ACCOUNT_NAV_ITEMS, PRIMARY_NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
+import { ACCOUNT_NAV_ITEMS, NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
 import { buildNavSections } from '@/modules/shell/lib/nav-sections';
 import { filterNavByParentViews, filterNavByRole } from '@/modules/shell/lib/nav-visible';
@@ -54,8 +54,14 @@ function AppSidebar() {
   // sections — "Manage" for the parent/school-admin/ops destinations, "Teach"
   // for the teacher's three — and an empty group renders nothing at all, so a
   // parent never sees a bare Teach overline nor a teacher a bare Manage one.
+  // NAV_ITEMS, not PRIMARY_NAV_ITEMS: the teacher's three entries carry
+  // `group: 'teach'`, so pre-filtering to `group === 'primary'` dropped them
+  // before buildNavSections could ever place them and left a teacher with only
+  // the primary items they happened to share. buildNavSections itself restricts
+  // the render to NAV_GROUP_ORDER (primary, teach), so `account` still stays out
+  // of the scroll area and is rendered from ACCOUNT_NAV_ITEMS in the footer.
   const navSections = buildNavSections(
-    filterNavByRole(filterNavByParentViews(PRIMARY_NAV_ITEMS), roleType),
+    filterNavByRole(filterNavByParentViews(NAV_ITEMS), roleType),
   );
   const accountNavItems = filterNavByRole(filterNavByParentViews(ACCOUNT_NAV_ITEMS), roleType);
 

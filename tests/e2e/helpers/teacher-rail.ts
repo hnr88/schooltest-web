@@ -12,12 +12,35 @@ export const en = loadMessages('en');
 export const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 export const DESKTOP = { width: 1280, height: 800 };
 
+// The "Teach" trio B3 restored (group 'teach') — the section the sidebar's old
+// group === 'primary' pre-filter dropped before render (fixed identically here
+// and in upstream 5c0841e).
 export const TEACHER_NAV = [
   { key: 'Shell.nav.teacherDashboard', href: '/dashboard' },
   { key: 'Shell.nav.testSessions', href: '/dashboard/test-sessions' },
   { key: 'Shell.nav.results', href: '/dashboard/results' },
 ] as const;
 
+// E11-01 later added a teacher-scoped Reports entry under the "Manage" section
+// (group 'primary'), so a teacher's whole rail is now FOUR entries, in DOM order:
+// Manage (reports) then Teach (the trio). Rail-count assertions use this list.
+export const TEACHER_RAIL_NAV = [
+  { key: 'Shell.nav.reports', href: '/dashboard/reports' },
+  ...TEACHER_NAV,
+] as const;
+
+// The ops console rail (role 'ops'): five destinations under "Manage".
+export const OPS_NAV = [
+  { key: 'Shell.nav.opsSchools', href: '/dashboard/ops/schools' },
+  { key: 'Shell.nav.opsPipeline', href: '/dashboard/ops/pipeline' },
+  { key: 'Shell.nav.opsTimers', href: '/dashboard/ops/timers' },
+  { key: 'Shell.nav.opsTools', href: '/dashboard/ops/tools' },
+  { key: 'Shell.nav.opsSettings', href: '/dashboard/ops/settings' },
+] as const;
+
+// Parent destinations — the labels a teacher's rail must never flash. The parent
+// portal itself is out of this release (Auth.parentViewsUnavailable), so these
+// exist only as leak probes, not as a rail anyone renders today.
 export const PARENT_NAV = [
   { key: 'Shell.nav.overview', href: '/dashboard' },
   { key: 'Shell.nav.myChildren', href: '/dashboard/children' },
@@ -27,7 +50,9 @@ export const PARENT_NAV = [
 
 export const ACCOUNTS = {
   teacher: { email: 'teacher@schooltest.local', secret: 'SEED_TEACHER_PASSWORD' },
-  admin: { email: 'apiadmin@schooltest.local', secret: 'SEED_APIADMIN_PASSWORD' },
+  // The seeded platform account carries the 'ops' role on this stack (verified in
+  // Postgres), so the key names the role it actually is, not the one it once had.
+  ops: { email: 'apiadmin@schooltest.local', secret: 'SEED_APIADMIN_PASSWORD' },
   parent: { email: 'parent@schooltest.local', secret: 'SEED_PARENT_PASSWORD' },
 } as const;
 

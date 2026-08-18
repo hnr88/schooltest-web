@@ -60,18 +60,17 @@ test.describe('teacher report route guard + data layer', () => {
     ).toBeVisible();
   });
 
-  // The rail entry MOVED, the route did not (.qa/DECISIONS.md A4): the teacher rail
-  // is capped at Dashboard · Test sessions · Results, so Reports left the sidebar
-  // while /dashboard/reports still answers for a teacher exactly as before.
-  test('teacher has no rail entry but the C-11 list and the C-4 report still answer', async ({
+  // Reports IS a teacher rail entry (.qa decision D-W1 + upstream 5c0841e: "teacher
+  // = Reports + Dashboard/Test sessions/Results"), and the routes answer as before.
+  test('teacher has the Reports rail entry and the C-11 list and the C-4 report still answer', async ({
     page,
   }) => {
     const seeded = teacherOwnedResult();
     await signInAsTeacher(page);
 
-    await expect(
-      page.getByRole('link', { name: cat(en, 'Shell.nav.reports'), exact: true }),
-    ).toHaveCount(0);
+    const railEntry = page.getByRole('link', { name: cat(en, 'Shell.nav.reports'), exact: true });
+    await expect(railEntry).toBeVisible({ timeout: 20_000 });
+    await expect(railEntry).toHaveAttribute('href', '/dashboard/reports');
 
     await page.goto('/dashboard/reports');
     const rows = page.locator('[data-slot="report-list-row"]');

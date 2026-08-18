@@ -15,20 +15,22 @@ import { ACCOUNTS, en, navLink, navLinks } from './teacher-rail';
 
 export type RailSpec = readonly { readonly key: string; readonly href: string }[];
 
-/** Flow 1: the brief's teacher rail — "Teachers get three sidebar items". */
+/** Flow 1: the teacher rail — the "Teach" trio (B3) plus the E11-01 Reports entry under "Manage". */
 export const TEACHER_RAIL: RailSpec = [
+  { key: 'Shell.nav.reports', href: '/dashboard/reports' },
   { key: 'Shell.nav.teacherDashboard', href: '/dashboard' },
   { key: 'Shell.nav.testSessions', href: '/dashboard/test-sessions' },
   { key: 'Shell.nav.results', href: '/dashboard/results' },
 ];
 
-// Flow 2, from .qa/DECISIONS.md A4 verbatim: "Parents and admins keep their nav
-// unchanged, which is what e2e flow 2 asserts."
-export const ADMIN_RAIL: RailSpec = [
-  { key: 'Shell.nav.overview', href: '/dashboard' },
-  { key: 'Shell.nav.myChildren', href: '/dashboard/children' },
-  { key: 'Shell.nav.search', href: '/dashboard/search' },
-  { key: 'Shell.nav.settings', href: '/dashboard/settings' },
+// Flow 2: the seeded platform account carries the 'ops' role on this stack, and
+// .qa/DECISIONS.md A4 keeps its holders on the ops rail — never the teacher trio.
+export const OPS_RAIL: RailSpec = [
+  { key: 'Shell.nav.opsSchools', href: '/dashboard/ops/schools' },
+  { key: 'Shell.nav.opsPipeline', href: '/dashboard/ops/pipeline' },
+  { key: 'Shell.nav.opsTimers', href: '/dashboard/ops/timers' },
+  { key: 'Shell.nav.opsTools', href: '/dashboard/ops/tools' },
+  { key: 'Shell.nav.opsSettings', href: '/dashboard/ops/settings' },
 ];
 
 /** Every label the rail could ever print, read out of the shipped en catalog. */
