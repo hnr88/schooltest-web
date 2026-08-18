@@ -2876,7 +2876,16 @@
         "in_progress": "진행 중",
         "submitted": "제출됨",
         "complete": "완료"
-      }
+      },
+      "searchLabel": "학교 검색",
+      "searchPlaceholder": "학교 검색...",
+      "clearSearch": "검색 지우기",
+      "filterAccountStatus": "계정 상태",
+      "filterOnboarding": "온보딩",
+      "filterAll": "전체",
+      "clearFilters": "모두 지우기",
+      "noMatches": "검색과 일치하는 학교가 없습니다.",
+      "showing": "학교 {total}개 중 {showing}개 표시"
     },
     "detail": {
       "meta": {
@@ -3448,6 +3457,7 @@
         "privacyNote": "가명 처리된 데이터 관리. 어떤 내보내기에도 학생 이름이 없습니다.",
         "successTitle": "관심을 가져주셔서 감사합니다",
         "successBody": "일주일 안에 샘플 리포트와 함께 연락드리겠습니다.",
+        "errorBody": "지금은 제출할 수 없습니다 — 몇 분 후 다시 시도해 주세요.",
         "nameRequired": "성명을 입력해 주세요.",
         "schoolRequired": "학교명을 입력해 주세요.",
         "roleRequired": "직책을 선택해 주세요.",

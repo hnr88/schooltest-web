@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { useAuthStore } from '@/modules/auth';
@@ -15,16 +16,35 @@ import {
   TableRow,
 } from '@/modules/design-system';
 import { OpsSchoolRow } from '@/modules/ops/components/OpsSchoolRow';
+import { OpsSchoolsFilters } from '@/modules/ops/components/OpsSchoolsFilters';
+import { useSchoolsFilter } from '@/modules/ops/hooks/use-schools-filter';
+import { filterOpsSchools } from '@/modules/ops/lib/schools-filter.lib';
 import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
 
 // Ops console schools screen (task 66, st-mvp-pivot): the C-OPS-01 cross-school
 // table — name, lifecycle chips and the live teacher/class/student/result
-// counts, each row linking to the school detail.
+// counts, each row linking to the school detail. SPEC-schools-search-filter.md
+// adds the search + filter band above the table (see OpsSchoolsFilters).
 export function OpsSchoolsTable() {
   const t = useTranslations('Ops.schools');
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const schoolsQuery = useOpsSchoolsQuery(hydrated && Boolean(token));
+  const {
+    filter,
+    searchInput,
+    setSearchInput,
+    setAccountStatus,
+    setOnboardingStatus,
+    clearAll,
+    hasActiveFilters,
+  } = useSchoolsFilter();
+
+  const schools = useMemo(() => schoolsQuery.data ?? [], [schoolsQuery.data]);
+  const visibleSchools = useMemo(
+    () => filterOpsSchools(schools, filter),
+    [schools, filter],
+  );
 
   if (schoolsQuery.isPending) {
     return (
@@ -60,8 +80,6 @@ export function OpsSchoolsTable() {
     );
   }
 
-  const schools = schoolsQuery.data;
-
   return (
     <main
       data-slot="ops-schools"
@@ -72,6 +90,18 @@ export function OpsSchoolsTable() {
         <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
         <p className="text-sm text-body">{t('description')}</p>
       </div>
+      <OpsSchoolsFilters
+        searchInput={searchInput}
+        onSearchInputChange={setSearchInput}
+        accountStatus={filter.accountStatus}
+        onAccountStatusChange={setAccountStatus}
+        onboardingStatus={filter.onboardingStatus}
+        onOnboardingStatusChange={setOnboardingStatus}
+        onClearAll={clearAll}
+        showingCount={visibleSchools.length}
+        totalCount={schools.length}
+        hasActiveFilters={hasActiveFilters}
+      />
       <div className="rounded-xl border border-border bg-card">
         <Table>
           <TableHeader>
@@ -86,9 +116,16 @@ export function OpsSchoolsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {schools.map((school) => (
+            {visibleSchools.map((school) => (
               <OpsSchoolRow key={school.documentId} school={school} />
             ))}
+            {schools.length > 0 && visibleSchools.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
+                  {t('noMatches')}
+                </TableCell>
+              </TableRow>
+            ) : null}
             {schools.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">

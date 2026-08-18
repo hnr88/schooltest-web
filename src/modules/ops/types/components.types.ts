@@ -7,6 +7,7 @@ import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
 import type { SectionTimersMeta, TimerSection } from '@/modules/ops/schemas/section-timers.schema';
 import type { ViewAsTeacher } from '@/modules/ops/schemas/surfaces.schema';
 import type { OpsSchool } from '@/modules/ops/types/ops.types';
+import type { SchoolsFilterState } from '@/modules/ops/lib/schools-filter.lib';
 import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
 import type { SchoolPlan } from '@/modules/school-admin';
 import type { UseFormReturn } from 'react-hook-form';
@@ -59,6 +60,19 @@ export interface OpsSchoolPlanPanelProps {
 
 export interface OpsSchoolRowProps {
   school: OpsSchool;
+}
+
+export interface OpsSchoolsFiltersProps {
+  searchInput: string;
+  onSearchInputChange: (value: string) => void;
+  accountStatus: SchoolsFilterState['accountStatus'];
+  onAccountStatusChange: (value: string) => void;
+  onboardingStatus: SchoolsFilterState['onboardingStatus'];
+  onOnboardingStatusChange: (value: string) => void;
+  onClearAll: () => void;
+  showingCount: number;
+  totalCount: number;
+  hasActiveFilters: boolean;
 }
 
 export interface OpsSectionTimersFormProps {

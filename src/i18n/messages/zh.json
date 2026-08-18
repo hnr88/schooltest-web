@@ -2956,7 +2956,16 @@
         "in_progress": "进行中",
         "submitted": "已提交",
         "complete": "已完成"
-      }
+      },
+      "searchLabel": "搜索学校",
+      "searchPlaceholder": "搜索学校…",
+      "clearSearch": "清除搜索",
+      "filterAccountStatus": "账户状态",
+      "filterOnboarding": "入驻",
+      "filterAll": "全部",
+      "clearFilters": "清除全部",
+      "noMatches": "没有符合搜索条件的学校。",
+      "showing": "显示 {showing}/{total} 所学校"
     },
     "detail": {
       "meta": {
@@ -3528,6 +3537,7 @@
         "privacyNote": "数据经假名化处理。任何导出中都不含学生姓名。",
         "successTitle": "感谢你的关注",
         "successBody": "我们会在一周内联系你，并附上示例报告。",
+        "errorBody": "暂时无法提交——请几分钟后再试。",
         "nameRequired": "请输入你的全名。",
         "schoolRequired": "请输入你的学校名称。",
         "roleRequired": "请选择你的职务。",

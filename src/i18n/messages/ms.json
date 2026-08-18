@@ -2876,7 +2876,16 @@
         "in_progress": "Sedang berjalan",
         "submitted": "Dihantar",
         "complete": "Selesai"
-      }
+      },
+      "searchLabel": "Cari sekolah",
+      "searchPlaceholder": "Cari sekolah...",
+      "clearSearch": "Kosongkan carian",
+      "filterAccountStatus": "Status akaun",
+      "filterOnboarding": "Onboarding",
+      "filterAll": "Semua",
+      "clearFilters": "Kosongkan semua",
+      "noMatches": "Tiada sekolah sepadan dengan carian anda.",
+      "showing": "Memaparkan {showing} daripada {total} sekolah"
     },
     "detail": {
       "meta": {
@@ -3448,6 +3457,7 @@
         "privacyNote": "Pengendalian data nama samaran. Tiada nama murid dalam sebarang eksport.",
         "successTitle": "Terima kasih atas minat anda",
         "successBody": "Kami akan menghubungi anda dalam masa seminggu dengan laporan contoh.",
+        "errorBody": "Tidak dapat menghantar buat masa ini — sila cuba lagi dalam beberapa minit.",
         "nameRequired": "Sila masukkan nama penuh anda.",
         "schoolRequired": "Sila masukkan nama sekolah anda.",
         "roleRequired": "Sila pilih peranan anda.",

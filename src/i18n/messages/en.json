@@ -3260,7 +3260,16 @@
         "in_progress": "In progress",
         "submitted": "Submitted",
         "complete": "Complete"
-      }
+      },
+      "searchLabel": "Search schools",
+      "searchPlaceholder": "Search schools...",
+      "clearSearch": "Clear search",
+      "filterAccountStatus": "Account status",
+      "filterOnboarding": "Onboarding",
+      "filterAll": "All",
+      "clearFilters": "Clear all",
+      "noMatches": "No schools match your search.",
+      "showing": "Showing {showing} of {total} schools"
     },
     "detail": {
       "meta": {

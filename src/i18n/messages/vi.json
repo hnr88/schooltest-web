@@ -2876,7 +2876,16 @@
         "in_progress": "Đang tiến hành",
         "submitted": "Đã gửi",
         "complete": "Hoàn tất"
-      }
+      },
+      "searchLabel": "Tìm trường học",
+      "searchPlaceholder": "Tìm trường học...",
+      "clearSearch": "Xóa tìm kiếm",
+      "filterAccountStatus": "Trạng thái tài khoản",
+      "filterOnboarding": "Onboarding",
+      "filterAll": "Tất cả",
+      "clearFilters": "Xóa tất cả",
+      "noMatches": "Không có trường nào khớp với tìm kiếm của bạn.",
+      "showing": "Đang hiển thị {showing} trong tổng số {total} trường"
     },
     "detail": {
       "meta": {
@@ -3448,6 +3457,7 @@
         "privacyNote": "Xử lý dữ liệu giả danh. Không có tên học sinh trong bất kỳ bản xuất nào.",
         "successTitle": "Cảm ơn sự quan tâm của bạn",
         "successBody": "Chúng tôi sẽ liên hệ trong vòng một tuần kèm báo cáo mẫu.",
+        "errorBody": "Hiện không gửi được — vui lòng thử lại sau vài phút.",
         "nameRequired": "Vui lòng nhập họ tên đầy đủ.",
         "schoolRequired": "Vui lòng nhập tên trường.",
         "roleRequired": "Vui lòng chọn vai trò của bạn.",
