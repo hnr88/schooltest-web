@@ -59,7 +59,7 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
             {t('Eald.nav.signIn')}
           </Button>
           <Button
-            href="/#register"
+            href="/eald#register"
             className="h-11 rounded-lg px-5 shadow-primary-glow transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
             {t('Eald.nav.registerInterest')}

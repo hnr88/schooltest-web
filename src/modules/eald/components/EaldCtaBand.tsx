@@ -18,7 +18,7 @@ async function EaldCtaBand() {
               {t('shared.cta.body')}
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Button size="xl" href="/#register">
+              <Button size="xl" href="/eald#register">
                 {t('shared.cta.button')}
               </Button>
             </div>

@@ -21,8 +21,8 @@ const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
     titleKey: 'Eald.footer.moreTitle',
     links: [
       { href: '/dashboard/search', labelKey: 'Eald.footer.schoolSearch' },
-      { href: '/#register', labelKey: 'Eald.footer.foundingPilot' },
-      { href: '/#register', labelKey: 'Eald.footer.contact' },
+      { href: '/eald#register', labelKey: 'Eald.footer.foundingPilot' },
+      { href: '/eald#register', labelKey: 'Eald.footer.contact' },
     ],
   },
   // C-LEG-02 (mission st-legal-seo-ops, task 206). Replaces the single
