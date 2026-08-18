@@ -144,6 +144,15 @@ const STATE_PAINT: Record<MonitorState, StatePaint> = {
   in_progress: { fill: '--color-blue-50', family: FAMILY.blue },
   submitted: { fill: '--color-success-soft-2', family: FAMILY.green },
   stalled: { fill: '--color-warning-soft', border: '--color-warning-strong', family: FAMILY.amber },
+  // Lane E's operator state — the red family is DISTINCT from warning amber so
+  // a scoring failure can never be misread as a stall. The soft fill is a
+  // near-neutral red tint while the strong border carries the chroma, so the
+  // envelope spans both.
+  scoring_failed: {
+    fill: '--color-danger-soft',
+    border: '--color-danger-strong',
+    family: { hue: [10, 40], chroma: [0, 30] },
+  },
 };
 
 /**

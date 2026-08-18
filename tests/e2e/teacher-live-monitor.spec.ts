@@ -24,6 +24,7 @@ const SHOTS = path.resolve(process.cwd(), '..', '.qa', 'screenshots');
 const LIVE = 'Teacher.testSessions.live';
 
 const STATE_LABEL_KEY: Record<MonitorState, string> = {
+  scoring_failed: 'stateScoringFailed',
   submitted: 'stateSubmitted',
   in_progress: 'stateInProgress',
   stalled: 'stateStalled',
@@ -37,6 +38,7 @@ const SUMMARY_LABEL_KEY = {
   in_progress: 'summaryInProgress',
   submitted: 'summarySubmitted',
   stalled: 'summaryStalled',
+  scoring_failed: 'summaryScoringFailed',
 } as const;
 
 /** The one line of extra fact a tile prints, rendered from the REAL catalog string. */
@@ -67,8 +69,16 @@ async function expectGridMatchesPayload(
   monitor: TestSessionMonitorResponse,
 ): Promise<void> {
   for (const [key, labelKey] of Object.entries(SUMMARY_LABEL_KEY)) {
+    // `scoring_failed` is optional on the wire (Lane E's counter arrives only
+    // once the API partitions the roster six ways) — a payload without it must
+    // not render the stat at all, so there is nothing to read.
+    const value = monitor.summary[key as MonitorSummaryKey];
     const stat = page.locator(`[data-slot="live-monitor-stat"][data-stat="${key}"]`);
-    await expect(stat).toContainText(String(monitor.summary[key as MonitorSummaryKey]));
+    if (value === undefined) {
+      await expect(stat).toHaveCount(0);
+      continue;
+    }
+    await expect(stat).toContainText(String(value));
     await expect(stat).toContainText(cat(en, `${LIVE}.${labelKey}`));
   }
 

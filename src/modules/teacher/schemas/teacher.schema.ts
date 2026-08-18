@@ -25,13 +25,20 @@ export const readingAttributeSchema = z.enum(['R1', 'R2', 'R3', 'R4', 'R5', 'R6'
  */
 export const masteryBandSchema = z.enum(['mastered', 'approaching', 'not_yet', 'not_assessed']);
 
-/** Per-student live tile state on the C-TS-3 monitoring grid. */
+/**
+ * Per-student live tile state on the C-TS-3 monitoring grid. `scoring_failed`
+ * (Lane E's terminal result state) is the OPERATOR signal: a student whose
+ * result exhausted its R retries must never read as merely "submitted". The
+ * server derives it; this enum only accepts it — the web tolerates payloads
+ * from before the API emits the state, never the reverse.
+ */
 export const monitorStateSchema = z.enum([
   'not_joined',
   'joined',
   'in_progress',
   'submitted',
   'stalled',
+  'scoring_failed',
 ]);
 
 /** The A/B parallel reading diagnostic pair (DECISIONS.md A2). */

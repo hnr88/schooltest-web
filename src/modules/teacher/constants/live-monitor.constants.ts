@@ -1,4 +1,4 @@
-import { AlertCircle, Check, LoaderCircle, UserCheck, UserX } from 'lucide-react';
+import { AlertCircle, Check, LoaderCircle, UserCheck, UserX, XCircle } from 'lucide-react';
 
 import type {
   MonitorSummaryKey,
@@ -15,10 +15,13 @@ import type { MonitorState } from '@/modules/teacher/types/teacher.types';
 export const MONITOR_POLL_INTERVAL_MS = 5_000;
 
 /**
- * .qa/DESIGN.md §Live monitoring — FIVE states, and the grid groups them in this
- * order (submitted first, not-joined last), exactly as wireframe `09` view 2.
+ * .qa/DESIGN.md §Live monitoring — the grid groups the states in this order
+ * (loudest first, not-joined last), exactly as wireframe `09` view 2.
+ * `scoring_failed` leads: a result that exhausted its R retries is the one
+ * tile a teacher must act on, so it can never sort beneath the routine ones.
  */
 export const MONITOR_STATE_ORDER: readonly MonitorState[] = [
+  'scoring_failed',
   'submitted',
   'in_progress',
   'stalled',
@@ -26,13 +29,18 @@ export const MONITOR_STATE_ORDER: readonly MonitorState[] = [
   'not_joined',
 ];
 
-/** The five stat tiles above the grid, in the wireframe's left-to-right order. */
+/**
+ * The stat tiles above the grid, in the wireframe's left-to-right order, with
+ * the operator counter appended after `stalled`. `scoring_failed` renders only
+ * when the server's summary carries it (see monitorSummarySchema).
+ */
 export const MONITOR_SUMMARY_ORDER: readonly MonitorSummaryKey[] = [
   'expected',
   'joined',
   'in_progress',
   'submitted',
   'stalled',
+  'scoring_failed',
 ];
 
 /**
@@ -42,6 +50,13 @@ export const MONITOR_SUMMARY_ORDER: readonly MonitorSummaryKey[] = [
  * survives greyscale, colour blindness and a screen reader (WCAG 2.2 AA 1.4.1).
  */
 export const MONITOR_STATE_THEME: Record<MonitorState, MonitorTileTheme> = {
+  scoring_failed: {
+    icon: XCircle,
+    iconClass: '',
+    tile: 'border-danger-strong bg-danger-soft text-danger-ink',
+    name: 'text-danger-ink',
+    detail: 'text-danger-ink',
+  },
   submitted: {
     icon: Check,
     iconClass: '',
@@ -85,6 +100,7 @@ export const MONITOR_STATE_THEME: Record<MonitorState, MonitorTileTheme> = {
  * `Teacher.testSessions.live`.
  */
 export const MONITOR_STATE_LABEL_KEY: Record<MonitorState, string> = {
+  scoring_failed: 'stateScoringFailed',
   submitted: 'stateSubmitted',
   in_progress: 'stateInProgress',
   stalled: 'stateStalled',
@@ -92,13 +108,14 @@ export const MONITOR_STATE_LABEL_KEY: Record<MonitorState, string> = {
   not_joined: 'stateNotJoined',
 };
 
-/** The label under each of the five stat tiles, same namespace. */
+/** The label under each stat tile, same namespace. */
 export const MONITOR_SUMMARY_LABEL_KEY: Record<MonitorSummaryKey, string> = {
   expected: 'summaryExpected',
   joined: 'summaryJoined',
   in_progress: 'summaryInProgress',
   submitted: 'summarySubmitted',
   stalled: 'summaryStalled',
+  scoring_failed: 'summaryScoringFailed',
 };
 
 /** Ink for the stat-tile VALUE; the label beneath it always carries the meaning. */
@@ -108,4 +125,5 @@ export const MONITOR_SUMMARY_VALUE_CLASS: Record<MonitorSummaryKey, string> = {
   in_progress: 'text-foreground',
   submitted: 'text-success-ink',
   stalled: 'text-warning-ink',
+  scoring_failed: 'text-danger-ink',
 };

@@ -30,12 +30,19 @@ export function deriveLiveMonitorStatus(counts: LiveMonitorReadCounts): LiveMoni
 }
 
 /**
- * The five stat tiles, read STRAIGHT off C-TS-3's `summary`. The portal never
+ * The stat tiles, read STRAIGHT off C-TS-3's `summary`. The portal never
  * counts the tiles itself: the server already partitioned the roster, and a
  * client-side recount could disagree with the grid it sits above.
+ *
+ * `scoring_failed` is optional on the wire while the API still partitions the
+ * roster five ways — its stat is omitted (not zeroed) until the server sends
+ * it, so a fabricated 0 can never claim a failure that was never reported.
  */
 export function monitorSummaryItems(summary: MonitorSummary): readonly MonitorSummaryItem[] {
-  return MONITOR_SUMMARY_ORDER.map((key) => ({ key, value: summary[key] }));
+  return MONITOR_SUMMARY_ORDER.flatMap((key) => {
+    const value = summary[key];
+    return value === undefined ? [] : [{ key, value }];
+  });
 }
 
 /**

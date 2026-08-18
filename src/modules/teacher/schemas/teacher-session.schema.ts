@@ -82,6 +82,13 @@ export const monitorSummarySchema = z.strictObject({
   in_progress: teacherCountSchema,
   submitted: teacherCountSchema,
   stalled: teacherCountSchema,
+  /**
+   * Lane E's terminal `scoring_failed` counter. OPTIONAL only while the API
+   * side of C-TS-3 still partitions the roster five ways — the summary row
+   * hides the stat until the server sends it, so the wider web schema can
+   * deploy first without 500-ing every monitor read against the current wire.
+   */
+  scoring_failed: teacherCountSchema.optional(),
 });
 
 /**

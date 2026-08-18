@@ -10,8 +10,10 @@ import {
 } from '@/modules/teacher/constants/live-monitor.constants';
 import type { LiveMonitorLegendProps } from '@/modules/teacher/types/live-monitor.types';
 
-// The legend of all FIVE states (.qa/DESIGN.md §Live monitoring — the brief's
-// prose names four, the wireframe and C-TS-3's `MonitorState` both have five).
+// The legend of every tile state (.qa/DESIGN.md §Live monitoring — the brief's
+// prose names four, the wireframe and C-TS-3's `MonitorState` both have five,
+// plus Lane E's `scoring_failed` operator state for a result whose R retries
+// were exhausted).
 //
 // The caption prints `stall_threshold_minutes` STRAIGHT from the C-TS-3 payload,
 // which the server sources from `Config.stall_threshold_minutes`. No number is

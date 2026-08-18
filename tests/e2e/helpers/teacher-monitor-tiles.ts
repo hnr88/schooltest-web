@@ -17,6 +17,7 @@ import { en } from './teacher-rail';
 const LIVE = 'Teacher.testSessions.live';
 
 export const MONITOR_LABEL_KEY: Record<MonitorState, string> = {
+  scoring_failed: 'stateScoringFailed',
   submitted: 'stateSubmitted',
   in_progress: 'stateInProgress',
   stalled: 'stateStalled',
