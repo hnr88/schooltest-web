@@ -7,12 +7,14 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/modules/design-system';
 import { RegisterFieldWrapper } from '@/modules/eald/components/RegisterFieldWrapper';
 import { ROLE_KEYS, STUDENT_KEYS } from '@/modules/eald/constants/components.constants';
+import { usePilotRegisterMutation } from '@/modules/eald/queries/use-pilot-register.mutation';
 import { registerSchema } from '@/modules/eald/schemas/register.schema';
 
 import type { RegisterInput } from '@/modules/eald/schemas/register.schema';
 import type { RegisterFormCardProps } from '@/modules/eald/types/components.types';
 
 function RegisterFormCard({ t, onSuccess }: RegisterFormCardProps) {
+  const pilotRegister = usePilotRegisterMutation();
   const {
     register,
     handleSubmit,
@@ -22,8 +24,8 @@ function RegisterFormCard({ t, onSuccess }: RegisterFormCardProps) {
     defaultValues: { name: '', school: '', role: '', email: '', students: '' },
   });
 
-  function onValid(_data: RegisterInput) {
-    onSuccess();
+  function onValid(data: RegisterInput) {
+    pilotRegister.mutate(data, { onSuccess: () => onSuccess() });
   }
 
   const fieldLabel = 'text-xs font-bold tracking-eyebrow text-slate-400 uppercase';
@@ -94,11 +96,16 @@ function RegisterFormCard({ t, onSuccess }: RegisterFormCardProps) {
 
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || pilotRegister.isPending}
           className="mt-1.5 h-12 w-full rounded-xl shadow-primary-glow"
         >
           {t('home.register.submitButton')}
         </Button>
+        {pilotRegister.isError && (
+          <p role="alert" className="text-meta text-red-600">
+            {t('home.register.errorBody')}
+          </p>
+        )}
       </form>
       <p className="mt-3.5 text-meta text-slate-400">{t('home.register.privacyNote')}</p>
     </div>

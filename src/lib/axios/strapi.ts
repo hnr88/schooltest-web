@@ -46,6 +46,11 @@ const PUBLIC_ONBOARDING_PATH = /^\/api\/school-onboarding(\/|$)/;
 // /api/schools/me/invitations routes keep the bearer token (a different path).
 const PUBLIC_INVITATION_PATH = /^\/api\/invitations(\/|$)/;
 
+// The public pilot-registration submit endpoint (Lane J) is anonymous by
+// design: a signed-in visitor registering interest must not have the call
+// evaluated against their role — the route is public regardless.
+const PUBLIC_PILOT_REGISTRATION_PATH = /^\/api\/pilot-registrations(\/|$)/;
+
 strapi.interceptors.request.use((config) => {
   const token = readClientToken();
   const url = config.url ?? '';
@@ -53,7 +58,8 @@ strapi.interceptors.request.use((config) => {
     token &&
     !PUBLIC_AUTH_PATH.test(url) &&
     !PUBLIC_ONBOARDING_PATH.test(url) &&
-    !PUBLIC_INVITATION_PATH.test(url)
+    !PUBLIC_INVITATION_PATH.test(url) &&
+    !PUBLIC_PILOT_REGISTRATION_PATH.test(url)
   ) {
     const headers =
       config.headers instanceof AxiosHeaders
