@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { usePathname } from '@/i18n/navigation';
@@ -46,9 +46,16 @@ export function useSchoolsFilter() {
   const [searchInput, setSearchInput] = useState(urlFilter.query);
   const debouncedInput = useDebouncedValue(searchInput, SEARCH_DEBOUNCE_MS);
 
+  // Last query string this hook wrote (null before mount). Guards the
+  // debounced-search effect against replace loops: after router.replace the
+  // searchParams identity changes and the effect re-fires, but the serialized
+  // state then equals lastWritten and the write is skipped.
+  const lastWritten = useRef<string | null>(null);
+
   const writeUrl = useCallback(
     (next: SchoolsFilterState) => {
       const qs = serializeSchoolsFilter(next).toString();
+      lastWritten.current = qs;
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     },
     [router, pathname],
@@ -58,6 +65,27 @@ export function useSchoolsFilter() {
     () => ({ ...urlFilter, query: debouncedInput.trim() }),
     [urlFilter, debouncedInput],
   );
+
+  // Spec §1/§3: once the debounced search settles, the query lands in the URL
+  // alongside any active filters. On mount the URL is adopted as-is (the input
+  // was initialised from it), not rewritten.
+  useEffect(() => {
+    const next: SchoolsFilterState = {
+      ...parseSchoolsFilter(searchParams),
+      query: debouncedInput.trim(),
+    };
+    const qs = serializeSchoolsFilter(next).toString();
+    if (lastWritten.current === null) {
+      lastWritten.current = qs;
+      return;
+    }
+    if (qs === lastWritten.current) return;
+    writeUrl(next);
+    // Fire only when the settled search changes; searchParams/writeUrl are
+    // read fresh but deliberately not listed — the lastWritten guard makes
+    // re-runs no-ops.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedInput]);
 
   const setAccountStatus = useCallback(
     (raw: string) => {
