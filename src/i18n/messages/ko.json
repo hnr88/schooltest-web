@@ -2043,7 +2043,6 @@
     },
     "entitlement": {
       "title": "플랜 및 시트",
-      "seatsExplainer": "시트 1개는 학교에서 SchoolTest를 사용하는 학생 1명을 의미합니다.",
       "seatsLabel": "시트",
       "seatsUsed": "{total}석 중 {used}석 사용 중",
       "seatsRemaining": "남은 시트 {count}석",
@@ -2073,14 +2072,6 @@
         "description": "학교의 모든 학급을 한곳에서.",
         "emptyTitle": "아직 학급이 없습니다",
         "emptyDescription": "학교에 추가한 학급이 여기에 표시됩니다."
-      },
-      "children": {
-        "metaTitle": "학생 - SchoolTest",
-        "metaDescription": "학교의 모든 학생.",
-        "title": "학생",
-        "description": "학교의 모든 학생을 한곳에서.",
-        "emptyTitle": "아직 학생이 없습니다",
-        "emptyDescription": "학교에 연결된 학생이 여기에 표시됩니다."
       },
       "teachers": {
         "metaTitle": "교사 - SchoolTest",

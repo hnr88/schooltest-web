@@ -2043,7 +2043,6 @@
     },
     "entitlement": {
       "title": "แผนและจำนวนที่นั่ง",
-      "seatsExplainer": "หนึ่งที่นั่งคือนักเรียนหนึ่งคนที่ใช้ SchoolTest ในโรงเรียนของคุณ",
       "seatsLabel": "ที่นั่ง",
       "seatsUsed": "ใช้แล้ว {used} จาก {total} ที่นั่ง",
       "seatsRemaining": "เหลือ {count} ที่นั่ง",
@@ -2073,14 +2072,6 @@
         "description": "ทุกชั้นเรียนในโรงเรียนของคุณ รวมอยู่ในที่เดียว",
         "emptyTitle": "ยังไม่มีชั้นเรียน",
         "emptyDescription": "ชั้นเรียนที่คุณเพิ่มให้โรงเรียนจะแสดงที่นี่"
-      },
-      "children": {
-        "metaTitle": "นักเรียน - SchoolTest",
-        "metaDescription": "นักเรียนทั้งหมดในโรงเรียนของคุณ",
-        "title": "นักเรียน",
-        "description": "นักเรียนทุกคนในโรงเรียนของคุณ รวมอยู่ในที่เดียว",
-        "emptyTitle": "ยังไม่มีนักเรียน",
-        "emptyDescription": "นักเรียนที่เชื่อมโยงกับโรงเรียนของคุณจะแสดงที่นี่"
       },
       "teachers": {
         "metaTitle": "ครู - SchoolTest",

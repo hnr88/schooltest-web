@@ -2348,7 +2348,6 @@
     },
     "entitlement": {
       "title": "Plan and seats",
-      "seatsExplainer": "A seat is one child using SchoolTest at your school.",
       "seatsLabel": "Seats",
       "seatsUsed": "{used} of {total} seats used",
       "seatsRemaining": "{count, plural, one {# seat remaining} other {# seats remaining}}",
@@ -2378,14 +2377,6 @@
         "description": "Every class at your school, in one place.",
         "emptyTitle": "No classes yet",
         "emptyDescription": "Classes you add for your school will appear here."
-      },
-      "children": {
-        "metaTitle": "Children - SchoolTest",
-        "metaDescription": "The children at your school.",
-        "title": "Children",
-        "description": "Every child at your school, in one place.",
-        "emptyTitle": "No children yet",
-        "emptyDescription": "Children linked to your school will appear here."
       },
       "teachers": {
         "metaTitle": "Teachers - SchoolTest",

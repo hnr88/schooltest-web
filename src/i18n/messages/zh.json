@@ -2043,7 +2043,6 @@
     },
     "entitlement": {
       "title": "计划和席位",
-      "seatsExplainer": "一个席位对应贵校一名使用 SchoolTest 的学生。",
       "seatsLabel": "席位",
       "seatsUsed": "已使用 {total} 个席位中的 {used} 个",
       "seatsRemaining": "剩余 {count} 个席位",
@@ -2073,14 +2072,6 @@
         "description": "您学校的所有班级，集中在一处。",
         "emptyTitle": "还没有班级",
         "emptyDescription": "您为学校添加的班级将显示在这里。"
-      },
-      "children": {
-        "metaTitle": "学生 - SchoolTest",
-        "metaDescription": "您学校的所有学生。",
-        "title": "学生",
-        "description": "您学校的所有学生，集中在一处。",
-        "emptyTitle": "还没有学生",
-        "emptyDescription": "与您学校关联的学生将显示在这里。"
       },
       "teachers": {
         "metaTitle": "教师 - SchoolTest",

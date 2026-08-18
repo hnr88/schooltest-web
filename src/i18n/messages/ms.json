@@ -2043,7 +2043,6 @@
     },
     "entitlement": {
       "title": "Pelan dan tempat",
-      "seatsExplainer": "Satu tempat ialah seorang murid yang menggunakan SchoolTest di sekolah anda.",
       "seatsLabel": "Tempat",
       "seatsUsed": "{used} daripada {total} tempat digunakan",
       "seatsRemaining": "{count} tempat berbaki",
@@ -2073,14 +2072,6 @@
         "description": "Setiap kelas di sekolah anda, dalam satu tempat.",
         "emptyTitle": "Belum ada kelas",
         "emptyDescription": "Kelas yang anda tambah untuk sekolah anda akan muncul di sini."
-      },
-      "children": {
-        "metaTitle": "Murid - SchoolTest",
-        "metaDescription": "Murid di sekolah anda.",
-        "title": "Murid",
-        "description": "Setiap murid di sekolah anda, dalam satu tempat.",
-        "emptyTitle": "Belum ada murid",
-        "emptyDescription": "Murid yang dipautkan ke sekolah anda akan muncul di sini."
       },
       "teachers": {
         "metaTitle": "Guru - SchoolTest",
