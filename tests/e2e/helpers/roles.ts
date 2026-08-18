@@ -31,8 +31,15 @@ export const ROLE_CREDENTIALS: Record<AppRole, Credential> = {
     password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'pEbjxVnJ4PPYiv8D!A1',
   },
   teacher: {
-    email: process.env.E2E_TEACHER_EMAIL ?? 'verify21@schooltest.local',
-    password: process.env.E2E_TEACHER_PASSWORD ?? 'Verify21!pw',
+    // The default MUST be a seeded account. It was `verify21@schooltest.local`
+    // with password `Verify21!pw` — a hand-made QA persona from a task
+    // verification session that the seeder has never created. E2E_TEACHER_EMAIL
+    // is set nowhere, so that default always won and every spec signing in as a
+    // teacher failed at the login form. Measured 2026-08-19: POST /api/auth/local
+    // returns 400 ValidationError "Invalid identifier or password" for the old
+    // pair and a real JWT for this one.
+    email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local',
+    password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!',
   },
 };
 
