@@ -2022,7 +2022,8 @@
         "roleRequired": "Please select your role.",
         "emailRequired": "Please enter your email address.",
         "emailInvalid": "Please enter a valid email address.",
-        "studentsRequired": "Please select the number of EAL/D students."
+        "studentsRequired": "Please select the number of EAL/D students.",
+        "errorBody": "Could not submit right now — please try again in a few minutes."
       }
     },
     "diagnose": {
@@ -3913,6 +3914,7 @@
         "stateNotJoined": "Not joined",
         "stageOf": "Stage {stage} of {total}",
         "noActivity": "No activity {minutes} min",
+        "signalsNoted": "{count, plural, one {# reminder noted} other {# reminders noted}}",
         "tileAria": "{name}: {state}",
         "tileAriaDetail": "{name}: {state} — {detail}",
         "stallCaption": "{minutes, plural, one {A tile turns amber after # minute with no activity.} other {A tile turns amber after # minutes with no activity.}}",

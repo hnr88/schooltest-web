@@ -3914,6 +3914,7 @@
         "stateNotJoined": "未加入",
         "stageOf": "第 {stage} 阶段 / 共 {total} 阶段",
         "noActivity": "已 {minutes} 分钟无活动",
+        "signalsNoted": "已记录 {count} 次提醒",
         "tileAria": "{name}: {state}",
         "tileAriaDetail": "{name}: {state} — {detail}",
         "stallCaption": "{minutes, plural, other {超过 # 分钟无活动后，色块变为琥珀色。}}",

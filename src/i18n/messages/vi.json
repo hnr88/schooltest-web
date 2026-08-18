@@ -3834,6 +3834,7 @@
         "stateNotJoined": "Chưa tham gia",
         "stageOf": "Chặng {stage} trên {total}",
         "noActivity": "Không hoạt động {minutes} phút",
+        "signalsNoted": "Đã ghi nhận {count} lời nhắc",
         "tileAria": "{name}: {state}",
         "tileAriaDetail": "{name}: {state} — {detail}",
         "stallCaption": "{minutes, plural, other {Ô chuyển sang màu hổ phách sau # phút không hoạt động.}}",

@@ -85,6 +85,19 @@ export function monitorTileDetail(student: MonitorStudent): MonitorTileDetail | 
 }
 
 /**
+ * The count of guidance reminders a student has received (C-PR-1 read side),
+ * or null when none are recorded. INFORMATION ONLY (rule 35): the number feeds
+ * a neutral "reminders noted" chip — it is never severity-coloured, never an
+ * accusation, and never affects the tile's state or paint.
+ */
+export function monitorTileSignals(student: MonitorStudent): number | null {
+  if (student.proctoring === null || student.proctoring === undefined) return null;
+  const { info, warn, flag } = student.proctoring.count_by_severity;
+  const total = info + warn + flag;
+  return total === 0 ? null : total;
+}
+
+/**
  * "Session started N min ago" for the live header. Presentation only — it is a
  * whole-minute rendering of the server's `opened_at`, never an input to any tile
  * state (the stall flag is the server's, from `stall_threshold_minutes`).

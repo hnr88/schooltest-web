@@ -91,10 +91,56 @@ export const monitorSummarySchema = z.strictObject({
   scoring_failed: teacherCountSchema.optional(),
 });
 
+/* ── C-PR-1 read side · proctoring signals on a monitor tile (rule 35) ───── */
+
+/** The 11 concern kinds `api::proctoring-event` ingests (Lane N, C-PR-1). */
+export const proctoringEventKindSchema = z.enum([
+  'gaze_away',
+  'no_face',
+  'focus_lost',
+  'multiple_faces',
+  'extra_person',
+  'phone_detected',
+  'extra_voice',
+  'help_seeking',
+  'mouse_inactive',
+  'screen_snapshot',
+  'integrity_anomaly',
+]);
+
+export const proctoringSeveritySchema = z.enum(['info', 'warn', 'flag']);
+
+/**
+ * Server-computed per-student signal summary for the monitor. INFORMATION
+ * ONLY (rule 35): it is a count of guidance reminders delivered to the
+ * student, never an integrity verdict — the teacher reads "reminders noted",
+ * never "suspicious".
+ */
+export const proctoringSummarySchema = z.strictObject({
+  count_by_severity: z.strictObject({
+    info: teacherCountSchema,
+    warn: teacherCountSchema,
+    flag: teacherCountSchema,
+  }),
+  /** Newest first, server-capped — the tile prints only the count. */
+  latest: z.array(
+    z.strictObject({
+      kind: proctoringEventKindSchema,
+      severity: proctoringSeveritySchema,
+      occurred_at: z.iso.datetime(),
+      detail: z.string().max(500),
+    }),
+  ),
+});
+
 /**
  * One tile. All three optional numbers stay null until the student's real rows
  * exist — `not_joined` has no session, `joined` has no responses, and
  * `inactive_minutes` is populated only on a `stalled` tile. Never rendered as 0.
+ *
+ * `proctoring` is OPTIONAL+NULLABLE while the API side of C-TS-3 has not
+ * adopted the C-PR-1 read: absent/null means "no signals recorded", and the
+ * chip is omitted rather than zeroed.
  */
 export const monitorStudentSchema = z.strictObject({
   student_document_id: teacherDocumentIdSchema,
@@ -103,6 +149,7 @@ export const monitorStudentSchema = z.strictObject({
   stage: stageSchema.nullable(),
   total_stages: teacherCountSchema.nullable(),
   inactive_minutes: z.number().nonnegative().nullable(),
+  proctoring: proctoringSummarySchema.nullable().optional(),
 });
 
 export const testSessionMonitorResponseSchema = z.strictObject({

@@ -3834,6 +3834,7 @@
         "stateNotJoined": "Belum sertai",
         "stageOf": "Tahap {stage} daripada {total}",
         "noActivity": "Tiada aktiviti {minutes} min",
+        "signalsNoted": "{count} peringatan direkodkan",
         "tileAria": "{name}: {state}",
         "tileAriaDetail": "{name}: {state} — {detail}",
         "stallCaption": "{minutes, plural, other {Petak bertukar kuning selepas # minit tiada aktiviti.}}",

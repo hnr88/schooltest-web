@@ -3834,6 +3834,7 @@
         "stateNotJoined": "ยังไม่เข้าร่วม",
         "stageOf": "ขั้นที่ {stage} จาก {total}",
         "noActivity": "ไม่มีการเคลื่อนไหว {minutes} นาที",
+        "signalsNoted": "บันทึกการแจ้งเตือน {count} ครั้ง",
         "tileAria": "{name}: {state}",
         "tileAriaDetail": "{name}: {state} — {detail}",
         "stallCaption": "{minutes, plural, other {ช่องจะเปลี่ยนเป็นสีเหลืองอำพันเมื่อไม่มีการเคลื่อนไหวเกิน # นาที}}",
