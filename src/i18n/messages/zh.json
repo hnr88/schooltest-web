@@ -4056,6 +4056,7 @@
         "stateDone": "已完成",
         "stateStalled": "已停止",
         "stateInProgress": "进行中",
+        "stateScoringFailed": "评分失败",
         "stateNotStarted": "尚未开始",
         "noValue": "—",
         "noValueLabel": "无数据",

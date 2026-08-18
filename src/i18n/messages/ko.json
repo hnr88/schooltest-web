@@ -3976,6 +3976,7 @@
         "stateDone": "완료",
         "stateStalled": "진행 중단",
         "stateInProgress": "진행 중",
+        "stateScoringFailed": "채점 실패",
         "stateNotStarted": "시작 전",
         "noValue": "—",
         "noValueLabel": "없음",

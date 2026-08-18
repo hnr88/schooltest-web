@@ -37,7 +37,7 @@ function StudentTestCells({ variant, cell }: StudentTestCellsProps) {
         className={cn(STUDENTS_TABLE_GROUP_EDGE_CLASS, 'px-3 py-3')}
       >
         {scoringFailed ? (
-          <StatusPill tone="danger">{t('statusScoringFailed')}</StatusPill>
+          <StatusPill tone="danger">{t('stateScoringFailed')}</StatusPill>
         ) : (
           <StatusPill tone={TEST_STATE_TONE[cell.state]}>
             {t(TEST_STATE_LABEL_KEY[cell.state])}

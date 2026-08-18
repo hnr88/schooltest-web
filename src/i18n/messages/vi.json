@@ -3985,6 +3985,7 @@
         "stateDone": "Hoàn thành",
         "stateStalled": "Bị dừng",
         "stateInProgress": "Đang làm",
+        "stateScoringFailed": "Chấm điểm thất bại",
         "stateNotStarted": "Chưa bắt đầu",
         "noValue": "—",
         "noValueLabel": "Không có dữ liệu",

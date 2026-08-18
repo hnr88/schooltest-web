@@ -4056,6 +4056,7 @@
         "stateDone": "Done",
         "stateStalled": "Stalled",
         "stateInProgress": "In progress",
+        "stateScoringFailed": "Scoring failed",
         "stateNotStarted": "Not started",
         "noValue": "—",
         "noValueLabel": "Not available",

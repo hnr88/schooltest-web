@@ -3976,6 +3976,7 @@
         "stateDone": "Selesai",
         "stateStalled": "Terhenti",
         "stateInProgress": "Sedang berjalan",
+        "stateScoringFailed": "Pemarkahan gagal",
         "stateNotStarted": "Belum bermula",
         "noValue": "—",
         "noValueLabel": "Tiada data",

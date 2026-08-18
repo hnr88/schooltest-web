@@ -3976,6 +3976,7 @@
         "stateDone": "เสร็จสิ้น",
         "stateStalled": "หยุดค้าง",
         "stateInProgress": "กำลังทำ",
+        "stateScoringFailed": "การให้คะแนนล้มเหลว",
         "stateNotStarted": "ยังไม่เริ่ม",
         "noValue": "—",
         "noValueLabel": "ไม่มีข้อมูล",
