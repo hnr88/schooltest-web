@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
 import { Container } from '@/modules/design-system';
-import { EALD_TRUSTED_SCHOOLS } from '@/modules/eald/constants/eald.constants';
 import { ScrollReveal } from '@/modules/landing';
 
 async function EaldTrustedBy() {
@@ -14,16 +13,16 @@ async function EaldTrustedBy() {
           <p className="text-xs font-semibold tracking-eyebrow text-slate-400 uppercase">
             {t('home.trustedBy.label')}
           </p>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:gap-x-10">
-            {EALD_TRUSTED_SCHOOLS.map((key) => (
-              <span
-                key={key}
-                className="text-body-md font-bold whitespace-nowrap text-slate-300 sm:text-body-lg"
-              >
-                {t(`home.${key}`)}
-              </span>
-            ))}
-          </div>
+          {/* Honest by design (same rule as the landing TrustedByStrip): no school
+              is listed as a pilot partner until it agrees to be named. The three
+              real Australian school names this band used to render were invented
+              pilot claims about real schools, and are gone. */}
+          <span
+            data-slot="pilot-evidence-placeholder"
+            className="mt-4 inline-block rounded-full bg-surface-inset px-3 py-1 text-meta font-semibold tracking-wide text-body uppercase"
+          >
+            {t('home.trustedBy.placeholder')}
+          </span>
         </Container>
       </ScrollReveal>
     </section>

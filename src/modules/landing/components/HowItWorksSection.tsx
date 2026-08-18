@@ -2,7 +2,6 @@ import { getTranslations } from 'next-intl/server';
 
 import { Card, Container, Eyebrow, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing/components/ScrollReveal';
-import { TestimonialCard } from '@/modules/landing/components/TestimonialCard';
 import { HOW_IT_WORKS_STEPS } from '@/modules/landing/constants/landing.constants';
 
 async function HowItWorksSection() {
@@ -31,9 +30,6 @@ async function HowItWorksSection() {
               ))}
             </ol>
           </Card>
-        </ScrollReveal>
-        <ScrollReveal delay={100} variant="scale">
-          <TestimonialCard />
         </ScrollReveal>
       </Container>
     </Section>
