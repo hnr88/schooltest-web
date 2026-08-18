@@ -3,7 +3,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { CLASS_CHILDREN_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
 import { CLASSES_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
 
 // C-CLS-04: delete the class. Students are unlinked server-side, never
@@ -18,7 +17,6 @@ export function useDeleteClassMutation() {
     mutationFn: deleteClassRequest,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: CLASSES_QUERY_KEY });
-      void queryClient.invalidateQueries({ queryKey: CLASS_CHILDREN_QUERY_KEY });
     },
   });
 }

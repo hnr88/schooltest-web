@@ -2642,29 +2642,6 @@
       "7_9": "Tahun 7-9",
       "10_12": "Tahun 10-12"
     },
-    "form": {
-      "createTitle": "Tambah kelas",
-      "editTitle": "Sunting {name}",
-      "createDescription": "Namakan kelas dan pilih kumpulan tahunnya. Anda boleh menetapkan guru sekarang atau kemudian.",
-      "editDescription": "Namakan semula kelas, tukar kumpulan tahunnya, atau kemas kini ahlinya.",
-      "name": "Nama kelas",
-      "yearBand": "Kumpulan tahun",
-      "teachers": "Guru",
-      "teachersEmpty": "Belum ada kakitangan tersedia.",
-      "students": "Murid",
-      "studentsEmpty": "Belum ada murid di sekolah anda.",
-      "studentsHint": "Membuang tanda akan mengeluarkan murid itu daripada kelas ini. Mereka kekal dalam senarai murid anda.",
-      "cancel": "Batal",
-      "submitCreate": "Tambah kelas",
-      "submitEdit": "Simpan perubahan",
-      "submitting": "Menyimpan...",
-      "createdToast": "{name} telah ditambah.",
-      "updatedToast": "{name} telah dikemas kini.",
-      "errorToast": "Itu tidak berjaya. Cuba lagi.",
-      "forbiddenToast": "Anda tidak mempunyai kebenaran untuk mengubah kelas.",
-      "loadError": "Kami tidak dapat memuatkan senarai kakitangan dan murid. Tutup dan cuba lagi.",
-      "loadErrorDescription": "Semak sambungan anda, kemudian tutup ini dan cuba lagi."
-    },
     "validation": {
       "required": "Ruangan ini wajib diisi.",
       "tooLong": "Itu terlalu panjang."

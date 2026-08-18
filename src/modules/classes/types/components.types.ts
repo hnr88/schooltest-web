@@ -1,4 +1,3 @@
-import type { ClassFormTarget } from '@/modules/classes/types/hooks.types';
 import type {
   ClassDetail,
   ClassDetailStudent,
@@ -9,7 +8,6 @@ import type {
   SubskillVerdict,
 } from '@/modules/classes/types/class-detail.types';
 import type {
-  ClassStudentOption,
   ClassTestCompletion,
   ClassTestCompletionDisplay,
   SchoolClass,
@@ -52,15 +50,17 @@ export interface ClassesTableRowProps {
   onEdit: () => void;
 }
 
-export interface ClassFormDialogProps {
-  target: ClassFormTarget;
-  onClose: () => void;
+// Spec §1 Edit Class modal target: the minimal shape both entry points can
+// supply — the class-detail screen passes its full C-CLS-05 payload, the
+// classes list passes its roster row with the single assigned teacher.
+export interface EditClassTarget {
+  documentId: string;
+  name: string | null;
+  teacher?: { documentId: string } | null;
 }
 
-export interface ClassFormProps {
-  target: ClassFormTarget;
-  teachers: SchoolTeacher[];
-  studentOptions: ClassStudentOption[];
+export interface EditClassDialogProps {
+  schoolClass: EditClassTarget;
   onClose: () => void;
 }
 
@@ -68,14 +68,6 @@ export interface ClassMemberOption {
   value: string;
   label: string;
   hint?: string;
-}
-
-export interface ClassMemberChecklistProps {
-  idPrefix: string;
-  options: ClassMemberOption[];
-  value: string[];
-  onChange: (next: string[]) => void;
-  emptyText: string;
 }
 
 export interface ClassRowActionsProps {
@@ -107,11 +99,6 @@ export interface ClassStudentsTableRowProps {
 
 export interface ClassStudentsEmptyProps {
   onImport: () => void;
-}
-
-export interface EditClassDialogProps {
-  schoolClass: ClassDetail;
-  onClose: () => void;
 }
 
 export interface ClassImportStudentsDialogProps {

@@ -12,15 +12,14 @@ import {
   createEditClassFormSchema,
   type EditClassFormValues,
 } from '@/modules/classes/schemas/edit-class.schema';
-import type { ClassDetail } from '@/modules/classes/types/class-detail.types';
-
+import type { EditClassTarget } from '@/modules/classes/types/components.types';
 import type { StrapiErrorEnvelope } from '@/modules/classes/types/hooks.types';
 
 // Spec §1 Edit Class modal wiring (C-CLS-03). The PATCH carries ONLY name +
 // the single teacher: `student_documentIds` is deliberately absent, so the
 // server's REPLACE semantics never touch the roster, and `year_band` is absent
 // so the class keeps its band.
-export function useEditClassForm(schoolClass: ClassDetail, onClose: () => void) {
+export function useEditClassForm(schoolClass: EditClassTarget, onClose: () => void) {
   const t = useTranslations('Classes.detail.edit');
   const tv = useTranslations('Classes.validation');
   const schema = useMemo(() => createEditClassFormSchema(tv), [tv]);

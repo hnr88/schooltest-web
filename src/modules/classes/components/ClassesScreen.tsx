@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { useAuthStore } from '@/modules/auth';
 import { AddClassDialog } from '@/modules/classes/components/AddClassDialog';
-import { ClassFormDialog } from '@/modules/classes/components/ClassFormDialog';
+import { EditClassDialog } from '@/modules/classes/components/EditClassDialog';
 import { ClassesTable } from '@/modules/classes/components/ClassesTable';
 import { testsCompletedByClass } from '@/modules/classes/lib/classes-table.helpers';
 import { useSchoolClassesQuery } from '@/modules/classes/queries/use-school-classes.query';
@@ -81,8 +81,14 @@ export function ClassesScreen() {
       )}
       {addOpen ? <AddClassDialog onClose={() => setAddOpen(false)} /> : null}
       {editTarget ? (
-        <ClassFormDialog
-          target={{ mode: 'edit', schoolClass: editTarget }}
+        <EditClassDialog
+          schoolClass={{
+            documentId: editTarget.documentId,
+            name: editTarget.name,
+            // One teacher per class (spec §1): the list row's first assigned
+            // teacher seeds the single dropdown.
+            teacher: editTarget.teachers[0] ?? null,
+          }}
           onClose={() => setEditTarget(null)}
         />
       ) : null}

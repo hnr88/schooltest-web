@@ -2642,29 +2642,6 @@
       "7_9": "Năm học 7-9",
       "10_12": "Năm học 10-12"
     },
-    "form": {
-      "createTitle": "Thêm lớp học",
-      "editTitle": "Chỉnh sửa {name}",
-      "createDescription": "Đặt tên lớp và chọn khối năm học. Bạn có thể phân công giáo viên ngay hoặc sau.",
-      "editDescription": "Đổi tên lớp, thay đổi khối năm học hoặc cập nhật thành viên của lớp.",
-      "name": "Tên lớp",
-      "yearBand": "Khối năm học",
-      "teachers": "Giáo viên",
-      "teachersEmpty": "Chưa có nhân viên nào.",
-      "students": "Học sinh",
-      "studentsEmpty": "Trường của bạn chưa có học sinh nào.",
-      "studentsHint": "Bỏ chọn sẽ đưa học sinh ra khỏi lớp này. Học sinh vẫn ở trong danh sách học sinh của bạn.",
-      "cancel": "Huỷ",
-      "submitCreate": "Thêm lớp",
-      "submitEdit": "Lưu thay đổi",
-      "submitting": "Đang lưu...",
-      "createdToast": "Đã thêm {name}.",
-      "updatedToast": "Đã cập nhật {name}.",
-      "errorToast": "Thao tác không thành công. Hãy thử lại.",
-      "forbiddenToast": "Bạn không có quyền thay đổi lớp học.",
-      "loadError": "Chúng tôi không thể tải danh sách nhân viên và học sinh. Hãy đóng và thử lại.",
-      "loadErrorDescription": "Kiểm tra kết nối, sau đó đóng hộp này và thử lại."
-    },
     "validation": {
       "required": "Trường này là bắt buộc.",
       "tooLong": "Nội dung quá dài."

@@ -2642,29 +2642,6 @@
       "7_9": "7-9학년",
       "10_12": "10-12학년"
     },
-    "form": {
-      "createTitle": "학급 추가",
-      "editTitle": "{name} 편집",
-      "createDescription": "학급 이름을 지정하고 학년대를 선택하세요. 교사는 지금 또는 나중에 배정할 수 있습니다.",
-      "editDescription": "학급 이름을 바꾸거나 학년대를 변경하거나 소속 인원을 업데이트하세요.",
-      "name": "학급 이름",
-      "yearBand": "학년대",
-      "teachers": "교사",
-      "teachersEmpty": "아직 사용 가능한 교직원이 없습니다.",
-      "students": "학생",
-      "studentsEmpty": "아직 학교에 학생이 없습니다.",
-      "studentsHint": "선택을 해제하면 해당 학생이 이 학급에서 제외됩니다. 학생은 학생 명단에 그대로 남습니다.",
-      "cancel": "취소",
-      "submitCreate": "학급 추가",
-      "submitEdit": "변경 사항 저장",
-      "submitting": "저장 중...",
-      "createdToast": "{name}을(를) 추가했습니다.",
-      "updatedToast": "{name}을(를) 업데이트했습니다.",
-      "errorToast": "작업이 실패했습니다. 다시 시도하세요.",
-      "forbiddenToast": "학급을 변경할 권한이 없습니다.",
-      "loadError": "교직원 및 학생 목록을 불러올 수 없습니다. 닫은 후 다시 시도하세요.",
-      "loadErrorDescription": "연결을 확인한 후 닫고 다시 시도하세요."
-    },
     "validation": {
       "required": "필수 입력 항목입니다.",
       "tooLong": "입력 내용이 너무 깁니다."

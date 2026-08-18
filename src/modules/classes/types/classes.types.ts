@@ -27,12 +27,3 @@ export interface ClassTestCompletionDisplay {
   testA: string;
   testB: string;
 }
-
-// Student option for the edit-dialog student picker (C-CHD-01 row projection).
-export interface ClassStudentOption {
-  documentId: string;
-  given_name: string;
-  family_name: string;
-  status: string;
-  class: { documentId: string; name: string } | null;
-}

@@ -2690,29 +2690,6 @@
       "7_9": "7-9 年级",
       "10_12": "10-12 年级"
     },
-    "form": {
-      "createTitle": "添加班级",
-      "editTitle": "编辑 {name}",
-      "createDescription": "为班级命名并选择年级段。您可以现在或稍后分配教师。",
-      "editDescription": "重命名班级、更改年级段，或更新班级的师生成员。",
-      "name": "班级名称",
-      "yearBand": "年级段",
-      "teachers": "教师",
-      "teachersEmpty": "暂无可用员工。",
-      "students": "学生",
-      "studentsEmpty": "您的学校还没有学生。",
-      "studentsHint": "取消勾选会将该学生移出本班。学生仍保留在您的学生名单中。",
-      "cancel": "取消",
-      "submitCreate": "添加班级",
-      "submitEdit": "保存更改",
-      "submitting": "正在保存...",
-      "createdToast": "已添加 {name}。",
-      "updatedToast": "已更新 {name}。",
-      "errorToast": "操作失败，请重试。",
-      "forbiddenToast": "您没有权限更改班级。",
-      "loadError": "无法加载员工和学生名单。请关闭后重试。",
-      "loadErrorDescription": "请检查网络连接，然后关闭此窗口并重试。"
-    },
     "validation": {
       "required": "此字段为必填项。",
       "tooLong": "内容过长。"
