@@ -31,6 +31,16 @@ export const studentTestCellSchema = z.strictObject({
   state: testProgressStateSchema,
   score: teacherScoreSchema,
   acara_phase: z.string().nullable(),
+  /**
+   * Review G2, additive+optional: the attached Result's own status, so a
+   * `scoring_failed` attempt (Lane E's terminal state — the score will never
+   * arrive) renders as an honest operator signal instead of a permanent
+   * "scoring". Absent on older payloads; null when no result row exists.
+   */
+  result_status: z
+    .enum(['scoring', 'partial_pending', 'complete', 'scoring_failed'])
+    .nullable()
+    .optional(),
 });
 
 export const classStudentRowSchema = teacherStudentRefSchema.extend({
