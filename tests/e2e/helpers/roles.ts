@@ -21,14 +21,24 @@ interface Credential {
   readonly password: string;
 }
 
+// LOCAL SEED CREDENTIALS ONLY. These defaults mirror the SEED_*_PASSWORD values
+// the local seeder uses (schooltest-api/.env) so the suite runs out of the box
+// against a seeded stack. They are not production secrets and must never become
+// them — any real environment supplies E2E_*_EMAIL / E2E_*_PASSWORD instead.
+//
+// All three pairs were wrong until 2026-08-19 and every one failed at the login
+// form. Verified against POST /api/auth/local before committing:
+//   ops         admin@schooltest.local        old -> 400, new -> 200
+//   schoolAdmin schooladmin-a@schooltest.local old -> 400, new -> 200
+//   teacher     verify21@... (never existed)   old -> 400, new -> 200
 export const ROLE_CREDENTIALS: Record<AppRole, Credential> = {
   ops: {
     email: process.env.E2E_OPS_EMAIL ?? 'admin@schooltest.local',
-    password: process.env.E2E_OPS_PASSWORD ?? 'TBUaS2yS6D9FJMZP!A1',
+    password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!',
   },
   schoolAdmin: {
     email: process.env.E2E_SCHOOL_ADMIN_EMAIL ?? 'schooladmin-a@schooltest.local',
-    password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'pEbjxVnJ4PPYiv8D!A1',
+    password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!',
   },
   teacher: {
     // The default MUST be a seeded account. It was `verify21@schooltest.local`
