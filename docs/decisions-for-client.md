@@ -51,3 +51,26 @@ list) stays deleted locally. The regression test that would have caught the
 original bug cheaply now exists: `teacher-sidebar.spec.ts` →
 "the rail pipeline hands buildNavSections every teach entry (B3 regression)"
 runs the sidebar's exact derivation against the real constants, browser-free.
+
+## D-W2 · The four dead FOREIGN_PARENT fixtures are captured pointers with no env hook — NOT a credentials-class defect
+
+⚠️ flag — task 067's leftover. Four specs pin a hardcoded password with no env
+hook for a second parent (`parent-t06@schooltest.local`): `push-subscription.spec.ts`,
+`push-subscription-security.spec.ts`, `notification-api-security.spec.ts`,
+`settings-tabs.spec.ts`. The account is not seeded anywhere in the repo, so the
+tests can only pass against a DB that happens to contain a manually created
+parent-t06 — they are believed unexercised on every stack (no one can run that
+suite), which is a prediction, not evidence.
+
+**Default taken (Lane J, 2026-08-19, task 067):** left untouched. Do NOT fix by
+inventing a seeded foreign parent.
+
+**Why:** these are captured pointers to an account nothing creates, distinct
+from the seed-credential fallback mechanism swept in 067. A real fix needs the
+tests to provision their own second parent through the registration contract
+(the way `throwaway-parent.ts` and `sign-up-form.ts` already do for the primary)
+or the seeder to create a documented second parent the specs resolve by name.
+
+**Reversal cost:** small and one-directional — rewrite each fixture to register
+its own throwaway second parent via `/api/auth/local` + the sign-up flow, or add
+a seeded second parent to the api bootstrap.
