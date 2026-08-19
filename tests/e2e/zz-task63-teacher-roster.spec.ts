@@ -3,6 +3,7 @@ import { expect, test, type APIRequestContext, type APIResponse, type Page } fro
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
+import { fixtureStudentId } from './helpers/fixture-ids';
 
 // Task 63 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Teacher read-only roster (C-CHD-01 + the task-63 email widening): the
@@ -18,7 +19,7 @@ const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.lo
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
-const SOFIA_ID = 'kxd4f1r27muoajv7ww18blvp';
+const SOFIA_ID = fixtureStudentId('Sofia', 'Petrov');
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local';
 // Well-formed but never-assigned class documentId: C-CHD-01 teacher scoping
 // returns an empty page for it.

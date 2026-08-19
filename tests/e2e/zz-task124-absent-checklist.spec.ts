@@ -3,6 +3,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
+import { fixtureStudentId } from './helpers/fixture-ids';
 
 // Task 124 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Absent workflow end to end (mvp-updates §4.5.6, C-SIT-06 + C-SIT-02): the
@@ -16,7 +17,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
-const SOFIA_ID = 'kxd4f1r27muoajv7ww18blvp';
+const SOFIA_ID = fixtureStudentId('Sofia', 'Petrov');
 const TEST_DAY_URL = `/en/dashboard/teach/classes/${CLASS_ID}/test-day`;
 
 async function login(

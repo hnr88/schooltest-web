@@ -3,6 +3,7 @@ import { expect, test, type APIRequestContext, type APIResponse, type Page } fro
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
+import { fixtureSchoolId } from './helpers/fixture-ids';
 
 // Task 69 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // C-OPS-03: the pipeline page renders the live BullMQ queue counts and the R
@@ -17,7 +18,7 @@ const OPS = { email: 'admin@schooltest.local', password: process.env.E2E_OPS_PAS
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 // Seeded fixture class ("EAL/D Year 7 - Room 4") of SchoolTest Demo School A.
 const CLASS_DOCUMENT_ID = fixtureClassId();
-const SCHOOL_DOCUMENT_ID = 'tcdu9a7g6qm2tg8brju2kosp';
+const SCHOOL_DOCUMENT_ID = fixtureSchoolId();
 
 interface QueueHealth {
   name: string;

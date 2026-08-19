@@ -14,7 +14,7 @@ import type {
 
 import { loginCached } from './http';
 import { ROLE_CREDENTIALS } from './roles';
-import { fixtureClassId } from './fixture-class';
+import { EMPTY_CLASS_NAME, fixtureClassId } from './fixture-class';
 
 // Shared plumbing for the class-detail + drill-down specs (spec §1/§2).
 // Every live read is parsed through the SAME shared Zod schemas the app uses,
@@ -27,7 +27,7 @@ export const API = process.env.API_BASE_URL ?? 'http://127.0.0.1:5500';
 export const FIXTURE_CLASS_ID = fixtureClassId();
 
 /** A class of the same school with no students — the empty-state case. */
-export const EMPTY_CLASS_ID = 'gaossopxive6fvqy22km4hkv';
+export const EMPTY_CLASS_ID = fixtureClassId(EMPTY_CLASS_NAME);
 
 export const ACARA_PHASES = ['Beginning', 'Emerging', 'Developing', 'Consolidating'] as const;
 

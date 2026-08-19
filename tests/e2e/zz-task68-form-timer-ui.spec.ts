@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type APIResponse, type Page } fro
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
+import { fixtureSchoolId } from './helpers/fixture-ids';
 
 // Task 68 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Signs in as the seeded ops account and drives the C-TMR-01 timers page and
@@ -14,7 +15,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const OPS = { email: 'admin@schooltest.local', password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!' };
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const SCHOOL_DOCUMENT_ID = 'tcdu9a7g6qm2tg8brju2kosp'; // SchoolTest Demo School A
+const SCHOOL_DOCUMENT_ID = fixtureSchoolId(); // SchoolTest Demo School A
 
 interface TimersBody {
   data: { sections: { stage: number; duration_seconds: number }[] };
