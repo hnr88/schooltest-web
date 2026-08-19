@@ -12,8 +12,8 @@ import { cat, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const OPS = { email: 'admin@schooltest.local', password: 'TBUaS2yS6D9FJMZP!A1' };
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: 'pEbjxVnJ4PPYiv8D!A1' };
+const OPS = { email: 'admin@schooltest.local', password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!' };
+const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
 const SCHOOL_DOCUMENT_ID = 'tcdu9a7g6qm2tg8brju2kosp'; // SchoolTest Demo School A
 
 interface TimersBody {

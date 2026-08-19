@@ -12,7 +12,7 @@ import { cat, icu, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const OPS = { email: 'admin@schooltest.local', password: 'TBUaS2yS6D9FJMZP!A1' };
+const OPS = { email: 'admin@schooltest.local', password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!' };
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 // Seeded fixtures: form RDG-FT-A-79, teacher verify21, a session with 53 responses.
 const FORM_DOCUMENT_ID = 'v5ytx5ji0mkqps1vr7dmhrvi';

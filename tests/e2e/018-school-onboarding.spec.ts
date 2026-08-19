@@ -7,7 +7,7 @@ import { expect, test, type APIRequestContext } from '@playwright/test';
 
 const API = process.env.E2E_API_URL ?? 'http://127.0.0.1:5500';
 const OPS_EMAIL = 'admin@schooltest.local';
-const OPS_PASSWORD = 'TBUaS2yS6D9FJMZP!A1';
+const OPS_PASSWORD = process.env.E2E_OPS_PASSWORD ?? 'Admin1234!';
 
 async function mintOnboardingLink(request: APIRequestContext, runId: string) {
   const login = await request.post(`${API}/api/auth/local`, {

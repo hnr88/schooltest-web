@@ -11,8 +11,8 @@ import { cat, icu, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const SCHOOL_ADMIN_A = { email: 'schooladmin-a@schooltest.local', password: 'pEbjxVnJ4PPYiv8D!A1' };
-const SCHOOL_ADMIN_B = { email: 'schooladmin-b@schooltest.local', password: 'BT77uuUGgqVSpFkP!A1' };
+const SCHOOL_ADMIN_A = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
+const SCHOOL_ADMIN_B = { email: 'schooladmin-b@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_B_PASSWORD ?? 'SchoolAdmin1234!' };
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
 const TEACHER_KEPT = 'Vee Twentyone';
 const TEACHER_PROBE = 'Pat Teacher';

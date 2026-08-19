@@ -9,7 +9,7 @@ const en = loadMessages('en');
 
 const SCHOOL_ADMIN = {
   email: 'schooladmin-a@schooltest.local',
-  password: 'pEbjxVnJ4PPYiv8D!A1',
+  password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!',
 };
 
 const API = process.env.API_BASE_URL ?? 'http://127.0.0.1:5500';

@@ -11,9 +11,9 @@ import { cat, loadMessages } from './helpers/i18n';
 //  - the parent portal still renders unchanged for a parent account
 const en = loadMessages('en');
 
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: 'pEbjxVnJ4PPYiv8D!A1' };
+const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const PARENT = { email: 'parent@schooltest.local', password: 'yvmnVObAiaOJw2C1!A1' };
+const PARENT = { email: 'parent@schooltest.local', password: process.env.E2E_PARENT_PASSWORD ?? 'Parent1234!' };
 
 // Seeded school behind schooladmin-a (cross-checked: GET /api/schools/me).
 const SCHOOL_NAME = 'SchoolTest Demo School A';

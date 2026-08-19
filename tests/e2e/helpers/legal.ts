@@ -56,7 +56,7 @@ export async function fetchLegalDocument(slug: string, locale = 'en'): Promise<L
 /** Ops JWT from the seeded ops account — minted live, never stored in the repo. */
 async function opsJwt(): Promise<string> {
   const identifier = process.env.E2E_OPS_EMAIL ?? 'admin@schooltest.local';
-  const password = process.env.E2E_OPS_PASSWORD ?? 'TBUaS2yS6D9FJMZP!A1';
+  const password = process.env.E2E_OPS_PASSWORD ?? 'Admin1234!';
   const res = await fetch(`${API_BASE_URL}/api/auth/local`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

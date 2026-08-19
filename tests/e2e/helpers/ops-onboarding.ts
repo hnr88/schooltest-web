@@ -11,7 +11,7 @@ const API_BASE_URL =
 
 const OPS = {
   email: process.env.E2E_OPS_EMAIL ?? 'admin@schooltest.local',
-  password: process.env.E2E_OPS_PASSWORD ?? 'TBUaS2yS6D9FJMZP!A1',
+  password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!',
 };
 
 /**
