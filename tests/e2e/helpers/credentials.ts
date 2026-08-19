@@ -1,0 +1,123 @@
+/**
+ * Shared E2E credential resolution for schooltest-web.
+ *
+ * WHY IT EXISTS: every spec used to pin seed passwords as literal fallbacks
+ * (`?? 'Teacher1234!'`, `?? 'Admin1234!'`...). Those specs passed ONLY because
+ * the literals happened to match this machine's untracked schooltest-api/.env.
+ * On CI, after a rotation, or on a fresh checkout they fail as an HTTP 400 from
+ * the server — which reads as a stack problem and sends the reader to the wrong
+ * place. `??` also does not catch an EMPTY string, and .env.example ships these
+ * vars empty, so a fresh checkout got the 400 rather than an instruction.
+ *
+ * THE FIX: credentials resolve from the environment and fail LOUDLY, naming the
+ * variable. This mirrors schooltest-api/tests/e2e/helpers/env.ts (`requireEnv`),
+ * with one deliberate addition: the seeded passwords live in the SIBLING
+ * schooltest-api/.env (this repo has no copy of them), so the loader reads that
+ * file for the dev-seed fallback and lets a shell E2E_* override win. Missing
+ * entirely -> a clear error naming the variable, never a 400 from the server.
+ */
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+let dotenvLoaded = false;
+
+/** Load sibling schooltest-api/.env once, merging only keys not already set. */
+function loadSiblingDotenv(): void {
+  if (dotenvLoaded) return;
+  dotenvLoaded = true;
+  // tests/e2e/helpers -> repo root -> sibling schooltest-api/.env
+  const envPath = resolve(__dirname, '../../../schooltest-api/.env');
+  if (!existsSync(envPath)) return;
+  const raw = readFileSync(envPath, 'utf8');
+  for (const line of raw.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    if (!key || key in process.env) continue;
+    let value = trimmed.slice(eq + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    process.env[key] = value;
+  }
+}
+
+loadSiblingDotenv();
+
+/** Read a required env var or throw with a clear, non-secret message. */
+export function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(
+      `[e2e] missing required env var ${name} — set it in the shell or schooltest-api/.env. ` +
+        'A missing credential must fail HERE, naming the variable, not as a 400 from the server.',
+    );
+  }
+  return value;
+}
+
+export type AppRole = 'ops' | 'schoolAdmin' | 'schoolAdminB' | 'teacher' | 'parent';
+
+export interface Credential {
+  readonly email: string;
+  readonly password: string;
+}
+
+/**
+ * The role's env var names. E2E_* wins if the shell provides it; otherwise the
+ * seeded SEED_* value from the sibling .env is required. No literal fallbacks.
+ */
+const ROLE_ENV: Record<AppRole, { email: string; password: string; defaultEmail: string }> = {
+  ops: { email: 'E2E_OPS_EMAIL', password: 'E2E_OPS_PASSWORD', defaultEmail: 'admin@schooltest.local' },
+  schoolAdmin: {
+    email: 'E2E_SCHOOL_ADMIN_EMAIL',
+    password: 'E2E_SCHOOL_ADMIN_PASSWORD',
+    defaultEmail: 'schooladmin-a@schooltest.local',
+  },
+  schoolAdminB: {
+    email: 'E2E_SCHOOL_ADMIN_B_EMAIL',
+    password: 'E2E_SCHOOL_ADMIN_B_PASSWORD',
+    defaultEmail: 'schooladmin-b@schooltest.local',
+  },
+  teacher: {
+    email: 'E2E_TEACHER_EMAIL',
+    password: 'E2E_TEACHER_PASSWORD',
+    defaultEmail: 'teacher@schooltest.local',
+  },
+  parent: {
+    email: 'E2E_PARENT_EMAIL',
+    password: 'E2E_PARENT_PASSWORD',
+    defaultEmail: 'parent@schooltest.local',
+  },
+};
+
+/** Seed env name that backs each role's password when E2E_* is absent. */
+const ROLE_SEED_PASSWORD: Record<AppRole, string> = {
+  ops: 'SEED_ADMIN_PASSWORD',
+  schoolAdmin: 'SEED_SCHOOLADMIN_A_PASSWORD',
+  schoolAdminB: 'SEED_SCHOOLADMIN_B_PASSWORD',
+  teacher: 'SEED_TEACHER_PASSWORD',
+  parent: 'SEED_PARENT_PASSWORD',
+};
+
+/**
+ * Resolve a role's email + password. Emails may default to the documented seed
+ * identity (public knowledge: seed emails are not secrets); PASSWORDS never
+ * default to a literal — they require E2E_* or the seeded SEED_* value, or the
+ * helper throws naming the exact variable.
+ */
+export function roleCredentials(role: AppRole): Credential {
+  const env = ROLE_ENV[role];
+  const email = process.env[env.email] || env.defaultEmail;
+  const seedPasswordVar = ROLE_SEED_PASSWORD[role];
+  // Truthy check (not ??): an EMPTY E2E_* or SEED_* var is treated as missing,
+  // so it fails with the named variable rather than silently supplying ''.
+  const password =
+    process.env[env.password] || process.env[seedPasswordVar] || requireEnv(env.password);
+  return { email, password };
+}

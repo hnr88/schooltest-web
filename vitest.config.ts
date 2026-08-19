@@ -17,7 +17,7 @@ export default defineConfig({
     // Node >= 26 shadows jsdom's `localStorage` with an undefined global; the
     // stub puts a working in-memory Storage back (schooltest-app precedent).
     setupFiles: ['./vitest-stubs/local-storage.ts'],
-    include: ['tests/unit/**/*.test.{ts,tsx}'],
+    include: ['tests/unit/**/*.test.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
     exclude: ['node_modules', 'out', 'dist', 'build', 'tests/e2e/**'],
     // Inline next-intl so Vite transforms it and the `next/navigation` alias
     // applies inside it (externalized node_modules bypass resolve.alias).
