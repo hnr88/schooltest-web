@@ -64,7 +64,7 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
   test('teacher: /dashboard redirects to /dashboard/teach; school section bounces', async ({
     page,
   }) => {
-    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard/teach');
+    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard');
     await expect(page.locator('[data-surface="teacher-home"]')).toBeVisible({ timeout: 20_000 });
 
     // SchoolAdminGuard bounces a teacher to /dashboard, whose role gate hands

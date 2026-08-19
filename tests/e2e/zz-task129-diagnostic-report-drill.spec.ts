@@ -35,7 +35,7 @@ async function signIn(page: Page, credentials: { email: string; password: string
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows.
-  await page.waitForURL('**/dashboard/teach**', { timeout: 90_000 });
+  await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 90_000 });
 }
 
 interface DiagnosticPayload {

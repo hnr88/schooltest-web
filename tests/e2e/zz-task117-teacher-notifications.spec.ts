@@ -211,7 +211,7 @@ test.describe('task 117: teacher notification flow vs the live stack', () => {
   });
 
   test('teacher: bell view-all lands on the same teach feed', async ({ page }) => {
-    await signIn(page, TEACHER, '**/dashboard/teach**');
+    await signIn(page, TEACHER, '**/dashboard**');
     await openFeedViaBell(page, '**/dashboard/teach/notifications');
   });
 

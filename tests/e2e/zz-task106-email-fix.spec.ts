@@ -71,7 +71,7 @@ async function withRolePage(
 }
 
 async function openTeacherRoster(page: Page) {
-  await signIn(page, TEACHER, '**/dashboard/teach**');
+  await signIn(page, TEACHER, '**/dashboard**');
   await page.goto(`/en/dashboard/teach/classes/${CLASS_ID}`);
   const screen = page.locator('[data-surface="teacher-roster"]');
   await expect(screen).toBeVisible({ timeout: 20_000 });

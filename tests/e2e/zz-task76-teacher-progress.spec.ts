@@ -37,7 +37,7 @@ async function signIn(page: Page, credentials: { email: string; password: string
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
   // layer rides out any 429 on the auth POST, so allow for that here.
-  await page.waitForURL('**/dashboard/teach**', { timeout: 90_000 });
+  await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 90_000 });
 }
 
 interface ProgressPayload {

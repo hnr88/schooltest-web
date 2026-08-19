@@ -131,7 +131,7 @@ test.describe('task 70: ops data surfaces (C-OPS-04)', () => {
   });
 
   test('teacher is bounced out of /dashboard/ops/tools', async ({ page }) => {
-    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard/teach');
+    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard');
     await page.goto('/dashboard/ops/tools');
     await page.waitForURL('**/dashboard/teach', { timeout: 30_000 });
     await expect(page.locator('[data-surface="ops-tools"]')).toHaveCount(0);

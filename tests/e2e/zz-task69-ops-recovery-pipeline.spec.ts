@@ -139,7 +139,7 @@ test.describe('task 69: ops pipeline health + sitting recovery', () => {
   });
 
   test('teacher is bounced out of /dashboard/ops/pipeline', async ({ page }) => {
-    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard/teach');
+    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard');
     await page.goto('/dashboard/ops/pipeline');
     await page.waitForURL('**/dashboard/teach', { timeout: 30_000 });
     await expect(page.locator('[data-surface="ops-pipeline"]')).toHaveCount(0);

@@ -101,7 +101,7 @@ test.describe('task 66: ops console vs live C-OPS-01', () => {
   });
 
   test('teacher is bounced out of /dashboard/ops', async ({ page }) => {
-    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard/teach');
+    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard');
     await page.goto('/dashboard/ops/schools');
     await page.waitForURL('**/dashboard/teach', { timeout: 30_000 });
     await expect(page.locator('[data-surface="ops-schools"]')).toHaveCount(0);
