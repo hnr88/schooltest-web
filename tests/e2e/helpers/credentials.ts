@@ -83,7 +83,7 @@ export function requireEnv(name: string): string {
   return value;
 }
 
-export type AppRole = 'ops' | 'schoolAdmin' | 'schoolAdminB' | 'teacher' | 'parent';
+export type AppRole = 'ops' | 'schoolAdmin' | 'schoolAdminB' | 'teacher' | 'teacher2' | 'parent';
 
 export interface Credential {
   readonly email: string;
@@ -111,6 +111,19 @@ const ROLE_ENV: Record<AppRole, { email: string; password: string; defaultEmail:
     password: 'E2E_TEACHER_PASSWORD',
     defaultEmail: 'teacher@schooltest.local',
   },
+  /**
+   * A SECOND teacher, in the SAME school as `teacher`. It exists so an
+   * ownership refusal can be tested at all: until it was seeded, every class in
+   * the database belonged to `teacher`, so no teacher could be refused another
+   * teacher's class and specs aliased FOREIGN_TEACHER to `teacher` itself.
+   * Same school ON PURPOSE — a teacher in a different school would be refused
+   * for TENANCY reasons and the test would prove nothing about OWNERSHIP.
+   */
+  teacher2: {
+    email: 'E2E_TEACHER2_EMAIL',
+    password: 'E2E_TEACHER2_PASSWORD',
+    defaultEmail: 'teacher2@schooltest.local',
+  },
   parent: {
     email: 'E2E_PARENT_EMAIL',
     password: 'E2E_PARENT_PASSWORD',
@@ -124,6 +137,7 @@ const ROLE_SEED_PASSWORD: Record<AppRole, string> = {
   schoolAdmin: 'SEED_SCHOOLADMIN_A_PASSWORD',
   schoolAdminB: 'SEED_SCHOOLADMIN_B_PASSWORD',
   teacher: 'SEED_TEACHER_PASSWORD',
+  teacher2: 'SEED_TEACHER2_PASSWORD',
   parent: 'SEED_PARENT_PASSWORD',
 };
 
