@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 129 (st-mvp-pivot): the permanent C-RPT-01 v2 drill spec — mvp-updates
 // spec 4.9 "one single click down" from the class diagnostic to a student's
@@ -16,7 +17,7 @@ const zh = loadMessages('zh');
 
 const API = 'http://127.0.0.1:5500';
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const DOCUMENT_ID_PATTERN = /^[a-z0-9]{24}$/;
 
 async function login(

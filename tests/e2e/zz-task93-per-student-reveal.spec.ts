@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 93 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Per-student reveal + staggered sitting (mvp-updates §4.5.3, C-SIT-05): the
@@ -17,7 +18,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const APP_ORIGIN = process.env.E2E_BASE_URL ?? 'http://localhost:3101';
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const SOFIA_ID = 'kxd4f1r27muoajv7ww18blvp';
 const SOFIA_NAME = 'Sofia Petrov';
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local';

@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 99 (st-mvp-pivot) live check: the W15 "group by limiting attribute"
 // surface (C-RPT-01 v2, mvp-updates spec 4.9/4.10). The teacher opens the
@@ -15,7 +16,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 
 async function login(
   request: APIRequestContext,

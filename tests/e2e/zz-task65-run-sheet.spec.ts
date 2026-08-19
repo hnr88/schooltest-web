@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 65 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Test-day run sheet (mvp-updates §4.5 step 4): renders every required block
@@ -11,7 +12,7 @@ const en = loadMessages('en');
 const zh = loadMessages('zh');
 
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const RUN_SHEET_URL = '/en/dashboard/teach/run-sheet';
 
 async function signIn(page: Page): Promise<void> {

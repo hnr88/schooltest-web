@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type Locator, type Page } from '@
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, escapeRegExp, icu, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 139 (st-mvp-pivot) — C-SIT-08 test-day summary panel. Permanent spec:
 // a full end-of-test-day flow runs against the live stack (start a sitting,
@@ -21,7 +22,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local'; // joins so close leaves one sat
 const BETA_ID = 'zkko2okpnsolmt6m1zg7aqh0'; // Import Beta carries the absent flag
 const TEST_DAY_URL = `/en/dashboard/teach/classes/${CLASS_ID}/test-day`;

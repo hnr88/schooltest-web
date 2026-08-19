@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 75 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Teacher diagnostic dashboard (C-RPT-01): class mastery list across the seven
@@ -16,7 +17,7 @@ const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.lo
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
 const FOREIGN_TEACHER = { email: 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const PARENT = { email: 'parent@schooltest.local', password: process.env.E2E_PARENT_PASSWORD ?? 'Parent1234!' };
-const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
 // Orphan class with no school link: every school role 403s it.
 const UNOWNED_CLASS_ID = 'bsonh15b2ggwe2rpyuudvzfa';

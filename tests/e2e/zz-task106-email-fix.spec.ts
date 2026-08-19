@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type Browser, type Page } from '@
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 106 (st-mvp-pivot) live check: the full W16 email-fix handoff loop
 // (C-CHD-05, mvp-updates spec 4.4) across both roles. The teacher flags a
@@ -18,7 +19,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 
 // The throwaway child this spec owns. The family name carries a per-run
 // suffix so the search needle never matches archived residue from earlier

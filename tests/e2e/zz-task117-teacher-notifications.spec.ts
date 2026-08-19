@@ -4,6 +4,7 @@ import { loginAsParent } from './helpers/auth';
 import { runSql } from './helpers/auth-db';
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 117 (st-mvp-pivot) live check: the W18 teacher notification flow end to
 // end (C-NOT-01, mvp-updates 4.4/4.3). A REAL student_email_fix_requested
@@ -20,7 +21,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const EMAIL_FIX_TYPE = 'student_email_fix_requested';
 
 interface ChildListRow {

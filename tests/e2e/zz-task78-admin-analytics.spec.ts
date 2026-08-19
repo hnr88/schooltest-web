@@ -4,6 +4,7 @@ import { expect, test, type APIRequestContext, type APIResponse, type Page } fro
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 
 // Task 78 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // C-RPT-04 participation monitor + C-RPT-05 school results export + the
@@ -18,7 +19,7 @@ const ADMIN_A = { email: 'schooladmin-a@schooltest.local', password: process.env
 const ADMIN_B = { email: 'schooladmin-b@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_B_PASSWORD ?? 'SchoolAdmin1234!' };
 const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const PARENT = { email: 'parent@schooltest.local', password: process.env.E2E_PARENT_PASSWORD ?? 'Parent1234!' };
-const FIXTURE_CLASS = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
+const FIXTURE_CLASS = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 
 async function login(
   request: APIRequestContext,
