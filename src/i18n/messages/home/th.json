@@ -90,12 +90,6 @@
       "stepThreeTitle": "ตรวจทานและเผยแพร่ผลลัพธ์",
       "stepThreeDescription": "AI ร่างคะแนนและคำแนะนำเมื่อผู้เรียนทำเสร็จ อนุมัติ ปรับแก้ และส่งผล — ได้ภายในวันเดียวกัน"
     },
-    "testimonial": {
-      "quote": "“ฉันไม่ต้องใช้วันอาทิตย์ไปกับการตรวจงานอีกแล้ว AI ร่างคำแนะนำ ฉันอนุมัติ แล้วผู้เรียนก็ได้ผลลัพธ์ในวันเดียวกัน”",
-      "name": "Lena Petrova",
-      "role": "ครูภาษาอังกฤษ, Lyceum 14",
-      "ratingLabel": "ได้รับคะแนน 5 จาก 5"
-    },
     "pilot": {
       "eyebrow": "Diagnostic tests for EAL/D classrooms",
       "title": "The English test that reveals much more than a score.",
@@ -122,9 +116,7 @@
       "uspFiveKicker": "The right level of detail for every stakeholder.",
       "audienceTeacher": "Teacher",
       "audienceLeader": "Leader",
-      "audienceFamily": "Family",
-      "testimonialQuote": "“SchoolTest gave us a much clearer picture of what students needed - and a much better way to discuss progress.”",
-      "testimonialAttribution": "EAL/D leader · Australian school partner"
+      "audienceFamily": "Family"
     },
     "pricing": {
       "eyebrow": "ราคา",

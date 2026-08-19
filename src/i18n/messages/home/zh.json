@@ -90,12 +90,6 @@
       "stepThreeTitle": "审核并发布结果",
       "stepThreeDescription": "学生完成后，AI 会起草分数和反馈。审核、调整并发送——当天即可完成。"
     },
-    "testimonial": {
-      "quote": "“我不再把周日都花在评分上。AI 会起草反馈，我来审核，学生当天就能拿到结果。”",
-      "name": "Lena Petrova",
-      "role": "英语教师，Lyceum 14",
-      "ratingLabel": "5 分制满分 5 分"
-    },
     "pilot": {
       "eyebrow": "Diagnostic tests for EAL/D classrooms",
       "title": "The English test that reveals much more than a score.",
@@ -122,9 +116,7 @@
       "uspFiveKicker": "The right level of detail for every stakeholder.",
       "audienceTeacher": "Teacher",
       "audienceLeader": "Leader",
-      "audienceFamily": "Family",
-      "testimonialQuote": "“SchoolTest gave us a much clearer picture of what students needed - and a much better way to discuss progress.”",
-      "testimonialAttribution": "EAL/D leader · Australian school partner"
+      "audienceFamily": "Family"
     },
     "pricing": {
       "eyebrow": "定价",

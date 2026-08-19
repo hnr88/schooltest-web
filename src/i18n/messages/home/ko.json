@@ -90,12 +90,6 @@
       "stepThreeTitle": "결과 검토 및 공개",
       "stepThreeDescription": "학생이 마치면 AI가 점수와 피드백을 초안으로 작성합니다. 승인하고, 조정한 뒤 전송하세요. 당일에 완료됩니다."
     },
-    "testimonial": {
-      "quote": "“일요일마다 채점하느라 시간을 쓰지 않게 됐어요. AI가 피드백 초안을 만들면 제가 승인하고, 학생들은 당일 결과를 받습니다.”",
-      "name": "Lena Petrova",
-      "role": "영어 교사, Lyceum 14",
-      "ratingLabel": "5점 만점에 5점"
-    },
     "pilot": {
       "eyebrow": "Diagnostic tests for EAL/D classrooms",
       "title": "The English test that reveals much more than a score.",
@@ -122,9 +116,7 @@
       "uspFiveKicker": "The right level of detail for every stakeholder.",
       "audienceTeacher": "Teacher",
       "audienceLeader": "Leader",
-      "audienceFamily": "Family",
-      "testimonialQuote": "“SchoolTest gave us a much clearer picture of what students needed - and a much better way to discuss progress.”",
-      "testimonialAttribution": "EAL/D leader · Australian school partner"
+      "audienceFamily": "Family"
     },
     "pricing": {
       "eyebrow": "요금",

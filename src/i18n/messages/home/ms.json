@@ -90,12 +90,6 @@
       "stepThreeTitle": "Semak & terbitkan keputusan",
       "stepThreeDescription": "AI merangka markah dan maklum balas apabila pelajar selesai. Luluskan, laraskan dan hantar — pada hari yang sama."
     },
-    "testimonial": {
-      "quote": "“Saya tidak lagi menghabiskan hari Ahad untuk menggred. AI merangka maklum balas, saya meluluskannya, dan pelajar saya mendapat keputusan pada hari yang sama.”",
-      "name": "Lena Petrova",
-      "role": "Guru bahasa Inggeris, Lyceum 14",
-      "ratingLabel": "Dinilai 5 daripada 5"
-    },
     "pilot": {
       "eyebrow": "Diagnostic tests for EAL/D classrooms",
       "title": "The English test that reveals much more than a score.",
@@ -122,9 +116,7 @@
       "uspFiveKicker": "The right level of detail for every stakeholder.",
       "audienceTeacher": "Teacher",
       "audienceLeader": "Leader",
-      "audienceFamily": "Family",
-      "testimonialQuote": "“SchoolTest gave us a much clearer picture of what students needed - and a much better way to discuss progress.”",
-      "testimonialAttribution": "EAL/D leader · Australian school partner"
+      "audienceFamily": "Family"
     },
     "pricing": {
       "eyebrow": "Harga",

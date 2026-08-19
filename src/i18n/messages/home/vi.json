@@ -91,12 +91,6 @@
       "stepThreeTitle": "Rà soát & công bố kết quả",
       "stepThreeDescription": "AI soạn điểm và phản hồi khi học viên hoàn thành. Phê duyệt, điều chỉnh và gửi đi — ngay trong ngày."
     },
-    "testimonial": {
-      "quote": "“Tôi không còn dành Chủ nhật để chấm bài. AI soạn phản hồi, tôi phê duyệt và học viên nhận kết quả ngay trong ngày.”",
-      "name": "Lena Petrova",
-      "role": "Giáo viên tiếng Anh, Lyceum 14",
-      "ratingLabel": "Được đánh giá 5 trên 5"
-    },
     "pilot": {
       "eyebrow": "Diagnostic tests for EAL/D classrooms",
       "title": "The English test that reveals much more than a score.",
@@ -123,9 +117,7 @@
       "uspFiveKicker": "The right level of detail for every stakeholder.",
       "audienceTeacher": "Teacher",
       "audienceLeader": "Leader",
-      "audienceFamily": "Family",
-      "testimonialQuote": "“SchoolTest gave us a much clearer picture of what students needed - and a much better way to discuss progress.”",
-      "testimonialAttribution": "EAL/D leader · Australian school partner"
+      "audienceFamily": "Family"
     },
     "pricing": {
       "eyebrow": "Bảng giá",
