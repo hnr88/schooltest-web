@@ -13,7 +13,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const OPS = { email: 'admin@schooltest.local', password: 'TBUaS2yS6D9FJMZP!A1' };
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: 'pEbjxVnJ4PPYiv8D!A1' };
-const TEACHER = { email: 'verify21@schooltest.local', password: 'Verify21!pw' };
+const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 
 interface OpsSchool {
   documentId: string;

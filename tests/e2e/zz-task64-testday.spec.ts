@@ -12,7 +12,7 @@ import { cat, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = { email: 'verify21@schooltest.local', password: 'Verify21!pw' };
+const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const CLASS_ID = 'x1hat1dy90boz11n9zyphoan'; // "EAL/D Year 7 - Room 4"
 const SOFIA_ID = 'kxd4f1r27muoajv7ww18blvp';
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local';

@@ -12,7 +12,7 @@ import { cat, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: 'pEbjxVnJ4PPYiv8D!A1' };
-const TEACHER = { email: 'verify21@schooltest.local', password: 'Verify21!pw' };
+const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 const PARENT = { email: 'parent@schooltest.local', password: 'yvmnVObAiaOJw2C1!A1' };
 
 // Seeded school behind schooladmin-a (cross-checked: GET /api/schools/me).

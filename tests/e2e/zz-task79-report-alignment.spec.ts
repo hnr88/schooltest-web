@@ -14,7 +14,7 @@ import { cat, icu, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = { email: 'verify21@schooltest.local', password: 'Verify21!pw' };
+const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
 
 // Live results settled in task 50 (plus one effort-invalid sitting).
 const MIXED = 'hvupac2i7ydbtu5zzcczznmm'; // R1-R3 assessed, R4-R7 "not_assessed"
