@@ -74,3 +74,42 @@ or the seeder to create a documented second parent the specs resolve by name.
 **Reversal cost:** small and one-directional — rewrite each fixture to register
 its own throwaway second parent via `/api/auth/local` + the sign-up flow, or add
 a seeded second parent to the api bootstrap.
+
+## D-W3 · Captured-pointer census: seven literals, all DEAD (Lane N, 2026-08-19)
+
+⚠️ flag — captured-pointer audit, `schooltest-web/tests/e2e`. The seven unique
+24–26-char lowercase-alnum literals found by the orchestrator's grep were each
+queried against the live datastore (`postgres 127.0.0.1:5540`, db `schooltest`,
+via `DATABASE_PASSWORD` from `schooltest-api/.env`). Every one returned ZERO
+rows — both in its presumed home table (`document_id` column) and in an
+exhaustive scan of **every** text/jsonb column of **every** base table in the
+database. Deliberate sentinels (`'aaaaaaaaaaaaaaaaaaaaaaaa'`,
+`'zzzzzzzzzzzzzzzzzzzzzzzz'`, `'zz63zz63zz63zz63zz63zz63'`) and Lane G's two
+`'bsonh15b2ggwe2rpyuudvzfa'` were excluded per the audit instruction. The
+repair differs per case and is NOT made here — this is the census only.
+
+| id | file:line | presumed entity | table checked | result |
+|---|---|---|---|---|
+| `hvupac2i7ydbtu5zzcczznmm` | `zz-task79-report-alignment.spec.ts:21` (MIXED) | result | `results` | **DEAD** (0 rows; no row in any table) |
+| `ndmrbjr6bdvlmnnr5cr4ioks` | `zz-task79-report-alignment.spec.ts:22` (NONE) | result | `results` | **DEAD** (0 rows; no row in any table) |
+| `l8148n4woi89kvzlzkrug249` | `zz-task79-report-alignment.spec.ts:23` (FULL) | result | `results` | **DEAD** (0 rows; no row in any table) |
+| `miqhycrej19pxzjndotuw9vk` | `zz-task79-report-alignment.spec.ts:24` (EFFORT_INVALID) | result | `results` | **DEAD** (0 rows; no row in any table) |
+| `ymd2oc6zp5r3g2vdntey2agy` | `zz-task70-ops-tools.spec.ts:22` (SESSION_DOCUMENT_ID) | session | `sessions` | **DEAD** (0 rows; no row in any table) |
+| `zkko2okpnsolmt6m1zg7aqh0` | `zz-task93-per-student-reveal.spec.ts:29` (BETA_ID) | student | `students` | **DEAD** (0 rows; no row in any table) |
+| `tqllrynirhpde967ej36s6k3` | `zz-task93-per-student-reveal.spec.ts:31` (ALPHA_ID) | student | `students` | **DEAD** (0 rows; no row in any table) |
+| `zkko2okpnsolmt6m1zg7aqh0` | `zz-task139-test-day-summary.spec.ts:28` (BETA_ID, same id as row above) | student | `students` | **DEAD** (0 rows; no row in any table) |
+
+**Population audited:** `results` (183 rows), `sessions` (190), `students` (18),
+`sittings` (142) — each confirmed non-empty, so a zero is a true absence, not a
+vacant table; plus a whole-database scan of every `document_id` column and every
+text/jsonb column of every base table (`information_schema` enumerated, `LIKE
+'%id%'`) returning no hit for any of the seven.
+
+**Default taken:** no repair in this census — matches the audit's
+"the repair differs per case". At minimum the four result literals and the
+session literal are captured pointers with no natural key; consistent with the
+mission's other findings they are likely unexercised on every live stack and
+would assert against a ghost if ever run.
+
+**Reversal cost:** n/a for the census itself; per-case repair costs will be
+recorded when the repair pass is assigned.
