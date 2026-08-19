@@ -23,12 +23,32 @@ interface WireEntry {
 }
 type WireAttributes = Record<string, WireEntry | 'not_assessed'>;
 
-/** NEXT_PUBLIC_API_BASE_URL as the running portal itself resolves it. */
+/**
+ * NEXT_PUBLIC_API_BASE_URL as the running portal itself resolves it, read from
+ * `.env` — the file this repo actually has. It read `.env.local` before, which
+ * does not exist here, so this threw a raw ENOENT rather than the message
+ * below: the guard covered the key-missing case and the file-missing case was
+ * the one that fired. `helpers/teacher-results-live.ts` reads the same key from
+ * the same file and is the precedent.
+ *
+ * That helper additionally pins `localhost` to 127.0.0.1 for its Node-side
+ * client. NOT copied here, because it does not reproduce on this call path:
+ * Strapi listens IPv4-only (`*:5500`) and Node's dns.lookup does return ::1
+ * first, but Playwright's APIRequestContext reaches http://localhost:5500
+ * (measured: 204, same as the 127.0.0.1 form). A pin carried without its
+ * failure is machinery the next reader cannot check.
+ */
 function apiBaseUrl(): string {
-  const raw = readFileSync(path.resolve(process.cwd(), '.env.local'), 'utf8');
+  const envPath = path.resolve(process.cwd(), '.env');
+  let raw: string;
+  try {
+    raw = readFileSync(envPath, 'utf8');
+  } catch {
+    throw new Error(`[e2e] ${envPath} not found — NEXT_PUBLIC_API_BASE_URL is read from it`);
+  }
   const match = raw.match(/^NEXT_PUBLIC_API_BASE_URL=(.*)$/m);
-  if (!match) throw new Error('[e2e] NEXT_PUBLIC_API_BASE_URL missing from .env.local');
-  return match[1].trim();
+  if (!match) throw new Error('[e2e] NEXT_PUBLIC_API_BASE_URL missing from schooltest-web/.env');
+  return match[1].trim().replace(/^(['"])(.*)\1$/, '$2');
 }
 
 function teacherOwned(extraSql: string): string {
