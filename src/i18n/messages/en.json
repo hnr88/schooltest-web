@@ -36,12 +36,6 @@
       "stepThree": "You release results"
     },
     "trustedBy": {
-      "label": "Trusted by",
-      "one": "Northfield Academy",
-      "two": "LinguaLab",
-      "three": "Prep&Go",
-      "four": "EduCore",
-      "five": "Wexford Schools",
       "pilotLabel": "Now piloting with",
       "pilotCaption": "Designed to move beyond broad four-skill scores toward actionable diagnostic evidence."
     },
@@ -89,12 +83,6 @@
       "stepTwoDescription": "Students join with their name — no accounts, no installs. Works on any device.",
       "stepThreeTitle": "Review & release results",
       "stepThreeDescription": "AI drafts scores and feedback as students finish. Approve, adjust, and send — same day."
-    },
-    "testimonial": {
-      "quote": "“I stopped spending Sundays grading. The AI drafts the feedback, I approve it, and my students get results the same day.”",
-      "name": "Lena Petrova",
-      "role": "English teacher, Lyceum 14",
-      "ratingLabel": "Rated 5 out of 5"
     },
     "pricing": {
       "eyebrow": "Pricing",
@@ -1935,9 +1923,7 @@
       },
       "trustedBy": {
         "label": "Piloting with",
-        "one": "John Paul College",
-        "two": "Ivanhoe Grammar",
-        "three": "Moreton Bay College"
+        "placeholder": "Pilot schools to be announced"
       },
       "problem": {
         "eyebrow": "The problem",

@@ -16,14 +16,6 @@ const NAV_LINKS = [
 
 const FLOW_STEPS = ['flow.stepOne', 'flow.stepTwo', 'flow.stepThree'] as const;
 
-const TRUSTED_WORDMARKS = [
-  'trustedBy.one',
-  'trustedBy.two',
-  'trustedBy.three',
-  'trustedBy.four',
-  'trustedBy.five',
-] as const;
-
 const FEATURE_CHECKLIST = [
   'featureDetail.checkOne',
   'featureDetail.checkTwo',
@@ -37,8 +29,6 @@ const HOW_IT_WORKS_STEPS = [
 ] as const;
 
 // Locale-invariant data — initials derive from the person, not the copy.
-const TESTIMONIAL_INITIALS = 'LP';
-const TESTIMONIAL_STAR_COUNT = 5;
 
 const PRICING_TIERS = [
   {
@@ -148,11 +138,8 @@ const FOOTER_LEGAL = [
 export {
   NAV_LINKS,
   FLOW_STEPS,
-  TRUSTED_WORDMARKS,
   FEATURE_CHECKLIST,
   HOW_IT_WORKS_STEPS,
-  TESTIMONIAL_INITIALS,
-  TESTIMONIAL_STAR_COUNT,
   PRICING_TIERS,
   FAQ_ITEMS,
   FOOTER_SOCIALS,

@@ -38,12 +38,6 @@ const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
   },
 ] as const;
 
-const EALD_TRUSTED_SCHOOLS = [
-  'trustedBy.one',
-  'trustedBy.two',
-  'trustedBy.three',
-] as const;
-
 const DIAGNOSE_NEXT_SECTIONS: readonly NextSectionCard[] = [
   { number: '02', titleKey: 'shared.nextTeachTitle', descriptionKey: 'shared.nextTeachDescription', href: '/eald/teach' },
   { number: '03', titleKey: 'shared.nextTrackTitle', descriptionKey: 'shared.nextTrackDescription', href: '/eald/track' },
@@ -81,7 +75,6 @@ const DIAGNOSE_SUBSKILLS: readonly SubskillBar[] = [
 export {
   EALD_NAV_LINKS,
   EALD_FOOTER_COLUMNS,
-  EALD_TRUSTED_SCHOOLS,
   DIAGNOSE_NEXT_SECTIONS,
   TEACH_NEXT_SECTIONS,
   TRACK_NEXT_SECTIONS,
