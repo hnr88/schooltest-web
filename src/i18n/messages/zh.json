@@ -3347,6 +3347,27 @@
       "savedToast": "Plan set to {plan}",
       "forbiddenToast": "Only an ops account can assign a plan.",
       "errorToast": "We could not change the plan. Try again."
+    },
+    "teachers": {
+      "title": "教师",
+      "description": "关联到本校的教职工账号——可编辑详情或移除账号。",
+      "flagNotice": "添加教师和编辑班级通过入驻和学校管理员完成——此视图用于核对和快速修正。",
+      "columnFirstName": "名",
+      "columnLastName": "姓",
+      "columnEmail": "邮箱",
+      "columnClass": "班级",
+      "columnActions": "操作",
+      "noClasses": "暂无班级",
+      "empty": "暂无教师",
+      "edit": "编辑教师",
+      "remove": "移除教师",
+      "save": "保存",
+      "cancel": "取消",
+      "invalidEmail": "请输入有效的邮箱地址",
+      "removeConfirm": "将该教师（{email}）从本校移除？",
+      "removeConfirmAction": "移除",
+      "errorTitle": "无法加载教师列表",
+      "errorDescription": "请检查连接后重试。"
     }
   },
   "RunSheet": {

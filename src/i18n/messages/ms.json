@@ -3267,6 +3267,27 @@
       "savedToast": "Plan set to {plan}",
       "forbiddenToast": "Only an ops account can assign a plan.",
       "errorToast": "We could not change the plan. Try again."
+    },
+    "teachers": {
+      "title": "Guru",
+      "description": "Akaun kakitangan yang dipautkan ke sekolah ini — edit butiran atau buang akaun.",
+      "flagNotice": "Menambah guru dan menyunting kelas dibuat melalui onboarding dan pentadbir sekolah — paparan ini untuk pengesahan dan pembetulan pantas.",
+      "columnFirstName": "Nama pertama",
+      "columnLastName": "Nama akhir",
+      "columnEmail": "E-mel",
+      "columnClass": "Kelas",
+      "columnActions": "Tindakan",
+      "noClasses": "Belum ada kelas",
+      "empty": "Belum ada guru",
+      "edit": "Edit guru",
+      "remove": "Buang guru",
+      "save": "Simpan",
+      "cancel": "Batal",
+      "invalidEmail": "Masukkan alamat e-mel yang sah",
+      "removeConfirm": "Buang {email} daripada sekolah ini?",
+      "removeConfirmAction": "Buang",
+      "errorTitle": "Kami tidak dapat memuatkan guru",
+      "errorDescription": "Periksa sambungan anda dan cuba lagi."
     }
   },
   "RunSheet": {

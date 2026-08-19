@@ -3276,6 +3276,27 @@
       "savedToast": "Plan set to {plan}",
       "forbiddenToast": "Only an ops account can assign a plan.",
       "errorToast": "We could not change the plan. Try again."
+    },
+    "teachers": {
+      "title": "Giáo viên",
+      "description": "Các tài khoản nhân viên được liên kết với trường này — chỉnh sửa thông tin hoặc xóa tài khoản.",
+      "flagNotice": "Thêm giáo viên và chỉnh sửa lớp học thực hiện qua onboarding và quản trị trường — dạng xem này để xác minh và sửa nhanh.",
+      "columnFirstName": "Tên",
+      "columnLastName": "Họ",
+      "columnEmail": "Email",
+      "columnClass": "Lớp",
+      "columnActions": "Thao tác",
+      "noClasses": "Chưa có lớp",
+      "empty": "Chưa có giáo viên",
+      "edit": "Sửa giáo viên",
+      "remove": "Xóa giáo viên",
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "invalidEmail": "Nhập địa chỉ email hợp lệ",
+      "removeConfirm": "Xóa {email} khỏi trường này?",
+      "removeConfirmAction": "Xóa",
+      "errorTitle": "Không thể tải giáo viên",
+      "errorDescription": "Kiểm tra kết nối và thử lại."
     }
   },
   "RunSheet": {

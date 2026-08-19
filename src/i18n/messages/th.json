@@ -3267,6 +3267,27 @@
       "savedToast": "Plan set to {plan}",
       "forbiddenToast": "Only an ops account can assign a plan.",
       "errorToast": "We could not change the plan. Try again."
+    },
+    "teachers": {
+      "title": "ครู",
+      "description": "บัญชีบุคลากรที่เชื่อมโยงกับโรงเรียนนี้ — แก้ไขรายละเอียดหรือลบบัญชี",
+      "flagNotice": "การเพิ่มครูและแก้ไขชั้นเรียนทำผ่านการเริ่มต้นใช้งานและผู้ดูแลโรงเรียน — หน้านี้ใช้ตรวจสอบและแก้ไขด่วน",
+      "columnFirstName": "ชื่อ",
+      "columnLastName": "นามสกุล",
+      "columnEmail": "อีเมล",
+      "columnClass": "ชั้นเรียน",
+      "columnActions": "การดำเนินการ",
+      "noClasses": "ยังไม่มีชั้นเรียน",
+      "empty": "ยังไม่มีครู",
+      "edit": "แก้ไขครู",
+      "remove": "ลบครู",
+      "save": "บันทึก",
+      "cancel": "ยกเลิก",
+      "invalidEmail": "กรอกอีเมลที่ถูกต้อง",
+      "removeConfirm": "ลบ {email} ออกจากโรงเรียนนี้?",
+      "removeConfirmAction": "ลบ",
+      "errorTitle": "ไม่สามารถโหลดครูได้",
+      "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"
     }
   },
   "RunSheet": {

@@ -3650,6 +3650,27 @@
       "savedToast": "Plan set to {plan}",
       "forbiddenToast": "Only an ops account can assign a plan.",
       "errorToast": "We could not change the plan. Try again."
+    },
+    "teachers": {
+      "title": "Teachers",
+      "description": "The staff accounts linked to this school — edit details or remove an account.",
+      "flagNotice": "Adding teachers and editing classes happen through onboarding and the school admin — this view is for verification and quick fixes.",
+      "columnFirstName": "First name",
+      "columnLastName": "Last name",
+      "columnEmail": "Email",
+      "columnClass": "Class",
+      "columnActions": "Actions",
+      "noClasses": "No classes yet",
+      "empty": "No teachers yet",
+      "edit": "Edit teacher",
+      "remove": "Remove teacher",
+      "save": "Save",
+      "cancel": "Cancel",
+      "invalidEmail": "Enter a valid email address",
+      "removeConfirm": "Remove {email} from this school?",
+      "removeConfirmAction": "Remove",
+      "errorTitle": "We could not load teachers",
+      "errorDescription": "Check your connection and try again."
     }
   },
   "RunSheet": {

@@ -3267,6 +3267,27 @@
       "savedToast": "Plan set to {plan}",
       "forbiddenToast": "Only an ops account can assign a plan.",
       "errorToast": "We could not change the plan. Try again."
+    },
+    "teachers": {
+      "title": "교사",
+      "description": "이 학교에 연결된 교직원 계정입니다 — 세부 정보를 편집하거나 계정을 제거할 수 있습니다.",
+      "flagNotice": "교사 추가 및 학급 편집은 온보딩과 학교 관리자를 통해 이루어집니다 — 이 화면은 확인과 빠른 수정용입니다.",
+      "columnFirstName": "이름",
+      "columnLastName": "성",
+      "columnEmail": "이메일",
+      "columnClass": "학급",
+      "columnActions": "작업",
+      "noClasses": "아직 학급이 없습니다",
+      "empty": "아직 교사가 없습니다",
+      "edit": "교사 편집",
+      "remove": "교사 제거",
+      "save": "저장",
+      "cancel": "취소",
+      "invalidEmail": "유효한 이메일 주소를 입력하세요",
+      "removeConfirm": "{email}을(를) 이 학교에서 제거하시겠습니까?",
+      "removeConfirmAction": "제거",
+      "errorTitle": "교사 목록을 불러올 수 없습니다",
+      "errorDescription": "연결을 확인하고 다시 시도하세요."
     }
   },
   "RunSheet": {

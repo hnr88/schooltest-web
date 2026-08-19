@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
@@ -11,19 +12,22 @@ import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvi
 import { OpsSchoolPlanPanel } from '@/modules/ops/components/OpsSchoolPlanPanel';
 import { OpsSittingRecovery } from '@/modules/ops/components/OpsSittingRecovery';
 import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
+import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
 import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
 import { ACCOUNT_STATUS_VARIANTS, ONBOARDING_STATUS_VARIANTS } from '@/modules/school-admin';
 
 import type { OpsSchoolDetailProps } from '@/modules/ops/types/components.types';
 
 // Ops console school detail (task 66, st-mvp-pivot): one C-OPS-01 row —
-// lifecycle chips plus the live teacher/class/student/result counts. The W8
-// tasks (67-70) hang the deeper management surfaces off this page.
+// lifecycle chips plus the live teacher/class/student/result counts. The
+// W8 tasks (67-70) hang the deeper management surfaces off this page; the
+// Teachers card opens the OPS-teacher-details staff directory (064).
 export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   const t = useTranslations('Ops.detail');
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const schoolsQuery = useOpsSchoolsQuery(hydrated && Boolean(token));
+  const [teachersOpen, setTeachersOpen] = useState(false);
 
   if (schoolsQuery.isPending) {
     return (
@@ -97,11 +101,16 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             above the summary cards. */}
         <OpsSchoolInvitationPanel documentId={documentId} enabled={hydrated && Boolean(token)} />
       </div>
-      <OpsSchoolCountCards school={school} />
+      <OpsSchoolCountCards school={school} onTeachersClick={() => setTeachersOpen(true)} />
       <OpsSchoolPlanPanel documentId={documentId} plan={school.plan} />
       <OpsFormWindow documentId={documentId} />
       <OpsSittingRecovery schoolDocumentId={documentId} />
       <OpsStudentImport documentId={documentId} />
+      <OpsTeachersDialog
+        schoolDocumentId={documentId}
+        open={teachersOpen}
+        onOpenChange={setTeachersOpen}
+      />
     </main>
   );
 }

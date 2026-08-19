@@ -6,7 +6,7 @@ import type { PipelineQueue } from '@/modules/ops/schemas/pipeline.schema';
 import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
 import type { SectionTimersMeta, TimerSection } from '@/modules/ops/schemas/section-timers.schema';
 import type { ViewAsTeacher } from '@/modules/ops/schemas/surfaces.schema';
-import type { OpsSchool } from '@/modules/ops/types/ops.types';
+import type { OpsSchool, OpsTeacherRow } from '@/modules/ops/types/ops.types';
 import type { SchoolsFilterState } from '@/modules/ops/lib/schools-filter.lib';
 import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
 import type { SchoolPlan } from '@/modules/school-admin';
@@ -40,10 +40,6 @@ export interface OpsPipelineQueueRowProps {
   queue: PipelineQueue;
 }
 
-export interface OpsSchoolCountCardsProps {
-  school: OpsSchool;
-}
-
 export interface OpsSchoolDetailProps {
   documentId: string;
 }
@@ -73,6 +69,36 @@ export interface OpsSchoolsFiltersProps {
   showingCount: number;
   totalCount: number;
   hasActiveFilters: boolean;
+}
+
+export interface EditState {
+  documentId: string;
+  values: { first_name: string; last_name: string; email: string };
+}
+
+export interface OpsTeachersDialogProps {
+  schoolDocumentId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export interface OpsTeachersTableRowProps {
+  row: OpsTeacherRow;
+  editing: EditState | null;
+  onEditingChange: (next: EditState | null) => void;
+  removing: boolean;
+  onRemovingChange: (documentId: string | null) => void;
+  onSave: () => void;
+  onRemove: () => void;
+  savePending: boolean;
+  removePending: boolean;
+  error: string | null;
+}
+
+export interface OpsSchoolCountCardsProps {
+  school: OpsSchool;
+  /** OPS-teacher-details: clicking the Teachers card opens the directory. */
+  onTeachersClick?: () => void;
 }
 
 export interface OpsSectionTimersFormProps {
