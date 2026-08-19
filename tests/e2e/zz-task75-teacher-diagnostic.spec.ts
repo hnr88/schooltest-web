@@ -32,8 +32,17 @@ const FOREIGN_TEACHER = roleCredentials('teacher2');
 const PARENT = roleCredentials('parent');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
-// Orphan class with no school link: every school role 403s it.
-const UNOWNED_CLASS_ID = 'bsonh15b2ggwe2rpyuudvzfa';
+/**
+ * teacher2's seeded class (schooltest-api 658a849), resolved by NAME — never a
+ * pinned documentId (fixture-class.ts explains why no fixture can promise one).
+ * The signed-in TEACHER does not own it, so the live server refuses it on
+ * OWNERSHIP grounds. The error-state test below MANUFACTURES that refusal with
+ * a route intercept instead of hoping the fixture produces one, so it can never
+ * go green against a 404, a dead record or a crashed component — the failure
+ * mode this file's old dead-id navigation had.
+ */
+const FOREIGN_CLASS_NAME = 'EAL/D Year 9 - Room 6';
+const FOREIGN_CLASS_ID = fixtureClassId(FOREIGN_CLASS_NAME);
 
 async function login(
   request: APIRequestContext,
@@ -80,6 +89,11 @@ test.describe('task 75: teacher diagnostic dashboard vs live C-RPT-01', () => {
     request,
   }) => {
     // API role matrix first: foreign teacher and parent 403, school_admin 200.
+    // The teacher's own 200 is asserted further down (diagnosticRes.ok), so the
+    // 403 below is PAIRED — a lone 403 could be a broken fixture rather than a
+    // refusal. This is the live end-to-end half of the refusal proof; the
+    // error-state test at the bottom manufactures its own 403 and cannot drift
+    // from server behaviour while this pairing stays green.
     const foreignJwt = await login(request, FOREIGN_TEACHER);
     const foreign = await fetchWithRetry(() =>
       request.get(`${API}/api/schools/me/classes/${CLASS_ID}/diagnostic`, {
@@ -253,14 +267,36 @@ test.describe('task 75: teacher diagnostic dashboard vs live C-RPT-01', () => {
     }
   });
 
-  test('an unowned class renders the error state, never a leak', async ({ page }) => {
+  test('a refused class renders the error state, never a leak', async ({ page }) => {
     await signIn(page, TEACHER);
-    await page.goto(`/en/dashboard/teach/results/${UNOWNED_CLASS_ID}`);
-    const screen = page.locator('[data-surface="teacher-diagnostic"]');
-    await expect(screen).toBeVisible({ timeout: 20_000 });
-    await expect(
-      screen.getByRole('alert').getByText(cat(en, 'Teach.diagnostic.loadError'), { exact: true }),
-    ).toBeVisible({ timeout: 20_000 }); // TanStack default retries the 403 before isError
-    await expect(screen.locator('[data-slot="mastery-table"]')).toHaveCount(0);
+    // The refusal is MANUFACTURED, not hoped for. This test used to navigate to
+    // a dead documentId: the endpoint answered 404, the SAME generic error
+    // state rendered, and the test stayed green while proving nothing about
+    // access control — 403, 404, a network fault and a crashed component were
+    // indistinguishable to it. Instead the page's own class-scoped GETs are
+    // answered with the 403 the live API really returns for a non-owner (see
+    // the paired foreign-teacher/teacher assertions in the first test), using
+    // the shape from teacher-results-export.spec.ts's injected failure: a test
+    // that controls its own failure condition cannot be fooled about which
+    // condition it tested. Flip the injected status to 200 and this goes red.
+    const refusal = `**/api/schools/me/classes/${FOREIGN_CLASS_ID}/**`;
+    await page.route(refusal, (route) =>
+      route.fulfill({
+        status: 403,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: { message: 'You do not own this class' } }),
+      }),
+    );
+    try {
+      await page.goto(`/en/dashboard/teach/results/${FOREIGN_CLASS_ID}`);
+      const screen = page.locator('[data-surface="teacher-diagnostic"]');
+      await expect(screen).toBeVisible({ timeout: 20_000 });
+      await expect(
+        screen.getByRole('alert').getByText(cat(en, 'Teach.diagnostic.loadError'), { exact: true }),
+      ).toBeVisible({ timeout: 20_000 }); // TanStack default retries the 403 before isError
+      await expect(screen.locator('[data-slot="mastery-table"]')).toHaveCount(0);
+    } finally {
+      await page.unroute(refusal);
+    }
   });
 });
