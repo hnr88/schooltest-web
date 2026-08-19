@@ -64,7 +64,6 @@ export default async function EaldHome({ params }: EaldHomeProps) {
       <PublicBreadcrumb pathname="/eald" />
       <main id="main-content">
         <EaldHero
-          badge={t('home.hero.badge')}
           title={t('home.hero.title')}
           subtitle={t('home.hero.subtitle')}
           primaryCta={{ label: t('home.hero.primaryCta'), href: '#register' }}
