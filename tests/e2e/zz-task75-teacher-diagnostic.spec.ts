@@ -16,7 +16,19 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const TEACHER = roleCredentials('teacher');
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
-const FOREIGN_TEACHER = roleCredentials('teacher');
+/**
+ * A GENUINELY foreign teacher. This was `roleCredentials('teacher')` — the SAME
+ * ACCOUNT as TEACHER above — so the "foreign teacher is refused" assertion below
+ * was asking whether a teacher is refused their OWN class. Measured: `teacher`
+ * gets 200 on CLASS_ID, so `toBe(403)` could not pass. The alias was not
+ * carelessness: until teacher2 was seeded (schooltest-api 658a849) there was no
+ * other teacher in the database to point it at.
+ *
+ * teacher2 is in the SAME school on purpose. A teacher from another school
+ * would be refused for TENANCY reasons and this assertion would go green
+ * without proving anything about OWNERSHIP.
+ */
+const FOREIGN_TEACHER = roleCredentials('teacher2');
 const PARENT = roleCredentials('parent');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
