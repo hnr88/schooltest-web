@@ -81,14 +81,6 @@
         "suggestion": "두 번째와 세 번째 문단을 연결해 보세요. <mark>‘반면에’</mark>를 쓰면 대비가 더 분명해집니다."
       }
     },
-    "stats": {
-      "deliveredValue": "2.4M",
-      "deliveredLabel": "완료된 시험",
-      "accuracyValue": "98%",
-      "accuracyLabel": "채점 정확도",
-      "savedValue": "6 hrs",
-      "savedLabel": "교사별 주당 절약"
-    },
     "howItWorks": {
       "eyebrow": "이용 방법",
       "stepOneTitle": "시험 만들기",
@@ -111,7 +103,6 @@
       "capabilityEald": "Built for EAL/D",
       "capabilitySubskills": "25+ subskills",
       "capabilityAcara": "ACARA mapped",
-      "capabilityPsychometric": "Psychometrically valid",
       "capabilityClassroom": "Classroom-delivered",
       "whyTitle": "Why Schools Are Choosing SchoolTest",
       "uspOneName": "Diagnose",

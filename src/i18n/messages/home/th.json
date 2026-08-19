@@ -81,14 +81,6 @@
         "suggestion": "ลองเชื่อมย่อหน้าที่สองและสามเข้าด้วยกัน — <mark>\"ในทางกลับกัน\"</mark> จะทำให้เห็นความแตกต่างชัดเจนขึ้น"
       }
     },
-    "stats": {
-      "deliveredValue": "2.4M",
-      "deliveredLabel": "แบบทดสอบที่ส่งแล้ว",
-      "accuracyValue": "98%",
-      "accuracyLabel": "ความแม่นยำในการให้คะแนน",
-      "savedValue": "6 hrs",
-      "savedLabel": "ประหยัดต่อครูหนึ่งคน ต่อสัปดาห์"
-    },
     "howItWorks": {
       "eyebrow": "วิธีการทำงาน",
       "stepOneTitle": "สร้างแบบทดสอบของคุณ",
@@ -111,7 +103,6 @@
       "capabilityEald": "Built for EAL/D",
       "capabilitySubskills": "25+ subskills",
       "capabilityAcara": "ACARA mapped",
-      "capabilityPsychometric": "Psychometrically valid",
       "capabilityClassroom": "Classroom-delivered",
       "whyTitle": "Why Schools Are Choosing SchoolTest",
       "uspOneName": "Diagnose",

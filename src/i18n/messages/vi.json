@@ -81,14 +81,6 @@
         "suggestion": "Try linking your second and third paragraphs — <mark>\"on the other hand\"</mark> would make the contrast clearer."
       }
     },
-    "stats": {
-      "deliveredValue": "2.4M",
-      "deliveredLabel": "tests delivered",
-      "accuracyValue": "98%",
-      "accuracyLabel": "grading accuracy",
-      "savedValue": "6 hrs",
-      "savedLabel": "saved per teacher, weekly"
-    },
     "howItWorks": {
       "eyebrow": "How it works",
       "stepOneTitle": "Create your test",
@@ -185,7 +177,6 @@
       "capabilityEald": "Built for EAL/D",
       "capabilitySubskills": "25+ subskills",
       "capabilityAcara": "ACARA mapped",
-      "capabilityPsychometric": "Psychometrically valid",
       "capabilityClassroom": "Classroom-delivered",
       "whyTitle": "Why Schools Are Choosing SchoolTest",
       "uspOneName": "Diagnose",

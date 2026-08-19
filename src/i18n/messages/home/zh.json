@@ -81,14 +81,6 @@
         "suggestion": "试着衔接第二段和第三段——<mark>“另一方面”</mark> 能让对比更清晰。"
       }
     },
-    "stats": {
-      "deliveredValue": "2.4M",
-      "deliveredLabel": "已发放测试",
-      "accuracyValue": "98%",
-      "accuracyLabel": "评分准确率",
-      "savedValue": "6 hrs",
-      "savedLabel": "每位教师每周节省"
-    },
     "howItWorks": {
       "eyebrow": "使用方式",
       "stepOneTitle": "创建测试",
@@ -111,7 +103,6 @@
       "capabilityEald": "Built for EAL/D",
       "capabilitySubskills": "25+ subskills",
       "capabilityAcara": "ACARA mapped",
-      "capabilityPsychometric": "Psychometrically valid",
       "capabilityClassroom": "Classroom-delivered",
       "whyTitle": "Why Schools Are Choosing SchoolTest",
       "uspOneName": "Diagnose",

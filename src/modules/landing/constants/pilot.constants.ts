@@ -2,7 +2,11 @@ const PILOT_CAPABILITIES = [
   'pilot.capabilityEald',
   'pilot.capabilitySubskills',
   'pilot.capabilityAcara',
-  'pilot.capabilityPsychometric',
+  // 'pilot.capabilityPsychometric' (Psychometrically valid) REMOVED: this project's own
+  // CLIENT-CAVEATS records an UNSIGNED 2F Q-matrix row, derived per-statement keys, ~280
+  // hand-mapped distractor types, and NO sensitivity review and NO DIF study. Advertising
+  // psychometric validity while those stand would be the most misleading claim on the
+  // page. Restore it when a psychometrician has signed the matrix.
   'pilot.capabilityClassroom',
 ] as const;
 

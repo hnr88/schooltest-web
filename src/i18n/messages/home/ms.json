@@ -81,14 +81,6 @@
         "suggestion": "Cuba hubungkan perenggan kedua dan ketiga anda — <mark>\"sebaliknya\"</mark> akan menjadikan perbezaannya lebih jelas."
       }
     },
-    "stats": {
-      "deliveredValue": "2.4M",
-      "deliveredLabel": "ujian dihantar",
-      "accuracyValue": "98%",
-      "accuracyLabel": "ketepatan penggredan",
-      "savedValue": "6 hrs",
-      "savedLabel": "dijimatkan bagi setiap guru, setiap minggu"
-    },
     "howItWorks": {
       "eyebrow": "Cara ia berfungsi",
       "stepOneTitle": "Cipta ujian anda",
@@ -111,7 +103,6 @@
       "capabilityEald": "Built for EAL/D",
       "capabilitySubskills": "25+ subskills",
       "capabilityAcara": "ACARA mapped",
-      "capabilityPsychometric": "Psychometrically valid",
       "capabilityClassroom": "Classroom-delivered",
       "whyTitle": "Why Schools Are Choosing SchoolTest",
       "uspOneName": "Diagnose",

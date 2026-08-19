@@ -82,14 +82,6 @@
         "suggestion": "Hãy thử liên kết đoạn thứ hai và thứ ba — <mark>\"mặt khác\"</mark> sẽ làm rõ sự tương phản hơn."
       }
     },
-    "stats": {
-      "deliveredValue": "2.4M",
-      "deliveredLabel": "bài kiểm tra đã gửi",
-      "accuracyValue": "98%",
-      "accuracyLabel": "độ chính xác chấm điểm",
-      "savedValue": "6 hrs",
-      "savedLabel": "tiết kiệm cho mỗi giáo viên, mỗi tuần"
-    },
     "howItWorks": {
       "eyebrow": "Cách hoạt động",
       "stepOneTitle": "Tạo bài kiểm tra",
@@ -112,7 +104,6 @@
       "capabilityEald": "Built for EAL/D",
       "capabilitySubskills": "25+ subskills",
       "capabilityAcara": "ACARA mapped",
-      "capabilityPsychometric": "Psychometrically valid",
       "capabilityClassroom": "Classroom-delivered",
       "whyTitle": "Why Schools Are Choosing SchoolTest",
       "uspOneName": "Diagnose",

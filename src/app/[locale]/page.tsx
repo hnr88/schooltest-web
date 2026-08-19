@@ -13,7 +13,6 @@ import {
   LandingHeader,
   PilotPositioningSection,
   PricingSection,
-  StatsBand,
   TrustedByStrip,
   WhySchoolsSection,
 } from '@/modules/landing';
@@ -47,7 +46,11 @@ export default async function Home() {
         <FeaturesSection />
         <WhySchoolsSection />
         <FeatureDetailSection />
-        <StatsBand />
+        {/* StatsBand is NOT mounted: all three of its numbers were fabricated -
+            "2.4M tests delivered" (the live database holds 161 results), "98% grading
+            accuracy" (no accuracy study exists) and "6 hrs saved per teacher, weekly"
+            (invented). Same rule as TrustedByStrip: no statistic goes on this page until
+            someone can name its source. Re-mount it when the numbers are real. */}
         <HowItWorksSection />
         <PricingSection />
         <FaqSection />
