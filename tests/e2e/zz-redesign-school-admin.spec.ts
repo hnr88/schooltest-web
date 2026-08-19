@@ -1,16 +1,14 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { roleCredentials } from './helpers/credentials';
 
 // School admin dashboard redesign (tasks/aug-5-2026/school-admin-dashboard-redesign.md).
 // Drives the five redesigned surfaces against the REAL API on :5500 with the
 // seeded school_admin, asserting the spec's structure and copy — never a fixture.
 const en = loadMessages('en');
 
-const SCHOOL_ADMIN = {
-  email: 'schooladmin-a@schooltest.local',
-  password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!',
-};
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 
 const API = process.env.API_BASE_URL ?? 'http://127.0.0.1:5500';
 

@@ -1,6 +1,7 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 30 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Drives the C-CHD-02 v2 add form (email, first-language picklist, optional
@@ -10,7 +11,7 @@ import { cat, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 
 interface ChildRow {
   documentId: string;

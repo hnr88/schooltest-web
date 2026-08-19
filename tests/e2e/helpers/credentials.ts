@@ -17,17 +17,39 @@
  * entirely -> a clear error naming the variable, never a 400 from the server.
  */
 import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 
 let dotenvLoaded = false;
+
+/**
+ * Locate the SIBLING schooltest-api/.env (the source of truth for seed
+ * passwords). This repo has no copy of them. Walk up from this file to the web
+ * repo root (package.json), then across to ../schooltest-api/.env. On a clean
+ * checkout where the sibling does not exist, the walk returns null and the
+ * credential resolver FAILS LOUDLY naming the variable — which is the point.
+ */
+function findSiblingApiEnv(): string | null {
+  const here = dirname(__filename);
+  let dir = here;
+  for (let i = 0; i < 8; i += 1) {
+    if (existsSync(resolve(dir, 'package.json'))) {
+      const candidate = resolve(dir, '../schooltest-api/.env');
+      if (existsSync(candidate)) return candidate;
+      return null;
+    }
+    const parent = dirname(dir);
+    if (parent === dir) return null;
+    dir = parent;
+  }
+  return null;
+}
 
 /** Load sibling schooltest-api/.env once, merging only keys not already set. */
 function loadSiblingDotenv(): void {
   if (dotenvLoaded) return;
   dotenvLoaded = true;
-  // tests/e2e/helpers -> repo root -> sibling schooltest-api/.env
-  const envPath = resolve(__dirname, '../../../schooltest-api/.env');
-  if (!existsSync(envPath)) return;
+  const envPath = findSiblingApiEnv();
+  if (!envPath) return;
   const raw = readFileSync(envPath, 'utf8');
   for (const line of raw.split('\n')) {
     const trimmed = line.trim();

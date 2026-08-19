@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 79 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Report module vs the REAL C-4 payloads (task 50 semantics): the mixed-evidence
@@ -14,7 +15,7 @@ import { cat, icu, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
+const TEACHER = roleCredentials('teacher');
 
 // Live results settled in task 50 (plus one effort-invalid sitting).
 const MIXED = 'hvupac2i7ydbtu5zzcczznmm'; // R1-R3 assessed, R4-R7 "not_assessed"

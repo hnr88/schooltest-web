@@ -1,6 +1,7 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
-import { loginAsParent } from './helpers/auth';
+import { loginAsParent } from './helpers/auth'
+import { roleCredentials } from './helpers/credentials';;
 import { runSql } from './helpers/auth-db';
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
@@ -19,8 +20,8 @@ import { fixtureClassId } from './helpers/fixture-class';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
+const TEACHER = roleCredentials('teacher');
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const EMAIL_FIX_TYPE = 'student_email_fix_requested';
 

@@ -12,6 +12,7 @@
  */
 import { expect, type Page } from '@playwright/test';
 
+import { roleCredentials } from './credentials';
 import { cat, loadMessages } from './i18n';
 
 export type AppRole = 'ops' | 'schoolAdmin' | 'teacher';
@@ -21,36 +22,16 @@ interface Credential {
   readonly password: string;
 }
 
-// LOCAL SEED CREDENTIALS ONLY. These defaults mirror the SEED_*_PASSWORD values
-// the local seeder uses (schooltest-api/.env) so the suite runs out of the box
-// against a seeded stack. They are not production secrets and must never become
-// them — any real environment supplies E2E_*_EMAIL / E2E_*_PASSWORD instead.
-//
-// All three pairs were wrong until 2026-08-19 and every one failed at the login
-// form. Verified against POST /api/auth/local before committing:
-//   ops         admin@schooltest.local        old -> 400, new -> 200
-//   schoolAdmin schooladmin-a@schooltest.local old -> 400, new -> 200
-//   teacher     verify21@... (never existed)   old -> 400, new -> 200
+// Credentials resolve through the shared module (tests/e2e/helpers/credentials.ts):
+// E2E_<ROLE>_EMAIL/_PASSWORD from the environment, else the seeded SEED_*_PASSWORD
+// value from the sibling schooltest-api/.env. NO literal fallbacks — a missing
+// credential fails loudly naming the exact variable, never as a 400 from the
+// server. The historical defect (verify21@schooltest.local, a QA persona the
+// seeder never created) is what this mechanism exists to make impossible.
 export const ROLE_CREDENTIALS: Record<AppRole, Credential> = {
-  ops: {
-    email: process.env.E2E_OPS_EMAIL ?? 'admin@schooltest.local',
-    password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!',
-  },
-  schoolAdmin: {
-    email: process.env.E2E_SCHOOL_ADMIN_EMAIL ?? 'schooladmin-a@schooltest.local',
-    password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!',
-  },
-  teacher: {
-    // The default MUST be a seeded account. It was `verify21@schooltest.local`
-    // with password `Verify21!pw` — a hand-made QA persona from a task
-    // verification session that the seeder has never created. E2E_TEACHER_EMAIL
-    // is set nowhere, so that default always won and every spec signing in as a
-    // teacher failed at the login form. Measured 2026-08-19: POST /api/auth/local
-    // returns 400 ValidationError "Invalid identifier or password" for the old
-    // pair and a real JWT for this one.
-    email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local',
-    password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!',
-  },
+  ops: roleCredentials('ops'),
+  schoolAdmin: roleCredentials('schoolAdmin'),
+  teacher: roleCredentials('teacher'),
 };
 
 const MIN_LOGIN_INTERVAL_MS = 3100;

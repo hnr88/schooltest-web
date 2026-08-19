@@ -6,13 +6,12 @@
  * are read from the running Mailpit. Nothing is mocked and no row is inserted
  * behind the API's back.
  */
+import { roleCredentials } from './credentials';
+
 const API_BASE_URL =
   process.env.E2E_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:5500';
 
-const OPS = {
-  email: process.env.E2E_OPS_EMAIL ?? 'admin@schooltest.local',
-  password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!',
-};
+const OPS = roleCredentials('ops');
 
 /**
  * The ops JWT is minted ONCE per worker: the API allows 20 logins per minute per

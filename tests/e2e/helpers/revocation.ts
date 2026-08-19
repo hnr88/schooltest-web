@@ -7,13 +7,12 @@ import { runSql } from './auth-db';
 
 export { runSql };
 
+import { roleCredentials } from './credentials';
+
 const API_BASE_URL =
   process.env.E2E_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:5500';
 
-const SCHOOL_ADMIN = {
-  email: process.env.E2E_SCHOOL_ADMIN_EMAIL ?? 'schooladmin-a@schooltest.local',
-  password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!',
-};
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 
 export interface HttpResult {
   status: number;

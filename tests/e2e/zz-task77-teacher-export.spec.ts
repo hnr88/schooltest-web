@@ -5,6 +5,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 77 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // C-RPT-03 markdown LLM export (mvp spec 4.10): the API role matrix and
@@ -15,9 +16,9 @@ import { fixtureClassId } from './helpers/fixture-class';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const SCHOOL_ADMIN_B = { email: 'schooladmin-b@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_B_PASSWORD ?? 'SchoolAdmin1234!' };
-const PARENT = { email: 'parent@schooltest.local', password: process.env.E2E_PARENT_PASSWORD ?? 'Parent1234!' };
+const TEACHER = roleCredentials('teacher');
+const SCHOOL_ADMIN_B = roleCredentials('schoolAdminB');
+const PARENT = roleCredentials('parent');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 
 async function login(

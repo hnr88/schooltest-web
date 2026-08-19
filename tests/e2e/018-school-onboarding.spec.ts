@@ -5,13 +5,14 @@ import { expect, test, type APIRequestContext } from '@playwright/test';
 // step saves (C-ONB-02), localStorage restore on reload, completion
 // (C-ONB-03 -> JWT stored) and the used-link screen afterwards.
 
+import { roleCredentials } from './helpers/credentials';
+
 const API = process.env.E2E_API_URL ?? 'http://127.0.0.1:5500';
-const OPS_EMAIL = 'admin@schooltest.local';
-const OPS_PASSWORD = process.env.E2E_OPS_PASSWORD ?? 'Admin1234!';
+const OPS = roleCredentials('ops');
 
 async function mintOnboardingLink(request: APIRequestContext, runId: string) {
   const login = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: OPS_EMAIL, password: OPS_PASSWORD },
+    data: { identifier: OPS.email, password: OPS.password },
   });
   expect(login.ok()).toBeTruthy();
   const { jwt } = (await login.json()) as { jwt: string };

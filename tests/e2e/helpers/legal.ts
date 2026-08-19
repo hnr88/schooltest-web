@@ -4,6 +4,7 @@
  * Postgres probe re-exported from the shared auth-db helper.
  */
 import { runSql } from './auth-db';
+import { roleCredentials } from './credentials';
 
 export { runSql };
 
@@ -55,8 +56,7 @@ export async function fetchLegalDocument(slug: string, locale = 'en'): Promise<L
 
 /** Ops JWT from the seeded ops account — minted live, never stored in the repo. */
 async function opsJwt(): Promise<string> {
-  const identifier = process.env.E2E_OPS_EMAIL ?? 'admin@schooltest.local';
-  const password = process.env.E2E_OPS_PASSWORD ?? 'Admin1234!';
+  const { email: identifier, password } = roleCredentials('ops');
   const res = await fetch(`${API_BASE_URL}/api/auth/local`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

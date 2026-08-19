@@ -6,13 +6,12 @@ import { runSql } from './auth-db';
 
 export { runSql };
 
+import { roleCredentials } from './credentials';
+
 const API_BASE_URL =
   process.env.E2E_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:5500';
 
-const OPS = {
-  email: process.env.E2E_OPS_EMAIL ?? 'admin@schooltest.local',
-  password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!',
-};
+const OPS = roleCredentials('ops');
 
 export interface HttpResult {
   status: number;

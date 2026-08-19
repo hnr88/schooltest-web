@@ -3,6 +3,7 @@ import { execSync } from 'node:child_process';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 23 (st-mvp-pivot) targeted live checks — NOT part of the suite.
 // Full invitation loop through the real UI against the live stack:
@@ -18,8 +19,8 @@ const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
 const MAILPIT = 'http://127.0.0.1:8125';
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const TEACHER = { email: 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
+const TEACHER = roleCredentials('teacher');
 const SCHOOL_NAME = 'SchoolTest Demo School A';
 
 const RUN = Date.now();

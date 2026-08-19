@@ -2,6 +2,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 66 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Signs in as the seeded ops account, pulls C-OPS-01 directly from the API,
@@ -11,9 +12,9 @@ import { cat, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const OPS = { email: 'admin@schooltest.local', password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!' };
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
+const OPS = roleCredentials('ops');
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
+const TEACHER = roleCredentials('teacher');
 
 interface OpsSchool {
   documentId: string;

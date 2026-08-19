@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 65 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Test-day run sheet (mvp-updates §4.5 step 4): renders every required block
@@ -11,7 +12,7 @@ import { fixtureClassId } from './helpers/fixture-class';
 const en = loadMessages('en');
 const zh = loadMessages('zh');
 
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
+const TEACHER = roleCredentials('teacher');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const RUN_SHEET_URL = '/en/dashboard/teach/run-sheet';
 

@@ -4,6 +4,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 134 (st-mvp-pivot) — C-SIT-07 sitting history. Permanent spec: the
 // history table on the test-day page renders the class's real sittings, cell
@@ -14,7 +15,7 @@ import { fixtureClassId } from './helpers/fixture-class';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
+const TEACHER = roleCredentials('teacher');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const TEST_DAY_URL = `/en/dashboard/teach/classes/${CLASS_ID}/test-day`;
 

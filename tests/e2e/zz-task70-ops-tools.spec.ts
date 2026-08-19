@@ -3,6 +3,7 @@ import { expect, test, type APIRequestContext, type APIResponse, type Page } fro
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureFormId, fixtureUserId } from './helpers/fixture-ids';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 70 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // C-OPS-04: the three ops data surfaces. API level: the RDG-FT-A-79 inspection
@@ -13,8 +14,8 @@ import { fixtureFormId, fixtureUserId } from './helpers/fixture-ids';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const OPS = { email: 'admin@schooltest.local', password: process.env.E2E_OPS_PASSWORD ?? 'Admin1234!' };
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
+const OPS = roleCredentials('ops');
+const TEACHER = roleCredentials('teacher');
 // Seeded fixtures: form RDG-FT-A-79, teacher verify21, a session with 53 responses.
 const FORM_DOCUMENT_ID = fixtureFormId('RDG-FT-A-79');
 const TEACHER_DOCUMENT_ID = fixtureUserId(TEACHER.email);

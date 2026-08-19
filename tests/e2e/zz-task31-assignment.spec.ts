@@ -1,6 +1,7 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { cat, icu, loadMessages } from './helpers/i18n';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 31 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Drives the class detail assignment screen (C-CLS-03 full-replacement
@@ -11,8 +12,8 @@ import { cat, icu, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const SCHOOL_ADMIN_A = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const SCHOOL_ADMIN_B = { email: 'schooladmin-b@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_B_PASSWORD ?? 'SchoolAdmin1234!' };
+const SCHOOL_ADMIN_A = roleCredentials('schoolAdmin');
+const SCHOOL_ADMIN_B = roleCredentials('schoolAdminB');
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
 const TEACHER_KEPT = 'Vee Twentyone';
 const TEACHER_PROBE = 'Pat Teacher';

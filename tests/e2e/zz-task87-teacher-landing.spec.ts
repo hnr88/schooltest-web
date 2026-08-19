@@ -3,6 +3,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 87 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Teacher landing dashboard (C-TEACH-01, mvp-updates §4.9): sign-in lands the
@@ -15,8 +16,8 @@ import { fixtureClassId } from './helpers/fixture-class';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
+const TEACHER = roleCredentials('teacher');
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
 

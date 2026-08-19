@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
 import { skipWhenParentPortalMasked } from './helpers/parent-portal';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 25 (st-mvp-pivot) targeted live checks — NOT part of the suite.
 // Seeded credentials from .qa/DECISIONS.md D-04. Verifies:
@@ -10,9 +11,9 @@ import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 //  - the parent dashboard surface still renders unchanged
 const en = loadMessages('en');
 
-const TEACHER = { email: 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const PARENT = { email: 'parent@schooltest.local', password: process.env.E2E_PARENT_PASSWORD ?? 'Parent1234!' };
+const TEACHER = roleCredentials('teacher');
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
+const PARENT = roleCredentials('parent');
 
 async function signIn(page: Page, email: string, password: string): Promise<void> {
   await page.goto('/sign-in');

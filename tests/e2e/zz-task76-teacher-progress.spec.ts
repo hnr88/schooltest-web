@@ -3,6 +3,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 76 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Teacher progress panel (C-RPT-02): Test B measured against Test A as the
@@ -13,10 +14,10 @@ import { fixtureClassId } from './helpers/fixture-class';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = { email: process.env.E2E_TEACHER_EMAIL ?? 'teacher@schooltest.local', password: process.env.E2E_TEACHER_PASSWORD ?? 'Teacher1234!' };
-const SCHOOL_ADMIN = { email: 'schooladmin-a@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_PASSWORD ?? 'SchoolAdmin1234!' };
-const SCHOOL_ADMIN_B = { email: 'schooladmin-b@schooltest.local', password: process.env.E2E_SCHOOL_ADMIN_B_PASSWORD ?? 'SchoolAdmin1234!' };
-const PARENT = { email: 'parent@schooltest.local', password: process.env.E2E_PARENT_PASSWORD ?? 'Parent1234!' };
+const TEACHER = roleCredentials('teacher');
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
+const SCHOOL_ADMIN_B = roleCredentials('schoolAdminB');
+const PARENT = roleCredentials('parent');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4" (Sofia P. holds the A/B chain)
 // Orphan class with no school link: every school role 403s it.
 const UNOWNED_CLASS_ID = 'bsonh15b2ggwe2rpyuudvzfa';
