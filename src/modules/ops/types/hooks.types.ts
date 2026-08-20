@@ -1,4 +1,8 @@
-import type { OnboardingLinkResult, RevokeInvitationResult } from '@/modules/ops/types/school-invitation.types';
+import type {
+  OnboardingLinkResult,
+  RevokeInvitationResult,
+} from '@/modules/ops/types/school-invitation.types';
+import type { OpsSchoolAdminInviteMode } from '@/modules/ops/lib/ops-school-admin-invite';
 import type { UseMutationResult } from '@tanstack/react-query';
 
 export interface UseInvitationActionsInput {
@@ -9,5 +13,6 @@ export interface UseInvitationActionsInput {
 
 export interface UseOnboardSchoolFormInput {
   schoolDocumentId: string;
-  onDone: () => void;
+  mode: Exclude<OpsSchoolAdminInviteMode, 'onboarding_pending'>;
+  onDone: (email: string) => void;
 }

@@ -2,7 +2,6 @@ import {
   BarChart3,
   ClipboardList,
   FileChartColumn,
-  GitBranch,
   LayoutDashboard,
   LayoutGrid,
   School,
@@ -13,7 +12,6 @@ import {
   Timer,
   User,
   Users,
-  Wrench,
 } from 'lucide-react';
 
 import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
@@ -61,9 +59,7 @@ export const ACCOUNT_HREF = `${SCHOOL_HREF}/account`;
 export const OPS_HREF = '/dashboard/ops';
 
 export const OPS_SCHOOLS_HREF = `${OPS_HREF}/schools`;
-export const OPS_PIPELINE_HREF = `${OPS_HREF}/pipeline`;
 export const OPS_TIMERS_HREF = `${OPS_HREF}/timers`;
-export const OPS_TOOLS_HREF = `${OPS_HREF}/tools`;
 export const OPS_SETTINGS_HREF = `${OPS_HREF}/settings`;
 
 export const NAV_ITEMS: readonly NavItem[] = [
@@ -163,25 +159,9 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: [OPS_ROLE_TYPE],
   },
   {
-    labelKey: 'opsPipeline',
-    href: OPS_PIPELINE_HREF,
-    icon: GitBranch,
-    exact: false,
-    group: 'primary',
-    roles: [OPS_ROLE_TYPE],
-  },
-  {
     labelKey: 'opsTimers',
     href: OPS_TIMERS_HREF,
     icon: Timer,
-    exact: false,
-    group: 'primary',
-    roles: [OPS_ROLE_TYPE],
-  },
-  {
-    labelKey: 'opsTools',
-    href: OPS_TOOLS_HREF,
-    icon: Wrench,
     exact: false,
     group: 'primary',
     roles: [OPS_ROLE_TYPE],

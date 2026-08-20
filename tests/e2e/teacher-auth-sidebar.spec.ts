@@ -92,7 +92,7 @@ test.describe('flows 1-2 — teacher auth + sidebar scoping', () => {
     await expect(groupLabels(page)).toHaveCount(1);
     await expect(groupLabels(page)).toHaveText(cat(en, 'Shell.sidebar.groups.manage'));
 
-    await page.goto('/dashboard/ops/pipeline');
+    await page.goto('/dashboard/ops/timers');
     await expectExactRail(page, OPS_RAIL);
   });
 

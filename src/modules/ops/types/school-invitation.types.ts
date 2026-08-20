@@ -1,6 +1,7 @@
 import type { z } from 'zod';
 
 import type {
+  adminInvitationResultSchema,
   onboardingLinkResultSchema,
   revokeInvitationResultSchema,
   schoolInvitationSchema,
@@ -11,5 +12,6 @@ import type {
 // (mission st-ops-onboarding, C-SCH-04 v2 / C-SCH-05 / C-SCH-06 / C-SCH-07).
 
 export type OnboardingLinkResult = z.infer<typeof onboardingLinkResultSchema>;
+export type AdminInvitationResult = z.infer<typeof adminInvitationResultSchema>;
 export type RevokeInvitationResult = z.infer<typeof revokeInvitationResultSchema>;
 export type SchoolInvitation = z.infer<typeof schoolInvitationSchema>;

@@ -18,6 +18,10 @@ export interface OnboardSchoolInput extends OnboardSchoolValues {
   schoolDocumentId: string;
 }
 
+export interface InviteSchoolAdminInput extends OnboardSchoolValues {
+  schoolDocumentId: string;
+}
+
 export interface SchoolPlanInput {
   schoolDocumentId: string;
   plan: SchoolPlan;
@@ -26,11 +30,6 @@ export interface SchoolPlanInput {
 export interface OpsResitInput {
   sittingDocumentId: string;
   studentDocumentId: string;
-}
-
-export interface PipelineRetryInput {
-  queue: string;
-  jobId: string;
 }
 
 export interface SectionTimersState {

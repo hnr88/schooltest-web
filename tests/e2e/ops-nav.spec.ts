@@ -5,10 +5,8 @@ import { loginAs } from './helpers/roles';
 
 /**
  * Ops rail coverage. The console shipped with a single "Ops" nav entry, so
- * /dashboard/ops/tools and /dashboard/ops/settings had no inbound link anywhere
- * in the app and pipeline/timers hung off two ad-hoc text links buried in the
- * schools table header. Every spec before this one reached the surfaces by
- * typing the URL, which is exactly why the gap survived.
+ * The rail exposes only the product-facing ops surfaces. Internal pipeline and
+ * diagnostic tools stay out of primary navigation.
  *
  * This spec never calls page.goto for a console surface: it queries the rail and
  * clicks through, so a missing nav entry fails instead of being routed around.
@@ -22,9 +20,7 @@ const railLink = (page: Page, key: string) =>
 
 const OPS_SURFACES = [
   { key: 'opsSchools', href: '/dashboard/ops/schools', surface: 'ops-schools' },
-  { key: 'opsPipeline', href: '/dashboard/ops/pipeline', surface: 'ops-pipeline' },
   { key: 'opsTimers', href: '/dashboard/ops/timers', surface: 'ops-section-timers' },
-  { key: 'opsTools', href: '/dashboard/ops/tools', surface: 'ops-tools' },
   { key: 'opsSettings', href: '/dashboard/ops/settings', surface: 'ops-settings' },
 ] as const;
 
@@ -67,6 +63,13 @@ test.describe('ops sidebar navigation', () => {
 
     await page.waitForURL(/\/dashboard\/ops\/schools\/[^/]+$/, { timeout: 20_000 });
     await expect(railLink(page, 'opsSchools')).toHaveAttribute('data-active', /.*/);
+  });
+
+  test('pipeline and tools are not in the ops rail', async ({ page }) => {
+    await loginAs(page, 'ops');
+    await expect(railLink(page, 'opsSchools')).toBeVisible({ timeout: 20_000 });
+    await expect(railLink(page, 'opsPipeline')).toHaveCount(0);
+    await expect(railLink(page, 'opsTools')).toHaveCount(0);
   });
 
   test('the ad-hoc links the rail replaced are gone from the schools header', async ({ page }) => {

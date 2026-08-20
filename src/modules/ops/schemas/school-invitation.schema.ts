@@ -37,6 +37,14 @@ export const onboardingLinkResultSchema = z.strictObject({
   contact: onboardingContactSchema,
 });
 
+export const adminInvitationResultSchema = z.strictObject({
+  documentId: z.string(),
+  email: z.email(),
+  status: z.literal('invited'),
+  expires_at: z.string(),
+  invite_url: z.string(),
+});
+
 /** C-SCH-06 200. */
 export const revokeInvitationResultSchema = z.strictObject({
   documentId: z.string(),

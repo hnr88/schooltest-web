@@ -6,11 +6,7 @@ export { OpsOnboardSchoolDialog } from './components/OpsOnboardSchoolDialog';
 export { OpsStudentImport } from './components/OpsStudentImport';
 export { OpsSectionTimers } from './components/OpsSectionTimers';
 export { OpsFormWindow } from './components/OpsFormWindow';
-export { OpsPipelineHealth } from './components/OpsPipelineHealth';
 export { OpsSittingRecovery } from './components/OpsSittingRecovery';
-export { OpsFormInspection } from './components/OpsFormInspection';
-export { OpsRawExport } from './components/OpsRawExport';
-export { OpsViewAsTeacher } from './components/OpsViewAsTeacher';
 export { OpsPlatformSettings } from './components/OpsPlatformSettings';
 export { useOpsSchoolsQuery } from './queries/use-ops-schools.query';
 export { usePlatformSettingsQuery } from './queries/use-platform-settings.query';
@@ -20,6 +16,7 @@ export { useResendInvitationMutation } from './queries/use-resend-invitation.mut
 export { useRevokeInvitationMutation } from './queries/use-revoke-invitation.mutation';
 export type { OpsSchool, OpsSchoolsResponse } from './types/ops.types';
 export type {
+  AdminInvitationResult,
   OnboardingLinkResult,
   RevokeInvitationResult,
   SchoolInvitation,

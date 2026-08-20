@@ -146,10 +146,14 @@ test.describe('dashboard breadcrumbs', () => {
     await loginAs(page, 'ops');
 
     for (const [path, expected] of [
-      ['/dashboard/ops/schools', [en['Shell.topbar.dashboard'], en['Shell.nav.ops'], en['Navigation.opsSchools']]],
-      ['/dashboard/ops/pipeline', [en['Shell.topbar.dashboard'], en['Shell.nav.ops'], en['Navigation.opsPipeline']]],
-      ['/dashboard/ops/timers', [en['Shell.topbar.dashboard'], en['Shell.nav.ops'], en['Navigation.opsTimers']]],
-      ['/dashboard/ops/tools', [en['Shell.topbar.dashboard'], en['Shell.nav.ops'], en['Navigation.opsTools']]],
+      [
+        '/dashboard/ops/schools',
+        [en['Shell.topbar.dashboard'], en['Shell.nav.ops'], en['Navigation.opsSchools']],
+      ],
+      [
+        '/dashboard/ops/timers',
+        [en['Shell.topbar.dashboard'], en['Shell.nav.ops'], en['Navigation.opsTimers']],
+      ],
     ] as const) {
       await page.goto(path);
       expect(await crumbLabels(page, en['Shell.topbar.breadcrumbLabel']), path).toEqual([...expected]);

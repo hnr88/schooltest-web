@@ -27,9 +27,7 @@ export const TEACHER_RAIL: RailSpec = [
 // .qa/DECISIONS.md A4 keeps its holders on the ops rail — never the teacher trio.
 export const OPS_RAIL: RailSpec = [
   { key: 'Shell.nav.opsSchools', href: '/dashboard/ops/schools' },
-  { key: 'Shell.nav.opsPipeline', href: '/dashboard/ops/pipeline' },
   { key: 'Shell.nav.opsTimers', href: '/dashboard/ops/timers' },
-  { key: 'Shell.nav.opsTools', href: '/dashboard/ops/tools' },
   { key: 'Shell.nav.opsSettings', href: '/dashboard/ops/settings' },
 ];
 

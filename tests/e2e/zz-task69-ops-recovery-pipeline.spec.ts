@@ -7,11 +7,9 @@ import { fixtureSchoolId } from './helpers/fixture-ids';
 import { roleCredentials } from './helpers/credentials';
 
 // Task 69 (st-mvp-pivot) targeted live check — NOT part of the suite.
-// C-OPS-03: the pipeline page renders the live BullMQ queue counts and the R
-// badge straight from GET /api/ops/pipeline/health. C-OPS-02: from the ops
-// school detail, a real sitting (created + code-minted as the seeded teacher)
-// is invalidated end to end through the recovery panel; the API then confirms
-// the sitting is closed. Finally a teacher is bounced off the pipeline page.
+// C-OPS-02: from the ops school detail, a real sitting (created + code-minted
+// as the seeded teacher) is invalidated end to end through the recovery panel;
+// the API then confirms the sitting is closed.
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
@@ -20,14 +18,6 @@ const TEACHER = roleCredentials('teacher');
 // Seeded fixture class ("EAL/D Year 7 - Room 4") of SchoolTest Demo School A.
 const CLASS_DOCUMENT_ID = fixtureClassId();
 const SCHOOL_DOCUMENT_ID = fixtureSchoolId();
-
-interface QueueHealth {
-  name: string;
-  waiting: number;
-  active: number;
-  failed: number;
-  completed: number;
-}
 
 async function login(request: APIRequestContext, email: string, password: string): Promise<string> {
   return loginCached(request, API, { email, password });
@@ -56,37 +46,9 @@ async function signIn(page: Page, email: string, password: string, landing: stri
   await page.waitForURL(`**${landing}`, { timeout: 90_000 });
 }
 
-test.describe('task 69: ops pipeline health + sitting recovery', () => {
+test.describe('task 69: ops sitting recovery', () => {
   // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
   test.describe.configure({ timeout: 120_000 });
-  test('pipeline page renders the live queue counts and R badge', async ({ page, request }) => {
-    const jwt = await login(request, OPS.email, OPS.password);
-    const res = await apiGet(request, `${API}/api/ops/pipeline/health`, {
-      headers: { Authorization: `Bearer ${jwt}` },
-    });
-    expect(res.ok()).toBeTruthy();
-    const { data } = (await res.json()) as { data: { queues: QueueHealth[]; r_scoring: string } };
-    expect(data.queues).toHaveLength(4);
-
-    await signIn(page, OPS.email, OPS.password, '/dashboard/ops/schools');
-    await page.goto('/dashboard/ops/pipeline');
-
-    const surface = page.locator('[data-surface="ops-pipeline"]');
-    await expect(surface).toBeVisible({ timeout: 20_000 });
-    await expect(
-      surface.getByRole('heading', { name: cat(en, 'Ops.pipeline.title'), exact: true }),
-    ).toBeVisible();
-    await expect(
-      surface.locator('[data-surface="ops-pipeline-r-status"]'),
-    ).toHaveText(cat(en, data.r_scoring === 'up' ? 'Ops.pipeline.rUp' : 'Ops.pipeline.rDown'));
-
-    for (const queue of data.queues) {
-      const row = surface.locator(`[data-surface="ops-pipeline-queue-${queue.name}"]`);
-      await expect(row).toBeVisible();
-      await expect(row.getByText(String(queue.failed), { exact: true }).first()).toBeVisible();
-    }
-  });
-
   test('ops invalidates a live sitting end to end from the school detail', async ({
     page,
     request,
@@ -139,12 +101,5 @@ test.describe('task 69: ops pipeline health + sitting recovery', () => {
     expect(check.ok()).toBeTruthy();
     const body = (await check.json()) as { data: { status: string } };
     expect(body.data.status).toBe('closed');
-  });
-
-  test('teacher is bounced out of /dashboard/ops/pipeline', async ({ page }) => {
-    await signIn(page, TEACHER.email, TEACHER.password, '/dashboard');
-    await page.goto('/dashboard/ops/pipeline');
-    await page.waitForURL('**/dashboard/teach', { timeout: 30_000 });
-    await expect(page.locator('[data-surface="ops-pipeline"]')).toHaveCount(0);
   });
 });

@@ -18,18 +18,24 @@ import { useOnboardSchoolForm } from '@/modules/ops/hooks/use-onboard-school-for
 
 import type { OpsOnboardSchoolDialogProps } from '@/modules/ops/types/components.types';
 
-// C-SCH-04 (v2) — the spec's Onboard School modal: First name, Last name, Email
-// address, all required, with "Send Invitation to Onboard" as the CTA. `noValidate`
-// hands validation to Zod so the messages are ours and localised.
+// Shared school-admin invitation modal: first name, last name and email address
+// are required. `noValidate` hands validation to Zod so the messages are ours
+// and localised.
 export function OpsOnboardSchoolDialog({
   schoolDocumentId,
+  mode,
   open,
   onOpenChange,
+  onInvited,
 }: OpsOnboardSchoolDialogProps) {
   const t = useTranslations('Ops.onboard');
   const { form, submit, reset, isPending } = useOnboardSchoolForm({
     schoolDocumentId,
-    onDone: () => onOpenChange(false),
+    mode,
+    onDone: (email) => {
+      onInvited?.(email);
+      onOpenChange(false);
+    },
   });
   const { errors } = form.formState;
 
@@ -96,7 +102,12 @@ export function OpsOnboardSchoolDialog({
             />
           </FieldShell>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => close(false)} disabled={isPending}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => close(false)}
+              disabled={isPending}
+            >
               {t('cancel')}
             </Button>
             <Button type="submit" loading={isPending}>

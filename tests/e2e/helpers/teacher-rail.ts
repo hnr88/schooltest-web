@@ -29,12 +29,10 @@ export const TEACHER_RAIL_NAV = [
   ...TEACHER_NAV,
 ] as const;
 
-// The ops console rail (role 'ops'): five destinations under "Manage".
+// The ops console rail after removing the Pipeline and Tools surfaces.
 export const OPS_NAV = [
   { key: 'Shell.nav.opsSchools', href: '/dashboard/ops/schools' },
-  { key: 'Shell.nav.opsPipeline', href: '/dashboard/ops/pipeline' },
   { key: 'Shell.nav.opsTimers', href: '/dashboard/ops/timers' },
-  { key: 'Shell.nav.opsTools', href: '/dashboard/ops/tools' },
   { key: 'Shell.nav.opsSettings', href: '/dashboard/ops/settings' },
 ] as const;
 

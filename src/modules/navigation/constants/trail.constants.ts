@@ -69,9 +69,7 @@ export const TRAIL_LABELS: Readonly<Record<string, string>> = {
   // --- ops console ----------------------------------------------------------
   '/dashboard/ops': 'Shell.nav.ops',
   '/dashboard/ops/schools': 'Navigation.opsSchools',
-  '/dashboard/ops/pipeline': 'Navigation.opsPipeline',
   '/dashboard/ops/timers': 'Navigation.opsTimers',
-  '/dashboard/ops/tools': 'Navigation.opsTools',
   '/dashboard/ops/users': 'Navigation.opsUsers',
   '/dashboard/ops/invitations': 'Navigation.opsInvitations',
   '/dashboard/ops/content': 'Navigation.opsContent',

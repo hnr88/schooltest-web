@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { useOnboardSchoolMutation } from '@/modules/ops/queries/use-onboard-school.mutation';
+import { useInviteSchoolAdminMutation } from '@/modules/ops/queries/use-invite-school-admin.mutation';
 import {
   createOnboardSchoolSchema,
   type OnboardSchoolValues,
@@ -17,14 +18,20 @@ import type { UseOnboardSchoolFormInput } from '@/modules/ops/types/hooks.types'
 import { DEFAULT_VALUES } from '@/modules/ops/constants/hooks.constants';
 
 /**
- * C-SCH-04 (v2) submit handling for the Onboard School modal. Keeps the dialog
- * dumb: the form wiring, the 409 mapping and the toasts live here.
+ * Submit handling for both the initial onboarding invite and a regular
+ * post-onboarding school-admin invite. Keeps the dialog dumb: the form wiring,
+ * the 409 mapping and the toasts live here.
  */
-export function useOnboardSchoolForm({ schoolDocumentId, onDone }: UseOnboardSchoolFormInput) {
+export function useOnboardSchoolForm({
+  schoolDocumentId,
+  mode,
+  onDone,
+}: UseOnboardSchoolFormInput) {
   const t = useTranslations('Ops.onboard');
   const tv = useTranslations('Ops.onboard.validation');
   const schema = useMemo(() => createOnboardSchoolSchema(tv), [tv]);
   const onboard = useOnboardSchoolMutation();
+  const inviteAdmin = useInviteSchoolAdminMutation();
 
   const form = useForm<OnboardSchoolValues, unknown, OnboardSchoolValues>({
     resolver: zodResolver(schema),
@@ -38,10 +45,14 @@ export function useOnboardSchoolForm({ schoolDocumentId, onDone }: UseOnboardSch
       // Awaited, so a 409 can still land inline on the open form. The panel
       // keeps the dialog mounted across the status flip this triggers, so
       // closing afterwards still runs the primitive's own close cleanup.
-      await onboard.mutateAsync({ schoolDocumentId, ...values });
+      if (mode === 'onboarding') {
+        await onboard.mutateAsync({ schoolDocumentId, ...values });
+      } else {
+        await inviteAdmin.mutateAsync({ schoolDocumentId, ...values });
+      }
       toast.success(t('successToast', { email: values.contact_email }));
       reset();
-      onDone();
+      onDone(values.contact_email);
     } catch (error) {
       // 409 = the school already holds an active invitation. It belongs on the
       // form, not in a toast, because the ops user has to revoke first.
@@ -53,5 +64,6 @@ export function useOnboardSchoolForm({ schoolDocumentId, onDone }: UseOnboardSch
     }
   });
 
-  return { form, submit, reset, isPending: onboard.isPending };
+  const isPending = mode === 'onboarding' ? onboard.isPending : inviteAdmin.isPending;
+  return { form, submit, reset, isPending };
 }

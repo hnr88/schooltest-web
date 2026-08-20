@@ -1,5 +1,4 @@
 import type {
-  ClassDetailStudent,
   ClassDetailTeacher,
   StudentTestResult,
   TestSlot,
@@ -31,11 +30,6 @@ export function testFor(
   slot: TestSlot,
 ): StudentTestResult | null {
   return tests.find((test) => test.test_id === slot) ?? null;
-}
-
-/** A row is only a link when there is something to drill into (spec §"Student Table"). */
-export function hasAnyTestStarted(student: ClassDetailStudent): boolean {
-  return student.tests.some((test) => test.status !== 'not_started');
 }
 
 /** Score cell: the measured value, or the spec's em dash when there is none. */
