@@ -26,30 +26,55 @@ test.describe('edit class modal (spec §1)', () => {
   // back unconditionally, whatever happened.
   let original: { name: string; teacherDocumentId: string } | null = null;
 
+  /**
+   * THE FIXTURE OWNER IS CHECKED, NOT INFERRED (D-13).
+   *
+   * This spec used to take "original" from whatever the database happened to
+   * hold, which made the teardown SELF-POISONING. On 2026-08-19 at 12:46 the
+   * restore PATCH returned 401 after a 60-second hang and never landed; from
+   * then on every run read the corrupted state as its "original" and faithfully
+   * restored the corruption. A ratchet: the fixture could be knocked out of
+   * true exactly once and could never come back. It stayed wrong for 26 hours,
+   * owned by a throwaway `e2e-scoping-*` account, and while it was wrong the
+   * class was absent from `teacher@`'s dashboard entirely — so the 22 API specs
+   * pinned on `classes[0]` were indexing a different class while staying GREEN.
+   *
+   * The seed now repairs the link (`schooltest-api/src/bootstrap/seed-users.ts`,
+   * `repairStarterClassTeacher`), but a repair alone leaves the pawl in place:
+   * the next run of THIS spec would adopt the corruption again. So the
+   * precondition is checked here. A test that silently accepts a broken
+   * precondition cannot detect a broken precondition.
+   *
+   * WHY `first_name` AND NOT `email`. `classDetailTeacherSchema` is a
+   * `z.strictObject` exposing only `documentId`, `first_name` and `last_name`
+   * (`src/modules/classes/schemas/class-detail.schema.ts:50-54`) — there is no
+   * `email` on this payload, so an email assertion here would compare
+   * `undefined` and fail on EVERY run, including healthy ones. That is a broken
+   * harness wearing a finding's clothes, and it is the shape this check is
+   * guarding against, so it would have been a poor way to write it.
+   *
+   * Every throwaway teacher is stamped `first_name: 'E2E'` by the shared helper
+   * (`tests/e2e/helpers/revocation.ts:80`), which is precisely the population
+   * that leaks into this class. So the guard tests the thing that actually goes
+   * wrong, using a field the contract really carries.
+   */
+  const THROWAWAY_MARKER = 'E2E';
+
   test.beforeAll(async ({ request }) => {
     const before = await apiClassDetail(request, await schoolAdminJwt(request));
+    // FAIL LOUDLY on a dirty fixture rather than baking it in as the baseline.
+    // If this fires, do NOT relax it — the fixture is wrong, and the seed will
+    // repair it on the next boot (ask L1, who owns restarts, for one).
+    expect(
+      before.teacher?.first_name ?? '(no teacher)',
+      'fixture class must NOT be owned by a throwaway e2e teacher before this spec mutates it — '
+        + 'a foreign owner means an earlier run failed to restore (D-13), and capturing it as '
+        + '"original" would make this teardown cement the corruption permanently',
+    ).not.toBe(THROWAWAY_MARKER);
     original = {
       name: before.name ?? '',
       teacherDocumentId: before.teacher?.documentId ?? '',
     };
-  });
-
-  test.afterAll(async ({ request }) => {
-    if (!original) return;
-    const jwt = await schoolAdminJwt(request);
-    const current = await apiClassDetail(request, jwt);
-    const dirty =
-      current.name !== original.name ||
-      (current.teacher?.documentId ?? '') !== original.teacherDocumentId;
-    if (!dirty) return;
-    const res = await request.patch(`${API}/api/schools/me/classes/${FIXTURE_CLASS_ID}`, {
-      headers: { Authorization: `Bearer ${jwt}` },
-      data: {
-        name: original.name,
-        teacher_documentIds: original.teacherDocumentId ? [original.teacherDocumentId] : [],
-      },
-    });
-    expect(res.status(), `fixture restore -> ${await res.text()}`).toBe(200);
   });
 
   test('flow 6: the modal pre-fills the name and offers ONE teacher select', async ({ page }) => {
