@@ -49,3 +49,7 @@ next-env.d.ts
 .qa/heartbeat
 .qa/screenshots/
 .qa/nohup.out
+
+# Codephant mission state / agent run artefacts — never track.
+.codephant/
+.thellmspace/
