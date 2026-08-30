@@ -1,4 +1,10 @@
-import type { ClassSitting, MonitorRowState, MonitorStudent, SittingMonitor, SittingStatus } from '@/modules/test-day/types/test-day.types';
+import type {
+  ClassSitting,
+  MonitorRowState,
+  MonitorStudent,
+  SittingMonitor,
+  SittingStatus,
+} from '@/modules/test-day/types/test-day.types';
 
 export interface AbsentToggleProps {
   studentName: string;
@@ -63,6 +69,7 @@ export interface SittingSummaryPanelProps {
 
 export interface StartSittingControlsProps {
   pending: boolean;
+  disabled: boolean;
   error: boolean;
   onStart: () => void;
 }

@@ -19,7 +19,12 @@ const PARENT = roleCredentials('parent');
 // Seeded school behind schooladmin-a (cross-checked: GET /api/schools/me).
 const SCHOOL_NAME = 'SchoolTest Demo School A';
 
-async function signIn(page: Page, email: string, password: string, finalUrl: string): Promise<void> {
+async function signIn(
+  page: Page,
+  email: string,
+  password: string,
+  finalUrl: string,
+): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
@@ -41,7 +46,9 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     await page.goto('/dashboard/school/account');
     const details = page.locator('[data-slot="account-details-card"]');
     await expect(details).toBeVisible({ timeout: 20_000 });
-    await expect(details.getByText(cat(en, 'SchoolAdmin.accountStatus.active'), { exact: true })).toBeVisible();
+    await expect(
+      details.getByText(cat(en, 'SchoolAdmin.accountStatus.active'), { exact: true }),
+    ).toBeVisible();
     await expect(
       details.getByText(cat(en, 'SchoolAdmin.onboardingStatus.not_started'), { exact: true }),
     ).toBeVisible();
@@ -62,16 +69,18 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     await expect(page.locator('[data-surface="teacher-home"]')).toHaveCount(0);
   });
 
-  test('teacher: /dashboard redirects to /dashboard/teach; school section bounces', async ({
+  test('teacher: /dashboard renders the teacher dashboard; school section bounces', async ({
     page,
   }) => {
     await signIn(page, TEACHER.email, TEACHER.password, '/dashboard');
-    await expect(page.locator('[data-surface="teacher-home"]')).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('[data-surface="teacher-dashboard"]')).toBeVisible({
+      timeout: 20_000,
+    });
 
-    // SchoolAdminGuard bounces a teacher to /dashboard, whose role gate hands
-    // them straight back to their own section.
+    // SchoolAdminGuard bounces a teacher to the role-filtered dashboard.
     await page.goto('/dashboard/school');
-    await page.waitForURL('**/dashboard/teach', { timeout: 20_000 });
+    await page.waitForURL('**/dashboard', { timeout: 20_000 });
+    await expect(page.locator('[data-surface="teacher-dashboard"]')).toBeVisible();
     await expect(page.locator('[data-surface="school-admin-home"]')).toHaveCount(0);
   });
 

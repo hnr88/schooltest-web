@@ -3,7 +3,8 @@ import { expect, test, type APIRequestContext, type Locator, type Page } from '@
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, escapeRegExp, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureStudentId } from './helpers/fixture-ids';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 139 (st-mvp-pivot) — C-SIT-08 test-day summary panel. Permanent spec:
 // a full end-of-test-day flow runs against the live stack (start a sitting,
@@ -21,11 +22,11 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local'; // joins so close leaves one sat
-const BETA_ID = 'zkko2okpnsolmt6m1zg7aqh0'; // Import Beta carries the absent flag
+const ABSENT_STUDENT_ID = fixtureStudentId('Ahmed', 'Hassan');
 const TEST_DAY_URL = `/en/dashboard/teach/classes/${CLASS_ID}/test-day`;
 
 interface SittingRow {
@@ -79,10 +80,26 @@ async function closeOpenSittings(request: APIRequestContext, jwt: string): Promi
 // Teacher create (C-SITTING-CREATE): the server forces status open + null code
 // and resolves the form itself — the same body the UI's start button posts.
 async function createSitting(request: APIRequestContext, jwt: string): Promise<string> {
+  const tests = await fetchWithRetry(() =>
+    request.get(`${API}/api/teacher/tests`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
+  );
+  expect(tests.ok(), await tests.text()).toBeTruthy();
+  const formDocumentId = ((await tests.json()) as { tests: Array<{ form_document_id: string }> })
+    .tests[0]?.form_document_id;
+  expect(formDocumentId, 'C-TD-2 serves Test A').toBeTruthy();
   const res = await fetchWithRetry(() =>
     request.post(`${API}/api/sittings`, {
       headers: { Authorization: `Bearer ${jwt}` },
-      data: { data: { class_document_id: CLASS_ID, mode: 'progress', skill: 'reading' } },
+      data: {
+        data: {
+          class_document_id: CLASS_ID,
+          mode: 'progress',
+          skill: 'reading',
+          form_document_id: formDocumentId,
+        },
+      },
     }),
   );
   expect(res.ok()).toBeTruthy();
@@ -104,7 +121,19 @@ async function mintCode(
   return ((await res.json()) as { code: string }).code;
 }
 
-// C-SIT-06: set/clear Import Beta's absent flag on the sitting.
+async function ensureSofiaEmail(request: APIRequestContext): Promise<void> {
+  const jwt = await loginCached(request, API, SCHOOL_ADMIN);
+  const studentId = fixtureStudentId('Sofia', 'Petrov');
+  const res = await fetchWithRetry(() =>
+    request.patch(`${API}/api/schools/me/children/${studentId}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+      data: { email: SOFIA_EMAIL },
+    }),
+  );
+  expect(res.ok(), await res.text()).toBeTruthy();
+}
+
+// C-SIT-06: set/clear a real roster learner's absent flag on the sitting.
 async function setBetaAbsent(
   request: APIRequestContext,
   jwt: string,
@@ -114,7 +143,7 @@ async function setBetaAbsent(
   const res = await fetchWithRetry(() =>
     request.post(`${API}/api/sittings/${sittingDocumentId}/absent`, {
       headers: { Authorization: `Bearer ${jwt}` },
-      data: { student_documentId: BETA_ID, absent },
+      data: { student_documentId: ABSENT_STUDENT_ID, absent },
     }),
   );
   expect(res.ok()).toBeTruthy();
@@ -188,25 +217,25 @@ test.describe('C-SIT-08: test-day summary panel vs live API', () => {
     request,
   }) => {
     const jwt = await loginCached(request, API, TEACHER);
+    await ensureSofiaEmail(request);
 
     // Arrange: no open sitting left over, a fresh open sitting with a minted
-    // code, Sofia joined and Import Beta absent — so close terminates Sofia's
+    // code, Sofia joined and Ahmed absent — so close terminates Sofia's
     // session and the rollup reads sat 1 / absent 1.
     await closeOpenSittings(request, jwt);
     const sittingId = await createSitting(request, jwt);
     const code = await mintCode(request, jwt, sittingId);
-    await setBetaAbsent(request, jwt, sittingId, false); // reruns stay idempotent
-    await joinAsSofia(request, code);
-    await setBetaAbsent(request, jwt, sittingId, true);
-
     try {
+      await setBetaAbsent(request, jwt, sittingId, false); // reruns stay idempotent
+      await joinAsSofia(request, code);
+      await setBetaAbsent(request, jwt, sittingId, true);
       // Act: end the test day, then read the API truth for the final rollup.
       await closeSitting(request, jwt, sittingId);
       const summary = await getSummary(request, jwt, sittingId);
       expect(summary.sitting.status).toBe('closed');
       expect(summary.sitting.code).toBe(code);
       expect(summary.sat).toBe(1); // Sofia's session terminated at close
-      expect(summary.absent).toBe(1); // Import Beta
+      expect(summary.absent).toBe(1); // Ahmed
 
       await signIn(page);
       await page.goto(TEST_DAY_URL);
@@ -249,7 +278,7 @@ test.describe('C-SIT-08: test-day summary panel vs live API', () => {
       // No error surface leaks on the happy path.
       await expect(panel.locator('[role="alert"]')).toHaveCount(0);
     } finally {
-      // Tidy: Beta not absent, every sitting for the class closed — the same
+      // Tidy: Ahmed not absent, every sitting for the class closed — the same
       // fixture shape the next run (and other specs) rely on.
       await setBetaAbsent(request, jwt, sittingId, false);
       await closeOpenSittings(request, jwt);
@@ -299,9 +328,9 @@ test.describe('C-SIT-08: test-day summary panel vs live API', () => {
       // The screen settles into its no-sitting empty state...
       const screen = page.locator('[data-surface="teacher-test-day"]');
       await expect(screen).toBeVisible({ timeout: 30_000 });
-      await expect(
-        screen.getByText(cat(en, 'TestDay.emptyTitle'), { exact: true }),
-      ).toBeVisible({ timeout: 30_000 });
+      await expect(screen.getByText(cat(en, 'TestDay.emptyTitle'), { exact: true })).toBeVisible({
+        timeout: 30_000,
+      });
 
       // ...the summary panel never mounts, and no error UI surfaces (neither
       // an inline alert nor an error toast).

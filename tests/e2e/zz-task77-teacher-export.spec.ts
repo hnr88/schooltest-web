@@ -5,7 +5,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 77 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // C-RPT-03 markdown LLM export (mvp spec 4.10): the API role matrix and
@@ -16,7 +16,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN_B = roleCredentials('schoolAdminB');
 const PARENT = roleCredentials('parent');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
@@ -31,9 +31,7 @@ async function login(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
@@ -130,17 +128,18 @@ test.describe('task 77: markdown LLM export (C-RPT-03)', () => {
     }
     expect(body).toContain('Emma L.'); // the footer naming-convention note
 
-    // Test B categories once sat: Sofia's A -> B movement lines.
-    const sofiaProgress = progress.students.find((row) => row.student_ref === 'Sofia P.');
-    expect(sofiaProgress).toBeTruthy();
+    // Test B categories once sat: one live A -> B movement chain.
+    const compared = progress.students[0];
+    expect(compared).toBeTruthy();
+    expect(body).toContain(`### ${compared.student_ref}`);
     expect(body).toContain(
-      `Movement from Test A (${progress.benchmark_form}) to Test B (${progress.progress_form}), ${sofiaProgress!.weeks_between} weeks apart:`,
+      `Movement from Test A (${progress.benchmark_form}) to Test B (${progress.progress_form}), ${compared.weeks_between} weeks apart:`,
     );
-    for (const transition of sofiaProgress!.transitions) {
+    for (const transition of compared.transitions) {
       expect(body).toContain(`- ${transition.statement}`);
     }
     const missingAreas = progress.not_assessed
-      .filter((row) => row.student_ref === 'Sofia P.')
+      .filter((row) => row.student_ref === compared.student_ref)
       .map((row) => AREA_NAMES[row.attribute] ?? row.attribute);
     if (missingAreas.length > 0) {
       expect(body).toContain(`- Not assessed on one or both tests: ${missingAreas.join(', ')}`);

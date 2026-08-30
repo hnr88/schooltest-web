@@ -48,6 +48,8 @@ export const TRAIL_LABELS: Readonly<Record<string, string>> = {
   '/dashboard/search/agents': 'Navigation.searchAgents',
   '/dashboard/search/schools': 'Navigation.searchSchools',
   '/dashboard/settings': 'Shell.nav.settings',
+  '/dashboard/results': 'Shell.nav.results',
+  '/dashboard/test-sessions': 'Shell.nav.testSessions',
   // --- school admin ---------------------------------------------------------
   '/dashboard/school': 'Shell.nav.school',
   '/dashboard/school/account': 'Shell.nav.account',
@@ -92,6 +94,9 @@ export const TRAIL_RECORD_PATTERNS: readonly string[] = [
   '/dashboard/school/classes/[documentId]/students/[studentDocumentId]',
   '/dashboard/teach/classes/[documentId]',
   '/dashboard/teach/results/[classId]',
+  '/dashboard/results/[classDocumentId]',
+  '/dashboard/results/[classDocumentId]/students/[studentDocumentId]',
+  '/dashboard/test-sessions/[sittingDocumentId]',
   '/dashboard/ops/schools/[documentId]',
   '/invite/[token]',
   '/school-onboarding/[token]',

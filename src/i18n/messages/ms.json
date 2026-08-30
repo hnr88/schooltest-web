@@ -1760,11 +1760,13 @@
     "supplementaryDescription": "Ketepatan mengikut jalur daripada tugasan kosa kata tambahan. Ia dilaporkan bersebelahan model, bukan di dalamnya: ia bukan atribut yang dimodelkan, tidak masuk ke dalam model penguasaan, dan tiada skor potong dikenakan padanya.",
     "supplementaryBands": {
       "a2": "Ketepatan jalur A2",
-      "b1": "Ketepatan jalur B1"
+      "b1": "Ketepatan jalur B1",
+      "b2": "Ketepatan jalur B2"
     },
     "supplementaryBandSource": {
       "a2": "Kadar jawapan betul bagi tugasan kosa kata Peringkat 1 dalam sesi ini.",
-      "b1": "Kadar jawapan betul bagi untaian padanan sinonim Peringkat 2 dalam sesi ini."
+      "b1": "Kadar jawapan betul bagi untaian padanan sinonim Peringkat 2 dalam sesi ini.",
+      "b2": "Kadar jawapan betul bagi untaian kosa kata tambahan B2 yang ditadbir bersama Peringkat 3."
     },
     "supplementaryAccuracyLabel": "Ketepatan jalur",
     "supplementaryNotAdministered": "Tidak ditadbir",
@@ -1879,7 +1881,8 @@
     "resultStatus": {
       "scoring": "Sedang dimarkah",
       "partial_pending": "Sebahagian tertunda",
-      "complete": "Selesai"
+      "complete": "Selesai",
+      "scoring_failed": "Pemarkahan gagal"
     }
   },
   "SchoolOnboarding": {

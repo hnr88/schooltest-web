@@ -114,7 +114,14 @@ const MONITOR = {
     variant: 'A',
   },
   stall_threshold_minutes: 5,
-  summary: { expected: 4, joined: 1, in_progress: 1, submitted: 1, stalled: 1 },
+  summary: {
+    expected: 4,
+    joined: 1,
+    in_progress: 1,
+    submitted: 1,
+    stalled: 1,
+    scoring_failed: 0,
+  },
   students: [
     {
       ...STUDENT_REF,
@@ -122,9 +129,34 @@ const MONITOR = {
       stage: null,
       total_stages: null,
       inactive_minutes: null,
+      proctoring: null,
     },
-    { ...STUDENT_REF, state: 'in_progress', stage: 2, total_stages: 3, inactive_minutes: null },
-    { ...STUDENT_REF, state: 'stalled', stage: 1, total_stages: 3, inactive_minutes: 8 },
+    {
+      ...STUDENT_REF,
+      state: 'in_progress',
+      stage: 2,
+      total_stages: 3,
+      inactive_minutes: null,
+      proctoring: {
+        count_by_severity: { info: 1, warn: 0, flag: 0 },
+        latest: [
+          {
+            kind: 'focus_lost',
+            severity: 'info',
+            occurred_at: NOW,
+            detail: 'Focus reminder shown',
+          },
+        ],
+      },
+    },
+    {
+      ...STUDENT_REF,
+      state: 'stalled',
+      stage: 1,
+      total_stages: 3,
+      inactive_minutes: 8,
+      proctoring: null,
+    },
   ],
 };
 

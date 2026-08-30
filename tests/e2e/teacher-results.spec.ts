@@ -3,7 +3,7 @@ import path from 'node:path';
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat } from './helpers/i18n';
-import { en, SCREENSHOTS } from './helpers/teacher-rail';
+import { en, SCREENSHOTS, signInTeacher } from './helpers/teacher-rail';
 import {
   openFirstClass,
   openResultsList,
@@ -111,7 +111,11 @@ test('flow 14 — rows print the server status, score and ACARA level per test',
   // DOM = API = Postgres on the newest completed test of the first student: the
   // ACARA level in the cell is the phase the `results` row actually persists.
   const first = live.detail.students[0];
-  const drill = await readDrillDownLive(playwright, live.detail.class.document_id, first.student_document_id);
+  const drill = await readDrillDownLive(
+    playwright,
+    live.detail.class.document_id,
+    first.student_document_id,
+  );
   const latest = drill.tests[0];
   expect(latest, `[e2e] ${first.display_name} has no completed test`).toBeTruthy();
   const cell = latest.variant === 'A' ? first.test_a : first.test_b;
@@ -153,41 +157,60 @@ test('flow 15 — clicking a row opens subskill tiles with the likelihood %', as
   });
 });
 
-test('flow 16 — tile colour follows the SERVER band, green/amber/red', async ({ playwright }) => {
+test('flow 16 — tile colour follows the SERVER band, green/amber/red', async ({
+  browser,
+  playwright,
+}) => {
   const configBands = activeConfigBands();
   const seen = new Map<string, string>();
   const wanted = ['mastered', 'approaching', 'not_yet'];
+  const bandTeacherEmail = 'teacher@schooltest.local';
+  const bandLive = await readLiveResults(playwright, bandTeacherEmail);
+  const bandPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await signInTeacher(bandPage, bandTeacherEmail);
 
   // Walk the teacher's real roster until every band has been PAINTED at least
   // once; no seeded student is assumed to hold all three.
-  for (const owned of live.classes) {
-    const roster = await readClassStudentsLive(playwright, owned.class_document_id);
-    for (const student of roster.students) {
-      const drill = await readDrillDownLive(
+  try {
+    for (const owned of bandLive.classes) {
+      const roster = await readClassStudentsLive(
         playwright,
         owned.class_document_id,
-        student.student_document_id,
+        bandTeacherEmail,
       );
-      if (drill.tests.length === 0) continue;
+      for (const student of roster.students) {
+        const drill = await readDrillDownLive(
+          playwright,
+          owned.class_document_id,
+          student.student_document_id,
+          bandTeacherEmail,
+        );
+        if (drill.tests.length === 0) continue;
 
-      // The cuts the page prints are the ACTIVE Config row's, echoed by C-TR-2.
-      expect(drill.bands).toEqual(configBands);
-      await openDrillDown(page, owned.class_document_id, student.student_document_id);
-      const legend = page.locator('[data-slot="mastery-legend"]').first();
-      await expect(legend).toHaveAttribute('data-mastered-cut', `${configBands.mastered_cut}`);
-      await expect(legend).toHaveAttribute('data-approaching-cut', `${configBands.approaching_cut}`);
+        // The cuts the page prints are the ACTIVE Config row's, echoed by C-TR-2.
+        expect(drill.bands).toEqual(configBands);
+        await openDrillDown(bandPage, owned.class_document_id, student.student_document_id);
+        const legend = bandPage.locator('[data-slot="mastery-legend"]').first();
+        await expect(legend).toHaveAttribute('data-mastered-cut', `${configBands.mastered_cut}`);
+        await expect(legend).toHaveAttribute(
+          'data-approaching-cut',
+          `${configBands.approaching_cut}`,
+        );
 
-      await expectTilesPaintedByServerBand(page, drill, seen);
-      if (wanted.every((band) => seen.has(band))) {
-        await page.screenshot({
-          path: path.join(SCREENSHOTS, 'flow-16-tile-colour-bands.png'),
-          animations: 'disabled',
-          fullPage: true,
-        });
-        break;
+        await expectTilesPaintedByServerBand(bandPage, drill, seen);
+        if (wanted.every((band) => seen.has(band))) {
+          await bandPage.screenshot({
+            path: path.join(SCREENSHOTS, 'flow-16-tile-colour-bands.png'),
+            animations: 'disabled',
+            fullPage: true,
+          });
+          break;
+        }
       }
+      if (wanted.every((band) => seen.has(band))) break;
     }
-    if (wanted.every((band) => seen.has(band))) break;
+  } finally {
+    await bandPage.close();
   }
 
   // All three colour bands must genuinely be exhibited by real data, and each

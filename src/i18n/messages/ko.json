@@ -1760,11 +1760,13 @@
     "supplementaryDescription": "보조 어휘 과제의 밴드 정확도입니다. 모형 안이 아니라 모형과 나란히 보고됩니다. 모형화된 속성이 아니며, 숙달 모형에 들어가지 않고, 컷 점수도 적용되지 않습니다.",
     "supplementaryBands": {
       "a2": "A2 밴드 정확도",
-      "b1": "B1 밴드 정확도"
+      "b1": "B1 밴드 정확도",
+      "b2": "B2 밴드 정확도"
     },
     "supplementaryBandSource": {
       "a2": "이번 응시의 1단계 어휘 과제에서 맞힌 비율입니다.",
-      "b1": "이번 응시의 2단계 동의어 연결 스트랜드에서 맞힌 비율입니다."
+      "b1": "이번 응시의 2단계 동의어 연결 스트랜드에서 맞힌 비율입니다.",
+      "b2": "3단계와 함께 실시된 보조 B2 어휘 스트랜드에서 맞힌 비율입니다."
     },
     "supplementaryAccuracyLabel": "밴드 정확도",
     "supplementaryNotAdministered": "실시되지 않음",
@@ -1879,7 +1881,8 @@
     "resultStatus": {
       "scoring": "채점 중",
       "partial_pending": "일부 대기 중",
-      "complete": "완료"
+      "complete": "완료",
+      "scoring_failed": "채점 실패"
     }
   },
   "SchoolOnboarding": {

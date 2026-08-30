@@ -69,13 +69,19 @@ const BAND_HUE_WINDOW: Partial<Record<MasteryBand, readonly [number, number]>> =
  */
 export function bandFromServerCuts(likelihood: number | null, bands: ServerBands): MasteryBand[] {
   if (likelihood === null) return ['not_assessed'];
-  const mastered = bands.mastered_cut * 100;
-  const approaching = bands.approaching_cut * 100;
-  if (Math.abs(likelihood - mastered) <= 0.5) return ['mastered', 'approaching'];
-  if (Math.abs(likelihood - approaching) <= 0.5) return ['approaching', 'not_yet'];
-  if (likelihood > mastered) return ['mastered'];
-  if (likelihood > approaching) return ['approaching'];
-  return ['not_yet'];
+  // `likelihood` is the rounded integer, so reconstruct the whole raw-posterior
+  // interval that could have produced it. Very low retuned cuts can put BOTH
+  // boundaries inside that interval; testing only the first nearby boundary
+  // would incorrectly exclude `not_yet` even though the raw value supports it.
+  const low = Math.max(0, (likelihood - 0.5) / 100);
+  const high = Math.min(1, (likelihood + 0.5) / 100);
+  const possible: MasteryBand[] = [];
+  if (high >= bands.mastered_cut) possible.push('mastered');
+  if (high >= bands.approaching_cut && low < bands.mastered_cut) {
+    possible.push('approaching');
+  }
+  if (low < bands.approaching_cut) possible.push('not_yet');
+  return possible;
 }
 
 /**

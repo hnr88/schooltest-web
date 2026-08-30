@@ -23,12 +23,17 @@ const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 test.describe.configure({ mode: 'serial' });
 
 test.describe('class detail (spec §1)', () => {
-  test('flow 1: a school_admin reaches the class detail from the Classes list', async ({ page }) => {
+  test('flow 1: a school_admin reaches the class detail from the Classes list', async ({
+    page,
+  }) => {
     await loginAs(page, 'schoolAdmin');
     const detail = await apiClassDetail(page.request, await schoolAdminJwt(page.request));
 
     await page.goto('/dashboard/school/classes');
-    await page.getByRole('link', { name: detail.name ?? '', exact: true }).first().click();
+    await page
+      .getByRole('link', { name: detail.name ?? '', exact: true })
+      .first()
+      .click();
     await page.waitForURL(/\/dashboard\/school\/classes\/[a-z0-9]+$/);
     await expect(page.getByRole('heading', { level: 1, name: detail.name ?? '' })).toBeVisible();
   });
@@ -48,9 +53,13 @@ test.describe('class detail (spec §1)', () => {
       ? [teacher.first_name, teacher.last_name].filter(Boolean).join(' ').trim()
       : cat(en, 'Classes.detail.teacherUnassigned');
     await expect(surface).toContainText(teacherName);
-    await expect(surface).toContainText(`${detail.student_count} students`);
+    await expect(surface).toContainText(
+      `${detail.student_count} ${detail.student_count === 1 ? 'student' : 'students'}`,
+    );
 
-    await expect(page.getByRole('button', { name: cat(en, 'Classes.detail.editClass') })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: cat(en, 'Classes.detail.editClass') }),
+    ).toBeVisible();
     await expect(
       page.getByRole('button', { name: cat(en, 'Classes.detail.importStudents') }),
     ).toBeVisible();
@@ -117,10 +126,15 @@ test.describe('class detail (spec §1)', () => {
     }
 
     expect(errors).toEqual([]);
-    await page.screenshot({ path: path.join(SCREENSHOTS, 'class-detail-desktop.png'), fullPage: true });
+    await page.screenshot({
+      path: path.join(SCREENSHOTS, 'class-detail-desktop.png'),
+      fullPage: true,
+    });
   });
 
-  test('flow 5: the removed surfaces are gone and ACARA never reads "Phase N"', async ({ page }) => {
+  test('flow 5: the removed surfaces are gone and ACARA never reads "Phase N"', async ({
+    page,
+  }) => {
     await loginAs(page, 'schoolAdmin');
     await gotoClassDetail(page);
     const surface = page.locator('[data-surface="school-admin-class-detail"]');
@@ -140,7 +154,9 @@ test.describe('class detail (spec §1)', () => {
 
     // Every ACARA cell is a canonical phase label or the em dash — never "Phase 1".
     expect(text).not.toMatch(/Phase\s*\d/);
-    const acaraCells = await surface.locator('tbody tr td:nth-child(4), tbody tr td:nth-child(7)').allInnerTexts();
+    const acaraCells = await surface
+      .locator('tbody tr td:nth-child(4), tbody tr td:nth-child(7)')
+      .allInnerTexts();
     for (const cell of acaraCells) {
       const value = cell.trim();
       expect(

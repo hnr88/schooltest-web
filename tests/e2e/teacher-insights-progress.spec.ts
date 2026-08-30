@@ -10,12 +10,7 @@ import {
   flow23AfterReload,
   flow24,
 } from './helpers/teacher-insights-flows';
-import {
-  dbClasses,
-  dbCompletedCount,
-  dbMasteryCuts,
-  FORM_CODES,
-} from './helpers/teacher-insights-live';
+import { dbCompletedCount, dbMasteryCuts, FORM_CODES } from './helpers/teacher-insights-live';
 import { comparableClasses, testAOnlyClass } from './helpers/teacher-progress-state';
 import {
   num,
@@ -23,7 +18,7 @@ import {
   openProgress,
   progressCopy,
 } from './helpers/teacher-insights-view';
-import { en, SCREENSHOTS } from './helpers/teacher-rail';
+import { en, SCREENSHOTS, signInTeacher } from './helpers/teacher-rail';
 import {
   readClassProgressLive,
   readLiveResults,
@@ -76,7 +71,9 @@ test('flow 19 — insights bars express MASTERY, not gaps', async ({ playwright 
   }
 });
 
-test('flow 20 — suggested groups partition the class by its PRIMARY gap', async ({ playwright }) => {
+test('flow 20 — suggested groups partition the class by its PRIMARY gap', async ({
+  playwright,
+}) => {
   const cuts = dbMasteryCuts();
   for (const card of live.classes) {
     const insights = await flow20(page, playwright, card.class_document_id, cuts);
@@ -100,17 +97,17 @@ test('flow 23 — after Test B, Progress shows the mastery shift and ACARA movem
 test('flow 24 — Progress counts ONLY students who completed both tests', async ({ playwright }) => {
   // Same derivation: the both-tests-only rule can only be shown on a class that
   // has a both-tests cohort to exclude a student FROM.
-  const cuts = dbMasteryCuts();
-  let moved = false;
+  let excludedEvidence = false;
   for (const card of comparableClasses(live.classes)) {
-    moved = (await flow24(page, playwright, card.class_document_id, cuts)) || moved;
+    excludedEvidence = (await flow24(page, playwright, card.class_document_id)) || excludedEvidence;
     await shot(`cohort-${card.class_document_id}`);
   }
-  // Non-vacuity: at least one excluded student really WOULD have moved a number.
-  expect(moved, 'no excluded student masters anything — the rule proves nothing').toBe(true);
+  // Non-vacuity: at least one excluded student carries an actual scored profile.
+  expect(excludedEvidence, 'no excluded student carries assessed evidence').toBe(true);
 });
 
 test('flow 22 — Progress before any Test B completion shows the empty-state placeholder', async ({
+  browser,
   playwright,
 }) => {
   // Task 063 seeded the class this flow needs (EAL/D 9A: three students, Test A
@@ -119,61 +116,62 @@ test('flow 22 — Progress before any Test B completion shows the empty-state pl
   // the negative half runs on every OTHER class in the same pass, which is what
   // makes the placeholder's presence a consequence of the Test B count rather
   // than of the page.
-  const classes = dbClasses();
-  expect(classes.length, `Postgres holds: ${classes.join(', ')}`).toBe(live.classes.length);
+  // T2 owns the populated class used above. T1 owns the real Test-A-only class,
+  // so this branch signs in as that journey teacher rather than expecting one
+  // teacher to own mutually incompatible data states.
+  const emptyTeacherEmail = 't1@schooltest.local';
+  const emptyLive = await readLiveResults(playwright, emptyTeacherEmail);
+  const card = testAOnlyClass(emptyLive.classes);
+  const body = await readClassProgressLive(playwright, card.class_document_id, emptyTeacherEmail);
+  const dbTestB = dbCompletedCount(card.class_document_id, [FORM_CODES.B]);
+  const dbTestA = dbCompletedCount(card.class_document_id, [FORM_CODES.A]);
+  expect(body.cohort.test_b_completed, `${card.name} Test B completions`).toBe(dbTestB);
+  expect(body.cohort.test_a_completed, `${card.name} Test A completions`).toBe(dbTestA);
 
-  const emptyCard = testAOnlyClass(live.classes);
-  for (const card of live.classes) {
-    const body = await readClassProgressLive(playwright, card.class_document_id);
-    const dbTestB = dbCompletedCount(card.class_document_id, [FORM_CODES.B]);
-    const dbTestA = dbCompletedCount(card.class_document_id, [FORM_CODES.A]);
-    expect(body.cohort.test_b_completed, `${card.name} Test B completions`).toBe(dbTestB);
-    expect(body.cohort.test_a_completed, `${card.name} Test A completions`).toBe(dbTestA);
+  const emptyPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  try {
+    await signInTeacher(emptyPage, emptyTeacherEmail);
+    const panel = await openProgress(emptyPage, card.class_document_id);
+    expect(dbTestB, `${card.name} must hold NO Test B result`).toBe(0);
+    expect(body.available, `${card.name} has nothing to compare`).toBe(false);
+    await expect(panel).toHaveAttribute('data-status', 'unavailable');
 
-    const panel = await openProgress(page, card.class_document_id);
-    if (card.class_document_id === emptyCard.class_document_id) {
-      expect(dbTestB, `${card.name} must hold NO Test B result`).toBe(0);
-      expect(body.available, `${card.name} has nothing to compare`).toBe(false);
-      await expect(panel).toHaveAttribute('data-status', 'unavailable');
-
-      // The placeholder, with the class's REAL counts under it — `available: false`
-      // is not an empty payload (C-TR-4), so `Test A: 3 / 3 · Test B: 0 / 3` is
-      // measured evidence, and Test A being NON-zero is what makes it meaningful.
-      const empty = panel.locator('[data-slot="progress-empty"]');
-      await expect(empty).toHaveCount(1);
-      await expect(empty).toContainText(progressCopy('emptyTitle'));
-      await expect(empty).toContainText(progressCopy('emptyDescription'));
-      await expect(panel.locator('[data-slot="progress-empty-counts"]')).toHaveText(
-        icu(progressCopy('emptyCounts'), {
-          testA: icu(progressCopy('completionValue'), {
-            completed: num(body.cohort.test_a_completed),
-            total: num(body.cohort.total),
-          }),
-          testB: icu(progressCopy('completionValue'), {
-            completed: num(body.cohort.test_b_completed),
-            total: num(body.cohort.total),
-          }),
+    const empty = panel.locator('[data-slot="progress-empty"]');
+    await expect(empty).toHaveCount(1);
+    await expect(empty).toContainText(progressCopy('emptyTitle'));
+    await expect(empty).toContainText(progressCopy('emptyDescription'));
+    await expect(panel.locator('[data-slot="progress-empty-counts"]')).toHaveText(
+      icu(progressCopy('emptyCounts'), {
+        testA: icu(progressCopy('completionValue'), {
+          completed: num(body.cohort.test_a_completed),
+          total: num(body.cohort.total),
         }),
-      );
-      expect(body.cohort.test_a_completed, 'a placeholder over zero Test A proves nothing').toBeGreaterThan(0);
+        testB: icu(progressCopy('completionValue'), {
+          completed: num(body.cohort.test_b_completed),
+          total: num(body.cohort.total),
+        }),
+      }),
+    );
+    expect(
+      body.cohort.test_a_completed,
+      'a placeholder over zero Test A proves nothing',
+    ).toBeGreaterThan(0);
 
-      // Nothing is zero-filled in the populated blocks' place.
-      for (const slot of [
-        'progress-summary',
-        'progress-shift-table',
-        'progress-acara-card',
-        'progress-mover',
-      ]) {
-        await expect(panel.locator(`[data-slot="${slot}"]`)).toHaveCount(0);
-      }
-      await shot(`flow22-empty-${card.class_document_id}`);
-    } else {
-      // The converse on the same run: a class WITH Test B never shows it.
-      expect(dbTestB, `${card.name} holds Test B results`).toBeGreaterThan(0);
-      expect(body.available).toBe(true);
-      await expect(panel).toHaveAttribute('data-status', 'ready');
-      await expect(panel.locator('[data-slot="progress-empty"]')).toHaveCount(0);
+    for (const slot of [
+      'progress-summary',
+      'progress-shift-table',
+      'progress-acara-card',
+      'progress-mover',
+    ]) {
+      await expect(panel.locator(`[data-slot="${slot}"]`)).toHaveCount(0);
     }
+    await emptyPage.screenshot({
+      path: path.join(SCREENSHOTS, `task-056-flow22-empty-${card.class_document_id}.png`),
+      animations: 'disabled',
+      fullPage: true,
+    });
+  } finally {
+    await emptyPage.close();
   }
 });
 

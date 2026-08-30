@@ -19,6 +19,7 @@ import {
   useOpsTeacherUpdateMutation,
   type OpsTeacherPatch,
 } from '@/modules/ops/queries/use-ops-teachers.query';
+import { serverMessage } from '@/modules/teachers';
 
 import type { EditState, OpsTeachersDialogProps } from '@/modules/ops/types/components.types';
 
@@ -63,10 +64,13 @@ export function OpsTeachersDialog({
   };
 
   const rows = teachersQuery.data ?? [];
-  const mutationError =
-    (updateMutation.isError ? String((updateMutation.error as Error)?.message ?? '') : '') ||
-    (removeMutation.isError ? String((removeMutation.error as Error)?.message ?? '') : '') ||
-    null;
+  const mutationError = editing
+    ? updateMutation.isError
+      ? serverMessage(updateMutation.error)
+      : null
+    : removing && removeMutation.isError
+      ? serverMessage(removeMutation.error)
+      : null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -98,7 +102,7 @@ export function OpsTeachersDialog({
                   <th className="py-2 pr-3 font-medium">{t('columnLastName')}</th>
                   <th className="py-2 pr-3 font-medium">{t('columnEmail')}</th>
                   <th className="py-2 pr-3 font-medium">{t('columnClass')}</th>
-                  <th className="py-2 font-medium sr-only">{t('columnActions')}</th>
+                  <th className="sr-only py-2 font-medium">{t('columnActions')}</th>
                 </tr>
               </thead>
               <tbody>

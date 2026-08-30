@@ -3,7 +3,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials } from './helpers/credentials';
 
 // Task 111 (st-mvp-pivot) targeted live check - NOT part of the suite.
 // Teacher cycle banner (mvp-updates 4.5, C-TEACH-02): the banner on the class
@@ -17,7 +17,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const CLASS_URL = `/en/dashboard/teach/classes/${CLASS_ID}`;
 
@@ -34,9 +34,7 @@ interface ClassCycle {
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios

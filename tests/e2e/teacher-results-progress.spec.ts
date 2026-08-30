@@ -8,7 +8,7 @@ import type { ClassProgressResponse } from '@/modules/teacher/types/teacher-prog
 
 import { cat, icu } from './helpers/i18n';
 import { comparableClasses, dbCohort, testAOnlyClass } from './helpers/teacher-progress-state';
-import { en, SCREENSHOTS } from './helpers/teacher-rail';
+import { en, SCREENSHOTS, signInTeacher } from './helpers/teacher-rail';
 import {
   openClassResults,
   readClassProgressLive,
@@ -74,10 +74,11 @@ test.afterAll(async () => {
 async function openProgress(
   classDocumentId: string,
   status: 'ready' | 'unavailable' | 'drift' = 'ready',
+  target: Page = page,
 ): Promise<Locator> {
-  await openClassResults(page, classDocumentId);
-  await page.getByRole('tab', { name: cat(en, 'Teacher.results.tabs.progress') }).click();
-  const panel = page.locator('[data-slot="class-progress"]');
+  await openClassResults(target, classDocumentId);
+  await target.getByRole('tab', { name: cat(en, 'Teacher.results.tabs.progress') }).click();
+  const panel = target.locator('[data-slot="class-progress"]');
   await expect(panel).toHaveAttribute('data-status', status, { timeout: 20_000 });
   return panel;
 }
@@ -92,7 +93,10 @@ async function assertPopulated(panel: Locator, body: ClassProgressResponse): Pro
   await expect(panel.locator('[data-slot="progress-caveat"]')).toHaveText(copy('caveat'));
 
   await expect(panel.locator('[data-stat="avg-change"]')).toContainText(
-    icu(copy('avgScoreValue'), { from: num(view.summary.avg_a, 1), to: num(view.summary.avg_b, 1) }),
+    icu(copy('avgScoreValue'), {
+      from: num(view.summary.avg_a, 1),
+      to: num(view.summary.avg_b, 1),
+    }),
   );
   await expect(panel.locator('[data-stat="avg-change"]')).toContainText(
     directionText(view.summary.avg_delta, 1),
@@ -110,7 +114,9 @@ async function assertPopulated(panel: Locator, body: ClassProgressResponse): Pro
   const rows = panel.locator('[data-slot="progress-shift-row"]');
   await expect(rows).toHaveCount(view.shift.length);
   for (const entry of view.shift) {
-    const row = panel.locator(`[data-slot="progress-shift-row"][data-attribute="${entry.attribute}"]`);
+    const row = panel.locator(
+      `[data-slot="progress-shift-row"][data-attribute="${entry.attribute}"]`,
+    );
     await expect(row.locator('th[scope="row"]')).toHaveText(entry.name);
     for (const mastered of [entry.a_mastered, entry.b_mastered]) {
       await expect(row).toContainText(
@@ -123,7 +129,9 @@ async function assertPopulated(panel: Locator, body: ClassProgressResponse): Pro
   for (const card of acaraMovementCards(view.movement)) {
     const tile = panel.locator(`[data-slot="progress-acara-card"][data-movement="${card.key}"]`);
     await expect(tile).toContainText(num(card.count));
-    await expect(tile).toContainText(copy(`acara${card.key === 'same' ? 'Same' : card.key === 'up' ? 'Up' : 'Down'}`));
+    await expect(tile).toContainText(
+      copy(`acara${card.key === 'same' ? 'Same' : card.key === 'up' ? 'Up' : 'Down'}`),
+    );
     await expect(tile.locator('[data-slot="progress-acara-step"]')).toHaveCount(card.detail.length);
     for (const step of card.detail) await expect(tile).toContainText(`${step.from} → ${step.to}`);
     if (card.improvedWithinPhase !== null) {
@@ -191,7 +199,9 @@ test.describe('Progress tab — populated state', () => {
       expect(body.cohort.test_a_completed, `${classCard.name} Test A completions`).toBe(db.testA);
       expect(body.cohort.test_b_completed, `${classCard.name} Test B completions`).toBe(db.testB);
       expect(body.cohort.both_tests, `${classCard.name} both-tests cohort`).toBe(db.both);
-      expect(body.available, `${classCard.name} has ${db.both} comparable pair(s)`).toBe(db.both > 0);
+      expect(body.available, `${classCard.name} has ${db.both} comparable pair(s)`).toBe(
+        db.both > 0,
+      );
 
       const panel = await openProgress(
         classCard.class_document_id,
@@ -258,9 +268,14 @@ test.describe('Progress tab — empty state', () => {
   // EAL/D 9A was seeded Test-A-only through .qa/seed-diagnostics.mjs and the live R
   // engine — so the perturbation is GONE and the placeholder is asserted against
   // the server's real body. Which class it is, is derived, never named.
-  test('renders the placeholder with the real Test A / Test B counts', async ({ playwright }) => {
-    const { class_document_id: id, name } = testAOnlyClass(live.classes);
-    const body = await readClassProgressLive(playwright, id);
+  test('renders the placeholder with the real Test A / Test B counts', async ({
+    browser,
+    playwright,
+  }) => {
+    const teacherEmail = 't1@schooltest.local';
+    const emptyLive = await readLiveResults(playwright, teacherEmail);
+    const { class_document_id: id, name } = testAOnlyClass(emptyLive.classes);
+    const body = await readClassProgressLive(playwright, id, teacherEmail);
     const db = dbCohort(id);
 
     expect(body.available, `${name} has no Test B completion`).toBe(false);
@@ -269,14 +284,19 @@ test.describe('Progress tab — empty state', () => {
     // Not an empty payload: an unavailable tab still carries the REAL counts.
     expect(body.cohort.test_a_completed).toBeGreaterThan(0);
 
-    const panel = await openProgress(id, 'unavailable');
-    await assertPlaceholder(panel, body);
-
-    await page.screenshot({
-      path: path.join(SCREENSHOTS, 'task-045-progress-empty-state.png'),
-      animations: 'disabled',
-      fullPage: true,
-    });
+    const emptyPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    try {
+      await signInTeacher(emptyPage, teacherEmail);
+      const panel = await openProgress(id, 'unavailable', emptyPage);
+      await assertPlaceholder(panel, body);
+      await emptyPage.screenshot({
+        path: path.join(SCREENSHOTS, 'task-045-progress-empty-state.png'),
+        animations: 'disabled',
+        fullPage: true,
+      });
+    } finally {
+      await emptyPage.close();
+    }
   });
 
   // Same in-flight perturbation, used on the other half of the invariant: a body

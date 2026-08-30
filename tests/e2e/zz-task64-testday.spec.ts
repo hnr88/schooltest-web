@@ -4,6 +4,7 @@ import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
 import { fixtureStudentId } from './helpers/fixture-ids';
+import { fixtureTeacherCredentials } from './helpers/credentials';
 import { roleCredentials } from './helpers/credentials';
 
 // Task 64 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -15,7 +16,8 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const SOFIA_ID = fixtureStudentId('Sofia', 'Petrov');
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local';
@@ -31,9 +33,7 @@ async function login(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
@@ -79,6 +79,17 @@ function joinAsSofia(request: APIRequestContext, code: string) {
   );
 }
 
+async function ensureSofiaEmail(request: APIRequestContext): Promise<void> {
+  const jwt = await login(request, SCHOOL_ADMIN);
+  const res = await fetchWithRetry(() =>
+    request.patch(`${API}/api/schools/me/children/${SOFIA_ID}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+      data: { email: SOFIA_EMAIL },
+    }),
+  );
+  expect(res.ok(), await res.text()).toBeTruthy();
+}
+
 test.describe('task 64: teacher test-day screen vs live C-SIT-01/02/03', () => {
   // Serial: one sitting lifecycle driven end to end through the real UI. The
   // timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
@@ -86,99 +97,100 @@ test.describe('task 64: teacher test-day screen vs live C-SIT-01/02/03', () => {
 
   test('start -> reveal -> live join -> re-sit -> close/reopen', async ({ page, request }) => {
     const jwt = await login(request, TEACHER);
+    await ensureSofiaEmail(request);
     // Setup: close any open sittings so the screen starts in the empty state.
     for (const sitting of await listClassSittings(request, jwt)) {
       if (sitting.status === 'open') await closeSitting(request, jwt, sitting.documentId);
     }
 
-    await signIn(page, TEACHER);
-    await page.goto(TEST_DAY_URL);
-    const screen = page.locator('[data-surface="teacher-test-day"]');
-    await expect(screen).toBeVisible({ timeout: 20_000 });
+    try {
+      await signIn(page, TEACHER);
+      await page.goto(TEST_DAY_URL);
+      const screen = page.locator('[data-surface="teacher-test-day"]');
+      await expect(screen).toBeVisible({ timeout: 20_000 });
 
-    // Every sitting closed -> the latest closed board shows with the start of
-    // the next sitting on top.
-    await expect(
-      screen.getByText(cat(en, 'TestDay.status.closed'), { exact: true }),
-    ).toBeVisible({ timeout: 15_000 });
-    await screen
-      .getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true })
-      .click();
+      // Every sitting closed -> the latest closed board shows with the start of
+      // the next sitting on top.
+      const start = screen.getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true });
+      await expect(start).toBeVisible({ timeout: 15_000 });
+      await start.click();
 
-    // The code card appears with the code hidden by default; Sofia is listed
-    // as not joined.
-    const card = screen.locator('[data-slot="code-reveal-card"]');
-    await expect(card).toBeVisible({ timeout: 15_000 });
-    await expect(card.locator('[data-slot="access-code-hidden"]')).toBeVisible();
-    const sofiaRow = screen.locator(`[data-student="${SOFIA_ID}"]`);
-    await expect(
-      sofiaRow.getByText(cat(en, 'TestDay.monitor.state.not_joined'), { exact: true }),
-    ).toBeVisible({ timeout: 15_000 });
+      // The code card appears with the code hidden by default; Sofia is listed
+      // as not joined.
+      const card = screen.locator('[data-slot="code-reveal-card"]');
+      await expect(card).toBeVisible({ timeout: 15_000 });
+      await expect(card.locator('[data-slot="access-code-hidden"]')).toBeVisible();
+      const sofiaRow = screen.locator(`[data-student="${SOFIA_ID}"]`);
+      await expect(
+        sofiaRow.getByText(cat(en, 'TestDay.monitor.state.not_joined'), { exact: true }),
+      ).toBeVisible({ timeout: 15_000 });
 
-    // Reveal mints the code and shows it large for the board.
-    await card
-      .getByRole('button', { name: cat(en, 'TestDay.code.revealCta'), exact: true })
-      .click();
-    const codeEl = card.locator('[data-slot="access-code"]');
-    await expect(codeEl).toBeVisible({ timeout: 15_000 });
-    const code = ((await codeEl.textContent()) ?? '').trim();
-    expect(code).toMatch(/^[A-Z]+-\d+$/);
+      // Reveal mints the code and shows it large for the board.
+      await card
+        .getByRole('button', { name: cat(en, 'TestDay.code.revealCta'), exact: true })
+        .click();
+      const codeEl = card.locator('[data-slot="access-code"]');
+      await expect(codeEl).toBeVisible({ timeout: 15_000 });
+      const code = ((await codeEl.textContent()) ?? '').trim();
+      expect(code).toMatch(/^[A-Z]+-\d+$/);
 
-    // A real student join through the public route flips the monitor row live
-    // (5 s poll, no reload).
-    const join = await joinAsSofia(request, code);
-    expect(join.ok()).toBeTruthy();
-    await expect(
-      sofiaRow.getByText(cat(en, 'TestDay.monitor.state.joined'), { exact: true }),
-    ).toBeVisible({ timeout: 20_000 });
+      // A real student join through the public route flips the monitor row live
+      // (5 s poll, no reload).
+      const join = await joinAsSofia(request, code);
+      expect(join.ok()).toBeTruthy();
+      await expect(
+        sofiaRow.getByText(cat(en, 'TestDay.monitor.state.joined'), { exact: true }),
+      ).toBeVisible({ timeout: 20_000 });
 
-    // Re-sit with the confirm dialog: the attempt ends and the row leaves the
-    // joined state...
-    await sofiaRow
-      .getByRole('button', { name: cat(en, 'TestDay.resit.cta'), exact: true })
-      .click();
-    await page
-      .getByRole('button', { name: cat(en, 'TestDay.resit.confirm'), exact: true })
-      .click();
-    await expect(
-      sofiaRow.getByText(cat(en, 'TestDay.monitor.state.joined'), { exact: true }),
-    ).toHaveCount(0, { timeout: 20_000 });
-    // ...and Sofia can join again fresh (C-SIT-03 promise: resumed === false).
-    const rejoin = await joinAsSofia(request, code);
-    expect(rejoin.ok()).toBeTruthy();
-    const rejoinBody = (await rejoin.json()) as { session: { resumed: boolean } };
-    expect(rejoinBody.session.resumed).toBe(false);
+      // Re-sit with the confirm dialog: the attempt ends and the row leaves the
+      // joined state...
+      await sofiaRow
+        .getByRole('button', { name: cat(en, 'TestDay.resit.cta'), exact: true })
+        .click();
+      await page
+        .getByRole('button', { name: cat(en, 'TestDay.resit.confirm'), exact: true })
+        .click();
+      await expect(
+        sofiaRow.getByText(cat(en, 'TestDay.monitor.state.joined'), { exact: true }),
+      ).toHaveCount(0, { timeout: 20_000 });
+      // ...and Sofia can join again fresh (C-SIT-03 promise: resumed === false).
+      const rejoin = await joinAsSofia(request, code);
+      expect(rejoin.ok()).toBeTruthy();
+      const rejoinBody = (await rejoin.json()) as { session: { resumed: boolean } };
+      expect(rejoinBody.session.resumed).toBe(false);
 
-    // Close: the pill flips, reveal is disabled, and join is blocked (400).
-    await card
-      .getByRole('button', { name: cat(en, 'TestDay.code.hideCta'), exact: true })
-      .click();
-    await screen
-      .getByRole('button', { name: cat(en, 'TestDay.monitor.closeCta'), exact: true })
-      .click();
-    await expect(
-      screen.getByText(cat(en, 'TestDay.status.closed'), { exact: true }),
-    ).toBeVisible({ timeout: 15_000 });
-    await expect(
-      card.getByRole('button', { name: cat(en, 'TestDay.code.revealCta'), exact: true }),
-    ).toBeDisabled();
-    const blocked = await joinAsSofia(request, code);
-    expect(blocked.status()).toBe(400);
+      // Close: the pill flips, reveal is disabled, and join is blocked (400).
+      await card
+        .getByRole('button', { name: cat(en, 'TestDay.code.hideCta'), exact: true })
+        .click();
+      await screen
+        .getByRole('button', { name: cat(en, 'TestDay.monitor.closeCta'), exact: true })
+        .click();
+      await expect(
+        screen.locator('h1').locator('xpath=following-sibling::*[@data-slot="status-pill"]'),
+      ).toHaveText(cat(en, 'TestDay.status.closed'), { timeout: 15_000 });
+      await expect(
+        card.getByRole('button', { name: cat(en, 'TestDay.code.revealCta'), exact: true }),
+      ).toBeDisabled();
+      const blocked = await joinAsSofia(request, code);
+      expect(blocked.status()).toBe(400);
 
-    // Reopen: the pill flips back and reveal is enabled again.
-    await screen
-      .getByRole('button', { name: cat(en, 'TestDay.monitor.reopenCta'), exact: true })
-      .click();
-    await expect(
-      screen.getByText(cat(en, 'TestDay.status.open'), { exact: true }),
-    ).toBeVisible({ timeout: 15_000 });
-    await expect(
-      card.getByRole('button', { name: cat(en, 'TestDay.code.revealCta'), exact: true }),
-    ).toBeEnabled();
+      // Reopen: the pill flips back and reveal is enabled again.
+      await screen
+        .getByRole('button', { name: cat(en, 'TestDay.monitor.reopenCta'), exact: true })
+        .click();
+      await expect(
+        screen.locator('h1').locator('xpath=following-sibling::*[@data-slot="status-pill"]'),
+      ).toHaveText(cat(en, 'TestDay.status.open'), { timeout: 15_000 });
+      await expect(
+        card.getByRole('button', { name: cat(en, 'TestDay.code.revealCta'), exact: true }),
+      ).toBeEnabled();
 
-    // Tidy: leave the sitting closed so the next run starts clean.
-    const [latest] = await listClassSittings(request, jwt);
-    if (latest.status === 'open') await closeSitting(request, jwt, latest.documentId);
+      // Tidy: leave the sitting closed so the next run starts clean.
+    } finally {
+      const [latest] = await listClassSittings(request, jwt);
+      if (latest?.status === 'open') await closeSitting(request, jwt, latest.documentId);
+    }
   });
 
   test('a class with no sittings renders the empty state', async ({ page }) => {
@@ -188,9 +200,9 @@ test.describe('task 64: teacher test-day screen vs live C-SIT-01/02/03', () => {
     await page.goto('/en/dashboard/teach/classes/zz64zz64zz64zz64zz64zz64/test-day');
     const screen = page.locator('[data-surface="teacher-test-day"]');
     await expect(screen).toBeVisible({ timeout: 20_000 });
-    await expect(
-      screen.getByText(cat(en, 'TestDay.emptyTitle'), { exact: true }),
-    ).toBeVisible({ timeout: 15_000 });
+    await expect(screen.getByText(cat(en, 'TestDay.emptyTitle'), { exact: true })).toBeVisible({
+      timeout: 15_000,
+    });
     await expect(
       screen.getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true }),
     ).toBeVisible();

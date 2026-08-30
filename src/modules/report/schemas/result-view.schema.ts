@@ -13,7 +13,12 @@ export const attributeStatusSchema = z.enum([
 export const skillSchema = z.enum(['reading', 'listening', 'speaking', 'writing']);
 export const cefrBandSchema = z.enum(['pre_A1', 'A1', 'A2', 'B1', 'B2', 'C1']);
 export const readinessSchema = z.enum(['met', 'approaching', 'not_yet', 'not_assessed']);
-export const resultStatusSchema = z.enum(['scoring', 'partial_pending', 'complete']);
+export const resultStatusSchema = z.enum([
+  'scoring',
+  'partial_pending',
+  'complete',
+  'scoring_failed',
+]);
 export const resultDestinationSchema = z.enum(['transient', 'official']);
 
 // A zero-administered attribute is the LITERAL string 'not_assessed' — never a
@@ -34,6 +39,7 @@ export const resultAttributeEntrySchema = z.union([
 export const resultSupplementarySchema = z.strictObject({
   vocab_band_a2_accuracy: z.number().min(0).max(1).nullable(),
   vocab_band_b1_accuracy: z.number().min(0).max(1).nullable(),
+  vocab_band_b2_accuracy: z.number().min(0).max(1).nullable().default(null),
   dprime: z.number().nullable().optional(),
 });
 

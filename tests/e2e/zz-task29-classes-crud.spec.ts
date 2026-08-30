@@ -6,15 +6,16 @@ import { roleCredentials } from './helpers/credentials';
 // Task 29 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Drives the full classes CRUD round-trip through the real UI as the seeded
 // school_admin and cross-checks every step against the live API: create ->
-// listed -> assign teacher + child (counts update) -> edit year band ->
-// delete -> the assigned child survives unlinked (C-CHD-01).
+// listed -> edit name + single teacher -> delete (C-CLS-01..04). Student
+// membership moved to the class-scoped import flow in the current redesign,
+// so this journey deliberately verifies that editing metadata leaves the
+// roster untouched.
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
-const TEACHER_NAME = 'Vee Twentyone';
-// Seeded child with class null (never the fixture class's members).
-const CHILD_NAME = 'VerifyAlpha RaceProbe';
+const CREATE_TEACHER_NAME = 'Tara Okonkwo';
+const EDIT_TEACHER_NAME = 'Marco Alvarez';
 
 interface SchoolClassRow {
   documentId: string;
@@ -22,14 +23,6 @@ interface SchoolClassRow {
   year_band: string | null;
   teachers: Array<{ documentId: string }>;
   student_count: number;
-}
-
-interface ChildRow {
-  documentId: string;
-  given_name: string;
-  family_name: string;
-  status: string;
-  class: { documentId: string; name: string } | null;
 }
 
 async function login(request: APIRequestContext): Promise<string> {
@@ -48,29 +41,6 @@ async function apiClasses(request: APIRequestContext, jwt: string): Promise<Scho
   return ((await res.json()) as { data: SchoolClassRow[] }).data;
 }
 
-// Pages through the WHOLE roster. C-CHD-01 caps pageSize at 100 and this school
-// has more students than that, so reading only page 1 silently missed anyone
-// past the cap — which is exactly the bug the edit-dialog picker had.
-async function apiChildren(request: APIRequestContext, jwt: string): Promise<ChildRow[]> {
-  const rows: ChildRow[] = [];
-  let page = 1;
-  let pageCount = 1;
-  do {
-    const res = await request.get(`${API}/api/schools/me/children?page=${page}&pageSize=100`, {
-      headers: { Authorization: `Bearer ${jwt}` },
-    });
-    expect(res.ok()).toBeTruthy();
-    const body = (await res.json()) as {
-      data: ChildRow[];
-      meta?: { pagination?: { pageCount?: number } };
-    };
-    rows.push(...body.data);
-    pageCount = body.meta?.pagination?.pageCount ?? 1;
-    page += 1;
-  } while (page <= pageCount);
-  return rows;
-}
-
 async function signIn(page: Page): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SCHOOL_ADMIN.email);
@@ -80,21 +50,20 @@ async function signIn(page: Page): Promise<void> {
 }
 
 test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
-  test('create -> assign teacher + child -> edit -> delete, child survives', async ({
+  test('create -> assign teacher -> edit name/teacher -> delete, roster stays untouched', async ({
     page,
     request,
   }) => {
     const jwt = await login(request);
     const className = `PW29 Probe ${Date.now()}`;
+    const editedName = `${className} edited`;
     await signIn(page);
     await page.goto('/en/dashboard/school/classes');
 
     const screen = page.locator('[data-slot="school-classes"]');
     await expect(screen).toBeVisible({ timeout: 20_000 });
     // The seeded fixture class renders with its teacher chip and count.
-    await expect(
-      screen.getByRole('row', { name: /EAL\/D Year 7 - Room 4/ }),
-    ).toBeVisible();
+    await expect(screen.getByRole('row', { name: /EAL\/D Year 7 - Room 4/ })).toBeVisible();
 
     // CREATE (C-CLS-02) with a teacher picked from C-TCH-01.
     await screen.getByRole('button', { name: cat(en, 'Classes.addButton'), exact: true }).click();
@@ -105,14 +74,14 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     // the label text, so the accessible name is "Class name*" — match non-exact.
     await createDialog.getByLabel(cat(en, 'Classes.addForm.name')).fill(className);
     await createDialog.getByLabel(cat(en, 'Classes.addForm.teacher')).click();
-    await page.getByRole('option', { name: TEACHER_NAME }).click();
+    await page.getByRole('option', { name: CREATE_TEACHER_NAME }).click();
     await createDialog
       .getByRole('button', { name: cat(en, 'Classes.addForm.submit'), exact: true })
       .click();
     await expect(createDialog).toBeHidden();
     const row = screen.getByRole('row', { name: new RegExp(className) });
     await expect(row).toBeVisible();
-    await expect(row.getByText(TEACHER_NAME, { exact: true })).toBeVisible();
+    await expect(row.getByText(CREATE_TEACHER_NAME, { exact: true })).toBeVisible();
 
     // API cross-check: created with the teacher, count 0, default band.
     let classes = await apiClasses(request, jwt);
@@ -124,43 +93,36 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     // student import only, so a class created through it carries no year band.
     expect(created?.year_band ?? null).toBeNull();
 
-    // EDIT (C-CLS-03): year band -> 10_12, assign a child.
+    // EDIT (C-CLS-03): the redesign permits only name + one teacher and must
+    // not replace the roster as the legacy assignment form did.
+    await page.getByRole('button', { name: `Actions for ${className}`, exact: true }).click();
     await page
-      .getByRole('button', { name: `Actions for ${className}`, exact: true })
+      .getByRole('menuitem', { name: cat(en, 'Classes.actions.edit'), exact: true })
       .click();
-    await page.getByRole('menuitem', { name: cat(en, 'Classes.actions.edit'), exact: true }).click();
     const editDialog = page.getByRole('dialog');
     await expect(editDialog).toBeVisible();
+    await editDialog.getByLabel(cat(en, 'Classes.detail.edit.nameLabel')).fill(editedName);
     await editDialog
-      .getByLabel(cat(en, 'Classes.form.yearBand'))
-      .selectOption('10_12');
-    await editDialog.getByRole('checkbox', { name: new RegExp(CHILD_NAME) }).click();
+      .getByLabel(cat(en, 'Classes.detail.edit.teacherLabel'))
+      .selectOption({ label: EDIT_TEACHER_NAME });
     await editDialog
-      .getByRole('button', { name: cat(en, 'Classes.form.submitEdit'), exact: true })
+      .getByRole('button', { name: cat(en, 'Classes.detail.edit.save'), exact: true })
       .click();
     await expect(editDialog).toBeHidden();
-    // Redesign spec section 2 replaced the "Year band" column with "Tests
-    // completed", so the band is no longer asserted in the row — the API
-    // cross-check below is now the only proof it round-tripped.
+    const editedRow = screen.getByRole('row', { name: new RegExp(editedName) });
+    await expect(editedRow).toBeVisible();
+    await expect(editedRow.getByText(EDIT_TEACHER_NAME, { exact: true })).toBeVisible();
 
-    // API cross-check: band changed, and the class now carries the assigned
-    // child. `student_count` counts ACTIVE students only — it is the same
-    // quantity the entitlement seat count and the C-RPT-04 participation
-    // buckets use, so an archived child contributes 0 (api::class.class
-    // service countStudents). CHILD_NAME is an archived probe fixture, so the
-    // assertion is on the class holding the link, not on a raw headcount.
+    // API cross-check: metadata changed and the zero-student roster did not.
     classes = await apiClasses(request, jwt);
     created = classes.find((entry) => entry.name === className);
-    expect(created?.year_band).toBe('10_12');
-    const assignedIsActive = (await apiChildren(request, jwt)).some(
-      (row) => `${row.given_name} ${row.family_name}` === CHILD_NAME && row.status === 'active',
-    );
-    expect(created?.student_count).toBe(assignedIsActive ? 1 : 0);
+    expect(created).toBeUndefined();
+    created = classes.find((entry) => entry.name === editedName);
+    expect(created?.student_count).toBe(0);
+    expect(created?.teachers).toHaveLength(1);
 
     // DELETE (C-CLS-04): the confirm copy states children are not deleted.
-    await page
-      .getByRole('button', { name: `Actions for ${className}`, exact: true })
-      .click();
+    await page.getByRole('button', { name: `Actions for ${editedName}`, exact: true }).click();
     await page
       .getByRole('menuitem', { name: cat(en, 'Classes.actions.delete'), exact: true })
       .click();
@@ -176,16 +138,10 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     // locator reads 0 prematurely — wait for the dialog to close (fires only
     // after the DELETE resolves) before asserting the row is gone.
     await expect(confirm).toBeHidden();
-    await expect(row).toHaveCount(0);
+    await expect(editedRow).toHaveCount(0);
 
-    // API cross-check: class gone, child survives unlinked (C-CHD-01).
+    // API cross-check: the class is gone.
     classes = await apiClasses(request, jwt);
-    expect(classes.find((entry) => entry.name === className)).toBeUndefined();
-    const children = await apiChildren(request, jwt);
-    const child = children.find(
-      (entry) => `${entry.given_name} ${entry.family_name}` === CHILD_NAME,
-    );
-    expect(child).toBeDefined();
-    expect(child?.class).toBeNull();
+    expect(classes.find((entry) => entry.name === editedName)).toBeUndefined();
   });
 });

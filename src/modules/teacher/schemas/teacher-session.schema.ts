@@ -82,13 +82,8 @@ export const monitorSummarySchema = z.strictObject({
   in_progress: teacherCountSchema,
   submitted: teacherCountSchema,
   stalled: teacherCountSchema,
-  /**
-   * Lane E's terminal `scoring_failed` counter. OPTIONAL only while the API
-   * side of C-TS-3 still partitions the roster five ways — the summary row
-   * hides the stat until the server sends it, so the wider web schema can
-   * deploy first without 500-ing every monitor read against the current wire.
-   */
-  scoring_failed: teacherCountSchema.optional(),
+  /** Lane E's terminal `scoring_failed` counter. */
+  scoring_failed: teacherCountSchema,
 });
 
 /* ── C-PR-1 read side · proctoring signals on a monitor tile (rule 35) ───── */
@@ -138,9 +133,7 @@ export const proctoringSummarySchema = z.strictObject({
  * exist — `not_joined` has no session, `joined` has no responses, and
  * `inactive_minutes` is populated only on a `stalled` tile. Never rendered as 0.
  *
- * `proctoring` is OPTIONAL+NULLABLE while the API side of C-TS-3 has not
- * adopted the C-PR-1 read: absent/null means "no signals recorded", and the
- * chip is omitted rather than zeroed.
+ * `proctoring` is null when no signals were recorded; the chip is then omitted.
  */
 export const monitorStudentSchema = z.strictObject({
   student_document_id: teacherDocumentIdSchema,
@@ -149,7 +142,7 @@ export const monitorStudentSchema = z.strictObject({
   stage: stageSchema.nullable(),
   total_stages: teacherCountSchema.nullable(),
   inactive_minutes: z.number().nonnegative().nullable(),
-  proctoring: proctoringSummarySchema.nullable().optional(),
+  proctoring: proctoringSummarySchema.nullable(),
 });
 
 export const testSessionMonitorResponseSchema = z.strictObject({

@@ -13,6 +13,7 @@ import { StartSittingControls } from '@/modules/test-day/components/StartSitting
 import { useCreateSittingMutation } from '@/modules/test-day/queries/use-create-sitting.mutation';
 import { useRevealCodeMutation } from '@/modules/test-day/queries/use-reveal-code.mutation';
 import { useClassSittingsQuery } from '@/modules/test-day/queries/use-class-sittings.query';
+import { useTeacherTestsQuery } from '@/modules/teacher';
 
 import type { TestDayScreenProps } from '@/modules/test-day/types/components.types';
 
@@ -21,12 +22,21 @@ import type { TestDayScreenProps } from '@/modules/test-day/types/components.typ
 // current sitting is the class's latest one (newest first from the query): an
 // open sitting is the live board, a closed one keeps its final board with
 // reopen plus the start of the next sitting (Test B later is simply a new
-// sitting; the server resolves which form the class gets, D-10).
+// sitting. The UI resolves the exact A/B document id from C-TD-2 and sends it
+// explicitly, satisfying D-32 without exposing a second picker on this legacy
+// one-click surface.
 export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
   const t = useTranslations('TestDay');
   const sittings = useClassSittingsQuery(classDocumentId);
   const current = sittings.data?.[0] ?? null;
-  const createSitting = useCreateSittingMutation(classDocumentId);
+  const tests = useTeacherTestsQuery();
+  const currentVariant = tests.data?.tests.find(
+    (test) => test.form_document_id === current?.form?.documentId,
+  )?.variant;
+  const nextVariant = currentVariant === 'A' ? 'B' : currentVariant === 'B' ? 'B' : 'A';
+  const nextFormId =
+    tests.data?.tests.find((test) => test.variant === nextVariant)?.form_document_id ?? null;
+  const createSitting = useCreateSittingMutation(classDocumentId, nextFormId);
   const revealCode = useRevealCodeMutation();
 
   const className = current?.class?.name ?? sittings.data?.[0]?.class?.name ?? null;
@@ -64,9 +74,7 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
         </div>
         <p className="max-w-xl text-sm text-body">{t('subtitle')}</p>
       </div>
-      {sittings.isPending ? (
-        <p className="text-sm text-muted-foreground">{t('loading')}</p>
-      ) : null}
+      {sittings.isPending ? <p className="text-sm text-muted-foreground">{t('loading')}</p> : null}
       {sittings.isError ? (
         <p role="alert" className="text-sm text-danger-ink">
           {t('loadError')}
@@ -76,8 +84,9 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
         <div className="flex max-w-xl flex-col gap-4">
           <EmptyState icon={PlayCircle} title={t('emptyTitle')} description={t('emptyBody')} />
           <StartSittingControls
-            pending={createSitting.isPending}
-            error={createSitting.isError}
+            pending={createSitting.isPending || tests.isPending}
+            disabled={!nextFormId}
+            error={createSitting.isError || tests.isError || (tests.isSuccess && !nextFormId)}
             onStart={() => createSitting.mutate()}
           />
         </div>
@@ -88,8 +97,9 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
             <div className="flex max-w-xl flex-col gap-3 rounded-xl border border-border bg-card px-4 py-4">
               <p className="max-w-md text-sm text-body">{t('closedStartHint')}</p>
               <StartSittingControls
-                pending={createSitting.isPending}
-                error={createSitting.isError}
+                pending={createSitting.isPending || tests.isPending}
+                disabled={!nextFormId}
+                error={createSitting.isError || tests.isError || (tests.isSuccess && !nextFormId)}
                 onStart={() => createSitting.mutate()}
               />
             </div>

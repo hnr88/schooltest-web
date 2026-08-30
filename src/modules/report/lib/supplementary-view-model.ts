@@ -32,6 +32,7 @@ export function buildSupplementaryStrand(result: ResultView): SupplementaryStran
     bands: [
       toBand('a2', supplementary.vocab_band_a2_accuracy),
       toBand('b1', supplementary.vocab_band_b1_accuracy),
+      toBand('b2', supplementary.vocab_band_b2_accuracy),
     ],
     // Server-composed qualifiers, pulled apart losslessly for cross-reference
     // only. Nothing here derives, re-words or suppresses a qualifier.

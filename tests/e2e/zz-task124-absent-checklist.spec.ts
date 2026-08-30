@@ -4,7 +4,7 @@ import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
 import { fixtureStudentId } from './helpers/fixture-ids';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials } from './helpers/credentials';
 
 // Task 124 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Absent workflow end to end (mvp-updates §4.5.6, C-SIT-06 + C-SIT-02): the
@@ -16,7 +16,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const SOFIA_ID = fixtureStudentId('Sofia', 'Petrov');
 const TEST_DAY_URL = `/en/dashboard/teach/classes/${CLASS_ID}/test-day`;
@@ -31,9 +31,7 @@ async function login(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
@@ -170,9 +168,7 @@ test.describe('task 124: absent toggle + still-to-sit checklist vs live C-SIT-02
     const sofiaBefore = sofiaRowOf(before);
     expect(sofiaBefore.absent).toBe(false);
     expect(sofiaBefore.needs_to_sit).toBe(true);
-    const sofiaName = [sofiaBefore.given_name, sofiaBefore.family_name]
-      .filter(Boolean)
-      .join(' ');
+    const sofiaName = [sofiaBefore.given_name, sofiaBefore.family_name].filter(Boolean).join(' ');
     const countTemplate = cat(en, 'TestDay.needsToSit.count');
     const initialCount = before.students.filter((student) => student.needs_to_sit).length;
     const markLabel = icu(cat(en, 'TestDay.monitor.markAbsentLabel'), { name: sofiaName });
@@ -202,9 +198,7 @@ test.describe('task 124: absent toggle + still-to-sit checklist vs live C-SIT-02
       // toggle's own label, and the toggle flips to the clear action.
       await expect(sofiaRow).toHaveAttribute('data-absent', 'true', { timeout: 30_000 });
       await expect(sofiaRow.getByText(absentLabel, { exact: true })).toHaveCount(2);
-      await expect(
-        sofiaRow.getByRole('button', { name: clearLabel, exact: true }),
-      ).toBeVisible();
+      await expect(sofiaRow.getByRole('button', { name: clearLabel, exact: true })).toBeVisible();
 
       // The still-to-sit panel drops her and the count falls by one.
       await expect(
@@ -229,9 +223,9 @@ test.describe('task 124: absent toggle + still-to-sit checklist vs live C-SIT-02
 
       // Clear the flag: the row and the panel restore.
       await sofiaRow.getByRole('button', { name: clearLabel, exact: true }).click();
-      await expect(
-        sofiaRow.getByRole('button', { name: markLabel, exact: true }),
-      ).toBeVisible({ timeout: 30_000 });
+      await expect(sofiaRow.getByRole('button', { name: markLabel, exact: true })).toBeVisible({
+        timeout: 30_000,
+      });
       await expect(sofiaRow.getByText(absentLabel, { exact: true })).toHaveCount(1);
       await expect(
         panel.getByText(formatStillToSitCount(countTemplate, initialCount), { exact: true }),

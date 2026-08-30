@@ -1760,11 +1760,13 @@
     "supplementaryDescription": "Band accuracies from the supplementary vocabulary tasks. They are reported alongside the model, not inside it: they are not one of the modelled attributes, they do not enter the mastery model, and no cut score is applied to them.",
     "supplementaryBands": {
       "a2": "A2 band accuracy",
-      "b1": "B1 band accuracy"
+      "b1": "B1 band accuracy",
+      "b2": "B2 band accuracy"
     },
     "supplementaryBandSource": {
       "a2": "Proportion correct over the Stage 1 vocabulary tasks in this sitting.",
-      "b1": "Proportion correct over the Stage 2 synonym-match strand in this sitting."
+      "b1": "Proportion correct over the Stage 2 synonym-match strand in this sitting.",
+      "b2": "Proportion correct over the supplementary B2 vocabulary strand served with Stage 3."
     },
     "supplementaryAccuracyLabel": "Band accuracy",
     "supplementaryNotAdministered": "Not administered",
@@ -1879,7 +1881,8 @@
     "resultStatus": {
       "scoring": "Scoring",
       "partial_pending": "Partially pending",
-      "complete": "Complete"
+      "complete": "Complete",
+      "scoring_failed": "Scoring failed"
     }
   },
   "Eald": {

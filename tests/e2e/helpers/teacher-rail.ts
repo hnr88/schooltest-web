@@ -47,7 +47,10 @@ export const PARENT_NAV = [
 ] as const;
 
 export const ACCOUNTS = {
-  teacher: { email: 'teacher@schooltest.local', secret: 'SEED_TEACHER_PASSWORD' },
+  teacher: {
+    email: process.env.E2E_TEACHER_EMAIL || 't2@schooltest.local',
+    secret: 'SEED_TEACHER_PASSWORD',
+  },
   // The seeded platform account carries the 'ops' role on this stack (verified in
   // Postgres), so the key names the role it actually is, not the one it once had.
   ops: { email: 'apiadmin@schooltest.local', secret: 'SEED_APIADMIN_PASSWORD' },
@@ -85,20 +88,28 @@ export function groupLabels(page: Page): Locator {
 const MIN_LOGIN_INTERVAL_MS = 3100;
 let lastLoginAt = 0;
 
-/** Drives the REAL /sign-in form for one seeded account and waits for /dashboard. */
-export async function signIn(page: Page, who: keyof typeof ACCOUNTS): Promise<void> {
+/** Drives the REAL /sign-in form for one email/seed secret and waits for /dashboard. */
+async function signInAccount(page: Page, email: string, secret: string): Promise<void> {
   const sinceLast = Date.now() - lastLoginAt;
   if (lastLoginAt !== 0 && sinceLast < MIN_LOGIN_INTERVAL_MS) {
     await page.waitForTimeout(MIN_LOGIN_INTERVAL_MS - sinceLast);
   }
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(ACCOUNTS[who].email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(apiEnv(ACCOUNTS[who].secret));
+  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(apiEnv(secret));
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   lastLoginAt = Date.now();
   await page.waitForURL('**/dashboard');
+}
+
+/** Drives the REAL /sign-in form for one seeded account and waits for /dashboard. */
+export async function signIn(page: Page, who: keyof typeof ACCOUNTS): Promise<void> {
+  await signInAccount(page, ACCOUNTS[who].email, ACCOUNTS[who].secret);
+}
+
+/** Signs in another journey teacher using the shared seeded teacher secret. */
+export async function signInTeacher(page: Page, email: string): Promise<void> {
+  await signInAccount(page, email, 'SEED_TEACHER_PASSWORD');
 }
 
 /**

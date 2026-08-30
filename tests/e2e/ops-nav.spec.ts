@@ -68,8 +68,12 @@ test.describe('ops sidebar navigation', () => {
   test('pipeline and tools are not in the ops rail', async ({ page }) => {
     await loginAs(page, 'ops');
     await expect(railLink(page, 'opsSchools')).toBeVisible({ timeout: 20_000 });
-    await expect(railLink(page, 'opsPipeline')).toHaveCount(0);
-    await expect(railLink(page, 'opsTools')).toHaveCount(0);
+    await expect(
+      page.locator('a[data-sidebar="menu-button"][href$="/dashboard/ops/pipeline"]'),
+    ).toHaveCount(0);
+    await expect(
+      page.locator('a[data-sidebar="menu-button"][href$="/dashboard/ops/tools"]'),
+    ).toHaveCount(0);
   });
 
   test('the ad-hoc links the rail replaced are gone from the schools header', async ({ page }) => {

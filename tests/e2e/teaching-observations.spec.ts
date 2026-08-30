@@ -14,7 +14,6 @@ import { cat, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 const LIST = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
-const PERCENT = new Intl.NumberFormat('en', { style: 'percent', maximumFractionDigits: 0 });
 
 interface WireEntry {
   status?: string;
@@ -130,16 +129,18 @@ async function diagnosticBundle(
 }
 
 test.describe('teacher report — teaching observations from the attribute contrast', () => {
-  test('the foundation bottleneck, the B1 band and the evidence caveat are the real row', async ({
+  test('the foundation bottleneck, retired B1 absence and evidence caveat are the real row', async ({
     page,
   }) => {
     // Comprehension assessed and unmastered while a foundation attribute is not
-    // secure — the E11-06 bottleneck case, with a measured B1 band to fold in.
+    // secure — the E11-06 bottleneck case. The current bank has retired B1,
+    // so the observation must name its absence instead of inventing a percent.
     const documentId = teacherOwned(
       `and r.skill = 'reading'
          and r.attributes -> 'R1' ->> 'status' = 'not_mastered'
          and r.attributes -> 'R7' ->> 'status' = 'not_mastered'
-         and r.supplementary ->> 'vocab_band_b1_accuracy' is not null`,
+         and r.supplementary ->> 'vocab_band_b1_accuracy' is null
+         and r.attributes -> 'R2' ->> 'status' is not null`,
     );
     const map = storedAttributes(documentId);
     const rows = assessed(map);
@@ -152,11 +153,6 @@ test.describe('teacher report — teaching observations from the attribute contr
     expect(foundationGap.length, 'a real foundation gap').toBeGreaterThan(0);
     expect(comprehensionGap.length, 'a real comprehension gap').toBeGreaterThan(0);
 
-    const b1 = Number(
-      runSql(
-        `select supplementary ->> 'vocab_band_b1_accuracy' from results where document_id = '${documentId}'`,
-      ),
-    );
     const vocabulary = rows.find((row) => ladderIndex(row.code) === 2);
     if (!vocabulary) throw new Error('[e2e] expected an assessed vocabulary attribute');
 
@@ -173,12 +169,12 @@ test.describe('teacher report — teaching observations from the attribute contr
     expect(bottleneckText).toContain(LIST.format(comprehensionGap));
     expect(bottleneckText).toContain(LIST.format(foundationGap));
 
-    const vocab = section.locator('[data-observation="vocabularyBandMeasured"]');
+    const vocab = section.locator('[data-observation="vocabularyBandNotAdministered"]');
     await expect(vocab).toHaveCount(1);
     const vocabText = (await vocab.innerText()).trim();
     expect(vocabText).toContain(`(${vocabulary.code})`);
     expect(vocabText).toContain(cat(en, `Report.attributeStatus.${vocabulary.status}`));
-    expect(vocabText).toContain(PERCENT.format(b1));
+    expect(vocabText).not.toContain('%');
 
     const caveat = section.locator('[data-observation="evidenceCaveat"]');
     const items = rows.map((row) => row.items);
@@ -200,7 +196,7 @@ test.describe('teacher report — teaching observations from the attribute contr
     );
   });
 
-  test('a sitting with no comprehension items says so, and an unserved B1 band is never a percentage', async ({
+  test('a sitting with only foundation evidence says so and makes no vocabulary claim', async ({
     page,
   }) => {
     const documentId = teacherOwned(
@@ -224,10 +220,7 @@ test.describe('teacher report — teaching observations from the attribute contr
       section.locator('[data-observation="comprehensionNotAssessedWithGap"]'),
     ).toHaveCount(1);
 
-    const vocab = section.locator('[data-observation="vocabularyBandNotAdministered"]');
-    await expect(vocab).toHaveCount(1);
-    // The absence is stated, never rendered as 0% (CT-7).
-    await expect(vocab).not.toContainText('%');
+    await expect(section.locator('[data-observation^="vocabulary"]')).toHaveCount(0);
     await expect(section.locator('[data-observation="vocabularyBandMeasured"]')).toHaveCount(0);
   });
 

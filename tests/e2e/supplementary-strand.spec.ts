@@ -14,6 +14,7 @@ const PERCENT = new Intl.NumberFormat('en', { style: 'percent', maximumFractionD
 interface WireSupplementary {
   vocab_band_a2_accuracy: number | null;
   vocab_band_b1_accuracy: number | null;
+  vocab_band_b2_accuracy?: number | null;
   dprime?: number | null;
 }
 
@@ -53,17 +54,18 @@ async function signInAsTeacher(page: Page): Promise<void> {
 }
 
 test.describe('teacher report — the out-of-model vocabulary strand', () => {
-  test('both bands render the real stored proportion, and a stored 0 renders as 0%', async ({
-    page,
-  }) => {
-    // A row whose B1 band is a genuine measured ZERO — the case E11-05 forbids
-    // conflating with "not administered".
+  test('measured A2/B2 zeros render as 0% while retired B1 stays absent', async ({ page }) => {
+    // The current bank administers A2 and B2 items and retires the old 2E B1
+    // strand. One real row therefore proves both sides of CT-7 at once.
     const documentId = teacherOwned(
-      `and (r.supplementary ->> 'vocab_band_b1_accuracy')::numeric = 0
-         and r.supplementary ->> 'vocab_band_a2_accuracy' is not null`,
+      `and (r.supplementary ->> 'vocab_band_a2_accuracy')::numeric = 0
+         and r.supplementary ->> 'vocab_band_b1_accuracy' is null
+         and (r.supplementary ->> 'vocab_band_b2_accuracy')::numeric = 0`,
     );
     const stored = storedSupplementary(documentId);
-    expect(stored.vocab_band_b1_accuracy).toBe(0);
+    expect(stored.vocab_band_a2_accuracy).toBe(0);
+    expect(stored.vocab_band_b1_accuracy).toBeNull();
+    expect(stored.vocab_band_b2_accuracy).toBe(0);
 
     await signInAsTeacher(page);
     await page.goto(`/dashboard/reports/${documentId}`);
@@ -72,34 +74,31 @@ test.describe('teacher report — the out-of-model vocabulary strand', () => {
     await expect(panel).toHaveAttribute('data-state', 'bands', { timeout: 20_000 });
 
     const bands = page.locator('[data-slot="report-supplementary-band"]');
-    await expect(bands).toHaveCount(2);
-    // Fixed A2 -> B1 order, so the contrast reads as a step between two rows.
+    await expect(bands).toHaveCount(3);
+    // Fixed A2 -> B1 -> B2 progression order.
     expect(await bands.evaluateAll((els) => els.map((el) => el.getAttribute('data-code')))).toEqual(
-      ['a2', 'b1'],
+      ['a2', 'b1', 'b2'],
     );
 
-    for (const [code, accuracy] of [
-      ['a2', stored.vocab_band_a2_accuracy],
-      ['b1', stored.vocab_band_b1_accuracy],
-    ] as const) {
-      const row = page.locator(`[data-slot="report-supplementary-band"][data-code="${code}"]`);
-      expect(accuracy).not.toBeNull();
-      await expect(row, code).toHaveAttribute('data-state', 'measured');
-      await expect(row, code).toHaveAttribute('data-accuracy', String(accuracy));
-      await expect(row.locator('[data-slot="report-supplementary-value"]'), code).toHaveText(
-        PERCENT.format(accuracy as number),
-      );
-    }
+    const a2 = page.locator('[data-slot="report-supplementary-band"][data-code="a2"]');
+    await expect(a2).toHaveAttribute('data-state', 'measured');
+    await expect(a2).toHaveAttribute('data-accuracy', '0');
+    await expect(a2.locator('[data-slot="report-supplementary-value"]')).toHaveText(
+      PERCENT.format(0),
+    );
 
-    // The measured zero is a percentage, NOT the absence phrase.
-    await expect(
-      page.locator('[data-slot="report-supplementary-band"][data-code="b1"]'),
-    ).toHaveText(/0%/);
-    await expect(
-      page
-        .locator('[data-slot="report-supplementary-band"][data-code="b1"]')
-        .getByText(cat(en, 'Report.supplementaryNotAdministered'), { exact: true }),
-    ).toHaveCount(0);
+    const b1 = page.locator('[data-slot="report-supplementary-band"][data-code="b1"]');
+    await expect(b1).toHaveAttribute('data-state', 'not_administered');
+    expect(await b1.getAttribute('data-accuracy')).toBeNull();
+    await expect(b1).toContainText(cat(en, 'Report.supplementaryNotAdministered'));
+    await expect(b1).not.toHaveText(/%/);
+
+    const b2 = page.locator('[data-slot="report-supplementary-band"][data-code="b2"]');
+    await expect(b2).toHaveAttribute('data-state', 'measured');
+    await expect(b2).toHaveAttribute('data-accuracy', '0');
+    await expect(b2.locator('[data-slot="report-supplementary-value"]')).toHaveText(
+      PERCENT.format(0),
+    );
   });
 
   test('a null band says "not administered" and renders no percentage at all', async ({ page }) => {
@@ -188,17 +187,23 @@ test.describe('teacher report — the out-of-model vocabulary strand', () => {
     }
   });
 
-  test('a receptive result with no strand yet says "not derived yet", not 0%', async ({ page }) => {
-    const documentId = teacherOwned(`and r.skill = 'reading' and r.supplementary is null`);
+  test('a receptive sitting with no vocabulary band served states all absences, not 0%', async ({
+    page,
+  }) => {
+    const documentId = teacherOwned(
+      `and r.skill = 'reading'
+         and r.supplementary ->> 'vocab_band_a2_accuracy' is null
+         and r.supplementary ->> 'vocab_band_b1_accuracy' is null
+         and coalesce(r.supplementary ->> 'vocab_band_b2_accuracy', '') = ''`,
+    );
 
     await signInAsTeacher(page);
     await page.goto(`/dashboard/reports/${documentId}`);
 
     const panel = page.locator('[data-slot="report-supplementary"]');
-    await expect(panel).toHaveAttribute('data-state', 'pending', { timeout: 20_000 });
-    await expect(panel.locator('[data-slot="report-supplementary-absent"]')).toHaveText(
-      cat(en, 'Report.supplementaryPending'),
-    );
+    await expect(panel).toHaveAttribute('data-state', 'bands', { timeout: 20_000 });
+    await expect(panel.locator('[data-slot="report-supplementary-band"]')).toHaveCount(3);
+    await expect(panel.locator('[data-state="not_administered"]')).toHaveCount(3);
     await expect(panel).not.toHaveText(/%/);
   });
 

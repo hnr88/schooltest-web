@@ -1,4 +1,10 @@
-import { expect, type APIRequestContext, type Locator, type Page, type PlaywrightWorkerArgs } from '@playwright/test';
+import {
+  expect,
+  type APIRequestContext,
+  type Locator,
+  type Page,
+  type PlaywrightWorkerArgs,
+} from '@playwright/test';
 
 import { studentDrillDownResponseSchema } from '@/modules/teacher/schemas/teacher-result.schema';
 import type { StudentDrillDownResponse } from '@/modules/teacher/types/teacher-result.types';
@@ -21,10 +27,11 @@ export async function readDrillDownLive(
   playwright: PlaywrightWorkerArgs['playwright'],
   classDocumentId: string,
   studentDocumentId: string,
+  teacherEmail?: string,
 ): Promise<StudentDrillDownResponse> {
   const request: APIRequestContext = await playwright.request.newContext();
   try {
-    const jwt = await bearer(request);
+    const jwt = await bearer(request, teacherEmail);
     const response = await request.get(
       `${API_BASE}/api/teacher/classes/${classDocumentId}/students/${studentDocumentId}`,
       { headers: { Authorization: `Bearer ${jwt}` } },
@@ -42,7 +49,8 @@ export async function readDrillDownLive(
 export async function expectDrillDownReady(page: Page, studentDocumentId?: string): Promise<void> {
   const surface = page.locator('[data-surface="teacher-student-drill-down"]');
   await expect(surface).toHaveAttribute('data-status', 'ready', { timeout: 20_000 });
-  if (studentDocumentId) await expect(surface).toHaveAttribute('data-student-id', studentDocumentId);
+  if (studentDocumentId)
+    await expect(surface).toHaveAttribute('data-student-id', studentDocumentId);
 }
 
 /** Opens one student drill-down by deep link and waits for that READY frame. */

@@ -3,7 +3,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 76 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Teacher progress panel (C-RPT-02): Test B measured against Test A as the
@@ -14,7 +14,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const TEACHER2 = roleCredentials('teacher2');
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const SCHOOL_ADMIN_B = roleCredentials('schoolAdminB');
@@ -42,9 +42,7 @@ async function login(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
@@ -133,26 +131,31 @@ test.describe('task 76: teacher progress panel vs live C-RPT-02', () => {
       ),
     ).toBeVisible();
 
-    // Sofia's real chain: every content expectation is computed from the live
+    // One real compared chain: every content expectation is computed from the live
     // C-RPT-02 payload (the fixture keeps evolving through re-sits — never
-    // pinned to a sitting count or a specific chain).
-    const sofia = payload.students.find((row) => row.student_ref === 'Sofia P.');
-    expect(sofia).toBeTruthy();
-    const student = panel.locator('[data-slot="progress-student"]', { hasText: 'Sofia P.' });
+    // pinned to a sitting count or a specific learner name).
+    const compared = payload.students[0];
+    expect(compared).toBeTruthy();
+    const student = panel.locator('[data-slot="progress-student"]', {
+      hasText: compared.student_ref,
+    });
     await expect(student).toBeVisible();
     await expect(
-      student.getByText(icu(cat(en, 'Teach.progress.weeksBetween'), {
-        weeks: String(sofia!.weeks_between),
-      }), {
-        exact: true,
-      }),
+      student.getByText(
+        icu(cat(en, 'Teach.progress.weeksBetween'), {
+          weeks: String(compared.weeks_between),
+        }),
+        {
+          exact: true,
+        },
+      ),
     ).toBeVisible();
 
     // Transition statements are plain statements about reading areas, rendered
     // exactly as ProgressTransitionRow builds them from the wire statuses.
     const transitions = student.locator('[data-slot="progress-transition"]');
-    await expect(transitions).toHaveCount(sofia!.transitions.length);
-    for (const transition of sofia!.transitions) {
+    await expect(transitions).toHaveCount(compared.transitions.length);
+    for (const transition of compared.transitions) {
       const area = cat(en, `Teach.diagnostic.areas.${transition.attribute}`);
       const fromWord = cat(en, `Teach.progress.statusWord.${transition.from_status}`);
       const label =
@@ -168,7 +171,7 @@ test.describe('task 76: teacher progress panel vs live C-RPT-02', () => {
 
     // Areas not assessed on one or both forms: explicit not_assessed, never "no change".
     const notAssessedAreas = payload.not_assessed
-      .filter((row) => row.student_ref === 'Sofia P.')
+      .filter((row) => row.student_ref === compared.student_ref)
       .map((row) => cat(en, `Teach.diagnostic.areas.${row.attribute}`));
     const notAssessed = student.locator('[data-slot="progress-not-assessed"]');
     if (notAssessedAreas.length > 0) {
@@ -196,8 +199,9 @@ test.describe('task 76: teacher progress panel vs live C-RPT-02', () => {
       }),
     );
     expect(teachersRes.ok()).toBeTruthy();
-    const teachers = ((await teachersRes.json()) as { data: Array<{ documentId: string; email: string }> })
-      .data;
+    const teachers = (
+      (await teachersRes.json()) as { data: Array<{ documentId: string; email: string }> }
+    ).data;
     const verify21 = teachers.find((row) => row.email === TEACHER.email);
     expect(verify21).toBeTruthy();
     const create = await fetchWithRetry(() =>

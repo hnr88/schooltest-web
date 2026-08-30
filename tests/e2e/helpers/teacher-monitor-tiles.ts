@@ -90,7 +90,14 @@ export function stallCaption(page: Page): Locator {
 
 /** C-TS-3's summary for a sitting nobody has joined yet — every tally still zero. */
 export function untouchedSummary(expected: number): Record<string, number> {
-  return { expected, joined: 0, in_progress: 0, submitted: 0, stalled: 0 };
+  return {
+    expected,
+    joined: 0,
+    in_progress: 0,
+    submitted: 0,
+    stalled: 0,
+    scoring_failed: 0,
+  };
 }
 
 /**

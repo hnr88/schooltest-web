@@ -1760,11 +1760,13 @@
     "supplementaryDescription": "补充词汇任务的分级正确率。它与模型并列报告，而不在模型之内：它不是被建模的属性，不进入掌握模型，也不应用任何切分分数。",
     "supplementaryBands": {
       "a2": "A2 级正确率",
-      "b1": "B1 级正确率"
+      "b1": "B1 级正确率",
+      "b2": "B2 级正确率"
     },
     "supplementaryBandSource": {
       "a2": "本次作答中第一阶段词汇任务的答对比例。",
-      "b1": "本次作答中第二阶段同义词匹配板块的答对比例。"
+      "b1": "本次作答中第二阶段同义词匹配板块的答对比例。",
+      "b2": "与第三阶段一起施测的补充 B2 词汇板块答对比例。"
     },
     "supplementaryAccuracyLabel": "分级正确率",
     "supplementaryNotAdministered": "未施测",
@@ -1879,7 +1881,8 @@
     "resultStatus": {
       "scoring": "评分中",
       "partial_pending": "部分待定",
-      "complete": "已完成"
+      "complete": "已完成",
+      "scoring_failed": "评分失败"
     }
   },
   "SchoolOnboarding": {

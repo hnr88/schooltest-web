@@ -4,7 +4,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials } from './helpers/credentials';
 
 // Task 134 (st-mvp-pivot) — C-SIT-07 sitting history. Permanent spec: the
 // history table on the test-day page renders the class's real sittings, cell
@@ -15,7 +15,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const TEST_DAY_URL = `/en/dashboard/teach/classes/${CLASS_ID}/test-day`;
 
@@ -45,10 +45,7 @@ async function signIn(page: Page): Promise<void> {
 }
 
 // C-SIT-07: per-class sitting history, newest first, owning teacher only.
-async function fetchHistory(
-  request: APIRequestContext,
-  jwt: string,
-): Promise<SittingHistoryRow[]> {
+async function fetchHistory(request: APIRequestContext, jwt: string): Promise<SittingHistoryRow[]> {
   const res = await fetchWithRetry(() =>
     request.get(`${API}/api/sittings?class=${CLASS_ID}&summary=true`, {
       headers: { Authorization: `Bearer ${jwt}` },

@@ -3,7 +3,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials } from './helpers/credentials';
 
 // Task 129 (st-mvp-pivot): the permanent C-RPT-01 v2 drill spec — mvp-updates
 // spec 4.9 "one single click down" from the class diagnostic to a student's
@@ -17,7 +17,7 @@ const en = loadMessages('en');
 const zh = loadMessages('zh');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const DOCUMENT_ID_PATTERN = /^[a-z0-9]{24}$/;
 
@@ -31,9 +31,7 @@ async function login(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows.

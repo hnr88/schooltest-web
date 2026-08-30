@@ -31,8 +31,7 @@ export const MONITOR_STATE_ORDER: readonly MonitorState[] = [
 
 /**
  * The stat tiles above the grid, in the wireframe's left-to-right order, with
- * the operator counter appended after `stalled`. `scoring_failed` renders only
- * when the server's summary carries it (see monitorSummarySchema).
+ * the operator counter appended after `stalled`.
  */
 export const MONITOR_SUMMARY_ORDER: readonly MonitorSummaryKey[] = [
   'expected',

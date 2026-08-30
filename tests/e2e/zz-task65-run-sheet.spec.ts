@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials } from './helpers/credentials';
 
 // Task 65 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Test-day run sheet (mvp-updates §4.5 step 4): renders every required block
@@ -12,7 +12,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 const zh = loadMessages('zh');
 
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const RUN_SHEET_URL = '/en/dashboard/teach/run-sheet';
 
@@ -86,9 +86,7 @@ test.describe('task 65: test-day run sheet', () => {
     await page.goto(`/en/dashboard/teach/classes/${CLASS_ID}/test-day`);
     const testDay = page.locator('[data-surface="teacher-test-day"]');
     await expect(testDay).toBeVisible({ timeout: 20_000 });
-    await testDay
-      .getByRole('link', { name: cat(en, 'TestDay.runSheetLink'), exact: true })
-      .click();
+    await testDay.getByRole('link', { name: cat(en, 'TestDay.runSheetLink'), exact: true }).click();
     // localePrefix "as-needed" drops the /en prefix on navigation.
     await page.waitForURL('**/dashboard/teach/run-sheet');
     await expect(page.locator('[data-surface="teacher-run-sheet"]')).toBeVisible({
@@ -111,9 +109,7 @@ test.describe('task 65: test-day run sheet', () => {
     await expect(
       sheet.getByRole('heading', { name: cat(zh, 'RunSheet.title'), exact: true }),
     ).toBeVisible();
-    await expect(
-      sheet.getByText(cat(zh, 'RunSheet.say.lineThree'), { exact: true }),
-    ).toBeVisible();
+    await expect(sheet.getByText(cat(zh, 'RunSheet.say.lineThree'), { exact: true })).toBeVisible();
     const zhText = (await sheet.innerText()) ?? '';
     expect(zhText).not.toMatch(/—|–/);
   });

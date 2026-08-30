@@ -3,7 +3,7 @@ import { expect, test, type APIRequestContext, type Browser, type Page } from '@
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 106 (st-mvp-pivot) live check: the full W16 email-fix handoff loop
 // (C-CHD-05, mvp-updates spec 4.4) across both roles. The teacher flags a
@@ -18,7 +18,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 
@@ -46,9 +46,7 @@ async function signIn(
 ): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows.
@@ -264,11 +262,7 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     });
   });
 
-  test('copy guard: no internal jargon on either surface', async ({
-    page,
-    browser,
-    baseURL,
-  }) => {
+  test('copy guard: no internal jargon on either surface', async ({ page, browser, baseURL }) => {
     // The em dash was dropped from this list by the school admin dashboard
     // redesign: spec sections 1 and 4 make "—" the mandated empty-value glyph
     // ("Level or —", "Avg. reading level ... show — if no data"), so the

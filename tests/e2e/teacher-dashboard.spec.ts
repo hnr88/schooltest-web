@@ -126,9 +126,11 @@ test.describe('teacher dashboard (C-TD-1)', () => {
       const overflow = await measureOverflow(page);
       expect(overflow.doc, `${name} page scrolls horizontally`).toBe(0);
       for (const card of overflow.cards) expect(card, `${name} card overflows`).toBe(0);
-      expect(overflow.columns).toBe(width === 1280 ? 2 : 1);
+      expect(overflow.columns).toBe(width === 1280 ? Math.min(2, wire.length) : 1);
 
-      const results = await new AxeBuilder({ page }).include('[data-surface="teacher-dashboard"]').analyze();
+      const results = await new AxeBuilder({ page })
+        .include('[data-surface="teacher-dashboard"]')
+        .analyze();
       // Only landmark best-practice rules are tolerated: SidebarInset is itself a
       // <main>, so every screen module in this app nests one. Shell-wide, and the
       // untouched parent Overview reports the same two.

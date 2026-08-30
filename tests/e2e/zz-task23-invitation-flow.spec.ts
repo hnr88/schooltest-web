@@ -1,7 +1,6 @@
-import { execSync } from 'node:child_process';
-
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { runSql } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { roleCredentials } from './helpers/credentials';
 
@@ -107,20 +106,16 @@ test.describe('task 23: invitation flow + teachers screen', () => {
 
     // C-INV-05 renders the welcome screen with school, role and email.
     await page.goto(`/en/invite/${token}`);
-    await expect(
-      page.getByRole('heading', { name: `Welcome to ${SCHOOL_NAME}` }),
-    ).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByRole('heading', { name: `Welcome to ${SCHOOL_NAME}` })).toBeVisible({
+      timeout: 20_000,
+    });
     await expect(page.getByText(INVITED.email)).toBeVisible();
-    await expect(
-      page.getByText(cat(en, 'Invite.roles.teacher'), { exact: true }),
-    ).toBeVisible();
+    await expect(page.getByText(cat(en, 'Invite.roles.teacher'), { exact: true })).toBeVisible();
 
     // C-INV-06 accepts and lands signed in on the teacher dashboard.
     await page.locator('#invite-password').fill(PASSWORD);
     await page.locator('#invite-confirm-password').fill(PASSWORD);
-    await page
-      .getByRole('button', { name: cat(en, 'Invite.form.submit'), exact: true })
-      .click();
+    await page.getByRole('button', { name: cat(en, 'Invite.form.submit'), exact: true }).click();
     await page.waitForURL('**/dashboard/teach', { timeout: 30_000 });
     await expect(page.locator('[data-surface="teacher-home"]')).toBeVisible({ timeout: 20_000 });
 
@@ -144,9 +139,7 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     await staffRow
       .getByLabel(cat(en, 'Teachers.actions.menuLabel').replace('{name}', displayName))
       .click();
-    await page
-      .getByRole('menuitem', { name: cat(en, 'Teachers.actions.deactivate') })
-      .click();
+    await page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.deactivate') }).click();
     await page
       .getByRole('button', { name: cat(en, 'Teachers.actions.deactivateConfirm'), exact: true })
       .click();
@@ -157,9 +150,7 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     await staffRow
       .getByLabel(cat(en, 'Teachers.actions.menuLabel').replace('{name}', displayName))
       .click();
-    await page
-      .getByRole('menuitem', { name: cat(en, 'Teachers.actions.reactivate') })
-      .click();
+    await page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.reactivate') }).click();
     await page
       .getByRole('button', { name: cat(en, 'Teachers.actions.reactivateConfirm'), exact: true })
       .click();
@@ -206,10 +197,8 @@ test.describe('task 23: invitation flow + teachers screen', () => {
       data: { email, first_name: 'Ex', last_name: 'Pired', role: 'teacher' },
     });
     const { data } = (await res.json()) as { data: { documentId: string; invite_url: string } };
-    execSync(
-      `docker exec -e PGPASSWORD=wizhBo7fa7h2-szhi1HxBYz1 schooltest-api-st1-postgres ` +
-        `psql -U schooltest -d schooltest_dev -c ` +
-        `"UPDATE invitations SET expires_at = NOW() - INTERVAL '1 day' WHERE document_id = '${data.documentId}'"`,
+    runSql(
+      `UPDATE invitations SET expires_at = NOW() - INTERVAL '1 day' WHERE document_id = '${data.documentId}'`,
     );
     const token = data.invite_url.split('/invite/')[1];
     await page.goto(`/en/invite/${token}`);
@@ -219,7 +208,8 @@ test.describe('task 23: invitation flow + teachers screen', () => {
   test('teacher role is bounced off the Teachers page', async ({ page }) => {
     await signIn(page, TEACHER.email, TEACHER.password);
     await page.goto('/dashboard/school/teachers');
-    await page.waitForURL('**/dashboard/teach', { timeout: 20_000 });
+    await page.waitForURL('**/dashboard', { timeout: 20_000 });
+    await expect(page.locator('[data-surface="teacher-dashboard"]')).toBeVisible();
     await expect(page.locator('[data-surface="school-admin-teachers"]')).toHaveCount(0);
   });
 });
