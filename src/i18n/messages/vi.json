@@ -4139,9 +4139,8 @@
         "downloadFailed": "Đã sao chép câu lệnh nhưng không thể tải bản xuất xuống. Hãy thử lại."
       },
       "exitPredictions": {
-        "title": "Dự đoán đầu ra",
-        "badge": "Sắp có",
-        "description": "SchoolTest chưa dự đoán trình độ đầu ra, nên không có gì để hành động trong thẻ này. Không có dự đoán nào được hiển thị, vì chưa có dự đoán nào được đo lường."
+        "title": "SchoolTest chưa dự đoán mức độ hoàn thành",
+        "description": "Không hiển thị dự đoán nào vì chưa có đo lường nào. Tab này đọc trực tiếp từ máy chủ và không hiển thị gì thay vì đoán."
       }
     }
   },

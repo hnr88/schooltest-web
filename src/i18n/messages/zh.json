@@ -4210,9 +4210,8 @@
         "downloadFailed": "提示词已复制，但无法下载导出文件。请重试。"
       },
       "exitPredictions": {
-        "title": "出口水平预测",
-        "badge": "即将推出",
-        "description": "SchoolTest 尚不预测出口水平，因此本标签页没有可执行的内容。由于没有测得任何预测值，此处不显示任何预测。"
+        "title": "SchoolTest 尚未提供毕业水平预测",
+        "description": "未显示任何预测，因为尚未进行过测量。本页直接从服务器读取，宁可空白也不作猜测。"
       }
     }
   },

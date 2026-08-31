@@ -4130,9 +4130,8 @@
         "downloadFailed": "Gesaan telah disalin, tetapi eksport tidak dapat dimuat turun. Cuba lagi."
       },
       "exitPredictions": {
-        "title": "Ramalan keluar",
-        "badge": "Akan datang",
-        "description": "SchoolTest belum meramalkan tahap keluar, jadi tiada apa-apa untuk ditindaklanjuti dalam tab ini. Tiada ramalan ditunjukkan kerana tiada yang telah diukur."
+        "title": "SchoolTest belum meramalkan tahap kelulusan",
+        "description": "Tiada ramalan ditunjukkan kerana tiada pengukuran telah dibuat. Tab ini membaca secara langsung dari pelayan dan tidak menunjukkan apa-apa daripada meneka."
       }
     }
   },

@@ -4210,9 +4210,8 @@
         "downloadFailed": "The prompt was copied, but the export could not be downloaded. Try again."
       },
       "exitPredictions": {
-        "title": "Exit predictions",
-        "badge": "Coming soon",
-        "description": "SchoolTest does not predict exit levels yet, so there is nothing to act on in this tab. No prediction is shown, because none has been measured."
+        "title": "SchoolTest does not predict exit levels yet",
+        "description": "No prediction is shown, because none has been measured. This tab reads live from the server and shows nothing rather than guess."
       }
     }
   },
