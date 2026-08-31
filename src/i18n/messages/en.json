@@ -304,6 +304,15 @@
     "googleTitle": "Sign in with your Google account",
     "orDivider": "or",
     "loginError": "Invalid email or password. Please try again.",
+    "loginErrorTitle": "We couldn't sign you in",
+    "loginAttemptsRemaining": "{count, plural, one {The email or password is incorrect. # attempt remains before sign-in is temporarily locked.} other {The email or password is incorrect. # attempts remain before sign-in is temporarily locked.}}",
+    "incorrectPassword": "Incorrect password",
+    "accountLockedTitle": "Account temporarily locked",
+    "accountLockedAlertTitle": "Too many attempts",
+    "accountLockedBody": "For security, sign-in is locked until {time}.",
+    "resetYourPassword": "Reset your password",
+    "signInAvailableIn": "Sign in — available in {time}",
+    "accountLockedAuditNotice": "If this wasn't you, tell your school administrator. Repeated attempts are logged against the account.",
     "registerError": "Could not create account. Please try again.",
     "takenError": "This email is already registered. Try signing in instead.",
     "offlineError": "You appear to be offline. Check your connection and try again.",
@@ -2437,7 +2446,8 @@
       "subtitle": "Your school's details, plan and test allowances.",
       "tabsLabel": "Account sections",
       "tabs": {
-        "account": "My account",
+        "details": "Details",
+        "plan": "Plan",
         "settings": "Settings",
         "signout": "Sign out"
       },
@@ -2776,6 +2786,41 @@
     }
   },
   "Teachers": {
+    "detail": {
+      "meta": {
+        "title": "Teacher detail - SchoolTest",
+        "description": "A staff member's assigned classes and account details."
+      },
+      "back": "Teachers",
+      "editButton": "Edit teacher",
+      "assignButton": "Assign to class",
+      "notFoundTitle": "Teacher not found",
+      "notFoundDescription": "This staff account is not part of your school, or the invitation has not been accepted yet.",
+      "notFoundBack": "Back to teachers",
+      "errorTitle": "We could not load this teacher",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again",
+      "stats": {
+        "classes": "Classes",
+        "students": "Students",
+        "testA": "Test A completed"
+      },
+      "classesPanel": {
+        "title": "Assigned classes",
+        "count": "{count, plural, one {# class} other {# classes}}",
+        "emptyTitle": "No classes assigned",
+        "emptyDescription": "Assign this teacher from a class's Edit class dialog.",
+        "completed": "{done} of {total} Test A completed",
+        "students": "{count, plural, one {# student} other {# students}}",
+        "openLabel": "Open class {name}"
+      },
+      "accountPanel": {
+        "title": "Account details",
+        "edit": "Edit",
+        "email": "Email",
+        "status": "Status"
+      }
+    },
     "meta": {
       "title": "Teachers - SchoolTest",
       "description": "The teachers and administrators at your school, and the invitations you have sent."
@@ -3593,6 +3638,49 @@
       "removeConfirmAction": "Remove",
       "errorTitle": "We could not load teachers",
       "errorDescription": "Check your connection and try again."
+    },
+    "classDetail": {
+      "meta": {
+        "title": "Class detail",
+        "description": "SchoolTest Ops — a class's roster and details."
+      },
+      "breadcrumbSchools": "Schools",
+      "breadcrumbSchool": "School",
+      "yearBand": "Year band",
+      "classTeacher": "Class teacher",
+      "noTeacher": "No teacher assigned",
+      "editClass": "Edit class",
+      "summaryStudents": "Students",
+      "summaryTeacher": "Class teacher",
+      "summaryAverageLevel": "Average level",
+      "summaryTestsCompleted": "Tests completed",
+      "notAvailable": "—",
+      "rosterTitle": "Students in this class",
+      "rosterName": "Name",
+      "rosterYear": "Year",
+      "rosterLanguage": "Home language",
+      "rosterLevel": "Level",
+      "rosterStatus": "Status",
+      "emptyTitle": "No students in this class",
+      "emptyDescription": "This class has no students on its roster yet.",
+      "errorTitle": "Could not load this class",
+      "errorDescription": "The class could not be read. Try again.",
+      "retry": "Retry",
+      "notFoundTitle": "Class not found",
+      "notFoundDescription": "This class could not be found or is not visible to ops.",
+      "edit": {
+        "title": "Edit class",
+        "description": "Rename the class and set its teacher.",
+        "nameLabel": "Class name",
+        "teacherLabel": "Teacher",
+        "teacherUnassigned": "Unassigned",
+        "save": "Save changes",
+        "saving": "Saving",
+        "cancel": "Cancel",
+        "loadError": "Could not load teachers",
+        "loadErrorDescription": "The school's teacher directory could not be read.",
+        "saveErrorTitle": "Could not save"
+      }
     }
   },
   "RunSheet": {

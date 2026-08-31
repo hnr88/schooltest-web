@@ -304,6 +304,15 @@
     "googleTitle": "Đăng nhập bằng tài khoản Google của bạn",
     "orDivider": "hoặc",
     "loginError": "Email hoặc mật khẩu không hợp lệ. Vui lòng thử lại.",
+    "loginErrorTitle": "Không thể đăng nhập",
+    "loginAttemptsRemaining": "Email hoặc mật khẩu không đúng. Còn {count} lần thử trước khi đăng nhập bị khóa tạm thời.",
+    "incorrectPassword": "Mật khẩu không đúng",
+    "accountLockedTitle": "Tài khoản tạm thời bị khóa",
+    "accountLockedAlertTitle": "Quá nhiều lần thử",
+    "accountLockedBody": "Để bảo mật, đăng nhập bị khóa đến {time}.",
+    "resetYourPassword": "Đặt lại mật khẩu",
+    "signInAvailableIn": "Đăng nhập — khả dụng sau {time}",
+    "accountLockedAuditNotice": "Nếu đây không phải là bạn, hãy báo cho quản trị viên trường. Các lần thử lặp lại được ghi lại cho tài khoản này.",
     "registerError": "Không thể tạo tài khoản. Vui lòng thử lại.",
     "takenError": "Email này đã được đăng ký. Hãy thử đăng nhập.",
     "offlineError": "Có vẻ bạn đang ngoại tuyến. Kiểm tra kết nối và thử lại.",
@@ -2143,7 +2152,8 @@
       "subtitle": "Your school's details, plan and test allowances.",
       "tabsLabel": "Account sections",
       "tabs": {
-        "account": "My account",
+        "details": "Chi tiết",
+        "plan": "Gói dịch vụ",
         "settings": "Settings",
         "signout": "Sign out"
       },
@@ -2482,6 +2492,41 @@
     }
   },
   "Teachers": {
+    "detail": {
+      "meta": {
+        "title": "Chi tiết giáo viên - SchoolTest",
+        "description": "Các lớp được phân công cho nhân viên này và chi tiết tài khoản của họ."
+      },
+      "back": "Giáo viên",
+      "editButton": "Sửa giáo viên",
+      "assignButton": "Gán vào lớp",
+      "notFoundTitle": "Không tìm thấy giáo viên",
+      "notFoundDescription": "Tài khoản nhân viên này không thuộc trường của bạn, hoặc lời mời chưa được chấp nhận.",
+      "notFoundBack": "Quay lại danh sách giáo viên",
+      "errorTitle": "Không thể tải thông tin giáo viên này",
+      "errorDescription": "Hãy kiểm tra kết nối rồi thử lại.",
+      "retry": "Thử lại",
+      "stats": {
+        "classes": "Lớp",
+        "students": "Học sinh",
+        "testA": "Đã hoàn thành Bài kiểm tra A"
+      },
+      "classesPanel": {
+        "title": "Các lớp được phân công",
+        "count": "{count, plural, other {# lớp}}",
+        "emptyTitle": "Chưa có lớp nào được phân công",
+        "emptyDescription": "Hãy phân công giáo viên này từ hộp thoại Sửa lớp của một lớp.",
+        "completed": "{done} trên {total} đã hoàn thành Bài kiểm tra A",
+        "students": "{count, plural, other {# học sinh}}",
+        "openLabel": "Mở lớp {name}"
+      },
+      "accountPanel": {
+        "title": "Chi tiết tài khoản",
+        "edit": "Sửa",
+        "email": "Email",
+        "status": "Trạng thái"
+      }
+    },
     "meta": {
       "title": "Giáo viên - SchoolTest",
       "description": "Giáo viên và quản trị viên tại trường của bạn, cùng các lời mời bạn đã gửi."
@@ -3219,6 +3264,49 @@
       "removeConfirmAction": "Xóa",
       "errorTitle": "Không thể tải giáo viên",
       "errorDescription": "Kiểm tra kết nối và thử lại."
+    },
+    "classDetail": {
+      "meta": {
+        "title": "Chi tiết lớp",
+        "description": "SchoolTest Ops — danh sách và chi tiết lớp."
+      },
+      "breadcrumbSchools": "Trường học",
+      "breadcrumbSchool": "Trường",
+      "yearBand": "Khối lớp",
+      "classTeacher": "Giáo viên chủ nhiệm",
+      "noTeacher": "Chưa phân công giáo viên",
+      "editClass": "Sửa lớp",
+      "summaryStudents": "Học sinh",
+      "summaryTeacher": "Giáo viên chủ nhiệm",
+      "summaryAverageLevel": "Mức trung bình",
+      "summaryTestsCompleted": "Bài kiểm tra đã hoàn thành",
+      "notAvailable": "—",
+      "rosterTitle": "Học sinh trong lớp này",
+      "rosterName": "Tên",
+      "rosterYear": "Năm",
+      "rosterLanguage": "Tiếng mẹ đẻ",
+      "rosterLevel": "Mức",
+      "rosterStatus": "Trạng thái",
+      "emptyTitle": "Không có học sinh trong lớp này",
+      "emptyDescription": "Lớp này chưa có học sinh trong danh sách.",
+      "errorTitle": "Không thể tải lớp",
+      "errorDescription": "Không thể đọc lớp. Hãy thử lại.",
+      "retry": "Thử lại",
+      "notFoundTitle": "Không tìm thấy lớp",
+      "notFoundDescription": "Không tìm thấy lớp này hoặc ops không nhìn thấy.",
+      "edit": {
+        "title": "Sửa lớp",
+        "description": "Đổi tên lớp và chỉ định giáo viên.",
+        "nameLabel": "Tên lớp",
+        "teacherLabel": "Giáo viên",
+        "teacherUnassigned": "Chưa phân công",
+        "save": "Lưu thay đổi",
+        "saving": "Đang lưu",
+        "cancel": "Hủy",
+        "loadError": "Không thể tải giáo viên",
+        "loadErrorDescription": "Không thể đọc danh bạ nhân sự của trường.",
+        "saveErrorTitle": "Không thể lưu"
+      }
     }
   },
   "RunSheet": {

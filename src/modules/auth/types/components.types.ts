@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
-import type { PasswordRuleState } from '@/modules/auth/types/auth.types';
+import type { LoginLockout, PasswordRuleState } from '@/modules/auth/types/auth.types';
 
 export interface AuthBackLinkProps {
   label: string;
@@ -103,6 +103,15 @@ export interface SignInCardProps {
   hasGoogleError?: boolean;
   hasSessionExpired?: boolean;
   showConfirmedBanner?: boolean;
+}
+
+export interface SignInFormProps {
+  onLocked: (lockout: LoginLockout) => void;
+}
+
+export interface SignInLockedStateProps {
+  lockout: LoginLockout;
+  onExpired: () => void;
 }
 
 export interface SignUpConfirmStateProps {

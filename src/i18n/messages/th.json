@@ -304,6 +304,15 @@
     "googleTitle": "เข้าสู่ระบบด้วยบัญชี Google ของคุณ",
     "orDivider": "หรือ",
     "loginError": "อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง",
+    "loginErrorTitle": "ไม่สามารถเข้าสู่ระบบได้",
+    "loginAttemptsRemaining": "อีเมลหรือรหัสผ่านไม่ถูกต้อง เหลืออีก {count} ครั้งก่อนการเข้าสู่ระบบจะถูกล็อกชั่วคราว",
+    "incorrectPassword": "รหัสผ่านไม่ถูกต้อง",
+    "accountLockedTitle": "บัญชีถูกล็อกชั่วคราว",
+    "accountLockedAlertTitle": "พยายามมากเกินไป",
+    "accountLockedBody": "เพื่อความปลอดภัย การเข้าสู่ระบบจะถูกล็อกจนถึง {time}",
+    "resetYourPassword": "รีเซ็ตรหัสผ่าน",
+    "signInAvailableIn": "เข้าสู่ระบบ — ใช้ได้ในอีก {time}",
+    "accountLockedAuditNotice": "หากไม่ใช่คุณ โปรดแจ้งผู้ดูแลระบบของโรงเรียน ระบบจะบันทึกความพยายามซ้ำไว้กับบัญชีนี้",
     "registerError": "ไม่สามารถสร้างบัญชีได้ กรุณาลองอีกครั้ง",
     "takenError": "อีเมลนี้ถูกลงทะเบียนแล้ว ลองเข้าสู่ระบบแทน",
     "offlineError": "ดูเหมือนคุณออฟไลน์อยู่ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
@@ -2134,7 +2143,8 @@
       "subtitle": "Your school's details, plan and test allowances.",
       "tabsLabel": "Account sections",
       "tabs": {
-        "account": "My account",
+        "details": "รายละเอียด",
+        "plan": "แผน",
         "settings": "Settings",
         "signout": "Sign out"
       },
@@ -2473,6 +2483,41 @@
     }
   },
   "Teachers": {
+    "detail": {
+      "meta": {
+        "title": "รายละเอียดครู - SchoolTest",
+        "description": "ชั้นเรียนที่รับผิดชอบของบุคลากรและรายละเอียดบัญชี"
+      },
+      "back": "ครู",
+      "editButton": "แก้ไขข้อมูลครู",
+      "assignButton": "มอบหมายให้ชั้นเรียน",
+      "notFoundTitle": "ไม่พบครูที่ต้องการ",
+      "notFoundDescription": "บัญชีบุคลากรนี้ไม่ได้อยู่ในโรงเรียนของคุณ หรือคำเชิญยังไม่ถูกยอมรับ",
+      "notFoundBack": "กลับไปหน้าครู",
+      "errorTitle": "ไม่สามารถโหลดข้อมูลครูได้",
+      "errorDescription": "โปรดตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+      "retry": "ลองอีกครั้ง",
+      "stats": {
+        "classes": "ชั้นเรียน",
+        "students": "นักเรียน",
+        "testA": "ทำแบบทดสอบ A เสร็จแล้ว"
+      },
+      "classesPanel": {
+        "title": "ชั้นเรียนที่รับผิดชอบ",
+        "count": "{count, plural, other {# ชั้นเรียน}}",
+        "emptyTitle": "ยังไม่มีชั้นเรียนที่ได้รับมอบหมาย",
+        "emptyDescription": "มอบหมายครูผู้นี้จากกล่องโต้ตอบ 'แก้ไขชั้นเรียน' ของชั้นเรียน",
+        "completed": "{done} จาก {total} คนทำแบบทดสอบ A เสร็จแล้ว",
+        "students": "{count, plural, other {# นักเรียน}}",
+        "openLabel": "เปิดชั้นเรียน {name}"
+      },
+      "accountPanel": {
+        "title": "รายละเอียดบัญชี",
+        "edit": "แก้ไข",
+        "email": "อีเมล",
+        "status": "สถานะ"
+      }
+    },
     "meta": {
       "title": "ครู - SchoolTest",
       "description": "ครูและผู้ดูแลในโรงเรียนของคุณ พร้อมคำเชิญที่คุณส่งไปแล้ว"
@@ -3210,6 +3255,49 @@
       "removeConfirmAction": "ลบ",
       "errorTitle": "ไม่สามารถโหลดครูได้",
       "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"
+    },
+    "classDetail": {
+      "meta": {
+        "title": "รายละเอียดชั้นเรียน",
+        "description": "SchoolTest Ops — รายชื่อและรายละเอียดชั้นเรียน"
+      },
+      "breadcrumbSchools": "โรงเรียน",
+      "breadcrumbSchool": "โรงเรียน",
+      "yearBand": "ช่วงชั้นปี",
+      "classTeacher": "ครูประจำชั้น",
+      "noTeacher": "ยังไม่กำหนดครู",
+      "editClass": "แก้ไขชั้นเรียน",
+      "summaryStudents": "นักเรียน",
+      "summaryTeacher": "ครูประจำชั้น",
+      "summaryAverageLevel": "ระดับเฉลี่ย",
+      "summaryTestsCompleted": "การทดสอบที่เสร็จแล้ว",
+      "notAvailable": "—",
+      "rosterTitle": "นักเรียนในชั้นนี้",
+      "rosterName": "ชื่อ",
+      "rosterYear": "ปี",
+      "rosterLanguage": "ภาษาแม่",
+      "rosterLevel": "ระดับ",
+      "rosterStatus": "สถานะ",
+      "emptyTitle": "ไม่มีนักเรียนในชั้นนี้",
+      "emptyDescription": "ชั้นนี้ยังไม่มีนักเรียนในรายชื่อ",
+      "errorTitle": "ไม่สามารถโหลดชั้นเรียน",
+      "errorDescription": "ไม่สามารถอ่านชั้นเรียนได้ โปรดลองอีกครั้ง",
+      "retry": "ลองใหม่",
+      "notFoundTitle": "ไม่พบชั้นเรียน",
+      "notFoundDescription": "ไม่พบชั้นเรียนนี้หรือ ops มองไม่เห็น",
+      "edit": {
+        "title": "แก้ไขชั้นเรียน",
+        "description": "เปลี่ยนชื่อชั้นเรียนและกำหนดครู",
+        "nameLabel": "ชื่อชั้นเรียน",
+        "teacherLabel": "ครู",
+        "teacherUnassigned": "ไม่กำหนด",
+        "save": "บันทึกการเปลี่ยนแปลง",
+        "saving": "กำลังบันทึก",
+        "cancel": "ยกเลิก",
+        "loadError": "ไม่สามารถโหลดครู",
+        "loadErrorDescription": "ไม่สามารถอ่านรายชื่อบุคลากรของโรงเรียน",
+        "saveErrorTitle": "ไม่สามารถบันทึกได้"
+      }
     }
   },
   "RunSheet": {

@@ -304,6 +304,15 @@
     "googleTitle": "Log masuk dengan akaun Google anda",
     "orDivider": "atau",
     "loginError": "E-mel atau kata laluan tidak sah. Sila cuba lagi.",
+    "loginErrorTitle": "Kami tidak dapat melog masuk anda",
+    "loginAttemptsRemaining": "E-mel atau kata laluan tidak betul. Tinggal {count} percubaan sebelum log masuk dikunci sementara.",
+    "incorrectPassword": "Kata laluan tidak betul",
+    "accountLockedTitle": "Akaun dikunci sementara",
+    "accountLockedAlertTitle": "Terlalu banyak percubaan",
+    "accountLockedBody": "Untuk keselamatan, log masuk dikunci sehingga {time}.",
+    "resetYourPassword": "Tetapkan semula kata laluan",
+    "signInAvailableIn": "Log masuk — tersedia dalam {time}",
+    "accountLockedAuditNotice": "Jika ini bukan anda, maklumkan pentadbir sekolah. Percubaan berulang direkodkan pada akaun ini.",
     "registerError": "Tidak dapat mencipta akaun. Sila cuba lagi.",
     "takenError": "E-mel ini sudah didaftarkan. Cuba log masuk sebaliknya.",
     "offlineError": "Anda kelihatan di luar talian. Semak sambungan anda dan cuba lagi.",
@@ -2134,7 +2143,8 @@
       "subtitle": "Your school's details, plan and test allowances.",
       "tabsLabel": "Account sections",
       "tabs": {
-        "account": "My account",
+        "details": "Butiran",
+        "plan": "Pelan",
         "settings": "Settings",
         "signout": "Sign out"
       },
@@ -2473,6 +2483,41 @@
     }
   },
   "Teachers": {
+    "detail": {
+      "meta": {
+        "title": "Butiran guru - SchoolTest",
+        "description": "Kelas yang ditugaskan kepada staf ini dan butiran akaunnya."
+      },
+      "back": "Guru",
+      "editButton": "Edit guru",
+      "assignButton": "Tugaskan ke kelas",
+      "notFoundTitle": "Guru tidak ditemui",
+      "notFoundDescription": "Akaun staf ini bukan sebahagian daripada sekolah anda, atau jemputan belum diterima.",
+      "notFoundBack": "Kembali kepada guru",
+      "errorTitle": "Kami tidak dapat memuatkan guru ini",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi",
+      "stats": {
+        "classes": "Kelas",
+        "students": "Pelajar",
+        "testA": "Ujian A selesai"
+      },
+      "classesPanel": {
+        "title": "Kelas yang ditugaskan",
+        "count": "{count, plural, other {# kelas}}",
+        "emptyTitle": "Tiada kelas ditugaskan",
+        "emptyDescription": "Tugaskan guru ini dari dialog Edit kelas sesebuah kelas.",
+        "completed": "{done} daripada {total} telah menyiapkan Ujian A",
+        "students": "{count, plural, other {# pelajar}}",
+        "openLabel": "Buka kelas {name}"
+      },
+      "accountPanel": {
+        "title": "Butiran akaun",
+        "edit": "Edit",
+        "email": "E-mel",
+        "status": "Status"
+      }
+    },
     "meta": {
       "title": "Guru - SchoolTest",
       "description": "Guru dan pentadbir di sekolah anda, serta jemputan yang telah anda hantar."
@@ -3210,6 +3255,49 @@
       "removeConfirmAction": "Buang",
       "errorTitle": "Kami tidak dapat memuatkan guru",
       "errorDescription": "Periksa sambungan anda dan cuba lagi."
+    },
+    "classDetail": {
+      "meta": {
+        "title": "Butiran kelas",
+        "description": "SchoolTest Ops — senarai dan butiran kelas."
+      },
+      "breadcrumbSchools": "Sekolah",
+      "breadcrumbSchool": "Sekolah",
+      "yearBand": "Kumpulan tahun",
+      "classTeacher": "Guru kelas",
+      "noTeacher": "Tiada guru ditetapkan",
+      "editClass": "Sunting kelas",
+      "summaryStudents": "Murid",
+      "summaryTeacher": "Guru kelas",
+      "summaryAverageLevel": "Purata tahap",
+      "summaryTestsCompleted": "Ujian selesai",
+      "notAvailable": "—",
+      "rosterTitle": "Murid dalam kelas ini",
+      "rosterName": "Nama",
+      "rosterYear": "Tahun",
+      "rosterLanguage": "Bahasa ibunda",
+      "rosterLevel": "Tahap",
+      "rosterStatus": "Status",
+      "emptyTitle": "Tiada murid dalam kelas ini",
+      "emptyDescription": "Kelas ini belum mempunyai murid dalam senarai.",
+      "errorTitle": "Tidak dapat memuat kelas",
+      "errorDescription": "Kelas tidak dapat dibaca. Cuba lagi.",
+      "retry": "Cuba lagi",
+      "notFoundTitle": "Kelas tidak dijumpai",
+      "notFoundDescription": "Kelas ini tidak dijumpai atau tidak dapat dilihat oleh ops.",
+      "edit": {
+        "title": "Sunting kelas",
+        "description": "Namakan semula kelas dan tetapkan gurunya.",
+        "nameLabel": "Nama kelas",
+        "teacherLabel": "Guru",
+        "teacherUnassigned": "Tiada",
+        "save": "Simpan perubahan",
+        "saving": "Menyimpan",
+        "cancel": "Batal",
+        "loadError": "Tidak dapat memuat guru",
+        "loadErrorDescription": "Direktori kakitangan sekolah tidak dapat dibaca.",
+        "saveErrorTitle": "Tidak dapat disimpan"
+      }
     }
   },
   "RunSheet": {

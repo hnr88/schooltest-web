@@ -1,5 +1,6 @@
 export { TeachersScreen } from './components/TeachersScreen';
 export { TeachersTable } from './components/TeachersTable';
+export { TeacherDetailScreen } from './components/TeacherDetailScreen';
 export { InviteTeacherDialog } from './components/InviteTeacherDialog';
 export { useTeachersQuery } from './queries/use-teachers.query';
 export { useInvitationsQuery } from './queries/use-invitations.query';

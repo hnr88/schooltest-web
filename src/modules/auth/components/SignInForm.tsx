@@ -12,18 +12,22 @@ import { TextField } from '@/modules/auth/components/TextField';
 import { classifySignInError } from '@/modules/auth/lib/classify-sign-in-error';
 import { useLoginMutation } from '@/modules/auth/queries/use-login.mutation';
 import { signInSchema, type SignInInput } from '@/modules/auth/schemas/sign-in.schema';
-import type { SignInErrorKey } from '@/modules/auth/types/auth.types';
 import { Alert, Button } from '@/modules/design-system';
 
-export function SignInForm() {
+import type { SignInFailure } from '@/modules/auth/types/auth.types';
+import type { SignInFormProps } from '@/modules/auth/types/components.types';
+
+export function SignInForm({ onLocked }: SignInFormProps) {
   const t = useTranslations('Auth');
   const router = useRouter();
   const login = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
-  const [formError, setFormError] = useState<SignInErrorKey | null>(null);
+  const [failure, setFailure] = useState<SignInFailure | null>(null);
   const {
     register,
     handleSubmit,
+    clearErrors,
+    setError,
     formState: { errors },
   } = useForm<SignInInput>({
     resolver: zodResolver(signInSchema),
@@ -31,7 +35,8 @@ export function SignInForm() {
   });
 
   const onSubmit = handleSubmit((values) => {
-    setFormError(null);
+    setFailure(null);
+    clearErrors('password');
     login.mutate(
       { identifier: values.email, password: values.password },
       {
@@ -40,9 +45,19 @@ export function SignInForm() {
           router.push('/dashboard');
         },
         onError: (error) => {
-          const formError = classifySignInError(error);
-          setFormError(formError);
-          toast.error(t(formError));
+          const nextFailure = classifySignInError(error);
+          if (nextFailure.lockout) {
+            onLocked(nextFailure.lockout);
+            toast.error(t('accountLockedTitle'));
+            return;
+          }
+          setFailure(nextFailure);
+          if (nextFailure.attemptsRemaining !== undefined) {
+            setError('password', { type: 'server', message: 'incorrectPassword' });
+          }
+          toast.error(
+            t(nextFailure.attemptsRemaining !== undefined ? 'loginErrorTitle' : nextFailure.key),
+          );
         },
       },
     );
@@ -50,12 +65,14 @@ export function SignInForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
-      {formError ? (
+      {failure ? (
         <Alert
-          variant={formError === 'notConfirmedError' ? 'warning' : 'error'}
-          title={t(formError)}
+          variant={failure.key === 'notConfirmedError' ? 'warning' : 'error'}
+          title={t(failure.attemptsRemaining !== undefined ? 'loginErrorTitle' : failure.key)}
         >
-          {null}
+          {failure.attemptsRemaining !== undefined ? (
+            <p>{t('loginAttemptsRemaining', { count: failure.attemptsRemaining })}</p>
+          ) : null}
         </Alert>
       ) : null}
       <TextField

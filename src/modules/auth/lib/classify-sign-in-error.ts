@@ -1,25 +1,48 @@
 import { isAxiosError } from 'axios';
 
-import type { SignInErrorKey, StrapiErrorBody } from '@/modules/auth/types/auth.types';
+import type { SignInFailure, StrapiErrorBody } from '@/modules/auth/types/auth.types';
 
-// Status-only mapping (C-AUTH-LOGIN) with ONE sanctioned message-based branch:
-// a 400 whose body message is exactly 'Your account email is not confirmed'
-// renders the distinct confirm-your-email-first state — status alone cannot
-// separate it from bad credentials, so C-AUTH-LOGIN explicitly sanctions this
-// message check. (With sign-up resend's "Already confirmed" these are the only
-// two sanctioned message-based branches.) Every other 400 stays the single
-// loginError; no response means offline; anything else is a server fault. Raw
-// Strapi error strings are never rendered.
-export function classifySignInError(error: unknown): SignInErrorKey {
+// C-AUTH-LOGIN sanctions exact message branches for confirmation and lockout.
+// Raw server strings select translated states but are never rendered.
+export function classifySignInError(error: unknown): SignInFailure {
   if (isAxiosError<StrapiErrorBody>(error)) {
+    const serverError = error.response?.data?.error;
+    const details = serverError?.details;
     if (
       error.response?.status === 400 &&
-      error.response.data?.error?.message === 'Your account email is not confirmed'
+      serverError?.message === 'Too many attempts. Your account is locked.'
     ) {
-      return 'notConfirmedError';
+      const { attemptsRemaining, retryAfterSeconds, unlockAt } = details ?? {};
+      if (
+        attemptsRemaining === 0 &&
+        Number.isInteger(retryAfterSeconds) &&
+        typeof retryAfterSeconds === 'number' &&
+        retryAfterSeconds > 0 &&
+        typeof unlockAt === 'string' &&
+        Number.isFinite(Date.parse(unlockAt))
+      ) {
+        return { key: 'accountLocked', lockout: { retryAfterSeconds, unlockAt } };
+      }
+      return { key: 'serverError' };
     }
-    if (error.response?.status === 400) return 'loginError';
-    if (error.response === undefined) return 'offlineError';
+    if (
+      error.response?.status === 400 &&
+      serverError?.message === 'Your account email is not confirmed'
+    ) {
+      return { key: 'notConfirmedError' };
+    }
+    if (error.response?.status === 400) {
+      const attemptsRemaining = details?.attemptsRemaining;
+      if (
+        Number.isInteger(attemptsRemaining) &&
+        typeof attemptsRemaining === 'number' &&
+        attemptsRemaining > 0
+      ) {
+        return { key: 'loginError', attemptsRemaining };
+      }
+      return { key: 'loginError' };
+    }
+    if (error.response === undefined) return { key: 'offlineError' };
   }
-  return 'serverError';
+  return { key: 'serverError' };
 }

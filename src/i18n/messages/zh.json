@@ -304,6 +304,15 @@
     "googleTitle": "使用您的 Google 账户登录",
     "orDivider": "或",
     "loginError": "邮箱或密码错误，请重试。",
+    "loginErrorTitle": "无法登录",
+    "loginAttemptsRemaining": "邮箱或密码不正确。登录暂时锁定前还可尝试 {count} 次。",
+    "incorrectPassword": "密码不正确",
+    "accountLockedTitle": "账户暂时锁定",
+    "accountLockedAlertTitle": "尝试次数过多",
+    "accountLockedBody": "为保障安全，登录功能将锁定至 {time}。",
+    "resetYourPassword": "重置密码",
+    "signInAvailableIn": "可在 {time} 后登录",
+    "accountLockedAuditNotice": "如果这不是您本人操作，请告知学校管理员。重复尝试将记录在此账户中。",
     "registerError": "无法创建账户，请重试。",
     "takenError": "该邮箱已被注册，请尝试直接登录。",
     "offlineError": "您似乎已离线，请检查网络连接后重试。",
@@ -2134,7 +2143,8 @@
       "subtitle": "Your school's details, plan and test allowances.",
       "tabsLabel": "Account sections",
       "tabs": {
-        "account": "My account",
+        "details": "详情",
+        "plan": "套餐",
         "settings": "Settings",
         "signout": "Sign out"
       },
@@ -2473,6 +2483,41 @@
     }
   },
   "Teachers": {
+    "detail": {
+      "meta": {
+        "title": "教师详情 - SchoolTest",
+        "description": "教职员工的授课班级与账号详情。"
+      },
+      "back": "教师",
+      "editButton": "编辑教师",
+      "assignButton": "分配到班级",
+      "notFoundTitle": "未找到该教师",
+      "notFoundDescription": "该员工账号不属于贵校，或邀请尚未被接受。",
+      "notFoundBack": "返回教师列表",
+      "errorTitle": "无法加载该教师信息",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试",
+      "stats": {
+        "classes": "班级",
+        "students": "学生",
+        "testA": "已完成测试 A"
+      },
+      "classesPanel": {
+        "title": "所授班级",
+        "count": "{count, plural, other {# 个班级}}",
+        "emptyTitle": "尚未分配班级",
+        "emptyDescription": "请在某个班级的“编辑班级”对话框中为该教师分配班级。",
+        "completed": "{total} 人中 {done} 人已完成测试 A",
+        "students": "{count, plural, other {# 名学生}}",
+        "openLabel": "打开班级 {name}"
+      },
+      "accountPanel": {
+        "title": "账号详情",
+        "edit": "编辑",
+        "email": "邮箱",
+        "status": "状态"
+      }
+    },
     "meta": {
       "title": "教师 - SchoolTest",
       "description": "您学校的教师和管理员，以及已发送的邀请。"
@@ -3290,6 +3335,49 @@
       "removeConfirmAction": "移除",
       "errorTitle": "无法加载教师列表",
       "errorDescription": "请检查连接后重试。"
+    },
+    "classDetail": {
+      "meta": {
+        "title": "班级详情",
+        "description": "SchoolTest 运营 — 班级名册与详情。"
+      },
+      "breadcrumbSchools": "学校",
+      "breadcrumbSchool": "学校",
+      "yearBand": "年级段",
+      "classTeacher": "班主任",
+      "noTeacher": "未分配教师",
+      "editClass": "编辑班级",
+      "summaryStudents": "学生",
+      "summaryTeacher": "班主任",
+      "summaryAverageLevel": "平均水平",
+      "summaryTestsCompleted": "已完成测试",
+      "notAvailable": "—",
+      "rosterTitle": "本班学生",
+      "rosterName": "姓名",
+      "rosterYear": "年级",
+      "rosterLanguage": "母语",
+      "rosterLevel": "水平",
+      "rosterStatus": "状态",
+      "emptyTitle": "本班没有学生",
+      "emptyDescription": "该班级名册上还没有学生。",
+      "errorTitle": "无法加载该班级",
+      "errorDescription": "无法读取该班级，请重试。",
+      "retry": "重试",
+      "notFoundTitle": "未找到班级",
+      "notFoundDescription": "找不到该班级或运营看不到该班级。",
+      "edit": {
+        "title": "编辑班级",
+        "description": "重命名班级并设置任课教师。",
+        "nameLabel": "班级名称",
+        "teacherLabel": "任课教师",
+        "teacherUnassigned": "未分配",
+        "save": "保存更改",
+        "saving": "保存中",
+        "cancel": "取消",
+        "loadError": "无法加载教师",
+        "loadErrorDescription": "无法读取学校的教职员目录。",
+        "saveErrorTitle": "无法保存"
+      }
     }
   },
   "RunSheet": {

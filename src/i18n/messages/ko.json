@@ -304,6 +304,15 @@
     "googleTitle": "Google 계정으로 로그인",
     "orDivider": "또는",
     "loginError": "이메일 또는 비밀번호가 올바르지 않습니다. 다시 시도해주세요.",
+    "loginErrorTitle": "로그인할 수 없습니다",
+    "loginAttemptsRemaining": "이메일 또는 비밀번호가 올바르지 않습니다. 로그인이 일시적으로 잠기기 전까지 {count}번 더 시도할 수 있습니다.",
+    "incorrectPassword": "비밀번호가 올바르지 않습니다",
+    "accountLockedTitle": "계정이 일시적으로 잠겼습니다",
+    "accountLockedAlertTitle": "시도 횟수가 너무 많습니다",
+    "accountLockedBody": "보안을 위해 {time}까지 로그인이 잠겼습니다.",
+    "resetYourPassword": "비밀번호 재설정",
+    "signInAvailableIn": "로그인 — {time} 후 가능",
+    "accountLockedAuditNotice": "본인이 시도한 것이 아니라면 학교 관리자에게 알려주세요. 반복된 시도는 계정에 기록됩니다.",
     "registerError": "계정을 만들 수 없습니다. 다시 시도해주세요.",
     "takenError": "이미 등록된 이메일입니다. 대신 로그인해보세요.",
     "offlineError": "오프라인 상태인 것 같습니다. 연결을 확인한 후 다시 시도해주세요.",
@@ -2134,7 +2143,8 @@
       "subtitle": "Your school's details, plan and test allowances.",
       "tabsLabel": "Account sections",
       "tabs": {
-        "account": "My account",
+        "details": "세부 정보",
+        "plan": "플랜",
         "settings": "Settings",
         "signout": "Sign out"
       },
@@ -2473,6 +2483,41 @@
     }
   },
   "Teachers": {
+    "detail": {
+      "meta": {
+        "title": "교사 상세 - SchoolTest",
+        "description": "교직원의 담당 수업과 계정 세부정보입니다."
+      },
+      "back": "교사",
+      "editButton": "교사 편집",
+      "assignButton": "수업 배정",
+      "notFoundTitle": "교사를 찾을 수 없습니다",
+      "notFoundDescription": "이 직원 계정은 귀교 소속이 아니거나 초대가 아직 수락되지 않았습니다.",
+      "notFoundBack": "교사 목록으로 돌아가기",
+      "errorTitle": "교사 정보를 불러올 수 없습니다",
+      "errorDescription": "네트워크 연결을 확인한 후 다시 시도하세요.",
+      "retry": "다시 시도",
+      "stats": {
+        "classes": "수업",
+        "students": "학생",
+        "testA": "테스트 A 완료"
+      },
+      "classesPanel": {
+        "title": "담당 수업",
+        "count": "{count, plural, other {#개 수업}}",
+        "emptyTitle": "배정된 수업 없음",
+        "emptyDescription": "수업의 '수업 편집' 대화상자에서 이 교사를 배정하세요.",
+        "completed": "총 {total}명 중 {done}명 테스트 A 완료",
+        "students": "{count, plural, other {#명 학생}}",
+        "openLabel": "수업 열기 {name}"
+      },
+      "accountPanel": {
+        "title": "계정 세부정보",
+        "edit": "편집",
+        "email": "이메일",
+        "status": "상태"
+      }
+    },
     "meta": {
       "title": "교사 - SchoolTest",
       "description": "학교의 교사와 관리자, 그리고 보낸 초대입니다."
@@ -3210,6 +3255,49 @@
       "removeConfirmAction": "제거",
       "errorTitle": "교사 목록을 불러올 수 없습니다",
       "errorDescription": "연결을 확인하고 다시 시도하세요."
+    },
+    "classDetail": {
+      "meta": {
+        "title": "클래스 상세",
+        "description": "SchoolTest 운영 — 클래스 명단과 세부 정보."
+      },
+      "breadcrumbSchools": "학교",
+      "breadcrumbSchool": "학교",
+      "yearBand": "학년 밴드",
+      "classTeacher": "담임",
+      "noTeacher": "배정된 교사 없음",
+      "editClass": "클래스 편집",
+      "summaryStudents": "학생",
+      "summaryTeacher": "담임",
+      "summaryAverageLevel": "평균 수준",
+      "summaryTestsCompleted": "완료한 테스트",
+      "notAvailable": "—",
+      "rosterTitle": "이 클래스의 학생",
+      "rosterName": "이름",
+      "rosterYear": "학년",
+      "rosterLanguage": "모국어",
+      "rosterLevel": "수준",
+      "rosterStatus": "상태",
+      "emptyTitle": "이 클래스에 학생 없음",
+      "emptyDescription": "이 클래스 명단에 아직 학생이 없습니다.",
+      "errorTitle": "클래스를 불러올 수 없음",
+      "errorDescription": "클래스를 읽을 수 없습니다. 다시 시도하세요.",
+      "retry": "다시 시도",
+      "notFoundTitle": "클래스를 찾을 수 없음",
+      "notFoundDescription": "이 클래스를 찾을 수 없거나 운영에게 보이지 않습니다.",
+      "edit": {
+        "title": "클래스 편집",
+        "description": "클래스 이름을 바꾸고 담임을 설정합니다.",
+        "nameLabel": "클래스 이름",
+        "teacherLabel": "담임",
+        "teacherUnassigned": "미배정",
+        "save": "변경 사항 저장",
+        "saving": "저장 중",
+        "cancel": "취소",
+        "loadError": "교사를 불러올 수 없음",
+        "loadErrorDescription": "학교 교직원 디렉터리를 읽을 수 없습니다.",
+        "saveErrorTitle": "저장할 수 없음"
+      }
     }
   },
   "RunSheet": {

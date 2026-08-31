@@ -1,12 +1,16 @@
 import type { AccountTab } from '@/modules/school-admin/types/account.types';
 import type { SchoolPlan } from '@/modules/school-admin/types/school-admin.types';
 
-// Spec section 5 "Sub-tabs": My account / Settings / Sign out, in that order.
-export const ACCOUNT_TABS = ['account', 'settings', 'signout'] as const;
+// School Admin Portal artboard, Account view: Details / Plan / Settings /
+// Sign out, in that order. The former combined "My account" tab is split so
+// the school details field list and the plan/seats/allowance cards each own
+// the tab the design depicts.
+export const ACCOUNT_TABS = ['details', 'plan', 'settings', 'signout'] as const;
 
 // DS §5.6 underline tabs are label-only — the canonical row carries no glyphs.
 export const ACCOUNT_TAB_CONFIG: readonly { value: AccountTab; labelKey: string }[] = [
-  { value: 'account', labelKey: 'account.tabs.account' },
+  { value: 'details', labelKey: 'account.tabs.details' },
+  { value: 'plan', labelKey: 'account.tabs.plan' },
   { value: 'settings', labelKey: 'account.tabs.settings' },
   { value: 'signout', labelKey: 'account.tabs.signout' },
 ];

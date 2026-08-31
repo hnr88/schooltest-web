@@ -17,7 +17,7 @@ import type { AccountTab } from '@/modules/school-admin/types/account.types';
 // "Dashboard / Account" trail is the shared topbar breadcrumb.
 export function SchoolAccountScreen() {
   const t = useTranslations('SchoolAdmin');
-  const [tab, setTab] = useState<AccountTab>('account');
+  const [tab, setTab] = useState<AccountTab>('details');
   const Panel = ACCOUNT_PANELS[tab];
   const options = ACCOUNT_TAB_CONFIG.map((option) => ({
     value: option.value,

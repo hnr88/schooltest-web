@@ -68,10 +68,31 @@ export interface StrapiErrorBody {
     status?: number;
     name?: string;
     message?: string;
+    details?: {
+      attemptsRemaining?: unknown;
+      retryAfterSeconds?: unknown;
+      unlockAt?: unknown;
+    };
   };
 }
 
-export type SignInErrorKey = 'loginError' | 'notConfirmedError' | 'offlineError' | 'serverError';
+export type SignInErrorKey =
+  | 'loginError'
+  | 'accountLocked'
+  | 'notConfirmedError'
+  | 'offlineError'
+  | 'serverError';
+
+export interface LoginLockout {
+  retryAfterSeconds: number;
+  unlockAt: string;
+}
+
+export interface SignInFailure {
+  key: SignInErrorKey;
+  attemptsRemaining?: number;
+  lockout?: LoginLockout;
+}
 
 export type ResendConfirmationErrorKey =
   | 'tooManyRequests'

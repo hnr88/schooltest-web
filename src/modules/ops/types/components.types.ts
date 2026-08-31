@@ -126,3 +126,17 @@ export interface OpsSittingRecoveryProps {
 export interface OpsStudentImportProps {
   documentId: string;
 }
+
+export interface OpsClassDetailProps {
+  classDocumentId: string;
+  schoolDocumentId: string;
+}
+
+export interface OpsEditClassDialogProps {
+  classDocumentId: string;
+  schoolDocumentId: string;
+  className: string;
+  currentYearBand: string | null;
+  currentTeacherDocumentId: string | null;
+  onClose: () => void;
+}
