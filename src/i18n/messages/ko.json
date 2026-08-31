@@ -2484,6 +2484,14 @@
   },
   "Teachers": {
     "detail": {
+      "attention": {
+        "title": "관심이 필요한 학생",
+        "subtitle": "이 교사의 모든 수업",
+        "empty": "모든 학생이 정상 궤도입니다.",
+        "scores": "{from} → {to}",
+        "errorTitle": "관심이 필요한 학생을 불러올 수 없습니다",
+        "errorDescription": "네트워크 연결을 확인한 후 다시 시도하세요."
+      },
       "meta": {
         "title": "교사 상세 - SchoolTest",
         "description": "교직원의 담당 수업과 계정 세부정보입니다."

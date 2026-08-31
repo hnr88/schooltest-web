@@ -231,6 +231,7 @@ export { ProgressSummarySection } from './components/ProgressSummarySection';
 export { ProgressShiftTable } from './components/ProgressShiftTable';
 export { ProgressAcaraSection } from './components/ProgressAcaraSection';
 export { ProgressWatchSection } from './components/ProgressWatchSection';
+export { ProgressDeltaPill } from './components/ProgressDeltaPill';
 export {
   progressDirection,
   progressDelta,

@@ -78,3 +78,6 @@ export interface RemoveTeacherResult {
   classes_unassigned: number;
   invitations_revoked: number;
 }
+
+// GAP-01 (task 019): parsed shape of the needs-attention response.
+export type { NeedsAttentionStudent, TeacherNeedsAttention } from '../schemas/teachers.schema';

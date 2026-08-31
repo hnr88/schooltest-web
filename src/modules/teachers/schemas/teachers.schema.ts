@@ -61,3 +61,31 @@ export const removeTeacherResponseSchema = z.object({
   classes_unassigned: z.number(),
   invitations_revoked: z.number(),
 });
+
+// GAP-01 (tasks 018/019): GET /api/schools/me/teachers/:documentId
+// /needs-attention. Rows are the C-TR-4 mover shape the existing
+// teacher-progress computation emits, plus the class each pair was measured
+// in. Deltas are the server's own; nothing is derived client-side.
+export const needsAttentionStudentSchema = z.object({
+  student_document_id: z.string(),
+  display_name: z.string(),
+  class: z.object({ documentId: z.string(), name: z.string().nullable() }),
+  score_a: z.number().int().min(0).max(100),
+  score_b: z.number().int().min(0).max(100),
+  delta: z.number().int().min(-100).max(100),
+});
+
+
+export type NeedsAttentionStudent = z.infer<typeof needsAttentionStudentSchema>;
+export type TeacherNeedsAttention = z.infer<typeof teacherNeedsAttentionSchema>;
+
+export const teacherNeedsAttentionSchema = z.object({
+  teacher: z.object({
+    documentId: z.string(),
+    email: z.string().nullable(),
+    first_name: z.string().nullable(),
+    last_name: z.string().nullable(),
+  }),
+  classes_considered: z.number().int(),
+  students: z.array(needsAttentionStudentSchema),
+});

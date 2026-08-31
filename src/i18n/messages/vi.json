@@ -2493,6 +2493,14 @@
   },
   "Teachers": {
     "detail": {
+      "attention": {
+        "title": "Học sinh cần chú ý",
+        "subtitle": "Trên tất cả các lớp của giáo viên",
+        "empty": "Mọi học sinh đều đang trên đúng tiến độ.",
+        "scores": "{from} → {to}",
+        "errorTitle": "Không thể tải học sinh cần chú ý",
+        "errorDescription": "Hãy kiểm tra kết nối rồi thử lại."
+      },
       "meta": {
         "title": "Chi tiết giáo viên - SchoolTest",
         "description": "Các lớp được phân công cho nhân viên này và chi tiết tài khoản của họ."

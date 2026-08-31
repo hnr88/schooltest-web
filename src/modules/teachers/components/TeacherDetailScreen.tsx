@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowLeft } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Link } from '@/i18n/navigation';
@@ -18,23 +18,28 @@ import {
   getAvatarTone,
 } from '@/modules/design-system';
 import { useParticipationQuery } from '@/modules/school-admin';
+import { ProgressDeltaPill, progressDelta } from '@/modules/teacher';
 import { EditTeacherDialog } from '@/modules/teachers/components/EditTeacherDialog';
 import { STATUS_VARIANTS } from '@/modules/teachers/constants/components.constants';
 import { useStaffRows } from '@/modules/teachers/hooks/use-staff-rows';
 import { useInvitationsQuery } from '@/modules/teachers/queries/use-invitations.query';
+import { useTeacherNeedsAttentionQuery } from '@/modules/teachers/queries/use-teacher-needs-attention.query';
 import { useTeachersQuery } from '@/modules/teachers/queries/use-teachers.query';
 
-// School admin Teacher detail (mission task 013, design-audit.md "Teachers list
-// and Teacher detail"). Renders ONLY what the existing API serves: the header
-// (identity, status, email), three KPI tiles (Classes / Students / Test A
-// completed — each a count or sum of server-computed per-class figures, never a
-// client-recomputed aggregate), the Assigned classes list with per-class
-// completion from C-RPT-04 buckets, and Account details. The design's
-// Students-needing-attention, Recent activity, the Avg-reading-score tile and
-// the role/last-active header fields are DELIBERATELY ABSENT: no school-admin
-// endpoint serves them, and this mission forbids empty shells and
-// client-side reimplementation of server aggregates (task 013 result records
-// the four gaps precisely).
+// School admin Teacher detail (mission tasks 013 + 019, design-audit.md
+// "Teachers list and Teacher detail"). Renders ONLY what the existing API
+// serves: the header (identity, status, email), three KPI tiles (Classes /
+// Students / Test A completed — each a count or sum of server-computed
+// per-class figures, never a client-recomputed aggregate), the Assigned
+// classes list with per-class completion from C-RPT-04 buckets, Account
+// details, and (task 019) the Students-needing-attention panel from GAP-01's
+// GET /schools/me/teachers/:documentId/needs-attention. That panel keeps its
+// three states strictly distinct: PENDING is a skeleton, ERROR is an alert
+// with retry, and only a SUCCESSFUL empty list renders "Everyone is on
+// track." — an absent or failed read must never read as all-clear. Still
+// deliberately absent, as unserveable contract gaps (GAP-02/03/04): the
+// Recent activity panel, the avg-reading-score tile, and the role/last-active
+// header fields.
 function initialsOf(first: string, last: string, email: string): string {
   const initials = `${first.trim().charAt(0)}${last.trim().charAt(0)}`.trim();
   return (initials || email.trim().charAt(0)).toUpperCase();
@@ -43,6 +48,7 @@ function initialsOf(first: string, last: string, email: string): string {
 export function TeacherDetailScreen({ documentId }: { documentId: string }) {
   const t = useTranslations('Teachers.detail');
   const tStatus = useTranslations('Teachers.table.status');
+  const format = useFormatter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const enabled = hydrated && Boolean(token);
@@ -59,6 +65,10 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
   // The detail route serves STAFF accounts; an invitation id has no account to
   // detail and lands on the not-found branch below.
   const row = rows.find((candidate) => candidate.documentId === documentId);
+  const attentionQuery = useTeacherNeedsAttentionQuery(
+    documentId,
+    enabled && row?.kind === 'teacher',
+  );
   const [editOpen, setEditOpen] = useState(false);
 
   const isPending =
@@ -277,6 +287,74 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
           </dl>
         </DataPanel>
       </div>
+
+      <DataPanel aria-label={t('attention.title')} data-slot="teacher-needs-attention">
+        <div className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3">
+          <h2 className="text-sm font-semibold text-foreground">{t('attention.title')}</h2>
+          <span className="text-meta text-body">{t('attention.subtitle')}</span>
+        </div>
+        {attentionQuery.isPending ? (
+          <div className="border-t border-border px-4 py-5">
+            <Skeleton className="h-10 w-full" />
+          </div>
+        ) : attentionQuery.isError ? (
+          <div className="border-t border-border px-4 py-5">
+            <Alert
+              variant="error"
+              title={t('attention.errorTitle')}
+              action={
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  loading={attentionQuery.isFetching}
+                  onClick={() => void attentionQuery.refetch()}
+                >
+                  {t('retry')}
+                </Button>
+              }
+            >
+              {t('attention.errorDescription')}
+            </Alert>
+          </div>
+        ) : (attentionQuery.data?.students.length ?? 0) === 0 ? (
+          <div className="border-t border-border px-4 py-6 text-center">
+            <p className="text-sm font-semibold text-foreground">{t('attention.empty')}</p>
+          </div>
+        ) : (
+          <ul data-slot="teacher-needs-attention-rows">
+            {attentionQuery.data?.students.map((student) => {
+              const delta = progressDelta(student.delta);
+              return (
+                <li
+                  key={student.student_document_id}
+                  className="border-t border-border first:border-t-0"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3">
+                    <span className="flex min-w-0 flex-col gap-0.5">
+                      <span className="truncate text-sm font-medium text-foreground">
+                        {student.display_name}
+                      </span>
+                      <span className="truncate text-meta text-body">
+                        {student.class.name ?? '—'}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="text-body-sm text-body tabular-nums">
+                        {t('attention.scores', { from: student.score_a, to: student.score_b })}
+                      </span>
+                      <ProgressDeltaPill
+                        direction={delta.direction}
+                        change={format.number(delta.magnitude, { maximumFractionDigits: 0 })}
+                      />
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </DataPanel>
 
       {editOpen ? <EditTeacherDialog row={row} onClose={() => setEditOpen(false)} /> : null}
     </main>

@@ -2484,6 +2484,14 @@
   },
   "Teachers": {
     "detail": {
+      "attention": {
+        "title": "Pelajar yang memerlukan perhatian",
+        "subtitle": "Merentas kelas guru ini",
+        "empty": "Semua pelajar berada di landasan yang betul.",
+        "scores": "{from} → {to}",
+        "errorTitle": "Kami tidak dapat memuatkan pelajar yang memerlukan perhatian",
+        "errorDescription": "Semak sambungan anda dan cuba lagi."
+      },
       "meta": {
         "title": "Butiran guru - SchoolTest",
         "description": "Kelas yang ditugaskan kepada staf ini dan butiran akaunnya."

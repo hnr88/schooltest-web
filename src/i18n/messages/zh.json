@@ -2484,6 +2484,14 @@
   },
   "Teachers": {
     "detail": {
+      "attention": {
+        "title": "需要关注的学生",
+        "subtitle": "该教师的所有班级",
+        "empty": "每位学生都在正轨上。",
+        "scores": "{from} → {to}",
+        "errorTitle": "无法加载需要关注的学生",
+        "errorDescription": "请检查网络连接后重试。"
+      },
       "meta": {
         "title": "教师详情 - SchoolTest",
         "description": "教职员工的授课班级与账号详情。"

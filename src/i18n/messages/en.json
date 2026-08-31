@@ -2787,6 +2787,14 @@
   },
   "Teachers": {
     "detail": {
+      "attention": {
+        "title": "Students needing attention",
+        "subtitle": "Across this teacher's classes",
+        "empty": "Everyone is on track.",
+        "scores": "{from} → {to}",
+        "errorTitle": "We could not load students needing attention",
+        "errorDescription": "Check your connection and try again."
+      },
       "meta": {
         "title": "Teacher detail - SchoolTest",
         "description": "A staff member's assigned classes and account details."
