@@ -5,15 +5,9 @@ import { useState } from 'react';
 
 import {
   Alert,
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
   Button,
 } from '@/modules/design-system';
+import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsSittingRecoveryTable } from '@/modules/ops/components/OpsSittingRecoveryTable';
 import { useSittingRecovery } from '@/modules/ops/hooks/use-sitting-recovery';
 import { useOpsSittingMonitorQuery } from '@/modules/ops/queries/use-ops-sitting-monitor.query';
@@ -82,31 +76,20 @@ export function OpsSittingRecoveryDetail({ sittingDocumentId }: OpsSittingRecove
         resitting={resitting}
         onResit={(studentDocumentId, studentName) => void resit(studentDocumentId, studentName)}
       />
-      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-        <AlertDialogContent size="sm">
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t('confirmTitle')}</AlertDialogTitle>
-            <AlertDialogDescription>{t('confirmBody')}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="h-11 px-4" disabled={invalidating}>
-              {t('cancel')}
-            </AlertDialogCancel>
-            <Button
-              type="button"
-              variant="destructive"
-              className="h-11 px-4"
-              loading={invalidating}
-              onClick={() => {
-                void invalidate();
-                setConfirmOpen(false);
-              }}
-            >
-              {t('confirm')}
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <OpsConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title={t('confirmTitle')}
+        description={t('confirmBody')}
+        confirmLabel={t('confirm')}
+        cancelLabel={t('cancel')}
+        tone="destructive"
+        pending={invalidating}
+        onConfirm={() => {
+          void invalidate();
+          setConfirmOpen(false);
+        }}
+      />
     </div>
   );
 }

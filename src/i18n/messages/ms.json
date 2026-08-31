@@ -2713,6 +2713,22 @@
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again."
+    },
+    "assignTeachersButton": "Tugaskan guru",
+    "assignTeachers": {
+      "title": "Tugaskan guru",
+      "description": "Tetapkan guru yang sama pada setiap kelas dipilih.",
+      "classesLegend": "Kelas ({count} dipilih)",
+      "teachersLegend": "Guru ({count} dipilih)",
+      "noTeachers": "Tiada guru aktif untuk ditugaskan.",
+      "errorTitle": "Kami tidak dapat memuatkan guru",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "submitErrorTitle": "Sesetengah kelas tidak dikemas kini",
+      "submitErrorDescription": "Satu permintaan ditolak. Yang lain tidak berubah.",
+      "successTitle": "Guru ditugaskan",
+      "successDescription": "{teachers} guru ditetapkan pada {classes} kelas.",
+      "cancel": "Batal",
+      "submit": "Tugaskan"
     }
   },
   "SchoolStudents": {
@@ -2984,6 +3000,13 @@
     "import": {
       "title": "Import murid",
       "description": "Muat naik hamparan templat yang telah dilengkapkan atau tampal CSV. Semak pratonton sebelum apa-apa disimpan.",
+      "dropTitle": "Letakkan CSV yang lengkap di sini",
+      "dropHint": "Seret fail masuk, atau pilih di bawah — setiap kiraan pratonton datang daripada pelayan.",
+      "dropActive": "Lepaskan untuk memuatkan fail",
+      "dropReady": "{name} sedia — jalankan Pratonton",
+      "templateButton": "Muat turun templat CSV",
+      "forbiddenDescription": "Peranan anda tidak boleh mengimport pelajar ke sekolah ini.",
+      "errorDescription": "Import tidak dapat dijalankan. Semak CSV dan cuba lagi.",
       "fileLabel": "Pilih fail CSV",
       "pasteLabel": "Atau tampal CSV",
       "placeholder": "first name,last name,email,first language,class,proficiency level",
@@ -3306,6 +3329,42 @@
         "loadErrorDescription": "Direktori kakitangan sekolah tidak dapat dibaca.",
         "saveErrorTitle": "Tidak dapat disimpan"
       }
+    },
+    "schoolTables": {
+      "title": "Direktori sekolah",
+      "tab": {
+        "admins": "Pentadbir",
+        "teachers": "Guru",
+        "classes": "Kelas",
+        "students": "Murid"
+      },
+      "adminsNote": "Pentadbir sekolah bagi sekolah ini. Untuk menjemput pentadbir, gunakan panel jemputan Onboard School pada tab Gambaran Keseluruhan. Direktori ini tidak menyenaraikan medan log masuk terakhir (sistem tidak merekodkannya).",
+      "adminsEmptyTitle": "Tiada pentadbir untuk sekolah ini",
+      "adminsEmptyDescription": "Sekolah ini belum mempunyai akaun pentadbir.",
+      "teachersNote": "Kakitangan pengajar bagi sekolah ini. Sunting dan alih keluar ditawarkan melalui Urus guru (titik tulis semula C-TCH-04/C-TCH-03).",
+      "teachersEmptyTitle": "Tiada guru untuk sekolah ini",
+      "teachersEmptyDescription": "Sekolah ini belum mempunyai kakitangan pengajar.",
+      "manageTeachers": "Urus guru",
+      "classesNote": "Kelas diperoleh melalui direktori kakitangan sekolah. Bilangan murid dan tetingkap ujian tidak disediakan oleh API ops.",
+      "classesEmptyTitle": "Tiada kelas ditemui",
+      "classesEmptyDescription": "Direktori kakitangan tidak melaporkan kelas untuk sekolah ini.",
+      "studentsNote": "Senarai murid tidak disediakan oleh API ops (bacaan murid adalah skop guru).",
+      "studentsEmptyTitle": "Murid tidak tersedia",
+      "studentsEmptyDescription": "API belum menyokong bacaan senarai murid oleh ops.",
+      "columnName": "Nama",
+      "columnEmail": "E-mel",
+      "columnRole": "Peranan",
+      "columnStatus": "Status",
+      "columnClasses": "Kelas",
+      "columnClass": "Kelas",
+      "columnTeacher": "Guru",
+      "columnStudents": "Murid",
+      "columnTestWindow": "Tetingkap ujian",
+      "statusActive": "Aktif",
+      "statusSuspended": "Digantung",
+      "notServed": "Tidak disediakan",
+      "errorTitle": "Tidak dapat memuat",
+      "errorDescription": "Direktori tidak dapat dibaca. Cuba lagi."
     }
   },
   "RunSheet": {
@@ -4057,14 +4116,35 @@
         "progressFootnote": "Data telah dinyahkenalan. Merangkumi perubahan subkemahiran setiap pelajar, pergerakan fasa ACARA dan gesaan sedia tampal untuk perancangan pengajaran terbeza.",
         "studentButton": "Eksport untuk AI",
         "studentFootnote": "Data telah dinyahkenalan — pelajar ini hanya muncul sebagai ID anonim.",
-        "pending": "Menyediakan muat turun anda",
-        "failed": "Eksport tidak dimuat turun, jadi tiada fail disimpan. Cuba lagi."
+        "pending": "Menyediakan pratonton anda",
+        "failed": "Pratonton eksport tidak dapat disediakan. Tiada apa-apa disimpan. Cuba lagi.",
+        "previewTitle": "Pratonton eksport",
+        "previewDescription": "Gesaan ini datang terus daripada berkas eksport dinyahkenalan yang dijana oleh pelayan.",
+        "previewPromptLabel": "Gesaan",
+        "previewFilename": "Nama fail berkas: {filename}",
+        "closePreview": "Tutup pratonton eksport",
+        "cancelPreview": "Batal",
+        "copyPromptAndDownload": "Salin gesaan + muat turun",
+        "copyDownloadSuccess": "Gesaan disalin dan eksport dimuat turun",
+        "copyFailed": "Gesaan tidak dapat disalin. Benarkan akses papan klip dan cuba lagi; tiada apa-apa dimuat turun.",
+        "downloadFailed": "Gesaan telah disalin, tetapi eksport tidak dapat dimuat turun. Cuba lagi."
       },
       "exitPredictions": {
         "title": "Ramalan keluar",
         "badge": "Akan datang",
         "description": "SchoolTest belum meramalkan tahap keluar, jadi tiada apa-apa untuk ditindaklanjuti dalam tab ini. Tiada ramalan ditunjukkan kerana tiada yang telah diukur."
       }
+    }
+  },
+  "SchoolCommand": {
+    "placeholder": "Cari kelas, guru, pelajar…",
+    "empty": "Tiada hasil.",
+    "triggerLabel": "Cari",
+    "groups": {
+      "classes": "Kelas ({count, plural, other {# kelas}})",
+      "teachers": "Guru ({count, plural, other {# guru}})",
+      "students": "Pelajar ({count, plural, other {# pelajar}})",
+      "studentsTotal": "Pelajar ({count, plural, other {# padanan}})"
     }
   }
 }

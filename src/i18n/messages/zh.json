@@ -2793,6 +2793,22 @@
         "inference": "推断",
         "critical": "批判性阅读"
       }
+    },
+    "assignTeachersButton": "分配教师",
+    "assignTeachers": {
+      "title": "分配教师",
+      "description": "为所有选中的班级设置相同的教师。",
+      "classesLegend": "班级（已选 {count} 个）",
+      "teachersLegend": "教师（已选 {count} 位）",
+      "noTeachers": "没有可分配的在职教师。",
+      "errorTitle": "无法加载教师",
+      "errorDescription": "请检查网络连接后重试。",
+      "submitErrorTitle": "部分班级未更新",
+      "submitErrorDescription": "有一个请求被拒绝，其余未受影响。",
+      "successTitle": "教师已分配",
+      "successDescription": "已为 {classes} 个班级设置 {teachers} 位教师。",
+      "cancel": "取消",
+      "submit": "分配"
     }
   },
   "SchoolStudents": {
@@ -3064,6 +3080,13 @@
     "import": {
       "title": "导入学生",
       "description": "上传填好的模板电子表格或粘贴 CSV。请先检查预览，确认后才会保存。",
+      "dropTitle": "将填写完成的 CSV 拖到此处",
+      "dropHint": "拖入文件，或在下方选择——所有预览计数均来自服务器。",
+      "dropActive": "松开以载入文件",
+      "dropReady": "{name} 已就绪——请运行预览",
+      "templateButton": "下载 CSV 模板",
+      "forbiddenDescription": "您的角色无法向该学校导入学生。",
+      "errorDescription": "无法运行导入。请检查 CSV 后重试。",
       "fileLabel": "选择 CSV 文件",
       "pasteLabel": "或粘贴 CSV",
       "placeholder": "first name,last name,email,first language,class,proficiency level",
@@ -3386,6 +3409,42 @@
         "loadErrorDescription": "无法读取学校的教职员目录。",
         "saveErrorTitle": "无法保存"
       }
+    },
+    "schoolTables": {
+      "title": "学校目录",
+      "tab": {
+        "admins": "管理员",
+        "teachers": "教师",
+        "classes": "班级",
+        "students": "学生"
+      },
+      "adminsNote": "该校的学校管理员。邀请管理员请使用概览标签页上的 Onboard School 邀请面板。此处不显示最后登录字段（系统未记录）。",
+      "adminsEmptyTitle": "该校没有管理员",
+      "adminsEmptyDescription": "该校还没有管理员帐户。",
+      "teachersNote": "该校的教职员工。编辑和移除请通过 Manage teachers（C-TCH-04/C-TCH-03 重写端点）。",
+      "teachersEmptyTitle": "该校没有教师",
+      "teachersEmptyDescription": "该校还没有教职员工。",
+      "manageTeachers": "管理教师",
+      "classesNote": "班级通过学校教职员目录获取。学生人数和测试窗口不由 ops API 提供。",
+      "classesEmptyTitle": "未找到班级",
+      "classesEmptyDescription": "教职员目录未报告该校有班级。",
+      "studentsNote": "ops API 不提供学生名册（学生读取是教师作用域）。",
+      "studentsEmptyTitle": "学生不可用",
+      "studentsEmptyDescription": "API 尚不支持 ops 读取学生名册。",
+      "columnName": "姓名",
+      "columnEmail": "邮箱",
+      "columnRole": "角色",
+      "columnStatus": "状态",
+      "columnClasses": "班级",
+      "columnClass": "班级",
+      "columnTeacher": "教师",
+      "columnStudents": "学生",
+      "columnTestWindow": "测试窗口",
+      "statusActive": "正常",
+      "statusSuspended": "已停用",
+      "notServed": "未提供",
+      "errorTitle": "无法加载",
+      "errorDescription": "无法读取目录，请重试。"
     }
   },
   "RunSheet": {
@@ -4137,14 +4196,35 @@
         "progressFootnote": "数据已去标识化。包含每位学生的子技能变化、ACARA 阶段移动，以及可直接粘贴的分层教学提示词。",
         "studentButton": "导出给 AI",
         "studentFootnote": "数据已去标识化——该学生仅以匿名 ID 出现。",
-        "pending": "正在准备下载",
-        "failed": "导出未能下载，因此没有保存任何文件。请重试。"
+        "pending": "正在准备预览",
+        "failed": "无法准备导出预览，未保存任何内容。请重试。",
+        "previewTitle": "导出预览",
+        "previewDescription": "此提示词直接来自服务器生成的去标识化导出包。",
+        "previewPromptLabel": "提示词",
+        "previewFilename": "导出包文件名：{filename}",
+        "closePreview": "关闭导出预览",
+        "cancelPreview": "取消",
+        "copyPromptAndDownload": "复制提示词 + 下载",
+        "copyDownloadSuccess": "已复制提示词并下载导出文件",
+        "copyFailed": "无法复制提示词。请允许访问剪贴板后重试；没有下载任何文件。",
+        "downloadFailed": "提示词已复制，但无法下载导出文件。请重试。"
       },
       "exitPredictions": {
         "title": "出口水平预测",
         "badge": "即将推出",
         "description": "SchoolTest 尚不预测出口水平，因此本标签页没有可执行的内容。由于没有测得任何预测值，此处不显示任何预测。"
       }
+    }
+  },
+  "SchoolCommand": {
+    "placeholder": "搜索班级、教师、学生…",
+    "empty": "没有结果。",
+    "triggerLabel": "搜索",
+    "groups": {
+      "classes": "班级（{count, plural, other {# 个班级}}）",
+      "teachers": "教师（{count, plural, other {# 位教师}}）",
+      "students": "学生（{count, plural, other {# 名学生}}）",
+      "studentsTotal": "学生（{count, plural, other {# 个匹配}}）"
     }
   }
 }

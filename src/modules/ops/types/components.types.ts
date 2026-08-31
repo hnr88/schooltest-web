@@ -140,3 +140,7 @@ export interface OpsEditClassDialogProps {
   currentTeacherDocumentId: string | null;
   onClose: () => void;
 }
+
+export interface OpsSchoolTablesProps {
+  schoolDocumentId: string;
+}

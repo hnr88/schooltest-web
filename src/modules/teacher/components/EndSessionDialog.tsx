@@ -1,5 +1,6 @@
 'use client';
 
+import { TriangleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import {
@@ -9,9 +10,11 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogMedia,
   AlertDialogTitle,
   Button,
 } from '@/modules/design-system';
+import { shouldApplyConfirmOpenChange } from '@/modules/teacher/lib/teacher-overlays';
 import type { EndSessionDialogProps } from '@/modules/teacher/types/end-session.types';
 
 // The confirmation step for C-TS-4. Deliberately the repo's AlertDialog (the
@@ -32,9 +35,19 @@ function EndSessionDialog({
   const t = useTranslations('Teacher.testSessions.live');
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog
+      open={open}
+      onOpenChange={(nextOpen, details) => {
+        if (shouldApplyConfirmOpenChange('destructive', nextOpen, details.reason)) {
+          onOpenChange(nextOpen);
+        }
+      }}
+    >
       <AlertDialogContent size="sm" data-slot="end-session-dialog">
         <AlertDialogHeader>
+          <AlertDialogMedia className="bg-danger-surface text-danger-strong">
+            <TriangleAlert aria-hidden="true" />
+          </AlertDialogMedia>
           <AlertDialogTitle>
             {t('endDialogTitle', { className: sessionClassName })}
           </AlertDialogTitle>

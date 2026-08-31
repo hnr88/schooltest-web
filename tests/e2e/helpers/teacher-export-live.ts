@@ -1,6 +1,9 @@
 import { expect, type Download, type Locator, type PlaywrightWorkerArgs } from '@playwright/test';
 
-import { parseTeacherExportFilename, teacherExportPath } from '@/modules/teacher/lib/teacher-export';
+import {
+  parseTeacherExportFilename,
+  teacherExportPath,
+} from '@/modules/teacher/lib/teacher-export';
 import {
   teacherExportDocumentSchema,
   teacherExportHeadersSchema,
@@ -28,10 +31,11 @@ const GENERATED_LINE = /^- Generated: (.+)$/m;
 export async function readTeacherExportLive(
   playwright: PlaywrightWorkerArgs['playwright'],
   request: TeacherExportRequest,
+  jwtOverride?: string,
 ): Promise<TeacherExportFile> {
   const context = await playwright.request.newContext();
   try {
-    const jwt = await bearer(context);
+    const jwt = jwtOverride ?? (await bearer(context));
     const response = await context.get(`${API_BASE}${teacherExportPath(request)}`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
@@ -54,9 +58,16 @@ export async function readTeacherExportLive(
 /** Clicks a button and returns the file the BROWSER actually saved. */
 export async function downloadFrom(button: Locator): Promise<TeacherExportFile> {
   const page = button.page();
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write'], {
+    origin: new URL(page.url()).origin,
+  });
+  await button.click();
+  const preview = page.locator('[data-slot="teacher-export-preview"]');
+  await expect(preview).toBeVisible({ timeout: 20_000 });
+  await expect(preview.locator('[data-slot="teacher-export-prompt"]')).not.toBeEmpty();
   const [download]: [Download, void] = await Promise.all([
     page.waitForEvent('download', { timeout: 30_000 }),
-    button.click(),
+    preview.locator('[data-slot="teacher-export-copy-download"]').click(),
   ]);
   const stream = await download.createReadStream();
   const chunks: Buffer[] = [];

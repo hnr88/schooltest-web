@@ -2722,6 +2722,22 @@
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again."
+    },
+    "assignTeachersButton": "Phân công giáo viên",
+    "assignTeachers": {
+      "title": "Phân công giáo viên",
+      "description": "Đặt cùng các giáo viên cho mọi lớp đã chọn.",
+      "classesLegend": "Lớp (đã chọn {count})",
+      "teachersLegend": "Giáo viên (đã chọn {count})",
+      "noTeachers": "Không có giáo viên đang hoạt động để phân công.",
+      "errorTitle": "Không thể tải giáo viên",
+      "errorDescription": "Kiểm tra kết nối rồi thử lại.",
+      "submitErrorTitle": "Một số lớp chưa được cập nhật",
+      "submitErrorDescription": "Một yêu cầu bị từ chối. Các yêu cầu khác không bị thay đổi.",
+      "successTitle": "Đã phân công giáo viên",
+      "successDescription": "Đã đặt {teachers} giáo viên cho {classes} lớp.",
+      "cancel": "Hủy",
+      "submit": "Phân công"
     }
   },
   "SchoolStudents": {
@@ -2993,6 +3009,13 @@
     "import": {
       "title": "Nhập học sinh",
       "description": "Tải lên bảng tính mẫu đã điền hoặc dán CSV. Hãy kiểm tra bản xem trước trước khi lưu.",
+      "dropTitle": "Thả tệp CSV đã điền vào đây",
+      "dropHint": "Kéo tệp vào, hoặc chọn bên dưới — mọi số liệu xem trước đều đến từ máy chủ.",
+      "dropActive": "Thả để tải tệp",
+      "dropReady": "{name} đã sẵn sàng — chạy Xem trước",
+      "templateButton": "Tải mẫu CSV",
+      "forbiddenDescription": "Vai trò của bạn không thể nhập học sinh vào trường này.",
+      "errorDescription": "Không thể chạy nhập. Hãy kiểm tra CSV rồi thử lại.",
       "fileLabel": "Chọn tệp CSV",
       "pasteLabel": "Hoặc dán CSV",
       "placeholder": "first name,last name,email,first language,class,proficiency level",
@@ -3315,6 +3338,42 @@
         "loadErrorDescription": "Không thể đọc danh bạ nhân sự của trường.",
         "saveErrorTitle": "Không thể lưu"
       }
+    },
+    "schoolTables": {
+      "title": "Danh bạ trường học",
+      "tab": {
+        "admins": "Quản trị viên",
+        "teachers": "Giáo viên",
+        "classes": "Lớp học",
+        "students": "Học sinh"
+      },
+      "adminsNote": "Quản trị viên trường của trường này. Để mời quản trị viên, hãy dùng bảng mời Onboard School trên tab Tổng quan. Danh bạ này không hiển thị trường đăng nhập lần cuối (hệ thống không lưu).",
+      "adminsEmptyTitle": "Không có quản trị viên cho trường này",
+      "adminsEmptyDescription": "Trường này chưa có tài khoản quản trị viên.",
+      "teachersNote": "Đội ngũ giảng dạy của trường này. Sửa và xóa được cung cấp qua Quản lý giáo viên (điểm viết lại C-TCH-04/C-TCH-03).",
+      "teachersEmptyTitle": "Không có giáo viên cho trường này",
+      "teachersEmptyDescription": "Trường này chưa có đội ngũ giảng dạy.",
+      "manageTeachers": "Quản lý giáo viên",
+      "classesNote": "Lớp học được lấy qua danh bạ nhân sự của trường. Số học sinh và cửa sổ bài kiểm tra không được API ops cung cấp.",
+      "classesEmptyTitle": "Không tìm thấy lớp học",
+      "classesEmptyDescription": "Danh bạ nhân sự không báo cáo lớp học cho trường này.",
+      "studentsNote": "Danh sách học sinh không được API ops cung cấp (đọc học sinh nằm trong phạm vi giáo viên).",
+      "studentsEmptyTitle": "Học sinh không khả dụng",
+      "studentsEmptyDescription": "API chưa hỗ trợ đọc danh sách học sinh cho ops.",
+      "columnName": "Tên",
+      "columnEmail": "Email",
+      "columnRole": "Vai trò",
+      "columnStatus": "Trạng thái",
+      "columnClasses": "Lớp",
+      "columnClass": "Lớp",
+      "columnTeacher": "Giáo viên",
+      "columnStudents": "Học sinh",
+      "columnTestWindow": "Cửa sổ bài kiểm tra",
+      "statusActive": "Hoạt động",
+      "statusSuspended": "Bị đình chỉ",
+      "notServed": "Không được cung cấp",
+      "errorTitle": "Không thể tải",
+      "errorDescription": "Không thể đọc danh bạ. Hãy thử lại."
     }
   },
   "RunSheet": {
@@ -4066,14 +4125,35 @@
         "progressFootnote": "Dữ liệu đã được ẩn danh. Bao gồm mức thay đổi từng kỹ năng của mỗi học sinh, dịch chuyển giai đoạn ACARA và một câu lệnh dán là dùng được cho kế hoạch phân hóa.",
         "studentButton": "Xuất cho AI",
         "studentFootnote": "Dữ liệu đã được ẩn danh — học sinh này chỉ xuất hiện dưới một mã ẩn danh.",
-        "pending": "Đang chuẩn bị tệp tải xuống",
-        "failed": "Bản xuất không tải xuống được nên không có tệp nào được lưu. Hãy thử lại."
+        "pending": "Đang chuẩn bị bản xem trước",
+        "failed": "Không thể chuẩn bị bản xem trước xuất dữ liệu. Chưa có gì được lưu. Hãy thử lại.",
+        "previewTitle": "Xem trước bản xuất",
+        "previewDescription": "Câu lệnh này được lấy trực tiếp từ gói xuất đã ẩn danh do máy chủ tạo.",
+        "previewPromptLabel": "Câu lệnh",
+        "previewFilename": "Tên tệp gói: {filename}",
+        "closePreview": "Đóng bản xem trước xuất dữ liệu",
+        "cancelPreview": "Hủy",
+        "copyPromptAndDownload": "Sao chép câu lệnh + tải xuống",
+        "copyDownloadSuccess": "Đã sao chép câu lệnh và tải bản xuất xuống",
+        "copyFailed": "Không thể sao chép câu lệnh. Hãy cho phép truy cập bảng nhớ tạm rồi thử lại; chưa có tệp nào được tải xuống.",
+        "downloadFailed": "Đã sao chép câu lệnh nhưng không thể tải bản xuất xuống. Hãy thử lại."
       },
       "exitPredictions": {
         "title": "Dự đoán đầu ra",
         "badge": "Sắp có",
         "description": "SchoolTest chưa dự đoán trình độ đầu ra, nên không có gì để hành động trong thẻ này. Không có dự đoán nào được hiển thị, vì chưa có dự đoán nào được đo lường."
       }
+    }
+  },
+  "SchoolCommand": {
+    "placeholder": "Tìm lớp, giáo viên, học sinh…",
+    "empty": "Không có kết quả.",
+    "triggerLabel": "Tìm kiếm",
+    "groups": {
+      "classes": "Lớp ({count, plural, other {# lớp}})",
+      "teachers": "Giáo viên ({count, plural, other {# giáo viên}})",
+      "students": "Học sinh ({count, plural, other {# học sinh}})",
+      "studentsTotal": "Học sinh ({count, plural, other {# kết quả}})"
     }
   }
 }

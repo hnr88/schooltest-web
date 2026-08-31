@@ -10,6 +10,7 @@ import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
 import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
 import { OpsSchoolPlanPanel } from '@/modules/ops/components/OpsSchoolPlanPanel';
+import { OpsSchoolTables } from '@/modules/ops/components/OpsSchoolTables';
 import { OpsSittingRecovery } from '@/modules/ops/components/OpsSittingRecovery';
 import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
 import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
@@ -106,6 +107,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
       <OpsFormWindow documentId={documentId} />
       <OpsSittingRecovery schoolDocumentId={documentId} />
       <OpsStudentImport documentId={documentId} />
+      <OpsSchoolTables schoolDocumentId={documentId} />
       <OpsTeachersDialog
         schoolDocumentId={documentId}
         open={teachersOpen}

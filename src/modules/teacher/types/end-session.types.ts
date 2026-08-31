@@ -13,6 +13,16 @@ export type EndSessionOutcome = 'closed' | 'already_closed' | 'failed';
 /** The failure half of the outcome — what `classifyEndSessionError` can return. */
 export type EndSessionFailure = Exclude<EndSessionOutcome, 'closed'>;
 
+export type TeacherConfirmVariant = 'neutral' | 'destructive';
+export type TeacherConfirmDismissReason =
+  | 'trigger-press'
+  | 'outside-press'
+  | 'escape-key'
+  | 'close-press'
+  | 'focus-out'
+  | 'imperative-action'
+  | 'none';
+
 export interface EndSessionState {
   isConfirmOpen: boolean;
   isPending: boolean;

@@ -22,14 +22,22 @@ export function useStudentImport(schoolDocumentId: string) {
   const [csv, setCsv] = useState('');
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [result, setResult] = useState<ImportCommitResult | null>(null);
+  // Task 026: the drop zone's real statuses. `fileName` is the loaded file's
+  // own name (null for pasted text); `errorKind` discriminates the inline
+  // error the panel renders alongside the existing toasts — 'forbidden' is the
+  // 403 the API answers for a wrong role, 'error' anything else.
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [errorKind, setErrorKind] = useState<'forbidden' | 'error' | null>(null);
   const previewMutation = useImportPreviewMutation();
   const commitMutation = useImportCommitMutation();
 
   const handleError = (error: unknown) => {
     if (isAxiosError(error) && error.response?.status === 403) {
+      setErrorKind('forbidden');
       toast.error(t('forbiddenToast'));
       return;
     }
+    setErrorKind('error');
     toast.error(t('errorToast'));
   };
 
@@ -37,16 +45,24 @@ export function useStudentImport(schoolDocumentId: string) {
     setCsv(value);
     setPreview(null);
     setResult(null);
+    setErrorKind(null);
+    setFileName(null);
   };
 
   const onFile = async (file: File | undefined) => {
     if (!file) return;
-    onCsvChange(await file.text());
+    const text = await file.text();
+    setCsv(text);
+    setPreview(null);
+    setResult(null);
+    setErrorKind(null);
+    setFileName(file.name);
   };
 
   const runPreview = async () => {
     try {
       setResult(null);
+      setErrorKind(null);
       setPreview(await previewMutation.mutateAsync({ schoolDocumentId, csv }));
     } catch (error) {
       handleError(error);
@@ -70,6 +86,8 @@ export function useStudentImport(schoolDocumentId: string) {
     csv,
     preview,
     result,
+    fileName,
+    errorKind,
     onCsvChange,
     onFile,
     runPreview,

@@ -16,10 +16,9 @@ import type { TeachingInsightsPanelProps } from '@/modules/teacher/types/teachin
 // The Teaching insights tab: ONE live read of C-TR-3 feeding the mastery bars, the
 // suggested groups and the AI export panel (.qa/DESIGN.md §Teaching insights 1-3).
 //
-// The export panel rides the READY branch only: C-TR-5 builds its document from the
-// same completed results these bars are drawn from, so offering the download while
-// the class has none — or while the read failed — would promise a file the server
-// would refuse.
+// C-TR-5 also builds an honest document for an empty class: every data section says
+// no student has completed test data, then the server's real prompt follows. Keep
+// that export reachable beside the empty state; only loading/errors suppress it.
 //
 // `empty` is C-TR-3's own `completed_count === 0` — an emptiness the server
 // asserted, never a swallowed failure: a failed read renders the error branch and
@@ -78,15 +77,18 @@ function TeachingInsightsPanel({ classDocumentId }: TeachingInsightsPanelProps) 
         <>
           <SubskillMasteryList mastery={data.mastery} completedCount={data.completed_count} />
           <SuggestedGroupsSection groups={data.groups} />
-          <TeacherExportPanel
-            request={{ kind: 'insights', classDocumentId }}
-            headingId="teaching-insights-export-heading"
-            title={tExport('insightsTitle')}
-            description={tExport('insightsDescription')}
-            buttonLabel={tExport('insightsButton')}
-            footnote={tExport('insightsFootnote')}
-          />
         </>
+      ) : null}
+
+      {status === 'empty' || status === 'ready' ? (
+        <TeacherExportPanel
+          request={{ kind: 'insights', classDocumentId }}
+          headingId="teaching-insights-export-heading"
+          title={tExport('insightsTitle')}
+          description={tExport('insightsDescription')}
+          buttonLabel={tExport('insightsButton')}
+          footnote={tExport('insightsFootnote')}
+        />
       ) : null}
     </div>
   );

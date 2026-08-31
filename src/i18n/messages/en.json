@@ -3096,6 +3096,22 @@
         "inference": "Inference",
         "critical": "Critical"
       }
+    },
+    "assignTeachersButton": "Assign teachers",
+    "assignTeachers": {
+      "title": "Assign teachers",
+      "description": "Set the same teachers on every selected class.",
+      "classesLegend": "Classes ({count, plural, one {# selected} other {# selected}})",
+      "teachersLegend": "Teachers ({count, plural, one {# selected} other {# selected}})",
+      "noTeachers": "No active teachers to assign.",
+      "errorTitle": "We could not load teachers",
+      "errorDescription": "Check your connection and try again.",
+      "submitErrorTitle": "Some classes were not updated",
+      "submitErrorDescription": "One request was rejected. Nothing else was changed by it.",
+      "successTitle": "Teachers assigned",
+      "successDescription": "{teachers, plural, one {# teacher} other {# teachers}} set on {classes, plural, one {# class} other {# classes}}.",
+      "cancel": "Cancel",
+      "submit": "Assign"
     }
   },
   "SchoolStudents": {
@@ -3367,6 +3383,13 @@
     "import": {
       "title": "Import students",
       "description": "Upload the completed template spreadsheet or paste the CSV. Check the preview before anything is saved.",
+      "dropTitle": "Drop the completed CSV here",
+      "dropHint": "Drag the file in, or pick it below — every preview count comes from the server.",
+      "dropActive": "Release to load the file",
+      "dropReady": "{name} ready — run Preview",
+      "templateButton": "Download CSV template",
+      "forbiddenDescription": "Your role cannot import students into this school.",
+      "errorDescription": "The import could not be run. Check the CSV and try again.",
       "fileLabel": "Choose the CSV file",
       "pasteLabel": "Or paste the CSV",
       "placeholder": "first name,last name,email,first language,class,proficiency level",
@@ -3689,6 +3712,42 @@
         "loadErrorDescription": "The school's teacher directory could not be read.",
         "saveErrorTitle": "Could not save"
       }
+    },
+    "schoolTables": {
+      "title": "School directory",
+      "tab": {
+        "admins": "Admins",
+        "teachers": "Teachers",
+        "classes": "Classes",
+        "students": "Students"
+      },
+      "adminsNote": "School administrators for this school. To invite an admin, use the Onboard School invitation panel on the Overview tab. This directory lists no last-login field (the system tracks none).",
+      "adminsEmptyTitle": "No admins for this school",
+      "adminsEmptyDescription": "This school has no administrator accounts yet.",
+      "teachersNote": "Teaching staff for this school. Edit and remove are offered through Manage teachers (the C-TCH-04/C-TCH-03 rewrite endpoints).",
+      "teachersEmptyTitle": "No teachers for this school",
+      "teachersEmptyDescription": "This school has no teaching staff yet.",
+      "manageTeachers": "Manage teachers",
+      "classesNote": "Classes retrieved through the school's staff directory. Student count and test window are not served by the ops API.",
+      "classesEmptyTitle": "No classes found",
+      "classesEmptyDescription": "This school has no classes reported by the staff directory.",
+      "studentsNote": "The student roster is not served by the ops API (student reads are teacher-scoped).",
+      "studentsEmptyTitle": "Students not available",
+      "studentsEmptyDescription": "Ops reads of the student roster are not supported by the API yet.",
+      "columnName": "Name",
+      "columnEmail": "Email",
+      "columnRole": "Role",
+      "columnStatus": "Status",
+      "columnClasses": "Classes",
+      "columnClass": "Class",
+      "columnTeacher": "Teacher",
+      "columnStudents": "Students",
+      "columnTestWindow": "Test window",
+      "statusActive": "Active",
+      "statusSuspended": "Suspended",
+      "notServed": "Not served",
+      "errorTitle": "Could not load",
+      "errorDescription": "The directory could not be read. Try again."
     }
   },
   "RunSheet": {
@@ -4137,14 +4196,35 @@
         "progressFootnote": "Data is de-identified. Includes per-student subskill deltas, ACARA phase movement, and a ready-to-paste prompt for differentiation planning.",
         "studentButton": "Export for AI",
         "studentFootnote": "Data is de-identified — this student appears as an anonymised ID only.",
-        "pending": "Preparing your download",
-        "failed": "The export did not download, so nothing was saved. Try again."
+        "pending": "Preparing your preview",
+        "failed": "The export preview could not be prepared. Nothing was saved. Try again.",
+        "previewTitle": "Export preview",
+        "previewDescription": "This prompt comes directly from the server-generated, de-identified export bundle.",
+        "previewPromptLabel": "Prompt",
+        "previewFilename": "Bundle filename: {filename}",
+        "closePreview": "Close export preview",
+        "cancelPreview": "Cancel",
+        "copyPromptAndDownload": "Copy prompt + download",
+        "copyDownloadSuccess": "Prompt copied and export downloaded",
+        "copyFailed": "The prompt could not be copied. Allow clipboard access and try again; nothing was downloaded.",
+        "downloadFailed": "The prompt was copied, but the export could not be downloaded. Try again."
       },
       "exitPredictions": {
         "title": "Exit predictions",
         "badge": "Coming soon",
         "description": "SchoolTest does not predict exit levels yet, so there is nothing to act on in this tab. No prediction is shown, because none has been measured."
       }
+    }
+  },
+  "SchoolCommand": {
+    "placeholder": "Search classes, teachers, students…",
+    "empty": "No results.",
+    "triggerLabel": "Search",
+    "groups": {
+      "classes": "Classes ({count, plural, one {# class} other {# classes}})",
+      "teachers": "Teachers ({count, plural, one {# teacher} other {# teachers}})",
+      "students": "Students ({count, plural, one {# student} other {# students}})",
+      "studentsTotal": "Students ({count, plural, one {# match} other {# matches}})"
     }
   }
 }

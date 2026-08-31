@@ -2713,6 +2713,22 @@
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
       "errorToast": "That did not work. Try again."
+    },
+    "assignTeachersButton": "มอบหมายครู",
+    "assignTeachers": {
+      "title": "มอบหมายครู",
+      "description": "กำหนดครูชุดเดียวกันให้ทุกชั้นเรียนที่เลือก",
+      "classesLegend": "ชั้นเรียน (เลือก {count})",
+      "teachersLegend": "ครู (เลือก {count})",
+      "noTeachers": "ไม่มีครูที่ใช้งานอยู่ให้มอบหมาย",
+      "errorTitle": "ไม่สามารถโหลดครูได้",
+      "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+      "submitErrorTitle": "บางชั้นเรียนยังไม่ได้อัปเดต",
+      "submitErrorDescription": "คำขอหนึ่งรายการถูกปฏิเสธ ที่เหลือไม่มีการเปลี่ยนแปลง",
+      "successTitle": "มอบหมายครูแล้ว",
+      "successDescription": "กำหนดครู {teachers} คนให้ {classes} ชั้นเรียน",
+      "cancel": "ยกเลิก",
+      "submit": "มอบหมาย"
     }
   },
   "SchoolStudents": {
@@ -2984,6 +3000,13 @@
     "import": {
       "title": "นำเข้านักเรียน",
       "description": "อัปโหลดสเปรดชีตเทมเพลตที่กรอกแล้วหรือวาง CSV ตรวจสอบตัวอย่างก่อนบันทึก",
+      "dropTitle": "วางไฟล์ CSV ที่กรอกแล้วที่นี่",
+      "dropHint": "ลากไฟล์เข้ามาหรือเลือกด้านล่าง — ทุกตัวเลขพรีวิวมาจากเซิร์ฟเวอร์",
+      "dropActive": "ปล่อยเพื่อโหลดไฟล์",
+      "dropReady": "{name} พร้อมแล้ว — เรียกใช้พรีวิว",
+      "templateButton": "ดาวน์โหลดเทมเพลต CSV",
+      "forbiddenDescription": "บทบาทของคุณไม่สามารถนำเข้านักเรียนเข้าโรงเรียนนี้ได้",
+      "errorDescription": "ไม่สามารถเรียกใช้การนำเข้า โปรดตรวจสอบ CSV แล้วลองอีกครั้ง",
       "fileLabel": "เลือกไฟล์ CSV",
       "pasteLabel": "หรือวาง CSV",
       "placeholder": "first name,last name,email,first language,class,proficiency level",
@@ -3306,6 +3329,42 @@
         "loadErrorDescription": "ไม่สามารถอ่านรายชื่อบุคลากรของโรงเรียน",
         "saveErrorTitle": "ไม่สามารถบันทึกได้"
       }
+    },
+    "schoolTables": {
+      "title": "ไดเรกทอรีโรงเรียน",
+      "tab": {
+        "admins": "ผู้ดูแลระบบ",
+        "teachers": "ครู",
+        "classes": "ชั้นเรียน",
+        "students": "นักเรียน"
+      },
+      "adminsNote": "ผู้ดูแลระบบของโรงเรียนนี้ หากต้องการเชิญผู้ดูแลระบบ ให้ใช้แผงเชิญ Onboard School บนแท็บภาพรวม ไดเรกทอรีนี้ไม่แสดงฟิลด์การเข้าสู่ระบบครั้งล่าสุด (ระบบไม่บันทึก)",
+      "adminsEmptyTitle": "ไม่มีผู้ดูแลระบบสำหรับโรงเรียนนี้",
+      "adminsEmptyDescription": "โรงเรียนนี้ยังไม่มีบัญชีผู้ดูแลระบบ",
+      "teachersNote": "บุคลากรการสอนของโรงเรียนนี้ การแก้ไขและลบผ่านจัดการครู (เอนด์พอยต์ C-TCH-04/C-TCH-03)",
+      "teachersEmptyTitle": "ไม่มีครูสำหรับโรงเรียนนี้",
+      "teachersEmptyDescription": "โรงเรียนนี้ยังไม่มีบุคลากรการสอน",
+      "manageTeachers": "จัดการครู",
+      "classesNote": "ชั้นเรียนดึงผ่านไดเรกทอรีบุคลากรของโรงเรียน จำนวนนักเรียนและกรอบเวลาทดสอบไม่ถูกให้บริการโดย API ops",
+      "classesEmptyTitle": "ไม่พบชั้นเรียน",
+      "classesEmptyDescription": "ไดเรกทอรีบุคลากรไม่ได้รายงานชั้นเรียนสำหรับโรงเรียนนี้",
+      "studentsNote": "รายชื่อนักเรียนไม่ถูกให้บริการโดย API ops (การอ่านนักเรียนอยู่ในขอบเขตครู)",
+      "studentsEmptyTitle": "นักเรียนไม่พร้อมใช้งาน",
+      "studentsEmptyDescription": "API ยังไม่รองรับการอ่านรายชื่อนักเรียนสำหรับ ops",
+      "columnName": "ชื่อ",
+      "columnEmail": "อีเมล",
+      "columnRole": "บทบาท",
+      "columnStatus": "สถานะ",
+      "columnClasses": "ชั้นเรียน",
+      "columnClass": "ชั้นเรียน",
+      "columnTeacher": "ครู",
+      "columnStudents": "นักเรียน",
+      "columnTestWindow": "กรอบเวลาทดสอบ",
+      "statusActive": "ใช้งานอยู่",
+      "statusSuspended": "ถูกระงับ",
+      "notServed": "ไม่ให้บริการ",
+      "errorTitle": "ไม่สามารถโหลด",
+      "errorDescription": "ไม่สามารถอ่านไดเรกทอรีได้ โปรดลองอีกครั้ง"
     }
   },
   "RunSheet": {
@@ -4057,14 +4116,35 @@
         "progressFootnote": "ข้อมูลถูกลบข้อมูลระบุตัวตนแล้ว ประกอบด้วยการเปลี่ยนแปลงทักษะย่อยของนักเรียนแต่ละคน การเลื่อนระยะ ACARA และพรอมป์ตที่วางใช้ได้ทันทีสำหรับวางแผนการสอนแบบแยกระดับ",
         "studentButton": "ส่งออกสำหรับ AI",
         "studentFootnote": "ข้อมูลถูกลบข้อมูลระบุตัวตนแล้ว — นักเรียนคนนี้ปรากฏเป็นรหัสนิรนามเท่านั้น",
-        "pending": "กำลังเตรียมไฟล์ดาวน์โหลด",
-        "failed": "การส่งออกไม่ได้ดาวน์โหลด จึงไม่มีไฟล์ถูกบันทึก โปรดลองอีกครั้ง"
+        "pending": "กำลังเตรียมตัวอย่าง",
+        "failed": "ไม่สามารถเตรียมตัวอย่างการส่งออกได้ จึงไม่มีสิ่งใดถูกบันทึก โปรดลองอีกครั้ง",
+        "previewTitle": "ตัวอย่างการส่งออก",
+        "previewDescription": "พรอมป์ตนี้มาจากชุดส่งออกที่เซิร์ฟเวอร์สร้างและลบข้อมูลระบุตัวตนแล้วโดยตรง",
+        "previewPromptLabel": "พรอมป์ต",
+        "previewFilename": "ชื่อไฟล์ชุดส่งออก: {filename}",
+        "closePreview": "ปิดตัวอย่างการส่งออก",
+        "cancelPreview": "ยกเลิก",
+        "copyPromptAndDownload": "คัดลอกพรอมป์ต + ดาวน์โหลด",
+        "copyDownloadSuccess": "คัดลอกพรอมป์ตและดาวน์โหลดการส่งออกแล้ว",
+        "copyFailed": "ไม่สามารถคัดลอกพรอมป์ตได้ โปรดอนุญาตการเข้าถึงคลิปบอร์ดแล้วลองอีกครั้ง โดยยังไม่มีการดาวน์โหลดไฟล์",
+        "downloadFailed": "คัดลอกพรอมป์ตแล้ว แต่ไม่สามารถดาวน์โหลดการส่งออกได้ โปรดลองอีกครั้ง"
       },
       "exitPredictions": {
         "title": "การคาดการณ์ระดับเมื่อจบ",
         "badge": "เร็ว ๆ นี้",
         "description": "SchoolTest ยังไม่คาดการณ์ระดับเมื่อจบ จึงไม่มีสิ่งใดให้ดำเนินการในแท็บนี้ ไม่มีการแสดงค่าคาดการณ์ เพราะยังไม่มีการวัดค่าใด"
       }
+    }
+  },
+  "SchoolCommand": {
+    "placeholder": "ค้นหาชั้นเรียน ครู นักเรียน…",
+    "empty": "ไม่พบผลลัพธ์",
+    "triggerLabel": "ค้นหา",
+    "groups": {
+      "classes": "ชั้นเรียน ({count, plural, other {# ชั้นเรียน}})",
+      "teachers": "ครู ({count, plural, other {# คน}})",
+      "students": "นักเรียน ({count, plural, other {# คน}})",
+      "studentsTotal": "นักเรียน ({count, plural, other {# รายการที่ตรง}})"
     }
   }
 }

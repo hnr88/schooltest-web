@@ -29,7 +29,22 @@ export interface TeacherExportFile {
   body: string;
 }
 
-/** What the ONE shared download hook hands a button. */
+export type TeacherExportActionError = 'copy' | 'download';
+export type TeacherExportActionResult = 'success' | `${TeacherExportActionError}_failed`;
+
+/** What the shared preview hook hands the export trigger and modal. */
+export interface TeacherExportPreview {
+  start: () => void;
+  close: () => void;
+  copyPromptAndDownload: () => Promise<TeacherExportActionResult>;
+  file: TeacherExportFile | null;
+  prompt: string | null;
+  actionError: TeacherExportActionError | null;
+  isPending: boolean;
+  isError: boolean;
+}
+
+/** Legacy immediate-download hook shape, retained for internal compatibility. */
 export interface TeacherExportDownload {
   start: () => void;
   isPending: boolean;
@@ -40,6 +55,14 @@ export interface TeacherExportButtonProps {
   request: TeacherExportRequest;
   label: string;
   variant?: 'default' | 'outline';
+}
+
+export interface TeacherExportPreviewDialogProps {
+  file: TeacherExportFile | null;
+  prompt: string | null;
+  actionError: TeacherExportActionError | null;
+  onClose: () => void;
+  onCopyPromptAndDownload: () => void;
 }
 
 /** The class-tab export panel (Teaching insights / Progress). */

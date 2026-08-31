@@ -1,11 +1,12 @@
 'use client';
 
-import { Plus } from 'lucide-react';
+import { Plus, UsersRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useAuthStore } from '@/modules/auth';
 import { AddClassDialog } from '@/modules/classes/components/AddClassDialog';
+import { AssignTeachersDialog } from '@/modules/classes/components/AssignTeachersDialog';
 import { EditClassDialog } from '@/modules/classes/components/EditClassDialog';
 import { ClassesTable } from '@/modules/classes/components/ClassesTable';
 import { testsCompletedByClass } from '@/modules/classes/lib/classes-table.helpers';
@@ -26,6 +27,7 @@ export function ClassesScreen() {
   const classesQuery = useSchoolClassesQuery(enabled);
   const participationQuery = useParticipationQuery(enabled);
   const [addOpen, setAddOpen] = useState(false);
+  const [assignOpen, setAssignOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<SchoolClass | null>(null);
 
   const isPending = !enabled || classesQuery.isPending || participationQuery.isPending;
@@ -41,10 +43,21 @@ export function ClassesScreen() {
           <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
           <p className="text-sm text-body">{t('description')}</p>
         </div>
-        <Button variant="accent" size="lg" onClick={() => setAddOpen(true)}>
-          <Plus className="size-4" aria-hidden />
-          {t('addButton')}
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setAssignOpen(true)}
+            disabled={(classesQuery.data ?? []).length === 0}
+          >
+            <UsersRound className="size-4" aria-hidden />
+            {t('assignTeachersButton')}
+          </Button>
+          <Button variant="accent" size="lg" onClick={() => setAddOpen(true)}>
+            <Plus className="size-4" aria-hidden />
+            {t('addButton')}
+          </Button>
+        </div>
       </div>
       {isPending ? (
         <div className="flex flex-col gap-3">
@@ -80,6 +93,15 @@ export function ClassesScreen() {
         />
       )}
       {addOpen ? <AddClassDialog onClose={() => setAddOpen(false)} /> : null}
+      {assignOpen ? (
+        <AssignTeachersDialog
+          classes={(classesQuery.data ?? []).map((row) => ({
+            documentId: row.documentId,
+            name: row.name,
+          }))}
+          onClose={() => setAssignOpen(false)}
+        />
+      ) : null}
       {editTarget ? (
         <EditClassDialog
           schoolClass={{
