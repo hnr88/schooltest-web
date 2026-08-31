@@ -17,9 +17,8 @@ async function resetPasswordRequest({
   return res.data;
 }
 
-// Success is an auto-login (C-AUTH-RESET): fresh 7d jwt + sanitized user —
-// the exact store/query-cache handoff of use-login.mutation.ts. Errors write
-// nothing (no token, no cache).
+// Success stores C-AUTH-RESET's fresh 7d jwt + sanitized user before the card
+// renders its explicit completion state. Errors write nothing.
 export function useResetPasswordMutation() {
   const queryClient = useQueryClient();
   const setToken = useAuthStore((state) => state.setToken);

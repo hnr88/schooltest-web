@@ -4,6 +4,7 @@ import { KeyRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { PasswordField } from '@/modules/auth/components/PasswordField';
+import { ResetPasswordRuleChecklist } from '@/modules/auth/components/ResetPasswordRuleChecklist';
 import { useResetPasswordForm } from '@/modules/auth/hooks/use-reset-password-form';
 import { Alert, Button } from '@/modules/design-system';
 
@@ -11,19 +12,25 @@ import type { ResetPasswordFormProps } from '@/modules/auth/types/components.typ
 
 // Form state of the reset-password card (§14.3 reuse): blue key tile, title +
 // helper copy, two PasswordFields, primary submit.
-export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProps) {
+export function ResetPasswordForm({
+  code,
+  onExpiredCode,
+  onInvalidCode,
+  onSuccess,
+}: ResetPasswordFormProps) {
   const t = useTranslations('Auth');
   const {
     register,
     errors,
     onSubmit,
     formError,
+    passwordRuleState,
     isPending,
     showPassword,
     toggleShowPassword,
     showConfirmPassword,
     toggleShowConfirmPassword,
-  } = useResetPasswordForm({ code, onInvalidCode });
+  } = useResetPasswordForm({ code, onExpiredCode, onInvalidCode, onSuccess });
 
   return (
     <div className="flex flex-col gap-5">
@@ -54,6 +61,7 @@ export function ResetPasswordForm({ code, onInvalidCode }: ResetPasswordFormProp
           error={errors.password?.message ? t(errors.password.message) : undefined}
           registration={register('password')}
         />
+        <ResetPasswordRuleChecklist state={passwordRuleState} />
         <PasswordField
           id="reset-confirm-password"
           label={t('confirmPasswordLabel')}

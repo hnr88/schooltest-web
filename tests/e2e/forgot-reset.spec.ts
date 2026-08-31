@@ -64,6 +64,15 @@ async function expectInvalidLinkState(page: Page): Promise<void> {
   ).toHaveAttribute('href', '/forgot-password');
 }
 
+async function expectExpiredLinkState(page: Page): Promise<void> {
+  await expect(
+    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.expiredLinkTitle') }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: cat(en, 'Auth.requestNewLink'), exact: true }),
+  ).toHaveAttribute('href', '/forgot-password');
+}
+
 test('en: flow 2 — wrong password → inline error → forgot link → sent state, countdown disabled', async ({
   page,
 }) => {
@@ -116,7 +125,7 @@ test('en: a garbage ?code= submit swaps the card to the invalid-link error state
 test.describe('reset round-trips against registered parents (serial, D20)', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test('en: flow 3 — forgot → styled reset email → reset form → /dashboard auto-login → sign out → NEW password signs in, old dead', async ({
+  test('en: flow 3 — forgot → reset form → completion → dashboard → NEW password signs in, old dead', async ({
     page,
     request,
   }) => {
@@ -135,10 +144,18 @@ test.describe('reset round-trips against registered parents (serial, D20)', () =
     await page.goto(`/reset-password?code=${code}`);
     await submitResetForm(page, NEW_PASSWORD);
 
-    // C-AUTH-RESET success → auto-login: fresh jwt stored, straight to /dashboard.
-    await page.waitForURL('**/dashboard');
+    await expect(
+      page.getByRole('heading', { level: 1, name: cat(en, 'Auth.passwordUpdatedTitle') }),
+    ).toBeVisible();
+    const continueLink = page.getByRole('link', {
+      name: cat(en, 'Auth.continueToDashboard'),
+      exact: true,
+    });
+    await expect(continueLink).toHaveAttribute('href', '/dashboard');
     const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
     expect(token).toMatch(/^eyJ/);
+    await continueLink.click();
+    await page.waitForURL(/\/(dashboard|onboarding)$/);
     // Onboarding-pending parent: skip the mandatory gate now or the dashboard
     // guard redirects mid-click during the sign-out below (see helpers/auth).
     await skipOnboardingViaUi(page);
@@ -181,7 +198,7 @@ test.describe('reset round-trips against registered parents (serial, D20)', () =
 
     await page.goto(`/reset-password?code=${code}`);
     await submitResetForm(page, 'Expired1234!');
-    await expectInvalidLinkState(page);
+    await expectExpiredLinkState(page);
 
     // No auto-login on the expired path, and the token died on presentation.
     const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));

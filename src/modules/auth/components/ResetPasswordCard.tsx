@@ -6,19 +6,21 @@ import { useState } from 'react';
 
 import { Link } from '@/i18n/navigation';
 import { AuthBackLink } from '@/modules/auth/components/AuthBackLink';
+import { ResetPasswordExpiredState } from '@/modules/auth/components/ResetPasswordExpiredState';
 import { ResetPasswordForm } from '@/modules/auth/components/ResetPasswordForm';
+import { ResetPasswordSuccessState } from '@/modules/auth/components/ResetPasswordSuccessState';
 import { Button, Logo } from '@/modules/design-system';
 
 import type { ResetPasswordCardProps } from '@/modules/auth/types/components.types';
+import type { ResetPasswordView } from '@/modules/auth/types/auth.types';
 
 // Split-layout reset column (design spec 06 §1.1): bare 420px stack on the page
-// background that swaps between the new-password form and ONE generic
-// invalid/expired error state (missing code OR any reset 400). Deliberately NO
-// authed redirect — a user may reset while a stale token exists.
+// background that swaps among form, invalid, expired and completion states.
+// Deliberately NO authed redirect — a user may reset while a stale token exists.
 export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
   const t = useTranslations('Auth');
   const tHome = useTranslations('Home');
-  const [isInvalid, setIsInvalid] = useState(false);
+  const [view, setView] = useState<ResetPasswordView>(code ? 'form' : 'invalid');
 
   return (
     <div className="flex w-full animate-in flex-col gap-6 duration-500 ease-out-expo fade-in slide-in-from-bottom-3 motion-reduce:animate-none">
@@ -28,7 +30,7 @@ export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
       >
         <Logo alt={tHome('footer.logoAlt')} height={30} />
       </Link>
-      {!code || isInvalid ? (
+      {view === 'invalid' ? (
         <div className="flex flex-col gap-5">
           <span
             aria-hidden="true"
@@ -48,10 +50,20 @@ export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
             {t('requestNewLink')}
           </Button>
         </div>
-      ) : (
-        <ResetPasswordForm code={code} onInvalidCode={() => setIsInvalid(true)} />
-      )}
-      <AuthBackLink label={t('backToSignIn')} />
+      ) : null}
+      {view === 'expired' ? <ResetPasswordExpiredState /> : null}
+      {view === 'success' ? <ResetPasswordSuccessState /> : null}
+      {view === 'form' && code ? (
+        <ResetPasswordForm
+          code={code}
+          onExpiredCode={() => setView('expired')}
+          onInvalidCode={() => setView('invalid')}
+          onSuccess={() => setView('success')}
+        />
+      ) : null}
+      {view === 'form' || view === 'invalid' ? (
+        <AuthBackLink label={t('backToSignIn')} />
+      ) : null}
     </div>
   );
 }

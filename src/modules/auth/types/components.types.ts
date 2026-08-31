@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
+import type { PasswordRuleState } from '@/modules/auth/types/auth.types';
+
 export interface AuthBackLinkProps {
   label: string;
 }
@@ -80,7 +82,13 @@ export interface ResetPasswordCardProps {
 
 export interface ResetPasswordFormProps {
   code: string;
+  onExpiredCode: () => void;
   onInvalidCode: () => void;
+  onSuccess: () => void;
+}
+
+export interface ResetPasswordRuleChecklistProps {
+  state: PasswordRuleState;
 }
 
 export interface SchoolAdminGuardProps {

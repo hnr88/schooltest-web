@@ -72,6 +72,14 @@
   --text-body-sm--line-height: 1.45;
   --text-meta: 0.78125rem; /* Caption 12.5/1.5/normal */
   --text-meta--line-height: 1.5;
+  --font-weight-display: 700;
+  --font-weight-h1: 700;
+  --font-weight-h2: 700;
+  --font-weight-h3: 600;
+  --font-weight-h4: 600;
+  --font-weight-body: 400;
+  --font-weight-body-sm: 400;
+  --font-weight-caption: 500;
   --text-overline: 0.71875rem;
   --text-overline--line-height: 1.2;
   --text-stat-xl: 2.125rem;
@@ -288,6 +296,7 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   --container-landing: 1200px;
+  --container-content: 1240px;
   --container-hero: 1360px;
   /* Auth column widths (spec 06 §1.6): 420px form/card column, 560px register
      column and login brand panel. */

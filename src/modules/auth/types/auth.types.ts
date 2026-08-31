@@ -91,7 +91,15 @@ export interface ResetPasswordRequest {
   passwordConfirmation: string;
 }
 
-export type ResetPasswordErrorKey = 'invalidOrExpired' | 'offlineError' | 'serverError';
+export type ResetPasswordErrorKey =
+  | 'invalidOrExpired'
+  | 'expiredLink'
+  | 'offlineError'
+  | 'serverError';
+
+export type PasswordRuleState = 'pending' | 'met' | 'unmet';
+
+export type ResetPasswordView = 'form' | 'invalid' | 'expired' | 'success';
 
 export type ChangePasswordErrorKey =
   | 'wrongCurrentPassword'

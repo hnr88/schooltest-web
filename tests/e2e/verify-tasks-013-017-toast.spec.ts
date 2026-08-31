@@ -112,7 +112,7 @@ test('015: forgot-password server error → toast.error; valid email → toast.s
   await page.screenshot({ path: path.join(SCREENSHOTS, '015-forgot-password-success-toast.png') });
 });
 
-test('016: reset-password via mailpit → toast.success before navigation', async ({
+test('016: reset-password via mailpit → toast.success and completion state', async ({
   page,
   request,
 }) => {
@@ -134,8 +134,10 @@ test('016: reset-password via mailpit → toast.success before navigation', asyn
   await page.getByRole('button', { name: cat(en, 'Auth.resetButton'), exact: true }).click();
 
   await expectToast(page, 'success', cat(en, 'Auth.passwordReset'));
+  await expect(
+    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.passwordUpdatedTitle') }),
+  ).toBeVisible();
   await page.screenshot({ path: path.join(SCREENSHOTS, '016-reset-password-success-toast.png') });
-  await page.waitForURL('**/dashboard');
 });
 
 test('017: change-password form → toast.success and toast.error on wrong current password', async ({

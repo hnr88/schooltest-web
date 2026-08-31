@@ -79,7 +79,7 @@ export const THEME_CLASS_GROUPS = {
   // --shadow-* → shadow-<name>
   shadow: ['sm', 'md', 'lg', 'xl', 'primary-glow', 'dark-lift', 'knob', 'float'],
   // --container-* → max-w-<name>
-  'max-w': ['landing', 'hero', 'auth', 'auth-wide', 'portal', 'shell', 'eald'],
+  'max-w': ['landing', 'content', 'hero', 'auth', 'auth-wide', 'portal', 'shell', 'eald'],
 } as const;
 
 /** The utility prefix each classGroup's tokens are written with. */

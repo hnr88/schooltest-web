@@ -83,7 +83,15 @@ export function requireEnv(name: string): string {
   return value;
 }
 
-export type AppRole = 'ops' | 'schoolAdmin' | 'schoolAdminB' | 'teacher' | 'teacher2' | 'parent';
+export type AppRole =
+  | 'ops'
+  | 'opsApi'
+  | 'schoolAdmin'
+  | 'schoolAdminB'
+  | 'teacher'
+  | 'teacher2'
+  | 'student'
+  | 'parent';
 
 export interface Credential {
   readonly email: string;
@@ -96,6 +104,13 @@ export interface Credential {
  */
 const ROLE_ENV: Record<AppRole, { email: string; password: string; defaultEmail: string }> = {
   ops: { email: 'E2E_OPS_EMAIL', password: 'E2E_OPS_PASSWORD', defaultEmail: 'admin@schooltest.local' },
+  // The seed's SECOND ops persona (seed-users-data.ts `apiadmin`) — a distinct
+  // account on the same role, so ops flows can be proven with either identity.
+  opsApi: {
+    email: 'E2E_OPS_API_EMAIL',
+    password: 'E2E_OPS_API_PASSWORD',
+    defaultEmail: 'apiadmin@schooltest.local',
+  },
   schoolAdmin: {
     email: 'E2E_SCHOOL_ADMIN_EMAIL',
     password: 'E2E_SCHOOL_ADMIN_PASSWORD',
@@ -124,6 +139,13 @@ const ROLE_ENV: Record<AppRole, { email: string; password: string; defaultEmail:
     password: 'E2E_TEACHER2_PASSWORD',
     defaultEmail: 'teacher2@schooltest.local',
   },
+  // student1..student4 share one seed password; student1 is the persona the
+  // web-portal smoke covers (the student renderer is a separate surface).
+  student: {
+    email: 'E2E_STUDENT_EMAIL',
+    password: 'E2E_STUDENT_PASSWORD',
+    defaultEmail: 'student1@schooltest.local',
+  },
   parent: {
     email: 'E2E_PARENT_EMAIL',
     password: 'E2E_PARENT_PASSWORD',
@@ -134,10 +156,12 @@ const ROLE_ENV: Record<AppRole, { email: string; password: string; defaultEmail:
 /** Seed env name that backs each role's password when E2E_* is absent. */
 const ROLE_SEED_PASSWORD: Record<AppRole, string> = {
   ops: 'SEED_ADMIN_PASSWORD',
+  opsApi: 'SEED_APIADMIN_PASSWORD',
   schoolAdmin: 'SEED_SCHOOLADMIN_A_PASSWORD',
   schoolAdminB: 'SEED_SCHOOLADMIN_B_PASSWORD',
   teacher: 'SEED_TEACHER_PASSWORD',
   teacher2: 'SEED_TEACHER2_PASSWORD',
+  student: 'SEED_STUDENT_PASSWORD',
   parent: 'SEED_PARENT_PASSWORD',
 };
 

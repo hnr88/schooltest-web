@@ -1,13 +1,18 @@
 import { isAxiosError } from 'axios';
 
-import type { ResetPasswordErrorKey } from '@/modules/auth/types/auth.types';
+import type { ResetPasswordErrorKey, StrapiErrorBody } from '@/modules/auth/types/auth.types';
 
-// Status-only mapping (C-UI-AUTH-PAGES): ANY 400 ("Incorrect code provided",
-// "Reset code has expired", …) folds into ONE generic invalid/expired state;
-// no response means offline; anything else is a server fault. Raw Strapi
-// error strings are never rendered.
+// C-AUTH-RESET exposes one sanctioned message branch: only the exact expiry
+// message can distinguish a timed-out code from the shared wrong/reused-code
+// response. Raw Strapi strings select a translated state but are never shown.
 export function classifyResetPasswordError(error: unknown): ResetPasswordErrorKey {
-  if (isAxiosError(error)) {
+  if (isAxiosError<StrapiErrorBody>(error)) {
+    if (
+      error.response?.status === 400 &&
+      error.response.data?.error?.message === 'Reset code has expired'
+    ) {
+      return 'expiredLink';
+    }
     if (error.response?.status === 400) return 'invalidOrExpired';
     if (error.response === undefined) return 'offlineError';
   }

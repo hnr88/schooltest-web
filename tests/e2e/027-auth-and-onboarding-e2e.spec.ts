@@ -331,7 +331,10 @@ test.describe('password reset round-trip (serial, API-seeded parent)', () => {
     usedEmails.push(parent.email);
   });
 
-  test('request reset and complete via UI → toast.success → /dashboard', async ({ page, request }) => {
+  test('request reset and complete via UI → toast.success → completion state', async ({
+    page,
+    request,
+  }) => {
     await page.setViewportSize(DESKTOP);
     await submitForgotForm(page, parent.email);
 
@@ -347,8 +350,10 @@ test.describe('password reset round-trip (serial, API-seeded parent)', () => {
 
     await submitResetForm(page, NEW_PASSWORD);
     await expectToast(page, 'success', cat(en, 'Auth.passwordReset'));
+    await expect(
+      page.getByRole('heading', { level: 1, name: cat(en, 'Auth.passwordUpdatedTitle') }),
+    ).toBeVisible();
     await page.screenshot({ path: path.join(SCREENSHOTS, '027-reset-success-toast.png') });
-    await page.waitForURL('**/dashboard');
 
     // Old password is dead.
     const oldLogin = await request.post(`${STACK_API_BASE_URL}/api/auth/local`, {

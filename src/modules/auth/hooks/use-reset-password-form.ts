@@ -3,41 +3,52 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { useRouter } from '@/i18n/navigation';
 import { classifyResetPasswordError } from '@/modules/auth/lib/classify-reset-password-error';
+import { isResetPasswordWithinByteLimit } from '@/modules/auth/lib/reset-password-policy';
 import { useResetPasswordMutation } from '@/modules/auth/queries/use-reset-password.mutation';
 import {
   resetPasswordSchema,
   type ResetPasswordInput,
 } from '@/modules/auth/schemas/reset-password.schema';
 
-import type { ResetPasswordErrorKey } from '@/modules/auth/types/auth.types';
+import type { PasswordRuleState, ResetPasswordErrorKey } from '@/modules/auth/types/auth.types';
 import type { UseResetPasswordFormOptions } from '@/modules/auth/types/hooks.types';
 
-// Form state + submit wiring for the reset-password card. A 400 (invalid or
-// expired code) hands off to the caller's error state; success auto-logs-in
-// (the mutation stores the fresh jwt) and lands on the dashboard.
-export function useResetPasswordForm({ code, onInvalidCode }: UseResetPasswordFormOptions) {
+// Form state + submit wiring for the reset-password card. The mutation stores
+// the fresh jwt; the card keeps the user on its explicit completion state.
+export function useResetPasswordForm({
+  code,
+  onExpiredCode,
+  onInvalidCode,
+  onSuccess,
+}: UseResetPasswordFormOptions) {
   const t = useTranslations('Auth');
-  const router = useRouter();
   const resetPassword = useResetPasswordMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formError, setFormError] = useState<Exclude<
     ResetPasswordErrorKey,
-    'invalidOrExpired'
+    'invalidOrExpired' | 'expiredLink'
   > | null>(null);
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<ResetPasswordInput>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: { password: '', passwordConfirmation: '' },
   });
+  const password = useWatch({ control, name: 'password' });
+  const passwordRuleState: PasswordRuleState =
+    password.length === 0
+      ? 'pending'
+      : isResetPasswordWithinByteLimit(password)
+        ? 'met'
+        : 'unmet';
 
   const onSubmit = handleSubmit((values) => {
     setFormError(null);
@@ -46,11 +57,14 @@ export function useResetPasswordForm({ code, onInvalidCode }: UseResetPasswordFo
       {
         onSuccess: () => {
           toast.success(t('passwordReset'));
-          router.replace('/dashboard');
+          onSuccess();
         },
         onError: (error) => {
           const key = classifyResetPasswordError(error);
-          if (key === 'invalidOrExpired') {
+          if (key === 'expiredLink') {
+            toast.error(t('expiredLinkTitle'));
+            onExpiredCode();
+          } else if (key === 'invalidOrExpired') {
             toast.error(t('invalidLinkTitle'));
             onInvalidCode();
           } else {
@@ -67,6 +81,7 @@ export function useResetPasswordForm({ code, onInvalidCode }: UseResetPasswordFo
     errors,
     onSubmit,
     formError,
+    passwordRuleState,
     isPending: resetPassword.isPending,
     showPassword,
     toggleShowPassword: () => setShowPassword((current) => !current),

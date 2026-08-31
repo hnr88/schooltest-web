@@ -1,5 +1,6 @@
 export { TeacherDashboardGate } from './components/TeacherDashboardGate';
 export { TeacherDashboardScreen } from './components/TeacherDashboardScreen';
+export { TeacherDashboardSplitScreen } from './components/TeacherDashboardSplitScreen';
 export { TeacherLiveSessionBanner } from './components/TeacherLiveSessionBanner';
 export { TeacherClassCard } from './components/TeacherClassCard';
 export { TeacherClassCompletionRow } from './components/TeacherClassCompletionRow';

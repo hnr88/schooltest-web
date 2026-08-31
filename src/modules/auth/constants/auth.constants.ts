@@ -4,3 +4,5 @@
 // (C-AUTH-GOOGLE), which stays env-gated server-side and answers a typed 400
 // while the provider has no credentials.
 export const GOOGLE_ENABLED = false;
+
+export const RESET_PASSWORD_MAX_BYTES = 72;

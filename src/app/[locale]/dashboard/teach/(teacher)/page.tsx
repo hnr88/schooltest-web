@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { TeacherHomeScreen } from '@/modules/teach';
+import { TeacherDashboardSplitScreen } from '@/modules/teacher';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Teach.meta');
@@ -13,5 +13,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function TeachPage() {
-  return <TeacherHomeScreen />;
+  return <TeacherDashboardSplitScreen />;
 }

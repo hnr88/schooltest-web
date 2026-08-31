@@ -15,7 +15,15 @@ import { expect, type Page } from '@playwright/test';
 import { roleCredentials } from './credentials';
 import { cat, loadMessages } from './i18n';
 
-export type AppRole = 'ops' | 'schoolAdmin' | 'teacher';
+export type AppRole =
+  | 'ops'
+  | 'opsApi'
+  | 'schoolAdmin'
+  | 'schoolAdminB'
+  | 'teacher'
+  | 'teacher2'
+  | 'student'
+  | 'parent';
 
 interface Credential {
   readonly email: string;
@@ -30,8 +38,13 @@ interface Credential {
 // seeder never created) is what this mechanism exists to make impossible.
 export const ROLE_CREDENTIALS: Record<AppRole, Credential> = {
   ops: roleCredentials('ops'),
+  opsApi: roleCredentials('opsApi'),
   schoolAdmin: roleCredentials('schoolAdmin'),
+  schoolAdminB: roleCredentials('schoolAdminB'),
   teacher: roleCredentials('teacher'),
+  teacher2: roleCredentials('teacher2'),
+  student: roleCredentials('student'),
+  parent: roleCredentials('parent'),
 };
 
 const MIN_LOGIN_INTERVAL_MS = 3100;
@@ -60,7 +73,12 @@ export async function loginAs(page: Page, role: AppRole): Promise<void> {
   await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 20_000 }).catch(() => {
     throw new Error(
       `[e2e] sign-in as ${role} (${email}) did not reach the dashboard — landed on ${page.url()}. ` +
-        'Fix the seeded credential/role via the Strapi seed; do NOT retry the form.',
+        'Two causes have this exact signature — check which before acting: ' +
+        '(a) a wrong seeded credential/role — fix it once at the seed, do NOT retry the form; ' +
+        '(b) the API auth rate limit (20 POST /api/auth/local per minute per IP) returned 429, ' +
+        'which strands the form on /sign-in with PERFECT credentials — grep the backend log for ' +
+        '"POST /api/auth/local" + 429, and if another suite is hitting the same API, let it ' +
+        'finish and re-run this spec alone.',
     );
   });
   expect(page.url()).toContain('/dashboard');
