@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { DashboardRoleGate, DashboardScreen } from '@/modules/dashboard';
-import { TeacherDashboardGate, TeacherDashboardScreen } from '@/modules/teacher';
+import { TeacherDashboardGate, TeacherDashboardSplitScreen } from '@/modules/teacher';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Dashboard.meta');
@@ -27,10 +27,16 @@ export async function generateMetadata(): Promise<Metadata> {
 // knowable client-side (the JWT lives in localStorage), so TeacherDashboardGate
 // is a client gate that mounts exactly one of the two screens; the parent
 // Overview is untouched for every non-teacher role.
+//
+// The teacher screen mounted here is Dash C (Split) — the layout the operator
+// locked. It was first mounted only at /dashboard/teach, which nothing in the
+// rail links to, so the rail's TEACHER_DASHBOARD_HREF ('/dashboard') still
+// rendered the pre-v2 TeacherDashboardScreen and the redesign was unreachable
+// by navigation. Both routes now render the same split screen.
 export default function DashboardPage() {
   return (
     <DashboardRoleGate>
-      <TeacherDashboardGate teacher={<TeacherDashboardScreen />} fallback={<DashboardScreen />} />
+      <TeacherDashboardGate teacher={<TeacherDashboardSplitScreen />} fallback={<DashboardScreen />} />
     </DashboardRoleGate>
   );
 }
