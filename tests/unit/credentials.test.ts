@@ -12,10 +12,17 @@ import { roleCredentials, requireEnv } from '../e2e/helpers/credentials';
  * them and defeat the probe — the orchestrator's own documented mistake).
  */
 const E2E_VARS = [
+  'E2E_OPS_EMAIL',
   'E2E_OPS_PASSWORD',
+  'E2E_SCHOOL_ADMIN_EMAIL',
   'E2E_SCHOOL_ADMIN_PASSWORD',
+  'E2E_SCHOOL_ADMIN_B_EMAIL',
   'E2E_SCHOOL_ADMIN_B_PASSWORD',
+  'E2E_TEACHER_EMAIL',
   'E2E_TEACHER_PASSWORD',
+  'E2E_TEACHER2_EMAIL',
+  'E2E_TEACHER2_PASSWORD',
+  'E2E_PARENT_EMAIL',
   'E2E_PARENT_PASSWORD',
   'SEED_ADMIN_PASSWORD',
   'SEED_SCHOOLADMIN_A_PASSWORD',
@@ -68,10 +75,11 @@ describe('roleCredentials fails loudly when a credential is missing', () => {
   });
 
   it('prefers the E2E_* shell override over the SEED_* sibling value', () => {
+    unsetAllCredentials();
     process.env.E2E_TEACHER_PASSWORD = 'shell-override-pw';
     const cred = roleCredentials('teacher');
     expect(cred.password).toBe('shell-override-pw');
-    expect(cred.email).toBe('teacher@schooltest.local');
+    expect(cred.email).toBe('t2@schooltest.local');
   });
 
   it('falls back to the seeded SEED_* value from the sibling .env', () => {
