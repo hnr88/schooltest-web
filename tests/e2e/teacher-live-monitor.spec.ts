@@ -69,15 +69,8 @@ async function expectGridMatchesPayload(
   monitor: TestSessionMonitorResponse,
 ): Promise<void> {
   for (const [key, labelKey] of Object.entries(SUMMARY_LABEL_KEY)) {
-    // `scoring_failed` is optional on the wire (Lane E's counter arrives only
-    // once the API partitions the roster six ways) — a payload without it must
-    // not render the stat at all, so there is nothing to read.
     const value = monitor.summary[key as MonitorSummaryKey];
     const stat = page.locator(`[data-slot="live-monitor-stat"][data-stat="${key}"]`);
-    if (value === undefined) {
-      await expect(stat).toHaveCount(0);
-      continue;
-    }
     await expect(stat).toContainText(String(value));
     await expect(stat).toContainText(cat(en, `${LIVE}.${labelKey}`));
   }
@@ -97,14 +90,15 @@ async function expectGridMatchesPayload(
       cat(en, `${LIVE}.${STATE_LABEL_KEY[student.state]}`),
     );
     const box = await tile.boundingBox();
-    expect(box?.height ?? 0, `tile target height for ${student.display_name}`).toBeGreaterThanOrEqual(
-      44,
-    );
+    expect(
+      box?.height ?? 0,
+      `tile target height for ${student.display_name}`,
+    ).toBeGreaterThanOrEqual(44);
   }
 }
 
 test.describe('C-TS-3 live monitoring grid', () => {
-  test('renders the real payload: five stat tiles, five states, server stall threshold', async ({
+  test('renders the real payload: six stat tiles, six states, server stall threshold', async ({
     page,
     request,
   }) => {
@@ -134,7 +128,7 @@ test.describe('C-TS-3 live monitoring grid', () => {
       await expect(page.locator('h1')).toContainText(fresh.sitting.class.name);
       await expectGridMatchesPayload(page, fresh);
 
-      // The legend names all FIVE states, and prints the server's own threshold.
+      // The legend names all six states, and prints the server's own threshold.
       const legend = page.locator('[data-slot="live-monitor-legend"]');
       for (const key of Object.values(STATE_LABEL_KEY)) {
         await expect(legend).toContainText(cat(en, `${LIVE}.${key}`));

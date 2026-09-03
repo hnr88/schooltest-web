@@ -17,6 +17,7 @@ import type { ClassProgressResponse } from '@/modules/teacher/types/teacher-prog
 import type { ClassStudentsResponse } from '@/modules/teacher/types/teacher-result.types';
 import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
 
+import { roleCredentials } from './credentials';
 import { cat } from './i18n';
 import { apiEnv, runSql } from './auth-db';
 import { en, navLink, signIn } from './teacher-rail';
@@ -44,22 +45,20 @@ export const API_BASE = (() => {
   throw new Error('[e2e] NEXT_PUBLIC_API_BASE_URL missing from schooltest-web/.env');
 })();
 
-/** The seeded teacher, resolved by ROLE from Postgres — no hardcoded credential. */
-export const TEACHER_EMAIL = runSql(
-  `select u.email from up_users u
-     join up_users_role_lnk l on l.user_id = u.id
-     join up_roles r on r.id = l.role_id
-    where r.type = 'teacher' order by u.id limit 1`,
-);
+/** The deterministic journey teacher with mixed Test A/Test B evidence. */
+export const TEACHER_EMAIL = roleCredentials('teacher').email;
 
 export interface LiveResults {
   classes: readonly DashboardClass[];
   detail: ClassStudentsResponse;
 }
 
-export async function bearer(request: APIRequestContext): Promise<string> {
+export async function bearer(
+  request: APIRequestContext,
+  teacherEmail: string = TEACHER_EMAIL,
+): Promise<string> {
   const response = await request.post(`${API_BASE}/api/auth/local`, {
-    data: { identifier: TEACHER_EMAIL, password: apiEnv('SEED_TEACHER_PASSWORD') },
+    data: { identifier: teacherEmail, password: apiEnv('SEED_TEACHER_PASSWORD') },
   });
   if (!response.ok()) {
     throw new Error(`[e2e] teacher sign-in failed: ${response.status()} ${await response.text()}`);
@@ -89,10 +88,11 @@ async function readJson(
  */
 export async function readLiveResults(
   playwright: PlaywrightWorkerArgs['playwright'],
+  teacherEmail: string = TEACHER_EMAIL,
 ): Promise<LiveResults> {
   const request = await playwright.request.newContext();
   try {
-    const jwt = await bearer(request);
+    const jwt = await bearer(request, teacherEmail);
 
     const dash = await readJson(request, jwt, '/api/teacher/dashboard');
     if (dash.status !== 200) throw new Error(`[e2e] C-TD-1 answered ${dash.status}`);
@@ -118,10 +118,11 @@ export async function readLiveResults(
 export async function readClassStudentsLive(
   playwright: PlaywrightWorkerArgs['playwright'],
   classDocumentId: string,
+  teacherEmail: string = TEACHER_EMAIL,
 ): Promise<ClassStudentsResponse> {
   const request = await playwright.request.newContext();
   try {
-    const jwt = await bearer(request);
+    const jwt = await bearer(request, teacherEmail);
     const detail = await readJson(request, jwt, `/api/teacher/classes/${classDocumentId}/students`);
     if (detail.status !== 200) throw new Error(`[e2e] C-TR-1 answered ${detail.status}`);
     return classStudentsResponseSchema.parse(detail.body);
@@ -138,11 +139,16 @@ export async function readClassStudentsLive(
 export async function readClassProgressLive(
   playwright: PlaywrightWorkerArgs['playwright'],
   classDocumentId: string,
+  teacherEmail: string = TEACHER_EMAIL,
 ): Promise<ClassProgressResponse> {
   const request = await playwright.request.newContext();
   try {
-    const jwt = await bearer(request);
-    const progress = await readJson(request, jwt, `/api/teacher/classes/${classDocumentId}/progress`);
+    const jwt = await bearer(request, teacherEmail);
+    const progress = await readJson(
+      request,
+      jwt,
+      `/api/teacher/classes/${classDocumentId}/progress`,
+    );
     if (progress.status !== 200) throw new Error(`[e2e] C-TR-4 answered ${progress.status}`);
     return classProgressResponseSchema.parse(progress.body);
   } finally {

@@ -7,6 +7,7 @@ import { splitDisplayLabel } from '@/modules/report/lib/display-label';
 
 import { apiEnv, runSql } from './helpers/auth-db';
 import { SEEDED_PARENT } from './helpers/auth';
+import { roleCredentials } from './helpers/credentials';
 import { cat, loadMessages } from './helpers/i18n';
 
 // E11-01 / F-WEB-TEACHER-REPORT — the teacher route guard and the C-4/C-11
@@ -14,6 +15,7 @@ import { cat, loadMessages } from './helpers/i18n';
 // REAL Postgres. Nothing here is fixtured: the expected display label is read
 // out of `public.results` with psql and compared to what the page renders.
 const en = loadMessages('en');
+const TEACHER_EMAIL = roleCredentials('teacher').email;
 
 interface SeededResult {
   documentId: string;
@@ -28,7 +30,7 @@ function teacherOwnedResult(): SeededResult {
        join students s on s.id = rs.student_id
        join students_teacher_lnk tl on tl.student_id = s.id
        join up_users u on u.id = tl.user_id
-      where u.email = 'teacher@schooltest.local'
+      where u.email = '${TEACHER_EMAIL}'
         and r.destination = 'official'
         and r.display_label is not null
       order by r.created_at desc
@@ -48,8 +50,28 @@ async function signIn(page: Page, email: string, password: string): Promise<void
   await page.waitForURL('**/dashboard');
 }
 
-const signInAsTeacher = (page: Page) =>
-  signIn(page, 'teacher@schooltest.local', apiEnv('SEED_TEACHER_PASSWORD'));
+const signInAsTeacher = (page: Page, email: string = TEACHER_EMAIL) =>
+  signIn(page, email, apiEnv('SEED_TEACHER_PASSWORD'));
+
+function teacherOwnedProductiveResult(): { documentId: string; teacherEmail: string } {
+  const row = runSql(
+    `select r.document_id, u.email
+       from results r
+       join results_student_lnk rs on rs.result_id = r.id
+       join students s on s.id = rs.student_id
+       join students_teacher_lnk tl on tl.student_id = s.id
+       join up_users u on u.id = tl.user_id
+      where r.destination = 'official'
+        and r.skill = 'writing'
+        and r.display_label is null
+      order by r.created_at desc
+      limit 1`,
+  );
+  const [documentId, teacherEmail] = row.split('\n')[0].split('|');
+  if (!documentId || !teacherEmail)
+    throw new Error(`[e2e] no teacher-owned writing result: ${row}`);
+  return { documentId, teacherEmail };
+}
 
 test.describe('teacher report route guard + data layer', () => {
   test('anonymous visitor is bounced off the report routes to /sign-in', async ({ page }) => {
@@ -112,23 +134,9 @@ test.describe('teacher report route guard + data layer', () => {
   test('a productive-skill result says the ladder does not apply, not "not derived yet"', async ({
     page,
   }) => {
-    const documentId = runSql(
-      `select r.document_id
-         from results r
-         join results_student_lnk rs on rs.result_id = r.id
-         join students s on s.id = rs.student_id
-         join students_teacher_lnk tl on tl.student_id = s.id
-         join up_users u on u.id = tl.user_id
-        where u.email = 'teacher@schooltest.local'
-          and r.destination = 'official'
-          and r.skill = 'writing'
-          and r.display_label is null
-        order by r.created_at desc
-        limit 1`,
-    ).split('\n')[0];
-    expect(documentId).not.toBe('');
+    const { documentId, teacherEmail } = teacherOwnedProductiveResult();
 
-    await signInAsTeacher(page);
+    await signInAsTeacher(page, teacherEmail);
     await page.goto(`/dashboard/reports/${documentId}`);
     const absent = page.locator('[data-slot="report-display-label-absent"]');
     await expect(absent).toBeVisible({ timeout: 20_000 });

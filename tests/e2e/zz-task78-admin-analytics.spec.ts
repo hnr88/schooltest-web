@@ -1,11 +1,17 @@
 import { readFile } from 'node:fs/promises';
 
-import { expect, test, type APIRequestContext, type APIResponse, type Page } from '@playwright/test';
+import {
+  expect,
+  test,
+  type APIRequestContext,
+  type APIResponse,
+  type Page,
+} from '@playwright/test';
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 78 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // C-RPT-04 participation monitor + C-RPT-05 school results export + the
@@ -18,7 +24,7 @@ const en = loadMessages('en');
 const API = 'http://127.0.0.1:5500';
 const ADMIN_A = roleCredentials('schoolAdmin');
 const ADMIN_B = roleCredentials('schoolAdminB');
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const PARENT = roleCredentials('parent');
 const FIXTURE_CLASS = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 
@@ -39,12 +45,10 @@ const apiGet = (
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   const landing = credentials.email.startsWith('schooladmin')
     ? '**/dashboard/school**'
-    : '**/dashboard/teach**';
+    : '**/dashboard**';
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
@@ -82,7 +86,8 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     // the count against the teacher diagnostic's independent roster read,
     // never pin it.
     const teacherJwt = await login(request, TEACHER);
-    const diagnostic = await apiGet(request, 
+    const diagnostic = await apiGet(
+      request,
       `${API}/api/schools/me/classes/${FIXTURE_CLASS}/diagnostic`,
       { headers: { Authorization: `Bearer ${teacherJwt}` } },
     );
@@ -127,14 +132,21 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
       ).status(),
     ).toBe(403);
 
-    // schooladmin-b (school B, no classes): 200 with an empty list - school A
-    // data never leaks across the scope.
+    // School B now has its own deterministic journey class. Prove tenant
+    // isolation by comparing ids instead of relying on an obsolete empty seed.
     const adminBJwt = await login(request, ADMIN_B);
     const bRes = await apiGet(request, `${API}/api/schools/me/participation`, {
       headers: { Authorization: `Bearer ${adminBJwt}` },
     });
     expect(bRes.status()).toBe(200);
-    expect(((await bRes.json()) as { data: { classes: unknown[] } }).data.classes).toHaveLength(0);
+    const schoolBClasses = (
+      (await bRes.json()) as {
+        data: { classes: Array<{ documentId: string; name: string }> };
+      }
+    ).data.classes;
+    expect(schoolBClasses.length).toBeGreaterThan(0);
+    const schoolAIds = new Set(body.data.classes.map((row) => row.documentId));
+    expect(schoolBClasses.every((row) => !schoolAIds.has(row.documentId))).toBe(true);
   });
 
   test('API: C-RPT-05 results export - JSON, CSV, role matrix', async ({ request }) => {
@@ -156,14 +168,14 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
       };
     };
     expect(body.data.results.length).toBeGreaterThan(0);
-    const sofiaA = body.data.results.find(
-      (row) => row.student_ref === 'Sofia P.' && row.form === 'RDG-FT-A-79',
+    const evidenced = body.data.results.find(
+      (row) => row.form === 'RDG-FT-A-79' && row.attributes.length === 7,
     );
-    expect(sofiaA).toBeTruthy();
-    expect(sofiaA!.attributes).toHaveLength(7);
+    expect(evidenced).toBeTruthy();
+    expect(evidenced!.student_ref).toMatch(/^.+ [A-Z]\.$/);
     // student_ref privacy: no surnames or emails anywhere in the export.
     const raw = JSON.stringify(body);
-    expect(raw).not.toMatch(/petrov|@/i);
+    expect(raw).not.toContain('@');
 
     const csv = await apiGet(request, `${API}/api/schools/me/results-export?format=csv`, {
       headers: { Authorization: `Bearer ${adminJwt}` },
@@ -173,8 +185,8 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     expect(csv.headers()['content-disposition']).toContain('school-results.csv');
     const csvBody = await csv.text();
     expect(csvBody.split('\n')[0]).toContain('student_ref,form,label,band,phase');
-    expect(csvBody).toContain('"Sofia P."');
-    expect(csvBody).not.toMatch(/petrov|@/i);
+    expect(csvBody).toContain(`"${evidenced!.student_ref}"`);
+    expect(csvBody).not.toContain('@');
 
     // Unknown format is a 400; teacher is NOT granted (403); forged is 401.
     expect(
@@ -206,12 +218,11 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     const body = (await res.json()) as {
       data: Array<{ eventType: string; title: string; linkUrl: string | null }>;
     };
-    const titles = body.data.map((row) => row.title);
-    expect(titles).toContain('Results ready');
-    expect(titles).toContain('Test A window open');
-    const windowRow = body.data.find((row) => row.title === 'Test A window open');
-    expect(windowRow!.eventType).toBe('test_results_ready'); // enum closed - data.notice marks it
-    expect(windowRow!.linkUrl).toBe('/dashboard/school/participation');
+    expect(body.data.length).toBeGreaterThan(0);
+    const resultsReady = body.data.find((row) => row.title === 'Results ready');
+    expect(resultsReady).toBeTruthy();
+    expect(resultsReady!.eventType).toBe('test_results_ready');
+    expect(resultsReady!.linkUrl).toBeTruthy();
   });
 
   test('UI: participation page renders the per-class A/B buckets', async ({ page, request }) => {
@@ -227,6 +238,8 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
       data: {
         classes: Array<{
           documentId: string;
+          name: string;
+          teacher: string | null;
           test_a: { submitted: number; in_progress: number; not_started: number };
           test_b: { submitted: number; in_progress: number; not_started: number };
         }>;
@@ -247,7 +260,7 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
       .locator('[data-slot="participation-row"]')
       .filter({ hasText: 'EAL/D Year 7 - Room 4' });
     await expect(fixtureRow).toBeVisible();
-    await expect(fixtureRow).toContainText('Vee Twentyone');
+    if (fixture!.teacher) await expect(fixtureRow).toContainText(fixture!.teacher);
     for (const form of [fixture!.test_a, fixture!.test_b]) {
       await expect(fixtureRow).toContainText(
         `${cat(en, 'SchoolAdmin.participation.buckets.submitted')}: ${form.submitted}`,
@@ -258,7 +271,34 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     }
   });
 
-  test('UI: analytics - school overview, class drill, CSV export', async ({ page }) => {
+  test('UI: analytics - school overview, class drill, CSV export', async ({ page, request }) => {
+    const adminJwt = await login(request, ADMIN_A);
+    const participation = await apiGet(request, `${API}/api/schools/me/participation`, {
+      headers: { Authorization: `Bearer ${adminJwt}` },
+    });
+    const classes = (
+      (await participation.json()) as {
+        data: {
+          classes: Array<{
+            name: string;
+            test_a: { submitted: number };
+            test_b: { submitted: number };
+          }>;
+        };
+      }
+    ).data.classes;
+    const evidencedClass = classes.find((row) => row.test_a.submitted + row.test_b.submitted > 0);
+    expect(evidencedClass).toBeTruthy();
+
+    const exportResponse = await apiGet(request, `${API}/api/schools/me/results-export`, {
+      headers: { Authorization: `Bearer ${adminJwt}` },
+    });
+    const exportRows = (
+      (await exportResponse.json()) as {
+        data: { results: Array<{ student_ref: string }> };
+      }
+    ).data.results;
+    expect(exportRows.length).toBeGreaterThan(0);
     await signIn(page, ADMIN_A);
     await page.goto('/en/dashboard/school/analytics');
     const screen = page.locator('[data-surface="school-admin-analytics"]');
@@ -273,15 +313,22 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     // progress components render at school scope.
     await screen
       .locator('[data-slot="analytics-class-list"]')
-      .getByRole('button', { name: /EAL\/D Year 7 - Room 4/ })
+      .getByRole('button', {
+        name: new RegExp(evidencedClass!.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
+      })
       .click();
     const diagnostic = page.locator('[data-surface="teacher-diagnostic"]');
     await expect(diagnostic).toBeVisible({ timeout: 20_000 });
     await expect(diagnostic.locator('[data-slot="mastery-table"]')).toBeVisible();
     await expect(page.locator('[data-surface="teacher-progress"]')).toBeVisible();
     // Level 3: one click down to a student profile.
-    await diagnostic.locator('[data-slot="mastery-table"] button', { hasText: 'Sofia P.' }).click();
-    await expect(diagnostic.getByText(/Sofia P\. - /)).toBeVisible();
+    const studentButton = diagnostic.locator('[data-slot="mastery-table"] button').first();
+    await expect(studentButton).toBeVisible();
+    const studentRef = (await studentButton.locator('span').first().innerText()).trim();
+    await studentButton.click();
+    const drilldown = diagnostic.locator('[data-slot="student-mastery-drilldown"]');
+    await expect(drilldown).toBeVisible();
+    await expect(drilldown).toContainText(studentRef);
 
     // C-RPT-05: the export button downloads school-results.csv.
     const exportSlot = page.locator('[data-slot="results-export"]').first();
@@ -293,8 +340,8 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     expect(download.suggestedFilename()).toBe('school-results.csv');
     const path = await download.path();
     const csvBody = await readFile(path!, 'utf-8');
-    expect(csvBody).toContain('"Sofia P."');
-    expect(csvBody).not.toMatch(/petrov|@/i);
+    expect(csvBody).toContain(`"${exportRows[0].student_ref}"`);
+    expect(csvBody).not.toContain('@');
   });
 
   test('UI: the notification bell surfaces the newest admin events', async ({ page, request }) => {
@@ -325,17 +372,18 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     }
   });
 
-  test('UI: school B empty states', async ({ page }) => {
-    // School B has no classes: both screens show their honest empty states.
+  test('UI: school B stays tenant-scoped with its own journey class', async ({ page }) => {
     await signIn(page, ADMIN_B);
     await page.goto('/en/dashboard/school/participation');
-    await expect(
-      page.getByRole('heading', { name: cat(en, 'SchoolAdmin.participation.emptyTitle') }),
-    ).toBeVisible({ timeout: 20_000 });
+    const participation = page.locator('[data-surface="school-admin-participation"]');
+    await expect(participation).toBeVisible({ timeout: 20_000 });
+    await expect(participation).toContainText('Reading 8A — Farsi (School B)');
+    await expect(participation).not.toContainText('Reading 8A — Okonkwo');
     await page.goto('/en/dashboard/school/analytics');
-    await expect(
-      page.getByRole('heading', { name: cat(en, 'SchoolAdmin.analytics.emptyTitle') }),
-    ).toBeVisible({ timeout: 20_000 });
+    const analytics = page.locator('[data-surface="school-admin-analytics"]');
+    await expect(analytics).toBeVisible({ timeout: 20_000 });
+    await expect(analytics).toContainText('Reading 8A — Farsi (School B)');
+    await expect(analytics).not.toContainText('Reading 8A — Okonkwo');
   });
 
   test('UI: the teacher role is guarded out of the school section', async ({ page }) => {

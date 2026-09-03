@@ -1,7 +1,7 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
-import { loginAsParent } from './helpers/auth'
-import { roleCredentials } from './helpers/credentials';;
+import { loginAsParent } from './helpers/auth';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 import { runSql } from './helpers/auth-db';
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
@@ -12,7 +12,7 @@ import { fixtureClassId } from './helpers/fixture-class';
 // notification is triggered through the C-CHD-05 flag endpoint (teacher, API
 // token) on a fixture roster child, then the school_admin reaches the teach
 // feed through the bell's view-all, sees the fresh row with its unread
-// affordance, marks it read, and follows its link to the children surface.
+// affordance, marks it read, and follows its link to the students surface.
 // View-all routing is repeated as the teacher (same teach feed) and spot-
 // checked as the parent (parent feed unchanged). No mocks; teardown deletes
 // the notification row (+ link) and clears the student flag so the fixture
@@ -20,7 +20,7 @@ import { fixtureClassId } from './helpers/fixture-class';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const EMAIL_FIX_TYPE = 'student_email_fix_requested';
@@ -58,9 +58,7 @@ async function signIn(
 ): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows.
@@ -70,12 +68,8 @@ async function signIn(
 // The bell's view-all is a Button-with-href (anchor semantics); the arrow
 // glyph is aria-hidden so the accessible name is the catalog string alone.
 async function openFeedViaBell(page: Page, feedGlob: string) {
-  await page
-    .getByRole('button', { name: cat(en, 'Notifications.bellLabel'), exact: true })
-    .click();
-  await page
-    .getByRole('link', { name: cat(en, 'Notifications.viewAll'), exact: true })
-    .click();
+  await page.getByRole('button', { name: cat(en, 'Notifications.bellLabel'), exact: true }).click();
+  await page.getByRole('link', { name: cat(en, 'Notifications.viewAll'), exact: true }).click();
   // The i18n Link renders the default locale prefix-free ("/dashboard/..."),
   // so the wait glob never carries "/en".
   await page.waitForURL(feedGlob, { timeout: 30_000 });
@@ -84,10 +78,7 @@ async function openFeedViaBell(page: Page, feedGlob: string) {
   return screen;
 }
 
-async function fetchSchoolFeed(
-  request: APIRequestContext,
-  jwt: string,
-): Promise<SchoolFeedRow[]> {
+async function fetchSchoolFeed(request: APIRequestContext, jwt: string): Promise<SchoolFeedRow[]> {
   const res = await fetchWithRetry(() =>
     request.get(`${API}/api/schools/me/notifications?pageSize=100`, {
       headers: { Authorization: `Bearer ${jwt}` },
@@ -144,7 +135,7 @@ test.describe('task 117: teacher notification flow vs the live stack', () => {
     notificationDocumentId = fresh!.documentId;
     notificationTitle = fresh!.title;
     expect(fresh!.read).toBe(false);
-    expect(fresh!.link).toBe('/dashboard/school/children');
+    expect(fresh!.link).toBe('/dashboard/school/students');
   });
 
   test.afterAll(async () => {
@@ -186,7 +177,7 @@ test.describe('task 117: teacher notification flow vs the live stack', () => {
     ).toHaveCount(0);
   });
 
-  test('school_admin: mark-read clears the unread dot and the link reaches the children surface', async ({
+  test('school_admin: mark-read clears the unread dot and the link reaches the students surface', async ({
     page,
   }) => {
     await signIn(page, SCHOOL_ADMIN, '**/dashboard/school**');
@@ -206,8 +197,8 @@ test.describe('task 117: teacher notification flow vs the live stack', () => {
 
     // The C-NOT-01 link deep-links to the surface where the fix happens.
     await item.getByRole('link', { name: notificationTitle, exact: true }).click();
-    await page.waitForURL('**/dashboard/school/children', { timeout: 30_000 });
-    await expect(page.locator('[data-surface="school-admin-children"]')).toBeVisible({
+    await page.waitForURL('**/dashboard/school/students', { timeout: 30_000 });
+    await expect(page.locator('[data-surface="school-admin-students"]')).toBeVisible({
       timeout: 20_000,
     });
   });
@@ -222,9 +213,7 @@ test.describe('task 117: teacher notification flow vs the live stack', () => {
     await page
       .getByRole('button', { name: cat(en, 'Notifications.bellLabel'), exact: true })
       .click();
-    await page
-      .getByRole('link', { name: cat(en, 'Notifications.viewAll'), exact: true })
-      .click();
+    await page.getByRole('link', { name: cat(en, 'Notifications.viewAll'), exact: true }).click();
     await page.waitForURL('**/dashboard/notifications', { timeout: 30_000 });
     // Parent bell behaviour is unchanged: the parent feed URL is the target.
     // The parent portal itself is stubbed this release, so the stub copy is

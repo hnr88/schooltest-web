@@ -22,6 +22,7 @@ import {
 } from '@/modules/teacher/schemas/teacher.schema';
 
 import { apiEnv, runSql } from './helpers/auth-db';
+import { roleCredentials } from './helpers/credentials';
 
 // Task 030 — the LIVE half of the proof. `teacher-contract-parity.spec.ts` shows
 // the eleven query hooks call exactly this set of paths (exact set equality over
@@ -58,17 +59,17 @@ const API_BASE = (() => {
   return url.origin;
 })();
 
-// Resolved FROM THE DATASTORE by role, so no credential is hardcoded here and
-// the sign-in cannot silently target the wrong account.
-const TEACHER_EMAIL = runSql(
-  `select u.email from up_users u
-     join up_users_role_lnk l on l.user_id = u.id
-     join up_roles r on r.id = l.role_id
-    where r.type = 'teacher' order by u.id limit 1`,
-);
+const TEACHER_EMAIL = roleCredentials('teacher').email;
 
 const [CLASS_ID, STUDENT_ID] = runSql(
-  `select c.document_id, s.document_id from classes c, students s order by c.id, s.id limit 1`,
+  `select c.document_id, s.document_id
+     from up_users u
+     join classes_teacher_lnk ctl on ctl.user_id = u.id
+     join classes c on c.id = ctl.class_id
+     join students_class_lnk scl on scl.class_id = c.id
+     join students s on s.id = scl.student_id
+    where u.email = '${TEACHER_EMAIL}'
+    order by c.id, s.id limit 1`,
 ).split('|');
 
 // A REAL sitting owned by that same teacher, resolved from the datastore.
@@ -200,12 +201,8 @@ test.describe('teacher contract — the module paths against the REAL Strapi', (
           // and that is what gets asserted. Reading "no schema" as "route absent" is what
           // made this spec fail the moment the exports landed and started answering 200.
           const headers = response.headers();
-          expect(headers['content-type'], `${contract} content-type`).toContain(
-            'text/markdown',
-          );
-          expect(headers['content-disposition'], `${contract} disposition`).toContain(
-            'attachment',
-          );
+          expect(headers['content-type'], `${contract} content-type`).toContain('text/markdown');
+          expect(headers['content-disposition'], `${contract} disposition`).toContain('attachment');
         }
       } else {
         // The route has not landed: the only honest alternative is absence.
@@ -230,7 +227,10 @@ test.describe('teacher contract — the module paths against the REAL Strapi', (
   // 404/405 from the router. Both bodies must be the typed envelope the web module mirrors.
   const ABSENT = [
     ['unknown class', `/api/teacher/classes/${'z'.repeat(24)}/students`],
-    ['unknown student in a real class', `/api/teacher/classes/${CLASS_ID}/students/${'z'.repeat(24)}`],
+    [
+      'unknown student in a real class',
+      `/api/teacher/classes/${CLASS_ID}/students/${'z'.repeat(24)}`,
+    ],
     ['unmounted teacher path', '/api/teacher/no-such-operation'],
   ] as const;
 

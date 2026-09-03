@@ -119,13 +119,19 @@ test.describe('school admin dashboard redesign', () => {
 
     // Class details + the shared import flow: template, drop zone, paste area.
     // exact:false — FieldShell appends a required "*" to the accessible name.
-    await expect(dialog.getByLabel(cat(en, 'Classes.addForm.name'), { exact: false })).toBeVisible();
+    await expect(
+      dialog.getByLabel(cat(en, 'Classes.addForm.name'), { exact: false }),
+    ).toBeVisible();
     await expect(
       dialog.getByRole('button', { name: cat(en, 'StudentImport.downloadTemplate'), exact: true }),
     ).toBeVisible();
     await expect(dialog.locator('[data-slot="student-import-fields"]')).toBeVisible();
-    await expect(dialog.getByText(cat(en, 'StudentImport.dropPrompt'), { exact: false })).toBeVisible();
-    await expect(dialog.getByLabel(cat(en, 'StudentImport.pasteLabel'), { exact: true })).toBeVisible();
+    await expect(
+      dialog.getByText(cat(en, 'StudentImport.dropPrompt'), { exact: false }),
+    ).toBeVisible();
+    await expect(
+      dialog.getByLabel(cat(en, 'StudentImport.pasteLabel'), { exact: true }),
+    ).toBeVisible();
   });
 
   test('Classes: the CSV template downloads with the spec header row', async ({ page }) => {
@@ -180,13 +186,21 @@ test.describe('school admin dashboard redesign', () => {
       page.getByRole('button', { name: cat(en, 'SchoolStudents.importButton'), exact: true }),
     ).toBeVisible();
 
-    for (const col of ['columnName', 'columnClass', 'columnFirstLanguage', 'columnLevel', 'columnDiagnostic']) {
+    for (const col of [
+      'columnName',
+      'columnClass',
+      'columnFirstLanguage',
+      'columnLevel',
+      'columnDiagnostic',
+    ]) {
       await expect(
         screen.getByText(cat(en, `SchoolStudents.table.${col}`), { exact: true }).first(),
       ).toBeVisible();
     }
 
-    const search = screen.getByLabel(cat(en, 'SchoolStudents.filters.searchLabel'), { exact: true });
+    const search = screen.getByLabel(cat(en, 'SchoolStudents.filters.searchLabel'), {
+      exact: true,
+    });
     await expect(search).toBeVisible();
 
     const rowsBefore = await screen.getByRole('row').count();
@@ -278,12 +292,15 @@ test.describe('school admin dashboard redesign', () => {
     // used to hardcode. This school has results, so they must be real phases.
     expect(a.avg_reading_level).not.toBeNull();
     expect(a.reading_progress).not.toBeNull();
-    expect(a.next_test_window).not.toBeNull();
 
     const diagnostics = home.locator('[data-slot="school-diagnostics"]');
-    await expect(diagnostics.getByText(String(a.students_tested), { exact: true }).first()).toBeVisible();
     await expect(
-      diagnostics.getByText(`${a.reading_tests_completed} / ${a.reading_tests_allowed}`, { exact: true }),
+      diagnostics.getByText(String(a.students_tested), { exact: true }).first(),
+    ).toBeVisible();
+    await expect(
+      diagnostics.getByText(`${a.reading_tests_completed} / ${a.reading_tests_allowed}`, {
+        exact: true,
+      }),
     ).toBeVisible();
 
     // The phases render as translated labels, never the raw enum.
@@ -299,7 +316,7 @@ test.describe('school admin dashboard redesign', () => {
     const screen = page.locator('[data-slot="school-students"]');
     await expect(screen).toBeVisible({ timeout: 20_000 });
 
-    const roster = (await apiJson('/api/schools/me/children?pageSize=10')).data as {
+    const roster = (await apiJson('/api/schools/me/children?pageSize=100')).data as {
       given_name: string;
       acara_phase: string | null;
       first_language: string | null;

@@ -23,7 +23,10 @@ import { loginAs, ROLE_CREDENTIALS } from './helpers/roles';
  * Run with E2E_PORT=3000 --workers=1.
  */
 test.describe('task 200 — school analytics cards render the C-RPT-06 payload', () => {
-  test('every card value matches the live payload the endpoint just returned', async ({ page, request }) => {
+  test('every card value matches the live payload the endpoint just returned', async ({
+    page,
+    request,
+  }) => {
     const en = loadMessages('en');
     const jwt = await schoolAdminJwt(request);
     const res = await request.get(`${API}/api/schools/me/analytics`, {
@@ -50,6 +53,8 @@ test.describe('task 200 — school analytics cards render the C-RPT-06 payload',
     // Each card is located by its LABEL and asserted on its VALUE — a card that
     // rendered the wrong page's shell cannot satisfy this.
     const noValue = cat(en, 'SchoolAdmin.home.noValue');
+    const phaseLabel = (value: string | null) =>
+      value === null ? noValue : `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
     const cardValue = async (label: string) => {
       const card = page.locator('[data-slot="metric-card"]', { hasText: label }).first();
       await expect(card).toBeVisible();
@@ -62,10 +67,9 @@ test.describe('task 200 — school analytics cards render the C-RPT-06 payload',
     await expect(tested).toContainText(String(summary.students_tested), { useInnerText: true });
 
     const avgLevel = await cardValue(cat(en, 'SchoolAdmin.home.avgReadingLevel'));
-    await expect(avgLevel).toContainText(
-      summary.avg_reading_level === null ? noValue : summary.avg_reading_level,
-      { useInnerText: true },
-    );
+    await expect(avgLevel).toContainText(phaseLabel(summary.avg_reading_level), {
+      useInnerText: true,
+    });
 
     const completed = await cardValue(cat(en, 'SchoolAdmin.home.readingTestsCompleted'));
     await expect(completed).toContainText(
@@ -77,13 +81,14 @@ test.describe('task 200 — school analytics cards render the C-RPT-06 payload',
     // test window. The window renders as a FORMATTED DATE (d MMM yyyy) — the
     // assertion derives it from the payload instant with the same format.
     const progress = await cardValue(cat(en, 'SchoolAdmin.home.readingProgress'));
-    await expect(progress).toContainText(
-      summary.reading_progress === null ? noValue : summary.reading_progress,
-      { useInnerText: true },
-    );
+    await expect(progress).toContainText(phaseLabel(summary.reading_progress), {
+      useInnerText: true,
+    });
 
     const thisCycle = await cardValue(cat(en, 'SchoolAdmin.home.testsThisCycle'));
-    await expect(thisCycle).toContainText(String(summary.reading_tests_allowed), { useInnerText: true });
+    await expect(thisCycle).toContainText(String(summary.reading_tests_allowed), {
+      useInnerText: true,
+    });
 
     const window = await cardValue(cat(en, 'SchoolAdmin.home.nextTestWindow'));
     const expectedWindow =
@@ -99,25 +104,43 @@ test.describe('task 200 — school analytics cards render the C-RPT-06 payload',
 });
 
 test.describe('task 202 — account page renders C-SCH-01 + C-ENT-01 + the seat pair', () => {
-  test('school details, plan, seats and allowance tiles match the live payloads', async ({ page, request }) => {
+  test('school details, plan, seats and allowance tiles match the live payloads', async ({
+    page,
+    request,
+  }) => {
     const en = loadMessages('en');
     const jwt = await schoolAdminJwt(request);
 
     const [schoolRes, entitlementRes, analyticsRes] = await Promise.all([
       request.get(`${API}/api/schools/me`, { headers: { Authorization: `Bearer ${jwt}` } }),
-      request.get(`${API}/api/schools/me/entitlement`, { headers: { Authorization: `Bearer ${jwt}` } }),
-      request.get(`${API}/api/schools/me/analytics`, { headers: { Authorization: `Bearer ${jwt}` } }),
+      request.get(`${API}/api/schools/me/entitlement`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      }),
+      request.get(`${API}/api/schools/me/analytics`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      }),
     ]);
     expect(schoolRes.status()).toBe(200);
     expect(entitlementRes.status()).toBe(200);
     expect(analyticsRes.status()).toBe(200);
 
     const schoolBody = (await schoolRes.json()) as {
-      data: { name: string; suburb: string | null; state: string | null; postcode: string | null; account_status: string; onboarding_status: string };
+      data: {
+        name: string;
+        suburb: string | null;
+        state: string | null;
+        postcode: string | null;
+        account_status: string;
+        onboarding_status: string;
+      };
     };
     const school = schoolBody.data;
     const entitlementBody = (await entitlementRes.json()) as {
-      data: { plan: string; renewal_date: string | null; allowances: Array<{ test_type: string; remaining: number }> };
+      data: {
+        plan: string;
+        renewal_date: string | null;
+        allowances: Array<{ test_type: string; remaining: number }>;
+      };
     };
     const entitlement = entitlementBody.data;
     const analyticsBody = (await analyticsRes.json()) as {

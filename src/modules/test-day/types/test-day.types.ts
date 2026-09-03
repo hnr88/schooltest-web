@@ -1,16 +1,11 @@
 // Sitting shapes consumed by the teacher test-day screen (task 64,
 // st-mvp-pivot; mvp-updates §4.5, contracts C-SIT-01/02/03). Form selection
-// stays server-side (D-10): the UI only ever renders the form code the API
-// resolved, never a picker.
+// is automatic on this surface, but the exact C-TD-2 id is sent explicitly so
+// D-32 can reject every genuinely implicit progress session.
 
 export type SittingStatus = 'open' | 'closed';
 
-export type SittingStudentState =
-  | 'not_joined'
-  | 'joined'
-  | 'in_progress'
-  | 'submitted'
-  | 'stalled';
+export type SittingStudentState = 'not_joined' | 'joined' | 'in_progress' | 'submitted' | 'stalled';
 
 // C-SIT-05 derived row state (task 90, mvp-updates §4.5.3): the backend enum
 // is unchanged; the monitor intersects not_joined with the UI-only reveal

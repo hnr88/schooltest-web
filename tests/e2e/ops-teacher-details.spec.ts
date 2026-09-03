@@ -41,9 +41,7 @@ async function signInAsOps(page: Page): Promise<void> {
   await page
     .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
     .fill(apiEnv('SEED_APIADMIN_PASSWORD'));
-  await page
-    .getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true })
-    .click();
+  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   await page.waitForURL('**/dashboard');
 }
 
@@ -82,16 +80,14 @@ test.describe('ops teacher details dialog (OPS-teacher-details)', () => {
       `insert into up_users (document_id, username, email, first_name, last_name, blocked, provider, confirmed, created_at, updated_at)
        values ('opse2e${runId}', '${teacherEmail}', '${teacherEmail}', 'Original', 'Teacher', false, 'local', true, now(), now())`,
     );
-    const roleId = runSql(
-      `select id from up_roles where type = 'teacher' limit 1`,
+    const roleId = runSql(`select id from up_roles where type = 'teacher' limit 1`);
+    runSql(
+      `insert into up_users_role_lnk (user_id, role_id, user_ord)
+       select id, ${roleId.trim()}, 0 from up_users where email = '${teacherEmail}'`,
     );
     runSql(
-      `insert into up_users_role_lnk (user_id, role_id, user_ord, role_ord)
-       select id, ${roleId.trim()}, 0, 0 from up_users where email = '${teacherEmail}'`,
-    );
-    runSql(
-      `insert into up_users_school_lnk (user_id, school_id, user_ord, school_ord)
-       select u.id, s.id, 0, 0 from up_users u, schools s
+      `insert into up_users_school_lnk (user_id, school_id, user_ord)
+       select u.id, s.id, 0 from up_users u, schools s
        where u.email = '${teacherEmail}' and s.document_id = '${school.documentId}'`,
     );
 
@@ -105,7 +101,7 @@ test.describe('ops teacher details dialog (OPS-teacher-details)', () => {
       const dialog = page.getByRole('dialog');
       await expect(dialog).toBeVisible();
       await expect(dialog).toContainText(cat(en, 'Ops.teachers.title'));
-      const row = dialog.locator('tr[data-teacher-email]', { hasText: teacherEmail });
+      const row = dialog.locator(`tr[data-teacher-email="${teacherEmail}"]`);
       await expect(row).toBeVisible();
       await expect(row).toContainText('Original');
       await expect(row).toContainText(cat(en, 'Ops.teachers.noClasses'));
@@ -115,9 +111,7 @@ test.describe('ops teacher details dialog (OPS-teacher-details)', () => {
       await row.getByLabel(cat(en, 'Ops.teachers.columnFirstName')).fill('Renamed');
       await row.getByRole('button', { name: cat(en, 'Ops.teachers.save') }).click();
       await expect(row).toContainText('Renamed');
-      const dbFirst = runSql(
-        `select first_name from up_users where email = '${teacherEmail}'`,
-      );
+      const dbFirst = runSql(`select first_name from up_users where email = '${teacherEmail}'`);
       expect(dbFirst.trim()).toBe('Renamed');
 
       // Duplicate email: the API's 400 message renders inline (C-TCH-04).
@@ -148,7 +142,9 @@ test.describe('ops teacher details dialog (OPS-teacher-details)', () => {
       expect(after.trim()).toBe('t|0');
     } finally {
       // Cleanup (own rows only): school via the ops route, user via SQL.
-      await request.delete(`${API}/api/ops/schools/${school.documentId}`, { headers: auth }).catch(() => {});
+      await request
+        .delete(`${API}/api/ops/schools/${school.documentId}`, { headers: auth })
+        .catch(() => {});
       runSql(
         `delete from up_users_role_lnk where user_id in (select id from up_users where email = '${teacherEmail}');
          delete from up_users_school_lnk where user_id in (select id from up_users where email = '${teacherEmail}');

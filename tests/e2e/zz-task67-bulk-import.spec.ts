@@ -17,7 +17,9 @@ const API = 'http://127.0.0.1:5500';
 const OPS = roleCredentials('ops');
 const SCHOOL_DOCUMENT_ID = fixtureSchoolId(); // SchoolTest Demo School A
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
-const SEEDED_EMAIL = 'sofia.petrov@schooltest.local';
+// Journey-seed student (stable natural key). The older Sofia fixture has no
+// email by design, so using a made-up address for her tested CREATE, not SKIP.
+const SEEDED_EMAIL = 'a1s01@schooltest.local';
 
 interface PreviewBody {
   data: {
@@ -95,9 +97,7 @@ test.describe('task 67: ops bulk student import vs live C-IMP-01/02', () => {
       panel.getByRole('button', { name: cat(en, 'Ops.import.commitButton'), exact: true }),
     ).toBeDisabled();
 
-    await panel
-      .getByLabel(cat(en, 'Ops.import.pasteLabel'), { exact: true })
-      .fill(csv);
+    await panel.getByLabel(cat(en, 'Ops.import.pasteLabel'), { exact: true }).fill(csv);
     await panel
       .getByRole('button', { name: cat(en, 'Ops.import.previewButton'), exact: true })
       .click();

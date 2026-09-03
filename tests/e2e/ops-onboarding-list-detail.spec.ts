@@ -83,9 +83,22 @@ test('flow 2: the prospect cohort reads Prospect / Not started, and no school is
   // Not started in the same row.
   const pairedRows = page
     .getByRole('row')
-    .filter({ has: page.getByRole('cell', { name: cat(en, 'Ops.schools.accountStatus.prospect'), exact: true }) })
-    .filter({ has: page.getByRole('cell', { name: cat(en, 'Ops.schools.onboardingStatus.not_started'), exact: true }) });
-  expect(await pairedRows.count(), 'rows showing BOTH Prospect and Not started').toBeGreaterThanOrEqual(300);
+    .filter({
+      has: page.getByRole('cell', {
+        name: cat(en, 'Ops.schools.accountStatus.prospect'),
+        exact: true,
+      }),
+    })
+    .filter({
+      has: page.getByRole('cell', {
+        name: cat(en, 'Ops.schools.onboardingStatus.not_started'),
+        exact: true,
+      }),
+    });
+  expect(
+    await pairedRows.count(),
+    'rows showing BOTH Prospect and Not started',
+  ).toBeGreaterThanOrEqual(300);
 });
 
 test('flow 25: the list renders every school, and the last row is reachable by scrolling', async ({
@@ -134,9 +147,9 @@ test('flows 3, 4, 5, 30, 31, 32: a row click reaches the detail page with badges
 
     // Flow 4: a brand-new prospect school counts zero of everything.
     for (const label of ['teachersLabel', 'classesLabel', 'studentsLabel', 'resultsLabel']) {
-      const term = page.getByText(cat(en, `Ops.detail.${label}`), { exact: true });
-      await expect(term).toBeVisible();
-      await expect(term.locator('xpath=following-sibling::dd[1]')).toHaveText('0');
+      const card = page.locator(`[data-count-label="${cat(en, `Ops.detail.${label}`)}"]`);
+      await expect(card).toBeVisible();
+      await expect(card.locator('[data-slot="ops-count-value"]')).toHaveText('0');
     }
 
     // Flow 5: the Onboard School button is present and enabled at Not started.

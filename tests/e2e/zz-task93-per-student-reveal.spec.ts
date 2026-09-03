@@ -4,7 +4,7 @@ import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
 import { fixtureStudentId } from './helpers/fixture-ids';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 93 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Per-student reveal + staggered sitting (mvp-updates §4.5.3, C-SIT-05): the
@@ -19,17 +19,19 @@ const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
 const APP_ORIGIN = process.env.E2E_BASE_URL ?? 'http://localhost:3101';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
+const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const SOFIA_ID = fixtureStudentId('Sofia', 'Petrov');
 const SOFIA_NAME = 'Sofia Petrov';
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local';
-// Import Beta is never revealed and never joins: the staggered control row.
-// (The monitor's active roster skips email-less students such as Daniel Kim.)
-const BETA_ID = 'zkko2okpnsolmt6m1zg7aqh0';
-// Import Alpha is revealed second and stays waiting across the reload.
-const ALPHA_ID = 'tqllrynirhpde967ej36s6k3';
-const ALPHA_NAME = 'Import Alpha';
+// Ahmed is never revealed and never joins: the staggered control row.
+const BETA_ID = fixtureStudentId('Ahmed', 'Hassan');
+const BETA_EMAIL = 'journey93-ahmed@schooltest.local';
+// Mei Lin is revealed second and stays waiting across the reload.
+const ALPHA_ID = fixtureStudentId('Mei Lin', 'Wang');
+const ALPHA_NAME = 'Mei Lin Wang';
+const ALPHA_EMAIL = 'journey93-mei@schooltest.local';
 const REVEAL_AUDIT_KEY = 'schooltest-test-day-reveal-audit';
 const TEST_DAY_URL = `/en/dashboard/teach/classes/${CLASS_ID}/test-day`;
 
@@ -43,14 +45,27 @@ async function login(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
   // layer rides out any 429 on the auth POST, so allow for that here.
   await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 90_000 });
+}
+
+async function setEmail(
+  request: APIRequestContext,
+  jwt: string,
+  studentId: string,
+  email: string | null,
+): Promise<void> {
+  const res = await fetchWithRetry(() =>
+    request.patch(`${API}/api/schools/me/children/${studentId}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+      data: { email },
+    }),
+  );
+  expect(res.ok(), await res.text()).toBeTruthy();
 }
 
 interface SittingRow {
@@ -108,12 +123,10 @@ function joinAsSofia(request: APIRequestContext, code: string) {
 }
 
 function revealAction(page: Page, studentId: string, name: string) {
-  return page
-    .locator(`[data-student="${studentId}"]`)
-    .getByRole('button', {
-      name: icu(cat(en, 'TestDay.studentReveal.actionLabel'), { name }),
-      exact: true,
-    });
+  return page.locator(`[data-student="${studentId}"]`).getByRole('button', {
+    name: icu(cat(en, 'TestDay.studentReveal.actionLabel'), { name }),
+    exact: true,
+  });
 }
 
 test.describe('task 93: per-student reveal vs live C-SIT-05', () => {
@@ -126,6 +139,13 @@ test.describe('task 93: per-student reveal vs live C-SIT-05', () => {
     request,
   }) => {
     const jwt = await login(request, TEACHER);
+    const adminJwt = await login(request, SCHOOL_ADMIN);
+    // The monitor intentionally omits email-less learners. Give the three
+    // durable fixture students test-owned addresses, then restore the two
+    // control students in finally.
+    await setEmail(request, adminJwt, SOFIA_ID, SOFIA_EMAIL);
+    await setEmail(request, adminJwt, BETA_ID, BETA_EMAIL);
+    await setEmail(request, adminJwt, ALPHA_ID, ALPHA_EMAIL);
     // Setup: close any open sittings so the screen starts in the empty state.
     for (const sitting of await listClassSittings(request, jwt)) {
       if (sitting.status === 'open') await closeSitting(request, jwt, sitting.documentId);
@@ -142,12 +162,9 @@ test.describe('task 93: per-student reveal vs live C-SIT-05', () => {
       await expect(screen).toBeVisible({ timeout: 20_000 });
 
       // Start the sitting and mint the code through the page's own controls.
-      await expect(
-        screen.getByText(cat(en, 'TestDay.status.closed'), { exact: true }),
-      ).toBeVisible({ timeout: 15_000 });
-      await screen
-        .getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true })
-        .click();
+      const start = screen.getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true });
+      await expect(start).toBeVisible({ timeout: 15_000 });
+      await start.click();
       const card = screen.locator('[data-slot="code-reveal-card"]');
       await expect(card).toBeVisible({ timeout: 15_000 });
       await card
@@ -262,6 +279,8 @@ test.describe('task 93: per-student reveal vs live C-SIT-05', () => {
         await resitSofia(request, jwt, latest.documentId);
         await closeSitting(request, jwt, latest.documentId);
       }
+      await setEmail(request, adminJwt, BETA_ID, null);
+      await setEmail(request, adminJwt, ALPHA_ID, null);
     }
   });
 });

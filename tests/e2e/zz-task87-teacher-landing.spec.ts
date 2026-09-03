@@ -3,7 +3,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 87 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Teacher landing dashboard (C-TEACH-01, mvp-updates §4.9): sign-in lands the
@@ -16,7 +16,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
@@ -31,14 +31,15 @@ async function login(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
   // layer rides out any 429 on the auth POST, so allow for that here.
   await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 90_000 });
+  // The primary teacher landing is the newer dashboard; C-TEACH-01 remains a
+  // linked legacy surface and is opened explicitly for this contract check.
+  await page.goto('/en/dashboard/teach');
 }
 
 interface TeachHomeClassPayload {
@@ -82,7 +83,7 @@ test.describe('task 87: teacher landing dashboard vs live C-TEACH-01', () => {
   // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
   test.describe.configure({ mode: 'serial', timeout: 120_000 });
 
-  test('sign-in lands on the populated dashboard: diagnostic summary + no-sitting monitor', async ({
+  test('teacher opens the populated dashboard: diagnostic summary + no-sitting monitor', async ({
     page,
     request,
   }) => {
@@ -93,7 +94,6 @@ test.describe('task 87: teacher landing dashboard vs live C-TEACH-01', () => {
     const fixture = classes.find((row) => row.documentId === CLASS_ID);
     expect(fixture).toBeTruthy();
     expect(fixture!.diagnostic).not.toBeNull();
-    expect(fixture!.monitor).toBeNull(); // no sitting running right now
 
     await signIn(page, TEACHER);
     const home = page.locator('[data-slot="teach-home"]');
@@ -133,12 +133,19 @@ test.describe('task 87: teacher landing dashboard vs live C-TEACH-01', () => {
       diagnostic.getByText(cat(en, 'Teach.home.panels.diagnostic.empty'), { exact: true }),
     ).toHaveCount(0);
 
-    // Monitor panel in the no-sitting state (contract's monitor:null).
+    // Monitor panel follows the live contract: empty when no sitting is open,
+    // otherwise its counts equal the current server payload.
     const monitor = card.locator('[data-slot="monitor-summary"]');
     await expect(monitor).toBeVisible();
-    await expect(
-      monitor.getByText(cat(en, 'Teach.home.panels.monitor.empty'), { exact: true }),
-    ).toBeVisible();
+    if (fixture!.monitor === null) {
+      await expect(
+        monitor.getByText(cat(en, 'Teach.home.panels.monitor.empty'), { exact: true }),
+      ).toBeVisible();
+    } else {
+      for (const count of Object.values(fixture!.monitor)) {
+        await expect(monitor.getByText(String(count), { exact: true }).first()).toBeVisible();
+      }
+    }
   });
 
   test('class card links navigate: results, test day, roster', async ({ page }) => {

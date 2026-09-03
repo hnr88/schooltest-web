@@ -46,4 +46,5 @@ export const RESULT_STATUS_TONES: Record<ResultStatus, StatusPillTone> = {
   scoring: 'warning',
   partial_pending: 'info',
   complete: 'success',
+  scoring_failed: 'danger',
 };

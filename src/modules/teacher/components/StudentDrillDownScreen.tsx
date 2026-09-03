@@ -39,7 +39,10 @@ function StudentDrillDownScreen({
     itemCount: data?.tests.length ?? 0,
   });
 
-  useRecordCrumb(data?.student.display_name);
+  useRecordCrumb(
+    data?.student.display_name,
+    data ? { [`/dashboard/results/${classDocumentId}`]: data.student.class_name } : undefined,
+  );
 
   // A `<div>`, not a second `<main>`: the READ-ONLY `SidebarInset` primitive
   // (src/components/ui/sidebar.tsx) already renders this route's `<main>`, and a

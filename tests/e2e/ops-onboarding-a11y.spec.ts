@@ -72,12 +72,21 @@ for (const [name, viewport] of [
     await page.getByRole('button', { name: t('button'), exact: true }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
+    await dialog.evaluate(async (element) => {
+      await Promise.all(
+        element
+          .getAnimations({ subtree: true })
+          .map((animation) => animation.finished.catch(() => undefined)),
+      );
+    });
     await expectAxeClean(page, `onboard-modal ${name}`);
     await expectNoHorizontalScroll(page, `onboard-modal ${name}`);
     await page.screenshot({ path: path.join(SCREENSHOTS, `ops-onboarding-modal-${name}.png`) });
 
     await dialog.getByRole('button', { name: t('submit'), exact: true }).click();
-    await expect(dialog.getByText(cat(en, 'Ops.onboard.validation.required')).first()).toBeVisible();
+    await expect(
+      dialog.getByText(cat(en, 'Ops.onboard.validation.required')).first(),
+    ).toBeVisible();
     await expectAxeClean(page, `onboard-modal-errors ${name}`);
     await page.screenshot({
       path: path.join(SCREENSHOTS, `ops-onboarding-modal-errors-${name}.png`),

@@ -165,8 +165,9 @@ export async function expectCollapsedSummary(
 /**
  * …and its pills are genuinely COLOURED by the server's band: the crosswalk name,
  * the server's likelihood, `data-band` = `status` (which the echoed cuts imply),
- * more than one band in the row, one colour per band, and — for every band the
- * full card also shows — the SAME ink as that card's tiles.
+ * one colour per band, and — for every band the full card also shows — the SAME
+ * ink as that card's tiles. A real result may honestly put every subskill in one
+ * band, so variation is not manufactured as a test precondition.
  */
 export async function expectPillsColouredByBand(
   page: Page,
@@ -192,7 +193,7 @@ export async function expectPillsColouredByBand(
 
   const pillInk = await readInkByBand(page, 'subskill-pill');
   const tileInk = await readInkByBand(page, 'subskill-tile');
-  expect(pillInk.size, 'the pill row must be coloured, not one flat tint').toBeGreaterThan(1);
+  expect(pillInk.size, 'the pill row must expose a server-derived band colour').toBeGreaterThan(0);
   expect(new Set(pillInk.values()).size, 'each band owns one colour').toBe(pillInk.size);
   const shared = [...pillInk.keys()].filter((band) => tileInk.has(band));
   expect(shared.length, 'pills and tiles share no band to compare').toBeGreaterThan(0);

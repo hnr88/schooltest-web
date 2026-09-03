@@ -1,9 +1,9 @@
-// E11-05. The out-of-model vocabulary strand (Doc 2a s.5.2 task 2E). A band the
+// E11-05. The out-of-model vocabulary strand (legacy 2E and Test A 2G). A band the
 // sitting never served has NO accuracy field to default to 0 — the shape itself
 // makes "0%" unrepresentable for an unadministered band, which is the whole
 // point of the row: 0% is "every item served was wrong", not administered is
 // "no item was served".
-export type SupplementaryBandCode = 'a2' | 'b1';
+export type SupplementaryBandCode = 'a2' | 'b1' | 'b2';
 
 export type SupplementaryBandView =
   | { code: SupplementaryBandCode; state: 'measured'; accuracy: number }

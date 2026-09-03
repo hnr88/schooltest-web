@@ -103,7 +103,11 @@ export interface Credential {
  * seeded SEED_* value from the sibling .env is required. No literal fallbacks.
  */
 const ROLE_ENV: Record<AppRole, { email: string; password: string; defaultEmail: string }> = {
-  ops: { email: 'E2E_OPS_EMAIL', password: 'E2E_OPS_PASSWORD', defaultEmail: 'admin@schooltest.local' },
+  ops: {
+    email: 'E2E_OPS_EMAIL',
+    password: 'E2E_OPS_PASSWORD',
+    defaultEmail: 'admin@schooltest.local',
+  },
   // The seed's SECOND ops persona (seed-users-data.ts `apiadmin`) — a distinct
   // account on the same role, so ops flows can be proven with either identity.
   opsApi: {
@@ -124,7 +128,10 @@ const ROLE_ENV: Record<AppRole, { email: string; password: string; defaultEmail:
   teacher: {
     email: 'E2E_TEACHER_EMAIL',
     password: 'E2E_TEACHER_PASSWORD',
-    defaultEmail: 'teacher@schooltest.local',
+    // T2 is the deterministic journey teacher: their class carries the mixed
+    // A-only/A+B result shapes required by the documented dashboard, results,
+    // progress and drill-down journeys. `teacher@` is the smaller CRUD fixture.
+    defaultEmail: 't2@schooltest.local',
   },
   /**
    * A SECOND teacher, in the SAME school as `teacher`. It exists so an
@@ -180,4 +187,17 @@ export function roleCredentials(role: AppRole): Credential {
   const password =
     process.env[env.password] || process.env[seedPasswordVar] || requireEnv(env.password);
   return { email, password };
+}
+
+/**
+ * The teacher attached to the legacy named class fixture
+ * "EAL/D Year 7 - Room 4". Current mission journeys use T2 by default, while
+ * the older C-RPT/C-CLS fixtures deliberately remain owned by the seed's base
+ * teacher. Tests for that named class must request its owner explicitly.
+ */
+export function fixtureTeacherCredentials(): Credential {
+  return {
+    email: process.env.E2E_FIXTURE_TEACHER_EMAIL || 'teacher@schooltest.local',
+    password: process.env.E2E_FIXTURE_TEACHER_PASSWORD || requireEnv('SEED_TEACHER_PASSWORD'),
+  };
 }

@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import { expect, test, type Page } from '@playwright/test';
 
-import { SCREENSHOTS } from './helpers/teacher-rail';
+import { SCREENSHOTS, signInTeacher } from './helpers/teacher-rail';
 import {
   openFirstClass,
   readClassStudentsLive,
@@ -36,9 +36,9 @@ const drillDownPath = (classId: string, studentId: string) =>
  * activation has left the Results surface, so no assertion can land on a loading
  * frame or on the error branch.
  */
-async function openClassDetail(documentId: string): Promise<void> {
-  await page.goto(classDetailPath(documentId));
-  await expect(page.locator('[data-surface="teacher-class-results"]')).toHaveAttribute(
+async function openClassDetail(documentId: string, target: Page = page): Promise<void> {
+  await target.goto(classDetailPath(documentId));
+  await expect(target.locator('[data-surface="teacher-class-results"]')).toHaveAttribute(
     'data-status',
     'ready',
     { timeout: 20_000 },
@@ -100,25 +100,29 @@ test.describe('Students tab (C-TR-1)', () => {
     });
   });
 
-  test('a SECOND class renders its own states, including a test nobody started', async ({
+  test('another journey class renders its own states, including a test nobody started', async ({
+    browser,
     playwright,
   }) => {
-    const other = live.classes.find(
-      (owned) => owned.class_document_id !== live.detail.class.document_id,
-    );
-    if (!other) {
-      throw new Error('[e2e] the seeded teacher owns one class — per-class states cannot be proven');
+    const teacherEmail = 't3@schooltest.local';
+    const otherLive = await readLiveResults(playwright, teacherEmail);
+    const other = otherLive.classes[0];
+    const detail = await readClassStudentsLive(playwright, other.class_document_id, teacherEmail);
+    expect(detail.students.some((student) => student.test_b.state === 'not_started')).toBe(true);
+
+    const otherPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    try {
+      await signInTeacher(otherPage, teacherEmail);
+      await openClassDetail(other.class_document_id, otherPage);
+      await expectStudentRows(otherPage, detail);
+      await otherPage.screenshot({
+        path: path.join(SCREENSHOTS, 'task-041-students-tab-second-class.png'),
+        animations: 'disabled',
+        fullPage: true,
+      });
+    } finally {
+      await otherPage.close();
     }
-
-    const detail = await readClassStudentsLive(playwright, other.class_document_id);
-    await openClassDetail(other.class_document_id);
-    await expectStudentRows(page, detail);
-
-    await page.screenshot({
-      path: path.join(SCREENSHOTS, 'task-041-students-tab-second-class.png'),
-      animations: 'disabled',
-      fullPage: true,
-    });
   });
 
   test('a row activates by KEYBOARD through to that student’s drill-down', async () => {
@@ -150,6 +154,7 @@ test.describe('Students tab (C-TR-1)', () => {
     // row link's overlay intercepts the pointer there — which is exactly the
     // wireframe's "clickable row", served by ONE real, keyboard-reachable anchor.
     const cell = studentCell(studentRow(page, last.student_document_id), 'acara', 'B');
+    await cell.scrollIntoViewIfNeeded();
     const box = await cell.boundingBox();
     if (!box) throw new Error('[e2e] the last row of the Students table has no box');
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);

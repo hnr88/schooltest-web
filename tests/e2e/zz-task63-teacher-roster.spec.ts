@@ -1,10 +1,16 @@
-import { expect, test, type APIRequestContext, type APIResponse, type Page } from '@playwright/test';
+import {
+  expect,
+  test,
+  type APIRequestContext,
+  type APIResponse,
+  type Page,
+} from '@playwright/test';
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
 import { fixtureStudentId } from './helpers/fixture-ids';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 63 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Teacher read-only roster (C-CHD-01 + the task-63 email widening): the
@@ -16,7 +22,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const CLASS_NAME = 'EAL/D Year 7 - Room 4';
@@ -25,6 +31,10 @@ const SOFIA_EMAIL = 'sofia.petrov@schooltest.local';
 // Well-formed but never-assigned class documentId: C-CHD-01 teacher scoping
 // returns an empty page for it.
 const FOREIGN_CLASS = 'zz63zz63zz63zz63zz63zz63';
+
+interface RosterRow {
+  email: string | null;
+}
 
 async function login(
   request: APIRequestContext,
@@ -60,23 +70,22 @@ async function patchSofiaEmail(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
-  const landing = credentials.email.startsWith('schooladmin')
-    ? '**/dashboard/school**'
-    : '**/dashboard/teach**';
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
-  // late role redirect can never hijack the goto that follows. The axios
-  // layer rides out any 429 on the auth POST, so allow for that here.
-  await page.waitForURL(landing, { timeout: 90_000 });
+  // Current teachers land on the primary /dashboard surface; this legacy
+  // roster journey navigates to /dashboard/teach explicitly below.
+  await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 90_000 });
 }
 
 test.describe('task 63: teacher roster with email flags vs live C-CHD-01/03', () => {
   // Serial: the first test mutates Sofia's email through the admin fix path.
   // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
   test.describe.configure({ mode: 'serial', timeout: 120_000 });
+
+  test.afterEach(async ({ request }) => {
+    const adminJwt = await login(request, SCHOOL_ADMIN);
+    await patchSofiaEmail(request, adminJwt, SOFIA_EMAIL);
+  });
 
   test('roster flags missing emails; admin fix clears the flag on reload', async ({
     page,
@@ -85,26 +94,35 @@ test.describe('task 63: teacher roster with email flags vs live C-CHD-01/03', ()
     const adminJwt = await login(request, SCHOOL_ADMIN);
     // Setup: Sofia's email is missing, so the flag must show.
     await patchSofiaEmail(request, adminJwt, null);
+    const teacherJwt = await login(request, TEACHER);
+    const roster = await apiGet(
+      request,
+      `${API}/api/schools/me/children?class=${CLASS_ID}&pageSize=100`,
+      { headers: { Authorization: `Bearer ${teacherJwt}` } },
+    );
+    expect(roster.ok()).toBeTruthy();
+    const missingBefore = ((await roster.json()) as { data: RosterRow[] }).data.filter(
+      (row) => !row.email,
+    ).length;
 
     await signIn(page, TEACHER);
     await page.goto('/en/dashboard/teach');
     const home = page.locator('[data-surface="teacher-home"]');
     await expect(home).toBeVisible({ timeout: 20_000 });
     await expect(home.getByText(CLASS_NAME, { exact: true })).toBeVisible();
-    await home.getByRole('link', { name: cat(en, 'Teach.home.rosterLink'), exact: true }).click();
+    const card = home.locator('[data-slot="teach-home-class-card"]', { hasText: CLASS_NAME });
+    await card.getByRole('link', { name: cat(en, 'Teach.home.rosterLink'), exact: true }).click();
     await page.waitForURL(`**/dashboard/teach/classes/${CLASS_ID}`);
 
     const screen = page.locator('[data-surface="teacher-roster"]');
     await expect(screen).toBeVisible();
-    await expect(
-      screen.getByRole('heading', { name: CLASS_NAME, exact: true }),
-    ).toBeVisible();
+    await expect(screen.getByRole('heading', { name: CLASS_NAME, exact: true })).toBeVisible();
     await expect(screen.getByText('Sofia Petrov', { exact: true })).toBeVisible();
     await expect(screen.getByText('Daniel Kim', { exact: true })).toBeVisible();
-    // Both students lack an email: two flags plus the admin-directing hint.
+    // Every email-less roster row is flagged, plus the admin-directing hint.
     await expect(
       screen.getByText(cat(en, 'Teach.roster.emailMissing'), { exact: true }),
-    ).toHaveCount(2);
+    ).toHaveCount(missingBefore);
     await expect(
       screen.getByText(cat(en, 'Teach.roster.emailMissingHint'), { exact: true }),
     ).toBeVisible();
@@ -119,20 +137,20 @@ test.describe('task 63: teacher roster with email flags vs live C-CHD-01/03', ()
     await expect(screen.getByText(SOFIA_EMAIL, { exact: true })).toBeVisible();
     await expect(
       screen.getByText(cat(en, 'Teach.roster.emailMissing'), { exact: true }),
-    ).toHaveCount(1); // Daniel Kim (archived) still flagged
+    ).toHaveCount(missingBefore - 1);
     const afterText = (await screen.textContent())?.toLowerCase() ?? '';
     expect(afterText).not.toContain('acara');
     expect(afterText).not.toContain('phase');
 
     // Negative probes as the teacher: PATCH is 403 (school_admin-only), and
     // a class the teacher does not own returns an empty page (never a leak).
-    const teacherJwt = await login(request, TEACHER);
     const forbidden = await apiPatch(request, `${API}/api/schools/me/children/${SOFIA_ID}`, {
       headers: { Authorization: `Bearer ${teacherJwt}` },
       data: { email: 'teacher-edit@example.com' },
     });
     expect(forbidden.status()).toBe(403);
-    const foreign = await apiGet(request, 
+    const foreign = await apiGet(
+      request,
       `${API}/api/schools/me/children?class=${FOREIGN_CLASS}&pageSize=100`,
       { headers: { Authorization: `Bearer ${teacherJwt}` } },
     );

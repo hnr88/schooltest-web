@@ -10,7 +10,12 @@ import type { StartSittingControlsProps } from '@/modules/test-day/types/compone
 // state and the closed-sitting card. Extracted from TestDayScreen in task 136
 // so the screen stays under the component line cap with the summary panel
 // mounted; behaviour and copy keys are unchanged.
-export function StartSittingControls({ pending, error, onStart }: StartSittingControlsProps) {
+export function StartSittingControls({
+  pending,
+  disabled,
+  error,
+  onStart,
+}: StartSittingControlsProps) {
   const t = useTranslations('TestDay');
 
   return (
@@ -19,6 +24,7 @@ export function StartSittingControls({ pending, error, onStart }: StartSittingCo
         type="button"
         className="min-h-11 w-fit px-4"
         loading={pending}
+        disabled={disabled}
         onClick={onStart}
       >
         {t('startCta')}

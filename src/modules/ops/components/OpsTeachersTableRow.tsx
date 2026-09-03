@@ -3,11 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Check, Pencil, Trash2, X } from 'lucide-react';
 
-import {
-  Button,
-  FieldShell,
-  Input,
-} from '@/modules/design-system';
+import { Button, FieldShell, Input } from '@/modules/design-system';
 import type { OpsTeacherRow as TeacherRow } from '@/modules/ops/types/ops.types';
 
 import type { OpsTeachersTableRowProps } from '@/modules/ops/types/components.types';
@@ -34,7 +30,8 @@ export function OpsTeachersTableRow({
   const classes = row.classes.map((klass) => klass.name ?? klass.documentId).join(', ');
 
   const setField = (key: 'first_name' | 'last_name' | 'email', value: string) =>
-    editing && onEditingChange({ documentId: row.documentId, values: { ...editing.values, [key]: value } });
+    editing &&
+    onEditingChange({ documentId: row.documentId, values: { ...editing.values, [key]: value } });
 
   if (removing) {
     return (
@@ -52,7 +49,12 @@ export function OpsTeachersTableRow({
               >
                 {t('removeConfirmAction')}
               </Button>
-              <Button type="button" variant="ghost" size="sm" onClick={() => onRemovingChange(null)}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => onRemovingChange(null)}
+              >
                 {t('cancel')}
               </Button>
             </div>
@@ -65,14 +67,25 @@ export function OpsTeachersTableRow({
   if (editing) {
     const invalidEmail = editing.values.email !== '' && !EMAIL_PATTERN.test(editing.values.email);
     return (
-      <tr className="border-b border-border/60" data-slot="ops-teacher-edit-row">
+      <tr
+        className="border-b border-border/60"
+        data-slot="ops-teacher-edit-row"
+        data-teacher-email={row.email ?? undefined}
+      >
         {(['first_name', 'last_name', 'email'] as const).map((key) => (
           <td key={key} className="py-2 pr-3">
             <FieldShell
               id={`ops-teacher-${key}-${row.documentId}`}
-              label={t(`column${key === 'first_name' ? 'FirstName' : key === 'last_name' ? 'LastName' : 'Email'}`)}
-              errorText={key === 'email' && invalidEmail ? t('invalidEmail') : undefined}
-              className="sr-only"
+              label={t(
+                `column${key === 'first_name' ? 'FirstName' : key === 'last_name' ? 'LastName' : 'Email'}`,
+              )}
+              errorText={
+                key === 'email'
+                  ? invalidEmail
+                    ? t('invalidEmail')
+                    : (error ?? undefined)
+                  : undefined
+              }
             >
               <Input
                 id={`ops-teacher-${key}-${row.documentId}`}

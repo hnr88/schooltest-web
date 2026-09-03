@@ -3,7 +3,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 75 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // Teacher diagnostic dashboard (C-RPT-01): class mastery list across the seven
@@ -14,7 +14,7 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 /**
  * A GENUINELY foreign teacher. This was `roleCredentials('teacher')` — the SAME
@@ -54,9 +54,7 @@ async function login(
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(credentials.password);
+  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
@@ -175,9 +173,12 @@ test.describe('task 75: teacher diagnostic dashboard vs live C-RPT-01', () => {
     const sections = [...new Set(diagnostic.heatmap.map((row) => row.section))];
     for (const section of sections) {
       await expect(
-        heatmap.getByText(icu(cat(en, 'Teach.diagnostic.sectionHeading'), {
-          section: String(section),
-        }), { exact: true }),
+        heatmap.getByText(
+          icu(cat(en, 'Teach.diagnostic.sectionHeading'), {
+            section: String(section),
+          }),
+          { exact: true },
+        ),
       ).toBeVisible();
     }
     for (const row of diagnostic.heatmap) {
@@ -223,8 +224,9 @@ test.describe('task 75: teacher diagnostic dashboard vs live C-RPT-01', () => {
       }),
     );
     expect(teachersRes.ok()).toBeTruthy();
-    const teachers = ((await teachersRes.json()) as { data: Array<{ documentId: string; email: string }> })
-      .data;
+    const teachers = (
+      (await teachersRes.json()) as { data: Array<{ documentId: string; email: string }> }
+    ).data;
     const verify21 = teachers.find((row) => row.email === TEACHER.email);
     expect(verify21).toBeTruthy();
     const create = await fetchWithRetry(() =>

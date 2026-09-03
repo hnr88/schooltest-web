@@ -52,6 +52,15 @@ export function sectionRows(body: string, heading: string): string[][] {
   return sectionTables(body, heading)[0];
 }
 
+/** Text between one level-two heading and the next. */
+function sectionBody(body: string, heading: string): string {
+  const start = body.indexOf(`\n## ${heading}\n`);
+  expect(start, `the export must carry a "## ${heading}" section`).toBeGreaterThan(-1);
+  const rest = body.slice(start + heading.length + 5);
+  const end = rest.indexOf('\n## ');
+  return end === -1 ? rest : rest.slice(0, end);
+}
+
 /** `+4` / `-10` / `0` — the sign convention the export writes deltas with. */
 export function signed(value: number): string {
   return value > 0 ? `+${value}` : String(value);
@@ -120,7 +129,7 @@ export function expectProgressNumbers(
   roster: readonly RosterIdentity[],
 ): void {
   const movementCounts = progress.acara_movement;
-  if (!progress.available || !movementCounts) {
+  if (!progress.available || !progress.summary || !movementCounts) {
     throw new Error('[e2e] C-TR-4 answered available:false — flow 25 needs a Test B cohort');
   }
 
@@ -149,12 +158,20 @@ export function expectProgressNumbers(
     expectRow(transitions, [`${move.from} → ${move.to}`, String(move.count)]);
   }
 
-  expect(sectionRows(body, 'Per-student movement')).toHaveLength(progress.cohort.both_tests);
+  const compared =
+    progress.summary.improved + progress.summary.unchanged + progress.summary.regressed;
+  expect(sectionRows(body, 'Per-student movement')).toHaveLength(compared);
 
   for (const [heading, ranked] of [
     ['Most improved', progress.most_improved],
     ['Needs attention', progress.needs_attention],
   ] as const) {
+    if (ranked.length === 0) {
+      const empty = sectionBody(body, heading);
+      expect(empty, `${heading} must state its honest empty result`).toContain('None');
+      expect(empty, `${heading} must not contain a fabricated table row`).not.toMatch(/^\|/m);
+      continue;
+    }
     const rows = sectionRows(body, heading);
     expect(rows).toHaveLength(ranked.length);
     ranked.forEach((entry, index) => {

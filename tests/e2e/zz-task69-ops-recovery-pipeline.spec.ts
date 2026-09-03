@@ -1,10 +1,16 @@
-import { expect, test, type APIRequestContext, type APIResponse, type Page } from '@playwright/test';
+import {
+  expect,
+  test,
+  type APIRequestContext,
+  type APIResponse,
+  type Page,
+} from '@playwright/test';
 
 import { fetchWithRetry, loginCached } from './helpers/http';
 import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
 import { fixtureSchoolId } from './helpers/fixture-ids';
-import { roleCredentials } from './helpers/credentials';
+import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 69 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // C-OPS-02: from the ops school detail, a real sitting (created + code-minted
@@ -14,7 +20,7 @@ const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
 const OPS = roleCredentials('ops');
-const TEACHER = roleCredentials('teacher');
+const TEACHER = fixtureTeacherCredentials();
 // Seeded fixture class ("EAL/D Year 7 - Room 4") of SchoolTest Demo School A.
 const CLASS_DOCUMENT_ID = fixtureClassId();
 const SCHOOL_DOCUMENT_ID = fixtureSchoolId();
@@ -86,12 +92,11 @@ test.describe('task 69: ops sitting recovery', () => {
     await detail
       .getByRole('button', { name: cat(en, 'Ops.recovery.invalidateButton'), exact: true })
       .click();
-    await page
-      .getByRole('button', { name: cat(en, 'Ops.recovery.confirm'), exact: true })
-      .click();
-    await expect(
-      detail.locator('[data-surface="ops-sitting-invalidated"]'),
-    ).toHaveText(cat(en, 'Ops.recovery.invalidatedNotice'), { timeout: 20_000 });
+    await page.getByRole('button', { name: cat(en, 'Ops.recovery.confirm'), exact: true }).click();
+    await expect(detail.locator('[data-surface="ops-sitting-invalidated"]')).toHaveText(
+      cat(en, 'Ops.recovery.invalidatedNotice'),
+      { timeout: 20_000 },
+    );
 
     // The API confirms the sitting is closed (C-OPS-02 effect).
     const opsJwt = await login(request, OPS.email, OPS.password);

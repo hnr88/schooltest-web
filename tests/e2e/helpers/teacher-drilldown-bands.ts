@@ -35,7 +35,11 @@ export async function findBothTestsSubject(
   for (const classDocumentId of classDocumentIds) {
     const roster = await readClassStudentsLive(playwright, classDocumentId);
     for (const student of roster.students) {
-      const drill = await readDrillDownLive(playwright, classDocumentId, student.student_document_id);
+      const drill = await readDrillDownLive(
+        playwright,
+        classDocumentId,
+        student.student_document_id,
+      );
       if (drill.tests.length !== 2 || drill.progress === null) continue;
       if (drill.tests[0].subskills.some((subskill) => subskill.delta === null)) continue;
       return { classDocumentId, studentDocumentId: student.student_document_id, drill };
@@ -151,33 +155,43 @@ export function dbLatestPreviousLikelihoods(studentDocumentId: string): Record<s
 }
 
 /**
- * A cut pair, computed from the subject's REAL posteriors, that is guaranteed to
- * move at least one tile DOWN a band and at least one tile UP:
- *   `mastered_cut`   = midpoint of the two highest currently-mastered posteriors,
- *                      so everything but the top one demotes to `approaching`.
- *   `approaching_cut`= midpoint between the highest currently-`not_yet` posterior
- *                      and the next one below it, so that one promotes.
- * Six decimals is enough separation for this data and stays inside the contract's
- * 0..1 range; the pair is rejected if the real distribution cannot supply it.
+ * A cut pair computed from the subject's REAL posterior gaps. Every valid pair
+ * is scored by how many tiles it re-bands, preferring a mix of promotions and
+ * demotions when the evidence supports both. A uniformly low or high profile
+ * may honestly permit only one direction; one observed re-band still proves the
+ * UI reads Config instead of hardcoding thresholds.
  */
 export function retunedCuts(
   probs: Record<string, number>,
   current: MasteryBandsRow,
 ): MasteryBandsRow {
-  const sorted = [...new Set(Object.values(probs))].sort((a, b) => b - a);
-  const mastered = sorted.filter((prob) => prob >= current.mastered_cut);
-  const notYet = sorted.filter((prob) => prob < current.approaching_cut);
-  if (mastered.length < 2 || notYet.length < 2) {
+  const sorted = [...new Set(Object.values(probs))].sort((a, b) => a - b);
+  if (sorted.length < 2) {
     throw new Error(`[e2e] posteriors cannot exhibit a band shift: ${JSON.stringify(sorted)}`);
   }
-  const round6 = (value: number) => Math.round(value * 1e6) / 1e6;
-  const cuts = {
-    mastered_cut: round6((mastered[0] + mastered[1]) / 2),
-    approaching_cut: round6((notYet[0] + notYet[1]) / 2),
-  };
-  expect(cuts.mastered_cut, 'retuned cuts must stay orderable').toBeGreaterThan(
-    cuts.approaching_cut,
-  );
-  expect(cuts).not.toEqual(current);
-  return cuts;
+  const round12 = (value: number) => Math.round(value * 1e12) / 1e12;
+  const candidates = [
+    0.000000000001,
+    ...sorted.slice(1).map((value, index) => round12((sorted[index] + value) / 2)),
+    0.999999999999,
+  ];
+  const band = (prob: number, cuts: MasteryBandsRow): number =>
+    prob >= cuts.mastered_cut ? 2 : prob >= cuts.approaching_cut ? 1 : 0;
+  let selected: { cuts: MasteryBandsRow; score: number } | null = null;
+  for (const mastered_cut of candidates) {
+    for (const approaching_cut of candidates) {
+      if (mastered_cut <= approaching_cut) continue;
+      const cuts = { mastered_cut, approaching_cut };
+      const shifts = sorted.map((prob) => band(prob, cuts) - band(prob, current));
+      const changed = shifts.filter((shift) => shift !== 0).length;
+      if (changed === 0) continue;
+      const bothDirections = shifts.some((shift) => shift > 0) && shifts.some((shift) => shift < 0);
+      const score = changed + (bothDirections ? 100 : 0);
+      if (selected === null || score > selected.score) selected = { cuts, score };
+    }
+  }
+  if (selected === null) {
+    throw new Error(`[e2e] no valid Config cuts re-band: ${JSON.stringify(sorted)}`);
+  }
+  return selected.cuts;
 }

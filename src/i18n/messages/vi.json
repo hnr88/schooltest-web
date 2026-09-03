@@ -1780,11 +1780,13 @@
     "supplementaryDescription": "Độ chính xác theo bậc từ các nhiệm vụ từ vựng bổ sung. Chúng được báo cáo song song với mô hình, không nằm trong mô hình: không phải là thuộc tính được mô hình hóa, không đi vào mô hình thành thạo và không áp dụng điểm cắt.",
     "supplementaryBands": {
       "a2": "Độ chính xác bậc A2",
-      "b1": "Độ chính xác bậc B1"
+      "b1": "Độ chính xác bậc B1",
+      "b2": "Độ chính xác bậc B2"
     },
     "supplementaryBandSource": {
       "a2": "Tỉ lệ trả lời đúng ở các nhiệm vụ từ vựng Giai đoạn 1 của lượt làm bài này.",
-      "b1": "Tỉ lệ trả lời đúng ở nhánh ghép từ đồng nghĩa Giai đoạn 2 của lượt làm bài này."
+      "b1": "Tỉ lệ trả lời đúng ở nhánh ghép từ đồng nghĩa Giai đoạn 2 của lượt làm bài này.",
+      "b2": "Tỉ lệ trả lời đúng ở nhánh từ vựng B2 bổ sung được thực hiện cùng Giai đoạn 3."
     },
     "supplementaryAccuracyLabel": "Độ chính xác theo bậc",
     "supplementaryNotAdministered": "Không được thực hiện",
@@ -1899,7 +1901,8 @@
     "resultStatus": {
       "scoring": "Đang chấm",
       "partial_pending": "Chờ một phần",
-      "complete": "Hoàn tất"
+      "complete": "Hoàn tất",
+      "scoring_failed": "Chấm điểm thất bại"
     }
   },
   "SchoolOnboarding": {

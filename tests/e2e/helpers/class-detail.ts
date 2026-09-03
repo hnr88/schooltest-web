@@ -7,10 +7,7 @@ import {
   classDetailSchema,
   classStudentDetailSchema,
 } from '@/modules/classes/schemas/class-detail.schema';
-import type {
-  ClassDetail,
-  ClassStudentDetail,
-} from '@/modules/classes/types/class-detail.types';
+import type { ClassDetail, ClassStudentDetail } from '@/modules/classes/types/class-detail.types';
 
 import { loginCached } from './http';
 import { ROLE_CREDENTIALS } from './roles';
@@ -23,8 +20,12 @@ import { EMPTY_CLASS_NAME, fixtureClassId } from './fixture-class';
 
 export const API = process.env.API_BASE_URL ?? 'http://127.0.0.1:5500';
 
-/** The seeded School A class the mission is proven against. */
-export const FIXTURE_CLASS_ID = fixtureClassId();
+/**
+ * The deterministic journey class with completed A/B evidence. The smaller
+ * class fixture is useful for CRUD tests, but it deliberately has no scored
+ * sittings and therefore cannot prove the result/drill-down contract.
+ */
+export const FIXTURE_CLASS_ID = fixtureClassId('Reading 8A — Okonkwo');
 
 /** A class of the same school with no students — the empty-state case. */
 export const EMPTY_CLASS_ID = fixtureClassId(EMPTY_CLASS_NAME);
@@ -38,11 +39,7 @@ export function schoolAdminJwt(request: APIRequestContext): Promise<string> {
   });
 }
 
-async function readJson(
-  request: APIRequestContext,
-  jwt: string,
-  path: string,
-): Promise<unknown> {
+async function readJson(request: APIRequestContext, jwt: string, path: string): Promise<unknown> {
   const res = await request.get(`${API}${path}`, { headers: { Authorization: `Bearer ${jwt}` } });
   expect(res.status(), `${path} -> ${await res.text()}`).toBe(200);
   return ((await res.json()) as { data: unknown }).data;
@@ -75,7 +72,10 @@ export async function apiClassStudent(
   );
 }
 
-export function fullName(person: { given_name: string | null; family_name: string | null }): string {
+export function fullName(person: {
+  given_name: string | null;
+  family_name: string | null;
+}): string {
   return [person.given_name, person.family_name].filter(Boolean).join(' ').trim();
 }
 
@@ -94,7 +94,10 @@ export function studentWithEvidence(detail: ClassDetail, slot: 'A' | 'B') {
 }
 
 /** Opens the class detail page as the seeded school_admin. */
-export async function gotoClassDetail(page: Page, classDocumentId = FIXTURE_CLASS_ID): Promise<void> {
+export async function gotoClassDetail(
+  page: Page,
+  classDocumentId = FIXTURE_CLASS_ID,
+): Promise<void> {
   await page.goto(`/dashboard/school/classes/${classDocumentId}`);
   await expect(page.locator('[data-surface="school-admin-class-detail"]')).toBeVisible();
 }

@@ -8,10 +8,7 @@ import type {
   MonitorSummaryItem,
   MonitorTileDetail,
 } from '@/modules/teacher/types/live-monitor.types';
-import type {
-  MonitorStudent,
-  MonitorSummary,
-} from '@/modules/teacher/types/teacher-session.types';
+import type { MonitorStudent, MonitorSummary } from '@/modules/teacher/types/teacher-session.types';
 
 const MS_PER_MINUTE = 60_000;
 
@@ -34,15 +31,10 @@ export function deriveLiveMonitorStatus(counts: LiveMonitorReadCounts): LiveMoni
  * counts the tiles itself: the server already partitioned the roster, and a
  * client-side recount could disagree with the grid it sits above.
  *
- * `scoring_failed` is optional on the wire while the API still partitions the
- * roster five ways — its stat is omitted (not zeroed) until the server sends
- * it, so a fabricated 0 can never claim a failure that was never reported.
+ * All six partitions are required by C-TS-3, including terminal scoring failure.
  */
 export function monitorSummaryItems(summary: MonitorSummary): readonly MonitorSummaryItem[] {
-  return MONITOR_SUMMARY_ORDER.flatMap((key) => {
-    const value = summary[key];
-    return value === undefined ? [] : [{ key, value }];
-  });
+  return MONITOR_SUMMARY_ORDER.map((key) => ({ key, value: summary[key] }));
 }
 
 /**
@@ -91,7 +83,7 @@ export function monitorTileDetail(student: MonitorStudent): MonitorTileDetail | 
  * accusation, and never affects the tile's state or paint.
  */
 export function monitorTileSignals(student: MonitorStudent): number | null {
-  if (student.proctoring === null || student.proctoring === undefined) return null;
+  if (student.proctoring === null) return null;
   const { info, warn, flag } = student.proctoring.count_by_severity;
   const total = info + warn + flag;
   return total === 0 ? null : total;
