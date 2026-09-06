@@ -3408,6 +3408,27 @@
           "title": "This school is archived",
           "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
         }
+      },
+      "suspend": {
+        "action": "Suspend school",
+        "confirmTitle": "Suspend {name}?",
+        "confirmBody": "Staff and students lose access until reactivation. In-flight assessments are paused and resume with their remaining time.",
+        "confirmCta": "Suspend",
+        "cancel": "Cancel",
+        "activate": "Reactivate school",
+        "restore": "Restore school",
+        "undo": "Undo last action",
+        "archive": "Archive school",
+        "archiveTitle": "Archive {name}?",
+        "archiveBody": "Type the school name to confirm. Students, classes and results are kept; the school becomes read-only until it is restored.",
+        "archiveCta": "Archive",
+        "success": "{name} updated.",
+        "errorAlready": "That school is already suspended.",
+        "errorArchived": "That school is archived — restore it first.",
+        "errorStale": "Someone else changed this school — refetch and review.",
+        "errorVersion": "The row version is missing or malformed.",
+        "errorVersionUnavailable": "The row version has not loaded yet.",
+        "archiveNameMismatch": "The typed name does not match the school name."
       }
     },
     "onboard": {
