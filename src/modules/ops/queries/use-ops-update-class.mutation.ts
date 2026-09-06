@@ -67,3 +67,58 @@ export function useOpsUpdateClassMutation() {
     },
   });
 }
+
+export interface OpsAssignTeacherInput {
+  classDocumentId: string;
+  schoolDocumentId: string;
+}
+
+/**
+ * Task 20 — the class-assignment write (POST /ops/classes/:documentId/
+ * assign-teacher). The SUBMITTED list is the whole assignment: one documentId
+ * to assign, an empty array to UNASSIGN deliberately. The server answers
+ * meta.changed=false when the same teacher was re-selected — surfaced to the
+ * caller so the UI never celebrates a no-op.
+ */
+export function useOpsAssignTeacherMutation(classDocumentId: string, schoolDocumentId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (teacherDocumentIds: string[]): Promise<{ changed: boolean }> => {
+      const res = await strapi.post(`/api/ops/classes/${classDocumentId}/assign-teacher`, {
+        teacher_documentIds: teacherDocumentIds,
+      });
+      const changed = (res.data as { meta?: { changed?: boolean } })?.meta?.changed !== false;
+      return { changed };
+    },
+    onSuccess: async () => {
+      // A changed assignment moves class + roster + BOTH teachers' counts.
+      await queryClient.invalidateQueries({ queryKey: ['ops', 'schools', schoolDocumentId] });
+      await queryClient.invalidateQueries({ queryKey: opsClassDetailQueryKey(classDocumentId) });
+    },
+  });
+}
+
+/**
+ * Task 20 — the per-class named test window (PUT /ops/schools/:schoolDocumentId/
+ * classes/:classDocumentId/window). `windowDocumentId: null` means "No window
+ * yet"; a non-null choice requires an eligible teacher, which the API enforces.
+ */
+export function useOpsAssignClassWindowMutation(
+  classDocumentId: string,
+  schoolDocumentId: string,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (windowDocumentId: string | null): Promise<unknown> => {
+      const res = await strapi.put(
+        `/api/ops/schools/${schoolDocumentId}/classes/${classDocumentId}/window`,
+        { window_documentId: windowDocumentId },
+      );
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['ops', 'schools', schoolDocumentId] });
+      await queryClient.invalidateQueries({ queryKey: opsClassDetailQueryKey(classDocumentId) });
+    },
+  });
+}

@@ -20,7 +20,7 @@ export function opsClassDetailQueryKey(classDocumentId: string) {
 async function fetchOpsClassDetail(classDocumentId: string): Promise<OpsClassDetail | null> {
   try {
     const res = await strapi.get<StrapiSingleResponse<unknown>>(
-      `/api/classes/${classDocumentId}?populate[students]=true&populate[teacher]=true&populate[school]=true`,
+      `/api/classes/${classDocumentId}?populate[students]=true&populate[teacher]=true&populate[school]=true&populate[test_window]=true`,
     );
     return opsClassDetailSchema.parse(res.data.data);
   } catch (error) {

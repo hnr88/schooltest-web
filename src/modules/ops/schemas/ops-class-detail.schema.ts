@@ -38,6 +38,10 @@ export const opsClassDetailSchema = z.object({
     })
     .nullable(),
   students: z.array(opsClassDetailStudentSchema),
+  // The per-class named test window (task 20) — null means "No window yet".
+  test_window: z
+    .object({ documentId: z.string().min(1), title: nullable(z.string()) })
+    .nullable(),
 });
 
 export type OpsClassDetail = z.infer<typeof opsClassDetailSchema>;
