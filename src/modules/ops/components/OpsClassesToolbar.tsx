@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Input } from '@/components/ui/input';
-import { FilterChipGroup } from '@/modules/design-system';
+import { FilterChipGroup, SelectField } from '@/modules/design-system';
 import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
 import {
   OPS_CLASSES_FILTER_ALL,
@@ -15,7 +15,7 @@ import { classListStatusSchema } from '@/modules/ops/lib/ops-classes-contract';
 
 // OPS-038 — the Classes-tab toolbar, split out of OpsClassesTab so the tab
 // stays under the 120-line component limit. Owns the status chips, the
-// year-band chips and the search box; all state lives in useClassesFilter.
+// year-band select and the search box; all state lives in useClassesFilter.
 const STATUSES = classListStatusSchema.options;
 
 export function OpsClassesToolbar({ filter }: { filter: OpsClassesFilterState }) {
@@ -33,14 +33,16 @@ export function OpsClassesToolbar({ filter }: { filter: OpsClassesFilterState })
             ...STATUSES.map((value) => ({ value, label: t(`status.${value}`) })),
           ]}
         />
-        <FilterChipGroup
-          ariaLabel={t('filterYear')}
-          value={filter.yearBand}
-          onValueChange={(value) => filter.setYearBand(value as OpsClassesYearFilter)}
+        <SelectField
+          id="ops-classes-year"
+          label={t('filterYear')}
+          placeholder={t('filterYear')}
           options={[
             { value: OPS_CLASSES_FILTER_ALL, label: t('filterAll') },
             ...YEAR_BANDS.map((value) => ({ value, label: t(`year.${value}`) })),
           ]}
+          value={filter.yearBand}
+          onValueChange={(value) => filter.setYearBand(value as OpsClassesYearFilter)}
         />
       </div>
       <Input
