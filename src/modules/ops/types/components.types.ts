@@ -125,8 +125,9 @@ export interface OpsEditClassDialogProps {
   classDocumentId: string;
   schoolDocumentId: string;
   className: string;
+  /** The class `updatedAt` the form opened with — the edit's If-Match token. */
+  classUpdatedAt: string | null;
   currentYearBand: string | null;
-  currentTeacherDocumentId: string | null;
   onClose: () => void;
 }
 

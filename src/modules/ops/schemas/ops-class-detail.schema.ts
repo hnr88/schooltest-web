@@ -24,6 +24,8 @@ export const opsClassDetailSchema = z.object({
   documentId: z.string().min(1),
   name: z.string().min(1),
   year_band: nullable(z.string()),
+  // The edit form's If-Match token (task 19): whatever the form opened with.
+  updatedAt: nullable(z.string()),
   school: z
     .object({ documentId: z.string().min(1), name: z.string().min(1) })
     .nullable(),

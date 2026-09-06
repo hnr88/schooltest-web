@@ -1,29 +1,59 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 
 import { strapi } from '@/lib/axios/strapi';
 import { opsClassDetailQueryKey } from '@/modules/ops/queries/use-ops-class-detail.query';
 
-// Ops edit-assign on one class (C-8 update, IS_OPS — the ops-only core class
-// router). Strapi v5 REST updates take a `data` wrapper and address relations
-// by documentId; both are verified against the running API (task 015). Adding a
-// field here is additive: the class entity only records what the body sends.
+/** Thrown on 412: the class moved under the form — the DRAFT is intact; refresh and reapply. */
+export class OpsClassEditStaleError extends Error {
+  readonly currentUpdatedAt: string | null;
+
+  constructor(currentUpdatedAt: string | null) {
+    super('this class changed after the edit began — refresh and reapply the draft');
+    this.name = 'OpsClassEditStaleError';
+    this.currentUpdatedAt = currentUpdatedAt;
+  }
+}
+
 export interface OpsUpdateClassInput {
   classDocumentId: string;
+  schoolDocumentId: string;
+  /** The class `updatedAt` the form was opened with — sent as If-Match. */
+  classUpdatedAt: string | null;
   name: string;
-  yearBand?: string | null;
-  teacher: string | null;
+  /**
+   * The key is ALWAYS sent: a string sets the band, an explicit null CLEARS it.
+   * Omission would mean "leave untouched", which is a different thing here.
+   */
+  yearBand: string | null;
 }
 
 async function updateOpsClass(input: OpsUpdateClassInput): Promise<unknown> {
-  // `data.teacher` is set unconditionally (documentId, or null to clear the
-  // relation); `year_band` is only sent when a value is provided, so an edit
-  // that leaves it untouched never strips it from the entity.
-  const data: Record<string, unknown> = { name: input.name, teacher: input.teacher };
-  if (input.yearBand) data.year_band = input.yearBand;
-  const res = await strapi.put(`/api/classes/${input.classDocumentId}`, { data });
-  return res.data;
+  try {
+    // Task 19 tightened edit: name + year_band ONLY, on the class-anchored ops
+    // route. The teacher relation is deliberately ABSENT — assignment is the
+    // assign-teacher route (task 20), so saving name/year can never overwrite
+    // a teacher changed elsewhere. If-Match turns a stale form into a 412
+    // instead of a silent clobber.
+    const res = await strapi.patch(
+      `/api/ops/schools/${input.schoolDocumentId}/classes/${input.classDocumentId}`,
+      { data: { name: input.name, year_band: input.yearBand } },
+      { headers: input.classUpdatedAt ? { 'If-Match': input.classUpdatedAt } : {} },
+    );
+    return res.data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === 412) {
+      const details = (
+        error.response.data as {
+          error?: { details?: { currentUpdatedAt?: string | null } };
+        }
+      )?.error?.details;
+      throw new OpsClassEditStaleError(details?.currentUpdatedAt ?? null);
+    }
+    throw error;
+  }
 }
 
 export function useOpsUpdateClassMutation() {

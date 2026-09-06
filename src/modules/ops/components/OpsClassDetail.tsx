@@ -199,8 +199,8 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
           classDocumentId={classDetail.documentId}
           schoolDocumentId={schoolDocumentId}
           className={classDetail.name}
+          classUpdatedAt={classDetail.updatedAt ?? null}
           currentYearBand={classDetail.year_band}
-          currentTeacherDocumentId={classDetail.teacher?.documentId ?? null}
           onClose={() => setEditOpen(false)}
         />
       ) : null}
