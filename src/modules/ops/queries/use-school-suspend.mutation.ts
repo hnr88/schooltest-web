@@ -27,7 +27,7 @@ import type { SchoolSuspendInput } from '@/modules/ops/types/school-suspend.type
  * a school someone else changed in the meantime answers 412 instead of being
  * suspended from a stale view.
  */
-async function suspendSchool({
+export async function suspendSchool({
   schoolDocumentId,
   version,
 }: SchoolSuspendInput): Promise<SchoolSuspendResult> {
@@ -61,7 +61,7 @@ export function useSchoolSuspendMutation() {
 /* --- task 12: archive, restore and the Undo window ----------------------- */
 
 /** C-OPS-PORTAL-016 — the typed-name half lives in the UI; this body key IS the server's guard. */
-async function archiveSchool({
+export async function archiveSchool({
   schoolDocumentId,
   version,
 }: SchoolSuspendInput): Promise<SchoolArchiveResult> {

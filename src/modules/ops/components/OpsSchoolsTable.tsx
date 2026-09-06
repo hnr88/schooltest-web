@@ -5,6 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 
+import { useOpsActionRunner } from '@/modules/ops/actions';
+import type { OpsActionTarget } from '@/modules/ops/actions';
+import {
+  ARCHIVE_SCHOOL_ACTION,
+  SUSPEND_SCHOOL_ACTION,
+} from '@/modules/ops/lib/school-lifecycle-bulk.lib';
+
 import type { SchoolsListRow } from '@schooltest/ops-contracts';
 
 import { useAuthStore } from '@/modules/auth';
@@ -210,6 +217,22 @@ export function OpsSchoolsTable() {
     },
   ];
 
+  // Bulk Suspend / Archive (task 12 lifecycle through the task 05 runner):
+  // every selected school takes the SAME single-school lifecycle write the
+  // detail panel uses - transactional, FOR UPDATE-locked, coded errors - and
+  // the runner reports an honest per-row outcome (success / failed /
+  // uncertain / not started), never a whole-set verdict.
+  const suspendRun = useOpsActionRunner(SUSPEND_SCHOOL_ACTION);
+  const archiveRun = useOpsActionRunner(ARCHIVE_SCHOOL_ACTION);
+  const bulkActions = [
+    { label: t('bulkSuspend'), onRun: (targets: readonly OpsActionTarget[]) => void suspendRun.run(targets) },
+    {
+      label: t('bulkArchive'),
+      destructive: true,
+      onRun: (targets: readonly OpsActionTarget[]) => void archiveRun.run(targets),
+    },
+  ];
+
   return (
     <main
       data-slot="ops-schools"
@@ -237,6 +260,9 @@ export function OpsSchoolsTable() {
         sorts={sorts}
         columns={columns}
         rowActions={rowActions}
+        selectable
+        bulkActions={bulkActions}
+        scope={[state.params.page, state.params.q, state.params.filters.status]}
         labels={{
           searchPlaceholder: t('searchPlaceholder'),
           searchLabel: t('searchLabel'),
