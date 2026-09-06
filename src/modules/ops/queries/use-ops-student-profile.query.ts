@@ -59,7 +59,7 @@ async function fetchOpsStudentProfile(
   schoolDocumentId: string,
   studentDocumentId: string,
 ): Promise<OpsStudentProfile> {
-  const res = await strapi.get<unknown>(
+  const res = await strapi.get<{ data: unknown }>(
     opsStudentProfilePath(schoolDocumentId, studentDocumentId),
     { opsPortalVersioned: true },
   );
