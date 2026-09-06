@@ -127,3 +127,80 @@ export function useOpsTeacherRemoveMutation() {
     },
   });
 }
+
+/**
+ * OPS-016 suspend / reactivate.
+ *
+ * The account endpoints are user-scoped (`/api/ops/users/:documentId`), not
+ * school-scoped, because being suspended is a property of the ACCOUNT rather
+ * than of one membership — the same call reaches an admin and a teacher, and
+ * the server holds the owner, last-admin and self-block invariants so a direct
+ * API call cannot break them either.
+ *
+ * Suspension deliberately does NOT touch class assignments: a suspended teacher
+ * keeps their classes so reactivating them restores a working account rather
+ * than an empty one.
+ */
+export async function setOpsStaffBlocked(
+  documentId: string,
+  blocked: boolean,
+  signal?: AbortSignal,
+): Promise<void> {
+  await strapi.post(
+    `/api/ops/users/${documentId}/${blocked ? 'block' : 'unblock'}`,
+    undefined,
+    { signal },
+  );
+}
+
+/**
+ * The Rule 7 read-back for a suspension: the write is done only when an
+ * authorized READ says so. The block endpoint echoes the updated row in its own
+ * response, and that echo proves nothing — it is the write describing itself —
+ * so this is a separate GET of the account.
+ */
+export async function readBackOpsStaffBlocked(
+  documentId: string,
+  expected: boolean,
+): Promise<boolean> {
+  const res = await strapi.get<{ data: { blocked: boolean } }>(`/api/ops/users/${documentId}`);
+  return res.data.data.blocked === expected;
+}
+
+/**
+ * The Rule 7 read-back for a removal. `removeTeacher` is revocation, not
+ * deletion: it blocks the account and severs the school relation. Proving the
+ * severed relation is what distinguishes a completed removal from a suspension,
+ * so the account being gone FROM THIS SCHOOL is what is read back — not merely
+ * that the row still exists.
+ */
+export async function readBackOpsTeacherRemoved(
+  schoolDocumentId: string,
+  documentId: string,
+): Promise<boolean> {
+  const res = await strapi.get<{ data: { school: { documentId: string } | null } }>(
+    `/api/ops/users/${documentId}`,
+  );
+  return res.data.data.school?.documentId !== schoolDocumentId;
+}
+
+/** Single-row suspend / reactivate, sharing the list invalidation above. */
+export function useOpsStaffBlockMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      documentId,
+      blocked,
+    }: {
+      schoolDocumentId: string;
+      documentId: string;
+      blocked: boolean;
+    }) => setOpsStaffBlocked(documentId, blocked),
+    onSuccess: async (_void, input) => {
+      await queryClient.invalidateQueries({
+        queryKey: teachersListSchoolKey(input.schoolDocumentId),
+      });
+      await queryClient.invalidateQueries({ queryKey: ['ops', 'staff-users'] });
+    },
+  });
+}
