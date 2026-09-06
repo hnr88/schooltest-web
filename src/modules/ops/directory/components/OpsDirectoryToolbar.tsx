@@ -71,14 +71,16 @@ export function OpsDirectoryToolbar<Row>({
             onValueChange={(next) => state.setFilter(def.key, next)}
           />
         ))}
-        <SelectField
-          id={`${idPrefix}-sort`}
-          label={labels.sortLabel}
-          placeholder={labels.sortLabel}
-          options={sorts.map((option) => ({ value: option.value, label: option.label }))}
-          value={state.params.sort}
-          onValueChange={(next) => state.setSort(next)}
-        />
+        {sorts.length > 0 ? (
+          <SelectField
+            id={`${idPrefix}-sort`}
+            label={labels.sortLabel}
+            placeholder={labels.sortLabel}
+            options={sorts.map((option) => ({ value: option.value, label: option.label }))}
+            value={state.params.sort}
+            onValueChange={(next) => state.setSort(next)}
+          />
+        ) : null}
       </div>
       <div className="flex items-center gap-3">
         {total > 0 ? (
