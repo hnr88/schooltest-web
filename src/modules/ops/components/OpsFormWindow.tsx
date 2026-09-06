@@ -11,6 +11,13 @@ import { OpsFormWindowEditor } from '@/modules/ops/components/OpsFormWindowEdito
 import { useFormWindowData } from '@/modules/ops/hooks/use-form-window';
 import { useAssessmentWindowCreateMutation } from '@/modules/ops/queries/use-assessment-window-create.mutation';
 import { useResultWindowsQuery } from '@/modules/ops/queries/use-result-windows.query';
+import {
+  useWindowCancelMutation,
+  useWindowReopenMutation,
+  useWindowShareMutation,
+} from '@/modules/ops/queries/use-window-actions.mutations';
+import { useWindowPdfDownload } from '@/modules/ops/queries/use-window-pdf.query';
+import { useWindowReportQuery } from '@/modules/ops/queries/use-window-report.query';
 import { useClassesListQuery } from '@/modules/ops/queries/use-classes-list.query';
 import { useFormsQuery } from '@/modules/ops/queries/use-forms.query';
 
@@ -222,6 +229,7 @@ function OpsResultWindowsSection({ schoolDocumentId }: { schoolDocumentId: strin
                   : ` · average ${row.average_percentage}%`}
                 {row.average_cefr === null ? ' · CEFR band pending' : ` · ${row.average_cefr}`}
               </p>
+              <OpsWindowRowActions schoolDocumentId={schoolDocumentId} row={row} />
             </li>
           ))}
         </ul>
@@ -241,6 +249,159 @@ const EMPTY_CREATE = {
   opens_at: '',
   closes_at: '',
 };
+
+/**
+ * The per-window actions (task 29/30): View report (inline, C-OPS-PORTAL-055),
+ * Download PDF (C-OPS-PORTAL-056, a true attachment — never window.print()),
+ * Share (C-OPS-PORTAL-057, idempotent), Cancel (scheduled only) and Reopen
+ * (complete only; the server 409s outside the seven-day rule). A row shows
+ * ONLY its permitted actions, and a rejected action surfaces its message —
+ * never a silent retry, never a claimed success.
+ */
+function OpsWindowRowActions({
+  schoolDocumentId,
+  row,
+}: {
+  schoolDocumentId: string;
+  row: { documentId: string; title: string; status: string; opens_at: string; closes_at: string };
+}) {
+  const [open, setOpen] = useState(false);
+  const share = useWindowShareMutation(schoolDocumentId);
+  const cancel = useWindowCancelMutation(schoolDocumentId);
+  const reopen = useWindowReopenMutation(schoolDocumentId);
+  const pdf = useWindowPdfDownload();
+  const report = useWindowReportQuery(schoolDocumentId, row.documentId, open);
+
+  const saveBlob = (blob: Blob) => {
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `schooltest-window-${row.documentId}-report.pdf`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="flex flex-col gap-2" data-testid={`ops-window-actions-${row.documentId}`}>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setOpen((current) => !current)}
+        >
+          {open ? 'Hide report' : 'View report'}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          loading={pdf.isPending}
+          disabled={row.status === 'cancelled'}
+          onClick={() =>
+            pdf.mutate(
+              { schoolDocumentId, windowDocumentId: row.documentId },
+              { onSuccess: (blob) => saveBlob(blob) }
+            )
+          }
+        >
+          Download PDF
+        </Button>
+        {row.status !== 'cancelled' ? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            loading={share.isPending}
+            disabled={share.isPending}
+            onClick={() => share.mutate({ schoolDocumentId, windowDocumentId: row.documentId })}
+          >
+            Share
+          </Button>
+        ) : null}
+        {row.status === 'scheduled' ? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            loading={cancel.isPending}
+            disabled={cancel.isPending}
+            onClick={() => cancel.mutate({ schoolDocumentId, windowDocumentId: row.documentId })}
+          >
+            Cancel
+          </Button>
+        ) : null}
+        {row.status === 'complete' ? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            loading={reopen.isPending}
+            disabled={reopen.isPending}
+            onClick={() => reopen.mutate({ schoolDocumentId, windowDocumentId: row.documentId })}
+          >
+            Reopen
+          </Button>
+        ) : null}
+      </div>
+      {pdf.isError ? (
+        <p role="alert" className="text-sm text-destructive">
+          The PDF download failed: {conflictMessage(pdf.error)}
+        </p>
+      ) : null}
+      {share.isSuccess ? (
+        <p className="text-sm text-body" data-testid="ops-window-share-result">
+          Shared: {share.data.sent} sent, {share.data.failed} failed
+          {share.data.failed > 0 ? ' — the failures are named in the audit log.' : '.'}
+        </p>
+      ) : null}
+      {share.isError ? (
+        <p role="alert" className="text-sm text-destructive">
+          Share failed: {conflictMessage(share.error)}
+        </p>
+      ) : null}
+      {cancel.isError ? (
+        <p role="alert" className="text-sm text-destructive">
+          Cancel failed: {conflictMessage(cancel.error)}
+        </p>
+      ) : null}
+      {reopen.isError ? (
+        <p role="alert" className="text-sm text-destructive">
+          Reopen failed: {conflictMessage(reopen.error)}
+        </p>
+      ) : null}
+      {open ? (
+        <div className="flex flex-col gap-1 rounded-lg border border-border bg-background p-2" data-testid={`ops-window-report-${row.documentId}`}>
+          {report.isPending ? <Skeleton className="h-4 w-1/2" /> : null}
+          {report.isError ? (
+            <Alert variant="error" title="Report could not be loaded">
+              {conflictMessage(report.error)}
+            </Alert>
+          ) : null}
+          {report.isSuccess ? (
+            <>
+              <p className="text-sm text-body">
+                Eligible {report.data.data.eligible} · sat {report.data.data.sat} · pending{' '}
+                {Math.max(report.data.data.eligible - report.data.data.sat, 0)} · invalidated attempts excluded{' '}
+                {report.data.data.excluded_invalidated}
+              </p>
+              <ul className="flex flex-col gap-1">
+                {report.data.data.results.map((result) => (
+                  <li key={result.result_documentId} className="text-sm text-body">
+                    {result.student_documentId} —{' '}
+                    {result.percentage === null ? 'score pending' : `${result.percentage}%`} (
+                    {result.cefr_level ?? 'CEFR pending'})
+                  </li>
+                ))}
+                {report.data.data.results.length === 0 ? <li className="text-sm text-body">No official results yet.</li> : null}
+              </ul>
+            </>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 /**
  * The scheduled-window creation form. Classes come from the EXISTING classes
