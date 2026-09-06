@@ -3030,7 +3030,71 @@
       "committedToast": "Import selesai: {created} murid dicipta, {skipped} dilangkau.",
       "resultSummary": "Import selesai. Dicipta: {created}. Sudah wujud: {skipped}. Ditolak: {rejected}.",
       "errorToast": "Import tidak dapat diproses. Semak fail dan cuba lagi.",
-      "forbiddenToast": "Hanya pasukan ops SchoolTest boleh menjalankan import."
+      "forbiddenToast": "Hanya pasukan ops SchoolTest boleh menjalankan import.",
+      "classLabel": "Add to class",
+      "classPlaceholder": "Choose a class",
+      "classHelper": "Students are added to this class. The CSV has no class column.",
+      "templateColumnsLabel": "Template columns:",
+      "templateDownloadLink": "Download the CSV template",
+      "progressPending": "Working. Progress appears once the server reports it.",
+      "progressPercent": "{pct}% of rows processed",
+      "progressLabel": "Import progress",
+      "reconcileTitle": "This import could not be confirmed",
+      "reconcileBody": "The connection dropped, so it is not known whether the students were added. Refresh to see the current state before trying again.",
+      "unresolved": "The connection dropped before this could be confirmed. Refresh to see the current state before trying again.",
+      "cancelButton": "Cancel import",
+      "cancelledToast": "Import cancelled. No students were added.",
+      "cancelLostToast": "The import finished before the cancellation reached the server.",
+      "undoButton": "Undo import",
+      "undoneToast": "Import undone.",
+      "undoExpired": "Undo is no longer available: the 60-second window has passed.",
+      "undoDone": "This import has already been undone.",
+      "undoUnknown": "Undo is unavailable until the receipt is read.",
+      "errorReportButton": "Download the error report",
+      "columnGivenName": "Given name",
+      "columnFamilyName": "Family name",
+      "columnDob": "Date of birth",
+      "columnYearLevel": "Year level",
+      "columnStudentKey": "Student key",
+      "columnMatchedStudent": "Matched student",
+      "card": {
+        "validating": {
+          "title": "Checking {name}...",
+          "body": "Validating headers and row data."
+        },
+        "ready": {
+          "title": "{name} - ready to import",
+          "body": "{created} rows, no problems found."
+        },
+        "rowErrors": {
+          "title": "{rejected} rows need fixing",
+          "body": "Import the {created} valid rows now and fix the rest later, or re-upload a corrected file."
+        },
+        "dupes": {
+          "title": "{skipped} students are already enrolled",
+          "body": "Duplicates are skipped. {created} new students will be added."
+        },
+        "badType": {
+          "title": "{name} isn't a CSV",
+          "body": "Export the roster as CSV and try again."
+        },
+        "tooBig": {
+          "title": "File is too large",
+          "body": "The limit is 5 MB. Split the roster by year level."
+        },
+        "noRows": {
+          "title": "No student rows found",
+          "body": "The file has headers but no data."
+        },
+        "uploading": {
+          "title": "Importing {name}...",
+          "body": "Keep this window open until it finishes."
+        },
+        "failed": {
+          "title": "Import did not complete",
+          "body": "Check the message below before trying again."
+        }
+      }
     },
     "timers": {
       "meta": {

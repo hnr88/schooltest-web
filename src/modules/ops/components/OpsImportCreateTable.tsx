@@ -10,13 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/modules/design-system';
-import type { ImportPreview } from '@/modules/ops/schemas/import.schema';
 
 import type { OpsImportCreateTableProps } from '@/modules/ops/types/components.types';
 
-// The C-IMP-01 create bucket (task 67): every row the commit would add, with
-// the normalised picklist values the server resolved (display spellings from
-// the template are already mapped to the enum keys).
+// The create bucket: every row the commit would add. The columns are the
+// VERSIONED template's own — given name, family name, date of birth, year
+// level, home language — plus the optional student key. There is deliberately
+// no class column: the class comes from the picker, so showing it per row would
+// suggest a csv could override it. No email column exists in this template.
 export function OpsImportCreateTable({ rows }: OpsImportCreateTableProps) {
   const t = useTranslations('Ops.import');
 
@@ -28,12 +29,12 @@ export function OpsImportCreateTable({ rows }: OpsImportCreateTableProps) {
           <TableHeader>
             <TableRow>
               <TableHead>{t('columnRow')}</TableHead>
-              <TableHead>{t('columnFirstName')}</TableHead>
-              <TableHead>{t('columnLastName')}</TableHead>
-              <TableHead>{t('columnEmail')}</TableHead>
+              <TableHead>{t('columnGivenName')}</TableHead>
+              <TableHead>{t('columnFamilyName')}</TableHead>
+              <TableHead>{t('columnDob')}</TableHead>
+              <TableHead>{t('columnYearLevel')}</TableHead>
               <TableHead>{t('columnLanguage')}</TableHead>
-              <TableHead>{t('columnClass')}</TableHead>
-              <TableHead>{t('columnProficiency')}</TableHead>
+              <TableHead>{t('columnStudentKey')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -41,11 +42,11 @@ export function OpsImportCreateTable({ rows }: OpsImportCreateTableProps) {
               <TableRow key={row.row}>
                 <TableCell>{row.row}</TableCell>
                 <TableCell>{row.given_name}</TableCell>
-                <TableCell>{row.family_name ?? ''}</TableCell>
-                <TableCell>{row.email}</TableCell>
+                <TableCell>{row.family_name}</TableCell>
+                <TableCell>{row.date_of_birth}</TableCell>
+                <TableCell>{row.year_level}</TableCell>
                 <TableCell>{row.first_language}</TableCell>
-                <TableCell>{row.class_name}</TableCell>
-                <TableCell>{row.acara_phase ?? ''}</TableCell>
+                <TableCell>{row.student_key ?? ''}</TableCell>
               </TableRow>
             ))}
           </TableBody>

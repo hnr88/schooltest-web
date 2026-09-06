@@ -1,5 +1,7 @@
+import type { StaffUserRole, SchoolsListRow } from '@schooltest/ops-contracts';
+
 import type { FormWindow, OpsForm } from '@/modules/ops/schemas/form-window.schema';
-import type { ImportPreview } from '@/modules/ops/schemas/import.schema';
+import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
 import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
 import type { SectionTimersMeta, TimerSection } from '@/modules/ops/schemas/section-timers.schema';
 import type { OpsSchool, OpsTeacherRow } from '@/modules/ops/types/ops.types';
@@ -20,11 +22,11 @@ export interface OpsFormWindowProps {
 }
 
 export interface OpsImportCreateTableProps {
-  rows: ImportPreview['create'];
+  rows: PortalImportPreview['create'];
 }
 
 export interface OpsImportPreviewTablesProps {
-  preview: ImportPreview;
+  preview: PortalImportPreview;
 }
 
 export interface OpsOnboardSchoolDialogProps {
@@ -50,7 +52,8 @@ export interface OpsSchoolPlanPanelProps {
 }
 
 export interface OpsSchoolRowProps {
-  school: OpsSchool;
+  /** The C-OPS-PORTAL-001 versioned row (contract types, not the legacy shape). */
+  school: SchoolsListRow;
 }
 
 export interface OpsSchoolsFiltersProps {
@@ -60,6 +63,12 @@ export interface OpsSchoolsFiltersProps {
   onAccountStatusChange: (value: string) => void;
   onboardingStatus: SchoolsFilterState['onboardingStatus'];
   onOnboardingStatusChange: (value: string) => void;
+  state: SchoolsFilterState['state'];
+  onStateChange: (value: string) => void;
+  sector: SchoolsFilterState['sector'];
+  onSectorChange: (value: string) => void;
+  sort: SchoolsFilterState['sort'];
+  onSortChange: (value: string) => void;
   onClearAll: () => void;
   showingCount: number;
   totalCount: number;
@@ -143,4 +152,15 @@ export interface OpsEditClassDialogProps {
 
 export interface OpsSchoolTablesProps {
   schoolDocumentId: string;
+}
+
+/** C-OPS-PORTAL-015 — the shared Admins/Teachers directory table (OPS-025). */
+export interface OpsStaffUsersTableProps {
+  schoolDocumentId: string;
+  role: StaffUserRole;
+  enabled: boolean;
+  emptyTitle: string;
+  emptyDescription: string;
+  /** Class counts keyed by teacher documentId; omitted hides the column. */
+  classCounts?: Record<string, number>;
 }
