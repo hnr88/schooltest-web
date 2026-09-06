@@ -3869,6 +3869,39 @@
         "saveErrorTitle": "Could not save"
       }
     },
+    "classesTab": {
+      "columnClass": "Class",
+      "columnTeacher": "Teacher",
+      "columnStudents": "Students",
+      "columnYear": "Year",
+      "columnStatus": "Status",
+      "noWindow": "No test window",
+      "noTeacher": "No teacher assigned",
+      "filterStatus": "Filter by status",
+      "filterAll": "All",
+      "filterYear": "Filter by year",
+      "searchLabel": "Search classes",
+      "searchPlaceholder": "Search by class or teacher name",
+      "errorTitle": "Classes could not be loaded",
+      "errorDescription": "The classes list could not be read. Try again.",
+      "noMatchesTitle": "No classes match these filters",
+      "noMatchesDescription": "Try changing the search or filters.",
+      "emptyTitle": "No classes yet",
+      "emptyDescription": "This school has no classes yet.",
+      "showing": "Showing {showing} of {total}",
+      "previousPage": "Previous page",
+      "nextPage": "Next page",
+      "clearFilter": "Clear teacher filter",
+      "status": {
+        "active": "Active",
+        "pending_setup": "Pending setup",
+        "archived": "Archived"
+      },
+      "year": {
+        "7_9": "Years 7–9",
+        "10_12": "Years 10–12"
+      }
+    },
     "schoolTables": {
       "title": "School directory",
       "tab": {
