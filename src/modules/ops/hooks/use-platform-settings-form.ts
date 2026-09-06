@@ -1,12 +1,16 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
+import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
 import {
   serverFieldErrors,
+  useUpdateOpsProfileMutation,
   useUpdatePlatformSettingsMutation,
 } from '@/modules/ops/queries/use-update-platform-settings.mutation';
 import { usePlatformSettingsQuery } from '@/modules/ops/queries/use-platform-settings.query';
@@ -79,6 +83,13 @@ export function usePlatformSettingsForm() {
       await update.mutateAsync(toPatch(values));
       toast.success(t('savedToast'));
     } catch (error) {
+      // 412 = the row changed since this form was hydrated (If-Match). The
+      // DRAFT STAYS in the inputs: no field errors, and NO refetch — the
+      // `values` hydration would silently clobber what the operator typed.
+      if (isAxiosError(error) && error.response?.status === 412) {
+        toast.error(t('staleToast'));
+        return;
+      }
       const fieldErrors = serverFieldErrors(error);
       for (const { path, message } of fieldErrors) {
         form.setError(path as keyof PlatformSettingsForm, { type: 'server', message });
@@ -88,4 +99,45 @@ export function usePlatformSettingsForm() {
   });
 
   return { t, form, query, handleSubmit, isSaving: update.isPending };
+}
+
+// C-OPS-PORTAL-031 — the internal operations account card. Self-profile editing
+// is the ONE write a read-only support account may perform, and the body is
+// only ever these two names: the server resolves the user from the JWT alone
+// and refuses email, role, school, blocked or password keys. The schema mirrors
+// the server's bounds (trimmed 1..100); the server stays the authority.
+const opsProfileFormSchema = z.object({
+  first_name: z.string().trim().min(1).max(100),
+  last_name: z.string().trim().min(1).max(100),
+});
+
+type OpsProfileForm = z.infer<typeof opsProfileFormSchema>;
+
+export function useOpsProfileForm() {
+  const t = useTranslations('Ops.settings.account');
+  const query = useCapabilitiesQuery();
+  const update = useUpdateOpsProfileMutation();
+
+  // Same `values`-only hydration as the settings form above — a reset() would
+  // wipe `_fields` and swallow later keystrokes.
+  const form = useForm<OpsProfileForm>({
+    resolver: zodResolver(opsProfileFormSchema),
+    values: query.data
+      ? {
+          first_name: query.data.actor.first_name ?? '',
+          last_name: query.data.actor.last_name ?? '',
+        }
+      : undefined,
+  });
+
+  const handleSubmit = form.handleSubmit(async (values) => {
+    try {
+      await update.mutateAsync(values);
+      toast.success(t('savedToast'));
+    } catch {
+      toast.error(t('errorToast'));
+    }
+  });
+
+  return { t, form, handleSubmit, isSaving: update.isPending };
 }

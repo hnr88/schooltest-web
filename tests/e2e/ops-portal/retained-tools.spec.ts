@@ -11,10 +11,11 @@
  *  2. failure — a failed read is named, offers a retry, and the retry really
  *     refetches (the intercept is lifted and the real read succeeds);
  *  3. ops_support — the read-only banner renders and the panel behaves exactly
- *     as it does today for a support session. Where the current client leaves
- *     a control ENABLED for support, the test pins that and says so: backend
- *     enforcement of the read-only contract belongs to tasks 02/31, not to
- *     this spec.
+ *     as it does today for a support session. Where the client leaves a
+ *     control ENABLED for support, the test pins that and says so: the write
+ *     boundary is the API (tasks 02/31 shipped it — support writes are
+ *     rejected server-side), so this spec pins the client surface, not the
+ *     enforcement.
  *
  * Every intercepted fixture is validated with the schema its reader uses — the
  * shared ops contract for school detail and capabilities, the web's own
@@ -406,8 +407,8 @@ test.describe('ops retained tools — school form window', () => {
 
     await expect(page.locator(CAPABILITIES_BANNER)).toBeVisible({ timeout: ACTION_TIMEOUT });
     await expect(page.locator(WINDOW_SURFACE)).toBeVisible({ timeout: ACTION_TIMEOUT });
-    // Pinned CURRENT client behaviour: the read-only contract is enforced by
-    // the API (tasks 02/31), not by disabling these controls for ops_support.
+    // Pinned client behaviour: the write boundary is the API (tasks 02/31
+    // shipped it), not disabled controls — support keeps these enabled.
     await expect(page.locator('#ops-window-form')).toBeEnabled({ timeout: ACTION_TIMEOUT });
     await expect(
       page.getByRole('button', { name: cat(en, 'Ops.window.saveButton'), exact: true }),
@@ -482,8 +483,9 @@ test.describe('ops retained tools — section timers', () => {
     await expect(page.locator('#ops-timer-section-1')).toHaveValue('1');
     await expect(page.locator('#ops-timer-section-2')).toHaveValue('15');
     await expect(page.locator('#ops-timer-section-3')).toHaveValue('60');
-    // Pinned CURRENT client behaviour, as on the form window: the API enforces
-    // read-only (tasks 02/31); these controls are not disabled for ops_support.
+    // Pinned client behaviour, as on the form window: the write boundary is
+    // the API (tasks 02/31 shipped it); these controls stay enabled for
+    // ops_support.
     for (const stage of [1, 2, 3]) {
       await expect(page.locator(`#ops-timer-section-${stage}`)).toBeEnabled({
         timeout: ACTION_TIMEOUT,
@@ -604,8 +606,9 @@ test.describe('ops retained tools — sitting recovery', () => {
 
     await expect(page.locator(CAPABILITIES_BANNER)).toBeVisible({ timeout: ACTION_TIMEOUT });
     await expect(page.locator(RECOVERY_SURFACE)).toBeVisible({ timeout: ACTION_TIMEOUT });
-    // Pinned CURRENT client behaviour, as on the form window: the API enforces
-    // read-only (tasks 02/31); the picker is not disabled for ops_support.
+    // Pinned client behaviour, as on the form window: the write boundary is
+    // the API (tasks 02/31 shipped it); the picker stays enabled for
+    // ops_support.
     await expect(
       page.locator(RECOVERY_SURFACE).getByLabel(cat(en, 'Ops.recovery.pickerLabel'), { exact: true }),
     ).toBeEnabled({ timeout: ACTION_TIMEOUT });
@@ -692,8 +695,9 @@ test.describe('ops retained tools — platform test email', () => {
 
     await expect(page.locator(CAPABILITIES_BANNER)).toBeVisible({ timeout: ACTION_TIMEOUT });
     await expect(page.locator(SETTINGS_READY)).toBeVisible({ timeout: ACTION_TIMEOUT });
-    // Pinned CURRENT client behaviour, as on the form window: the API enforces
-    // read-only (tasks 02/31); the send control is not disabled for ops_support.
+    // Pinned client behaviour, as on the form window: the write boundary is
+    // the API (tasks 02/31 shipped it); the send control stays enabled for
+    // ops_support.
     const recipient = page.locator('#test-email-to');
     await recipient.fill('support@example.com');
     const send = page.getByRole('button', {
