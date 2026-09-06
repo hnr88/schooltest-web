@@ -4,14 +4,33 @@ import { useTranslations } from 'next-intl';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
-import { Button, KeyValueList, KeyValueRow, Tabs, TabsContent, TabsList, TabsTrigger } from '@/modules/design-system';
+import type { StaffUserRow } from '@schooltest/ops-contracts';
+
+import {
+  Alert,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  KeyValueList,
+  KeyValueRow,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/modules/design-system';
+import { dispositionOfFailure, statusOfDisposition } from '@/modules/ops/actions';
 import { DIRECTORY_PARAMS } from '@/modules/ops/directory';
 import { OpsClassesTab } from '@/modules/ops/components/OpsClassesTab';
 import { OpsSchoolActivity } from '@/modules/ops/components/OpsSchoolActivity';
 import { OpsStaffUsersTable } from '@/modules/ops/components/OpsStaffUsersTable';
 import { OpsStudentsTab } from '@/modules/ops/components/OpsStudentsTab';
 import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
+import { useOwnershipTransferMutation } from '@/modules/ops/queries/use-staff-users.query';
 import { useTeachersListQuery } from '@/modules/ops/queries/use-teachers-list.query';
+import { restFailureOf } from '@/lib/axios/strapi';
 
 import type { OpsSchoolTablesProps } from '@/modules/ops/types/components.types';
 
@@ -125,16 +144,11 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       </TabsContent>
 
       <TabsContent value="admins">
-        <div className="flex flex-col gap-3">
-          <p className="max-w-2xl text-sm text-body">{t('adminsNote')}</p>
-          <OpsStaffUsersTable
-            schoolDocumentId={schoolDocumentId}
-            role="school_admin"
-            enabled={tab === 'admins'}
-            emptyTitle={t('adminsEmptyTitle')}
-            emptyDescription={t('adminsEmptyDescription')}
-          />
-        </div>
+        <AdminsTab
+          schoolDocumentId={schoolDocumentId}
+          ownerDocumentId={school.owner_documentId}
+          active={tab === 'admins'}
+        />
       </TabsContent>
 
       <TabsContent value="teachers">
@@ -159,6 +173,104 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
         onOpenChange={setTeachersOpen}
       />
     </Tabs>
+  );
+}
+
+/**
+ * C-OPS-PORTAL-027 (task 17) — the admins directory plus the Make owner action.
+ *
+ * The confirm carries the owner the operator SAW (`ownerDocumentId`, straight
+ * off the school detail) as `expected_owner_documentId`. It is never re-read
+ * just before sending: a value fetched to satisfy the guard would defeat it,
+ * and the whole point is that a concurrent transfer 409s instead of silently
+ * winning. A 409 is therefore not an error to apologise for — it means the
+ * page is stale, so the message says to refresh rather than to retry.
+ *
+ * A school whose `owner_documentId` is null is the ambiguous LEGACY case D-OWN
+ * describes: the backfill named an owner only where there was exactly one
+ * active admin, and left the rest null on purpose. The banner says so and asks
+ * ops to choose, because picking the first admin by sort order — or the primary
+ * contact — is precisely the guess the decision forbids.
+ */
+function AdminsTab({
+  schoolDocumentId,
+  ownerDocumentId,
+  active,
+}: {
+  schoolDocumentId: string;
+  ownerDocumentId: string | null;
+  active: boolean;
+}) {
+  const t = useTranslations('Ops.schoolTables');
+  const [target, setTarget] = useState<StaffUserRow | null>(null);
+  const transfer = useOwnershipTransferMutation();
+
+  const status = statusOfDisposition(dispositionOfFailure(restFailureOf(transfer.error)));
+  const errorMessage =
+    transfer.error === null ? null : status === 409 ? t('ownerConflict') : t('ownerNotEligible');
+
+  const confirm = () => {
+    if (target === null) return;
+    transfer.mutate(
+      {
+        schoolDocumentId,
+        ownerDocumentId: target.documentId,
+        expectedOwnerDocumentId: ownerDocumentId,
+      },
+      { onSuccess: () => setTarget(null) },
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="max-w-2xl text-sm text-body">{t('adminsNote')}</p>
+      {ownerDocumentId === null ? (
+        <Alert variant="warning" title={t('ownerNone')}>
+          {t('ownerNoneDescription')}
+        </Alert>
+      ) : null}
+      {errorMessage === null ? null : (
+        <Alert variant="error" title={t('errorTitle')}>
+          {errorMessage}
+        </Alert>
+      )}
+      <OpsStaffUsersTable
+        schoolDocumentId={schoolDocumentId}
+        role="school_admin"
+        enabled={active}
+        emptyTitle={t('adminsEmptyTitle')}
+        emptyDescription={t('adminsEmptyDescription')}
+        ownership={{
+          ownerDocumentId,
+          onMakeOwner: (row) => {
+            transfer.reset();
+            setTarget(row);
+          },
+          pendingDocumentId: transfer.isPending ? (target?.documentId ?? null) : null,
+        }}
+      />
+
+      <Dialog open={target !== null} onOpenChange={(open) => (open ? null : setTarget(null))}>
+        <DialogContent data-slot="ops-make-owner-dialog">
+          <DialogHeader>
+            <DialogTitle>
+              {t('makeOwnerConfirmTitle', {
+                name: target?.display_name ?? target?.email ?? '',
+              })}
+            </DialogTitle>
+            <DialogDescription>{t('makeOwnerConfirmBody')}</DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={() => setTarget(null)}>
+              {t('makeOwnerCancel')}
+            </Button>
+            <Button type="button" onClick={confirm} disabled={transfer.isPending}>
+              {t('makeOwnerConfirmAction')}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
 

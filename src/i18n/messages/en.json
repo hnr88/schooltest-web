@@ -3951,7 +3951,19 @@
       "retry": "Try again",
       "columnSpecialty": "Specialty",
       "columnLastActive": "Last active",
-      "lastActiveUnavailable": "unavailable"
+      "lastActiveUnavailable": "unavailable",
+      "columnOwnership": "Ownership",
+      "ownerBadge": "Owner",
+      "makeOwner": "Make owner",
+      "makeOwnerConfirmTitle": "Make {name} the owner of this school?",
+      "makeOwnerConfirmBody": "A school has exactly one owner. The current owner keeps their administrator account and their classes — only ownership moves.",
+      "makeOwnerConfirmAction": "Make owner",
+      "makeOwnerCancel": "Cancel",
+      "ownerNone": "No owner set",
+      "ownerNoneDescription": "This school predates the ownership record and had more than one administrator, so no owner was assigned automatically. Choose one explicitly.",
+      "ownerConflict": "Ownership changed since this page loaded. Refresh the directory and confirm again.",
+      "ownerNotEligible": "The new owner must be an active administrator of this school.",
+      "ownerTransferred": "Ownership transferred."
     },
     "staffInvitations": {
       "inviteRoleLabel": "Role",

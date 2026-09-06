@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 import { staffRowId, type StaffUserRow } from '@schooltest/ops-contracts';
 
-import { Badge } from '@/modules/design-system';
+import { Badge, Button } from '@/modules/design-system';
 import {
   DIRECTORY_ALL,
   OpsDirectoryTable,
@@ -47,6 +47,7 @@ export function OpsStaffUsersTable({
   emptyTitle,
   emptyDescription,
   classCounts,
+  ownership,
 }: OpsStaffUsersTableProps) {
   const t = useTranslations('Ops.schoolTables');
   const format = useFormatter();
@@ -124,8 +125,35 @@ export function OpsStaffUsersTable({
           </Badge>
         ),
       },
+      // C-OPS-PORTAL-027 — present only when the caller supplies `ownership`,
+      // so the Teachers tab does not grow a column for something a teacher can
+      // never be. A SUSPENDED admin is shown without a button rather than with
+      // a disabled one: the server refuses a blocked target, and offering a
+      // control that is guaranteed to fail is worse than not offering it.
+      ...(ownership
+        ? [
+            {
+              key: 'ownership',
+              header: t('columnOwnership'),
+              cell: (row: StaffUserRow) =>
+                ownership.ownerDocumentId === row.documentId ? (
+                  <Badge variant="accent">{t('ownerBadge')}</Badge>
+                ) : row.blocked ? null : (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    disabled={ownership.pendingDocumentId !== null}
+                    onClick={() => ownership.onMakeOwner(row)}
+                  >
+                    {t('makeOwner')}
+                  </Button>
+                ),
+            },
+          ]
+        : []),
     ],
-    [classCounts, format, t],
+    [classCounts, format, ownership, t],
   );
 
   return (

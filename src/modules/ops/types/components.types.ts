@@ -1,4 +1,4 @@
-import type { SchoolDetail, StaffUserRole, SchoolsListRow } from '@schooltest/ops-contracts';
+import type { SchoolDetail, StaffUserRole, StaffUserRow, SchoolsListRow } from '@schooltest/ops-contracts';
 
 import type { FormWindow, OpsForm } from '@/modules/ops/schemas/form-window.schema';
 import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
@@ -137,6 +137,20 @@ export interface OpsSchoolTablesProps {
   school: SchoolDetail;
 }
 
+/**
+ * C-OPS-PORTAL-027 (task 17) — the Make owner affordance on the admins table.
+ *
+ * Passed only by the Admins tab: teachers can never own a school, so the
+ * Teachers tab omits it and the column does not render there at all.
+ */
+export interface OpsStaffOwnership {
+  /** The school's current owner, or null for an ambiguous legacy school. */
+  ownerDocumentId: string | null;
+  onMakeOwner: (row: StaffUserRow) => void;
+  /** The row whose transfer is in flight, so only that button shows pending. */
+  pendingDocumentId: string | null;
+}
+
 /** C-OPS-PORTAL-015 — the shared Admins/Teachers directory table (OPS-025). */
 export interface OpsStaffUsersTableProps {
   schoolDocumentId: string;
@@ -146,4 +160,6 @@ export interface OpsStaffUsersTableProps {
   emptyDescription: string;
   /** Class counts keyed by teacher documentId; omitted hides the column. */
   classCounts?: Record<string, number>;
+  /** Omitted hides the ownership column entirely. */
+  ownership?: OpsStaffOwnership;
 }
