@@ -1,4 +1,4 @@
-import { runSql } from './auth-db';
+import { UNRESOLVED_FIXTURE_ID, runSql } from './auth-db';
 
 /**
  * Resolve NON-CLASS seeded fixtures by their stable natural key.
@@ -38,6 +38,12 @@ function resolve(cacheKey: string, what: string, sql: string, listSql: string): 
   if (cached !== undefined) return cached;
 
   const id = runSql(sql).trim();
+  // An unreachable database is not a missing row: degrade so collection lives,
+  // and leave the loud not-found path below for a query that actually ran.
+  if (id === UNRESOLVED_FIXTURE_ID) {
+    cache.set(cacheKey, UNRESOLVED_FIXTURE_ID);
+    return UNRESOLVED_FIXTURE_ID;
+  }
   if (!id) {
     const present = runSql(listSql) || '(none at all)';
     throw new Error(

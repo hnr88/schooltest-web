@@ -1,4 +1,4 @@
-import { runSql } from './auth-db';
+import { UNRESOLVED_FIXTURE_ID, runSql } from './auth-db';
 
 /**
  * Resolve a seeded fixture class by NAME, never by a pinned documentId.
@@ -50,6 +50,12 @@ export function fixtureClassId(name: string = FIXTURE_CLASS_NAME): string {
 
   const escaped = name.replace(/'/g, "''");
   const id = runSql(`select document_id from classes where name = '${escaped}'`).trim();
+  // An unreachable database is not a missing row: degrade so collection lives,
+  // and leave the loud not-found path below for a query that actually ran.
+  if (id === UNRESOLVED_FIXTURE_ID) {
+    cache.set(name, UNRESOLVED_FIXTURE_ID);
+    return UNRESOLVED_FIXTURE_ID;
+  }
   if (!id) {
     const present = runSql('select name from classes order by name') || '(no classes at all)';
     throw new Error(

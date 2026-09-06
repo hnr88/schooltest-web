@@ -48,8 +48,65 @@ function literal(value: string): string {
   return `'${value.replace(/'/g, "''")}'`;
 }
 
-/** Run one SQL statement through psql; returns trimmed tuples-only output. */
-export function runSql(sql: string): string {
+/**
+ * What `runSql` yields when the database cannot be reached AT ALL — no `psql`
+ * client and no usable container — as distinct from a query that ran and
+ * matched nothing.
+ *
+ * Returning a marker rather than throwing is what keeps `--list` alive. Roughly
+ * thirty specs resolve fixtures at IMPORT time, and Playwright evaluates every
+ * spec module during collection, so one unreachable database otherwise collects
+ * zero tests for the whole suite. The value is deliberately not a valid
+ * documentId: nothing can accidentally pass with it, and any failure message
+ * carrying it names its own cause. It is the opposite of a pinned id — it
+ * matches no row by construction.
+ *
+ * A query that RUNS and returns nothing still yields '', so every existing
+ * "seed row not found" path stays exactly as loud as it was.
+ */
+export const UNRESOLVED_FIXTURE_ID = '__e2e-db-unavailable__';
+
+/** Raised by callers that need a real value and got the marker instead. */
+export class DatabaseUnavailableError extends Error {
+  constructor() {
+    super(
+      '[e2e] dev database unreachable: no `psql` on PATH and no usable postgres container. ' +
+        `Expected ${apiEnv('DATABASE_NAME')} on ${apiEnv('DATABASE_HOST')}:${apiEnv('DATABASE_PORT')}. ` +
+        'Start the dev database, install a psql client, or set E2E_PG_CONTAINER.',
+    );
+    this.name = 'DatabaseUnavailableError';
+  }
+}
+
+/** Marker in, loud failure out — for run-time callers that need a real value. */
+function requireDatabase(value: string): string {
+  if (value === UNRESOLVED_FIXTURE_ID) throw new DatabaseUnavailableError();
+  return value;
+}
+
+const containerChecked = new Map<string, boolean>();
+
+/**
+ * Whether a named container exists, probed once. Checking BEFORE running the
+ * query is what keeps a real SQL error a real SQL error: an absent container is
+ * answered here, so anything `docker exec` throws later is the database talking.
+ */
+function containerAvailable(name: string): boolean {
+  const cached = containerChecked.get(name);
+  if (cached !== undefined) return cached;
+  let present: boolean;
+  try {
+    execFileSync('docker', ['inspect', '--type=container', name], { stdio: 'ignore' });
+    present = true;
+  } catch {
+    present = false;
+  }
+  containerChecked.set(name, present);
+  return present;
+}
+
+/** Raw executor: the marker when unreachable, otherwise psql's own outcome. */
+function execSql(sql: string): string {
   const args = [
     '-h',
     apiEnv('DATABASE_HOST'),
@@ -73,10 +130,15 @@ export function runSql(sql: string): string {
     // Hosts without a psql client (st-mvp-pivot sandbox) reach the same dev
     // database through the compose postgres container's own psql instead.
     if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
-    const container = apiEnv('DATABASE_PORT') === '5540' ? 'schooltest-api-st1-postgres' : '';
-    if (!container) throw error;
+    // Overridable: the compose project name is not universal, so the historic
+    // default does not exist on every host, and an absent container must never
+    // read as "the query ran and failed".
+    const container =
+      process.env.E2E_PG_CONTAINER ??
+      (apiEnv('DATABASE_PORT') === '5540' ? 'schooltest-api-st1-postgres' : '');
+    if (!container || !containerAvailable(container)) return UNRESOLVED_FIXTURE_ID;
     return execFileSync(
-      'docker',
+        'docker',
       [
         'exec',
         '-e',
@@ -103,6 +165,48 @@ export function runSql(sql: string): string {
   }
 }
 
+/** Cached per process — a schema does not appear mid-run. */
+let provisioned: boolean | null = null;
+
+/**
+ * Whether the schooltest schema exists at all, probed once.
+ *
+ * A reachable but UNPROVISIONED database — a fresh container Strapi has not
+ * booted against yet — fails every fixture query with `relation "classes" does
+ * not exist`. That is the same condition as an absent database for anything
+ * resolving fixtures, and it must degrade rather than abort collection.
+ *
+ * Probed with `to_regclass` rather than by matching error text, so a genuine
+ * typo against a PROVISIONED database still throws its real psql error.
+ */
+function databaseProvisioned(): boolean {
+  if (provisioned === null) {
+    provisioned = execSql("select to_regclass('public.classes') is not null") === 't';
+  }
+  return provisioned;
+}
+
+/**
+ * Run one SQL statement through psql; returns trimmed tuples-only output.
+ *
+ * Yields the marker when the database is unreachable or unprovisioned; a query
+ * that actually runs keeps every outcome it has today, empty result included.
+ */
+export function runSql(sql: string): string {
+  if (!databaseProvisioned()) return UNRESOLVED_FIXTURE_ID;
+  return execSql(sql);
+}
+
+/**
+ * Whether fixture resolution is impossible — no database, or no schema in it.
+ *
+ * Exported for callers that would rather skip than fail; nothing in this file
+ * depends on it.
+ */
+export function databaseUnavailable(): boolean {
+  return !databaseProvisioned();
+}
+
 /**
  * C-AUTH-RESET expiry branch: age the issuance row past the 30-min TTL by
  * shifting its created_at back 31 minutes. Returns the number of rows moved
@@ -115,7 +219,7 @@ export function backdateResetIssuance(tokenHash: string): number {
        where token_hash = ${literal(tokenHash)} returning 1
      ) select count(*) from moved`,
   );
-  return Number.parseInt(moved, 10);
+  return Number.parseInt(requireDatabase(moved), 10);
 }
 
 /** Test hygiene: drop the budget rows a throwaway e2e email created (afterAll). */
@@ -125,7 +229,7 @@ export function deleteAuthEmailRows(email: string): number {
        delete from auth_email_requests where email = ${literal(email.toLowerCase())} returning 1
      ) select count(*) from gone`,
   );
-  return Number.parseInt(deleted, 10);
+  return Number.parseInt(requireDatabase(deleted), 10);
 }
 
 /** up_users.reset_password_token for one user ('' → null); user must exist. */
@@ -134,7 +238,7 @@ export function userResetToken(email: string): string | null {
     `select coalesce(reset_password_token, '') from up_users
      where email = ${literal(email.toLowerCase())}`,
   );
-  return out || null;
+  return requireDatabase(out) || null;
 }
 
 /** Linked role type for one user (D20: the parent grant lands post-response). */
@@ -145,5 +249,5 @@ export function userRoleType(email: string): string | null {
      left join up_roles r on r.id = l.role_id
      where u.email = ${literal(email.toLowerCase())}`,
   );
-  return out || null;
+  return requireDatabase(out) || null;
 }
