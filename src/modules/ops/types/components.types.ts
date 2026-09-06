@@ -133,6 +133,8 @@ export interface OpsEditClassDialogProps {
 
 export interface OpsSchoolTablesProps {
   schoolDocumentId: string;
+  /** The detail row, for the Overview panel's profile fields. */
+  school: SchoolDetail;
 }
 
 /** C-OPS-PORTAL-015 — the shared Admins/Teachers directory table (OPS-025). */

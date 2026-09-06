@@ -3460,7 +3460,8 @@
         "admins": "ผู้ดูแลระบบ",
         "teachers": "ครู",
         "classes": "ชั้นเรียน",
-        "students": "นักเรียน"
+        "students": "นักเรียน",
+        "overview": "Overview"
       },
       "adminsNote": "ผู้ดูแลระบบของโรงเรียนนี้ หากต้องการเชิญผู้ดูแลระบบ ให้ใช้แผงเชิญ Onboard School บนแท็บภาพรวม ไดเรกทอรีนี้ไม่แสดงฟิลด์การเข้าสู่ระบบครั้งล่าสุด (ระบบไม่บันทึก)",
       "adminsEmptyTitle": "ไม่มีผู้ดูแลระบบสำหรับโรงเรียนนี้",
@@ -3488,7 +3489,15 @@
       "statusSuspended": "ถูกระงับ",
       "notServed": "ไม่ให้บริการ",
       "errorTitle": "ไม่สามารถโหลด",
-      "errorDescription": "ไม่สามารถอ่านไดเรกทอรีได้ โปรดลองอีกครั้ง"
+      "errorDescription": "ไม่สามารถอ่านไดเรกทอรีได้ โปรดลองอีกครั้ง",
+      "fieldSuburb": "Suburb",
+      "fieldState": "State",
+      "fieldSector": "Sector",
+      "fieldContact": "Primary contact",
+      "fieldEmail": "Email",
+      "fieldPhone": "Phone",
+      "fieldLastActivity": "Last activity",
+      "unknown": "unavailable"
     }
   },
   "RunSheet": {

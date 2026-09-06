@@ -3469,7 +3469,8 @@
         "admins": "Quản trị viên",
         "teachers": "Giáo viên",
         "classes": "Lớp học",
-        "students": "Học sinh"
+        "students": "Học sinh",
+        "overview": "Overview"
       },
       "adminsNote": "Quản trị viên trường của trường này. Để mời quản trị viên, hãy dùng bảng mời Onboard School trên tab Tổng quan. Danh bạ này không hiển thị trường đăng nhập lần cuối (hệ thống không lưu).",
       "adminsEmptyTitle": "Không có quản trị viên cho trường này",
@@ -3497,7 +3498,15 @@
       "statusSuspended": "Bị đình chỉ",
       "notServed": "Không được cung cấp",
       "errorTitle": "Không thể tải",
-      "errorDescription": "Không thể đọc danh bạ. Hãy thử lại."
+      "errorDescription": "Không thể đọc danh bạ. Hãy thử lại.",
+      "fieldSuburb": "Suburb",
+      "fieldState": "State",
+      "fieldSector": "Sector",
+      "fieldContact": "Primary contact",
+      "fieldEmail": "Email",
+      "fieldPhone": "Phone",
+      "fieldLastActivity": "Last activity",
+      "unknown": "unavailable"
     }
   },
   "RunSheet": {

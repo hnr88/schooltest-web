@@ -3460,7 +3460,8 @@
         "admins": "Pentadbir",
         "teachers": "Guru",
         "classes": "Kelas",
-        "students": "Murid"
+        "students": "Murid",
+        "overview": "Overview"
       },
       "adminsNote": "Pentadbir sekolah bagi sekolah ini. Untuk menjemput pentadbir, gunakan panel jemputan Onboard School pada tab Gambaran Keseluruhan. Direktori ini tidak menyenaraikan medan log masuk terakhir (sistem tidak merekodkannya).",
       "adminsEmptyTitle": "Tiada pentadbir untuk sekolah ini",
@@ -3488,7 +3489,15 @@
       "statusSuspended": "Digantung",
       "notServed": "Tidak disediakan",
       "errorTitle": "Tidak dapat memuat",
-      "errorDescription": "Direktori tidak dapat dibaca. Cuba lagi."
+      "errorDescription": "Direktori tidak dapat dibaca. Cuba lagi.",
+      "fieldSuburb": "Suburb",
+      "fieldState": "State",
+      "fieldSector": "Sector",
+      "fieldContact": "Primary contact",
+      "fieldEmail": "Email",
+      "fieldPhone": "Phone",
+      "fieldLastActivity": "Last activity",
+      "unknown": "unavailable"
     }
   },
   "RunSheet": {

@@ -156,7 +156,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
       <OpsFormWindow documentId={documentId} />
       <OpsSittingRecovery schoolDocumentId={documentId} />
       <OpsStudentImport documentId={documentId} />
-      <OpsSchoolTables schoolDocumentId={documentId} />
+      <OpsSchoolTables schoolDocumentId={documentId} school={detail} />
       <OpsTeachersDialog
         schoolDocumentId={documentId}
         open={teachersOpen}

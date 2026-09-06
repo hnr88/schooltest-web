@@ -3460,7 +3460,8 @@
         "admins": "관리자",
         "teachers": "교사",
         "classes": "클래스",
-        "students": "학생"
+        "students": "학생",
+        "overview": "Overview"
       },
       "adminsNote": "이 학교의 학교 관리자. 관리자 초대는 개요 탭의 Onboard School 초대 패널을 사용하세요. 이 디렉터리는 마지막 로그인 필드를 표시하지 않습니다(시스템이 기록하지 않음).",
       "adminsEmptyTitle": "이 학교에 관리자 없음",
@@ -3488,7 +3489,15 @@
       "statusSuspended": "정지",
       "notServed": "제공 안 됨",
       "errorTitle": "불러올 수 없음",
-      "errorDescription": "디렉터리를 읽을 수 없습니다. 다시 시도하세요."
+      "errorDescription": "디렉터리를 읽을 수 없습니다. 다시 시도하세요.",
+      "fieldSuburb": "Suburb",
+      "fieldState": "State",
+      "fieldSector": "Sector",
+      "fieldContact": "Primary contact",
+      "fieldEmail": "Email",
+      "fieldPhone": "Phone",
+      "fieldLastActivity": "Last activity",
+      "unknown": "unavailable"
     }
   },
   "RunSheet": {

@@ -3540,7 +3540,8 @@
         "admins": "管理员",
         "teachers": "教师",
         "classes": "班级",
-        "students": "学生"
+        "students": "学生",
+        "overview": "Overview"
       },
       "adminsNote": "该校的学校管理员。邀请管理员请使用概览标签页上的 Onboard School 邀请面板。此处不显示最后登录字段（系统未记录）。",
       "adminsEmptyTitle": "该校没有管理员",
@@ -3568,7 +3569,15 @@
       "statusSuspended": "已停用",
       "notServed": "未提供",
       "errorTitle": "无法加载",
-      "errorDescription": "无法读取目录，请重试。"
+      "errorDescription": "无法读取目录，请重试。",
+      "fieldSuburb": "Suburb",
+      "fieldState": "State",
+      "fieldSector": "Sector",
+      "fieldContact": "Primary contact",
+      "fieldEmail": "Email",
+      "fieldPhone": "Phone",
+      "fieldLastActivity": "Last activity",
+      "unknown": "unavailable"
     }
   },
   "RunSheet": {

@@ -3843,7 +3843,8 @@
         "admins": "Admins",
         "teachers": "Teachers",
         "classes": "Classes",
-        "students": "Students"
+        "students": "Students",
+        "overview": "Overview"
       },
       "adminsNote": "School administrators for this school. To invite an admin, use the Onboard School invitation panel on the Overview tab. This directory lists no last-login field (the system tracks none).",
       "adminsEmptyTitle": "No admins for this school",
@@ -3871,7 +3872,15 @@
       "statusSuspended": "Suspended",
       "notServed": "Not served",
       "errorTitle": "Could not load",
-      "errorDescription": "The directory could not be read. Try again."
+      "errorDescription": "The directory could not be read. Try again.",
+      "fieldSuburb": "Suburb",
+      "fieldState": "State",
+      "fieldSector": "Sector",
+      "fieldContact": "Primary contact",
+      "fieldEmail": "Email",
+      "fieldPhone": "Phone",
+      "fieldLastActivity": "Last activity",
+      "unknown": "unavailable"
     }
   },
   "RunSheet": {
