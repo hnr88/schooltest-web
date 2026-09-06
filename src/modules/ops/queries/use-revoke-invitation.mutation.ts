@@ -1,5 +1,7 @@
 'use client';
 
+import { z } from 'zod';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
@@ -25,6 +27,33 @@ export function useRevokeInvitationMutation() {
     onSuccess: async (_data, schoolDocumentId) => {
       await queryClient.invalidateQueries({ queryKey: schoolInvitationQueryKey(schoolDocumentId) });
       await queryClient.invalidateQueries({ queryKey: ['ops', 'schools'] });
+    },
+  });
+}
+
+/* --- task 15: the STAFF invitation lifecycle (ops) ----------------------- */
+
+/**
+ * C-OPSI-02 — POST /api/ops/invitations/:documentId/revoke. Offered on
+ * INVITATION ROWS only: an accepted invitation is refused by the server
+ * (remove the account instead - task 16), and a revoked row stays revoked.
+ */
+export async function revokeStaffInvitation(
+  invitationDocumentId: string,
+): Promise<{ documentId: string; status: string }> {
+  const res = await strapi.post<{ data: unknown }>(
+    `/api/ops/invitations/${invitationDocumentId}/revoke`,
+    {},
+  );
+  return z.strictObject({ documentId: z.string(), status: z.string() }).parse(res.data.data);
+}
+
+export function useStaffRevokeInvitationMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: revokeStaffInvitation,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['ops', 'invitations'] });
     },
   });
 }

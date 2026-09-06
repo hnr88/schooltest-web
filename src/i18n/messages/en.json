@@ -3978,7 +3978,9 @@
       "inviteNotSentTitle": "Invitation created, but not sent",
       "inviteNotSentBody": "The invitation for {email} was saved but the email could not be sent. Resend it from the list below — do not invite them again.",
       "inviteErrorTitle": "The invitation was not created",
-      "inviteErrorBody": "Nothing was saved. Check the address and try again."
+      "inviteErrorBody": "Nothing was saved. Check the address and try again.",
+      "staffActionResend": "Resend",
+      "staffActionRevoke": "Revoke"
     }
   },
   "RunSheet": {

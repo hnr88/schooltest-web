@@ -1,5 +1,7 @@
 'use client';
 
+import { z } from 'zod';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
@@ -24,6 +26,36 @@ export function useResendInvitationMutation() {
     onSuccess: async (_data, schoolDocumentId) => {
       await queryClient.invalidateQueries({ queryKey: schoolInvitationQueryKey(schoolDocumentId) });
       await queryClient.invalidateQueries({ queryKey: ['ops', 'schools'] });
+    },
+  });
+}
+
+/* --- task 15: the STAFF invitation lifecycle (ops) ----------------------- */
+
+/**
+ * C-OPSI-03 — POST /api/ops/invitations/:documentId/resend. The server rotates
+ * the token in place (invalidating the previous link), re-arms the 14-day
+ * expiry and never returns the new token; a persisted cooldown answers 429
+ * with Retry-After, which the axios boundary surfaces WITHOUT retrying.
+ */
+export async function resendStaffInvitation(
+  invitationDocumentId: string,
+): Promise<{ documentId: string; expires_at: string }> {
+  const res = await strapi.post<{ data: unknown }>(
+    `/api/ops/invitations/${invitationDocumentId}/resend`,
+    {},
+  );
+  return z
+    .strictObject({ documentId: z.string(), expires_at: z.string() })
+    .parse(res.data.data);
+}
+
+export function useStaffResendInvitationMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: resendStaffInvitation,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['ops', 'invitations'] });
     },
   });
 }
