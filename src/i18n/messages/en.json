@@ -3448,6 +3448,7 @@
       "resend": "Resend invitation",
       "revoke": "Revoke invitation",
       "resendSuccess": "A new invitation was sent to {email}",
+      "resendCooldown": "Recently sent - you can resend in {seconds}s.",
       "resendError": "We could not resend the invitation. Try again.",
       "revokeSuccess": "Invitation revoked",
       "revokeError": "We could not revoke the invitation. Try again.",
