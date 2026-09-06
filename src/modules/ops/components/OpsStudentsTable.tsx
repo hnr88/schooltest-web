@@ -11,6 +11,7 @@ import {
   type DirectoryLabels,
   type DirectoryMeta,
   type DirectoryQueryStatus,
+  type DirectoryRowAction,
   type DirectoryStateApi,
 } from '@/modules/ops/directory';
 import { noValueIfMissing } from '@/modules/ops/lib/ops-class-detail.helpers';
@@ -30,6 +31,7 @@ export interface OpsStudentsTableProps {
   rows: readonly OpsStudentRow[];
   meta?: DirectoryMeta;
   filters: readonly DirectoryFilterDef[];
+  rowActions?: (row: OpsStudentRow) => readonly DirectoryRowAction<OpsStudentRow>[];
 }
 
 // The C-OPS-PORTAL-035 roster grid rendered THROUGH the task-04 directory kit:
@@ -38,7 +40,7 @@ export interface OpsStudentsTableProps {
 // cell is served data — a student with no class, no year, no ACARA phase or no
 // result renders the shared "no value" dash rather than an invented figure,
 // and `percentage === 0` is a real score that renders as "0%".
-export function OpsStudentsTable({ state, query, rows, meta, filters }: OpsStudentsTableProps) {
+export function OpsStudentsTable({ state, query, rows, meta, filters, rowActions }: OpsStudentsTableProps) {
   const t = useTranslations('Ops.schoolTables');
   const format = useFormatter();
 
@@ -116,6 +118,7 @@ export function OpsStudentsTable({ state, query, rows, meta, filters }: OpsStude
       meta={meta}
       filters={filters}
       sorts={[]}
+      rowActions={rowActions}
       columns={columns}
       labels={labels}
     />

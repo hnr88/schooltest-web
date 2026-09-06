@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   OPS_STUDENT_STATUSES,
@@ -8,6 +8,7 @@ import {
 } from '@schooltest/ops-contracts';
 
 import { useOpsDirectoryState } from '@/modules/ops/directory';
+import { OpsStudentProfilePanel } from '@/modules/ops/components/OpsStudentProfilePanel';
 import { OpsStudentsTable } from '@/modules/ops/components/OpsStudentsTable';
 import {
   OPS_STUDENT_YEAR_LEVELS,
@@ -31,6 +32,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   const t = useTranslations('Ops.schoolTables');
   const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const classOptions = opsStudentClassOptions(teachers.data?.data ?? []);
+  const [profileDocumentId, setProfileDocumentId] = useState<string | null>(null);
 
   const filters = useMemo<DirectoryFilterDef[]>(
     () => [
@@ -87,12 +89,21 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   const students = useStudentsListQuery(schoolDocumentId, query, true);
 
   return (
+    <div className="flex flex-col gap-4">
     <OpsStudentsTable
       state={state}
       filters={filters}
       rows={students.data?.data ?? []}
       meta={students.data?.meta.pagination}
       query={students}
+      rowActions={(row) => [
+        { label: t('opsProfileOpen'), onSelect: () => setProfileDocumentId(row.documentId) },
+      ]}
     />
+      <OpsStudentProfilePanel
+        schoolDocumentId={schoolDocumentId}
+        studentDocumentId={profileDocumentId}
+      />
+    </div>
   );
 }
