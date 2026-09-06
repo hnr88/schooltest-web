@@ -45,6 +45,24 @@ export const adminInvitationResultSchema = z.strictObject({
   invite_url: z.string(),
 });
 
+/**
+ * The VERSIONED staff-invite 201. Two differences from the legacy shape above,
+ * both deliberate:
+ *  - `delivery` is the server's REAL send outcome. Provider acceptance means
+ *    sent, never delivered; `failed` means the invitation exists but no mail
+ *    left, and the operator must be told so rather than shown a tick.
+ *  - no `invite_url`. The token IS the credential, so a response that carries
+ *    it puts it in every log and analytics hop. Resending goes by documentId.
+ */
+export const staffInviteResultSchema = z.strictObject({
+  documentId: z.string(),
+  email: z.email(),
+  status: z.literal('invited'),
+  expires_at: z.string(),
+  delivery: z.enum(['sent', 'failed']),
+});
+export type StaffInviteResult = z.infer<typeof staffInviteResultSchema>;
+
 /** C-SCH-06 200. */
 export const revokeInvitationResultSchema = z.strictObject({
   documentId: z.string(),
