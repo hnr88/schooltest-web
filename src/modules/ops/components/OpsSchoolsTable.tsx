@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import type { SchoolsListRow } from '@schooltest/ops-contracts';
 
 import { useAuthStore } from '@/modules/auth';
+import { Badge } from '@/modules/design-system';
 import {
   DIRECTORY_ALL,
   OpsDirectoryTable,
@@ -16,6 +17,11 @@ import {
   type DirectoryFilterDef,
 } from '@/modules/ops/directory';
 import { OpsSchoolsPills } from '@/modules/ops/components/OpsSchoolsPills';
+import {
+  PORTAL_STATUS_VARIANTS,
+  portalPlanLabelKey,
+  portalStatusLabelKey,
+} from '@/modules/ops/lib/portal-lifecycle.lib';
 import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
 import { useSchoolsListQuery } from '@/modules/ops/queries/use-schools-list.query';
 
@@ -152,12 +158,17 @@ export function OpsSchoolsTable() {
       {
         key: 'portal_status',
         header: t('columnStatus'),
-        cell: (school) => t(`portalStatus.${school.portal_status}`),
+        // Same mapping the detail page uses — one status, one label, one tone.
+        cell: (school) => (
+          <Badge variant={PORTAL_STATUS_VARIANTS[school.portal_status]}>
+            {t(portalStatusLabelKey(school.portal_status))}
+          </Badge>
+        ),
       },
       {
         key: 'portal_plan',
         header: t('columnPlan'),
-        cell: (school) => t(`portalPlan.${school.portal_plan}`),
+        cell: (school) => t(portalPlanLabelKey(school.portal_plan)),
       },
       {
         key: 'portal_teacher_count',

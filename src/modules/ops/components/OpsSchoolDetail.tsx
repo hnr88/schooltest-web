@@ -10,27 +10,44 @@ import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
 import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
 import { OpsSchoolPlanPanel } from '@/modules/ops/components/OpsSchoolPlanPanel';
+import { OpsSchoolSuspendPanel } from '@/modules/ops/components/OpsSchoolSuspendPanel';
 import { OpsSchoolTables } from '@/modules/ops/components/OpsSchoolTables';
 import { OpsSittingRecovery } from '@/modules/ops/components/OpsSittingRecovery';
 import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
 import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
-import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
-import { ACCOUNT_STATUS_VARIANTS, ONBOARDING_STATUS_VARIANTS } from '@/modules/school-admin';
+import {
+  PORTAL_STATUS_VARIANTS,
+  portalLifecycleBanner,
+  portalPlanLabelKey,
+  portalStatusLabelKey,
+} from '@/modules/ops/lib/portal-lifecycle.lib';
+import { useSchoolDetailQuery } from '@/modules/ops/queries/use-school-detail.query';
+import { ONBOARDING_STATUS_VARIANTS } from '@/modules/school-admin';
 
 import type { OpsSchoolDetailProps } from '@/modules/ops/types/components.types';
+import type { OpsSchool } from '@/modules/ops/types/ops.types';
 
+// OPS-012 (C-OPS-PORTAL-002): the page now reads GET /api/ops/schools/:documentId
+// directly. It previously pulled the WHOLE directory and did an in-memory
+// `.find()` on documentId, so a deep link paid for every school in the tenant
+// and — after OPS-011 paginated the directory — any school outside page 1
+// rendered as "not found" although it existed.
+//
 // Ops console school detail (task 66, st-mvp-pivot): one C-OPS-01 row —
 // lifecycle chips plus the live teacher/class/student/result counts. The
 // W8 tasks (67-70) hang the deeper management surfaces off this page; the
 // Teachers card opens the OPS-teacher-details staff directory (064).
 export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   const t = useTranslations('Ops.detail');
+  // The lifecycle words live in ONE catalogue (Ops.schools), so the list and
+  // this page cannot drift apart in wording either.
+  const tSchools = useTranslations('Ops.schools');
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
-  const schoolsQuery = useOpsSchoolsQuery(hydrated && Boolean(token));
+  const schoolQuery = useSchoolDetailQuery(documentId, hydrated && Boolean(token));
   const [teachersOpen, setTeachersOpen] = useState(false);
 
-  if (schoolsQuery.isPending) {
+  if (schoolQuery.isPending) {
     return (
       <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         <Skeleton className="h-9 w-1/3" />
@@ -40,7 +57,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
     );
   }
 
-  if (schoolsQuery.isError) {
+  if (schoolQuery.isError) {
     return (
       <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         <Alert
@@ -51,8 +68,8 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
               type="button"
               variant="outline"
               size="sm"
-              loading={schoolsQuery.isFetching}
-              onClick={() => schoolsQuery.refetch()}
+              loading={schoolQuery.isFetching}
+              onClick={() => schoolQuery.refetch()}
             >
               {t('retry')}
             </Button>
@@ -64,9 +81,30 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
     );
   }
 
-  const school = schoolsQuery.data.find((row) => row.documentId === documentId);
+  const detail = schoolQuery.data;
 
-  if (!school) {
+  // The three identity fields are NOT NULL in the school content-type, so a row
+  // missing them is a broken record rather than a renderable school. Narrowing
+  // here keeps the child components on their existing non-null OpsSchool
+  // contract without inventing a substitute name or lifecycle value.
+  const school: OpsSchool | null =
+    detail && detail.name !== null && detail.account_status !== null && detail.onboarding_status !== null
+      ? {
+          documentId: detail.documentId,
+          name: detail.name,
+          account_status: detail.account_status,
+          onboarding_status: detail.onboarding_status,
+          plan: detail.plan,
+          teacher_count: detail.teacher_count,
+          class_count: detail.class_count,
+          student_count: detail.student_count,
+          results_count: detail.results_count,
+        }
+      : null;
+
+  const banner = detail === undefined ? null : portalLifecycleBanner(detail.portal_status);
+
+  if (!school || detail === undefined) {
     return (
       <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         <Alert variant="error" title={t('notFoundTitle')}>
@@ -90,19 +128,30 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
           {t('backToSchools')}
         </Link>
         <h1 className="text-2xl font-semibold text-foreground">{school.name}</h1>
+        {banner === null ? null : (
+          <Alert variant={banner.tone} title={t(banner.titleKey)}>
+            {t(banner.bodyKey)}
+          </Alert>
+        )}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-          <Badge variant={ACCOUNT_STATUS_VARIANTS[school.account_status]}>
-            {t(`accountStatus.${school.account_status}`)}
+          {/* The portal lifecycle, through the mapping the directory row also
+              uses — so a school reads the same on both screens. The legacy
+              onboarding chip stays beside it: account_status and
+              onboarding_status are independent and neither is replaced. */}
+          <Badge variant={PORTAL_STATUS_VARIANTS[detail.portal_status]}>
+            {tSchools(portalStatusLabelKey(detail.portal_status))}
           </Badge>
+          <Badge variant="outline">{tSchools(portalPlanLabelKey(detail.portal_plan))}</Badge>
           <Badge variant={ONBOARDING_STATUS_VARIANTS[school.onboarding_status]}>
             {t(`onboardingStatus.${school.onboarding_status}`)}
           </Badge>
+          <OpsSchoolSuspendPanel school={school} enabled={hydrated && Boolean(token)} />
         </div>
         {/* Spec: the Onboard School control sits near the status badges and
             above the summary cards. */}
         <OpsSchoolInvitationPanel documentId={documentId} enabled={hydrated && Boolean(token)} />
       </div>
-      <OpsSchoolCountCards school={school} onTeachersClick={() => setTeachersOpen(true)} />
+      <OpsSchoolCountCards school={detail} onTeachersClick={() => setTeachersOpen(true)} />
       <OpsSchoolPlanPanel documentId={documentId} plan={school.plan} />
       <OpsFormWindow documentId={documentId} />
       <OpsSittingRecovery schoolDocumentId={documentId} />

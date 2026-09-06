@@ -3006,6 +3006,25 @@
         "in_progress": "กำลังดำเนินการ",
         "submitted": "ส่งแล้ว",
         "complete": "เสร็จสมบูรณ์"
+      },
+      "adminsLabel": "Admins",
+      "banner": {
+        "trial": {
+          "title": "Trial",
+          "body": "This school is on a trial. Activate it to keep test windows running once the trial ends."
+        },
+        "pending_setup": {
+          "title": "Setup incomplete",
+          "body": "No admin has accepted the owner invitation yet. Nothing else can be set up until they do."
+        },
+        "suspended": {
+          "title": "This school is suspended",
+          "body": "Staff and students have no access and test windows are paused."
+        },
+        "archived": {
+          "title": "This school is archived",
+          "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
+        }
       }
     },
     "onboard": {

@@ -1,4 +1,4 @@
-import type { StaffUserRole, SchoolsListRow } from '@schooltest/ops-contracts';
+import type { SchoolDetail, StaffUserRole, SchoolsListRow } from '@schooltest/ops-contracts';
 
 import type { FormWindow, OpsForm } from '@/modules/ops/schemas/form-window.schema';
 import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
@@ -80,7 +80,7 @@ export interface OpsTeachersTableRowProps {
 }
 
 export interface OpsSchoolCountCardsProps {
-  school: OpsSchool;
+  school: SchoolDetail;
   /** OPS-teacher-details: clicking the Teachers card opens the directory. */
   onTeachersClick?: () => void;
 }
