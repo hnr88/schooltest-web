@@ -5,7 +5,6 @@ import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
 import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
 import type { SectionTimersMeta, TimerSection } from '@/modules/ops/schemas/section-timers.schema';
 import type { OpsSchool, OpsTeacherRow } from '@/modules/ops/types/ops.types';
-import type { SchoolsFilterState } from '@/modules/ops/lib/schools-filter.lib';
 import type { OpsSchoolAdminInviteMode } from '@/modules/ops/lib/ops-school-admin-invite';
 import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
 import type { SchoolPlan } from '@/modules/school-admin';
@@ -23,6 +22,11 @@ export interface OpsFormWindowProps {
 
 export interface OpsImportCreateTableProps {
   rows: PortalImportPreview['create'];
+}
+
+/** One rendered school row. Kept: the component is still used elsewhere. */
+export interface OpsSchoolRowProps {
+  school: SchoolsListRow;
 }
 
 export interface OpsImportPreviewTablesProps {
@@ -49,30 +53,6 @@ export interface OpsSchoolInvitationPanelProps {
 export interface OpsSchoolPlanPanelProps {
   documentId: string;
   plan: SchoolPlan | null;
-}
-
-export interface OpsSchoolRowProps {
-  /** The C-OPS-PORTAL-001 versioned row (contract types, not the legacy shape). */
-  school: SchoolsListRow;
-}
-
-export interface OpsSchoolsFiltersProps {
-  searchInput: string;
-  onSearchInputChange: (value: string) => void;
-  accountStatus: SchoolsFilterState['accountStatus'];
-  onAccountStatusChange: (value: string) => void;
-  onboardingStatus: SchoolsFilterState['onboardingStatus'];
-  onOnboardingStatusChange: (value: string) => void;
-  state: SchoolsFilterState['state'];
-  onStateChange: (value: string) => void;
-  sector: SchoolsFilterState['sector'];
-  onSectorChange: (value: string) => void;
-  sort: SchoolsFilterState['sort'];
-  onSortChange: (value: string) => void;
-  onClearAll: () => void;
-  showingCount: number;
-  totalCount: number;
-  hasActiveFilters: boolean;
 }
 
 export interface EditState {

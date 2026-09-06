@@ -2937,7 +2937,45 @@
       "filterAll": "Semua",
       "clearFilters": "Kosongkan semua",
       "noMatches": "Tiada sekolah sepadan dengan carian anda.",
-      "showing": "Memaparkan {showing} daripada {total} sekolah"
+      "showing": "Memaparkan {showing} daripada {total} sekolah",
+      "pillAllSchools": "All schools",
+      "filterStatus": "Status",
+      "filterState": "State",
+      "filterStateAll": "All states",
+      "filterSector": "Sector",
+      "filterSectorAll": "All sectors",
+      "filterPlan": "Plan",
+      "filterPlanAll": "All plans",
+      "filterOnboardingAll": "All onboarding states",
+      "sortName": "Name (A-Z)",
+      "sortStudents": "Most students",
+      "sortCreated": "Newest first",
+      "columnStatus": "Status",
+      "columnPlan": "Plan",
+      "columnAdmins": "Admins",
+      "unnamedSchool": "Unnamed school",
+      "actionOpen": "Open school",
+      "actionStatusPage": "Status page",
+      "statusPageUnconfigured": "This release has no status page URL configured.",
+      "emptyNoneTitle": "No schools yet",
+      "emptyNoneDescription": "Create the first school to get started.",
+      "portalStatus": {
+        "active": "Active",
+        "trial": "Trial",
+        "pending_setup": "Pending setup",
+        "suspended": "Suspended",
+        "archived": "Archived"
+      },
+      "portalPlan": {
+        "pilot": "Pilot",
+        "standard": "Standard",
+        "enterprise": "Enterprise"
+      },
+      "sector": {
+        "government": "Government",
+        "non-government": "Non-government",
+        "catholic": "Catholic"
+      }
     },
     "detail": {
       "meta": {

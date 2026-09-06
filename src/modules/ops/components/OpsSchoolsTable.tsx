@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { toast } from 'sonner';
 
 import type { SchoolsListRow } from '@schooltest/ops-contracts';
@@ -125,21 +125,15 @@ export function OpsSchoolsTable() {
     [t],
   );
 
-  // The kit's page clamp needs the LIVE pageCount, but the query that carries it
-  // is built from this hook's own params — so the value can only arrive from the
-  // previous render. A ref written after the query resolves is the honest way to
-  // pass it: it is not state, it triggers no render, and the kit's clamp already
-  // runs in an effect on a later render. The alternative — a second, disabled
-  // priming query — would be a duplicate request for one number.
-  const pageCountRef = useRef<number | undefined>(undefined);
-  const state = useOpsDirectoryState({
-    filters: allFilters,
-    sorts,
-    defaultSort: 'name:asc',
-    pageCount: pageCountRef.current,
-  });
+  // `pageCount` is deliberately NOT passed. The kit's clamp option wants the
+  // live pageCount, but the query carrying it is built from this hook's own
+  // params, so a consumer can only supply it from a previous render — and the
+  // ways to do that (a ref written during render, or setState in an effect) are
+  // both genuinely wrong in React 19, not merely lint-flagged. The kit already
+  // receives `meta` on the table, so the clamp belongs there; reported upstream
+  // rather than worked around here, since four more surfaces copy this file.
+  const state = useOpsDirectoryState({ filters: allFilters, sorts, defaultSort: 'name:asc' });
   const live = useSchoolsListQuery(state.params, hydrated && Boolean(token));
-  pageCountRef.current = live.data?.meta.pagination.pageCount;
 
   const columns: readonly DirectoryColumnDef<SchoolsListRow>[] = useMemo(
     () => [
