@@ -18,6 +18,9 @@ const eslintConfig = [
       // Its bundled support.js/image-slot.js are third-party viewer scripts that
       // trip react/no-deprecated and no-assign-module-variable.
       'dashbaord-design/**',
+      // The OPS-010 visual-reference fixture vendors that same unmodified
+      // support.js plus the React UMD builds; identical third-party scripts.
+      'tests/e2e/ops-portal/reference/**',
       '.qa/**',
     ],
   },
