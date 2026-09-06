@@ -1,60 +1,40 @@
 'use client';
 
 /**
- * Task 04 — the bulk bar: shown only while a selection exists, listing the
- * consumer's bulk actions plus the way out. The actions receive the selected
- * keys and decide their own side effects; the bar never interprets them.
+ * Task 04 — the bulk bar, rendered by the task 05 action kit's OpsBulkBar
+ * (composed, never reimplemented — house rule 1). The bar shows only while a
+ * selection exists; the actions receive the selected targets in page order and
+ * decide their own side effects. The cap notice and the "on this page" wording
+ * come from the shared bar, so every ops surface states selection the same way.
  */
-import { X } from 'lucide-react';
+import { OpsBulkBar } from '@/modules/ops/actions';
 
-import { Button } from '@/modules/design-system';
+import type { DirectoryBulkAction, DirectoryLabels, OpsDirectorySelectionApi } from '../types/ops-directory.types';
 
-import type { DirectoryBulkAction, DirectoryLabels } from '../types/ops-directory.types';
-
-interface OpsDirectoryBulkBarProps {
-  selectedKeys: readonly string[];
+interface OpsDirectoryBulkBarProps<Row> {
+  selection: OpsDirectorySelectionApi<Row>;
   bulkActions: readonly DirectoryBulkAction[];
-  onClear: () => void;
   labels: DirectoryLabels;
 }
 
-export function OpsDirectoryBulkBar({
-  selectedKeys,
+export function OpsDirectoryBulkBar<Row>({
+  selection,
   bulkActions,
-  onClear,
   labels,
-}: OpsDirectoryBulkBarProps) {
+}: OpsDirectoryBulkBarProps<Row>) {
+  if (selection.count === 0) return null;
   return (
-    <div
-      data-slot="ops-directory-bulk-bar"
-      className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-muted/40 px-4 py-2"
-    >
-      <p className="text-sm font-medium" role="status">
-        {labels.selectedCount(selectedKeys.length)}
-      </p>
-      <div className="flex flex-wrap items-center gap-2">
-        {bulkActions.map((action) => (
-          <Button
-            key={action.label}
-            type="button"
-            variant={action.destructive ? 'destructive' : 'outline'}
-            size="sm"
-            onClick={() => action.onRun(selectedKeys)}
-          >
-            {action.label}
-          </Button>
-        ))}
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          aria-label={labels.clearSelection}
-          onClick={onClear}
-        >
-          <X aria-hidden="true" className="size-4" />
-          {labels.clearSelection}
-        </Button>
-      </div>
-    </div>
+    <OpsBulkBar
+      count={selection.count}
+      atCap={selection.atCap}
+      entityLabel={labels.selectedEntityNoun}
+      actions={bulkActions.map((action) => ({
+        id: action.label,
+        label: action.label,
+        destructive: action.destructive,
+        onSelect: () => action.onRun(selection.targets),
+      }))}
+      onClear={selection.clear}
+    />
   );
 }

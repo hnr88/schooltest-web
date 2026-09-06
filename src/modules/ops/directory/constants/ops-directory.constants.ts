@@ -43,8 +43,7 @@ export const DIRECTORY_DEFAULT_LABELS: DirectoryLabels = {
   showingCount: ({ showing, total }) => `Showing ${showing} of ${total}`,
   pageCount: ({ page, pageCount, total }) =>
     `Page ${page} of ${pageCount} — ${total} total`,
-  selectedCount: (count) => `${count} selected`,
-  clearSelection: 'Clear selection',
+  selectedEntityNoun: 'row',
   emptyNoneTitle: 'Nothing here yet',
   emptyNoneDescription: 'Items appear here as soon as they are created.',
   emptyNoMatchesTitle: 'No matches',

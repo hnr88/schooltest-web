@@ -9,6 +9,7 @@
  */
 import { ArrowDown, ArrowUp, MoreHorizontal } from 'lucide-react';
 
+import type { OpsActionTarget } from '@/modules/ops/actions';
 import { IconButton, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/modules/design-system';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -30,9 +31,9 @@ interface OpsDirectoryRowsProps<Row> {
   state: DirectoryStateApi;
   columns: readonly DirectoryColumnDef<Row>[];
   rows: readonly Row[];
-  getRowKey: (row: Row) => string;
+  getRowTarget: (row: Row) => OpsActionTarget;
   selectable: boolean;
-  selection: OpsDirectorySelectionApi;
+  selection: OpsDirectorySelectionApi<Row>;
   rowActions?: (row: Row) => readonly DirectoryRowAction<Row>[];
   labels: DirectoryLabels;
 }
@@ -41,7 +42,7 @@ export function OpsDirectoryRows<Row>({
   state,
   columns,
   rows,
-  getRowKey,
+  getRowTarget,
   selectable,
   selection,
   rowActions,
@@ -59,8 +60,8 @@ export function OpsDirectoryRows<Row>({
             <TableHead className="w-10">
               <Checkbox
                 aria-label={labels.selectAllLabel}
-                checked={selection.allOnPageSelected}
-                onCheckedChange={() => selection.togglePage()}
+                checked={selection.headerState === 'all'}
+                onCheckedChange={() => selection.toggleAllOnPage()}
               />
             </TableHead>
           ) : null}
@@ -88,15 +89,17 @@ export function OpsDirectoryRows<Row>({
       </TableHeader>
       <TableBody>
         {rows.map((row) => {
-          const key = getRowKey(row);
+          const target = getRowTarget(row);
+          // Same string the selection engine keys on — stable and collision-free.
+          const key = `${target.kind}:${target.documentId}`;
           return (
-            <TableRow key={key} data-selected={selection.isSelected(key) || undefined}>
+            <TableRow key={key} data-selected={selection.isSelected(row) || undefined}>
               {selectable ? (
                 <TableCell>
                   <Checkbox
                     aria-label={labels.selectRowLabel(key)}
-                    checked={selection.isSelected(key)}
-                    onCheckedChange={() => selection.toggleRow(key)}
+                    checked={selection.isSelected(row)}
+                    onCheckedChange={() => selection.toggleRow(row)}
                   />
                 </TableCell>
               ) : null}

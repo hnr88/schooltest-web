@@ -1,84 +1,209 @@
 'use client';
 
-import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useMemo, useRef } from 'react';
+import { toast } from 'sonner';
+
+import type { SchoolsListRow } from '@schooltest/ops-contracts';
 
 import { useAuthStore } from '@/modules/auth';
 import {
-  Alert,
-  Button,
-  Skeleton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/modules/design-system';
-import { OpsSchoolRow } from '@/modules/ops/components/OpsSchoolRow';
-import { OpsSchoolsFilters } from '@/modules/ops/components/OpsSchoolsFilters';
-import { useSchoolsFilter } from '@/modules/ops/hooks/use-schools-filter';
-import { filterOpsSchools } from '@/modules/ops/lib/schools-filter.lib';
-import { useOpsSchoolsQuery } from '@/modules/ops/queries/use-ops-schools.query';
+  DIRECTORY_ALL,
+  OpsDirectoryTable,
+  useOpsDirectoryState,
+  type DirectoryColumnDef,
+  type DirectoryFilterDef,
+} from '@/modules/ops/directory';
+import { OpsSchoolsPills } from '@/modules/ops/components/OpsSchoolsPills';
+import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
+import { useSchoolsListQuery } from '@/modules/ops/queries/use-schools-list.query';
 
-// Ops console schools screen (task 66, st-mvp-pivot): the C-OPS-01 cross-school
-// table — name, lifecycle chips and the live teacher/class/student/result
-// counts, each row linking to the school detail. SPEC-schools-search-filter.md
-// adds the search + filter band above the table (see OpsSchoolsFilters).
+const SCHOOL_STATES = ['VIC', 'NSW', 'QLD', 'SA', 'WA', 'TAS', 'ACT', 'NT'] as const;
+const SCHOOL_SECTORS = ['government', 'non-government', 'catholic'] as const;
+const PORTAL_PLANS = ['pilot', 'standard', 'enterprise'] as const;
+const ONBOARDING = ['not_started', 'link_sent', 'in_progress', 'submitted', 'complete'] as const;
+
+/** Nulls never reach a formatter: a school with no suburb still renders a row. */
+function metaLine(school: SchoolsListRow): string {
+  return [school.suburb, school.state].filter((part): part is string => Boolean(part)).join(' ');
+}
+
+/**
+ * The Schools screen, on the task 04 directory kit.
+ *
+ * Search, filters, sort, pagination, empty states, the error/stale banner and
+ * URL round-tripping all belong to the kit — none of them is re-implemented
+ * here, and the local OpsSchoolsFilters/OpsSchoolsPagination copies were
+ * deleted rather than left beside it. What stays local is what is genuinely
+ * domain-specific: the columns, the row actions and the counted status pills,
+ * which the kit has no concept of.
+ *
+ * `status` IS a kit filter, so it round-trips through the URL and Clear filters
+ * resets it, but it is deliberately not passed to the table's filter row: the
+ * design renders it as the pill bar instead, and offering it twice would be two
+ * controls writing one value.
+ */
 export function OpsSchoolsTable() {
   const t = useTranslations('Ops.schools');
+  const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
-  const schoolsQuery = useOpsSchoolsQuery(hydrated && Boolean(token));
-  const {
-    filter,
-    searchInput,
-    setSearchInput,
-    setAccountStatus,
-    setOnboardingStatus,
-    clearAll,
-    hasActiveFilters,
-  } = useSchoolsFilter();
+  // The pictured Status page action reads the URL the RELEASE configured, which
+  // the capabilities operation already serves as `status_page_url`. Nothing is
+  // hardcoded here. Per that contract a null is "the release configured none" —
+  // an explicit setup failure to surface, not a licence to drop the control, so
+  // the action stays and says what is missing instead of doing nothing.
+  const capabilities = useCapabilitiesQuery(hydrated && Boolean(token));
+  const statusPageUrl = capabilities.data?.status_page_url ?? null;
 
-  const schools = useMemo(() => schoolsQuery.data ?? [], [schoolsQuery.data]);
-  const visibleSchools = useMemo(
-    () => filterOpsSchools(schools, filter),
-    [schools, filter],
+  const statusFilter: DirectoryFilterDef = useMemo(
+    () => ({
+      key: 'status',
+      label: t('filterStatus'),
+      options: [
+        { value: DIRECTORY_ALL, label: t('pillAllSchools') },
+        { value: 'active', label: t('portalStatus.active') },
+        { value: 'trial', label: t('portalStatus.trial') },
+        { value: 'pending_setup', label: t('portalStatus.pending_setup') },
+        { value: 'suspended', label: t('portalStatus.suspended') },
+        { value: 'archived', label: t('portalStatus.archived') },
+      ],
+    }),
+    [t],
   );
 
-  if (schoolsQuery.isPending) {
-    return (
-      <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-        <Skeleton className="h-9 w-1/3" />
-        <Skeleton className="h-4 w-1/2" />
-        <Skeleton className="h-64 w-full" />
-      </main>
-    );
-  }
+  const visibleFilters: readonly DirectoryFilterDef[] = useMemo(
+    () => [
+      {
+        key: 'state',
+        label: t('filterState'),
+        options: [
+          { value: DIRECTORY_ALL, label: t('filterStateAll') },
+          ...SCHOOL_STATES.map((value) => ({ value, label: value })),
+        ],
+      },
+      {
+        key: 'sector',
+        label: t('filterSector'),
+        options: [
+          { value: DIRECTORY_ALL, label: t('filterSectorAll') },
+          ...SCHOOL_SECTORS.map((value) => ({ value, label: t(`sector.${value}`) })),
+        ],
+      },
+      {
+        key: 'plan',
+        label: t('filterPlan'),
+        options: [
+          { value: DIRECTORY_ALL, label: t('filterPlanAll') },
+          ...PORTAL_PLANS.map((value) => ({ value, label: t(`portalPlan.${value}`) })),
+        ],
+      },
+      {
+        key: 'onboarding',
+        label: t('filterOnboarding'),
+        options: [
+          { value: DIRECTORY_ALL, label: t('filterOnboardingAll') },
+          ...ONBOARDING.map((value) => ({ value, label: t(`onboardingStatus.${value}`) })),
+        ],
+      },
+    ],
+    [t],
+  );
 
-  if (schoolsQuery.isError) {
-    return (
-      <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-        <Alert
-          variant="error"
-          title={t('errorTitle')}
-          action={
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              loading={schoolsQuery.isFetching}
-              onClick={() => schoolsQuery.refetch()}
-            >
-              {t('retry')}
-            </Button>
-          }
-        >
-          {t('errorDescription')}
-        </Alert>
-      </main>
-    );
-  }
+  const allFilters = useMemo(
+    () => [statusFilter, ...visibleFilters],
+    [statusFilter, visibleFilters],
+  );
+
+  const sorts = useMemo(
+    () => [
+      { value: 'name:asc', label: t('sortName') },
+      { value: 'student_count:desc', label: t('sortStudents') },
+      { value: 'createdAt:desc', label: t('sortCreated') },
+    ],
+    [t],
+  );
+
+  // The kit's page clamp needs the LIVE pageCount, but the query that carries it
+  // is built from this hook's own params — so the value can only arrive from the
+  // previous render. A ref written after the query resolves is the honest way to
+  // pass it: it is not state, it triggers no render, and the kit's clamp already
+  // runs in an effect on a later render. The alternative — a second, disabled
+  // priming query — would be a duplicate request for one number.
+  const pageCountRef = useRef<number | undefined>(undefined);
+  const state = useOpsDirectoryState({
+    filters: allFilters,
+    sorts,
+    defaultSort: 'name:asc',
+    pageCount: pageCountRef.current,
+  });
+  const live = useSchoolsListQuery(state.params, hydrated && Boolean(token));
+  pageCountRef.current = live.data?.meta.pagination.pageCount;
+
+  const columns: readonly DirectoryColumnDef<SchoolsListRow>[] = useMemo(
+    () => [
+      {
+        key: 'name',
+        header: t('columnName'),
+        sortable: true,
+        sortValues: { asc: 'name:asc', desc: 'name:asc' },
+        cell: (school) => (
+          <div className="flex flex-col">
+            <span className="font-medium text-foreground">{school.name ?? t('unnamedSchool')}</span>
+            <span className="text-meta text-body">{metaLine(school)}</span>
+          </div>
+        ),
+      },
+      {
+        key: 'portal_status',
+        header: t('columnStatus'),
+        cell: (school) => t(`portalStatus.${school.portal_status}`),
+      },
+      {
+        key: 'portal_plan',
+        header: t('columnPlan'),
+        cell: (school) => t(`portalPlan.${school.portal_plan}`),
+      },
+      {
+        key: 'portal_teacher_count',
+        header: t('columnTeachers'),
+        cell: (school) => school.portal_teacher_count,
+      },
+      { key: 'admin_count', header: t('columnAdmins'), cell: (school) => school.admin_count },
+      { key: 'class_count', header: t('columnClasses'), cell: (school) => school.class_count },
+      {
+        key: 'student_count',
+        header: t('columnStudents'),
+        sortable: true,
+        sortValues: { asc: 'student_count:desc', desc: 'student_count:desc' },
+        cell: (school) => school.student_count,
+      },
+      { key: 'results_count', header: t('columnResults'), cell: (school) => school.results_count },
+    ],
+    [t],
+  );
+
+  // Every action closes over the row it was built for, so the target is the
+  // school actually clicked. Two schools sharing a name stay separate targets
+  // because the documentId, not the label, is what is captured.
+  const rowActions = () => [
+    {
+      label: t('actionOpen'),
+      onSelect: (target: SchoolsListRow) =>
+        router.push(`/dashboard/ops/schools/${target.documentId}`),
+    },
+    {
+      label: t('actionStatusPage'),
+      onSelect: () => {
+        if (statusPageUrl === null) {
+          toast.error(t('statusPageUnconfigured'));
+          return;
+        }
+        window.open(statusPageUrl, '_blank', 'noopener,noreferrer');
+      },
+    },
+  ];
 
   return (
     <main
@@ -90,52 +215,34 @@ export function OpsSchoolsTable() {
         <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
         <p className="text-sm text-body">{t('description')}</p>
       </div>
-      <OpsSchoolsFilters
-        searchInput={searchInput}
-        onSearchInputChange={setSearchInput}
-        accountStatus={filter.accountStatus}
-        onAccountStatusChange={setAccountStatus}
-        onboardingStatus={filter.onboardingStatus}
-        onOnboardingStatusChange={setOnboardingStatus}
-        onClearAll={clearAll}
-        showingCount={visibleSchools.length}
-        totalCount={schools.length}
-        hasActiveFilters={hasActiveFilters}
+
+      <OpsSchoolsPills
+        counts={live.data?.meta.status_counts}
+        selected={state.params.filters.status ?? DIRECTORY_ALL}
+        onSelect={(value) => state.setFilter('status', value)}
       />
-      <div className="rounded-xl border border-border bg-card">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{t('columnName')}</TableHead>
-              <TableHead>{t('columnAccountStatus')}</TableHead>
-              <TableHead>{t('columnOnboarding')}</TableHead>
-              <TableHead>{t('columnTeachers')}</TableHead>
-              <TableHead>{t('columnClasses')}</TableHead>
-              <TableHead>{t('columnStudents')}</TableHead>
-              <TableHead>{t('columnResults')}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {visibleSchools.map((school) => (
-              <OpsSchoolRow key={school.documentId} school={school} />
-            ))}
-            {schools.length > 0 && visibleSchools.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
-                  {t('noMatches')}
-                </TableCell>
-              </TableRow>
-            ) : null}
-            {schools.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
-                  {t('empty')}
-                </TableCell>
-              </TableRow>
-            ) : null}
-          </TableBody>
-        </Table>
-      </div>
+
+      <OpsDirectoryTable
+        state={state}
+        query={live}
+        rows={live.data?.data ?? []}
+        getRowTarget={(school) => ({ kind: 'school', documentId: school.documentId })}
+        meta={live.data?.meta.pagination}
+        filters={visibleFilters}
+        sorts={sorts}
+        columns={columns}
+        rowActions={rowActions}
+        labels={{
+          searchPlaceholder: t('searchPlaceholder'),
+          searchLabel: t('searchLabel'),
+          emptyNoneTitle: t('emptyNoneTitle'),
+          emptyNoneDescription: t('emptyNoneDescription'),
+          emptyNoMatchesTitle: t('noMatches'),
+          errorTitle: t('errorTitle'),
+          errorDescription: t('errorDescription'),
+          retry: t('retry'),
+        }}
+      />
     </main>
   );
 }

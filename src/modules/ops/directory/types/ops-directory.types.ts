@@ -9,6 +9,8 @@
  */
 import type { ReactNode } from 'react';
 
+import type { OpsActionTarget, OpsHeaderCheckboxState } from '@/modules/ops/actions';
+
 /** One selectable entry of a filter or sort control. */
 export interface DirectoryOption {
   value: string;
@@ -71,7 +73,8 @@ export interface DirectoryRowAction<Row> {
 /** One bulk action, offered on the current selection. */
 export interface DirectoryBulkAction {
   label: string;
-  onRun: (selectedKeys: readonly string[]) => void;
+  /** Receives the selected targets in page order — kind + documentId, not names. */
+  onRun: (selectedTargets: readonly OpsActionTarget[]) => void;
   destructive?: boolean;
 }
 
@@ -116,8 +119,8 @@ export interface DirectoryLabels {
   selectRowLabel: (rowKey: string) => string;
   showingCount: (values: { showing: number; total: number }) => string;
   pageCount: (values: { page: number; pageCount: number; total: number }) => string;
-  selectedCount: (count: number) => string;
-  clearSelection: string;
+  /** Noun for the bulk bar's count line, e.g. 'school' (the bar pluralises). */
+  selectedEntityNoun: string;
   emptyNoneTitle: string;
   emptyNoneDescription: string;
   emptyNoMatchesTitle: string;
@@ -168,15 +171,22 @@ export interface DirectoryStateApi {
   hasActiveControls: boolean;
 }
 
-/** Row-selection state for the table (page-scoped header, cross-page keys). */
-export interface OpsDirectorySelectionApi {
-  selectedKeys: readonly string[];
-  selectedCount: number;
-  isSelected: (key: string) => boolean;
-  toggleRow: (key: string) => void;
-  /** Header-checkbox semantics: all-or-nothing over the CURRENT page's rows. */
-  allOnPageSelected: boolean;
-  someOnPageSelected: boolean;
-  togglePage: () => void;
-  clearSelection: () => void;
+/**
+ * Row selection for the table. This is the task 05 action kit's
+ * `useOpsSelection` ENGINE re-exposed in row ergonomics — page-scoped,
+ * capped, and reset when the scope changes — composed, never reimplemented
+ * (house rule 1). "N selected" means the rows the operator can see and will
+ * actually dispatch on, never a cross-page accumulator behind the filters.
+ */
+export interface OpsDirectorySelectionApi<Row> {
+  count: number;
+  /** True when the selection cap stopped the selection growing. */
+  atCap: boolean;
+  headerState: OpsHeaderCheckboxState;
+  /** The selected targets in page order — what bulk actions dispatch on. */
+  targets: OpsActionTarget[];
+  isSelected: (row: Row) => boolean;
+  toggleRow: (row: Row) => void;
+  toggleAllOnPage: () => void;
+  clear: () => void;
 }

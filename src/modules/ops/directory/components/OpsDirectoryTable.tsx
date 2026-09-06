@@ -10,6 +10,8 @@
  */
 import { useMemo, type ReactElement } from 'react';
 
+import type { OpsActionTarget } from '@/modules/ops/actions';
+
 import { DIRECTORY_DEFAULT_LABELS } from '../constants/ops-directory.constants';
 import { useOpsDirectorySelection } from '../hooks/use-ops-directory-selection';
 import type {
@@ -38,7 +40,14 @@ export interface OpsDirectoryTableProps<Row> {
   state: DirectoryStateApi;
   query: DirectoryQueryStatus;
   rows: readonly Row[];
-  getRowKey: (row: Row) => string;
+  /** Names a row as a selection/bulk target — the kit's only row assumption. */
+  getRowTarget: (row: Row) => OpsActionTarget;
+  /**
+   * Everything that scopes the list (school, tab, filters) — any change clears
+   * the selection, so a bulk action can never address a row the operator can
+   * no longer see. Thread the consumer's own scope keys through here.
+   */
+  scope?: readonly unknown[];
   meta?: DirectoryMeta;
   filters: readonly DirectoryFilterDef[];
   sorts: readonly DirectorySortDef[];
@@ -54,7 +63,8 @@ export function OpsDirectoryTable<Row>({
   state,
   query,
   rows,
-  getRowKey,
+  getRowTarget,
+  scope = [],
   meta,
   filters,
   sorts,
@@ -69,7 +79,7 @@ export function OpsDirectoryTable<Row>({
     () => ({ ...DIRECTORY_DEFAULT_LABELS, ...labelOverrides }),
     [labelOverrides],
   );
-  const selection = useOpsDirectorySelection(rows, getRowKey);
+  const selection = useOpsDirectorySelection({ page: rows, getRowTarget, scope });
 
   const total = meta?.total ?? 0;
   const hasData = rows.length > 0 || total > 0;
@@ -95,7 +105,7 @@ export function OpsDirectoryTable<Row>({
         state={state}
         columns={columns}
         rows={rows}
-        getRowKey={getRowKey}
+        getRowTarget={getRowTarget}
         selectable={selectable}
         selection={selection}
         rowActions={rowActions}
@@ -117,13 +127,8 @@ export function OpsDirectoryTable<Row>({
       {stale ? (
         <OpsDirectoryStaleBanner labels={labels} onRetry={query.refetch} retrying={query.isFetching} />
       ) : null}
-      {selection.selectedCount > 0 && bulkActions.length > 0 ? (
-        <OpsDirectoryBulkBar
-          selectedKeys={selection.selectedKeys}
-          bulkActions={bulkActions}
-          onClear={selection.clearSelection}
-          labels={labels}
-        />
+      {selection.count > 0 && bulkActions.length > 0 ? (
+        <OpsDirectoryBulkBar selection={selection} bulkActions={bulkActions} labels={labels} />
       ) : null}
       <div className="overflow-x-auto rounded-xl border border-border bg-card">{body}</div>
       {meta ? <OpsDirectoryPagination meta={meta} onPageChange={state.setPage} labels={labels} /> : null}

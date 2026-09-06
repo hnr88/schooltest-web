@@ -1,72 +1,51 @@
 'use client';
 
 /**
- * Task 04 — row selection for the directory kit. Selection and row menus are
- * NEW UI (no ops table implements them today — verified in the wave research),
- * so there is no incumbent to copy; the semantics follow the standard data
- * table: the header checkbox scopes to the CURRENT page, while a row ticked on
- * any page stays selected so a bulk action can span pages. The consumer owns
- * what a bulk action then does with the keys.
+ * Task 04 — row selection for the directory kit, as a THIN ADAPTER over the
+ * task 05 action kit's useOpsSelection (composed, never reimplemented — house
+ * rule 1). All selection semantics live there: keys are `kind:documentId`
+ * (never a display name), the header checkbox scopes to the CURRENT page, the
+ * selection cap is enforced in the lib, and any scope change (school, filters,
+ * page) clears the selection during render so a bulk action can never be aimed
+ * at a row the operator can no longer see.
+ *
+ * The consumer supplies `getRowTarget` to name its rows as action targets —
+ * the only assumption the kit makes about a row.
  */
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo } from 'react';
+
+import { useOpsSelection, type OpsActionTarget } from '@/modules/ops/actions';
 
 import type { OpsDirectorySelectionApi } from '../types/ops-directory.types';
 
-export function useOpsDirectorySelection<Row>(
-  rows: readonly Row[],
-  getRowKey: (row: Row) => string,
-): OpsDirectorySelectionApi {
-  const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
+export interface OpsDirectorySelectionOptions<Row> {
+  /** The rows currently on screen — "select all" means exactly these. */
+  page: readonly Row[];
+  /** Names a row as a bulk-action target (`kind` + `documentId`). */
+  getRowTarget: (row: Row) => OpsActionTarget;
+  /**
+   * Everything that scopes the page — school, tab, filters, page number. Any
+   * change clears the selection (the engine's wrong-tenant guard).
+   */
+  scope: readonly unknown[];
+}
 
-  const pageKeys = useMemo(() => rows.map(getRowKey), [rows, getRowKey]);
-
-  const isSelected = useCallback((key: string) => selected.has(key), [selected]);
-
-  const toggleRow = useCallback(
-    (key: string) => {
-      setSelected((current) => {
-        const next = new Set(current);
-        if (next.has(key)) {
-          next.delete(key);
-        } else {
-          next.add(key);
-        }
-        return next;
-      });
-    },
-    [],
-  );
-
-  const allOnPageSelected = pageKeys.length > 0 && pageKeys.every((key) => selected.has(key));
-  const someOnPageSelected = pageKeys.some((key) => selected.has(key)) && !allOnPageSelected;
-
-  const togglePage = useCallback(() => {
-    setSelected((current) => {
-      const next = new Set(current);
-      const everythingSelected = pageKeys.length > 0 && pageKeys.every((key) => next.has(key));
-      for (const key of pageKeys) {
-        if (everythingSelected) {
-          next.delete(key);
-        } else {
-          next.add(key);
-        }
-      }
-      return next;
-    });
-  }, [pageKeys]);
-
-  const clearSelection = useCallback(() => setSelected(new Set()), []);
-
-  const selectedKeys = useMemo(() => Array.from(selected), [selected]);
+export function useOpsDirectorySelection<Row>({
+  page,
+  getRowTarget,
+  scope,
+}: OpsDirectorySelectionOptions<Row>): OpsDirectorySelectionApi<Row> {
+  const targets = useMemo(() => page.map(getRowTarget), [page, getRowTarget]);
+  const selection = useOpsSelection({ page: targets, scope });
 
   return {
-    selectedKeys,
-    selectedCount: selected.size,
-    isSelected,
-    toggleRow,
-    allOnPageSelected,
-    someOnPageSelected,
-    togglePage,
-    clearSelection,
+    count: selection.count,
+    atCap: selection.atCap,
+    headerState: selection.headerState,
+    targets: selection.targets,
+    isSelected: (row: Row) => selection.isRowSelected(getRowTarget(row)),
+    toggleRow: (row: Row) => selection.toggleRow(getRowTarget(row)),
+    toggleAllOnPage: selection.toggleAllOnPage,
+    clear: selection.clear,
   };
 }
