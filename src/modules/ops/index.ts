@@ -10,7 +10,6 @@ export { OpsSectionTimers } from './components/OpsSectionTimers';
 export { OpsFormWindow } from './components/OpsFormWindow';
 export { OpsSittingRecovery } from './components/OpsSittingRecovery';
 export { OpsPlatformSettings } from './components/OpsPlatformSettings';
-export { useOpsSchoolsQuery } from './queries/use-ops-schools.query';
 export { usePlatformSettingsQuery } from './queries/use-platform-settings.query';
 export { useSchoolInvitationQuery } from './queries/use-school-invitation.query';
 export { useOnboardSchoolMutation } from './queries/use-onboard-school.mutation';

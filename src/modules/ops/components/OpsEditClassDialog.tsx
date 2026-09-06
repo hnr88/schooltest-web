@@ -19,7 +19,7 @@ import {
   Skeleton,
 } from '@/modules/design-system';
 import { opsTeacherLabel } from '@/modules/ops/lib/ops-class-detail.helpers';
-import { useOpsTeachersQuery } from '@/modules/ops/queries/use-ops-teachers.query';
+import { useTeachersListQuery } from '@/modules/ops/queries/use-teachers-list.query';
 import { useOpsUpdateClassMutation } from '@/modules/ops/queries/use-ops-update-class.mutation';
 
 import type { OpsClassTeacherOption } from '@/modules/ops/lib/ops-class-detail.helpers';
@@ -40,14 +40,14 @@ export function OpsEditClassDialog({
   onClose,
 }: OpsEditClassDialogProps) {
   const t = useTranslations('Ops.classDetail.edit');
-  const teachersQuery = useOpsTeachersQuery(schoolDocumentId, true);
+  const teachersQuery = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const mutation = useOpsUpdateClassMutation();
   const [name, setName] = useState(className);
   const [teacherDocumentId, setTeacherDocumentId] = useState(
     currentTeacherDocumentId ?? '',
   );
 
-  const teacherOptions: OpsClassTeacherOption[] = (teachersQuery.data ?? []).map((teacher) => ({
+  const teacherOptions: OpsClassTeacherOption[] = (teachersQuery.data?.data ?? []).map((teacher) => ({
     documentId: teacher.documentId,
     label: opsTeacherLabel(teacher),
   }));
