@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
 import { Button, KeyValueList, KeyValueRow, Tabs, TabsContent, TabsList, TabsTrigger } from '@/modules/design-system';
+import { DIRECTORY_PARAMS } from '@/modules/ops/directory';
 import { OpsClassesTab } from '@/modules/ops/components/OpsClassesTab';
 import { OpsSchoolActivity } from '@/modules/ops/components/OpsSchoolActivity';
 import { OpsStaffUsersTable } from '@/modules/ops/components/OpsStaffUsersTable';
@@ -25,6 +26,14 @@ const TAB_ORDER = ['overview', 'admins', 'teachers', 'classes', 'students'] as c
 type Tab = (typeof TAB_ORDER)[number];
 
 const TAB_PARAM = 'tab';
+
+/** The directory kit's page-global URL params, reset whenever the tab changes. */
+const DIRECTORY_SCOPED_PARAMS = [
+  DIRECTORY_PARAMS.q,
+  DIRECTORY_PARAMS.sort,
+  DIRECTORY_PARAMS.page,
+  'blocked',
+] as const;
 
 function isTab(value: string | null): value is Tab {
   return value !== null && (TAB_ORDER as readonly string[]).includes(value);
@@ -65,6 +74,13 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       const params = new URLSearchParams(searchParams.toString());
       if (next === 'overview') params.delete(TAB_PARAM);
       else params.set(TAB_PARAM, next);
+      // Each tab is its own directory, and the kit's URL params are page-global
+      // (`q`, `sort`, `page` are fixed names with no namespace). Carrying them
+      // across a tab switch would ask the Teachers directory for the Admins
+      // page 3 the operator was on — an empty table that looks like "no
+      // teachers". Clearing them here, in the handler that changes the tab, is
+      // the one place that knows the directory scope just changed.
+      for (const param of DIRECTORY_SCOPED_PARAMS) params.delete(param);
       const query = params.toString();
       router.replace(query === '' ? pathname : `${pathname}?${query}`, { scroll: false });
     },
