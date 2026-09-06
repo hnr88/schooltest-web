@@ -7,6 +7,7 @@ import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
 import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
+import { OpsEditSchoolDialog } from '@/modules/ops/components/OpsEditSchoolDialog';
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
 import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
 import { OpsSchoolPlanPanel } from '@/modules/ops/components/OpsSchoolPlanPanel';
@@ -46,6 +47,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   const hydrated = useAuthStore((state) => state.hydrated);
   const schoolQuery = useSchoolDetailQuery(documentId, hydrated && Boolean(token));
   const [teachersOpen, setTeachersOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   if (schoolQuery.isPending) {
     return (
@@ -146,6 +148,18 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             {t(`onboardingStatus.${school.onboarding_status}`)}
           </Badge>
           <OpsSchoolSuspendPanel school={school} enabled={hydrated && Boolean(token)} />
+          {/* Task 10: the EDIT entry — the same modal surface as create, driven
+              by the loaded school draft, writing the versioned PATCH with
+              If-Match quoting THIS page's updatedAt. */}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            data-testid="ops-edit-school"
+            onClick={() => setEditOpen(true)}
+          >
+            {t('editSchool')}
+          </Button>
         </div>
         {/* Spec: the Onboard School control sits near the status badges and
             above the summary cards. */}
@@ -162,6 +176,31 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
         open={teachersOpen}
         onOpenChange={setTeachersOpen}
       />
+      {editOpen ? (
+        <OpsEditSchoolDialog
+          school={{
+            documentId: detail.documentId,
+            name: school.name,
+            suburb: detail.suburb,
+            state: detail.state,
+            sector: detail.sector,
+            postcode: detail.postcode,
+            schoolType: detail.schoolType,
+            contact_email: detail.contact_email,
+            contact_first_name: detail.contact_first_name,
+            contact_last_name: detail.contact_last_name,
+            phone: detail.phone,
+            contact_name: detail.contact_name,
+            plan: detail.plan,
+            portal_plan: detail.portal_plan,
+            updatedAt: detail.updatedAt,
+          }}
+          onDone={() => {
+            setEditOpen(false);
+            void schoolQuery.refetch();
+          }}
+        />
+      ) : null}
     </main>
   );
 }

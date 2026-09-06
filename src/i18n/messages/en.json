@@ -3429,7 +3429,8 @@
         "errorVersion": "The row version is missing or malformed.",
         "errorVersionUnavailable": "The row version has not loaded yet.",
         "archiveNameMismatch": "The typed name does not match the school name."
-      }
+      },
+      "editSchool": "Edit school"
     },
     "onboard": {
       "button": "Invite school admin",
@@ -4015,6 +4016,25 @@
       "inviteErrorBody": "Nothing was saved. Check the address and try again.",
       "staffActionResend": "Resend",
       "staffActionRevoke": "Revoke"
+    },
+    "createSchool": {
+      "editTitle": "Edit school",
+      "editDescription": "Update {name}'s profile, plan and contact. Saving writes the versioned school edit.",
+      "editVersionNote": "Version guard: saving checks this edit against the school as loaded ({version}). If someone else changes the school first, your edit is refused with the draft intact.",
+      "editSuccessToast": "School updated.",
+      "save": "Save",
+      "staleEdit": "This school changed after you loaded it — someone else may have saved an edit. Reload the detail page and decide what to keep; your draft stays in the form.",
+      "fieldServerError": "The server refused some fields — fix the highlighted controls and save again.",
+      "emailDomainWarning": "This email is not on a school-domain. Double-check it before sending invitations.",
+      "deliveryFailed": "The school was saved, but the owner invitation could not be delivered. You can resend it — only the invitation is sent again.",
+      "resendInvitation": "Resend invitation",
+      "dirtyCloseTitle": "Discard your changes?",
+      "dirtyCloseDescription": "You have entered values that have not been saved. Closing now loses them.",
+      "dirtyCloseConfirm": "Discard",
+      "dirtyCloseCancel": "Keep editing",
+      "schoolType": "School type",
+      "schoolTypePlaceholder": "Choose a type",
+      "postcode": "Postcode"
     }
   },
   "RunSheet": {
