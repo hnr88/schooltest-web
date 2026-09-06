@@ -1,6 +1,5 @@
 'use client';
 
-import { isAxiosError } from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
@@ -68,7 +67,8 @@ export interface SchoolEditPayload {
  * C-OPS-PORTAL-004 — PATCH /api/schools/{documentId} (task 10, versioned edit).
  * STALE IS SURFACED, NEVER RETRIED: a 412 is mapped to the honest
  * user-visible state by the caller, which keeps the draft in the form. The
- * response is the SAME SchoolWriteResult projection the create returns.
+ * response is the SAME SchoolWriteResult projection the create returns, with
+ * the delivery object pinned to not_requested for a pure edit.
  */
 async function editSchool(input: SchoolEditPayload): Promise<SchoolWriteResult> {
   const res = await strapi.patch<unknown>(`/api/schools/${input.documentId}`, input.patch, {
@@ -90,16 +90,16 @@ export function useSchoolEditMutation(schoolDocumentId: string) {
 
 /** Field issues from the standard 400 envelope, for the form's per-control errors. */
 export function schoolFieldIssues(error: unknown): Array<{ path: string; message: string }> {
-  if (!isAxiosError(error)) return [];
-  const envelope = error.response?.data as
-    | { error?: { details?: { errors?: Array<{ path?: string; message?: string }> } } }
+  const candidate = error as
+    | { response?: { data?: { error?: { details?: { errors?: Array<{ path?: string; message?: string }> } } } } }
     | undefined;
-  return (envelope?.error?.details?.errors ?? [])
+  return (candidate?.response?.data?.error?.details?.errors ?? [])
     .filter((issue) => issue.path && issue.path !== '(root)' && issue.path !== 'If-Match')
     .map((issue) => ({ path: String(issue.path), message: String(issue.message) }));
 }
 
 /** True when the write was refused because the school moved under the operator. */
 export function schoolStale(error: unknown): boolean {
-  return isAxiosError(error) && error.response?.status === 412;
+  const candidate = error as { response?: { status?: number } } | undefined;
+  return candidate?.response?.status === 412;
 }
