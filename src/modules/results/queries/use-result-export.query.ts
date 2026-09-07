@@ -14,7 +14,7 @@ import { strapi } from '@/lib/axios/strapi';
  * spec v2 §7 — the LLM-ready diagnostic bundle: GET
  * /api/results/{documentId}/export?format=diagnostic_json, answered as a JSON
  * document parsed strictly at the boundary (strictObject everywhere: a leaked
- * `prob`, `theta` or name is a parse failure, never a wire leak).
+ * posterior fields or name is a parse failure, never a wire leak).
  *
  * The task pins this as a QUERY with key ['results', 'export', resultId], so
  * the hook ships as one — but an export is an IMPERATIVE act (the teacher asks

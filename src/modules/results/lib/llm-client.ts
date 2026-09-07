@@ -5,7 +5,7 @@ import { strapi } from '@/lib/axios/strapi';
 /**
  * §4.8/D5 — the LLM seam. BOTH features send exactly `{ prompt, context }`
  * where `context` IS the export bundle (never ResultView fields — D5: the
- * bundle is no-name, no-transcript, no-prob, no-θ by construction) plus, for
+ * bundle is no-name, no-transcript, no posteriors by construction) plus, for
  * Ask AI, the teacher's question. The prompts carry the honesty guardrails
  * into the model: "steady" means DO NOT CLAIM GROWTH, and Critical Reading is
  * described by score and gate state, never band language.

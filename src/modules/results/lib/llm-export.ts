@@ -3,7 +3,7 @@ import type { DiagnosticExport } from '@schooltest/scoring-contracts';
 
 /**
  * §4.9 — the LLM-ready markdown download, rendered from the export bundle and
- * from nothing else. The bundle is already no-name, no-transcript, no-prob,
+ * from nothing else. The bundle is already no-name, no-transcript, no
  * no-θ; this renderer adds no identity column and no derived figure — every
  * number is copied from the bundle, and changes appear only as their
  * `delta_display` rendering.

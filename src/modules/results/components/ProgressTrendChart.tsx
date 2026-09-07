@@ -11,7 +11,7 @@ import type { ResultView } from '@schooltest/scoring-contracts';
  *
  * ACARA BAND GUIDE-LINES ARE DELIBERATELY ABSENT (task 30 report): the spec
  * draws them at "positions from Crosswalk display config", but the crosswalk's
- * label_rules are cuts on the posterior PROB (0.8/0.5/0.2), and the Y axis here
+ * label_rules are cuts on the posterior probability (0.8/0.5/0.2), and the Y axis here
  * is a DOMAIN SCORE — no contract maps one onto the other, and hardcoding a
  * mapping would be an invented standard-setting value (house rule 5). The lines
  * arrive with the config endpoint; the axis notes that below.

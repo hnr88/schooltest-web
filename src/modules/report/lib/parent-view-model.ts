@@ -75,7 +75,7 @@ export function buildParentReport(result: V1ResultView): ParentReportView {
 /* ────────────────────────────────────────────────────────────────────────────
  * FAMILY PREVIEW (task 35, spec v2) — the v2 allow-list constructor. The
  * returned object is built key by key, so a field added upstream is excluded
- * by DEFAULT: `prob`, `prob_se`, `se`, `theta`, `readiness`, `cefr_band`,
+ * by DEFAULT: the posterior fields, standard errors, `readiness`, `cefr_band`,
  * `low_confidence` and every audit code are absent from the family rendering
  * structurally, not by a deny-list conditional a later edit could drop.
  *
