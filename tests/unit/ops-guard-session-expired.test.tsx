@@ -1,4 +1,3 @@
-import { createElement } from 'react';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { NextIntlClientProvider } from 'next-intl';
@@ -33,17 +32,11 @@ function renderGuard(childText = 'guarded-content'): HTMLElement {
   root = createRoot(host);
   act(() => {
     root!.render(
-      createElement(
-        NextIntlClientProvider,
-        {
-          locale: 'en',
-          messages: enMessages,
-          timeZone: 'Australia/Sydney',
-          children: createElement(OpsGuard, {
-            children: createElement('section', { 'data-slot': 'guarded' }, childText),
-          }),
-        },
-      ),
+      <NextIntlClientProvider locale="en" messages={enMessages} timeZone="Australia/Sydney">
+        <OpsGuard>
+          <section data-slot="guarded">{childText}</section>
+        </OpsGuard>
+      </NextIntlClientProvider>,
     );
   });
   return host;
