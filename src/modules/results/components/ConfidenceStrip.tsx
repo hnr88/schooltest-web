@@ -26,7 +26,7 @@ export function ConfidenceStrip({ view }: { view: ResultView }) {
         role="status"
         className="rounded-tile bg-warning-soft px-3 py-2 text-caption font-semibold text-warning-ink"
       >
-        ⚠ Low confidence — results may not reflect this student's ability
+        ⚠ Low confidence — results may not reflect this student&apos;s ability
       </p>
     );
   }

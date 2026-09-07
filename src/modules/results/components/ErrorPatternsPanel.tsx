@@ -72,7 +72,7 @@ export function ErrorPatternsPanel({ view, studentName }: { view: ResultView; st
       </ul>
       {dominant !== null ? (
         <p data-slot="error-pattern-insight" data-type={dominant.type} className="text-caption font-semibold">
-          {ERROR_PATTERN_COPY[dominant.type]?.label ?? dominant.type} is {first}'s most common slip — {dominant.pct}% of the wrong answers.
+          {ERROR_PATTERN_COPY[dominant.type]?.label ?? dominant.type} is {first}&apos;s most common slip — {dominant.pct}% of the wrong answers.
         </p>
       ) : null}
     </section>
