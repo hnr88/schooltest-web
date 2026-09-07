@@ -50,13 +50,7 @@ export {
   deriveResultsStatus,
   isResultsTabValue,
 } from './lib/results-shell';
-export { masteryBarView } from './lib/teaching-insights';
-
 export { MASTERY_BAND_TONE } from './constants/mastery.constants';
-export {
-  TEST_STATE_TONE,
-  TEST_STATE_LABEL_KEY,
-} from './constants/students-table.constants';
 export {
   TEST_SESSION_SELECT_TRIGGER_CLASS,
   START_TEST_SESSION_DEFAULTS,
@@ -213,7 +207,8 @@ export type {
   StudentsTabPanelProps,
   StudentsResultsTableProps,
   StudentResultsRowProps,
-  StudentTestCellsProps,
+  RosterHeadCellsProps,
+  RosterStudentCellsProps,
 } from './types/students-table.types';
 export type {
   TeachingInsightsPanelProps,

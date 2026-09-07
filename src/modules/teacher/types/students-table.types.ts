@@ -1,31 +1,29 @@
-import type {
-  ClassStudentRow,
-  StudentTestCell,
-} from '@/modules/teacher/types/teacher-result.types';
-import type { TestVariant } from '@/modules/teacher/types/teacher.types';
+import type { RosterRow } from '@/modules/results/types/roster.types';
 
-/** The Students tab renders C-TR-1's `students` array — it issues no second read. */
+/**
+ * Task 33 — the Students tab renders the ROSTER read (task 23 wrapper): every
+ * student of the class, `result: null` where no official Result exists. The v1
+ * C-TR-1 `students` array and its Test A/B cells are gone.
+ */
 export interface StudentsTabPanelProps {
   classDocumentId: string;
-  students: ClassStudentRow[];
+  rows: RosterRow[];
 }
 
 export interface StudentsResultsTableProps {
   classDocumentId: string;
-  students: ClassStudentRow[];
+  rows: RosterRow[];
 }
 
 export interface StudentResultsRowProps {
   classDocumentId: string;
-  student: ClassStudentRow;
+  row: RosterRow;
 }
 
-/**
- * The three cells of ONE test group: Status, Score, ACARA. `variant` is used for
- * the data attribute and the group's own label — never to pick which numbers to
- * show, which the caller has already resolved from the wire object.
- */
-export interface StudentTestCellsProps {
-  variant: TestVariant;
-  cell: StudentTestCell;
+/** The single-level column headers of the roster table (no props — one group). */
+export interface RosterHeadCellsProps {}
+
+/** The five data cells of one roster row: Score · Growth · Weakest skill · ACARA · Confidence. */
+export interface RosterStudentCellsProps {
+  row: RosterRow;
 }

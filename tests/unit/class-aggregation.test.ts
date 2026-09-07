@@ -9,17 +9,30 @@ import {
   classAverage,
   phaseSpread,
   reliableGrowthAverage,
+  resultViewsOf,
   scoredCount,
   weakestSkill,
 } from '@/modules/results/lib/class-aggregation';
+import {
+  needsSupport,
+  secureCounts,
+  subskillAverages,
+  topGains,
+  vocabStrandMeans,
+} from '@/modules/results/lib/class-analytics';
+import { filterByPhase, phasesOf, sortRosterRows } from '@/modules/results/lib/roster-order';
+import type { RosterRow } from '@/modules/results/types/roster.types';
 
 /**
- * Task 33 (scoped) — the pure roster aggregation layer, over the REAL contract
- * fixture mutated into multiple students. Each test names its honesty
+ * Tasks 33/34 (scoped) — the pure roster aggregation layer, over the REAL
+ * contract fixture mutated into multiple students. Each test names its honesty
  * guardrail: not-assessed is never a weak skill, Critical is never comparable,
  * an unscored student is never a zero, band_movement contributes no growth,
  * fewer than three reliable movers is "not enough data", and a null ACARA
- * phase gets its own bucket (D17) instead of folding to the bottom.
+ * phase gets its own bucket (D17) instead of folding to the bottom. The roster
+ * aggregates take the task 23 WRAPPER (`{ student, result | null }`) so the
+ * total is the roster — scoredCount's bare-Array input was the defect that
+ * rendered "18 of 18 scored" for a class of 30.
  */
 
 const fixture = resultViewSchema.parse(
@@ -40,6 +53,14 @@ function rescored(
 
 function withScores(overrides: Array<Partial<ResultView>>): ResultView[] {
   return overrides.map((override) => resultViewSchema.parse({ ...fixture, ...override }));
+}
+
+/** Roster rows from the same overrides; a `null` entry is a RESULT-LESS student. */
+function withRoster(overrides: Array<Partial<ResultView> | null>): RosterRow[] {
+  return overrides.map((override, index) => ({
+    student: { document_id: `stu-${index}`, name: `Student ${index}`, initials: `S${index}`, eald_flag: false },
+    result: override === null ? null : resultViewSchema.parse({ ...fixture, ...override }),
+  }));
 }
 
 describe('weakestSkill — minimum among assessed banded skills only', () => {
@@ -131,13 +152,24 @@ describe('reliableGrowthAverage — reliable numeric deltas only, <3 is insuffic
   });
 });
 
-describe('phaseSpread — null phase has its own bucket (D17)', () => {
+describe('resultViewsOf — the one unwrap the scored-only aggregates are fed from', () => {
+  test('keeps every scored view in roster order and drops result-less students', () => {
+    const rows = withRoster([
+      { overall: { ...fixture.overall, domain_score: 80 } },
+      null, // no official result: absent from every scored-only aggregate
+      { overall: { ...fixture.overall, domain_score: 60 } },
+    ]);
+    expect(resultViewsOf(rows).map((view) => view.overall.domain_score)).toEqual([80, 60]);
+  });
+});
+
+describe('phaseSpread — null phase has its own bucket (D17), over the whole roster', () => {
   test('counts per phase and never folds a null phase into a named one', () => {
-    const rows = withScores([
+    const rows = withRoster([
       { acara_phase: 'developing' },
       { acara_phase: 'developing' },
       { acara_phase: 'consolidating' },
-      { acara_phase: null }, // Decoding never assessed: no phase, its own bucket
+      { acara_phase: null }, // no measured phase: its own bucket
     ]);
     const spread = phaseSpread(rows);
     expect(spread).toEqual([
@@ -147,30 +179,97 @@ describe('phaseSpread — null phase has its own bucket (D17)', () => {
     ]);
   });
 
+  test('a result-less student lands in the null bucket — the roster total is preserved (task 33 decision)', () => {
+    // Excluding them would shrink the chart below the roster — scoredCount's
+    // exact defect. The bucket means "no ACARA phase measured", true both ways.
+    const rows = withRoster([
+      { acara_phase: 'developing' },
+      null,
+      null,
+    ]);
+    // Count desc: the null bucket (2) outranks the single developing row.
+    expect(phaseSpread(rows)).toEqual([
+      { phase: null, count: 2 },
+      { phase: 'developing', count: 1 },
+    ]);
+  });
+
   test('an empty roster yields an empty spread', () => {
     expect(phaseSpread([])).toEqual([]);
   });
 });
 
-describe('scoredCount — an actual overall score, not a present row', () => {
-  test('counts scored rows against the roster total', () => {
-    const rows = withScores([
+describe('scoredCount — scored over the ROSTER total, never over students-with-results', () => {
+  test('counts actual overall scores against every roster student', () => {
+    const rows = withRoster([
       { overall: { ...fixture.overall, domain_score: 80 } },
-      { overall: { ...fixture.overall, domain_score: null } },
+      { overall: { ...fixture.overall, domain_score: null } }, // a result, but no score: not scored
       { overall: { ...fixture.overall, domain_score: 55 } },
     ]);
     expect(scoredCount(rows)).toEqual({ scored: 2, total: 3 });
     expect(scoredCount([])).toEqual({ scored: 0, total: 0 });
   });
+
+  test('the denominator defect, as a regression: 18 scored in a class of 30 reads 18 of 30', () => {
+    const rows = withRoster([
+      ...Array.from({ length: 18 }, () => ({ overall: { ...fixture.overall, domain_score: 70 } })),
+      ...Array.from({ length: 12 }, () => null), // twelve students with no official result at all
+    ]);
+    expect(scoredCount(rows)).toEqual({ scored: 18, total: 30 });
+  });
+});
+
+describe('sortRosterRows — lowest first, unscored last, ties by name', () => {
+  test('ranks scored students ascending and sends result-less rows to the end, never as a zero', () => {
+    const rows = withRoster([
+      { overall: { ...fixture.overall, domain_score: 55 } },
+      null,
+      { overall: { ...fixture.overall, domain_score: 80 } },
+      { overall: { ...fixture.overall, domain_score: null } }, // result but unscored: also last
+    ]);
+    const sorted = sortRosterRows(rows);
+    expect(sorted.map((row) => row.result?.overall.domain_score ?? null)).toEqual([55, 80, null, null]);
+    expect(sorted[0]?.result).not.toBeNull();
+  });
+
+  test('equal scores break by student name, deterministically', () => {
+    const rows = withRoster([
+      { overall: { ...fixture.overall, domain_score: 70 } },
+      { overall: { ...fixture.overall, domain_score: 70 } },
+    ]);
+    const sorted = sortRosterRows(rows);
+    expect(sorted.map((row) => row.student.name)).toEqual([...sorted.map((row) => row.student.name)].sort());
+  });
+});
+
+describe('phase filter inputs', () => {
+  test('phasesOf lists distinct named phases sorted; result-less and null phases add nothing', () => {
+    const rows = withRoster([
+      { acara_phase: 'consolidating' },
+      { acara_phase: 'developing' },
+      { acara_phase: 'developing' },
+      { acara_phase: null },
+      null,
+    ]);
+    expect(phasesOf(rows)).toEqual(['consolidating', 'developing']);
+  });
+
+  test('filterByPhase keeps only that phase; null keeps the whole roster in order', () => {
+    const rows = withRoster([
+      { acara_phase: 'consolidating' },
+      { acara_phase: 'developing' },
+      null,
+    ]);
+    expect(filterByPhase(rows, 'developing')).toHaveLength(1);
+    expect(filterByPhase(rows, null)).toHaveLength(3);
+  });
 });
 
 /* ──────────────────────────────────────────────────────────────────────────
- * Task 34 (scoped) — Screen B's five pure additions. Same fixture discipline:
- * the real contract payload mutated into multiple students, every exclusion
- * rule asserted by name.
+ * Task 34 (scoped) — Screen B's five pure additions (class-analytics.ts).
+ * Same fixture discipline: the real contract payload mutated into multiple
+ * students, every exclusion rule asserted by name.
  * ────────────────────────────────────────────────────────────────────────── */
-
-import { needsSupport, secureCounts, subskillAverages, topGains, vocabStrandMeans } from '@/modules/results/lib/class-aggregation';
 
 describe('subskillAverages — per-skill means with their own denominator', () => {
   test('averages each skill over the students who have it assessed, and counts the excluded', () => {

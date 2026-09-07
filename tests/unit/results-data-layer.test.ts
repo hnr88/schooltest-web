@@ -56,18 +56,39 @@ describe('the student-result read (GET /api/results/{id})', () => {
 });
 
 describe('the class-results read (GET /api/my/students/results?class=)', () => {
-  test('parses a bare array of views, history omitted', async () => {
-    const { history: _history, ...rosterRow } = resultViewFixture as Record<string, unknown>;
-    get.mockResolvedValueOnce({ data: [rosterRow] });
+  // Task 23 contract: ONE row per roster student, `result: null` where no
+  // official Result exists, `history` omitted on every row.
+  test('parses the roster wrapper — a scored row and a result-less row', async () => {
+    const { history: _history, ...rosterView } = resultViewFixture as Record<string, unknown>;
+    get.mockResolvedValueOnce({
+      data: [
+        { student: { document_id: 'stu-0001', name: 'Amelia Ngo', initials: 'AN', eald_flag: true }, result: rosterView },
+        { student: { document_id: 'stu-0002', name: 'Ben Carter', initials: 'BC', eald_flag: false }, result: null },
+      ],
+    });
     const rows = await fetchClassResults('cls-0001');
-    expect(rows).toHaveLength(1);
-    expect(rows[0].document_id).toBe('res-fixture-0001');
-    expect('history' in rows[0]).toBe(false);
+    expect(rows).toHaveLength(2);
+    expect(rows[0].student.document_id).toBe('stu-0001');
+    expect(rows[0].result?.overall.domain_score).toBe(74);
+    expect('history' in (rows[0].result as object)).toBe(false);
+    expect(rows[1].result).toBeNull();
   });
 
   test('rejects a roster row with an extra key (strict)', async () => {
-    get.mockResolvedValueOnce({ data: [{ ...(resultViewFixture as object), leaked: true }] });
+    get.mockResolvedValueOnce({
+      data: [
+        { student: { document_id: 'stu-0001', name: 'Amelia Ngo', initials: 'AN', eald_flag: false }, leaked: true },
+      ],
+    });
     await expect(fetchClassResults('cls-0001')).rejects.toThrowError(/leaked|Unrecognized|invalid/i);
+  });
+
+  test('rejects a student block missing a field (strict)', async () => {
+    const { history: _history, ...rosterView } = resultViewFixture as Record<string, unknown>;
+    get.mockResolvedValueOnce({
+      data: [{ student: { document_id: 'stu-0001', name: 'Amelia Ngo' }, result: rosterView }],
+    });
+    await expect(fetchClassResults('cls-0001')).rejects.toThrowError(/initials|eald|Unrecognized|invalid/i);
   });
 });
 

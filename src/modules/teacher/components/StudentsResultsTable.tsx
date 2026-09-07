@@ -2,7 +2,6 @@
 
 import { useTranslations } from 'next-intl';
 
-import { cn } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -11,20 +10,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/modules/design-system';
+import { RosterHeadCells } from '@/modules/teacher/components/RosterHeadCells';
 import { StudentResultsRow } from '@/modules/teacher/components/StudentResultsRow';
-import { StudentTestHeadCells } from '@/modules/teacher/components/StudentTestHeadCells';
-import { STUDENTS_TABLE_GROUP_EDGE_CLASS } from '@/modules/teacher/constants/students-table.constants';
 import type { StudentsResultsTableProps } from '@/modules/teacher/types/students-table.types';
 
-// .qa/DESIGN.md §Students tab: a TWO-LEVEL header where Test A and Test B each
-// span Status · Score · ACARA. Real <th>s throughout — `rowSpan` + `scope="col"`
-// on Student, `colSpan={3}` + `scope="colgroup"` on each test, `scope="col"` on
-// the six sub-headers and `scope="row"` on every student name.
+// The roster table (task 33, dashboard §2): ONE header row — Student · Score ·
+// Growth · Weakest skill · ACARA · Confidence — over the whole class. The v1
+// two-level Test A / Test B grouping is gone with the C-TR-1 read it served.
 //
-// EVERY row the server sent is rendered. The wireframe's "+ 16 more students"
-// overflow row is a mock-up device for a 21-student roster; truncating a real
-// roster would hide students a teacher must act on, so it is not reproduced.
-function StudentsResultsTable({ classDocumentId, students }: StudentsResultsTableProps) {
+// EVERY row the roster sent is rendered — including the result-less ones ("No
+// result yet"), which is the point of the task 23 wrapper shape. The
+// wireframe's "+ 16 more students" overflow row is a mock-up device; truncating
+// a real roster would hide students a teacher must act on.
+function StudentsResultsTable({ classDocumentId, rows }: StudentsResultsTableProps) {
   const t = useTranslations('Teacher.results.students');
 
   return (
@@ -32,41 +30,18 @@ function StudentsResultsTable({ classDocumentId, students }: StudentsResultsTabl
       <TableCaption className="sr-only">{t('caption')}</TableCaption>
       <TableHeader>
         <TableRow className="border-border">
-          <TableHead scope="col" rowSpan={2} className="px-3 text-meta text-muted-foreground">
+          <TableHead scope="col" className="px-3 text-meta text-muted-foreground">
             {t('student')}
           </TableHead>
-          <TableHead
-            scope="colgroup"
-            colSpan={3}
-            className={cn(
-              STUDENTS_TABLE_GROUP_EDGE_CLASS,
-              'px-3 text-body-sm font-semibold text-foreground',
-            )}
-          >
-            {t('testA')}
-          </TableHead>
-          <TableHead
-            scope="colgroup"
-            colSpan={3}
-            className={cn(
-              STUDENTS_TABLE_GROUP_EDGE_CLASS,
-              'px-3 text-body-sm font-semibold text-foreground',
-            )}
-          >
-            {t('testB')}
-          </TableHead>
-        </TableRow>
-        <TableRow className="border-border">
-          <StudentTestHeadCells variant="A" />
-          <StudentTestHeadCells variant="B" />
+          <RosterHeadCells />
         </TableRow>
       </TableHeader>
       <TableBody>
-        {students.map((student) => (
+        {rows.map((row) => (
           <StudentResultsRow
-            key={student.student_document_id}
+            key={row.student.document_id}
             classDocumentId={classDocumentId}
-            student={student}
+            row={row}
           />
         ))}
       </TableBody>
