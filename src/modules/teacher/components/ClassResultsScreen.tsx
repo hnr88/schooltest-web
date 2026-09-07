@@ -108,8 +108,8 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
             students={
               <StudentsTabPanel classDocumentId={classDocumentId} rows={rows} />
             }
-            insights={<TeachingInsightsPanel classDocumentId={classDocumentId} />}
-            progress={<ProgressTabPanel classDocumentId={classDocumentId} />}
+            insights={<TeachingInsightsPanel classDocumentId={classDocumentId} rows={rows} />}
+            progress={<ProgressTabPanel classDocumentId={classDocumentId} rows={rows} />}
           />
         </>
       ) : null}

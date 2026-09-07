@@ -2153,6 +2153,8 @@
       "classesTitle": "班级",
       "classStudentsLine": "{count} 名学生",
       "loadError": "无法加载学校概览,请重试。",
+        "notYetAssessed": "尚未评估",
+        "transitionSteadyShort": "steady",
       "export": {
         "cta": "导出全校成绩 (CSV)",
         "downloading": "正在准备导出...",
@@ -4229,7 +4231,15 @@
         "groupsTitle": "建议分组",
         "groupsCaption": "按学生的主要薄弱项分组，便于针对性教学",
         "groupStudents": "{count, plural, other {# 名学生}}",
-        "groupsNone": "服务器未为该班级建议任何分组：目前还没有任何已完成的结果具备完整的子技能数据可供分组。"
+        "groupsNone": "服务器未为该班级建议任何分组：目前还没有任何已完成的结果具备完整的子技能数据可供分组。",
+        "strandTitle": "词汇分项均值",
+        "strandCaption": "A2 与 B1 均值——仅做一个分项的学生只计入该分项",
+        "strandA2": "词汇 A2",
+        "strandB1": "词汇 B1",
+        "strandNone": "—",
+        "strandAssessed": "{count} 名学生已评估",
+        "averageOnly": "均值 {average}",
+        "excludedNote": "{total} 人中的 {assessed} 人已评估"
       },
       "progress": {
         "loading": "正在加载测验 A 与测验 B 的对比",
@@ -4276,7 +4286,18 @@
         "needsAttentionNote": "这些学生出现退步——可能需要个别跟进。",
         "mostImprovedEmpty": "参与比较的学生中，两次测验之间没有人进步。",
         "needsAttentionEmpty": "参与比较的学生中，两次测验之间没有人退步。",
-        "moverScores": "{from} → {to}"
+        "moverScores": "{from} → {to}",
+        "topGainsTitle": "最可靠的进步",
+        "topGainsEmpty": "暂无可靠的进步记录",
+        "needsSupportTitle": "需要支持",
+        "needsSupportEmpty": "目前没有需要支持的学生",
+        "moverScore": "分数 {score}",
+        "phaseSpreadTitle": "ACARA 阶段分布",
+        "phaseSpreadCaption": "全班学生按其最近一次正式结果测得的阶段",
+        "phaseUnmeasured": "尚未测量阶段",
+        "phaseCount": "{total} 名学生中的 {count} 名",
+        "chartDeferredTitle": "班级进步图表尚不可用",
+        "chartDeferredDescription": "该图表需要按班级的历次 sitting 记录，而成绩暂未包含。待历史数据存在后将在此显示——不会以估计值代替。"
       },
       "students": {
         "title": "学生",
@@ -4323,6 +4344,10 @@
         "firstLanguage": "第一语言 {language}",
         "testHeading": "测验 {variant} — 阅读诊断",
         "completedOn": "完成于 {date}",
+        "gateLabel": "退出关卡",
+        "gatePassed": "已通过退出关卡",
+        "gateNotPassed": "未通过退出关卡",
+        "gateNotSat": "尚未参加退出关卡",
         "scoreValue": "{score} / 100",
         "scoreLabel": "总分",
         "displayLabel": "阅读者类型：{label}",

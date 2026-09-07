@@ -2,11 +2,24 @@
 
 import { useTranslations } from 'next-intl';
 
-import {
-  PROGRESS_DIRECTION_ICON,
-  PROGRESS_DIRECTION_LABEL_KEY,
-} from '@/modules/teacher/constants/class-progress.constants';
+import { ArrowDown, ArrowUp, Minus, type LucideIcon } from 'lucide-react';
+
 import type { SubskillDeltaLineProps } from '@/modules/teacher/types/student-drill-down.types';
+import type { ProgressDirection } from '@/modules/teacher/types/student-drill-down.types';
+
+// The direction maps moved here from the retired v1 progress-tab constants
+// (task 34); this line and the delta pill are their only remaining consumers.
+const DIRECTION_ICON: Record<ProgressDirection, LucideIcon> = {
+  up: ArrowUp,
+  flat: Minus,
+  down: ArrowDown,
+};
+
+const DIRECTION_LABEL_KEY: Record<ProgressDirection, string> = {
+  up: 'directionUp',
+  flat: 'directionFlat',
+  down: 'directionDown',
+};
 
 // The wireframe's `was 62% ↑16` (.qa/DESIGN.md §Both tests completed), rendered as
 // TEXT: the earlier likelihood, then the direction's own WORD and the magnitude.
@@ -22,7 +35,7 @@ import type { SubskillDeltaLineProps } from '@/modules/teacher/types/student-dri
 function SubskillDeltaLine({ delta }: SubskillDeltaLineProps) {
   const t = useTranslations('Teacher.results.drillDown');
   const tDirection = useTranslations('Teacher.results.progress');
-  const Icon = PROGRESS_DIRECTION_ICON[delta.direction];
+  const Icon = DIRECTION_ICON[delta.direction];
 
   return (
     <span
@@ -33,7 +46,7 @@ function SubskillDeltaLine({ delta }: SubskillDeltaLineProps) {
       <span>{t('previousLikelihood', { previous: delta.previous })}</span>
       <span className="flex items-center gap-0.5">
         <Icon aria-hidden="true" className="size-3" />
-        {tDirection(PROGRESS_DIRECTION_LABEL_KEY[delta.direction], { change: delta.magnitude })}
+        {tDirection(DIRECTION_LABEL_KEY[delta.direction], { change: delta.magnitude })}
       </span>
     </span>
   );

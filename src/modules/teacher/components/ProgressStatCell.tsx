@@ -1,13 +1,16 @@
 'use client';
 
 import { ProgressDeltaPill } from '@/modules/teacher/components/ProgressDeltaPill';
-import type { ProgressStatCellProps } from '@/modules/teacher/types/class-progress.types';
+import type { ProgressStatItem } from '@/modules/teacher/types/student-drill-down.types';
 
-// One cell of the Progress stat row (.qa/DESIGN.md §Progress tab), on the same
-// label / value / pill anatomy the class-detail header already uses.
-//
-// The value string is composed in `hooks/useProgressStats.ts` from C-TR-4's own
-// numbers; this cell adds nothing to it.
+// One cell of a stat row, on the same label / value / pill anatomy the
+// class-detail header already uses. The value string is composed by the caller's
+// hook (the drill-down's useDrillDownComparison); this cell adds nothing to it.
+// The props type moved inline from the retired v1 progress-tab types (task 34).
+interface ProgressStatCellProps {
+  item: ProgressStatItem;
+}
+
 function ProgressStatCell({ item }: ProgressStatCellProps) {
   return (
     <div

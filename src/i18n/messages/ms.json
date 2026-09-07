@@ -2153,6 +2153,8 @@
       "classesTitle": "Kelas",
       "classStudentsLine": "{count} murid",
       "loadError": "Ringkasan sekolah tidak dapat dimuatkan. Cuba lagi.",
+        "notYetAssessed": "Belum dinilai",
+        "transitionSteadyShort": "steady",
       "export": {
         "cta": "Eksport keputusan sekolah (CSV)",
         "downloading": "Menyediakan eksport...",
@@ -4149,7 +4151,15 @@
         "groupsTitle": "Kumpulan yang disarankan",
         "groupsCaption": "Pelajar dikumpulkan mengikut kelemahan utama mereka untuk pengajaran bersasar",
         "groupStudents": "{count, plural, other {# pelajar}}",
-        "groupsNone": "Pelayan tidak menyarankan sebarang kumpulan untuk kelas ini: belum ada keputusan selesai yang membawa profil subkemahiran penuh untuk dikumpulkan."
+        "groupsNone": "Pelayan tidak menyarankan sebarang kumpulan untuk kelas ini: belum ada keputusan selesai yang membawa profil subkemahiran penuh untuk dikumpulkan.",
+        "strandTitle": "Purata strata kosa kata",
+        "strandCaption": "Purata A2 dan B1 — murid strata tunggal dikira untuk strata yang mereka duduki sahaja",
+        "strandA2": "Kosa kata A2",
+        "strandB1": "Kosa kata B1",
+        "strandNone": "—",
+        "strandAssessed": "{count} murid dinilai",
+        "averageOnly": "purata {average}",
+        "excludedNote": "{assessed} daripada {total} dinilai"
       },
       "progress": {
         "loading": "Memuatkan perbandingan Ujian A ke Ujian B",
@@ -4196,7 +4206,18 @@
         "needsAttentionNote": "Pelajar ini merosot — mungkin memerlukan tindakan susulan secara individu.",
         "mostImprovedEmpty": "Tiada pelajar dalam kumpulan yang dibandingkan bertambah baik antara kedua-dua ujian.",
         "needsAttentionEmpty": "Tiada pelajar dalam kumpulan yang dibandingkan merosot antara kedua-dua ujian.",
-        "moverScores": "{from} → {to}"
+        "moverScores": "{from} → {to}",
+        "topGainsTitle": "Pertumbuhan boleh dipercayai teratas",
+        "topGainsEmpty": "Tiada penggerak boleh dipercayai lagi",
+        "needsSupportTitle": "Perlu sokongan",
+        "needsSupportEmpty": "Tiada pelajar yang perlu disokong buat masa ini",
+        "moverScore": "Skor {score}",
+        "phaseSpreadTitle": "Taburan fasa ACARA",
+        "phaseSpreadCaption": "Setiap murid kelas, mengikut fasa keputusan rasmi terkini mereka",
+        "phaseUnmeasured": "Tiada fasa diukur lagi",
+        "phaseCount": "{count} daripada {total} murid",
+        "chartDeferredTitle": "Carta kemajuan kelas belum tersedia",
+        "chartDeferredDescription": "Carta ini memerlukan sejarah pelaksanaan mengikut kelas, yang belum dibawa oleh keputusan. Ia akan muncul di sini bila sejarah itu wujud — tiada anggaran yang menggantikannya."
       },
       "students": {
         "title": "Pelajar",
@@ -4243,6 +4264,10 @@
         "firstLanguage": "Bahasa pertama {language}",
         "testHeading": "Ujian {variant} — diagnostik bacaan",
         "completedOn": "Selesai {date}",
+        "gateLabel": "Gerbang exit",
+        "gatePassed": "Gerbang exit diluluskan",
+        "gateNotPassed": "Gerbang exit tidak lulus",
+        "gateNotSat": "Gerbang exit tidak diduduki",
         "scoreValue": "{score} / 100",
         "scoreLabel": "Skor keseluruhan",
         "displayLabel": "Profil pembaca: {label}",

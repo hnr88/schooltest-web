@@ -2,20 +2,18 @@
 
 import { useTranslations } from 'next-intl';
 
-import {
-  PROGRESS_WATCH_EMPTY_KEY,
-  PROGRESS_WATCH_LABEL_KEY,
-} from '@/modules/teacher/constants/class-progress.constants';
 import { ProgressMoverRow } from '@/modules/teacher/components/ProgressMoverRow';
-import type { ProgressWatchListProps } from '@/modules/teacher/types/class-progress.types';
+import type { ProgressWatchListProps } from '@/modules/teacher/types/class-analytics.types';
 
-// One "Students to watch" column. `needs_attention` carries the wireframe's
-// follow-up note; `most_improved` needs none.
+// One ranked list of the Progress tab (task 34, dashboard §3): `gains` is the
+// top reliable gains, `support` the needs-support ranking (a reliable decline
+// outranks low-but-steady). Both orders come from the pure layer; this list
+// re-sorts nothing and names students from the roster wrapper.
 //
-// An empty array is stated in words, because C-TR-4 sending zero movers is a
-// measured fact about the comparable cohort — never a swallowed error, and never
-// filled with the "next best" student to make the column look inhabited.
-function ProgressWatchList({ variant, movers }: ProgressWatchListProps) {
+// An empty array is stated in words — "no reliable movers yet" is a measured
+// fact about the class, never a swallowed error and never a gap filled to make
+// the list look inhabited.
+function ProgressWatchList({ variant, rows }: ProgressWatchListProps) {
   const t = useTranslations('Teacher.results.progress');
   const headingId = `progress-watch-${variant}`;
 
@@ -28,22 +26,22 @@ function ProgressWatchList({ variant, movers }: ProgressWatchListProps) {
       className="flex flex-col gap-2 rounded-panel border border-border bg-card px-5 py-5"
     >
       <h3 id={headingId} className="text-base font-semibold text-foreground">
-        {t(PROGRESS_WATCH_LABEL_KEY[variant])}
+        {t(variant === 'gains' ? 'topGainsTitle' : 'needsSupportTitle')}
       </h3>
 
-      {movers.length > 0 ? (
+      {rows.length > 0 ? (
         <ul className="flex flex-col gap-2">
-          {movers.map((mover) => (
-            <ProgressMoverRow key={mover.student_document_id} mover={mover} />
+          {rows.map((row) => (
+            <ProgressMoverRow key={row.student.document_id} row={row} />
           ))}
         </ul>
       ) : (
         <p className="text-meta text-balance text-muted-foreground">
-          {t(PROGRESS_WATCH_EMPTY_KEY[variant])}
+          {t(variant === 'gains' ? 'topGainsEmpty' : 'needsSupportEmpty')}
         </p>
       )}
 
-      {variant === 'needs_attention' && movers.length > 0 ? (
+      {variant === 'support' && rows.length > 0 ? (
         <p className="text-meta text-balance text-muted-foreground">{t('needsAttentionNote')}</p>
       ) : null}
     </div>

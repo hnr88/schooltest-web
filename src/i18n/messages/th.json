@@ -2153,6 +2153,8 @@
       "classesTitle": "ชั้นเรียน",
       "classStudentsLine": "นักเรียน {count} คน",
       "loadError": "ไม่สามารถโหลดภาพรวมโรงเรียนได้ ลองอีกครั้ง",
+        "notYetAssessed": "ยังไม่ประเมิน",
+        "transitionSteadyShort": "steady",
       "export": {
         "cta": "ส่งออกผลของโรงเรียน (CSV)",
         "downloading": "กำลังเตรียมไฟล์ส่งออก...",
@@ -4149,7 +4151,15 @@
         "groupsTitle": "กลุ่มที่แนะนำ",
         "groupsCaption": "จัดกลุ่มนักเรียนตามจุดอ่อนหลักเพื่อการสอนที่ตรงจุด",
         "groupStudents": "{count, plural, other {นักเรียน # คน}}",
-        "groupsNone": "เซิร์ฟเวอร์ไม่ได้แนะนำกลุ่มใดสำหรับชั้นเรียนนี้ เพราะยังไม่มีผลที่ทำเสร็จรายใดที่มีข้อมูลทักษะย่อยครบถ้วนพอจะจัดกลุ่ม"
+        "groupsNone": "เซิร์ฟเวอร์ไม่ได้แนะนำกลุ่มใดสำหรับชั้นเรียนนี้ เพราะยังไม่มีผลที่ทำเสร็จรายใดที่มีข้อมูลทักษะย่อยครบถ้วนพอจะจัดกลุ่ม",
+        "strandTitle": "ค่าเฉลี่ยแต่ละส่วนของคลังคำ",
+        "strandCaption": "ค่าเฉลี่ย A2 และ B1 — ผู้เรียนที่ทำเพียงส่วนเดียวจะนับเฉพาะส่วนที่ทำ",
+        "strandA2": "คลังคำ A2",
+        "strandB1": "คลังคำ B1",
+        "strandNone": "—",
+        "strandAssessed": "นักเรียนที่ประเมิน {count} คน",
+        "averageOnly": "เฉลี่ย {average}",
+        "excludedNote": "ประเมิน {assessed} จาก {total} คน"
       },
       "progress": {
         "loading": "กำลังโหลดการเปรียบเทียบชุด A กับชุด B",
@@ -4196,7 +4206,18 @@
         "needsAttentionNote": "นักเรียนเหล่านี้คะแนนถอยหลัง อาจต้องติดตามเป็นรายบุคคล",
         "mostImprovedEmpty": "ไม่มีนักเรียนในกลุ่มที่เปรียบเทียบมีคะแนนดีขึ้นระหว่างสองชุด",
         "needsAttentionEmpty": "ไม่มีนักเรียนในกลุ่มที่เปรียบเทียบมีคะแนนถอยหลังระหว่างสองชุด",
-        "moverScores": "{from} → {to}"
+        "moverScores": "{from} → {to}",
+        "topGainsTitle": "ความก้าวหน้าที่เชื่อถือได้สูงสุด",
+        "topGainsEmpty": "ยังไม่มีการเปลี่ยนแปลงที่เชื่อถือได้",
+        "needsSupportTitle": "ต้องการความช่วยเหลือ",
+        "needsSupportEmpty": "ไม่มีนักเรียนที่ต้องการความช่วยเหลือในตอนนี้",
+        "moverScore": "คะแนน {score}",
+        "phaseSpreadTitle": "การกระจายระดับ ACARA",
+        "phaseSpreadCaption": "นักเรียนทุกคนในชั้น จำแนกตามระดับจากผลล่าสุดที่เป็นทางการ",
+        "phaseUnmeasured": "ยังไม่มีระดับที่วัดผล",
+        "phaseCount": "นักเรียน {count} จาก {total} คน",
+        "chartDeferredTitle": "แผนภูมิความก้าวหน้าของชั้นยังไม่พร้อมใช้งาน",
+        "chartDeferredDescription": "แผนภูมินี้ต้องใช้ประวัติการสอบรายชั้น ซึ่งผลลัพธ์ยังไม่มีข้อมูลนั้น จะแสดงที่นี่เมื่อมีประวัติดังกล่าว — ไม่ใช้ค่าประมาณแทน"
       },
       "students": {
         "title": "นักเรียน",
@@ -4243,6 +4264,10 @@
         "firstLanguage": "ภาษาแม่ {language}",
         "testHeading": "ชุด {variant} — การประเมินการอ่าน",
         "completedOn": "ทำเสร็จ {date}",
+        "gateLabel": "ประตู exit",
+        "gatePassed": "ผ่านประตู exit แล้ว",
+        "gateNotPassed": "ยังไม่ผ่านประตู exit",
+        "gateNotSat": "ยังไม่ได้เข้าสอบประตู exit",
         "scoreValue": "{score} / 100",
         "scoreLabel": "คะแนนรวม",
         "displayLabel": "ลักษณะผู้อ่าน: {label}",

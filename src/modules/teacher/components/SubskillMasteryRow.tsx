@@ -1,50 +1,46 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 
 import { ProgressBar } from '@/modules/design-system';
-import { masteryBarView } from '@/modules/teacher/lib/teaching-insights';
-import type { SubskillMasteryRowProps } from '@/modules/teacher/types/teaching-insights.types';
+import type { SubskillMasteryRowProps } from '@/modules/teacher/types/class-analytics.types';
 
-// One bar of .qa/DESIGN.md §Teaching insights: the subskill's NAME (C-TR-3
-// `name`, from the active crosswalk descriptors — never a client codebook), the
-// bar, and the `11 / 14` count.
+// One bar of the insights tab (task 34, dashboard §3): the skill's name, the
+// class AVERAGE as the bar's WIDTH ONLY, the "Mastered n of N" count read as
+// `status === "secure"` from the API — never recomputed from a score — and the
+// exclusion stated in words when any student lacks the skill ("n of N assessed").
 //
-// The bar shows MASTERY, so a short bar is the red flag — the endpoint already
-// counts it that way and this row does not re-invert it. Bar LENGTH is never the
-// only signal: `mastered_count / assessed_count` is printed as text on every row
-// (WCAG 2.2 AA 1.4.1), and the bar carries no band colour at all, because a
-// class-level ratio has no server `status` and the portal may not threshold one
-// itself.
-function SubskillMasteryRow({ entry }: SubskillMasteryRowProps) {
+// The bar carries no band colour and no cut: a class AVERAGE is not a posterior,
+// the ACARA band cuts live on posteriors, and no client-side threshold maps one
+// to the other (open-risk R2c). Length is decoration; the numbers are the claim.
+function SubskillMasteryRow({ entry, secure, totalStudents }: SubskillMasteryRowProps) {
   const t = useTranslations('Teacher.results.insights');
-  const bar = masteryBarView(entry);
+  const format = useFormatter();
+  const assessed = totalStudents - entry.excluded;
 
   return (
     <li
       data-slot="subskill-mastery-row"
-      data-attribute={entry.attribute}
+      data-attribute={entry.skill}
+      data-excluded={entry.excluded}
       className="flex flex-col gap-1.5"
     >
       <div className="flex items-baseline justify-between gap-3">
-        <span className="min-w-0 text-sm font-medium text-foreground">{entry.name}</span>
+        <span className="min-w-0 text-sm font-medium text-foreground">{entry.skill}</span>
         <span className="shrink-0 text-meta font-semibold text-muted-foreground tabular-nums">
-          {bar.assessed
-            ? t('masteredCount', {
-                mastered: entry.mastered_count,
-                assessed: entry.assessed_count,
-              })
-            : t('notAssessed')}
+          {secure === null
+            ? t('averageOnly', { average: format.number(entry.average, { maximumFractionDigits: 1 }) })
+            : t('masteredCount', { mastered: secure, assessed })}
         </span>
       </div>
 
-      {bar.assessed ? (
-        <ProgressBar value={bar.percent} ariaLabel={t('barLabel', { name: entry.name })} />
-      ) : (
-        // An EMPTY track, never a zero-length bar: "0 % mastered" and "never
-        // administered" are different facts, and only the second one is true here.
-        <span aria-hidden="true" className="block h-1.5 w-full rounded-full bg-divider" />
-      )}
+      <ProgressBar value={entry.average} ariaLabel={t('barLabel', { name: entry.skill })} />
+
+      {entry.excluded > 0 ? (
+        <p className="text-meta text-muted-foreground">
+          {t('excludedNote', { assessed, total: totalStudents })}
+        </p>
+      ) : null}
     </li>
   );
 }

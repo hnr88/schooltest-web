@@ -2,9 +2,8 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 
-import { progressDelta } from '@/modules/teacher/lib/class-progress';
 import { acaraShift } from '@/modules/teacher/lib/student-drill-down';
-import type { ProgressStatItem } from '@/modules/teacher/types/class-progress.types';
+import type { ProgressStatItem } from '@/modules/teacher/types/student-drill-down.types';
 import type { StudentComparisonStripProps } from '@/modules/teacher/types/student-drill-down.types';
 
 /**
@@ -25,6 +24,13 @@ import type { StudentComparisonStripProps } from '@/modules/teacher/types/studen
  * two names the server sent — the wireframe's `↑` is deliberately absent, because
  * ordering ACARA phases would need a client-side ladder this surface forbids.
  */
+// The sign and magnitude of the server's own `score_delta`, inline for the same
+// reason as the progress tab's mover row: no cut, no computed difference, no
+// dependency on the lib that is being rewritten underneath another task.
+function deltaOf(value: number): { direction: 'up' | 'flat' | 'down'; magnitude: number } {
+  return { direction: value > 0 ? 'up' : value < 0 ? 'down' : 'flat', magnitude: Math.abs(value) };
+}
+
 export function useDrillDownComparison({
   progress,
   earlier,
@@ -32,7 +38,7 @@ export function useDrillDownComparison({
 }: StudentComparisonStripProps): ProgressStatItem[] {
   const t = useTranslations('Teacher.results.drillDown');
   const format = useFormatter();
-  const score = progressDelta(progress.score_delta);
+  const score = deltaOf(progress.score_delta);
   const phase = acaraShift(progress);
 
   const scoreValue =

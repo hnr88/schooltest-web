@@ -3,16 +3,13 @@
 import { useTranslations } from 'next-intl';
 
 import { SubskillMasteryRow } from '@/modules/teacher/components/SubskillMasteryRow';
-import type { SubskillMasteryListProps } from '@/modules/teacher/types/teaching-insights.types';
+import type { SubskillMasteryListProps } from '@/modules/teacher/types/class-analytics.types';
 
-// .qa/DESIGN.md §Teaching insights (1): "Reading subskill mastery across class",
-// caption "Students mastered per subskill (most recent test data, N students
-// completed)", then one bar per subskill.
-//
-// The rows are rendered in the order C-TR-3 sent them (ATTRIBUTE_ORDER.reading)
-// and the list is never re-sorted by ratio: re-ranking would invent a "worst
-// first" reading the endpoint did not send.
-function SubskillMasteryList({ mastery, completedCount }: SubskillMasteryListProps) {
+// .qa/DESIGN.md §Teaching insights (1), task 34 (dashboard §3): one row per
+// assessed subskill, WEAKEST AVERAGE FIRST — the ranking the task names — with
+// every exclusion stated on the row ("n of N assessed"). The rows arrive in
+// that order from `weakestFirstAverages`; the list re-sorts nothing.
+function SubskillMasteryList({ averages, secure, totalStudents }: SubskillMasteryListProps) {
   const t = useTranslations('Teacher.results.insights');
 
   return (
@@ -26,13 +23,18 @@ function SubskillMasteryList({ mastery, completedCount }: SubskillMasteryListPro
           {t('masteryTitle')}
         </h2>
         <p className="text-meta text-muted-foreground">
-          {t('masteryCaption', { count: completedCount })}
+          {t('masteryCaption', { count: totalStudents })}
         </p>
       </div>
 
       <ul className="flex flex-col gap-3.5">
-        {mastery.map((entry) => (
-          <SubskillMasteryRow key={entry.attribute} entry={entry} />
+        {averages.map((entry) => (
+          <SubskillMasteryRow
+            key={entry.skill}
+            entry={entry}
+            secure={secure.get(entry.skill) ?? null}
+            totalStudents={totalStudents}
+          />
         ))}
       </ul>
     </section>

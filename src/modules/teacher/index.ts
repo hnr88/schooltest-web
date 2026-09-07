@@ -35,8 +35,6 @@ export { useCreateTestSessionMutation } from './queries/use-create-test-session.
 export { useCloseTestSessionMutation } from './queries/use-close-test-session.mutation';
 export { useClassStudentsQuery } from './queries/use-class-students.query';
 export { useStudentDrillDownQuery } from './queries/use-student-drill-down.query';
-export { useClassInsightsQuery } from './queries/use-class-insights.query';
-export { useClassProgressQuery } from './queries/use-class-progress.query';
 export { useTeacherExportMutation } from './queries/use-teacher-export.mutation';
 
 export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-export';
@@ -214,45 +212,21 @@ export type {
   TeachingInsightsPanelProps,
   SubskillMasteryListProps,
   SubskillMasteryRowProps,
-  SuggestedGroupsSectionProps,
-  SuggestedGroupCardProps,
-  MasteryBarView,
-} from './types/teaching-insights.types';
+  VocabStrandMeanProps,
+} from './types/class-analytics.types';
 
-// Progress tab (task 045, C-TR-4).
+// Progress tab (task 34, dashboard §3) — ranked lists, phase spread, deferred chart.
 export { ProgressTabPanel } from './components/ProgressTabPanel';
-export { ProgressEmptyState } from './components/ProgressEmptyState';
-export { ProgressSummarySection } from './components/ProgressSummarySection';
-export { ProgressShiftTable } from './components/ProgressShiftTable';
 export { ProgressAcaraSection } from './components/ProgressAcaraSection';
-export { ProgressWatchSection } from './components/ProgressWatchSection';
 export { ProgressDeltaPill } from './components/ProgressDeltaPill';
-export {
-  progressDirection,
-  progressDelta,
-  deriveProgressStatus,
-  progressView,
-  acaraMovementCards,
-} from './lib/class-progress';
-export {
-  PROGRESS_DIRECTION_TONE,
-  PROGRESS_DIRECTION_LABEL_KEY,
-  PROGRESS_ACARA_CARD_ORDER,
-  PROGRESS_ACARA_LABEL_KEY,
-  PROGRESS_WATCH_LABEL_KEY,
-  PROGRESS_WATCH_EMPTY_KEY,
-} from './constants/class-progress.constants';
+export { progressDelta } from '@/modules/results/lib/class-analytics';
 export type {
-  ProgressDirection,
-  ProgressReadStatus,
-  ProgressReadCounts,
-  ProgressView,
-  ProgressAcaraCardKey,
-  ProgressAcaraCard as ProgressAcaraCardData,
-  ProgressStatItem,
-  ProgressWatchVariant,
   ProgressTabPanelProps,
-} from './types/class-progress.types';
+  ProgressAcaraSectionProps,
+  ProgressMoverRowProps,
+  ProgressWatchListProps,
+  ProgressWatchVariant,
+} from './types/class-analytics.types';
 
 // Live monitoring grid (task 037, C-TS-3).
 export { LiveMonitorScreen } from './components/LiveMonitorScreen';

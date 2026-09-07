@@ -1,93 +1,74 @@
 'use client';
 
+import { LineChart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, Button } from '@/modules/design-system';
+import { EmptyState } from '@/modules/design-system';
 import { ProgressAcaraSection } from '@/modules/teacher/components/ProgressAcaraSection';
-import { ProgressEmptyState } from '@/modules/teacher/components/ProgressEmptyState';
-import { ProgressShiftTable } from '@/modules/teacher/components/ProgressShiftTable';
-import { ProgressSummarySection } from '@/modules/teacher/components/ProgressSummarySection';
-import { ProgressWatchSection } from '@/modules/teacher/components/ProgressWatchSection';
+import { ProgressWatchList } from '@/modules/teacher/components/ProgressWatchList';
 import { TeacherExportPanel } from '@/modules/teacher/components/TeacherExportPanel';
-import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
-import { deriveProgressStatus, progressView } from '@/modules/teacher/lib/class-progress';
-import { useClassProgressQuery } from '@/modules/teacher/queries/use-class-progress.query';
-import type { ProgressTabPanelProps } from '@/modules/teacher/types/class-progress.types';
+import { needsSupport, topGains } from '@/modules/results/lib/class-analytics';
+import { resultViewsOf } from '@/modules/results/lib/class-aggregation';
+import type { RosterRow } from '@/modules/results/types/roster.types';
+import type { ProgressTabPanelProps } from '@/modules/teacher/types/class-analytics.types';
 
-// The Progress tab: ONE live read of C-TR-4 (GET /api/teacher/classes/:id/progress).
-//
-// TWO states, and the SERVER decides which: `available: false` renders the
-// placeholder with the real Test A / Test B completion counts, `available: true`
-// renders the stat row, the subskill mastery shift table, the ACARA phase
-// movement cards and Students to watch. The portal never infers emptiness from an
-// array it found empty, never zero-fills a suppressed comparison, and never
-// re-thresholds a likelihood — every count here was already computed server-side
-// over the both-tests cohort with `Config.teacher_mastery_bands`.
-function ProgressTabPanel({ classDocumentId }: ProgressTabPanelProps) {
+// The Progress tab (task 34, dashboard §3/D2). Everything renders from the ONE
+// Screen A roster payload — the panel issues no read, so switching tabs never
+// re-requests. Top reliable gains (delta desc, delta_reliable, max 5), needs
+// support (reliable declines first, then lowest score, max 5), the ACARA phase
+// spread over the WHOLE roster, and the class progress chart's honest
+// placeholder: per-class history is not served by the roster read, and a fake
+// chart is worse than a stated gap.
+function ProgressTabPanel({ rows, classDocumentId }: ProgressTabPanelProps) {
   const t = useTranslations('Teacher.results.progress');
   const tExport = useTranslations('Teacher.results.export');
-  const progress = useClassProgressQuery(classDocumentId);
-  const status = deriveProgressStatus({
-    isLoading: progress.isPending,
-    isError: progress.isError,
-    isSuccess: progress.isSuccess,
-    data: progress.data,
-  });
-  const view = progress.data ? progressView(progress.data) : null;
-  const failed = status === 'error' || status === 'drift';
+  const views = resultViewsOf(rows);
+
+  // The pure layers return SCORED views in order; the wrapper carries the name.
+  const rowByStudent = new Map(rows.map((row) => [row.student.document_id, row]));
+  const asRows = (picked: typeof views): RosterRow[] =>
+    picked.flatMap((view) => {
+      const row = rowByStudent.get(view.student_document_id);
+      return row ? [row] : [];
+    });
+
+  const gains = asRows(topGains(views));
+  const support = asRows(needsSupport(views));
 
   return (
-    <div data-slot="class-progress" data-status={status} className="flex flex-col gap-6">
-      {status === 'loading' ? (
-        <div role="status" aria-label={t('loading')} className="flex flex-col gap-4">
-          <Skeleton className="h-32 w-full rounded-card" />
-          <Skeleton className="h-64 w-full rounded-card" />
-          <Skeleton className="h-40 w-full rounded-card" />
-        </div>
-      ) : null}
-
-      {failed ? (
-        <Alert
-          variant="error"
-          title={status === 'drift' ? t('driftTitle') : t('errorTitle')}
-          action={
-            <Button
-              variant="outline"
-              size="sm"
-              className={TEACHER_RETRY_BUTTON_CLASS}
-              loading={progress.isFetching}
-              onClick={() => progress.refetch()}
-            >
-              {t('retry')}
-            </Button>
-          }
-        >
-          {status === 'drift' ? t('driftDescription') : t('errorDescription')}
-        </Alert>
-      ) : null}
-
-      {view?.kind === 'unavailable' ? <ProgressEmptyState cohort={view.cohort} /> : null}
-
-      {view?.kind === 'ready' ? (
+    <div data-slot="class-progress" data-status={views.length === 0 ? 'empty' : 'ready'} className="flex flex-col gap-6">
+      {views.length === 0 ? (
+        <EmptyState
+          icon={LineChart}
+          tone="brand"
+          title={t('emptyTitle')}
+          description={t('emptyDescription')}
+        />
+      ) : (
         <>
-          <ProgressSummarySection
-            cohort={view.cohort}
-            summary={view.summary}
-            compared={view.compared}
-          />
-          <ProgressShiftTable shift={view.shift} compared={view.compared} />
-          <ProgressAcaraSection movement={view.movement} />
-          <ProgressWatchSection
-            mostImproved={view.mostImproved}
-            needsAttention={view.needsAttention}
-          />
+          <ProgressWatchList variant="gains" rows={gains} />
+          <ProgressWatchList variant="support" rows={support} />
+          <ProgressAcaraSection rows={rows} />
+
           {/*
-            READY only. C-TR-6 answers 404 when no student has completed Test B, so
-            the export lives exactly where the server has a document to give — the
-            `available: false` placeholder offers no download rather than one that
-            would fail.
+            DEFERRED, stated as a gap: the class progress chart needs per-class
+            history, which the roster read deliberately omits. A placeholder that
+            names the missing input is honest; a fabricated chart is not.
           */}
+          <div
+            data-slot="progress-chart-placeholder"
+            aria-labelledby="progress-chart-heading"
+            className="flex flex-col items-center gap-2 rounded-card border border-dashed border-border bg-surface-inset px-6 py-8 text-center"
+          >
+            <LineChart aria-hidden="true" className="size-6 text-muted-foreground" />
+            <h2 id="progress-chart-heading" className="text-body font-semibold text-foreground">
+              {t('chartDeferredTitle')}
+            </h2>
+            <p className="max-w-prose text-meta text-balance text-muted-foreground">
+              {t('chartDeferredDescription')}
+            </p>
+          </div>
+
           <TeacherExportPanel
             request={{ kind: 'progress', classDocumentId }}
             headingId="class-progress-export-heading"
@@ -97,7 +78,7 @@ function ProgressTabPanel({ classDocumentId }: ProgressTabPanelProps) {
             footnote={tExport('progressFootnote')}
           />
         </>
-      ) : null}
+      )}
     </div>
   );
 }

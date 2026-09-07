@@ -2162,6 +2162,8 @@
       "classesTitle": "Lớp học",
       "classStudentsLine": "{count} học sinh",
       "loadError": "Không thể tải tổng quan trường. Thử lại.",
+        "notYetAssessed": "Chưa được đánh giá",
+        "transitionSteadyShort": "steady",
       "export": {
         "cta": "Xuất kết quả của trường (CSV)",
         "downloading": "Đang chuẩn bị xuất...",
@@ -4158,7 +4160,15 @@
         "groupsTitle": "Nhóm được đề xuất",
         "groupsCaption": "Học sinh được nhóm theo điểm yếu chính để dạy có trọng tâm",
         "groupStudents": "{count, plural, other {# học sinh}}",
-        "groupsNone": "Máy chủ không đề xuất nhóm nào cho lớp này: chưa có kết quả hoàn thành nào có đủ hồ sơ kỹ năng con để nhóm."
+        "groupsNone": "Máy chủ không đề xuất nhóm nào cho lớp này: chưa có kết quả hoàn thành nào có đủ hồ sơ kỹ năng con để nhóm.",
+        "strandTitle": "Trung bình từng phân ngành từ vựng",
+        "strandCaption": "Trung bình A2 và B1 — học sinh chỉ làm một phân ngành chỉ tính cho phân ngành đó",
+        "strandA2": "Từ vựng A2",
+        "strandB1": "Từ vựng B1",
+        "strandNone": "—",
+        "strandAssessed": "{count} học sinh được đánh giá",
+        "averageOnly": "TB {average}",
+        "excludedNote": "{assessed} trên {total} được đánh giá"
       },
       "progress": {
         "loading": "Đang tải phần so sánh Bài A với Bài B",
@@ -4205,7 +4215,18 @@
         "needsAttentionNote": "Những học sinh này bị giảm điểm — có thể cần theo dõi riêng.",
         "mostImprovedEmpty": "Không có học sinh nào trong nhóm được so sánh tiến bộ giữa hai bài.",
         "needsAttentionEmpty": "Không có học sinh nào trong nhóm được so sánh bị giảm giữa hai bài.",
-        "moverScores": "{from} → {to}"
+        "moverScores": "{from} → {to}",
+        "topGainsTitle": "Tăng trưởng đáng tin cậy nhất",
+        "topGainsEmpty": "Chưa có thay đổi đáng tin cậy nào",
+        "needsSupportTitle": "Cần hỗ trợ",
+        "needsSupportEmpty": "Hiện không có học sinh nào cần hỗ trợ",
+        "moverScore": "Điểm {score}",
+        "phaseSpreadTitle": "Phân bố giai đoạn ACARA",
+        "phaseSpreadCaption": "Mọi học sinh của lớp, theo giai đoạn của kết quả chính thức gần nhất",
+        "phaseUnmeasured": "Chưa đo lường giai đoạn nào",
+        "phaseCount": "{count} trên {total} học sinh",
+        "chartDeferredTitle": "Biểu đồ tiến bộ của lớp chưa khả dụng",
+        "chartDeferredDescription": "Biểu đồ này cần lịch sử làm bài theo lớp, mà kết quả hiện chưa mang theo. Nó sẽ xuất hiện ở đây khi có lịch sử — không dùng ước lượng thay thế."
       },
       "students": {
         "title": "Học sinh",
@@ -4252,6 +4273,10 @@
         "firstLanguage": "Tiếng mẹ đẻ {language}",
         "testHeading": "Bài {variant} — đánh giá đọc",
         "completedOn": "Hoàn thành {date}",
+        "gateLabel": "Cổng đầu ra",
+        "gatePassed": "Đã qua cổng đầu ra",
+        "gateNotPassed": "Chưa qua cổng đầu ra",
+        "gateNotSat": "Chưa thi cổng đầu ra",
         "scoreValue": "{score} / 100",
         "scoreLabel": "Điểm tổng",
         "displayLabel": "Kiểu người đọc: {label}",

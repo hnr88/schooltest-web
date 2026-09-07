@@ -116,3 +116,23 @@ export function needsSupport(rows: readonly ResultView[]): ResultView[] {
     })
     .slice(0, 5);
 }
+
+/**
+ * The DISPLAY order for the insights tab (dashboard §3): weakest average first.
+ * The canonical order is the AGGREGATE order (the pure map above); this is the
+ * teacher-facing ranking on top of it. Stable sort, so equal averages keep the
+ * canonical tile order — the tie-break is never insertion luck.
+ */
+export function weakestFirstAverages(rows: readonly ResultView[]): SubskillAverage[] {
+  return subskillAverages(rows).sort((a, b) => a.average - b.average);
+}
+
+/**
+ * The SIGN and magnitude of a server-sent difference, as the delta pill prints
+ * it: direction is the sign (compared to zero — no cut, no band), magnitude is
+ * `Math.abs`. The difference itself is never computed here; every caller passes
+ * a delta the API already sent.
+ */
+export function progressDelta(value: number): { direction: 'up' | 'flat' | 'down'; magnitude: number } {
+  return { direction: value > 0 ? 'up' : value < 0 ? 'down' : 'flat', magnitude: Math.abs(value) };
+}
