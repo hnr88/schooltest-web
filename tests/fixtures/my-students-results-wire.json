@@ -1,0 +1,160 @@
+[
+  {
+    "document_id": "bb8qvpcavodspdz5ve3mqc9z",
+    "session_document_id": "dyvqpiunc7a4mibn2f6fnwwu",
+    "student_document_id": "dl5s5ixvaqloivg416tlfbis",
+    "skill": "reading",
+    "scope": "receptive",
+    "status": "complete",
+    "destination": "official",
+    "published_at": "2026-09-07T18:35:56.149Z",
+    "provisional": "field_test",
+    "model_version": "reading-3model/1",
+    "overall": {
+      "domain_score": 90,
+      "provisional_transform": true,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null
+    },
+    "acara_phase": "developing_to_consolidating",
+    "transitioning_attribute": null,
+    "readiness": "approaching",
+    "gate": {
+      "passed": true,
+      "domain_score": 86,
+      "provisional_cut": true
+    },
+    "effort_valid": true,
+    "low_confidence": null,
+    "items_answered": 94,
+    "items_total": 94,
+    "duration_minutes": 1,
+    "attributes": {
+      "Gist": {
+        "domain_score": 90,
+        "se": 0,
+        "status": "secure",
+        "prob": 0.999999983713629,
+        "prob_se": 0.000127618065979416,
+        "items_seen": 14,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "Detail": {
+        "domain_score": 90,
+        "se": 0.1,
+        "status": "secure",
+        "prob": 0.999999941350565,
+        "prob_se": 0.000242176448028245,
+        "items_seen": 13,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "Grammar": {
+        "domain_score": 90,
+        "se": 0,
+        "status": "secure",
+        "prob": 0.999999999992519,
+        "prob_se": 2.73512427221749e-06,
+        "items_seen": 20,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "Decoding": {
+        "domain_score": 90,
+        "se": 0,
+        "status": "secure",
+        "prob": 1,
+        "prob_se": 1.05367121277235e-08,
+        "items_seen": 42,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "Vocab_A2": {
+        "domain_score": 90,
+        "se": 0,
+        "status": "secure",
+        "prob": 1,
+        "prob_se": 1.05367121277235e-08,
+        "items_seen": 16,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "Vocab_B1": {
+        "domain_score": 90,
+        "se": 0.2,
+        "status": "secure",
+        "prob": 0.999990153670177,
+        "prob_se": 0.00313787075460491,
+        "items_seen": 9,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "Inference": {
+        "domain_score": 90,
+        "se": 0.1,
+        "status": "secure",
+        "prob": 0.999999240245393,
+        "prob_se": 0.000871638703885297,
+        "items_seen": 11,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      }
+    },
+    "vocab": {
+      "blended": 90,
+      "status": "secure",
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": null,
+      "a2": {
+        "domain_score": 90
+      },
+      "b1": {
+        "domain_score": 90
+      },
+      "single_strand": null
+    },
+    "error_patterns": [],
+    "previous_result_document_id": null,
+    "narrative": null,
+    "cefr_band": "B1",
+    "display_label": "Developing \u2192 Consolidating (transitioning)",
+    "supplementary": {
+      "vocab_band_a2_accuracy": 1,
+      "vocab_band_b1_accuracy": null,
+      "vocab_band_b2_accuracy": 1
+    },
+    "productive_scores": null
+  },
+  {
+    "document_id": "ghkasc5ql1f2gdawllpkghef",
+    "scope": "skill",
+    "skill": "reading",
+    "status": "scoring_failed",
+    "attributes": null,
+    "provisional": null,
+    "display_label": null,
+    "acara_phase": null,
+    "cefr_band": null,
+    "readiness": null,
+    "low_confidence": null,
+    "effort_valid": null,
+    "productive_scores": null,
+    "supplementary": null,
+    "destination": "official",
+    "published_at": null,
+    "previous_result_document_id": null,
+    "session_document_id": "bxfsu52462t94gngktwxzvib",
+    "model_version": null,
+    "legacy_caveat": null
+  }
+]

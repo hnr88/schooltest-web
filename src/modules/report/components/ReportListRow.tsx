@@ -7,12 +7,17 @@ import { Link } from '@/i18n/navigation';
 import { StatusPill } from '@/modules/design-system';
 import { getDisplayLabelState } from '@/modules/report/lib/display-label';
 import { getResultStatusTone } from '@/modules/report/lib/report-status';
-import type { ResultView } from '@/modules/report/types/report.types';
+import type { MyStudentsResultsRow } from '@/modules/report/schemas/result-view.schema';
 
-// C-11 rows carry NO student identity by design (PII stays off the ResultView),
-// so the row is named by what the API actually published: the Crosswalk phase
+// C-11 rows carry NO student NAME by design (PII stays off the ResultView), so
+// the row is named by what the API actually published: the Crosswalk phase
 // label, the skill and the publication date. No name is invented to fill the gap.
-export function ReportListRow({ result }: { result: ResultView }) {
+//
+// The row type is the list's own union — a current reading row and a v1 row
+// (`scoring_failed`, listening) both render here, and every field this row
+// reads exists on both. A failed sitting showing its status is the point: a
+// dropped row would tell the teacher nothing happened.
+export function ReportListRow({ result }: { result: MyStudentsResultsRow }) {
   const t = useTranslations('Report');
   const format = useFormatter();
   const state = getDisplayLabelState(result);

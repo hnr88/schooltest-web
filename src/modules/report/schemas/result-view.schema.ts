@@ -54,9 +54,6 @@ export type {
   Skill,
 } from '@schooltest/scoring-contracts';
 
-// C-11 answers a BARE array — no `{data, meta}` envelope on this route.
-export const myStudentsResultsResponseSchema = z.array(resultViewSchema);
-
 // Legacy / non-v2 fallback for the C-4 read. The server answers v2 rows with
 // the contract ResultView and EVERYTHING else (legacy-r7, listening, unscored)
 // with its own v1 view (schooltest-api/src/contracts/results.ts
@@ -115,3 +112,21 @@ export const legacyResultViewSchema = z.strictObject({
   combined_children: z.array(z.unknown()).optional(),
 });
 export type LegacyResultView = z.infer<typeof legacyResultViewSchema>;
+
+/**
+ * C-11 GET /api/my/students/results (no `class`) answers a BARE array — no
+ * `{data, meta}` envelope — and its ROWS carry the same per-row dispatch the
+ * C-4 read does: a current reading row is the contract `ResultView`, and the
+ * two populations the v2 read model refuses (`scoring_failed`, listening) are
+ * the server's v1 view.
+ *
+ * This was `z.array(resultViewSchema)`, and the server was answering 400 on the
+ * whole list rather than v1 rows — so the union is what the fixed endpoint
+ * actually serves, not a loosening: both members stay strict, and a row that is
+ * neither shape still fails the parse.
+ */
+export const myStudentsResultsResponseSchema = z.array(
+  z.union([resultViewSchema, legacyResultViewSchema])
+);
+/** One list row: whichever view the server dispatched for it. */
+export type MyStudentsResultsRow = z.infer<typeof myStudentsResultsResponseSchema>[number];
