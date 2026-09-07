@@ -9,6 +9,11 @@ export interface TrailCrumb {
   /** True for the last crumb — rendered as `BreadcrumbPage`, never a link. */
   isCurrent: boolean;
   /**
+   * A real level of the hierarchy with no page of its own
+   * (`TRAIL_NONLINK_PATHS`): keeps its label, renders as text, never links.
+   */
+  isNonLink: boolean;
+  /**
    * A dynamic segment (`[documentId]`) whose label is not in the registry. The
    * caller supplies the real record name; until it resolves the crumb is
    * dropped rather than showing a raw id.

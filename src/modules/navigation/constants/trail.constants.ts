@@ -8,9 +8,11 @@
  * next-intl message keys — existing `Shell.nav.*` labels are reused rather than
  * duplicated into a second catalog.
  *
- * Every entry corresponds to a route that really exists. Adding a route without
- * adding it here leaves an unlabeled crumb, which the mission's breadcrumb e2e
- * fails on.
+ * Every entry names a real LEVEL of the hierarchy. Most of them are also a real
+ * route; the handful that are not are listed in `TRAIL_NONLINK_PATHS` below and
+ * render as text, so no crumb can ever link to a page that does not exist.
+ * Adding a route without adding it here leaves an unlabeled crumb, which the
+ * mission's breadcrumb e2e fails on.
  */
 export const TRAIL_ROOT_KEY = 'Navigation.home';
 
@@ -83,6 +85,28 @@ export const TRAIL_LABELS: Readonly<Record<string, string>> = {
 };
 
 /**
+ * Registry paths that are LABELS ONLY — a real level of the hierarchy with no
+ * page of its own, so their crumb renders as text and never as a link.
+ *
+ * Both teacher entries are ancestors of the record patterns below, so every
+ * teacher class-detail and class-results page walks through them, yet neither
+ * has a `page.tsx` and the MVP design pictures no teacher classes-list or
+ * results-index surface — so the answer is to stop emitting the href, not to
+ * invent the pages.
+ *
+ * Without this list the safety is accidental rather than structural: the
+ * ancestor only escapes being a link while it happens to be the LAST crumb,
+ * which holds solely because nothing in `modules/teach` publishes a record
+ * crumb. Add one — as every other detail page in the app already does — and the
+ * ancestor stops being current and becomes a live link to a 404. See
+ * `build-trail.test.ts`.
+ */
+export const TRAIL_NONLINK_PATHS: readonly string[] = [
+  '/dashboard/teach/classes',
+  '/dashboard/teach/results',
+];
+
+/**
  * Path patterns whose LAST segment is dynamic and carries a record name the
  * page supplies at runtime (class, school, child, result). Listed explicitly so
  * an unregistered path can never be silently treated as a record.
@@ -107,3 +131,4 @@ export const TRAIL_IGNORED_SEGMENTS: readonly string[] = ['(portal)', '(teacher)
 
 export const RECORD_PATTERNS = new Set(TRAIL_RECORD_PATTERNS);
 export const IGNORED = new Set(TRAIL_IGNORED_SEGMENTS);
+export const NONLINK = new Set(TRAIL_NONLINK_PATHS);

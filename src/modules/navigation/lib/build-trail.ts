@@ -4,7 +4,7 @@ import {
   TRAIL_RECORD_PATTERNS,
   TRAIL_ROOT_KEY,
 } from '@/modules/navigation/constants/trail.constants';
-import { IGNORED, RECORD_PATTERNS } from '@/modules/navigation/constants/trail.constants';
+import { IGNORED, NONLINK, RECORD_PATTERNS } from '@/modules/navigation/constants/trail.constants';
 import type { BuildTrailOptions, Trail, TrailCrumb } from '@/modules/navigation/types/navigation.types';
 
 /** A path segment that looks like an opaque record id rather than a literal route. */
@@ -61,7 +61,13 @@ export function buildTrail(pathname: string, options: BuildTrailOptions = {}): T
   const crumbs: TrailCrumb[] = [];
 
   if (includeRoot) {
-    crumbs.push({ href: '/', labelKey: TRAIL_ROOT_KEY, isCurrent: segments.length === 0, isRecord: false });
+    crumbs.push({
+      href: '/',
+      labelKey: TRAIL_ROOT_KEY,
+      isCurrent: segments.length === 0,
+      isRecord: false,
+      isNonLink: false,
+    });
   }
 
   const walked: string[] = [];
@@ -84,6 +90,8 @@ export function buildTrail(pathname: string, options: BuildTrailOptions = {}): T
       labelKey: isRecord ? '' : TRAIL_LABELS[pattern],
       isCurrent: false,
       isRecord,
+      // A level with no page of its own keeps its label and loses its link.
+      isNonLink: NONLINK.has(pattern),
     });
   }
 

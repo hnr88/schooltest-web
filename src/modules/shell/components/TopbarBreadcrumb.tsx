@@ -13,7 +13,7 @@ import {
   BreadcrumbSeparator,
 } from '@/modules/design-system';
 import { buildTrail } from '@/modules/navigation';
-import { CRUMB_LINK_CLASSES } from '@/modules/shell/constants/crumb.constants';
+import { CRUMB_LINK_CLASSES, CRUMB_TEXT_CLASSES } from '@/modules/shell/constants/crumb.constants';
 import {
   useRecordCrumbAncestors,
   useRecordCrumbLabel,
@@ -39,31 +39,38 @@ function TopbarBreadcrumb() {
   return (
     <Breadcrumb aria-label={t('Shell.topbar.breadcrumbLabel')} className="min-w-0">
       <BreadcrumbList className="flex-nowrap gap-2 text-sm">
-        {crumbs.map((crumb, index) => (
-          <Fragment key={crumb.href}>
-            {index > 0 ? (
-              <BreadcrumbSeparator
-                className={crumb.isCurrent ? 'text-input' : 'text-input max-sm:hidden'}
-              >
-                /
-              </BreadcrumbSeparator>
-            ) : null}
-            <BreadcrumbItem className={crumb.isCurrent ? 'min-w-0' : 'min-w-0 max-sm:hidden'}>
-              {crumb.isCurrent ? (
-                <BreadcrumbPage
-                  data-slot="topbar-page-title"
-                  className="truncate font-semibold text-foreground"
+        {crumbs.map((crumb, index) => {
+          const label = crumb.isRecord ? (crumb.label ?? recordLabel) : t(crumb.labelKey);
+          return (
+            <Fragment key={crumb.href}>
+              {index > 0 ? (
+                <BreadcrumbSeparator
+                  className={crumb.isCurrent ? 'text-input' : 'text-input max-sm:hidden'}
                 >
-                  {crumb.isRecord ? (crumb.label ?? recordLabel) : t(crumb.labelKey)}
-                </BreadcrumbPage>
-              ) : (
-                <BreadcrumbLink render={<Link href={crumb.href} />} className={CRUMB_LINK_CLASSES}>
-                  {crumb.isRecord ? (crumb.label ?? recordLabel) : t(crumb.labelKey)}
-                </BreadcrumbLink>
-              )}
-            </BreadcrumbItem>
-          </Fragment>
-        ))}
+                  /
+                </BreadcrumbSeparator>
+              ) : null}
+              <BreadcrumbItem className={crumb.isCurrent ? 'min-w-0' : 'min-w-0 max-sm:hidden'}>
+                {crumb.isCurrent ? (
+                  <BreadcrumbPage
+                    data-slot="topbar-page-title"
+                    className="truncate font-semibold text-foreground"
+                  >
+                    {label}
+                  </BreadcrumbPage>
+                ) : crumb.isNonLink ? (
+                  <BreadcrumbPage data-slot="topbar-crumb-text" className={CRUMB_TEXT_CLASSES}>
+                    {label}
+                  </BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink render={<Link href={crumb.href} />} className={CRUMB_LINK_CLASSES}>
+                    {label}
+                  </BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </Fragment>
+          );
+        })}
       </BreadcrumbList>
     </Breadcrumb>
   );
