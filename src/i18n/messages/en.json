@@ -3866,6 +3866,66 @@
       "errorTitle": "We could not load teachers",
       "errorDescription": "Check your connection and try again."
     },
+    "audit": {
+      "title": "Audit",
+      "description": "The platform audit ledger and the API tokens that can reach it.",
+      "meta": {
+        "title": "Audit — SchoolTest Ops",
+        "description": "SchoolTest Ops — the audit ledger and API token administration."
+      },
+      "ledgerTitle": "Audit ledger",
+      "loadingLabel": "Loading the audit ledger",
+      "noValue": "\u2014",
+      "actorSystem": "System",
+      "columns": {
+        "actor": "Actor",
+        "action": "Action",
+        "target": "Target",
+        "timestamp": "When"
+      },
+      "empty": {
+        "none": "No audit entries have been recorded yet.",
+        "noMatches": "No audit entries match these filters."
+      },
+      "error": {
+        "title": "We could not load the audit ledger.",
+        "description": "Check your connection and try again.",
+        "retry": "Try again"
+      },
+      "pagination": {
+        "label": "Audit ledger pages",
+        "previous": "Previous",
+        "next": "Next",
+        "pageCount": "Page {page} of {pageCount} \u00b7 {total} entries"
+      },
+      "filters": {
+        "action": "Action",
+        "actionPlaceholder": "e.g. invitation.revoke",
+        "target": "Target",
+        "targetPlaceholder": "Target id",
+        "apply": "Apply filters",
+        "clear": "Clear filters"
+      },
+      "tokens": {
+        "title": "API tokens",
+        "description": "Tokens that can call the platform API. Revoking one is immediate and cannot be undone.",
+        "loadingLabel": "Loading API tokens",
+        "errorTitle": "We could not load the API tokens.",
+        "errorDescription": "Check your connection and try again.",
+        "revoke": "Revoke",
+        "confirmTitle": "Revoke this API token?",
+        "confirmBody": "{name} stops working immediately and cannot be restored. Anything using it will start failing.",
+        "confirmAction": "Revoke token",
+        "cancel": "Cancel",
+        "columns": {
+          "name": "Name",
+          "type": "Type",
+          "lastUsed": "Last used",
+          "created": "Created",
+          "actions": "Actions"
+        }
+      }
+    },
     "classDetail": {
       "meta": {
         "title": "Class detail",

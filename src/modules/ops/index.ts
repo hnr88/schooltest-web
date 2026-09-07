@@ -7,10 +7,14 @@ export { OpsSchoolCountCards } from './components/OpsSchoolCountCards';
 export { OpsOnboardSchoolDialog } from './components/OpsOnboardSchoolDialog';
 export { OpsStudentImport } from './components/OpsStudentImport';
 export { OpsSectionTimers } from './components/OpsSectionTimers';
+/* ledger 6 — the Audit console (audit ledger + API tokens) */
+export { OpsAuditConsole } from './components/OpsAuditConsole';
 export { OpsFormWindow } from './components/OpsFormWindow';
 export { OpsSittingRecovery } from './components/OpsSittingRecovery';
 export { OpsPlatformSettings } from './components/OpsPlatformSettings';
 export { OpsSystemConsole } from './components/OpsSystemConsole';
+export { OpsPipelinePanel } from './components/OpsPipelinePanel';
+export { OpsSystemMaintenance } from './components/OpsSystemMaintenance';
 export { usePlatformSettingsQuery } from './queries/use-platform-settings.query';
 export { useSchoolInvitationQuery } from './queries/use-school-invitation.query';
 export { useOnboardSchoolMutation } from './queries/use-onboard-school.mutation';
