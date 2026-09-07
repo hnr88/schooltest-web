@@ -82,10 +82,14 @@ test.describe('ops staff invitation UI (GAP-1 visual proof)', () => {
     // and unknown rows never render the controls. No row is clicked.
     const rows = dialog.locator('[data-slot="ops-staff-invitations-table"] tr[data-status]');
     const rowCount = await rows.count();
+    const seen: string[] = [];
+    let actionableRows = 0;
     for (let index = 0; index < rowCount; index += 1) {
       const row = rows.nth(index);
       const status = await row.getAttribute('data-status');
+      seen.push(status ?? '(none)');
       const actionable = status === 'invited' || status === 'expired';
+      if (actionable) actionableRows += 1;
       expect(
         await row.locator('[data-slot="ops-staff-invitation-row-actions"]').count(),
         `row ${index} (status=${status}) actions column`,
@@ -93,9 +97,50 @@ test.describe('ops staff invitation UI (GAP-1 visual proof)', () => {
     }
     expect(rowCount, 'the seeded school has invitation history to render').toBeGreaterThan(0);
 
+    // WHICH HALF OF THE RULE THIS LIVE RUN ACTUALLY PROVES. The loop above is
+    // only as strong as the statuses the seeded data happens to contain, and a
+    // green tick hides which branch ran. Recording the observed set makes the
+    // coverage auditable instead of implied, and would fail loudly the day the
+    // table renders a status the eligibility rule does not know about.
+    const statuses = [...new Set(seen)].sort();
+    testInfo.annotations.push({
+      type: 'eligibility-coverage',
+      description:
+        `rows=${rowCount} statuses=[${statuses.join(', ')}] actionable=${actionableRows}. `
+        + 'The POSITIVE branch (invited/expired => Resend + Revoke) is proven at component level in '
+        + 'tests/unit/ops-staff-invitation-actions.test.tsx, which covers all four statuses plus the '
+        + 'no-status and no-renderActions cases; it cannot be proven here without creating an '
+        + 'invitation, and live mutations are out of scope for this spec.',
+    });
+    for (const status of statuses) {
+      expect(
+        ['invited', 'expired', 'accepted', 'revoked', '(none)'],
+        `rendered status "${status}" must be one the eligibility rule handles`,
+      ).toContain(status);
+    }
+
+    // The Actions COLUMN survives even when no row is eligible — that is what
+    // proves `renderActions` is wired through the table at all, independently
+    // of which statuses the seed happens to hold.
+    const actionsHeader = dialog.locator('table thead').getByText(cat(en, 'Ops.staffInvitations.columnActions'));
+    await expect(actionsHeader).toBeVisible();
+
+    // The table lives in an `overflow-x-auto` container
+    // (OpsStaffInvitationTable.tsx:46), so at 1280 the Actions column sits
+    // outside the frame and a plain page screenshot proves nothing about it.
+    // Scroll it into view before capturing, or the image is of the wrong half
+    // of the table.
+    await actionsHeader.scrollIntoViewIfNeeded();
     await page.waitForTimeout(400);
     const dialogShot = await page.screenshot({ path: `${CAPTURES}/gap1-e2e-dialog-desktop.png` });
     await testInfo.attach('gap1-e2e-dialog-desktop.png', { body: dialogShot, contentType: 'image/png' });
+
+    // A tight capture of the table itself, so the Actions column and the
+    // per-row eligibility are legible rather than a strip at the frame edge.
+    const tableShot = await dialog
+      .locator('[data-slot="ops-staff-invitations-table"]')
+      .screenshot({ path: `${CAPTURES}/gap1-e2e-actions-column.png` });
+    await testInfo.attach('gap1-e2e-actions-column.png', { body: tableShot, contentType: 'image/png' });
 
     // --- 375px: the same surfaces stay usable ---
     // Close the desktop dialog first: its modal overlay would otherwise
@@ -112,6 +157,12 @@ test.describe('ops staff invitation UI (GAP-1 visual proof)', () => {
     });
     await teachersInvite.click();
     await dialog.waitFor({ state: 'visible', timeout: 30_000 });
+    // Same overflow container at 375px — scroll the Actions column in so the
+    // mobile capture shows it too.
+    await dialog
+      .locator('table thead')
+      .getByText(cat(en, 'Ops.staffInvitations.columnActions'))
+      .scrollIntoViewIfNeeded();
     await page.waitForTimeout(500);
     const dialogMobile = await page.screenshot({
       path: `${CAPTURES}/gap1-e2e-dialog-mobile.png`,
