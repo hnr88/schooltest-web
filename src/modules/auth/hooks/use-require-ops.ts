@@ -17,6 +17,10 @@ export function useRequireOps() {
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const hydrate = useAuthStore((state) => state.hydrate);
+  // GAP-6: the design-drawn expired state. While it stands, the guard stops
+  // bounce-redirecting — the caller renders the session-expired card over the
+  // kept-alive tree instead of yanking the operator to /sign-in.
+  const sessionExpired = useAuthStore((state) => state.sessionExpired);
   const router = useRouter();
 
   useEffect(() => {
@@ -35,21 +39,24 @@ export function useRequireOps() {
   const isRejected = meQuery.isError;
 
   useEffect(() => {
+    if (sessionExpired) return;
     if (hydrated && !hasToken) router.replace('/sign-in');
-  }, [hydrated, hasToken, router]);
+  }, [sessionExpired, hydrated, hasToken, router]);
 
   useEffect(() => {
+    if (sessionExpired) return;
     if (!isResolved) return;
     if (isRejected) {
       router.replace('/sign-in');
       return;
     }
     if (!isOps) router.replace('/dashboard');
-  }, [isResolved, isRejected, isOps, router]);
+  }, [sessionExpired, isResolved, isRejected, isOps, router]);
 
   return {
     isReady: isResolved && !isRejected && isOps,
     isOps,
     roleType,
+    sessionExpired,
   };
 }

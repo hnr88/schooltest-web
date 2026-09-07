@@ -34,6 +34,27 @@ export function onAuthChange(listener: () => void): () => void {
   };
 }
 
+const authInvalidListeners = new Set<() => void>();
+
+/**
+ * GAP-6: fires ONLY when the failure classifier ruled a response `auth-invalid`
+ * — a 401 the caller did not cause by signing out. This is the `expired`
+ * signal, distinct from a deliberate signed-out (which never passes through
+ * here: sign-out clears the token through setToken without any failing
+ * request). The auth store subscribes and raises the flag the ops guard's
+ * session-expired card renders from.
+ */
+export function onAuthInvalid(listener: () => void): () => void {
+  authInvalidListeners.add(listener);
+  return () => {
+    authInvalidListeners.delete(listener);
+  };
+}
+
+function notifyAuthInvalid(): void {
+  for (const listener of authInvalidListeners) listener();
+}
+
 export function readClientToken(): string | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -129,7 +150,10 @@ strapi.interceptors.response.use(
       idempotencyKey: typeof idempotencyRaw === 'string' ? idempotencyRaw : null,
     });
     (error as AxiosError & { restFailure?: RestFailure }).restFailure = failure;
-    if (failure.kind === 'auth-invalid') writeClientToken(null);
+    if (failure.kind === 'auth-invalid') {
+      writeClientToken(null);
+      notifyAuthInvalid();
+    }
     // A 429 no longer always precedes the handler: the invitation-resend
     // cooldown answers 429 from inside the service, after the request ran.
     // Riding out the window is therefore restricted to reads (GET/HEAD),

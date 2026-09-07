@@ -396,6 +396,8 @@
     "currentPasswordRequired": "Current password is required",
     "wrongCurrentPassword": "The current password you entered is incorrect.",
     "sessionExpired": "Your session has expired. Please sign in again.",
+    "sessionExpiredBody": "Ops sessions end after 30 minutes of inactivity. Sign in again — nothing you saved was lost.",
+    "sessionExpiredAction": "Sign in again",
     "updatePasswordButton": "Update password",
     "updatingPassword": "Updating password…",
     "passwordUpdated": "Password updated",
@@ -3489,6 +3491,9 @@
       "loadError": "We could not load the invitation for this school.",
       "loadErrorDescription": "Check your connection and try again.",
       "retry": "Try again",
+      "primaryContact": "Primary contact",
+      "contactEmail": "Contact email",
+      "contactMissing": "Not provided",
       "validation": {
         "required": "This field is required",
         "tooLong": "Use 100 characters or fewer",
