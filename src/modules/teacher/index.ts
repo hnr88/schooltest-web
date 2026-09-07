@@ -33,7 +33,6 @@ export { useTestSessionsQuery } from './queries/use-test-sessions.query';
 export { useTestSessionMonitorQuery } from './queries/use-test-session-monitor.query';
 export { useCreateTestSessionMutation } from './queries/use-create-test-session.mutation';
 export { useCloseTestSessionMutation } from './queries/use-close-test-session.mutation';
-export { useClassStudentsQuery } from './queries/use-class-students.query';
 export { useStudentDrillDownQuery } from './queries/use-student-drill-down.query';
 export { useTeacherExportMutation } from './queries/use-teacher-export.mutation';
 
