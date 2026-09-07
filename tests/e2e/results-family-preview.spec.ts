@@ -3,6 +3,8 @@ import { resolve } from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
+import { signIn } from './helpers/teacher-rail';
+
 /**
  * Task 35 e2e — Screen D family preview over route interception (no live
  * Strapi): /api/results/:id is fulfilled with the contract fixture.
@@ -18,8 +20,15 @@ import { expect, test } from '@playwright/test';
  * The DOM grep for `prob` is the allow-list proof at the rendered surface.
  */
 
-const FIXTURE = resolve(process.cwd(), '../../mvp/contracts/scoring/fixtures/result-view.json');
+const FIXTURE = resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json');
 const view = (): Record<string, unknown> => JSON.parse(readFileSync(FIXTURE, 'utf8'));
+
+// The route sits behind TeacherGuard, so every test signs in first — the
+// precondition the assertions always assumed; this file shipped before the
+// route had a guard and never carried it.
+test.beforeEach(async ({ page }) => {
+  await signIn(page, 'teacher');
+});
 
 const SCREEN_ROUTE = '/en/dashboard/teacher/results/res-fixture-0001/family'; // the page route the wiring task adds
 

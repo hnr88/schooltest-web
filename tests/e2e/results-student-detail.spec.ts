@@ -3,6 +3,8 @@ import { resolve } from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
+import { signIn } from './helpers/teacher-rail';
+
 /**
  * Task 31 e2e — Screen C part 2 over route interception (NO live Strapi: the
  * /api/results/:id call is fulfilled with the contract fixture, which is what
@@ -24,9 +26,16 @@ import { expect, test } from '@playwright/test';
  * - a not-assessed skill is a gap, never a 0 (task 30 ruling).
  */
 
-const FIXTURE = resolve(process.cwd(), '../../mvp/contracts/scoring/fixtures/result-view.json');
+const FIXTURE = resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json');
 
 const view = (): Record<string, unknown> => JSON.parse(readFileSync(FIXTURE, 'utf8'));
+
+// The route sits behind TeacherGuard, so every test signs in first — the
+// precondition the assertions always assumed; this file shipped before the
+// route had a guard and never carried it.
+test.beforeEach(async ({ page }) => {
+  await signIn(page, 'teacher');
+});
 
 const SCREEN_ROUTE = '/en/dashboard/teacher/results/res-fixture-0001'; // the page route task 33 wires
 
