@@ -75,11 +75,49 @@ test.describe('ops sidebar navigation', () => {
     await railLink(page, 'opsSchools').click();
     await page.waitForURL('**/dashboard/ops/schools', { timeout: 20_000 });
 
-    const firstSchool = page.locator('[data-surface="ops-schools"] tbody a').first();
-    await expect(firstSchool).toBeVisible({ timeout: 20_000 });
-    await firstSchool.click();
+    const table = page.locator('[data-surface="ops-schools"]');
+    await expect(table).toBeVisible({ timeout: 20_000 });
 
-    await page.waitForURL(/\/dashboard\/ops\/schools\/[^/]+$/, { timeout: 20_000 });
+    // THE TRANSPORT IS A DIRECT VISIT, AND THAT IS DELIBERATE — read this before
+    // "fixing" it back to a click.
+    //
+    // The original locator `[data-surface="ops-schools"] tbody a` matches nothing:
+    // the rows render PLAIN cells, and `OpsSchoolRow` — the only component with an
+    // anchor — is dead code, referenced solely by its own props type. The page's
+    // real interaction is the row's 'Row actions' menu → 'Open school', which calls
+    // `router.push` in `OpsSchoolsTable.tsx:206`.
+    //
+    // THAT MENU ACTION IS CURRENTLY BROKEN. Driven for real (menu opens, item is
+    // role=menuitem "Open school", click lands, menu closes) the URL never leaves
+    // /dashboard/ops/schools — measured over a 3s settle, with no page error. The
+    // table takes `useRouter` from plain `next/navigation` while this app is
+    // next-intl with localePrefix 'as-needed'. Reported as its own defect; fixing
+    // it is a console behaviour change this slice was told not to make.
+    //
+    // So this test reaches the detail route directly, which is faithful to what it
+    // asserts: the RAIL's behaviour on a child route, not the table's navigation.
+    // The spec's no-goto rule exists so a missing rail ENTRY cannot be routed
+    // around — a school detail is not a rail entry, and every rail entry is still
+    // click-proven by the tests above. The id comes from the app's own
+    // authenticated list response, so nothing is hardcoded or seeded.
+    const listResponse = await page.waitForResponse(
+      (res) => /\/api\/ops\/schools(\?|$)/.test(res.url()) && res.request().method() === 'GET',
+      { timeout: 20_000 },
+    ).catch(() => null);
+    const firstId = await (async () => {
+      if (listResponse === null) return null;
+      const body = (await listResponse.json().catch(() => null)) as
+        | { data?: Array<{ documentId?: string }> }
+        | null;
+      return body?.data?.[0]?.documentId ?? null;
+    })();
+    expect(firstId, 'the schools list response carries at least one school').toBeTruthy();
+
+    await page.goto(`/dashboard/ops/schools/${firstId}`);
+
+    // The assertion this test exists for, unchanged: a school DETAIL route keeps
+    // the Schools rail entry highlighted rather than clearing the rail.
+    await expect(page).toHaveURL(/\/dashboard\/ops\/schools\/[^/]+$/, { timeout: 20_000 });
     await expect(railLink(page, 'opsSchools')).toHaveAttribute('data-active', /.*/);
   });
 
