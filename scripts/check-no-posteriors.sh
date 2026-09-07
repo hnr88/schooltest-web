@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # check-no-posteriors.sh — data contract §8 / dashboard §7 grep guard (task 38).
 #
-# `prob`, `prob_se` and `theta` are AUDIT fields. They are permitted ONLY in
+# `prob`, `prob_se`, `theta`, `likelihood` (= round(prob*100) — the same
+# posterior in display units) and `map_posterior` are AUDIT fields. Permitted ONLY in
 # node_modules, in (multi-line) type imports/re-exports from
 # @schooltest/scoring-contracts, and on the KNOWN_LEGACY inventory below —
 # the contract legitimately carries them, so a naive "no prob anywhere" guard
@@ -41,7 +42,7 @@ KNOWN_LEGACY=(
   'src/modules/teacher/constants/mastery.constants.ts|task-24|`mastery_band(prob)` applies it SERVER-SIDE'
 )
 
-raw=$(grep -RniE '\b(prob|prob_se|theta)\b' src \
+raw=$(grep -RniE '\b(prob|prob_se|theta|likelihood|map_posterior)\b' src \
   --include='*.ts' --include='*.tsx' --exclude-dir=node_modules \
   | grep -vE '\.test\.tsx?:|\.spec\.tsx?:' \
   | awk '
