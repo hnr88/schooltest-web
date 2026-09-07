@@ -21,7 +21,7 @@ export const readingAttributeSchema = z.enum(['R1', 'R2', 'R3', 'R4', 'R5', 'R6'
 
 /**
  * Teacher-view band, DERIVED SERVER-SIDE from `prob` + `Config.teacher_mastery_bands`.
- * The portal renders this wire value; it never re-thresholds a likelihood.
+ * The portal renders this wire value and re-thresholds nothing.
  */
 export const masteryBandSchema = z.enum(['mastered', 'approaching', 'not_yet', 'not_assessed']);
 
@@ -53,8 +53,6 @@ export const teacherMasteryBandsSchema = z.strictObject({
   approaching_cut: z.number().min(0).max(1),
 });
 
-/** `Math.round(prob * 100)`; `null` when the attribute is `not_assessed`. */
-export const likelihoodSchema = z.number().int().min(0).max(100).nullable();
 /** A1 overall score: `round(mean(prob) * 100)`; `null` when nothing is assessed. */
 export const teacherScoreSchema = z.number().int().min(0).max(100).nullable();
 

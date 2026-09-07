@@ -1,13 +1,7 @@
-import type {
-  MasteryBand,
-  TeacherMasteryBands,
-  TestVariant,
-} from '@/modules/teacher/types/teacher.types';
+import type { TestVariant } from '@/modules/teacher/types/teacher.types';
 import type { ResultView } from '@schooltest/scoring-contracts';
 import type {
-  StudentDrillDownResponse,
   StudentProgress,
-  StudentSubskill,
   StudentTestResult,
 } from '@/modules/teacher/types/teacher-result.types';
 
@@ -33,40 +27,6 @@ export interface StudentDrillDownScreenProps {
   studentDocumentId: string;
 }
 
-export interface StudentTestCardProps {
-  test: StudentTestResult;
-  bands: TeacherMasteryBands;
-}
-
-export interface MasteryLegendProps {
-  bands: TeacherMasteryBands;
-}
-
-export interface SubskillTileGridProps {
-  variant: StudentTestResult['variant'];
-  subskills: readonly StudentSubskill[];
-}
-
-export interface SubskillTileProps {
-  subskill: StudentSubskill;
-}
-
-/**
- * How one subskill tile may be drawn.
- *
- * `measured: false` is the honest no-measurement state: C-TR-2 sends
- * `likelihood: null` with `status: 'not_assessed'` for an attribute this result
- * never assessed, and that tile prints NO percentage — a `0%` would assert a
- * measured floor that does not exist.
- *
- * `measured: true` carries the server's own `likelihood` (already an integer
- * `0..100`) and the server's own `status` band. The band is transported, never
- * derived: no field here is compared to a cut.
- */
-export type SubskillTileView =
-  | { measured: false; status: MasteryBand }
-  | { measured: true; likelihood: number; status: MasteryBand };
-
 /**
  * C-TR-2's `tests`, split by RECENCY and by nothing else.
  *
@@ -83,20 +43,6 @@ export interface DrillDownTestsView {
   latest: StudentTestResult;
   earlier: readonly StudentTestResult[];
   missing: readonly TestVariant[];
-}
-
-/**
- * The `was 62% ↑16` line of one tile, split into the three things it prints.
- *
- * It exists ONLY when C-TR-2 sent both `previous_likelihood` and `delta`. A
- * `null` on either is "no earlier test, or the A/B pair is not comparable"
- * (.qa/CONTRACTS.md F-EQUATING-GATE) and yields `null` here — the UI then shows
- * NO delta, and nothing subtracts one likelihood from another to invent it.
- */
-export interface SubskillDeltaView {
-  previous: number;
-  direction: ProgressDirection;
-  magnitude: number;
 }
 
 /**
@@ -119,23 +65,6 @@ export interface StudentComparisonStripProps {
   earlier: StudentTestResult;
   /** The newest test (`tests[0]`): the "to" of every difference on the strip. */
   latest: StudentTestResult;
-}
-
-export interface CollapsedTestSummaryProps {
-  test: StudentTestResult;
-}
-
-export interface SubskillPillListProps {
-  variant: TestVariant;
-  subskills: readonly StudentSubskill[];
-}
-
-export interface SubskillPillProps {
-  subskill: StudentSubskill;
-}
-
-export interface SubskillDeltaLineProps {
-  delta: SubskillDeltaView;
 }
 
 export interface TestNotCompletedCardProps {

@@ -16,7 +16,7 @@ import type { StudentComparisonStripProps } from '@/modules/teacher/types/studen
  * `progress.improved / stable / regressed` — SUBSKILL COUNTS, not booleans. The
  * hook recomputes none of them: it never subtracts the two scores (the server's
  * `score_delta` is the authority, and it exists only because the A/B forms are
- * equated), and it never compares a likelihood to a mastery cut.
+ * equated), and it never compares a displayed value to a mastery cut.
  *
  * A `null` score or a `null` phase name yields the explicit "Not available"
  * string, never a 0 and never a guessed phase. The phase cell carries the WORD

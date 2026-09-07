@@ -10,8 +10,8 @@ import type { MasteryBand } from '@/modules/teacher/types/teacher.types';
 // `mastery_band(prob)` applies it SERVER-SIDE, writing the answer into the wire
 // field `status` (.qa/CONTRACTS.md "Vocabulary"). The brief's requirement is
 // literally "the 80% threshold is configurable server-side — don't hardcode it",
-// so the portal colours a tile from `status` and prints `likelihood` verbatim.
-// It never compares a likelihood to 80, to 50, or to the `bands` C-TR-2 echoes.
+// so the portal colours a tile from `status` alone and re-thresholds nothing.
+// No surface here compares the cuts C-TR-2 echoes, let alone hardcodes them.
 //
 // WCAG 2.2 AA: a tone is never the only carrier of a band — every surface that
 // uses this map also renders the band's own word.

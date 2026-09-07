@@ -2,56 +2,12 @@ import { testVariantSchema } from '@/modules/teacher/schemas/teacher.schema';
 import type { ProgressDirection } from '@/modules/teacher/types/student-drill-down.types';
 import type {
   StudentProgress,
-  StudentSubskill,
   StudentTestResult,
 } from '@/modules/teacher/types/teacher-result.types';
 import type {
   AcaraShiftView,
   DrillDownTestsView,
-  SubskillDeltaView,
-  SubskillTileView,
 } from '@/modules/teacher/types/student-drill-down.types';
-
-/**
- * Chooses which of the two tile arms one C-TR-2 subskill may be drawn as.
- *
- * This is the ONLY branch the drill-down makes over a subskill, and it is a
- * PRESENCE test, never a threshold: `likelihood === null` (the `'not_assessed'`
- * sentinel, per .qa/CONTRACTS.md "Vocabulary") means this result never measured
- * the attribute, so the tile prints no percentage. Otherwise the server's own
- * integer `likelihood` and the server's own `status` band are passed through
- * verbatim.
- *
- * The 80% / 50% mastery cuts are `Config.teacher_mastery_bands` and were applied
- * server-side by `mastery_band(prob)` before `status` was ever sent. Deriving a
- * band here — from `likelihood`, or from the `bands` C-TR-2 echoes for the legend
- * — would be exactly the hardcoded threshold the brief forbids.
- */
-export function subskillTileView(subskill: StudentSubskill): SubskillTileView {
-  if (subskill.likelihood === null) return { measured: false, status: subskill.status };
-  return { measured: true, likelihood: subskill.likelihood, status: subskill.status };
-}
-
-/**
- * The `was 62% ↑16` line, or `null` when this attribute has no reportable
- * comparison.
- *
- * BOTH server fields are required. `delta` is C-TR-2's own integer — this
- * function reads its SIGN and its magnitude for display and never computes it:
- * `likelihood - previous_likelihood` is forbidden here, because a `null` from the
- * server means "not comparable" (F-EQUATING-GATE: the A/B pair is unequated, so
- * the difference of the two DINA posteriors may not be reported) and computing it
- * anyway would manufacture exactly the number the platform suppressed.
- */
-export function progressDelta(value: number): { direction: ProgressDirection; magnitude: number } {
-  return { direction: value > 0 ? 'up' : value < 0 ? 'down' : 'flat', magnitude: Math.abs(value) };
-}
-
-export function subskillDeltaView(subskill: StudentSubskill): SubskillDeltaView | null {
-  if (subskill.previous_likelihood === null || subskill.delta === null) return null;
-  const { direction, magnitude } = progressDelta(subskill.delta);
-  return { previous: subskill.previous_likelihood, direction, magnitude };
-}
 
 /**
  * Splits C-TR-2's `tests` into the newest test and the ones that collapse.

@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import {
-  likelihoodSchema,
   masteryBandSchema,
   namedAttributeSchema,
   readingAttributeSchema,
@@ -67,14 +66,13 @@ export const classStudentsResponseSchema = z.strictObject({
 /* ── C-TR-2 · GET .../students/:studentDocumentId ───────────────────────── */
 
 /**
- * One subskill tile. `status` is the server's band — the tile colours from it
- * and prints `likelihood` as-is. `previous_likelihood`/`delta` are populated on
- * the NEWER test only and only when both tests exist: null elsewhere, never 0.
+ * One subskill tile. `status` is the server's band — the tile colours from it.
+ * Task-30 removed the posterior display integers from this wire (C-TR-2's
+ * producer dropped them), and the retired tiles that printed them are deleted
+ * with this slice.
  */
 export const studentSubskillSchema = namedAttributeSchema.extend({
-  likelihood: likelihoodSchema,
   status: masteryBandSchema,
-  previous_likelihood: likelihoodSchema,
   delta: z.number().int().min(-100).max(100).nullable(),
 });
 
