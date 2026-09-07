@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import {
   RATE_LIMIT_MAX_MAX,
@@ -14,6 +16,10 @@ import { useAuthStore } from '@/modules/auth';
 import { Button, Card, FieldShell, Input } from '@/modules/design-system';
 import { useRateLimitMutation } from '@/modules/ops/queries/use-rate-limit.mutation';
 import { useSettingsReadQuery } from '@/modules/ops/queries/use-settings-read.query';
+import {
+  createRateLimitFormSchema,
+  type RateLimitFormValues,
+} from '@/modules/ops/schemas/flags-console.schema';
 
 import { OpsConfirmDialog } from './OpsConfirmDialog';
 
@@ -32,6 +38,9 @@ import { OpsConfirmDialog } from './OpsConfirmDialog';
 // Confirm-gated because this governs POST /api/auth/local. A `max` of 1 locks
 // operators out of sign-in, which is the kind of change that should cost one
 // deliberate extra click.
+//
+// Hydration is `values`-only, per `use-platform-settings-form.ts` — see the
+// note in OpsBannerEditor for why an effect is the wrong tool here.
 export function OpsRateLimitEditor() {
   const t = useTranslations('Ops.flags');
   const token = useAuthStore((state) => state.token);
@@ -39,54 +48,51 @@ export function OpsRateLimitEditor() {
   const settings = useSettingsReadQuery(hydrated && Boolean(token));
   const rateLimit = useRateLimitMutation();
 
-  const [max, setMax] = useState('');
-  const [windowMs, setWindowMs] = useState('');
-  const [errors, setErrors] = useState<{ max?: string; windowMs?: string }>({});
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [hydratedFrom, setHydratedFrom] = useState<string | null>(null);
 
-  useEffect(() => {
-    const row = settings.data;
-    if (!row || hydratedFrom === row.updatedAt) return;
-    setMax(String(row.rate_limit_auth_max ?? ''));
-    setWindowMs(String(row.rate_limit_auth_window_ms ?? ''));
-    setHydratedFrom(row.updatedAt);
-  }, [settings.data, hydratedFrom]);
+  const maxBounds = t('validation.maxBounds', {
+    min: RATE_LIMIT_MAX_MIN,
+    max: RATE_LIMIT_MAX_MAX,
+  });
+  const windowBounds = t('validation.windowBounds', {
+    min: RATE_LIMIT_WINDOW_MIN_MS,
+    max: RATE_LIMIT_WINDOW_MAX_MS,
+  });
 
-  /** Integers only, inside the server's own bounds. */
-  function validate(): { max?: string; windowMs?: string } {
-    const next: { max?: string; windowMs?: string } = {};
-    const maxValue = Number(max);
-    const windowValue = Number(windowMs);
+  const schema = useMemo(
+    () => createRateLimitFormSchema(maxBounds, windowBounds),
+    [maxBounds, windowBounds],
+  );
 
-    if (!Number.isInteger(maxValue) || maxValue < RATE_LIMIT_MAX_MIN || maxValue > RATE_LIMIT_MAX_MAX) {
-      next.max = t('validation.maxBounds', { min: RATE_LIMIT_MAX_MIN, max: RATE_LIMIT_MAX_MAX });
-    }
-    if (
-      !Number.isInteger(windowValue) ||
-      windowValue < RATE_LIMIT_WINDOW_MIN_MS ||
-      windowValue > RATE_LIMIT_WINDOW_MAX_MS
-    ) {
-      next.windowMs = t('validation.windowBounds', {
-        min: RATE_LIMIT_WINDOW_MIN_MS,
-        max: RATE_LIMIT_WINDOW_MAX_MS,
-      });
-    }
-    return next;
-  }
+  const row = settings.data;
+  const values = useMemo<RateLimitFormValues | undefined>(
+    () =>
+      row
+        ? {
+            max: Number(row.rate_limit_auth_max ?? RATE_LIMIT_MAX_MIN),
+            window_ms: Number(row.rate_limit_auth_window_ms ?? RATE_LIMIT_WINDOW_MIN_MS),
+          }
+        : undefined,
+    [row],
+  );
 
-  function requestSave() {
-    const found = validate();
-    setErrors(found);
-    if (Object.keys(found).length > 0) return;
-    setConfirmOpen(true);
-  }
+  const form = useForm<RateLimitFormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { max: RATE_LIMIT_MAX_MIN, window_ms: RATE_LIMIT_WINDOW_MIN_MS },
+    values,
+  });
+
+  const maxError = form.formState.errors.max?.message;
+  const windowError = form.formState.errors.window_ms?.message;
+
+  const requestSave = form.handleSubmit(() => setConfirmOpen(true));
 
   async function confirmSave() {
+    const current = form.getValues();
     try {
       const result = await rateLimit.mutateAsync({
-        max: Number(max),
-        window_ms: Number(windowMs),
+        max: Number(current.max),
+        window_ms: Number(current.window_ms),
       });
       toast.success(
         t('rateLimit.savedToast', {
@@ -103,6 +109,12 @@ export function OpsRateLimitEditor() {
     }
   }
 
+  // Watched through `useWatch` (see OpsBannerEditor) so the confirm dialog can
+  // quote the exact numbers about to be sent without tripping the compiler's
+  // unmemoizable-watch() rule.
+  const pendingMax = useWatch({ control: form.control, name: 'max' });
+  const pendingWindow = useWatch({ control: form.control, name: 'window_ms' });
+
   return (
     <Card data-slot="ops-rate-limit-editor" className="flex flex-col gap-4 p-6">
       <div className="flex flex-col gap-1">
@@ -114,37 +126,55 @@ export function OpsRateLimitEditor() {
         <FieldShell
           id="rate-limit-max"
           label={t('rateLimit.maxLabel')}
-          errorText={errors.max}
-          helperText={t('validation.maxBounds', { min: RATE_LIMIT_MAX_MIN, max: RATE_LIMIT_MAX_MAX })}
+          errorText={maxError}
+          helperText={maxBounds}
           required
           className="max-w-48"
         >
-          <Input
-            id="rate-limit-max"
-            inputMode="numeric"
-            value={max}
-            onChange={(event) => setMax(event.target.value)}
-            aria-invalid={errors.max ? true : undefined}
+          <Controller
+            control={form.control}
+            name="max"
+            render={({ field }) => (
+              <Input
+                id="rate-limit-max"
+                name={field.name}
+                ref={field.ref}
+                type="number"
+                value={String(field.value ?? '')}
+                // `valueAsNumber` per the OpsSettingsControl precedent: the form
+                // value stays a number, so the non-coerced schema validates it
+                // directly and a non-numeric entry arrives as NaN and fails.
+                onChange={(event) => field.onChange(event.target.valueAsNumber)}
+                onBlur={field.onBlur}
+                aria-invalid={maxError ? true : undefined}
+              />
+            )}
           />
         </FieldShell>
 
         <FieldShell
           id="rate-limit-window"
           label={t('rateLimit.windowLabel')}
-          errorText={errors.windowMs}
-          helperText={t('validation.windowBounds', {
-            min: RATE_LIMIT_WINDOW_MIN_MS,
-            max: RATE_LIMIT_WINDOW_MAX_MS,
-          })}
+          errorText={windowError}
+          helperText={windowBounds}
           required
           className="max-w-64"
         >
-          <Input
-            id="rate-limit-window"
-            inputMode="numeric"
-            value={windowMs}
-            onChange={(event) => setWindowMs(event.target.value)}
-            aria-invalid={errors.windowMs ? true : undefined}
+          <Controller
+            control={form.control}
+            name="window_ms"
+            render={({ field }) => (
+              <Input
+                id="rate-limit-window"
+                name={field.name}
+                ref={field.ref}
+                type="number"
+                value={String(field.value ?? '')}
+                onChange={(event) => field.onChange(event.target.valueAsNumber)}
+                onBlur={field.onBlur}
+                aria-invalid={windowError ? true : undefined}
+              />
+            )}
           />
         </FieldShell>
       </div>
@@ -154,7 +184,7 @@ export function OpsRateLimitEditor() {
           type="button"
           data-slot="ops-rate-limit-save"
           disabled={rateLimit.isPending || settings.isPending}
-          onClick={requestSave}
+          onClick={() => void requestSave()}
         >
           {t('rateLimit.save')}
         </Button>
@@ -164,7 +194,10 @@ export function OpsRateLimitEditor() {
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         title={t('rateLimit.confirmTitle')}
-        description={t('rateLimit.confirmDescription', { max, window: windowMs })}
+        description={t('rateLimit.confirmDescription', {
+          max: pendingMax,
+          window: pendingWindow,
+        })}
         confirmLabel={t('rateLimit.confirmAction')}
         cancelLabel={t('actions.cancel')}
         tone="destructive"

@@ -1,15 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
-import { ANNOUNCEMENT_LEVELS, type AnnouncementLevel } from '@schooltest/ops-contracts';
+import { ANNOUNCEMENT_LEVELS } from '@schooltest/ops-contracts';
 
 import { useAuthStore } from '@/modules/auth';
 import { Button, Card, FieldShell, SelectField, Switch, Textarea } from '@/modules/design-system';
 import { useAnnouncementMutation } from '@/modules/ops/queries/use-announcement.mutation';
 import { useMaintenanceMutation } from '@/modules/ops/queries/use-maintenance.mutation';
 import { useSettingsReadQuery } from '@/modules/ops/queries/use-settings-read.query';
+import {
+  BANNER_MESSAGE_MAX,
+  createBannerFormSchema,
+  type BannerFormValues,
+} from '@/modules/ops/schemas/flags-console.schema';
 
 import { OpsConfirmDialog } from './OpsConfirmDialog';
 
@@ -25,15 +32,18 @@ import { OpsConfirmDialog } from './OpsConfirmDialog';
 // and maintenance additionally closes the site. The dialog names the specific
 // consequence; a generic "are you sure?" trains operators to click through.
 //
-// Values hydrate from the EXISTING settings read (`useSettingsReadQuery`) —
-// there is no second read hook for fields the ops screen already fetches.
+// HYDRATION IS `values`-ONLY, which is this codebase's stated pattern for
+// server-fed forms (`use-platform-settings-form.ts`, hydrating this very
+// settings query): RHF re-applies `values` with `keepFieldsRef: true`, whereas
+// a hand-rolled effect that calls setState — or a `form.reset()` — wipes
+// `control._fields` and silently drops later keystrokes. It also keeps this
+// component free of `set-state-in-effect`, which an earlier revision of this
+// file tripped.
 export type BannerVariant = 'maintenance' | 'announcement';
 
 interface OpsBannerEditorProps {
   variant: BannerVariant;
 }
-
-const MESSAGE_MAX = 2000;
 
 export function OpsBannerEditor({ variant }: OpsBannerEditorProps) {
   const t = useTranslations('Ops.flags');
@@ -43,73 +53,69 @@ export function OpsBannerEditor({ variant }: OpsBannerEditorProps) {
   const hydrated = useAuthStore((state) => state.hydrated);
   const settings = useSettingsReadQuery(hydrated && Boolean(token));
 
-  const [enabled, setEnabled] = useState(false);
-  const [message, setMessage] = useState('');
-  const [level, setLevel] = useState<AnnouncementLevel>('info');
-  const [error, setError] = useState<string | undefined>(undefined);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [hydratedFrom, setHydratedFrom] = useState<string | null>(null);
 
   // Hook order cannot depend on a prop, so both are called and one is used.
   const maintenance = useMaintenanceMutation();
   const announcement = useAnnouncementMutation();
   const pending = variant === 'maintenance' ? maintenance.isPending : announcement.isPending;
 
-  // Hydrate ONCE per served row rather than on every render: re-syncing on each
-  // settings refetch would wipe an operator's half-typed message when another
-  // console invalidates the same cache key.
-  useEffect(() => {
-    const row = settings.data;
-    if (!row || hydratedFrom === row.updatedAt) return;
-    if (variant === 'maintenance') {
-      setEnabled(Boolean(row.maintenance_mode));
-      setMessage(row.maintenance_message ?? '');
-    } else {
-      setEnabled(Boolean(row.announcement_enabled));
-      setMessage(row.announcement_message ?? '');
-      setLevel((row.announcement_level ?? 'info') as AnnouncementLevel);
-    }
-    setHydratedFrom(row.updatedAt);
-  }, [settings.data, variant, hydratedFrom]);
+  const schema = useMemo(
+    () =>
+      createBannerFormSchema(
+        t('validation.messageRequiredWhenOn'),
+        t('validation.tooLong', { max: BANNER_MESSAGE_MAX }),
+      ),
+    [t],
+  );
 
-  /**
-   * A banner that is ON must say something — an enabled empty banner renders a
-   * blank bar to every visitor. Turning one OFF needs no message, so the rule
-   * is conditional rather than a blanket required field.
-   */
-  function validate(): string | undefined {
-    if (enabled && message.trim().length === 0) return t('validation.messageRequiredWhenOn');
-    if (message.length > MESSAGE_MAX) return t('validation.tooLong', { max: MESSAGE_MAX });
-    return undefined;
-  }
+  const row = settings.data;
+  const values = useMemo<BannerFormValues | undefined>(() => {
+    if (!row) return undefined;
+    return variant === 'maintenance'
+      ? { enabled: Boolean(row.maintenance_mode), message: row.maintenance_message ?? '', level: 'info' }
+      : {
+          enabled: Boolean(row.announcement_enabled),
+          message: row.announcement_message ?? '',
+          level: row.announcement_level ?? 'info',
+        };
+  }, [row, variant]);
+
+  const form = useForm<BannerFormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { enabled: false, message: '', level: 'info' },
+    values,
+  });
+
+  // `useWatch` rather than `form.watch()`: watch() cannot be memoized safely
+  // under the React Compiler (the repo's own lint says so), and this value only
+  // drives the card attribute and the dialog's copy.
+  const enabled = Boolean(useWatch({ control: form.control, name: 'enabled' }));
+  const messageError = form.formState.errors.message?.message;
 
   function serverMessage(err: unknown): string | undefined {
     return (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
       ?.error?.message;
   }
 
-  function requestSave() {
-    const found = validate();
-    setError(found);
-    if (found) return;
-    setConfirmOpen(true);
-  }
+  // Validation runs FIRST: on a bad form RHF never calls this, so the dialog
+  // stays shut and nothing reaches the API.
+  const requestSave = form.handleSubmit(() => setConfirmOpen(true));
 
   async function confirmSave() {
+    const current = form.getValues();
+    const message = current.message.trim().length === 0 ? null : current.message;
     try {
       if (variant === 'maintenance') {
-        const result = await maintenance.mutateAsync({
-          enabled,
-          message: message.trim().length === 0 ? null : message,
-        });
+        const result = await maintenance.mutateAsync({ enabled: current.enabled, message });
         toast.success(
           result.maintenance_mode ? t('maintenance.onToast') : t('maintenance.offToast'),
         );
       } else {
         const result = await announcement.mutateAsync({
-          enabled,
-          message: message.trim().length === 0 ? null : message,
-          level,
+          enabled: current.enabled,
+          message,
+          level: current.level,
         });
         toast.success(
           result.announcement_enabled
@@ -142,14 +148,17 @@ export function OpsBannerEditor({ variant }: OpsBannerEditorProps) {
       </div>
 
       <label className="flex items-center gap-3 text-sm font-medium text-foreground">
-        <Switch
-          data-slot={`ops-banner-switch-${variant}`}
-          checked={enabled}
-          disabled={pending}
-          onCheckedChange={(next) => {
-            setEnabled(next);
-            setError(undefined);
-          }}
+        <Controller
+          control={form.control}
+          name="enabled"
+          render={({ field }) => (
+            <Switch
+              data-slot={`ops-banner-switch-${variant}`}
+              checked={Boolean(field.value)}
+              disabled={pending}
+              onCheckedChange={field.onChange}
+            />
+          )}
         />
         {t(`${scope}.switchLabel`)}
       </label>
@@ -157,35 +166,50 @@ export function OpsBannerEditor({ variant }: OpsBannerEditorProps) {
       <FieldShell
         id={`${variant}-message`}
         label={t('fields.message')}
-        errorText={error}
+        errorText={messageError}
         // Per-variant, not shared: "while the banner is on" is true of the
         // announcement and misleading for maintenance mode, which closes the
         // site rather than decorating it. Sharing the component should not mean
         // sharing copy that is only accurate for one of its two uses.
         helperText={t(`${scope}.messageHelp`)}
       >
-        <Textarea
-          id={`${variant}-message`}
-          value={message}
-          rows={3}
-          maxLength={MESSAGE_MAX}
-          onChange={(event) => setMessage(event.target.value)}
-          aria-invalid={error ? true : undefined}
+        <Controller
+          control={form.control}
+          name="message"
+          render={({ field }) => (
+            <Textarea
+              id={`${variant}-message`}
+              name={field.name}
+              ref={field.ref}
+              value={String(field.value ?? '')}
+              rows={3}
+              maxLength={BANNER_MESSAGE_MAX}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              aria-invalid={messageError ? true : undefined}
+            />
+          )}
         />
       </FieldShell>
 
       {variant === 'announcement' ? (
-        <SelectField
-          id="announcement-level"
-          label={t('fields.level')}
-          // Required by SelectFieldProps, but never rendered here: the level
-          // always has a value (hydrated from the row, defaulting to info), so
-          // there is no empty state for a placeholder to describe.
-          placeholder={t('levels.info')}
-          options={levelOptions}
-          value={level}
-          onValueChange={(next) => setLevel(next as AnnouncementLevel)}
-          className="max-w-xs"
+        <Controller
+          control={form.control}
+          name="level"
+          render={({ field }) => (
+            <SelectField
+              id="announcement-level"
+              label={t('fields.level')}
+              // Required by SelectFieldProps, but never rendered here: the level
+              // always has a value (hydrated from the row, defaulting to info),
+              // so there is no empty state for a placeholder to describe.
+              placeholder={t('levels.info')}
+              options={levelOptions}
+              value={String(field.value ?? 'info')}
+              onValueChange={field.onChange}
+              className="max-w-xs"
+            />
+          )}
         />
       ) : null}
 
@@ -195,7 +219,7 @@ export function OpsBannerEditor({ variant }: OpsBannerEditorProps) {
           variant={variant === 'maintenance' ? 'destructive' : 'default'}
           data-slot={`ops-banner-save-${variant}`}
           disabled={pending || settings.isPending}
-          onClick={requestSave}
+          onClick={() => void requestSave()}
         >
           {t(`${scope}.save`)}
         </Button>
@@ -207,9 +231,7 @@ export function OpsBannerEditor({ variant }: OpsBannerEditorProps) {
         title={t(`${scope}.confirmTitle`)}
         // The consequence is stated for the DIRECTION being saved: closing the
         // site and reopening it are not the same decision.
-        description={
-          enabled ? t(`${scope}.confirmOn`) : t(`${scope}.confirmOff`)
-        }
+        description={enabled ? t(`${scope}.confirmOn`) : t(`${scope}.confirmOff`)}
         confirmLabel={t(`${scope}.confirmAction`)}
         cancelLabel={t('actions.cancel')}
         tone={variant === 'maintenance' ? 'destructive' : 'neutral'}
