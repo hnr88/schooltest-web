@@ -16,7 +16,7 @@ export function OpsSessionExpiredCard() {
       data-slot="ops-session-expired"
       role="alertdialog"
       aria-modal="true"
-      aria-label={t('sessionExpiredTitle')}
+      aria-label={t('sessionExpired')}
       className="fixed inset-0 z-50 grid place-items-center bg-black/10 p-6 supports-backdrop-filter:backdrop-blur-xs"
     >
       <div className="flex w-full max-w-md flex-col gap-4 rounded-card border border-border bg-card p-8 shadow-lg">
