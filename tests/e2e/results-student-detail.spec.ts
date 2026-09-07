@@ -8,12 +8,11 @@ import { expect, test } from '@playwright/test';
  * /api/results/:id call is fulfilled with the contract fixture, which is what
  * proves the CLIENT contract without owning the server).
  *
- * BLOCKED ON WIRING, DELIBERATELY (task 31 running early, standing deviation):
- * no app route renders the results screen yet — the page and its
- * useStudentResultQuery wiring arrive with the task 30/33 train against the
- * live v2 endpoints (tasks 23/25). Every test below is `test.fixme`: it SHIPS
- * with its route + assertions ready, and runs the day the page route exists.
- * Nothing here starts a server.
+ * WIRED (the route these tests waited for now exists): the page task 33's
+ * wiring train promised is `/en/dashboard/teacher/results/:id`, mounting the
+ * task 30/31/32 Screen C components through the results module's wired screen.
+ * The C-4 v2 dispatch is live server-side too, but these specs intercept the
+ * endpoint either way — the CLIENT contract is what they prove.
  *
  * When unblocked, the assertions are the ones the orchestrator pinned:
  * - sparkline section ABSENT with one sitting, PRESENT with three;
@@ -31,7 +30,7 @@ const view = (): Record<string, unknown> => JSON.parse(readFileSync(FIXTURE, 'ut
 
 const SCREEN_ROUTE = '/en/dashboard/teacher/results/res-fixture-0001'; // the page route task 33 wires
 
-test.fixme('sparklines: absent with one sitting, present with two', async ({ page }) => {
+test('sparklines: absent with one sitting, present with two', async ({ page }) => {
   await page.route('**/api/results/res-fixture-0001*', (route) => route.fulfill({ json: view() }));
   await page.goto(SCREEN_ROUTE);
   await expect(page.locator('[data-slot="movement-sparklines"]')).toHaveCount(1);
@@ -39,7 +38,7 @@ test.fixme('sparklines: absent with one sitting, present with two', async ({ pag
   await expect(page.locator('[data-slot="movement-row"][data-skill="Critical"]')).toHaveCount(0);
 });
 
-test.fixme('error patterns: present with patterns, absent for an empty array', async ({ page }) => {
+test('error patterns: present with patterns, absent for an empty array', async ({ page }) => {
   await page.route('**/api/results/res-fixture-0001*', (route) => route.fulfill({ json: view() }));
   await page.goto(SCREEN_ROUTE);
   await expect(page.locator('[data-slot="error-patterns"]')).toHaveCount(1);
@@ -47,7 +46,7 @@ test.fixme('error patterns: present with patterns, absent for an empty array', a
   await expect(page.locator('[data-slot="error-pattern-insight"]')).toContainText('most common slip');
 });
 
-test.fixme('consolidating: the banner replaces the checklist', async ({ page }) => {
+test('consolidating: the banner replaces the checklist', async ({ page }) => {
   await page.route('**/api/results/res-fixture-0001*', (route) =>
     route.fulfill({ json: { ...view(), acara_phase: 'consolidating' } }),
   );
@@ -58,7 +57,7 @@ test.fixme('consolidating: the banner replaces the checklist', async ({ page }) 
   );
 });
 
-test.fixme('print: the print-media snapshot carries no buttons', async ({ page }) => {
+test('print: the print-media snapshot carries no buttons', async ({ page }) => {
   await page.route('**/api/results/res-fixture-0001*', (route) => route.fulfill({ json: view() }));
   await page.goto(SCREEN_ROUTE);
   await expect(page.locator('[data-slot="print-report-button"]')).toBeVisible();
@@ -67,7 +66,7 @@ test.fixme('print: the print-media snapshot carries no buttons', async ({ page }
   await page.emulateMedia({ media: 'screen' });
 });
 
-test.fixme('the guardrails hold on the wired screen (task 30 rulings)', async ({ page }) => {
+test('the guardrails hold on the wired screen (task 30 rulings)', async ({ page }) => {
   await page.route('**/api/results/res-fixture-0001*', (route) => route.fulfill({ json: view() }));
   await page.goto(SCREEN_ROUTE);
   await expect(page.locator('[data-slot="skill-card"][data-skill="Gist"]')).toHaveAttribute('data-assessed', 'false');
