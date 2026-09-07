@@ -19,3 +19,8 @@ export const SYSTEM_MIGRATIONS_QUERY_KEY = ['ops', 'system-migrations'] as const
 export const SYSTEM_BACKUPS_QUERY_KEY = ['ops', 'system-backups'] as const;
 
 export const PIPELINE_HEALTH_QUERY_KEY = ['ops', 'pipeline-health'] as const;
+
+/* --- ledger 7: the comms console --- */
+export const COMMS_TEMPLATES_QUERY_KEY = ['ops', 'comms-templates'] as const;
+
+export const COMMS_EMAIL_LOG_QUERY_KEY = ['ops', 'comms-email-log'] as const;

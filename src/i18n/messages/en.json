@@ -3314,6 +3314,111 @@
     }
   },
   "Ops": {
+    "comms": {
+      "meta": {
+        "title": "Communications — SchoolTest Ops",
+        "description": "SchoolTest Ops — notification events, the auth email ledger, and platform broadcasts."
+      },
+      "title": "Communications",
+      "description": "What the platform sends, what it has issued, and the broadcasts you can send yourself.",
+      "noValue": "—",
+      "composersTitle": "Send a broadcast",
+      "errorToast": "That request did not go through. Nothing was sent.",
+      "templates": {
+        "title": "Notification events",
+        "description": "The events this platform dispatches. These are set in the application, not editable here.",
+        "loadingLabel": "Loading the notification events",
+        "empty": "No notification events are registered.",
+        "sendsEmail": "Sends email",
+        "inAppOnly": "In-app only",
+        "columns": {
+          "key": "Event",
+          "subject": "Subject",
+          "delivery": "Delivery"
+        },
+        "error": {
+          "title": "We could not load the notification events.",
+          "description": "Check your connection and try again.",
+          "retry": "Try again"
+        }
+      },
+      "log": {
+        "title": "Auth email ledger",
+        "description": "Password reset and confirmation emails the platform has issued. Newest first.",
+        "loadingLabel": "Loading the auth email ledger",
+        "empty": "No auth emails have been issued yet.",
+        "columns": {
+          "kind": "Kind",
+          "email": "Recipient",
+          "issued": "Issued"
+        },
+        "error": {
+          "title": "We could not load the auth email ledger.",
+          "description": "Check your connection and try again.",
+          "retry": "Try again"
+        },
+        "pagination": {
+          "label": "Auth email ledger pages",
+          "previous": "Previous",
+          "next": "Next",
+          "pageCount": "Page {page} of {pageCount} · {total} entries"
+        }
+      },
+      "fields": {
+        "audience": "Audience",
+        "audiencePlaceholder": "Choose who receives this",
+        "body": "Message",
+        "maxChars": "{max} characters maximum"
+      },
+      "audiences": {
+        "all": "Everyone",
+        "ops": "Ops staff",
+        "school_admins": "School admins",
+        "teachers": "Teachers",
+        "parents": "Parents"
+      },
+      "validation": {
+        "audienceRequired": "Choose an audience.",
+        "bodyRequired": "Write a message.",
+        "tooLong": "Use {max} characters or fewer."
+      },
+      "actions": {
+        "preview": "Preview recipients",
+        "cancel": "Cancel"
+      },
+      "bulkEmail": {
+        "title": "Bulk email",
+        "description": "Email every account in an audience. Preview the count first — a send cannot be recalled.",
+        "headline": "Subject",
+        "send": "Send email",
+        "previewToast": "{count} recipients would receive this. Nothing was sent.",
+        "previewResult": "This would reach {count} recipients.",
+        "sentToast": "Sent to {sent} recipients, {failed} failed.",
+        "confirmTitle": "Send this email now?",
+        "confirmDescription": "This emails {count} recipients immediately. It cannot be recalled.",
+        "confirmUnknown": "This emails everyone in the chosen audience immediately. It cannot be recalled. Preview the count first if you want to see the blast radius.",
+        "confirmAction": "Send email",
+        "validation": {
+          "headlineRequired": "Write a subject."
+        }
+      },
+      "push": {
+        "title": "Push broadcast",
+        "description": "Push a notification to every registered device in an audience. It cannot be recalled.",
+        "headline": "Title",
+        "send": "Send push",
+        "previewToast": "{count} devices would receive this. Nothing was sent.",
+        "previewResult": "This would reach {count} registered devices.",
+        "sentToast": "Pushed to {sent} devices, {failed} failed.",
+        "confirmTitle": "Send this push now?",
+        "confirmDescription": "This pushes to {count} registered devices immediately. It cannot be recalled.",
+        "confirmUnknown": "This pushes to every registered device in the chosen audience immediately. It cannot be recalled. Preview the count first if you want to see the blast radius.",
+        "confirmAction": "Send push",
+        "validation": {
+          "headlineRequired": "Write a title."
+        }
+      }
+    },
     "schools": {
       "meta": {
         "title": "Schools - SchoolTest ops",
