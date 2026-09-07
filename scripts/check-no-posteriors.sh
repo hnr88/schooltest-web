@@ -29,58 +29,22 @@ cd "$(dirname "$0")/.."
 # re-point removed them mid-run, which is the tier-3 check working as designed.
 # Task 36 then retired the diagnostic-bundle.schema (task-25) and attribute.types
 # (task-36) entries: the schema field is gone and the comment was reworded.
+#
+# Task-30 residue (the six dead teacher components, the C-TR-2 likelihood fields
+# and their whole dead view tree: MasteryLegend, SubskillDeltaLine,
+# drill-down.constants, student-drill-down.ts's tile views) landed 2026-09-07:
+# all 27 task-30 entries were then stale by design and were removed with it, as
+# were the two task-24 entries whose anchoring lines died (the likelihoodSchema
+# doc comment in teacher.schema.ts and drill-down.constants.ts itself). The
+# remaining task-24 `prob` entries below are pre-existing and independent.
 KNOWN_LEGACY=(
   'src/modules/teach/schemas/diagnostic.schema.ts|task-24|prob: z.number().nullable(),'
   'src/modules/teach/types/diagnostic.types.ts|task-24|task 50 sentinel semantics: null prob stays'
   'src/modules/teach/types/diagnostic.types.ts|task-24|prob: number | null;'
   'src/modules/teach/components/StudentMasteryDrilldown.tsx|task-24|A null prob renders as "not yet assessed"'
   'src/modules/teacher/schemas/teacher.schema.ts|task-24|DERIVED SERVER-SIDE from `prob`'
-  'src/modules/teacher/schemas/teacher.schema.ts|task-24|`Math.round(prob * 100)`'
   'src/modules/teacher/schemas/teacher.schema.ts|task-24|round(mean(prob) * 100)'
-  'src/modules/teacher/lib/student-drill-down.ts|task-24|by `mastery_band(prob)` before `status` was ever sent'
-  'src/modules/teacher/constants/drill-down.constants.ts|task-24|which `mastery_band(prob)`'
   'src/modules/teacher/constants/mastery.constants.ts|task-24|`mastery_band(prob)` applies it SERVER-SIDE'
-
-  # --- task-38 inventory of the `likelihood` needle's first sweep -------------
-  # Closing the needle hole surfaced 27 occurrences the guard could not see.
-  # NONE is a live posterior render: the SubskillTile/SubskillPill/MasteryLegend/
-  # SubskillDeltaLine tree is task-30 residue with NO page importer (traced:
-  # teacher/StudentTestCard and teacher/CollapsedTestSummary have zero importers,
-  # and each file below them has exactly one — its own dead parent). The schema,
-  # types and lib lines are the wire-level passthrough the portal prints
-  # verbatim; the rest are prose comments ASSERTING the absence of thresholding.
-  # Expiry task-30: it deletes the six dead components and drops likelihoodSchema
-  # from teacher.schema.ts / teacher-result.schema.ts, at which point tier-3
-  # fails every entry here and they must be removed. Three UNPARKED specs
-  # (teacher-drilldown, teacher-exports, teacher-results) assert the dead
-  # components' data-slots, so task-30 must re-sequence them in the same slice.
-  'src/modules/teacher/hooks/useDrillDownComparison.ts|task-30|it never compares a likelihood to a mastery cut'
-  'src/modules/teacher/schemas/teacher-result.schema.ts|task-30|prints `likelihood` as-is'
-  'src/modules/teacher/schemas/teacher-result.schema.ts|task-30|likelihood: likelihoodSchema,'
-  'src/modules/teacher/schemas/teacher.schema.ts|task-30|it never re-thresholds a likelihood'
-  'src/modules/teacher/types/student-drill-down.types.ts|task-30|`likelihood: null` with `status:'
-  'src/modules/teacher/types/student-drill-down.types.ts|task-30|carries the server'
-  'src/modules/teacher/types/student-drill-down.types.ts|task-30|{ measured: true; likelihood: number; status: MasteryBand };'
-  'src/modules/teacher/types/student-drill-down.types.ts|task-30|nothing subtracts one likelihood from another to invent it'
-  'src/modules/teacher/components/SubskillTile.tsx|task-30|big LIKELIHOOD percentage'
-  'src/modules/teacher/components/SubskillTile.tsx|task-30|printed as it arrived'
-  'src/modules/teacher/components/SubskillTile.tsx|task-30|data-slot="subskill-tile-likelihood"'
-  'src/modules/teacher/components/SubskillTile.tsx|task-30|, { likelihood: view.likelihood })}'
-  'src/modules/teacher/components/MasteryLegend.tsx|task-30|"Mastery likelihood: >=80% mastered'
-  'src/modules/teacher/components/MasteryLegend.tsx|task-30|compares a likelihood to them'
-  'src/modules/teacher/components/SubskillDeltaLine.tsx|task-30|TEXT: the earlier likelihood'
-  'src/modules/teacher/components/SubskillDeltaLine.tsx|task-30|Nothing here subtracts one likelihood from another'
-  'src/modules/teacher/components/SubskillPill.tsx|task-30|data-slot="subskill-pill-likelihood"'
-  'src/modules/teacher/components/SubskillPill.tsx|task-30|, { likelihood: view.likelihood })}'
-  'src/modules/teacher/lib/student-drill-down.ts|task-30|PRESENCE test, never a threshold'
-  'src/modules/teacher/lib/student-drill-down.ts|task-30|integer `likelihood` and the server'
-  'src/modules/teacher/lib/student-drill-down.ts|task-30|C-TR-2 echoes for the legend'
-  'src/modules/teacher/lib/student-drill-down.ts|task-30|if (subskill.likelihood === null) return { measured: false'
-  'src/modules/teacher/lib/student-drill-down.ts|task-30|return { measured: true, likelihood: subskill.likelihood'
-  'src/modules/teacher/lib/student-drill-down.ts|task-30|is forbidden here, because a'
-  'src/modules/teacher/constants/drill-down.constants.ts|task-30|sees a likelihood number at all'
-  'src/modules/teacher/constants/mastery.constants.ts|task-30|prints `likelihood` verbatim'
-  'src/modules/teacher/constants/mastery.constants.ts|task-30|It never compares a likelihood to 80'
 )
 
 raw=$(grep -RniE '\b(prob|prob_se|theta|likelihood|map_posterior)\b' src \
