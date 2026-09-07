@@ -2467,8 +2467,8 @@
       "classesTitle": "Classes",
       "classStudentsLine": "{count, plural, one {# student} other {# students}}",
       "loadError": "The school overview could not be loaded. Try again.",
-        "notYetAssessed": "Not yet assessed",
-        "transitionSteadyShort": "steady",
+      "notYetAssessed": "Not yet assessed",
+      "transitionSteadyShort": "steady",
       "export": {
         "cta": "Export school results (CSV)",
         "downloading": "Preparing the export...",
@@ -4116,6 +4116,77 @@
       "schoolType": "School type",
       "schoolTypePlaceholder": "Choose a type",
       "postcode": "Postcode"
+    },
+    "system": {
+      "meta": {
+        "title": "System",
+        "description": "Live platform health, versions, migrations and the backup ledger."
+      },
+      "title": "System",
+      "description": "What the platform is running on right now: dependency health, versions, applied migrations and recorded backups.",
+      "health": {
+        "title": "Dependency health",
+        "description": "Live probes of every dependency the platform needs. A red probe is a real state, shown as it is.",
+        "overall": "Overall {ms} ms",
+        "status": {
+          "up": "up",
+          "down": "down"
+        },
+        "latency": "{ms} ms",
+        "probes": {
+          "database": "Database",
+          "redis": "Redis",
+          "queues": "Queues",
+          "storage": "Storage",
+          "web": "Web"
+        },
+        "errorTitle": "Health read failed",
+        "errorDescription": "The health probes could not be read. Retry, or check the API if it persists."
+      },
+      "info": {
+        "title": "Runtime",
+        "description": "Versions and uptime only — never secrets, never connection strings.",
+        "fields": {
+          "strapiVersion": "Strapi",
+          "nodeVersion": "Node",
+          "uptime": "Uptime",
+          "env": "Environment",
+          "database": "Database client",
+          "timezone": "Timezone",
+          "queues": "Queues"
+        },
+        "errorTitle": "Info read failed",
+        "errorDescription": "Runtime info could not be read. Retry, or check the API if it persists."
+      },
+      "migrations": {
+        "title": "Applied migrations",
+        "description": "The user-migration ledger, newest first, with the server's own count.",
+        "count": "{count, plural, =1 {1 migration applied} other {# migrations applied}}",
+        "columns": {
+          "name": "Migration",
+          "appliedAt": "Applied at"
+        },
+        "never": "not recorded",
+        "errorTitle": "Migrations read failed",
+        "errorDescription": "The migration ledger could not be read. Retry, or check the API if it persists."
+      },
+      "backups": {
+        "title": "Backup ledger",
+        "description": "Recorded database backups, newest first. Running a backup arrives with the write controls.",
+        "empty": "No backups recorded yet. The ledger fills when a backup run succeeds or fails.",
+        "columns": {
+          "filename": "File",
+          "bytes": "Bytes",
+          "status": "Status",
+          "startedAt": "Started"
+        },
+        "status": {
+          "succeeded": "succeeded",
+          "failed": "failed"
+        },
+        "errorTitle": "Backup ledger read failed",
+        "errorDescription": "The backup ledger could not be read. Retry, or check the API if it persists."
+      }
     }
   },
   "RunSheet": {
