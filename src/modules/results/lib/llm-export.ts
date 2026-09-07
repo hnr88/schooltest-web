@@ -1,5 +1,24 @@
 import { ERROR_PATTERN_COPY } from '@/modules/results/components/ErrorPatternsPanel';
-import type { DiagnosticExport } from '@schooltest/scoring-contracts';
+import type { DiagnosticExport, DiagnosticExportSkill } from '@schooltest/scoring-contracts';
+
+/**
+ * The three-variant union, narrowed by ITS OWN discriminators (task 38's
+ * membership lesson: never assume a shape the union no longer guarantees):
+ * a `gate_passed` key is the Critical gate variant (D13 — score + verdict,
+ * deliberately no band and no delta field), `status: "not_assessed"` is the
+ * measured absence, everything else is a banded skill.
+ */
+function isGateSkill(entry: DiagnosticExportSkill): entry is Extract<DiagnosticExportSkill, { gate_passed: boolean }> {
+  return 'gate_passed' in entry;
+}
+
+function isNotAssessed(
+  entry: DiagnosticExportSkill,
+): entry is Extract<DiagnosticExportSkill, { status: 'not_assessed' }> {
+  // The gate variant carries NO status key at all — the `in` guard must come
+  // first, and the property test then narrows to the absence variant only.
+  return 'status' in entry && entry.status === 'not_assessed';
+}
 
 /**
  * §4.9 — the LLM-ready markdown download, rendered from the export bundle and
@@ -23,8 +42,14 @@ export function renderStudentMarkdown(bundle: DiagnosticExport): string {
 
   lines.push('## Skills');
   for (const [skill, entry] of Object.entries(bundle.skills)) {
-    if (entry.status === 'not_assessed') {
+    if (isNotAssessed(entry)) {
       lines.push(`- ${skill}: not assessed this sitting`);
+      continue;
+    }
+    if (isGateSkill(entry)) {
+      // D13: the gate skill carries a score and a verdict — NO band, NO change claim.
+      const descriptor = entry.descriptor === undefined ? '' : ` — ${entry.descriptor}`;
+      lines.push(`- ${skill}: ${entry.domain_score}% — exit gate ${entry.gate_passed ? 'passed' : 'not yet met'}${descriptor}`);
       continue;
     }
     const descriptor = entry.descriptor === undefined ? '' : ` — ${entry.descriptor}`;

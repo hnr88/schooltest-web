@@ -1,5 +1,30 @@
 import { ERROR_PATTERN_COPY } from '@/modules/results/components/ErrorPatternsPanel';
-import type { DiagnosticExport } from '@schooltest/scoring-contracts';
+import type { DiagnosticExport, DiagnosticExportSkill } from '@schooltest/scoring-contracts';
+
+/**
+ * The export skill union, narrowed by its OWN discriminators (three variants
+ * since the D13 amendment): a `gate_passed` key is the Critical gate variant,
+ * `status: "not_assessed"` is the measured absence, everything else is a
+ * banded skill. One predicate each — never a cast, never optional chaining.
+ */
+function isGateSkill(
+  entry: DiagnosticExportSkill,
+): entry is Extract<DiagnosticExportSkill, { gate_passed: boolean }> {
+  return 'gate_passed' in entry;
+}
+
+function isNotAssessed(
+  entry: DiagnosticExportSkill,
+): entry is Extract<DiagnosticExportSkill, { status: 'not_assessed' }> {
+  // The gate variant carries NO status key — the `in` guard comes first.
+  return 'status' in entry && entry.status === 'not_assessed';
+}
+
+function isBanded(
+  entry: DiagnosticExportSkill,
+): entry is Extract<DiagnosticExportSkill, { delta_display: string | null }> {
+  return !isGateSkill(entry) && !isNotAssessed(entry);
+}
 
 /**
  * §4.8 fallback — the template commentary shown when the LLM is unavailable.
@@ -36,9 +61,13 @@ function positionParagraph(bundle: DiagnosticExport): string {
 
 /** §4.4 comparison — band-carrying skills only; Critical sits outside the scale (ruling 4a). */
 function strengthAndErrorsParagraph(bundle: DiagnosticExport): string {
-  const assessed = Object.entries(bundle.skills)
-    .filter(([skill, entry]) => skill !== 'Critical' && entry.status !== 'not_assessed' && 'domain_score' in entry)
-    .map(([skill, entry]) => ({ skill, score: (entry as { domain_score: number }).domain_score }));
+  // A for-loop rather than filter().map(): the type predicate narrows the
+  // ELEMENT, and a destructuring tuple would silently drop the narrowing.
+  const assessed: Array<{ skill: string; score: number }> = [];
+  for (const [skill, entry] of Object.entries(bundle.skills)) {
+    if (skill === 'Critical' || !isBanded(entry)) continue;
+    assessed.push({ skill, score: entry.domain_score });
+  }
   const best = assessed.reduce<{ skill: string; score: number } | null>(
     (top, row) => (top === null || row.score > top.score ? row : top), null,
   );
@@ -50,9 +79,9 @@ function strengthAndErrorsParagraph(bundle: DiagnosticExport): string {
     parts.push(`Strongest skill: ${best.skill} (${best.score}%). Greatest need: ${worst.skill} (${worst.score}%).`);
   }
   const critical = bundle.skills.Critical;
-  if (critical && critical.status !== 'not_assessed' && 'domain_score' in critical) {
+  if (critical && isGateSkill(critical)) {
     parts.push(
-      `Critical Reading scored ${critical.domain_score}% with the exit gate ${bundle.gate.passed === true ? 'passed' : 'not yet met'} — a gate result, not a band.`,
+      `Critical Reading scored ${critical.domain_score}% with the exit gate ${critical.gate_passed ? 'passed' : 'not yet met'} — a gate result, not a band.`,
     );
   }
   const dominant = bundle.error_patterns.reduce<{ type: string; pct: number } | null>(

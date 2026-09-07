@@ -138,7 +138,8 @@ describe('display-skills — the seven-tile mapping every screen uses', () => {
     const base = resultViewSchema.parse(resultViewFixture);
     const view = {
       ...base,
-      vocab: { ...base.vocab, blended: null },
+      // The schema's biconditional: blended null exactly when status not_assessed.
+      vocab: { ...base.vocab, blended: null, status: 'not_assessed' as const },
       gate: { ...base.gate, domain_score: null, passed: null },
     };
     get.mockResolvedValueOnce({ data: view });
