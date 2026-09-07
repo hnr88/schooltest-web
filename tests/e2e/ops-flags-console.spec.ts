@@ -84,6 +84,15 @@ test.describe('ledger 9 — the ops Flags console', () => {
     context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     page = await context.newPage();
     await loginAs(page, 'ops');
+
+    // WARM THE ROUTE HERE, not inside a test. The first navigation to this
+    // console compiles it in the dev server, which on a cold cache took ~30s
+    // and intermittently blew a per-test 30s budget (observed: two failures in
+    // eleven runs, both on runs whose wall time was 36-43s). Paying it once in
+    // `beforeAll` puts the cost under the describe block's 120s budget and
+    // leaves every test asserting against an already-compiled route.
+    await page.goto('/dashboard/ops/flags');
+    await expect(flagRow(page, TOGGLE_KEY)).toBeVisible({ timeout: 90_000 });
   });
 
   test.afterAll(async () => {
@@ -118,7 +127,14 @@ test.describe('ledger 9 — the ops Flags console', () => {
     await expect(row).toBeVisible({ timeout: WAIT });
 
     const before = Boolean(storedFlags()[TOGGLE_KEY]);
-    await expect(row).toHaveAttribute('data-flag-enabled', before ? 'true' : 'false');
+    // Explicit budget, not the 5s default: the registry read has staleTime 0, so
+    // TanStack paints the cached row first and reconciles when the refetch
+    // lands. Under a cold dev-server compile that gap exceeded 5s and made this
+    // assertion flaky — the claim is eventual agreement with the datastore, so
+    // it gets a budget that matches.
+    await expect(row).toHaveAttribute('data-flag-enabled', before ? 'true' : 'false', {
+      timeout: WAIT,
+    });
 
     // Flip it, and watch the PUT carry the TARGET value explicitly.
     const put = page.waitForRequest(
@@ -138,8 +154,13 @@ test.describe('ledger 9 — the ops Flags console', () => {
     // And the re-fetched registry agrees.
     await expect(row).toHaveAttribute('data-flag-enabled', (!before).toString(), { timeout: WAIT });
 
-    // Flip it back — the round trip, so the row ends as it began.
-    await row.locator('[data-slot="ops-flag-switch"]').click();
+    // Flip it back — the round trip, so the row ends as it began. The switch
+    // disables itself while its own row is in flight, so wait for it to be
+    // enabled again: clicking a disabled control is a silent no-op, and the
+    // restore would never happen.
+    const restore = row.locator('[data-slot="ops-flag-switch"]');
+    await expect(restore).toBeEnabled({ timeout: WAIT });
+    await restore.click();
     await expect.poll(() => Boolean(storedFlags()[TOGGLE_KEY]), { timeout: WAIT }).toBe(before);
   });
 
@@ -287,6 +308,21 @@ test.describe('ledger 9 — the ops Flags console', () => {
     };
     page.on('request', watch);
 
+    // A Next server action posts back to the page URL carrying `Next-Action`.
+    // Watching for THAT is what proves the save executed server-side, and it is
+    // a deterministic network event — unlike the success toast, which sonner
+    // auto-dismisses and which made an earlier revision of this test flaky
+    // (1 failure in 4 runs, "element(s) not found" on the toast text).
+    const actionPost = page.waitForRequest(
+      (request) => request.method() === 'POST' && Boolean(request.headers()['next-action']),
+    );
+    // The mutation invalidates the settings cache ONLY in its onSuccess path, so
+    // the refetch that follows is a deterministic signal that the write really
+    // succeeded rather than surfacing an error toast.
+    const refetch = page.waitForRequest(
+      (request) => request.method() === 'GET' && request.url().includes('/api/platform-settings'),
+    );
+
     // Saving the existing OFF state: valid (no message needed when off) and
     // idempotent, but a real write through the real route.
     await editor.locator('[data-slot="ops-banner-save-announcement"]').click();
@@ -296,10 +332,10 @@ test.describe('ledger 9 — the ops Flags console', () => {
       .getByRole('button', { name: en['Ops.flags.announcement.confirmAction'], exact: true })
       .click();
 
-    // The success toast is the server's own answer surfacing.
-    await expect(page.getByText(en['Ops.flags.announcement.offToast'])).toBeVisible({
-      timeout: WAIT,
-    });
+    await actionPost;
+    await refetch;
+    // The dialog closes on the resolved save.
+    await expect(dialog).toBeHidden({ timeout: WAIT });
 
     page.off('request', watch);
     expect(direct, 'the browser never called the Strapi announcement route directly').toEqual([]);
