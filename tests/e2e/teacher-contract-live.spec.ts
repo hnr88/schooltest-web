@@ -4,12 +4,6 @@ import path from 'node:path';
 import { expect, test } from '@playwright/test';
 
 import { teacherExportPath } from '@/modules/teacher/lib/teacher-export';
-import { classProgressResponseSchema } from '@/modules/teacher/schemas/teacher-progress.schema';
-import {
-  classInsightsResponseSchema,
-  classStudentsResponseSchema,
-  studentDrillDownResponseSchema,
-} from '@/modules/teacher/schemas/teacher-result.schema';
 import {
   teacherTestSessionsResponseSchema,
   testSessionMonitorResponseSchema,
@@ -25,17 +19,15 @@ import { apiEnv, runSql } from './helpers/auth-db';
 import { roleCredentials } from './helpers/credentials';
 
 // Task 030 — the LIVE half of the proof. `teacher-contract-parity.spec.ts` shows
-// the eleven query hooks call exactly this set of paths (exact set equality over
+// the query hooks call exactly this set of paths (exact set equality over
 // the source); this spec takes the same paths to the REAL Strapi on the port
 // `schooltest-web/.env` points the Axios instance at, with a REAL teacher JWT
 // minted by the project's own auth path, and asserts what the server answers.
 //
-// The /api/teacher/** routes are built by a PARALLEL backend track and had not
-// landed when this ran, so the honest live result is route-absence — asserted
-// precisely rather than glossed: absence must look like 404/405 and must NOT
-// look like 401/403, which is what proves the JWT is good and the paths point at
-// a server that simply has no such route yet. The 200 arm is written too, so the
-// day the routes land this becomes a live conformance test of the mirror.
+// Scoring task 24 — the four duplicate result routes (C-TR-1..4) are RETIRED:
+// they answer 410 Gone with a pointer body, asserted by their own arm below.
+// They are no longer part of the read-sweep's payload conformance, because no
+// route serves those shapes any more.
 
 /** Read one key from the gitignored schooltest-web/.env — never a guessed default. */
 function webEnv(key: string): string {
@@ -107,14 +99,6 @@ const READ_OPERATIONS: ReadOperation[] = [
   ['C-TD-2', '/api/teacher/tests', teacherTestsResponseSchema],
   ['C-TS-2', '/api/teacher/test-sessions', teacherTestSessionsResponseSchema],
   ['C-TS-3', `/api/teacher/test-sessions/${SITTING_ID}/monitor`, testSessionMonitorResponseSchema],
-  ['C-TR-1', `/api/teacher/classes/${CLASS_ID}/students`, classStudentsResponseSchema],
-  [
-    'C-TR-2',
-    `/api/teacher/classes/${CLASS_ID}/students/${STUDENT_ID}`,
-    studentDrillDownResponseSchema,
-  ],
-  ['C-TR-3', `/api/teacher/classes/${CLASS_ID}/insights`, classInsightsResponseSchema],
-  ['C-TR-4', `/api/teacher/classes/${CLASS_ID}/progress`, classProgressResponseSchema],
   ['C-TR-5', teacherExportPath({ kind: 'insights', classDocumentId: CLASS_ID }), null],
   ['C-TR-6', teacherExportPath({ kind: 'progress', classDocumentId: CLASS_ID }), null],
   [
@@ -126,6 +110,16 @@ const READ_OPERATIONS: ReadOperation[] = [
     }),
     null,
   ],
+];
+
+// Scoring task 24 — the RETIRED duplicate result routes. They must answer the
+// typed 410 envelope with the canonical-read pointer for an authorised teacher,
+// whatever id is on the path (the handler reads nothing).
+const RETIRED_OPERATIONS: string[] = [
+  `/api/teacher/classes/${CLASS_ID}/students`,
+  `/api/teacher/classes/${CLASS_ID}/students/${STUDENT_ID}`,
+  `/api/teacher/classes/${CLASS_ID}/insights`,
+  `/api/teacher/classes/${CLASS_ID}/progress`,
 ];
 
 let jwt = '';
@@ -215,24 +209,40 @@ test.describe('teacher contract — the module paths against the REAL Strapi', (
     await context.dispose();
   });
 
+  test('the four retired duplicate result routes answer 410 Gone with the pointer envelope', async ({
+    playwright,
+  }) => {
+    const context = await playwright.request.newContext();
+    for (const routePath of RETIRED_OPERATIONS) {
+      const response = await context.get(`${API_BASE}${routePath}`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+      const text = await response.text();
+      expect(
+        response.status(),
+        `retired ${routePath}: ${text}`,
+      ).toBe(410);
+      const parsed = teacherErrorSchema.safeParse(JSON.parse(text));
+      expect(parsed.success, `retired ${routePath}: ${parsed.error?.message}`).toBe(true);
+      const error = (parsed as { data?: { error: { name: string; details: unknown } } }).data!.error;
+      expect(error.name).toBe('GoneError');
+      expect(error.details).toEqual({
+        replacements: ['GET /api/my/students/results', 'GET /api/results/:documentId'],
+      });
+    }
+    await context.dispose();
+  });
+
   // An ABSENT RESOURCE, not an unbuilt route. This used to walk READ_OPERATIONS and parse
   // whichever rows happened to answer 404 — i.e. it depended on some contract routes NOT
   // BEING BUILT YET. Once the API lane landed all eleven, every row answered 200, the loop
   // skipped everything, and `envelopesChecked > 0` failed. The guard was right; the premise
   // had expired. Three separate verifiers (038, 042, 043) reported the red.
   //
-  // These ids are absent BY CONSTRUCTION rather than by accident of build order, so this
-  // test cannot rot the same way again: a well-formed documentId that matches no row must
-  // answer 404 (existence before ownership — SF-5), and an unmounted path must answer
-  // 404/405 from the router. Both bodies must be the typed envelope the web module mirrors.
-  const ABSENT = [
-    ['unknown class', `/api/teacher/classes/${'z'.repeat(24)}/students`],
-    [
-      'unknown student in a real class',
-      `/api/teacher/classes/${CLASS_ID}/students/${'z'.repeat(24)}`,
-    ],
-    ['unmounted teacher path', '/api/teacher/no-such-operation'],
-  ] as const;
+  // Scoring task 24 — the two students-shaped rows this used to carry are RETIRED routes:
+  // they answer 410 (asserted by the retired arm above), never 404, so they would have
+  // rotted this loop the same way. What remains is the genuinely unmounted path.
+  const ABSENT = [['unmounted teacher path', '/api/teacher/no-such-operation']] as const;
 
   test('an absent resource answers the error envelope the module mirrors', async ({
     playwright,

@@ -16,7 +16,6 @@ import * as webTeacher from '@/modules/teacher/schemas/teacher.schema';
 
 import * as apiExport from '../../../schooltest-api/src/contracts/teacher-export';
 import * as apiProgress from '../../../schooltest-api/src/contracts/teacher-progress';
-import * as apiResults from '../../../schooltest-api/src/contracts/teacher-results';
 import * as apiSessions from '../../../schooltest-api/src/contracts/teacher-sessions';
 import * as apiTeacher from '../../../schooltest-api/src/contracts/teacher';
 import { readingAttributeSchema, stageSchema } from '../../../schooltest-api/src/contracts/vocab';
@@ -32,7 +31,6 @@ import { readingAttributeSchema, stageSchema } from '../../../schooltest-api/src
 const API: Record<string, unknown> = {
   ...apiTeacher,
   ...apiSessions,
-  ...apiResults,
   ...apiProgress,
   ...apiExport,
 };

@@ -86,9 +86,7 @@ export {
 export {
   classStudentsResponseSchema,
   studentDrillDownResponseSchema,
-  classInsightsResponseSchema,
 } from './schemas/teacher-result.schema';
-export { classProgressResponseSchema } from './schemas/teacher-progress.schema';
 export { startTestSessionFormSchema } from './schemas/session-setup.schema';
 export {
   teacherExportKindSchema,
@@ -140,20 +138,10 @@ export type {
   StudentTestResult,
   StudentProgress,
   StudentDrillDownResponse,
-  InsightMastery,
-  InsightGroupKey,
-  InsightGroup,
-  ClassInsightsResponse,
 } from './types/teacher-result.types';
-export type {
-  ProgressCohort,
-  ProgressSummary,
-  ProgressSubskillShift,
-  AcaraMovementDetail,
-  AcaraMovement,
-  ProgressMover,
-  ClassProgressResponse,
-} from './types/teacher-progress.types';
+// Scoring task 24: the progress/insights barrel re-exports are gone with their
+// surfaces. The schema/type FILES stay — the export-derivation test cluster
+// still reads them until 70459cff's re-point settles.
 export type {
   StartTestSessionFormValues,
   TestSessionSetupStatus,

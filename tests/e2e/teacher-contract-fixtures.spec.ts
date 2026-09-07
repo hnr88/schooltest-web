@@ -8,7 +8,6 @@ import * as webTeacher from '@/modules/teacher/schemas/teacher.schema';
 
 import * as apiExport from '../../../schooltest-api/src/contracts/teacher-export';
 import * as apiProgress from '../../../schooltest-api/src/contracts/teacher-progress';
-import * as apiResults from '../../../schooltest-api/src/contracts/teacher-results';
 import * as apiSessions from '../../../schooltest-api/src/contracts/teacher-sessions';
 import * as apiTeacher from '../../../schooltest-api/src/contracts/teacher';
 
@@ -162,114 +161,12 @@ const MONITOR = {
 
 const CLOSED = { sitting_document_id: SITTING_ID, status: 'closed', closed_at: NOW };
 
-const CLASS_STUDENTS = {
-  class: { ...CLASS_REF, year_band: '7_9', student_count: 4 },
-  summary: {
-    test_a: COMPLETION,
-    test_b: { completed: 0, total: 4 },
-    avg_score: 62,
-    top_gap: TOP_GAP,
-  },
-  students: [
-    {
-      ...STUDENT_REF,
-      test_a: { state: 'done', score: 72, acara_phase: 'Developing' },
-      test_b: { state: 'not_started', score: null, acara_phase: null },
-    },
-  ],
-};
-
-const DRILL_DOWN = {
-  student: {
-    document_id: STUDENT_ID,
-    display_name: 'Omar K.',
-    year_band: '7_9',
-    first_language: 'Vietnamese',
-    class_name: CLASS_NAME,
-  },
-  bands: { mastered_cut: 0.8, approaching_cut: 0.5 },
-  tests: [
-    {
-      variant: 'B',
-      completed_at: NOW,
-      score: 81,
-      acara_phase: 'Consolidating',
-      display_label: 'Consolidating reader',
-      subskills: [
-        {
-          attribute: 'R6',
-          name: 'Propositional Inference',
-          likelihood: 78,
-          status: 'approaching',
-          previous_likelihood: 62,
-          delta: 16,
-        },
-        {
-          attribute: 'R7',
-          name: 'Critical Reading',
-          likelihood: null,
-          status: 'not_assessed',
-          previous_likelihood: null,
-          delta: null,
-        },
-      ],
-    },
-  ],
-  progress: {
-    score_delta: 9,
-    acara_from: 'Developing',
-    acara_to: 'Consolidating',
-    improved: 5,
-    stable: 2,
-    regressed: 0,
-  },
-};
-
-const INSIGHTS = {
-  class: CLASS_REF,
-  completed_count: 14,
-  mastery: [
-    { attribute: 'R1', name: 'Word Decoding', mastered_count: 11, assessed_count: 14, ratio: 0.79 },
-  ],
-  groups: [
-    { key: 'R6', label: 'Inference', hint: 'Focus on implied meaning', students: [STUDENT_REF] },
-    {
-      key: 'no_gaps',
-      label: 'No gaps identified',
-      hint: 'Extend with challenge texts',
-      students: [],
-    },
-  ],
-};
-
-const COHORT = { both_tests: 19, test_a_completed: 21, test_b_completed: 19, total: 21 };
-
-const PROGRESS = {
-  available: true,
-  cohort: COHORT,
-  summary: { avg_a: 62, avg_b: 71, avg_delta: 9, improved: 15, unchanged: 2, regressed: 2 },
-  subskill_shift: [{ attribute: 'R5', name: 'Detail', a_mastered: 14, b_mastered: 16, change: 2 }],
-  acara_movement: {
-    up: 7,
-    same: 11,
-    down: 1,
-    up_detail: [{ from: 'Beginning', to: 'Emerging', count: 3 }],
-    down_detail: [],
-    same_improved_within_phase: 8,
-  },
-  most_improved: [{ ...STUDENT_REF, score_a: 45, score_b: 63, delta: 18 }],
-  needs_attention: [{ ...STUDENT_REF, score_a: 52, score_b: 48, delta: -4 }],
-};
-
-const PROGRESS_EMPTY = {
-  available: false,
-  cohort: { ...COHORT, both_tests: 0, test_b_completed: 0 },
-  summary: null,
-  subskill_shift: [],
-  acara_movement: null,
-  most_improved: [],
-  needs_attention: [],
-};
+// Scoring task 24 — the C-TR-1..4 fixtures (CLASS_STUDENTS, DRILL_DOWN, INSIGHTS,
+// PROGRESS) are DELETED with their surfaces: the four duplicate teacher result
+// routes now answer 410 Gone and can never serve these bodies again, so parity
+// rows asserting them described a world that no longer exists. The schemas they
+// used to exercise stay mirrored on both sides until the export-derivation
+// cluster that still reads them is re-pointed (70459cff's landing).
 
 const EXPORT_HEADERS = {
   'content-type': 'text/markdown; charset=utf-8',
@@ -285,7 +182,6 @@ const TEACHER_ERROR = {
 const API: Record<string, unknown> = {
   ...apiTeacher,
   ...apiSessions,
-  ...apiResults,
   ...apiProgress,
   ...apiExport,
 };
@@ -311,8 +207,6 @@ function pair(schemaName: string): [ContractParser, ContractParser] {
   return [server, web];
 }
 
-const DRILL_TEST = DRILL_DOWN.tests[0];
-
 const CASES: Array<[string, string, unknown]> = [
   ['C-TD-1', 'teacherDashboardResponseSchema', DASHBOARD],
   ['C-TD-2', 'teacherTestsResponseSchema', TESTS],
@@ -321,11 +215,6 @@ const CASES: Array<[string, string, unknown]> = [
   ['C-TS-2', 'teacherTestSessionsResponseSchema', SESSIONS],
   ['C-TS-3', 'testSessionMonitorResponseSchema', MONITOR],
   ['C-TS-4', 'closeTestSessionResponseSchema', CLOSED],
-  ['C-TR-1', 'classStudentsResponseSchema', CLASS_STUDENTS],
-  ['C-TR-2', 'studentDrillDownResponseSchema', DRILL_DOWN],
-  ['C-TR-3', 'classInsightsResponseSchema', INSIGHTS],
-  ['C-TR-4 available', 'classProgressResponseSchema', PROGRESS],
-  ['C-TR-4 empty state', 'classProgressResponseSchema', PROGRESS_EMPTY],
   ['C-TR-5/6/7 headers', 'teacherExportHeadersSchema', EXPORT_HEADERS],
   ['C-TR-5/6/7 body', 'teacherExportDocumentSchema', EXPORT_BODY],
   ['error envelope', 'teacherErrorSchema', TEACHER_ERROR],
@@ -344,24 +233,6 @@ const REJECTED: Array<[string, string, unknown]> = [
     'C-TS-3 stage 4',
     'testSessionMonitorResponseSchema',
     { ...MONITOR, students: [{ ...MONITOR.students[1], stage: 4 }] },
-  ],
-  [
-    'C-TR-2 likelihood 105',
-    'studentDrillDownResponseSchema',
-    {
-      ...DRILL_DOWN,
-      tests: [{ ...DRILL_TEST, subskills: [{ ...DRILL_TEST.subskills[0], likelihood: 105 }] }],
-    },
-  ],
-  [
-    'C-TR-3 unknown group key',
-    'classInsightsResponseSchema',
-    { ...INSIGHTS, groups: [{ ...INSIGHTS.groups[0], key: 'R9' }] },
-  ],
-  [
-    'C-TR-4 four movers',
-    'classProgressResponseSchema',
-    { ...PROGRESS, most_improved: Array.from({ length: 4 }, () => PROGRESS.most_improved[0]) },
   ],
   [
     'export inline disposition',
