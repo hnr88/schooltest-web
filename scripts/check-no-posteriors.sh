@@ -2,23 +2,46 @@
 # check-no-posteriors.sh — data contract §8 / dashboard §7 grep guard (task 38).
 #
 # `prob`, `prob_se` and `theta` are AUDIT fields. They are permitted ONLY in
-# node_modules and in (multi-line) type imports/re-exports from
-# @schooltest/scoring-contracts — the contract legitimately carries them, so a
-# naive "no prob anywhere" guard fails on honest type imports and gets deleted
-# within a week. Permit the type import, forbid the value: anywhere else under
-# src/ they are a rendered-surface leak and this exits non-zero.
+# node_modules, in (multi-line) type imports/re-exports from
+# @schooltest/scoring-contracts, and on the KNOWN_LEGACY inventory below —
+# the contract legitimately carries them, so a naive "no prob anywhere" guard
+# fails on honest type imports and gets deleted within a week. Permit the type
+# import, forbid the value.
+#
+# THREE TIERS:
+#   1. KNOWN_LEGACY — inventoried file|task|snippet entries, each annotated
+#      with the task that retires it; the guard passes over them.
+#   2. EVERYTHING ELSE — any occurrence outside the allow-list fails, exit 1:
+#      the guard catching the NEXT leak, from today.
+#   3. STALENESS — an entry whose snippet no longer appears in its file FAILS,
+#      naming it: the inventory must not outlive the problem it inventories.
 #
 # Test files (*.test.ts(x), *.spec.ts) are excluded: they assert the ABSENCE of
-# these fields, so their source must be allowed to name them.
-#
-# A guard that cries wolf gets edited until it stops crying — so this scans
-# comment lines too (commented-out posterior code is exactly what must not
-# resurface), and the allowed vocabulary for prose is "posterior", not the
-# field names.
+# these fields, so their source must be allowed to name them. Comments are
+# scanned too — commented-out posterior code is exactly what resurfaces later.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 
-violations=$(grep -RniE '\b(prob|prob_se|theta)\b' src \
+# file | retiring task | distinctive snippet (content-anchored: line numbers drift).
+# NOTE: the attribute-view-model/attribute.types/mastery.constants(report) entries
+# from the first inventory were RETIRED via the staleness check — kimi's task-36
+# re-point removed them mid-run, which is the tier-3 check working as designed.
+KNOWN_LEGACY=(
+  'src/modules/teach/schemas/diagnostic.schema.ts|task-24|prob: z.number().nullable(),'
+  'src/modules/teach/types/diagnostic.types.ts|task-24|task 50 sentinel semantics: null prob stays'
+  'src/modules/teach/types/diagnostic.types.ts|task-24|prob: number | null;'
+  'src/modules/teach/components/StudentMasteryDrilldown.tsx|task-24|A null prob renders as "not yet assessed"'
+  'src/modules/report/schemas/diagnostic-bundle.schema.ts|task-25|prob: z.number(),'
+  'src/modules/report/types/attribute.types.ts|task-36|are audit fields and never reach a view'
+  'src/modules/teacher/schemas/teacher.schema.ts|task-24|DERIVED SERVER-SIDE from `prob`'
+  'src/modules/teacher/schemas/teacher.schema.ts|task-24|`Math.round(prob * 100)`'
+  'src/modules/teacher/schemas/teacher.schema.ts|task-24|round(mean(prob) * 100)'
+  'src/modules/teacher/lib/student-drill-down.ts|task-24|by `mastery_band(prob)` before `status` was ever sent'
+  'src/modules/teacher/constants/drill-down.constants.ts|task-24|which `mastery_band(prob)`'
+  'src/modules/teacher/constants/mastery.constants.ts|task-24|`mastery_band(prob)` applies it SERVER-SIDE'
+)
+
+raw=$(grep -RniE '\b(prob|prob_se|theta)\b' src \
   --include='*.ts' --include='*.tsx' --exclude-dir=node_modules \
   | grep -vE '\.test\.tsx?:|\.spec\.tsx?:' \
   | awk '
@@ -28,10 +51,45 @@ violations=$(grep -RniE '\b(prob|prob_se|theta)\b' src \
       { print }
     ')
 
-if [ -n "$violations" ]; then
-  echo "check-no-posteriors: posterior fields outside the contract allow-list:"
-  echo "$violations"
-  echo "prob/prob_se/theta are audit fields — render nothing from them (data contract §8)."
-  exit 1
+new_leaks=""
+declare -A seen_known=()
+while IFS= read -r line; do
+  [ -z "$line" ] && continue
+  file="${line%%:*}"
+  known="no"
+  for entry in "${KNOWN_LEGACY[@]}"; do
+    IFS='|' read -r efile etask esnippet <<< "$entry"
+    if [ "$file" = "$efile" ] && [[ "$line" == *"$esnippet"* ]]; then
+      known="yes"
+      seen_known["$entry"]=1
+      break
+    fi
+  done
+  if [ "$known" = "no" ]; then
+    new_leaks+="  $line"$'\n'
+  fi
+done <<< "$raw"
+
+stale=""
+for entry in "${KNOWN_LEGACY[@]}"; do
+  IFS='|' read -r efile etask esnippet <<< "$entry"
+  if [ -z "${seen_known[$entry]:-}" ]; then
+    stale+="  $efile no longer carries: $esnippet — the leak is gone, retire this entry (was: $etask)"$'\n'
+  fi
+done
+
+fail=0
+if [ -n "$new_leaks" ]; then
+  echo "check-no-posteriors: NEW leaks outside the contract allow-list and the KNOWN_LEGACY inventory:"
+  echo "$new_leaks"
+  fail=1
 fi
-echo "check-no-posteriors: clean"
+if [ -n "$stale" ]; then
+  echo "check-no-posteriors: STALE KNOWN_LEGACY entries — retire them from this script:"
+  echo "$stale"
+  fail=1
+fi
+if [ "$fail" = 0 ]; then
+  echo "check-no-posteriors: clean (${#seen_known[@]} of ${#KNOWN_LEGACY[@]} known legacy entries still present)"
+fi
+exit "$fail"
