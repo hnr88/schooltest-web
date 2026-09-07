@@ -3317,6 +3317,86 @@
     }
   },
   "Ops": {
+    "flags": {
+      "meta": {
+        "title": "Feature flags — SchoolTest Ops",
+        "description": "SchoolTest Ops — feature flags, the public banners, and the sign-in rate limit."
+      },
+      "title": "Feature flags",
+      "description": "Platform switches, the banners visitors see, and the limit that governs sign-in.",
+      "editorsTitle": "Platform settings",
+      "errorToast": "That change did not save. Nothing was applied.",
+      "actions": {
+        "cancel": "Cancel"
+      },
+      "levels": {
+        "info": "Information",
+        "warning": "Warning",
+        "critical": "Critical"
+      },
+      "fields": {
+        "message": "Message",
+        "level": "Level"
+      },
+      "validation": {
+        "messageRequiredWhenOn": "Write a message before turning this on.",
+        "tooLong": "Use {max} characters or fewer.",
+        "maxBounds": "A whole number between {min} and {max}.",
+        "windowBounds": "Milliseconds, a whole number between {min} and {max}."
+      },
+      "registry": {
+        "title": "Feature flags",
+        "description": "The switches this platform ships. The list comes from the server, so a newly released flag appears here on its own.",
+        "loadingLabel": "Loading the feature flags",
+        "empty": "No feature flags are registered.",
+        "toggleLabel": "Toggle {key}",
+        "enabledToast": "{key} is now on.",
+        "disabledToast": "{key} is now off.",
+        "errorToast": "That flag did not change.",
+        "error": {
+          "title": "We could not load the feature flags.",
+          "description": "Check your connection and try again.",
+          "retry": "Try again"
+        }
+      },
+      "announcement": {
+        "title": "Announcement banner",
+        "description": "A message shown on public pages. Saving republishes the cached pages straight away.",
+        "switchLabel": "Show the announcement",
+        "messageHelp": "Shown to visitors while the announcement is on. Required when you turn it on.",
+        "save": "Save announcement",
+        "confirmTitle": "Publish this announcement?",
+        "confirmOn": "This shows the message to every visitor on the public site, and republishes the cached pages now.",
+        "confirmOff": "This removes the announcement from every public page and republishes them now.",
+        "confirmAction": "Save announcement",
+        "onToast": "Announcement published at {level} level.",
+        "offToast": "Announcement removed."
+      },
+      "maintenance": {
+        "title": "Maintenance mode",
+        "description": "Closes the site to visitors. The highest-impact switch on this page.",
+        "switchLabel": "Put the site into maintenance",
+        "messageHelp": "Shown on the closed site while maintenance is on. Required when you turn it on.",
+        "save": "Save maintenance mode",
+        "confirmTitle": "Close the site to visitors?",
+        "confirmOn": "This closes the public site for everyone until you turn it back off. Signed-in work in progress may be interrupted.",
+        "confirmOff": "This reopens the public site to visitors.",
+        "confirmAction": "Save maintenance mode",
+        "onToast": "Maintenance mode is on — the site is closed.",
+        "offToast": "Maintenance mode is off — the site is open."
+      },
+      "rateLimit": {
+        "title": "Sign-in rate limit",
+        "description": "How many sign-in attempts one address may make per window. Too low locks people out, including you.",
+        "maxLabel": "Attempts",
+        "windowLabel": "Window (ms)",
+        "save": "Save rate limit",
+        "confirmTitle": "Change the sign-in rate limit?",
+        "confirmDescription": "This allows {max} sign-in attempts per {window} ms. Setting it too low can lock every operator out of sign-in.",
+        "confirmAction": "Save rate limit",
+        "savedToast": "Rate limit saved: {max} attempts per {window} ms."
+      }
+    },
     "comms": {
       "meta": {
         "title": "Communications — SchoolTest Ops",

@@ -1,5 +1,7 @@
 import type { SettingsGroup } from '@/modules/ops/types/constants.types';
 
+import { REVALIDATE_TAGS } from '@/modules/seo/constants/schemas.constants';
+
 import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
 
 /** One settings group = one card on the ops screen. */
@@ -62,3 +64,15 @@ export const SETTINGS_SELECT_OPTIONS: Readonly<Record<string, readonly string[]>
   announcement_level: ['info', 'warning', 'critical'],
   email_provider: ['smtp', 'console'],
 };
+
+/**
+ * Ledger 9 — the cache tag the announcement editor invalidates on save.
+ *
+ * Typed against the seo module's canonical `REVALIDATE_TAGS` union rather than
+ * written as a bare string, so renaming the tag there breaks this build instead
+ * of silently leaving the public banner stale. Imported from the constants FILE
+ * and not the seo barrel: that barrel re-exports React Server Components, and
+ * this constant is consumed by a server action.
+ */
+export const PLATFORM_SETTINGS_REVALIDATE_TAG: (typeof REVALIDATE_TAGS)[number] =
+  'platform-settings';

@@ -11,6 +11,8 @@ export { OpsSectionTimers } from './components/OpsSectionTimers';
 export { OpsAuditConsole } from './components/OpsAuditConsole';
 /* ledger 7 — the Comms console (templates, email log, both composers) */
 export { OpsCommsConsole } from './components/OpsCommsConsole';
+/* ledger 9 — the Flags console (registry toggle + the three settings editors) */
+export { OpsFlagsConsole } from './components/OpsFlagsConsole';
 export { OpsFormWindow } from './components/OpsFormWindow';
 export { OpsSittingRecovery } from './components/OpsSittingRecovery';
 export { OpsPlatformSettings } from './components/OpsPlatformSettings';
