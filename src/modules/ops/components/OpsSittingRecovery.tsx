@@ -4,16 +4,16 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useAuthStore } from '@/modules/auth';
-import { SelectField } from '@/modules/design-system';
+import { Alert, Button, SelectField } from '@/modules/design-system';
 import { OpsSittingRecoveryDetail } from '@/modules/ops/components/OpsSittingRecoveryDetail';
 import { useSchoolSittingsQuery } from '@/modules/ops/queries/use-school-sittings.query';
 
 import type { OpsSittingRecoveryProps } from '@/modules/ops/types/components.types';
 
-// Ops sitting-recovery panel (task 69, C-OPS-02, mvp-updates 4.2): pick one of
-// the school's sittings (existing core sittings read, school-filtered), then
-// invalidate the sitting or re-sit a student. Mounted from the ops school
-// detail.
+// Ops sitting-recovery panel (task 69, C-OPS-02 / C-OPS-PORTAL-063,
+// mvp-updates 4.2): pick one of the school's sittings (existing core sittings
+// read, school-filtered), then invalidate the sitting or re-sit a student.
+// Mounted from the ops school detail.
 export function OpsSittingRecovery({ schoolDocumentId }: OpsSittingRecoveryProps) {
   const t = useTranslations('Ops.recovery');
   const token = useAuthStore((state) => state.token);
@@ -38,19 +38,44 @@ export function OpsSittingRecovery({ schoolDocumentId }: OpsSittingRecoveryProps
         <h2 className="text-lg font-semibold text-foreground">{t('title')}</h2>
         <p className="text-sm text-body">{t('description')}</p>
       </div>
-      <SelectField
-        id="ops-sitting-recovery-picker"
-        label={t('pickerLabel')}
-        placeholder={t('pickerPlaceholder')}
-        options={options}
-        value={selected}
-        onValueChange={setSelected}
-        disabled={!sittingsQuery.isSuccess || options.length === 0}
-        helperText={
-          sittingsQuery.isSuccess && options.length === 0 ? t('empty') : undefined
-        }
-      />
-      {selected ? <OpsSittingRecoveryDetail sittingDocumentId={selected} /> : null}
+      {sittingsQuery.isError ? (
+        // Without this the failed read was indistinguishable from "still
+        // loading": a disabled picker, no message and no way back. The retry
+        // refetches the same read rather than reloading the school detail.
+        <div data-surface="ops-sitting-recovery-error">
+          <Alert
+            variant="error"
+            title={t('loadErrorTitle')}
+            action={
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                loading={sittingsQuery.isFetching}
+                onClick={() => void sittingsQuery.refetch()}
+              >
+                {t('retry')}
+              </Button>
+            }
+          >
+            {t('loadErrorDescription')}
+          </Alert>
+        </div>
+      ) : (
+        <SelectField
+          id="ops-sitting-recovery-picker"
+          label={t('pickerLabel')}
+          placeholder={t('pickerPlaceholder')}
+          options={options}
+          value={selected}
+          onValueChange={setSelected}
+          disabled={!sittingsQuery.isSuccess || options.length === 0}
+          helperText={sittingsQuery.isSuccess && options.length === 0 ? t('empty') : undefined}
+        />
+      )}
+      {selected && !sittingsQuery.isError ? (
+        <OpsSittingRecoveryDetail sittingDocumentId={selected} />
+      ) : null}
     </section>
   );
 }

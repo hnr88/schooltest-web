@@ -1,4 +1,10 @@
 import type {
+  AustralianState,
+  SchoolsListSort,
+  Sector,
+} from '@schooltest/ops-contracts';
+
+import type {
   SchoolAccountStatus,
   SchoolOnboardingStatus,
 } from '@/modules/school-admin';
@@ -22,23 +28,45 @@ import type { OpsSchool } from '@/modules/ops/types/ops.types';
 // buckets here — not disappear.
 export const OPS_SCHOOLS_FILTER_ALL = 'all';
 
+const SCHOOLS_SORTS: readonly SchoolsListSort[] = ['name:asc', 'student_count:desc', 'createdAt:desc'];
+const SCHOOLS_STATES: readonly AustralianState[] = ['VIC', 'NSW', 'QLD', 'SA', 'WA', 'TAS', 'ACT', 'NT'];
+const SCHOOLS_SECTORS: readonly Sector[] = ['government', 'non-government', 'catholic'];
+
+/** Every sort the versioned directory serves (GAP-15: last_active withheld). */
+export const SCHOOLS_SORT_OPTIONS = SCHOOLS_SORTS;
+export const SCHOOLS_STATE_OPTIONS = SCHOOLS_STATES;
+export const SCHOOLS_SECTOR_OPTIONS = SCHOOLS_SECTORS;
+
 export interface SchoolsFilterState {
   query: string;
   accountStatus: SchoolAccountStatus | typeof OPS_SCHOOLS_FILTER_ALL;
   onboardingStatus: SchoolOnboardingStatus | typeof OPS_SCHOOLS_FILTER_ALL;
+  /** C-OPS-PORTAL-001 filters — server-applied, URL-synced, fail-open to All. */
+  state: AustralianState | typeof OPS_SCHOOLS_FILTER_ALL;
+  sector: Sector | typeof OPS_SCHOOLS_FILTER_ALL;
+  sort: SchoolsListSort;
+  page: number;
 }
 
 export const DEFAULT_SCHOOLS_FILTER: SchoolsFilterState = {
   query: '',
   accountStatus: OPS_SCHOOLS_FILTER_ALL,
   onboardingStatus: OPS_SCHOOLS_FILTER_ALL,
+  state: OPS_SCHOOLS_FILTER_ALL,
+  sector: OPS_SCHOOLS_FILTER_ALL,
+  sort: 'name:asc',
+  page: 1,
 };
 
-// URL params (spec §3): ?q=abbott&status=invited&onboarding=link_sent
+// URL params: ?q=abbott&status=invited&onboarding=link_sent&state=VIC&sector=catholic&sort=student_count:desc&page=2
 export const SCHOOLS_FILTER_PARAMS = {
   query: 'q',
   accountStatus: 'status',
   onboardingStatus: 'onboarding',
+  state: 'state',
+  sector: 'sector',
+  sort: 'sort',
+  page: 'page',
 } as const;
 
 function oneOf<T extends string>(
@@ -54,6 +82,7 @@ function oneOf<T extends string>(
 export function parseSchoolsFilter(
   params: URLSearchParams,
 ): SchoolsFilterState {
+  const rawPage = Number(params.get(SCHOOLS_FILTER_PARAMS.page));
   return {
     query: (params.get(SCHOOLS_FILTER_PARAMS.query) ?? '').trim(),
     accountStatus: oneOf(
@@ -66,6 +95,18 @@ export function parseSchoolsFilter(
       [OPS_SCHOOLS_FILTER_ALL, ...SCHOOL_ONBOARDING_STATUSES],
       OPS_SCHOOLS_FILTER_ALL,
     ),
+    state: oneOf(
+      params.get(SCHOOLS_FILTER_PARAMS.state),
+      [OPS_SCHOOLS_FILTER_ALL, ...SCHOOLS_STATES],
+      OPS_SCHOOLS_FILTER_ALL,
+    ),
+    sector: oneOf(
+      params.get(SCHOOLS_FILTER_PARAMS.sector),
+      [OPS_SCHOOLS_FILTER_ALL, ...SCHOOLS_SECTORS],
+      OPS_SCHOOLS_FILTER_ALL,
+    ),
+    sort: oneOf(params.get(SCHOOLS_FILTER_PARAMS.sort), SCHOOLS_SORTS, DEFAULT_SCHOOLS_FILTER.sort),
+    page: Number.isInteger(rawPage) && rawPage >= 1 ? rawPage : 1,
   };
 }
 
@@ -80,6 +121,16 @@ export function serializeSchoolsFilter(
   if (filter.onboardingStatus !== OPS_SCHOOLS_FILTER_ALL) {
     params.set(SCHOOLS_FILTER_PARAMS.onboardingStatus, filter.onboardingStatus);
   }
+  if (filter.state !== OPS_SCHOOLS_FILTER_ALL) {
+    params.set(SCHOOLS_FILTER_PARAMS.state, filter.state);
+  }
+  if (filter.sector !== OPS_SCHOOLS_FILTER_ALL) {
+    params.set(SCHOOLS_FILTER_PARAMS.sector, filter.sector);
+  }
+  if (filter.sort !== DEFAULT_SCHOOLS_FILTER.sort) {
+    params.set(SCHOOLS_FILTER_PARAMS.sort, filter.sort);
+  }
+  if (filter.page > 1) params.set(SCHOOLS_FILTER_PARAMS.page, String(filter.page));
   return params;
 }
 
@@ -87,13 +138,19 @@ export function isDefaultSchoolsFilter(filter: SchoolsFilterState): boolean {
   return (
     filter.query === DEFAULT_SCHOOLS_FILTER.query &&
     filter.accountStatus === DEFAULT_SCHOOLS_FILTER.accountStatus &&
-    filter.onboardingStatus === DEFAULT_SCHOOLS_FILTER.onboardingStatus
+    filter.onboardingStatus === DEFAULT_SCHOOLS_FILTER.onboardingStatus &&
+    filter.state === DEFAULT_SCHOOLS_FILTER.state &&
+    filter.sector === DEFAULT_SCHOOLS_FILTER.sector &&
+    filter.sort === DEFAULT_SCHOOLS_FILTER.sort &&
+    filter.page === DEFAULT_SCHOOLS_FILTER.page
   );
 }
 
 // Spec §2 "Combined behaviour": search AND both filters — a school must match
 // the (case-insensitive, substring) name query AND each active filter. Filters
 // compose independently; clearing one never disturbs the others.
+// The versioned table filters server-side (OPS-011); this in-memory pass
+// remains for the legacy C-OPS-01 consumers.
 export function filterOpsSchools(
   schools: readonly OpsSchool[],
   filter: SchoolsFilterState,

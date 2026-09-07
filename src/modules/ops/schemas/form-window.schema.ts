@@ -15,12 +15,16 @@ export const opsFormSchema = z.object({
 
 export type OpsForm = z.infer<typeof opsFormSchema>;
 
-// Core GET /api/form-windows row with the form populated (the C-WIN-01 PUT
-// response carries the same projection).
+// Core GET /api/form-windows row with the school and form populated — the
+// C-OPS-PORTAL-052 projection the server now pins (OPS-062), which the C-WIN-01
+// PUT response already carried. Both relations are nullable because a deleted
+// form or school leaves the stored window pointing at nothing, and refusing to
+// parse that would turn a recoverable data problem into an unreadable panel.
 export const formWindowSchema = z.object({
   documentId: z.string(),
   opens_at: z.string(),
   closes_at: z.string(),
+  school: z.object({ documentId: z.string() }).nullable(),
   form: z.object({ documentId: z.string(), form_code: z.string() }).nullable(),
 });
 

@@ -2,8 +2,9 @@
 
 import { useEffect } from 'react';
 
+import { isOpsPortalRole } from '@schooltest/ops-contracts';
+
 import { useRouter } from '@/i18n/navigation';
-import { OPS_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
 import { useMeQuery } from '@/modules/auth/queries/use-me.query';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 
@@ -25,7 +26,11 @@ export function useRequireOps() {
   const hasToken = Boolean(token);
   const meQuery = useMeQuery(hydrated && hasToken);
   const roleType = meQuery.data?.role?.type ?? null;
-  const isOps = roleType === OPS_ROLE_TYPE;
+  // OPS-075: the narrow `ops_support` account signs in to the SAME portal — it
+  // reads and exports, and the server refuses every write it cannot do. Sending
+  // it back to /dashboard would hide a surface it is entitled to see. The
+  // shared `isOpsPortalRole` guard keeps this list identical to the API's.
+  const isOps = isOpsPortalRole(roleType);
   const isResolved = hydrated && hasToken && !meQuery.isPending;
   const isRejected = meQuery.isError;
 

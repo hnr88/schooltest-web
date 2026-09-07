@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { formWindowQueryKey } from '@/modules/ops/queries/use-form-window.query';
+import { formWindowQueryKey } from '@/modules/ops/queries/use-form-window-read.query';
 import { formWindowSchema, type FormWindow } from '@/modules/ops/schemas/form-window.schema';
 
 import type { PutFormWindowInput } from '@/modules/ops/types/queries.types';

@@ -1,25 +1,12 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-
-import { strapi } from '@/lib/axios/strapi';
-import { platformSettingsSchema } from '@/modules/ops/schemas/platform-settings.schema';
-import type { PlatformSettings } from '@/modules/ops/types/platform-settings.types';
-import { PLATFORM_SETTINGS_QUERY_KEY } from '@/modules/ops/constants/queries.constants';
-
-// C-SET-02 — ops-only (global::is-ops + the ops grant). The whole envelope is
-// parsed through the shared schema; a shape the contract never promised fails
-// here rather than corrupting the form.
-async function fetchPlatformSettings(): Promise<PlatformSettings> {
-  const res = await strapi.get<{ data: unknown }>('/api/platform-settings');
-  return platformSettingsSchema.parse(res.data.data);
-}
-
-export function usePlatformSettingsQuery(enabled = true) {
-  return useQuery({
-    queryKey: PLATFORM_SETTINGS_QUERY_KEY,
-    queryFn: fetchPlatformSettings,
-    enabled,
-    retry: false,
-  });
-}
+/**
+ * C-SET-02 / C-OPS-PORTAL-067 — the historical name for the settings read.
+ *
+ * The implementation moved to `use-settings-read.query.ts` (OPS-077) so the
+ * operation has exactly one fetcher, one query key and one contract parse. This
+ * file stays as the published name: the ops barrel and the settings form hook
+ * import `usePlatformSettingsQuery`, and a second hook against the same
+ * endpoint would be a duplicate service, not a migration.
+ */
+export { useSettingsReadQuery as usePlatformSettingsQuery } from './use-settings-read.query';

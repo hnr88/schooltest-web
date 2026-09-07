@@ -4,16 +4,23 @@ import { useTranslations } from 'next-intl';
 import { Check, Pencil, Trash2, X } from 'lucide-react';
 
 import { Button, FieldShell, Input } from '@/modules/design-system';
+import {
+  teacherClassLabel,
+  teacherLastActiveLabel,
+} from '@/modules/ops/lib/teachers-list.lib';
 import type { OpsTeacherRow as TeacherRow } from '@/modules/ops/types/ops.types';
 
-import type { OpsTeachersTableRowProps } from '@/modules/ops/types/components.types';
+import type { OpsPortalTeacherRowProps } from '@/modules/ops/types/teachers-list.types';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const COLUMN_COUNT = 7;
 
 // One staff row of the OPS teachers dialog: read mode, edit mode (the exact
-// C-TCH-04 whitelist — first/last/email) or the inline remove-confirm. The
-// Class column is deliberately read-only: no backing write exists anywhere
-// (⚠️ ruling open with the client, see the dialog docblock).
+// C-TCH-04 whitelist — first/last/email) or the inline remove-confirm.
+// C-OPS-PORTAL-021 (OPS-031) adds the Specialty and Last activity columns; both
+// are stored values, and a null one renders the source-style empty fallback
+// rather than a guess. Class, Specialty and Last activity are read-only: no
+// backing write exists anywhere (⚠️ ruling open with the client).
 export function OpsTeachersTableRow({
   row,
   editing,
@@ -25,9 +32,11 @@ export function OpsTeachersTableRow({
   savePending,
   removePending,
   error,
-}: OpsTeachersTableRowProps) {
+}: OpsPortalTeacherRowProps) {
   const t = useTranslations('Ops.teachers');
-  const classes = row.classes.map((klass) => klass.name ?? klass.documentId).join(', ');
+  const classes = teacherClassLabel(row.classes);
+  const specialty = row.teaching_specialty ?? t('noSpecialty');
+  const lastActive = teacherLastActiveLabel(row.last_active_at) ?? t('noActivity');
 
   const setField = (key: 'first_name' | 'last_name' | 'email', value: string) =>
     editing &&
@@ -36,7 +45,7 @@ export function OpsTeachersTableRow({
   if (removing) {
     return (
       <tr className="border-b border-border/60" data-slot="ops-teacher-remove-confirm">
-        <td colSpan={5} className="py-3">
+        <td colSpan={COLUMN_COUNT} className="py-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span>{error ?? t('removeConfirm', { email: row.email ?? '' })}</span>
             <div className="flex gap-2">
@@ -96,7 +105,9 @@ export function OpsTeachersTableRow({
             </FieldShell>
           </td>
         ))}
+        <td className="py-2 pr-3 text-muted-foreground">{specialty}</td>
         <td className="py-2 pr-3 text-muted-foreground">{classes || t('noClasses')}</td>
+        <td className="py-2 pr-3 text-muted-foreground">{lastActive}</td>
         <td className="py-2">
           <div className="flex justify-end gap-1">
             <Button
@@ -138,7 +149,15 @@ export function OpsTeachersTableRow({
       <td className="py-2 pr-3">{row.first_name ?? '—'}</td>
       <td className="py-2 pr-3">{row.last_name ?? '—'}</td>
       <td className="py-2 pr-3">{row.email ?? '—'}</td>
-      <td className="py-2 pr-3 text-muted-foreground">{classes || t('noClasses')}</td>
+      <td className="py-2 pr-3 text-muted-foreground" data-slot="ops-teacher-specialty">
+        {specialty}
+      </td>
+      <td className="py-2 pr-3 text-muted-foreground" data-slot="ops-teacher-classes">
+        {classes || t('noClasses')}
+      </td>
+      <td className="py-2 pr-3 text-muted-foreground" data-slot="ops-teacher-last-active">
+        {lastActive}
+      </td>
       <td className="py-2">
         <div className="flex justify-end gap-1">
           <Button
