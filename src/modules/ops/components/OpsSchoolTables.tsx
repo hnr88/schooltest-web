@@ -25,6 +25,7 @@ import { dispositionOfFailure, statusOfDisposition } from '@/modules/ops/actions
 import { DIRECTORY_PARAMS } from '@/modules/ops/directory';
 import { OpsClassesTab } from '@/modules/ops/components/OpsClassesTab';
 import { OpsSchoolActivity } from '@/modules/ops/components/OpsSchoolActivity';
+import { OpsStaffInvitationDialog } from '@/modules/ops/components/OpsStaffInvitationDialog';
 import { OpsStaffUsersTable } from '@/modules/ops/components/OpsStaffUsersTable';
 import { OpsStudentsTab } from '@/modules/ops/components/OpsStudentsTab';
 import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
@@ -82,6 +83,13 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [teachersOpen, setTeachersOpen] = useState(false);
+  // GAP-1 (task 15): the staff invitations dialog — the pictured INVITE MODAL
+  // plus its table — opened from BOTH staff tabs. One instance for the whole
+  // tab block, mounted unconditionally like OpsOnboardSchoolDialog: closing
+  // must run the dialog primitive's cleanup even when a tab switch flips
+  // `active` underneath it.
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const openInvitations = useCallback(() => setInviteOpen(true), []);
 
   const raw = searchParams.get(TAB_PARAM);
   // An unknown ?tab= falls back to the first tab rather than rendering nothing:
@@ -148,6 +156,7 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
           schoolDocumentId={schoolDocumentId}
           ownerDocumentId={school.owner_documentId}
           active={tab === 'admins'}
+          onInvite={openInvitations}
         />
       </TabsContent>
 
@@ -156,6 +165,7 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
           schoolDocumentId={schoolDocumentId}
           active={tab === 'teachers'}
           onManage={() => setTeachersOpen(true)}
+          onInvite={openInvitations}
         />
       </TabsContent>
 
@@ -171,6 +181,11 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
         schoolDocumentId={schoolDocumentId}
         open={teachersOpen}
         onOpenChange={setTeachersOpen}
+      />
+      <OpsStaffInvitationDialog
+        schoolDocumentId={schoolDocumentId}
+        open={inviteOpen}
+        onOpenChange={setInviteOpen}
       />
     </Tabs>
   );
@@ -196,10 +211,12 @@ function AdminsTab({
   schoolDocumentId,
   ownerDocumentId,
   active,
+  onInvite,
 }: {
   schoolDocumentId: string;
   ownerDocumentId: string | null;
   active: boolean;
+  onInvite: () => void;
 }) {
   const t = useTranslations('Ops.schoolTables');
   const [target, setTarget] = useState<StaffUserRow | null>(null);
@@ -223,7 +240,12 @@ function AdminsTab({
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="max-w-2xl text-sm text-body">{t('adminsNote')}</p>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="max-w-2xl text-sm text-body">{t('adminsNote')}</p>
+        <Button type="button" size="sm" variant="outline" data-testid="ops-admins-invite" onClick={onInvite}>
+          {t('inviteStaff')}
+        </Button>
+      </div>
       {ownerDocumentId === null ? (
         <Alert variant="warning" title={t('ownerNone')}>
           {t('ownerNoneDescription')}
@@ -278,10 +300,12 @@ function TeachersTab({
   schoolDocumentId,
   active,
   onManage,
+  onInvite,
 }: {
   schoolDocumentId: string;
   active: boolean;
   onManage: () => void;
+  onInvite: () => void;
 }) {
   const t = useTranslations('Ops.schoolTables');
   // Class membership stays with the staff directory that owns it; the accepted
@@ -299,6 +323,15 @@ function TeachersTab({
       <div className="flex flex-wrap gap-2">
         <Button type="button" size="sm" variant="outline" onClick={onManage}>
           {t('manageTeachers')}
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          data-testid="ops-teachers-invite"
+          onClick={onInvite}
+        >
+          {t('inviteStaff')}
         </Button>
       </div>
       <OpsStaffUsersTable

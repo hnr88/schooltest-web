@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 import { staffInvitationHasUserAccount, staffRowId } from '@schooltest/ops-contracts';
 
 import {
@@ -18,6 +19,8 @@ import {
   staffInvitationTone,
 } from '@/modules/ops/lib/ops-staff-invitations.helpers';
 
+import type { StaffInvitationRow } from '@schooltest/ops-contracts';
+
 import type { OpsStaffInvitationTableProps } from '@/modules/ops/types/staff-invitations.types';
 
 // C-OPS-PORTAL-016 rows. The reference row is avatar + title + subtitle + role +
@@ -25,7 +28,18 @@ import type { OpsStaffInvitationTableProps } from '@/modules/ops/types/staff-inv
 // never its expiry. An accepted invitation is labelled as already having a staff
 // account so the pictured tab never shows the same person twice, and the row key
 // is the shared `invitation:<documentId>` identity — never a display name.
-export function OpsStaffInvitationTable({ rows, nowMs }: OpsStaffInvitationTableProps) {
+//
+// GAP-1 (task 15): when `renderActions` is provided the table grows one
+// trailing column and the callback decides what — if anything — a row's
+// status allows. Without it the table renders exactly as before, header
+// for header.
+export function OpsStaffInvitationTable({
+  rows,
+  nowMs,
+  renderActions,
+}: OpsStaffInvitationTableProps & {
+  renderActions?: (row: StaffInvitationRow) => ReactNode;
+}) {
   const t = useTranslations('Ops.staffInvitations');
 
   return (
@@ -37,6 +51,7 @@ export function OpsStaffInvitationTable({ rows, nowMs }: OpsStaffInvitationTable
             <TableHead>{t('columnEmail')}</TableHead>
             <TableHead>{t('columnRole')}</TableHead>
             <TableHead>{t('columnStatus')}</TableHead>
+            {renderActions ? <TableHead>{t('columnActions')}</TableHead> : null}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -81,6 +96,7 @@ export function OpsStaffInvitationTable({ rows, nowMs }: OpsStaffInvitationTable
                     {row.status === null ? t('statusUnknown') : t(`status.${row.status}`)}
                   </StatusPill>
                 </TableCell>
+                {renderActions ? <TableCell className="align-top">{renderActions(row)}</TableCell> : null}
               </TableRow>
             );
           })}

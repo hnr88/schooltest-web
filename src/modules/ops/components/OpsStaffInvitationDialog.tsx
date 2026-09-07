@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { MailX } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Alert,
@@ -20,6 +20,7 @@ import {
   Skeleton,
 } from '@/modules/design-system';
 import { OpsStaffInvitationFilters } from '@/modules/ops/components/OpsStaffInvitationFilters';
+import { OpsStaffInvitationRowActions } from '@/modules/ops/components/OpsStaffInvitationRowActions';
 import { OpsStaffInvitationTable } from '@/modules/ops/components/OpsStaffInvitationTable';
 import { useStaffInvitationsFilter } from '@/modules/ops/hooks/use-staff-invitations-filter';
 import {
@@ -43,6 +44,16 @@ export function OpsStaffInvitationDialog({
   const filter = useStaffInvitationsFilter(schoolDocumentId);
   const invitations = useStaffInvitationsQuery(filter.params, open);
   const pagination = invitations.data?.meta.pagination;
+  // GAP-1 (task 15): one shared resend cooldown for the whole dialog — the
+  // server keys it by school and invitation kind, so two rows cannot dodge
+  // each other's window. A tick counts it down; every Resend stays disabled
+  // while it is open.
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  useEffect(() => {
+    if (cooldownSeconds <= 0) return;
+    const timer = setInterval(() => setCooldownSeconds((value) => Math.max(value - 1, 0)), 1000);
+    return () => clearInterval(timer);
+  }, [cooldownSeconds]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -84,6 +95,13 @@ export function OpsStaffInvitationDialog({
             // "As of the read" — the query's own receipt timestamp, so the row
             // ages are a pure function of the data, not of when React rendered.
             nowMs={invitations.dataUpdatedAt}
+            renderActions={(row) => (
+              <OpsStaffInvitationRowActions
+                row={row}
+                cooldownSeconds={cooldownSeconds}
+                onCooldown={setCooldownSeconds}
+              />
+            )}
           />
         )}
 

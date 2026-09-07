@@ -37,7 +37,17 @@ export function useRevokeInvitationMutation() {
  * C-OPSI-02 — POST /api/ops/invitations/:documentId/revoke. Offered on
  * INVITATION ROWS only: an accepted invitation is refused by the server
  * (remove the account instead - task 16), and a revoked row stays revoked.
+ *
+ * The service answers with the FULL projected row (`project(load(...))` —
+ * email, role, timestamps and school included), not just the pair the UI
+ * reads. The parse therefore strips the projection down to the two fields the
+ * row action needs instead of strictObjects rejecting every real response;
+ * pinned by tests/unit/ops-staff-invitation-actions.test.tsx so the wire
+ * shape and the parser cannot drift apart silently again.
  */
+export const revokeStaffInvitationResultSchema = z
+  .object({ documentId: z.string(), status: z.string() });
+
 export async function revokeStaffInvitation(
   invitationDocumentId: string,
 ): Promise<{ documentId: string; status: string }> {
@@ -45,7 +55,7 @@ export async function revokeStaffInvitation(
     `/api/ops/invitations/${invitationDocumentId}/revoke`,
     {},
   );
-  return z.strictObject({ documentId: z.string(), status: z.string() }).parse(res.data.data);
+  return revokeStaffInvitationResultSchema.parse(res.data.data);
 }
 
 export function useStaffRevokeInvitationMutation() {

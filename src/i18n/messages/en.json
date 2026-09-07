@@ -3946,7 +3946,8 @@
         "students": "Students",
         "overview": "Overview"
       },
-      "adminsNote": "School administrators for this school. To invite an admin, use the Onboard School invitation panel on the Overview tab. This directory lists no last-login field (the system tracks none).",
+      "adminsNote": "School administrators for this school. Invite an administrator with the Invite staff control. This directory lists no last-login field (the system tracks none).",
+      "inviteStaff": "Invite staff",
       "adminsEmptyTitle": "No admins for this school",
       "adminsEmptyDescription": "This school has no administrator accounts yet.",
       "teachersNote": "Teaching staff for this school. Edit and remove are offered through Manage teachers (the C-TCH-04/C-TCH-03 rewrite endpoints).",
@@ -4034,6 +4035,43 @@
       "ownerTransferred": "Ownership transferred."
     },
     "staffInvitations": {
+      "title": "Staff invitations",
+      "description": "Invite a teacher or an administrator, and manage the invitations already sent.",
+      "filterAll": "All",
+      "filterRole": "Filter by role",
+      "filterStatus": "Filter by status",
+      "role": {
+        "teacher": "Teacher",
+        "school_admin": "School administrator"
+      },
+      "status": {
+        "invited": "Invited",
+        "accepted": "Accepted",
+        "expired": "Expired",
+        "revoked": "Revoked"
+      },
+      "columnName": "Name",
+      "columnEmail": "Email",
+      "columnRole": "Role",
+      "columnStatus": "Status",
+      "columnActions": "Actions",
+      "noName": "No name provided",
+      "noValue": "—",
+      "roleUnknown": "Unknown",
+      "statusUnknown": "Unknown",
+      "invitedUnknown": "Invitation date unavailable",
+      "invitedDaysAgo": "Invited {days, plural, one {# day} other {# days}} ago",
+      "acceptedNote": "Has a staff account",
+      "emptyTitle": "No invitations yet",
+      "emptyDescription": "Invite a teacher or an administrator with the form above.",
+      "emptyFilteredTitle": "No matching invitations",
+      "emptyFilteredDescription": "No invitation matches the current role and status filters.",
+      "errorTitle": "Couldn’t load invitations",
+      "errorDescription": "The invitation list is unavailable right now. Try again.",
+      "summary": "{total, plural, one {# invitation} other {# invitations}}",
+      "previous": "Previous",
+      "page": "Page {page} of {pageCount}",
+      "next": "Next",
       "inviteRoleLabel": "Role",
       "roleTeacher": "Teacher",
       "roleAdmin": "School administrator",
@@ -4048,7 +4086,12 @@
       "inviteErrorTitle": "The invitation was not created",
       "inviteErrorBody": "Nothing was saved. Check the address and try again.",
       "staffActionResend": "Resend",
-      "staffActionRevoke": "Revoke"
+      "staffActionRevoke": "Revoke",
+      "staffResendSuccess": "A fresh invitation link was sent to {email}. The previous link no longer works.",
+      "staffResendCooldown": "This invitation was just resent. Try again in {seconds}s.",
+      "staffResendError": "The invitation could not be resent. Try again.",
+      "staffRevokeSuccess": "The invitation for {email} was revoked. Its link no longer works.",
+      "staffRevokeError": "The invitation could not be revoked. Refresh the list and try again."
     },
     "createSchool": {
       "editTitle": "Edit school",
