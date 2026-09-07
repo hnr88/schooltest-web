@@ -28,6 +28,16 @@ const fixture = resultViewSchema.parse(
   ),
 ) as ResultView;
 
+/** Re-scores one fixture attribute entry, preserving the scored branch's own fields. */
+function rescored(
+  entry: NonNullable<ResultView['attributes'][keyof ResultView['attributes']]>,
+  domainScore: number,
+  status: 'secure' | 'developing' | 'emerging' | 'not_yet',
+) {
+  if (entry.status === 'not_assessed') throw new Error('fixture drifted');
+  return { ...entry, domain_score: domainScore, status };
+}
+
 function withScores(overrides: Array<Partial<ResultView>>): ResultView[] {
   return overrides.map((override) => resultViewSchema.parse({ ...fixture, ...override }));
 }
@@ -48,8 +58,8 @@ describe('weakestSkill — minimum among assessed banded skills only', () => {
       ...fixture,
       attributes: {
         ...fixture.attributes,
-        Grammar: { ...fixture.attributes.Grammar!, domain_score: 54, status: 'emerging' as const },
-        Detail: { ...fixture.attributes.Detail!, domain_score: 54, status: 'emerging' as const },
+        Grammar: rescored(fixture.attributes.Grammar!, 54, 'emerging'),
+        Detail: rescored(fixture.attributes.Detail!, 54, 'emerging'),
       },
     };
     const weakest = weakestSkill(resultViewSchema.parse(tied));
@@ -151,5 +161,113 @@ describe('scoredCount — an actual overall score, not a present row', () => {
     ]);
     expect(scoredCount(rows)).toEqual({ scored: 2, total: 3 });
     expect(scoredCount([])).toEqual({ scored: 0, total: 0 });
+  });
+});
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Task 34 (scoped) — Screen B's five pure additions. Same fixture discipline:
+ * the real contract payload mutated into multiple students, every exclusion
+ * rule asserted by name.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+import { needsSupport, secureCounts, subskillAverages, topGains, vocabStrandMeans } from '@/modules/results/lib/class-aggregation';
+
+describe('subskillAverages — per-skill means with their own denominator', () => {
+  test('averages each skill over the students who have it assessed, and counts the excluded', () => {
+    const rows = withScores([
+      { overall: { ...fixture.overall, domain_score: 80 } }, // fixture attributes: Decoding 92, Vocab blend 76, Grammar 72, Detail 74, Inference 80, gate 70
+      { overall: { ...fixture.overall, domain_score: 60 }, attributes: { ...fixture.attributes, Grammar: { status: 'not_assessed', items_seen: 0 } } },
+    ]);
+    const averages = subskillAverages(rows);
+    const bySkill = new Map(averages.map((a) => [a.skill, a]));
+    expect(bySkill.get('Decoding')).toEqual({ skill: 'Decoding', average: 92, assessed: 2, excluded: 0 });
+    expect(bySkill.get('Grammar')).toEqual({ skill: 'Grammar', average: 72, assessed: 1, excluded: 1 });
+    // D13 per-function: Critical's gate score averages WITHIN itself…
+    expect(bySkill.get('Critical')).toEqual({ skill: 'Critical', average: 70, assessed: 2, excluded: 0 });
+    // …and the canonical order holds, Gist (never assessed) absent.
+    expect(averages.map((a) => a.skill)).toEqual(['Decoding', 'Vocabulary', 'Grammar', 'Detail', 'Inference', 'Critical']);
+  });
+});
+
+describe('secureCounts — counted as sent, Critical absent by construction', () => {
+  test('counts status === "secure" per banded skill and NEVER recomputes from a score', () => {
+    const highScoreDeveloping = rescored(fixture.attributes.Decoding!, 95, 'developing');
+    const rows = withScores([
+      { overall: { ...fixture.overall, domain_score: 80 }, attributes: { ...fixture.attributes, Decoding: highScoreDeveloping } },
+      { overall: { ...fixture.overall, domain_score: 60 }, vocab: { ...fixture.vocab, status: 'developing' as const } },
+    ]);
+    const counts = secureCounts(rows);
+    const bySkill = new Map(counts.map((c) => [c.skill, c]));
+    // 95% but the API said developing — the count stays 1, never recomputed.
+    expect(bySkill.get('Decoding')).toEqual({ skill: 'Decoding', secure: 1, assessed: 2 });
+    // The blend: the second row's API status is developing — counted as sent.
+    expect(bySkill.get('Vocabulary')).toEqual({ skill: 'Vocabulary', secure: 1, assessed: 2 });
+    expect(counts.map((c) => c.skill)).not.toContain('Critical'); // no band on the gate — no tally
+  });
+});
+
+describe('vocabStrandMeans — single-strand students are absent from the strand they did not sit', () => {
+  test('a2-only, b1-only and dual-strand rows each contribute to exactly their strands', () => {
+    const rows = withScores([
+      { vocab: { ...fixture.vocab, single_strand: 'a2' as const, a2: { domain_score: 80 }, b1: { domain_score: null } } },
+      { vocab: { ...fixture.vocab, single_strand: 'b1' as const, a2: { domain_score: null }, b1: { domain_score: 60 } } },
+      { vocab: { ...fixture.vocab, single_strand: null, a2: { domain_score: 90 }, b1: { domain_score: 50 } } },
+    ]);
+    const means = vocabStrandMeans(rows);
+    expect(means.a2).toEqual({ average: 85, assessed: 2 }); // 80 + 90; the b1-only row is ABSENT
+    expect(means.b1).toEqual({ average: 55, assessed: 2 }); // 60 + 50; the a2-only row is ABSENT
+  });
+
+  test('a single-strand row never contributes a fallback to its missing strand', () => {
+    // Even if a numeric value rode along on the unsat strand, the exclusion wins.
+    const rows = withScores([
+      { vocab: { ...fixture.vocab, single_strand: 'a2' as const, a2: { domain_score: 80 }, b1: { domain_score: 99 } } },
+    ]);
+    const means = vocabStrandMeans(rows);
+    expect(means.b1).toEqual({ average: null, assessed: 0 });
+    expect(means.a2).toEqual({ average: 80, assessed: 1 });
+  });
+});
+
+describe('topGains — reliable numeric deltas desc, capped at 5', () => {
+  test('sorts desc, drops band_movement and unreliable deltas, caps at 5', () => {
+    const rows = withScores([
+      { overall: { ...fixture.overall, delta: 2, delta_reliable: true } },
+      { overall: { ...fixture.overall, delta: 12, delta_reliable: true } },
+      { overall: { ...fixture.overall, delta: null, delta_reliable: null } },  // band_movement: cannot rank
+      { overall: { ...fixture.overall, delta: 30, delta_reliable: false } },  // unreliable: cannot rank
+      { overall: { ...fixture.overall, delta: 7, delta_reliable: true } },
+      { overall: { ...fixture.overall, delta: 9, delta_reliable: true } },
+      { overall: { ...fixture.overall, delta: 5, delta_reliable: true } },
+    ]);
+    const ranked = topGains(rows);
+    expect(ranked).toHaveLength(5); // six reliable rows, capped at five
+    const deltas = ranked.map((row) => row.overall.delta);
+    expect(deltas).toEqual([12, 9, 7, 5, 2]);
+  });
+});
+
+describe('needsSupport — a reliable decline outranks low-but-steady', () => {
+  test('the ordering is the pedagogical claim, asserted directly', () => {
+    const rows = withScores([
+      { overall: { ...fixture.overall, domain_score: 45, delta: null, delta_reliable: null } },   // low and steady
+      { overall: { ...fixture.overall, domain_score: 61, delta: -8, delta_reliable: true } },     // RELIABLE DECLINE, higher score
+      { overall: { ...fixture.overall, domain_score: 38, delta: -5, delta_reliable: false } },    // UNRELIABLE negative: not a decline
+      { overall: { ...fixture.overall, domain_score: 30, delta: -3, delta_reliable: true } },     // reliable decline, lower score
+    ]);
+    const ranked = needsSupport(rows);
+    // Both reliable declines first — within them, most negative delta first
+    // (the steeper the backslide, the more urgent) — then the rest by score,
+    // so the unreliable -5 and the steady 45 trail despite 38's lower score.
+    expect(ranked.map((row) => row.overall.domain_score)).toEqual([61, 30, 38, 45]);
+  });
+
+  test('unscored rows never rank, and the cap is 5', () => {
+    const rows = withScores([
+      ...Array.from({ length: 7 }, (_, i) => ({ overall: { ...fixture.overall, domain_score: 40 + i } })),
+      { overall: { ...fixture.overall, domain_score: null } },
+    ]);
+    expect(needsSupport(rows)).toHaveLength(5);
+    expect(needsSupport(rows)[0]?.overall.domain_score).toBe(40);
   });
 });
