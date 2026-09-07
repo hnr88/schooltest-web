@@ -3,27 +3,34 @@
 import { useTranslations } from 'next-intl';
 
 import { ProgressEmptyState } from '@/modules/teach/components/ProgressEmptyState';
-import { ProgressTransitionRow } from '@/modules/teach/components/ProgressTransitionRow';
-import { useClassProgressQuery } from '@/modules/teach/queries/use-class-progress.query';
+import { ProgressMovementRow } from '@/modules/teach/components/ProgressMovementRow';
+import type { ResultView } from '@schooltest/scoring-contracts';
+
+import { useClassResultsQuery } from '@/modules/results/queries/use-class-results.query';
+import { buildStudentDrillDownView } from '@/modules/teacher/lib/student-drill-down-view';
 
 import type { ProgressPanelProps } from '@/modules/teach/types/components.types';
 
-// Teacher progress panel (task 76, mvp-updates §4.9, C-RPT-02): Test B
-// measured against Test A as the benchmark. The empty state is a first-class
-// server payload (populated:false + reason), rendered verbatim until Test B
-// results exist; afterwards each student lists per-area transitions with the
-// weeks between the two sittings. Areas never assessed on either form are
-// called out explicitly - never read as "no change".
+// Teacher progress panel, re-pointed onto the CANONICAL read (web repoint,
+// pre-24): the class roster carries each student's latest official ResultView,
+// whose per-skill growth triplets ARE the Test A -> Test B movement the server
+// has already judged — steady, a coarse signed step, or a band pair. The
+// retired `/schools/me/classes/:id/progress` aggregation (C-RPT-02) is gone;
+// no per-student fan-out replaces it (one roster read serves the whole panel).
+//
+// What the retired payload held that the roster contract does not: the two
+// form ids (benchmark/progress) and the weeks between sittings. Both stay
+// unrendered rather than inferred — the movement statement itself is the
+// server's, verbatim. A student with no official Result renders as a gap row
+// ("not assessed"), never as a zero.
 export function ProgressPanel({ classId }: ProgressPanelProps) {
   const t = useTranslations('Teach.progress');
   const td = useTranslations('Teach.diagnostic');
-  const query = useClassProgressQuery(classId);
+  const roster = useClassResultsQuery(classId);
 
-  const data = query.data ?? null;
-  const notAssessedFor = (studentRef: string): string[] =>
-    (data?.not_assessed ?? [])
-      .filter((row) => row.student_ref === studentRef)
-      .map((row) => td(`areas.${row.attribute}`));
+  const scored = (roster.data ?? []).filter(
+    (row): row is typeof row & { result: ResultView } => row.result !== null,
+  );
 
   return (
     <section
@@ -35,60 +42,60 @@ export function ProgressPanel({ classId }: ProgressPanelProps) {
       <h2 className="text-lg font-semibold text-foreground">{t('title')}</h2>
       <p className="max-w-xl text-sm text-body">{t('description')}</p>
 
-      {query.isPending ? (
+      {roster.isPending ? (
         <p className="text-sm text-muted-foreground">{t('loading')}</p>
       ) : null}
-      {query.isError ? (
+      {roster.isError ? (
         <p role="alert" className="text-sm text-danger-ink">
           {t('loadError')}
         </p>
       ) : null}
 
-      {query.isSuccess && data && !data.populated ? <ProgressEmptyState /> : null}
+      {roster.isSuccess && scored.length === 0 ? <ProgressEmptyState /> : null}
 
-      {query.isSuccess && data?.populated ? (
-        <>
-          <p className="text-sm font-medium text-foreground">
-            {t('formsLine', {
-              benchmark: data.benchmark_form ?? '-',
-              progress: data.progress_form ?? '-',
-            })}
-          </p>
-          <ul data-slot="progress-students" className="flex flex-col gap-3">
-            {data.students.map((student) => {
-              const notAssessed = notAssessedFor(student.student_ref);
-              return (
-                <li
-                  key={student.student_document_id}
-                  data-slot="progress-student"
-                  className="flex flex-col gap-3 rounded-xl border border-border bg-card px-4 py-3"
-                >
-                  <div className="flex flex-wrap items-baseline gap-2">
-                    <span className="text-sm font-semibold text-foreground">
-                      {student.student_ref}
-                    </span>
-                    <span className="text-xs text-body">
-                      {t('weeksBetween', { weeks: student.weeks_between })}
-                    </span>
-                  </div>
-                  {student.transitions.length > 0 ? (
-                    <ul className="flex flex-col gap-2">
-                      {student.transitions.map((transition) => (
-                        <ProgressTransitionRow key={transition.attribute} transition={transition} />
-                      ))}
-                    </ul>
-                  ) : null}
-                  {notAssessed.length > 0 ? (
-                    <p data-slot="progress-not-assessed" className="text-xs text-body">
-                      {t('notAssessedLine', { areas: notAssessed.join(', ') })}
-                    </p>
-                  ) : null}
-                </li>
-              );
-            })}
-          </ul>
-        </>
+      {roster.isSuccess && scored.length > 0 ? (
+        <ul data-slot="progress-students" className="flex flex-col gap-3">
+          {scored.map((row) => {
+            const movement = buildStudentDrillDownView(row.result);
+            return (
+              <li
+                key={row.student.document_id}
+                data-slot="progress-student"
+                className="flex flex-col gap-3 rounded-xl border border-border bg-card px-4 py-3"
+              >
+                <span className="text-sm font-semibold text-foreground">
+                  {row.student.name}
+                </span>
+                <ul data-slot="progress-movements" className="flex flex-col gap-2">
+                  {movement.skills.map((skill) => (
+                    <ProgressMovementRow
+                      key={skill.attribute}
+                      attribute={skill.attribute}
+                      label={td(`areas.${labelKey(skill.attribute)}`)}
+                      deltaDisplay={skill.deltaDisplay}
+                      bandBefore={skill.bandBefore}
+                      bandAfter={skill.bandAfter}
+                    />
+                  ))}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
       ) : null}
     </section>
   );
+}
+
+/** Label-only i18n key: the areas map is presentation vocabulary. */
+function labelKey(attribute: string): string {
+  const keys: Record<string, string> = {
+    Decoding: 'R1',
+    Vocabulary: 'R2',
+    Grammar: 'R3',
+    Gist: 'R4',
+    Detail: 'R5',
+    Inference: 'R6',
+  };
+  return keys[attribute] ?? attribute;
 }

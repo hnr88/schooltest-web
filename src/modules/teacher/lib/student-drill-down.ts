@@ -1,5 +1,5 @@
-import { progressDelta } from '@/modules/teacher/lib/class-progress';
 import { testVariantSchema } from '@/modules/teacher/schemas/teacher.schema';
+import type { ProgressDirection } from '@/modules/teacher/types/student-drill-down.types';
 import type {
   StudentProgress,
   StudentSubskill,
@@ -43,6 +43,10 @@ export function subskillTileView(subskill: StudentSubskill): SubskillTileView {
  * the difference of the two DINA posteriors may not be reported) and computing it
  * anyway would manufacture exactly the number the platform suppressed.
  */
+export function progressDelta(value: number): { direction: ProgressDirection; magnitude: number } {
+  return { direction: value > 0 ? 'up' : value < 0 ? 'down' : 'flat', magnitude: Math.abs(value) };
+}
+
 export function subskillDeltaView(subskill: StudentSubskill): SubskillDeltaView | null {
   if (subskill.previous_likelihood === null || subskill.delta === null) return null;
   const { direction, magnitude } = progressDelta(subskill.delta);

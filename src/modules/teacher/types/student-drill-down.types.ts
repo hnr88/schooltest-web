@@ -1,9 +1,9 @@
-import type { ProgressDirection } from '@/modules/teacher/types/class-progress.types';
 import type {
   MasteryBand,
   TeacherMasteryBands,
   TestVariant,
 } from '@/modules/teacher/types/teacher.types';
+import type { ResultView } from '@schooltest/scoring-contracts';
 import type {
   StudentDrillDownResponse,
   StudentProgress,
@@ -17,13 +17,20 @@ export interface StudentDrillDownScreenProps {
 }
 
 export interface StudentDrillDownBodyProps {
-  data: StudentDrillDownResponse;
+  /** The RAW v2 view; the body builds its own display model from it. */
+  view: ResultView;
 }
 
 export interface StudentDrillDownHeaderProps {
-  student: StudentDrillDownResponse['student'];
+  studentDocumentId: string;
+  displayName: string;
   /** Owner of the C-TR-7 export route — the student's own id alone cannot address it. */
   classDocumentId: string;
+}
+
+export interface StudentDrillDownScreenProps {
+  classDocumentId: string;
+  studentDocumentId: string;
 }
 
 export interface StudentTestCardProps {
@@ -133,4 +140,21 @@ export interface SubskillDeltaLineProps {
 
 export interface TestNotCompletedCardProps {
   variant: TestVariant;
+}
+
+// Moved from the deleted `types/class-progress.types.ts` (task 34) — these two
+// serve the drill-down's comparison strip now.
+
+/** The SIGN of a difference the server already computed — never a band. */
+export type ProgressDirection = 'up' | 'flat' | 'down';
+
+/** One cell of a stat row (label / value / direction), drill-down comparison strip shape. */
+export interface ProgressStatItem {
+  key: string;
+  label: string;
+  value: string;
+  direction: ProgressDirection | null;
+  change: string | null;
+  /** Optional second line under the value — the ACARA phase's "Same phase" / "Phase changed" WORD. */
+  note?: string | null;
 }

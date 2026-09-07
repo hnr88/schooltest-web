@@ -17,7 +17,6 @@ import {
 import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
 import { useClassResultsStats } from '@/modules/teacher/hooks/useClassResultsStats';
 import { deriveDashboardStatus } from '@/modules/teacher/lib/dashboard-cards';
-import { useClassStudentsQuery } from '@/modules/teacher/queries/use-class-students.query';
 import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-dashboard.query';
 import { useTestSessionMonitorQuery } from '@/modules/teacher/queries/use-test-session-monitor.query';
 import type { MonitorSummaryKey } from '@/modules/teacher/types/live-monitor.types';
@@ -175,10 +174,13 @@ function DetailPane({
   const t = useTranslations('Teacher.results.detail');
   const tTeach = useTranslations('Teach');
   const tLive = useTranslations('Teacher.testSessions.live');
-  const students = useClassStudentsQuery(classCard.class_document_id);
+  // Web repoint (pre-24): the detail pane's two facts come from the class card
+  // of the canonical dashboard read. The retired C-TR-1 students read this pane
+  // used to fire for them is gone; the Students-tab table (task 33) owns the
+  // deep version.
   const monitor = useTestSessionMonitorQuery(liveSittingId ?? '');
-  const className = students.data?.class.name ?? classCard.name;
-  const studentCount = students.data?.class.student_count ?? classCard.student_count;
+  const className = classCard.name;
+  const studentCount = classCard.student_count;
 
   return (
     <section
@@ -214,23 +216,6 @@ function DetailPane({
           {tTeach('home.testDayLink')}
         </Link>
       </div>
-
-      {students.isPending ? (
-        <div role="status" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <Skeleton className="h-20 w-full rounded-tile" />
-          <Skeleton className="h-20 w-full rounded-tile" />
-          <Skeleton className="h-20 w-full rounded-tile" />
-          <Skeleton className="h-20 w-full rounded-tile" />
-        </div>
-      ) : null}
-
-      {students.isError ? (
-        <Alert variant="error" title={t('errorTitle')}>
-          {t('errorDescription')}
-        </Alert>
-      ) : null}
-
-      {students.isSuccess && students.data ? <StatsGrid summary={students.data.summary} /> : null}
 
       {liveSittingId !== null && monitor.data ? (
         <div className="flex flex-col gap-3 rounded-tile border border-warning/45 bg-warning-soft px-4 py-4 text-warning-ink">
