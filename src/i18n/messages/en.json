@@ -4430,6 +4430,88 @@
           "action": "Retry"
         }
       }
+    },
+    "content": {
+      "meta": {
+        "title": "Content",
+        "description": "Row counts, media usage and orphan cleanup for every content type."
+      },
+      "title": "Content",
+      "description": "What the platform stores right now: per-type row counts, media usage, orphaned rows and the maintenance passes that clean them.",
+      "counts": {
+        "title": "Content types",
+        "description": "Live row counts for every api:: content type, enumerated from the database.",
+        "columns": {
+          "contentType": "Content type",
+          "uid": "UID",
+          "rows": "Rows"
+        },
+        "errorTitle": "Counts read failed",
+        "errorDescription": "Row counts could not be read. Retry, or check the API if it persists."
+      },
+      "media": {
+        "title": "Media",
+        "description": "Real byte totals from the upload plugin's own file table.",
+        "files": "Files",
+        "totalBytes": "Total bytes",
+        "unreferenced": "Unreferenced",
+        "columns": {
+          "mime": "Type",
+          "count": "Files",
+          "bytes": "Bytes"
+        },
+        "noMedia": "No media files stored yet.",
+        "errorTitle": "Media stats read failed",
+        "errorDescription": "Media statistics could not be read. Retry, or check the API if it persists."
+      },
+      "orphans": {
+        "title": "Orphaned rows",
+        "description": "Rows whose required relation is missing, per kind, with a sample of the first 20.",
+        "columns": {
+          "kind": "Orphan kind",
+          "count": "Count",
+          "purge": "Purge"
+        },
+        "selectForPurge": "select for purge",
+        "selectKind": "Select {kind} for purge",
+        "purgeHint": "Purging permanently deletes the selected kinds' orphan rows. The server reports exactly what it deleted.",
+        "purgeButton": "Purge selected",
+        "confirmTitle": "Purge the selected orphan kinds?",
+        "confirmBody": "All orphaned rows of the {count} selected kind(s) are deleted now. This cannot be undone.",
+        "confirmAction": "Purge",
+        "cancel": "Cancel",
+        "executed": "Purge executed: {counts}",
+        "nothingPurged": "nothing to delete",
+        "errorTitle": "Orphans read failed",
+        "errorDescription": "The orphan report could not be read. Retry, or check the API if it persists."
+      },
+      "maintenance": {
+        "title": "Maintenance passes",
+        "description": "Both passes default to a dry-run report. Executing requires the explicit confirm and is audited.",
+        "cancel": "Cancel",
+        "reindex": {
+          "label": "Search integrity pass",
+          "description": "Counts every school row and any missing searchable slug. Dry-run reports only; executing writes an audit entry.",
+          "preview": "Preview (dry run)",
+          "execute": "Execute",
+          "confirmTitle": "Execute the search integrity pass?",
+          "confirmBody": "The pass runs now and is written to the audit ledger. The counts are reported either way.",
+          "confirmAction": "Execute",
+          "dryRun": "Dry run: {indexed} schools indexed, {missing} missing slug(s) — nothing written",
+          "executed": "Executed: {indexed} schools indexed in {ms} ms — audited"
+        },
+        "prune": {
+          "label": "Prune unreferenced media",
+          "description": "Deletes upload files no content references (row and stored object together). Dry-run reports only.",
+          "preview": "Preview (dry run)",
+          "execute": "Execute prune",
+          "confirmTitle": "Prune unreferenced media now?",
+          "confirmBody": "Unreferenced files are deleted for real — the stored objects go with the rows. The server reports what it removed.",
+          "confirmAction": "Prune",
+          "dryRun": "Dry run: {removed} unreferenced file(s) would be deleted — nothing written",
+          "executed": "Executed: {removed} file(s) removed, {bytes} bytes freed — audited"
+        }
+      }
     }
   },
   "RunSheet": {

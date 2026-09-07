@@ -15,6 +15,7 @@ export { OpsFormWindow } from './components/OpsFormWindow';
 export { OpsSittingRecovery } from './components/OpsSittingRecovery';
 export { OpsPlatformSettings } from './components/OpsPlatformSettings';
 export { OpsSystemConsole } from './components/OpsSystemConsole';
+export { OpsContentConsole } from './components/OpsContentConsole';
 export { OpsPipelinePanel } from './components/OpsPipelinePanel';
 export { OpsSystemMaintenance } from './components/OpsSystemMaintenance';
 export { usePlatformSettingsQuery } from './queries/use-platform-settings.query';
