@@ -17,3 +17,5 @@ export const SYSTEM_INFO_QUERY_KEY = ['ops', 'system-info'] as const;
 export const SYSTEM_MIGRATIONS_QUERY_KEY = ['ops', 'system-migrations'] as const;
 
 export const SYSTEM_BACKUPS_QUERY_KEY = ['ops', 'system-backups'] as const;
+
+export const PIPELINE_HEALTH_QUERY_KEY = ['ops', 'pipeline-health'] as const;

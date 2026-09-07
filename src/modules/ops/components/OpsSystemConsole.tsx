@@ -20,6 +20,8 @@ import { useSystemBackupsQuery } from '@/modules/ops/queries/use-system-backups.
 import { useSystemHealthQuery } from '@/modules/ops/queries/use-system-health.query';
 import { useSystemInfoQuery } from '@/modules/ops/queries/use-system-info.query';
 import { useSystemMigrationsQuery } from '@/modules/ops/queries/use-system-migrations.query';
+import { OpsPipelinePanel } from '@/modules/ops/components/OpsPipelinePanel';
+import { OpsSystemMaintenance } from '@/modules/ops/components/OpsSystemMaintenance';
 
 /**
  * Ledger row 5b — the ops System console READ layer (C-OPSY-04/06/07/10).
@@ -318,6 +320,22 @@ export function OpsSystemConsole() {
           <p className="mt-1 text-sm text-body">{t('backups.description')}</p>
         </div>
         <BackupsSection />
+      </Card>
+
+      <Card className="flex flex-col gap-4 p-6">
+        <div>
+          <h2 className="text-lg font-semibold text-foreground">{t('maintenance.title')}</h2>
+          <p className="mt-1 text-sm text-body">{t('maintenance.description')}</p>
+        </div>
+        <OpsSystemMaintenance />
+      </Card>
+
+      <Card className="flex flex-col gap-4 p-6">
+        <div>
+          <h2 className="text-lg font-semibold text-foreground">{t('pipeline.title')}</h2>
+          <p className="mt-1 text-sm text-body">{t('pipeline.description')}</p>
+        </div>
+        <OpsPipelinePanel />
       </Card>
     </div>
   );

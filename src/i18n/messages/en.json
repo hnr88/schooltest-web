@@ -3875,7 +3875,7 @@
       },
       "ledgerTitle": "Audit ledger",
       "loadingLabel": "Loading the audit ledger",
-      "noValue": "\u2014",
+      "noValue": "—",
       "actorSystem": "System",
       "columns": {
         "actor": "Actor",
@@ -3896,7 +3896,7 @@
         "label": "Audit ledger pages",
         "previous": "Previous",
         "next": "Next",
-        "pageCount": "Page {page} of {pageCount} \u00b7 {total} entries"
+        "pageCount": "Page {page} of {pageCount} · {total} entries"
       },
       "filters": {
         "action": "Action",
@@ -4246,6 +4246,81 @@
         },
         "errorTitle": "Backup ledger read failed",
         "errorDescription": "The backup ledger could not be read. Retry, or check the API if it persists."
+      },
+      "maintenance": {
+        "title": "Maintenance actions",
+        "description": "Actions that change real state. Each one asks first, and every result line shows the server's own answer.",
+        "disruptiveBadge": "disruptive",
+        "cancel": "Cancel",
+        "backup": {
+          "label": "Run backup",
+          "description": "Dumps the database (pg_dump, container fallback), writes it to disk and records the run — succeeded or failed — in the ledger below.",
+          "confirmTitle": "Run a database backup?",
+          "confirmBody": "The dump runs now and the run is recorded in the backup ledger, whatever its outcome.",
+          "confirmAction": "Run backup",
+          "success": "Backup recorded: {filename} ({bytes} bytes)"
+        },
+        "cacheClear": {
+          "label": "Clear caches",
+          "description": "Deletes matching keys from Redis with SCAN+DEL. The server reports exactly how many keys it deleted.",
+          "scopeLabel": "Scope",
+          "confirmTitle": "Clear caches (scope: {scope})?",
+          "confirmBody": "Matching {scope} keys are deleted from Redis now. Caches repopulate on the next read.",
+          "confirmAction": "Clear",
+          "success": "Cleared {scope}: {count} key(s) deleted"
+        },
+        "sitemap": {
+          "label": "Regenerate sitemap",
+          "description": "Stamps the platform setting, asks the web app to revalidate, then counts the URLs the fresh sitemap really contains.",
+          "confirmTitle": "Regenerate the sitemap?",
+          "confirmBody": "The platform setting is stamped now and the web app is asked to revalidate. If the web app does not answer, the failure is shown verbatim.",
+          "confirmAction": "Regenerate",
+          "success": "Sitemap regenerated: {count} URLs"
+        }
+      },
+      "pipeline": {
+        "title": "Scoring pipeline",
+        "description": "Live BullMQ counts for the registered queues, shared with the running workers. Controls are confirmed and never touch another console.",
+        "rScoring": "R scoring: {status}",
+        "loading": "Reading queue counts…",
+        "error": "Queue health could not be read. Retry by reopening the page.",
+        "columns": {
+          "queue": "Queue",
+          "waiting": "Waiting",
+          "active": "Active",
+          "failed": "Failed",
+          "completed": "Completed",
+          "actions": "Controls"
+        },
+        "pause": "Pause",
+        "resume": "Resume",
+        "pauseWord": "pause",
+        "resumeWord": "resume",
+        "drain": "Drain failed",
+        "cancel": "Cancel",
+        "pauseConfirm": {
+          "title": "Change queue state?",
+          "body": "{action} queue \"{queue}\" now? The running workers share it — paused queues accept no new jobs until resumed.",
+          "action": "Confirm"
+        },
+        "drainConfirm": {
+          "title": "Drain failed jobs?",
+          "body": "Deletes the {count} failed job(s) on \"{queue}\". Waiting jobs are never touched. This cannot be undone.",
+          "action": "Drain"
+        },
+        "retry": {
+          "description": "Re-run ONE failed job through the queue's own retry — by id, never a bulk replay.",
+          "queueLabel": "Queue",
+          "queuePlaceholder": "Select queue",
+          "jobLabel": "Job id",
+          "jobPlaceholder": "Failed job id",
+          "action": "Retry job"
+        },
+        "retryConfirm": {
+          "title": "Retry this job?",
+          "body": "Job {jobId} on \"{queue}\" goes back through the queue's own retry. It will execute again.",
+          "action": "Retry"
+        }
       }
     }
   },
@@ -4698,7 +4773,6 @@
         "legendApproaching": "{from} to under {to} approaching",
         "legendNotYet": "Under {cut} not yet",
         "subskillsHeading": "Reading subskills",
-        "likelihoodValue": "{likelihood}%",
         "bandMastered": "Mastered",
         "bandApproaching": "Approaching",
         "bandNotYet": "Not yet",
