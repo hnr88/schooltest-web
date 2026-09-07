@@ -7,6 +7,13 @@
  */
 export { DISPLAY_SKILL_ORDER, displaySkills } from './lib/display-skills';
 export type { DisplaySkillReading } from './lib/display-skills';
+export { ConfidenceStrip } from './components/ConfidenceStrip';
+export { ProgressTrendChart } from './components/ProgressTrendChart';
+export { StudentResultHeader } from './components/StudentResultHeader';
+export type { StudentIdentity } from './components/StudentResultHeader';
+export { StudentResultScreen } from './components/StudentResultScreen';
+export { SubskillCard } from './components/SubskillCard';
+export { SubskillCardGrid } from './components/SubskillCardGrid';
 export { useClassResultsQuery } from './queries/use-class-results.query';
 export { useStudentResultQuery } from './queries/use-student-result.query';
 export { useResultExportQuery } from './queries/use-result-export.query';
