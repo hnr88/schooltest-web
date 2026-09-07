@@ -4,9 +4,12 @@ import {
   FileChartColumn,
   LayoutDashboard,
   LayoutGrid,
+  Mail,
   School,
   Search,
+  Server,
   Settings,
+  ShieldCheck,
   SlidersHorizontal,
   SquareCheckBig,
   Timer,
@@ -61,6 +64,14 @@ export const OPS_HREF = '/dashboard/ops';
 export const OPS_SCHOOLS_HREF = `${OPS_HREF}/schools`;
 export const OPS_TIMERS_HREF = `${OPS_HREF}/timers`;
 export const OPS_SETTINGS_HREF = `${OPS_HREF}/settings`;
+
+// The three consoles that landed after this rail was written. Each page exists
+// (System 2ee7ccb, Audit e542728, Comms 3c94805) and each was reachable ONLY by
+// typing its URL until these entries; the trail registry already names all three
+// for the breadcrumbs, so nothing here invents a route or a label.
+export const OPS_SYSTEM_HREF = `${OPS_HREF}/system`;
+export const OPS_AUDIT_HREF = `${OPS_HREF}/audit`;
+export const OPS_COMMS_HREF = `${OPS_HREF}/comms`;
 
 export const NAV_ITEMS: readonly NavItem[] = [
   {
@@ -170,6 +181,32 @@ export const NAV_ITEMS: readonly NavItem[] = [
     labelKey: 'opsSettings',
     href: OPS_SETTINGS_HREF,
     icon: SlidersHorizontal,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
+  },
+  // Appended rather than interleaved: the existing ops positions stay exactly
+  // where they were, which keeps this slice to the three entries it was asked for.
+  {
+    labelKey: 'opsSystem',
+    href: OPS_SYSTEM_HREF,
+    icon: Server,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
+  },
+  {
+    labelKey: 'opsAudit',
+    href: OPS_AUDIT_HREF,
+    icon: ShieldCheck,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
+  },
+  {
+    labelKey: 'opsComms',
+    href: OPS_COMMS_HREF,
+    icon: Mail,
     exact: false,
     group: 'primary',
     roles: [OPS_ROLE_TYPE],

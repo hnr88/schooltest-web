@@ -17,10 +17,26 @@ describe('ops school-admin controls', () => {
   it('does not promote Pipeline or Tools in the ops rail', () => {
     const hrefs = filterNavByRole(NAV_ITEMS, OPS_ROLE_TYPE).map((item) => item.href);
 
+    // The System / Audit / Communications consoles joined the rail once their
+    // pages existed (2ee7ccb, e542728, 3c94805); before that they were reachable
+    // only by typing the URL. They are APPENDED, so the original three keep their
+    // positions — this list is exhaustive on purpose, which is what makes it catch
+    // a promoted Pipeline or Tools entry at all.
     expect(hrefs).toEqual([
       '/dashboard/ops/schools',
       '/dashboard/ops/timers',
       '/dashboard/ops/settings',
+      '/dashboard/ops/system',
+      '/dashboard/ops/audit',
+      '/dashboard/ops/comms',
     ]);
+    // The intent this test was written for, asserted directly rather than left
+    // implicit in the list above.
+    expect(hrefs).not.toContain('/dashboard/ops/pipeline');
+    expect(hrefs).not.toContain('/dashboard/ops/tools');
+    // Every ops rail destination must be a page that exists — the defect this
+    // slice fixes was the inverse (pages with no entry), and the opposite defect
+    // is a dead link.
+    for (const href of hrefs) expect(href.startsWith('/dashboard/ops/')).toBe(true);
   });
 });

@@ -16,6 +16,13 @@ export type NavLabelKey =
   | 'opsSchools'
   | 'opsTimers'
   | 'opsSettings'
+  // The three consoles that landed after the rail was written (System 2ee7ccb,
+  // Audit e542728, Comms 3c94805). Their `Navigation.*` labels already existed —
+  // the trail registry defines them for the breadcrumbs — so these keys join the
+  // union rather than introducing new copy.
+  | 'opsSystem'
+  | 'opsAudit'
+  | 'opsComms'
   | 'teacherDashboard'
   | 'testSessions'
   | 'results';
