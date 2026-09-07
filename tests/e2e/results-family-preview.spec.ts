@@ -46,7 +46,10 @@ test('flag on: the family preview renders the allow-list surface', async ({ page
 test('the rendered family DOM never contains an audit field (allow-list proof)', async ({ page }) => {
   await page.route('**/api/results/res-fixture-0001*', (route) => route.fulfill({ json: view() }));
   await page.goto(SCREEN_ROUTE);
-  expect(await page.locator('body').textContent()).not.toMatch(/prob|theta/i);
+  // Scoped to the family arm per the receipt-vs-render ruling: the guard is on
+      // what a family member SEES, not on payloads (flight data carries catalog
+      // text like "Report a problem" that matches /prob/i but renders nothing).
+      expect(await page.locator('[data-arm="family"]').textContent()).not.toMatch(/prob|theta/i);
 });
 
 test('flag off: the family route stays hidden, as today', async ({ page }) => {

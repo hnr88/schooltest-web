@@ -80,5 +80,8 @@ test('the guardrails hold on the wired screen (task 30 rulings)', async ({ page 
   await page.goto(SCREEN_ROUTE);
   await expect(page.locator('[data-slot="skill-card"][data-skill="Gist"]')).toHaveAttribute('data-assessed', 'false');
   await expect(page.locator('[data-slot="skill-card"][data-skill="Critical"]')).not.toHaveAttribute('data-band');
-  expect(await page.locator('body').textContent()).not.toMatch(/prob|theta/i);
+  // Scoped to the rendered surface per the receipt-vs-render ruling: posteriors in API payloads for audit; the guard is on what a teacher SEES.
+       // body.textContent would sweep Next's RSC flight payload (catalog text
+       // like "Report a problem" matches /prob/i) and assert the wrong rule.
+       expect(await page.locator('[data-slot="result-screen"]').textContent()).not.toMatch(/prob|theta/i);
 });
