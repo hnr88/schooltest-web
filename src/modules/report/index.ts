@@ -21,7 +21,6 @@ export { useResultQuery } from './queries/use-result.query';
 export { useDiagnosticBundleQuery } from './queries/use-diagnostic-bundle.query';
 export { useMyStudentResultsQuery } from './queries/use-my-student-results.query';
 export {
-  splitDisplayLabel,
   getDisplayLabelState,
   getCrosswalkFieldState,
   resolveDisplayLabel,
@@ -30,39 +29,30 @@ export { getResultStatusTone } from './lib/report-status';
 export {
   buildAttributePanel,
   resolveAttributeRow,
-  orderAttributeCodes,
+  orderAttributeNames,
 } from './lib/attribute-view-model';
 export { buildSupplementaryStrand } from './lib/supplementary-view-model';
-export { buildParentReport } from './lib/parent-view-model';
-export { PARENT_SUBSKILL_ORDER, PARENT_TONE_BY_STATUS, PARENT_TONE_FILL, PARENT_TONE_SURFACE } from '@/modules/report/constants/lib.constants';
+export { buildFamilyPreview } from './lib/parent-view-model';
+export { PARENT_SUBSKILL_ORDER, PARENT_TONE_FILL, PARENT_TONE_SURFACE } from '@/modules/report/constants/lib.constants';
 export { buildObservations } from './lib/observations';
 export { observationValues } from './lib/observation-message';
 export { buildErrorPatterns, hasDiagnosticBundle } from './lib/error-patterns-view-model';
 export { useBarReveal } from './hooks/useBarReveal';
 export {
   resultViewSchema,
-  resultViewBaseSchema,
   myStudentsResultsResponseSchema,
+  diagnosticExportSchema,
+  DIAGNOSTIC_JSON_FORMAT,
 } from './schemas/result-view.schema';
-export { diagnosticBundleSchema, diagnosticSkillEntrySchema } from './schemas/diagnostic-bundle.schema';
-export { DIAGNOSTIC_JSON_FORMAT } from '@/modules/report/constants/schemas.constants';
 export type {
   ResultView,
-  ResultViewBase,
-  ResultAttributeEntry,
-  ResultSupplementary,
   ResultStatus,
   ReportSkill,
   CefrBand,
   Readiness,
-  AttributeStatus,
-  DisplayLabelParts,
-  DisplayLabelState,
-  ResolvedDisplayLabel,
 } from './types/report.types';
+export type { AssessedBand, AttributeName } from './schemas/result-view.schema';
 export type {
-  AssessedAttributeStatus,
-  AttributeConfidence,
   AttributeRowView,
   AttributeEvidence,
   AttributePanelView,
@@ -72,17 +62,21 @@ export type {
   SupplementaryBandView,
   SupplementaryStrandView,
 } from './types/supplementary.types';
-export type { Observation, ObservationKey, ObservationsView } from './types/observation.types';
+export type { Observation, ObservationsView } from './types/observation.types';
 export type {
   ReportViewMode,
   ParentSubskillState,
   ParentSubskillGroup,
-  ParentHeadline,
   ParentSubskillsView,
-  ParentReportView as ParentReportViewModel,
 } from './types/report-view.types';
 export type {
-  DiagnosticBundle,
-  DiagnosticSkillEntry,
+  FamilyPreviewView,
+  FamilyNextStep,
+  FamilyStrength,
+  FamilySubskillGroup,
+} from './lib/parent-view-model';
+export type {
+  DiagnosticExport,
+  ErrorPattern,
   ErrorPatternsView,
 } from './types/error-pattern.types';

@@ -1,54 +1,53 @@
-import { ATTRIBUTE_CODE_PATTERN } from '@/modules/report/constants/mastery.constants';
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { getCrosswalkFieldState } from '@/modules/report/lib/display-label';
 import { buildSupplementaryStrand } from '@/modules/report/lib/supplementary-view-model';
-import type { AttributeEvidence, AttributeRowView } from '@/modules/report/types/attribute.types';
+import type { AttributeEvidence } from '@/modules/report/types/attribute.types';
+import type { AssessedRow } from '@/modules/report/types/lib.types';
 import type { Observation, ObservationsView } from '@/modules/report/types/observation.types';
 import type { ResultView } from '@/modules/report/types/report.types';
 import type { SupplementaryStrandView } from '@/modules/report/types/supplementary.types';
+import type { AttributeName } from '@/modules/report/schemas/result-view.schema';
 
-import type { AssessedRow, PlacedRow } from '@/modules/report/types/lib.types';
-import { FOUNDATION_MAX_LADDER_INDEX, VOCABULARY_LADDER_INDEX } from '@/modules/report/constants/lib.constants';
+// The two layers of the split Q-matrix, named by contract attribute. Matrix 1
+// (stage 1 core) is the foundation; Matrix 2 (stage 2 core) is comprehension.
+// Membership is by NAME, so a panel row can never fail to land in a layer.
+const FOUNDATION: readonly AttributeName[] = ['Decoding', 'Vocab_A2', 'Grammar'];
+const COMPREHENSION: readonly AttributeName[] = ['Vocab_B1', 'Gist', 'Detail', 'Inference'];
 
-function ladderIndex(code: string): number | null {
-  const match = ATTRIBUTE_CODE_PATTERN.exec(code);
-  return match === null ? null : Number(match[2]);
+function namesOf(rows: readonly AssessedRow[]): AttributeName[] {
+  return rows.map((row) => row.name);
 }
 
-function codesOf(rows: readonly PlacedRow[]): string[] {
-  return rows.map((placed) => placed.row.code);
-}
-
-// Sentence 1 — the contrast. Reads the WIRE `status` only: no probability is
-// compared against any cut here, because the cut lives in Config and is applied
-// once, server-side (see F-WEB-ATTRIBUTE-BARS). `not_assessed` rows are absent
-// from both layers — an unadministered attribute makes no claim and is never
-// counted as a failure. The arms are ordered and exhaustive; exactly one fires.
+// Sentence 1 — the contrast. Reads the WIRE `status` only: no score is compared
+// against any cut here, because the cut lives in Config and is applied once,
+// server-side (see F-WEB-ATTRIBUTE-BARS). `not_assessed` rows are absent from
+// both layers — an unadministered attribute makes no claim and is never counted
+// as a failure. The arms are ordered and exhaustive; exactly one fires.
 function contrastObservation(
-  foundation: readonly PlacedRow[],
-  comprehension: readonly PlacedRow[],
+  foundation: readonly AssessedRow[],
+  comprehension: readonly AssessedRow[],
 ): Observation {
-  const foundationGap = foundation.filter((placed) => placed.row.status !== 'mastered');
-  const comprehensionGap = comprehension.filter((placed) => placed.row.status !== 'mastered');
-  const comprehensionMastered = comprehension.filter((placed) => placed.row.status === 'mastered');
+  const foundationGap = foundation.filter((row) => row.status !== 'secure');
+  const comprehensionGap = comprehension.filter((row) => row.status !== 'secure');
+  const comprehensionSecure = comprehension.filter((row) => row.status === 'secure');
 
   if (foundation.length === 0 && comprehension.length === 0) return { key: 'noAttributeEvidence' };
 
-  // The audit's headline contrast: mastered comprehension over an unmastered
-  // foundation. Doc 2a s.2 places such a profile outside the 24-pattern valid
-  // space, so it is named first and the comprehension claim is flagged.
-  if (comprehensionMastered.length > 0 && foundationGap.length > 0) {
+  // The audit's headline contrast: secure comprehension over an insecure
+  // foundation. Such a profile sits outside the admissible Matrix 1/Matrix 2
+  // profile spaces, so it is named first and the comprehension claim is flagged.
+  if (comprehensionSecure.length > 0 && foundationGap.length > 0) {
     return {
       key: 'jaggedProfile',
-      mastered: codesOf(comprehensionMastered),
-      gap: codesOf(foundationGap),
+      mastered: namesOf(comprehensionSecure),
+      gap: namesOf(foundationGap),
     };
   }
 
   if (comprehension.length === 0) {
     return foundationGap.length > 0
-      ? { key: 'comprehensionNotAssessedWithGap', gap: codesOf(foundationGap) }
-      : { key: 'comprehensionNotAssessedFoundationSecure', foundation: codesOf(foundation) };
+      ? { key: 'comprehensionNotAssessedWithGap', gap: namesOf(foundationGap) }
+      : { key: 'comprehensionNotAssessedFoundationSecure', foundation: namesOf(foundation) };
   }
 
   // Reached only after the jagged arm, so an empty comprehension gap here also
@@ -58,49 +57,41 @@ function contrastObservation(
   return foundationGap.length > 0
     ? {
         key: 'foundationBottleneck',
-        blocked: codesOf(comprehensionGap),
-        gap: codesOf(foundationGap),
+        blocked: namesOf(comprehensionGap),
+        gap: namesOf(foundationGap),
       }
-    : { key: 'foundationSecureComprehensionGap', gap: codesOf(comprehensionGap) };
+    : { key: 'foundationSecureComprehensionGap', gap: namesOf(comprehensionGap) };
 }
 
-// Sentence 2 — the B1 band folded in. Doc 2a s.2: "R2/L2 Vocabulary = A2-band
-// lexicon secure. Vocabulary above A2 is measured by the supplementary B1
-// strand and reported as band accuracy, never as the switch." The accuracy is
-// stated as the proportion it is and is NEVER classified as low or as a gap —
-// that would be a client-side cut score on an out-of-model indicator. Returns
-// null (the sentence is omitted) when there is nothing measured to fold in.
+// Sentence 2 — the B1 band folded in. The band carries a DOMAIN SCORE from the
+// ResultView v2 `vocab` block, stated as the number it is and NEVER classified
+// as low or as a gap — that would be a client-side cut score on an out-of-model
+// indicator. Returns null (the sentence is omitted) when there is nothing
+// measured to fold in.
 function vocabularyObservation(
-  placed: readonly PlacedRow[],
+  rows: readonly AssessedRow[],
   strand: SupplementaryStrandView,
 ): Observation | null {
   if (strand.state !== 'bands') return null;
   const b1 = strand.bands.find((band) => band.code === 'b1');
-  const accuracy = b1 !== undefined && b1.state === 'measured' ? b1.accuracy : null;
-  const vocabulary = placed.find((entry) => entry.index === VOCABULARY_LADDER_INDEX);
+  const score = b1 !== undefined && b1.state === 'measured' ? b1.domainScore : null;
+  const vocabulary = rows.find((row) => row.name === 'Vocab_A2');
 
   if (vocabulary === undefined) {
-    return accuracy === null ? null : { key: 'vocabularyNotAssessedBandMeasured', b1: accuracy };
+    return score === null ? null : { key: 'vocabularyNotAssessedBandMeasured', b1: score };
   }
-  return accuracy === null
-    ? {
-        key: 'vocabularyBandNotAdministered',
-        code: vocabulary.row.code,
-        status: vocabulary.row.status,
-      }
-    : {
-        key: 'vocabularyBandMeasured',
-        code: vocabulary.row.code,
-        status: vocabulary.row.status,
-        b1: accuracy,
-      };
+  return score === null
+    ? { key: 'vocabularyBandNotAdministered', status: vocabulary.status }
+    : { key: 'vocabularyBandMeasured', status: vocabulary.status, b1: score };
 }
 
 // Sentence 3 — how thinly the two sentences above are evidenced. Item counts are
 // never summed across attributes (one item may load several Q-matrix columns).
+// A field-test result is flagged as such; it is never called low-confidence,
+// because the contract's low_confidence rule is unconfigured and always null.
 function evidenceObservation(
   evidence: AttributeEvidence,
-  lowConfidence: boolean | null,
+  provisional: ResultView['provisional'],
 ): Observation | null {
   if (evidence.state !== 'assessed') return null;
   return {
@@ -109,7 +100,7 @@ function evidenceObservation(
     total: evidence.total,
     minItems: evidence.minItems,
     maxItems: evidence.maxItems,
-    lowConfidence: lowConfidence === true,
+    fieldTest: provisional === 'field_test',
   };
 }
 
@@ -119,8 +110,8 @@ function evidenceObservation(
 // it describes, and it resolves absence through the SAME machine as every other
 // block on this report.
 export function buildObservations(result: ResultView): ObservationsView {
-  // The two-layer ladder is defined for the receptive skills only (Doc 2a s.2),
-  // so a productive ladder or a placement parent is not_applicable rather than
+  // The two-layer model is defined for the receptive skills only (memo s.2-3),
+  // so a productive skill or a placement parent is not_applicable rather than
   // split into layers it does not have.
   if (getCrosswalkFieldState(result, null) === 'not_applicable') return { state: 'not_applicable' };
 
@@ -129,22 +120,15 @@ export function buildObservations(result: ResultView): ObservationsView {
     return { state: panel.state === 'not_applicable' ? 'not_applicable' : 'not_derived' };
   }
 
-  const placed: PlacedRow[] = [];
-  for (const row of panel.rows) {
-    const index = ladderIndex(row.code);
-    // A code with no readable ladder position has no readable layer. Reporting
-    // that is honest; dropping it into a layer would be a guess.
-    if (index === null) return { state: 'unclassified' };
-    if (row.state === 'assessed') placed.push({ row, index });
-  }
+  const assessed = panel.rows.filter((row): row is AssessedRow => row.state === 'assessed');
 
   const observations = [
     contrastObservation(
-      placed.filter((entry) => entry.index <= FOUNDATION_MAX_LADDER_INDEX),
-      placed.filter((entry) => entry.index > FOUNDATION_MAX_LADDER_INDEX),
+      assessed.filter((row) => FOUNDATION.includes(row.name)),
+      assessed.filter((row) => COMPREHENSION.includes(row.name)),
     ),
-    vocabularyObservation(placed, buildSupplementaryStrand(result)),
-    evidenceObservation(panel.evidence, result.low_confidence),
+    vocabularyObservation(assessed, buildSupplementaryStrand(result)),
+    evidenceObservation(panel.evidence, result.provisional),
   ].filter((observation): observation is Observation => observation !== null);
 
   return { state: 'observations', observations };

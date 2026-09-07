@@ -9,7 +9,8 @@ import { Eyebrow, InsightCallout } from '@/modules/design-system';
 import { EvidenceSummary } from '@/modules/report/components/EvidenceSummary';
 import { getCrosswalkFieldState } from '@/modules/report/lib/display-label';
 import type { AttributeEvidence } from '@/modules/report/types/attribute.types';
-import type { DisplayLabelState, ResultView } from '@/modules/report/types/report.types';
+import type { DisplayLabelState } from '@/modules/report/types/report-view.types';
+import type { ResultView } from '@/modules/report/types/report.types';
 
 // E11-02/E11-08 — one crosswalk-derived header fact. `value` is resolved by the
 // caller from the real Result and is `null` when the Result carries none;

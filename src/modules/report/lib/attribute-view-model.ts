@@ -1,65 +1,53 @@
-import { ATTRIBUTE_CODE_PATTERN } from '@/modules/report/constants/mastery.constants';
 import { getCrosswalkFieldState } from '@/modules/report/lib/display-label';
+import { attributeNameSchema } from '@/modules/report/schemas/result-view.schema';
 import type {
-  AttributeConfidence,
   AttributeEvidence,
   AttributePanelView,
   AttributeRowView,
 } from '@/modules/report/types/attribute.types';
-import type { ResultAttributeEntry, ResultView } from '@/modules/report/types/report.types';
-import { NOT_ASSESSED } from '@/modules/report/constants/lib.constants';
+import type {
+  AttributeName,
+  ResultView,
+  ResultViewAttribute,
+} from '@/modules/report/schemas/result-view.schema';
 
-function codeSortKey(code: string): [string, number] {
-  const match = ATTRIBUTE_CODE_PATTERN.exec(code);
-  if (!match) return [code.toUpperCase(), Number.MAX_SAFE_INTEGER];
-  return [match[1].toUpperCase(), Number(match[2])];
+// `attributes` is a partial record, so its key order is whatever the server
+// inserted. Ordering is presentation only: the memo's attribute order, with
+// any key outside the contract enum appended at the end rather than dropped.
+export function orderAttributeNames(names: readonly string[]): AttributeName[] {
+  const known = attributeNameSchema.options.filter((name) => names.includes(name));
+  const unknown = names.filter((name) => !attributeNameSchema.options.includes(name as AttributeName));
+  return [...known, ...unknown] as AttributeName[];
 }
 
-// `attributes` is a json object, so its key order is whatever the server
-// inserted. Ordering is presentation only.
-export function orderAttributeCodes(codes: readonly string[]): string[] {
-  return [...codes].sort((a, b) => {
-    const [prefixA, indexA] = codeSortKey(a);
-    const [prefixB, indexB] = codeSortKey(b);
-    if (prefixA !== prefixB) return prefixA < prefixB ? -1 : 1;
-    if (indexA !== indexB) return indexA - indexB;
-    return a < b ? -1 : a > b ? 1 : 0;
-  });
-}
-
-function confidenceFor(probability: number, se: number | undefined): AttributeConfidence {
-  if (se === undefined) return { kind: 'evidence_only' };
-  return {
-    kind: 'interval',
-    se,
-    lower: Math.max(0, probability - se),
-    upper: Math.min(1, probability + se),
-  };
-}
-
-// The three ways zero evidence reaches the client, collapsed to the ONE state.
-// Each is the producer's own semantics restated as a guard, never a substitute
-// value: `assembleEntry` emits the literal sentinel exactly when `prob` is null,
-// and Doc 2a s.9 is explicit that no items means not_assessed — so a bar drawn
-// over zero administered items would be the false claim CT-7 forbids.
-export function resolveAttributeRow(code: string, entry: ResultAttributeEntry): AttributeRowView {
-  if (entry === NOT_ASSESSED) return { state: 'not_assessed', code };
-  if (entry.prob === null || entry.status === NOT_ASSESSED || entry.items === 0) {
-    return { state: 'not_assessed', code };
+// Zero evidence reaches the client as the literal `not_assessed` status, and
+// the row keeps NO score field — a bar drawn over zero administered items
+// would be the false claim the union type exists to forbid.
+export function resolveAttributeRow(
+  name: AttributeName,
+  entry: ResultViewAttribute,
+): AttributeRowView {
+  if (entry.status === 'not_assessed') {
+    return {
+      state: 'not_assessed',
+      name,
+      insufficientEvidence: entry.insufficient_evidence,
+      itemsSeen: entry.items_seen,
+    };
   }
   return {
     state: 'assessed',
-    code,
+    name,
     status: entry.status,
-    probability: entry.prob,
-    items: entry.items,
-    delta: entry.delta,
-    confidence: confidenceFor(entry.prob, entry.prob_se),
+    domainScore: entry.domain_score,
+    itemsSeen: entry.items_seen,
+    deltaDisplay: entry.delta_display,
+    deltaReliable: entry.delta_reliable,
   };
 }
 
 function evidenceFor(rows: readonly AttributeRowView[]): AttributeEvidence {
-  const items = rows.flatMap((row) => (row.state === 'assessed' ? [row.items] : []));
+  const items = rows.flatMap((row) => (row.state === 'assessed' ? [row.itemsSeen] : []));
   if (items.length === 0) return { state: 'none_assessed', total: rows.length };
   return {
     state: 'assessed',
@@ -75,19 +63,14 @@ function evidenceFor(rows: readonly AttributeRowView[]): AttributeEvidence {
 // function — so the panel can never disagree with the header about which
 // absence this result is.
 export function buildAttributePanel(result: ResultView): AttributePanelView {
-  const map = result.attributes;
-  const codes = map === null ? [] : orderAttributeCodes(Object.keys(map));
-  if (map === null || codes.length === 0) {
+  const names = orderAttributeNames(Object.keys(result.attributes));
+  if (names.length === 0) {
     const state = getCrosswalkFieldState(result, null);
     return state === 'not_applicable' ? { state: 'not_applicable' } : { state: 'not_derived' };
   }
-  const rows = codes.map((code) => resolveAttributeRow(code, map[code]));
-  return {
-    state: 'rows',
-    rows,
-    evidence: evidenceFor(rows),
-    missingStandardError: rows.some(
-      (row) => row.state === 'assessed' && row.confidence.kind === 'evidence_only',
-    ),
-  };
+  const rows = names.flatMap((name) => {
+    const entry = result.attributes[name];
+    return entry ? [resolveAttributeRow(name, entry)] : [];
+  });
+  return { state: 'rows', rows, evidence: evidenceFor(rows) };
 }

@@ -10,21 +10,21 @@ import { EVIDENCE_METER_FLOOR } from '@/modules/report/constants/mastery.constan
 // visibly thinner than one backed by 73. The number is the datum; the meter is
 // only a relative rendering of it, and nothing is summed across attributes.
 export function EvidenceCount({
-  items,
+  itemsSeen,
   scaleMax,
   className,
 }: {
-  items: number;
+  itemsSeen: number;
   scaleMax: number;
   className?: string;
 }) {
   const t = useTranslations('Report');
-  const share = scaleMax > 0 ? Math.max(EVIDENCE_METER_FLOOR, items / scaleMax) : 0;
+  const share = scaleMax > 0 ? Math.max(EVIDENCE_METER_FLOOR, itemsSeen / scaleMax) : 0;
 
   return (
     <span
       data-slot="report-evidence-count"
-      data-items={items}
+      data-items-seen={itemsSeen}
       title={t('evidenceLabel')}
       className={cn('inline-flex items-center gap-2 text-caption text-muted-foreground', className)}
     >
@@ -34,7 +34,7 @@ export function EvidenceCount({
           style={{ transform: `scaleX(${share})` }}
         />
       </span>
-      <span className="tabular-nums">{t('evidenceItems', { count: items })}</span>
+      <span className="tabular-nums">{t('evidenceItems', { count: itemsSeen })}</span>
     </span>
   );
 }

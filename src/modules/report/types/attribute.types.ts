@@ -1,30 +1,24 @@
-import type { AttributeStatus } from '@/modules/report/types/report.types';
+import type { AssessedBand, AttributeName } from '@/modules/report/schemas/result-view.schema';
 
-// The three statuses an ASSESSED attribute can carry. `not_assessed` is not one
-// of them: it is the absence, and it lives on the row union below rather than
-// inside a status field (E11-09).
-export type AssessedAttributeStatus = Exclude<AttributeStatus, 'not_assessed'>;
-
-// E11-03. `interval` is a REAL +/- standard error read off `prob_se`;
-// `evidence_only` is the honest absence of one. No interval is ever synthesised
-// from item counts, from `low_confidence`, or from anything else.
-export type AttributeConfidence =
-  { kind: 'interval'; se: number; lower: number; upper: number } | { kind: 'evidence_only' };
-
-// E11-09. A zero-evidence attribute has NO probability field to default to 0 and
-// NO delta field to default to 0 — the shape itself makes the false claim
-// unrepresentable.
+// E11-09. A zero-evidence attribute has NO domain_score field to default to 0
+// and NO delta field to default to 0 — the shape itself makes the false claim
+// unrepresentable. Posterior fields are audit-only and never reach a view.
 export type AttributeRowView =
   | {
       state: 'assessed';
-      code: string;
-      status: AssessedAttributeStatus;
-      probability: number;
-      items: number;
-      delta: number | null;
-      confidence: AttributeConfidence;
+      name: AttributeName;
+      status: AssessedBand;
+      domainScore: number;
+      itemsSeen: number;
+      deltaDisplay: string | null;
+      deltaReliable: boolean | null;
     }
-  | { state: 'not_assessed'; code: string };
+  | {
+      state: 'not_assessed';
+      name: AttributeName;
+      insufficientEvidence?: boolean;
+      itemsSeen: number;
+    };
 
 // E11-04. Item counts are never summed across attributes — one item may load
 // several attributes in the Q-matrix, so a total would be a fabricated number.
@@ -40,5 +34,4 @@ export type AttributePanelView =
       state: 'rows';
       rows: AttributeRowView[];
       evidence: AttributeEvidence;
-      missingStandardError: boolean;
     };

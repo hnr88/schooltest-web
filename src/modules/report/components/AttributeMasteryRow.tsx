@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 import { StatusPill, TrendDelta } from '@/modules/design-system';
 import { AttributeTrack } from '@/modules/report/components/AttributeTrack';
@@ -9,11 +9,18 @@ import { ATTRIBUTE_STATUS_TONE } from '@/modules/report/constants/mastery.consta
 import type { AttributeRowView } from '@/modules/report/types/attribute.types';
 import { ROW_CLASS } from '@/modules/report/constants/components.constants';
 
-// E11-03 / E11-09 — one attribute. The ASSESSED arm shows the mastery
-// probability, the wire status band, the evidence count and the delta; the
-// NOT-ASSESSED arm shows a hatched empty track and a sentence, with no
-// percentage, no delta and no evidence meter. There is no `p: number` prop that
-// could quietly become 0.
+function deltaTone(deltaDisplay: string): 'positive' | 'negative' | 'neutral' {
+  const first = deltaDisplay.charAt(0);
+  if (first === '+') return 'positive';
+  if (first === '-' || first === '−') return 'negative';
+  return 'neutral';
+}
+
+// One attribute. The ASSESSED arm shows the domain score, the wire status band,
+// the evidence count and the delta; the NOT-ASSESSED arm shows a hatched empty
+// track and a sentence, with no score, no delta and no evidence meter. The
+// score comes from `domain_score` only — posterior fields are audit-only and
+// never rendered — and the delta is `delta_display` verbatim.
 export function AttributeMasteryRow({
   row,
   scaleMax,
@@ -26,62 +33,44 @@ export function AttributeMasteryRow({
   index: number;
 }) {
   const t = useTranslations('Report');
-  const format = useFormatter();
+  const name = t(`attributes.${row.name}`);
   const statusKey = row.state === 'assessed' ? row.status : 'not_assessed';
-  const percent =
-    row.state === 'assessed'
-      ? format.number(row.probability, { style: 'percent', maximumFractionDigits: 1 })
-      : null;
+  const score = row.state === 'assessed' ? String(row.domainScore) : null;
 
   return (
     <li
       data-slot="report-attribute-row"
       data-state={row.state}
-      data-code={row.code}
+      data-attribute={row.name}
       className={ROW_CLASS}
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-        <span
-          aria-label={`${t('attributeCodeLabel')} ${row.code}`}
-          className="rounded-md bg-muted px-2 py-0.5 text-meta font-bold text-secondary-foreground tabular-nums"
-        >
-          {row.code}
+        <span className="rounded-md bg-muted px-2 py-0.5 text-meta font-bold text-secondary-foreground tabular-nums">
+          {name}
         </span>
         <StatusPill tone={row.state === 'assessed' ? ATTRIBUTE_STATUS_TONE[row.status] : 'neutral'}>
           {t(`attributeStatus.${statusKey}`)}
         </StatusPill>
-        {percent !== null ? (
+        {score !== null ? (
           <span
-            data-slot="report-attribute-probability"
+            data-slot="report-attribute-score"
             className="ml-auto text-body-md font-bold text-foreground tabular-nums"
           >
-            {percent}
+            {score}
           </span>
         ) : null}
       </div>
 
-      <AttributeTrack row={row} revealed={revealed} index={index} probabilityLabel={percent} />
+      <AttributeTrack row={row} revealed={revealed} index={index} scoreLabel={score} />
 
       {row.state === 'assessed' ? (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-          <EvidenceCount items={row.items} scaleMax={scaleMax} />
-          {row.delta !== null ? (
+          <EvidenceCount itemsSeen={row.itemsSeen} scaleMax={scaleMax} />
+          {row.deltaDisplay !== null ? (
             <TrendDelta
-              tone={row.delta > 0 ? 'positive' : row.delta < 0 ? 'negative' : 'neutral'}
-              label={t('deltaSincePrevious', {
-                delta: format.number(row.delta, {
-                  signDisplay: 'exceptZero',
-                  maximumFractionDigits: 2,
-                }),
-              })}
+              tone={deltaTone(row.deltaDisplay)}
+              label={t('deltaSincePrevious', { delta: row.deltaDisplay })}
             />
-          ) : null}
-          {row.confidence.kind === 'interval' ? (
-            <span data-slot="report-attribute-se" className="text-caption text-muted-foreground">
-              {t('confidenceIntervalLabel', {
-                se: format.number(row.confidence.se, { maximumFractionDigits: 3 }),
-              })}
-            </span>
           ) : null}
         </div>
       ) : (

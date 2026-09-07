@@ -4,7 +4,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 
 import { Eyebrow } from '@/modules/design-system';
 import { observationValues } from '@/modules/report/lib/observation-message';
-import type { AssessedAttributeStatus } from '@/modules/report/types/attribute.types';
+import type { AssessedBand, AttributeName } from '@/modules/report/schemas/result-view.schema';
 import type { ObservationsView } from '@/modules/report/types/observation.types';
 import { ABSENT_KEY, OBSERVATION_SECTION_CLASS } from '@/modules/report/constants/components.constants';
 
@@ -32,10 +32,12 @@ export function ObservationList({ view }: { view: ObservationsView }) {
   }
 
   const formatters = {
-    list: (codes: string[]) => format.list(codes, { type: 'conjunction' }),
-    percent: (value: number) =>
-      format.number(value, { style: 'percent', maximumFractionDigits: 0 }),
-    status: (status: AssessedAttributeStatus) => t(`attributeStatus.${status}`),
+    list: (names: AttributeName[]) =>
+      format.list(
+        names.map((name) => t(`attributes.${name}`)),
+        { type: 'conjunction' },
+      ),
+    status: (status: AssessedBand) => t(`attributeStatus.${status}`),
   };
 
   return (

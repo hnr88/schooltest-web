@@ -1,11 +1,11 @@
-import type { AssessedAttributeStatus } from '@/modules/report/types/attribute.types';
 import type { Observation } from '@/modules/report/types/observation.types';
 
 import type { ObservationFormatters, ObservationValues } from '@/modules/report/types/lib.types';
 
 // E11-06 — one observation to the ICU values its catalog sentence declares.
 // Every branch is exhaustive over the union, so a new observation kind cannot be
-// added without its values; nothing here composes prose.
+// added without its values; nothing here composes prose. The b1 value is a
+// domain score stated VERBATIM as a bare number — never a percent.
 export function observationValues(
   observation: Observation,
   format: ObservationFormatters,
@@ -37,15 +37,11 @@ export function observationValues(
         gapCount: observation.gap.length,
       };
     case 'vocabularyBandMeasured':
-      return {
-        code: observation.code,
-        status: format.status(observation.status),
-        b1: format.percent(observation.b1),
-      };
+      return { status: format.status(observation.status), b1: observation.b1 };
     case 'vocabularyBandNotAdministered':
-      return { code: observation.code, status: format.status(observation.status) };
+      return { status: format.status(observation.status) };
     case 'vocabularyNotAssessedBandMeasured':
-      return { b1: format.percent(observation.b1) };
+      return { b1: observation.b1 };
     case 'evidenceCaveat':
       return {
         assessed: observation.assessed,
@@ -53,7 +49,7 @@ export function observationValues(
         minItems: observation.minItems,
         maxItems: observation.maxItems,
         spread: observation.minItems === observation.maxItems ? 'uniform' : 'range',
-        lowConfidence: observation.lowConfidence ? 'true' : 'false',
+        fieldTest: observation.fieldTest ? 'true' : 'false',
       };
   }
 }

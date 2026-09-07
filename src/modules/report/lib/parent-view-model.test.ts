@@ -29,30 +29,42 @@ describe('the allow-list view model (task 35)', () => {
     expect(Object.keys(model.overall)).toEqual(['score']);
     expect(Object.keys(model.phase)).toEqual(['label']);
     for (const strength of model.strengths) {
-      expect(Object.keys(strength).sort()).toEqual(['line', 'score', 'skill']);
+      expect(Object.keys(strength).sort()).toEqual(['score', 'skill', 'state']);
     }
     for (const step of model.nextSteps) {
-      expect(Object.keys(step)).toEqual(['line']);
+      expect(
+        Object.keys(step).sort(),
+      ).toEqual(step.kind === 'focus' ? ['kind', 'score', 'skill', 'state'] : ['kind']);
     }
     expect([...Object.keys(model.subskills)].sort()).toEqual(['groups', 'state', 'total']);
-    // The audit fields stay OUT of the emitted object entirely.
+    // The audit fields stay OUT of the emitted object entirely, and the model
+    // carries NO interpolated copy — rendering strings are locale keys applied
+    // in the component, never here.
     expect(JSON.stringify(model)).not.toMatch(/prob|theta|"se"|low_confidence|readiness|cefr/i);
+    expect(JSON.stringify(model)).not.toMatch(/practice at home|uses this skill|getting there/i);
   });
 
   test('strengths are the top-2 ASSESSED banded skills; not-assessed is never one', () => {
     const { strengths } = buildFamilyPreview(view);
     // Decoding 92 and Vocab_A2 90 lead; Gist (not assessed) and Critical (not an attribute) absent.
-    expect(strengths.map((s) => s.skill)).toEqual(['Decoding', 'Vocab_A2']);
+    expect(strengths).toEqual([
+      { skill: 'Decoding', score: 92, state: 'secure' },
+      { skill: 'Vocab_A2', score: 90, state: 'secure' },
+    ]);
     expect(strengths.map((s) => s.skill)).not.toContain('Gist');
     expect(strengths.map((s) => s.skill)).not.toContain('Critical');
-    expect(strengths[0]?.line).toContain('92% — uses this skill reliably');
   });
 
   test('next steps name the lowest assessed banded skill; not-assessed is never the focus', () => {
     const { nextSteps } = buildFamilyPreview(view);
-    expect(nextSteps[0]?.line).toContain('Focus next: Vocab_B1 — 54%');
-    expect(nextSteps.map((s) => s.line).join(' ')).not.toContain('Gist');
-    expect(nextSteps[1]?.line).toContain('Short, regular reading practice at home');
+    expect(nextSteps[0]).toEqual({
+      kind: 'focus',
+      skill: 'Vocab_B1',
+      score: 54,
+      state: 'getting_there',
+    });
+    expect(nextSteps[1]).toEqual({ kind: 'practice' });
+    expect(nextSteps.map((s) => (s.kind === 'focus' ? s.skill : ''))).not.toContain('Gist');
   });
 
   test('with nothing assessed there are no strengths and NO invented advice', () => {
@@ -71,12 +83,12 @@ describe('the allow-list view model (task 35)', () => {
     const model = buildFamilyPreview(view);
     // Vocab_A2 secure, Vocab_B1 emerging, Gist not assessed:
     expect(model.subskills.groups).toEqual([
-      { state: 'secure', count: 4 },       // Decoding, Vocab_A2, Grammar?, no — Grammar developing
+      { state: 'secure', count: 4 },        // Decoding, Vocab_A2, Detail, Inference
       { state: 'getting_there', count: 2 }, // Grammar developing + Vocab_B1 emerging
-      { state: 'not_assessed', count: 1 }, // Gist
+      { state: 'not_assessed', count: 1 },  // Gist
     ]);
     // Grammar (developing) lands in the same family step as Vocab_B1 (emerging):
     const detail = model.strengths.find((s) => s.skill === 'Decoding');
-    expect(detail?.line).toContain('uses this skill reliably');
+    expect(detail?.state).toBe('secure');
   });
 });

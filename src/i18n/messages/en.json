@@ -1766,6 +1766,12 @@
       "not_yet": "Not yet",
       "not_assessed": "Not assessed"
     },
+    "legacyStatus": {
+      "mastered": "Mastered",
+      "emerging": "Emerging",
+      "not_mastered": "Not mastered",
+      "not_assessed": "Not yet assessed"
+    },
     "attributeNotAssessedNote": "No items were administered for this attribute in this sitting.",
     "attributeScoreLabel": "Domain score",
     "evidenceItems": "{count, plural, one {# item} other {# items}}",

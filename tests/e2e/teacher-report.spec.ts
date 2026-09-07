@@ -1,10 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Leaf import, not the barrel: the barrel re-exports React components and
-// Playwright evaluates specs in plain Node, where next-intl's client navigation
-// entry cannot resolve. The rule about barrel-only imports governs src/modules.
-import { splitDisplayLabel } from '@/modules/report/lib/display-label';
-
 import { apiEnv, runSql } from './helpers/auth-db';
 import { SEEDED_PARENT } from './helpers/auth';
 import { roleCredentials } from './helpers/credentials';
@@ -12,19 +7,22 @@ import { cat, loadMessages } from './helpers/i18n';
 
 // E11-01 / F-WEB-TEACHER-REPORT — the teacher route guard and the C-4/C-11
 // report data layer, driven against the REAL portal, the REAL Strapi and the
-// REAL Postgres. Nothing here is fixtured: the expected display label is read
+// REAL Postgres. Nothing here is fixtured: the expected ACARA phase is read
 // out of `public.results` with psql and compared to what the page renders.
+// Task 36 repoint: the panel renders `acara_phase` verbatim; `display_label`
+// remains in the schema but is no longer rendered (no label/qualifier split —
+// that belonged to the retired splitDisplayLabel).
 const en = loadMessages('en');
 const TEACHER_EMAIL = roleCredentials('teacher').email;
 
 interface SeededResult {
   documentId: string;
-  displayLabel: string;
+  acaraPhase: string;
 }
 
 function teacherOwnedResult(): SeededResult {
   const row = runSql(
-    `select r.document_id, r.display_label
+    `select r.document_id, r.acara_phase
        from results r
        join results_student_lnk rs on rs.result_id = r.id
        join students s on s.id = rs.student_id
@@ -32,14 +30,14 @@ function teacherOwnedResult(): SeededResult {
        join up_users u on u.id = tl.user_id
       where u.email = '${TEACHER_EMAIL}'
         and r.destination = 'official'
-        and r.display_label is not null
+        and r.acara_phase is not null
       order by r.created_at desc
       limit 1`,
   );
-  const [documentId, displayLabel] = row.split('\n')[0].split('|');
-  if (!documentId || !displayLabel)
+  const [documentId, acaraPhase] = row.split('\n')[0].split('|');
+  if (!documentId || !acaraPhase)
     throw new Error(`[e2e] no teacher-owned labelled result: ${row}`);
-  return { documentId, displayLabel };
+  return { documentId, acaraPhase };
 }
 
 async function signIn(page: Page, email: string, password: string): Promise<void> {
@@ -63,7 +61,7 @@ function teacherOwnedProductiveResult(): { documentId: string; teacherEmail: str
        join up_users u on u.id = tl.user_id
       where r.destination = 'official'
         and r.skill = 'writing'
-        and r.display_label is null
+        and r.acara_phase is null
       order by r.created_at desc
       limit 1`,
   );
@@ -102,7 +100,7 @@ test.describe('teacher report route guard + data layer', () => {
     await page.goto(`/dashboard/reports/${seeded.documentId}`);
     const label = page.locator('[data-slot="report-display-label-value"]');
     await expect(label).toBeVisible({ timeout: 20_000 });
-    await expect(label).toHaveText(seeded.displayLabel.replace(/\s+\([^()]*\)$/, ''));
+    await expect(label).toHaveText(seeded.acaraPhase);
     await expect(page.getByText(cat(en, 'Report.displayLabelSource'))).toBeVisible();
   });
 
@@ -119,7 +117,7 @@ test.describe('teacher report route guard + data layer', () => {
     await page.reload();
     await expect(label).toBeVisible();
     expect(await label.textContent()).toBe(before);
-    expect(before).toBe(seeded.displayLabel.replace(/\s+\([^()]*\)$/, ''));
+    expect(before).toBe(seeded.acaraPhase);
   });
 
   test('an unknown result documentId renders the gone state, never an empty report', async ({
@@ -142,34 +140,6 @@ test.describe('teacher report route guard + data layer', () => {
     await expect(absent).toBeVisible({ timeout: 20_000 });
     await expect(absent).toHaveAttribute('data-state', 'not_applicable');
     await expect(absent).toHaveText(cat(en, 'Report.displayLabelNotApplicable'));
-  });
-
-  test('the label/qualifier split round-trips every display_label the seed has produced', () => {
-    // Bracketed so runSql's trim cannot eat the join's significant trailing space.
-    const [format, bracketedJoin] = runSql(
-      `select label_rules->>'qualifier_format', concat('[', label_rules->>'qualifier_join', ']')
-         from crosswalks where active = true and skill = 'reading' limit 1`,
-    ).split('|');
-    const join = bracketedJoin.slice(1, -1);
-    expect(format).toBe('{label} ({qualifiers})');
-    expect(join).toBe('; ');
-
-    const labels = runSql(
-      `select distinct display_label from results where display_label is not null`,
-    ).split('\n');
-    expect(labels.length).toBeGreaterThan(1);
-
-    for (const original of labels) {
-      const parts = splitDisplayLabel(original);
-      const recomposed =
-        parts.qualifiers.length === 0
-          ? parts.label
-          : format
-              .replace('{label}', parts.label)
-              .replace('{qualifiers}', parts.qualifiers.join(join));
-      expect(recomposed, original).toBe(original);
-      expect(parts.qualifiers.length > 0, original).toBe(/\([^()]+\)$/.test(original));
-    }
   });
 
   test('a parent account gets no rail entry and is redirected off the report route', async ({

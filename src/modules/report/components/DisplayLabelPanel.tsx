@@ -4,15 +4,14 @@ import { useFormatter, useTranslations } from 'next-intl';
 
 import { Eyebrow, StatusPill } from '@/modules/design-system';
 import { EvidenceSummary } from '@/modules/report/components/EvidenceSummary';
-import { getDisplayLabelState, splitDisplayLabel } from '@/modules/report/lib/display-label';
+import { getDisplayLabelState } from '@/modules/report/lib/display-label';
 import { getResultStatusTone } from '@/modules/report/lib/report-status';
 import type { AttributeEvidence } from '@/modules/report/types/attribute.types';
 import type { ResultView } from '@/modules/report/types/report.types';
 
-// E11-01 — the primary teacher-facing claim: the Crosswalk `display_label`
-// (Doc 2a s.9), shown as the ladder rung plus its jaggedness qualifiers. Both
-// halves are SERVER-derived; this only pulls the composed string apart so the
-// qualifier reads as a qualifier instead of disappearing into the label.
+// E11-01 — the primary teacher-facing claim: the Crosswalk `acara_phase`
+// (Doc 2a s.9). The label is SERVER-derived and rendered verbatim; this panel
+// never composes or alters it.
 export function DisplayLabelPanel({
   result,
   evidence,
@@ -23,7 +22,6 @@ export function DisplayLabelPanel({
   const t = useTranslations('Report');
   const format = useFormatter();
   const state = getDisplayLabelState(result);
-  const parts = result.display_label ? splitDisplayLabel(result.display_label) : null;
   const absentKey = state === 'pending' ? 'displayLabelPending' : 'displayLabelNotApplicable';
 
   return (
@@ -34,25 +32,14 @@ export function DisplayLabelPanel({
     >
       <Eyebrow>{t('displayLabelEyebrow')}</Eyebrow>
 
-      {parts !== null ? (
-        <div className="flex flex-col gap-3">
-          <h1
-            id="report-display-label-title"
-            data-slot="report-display-label-value"
-            className="text-portal-heading font-bold text-balance text-foreground"
-          >
-            {parts.label}
-          </h1>
-          {parts.qualifiers.length > 0 ? (
-            <ul data-slot="report-jaggedness-qualifiers" className="flex flex-wrap gap-2">
-              {parts.qualifiers.map((qualifier) => (
-                <li key={qualifier}>
-                  <StatusPill tone="warning">{qualifier}</StatusPill>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </div>
+      {result.acara_phase !== null ? (
+        <h1
+          id="report-display-label-title"
+          data-slot="report-display-label-value"
+          className="text-portal-heading font-bold text-balance text-foreground"
+        >
+          {result.acara_phase}
+        </h1>
       ) : (
         <div className="flex flex-col gap-2">
           <h1

@@ -5,18 +5,17 @@ import { useFormatter, useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
 import { StatusPill } from '@/modules/design-system';
-import { getDisplayLabelState, splitDisplayLabel } from '@/modules/report/lib/display-label';
+import { getDisplayLabelState } from '@/modules/report/lib/display-label';
 import { getResultStatusTone } from '@/modules/report/lib/report-status';
 import type { ResultView } from '@/modules/report/types/report.types';
 
 // C-11 rows carry NO student identity by design (PII stays off the ResultView),
-// so the row is named by what the API actually published: the display label,
-// the skill and the publication date. No name is invented to fill the gap.
+// so the row is named by what the API actually published: the Crosswalk phase
+// label, the skill and the publication date. No name is invented to fill the gap.
 export function ReportListRow({ result }: { result: ResultView }) {
   const t = useTranslations('Report');
   const format = useFormatter();
   const state = getDisplayLabelState(result);
-  const parts = result.display_label ? splitDisplayLabel(result.display_label) : null;
 
   return (
     <li>
@@ -27,8 +26,8 @@ export function ReportListRow({ result }: { result: ResultView }) {
       >
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="truncate text-body-md font-semibold text-foreground">
-            {parts !== null
-              ? parts.label
+            {result.acara_phase !== null
+              ? result.acara_phase
               : t(state === 'pending' ? 'displayLabelPending' : 'displayLabelNotApplicable')}
           </span>
           <span className="truncate text-caption text-muted-foreground">
@@ -40,11 +39,6 @@ export function ReportListRow({ result }: { result: ResultView }) {
             ].join(' · ')}
           </span>
         </div>
-        {parts && parts.qualifiers.length > 0 ? (
-          <StatusPill tone="warning" className="shrink-0">
-            {parts.qualifiers.join(' · ')}
-          </StatusPill>
-        ) : null}
         <StatusPill tone={getResultStatusTone(result.status)} className="shrink-0">
           {t(`resultStatus.${result.status}`)}
         </StatusPill>

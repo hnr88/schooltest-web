@@ -1,54 +1,101 @@
 import { z } from 'zod';
 
-// C-4 `ResultView` — mirrored field for field from the server contract
-// (schooltest-api/src/contracts/results.ts). Every object is STRICT: an
-// unexpected key or a missing field throws at the Axios boundary so a
-// contract drift surfaces as an error state, never as a half-rendered report.
-export const attributeStatusSchema = z.enum([
-  'mastered',
-  'emerging',
-  'not_mastered',
-  'not_assessed',
-]);
-export const skillSchema = z.enum(['reading', 'listening', 'speaking', 'writing']);
-export const cefrBandSchema = z.enum(['pre_A1', 'A1', 'A2', 'B1', 'B2', 'C1']);
-export const readinessSchema = z.enum(['met', 'approaching', 'not_yet', 'not_assessed']);
-export const resultStatusSchema = z.enum([
-  'scoring',
-  'partial_pending',
-  'complete',
-  'scoring_failed',
-]);
-export const resultDestinationSchema = z.enum(['transient', 'official']);
+import {
+  bandSchema,
+  cefrBandSchema,
+  readinessSchema,
+  resultDestinationSchema,
+  resultStatusSchema,
+  resultViewSchema,
+  skillSchema,
+} from '@schooltest/scoring-contracts';
 
-// A zero-administered attribute is the LITERAL string 'not_assessed' — never a
-// 0, never a 0.5 (CT-7). The union keeps that distinction on the wire.
-export const resultAttributeEntrySchema = z.union([
-  z.strictObject({
-    status: attributeStatusSchema,
-    prob: z.number().nullable(),
-    prob_se: z.number().optional(),
+// C-4 `ResultView` — the hand-written mirror that used to live here was
+// replaced by the shared contract package. Re-export its schemas so existing
+// import paths keep resolving; every object stays strict at the Axios boundary.
+export {
+  assessedBandSchema,
+  attributeNameSchema,
+  bandSchema,
+  cefrBandSchema,
+  DIAGNOSTIC_JSON_FORMAT,
+  diagnosticExportSchema,
+  displaySkillSchema,
+  LEGACY_MODEL_VERSION,
+  MODEL_VERSION,
+  modelVersionSchema,
+  provisionalSchema,
+  readinessSchema,
+  resultDestinationSchema,
+  resultScopeSchema,
+  resultStatusSchema,
+  resultViewSchema,
+  skillSchema,
+} from '@schooltest/scoring-contracts';
+export type {
+  AssessedBand,
+  AttributeName,
+  Band,
+  CefrBand,
+  DiagnosticExport,
+  DisplaySkill,
+  ErrorPattern,
+  ModelVersion,
+  Readiness,
+  ResultDestination,
+  ResultScope,
+  ResultStatus,
+  ResultView,
+  ResultViewAttribute,
+  ResultViewAttributeScored,
+  ResultViewGate,
+  ResultViewOverall,
+  ResultViewVocab,
+  Skill,
+} from '@schooltest/scoring-contracts';
+
+// C-11 answers a BARE array — no `{data, meta}` envelope on this route.
+export const myStudentsResultsResponseSchema = z.array(resultViewSchema);
+
+// Legacy / non-v2 fallback for the C-4 read. The server answers v2 rows with
+// the contract ResultView and EVERYTHING else (legacy-r7, listening, unscored)
+// with its own v1 view (schooltest-api/src/contracts/results.ts
+// resultViewBaseSchema). This schema mirrors that base shape key-for-key so a
+// strict parse cannot silently drop such a row into the error fallback. Stored
+// statuses are rendered VERBATIM as localized text — never recomputed, never
+// turned into bars or scores.
+const legacyStoredStatusSchema = z.union([
+  bandSchema,
+  z.enum(['mastered', 'emerging', 'not_mastered', 'not_assessed']),
+]);
+export type LegacyStoredStatus = z.infer<typeof legacyStoredStatusSchema>;
+
+// The assessed wire member carries posterior AUDIT fields
+// (schooltest-api/src/contracts/results.ts resultAttributeAssessedEntrySchema).
+// They are NOT declared here on purpose: z.object strips them at the boundary,
+// so no component can ever read one back (data contract §8, task 36).
+// Stripping (not strictObject) is safe — the union still discriminates because
+// this member alone requires `items`/`delta`, which the floor entry forbids.
+const legacyAttributeEntrySchema = z.union([
+  z.object({
+    status: legacyStoredStatusSchema,
     items: z.number().int().min(0),
     delta: z.number().nullable(),
+  }),
+  z.strictObject({
+    status: z.literal('not_assessed'),
+    insufficient_evidence: z.literal(true),
+    items_seen: z.number().int().min(0),
   }),
   z.literal('not_assessed'),
 ]);
 
-// The out-of-model supplementary strand. A band with zero administered items is
-// `null` — rendering it as 0% would be a false claim (CT-7).
-export const resultSupplementarySchema = z.strictObject({
-  vocab_band_a2_accuracy: z.number().min(0).max(1).nullable(),
-  vocab_band_b1_accuracy: z.number().min(0).max(1).nullable(),
-  vocab_band_b2_accuracy: z.number().min(0).max(1).nullable().default(null),
-  dprime: z.number().nullable().optional(),
-});
-
-export const resultViewBaseSchema = z.strictObject({
-  document_id: z.string().min(1),
+export const legacyResultViewSchema = z.strictObject({
+  document_id: z.string(),
   scope: z.enum(['skill', 'combined']),
   skill: skillSchema.nullable(),
   status: resultStatusSchema,
-  attributes: z.record(z.string().min(1), resultAttributeEntrySchema).nullable(),
+  attributes: z.record(z.string(), legacyAttributeEntrySchema).nullable(),
   provisional: z.literal('field_test').nullish(),
   display_label: z.string().nullable(),
   acara_phase: z.string().nullable(),
@@ -57,16 +104,14 @@ export const resultViewBaseSchema = z.strictObject({
   low_confidence: z.boolean().nullable(),
   effort_valid: z.boolean().nullable(),
   productive_scores: z.record(z.string(), z.unknown()).nullable(),
-  supplementary: resultSupplementarySchema.nullable(),
+  supplementary: z.unknown().nullable(),
   destination: resultDestinationSchema,
-  published_at: z.iso.datetime().nullable(),
-  previous_result_document_id: z.string().min(1).nullable(),
-  session_document_id: z.string().min(1).nullable(),
+  published_at: z.string().nullable(),
+  previous_result_document_id: z.string().nullable(),
+  session_document_id: z.string().nullable(),
+  model_version: z.string().min(1).nullish(),
+  legacy_caveat: z.literal('pilot_diagnostic_earlier_model').nullish(),
+  narrative: z.unknown().nullish(),
+  combined_children: z.array(z.unknown()).optional(),
 });
-
-export const resultViewSchema = resultViewBaseSchema.extend({
-  combined_children: z.array(resultViewBaseSchema).optional(),
-});
-
-// C-11 answers a BARE array — no `{data, meta}` envelope on this route.
-export const myStudentsResultsResponseSchema = z.array(resultViewSchema);
+export type LegacyResultView = z.infer<typeof legacyResultViewSchema>;

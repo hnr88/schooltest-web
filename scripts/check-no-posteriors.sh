@@ -26,13 +26,13 @@ cd "$(dirname "$0")/.."
 # NOTE: the attribute-view-model/attribute.types/mastery.constants(report) entries
 # from the first inventory were RETIRED via the staleness check — kimi's task-36
 # re-point removed them mid-run, which is the tier-3 check working as designed.
+# Task 36 then retired the diagnostic-bundle.schema (task-25) and attribute.types
+# (task-36) entries: the schema field is gone and the comment was reworded.
 KNOWN_LEGACY=(
   'src/modules/teach/schemas/diagnostic.schema.ts|task-24|prob: z.number().nullable(),'
   'src/modules/teach/types/diagnostic.types.ts|task-24|task 50 sentinel semantics: null prob stays'
   'src/modules/teach/types/diagnostic.types.ts|task-24|prob: number | null;'
   'src/modules/teach/components/StudentMasteryDrilldown.tsx|task-24|A null prob renders as "not yet assessed"'
-  'src/modules/report/schemas/diagnostic-bundle.schema.ts|task-25|prob: z.number(),'
-  'src/modules/report/types/attribute.types.ts|task-36|are audit fields and never reach a view'
   'src/modules/teacher/schemas/teacher.schema.ts|task-24|DERIVED SERVER-SIDE from `prob`'
   'src/modules/teacher/schemas/teacher.schema.ts|task-24|`Math.round(prob * 100)`'
   'src/modules/teacher/schemas/teacher.schema.ts|task-24|round(mean(prob) * 100)'

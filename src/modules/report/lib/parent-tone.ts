@@ -1,5 +1,7 @@
 import type { Band } from '@schooltest/scoring-contracts';
 
+import type { ParentSubskillState } from '@/modules/report/types/report-view.types';
+
 /**
  * §5 Screen D — the family-facing TONE layer, now on the v2 four-band contract
  * (task 35). The v1 module content was an empty import shell; these maps are
@@ -11,9 +13,11 @@ import type { Band } from '@schooltest/scoring-contracts';
  * `not_assessed` stays an explicit absence. WCAG 1.4.1 discipline from the
  * teacher tiles applies unchanged: tint never carries meaning alone, the state
  * word is always printed beside it.
+ *
+ * The templated copy per state is i18n, not data: components translate it via
+ * `t('parentStatePhrase.' + state)` (dashboard §5 "templated copy"). No
+ * user-facing string lives in this module.
  */
-
-export type ParentSubskillState = 'secure' | 'getting_there' | 'not_yet' | 'not_assessed';
 
 export function bandToParentState(band: Band): ParentSubskillState {
   if (band === 'secure') return 'secure';
@@ -21,11 +25,3 @@ export function bandToParentState(band: Band): ParentSubskillState {
   if (band === 'not_yet') return 'not_yet';
   return 'not_assessed';
 }
-
-/** The templated strength/next-step copy per state (dashboard §5 "templated copy"). */
-export const PARENT_STATE_PHRASE: Record<ParentSubskillState, string> = {
-  secure: 'uses this skill reliably',
-  getting_there: 'is getting there and benefits from support',
-  not_yet: 'is still building this skill',
-  not_assessed: 'was not assessed this sitting',
-};

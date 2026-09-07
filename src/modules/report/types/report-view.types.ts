@@ -1,5 +1,3 @@
-import type { ReportSkill } from '@/modules/report/types/report.types';
-
 // E11-10. The report is ONE route, ONE C-4 read and ONE result; the audience is
 // a MODE over that result, never a second report with a second fetch.
 export type ReportViewMode = 'teacher' | 'parent';
@@ -16,27 +14,20 @@ export interface ParentSubskillGroup {
   count: number;
 }
 
-// The rung alone. Its two absences are the SAME two every crosswalk-derived
-// field on this report splits into, so the parent mode can never disagree with
-// the teacher mode about which absence a result is.
-export type ParentHeadline =
+// Every crosswalk-derived field on the report resolves to exactly one of these
+// three states, so the crumb, the panel heading and the fact panel cannot
+// disagree about which absence a result is.
+export type DisplayLabelState = 'derived' | 'pending' | 'not_applicable';
+
+// absentKey names the i18n key for the absent sentence; a derived resolution
+// carries the label itself and nothing else.
+export type ResolvedDisplayLabel =
   | { state: 'derived'; label: string }
-  | { state: 'pending' }
-  | { state: 'not_applicable' };
+  | { state: 'pending'; label: null; absentKey: 'displayLabelPending' }
+  | { state: 'not_applicable'; label: null; absentKey: 'displayLabelNotApplicable' };
 
 export type ParentSubskillsView =
   | { state: 'groups'; groups: ParentSubskillGroup[]; total: number }
   | { state: 'not_derived' }
   | { state: 'not_applicable' };
 
-// E11-14/E11-15. THE allow-list. Not a filtered ResultView and not a Pick<> of
-// one: a separate shape whose every field is enumerated here, so a field a
-// parent must not see cannot be forgotten-to-be-hidden — it has nowhere to live.
-// No cefr_band, no acara_phase, no readiness, no low_confidence, no provisional,
-// no attribute code and no probability is representable in it.
-export interface ParentReportView {
-  headline: ParentHeadline;
-  skill: ReportSkill | null;
-  publishedAt: string | null;
-  subskills: ParentSubskillsView;
-}

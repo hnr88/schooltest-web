@@ -5,9 +5,9 @@ import { useFormatter, useTranslations } from 'next-intl';
 import type { SupplementaryBandView } from '@/modules/report/types/supplementary.types';
 import { HATCH } from '@/modules/report/constants/components.constants';
 
-// E11-05 — one out-of-model vocabulary band. The fill carries NO mastery status
-// colour: a success/warning/danger tint would imply the cut score this strand
-// must not have (Doc 0).
+// E11-05 — one out-of-model vocabulary strand, shown as a DOMAIN SCORE. The
+// fill carries NO mastery status colour: a success/warning/danger tint would
+// imply the cut score this strand must not have (Doc 0).
 export function SupplementaryBandRow({
   band,
   revealed,
@@ -26,7 +26,7 @@ export function SupplementaryBandRow({
       data-slot="report-supplementary-band"
       data-code={band.code}
       data-state={band.state}
-      data-accuracy={measured ? band.accuracy : undefined}
+      data-score={measured ? band.domainScore : undefined}
       className="flex flex-col gap-2 border-b border-divider py-4 last:border-b-0"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -42,7 +42,7 @@ export function SupplementaryBandRow({
           }
         >
           {measured
-            ? format.number(band.accuracy, { style: 'percent', maximumFractionDigits: 0 })
+            ? format.number(band.domainScore, { maximumFractionDigits: 0 })
             : t('supplementaryNotAdministered')}
         </span>
       </div>
@@ -50,14 +50,14 @@ export function SupplementaryBandRow({
       {measured ? (
         <div
           role="img"
-          aria-label={`${t(`supplementaryBands.${band.code}`)} ${t('supplementaryAccuracyLabel')}`}
+          aria-label={`${t(`supplementaryBands.${band.code}`)} ${t('supplementaryScoreLabel')}`}
           className="h-1.5 w-full overflow-hidden rounded-full bg-surface-inset"
         >
           <span
             aria-hidden="true"
             className="block h-full w-full origin-left rounded-full bg-teal-600 transition-transform duration-700 ease-out-expo motion-reduce:transition-none"
             style={{
-              transform: `scaleX(${revealed ? band.accuracy : 0})`,
+              transform: `scaleX(${revealed ? band.domainScore / 100 : 0})`,
               transitionDelay: `${index * 80}ms`,
             }}
           />

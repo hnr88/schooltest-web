@@ -49,7 +49,7 @@ export function AttributePanel({ view }: { view: AttributePanelView }) {
       <ul className="flex flex-col gap-0.5">
         {view.rows.map((row, index) => (
           <AttributeMasteryRow
-            key={row.code}
+            key={row.name}
             row={row}
             scaleMax={scaleMax}
             revealed={revealed}
@@ -58,13 +58,6 @@ export function AttributePanel({ view }: { view: AttributePanelView }) {
         ))}
       </ul>
 
-      {view.missingStandardError ? (
-        <p data-slot="report-attributes-se-absent" className="text-caption text-muted-foreground">
-          {t('confidenceIntervalAbsent')}
-        </p>
-      ) : null}
-
-      <p className="text-caption text-muted-foreground">{t('attributesSource')}</p>
-    </section>
+      <p className="text-caption text-muted-foreground">{t('attributesSource')}</p>    </section>
   );
 }

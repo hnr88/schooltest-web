@@ -7,13 +7,14 @@ import { useState } from 'react';
 import { Button } from '@/modules/design-system';
 import { parentViewsEnabled } from '@/modules/flags';
 import { QueryErrorFallback } from '@/modules/query-errors';
+import { LegacyReportBody } from '@/modules/report/components/LegacyReportBody';
 import { ParentReportView } from '@/modules/report/components/ParentReportView';
 import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
 import { TeacherReportBody } from '@/modules/report/components/TeacherReportBody';
 import { ViewToggle } from '@/modules/report/components/ViewToggle';
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { resolveDisplayLabel } from '@/modules/report/lib/display-label';
-import { buildParentReport } from '@/modules/report/lib/parent-view-model';
+import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
 import { useResultQuery } from '@/modules/report/queries/use-result.query';
 import type { ReportViewMode } from '@/modules/report/types/report-view.types';
 import { RecordCrumb } from '@/modules/shell';
@@ -24,7 +25,7 @@ import { RecordCrumb } from '@/modules/shell';
 // swaps the whole rendering. Parent mode builds its own allow-list view-model
 // (E11-14) from the SAME cached result rather than hiding teacher blocks, so
 // readiness, the CEFR band, the ACARA phase, the attribute codes and every
-// probability are absent from the DOM, not merely invisible (E11-15).
+// posterior value are absent from the DOM, not merely invisible (E11-15).
 export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: string }) {
   const t = useTranslations('Report');
   const [view, setView] = useState<ReportViewMode>('teacher');
@@ -63,20 +64,30 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
     );
   }
 
-  const displayLabel = resolveDisplayLabel(data);
-  const attributes = buildAttributePanel(data);
+  // Legacy-r7 rows (and any other non-v2 view) never reach the view-models:
+  // they render their stored statements as text via `LegacyReportBody`.
+  if (data.kind === 'legacy') {
+    return (
+      <main
+        data-surface="teacher-report"
+        className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
+      >
+        <RecordCrumb
+          label={data.view.display_label ?? data.view.acara_phase ?? resultDocumentId}
+        />
+        <LegacyReportBody view={data.view} />
+      </main>
+    );
+  }
+
+  const result = data.view;
+  const displayLabel = resolveDisplayLabel(result);
+  const attributes = buildAttributePanel(result);
   const evidence = attributes.state === 'rows' ? attributes.evidence : null;
-  const parent = buildParentReport(data);
+  const parent = buildFamilyPreview(result);
   const teacherCrumb =
     displayLabel.state === 'derived' ? displayLabel.label : t(displayLabel.absentKey);
-  const parentCrumb =
-    parent.headline.state === 'derived'
-      ? parent.headline.label
-      : t(
-          parent.headline.state === 'pending'
-            ? 'parentHeadlinePending'
-            : 'parentHeadlineNotApplicable',
-        );
+  const parentCrumb = parent.phase.label ?? t('parentHeadlinePending');
 
   return (
     <main
@@ -91,7 +102,7 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
       {parentViews && view === 'parent' ? (
         <ParentReportView view={parent} />
       ) : (
-        <TeacherReportBody result={data} attributes={attributes} evidence={evidence} />
+        <TeacherReportBody result={result} attributes={attributes} evidence={evidence} />
       )}
     </main>
   );

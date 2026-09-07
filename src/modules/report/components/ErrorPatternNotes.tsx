@@ -11,11 +11,12 @@ import {
 import { useDiagnosticBundleQuery } from '@/modules/report/queries/use-diagnostic-bundle.query';
 import type { ResultView } from '@/modules/report/types/report.types';
 
-// E11-07 — the C-5 distractor-type notes on the teacher report. Five honest
-// states and no sixth: a failed read renders as `unavailable`, never as an empty
-// list, because an empty list would assert "no error pattern was observed" —
-// a measurement claim this page would not have. Every string on a pattern line
-// is the server's own, rendered verbatim.
+// E11-07 — the distractor-type notes on the teacher report. Five honest states
+// and no sixth: a failed read renders as `unavailable`, never as an empty list,
+// because an empty list would assert "no error pattern was observed" — a
+// measurement claim this page would not have. The server composes each pattern
+// as {type, count, pct}; the portal renders the numbers verbatim and never
+// computes one of its own.
 export function ErrorPatternNotes({ result }: { result: ResultView }) {
   const t = useTranslations('Report');
   const enabled = hasDiagnosticBundle(result);
@@ -71,24 +72,22 @@ export function ErrorPatternNotes({ result }: { result: ResultView }) {
         <p className="text-body-md text-muted-foreground">{t('errorPatternsDescription')}</p>
       </div>
 
-      {view.skills.map((block) => (
-        <div key={block.skill} data-slot="report-error-pattern-skill" data-skill={block.skill}>
-          <p className="text-caption font-bold text-secondary-foreground uppercase">
-            {t(`skills.${block.skill}`)}
-          </p>
-          <ul className="mt-2 flex flex-col gap-2">
-            {block.patterns.map((pattern) => (
-              <li
-                key={pattern}
-                data-slot="report-error-pattern"
-                className="animate-in border-l-2 border-warning/45 pl-4 text-body-md text-pretty text-foreground duration-300 ease-out-expo fade-in slide-in-from-left-1 motion-reduce:animate-none"
-              >
-                {pattern}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <ul className="mt-2 flex flex-col gap-2">
+        {view.patterns.map((pattern) => (
+          <li
+            key={pattern.type}
+            data-slot="report-error-pattern"
+            data-pattern={pattern.type}
+            className="animate-in border-l-2 border-warning/45 pl-4 text-body-md text-pretty text-foreground duration-300 ease-out-expo fade-in slide-in-from-left-1 motion-reduce:animate-none"
+          >
+            {t('errorPatternLine', {
+              type: t(`errorPatternTypes.${pattern.type}`),
+              count: pattern.count,
+              pct: pattern.pct,
+            })}
+          </li>
+        ))}
+      </ul>
 
       <p className="text-caption text-muted-foreground">{t('errorPatternsSource')}</p>
     </section>

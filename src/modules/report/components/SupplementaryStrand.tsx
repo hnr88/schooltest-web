@@ -8,9 +8,9 @@ import { useBarReveal } from '@/modules/report/hooks/useBarReveal';
 import type { SupplementaryStrandView } from '@/modules/report/types/supplementary.types';
 import { SUPPLEMENTARY_SECTION_CLASS } from '@/modules/report/constants/components.constants';
 
-// E11-05 — the vocabulary strand as a SEPARATE card outside the seven modelled
-// attribute bars, carrying its own "out of model" pill. Doc 2a s.5.2: the strand
-// never touches the R2/L2 switch, so it is never drawn as an eighth attribute
+// E11-05 — the vocabulary strands as a SEPARATE card outside the seven modelled
+// attribute bars, carrying its own "out of model" pill. Doc 2a s.5.2: the
+// strands sit outside the CDM, so they are never drawn as an eighth attribute
 // and never coloured with a mastery status.
 export function SupplementaryStrand({ view }: { view: SupplementaryStrandView }) {
   const t = useTranslations('Report');
@@ -55,15 +55,6 @@ export function SupplementaryStrand({ view }: { view: SupplementaryStrandView })
           <SupplementaryBandRow key={band.code} band={band} revealed={revealed} index={index} />
         ))}
       </ul>
-
-      {view.qualifiers.length > 0 ? (
-        <p data-slot="report-supplementary-qualifier-link" className="text-caption text-body">
-          {t('supplementaryQualifierLink', {
-            count: view.qualifiers.length,
-            qualifiers: view.qualifiers.join(', '),
-          })}
-        </p>
-      ) : null}
 
       <p className="text-caption text-muted-foreground">{t('supplementarySource')}</p>
     </section>

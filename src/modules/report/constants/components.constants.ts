@@ -11,7 +11,6 @@ export const ERROR_PATTERN_SECTION_CLASS =
 export const ABSENT_KEY = {
   not_derived: 'observationsNotDerived',
   not_applicable: 'observationsNotApplicable',
-  unclassified: 'observationsUnclassified',
 } as const;
 
 export const MODES: readonly ReportViewMode[] = ['teacher', 'parent'];
