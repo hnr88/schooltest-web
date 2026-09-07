@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 import { expect, test } from 'vitest';
 
 import { legacyResultViewSchema } from '@/modules/report/schemas/result-view.schema';
-import { resultViewBaseSchema } from '../../../schooltest-api/src/contracts/results';
 
 /**
  * DRIFT GUARD for the web legacy envelope — this file does NOT touch
@@ -27,10 +26,29 @@ import { resultViewBaseSchema } from '../../../schooltest-api/src/contracts/resu
  */
 const here = dirname(fileURLToPath(import.meta.url));
 
-/** The server contract's base keys, read straight off the authority. */
-const serverKeys = Object.keys(resultViewBaseSchema.shape).sort();
+/**
+ * The authority is imported DYNAMICALLY and never stubbed or skipped: the three
+ * repos are separate git checkouts that happen to sit as siblings, and if
+ * schooltest-api is not checked out beside schooltest-web this must FAIL LOUD
+ * naming the real cause — a missing sibling, not a broken test. A guard that
+ * skips in CI guards nothing, and a stubbed key list would reintroduce the
+ * exact drift this test exists to catch.
+ */
+async function loadAuthority() {
+  try {
+    return (await import('../../../schooltest-api/src/contracts/results')).resultViewBaseSchema;
+  } catch {
+    throw new Error(
+      'this guard requires schooltest-api checked out as a SIBLING of schooltest-web: ' +
+        'it asserts the web legacy envelope against the server contract as the single authority, ' +
+        'and stubbing or copying the key list would reintroduce the exact drift it exists to catch ' +
+        '(a failed import above means the sibling checkout is missing — it is not a broken test)',
+    );
+  }
+}
 
-test('the web legacy envelope mirrors the server contract key-for-key', () => {
+test('the web legacy envelope mirrors the server contract key-for-key', async () => {
+  const serverKeys = Object.keys((await loadAuthority()).shape).sort();
   const webKeys = Object.keys(legacyResultViewSchema.shape).sort();
   // The one legal addition: web's schema folds `combined_children` (the server
   // keeps it on the parent `resultViewSchema` via `.extend`) so a strict parse
@@ -39,7 +57,8 @@ test('the web legacy envelope mirrors the server contract key-for-key', () => {
   expect(serverKeys.filter((key) => !webKeys.includes(key))).toEqual([]);
 });
 
-test('the two keys whose drift broke the desktop are pinned on the web envelope', () => {
+test('the two keys whose drift broke the desktop are pinned on the web envelope', async () => {
+  const serverKeys = Object.keys((await loadAuthority()).shape);
   const webKeys = Object.keys(legacyResultViewSchema.shape);
   for (const key of ['model_version', 'legacy_caveat']) {
     expect(webKeys, `web envelope carries ${key}`).toContain(key);
@@ -47,7 +66,7 @@ test('the two keys whose drift broke the desktop are pinned on the web envelope'
   }
 });
 
-/** Guard the guard: the cross-repo import resolves to the real server file. */
+/** Guard the guard: the authority import is the real server file, not a copy. */
 test('the authority import is the real server contract, not a stale copy', () => {
   const source = readFileSync(
     join(here, '../../../schooltest-api/src/contracts/results.ts'),
