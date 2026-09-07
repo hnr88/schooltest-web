@@ -76,3 +76,15 @@ export const SETTINGS_SELECT_OPTIONS: Readonly<Record<string, readonly string[]>
  */
 export const PLATFORM_SETTINGS_REVALIDATE_TAG: (typeof REVALIDATE_TAGS)[number] =
   'platform-settings';
+
+/**
+ * Ledger 10 (D-008) — the cache tag the legal-document editor invalidates on
+ * save. Same discipline as the ledger-9 tag above: typed against the seo
+ * module's canonical `REVALIDATE_TAGS` union, imported from the constants FILE
+ * (the seo barrel carries server components this constant's server-action
+ * consumer must not pull in). The public legal pages read through
+ * `LEGAL_CACHE_TAG` in `@/modules/legal` with `revalidate: 300`; invalidating
+ * this tag after a real 200 is what makes an edit visible immediately.
+ */
+export const LEGAL_DOCUMENTS_REVALIDATE_TAG: (typeof REVALIDATE_TAGS)[number] =
+  'legal-documents';

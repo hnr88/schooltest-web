@@ -3870,6 +3870,37 @@
       }
     },
     "settings": {
+      "legal": {
+        "title": "Legal documents",
+        "description": "Edit the public legal pages. A saved change is published immediately and busts the pages' cache.",
+        "slugLabel": "Document",
+        "versionLabel": "Version",
+        "effectiveDateLabel": "Effective date",
+        "sectionHeading": "Section {index} heading",
+        "sectionParagraphs": "Section {index} paragraphs",
+        "sectionParagraphsHelp": "One paragraph per line. Bullet lists are kept as they are.",
+        "save": "Save document",
+        "savedToast": "Saved. The public page now serves version {version}.",
+        "errorToast": "The document could not be saved. Try again.",
+        "loadErrorTitle": "We could not load this document",
+        "loadErrorDescription": "The document could not be read. Retry, or check the API if it persists.",
+        "confirmTitle": "Publish this legal document?",
+        "confirmBody": "The public {slug} page reflects the edit immediately. The save is audited.",
+        "confirmAction": "Publish",
+        "cancel": "Cancel",
+        "validation": {
+          "versionRequired": "A version of 1–20 characters is required.",
+          "dateInvalid": "Enter the effective date as YYYY-MM-DD.",
+          "headingRequired": "Every section needs a heading.",
+          "paragraphRequired": "Every section needs at least one paragraph."
+        },
+        "slugs": {
+          "privacy-policy": "Privacy policy",
+          "terms-of-service": "Terms of service",
+          "cookie-policy": "Cookie policy",
+          "gdpr": "GDPR"
+        }
+      },
       "meta": {
         "title": "Platform settings",
         "description": "Site identity, SEO defaults, email, limits, maintenance and announcements."
