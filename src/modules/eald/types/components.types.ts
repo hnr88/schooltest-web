@@ -39,3 +39,11 @@ export interface RegisterFieldWrapperProps extends RegisterCardProps {
   error: string | undefined;
   children: ReactNode;
 }
+
+export interface FigureCardProps {
+  readonly title: string;
+  readonly context?: string;
+  readonly footnote?: string;
+  readonly children?: ReactNode;
+  readonly className?: string;
+}

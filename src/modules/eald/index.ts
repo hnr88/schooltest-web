@@ -54,3 +54,5 @@ export {
   PREDICT_NEXT_SECTIONS,
   DIAGNOSE_SUBSKILLS,
 } from '@/modules/eald/constants/eald.constants';
+export { FigureCard } from '@/modules/eald/components/FigureCard';
+export type { FigureCardProps } from '@/modules/eald/types/components.types';

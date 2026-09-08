@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 
 import type { AvatarTintTone } from '@/modules/design-system/types/metrics.types';
 
-export type PanelHeaderLevel = 'h2' | 'h3';
+export type PanelHeaderLevel = 'h2' | 'h3' | 'span';
 
 export interface PanelHeaderRowProps {
   title: string;
@@ -138,15 +138,23 @@ export interface AvatarStackProps {
   className?: string;
 }
 
+export interface BarChartBar {
+  value: number;
+  display: string;
+}
+
 export interface BarChartItem {
   label: string;
   value: number;
   display: string;
   current?: boolean;
+  bars?: readonly BarChartBar[];
 }
 
 export interface BarChartProps {
   items: readonly BarChartItem[];
+  series?: readonly string[];
+  bands?: readonly string[];
   ariaLabel: string;
   max?: number;
   className?: string;

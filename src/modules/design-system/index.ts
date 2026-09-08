@@ -197,3 +197,5 @@ export type {
 } from './types/design-system.types';
 export * from './primitives'; // read-only ui primitives (single import surface)
 export * from './components/showcase'; // showcase
+export { BAR_CHART_SERIES_CLASSES } from './constants/bar-chart.constants';
+export type { BarChartBar } from './types/record.types';
