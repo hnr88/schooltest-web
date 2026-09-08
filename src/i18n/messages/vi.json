@@ -3804,6 +3804,171 @@
       "errorTitle": "Không thể tải hoạt động",
       "errorDescription": "Kiểm tra kết nối và thử lại.",
       "retry": "Thử lại"
+    },
+    "comms": {
+      "meta": {
+        "title": "Liên lạc — Vận hành SchoolTest",
+        "description": "Vận hành SchoolTest — sự kiện thông báo, nhật ký email xác thực và thông điệp phát tới toàn hệ thống."
+      },
+      "title": "Liên lạc",
+      "description": "Những gì hệ thống gửi đi, những gì đã phát hành, và các thông điệp bạn có thể tự gửi.",
+      "noValue": "—",
+      "composersTitle": "Gửi thông điệp",
+      "errorToast": "Yêu cầu không thực hiện được. Không có gì được gửi.",
+      "templates": {
+        "title": "Sự kiện thông báo",
+        "description": "Các sự kiện mà hệ thống này phát đi. Chúng được đặt trong ứng dụng và không sửa được ở đây.",
+        "loadingLabel": "Đang tải các sự kiện thông báo",
+        "empty": "Chưa có sự kiện thông báo nào được đăng ký.",
+        "sendsEmail": "Gửi email",
+        "inAppOnly": "Chỉ trong ứng dụng",
+        "columns": {
+          "key": "Sự kiện",
+          "subject": "Tiêu đề",
+          "delivery": "Hình thức gửi"
+        },
+        "error": {
+          "title": "Không tải được các sự kiện thông báo.",
+          "description": "Kiểm tra kết nối và thử lại.",
+          "retry": "Thử lại"
+        }
+      },
+      "log": {
+        "title": "Nhật ký email xác thực",
+        "description": "Các email đặt lại mật khẩu và xác nhận mà hệ thống đã gửi. Mới nhất trước.",
+        "loadingLabel": "Đang tải nhật ký email xác thực",
+        "empty": "Chưa có email xác thực nào được gửi.",
+        "columns": {
+          "kind": "Loại",
+          "email": "Người nhận",
+          "issued": "Thời điểm gửi"
+        },
+        "error": {
+          "title": "Không tải được nhật ký email xác thực.",
+          "description": "Kiểm tra kết nối và thử lại.",
+          "retry": "Thử lại"
+        },
+        "pagination": {
+          "label": "Các trang nhật ký email xác thực",
+          "previous": "Trước",
+          "next": "Tiếp theo",
+          "pageCount": "Trang {page} trên {pageCount} · {total} bản ghi"
+        }
+      },
+      "fields": {
+        "audience": "Đối tượng nhận",
+        "audiencePlaceholder": "Chọn người sẽ nhận",
+        "body": "Nội dung",
+        "maxChars": "Tối đa {max} ký tự"
+      },
+      "audiences": {
+        "all": "Tất cả",
+        "ops": "Nhân viên vận hành",
+        "school_admins": "Quản trị viên trường",
+        "teachers": "Giáo viên",
+        "parents": "Phụ huynh"
+      },
+      "validation": {
+        "audienceRequired": "Hãy chọn đối tượng nhận.",
+        "bodyRequired": "Hãy viết nội dung.",
+        "tooLong": "Dùng tối đa {max} ký tự."
+      },
+      "actions": {
+        "preview": "Xem trước người nhận",
+        "cancel": "Hủy"
+      },
+      "bulkEmail": {
+        "title": "Email hàng loạt",
+        "description": "Gửi email tới mọi tài khoản trong một đối tượng nhận. Hãy xem trước số lượng — email đã gửi thì không thu hồi được.",
+        "headline": "Tiêu đề",
+        "send": "Gửi email",
+        "previewToast": "{count} người sẽ nhận email này. Chưa có gì được gửi.",
+        "previewResult": "Email này sẽ đến {count} người nhận.",
+        "sentToast": "Đã gửi tới {sent} người nhận, {failed} thất bại.",
+        "confirmTitle": "Gửi email này ngay?",
+        "confirmDescription": "Việc này gửi email tới {count} người nhận ngay lập tức và không thể thu hồi.",
+        "confirmUnknown": "Việc này gửi email tới mọi người trong đối tượng đã chọn ngay lập tức và không thể thu hồi. Hãy xem trước số lượng nếu bạn muốn biết phạm vi ảnh hưởng.",
+        "confirmAction": "Gửi email",
+        "validation": {
+          "headlineRequired": "Hãy viết tiêu đề."
+        }
+      },
+      "push": {
+        "title": "Thông báo đẩy",
+        "description": "Đẩy thông báo tới mọi thiết bị đã đăng ký trong một đối tượng nhận. Không thể thu hồi.",
+        "headline": "Tiêu đề",
+        "send": "Gửi thông báo đẩy",
+        "previewToast": "{count} thiết bị sẽ nhận thông báo này. Chưa có gì được gửi.",
+        "previewResult": "Thông báo này sẽ đến {count} thiết bị đã đăng ký.",
+        "sentToast": "Đã đẩy tới {sent} thiết bị, {failed} thất bại.",
+        "confirmTitle": "Gửi thông báo đẩy này ngay?",
+        "confirmDescription": "Việc này đẩy thông báo tới {count} thiết bị đã đăng ký ngay lập tức và không thể thu hồi.",
+        "confirmUnknown": "Việc này đẩy thông báo tới mọi thiết bị đã đăng ký trong đối tượng đã chọn ngay lập tức và không thể thu hồi. Hãy xem trước số lượng nếu bạn muốn biết phạm vi ảnh hưởng.",
+        "confirmAction": "Gửi thông báo đẩy",
+        "validation": {
+          "headlineRequired": "Hãy viết tiêu đề."
+        }
+      }
+    },
+    "audit": {
+      "title": "Kiểm toán",
+      "description": "Nhật ký kiểm toán của hệ thống và các token API có thể truy cập nó.",
+      "meta": {
+        "title": "Kiểm toán — Vận hành SchoolTest",
+        "description": "Vận hành SchoolTest — nhật ký kiểm toán và quản trị token API."
+      },
+      "ledgerTitle": "Nhật ký kiểm toán",
+      "loadingLabel": "Đang tải nhật ký kiểm toán",
+      "noValue": "—",
+      "actorSystem": "Hệ thống",
+      "columns": {
+        "actor": "Người thực hiện",
+        "action": "Hành động",
+        "target": "Đối tượng",
+        "timestamp": "Thời điểm"
+      },
+      "empty": {
+        "none": "Chưa có bản ghi kiểm toán nào.",
+        "noMatches": "Không có bản ghi kiểm toán nào khớp với các bộ lọc này."
+      },
+      "error": {
+        "title": "Không tải được nhật ký kiểm toán.",
+        "description": "Kiểm tra kết nối và thử lại.",
+        "retry": "Thử lại"
+      },
+      "pagination": {
+        "label": "Các trang nhật ký kiểm toán",
+        "previous": "Trước",
+        "next": "Tiếp theo",
+        "pageCount": "Trang {page} trên {pageCount} · {total} bản ghi"
+      },
+      "filters": {
+        "action": "Hành động",
+        "actionPlaceholder": "ví dụ invitation.revoke",
+        "target": "Đối tượng",
+        "targetPlaceholder": "ID đối tượng",
+        "apply": "Áp dụng bộ lọc",
+        "clear": "Xóa bộ lọc"
+      },
+      "tokens": {
+        "title": "Token API",
+        "description": "Các token có thể gọi API của hệ thống. Thu hồi có hiệu lực ngay và không thể hoàn tác.",
+        "loadingLabel": "Đang tải token API",
+        "errorTitle": "Không tải được token API.",
+        "errorDescription": "Kiểm tra kết nối và thử lại.",
+        "revoke": "Thu hồi",
+        "confirmTitle": "Thu hồi token API này?",
+        "confirmBody": "{name} sẽ ngừng hoạt động ngay lập tức và không thể phục hồi. Mọi thứ đang dùng nó sẽ bắt đầu lỗi.",
+        "confirmAction": "Thu hồi token",
+        "cancel": "Hủy",
+        "columns": {
+          "name": "Tên",
+          "type": "Loại",
+          "lastUsed": "Dùng lần cuối",
+          "created": "Ngày tạo",
+          "actions": "Hành động"
+        }
+      }
     }
   },
   "RunSheet": {

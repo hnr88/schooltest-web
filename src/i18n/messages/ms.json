@@ -3795,6 +3795,171 @@
       "errorTitle": "Kami tidak dapat memuatkan aktiviti",
       "errorDescription": "Semak sambungan anda dan cuba lagi.",
       "retry": "Cuba lagi"
+    },
+    "comms": {
+      "meta": {
+        "title": "Komunikasi — Operasi SchoolTest",
+        "description": "Operasi SchoolTest — peristiwa pemberitahuan, lejar e-mel pengesahan dan siaran platform."
+      },
+      "title": "Komunikasi",
+      "description": "Apa yang dihantar oleh platform, apa yang telah dikeluarkan, dan siaran yang boleh anda hantar sendiri.",
+      "noValue": "—",
+      "composersTitle": "Hantar siaran",
+      "errorToast": "Permintaan itu tidak berjaya. Tiada apa-apa dihantar.",
+      "templates": {
+        "title": "Peristiwa pemberitahuan",
+        "description": "Peristiwa yang dihantar oleh platform ini. Ia ditetapkan dalam aplikasi dan tidak boleh disunting di sini.",
+        "loadingLabel": "Memuatkan peristiwa pemberitahuan",
+        "empty": "Tiada peristiwa pemberitahuan didaftarkan.",
+        "sendsEmail": "Hantar e-mel",
+        "inAppOnly": "Dalam apl sahaja",
+        "columns": {
+          "key": "Peristiwa",
+          "subject": "Subjek",
+          "delivery": "Penghantaran"
+        },
+        "error": {
+          "title": "Kami tidak dapat memuatkan peristiwa pemberitahuan.",
+          "description": "Periksa sambungan anda dan cuba lagi.",
+          "retry": "Cuba lagi"
+        }
+      },
+      "log": {
+        "title": "Lejar e-mel pengesahan",
+        "description": "E-mel tetapan semula kata laluan dan pengesahan yang telah dikeluarkan platform. Terbaharu dahulu.",
+        "loadingLabel": "Memuatkan lejar e-mel pengesahan",
+        "empty": "Belum ada e-mel pengesahan dikeluarkan.",
+        "columns": {
+          "kind": "Jenis",
+          "email": "Penerima",
+          "issued": "Dikeluarkan"
+        },
+        "error": {
+          "title": "Kami tidak dapat memuatkan lejar e-mel pengesahan.",
+          "description": "Periksa sambungan anda dan cuba lagi.",
+          "retry": "Cuba lagi"
+        },
+        "pagination": {
+          "label": "Halaman lejar e-mel pengesahan",
+          "previous": "Sebelumnya",
+          "next": "Seterusnya",
+          "pageCount": "Halaman {page} daripada {pageCount} · {total} entri"
+        }
+      },
+      "fields": {
+        "audience": "Khalayak",
+        "audiencePlaceholder": "Pilih siapa yang menerimanya",
+        "body": "Mesej",
+        "maxChars": "Maksimum {max} aksara"
+      },
+      "audiences": {
+        "all": "Semua orang",
+        "ops": "Kakitangan operasi",
+        "school_admins": "Pentadbir sekolah",
+        "teachers": "Guru",
+        "parents": "Ibu bapa"
+      },
+      "validation": {
+        "audienceRequired": "Pilih satu khalayak.",
+        "bodyRequired": "Tulis mesej.",
+        "tooLong": "Gunakan {max} aksara atau kurang."
+      },
+      "actions": {
+        "preview": "Pratonton penerima",
+        "cancel": "Batal"
+      },
+      "bulkEmail": {
+        "title": "E-mel pukal",
+        "description": "Hantar e-mel kepada setiap akaun dalam satu khalayak. Pratonton jumlahnya dahulu — hantaran tidak boleh ditarik semula.",
+        "headline": "Subjek",
+        "send": "Hantar e-mel",
+        "previewToast": "{count} penerima akan menerimanya. Tiada apa-apa dihantar.",
+        "previewResult": "Ini akan sampai kepada {count} penerima.",
+        "sentToast": "Dihantar kepada {sent} penerima, {failed} gagal.",
+        "confirmTitle": "Hantar e-mel ini sekarang?",
+        "confirmDescription": "Ini menghantar e-mel kepada {count} penerima serta-merta dan tidak boleh ditarik semula.",
+        "confirmUnknown": "Ini menghantar e-mel kepada semua orang dalam khalayak yang dipilih serta-merta dan tidak boleh ditarik semula. Pratonton jumlahnya dahulu jika anda mahu melihat skop kesannya.",
+        "confirmAction": "Hantar e-mel",
+        "validation": {
+          "headlineRequired": "Tulis subjek."
+        }
+      },
+      "push": {
+        "title": "Siaran push",
+        "description": "Hantar pemberitahuan push ke setiap peranti berdaftar dalam satu khalayak. Ia tidak boleh ditarik semula.",
+        "headline": "Tajuk",
+        "send": "Hantar push",
+        "previewToast": "{count} peranti akan menerimanya. Tiada apa-apa dihantar.",
+        "previewResult": "Ini akan sampai ke {count} peranti berdaftar.",
+        "sentToast": "Dihantar ke {sent} peranti, {failed} gagal.",
+        "confirmTitle": "Hantar push ini sekarang?",
+        "confirmDescription": "Ini menghantar push ke {count} peranti berdaftar serta-merta dan tidak boleh ditarik semula.",
+        "confirmUnknown": "Ini menghantar push ke setiap peranti berdaftar dalam khalayak yang dipilih serta-merta dan tidak boleh ditarik semula. Pratonton jumlahnya dahulu jika anda mahu melihat skop kesannya.",
+        "confirmAction": "Hantar push",
+        "validation": {
+          "headlineRequired": "Tulis tajuk."
+        }
+      }
+    },
+    "audit": {
+      "title": "Audit",
+      "description": "Lejar audit platform dan token API yang boleh mencapainya.",
+      "meta": {
+        "title": "Audit — Operasi SchoolTest",
+        "description": "Operasi SchoolTest — lejar audit dan pentadbiran token API."
+      },
+      "ledgerTitle": "Lejar audit",
+      "loadingLabel": "Memuatkan lejar audit",
+      "noValue": "—",
+      "actorSystem": "Sistem",
+      "columns": {
+        "actor": "Pelaku",
+        "action": "Tindakan",
+        "target": "Sasaran",
+        "timestamp": "Masa"
+      },
+      "empty": {
+        "none": "Belum ada entri audit direkodkan.",
+        "noMatches": "Tiada entri audit yang menepati penapis ini."
+      },
+      "error": {
+        "title": "Kami tidak dapat memuatkan lejar audit.",
+        "description": "Periksa sambungan anda dan cuba lagi.",
+        "retry": "Cuba lagi"
+      },
+      "pagination": {
+        "label": "Halaman lejar audit",
+        "previous": "Sebelumnya",
+        "next": "Seterusnya",
+        "pageCount": "Halaman {page} daripada {pageCount} · {total} entri"
+      },
+      "filters": {
+        "action": "Tindakan",
+        "actionPlaceholder": "cth. invitation.revoke",
+        "target": "Sasaran",
+        "targetPlaceholder": "ID sasaran",
+        "apply": "Guna penapis",
+        "clear": "Kosongkan penapis"
+      },
+      "tokens": {
+        "title": "Token API",
+        "description": "Token yang boleh memanggil API platform. Membatalkannya berkesan serta-merta dan tidak boleh dibatalkan semula.",
+        "loadingLabel": "Memuatkan token API",
+        "errorTitle": "Kami tidak dapat memuatkan token API.",
+        "errorDescription": "Periksa sambungan anda dan cuba lagi.",
+        "revoke": "Batalkan",
+        "confirmTitle": "Batalkan token API ini?",
+        "confirmBody": "{name} berhenti berfungsi serta-merta dan tidak boleh dipulihkan. Apa sahaja yang menggunakannya akan mula gagal.",
+        "confirmAction": "Batalkan token",
+        "cancel": "Batal",
+        "columns": {
+          "name": "Nama",
+          "type": "Jenis",
+          "lastUsed": "Kali terakhir digunakan",
+          "created": "Dicipta",
+          "actions": "Tindakan"
+        }
+      }
     }
   },
   "RunSheet": {

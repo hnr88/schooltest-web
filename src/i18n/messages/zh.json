@@ -3875,6 +3875,171 @@
       "errorTitle": "无法加载活动",
       "errorDescription": "请检查网络连接后重试。",
       "retry": "重试"
+    },
+    "comms": {
+      "meta": {
+        "title": "通信 — SchoolTest 运维",
+        "description": "SchoolTest 运维 — 通知事件、认证邮件日志与平台广播。"
+      },
+      "title": "通信",
+      "description": "平台会发送什么、已经发出过什么，以及您可以自行发送的广播。",
+      "noValue": "—",
+      "composersTitle": "发送广播",
+      "errorToast": "该请求未成功，未发送任何内容。",
+      "templates": {
+        "title": "通知事件",
+        "description": "本平台会派发的事件。这些在应用中设定，无法在此编辑。",
+        "loadingLabel": "正在加载通知事件",
+        "empty": "尚未注册任何通知事件。",
+        "sendsEmail": "发送邮件",
+        "inAppOnly": "仅应用内",
+        "columns": {
+          "key": "事件",
+          "subject": "主题",
+          "delivery": "送达方式"
+        },
+        "error": {
+          "title": "无法加载通知事件。",
+          "description": "请检查网络连接后重试。",
+          "retry": "再试一次"
+        }
+      },
+      "log": {
+        "title": "认证邮件日志",
+        "description": "平台已发出的密码重置与确认邮件。最新的排在前面。",
+        "loadingLabel": "正在加载认证邮件日志",
+        "empty": "尚未发出任何认证邮件。",
+        "columns": {
+          "kind": "类型",
+          "email": "收件人",
+          "issued": "发出时间"
+        },
+        "error": {
+          "title": "无法加载认证邮件日志。",
+          "description": "请检查网络连接后重试。",
+          "retry": "再试一次"
+        },
+        "pagination": {
+          "label": "认证邮件日志分页",
+          "previous": "上一页",
+          "next": "下一页",
+          "pageCount": "第 {page} 页，共 {pageCount} 页 · {total} 条记录"
+        }
+      },
+      "fields": {
+        "audience": "受众",
+        "audiencePlaceholder": "选择接收对象",
+        "body": "消息内容",
+        "maxChars": "最多 {max} 个字符"
+      },
+      "audiences": {
+        "all": "所有人",
+        "ops": "运维人员",
+        "school_admins": "学校管理员",
+        "teachers": "教师",
+        "parents": "家长"
+      },
+      "validation": {
+        "audienceRequired": "请选择受众。",
+        "bodyRequired": "请填写消息内容。",
+        "tooLong": "请控制在 {max} 个字符以内。"
+      },
+      "actions": {
+        "preview": "预览收件人",
+        "cancel": "取消"
+      },
+      "bulkEmail": {
+        "title": "群发邮件",
+        "description": "向某一受众中的每个账户发送邮件。请先预览人数——邮件一旦发出便无法撤回。",
+        "headline": "主题",
+        "send": "发送邮件",
+        "previewToast": "将有 {count} 位收件人收到此邮件。目前未发送任何内容。",
+        "previewResult": "此邮件将触达 {count} 位收件人。",
+        "sentToast": "已发送给 {sent} 位收件人，{failed} 位失败。",
+        "confirmTitle": "现在发送这封邮件？",
+        "confirmDescription": "这会立即向 {count} 位收件人发送邮件，且无法撤回。",
+        "confirmUnknown": "这会立即向所选受众中的所有人发送邮件，且无法撤回。若想了解影响范围，请先预览人数。",
+        "confirmAction": "发送邮件",
+        "validation": {
+          "headlineRequired": "请填写主题。"
+        }
+      },
+      "push": {
+        "title": "推送广播",
+        "description": "向某一受众中所有已注册的设备推送通知。推送无法撤回。",
+        "headline": "标题",
+        "send": "发送推送",
+        "previewToast": "将有 {count} 台设备收到此推送。目前未发送任何内容。",
+        "previewResult": "此推送将触达 {count} 台已注册设备。",
+        "sentToast": "已推送至 {sent} 台设备，{failed} 台失败。",
+        "confirmTitle": "现在发送此推送？",
+        "confirmDescription": "这会立即推送至 {count} 台已注册设备，且无法撤回。",
+        "confirmUnknown": "这会立即推送至所选受众中的所有已注册设备，且无法撤回。若想了解影响范围，请先预览数量。",
+        "confirmAction": "发送推送",
+        "validation": {
+          "headlineRequired": "请填写标题。"
+        }
+      }
+    },
+    "audit": {
+      "title": "审计",
+      "description": "平台审计日志，以及可以访问它的 API 令牌。",
+      "meta": {
+        "title": "审计 — SchoolTest 运维",
+        "description": "SchoolTest 运维 — 审计日志与 API 令牌管理。"
+      },
+      "ledgerTitle": "审计日志",
+      "loadingLabel": "正在加载审计日志",
+      "noValue": "—",
+      "actorSystem": "系统",
+      "columns": {
+        "actor": "操作者",
+        "action": "操作",
+        "target": "目标",
+        "timestamp": "时间"
+      },
+      "empty": {
+        "none": "尚未记录任何审计条目。",
+        "noMatches": "没有符合这些筛选条件的审计条目。"
+      },
+      "error": {
+        "title": "无法加载审计日志。",
+        "description": "请检查网络连接后重试。",
+        "retry": "再试一次"
+      },
+      "pagination": {
+        "label": "审计日志分页",
+        "previous": "上一页",
+        "next": "下一页",
+        "pageCount": "第 {page} 页，共 {pageCount} 页 · {total} 条记录"
+      },
+      "filters": {
+        "action": "操作",
+        "actionPlaceholder": "例如 invitation.revoke",
+        "target": "目标",
+        "targetPlaceholder": "目标 ID",
+        "apply": "应用筛选",
+        "clear": "清除筛选"
+      },
+      "tokens": {
+        "title": "API 令牌",
+        "description": "可以调用平台 API 的令牌。撤销会立即生效且无法撤销。",
+        "loadingLabel": "正在加载 API 令牌",
+        "errorTitle": "无法加载 API 令牌。",
+        "errorDescription": "请检查网络连接后重试。",
+        "revoke": "撤销",
+        "confirmTitle": "撤销这个 API 令牌？",
+        "confirmBody": "{name} 会立即停止工作且无法恢复。任何正在使用它的程序都会开始失败。",
+        "confirmAction": "撤销令牌",
+        "cancel": "取消",
+        "columns": {
+          "name": "名称",
+          "type": "类型",
+          "lastUsed": "最近使用",
+          "created": "创建时间",
+          "actions": "操作"
+        }
+      }
     }
   },
   "RunSheet": {
