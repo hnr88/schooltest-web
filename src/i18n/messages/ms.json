@@ -406,7 +406,9 @@
       "benefitFeedback": "Fahami kemajuan dengan maklum balas AI",
       "legal": "© 2026 SchoolTest. Hak cipta terpelihara."
     },
-    "wizardStepSkipped": "Step skipped"
+    "wizardStepSkipped": "Step skipped",
+    "sessionExpiredBody": "Sesi ops tamat selepas 30 minit tanpa aktiviti. Log masuk semula — tiada apa yang anda simpan hilang.",
+    "sessionExpiredAction": "Log masuk semula"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -855,7 +857,11 @@
       "account": "Akaun",
       "teacherDashboard": "Papan pemuka",
       "testSessions": "Sesi ujian",
-      "results": "Keputusan"
+      "results": "Keputusan",
+      "opsSystem": "Sistem",
+      "opsAudit": "Audit & keselamatan",
+      "opsComms": "Komunikasi",
+      "opsFlags": "Bendera & tetapan"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -2684,7 +2690,65 @@
       "saving": "Menyimpan...",
       "savedToast": "{name} telah dikemas kini.",
       "forbiddenToast": "Anda tidak mempunyai kebenaran untuk mengubah kelas ini.",
-      "errorToast": "Itu tidak berjaya. Cuba lagi."
+      "errorToast": "Itu tidak berjaya. Cuba lagi.",
+      "teacherUnassigned": "Tiada guru ditugaskan",
+      "studentCount": "{count, plural, other {# murid}}",
+      "editClass": "Sunting kelas",
+      "importStudents": "Import murid",
+      "summary": {
+        "students": "Murid",
+        "testACompleted": "Ujian A selesai",
+        "testBCompleted": "Ujian B selesai",
+        "completedFraction": "{completed} / {total}",
+        "avgReadingScore": "Skor bacaan purata"
+      },
+      "table": {
+        "caption": "Murid dalam kelas ini dengan keputusan Ujian A dan Ujian B mereka",
+        "columnStudent": "Murid",
+        "columnTestA": "Ujian A",
+        "columnTestB": "Ujian B",
+        "columnScore": "Skor",
+        "columnAcara": "ACARA",
+        "statusDone": "Selesai",
+        "statusNotStarted": "Belum bermula",
+        "statusInProgress": "Sedang berjalan"
+      },
+      "empty": {
+        "title": "Belum ada murid dalam kelas ini",
+        "description": "Import murid melalui CSV atau tambah mereka satu demi satu.",
+        "import": "Import murid",
+        "addStudent": "Tambah murid"
+      },
+      "edit": {
+        "title": "Sunting kelas",
+        "description": "Namakan semula kelas ini atau tugaskan guru yang berbeza.",
+        "nameLabel": "Nama kelas",
+        "teacherLabel": "Tugaskan guru",
+        "teacherUnassigned": "Tiada guru",
+        "cancel": "Batal",
+        "save": "Simpan perubahan",
+        "saving": "Menyimpan...",
+        "savedToast": "{name} telah dikemas kini.",
+        "forbiddenToast": "Anda tidak mempunyai kebenaran untuk mengubah kelas ini.",
+        "errorToast": "Tindakan itu tidak berjaya. Cuba lagi.",
+        "loadError": "Kami tidak dapat memuatkan senarai kakitangan anda",
+        "loadErrorDescription": "Semak sambungan anda, kemudian tutup ini dan cuba lagi."
+      },
+      "import": {
+        "title": "Import murid",
+        "description": "Setiap baris ditambah ke {name}.",
+        "readyCount": "{count, plural, =0 {Belum ada baris yang sedia} other {# baris sedia untuk diimport}}",
+        "errorCount": "{count, plural, other {# baris tidak dapat dibaca}}",
+        "cancel": "Batal",
+        "submit": "Import murid",
+        "submitting": "Mengimport...",
+        "successToast": "{count, plural, other {# murid telah diimport}}.",
+        "partialToast": "{created} daripada {total} murid telah diimport.",
+        "seatsToast": "Pelan anda tidak mempunyai tempat yang tinggal untuk murid ini.",
+        "forbiddenToast": "Anda tidak mempunyai kebenaran untuk menambah murid.",
+        "genericToast": "Tindakan itu tidak berjaya. Cuba lagi.",
+        "duplicateToast": "Murid tersebut sudah wujud. Semak e-mel dan cuba lagi."
+      }
     },
     "title": "Kelas",
     "description": "Setiap kelas di sekolah anda, dalam satu tempat.",
@@ -2765,6 +2829,38 @@
       "successDescription": "{teachers} guru ditetapkan pada {classes} kelas.",
       "cancel": "Batal",
       "submit": "Tugaskan"
+    },
+    "studentDetailMeta": {
+      "title": "Keputusan murid - SchoolTest",
+      "description": "Keputusan ujian bacaan seorang murid dan pecahan subkemahirannya."
+    },
+    "studentDetail": {
+      "backLink": "Kembali ke {name}",
+      "backLinkFallback": "Kembali ke kelas",
+      "notFoundTitle": "Kami tidak dapat menemui murid ini",
+      "notFoundDescription": "Mereka mungkin telah dipindahkan keluar dari kelas ini.",
+      "errorTitle": "Kami tidak dapat memuatkan murid ini",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi",
+      "firstLanguageLabel": "Bahasa pertama:",
+      "levelLabel": "Tahap:",
+      "cardTitle": "Ujian {slot} — Diagnostik bacaan",
+      "overallLabel": "Keseluruhan:",
+      "overallValue": "{score} / 100",
+      "acaraLabel": "ACARA:",
+      "notCompleted": "Ujian {slot} — belum selesai.",
+      "noSubskills": "Tiada keputusan subkemahiran direkodkan untuk ujian ini.",
+      "mastered": "Dikuasai",
+      "notYet": "Belum lagi",
+      "subskill": {
+        "decoding": "Penyahkodan",
+        "vocabulary": "Kosa kata",
+        "grammar": "Tatabahasa",
+        "gist": "Inti",
+        "detail": "Perincian",
+        "inference": "Inferens",
+        "critical": "Bacaan kritis"
+      }
     }
   },
   "SchoolStudents": {

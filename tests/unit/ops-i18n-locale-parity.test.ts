@@ -12,9 +12,14 @@ import { describe, expect, it } from 'vitest';
  * `src/i18n/request.ts` has NO English fallback: a locale missing an `Ops.*` key
  * renders the RAW KEY to a non-en operator. Six parity slices translated the
  * 617-key missing set (tasks slice A–F, 2026-09-08); this guard pins full
- * Ops-namespace parity shut. Deliberately NOT asserted here: the pre-existing
- * NON-Ops debt (80 keys in ko/ms/th/vi, 6 in zh) — different namespaces,
- * outside this mission's scope, and asserting them would keep this spec red.
+ * Ops-namespace parity shut.
+ *
+ * KEY PARITY IS NOW CATALOG-WIDE, not Ops-only. The NON-Ops debt this file
+ * previously excluded (80 keys in ko/ms/th/vi, 6 in zh — Classes.detail,
+ * Classes.studentDetail, Shell.nav ops entries, Auth.sessionExpired*) was
+ * translated in the closing slice, so the presence check below now derives from
+ * EVERY en key. There is no remaining namespace to carve out, and carving one
+ * out again would be how the raw-key class regrows.
  *
  * The check is DERIVED, never hardcoded: a fixed key list would pass forever
  * while a forty-second key went missing, the failure mode that let the raw-key
@@ -42,8 +47,14 @@ function flatKeys(node: Catalog, prefix = ''): string[] {
   );
 }
 
-const enOpsKeys = flatKeys(en).filter((k) => k.startsWith('Ops.'));
+const enAllKeys = flatKeys(en);
+const enOpsKeys = enAllKeys.filter((k) => k.startsWith('Ops.'));
 const LOCALES = ['zh', 'ko', 'ms', 'vi', 'th'] as const;
+
+const catalogFor = (locale: string): Catalog =>
+  JSON.parse(
+    readFileSync(path.join(WEB_ROOT, 'src', 'i18n', 'messages', `${locale}.json`), 'utf8'),
+  ) as Catalog;
 
 describe('Ops i18n locale parity', () => {
   it('the en Ops namespace is non-trivial — an empty census proves nothing', () => {
@@ -51,10 +62,27 @@ describe('Ops i18n locale parity', () => {
   });
 
   it.each(LOCALES)('%s carries every en Ops.* key — no raw keys for non-en operators', (locale) => {
-    const catalog = JSON.parse(readFileSync(path.join(WEB_ROOT, 'src', 'i18n', 'messages', `${locale}.json`), 'utf8')) as Catalog;
-    const present = new Set(flatKeys(catalog));
+    const present = new Set(flatKeys(catalogFor(locale)));
     const missing = enOpsKeys.filter((k) => !present.has(k));
     expect(missing, `${locale} is missing ${missing.length} Ops keys, e.g. ${missing.slice(0, 5).join(', ')}`).toEqual([]);
+  });
+});
+
+describe('catalog-wide i18n key parity (non-Ops trees included)', () => {
+  it('the en catalog is non-trivial', () => {
+    expect(enAllKeys.length).toBeGreaterThan(4000);
+    // And it must be strictly larger than the Ops slice, or "catalog-wide"
+    // would silently mean "Ops-only" again.
+    expect(enAllKeys.length).toBeGreaterThan(enOpsKeys.length + 2000);
+  });
+
+  it.each(LOCALES)('%s carries every en key, in EVERY namespace', (locale) => {
+    const present = new Set(flatKeys(catalogFor(locale)));
+    const missing = enAllKeys.filter((k) => !present.has(k));
+    expect(
+      missing,
+      `${locale} is missing ${missing.length} keys, e.g. ${missing.slice(0, 5).join(', ')}`,
+    ).toEqual([]);
   });
 });
 
@@ -103,6 +131,11 @@ const ALLOWLIST: readonly Exemption[] = [
   },
   { key: 'Ops.system.info.fields.nodeVersion', why: 'product name: the runtime is called Node everywhere' },
   { key: 'Ops.system.info.fields.strapiVersion', why: 'product name: Strapi' },
+  { value: /^ACARA:$/, why: 'the ACARA proper noun as a field label — the colon is punctuation, not English' },
+  {
+    value: /^\{\w+\}\s*\/\s*(\{\w+\}|\d+)$/,
+    why: 'a fraction built from interpolations (e.g. "{completed} / {total}", "{score} / 100"): there is no prose to translate, and rewriting the separator would break the reading order the component lays out',
+  },
 ];
 
 function exempt(locale: string, key: string, value: string): boolean {
@@ -148,6 +181,58 @@ describe('Ops i18n content parity', () => {
     expect(
       still,
       `${locale} still renders English for ${still.length} Ops keys, e.g. ${still.slice(0, 5).join(' | ')}`,
+    ).toEqual([]);
+  });
+});
+
+/**
+ * CONTENT parity for the NON-Ops trees the closing slice delivered.
+ *
+ * Scoped deliberately, and the scope is the honest part. Key parity above is
+ * catalog-wide because every en key now exists in every catalog. CONTENT parity
+ * cannot be, yet: measured 2026-09-08, the catalogs still hold 608–636 non-Ops
+ * values per locale that are byte-identical to en — concentrated in
+ * `Home.pilot` (~93/locale), `Home.footer`, `SchoolAdmin.account`,
+ * `Home.pricing`, `Classes.addForm` and `SchoolStudents.import`. That is
+ * pre-existing marketing/admin-surface debt, it predates this mission, and the
+ * closing slice was told to REPORT it rather than fix it. Asserting it here
+ * would ship a permanently red spec, which teaches the suite to be ignored.
+ *
+ * So this block pins exactly what was translated, and nothing it did not earn.
+ * When someone repays the Home/SchoolAdmin debt, they should widen
+ * TRANSLATED_TREES rather than add a second spec.
+ */
+const TRANSLATED_TREES = [
+  'Classes.detail.',
+  'Classes.studentDetail.',
+  'Classes.studentDetailMeta.',
+  'Shell.nav.',
+  'Auth.sessionExpired',
+] as const;
+
+const enTranslated = new Map(
+  flatEntries(en).filter(([k]) => TRANSLATED_TREES.some((t) => k.startsWith(t))),
+);
+
+describe('non-Ops i18n content parity (the trees this slice translated)', () => {
+  it('the scoped tree set is non-empty and covers the delivered keys', () => {
+    expect(enTranslated.size).toBeGreaterThan(80);
+  });
+
+  it.each(LOCALES)('%s translates the Classes/Shell.nav/Auth-session trees', (locale) => {
+    const catalog = catalogFor(locale);
+    const still = flatEntries(catalog)
+      .filter(([key, value]) => {
+        if (typeof value !== 'string') return false;
+        const source = enTranslated.get(key);
+        if (typeof source !== 'string' || source !== value) return false;
+        if (!/[A-Za-z]{3,}/.test(source)) return false;
+        return !exempt(locale, key, value);
+      })
+      .map(([key, value]) => `${key} = ${String(value)}`);
+    expect(
+      still,
+      `${locale} still renders English for ${still.length} of these keys, e.g. ${still.slice(0, 5).join(' | ')}`,
     ).toEqual([]);
   });
 });

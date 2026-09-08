@@ -406,7 +406,9 @@
       "benefitFeedback": "Nắm bắt tiến bộ qua phản hồi AI",
       "legal": "© 2026 SchoolTest. Bảo lưu mọi quyền."
     },
-    "wizardStepSkipped": "Step skipped"
+    "wizardStepSkipped": "Step skipped",
+    "sessionExpiredBody": "Phiên vận hành kết thúc sau 30 phút không hoạt động. Vui lòng đăng nhập lại — những gì bạn đã lưu không bị mất.",
+    "sessionExpiredAction": "Đăng nhập lại"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -855,7 +857,11 @@
       "account": "Tài khoản",
       "teacherDashboard": "Bảng điều khiển",
       "testSessions": "Phiên kiểm tra",
-      "results": "Kết quả"
+      "results": "Kết quả",
+      "opsSystem": "Hệ thống",
+      "opsAudit": "Kiểm toán & bảo mật",
+      "opsComms": "Liên lạc",
+      "opsFlags": "Cờ & cài đặt"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -2693,7 +2699,65 @@
       "saving": "Đang lưu...",
       "savedToast": "Đã cập nhật {name}.",
       "forbiddenToast": "Bạn không có quyền thay đổi lớp này.",
-      "errorToast": "Thao tác không thành công. Hãy thử lại."
+      "errorToast": "Thao tác không thành công. Hãy thử lại.",
+      "teacherUnassigned": "Chưa phân công giáo viên",
+      "studentCount": "{count, plural, other {# học sinh}}",
+      "editClass": "Chỉnh sửa lớp",
+      "importStudents": "Nhập học sinh",
+      "summary": {
+        "students": "Học sinh",
+        "testACompleted": "Đã hoàn thành bài A",
+        "testBCompleted": "Đã hoàn thành bài B",
+        "completedFraction": "{completed} / {total}",
+        "avgReadingScore": "Điểm đọc trung bình"
+      },
+      "table": {
+        "caption": "Học sinh trong lớp này cùng kết quả bài A và bài B",
+        "columnStudent": "Học sinh",
+        "columnTestA": "Bài A",
+        "columnTestB": "Bài B",
+        "columnScore": "Điểm",
+        "columnAcara": "ACARA",
+        "statusDone": "Hoàn thành",
+        "statusNotStarted": "Chưa bắt đầu",
+        "statusInProgress": "Đang tiến hành"
+      },
+      "empty": {
+        "title": "Lớp này chưa có học sinh nào",
+        "description": "Nhập học sinh bằng CSV hoặc thêm từng em một.",
+        "import": "Nhập học sinh",
+        "addStudent": "Thêm học sinh"
+      },
+      "edit": {
+        "title": "Chỉnh sửa lớp",
+        "description": "Đổi tên lớp này hoặc phân công một giáo viên khác.",
+        "nameLabel": "Tên lớp",
+        "teacherLabel": "Phân công giáo viên",
+        "teacherUnassigned": "Không có giáo viên",
+        "cancel": "Hủy",
+        "save": "Lưu thay đổi",
+        "saving": "Đang lưu...",
+        "savedToast": "Đã cập nhật {name}.",
+        "forbiddenToast": "Bạn không có quyền thay đổi lớp này.",
+        "errorToast": "Thao tác không thành công. Hãy thử lại.",
+        "loadError": "Chúng tôi không tải được danh sách nhân sự của bạn",
+        "loadErrorDescription": "Kiểm tra kết nối của bạn, sau đó đóng cửa sổ này rồi thử lại."
+      },
+      "import": {
+        "title": "Nhập học sinh",
+        "description": "Mọi dòng đều được thêm vào {name}.",
+        "readyCount": "{count, plural, =0 {Chưa có dòng nào sẵn sàng} other {# dòng sẵn sàng để nhập}}",
+        "errorCount": "{count, plural, other {# dòng không đọc được}}",
+        "cancel": "Hủy",
+        "submit": "Nhập học sinh",
+        "submitting": "Đang nhập...",
+        "successToast": "{count, plural, other {Đã nhập # học sinh}}.",
+        "partialToast": "Đã nhập {created} trong {total} học sinh.",
+        "seatsToast": "Gói của bạn không còn chỗ cho những học sinh này.",
+        "forbiddenToast": "Bạn không có quyền thêm học sinh.",
+        "genericToast": "Thao tác không thành công. Hãy thử lại.",
+        "duplicateToast": "Những học sinh đó đã tồn tại. Hãy kiểm tra email rồi thử lại."
+      }
     },
     "title": "Lớp học",
     "description": "Mọi lớp học tại trường của bạn, ở một nơi.",
@@ -2774,6 +2838,38 @@
       "successDescription": "Đã đặt {teachers} giáo viên cho {classes} lớp.",
       "cancel": "Hủy",
       "submit": "Phân công"
+    },
+    "studentDetailMeta": {
+      "title": "Kết quả học sinh - SchoolTest",
+      "description": "Kết quả bài kiểm tra đọc của một học sinh và phân tích theo kỹ năng thành phần."
+    },
+    "studentDetail": {
+      "backLink": "Quay lại {name}",
+      "backLinkFallback": "Quay lại lớp",
+      "notFoundTitle": "Chúng tôi không tìm thấy học sinh này",
+      "notFoundDescription": "Có thể em đã được chuyển ra khỏi lớp này.",
+      "errorTitle": "Chúng tôi không tải được học sinh này",
+      "errorDescription": "Kiểm tra kết nối của bạn rồi thử lại.",
+      "retry": "Thử lại",
+      "firstLanguageLabel": "Ngôn ngữ thứ nhất:",
+      "levelLabel": "Trình độ:",
+      "cardTitle": "Bài {slot} — Chẩn đoán đọc",
+      "overallLabel": "Tổng thể:",
+      "overallValue": "{score} / 100",
+      "acaraLabel": "ACARA:",
+      "notCompleted": "Bài {slot} — chưa hoàn thành.",
+      "noSubskills": "Không có kết quả kỹ năng thành phần nào được ghi cho bài kiểm tra này.",
+      "mastered": "Thành thạo",
+      "notYet": "Chưa đạt",
+      "subskill": {
+        "decoding": "Giải mã",
+        "vocabulary": "Từ vựng",
+        "grammar": "Ngữ pháp",
+        "gist": "Ý chính",
+        "detail": "Chi tiết",
+        "inference": "Suy luận",
+        "critical": "Đọc phản biện"
+      }
     }
   },
   "SchoolStudents": {

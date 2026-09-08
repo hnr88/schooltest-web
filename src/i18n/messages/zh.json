@@ -406,7 +406,9 @@
       "benefitFeedback": "通过 AI 反馈了解学习进度",
       "legal": "© 2026 SchoolTest。保留所有权利。"
     },
-    "wizardStepSkipped": "Step skipped"
+    "wizardStepSkipped": "Step skipped",
+    "sessionExpiredBody": "运维会话在闲置 30 分钟后结束。请重新登录 — 您已保存的内容不会丢失。",
+    "sessionExpiredAction": "重新登录"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -855,7 +857,11 @@
       "account": "账户",
       "teacherDashboard": "控制面板",
       "testSessions": "测验场次",
-      "results": "成绩"
+      "results": "成绩",
+      "opsSystem": "系统",
+      "opsAudit": "审计与安全",
+      "opsComms": "通信",
+      "opsFlags": "开关与设置"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",

@@ -406,7 +406,9 @@
       "benefitFeedback": "AI 피드백으로 학습 진행 상황 파악",
       "legal": "© 2026 SchoolTest. 모든 권리 보유."
     },
-    "wizardStepSkipped": "Step skipped"
+    "wizardStepSkipped": "Step skipped",
+    "sessionExpiredBody": "운영 세션은 30분간 활동이 없으면 종료됩니다. 다시 로그인해 주세요 — 저장한 내용은 사라지지 않았습니다.",
+    "sessionExpiredAction": "다시 로그인"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -855,7 +857,11 @@
       "account": "계정",
       "teacherDashboard": "대시보드",
       "testSessions": "테스트 세션",
-      "results": "결과"
+      "results": "결과",
+      "opsSystem": "시스템",
+      "opsAudit": "감사 및 보안",
+      "opsComms": "커뮤니케이션",
+      "opsFlags": "플래그 및 설정"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -2684,7 +2690,65 @@
       "saving": "저장 중...",
       "savedToast": "{name}을(를) 업데이트했습니다.",
       "forbiddenToast": "이 학급을 변경할 권한이 없습니다.",
-      "errorToast": "작업이 실패했습니다. 다시 시도하세요."
+      "errorToast": "작업이 실패했습니다. 다시 시도하세요.",
+      "teacherUnassigned": "배정된 교사 없음",
+      "studentCount": "{count, plural, other {학생 #명}}",
+      "editClass": "학급 편집",
+      "importStudents": "학생 가져오기",
+      "summary": {
+        "students": "학생",
+        "testACompleted": "테스트 A 완료",
+        "testBCompleted": "테스트 B 완료",
+        "completedFraction": "{completed} / {total}",
+        "avgReadingScore": "평균 읽기 점수"
+      },
+      "table": {
+        "caption": "이 학급의 학생과 테스트 A·B 결과",
+        "columnStudent": "학생",
+        "columnTestA": "테스트 A",
+        "columnTestB": "테스트 B",
+        "columnScore": "점수",
+        "columnAcara": "ACARA",
+        "statusDone": "완료",
+        "statusNotStarted": "시작 전",
+        "statusInProgress": "진행 중"
+      },
+      "empty": {
+        "title": "이 학급에는 아직 학생이 없습니다",
+        "description": "CSV로 학생을 가져오거나 한 명씩 추가하세요.",
+        "import": "학생 가져오기",
+        "addStudent": "학생 추가"
+      },
+      "edit": {
+        "title": "학급 편집",
+        "description": "이 학급의 이름을 바꾸거나 다른 교사를 배정합니다.",
+        "nameLabel": "클래스 이름",
+        "teacherLabel": "교사 배정",
+        "teacherUnassigned": "교사 없음",
+        "cancel": "취소",
+        "save": "변경 사항 저장",
+        "saving": "저장 중...",
+        "savedToast": "{name}을(를) 수정했습니다.",
+        "forbiddenToast": "이 학급을 변경할 권한이 없습니다.",
+        "errorToast": "작업에 실패했습니다. 다시 시도하세요.",
+        "loadError": "교직원 목록을 불러올 수 없습니다",
+        "loadErrorDescription": "인터넷 연결을 확인한 뒤 이 창을 닫고 다시 시도해 주세요."
+      },
+      "import": {
+        "title": "학생 가져오기",
+        "description": "모든 행이 {name}에 추가됩니다.",
+        "readyCount": "{count, plural, =0 {아직 준비된 행이 없습니다} other {가져올 준비가 된 행 #개}}",
+        "errorCount": "{count, plural, other {읽을 수 없는 행 #개}}",
+        "cancel": "취소",
+        "submit": "학생 가져오기",
+        "submitting": "가져오는 중...",
+        "successToast": "{count, plural, other {학생 #명을 가져왔습니다}}.",
+        "partialToast": "학생 {total}명 중 {created}명을 가져왔습니다.",
+        "seatsToast": "현재 플랜에는 이 학생들을 받을 좌석이 남아 있지 않습니다.",
+        "forbiddenToast": "학생을 추가할 권한이 없습니다.",
+        "genericToast": "작업에 실패했습니다. 다시 시도하세요.",
+        "duplicateToast": "해당 학생들은 이미 존재합니다. 이메일을 확인한 뒤 다시 시도하세요."
+      }
     },
     "title": "학급",
     "description": "학교의 모든 학급을 한곳에서 확인하세요.",
@@ -2765,6 +2829,38 @@
       "successDescription": "{classes}개 반에 교사 {teachers}명이 지정되었습니다.",
       "cancel": "취소",
       "submit": "배정"
+    },
+    "studentDetailMeta": {
+      "title": "학생 결과 - SchoolTest",
+      "description": "한 학생의 읽기 테스트 결과와 하위 기능별 분석."
+    },
+    "studentDetail": {
+      "backLink": "{name}(으)로 돌아가기",
+      "backLinkFallback": "학급으로 돌아가기",
+      "notFoundTitle": "이 학생을 찾을 수 없습니다",
+      "notFoundDescription": "이 학급에서 이동되었을 수 있습니다.",
+      "errorTitle": "이 학생을 불러올 수 없습니다",
+      "errorDescription": "인터넷 연결을 확인한 후 다시 시도해 주세요.",
+      "retry": "다시 시도",
+      "firstLanguageLabel": "제1언어:",
+      "levelLabel": "수준:",
+      "cardTitle": "테스트 {slot} — 읽기 진단",
+      "overallLabel": "종합:",
+      "overallValue": "{score} / 100",
+      "acaraLabel": "ACARA:",
+      "notCompleted": "테스트 {slot} — 아직 완료되지 않았습니다.",
+      "noSubskills": "이 테스트에는 기록된 하위 기능 결과가 없습니다.",
+      "mastered": "숙달",
+      "notYet": "아직 아님",
+      "subskill": {
+        "decoding": "디코딩",
+        "vocabulary": "어휘",
+        "grammar": "문법",
+        "gist": "요지",
+        "detail": "세부",
+        "inference": "추론",
+        "critical": "비판적 읽기"
+      }
     }
   },
   "SchoolStudents": {

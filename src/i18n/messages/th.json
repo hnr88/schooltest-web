@@ -406,7 +406,9 @@
       "benefitFeedback": "เข้าใจความก้าวหน้าด้วยฟีดแบ็ก AI",
       "legal": "© 2026 SchoolTest สงวนลิขสิทธิ์"
     },
-    "wizardStepSkipped": "Step skipped"
+    "wizardStepSkipped": "Step skipped",
+    "sessionExpiredBody": "เซสชันฝ่ายปฏิบัติการจะสิ้นสุดหลังไม่มีการใช้งาน 30 นาที กรุณาเข้าสู่ระบบอีกครั้ง — ข้อมูลที่คุณบันทึกไว้ไม่สูญหาย",
+    "sessionExpiredAction": "เข้าสู่ระบบอีกครั้ง"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -855,7 +857,11 @@
       "account": "บัญชี",
       "teacherDashboard": "แดชบอร์ด",
       "testSessions": "รอบสอบ",
-      "results": "ผลการสอบ"
+      "results": "ผลการสอบ",
+      "opsSystem": "ระบบ",
+      "opsAudit": "การตรวจสอบและความปลอดภัย",
+      "opsComms": "การสื่อสาร",
+      "opsFlags": "ฟีเจอร์แฟล็กและการตั้งค่า"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
@@ -2684,7 +2690,65 @@
       "saving": "กำลังบันทึก...",
       "savedToast": "อัปเดต {name} แล้ว",
       "forbiddenToast": "คุณไม่มีสิทธิ์เปลี่ยนแปลงชั้นเรียนนี้",
-      "errorToast": "การดำเนินการไม่สำเร็จ ลองอีกครั้ง"
+      "errorToast": "การดำเนินการไม่สำเร็จ ลองอีกครั้ง",
+      "teacherUnassigned": "ยังไม่ได้กำหนดครู",
+      "studentCount": "{count, plural, other {นักเรียน # คน}}",
+      "editClass": "แก้ไขชั้นเรียน",
+      "importStudents": "นำเข้านักเรียน",
+      "summary": {
+        "students": "นักเรียน",
+        "testACompleted": "ทำชุด A เสร็จแล้ว",
+        "testBCompleted": "ทำชุด B เสร็จแล้ว",
+        "completedFraction": "{completed} / {total}",
+        "avgReadingScore": "คะแนนการอ่านเฉลี่ย"
+      },
+      "table": {
+        "caption": "นักเรียนในชั้นเรียนนี้พร้อมผลการทำชุด A และชุด B",
+        "columnStudent": "นักเรียน",
+        "columnTestA": "ชุด A",
+        "columnTestB": "ชุด B",
+        "columnScore": "คะแนน",
+        "columnAcara": "ACARA",
+        "statusDone": "เสร็จสิ้น",
+        "statusNotStarted": "ยังไม่เริ่ม",
+        "statusInProgress": "กำลังดำเนินการ"
+      },
+      "empty": {
+        "title": "ยังไม่มีนักเรียนในชั้นเรียนนี้",
+        "description": "นำเข้านักเรียนด้วยไฟล์ CSV หรือเพิ่มทีละคน",
+        "import": "นำเข้านักเรียน",
+        "addStudent": "เพิ่มนักเรียน"
+      },
+      "edit": {
+        "title": "แก้ไขชั้นเรียน",
+        "description": "เปลี่ยนชื่อชั้นเรียนนี้ หรือกำหนดครูคนอื่น",
+        "nameLabel": "ชื่อชั้นเรียน",
+        "teacherLabel": "กำหนดครู",
+        "teacherUnassigned": "ไม่มีครู",
+        "cancel": "ยกเลิก",
+        "save": "บันทึกการเปลี่ยนแปลง",
+        "saving": "กำลังบันทึก...",
+        "savedToast": "อัปเดต {name} แล้ว",
+        "forbiddenToast": "คุณไม่มีสิทธิ์เปลี่ยนแปลงชั้นเรียนนี้",
+        "errorToast": "ดำเนินการไม่สำเร็จ ลองอีกครั้ง",
+        "loadError": "เราไม่สามารถโหลดรายชื่อบุคลากรของคุณได้",
+        "loadErrorDescription": "ตรวจสอบการเชื่อมต่อ แล้วปิดหน้านี้และลองอีกครั้ง"
+      },
+      "import": {
+        "title": "นำเข้านักเรียน",
+        "description": "ทุกแถวจะถูกเพิ่มเข้าไปใน {name}",
+        "readyCount": "{count, plural, =0 {ยังไม่มีแถวที่พร้อม} other {มี # แถวพร้อมนำเข้า}}",
+        "errorCount": "{count, plural, other {อ่าน # แถวไม่ได้}}",
+        "cancel": "ยกเลิก",
+        "submit": "นำเข้านักเรียน",
+        "submitting": "กำลังนำเข้า...",
+        "successToast": "{count, plural, other {นำเข้านักเรียน # คนแล้ว}}",
+        "partialToast": "นำเข้านักเรียน {created} คนจากทั้งหมด {total} คน",
+        "seatsToast": "แพ็กเกจของคุณไม่มีที่นั่งเหลือสำหรับนักเรียนเหล่านี้",
+        "forbiddenToast": "คุณไม่มีสิทธิ์เพิ่มนักเรียน",
+        "genericToast": "ดำเนินการไม่สำเร็จ ลองอีกครั้ง",
+        "duplicateToast": "มีนักเรียนเหล่านี้อยู่แล้ว ตรวจสอบอีเมลแล้วลองอีกครั้ง"
+      }
     },
     "title": "ชั้นเรียน",
     "description": "ทุกชั้นเรียนในโรงเรียนของคุณ รวมอยู่ในที่เดียว",
@@ -2765,6 +2829,38 @@
       "successDescription": "กำหนดครู {teachers} คนให้ {classes} ชั้นเรียน",
       "cancel": "ยกเลิก",
       "submit": "มอบหมาย"
+    },
+    "studentDetailMeta": {
+      "title": "ผลการทดสอบของนักเรียน - SchoolTest",
+      "description": "ผลการทดสอบการอ่านของนักเรียนหนึ่งคน พร้อมการแยกตามทักษะย่อย"
+    },
+    "studentDetail": {
+      "backLink": "กลับไปที่ {name}",
+      "backLinkFallback": "กลับไปที่ชั้นเรียน",
+      "notFoundTitle": "เราไม่พบนักเรียนคนนี้",
+      "notFoundDescription": "นักเรียนอาจถูกย้ายออกจากชั้นเรียนนี้แล้ว",
+      "errorTitle": "เราไม่สามารถโหลดข้อมูลนักเรียนคนนี้ได้",
+      "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+      "retry": "ลองอีกครั้ง",
+      "firstLanguageLabel": "ภาษาแม่:",
+      "levelLabel": "ระดับ:",
+      "cardTitle": "ชุด {slot} — การประเมินการอ่าน",
+      "overallLabel": "รวม:",
+      "overallValue": "{score} / 100",
+      "acaraLabel": "ACARA:",
+      "notCompleted": "ชุด {slot} — ยังทำไม่เสร็จ",
+      "noSubskills": "ไม่มีการบันทึกผลทักษะย่อยสำหรับการทดสอบนี้",
+      "mastered": "เชี่ยวชาญ",
+      "notYet": "ยังไม่ถึง",
+      "subskill": {
+        "decoding": "การถอดรหัส",
+        "vocabulary": "คำศัพท์",
+        "grammar": "ไวยากรณ์",
+        "gist": "ใจความสำคัญ",
+        "detail": "รายละเอียด",
+        "inference": "การอนุมาน",
+        "critical": "การอ่านเชิงวิพากษ์"
+      }
     }
   },
   "SchoolStudents": {
