@@ -16,11 +16,10 @@ const en = loadMessages('en');
 
 const PUBLIC_TRAILS: readonly { path: string; crumbs: string[] }[] = [
   { path: '/', crumbs: [en['Navigation.home']] },
-  { path: '/eald', crumbs: [en['Navigation.home'], en['Navigation.eald']] },
-  { path: '/eald/diagnose', crumbs: [en['Navigation.home'], en['Navigation.eald'], en['Eald.nav.diagnose']] },
-  { path: '/eald/teach', crumbs: [en['Navigation.home'], en['Navigation.eald'], en['Eald.nav.teach']] },
-  { path: '/eald/track', crumbs: [en['Navigation.home'], en['Navigation.eald'], en['Eald.nav.track']] },
-  { path: '/eald/predict', crumbs: [en['Navigation.home'], en['Navigation.eald'], en['Eald.nav.predict']] },
+  { path: '/diagnose', crumbs: [en['Navigation.home'], en['Eald.nav.diagnose']] },
+  { path: '/teach', crumbs: [en['Navigation.home'], en['Eald.nav.teach']] },
+  { path: '/track', crumbs: [en['Navigation.home'], en['Eald.nav.track']] },
+  { path: '/predict', crumbs: [en['Navigation.home'], en['Eald.nav.predict']] },
   { path: '/privacy-policy', crumbs: [en['Navigation.home'], en['Navigation.privacyPolicy']] },
   { path: '/terms-of-service', crumbs: [en['Navigation.home'], en['Navigation.termsOfService']] },
   { path: '/cookie-policy', crumbs: [en['Navigation.home'], en['Navigation.cookiePolicy']] },

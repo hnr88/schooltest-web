@@ -168,8 +168,8 @@ test.describe('public SEO', () => {
 
     expect(body.startsWith('# ')).toBe(true);
 
-    // Compare the actual link TARGETS: `toContain('/eald')` is satisfied by the
-    // '/eald/diagnose' URL, so dropping '/eald' would still pass.
+    // Compare the actual link TARGETS: a bare `toContain('/diagnose')` would
+    // be satisfied by '/diagnose-extra', so exact pathname equality it is.
     const listed = new Set(
       [...body.matchAll(/\]\((https?:\/\/[^)]+)\)/g)].map((m) => new URL(m[1]).pathname),
     );

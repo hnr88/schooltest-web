@@ -91,7 +91,7 @@ test.describe('C-WEB-04 /api/revalidate immediacy (task 0e17434e)', () => {
     const banner = page.locator('[data-slot="announcement-banner"]');
 
     // 1. warm the web's tagged read of the API
-    await page.goto('/eald');
+    await page.goto('/');
     const bannerBefore = await banner.count();
 
     // 2. change it through the API (clears the API's own cache, not the web's)
@@ -103,7 +103,7 @@ test.describe('C-WEB-04 /api/revalidate immediacy (task 0e17434e)', () => {
     // 3. THE DISCRIMINATOR: the web is still serving its cached copy. Asserted
     // on the MESSAGE, not the banner count — when the baseline already has an
     // announcement on, the count is 1 either way and would pass vacuously.
-    await page.goto('/eald');
+    await page.goto('/');
     expect(
       await page.locator('body').innerText(),
       'the web must still be stale here — otherwise this test proves nothing about the route',
@@ -118,7 +118,7 @@ test.describe('C-WEB-04 /api/revalidate immediacy (task 0e17434e)', () => {
     expect(revalidated.status()).toBe(200);
     expect(await revalidated.json()).toEqual({ revalidated: true, tags: ['platform-settings'] });
 
-    await page.goto('/eald');
+    await page.goto('/');
     await expect(banner).toBeVisible({ timeout: 30_000 });
     await expect(banner).toContainText(throwaway);
 
@@ -130,7 +130,7 @@ test.describe('C-WEB-04 /api/revalidate immediacy (task 0e17434e)', () => {
     });
     expect(revalidatedBack.status()).toBe(200);
 
-    await page.goto('/eald');
+    await page.goto('/');
     await expect(banner).toHaveCount(bannerBefore);
     expect(await page.locator('body').innerText()).not.toContain(throwaway);
   });
