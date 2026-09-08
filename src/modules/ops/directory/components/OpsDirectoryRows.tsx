@@ -161,7 +161,13 @@ function RowMenu<Row>({ actions, row, labels }: RowMenuProps<Row>) {
           <DropdownMenuItem
             key={action.label}
             className={action.destructive ? 'text-destructive' : undefined}
-            onSelect={() => action.onSelect(row)}
+            // onClick, NOT onSelect: this is Base UI's Menu.Item, which has no
+            // onSelect prop — that is Radix's API. React binds the name as the
+            // DOM text-selection event instead, so the handler sat silent
+            // through every click (menu opens, item "activates", nothing
+            // runs, no error) — the schools table's dead "Open school" was
+            // this, not the router.
+            onClick={() => action.onSelect(row)}
           >
             {action.label}
           </DropdownMenuItem>

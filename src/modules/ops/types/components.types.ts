@@ -1,4 +1,4 @@
-import type { SchoolDetail, StaffUserRole, StaffUserRow, SchoolsListRow } from '@schooltest/ops-contracts';
+import type { SchoolDetail, StaffUserRole, StaffUserRow } from '@schooltest/ops-contracts';
 
 import type { FormWindow, OpsForm } from '@/modules/ops/schemas/form-window.schema';
 import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
@@ -22,11 +22,6 @@ export interface OpsFormWindowProps {
 
 export interface OpsImportCreateTableProps {
   rows: PortalImportPreview['create'];
-}
-
-/** One rendered school row. Kept: the component is still used elsewhere. */
-export interface OpsSchoolRowProps {
-  school: SchoolsListRow;
 }
 
 export interface OpsImportPreviewTablesProps {

@@ -3563,6 +3563,8 @@
       "unnamedSchool": "Unnamed school",
       "actionOpen": "Open school",
       "actionStatusPage": "Status page",
+      "bulkSuspend": "Suspend selected",
+      "bulkArchive": "Archive selected",
       "statusPageUnconfigured": "This release has no status page URL configured.",
       "emptyNoneTitle": "No schools yet",
       "emptyNoneDescription": "Create the first school to get started.",
@@ -4379,6 +4381,48 @@
       "staffRevokeError": "The invitation could not be revoked. Refresh the list and try again."
     },
     "createSchool": {
+      "button": "Create school",
+      "title": "Create a school",
+      "description": "Creates the school and invites its first school administrator.",
+      "callout": "On submit the school is created and an invitation email goes to the primary contact.",
+      "cancel": "Cancel",
+      "submit": "Create school",
+      "submitting": "Creating…",
+      "name": "School name",
+      "suburb": "Suburb",
+      "state": "State",
+      "statePlaceholder": "Select a state",
+      "sector": "Sector",
+      "sectorPlaceholder": "Select a sector",
+      "plan": "Plan",
+      "planPlaceholder": "Select a plan",
+      "status": "Status",
+      "statusPlaceholder": "Select a status",
+      "contactName": "Primary contact name",
+      "contactEmail": "Contact email",
+      "phone": "Phone",
+      "sectorOptions": {
+        "government": "Government",
+        "catholic": "Catholic",
+        "non-government": "Non-government"
+      },
+      "planOptions": {
+        "pilot": "Pilot",
+        "standard": "Standard",
+        "enterprise": "Enterprise"
+      },
+      "statusOptions": {
+        "pending_setup": "Pending setup",
+        "trial": "Trial",
+        "active": "Active"
+      },
+      "validation": {
+        "required": "This field is required",
+        "tooLong": "Use 100 characters or fewer",
+        "emailTooLong": "Use 255 characters or fewer",
+        "emailInvalid": "Enter a valid email address",
+        "nameTooShort": "Use at least 3 characters"
+      },
       "editTitle": "Edit school",
       "editDescription": "Update {name}'s profile, plan and contact. Saving writes the versioned school edit.",
       "editVersionNote": "Version guard: saving checks this edit against the school as loaded ({version}). If someone else changes the school first, your edit is refused with the draft intact.",

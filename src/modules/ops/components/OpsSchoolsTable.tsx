@@ -1,10 +1,10 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 
+import { useRouter } from '@/i18n/navigation';
 import { useOpsActionRunner } from '@/modules/ops/actions';
 import type { OpsActionTarget } from '@/modules/ops/actions';
 import {
@@ -203,6 +203,11 @@ export function OpsSchoolsTable() {
     {
       label: t('actionOpen'),
       onSelect: (target: SchoolsListRow) =>
+        // The router is next-intl's (`@/i18n/navigation`), NOT the plain
+        // next/navigation one: this app runs localePrefix 'as-needed', and the
+        // plain router's push used to land on an unprefixed path the
+        // locale-aware stack bounced off — the click closed the menu and the
+        // URL never left the list (measured over a 3s settle, no pageerror).
         router.push(`/dashboard/ops/schools/${target.documentId}`),
     },
     {
