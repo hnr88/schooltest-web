@@ -1987,7 +1987,17 @@
         "subtitle": "See exactly what each EAL/D student can and can't do, subskill by subskill, in 30 minutes per skill.",
         "primaryCta": "Register your interest",
         "secondaryCta": "See a sample profile",
-        "microcopy": "Join the founding schools pilot"
+        "microcopy": "Join the founding schools pilot",
+        "eyebrow": "Diagnostic and progress assessment",
+        "stat1Label": "Subskills measured",
+        "stat1Value": "27",
+        "stat2Label": "Test length",
+        "stat2Value": "30 min per skill",
+        "stat3Label": "Reported against",
+        "stat3Value": "ACARA + CEFR",
+        "stat4Label": "Year levels",
+        "stat4Value": "7 to 12",
+        "statsLabel": "EAL/D assessment at a glance"
       },
       "trustedBy": {
         "label": "Piloting with",

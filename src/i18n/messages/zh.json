@@ -4554,7 +4554,17 @@
         "subtitle": "30 分钟测一项技能，逐个微技能看清每位 EAL/D 学生能做什么、还不能做什么。",
         "primaryCta": "登记意向",
         "secondaryCta": "查看示例档案",
-        "microcopy": "加入创始学校试点"
+        "microcopy": "加入创始学校试点",
+        "eyebrow": "诊断与进展评估",
+        "stat1Label": "测量子技能",
+        "stat1Value": "27",
+        "stat2Label": "测试时长",
+        "stat2Value": "每项技能 30 分钟",
+        "stat3Label": "成绩对照",
+        "stat3Value": "ACARA + CEFR",
+        "stat4Label": "适用年级",
+        "stat4Value": "7 至 12",
+        "statsLabel": "EAL/D 评估概览"
       },
       "trustedBy": {
         "label": "试点合作学校",

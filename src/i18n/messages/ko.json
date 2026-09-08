@@ -4564,7 +4564,17 @@
         "subtitle": "각 EAL/D 학생이 무엇을 할 수 있고 아직 할 수 없는지, 스킬당 30분 만에 서브스킬별로 정확히 확인하세요.",
         "primaryCta": "관심 등록",
         "secondaryCta": "샘플 프로필 보기",
-        "microcopy": "창립 학교 파일럿에 참여하세요"
+        "microcopy": "창립 학교 파일럿에 참여하세요",
+        "eyebrow": "진단 및 진전 평가",
+        "stat1Label": "측정 하위 기술",
+        "stat1Value": "27",
+        "stat2Label": "시험 시간",
+        "stat2Value": "기술당 30분",
+        "stat3Label": "성적 보고 기준",
+        "stat3Value": "ACARA + CEFR",
+        "stat4Label": "대상 학년",
+        "stat4Value": "7~12",
+        "statsLabel": "EAL/D 평가 한눈에 보기"
       },
       "trustedBy": {
         "label": "파일럿 진행 학교",

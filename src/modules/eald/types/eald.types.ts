@@ -26,6 +26,13 @@ interface EaldHeroProps {
   readonly imageAlt?: string;
   readonly centered?: boolean;
   readonly minHeight?: string;
+  // Task 05 (Home v2:74–97): the full-bleed home band renders the public
+  // breadcrumb INSIDE the hero and the four-cell StatStrip beneath it. Both
+  // slots are optional — every existing consumer omits them and gets the
+  // centred card unchanged.
+  readonly eyebrow?: string;
+  readonly breadcrumb?: ReactNode;
+  readonly stats?: ReactNode;
 }
 
 interface QuoteBandProps {

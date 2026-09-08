@@ -4573,7 +4573,17 @@
         "subtitle": "Xem chính xác từng học sinh EAL/D làm được và chưa làm được gì, theo từng vi kỹ năng, trong 30 phút mỗi kỹ năng.",
         "primaryCta": "Đăng ký quan tâm",
         "secondaryCta": "Xem hồ sơ mẫu",
-        "microcopy": "Tham gia chương trình thí điểm trường sáng lập"
+        "microcopy": "Tham gia chương trình thí điểm trường sáng lập",
+        "eyebrow": "Đánh giá chẩn đoán và tiến bộ",
+        "stat1Label": "Tiểu kỹ năng được đo",
+        "stat1Value": "27",
+        "stat2Label": "Thời lượng bài kiểm tra",
+        "stat2Value": "30 phút mỗi kỹ năng",
+        "stat3Label": "Đối chiếu kết quả",
+        "stat3Value": "ACARA + CEFR",
+        "stat4Label": "Khối lớp",
+        "stat4Value": "7 đến 12",
+        "statsLabel": "Đánh giá EAL/D qua các chỉ số chính"
       },
       "trustedBy": {
         "label": "Đang thí điểm cùng",

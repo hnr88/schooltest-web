@@ -4564,7 +4564,17 @@
         "subtitle": "Lihat dengan tepat apa yang setiap murid EAL/D boleh dan belum boleh lakukan, subkemahiran demi subkemahiran, dalam 30 minit setiap kemahiran.",
         "primaryCta": "Daftar minat anda",
         "secondaryCta": "Lihat profil contoh",
-        "microcopy": "Sertai perintis sekolah pengasas"
+        "microcopy": "Sertai perintis sekolah pengasas",
+        "eyebrow": "Pentaksiran diagnostik dan kemajuan",
+        "stat1Label": "Subskill diukur",
+        "stat1Value": "27",
+        "stat2Label": "Tempoh ujian",
+        "stat2Value": "30 minit setiap kemahiran",
+        "stat3Label": "Dilaporkan terhadap",
+        "stat3Value": "ACARA + CEFR",
+        "stat4Label": "Tahap tahun",
+        "stat4Value": "7 hingga 12",
+        "statsLabel": "Pentaksiran EAL/D secara ringkas"
       },
       "trustedBy": {
         "label": "Sedang diperintis dengan",

@@ -7,6 +7,7 @@ import {
   EaldHeader,
   EaldHero,
 } from '@/modules/eald';
+import { StatStrip } from '@/modules/design-system';
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings } from '@/modules/settings';
@@ -61,14 +62,33 @@ export default async function EaldHome({ params }: EaldHomeProps) {
         title={t('meta.homeTitle')}
         description={t('meta.homeDescription')}
       />
-      <PublicBreadcrumb pathname="/eald" />
+      {/* Home v2:78 puts the crumb row INSIDE the hero band, so the standalone
+          row above <main> is gone; the slot below renders the same
+          PublicBreadcrumb, which still draws from buildTrail — the registry
+          BreadcrumbJsonLd above uses too, so visible trail and JSON-LD stay
+          one derivation. */}
       <main id="main-content">
         <EaldHero
+          centered={false}
+          eyebrow={t('home.hero.eyebrow')}
           title={t('home.hero.title')}
           subtitle={t('home.hero.subtitle')}
           primaryCta={{ label: t('home.hero.primaryCta'), href: '#register' }}
           secondaryCta={{ label: t('home.hero.secondaryCta'), href: '/eald/diagnose' }}
           subText={t('home.hero.microcopy')}
+          breadcrumb={<PublicBreadcrumb pathname="/eald" className="py-0" />}
+          stats={
+            <StatStrip
+              ariaLabel={t('home.hero.statsLabel')}
+              className="grid grid-cols-2 gap-y-6 lg:grid-cols-4 lg:gap-y-0 [&>div]:py-4 lg:[&>div]:py-5 lg:[&>div]:px-6 lg:[&>div:first-child]:pl-0 lg:[&>div:last-child]:pr-0 lg:[&>div+div]:border-l lg:[&>div+div]:border-white/15 [&>div>dd]:order-2 [&>div>dt]:order-1 [&>div>dd]:text-white [&>div>dt]:tracking-widest [&>div>dt]:text-navy-muted [&>div>dt]:uppercase"
+              items={[
+                { label: t('home.hero.stat1Label'), value: t('home.hero.stat1Value') },
+                { label: t('home.hero.stat2Label'), value: t('home.hero.stat2Value') },
+                { label: t('home.hero.stat3Label'), value: t('home.hero.stat3Value') },
+                { label: t('home.hero.stat4Label'), value: t('home.hero.stat4Value') },
+              ]}
+            />
+          }
         />
         <EaldTrustedBy />
         <ProblemSection />
