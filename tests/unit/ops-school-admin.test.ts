@@ -18,10 +18,12 @@ describe('ops school-admin controls', () => {
     const hrefs = filterNavByRole(NAV_ITEMS, OPS_ROLE_TYPE).map((item) => item.href);
 
     // The System / Audit / Communications consoles joined the rail once their
-    // pages existed (2ee7ccb, e542728, 3c94805); before that they were reachable
-    // only by typing the URL. They are APPENDED, so the original three keep their
+    // pages existed (2ee7ccb, e542728, 3c94805), and the Flags console the same
+    // way one slice later (6cb9cde); before that each was reachable only by
+    // typing the URL. They are APPENDED, so the original three keep their
     // positions — this list is exhaustive on purpose, which is what makes it catch
-    // a promoted Pipeline or Tools entry at all.
+    // a promoted Pipeline or Tools entry at all, and it is why adding a rail
+    // entry has to be acknowledged HERE rather than passing silently.
     expect(hrefs).toEqual([
       '/dashboard/ops/schools',
       '/dashboard/ops/timers',
@@ -29,6 +31,7 @@ describe('ops school-admin controls', () => {
       '/dashboard/ops/system',
       '/dashboard/ops/audit',
       '/dashboard/ops/comms',
+      '/dashboard/ops/flags',
     ]);
     // The intent this test was written for, asserted directly rather than left
     // implicit in the list above.

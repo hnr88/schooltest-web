@@ -857,6 +857,7 @@
       "opsSystem": "System",
       "opsAudit": "Audit & security",
       "opsComms": "Communications",
+      "opsFlags": "Flags & settings",
       "account": "Account",
       "teacherDashboard": "Dashboard",
       "testSessions": "Test sessions",
@@ -3319,10 +3320,10 @@
   "Ops": {
     "flags": {
       "meta": {
-        "title": "Feature flags — SchoolTest Ops",
+        "title": "Flags & settings — SchoolTest Ops",
         "description": "SchoolTest Ops — feature flags, the public banners, and the sign-in rate limit."
       },
-      "title": "Feature flags",
+      "title": "Flags & settings",
       "description": "Platform switches, the banners visitors see, and the limit that governs sign-in.",
       "editorsTitle": "Platform settings",
       "errorToast": "That change did not save. Nothing was applied.",

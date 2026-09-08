@@ -34,6 +34,8 @@ const OPS_SURFACES = [
   { key: 'opsSystem', href: '/dashboard/ops/system', selector: '[data-surface="ops-system"]' },
   { key: 'opsAudit', href: '/dashboard/ops/audit', selector: '[data-slot="ops-audit-console"]' },
   { key: 'opsComms', href: '/dashboard/ops/comms', selector: '[data-surface="ops-comms"]' },
+  // The fourth console, same story one slice later (Flags 6cb9cde + acb51e6).
+  { key: 'opsFlags', href: '/dashboard/ops/flags', selector: '[data-surface="ops-flags"]' },
 ] as const;
 
 // The mission captures directory sits at the PROJECT ROOT; this spec lives two
@@ -132,13 +134,13 @@ test.describe('ops sidebar navigation', () => {
     ).toHaveCount(0);
   });
 
-  test('the three new console entries render in the rail at desktop and 375', async ({ page }) => {
+  test('the four rail-less consoles now render in the rail at desktop and 375', async ({ page }) => {
     await loginAs(page, 'ops');
     await expect(railLink(page, 'opsSchools')).toBeVisible({ timeout: 20_000 });
 
-    const NEW_ENTRIES = ['opsSystem', 'opsAudit', 'opsComms'] as const;
+    const NEW_ENTRIES = ['opsSystem', 'opsAudit', 'opsComms', 'opsFlags'] as const;
 
-    // Desktop: the rail is open, so the three entries are visible with their labels.
+    // Desktop: the rail is open, so every entry is visible with its label.
     await page.setViewportSize({ width: 1440, height: 900 });
     for (const key of NEW_ENTRIES) {
       await expect(railLink(page, key), `${key} desktop`).toBeVisible();
@@ -151,7 +153,7 @@ test.describe('ops sidebar navigation', () => {
 
     // 375: the rail collapses into a sheet and UNMOUNTS its items — asserting them
     // while it is shut would be asserting nothing. So open it through the topbar
-    // trigger the way a person would, then require the three entries to be really
+    // trigger the way a person would, then require the entries to be really
     // visible at that width.
     await page.setViewportSize({ width: 375, height: 780 });
     await page.getByRole('button', { name: cat(en, 'Shell.topbar.toggleNav') }).click();

@@ -23,6 +23,10 @@ export type NavLabelKey =
   | 'opsSystem'
   | 'opsAudit'
   | 'opsComms'
+  // The fourth console, same story one slice later: the Flags console (6cb9cde)
+  // shipped URL-only because the rail slice above was scoped before it existed.
+  // `Navigation.opsFlags` already names it for the breadcrumb.
+  | 'opsFlags'
   | 'teacherDashboard'
   | 'testSessions'
   | 'results';

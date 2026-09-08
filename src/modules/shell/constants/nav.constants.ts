@@ -2,6 +2,7 @@ import {
   BarChart3,
   ClipboardList,
   FileChartColumn,
+  Flag,
   LayoutDashboard,
   LayoutGrid,
   Mail,
@@ -72,6 +73,11 @@ export const OPS_SETTINGS_HREF = `${OPS_HREF}/settings`;
 export const OPS_SYSTEM_HREF = `${OPS_HREF}/system`;
 export const OPS_AUDIT_HREF = `${OPS_HREF}/audit`;
 export const OPS_COMMS_HREF = `${OPS_HREF}/comms`;
+
+// The fourth console (Flags 6cb9cde + acb51e6), reachable only by URL until this
+// entry for the same reason the three above were: its page and its trail label
+// both already existed.
+export const OPS_FLAGS_HREF = `${OPS_HREF}/flags`;
 
 export const NAV_ITEMS: readonly NavItem[] = [
   {
@@ -207,6 +213,14 @@ export const NAV_ITEMS: readonly NavItem[] = [
     labelKey: 'opsComms',
     href: OPS_COMMS_HREF,
     icon: Mail,
+    exact: false,
+    group: 'primary',
+    roles: [OPS_ROLE_TYPE],
+  },
+  {
+    labelKey: 'opsFlags',
+    href: OPS_FLAGS_HREF,
+    icon: Flag,
     exact: false,
     group: 'primary',
     roles: [OPS_ROLE_TYPE],
