@@ -176,7 +176,11 @@ export function OpsSchoolSuspendPanel({ school, enabled }: OpsSchoolSuspendPanel
       <OpsTypedNameConfirm
         open={archiveOpen}
         onOpenChange={setArchiveOpen}
-        title={t('archiveTitle')}
+        // `archiveTitle` is "Archive {name}?" — it MUST be given the name. Without
+        // it next-intl throws IntlError FORMATTING_ERROR and the dialog renders
+        // the raw key instead of a title. The sibling `archiveBody` below always
+        // passed it; this one did not.
+        title={t('archiveTitle', { name: school.name })}
         description={t('archiveBody', { name: school.name })}
         requiredName={school.name}
         typedName={typedName}

@@ -3870,7 +3870,11 @@
         "formRequired": "Choose a form.",
         "datetimeRequired": "Choose a date and time.",
         "order": "The opening time must be before the closing time."
-      }
+      },
+      "integrityTitle": "This window has integrity problems.",
+      "integrityDescription": "{count, plural, one {# sitting needs review} other {# sittings need review}} before results can be published.",
+      "incompleteTitle": "This window is not complete.",
+      "incompleteDescription": "Some students have not finished, so the results below are partial."
     },
     "settings": {
       "legal": {
@@ -4049,7 +4053,9 @@
         "sending": "Sending…",
         "sentToast": "Test email sent to {to} via {provider}.",
         "errorToast": "The provider rejected the message."
-      }
+      },
+      "firstName": "First name",
+      "lastName": "Last name"
     },
     "plan": {
       "title": "Plan",
@@ -4086,7 +4092,24 @@
       "removeConfirm": "Remove {email} from this school?",
       "removeConfirmAction": "Remove",
       "errorTitle": "We could not load teachers",
-      "errorDescription": "Check your connection and try again."
+      "errorDescription": "Check your connection and try again.",
+      "columnSpecialty": "Specialty",
+      "columnLastActive": "Last active",
+      "noSpecialty": "No specialty recorded",
+      "noActivity": "Never signed in",
+      "noMatches": "No teachers match these filters",
+      "searchLabel": "Search teachers",
+      "roleFilterLabel": "Filter by role",
+      "roleAll": "All roles",
+      "roleTeacher": "Teachers",
+      "roleSchoolAdmin": "School admins",
+      "statusFilterLabel": "Filter by status",
+      "statusAll": "All statuses",
+      "statusActive": "Active",
+      "statusSuspended": "Suspended",
+      "pageStatus": "Page {page} of {pageCount} · {total} teachers",
+      "previousPage": "Previous",
+      "nextPage": "Next"
     },
     "audit": {
       "title": "Audit",
@@ -4439,7 +4462,11 @@
       "dirtyCloseCancel": "Keep editing",
       "schoolType": "School type",
       "schoolTypePlaceholder": "Choose a type",
-      "postcode": "Postcode"
+      "postcode": "Postcode",
+      "successToast": "School created — the admin invitation went to {email}.",
+      "successNoInviteToast": "School created. No admin invitation was sent.",
+      "conflict": "A school with that name already exists.",
+      "errorToast": "That school could not be created. Nothing was saved."
     },
     "system": {
       "meta": {
@@ -4719,6 +4746,24 @@
       "studentCount": "{count, plural, one {# student} other {# students}}",
       "noClasses": "This teacher holds no classes.",
       "noSittings": "This teacher has no sittings."
+    },
+    "export": {
+      "title": "Export schools",
+      "cta": "Download CSV",
+      "downloading": "Preparing the CSV…",
+      "downloaded": "Downloaded {filename}",
+      "scopeAll": "Every school",
+      "scopeFiltered": "The filtered schools",
+      "scopeSelected": "{count, plural, one {# selected school} other {# selected schools}}",
+      "errorTitle": "We could not build the export.",
+      "errorDescription": "Check your connection and try again — nothing was downloaded."
+    },
+    "activity": {
+      "title": "Recent activity",
+      "empty": "No activity recorded for this school yet.",
+      "errorTitle": "We could not load the activity.",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Try again"
     }
   },
   "RunSheet": {
