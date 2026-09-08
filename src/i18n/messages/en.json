@@ -2071,7 +2071,9 @@
         "emailRequired": "Please enter your email address.",
         "emailInvalid": "Please enter a valid email address.",
         "studentsRequired": "Please select the number of EAL/D students.",
-        "errorBody": "Could not submit right now — please try again in a few minutes."
+        "errorBody": "Could not submit right now — please try again in a few minutes.",
+        "foundingImageAlt": "School grounds",
+        "privacyLinkLabel": "Privacy statement"
       }
     },
     "diagnose": {

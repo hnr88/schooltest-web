@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/modules/design-system';
 import { RegisterFieldWrapper } from '@/modules/eald/components/RegisterFieldWrapper';
@@ -23,27 +24,27 @@ function RegisterFormCard({ t, onSuccess }: RegisterFormCardProps) {
     resolver: zodResolver(registerSchema),
     defaultValues: { name: '', school: '', role: '', email: '', students: '' },
   });
-
   function onValid(data: RegisterInput) {
     pilotRegister.mutate(data, { onSuccess: () => onSuccess() });
   }
-
-  const fieldLabel = 'text-xs font-bold tracking-eyebrow text-slate-400 uppercase';
   const fieldBase = cn(
-    'h-11 w-full rounded-xl border bg-transparent px-3.5',
+    'h-11.5 w-full rounded-xl border bg-card px-3.5',
     'text-body-md text-foreground placeholder:text-slate-400',
     'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
   );
 
-  return (
-    <div className="rounded-3xl border border-border bg-background p-8 shadow-sm sm:p-10">
-      <h3 className="text-2xl font-bold tracking-tight text-foreground">
-        {t('home.register.formTitle')}
-      </h3>
-      <p className="mt-2 text-body-md text-body">{t('home.register.formSubtitle')}</p>
+  const fieldProps = (name: keyof RegisterInput) => ({
+    label: t(`home.register.${name}Label`),
+    error: errors[name]?.message,
+    t,
+  });
 
-      <form onSubmit={handleSubmit(onValid)} className="mt-6 flex flex-col gap-3.5">
-        <RegisterFieldWrapper label={t('home.register.nameLabel')} error={errors.name?.message} t={t}>
+  return (
+    <div className="p-6 sm:p-7.5">
+      <p className="text-body-md text-muted-foreground">{t('home.register.formSubtitle')}</p>
+
+      <form noValidate onSubmit={handleSubmit(onValid)} className="mt-6 flex flex-col gap-4">
+        <RegisterFieldWrapper {...fieldProps('name')}>
           <input
             {...register('name')}
             type="text"
@@ -51,8 +52,7 @@ function RegisterFormCard({ t, onSuccess }: RegisterFormCardProps) {
             className={cn(fieldBase, errors.name ? 'border-red-500' : 'border-slate-300')}
           />
         </RegisterFieldWrapper>
-
-        <RegisterFieldWrapper label={t('home.register.schoolLabel')} error={errors.school?.message} t={t}>
+        <RegisterFieldWrapper {...fieldProps('school')}>
           <input
             {...register('school')}
             type="text"
@@ -60,20 +60,20 @@ function RegisterFormCard({ t, onSuccess }: RegisterFormCardProps) {
             className={cn(fieldBase, errors.school ? 'border-red-500' : 'border-slate-300')}
           />
         </RegisterFieldWrapper>
-
-        <RegisterFieldWrapper label={t('home.register.roleLabel')} error={errors.role?.message} t={t}>
+        <RegisterFieldWrapper {...fieldProps('role')}>
           <select
             {...register('role')}
             className={cn(fieldBase, errors.role ? 'border-red-500' : 'border-slate-300')}
           >
             <option value="">{t('home.register.selectPlaceholder')}</option>
             {ROLE_KEYS.map((key) => (
-              <option key={key} value={t(key)}>{t(key)}</option>
+              <option key={key} value={t(key)}>
+                {t(key)}
+              </option>
             ))}
           </select>
         </RegisterFieldWrapper>
-
-        <RegisterFieldWrapper label={t('home.register.emailLabel')} error={errors.email?.message} t={t}>
+        <RegisterFieldWrapper {...fieldProps('email')}>
           <input
             {...register('email')}
             type="email"
@@ -81,23 +81,23 @@ function RegisterFormCard({ t, onSuccess }: RegisterFormCardProps) {
             className={cn(fieldBase, errors.email ? 'border-red-500' : 'border-slate-300')}
           />
         </RegisterFieldWrapper>
-
-        <RegisterFieldWrapper label={t('home.register.studentsLabel')} error={errors.students?.message} t={t}>
+        <RegisterFieldWrapper {...fieldProps('students')}>
           <select
             {...register('students')}
             className={cn(fieldBase, errors.students ? 'border-red-500' : 'border-slate-300')}
           >
             <option value="">{t('home.register.selectPlaceholder')}</option>
             {STUDENT_KEYS.map((key) => (
-              <option key={key} value={t(key)}>{t(key)}</option>
+              <option key={key} value={t(key)}>
+                {t(key)}
+              </option>
             ))}
           </select>
         </RegisterFieldWrapper>
-
         <Button
           type="submit"
           disabled={isSubmitting || pilotRegister.isPending}
-          className="mt-1.5 h-12 w-full rounded-xl shadow-primary-glow"
+          className="mt-1 h-12.5 w-full rounded-xl"
         >
           {t('home.register.submitButton')}
         </Button>
@@ -107,7 +107,12 @@ function RegisterFormCard({ t, onSuccess }: RegisterFormCardProps) {
           </p>
         )}
       </form>
-      <p className="mt-3.5 text-meta text-slate-400">{t('home.register.privacyNote')}</p>
+      <p className="mt-4 text-meta text-muted-foreground">
+        {t('home.register.privacyNote')}{' '}
+        <Link href="/privacy-policy" className="text-primary underline underline-offset-2">
+          {t('home.register.privacyLinkLabel')}
+        </Link>
+      </p>
     </div>
   );
 }

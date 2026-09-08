@@ -6,7 +6,7 @@ import { strapi } from '@/lib/axios/strapi';
 import { registerSchema } from '@/modules/eald/schemas/register.schema';
 
 interface PilotRegisterResponse {
-  data: { received: boolean; documentId: string; deduped: boolean };
+  data: { received: boolean };
   meta: Record<string, unknown>;
 }
 
@@ -20,7 +20,7 @@ async function pilotRegisterRequest(
 
 // Lane J: the landing "register your interest" form posts to the real public
 // endpoint (POST /api/pilot-registrations/submit, rate-limited 5/10min/IP).
-// Success (fresh row or deduped repeat) swaps the section to the success card.
+// Every successful submission swaps the section to the success card.
 export function usePilotRegisterMutation() {
   return useMutation({ mutationFn: pilotRegisterRequest });
 }

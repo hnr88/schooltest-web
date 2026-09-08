@@ -4648,7 +4648,9 @@
         "roleRequired": "กรุณาเลือกบทบาทของคุณ",
         "emailRequired": "กรุณากรอกอีเมลของคุณ",
         "emailInvalid": "กรุณากรอกอีเมลที่ถูกต้อง",
-        "studentsRequired": "กรุณาเลือกจำนวนนักเรียน EAL/D"
+        "studentsRequired": "กรุณาเลือกจำนวนนักเรียน EAL/D",
+        "foundingImageAlt": "บริเวณโรงเรียน",
+        "privacyLinkLabel": "คำชี้แจงความเป็นส่วนตัว"
       }
     },
     "diagnose": {

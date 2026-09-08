@@ -1,5 +1,11 @@
+import { jsx } from 'react/jsx-runtime';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { NextIntlClientProvider } from 'next-intl';
 import { describe, expect, it } from 'vitest';
 
+import messages from '@/i18n/messages/en.json';
+import { RegisterSection } from '@/modules/eald/components/RegisterSection';
 import { registerSchema } from '@/modules/eald/schemas/register.schema';
 
 /**
@@ -48,5 +54,35 @@ describe('registerSchema', () => {
   it('rejects whitespace-only required fields (client can never submit them)', () => {
     expect(registerSchema.safeParse({ ...VALID, name: '  ' }).success).toBe(false);
     expect(registerSchema.safeParse({ ...VALID, school: '   ' }).success).toBe(false);
+  });
+});
+
+describe('registration layout', () => {
+  it('keeps the five labelled fields and adds the real privacy link and founding-school photo', () => {
+    const client = new QueryClient();
+    const html = renderToStaticMarkup(
+      jsx(QueryClientProvider, {
+        client,
+        children: jsx(NextIntlClientProvider, {
+          locale: 'en',
+          messages,
+          children: jsx(RegisterSection, {}),
+        }),
+      }),
+    );
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    expect(
+      Array.from(container.querySelectorAll('form label input, form label select')).map((field) =>
+        field.getAttribute('name'),
+      ),
+    ).toEqual(['name', 'school', 'role', 'email', 'students']);
+    expect(container.querySelector('a[href="/privacy-policy"]')).not.toBeNull();
+    expect(container.querySelector('img')).not.toBeNull();
+    expect(container.querySelectorAll('li')).toHaveLength(3);
+    expect(container.querySelector('button[type="submit"]')?.textContent).toBe(
+      messages.Eald.home.register.submitButton,
+    );
+    client.clear();
   });
 });

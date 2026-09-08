@@ -4648,7 +4648,9 @@
         "roleRequired": "직책을 선택해 주세요.",
         "emailRequired": "이메일 주소를 입력해 주세요.",
         "emailInvalid": "유효한 이메일 주소를 입력해 주세요.",
-        "studentsRequired": "EAL/D 학생 수를 선택해 주세요."
+        "studentsRequired": "EAL/D 학생 수를 선택해 주세요.",
+        "foundingImageAlt": "학교 교정",
+        "privacyLinkLabel": "개인정보 보호 안내"
       }
     },
     "diagnose": {

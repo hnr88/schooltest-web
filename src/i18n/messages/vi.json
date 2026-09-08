@@ -4657,7 +4657,9 @@
         "roleRequired": "Vui lòng chọn vai trò của bạn.",
         "emailRequired": "Vui lòng nhập địa chỉ email.",
         "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ.",
-        "studentsRequired": "Vui lòng chọn số lượng học sinh EAL/D."
+        "studentsRequired": "Vui lòng chọn số lượng học sinh EAL/D.",
+        "foundingImageAlt": "Khuôn viên trường",
+        "privacyLinkLabel": "Tuyên bố về quyền riêng tư"
       }
     },
     "diagnose": {

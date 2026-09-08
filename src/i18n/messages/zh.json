@@ -4638,7 +4638,9 @@
         "roleRequired": "请选择你的职务。",
         "emailRequired": "请输入你的邮箱地址。",
         "emailInvalid": "请输入有效的邮箱地址。",
-        "studentsRequired": "请选择 EAL/D 学生人数。"
+        "studentsRequired": "请选择 EAL/D 学生人数。",
+        "foundingImageAlt": "校园",
+        "privacyLinkLabel": "隐私声明"
       }
     },
     "diagnose": {

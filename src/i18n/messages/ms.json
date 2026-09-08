@@ -4648,7 +4648,9 @@
         "roleRequired": "Sila pilih peranan anda.",
         "emailRequired": "Sila masukkan alamat e-mel anda.",
         "emailInvalid": "Sila masukkan alamat e-mel yang sah.",
-        "studentsRequired": "Sila pilih bilangan murid EAL/D."
+        "studentsRequired": "Sila pilih bilangan murid EAL/D.",
+        "foundingImageAlt": "Kawasan sekolah",
+        "privacyLinkLabel": "Pernyataan privasi"
       }
     },
     "diagnose": {

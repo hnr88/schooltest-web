@@ -2,8 +2,8 @@ import type { RegisterFieldWrapperProps } from '@/modules/eald/types/components.
 
 function RegisterFieldWrapper({ label, error, t, children }: RegisterFieldWrapperProps) {
   return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-xs font-bold tracking-eyebrow text-slate-400 uppercase">{label}</span>
+    <label className="flex flex-col gap-1.75">
+      <span className="text-body-sm font-semibold text-foreground">{label}</span>
       {children}
       {error ? (
         <span className="text-xs text-red-500" role="alert">
