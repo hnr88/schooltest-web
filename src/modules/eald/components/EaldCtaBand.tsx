@@ -23,11 +23,11 @@ async function EaldCtaBand() {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3 lg:justify-end">
-              <Button size="xl" href="/eald#register">
+              <Button size="xl" href="/#register">
                 {t('shared.cta.button')}
                 <ArrowRight aria-hidden="true" />
               </Button>
-              <Button size="xl" variant="outline-white" href="/eald#evidence">
+              <Button size="xl" variant="outline-white" href="/#evidence">
                 {t('shared.cta.secondary')}
               </Button>
             </div>
