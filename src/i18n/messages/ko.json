@@ -4578,7 +4578,15 @@
         "title": "프로필을 AI에 붙여넣으세요. <blue>일주일치 콘텐츠가 나옵니다.</blue>",
         "body": "개인정보가 보호되는 개인 또는 학급 데이터를 내보내 ChatGPT, Gemini 또는 Claude에 전달하세요. 실제 서브스킬 데이터가 일반적인 프롬프트를 개인화된 수업 콘텐츠로 바꿔줍니다.",
         "primaryCta": "관심 등록",
-        "secondaryCta": "샘플 프로필 보기"
+        "secondaryCta": "샘플 프로필 보기",
+        "statExportLabel": "학급 자료 내보내기",
+        "statExportValue": "가명 처리됨",
+        "statNamesLabel": "내보내기에 포함된 학생 이름",
+        "statNamesValue": "없음",
+        "statGroupingLabel": "그룹 보기",
+        "statGroupingValue": "기본 내장",
+        "statAiLabel": "AI 없이 사용 가능",
+        "statAiValue": "예"
       },
       "generate": {
         "eyebrow": "AI 콘텐츠 생성",
@@ -4589,7 +4597,8 @@
         "exportBadge": "내보내기",
         "promptText": "“학급의 어휘 수준에 맞는 지문 하나를 쓰고, 약점에 맞춘 문제 세트를 만들어줘.”",
         "outputTitle": "읽기 지문 + 문제",
-        "targetBadge": "대상: 추론, 어휘"
+        "targetBadge": "대상: 추론, 어휘",
+        "footnote": "내보내기에 학생 이름은 포함되지 않습니다."
       },
       "classroom": {
         "eyebrow": "더 스마트한 교실 관리",
@@ -4601,6 +4610,22 @@
         "groupD": "D조",
         "groupCaption": "네 개의 조. 네 개의 문제 세트.",
         "callout": "<strong>의미하는 바:</strong> 계획은 데이터가 하게 하고, 수업은 당신이 하세요."
+      },
+      "grouping": {
+        "eyebrow": "약점별 그룹",
+        "body": "22명 학급은 전체 수준이 아니라 공통 약점을 기준으로 나뉩니다. 아래 차트는 배치 시점과 6주의 집중 수업 이후, 각 하위 기능을 최대 약점으로 안고 있는 학생 수를 보여줍니다.",
+        "trackLink": "그룹이 효과가 있었는지 확인하기",
+        "figureTitle": "그림 1 — 한 학급의 최대 약점",
+        "figureContext": "9학년 · 22명",
+        "seriesTerm1": "1학기 · 배치",
+        "seriesTerm2": "2학기 · 6주 후",
+        "categoryVocabulary": "어휘",
+        "categoryInference": "추론",
+        "categoryNoteTaking": "노트 필기",
+        "categoryFluency": "유창성",
+        "footnote": "예시용 샘플 데이터입니다. 각 학생은 가장 낮은 하위 기능 기준으로 한 번만 계산됩니다. 두 학기 모두 총 22명입니다.",
+        "ariaLabel": "22명 학급에서 배치 시점과 6주 후에 각 하위 기능을 최대 약점으로 안고 있는 학생 수를 보여주는 그룹 막대 차트",
+        "bandMaxStudents": "학생 10명"
       },
       "threeMore": {
         "title": "그리고 가능해지는 세 가지.",

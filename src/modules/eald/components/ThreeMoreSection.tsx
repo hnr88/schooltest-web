@@ -15,32 +15,17 @@ async function ThreeMoreSection() {
           </h2>
         </ScrollReveal>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Teach:208–218 — the design's hairline grid: white cells separated by
+            1px rules inside one bordered card. The const's tone field is kept
+            data but the design's uniform white cells win the render. */}
+        <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {THREE_MORE_CARDS.map((card, i) => (
             <ScrollReveal key={card.titleKey} delay={i * 90}>
-              <div
-                className={
-                  card.tone === 'navy'
-                    ? 'h-full rounded-2xl bg-navy-900 p-7'
-                    : 'h-full rounded-2xl border border-border bg-background p-7'
-                }
-              >
-                <h3
-                  className={
-                    card.tone === 'navy'
-                      ? 'text-lg font-bold text-white'
-                      : 'text-lg font-bold text-foreground'
-                  }
-                >
+              <div className="h-full bg-background p-7">
+                <h3 className="text-lg font-bold text-foreground">
                   {t(`teach.threeMore.${card.titleKey}`)}
                 </h3>
-                <p
-                  className={
-                    card.tone === 'navy'
-                      ? 'mt-2 text-sm leading-relaxed text-navy-body'
-                      : 'mt-2 text-sm leading-relaxed text-body'
-                  }
-                >
+                <p className="mt-2.5 text-sm leading-relaxed text-body">
                   {t(`teach.threeMore.${card.descKey}`)}
                 </p>
               </div>

@@ -2,6 +2,7 @@ import type { SubskillPhase } from '@/modules/eald/types/eald.types';
 import type {
   HomeEvidenceChartConfig,
   ProgrammeFact,
+  TeachGroupingConfig,
   WhatYouGetCard,
 } from '@/modules/eald/types/components.types';
 
@@ -101,6 +102,43 @@ export const PROGRAMME_FACTS: readonly ProgrammeFact[] = [
   { labelKey: 'home.about.factStatusLabel', valueKey: 'home.about.factStatusValue', tone: 'teal' },
 ];
 
+// Teach:186–193 — "Figure 1 — Primary gap across one class": students holding
+// each subskill as their primary gap, Term 1 placement vs Term 2 after six
+// weeks. Counts on a numeric axis (max 10); both series total 22.
+export const TEACH_GROUPING: TeachGroupingConfig = {
+  seriesLabelKeys: ['teach.grouping.seriesTerm1', 'teach.grouping.seriesTerm2'],
+  categories: [
+    {
+      labelKey: 'teach.grouping.categoryVocabulary',
+      bars: [
+        { value: 8, display: '8' },
+        { value: 5, display: '5' },
+      ],
+    },
+    {
+      labelKey: 'teach.grouping.categoryInference',
+      bars: [
+        { value: 6, display: '6' },
+        { value: 6, display: '6' },
+      ],
+    },
+    {
+      labelKey: 'teach.grouping.categoryNoteTaking',
+      bars: [
+        { value: 4, display: '4' },
+        { value: 6, display: '6' },
+      ],
+    },
+    {
+      labelKey: 'teach.grouping.categoryFluency',
+      bars: [
+        { value: 4, display: '4' },
+        { value: 5, display: '5' },
+      ],
+    },
+  ],
+};
+
 // Home v2:247–264 — "Figure 1 — ACARA phase by skill, one student". Values are
 // the design's literals on the 0–100 band scale (BarChart max=100); band label
 // keys are listed bottom-up (Beginning … Independent) to match the axis order
@@ -160,3 +198,4 @@ export const PREDICT_COHORT = [
   { labelKey: 'predict.cohort.figureBand60to79', values: [5, 8] },
   { labelKey: 'predict.cohort.figureBand80plus', values: [2, 6] },
 ] as const;
+

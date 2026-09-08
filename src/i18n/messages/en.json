@@ -2001,7 +2001,15 @@
         "title": "Paste the profile into AI. <blue>Get a week of content out.</blue>",
         "body": "Export a privacy-safe individual or class set and hand it to ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into personalised teaching content.",
         "primaryCta": "Register your interest",
-        "secondaryCta": "See a sample profile"
+        "secondaryCta": "See a sample profile",
+        "statExportLabel": "Class set export",
+        "statExportValue": "Pseudonymised",
+        "statNamesLabel": "Student names in export",
+        "statNamesValue": "None",
+        "statGroupingLabel": "Grouping views",
+        "statGroupingValue": "Built in",
+        "statAiLabel": "Works without AI",
+        "statAiValue": "Yes"
       },
       "generate": {
         "eyebrow": "AI content generation",
@@ -2012,7 +2020,8 @@
         "exportBadge": "EXPORT",
         "promptText": "“Write one passage at the class’s vocabulary band, with question sets matched to their gaps.”",
         "outputTitle": "Reading passage + questions",
-        "targetBadge": "Targets: inference, vocabulary"
+        "targetBadge": "Targets: inference, vocabulary",
+        "footnote": "No student names appear in any export."
       },
       "classroom": {
         "eyebrow": "Smarter classroom management",
@@ -2024,6 +2033,22 @@
         "groupD": "Group D",
         "groupCaption": "Four groups. Four question sets.",
         "callout": "<strong>What this means for you:</strong> let the data do the planning so you can do the teaching."
+      },
+      "grouping": {
+        "eyebrow": "Group by gap",
+        "body": "A class of 22 splits by shared weakness rather than by overall level. The chart below shows how many students hold each subskill as their primary gap — at placement, and again after six weeks of targeted teaching.",
+        "trackLink": "See whether the grouping worked",
+        "figureTitle": "Figure 1 — Primary gap across one class",
+        "figureContext": "Year 9 · 22 students",
+        "seriesTerm1": "Term 1 · placement",
+        "seriesTerm2": "Term 2 · after six weeks",
+        "categoryVocabulary": "Vocabulary",
+        "categoryInference": "Inference",
+        "categoryNoteTaking": "Note-taking",
+        "categoryFluency": "Fluency",
+        "footnote": "Illustrative sample data. Each student counted once, against their lowest-scoring subskill. Both series total 22 students.",
+        "ariaLabel": "Grouped column chart showing the number of students in a class of 22 holding each subskill as their primary gap, before and after six weeks",
+        "bandMaxStudents": "10 students"
       },
       "threeMore": {
         "title": "And three more things it makes possible.",

@@ -80,3 +80,16 @@ export interface ProgrammeFact {
   /** Only the Status cell tints its value. */
   readonly tone?: 'teal';
 }
+
+export interface TeachGroupingCategory {
+  readonly labelKey: string;
+  readonly bars: readonly { readonly value: number; readonly display: string }[];
+}
+
+// Task 11's TEACH_GROUPING (Teach:139–206): two series over four categories,
+// counts on a numeric axis (max 10) — no ACARA bands.
+export interface TeachGroupingConfig {
+  readonly seriesLabelKeys: readonly string[];
+  readonly categories: readonly TeachGroupingCategory[];
+}
+

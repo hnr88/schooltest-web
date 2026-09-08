@@ -4568,7 +4568,15 @@
         "title": "把画像粘贴进 AI。<blue>换出一周的教学内容。</blue>",
         "body": "导出保护隐私的个人或班级数据，交给 ChatGPT、Gemini 或 Claude。真实的微技能数据能把泛泛的提示词变成个性化的教学内容。",
         "primaryCta": "登记意向",
-        "secondaryCta": "查看示例档案"
+        "secondaryCta": "查看示例档案",
+        "statExportLabel": "班级资料包导出",
+        "statExportValue": "已化名处理",
+        "statNamesLabel": "导出中的学生姓名",
+        "statNamesValue": "无",
+        "statGroupingLabel": "分组视图",
+        "statGroupingValue": "内置",
+        "statAiLabel": "无需 AI 也可使用",
+        "statAiValue": "是"
       },
       "generate": {
         "eyebrow": "AI 内容生成",
@@ -4579,7 +4587,8 @@
         "exportBadge": "导出",
         "promptText": "“写一篇符合全班词汇水平的文章，并配与弱项对应的题组。”",
         "outputTitle": "阅读文章 + 题目",
-        "targetBadge": "目标：推断、词汇"
+        "targetBadge": "目标：推断、词汇",
+        "footnote": "任何导出中都不包含学生姓名。"
       },
       "classroom": {
         "eyebrow": "更智慧的课堂管理",
@@ -4591,6 +4600,22 @@
         "groupD": "D 组",
         "groupCaption": "四个小组。四套题组。",
         "callout": "<strong>对你而言：</strong>让数据做规划，你来做教学。"
+      },
+      "grouping": {
+        "eyebrow": "按薄弱点分组",
+        "body": "一个 22 人的班级按照共同薄弱点而非整体水平分组。下图展示了在入学测试时以及经过六周针对性教学后，分别有多少学生把各子技能当作自己的首要薄弱点。",
+        "trackLink": "看看分组是否见效",
+        "figureTitle": "图 1 — 一个班级的首要薄弱点",
+        "figureContext": "九年级 · 22 名学生",
+        "seriesTerm1": "第一学期 · 入学测试",
+        "seriesTerm2": "第二学期 · 六周教学后",
+        "categoryVocabulary": "词汇",
+        "categoryInference": "推断",
+        "categoryNoteTaking": "记笔记",
+        "categoryFluency": "流利度",
+        "footnote": "示意性样本数据。每名学生只计一次，按其得分最低的子技能归类。两个学期的人数均为 22 人。",
+        "ariaLabel": "分组柱状图，展示一个 22 人班级在入学时和六周后分别有多少学生把各子技能作为首要薄弱点",
+        "bandMaxStudents": "10 名学生"
       },
       "threeMore": {
         "title": "还有三件它能做到的事。",

@@ -4578,7 +4578,15 @@
         "title": "Tampal profil ke dalam AI. <blue>Dapatkan kandungan seminggu.</blue>",
         "body": "Eksport set individu atau kelas yang selamat privasi dan serahkan kepada ChatGPT, Gemini atau Claude. Data subkemahiran sebenar menukar prompt generik kepada kandungan pengajaran diperibadikan.",
         "primaryCta": "Daftar minat anda",
-        "secondaryCta": "Lihat profil contoh"
+        "secondaryCta": "Lihat profil contoh",
+        "statExportLabel": "Eksport set kelas",
+        "statExportValue": "Telah pseudonim",
+        "statNamesLabel": "Nama murid dalam eksport",
+        "statNamesValue": "Tiada",
+        "statGroupingLabel": "Paparan pengumpulan",
+        "statGroupingValue": "Terbina dalam",
+        "statAiLabel": "Berfungsi tanpa AI",
+        "statAiValue": "Ya"
       },
       "generate": {
         "eyebrow": "Penjanaan kandungan AI",
@@ -4589,7 +4597,8 @@
         "exportBadge": "EKSPORT",
         "promptText": "“Tulis satu petikan pada tahap kosa kata kelas, dengan set soalan yang sepadan dengan jurang mereka.”",
         "outputTitle": "Petikan bacaan + soalan",
-        "targetBadge": "Sasaran: inferens, kosa kata"
+        "targetBadge": "Sasaran: inferens, kosa kata",
+        "footnote": "Tiada nama murid muncul dalam sebarang eksport."
       },
       "classroom": {
         "eyebrow": "Pengurusan bilik darjah yang lebih bijak",
@@ -4601,6 +4610,22 @@
         "groupD": "Kumpulan D",
         "groupCaption": "Empat kumpulan. Empat set soalan.",
         "callout": "<strong>Maksudnya untuk anda:</strong> biar data yang merancang supaya anda boleh mengajar."
+      },
+      "grouping": {
+        "eyebrow": "Kumpul mengikut jurang",
+        "body": "Kelas 22 murid dipecah mengikut kelemahan bersama dan bukannya tahap keseluruhan. Carta di bawah menunjukkan berapa ramai murid yang memegang setiap subskill sebagai jurang utama mereka — semasa penempatan, dan selepas enam minggu pengajaran bersasar.",
+        "trackLink": "Lihat sama ada pengumpulan berkesan",
+        "figureTitle": "Rajah 1 — Jurang utama dalam satu kelas",
+        "figureContext": "Tahun 9 · 22 murid",
+        "seriesTerm1": "Penggal 1 · penempatan",
+        "seriesTerm2": "Penggal 2 · selepas enam minggu",
+        "categoryVocabulary": "Kosa kata",
+        "categoryInference": "Inferens",
+        "categoryNoteTaking": "Nota",
+        "categoryFluency": "Kelicinan",
+        "footnote": "Data sampel ilustrasi. Setiap murid dikira sekali, mengikut subskill terendah mereka. Kedua-dua siri berjumlah 22 murid.",
+        "ariaLabel": "Carta lajur berkumpulan menunjukkan bilangan murid dalam kelas 22 yang memegang setiap subskill sebagai jurang utama, sebelum dan selepas enam minggu",
+        "bandMaxStudents": "10 murid"
       },
       "threeMore": {
         "title": "Dan tiga lagi perkara yang ia mungkinkan.",

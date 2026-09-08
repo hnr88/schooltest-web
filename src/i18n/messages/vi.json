@@ -4587,7 +4587,15 @@
         "title": "Dán hồ sơ vào AI. <blue>Nhận về nội dung cho cả tuần.</blue>",
         "body": "Xuất dữ liệu cá nhân hoặc cả lớp an toàn về quyền riêng tư và đưa cho ChatGPT, Gemini hoặc Claude. Dữ liệu vi kỹ năng thực biến một câu lệnh chung chung thành nội dung giảng dạy cá nhân hoá.",
         "primaryCta": "Đăng ký quan tâm",
-        "secondaryCta": "Xem hồ sơ mẫu"
+        "secondaryCta": "Xem hồ sơ mẫu",
+        "statExportLabel": "Xuất tập lớp",
+        "statExportValue": "Đã giả danh hóa",
+        "statNamesLabel": "Tên học sinh trong bản xuất",
+        "statNamesValue": "Không",
+        "statGroupingLabel": "Chế độ xem nhóm",
+        "statGroupingValue": "Có sẵn",
+        "statAiLabel": "Hoạt động không cần AI",
+        "statAiValue": "Có"
       },
       "generate": {
         "eyebrow": "AI tạo nội dung",
@@ -4598,7 +4606,8 @@
         "exportBadge": "XUẤT",
         "promptText": "“Viết một bài đọc ở dải từ vựng của lớp, kèm bộ câu hỏi khớp với các lỗ hổng của các em.”",
         "outputTitle": "Bài đọc + câu hỏi",
-        "targetBadge": "Mục tiêu: suy luận, từ vựng"
+        "targetBadge": "Mục tiêu: suy luận, từ vựng",
+        "footnote": "Không có tên học sinh nào xuất hiện trong bản xuất."
       },
       "classroom": {
         "eyebrow": "Quản lý lớp học thông minh hơn",
@@ -4610,6 +4619,22 @@
         "groupD": "Nhóm D",
         "groupCaption": "Bốn nhóm. Bốn bộ câu hỏi.",
         "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> để dữ liệu lo việc lên kế hoạch để bạn lo việc giảng dạy."
+      },
+      "grouping": {
+        "eyebrow": "Nhóm theo lỗ hổng",
+        "body": "Lớp 22 học sinh được chia theo điểm yếu chung chứ không theo trình độ chung. Biểu đồ dưới đây cho biết bao nhiêu học sinh coi mỗi kỹ năng thành phần là lỗ hổng chính của mình — lúc đầu vào, và sau sáu tuần dạy bù có mục tiêu.",
+        "trackLink": "Xem việc nhóm có hiệu quả không",
+        "figureTitle": "Hình 1 — Lỗ hổng chính của một lớp",
+        "figureContext": "Lớp 9 · 22 học sinh",
+        "seriesTerm1": "Học kỳ 1 · đầu vào",
+        "seriesTerm2": "Học kỳ 2 · sau sáu tuần",
+        "categoryVocabulary": "Từ vựng",
+        "categoryInference": "Suy luận",
+        "categoryNoteTaking": "Ghi chép",
+        "categoryFluency": "Lưu loát",
+        "footnote": "Dữ liệu mẫu minh họa. Mỗi học sinh chỉ được tính một lần, theo kỹ năng thành phần có điểm thấp nhất. Cả hai chuỗi đều tổng cộng 22 học sinh.",
+        "ariaLabel": "Biểu đồ cột nhóm cho thấy số học sinh trong một lớp 22 đang có mỗi kỹ năng thành phần là lỗ hổng chính, trước và sau sáu tuần",
+        "bandMaxStudents": "10 học sinh"
       },
       "threeMore": {
         "title": "Và ba điều nữa mà nó làm được.",
