@@ -69,6 +69,51 @@ function storedFlags(): Record<string, boolean> {
   return JSON.parse(raw || '{}') as Record<string, boolean>;
 }
 
+
+/** The stored announcement triplet, read from the source of truth. */
+function storedAnnouncement(): { enabled: string; level: string; message: string } {
+  const raw = sql(
+    'select announcement_enabled, announcement_level, coalesce(announcement_message, \'\') from platform_settings order by id limit 1;',
+  );
+  const [enabled, level, ...rest] = raw.split('|');
+  return { enabled, level, message: rest.join('|') };
+}
+
+
+/**
+ * Saves the announcement editor through its confirm gate, waiting on the two
+ * DETERMINISTIC network events the transport test already relies on: the
+ * `Next-Action` POST (proof the server action ran) and the settings refetch the
+ * mutation only issues in its onSuccess path. The success toast is deliberately
+ * NOT the signal — sonner auto-dismisses it and it made an earlier revision of
+ * the sibling test flaky.
+ */
+async function saveAnnouncementEditor(page: Page): Promise<void> {
+  const editor = page.locator('[data-slot="ops-banner-editor-announcement"]');
+  const actionPost = page.waitForRequest(
+    (request) => request.method() === 'POST' && Boolean(request.headers()['next-action']),
+  );
+  const refetch = page.waitForRequest(
+    (request) => request.method() === 'GET' && request.url().includes('/api/platform-settings'),
+  );
+  // The button is disabled while the settings read is in flight (it is
+  // `staleTime: 0` + `refetchOnMount: 'always'`, so a refetch triggered by the
+  // preceding test can still be running when this one clicks). Waiting for it
+  // to be enabled is what makes this helper deterministic — a click on the
+  // disabled button silently does nothing and the confirm never opens.
+  const saveButton = editor.locator('[data-slot="ops-banner-save-announcement"]');
+  await expect(saveButton).toBeEnabled({ timeout: WAIT });
+  await saveButton.click();
+  const dialog = page.getByRole('alertdialog');
+  await expect(dialog).toBeVisible({ timeout: WAIT });
+  await dialog
+    .getByRole('button', { name: en['Ops.flags.announcement.confirmAction'], exact: true })
+    .click();
+  await actionPost;
+  await refetch;
+  await expect(dialog).toBeHidden({ timeout: WAIT });
+}
+
 const flagRow = (page: Page, key: string) =>
   page.locator(`[data-slot="ops-flag-row"][data-flag-key="${key}"]`);
 
@@ -78,9 +123,11 @@ test.describe('ledger 9 — the ops Flags console', () => {
   let context: BrowserContext;
   let page: Page;
   let originalFlag = false;
+  let originalAnnouncement = { enabled: 'f', level: 'info', message: '' };
 
   test.beforeAll(async ({ browser }: { browser: Browser }) => {
     originalFlag = Boolean(storedFlags()[TOGGLE_KEY]);
+    originalAnnouncement = storedAnnouncement();
     context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     page = await context.newPage();
     await loginAs(page, 'ops');
@@ -104,6 +151,10 @@ test.describe('ledger 9 — the ops Flags console', () => {
         `update platform_settings set feature_flags = '${JSON.stringify(flags)}'::jsonb where id = (select id from platform_settings order by id limit 1);`,
       );
     }
+    // The announcement row must survive this file untouched: the both-ways
+    // cache-bust test restores it through the UI, and this is the independent
+    // check on the source of truth.
+    test.expect(storedAnnouncement()).toEqual(originalAnnouncement);
     await context?.close();
   });
 
@@ -339,6 +390,107 @@ test.describe('ledger 9 — the ops Flags console', () => {
 
     page.off('request', watch);
     expect(direct, 'the browser never called the Strapi announcement route directly').toEqual([]);
+  });
+
+  test('the announcement reaches the PUBLIC banner immediately, both ways (updateTag, not SWR)', async () => {
+    // THE DEFECT THIS PINS. The save action used `revalidateTag(tag, 'max')`,
+    // which is STALE-WHILE-REVALIDATE: Next only marks the path revalidated
+    // when the profile's expire is 0, so the public pages under the
+    // `platform-settings` tag (getPublicSettings caches the C-SET-01 read with
+    // `revalidate: 300`) kept serving the PRE-EDIT banner while a background
+    // refresh ran. `updateTag` is the action-context immediate purge.
+    //
+    // WHY BOTH WAYS IS THE PROOF, not one save: with SWR the first save can
+    // still look right (the background refresh lands before the assertion) and
+    // the SECOND read serves the now-stale-again cache. Turning the banner ON
+    // and then OFF, asserting the public page each time with NO sleep, is what
+    // discriminates the two primitives — verified red against
+    // `revalidateTag(tag, 'max')` before this passed.
+    //
+    // NET-ZERO: the row is restored through the SAME UI path, and `afterAll`
+    // asserts the datastore is byte-identical to what it held before.
+    const before = storedAnnouncement();
+    const throwaway = `E2E announcement ${String(Date.now()).slice(-6)} — ledger 9 cache-bust proof`;
+
+    // WAIT FOR HYDRATION BEFORE TYPING, and this is a measured requirement:
+    // the editor's form is driven by react-hook-form's `values` prop fed from
+    // `useSettingsReadQuery` (staleTime 0, refetchOnMount 'always'), so a
+    // refetch that lands AFTER a fill RESETS the field. On a warm route that
+    // reset arrived between the fill and the save, leaving enabled=true with an
+    // empty message — the form then failed `messageRequiredWhenOn`, the confirm
+    // never opened, and the click looked like it did nothing. Awaiting the
+    // settings response first makes the form stable before it is touched.
+    const settingsRead = page.waitForResponse(
+      (response) => response.url().includes('/api/platform-settings') && response.status() === 200,
+      { timeout: WAIT },
+    );
+    await page.goto('/dashboard/ops/flags');
+    const editor = page.locator('[data-slot="ops-banner-editor-announcement"]');
+    await expect(editor).toBeVisible({ timeout: WAIT });
+    await settingsRead;
+    await expect(editor.locator('[data-slot="ops-banner-save-announcement"]')).toBeEnabled({
+      timeout: WAIT,
+    });
+
+    // --- ON: a real message and a real switch, saved through the confirm ---
+    await editor.locator('#announcement-message').fill(throwaway);
+    await expect(editor.locator('#announcement-message')).toHaveValue(throwaway);
+    if (before.enabled !== 't') {
+      await editor.locator('[data-slot="ops-banner-switch-announcement"]').click();
+    }
+    await expect(editor).toHaveAttribute('data-enabled', 'true');
+    await saveAnnouncementEditor(page);
+    await expect
+      .poll(() => storedAnnouncement().enabled, { timeout: WAIT })
+      .toBe('t');
+
+    // --- the PUBLIC page must serve it with no waiting ---
+    await page.goto('/eald');
+    const banner = page.locator('[data-slot="announcement-banner"]');
+    await expect(banner).toBeVisible({ timeout: WAIT });
+    await expect(banner).toContainText(throwaway);
+
+    await mkdir(OUT, { recursive: true });
+    await page.screenshot({ path: path.join(OUT, 'announcement-banner-desktop.png') });
+    await test.info().attach('announcement-banner-desktop', {
+      body: await page.screenshot(),
+      contentType: 'image/png',
+    });
+    await page.setViewportSize({ width: 375, height: 812 });
+    await expect(banner).toBeVisible({ timeout: WAIT });
+    await page.screenshot({ path: path.join(OUT, 'announcement-banner-375.png') });
+    await test.info().attach('announcement-banner-375', {
+      body: await page.screenshot(),
+      contentType: 'image/png',
+    });
+    await page.setViewportSize({ width: 1440, height: 900 });
+
+    // --- OFF again, the same way; the banner must be gone immediately ---
+    const settingsReadBack = page.waitForResponse(
+      (response) => response.url().includes('/api/platform-settings') && response.status() === 200,
+      { timeout: WAIT },
+    );
+    await page.goto('/dashboard/ops/flags');
+    await expect(editor).toBeVisible({ timeout: WAIT });
+    await settingsReadBack;
+    // Hydrated from the row this test just wrote — the editor round-trips too.
+    await expect(editor).toHaveAttribute('data-enabled', 'true', { timeout: WAIT });
+    await expect(editor.locator('#announcement-message')).toHaveValue(throwaway, { timeout: WAIT });
+    await editor.locator('#announcement-message').fill(before.message);
+    if (before.enabled !== 't') {
+      await editor.locator('[data-slot="ops-banner-switch-announcement"]').click();
+      await expect(editor).toHaveAttribute('data-enabled', 'false');
+    }
+    await saveAnnouncementEditor(page);
+    await expect
+      .poll(() => storedAnnouncement().enabled, { timeout: WAIT })
+      .toBe(before.enabled);
+
+    await page.goto('/eald');
+    await expect(banner).toHaveCount(0);
+
+    // --- the datastore is back to exactly what it held ---
+    expect(storedAnnouncement()).toEqual(before);
   });
 
   test('captures the console at desktop and 375', async () => {
