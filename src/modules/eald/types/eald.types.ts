@@ -5,7 +5,9 @@ type EaldPage = 'home' | 'diagnose' | 'teach' | 'track' | 'predict';
 interface EaldNavLink {
   readonly href: string;
   readonly key: string;
-  readonly page: EaldPage;
+  // Absent for entries that can never be the current page (anchors such as
+  // `/eald#evidence`), so `activePage === page` never highlights them.
+  readonly page?: EaldPage;
 }
 
 interface EaldFooterColumn {

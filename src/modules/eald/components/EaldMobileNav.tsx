@@ -62,6 +62,7 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
             <Link
               key={key}
               href={href}
+              aria-current={activePage === page ? 'page' : undefined}
               onClick={close}
               className={cn(
                 'rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-muted',

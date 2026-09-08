@@ -4543,7 +4543,15 @@
       "signIn": "Log masuk",
       "startFree": "Mula percuma",
       "openMenu": "Buka menu",
-      "closeMenu": "Tutup menu"
+      "closeMenu": "Tutup menu",
+      "overview": "Ringkasan",
+      "evidence": "Asas bukti",
+      "contact": "Hubungi pasukan program",
+      "utilityTagline": "Sekolah menengah Australia · Program pentaksiran EAL/D",
+      "searchLabel": "Cari",
+      "searchPlaceholder": "Cari dalam program",
+      "searchSubmit": "Cari",
+      "mastheadTagline": "Pentaksiran kefasihan bahasa Inggeris untuk Tahun 7–12"
     },
     "home": {
       "hero": {
@@ -4820,6 +4828,10 @@
       "status": "Memperintis dengan sekolah pengasas",
       "logoAlt": "Logo SchoolTest",
       "legalTitle": "Undang-undang"
+    },
+    "notice": {
+      "label": "Notis",
+      "cta": "Daftarkan sekolah anda"
     }
   },
   "Navigation": {

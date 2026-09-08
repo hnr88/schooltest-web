@@ -4543,7 +4543,15 @@
       "signIn": "เข้าสู่ระบบ",
       "startFree": "เริ่มฟรี",
       "openMenu": "เปิดเมนู",
-      "closeMenu": "ปิดเมนู"
+      "closeMenu": "ปิดเมนู",
+      "overview": "ภาพรวม",
+      "evidence": "ฐานหลักฐานเชิงประจักษ์",
+      "contact": "ติดต่อทีมโปรแกรม",
+      "utilityTagline": "โรงเรียนมัธยมออสเตรเลีย · โปรแกรมประเมิน EAL/D",
+      "searchLabel": "ค้นหา",
+      "searchPlaceholder": "ค้นหาในโปรแกรม",
+      "searchSubmit": "ค้นหา",
+      "mastheadTagline": "การประเมินความสามารถด้านภาษาอังกฤษสำหรับชั้นปี 7–12"
     },
     "home": {
       "hero": {
@@ -4820,6 +4828,10 @@
       "status": "กำลังนำร่องกับโรงเรียนก่อตั้ง",
       "logoAlt": "โลโก้ SchoolTest",
       "legalTitle": "ข้อกำหนดทางกฎหมาย"
+    },
+    "notice": {
+      "label": "ประกาศ",
+      "cta": "ลงทะเบียนโรงเรียนของคุณ"
     }
   },
   "Navigation": {

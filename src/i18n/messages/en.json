@@ -1966,7 +1966,15 @@
       "signIn": "Sign in",
       "startFree": "Start free",
       "openMenu": "Open menu",
-      "closeMenu": "Close menu"
+      "closeMenu": "Close menu",
+      "overview": "Overview",
+      "evidence": "Evidence base",
+      "contact": "Contact the programme team",
+      "utilityTagline": "Australian secondary schools · EAL/D assessment programme",
+      "searchLabel": "Search",
+      "searchPlaceholder": "Search the programme",
+      "searchSubmit": "Search",
+      "mastheadTagline": "English language proficiency assessment for Years 7–12"
     },
     "home": {
       "hero": {
@@ -2243,6 +2251,10 @@
       "status": "Piloting with founding schools",
       "logoAlt": "SchoolTest logo",
       "legalTitle": "Legal"
+    },
+    "notice": {
+      "label": "Notice",
+      "cta": "Register your school"
     }
   },
   "SchoolOnboarding": {

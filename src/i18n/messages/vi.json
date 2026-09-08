@@ -4552,7 +4552,15 @@
       "signIn": "Đăng nhập",
       "startFree": "Bắt đầu miễn phí",
       "openMenu": "Mở menu",
-      "closeMenu": "Đóng menu"
+      "closeMenu": "Đóng menu",
+      "overview": "Tổng quan",
+      "evidence": "Nền tảng bằng chứng",
+      "contact": "Liên hệ nhóm chương trình",
+      "utilityTagline": "Trường trung học Úc · Chương trình đánh giá EAL/D",
+      "searchLabel": "Tìm kiếm",
+      "searchPlaceholder": "Tìm kiếm trong chương trình",
+      "searchSubmit": "Tìm kiếm",
+      "mastheadTagline": "Đánh giá năng lực tiếng Anh cho lớp 7–12"
     },
     "home": {
       "hero": {
@@ -4829,6 +4837,10 @@
       "status": "Đang thí điểm cùng các trường sáng lập",
       "logoAlt": "Logo SchoolTest",
       "legalTitle": "Pháp lý"
+    },
+    "notice": {
+      "label": "Thông báo",
+      "cta": "Đăng ký trường của bạn"
     }
   },
   "Navigation": {

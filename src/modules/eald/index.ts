@@ -1,6 +1,7 @@
 // Components
 export { EaldHeader } from '@/modules/eald/components/EaldHeader';
 export { EaldMobileNav } from '@/modules/eald/components/EaldMobileNav';
+export { SiteSearchField } from '@/modules/eald/components/SiteSearchField';
 export { EaldFooter } from '@/modules/eald/components/EaldFooter';
 export { EaldHero } from '@/modules/eald/components/EaldHero';
 export { QuoteBand } from '@/modules/eald/components/QuoteBand';

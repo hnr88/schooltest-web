@@ -4533,7 +4533,15 @@
       "signIn": "登录",
       "startFree": "免费开始",
       "openMenu": "打开菜单",
-      "closeMenu": "关闭菜单"
+      "closeMenu": "关闭菜单",
+      "overview": "概览",
+      "evidence": "实证依据",
+      "contact": "联系项目团队",
+      "utilityTagline": "澳大利亚中学 · EAL/D 评估项目",
+      "searchLabel": "搜索",
+      "searchPlaceholder": "搜索项目内容",
+      "searchSubmit": "搜索",
+      "mastheadTagline": "面向 7–12 年级的英语语言能力评估"
     },
     "home": {
       "hero": {
@@ -4810,6 +4818,10 @@
       "status": "正与创始学校试点合作",
       "logoAlt": "SchoolTest 标志",
       "legalTitle": "法律条款"
+    },
+    "notice": {
+      "label": "通知",
+      "cta": "注册您的学校"
     }
   },
   "Navigation": {

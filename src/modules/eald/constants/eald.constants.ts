@@ -1,10 +1,12 @@
 import type { EaldNavLink, EaldFooterColumn, NextSectionCard, SubskillBar } from '@/modules/eald/types/eald.types';
 
 const EALD_NAV_LINKS: readonly EaldNavLink[] = [
+  { href: '/eald', key: 'nav.overview', page: 'home' },
   { href: '/eald/diagnose', key: 'nav.diagnose', page: 'diagnose' },
   { href: '/eald/teach', key: 'nav.teach', page: 'teach' },
   { href: '/eald/track', key: 'nav.track', page: 'track' },
   { href: '/eald/predict', key: 'nav.predict', page: 'predict' },
+  { href: '/eald#evidence', key: 'nav.evidence' },
 ] as const;
 
 const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [

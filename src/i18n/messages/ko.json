@@ -4543,7 +4543,15 @@
       "signIn": "로그인",
       "startFree": "무료 시작",
       "openMenu": "메뉴 열기",
-      "closeMenu": "메뉴 닫기"
+      "closeMenu": "메뉴 닫기",
+      "overview": "개요",
+      "evidence": "근거 자료",
+      "contact": "프로그램 팀에 문의",
+      "utilityTagline": "호주 중등학교 · EAL/D 평가 프로그램",
+      "searchLabel": "검색",
+      "searchPlaceholder": "프로그램 검색",
+      "searchSubmit": "검색",
+      "mastheadTagline": "7–12학년 대상 영어 능숙도 평가"
     },
     "home": {
       "hero": {
@@ -4820,6 +4828,10 @@
       "status": "창립 학교와 파일럿 진행 중",
       "logoAlt": "SchoolTest 로고",
       "legalTitle": "법적 고지"
+    },
+    "notice": {
+      "label": "공지",
+      "cta": "학교 등록하기"
     }
   },
   "Navigation": {
