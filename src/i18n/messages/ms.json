@@ -4570,6 +4570,20 @@
         "label": "Sedang diperintis dengan",
         "placeholder": "Sekolah perintis akan diumumkan"
       },
+      "about": {
+        "eyebrow": "Yang diberikan kepada guru hari ini:",
+        "photoCaption": "Setiap murid di dalam kelas berada di titik yang berbeza dalam empat kemahiran.",
+        "factCohortLabel": "Kohort",
+        "factCohortValue": "EAL/D Tahun 7–12",
+        "factSkillsLabel": "Kemahiran dinilai",
+        "factSkillsValue": "Membaca, mendengar, bertutur, menulis",
+        "factDeliveryLabel": "Penghantaran",
+        "factDeliveryValue": "Dalam talian, pada waktu sekolah",
+        "factReportingLabel": "Pelaporan",
+        "factReportingValue": "Fasa ACARA, band CEFR",
+        "factStatusLabel": "Status",
+        "factStatusValue": "Ujian lapangan, Penggal 1 2027"
+      },
       "problem": {
         "eyebrow": "Masalahnya",
         "title": "Bagaimana jika anda dapat melihat ke dalam minda mereka?",
@@ -4594,7 +4608,10 @@
         "trackTitle": "Jejak kemajuan dari semasa ke semasa",
         "trackDescription": "Setiap keputusan pada skala ACARA yang sama. Jika ia berkesan, ia akan kelihatan.",
         "predictTitle": "Ramal kesediaan arus perdana",
-        "predictDescription": "Satu skor kesediaan merentasi kesemua empat domain. Keputusan keluar yang boleh anda pertahankan."
+        "predictDescription": "Satu skor kesediaan merentasi kesemua empat domain. Keputusan keluar yang boleh anda pertahankan.",
+        "reportTitle": "Lapor kepada kepimpinan dan keluarga",
+        "reportDescription": "Profil bahasa mudah yang boleh dibaca ibu bapa dan paparan kohort untuk dilaporkan kepada kepimpinan — bukti yang sama, dua khalayak, tiada kemasukan semula.",
+        "inFieldTesting": "Dalam ujian lapangan"
       },
       "classroom": {
         "quote": "Penilaian bukan lagi ringkasan, ia menjadi peta.",

@@ -1993,6 +1993,20 @@
         "label": "Piloting with",
         "placeholder": "Pilot schools to be announced"
       },
+      "about": {
+        "eyebrow": "All a teacher is given today:",
+        "photoCaption": "Every student in the room sits at a different point in four different skills.",
+        "factCohortLabel": "Cohort",
+        "factCohortValue": "Years 7–12 EAL/D",
+        "factSkillsLabel": "Skills assessed",
+        "factSkillsValue": "Reading, listening, speaking, writing",
+        "factDeliveryLabel": "Delivery",
+        "factDeliveryValue": "Online, in school hours",
+        "factReportingLabel": "Reporting",
+        "factReportingValue": "ACARA phases, CEFR bands",
+        "factStatusLabel": "Status",
+        "factStatusValue": "Field testing, Term 1 2027"
+      },
       "problem": {
         "eyebrow": "The problem",
         "title": "What if you could see inside their minds?",
@@ -2017,7 +2031,10 @@
         "trackTitle": "Track progress over time",
         "trackDescription": "Every result on the same ACARA scale. If it worked, it shows up.",
         "predictTitle": "Predict mainstream readiness",
-        "predictDescription": "One readiness score across all four domains. Exit calls you can defend."
+        "predictDescription": "One readiness score across all four domains. Exit calls you can defend.",
+        "reportTitle": "Report to leadership and families",
+        "reportDescription": "A plain-language profile a parent can read and a cohort view leadership can report on — the same evidence, two audiences, no re-keying.",
+        "inFieldTesting": "In field testing"
       },
       "classroom": {
         "quote": "Assessment stops being a summary and starts being a map.",

@@ -4570,6 +4570,20 @@
         "label": "파일럿 진행 학교",
         "placeholder": "파일럿 학교는 추후 공개됩니다"
       },
+      "about": {
+        "eyebrow": "오늘날 교사에게 주어진 것은:",
+        "photoCaption": "교실의 모든 학생은 네 가지 기능에서 서로 다른 지점에 있습니다.",
+        "factCohortLabel": "대상",
+        "factCohortValue": "7–12학년 EAL/D",
+        "factSkillsLabel": "평가 기능",
+        "factSkillsValue": "읽기, 듣기, 말하기, 쓰기",
+        "factDeliveryLabel": "운영 방식",
+        "factDeliveryValue": "온라인, 수업 시간 내",
+        "factReportingLabel": "보고",
+        "factReportingValue": "ACARA 단계, CEFR 등급",
+        "factStatusLabel": "상태",
+        "factStatusValue": "2027년 1학기 현장 테스트"
+      },
       "problem": {
         "eyebrow": "문제",
         "title": "그들의 마음속을 들여다볼 수 있다면?",
@@ -4594,7 +4608,10 @@
         "trackTitle": "시간에 따른 진도 추적",
         "trackDescription": "모든 결과가 같은 ACARA 척도 위에. 효과가 있었다면 드러내니다.",
         "predictTitle": "주류 학급 준비도 예측",
-        "predictDescription": "네 영역을 아우르는 하나의 준비도 점수. 방어 가능한 전출 판단."
+        "predictDescription": "네 영역을 아우르는 하나의 준비도 점수. 방어 가능한 전출 판단.",
+        "reportTitle": "운영진과 학부모에게 보고",
+        "reportDescription": "학부모가 읽을 수 있는 쉬운 표현의 프로파일과 운영진이 보고할 수 있는 학년군 보기 — 같은 증거, 두 독자, 재입력 없음.",
+        "inFieldTesting": "현장 테스트 진행 중"
       },
       "classroom": {
         "quote": "평가는 요약에서 지도로 바뀝니다.",

@@ -4560,6 +4560,20 @@
         "label": "试点合作学校",
         "placeholder": "试点学校即将公布"
       },
+      "about": {
+        "eyebrow": "如今老师拿到的只有：",
+        "photoCaption": "教室里的每个学生都处在四项技能的不同节点上。",
+        "factCohortLabel": "授课对象",
+        "factCohortValue": "7–12 年级 EAL/D 学生",
+        "factSkillsLabel": "评估技能",
+        "factSkillsValue": "读、听、说、写",
+        "factDeliveryLabel": "授课形式",
+        "factDeliveryValue": "线上，在校期间进行",
+        "factReportingLabel": "报告呈现",
+        "factReportingValue": "ACARA 阶段、CEFR 等级",
+        "factStatusLabel": "进展状态",
+        "factStatusValue": "2027 年第一学期实地测试"
+      },
       "problem": {
         "eyebrow": "问题所在",
         "title": "如果你能看清他们的内心呢？",
@@ -4584,7 +4598,10 @@
         "trackTitle": "长期追踪进度",
         "trackDescription": "每次结果都在同一 ACARA 量表上。有效，就会显现。",
         "predictTitle": "预测主流班就绪度",
-        "predictDescription": "四大领域汇成一个就绪分数。转出决定，有据可依。"
+        "predictDescription": "四大领域汇成一个就绪分数。转出决定，有据可依。",
+        "reportTitle": "向领导层与家长报告",
+        "reportDescription": "一份家长能读懂的通俗档案，一份领导层可汇报的群体视图——同一份证据，两类受众，无需重复录入。",
+        "inFieldTesting": "实地测试中"
       },
       "classroom": {
         "quote": "评估不再只是总结，而是成为一幅地图。",

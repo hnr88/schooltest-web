@@ -1,4 +1,3 @@
-import { BarChart3, Sparkles, Target, TrendingUp } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import { Link } from '@/i18n/navigation';
@@ -6,71 +5,75 @@ import { cn } from '@/lib/utils';
 import { Container, Eyebrow, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing';
 import { WHAT_YOU_GET_CARDS } from '@/modules/eald/constants/components.constants';
+import type { WhatYouGetCard } from '@/modules/eald/types/components.types';
+
+// Home v2:143–196 — "Five programme components": a numbered ordered list in
+// one bordered card, not a card grid. Rows 01–02 use the blue tile, 03–04 the
+// teal tile; row 05 inverts to the navy tile and carries the "In field
+// testing" pill instead of a link (no destination — never a dead `#`).
+const TILE_CLASSES: Record<WhatYouGetCard['tone'], string> = {
+  blue: 'bg-blue-50 text-blue-600',
+  teal: 'bg-teal-50 text-teal-600',
+  navy: 'bg-navy-900 text-teal-300',
+};
 
 async function WhatYouGetSection() {
   const t = await getTranslations('Eald');
 
   return (
-    <Section>
+    <Section className="border-y border-border">
       <Container className="max-w-eald">
-        <div className="text-center">
-          <Eyebrow>{t('home.whatYouGet.eyebrow')}</Eyebrow>
-          <h2 className="mx-auto mt-3 max-w-2xl text-h2 font-bold tracking-tight text-balance text-foreground sm:text-display">
-            {t('home.whatYouGet.title')}
-          </h2>
-        </div>
+        <Eyebrow tone="teal" className="text-teal-600">
+          {t('home.whatYouGet.eyebrow')}
+        </Eyebrow>
+        <h2 className="mt-3.5 max-w-3xl text-h2 font-bold text-balance text-foreground">
+          {t('home.whatYouGet.title')}
+        </h2>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {WHAT_YOU_GET_CARDS.map((card, i) => {
-            const Icon = card.icon;
-            return (
-              <ScrollReveal key={card.href} delay={i * 90}>
-                <Link
-                  href={card.href}
-                  className={cn(
-                    'flex h-full flex-col rounded-2xl p-7 transition-[transform,box-shadow] duration-200 ease-out-expo hover:-translate-y-1 hover:shadow-lg',
-                    card.dark
-                      ? 'bg-navy-900'
-                      : 'border border-border bg-surface-inset',
+        <ol className="mt-11 overflow-hidden rounded-2xl border border-border bg-card">
+          {WHAT_YOU_GET_CARDS.map((card, index) => (
+            <li
+              key={card.titleKey}
+              className={cn(
+                index < WHAT_YOU_GET_CARDS.length - 1 && 'border-b border-divider',
+              )}
+            >
+              <ScrollReveal delay={index * 90}>
+                <div className="flex items-center gap-6 p-6 sm:gap-7 sm:p-8">
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'flex size-14 shrink-0 items-center justify-center rounded-xl text-lg font-bold',
+                      TILE_CLASSES[card.tone],
+                    )}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-lg font-bold text-foreground">
+                      {t(card.titleKey)}
+                    </h3>
+                    <p className="mt-2 text-body-lg text-body">
+                      {t(card.descKey)}
+                    </p>
+                  </div>
+                  {card.href ? (
+                    <Link
+                      href={card.href}
+                      className="shrink-0 text-sm font-semibold text-blue-700 hover:underline"
+                    >
+                      {t('shared.readMore')}
+                    </Link>
+                  ) : (
+                    <span className="shrink-0 whitespace-nowrap rounded-full border border-teal-100 bg-teal-50 px-3.5 py-1.5 text-body-sm font-semibold text-teal-600">
+                      {t('home.whatYouGet.inFieldTesting')}
+                    </span>
                   )}
-                >
-                  <span
-                    className={cn(
-                      'inline-grid size-11 place-items-center rounded-xl',
-                      card.iconWrap,
-                    )}
-                  >
-                    <Icon className={cn('size-5', card.iconColor)} />
-                  </span>
-                  <p
-                    className={cn(
-                      'mt-4 text-lg font-bold',
-                      card.dark ? 'text-white' : 'text-foreground',
-                    )}
-                  >
-                    {t(card.titleKey)}
-                  </p>
-                  <p
-                    className={cn(
-                      'mt-2 text-body-md leading-relaxed',
-                      card.dark ? 'text-navy-muted' : 'text-body',
-                    )}
-                  >
-                    {t(card.descKey)}
-                  </p>
-                  <span
-                    className={cn(
-                      'mt-auto pt-5 text-body-sm font-semibold',
-                      card.dark ? 'text-teal-400' : 'text-blue-600',
-                    )}
-                  >
-                    {t('shared.readMore')}
-                  </span>
-                </Link>
+                </div>
               </ScrollReveal>
-            );
-          })}
-        </div>
+            </li>
+          ))}
+        </ol>
       </Container>
     </Section>
   );

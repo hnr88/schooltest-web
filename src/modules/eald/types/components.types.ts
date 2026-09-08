@@ -47,3 +47,36 @@ export interface FigureCardProps {
   readonly children?: ReactNode;
   readonly className?: string;
 }
+
+export interface HomeEvidenceChartBar {
+  readonly value: number;
+  readonly display: string;
+}
+
+export interface HomeEvidenceChartCategory {
+  readonly labelKey: string;
+  readonly bars: readonly HomeEvidenceChartBar[];
+}
+
+// Task 07's HOME_EVIDENCE_CHART (Home v2:247–264): three sittings per skill,
+// values on the 0–100 ACARA band scale; band labels are listed bottom-up.
+export interface HomeEvidenceChartConfig {
+  readonly seriesLabelKeys: readonly string[];
+  readonly bandLabelKeys: readonly string[];
+  readonly categories: readonly HomeEvidenceChartCategory[];
+}
+
+export interface WhatYouGetCard {
+  readonly titleKey: string;
+  readonly descKey: string;
+  /** Absent for rows with no destination (row 05) — never a dead `#`. */
+  readonly href?: string;
+  readonly tone: 'blue' | 'teal' | 'navy';
+}
+
+export interface ProgrammeFact {
+  readonly labelKey: string;
+  readonly valueKey: string;
+  /** Only the Status cell tints its value. */
+  readonly tone?: 'teal';
+}

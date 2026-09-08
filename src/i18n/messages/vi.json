@@ -4579,6 +4579,20 @@
         "label": "Đang thí điểm cùng",
         "placeholder": "Trường thí điểm sẽ được công bố"
       },
+      "about": {
+        "eyebrow": "Tất cả những gì giáo viên có hôm nay:",
+        "photoCaption": "Mỗi học sinh trong lớp đang ở một điểm khác nhau của bốn kỹ năng.",
+        "factCohortLabel": "Đối tượng",
+        "factCohortValue": "EAL/D năm 7–12",
+        "factSkillsLabel": "Kỹ năng đánh giá",
+        "factSkillsValue": "Đọc, nghe, nói, viết",
+        "factDeliveryLabel": "Hình thức",
+        "factDeliveryValue": "Trực tuyến, trong giờ học",
+        "factReportingLabel": "Báo cáo",
+        "factReportingValue": "Giai đoạn ACARA, bậc CEFR",
+        "factStatusLabel": "Trạng thái",
+        "factStatusValue": "Thử nghiệm hiện trường, Học kỳ 1 năm 2027"
+      },
       "problem": {
         "eyebrow": "Vấn đề",
         "title": "Nếu bạn có thể nhìn vào tâm trí các em thì sao?",
@@ -4603,7 +4617,10 @@
         "trackTitle": "Theo dõi tiến bộ theo thời gian",
         "trackDescription": "Mọi kết quả trên cùng thang ACARA. Nếu có hiệu quả, nó sẽ hiện ra.",
         "predictTitle": "Dự đoán mức sẵn sàng vào lớp chính",
-        "predictDescription": "Một điểm sẵn sàng trên cả bốn lĩnh vực. Quyết định chuyển lớp mà bạn có thể bảo vệ."
+        "predictDescription": "Một điểm sẵn sàng trên cả bốn lĩnh vực. Quyết định chuyển lớp mà bạn có thể bảo vệ.",
+        "reportTitle": "Báo cáo cho ban lãnh đạo và gia đình",
+        "reportDescription": "Hồ sơ ngôn ngữ đơn giản phụ huynh đọc được và góc nhìn toàn khóa ban lãnh đạo có thể báo cáo — cùng một bằng chứng, hai đối tượng, không nhập lại.",
+        "inFieldTesting": "Đang thử nghiệm hiện trường"
       },
       "classroom": {
         "quote": "Đánh giá không còn là bản tóm tắt mà trở thành tấm bản đồ.",
