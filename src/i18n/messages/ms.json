@@ -3960,6 +3960,168 @@
           "actions": "Tindakan"
         }
       }
+    },
+    "content": {
+      "meta": {
+        "title": "Kandungan",
+        "description": "Kiraan baris, penggunaan media dan pembersihan baris yatim bagi setiap jenis kandungan."
+      },
+      "title": "Kandungan",
+      "description": "Apa yang platform simpan sekarang: kiraan baris mengikut jenis, penggunaan media, baris yatim, dan larian penyelenggaraan yang membersihkannya.",
+      "counts": {
+        "title": "Jenis kandungan",
+        "description": "Kiraan baris semasa bagi setiap jenis kandungan api::, dihitung terus daripada pangkalan data.",
+        "columns": {
+          "contentType": "Jenis kandungan",
+          "uid": "UID",
+          "rows": "Baris"
+        },
+        "errorTitle": "Gagal membaca kiraan baris",
+        "errorDescription": "Kiraan baris tidak dapat dibaca. Cuba lagi, atau periksa API jika ia berterusan."
+      },
+      "media": {
+        "title": "Media",
+        "description": "Jumlah bait sebenar daripada jadual fail milik plugin muat naik.",
+        "files": "Fail",
+        "totalBytes": "Jumlah bait",
+        "unreferenced": "Tidak dirujuk",
+        "columns": {
+          "mime": "Jenis",
+          "count": "Fail",
+          "bytes": "Bait"
+        },
+        "noMedia": "Belum ada fail media disimpan.",
+        "errorTitle": "Gagal membaca statistik media",
+        "errorDescription": "Statistik media tidak dapat dibaca. Cuba lagi, atau periksa API jika ia berterusan."
+      },
+      "orphans": {
+        "title": "Baris yatim",
+        "description": "Baris yang kehilangan hubungan wajibnya, mengikut jenis, dengan sampel 20 yang pertama.",
+        "columns": {
+          "kind": "Jenis yatim",
+          "count": "Bilangan",
+          "purge": "Buang"
+        },
+        "selectForPurge": "pilih untuk dibuang",
+        "selectKind": "Pilih {kind} untuk dibuang",
+        "purgeHint": "Membuang akan memadam baris yatim bagi jenis yang dipilih secara kekal. Pelayan melaporkan dengan tepat apa yang dipadamnya.",
+        "purgeButton": "Buang yang dipilih",
+        "confirmTitle": "Buang jenis yatim yang dipilih?",
+        "confirmBody": "Semua baris yatim bagi {count} jenis yang dipilih dipadam sekarang. Ini tidak boleh dibatalkan.",
+        "confirmAction": "Buang",
+        "cancel": "Batal",
+        "executed": "Pembuangan dilaksanakan: {counts}",
+        "nothingPurged": "tiada apa untuk dipadam",
+        "errorTitle": "Gagal membaca baris yatim",
+        "errorDescription": "Laporan baris yatim tidak dapat dibaca. Cuba lagi, atau periksa API jika ia berterusan."
+      },
+      "maintenance": {
+        "title": "Larian penyelenggaraan",
+        "description": "Kedua-dua larian lalai kepada laporan larian percubaan. Pelaksanaan memerlukan pengesahan yang jelas dan diaudit.",
+        "cancel": "Batal",
+        "reindex": {
+          "label": "Larian integriti carian",
+          "description": "Mengira setiap baris sekolah dan sebarang slug boleh cari yang hilang. Larian percubaan hanya melaporkan; pelaksanaan menulis entri audit.",
+          "preview": "Pratonton (larian percubaan)",
+          "execute": "Laksana",
+          "confirmTitle": "Laksanakan larian integriti carian?",
+          "confirmBody": "Larian berjalan sekarang dan ditulis ke lejar audit. Kiraannya dilaporkan dalam kedua-dua keadaan.",
+          "confirmAction": "Laksana",
+          "dryRun": "Larian percubaan: {indexed} sekolah diindeks, {missing} slug hilang — tiada apa ditulis",
+          "executed": "Dilaksanakan: {indexed} sekolah diindeks dalam {ms} ms — diaudit"
+        },
+        "prune": {
+          "label": "Buang media yang tidak dirujuk",
+          "description": "Memadam fail muat naik yang tidak dirujuk oleh mana-mana kandungan (baris dan objek tersimpan sekali gus). Larian percubaan hanya melaporkan.",
+          "preview": "Pratonton (larian percubaan)",
+          "execute": "Laksana pembuangan",
+          "confirmTitle": "Buang media yang tidak dirujuk sekarang?",
+          "confirmBody": "Fail yang tidak dirujuk dipadam betul-betul — objek tersimpan turut hilang bersama barisnya. Pelayan melaporkan apa yang dibuangnya.",
+          "confirmAction": "Buang",
+          "dryRun": "Larian percubaan: {removed} fail tidak dirujuk akan dipadam — tiada apa ditulis",
+          "executed": "Dilaksanakan: {removed} fail dibuang, {bytes} bait dibebaskan — diaudit"
+        }
+      }
+    },
+    "flags": {
+      "meta": {
+        "title": "Bendera & tetapan — SchoolTest Ops",
+        "description": "SchoolTest Ops — bendera ciri, sepanduk awam, dan had kadar untuk masuk."
+      },
+      "title": "Bendera & tetapan",
+      "description": "Suis platform, sepanduk yang dilihat pelawat, dan had yang mengawal proses masuk.",
+      "editorsTitle": "Tetapan platform",
+      "errorToast": "Perubahan itu tidak disimpan. Tiada apa yang digunakan.",
+      "actions": {
+        "cancel": "Batal"
+      },
+      "levels": {
+        "info": "Maklumat",
+        "warning": "Amaran",
+        "critical": "Kritikal"
+      },
+      "fields": {
+        "message": "Mesej",
+        "level": "Tahap"
+      },
+      "validation": {
+        "messageRequiredWhenOn": "Tulis mesej sebelum menghidupkannya.",
+        "tooLong": "Gunakan {max} aksara atau kurang.",
+        "maxBounds": "Nombor bulat antara {min} dan {max}.",
+        "windowBounds": "Milisaat, nombor bulat antara {min} dan {max}."
+      },
+      "registry": {
+        "title": "Bendera ciri",
+        "description": "Suis yang disertakan platform ini. Senarainya datang daripada pelayan, jadi bendera yang baru dikeluarkan muncul di sini dengan sendiri.",
+        "loadingLabel": "Memuatkan bendera ciri",
+        "empty": "Tiada bendera ciri didaftarkan.",
+        "toggleLabel": "Tukar {key}",
+        "enabledToast": "{key} kini hidup.",
+        "disabledToast": "{key} kini mati.",
+        "errorToast": "Bendera itu tidak berubah.",
+        "error": {
+          "title": "Kami tidak dapat memuatkan bendera ciri.",
+          "description": "Semak sambungan anda dan cuba lagi.",
+          "retry": "Cuba lagi"
+        }
+      },
+      "announcement": {
+        "title": "Sepanduk pengumuman",
+        "description": "Mesej yang dipaparkan pada halaman awam. Menyimpan akan menerbitkan semula halaman cache serta-merta.",
+        "switchLabel": "Papar pengumuman",
+        "messageHelp": "Dipaparkan kepada pelawat semasa pengumuman hidup. Wajib apabila anda menghidupkannya.",
+        "save": "Simpan pengumuman",
+        "confirmTitle": "Terbitkan pengumuman ini?",
+        "confirmOn": "Ini memaparkan mesej kepada setiap pelawat di tapak awam, dan menerbitkan semula halaman cache sekarang.",
+        "confirmOff": "Ini membuang pengumuman daripada setiap halaman awam dan menerbitkannya semula sekarang.",
+        "confirmAction": "Simpan pengumuman",
+        "onToast": "Pengumuman diterbitkan pada tahap {level}.",
+        "offToast": "Pengumuman dibuang."
+      },
+      "maintenance": {
+        "title": "Mod penyelenggaraan",
+        "description": "Menutup tapak kepada pelawat. Suis paling besar impaknya pada halaman ini.",
+        "switchLabel": "Letakkan tapak dalam penyelenggaraan",
+        "messageHelp": "Dipaparkan pada tapak yang ditutup semasa penyelenggaraan. Wajib apabila anda menghidupkannya.",
+        "save": "Simpan mod penyelenggaraan",
+        "confirmTitle": "Tutup tapak kepada pelawat?",
+        "confirmOn": "Ini menutup tapak awam untuk semua orang sehingga anda mematikannya semula. Kerja yang sedang berjalan bagi pengguna yang telah masuk mungkin terganggu.",
+        "confirmOff": "Ini membuka semula tapak awam kepada pelawat.",
+        "confirmAction": "Simpan mod penyelenggaraan",
+        "onToast": "Mod penyelenggaraan hidup — tapak ditutup.",
+        "offToast": "Mod penyelenggaraan mati — tapak dibuka."
+      },
+      "rateLimit": {
+        "title": "Had kadar masuk",
+        "description": "Berapa kali satu alamat boleh mencuba masuk dalam setiap tetingkap. Terlalu rendah akan mengunci orang di luar, termasuk anda.",
+        "maxLabel": "Cubaan",
+        "windowLabel": "Tetingkap (ms)",
+        "save": "Simpan had kadar",
+        "confirmTitle": "Ubah had kadar masuk?",
+        "confirmDescription": "Ini membenarkan {max} cubaan masuk setiap {window} ms. Menetapkannya terlalu rendah boleh mengunci setiap pengendali daripada masuk.",
+        "confirmAction": "Simpan had kadar",
+        "savedToast": "Had kadar disimpan: {max} cubaan setiap {window} ms."
+      }
     }
   },
   "RunSheet": {

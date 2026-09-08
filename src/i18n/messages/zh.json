@@ -4040,6 +4040,168 @@
           "actions": "操作"
         }
       }
+    },
+    "content": {
+      "meta": {
+        "title": "内容",
+        "description": "各内容类型的行数、媒体占用与孤立行清理。"
+      },
+      "title": "内容",
+      "description": "平台当前存储的内容：各类型行数、媒体占用、孤立行，以及用于清理它们的维护流程。",
+      "counts": {
+        "title": "内容类型",
+        "description": "从数据库枚举出的每个 api:: 内容类型的实时行数。",
+        "columns": {
+          "contentType": "内容类型",
+          "uid": "UID",
+          "rows": "行数"
+        },
+        "errorTitle": "行数读取失败",
+        "errorDescription": "无法读取行数。请重试；若持续出现，请检查 API。"
+      },
+      "media": {
+        "title": "媒体",
+        "description": "来自上传插件自身文件表的真实字节统计。",
+        "files": "文件数",
+        "totalBytes": "总字节数",
+        "unreferenced": "未被引用",
+        "columns": {
+          "mime": "类型",
+          "count": "文件数",
+          "bytes": "字节"
+        },
+        "noMedia": "尚未存储任何媒体文件。",
+        "errorTitle": "媒体统计读取失败",
+        "errorDescription": "无法读取媒体统计。请重试；若持续出现，请检查 API。"
+      },
+      "orphans": {
+        "title": "孤立行",
+        "description": "缺少必需关联的行，按类别列出，并附前 20 条样本。",
+        "columns": {
+          "kind": "孤立类别",
+          "count": "数量",
+          "purge": "清除"
+        },
+        "selectForPurge": "选择以清除",
+        "selectKind": "选择“{kind}”以清除",
+        "purgeHint": "清除将永久删除所选类别的孤立行。服务器会准确报告删除了什么。",
+        "purgeButton": "清除所选",
+        "confirmTitle": "确定清除所选的孤立类别？",
+        "confirmBody": "所选 {count} 个类别的全部孤立行将立即删除。此操作无法撤销。",
+        "confirmAction": "清除",
+        "cancel": "取消",
+        "executed": "已执行清除：{counts}",
+        "nothingPurged": "无内容可删除",
+        "errorTitle": "孤立行读取失败",
+        "errorDescription": "无法读取孤立行报告。请重试；若持续出现，请检查 API。"
+      },
+      "maintenance": {
+        "title": "维护流程",
+        "description": "两个流程默认只生成试运行报告。实际执行需要显式确认，并会记入审计日志。",
+        "cancel": "取消",
+        "reindex": {
+          "label": "搜索完整性检查",
+          "description": "统计全部学校行以及缺失的可搜索 slug。试运行仅生成报告；实际执行会写入审计记录。",
+          "preview": "预览（试运行）",
+          "execute": "执行",
+          "confirmTitle": "确定执行搜索完整性检查？",
+          "confirmBody": "该检查将立即运行，并写入审计日志。无论是否执行，都会报告统计结果。",
+          "confirmAction": "执行",
+          "dryRun": "试运行：已索引 {indexed} 所学校，{missing} 个缺失 slug — 未写入任何数据",
+          "executed": "已执行：{ms} 毫秒内索引了 {indexed} 所学校 — 已记入审计日志"
+        },
+        "prune": {
+          "label": "清理未被引用的媒体",
+          "description": "删除没有任何内容引用的上传文件（数据行与已存储对象一并删除）。试运行仅生成报告。",
+          "preview": "预览（试运行）",
+          "execute": "执行清理",
+          "confirmTitle": "确定立即清理未被引用的媒体？",
+          "confirmBody": "未被引用的文件将被真实删除 — 已存储的对象会随数据行一起删除。服务器会报告删除了什么。",
+          "confirmAction": "清理",
+          "dryRun": "试运行：将删除 {removed} 个未被引用的文件 — 未写入任何数据",
+          "executed": "已执行：已删除 {removed} 个文件，释放 {bytes} 字节 — 已记入审计日志"
+        }
+      }
+    },
+    "flags": {
+      "meta": {
+        "title": "开关与设置 — SchoolTest 运维",
+        "description": "SchoolTest 运维 — 功能开关、公开横幅与登录频率限制。"
+      },
+      "title": "开关与设置",
+      "description": "平台开关、访客看到的横幅，以及约束登录的限制。",
+      "editorsTitle": "平台设置",
+      "errorToast": "该更改未能保存，任何设置都未生效。",
+      "actions": {
+        "cancel": "取消"
+      },
+      "levels": {
+        "info": "信息",
+        "warning": "警告",
+        "critical": "严重"
+      },
+      "fields": {
+        "message": "消息内容",
+        "level": "级别"
+      },
+      "validation": {
+        "messageRequiredWhenOn": "开启前请先填写消息内容。",
+        "tooLong": "请控制在 {max} 个字符以内。",
+        "maxBounds": "请输入 {min} 到 {max} 之间的整数。",
+        "windowBounds": "毫秒数，请输入 {min} 到 {max} 之间的整数。"
+      },
+      "registry": {
+        "title": "功能开关",
+        "description": "本平台随附的开关。列表来自服务器，因此新发布的开关会自动出现在这里。",
+        "loadingLabel": "正在加载功能开关",
+        "empty": "尚未注册任何功能开关。",
+        "toggleLabel": "切换 {key}",
+        "enabledToast": "{key} 已开启。",
+        "disabledToast": "{key} 已关闭。",
+        "errorToast": "该开关未发生变化。",
+        "error": {
+          "title": "无法加载功能开关。",
+          "description": "请检查网络连接后再试。",
+          "retry": "再试一次"
+        }
+      },
+      "announcement": {
+        "title": "公告横幅",
+        "description": "显示在公开页面上的消息。保存后会立即重新发布缓存页面。",
+        "switchLabel": "显示公告",
+        "messageHelp": "公告开启期间向访客展示。开启时必填。",
+        "save": "保存公告",
+        "confirmTitle": "确定发布此公告？",
+        "confirmOn": "该消息将向公开站点的所有访客展示，并立即重新发布缓存页面。",
+        "confirmOff": "该公告将从所有公开页面移除，并立即重新发布这些页面。",
+        "confirmAction": "保存公告",
+        "onToast": "公告已按“{level}”级别发布。",
+        "offToast": "公告已移除。"
+      },
+      "maintenance": {
+        "title": "维护模式",
+        "description": "对访客关闭站点。本页影响最大的开关。",
+        "switchLabel": "将站点置于维护状态",
+        "messageHelp": "维护期间显示在已关闭的站点上。开启时必填。",
+        "save": "保存维护模式",
+        "confirmTitle": "确定对访客关闭站点？",
+        "confirmOn": "在你再次关闭之前，公开站点将对所有人关闭。已登录用户正在进行的操作可能被中断。",
+        "confirmOff": "公开站点将重新向访客开放。",
+        "confirmAction": "保存维护模式",
+        "onToast": "维护模式已开启 — 站点已关闭。",
+        "offToast": "维护模式已关闭 — 站点已开放。"
+      },
+      "rateLimit": {
+        "title": "登录频率限制",
+        "description": "单个地址在每个时间窗口内可尝试登录的次数。设置过低会把用户挡在外面，包括你自己。",
+        "maxLabel": "尝试次数",
+        "windowLabel": "时间窗口（毫秒）",
+        "save": "保存频率限制",
+        "confirmTitle": "确定修改登录频率限制？",
+        "confirmDescription": "这将允许每 {window} 毫秒内尝试登录 {max} 次。设置过低可能导致所有运维人员都无法登录。",
+        "confirmAction": "保存频率限制",
+        "savedToast": "频率限制已保存：每 {window} 毫秒 {max} 次尝试。"
+      }
     }
   },
   "RunSheet": {

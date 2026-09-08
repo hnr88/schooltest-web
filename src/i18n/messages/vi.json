@@ -3969,6 +3969,168 @@
           "actions": "Hành động"
         }
       }
+    },
+    "content": {
+      "meta": {
+        "title": "Nội dung",
+        "description": "Số dòng, mức dùng phương tiện và việc dọn dòng mồ côi cho mọi loại nội dung."
+      },
+      "title": "Nội dung",
+      "description": "Những gì nền tảng đang lưu: số dòng theo từng loại, mức dùng phương tiện, các dòng mồ côi, và những lượt bảo trì dọn chúng.",
+      "counts": {
+        "title": "Loại nội dung",
+        "description": "Số dòng thực tế của mọi loại nội dung api::, đếm trực tiếp từ cơ sở dữ liệu.",
+        "columns": {
+          "contentType": "Loại nội dung",
+          "uid": "UID",
+          "rows": "Số dòng"
+        },
+        "errorTitle": "Không đọc được số dòng",
+        "errorDescription": "Không thể đọc số dòng. Hãy thử lại, hoặc kiểm tra API nếu lỗi vẫn còn."
+      },
+      "media": {
+        "title": "Phương tiện",
+        "description": "Tổng số byte thực tế lấy từ bảng tệp của chính plugin tải lên.",
+        "files": "Tệp",
+        "totalBytes": "Tổng số byte",
+        "unreferenced": "Không được tham chiếu",
+        "columns": {
+          "mime": "Loại",
+          "count": "Tệp",
+          "bytes": "Byte"
+        },
+        "noMedia": "Chưa có tệp phương tiện nào được lưu.",
+        "errorTitle": "Không đọc được thống kê phương tiện",
+        "errorDescription": "Không thể đọc thống kê phương tiện. Hãy thử lại, hoặc kiểm tra API nếu lỗi vẫn còn."
+      },
+      "orphans": {
+        "title": "Dòng mồ côi",
+        "description": "Những dòng thiếu quan hệ bắt buộc, theo từng loại, kèm 20 mẫu đầu tiên.",
+        "columns": {
+          "kind": "Loại mồ côi",
+          "count": "Số lượng",
+          "purge": "Xóa"
+        },
+        "selectForPurge": "chọn để xóa",
+        "selectKind": "Chọn {kind} để xóa",
+        "purgeHint": "Việc xóa sẽ loại bỏ vĩnh viễn các dòng mồ côi của những loại đã chọn. Máy chủ báo lại chính xác những gì đã xóa.",
+        "purgeButton": "Xóa mục đã chọn",
+        "confirmTitle": "Xóa các loại mồ côi đã chọn?",
+        "confirmBody": "Toàn bộ dòng mồ côi của {count} loại đã chọn sẽ bị xóa ngay. Không thể hoàn tác.",
+        "confirmAction": "Xóa",
+        "cancel": "Hủy",
+        "executed": "Đã thực hiện xóa: {counts}",
+        "nothingPurged": "không có gì để xóa",
+        "errorTitle": "Không đọc được dòng mồ côi",
+        "errorDescription": "Không thể đọc báo cáo dòng mồ côi. Hãy thử lại, hoặc kiểm tra API nếu lỗi vẫn còn."
+      },
+      "maintenance": {
+        "title": "Các lượt bảo trì",
+        "description": "Cả hai lượt đều mặc định chỉ tạo báo cáo chạy thử. Muốn thực thi phải xác nhận rõ ràng và việc đó được ghi nhật ký kiểm toán.",
+        "cancel": "Hủy",
+        "reindex": {
+          "label": "Lượt kiểm tra toàn vẹn tìm kiếm",
+          "description": "Đếm mọi dòng trường học và mọi slug tìm kiếm bị thiếu. Chạy thử chỉ báo cáo; thực thi sẽ ghi một bản ghi kiểm toán.",
+          "preview": "Xem trước (chạy thử)",
+          "execute": "Thực thi",
+          "confirmTitle": "Thực thi lượt kiểm tra toàn vẹn tìm kiếm?",
+          "confirmBody": "Lượt kiểm tra chạy ngay và được ghi vào sổ kiểm toán. Kết quả đếm đều được báo cáo trong cả hai trường hợp.",
+          "confirmAction": "Thực thi",
+          "dryRun": "Chạy thử: đã lập chỉ mục {indexed} trường, thiếu {missing} slug — không ghi gì",
+          "executed": "Đã thực thi: lập chỉ mục {indexed} trường trong {ms} ms — đã ghi kiểm toán"
+        },
+        "prune": {
+          "label": "Dọn phương tiện không được tham chiếu",
+          "description": "Xóa các tệp tải lên mà không nội dung nào tham chiếu (xóa cả dòng dữ liệu và đối tượng đã lưu). Chạy thử chỉ báo cáo.",
+          "preview": "Xem trước (chạy thử)",
+          "execute": "Thực thi dọn dẹp",
+          "confirmTitle": "Dọn phương tiện không được tham chiếu ngay?",
+          "confirmBody": "Các tệp không được tham chiếu sẽ bị xóa thật — đối tượng đã lưu mất theo dòng dữ liệu. Máy chủ báo lại những gì đã loại bỏ.",
+          "confirmAction": "Dọn",
+          "dryRun": "Chạy thử: {removed} tệp không được tham chiếu sẽ bị xóa — không ghi gì",
+          "executed": "Đã thực thi: loại bỏ {removed} tệp, giải phóng {bytes} byte — đã ghi kiểm toán"
+        }
+      }
+    },
+    "flags": {
+      "meta": {
+        "title": "Cờ & cài đặt — SchoolTest Ops",
+        "description": "SchoolTest Ops — cờ tính năng, các biểu ngữ công khai, và giới hạn tần suất đăng nhập."
+      },
+      "title": "Cờ & cài đặt",
+      "description": "Các công tắc nền tảng, biểu ngữ mà khách truy cập nhìn thấy, và giới hạn chi phối việc đăng nhập.",
+      "editorsTitle": "Cài đặt nền tảng",
+      "errorToast": "Thay đổi đó chưa được lưu. Không có gì được áp dụng.",
+      "actions": {
+        "cancel": "Hủy"
+      },
+      "levels": {
+        "info": "Thông tin",
+        "warning": "Cảnh báo",
+        "critical": "Nghiêm trọng"
+      },
+      "fields": {
+        "message": "Nội dung",
+        "level": "Mức"
+      },
+      "validation": {
+        "messageRequiredWhenOn": "Hãy viết nội dung trước khi bật.",
+        "tooLong": "Dùng tối đa {max} ký tự.",
+        "maxBounds": "Một số nguyên từ {min} đến {max}.",
+        "windowBounds": "Milisecond, một số nguyên từ {min} đến {max}."
+      },
+      "registry": {
+        "title": "Cờ tính năng",
+        "description": "Các công tắc nền tảng này cung cấp. Danh sách lấy từ máy chủ, nên một cờ vừa phát hành sẽ tự xuất hiện ở đây.",
+        "loadingLabel": "Đang tải các cờ tính năng",
+        "empty": "Chưa có cờ tính năng nào được đăng ký.",
+        "toggleLabel": "Bật/tắt {key}",
+        "enabledToast": "{key} hiện đang bật.",
+        "disabledToast": "{key} hiện đang tắt.",
+        "errorToast": "Cờ đó không thay đổi.",
+        "error": {
+          "title": "Chúng tôi không tải được các cờ tính năng.",
+          "description": "Kiểm tra kết nối của bạn rồi thử lại.",
+          "retry": "Thử lại"
+        }
+      },
+      "announcement": {
+        "title": "Biểu ngữ thông báo",
+        "description": "Một nội dung hiển thị trên các trang công khai. Lưu lại sẽ phát hành lại các trang đã lưu bộ đệm ngay lập tức.",
+        "switchLabel": "Hiển thị thông báo",
+        "messageHelp": "Hiển thị cho khách truy cập khi thông báo đang bật. Bắt buộc khi bạn bật nó.",
+        "save": "Lưu thông báo",
+        "confirmTitle": "Phát hành thông báo này?",
+        "confirmOn": "Việc này hiển thị nội dung cho mọi khách truy cập trên trang công khai, và phát hành lại các trang đã lưu bộ đệm ngay bây giờ.",
+        "confirmOff": "Việc này xóa thông báo khỏi mọi trang công khai và phát hành lại chúng ngay bây giờ.",
+        "confirmAction": "Lưu thông báo",
+        "onToast": "Đã phát hành thông báo ở mức {level}.",
+        "offToast": "Đã xóa thông báo."
+      },
+      "maintenance": {
+        "title": "Chế độ bảo trì",
+        "description": "Đóng trang với khách truy cập. Công tắc có ảnh hưởng lớn nhất trên trang này.",
+        "switchLabel": "Đưa trang vào chế độ bảo trì",
+        "messageHelp": "Hiển thị trên trang đã đóng trong lúc bảo trì. Bắt buộc khi bạn bật nó.",
+        "save": "Lưu chế độ bảo trì",
+        "confirmTitle": "Đóng trang với khách truy cập?",
+        "confirmOn": "Việc này đóng trang công khai với mọi người cho đến khi bạn tắt lại. Công việc đang làm của người đã đăng nhập có thể bị ngắt.",
+        "confirmOff": "Việc này mở lại trang công khai cho khách truy cập.",
+        "confirmAction": "Lưu chế độ bảo trì",
+        "onToast": "Chế độ bảo trì đang bật — trang đã đóng.",
+        "offToast": "Chế độ bảo trì đã tắt — trang đang mở."
+      },
+      "rateLimit": {
+        "title": "Giới hạn tần suất đăng nhập",
+        "description": "Số lần một địa chỉ có thể thử đăng nhập trong mỗi khoảng. Đặt quá thấp sẽ khóa mọi người ở ngoài, kể cả bạn.",
+        "maxLabel": "Số lần thử",
+        "windowLabel": "Khoảng (ms)",
+        "save": "Lưu giới hạn tần suất",
+        "confirmTitle": "Thay đổi giới hạn tần suất đăng nhập?",
+        "confirmDescription": "Việc này cho phép {max} lần thử đăng nhập mỗi {window} ms. Đặt quá thấp có thể khóa mọi người vận hành khỏi việc đăng nhập.",
+        "confirmAction": "Lưu giới hạn tần suất",
+        "savedToast": "Đã lưu giới hạn tần suất: {max} lần thử mỗi {window} ms."
+      }
     }
   },
   "RunSheet": {

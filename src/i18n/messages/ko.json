@@ -3960,6 +3960,168 @@
           "actions": "작업"
         }
       }
+    },
+    "content": {
+      "meta": {
+        "title": "콘텐츠",
+        "description": "모든 콘텐츠 유형의 행 수, 미디어 사용량, 고아 행 정리."
+      },
+      "title": "콘텐츠",
+      "description": "플랫폼이 현재 저장하고 있는 것: 유형별 행 수, 미디어 사용량, 관계가 끊긴 고아 행, 그리고 이를 정리하는 유지관리 작업.",
+      "counts": {
+        "title": "콘텐츠 유형",
+        "description": "데이터베이스에서 직접 집계한 모든 api:: 콘텐츠 유형의 실시간 행 수.",
+        "columns": {
+          "contentType": "콘텐츠 유형",
+          "uid": "UID",
+          "rows": "행 수"
+        },
+        "errorTitle": "행 수를 읽지 못했습니다",
+        "errorDescription": "행 수를 읽을 수 없습니다. 다시 시도하고, 계속되면 API를 확인하세요."
+      },
+      "media": {
+        "title": "미디어",
+        "description": "업로드 플러그인의 파일 테이블에서 가져온 실제 바이트 합계.",
+        "files": "파일 수",
+        "totalBytes": "총 바이트",
+        "unreferenced": "미참조",
+        "columns": {
+          "mime": "유형",
+          "count": "파일 수",
+          "bytes": "바이트"
+        },
+        "noMedia": "저장된 미디어 파일이 아직 없습니다.",
+        "errorTitle": "미디어 통계를 읽지 못했습니다",
+        "errorDescription": "미디어 통계를 읽을 수 없습니다. 다시 시도하고, 계속되면 API를 확인하세요."
+      },
+      "orphans": {
+        "title": "고아 행",
+        "description": "필수 관계가 없는 행을 종류별로, 처음 20건의 표본과 함께 보여줍니다.",
+        "columns": {
+          "kind": "고아 종류",
+          "count": "건수",
+          "purge": "정리"
+        },
+        "selectForPurge": "정리 대상으로 선택",
+        "selectKind": "{kind}을(를) 정리 대상으로 선택",
+        "purgeHint": "정리하면 선택한 종류의 고아 행이 영구히 삭제됩니다. 서버가 삭제한 내용을 정확히 보고합니다.",
+        "purgeButton": "선택 항목 정리",
+        "confirmTitle": "선택한 고아 종류를 정리할까요?",
+        "confirmBody": "선택한 {count}개 종류의 모든 고아 행이 지금 삭제됩니다. 되돌릴 수 없습니다.",
+        "confirmAction": "정리",
+        "cancel": "취소",
+        "executed": "정리 실행: {counts}",
+        "nothingPurged": "삭제할 항목 없음",
+        "errorTitle": "고아 행을 읽지 못했습니다",
+        "errorDescription": "고아 행 보고서를 읽을 수 없습니다. 다시 시도하고, 계속되면 API를 확인하세요."
+      },
+      "maintenance": {
+        "title": "유지관리 작업",
+        "description": "두 작업 모두 기본적으로 시험 실행 보고서만 생성합니다. 실제 실행에는 명시적 확인이 필요하며 감사 기록에 남습니다.",
+        "cancel": "취소",
+        "reindex": {
+          "label": "검색 정합성 점검",
+          "description": "모든 학교 행과 누락된 검색용 슬러그를 집계합니다. 시험 실행은 보고만 하고, 실제 실행은 감사 기록을 남깁니다.",
+          "preview": "미리보기(시험 실행)",
+          "execute": "실행",
+          "confirmTitle": "검색 정합성 점검을 실행할까요?",
+          "confirmBody": "점검이 지금 실행되며 감사 원장에 기록됩니다. 어느 경우든 집계 결과는 보고됩니다.",
+          "confirmAction": "실행",
+          "dryRun": "시험 실행: 학교 {indexed}건 색인, 슬러그 누락 {missing}건 — 기록된 변경 없음",
+          "executed": "실행 완료: {ms}ms 동안 학교 {indexed}건 색인 — 감사 기록됨"
+        },
+        "prune": {
+          "label": "미참조 미디어 정리",
+          "description": "어떤 콘텐츠도 참조하지 않는 업로드 파일을 삭제합니다(행과 저장된 객체를 함께). 시험 실행은 보고만 합니다.",
+          "preview": "미리보기(시험 실행)",
+          "execute": "정리 실행",
+          "confirmTitle": "미참조 미디어를 지금 정리할까요?",
+          "confirmBody": "미참조 파일이 실제로 삭제됩니다 — 저장된 객체도 행과 함께 사라집니다. 서버가 제거한 내용을 보고합니다.",
+          "confirmAction": "정리",
+          "dryRun": "시험 실행: 미참조 파일 {removed}건이 삭제될 예정 — 기록된 변경 없음",
+          "executed": "실행 완료: 파일 {removed}건 제거, {bytes}바이트 확보 — 감사 기록됨"
+        }
+      }
+    },
+    "flags": {
+      "meta": {
+        "title": "플래그 및 설정 — SchoolTest 운영",
+        "description": "SchoolTest 운영 — 기능 플래그, 공개 배너, 로그인 속도 제한."
+      },
+      "title": "플래그 및 설정",
+      "description": "플랫폼 스위치, 방문자가 보는 배너, 그리고 로그인을 통제하는 제한.",
+      "editorsTitle": "플랫폼 설정",
+      "errorToast": "변경 사항이 저장되지 않았습니다. 아무것도 적용되지 않았습니다.",
+      "actions": {
+        "cancel": "취소"
+      },
+      "levels": {
+        "info": "정보",
+        "warning": "경고",
+        "critical": "심각"
+      },
+      "fields": {
+        "message": "메시지",
+        "level": "수준"
+      },
+      "validation": {
+        "messageRequiredWhenOn": "켜기 전에 메시지를 작성하세요.",
+        "tooLong": "{max}자 이내로 작성하세요.",
+        "maxBounds": "{min}에서 {max} 사이의 정수.",
+        "windowBounds": "밀리초 단위, {min}에서 {max} 사이의 정수."
+      },
+      "registry": {
+        "title": "기능 플래그",
+        "description": "이 플랫폼이 제공하는 스위치입니다. 목록은 서버에서 가져오므로 새로 배포된 플래그는 자동으로 여기에 나타납니다.",
+        "loadingLabel": "기능 플래그를 불러오는 중",
+        "empty": "등록된 기능 플래그가 없습니다.",
+        "toggleLabel": "{key} 전환",
+        "enabledToast": "{key}이(가) 켜졌습니다.",
+        "disabledToast": "{key}이(가) 꺼졌습니다.",
+        "errorToast": "해당 플래그는 변경되지 않았습니다.",
+        "error": {
+          "title": "기능 플래그를 불러올 수 없습니다.",
+          "description": "인터넷 연결을 확인한 후 다시 시도해 주세요.",
+          "retry": "다시 시도"
+        }
+      },
+      "announcement": {
+        "title": "공지 배너",
+        "description": "공개 페이지에 표시되는 메시지입니다. 저장하면 캐시된 페이지가 즉시 다시 발행됩니다.",
+        "switchLabel": "공지 표시",
+        "messageHelp": "공지가 켜져 있는 동안 방문자에게 표시됩니다. 켤 때는 필수입니다.",
+        "save": "공지 저장",
+        "confirmTitle": "이 공지를 발행할까요?",
+        "confirmOn": "이 메시지가 공개 사이트의 모든 방문자에게 표시되며, 캐시된 페이지가 지금 다시 발행됩니다.",
+        "confirmOff": "모든 공개 페이지에서 공지가 제거되고 해당 페이지가 지금 다시 발행됩니다.",
+        "confirmAction": "공지 저장",
+        "onToast": "공지를 {level} 수준으로 발행했습니다.",
+        "offToast": "공지를 제거했습니다."
+      },
+      "maintenance": {
+        "title": "점검 모드",
+        "description": "방문자에게 사이트를 닫습니다. 이 페이지에서 영향이 가장 큰 스위치입니다.",
+        "switchLabel": "사이트를 점검 상태로 전환",
+        "messageHelp": "점검 중 닫힌 사이트에 표시됩니다. 켤 때는 필수입니다.",
+        "save": "점검 모드 저장",
+        "confirmTitle": "방문자에게 사이트를 닫을까요?",
+        "confirmOn": "다시 끄기 전까지 공개 사이트가 모두에게 닫힙니다. 로그인한 사용자의 진행 중인 작업이 중단될 수 있습니다.",
+        "confirmOff": "공개 사이트를 방문자에게 다시 엽니다.",
+        "confirmAction": "점검 모드 저장",
+        "onToast": "점검 모드가 켜졌습니다 — 사이트가 닫혔습니다.",
+        "offToast": "점검 모드가 꺼졌습니다 — 사이트가 열렸습니다."
+      },
+      "rateLimit": {
+        "title": "로그인 속도 제한",
+        "description": "하나의 주소가 구간당 시도할 수 있는 로그인 횟수입니다. 너무 낮게 설정하면 본인을 포함해 모두가 로그인하지 못합니다.",
+        "maxLabel": "시도 횟수",
+        "windowLabel": "구간(ms)",
+        "save": "속도 제한 저장",
+        "confirmTitle": "로그인 속도 제한을 변경할까요?",
+        "confirmDescription": "{window}ms당 로그인 시도 {max}회를 허용합니다. 너무 낮게 설정하면 모든 운영자가 로그인하지 못할 수 있습니다.",
+        "confirmAction": "속도 제한 저장",
+        "savedToast": "속도 제한을 저장했습니다: {window}ms당 {max}회."
+      }
     }
   },
   "RunSheet": {
