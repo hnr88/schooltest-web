@@ -48,7 +48,7 @@ export default async function PredictPage({ params }: PredictPageProps) {
         description={t('meta.predictDescription')}
       />
       <PublicBreadcrumb pathname="/predict" />
-      <main>
+      <main id="main-content">
         <PredictHero />
         <IndividualSection />
         <CohortSection />

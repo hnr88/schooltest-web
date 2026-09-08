@@ -46,12 +46,6 @@ export default async function EaldHome({ params }: EaldHomeProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-6 focus:z-50 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-ring"
-      >
-        {t('nav.label')}
-      </a>
       <EaldHeader activePage="home" />
       <BreadcrumbJsonLd pathname="/" locale={locale} />
       <PublicPageJsonLd

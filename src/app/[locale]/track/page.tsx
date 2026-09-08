@@ -48,7 +48,7 @@ export default async function TrackPage({ params }: TrackPageProps) {
         description={t('meta.trackDescription')}
       />
       <PublicBreadcrumb pathname="/track" />
-      <main>
+      <main id="main-content">
         <TrackHero />
         <EvidenceSection />
         <TeachEmpiricalSection />

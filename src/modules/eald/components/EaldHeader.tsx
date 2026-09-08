@@ -22,6 +22,16 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
 
   return (
     <>
+      {/* WCAG 2.4.1 bypass block. Task 14/15 acceptance found the skip link
+          living on only one of the five pages — each page task looked correct
+          in isolation; the shared chrome is the one place that cannot drift.
+          First focusable element on every page that mounts the header. */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-6 focus:z-50 focus:rounded-lg focus:bg-background focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-ring"
+      >
+        {t('Eald.nav.label')}
+      </a>
       <div className="bg-navy-950">
         <Container className="flex max-w-eald flex-wrap items-center gap-x-6 gap-y-1 py-2">
           <span className="inline-flex items-center gap-2 text-xs font-medium text-navy-muted">
