@@ -4282,7 +4282,8 @@
       "searchLabel": "搜索",
       "searchPlaceholder": "搜索项目内容",
       "searchSubmit": "搜索",
-      "mastheadTagline": "面向 7–12 年级的英语语言能力评估"
+      "mastheadTagline": "面向 7–12 年级的英语语言能力评估",
+      "skipToContent": "跳到主要内容"
     },
     "notice": {
       "label": "通知",

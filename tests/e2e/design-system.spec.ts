@@ -321,14 +321,14 @@ test('LOCALE-TOGGLE: footer switcher en→zh→en uses canonical locale URLs', a
     .click();
   await page.getByRole('option', { name: '中文' }).click();
   // Shared chrome and the EAL/D home content both flip to Chinese.
-  await expect(page.getByText(cat(zh, 'Eald.nav.label'), { exact: true })).toBeAttached();
+  await expect(page.getByText(cat(zh, 'Eald.nav.skipToContent'), { exact: true })).toBeAttached();
   await expect(h1).toContainText(cat(zh, 'Eald.home.hero.title'));
   await expect(page).toHaveURL((url) => url.pathname === '/zh');
   await footer
     .getByRole('combobox', { name: cat(zh, 'LocaleSwitcher.label'), exact: true })
     .click();
   await page.getByRole('option', { name: 'English' }).click();
-  await expect(page.getByText(cat(en, 'Eald.nav.label'), { exact: true })).toBeAttached();
+  await expect(page.getByText(cat(en, 'Eald.nav.skipToContent'), { exact: true })).toBeAttached();
   await expect(page).toHaveURL((url) => url.pathname === '/');
   expect(errors, errors.join('\n')).toEqual([]);
 });

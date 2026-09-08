@@ -4292,7 +4292,8 @@
       "searchLabel": "ค้นหา",
       "searchPlaceholder": "ค้นหาในโปรแกรม",
       "searchSubmit": "ค้นหา",
-      "mastheadTagline": "การประเมินความสามารถด้านภาษาอังกฤษสำหรับชั้นปี 7–12"
+      "mastheadTagline": "การประเมินความสามารถด้านภาษาอังกฤษสำหรับชั้นปี 7–12",
+      "skipToContent": "ข้ามไปยังเนื้อหาหลัก"
     },
     "notice": {
       "label": "ประกาศ",
