@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
@@ -14,6 +15,7 @@ import {
 import { OpsTeachersFilters } from '@/modules/ops/components/OpsTeachersFilters';
 import { OpsTeachersTable } from '@/modules/ops/components/OpsTeachersTable';
 import { OpsTeachersTableRow } from '@/modules/ops/components/OpsTeachersTableRow';
+import { OpsViewAsTeacherPanel } from '@/modules/ops/components/OpsViewAsTeacherPanel';
 import { useOpsTeachersDirectory } from '@/modules/ops/hooks/use-teachers-directory';
 import { useOpsTeacherRowActions } from '@/modules/ops/hooks/use-teachers-row-actions';
 
@@ -39,6 +41,11 @@ export function OpsTeachersDialog({
   const directory = useOpsTeachersDirectory(schoolDocumentId, open);
   const actions = useOpsTeacherRowActions(schoolDocumentId);
   const result = directory.listQuery.data;
+  // Ledger 11c — ONE open impersonation panel at a time, owned here rather
+  // than per row: mounting the panel is what performs the audited read, so a
+  // second row's click must replace the first view, not add another.
+  const [viewingTeacher, setViewingTeacher] = useState<string | null>(null);
+  const viewingRow = result?.data.find((row) => row.documentId === viewingTeacher) ?? null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -91,10 +98,19 @@ export function OpsTeachersDialog({
                   savePending={actions.savePending}
                   removePending={actions.removePending}
                   error={actions.error}
+                  onViewAs={setViewingTeacher}
                 />
               )}
             />
           )}
+          {viewingTeacher !== null ? (
+            <OpsViewAsTeacherPanel
+              key={viewingTeacher}
+              teacherDocumentId={viewingTeacher}
+              teacherEmail={viewingRow?.email ?? null}
+              onClose={() => setViewingTeacher(null)}
+            />
+          ) : null}
         </div>
       </DialogContent>
     </Dialog>

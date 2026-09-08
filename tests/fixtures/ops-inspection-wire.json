@@ -1,0 +1,106 @@
+{
+  "_provenance": "VERBATIM live captures, 2026-09-08: form inspection + responses.csv from :5500 (GET-only reads), view-as-teacher from a throwaway :5508 (it writes an audit row). Ops JWT admin@schooltest.local, ONE login. Full bodies: .codephant/missions/msn-0da39441-f845-426b-88a1-037c9eb98442/artifacts/task-11-*.json",
+  "formInspection": {
+    "form_code": "RDG-PRAC-A-79",
+    "items": [
+      {
+        "item_code": "RDG-1A-007",
+        "task_type": "1A",
+        "stage": 1,
+        "attribute_vector": [
+          1,
+          0,
+          0
+        ],
+        "key": {
+          "type": "single",
+          "answer": "c"
+        }
+      },
+      {
+        "item_code": "RDG-1A-008",
+        "task_type": "1A",
+        "stage": 1,
+        "attribute_vector": [
+          1,
+          0,
+          0
+        ],
+        "key": {
+          "type": "single",
+          "answer": "d"
+        }
+      },
+      {
+        "item_code": "RDG-1B-002",
+        "task_type": "1B",
+        "stage": 1,
+        "attribute_vector": [
+          1,
+          0,
+          0
+        ],
+        "key": {
+          "type": "single",
+          "answer": "b"
+        }
+      }
+    ],
+    "anchors": [],
+    "locked": false
+  },
+  "formInspectionItemCountLive": 46,
+  "viewAsTeacher": {
+    "teacher": {
+      "documentId": "b61g8tt94pl1a723vavli7fk",
+      "first_name": null,
+      "last_name": null,
+      "email": "teacher@schooltest.local"
+    },
+    "classes": [
+      {
+        "documentId": "uk7pj4xwkwb5p72j70aqe2h2",
+        "name": "EAL/D 8A",
+        "year_band": "7_9",
+        "teachers": [
+          {
+            "documentId": "b61g8tt94pl1a723vavli7fk",
+            "first_name": null,
+            "last_name": null
+          }
+        ],
+        "student_count": 4
+      },
+      {
+        "documentId": "ldir80prpa3oruquwazfaaau",
+        "name": "EAL/D Year 7 - Room 4",
+        "year_band": "7_9",
+        "teachers": [
+          {
+            "documentId": "b61g8tt94pl1a723vavli7fk",
+            "first_name": null,
+            "last_name": null
+          }
+        ],
+        "student_count": 1
+      },
+      {
+        "documentId": "b5zea48d5x78z6hvz9rs8dmz",
+        "name": "EAL/D Year 8 - Room 5 (no students)",
+        "year_band": "7_9",
+        "teachers": [
+          {
+            "documentId": "b61g8tt94pl1a723vavli7fk",
+            "first_name": null,
+            "last_name": null
+          }
+        ],
+        "student_count": 0
+      }
+    ],
+    "sittings": [],
+    "monitors": []
+  },
+  "responsesCsvHeader": "session_document_id,sequence_index,item_code,raw_response,presented_at,responded_at",
+  "responsesCsvFirstRow": "\"dyvqpiunc7a4mibn2f6fnwwu\",\"0\",\"RDG-1A-101\",\"{\"\"option_id\"\":\"\"b\"\"}\",\"2026-09-07T18:34:27.063Z\",\"2026-09-07T18:34:32.063Z\""
+}

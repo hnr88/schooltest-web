@@ -33,3 +33,14 @@ export const COMMS_EMAIL_LOG_QUERY_KEY = ['ops', 'comms-email-log'] as const;
 
 /* --- ledger 9: the flags console --- */
 export const OPS_FLAGS_QUERY_KEY = ['ops', 'flags'] as const;
+
+/* --- ledger 11 / D-007: the C-OPS-04 inspection surfaces --- */
+export function formInspectionQueryKey(formDocumentId: string) {
+  return ['ops', 'form-inspection', formDocumentId] as const;
+}
+
+export const RESPONSES_CSV_QUERY_KEY = ['ops', 'responses-csv'] as const;
+
+export function viewAsTeacherQueryKey(teacherDocumentId: string) {
+  return ['ops', 'view-as-teacher', teacherDocumentId] as const;
+}

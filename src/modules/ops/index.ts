@@ -34,3 +34,12 @@ export type {
 } from './types/school-invitation.types';
 export type { ImportCommitResult, ImportPreview } from './schemas/import.schema';
 export type { PlatformSettings, PlatformSettingsForm } from './types/platform-settings.types';
+
+/* --- ledger 11 / D-007: the C-OPS-04 inspection surfaces --- */
+export { OpsFormInspection } from './components/OpsFormInspection';
+export { OpsResponsesExport } from './components/OpsResponsesExport';
+export { OpsViewAsTeacherPanel } from './components/OpsViewAsTeacherPanel';
+export { useFormInspectionQuery } from './queries/use-form-inspection.query';
+export { useResponsesCsvQuery } from './queries/use-responses-csv.query';
+export { useViewAsTeacherQuery } from './queries/use-view-as-teacher.query';
+export type { OpsResponsesCsvFile } from './types/inspection.types';

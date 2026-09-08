@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { OpsFormInspection } from '@/modules/ops/components/OpsFormInspection';
 import { OpsFormWindowEditor } from '@/modules/ops/components/OpsFormWindowEditor';
 import { useFormWindowData } from '@/modules/ops/hooks/use-form-window';
 import { useAssessmentWindowCreateMutation } from '@/modules/ops/queries/use-assessment-window-create.mutation';
@@ -120,6 +121,16 @@ export function OpsFormWindow({ documentId }: OpsFormWindowProps) {
       ) : state.kind === 'none' ? (
         <p className="text-sm text-body">{t('currentNone')}</p>
       ) : null}
+      {/* Ledger 11a / D-007 — the Q-matrix + key inspection of the form THIS
+          window points at. It lives here because this panel is the only place
+          that already resolves the live form's documentId (the same value the
+          C-WIN-02 lock read uses), and it renders nothing when no single
+          window is live. */}
+      <OpsFormInspection
+        formDocumentId={current?.form?.documentId ?? null}
+        formCode={current?.form?.form_code ?? null}
+        forms={win.forms}
+      />
       <OpsFormWindowEditor
         key={windowKey(current)}
         schoolDocumentId={documentId}
