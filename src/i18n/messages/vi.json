@@ -3121,48 +3121,48 @@
       "searchPlaceholder": "Tìm trường học...",
       "clearSearch": "Xóa tìm kiếm",
       "filterAccountStatus": "Trạng thái tài khoản",
-      "filterOnboarding": "Onboarding",
+      "filterOnboarding": "Tiếp nhận",
       "filterAll": "Tất cả",
       "clearFilters": "Xóa tất cả",
       "noMatches": "Không có trường nào khớp với tìm kiếm của bạn.",
       "showing": "Đang hiển thị {showing} trong tổng số {total} trường",
-      "pillAllSchools": "All schools",
-      "filterStatus": "Status",
-      "filterState": "State",
-      "filterStateAll": "All states",
-      "filterSector": "Sector",
-      "filterSectorAll": "All sectors",
-      "filterPlan": "Plan",
-      "filterPlanAll": "All plans",
-      "filterOnboardingAll": "All onboarding states",
-      "sortName": "Name (A-Z)",
-      "sortStudents": "Most students",
-      "sortCreated": "Newest first",
-      "columnStatus": "Status",
-      "columnPlan": "Plan",
-      "columnAdmins": "Admins",
-      "unnamedSchool": "Unnamed school",
-      "actionOpen": "Open school",
-      "actionStatusPage": "Status page",
-      "statusPageUnconfigured": "This release has no status page URL configured.",
-      "emptyNoneTitle": "No schools yet",
-      "emptyNoneDescription": "Create the first school to get started.",
+      "pillAllSchools": "Tất cả trường",
+      "filterStatus": "Trạng thái",
+      "filterState": "Bang",
+      "filterStateAll": "Mọi bang",
+      "filterSector": "Khu vực",
+      "filterSectorAll": "Mọi khu vực",
+      "filterPlan": "Gói",
+      "filterPlanAll": "Mọi gói",
+      "filterOnboardingAll": "Mọi trạng thái tiếp nhận",
+      "sortName": "Tên (A–Z)",
+      "sortStudents": "Nhiều học sinh nhất",
+      "sortCreated": "Mới nhất trước",
+      "columnStatus": "Trạng thái",
+      "columnPlan": "Gói",
+      "columnAdmins": "Quản trị viên",
+      "unnamedSchool": "Trường chưa đặt tên",
+      "actionOpen": "Mở trường",
+      "actionStatusPage": "Trang trạng thái",
+      "statusPageUnconfigured": "Bản phát hành này chưa cấu hình URL trang trạng thái.",
+      "emptyNoneTitle": "Chưa có trường nào",
+      "emptyNoneDescription": "Hãy tạo trường đầu tiên để bắt đầu.",
       "portalStatus": {
-        "active": "Active",
-        "trial": "Trial",
-        "pending_setup": "Pending setup",
-        "suspended": "Suspended",
-        "archived": "Archived"
+        "active": "Hoạt động",
+        "trial": "Dùng thử",
+        "pending_setup": "Chờ thiết lập",
+        "suspended": "Bị đình chỉ",
+        "archived": "Đã lưu trữ"
       },
       "portalPlan": {
-        "pilot": "Pilot",
-        "standard": "Standard",
-        "enterprise": "Enterprise"
+        "pilot": "Thí điểm",
+        "standard": "Chuẩn",
+        "enterprise": "Doanh nghiệp"
       },
       "sector": {
-        "government": "Government",
-        "non-government": "Non-government",
-        "catholic": "Catholic"
+        "government": "Công lập",
+        "non-government": "Ngoài công lập",
+        "catholic": "Công giáo"
       },
       "bulkSuspend": "Tạm ngưng trường đã chọn",
       "bulkArchive": "Lưu trữ trường đã chọn"
@@ -3197,23 +3197,23 @@
         "submitted": "Đã gửi",
         "complete": "Hoàn tất"
       },
-      "adminsLabel": "Admins",
+      "adminsLabel": "Quản trị viên",
       "banner": {
         "trial": {
-          "title": "Trial",
-          "body": "This school is on a trial. Activate it to keep test windows running once the trial ends."
+          "title": "Dùng thử",
+          "body": "Trường này đang dùng thử. Hãy kích hoạt để các kỳ kiểm tra tiếp tục chạy sau khi thời gian dùng thử kết thúc."
         },
         "pending_setup": {
-          "title": "Setup incomplete",
-          "body": "No admin has accepted the owner invitation yet. Nothing else can be set up until they do."
+          "title": "Thiết lập chưa hoàn tất",
+          "body": "Chưa có quản trị viên nào nhận lời mời làm chủ sở hữu. Chưa thể thiết lập gì thêm cho đến khi đó."
         },
         "suspended": {
-          "title": "This school is suspended",
-          "body": "Staff and students have no access and test windows are paused."
+          "title": "Trường này đang bị đình chỉ",
+          "body": "Nhân sự và học sinh không có quyền truy cập, các kỳ kiểm tra bị tạm dừng."
         },
         "archived": {
-          "title": "This school is archived",
-          "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
+          "title": "Trường này đã được lưu trữ",
+          "body": "Việc thanh toán đã dừng và nhân sự không còn quyền truy cập. Dữ liệu được giữ đến hết thời hạn lưu."
         }
       },
       "suspend": {
@@ -3304,68 +3304,68 @@
       "resultSummary": "Nhập xong. Đã tạo: {created}. Đã tồn tại: {skipped}. Bị từ chối: {rejected}.",
       "errorToast": "Không thể xử lý tệp nhập. Hãy kiểm tra tệp và thử lại.",
       "forbiddenToast": "Chỉ đội ngũ vận hành SchoolTest mới có thể chạy nhập dữ liệu.",
-      "classLabel": "Add to class",
-      "classPlaceholder": "Choose a class",
-      "classHelper": "Students are added to this class. The CSV has no class column.",
-      "templateColumnsLabel": "Template columns:",
-      "templateDownloadLink": "Download the CSV template",
-      "progressPending": "Working. Progress appears once the server reports it.",
-      "progressPercent": "{pct}% of rows processed",
-      "progressLabel": "Import progress",
-      "reconcileTitle": "This import could not be confirmed",
-      "reconcileBody": "The connection dropped, so it is not known whether the students were added. Refresh to see the current state before trying again.",
-      "unresolved": "The connection dropped before this could be confirmed. Refresh to see the current state before trying again.",
-      "cancelButton": "Cancel import",
-      "cancelledToast": "Import cancelled. No students were added.",
-      "cancelLostToast": "The import finished before the cancellation reached the server.",
-      "undoButton": "Undo import",
-      "undoneToast": "Import undone.",
-      "undoExpired": "Undo is no longer available: the 60-second window has passed.",
-      "undoDone": "This import has already been undone.",
-      "undoUnknown": "Undo is unavailable until the receipt is read.",
-      "errorReportButton": "Download the error report",
-      "columnGivenName": "Given name",
-      "columnFamilyName": "Family name",
-      "columnDob": "Date of birth",
-      "columnYearLevel": "Year level",
-      "columnStudentKey": "Student key",
-      "columnMatchedStudent": "Matched student",
+      "classLabel": "Thêm vào lớp",
+      "classPlaceholder": "Chọn một lớp",
+      "classHelper": "Học sinh được thêm vào lớp này. Tệp CSV không có cột lớp.",
+      "templateColumnsLabel": "Các cột của mẫu:",
+      "templateDownloadLink": "Tải mẫu CSV",
+      "progressPending": "Đang xử lý. Tiến độ sẽ hiện khi máy chủ báo về.",
+      "progressPercent": "Đã xử lý {pct}% số dòng",
+      "progressLabel": "Tiến độ nhập",
+      "reconcileTitle": "Không thể xác nhận lần nhập này",
+      "reconcileBody": "Kết nối bị ngắt nên không rõ học sinh đã được thêm hay chưa. Hãy làm mới để xem trạng thái hiện tại trước khi thử lại.",
+      "unresolved": "Kết nối bị ngắt trước khi việc này được xác nhận. Hãy làm mới để xem trạng thái hiện tại trước khi thử lại.",
+      "cancelButton": "Hủy nhập",
+      "cancelledToast": "Đã hủy nhập. Không có học sinh nào được thêm.",
+      "cancelLostToast": "Việc nhập đã hoàn tất trước khi yêu cầu hủy đến được máy chủ.",
+      "undoButton": "Hoàn tác việc nhập",
+      "undoneToast": "Đã hoàn tác việc nhập.",
+      "undoExpired": "Không thể hoàn tác nữa: đã quá thời hạn 60 giây.",
+      "undoDone": "Lần nhập này đã được hoàn tác.",
+      "undoUnknown": "Chưa thể hoàn tác cho đến khi biên nhận được đọc.",
+      "errorReportButton": "Tải báo cáo lỗi",
+      "columnGivenName": "Tên",
+      "columnFamilyName": "Họ",
+      "columnDob": "Ngày sinh",
+      "columnYearLevel": "Khối lớp",
+      "columnStudentKey": "Mã học sinh",
+      "columnMatchedStudent": "Học sinh khớp",
       "card": {
         "validating": {
-          "title": "Checking {name}...",
-          "body": "Validating headers and row data."
+          "title": "Đang kiểm tra {name}…",
+          "body": "Đang kiểm tra dòng tiêu đề và dữ liệu từng dòng."
         },
         "ready": {
-          "title": "{name} - ready to import",
-          "body": "{created} rows, no problems found."
+          "title": "{name} — sẵn sàng để nhập",
+          "body": "{created} dòng, không có vấn đề nào."
         },
         "rowErrors": {
-          "title": "{rejected} rows need fixing",
-          "body": "Import the {created} valid rows now and fix the rest later, or re-upload a corrected file."
+          "title": "{rejected} dòng cần sửa",
+          "body": "Nhập {created} dòng hợp lệ ngay và sửa phần còn lại sau, hoặc tải lên lại tệp đã sửa."
         },
         "dupes": {
-          "title": "{skipped} students are already enrolled",
-          "body": "Duplicates are skipped. {created} new students will be added."
+          "title": "{skipped} học sinh đã có trong danh sách",
+          "body": "Các bản trùng sẽ được bỏ qua. Sẽ thêm {created} học sinh mới."
         },
         "badType": {
-          "title": "{name} isn't a CSV",
-          "body": "Export the roster as CSV and try again."
+          "title": "{name} không phải tệp CSV",
+          "body": "Hãy xuất danh sách dưới dạng CSV rồi thử lại."
         },
         "tooBig": {
-          "title": "File is too large",
-          "body": "The limit is 5 MB. Split the roster by year level."
+          "title": "Tệp quá lớn",
+          "body": "Giới hạn là 5 MB. Hãy chia danh sách theo khối lớp."
         },
         "noRows": {
-          "title": "No student rows found",
-          "body": "The file has headers but no data."
+          "title": "Không tìm thấy dòng học sinh nào",
+          "body": "Tệp có dòng tiêu đề nhưng không có dữ liệu."
         },
         "uploading": {
-          "title": "Importing {name}...",
-          "body": "Keep this window open until it finishes."
+          "title": "Đang nhập {name}…",
+          "body": "Giữ cửa sổ này mở cho đến khi hoàn tất."
         },
         "failed": {
-          "title": "Import did not complete",
-          "body": "Check the message below before trying again."
+          "title": "Việc nhập chưa hoàn tất",
+          "body": "Hãy xem thông báo bên dưới trước khi thử lại."
         }
       }
     },
@@ -3639,20 +3639,20 @@
       "lastName": "Họ"
     },
     "plan": {
-      "title": "Plan",
-      "description": "The school's product tier. Ops assigns the full license here — a school can never switch itself.",
-      "current": "Current plan: {plan}",
-      "currentNone": "No plan is stored for this school yet.",
-      "label": "Plan",
-      "placeholder": "Choose a plan",
-      "helper": "Trial fixes the test allowances at 2 reading tests. Full license hands the allowance totals back to the entitlement you set for this school.",
+      "title": "Gói",
+      "description": "Bậc sản phẩm của trường. Bộ phận vận hành gán giấy phép đầy đủ ở đây — trường không thể tự chuyển đổi.",
+      "current": "Gói hiện tại: {plan}",
+      "currentNone": "Chưa lưu gói nào cho trường này.",
+      "label": "Gói",
+      "placeholder": "Chọn một gói",
+      "helper": "Bản dùng thử giới hạn hạn mức ở 2 bài kiểm tra đọc. Giấy phép đầy đủ trả hạn mức về đúng quyền lợi bạn đã đặt cho trường này.",
       "options": {
-        "trial": "Trial",
-        "full_license": "Full license"
+        "trial": "Dùng thử",
+        "full_license": "Giấy phép đầy đủ"
       },
-      "savedToast": "Plan set to {plan}",
-      "forbiddenToast": "Only an ops account can assign a plan.",
-      "errorToast": "We could not change the plan. Try again."
+      "savedToast": "Đã đặt gói thành {plan}",
+      "forbiddenToast": "Chỉ tài khoản vận hành mới gán được gói.",
+      "errorToast": "Không đổi được gói. Vui lòng thử lại."
     },
     "teachers": {
       "title": "Giáo viên",
@@ -3742,7 +3742,7 @@
         "teachers": "Giáo viên",
         "classes": "Lớp học",
         "students": "Học sinh",
-        "overview": "Overview"
+        "overview": "Tổng quan"
       },
       "adminsNote": "Quản trị viên trường của trường này. Để mời quản trị viên, hãy dùng bảng mời Onboard School trên tab Tổng quan. Danh bạ này không hiển thị trường đăng nhập lần cuối (hệ thống không lưu).",
       "adminsEmptyTitle": "Không có quản trị viên cho trường này",
@@ -3771,14 +3771,14 @@
       "notServed": "Không được cung cấp",
       "errorTitle": "Không thể tải",
       "errorDescription": "Không thể đọc danh bạ. Hãy thử lại.",
-      "fieldSuburb": "Suburb",
-      "fieldState": "State",
-      "fieldSector": "Sector",
-      "fieldContact": "Primary contact",
+      "fieldSuburb": "Khu vực dân cư",
+      "fieldState": "Bang",
+      "fieldSector": "Khu vực",
+      "fieldContact": "Người liên hệ chính",
       "fieldEmail": "Email",
-      "fieldPhone": "Phone",
-      "fieldLastActivity": "Last activity",
-      "unknown": "unavailable",
+      "fieldPhone": "Điện thoại",
+      "fieldLastActivity": "Hoạt động gần nhất",
+      "unknown": "không có",
       "inviteStaff": "Mời nhân sự",
       "opsProfileOpen": "Xem hồ sơ",
       "opsProfileAttemptInvalidated": "Đã vô hiệu",
@@ -3833,55 +3833,55 @@
       "ownerTransferred": "Đã chuyển quyền sở hữu."
     },
     "inspection": {
-      "title": "Form inspection",
-      "description": "The composition of the form this window points at: every item with its task type, stage, Q-matrix attribute vector and correct key, plus the anchor items and the lock state. Ops-only — this is the only surface that shows keys.",
-      "show": "Inspect form",
-      "hide": "Hide inspection",
-      "errorTitle": "The form inspection could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — retry, or check that this window's form still exists.",
-      "formCode": "Form {formCode}",
+      "title": "Kiểm tra đề",
+      "description": "Thành phần của đề mà kỳ kiểm tra này trỏ tới: từng câu hỏi kèm loại câu, giai đoạn, vectơ thuộc tính ma trận Q và đáp án đúng, cùng các câu neo và trạng thái khóa. Chỉ dành cho vận hành — đây là màn hình duy nhất hiển thị đáp án.",
+      "show": "Xem đề",
+      "hide": "Ẩn phần kiểm tra",
+      "errorTitle": "Không tải được phần kiểm tra đề",
+      "errorDescription": "Máy chủ từ chối hoặc đọc thất bại. Không có gì bị thay đổi — hãy thử lại, hoặc kiểm tra xem đề của kỳ kiểm tra này còn tồn tại không.",
+      "formCode": "Đề {formCode}",
       "itemCount": "{count, plural, other {# items}}",
-      "anchors": "Anchors: {codes}",
-      "anchorsNone": "No anchor items",
-      "lockedBadge": "Locked — a sitting has been submitted",
-      "unlockedBadge": "Not locked",
-      "columnItem": "Item",
-      "columnTaskType": "Task type",
-      "columnStage": "Stage",
-      "columnVector": "Attribute vector",
-      "columnKey": "Correct key",
-      "formSelectLabel": "Form to inspect",
-      "noLiveWindow": "No form window is live for this school, so the selection above is the form being inspected — not a form this school's sittings currently use.",
-      "notLiveForm": "Inspecting a form other than this window's live form ({formCode})."
+      "anchors": "Câu neo: {codes}",
+      "anchorsNone": "Không có câu neo",
+      "lockedBadge": "Đã khóa — đã có bài làm được gửi",
+      "unlockedBadge": "Chưa khóa",
+      "columnItem": "Câu hỏi",
+      "columnTaskType": "Loại câu hỏi",
+      "columnStage": "Giai đoạn",
+      "columnVector": "Vectơ thuộc tính",
+      "columnKey": "Đáp án đúng",
+      "formSelectLabel": "Đề cần xem",
+      "noLiveWindow": "Trường này không có kỳ kiểm tra nào đang hoạt động, nên lựa chọn ở trên chỉ là đề đang được xem — không phải đề mà các bài làm của trường đang dùng.",
+      "notLiveForm": "Đang xem một đề khác với đề đang hoạt động của kỳ kiểm tra này ({formCode})."
     },
     "responsesExport": {
-      "title": "Session responses (CSV)",
-      "description": "The raw item-level export of ONE session for offline analysis: one row per stored response, in presentation order. The server requires a session id and names the file.",
-      "sessionLabel": "Session document id",
-      "sessionPlaceholder": "e.g. dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "Download responses.csv",
-      "downloading": "Preparing the export...",
-      "downloaded": "Downloaded {filename}",
-      "errorTitle": "The responses export could not be downloaded",
-      "errorDescription": "The server refused the export and no file was written. Check the session id — an unknown session returns an empty export, a malformed request returns an error."
+      "title": "Phản hồi bài làm (CSV)",
+      "description": "Bản xuất thô theo từng câu của MỘT bài làm để phân tích ngoại tuyến: mỗi phản hồi đã lưu là một dòng, theo thứ tự xuất hiện. Máy chủ yêu cầu id bài làm và tự đặt tên tệp.",
+      "sessionLabel": "Id tài liệu bài làm",
+      "sessionPlaceholder": "ví dụ dyvqpiunc7a4mibn2f6fnwwu",
+      "cta": "Tải responses.csv",
+      "downloading": "Đang chuẩn bị bản xuất…",
+      "downloaded": "Đã tải {filename}",
+      "errorTitle": "Không tải được bản xuất phản hồi",
+      "errorDescription": "Máy chủ từ chối bản xuất và không tệp nào được ghi. Hãy kiểm tra id bài làm — bài làm không tồn tại trả về bản xuất rỗng, yêu cầu sai định dạng trả về lỗi."
     },
     "viewAsTeacher": {
-      "openCta": "View as teacher",
-      "openAriaLabel": "View as teacher {teacher} — impersonation, recorded in the audit log",
-      "panelLabel": "View as teacher — impersonation",
-      "impersonationTitle": "Impersonation view",
-      "impersonationSubject": "You are seeing exactly what {teacher} sees — their classes and their sittings, nothing wider.",
-      "auditedNotice": "This access is recorded in the audit log against your account, with the teacher and the time.",
-      "close": "Close",
-      "errorTitle": "The teacher view could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — this staff member may not be a teacher account (this directory also lists school admins), may no longer exist, or may not be linked to a school.",
+      "openCta": "Xem với vai trò giáo viên",
+      "openAriaLabel": "Xem với vai trò giáo viên {teacher} — xem thay, được ghi vào nhật ký kiểm toán",
+      "panelLabel": "Xem với vai trò giáo viên — xem thay",
+      "impersonationTitle": "Màn hình xem thay giáo viên",
+      "impersonationSubject": "Bạn đang thấy đúng những gì {teacher} thấy — các lớp và các bài làm của họ, không rộng hơn.",
+      "auditedNotice": "Lần truy cập này được ghi vào nhật ký kiểm toán dưới tài khoản của bạn, kèm giáo viên và thời điểm.",
+      "close": "Đóng",
+      "errorTitle": "Không tải được màn hình giáo viên",
+      "errorDescription": "Máy chủ từ chối hoặc đọc thất bại. Không có gì bị thay đổi — nhân sự này có thể không phải tài khoản giáo viên (danh sách này cũng gồm quản trị viên trường), có thể không còn tồn tại, hoặc chưa được gắn với trường nào.",
       "classCount": "{count, plural, other {# classes}}",
       "sittingCount": "{count, plural, other {# sittings}}",
       "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "Year band {yearBand}",
+      "classMeta": "Khối lớp {yearBand}",
       "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "This teacher holds no classes.",
-      "noSittings": "This teacher has no sittings."
+      "noClasses": "Giáo viên này không phụ trách lớp nào.",
+      "noSittings": "Giáo viên này chưa có bài làm nào."
     },
     "export": {
       "title": "Xuất trường học",

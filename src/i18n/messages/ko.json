@@ -3117,43 +3117,43 @@
       "clearFilters": "모두 지우기",
       "noMatches": "검색과 일치하는 학교가 없습니다.",
       "showing": "학교 {total}개 중 {showing}개 표시",
-      "pillAllSchools": "All schools",
-      "filterStatus": "Status",
-      "filterState": "State",
-      "filterStateAll": "All states",
-      "filterSector": "Sector",
-      "filterSectorAll": "All sectors",
-      "filterPlan": "Plan",
-      "filterPlanAll": "All plans",
-      "filterOnboardingAll": "All onboarding states",
-      "sortName": "Name (A-Z)",
-      "sortStudents": "Most students",
-      "sortCreated": "Newest first",
-      "columnStatus": "Status",
-      "columnPlan": "Plan",
-      "columnAdmins": "Admins",
-      "unnamedSchool": "Unnamed school",
-      "actionOpen": "Open school",
-      "actionStatusPage": "Status page",
-      "statusPageUnconfigured": "This release has no status page URL configured.",
-      "emptyNoneTitle": "No schools yet",
-      "emptyNoneDescription": "Create the first school to get started.",
+      "pillAllSchools": "모든 학교",
+      "filterStatus": "상태",
+      "filterState": "주",
+      "filterStateAll": "모든 주",
+      "filterSector": "설립 구분",
+      "filterSectorAll": "모든 설립 구분",
+      "filterPlan": "플랜",
+      "filterPlanAll": "모든 플랜",
+      "filterOnboardingAll": "모든 온보딩 상태",
+      "sortName": "이름(A–Z)",
+      "sortStudents": "학생 많은 순",
+      "sortCreated": "최신순",
+      "columnStatus": "상태",
+      "columnPlan": "플랜",
+      "columnAdmins": "관리자",
+      "unnamedSchool": "이름 없는 학교",
+      "actionOpen": "학교 열기",
+      "actionStatusPage": "상태 페이지",
+      "statusPageUnconfigured": "이 릴리스에는 상태 페이지 URL이 설정되어 있지 않습니다.",
+      "emptyNoneTitle": "학교가 없습니다",
+      "emptyNoneDescription": "첫 학교를 만들어 시작하세요.",
       "portalStatus": {
-        "active": "Active",
-        "trial": "Trial",
-        "pending_setup": "Pending setup",
-        "suspended": "Suspended",
-        "archived": "Archived"
+        "active": "활성",
+        "trial": "체험",
+        "pending_setup": "설정 대기",
+        "suspended": "정지",
+        "archived": "보관됨"
       },
       "portalPlan": {
-        "pilot": "Pilot",
-        "standard": "Standard",
-        "enterprise": "Enterprise"
+        "pilot": "파일럿",
+        "standard": "표준",
+        "enterprise": "엔터프라이즈"
       },
       "sector": {
-        "government": "Government",
-        "non-government": "Non-government",
-        "catholic": "Catholic"
+        "government": "공립",
+        "non-government": "사립",
+        "catholic": "가톨릭계"
       },
       "bulkSuspend": "선택한 학교 일시 중지",
       "bulkArchive": "선택한 학교 보관"
@@ -3188,23 +3188,23 @@
         "submitted": "제출됨",
         "complete": "완료"
       },
-      "adminsLabel": "Admins",
+      "adminsLabel": "관리자",
       "banner": {
         "trial": {
-          "title": "Trial",
-          "body": "This school is on a trial. Activate it to keep test windows running once the trial ends."
+          "title": "체험",
+          "body": "이 학교는 체험 중입니다. 체험이 끝난 뒤에도 시험 기간을 유지하려면 활성화하세요."
         },
         "pending_setup": {
-          "title": "Setup incomplete",
-          "body": "No admin has accepted the owner invitation yet. Nothing else can be set up until they do."
+          "title": "설정이 완료되지 않았습니다",
+          "body": "아직 소유자 초대를 수락한 관리자가 없습니다. 수락 전에는 다른 설정을 진행할 수 없습니다."
         },
         "suspended": {
-          "title": "This school is suspended",
-          "body": "Staff and students have no access and test windows are paused."
+          "title": "이 학교는 정지되었습니다",
+          "body": "교직원과 학생은 접근할 수 없고 시험 기간은 중지되었습니다."
         },
         "archived": {
-          "title": "This school is archived",
-          "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
+          "title": "이 학교는 보관되었습니다",
+          "body": "청구가 중단되었고 교직원은 접근할 수 없습니다. 데이터는 보존 기한까지 유지됩니다."
         }
       },
       "suspend": {
@@ -3295,68 +3295,68 @@
       "resultSummary": "가져오기 완료. 생성: {created}. 이미 있음: {skipped}. 거부됨: {rejected}.",
       "errorToast": "가져오기를 처리할 수 없습니다. 파일을 확인하고 다시 시도하세요.",
       "forbiddenToast": "SchoolTest 운영 팀만 가져오기를 실행할 수 있습니다.",
-      "classLabel": "Add to class",
-      "classPlaceholder": "Choose a class",
-      "classHelper": "Students are added to this class. The CSV has no class column.",
-      "templateColumnsLabel": "Template columns:",
-      "templateDownloadLink": "Download the CSV template",
-      "progressPending": "Working. Progress appears once the server reports it.",
-      "progressPercent": "{pct}% of rows processed",
-      "progressLabel": "Import progress",
-      "reconcileTitle": "This import could not be confirmed",
-      "reconcileBody": "The connection dropped, so it is not known whether the students were added. Refresh to see the current state before trying again.",
-      "unresolved": "The connection dropped before this could be confirmed. Refresh to see the current state before trying again.",
-      "cancelButton": "Cancel import",
-      "cancelledToast": "Import cancelled. No students were added.",
-      "cancelLostToast": "The import finished before the cancellation reached the server.",
-      "undoButton": "Undo import",
-      "undoneToast": "Import undone.",
-      "undoExpired": "Undo is no longer available: the 60-second window has passed.",
-      "undoDone": "This import has already been undone.",
-      "undoUnknown": "Undo is unavailable until the receipt is read.",
-      "errorReportButton": "Download the error report",
-      "columnGivenName": "Given name",
-      "columnFamilyName": "Family name",
-      "columnDob": "Date of birth",
-      "columnYearLevel": "Year level",
-      "columnStudentKey": "Student key",
-      "columnMatchedStudent": "Matched student",
+      "classLabel": "학급에 추가",
+      "classPlaceholder": "학급 선택",
+      "classHelper": "학생은 이 학급에 추가됩니다. CSV에는 학급 열이 없습니다.",
+      "templateColumnsLabel": "템플릿 열:",
+      "templateDownloadLink": "CSV 템플릿 다운로드",
+      "progressPending": "처리 중입니다. 서버가 진행 상황을 보고하면 표시됩니다.",
+      "progressPercent": "전체 행의 {pct}% 처리",
+      "progressLabel": "가져오기 진행률",
+      "reconcileTitle": "이 가져오기를 확인할 수 없었습니다",
+      "reconcileBody": "연결이 끊겨 학생이 추가되었는지 알 수 없습니다. 새로 고쳐 현재 상태를 확인한 뒤 다시 시도하세요.",
+      "unresolved": "확인되기 전에 연결이 끊겼습니다. 새로 고쳐 현재 상태를 확인한 뒤 다시 시도하세요.",
+      "cancelButton": "가져오기 취소",
+      "cancelledToast": "가져오기를 취소했습니다. 추가된 학생은 없습니다.",
+      "cancelLostToast": "취소 요청이 서버에 닿기 전에 가져오기가 끝났습니다.",
+      "undoButton": "가져오기 되돌리기",
+      "undoneToast": "가져오기를 되돌렸습니다.",
+      "undoExpired": "되돌리기를 더 이상 사용할 수 없습니다: 60초 제한이 지났습니다.",
+      "undoDone": "이 가져오기는 이미 되돌렸습니다.",
+      "undoUnknown": "접수 내역을 읽기 전에는 되돌릴 수 없습니다.",
+      "errorReportButton": "오류 보고서 다운로드",
+      "columnGivenName": "이름",
+      "columnFamilyName": "성",
+      "columnDob": "생년월일",
+      "columnYearLevel": "학년",
+      "columnStudentKey": "학생 키",
+      "columnMatchedStudent": "일치한 학생",
       "card": {
         "validating": {
-          "title": "Checking {name}...",
-          "body": "Validating headers and row data."
+          "title": "{name} 확인 중…",
+          "body": "머리글과 행 데이터를 검사하는 중입니다."
         },
         "ready": {
-          "title": "{name} - ready to import",
-          "body": "{created} rows, no problems found."
+          "title": "{name} — 가져올 준비가 되었습니다",
+          "body": "{created}행, 문제 없음."
         },
         "rowErrors": {
-          "title": "{rejected} rows need fixing",
-          "body": "Import the {created} valid rows now and fix the rest later, or re-upload a corrected file."
+          "title": "{rejected}행을 수정해야 합니다",
+          "body": "유효한 {created}행을 지금 가져오고 나머지는 나중에 고치거나, 수정한 파일을 다시 업로드하세요."
         },
         "dupes": {
-          "title": "{skipped} students are already enrolled",
-          "body": "Duplicates are skipped. {created} new students will be added."
+          "title": "학생 {skipped}명은 이미 등록되어 있습니다",
+          "body": "중복은 건너뜁니다. 새 학생 {created}명이 추가됩니다."
         },
         "badType": {
-          "title": "{name} isn't a CSV",
-          "body": "Export the roster as CSV and try again."
+          "title": "{name}은 CSV가 아닙니다",
+          "body": "명단을 CSV로 내보낸 뒤 다시 시도하세요."
         },
         "tooBig": {
-          "title": "File is too large",
-          "body": "The limit is 5 MB. Split the roster by year level."
+          "title": "파일이 너무 큽니다",
+          "body": "제한은 5 MB입니다. 명단을 학년별로 나누세요."
         },
         "noRows": {
-          "title": "No student rows found",
-          "body": "The file has headers but no data."
+          "title": "학생 데이터 행을 찾지 못했습니다",
+          "body": "파일에 머리글은 있지만 데이터가 없습니다."
         },
         "uploading": {
-          "title": "Importing {name}...",
-          "body": "Keep this window open until it finishes."
+          "title": "{name} 가져오는 중…",
+          "body": "완료될 때까지 이 창을 열어 두세요."
         },
         "failed": {
-          "title": "Import did not complete",
-          "body": "Check the message below before trying again."
+          "title": "가져오기가 완료되지 않았습니다",
+          "body": "다시 시도하기 전에 아래 메시지를 확인하세요."
         }
       }
     },
@@ -3630,20 +3630,20 @@
       "lastName": "성"
     },
     "plan": {
-      "title": "Plan",
-      "description": "The school's product tier. Ops assigns the full license here — a school can never switch itself.",
-      "current": "Current plan: {plan}",
-      "currentNone": "No plan is stored for this school yet.",
-      "label": "Plan",
-      "placeholder": "Choose a plan",
-      "helper": "Trial fixes the test allowances at 2 reading tests. Full license hands the allowance totals back to the entitlement you set for this school.",
+      "title": "플랜",
+      "description": "학교의 제품 등급입니다. 정식 라이선스는 운영이 여기서 지정하며 — 학교가 스스로 바꿀 수는 없습니다.",
+      "current": "현재 플랜: {plan}",
+      "currentNone": "이 학교에는 아직 저장된 플랜이 없습니다.",
+      "label": "플랜",
+      "placeholder": "플랜 선택",
+      "helper": "체험은 시험 허용량을 읽기 시험 2회로 고정합니다. 정식 라이선스는 이 학교에 설정한 이용 권한의 총량을 그대로 따릅니다.",
       "options": {
-        "trial": "Trial",
-        "full_license": "Full license"
+        "trial": "체험",
+        "full_license": "정식 라이선스"
       },
-      "savedToast": "Plan set to {plan}",
-      "forbiddenToast": "Only an ops account can assign a plan.",
-      "errorToast": "We could not change the plan. Try again."
+      "savedToast": "플랜을 {plan}으로 설정했습니다",
+      "forbiddenToast": "플랜은 운영 계정만 지정할 수 있습니다.",
+      "errorToast": "플랜을 변경하지 못했습니다. 다시 시도하세요."
     },
     "teachers": {
       "title": "교사",
@@ -3733,7 +3733,7 @@
         "teachers": "교사",
         "classes": "클래스",
         "students": "학생",
-        "overview": "Overview"
+        "overview": "개요"
       },
       "adminsNote": "이 학교의 학교 관리자. 관리자 초대는 개요 탭의 Onboard School 초대 패널을 사용하세요. 이 디렉터리는 마지막 로그인 필드를 표시하지 않습니다(시스템이 기록하지 않음).",
       "adminsEmptyTitle": "이 학교에 관리자 없음",
@@ -3762,14 +3762,14 @@
       "notServed": "제공 안 됨",
       "errorTitle": "불러올 수 없음",
       "errorDescription": "디렉터리를 읽을 수 없습니다. 다시 시도하세요.",
-      "fieldSuburb": "Suburb",
-      "fieldState": "State",
-      "fieldSector": "Sector",
-      "fieldContact": "Primary contact",
-      "fieldEmail": "Email",
-      "fieldPhone": "Phone",
-      "fieldLastActivity": "Last activity",
-      "unknown": "unavailable",
+      "fieldSuburb": "지역",
+      "fieldState": "주",
+      "fieldSector": "설립 구분",
+      "fieldContact": "주요 담당자",
+      "fieldEmail": "이메일",
+      "fieldPhone": "전화",
+      "fieldLastActivity": "최근 활동",
+      "unknown": "알 수 없음",
       "inviteStaff": "교직원 초대",
       "opsProfileOpen": "프로필 보기",
       "opsProfileAttemptInvalidated": "무효화됨",
@@ -3824,55 +3824,55 @@
       "ownerTransferred": "소유권을 이전했습니다."
     },
     "inspection": {
-      "title": "Form inspection",
-      "description": "The composition of the form this window points at: every item with its task type, stage, Q-matrix attribute vector and correct key, plus the anchor items and the lock state. Ops-only — this is the only surface that shows keys.",
-      "show": "Inspect form",
-      "hide": "Hide inspection",
-      "errorTitle": "The form inspection could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — retry, or check that this window's form still exists.",
-      "formCode": "Form {formCode}",
+      "title": "시험지 검토",
+      "description": "이 기간이 지정한 시험지의 구성입니다. 각 문항의 유형, 단계, Q 행렬 속성 벡터와 정답, 그리고 앵커 문항과 잠금 상태를 보여 줍니다. 운영 전용 — 정답을 보여 주는 화면은 이곳뿐입니다.",
+      "show": "시험지 검토",
+      "hide": "검토 숨기기",
+      "errorTitle": "시험지 검토를 불러오지 못했습니다",
+      "errorDescription": "서버가 읽기를 거부했거나 실패했습니다. 변경된 것은 없습니다 — 다시 시도하거나 이 기간의 시험지가 아직 있는지 확인하세요.",
+      "formCode": "시험지 {formCode}",
       "itemCount": "{count, plural, other {# items}}",
-      "anchors": "Anchors: {codes}",
-      "anchorsNone": "No anchor items",
-      "lockedBadge": "Locked — a sitting has been submitted",
-      "unlockedBadge": "Not locked",
-      "columnItem": "Item",
-      "columnTaskType": "Task type",
-      "columnStage": "Stage",
-      "columnVector": "Attribute vector",
-      "columnKey": "Correct key",
-      "formSelectLabel": "Form to inspect",
-      "noLiveWindow": "No form window is live for this school, so the selection above is the form being inspected — not a form this school's sittings currently use.",
-      "notLiveForm": "Inspecting a form other than this window's live form ({formCode})."
+      "anchors": "앵커 문항: {codes}",
+      "anchorsNone": "앵커 문항 없음",
+      "lockedBadge": "잠김 — 제출된 응시가 있습니다",
+      "unlockedBadge": "잠기지 않음",
+      "columnItem": "문항",
+      "columnTaskType": "문항 유형",
+      "columnStage": "단계",
+      "columnVector": "속성 벡터",
+      "columnKey": "정답",
+      "formSelectLabel": "검토할 시험지",
+      "noLiveWindow": "이 학교에는 진행 중인 시험 기간이 없으므로 위에서 선택한 것은 검토 대상 시험지일 뿐이며 — 이 학교의 응시가 현재 사용하는 시험지가 아닙니다.",
+      "notLiveForm": "이 기간의 실제 시험지({formCode})가 아닌 다른 시험지를 검토하고 있습니다."
     },
     "responsesExport": {
-      "title": "Session responses (CSV)",
-      "description": "The raw item-level export of ONE session for offline analysis: one row per stored response, in presentation order. The server requires a session id and names the file.",
-      "sessionLabel": "Session document id",
-      "sessionPlaceholder": "e.g. dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "Download responses.csv",
-      "downloading": "Preparing the export...",
-      "downloaded": "Downloaded {filename}",
-      "errorTitle": "The responses export could not be downloaded",
-      "errorDescription": "The server refused the export and no file was written. Check the session id — an unknown session returns an empty export, a malformed request returns an error."
+      "title": "응시 응답(CSV)",
+      "description": "오프라인 분석을 위한 단일 응시의 문항 단위 원본 내보내기입니다. 저장된 응답마다 한 행이며 제시 순서대로 정렬됩니다. 서버는 응시 ID를 요구하고 파일 이름도 서버가 정합니다.",
+      "sessionLabel": "응시 문서 ID",
+      "sessionPlaceholder": "예: dyvqpiunc7a4mibn2f6fnwwu",
+      "cta": "responses.csv 다운로드",
+      "downloading": "내보내기를 준비하는 중…",
+      "downloaded": "{filename} 다운로드 완료",
+      "errorTitle": "응답 내보내기를 다운로드하지 못했습니다",
+      "errorDescription": "서버가 내보내기를 거부했고 파일은 저장되지 않았습니다. 응시 ID를 확인하세요 — 알 수 없는 응시는 빈 내보내기를 반환하고, 잘못된 요청은 오류를 반환합니다."
     },
     "viewAsTeacher": {
-      "openCta": "View as teacher",
-      "openAriaLabel": "View as teacher {teacher} — impersonation, recorded in the audit log",
-      "panelLabel": "View as teacher — impersonation",
-      "impersonationTitle": "Impersonation view",
-      "impersonationSubject": "You are seeing exactly what {teacher} sees — their classes and their sittings, nothing wider.",
-      "auditedNotice": "This access is recorded in the audit log against your account, with the teacher and the time.",
-      "close": "Close",
-      "errorTitle": "The teacher view could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — this staff member may not be a teacher account (this directory also lists school admins), may no longer exist, or may not be linked to a school.",
+      "openCta": "교사로 보기",
+      "openAriaLabel": "교사 {teacher}로 보기 — 대리 조회이며 감사 기록에 남습니다",
+      "panelLabel": "교사로 보기 — 대리 조회",
+      "impersonationTitle": "대리 조회 화면",
+      "impersonationSubject": "{teacher}이(가) 보는 것을 그대로 보고 있습니다 — 해당 교사의 학급과 응시뿐이며 그 이상은 없습니다.",
+      "auditedNotice": "이 접근은 담당 교사와 시각과 함께 귀하의 계정으로 감사 기록에 남습니다.",
+      "close": "닫기",
+      "errorTitle": "교사 화면을 불러오지 못했습니다",
+      "errorDescription": "서버가 읽기를 거부했거나 실패했습니다. 변경된 것은 없습니다 — 이 교직원은 교사 계정이 아닐 수 있고(이 목록에는 학교 관리자도 포함됩니다), 이미 존재하지 않거나 학교에 연결되지 않았을 수 있습니다.",
       "classCount": "{count, plural, other {# classes}}",
       "sittingCount": "{count, plural, other {# sittings}}",
       "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "Year band {yearBand}",
+      "classMeta": "학년 밴드 {yearBand}",
       "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "This teacher holds no classes.",
-      "noSittings": "This teacher has no sittings."
+      "noClasses": "이 교사에게는 학급이 없습니다.",
+      "noSittings": "이 교사에게는 응시가 없습니다."
     },
     "export": {
       "title": "학교 내보내기",

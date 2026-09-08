@@ -2956,7 +2956,7 @@
         "errorDescription": "Probe kesihatan tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
       },
       "info": {
-        "title": "Runtime",
+        "title": "Masa jalan",
         "description": "Versi dan masa beroperasi sahaja — tiada rahsia, tiada rentetan sambungan.",
         "fields": {
           "strapiVersion": "Strapi",
@@ -3112,48 +3112,48 @@
       "searchPlaceholder": "Cari sekolah...",
       "clearSearch": "Kosongkan carian",
       "filterAccountStatus": "Status akaun",
-      "filterOnboarding": "Onboarding",
+      "filterOnboarding": "Kemasukan",
       "filterAll": "Semua",
       "clearFilters": "Kosongkan semua",
       "noMatches": "Tiada sekolah sepadan dengan carian anda.",
       "showing": "Memaparkan {showing} daripada {total} sekolah",
-      "pillAllSchools": "All schools",
+      "pillAllSchools": "Semua sekolah",
       "filterStatus": "Status",
-      "filterState": "State",
-      "filterStateAll": "All states",
-      "filterSector": "Sector",
-      "filterSectorAll": "All sectors",
-      "filterPlan": "Plan",
-      "filterPlanAll": "All plans",
-      "filterOnboardingAll": "All onboarding states",
-      "sortName": "Name (A-Z)",
-      "sortStudents": "Most students",
-      "sortCreated": "Newest first",
+      "filterState": "Negeri",
+      "filterStateAll": "Semua negeri",
+      "filterSector": "Sektor",
+      "filterSectorAll": "Semua sektor",
+      "filterPlan": "Pelan",
+      "filterPlanAll": "Semua pelan",
+      "filterOnboardingAll": "Semua keadaan kemasukan",
+      "sortName": "Nama (A–Z)",
+      "sortStudents": "Paling banyak murid",
+      "sortCreated": "Terbaharu dahulu",
       "columnStatus": "Status",
-      "columnPlan": "Plan",
-      "columnAdmins": "Admins",
-      "unnamedSchool": "Unnamed school",
-      "actionOpen": "Open school",
-      "actionStatusPage": "Status page",
-      "statusPageUnconfigured": "This release has no status page URL configured.",
-      "emptyNoneTitle": "No schools yet",
-      "emptyNoneDescription": "Create the first school to get started.",
+      "columnPlan": "Pelan",
+      "columnAdmins": "Pentadbir",
+      "unnamedSchool": "Sekolah tanpa nama",
+      "actionOpen": "Buka sekolah",
+      "actionStatusPage": "Halaman status",
+      "statusPageUnconfigured": "Keluaran ini tiada URL halaman status yang dikonfigurasikan.",
+      "emptyNoneTitle": "Belum ada sekolah",
+      "emptyNoneDescription": "Cipta sekolah pertama untuk bermula.",
       "portalStatus": {
-        "active": "Active",
-        "trial": "Trial",
-        "pending_setup": "Pending setup",
-        "suspended": "Suspended",
-        "archived": "Archived"
+        "active": "Aktif",
+        "trial": "Percubaan",
+        "pending_setup": "Menunggu persediaan",
+        "suspended": "Digantung",
+        "archived": "Diarkib"
       },
       "portalPlan": {
-        "pilot": "Pilot",
+        "pilot": "Perintis",
         "standard": "Standard",
         "enterprise": "Enterprise"
       },
       "sector": {
-        "government": "Government",
-        "non-government": "Non-government",
-        "catholic": "Catholic"
+        "government": "Kerajaan",
+        "non-government": "Bukan kerajaan",
+        "catholic": "Katolik"
       },
       "bulkSuspend": "Gantung sekolah dipilih",
       "bulkArchive": "Arkib sekolah dipilih"
@@ -3188,23 +3188,23 @@
         "submitted": "Dihantar",
         "complete": "Selesai"
       },
-      "adminsLabel": "Admins",
+      "adminsLabel": "Pentadbir",
       "banner": {
         "trial": {
-          "title": "Trial",
-          "body": "This school is on a trial. Activate it to keep test windows running once the trial ends."
+          "title": "Percubaan",
+          "body": "Sekolah ini sedang mencuba. Aktifkannya supaya tetingkap ujian terus berjalan selepas tempoh percubaan tamat."
         },
         "pending_setup": {
-          "title": "Setup incomplete",
-          "body": "No admin has accepted the owner invitation yet. Nothing else can be set up until they do."
+          "title": "Persediaan belum lengkap",
+          "body": "Belum ada pentadbir yang menerima jemputan pemilik. Tiada perkara lain boleh disediakan sebelum itu."
         },
         "suspended": {
-          "title": "This school is suspended",
-          "body": "Staff and students have no access and test windows are paused."
+          "title": "Sekolah ini digantung",
+          "body": "Kakitangan dan murid tiada akses dan tetingkap ujian dijeda."
         },
         "archived": {
-          "title": "This school is archived",
-          "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
+          "title": "Sekolah ini telah diarkib",
+          "body": "Pengebilan telah berhenti dan kakitangan tiada akses. Data disimpan sehingga tarikh penyimpanan."
         }
       },
       "suspend": {
@@ -3295,68 +3295,68 @@
       "resultSummary": "Import selesai. Dicipta: {created}. Sudah wujud: {skipped}. Ditolak: {rejected}.",
       "errorToast": "Import tidak dapat diproses. Semak fail dan cuba lagi.",
       "forbiddenToast": "Hanya pasukan ops SchoolTest boleh menjalankan import.",
-      "classLabel": "Add to class",
-      "classPlaceholder": "Choose a class",
-      "classHelper": "Students are added to this class. The CSV has no class column.",
-      "templateColumnsLabel": "Template columns:",
-      "templateDownloadLink": "Download the CSV template",
-      "progressPending": "Working. Progress appears once the server reports it.",
-      "progressPercent": "{pct}% of rows processed",
-      "progressLabel": "Import progress",
-      "reconcileTitle": "This import could not be confirmed",
-      "reconcileBody": "The connection dropped, so it is not known whether the students were added. Refresh to see the current state before trying again.",
-      "unresolved": "The connection dropped before this could be confirmed. Refresh to see the current state before trying again.",
-      "cancelButton": "Cancel import",
-      "cancelledToast": "Import cancelled. No students were added.",
-      "cancelLostToast": "The import finished before the cancellation reached the server.",
-      "undoButton": "Undo import",
-      "undoneToast": "Import undone.",
-      "undoExpired": "Undo is no longer available: the 60-second window has passed.",
-      "undoDone": "This import has already been undone.",
-      "undoUnknown": "Undo is unavailable until the receipt is read.",
-      "errorReportButton": "Download the error report",
-      "columnGivenName": "Given name",
-      "columnFamilyName": "Family name",
-      "columnDob": "Date of birth",
-      "columnYearLevel": "Year level",
-      "columnStudentKey": "Student key",
-      "columnMatchedStudent": "Matched student",
+      "classLabel": "Tambah ke kelas",
+      "classPlaceholder": "Pilih kelas",
+      "classHelper": "Murid ditambah ke kelas ini. CSV tiada lajur kelas.",
+      "templateColumnsLabel": "Lajur templat:",
+      "templateDownloadLink": "Muat turun templat CSV",
+      "progressPending": "Sedang berjalan. Kemajuan muncul sebaik pelayan melaporkannya.",
+      "progressPercent": "{pct}% baris telah diproses",
+      "progressLabel": "Kemajuan import",
+      "reconcileTitle": "Import ini tidak dapat disahkan",
+      "reconcileBody": "Sambungan terputus, jadi tidak diketahui sama ada murid telah ditambah. Muat semula untuk melihat keadaan semasa sebelum mencuba lagi.",
+      "unresolved": "Sambungan terputus sebelum ini dapat disahkan. Muat semula untuk melihat keadaan semasa sebelum mencuba lagi.",
+      "cancelButton": "Batalkan import",
+      "cancelledToast": "Import dibatalkan. Tiada murid ditambah.",
+      "cancelLostToast": "Import selesai sebelum pembatalan sampai ke pelayan.",
+      "undoButton": "Buat asal import",
+      "undoneToast": "Import telah dibuat asal.",
+      "undoExpired": "Buat asal tidak lagi tersedia: tempoh 60 detik telah berlalu.",
+      "undoDone": "Import ini sudah dibuat asal.",
+      "undoUnknown": "Buat asal tidak tersedia sebelum resit dibaca.",
+      "errorReportButton": "Muat turun laporan ralat",
+      "columnGivenName": "Nama pertama",
+      "columnFamilyName": "Nama keluarga",
+      "columnDob": "Tarikh lahir",
+      "columnYearLevel": "Tahap tahun",
+      "columnStudentKey": "Kunci murid",
+      "columnMatchedStudent": "Murid yang dipadankan",
       "card": {
         "validating": {
-          "title": "Checking {name}...",
-          "body": "Validating headers and row data."
+          "title": "Memeriksa {name}…",
+          "body": "Mengesahkan pengepala dan data baris."
         },
         "ready": {
-          "title": "{name} - ready to import",
-          "body": "{created} rows, no problems found."
+          "title": "{name} — sedia untuk diimport",
+          "body": "{created} baris, tiada masalah ditemui."
         },
         "rowErrors": {
-          "title": "{rejected} rows need fixing",
-          "body": "Import the {created} valid rows now and fix the rest later, or re-upload a corrected file."
+          "title": "{rejected} baris perlu dibetulkan",
+          "body": "Import {created} baris yang sah sekarang dan betulkan yang lain kemudian, atau muat naik semula fail yang telah dibetulkan."
         },
         "dupes": {
-          "title": "{skipped} students are already enrolled",
-          "body": "Duplicates are skipped. {created} new students will be added."
+          "title": "{skipped} murid sudah didaftarkan",
+          "body": "Pendua dilangkau. {created} murid baharu akan ditambah."
         },
         "badType": {
-          "title": "{name} isn't a CSV",
-          "body": "Export the roster as CSV and try again."
+          "title": "{name} bukan CSV",
+          "body": "Eksport senarai sebagai CSV dan cuba lagi."
         },
         "tooBig": {
-          "title": "File is too large",
-          "body": "The limit is 5 MB. Split the roster by year level."
+          "title": "Fail terlalu besar",
+          "body": "Hadnya 5 MB. Bahagikan senarai mengikut tahun."
         },
         "noRows": {
-          "title": "No student rows found",
-          "body": "The file has headers but no data."
+          "title": "Tiada baris murid ditemui",
+          "body": "Fail mempunyai pengepala tetapi tiada data."
         },
         "uploading": {
-          "title": "Importing {name}...",
-          "body": "Keep this window open until it finishes."
+          "title": "Mengimport {name}…",
+          "body": "Biarkan tetingkap ini terbuka sehingga selesai."
         },
         "failed": {
-          "title": "Import did not complete",
-          "body": "Check the message below before trying again."
+          "title": "Import tidak selesai",
+          "body": "Semak mesej di bawah sebelum mencuba lagi."
         }
       }
     },
@@ -3630,20 +3630,20 @@
       "lastName": "Nama keluarga"
     },
     "plan": {
-      "title": "Plan",
-      "description": "The school's product tier. Ops assigns the full license here — a school can never switch itself.",
-      "current": "Current plan: {plan}",
-      "currentNone": "No plan is stored for this school yet.",
-      "label": "Plan",
-      "placeholder": "Choose a plan",
-      "helper": "Trial fixes the test allowances at 2 reading tests. Full license hands the allowance totals back to the entitlement you set for this school.",
+      "title": "Pelan",
+      "description": "Peringkat produk sekolah. Operasi menetapkan lesen penuh di sini — sekolah tidak boleh menukarnya sendiri.",
+      "current": "Pelan semasa: {plan}",
+      "currentNone": "Belum ada pelan disimpan untuk sekolah ini.",
+      "label": "Pelan",
+      "placeholder": "Pilih pelan",
+      "helper": "Percubaan menetapkan kuota ujian pada 2 ujian bacaan. Lesen penuh menyerahkan jumlah kuota kembali kepada kelayakan yang anda tetapkan untuk sekolah ini.",
       "options": {
-        "trial": "Trial",
-        "full_license": "Full license"
+        "trial": "Percubaan",
+        "full_license": "Lesen penuh"
       },
-      "savedToast": "Plan set to {plan}",
-      "forbiddenToast": "Only an ops account can assign a plan.",
-      "errorToast": "We could not change the plan. Try again."
+      "savedToast": "Pelan ditetapkan kepada {plan}",
+      "forbiddenToast": "Hanya akaun operasi boleh menetapkan pelan.",
+      "errorToast": "Kami tidak dapat menukar pelan. Cuba lagi."
     },
     "teachers": {
       "title": "Guru",
@@ -3733,7 +3733,7 @@
         "teachers": "Guru",
         "classes": "Kelas",
         "students": "Murid",
-        "overview": "Overview"
+        "overview": "Gambaran keseluruhan"
       },
       "adminsNote": "Pentadbir sekolah bagi sekolah ini. Untuk menjemput pentadbir, gunakan panel jemputan Onboard School pada tab Gambaran Keseluruhan. Direktori ini tidak menyenaraikan medan log masuk terakhir (sistem tidak merekodkannya).",
       "adminsEmptyTitle": "Tiada pentadbir untuk sekolah ini",
@@ -3762,14 +3762,14 @@
       "notServed": "Tidak disediakan",
       "errorTitle": "Tidak dapat memuat",
       "errorDescription": "Direktori tidak dapat dibaca. Cuba lagi.",
-      "fieldSuburb": "Suburb",
-      "fieldState": "State",
-      "fieldSector": "Sector",
-      "fieldContact": "Primary contact",
-      "fieldEmail": "Email",
-      "fieldPhone": "Phone",
-      "fieldLastActivity": "Last activity",
-      "unknown": "unavailable",
+      "fieldSuburb": "Daerah",
+      "fieldState": "Negeri",
+      "fieldSector": "Sektor",
+      "fieldContact": "Orang hubungan utama",
+      "fieldEmail": "E-mel",
+      "fieldPhone": "Telefon",
+      "fieldLastActivity": "Aktiviti terakhir",
+      "unknown": "tidak tersedia",
       "inviteStaff": "Jemput kakitangan",
       "opsProfileOpen": "Lihat profil",
       "opsProfileAttemptInvalidated": "Dibatalkan",
@@ -3824,55 +3824,55 @@
       "ownerTransferred": "Pemilikan telah dipindahkan."
     },
     "inspection": {
-      "title": "Form inspection",
-      "description": "The composition of the form this window points at: every item with its task type, stage, Q-matrix attribute vector and correct key, plus the anchor items and the lock state. Ops-only — this is the only surface that shows keys.",
-      "show": "Inspect form",
-      "hide": "Hide inspection",
-      "errorTitle": "The form inspection could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — retry, or check that this window's form still exists.",
-      "formCode": "Form {formCode}",
+      "title": "Pemeriksaan borang",
+      "description": "Komposisi borang yang ditunjuk oleh tetingkap ini: setiap item dengan jenis tugasan, peringkat, vektor atribut matriks-Q dan jawapan betulnya, serta item sauh dan keadaan kunci. Operasi sahaja — inilah satu-satunya paparan yang menunjukkan jawapan.",
+      "show": "Periksa borang",
+      "hide": "Sembunyikan pemeriksaan",
+      "errorTitle": "Pemeriksaan borang tidak dapat dimuatkan",
+      "errorDescription": "Pelayan menolak atau gagal membaca. Tiada apa-apa diubah — cuba lagi, atau pastikan borang tetingkap ini masih ada.",
+      "formCode": "Borang {formCode}",
       "itemCount": "{count, plural, other {# items}}",
-      "anchors": "Anchors: {codes}",
-      "anchorsNone": "No anchor items",
-      "lockedBadge": "Locked — a sitting has been submitted",
-      "unlockedBadge": "Not locked",
+      "anchors": "Item sauh: {codes}",
+      "anchorsNone": "Tiada item sauh",
+      "lockedBadge": "Dikunci — satu sesi ujian telah dihantar",
+      "unlockedBadge": "Tidak dikunci",
       "columnItem": "Item",
-      "columnTaskType": "Task type",
-      "columnStage": "Stage",
-      "columnVector": "Attribute vector",
-      "columnKey": "Correct key",
-      "formSelectLabel": "Form to inspect",
-      "noLiveWindow": "No form window is live for this school, so the selection above is the form being inspected — not a form this school's sittings currently use.",
-      "notLiveForm": "Inspecting a form other than this window's live form ({formCode})."
+      "columnTaskType": "Jenis tugasan",
+      "columnStage": "Peringkat",
+      "columnVector": "Vektor atribut",
+      "columnKey": "Jawapan betul",
+      "formSelectLabel": "Borang untuk diperiksa",
+      "noLiveWindow": "Tiada tetingkap borang yang aktif untuk sekolah ini, jadi pilihan di atas hanyalah borang yang sedang diperiksa — bukan borang yang digunakan oleh sesi ujian sekolah ini sekarang.",
+      "notLiveForm": "Memeriksa borang selain borang aktif tetingkap ini ({formCode})."
     },
     "responsesExport": {
-      "title": "Session responses (CSV)",
-      "description": "The raw item-level export of ONE session for offline analysis: one row per stored response, in presentation order. The server requires a session id and names the file.",
-      "sessionLabel": "Session document id",
-      "sessionPlaceholder": "e.g. dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "Download responses.csv",
-      "downloading": "Preparing the export...",
-      "downloaded": "Downloaded {filename}",
-      "errorTitle": "The responses export could not be downloaded",
-      "errorDescription": "The server refused the export and no file was written. Check the session id — an unknown session returns an empty export, a malformed request returns an error."
+      "title": "Respons sesi (CSV)",
+      "description": "Eksport mentah peringkat item bagi SATU sesi untuk analisis luar talian: satu baris bagi setiap respons yang disimpan, mengikut urutan paparan. Pelayan memerlukan id sesi dan pelayan yang menamakan fail itu.",
+      "sessionLabel": "Id dokumen sesi",
+      "sessionPlaceholder": "cth. dyvqpiunc7a4mibn2f6fnwwu",
+      "cta": "Muat turun responses.csv",
+      "downloading": "Menyediakan eksport…",
+      "downloaded": "{filename} dimuat turun",
+      "errorTitle": "Eksport respons tidak dapat dimuat turun",
+      "errorDescription": "Pelayan menolak eksport dan tiada fail ditulis. Semak id sesi — sesi yang tidak dikenali memberi eksport kosong, permintaan yang tidak sah memberi ralat."
     },
     "viewAsTeacher": {
-      "openCta": "View as teacher",
-      "openAriaLabel": "View as teacher {teacher} — impersonation, recorded in the audit log",
-      "panelLabel": "View as teacher — impersonation",
-      "impersonationTitle": "Impersonation view",
-      "impersonationSubject": "You are seeing exactly what {teacher} sees — their classes and their sittings, nothing wider.",
-      "auditedNotice": "This access is recorded in the audit log against your account, with the teacher and the time.",
-      "close": "Close",
-      "errorTitle": "The teacher view could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — this staff member may not be a teacher account (this directory also lists school admins), may no longer exist, or may not be linked to a school.",
+      "openCta": "Lihat sebagai guru",
+      "openAriaLabel": "Lihat sebagai guru {teacher} — penyamaran, direkodkan dalam lejar audit",
+      "panelLabel": "Lihat sebagai guru — penyamaran",
+      "impersonationTitle": "Paparan penyamaran",
+      "impersonationSubject": "Anda melihat tepat apa yang dilihat oleh {teacher} — kelas dan sesi ujian mereka, tiada yang lebih luas.",
+      "auditedNotice": "Akses ini direkodkan dalam lejar audit terhadap akaun anda, bersama guru dan masanya.",
+      "close": "Tutup",
+      "errorTitle": "Paparan guru tidak dapat dimuatkan",
+      "errorDescription": "Pelayan menolak atau gagal membaca. Tiada apa-apa diubah — kakitangan ini mungkin bukan akaun guru (direktori ini juga menyenaraikan pentadbir sekolah), mungkin tidak lagi wujud, atau tidak dipautkan kepada sekolah.",
       "classCount": "{count, plural, other {# classes}}",
       "sittingCount": "{count, plural, other {# sittings}}",
       "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "Year band {yearBand}",
+      "classMeta": "Kumpulan tahun {yearBand}",
       "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "This teacher holds no classes.",
-      "noSittings": "This teacher has no sittings."
+      "noClasses": "Guru ini tidak memegang kelas.",
+      "noSittings": "Guru ini tiada sesi ujian."
     },
     "export": {
       "title": "Eksport sekolah",

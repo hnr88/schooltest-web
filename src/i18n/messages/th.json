@@ -3117,43 +3117,43 @@
       "clearFilters": "ล้างทั้งหมด",
       "noMatches": "ไม่พบโรงเรียนที่ตรงกับการค้นหา",
       "showing": "แสดง {showing} จาก {total} โรงเรียน",
-      "pillAllSchools": "All schools",
-      "filterStatus": "Status",
-      "filterState": "State",
-      "filterStateAll": "All states",
-      "filterSector": "Sector",
-      "filterSectorAll": "All sectors",
-      "filterPlan": "Plan",
-      "filterPlanAll": "All plans",
-      "filterOnboardingAll": "All onboarding states",
-      "sortName": "Name (A-Z)",
-      "sortStudents": "Most students",
-      "sortCreated": "Newest first",
-      "columnStatus": "Status",
-      "columnPlan": "Plan",
-      "columnAdmins": "Admins",
-      "unnamedSchool": "Unnamed school",
-      "actionOpen": "Open school",
-      "actionStatusPage": "Status page",
-      "statusPageUnconfigured": "This release has no status page URL configured.",
-      "emptyNoneTitle": "No schools yet",
-      "emptyNoneDescription": "Create the first school to get started.",
+      "pillAllSchools": "ทุกโรงเรียน",
+      "filterStatus": "สถานะ",
+      "filterState": "รัฐ",
+      "filterStateAll": "ทุกรัฐ",
+      "filterSector": "ภาคการศึกษา",
+      "filterSectorAll": "ทุกภาคการศึกษา",
+      "filterPlan": "แพ็กเกจ",
+      "filterPlanAll": "ทุกแพ็กเกจ",
+      "filterOnboardingAll": "ทุกสถานะการเริ่มใช้งาน",
+      "sortName": "ชื่อ (A–Z)",
+      "sortStudents": "นักเรียนมากที่สุด",
+      "sortCreated": "ใหม่สุดก่อน",
+      "columnStatus": "สถานะ",
+      "columnPlan": "แพ็กเกจ",
+      "columnAdmins": "ผู้ดูแลระบบ",
+      "unnamedSchool": "โรงเรียนที่ไม่มีชื่อ",
+      "actionOpen": "เปิดโรงเรียน",
+      "actionStatusPage": "หน้าสถานะ",
+      "statusPageUnconfigured": "รุ่นนี้ยังไม่ได้ตั้งค่า URL ของหน้าสถานะ",
+      "emptyNoneTitle": "ยังไม่มีโรงเรียน",
+      "emptyNoneDescription": "สร้างโรงเรียนแรกเพื่อเริ่มต้น",
       "portalStatus": {
-        "active": "Active",
-        "trial": "Trial",
-        "pending_setup": "Pending setup",
-        "suspended": "Suspended",
-        "archived": "Archived"
+        "active": "ใช้งานอยู่",
+        "trial": "ทดลองใช้",
+        "pending_setup": "รอการตั้งค่า",
+        "suspended": "ถูกระงับ",
+        "archived": "เก็บถาวรแล้ว"
       },
       "portalPlan": {
-        "pilot": "Pilot",
-        "standard": "Standard",
-        "enterprise": "Enterprise"
+        "pilot": "นำร่อง",
+        "standard": "มาตรฐาน",
+        "enterprise": "องค์กร"
       },
       "sector": {
-        "government": "Government",
-        "non-government": "Non-government",
-        "catholic": "Catholic"
+        "government": "รัฐบาล",
+        "non-government": "นอกภาครัฐ",
+        "catholic": "คาทอลิก"
       },
       "bulkSuspend": "ระงับโรงเรียนที่เลือก",
       "bulkArchive": "เก็บถาวรโรงเรียนที่เลือก"
@@ -3188,23 +3188,23 @@
         "submitted": "ส่งแล้ว",
         "complete": "เสร็จสมบูรณ์"
       },
-      "adminsLabel": "Admins",
+      "adminsLabel": "ผู้ดูแลระบบ",
       "banner": {
         "trial": {
-          "title": "Trial",
-          "body": "This school is on a trial. Activate it to keep test windows running once the trial ends."
+          "title": "ทดลองใช้",
+          "body": "โรงเรียนนี้อยู่ในช่วงทดลองใช้ เปิดใช้งานเพื่อให้ช่วงเวลาสอบดำเนินต่อหลังสิ้นสุดการทดลองใช้"
         },
         "pending_setup": {
-          "title": "Setup incomplete",
-          "body": "No admin has accepted the owner invitation yet. Nothing else can be set up until they do."
+          "title": "การตั้งค่ายังไม่เสร็จ",
+          "body": "ยังไม่มีผู้ดูแลรับคำเชิญเป็นเจ้าของ จึงยังตั้งค่าอย่างอื่นไม่ได้จนกว่าจะมีผู้รับ"
         },
         "suspended": {
-          "title": "This school is suspended",
-          "body": "Staff and students have no access and test windows are paused."
+          "title": "โรงเรียนนี้ถูกระงับ",
+          "body": "บุคลากรและนักเรียนไม่มีสิทธิ์เข้าถึง และช่วงเวลาสอบถูกหยุดชั่วคราว"
         },
         "archived": {
-          "title": "This school is archived",
-          "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
+          "title": "โรงเรียนนี้ถูกเก็บถาวรแล้ว",
+          "body": "การเรียกเก็บเงินหยุดแล้วและบุคลากรไม่มีสิทธิ์เข้าถึง ข้อมูลจะถูกเก็บไว้จนถึงวันสิ้นสุดการเก็บรักษา"
         }
       },
       "suspend": {
@@ -3295,68 +3295,68 @@
       "resultSummary": "นำเข้าเสร็จสิ้น สร้างแล้ว: {created} มีอยู่แล้ว: {skipped} ถูกปฏิเสธ: {rejected}",
       "errorToast": "ไม่สามารถประมวลผลการนำเข้าได้ โปรดตรวจสอบไฟล์แล้วลองอีกครั้ง",
       "forbiddenToast": "เฉพาะทีมปฏิบัติการ SchoolTest เท่านั้นที่สามารถนำเข้าได้",
-      "classLabel": "Add to class",
-      "classPlaceholder": "Choose a class",
-      "classHelper": "Students are added to this class. The CSV has no class column.",
-      "templateColumnsLabel": "Template columns:",
-      "templateDownloadLink": "Download the CSV template",
-      "progressPending": "Working. Progress appears once the server reports it.",
-      "progressPercent": "{pct}% of rows processed",
-      "progressLabel": "Import progress",
-      "reconcileTitle": "This import could not be confirmed",
-      "reconcileBody": "The connection dropped, so it is not known whether the students were added. Refresh to see the current state before trying again.",
-      "unresolved": "The connection dropped before this could be confirmed. Refresh to see the current state before trying again.",
-      "cancelButton": "Cancel import",
-      "cancelledToast": "Import cancelled. No students were added.",
-      "cancelLostToast": "The import finished before the cancellation reached the server.",
-      "undoButton": "Undo import",
-      "undoneToast": "Import undone.",
-      "undoExpired": "Undo is no longer available: the 60-second window has passed.",
-      "undoDone": "This import has already been undone.",
-      "undoUnknown": "Undo is unavailable until the receipt is read.",
-      "errorReportButton": "Download the error report",
-      "columnGivenName": "Given name",
-      "columnFamilyName": "Family name",
-      "columnDob": "Date of birth",
-      "columnYearLevel": "Year level",
-      "columnStudentKey": "Student key",
-      "columnMatchedStudent": "Matched student",
+      "classLabel": "เพิ่มเข้าชั้นเรียน",
+      "classPlaceholder": "เลือกชั้นเรียน",
+      "classHelper": "นักเรียนจะถูกเพิ่มเข้าชั้นเรียนนี้ ไฟล์ CSV ไม่มีคอลัมน์ชั้นเรียน",
+      "templateColumnsLabel": "คอลัมน์ของแม่แบบ:",
+      "templateDownloadLink": "ดาวน์โหลดแม่แบบ CSV",
+      "progressPending": "กำลังดำเนินการ ความคืบหน้าจะแสดงเมื่อเซิร์ฟเวอร์รายงาน",
+      "progressPercent": "ประมวลผลแล้ว {pct}% ของแถว",
+      "progressLabel": "ความคืบหน้าการนำเข้า",
+      "reconcileTitle": "ยืนยันการนำเข้าครั้งนี้ไม่ได้",
+      "reconcileBody": "การเชื่อมต่อหลุด จึงไม่ทราบว่านักเรียนถูกเพิ่มแล้วหรือไม่ โปรดรีเฟรชเพื่อดูสถานะปัจจุบันก่อนลองอีกครั้ง",
+      "unresolved": "การเชื่อมต่อหลุดก่อนที่จะยืนยันได้ โปรดรีเฟรชเพื่อดูสถานะปัจจุบันก่อนลองอีกครั้ง",
+      "cancelButton": "ยกเลิกการนำเข้า",
+      "cancelledToast": "ยกเลิกการนำเข้าแล้ว ไม่มีการเพิ่มนักเรียน",
+      "cancelLostToast": "การนำเข้าเสร็จก่อนที่คำสั่งยกเลิกจะถึงเซิร์ฟเวอร์",
+      "undoButton": "เลิกทำการนำเข้า",
+      "undoneToast": "เลิกทำการนำเข้าแล้ว",
+      "undoExpired": "ไม่สามารถเลิกทำได้อีก: เลยกำหนด 60 วินาทีแล้ว",
+      "undoDone": "การนำเข้าครั้งนี้ถูกเลิกทำแล้ว",
+      "undoUnknown": "ยังเลิกทำไม่ได้จนกว่าจะอ่านใบรับแล้ว",
+      "errorReportButton": "ดาวน์โหลดรายงานข้อผิดพลาด",
+      "columnGivenName": "ชื่อ",
+      "columnFamilyName": "นามสกุล",
+      "columnDob": "วันเกิด",
+      "columnYearLevel": "ระดับชั้น",
+      "columnStudentKey": "รหัสนักเรียน",
+      "columnMatchedStudent": "นักเรียนที่จับคู่ได้",
       "card": {
         "validating": {
-          "title": "Checking {name}...",
-          "body": "Validating headers and row data."
+          "title": "กำลังตรวจ {name}…",
+          "body": "กำลังตรวจสอบหัวตารางและข้อมูลแต่ละแถว"
         },
         "ready": {
-          "title": "{name} - ready to import",
-          "body": "{created} rows, no problems found."
+          "title": "{name} — พร้อมนำเข้า",
+          "body": "{created} แถว ไม่พบปัญหา"
         },
         "rowErrors": {
-          "title": "{rejected} rows need fixing",
-          "body": "Import the {created} valid rows now and fix the rest later, or re-upload a corrected file."
+          "title": "{rejected} แถวต้องแก้ไข",
+          "body": "นำเข้า {created} แถวที่ถูกต้องตอนนี้แล้วแก้ที่เหลือภายหลัง หรืออัปโหลดไฟล์ที่แก้แล้วอีกครั้ง"
         },
         "dupes": {
-          "title": "{skipped} students are already enrolled",
-          "body": "Duplicates are skipped. {created} new students will be added."
+          "title": "นักเรียน {skipped} คนลงทะเบียนอยู่แล้ว",
+          "body": "รายการซ้ำจะถูกข้าม จะเพิ่มนักเรียนใหม่ {created} คน"
         },
         "badType": {
-          "title": "{name} isn't a CSV",
-          "body": "Export the roster as CSV and try again."
+          "title": "{name} ไม่ใช่ไฟล์ CSV",
+          "body": "ส่งออกรายชื่อเป็นไฟล์ CSV แล้วลองอีกครั้ง"
         },
         "tooBig": {
-          "title": "File is too large",
-          "body": "The limit is 5 MB. Split the roster by year level."
+          "title": "ไฟล์ใหญ่เกินไป",
+          "body": "ขีดจำกัดคือ 5 MB โปรดแบ่งรายชื่อตามระดับชั้น"
         },
         "noRows": {
-          "title": "No student rows found",
-          "body": "The file has headers but no data."
+          "title": "ไม่พบแถวข้อมูลนักเรียน",
+          "body": "ไฟล์มีหัวตารางแต่ไม่มีข้อมูล"
         },
         "uploading": {
-          "title": "Importing {name}...",
-          "body": "Keep this window open until it finishes."
+          "title": "กำลังนำเข้า {name}…",
+          "body": "เปิดหน้าต่างนี้ไว้จนเสร็จ"
         },
         "failed": {
-          "title": "Import did not complete",
-          "body": "Check the message below before trying again."
+          "title": "การนำเข้าไม่เสร็จสมบูรณ์",
+          "body": "ตรวจดูข้อความด้านล่างก่อนลองอีกครั้ง"
         }
       }
     },
@@ -3630,20 +3630,20 @@
       "lastName": "นามสกุล"
     },
     "plan": {
-      "title": "Plan",
-      "description": "The school's product tier. Ops assigns the full license here — a school can never switch itself.",
-      "current": "Current plan: {plan}",
-      "currentNone": "No plan is stored for this school yet.",
-      "label": "Plan",
-      "placeholder": "Choose a plan",
-      "helper": "Trial fixes the test allowances at 2 reading tests. Full license hands the allowance totals back to the entitlement you set for this school.",
+      "title": "แพ็กเกจ",
+      "description": "ระดับผลิตภัณฑ์ของโรงเรียน ฝ่ายปฏิบัติการกำหนดสิทธิ์ใช้งานเต็มรูปแบบที่นี่ — โรงเรียนเปลี่ยนเองไม่ได้",
+      "current": "แพ็กเกจปัจจุบัน: {plan}",
+      "currentNone": "ยังไม่มีการบันทึกแพ็กเกจสำหรับโรงเรียนนี้",
+      "label": "แพ็กเกจ",
+      "placeholder": "เลือกแพ็กเกจ",
+      "helper": "การทดลองใช้จำกัดสิทธิ์การสอบไว้ที่แบบทดสอบการอ่าน 2 ครั้ง สิทธิ์ใช้งานเต็มรูปแบบจะคืนจำนวนสิทธิ์ตามที่คุณกำหนดให้โรงเรียนนี้",
       "options": {
-        "trial": "Trial",
-        "full_license": "Full license"
+        "trial": "ทดลองใช้",
+        "full_license": "สิทธิ์ใช้งานเต็มรูปแบบ"
       },
-      "savedToast": "Plan set to {plan}",
-      "forbiddenToast": "Only an ops account can assign a plan.",
-      "errorToast": "We could not change the plan. Try again."
+      "savedToast": "ตั้งแพ็กเกจเป็น {plan} แล้ว",
+      "forbiddenToast": "มีเพียงบัญชีฝ่ายปฏิบัติการที่กำหนดแพ็กเกจได้",
+      "errorToast": "เปลี่ยนแพ็กเกจไม่สำเร็จ โปรดลองอีกครั้ง"
     },
     "teachers": {
       "title": "ครู",
@@ -3733,7 +3733,7 @@
         "teachers": "ครู",
         "classes": "ชั้นเรียน",
         "students": "นักเรียน",
-        "overview": "Overview"
+        "overview": "ภาพรวม"
       },
       "adminsNote": "ผู้ดูแลระบบของโรงเรียนนี้ หากต้องการเชิญผู้ดูแลระบบ ให้ใช้แผงเชิญ Onboard School บนแท็บภาพรวม ไดเรกทอรีนี้ไม่แสดงฟิลด์การเข้าสู่ระบบครั้งล่าสุด (ระบบไม่บันทึก)",
       "adminsEmptyTitle": "ไม่มีผู้ดูแลระบบสำหรับโรงเรียนนี้",
@@ -3762,14 +3762,14 @@
       "notServed": "ไม่ให้บริการ",
       "errorTitle": "ไม่สามารถโหลด",
       "errorDescription": "ไม่สามารถอ่านไดเรกทอรีได้ โปรดลองอีกครั้ง",
-      "fieldSuburb": "Suburb",
-      "fieldState": "State",
-      "fieldSector": "Sector",
-      "fieldContact": "Primary contact",
-      "fieldEmail": "Email",
-      "fieldPhone": "Phone",
-      "fieldLastActivity": "Last activity",
-      "unknown": "unavailable",
+      "fieldSuburb": "เขต",
+      "fieldState": "รัฐ",
+      "fieldSector": "ภาคการศึกษา",
+      "fieldContact": "ผู้ติดต่อหลัก",
+      "fieldEmail": "อีเมล",
+      "fieldPhone": "โทรศัพท์",
+      "fieldLastActivity": "กิจกรรมล่าสุด",
+      "unknown": "ไม่มีข้อมูล",
       "inviteStaff": "เชิญบุคลากร",
       "opsProfileOpen": "ดูโปรไฟล์",
       "opsProfileAttemptInvalidated": "ถูกยกเลิก",
@@ -3824,55 +3824,55 @@
       "ownerTransferred": "โอนความเป็นเจ้าของแล้ว"
     },
     "inspection": {
-      "title": "Form inspection",
-      "description": "The composition of the form this window points at: every item with its task type, stage, Q-matrix attribute vector and correct key, plus the anchor items and the lock state. Ops-only — this is the only surface that shows keys.",
-      "show": "Inspect form",
-      "hide": "Hide inspection",
-      "errorTitle": "The form inspection could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — retry, or check that this window's form still exists.",
-      "formCode": "Form {formCode}",
+      "title": "การตรวจสอบแบบทดสอบ",
+      "description": "องค์ประกอบของแบบทดสอบที่ช่วงเวลานี้ชี้ไป: ทุกข้อพร้อมประเภทข้อสอบ ขั้น เวกเตอร์คุณลักษณะแบบ Q-matrix และเฉลย รวมทั้งข้อสอบยึดโยงและสถานะการล็อก สำหรับฝ่ายปฏิบัติการเท่านั้น — นี่เป็นหน้าจอเดียวที่แสดงเฉลย",
+      "show": "ตรวจสอบแบบทดสอบ",
+      "hide": "ซ่อนการตรวจสอบ",
+      "errorTitle": "โหลดการตรวจสอบแบบทดสอบไม่สำเร็จ",
+      "errorDescription": "เซิร์ฟเวอร์ปฏิเสธหรืออ่านไม่สำเร็จ ไม่มีการเปลี่ยนแปลงใด — ลองอีกครั้ง หรือตรวจสอบว่าแบบทดสอบของช่วงเวลานี้ยังอยู่",
+      "formCode": "แบบทดสอบ {formCode}",
       "itemCount": "{count, plural, other {# items}}",
-      "anchors": "Anchors: {codes}",
-      "anchorsNone": "No anchor items",
-      "lockedBadge": "Locked — a sitting has been submitted",
-      "unlockedBadge": "Not locked",
-      "columnItem": "Item",
-      "columnTaskType": "Task type",
-      "columnStage": "Stage",
-      "columnVector": "Attribute vector",
-      "columnKey": "Correct key",
-      "formSelectLabel": "Form to inspect",
-      "noLiveWindow": "No form window is live for this school, so the selection above is the form being inspected — not a form this school's sittings currently use.",
-      "notLiveForm": "Inspecting a form other than this window's live form ({formCode})."
+      "anchors": "ข้อสอบยึดโยง: {codes}",
+      "anchorsNone": "ไม่มีข้อสอบยึดโยง",
+      "lockedBadge": "ล็อกแล้ว — มีการส่งคำตอบแล้ว",
+      "unlockedBadge": "ไม่ได้ล็อก",
+      "columnItem": "ข้อสอบ",
+      "columnTaskType": "ประเภทข้อสอบ",
+      "columnStage": "ขั้น",
+      "columnVector": "เวกเตอร์คุณลักษณะ",
+      "columnKey": "เฉลย",
+      "formSelectLabel": "แบบทดสอบที่จะตรวจสอบ",
+      "noLiveWindow": "โรงเรียนนี้ไม่มีช่วงเวลาแบบทดสอบที่ใช้งานอยู่ ดังนั้นตัวเลือกด้านบนเป็นเพียงแบบทดสอบที่กำลังตรวจสอบ — ไม่ใช่แบบทดสอบที่การสอบของโรงเรียนนี้ใช้อยู่",
+      "notLiveForm": "กำลังตรวจสอบแบบทดสอบอื่นที่ไม่ใช่แบบทดสอบที่ใช้งานอยู่ของช่วงเวลานี้ ({formCode})"
     },
     "responsesExport": {
-      "title": "Session responses (CSV)",
-      "description": "The raw item-level export of ONE session for offline analysis: one row per stored response, in presentation order. The server requires a session id and names the file.",
-      "sessionLabel": "Session document id",
-      "sessionPlaceholder": "e.g. dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "Download responses.csv",
-      "downloading": "Preparing the export...",
-      "downloaded": "Downloaded {filename}",
-      "errorTitle": "The responses export could not be downloaded",
-      "errorDescription": "The server refused the export and no file was written. Check the session id — an unknown session returns an empty export, a malformed request returns an error."
+      "title": "คำตอบของการสอบ (CSV)",
+      "description": "การส่งออกข้อมูลดิบระดับข้อสอบของการสอบหนึ่งครั้งเพื่อวิเคราะห์แบบออฟไลน์: หนึ่งแถวต่อหนึ่งคำตอบที่บันทึกไว้ ตามลำดับที่แสดง เซิร์ฟเวอร์ต้องการรหัสการสอบและเป็นผู้ตั้งชื่อไฟล์",
+      "sessionLabel": "รหัสเอกสารการสอบ",
+      "sessionPlaceholder": "เช่น dyvqpiunc7a4mibn2f6fnwwu",
+      "cta": "ดาวน์โหลด responses.csv",
+      "downloading": "กำลังเตรียมการส่งออก…",
+      "downloaded": "ดาวน์โหลด {filename} แล้ว",
+      "errorTitle": "ดาวน์โหลดการส่งออกคำตอบไม่สำเร็จ",
+      "errorDescription": "เซิร์ฟเวอร์ปฏิเสธการส่งออกและไม่มีไฟล์ถูกเขียน ตรวจสอบรหัสการสอบ — การสอบที่ไม่รู้จักจะได้ไฟล์ว่าง คำขอที่ผิดรูปแบบจะได้ข้อผิดพลาด"
     },
     "viewAsTeacher": {
-      "openCta": "View as teacher",
-      "openAriaLabel": "View as teacher {teacher} — impersonation, recorded in the audit log",
-      "panelLabel": "View as teacher — impersonation",
-      "impersonationTitle": "Impersonation view",
-      "impersonationSubject": "You are seeing exactly what {teacher} sees — their classes and their sittings, nothing wider.",
-      "auditedNotice": "This access is recorded in the audit log against your account, with the teacher and the time.",
-      "close": "Close",
-      "errorTitle": "The teacher view could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — this staff member may not be a teacher account (this directory also lists school admins), may no longer exist, or may not be linked to a school.",
+      "openCta": "ดูในมุมมองของครู",
+      "openAriaLabel": "ดูในมุมมองของครู {teacher} — เป็นการสวมสิทธิ์ และถูกบันทึกในบันทึกการตรวจสอบ",
+      "panelLabel": "ดูในมุมมองของครู — การสวมสิทธิ์",
+      "impersonationTitle": "มุมมองสวมสิทธิ์",
+      "impersonationSubject": "คุณเห็นสิ่งที่ {teacher} เห็นตรงตามจริง — ชั้นเรียนและการสอบของครูคนนั้นเท่านั้น ไม่กว้างกว่านี้",
+      "auditedNotice": "การเข้าถึงครั้งนี้ถูกบันทึกในบันทึกการตรวจสอบภายใต้บัญชีของคุณ พร้อมชื่อครูและเวลา",
+      "close": "ปิด",
+      "errorTitle": "โหลดหน้าจอของครูไม่สำเร็จ",
+      "errorDescription": "เซิร์ฟเวอร์ปฏิเสธหรืออ่านไม่สำเร็จ ไม่มีการเปลี่ยนแปลงใด — บุคลากรคนนี้อาจไม่ใช่บัญชีครู (ไดเรกทอรีนี้รวมผู้ดูแลโรงเรียนด้วย) อาจไม่มีอยู่แล้ว หรืออาจไม่ได้ผูกกับโรงเรียนใด",
       "classCount": "{count, plural, other {# classes}}",
       "sittingCount": "{count, plural, other {# sittings}}",
       "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "Year band {yearBand}",
+      "classMeta": "ช่วงชั้นปี {yearBand}",
       "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "This teacher holds no classes.",
-      "noSittings": "This teacher has no sittings."
+      "noClasses": "ครูคนนี้ไม่มีชั้นเรียน",
+      "noSittings": "ครูคนนี้ยังไม่มีการสอบ"
     },
     "export": {
       "title": "ส่งออกโรงเรียน",

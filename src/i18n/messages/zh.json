@@ -3030,7 +3030,7 @@
           "redis": "Redis",
           "queues": "队列",
           "storage": "存储",
-          "web": "Web"
+          "web": "网页"
         },
         "errorTitle": "健康探测读取失败",
         "errorDescription": "无法读取健康探测。请重试，或检查 API 是否持续失败。"
@@ -3197,43 +3197,43 @@
       "clearFilters": "清除全部",
       "noMatches": "没有符合搜索条件的学校。",
       "showing": "显示 {showing}/{total} 所学校",
-      "pillAllSchools": "All schools",
-      "filterStatus": "Status",
-      "filterState": "State",
-      "filterStateAll": "All states",
-      "filterSector": "Sector",
-      "filterSectorAll": "All sectors",
-      "filterPlan": "Plan",
-      "filterPlanAll": "All plans",
-      "filterOnboardingAll": "All onboarding states",
-      "sortName": "Name (A-Z)",
-      "sortStudents": "Most students",
-      "sortCreated": "Newest first",
-      "columnStatus": "Status",
-      "columnPlan": "Plan",
-      "columnAdmins": "Admins",
-      "unnamedSchool": "Unnamed school",
-      "actionOpen": "Open school",
-      "actionStatusPage": "Status page",
-      "statusPageUnconfigured": "This release has no status page URL configured.",
-      "emptyNoneTitle": "No schools yet",
-      "emptyNoneDescription": "Create the first school to get started.",
+      "pillAllSchools": "所有学校",
+      "filterStatus": "状态",
+      "filterState": "州/领地",
+      "filterStateAll": "所有州/领地",
+      "filterSector": "办学类型",
+      "filterSectorAll": "所有办学类型",
+      "filterPlan": "方案",
+      "filterPlanAll": "所有方案",
+      "filterOnboardingAll": "所有入驻状态",
+      "sortName": "名称（A–Z）",
+      "sortStudents": "学生最多",
+      "sortCreated": "最新优先",
+      "columnStatus": "状态",
+      "columnPlan": "方案",
+      "columnAdmins": "管理员",
+      "unnamedSchool": "未命名学校",
+      "actionOpen": "打开学校",
+      "actionStatusPage": "状态页",
+      "statusPageUnconfigured": "此版本未配置状态页地址。",
+      "emptyNoneTitle": "暂无学校",
+      "emptyNoneDescription": "创建第一所学校即可开始。",
       "portalStatus": {
-        "active": "Active",
-        "trial": "Trial",
-        "pending_setup": "Pending setup",
-        "suspended": "Suspended",
-        "archived": "Archived"
+        "active": "正常",
+        "trial": "试用",
+        "pending_setup": "待设置",
+        "suspended": "已停用",
+        "archived": "已归档"
       },
       "portalPlan": {
-        "pilot": "Pilot",
-        "standard": "Standard",
-        "enterprise": "Enterprise"
+        "pilot": "试点",
+        "standard": "标准版",
+        "enterprise": "企业版"
       },
       "sector": {
-        "government": "Government",
-        "non-government": "Non-government",
-        "catholic": "Catholic"
+        "government": "公立",
+        "non-government": "非公立",
+        "catholic": "天主教学校"
       },
       "bulkSuspend": "暂停所选学校",
       "bulkArchive": "归档所选学校"
@@ -3268,23 +3268,23 @@
         "submitted": "已提交",
         "complete": "已完成"
       },
-      "adminsLabel": "Admins",
+      "adminsLabel": "管理员",
       "banner": {
         "trial": {
-          "title": "Trial",
-          "body": "This school is on a trial. Activate it to keep test windows running once the trial ends."
+          "title": "试用",
+          "body": "这所学校正在试用。请在试用结束前激活，以保持测试窗口继续运行。"
         },
         "pending_setup": {
-          "title": "Setup incomplete",
-          "body": "No admin has accepted the owner invitation yet. Nothing else can be set up until they do."
+          "title": "设置未完成",
+          "body": "尚无管理员接受所有者邀请。在此之前无法进行其他设置。"
         },
         "suspended": {
-          "title": "This school is suspended",
-          "body": "Staff and students have no access and test windows are paused."
+          "title": "这所学校已停用",
+          "body": "员工与学生无法访问，测试窗口已暂停。"
         },
         "archived": {
-          "title": "This school is archived",
-          "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
+          "title": "这所学校已归档",
+          "body": "计费已停止，员工无法访问。数据将保留至保留期限。"
         }
       },
       "suspend": {
@@ -3375,68 +3375,68 @@
       "resultSummary": "导入完成。已创建：{created}。已存在：{skipped}。已拒绝：{rejected}。",
       "errorToast": "无法处理导入，请检查文件后重试。",
       "forbiddenToast": "只有 SchoolTest 运维团队可以执行导入。",
-      "classLabel": "Add to class",
-      "classPlaceholder": "Choose a class",
-      "classHelper": "Students are added to this class. The CSV has no class column.",
-      "templateColumnsLabel": "Template columns:",
-      "templateDownloadLink": "Download the CSV template",
-      "progressPending": "Working. Progress appears once the server reports it.",
-      "progressPercent": "{pct}% of rows processed",
-      "progressLabel": "Import progress",
-      "reconcileTitle": "This import could not be confirmed",
-      "reconcileBody": "The connection dropped, so it is not known whether the students were added. Refresh to see the current state before trying again.",
-      "unresolved": "The connection dropped before this could be confirmed. Refresh to see the current state before trying again.",
-      "cancelButton": "Cancel import",
-      "cancelledToast": "Import cancelled. No students were added.",
-      "cancelLostToast": "The import finished before the cancellation reached the server.",
-      "undoButton": "Undo import",
-      "undoneToast": "Import undone.",
-      "undoExpired": "Undo is no longer available: the 60-second window has passed.",
-      "undoDone": "This import has already been undone.",
-      "undoUnknown": "Undo is unavailable until the receipt is read.",
-      "errorReportButton": "Download the error report",
-      "columnGivenName": "Given name",
-      "columnFamilyName": "Family name",
-      "columnDob": "Date of birth",
-      "columnYearLevel": "Year level",
-      "columnStudentKey": "Student key",
-      "columnMatchedStudent": "Matched student",
+      "classLabel": "加入班级",
+      "classPlaceholder": "选择班级",
+      "classHelper": "学生将被加入此班级。CSV 中没有班级列。",
+      "templateColumnsLabel": "模板列：",
+      "templateDownloadLink": "下载 CSV 模板",
+      "progressPending": "正在处理。服务器返回进度后即会显示。",
+      "progressPercent": "已处理 {pct}% 的行",
+      "progressLabel": "导入进度",
+      "reconcileTitle": "无法确认此次导入",
+      "reconcileBody": "连接已中断，因此无法确认学生是否已添加。请刷新查看当前状态后再重试。",
+      "unresolved": "连接在确认之前中断。请刷新查看当前状态后再重试。",
+      "cancelButton": "取消导入",
+      "cancelledToast": "导入已取消，未添加任何学生。",
+      "cancelLostToast": "取消请求到达服务器之前，导入已经完成。",
+      "undoButton": "撤销导入",
+      "undoneToast": "导入已撤销。",
+      "undoExpired": "撤销已不可用：60 秒的时限已过。",
+      "undoDone": "此次导入已被撤销。",
+      "undoUnknown": "在读取回执之前无法撤销。",
+      "errorReportButton": "下载错误报告",
+      "columnGivenName": "名",
+      "columnFamilyName": "姓",
+      "columnDob": "出生日期",
+      "columnYearLevel": "年级",
+      "columnStudentKey": "学生标识",
+      "columnMatchedStudent": "匹配到的学生",
       "card": {
         "validating": {
-          "title": "Checking {name}...",
-          "body": "Validating headers and row data."
+          "title": "正在检查 {name}…",
+          "body": "正在校验表头与行数据。"
         },
         "ready": {
-          "title": "{name} - ready to import",
-          "body": "{created} rows, no problems found."
+          "title": "{name} — 可以导入",
+          "body": "共 {created} 行，未发现问题。"
         },
         "rowErrors": {
-          "title": "{rejected} rows need fixing",
-          "body": "Import the {created} valid rows now and fix the rest later, or re-upload a corrected file."
+          "title": "{rejected} 行需要修正",
+          "body": "可以现在导入 {created} 行有效数据，稍后再修正其余部分；也可以重新上传修正后的文件。"
         },
         "dupes": {
-          "title": "{skipped} students are already enrolled",
-          "body": "Duplicates are skipped. {created} new students will be added."
+          "title": "{skipped} 名学生已在册",
+          "body": "重复项将被跳过。将新增 {created} 名学生。"
         },
         "badType": {
-          "title": "{name} isn't a CSV",
-          "body": "Export the roster as CSV and try again."
+          "title": "{name} 不是 CSV 文件",
+          "body": "请将名册导出为 CSV 后重试。"
         },
         "tooBig": {
-          "title": "File is too large",
-          "body": "The limit is 5 MB. Split the roster by year level."
+          "title": "文件过大",
+          "body": "上限为 5 MB。请按年级拆分名册。"
         },
         "noRows": {
-          "title": "No student rows found",
-          "body": "The file has headers but no data."
+          "title": "未找到学生数据行",
+          "body": "文件只有表头，没有数据。"
         },
         "uploading": {
-          "title": "Importing {name}...",
-          "body": "Keep this window open until it finishes."
+          "title": "正在导入 {name}…",
+          "body": "请保持此窗口打开，直到完成。"
         },
         "failed": {
-          "title": "Import did not complete",
-          "body": "Check the message below before trying again."
+          "title": "导入未完成",
+          "body": "重试前请查看下面的错误信息。"
         }
       }
     },
@@ -3710,20 +3710,20 @@
       "lastName": "姓"
     },
     "plan": {
-      "title": "Plan",
-      "description": "The school's product tier. Ops assigns the full license here — a school can never switch itself.",
-      "current": "Current plan: {plan}",
-      "currentNone": "No plan is stored for this school yet.",
-      "label": "Plan",
-      "placeholder": "Choose a plan",
-      "helper": "Trial fixes the test allowances at 2 reading tests. Full license hands the allowance totals back to the entitlement you set for this school.",
+      "title": "方案",
+      "description": "学校的产品层级。完整许可由运维在此分配 — 学校无法自行切换。",
+      "current": "当前方案：{plan}",
+      "currentNone": "这所学校尚未设置方案。",
+      "label": "方案",
+      "placeholder": "选择方案",
+      "helper": "试用将测试额度固定为 2 次阅读测试。完整许可则把额度总量交还给您为这所学校设置的权益。",
       "options": {
-        "trial": "Trial",
-        "full_license": "Full license"
+        "trial": "试用",
+        "full_license": "完整许可"
       },
-      "savedToast": "Plan set to {plan}",
-      "forbiddenToast": "Only an ops account can assign a plan.",
-      "errorToast": "We could not change the plan. Try again."
+      "savedToast": "方案已设为 {plan}",
+      "forbiddenToast": "只有运维账户才能分配方案。",
+      "errorToast": "方案更改失败，请重试。"
     },
     "teachers": {
       "title": "教师",
@@ -3813,7 +3813,7 @@
         "teachers": "教师",
         "classes": "班级",
         "students": "学生",
-        "overview": "Overview"
+        "overview": "概览"
       },
       "adminsNote": "该校的学校管理员。邀请管理员请使用概览标签页上的 Onboard School 邀请面板。此处不显示最后登录字段（系统未记录）。",
       "adminsEmptyTitle": "该校没有管理员",
@@ -3842,14 +3842,14 @@
       "notServed": "未提供",
       "errorTitle": "无法加载",
       "errorDescription": "无法读取目录，请重试。",
-      "fieldSuburb": "Suburb",
-      "fieldState": "State",
-      "fieldSector": "Sector",
-      "fieldContact": "Primary contact",
-      "fieldEmail": "Email",
-      "fieldPhone": "Phone",
-      "fieldLastActivity": "Last activity",
-      "unknown": "unavailable",
+      "fieldSuburb": "城区",
+      "fieldState": "州/领地",
+      "fieldSector": "办学类型",
+      "fieldContact": "主要联系人",
+      "fieldEmail": "邮箱",
+      "fieldPhone": "电话",
+      "fieldLastActivity": "最近活动",
+      "unknown": "不可用",
       "inviteStaff": "邀请员工",
       "opsProfileOpen": "查看档案",
       "opsProfileAttemptInvalidated": "已作废",
@@ -3904,55 +3904,55 @@
       "ownerTransferred": "所有权已转移。"
     },
     "inspection": {
-      "title": "Form inspection",
-      "description": "The composition of the form this window points at: every item with its task type, stage, Q-matrix attribute vector and correct key, plus the anchor items and the lock state. Ops-only — this is the only surface that shows keys.",
-      "show": "Inspect form",
-      "hide": "Hide inspection",
-      "errorTitle": "The form inspection could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — retry, or check that this window's form still exists.",
-      "formCode": "Form {formCode}",
+      "title": "试卷检视",
+      "description": "此窗口所指向试卷的构成：每道题的题型、阶段、Q 矩阵属性向量与正确答案，以及锚题和锁定状态。仅限运维 — 这是唯一显示答案的界面。",
+      "show": "检视试卷",
+      "hide": "隐藏检视",
+      "errorTitle": "无法加载试卷检视",
+      "errorDescription": "服务器拒绝或读取失败，未做任何更改 — 请重试，或确认此窗口的试卷仍然存在。",
+      "formCode": "试卷 {formCode}",
       "itemCount": "{count, plural, other {# items}}",
-      "anchors": "Anchors: {codes}",
-      "anchorsNone": "No anchor items",
-      "lockedBadge": "Locked — a sitting has been submitted",
-      "unlockedBadge": "Not locked",
-      "columnItem": "Item",
-      "columnTaskType": "Task type",
-      "columnStage": "Stage",
-      "columnVector": "Attribute vector",
-      "columnKey": "Correct key",
-      "formSelectLabel": "Form to inspect",
-      "noLiveWindow": "No form window is live for this school, so the selection above is the form being inspected — not a form this school's sittings currently use.",
-      "notLiveForm": "Inspecting a form other than this window's live form ({formCode})."
+      "anchors": "锚题：{codes}",
+      "anchorsNone": "没有锚题",
+      "lockedBadge": "已锁定 — 已有考试提交",
+      "unlockedBadge": "未锁定",
+      "columnItem": "题目",
+      "columnTaskType": "题型",
+      "columnStage": "阶段",
+      "columnVector": "属性向量",
+      "columnKey": "正确答案",
+      "formSelectLabel": "要检视的试卷",
+      "noLiveWindow": "这所学校没有生效的试卷窗口，因此上面选中的只是被检视的试卷 — 并非该校考试当前使用的试卷。",
+      "notLiveForm": "正在检视的试卷不是此窗口生效的试卷（{formCode}）。"
     },
     "responsesExport": {
-      "title": "Session responses (CSV)",
-      "description": "The raw item-level export of ONE session for offline analysis: one row per stored response, in presentation order. The server requires a session id and names the file.",
-      "sessionLabel": "Session document id",
-      "sessionPlaceholder": "e.g. dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "Download responses.csv",
-      "downloading": "Preparing the export...",
-      "downloaded": "Downloaded {filename}",
-      "errorTitle": "The responses export could not be downloaded",
-      "errorDescription": "The server refused the export and no file was written. Check the session id — an unknown session returns an empty export, a malformed request returns an error."
+      "title": "考试作答（CSV）",
+      "description": "单场考试的原始逐题导出，供离线分析：每条已存作答一行，按呈现顺序排列。服务器要求提供考试 ID，并由服务器命名文件。",
+      "sessionLabel": "考试文档 ID",
+      "sessionPlaceholder": "例如 dyvqpiunc7a4mibn2f6fnwwu",
+      "cta": "下载 responses.csv",
+      "downloading": "正在准备导出…",
+      "downloaded": "已下载 {filename}",
+      "errorTitle": "无法下载作答导出",
+      "errorDescription": "服务器拒绝了导出，未写入任何文件。请检查考试 ID — 未知的考试会返回空导出，格式错误的请求会返回错误。"
     },
     "viewAsTeacher": {
-      "openCta": "View as teacher",
-      "openAriaLabel": "View as teacher {teacher} — impersonation, recorded in the audit log",
-      "panelLabel": "View as teacher — impersonation",
-      "impersonationTitle": "Impersonation view",
-      "impersonationSubject": "You are seeing exactly what {teacher} sees — their classes and their sittings, nothing wider.",
-      "auditedNotice": "This access is recorded in the audit log against your account, with the teacher and the time.",
-      "close": "Close",
-      "errorTitle": "The teacher view could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — this staff member may not be a teacher account (this directory also lists school admins), may no longer exist, or may not be linked to a school.",
+      "openCta": "以教师身份查看",
+      "openAriaLabel": "以教师 {teacher} 的身份查看 — 模拟身份，会记入审计日志",
+      "panelLabel": "以教师身份查看 — 模拟身份",
+      "impersonationTitle": "模拟身份视图",
+      "impersonationSubject": "您看到的正是 {teacher} 所看到的内容 — 他们的班级与考试，不含更多范围。",
+      "auditedNotice": "此次访问会以您的账户记入审计日志，并附带该教师与时间。",
+      "close": "关闭",
+      "errorTitle": "无法加载教师视图",
+      "errorDescription": "服务器拒绝或读取失败，未做任何更改 — 该员工可能不是教师账户（此目录也包含学校管理员）、可能已不存在，或未关联到任何学校。",
       "classCount": "{count, plural, other {# classes}}",
       "sittingCount": "{count, plural, other {# sittings}}",
       "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "Year band {yearBand}",
+      "classMeta": "年级段 {yearBand}",
       "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "This teacher holds no classes.",
-      "noSittings": "This teacher has no sittings."
+      "noClasses": "这位教师没有任何班级。",
+      "noSittings": "这位教师没有任何考试。"
     },
     "export": {
       "title": "导出学校",
