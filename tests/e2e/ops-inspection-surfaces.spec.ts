@@ -105,14 +105,18 @@ test.describe('ops inspection surfaces (ledger 11 / D-007)', () => {
     await writeFile(path.join(CAPTURES, 'inspection-surfaces-form-desktop.png'), desktopInspection);
 
     // --- 11c: the audited view-as-teacher read ---
-    // A WIDER FRAME FIRST, and it is measured rather than cosmetic: this dialog
-    // renders 384px wide while its 7-column directory table overflows to
-    // x≈1285, so at 1280 the actions column sits outside the frame entirely and
-    // is NOT reachable by scrolling (the container is not a scroller — the
-    // table simply spills). Edit and Remove already share that pre-existing
-    // problem; it is reported with this slice, not silently patched here. A
-    // 1680px frame is where an operator actually reaches these controls.
-    await page.setViewportSize({ width: 1680, height: 1000 });
+    // 1280px ON PURPOSE, and it is the pin for a fixed layout defect: this
+    // dialog used to render 384px wide at ANY desktop width (the base
+    // sm:max-w-sm beat the unprefixed max-w-5xl in the compiled stylesheet)
+    // while its 7-column table overflowed to x≈1285 — and because the content
+    // div had no min-w-0, the overflow-x-auto wrapper never became a scroller,
+    // so Edit / Remove / view-as-teacher were unreachable at 1280 (the
+    // pre-fix workaround was a 1680px frame). The dialog now takes
+    // sm:max-w-5xl with min-w-0 on its content column: the wrapper is a real
+    // scroller and the actions column is inside the viewport at the common
+    // 1280 width. The in-viewport pin below is the accessibility assertion;
+    // the click that follows is the real interaction.
+    await page.setViewportSize({ width: 1280, height: 800 });
     await page.locator('[data-slot="ops-count-card-teachers"]').click();
     const dialog = page.locator('[data-slot="ops-teachers-dialog"]');
     await expect(dialog).toBeVisible({ timeout: 60_000 });
@@ -126,7 +130,17 @@ test.describe('ops inspection surfaces (ledger 11 / D-007)', () => {
     await expect(openViewAs).toBeVisible({ timeout: 60_000 });
     // The accessible name says impersonation BEFORE the click is recorded.
     await expect(openViewAs).toHaveAttribute('aria-label', /impersonation/i);
+    // THE 1280 PIN: the row action is not merely rendered — on the defect's
+    // own axis (horizontal) its box lies inside the 1280 viewport, so the
+    // operator reaches it without a wider frame; vertical placement is
+    // ordinary page scrolling and is not the defect. (This bounding-box read
+    // fires nothing; the click below remains the spec's single audited
+    // view-as call.)
     await openViewAs.scrollIntoViewIfNeeded();
+    const actionBox = await openViewAs.boundingBox();
+    expect(actionBox, 'the row action rendered into the layout').toBeTruthy();
+    expect(actionBox!.x).toBeGreaterThanOrEqual(0);
+    expect(actionBox!.x + actionBox!.width).toBeLessThanOrEqual(1280);
     await openViewAs.click();
 
     const panel = dialog.locator('[data-slot="ops-view-as-teacher-panel"]');
@@ -211,5 +225,31 @@ test.describe('ops inspection surfaces (ledger 11 / D-007)', () => {
     const mobilePath = path.join(CAPTURES, 'inspection-surfaces-375.png');
     await writeFile(mobilePath, mobile);
     await testInfo.attach('inspection-surfaces-375-saved', { path: mobilePath });
+
+    // --- 375px: the teachers dialog must not regress ---
+    // The width fix is sm:-scoped and the base calc() margin guard survived it,
+    // so the dialog at 375 keeps exactly its pre-fix behaviour: full-width
+    // minus the 2rem guard, table scrolling inside. Asserted live rather than
+    // assumed.
+    await page.goto(`/dashboard/ops/schools/${SCHOOL}`);
+    await expect(page.locator('[data-slot="ops-count-card-teachers"]')).toBeVisible({
+      timeout: 60_000,
+    });
+    await page.locator('[data-slot="ops-count-card-teachers"]').click();
+    const mobileDialog = page.locator('[data-slot="ops-teachers-dialog"]');
+    await expect(mobileDialog).toBeVisible({ timeout: 60_000 });
+    await expect(mobileDialog.locator('[data-slot="ops-teachers-table"]')).toBeVisible({
+      timeout: 60_000,
+    });
+    await mobileDialog.scrollIntoViewIfNeeded();
+    const mobileDialogShot = await page.screenshot();
+    await testInfo.attach('inspection-surfaces-375-teachers-dialog', {
+      body: mobileDialogShot,
+      contentType: 'image/png',
+    });
+    await writeFile(
+      path.join(CAPTURES, 'inspection-surfaces-375-teachers-dialog.png'),
+      mobileDialogShot,
+    );
   });
 });

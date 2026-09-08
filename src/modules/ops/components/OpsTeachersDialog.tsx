@@ -49,13 +49,24 @@ export function OpsTeachersDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent data-slot="ops-teachers-dialog" className="max-w-5xl">
+      <DialogContent data-slot="ops-teachers-dialog" className="sm:max-w-5xl">
+        {/* sm:-prefixed override on PURPOSE: the base class already sets
+            sm:max-w-sm, and an unprefixed max-w-5xl loses to that breakpoint
+            variant in the compiled stylesheet — the dialog rendered 384px at
+            any desktop width (measured). twMerge drops sm:max-w-sm for
+            sm:max-w-5xl and keeps the base calc() guard, so <640px is
+            unchanged. */}
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col gap-3">
+        {/* min-w-0 lets this grid item shrink below its content width —
+            without it the 7-column table stretches the item to its own
+            min-content width, the overflow-x-auto wrapper inside never
+            becomes a scroller, and the row actions simply paint past the
+            dialog frame, unreachable at 1280. */}
+        <div className="flex min-w-0 flex-col gap-3">
           <p className="text-xs text-muted-foreground" data-slot="ops-teachers-flag">
             {t('flagNotice')}
           </p>
