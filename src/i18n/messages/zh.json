@@ -3009,6 +3009,152 @@
     }
   },
   "Ops": {
+    "system": {
+      "meta": {
+        "title": "系统",
+        "description": "实时平台健康状况、版本、已执行的迁移和备份台账。"
+      },
+      "title": "系统",
+      "description": "平台当前的运行状况：依赖健康、版本、已应用的迁移和已记录的备份。",
+      "health": {
+        "title": "依赖健康",
+        "description": "平台所需每个依赖的实时探测。红色探测是真实状态，如实显示。",
+        "overall": "总计 {ms} 毫秒",
+        "status": {
+          "up": "正常",
+          "down": "宕机"
+        },
+        "latency": "{ms} 毫秒",
+        "probes": {
+          "database": "数据库",
+          "redis": "Redis",
+          "queues": "队列",
+          "storage": "存储",
+          "web": "Web"
+        },
+        "errorTitle": "健康探测读取失败",
+        "errorDescription": "无法读取健康探测。请重试，或检查 API 是否持续失败。"
+      },
+      "info": {
+        "title": "运行时",
+        "description": "仅版本与运行时长——绝不包含密钥或连接字符串。",
+        "fields": {
+          "strapiVersion": "Strapi",
+          "nodeVersion": "Node",
+          "uptime": "运行时长",
+          "env": "环境",
+          "database": "数据库客户端",
+          "timezone": "时区",
+          "queues": "队列"
+        },
+        "errorTitle": "运行时信息读取失败",
+        "errorDescription": "无法读取运行时信息。请重试，或检查 API 是否持续失败。"
+      },
+      "migrations": {
+        "title": "已应用的迁移",
+        "description": "用户迁移台账，最新在前，附带服务器自身的计数。",
+        "count": "{count, plural, other {已应用 # 项迁移}}",
+        "columns": {
+          "name": "迁移",
+          "appliedAt": "应用时间"
+        },
+        "never": "未记录",
+        "errorTitle": "迁移记录读取失败",
+        "errorDescription": "无法读取迁移台账。请重试，或检查 API 是否持续失败。"
+      },
+      "backups": {
+        "title": "备份台账",
+        "description": "已记录的数据库备份，最新在前。运行备份的写入控件就在下方。",
+        "empty": "尚无备份记录。备份运行成功或失败后，台账会自动填充。",
+        "columns": {
+          "filename": "文件",
+          "bytes": "字节",
+          "status": "状态",
+          "startedAt": "开始时间"
+        },
+        "status": {
+          "succeeded": "成功",
+          "failed": "失败"
+        },
+        "errorTitle": "备份台账读取失败",
+        "errorDescription": "无法读取备份台账。请重试，或检查 API 是否持续失败。"
+      },
+      "maintenance": {
+        "title": "维护操作",
+        "description": "会改变真实状态的操作。每个操作都会先询问，每条结果行都显示服务器自身的答复。",
+        "disruptiveBadge": "具破坏性",
+        "cancel": "取消",
+        "backup": {
+          "label": "运行备份",
+          "description": "转储数据库（pg_dump，容器回退），写入磁盘，并将本次运行——无论成败——记录到下方台账。",
+          "confirmTitle": "运行数据库备份？",
+          "confirmBody": "转储立即运行，无论结果如何都会记录到备份台账。",
+          "confirmAction": "运行备份",
+          "success": "备份已记录：{filename}（{bytes} 字节）"
+        },
+        "cacheClear": {
+          "label": "清除缓存",
+          "description": "使用 SCAN+DEL 从 Redis 删除匹配的键。服务器会如实报告删除了多少个键。",
+          "scopeLabel": "范围",
+          "confirmTitle": "清除缓存（范围：{scope}）？",
+          "confirmBody": "匹配 {scope} 的键将立即从 Redis 删除。缓存会在下次读取时重建。",
+          "confirmAction": "清除",
+          "success": "已清除 {scope}：删除了 {count} 个键"
+        },
+        "sitemap": {
+          "label": "重新生成站点地图",
+          "description": "标记平台设置，请求 Web 应用重新验证，然后统计新生成的站点地图实际包含的 URL 数。",
+          "confirmTitle": "重新生成站点地图？",
+          "confirmBody": "立即标记平台设置并请求 Web 应用重新验证。如果 Web 应用无响应，将如实显示失败信息。",
+          "confirmAction": "重新生成",
+          "success": "站点地图已重新生成：{count} 个 URL"
+        }
+      },
+      "pipeline": {
+        "title": "评分流水线",
+        "description": "已注册队列的实时 BullMQ 计数，与运行中的 worker 共享。控件均需确认，且绝不会影响其他控制台。",
+        "rScoring": "R 评分：{status}",
+        "loading": "正在读取队列计数…",
+        "error": "无法读取队列健康状况。重新打开页面即可重试。",
+        "columns": {
+          "queue": "队列",
+          "waiting": "等待中",
+          "active": "进行中",
+          "failed": "失败",
+          "completed": "已完成",
+          "actions": "控件"
+        },
+        "pause": "暂停",
+        "resume": "恢复",
+        "pauseWord": "暂停",
+        "resumeWord": "恢复",
+        "drain": "清空失败任务",
+        "cancel": "取消",
+        "pauseConfirm": {
+          "title": "更改队列状态？",
+          "body": "现在就{action}队列“{queue}”？运行中的 worker 与其共享——暂停的队列在恢复前不接受新任务。",
+          "action": "确认"
+        },
+        "drainConfirm": {
+          "title": "清空失败任务？",
+          "body": "删除“{queue}”上的 {count} 个失败任务。等待中的任务绝不受影响。此操作无法撤销。",
+          "action": "清空"
+        },
+        "retry": {
+          "description": "通过队列自身的重试机制重新运行单个失败任务——按 id 操作，绝非批量重放。",
+          "queueLabel": "队列",
+          "queuePlaceholder": "选择队列",
+          "jobLabel": "任务 id",
+          "jobPlaceholder": "失败任务的 id",
+          "action": "重试任务"
+        },
+        "retryConfirm": {
+          "title": "重试此任务？",
+          "body": "“{queue}”上的任务 {jobId} 将通过队列自身的重试再次执行。",
+          "action": "重试"
+        }
+      }
+    },
     "schools": {
       "meta": {
         "title": "学校 - SchoolTest 运维",
@@ -3088,7 +3234,9 @@
         "government": "Government",
         "non-government": "Non-government",
         "catholic": "Catholic"
-      }
+      },
+      "bulkSuspend": "暂停所选学校",
+      "bulkArchive": "归档所选学校"
     },
     "detail": {
       "meta": {
@@ -3138,7 +3286,29 @@
           "title": "This school is archived",
           "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
         }
-      }
+      },
+      "suspend": {
+        "action": "暂停学校",
+        "confirmTitle": "暂停 {name}？",
+        "confirmBody": "在重新激活之前，教职员工和学生将无法访问。进行中的评估将暂停，并在恢复后继续剩余时间。",
+        "confirmCta": "暂停",
+        "cancel": "取消",
+        "activate": "重新激活学校",
+        "restore": "恢复学校",
+        "undo": "撤销上一步操作",
+        "archive": "归档学校",
+        "archiveTitle": "归档 {name}？",
+        "archiveBody": "输入学校名称以确认。学生、班级和成绩将保留；学校在恢复之前为只读状态。",
+        "archiveCta": "归档",
+        "success": "{name} 已更新。",
+        "errorAlready": "该学校已处于暂停状态。",
+        "errorArchived": "该学校已归档——请先恢复。",
+        "errorStale": "有人已更改这所学校——请重新获取并核对。",
+        "errorVersion": "行版本缺失或格式错误。",
+        "errorVersionUnavailable": "行版本尚未加载。",
+        "archiveNameMismatch": "输入的名称与学校名称不一致。"
+      },
+      "editSchool": "编辑学校"
     },
     "onboard": {
       "button": "邀请学校管理员",
@@ -3168,7 +3338,11 @@
         "tooLong": "请使用 100 个字符以内",
         "emailTooLong": "请使用 255 个字符以内",
         "emailInvalid": "请输入有效的电子邮件地址"
-      }
+      },
+      "resendCooldown": "最近已发送 - {seconds} 秒后可重新发送。",
+      "primaryContact": "主要联系人",
+      "contactEmail": "联系邮箱",
+      "contactMissing": "未提供"
     },
     "import": {
       "title": "导入学生",
@@ -3348,7 +3522,11 @@
         "formRequired": "请选择试卷。",
         "datetimeRequired": "请选择日期和时间。",
         "order": "开启时间必须早于关闭时间。"
-      }
+      },
+      "integrityTitle": "该窗口存在完整性问题。",
+      "integrityDescription": "{count, plural, other {需先核对 # 个场次，然后才能发布结果}}",
+      "incompleteTitle": "该窗口尚未完成。",
+      "incompleteDescription": "部分学生尚未完成，因此以下结果并不完整。"
     },
     "settings": {
       "meta": {
@@ -3522,7 +3700,24 @@
       "removeConfirm": "将该教师（{email}）从本校移除？",
       "removeConfirmAction": "移除",
       "errorTitle": "无法加载教师列表",
-      "errorDescription": "请检查连接后重试。"
+      "errorDescription": "请检查连接后重试。",
+      "columnSpecialty": "专长",
+      "columnLastActive": "最近活动",
+      "noSpecialty": "未记录专长",
+      "noActivity": "从未登录",
+      "noMatches": "没有符合这些筛选条件的教师。",
+      "searchLabel": "搜索教师",
+      "roleFilterLabel": "按角色筛选",
+      "roleAll": "全部角色",
+      "roleTeacher": "教师",
+      "roleSchoolAdmin": "学校管理员",
+      "statusFilterLabel": "按状态筛选",
+      "statusAll": "所有状态",
+      "statusActive": "已激活",
+      "statusSuspended": "已暂停",
+      "pageStatus": "第 {page} 页，共 {pageCount} 页 · {total} 名教师",
+      "previousPage": "上一页",
+      "nextPage": "下一页"
     },
     "classDetail": {
       "meta": {
@@ -3662,6 +3857,24 @@
       "studentCount": "{count, plural, other {# students}}",
       "noClasses": "This teacher holds no classes.",
       "noSittings": "This teacher has no sittings."
+    },
+    "export": {
+      "title": "导出学校",
+      "cta": "下载 CSV",
+      "downloading": "正在准备 CSV...",
+      "downloaded": "{filename} 已下载",
+      "scopeAll": "所有学校",
+      "scopeFiltered": "筛选后的学校",
+      "scopeSelected": "{count, plural, other {已选 # 所学校}}",
+      "errorTitle": "无法生成导出文件",
+      "errorDescription": "请检查网络连接后重试——尚未下载任何文件。"
+    },
+    "activity": {
+      "title": "最近动态",
+      "empty": "该校还没有任何活动记录。",
+      "errorTitle": "无法加载活动",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试"
     }
   },
   "RunSheet": {

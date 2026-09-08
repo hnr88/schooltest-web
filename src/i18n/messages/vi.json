@@ -2938,6 +2938,152 @@
     }
   },
   "Ops": {
+    "system": {
+      "meta": {
+        "title": "Hệ thống",
+        "description": "Sức khoẻ nền tảng theo thời gian thực, các phiên bản, di chuyển và sổ cái sao lưu."
+      },
+      "title": "Hệ thống",
+      "description": "Nền tảng đang chạy trên gì ngay bây giờ: tình trạng phụ thuộc, phiên bản, di chuyển đã áp dụng và bản sao lưu đã ghi.",
+      "health": {
+        "title": "Tình trạng phụ thuộc",
+        "description": "Kiểm tra trực tiếp mọi phụ thuộc nền tảng cần. Một probe đỏ là trạng thái thật, hiển thị nguyên trạng.",
+        "overall": "Tổng {ms} ms",
+        "status": {
+          "up": "lên",
+          "down": "xuống"
+        },
+        "latency": "{ms} ms",
+        "probes": {
+          "database": "Cơ sở dữ liệu",
+          "redis": "Redis",
+          "queues": "Hàng đợi",
+          "storage": "Lưu trữ",
+          "web": "Web"
+        },
+        "errorTitle": "Đọc tình trạng thất bại",
+        "errorDescription": "Không đọc được các probe tình trạng. Thử lại, hoặc kiểm tra API nếu kéo dài."
+      },
+      "info": {
+        "title": "Thời gian chạy",
+        "description": "Chỉ phiên bản và thời gian hoạt động — không bao giờ có bí mật, không chuỗi kết nối.",
+        "fields": {
+          "strapiVersion": "Strapi",
+          "nodeVersion": "Node",
+          "uptime": "Thời gian hoạt động",
+          "env": "Môi trường",
+          "database": "Khách cơ sở dữ liệu",
+          "timezone": "Múi giờ",
+          "queues": "Hàng đợi"
+        },
+        "errorTitle": "Đọc thông tin thời gian chạy thất bại",
+        "errorDescription": "Không đọc được thông tin thời gian chạy. Thử lại, hoặc kiểm tra API nếu kéo dài."
+      },
+      "migrations": {
+        "title": "Di chuyển đã áp dụng",
+        "description": "Sổ cái di chuyển của người dùng, mới nhất trước, kèm số đếm của chính máy chủ.",
+        "count": "{count, plural, other {đã áp dụng # lần di chuyển}}",
+        "columns": {
+          "name": "Di chuyển",
+          "appliedAt": "Áp dụng lúc"
+        },
+        "never": "chưa ghi",
+        "errorTitle": "Đọc di chuyển thất bại",
+        "errorDescription": "Không đọc được sổ cái di chuyển. Thử lại, hoặc kiểm tra API nếu kéo dài."
+      },
+      "backups": {
+        "title": "Sổ cái sao lưu",
+        "description": "Các bản sao lưu cơ sở dữ liệu đã ghi, mới nhất trước. Chạy sao lưu đến cùng các điều khiển ghi.",
+        "empty": "Chưa có bản sao lưu nào được ghi. Sổ cái được điền khi một lần sao lưu thành công hay thất bại.",
+        "columns": {
+          "filename": "Tệp",
+          "bytes": "Byte",
+          "status": "Trạng thái",
+          "startedAt": "Bắt đầu"
+        },
+        "status": {
+          "succeeded": "thành công",
+          "failed": "thất bại"
+        },
+        "errorTitle": "Đọc sổ cái sao lưu thất bại",
+        "errorDescription": "Không đọc được sổ cái sao lưu. Thử lại, hoặc kiểm tra API nếu kéo dài."
+      },
+      "maintenance": {
+        "title": "Hành động bảo trì",
+        "description": "Các hành động thay đổi trạng thái thật. Mỗi hành động hỏi trước, và mọi dòng kết quả hiển thị câu trả lời của chính máy chủ.",
+        "disruptiveBadge": "gây gián đoạn",
+        "cancel": "Hủy",
+        "backup": {
+          "label": "Chạy sao lưu",
+          "description": "Kết xuất cơ sở dữ liệu (pg_dump, dự phòng container), ghi ra đĩa và ghi lại lần chạy — thành công hay thất bại — vào sổ cái dưới đây.",
+          "confirmTitle": "Chạy sao lưu cơ sở dữ liệu?",
+          "confirmBody": "Bản kết xuất chạy ngay và lần chạy được ghi vào sổ cái sao lưu, bất kể kết quả.",
+          "confirmAction": "Chạy sao lưu",
+          "success": "Đã ghi bản sao lưu: {filename} ({bytes} byte)"
+        },
+        "cacheClear": {
+          "label": "Xoá bộ nhớ đệm",
+          "description": "Xoá các khoá khớp khỏi Redis bằng SCAN+DEL. Máy chủ báo đúng số khoá đã xoá.",
+          "scopeLabel": "Phạm vi",
+          "confirmTitle": "Xoá bộ nhớ đệm (phạm vi: {scope})?",
+          "confirmBody": "Các khoá {scope} khớp bị xoá khỏi Redis ngay. Bộ nhớ đệm được điền lại ở lần đọc sau.",
+          "confirmAction": "Xoá",
+          "success": "Đã xoá {scope}: {count} khoá"
+        },
+        "sitemap": {
+          "label": "Tạo lại sơ đồ trang web",
+          "description": "Đóng dấu cấu hình nền tảng, yêu cầu ứng dụng web xác thực lại, rồi đếm số URL mà sơ đồ trang web mới thực chứa.",
+          "confirmTitle": "Tạo lại sơ đồ trang web?",
+          "confirmBody": "Cấu hình nền tảng được đóng dấu ngay và ứng dụng web được yêu cầu xác thực lại. Nếu ứng dụng web không trả lời, thất bại hiển thị nguyên văn.",
+          "confirmAction": "Tạo lại",
+          "success": "Đã tạo lại sơ đồ trang web: {count} URL"
+        }
+      },
+      "pipeline": {
+        "title": "Đường ống chấm điểm",
+        "description": "Số đếm BullMQ trực tiếp cho các hàng đợi đã đăng ký, dùng chung với worker đang chạy. Các điều khiển yêu cầu xác nhận và không bao giờ chạm console khác.",
+        "rScoring": "Chấm điểm R: {status}",
+        "loading": "Đang đọc số đếm hàng đợi…",
+        "error": "Không đọc được tình trạng hàng đợi. Thử lại bằng cách mở lại trang.",
+        "columns": {
+          "queue": "Hàng đợi",
+          "waiting": "Đang chờ",
+          "active": "Đang chạy",
+          "failed": "Thất bại",
+          "completed": "Hoàn thành",
+          "actions": "Điều khiển"
+        },
+        "pause": "Tạm dừng",
+        "resume": "Tiếp tục",
+        "pauseWord": "tạm dừng",
+        "resumeWord": "tiếp tục",
+        "drain": "Xoá các công việc thất bại",
+        "cancel": "Hủy",
+        "pauseConfirm": {
+          "title": "Thay đổi trạng thái hàng đợi?",
+          "body": "{action} hàng đợi \"{queue}\" ngay bây giờ? Worker đang chạy dùng chung nó — hàng đợi tạm dừng không nhận công việc mới cho đến khi tiếp tục.",
+          "action": "Xác nhận"
+        },
+        "drainConfirm": {
+          "title": "Xoá các công việc thất bại?",
+          "body": "Xoá {count} công việc thất bại trên \"{queue}\". Công việc đang chờ không bao giờ bị đụng tới. Không thể hoàn tác.",
+          "action": "Xoá sạch"
+        },
+        "retry": {
+          "description": "Chạy lại MỘT công việc thất bại qua cơ chế thử lại của chính hàng đợi — theo id, không bao giờ phát lại hàng loạt.",
+          "queueLabel": "Hàng đợi",
+          "queuePlaceholder": "Chọn hàng đợi",
+          "jobLabel": "Id công việc",
+          "jobPlaceholder": "Id công việc thất bại",
+          "action": "Thử lại công việc"
+        },
+        "retryConfirm": {
+          "title": "Thử lại công việc này?",
+          "body": "Công việc {jobId} trên \"{queue}\" quay lại qua cơ chế thử lại của hàng đợi. Nó sẽ được thực thi lại.",
+          "action": "Thử lại"
+        }
+      }
+    },
     "schools": {
       "meta": {
         "title": "Trường học - Vận hành SchoolTest",
@@ -3017,7 +3163,9 @@
         "government": "Government",
         "non-government": "Non-government",
         "catholic": "Catholic"
-      }
+      },
+      "bulkSuspend": "Tạm ngưng trường đã chọn",
+      "bulkArchive": "Lưu trữ trường đã chọn"
     },
     "detail": {
       "meta": {
@@ -3067,7 +3215,29 @@
           "title": "This school is archived",
           "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
         }
-      }
+      },
+      "suspend": {
+        "action": "Tạm ngưng trường",
+        "confirmTitle": "Tạm ngưng {name}?",
+        "confirmBody": "Nhân viên và học sinh mất quyền truy cập cho đến khi được kích hoạt lại. Bài đánh giá đang làm sẽ tạm dừng và tiếp tục với phần thời gian còn lại.",
+        "confirmCta": "Tạm ngưng",
+        "cancel": "Hủy",
+        "activate": "Kích hoạt lại trường",
+        "restore": "Khôi phục trường",
+        "undo": "Hoàn tác hành động gần nhất",
+        "archive": "Lưu trữ trường",
+        "archiveTitle": "Lưu trữ {name}?",
+        "archiveBody": "Nhập tên trường để xác nhận. Học sinh, lớp và kết quả được giữ lại; trường ở chế độ chỉ đọc cho đến khi được khôi phục.",
+        "archiveCta": "Lưu trữ",
+        "success": "Đã cập nhật {name}.",
+        "errorAlready": "Trường đó đã bị tạm ngưng.",
+        "errorArchived": "Trường đó đã được lưu trữ — hãy khôi phục trước.",
+        "errorStale": "Người khác đã thay đổi trường này — hãy tải lại và xem lại.",
+        "errorVersion": "Phiên bản hàng bị thiếu hoặc sai định dạng.",
+        "errorVersionUnavailable": "Phiên bản hàng chưa được tải.",
+        "archiveNameMismatch": "Tên đã nhập không khớp với tên trường."
+      },
+      "editSchool": "Sửa trường"
     },
     "onboard": {
       "button": "Mời quản trị viên trường",
@@ -3097,7 +3267,11 @@
         "tooLong": "Dùng tối đa 100 ký tự",
         "emailTooLong": "Dùng tối đa 255 ký tự",
         "emailInvalid": "Nhập địa chỉ email hợp lệ"
-      }
+      },
+      "resendCooldown": "Vừa gửi - có thể gửi lại sau {seconds} giây.",
+      "primaryContact": "Liên hệ chính",
+      "contactEmail": "Email liên hệ",
+      "contactMissing": "Chưa cung cấp"
     },
     "import": {
       "title": "Nhập học sinh",
@@ -3277,7 +3451,11 @@
         "formRequired": "Hãy chọn đề thi.",
         "datetimeRequired": "Hãy chọn ngày và giờ.",
         "order": "Thời điểm mở phải trước thời điểm đóng."
-      }
+      },
+      "integrityTitle": "Khung giờ này có vấn đề về tính toàn vẹn của dữ liệu.",
+      "integrityDescription": "{count, plural, other {cần xem lại # ca thi trước khi có thể công bố kết quả}}",
+      "incompleteTitle": "Khung giờ này chưa hoàn tất.",
+      "incompleteDescription": "Một số học sinh chưa hoàn thành nên kết quả bên dưới chỉ là một phần."
     },
     "settings": {
       "meta": {
@@ -3451,7 +3629,24 @@
       "removeConfirm": "Xóa {email} khỏi trường này?",
       "removeConfirmAction": "Xóa",
       "errorTitle": "Không thể tải giáo viên",
-      "errorDescription": "Kiểm tra kết nối và thử lại."
+      "errorDescription": "Kiểm tra kết nối và thử lại.",
+      "columnSpecialty": "Chuyên môn",
+      "columnLastActive": "Hoạt động gần nhất",
+      "noSpecialty": "Chưa ghi nhận chuyên môn",
+      "noActivity": "Chưa từng đăng nhập",
+      "noMatches": "Không có giáo viên khớp với bộ lọc này.",
+      "searchLabel": "Tìm giáo viên",
+      "roleFilterLabel": "Lọc theo vai trò",
+      "roleAll": "Mọi vai trò",
+      "roleTeacher": "Giáo viên",
+      "roleSchoolAdmin": "Quản trị viên trường",
+      "statusFilterLabel": "Lọc theo trạng thái",
+      "statusAll": "Mọi trạng thái",
+      "statusActive": "Đang hoạt động",
+      "statusSuspended": "Bị tạm ngưng",
+      "pageStatus": "Trang {page} / {pageCount} · {total} giáo viên",
+      "previousPage": "Trước",
+      "nextPage": "Tiếp theo"
     },
     "classDetail": {
       "meta": {
@@ -3591,6 +3786,24 @@
       "studentCount": "{count, plural, other {# students}}",
       "noClasses": "This teacher holds no classes.",
       "noSittings": "This teacher has no sittings."
+    },
+    "export": {
+      "title": "Xuất trường học",
+      "cta": "Tải CSV",
+      "downloading": "Đang chuẩn bị CSV...",
+      "downloaded": "Đã tải {filename}",
+      "scopeAll": "Mọi trường",
+      "scopeFiltered": "Các trường đã lọc",
+      "scopeSelected": "{count, plural, other {đã chọn # trường}}",
+      "errorTitle": "Chúng tôi không thể tạo bản xuất",
+      "errorDescription": "Kiểm tra kết nối và thử lại — chưa tải được tệp nào."
+    },
+    "activity": {
+      "title": "Hoạt động gần đây",
+      "empty": "Chưa có hoạt động nào được ghi nhận cho trường này.",
+      "errorTitle": "Không thể tải hoạt động",
+      "errorDescription": "Kiểm tra kết nối và thử lại.",
+      "retry": "Thử lại"
     }
   },
   "RunSheet": {

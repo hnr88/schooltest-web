@@ -2929,6 +2929,152 @@
     }
   },
   "Ops": {
+    "system": {
+      "meta": {
+        "title": "Sistem",
+        "description": "Kesihatan platform secara langsung, versi, migrasi dan buku besar sandaran."
+      },
+      "title": "Sistem",
+      "description": "Apa yang platform jalankan sekarang: kesihatan kebergantungan, versi, migrasi yang digunakan dan sandaran yang direkodkan.",
+      "health": {
+        "title": "Kesihatan kebergantungan",
+        "description": "Probe langsung bagi setiap kebergantungan yang platform perlukan. Probe merah ialah keadaan sebenar, dipaparkan seadanya.",
+        "overall": "Keseluruhan {ms} ms",
+        "status": {
+          "up": "naik",
+          "down": "turun"
+        },
+        "latency": "{ms} ms",
+        "probes": {
+          "database": "Pangkalan data",
+          "redis": "Redis",
+          "queues": "Baris gilir",
+          "storage": "Storan",
+          "web": "Web"
+        },
+        "errorTitle": "Bacaan kesihatan gagal",
+        "errorDescription": "Probe kesihatan tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
+      },
+      "info": {
+        "title": "Runtime",
+        "description": "Versi dan masa beroperasi sahaja — tiada rahsia, tiada rentetan sambungan.",
+        "fields": {
+          "strapiVersion": "Strapi",
+          "nodeVersion": "Node",
+          "uptime": "Masa beroperasi",
+          "env": "Persekitaran",
+          "database": "Klien pangkalan data",
+          "timezone": "Zon waktu",
+          "queues": "Baris gilir"
+        },
+        "errorTitle": "Bacaan maklumat runtime gagal",
+        "errorDescription": "Maklumat runtime tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
+      },
+      "migrations": {
+        "title": "Migrasi yang digunakan",
+        "description": "Buku besar migrasi pengguna, terbaharu dahulu, dengan kiraan pelayan sendiri.",
+        "count": "{count, plural, other {# migrasi digunakan}}",
+        "columns": {
+          "name": "Migrasi",
+          "appliedAt": "Masa digunakan"
+        },
+        "never": "tidak direkodkan",
+        "errorTitle": "Bacaan migrasi gagal",
+        "errorDescription": "Buku besar migrasi tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
+      },
+      "backups": {
+        "title": "Buku besar sandaran",
+        "description": "Sandaran pangkalan data yang direkodkan, terbaharu dahulu. Menjalankan sandaran tiba bersama kawalan tulisan.",
+        "empty": "Tiada sandaran direkodkan lagi. Buku besar diisi apabila satu sandaran berjaya atau gagal.",
+        "columns": {
+          "filename": "Fail",
+          "bytes": "Bait",
+          "status": "Status",
+          "startedAt": "Dimulakan"
+        },
+        "status": {
+          "succeeded": "berjaya",
+          "failed": "gagal"
+        },
+        "errorTitle": "Bacaan buku besar sandaran gagal",
+        "errorDescription": "Buku besar sandaran tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
+      },
+      "maintenance": {
+        "title": "Tindakan penyelenggaraan",
+        "description": "Tindakan yang mengubah keadaan sebenar. Setiap satu bertanya dahulu, dan setiap baris keputusan menunjukkan jawapan pelayan sendiri.",
+        "disruptiveBadge": "mengganggu",
+        "cancel": "Batal",
+        "backup": {
+          "label": "Jalankan sandaran",
+          "description": "Menambak pangkalan data (pg_dump, fallback kontena), menulisnya ke cakera dan merekodkan larian — berjaya atau gagal — ke buku besar di bawah.",
+          "confirmTitle": "Jalankan sandaran pangkalan data?",
+          "confirmBody": "Tambakan berjalan sekarang dan larian direkodkan ke buku besar sandaran, apa pun hasilnya.",
+          "confirmAction": "Jalankan sandaran",
+          "success": "Sandaran direkodkan: {filename} ({bytes} bait)"
+        },
+        "cacheClear": {
+          "label": "Kosongkan cache",
+          "description": "Memadam kunci yang sepadan dari Redis dengan SCAN+DEL. Pelayan melaporkan dengan tepat berapa kunci dipadam.",
+          "scopeLabel": "Skop",
+          "confirmTitle": "Kosongkan cache (skop: {scope})?",
+          "confirmBody": "Kunci {scope} yang sepadan dipadam dari Redis sekarang. Cache diisi semula pada bacaan berikutnya.",
+          "confirmAction": "Kosongkan",
+          "success": "{scope} dikosongkan: {count} kunci dipadam"
+        },
+        "sitemap": {
+          "label": "Jana semula peta laman",
+          "description": "Merakam tetapan platform, meminta aplikasi web menyusun semula, kemudian mengira URL yang benar-benar terkandung dalam peta laman baharu.",
+          "confirmTitle": "Jana semula peta laman?",
+          "confirmBody": "Tetapan platform dirakam sekarang dan aplikasi web diminta menyusun semula. Jika aplikasi web tidak menjawab, kegagalan dipaparkan seadanya.",
+          "confirmAction": "Jana semula",
+          "success": "Peta laman dijana semula: {count} URL"
+        }
+      },
+      "pipeline": {
+        "title": "Saluran paip penskoran",
+        "description": "Kiraan BullMQ secara langsung untuk baris gilir berdaftar, dikongsi dengan pekerja yang berjalan. Kawalan memerlukan pengesahan dan tidak pernah menyentuh konsol lain.",
+        "rScoring": "Penskoran R: {status}",
+        "loading": "Membaca kiraan baris gilir…",
+        "error": "Kesihatan baris gilir tidak dapat dibaca. Cuba semula dengan membuka semula halaman.",
+        "columns": {
+          "queue": "Baris gilir",
+          "waiting": "Menunggu",
+          "active": "Aktif",
+          "failed": "Gagal",
+          "completed": "Selesai",
+          "actions": "Kawalan"
+        },
+        "pause": "Jeda",
+        "resume": "Sambung semula",
+        "pauseWord": "jeda",
+        "resumeWord": "sambung semula",
+        "drain": "Kosongkan yang gagal",
+        "cancel": "Batal",
+        "pauseConfirm": {
+          "title": "Ubah keadaan baris gilir?",
+          "body": "{action} baris gilir \"{queue}\" sekarang? Pekerja yang berjalan berkongsi — baris gilir yang dijeda tidak menerima kerja baharu sehingga disambung semula.",
+          "action": "Sahkan"
+        },
+        "drainConfirm": {
+          "title": "Kosongkan kerja yang gagal?",
+          "body": "Memadam {count} kerja gagal pada \"{queue}\". Kerja menunggu tidak pernah disentuh. Ini tidak boleh dibuat asal.",
+          "action": "Kosongkan"
+        },
+        "retry": {
+          "description": "Jalankan semula SATU kerja gagal melalui semula jadi baris gilir — mengikut id, bukan main semula pukal.",
+          "queueLabel": "Baris gilir",
+          "queuePlaceholder": "Pilih baris gilir",
+          "jobLabel": "Id kerja",
+          "jobPlaceholder": "Id kerja gagal",
+          "action": "Cuba semula kerja"
+        },
+        "retryConfirm": {
+          "title": "Cuba semula kerja ini?",
+          "body": "Kerja {jobId} pada \"{queue}\" kembali melalui semula jadi baris gilir. Ia akan dilaksanakan semula.",
+          "action": "Cuba semula"
+        }
+      }
+    },
     "schools": {
       "meta": {
         "title": "Sekolah - Operasi SchoolTest",
@@ -3008,7 +3154,9 @@
         "government": "Government",
         "non-government": "Non-government",
         "catholic": "Catholic"
-      }
+      },
+      "bulkSuspend": "Gantung sekolah dipilih",
+      "bulkArchive": "Arkib sekolah dipilih"
     },
     "detail": {
       "meta": {
@@ -3058,7 +3206,29 @@
           "title": "This school is archived",
           "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
         }
-      }
+      },
+      "suspend": {
+        "action": "Gantung sekolah",
+        "confirmTitle": "Gantung {name}?",
+        "confirmBody": "Kakitangan dan murid hilang akses sehingga diaktifkan semula. Penilaian yang sedang dijalankan digantung dan diteruskan dengan baki masa asal.",
+        "confirmCta": "Gantung",
+        "cancel": "Batal",
+        "activate": "Aktifkan semula sekolah",
+        "restore": "Pulihkan sekolah",
+        "undo": "Buat asal tindakan terakhir",
+        "archive": "Arkibkan sekolah",
+        "archiveTitle": "Arkibkan {name}?",
+        "archiveBody": "Taip nama sekolah untuk pengesahan. Murid, kelas dan keputusan dikekalkan; sekolah menjadi baca sahaja sehingga dipulihkan.",
+        "archiveCta": "Arkib",
+        "success": "{name} dikemas kini.",
+        "errorAlready": "Sekolah itu sudah digantung.",
+        "errorArchived": "Sekolah itu telah diarkibkan — pulihkannya dahulu.",
+        "errorStale": "Seseorang telah mengubah sekolah ini — muat semula dan semak.",
+        "errorVersion": "Versi baris tiada atau formatnya rosak.",
+        "errorVersionUnavailable": "Versi baris masih belum dimuatkan.",
+        "archiveNameMismatch": "Nama yang ditaip tidak sepadan dengan nama sekolah."
+      },
+      "editSchool": "Edit sekolah"
     },
     "onboard": {
       "button": "Jemput pentadbir sekolah",
@@ -3088,7 +3258,11 @@
         "tooLong": "Gunakan 100 aksara atau kurang",
         "emailTooLong": "Gunakan 255 aksara atau kurang",
         "emailInvalid": "Masukkan alamat e-mel yang sah"
-      }
+      },
+      "resendCooldown": "Baru dihantar - boleh hantar semula dalam {seconds}s.",
+      "primaryContact": "Kenalan utama",
+      "contactEmail": "E-mel kenalan",
+      "contactMissing": "Tidak disediakan"
     },
     "import": {
       "title": "Import murid",
@@ -3268,7 +3442,11 @@
         "formRequired": "Pilih borang.",
         "datetimeRequired": "Pilih tarikh dan masa.",
         "order": "Masa buka mesti sebelum masa tutup."
-      }
+      },
+      "integrityTitle": "Tetingkap ini mempunyai masalah integriti.",
+      "integrityDescription": "{count, plural, other {# sesi perlu disemak sebelum keputusan dapat diterbitkan}}",
+      "incompleteTitle": "Tetingkap ini belum lengkap.",
+      "incompleteDescription": "Sesetengah murid belum selesai, jadi keputusan di bawah adalah separa."
     },
     "settings": {
       "meta": {
@@ -3442,7 +3620,24 @@
       "removeConfirm": "Buang {email} daripada sekolah ini?",
       "removeConfirmAction": "Buang",
       "errorTitle": "Kami tidak dapat memuatkan guru",
-      "errorDescription": "Periksa sambungan anda dan cuba lagi."
+      "errorDescription": "Periksa sambungan anda dan cuba lagi.",
+      "columnSpecialty": "Kepakaran",
+      "columnLastActive": "Aktiviti terakhir",
+      "noSpecialty": "Tiada kepakaran direkodkan",
+      "noActivity": "Belum pernah log masuk",
+      "noMatches": "Tiada guru sepadan dengan penapis ini.",
+      "searchLabel": "Cari guru",
+      "roleFilterLabel": "Tapis mengikut peranan",
+      "roleAll": "Semua peranan",
+      "roleTeacher": "Guru",
+      "roleSchoolAdmin": "Pentadbir sekolah",
+      "statusFilterLabel": "Tapis mengikut status",
+      "statusAll": "Semua status",
+      "statusActive": "Aktif",
+      "statusSuspended": "Digantung",
+      "pageStatus": "Halaman {page} daripada {pageCount} · {total} guru",
+      "previousPage": "Sebelumnya",
+      "nextPage": "Seterusnya"
     },
     "classDetail": {
       "meta": {
@@ -3582,6 +3777,24 @@
       "studentCount": "{count, plural, other {# students}}",
       "noClasses": "This teacher holds no classes.",
       "noSittings": "This teacher has no sittings."
+    },
+    "export": {
+      "title": "Eksport sekolah",
+      "cta": "Muat turun CSV",
+      "downloading": "Menyediakan CSV...",
+      "downloaded": "{filename} dimuat turun",
+      "scopeAll": "Setiap sekolah",
+      "scopeFiltered": "Sekolah yang ditapis",
+      "scopeSelected": "{count, plural, other {# sekolah dipilih}}",
+      "errorTitle": "Kami tidak dapat menjana eksport",
+      "errorDescription": "Semak sambungan anda dan cuba lagi — tiada apa-apa yang dimuat turun."
+    },
+    "activity": {
+      "title": "Aktiviti terkini",
+      "empty": "Tiada aktiviti direkodkan untuk sekolah ini lagi.",
+      "errorTitle": "Kami tidak dapat memuatkan aktiviti",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi"
     }
   },
   "RunSheet": {
