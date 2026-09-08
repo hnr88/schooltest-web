@@ -11,7 +11,7 @@ async function ClassroomBand() {
     <Section>
       <Container className="max-w-eald">
         <ScrollReveal variant="scale">
-          <div className="relative flex min-h-80 items-end overflow-hidden rounded-4xl bg-navy-900 sm:min-h-96">
+          <div className="relative flex min-h-80 items-end overflow-hidden rounded-4xl bg-navy-950 sm:min-h-96">
             <Image
               src="/images/erika-fletcher-MZxqc6n9qCw-unsplash.jpg"
               alt=""
@@ -21,15 +21,17 @@ async function ClassroomBand() {
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-b from-navy-900/10 to-navy-900/80"
+              className="absolute inset-0 bg-gradient-to-b from-navy-950/20 to-navy-950/90"
             />
             <div className="relative z-10 p-8 sm:p-10">
-              <p className="max-w-2xl text-flow font-bold text-balance text-white">
-                {t('home.classroom.quote')}
-              </p>
-              <p className="mt-2 text-body-md text-blue-200">
-                {t('home.classroom.subtext')}
-              </p>
+              <blockquote className="max-w-2xl">
+                <p className="text-flow font-bold text-balance text-white">
+                  {t('home.classroom.quote')}
+                </p>
+                <footer className="mt-3 text-body-md text-navy-soft">
+                  {t('home.classroom.subtext')}
+                </footer>
+              </blockquote>
             </div>
           </div>
         </ScrollReveal>

@@ -4796,9 +4796,12 @@
       "cta": {
         "title": "Kami membina ini bersama sekolah pengasas.",
         "body": "Ujian lapangan sedang berjalan. Akses awal, input langsung ke dalam laporan, terma pengasas semasa pelancaran.",
-        "button": "Daftar minat anda"
+        "button": "Daftar minat anda",
+        "secondary": "Asas bukti"
       },
       "nextLabel": "Seterusnya",
+      "nextEyebrow": "Bahagian lain dalam program",
+      "nextHeading": "Baki sesi ujian yang sama.",
       "nextStep01": "01",
       "nextStep02": "02",
       "nextStep03": "03",

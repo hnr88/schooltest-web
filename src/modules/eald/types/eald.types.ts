@@ -30,6 +30,7 @@ interface EaldHeroProps {
 
 interface QuoteBandProps {
   readonly quote: ReactNode;
+  readonly footer?: ReactNode;
 }
 
 interface NextSectionCard {

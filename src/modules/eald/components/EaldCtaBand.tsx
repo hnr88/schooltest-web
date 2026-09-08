@@ -1,25 +1,35 @@
+import { ArrowRight } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
-import { Button, Container, Section } from '@/modules/design-system';
+import { Button, Container, Eyebrow, Section } from '@/modules/design-system';
 import { ScrollReveal } from '@/modules/landing';
 
 async function EaldCtaBand() {
   const t = await getTranslations('Eald');
 
   return (
-    <Section>
+    <Section className="bg-navy-900">
       <Container className="max-w-eald">
         <ScrollReveal variant="scale">
-          <div className="rounded-4xl bg-navy-promo p-10 text-center sm:p-16">
-            <h2 className="text-h2 font-bold text-white">
-              {t('shared.cta.title')}
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-blue-200">
-              {t('shared.cta.body')}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <div>
+              <Eyebrow tone="teal" className="text-teal-300">
+                {t('home.register.foundingEyebrow')}
+              </Eyebrow>
+              <h2 className="mt-3.5 max-w-2xl text-h2 font-bold text-balance text-white">
+                {t('shared.cta.title')}
+              </h2>
+              <p className="mt-4 max-w-xl text-body-lg text-navy-body">
+                {t('shared.cta.body')}
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 lg:justify-end">
               <Button size="xl" href="/eald#register">
                 {t('shared.cta.button')}
+                <ArrowRight aria-hidden="true" />
+              </Button>
+              <Button size="xl" variant="outline-white" href="/eald#evidence">
+                {t('shared.cta.secondary')}
               </Button>
             </div>
           </div>

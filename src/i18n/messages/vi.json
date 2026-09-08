@@ -4805,9 +4805,12 @@
       "cta": {
         "title": "Chúng tôi đang xây dựng điều này cùng các trường sáng lập.",
         "body": "Đang thử nghiệm thực địa. Trải nghiệm sớm, góp ý trực tiếp vào báo cáo, điều kiện sáng lập khi ra mắt.",
-        "button": "Đăng ký quan tâm"
+        "button": "Đăng ký quan tâm",
+        "secondary": "Cơ sở bằng chứng"
       },
       "nextLabel": "Tiếp theo",
+      "nextEyebrow": "Các phần khác của chương trình",
+      "nextHeading": "Phần còn lại của cùng một buổi kiểm tra.",
       "nextStep01": "01",
       "nextStep02": "02",
       "nextStep03": "03",

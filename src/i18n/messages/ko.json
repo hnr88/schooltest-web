@@ -4796,9 +4796,12 @@
       "cta": {
         "title": "창립 학교들과 함께 만들고 있습니다.",
         "body": "현장 테스트 진행 중. 얼리 액세스, 리포트에 직접 의견 반영, 출시 시 창립 혜택.",
-        "button": "관심 등록"
+        "button": "관심 등록",
+        "secondary": "근거 자료"
       },
       "nextLabel": "다음",
+      "nextEyebrow": "프로그램의 다른 영역",
+      "nextHeading": "같은 응시의 나머지 부분입니다.",
       "nextStep01": "01",
       "nextStep02": "02",
       "nextStep03": "03",

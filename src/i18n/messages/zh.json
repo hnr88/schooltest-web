@@ -4786,9 +4786,12 @@
       "cta": {
         "title": "我们正在与创始学校共同打造。",
         "body": "实地测试进行中。抢先体验、直接参与报告设计、上线时享创始条件。",
-        "button": "登记意向"
+        "button": "登记意向",
+        "secondary": "实证依据"
       },
       "nextLabel": "接下来",
+      "nextEyebrow": "课程中的其他环节",
+      "nextHeading": "同一次测试的其余部分。",
       "nextStep01": "01",
       "nextStep02": "02",
       "nextStep03": "03",
