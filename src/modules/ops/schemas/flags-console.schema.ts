@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+  BANNER_MESSAGE_MAX,
   RATE_LIMIT_MAX_MAX,
   RATE_LIMIT_MAX_MIN,
   RATE_LIMIT_WINDOW_MAX_MS,
@@ -14,7 +15,16 @@ import {
 // the copy still comes from the catalog (the `createSchoolEditFormSchema`
 // precedent in this module).
 
-export const BANNER_MESSAGE_MAX = 2000;
+/**
+ * Re-exported, not restated: the bound IS the contract's settings-read
+ * projection cap (600), so this client check and the read the portal renders
+ * are one number by construction. The previous literal here was 2000 — a
+ * drift that let an editor accept ~1400 characters the read-side parse
+ * refuses to render. The unit suite pins the two together
+ * (tests/unit/ops-flags-console-bounds.test.ts), so the claim survives
+ * without trusting this comment.
+ */
+export { BANNER_MESSAGE_MAX };
 
 /**
  * A banner that is ON must say something — an enabled empty banner renders a
