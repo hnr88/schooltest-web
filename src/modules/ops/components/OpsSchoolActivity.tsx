@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormatter, useTranslations } from 'next-intl';
+import { useFormatter, useNow, useTranslations } from 'next-intl';
 
 import { useAuthStore } from '@/modules/auth';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
@@ -14,6 +14,12 @@ import { useSchoolActivityQuery } from '@/modules/ops/queries/use-school-activit
 export function OpsSchoolActivity({ documentId }: { documentId: string }) {
   const t = useTranslations('Ops.activity');
   const format = useFormatter();
+  // next-intl's relativeTime needs an explicit `now`: without one it falls
+  // back to the environment's clock at MODULE scope and logs an
+  // IntlError ENVIRONMENT_FALLBACK into the console on every render (x per
+  // activity row) — the house pattern is `useNow()` (NotificationFeedList,
+  // NotificationPreviewItem).
+  const now = useNow();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const activityQuery = useSchoolActivityQuery({ schoolDocumentId: documentId }, hydrated && Boolean(token));
@@ -80,7 +86,7 @@ export function OpsSchoolActivity({ documentId }: { documentId: string }) {
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold text-foreground">{row.summary}</div>
                 <div className="mt-0.5 text-xs text-body">
-                  {format.relativeTime(new Date(row.timestamp))}
+                  {format.relativeTime(new Date(row.timestamp), { now })}
                 </div>
               </div>
             </li>
