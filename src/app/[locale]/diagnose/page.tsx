@@ -48,7 +48,7 @@ export default async function DiagnosePage({ params }: DiagnosePageProps) {
         description={t('meta.diagnoseDescription')}
       />
       <PublicBreadcrumb pathname="/diagnose" />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <DiagnoseHero />
         <UnpackSection />
         <SameScoreSection />

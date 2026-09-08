@@ -49,7 +49,7 @@ export default async function TeachPage({ params }: TeachPageProps) {
         description={t('meta.teachDescription')}
       />
       <PublicBreadcrumb pathname="/teach" />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <TeachHero />
         <GenerateSection />
         <ClassroomSection />

@@ -60,7 +60,7 @@ export default async function EaldHome({ params }: EaldHomeProps) {
           PublicBreadcrumb, which still draws from buildTrail — the registry
           BreadcrumbJsonLd above uses too, so visible trail and JSON-LD stay
           one derivation. */}
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <EaldHero
           centered={false}
           eyebrow={t('home.hero.eyebrow')}

@@ -36,7 +36,7 @@ async function LegalDocumentScreen({ document, pathname, locale }: LegalDocument
         dateModified={document.updatedAt}
       />
       <PublicBreadcrumb pathname={pathname} currentLabel={document.title} />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <Container className="max-w-3xl pt-4 pb-16">
           <header className="border-b border-border pb-6">
             <h1 className="text-h2 font-semibold text-foreground">{document.title}</h1>
