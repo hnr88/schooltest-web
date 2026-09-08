@@ -9,7 +9,7 @@ import type {
 
 // Canonical detail-hero stat strip: bare value/label pairs, no card, no icon —
 // the contrast against the bordered hero is what makes the composition read.
-function StatStrip({ items, size = 'md', ariaLabel, className }: StatStripProps) {
+function StatStrip({ items, size = 'md', ariaLabel, className, wrap = false }: StatStripProps) {
   return (
     <dl
       data-slot="stat-strip"
@@ -20,14 +20,15 @@ function StatStrip({ items, size = 'md', ariaLabel, className }: StatStripProps)
         <div key={item.label} className="flex min-w-0 flex-col gap-0.5">
           <dd
             className={cn(
-              'order-1 truncate font-bold',
+              'order-1 font-bold',
+              !wrap && 'truncate',
               VALUE_SIZES[size],
               VALUE_TONES[item.tone ?? 'default'],
             )}
           >
             {item.value}
           </dd>
-          <dt className="order-2 truncate text-meta text-muted-foreground">{item.label}</dt>
+          <dt className={cn('order-2 text-meta text-muted-foreground', !wrap && 'truncate')}>{item.label}</dt>
         </div>
       ))}
     </dl>

@@ -72,6 +72,7 @@ export default async function EaldHome({ params }: EaldHomeProps) {
           breadcrumb={<PublicBreadcrumb pathname="/" className="py-0" />}
           stats={
             <StatStrip
+          wrap
               ariaLabel={t('home.hero.statsLabel')}
               className="grid grid-cols-2 gap-y-6 lg:grid-cols-4 lg:gap-y-0 [&>div]:py-4 lg:[&>div]:py-5 lg:[&>div]:px-6 lg:[&>div:first-child]:pl-0 lg:[&>div:last-child]:pr-0 lg:[&>div+div]:border-l lg:[&>div+div]:border-white/15 [&>div>dd]:order-2 [&>div>dt]:order-1 [&>div>dd]:text-white [&>div>dt]:tracking-widest [&>div>dt]:text-navy-muted [&>div>dt]:uppercase"
               items={[

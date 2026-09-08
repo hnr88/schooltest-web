@@ -33,7 +33,7 @@ const CRUMB_LABEL = cat(messages, 'Navigation.breadcrumbLabel');
 // The card hero's LCP hint (DiagnoseHero and every centred hero still use it).
 const CARD_SIZES = '(min-width: 1380px) 1320px, calc(100vw - 2.5rem)';
 
-test('desktop hero: breadcrumb, eyebrow, h1, CTAs and the four-cell stat strip render inside the band on /eald', async ({
+test('desktop hero: breadcrumb, eyebrow, h1, CTAs and the four-cell stat strip render inside the band on /', async ({
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -67,7 +67,7 @@ test('desktop hero: breadcrumb, eyebrow, h1, CTAs and the four-cell stat strip r
   );
   await expect(heroBand.getByRole('link', { name: SECONDARY_CTA, exact: true })).toHaveAttribute(
     'href',
-    '/eald/diagnose',
+    '/diagnose',
   );
 
   // The four-cell stat strip: the aria-labelled dl (Chromium exposes dl as
@@ -136,4 +136,49 @@ test('375px: the hero band, stat strip and field-testing strip do not push the p
 
   const shot = await page.screenshot({ path: `${SHOT_DIR}/05-eald-mobile-375.png` });
   await testInfo.attach('05-eald-mobile-375', { body: shot, contentType: 'image/png' });
+});
+
+test('375px: the wrap opt-in — home and track stat strips wrap in full; diagnose/teach/predict keep the truncating default', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+
+  // Home + Track pass the opt-in: dd/dt wrap, so no node is clipped and no
+  // ellipsis can appear, and the strip stays the design's two columns.
+  for (const [index, route] of ['/', '/track'].entries()) {
+    await page.goto(route);
+    const strip = page.locator('dl[data-slot="stat-strip"]');
+    await expect(strip).toBeVisible();
+    const tracks = await strip.evaluate((el) =>
+      getComputedStyle(el).gridTemplateColumns.split(' ').filter(Boolean).length,
+    );
+    expect(tracks, `${route} stays two columns at 375 (design lines 90-95)`).toBe(2);
+    for (const node of await strip.locator('dd, dt').all()) {
+      await expect(node, `${route} stat node wraps`).not.toHaveClass(/truncate/);
+      const clipped = await node.evaluate((el) => el.scrollWidth - el.clientWidth);
+      expect(clipped, `${route} stat node renders in full`).toBeLessThanOrEqual(1);
+    }
+    const shot = await page.screenshot({ path: `${SHOT_DIR}/05-statstrip-${route === '/' ? 'home' : 'track'}-375.png` });
+    await testInfo.attach(`05-statstrip-${route === '/' ? 'home' : 'track'}-375`, {
+      body: shot,
+      contentType: 'image/png',
+    });
+  }
+
+  // The other three consumers never pass wrap: their dd/dt keep the
+  // truncating default — byte-identical behaviour to before the primitive
+  // change (white-space: nowrap via .truncate).
+  for (const route of ['/diagnose', '/teach', '/predict']) {
+    await page.goto(route);
+    const strip = page.locator('dl[data-slot="stat-strip"]');
+    await expect(strip).toBeVisible();
+    for (const node of await strip.locator('dd, dt').all()) {
+      await expect(node, `${route} keeps the truncating default`).toHaveClass(/truncate/);
+    }
+    const shot = await page.screenshot({ path: `${SHOT_DIR}/05-statstrip-${route.slice(1)}-375.png` });
+    await testInfo.attach(`05-statstrip-${route.slice(1)}-375`, {
+      body: shot,
+      contentType: 'image/png',
+    });
+  }
 });

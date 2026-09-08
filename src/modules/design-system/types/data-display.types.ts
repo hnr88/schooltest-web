@@ -40,6 +40,10 @@ export interface StatStripProps {
   size?: StatStripSize;
   ariaLabel: string;
   className?: string;
+  /** Opt-in: let long values/labels wrap instead of truncating (task 05/12 —
+   * the design's two-column 375px strip shows them in full). Defaults to the
+   * truncating render every existing consumer relies on. */
+  wrap?: boolean;
 }
 
 export interface FilterChipOption {
