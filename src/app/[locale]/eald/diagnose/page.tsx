@@ -48,13 +48,11 @@ export default async function DiagnosePage({ params }: DiagnosePageProps) {
         description={t('meta.diagnoseDescription')}
       />
       <PublicBreadcrumb pathname="/eald/diagnose" />
-      <main>
+      <main id="main-content">
         <DiagnoseHero />
         <UnpackSection />
         <SameScoreSection />
-        <QuoteBand
-          quote={t.rich('diagnose.quote', { br: () => <br /> })}
-        />
+        <QuoteBand quote={t.rich('diagnose.quote', { br: () => <br /> })} />
         <NextSectionNav sections={DIAGNOSE_NEXT_SECTIONS} />
         <EaldCtaBand />
       </main>

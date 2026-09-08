@@ -4693,7 +4693,20 @@
       "hero": {
         "eyebrow": "Thấy điểm mạnh và điểm yếu",
         "title": "Một bài kiểm tra 30 phút. <blue>Một hồ sơ chẩn đoán hoàn chỉnh.</blue>",
-        "body": "SchoolTest chia mỗi vĩ kỹ năng thành các vi kỹ năng thành phần, để bạn thấy chính xác người học đang ở đâu và nên dạy gì trước."
+        "body": "SchoolTest chia mỗi vĩ kỹ năng thành các vi kỹ năng thành phần, để bạn thấy chính xác người học đang ở đâu và nên dạy gì trước.",
+        "componentLabel": "Thành phần 01",
+        "registerCta": "Đăng ký trường của bạn",
+        "teachCta": "Lập kế hoạch giảng dạy từ kết quả",
+        "imageAlt": "Các tòa nhà trong khuôn viên phía sau bãi cỏ và lối đi lát gạch",
+        "statsLabel": "Thông tin đánh giá",
+        "stat1Label": "Vi kỹ năng được báo cáo",
+        "stat1Value": "27",
+        "stat2Label": "Thời lượng",
+        "stat2Value": "30 phút mỗi kỹ năng",
+        "stat3Label": "Lĩnh vực đánh giá",
+        "stat3Value": "4",
+        "stat4Label": "Chuẩn báo cáo",
+        "stat4Value": "ACARA + CEFR"
       },
       "unpack": {
         "eyebrow": "Ngày đầu tiên",
@@ -4717,15 +4730,37 @@
         "phaseBeginning": "Bắt đầu",
         "phaseDeveloping": "Phát triển",
         "phaseEmerging": "Manh nha",
-        "moreSubskills": "+ 18 vi kỹ năng nữa ở nghe, nói và viết"
+        "moreSubskills": "+ 18 vi kỹ năng nữa ở nghe, nói và viết",
+        "figureTitle": "Hình 1 — Hồ sơ vi kỹ năng đọc của một học sinh",
+        "figureContext": "Lớp 9 · đợt đánh giá xếp lớp",
+        "ariaLabel": "Biểu đồ thanh ngang thể hiện bảy vi kỹ năng đọc của một học sinh theo năm giai đoạn ACARA",
+        "footnote": "Dữ liệu mẫu minh họa. Các thanh được đặt trong các khoảng giai đoạn ACARA được hiển thị.",
+        "scaleBeginning": "Bắt đầu",
+        "scaleEmerging": "Manh nha",
+        "scaleConsolidating": "Củng cố",
+        "scaleIndependent": "Độc lập"
       },
       "sameScore": {
         "eyebrow": "Hai học sinh",
         "title": "Cùng một điểm.<br></br>Năng lực khác nhau.",
         "body": "Hai học sinh đến với cùng một mức điểm tổng. Họ giống nhau không? Hoàn toàn không. Một em giỏi ngữ pháp nhưng yếu suy luận; em kia ngược lại. Mỗi học sinh có một hồ sơ ngôn ngữ riêng mà bài kiểm tra xếp lớp không hé lộ. Giờ bạn đã thấy.",
-        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> hai học sinh lẽ ra được dạy chung, nay được dạy đúng cách."
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> hai học sinh lẽ ra được dạy chung, nay được dạy đúng cách.",
+        "imageAlt": "Một học sinh đang viết tại bàn trong lớp học",
+        "caption": "Hai học sinh cùng mức, học cùng lớp, nhưng cần những bài học khác nhau."
       },
-      "quote": "Điểm số là bản tóm tắt.<br></br>Hồ sơ vi kỹ năng là tấm bản đồ."
+      "quote": "Điểm số là bản tóm tắt.<br></br>Hồ sơ vi kỹ năng là tấm bản đồ.",
+      "comparison": {
+        "eyebrow": "Điều mức xếp loại che giấu",
+        "title": "Một mức, hai lớp học khác nhau.",
+        "bodyOne": "Cả hai học sinh bên dưới đều được xếp CEFR B1 khi nhập học. Nhưng từng vi kỹ năng lại trái ngược: em thứ nhất đọc trôi chảy nhưng không giải thích được từ mình đọc, em thứ hai biết từ nhưng mất mạch nội dung.",
+        "bodyTwo": "Dạy chung một nhóm, mỗi em chỉ nhận được nửa bài học. Dạy theo hồ sơ, mỗi em nhận được một bài học trọn vẹn.",
+        "figureTitle": "Hình 2 — Hai học sinh được xếp CEFR B1",
+        "figureContext": "Lớp 9 · cùng đợt đánh giá xếp lớp",
+        "studentA": "Học sinh A",
+        "studentB": "Học sinh B",
+        "ariaLabel": "Biểu đồ cột nhóm so sánh bốn vi kỹ năng đọc của hai học sinh được xếp cùng mức CEFR",
+        "footnote": "Dữ liệu mẫu minh họa. Cả hai học sinh được báo cáo ở mức CEFR B1 trong bài đánh giá xếp lớp."
+      }
     },
     "predict": {
       "hero": {

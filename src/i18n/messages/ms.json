@@ -4684,7 +4684,20 @@
       "hero": {
         "eyebrow": "Lihat kekuatan dan kelemahan",
         "title": "Satu ujian 30 minit. <blue>Profil diagnostik yang lengkap.</blue>",
-        "body": "SchoolTest memecahkan setiap makrokemahiran kepada subkemahirannya, supaya anda dapat melihat dengan tepat di mana kedudukan pelajar dan apa yang perlu diajar dahulu."
+        "body": "SchoolTest memecahkan setiap makrokemahiran kepada subkemahirannya, supaya anda dapat melihat dengan tepat di mana kedudukan pelajar dan apa yang perlu diajar dahulu.",
+        "componentLabel": "Komponen 01",
+        "registerCta": "Daftarkan sekolah anda",
+        "teachCta": "Rancang dan mengajar berdasarkan keputusan",
+        "imageAlt": "Bangunan kampus di seberang halaman rumput dan laluan bata",
+        "statsLabel": "Maklumat pentaksiran",
+        "stat1Label": "Subkemahiran dilaporkan",
+        "stat1Value": "27",
+        "stat2Label": "Tempoh sesi",
+        "stat2Value": "30 min setiap kemahiran",
+        "stat3Label": "Domain diliputi",
+        "stat3Value": "4",
+        "stat4Label": "Piawaian pelaporan",
+        "stat4Value": "ACARA + CEFR"
       },
       "unpack": {
         "eyebrow": "Hari pertama",
@@ -4708,15 +4721,37 @@
         "phaseBeginning": "Mula",
         "phaseDeveloping": "Berkembang",
         "phaseEmerging": "Baharu",
-        "moreSubskills": "+ 18 lagi merentasi mendengar, bertutur dan menulis"
+        "moreSubskills": "+ 18 lagi merentasi mendengar, bertutur dan menulis",
+        "figureTitle": "Rajah 1 — Profil subkemahiran membaca seorang murid",
+        "figureContext": "Tahun 9 · sesi penempatan",
+        "ariaLabel": "Carta bar mendatar yang menunjukkan tujuh subkemahiran membaca seorang murid berbanding lima fasa ACARA",
+        "footnote": "Data contoh untuk ilustrasi. Bar diletakkan dalam julat fasa ACARA yang ditunjukkan.",
+        "scaleBeginning": "Permulaan",
+        "scaleEmerging": "Mula berkembang",
+        "scaleConsolidating": "Pengukuhan",
+        "scaleIndependent": "Berdikari"
       },
       "sameScore": {
         "eyebrow": "Dua murid",
         "title": "Skor sama.<br></br>Keupayaan berbeza.",
         "body": "Dua murid tiba dengan skor umum yang sama. Adakah mereka sama? Tidak langsung. Seorang kuat dalam tatabahasa tetapi lemah dalam inferens; seorang lagi sebaliknya. Setiap murid mempunyai profil linguistik unik yang tidak didedahkan oleh ujian penempatan. Kini anda dapat melihatnya.",
-        "callout": "<strong>Maksudnya untuk anda:</strong> dua murid yang akan anda ajar bersama, diajar dengan sewajarnya."
+        "callout": "<strong>Maksudnya untuk anda:</strong> dua murid yang akan anda ajar bersama, diajar dengan sewajarnya.",
+        "imageAlt": "Seorang murid menulis di meja dalam bilik darjah",
+        "caption": "Dua murid pada tahap yang sama, dalam kelas yang sama, memerlukan pelajaran yang berbeza."
       },
-      "quote": "Skor ialah ringkasan.<br></br>Profil subkemahiran ialah peta."
+      "quote": "Skor ialah ringkasan.<br></br>Profil subkemahiran ialah peta.",
+      "comparison": {
+        "eyebrow": "Apa yang tersembunyi di sebalik tahap",
+        "title": "Satu tahap, dua bilik darjah yang berbeza.",
+        "bodyOne": "Kedua-dua murid di bawah ditempatkan pada CEFR B1 semasa tiba. Namun subkemahiran mereka bertentangan: murid pertama membaca lancar tetapi tidak dapat menjelaskan perkataan yang dibaca; murid kedua tahu perkataan tetapi hilang jalan cerita.",
+        "bodyTwo": "Apabila diajar sebagai satu kumpulan, masing-masing mendapat separuh pelajaran. Apabila diajar mengikut profil, masing-masing mendapat pelajaran penuh.",
+        "figureTitle": "Rajah 2 — Dua murid ditempatkan pada CEFR B1",
+        "figureContext": "Tahun 9 · sesi penempatan yang sama",
+        "studentA": "Murid A",
+        "studentB": "Murid B",
+        "ariaLabel": "Carta lajur berkumpulan yang membandingkan empat subkemahiran membaca bagi dua murid pada tahap CEFR yang sama",
+        "footnote": "Data contoh untuk ilustrasi. Kedua-dua murid dilaporkan sebagai CEFR B1 dalam ujian penempatan."
+      }
     },
     "predict": {
       "hero": {

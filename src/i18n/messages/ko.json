@@ -4684,7 +4684,20 @@
       "hero": {
         "eyebrow": "강점과 약점 파악",
         "title": "30분 테스트 하나. <blue>완전한 진단 프로필.</blue>",
-        "body": "SchoolTest는 각 매크로스킬을 구성 서브스킬로 나누어, 학습자가 정확히 어디에 있는지와 무엇을 먼저 가르쳐야 할지 보여줍니다."
+        "body": "SchoolTest는 각 매크로스킬을 구성 서브스킬로 나누어, 학습자가 정확히 어디에 있는지와 무엇을 먼저 가르쳐야 할지 보여줍니다.",
+        "componentLabel": "구성 요소 01",
+        "registerCta": "학교 등록하기",
+        "teachCta": "결과를 바탕으로 수업 계획하기",
+        "imageAlt": "잔디밭과 벽돌길 너머의 캠퍼스 건물",
+        "statsLabel": "평가 개요",
+        "stat1Label": "보고되는 서브스킬",
+        "stat1Value": "27",
+        "stat2Label": "평가 시간",
+        "stat2Value": "스킬당 30분",
+        "stat3Label": "평가 영역",
+        "stat3Value": "4",
+        "stat4Label": "보고 기준",
+        "stat4Value": "ACARA + CEFR"
       },
       "unpack": {
         "eyebrow": "첫날",
@@ -4708,15 +4721,37 @@
         "phaseBeginning": "시작",
         "phaseDeveloping": "발전",
         "phaseEmerging": "초기",
-        "moreSubskills": "+ 듣기, 말하기, 쓰기에 18개 더"
+        "moreSubskills": "+ 듣기, 말하기, 쓰기에 18개 더",
+        "figureTitle": "그림 1 — 학생 한 명의 읽기 서브스킬 프로필",
+        "figureContext": "9학년 · 배치 평가",
+        "ariaLabel": "학생 한 명의 읽기 서브스킬 일곱 개를 ACARA의 다섯 단계와 비교한 가로 막대그래프",
+        "footnote": "설명용 예시 데이터입니다. 막대는 표시된 ACARA 단계 구간 안에 배치됩니다.",
+        "scaleBeginning": "시작",
+        "scaleEmerging": "초기",
+        "scaleConsolidating": "통합",
+        "scaleIndependent": "독립"
       },
       "sameScore": {
         "eyebrow": "두 명의 학생",
         "title": "같은 점수.<br></br>다른 능력.",
         "body": "두 학생이 같은 총점을 들고 옵니다. 둘은 같을까요? 전혀 아닙니다. 한 명은 문법은 강하지만 추론이 약하고, 다른 한 명은 정반대입니다. 모든 학생은 배치 테스트가 드러내지 못하는 고유한 언어 프로필을 가지고 있습니다. 이제는 보입니다.",
-        "callout": "<strong>의미하는 바:</strong> 함께 가르쳤을 두 학생을 제대로 가르칠 수 있습니다."
+        "callout": "<strong>의미하는 바:</strong> 함께 가르쳤을 두 학생을 제대로 가르칠 수 있습니다.",
+        "imageAlt": "교실 책상에서 글을 쓰는 학생",
+        "caption": "같은 단계와 같은 학급에 있지만 서로 다른 수업이 필요한 두 학생."
       },
-      "quote": "점수는 요약입니다.<br></br>서브스킬 프로필은 지도입니다."
+      "quote": "점수는 요약입니다.<br></br>서브스킬 프로필은 지도입니다.",
+      "comparison": {
+        "eyebrow": "단계가 감추는 것",
+        "title": "하나의 단계, 서로 다른 두 교실.",
+        "bodyOne": "아래 두 학생은 입학 당시 모두 CEFR B1로 배치되었습니다. 하지만 서브스킬별로는 반대입니다. 첫 학생은 유창하게 읽지만 읽은 단어의 뜻을 설명하지 못하고, 둘째는 단어를 알지만 글의 흐름을 놓칩니다.",
+        "bodyTwo": "한 그룹으로 가르치면 둘 다 수업의 절반만 얻습니다. 프로필에 맞춰 가르치면 둘 다 온전한 수업을 얻습니다.",
+        "figureTitle": "그림 2 — CEFR B1로 배치된 두 학생",
+        "figureContext": "9학년 · 같은 배치 평가",
+        "studentA": "학생 A",
+        "studentB": "학생 B",
+        "ariaLabel": "같은 CEFR 단계로 배치된 두 학생의 읽기 서브스킬 네 개를 비교한 묶은 세로 막대그래프",
+        "footnote": "설명용 예시 데이터입니다. 두 학생 모두 배치 평가에서 CEFR B1로 보고되었습니다."
+      }
     },
     "predict": {
       "hero": {

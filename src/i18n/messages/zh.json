@@ -4674,7 +4674,20 @@
       "hero": {
         "eyebrow": "看清优势与弱项",
         "title": "一次 30 分钟测试。<blue>一份完整的诊断画像。</blue>",
-        "body": "SchoolTest 将每个宏观技能拆解为若干微技能，让你准确了解学习者的水平，以及先教什么。"
+        "body": "SchoolTest 将每个宏观技能拆解为若干微技能，让你准确了解学习者的水平，以及先教什么。",
+        "componentLabel": "组成部分 01",
+        "registerCta": "登记您的学校",
+        "teachCta": "根据结果规划教学",
+        "imageAlt": "草坪和砖砌小路后方的校园建筑",
+        "statsLabel": "测评概况",
+        "stat1Label": "报告的微技能",
+        "stat1Value": "27",
+        "stat2Label": "测评时长",
+        "stat2Value": "每项技能 30 分钟",
+        "stat3Label": "涵盖领域",
+        "stat3Value": "4",
+        "stat4Label": "参照标准",
+        "stat4Value": "ACARA + CEFR"
       },
       "unpack": {
         "eyebrow": "第一天",
@@ -4698,15 +4711,37 @@
         "phaseBeginning": "起步",
         "phaseDeveloping": "发展",
         "phaseEmerging": "萌芽",
-        "moreSubskills": "+ 听力、口语和写作还有 18 项"
+        "moreSubskills": "+ 听力、口语和写作还有 18 项",
+        "figureTitle": "图 1 — 一名学生的阅读微技能画像",
+        "figureContext": "九年级 · 分班测评",
+        "ariaLabel": "水平条形图：一名学生的七项阅读微技能与 ACARA 五个阶段的对照",
+        "footnote": "示例数据。条形位置对应图示 ACARA 阶段区间。",
+        "scaleBeginning": "起步",
+        "scaleEmerging": "萌芽",
+        "scaleConsolidating": "巩固",
+        "scaleIndependent": "独立"
       },
       "sameScore": {
         "eyebrow": "两名学生",
         "title": "同样的分数。<br></br>不同的能力。",
         "body": "两名学生带着相同的总分到来。他们一样吗？完全不是。一个语法强但推断弱，另一个正好相反。每个学生都有独特的语言画像，而分班测试无法揭示。现在你能看清了。",
-        "callout": "<strong>对你而言：</strong>两名你原本会一起教的学生，如今各得其所。"
+        "callout": "<strong>对你而言：</strong>两名你原本会一起教的学生，如今各得其所。",
+        "imageAlt": "一名学生在教室的课桌前书写",
+        "caption": "同一阶段、同一班级的两名学生，却需要不同的课程。"
       },
-      "quote": "分数是总结。<br></br>微技能画像是地图。"
+      "quote": "分数是总结。<br></br>微技能画像是地图。",
+      "comparison": {
+        "eyebrow": "等级背后隐藏了什么",
+        "title": "同一等级，两种不同的课堂。",
+        "bodyOne": "下方两名学生入学时均被评为 CEFR B1。但逐项看微技能，情况恰好相反：第一名读得流利，却说不出所读词语的意思；第二名认识词语，却跟不上文章思路。",
+        "bodyTwo": "放在同一组教学，两人都只能学到半节课的内容。按画像教学，两人都能获得完整的一课。",
+        "figureTitle": "图 2 — 两名被评为 CEFR B1 的学生",
+        "figureContext": "九年级 · 同一次分班测评",
+        "studentA": "学生 A",
+        "studentB": "学生 B",
+        "ariaLabel": "分组柱状图：比较两名处于同一 CEFR 等级学生的四项阅读微技能",
+        "footnote": "示例数据。两名学生在分班测评中均被评为 CEFR B1。"
+      }
     },
     "predict": {
       "hero": {

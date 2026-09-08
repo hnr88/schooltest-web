@@ -2107,7 +2107,20 @@
       "hero": {
         "eyebrow": "See strengths and weaknesses",
         "title": "One 30-minute test. <blue>A complete diagnostic profile.</blue>",
-        "body": "SchoolTest breaks each macroskill into its component subskills, so you see exactly where a learner is and what to teach first."
+        "body": "SchoolTest breaks each macroskill into its component subskills, so you see exactly where a learner is and what to teach first.",
+        "componentLabel": "Component 01",
+        "registerCta": "Register your school",
+        "teachCta": "Plan and teach from the results",
+        "imageAlt": "Campus buildings beyond a lawn and brick path",
+        "statsLabel": "Assessment facts",
+        "stat1Label": "Subskills reported",
+        "stat1Value": "27",
+        "stat2Label": "Sitting length",
+        "stat2Value": "30 min per skill",
+        "stat3Label": "Domains covered",
+        "stat3Value": "4",
+        "stat4Label": "Reported against",
+        "stat4Value": "ACARA + CEFR"
       },
       "unpack": {
         "eyebrow": "Day one",
@@ -2131,15 +2144,37 @@
         "phaseBeginning": "Beg.",
         "phaseDeveloping": "Dev.",
         "phaseEmerging": "Emg.",
-        "moreSubskills": "+ 18 more across listening, speaking and writing"
+        "moreSubskills": "+ 18 more across listening, speaking and writing",
+        "figureTitle": "Figure 1 — Reading subskill profile, one student",
+        "figureContext": "Year 9 · placement sitting",
+        "ariaLabel": "Horizontal bar chart showing seven reading subskills for one student against the five ACARA phases",
+        "footnote": "Illustrative sample data. Bars positioned within the ACARA phase bands shown.",
+        "scaleBeginning": "Beginning",
+        "scaleEmerging": "Emerging",
+        "scaleConsolidating": "Consolidating",
+        "scaleIndependent": "Independent"
       },
       "sameScore": {
         "eyebrow": "Two students",
         "title": "Same score.<br></br>Different abilities.",
         "body": "Two students arrive with the same broad scores. Are they the same? Not at all. One is strong in grammar but weak in inference; the other is the reverse. Each student has a unique linguistic profile that placement tests don't reveal. Now you see it.",
-        "callout": "<strong>What this means for you:</strong> two students you'd have taught together, taught properly."
+        "callout": "<strong>What this means for you:</strong> two students you'd have taught together, taught properly.",
+        "imageAlt": "A pupil writing at a classroom desk",
+        "caption": "Two students on the same band, sitting in the same class, needing different lessons."
       },
-      "quote": "A score is a summary.<br></br>A subskill profile is a map."
+      "quote": "A score is a summary.<br></br>A subskill profile is a map.",
+      "comparison": {
+        "eyebrow": "What the band hides",
+        "title": "One band, two different classrooms.",
+        "bodyOne": "Both students below were placed at CEFR B1 on arrival. Subskill by subskill they invert: the first reads fluently and cannot name what she reads, the second has the words and loses the thread.",
+        "bodyTwo": "Taught as one group they each get half a lesson. Taught from the profile they each get a full one.",
+        "figureTitle": "Figure 2 — Two students placed at CEFR B1",
+        "figureContext": "Year 9 · same placement sitting",
+        "studentA": "Student A",
+        "studentB": "Student B",
+        "ariaLabel": "Grouped column chart comparing four reading subskills for two students placed at the same CEFR band",
+        "footnote": "Illustrative sample data. Both students reported as CEFR B1 on the placement test."
+      }
     },
     "predict": {
       "hero": {

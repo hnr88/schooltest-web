@@ -77,14 +77,29 @@ const PREDICT_NEXT_SECTIONS: readonly NextSectionCard[] = [
 ] as const;
 
 const DIAGNOSE_SUBSKILLS: readonly SubskillBar[] = [
-  { labelKey: 'diagnose.profile.decoding', percent: 88, phaseKey: 'diagnose.profile.phaseConsolidating', phase: 'consolidating' },
-  { labelKey: 'diagnose.profile.vocabulary', percent: 32, phaseKey: 'diagnose.profile.phaseBeginning', phase: 'beginning' },
-  { labelKey: 'diagnose.profile.grammar', percent: 68, phaseKey: 'diagnose.profile.phaseDeveloping', phase: 'developing' },
-  { labelKey: 'diagnose.profile.gist', percent: 78, phaseKey: 'diagnose.profile.phaseDeveloping', phase: 'developing' },
-  { labelKey: 'diagnose.profile.detail', percent: 42, phaseKey: 'diagnose.profile.phaseEmerging', phase: 'emerging' },
-  { labelKey: 'diagnose.profile.inference', percent: 38, phaseKey: 'diagnose.profile.phaseEmerging', phase: 'emerging' },
-  { labelKey: 'diagnose.profile.critical', percent: 20, phaseKey: 'diagnose.profile.phaseBeginning', phase: 'beginning' },
+  { labelKey: 'diagnose.profile.decoding', percent: 72, phaseKey: 'diagnose.profile.phaseConsolidating', phase: 'consolidating' },
+  { labelKey: 'diagnose.profile.vocabulary', percent: 14, phaseKey: 'diagnose.profile.phaseBeginning', phase: 'beginning' },
+  { labelKey: 'diagnose.profile.grammar', percent: 52, phaseKey: 'diagnose.profile.phaseDeveloping', phase: 'developing' },
+  { labelKey: 'diagnose.profile.gist', percent: 58, phaseKey: 'diagnose.profile.phaseDeveloping', phase: 'developing' },
+  { labelKey: 'diagnose.profile.detail', percent: 32, phaseKey: 'diagnose.profile.phaseEmerging', phase: 'emerging' },
+  { labelKey: 'diagnose.profile.inference', percent: 27, phaseKey: 'diagnose.profile.phaseEmerging', phase: 'emerging' },
+  { labelKey: 'diagnose.profile.critical', percent: 10, phaseKey: 'diagnose.profile.phaseBeginning', phase: 'beginning' },
 ] as const;
+
+export const DIAGNOSE_COMPARISON = {
+  seriesKeys: ['diagnose.comparison.studentA', 'diagnose.comparison.studentB'],
+  bandKeys: [
+    'diagnose.profile.scaleBeginning', 'diagnose.profile.scaleEmerging',
+    'diagnose.profile.phase', 'diagnose.profile.scaleConsolidating',
+    'diagnose.profile.scaleIndependent',
+  ],
+  categories: [
+    { labelKey: 'diagnose.profile.decoding', values: [72, 46] },
+    { labelKey: 'diagnose.profile.vocabulary', values: [14, 80] },
+    { labelKey: 'diagnose.profile.inference', values: [27, 62] },
+    { labelKey: 'diagnose.profile.grammar', values: [52, 44] },
+  ],
+} as const;
 
 // "Page last updated" (Home v2:385): the copy's own date as epoch ms, bumped
 // with the copy and rendered through next-intl's formatter per locale (PRD
