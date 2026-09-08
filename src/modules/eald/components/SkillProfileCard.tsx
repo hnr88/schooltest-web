@@ -14,7 +14,11 @@ async function SkillProfileCard() {
       context={t('diagnose.profile.figureContext')}
       footnote={t('diagnose.profile.footnote')}
     >
-      <div role="group" aria-label={t('diagnose.profile.ariaLabel')} className="min-w-120 pb-4">
+      {/* No min-width floor here: the figure-card body scrolls this content
+          inside its own overflow-x-auto container, and a 480px floor on this
+          div leaks past the scroller to the document at 375px (measured
+          deScroll 517 vs 375). The card's own min-content keeps the scroll. */}
+      <div role="group" aria-label={t('diagnose.profile.ariaLabel')} className="pb-4">
         <ul className="flex flex-col gap-3">
           {DIAGNOSE_SUBSKILLS.map((skill) => (
             <li key={skill.labelKey} className="grid grid-cols-subskill-row items-center gap-3.5">
