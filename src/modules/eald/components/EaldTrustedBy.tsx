@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { Container } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Container, ScrollReveal } from '@/modules/design-system';
 
 async function EaldTrustedBy() {
   const t = await getTranslations('Eald');

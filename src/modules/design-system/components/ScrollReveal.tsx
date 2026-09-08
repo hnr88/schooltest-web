@@ -1,8 +1,8 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useScrollReveal } from '@/modules/landing/hooks/use-scroll-reveal';
-import type { ScrollRevealProps } from '@/modules/landing/types/scroll-reveal.types';
+import { useScrollReveal } from '@/modules/design-system/hooks/use-scroll-reveal';
+import type { ScrollRevealProps } from '@/modules/design-system/types/scroll-reveal.types';
 
 function ScrollReveal({ children, className, delay = 0, variant = 'rise' }: ScrollRevealProps) {
   const { elementRef, isPrepared, isRevealed, reveal } = useScrollReveal();

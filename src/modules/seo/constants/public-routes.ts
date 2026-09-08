@@ -8,16 +8,16 @@ import type { PublicRoute } from '@/modules/seo/types/seo.types';
  * Legal routes are appended at runtime from C-LEG-01 rather than listed here,
  * so publishing a new legal document surfaces in all three without a code edit.
  *
- * `/eald` is deliberately ABSENT: it renders the same sections as `/` and
- * canonicalises to it, so listing both would put duplicate content in the
- * sitemap. It remains crawlable and is still a breadcrumb link.
+ * `/` IS the EAL/D home (D-01-REVISED, 2026-09-08): the design remounted at the
+ * root and the old `/eald` URLs redirect to their replacements, so there is one
+ * URL per page and no duplicate-content split.
  */
 export const PUBLIC_ROUTES: readonly PublicRoute[] = [
   { pathname: '/', changeFrequency: 'weekly', priority: 1, llmsLabelKey: 'Navigation.home' },
-  { pathname: '/eald/diagnose', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.diagnose' },
-  { pathname: '/eald/teach', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.teach' },
-  { pathname: '/eald/track', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.track' },
-  { pathname: '/eald/predict', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.predict' },
+  { pathname: '/diagnose', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.diagnose' },
+  { pathname: '/teach', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.teach' },
+  { pathname: '/track', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.track' },
+  { pathname: '/predict', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.predict' },
 ];
 
 /**

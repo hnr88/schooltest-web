@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
-import { Badge, Container, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Badge, Container, ScrollReveal, Section } from '@/modules/design-system';
 import { cn } from '@/lib/utils';
 import { PROGRAMME_FACTS } from '@/modules/eald/constants/components.constants';
 

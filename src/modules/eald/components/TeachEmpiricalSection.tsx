@@ -2,8 +2,7 @@ import Image from 'next/image';
 
 import { getTranslations } from 'next-intl/server';
 
-import { Container, Eyebrow, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Container, Eyebrow, ScrollReveal, Section } from '@/modules/design-system';
 
 async function TeachEmpiricalSection() {
   const t = await getTranslations('Eald.track.teachEmpirical');

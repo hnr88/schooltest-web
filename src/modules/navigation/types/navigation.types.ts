@@ -46,7 +46,7 @@ export interface BuildTrailOptions {
 }
 
 export interface PublicBreadcrumbProps {
-  /** Locale-less pathname, e.g. `/eald/diagnose`. */
+  /** Locale-less pathname, e.g. `/diagnose`. */
   readonly pathname: string;
   /** Human label for a trailing dynamic segment (article title, …). */
   readonly recordLabel?: string | null;

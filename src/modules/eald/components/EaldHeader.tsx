@@ -36,7 +36,7 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
               {t('Eald.nav.schoolSearch')}
             </Link>
             <Link
-              href="/eald#register"
+              href="/#register"
               className="py-1 text-xs font-medium text-navy-soft transition-colors duration-150 hover:text-white hover:underline"
             >
               {t('Eald.nav.contact')}
@@ -53,7 +53,7 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
 
       <header className="sticky top-0 z-50 border-b border-border bg-background/88 backdrop-blur">
         <Container className="flex max-w-eald flex-wrap items-center gap-x-8 gap-y-3 py-4">
-          <Link href="/eald" className="flex shrink-0 items-center gap-4">
+          <Link href="/" className="flex shrink-0 items-center gap-4">
             <Logo alt={t('Eald.footer.logoAlt')} />
             <span aria-hidden="true" className="hidden h-8 w-px bg-border sm:block" />
             <span className="hidden max-w-56 text-body-sm font-medium leading-snug text-body xl:block">
@@ -84,7 +84,7 @@ async function EaldHeader({ activePage }: EaldHeaderProps) {
               </Link>
             ))}
             <Button
-              href="/eald#register"
+              href="/#register"
               className="my-auto ml-auto h-11 shrink-0 rounded-lg px-5 shadow-primary-glow transition-[transform,background-color,box-shadow] duration-150 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               {t('Eald.nav.registerInterest')}

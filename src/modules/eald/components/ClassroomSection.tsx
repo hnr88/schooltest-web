@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
-import { Container, Eyebrow, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Container, Eyebrow, ScrollReveal, Section } from '@/modules/design-system';
 import { GROUP_KEYS } from '@/modules/eald/constants/components.constants';
 
 async function ClassroomSection() {

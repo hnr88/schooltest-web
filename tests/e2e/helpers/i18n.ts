@@ -30,10 +30,9 @@ export function loadMessages(locale: AnyLocale): Messages {
   const file = path.resolve(messagesDir, `${locale}.json`);
   const raw = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>;
 
-  if (locale !== 'en') {
-    const landingFile = path.resolve(messagesDir, 'home', `${locale}.json`);
-    Object.assign(raw, JSON.parse(readFileSync(landingFile, 'utf8')) as Record<string, unknown>);
-  }
+  // D-01-REVISED: the localized landing bundles were retired with the
+  // SaaS landing; every surviving namespace (Eald.*, Seo.*, …) resolves from
+  // the base catalogues alone.
 
   return flatten(raw, '', {});
 }

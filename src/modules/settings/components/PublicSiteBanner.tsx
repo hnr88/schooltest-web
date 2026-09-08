@@ -39,7 +39,7 @@ async function PublicSiteBanner({ settings }: PublicSiteBannerProps) {
         <p className="text-body-sm font-medium">
           {message}{' '}
           <Link
-            href="/eald#register"
+            href="/#register"
             className="font-semibold text-primary underline-offset-2 hover:underline"
           >
             {t('Eald.notice.cta')}

@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { Badge, Container, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Badge, Container, ScrollReveal, Section } from '@/modules/design-system';
 import { STATS } from '@/modules/eald/constants/components.constants';
 
 async function ProofSection() {

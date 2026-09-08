@@ -1,8 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
-import { Button, Container, Eyebrow, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Button, Container, Eyebrow, ScrollReveal, Section } from '@/modules/design-system';
 
 async function EaldCtaBand() {
   const t = await getTranslations('Eald');

@@ -62,25 +62,25 @@ export const WHAT_YOU_GET_CARDS: readonly WhatYouGetCard[] = [
   {
     titleKey: 'home.whatYouGet.diagnoseTitle',
     descKey: 'home.whatYouGet.diagnoseDescription',
-    href: '/eald/diagnose',
+    href: '/diagnose',
     tone: 'blue',
   },
   {
     titleKey: 'home.whatYouGet.teachTitle',
     descKey: 'home.whatYouGet.teachDescription',
-    href: '/eald/teach',
+    href: '/teach',
     tone: 'blue',
   },
   {
     titleKey: 'home.whatYouGet.trackTitle',
     descKey: 'home.whatYouGet.trackDescription',
-    href: '/eald/track',
+    href: '/track',
     tone: 'teal',
   },
   {
     titleKey: 'home.whatYouGet.predictTitle',
     descKey: 'home.whatYouGet.predictDescription',
-    href: '/eald/predict',
+    href: '/predict',
     tone: 'teal',
   },
   {

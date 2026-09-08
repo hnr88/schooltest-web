@@ -2,62 +2,62 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import {
-  CohortSection,
   EaldCtaBand,
   EaldFooter,
   EaldHeader,
-  IndividualSection,
   NextSectionNav,
-  PredictHero,
   QuoteBand,
-  PREDICT_NEXT_SECTIONS,
+  TRACK_NEXT_SECTIONS,
 } from '@/modules/eald';
 import { PublicBreadcrumb } from '@/modules/navigation';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings } from '@/modules/settings';
+import { EvidenceSection } from '@/modules/eald';
+import { TeachEmpiricalSection } from '@/modules/eald';
+import { TrackHero } from '@/modules/eald';
 
-interface PredictPageProps {
+interface TrackPageProps {
   params: Promise<{ locale: string }>;
 }
 
-export async function generateMetadata({ params }: PredictPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: TrackPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations('Eald.meta');
   const settings = await getPublicSettings();
   return buildPageMetadata({
-    title: t('predictTitle'),
-    description: t('predictDescription'),
-    pathname: '/eald/predict',
+    title: t('trackTitle'),
+    description: t('trackDescription'),
+    pathname: '/track',
     locale,
     siteName: settings.site_name,
   });
 }
 
-export default async function PredictPage({ params }: PredictPageProps) {
+export default async function TrackPage({ params }: TrackPageProps) {
   const { locale } = await params;
   const t = await getTranslations('Eald');
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <EaldHeader activePage="predict" />
-      <BreadcrumbJsonLd pathname="/eald/predict" locale={locale} />
+      <EaldHeader activePage="track" />
+      <BreadcrumbJsonLd pathname="/track" locale={locale} />
       <PublicPageJsonLd
-        pathname="/eald/predict"
+        pathname="/track"
         locale={locale}
-        title={t('meta.predictTitle')}
-        description={t('meta.predictDescription')}
+        title={t('meta.trackTitle')}
+        description={t('meta.trackDescription')}
       />
-      <PublicBreadcrumb pathname="/eald/predict" />
+      <PublicBreadcrumb pathname="/track" />
       <main>
-        <PredictHero />
-        <IndividualSection />
-        <CohortSection />
+        <TrackHero />
+        <EvidenceSection />
+        <TeachEmpiricalSection />
         <QuoteBand
-          quote={t.rich('predict.quote', {
+          quote={t.rich('track.quote', {
             br: () => <br />,
           })}
         />
-        <NextSectionNav sections={PREDICT_NEXT_SECTIONS} />
+        <NextSectionNav sections={TRACK_NEXT_SECTIONS} />
         <EaldCtaBand />
       </main>
       <EaldFooter />

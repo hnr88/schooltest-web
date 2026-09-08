@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: DiagnosePageProps): Promise<M
   return buildPageMetadata({
     title: t('diagnoseTitle'),
     description: t('diagnoseDescription'),
-    pathname: '/eald/diagnose',
+    pathname: '/diagnose',
     locale,
     siteName: settings.site_name,
   });
@@ -40,14 +40,14 @@ export default async function DiagnosePage({ params }: DiagnosePageProps) {
   return (
     <div className="min-h-screen bg-white text-foreground">
       <EaldHeader activePage="diagnose" />
-      <BreadcrumbJsonLd pathname="/eald/diagnose" locale={locale} />
+      <BreadcrumbJsonLd pathname="/diagnose" locale={locale} />
       <PublicPageJsonLd
-        pathname="/eald/diagnose"
+        pathname="/diagnose"
         locale={locale}
         title={t('meta.diagnoseTitle')}
         description={t('meta.diagnoseDescription')}
       />
-      <PublicBreadcrumb pathname="/eald/diagnose" />
+      <PublicBreadcrumb pathname="/diagnose" />
       <main id="main-content">
         <DiagnoseHero />
         <UnpackSection />

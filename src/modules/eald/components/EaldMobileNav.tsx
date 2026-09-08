@@ -89,7 +89,7 @@ function EaldMobileNav({ activePage }: EaldMobileNavProps) {
             {t('Eald.nav.signIn')}
           </Link>
           <Link
-            href="/eald#register"
+            href="/#register"
             onClick={close}
             className="inline-flex h-11 items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/80"
           >

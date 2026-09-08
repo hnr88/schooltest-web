@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
-import { Container, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Container, ScrollReveal, Section } from '@/modules/design-system';
 
 async function ClassroomBand() {
   const t = await getTranslations('Eald');

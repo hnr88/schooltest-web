@@ -2,8 +2,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
-import { Container, Eyebrow, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Container, Eyebrow, ScrollReveal, Section } from '@/modules/design-system';
 import { WHAT_YOU_GET_CARDS } from '@/modules/eald/constants/components.constants';
 import type { WhatYouGetCard } from '@/modules/eald/types/components.types';
 

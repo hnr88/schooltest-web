@@ -1,12 +1,12 @@
 import type { EaldNavLink, EaldFooterColumn, NextSectionCard, SubskillBar } from '@/modules/eald/types/eald.types';
 
 const EALD_NAV_LINKS: readonly EaldNavLink[] = [
-  { href: '/eald', key: 'nav.overview', page: 'home' },
-  { href: '/eald/diagnose', key: 'nav.diagnose', page: 'diagnose' },
-  { href: '/eald/teach', key: 'nav.teach', page: 'teach' },
-  { href: '/eald/track', key: 'nav.track', page: 'track' },
-  { href: '/eald/predict', key: 'nav.predict', page: 'predict' },
-  { href: '/eald#evidence', key: 'nav.evidence' },
+  { href: '/', key: 'nav.overview', page: 'home' },
+  { href: '/diagnose', key: 'nav.diagnose', page: 'diagnose' },
+  { href: '/teach', key: 'nav.teach', page: 'teach' },
+  { href: '/track', key: 'nav.track', page: 'track' },
+  { href: '/predict', key: 'nav.predict', page: 'predict' },
+  { href: '/#evidence', key: 'nav.evidence' },
 ] as const;
 
 // Home v2:347–379. The design's four link columns behind the brand column.
@@ -20,20 +20,20 @@ const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
   {
     titleKey: 'Eald.footer.productTitle',
     links: [
-      { href: '/eald/diagnose', labelKey: 'Eald.footer.diagnose' },
-      { href: '/eald/teach', labelKey: 'Eald.footer.teach' },
-      { href: '/eald/track', labelKey: 'Eald.footer.track' },
-      { href: '/eald/predict', labelKey: 'Eald.footer.predict' },
+      { href: '/diagnose', labelKey: 'Eald.footer.diagnose' },
+      { href: '/teach', labelKey: 'Eald.footer.teach' },
+      { href: '/track', labelKey: 'Eald.footer.track' },
+      { href: '/predict', labelKey: 'Eald.footer.predict' },
     ],
   },
   {
     titleKey: 'Eald.footer.forSchoolsTitle',
     links: [
-      { href: '/eald#register', labelKey: 'Eald.footer.foundingPilot' },
-      // `/eald#evidence` is the anchor task 07 puts on the home progress
+      { href: '/#register', labelKey: 'Eald.footer.foundingPilot' },
+      // `/#evidence` is the anchor task 07 puts on the home progress
       // chart — the same destination the masthead's Evidence base link uses.
-      { href: '/eald#evidence', labelKey: 'Eald.footer.evidenceBase' },
-      { href: '/eald#register', labelKey: 'Eald.footer.testAdministration' },
+      { href: '/#evidence', labelKey: 'Eald.footer.evidenceBase' },
+      { href: '/#register', labelKey: 'Eald.footer.testAdministration' },
       { href: '/dashboard/search', labelKey: 'Eald.footer.schoolSearch' },
     ],
   },
@@ -43,7 +43,7 @@ const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
   {
     titleKey: 'Eald.footer.aboutTitle',
     links: [
-      { href: '/eald#register', labelKey: 'Eald.footer.contact' },
+      { href: '/#register', labelKey: 'Eald.footer.contact' },
       { href: '/privacy-policy', labelKey: 'Eald.footer.privacyStatement' },
       { href: '/terms-of-service', labelKey: 'Eald.footer.termsOfUse' },
       { href: '/cookie-policy', labelKey: 'Navigation.cookiePolicy' },
@@ -53,27 +53,27 @@ const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
 ] as const;
 
 const DIAGNOSE_NEXT_SECTIONS: readonly NextSectionCard[] = [
-  { number: '02', titleKey: 'shared.nextTeachTitle', descriptionKey: 'shared.nextTeachDescription', href: '/eald/teach' },
-  { number: '03', titleKey: 'shared.nextTrackTitle', descriptionKey: 'shared.nextTrackDescription', href: '/eald/track' },
-  { number: '04', titleKey: 'shared.nextPredictTitle', descriptionKey: 'shared.nextPredictDescription', href: '/eald/predict' },
+  { number: '02', titleKey: 'shared.nextTeachTitle', descriptionKey: 'shared.nextTeachDescription', href: '/teach' },
+  { number: '03', titleKey: 'shared.nextTrackTitle', descriptionKey: 'shared.nextTrackDescription', href: '/track' },
+  { number: '04', titleKey: 'shared.nextPredictTitle', descriptionKey: 'shared.nextPredictDescription', href: '/predict' },
 ] as const;
 
 const TEACH_NEXT_SECTIONS: readonly NextSectionCard[] = [
-  { number: '01', titleKey: 'shared.nextDiagnoseTitle', descriptionKey: 'shared.nextDiagnoseDescription', href: '/eald/diagnose' },
-  { number: '03', titleKey: 'shared.nextTrackTitle', descriptionKey: 'shared.nextTrackDescription', href: '/eald/track' },
-  { number: '04', titleKey: 'shared.nextPredictTitle', descriptionKey: 'shared.nextPredictDescription', href: '/eald/predict' },
+  { number: '01', titleKey: 'shared.nextDiagnoseTitle', descriptionKey: 'shared.nextDiagnoseDescription', href: '/diagnose' },
+  { number: '03', titleKey: 'shared.nextTrackTitle', descriptionKey: 'shared.nextTrackDescription', href: '/track' },
+  { number: '04', titleKey: 'shared.nextPredictTitle', descriptionKey: 'shared.nextPredictDescription', href: '/predict' },
 ] as const;
 
 const TRACK_NEXT_SECTIONS: readonly NextSectionCard[] = [
-  { number: '01', titleKey: 'shared.nextDiagnoseTitle', descriptionKey: 'shared.nextDiagnoseDescription', href: '/eald/diagnose' },
-  { number: '02', titleKey: 'shared.nextTeachTitle', descriptionKey: 'shared.nextTeachDescription', href: '/eald/teach' },
-  { number: '04', titleKey: 'shared.nextPredictTitle', descriptionKey: 'shared.nextPredictDescription', href: '/eald/predict' },
+  { number: '01', titleKey: 'shared.nextDiagnoseTitle', descriptionKey: 'shared.nextDiagnoseDescription', href: '/diagnose' },
+  { number: '02', titleKey: 'shared.nextTeachTitle', descriptionKey: 'shared.nextTeachDescription', href: '/teach' },
+  { number: '04', titleKey: 'shared.nextPredictTitle', descriptionKey: 'shared.nextPredictDescription', href: '/predict' },
 ] as const;
 
 const PREDICT_NEXT_SECTIONS: readonly NextSectionCard[] = [
-  { number: '01', titleKey: 'shared.nextDiagnoseTitle', descriptionKey: 'shared.nextDiagnoseDescription', href: '/eald/diagnose' },
-  { number: '02', titleKey: 'shared.nextTeachTitle', descriptionKey: 'shared.nextTeachDescription', href: '/eald/teach' },
-  { number: '03', titleKey: 'shared.nextTrackTitle', descriptionKey: 'shared.nextTrackDescription', href: '/eald/track' },
+  { number: '01', titleKey: 'shared.nextDiagnoseTitle', descriptionKey: 'shared.nextDiagnoseDescription', href: '/diagnose' },
+  { number: '02', titleKey: 'shared.nextTeachTitle', descriptionKey: 'shared.nextTeachDescription', href: '/teach' },
+  { number: '03', titleKey: 'shared.nextTrackTitle', descriptionKey: 'shared.nextTrackDescription', href: '/track' },
 ] as const;
 
 const DIAGNOSE_SUBSKILLS: readonly SubskillBar[] = [

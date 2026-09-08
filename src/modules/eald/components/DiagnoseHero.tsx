@@ -27,12 +27,12 @@ async function DiagnoseHero() {
               {t('diagnose.hero.body')}
             </p>
             <div className="mt-7.5 flex flex-wrap gap-3">
-              <Button href="/eald#register" className="h-auto rounded-xl px-6 py-3.5">
+              <Button href="/#register" className="h-auto rounded-xl px-6 py-3.5">
                 {t('diagnose.hero.registerCta')}
                 <ArrowRight aria-hidden="true" className="size-4" />
               </Button>
               <Button
-                href="/eald/teach"
+                href="/teach"
                 variant="outline"
                 className="h-auto rounded-xl px-6 py-3.5"
               >

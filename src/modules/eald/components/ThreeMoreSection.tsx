@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { Container, Section } from '@/modules/design-system';
-import { ScrollReveal } from '@/modules/landing';
+import { Container, ScrollReveal, Section } from '@/modules/design-system';
 import { THREE_MORE_CARDS } from '@/modules/eald/constants/components.constants';
 
 async function ThreeMoreSection() {

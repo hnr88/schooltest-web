@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: TeachPageProps): Promise<Meta
   return buildPageMetadata({
     title: t('teachTitle'),
     description: t('teachDescription'),
-    pathname: '/eald/teach',
+    pathname: '/teach',
     locale,
     siteName: settings.site_name,
   });
@@ -41,14 +41,14 @@ export default async function TeachPage({ params }: TeachPageProps) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <EaldHeader activePage="teach" />
-      <BreadcrumbJsonLd pathname="/eald/teach" locale={locale} />
+      <BreadcrumbJsonLd pathname="/teach" locale={locale} />
       <PublicPageJsonLd
-        pathname="/eald/teach"
+        pathname="/teach"
         locale={locale}
         title={t('meta.teachTitle')}
         description={t('meta.teachDescription')}
       />
-      <PublicBreadcrumb pathname="/eald/teach" />
+      <PublicBreadcrumb pathname="/teach" />
       <main>
         <TeachHero />
         <GenerateSection />

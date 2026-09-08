@@ -3,8 +3,6 @@ import {
   cat,
   ds,
   escapeRegExp,
-  heroTitleLines,
-  home,
   icu,
   loadMessages,
   type Locale,
@@ -322,15 +320,15 @@ test('LOCALE-TOGGLE: footer switcher en→zh→en uses canonical locale URLs', a
     .getByRole('combobox', { name: cat(en, 'LocaleSwitcher.label'), exact: true })
     .click();
   await page.getByRole('option', { name: '中文' }).click();
-  // Shared chrome and the landing content both flip to Chinese.
-  await expect(page.getByText(zh['Home.skipToContent'], { exact: true })).toBeAttached();
-  for (const line of heroTitleLines(zh)) await expect(h1).toContainText(line);
+  // Shared chrome and the EAL/D home content both flip to Chinese.
+  await expect(page.getByText(cat(zh, 'Eald.nav.label'), { exact: true })).toBeAttached();
+  await expect(h1).toContainText(cat(zh, 'Eald.home.hero.title'));
   await expect(page).toHaveURL((url) => url.pathname === '/zh');
   await footer
     .getByRole('combobox', { name: cat(zh, 'LocaleSwitcher.label'), exact: true })
     .click();
   await page.getByRole('option', { name: 'English' }).click();
-  await expect(page.getByText(en['Home.skipToContent'], { exact: true })).toBeAttached();
+  await expect(page.getByText(cat(en, 'Eald.nav.label'), { exact: true })).toBeAttached();
   await expect(page).toHaveURL((url) => url.pathname === '/');
   expect(errors, errors.join('\n')).toEqual([]);
 });

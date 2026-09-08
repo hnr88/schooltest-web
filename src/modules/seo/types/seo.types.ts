@@ -33,7 +33,7 @@ export interface BuildPageMetadataInput {
 
 /** One entry of the shared public-route registry (sitemap + llms.txt + robots). */
 export interface PublicRoute {
-  /** Locale-less pathname, e.g. `/eald/diagnose`. */
+  /** Locale-less pathname, e.g. `/diagnose`. */
   readonly pathname: string;
   readonly changeFrequency: 'daily' | 'weekly' | 'monthly' | 'yearly';
   readonly priority: number;

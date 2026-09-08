@@ -6,7 +6,7 @@ interface EaldNavLink {
   readonly href: string;
   readonly key: string;
   // Absent for entries that can never be the current page (anchors such as
-  // `/eald#evidence`), so `activePage === page` never highlights them.
+  // `/#evidence`), so `activePage === page` never highlights them.
   readonly page?: EaldPage;
 }
 

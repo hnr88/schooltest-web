@@ -23,10 +23,10 @@ async function TeachHero() {
               {t('teach.hero.body')}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Button size="xl" href="/eald#register">
+              <Button size="xl" href="/#register">
                 {t('teach.hero.primaryCta')}
               </Button>
-              <Button variant="outline" size="xl" href="/eald/diagnose">
+              <Button variant="outline" size="xl" href="/diagnose">
                 {t('teach.hero.secondaryCta')}
               </Button>
             </div>
