@@ -93,3 +93,16 @@ export interface TeachGroupingConfig {
   readonly categories: readonly TeachGroupingCategory[];
 }
 
+export interface TrackProgressCategory {
+  readonly labelKey: string;
+  readonly bars: readonly { readonly value: number; readonly display: string }[];
+}
+
+// Task 12's TRACK_PROGRESS (Track:172–187): four sittings over four subskills,
+// values on the 0–100 ACARA band scale (BarChart max=100); band labels listed
+// bottom-up.
+export interface TrackProgressConfig {
+  readonly seriesLabelKeys: readonly string[];
+  readonly bandLabelKeys: readonly string[];
+  readonly categories: readonly TrackProgressCategory[];
+}

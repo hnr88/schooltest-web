@@ -4643,7 +4643,16 @@
       "hero": {
         "eyebrow": "시간에 따른 진도 추적",
         "title": "느낌이 아니라 측정할 수 있는 진보.",
-        "body": "어떤 스킬이든 30분 만에 재시험하고, 수업 주기에 맞춰 원하는 만큼 자주. 모든 결과가 같은 척도에 놓이므로 무엇이 얼마나 변했는지 항상 알 수 있습니다."
+        "body": "어떤 스킬이든 30분 만에 재시험하고, 수업 주기에 맞춰 원하는 만큼 자주. 모든 결과가 같은 척도에 놓이므로 무엇이 얼마나 변했는지 항상 알 수 있습니다.",
+        "statsLabel": "진전 현황 한눈에 보기",
+        "stat1Label": "재시험 주기",
+        "stat1Value": "필요할 때마다",
+        "stat2Label": "평가 척도",
+        "stat2Value": "ACARA 단계",
+        "stat3Label": "비교 가능한 평가",
+        "stat3Value": "모든 평가",
+        "stat4Label": "단일 기술 재시험",
+        "stat4Value": "30분"
       },
       "evidence": {
         "eyebrow": "증거의 궤적",
@@ -4669,6 +4678,25 @@
         "focusBadge": "어휘 집중, 3–8주차",
         "resultBadge": "어휘 +2단계",
         "callout": "<strong>의미하는 바:</strong> 학생뿐 아니라 당신의 수업에 대한 피드백."
+      },
+      "progress": {
+        "eyebrow": "네 번의 평가, 하나의 척도",
+        "heading": "손으로 가리킬 수 있는 성장입니다.",
+        "bodyOne": "1년에 네 번의 평가, 네 가지 하위 기술, 하나의 척도입니다. 어휘는 가르친 곳이라 가장 빠르게 움직이고, 비판적 읽기는 거의 움직이지 않으며, 그것이 다음 논의 주제입니다.",
+        "bodyTwo": "하나의 등급으로 평균내면 이 중 어떤 것도 보이지 않습니다.",
+        "figureTitle": "그림 1 — 네 차례 평가에 걸친 네 가지 하위 기술",
+        "figureContext": "9학년 · 한 학생, 1년",
+        "ariaLabel": "네 학기에 걸쳐 측정한 네 가지 읽기 하위 기술을 보여주는 그룹 막대 차트",
+        "categoryVocabulary": "어휘",
+        "categoryInference": "추론",
+        "categoryGrammar": "문법",
+        "categoryCritical": "비판적 읽기",
+        "bandBeginning": "시작",
+        "bandDeveloping": "발달",
+        "bandEmerging": "출현",
+        "bandConsolidating": "강화",
+        "bandIndependent": "독립",
+        "footnote": "예시 데이터입니다. ACARA 단계가 표시되며 CEFR 등급도 함께 보고됩니다."
       },
       "quote": "가리켜 보일 수 있는 진보."
     },

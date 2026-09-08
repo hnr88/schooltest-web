@@ -4633,7 +4633,16 @@
       "hero": {
         "eyebrow": "长期追踪进度",
         "title": "可以衡量的进步，而不只是感觉。",
-        "body": "任何技能都可在 30 分钟内重测，频率随你的教学周期而定。每次结果都落在同一量表上，你始终知道哪里进步了、进步了多少。"
+        "body": "任何技能都可在 30 分钟内重测，频率随你的教学周期而定。每次结果都落在同一量表上，你始终知道哪里进步了、进步了多少。",
+        "statsLabel": "跟踪进步一览",
+        "stat1Label": "复测周期",
+        "stat1Value": "按需随时",
+        "stat2Label": "量尺",
+        "stat2Value": "ACARA 阶段",
+        "stat3Label": "可比测评",
+        "stat3Value": "每一次",
+        "stat4Label": "单项技能复测",
+        "stat4Value": "30 分钟"
       },
       "evidence": {
         "eyebrow": "证据轨迹",
@@ -4659,6 +4668,25 @@
         "focusBadge": "词汇重点，第 3–8 周",
         "resultBadge": "词汇 +2 个阶段",
         "callout": "<strong>对你而言：</strong>不仅是对学生的反馈，也是对你教学的反馈。"
+      },
+      "progress": {
+        "eyebrow": "四次测评，同一把尺",
+        "heading": "看得见、指得出的进步。",
+        "bodyOne": "一年四次测评、四项子技能、同一把量尺。词汇进步最快，因为教学着力于此；批判性阅读几乎停滞，这正是接下来要谈的话题。",
+        "bodyTwo": "一旦平均成一个等级，这些就全都看不见了。",
+        "figureTitle": "图 1 — 四次测评中的四项子技能",
+        "figureContext": "九年级 · 一名学生，一学年",
+        "ariaLabel": "分组柱状图，展示四项阅读子技能在四学期中的测量结果",
+        "categoryVocabulary": "词汇",
+        "categoryInference": "推断",
+        "categoryGrammar": "语法",
+        "categoryCritical": "批判性阅读",
+        "bandBeginning": "起步",
+        "bandDeveloping": "发展",
+        "bandEmerging": "萌芽",
+        "bandConsolidating": "巩固",
+        "bandIndependent": "独立",
+        "footnote": "示例数据。图中显示 ACARA 阶段；CEFR 等级一并报告。"
       },
       "quote": "可以指给人看的进步。"
     },

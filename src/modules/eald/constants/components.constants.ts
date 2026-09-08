@@ -3,6 +3,7 @@ import type {
   HomeEvidenceChartConfig,
   ProgrammeFact,
   TeachGroupingConfig,
+  TrackProgressConfig,
   WhatYouGetCard,
 } from '@/modules/eald/types/components.types';
 
@@ -199,3 +200,61 @@ export const PREDICT_COHORT = [
   { labelKey: 'predict.cohort.figureBand80plus', values: [2, 6] },
 ] as const;
 
+// Track:172–187 — "Figure 1 — Four subskills across four sittings". The
+// widest figure in the backlog: four sittings over four subskills on the
+// 0–100 ACARA band scale (BarChart max=100). Series labels reuse the existing
+// track.evidence.term{1..4}Label keys; band keys are listed bottom-up
+// (Beginning … Independent) to match the axis order BarChart expects.
+export const TRACK_PROGRESS: TrackProgressConfig = {
+  seriesLabelKeys: [
+    'track.evidence.term1Label',
+    'track.evidence.term2Label',
+    'track.evidence.term3Label',
+    'track.evidence.term4Label',
+  ],
+  bandLabelKeys: [
+    'track.progress.bandBeginning',
+    'track.progress.bandDeveloping',
+    'track.progress.bandEmerging',
+    'track.progress.bandConsolidating',
+    'track.progress.bandIndependent',
+  ],
+  categories: [
+    {
+      labelKey: 'track.progress.categoryVocabulary',
+      bars: [
+        { value: 24, display: '24' },
+        { value: 42, display: '42' },
+        { value: 66, display: '66' },
+        { value: 84, display: '84' },
+      ],
+    },
+    {
+      labelKey: 'track.progress.categoryInference',
+      bars: [
+        { value: 18, display: '18' },
+        { value: 30, display: '30' },
+        { value: 52, display: '52' },
+        { value: 72, display: '72' },
+      ],
+    },
+    {
+      labelKey: 'track.progress.categoryGrammar',
+      bars: [
+        { value: 36, display: '36' },
+        { value: 44, display: '44' },
+        { value: 58, display: '58' },
+        { value: 68, display: '68' },
+      ],
+    },
+    {
+      labelKey: 'track.progress.categoryCritical',
+      bars: [
+        { value: 16, display: '16' },
+        { value: 20, display: '20' },
+        { value: 26, display: '26' },
+        { value: 34, display: '34' },
+      ],
+    },
+  ],
+};

@@ -4643,7 +4643,16 @@
       "hero": {
         "eyebrow": "Jejak kemajuan dari semasa ke semasa",
         "title": "Kemajuan yang boleh diukur, bukan sekadar dirasa.",
-        "body": "Uji semula mana-mana kemahiran dalam 30 minit, sekerap yang diperlukan kitaran pengajaran anda. Setiap keputusan berada pada skala yang sama, jadi anda sentiasa tahu apa yang berubah dan berapa banyak."
+        "body": "Uji semula mana-mana kemahiran dalam 30 minit, sekerap yang diperlukan kitaran pengajaran anda. Setiap keputusan berada pada skala yang sama, jadi anda sentiasa tahu apa yang berubah dan berapa banyak.",
+        "statsLabel": "Sekilas kemajuan penjejakan",
+        "stat1Label": "Kitaran ujian semula",
+        "stat1Value": "Se kerap diperlukan",
+        "stat2Label": "Skala",
+        "stat2Value": "Fasa ACARA",
+        "stat3Label": "Sesi ujian setara",
+        "stat3Value": "Setiap satu",
+        "stat4Label": "Ujian semula satu kemahiran",
+        "stat4Value": "30 minit"
       },
       "evidence": {
         "eyebrow": "Jejak bukti",
@@ -4669,6 +4678,25 @@
         "focusBadge": "Fokus kosa kata, minggu 3–8",
         "resultBadge": "Kosa kata +2 fasa",
         "callout": "<strong>Maksudnya untuk anda:</strong> maklum balas tentang pengajaran anda, bukan hanya murid anda."
+      },
+      "progress": {
+        "eyebrow": "Empat sesi, satu skala",
+        "heading": "Kemajuan yang boleh ditunjuk.",
+        "bodyOne": "Empat sesi ujian setahun, empat subkemahiran, satu skala. Perbendaharaan kata bergerak paling cepat kerana di situlah pengajaran difokuskan; bacaan kritikal hampir tidak bergerak, dan itulah perbincangan seterusnya.",
+        "bodyTwo": "Jika dipuratakan menjadi satu band, semua ini tidak kelihatan.",
+        "figureTitle": "Rajah 1 — Empat subkemahiran merentas empat sesi ujian",
+        "figureContext": "Tahun 9 · seorang pelajar, satu tahun",
+        "ariaLabel": "Carta lajur berkumpulan menunjukkan empat subkemahiran membaca yang diukur merentas empat penggal persekolahan",
+        "categoryVocabulary": "Perbendaharaan kata",
+        "categoryInference": "Inferens",
+        "categoryGrammar": "Tatabahasa",
+        "categoryCritical": "Bacaan kritikal",
+        "bandBeginning": "Permulaan",
+        "bandDeveloping": "Berkembang",
+        "bandEmerging": "Muncul",
+        "bandConsolidating": "Pemantapan",
+        "bandIndependent": "Bebas",
+        "footnote": "Data ilustrasi. Fasa ACARA dipaparkan; band CEFR dilaporkan bersama."
       },
       "quote": "Kemajuan yang boleh anda tunjukkan."
     },

@@ -1,40 +1,39 @@
-import Image from 'next/image';
-
 import { getTranslations } from 'next-intl/server';
 
-import { Container, Eyebrow, Section } from '@/modules/design-system';
+import { StatStrip } from '@/modules/design-system';
+import { EaldHero } from '@/modules/eald';
 
 async function TrackHero() {
   const t = await getTranslations('Eald.track.hero');
+  const tRoot = await getTranslations('Eald');
 
+  // Home v2/Track :67–90 — the full-bleed dark hero comes from task 05's
+  // EaldHero variant (centered={false}); this component never forks its own.
+  // The photo is the track page's existing asset, reused rather than swapped
+  // for a near-duplicate.
   return (
-    <Section className="bg-gradient-to-b from-white to-background py-5 sm:py-6">
-      <Container className="max-w-eald">
-        <div className="relative flex min-h-72 items-end overflow-hidden rounded-4xl bg-navy-900 shadow-xl sm:min-h-96 lg:min-h-135">
-          <Image
-            src="/images/azzedine-rouichi-KDM09YR4_bY-unsplash.jpg"
-            alt=""
-            fill
-            priority
-            sizes="(min-width: 1380px) 1320px, calc(100vw - 2.5rem)"
-            className="object-cover"
-          />
-          <div aria-hidden="true" className="absolute inset-0 bg-eald-hero-scrim" />
-
-          <div className="relative z-10 max-w-3xl px-8 py-14 sm:px-12">
-            <Eyebrow tone="teal" className="text-teal-400">
-              {t('eyebrow')}
-            </Eyebrow>
-            <h1 className="mt-4 text-display font-bold text-balance text-white text-shadow-lg">
-              {t('title')}
-            </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/90">
-              {t('body')}
-            </p>
-          </div>
-        </div>
-      </Container>
-    </Section>
+    <EaldHero
+      centered={false}
+      imageSrc="/images/azzedine-rouichi-KDM09YR4_bY-unsplash.jpg"
+      imageAlt=""
+      eyebrow={t('eyebrow')}
+      title={t('title')}
+      subtitle={t('body')}
+      primaryCta={{ label: tRoot('diagnose.hero.registerCta'), href: '/#register' }}
+      secondaryCta={{ label: tRoot('footer.predict'), href: '/predict' }}
+      stats={
+        <StatStrip
+          ariaLabel={t('statsLabel')}
+          className="grid grid-cols-2 gap-y-6 lg:grid-cols-4 lg:gap-y-0 [&>div]:py-4 lg:[&>div]:py-5 lg:[&>div]:px-6 lg:[&>div:first-child]:pl-0 lg:[&>div:last-child]:pr-0 lg:[&>div+div]:border-l lg:[&>div+div]:border-white/15 [&>div>dd]:order-2 [&>div>dt]:order-1 [&>div>dd]:text-white [&>div>dt]:tracking-widest [&>div>dt]:text-navy-muted [&>div>dt]:uppercase"
+          items={[
+            { label: t('stat1Label'), value: t('stat1Value') },
+            { label: t('stat2Label'), value: t('stat2Value') },
+            { label: t('stat3Label'), value: t('stat3Value') },
+            { label: t('stat4Label'), value: t('stat4Value') },
+          ]}
+        />
+      }
+    />
   );
 }
 

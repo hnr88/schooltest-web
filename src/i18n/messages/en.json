@@ -2066,7 +2066,16 @@
       "hero": {
         "eyebrow": "Track progress over time",
         "title": "Progress you can measure, not just feel.",
-        "body": "Re-test any skill in 30 minutes, as often as your teaching cycle needs. Every result sits on the same scale, so you always know what moved and by how much."
+        "body": "Re-test any skill in 30 minutes, as often as your teaching cycle needs. Every result sits on the same scale, so you always know what moved and by how much.",
+        "statsLabel": "Track progress at a glance",
+        "stat1Label": "Retest cycle",
+        "stat1Value": "As often as needed",
+        "stat2Label": "Scale",
+        "stat2Value": "ACARA phases",
+        "stat3Label": "Comparable sittings",
+        "stat3Value": "Every one",
+        "stat4Label": "Single-skill retest",
+        "stat4Value": "30 minutes"
       },
       "evidence": {
         "eyebrow": "The evidence trail",
@@ -2092,6 +2101,25 @@
         "focusBadge": "Vocabulary focus, weeks 3–8",
         "resultBadge": "Vocabulary +2 phases",
         "callout": "<strong>What this means for you:</strong> feedback on your teaching, not just on your students."
+      },
+      "progress": {
+        "eyebrow": "Four terms, one scale",
+        "heading": "Growth you can point at.",
+        "bodyOne": "Four sittings across a year, four subskills, one scale. Vocabulary moves fastest because that is where the teaching went; critical reading barely moves, which is the next conversation.",
+        "bodyTwo": "Averaged into a single band, none of this is visible.",
+        "figureTitle": "Figure 1 — Four subskills across four sittings",
+        "figureContext": "Year 9 · one student, one year",
+        "ariaLabel": "Grouped column chart showing four reading subskills measured across four school terms",
+        "categoryVocabulary": "Vocabulary",
+        "categoryInference": "Inference",
+        "categoryGrammar": "Grammar",
+        "categoryCritical": "Critical",
+        "bandBeginning": "Beginning",
+        "bandDeveloping": "Developing",
+        "bandEmerging": "Emerging",
+        "bandConsolidating": "Consolidating",
+        "bandIndependent": "Independent",
+        "footnote": "Illustrative sample data. ACARA phases shown; CEFR bands reported alongside."
       },
       "quote": "Progress you can point to."
     },

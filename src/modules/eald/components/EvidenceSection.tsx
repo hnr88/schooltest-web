@@ -1,14 +1,20 @@
 import { getTranslations } from 'next-intl/server';
 
-import { Container, Eyebrow, ScrollReveal, Section } from '@/modules/design-system';
-import { TERMS } from '@/modules/eald/constants/components.constants';
+import { BarChart, Container, Eyebrow, ScrollReveal, Section } from '@/modules/design-system';
+import { TERMS, TRACK_PROGRESS } from '@/modules/eald/constants/components.constants';
+import { FigureCard } from '@/modules/eald/components/FigureCard';
 
 async function EvidenceSection() {
   const t = await getTranslations('Eald.track.evidence');
+  // The progress chart's constant stores keys relative to the Eald root (its
+  // series labels reuse the evidence.term{1..4}Label keys), so the band below
+  // reads through a root-scoped translation.
+  const tEald = await getTranslations('Eald');
 
   return (
-    <Section>
-      <Container className="max-w-eald">
+    <>
+      <Section>
+        <Container className="max-w-eald">
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <ScrollReveal>
             <Eyebrow tone="teal">{t('eyebrow')}</Eyebrow>
@@ -72,6 +78,50 @@ async function EvidenceSection() {
         </div>
       </Container>
     </Section>
+
+    {/* Track:117–200 — the four-series progress figure ("Figure 1 — Four
+        subskills across four sittings"), the widest chart in the feature. */}
+    <Section className="border-y border-border bg-muted">
+      <Container className="max-w-eald">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <Eyebrow tone="teal">{tEald('track.progress.eyebrow')}</Eyebrow>
+            <h2 className="mt-4 text-balance text-h2 font-bold text-foreground">
+              {tEald('track.progress.heading')}
+            </h2>
+            <p className="mt-4 max-w-prose text-body-lg leading-relaxed text-body">
+              {tEald('track.progress.bodyOne')}
+            </p>
+            <p className="mt-3.5 max-w-prose text-body-lg leading-relaxed text-body">
+              {tEald('track.progress.bodyTwo')}
+            </p>
+          </div>
+          <FigureCard
+            title={tEald('track.progress.figureTitle')}
+            context={tEald('track.progress.figureContext')}
+            footnote={tEald('track.progress.footnote')}
+          >
+            <BarChart
+              ariaLabel={tEald('track.progress.ariaLabel')}
+              max={100}
+              series={TRACK_PROGRESS.seriesLabelKeys.map((key) => tEald(key))}
+              bands={TRACK_PROGRESS.bandLabelKeys.map((key) => tEald(key))}
+              items={TRACK_PROGRESS.categories.map((category) => {
+                const top = category.bars[category.bars.length - 1];
+                return {
+                  label: tEald(category.labelKey),
+                  value: top.value,
+                  display: top.display,
+                  current: true,
+                  bars: category.bars.map((bar) => ({ value: bar.value, display: bar.display })),
+                };
+              })}
+            />
+          </FigureCard>
+        </div>
+      </Container>
+    </Section>
+    </>
   );
 }
 

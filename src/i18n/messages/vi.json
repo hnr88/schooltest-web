@@ -4652,7 +4652,16 @@
       "hero": {
         "eyebrow": "Theo dõi tiến bộ theo thời gian",
         "title": "Tiến bộ đo được, không chỉ cảm nhận được.",
-        "body": "Kiểm tra lại bất kỳ kỹ năng nào trong 30 phút, thường xuyên theo chu kỳ giảng dạy của bạn. Mọi kết quả đều nằm trên cùng một thang đo, nên bạn luôn biết cái gì đã thay đổi và thay đổi bao nhiêu."
+        "body": "Kiểm tra lại bất kỳ kỹ năng nào trong 30 phút, thường xuyên theo chu kỳ giảng dạy của bạn. Mọi kết quả đều nằm trên cùng một thang đo, nên bạn luôn biết cái gì đã thay đổi và thay đổi bao nhiêu.",
+        "statsLabel": "Tổng quan về theo dõi tiến bộ",
+        "stat1Label": "Chu kỳ kiểm tra lại",
+        "stat1Value": "Bất cứ khi nào cần",
+        "stat2Label": "Thang điểm",
+        "stat2Value": "Giai đoạn ACARA",
+        "stat3Label": "Các lần đánh giá có thể so sánh",
+        "stat3Value": "Mỗi lần đánh giá",
+        "stat4Label": "Kiểm tra lại một kỹ năng",
+        "stat4Value": "30 phút"
       },
       "evidence": {
         "eyebrow": "Dấu vết bằng chứng",
@@ -4678,6 +4687,25 @@
         "focusBadge": "Tập trung từ vựng, tuần 3–8",
         "resultBadge": "Từ vựng +2 giai đoạn",
         "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> phản hồi về việc dạy của bạn, không chỉ về học sinh."
+      },
+      "progress": {
+        "eyebrow": "Bốn lần đánh giá, một thang điểm",
+        "heading": "Sự tiến bộ bạn có thể chỉ ra.",
+        "bodyOne": "Bốn lần đánh giá trong một năm, bốn kỹ năng thành phần, một thang điểm. Từ vựng tiến bộ nhanh nhất vì đó là nơi dạy tập trung; đọc phê phán hầu như không chuyển động, và đó là cuộc trao đổi tiếp theo.",
+        "bodyTwo": "Bị trung bình thành một bậc, không điều nào ở trên nhìn thấy được.",
+        "figureTitle": "Hình 1 — Bốn kỹ năng thành phần qua bốn lần đánh giá",
+        "figureContext": "Lớp 9 · một học sinh, một năm",
+        "ariaLabel": "Biểu đồ cột nhóm thể hiện bốn kỹ năng thành phần của đọc được đo qua bốn học kỳ",
+        "categoryVocabulary": "Từ vựng",
+        "categoryInference": "Suy luận",
+        "categoryGrammar": "Ngữ pháp",
+        "categoryCritical": "Đọc phê phán",
+        "bandBeginning": "Khởi đầu",
+        "bandDeveloping": "Phát triển",
+        "bandEmerging": "Hình thành",
+        "bandConsolidating": "Ổn định",
+        "bandIndependent": "Tự lập",
+        "footnote": "Dữ liệu minh hoạ. Hiển thị giai đoạn ACARA; các bậc CEFR được báo cáo kèm theo."
       },
       "quote": "Tiến bộ mà bạn có thể chỉ ra."
     },
