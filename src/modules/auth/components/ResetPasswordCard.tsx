@@ -19,7 +19,7 @@ import type { ResetPasswordView } from '@/modules/auth/types/auth.types';
 // Deliberately NO authed redirect — a user may reset while a stale token exists.
 export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
   const t = useTranslations('Auth');
-  const tHome = useTranslations('Home');
+  const tShell = useTranslations('Shell.sidebar');
   const [view, setView] = useState<ResetPasswordView>(code ? 'form' : 'invalid');
 
   return (
@@ -28,7 +28,7 @@ export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
         href="/"
         className="self-start rounded-sm transition-transform duration-200 ease-out-expo hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring motion-reduce:transition-none motion-reduce:hover:translate-y-0 lg:hidden"
       >
-        <Logo alt={tHome('footer.logoAlt')} height={30} />
+        <Logo alt={tShell('logoAlt')} height={30} />
       </Link>
       {view === 'invalid' ? (
         <div className="flex flex-col gap-5">

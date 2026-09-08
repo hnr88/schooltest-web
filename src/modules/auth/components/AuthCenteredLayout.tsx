@@ -11,7 +11,7 @@ import type { AuthCenteredLayoutProps } from '@/modules/auth/types/components.ty
 // full-colour logo lockup sits alone at the top of the padded frame with the
 // content column centred below it. Server component — layout chrome only.
 export function AuthCenteredLayout({ children, width = 'narrow' }: AuthCenteredLayoutProps) {
-  const tHome = useTranslations('Home');
+  const tShell = useTranslations('Shell.sidebar');
 
   return (
     <main className="flex flex-1 flex-col items-center bg-background px-6 py-12 sm:py-14">
@@ -19,7 +19,7 @@ export function AuthCenteredLayout({ children, width = 'narrow' }: AuthCenteredL
         href="/"
         className="rounded-sm transition-transform duration-200 ease-out-expo hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       >
-        <Logo alt={tHome('footer.logoAlt')} height={34} />
+        <Logo alt={tShell('logoAlt')} height={34} />
       </Link>
       <div
         className={cn(

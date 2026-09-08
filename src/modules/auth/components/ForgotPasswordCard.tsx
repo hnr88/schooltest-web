@@ -16,7 +16,7 @@ import { Logo } from '@/modules/design-system';
 // enumeration-safe sent state.
 export function ForgotPasswordCard() {
   const t = useTranslations('Auth');
-  const tHome = useTranslations('Home');
+  const tShell = useTranslations('Shell.sidebar');
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
@@ -38,7 +38,7 @@ export function ForgotPasswordCard() {
         href="/"
         className="self-start rounded-sm transition-transform duration-200 ease-out-expo hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring motion-reduce:transition-none motion-reduce:hover:translate-y-0 lg:hidden"
       >
-        <Logo alt={tHome('footer.logoAlt')} height={30} />
+        <Logo alt={tShell('logoAlt')} height={30} />
       </Link>
       {sentEmail ? (
         <ForgotPasswordSentState email={sentEmail} />

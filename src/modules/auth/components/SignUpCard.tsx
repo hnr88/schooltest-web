@@ -18,7 +18,7 @@ import { Logo, Skeleton } from '@/modules/design-system';
 // order logo → Google → username.
 export function SignUpCard() {
   const t = useTranslations('Auth');
-  const tHome = useTranslations('Home');
+  const tShell = useTranslations('Shell.sidebar');
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
@@ -61,7 +61,7 @@ export function SignUpCard() {
         href="/"
         className="self-start rounded-sm transition-transform duration-200 ease-out-expo hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring motion-reduce:transition-none motion-reduce:hover:translate-y-0 lg:hidden"
       >
-        <Logo alt={tHome('footer.logoAlt')} height={30} />
+        <Logo alt={tShell('logoAlt')} height={30} />
       </Link>
       <div className="flex flex-col gap-2">
         <h1 className="text-auth-title font-bold text-foreground">{t('signUpTitle')}</h1>

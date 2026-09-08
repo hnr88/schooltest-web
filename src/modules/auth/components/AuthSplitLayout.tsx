@@ -16,7 +16,7 @@ import { BENEFIT_KEYS } from '@/modules/auth/constants/components.constants';
 // scope). Server component — static brand copy only.
 export function AuthSplitLayout({ children }: AuthSplitLayoutProps) {
   const t = useTranslations('Auth.split');
-  const tHome = useTranslations('Home');
+  const tShell = useTranslations('Shell.sidebar');
 
   return (
     <main className="flex flex-1 bg-background">
@@ -29,7 +29,7 @@ export function AuthSplitLayout({ children }: AuthSplitLayoutProps) {
           href="/"
           className="relative self-start rounded-sm transition-transform duration-200 ease-out-expo hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-on-dark motion-reduce:transition-none motion-reduce:hover:translate-y-0"
         >
-          <Logo theme="white" alt={tHome('footer.logoAlt')} height={40} />
+          <Logo theme="white" alt={tShell('logoAlt')} height={40} />
         </Link>
         <div className="relative flex flex-col gap-5">
           <p className="animate-in text-h1 font-bold text-balance text-white duration-700 ease-out-expo fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none">
