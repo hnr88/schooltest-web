@@ -4553,6 +4553,10 @@
       "searchSubmit": "Cari",
       "mastheadTagline": "Pentaksiran kefasihan bahasa Inggeris untuk Tahun 7–12"
     },
+    "notice": {
+      "label": "Notis",
+      "cta": "Daftarkan sekolah anda"
+    },
     "home": {
       "hero": {
         "badge": "Untuk bilik darjah EAL/D Australia",
@@ -4839,10 +4843,6 @@
       "privacyStatement": "Pernyataan privasi",
       "termsOfUse": "Terma penggunaan",
       "evidenceBase": "Asas bukti"
-    },
-    "notice": {
-      "label": "Notis",
-      "cta": "Daftarkan sekolah anda"
     }
   },
   "Navigation": {

@@ -4553,6 +4553,10 @@
       "searchSubmit": "검색",
       "mastheadTagline": "7–12학년 대상 영어 능숙도 평가"
     },
+    "notice": {
+      "label": "공지",
+      "cta": "학교 등록하기"
+    },
     "home": {
       "hero": {
         "badge": "호주 EAL/D 교실을 위해",
@@ -4839,10 +4843,6 @@
       "privacyStatement": "개인정보 보호 선언문",
       "termsOfUse": "이용약관",
       "evidenceBase": "근거 기반"
-    },
-    "notice": {
-      "label": "공지",
-      "cta": "학교 등록하기"
     }
   },
   "Navigation": {

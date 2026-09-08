@@ -4543,6 +4543,10 @@
       "searchSubmit": "搜索",
       "mastheadTagline": "面向 7–12 年级的英语语言能力评估"
     },
+    "notice": {
+      "label": "通知",
+      "cta": "注册您的学校"
+    },
     "home": {
       "hero": {
         "badge": "专为澳大利亚 EAL/D 课堂打造",
@@ -4829,10 +4833,6 @@
       "privacyStatement": "隐私声明",
       "termsOfUse": "使用条款",
       "evidenceBase": "实证依据"
-    },
-    "notice": {
-      "label": "通知",
-      "cta": "注册您的学校"
     }
   },
   "Navigation": {

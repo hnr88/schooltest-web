@@ -1976,6 +1976,10 @@
       "searchSubmit": "Search",
       "mastheadTagline": "English language proficiency assessment for Years 7–12"
     },
+    "notice": {
+      "label": "Notice",
+      "cta": "Register your school"
+    },
     "home": {
       "hero": {
         "badge": "For Australian EAL/D classrooms",
@@ -2262,10 +2266,6 @@
       "privacyStatement": "Privacy statement",
       "termsOfUse": "Terms of use",
       "evidenceBase": "Evidence base"
-    },
-    "notice": {
-      "label": "Notice",
-      "cta": "Register your school"
     }
   },
   "SchoolOnboarding": {

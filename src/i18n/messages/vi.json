@@ -4562,6 +4562,10 @@
       "searchSubmit": "Tìm kiếm",
       "mastheadTagline": "Đánh giá năng lực tiếng Anh cho lớp 7–12"
     },
+    "notice": {
+      "label": "Thông báo",
+      "cta": "Đăng ký trường của bạn"
+    },
     "home": {
       "hero": {
         "badge": "Dành cho lớp học EAL/D tại Úc",
@@ -4848,10 +4852,6 @@
       "privacyStatement": "Tuyên bố về quyền riêng tư",
       "termsOfUse": "Điều khoản sử dụng",
       "evidenceBase": "Cơ sở bằng chứng"
-    },
-    "notice": {
-      "label": "Thông báo",
-      "cta": "Đăng ký trường của bạn"
     }
   },
   "Navigation": {
