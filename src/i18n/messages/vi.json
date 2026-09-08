@@ -4836,7 +4836,15 @@
       "copyright": "© 2026 SchoolTest",
       "status": "Đang thí điểm cùng các trường sáng lập",
       "logoAlt": "Logo SchoolTest",
-      "legalTitle": "Pháp lý"
+      "legalTitle": "Pháp lý",
+      "acknowledgement": "SchoolTest tri ân những Người Giữ gìn truyền thống trên vùng đất nơi các trường học Úc tọa lạc, và tỏ lòng kính trọng các vị Trưởng lão trong quá khứ cũng như hiện tại.",
+      "lastUpdated": "Trang cập nhật lần cuối vào {date}",
+      "forSchoolsTitle": "Dành cho trường học",
+      "aboutTitle": "Giới thiệu",
+      "testAdministration": "Tổ chức bài kiểm tra",
+      "privacyStatement": "Tuyên bố về quyền riêng tư",
+      "termsOfUse": "Điều khoản sử dụng",
+      "evidenceBase": "Cơ sở bằng chứng"
     },
     "notice": {
       "label": "Thông báo",

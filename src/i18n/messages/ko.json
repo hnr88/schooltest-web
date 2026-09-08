@@ -4827,7 +4827,15 @@
       "copyright": "© 2026 SchoolTest",
       "status": "창립 학교와 파일럿 진행 중",
       "logoAlt": "SchoolTest 로고",
-      "legalTitle": "법적 고지"
+      "legalTitle": "법적 고지",
+      "acknowledgement": "SchoolTest는 호주 학교가 자리한 땅의 전통 수호자들에게 경의를 표하며, 과거와 현재의 어르신들께 존경을 바칩니다.",
+      "lastUpdated": "페이지 마지막 업데이트: {date}",
+      "forSchoolsTitle": "학교를 위해",
+      "aboutTitle": "소개",
+      "testAdministration": "시험 운영",
+      "privacyStatement": "개인정보 보호 선언문",
+      "termsOfUse": "이용약관",
+      "evidenceBase": "근거 기반"
     },
     "notice": {
       "label": "공지",

@@ -4827,7 +4827,15 @@
       "copyright": "© 2026 SchoolTest",
       "status": "กำลังนำร่องกับโรงเรียนก่อตั้ง",
       "logoAlt": "โลโก้ SchoolTest",
-      "legalTitle": "ข้อกำหนดทางกฎหมาย"
+      "legalTitle": "ข้อกำหนดทางกฎหมาย",
+      "acknowledgement": "SchoolTest ขอแสดงความเคารพต่อผู้พิทักษ์ดั้งเดิมแห่งดินแดนที่โรงเรียนในออสเตรเลียตั้งอยู่ และขอเคารพบรรพบุรุษผู้นำทั้งในอดีตและปัจจุบัน",
+      "lastUpdated": "อัปเดตหน้าล่าสุดเมื่อ {date}",
+      "forSchoolsTitle": "สำหรับโรงเรียน",
+      "aboutTitle": "เกี่ยวกับ",
+      "testAdministration": "การจัดสอบ",
+      "privacyStatement": "แถลงการณ์ความเป็นส่วนตัว",
+      "termsOfUse": "ข้อกำหนดการใช้งาน",
+      "evidenceBase": "ฐานหลักฐาน"
     },
     "notice": {
       "label": "ประกาศ",

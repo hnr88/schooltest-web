@@ -1,14 +1,17 @@
-import { getTranslations } from 'next-intl/server';
+import { getFormatter, getTranslations } from 'next-intl/server';
 
 import { Link } from '@/i18n/navigation';
 import { Container, Logo } from '@/modules/design-system';
-import { EALD_FOOTER_COLUMNS } from '@/modules/eald/constants/eald.constants';
+import { EALD_FOOTER_COLUMNS, PAGE_LAST_UPDATED } from '@/modules/eald/constants/eald.constants';
 import { getPublicSettings } from '@/modules/settings';
 
 async function EaldFooter() {
   // Root-scoped: the footer mixes Eald.* copy with the shared Navigation.*
   // legal labels, so the keys in EALD_FOOTER_COLUMNS are fully qualified.
   const t = await getTranslations();
+  // The last-updated date is formatted per active locale by next-intl's
+  // Intl-backed formatter — never toLocaleDateString with a pinned locale.
+  const format = await getFormatter();
   // C-SET-01: the site name and tagline are ops-editable, so they come from the
   // settings row. The catalog value is the fallback for the tagline only —
   // site_name is required server-side and always present.
@@ -51,9 +54,19 @@ async function EaldFooter() {
             </nav>
           ))}
         </div>
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm">
+        {/* Acknowledgement of Country (Home v2:381) — above the bottom row,
+            capped at reading width. */}
+        <div className="mt-12 border-t border-white/10 pt-6">
+          <p className="max-w-prose text-sm leading-relaxed">{t('Eald.footer.acknowledgement')}</p>
+        </div>
+        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 pb-6 text-sm">
           <p>{t('Eald.footer.copyright')}</p>
-          <p className="inline-flex items-center gap-2 rounded-full px-3 py-1 ring-1 ring-white/15">
+          <p>
+            {t('Eald.footer.lastUpdated', {
+              date: format.dateTime(PAGE_LAST_UPDATED, { dateStyle: 'long', timeZone: 'UTC' }),
+            })}
+          </p>
+          <p className="ml-auto inline-flex items-center gap-2 rounded-full px-3 py-1 ring-1 ring-white/15">
             <span aria-hidden="true" className="size-2 rounded-full bg-teal-400" />
             {t('Eald.footer.status')}
           </p>

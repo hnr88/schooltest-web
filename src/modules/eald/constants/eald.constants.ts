@@ -9,6 +9,13 @@ const EALD_NAV_LINKS: readonly EaldNavLink[] = [
   { href: '/eald#evidence', key: 'nav.evidence' },
 ] as const;
 
+// Home v2:347–379. The design's four link columns behind the brand column.
+// Every pre-existing href and label key survives the reshuffle (C-LEG-02:
+// the four legal routes must never regress to a placeholder) — only the
+// column grouping changes, and the two headings the design introduces get
+// the new forSchoolsTitle/aboutTitle keys. Accessibility (design :375) is
+// deferred per D-05: its design href is the `#register` placeholder and no
+// accessibility statement exists.
 const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
   {
     titleKey: 'Eald.footer.productTitle',
@@ -20,20 +27,25 @@ const EALD_FOOTER_COLUMNS: readonly EaldFooterColumn[] = [
     ],
   },
   {
-    titleKey: 'Eald.footer.moreTitle',
+    titleKey: 'Eald.footer.forSchoolsTitle',
     links: [
-      { href: '/dashboard/search', labelKey: 'Eald.footer.schoolSearch' },
       { href: '/eald#register', labelKey: 'Eald.footer.foundingPilot' },
-      { href: '/eald#register', labelKey: 'Eald.footer.contact' },
+      // `/eald#evidence` is the anchor task 07 puts on the home progress
+      // chart — the same destination the masthead's Evidence base link uses.
+      { href: '/eald#evidence', labelKey: 'Eald.footer.evidenceBase' },
+      { href: '/eald#register', labelKey: 'Eald.footer.testAdministration' },
+      { href: '/dashboard/search', labelKey: 'Eald.footer.schoolSearch' },
     ],
   },
-  // C-LEG-02 (mission st-legal-seo-ops, task 206). Replaces the single
-  // `/privacy` entry, which pointed at a route that never existed and 404'd.
+  // Home v2:371–379 "About". All four C-LEG-02 legal routes land here:
+  // privacy/terms under the design's own labels, cookie/GDPR keeping their
+  // Navigation.* keys (D-02 — the old labels stay in the catalogues).
   {
-    titleKey: 'Eald.footer.legalTitle',
+    titleKey: 'Eald.footer.aboutTitle',
     links: [
-      { href: '/privacy-policy', labelKey: 'Navigation.privacyPolicy' },
-      { href: '/terms-of-service', labelKey: 'Navigation.termsOfService' },
+      { href: '/eald#register', labelKey: 'Eald.footer.contact' },
+      { href: '/privacy-policy', labelKey: 'Eald.footer.privacyStatement' },
+      { href: '/terms-of-service', labelKey: 'Eald.footer.termsOfUse' },
       { href: '/cookie-policy', labelKey: 'Navigation.cookiePolicy' },
       { href: '/gdpr', labelKey: 'Navigation.gdpr' },
     ],
@@ -74,6 +86,11 @@ const DIAGNOSE_SUBSKILLS: readonly SubskillBar[] = [
   { labelKey: 'diagnose.profile.critical', percent: 20, phaseKey: 'diagnose.profile.phaseBeginning', phase: 'beginning' },
 ] as const;
 
+// "Page last updated" (Home v2:385): the copy's own date as epoch ms, bumped
+// with the copy and rendered through next-intl's formatter per locale (PRD
+// A8). Deliberately NOT a request-time clock.
+const PAGE_LAST_UPDATED = Date.parse('2026-08-31');
+
 export {
   EALD_NAV_LINKS,
   EALD_FOOTER_COLUMNS,
@@ -82,4 +99,5 @@ export {
   TRACK_NEXT_SECTIONS,
   PREDICT_NEXT_SECTIONS,
   DIAGNOSE_SUBSKILLS,
+  PAGE_LAST_UPDATED,
 };

@@ -4827,7 +4827,15 @@
       "copyright": "© 2026 SchoolTest",
       "status": "Memperintis dengan sekolah pengasas",
       "logoAlt": "Logo SchoolTest",
-      "legalTitle": "Undang-undang"
+      "legalTitle": "Undang-undang",
+      "acknowledgement": "SchoolTest menghormati Penjaga Adat tanah tempat sekolah-sekolah Australia berdiri, dan menghormati para Tetua yang lampau dan kini.",
+      "lastUpdated": "Halaman dikemas kini pada {date}",
+      "forSchoolsTitle": "Untuk sekolah",
+      "aboutTitle": "Tentang",
+      "testAdministration": "Pentadbiran ujian",
+      "privacyStatement": "Pernyataan privasi",
+      "termsOfUse": "Terma penggunaan",
+      "evidenceBase": "Asas bukti"
     },
     "notice": {
       "label": "Notis",

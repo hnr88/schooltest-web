@@ -4817,7 +4817,15 @@
       "copyright": "© 2026 SchoolTest",
       "status": "正与创始学校试点合作",
       "logoAlt": "SchoolTest 标志",
-      "legalTitle": "法律条款"
+      "legalTitle": "法律条款",
+      "acknowledgement": "SchoolTest 谨向澳大利亚学校所在土地的传统守护者致敬，并尊崇过去与现在的原住民长老。",
+      "lastUpdated": "页面最后更新于 {date}",
+      "forSchoolsTitle": "面向学校",
+      "aboutTitle": "关于",
+      "testAdministration": "考试管理",
+      "privacyStatement": "隐私声明",
+      "termsOfUse": "使用条款",
+      "evidenceBase": "实证依据"
     },
     "notice": {
       "label": "通知",

@@ -2250,7 +2250,15 @@
       "copyright": "© 2026 SchoolTest",
       "status": "Piloting with founding schools",
       "logoAlt": "SchoolTest logo",
-      "legalTitle": "Legal"
+      "legalTitle": "Legal",
+      "acknowledgement": "SchoolTest acknowledges the Traditional Custodians of the lands on which Australian schools stand, and pays respect to Elders past and present.",
+      "lastUpdated": "Page last updated {date}",
+      "forSchoolsTitle": "For schools",
+      "aboutTitle": "About",
+      "testAdministration": "Test administration",
+      "privacyStatement": "Privacy statement",
+      "termsOfUse": "Terms of use",
+      "evidenceBase": "Evidence base"
     },
     "notice": {
       "label": "Notice",
