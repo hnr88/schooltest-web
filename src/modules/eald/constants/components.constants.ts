@@ -153,3 +153,10 @@ export const HOME_EVIDENCE_CHART: HomeEvidenceChartConfig = {
     },
   ],
 };
+
+export const PREDICT_COHORT = [
+  { labelKey: 'predict.cohort.figureBandUnder40', values: [9, 3] },
+  { labelKey: 'predict.cohort.figureBand40to59', values: [6, 5] },
+  { labelKey: 'predict.cohort.figureBand60to79', values: [5, 8] },
+  { labelKey: 'predict.cohort.figureBand80plus', values: [2, 6] },
+] as const;

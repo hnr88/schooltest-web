@@ -4526,7 +4526,9 @@
         "domainsValue": "4개 영역",
         "domainsLabel": "하나의 지표로 집계",
         "termValue": "매 학기",
-        "termLabel": "시간표 전에 전출 예측"
+        "termLabel": "시간표 전에 전출 예측",
+        "componentLabel": "구성 요소 04",
+        "trackCta": "진행 상황을 추적하는 방법 보기"
       },
       "individual": {
         "eyebrow": "개인",
@@ -4538,7 +4540,12 @@
         "term1Value": "34%",
         "term3Label": "3학기",
         "term3Value": "81%",
-        "readinessFooter": "네 영역의 모든 서브스킬에서 집계됨."
+        "readinessFooter": "네 영역의 모든 서브스킬에서 집계됨.",
+        "oneStudent": "학생 한 명",
+        "yearLabel": "9학년",
+        "blockingTitle": "아직 발목을 잡는 스킬",
+        "blockingVocabulary": "학술 어휘",
+        "blockingWriting": "장문 쓰기"
       },
       "cohort": {
         "eyebrow": "코호트",
@@ -4546,7 +4553,21 @@
         "body": "전체 코호트의 준비도를 한눈에 보고, 시간표를 짜기 전에 다음 학기의 전출과 전입을 예측하세요.",
         "cohortBadge": "코호트 준비도 · 학생 22명",
         "exitBadge": "다음 학기 전출 예상 4명",
-        "callout": "<strong>의미하는 바:</strong> “다음 학기에 몇 명이 떠나나요”라는 질문에 추정이 아닌 숫자로 답하세요."
+        "callout": "<strong>의미하는 바:</strong> “다음 학기에 몇 명이 떠나나요”라는 질문에 추정이 아닌 숫자로 답하세요.",
+        "figureTitle": "그림 1 — 코호트 준비도 분포",
+        "figureContext": "9학년 · 학생 22명",
+        "figureBandUnder40": "40% 미만",
+        "figureBand40to59": "40–59%",
+        "figureBand60to79": "60–79%",
+        "figureBand80plus": "80% 이상",
+        "figureAriaLabel": "학생 22명으로 구성된 코호트에서 1학기와 3학기에 각 주류 학급 준비도 구간에 속한 학생 수를 보여주는 묶은 세로 막대그래프",
+        "figureAxisCeiling": "학생 10명",
+        "figureFootnote": "설명용 예시 데이터입니다. 준비도는 네 영역 전체에서 집계됩니다. 두 데이터 계열은 각각 학생 22명을 나타냅니다.",
+        "photoCaption": "전출 결정은 시간표와 인력 배치에 관한 결정이자 가족과의 대화입니다.",
+        "photoEyebrow": "근거를 제시할 수 있는 결정",
+        "photoTitle": "결정은 여전히 교사의 몫입니다. 근거는 페이지에 있습니다.",
+        "photoBody": "준비도 점수는 지시가 아닙니다. 평가 위원회, 학부모 상담 또는 시간표 검토에 가져갈 근거이며, 그 바탕이 되는 서브스킬이 아래에 나열됩니다.",
+        "photoLink": "점수 아래에 있는 스킬 보기"
       },
       "quote": "교사의 직관과 SchoolTest의 실증.<br></br>그것이 차이입니다."
     },

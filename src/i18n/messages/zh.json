@@ -4516,7 +4516,9 @@
         "domainsValue": "4 大领域",
         "domainsLabel": "汇总为一个指标",
         "termValue": "每个学期",
-        "termLabel": "排课之前预判转出"
+        "termLabel": "排课之前预判转出",
+        "componentLabel": "组件 04",
+        "trackCta": "了解如何跟踪进步"
       },
       "individual": {
         "eyebrow": "个体",
@@ -4528,7 +4530,12 @@
         "term1Value": "34%",
         "term3Label": "第 3 学期",
         "term3Value": "81%",
-        "readinessFooter": "由四大领域中的每个微技能汇总而成。"
+        "readinessFooter": "由四大领域中的每个微技能汇总而成。",
+        "oneStudent": "一名学生",
+        "yearLabel": "9 年级",
+        "blockingTitle": "仍在阻碍她的能力短板",
+        "blockingVocabulary": "学术词汇",
+        "blockingWriting": "长篇写作"
       },
       "cohort": {
         "eyebrow": "学生群体",
@@ -4536,7 +4543,21 @@
         "body": "在一个视图中看到整个群体的就绪度，在排课之前预测下学期的转出和转入。",
         "cohortBadge": "群体就绪度 · 22 名学生",
         "exitBadge": "预计下学期 4 人转出",
-        "callout": "<strong>对你而言：</strong>用一个数字而不是估计来回答“下学期有多少人会离开”。"
+        "callout": "<strong>对你而言：</strong>用一个数字而不是估计来回答“下学期有多少人会离开”。",
+        "figureTitle": "图 1 — 学生群体就绪度分布",
+        "figureContext": "9 年级 · 22 名学生",
+        "figureBandUnder40": "低于 40%",
+        "figureBand40to59": "40–59%",
+        "figureBand60to79": "60–79%",
+        "figureBand80plus": "80% 及以上",
+        "figureAriaLabel": "分组柱状图，显示一个由 22 名学生组成的群体在第 1 和第 3 学期各主流班就绪度区间的人数",
+        "figureAxisCeiling": "10 名学生",
+        "figureFootnote": "说明用示例数据。就绪度由四大领域汇总而成。两个数据系列各包含 22 名学生。",
+        "photoCaption": "转出决定涉及排课、人员配置，也涉及与家庭的沟通。",
+        "photoEyebrow": "有据可依的决定",
+        "photoTitle": "决定权仍在你手中。证据就在页面上。",
+        "photoBody": "就绪度分数不是指令。它是你在评审小组、家长会议或排课审议中使用的证据，分数背后的微技能也会列在下方。",
+        "photoLink": "查看分数背后的能力"
       },
       "quote": "教师直觉加上 SchoolTest 实证。<br></br>这就是差别所在。"
     },

@@ -1949,7 +1949,9 @@
         "domainsValue": "4 domains",
         "domainsLabel": "Aggregated into one indicator",
         "termValue": "Every term",
-        "termLabel": "Forecast exits before the timetable"
+        "termLabel": "Forecast exits before the timetable",
+        "componentLabel": "Component 04",
+        "trackCta": "See how progress is tracked"
       },
       "individual": {
         "eyebrow": "The individual",
@@ -1961,7 +1963,12 @@
         "term1Value": "34%",
         "term3Label": "Term 3",
         "term3Value": "81%",
-        "readinessFooter": "Aggregated from every subskill in all four domains."
+        "readinessFooter": "Aggregated from every subskill in all four domains.",
+        "oneStudent": "one student",
+        "yearLabel": "Year 9",
+        "blockingTitle": "Still holding her back",
+        "blockingVocabulary": "Academic vocabulary",
+        "blockingWriting": "Extended writing"
       },
       "cohort": {
         "eyebrow": "The cohort",
@@ -1969,7 +1976,21 @@
         "body": "See the whole cohort's readiness in one view and forecast next term's exits and intakes before you set the timetable.",
         "cohortBadge": "Cohort readiness · 22 students",
         "exitBadge": "4 projected to exit next term",
-        "callout": "<strong>What this means for you:</strong> answer “how many are leaving us next term” with a number instead of an estimate."
+        "callout": "<strong>What this means for you:</strong> answer “how many are leaving us next term” with a number instead of an estimate.",
+        "figureTitle": "Figure 1 — Cohort readiness distribution",
+        "figureContext": "Year 9 · 22 students",
+        "figureBandUnder40": "Under 40%",
+        "figureBand40to59": "40–59%",
+        "figureBand60to79": "60–79%",
+        "figureBand80plus": "80%+",
+        "figureAriaLabel": "Grouped column chart showing how many students in a cohort of 22 sit in each mainstream readiness band at Term 1 and Term 3",
+        "figureAxisCeiling": "10 students",
+        "figureFootnote": "Illustrative sample data. Readiness aggregated across all four domains. Both series total 22 students.",
+        "photoCaption": "The exit decision is a timetable decision, a staffing decision and a family conversation.",
+        "photoEyebrow": "Defensible decisions",
+        "photoTitle": "The call stays yours. The evidence is on the page.",
+        "photoBody": "A readiness score is not an instruction. It is the evidence you take into a panel, a parent meeting or a timetable review, with the subskills behind it listed underneath.",
+        "photoLink": "See what sits underneath the score"
       },
       "quote": "Teacher intuition plus SchoolTest empiricism.<br></br>That is the difference."
     },

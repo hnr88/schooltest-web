@@ -4526,7 +4526,9 @@
         "domainsValue": "4 domain",
         "domainsLabel": "Diagregatkan kepada satu penunjuk",
         "termValue": "Setiap penggal",
-        "termLabel": "Ramal keluar sebelum jadual"
+        "termLabel": "Ramal keluar sebelum jadual",
+        "componentLabel": "Komponen 04",
+        "trackCta": "Lihat cara kemajuan dijejak"
       },
       "individual": {
         "eyebrow": "Individu",
@@ -4538,7 +4540,12 @@
         "term1Value": "34%",
         "term3Label": "Penggal 3",
         "term3Value": "81%",
-        "readinessFooter": "Diagregatkan daripada setiap subkemahiran dalam kesemua empat domain."
+        "readinessFooter": "Diagregatkan daripada setiap subkemahiran dalam kesemua empat domain.",
+        "oneStudent": "seorang murid",
+        "yearLabel": "Tahun 9",
+        "blockingTitle": "Masih menghalangnya",
+        "blockingVocabulary": "Kosa kata akademik",
+        "blockingWriting": "Penulisan panjang"
       },
       "cohort": {
         "eyebrow": "Kohort",
@@ -4546,7 +4553,21 @@
         "body": "Lihat kesediaan keseluruhan kohort dalam satu paparan dan ramalkan keluar dan masuk penggal depan sebelum anda menyusun jadual.",
         "cohortBadge": "Kesediaan kohort · 22 murid",
         "exitBadge": "4 diunjurkan keluar penggal depan",
-        "callout": "<strong>Maksudnya untuk anda:</strong> jawab “berapa ramai yang akan meninggalkan kita penggal depan” dengan angka dan bukan anggaran."
+        "callout": "<strong>Maksudnya untuk anda:</strong> jawab “berapa ramai yang akan meninggalkan kita penggal depan” dengan angka dan bukan anggaran.",
+        "figureTitle": "Rajah 1 — Taburan kesediaan kohort",
+        "figureContext": "Tahun 9 · 22 murid",
+        "figureBandUnder40": "Bawah 40%",
+        "figureBand40to59": "40–59%",
+        "figureBand60to79": "60–79%",
+        "figureBand80plus": "80% ke atas",
+        "figureAriaLabel": "Carta lajur berkumpulan yang menunjukkan bilangan murid daripada kohort 22 murid dalam setiap julat kesediaan arus perdana pada Penggal 1 dan Penggal 3",
+        "figureAxisCeiling": "10 murid",
+        "figureFootnote": "Data contoh untuk ilustrasi. Kesediaan diagregatkan merentasi keempat-empat domain. Setiap siri berjumlah 22 murid.",
+        "photoCaption": "Keputusan keluar ialah keputusan jadual, keputusan penempatan kakitangan dan perbualan bersama keluarga.",
+        "photoEyebrow": "Keputusan yang dapat dipertahankan",
+        "photoTitle": "Keputusan tetap di tangan anda. Buktinya ada pada halaman ini.",
+        "photoBody": "Skor kesediaan bukan arahan. Ia ialah bukti yang dibawa ke panel, pertemuan ibu bapa atau semakan jadual, dengan subkemahiran yang mendasarinya disenaraikan di bawah.",
+        "photoLink": "Lihat perkara yang mendasari skor"
       },
       "quote": "Intuisi guru campur empirikalisme SchoolTest.<br></br>Itulah perbezaannya."
     },

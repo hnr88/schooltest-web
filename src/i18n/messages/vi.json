@@ -4535,7 +4535,9 @@
         "domainsValue": "4 lĩnh vực",
         "domainsLabel": "Tổng hợp thành một chỉ số",
         "termValue": "Mỗi học kỳ",
-        "termLabel": "Dự báo chuyển lớp trước khi xếp thời khoá biểu"
+        "termLabel": "Dự báo chuyển lớp trước khi xếp thời khoá biểu",
+        "componentLabel": "Thành phần 04",
+        "trackCta": "Xem cách theo dõi tiến bộ"
       },
       "individual": {
         "eyebrow": "Cá nhân",
@@ -4547,7 +4549,12 @@
         "term1Value": "34%",
         "term3Label": "Học kỳ 3",
         "term3Value": "81%",
-        "readinessFooter": "Tổng hợp từ mọi vi kỹ năng trong cả bốn lĩnh vực."
+        "readinessFooter": "Tổng hợp từ mọi vi kỹ năng trong cả bốn lĩnh vực.",
+        "oneStudent": "một học sinh",
+        "yearLabel": "Lớp 9",
+        "blockingTitle": "Những kỹ năng vẫn cản trở em",
+        "blockingVocabulary": "Từ vựng học thuật",
+        "blockingWriting": "Viết bài dài"
       },
       "cohort": {
         "eyebrow": "Cả nhóm",
@@ -4555,7 +4562,21 @@
         "body": "Xem mức sẵn sàng của toàn nhóm trong một khung và dự báo số ra vào học kỳ tới trước khi xếp thời khoá biểu.",
         "cohortBadge": "Mức sẵn sàng nhóm · 22 học sinh",
         "exitBadge": "Dự kiến 4 em chuyển lớp học kỳ tới",
-        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> trả lời “học kỳ tới có bao nhiêu em rời đi” bằng một con số thay vì ước chừng."
+        "callout": "<strong>Điều này nghĩa là gì với bạn:</strong> trả lời “học kỳ tới có bao nhiêu em rời đi” bằng một con số thay vì ước chừng.",
+        "figureTitle": "Hình 1 — Phân bố mức sẵn sàng của cả nhóm",
+        "figureContext": "Lớp 9 · 22 học sinh",
+        "figureBandUnder40": "Dưới 40%",
+        "figureBand40to59": "40–59%",
+        "figureBand60to79": "60–79%",
+        "figureBand80plus": "Từ 80% trở lên",
+        "figureAriaLabel": "Biểu đồ cột nhóm thể hiện số học sinh trong nhóm 22 em ở từng khoảng mức sẵn sàng vào lớp chính tại Học kỳ 1 và Học kỳ 3",
+        "figureAxisCeiling": "10 học sinh",
+        "figureFootnote": "Dữ liệu mẫu minh họa. Mức sẵn sàng được tổng hợp trên cả bốn lĩnh vực. Mỗi chuỗi dữ liệu có tổng cộng 22 học sinh.",
+        "photoCaption": "Quyết định chuyển lớp liên quan đến thời khóa biểu, bố trí nhân sự và trao đổi với gia đình.",
+        "photoEyebrow": "Những quyết định có cơ sở",
+        "photoTitle": "Quyết định vẫn là của bạn. Bằng chứng nằm ngay trên trang.",
+        "photoBody": "Điểm sẵn sàng không phải là mệnh lệnh. Đó là bằng chứng bạn mang tới hội đồng, cuộc họp phụ huynh hoặc buổi rà soát thời khóa biểu, với các vi kỹ năng làm cơ sở được liệt kê bên dưới.",
+        "photoLink": "Xem những gì nằm dưới điểm số"
       },
       "quote": "Trực giác của giáo viên cộng với thực chứng của SchoolTest.<br></br>Đó chính là khác biệt."
     },
