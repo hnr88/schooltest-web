@@ -14,10 +14,19 @@ import path from 'node:path';
 import { expect, test, type Page, type Request } from '@playwright/test';
 
 import { apiEnv } from '../helpers/auth-db';
+import { namedRetry } from '../helpers/api-named-retry';
 import { cat, loadMessages } from '../helpers/i18n';
+import {
+  OpsFixtureLedger,
+  createOpsFixtureSchool,
+  createOpsFixtureTeacher,
+} from '../helpers/ops-portal';
 
 const en = loadMessages('en');
-const SCHOOL_A = 'a19wa9lrmloi95ab9m4gmxqk';
+// Fixture school with one teacher, created in beforeAll through the real
+// contracts (the seeded demo school this spec once pointed at is absent at HEAD).
+let schoolId = '';
+const ledger = new OpsFixtureLedger();
 const OPS_EMAIL = 'apiadmin@schooltest.local';
 const ACTION_TIMEOUT = 30_000;
 const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:3002';
@@ -63,7 +72,7 @@ function recordStaffRequests(page: Page): Request[] {
 }
 
 async function openSchool(page: Page): Promise<void> {
-  await page.goto(`/dashboard/ops/schools/${SCHOOL_A}`);
+  await page.goto(`/dashboard/ops/schools/${schoolId}`);
   const admins = page.getByRole('tab', { name: cat(en, 'Ops.schoolTables.tab.admins') });
   await expect(admins).toBeVisible({ timeout: ACTION_TIMEOUT });
 }
@@ -83,7 +92,7 @@ test.describe.configure({ timeout: 180_000, retries: 1 });
 test.use({ storageState: STORAGE });
 
 test.describe('ops staff directory (C-OPS-PORTAL-015)', () => {
-  test.beforeAll(async ({ browser }) => {
+  test.beforeAll(async ({ browser, request }) => {
     // Hooks do not inherit describe.configure's timeout.
     test.setTimeout(240_000);
     mkdirSync(CAPTURES, { recursive: true });
@@ -95,6 +104,22 @@ test.describe('ops staff directory (C-OPS-PORTAL-015)', () => {
     } finally {
       await context.close();
     }
+    // ops/12: the fixture chain runs under the fleet-standard named-failure
+    // wrapper — a 429 or an API restart window inside beforeAll used to
+    // condemn code it never exercised and read as a surface defect.
+    await namedRetry(
+      'ops-025',
+      'create the fixture school and teacher',
+      async () => {
+        const school = await createOpsFixtureSchool(request, ledger, 'ops-025');
+        schoolId = school.documentId;
+        await createOpsFixtureTeacher(request, ledger, schoolId, 'ops-025');
+      },
+    );
+  });
+
+  test.afterAll(async ({ request }) => {
+    await ledger.cleanup(request);
   });
 
   test('admins and teachers read the versioned, school-and-role scoped endpoint', async ({
@@ -114,7 +139,7 @@ test.describe('ops staff directory (C-OPS-PORTAL-015)', () => {
     expect(urls.some((url) => url.includes('role=school_admin'))).toBe(true);
     expect(urls.some((url) => url.includes('role=teacher'))).toBe(true);
     for (const request of requests) {
-      expect(request.url()).toContain(`school=${SCHOOL_A}`);
+      expect(request.url()).toContain(`school=${schoolId}`);
       expect(await request.headerValue('x-ops-portal-version')).toBe('1');
     }
   });

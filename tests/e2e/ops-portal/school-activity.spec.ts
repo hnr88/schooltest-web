@@ -15,6 +15,7 @@ import path from 'node:path';
 import { expect, test, type Page } from '@playwright/test';
 
 import { apiEnv } from '../helpers/auth-db';
+import { namedRetry } from '../helpers/api-named-retry';
 import { cat, loadMessages } from '../helpers/i18n';
 
 const en = loadMessages('en');
@@ -27,13 +28,18 @@ const CAPTURES = path.resolve(
 );
 
 async function signInAsOps(page: Page): Promise<void> {
-  await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(OPS_EMAIL);
-  await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-    .fill(apiEnv('SEED_APIADMIN_PASSWORD'));
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL('**/dashboard', { timeout: 30_000 });
+  // ops/12: the sign-in is the fragile point — a 429 or an API restart window
+  // presents as a sign-in failure and used to be indistinguishable from a
+  // surface defect. Named-failure wrapper, fleet standard.
+  await namedRetry('school-activity', 'sign in as ops through the UI', async () => {
+    await page.goto('/sign-in');
+    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(OPS_EMAIL);
+    await page
+      .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
+      .fill(apiEnv('SEED_APIADMIN_PASSWORD'));
+    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+    await page.waitForURL('**/dashboard', { timeout: 30_000 });
+  });
 }
 
 /** The page's /api/ops/audit-logs request URLs, query string kept. */

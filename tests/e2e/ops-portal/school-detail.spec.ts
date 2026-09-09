@@ -22,6 +22,7 @@ import { z } from 'zod';
 
 import { REFERENCE_VIEWPORT } from '@/modules/ops/hooks/use-visual-reference';
 import { apiEnv } from '../helpers/auth-db';
+import { namedRetry } from '../helpers/api-named-retry';
 import { roleCredentials } from '../helpers/credentials';
 import { cat, loadMessages } from '../helpers/i18n';
 import { paceRateWindow } from '../helpers/pace';
@@ -37,71 +38,8 @@ const en = loadMessages('en');
 const SHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 const API = process.env.API_BASE_URL ?? 'http://localhost:5500';
 const ACTION_TIMEOUT = 30_000;
-
-// Named-failure wrapper, fleet standard (orchestrator-specified numbers,
-// ops/34-proven shape, adopted for this spec's ops credentials): :5500 is a
-// WATCHER whose child restarts under live api-row writes, and the shared auth
-// limiter bursts — a restart or a 429 landing inside beforeAll condemns code
-// it never exercised, and that failure is indistinguishable from a surface
-// defect unless it is LABELLED. 4 attempts, a 90s cap raced against each
-// attempt, a 175s total budget inside this spec's 240s hook timeout, a new
-// attempt only while elapsed + cap <= budget, and on exhaustion a NAMED throw
-// with the last real error attached — never swallowed.
-const ATTEMPTS = 4;
-const PER_ATTEMPT_CAP_MS = 90_000;
-const TOTAL_BUDGET_MS = 175_000;
-const RATE_LIMITED_WAIT_MS = 45_000;
-const RESTART_WAIT_MS = 15_000;
-
-function withCap<T>(promise: Promise<T>, capMs: number): Promise<T> {
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) => {
-      setTimeout(() => reject(new Error(`attempt exceeded its ${capMs}ms cap`)), capMs);
-    }),
-  ]);
-}
-
-function classify(error: unknown): { label: string; waitMs: number } {
-  const message = error instanceof Error ? error.message : String(error);
-  if (/\b429\b|rate.?limit/i.test(message)) {
-    return { label: 'RATE-LIMITED (429)', waitMs: RATE_LIMITED_WAIT_MS };
-  }
-  if (/ECONNREFUSED|ECONNRESET|ERR_CONNECTION|network/i.test(message)) {
-    return { label: 'API RESTART WINDOW (connection refused/reset)', waitMs: RESTART_WAIT_MS };
-  }
-  return { label: 'transient error', waitMs: RESTART_WAIT_MS };
-}
-
-async function withNamedRetries<T>(what: string, attempt: () => Promise<T>): Promise<T> {
-  const startedAt = Date.now();
-  let lastError: unknown = null;
-  let lastLabel = 'no attempt completed';
-  for (let attemptNo = 1; attemptNo <= ATTEMPTS; attemptNo += 1) {
-    const elapsed = Date.now() - startedAt;
-    if (elapsed + PER_ATTEMPT_CAP_MS > TOTAL_BUDGET_MS) break;
-    try {
-      return await withCap(attempt(), PER_ATTEMPT_CAP_MS);
-    } catch (error) {
-      lastError = error;
-      const { label, waitMs } = classify(error);
-      lastLabel = label;
-      console.log(
-        `[ops/12] ${what} attempt ${attemptNo}/${ATTEMPTS} failed — ${label}; waiting ${waitMs}ms`,
-      );
-      const remaining = TOTAL_BUDGET_MS - (Date.now() - startedAt);
-      if (attemptNo < ATTEMPTS && remaining > 0) {
-        await new Promise((resolve) => setTimeout(resolve, Math.min(waitMs, remaining)));
-      }
-    }
-  }
-  throw new Error(
-    `[ops/12] could not ${what} after ${ATTEMPTS} attempts — this is an ENVIRONMENT failure ` +
-      `(${lastLabel}), NOT a failure of the surface under test. Last error: ${
-        lastError instanceof Error ? lastError.message : String(lastError)
-      }`,
-  );
-}
+// Named-failure budget (fleet standard) lives in helpers/api-named-retry.ts;
+// this spec's hook timeout is 240s, inside which the 175s budget fits.
 
 const ledger = new OpsFixtureLedger();
 let schoolId = '';
@@ -111,6 +49,10 @@ let adminB = '';
 
 /** One ops login for the whole worker; the JWT is reused by every API call. */
 let opsJwt = '';
+async function withNamedRetries<T>(what: string, attempt: () => Promise<T>): Promise<T> {
+  return namedRetry('ops/12 school-detail', what, attempt);
+}
+
 async function getOpsJwt(request: import('@playwright/test').APIRequestContext): Promise<string> {
   if (opsJwt === '') {
     const res = await request.post(`${API}/api/auth/local`, {
