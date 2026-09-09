@@ -50,8 +50,8 @@
     "vaul": "^1.1.2",
     "zod": "^4.4.3",
     "zustand": "^5.0.14",
-    "@schooltest/ops-contracts": "file:../mvp/contracts/ops",
-    "@schooltest/scoring-contracts": "file:../mvp/contracts/scoring"
+    "@schooltest/ops-contracts": "file:vendor/contracts/ops",
+    "@schooltest/scoring-contracts": "file:vendor/contracts/scoring"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",

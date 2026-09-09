@@ -1,0 +1,77 @@
+{
+  "model_version": "reading-3model/1",
+  "reference_sets_version": "ref-fixture-0000-A",
+  "attributes": {
+    "Decoding": {
+      "prob": 0.98,
+      "prob_se": 0.02,
+      "domain_score": 92,
+      "se": 4.1,
+      "items_seen": 14,
+      "status": "secure"
+    },
+    "Vocab_A2": {
+      "prob": 0.93,
+      "prob_se": 0.05,
+      "domain_score": 90,
+      "se": 3.8,
+      "items_seen": 14,
+      "status": "secure"
+    },
+    "Grammar": {
+      "prob": 0.85,
+      "prob_se": 0.08,
+      "domain_score": 72,
+      "se": 5.0,
+      "items_seen": 14,
+      "status": "secure"
+    },
+    "Vocab_B1": {
+      "prob": 0.31,
+      "prob_se": 0.11,
+      "domain_score": 54,
+      "se": 6.2,
+      "items_seen": 9,
+      "status": "emerging"
+    },
+    "Gist": { "status": "not_assessed", "insufficient_evidence": true, "items_seen": 2 },
+    "Detail": {
+      "prob": 0.71,
+      "prob_se": 0.1,
+      "domain_score": 74,
+      "se": 4.9,
+      "items_seen": 9,
+      "status": "developing"
+    },
+    "Inference": {
+      "prob": 0.85,
+      "prob_se": 0.07,
+      "domain_score": 80,
+      "se": 4.4,
+      "items_seen": 9,
+      "status": "secure"
+    }
+  },
+  "overall": { "theta": 1.24, "theta_se": 0.34, "domain_score": 74, "provisional_transform": true },
+  "gate": {
+    "passed": false,
+    "theta": 0.41,
+    "se": 0.52,
+    "domain_score": 70,
+    "provisional_cut": true
+  },
+  "vocab": {
+    "blended": 76,
+    "blended_se": 3.4,
+    "status": "secure",
+    "single_strand": null,
+    "a2": { "domain_score": 90, "se": 3.8, "items_seen": 14, "status": "secure" },
+    "b1": { "domain_score": 54, "se": 6.2, "items_seen": 9, "status": "emerging" }
+  },
+  "error_patterns": [
+    { "type": "literal_match", "count": 9, "pct": 45 },
+    { "type": "overinference", "count": 5, "pct": 25 }
+  ],
+  "effort_valid": true,
+  "low_confidence": false
+}

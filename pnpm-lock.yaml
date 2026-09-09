@@ -15,11 +15,11 @@ importers:
         specifier: ^5.4.0
         version: 5.4.0(react-hook-form@7.81.0(react@19.2.7))
       '@schooltest/ops-contracts':
-        specifier: file:../mvp/contracts/ops
-        version: file:../mvp/contracts/ops(zod@4.4.3)
+        specifier: file:vendor/contracts/ops
+        version: file:vendor/contracts/ops(zod@4.4.3)
       '@schooltest/scoring-contracts':
-        specifier: file:../mvp/contracts/scoring
-        version: file:../mvp/contracts/scoring(zod@4.4.3)
+        specifier: file:vendor/contracts/scoring
+        version: file:vendor/contracts/scoring(zod@4.4.3)
       '@t3-oss/env-nextjs':
         specifier: ^0.13.11
         version: 0.13.11(typescript@5.9.3)(zod@4.4.3)
@@ -1132,13 +1132,13 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@schooltest/ops-contracts@file:../mvp/contracts/ops':
-    resolution: {directory: ../mvp/contracts/ops, type: directory}
+  '@schooltest/ops-contracts@file:vendor/contracts/ops':
+    resolution: {directory: vendor/contracts/ops, type: directory}
     peerDependencies:
       zod: ^4.4.3
 
-  '@schooltest/scoring-contracts@file:../mvp/contracts/scoring':
-    resolution: {directory: ../mvp/contracts/scoring, type: directory}
+  '@schooltest/scoring-contracts@file:vendor/contracts/scoring':
+    resolution: {directory: vendor/contracts/scoring, type: directory}
     peerDependencies:
       zod: ^4.4.3
 
@@ -5344,11 +5344,11 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@schooltest/ops-contracts@file:../mvp/contracts/ops(zod@4.4.3)':
+  '@schooltest/ops-contracts@file:vendor/contracts/ops(zod@4.4.3)':
     dependencies:
       zod: 4.4.3
 
-  '@schooltest/scoring-contracts@file:../mvp/contracts/scoring(zod@4.4.3)':
+  '@schooltest/scoring-contracts@file:vendor/contracts/scoring(zod@4.4.3)':
     dependencies:
       zod: 4.4.3
 

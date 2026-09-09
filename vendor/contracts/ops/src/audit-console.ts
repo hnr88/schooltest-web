@@ -1,0 +1,162 @@
+/**
+ * C-OPSA-01/02 — the ops Audit console: `GET /api/ops/audit-logs` (the
+ * UNVERSIONED ledger projection), `GET /api/ops/security/api-tokens` and
+ * `POST /api/ops/security/api-tokens/:id/revoke`.
+ *
+ * These mirror the REAL server shapes in
+ * `schooltest-api/src/api/ops/services/audit.ts`:
+ *  - the ledger row is the raw audit row (`detail` included) — this is the
+ *    ops-only legacy projection, NOT the sanitized school-scoped `activity`
+ *    view in `./school-activity`, which is the SAME route read with
+ *    `X-Ops-Portal-Version: 1`. Both exist on purpose; do not merge them.
+ *  - `detail` stays `unknown`: it is free-form JSON that can carry an email or
+ *    a CSV row, so it is typed as opaque and the console never renders it.
+ *  - the token row NEVER carries `accessKey`. The server projects it away
+ *    because an ops screen showing a token secret is a credential-disclosure
+ *    bug; this schema refuses to model it so a drift that adds it back fails
+ *    the contract instead of painting a secret on screen.
+ *  - revoke is a HARD DELETE server-side and is therefore irreversible.
+ *
+ * The ledger serves NO sort parameter — the server orders `id desc` (newest
+ * first) and that is the only order. A sort control would need an API change.
+ */
+import { z } from 'zod';
+
+import { documentIdSchema, type OpsOperation } from './core';
+
+const ACTION_MAX = 100;
+const TARGET_MAX = 255;
+const EMAIL_MAX = 255;
+const TOKEN_NAME_MAX = 255;
+const TOKEN_TYPE_MAX = 50;
+const TOKEN_DESCRIPTION_MAX = 255;
+
+export const AUDIT_PAGE_MIN = 1;
+export const AUDIT_PAGE_MAX = 100_000;
+export const AUDIT_PAGE_SIZE_MIN = 1;
+export const AUDIT_PAGE_SIZE_MAX = 200;
+export const AUDIT_PAGE_SIZE_DEFAULT = 25;
+
+const timestampSchema = z.iso.datetime({ offset: true });
+
+export const auditPaginationSchema = z.strictObject({
+  page: z.number().int().min(AUDIT_PAGE_MIN).max(AUDIT_PAGE_MAX),
+  pageSize: z.number().int().min(AUDIT_PAGE_SIZE_MIN).max(AUDIT_PAGE_SIZE_MAX),
+  pageCount: z.number().int().min(0),
+  total: z.number().int().min(0),
+});
+export type AuditPagination = z.infer<typeof auditPaginationSchema>;
+
+/** The acting staff member on a ledger row, by the server's own projection. */
+export const auditActorSchema = z.strictObject({
+  documentId: documentIdSchema,
+  email: z.string().max(EMAIL_MAX).nullable(),
+});
+export type AuditActor = z.infer<typeof auditActorSchema>;
+
+export const auditLogRowSchema = z.strictObject({
+  /**
+   * Strapi's `db.query` returns the numeric primary key alongside the
+   * explicit `select`, so the wire row carries `id` even though the service
+   * does not ask for it. Verified against the live route — modelling it is
+   * what keeps this a strict schema instead of a passthrough.
+   */
+  id: z.number().int().positive(),
+  documentId: documentIdSchema,
+  action: z.string().min(1).max(ACTION_MAX),
+  target: z.string().max(TARGET_MAX).nullable(),
+  /** Free-form JSON. Opaque on purpose — never rendered. */
+  detail: z.unknown(),
+  createdAt: timestampSchema,
+  actor: auditActorSchema.nullable(),
+});
+export type AuditLogRow = z.infer<typeof auditLogRowSchema>;
+
+/**
+ * Every filter is applied SERVER-side: `action` and `target` are
+ * case-insensitive contains, `actor` is an exact documentId, and `from`/`to`
+ * bound `createdAt`. There is deliberately no free-text `q` and no `sort` —
+ * the route serves neither.
+ */
+export const auditLogsQuerySchema = z.strictObject({
+  actor: documentIdSchema.optional(),
+  action: z.string().min(1).max(ACTION_MAX).optional(),
+  target: z.string().min(1).max(TARGET_MAX).optional(),
+  from: timestampSchema.optional(),
+  to: timestampSchema.optional(),
+  page: z.number().int().min(AUDIT_PAGE_MIN).max(AUDIT_PAGE_MAX).optional(),
+  pageSize: z.number().int().min(AUDIT_PAGE_SIZE_MIN).max(AUDIT_PAGE_SIZE_MAX).optional(),
+});
+export type AuditLogsQuery = z.infer<typeof auditLogsQuerySchema>;
+
+export const auditLogsResponseSchema = z.strictObject({
+  data: z.array(auditLogRowSchema).max(AUDIT_PAGE_SIZE_MAX),
+  meta: z.strictObject({ pagination: auditPaginationSchema }),
+});
+export type AuditLogsResponse = z.infer<typeof auditLogsResponseSchema>;
+
+export const apiTokenRowSchema = z.strictObject({
+  id: z.number().int().positive(),
+  name: z.string().min(1).max(TOKEN_NAME_MAX),
+  description: z.string().max(TOKEN_DESCRIPTION_MAX).nullable(),
+  type: z.string().min(1).max(TOKEN_TYPE_MAX),
+  lastUsedAt: timestampSchema.nullable(),
+  expiresAt: timestampSchema.nullable(),
+  createdAt: timestampSchema.nullable(),
+});
+export type ApiTokenRow = z.infer<typeof apiTokenRowSchema>;
+
+export const apiTokensResponseSchema = z.strictObject({ data: z.array(apiTokenRowSchema) });
+export type ApiTokensResponse = z.infer<typeof apiTokensResponseSchema>;
+
+/** Revoke is a hard delete: the row is gone, so the ack is the id and a flag. */
+export const apiTokenRevokeResponseSchema = z.strictObject({
+  data: z.strictObject({ id: z.number().int().positive(), revoked: z.literal(true) }),
+});
+export type ApiTokenRevokeResponse = z.infer<typeof apiTokenRevokeResponseSchema>;
+
+export const emptyRevokeBodySchema = z.strictObject({});
+
+export const AuditLogsOperation: OpsOperation<
+  typeof auditLogsQuerySchema,
+  typeof auditLogsResponseSchema
+> = Object.freeze({
+  contractId: 'C-OPSA-01',
+  method: 'GET',
+  path: '/api/ops/audit-logs',
+  request: auditLogsQuerySchema,
+  response: auditLogsResponseSchema,
+  success: 200,
+  errors: [400, 401, 403, 429, 500],
+});
+
+export const ApiTokensOperation: OpsOperation<
+  typeof emptyRevokeBodySchema,
+  typeof apiTokensResponseSchema
+> = Object.freeze({
+  contractId: 'C-OPSA-02',
+  method: 'GET',
+  path: '/api/ops/security/api-tokens',
+  request: emptyRevokeBodySchema,
+  response: apiTokensResponseSchema,
+  success: 200,
+  errors: [401, 403, 429, 500],
+});
+
+export const ApiTokenRevokeOperation: OpsOperation<
+  typeof emptyRevokeBodySchema,
+  typeof apiTokenRevokeResponseSchema
+> = Object.freeze({
+  contractId: 'C-OPSA-02',
+  method: 'POST',
+  path: '/api/ops/security/api-tokens/:id/revoke',
+  request: emptyRevokeBodySchema,
+  response: apiTokenRevokeResponseSchema,
+  success: 200,
+  errors: [400, 401, 403, 404, 429, 500],
+});
+
+/** The route path for one token's revoke. */
+export function apiTokenRevokePath(id: number): string {
+  return `/api/ops/security/api-tokens/${id}/revoke`;
+}
