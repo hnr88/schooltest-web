@@ -22,7 +22,7 @@ import { z } from 'zod';
 
 import { REFERENCE_VIEWPORT } from '@/modules/ops/hooks/use-visual-reference';
 import { apiEnv } from '../helpers/auth-db';
-import { namedRetry } from '../helpers/api-named-retry';
+import { detectApiState, namedRetry } from '../helpers/api-named-retry';
 import { roleCredentials } from '../helpers/credentials';
 import { cat, loadMessages } from '../helpers/i18n';
 import { paceRateWindow } from '../helpers/pace';
@@ -134,6 +134,16 @@ test.describe.configure({ timeout: 240_000, retries: 1 });
 test.describe.configure({ mode: 'serial' });
 
 test.beforeAll(async ({ request }) => {
+  // API BOOT STOP gate (ops/12, orchestrator-directed): an old watcher child
+  // with no :5500 service is a crash-loop that retrying cannot fix — fail fast
+  // with the watcher-log evidence instead of spending the attempt budget.
+  const apiState = detectApiState();
+  if (apiState.state === 'boot-stop') {
+    throw new Error(
+      `API BOOT STOP — :5500 is crash-looping, not restarting. Retry cannot fix it; ` +
+        `the fix is in another row's file. Evidence: ${apiState.evidence}`,
+    );
+  }
   await withNamedRetries('create the fixture school and staff', async () => {
     const school = await createOpsFixtureSchool(request, ledger, 'ops-012');
     schoolId = school.documentId;
