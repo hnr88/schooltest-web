@@ -135,7 +135,12 @@ test.describe('task 129: mastery row click-through to the full report (C-RPT-01 
     await expect(screen).toBeVisible({ timeout: 20_000 });
     const masteryTable = screen.locator('[data-slot="mastery-table"]');
     await expect(masteryTable).toBeVisible();
-    await expect(masteryTable.locator(':scope > li')).toHaveCount(diagnostic.mastery.length);
+    // ops/33: the mastery surface renders through the kit's table body now —
+    // rows carry the kit's own [data-directory-row] marker instead of being
+    // `<li>` children.
+    await expect(masteryTable.locator('[data-directory-row]')).toHaveCount(
+      diagnostic.mastery.length,
+    );
 
     // The row link: catalog label, href pointing at the wire's result id.
     const label = icu(cat(en, 'Teach.diagnostic.mastery.viewFullReport'), {
@@ -201,7 +206,7 @@ test.describe('task 129: mastery row click-through to the full report (C-RPT-01 
 
     // Row-scoped: a no-result row carries no anchor element at all — no dead
     // affordance, not even a hidden one.
-    const rows = masteryTable.locator(':scope > li');
+    const rows = masteryTable.locator('[data-directory-row]');
     for (const row of empty) {
       const rowItem = rows.filter({ has: page.getByText(row.student_ref, { exact: true }) });
       await expect(rowItem).toHaveCount(1);

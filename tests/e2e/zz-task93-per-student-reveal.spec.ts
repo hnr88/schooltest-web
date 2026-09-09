@@ -22,14 +22,20 @@ const APP_ORIGIN = process.env.E2E_BASE_URL ?? 'http://localhost:3101';
 const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
-const SOFIA_ID = fixtureStudentId('Sofia', 'Petrov');
+// The three student ids resolve in beforeAll, NOT at module level
+// (orchestrator-authorised move, ops/33): a module-level DB lookup made test
+// COLLECTION depend on live seed data, so one drifted student blanked the
+// whole suite's catalog. With the lookup at setup time the spec now fails at
+// RUNTIME while the seed is drifted — the honest red — instead of killing
+// discovery for every spec in the suite.
+let SOFIA_ID: string;
 const SOFIA_NAME = 'Sofia Petrov';
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local';
 // Ahmed is never revealed and never joins: the staggered control row.
-const BETA_ID = fixtureStudentId('Ahmed', 'Hassan');
+let BETA_ID: string;
 const BETA_EMAIL = 'journey93-ahmed@schooltest.local';
 // Mei Lin is revealed second and stays waiting across the reload.
-const ALPHA_ID = fixtureStudentId('Mei Lin', 'Wang');
+let ALPHA_ID: string;
 const ALPHA_NAME = 'Mei Lin Wang';
 const ALPHA_EMAIL = 'journey93-mei@schooltest.local';
 const REVEAL_AUDIT_KEY = 'schooltest-test-day-reveal-audit';
@@ -133,6 +139,12 @@ test.describe('task 93: per-student reveal vs live C-SIT-05', () => {
   // Serial: one sitting lifecycle driven end to end through the real UI. The
   // timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
   test.describe.configure({ mode: 'serial', timeout: 120_000 });
+
+  test.beforeAll(() => {
+    SOFIA_ID = fixtureStudentId('Sofia', 'Petrov');
+    BETA_ID = fixtureStudentId('Ahmed', 'Hassan');
+    ALPHA_ID = fixtureStudentId('Mei Lin', 'Wang');
+  });
 
   test('reveal -> copy -> code_shown -> staggered join -> reload persistence -> restore', async ({
     page,

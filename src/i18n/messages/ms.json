@@ -6,6 +6,41 @@
   "Articles": {
     "title": "Articles",
     "description": "Example module wired end-to-end to the Strapi article API.",
+    "searchLabel": "Cari artikel",
+    "searchPlaceholder": "Cari mengikut tajuk",
+    "sortLabel": "Susun",
+    "sortNewest": "Terbaharu dahulu",
+    "sortOldest": "Terlama dahulu",
+    "clearFilters": "Kosongkan penapis",
+    "rowMenuLabel": "Tindakan baris",
+    "paginationLabel": "Paginasi",
+    "previous": "Sebelumnya",
+    "next": "Seterusnya",
+    "showingCount": "Menunjukkan {showing} daripada {total}",
+    "pageCount": "Halaman {page} daripada {pageCount} ({total} jumlah)",
+    "emptyTitle": "Tiada artikel lagi",
+    "emptyDescription": "Artikel muncul di sini setelah diterbitkan.",
+    "filteredEmptyTitle": "Tiada padanan",
+    "filteredEmptyDescription": "Tiada artikel sepadan dengan carian dan penapis semasa.",
+    "staleBanner": "Muat semula terkini gagal — artikel di bawah ialah yang terakhir dihidangkan pelayan.",
+    "errorTitle": "Tidak dapat memuatkan artikel",
+    "errorDescription": "Masalah berlaku semasa memuatkan senarai ini.",
+    "retry": "Cuba lagi",
+    "loading": "Memuatkan artikel",
+    "columnTitle": "Tajuk",
+    "columnCategory": "Kategori",
+    "columnViews": "Paparan",
+    "columnUpdated": "Dikemas kini",
+    "filterCategoryLabel": "Kategori",
+    "filterFeaturedLabel": "Ketengah",
+    "featuredAll": "Semua",
+    "featuredOnly": "Ketengah sahaja",
+    "featuredBadge": "Ketengah",
+    "viewsCount": "{views, plural, other {# paparan}}",
+    "categoryNews": "Berita",
+    "categoryTutorial": "Tutorial",
+    "categoryGuide": "Panduan",
+    "categoryOpinion": "Pendapat",
     "createTitle": "Create article"
   },
   "Auth": {
@@ -593,22 +628,18 @@
       "teach": "Mengajar",
       "ops": "Operasi",
       "opsSchools": "Sekolah",
-      "opsTimers": "Pemasa bahagian",
       "opsSettings": "Tetapan platform",
       "account": "Akaun",
       "teacherDashboard": "Papan pemuka",
       "testSessions": "Sesi ujian",
-      "results": "Keputusan",
-      "opsSystem": "Sistem",
-      "opsAudit": "Audit & keselamatan",
-      "opsComms": "Komunikasi",
-      "opsFlags": "Bendera & tetapan"
+      "results": "Keputusan"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
       "groups": {
         "manage": "Urus",
-        "teach": "Ajar"
+        "teach": "Ajar",
+        "teacherView": "Pandangan guru"
       },
       "promo": {
         "overline": "Anak dipautkan",
@@ -1412,6 +1443,21 @@
     "viewAll": "Lihat semua pemberitahuan",
     "markAllRead": "Tanda semua sebagai dibaca",
     "markAllReadShort": "Tanda semua dibaca",
+    "feedSearchLabel": "Cari suapan",
+    "feedSearchPlaceholder": "Cari mengikut teks",
+    "feedSortLabel": "Susun",
+    "feedSortNewest": "Terbaharu dahulu",
+    "feedSortOldest": "Terlama dahulu",
+    "feedClearFilters": "Kosongkan penapis",
+    "feedReadFilterLabel": "Status bacaan",
+    "feedRowMenuLabel": "Tindakan baris",
+    "feedOpenTarget": "Buka halaman pautan",
+    "feedShowingCount": "Menunjukkan {showing} daripada {total}",
+    "feedPageCount": "Halaman {page} daripada {pageCount} ({total} jumlah)",
+    "feedFilteredEmptyTitle": "Tiada padanan",
+    "feedFilteredEmptyDescription": "Tiada pemberitahuan sepadan dengan carian dan penapis semasa.",
+    "feedStaleBanner": "Muat semula terkini gagal — pemberitahuan di bawah ialah yang terakhir dihidangkan pelayan.",
+    "feedLoading": "Memuatkan pemberitahuan",
     "markRead": "Tanda sebagai dibaca",
     "unread": "Belum dibaca",
     "read": "Dibaca",
@@ -1481,6 +1527,27 @@
     "listEmptyDescription": "Laporan muncul di sini apabila pelajar anda menyelesaikan sesi ujian rasmi dan pemarkahan selesai.",
     "listGoneTitle": "Senarai laporan ini tidak lagi tersedia",
     "listGoneDescription": "Akaun anda tidak lagi boleh membuka senarai ini.",
+    "listFilterAll": "Semua",
+    "listSearchLabel": "Cari laporan",
+    "listSearchPlaceholder": "Cari mengikut fasa, kemahiran atau status",
+    "listSortLabel": "Susun",
+    "listSortNewest": "Terbaharu dahulu",
+    "listSortOldest": "Terlama dahulu",
+    "listClearFilters": "Kosongkan penapis",
+    "listRowMenuLabel": "Tindakan baris",
+    "listOpenReport": "Buka laporan",
+    "listPaginationLabel": "Paginasi",
+    "listPrevious": "Sebelumnya",
+    "listNext": "Seterusnya",
+    "listShowingCount": "Menunjukkan {showing} daripada {total}",
+    "listPageCount": "Halaman {page} daripada {pageCount} ({total} jumlah)",
+    "listFilteredEmptyTitle": "Tiada padanan",
+    "listFilteredEmptyDescription": "Tiada laporan sepadan dengan carian dan penapis semasa.",
+    "listStaleBanner": "Muat semula terkini gagal — laporan di bawah ialah yang terakhir dihidangkan pelayan.",
+    "listErrorTitle": "Tidak dapat memuatkan senarai laporan",
+    "listErrorDescription": "Masalah berlaku semasa memuatkan senarai ini.",
+    "listRetry": "Cuba lagi",
+    "listLoading": "Memuatkan laporan",
     "reportGoneTitle": "Laporan ini tidak lagi tersedia",
     "reportGoneDescription": "Ia mungkin telah dibuang, atau pautan sudah lapuk.",
     "backToList": "Kembali ke laporan",
@@ -2029,7 +2096,24 @@
       "emailFixPending": "Pembetulan diminta",
       "emailFixSuccessToast": "Pentadbir sekolah anda telah diminta untuk membetulkan e-mel ini.",
       "emailFixErrorToast": "Pembetulan e-mel tidak dapat diminta. Cuba lagi.",
-      "testDayLink": "Pergi ke hari ujian"
+      "testDayLink": "Pergi ke hari ujian",
+      "searchPlaceholder": "Cari pelajar",
+      "searchLabel": "Cari pelajar",
+      "sortLabel": "Isih",
+      "filterStatusLabel": "Status",
+      "filterStatusAll": "Semua status",
+      "sortNameAsc": "Nama A–Z",
+      "sortNameDesc": "Nama Z–A",
+      "showingCount": "Menunjukkan {showing} daripada {total} pelajar",
+      "pageCount": "Halaman {page} daripada {pageCount} · {total} jumlah",
+      "previous": "Sebelumnya",
+      "next": "Seterusnya",
+      "paginationLabel": "Halaman senarai",
+      "rowMenuLabel": "Tindakan baris",
+      "clearFilters": "Kosongkan penapis",
+      "errorStaleBanner": "Muat semula terakhir gagal — pelajar di bawah ialah senarai terakhir yang dihantar oleh pelayan.",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi"
     },
     "diagnostic": {
       "meta": {
@@ -2084,7 +2168,25 @@
         "cta": "Eksport untuk pembantu AI anda",
         "downloading": "Menyediakan eksport...",
         "error": "Eksport tidak dapat dimuat turun. Cuba lagi."
-      }
+      },
+      "searchPlaceholder": "Cari pelajar",
+      "searchLabel": "Cari pelajar",
+      "sortLabel": "Isih",
+      "sortNameAsc": "Nama A–Z",
+      "sortNameDesc": "Nama Z–A",
+      "sortAreaWeakest": "{area} — paling lemah dahulu",
+      "sortAreaStrongest": "{area} — paling kuat dahulu",
+      "columnStudent": "Pelajar",
+      "columnReport": "Laporan penuh",
+      "showingCount": "Menunjukkan {showing} daripada {total} pelajar",
+      "pageCount": "Halaman {page} daripada {pageCount} · {total} jumlah",
+      "previous": "Sebelumnya",
+      "next": "Seterusnya",
+      "paginationLabel": "Halaman penguasaan",
+      "clearFilters": "Kosongkan penapis",
+      "errorStaleBanner": "Muat semula terakhir gagal — baris di bawah ialah data terakhir yang dihantar oleh pelayan.",
+      "errorDescription": "Semak sambungan anda dan cuba lagi.",
+      "retry": "Cuba lagi"
     },
     "progress": {
       "title": "Kemajuan - Test B berbanding Test A",
@@ -2306,7 +2408,12 @@
         "title": "Butiran akaun",
         "edit": "Edit",
         "email": "E-mel",
-        "status": "Status"
+        "status": "Status",
+        "role": "Peranan",
+        "added": "Ditambah",
+        "lastActive": "Aktif terakhir",
+        "neverActive": "Belum pernah membuka sesi ujian",
+        "roleNone": "Tiada peranan"
       }
     },
     "meta": {
@@ -2766,151 +2873,18 @@
     }
   },
   "Ops": {
-    "system": {
-      "meta": {
-        "title": "Sistem",
-        "description": "Kesihatan platform secara langsung, versi, migrasi dan buku besar sandaran."
-      },
-      "title": "Sistem",
-      "description": "Apa yang platform jalankan sekarang: kesihatan kebergantungan, versi, migrasi yang digunakan dan sandaran yang direkodkan.",
-      "health": {
-        "title": "Kesihatan kebergantungan",
-        "description": "Probe langsung bagi setiap kebergantungan yang platform perlukan. Probe merah ialah keadaan sebenar, dipaparkan seadanya.",
-        "overall": "Keseluruhan {ms} ms",
-        "status": {
-          "up": "naik",
-          "down": "turun"
-        },
-        "latency": "{ms} ms",
-        "probes": {
-          "database": "Pangkalan data",
-          "redis": "Redis",
-          "queues": "Baris gilir",
-          "storage": "Storan",
-          "web": "Web"
-        },
-        "errorTitle": "Bacaan kesihatan gagal",
-        "errorDescription": "Probe kesihatan tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
-      },
-      "info": {
-        "title": "Masa jalan",
-        "description": "Versi dan masa beroperasi sahaja — tiada rahsia, tiada rentetan sambungan.",
-        "fields": {
-          "strapiVersion": "Strapi",
-          "nodeVersion": "Node",
-          "uptime": "Masa beroperasi",
-          "env": "Persekitaran",
-          "database": "Klien pangkalan data",
-          "timezone": "Zon waktu",
-          "queues": "Baris gilir"
-        },
-        "errorTitle": "Bacaan maklumat runtime gagal",
-        "errorDescription": "Maklumat runtime tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
-      },
-      "migrations": {
-        "title": "Migrasi yang digunakan",
-        "description": "Buku besar migrasi pengguna, terbaharu dahulu, dengan kiraan pelayan sendiri.",
-        "count": "{count, plural, other {# migrasi digunakan}}",
-        "columns": {
-          "name": "Migrasi",
-          "appliedAt": "Masa digunakan"
-        },
-        "never": "tidak direkodkan",
-        "errorTitle": "Bacaan migrasi gagal",
-        "errorDescription": "Buku besar migrasi tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
-      },
-      "backups": {
-        "title": "Buku besar sandaran",
-        "description": "Sandaran pangkalan data yang direkodkan, terbaharu dahulu. Menjalankan sandaran tiba bersama kawalan tulisan.",
-        "empty": "Tiada sandaran direkodkan lagi. Buku besar diisi apabila satu sandaran berjaya atau gagal.",
-        "columns": {
-          "filename": "Fail",
-          "bytes": "Bait",
-          "status": "Status",
-          "startedAt": "Dimulakan"
-        },
-        "status": {
-          "succeeded": "berjaya",
-          "failed": "gagal"
-        },
-        "errorTitle": "Bacaan buku besar sandaran gagal",
-        "errorDescription": "Buku besar sandaran tidak dapat dibaca. Cuba semula, atau semak API jika berterusan."
-      },
-      "maintenance": {
-        "title": "Tindakan penyelenggaraan",
-        "description": "Tindakan yang mengubah keadaan sebenar. Setiap satu bertanya dahulu, dan setiap baris keputusan menunjukkan jawapan pelayan sendiri.",
-        "disruptiveBadge": "mengganggu",
-        "cancel": "Batal",
-        "backup": {
-          "label": "Jalankan sandaran",
-          "description": "Menambak pangkalan data (pg_dump, fallback kontena), menulisnya ke cakera dan merekodkan larian — berjaya atau gagal — ke buku besar di bawah.",
-          "confirmTitle": "Jalankan sandaran pangkalan data?",
-          "confirmBody": "Tambakan berjalan sekarang dan larian direkodkan ke buku besar sandaran, apa pun hasilnya.",
-          "confirmAction": "Jalankan sandaran",
-          "success": "Sandaran direkodkan: {filename} ({bytes} bait)"
-        },
-        "cacheClear": {
-          "label": "Kosongkan cache",
-          "description": "Memadam kunci yang sepadan dari Redis dengan SCAN+DEL. Pelayan melaporkan dengan tepat berapa kunci dipadam.",
-          "scopeLabel": "Skop",
-          "confirmTitle": "Kosongkan cache (skop: {scope})?",
-          "confirmBody": "Kunci {scope} yang sepadan dipadam dari Redis sekarang. Cache diisi semula pada bacaan berikutnya.",
-          "confirmAction": "Kosongkan",
-          "success": "{scope} dikosongkan: {count} kunci dipadam"
-        },
-        "sitemap": {
-          "label": "Jana semula peta laman",
-          "description": "Merakam tetapan platform, meminta aplikasi web menyusun semula, kemudian mengira URL yang benar-benar terkandung dalam peta laman baharu.",
-          "confirmTitle": "Jana semula peta laman?",
-          "confirmBody": "Tetapan platform dirakam sekarang dan aplikasi web diminta menyusun semula. Jika aplikasi web tidak menjawab, kegagalan dipaparkan seadanya.",
-          "confirmAction": "Jana semula",
-          "success": "Peta laman dijana semula: {count} URL"
-        }
-      },
-      "pipeline": {
-        "title": "Saluran paip penskoran",
-        "description": "Kiraan BullMQ secara langsung untuk baris gilir berdaftar, dikongsi dengan pekerja yang berjalan. Kawalan memerlukan pengesahan dan tidak pernah menyentuh konsol lain.",
-        "rScoring": "Penskoran R: {status}",
-        "loading": "Membaca kiraan baris gilir…",
-        "error": "Kesihatan baris gilir tidak dapat dibaca. Cuba semula dengan membuka semula halaman.",
-        "columns": {
-          "queue": "Baris gilir",
-          "waiting": "Menunggu",
-          "active": "Aktif",
-          "failed": "Gagal",
-          "completed": "Selesai",
-          "actions": "Kawalan"
-        },
-        "pause": "Jeda",
-        "resume": "Sambung semula",
-        "pauseWord": "jeda",
-        "resumeWord": "sambung semula",
-        "drain": "Kosongkan yang gagal",
-        "cancel": "Batal",
-        "pauseConfirm": {
-          "title": "Ubah keadaan baris gilir?",
-          "body": "{action} baris gilir \"{queue}\" sekarang? Pekerja yang berjalan berkongsi — baris gilir yang dijeda tidak menerima kerja baharu sehingga disambung semula.",
-          "action": "Sahkan"
-        },
-        "drainConfirm": {
-          "title": "Kosongkan kerja yang gagal?",
-          "body": "Memadam {count} kerja gagal pada \"{queue}\". Kerja menunggu tidak pernah disentuh. Ini tidak boleh dibuat asal.",
-          "action": "Kosongkan"
-        },
-        "retry": {
-          "description": "Jalankan semula SATU kerja gagal melalui semula jadi baris gilir — mengikut id, bukan main semula pukal.",
-          "queueLabel": "Baris gilir",
-          "queuePlaceholder": "Pilih baris gilir",
-          "jobLabel": "Id kerja",
-          "jobPlaceholder": "Id kerja gagal",
-          "action": "Cuba semula kerja"
-        },
-        "retryConfirm": {
-          "title": "Cuba semula kerja ini?",
-          "body": "Kerja {jobId} pada \"{queue}\" kembali melalui semula jadi baris gilir. Ia akan dilaksanakan semula.",
-          "action": "Cuba semula"
-        }
-      }
+    "capabilities": {
+      "offlineTitle": "Anda luar talian",
+      "offlineBody": "Menyemak data cache. Perubahan tidak akan disimpan sehingga sambungan pulih.",
+      "offlineRetry": "Cuba sambung semula",
+      "sessionExpiredBodyNoTimeout": "Sesi anda tamat selepas tempoh tidak aktif. Log masuk semula — tiada apa yang anda simpan akan hilang.",
+      "sessionExpiredBodyWithTimeout": "Sesi anda tamat selepas {minutes} minit tidak aktif. Log masuk semula — tiada apa yang anda simpan akan hilang.",
+      "readOnlyWriteBlocked": "Akaun sokongan adalah baca sahaja — minta pentadbir operasi membuat perubahan ini",
+      "offlineWriteBlocked": "Anda di luar talian — tiada apa-apa disimpan"
+    },
+    "toast": {
+      "retry": "Cuba lagi",
+      "undo": "Buat asal"
     },
     "schools": {
       "meta": {
@@ -3195,29 +3169,6 @@
           "title": "Import tidak selesai",
           "body": "Semak mesej di bawah sebelum mencuba lagi."
         }
-      }
-    },
-    "timers": {
-      "meta": {
-        "title": "Pemasa bahagian - ops SchoolTest",
-        "description": "Tetapkan pemasa ujian global setiap bahagian."
-      },
-      "title": "Pemasa bahagian",
-      "description": "Satu pemasa setiap bahagian. Tempoh yang sama digunakan untuk semua sekolah dan setiap perubahan direkodkan sebagai versi.",
-      "sectionLabel": "Bahagian {stage}",
-      "minutesHint": "Minit bulat, 1 hingga 60.",
-      "nonRetroactiveNote": "Perubahan tidak mengubah sesi yang telah dicipta - setiap sesi mengekalkan masa asalnya.",
-      "lastSaved": "Terakhir disimpan oleh {email} pada {date} (versi {version}).",
-      "saveButton": "Simpan pemasa",
-      "savingButton": "Menyimpan...",
-      "savedToast": "Disimpan. Sesi baharu akan menggunakan masa ini.",
-      "errorToast": "Pemasa tidak dapat disimpan. Cuba lagi.",
-      "forbiddenToast": "Hanya pasukan ops SchoolTest boleh mengubah pemasa.",
-      "loadErrorTitle": "Pemasa tidak dapat dimuatkan",
-      "loadErrorDescription": "Semak sambungan anda dan cuba lagi.",
-      "retry": "Cuba lagi",
-      "validation": {
-        "range": "Masukkan minit bulat dari 1 hingga 60."
       }
     },
     "recovery": {
@@ -3728,333 +3679,6 @@
       "errorTitle": "Kami tidak dapat memuatkan aktiviti",
       "errorDescription": "Semak sambungan anda dan cuba lagi.",
       "retry": "Cuba lagi"
-    },
-    "comms": {
-      "meta": {
-        "title": "Komunikasi — Operasi SchoolTest",
-        "description": "Operasi SchoolTest — peristiwa pemberitahuan, lejar e-mel pengesahan dan siaran platform."
-      },
-      "title": "Komunikasi",
-      "description": "Apa yang dihantar oleh platform, apa yang telah dikeluarkan, dan siaran yang boleh anda hantar sendiri.",
-      "noValue": "—",
-      "composersTitle": "Hantar siaran",
-      "errorToast": "Permintaan itu tidak berjaya. Tiada apa-apa dihantar.",
-      "templates": {
-        "title": "Peristiwa pemberitahuan",
-        "description": "Peristiwa yang dihantar oleh platform ini. Ia ditetapkan dalam aplikasi dan tidak boleh disunting di sini.",
-        "loadingLabel": "Memuatkan peristiwa pemberitahuan",
-        "empty": "Tiada peristiwa pemberitahuan didaftarkan.",
-        "sendsEmail": "Hantar e-mel",
-        "inAppOnly": "Dalam apl sahaja",
-        "columns": {
-          "key": "Peristiwa",
-          "subject": "Subjek",
-          "delivery": "Penghantaran"
-        },
-        "error": {
-          "title": "Kami tidak dapat memuatkan peristiwa pemberitahuan.",
-          "description": "Periksa sambungan anda dan cuba lagi.",
-          "retry": "Cuba lagi"
-        }
-      },
-      "log": {
-        "title": "Lejar e-mel pengesahan",
-        "description": "E-mel tetapan semula kata laluan dan pengesahan yang telah dikeluarkan platform. Terbaharu dahulu.",
-        "loadingLabel": "Memuatkan lejar e-mel pengesahan",
-        "empty": "Belum ada e-mel pengesahan dikeluarkan.",
-        "columns": {
-          "kind": "Jenis",
-          "email": "Penerima",
-          "issued": "Dikeluarkan"
-        },
-        "error": {
-          "title": "Kami tidak dapat memuatkan lejar e-mel pengesahan.",
-          "description": "Periksa sambungan anda dan cuba lagi.",
-          "retry": "Cuba lagi"
-        },
-        "pagination": {
-          "label": "Halaman lejar e-mel pengesahan",
-          "previous": "Sebelumnya",
-          "next": "Seterusnya",
-          "pageCount": "Halaman {page} daripada {pageCount} · {total} entri"
-        }
-      },
-      "fields": {
-        "audience": "Khalayak",
-        "audiencePlaceholder": "Pilih siapa yang menerimanya",
-        "body": "Mesej",
-        "maxChars": "Maksimum {max} aksara"
-      },
-      "audiences": {
-        "all": "Semua orang",
-        "ops": "Kakitangan operasi",
-        "school_admins": "Pentadbir sekolah",
-        "teachers": "Guru",
-        "parents": "Ibu bapa"
-      },
-      "validation": {
-        "audienceRequired": "Pilih satu khalayak.",
-        "bodyRequired": "Tulis mesej.",
-        "tooLong": "Gunakan {max} aksara atau kurang."
-      },
-      "actions": {
-        "preview": "Pratonton penerima",
-        "cancel": "Batal"
-      },
-      "bulkEmail": {
-        "title": "E-mel pukal",
-        "description": "Hantar e-mel kepada setiap akaun dalam satu khalayak. Pratonton jumlahnya dahulu — hantaran tidak boleh ditarik semula.",
-        "headline": "Subjek",
-        "send": "Hantar e-mel",
-        "previewToast": "{count} penerima akan menerimanya. Tiada apa-apa dihantar.",
-        "previewResult": "Ini akan sampai kepada {count} penerima.",
-        "sentToast": "Dihantar kepada {sent} penerima, {failed} gagal.",
-        "confirmTitle": "Hantar e-mel ini sekarang?",
-        "confirmDescription": "Ini menghantar e-mel kepada {count} penerima serta-merta dan tidak boleh ditarik semula.",
-        "confirmUnknown": "Ini menghantar e-mel kepada semua orang dalam khalayak yang dipilih serta-merta dan tidak boleh ditarik semula. Pratonton jumlahnya dahulu jika anda mahu melihat skop kesannya.",
-        "confirmAction": "Hantar e-mel",
-        "validation": {
-          "headlineRequired": "Tulis subjek."
-        }
-      },
-      "push": {
-        "title": "Siaran push",
-        "description": "Hantar pemberitahuan push ke setiap peranti berdaftar dalam satu khalayak. Ia tidak boleh ditarik semula.",
-        "headline": "Tajuk",
-        "send": "Hantar push",
-        "previewToast": "{count} peranti akan menerimanya. Tiada apa-apa dihantar.",
-        "previewResult": "Ini akan sampai ke {count} peranti berdaftar.",
-        "sentToast": "Dihantar ke {sent} peranti, {failed} gagal.",
-        "confirmTitle": "Hantar push ini sekarang?",
-        "confirmDescription": "Ini menghantar push ke {count} peranti berdaftar serta-merta dan tidak boleh ditarik semula.",
-        "confirmUnknown": "Ini menghantar push ke setiap peranti berdaftar dalam khalayak yang dipilih serta-merta dan tidak boleh ditarik semula. Pratonton jumlahnya dahulu jika anda mahu melihat skop kesannya.",
-        "confirmAction": "Hantar push",
-        "validation": {
-          "headlineRequired": "Tulis tajuk."
-        }
-      }
-    },
-    "audit": {
-      "title": "Audit",
-      "description": "Lejar audit platform dan token API yang boleh mencapainya.",
-      "meta": {
-        "title": "Audit — Operasi SchoolTest",
-        "description": "Operasi SchoolTest — lejar audit dan pentadbiran token API."
-      },
-      "ledgerTitle": "Lejar audit",
-      "loadingLabel": "Memuatkan lejar audit",
-      "noValue": "—",
-      "actorSystem": "Sistem",
-      "columns": {
-        "actor": "Pelaku",
-        "action": "Tindakan",
-        "target": "Sasaran",
-        "timestamp": "Masa"
-      },
-      "empty": {
-        "none": "Belum ada entri audit direkodkan.",
-        "noMatches": "Tiada entri audit yang menepati penapis ini."
-      },
-      "error": {
-        "title": "Kami tidak dapat memuatkan lejar audit.",
-        "description": "Periksa sambungan anda dan cuba lagi.",
-        "retry": "Cuba lagi"
-      },
-      "pagination": {
-        "label": "Halaman lejar audit",
-        "previous": "Sebelumnya",
-        "next": "Seterusnya",
-        "pageCount": "Halaman {page} daripada {pageCount} · {total} entri"
-      },
-      "filters": {
-        "action": "Tindakan",
-        "actionPlaceholder": "cth. invitation.revoke",
-        "target": "Sasaran",
-        "targetPlaceholder": "ID sasaran",
-        "apply": "Guna penapis",
-        "clear": "Kosongkan penapis"
-      },
-      "tokens": {
-        "title": "Token API",
-        "description": "Token yang boleh memanggil API platform. Membatalkannya berkesan serta-merta dan tidak boleh dibatalkan semula.",
-        "loadingLabel": "Memuatkan token API",
-        "errorTitle": "Kami tidak dapat memuatkan token API.",
-        "errorDescription": "Periksa sambungan anda dan cuba lagi.",
-        "revoke": "Batalkan",
-        "confirmTitle": "Batalkan token API ini?",
-        "confirmBody": "{name} berhenti berfungsi serta-merta dan tidak boleh dipulihkan. Apa sahaja yang menggunakannya akan mula gagal.",
-        "confirmAction": "Batalkan token",
-        "cancel": "Batal",
-        "columns": {
-          "name": "Nama",
-          "type": "Jenis",
-          "lastUsed": "Kali terakhir digunakan",
-          "created": "Dicipta",
-          "actions": "Tindakan"
-        }
-      }
-    },
-    "content": {
-      "meta": {
-        "title": "Kandungan",
-        "description": "Kiraan baris, penggunaan media dan pembersihan baris yatim bagi setiap jenis kandungan."
-      },
-      "title": "Kandungan",
-      "description": "Apa yang platform simpan sekarang: kiraan baris mengikut jenis, penggunaan media, baris yatim, dan larian penyelenggaraan yang membersihkannya.",
-      "counts": {
-        "title": "Jenis kandungan",
-        "description": "Kiraan baris semasa bagi setiap jenis kandungan api::, dihitung terus daripada pangkalan data.",
-        "columns": {
-          "contentType": "Jenis kandungan",
-          "uid": "UID",
-          "rows": "Baris"
-        },
-        "errorTitle": "Gagal membaca kiraan baris",
-        "errorDescription": "Kiraan baris tidak dapat dibaca. Cuba lagi, atau periksa API jika ia berterusan."
-      },
-      "media": {
-        "title": "Media",
-        "description": "Jumlah bait sebenar daripada jadual fail milik plugin muat naik.",
-        "files": "Fail",
-        "totalBytes": "Jumlah bait",
-        "unreferenced": "Tidak dirujuk",
-        "columns": {
-          "mime": "Jenis",
-          "count": "Fail",
-          "bytes": "Bait"
-        },
-        "noMedia": "Belum ada fail media disimpan.",
-        "errorTitle": "Gagal membaca statistik media",
-        "errorDescription": "Statistik media tidak dapat dibaca. Cuba lagi, atau periksa API jika ia berterusan."
-      },
-      "orphans": {
-        "title": "Baris yatim",
-        "description": "Baris yang kehilangan hubungan wajibnya, mengikut jenis, dengan sampel 20 yang pertama.",
-        "columns": {
-          "kind": "Jenis yatim",
-          "count": "Bilangan",
-          "purge": "Buang"
-        },
-        "selectForPurge": "pilih untuk dibuang",
-        "selectKind": "Pilih {kind} untuk dibuang",
-        "purgeHint": "Membuang akan memadam baris yatim bagi jenis yang dipilih secara kekal. Pelayan melaporkan dengan tepat apa yang dipadamnya.",
-        "purgeButton": "Buang yang dipilih",
-        "confirmTitle": "Buang jenis yatim yang dipilih?",
-        "confirmBody": "Semua baris yatim bagi {count} jenis yang dipilih dipadam sekarang. Ini tidak boleh dibatalkan.",
-        "confirmAction": "Buang",
-        "cancel": "Batal",
-        "executed": "Pembuangan dilaksanakan: {counts}",
-        "nothingPurged": "tiada apa untuk dipadam",
-        "errorTitle": "Gagal membaca baris yatim",
-        "errorDescription": "Laporan baris yatim tidak dapat dibaca. Cuba lagi, atau periksa API jika ia berterusan."
-      },
-      "maintenance": {
-        "title": "Larian penyelenggaraan",
-        "description": "Kedua-dua larian lalai kepada laporan larian percubaan. Pelaksanaan memerlukan pengesahan yang jelas dan diaudit.",
-        "cancel": "Batal",
-        "reindex": {
-          "label": "Larian integriti carian",
-          "description": "Mengira setiap baris sekolah dan sebarang slug boleh cari yang hilang. Larian percubaan hanya melaporkan; pelaksanaan menulis entri audit.",
-          "preview": "Pratonton (larian percubaan)",
-          "execute": "Laksana",
-          "confirmTitle": "Laksanakan larian integriti carian?",
-          "confirmBody": "Larian berjalan sekarang dan ditulis ke lejar audit. Kiraannya dilaporkan dalam kedua-dua keadaan.",
-          "confirmAction": "Laksana",
-          "dryRun": "Larian percubaan: {indexed} sekolah diindeks, {missing} slug hilang — tiada apa ditulis",
-          "executed": "Dilaksanakan: {indexed} sekolah diindeks dalam {ms} ms — diaudit"
-        },
-        "prune": {
-          "label": "Buang media yang tidak dirujuk",
-          "description": "Memadam fail muat naik yang tidak dirujuk oleh mana-mana kandungan (baris dan objek tersimpan sekali gus). Larian percubaan hanya melaporkan.",
-          "preview": "Pratonton (larian percubaan)",
-          "execute": "Laksana pembuangan",
-          "confirmTitle": "Buang media yang tidak dirujuk sekarang?",
-          "confirmBody": "Fail yang tidak dirujuk dipadam betul-betul — objek tersimpan turut hilang bersama barisnya. Pelayan melaporkan apa yang dibuangnya.",
-          "confirmAction": "Buang",
-          "dryRun": "Larian percubaan: {removed} fail tidak dirujuk akan dipadam — tiada apa ditulis",
-          "executed": "Dilaksanakan: {removed} fail dibuang, {bytes} bait dibebaskan — diaudit"
-        }
-      }
-    },
-    "flags": {
-      "meta": {
-        "title": "Bendera & tetapan — SchoolTest Ops",
-        "description": "SchoolTest Ops — bendera ciri, sepanduk awam, dan had kadar untuk masuk."
-      },
-      "title": "Bendera & tetapan",
-      "description": "Suis platform, sepanduk yang dilihat pelawat, dan had yang mengawal proses masuk.",
-      "editorsTitle": "Tetapan platform",
-      "errorToast": "Perubahan itu tidak disimpan. Tiada apa yang digunakan.",
-      "actions": {
-        "cancel": "Batal"
-      },
-      "levels": {
-        "info": "Maklumat",
-        "warning": "Amaran",
-        "critical": "Kritikal"
-      },
-      "fields": {
-        "message": "Mesej",
-        "level": "Tahap"
-      },
-      "validation": {
-        "messageRequiredWhenOn": "Tulis mesej sebelum menghidupkannya.",
-        "tooLong": "Gunakan {max} aksara atau kurang.",
-        "maxBounds": "Nombor bulat antara {min} dan {max}.",
-        "windowBounds": "Milisaat, nombor bulat antara {min} dan {max}."
-      },
-      "registry": {
-        "title": "Bendera ciri",
-        "description": "Suis yang disertakan platform ini. Senarainya datang daripada pelayan, jadi bendera yang baru dikeluarkan muncul di sini dengan sendiri.",
-        "loadingLabel": "Memuatkan bendera ciri",
-        "empty": "Tiada bendera ciri didaftarkan.",
-        "toggleLabel": "Tukar {key}",
-        "enabledToast": "{key} kini hidup.",
-        "disabledToast": "{key} kini mati.",
-        "errorToast": "Bendera itu tidak berubah.",
-        "error": {
-          "title": "Kami tidak dapat memuatkan bendera ciri.",
-          "description": "Semak sambungan anda dan cuba lagi.",
-          "retry": "Cuba lagi"
-        }
-      },
-      "announcement": {
-        "title": "Sepanduk pengumuman",
-        "description": "Mesej yang dipaparkan pada halaman awam. Menyimpan akan menerbitkan semula halaman cache serta-merta.",
-        "switchLabel": "Papar pengumuman",
-        "messageHelp": "Dipaparkan kepada pelawat semasa pengumuman hidup. Wajib apabila anda menghidupkannya.",
-        "save": "Simpan pengumuman",
-        "confirmTitle": "Terbitkan pengumuman ini?",
-        "confirmOn": "Ini memaparkan mesej kepada setiap pelawat di tapak awam, dan menerbitkan semula halaman cache sekarang.",
-        "confirmOff": "Ini membuang pengumuman daripada setiap halaman awam dan menerbitkannya semula sekarang.",
-        "confirmAction": "Simpan pengumuman",
-        "onToast": "Pengumuman diterbitkan pada tahap {level}.",
-        "offToast": "Pengumuman dibuang."
-      },
-      "maintenance": {
-        "title": "Mod penyelenggaraan",
-        "description": "Menutup tapak kepada pelawat. Suis paling besar impaknya pada halaman ini.",
-        "switchLabel": "Letakkan tapak dalam penyelenggaraan",
-        "messageHelp": "Dipaparkan pada tapak yang ditutup semasa penyelenggaraan. Wajib apabila anda menghidupkannya.",
-        "save": "Simpan mod penyelenggaraan",
-        "confirmTitle": "Tutup tapak kepada pelawat?",
-        "confirmOn": "Ini menutup tapak awam untuk semua orang sehingga anda mematikannya semula. Kerja yang sedang berjalan bagi pengguna yang telah masuk mungkin terganggu.",
-        "confirmOff": "Ini membuka semula tapak awam kepada pelawat.",
-        "confirmAction": "Simpan mod penyelenggaraan",
-        "onToast": "Mod penyelenggaraan hidup — tapak ditutup.",
-        "offToast": "Mod penyelenggaraan mati — tapak dibuka."
-      },
-      "rateLimit": {
-        "title": "Had kadar masuk",
-        "description": "Berapa kali satu alamat boleh mencuba masuk dalam setiap tetingkap. Terlalu rendah akan mengunci orang di luar, termasuk anda.",
-        "maxLabel": "Cubaan",
-        "windowLabel": "Tetingkap (ms)",
-        "save": "Simpan had kadar",
-        "confirmTitle": "Ubah had kadar masuk?",
-        "confirmDescription": "Ini membenarkan {max} cubaan masuk setiap {window} ms. Menetapkannya terlalu rendah boleh mengunci setiap pengendali daripada masuk.",
-        "confirmAction": "Simpan had kadar",
-        "savedToast": "Had kadar disimpan: {max} cubaan setiap {window} ms."
-      }
     },
     "classesTab": {
       "columnClass": "Kelas",
@@ -4765,16 +4389,8 @@
     "newChild": "Pelajar baharu",
     "newStudent": "Pelajar baharu",
     "onboarding": "Permulaan",
-    "opsAudit": "Audit & keselamatan",
-    "opsComms": "Komunikasi",
-    "opsContent": "Kandungan",
-    "opsFlags": "Bendera & tetapan",
-    "opsInvitations": "Jemputan",
     "opsSchools": "Sekolah",
     "opsSettings": "Tetapan platform",
-    "opsSystem": "Sistem",
-    "opsTimers": "Pemasa bahagian",
-    "opsUsers": "Pengguna",
     "participation": "Penyertaan",
     "privacyPolicy": "Dasar Privasi",
     "resetPassword": "Tetap semula kata laluan",
@@ -4903,7 +4519,24 @@
         "loadErrorBody": "Jadual kekal kosong dan tidak meneka. Periksa sambungan anda dan cuba lagi.",
         "retry": "Cuba lagi",
         "emptyTitle": "Belum ada sesi",
-        "emptyDescription": "Jana kod sertai di atas dan sesi itu akan muncul di sini dengan kiraan penyiapannya."
+        "emptyDescription": "Jana kod sertai di atas dan sesi itu akan muncul di sini dengan kiraan penyiapannya.",
+        "searchPlaceholder": "Cari mengikut ujian",
+        "searchLabel": "Cari sesi",
+        "sortLabel": "Isih",
+        "clearFilters": "Kosongkan penapis",
+        "sortDateNewest": "Tarikh, terbaharu",
+        "sortDateOldest": "Tarikh, terlama",
+        "sortStatusLiveFirst": "Status, sedang berjalan dahulu",
+        "sortStatusClosedFirst": "Status, ditutup dahulu",
+        "showingCount": "Menunjukkan {showing} daripada {total}",
+        "pageCount": "Halaman {page} daripada {pageCount}",
+        "paginationLabel": "Paginasi",
+        "previous": "Sebelumnya",
+        "next": "Seterusnya",
+        "loadingLabel": "Memuatkan sesi",
+        "noMatchesTitle": "Tiada sesi sepadan",
+        "noMatchesDescription": "Tiada sesi sepadan dengan carian atau isihan semasa.",
+        "staleBanner": "Muat semula terkini gagal — sesi di bawah ialah senarai terakhir yang dihantar pelayan."
       },
       "live": {
         "meta": {
@@ -4978,7 +4611,44 @@
         "emptyDescription": "Keputusan disenaraikan satu kelas pada satu masa. Minta pentadbir menugaskan kelas kepada anda, kemudian muat semula halaman ini.",
         "errorTitle": "Tidak dapat memuatkan kelas anda",
         "errorDescription": "Senarai ini dibaca secara langsung daripada pelayan dan tidak menunjukkan apa-apa dan bukannya meneka. Periksa sambungan anda dan cuba lagi.",
-        "retry": "Cuba lagi"
+        "retry": "Cuba lagi",
+        "adminNote": "Kelas anda. Hubungi pentadbir sekolah SchoolTest anda untuk mengurus kelas.",
+        "searchPlaceholder": "Cari kelas",
+        "searchLabel": "Cari kelas",
+        "filterYear": "Tahap tahun",
+        "filterAllYears": "Semua tahap tahun",
+        "filterStatus": "Status",
+        "filterAnyStatus": "Semua status",
+        "sortLabel": "Susun",
+        "sortName": "Nama A–Z",
+        "sortStudents": "Kebanyakan murid",
+        "sortProgress": "Kemajuan paling rendah",
+        "layoutLabel": "Paparan",
+        "tiles": "Jubin",
+        "list": "Senarai",
+        "classColumn": "Kelas",
+        "statusColumn": "Status",
+        "reading": "Membaca",
+        "listening": "Mendengar",
+        "writing": "Menulis",
+        "speaking": "Bertutur",
+        "soon": "Akan datang",
+        "studentsLabel": "Murid",
+        "growth": "Pertumbuhan keseluruhan",
+        "noValue": "—",
+        "meta": "{year} · borang {form}",
+        "statusSittingNow": "Sedang menduduki ujian",
+        "statusScheduled": "Dijadualkan",
+        "statusNoTestsYet": "Belum ada ujian",
+        "statusComplete": "Selesai",
+        "liveNow": "SEDANG BERLANGSUNG",
+        "live": "Langsung",
+        "sessionsLive": "{count, plural, other {# sesi sedang berlangsung}}",
+        "liveStripLabel": "{count, plural, other {# sesi sedang berlangsung sekarang}}",
+        "emptyNoMatchesTitle": "Tiada kelas sepadan dengan penapis tersebut",
+        "emptyNoMatchesDescription": "Ubah suai carian atau penapis, atau kosongkannya untuk melihat semua kelas semula.",
+        "countLabel": "{count, plural, other {# kelas}}",
+        "clearFilters": "Kosongkan penapis"
       },
       "detail": {
         "meta": {
@@ -5010,7 +4680,9 @@
         "insights": "Cerapan pengajaran",
         "progress": "Kemajuan",
         "exit": "Ramalan keluar",
-        "comingSoon": "Akan datang"
+        "comingSoon": "Akan datang",
+        "reports": "Laporan keluarga",
+        "live": "Sesi langsung"
       },
       "insights": {
         "loading": "Memuatkan cerapan pengajaran",
@@ -5093,7 +4765,20 @@
         "phaseUnmeasured": "Tiada fasa diukur lagi",
         "phaseCount": "{count} daripada {total} murid",
         "chartDeferredTitle": "Carta kemajuan kelas belum tersedia",
-        "chartDeferredDescription": "Carta ini memerlukan sejarah pelaksanaan mengikut kelas, yang belum dibawa oleh keputusan. Ia akan muncul di sini bila sejarah itu wujud — tiada anggaran yang menggantikannya."
+        "chartDeferredDescription": "Carta ini memerlukan sejarah pelaksanaan mengikut kelas, yang belum dibawa oleh keputusan. Ia akan muncul di sini bila sejarah itu wujud — tiada anggaran yang menggantikannya.",
+        "searchPlaceholder": "Cari pelajar",
+        "searchLabel": "Cari senarai",
+        "sortLabel": "Isih",
+        "clearFilters": "Kosongkan penapis",
+        "sortNameA2z": "Nama A–Z",
+        "showingCount": "Menunjukkan {showing} daripada {total}",
+        "pageCount": "Halaman {page} daripada {pageCount}",
+        "paginationLabel": "Paginasi",
+        "previous": "Sebelumnya",
+        "next": "Seterusnya",
+        "loadingLabel": "Memuatkan",
+        "gainsEmptyHint": "Penggerak boleh dipercayai akan muncul di sini mengikut kedudukan sebaik perbandingan Test A ke Test B menghasilkannya.",
+        "supportEmptyHint": "Pelajar yang perlu disokong akan muncul di sini mengikut kedudukan sebaik perbandingan Test A ke Test B menghasilkannya."
       },
       "students": {
         "title": "Pelajar",
@@ -5122,7 +4807,26 @@
         "flaggedLabel": "Amaran keyakinan",
         "flaggedTooltip": "Usaha tidak sah atau keyakinan rendah — tafsirkan keputusan ini dengan berhati-hati",
         "emptyTitle": "Tiada pelajar dalam senarai kelas ini",
-        "emptyDescription": "Kelas ini tiada pelajar aktif, jadi tiada keputusan untuk disenaraikan. Minta pentadbir menambah pelajar ke kelas ini, kemudian muat semula halaman."
+        "emptyDescription": "Kelas ini tiada pelajar aktif, jadi tiada keputusan untuk disenaraikan. Minta pentadbir menambah pelajar ke kelas ini, kemudian muat semula halaman.",
+        "searchPlaceholder": "Cari pelajar",
+        "searchLabel": "Cari pelajar",
+        "sortLabel": "Isih",
+        "clearFilters": "Kosongkan penapis",
+        "sortDefault": "Susunan perhatian (skor terendah dahulu)",
+        "sortNameAsc": "Nama A–Z",
+        "sortNameDesc": "Nama Z–A",
+        "sortScoreLow": "Skor, terendah dahulu",
+        "sortScoreHigh": "Skor, tertinggi dahulu",
+        "showingCount": "Menunjukkan {showing} daripada {total}",
+        "pageCount": "Halaman {page} daripada {pageCount}",
+        "paginationLabel": "Paginasi",
+        "previous": "Sebelumnya",
+        "next": "Seterusnya",
+        "rowMenuLabel": "Tindakan baris",
+        "actionOpen": "Buka",
+        "loadingLabel": "Memuatkan pelajar",
+        "noMatchesTitle": "Tiada pelajar sepadan",
+        "noMatchesDescription": "Tiada pelajar sepadan dengan carian, penapis atau isihan semasa."
       },
       "drillDown": {
         "meta": {
@@ -5192,6 +4896,22 @@
       "exitPredictions": {
         "title": "SchoolTest belum meramalkan tahap kelulusan",
         "description": "Tiada ramalan ditunjukkan kerana tiada pengukuran telah dibuat. Tab ini membaca secara langsung dari pelayan dan tidak menunjukkan apa-apa daripada meneka."
+      },
+      "classSwitcher": {
+        "label": "Tukar kelas"
+      },
+      "skills": {
+        "listLabel": "Skop kemahiran",
+        "reading": "Membaca",
+        "listening": "Mendengar",
+        "writing": "Menulis",
+        "speaking": "Bertutur",
+        "liveNow": "Sedia sekarang",
+        "soonBadge": "Akan datang",
+        "liveChip": "{skill} · Langsung",
+        "soonChip": "{skill} · Akan datang",
+        "comingSoonTitle": "{skill} akan datang",
+        "comingSoonBody": "Membaca sahaja tersedia buat masa ini. Pentaksiran {skill} untuk kelas ini sedang dibangunkan dan akan muncul di sini sebaik sahaja siap — senarai murid yang sama, tiada persediaan diperlukan."
       }
     }
   },

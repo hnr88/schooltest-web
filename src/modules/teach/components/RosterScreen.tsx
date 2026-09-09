@@ -1,10 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Users } from 'lucide-react';
 
 import { Link } from '@/i18n/navigation';
-import { EmptyState } from '@/modules/design-system';
 import { RosterTable } from '@/modules/teach/components/RosterTable';
 import { useClassRosterQuery } from '@/modules/teach/queries/use-class-roster.query';
 
@@ -12,8 +10,10 @@ import type { RosterScreenProps } from '@/modules/teach/types/components.types';
 
 // Teacher roster screen (task 63, mvp-updates §4.4): the read-only class
 // roster ahead of test day. An unowned class yields an empty page from
-// C-CHD-01 (teacher scoping), which renders as the empty state — never an
-// error and never another teacher's students.
+// C-CHD-01 (teacher scoping), which the kit renders as its empty state —
+// never an error and never another teacher's students. ops/33: loading,
+// empty, error, search, filter and sort all belong to the shared directory
+// kit now, so this screen keeps only the page header and the hint.
 export function RosterScreen({ documentId }: RosterScreenProps) {
   const t = useTranslations('Teach.roster');
   const roster = useClassRosterQuery(documentId);
@@ -43,24 +43,9 @@ export function RosterScreen({ documentId }: RosterScreenProps) {
           {t('testDayLink')}
         </Link>
       </div>
-      {roster.isPending ? (
-        <p className="text-sm text-muted-foreground">{t('loading')}</p>
-      ) : null}
-      {roster.isError ? (
-        <p role="alert" className="text-sm text-danger-ink">
-          {t('loadError')}
-        </p>
-      ) : null}
-      {roster.isSuccess && rows.length === 0 ? (
-        <EmptyState icon={Users} title={t('emptyTitle')} description={t('emptyBody')} />
-      ) : null}
-      {roster.isSuccess && rows.length > 0 ? (
-        <>
-          <RosterTable rows={rows} />
-          {hasMissingEmail ? (
-            <p className="max-w-xl text-sm text-body">{t('emailMissingHint')}</p>
-          ) : null}
-        </>
+      <RosterTable rows={rows} query={roster} />
+      {hasMissingEmail ? (
+        <p className="max-w-xl text-sm text-body">{t('emailMissingHint')}</p>
       ) : null}
     </main>
   );

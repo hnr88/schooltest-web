@@ -85,8 +85,8 @@ export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/t
             <p className="max-w-xl text-sm text-body">{t('masteryDescription')}</p>
             <MasteryTable
               rows={data.mastery}
-              selectedRef={selectedRef}
               onSelect={toggleSelected}
+              query={query}
             />
             {selectedRow ? (
               <StudentMasteryDrilldown row={selectedRow} onClose={() => setSelectedRef(null)} />

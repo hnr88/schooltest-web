@@ -917,6 +917,14 @@
     break-inside: avoid;
   }
 
+  /* ops/33: the mastery surface renders through the shared directory kit now,
+     so its rows are kit table rows, not `li` children. The old selector above
+     is left byte-identical for its owner to retire; this added rule keeps the
+     print behavior (a student's row never splits across printed pages). */
+  [data-slot='mastery-table'] [data-directory-row] {
+    break-inside: avoid;
+  }
+
   [data-slot='heatmap-cell'] {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;

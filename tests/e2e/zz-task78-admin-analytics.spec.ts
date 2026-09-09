@@ -321,8 +321,13 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
     await expect(diagnostic).toBeVisible({ timeout: 20_000 });
     await expect(diagnostic.locator('[data-slot="mastery-table"]')).toBeVisible();
     await expect(page.locator('[data-surface="teacher-progress"]')).toBeVisible();
-    // Level 3: one click down to a student profile.
-    const studentButton = diagnostic.locator('[data-slot="mastery-table"] button').first();
+    // Level 3: one click down to a student profile. ops/33: the mastery
+    // surface renders through the kit's table body, so the drill target is
+    // the kit's first-cell row button ([data-row-select]), not "the first
+    // button in the region" — the sortable header buttons are buttons too.
+    const studentButton = diagnostic
+      .locator('[data-slot="mastery-table"] [data-directory-row] [data-row-select]')
+      .first();
     await expect(studentButton).toBeVisible();
     const studentRef = (await studentButton.locator('span').first().innerText()).trim();
     await studentButton.click();

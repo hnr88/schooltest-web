@@ -1,3 +1,4 @@
+import type { DirectoryQueryStatus } from '@/modules/directory';
 import type { DiagnosticGroup, DiagnosticHeatmapRow, DiagnosticMasteryRow } from '@/modules/teach/types/diagnostic.types';
 import type { ProgressTransition } from '@/modules/teach/types/progress.types';
 import type { RosterChild } from '@/modules/teach/types/roster.types';
@@ -46,8 +47,8 @@ export interface ItemTypeHeatmapProps {
 
 export interface MasteryTableProps {
   rows: DiagnosticMasteryRow[];
-  selectedRef: string | null;
   onSelect: (studentRef: string) => void;
+  query: DirectoryQueryStatus;
 }
 
 export interface MonitorSummaryPanelProps {
@@ -70,6 +71,7 @@ export interface RosterScreenProps {
 
 export interface RosterTableProps {
   rows: RosterChild[];
+  query: DirectoryQueryStatus;
 }
 
 export interface StudentMasteryDrilldownProps {

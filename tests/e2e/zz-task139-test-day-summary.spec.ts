@@ -26,7 +26,11 @@ const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
 const SOFIA_EMAIL = 'sofia.petrov@schooltest.local'; // joins so close leaves one sat
-const ABSENT_STUDENT_ID = fixtureStudentId('Ahmed', 'Hassan');
+// Resolved in beforeAll, NOT at module level (orchestrator-authorised move,
+// ops/33): the collection-time DB lookup made the whole suite's catalog depend
+// on live seed data. Fails at RUNTIME while the seed is drifted — the honest
+// red — instead of killing discovery for every spec.
+let ABSENT_STUDENT_ID: string;
 const TEST_DAY_URL = `/en/dashboard/teach/classes/${CLASS_ID}/test-day`;
 
 interface SittingRow {
@@ -211,6 +215,10 @@ function countValue(panel: Locator, label: string): Locator {
 test.describe('C-SIT-08: test-day summary panel vs live API', () => {
   // Serial + generous timeout: rate-limit ride-out budget (helpers/http.ts).
   test.describe.configure({ mode: 'serial', timeout: 180_000 });
+
+  test.beforeAll(() => {
+    ABSENT_STUDENT_ID = fixtureStudentId('Ahmed', 'Hassan');
+  });
 
   test('end-of-day flow: closed sitting rollup renders counts equal to the API', async ({
     page,

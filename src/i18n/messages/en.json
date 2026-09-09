@@ -6,6 +6,41 @@
   "Articles": {
     "title": "Articles",
     "description": "Example module wired end-to-end to the Strapi article API.",
+    "searchLabel": "Search articles",
+    "searchPlaceholder": "Search by title",
+    "sortLabel": "Sort",
+    "sortNewest": "Newest first",
+    "sortOldest": "Oldest first",
+    "clearFilters": "Clear filters",
+    "rowMenuLabel": "Row actions",
+    "paginationLabel": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "showingCount": "Showing {showing} of {total}",
+    "pageCount": "Page {page} of {pageCount} ({total} total)",
+    "emptyTitle": "No articles yet",
+    "emptyDescription": "Articles appear here once published.",
+    "filteredEmptyTitle": "No matches",
+    "filteredEmptyDescription": "No articles match the current search and filters.",
+    "staleBanner": "The latest refresh failed — the articles below are the last ones the server served.",
+    "errorTitle": "Could not load the articles",
+    "errorDescription": "Something went wrong while loading this list.",
+    "retry": "Retry",
+    "loading": "Loading articles",
+    "columnTitle": "Title",
+    "columnCategory": "Category",
+    "columnViews": "Views",
+    "columnUpdated": "Updated",
+    "filterCategoryLabel": "Category",
+    "filterFeaturedLabel": "Featured",
+    "featuredAll": "All",
+    "featuredOnly": "Featured only",
+    "featuredBadge": "Featured",
+    "viewsCount": "{views, plural, one {# view} other {# views}}",
+    "categoryNews": "News",
+    "categoryTutorial": "Tutorial",
+    "categoryGuide": "Guide",
+    "categoryOpinion": "Opinion",
     "createTitle": "Create article"
   },
   "Auth": {
@@ -593,12 +628,7 @@
       "teach": "Teaching",
       "ops": "Ops",
       "opsSchools": "Schools",
-      "opsTimers": "Section timers",
       "opsSettings": "Platform settings",
-      "opsSystem": "System",
-      "opsAudit": "Audit & security",
-      "opsComms": "Communications",
-      "opsFlags": "Flags & settings",
       "account": "Account",
       "teacherDashboard": "Dashboard",
       "testSessions": "Test sessions",
@@ -608,7 +638,8 @@
       "logoAlt": "SchoolTest",
       "groups": {
         "manage": "Manage",
-        "teach": "Teach"
+        "teach": "Teach",
+        "teacherView": "Teacher view"
       },
       "promo": {
         "overline": "Linked children",
@@ -1412,6 +1443,21 @@
     "viewAll": "View all notifications",
     "markAllRead": "Mark all as read",
     "markAllReadShort": "Mark all read",
+    "feedSearchLabel": "Search the feed",
+    "feedSearchPlaceholder": "Search by text",
+    "feedSortLabel": "Sort",
+    "feedSortNewest": "Newest first",
+    "feedSortOldest": "Oldest first",
+    "feedClearFilters": "Clear filters",
+    "feedReadFilterLabel": "Read state",
+    "feedRowMenuLabel": "Row actions",
+    "feedOpenTarget": "Open linked page",
+    "feedShowingCount": "Showing {showing} of {total}",
+    "feedPageCount": "Page {page} of {pageCount} ({total} total)",
+    "feedFilteredEmptyTitle": "No matches",
+    "feedFilteredEmptyDescription": "No notifications match the current search and filters.",
+    "feedStaleBanner": "The latest refresh failed — the notifications below are the last ones the server served.",
+    "feedLoading": "Loading notifications",
     "markRead": "Mark as read",
     "unread": "Unread",
     "read": "Read",
@@ -1481,6 +1527,27 @@
     "listEmptyDescription": "A report appears here once one of your students completes an official sitting and scoring finishes.",
     "listGoneTitle": "This report list is no longer available",
     "listGoneDescription": "Your account can no longer open this list.",
+    "listFilterAll": "All",
+    "listSearchLabel": "Search reports",
+    "listSearchPlaceholder": "Search by phase, skill or status",
+    "listSortLabel": "Sort",
+    "listSortNewest": "Newest first",
+    "listSortOldest": "Oldest first",
+    "listClearFilters": "Clear filters",
+    "listRowMenuLabel": "Row actions",
+    "listOpenReport": "Open report",
+    "listPaginationLabel": "Pagination",
+    "listPrevious": "Previous",
+    "listNext": "Next",
+    "listShowingCount": "Showing {showing} of {total}",
+    "listPageCount": "Page {page} of {pageCount} ({total} total)",
+    "listFilteredEmptyTitle": "No matches",
+    "listFilteredEmptyDescription": "No reports match the current search and filters.",
+    "listStaleBanner": "The latest refresh failed — the reports below are the last ones the server served.",
+    "listErrorTitle": "Could not load the report list",
+    "listErrorDescription": "Something went wrong while loading this list.",
+    "listRetry": "Retry",
+    "listLoading": "Loading reports",
     "reportGoneTitle": "This report is no longer available",
     "reportGoneDescription": "It may have been removed, or the link may be out of date.",
     "backToList": "Back to reports",
@@ -2518,7 +2585,24 @@
       "emailFixPending": "Fix requested",
       "emailFixSuccessToast": "Your school administrator has been asked to fix this email.",
       "emailFixErrorToast": "The email fix could not be requested. Try again.",
-      "testDayLink": "Go to test day"
+      "testDayLink": "Go to test day",
+      "searchPlaceholder": "Search students",
+      "searchLabel": "Search students",
+      "sortLabel": "Sort",
+      "filterStatusLabel": "Status",
+      "filterStatusAll": "All statuses",
+      "sortNameAsc": "Name A–Z",
+      "sortNameDesc": "Name Z–A",
+      "showingCount": "Showing {showing} of {total} students",
+      "pageCount": "Page {page} of {pageCount} · {total} total",
+      "previous": "Previous",
+      "next": "Next",
+      "paginationLabel": "Roster pages",
+      "rowMenuLabel": "Row actions",
+      "clearFilters": "Clear filters",
+      "errorStaleBanner": "The latest refresh failed — the students below are the last ones the server served.",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Retry"
     },
     "diagnostic": {
       "meta": {
@@ -2573,7 +2657,25 @@
         "cta": "Export for your AI assistant",
         "downloading": "Preparing the export...",
         "error": "The export could not be downloaded. Try again."
-      }
+      },
+      "searchPlaceholder": "Search students",
+      "searchLabel": "Search students",
+      "sortLabel": "Sort",
+      "sortNameAsc": "Name A–Z",
+      "sortNameDesc": "Name Z–A",
+      "sortAreaWeakest": "{area} — weakest first",
+      "sortAreaStrongest": "{area} — strongest first",
+      "columnStudent": "Student",
+      "columnReport": "Full report",
+      "showingCount": "Showing {showing} of {total} students",
+      "pageCount": "Page {page} of {pageCount} · {total} total",
+      "previous": "Previous",
+      "next": "Next",
+      "paginationLabel": "Mastery pages",
+      "clearFilters": "Clear filters",
+      "errorStaleBanner": "The latest refresh failed — the rows below are the last ones the server served.",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Retry"
     },
     "progress": {
       "title": "Progress - Test B against Test A",
@@ -2795,7 +2897,12 @@
         "title": "Account details",
         "edit": "Edit",
         "email": "Email",
-        "status": "Status"
+        "status": "Status",
+        "role": "Role",
+        "added": "Added",
+        "lastActive": "Last active",
+        "neverActive": "Never opened a sitting",
+        "roleNone": "No role"
       }
     },
     "meta": {
@@ -3245,190 +3352,18 @@
     }
   },
   "Ops": {
-    "flags": {
-      "meta": {
-        "title": "Flags & settings — SchoolTest Ops",
-        "description": "SchoolTest Ops — feature flags, the public banners, and the sign-in rate limit."
-      },
-      "title": "Flags & settings",
-      "description": "Platform switches, the banners visitors see, and the limit that governs sign-in.",
-      "editorsTitle": "Platform settings",
-      "errorToast": "That change did not save. Nothing was applied.",
-      "actions": {
-        "cancel": "Cancel"
-      },
-      "levels": {
-        "info": "Information",
-        "warning": "Warning",
-        "critical": "Critical"
-      },
-      "fields": {
-        "message": "Message",
-        "level": "Level"
-      },
-      "validation": {
-        "messageRequiredWhenOn": "Write a message before turning this on.",
-        "tooLong": "Use {max} characters or fewer.",
-        "maxBounds": "A whole number between {min} and {max}.",
-        "windowBounds": "Milliseconds, a whole number between {min} and {max}."
-      },
-      "registry": {
-        "title": "Feature flags",
-        "description": "The switches this platform ships. The list comes from the server, so a newly released flag appears here on its own.",
-        "loadingLabel": "Loading the feature flags",
-        "empty": "No feature flags are registered.",
-        "toggleLabel": "Toggle {key}",
-        "enabledToast": "{key} is now on.",
-        "disabledToast": "{key} is now off.",
-        "errorToast": "That flag did not change.",
-        "error": {
-          "title": "We could not load the feature flags.",
-          "description": "Check your connection and try again.",
-          "retry": "Try again"
-        }
-      },
-      "announcement": {
-        "title": "Announcement banner",
-        "description": "A message shown on public pages. Saving republishes the cached pages straight away.",
-        "switchLabel": "Show the announcement",
-        "messageHelp": "Shown to visitors while the announcement is on. Required when you turn it on.",
-        "save": "Save announcement",
-        "confirmTitle": "Publish this announcement?",
-        "confirmOn": "This shows the message to every visitor on the public site, and republishes the cached pages now.",
-        "confirmOff": "This removes the announcement from every public page and republishes them now.",
-        "confirmAction": "Save announcement",
-        "onToast": "Announcement published at {level} level.",
-        "offToast": "Announcement removed."
-      },
-      "maintenance": {
-        "title": "Maintenance mode",
-        "description": "Closes the site to visitors. The highest-impact switch on this page.",
-        "switchLabel": "Put the site into maintenance",
-        "messageHelp": "Shown on the closed site while maintenance is on. Required when you turn it on.",
-        "save": "Save maintenance mode",
-        "confirmTitle": "Close the site to visitors?",
-        "confirmOn": "This closes the public site for everyone until you turn it back off. Signed-in work in progress may be interrupted.",
-        "confirmOff": "This reopens the public site to visitors.",
-        "confirmAction": "Save maintenance mode",
-        "onToast": "Maintenance mode is on — the site is closed.",
-        "offToast": "Maintenance mode is off — the site is open."
-      },
-      "rateLimit": {
-        "title": "Sign-in rate limit",
-        "description": "How many sign-in attempts one address may make per window. Too low locks people out, including you.",
-        "maxLabel": "Attempts",
-        "windowLabel": "Window (ms)",
-        "save": "Save rate limit",
-        "confirmTitle": "Change the sign-in rate limit?",
-        "confirmDescription": "This allows {max} sign-in attempts per {window} ms. Setting it too low can lock every operator out of sign-in.",
-        "confirmAction": "Save rate limit",
-        "savedToast": "Rate limit saved: {max} attempts per {window} ms."
-      }
+    "capabilities": {
+      "offlineTitle": "You’re offline",
+      "offlineBody": "Browsing cached data. Changes won’t save until the connection is back.",
+      "offlineRetry": "Retry connection",
+      "sessionExpiredBodyNoTimeout": "Your session ended after a period of inactivity. Sign in again — nothing you saved was lost.",
+      "sessionExpiredBodyWithTimeout": "Your session ended after {minutes} minutes of inactivity. Sign in again — nothing you saved was lost.",
+      "readOnlyWriteBlocked": "Support accounts are read-only — ask an ops admin to make this change",
+      "offlineWriteBlocked": "You’re offline — nothing was saved"
     },
-    "comms": {
-      "meta": {
-        "title": "Communications — SchoolTest Ops",
-        "description": "SchoolTest Ops — notification events, the auth email ledger, and platform broadcasts."
-      },
-      "title": "Communications",
-      "description": "What the platform sends, what it has issued, and the broadcasts you can send yourself.",
-      "noValue": "—",
-      "composersTitle": "Send a broadcast",
-      "errorToast": "That request did not go through. Nothing was sent.",
-      "templates": {
-        "title": "Notification events",
-        "description": "The events this platform dispatches. These are set in the application, not editable here.",
-        "loadingLabel": "Loading the notification events",
-        "empty": "No notification events are registered.",
-        "sendsEmail": "Sends email",
-        "inAppOnly": "In-app only",
-        "columns": {
-          "key": "Event",
-          "subject": "Subject",
-          "delivery": "Delivery"
-        },
-        "error": {
-          "title": "We could not load the notification events.",
-          "description": "Check your connection and try again.",
-          "retry": "Try again"
-        }
-      },
-      "log": {
-        "title": "Auth email ledger",
-        "description": "Password reset and confirmation emails the platform has issued. Newest first.",
-        "loadingLabel": "Loading the auth email ledger",
-        "empty": "No auth emails have been issued yet.",
-        "columns": {
-          "kind": "Kind",
-          "email": "Recipient",
-          "issued": "Issued"
-        },
-        "error": {
-          "title": "We could not load the auth email ledger.",
-          "description": "Check your connection and try again.",
-          "retry": "Try again"
-        },
-        "pagination": {
-          "label": "Auth email ledger pages",
-          "previous": "Previous",
-          "next": "Next",
-          "pageCount": "Page {page} of {pageCount} · {total} entries"
-        }
-      },
-      "fields": {
-        "audience": "Audience",
-        "audiencePlaceholder": "Choose who receives this",
-        "body": "Message",
-        "maxChars": "{max} characters maximum"
-      },
-      "audiences": {
-        "all": "Everyone",
-        "ops": "Ops staff",
-        "school_admins": "School admins",
-        "teachers": "Teachers",
-        "parents": "Parents"
-      },
-      "validation": {
-        "audienceRequired": "Choose an audience.",
-        "bodyRequired": "Write a message.",
-        "tooLong": "Use {max} characters or fewer."
-      },
-      "actions": {
-        "preview": "Preview recipients",
-        "cancel": "Cancel"
-      },
-      "bulkEmail": {
-        "title": "Bulk email",
-        "description": "Email every account in an audience. Preview the count first — a send cannot be recalled.",
-        "headline": "Subject",
-        "send": "Send email",
-        "previewToast": "{count} recipients would receive this. Nothing was sent.",
-        "previewResult": "This would reach {count} recipients.",
-        "sentToast": "Sent to {sent} recipients, {failed} failed.",
-        "confirmTitle": "Send this email now?",
-        "confirmDescription": "This emails {count} recipients immediately. It cannot be recalled.",
-        "confirmUnknown": "This emails everyone in the chosen audience immediately. It cannot be recalled. Preview the count first if you want to see the blast radius.",
-        "confirmAction": "Send email",
-        "validation": {
-          "headlineRequired": "Write a subject."
-        }
-      },
-      "push": {
-        "title": "Push broadcast",
-        "description": "Push a notification to every registered device in an audience. It cannot be recalled.",
-        "headline": "Title",
-        "send": "Send push",
-        "previewToast": "{count} devices would receive this. Nothing was sent.",
-        "previewResult": "This would reach {count} registered devices.",
-        "sentToast": "Pushed to {sent} devices, {failed} failed.",
-        "confirmTitle": "Send this push now?",
-        "confirmDescription": "This pushes to {count} registered devices immediately. It cannot be recalled.",
-        "confirmUnknown": "This pushes to every registered device in the chosen audience immediately. It cannot be recalled. Preview the count first if you want to see the blast radius.",
-        "confirmAction": "Send push",
-        "validation": {
-          "headlineRequired": "Write a title."
-        }
-      }
+    "toast": {
+      "retry": "Retry",
+      "undo": "Undo"
     },
     "schools": {
       "meta": {
@@ -3713,29 +3648,6 @@
           "title": "Import did not complete",
           "body": "Check the message below before trying again."
         }
-      }
-    },
-    "timers": {
-      "meta": {
-        "title": "Section timers - SchoolTest ops",
-        "description": "Set the global per-section test timers."
-      },
-      "title": "Section timers",
-      "description": "One timer per section. The same durations apply to every school, and every change is versioned.",
-      "sectionLabel": "Section {stage}",
-      "minutesHint": "Whole minutes, from 1 to 60.",
-      "nonRetroactiveNote": "Changes never alter sittings already created - every sitting keeps the times it started with.",
-      "lastSaved": "Last saved by {email} on {date} (version {version}).",
-      "saveButton": "Save timers",
-      "savingButton": "Saving...",
-      "savedToast": "Saved. New sittings will use these times.",
-      "errorToast": "The timers could not be saved. Try again.",
-      "forbiddenToast": "Only the SchoolTest ops team can change the timers.",
-      "loadErrorTitle": "We could not load the timers",
-      "loadErrorDescription": "Check your connection and try again.",
-      "retry": "Try again",
-      "validation": {
-        "range": "Enter a whole number of minutes from 1 to 60."
       }
     },
     "recovery": {
@@ -4038,66 +3950,6 @@
       "previousPage": "Previous",
       "nextPage": "Next"
     },
-    "audit": {
-      "title": "Audit",
-      "description": "The platform audit ledger and the API tokens that can reach it.",
-      "meta": {
-        "title": "Audit — SchoolTest Ops",
-        "description": "SchoolTest Ops — the audit ledger and API token administration."
-      },
-      "ledgerTitle": "Audit ledger",
-      "loadingLabel": "Loading the audit ledger",
-      "noValue": "—",
-      "actorSystem": "System",
-      "columns": {
-        "actor": "Actor",
-        "action": "Action",
-        "target": "Target",
-        "timestamp": "When"
-      },
-      "empty": {
-        "none": "No audit entries have been recorded yet.",
-        "noMatches": "No audit entries match these filters."
-      },
-      "error": {
-        "title": "We could not load the audit ledger.",
-        "description": "Check your connection and try again.",
-        "retry": "Try again"
-      },
-      "pagination": {
-        "label": "Audit ledger pages",
-        "previous": "Previous",
-        "next": "Next",
-        "pageCount": "Page {page} of {pageCount} · {total} entries"
-      },
-      "filters": {
-        "action": "Action",
-        "actionPlaceholder": "e.g. invitation.revoke",
-        "target": "Target",
-        "targetPlaceholder": "Target id",
-        "apply": "Apply filters",
-        "clear": "Clear filters"
-      },
-      "tokens": {
-        "title": "API tokens",
-        "description": "Tokens that can call the platform API. Revoking one is immediate and cannot be undone.",
-        "loadingLabel": "Loading API tokens",
-        "errorTitle": "We could not load the API tokens.",
-        "errorDescription": "Check your connection and try again.",
-        "revoke": "Revoke",
-        "confirmTitle": "Revoke this API token?",
-        "confirmBody": "{name} stops working immediately and cannot be restored. Anything using it will start failing.",
-        "confirmAction": "Revoke token",
-        "cancel": "Cancel",
-        "columns": {
-          "name": "Name",
-          "type": "Type",
-          "lastUsed": "Last used",
-          "created": "Created",
-          "actions": "Actions"
-        }
-      }
-    },
     "classDetail": {
       "meta": {
         "title": "Class detail",
@@ -4395,234 +4247,6 @@
       "conflict": "A school with that name already exists.",
       "errorToast": "That school could not be created. Nothing was saved."
     },
-    "system": {
-      "meta": {
-        "title": "System",
-        "description": "Live platform health, versions, migrations and the backup ledger."
-      },
-      "title": "System",
-      "description": "What the platform is running on right now: dependency health, versions, applied migrations and recorded backups.",
-      "health": {
-        "title": "Dependency health",
-        "description": "Live probes of every dependency the platform needs. A red probe is a real state, shown as it is.",
-        "overall": "Overall {ms} ms",
-        "status": {
-          "up": "up",
-          "down": "down"
-        },
-        "latency": "{ms} ms",
-        "probes": {
-          "database": "Database",
-          "redis": "Redis",
-          "queues": "Queues",
-          "storage": "Storage",
-          "web": "Web"
-        },
-        "errorTitle": "Health read failed",
-        "errorDescription": "The health probes could not be read. Retry, or check the API if it persists."
-      },
-      "info": {
-        "title": "Runtime",
-        "description": "Versions and uptime only — never secrets, never connection strings.",
-        "fields": {
-          "strapiVersion": "Strapi",
-          "nodeVersion": "Node",
-          "uptime": "Uptime",
-          "env": "Environment",
-          "database": "Database client",
-          "timezone": "Timezone",
-          "queues": "Queues"
-        },
-        "errorTitle": "Info read failed",
-        "errorDescription": "Runtime info could not be read. Retry, or check the API if it persists."
-      },
-      "migrations": {
-        "title": "Applied migrations",
-        "description": "The user-migration ledger, newest first, with the server's own count.",
-        "count": "{count, plural, =1 {1 migration applied} other {# migrations applied}}",
-        "columns": {
-          "name": "Migration",
-          "appliedAt": "Applied at"
-        },
-        "never": "not recorded",
-        "errorTitle": "Migrations read failed",
-        "errorDescription": "The migration ledger could not be read. Retry, or check the API if it persists."
-      },
-      "backups": {
-        "title": "Backup ledger",
-        "description": "Recorded database backups, newest first. Running a backup arrives with the write controls.",
-        "empty": "No backups recorded yet. The ledger fills when a backup run succeeds or fails.",
-        "columns": {
-          "filename": "File",
-          "bytes": "Bytes",
-          "status": "Status",
-          "startedAt": "Started"
-        },
-        "status": {
-          "succeeded": "succeeded",
-          "failed": "failed"
-        },
-        "errorTitle": "Backup ledger read failed",
-        "errorDescription": "The backup ledger could not be read. Retry, or check the API if it persists."
-      },
-      "maintenance": {
-        "title": "Maintenance actions",
-        "description": "Actions that change real state. Each one asks first, and every result line shows the server's own answer.",
-        "disruptiveBadge": "disruptive",
-        "cancel": "Cancel",
-        "backup": {
-          "label": "Run backup",
-          "description": "Dumps the database (pg_dump, container fallback), writes it to disk and records the run — succeeded or failed — in the ledger below.",
-          "confirmTitle": "Run a database backup?",
-          "confirmBody": "The dump runs now and the run is recorded in the backup ledger, whatever its outcome.",
-          "confirmAction": "Run backup",
-          "success": "Backup recorded: {filename} ({bytes} bytes)"
-        },
-        "cacheClear": {
-          "label": "Clear caches",
-          "description": "Deletes matching keys from Redis with SCAN+DEL. The server reports exactly how many keys it deleted.",
-          "scopeLabel": "Scope",
-          "confirmTitle": "Clear caches (scope: {scope})?",
-          "confirmBody": "Matching {scope} keys are deleted from Redis now. Caches repopulate on the next read.",
-          "confirmAction": "Clear",
-          "success": "Cleared {scope}: {count} key(s) deleted"
-        },
-        "sitemap": {
-          "label": "Regenerate sitemap",
-          "description": "Stamps the platform setting, asks the web app to revalidate, then counts the URLs the fresh sitemap really contains.",
-          "confirmTitle": "Regenerate the sitemap?",
-          "confirmBody": "The platform setting is stamped now and the web app is asked to revalidate. If the web app does not answer, the failure is shown verbatim.",
-          "confirmAction": "Regenerate",
-          "success": "Sitemap regenerated: {count} URLs"
-        }
-      },
-      "pipeline": {
-        "title": "Scoring pipeline",
-        "description": "Live BullMQ counts for the registered queues, shared with the running workers. Controls are confirmed and never touch another console.",
-        "rScoring": "R scoring: {status}",
-        "loading": "Reading queue counts…",
-        "error": "Queue health could not be read. Retry by reopening the page.",
-        "columns": {
-          "queue": "Queue",
-          "waiting": "Waiting",
-          "active": "Active",
-          "failed": "Failed",
-          "completed": "Completed",
-          "actions": "Controls"
-        },
-        "pause": "Pause",
-        "resume": "Resume",
-        "pauseWord": "pause",
-        "resumeWord": "resume",
-        "drain": "Drain failed",
-        "cancel": "Cancel",
-        "pauseConfirm": {
-          "title": "Change queue state?",
-          "body": "{action} queue \"{queue}\" now? The running workers share it — paused queues accept no new jobs until resumed.",
-          "action": "Confirm"
-        },
-        "drainConfirm": {
-          "title": "Drain failed jobs?",
-          "body": "Deletes the {count} failed job(s) on \"{queue}\". Waiting jobs are never touched. This cannot be undone.",
-          "action": "Drain"
-        },
-        "retry": {
-          "description": "Re-run ONE failed job through the queue's own retry — by id, never a bulk replay.",
-          "queueLabel": "Queue",
-          "queuePlaceholder": "Select queue",
-          "jobLabel": "Job id",
-          "jobPlaceholder": "Failed job id",
-          "action": "Retry job"
-        },
-        "retryConfirm": {
-          "title": "Retry this job?",
-          "body": "Job {jobId} on \"{queue}\" goes back through the queue's own retry. It will execute again.",
-          "action": "Retry"
-        }
-      }
-    },
-    "content": {
-      "meta": {
-        "title": "Content",
-        "description": "Row counts, media usage and orphan cleanup for every content type."
-      },
-      "title": "Content",
-      "description": "What the platform stores right now: per-type row counts, media usage, orphaned rows and the maintenance passes that clean them.",
-      "counts": {
-        "title": "Content types",
-        "description": "Live row counts for every api:: content type, enumerated from the database.",
-        "columns": {
-          "contentType": "Content type",
-          "uid": "UID",
-          "rows": "Rows"
-        },
-        "errorTitle": "Counts read failed",
-        "errorDescription": "Row counts could not be read. Retry, or check the API if it persists."
-      },
-      "media": {
-        "title": "Media",
-        "description": "Real byte totals from the upload plugin's own file table.",
-        "files": "Files",
-        "totalBytes": "Total bytes",
-        "unreferenced": "Unreferenced",
-        "columns": {
-          "mime": "Type",
-          "count": "Files",
-          "bytes": "Bytes"
-        },
-        "noMedia": "No media files stored yet.",
-        "errorTitle": "Media stats read failed",
-        "errorDescription": "Media statistics could not be read. Retry, or check the API if it persists."
-      },
-      "orphans": {
-        "title": "Orphaned rows",
-        "description": "Rows whose required relation is missing, per kind, with a sample of the first 20.",
-        "columns": {
-          "kind": "Orphan kind",
-          "count": "Count",
-          "purge": "Purge"
-        },
-        "selectForPurge": "select for purge",
-        "selectKind": "Select {kind} for purge",
-        "purgeHint": "Purging permanently deletes the selected kinds' orphan rows. The server reports exactly what it deleted.",
-        "purgeButton": "Purge selected",
-        "confirmTitle": "Purge the selected orphan kinds?",
-        "confirmBody": "All orphaned rows of the {count} selected kind(s) are deleted now. This cannot be undone.",
-        "confirmAction": "Purge",
-        "cancel": "Cancel",
-        "executed": "Purge executed: {counts}",
-        "nothingPurged": "nothing to delete",
-        "errorTitle": "Orphans read failed",
-        "errorDescription": "The orphan report could not be read. Retry, or check the API if it persists."
-      },
-      "maintenance": {
-        "title": "Maintenance passes",
-        "description": "Both passes default to a dry-run report. Executing requires the explicit confirm and is audited.",
-        "cancel": "Cancel",
-        "reindex": {
-          "label": "Search integrity pass",
-          "description": "Counts every school row and any missing searchable slug. Dry-run reports only; executing writes an audit entry.",
-          "preview": "Preview (dry run)",
-          "execute": "Execute",
-          "confirmTitle": "Execute the search integrity pass?",
-          "confirmBody": "The pass runs now and is written to the audit ledger. The counts are reported either way.",
-          "confirmAction": "Execute",
-          "dryRun": "Dry run: {indexed} schools indexed, {missing} missing slug(s) — nothing written",
-          "executed": "Executed: {indexed} schools indexed in {ms} ms — audited"
-        },
-        "prune": {
-          "label": "Prune unreferenced media",
-          "description": "Deletes upload files no content references (row and stored object together). Dry-run reports only.",
-          "preview": "Preview (dry run)",
-          "execute": "Execute prune",
-          "confirmTitle": "Prune unreferenced media now?",
-          "confirmBody": "Unreferenced files are deleted for real — the stored objects go with the rows. The server reports what it removed.",
-          "confirmAction": "Prune",
-          "dryRun": "Dry run: {removed} unreferenced file(s) would be deleted — nothing written",
-          "executed": "Executed: {removed} file(s) removed, {bytes} bytes freed — audited"
-        }
-      }
-    },
     "inspection": {
       "title": "Form inspection",
       "description": "The composition of the form this window points at: every item with its task type, stage, Q-matrix attribute vector and correct key, plus the anchor items and the lock state. Ops-only — this is the only surface that shows keys.",
@@ -4755,16 +4379,8 @@
     "newChild": "New student",
     "newStudent": "New student",
     "onboarding": "Onboarding",
-    "opsAudit": "Audit & security",
-    "opsComms": "Communications",
-    "opsContent": "Content",
-    "opsFlags": "Flags & settings",
-    "opsInvitations": "Invitations",
     "opsSchools": "Schools",
     "opsSettings": "Platform settings",
-    "opsSystem": "System",
-    "opsTimers": "Section timers",
-    "opsUsers": "Users",
     "participation": "Participation",
     "privacyPolicy": "Privacy Policy",
     "resetPassword": "Reset password",
@@ -4893,7 +4509,24 @@
         "loadErrorBody": "The table stays empty rather than guess. Check your connection and try again.",
         "retry": "Try again",
         "emptyTitle": "No sessions yet",
-        "emptyDescription": "Generate a join code above and the session appears here with its completion count."
+        "emptyDescription": "Generate a join code above and the session appears here with its completion count.",
+        "searchPlaceholder": "Search by test",
+        "searchLabel": "Search sessions",
+        "sortLabel": "Sort",
+        "clearFilters": "Clear filters",
+        "sortDateNewest": "Date, newest first",
+        "sortDateOldest": "Date, oldest first",
+        "sortStatusLiveFirst": "Status, live first",
+        "sortStatusClosedFirst": "Status, closed first",
+        "showingCount": "Showing {showing} of {total}",
+        "pageCount": "Page {page} of {pageCount}",
+        "paginationLabel": "Pagination",
+        "previous": "Previous",
+        "next": "Next",
+        "loadingLabel": "Loading sessions",
+        "noMatchesTitle": "No sessions match",
+        "noMatchesDescription": "No session matches the current search or sort.",
+        "staleBanner": "The latest refresh failed — the sessions below are the last ones the server served."
       },
       "live": {
         "meta": {
@@ -4968,7 +4601,44 @@
         "emptyDescription": "Results are listed one class at a time. Ask an administrator to assign you a class, then reload this page.",
         "errorTitle": "Could not load your classes",
         "errorDescription": "This list reads live from the server and shows nothing rather than guess. Check your connection and try again.",
-        "retry": "Try again"
+        "retry": "Try again",
+        "adminNote": "Your classes. Contact your SchoolTest school admin to manage classes.",
+        "searchPlaceholder": "Search classes",
+        "searchLabel": "Search classes",
+        "filterYear": "Year level",
+        "filterAllYears": "All year levels",
+        "filterStatus": "Status",
+        "filterAnyStatus": "Any status",
+        "sortLabel": "Sort",
+        "sortName": "Name A–Z",
+        "sortStudents": "Most students",
+        "sortProgress": "Least progress",
+        "layoutLabel": "Layout",
+        "tiles": "Tiles",
+        "list": "List",
+        "classColumn": "Class",
+        "statusColumn": "Status",
+        "reading": "Reading",
+        "listening": "Listening",
+        "writing": "Writing",
+        "speaking": "Speaking",
+        "soon": "Soon",
+        "studentsLabel": "Students",
+        "growth": "Overall growth",
+        "noValue": "—",
+        "meta": "{year} · form {form}",
+        "statusSittingNow": "Sitting now",
+        "statusScheduled": "Scheduled",
+        "statusNoTestsYet": "No tests yet",
+        "statusComplete": "Complete",
+        "liveNow": "LIVE NOW",
+        "live": "Live",
+        "sessionsLive": "{count, plural, one {# session live} other {# sessions live}}",
+        "liveStripLabel": "{count, plural, one {# session live now} other {# sessions live now}}",
+        "emptyNoMatchesTitle": "No classes match those filters",
+        "emptyNoMatchesDescription": "Adjust the search or filters, or clear them to see every class again.",
+        "countLabel": "{count, plural, one {# class} other {# classes}}",
+        "clearFilters": "Clear filters"
       },
       "detail": {
         "meta": {
@@ -5000,7 +4670,9 @@
         "insights": "Teaching insights",
         "progress": "Progress",
         "exit": "Exit predictions",
-        "comingSoon": "Coming soon"
+        "comingSoon": "Coming soon",
+        "reports": "Family reports",
+        "live": "Live sessions"
       },
       "insights": {
         "loading": "Loading teaching insights",
@@ -5083,7 +4755,20 @@
         "phaseUnmeasured": "No phase measured yet",
         "phaseCount": "{count, plural, one {# of #} other {# of #}} students",
         "chartDeferredTitle": "Class progress chart is not available yet",
-        "chartDeferredDescription": "This chart needs per-class sitting history, which results do not carry yet. It will appear here once that history exists — no estimate stands in for it."
+        "chartDeferredDescription": "This chart needs per-class sitting history, which results do not carry yet. It will appear here once that history exists — no estimate stands in for it.",
+        "searchPlaceholder": "Search students",
+        "searchLabel": "Search the list",
+        "sortLabel": "Sort",
+        "clearFilters": "Clear filters",
+        "sortNameA2z": "Name A–Z",
+        "showingCount": "Showing {showing} of {total}",
+        "pageCount": "Page {page} of {pageCount}",
+        "paginationLabel": "Pagination",
+        "previous": "Previous",
+        "next": "Next",
+        "loadingLabel": "Loading",
+        "gainsEmptyHint": "Reliable gains appear here, ranked, as soon as the Test A to Test B comparison produces them.",
+        "supportEmptyHint": "Students needing support appear here, ranked, as soon as the Test A to Test B comparison produces them."
       },
       "students": {
         "title": "Students",
@@ -5112,7 +4797,26 @@
         "flaggedLabel": "Confidence warning",
         "flaggedTooltip": "Low effort validity or low confidence — treat this result with care",
         "emptyTitle": "No students on this class roster",
-        "emptyDescription": "This class has no active students, so there is no result to list. Ask an administrator to add students to the class, then reload this page."
+        "emptyDescription": "This class has no active students, so there is no result to list. Ask an administrator to add students to the class, then reload this page.",
+        "searchPlaceholder": "Search students",
+        "searchLabel": "Search students",
+        "sortLabel": "Sort",
+        "clearFilters": "Clear filters",
+        "sortDefault": "Attention order (lowest score first)",
+        "sortNameAsc": "Name A–Z",
+        "sortNameDesc": "Name Z–A",
+        "sortScoreLow": "Score, lowest first",
+        "sortScoreHigh": "Score, highest first",
+        "showingCount": "Showing {showing} of {total}",
+        "pageCount": "Page {page} of {pageCount}",
+        "paginationLabel": "Pagination",
+        "previous": "Previous",
+        "next": "Next",
+        "rowMenuLabel": "Row actions",
+        "actionOpen": "Open",
+        "loadingLabel": "Loading students",
+        "noMatchesTitle": "No students match",
+        "noMatchesDescription": "No student matches the current search, filter or sort."
       },
       "drillDown": {
         "meta": {
@@ -5182,6 +4886,22 @@
       "exitPredictions": {
         "title": "SchoolTest does not predict exit levels yet",
         "description": "No prediction is shown, because none has been measured. This tab reads live from the server and shows nothing rather than guess."
+      },
+      "classSwitcher": {
+        "label": "Switch class"
+      },
+      "skills": {
+        "listLabel": "Skill scope",
+        "reading": "Reading",
+        "listening": "Listening",
+        "writing": "Writing",
+        "speaking": "Speaking",
+        "liveNow": "Live now",
+        "soonBadge": "Soon",
+        "liveChip": "{skill} · Live",
+        "soonChip": "{skill} · Soon",
+        "comingSoonTitle": "{skill} is coming soon",
+        "comingSoonBody": "Reading is live today. The {skill} assessment for this class is in development and will appear right here once it is ready — same roster, no setup needed."
       }
     }
   },

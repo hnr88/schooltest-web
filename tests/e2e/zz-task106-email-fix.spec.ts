@@ -153,9 +153,12 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
   }) => {
     const { row } = await openTeacherRoster(page);
 
-    const action = row.locator('[data-slot="email-fix-action"]');
+    // ops/33: the action is a kit row action now — a quick icon button whose
+    // accessible name is the catalog label (the kit renders row actions as an
+    // icon button plus the ⋯ menu, not a bespoke slotted text button).
+    const action = row.getByRole('button', { name: cat(en, 'Teach.roster.emailFixAction') });
     await expect(action).toBeVisible();
-    await expect(action).toHaveText(cat(en, 'Teach.roster.emailFixAction'));
+    await expect(action).toHaveAccessibleName(cat(en, 'Teach.roster.emailFixAction'));
 
     await action.click();
     await expect(
@@ -171,7 +174,9 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     await expect(screen).toBeVisible({ timeout: 20_000 });
     const reloadedRow = screen.getByRole('row', { name: new RegExp(CHILD_NAME) });
     await expect(teacherPendingBadge(reloadedRow)).toBeVisible();
-    await expect(reloadedRow.locator('[data-slot="email-fix-action"]')).toHaveCount(0);
+    await expect(
+      reloadedRow.getByRole('button', { name: cat(en, 'Teach.roster.emailFixAction') }),
+    ).toHaveCount(0);
   });
 
   test('admin: badge on the students page and the notification in the feed', async ({
@@ -258,7 +263,9 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
       const { row: teacherRow } = await openTeacherRoster(teacherPage);
       await expect(teacherPendingBadge(teacherRow)).toHaveCount(0);
       await expect(teacherRow.getByText(FIXED_EMAIL, { exact: true })).toBeVisible();
-      await expect(teacherRow.locator('[data-slot="email-fix-action"]')).toBeVisible();
+      await expect(
+        teacherRow.getByRole('button', { name: cat(en, 'Teach.roster.emailFixAction') }),
+      ).toBeVisible();
     });
   });
 
