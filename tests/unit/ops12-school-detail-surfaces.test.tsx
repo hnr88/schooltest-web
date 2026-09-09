@@ -24,6 +24,9 @@ vi.mock('@/modules/ops/components/OpsSchoolActivity', () => ({
   ),
 }));
 
+// A render test needs only the fields these two components read; the full
+// SchoolDetail contract row is exercised by the wire-typed fixtures in the
+// e2e spec, so the fixture is cast rather than carrying 30 irrelevant fields.
 const SCHOOL = {
   documentId: 'ops12schooldoc000000001',
   name: 'Fixture College',
@@ -40,7 +43,7 @@ const SCHOOL = {
   class_count: 0,
   student_count: 7,
   results_count: 3,
-};
+} as unknown as import('@schooltest/ops-contracts').SchoolDetail;
 
 let host: HTMLElement | undefined;
 let root: Root | undefined;
