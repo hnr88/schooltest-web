@@ -109,11 +109,36 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       className="flex flex-col gap-4"
     >
       <TabsList aria-label={t('title')} className="overflow-x-auto">
-        {TAB_ORDER.map((key) => (
-          <TabsTrigger key={key} value={key}>
-            {t(`tab.${key}`)}
-          </TabsTrigger>
-        ))}
+        {TAB_ORDER.map((key) => {
+          // The design's tab count badges (`:296-298`), fed from the detail
+          // read; the Overview tab has no count. A zero count renders NO badge
+          // (the design's countDisplay), and the badge is aria-hidden so the
+          // tab's accessible name stays exactly the label the specs select by.
+          const count =
+            key === 'admins'
+              ? school.admin_count
+              : key === 'teachers'
+                ? school.portal_teacher_count
+                : key === 'classes'
+                  ? school.class_count
+                  : key === 'students'
+                    ? school.student_count
+                    : null;
+          return (
+            <TabsTrigger key={key} value={key} className="gap-2">
+              {t(`tab.${key}`)}
+              {count !== null && count > 0 ? (
+                <span
+                  aria-hidden="true"
+                  data-testid={`ops-tab-count-${key}`}
+                  className="rounded-full bg-muted px-2 py-0.5 text-[11.5px] font-bold leading-none text-muted-foreground"
+                >
+                  {count}
+                </span>
+              ) : null}
+            </TabsTrigger>
+          );
+        })}
       </TabsList>
 
       {/* Each panel owns its own loading, error and empty state: every tab body
