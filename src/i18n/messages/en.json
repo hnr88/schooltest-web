@@ -202,6 +202,11 @@
     "backToHome": "Back to home"
   },
   "DesignSystem": {
+    "directory": {
+      "exportCsv": "Export CSV",
+      "primaryAction": "Open",
+      "chipAll": "All"
+    },
     "meta": {
       "title": "Design system — SchoolTest",
       "description": "Reusable SchoolTest components built on shadcn primitives: buttons, badges, alerts, cards, forms, overlays, and data display."
@@ -3419,6 +3424,7 @@
       "sortName": "Name (A-Z)",
       "sortStudents": "Most students",
       "sortCreated": "Newest first",
+      "sortRecent": "Recently active",
       "columnStatus": "Status",
       "columnPlan": "Plan",
       "columnAdmins": "Admins",
@@ -3430,6 +3436,13 @@
       "statusPageUnconfigured": "This release has no status page URL configured.",
       "emptyNoneTitle": "No schools yet",
       "emptyNoneDescription": "Create the first school to get started.",
+      "emptySearchTitle": "No schools match your search",
+      "emptySearchDescription": "Try a different search.",
+      "emptyFilterTitle": "No schools match these filters",
+      "emptyFilterDescription": "Try clearing one or more filters.",
+      "createSchool": "Create school",
+      "planSuffix": "plan",
+      "activePrefix": "active",
       "portalStatus": {
         "active": "Active",
         "trial": "Trial",
@@ -3458,6 +3471,11 @@
       "classesLabel": "Classes",
       "studentsLabel": "Students",
       "resultsLabel": "Results",
+      "testsTermLabel": "Tests this term",
+      "lastActivityLabel": "Last activity",
+      "neverValue": "Never",
+      "detailsCardTitle": "School details",
+      "detailsEditLabel": "Edit",
       "notFoundTitle": "School not found",
       "notFoundDescription": "This school does not exist.",
       "errorTitle": "We could not load this school",
@@ -3518,7 +3536,51 @@
         "errorVersionUnavailable": "The row version has not loaded yet.",
         "archiveNameMismatch": "The typed name does not match the school name."
       },
-      "editSchool": "Edit school"
+      "editSchool": "Edit school",
+      "createdPrefix": "created",
+      "actions": {
+        "menuLabel": "More actions",
+        "editDetails": "Edit details",
+        "inviteAdmin": "Invite admin",
+        "activate": "Activate school",
+        "reactivate": "Reactivate school",
+        "restore": "Restore school",
+        "suspend": "Suspend school",
+        "archive": "Archive school",
+        "undo": "Undo",
+        "success": "{name} updated.",
+        "undoSuccess": "{name} was restored.",
+        "undoExpired": "Undo is no longer available. Refresh to see the current state.",
+        "error": "The change could not be saved. Refresh and try again.",
+        "cancel": "Cancel",
+        "confirm": {
+          "activate": {
+            "title": "Activate {name}?",
+            "body": "Billing starts on the current plan and all invited staff get access.",
+            "cta": "Activate"
+          },
+          "reactivate": {
+            "title": "Reactivate {name}?",
+            "body": "Staff and students regain access immediately and scheduled test windows resume.",
+            "cta": "Reactivate"
+          },
+          "restore": {
+            "title": "Restore {name}?",
+            "body": "The school returns to Pending setup. No data is deleted while archived.",
+            "cta": "Restore"
+          },
+          "suspend": {
+            "title": "Suspend {name}?",
+            "body": "Staff and students lose access until reactivated. Test windows in progress are paused.",
+            "cta": "Suspend school"
+          },
+          "archive": {
+            "title": "Archive {name}?",
+            "body": "The school is hidden from the active list and billing stops. Data is retained for 24 months.",
+            "cta": "Archive school"
+          }
+        }
+      }
     },
     "onboard": {
       "button": "Invite school admin",
@@ -3991,7 +4053,16 @@
         "loadError": "Could not load teachers",
         "loadErrorDescription": "The school's teacher directory could not be read.",
         "saveErrorTitle": "Could not save"
-      }
+      },
+      "rosterSearchPlaceholder": "Search students",
+      "rosterCount": "{count, plural, =0 {No students} one {# student} other {# students}}",
+      "rosterNoMatchTitle": "No students match that search",
+      "rosterNoMatchDescription": "No student on this class roster matches your search. Clear it to see the whole class.",
+      "rosterErrorTitle": "Could not load this roster",
+      "rosterErrorBody": "The class roster could not be loaded. The class itself is shown above.",
+      "rosterPageOf": "Page {page} of {pageCount}",
+      "rosterPrev": "Previous",
+      "rosterNext": "Next"
     },
     "classesTab": {
       "columnClass": "Class",
@@ -4098,6 +4169,8 @@
       "fieldState": "State",
       "fieldSector": "Sector",
       "fieldContact": "Primary contact",
+      "fieldLocation": "Location",
+      "fieldPlan": "Plan",
       "fieldEmail": "Email",
       "fieldPhone": "Phone",
       "fieldLastActivity": "Last activity",
@@ -4641,28 +4714,38 @@
         "clearFilters": "Clear filters"
       },
       "detail": {
+        "avgScore": "Avg score",
+        "avgScoreNone": "No student in this class has a scored test yet.",
+        "completedNote": "students completed",
+        "completionValue": "{completed} / {total}",
+        "errorDescription": "This page reads the class live from the server and shows nothing rather than guess. If the class is not one you teach, ask an administrator; otherwise check your connection and try again.",
+        "errorTitle": "Could not load this class",
+        "latestTestBasis": "From each student’s most recent completed test.",
+        "loading": "Loading this class",
         "meta": {
           "title": "Class results — SchoolTest",
           "description": "One class: every student’s reading diagnostic, the teaching insights behind it and the progress between Test A and Test B."
         },
-        "loading": "Loading this class",
-        "errorTitle": "Could not load this class",
-        "errorDescription": "This page reads the class live from the server and shows nothing rather than guess. If the class is not one you teach, ask an administrator; otherwise check your connection and try again.",
+        "noValue": "—",
+        "notYetCount": "{count, plural, one {# not yet mastered} other {# not yet mastered}}",
         "retry": "Try again",
+        "scoreValue": "{score} / 100",
         "students": "{count, plural, one {# student} other {# students}}",
         "summaryLabel": "Class summary",
         "testA": "Test A",
         "testB": "Test B",
-        "completionValue": "{completed} / {total}",
-        "completedNote": "students completed",
-        "avgScore": "Avg score",
-        "scoreValue": "{score} / 100",
-        "noValue": "—",
-        "avgScoreNone": "No student in this class has a scored test yet.",
+        "tileAverage": "Class average",
+        "tileAverageNone": "No scored results yet",
+        "tileGrowth": "Reliable growth",
+        "tileGrowthInsufficient": "Not enough data",
+        "tileGrowthNote": "{count, plural, one {# reliable mover} other {# reliable movers}}",
+        "tilePhases": "ACARA phase spread",
+        "tilePhasesUnmeasured": "{count, plural, one {# student unmeasured} other {# students unmeasured}}",
+        "tilePhasesValue": "{count, plural, one {# phase} other {# phases}}",
+        "tileScored": "Scored",
+        "tileScoredValue": "{scored} of {total} scored",
         "topGap": "Top gap",
-        "notYetCount": "{count, plural, one {# not yet mastered} other {# not yet mastered}}",
-        "topGapNone": "No completed result in this class marks a subskill as not yet mastered.",
-        "latestTestBasis": "From each student’s most recent completed test."
+        "topGapNone": "No completed result in this class marks a subskill as not yet mastered."
       },
       "tabs": {
         "listLabel": "Class results views",

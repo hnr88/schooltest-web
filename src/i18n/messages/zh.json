@@ -202,6 +202,11 @@
     "backToHome": "返回首页"
   },
   "DesignSystem": {
+    "directory": {
+      "exportCsv": "导出 CSV",
+      "primaryAction": "打开",
+      "chipAll": "全部"
+    },
     "meta": {
       "title": "Design system — SchoolTest",
       "description": "Reusable SchoolTest components built on shadcn primitives: buttons, badges, alerts, cards, forms, overlays, and data display."
@@ -2930,6 +2935,7 @@
       "sortName": "名称（A–Z）",
       "sortStudents": "学生最多",
       "sortCreated": "最新优先",
+      "sortRecent": "最近活跃",
       "columnStatus": "状态",
       "columnPlan": "方案",
       "columnAdmins": "管理员",
@@ -2939,6 +2945,13 @@
       "statusPageUnconfigured": "此版本未配置状态页地址。",
       "emptyNoneTitle": "暂无学校",
       "emptyNoneDescription": "创建第一所学校即可开始。",
+      "emptySearchTitle": "没有符合搜索条件的学校",
+      "emptySearchDescription": "请尝试其他搜索词。",
+      "emptyFilterTitle": "没有符合这些筛选条件的学校",
+      "emptyFilterDescription": "请清除一个或多个筛选条件。",
+      "createSchool": "创建学校",
+      "planSuffix": "方案",
+      "activePrefix": "最近活跃",
       "portalStatus": {
         "active": "正常",
         "trial": "试用",
@@ -2969,6 +2982,11 @@
       "classesLabel": "班级",
       "studentsLabel": "学生",
       "resultsLabel": "成绩",
+      "testsTermLabel": "本学期测试",
+      "lastActivityLabel": "最近活动",
+      "neverValue": "从未",
+      "detailsCardTitle": "学校详情",
+      "detailsEditLabel": "编辑",
       "notFoundTitle": "未找到学校",
       "notFoundDescription": "该学校不存在。",
       "errorTitle": "无法加载该学校",
@@ -3029,7 +3047,51 @@
         "errorVersionUnavailable": "行版本尚未加载。",
         "archiveNameMismatch": "输入的名称与学校名称不一致。"
       },
-      "editSchool": "编辑学校"
+      "editSchool": "编辑学校",
+      "createdPrefix": "创建于",
+      "actions": {
+        "menuLabel": "更多操作",
+        "editDetails": "编辑详情",
+        "inviteAdmin": "邀请管理员",
+        "activate": "启用学校",
+        "reactivate": "重新启用学校",
+        "restore": "恢复学校",
+        "suspend": "暂停学校",
+        "archive": "归档学校",
+        "undo": "撤销",
+        "success": "{name} 已更新。",
+        "undoSuccess": "{name} 已恢复。",
+        "undoExpired": "无法再撤销。刷新以查看当前状态。",
+        "error": "无法保存更改。请刷新后重试。",
+        "cancel": "取消",
+        "confirm": {
+          "activate": {
+            "title": "启用 {name}？",
+            "body": "当前方案开始计费，所有受邀员工都将获得访问权限。",
+            "cta": "启用"
+          },
+          "reactivate": {
+            "title": "重新启用 {name}？",
+            "body": "员工和学生将立即恢复访问，已安排的测试窗口也会恢复。",
+            "cta": "重新启用"
+          },
+          "restore": {
+            "title": "恢复 {name}？",
+            "body": "学校将回到待设置状态。归档期间不会删除任何数据。",
+            "cta": "恢复"
+          },
+          "suspend": {
+            "title": "暂停 {name}？",
+            "body": "员工和学生将无法访问，直到重新启用。正在进行的测试窗口将暂停。",
+            "cta": "暂停学校"
+          },
+          "archive": {
+            "title": "归档 {name}？",
+            "body": "学校将从活动列表中隐藏并停止计费。数据保留 24 个月。",
+            "cta": "归档学校"
+          }
+        }
+      }
     },
     "onboard": {
       "button": "邀请学校管理员",
@@ -3502,7 +3564,16 @@
         "loadError": "无法加载教师",
         "loadErrorDescription": "无法读取学校的教职员目录。",
         "saveErrorTitle": "无法保存"
-      }
+      },
+      "rosterSearchPlaceholder": "搜索学生",
+      "rosterCount": "{count, plural, =0 {没有学生} other {# 名学生}}",
+      "rosterNoMatchTitle": "没有匹配该搜索的学生",
+      "rosterNoMatchDescription": "该班级名册中没有与您的搜索匹配的学生。清除搜索即可查看整个班级。",
+      "rosterErrorTitle": "无法加载该名册",
+      "rosterErrorBody": "无法加载班级学生名册。班级信息显示在上方。",
+      "rosterPageOf": "第 {page} 页，共 {pageCount} 页",
+      "rosterPrev": "上一页",
+      "rosterNext": "下一页"
     },
     "schoolTables": {
       "title": "学校目录",
@@ -3544,6 +3615,8 @@
       "fieldState": "州/领地",
       "fieldSector": "办学类型",
       "fieldContact": "主要联系人",
+      "fieldLocation": "所在地",
+      "fieldPlan": "方案",
       "fieldEmail": "邮箱",
       "fieldPhone": "电话",
       "fieldLastActivity": "最近活动",
@@ -4641,28 +4714,38 @@
         "clearFilters": "清除筛选"
       },
       "detail": {
+        "avgScore": "平均分",
+        "avgScoreNone": "该班级还没有学生完成已评分的测验。",
+        "completedNote": "名学生已完成",
+        "completionValue": "{completed} / {total}",
+        "errorDescription": "本页面从服务器实时读取班级数据，宁可不显示也绝不猜测。若该班级不是你所教的班级，请联系管理员；否则请检查网络连接后重试。",
+        "errorTitle": "无法加载该班级",
+        "latestTestBasis": "依据每位学生最近一次完成的测验。",
+        "loading": "正在加载该班级",
         "meta": {
           "title": "班级成绩 — SchoolTest",
           "description": "单个班级：每位学生的阅读诊断结果、其背后的教学洞察，以及测验 A 到测验 B 的进步情况。"
         },
-        "loading": "正在加载该班级",
-        "errorTitle": "无法加载该班级",
-        "errorDescription": "本页面从服务器实时读取班级数据，宁可不显示也绝不猜测。若该班级不是你所教的班级，请联系管理员；否则请检查网络连接后重试。",
+        "noValue": "—",
+        "notYetCount": "{count, plural, other {# 名尚未掌握}}",
         "retry": "重试",
+        "scoreValue": "{score} / 100",
         "students": "{count, plural, other {# 名学生}}",
         "summaryLabel": "班级概况",
         "testA": "测验 A",
         "testB": "测验 B",
-        "completionValue": "{completed} / {total}",
-        "completedNote": "名学生已完成",
-        "avgScore": "平均分",
-        "scoreValue": "{score} / 100",
-        "noValue": "—",
-        "avgScoreNone": "该班级还没有学生完成已评分的测验。",
+        "tileAverage": "班级平均",
+        "tileAverageNone": "暂无已评分结果",
+        "tileGrowth": "可靠成长",
+        "tileGrowthInsufficient": "数据不足",
+        "tileGrowthNote": "{count, plural, other {# 个可靠变化}}",
+        "tilePhases": "ACARA 阶段分布",
+        "tilePhasesUnmeasured": "{count, plural, other {# 名学生未测量}}",
+        "tilePhasesValue": "{count, plural, other {# 个阶段}}",
+        "tileScored": "已评分",
+        "tileScoredValue": "{total} 人中 {scored} 人已评分",
         "topGap": "主要薄弱项",
-        "notYetCount": "{count, plural, other {# 名尚未掌握}}",
-        "topGapNone": "该班级已完成的成绩中，没有任何子技能被标记为尚未掌握。",
-        "latestTestBasis": "依据每位学生最近一次完成的测验。"
+        "topGapNone": "该班级已完成的成绩中，没有任何子技能被标记为尚未掌握。"
       },
       "tabs": {
         "listLabel": "班级成绩视图",

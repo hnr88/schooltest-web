@@ -202,6 +202,11 @@
     "backToHome": "Về trang chủ"
   },
   "DesignSystem": {
+    "directory": {
+      "exportCsv": "Xuất CSV",
+      "primaryAction": "Mở",
+      "chipAll": "Tất cả"
+    },
     "meta": {
       "title": "Design system — SchoolTest",
       "description": "Reusable SchoolTest components built on shadcn primitives: buttons, badges, alerts, cards, forms, overlays, and data display."
@@ -2949,6 +2954,7 @@
       "sortName": "Tên (A–Z)",
       "sortStudents": "Nhiều học sinh nhất",
       "sortCreated": "Mới nhất trước",
+      "sortRecent": "Hoạt động gần đây",
       "columnStatus": "Trạng thái",
       "columnPlan": "Gói",
       "columnAdmins": "Quản trị viên",
@@ -2958,6 +2964,13 @@
       "statusPageUnconfigured": "Bản phát hành này chưa cấu hình URL trang trạng thái.",
       "emptyNoneTitle": "Chưa có trường nào",
       "emptyNoneDescription": "Hãy tạo trường đầu tiên để bắt đầu.",
+      "emptySearchTitle": "Không có trường khớp với tìm kiếm",
+      "emptySearchDescription": "Hãy thử tìm kiếm khác.",
+      "emptyFilterTitle": "Không có trường khớp với bộ lọc",
+      "emptyFilterDescription": "Hãy xoá một hoặc nhiều bộ lọc.",
+      "createSchool": "Tạo trường",
+      "planSuffix": "gói",
+      "activePrefix": "hoạt động",
       "portalStatus": {
         "active": "Hoạt động",
         "trial": "Dùng thử",
@@ -2988,6 +3001,11 @@
       "classesLabel": "Lớp học",
       "studentsLabel": "Học sinh",
       "resultsLabel": "Kết quả",
+      "testsTermLabel": "Bài kiểm tra học kỳ này",
+      "lastActivityLabel": "Hoạt động gần nhất",
+      "neverValue": "Chưa có",
+      "detailsCardTitle": "Thông tin trường học",
+      "detailsEditLabel": "Chỉnh sửa",
       "notFoundTitle": "Không tìm thấy trường",
       "notFoundDescription": "Trường này không tồn tại.",
       "errorTitle": "Chúng tôi không thể tải trường này",
@@ -3048,7 +3066,51 @@
         "errorVersionUnavailable": "Phiên bản hàng chưa được tải.",
         "archiveNameMismatch": "Tên đã nhập không khớp với tên trường."
       },
-      "editSchool": "Sửa trường"
+      "editSchool": "Sửa trường",
+      "createdPrefix": "tạo ngày",
+      "actions": {
+        "menuLabel": "Thao tác khác",
+        "editDetails": "Sửa thông tin",
+        "inviteAdmin": "Mời quản trị viên",
+        "activate": "Kích hoạt trường",
+        "reactivate": "Kích hoạt lại trường",
+        "restore": "Khôi phục trường",
+        "suspend": "Tạm ngưng trường",
+        "archive": "Lưu trữ trường",
+        "undo": "Hoàn tác",
+        "success": "Đã cập nhật {name}.",
+        "undoSuccess": "Đã khôi phục {name}.",
+        "undoExpired": "Không thể hoàn tác nữa. Hãy tải lại để xem trạng thái hiện tại.",
+        "error": "Không thể lưu thay đổi. Hãy tải lại và thử lại.",
+        "cancel": "Hủy",
+        "confirm": {
+          "activate": {
+            "title": "Kích hoạt {name}?",
+            "body": "Gói hiện tại bắt đầu được tính phí và tất cả nhân viên được mời sẽ có quyền truy cập.",
+            "cta": "Kích hoạt"
+          },
+          "reactivate": {
+            "title": "Kích hoạt lại {name}?",
+            "body": "Nhân viên và học sinh có quyền truy cập ngay và các cửa sổ kiểm tra đã lên lịch sẽ tiếp tục.",
+            "cta": "Kích hoạt lại"
+          },
+          "restore": {
+            "title": "Khôi phục {name}?",
+            "body": "Trường trở lại trạng thái Đang chờ thiết lập. Dữ liệu không bị xóa khi lưu trữ.",
+            "cta": "Khôi phục"
+          },
+          "suspend": {
+            "title": "Tạm ngưng {name}?",
+            "body": "Nhân viên và học sinh mất quyền truy cập cho đến khi kích hoạt lại. Các cửa sổ kiểm tra đang diễn ra sẽ tạm dừng.",
+            "cta": "Tạm ngưng trường"
+          },
+          "archive": {
+            "title": "Lưu trữ {name}?",
+            "body": "Trường bị ẩn khỏi danh sách đang hoạt động và thanh toán dừng lại. Dữ liệu được giữ trong 24 tháng.",
+            "cta": "Lưu trữ trường"
+          }
+        }
+      }
     },
     "onboard": {
       "button": "Mời quản trị viên trường",
@@ -3521,7 +3583,16 @@
         "loadError": "Không thể tải giáo viên",
         "loadErrorDescription": "Không thể đọc danh bạ nhân sự của trường.",
         "saveErrorTitle": "Không thể lưu"
-      }
+      },
+      "rosterSearchPlaceholder": "Tìm học sinh",
+      "rosterCount": "{count, plural, =0 {Không có học sinh} other {# học sinh}}",
+      "rosterNoMatchTitle": "Không có học sinh nào khớp với tìm kiếm đó",
+      "rosterNoMatchDescription": "Không có học sinh nào trong danh sách lớp này khớp với tìm kiếm của bạn. Xoá tìm kiếm để xem toàn bộ lớp.",
+      "rosterErrorTitle": "Không thể tải danh sách này",
+      "rosterErrorBody": "Không thể tải danh sách học sinh của lớp. Thông tin lớp được hiển thị ở trên.",
+      "rosterPageOf": "Trang {page} trên {pageCount}",
+      "rosterPrev": "Trước",
+      "rosterNext": "Sau"
     },
     "schoolTables": {
       "title": "Danh bạ trường học",
@@ -3563,6 +3634,8 @@
       "fieldState": "Bang",
       "fieldSector": "Khu vực",
       "fieldContact": "Người liên hệ chính",
+      "fieldLocation": "Địa điểm",
+      "fieldPlan": "Gói",
       "fieldEmail": "Email",
       "fieldPhone": "Điện thoại",
       "fieldLastActivity": "Hoạt động gần nhất",
@@ -4660,28 +4733,38 @@
         "clearFilters": "Xóa bộ lọc"
       },
       "detail": {
+        "avgScore": "Điểm trung bình",
+        "avgScoreNone": "Chưa có học sinh nào trong lớp này có bài kiểm tra đã được tính điểm.",
+        "completedNote": "học sinh đã hoàn thành",
+        "completionValue": "{completed} / {total}",
+        "errorDescription": "Trang này đọc dữ liệu lớp trực tiếp từ máy chủ và không hiển thị gì thay vì phỏng đoán. Nếu đây không phải lớp bạn dạy, hãy liên hệ quản trị viên; nếu không, hãy kiểm tra kết nối và thử lại.",
+        "errorTitle": "Không tải được lớp này",
+        "latestTestBasis": "Dựa trên bài kiểm tra gần nhất mà mỗi học sinh đã hoàn thành.",
+        "loading": "Đang tải lớp này",
         "meta": {
           "title": "Kết quả lớp — SchoolTest",
           "description": "Một lớp: kết quả chẩn đoán đọc của từng học sinh, nhận định giảng dạy phía sau và tiến bộ giữa Bài A và Bài B."
         },
-        "loading": "Đang tải lớp này",
-        "errorTitle": "Không tải được lớp này",
-        "errorDescription": "Trang này đọc dữ liệu lớp trực tiếp từ máy chủ và không hiển thị gì thay vì phỏng đoán. Nếu đây không phải lớp bạn dạy, hãy liên hệ quản trị viên; nếu không, hãy kiểm tra kết nối và thử lại.",
+        "noValue": "—",
+        "notYetCount": "{count, plural, other {# chưa thành thạo}}",
         "retry": "Thử lại",
+        "scoreValue": "{score} / 100",
         "students": "{count, plural, other {# học sinh}}",
         "summaryLabel": "Tóm tắt lớp",
         "testA": "Bài A",
         "testB": "Bài B",
-        "completionValue": "{completed} / {total}",
-        "completedNote": "học sinh đã hoàn thành",
-        "avgScore": "Điểm trung bình",
-        "scoreValue": "{score} / 100",
-        "noValue": "—",
-        "avgScoreNone": "Chưa có học sinh nào trong lớp này có bài kiểm tra đã được tính điểm.",
+        "tileAverage": "Trung bình lớp",
+        "tileAverageNone": "Chưa có kết quả được chấm điểm",
+        "tileGrowth": "Tăng trưởng đáng tin cậy",
+        "tileGrowthInsufficient": "Chưa đủ dữ liệu",
+        "tileGrowthNote": "{count, plural, other {# thay đổi đáng tin cậy}}",
+        "tilePhases": "Phân bố giai đoạn ACARA",
+        "tilePhasesUnmeasured": "{count, plural, other {# học sinh chưa đo lường}}",
+        "tilePhasesValue": "{count, plural, other {# giai đoạn}}",
+        "tileScored": "Đã chấm điểm",
+        "tileScoredValue": "{scored}/{total} đã chấm điểm",
         "topGap": "Khoảng trống lớn nhất",
-        "notYetCount": "{count, plural, other {# chưa thành thạo}}",
-        "topGapNone": "Không có kết quả đã hoàn thành nào trong lớp này đánh dấu một kỹ năng con là chưa thành thạo.",
-        "latestTestBasis": "Dựa trên bài kiểm tra gần nhất mà mỗi học sinh đã hoàn thành."
+        "topGapNone": "Không có kết quả đã hoàn thành nào trong lớp này đánh dấu một kỹ năng con là chưa thành thạo."
       },
       "tabs": {
         "listLabel": "Các khung xem kết quả lớp",

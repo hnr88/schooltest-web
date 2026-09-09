@@ -202,6 +202,11 @@
     "backToHome": "Kembali ke laman utama"
   },
   "DesignSystem": {
+    "directory": {
+      "exportCsv": "Eksport CSV",
+      "primaryAction": "Buka",
+      "chipAll": "Semua"
+    },
     "meta": {
       "title": "Design system — SchoolTest",
       "description": "Reusable SchoolTest components built on shadcn primitives: buttons, badges, alerts, cards, forms, overlays, and data display."
@@ -2940,6 +2945,7 @@
       "sortName": "Nama (A–Z)",
       "sortStudents": "Paling banyak murid",
       "sortCreated": "Terbaharu dahulu",
+      "sortRecent": "Aktif baru-baru ini",
       "columnStatus": "Status",
       "columnPlan": "Pelan",
       "columnAdmins": "Pentadbir",
@@ -2949,6 +2955,13 @@
       "statusPageUnconfigured": "Keluaran ini tiada URL halaman status yang dikonfigurasikan.",
       "emptyNoneTitle": "Belum ada sekolah",
       "emptyNoneDescription": "Cipta sekolah pertama untuk bermula.",
+      "emptySearchTitle": "Tiada sekolah sepadan dengan carian",
+      "emptySearchDescription": "Cuba carian lain.",
+      "emptyFilterTitle": "Tiada sekolah sepadan dengan penapis",
+      "emptyFilterDescription": "Kosongkan satu atau lebih penapis.",
+      "createSchool": "Cipta sekolah",
+      "planSuffix": "pelan",
+      "activePrefix": "aktif",
       "portalStatus": {
         "active": "Aktif",
         "trial": "Percubaan",
@@ -2979,6 +2992,11 @@
       "classesLabel": "Kelas",
       "studentsLabel": "Murid",
       "resultsLabel": "Keputusan",
+      "testsTermLabel": "Ujian penggal ini",
+      "lastActivityLabel": "Aktiviti terkini",
+      "neverValue": "Tiada",
+      "detailsCardTitle": "Maklumat sekolah",
+      "detailsEditLabel": "Sunting",
       "notFoundTitle": "Sekolah tidak dijumpai",
       "notFoundDescription": "Sekolah ini tidak wujud.",
       "errorTitle": "Kami tidak dapat memuatkan sekolah ini",
@@ -3039,7 +3057,51 @@
         "errorVersionUnavailable": "Versi baris masih belum dimuatkan.",
         "archiveNameMismatch": "Nama yang ditaip tidak sepadan dengan nama sekolah."
       },
-      "editSchool": "Edit sekolah"
+      "editSchool": "Edit sekolah",
+      "createdPrefix": "dicipta",
+      "actions": {
+        "menuLabel": "Tindakan lain",
+        "editDetails": "Edit butiran",
+        "inviteAdmin": "Jemput pentadbir",
+        "activate": "Aktifkan sekolah",
+        "reactivate": "Aktifkan semula sekolah",
+        "restore": "Pulihkan sekolah",
+        "suspend": "Gantung sekolah",
+        "archive": "Arkibkan sekolah",
+        "undo": "Buat asal",
+        "success": "{name} dikemas kini.",
+        "undoSuccess": "{name} dipulihkan.",
+        "undoExpired": "Buat asal tidak lagi tersedia. Muat semula untuk melihat keadaan semasa.",
+        "error": "Perubahan tidak dapat disimpan. Muat semula dan cuba lagi.",
+        "cancel": "Batal",
+        "confirm": {
+          "activate": {
+            "title": "Aktifkan {name}?",
+            "body": "Pengebilan bermula pada pelan semasa dan semua kakitangan yang dijemput mendapat akses.",
+            "cta": "Aktifkan"
+          },
+          "reactivate": {
+            "title": "Aktifkan semula {name}?",
+            "body": "Kakitangan dan murid mendapat akses serta-merta dan tetingkap ujian berjadual disambung semula.",
+            "cta": "Aktifkan semula"
+          },
+          "restore": {
+            "title": "Pulihkan {name}?",
+            "body": "Sekolah kembali kepada Persediaan belum selesai. Tiada data dipadam semasa diarkibkan.",
+            "cta": "Pulihkan"
+          },
+          "suspend": {
+            "title": "Gantung {name}?",
+            "body": "Kakitangan dan murid kehilangan akses sehingga diaktifkan semula. Tetingkap ujian yang sedang berjalan dijeda.",
+            "cta": "Gantung sekolah"
+          },
+          "archive": {
+            "title": "Arkibkan {name}?",
+            "body": "Sekolah disembunyikan daripada senarai aktif dan pengebilan dihentikan. Data disimpan selama 24 bulan.",
+            "cta": "Arkibkan sekolah"
+          }
+        }
+      }
     },
     "onboard": {
       "button": "Jemput pentadbir sekolah",
@@ -3512,7 +3574,16 @@
         "loadError": "Tidak dapat memuat guru",
         "loadErrorDescription": "Direktori kakitangan sekolah tidak dapat dibaca.",
         "saveErrorTitle": "Tidak dapat disimpan"
-      }
+      },
+      "rosterSearchPlaceholder": "Cari murid",
+      "rosterCount": "{count, plural, =0 {Tiada murid} other {# murid}}",
+      "rosterNoMatchTitle": "Tiada murid sepadan dengan carian itu",
+      "rosterNoMatchDescription": "Tiada murid dalam senarai kelas ini yang sepadan dengan carian anda. Kosongkan carian untuk melihat seluruh kelas.",
+      "rosterErrorTitle": "Tidak dapat memuat senarai ini",
+      "rosterErrorBody": "Senarai murid kelas tidak dapat dimuatkan. Maklumat kelas ditunjukkan di atas.",
+      "rosterPageOf": "Halaman {page} daripada {pageCount}",
+      "rosterPrev": "Sebelumnya",
+      "rosterNext": "Seterusnya"
     },
     "schoolTables": {
       "title": "Direktori sekolah",
@@ -3554,6 +3625,8 @@
       "fieldState": "Negeri",
       "fieldSector": "Sektor",
       "fieldContact": "Orang hubungan utama",
+      "fieldLocation": "Lokasi",
+      "fieldPlan": "Pelan",
       "fieldEmail": "E-mel",
       "fieldPhone": "Telefon",
       "fieldLastActivity": "Aktiviti terakhir",
@@ -4651,28 +4724,38 @@
         "clearFilters": "Kosongkan penapis"
       },
       "detail": {
+        "avgScore": "Skor purata",
+        "avgScoreNone": "Belum ada pelajar dalam kelas ini yang mempunyai ujian berskor.",
+        "completedNote": "pelajar selesai",
+        "completionValue": "{completed} / {total}",
+        "errorDescription": "Halaman ini membaca kelas secara langsung daripada pelayan dan tidak menunjukkan apa-apa dan bukannya meneka. Jika kelas ini bukan kelas anda, hubungi pentadbir; jika tidak, periksa sambungan anda dan cuba lagi.",
+        "errorTitle": "Tidak dapat memuatkan kelas ini",
+        "latestTestBasis": "Daripada ujian terkini yang diselesaikan setiap pelajar.",
+        "loading": "Memuatkan kelas ini",
         "meta": {
           "title": "Keputusan kelas — SchoolTest",
           "description": "Satu kelas: diagnostik bacaan setiap pelajar, cerapan pengajaran di sebaliknya dan kemajuan antara Ujian A dan Ujian B."
         },
-        "loading": "Memuatkan kelas ini",
-        "errorTitle": "Tidak dapat memuatkan kelas ini",
-        "errorDescription": "Halaman ini membaca kelas secara langsung daripada pelayan dan tidak menunjukkan apa-apa dan bukannya meneka. Jika kelas ini bukan kelas anda, hubungi pentadbir; jika tidak, periksa sambungan anda dan cuba lagi.",
+        "noValue": "—",
+        "notYetCount": "{count, plural, other {# belum menguasai}}",
         "retry": "Cuba lagi",
+        "scoreValue": "{score} / 100",
         "students": "{count, plural, other {# pelajar}}",
         "summaryLabel": "Ringkasan kelas",
         "testA": "Ujian A",
         "testB": "Ujian B",
-        "completionValue": "{completed} / {total}",
-        "completedNote": "pelajar selesai",
-        "avgScore": "Skor purata",
-        "scoreValue": "{score} / 100",
-        "noValue": "—",
-        "avgScoreNone": "Belum ada pelajar dalam kelas ini yang mempunyai ujian berskor.",
+        "tileAverage": "Purata kelas",
+        "tileAverageNone": "Tiada keputusan berskoran lagi",
+        "tileGrowth": "Pertumbuhan boleh dipercayai",
+        "tileGrowthInsufficient": "Data tidak mencukupi",
+        "tileGrowthNote": "{count, plural, other {# penggerak boleh dipercayai}}",
+        "tilePhases": "Taburan fasa ACARA",
+        "tilePhasesUnmeasured": "{count, plural, other {# murid tidak diukur}}",
+        "tilePhasesValue": "{count, plural, other {# fasa}}",
+        "tileScored": "Berskoran",
+        "tileScoredValue": "{scored} daripada {total} berskoran",
         "topGap": "Jurang utama",
-        "notYetCount": "{count, plural, other {# belum menguasai}}",
-        "topGapNone": "Tiada keputusan selesai dalam kelas ini yang menandakan sesuatu subkemahiran sebagai belum dikuasai.",
-        "latestTestBasis": "Daripada ujian terkini yang diselesaikan setiap pelajar."
+        "topGapNone": "Tiada keputusan selesai dalam kelas ini yang menandakan sesuatu subkemahiran sebagai belum dikuasai."
       },
       "tabs": {
         "listLabel": "Paparan keputusan kelas",

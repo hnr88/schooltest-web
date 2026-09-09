@@ -202,6 +202,11 @@
     "backToHome": "홈으로 돌아가기"
   },
   "DesignSystem": {
+    "directory": {
+      "exportCsv": "CSV 내보내기",
+      "primaryAction": "열기",
+      "chipAll": "전체"
+    },
     "meta": {
       "title": "Design system — SchoolTest",
       "description": "Reusable SchoolTest components built on shadcn primitives: buttons, badges, alerts, cards, forms, overlays, and data display."
@@ -2940,6 +2945,7 @@
       "sortName": "이름(A–Z)",
       "sortStudents": "학생 많은 순",
       "sortCreated": "최신순",
+      "sortRecent": "최근 활동순",
       "columnStatus": "상태",
       "columnPlan": "플랜",
       "columnAdmins": "관리자",
@@ -2949,6 +2955,13 @@
       "statusPageUnconfigured": "이 릴리스에는 상태 페이지 URL이 설정되어 있지 않습니다.",
       "emptyNoneTitle": "학교가 없습니다",
       "emptyNoneDescription": "첫 학교를 만들어 시작하세요.",
+      "emptySearchTitle": "검색과 일치하는 학교가 없습니다",
+      "emptySearchDescription": "다른 검색어를 시도해 보세요.",
+      "emptyFilterTitle": "필터와 일치하는 학교가 없습니다",
+      "emptyFilterDescription": "하나 이상의 필터를 지워 보세요.",
+      "createSchool": "학교 만들기",
+      "planSuffix": "플랜",
+      "activePrefix": "활동",
       "portalStatus": {
         "active": "활성",
         "trial": "체험",
@@ -2979,6 +2992,11 @@
       "classesLabel": "학급",
       "studentsLabel": "학생",
       "resultsLabel": "결과",
+      "testsTermLabel": "이번 학기 시험",
+      "lastActivityLabel": "마지막 활동",
+      "neverValue": "없음",
+      "detailsCardTitle": "학교 정보",
+      "detailsEditLabel": "편집",
       "notFoundTitle": "학교를 찾을 수 없습니다",
       "notFoundDescription": "해당 학교가 존재하지 않습니다.",
       "errorTitle": "이 학교를 불러올 수 없습니다",
@@ -3039,7 +3057,51 @@
         "errorVersionUnavailable": "행 버전이 아직 로드되지 않았습니다.",
         "archiveNameMismatch": "입력한 이름이 학교 이름과 일치하지 않습니다."
       },
-      "editSchool": "학교 편집"
+      "editSchool": "학교 편집",
+      "createdPrefix": "생성일",
+      "actions": {
+        "menuLabel": "추가 작업",
+        "editDetails": "세부 정보 편집",
+        "inviteAdmin": "관리자 초대",
+        "activate": "학교 활성화",
+        "reactivate": "학교 재활성화",
+        "restore": "학교 복원",
+        "suspend": "학교 일시 중지",
+        "archive": "학교 보관",
+        "undo": "실행 취소",
+        "success": "{name}이(가) 업데이트되었습니다.",
+        "undoSuccess": "{name}이(가) 복원되었습니다.",
+        "undoExpired": "실행 취소를 사용할 수 없습니다. 현재 상태를 보려면 새로 고침하세요.",
+        "error": "변경 사항을 저장하지 못했습니다. 새로 고친 후 다시 시도하세요.",
+        "cancel": "취소",
+        "confirm": {
+          "activate": {
+            "title": "{name}을(를) 활성화하시겠습니까?",
+            "body": "현재 요금제가 청구되고 초대한 모든 직원이 액세스할 수 있습니다.",
+            "cta": "활성화"
+          },
+          "reactivate": {
+            "title": "{name}을(를) 재활성화하시겠습니까?",
+            "body": "직원과 학생이 즉시 액세스하고 예약된 테스트 창이 재개됩니다.",
+            "cta": "재활성화"
+          },
+          "restore": {
+            "title": "{name}을(를) 복원하시겠습니까?",
+            "body": "학교가 설정 대기 상태로 돌아갑니다. 보관 중에는 데이터가 삭제되지 않습니다.",
+            "cta": "복원"
+          },
+          "suspend": {
+            "title": "{name}을(를) 일시 중지하시겠습니까?",
+            "body": "재활성화할 때까지 직원과 학생이 액세스할 수 없으며 진행 중인 테스트 창이 일시 중지됩니다.",
+            "cta": "학교 일시 중지"
+          },
+          "archive": {
+            "title": "{name}을(를) 보관하시겠습니까?",
+            "body": "학교가 활성 목록에서 숨겨지고 청구가 중지됩니다. 데이터는 24개월 동안 보존됩니다.",
+            "cta": "학교 보관"
+          }
+        }
+      }
     },
     "onboard": {
       "button": "학교 관리자 초대",
@@ -3512,7 +3574,16 @@
         "loadError": "교사를 불러올 수 없음",
         "loadErrorDescription": "학교 교직원 디렉터리를 읽을 수 없습니다.",
         "saveErrorTitle": "저장할 수 없음"
-      }
+      },
+      "rosterSearchPlaceholder": "학생 검색",
+      "rosterCount": "{count, plural, =0 {학생 없음} other {학생 #명}}",
+      "rosterNoMatchTitle": "검색과 일치하는 학생 없음",
+      "rosterNoMatchDescription": "이 클래스 명단에 검색과 일치하는 학생이 없습니다. 검색어를 지우면 전체 클래스가 표시됩니다.",
+      "rosterErrorTitle": "명단을 불러올 수 없음",
+      "rosterErrorBody": "클래스 명단을 불러오지 못했습니다. 클래스 정보는 위에 표시됩니다.",
+      "rosterPageOf": "{pageCount}페이지 중 {page}페이지",
+      "rosterPrev": "이전",
+      "rosterNext": "다음"
     },
     "schoolTables": {
       "title": "학교 디렉터리",
@@ -3554,6 +3625,8 @@
       "fieldState": "주",
       "fieldSector": "설립 구분",
       "fieldContact": "주요 담당자",
+      "fieldLocation": "위치",
+      "fieldPlan": "플랜",
       "fieldEmail": "이메일",
       "fieldPhone": "전화",
       "fieldLastActivity": "최근 활동",
@@ -4651,28 +4724,38 @@
         "clearFilters": "필터 지우기"
       },
       "detail": {
+        "avgScore": "평균 점수",
+        "avgScoreNone": "이 학급에는 아직 채점된 시험을 마친 학생이 없습니다.",
+        "completedNote": "명 완료",
+        "completionValue": "{completed} / {total}",
+        "errorDescription": "이 페이지는 학급 정보를 서버에서 실시간으로 읽어오며, 추측하지 않고 아무것도 표시하지 않습니다. 담당 학급이 아니라면 관리자에게 문의하고, 그렇지 않다면 연결을 확인한 뒤 다시 시도하세요.",
+        "errorTitle": "이 학급을 불러올 수 없습니다",
+        "latestTestBasis": "각 학생이 가장 최근에 완료한 시험을 기준으로 합니다.",
+        "loading": "이 학급을 불러오는 중",
         "meta": {
           "title": "학급 결과 — SchoolTest",
           "description": "한 학급의 모든 학생 읽기 진단 결과와 수업 인사이트, 테스트 A에서 테스트 B까지의 향상도입니다."
         },
-        "loading": "이 학급을 불러오는 중",
-        "errorTitle": "이 학급을 불러올 수 없습니다",
-        "errorDescription": "이 페이지는 학급 정보를 서버에서 실시간으로 읽어오며, 추측하지 않고 아무것도 표시하지 않습니다. 담당 학급이 아니라면 관리자에게 문의하고, 그렇지 않다면 연결을 확인한 뒤 다시 시도하세요.",
+        "noValue": "—",
+        "notYetCount": "{count, plural, other {#명 미숙달}}",
         "retry": "다시 시도",
+        "scoreValue": "{score} / 100",
         "students": "{count, plural, other {학생 #명}}",
         "summaryLabel": "학급 요약",
         "testA": "테스트 A",
         "testB": "테스트 B",
-        "completionValue": "{completed} / {total}",
-        "completedNote": "명 완료",
-        "avgScore": "평균 점수",
-        "scoreValue": "{score} / 100",
-        "noValue": "—",
-        "avgScoreNone": "이 학급에는 아직 채점된 시험을 마친 학생이 없습니다.",
+        "tileAverage": "학급 평균",
+        "tileAverageNone": "아직 채점된 결과 없음",
+        "tileGrowth": "신뢰할 수 있는 성장",
+        "tileGrowthInsufficient": "데이터 부족",
+        "tileGrowthNote": "{count, plural, other {신뢰할 수 있는 변화 #건}}",
+        "tilePhases": "ACARA 단계 분포",
+        "tilePhasesUnmeasured": "{count, plural, other {측정되지 않은 학생 #명}}",
+        "tilePhasesValue": "{count, plural, other {단계 #개}}",
+        "tileScored": "채점됨",
+        "tileScoredValue": "총 {total}명 중 {scored}명 채점됨",
         "topGap": "주요 취약 영역",
-        "notYetCount": "{count, plural, other {#명 미숙달}}",
-        "topGapNone": "이 학급의 완료된 결과 중 아직 숙달하지 못한 세부 기능으로 표시된 것이 없습니다.",
-        "latestTestBasis": "각 학생이 가장 최근에 완료한 시험을 기준으로 합니다."
+        "topGapNone": "이 학급의 완료된 결과 중 아직 숙달하지 못한 세부 기능으로 표시된 것이 없습니다."
       },
       "tabs": {
         "listLabel": "학급 결과 보기",

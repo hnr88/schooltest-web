@@ -202,6 +202,11 @@
     "backToHome": "กลับสู่หน้าแรก"
   },
   "DesignSystem": {
+    "directory": {
+      "exportCsv": "ส่งออก CSV",
+      "primaryAction": "เปิด",
+      "chipAll": "ทั้งหมด"
+    },
     "meta": {
       "title": "Design system — SchoolTest",
       "description": "Reusable SchoolTest components built on shadcn primitives: buttons, badges, alerts, cards, forms, overlays, and data display."
@@ -2940,6 +2945,7 @@
       "sortName": "ชื่อ (A–Z)",
       "sortStudents": "นักเรียนมากที่สุด",
       "sortCreated": "ใหม่สุดก่อน",
+      "sortRecent": "ใช้งานล่าสุด",
       "columnStatus": "สถานะ",
       "columnPlan": "แพ็กเกจ",
       "columnAdmins": "ผู้ดูแลระบบ",
@@ -2949,6 +2955,13 @@
       "statusPageUnconfigured": "รุ่นนี้ยังไม่ได้ตั้งค่า URL ของหน้าสถานะ",
       "emptyNoneTitle": "ยังไม่มีโรงเรียน",
       "emptyNoneDescription": "สร้างโรงเรียนแรกเพื่อเริ่มต้น",
+      "emptySearchTitle": "ไม่พบโรงเรียนที่ตรงกับการค้นหา",
+      "emptySearchDescription": "ลองค้นหาด้วยคำอื่น",
+      "emptyFilterTitle": "ไม่พบโรงเรียนที่ตรงกับตัวกรอง",
+      "emptyFilterDescription": "ลองล้างตัวกรองอย่างน้อยหนึ่งรายการ",
+      "createSchool": "สร้างโรงเรียน",
+      "planSuffix": "แพ็กเกจ",
+      "activePrefix": "ใช้งานล่าสุด",
       "portalStatus": {
         "active": "ใช้งานอยู่",
         "trial": "ทดลองใช้",
@@ -2979,6 +2992,11 @@
       "classesLabel": "ชั้นเรียน",
       "studentsLabel": "นักเรียน",
       "resultsLabel": "ผลการทดสอบ",
+      "testsTermLabel": "การทดสอบภาคเรียนนี้",
+      "lastActivityLabel": "กิจกรรมล่าสุด",
+      "neverValue": "ไม่มี",
+      "detailsCardTitle": "ข้อมูลโรงเรียน",
+      "detailsEditLabel": "แก้ไข",
       "notFoundTitle": "ไม่พบโรงเรียน",
       "notFoundDescription": "ไม่มีโรงเรียนนี้",
       "errorTitle": "เราไม่สามารถโหลดโรงเรียนนี้ได้",
@@ -3039,7 +3057,51 @@
         "errorVersionUnavailable": "ยังไม่ได้โหลดเวอร์ชันของแถว",
         "archiveNameMismatch": "ชื่อที่พิมพ์ไม่ตรงกับชื่อโรงเรียน"
       },
-      "editSchool": "แก้ไขโรงเรียน"
+      "editSchool": "แก้ไขโรงเรียน",
+      "createdPrefix": "สร้างเมื่อ",
+      "actions": {
+        "menuLabel": "การดำเนินการเพิ่มเติม",
+        "editDetails": "แก้ไขรายละเอียด",
+        "inviteAdmin": "เชิญผู้ดูแล",
+        "activate": "เปิดใช้งานโรงเรียน",
+        "reactivate": "เปิดใช้งานโรงเรียนอีกครั้ง",
+        "restore": "กู้คืนโรงเรียน",
+        "suspend": "ระงับโรงเรียน",
+        "archive": "เก็บถาวรโรงเรียน",
+        "undo": "เลิกทำ",
+        "success": "อัปเดต {name} แล้ว",
+        "undoSuccess": "กู้คืน {name} แล้ว",
+        "undoExpired": "ไม่สามารถเลิกทำได้อีก โหลดใหม่เพื่อดูสถานะปัจจุบัน",
+        "error": "บันทึกการเปลี่ยนแปลงไม่ได้ โหลดใหม่แล้วลองอีกครั้ง",
+        "cancel": "ยกเลิก",
+        "confirm": {
+          "activate": {
+            "title": "เปิดใช้งาน {name} หรือไม่?",
+            "body": "เริ่มเรียกเก็บเงินตามแผนปัจจุบัน และพนักงานที่ได้รับเชิญทั้งหมดจะเข้าถึงได้",
+            "cta": "เปิดใช้งาน"
+          },
+          "reactivate": {
+            "title": "เปิดใช้งาน {name} อีกครั้งหรือไม่?",
+            "body": "พนักงานและนักเรียนจะเข้าถึงได้ทันที และช่วงเวลาการทดสอบที่กำหนดไว้จะดำเนินต่อ",
+            "cta": "เปิดใช้งานอีกครั้ง"
+          },
+          "restore": {
+            "title": "กู้คืน {name} หรือไม่?",
+            "body": "โรงเรียนจะกลับสู่สถานะรอการตั้งค่า ข้อมูลจะไม่ถูกลบขณะเก็บถาวร",
+            "cta": "กู้คืน"
+          },
+          "suspend": {
+            "title": "ระงับ {name} หรือไม่?",
+            "body": "พนักงานและนักเรียนจะเข้าถึงไม่ได้จนกว่าจะเปิดใช้งานอีกครั้ง ช่วงเวลาทดสอบที่กำลังดำเนินการจะหยุดชั่วคราว",
+            "cta": "ระงับโรงเรียน"
+          },
+          "archive": {
+            "title": "เก็บถาวร {name} หรือไม่?",
+            "body": "โรงเรียนจะถูกซ่อนจากรายการที่ใช้งานอยู่และหยุดเรียกเก็บเงิน ข้อมูลจะเก็บไว้ 24 เดือน",
+            "cta": "เก็บถาวรโรงเรียน"
+          }
+        }
+      }
     },
     "onboard": {
       "button": "เชิญผู้ดูแลโรงเรียน",
@@ -3512,7 +3574,16 @@
         "loadError": "ไม่สามารถโหลดครู",
         "loadErrorDescription": "ไม่สามารถอ่านรายชื่อบุคลากรของโรงเรียน",
         "saveErrorTitle": "ไม่สามารถบันทึกได้"
-      }
+      },
+      "rosterSearchPlaceholder": "ค้นหานักเรียน",
+      "rosterCount": "{count, plural, =0 {ไม่มีนักเรียน} other {นักเรียน # คน}}",
+      "rosterNoMatchTitle": "ไม่พบนักเรียนที่ตรงกับการค้นหา",
+      "rosterNoMatchDescription": "ไม่มีนักเรียนในรายชื่อชั้นนี้ที่ตรงกับการค้นหาของคุณ ล้างการค้นหาเพื่อดูทั้งชั้น",
+      "rosterErrorTitle": "ไม่สามารถโหลดรายชื่อนี้",
+      "rosterErrorBody": "ไม่สามารถโหลดรายชื่อนักเรียนของชั้นเรียนได้ ข้อมูลชั้นเรียนแสดงอยู่ด้านบน",
+      "rosterPageOf": "หน้า {page} จาก {pageCount}",
+      "rosterPrev": "ก่อนหน้า",
+      "rosterNext": "ถัดไป"
     },
     "schoolTables": {
       "title": "ไดเรกทอรีโรงเรียน",
@@ -3554,6 +3625,8 @@
       "fieldState": "รัฐ",
       "fieldSector": "ภาคการศึกษา",
       "fieldContact": "ผู้ติดต่อหลัก",
+      "fieldLocation": "สถานที่ตั้ง",
+      "fieldPlan": "แผน",
       "fieldEmail": "อีเมล",
       "fieldPhone": "โทรศัพท์",
       "fieldLastActivity": "กิจกรรมล่าสุด",
@@ -4651,28 +4724,38 @@
         "clearFilters": "ล้างตัวกรอง"
       },
       "detail": {
+        "avgScore": "คะแนนเฉลี่ย",
+        "avgScoreNone": "ยังไม่มีนักเรียนในชั้นเรียนนี้ที่มีการสอบซึ่งให้คะแนนแล้ว",
+        "completedNote": "คนทำเสร็จแล้ว",
+        "completionValue": "{completed} / {total}",
+        "errorDescription": "หน้านี้อ่านข้อมูลชั้นเรียนสดจากเซิร์ฟเวอร์ และจะไม่แสดงสิ่งใดแทนการเดา หากไม่ใช่ชั้นเรียนที่คุณสอน โปรดติดต่อผู้ดูแลระบบ หากใช่ โปรดตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+        "errorTitle": "ไม่สามารถโหลดชั้นเรียนนี้ได้",
+        "latestTestBasis": "จากการสอบครั้งล่าสุดที่นักเรียนแต่ละคนทำเสร็จ",
+        "loading": "กำลังโหลดชั้นเรียนนี้",
         "meta": {
           "title": "ผลของชั้นเรียน — SchoolTest",
           "description": "ชั้นเรียนหนึ่ง: ผลการวินิจฉัยการอ่านของนักเรียนทุกคน ข้อมูลเชิงลึกด้านการสอนที่อยู่เบื้องหลัง และความก้าวหน้าระหว่างชุด A กับชุด B"
         },
-        "loading": "กำลังโหลดชั้นเรียนนี้",
-        "errorTitle": "ไม่สามารถโหลดชั้นเรียนนี้ได้",
-        "errorDescription": "หน้านี้อ่านข้อมูลชั้นเรียนสดจากเซิร์ฟเวอร์ และจะไม่แสดงสิ่งใดแทนการเดา หากไม่ใช่ชั้นเรียนที่คุณสอน โปรดติดต่อผู้ดูแลระบบ หากใช่ โปรดตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+        "noValue": "—",
+        "notYetCount": "{count, plural, other {# คนยังไม่เชี่ยวชาญ}}",
         "retry": "ลองอีกครั้ง",
+        "scoreValue": "{score} / 100",
         "students": "{count, plural, other {นักเรียน # คน}}",
         "summaryLabel": "สรุปชั้นเรียน",
         "testA": "ชุด A",
         "testB": "ชุด B",
-        "completionValue": "{completed} / {total}",
-        "completedNote": "คนทำเสร็จแล้ว",
-        "avgScore": "คะแนนเฉลี่ย",
-        "scoreValue": "{score} / 100",
-        "noValue": "—",
-        "avgScoreNone": "ยังไม่มีนักเรียนในชั้นเรียนนี้ที่มีการสอบซึ่งให้คะแนนแล้ว",
+        "tileAverage": "ค่าเฉลี่ยชั้นเรียน",
+        "tileAverageNone": "ยังไม่มีผลที่ให้คะแนน",
+        "tileGrowth": "ความก้าวหน้าที่เชื่อถือได้",
+        "tileGrowthInsufficient": "ข้อมูลไม่เพียงพอ",
+        "tileGrowthNote": "{count, plural, other {การเปลี่ยนแปลงที่เชื่อถือได้ # รายการ}}",
+        "tilePhases": "การกระจายระดับ ACARA",
+        "tilePhasesUnmeasured": "{count, plural, other {นักเรียนที่ยังไม่วัดผล # คน}}",
+        "tilePhasesValue": "{count, plural, other {# ระดับ}}",
+        "tileScored": "ได้รับการให้คะแนน",
+        "tileScoredValue": "ให้คะแนนแล้ว {scored} จาก {total}",
         "topGap": "ช่องว่างหลัก",
-        "notYetCount": "{count, plural, other {# คนยังไม่เชี่ยวชาญ}}",
-        "topGapNone": "ไม่มีผลที่ทำเสร็จในชั้นเรียนนี้ที่ระบุว่าทักษะย่อยใดยังไม่เชี่ยวชาญ",
-        "latestTestBasis": "จากการสอบครั้งล่าสุดที่นักเรียนแต่ละคนทำเสร็จ"
+        "topGapNone": "ไม่มีผลที่ทำเสร็จในชั้นเรียนนี้ที่ระบุว่าทักษะย่อยใดยังไม่เชี่ยวชาญ"
       },
       "tabs": {
         "listLabel": "มุมมองผลของชั้นเรียน",
