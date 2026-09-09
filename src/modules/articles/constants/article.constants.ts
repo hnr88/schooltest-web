@@ -7,5 +7,3 @@ export const STAT_ITEMS: ReadonlyArray<{ key: keyof ArticleStats; label: string 
   { key: 'featured', label: 'Featured' },
   { key: 'totalViews', label: 'Total views' },
 ];
-
-export const INITIAL_ARTICLES_FILTERS = { search: '', category: 'all' as const, page: 1 };

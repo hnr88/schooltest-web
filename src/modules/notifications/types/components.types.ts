@@ -1,5 +1,3 @@
-import type { Notification } from '@/modules/notifications/types/notification.types';
-
 import type { ReactNode } from 'react';
 
 export interface PortalPanelProps {
@@ -35,13 +33,4 @@ export interface NotificationFeedHeaderProps {
   unreadCount: number;
   isMarkingAll: boolean;
   onMarkAllRead: () => void;
-}
-
-export interface NotificationFeedBodyProps {
-  isPending: boolean;
-  isError: boolean;
-  onRetry: () => void;
-  notifications: Notification[];
-  onMarkRead: (documentId: string) => void;
-  isMarking: boolean;
 }

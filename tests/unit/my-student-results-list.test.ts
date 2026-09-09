@@ -71,8 +71,9 @@ describe('the teacher report list read (GET /api/my/students/results)', () => {
 
     const rows = await fetchMyStudentResults();
 
-    // The four fields ReportListRow reads, plus the phase-state helper it calls
-    // — over both arms, so a v1 row cannot crash the list it belongs on.
+    // The four fields the C-11 list row reads, plus the phase-state helper the
+    // list screen calls — over both arms, so a v1 row cannot crash the list it
+    // belongs on.
     for (const row of rows) {
       const view = row as { document_id: string; status: string; acara_phase: string | null; published_at: string | null };
       expect(typeof view.document_id).toBe('string');

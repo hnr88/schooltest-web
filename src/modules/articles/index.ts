@@ -7,8 +7,6 @@ export { useArticleQuery } from './queries/use-article.query';
 export { useArticleStatsQuery } from './queries/use-article-stats.query';
 export { useCreateArticleMutation } from './queries/use-create-article.mutation';
 
-export { useArticlesFiltersStore } from './stores/use-articles-filters.store';
-
 export { ARTICLE_CATEGORIES } from './constants/article.constants';
 export { createArticleSchema } from './schemas/article.schema';
 export type {

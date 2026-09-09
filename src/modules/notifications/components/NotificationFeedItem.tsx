@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
@@ -15,14 +16,23 @@ import type { Notification } from '@/modules/notifications/types/notification.ty
 // hairline, a 40px r12 glyph tile, a 14.5/600 title over a 13px body and a 12px
 // timestamp, and an 8px trailing dot. The dot stays in the layout when the row is
 // read — as a transparent spacer — so read and unread rows keep the same measure.
+// ops/36: the kit's list track owns the <li>, so this renders a <div> inside it,
+// and the hairline is keyed off the kit's `last` flag instead of CSS last-child
+// (every track child is a last-child inside its own <li>).
 function NotificationFeedItem({
   notification,
   now,
+  last = false,
+  menu = null,
   onMarkRead,
   isMarking,
 }: {
   notification: Notification;
   now: Date;
+  /** Last row of its kit group — no bottom hairline. */
+  last?: boolean;
+  /** The kit's row-action menu (⋯), rendered after the read-state dot. */
+  menu?: ReactNode;
   onMarkRead?: (documentId: string) => void;
   isMarking?: boolean;
 }) {
@@ -39,11 +49,14 @@ function NotificationFeedItem({
         : format.dateTime(createdAt, { day: 'numeric', month: 'long' });
 
   return (
-    <li
+    <div
       data-slot="notification-item"
       data-notification-id={notification.documentId}
       data-read={String(!isUnread)}
-      className="flex animate-in items-start gap-4 border-b border-divider py-4.25 duration-300 ease-out-expo slide-in-from-bottom-1 last:border-b-0 motion-reduce:animate-none"
+      className={cn(
+        'flex animate-in items-start gap-4 py-4.25 duration-300 ease-out-expo slide-in-from-bottom-1 motion-reduce:animate-none',
+        !last && 'border-b border-divider',
+      )}
     >
       <span
         aria-hidden="true"
@@ -88,7 +101,8 @@ function NotificationFeedItem({
       ) : (
         <span aria-hidden="true" className="mt-1.5 size-2 shrink-0 rounded-full" />
       )}
-    </li>
+      {menu}
+    </div>
   );
 }
 
