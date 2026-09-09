@@ -14,6 +14,9 @@ export { DirectoryTable, type DirectoryTableProps } from './components/Directory
 export { DirectoryBulkBar } from './components/DirectoryBulkBar';
 export { DirectoryPagination } from './components/DirectoryPagination';
 export { DirectoryRows } from './components/DirectoryRows';
+// ops/14 — the tab-body frame: the header unit, the chips unit, and their types.
+export { DirectoryHeader } from './components/DirectoryHeader';
+export { DirectoryChips } from './components/DirectoryChips';
 export {
   DirectoryEmpty,
   DirectoryError,
@@ -56,6 +59,10 @@ export {
   DIRECTORY_Q_MAX,
   DIRECTORY_SEARCH_DEBOUNCE_MS,
 } from './constants/directory.constants';
+// teacher/04 (D-71, authorized Touches amendment): the sticky recipe's ONE
+// append-only export line, so cross-module consumers re-import it through this
+// barrel — the module's declared-only public entry.
+export { DIRECTORY_STICKY_SCROLL_CLASS } from './constants/directory-scroll.constants';
 export type {
   DirectoryBulkAction,
   DirectoryGroupDef,
@@ -69,6 +76,9 @@ export type {
   DirectoryColumnDef,
   DirectoryFilterDef,
   DirectoryFilterValues,
+  DirectoryHeaderAction,
+  DirectoryHeaderDef,
+  DirectoryEmptyCopy,
   DirectoryLabels,
   DirectoryMeta,
   DirectoryMode,
