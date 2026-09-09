@@ -1,6 +1,9 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderToStaticMarkup } from 'react-dom/server';
 import type { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 
+import { OPS_CAPABILITIES_QUERY_KEY } from '@/modules/ops/constants/capabilities.constants';
 import { DirectoryChips } from '@/modules/directory/components/DirectoryChips';
 import { DirectoryHeader } from '@/modules/directory/components/DirectoryHeader';
 
@@ -52,7 +55,6 @@ function FrameTable(): ReactNode {
 }
 
 export function buildTabFrameHarness(): string {
-  const { renderToStaticMarkup } = require('react-dom/server') as typeof import('react-dom/server');
   return renderToStaticMarkup(
     <NextIntlClientProvider locale="en" messages={MESSAGES}>
       <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
@@ -74,33 +76,52 @@ export function buildTabFrameHarness(): string {
  * The orchestrator's live ops_support check: a `write: true` primary in a
  * read-only session. The onSelect plants a window flag, so the spec can prove
  * a click BOTH issues no request AND never reaches the handler.
+ *
+ * The gate reads the capabilities through TanStack Query, so the client is
+ * PRE-SEEDED with the contract-exact `ops_support` payload
+ * (`capabilitiesForRole('ops_support')` — write:false): the SSR render then
+ * shows the gated (greyed, refusal-titled) state deterministically, with no
+ * network needed behind the static page.
  */
 export function buildSupportHarness(): string {
-  const { renderToStaticMarkup } = require('react-dom/server') as typeof import('react-dom/server');
+  const queryClient = new QueryClient();
+  queryClient.setQueryData(OPS_CAPABILITIES_QUERY_KEY, {
+    actor: {
+      documentId: 'zz14supportsessionactor01',
+      first_name: 'Support',
+      last_name: 'Session',
+      email: 'support@schooltest.local',
+      role: 'ops_support',
+      updatedAt: '2026-09-09T21:00:00+00:00',
+    },
+    capabilities: { read: true, write: false, export: true, view_as_teacher: false, edit_self: true },
+    status_page_url: null,
+  });
   return renderToStaticMarkup(
-    <NextIntlClientProvider locale="en" messages={MESSAGES}>
-      <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
-        <DirectoryHeader
-          header={{
-            title: 'School admins',
-            summary: '2 invited · 1 active',
-            primary: {
-              label: 'Invite admin',
-              write: true,
-              onSelect: () => {
-                (window as { __inviteClicked?: boolean }).__inviteClicked = true;
+    <QueryClientProvider client={queryClient}>
+      <NextIntlClientProvider locale="en" messages={MESSAGES}>
+        <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
+          <DirectoryHeader
+            header={{
+              title: 'School admins',
+              summary: '2 invited · 1 active',
+              primary: {
+                label: 'Invite admin',
+                write: true,
+                onSelect: () => {
+                  (window as { __inviteClicked?: boolean }).__inviteClicked = true;
+                },
               },
-            },
-          }}
-        />
-        <FrameTable />
-      </div>
-    </NextIntlClientProvider>,
+            }}
+          />
+          <FrameTable />
+        </div>
+      </NextIntlClientProvider>
+    </QueryClientProvider>,
   );
 }
 
 export function buildChipsHarness(): string {
-  const { renderToStaticMarkup } = require('react-dom/server') as typeof import('react-dom/server');
   return renderToStaticMarkup(
     <NextIntlClientProvider locale="en" messages={MESSAGES}>
       <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
