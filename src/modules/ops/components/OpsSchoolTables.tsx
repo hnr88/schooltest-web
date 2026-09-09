@@ -4,34 +4,15 @@ import { useTranslations } from 'next-intl';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
-import type { StaffUserRow } from '@schooltest/ops-contracts';
-
-import {
-  Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  KeyValueList,
-  KeyValueRow,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/modules/design-system';
-import { dispositionOfFailure, statusOfDisposition } from '@/modules/ops/actions';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/modules/design-system';
 import { DIRECTORY_PARAMS } from '@/modules/ops/directory';
+import { OpsAdminsTab } from '@/modules/ops/components/OpsAdminsTab';
 import { OpsClassesTab } from '@/modules/ops/components/OpsClassesTab';
-import { OpsSchoolActivity } from '@/modules/ops/components/OpsSchoolActivity';
+import { OpsOverviewTab } from '@/modules/ops/components/OpsOverviewTab';
 import { OpsStaffInvitationDialog } from '@/modules/ops/components/OpsStaffInvitationDialog';
-import { OpsStaffUsersTable } from '@/modules/ops/components/OpsStaffUsersTable';
 import { OpsStudentsTab } from '@/modules/ops/components/OpsStudentsTab';
 import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
-import { useOwnershipTransferMutation } from '@/modules/ops/queries/use-staff-users.query';
-import { useTeachersListQuery } from '@/modules/ops/queries/use-teachers-list.query';
-import { restFailureOf } from '@/lib/axios/strapi';
+import { OpsTeachersTab } from '@/modules/ops/components/OpsTeachersTab';
 
 import type { OpsSchoolTablesProps } from '@/modules/ops/types/components.types';
 
@@ -76,6 +57,12 @@ function isTab(value: string | null): value is Tab {
  * state — a stale roster appearing under a new school is the defect that
  * matters here, and unmounting is what makes it impossible rather than
  * unlikely.
+ *
+ * ops/12 (D-29): the four tab bodies live in their own sibling files
+ * (OpsOverviewTab, OpsAdminsTab, OpsTeachersTab, plus the pre-existing
+ * OpsClassesTab and OpsStudentsTab) so tasks 15-18 and 25 each own one file.
+ * This component keeps ONLY the tab bar, the URL handling and the panel
+ * wiring.
  */
 export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesProps) {
   const t = useTranslations('Ops.schoolTables');
@@ -130,29 +117,14 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       </TabsList>
 
       {/* Each panel owns its own loading, error and empty state: every tab body
-          below is a component with its own query, so one tab failing never
-          blanks another. */}
+          is a component with its own query, so one tab failing never blanks
+          another. */}
       <TabsContent value="overview">
-        <div className="flex flex-col gap-4">
-          <KeyValueList>
-            <KeyValueRow label={t('fieldSuburb')}>{school.suburb ?? t('unknown')}</KeyValueRow>
-            <KeyValueRow label={t('fieldState')}>{school.state ?? t('unknown')}</KeyValueRow>
-            <KeyValueRow label={t('fieldSector')}>{school.sector ?? t('unknown')}</KeyValueRow>
-            <KeyValueRow label={t('fieldContact')}>{school.contact_name ?? t('unknown')}</KeyValueRow>
-            <KeyValueRow label={t('fieldEmail')}>{school.contact_email ?? t('unknown')}</KeyValueRow>
-            {/* Unknown phone and last activity are NULL, shown as "unavailable"
-                — never a placeholder that reads like a real value. */}
-            <KeyValueRow label={t('fieldPhone')}>{school.phone ?? t('unknown')}</KeyValueRow>
-            <KeyValueRow label={t('fieldLastActivity')}>
-              {school.last_active_at ?? t('unknown')}
-            </KeyValueRow>
-          </KeyValueList>
-          <OpsSchoolActivity documentId={schoolDocumentId} />
-        </div>
+        <OpsOverviewTab school={school} />
       </TabsContent>
 
       <TabsContent value="admins">
-        <AdminsTab
+        <OpsAdminsTab
           schoolDocumentId={schoolDocumentId}
           ownerDocumentId={school.owner_documentId}
           active={tab === 'admins'}
@@ -161,7 +133,7 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       </TabsContent>
 
       <TabsContent value="teachers">
-        <TeachersTab
+        <OpsTeachersTab
           schoolDocumentId={schoolDocumentId}
           active={tab === 'teachers'}
           onManage={() => setTeachersOpen(true)}
@@ -188,160 +160,5 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
         onOpenChange={setInviteOpen}
       />
     </Tabs>
-  );
-}
-
-/**
- * C-OPS-PORTAL-027 (task 17) — the admins directory plus the Make owner action.
- *
- * The confirm carries the owner the operator SAW (`ownerDocumentId`, straight
- * off the school detail) as `expected_owner_documentId`. It is never re-read
- * just before sending: a value fetched to satisfy the guard would defeat it,
- * and the whole point is that a concurrent transfer 409s instead of silently
- * winning. A 409 is therefore not an error to apologise for — it means the
- * page is stale, so the message says to refresh rather than to retry.
- *
- * A school whose `owner_documentId` is null is the ambiguous LEGACY case D-OWN
- * describes: the backfill named an owner only where there was exactly one
- * active admin, and left the rest null on purpose. The banner says so and asks
- * ops to choose, because picking the first admin by sort order — or the primary
- * contact — is precisely the guess the decision forbids.
- */
-function AdminsTab({
-  schoolDocumentId,
-  ownerDocumentId,
-  active,
-  onInvite,
-}: {
-  schoolDocumentId: string;
-  ownerDocumentId: string | null;
-  active: boolean;
-  onInvite: () => void;
-}) {
-  const t = useTranslations('Ops.schoolTables');
-  const [target, setTarget] = useState<StaffUserRow | null>(null);
-  const transfer = useOwnershipTransferMutation();
-
-  const status = statusOfDisposition(dispositionOfFailure(restFailureOf(transfer.error)));
-  const errorMessage =
-    transfer.error === null ? null : status === 409 ? t('ownerConflict') : t('ownerNotEligible');
-
-  const confirm = () => {
-    if (target === null) return;
-    transfer.mutate(
-      {
-        schoolDocumentId,
-        ownerDocumentId: target.documentId,
-        expectedOwnerDocumentId: ownerDocumentId,
-      },
-      { onSuccess: () => setTarget(null) },
-    );
-  };
-
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="max-w-2xl text-sm text-body">{t('adminsNote')}</p>
-        <Button type="button" size="sm" variant="outline" data-testid="ops-admins-invite" onClick={onInvite}>
-          {t('inviteStaff')}
-        </Button>
-      </div>
-      {ownerDocumentId === null ? (
-        <Alert variant="warning" title={t('ownerNone')}>
-          {t('ownerNoneDescription')}
-        </Alert>
-      ) : null}
-      {errorMessage === null ? null : (
-        <Alert variant="error" title={t('errorTitle')}>
-          {errorMessage}
-        </Alert>
-      )}
-      <OpsStaffUsersTable
-        schoolDocumentId={schoolDocumentId}
-        role="school_admin"
-        enabled={active}
-        emptyTitle={t('adminsEmptyTitle')}
-        emptyDescription={t('adminsEmptyDescription')}
-        ownership={{
-          ownerDocumentId,
-          onMakeOwner: (row) => {
-            transfer.reset();
-            setTarget(row);
-          },
-          pendingDocumentId: transfer.isPending ? (target?.documentId ?? null) : null,
-        }}
-      />
-
-      <Dialog open={target !== null} onOpenChange={(open) => (open ? null : setTarget(null))}>
-        <DialogContent data-slot="ops-make-owner-dialog">
-          <DialogHeader>
-            <DialogTitle>
-              {t('makeOwnerConfirmTitle', {
-                name: target?.display_name ?? target?.email ?? '',
-              })}
-            </DialogTitle>
-            <DialogDescription>{t('makeOwnerConfirmBody')}</DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={() => setTarget(null)}>
-              {t('makeOwnerCancel')}
-            </Button>
-            <Button type="button" onClick={confirm} disabled={transfer.isPending}>
-              {t('makeOwnerConfirmAction')}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-}
-
-function TeachersTab({
-  schoolDocumentId,
-  active,
-  onManage,
-  onInvite,
-}: {
-  schoolDocumentId: string;
-  active: boolean;
-  onManage: () => void;
-  onInvite: () => void;
-}) {
-  const t = useTranslations('Ops.schoolTables');
-  // Class membership stays with the staff directory that owns it; the accepted
-  // accounts, their status and their real activity come from C-OPS-PORTAL-015.
-  // Neither read invents the other's data. The query only runs while its own
-  // tab is selected, so opening the page does not fetch four tabs' worth.
-  const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, active);
-  const classCounts = Object.fromEntries(
-    (teachers.data?.data ?? []).map((teacher) => [teacher.documentId, teacher.classes.length]),
-  );
-
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="max-w-2xl text-sm text-body">{t('teachersNote')}</p>
-      <div className="flex flex-wrap gap-2">
-        <Button type="button" size="sm" variant="outline" onClick={onManage}>
-          {t('manageTeachers')}
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant="outline"
-          data-testid="ops-teachers-invite"
-          onClick={onInvite}
-        >
-          {t('inviteStaff')}
-        </Button>
-      </div>
-      <OpsStaffUsersTable
-        schoolDocumentId={schoolDocumentId}
-        role="teacher"
-        enabled={active}
-        emptyTitle={t('teachersEmptyTitle')}
-        emptyDescription={t('teachersEmptyDescription')}
-        classCounts={classCounts}
-      />
-    </div>
   );
 }
