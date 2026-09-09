@@ -488,6 +488,20 @@
   grid-template-columns: repeat(auto-fit, minmax(min(23.75rem, 100%), 1fr));
 }
 
+/* teacher/01 · the directory kit's two non-table grid tracks (SHARED-LAYER
+   §L-layout). Floors come from Teacher Portal v2: the class tiles at :119 use a
+   288px minimum, the live-roster cards at :1195 a 250px one. A bracket value
+   would be an arbitrary size, so both live here as named tracks; the
+   `min(…, 100%)` guard is the same one grid-cols-child-cards uses to stop a
+   floor overflowing a 375px viewport. */
+@utility grid-cols-directory-tiles {
+  grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+}
+
+@utility grid-cols-directory-cards {
+  grid-template-columns: repeat(auto-fill, minmax(min(15.625rem, 100%), 1fr));
+}
+
 /* Same row, collapsed for narrow viewports: identity + trailing action only. */
 @utility grid-cols-row-compact {
   grid-template-columns: minmax(0, 1fr) auto;

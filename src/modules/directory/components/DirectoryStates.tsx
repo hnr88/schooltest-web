@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Task 04 — the directory's distinct non-data states. The three empty states
+ * Task 02 — the directory's distinct non-data states. The three empty states
  * the task demands stay separate: nothing yet (create), no matches (clear
  * filters), read failure (retry). A failed refetch with previously served
  * rows shows an explicit stale banner over those rows — never a false empty
@@ -12,16 +12,16 @@ import { Inbox, SearchX, TriangleAlert } from 'lucide-react';
 
 import { Alert, Button, EmptyState, Skeleton } from '@/modules/design-system';
 
-import type { DirectoryLabels } from '../types/ops-directory.types';
+import type { DirectoryLabels } from '../types/directory.types';
 
 const SKELETON_ROWS = [0, 1, 2, 3, 4];
 
-export function OpsDirectoryLoading({ labels }: { labels: DirectoryLabels }) {
+export function DirectoryLoading({ labels }: { labels: DirectoryLabels }) {
   return (
     <div
       role="status"
       aria-label={labels.loadingLabel}
-      data-slot="ops-directory-loading"
+      data-slot="directory-loading"
       className="flex flex-col gap-3 p-6"
     >
       <Skeleton className="h-9 w-1/3" />
@@ -33,7 +33,7 @@ export function OpsDirectoryLoading({ labels }: { labels: DirectoryLabels }) {
   );
 }
 
-export function OpsDirectoryError({
+export function DirectoryError({
   labels,
   onRetry,
   retrying,
@@ -57,7 +57,7 @@ export function OpsDirectoryError({
   );
 }
 
-export function OpsDirectoryStaleBanner({
+export function DirectoryStaleBanner({
   labels,
   onRetry,
   retrying,
@@ -81,7 +81,7 @@ export function OpsDirectoryStaleBanner({
   );
 }
 
-export function OpsDirectoryEmpty({
+export function DirectoryEmpty({
   variant,
   labels,
   onClearFilters,

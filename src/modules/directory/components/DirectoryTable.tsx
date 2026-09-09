@@ -1,19 +1,19 @@
 'use client';
 
 /**
- * Task 04 — the ONE generic directory component. The consumer owns its query:
- * it calls useOpsDirectoryState, spreads `state.params` into its server query
+ * Task 02 — the ONE generic directory component. The consumer owns its query:
+ * it calls useDirectoryState, spreads `state.params` into its server query
  * (the `q`/filters/sort/page/pageSize contract shape), and hands the result to
  * this component as `rows` + `meta` + `query`. Everything visual — toolbar,
  * filter bar, sortable headers, row menus, selection, bulk bar, the three
  * empty states, pager — is the kit's.
  */
-import { useMemo, type ReactElement } from 'react';
+import { useEffect, useMemo, type ReactElement } from 'react';
 
 import type { OpsActionTarget } from '@/modules/ops/actions';
 
-import { DIRECTORY_DEFAULT_LABELS } from '../constants/ops-directory.constants';
-import { useOpsDirectorySelection } from '../hooks/use-ops-directory-selection';
+import { DIRECTORY_DEFAULT_LABELS } from '../constants/directory.constants';
+import { useDirectorySelection } from '../hooks/use-directory-selection';
 import type {
   DirectoryBulkAction,
   DirectoryColumnDef,
@@ -24,19 +24,19 @@ import type {
   DirectoryRowAction,
   DirectorySortDef,
   DirectoryStateApi,
-} from '../types/ops-directory.types';
-import { OpsDirectoryBulkBar } from './OpsDirectoryBulkBar';
-import { OpsDirectoryPagination } from './OpsDirectoryPagination';
-import { OpsDirectoryRows } from './OpsDirectoryRows';
+} from '../types/directory.types';
+import { DirectoryBulkBar } from './DirectoryBulkBar';
+import { DirectoryPagination } from './DirectoryPagination';
+import { DirectoryRows } from './DirectoryRows';
 import {
-  OpsDirectoryEmpty,
-  OpsDirectoryError,
-  OpsDirectoryLoading,
-  OpsDirectoryStaleBanner,
-} from './OpsDirectoryStates';
-import { OpsDirectoryToolbar } from './OpsDirectoryToolbar';
+  DirectoryEmpty,
+  DirectoryError,
+  DirectoryLoading,
+  DirectoryStaleBanner,
+} from './DirectoryStates';
+import { DirectoryToolbar } from './DirectoryToolbar';
 
-export interface OpsDirectoryTableProps<Row> {
+export interface DirectoryTableProps<Row> {
   state: DirectoryStateApi;
   query: DirectoryQueryStatus;
   rows: readonly Row[];
@@ -59,7 +59,7 @@ export interface OpsDirectoryTableProps<Row> {
   labels?: Partial<DirectoryLabels>;
 }
 
-export function OpsDirectoryTable<Row>({
+export function DirectoryTable<Row>({
   state,
   query,
   rows,
@@ -74,12 +74,20 @@ export function OpsDirectoryTable<Row>({
   bulkActions = [],
   emptyAction,
   labels: labelOverrides,
-}: OpsDirectoryTableProps<Row>) {
+}: DirectoryTableProps<Row>) {
   const labels = useMemo<DirectoryLabels>(
     () => ({ ...DIRECTORY_DEFAULT_LABELS, ...labelOverrides }),
     [labelOverrides],
   );
-  const selection = useOpsDirectorySelection({ page: rows, getRowTarget, scope });
+  const selection = useDirectorySelection({ page: rows, getRowTarget, scope });
+
+  // Deleting the last row of the last page: clamp, keep the filters (task 02 —
+  // the clamp lives here because meta.pageCount only exists at the table).
+  useEffect(() => {
+    if (meta && meta.pageCount > 0 && state.params.page > meta.pageCount) {
+      state.setPage(meta.pageCount);
+    }
+  }, [meta, state]);
 
   const total = meta?.total ?? 0;
   const hasData = rows.length > 0 || total > 0;
@@ -87,12 +95,12 @@ export function OpsDirectoryTable<Row>({
 
   let body: ReactElement;
   if (query.isPending) {
-    body = <OpsDirectoryLoading labels={labels} />;
+    body = <DirectoryLoading labels={labels} />;
   } else if (query.isError && !hasData) {
-    body = <OpsDirectoryError labels={labels} onRetry={query.refetch} retrying={query.isFetching} />;
+    body = <DirectoryError labels={labels} onRetry={query.refetch} retrying={query.isFetching} />;
   } else if (total === 0) {
     body = (
-      <OpsDirectoryEmpty
+      <DirectoryEmpty
         variant={state.hasActiveControls ? 'no-matches' : 'none'}
         labels={labels}
         onClearFilters={state.clearFilters}
@@ -101,7 +109,7 @@ export function OpsDirectoryTable<Row>({
     );
   } else {
     body = (
-      <OpsDirectoryRows
+      <DirectoryRows
         state={state}
         columns={columns}
         rows={rows}
@@ -115,8 +123,8 @@ export function OpsDirectoryTable<Row>({
   }
 
   return (
-    <section data-slot="ops-directory" className="flex flex-col gap-4">
-      <OpsDirectoryToolbar
+    <section data-slot="directory" className="flex flex-col gap-4">
+      <DirectoryToolbar
         state={state}
         filters={filters}
         sorts={sorts}
@@ -125,13 +133,13 @@ export function OpsDirectoryTable<Row>({
         total={total}
       />
       {stale ? (
-        <OpsDirectoryStaleBanner labels={labels} onRetry={query.refetch} retrying={query.isFetching} />
+        <DirectoryStaleBanner labels={labels} onRetry={query.refetch} retrying={query.isFetching} />
       ) : null}
       {selection.count > 0 && bulkActions.length > 0 ? (
-        <OpsDirectoryBulkBar selection={selection} bulkActions={bulkActions} labels={labels} />
+        <DirectoryBulkBar selection={selection} bulkActions={bulkActions} labels={labels} />
       ) : null}
       <div className="overflow-x-auto rounded-xl border border-border bg-card">{body}</div>
-      {meta ? <OpsDirectoryPagination meta={meta} onPageChange={state.setPage} labels={labels} /> : null}
+      {meta ? <DirectoryPagination meta={meta} onPageChange={state.setPage} labels={labels} /> : null}
     </section>
   );
 }

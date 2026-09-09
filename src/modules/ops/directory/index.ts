@@ -1,60 +1,39 @@
 /**
- * Task 04 — the generic ops directory kit (`@/modules/ops/directory`).
- *
- * One kit for search, filters, sort, pagination, row menus, selection and
- * bulk actions over any server-filtered list that follows the ops contract
- * shape (`q`, filters, `sort`, `page`, `pageSize` -> `data` + `meta.pagination`).
- * Consuming surface tasks (07, 13, 18, 22, 25) call useOpsDirectoryState,
- * spread its `params` into their query, and render OpsDirectoryTable. This
- * barrel is the module's only public entry.
+ * Task 02 — back-compat shim. The kit moved to the portal-neutral
+ * `@/modules/directory`; this barrel re-exports it under the original
+ * `Ops…` names so the existing ops importers compile and behave unchanged.
+ * Nothing but re-exports lives here.
  */
-export { OpsDirectoryTable, type OpsDirectoryTableProps } from './components/OpsDirectoryTable';
-export { OpsDirectoryBulkBar } from './components/OpsDirectoryBulkBar';
-export { OpsDirectoryPagination } from './components/OpsDirectoryPagination';
-export { OpsDirectoryRows } from './components/OpsDirectoryRows';
+export * from '@/modules/directory';
 export {
-  OpsDirectoryEmpty,
-  OpsDirectoryError,
-  OpsDirectoryLoading,
-  OpsDirectoryStaleBanner,
-} from './components/OpsDirectoryStates';
-export { OpsDirectoryToolbar } from './components/OpsDirectoryToolbar';
-export { useOpsDirectoryState } from './hooks/use-ops-directory-state';
-export { useOpsDirectorySelection } from './hooks/use-ops-directory-selection';
-export {
-  clampPage,
-  defaultUrlState,
-  isDefaultUrlState,
-  parseDirectoryParams,
-  queryParamsIdentity,
-  sanitizeQuery,
-  serializeDirectoryParams,
-  toQueryParams,
-} from './lib/ops-directory-url';
-export {
-  DIRECTORY_ALL,
-  DIRECTORY_DEFAULT_LABELS,
-  DIRECTORY_PARAMS,
-  DIRECTORY_PAGE_SIZE_DEFAULT,
-  DIRECTORY_PAGE_SIZE_MAX,
-  DIRECTORY_Q_MAX,
-  DIRECTORY_SEARCH_DEBOUNCE_MS,
-} from './constants/ops-directory.constants';
+  DirectoryTable as OpsDirectoryTable,
+  type DirectoryTableProps as OpsDirectoryTableProps,
+  DirectoryBulkBar as OpsDirectoryBulkBar,
+  DirectoryPagination as OpsDirectoryPagination,
+  DirectoryRows as OpsDirectoryRows,
+  DirectoryEmpty as OpsDirectoryEmpty,
+  DirectoryError as OpsDirectoryError,
+  DirectoryLoading as OpsDirectoryLoading,
+  DirectoryStaleBanner as OpsDirectoryStaleBanner,
+  DirectoryToolbar as OpsDirectoryToolbar,
+  useDirectoryState as useOpsDirectoryState,
+  useDirectorySelection as useOpsDirectorySelection,
+} from '@/modules/directory';
+export type { DirectorySelectionApi as OpsDirectorySelectionApi } from '@/modules/directory';
+
+/**
+ * teacher/01 — the layout axis. These names never had an `Ops…` form, but the
+ * shim aliases every NEW export as well as the old ones: a missing alias is a
+ * compile error inside one of the seven importers this task may not touch.
+ */
+export { DirectoryList as OpsDirectoryList } from '@/modules/directory';
 export type {
-  DirectoryBulkAction,
-  DirectoryColumnDef,
-  DirectoryFilterDef,
-  DirectoryFilterValues,
-  DirectoryLabels,
-  DirectoryMeta,
-  DirectoryOption,
-  DirectoryQueryParams,
-  DirectoryQueryStatus,
-  DirectoryRowAction,
-  DirectorySortDef,
-  DirectorySortValues,
-  DirectoryStateApi,
-  DirectoryUrlState,
-  OpsDirectorySelectionApi,
-  UseDirectoryStateOptions,
-} from './types/ops-directory.types';
+  DirectoryGroupDef as OpsDirectoryGroupDef,
+  DirectoryLayout as OpsDirectoryLayout,
+  DirectoryLayoutProps as OpsDirectoryLayoutProps,
+  DirectoryListLayout as OpsDirectoryListLayout,
+  DirectoryRowApi as OpsDirectoryRowApi,
+  DirectoryRowGroup as OpsDirectoryRowGroup,
+  DirectoryRowNavProps as OpsDirectoryRowNavProps,
+  DirectoryRowTargetProps as OpsDirectoryRowTargetProps,
+} from '@/modules/directory';

@@ -210,7 +210,7 @@ test.describe('ops inspection surfaces (ledger 11 / D-007)', () => {
     // Wait for the list itself to finish loading and scroll the panel into
     // frame: a full-page shot taken while the table is still skeleton proves
     // nothing about the control underneath it.
-    await expect(page.locator('[data-slot="ops-directory"]')).toBeVisible({ timeout: 60_000 });
+    await expect(page.locator('[data-slot="directory"]')).toBeVisible({ timeout: 60_000 });
     await expect(page.getByRole('row').nth(1)).toBeVisible({ timeout: 60_000 });
     await mobileExport.scrollIntoViewIfNeeded();
     await page.waitForTimeout(400);

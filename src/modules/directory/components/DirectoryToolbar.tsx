@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Task 04 — the directory toolbar: trimmed-literal search, one select per
+ * Task 02 — the directory toolbar: trimmed-literal search, one select per
  * filter def, the sort select, and Clear filters. The controls are the design
  * system's canonical ones (DS §06 SelectField); every value change goes
  * through the state hook, which owns the URL write and the page reset.
@@ -12,15 +12,15 @@ import { Search } from 'lucide-react';
 import { Button, SelectField } from '@/modules/design-system';
 import { Input } from '@/components/ui/input';
 
-import { DIRECTORY_ALL } from '../constants/ops-directory.constants';
+import { DIRECTORY_ALL } from '../constants/directory.constants';
 import type {
   DirectoryFilterDef,
   DirectoryLabels,
   DirectorySortDef,
   DirectoryStateApi,
-} from '../types/ops-directory.types';
+} from '../types/directory.types';
 
-interface OpsDirectoryToolbarProps<Row> {
+interface DirectoryToolbarProps<Row> {
   state: DirectoryStateApi;
   filters: readonly DirectoryFilterDef[];
   sorts: readonly DirectorySortDef[];
@@ -29,19 +29,19 @@ interface OpsDirectoryToolbarProps<Row> {
   total: number;
 }
 
-export function OpsDirectoryToolbar<Row>({
+export function DirectoryToolbar<Row>({
   state,
   filters,
   sorts,
   labels,
   showing,
   total,
-}: OpsDirectoryToolbarProps<Row>) {
+}: DirectoryToolbarProps<Row>) {
   const idPrefix = useId();
 
   return (
     <div
-      data-slot="ops-directory-toolbar"
+      data-slot="directory-toolbar"
       className="flex flex-wrap items-end justify-between gap-3"
     >
       <div className="flex flex-wrap items-end gap-3">

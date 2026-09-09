@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Task 04 — the bulk bar, rendered by the task 05 action kit's OpsBulkBar
+ * Task 02 — the bulk bar, rendered by the task 05 action kit's OpsBulkBar
  * (composed, never reimplemented — house rule 1). The bar shows only while a
  * selection exists; the actions receive the selected targets in page order and
  * decide their own side effects. The cap notice and the "on this page" wording
@@ -9,19 +9,19 @@
  */
 import { OpsBulkBar } from '@/modules/ops/actions';
 
-import type { DirectoryBulkAction, DirectoryLabels, OpsDirectorySelectionApi } from '../types/ops-directory.types';
+import type { DirectoryBulkAction, DirectoryLabels, DirectorySelectionApi } from '../types/directory.types';
 
-interface OpsDirectoryBulkBarProps<Row> {
-  selection: OpsDirectorySelectionApi<Row>;
+interface DirectoryBulkBarProps<Row> {
+  selection: DirectorySelectionApi<Row>;
   bulkActions: readonly DirectoryBulkAction[];
   labels: DirectoryLabels;
 }
 
-export function OpsDirectoryBulkBar<Row>({
+export function DirectoryBulkBar<Row>({
   selection,
   bulkActions,
   labels,
-}: OpsDirectoryBulkBarProps<Row>) {
+}: DirectoryBulkBarProps<Row>) {
   if (selection.count === 0) return null;
   return (
     <OpsBulkBar

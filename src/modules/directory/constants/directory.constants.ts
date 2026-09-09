@@ -1,12 +1,12 @@
 /**
- * Task 04 — kit-wide constants and the English label defaults.
+ * Task 02 — kit-wide constants and the English label defaults.
  *
  * The pagination constants restate the SERVER contract, not a client whim:
  * src/api/ops/lib/ops-pagination.ts serves page 1, pageSize 25, max 200 and
  * rejects `q` above 120 with a 400. The client keeps the same numbers so a
  * consumer can never build a request the server must refuse.
  */
-import type { DirectoryLabels } from '../types/ops-directory.types';
+import type { DirectoryLabels } from '../types/directory.types';
 
 export const DIRECTORY_ALL = 'all';
 export const DIRECTORY_PAGE_SIZE_DEFAULT = 25;

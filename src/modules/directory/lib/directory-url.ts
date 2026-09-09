@@ -1,5 +1,5 @@
 /**
- * Task 04 — URL <-> directory-state mapping, pure and generic.
+ * Task 02 — URL <-> directory-state mapping, pure and generic.
  *
  * Mirrors the schools pattern (schools-filter.lib.ts): a state that differs
  * from the canonical default is written to the query string, everything else
@@ -14,13 +14,13 @@ import {
   DIRECTORY_PAGE_SIZE_DEFAULT,
   DIRECTORY_PAGE_SIZE_MAX,
   DIRECTORY_Q_MAX,
-} from '../constants/ops-directory.constants';
+} from '../constants/directory.constants';
 import type {
   DirectoryFilterDef,
   DirectoryFilterValues,
   DirectoryQueryParams,
   DirectoryUrlState,
-} from '../types/ops-directory.types';
+} from '../types/directory.types';
 
 export type { DirectoryFilterValues, DirectoryUrlState };
 

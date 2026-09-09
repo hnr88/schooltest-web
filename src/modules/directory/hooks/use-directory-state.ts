@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Task 04 — the headless directory state. The URL is the store (the
+ * Task 02 — the headless directory state. The URL is the store (the
  * use-schools-filter pattern): every control writes the full serialized state
  * with router.replace (filtering is not navigation history), and the parsed
  * URL is the single source the query params derive from.
@@ -20,7 +20,7 @@ import {
   DIRECTORY_PAGE_SIZE_DEFAULT,
   DIRECTORY_PAGE_SIZE_MAX,
   DIRECTORY_SEARCH_DEBOUNCE_MS,
-} from '../constants/ops-directory.constants';
+} from '../constants/directory.constants';
 import {
   clampPage,
   defaultUrlState,
@@ -29,7 +29,7 @@ import {
   sanitizeQuery,
   serializeDirectoryParams,
   toQueryParams,
-} from '../lib/ops-directory-url';
+} from '../lib/directory-url';
 import type {
   DirectoryFilterDef,
   DirectoryQueryParams,
@@ -37,10 +37,10 @@ import type {
   DirectoryStateApi,
   DirectoryUrlState,
   UseDirectoryStateOptions,
-} from '../types/ops-directory.types';
+} from '../types/directory.types';
 
-export function useOpsDirectoryState(options: UseDirectoryStateOptions): DirectoryStateApi {
-  const { filters, sorts, defaultSort } = options;
+export function useDirectoryState(options: UseDirectoryStateOptions): DirectoryStateApi {
+  const { filters, sorts, defaultSort, mode = 'server' } = options;
   const pageSize =
     options.pageSize === undefined
       ? DIRECTORY_PAGE_SIZE_DEFAULT
@@ -122,14 +122,6 @@ export function useOpsDirectoryState(options: UseDirectoryStateOptions): Directo
     [state, writeUrl],
   );
 
-  // Deleting the last row of the last page: clamp, keep the filters.
-  const { pageCount } = options;
-  useEffect(() => {
-    if (pageCount !== undefined && pageCount > 0 && state.page > pageCount) {
-      writeUrl({ ...state, page: pageCount });
-    }
-  }, [pageCount, state, writeUrl]);
-
   const clearFilters = useCallback(() => {
     setSearchInput('');
     writeUrl(defaultUrlState(defaultSort));
@@ -144,6 +136,7 @@ export function useOpsDirectoryState(options: UseDirectoryStateOptions): Directo
 
   return {
     params,
+    mode,
     searchInput,
     setSearchInput,
     setFilter,

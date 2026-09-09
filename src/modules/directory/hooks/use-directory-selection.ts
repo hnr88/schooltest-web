@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Task 04 — row selection for the directory kit, as a THIN ADAPTER over the
+ * Task 02 — row selection for the directory kit, as a THIN ADAPTER over the
  * task 05 action kit's useOpsSelection (composed, never reimplemented — house
  * rule 1). All selection semantics live there: keys are `kind:documentId`
  * (never a display name), the header checkbox scopes to the CURRENT page, the
@@ -16,9 +16,9 @@ import { useMemo } from 'react';
 
 import { useOpsSelection, type OpsActionTarget } from '@/modules/ops/actions';
 
-import type { OpsDirectorySelectionApi } from '../types/ops-directory.types';
+import type { DirectorySelectionApi } from '../types/directory.types';
 
-export interface OpsDirectorySelectionOptions<Row> {
+export interface DirectorySelectionOptions<Row> {
   /** The rows currently on screen — "select all" means exactly these. */
   page: readonly Row[];
   /** Names a row as a bulk-action target (`kind` + `documentId`). */
@@ -30,11 +30,11 @@ export interface OpsDirectorySelectionOptions<Row> {
   scope: readonly unknown[];
 }
 
-export function useOpsDirectorySelection<Row>({
+export function useDirectorySelection<Row>({
   page,
   getRowTarget,
   scope,
-}: OpsDirectorySelectionOptions<Row>): OpsDirectorySelectionApi<Row> {
+}: DirectorySelectionOptions<Row>): DirectorySelectionApi<Row> {
   const targets = useMemo(() => page.map(getRowTarget), [page, getRowTarget]);
   const selection = useOpsSelection({ page: targets, scope });
 

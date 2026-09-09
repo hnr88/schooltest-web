@@ -103,6 +103,19 @@ export function parseOpsEnvelope<T>(schema: ZodType<T>, body: unknown, label: st
   return parseOrThrow(dataEnvelope(schema), body, label).data;
 }
 
+/**
+ * The fixture CREATE endpoints answer on the core-controller path — the legacy
+ * school create returns `controller.transformResponse(...)` and the versioned one
+ * sets `ctx.body = { data: result, meta: {} }` by hand (school-create.actions.ts),
+ * while `POST /api/students` is the untouched core create. Every one of those
+ * bodies therefore carries `meta`. `dataEnvelope` is a `strictObject`, which is
+ * right for the `/api/ops/*` contract responses but rejects that `meta`, so the
+ * creates get a meta-tolerant envelope rather than the contract being loosened.
+ */
+function parseCreatedEnvelope<T>(schema: ZodType<T>, body: unknown, label: string): T {
+  return parseOrThrow(z.object({ data: schema }), body, label).data;
+}
+
 export async function expectOpsError(res: APIResponse, httpStatus: number) {
   if (res.status() !== httpStatus) {
     throw new Error(`[ops-fixture] expected HTTP ${httpStatus}, got ${res.status()}: ${await res.text()}`);
@@ -176,25 +189,148 @@ export async function createOpsFixtureSchool(
     await loginCached(request, apiBaseUrl(), roleCredentials('opsApi')),
   );
   const res = await request.post(`${apiBaseUrl()}/api/schools`, {
-    headers,
+    headers: { ...headers, 'Idempotency-Key': crypto.randomUUID() },
     data: {
       name,
       contact_email: `${crypto.randomUUID()}@fixture.schooltest.local`,
+      contact_name: `${label} Contact`,
       suburb: 'Probe',
       state: 'NSW',
       postcode: '2000',
       sector: 'non-government',
+      portal: { plan: 'standard', status: 'active', send_owner_invitation: false },
     },
   });
   const status = res.status();
   if (status !== 200 && status !== 201) {
     throw new Error(`[ops-fixture] POST /api/schools expected 200|201, got ${status}: ${await res.text()}`);
   }
-  const { documentId } = parseOpsEnvelope(
+  const { documentId } = parseCreatedEnvelope(
     z.object({ documentId: documentIdSchema }),
     await res.json(),
     'create school',
   );
   ledger.track('school', documentId);
   return { documentId, name };
+}
+
+/**
+ * A versioned school create starts with seats_total 0, and the seat gate turns
+ * that into a 403 on every student create. Raise the seat pool first.
+ */
+export async function setOpsFixtureSeats(
+  request: APIRequestContext,
+  schoolDocumentId: string,
+  seatsTotal = 25,
+): Promise<void> {
+  const headers = fixtureHeaders(
+    'ops',
+    await loginCached(request, apiBaseUrl(), roleCredentials('opsApi')),
+  );
+  const res = await request.put(`${apiBaseUrl()}/api/schools/${schoolDocumentId}/entitlement`, {
+    headers,
+    data: { seats_total: seatsTotal },
+  });
+  if (!res.ok()) {
+    throw new Error(
+      `[ops-fixture] PUT /api/schools/${schoolDocumentId}/entitlement -> HTTP ${res.status()}: ${await res.text()}`,
+    );
+  }
+}
+
+/**
+ * Active students linked straight to the school — no class needed; the ops
+ * students listing rows on the school relation alone. Caller cleans up with
+ * `deleteStudents` (helpers/student-cleanup.ts); the ledger tracks no students.
+ */
+export async function createOpsFixtureStudents(
+  request: APIRequestContext,
+  schoolDocumentId: string,
+  count: number,
+): Promise<string[]> {
+  const headers = fixtureHeaders(
+    'ops',
+    await loginCached(request, apiBaseUrl(), roleCredentials('opsApi')),
+  );
+  const documentIds: string[] = [];
+  for (let index = 0; index < count; index += 1) {
+    const res = await request.post(`${apiBaseUrl()}/api/students`, {
+      headers,
+      data: {
+        data: {
+          given_name: `Fixture${index}`,
+          family_name: `Student ${opsFixtureLabel('fx')}`,
+          email: `${crypto.randomUUID()}@fixture.schooltest.local`,
+          year_level: 7,
+          first_language: 'english',
+          status: 'active',
+          school: schoolDocumentId,
+        },
+      },
+    });
+    const status = res.status();
+    if (status !== 200 && status !== 201) {
+      throw new Error(`[ops-fixture] POST /api/students expected 200|201, got ${status}: ${await res.text()}`);
+    }
+    const { documentId } = parseCreatedEnvelope(
+      z.object({ documentId: documentIdSchema }),
+      await res.json(),
+      'create student',
+    );
+    documentIds.push(documentId);
+  }
+  return documentIds;
+}
+
+/**
+ * A teacher row for the staff directory: public register, then the ops role and
+ * school links. The listing rows on `role.type` + `user.school`, nothing else.
+ * The ledger deletes the user on cleanup.
+ */
+export async function createOpsFixtureTeacher(
+  request: APIRequestContext,
+  ledger: OpsFixtureLedger,
+  schoolDocumentId: string,
+  label: string,
+): Promise<{ documentId: string; email: string }> {
+  const email = `${crypto.randomUUID()}@fixture.schooltest.local`;
+  const register = await request.post(`${apiBaseUrl()}/api/auth/local/register`, {
+    data: { username: email, email, password: 'Fixture!Passw0rd' },
+  });
+  if (!register.ok()) {
+    throw new Error(
+      `[ops-fixture] POST /api/auth/local/register -> HTTP ${register.status()}: ${await register.text()}`,
+    );
+  }
+  const parsed = z
+    .object({ user: z.object({ documentId: documentIdSchema }) })
+    .safeParse(await register.json());
+  if (!parsed.success) {
+    throw new Error(`[ops-fixture] register ${label} returned an unexpected shape`);
+  }
+  const userDocumentId = parsed.data.user.documentId;
+  const headers = fixtureHeaders(
+    'ops',
+    await loginCached(request, apiBaseUrl(), roleCredentials('opsApi')),
+  );
+  const role = await request.post(`${apiBaseUrl()}/api/ops/users/${userDocumentId}/role`, {
+    headers,
+    data: { role: 'teacher' },
+  });
+  if (!role.ok()) {
+    throw new Error(
+      `[ops-fixture] POST /api/ops/users/${userDocumentId}/role -> HTTP ${role.status()}: ${await role.text()}`,
+    );
+  }
+  const school = await request.post(`${apiBaseUrl()}/api/ops/users/${userDocumentId}/school`, {
+    headers,
+    data: { schoolDocumentId },
+  });
+  if (!school.ok()) {
+    throw new Error(
+      `[ops-fixture] POST /api/ops/users/${userDocumentId}/school -> HTTP ${school.status()}: ${await school.text()}`,
+    );
+  }
+  ledger.track('user', userDocumentId);
+  return { documentId: userDocumentId, email };
 }

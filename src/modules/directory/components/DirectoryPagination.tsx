@@ -1,28 +1,28 @@
 'use client';
 
 /**
- * Task 04 — the directory pager. Every number comes from the server's
+ * Task 02 — the directory pager. Every number comes from the server's
  * `meta.pagination` (whole-scope totals, never the loaded page) and pageCount
  * is the server's, so an empty result simply renders nothing instead of a
  * "page 1 of 0" contradiction.
  */
 import { Button } from '@/modules/design-system';
 
-import type { DirectoryLabels, DirectoryMeta } from '../types/ops-directory.types';
+import type { DirectoryLabels, DirectoryMeta } from '../types/directory.types';
 
-interface OpsDirectoryPaginationProps {
+interface DirectoryPaginationProps {
   meta: DirectoryMeta;
   onPageChange: (page: number) => void;
   labels: DirectoryLabels;
 }
 
-export function OpsDirectoryPagination({ meta, onPageChange, labels }: OpsDirectoryPaginationProps) {
+export function DirectoryPagination({ meta, onPageChange, labels }: DirectoryPaginationProps) {
   if (meta.total === 0 || meta.pageCount === 0) return null;
 
   return (
     <nav
       aria-label={labels.paginationLabel}
-      data-slot="ops-directory-pagination"
+      data-slot="directory-pagination"
       className="flex items-center justify-end gap-3"
     >
       <p className="text-sm text-muted-foreground" role="status">
