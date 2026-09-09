@@ -1,157 +1,359 @@
 /**
- * OPS-012 — the school detail page reading C-OPS-PORTAL-002, driven through
- * the REAL app.
+ * ops/12 — the school detail page AFTER the D-29 tab split, driven through the
+ * real app with a fixture school created through the real contracts.
  *
- * What this spec is written around:
- *  1. The defect being closed is invisible in a screenshot. The page used to
- *     fetch the WHOLE directory and `.find()` the id in the browser, so the
- *     proof is a NETWORK assertion: exactly one GET to the single-school
- *     endpoint, and no directory read at all.
- *  2. Playwright with no timeout waits FOREVER on an element that never
- *     appears rather than failing, so every wait here is explicitly bounded.
- *  3. A capture nobody opened proves nothing (OPS-010). Both captures are
- *     written to the mission captures dir and their byte-distinctness is
- *     asserted here, not assumed.
+ * Three rules this spec exists to enforce:
+ *  1. TABS ARE SELECTED BY ROLE and proven by CONTENT (the panel that renders,
+ *     aria-selected), never by text: the metric strip renders plain "Teachers"
+ *     / "Students" labels that precede the real tab in DOM order and swallow
+ *     the click — a text-selected switch can pass while nothing switches,
+ *     with byte-identical screenshots.
+ *  2. The extraction must have kept the keeps-working contracts, each with an
+ *     explicit assertion: the Make-owner 409 message, the null-owner warning
+ *     banner, the teacher class-count join.
+ *  3. A tab change clears the kit's URL params AND the row selection: a
+ *     selection carried across tabs is a bulk action aimed at the wrong rows.
  */
-import { mkdirSync } from 'node:fs';
-import { createHash } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { mkdirSync } from 'node:fs';
 
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+import { z } from 'zod';
 
-import { MOBILE_VIEWPORT, REFERENCE_VIEWPORT } from '@/modules/ops/hooks/use-visual-reference';
+import { REFERENCE_VIEWPORT } from '@/modules/ops/hooks/use-visual-reference';
+import { apiEnv } from '../helpers/auth-db';
+import { roleCredentials } from '../helpers/credentials';
+import { cat, loadMessages } from '../helpers/i18n';
+import { paceRateWindow } from '../helpers/pace';
+import {
+  OpsFixtureLedger,
+  createOpsFixtureSchool,
+  createOpsFixtureStudents,
+  createOpsFixtureTeacher,
+  fixtureHeaders,
+} from '../helpers/ops-portal';
 
-import { loginAs } from '../helpers/roles';
+const en = loadMessages('en');
+const SHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
+const API = process.env.API_BASE_URL ?? 'http://localhost:5500';
+const ACTION_TIMEOUT = 30_000;
 
-const SCHOOL_A = 'a19wa9lrmloi95ab9m4gmxqk';
-const UNKNOWN_SCHOOL = 'zzzznotarealdocumentid00';
-const ACTION_TIMEOUT = 20_000;
+const ledger = new OpsFixtureLedger();
+let schoolId = '';
+let schoolName = '';
+let adminA = '';
+let adminB = '';
 
-const CAPTURES = path.resolve(
-  __dirname,
-  '../../../../.codephant/missions/msn-ab5a6a54-f385-42e1-826a-aeba2bbdbc66/captures/ops-012',
-);
-
-/** Every ops-schools GET the page issues, so we can prove WHICH one it used. */
-function recordSchoolRequests(page: Page): string[] {
-  const seen: string[] = [];
-  page.on('request', (request) => {
-    const url = request.url();
-    if (request.method() === 'GET' && url.includes('/api/ops/schools')) seen.push(url);
-  });
-  return seen;
+/** One ops login for the whole worker; the JWT is reused by every API call. */
+let opsJwt = '';
+async function getOpsJwt(request: import('@playwright/test').APIRequestContext): Promise<string> {
+  if (opsJwt === '') {
+    const res = await request.post(`${API}/api/auth/local`, {
+      data: {
+        identifier: roleCredentials('opsApi').email,
+        password: apiEnv('SEED_APIADMIN_PASSWORD'),
+      },
+    });
+    if (!res.ok()) throw new Error(`[ops/12] ops login failed: ${res.status()}`);
+    opsJwt = ((await res.json()) as { jwt: string }).jwt;
+  }
+  return opsJwt;
 }
 
-async function openSchool(page: Page, documentId = SCHOOL_A): Promise<void> {
-  await page.goto(`/dashboard/ops/schools/${documentId}`);
+/** The admin variant of the teacher fixture helper (register → role → school). */
+async function createOpsFixtureAdmin(
+  request: import('@playwright/test').APIRequestContext,
+  schoolDocumentId: string,
+  label: string,
+): Promise<string> {
+  const email = `${label}-${Date.now()}-${Math.floor(Math.random() * 1e6)}@fixture.schooltest.local`;
+  const register = await request.post(`${API}/api/auth/local/register`, {
+    data: { username: email, email, password: 'Fixture!Passw0rd' },
+  });
+  if (!register.ok()) {
+    throw new Error(`[ops/12] register ${label} -> ${register.status()}: ${await register.text()}`);
+  }
+  const userDocumentId = z
+    .object({ user: z.object({ documentId: z.string().min(1) }) })
+    .parse(await register.json()).user.documentId;
+  const headers = fixtureHeaders('ops', await getOpsJwt(request));
+  const role = await request.post(`${API}/api/ops/users/${userDocumentId}/role`, {
+    headers,
+    data: { role: 'school_admin' },
+  });
+  if (!role.ok()) {
+    throw new Error(`[ops/12] role ${label} -> ${role.status()}: ${await role.text()}`);
+  }
+  const school = await request.post(`${API}/api/ops/users/${userDocumentId}/school`, {
+    headers,
+    data: { schoolDocumentId },
+  });
+  if (!school.ok()) {
+    throw new Error(`[ops/12] school ${label} -> ${school.status()}: ${await school.text()}`);
+  }
+  ledger.track('user', userDocumentId);
+  return userDocumentId;
 }
 
 /**
- * The count cards mark themselves with `data-slot`, NOT `data-testid`, and this
- * project does not remap Playwright's test-id attribute — the by-test-id
- * locator silently matches nothing here and then waits until it times out. The
- * teachers card uses the `-teachers` suffix, so match the prefix for both.
+ * The ownership transfer, called directly with the contract's operation path
+ * and body (`owner_documentId`, `expected_owner_documentId`) and the versioned
+ * header — the exact request the UI's Make-owner confirm sends.
  */
-function countCards(page: Page): Locator {
-  return page.locator('[data-slot^="ops-count-card"]');
+async function transferOwner(
+  request: import('@playwright/test').APIRequestContext,
+  targetDocumentId: string,
+  expectedOwnerDocumentId: string | null,
+): Promise<number> {
+  const res = await request.post(`${API}/api/ops/schools/${schoolId}/owner`, {
+    headers: fixtureHeaders('ops', await getOpsJwt(request)),
+    data: {
+      owner_documentId: targetDocumentId,
+      expected_owner_documentId: expectedOwnerDocumentId,
+    },
+  });
+  return res.status();
 }
 
-async function sha256(file: string): Promise<string> {
-  return createHash('sha256').update(await readFile(file)).digest('hex');
+/** Tabs are selected BY ROLE; the panel proof is aria-selected, not a click. */
+async function openTab(page: Page, key: string): Promise<void> {
+  const tab = page.getByRole('tab', { name: cat(en, `Ops.schoolTables.tab.${key}`) });
+  await expect(tab).toBeVisible({ timeout: ACTION_TIMEOUT });
+  await tab.click();
+  await expect(tab).toHaveAttribute('aria-selected', 'true', { timeout: ACTION_TIMEOUT });
 }
 
-test.describe('ops school detail (C-OPS-PORTAL-002)', () => {
-  test.beforeAll(() => {
-    mkdirSync(CAPTURES, { recursive: true });
+test.describe.configure({ timeout: 240_000, retries: 1 });
+test.describe.configure({ mode: 'serial' });
+
+test.beforeAll(async ({ request }) => {
+  const school = await createOpsFixtureSchool(request, ledger, 'ops-012');
+  schoolId = school.documentId;
+  schoolName = school.name;
+  await createOpsFixtureStudents(request, schoolId, 2);
+  adminA = await createOpsFixtureAdmin(request, schoolId, 'ops12adminA');
+  adminB = await createOpsFixtureAdmin(request, schoolId, 'ops12adminB');
+  await createOpsFixtureTeacher(request, ledger, schoolId, 'ops-012');
+});
+
+test.afterAll(async ({ request }) => {
+  await ledger.cleanup(request);
+});
+
+test.beforeEach(async ({ page }) => paceRateWindow(page));
+
+async function loginAsOps(page: Page): Promise<void> {
+  await page.goto('/sign-in');
+  await page
+    .getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })
+    .fill(roleCredentials('opsApi').email);
+  await page
+    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
+    .fill(apiEnv('SEED_APIADMIN_PASSWORD'));
+  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.waitForURL('**/dashboard', { timeout: ACTION_TIMEOUT });
+}
+
+async function openSchool(page: Page): Promise<void> {
+  await page.goto(`/dashboard/ops/schools/${schoolId}`);
+  await expect(page.getByRole('heading', { level: 1, name: schoolName })).toBeVisible({
+    timeout: ACTION_TIMEOUT,
+  });
+}
+
+test('the stat strip shows exactly the design’s four cards', async ({ page }) => {
+  await loginAsOps(page);
+  await openSchool(page);
+
+  // The design’s four labels and NOTHING else: the classes and admins counts
+  // moved onto their tab badges.
+  const strip = page.locator('[data-slot="ops-count-cards"]');
+  await expect(strip).toBeVisible({ timeout: ACTION_TIMEOUT });
+  const labels = await strip
+    .locator('[data-count-label]')
+    .evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-count-label')));
+  expect(labels).toEqual([
+    cat(en, 'Ops.detail.studentsLabel'),
+    cat(en, 'Ops.detail.teachersLabel'),
+    cat(en, 'Ops.detail.testsTermLabel'),
+    cat(en, 'Ops.detail.lastActivityLabel'),
+  ]);
+
+  // The fixture school was created seconds ago: last_active_at is NULL, and
+  // the design’s "Never" is the honest rendering — not a manufactured date.
+  await expect(strip.getByText(cat(en, 'Ops.detail.neverValue'))).toBeVisible();
+
+  // The Teachers card stays the click-through (a button), the others are not.
+  await expect(page.locator('[data-slot="ops-count-card-teachers"]')).toBeVisible();
+});
+
+test('tab badges follow the design’s countDisplay: zero renders no badge', async ({ page }) => {
+  await loginAsOps(page);
+  await openSchool(page);
+
+  // Two admins, one teacher, zero classes, zero students — so exactly two
+  // badges exist, and neither zero-count tab carries one.
+  await expect(page.getByTestId('ops-tab-count-admins')).toHaveText('2');
+  await expect(page.getByTestId('ops-tab-count-teachers')).toHaveText('1');
+  await expect(page.getByTestId('ops-tab-count-classes')).toHaveCount(0);
+  await expect(page.getByTestId('ops-tab-count-students')).toHaveCount(0);
+  await expect(page.getByTestId('ops-tab-count-overview')).toHaveCount(0);
+});
+
+test('tab switching is role-selected and clears the URL params and the selection', async ({
+  page,
+}) => {
+  await loginAsOps(page);
+  await openSchool(page);
+
+  await openTab(page, 'students');
+  // The active Radix panel is the ONLY tabpanel in the DOM at a time.
+  const panel = page.getByRole('tabpanel');
+  await expect(panel.locator('tbody input[type="checkbox"]').first()).toBeVisible({
+    timeout: ACTION_TIMEOUT,
   });
 
-  test('reads the single-school endpoint and never the whole directory', async ({ page }) => {
-    await loginAs(page, 'ops');
-    const requests = recordSchoolRequests(page);
-    await openSchool(page);
+  // The kit search writes `q` into the URL…
+  await page
+    .locator('[data-slot="directory-toolbar"] input[type="search"]')
+    .fill('zz-no-such-student');
+  await expect
+    .poll(() => page.url(), { timeout: ACTION_TIMEOUT })
+    .toContain('q=zz-no-such-student');
 
-    await expect(countCards(page).first()).toBeVisible({
-      timeout: ACTION_TIMEOUT,
-    });
+  // …and a row selection…
+  const firstCheckbox = panel.locator('tbody input[type="checkbox"]').first();
+  await firstCheckbox.click();
+  await expect(firstCheckbox).toBeChecked({ timeout: ACTION_TIMEOUT });
 
-    const detailReads = requests.filter((url) => url.includes(`/api/ops/schools/${SCHOOL_A}`));
-    // The directory read is `/api/ops/schools` with nothing (or only a query)
-    // after it — the exact call this task removed from the detail page.
-    const directoryReads = requests.filter((url) => /\/api\/ops\/schools(\?|$)/.test(url));
+  // …both die on a tab switch, alongside the panel swap this test already
+  // proved via aria-selected.
+  await openTab(page, 'classes');
+  await expect(page.getByRole('tabpanel')).toBeVisible({ timeout: ACTION_TIMEOUT });
+  expect(page.url()).not.toContain('q=');
 
-    test.info().annotations.push({
-      type: 'ops-schools-requests',
-      description: requests.join(' | ') || '(none)',
-    });
+  await openTab(page, 'students');
+  await expect(page.getByRole('tabpanel').locator('tbody input[type="checkbox"]:checked')).toHaveCount(0);
+});
 
-    expect(detailReads.length, 'the page must read the single-school endpoint').toBeGreaterThan(0);
-    expect(
-      directoryReads,
-      'the detail page must not fetch the whole school directory',
-    ).toHaveLength(0);
+test('the Overview card shows the design’s six rows and its Edit opens the school form', async ({
+  page,
+}) => {
+  await loginAsOps(page);
+  await openSchool(page);
+
+  const details = page.locator('[data-slot="ops-overview-details"]');
+  await expect(details).toBeVisible({ timeout: ACTION_TIMEOUT });
+  for (const label of [
+    cat(en, 'Ops.schoolTables.fieldSector'),
+    cat(en, 'Ops.schoolTables.fieldLocation'),
+    cat(en, 'Ops.schoolTables.fieldPlan'),
+    cat(en, 'Ops.schoolTables.fieldContact'),
+    cat(en, 'Ops.schoolTables.fieldEmail'),
+    cat(en, 'Ops.schoolTables.fieldPhone'),
+  ]) {
+    await expect(details.getByText(label, { exact: true })).toBeVisible();
+  }
+  // The old Last-activity row is gone from the list: it is a stat card now.
+  await expect(details.getByText(cat(en, 'Ops.schoolTables.fieldLastActivity'))).toHaveCount(0);
+
+  // The inline Edit activates the page-header Edit control, which owns the
+  // write gate; the school form dialog is the proof it opened.
+  await details.getByTestId('ops-overview-edit').click();
+  await expect(page.locator('[data-slot="ops-edit-school-dialog"]')).toBeVisible({
+    timeout: ACTION_TIMEOUT,
   });
+});
 
-  test('renders the real school identity and its counters', async ({ page }) => {
-    await loginAs(page, 'ops');
-    await openSchool(page);
+test('a school whose owner is null shows the null-owner warning banner', async ({ page }) => {
+  await loginAsOps(page);
+  await openSchool(page);
 
-    const heading = page.getByRole('heading', { level: 1 });
-    await expect(heading).toBeVisible({ timeout: ACTION_TIMEOUT });
-    // The name comes from the API, so assert it is non-empty rather than
-    // hardcoding a fixture string other agents are actively mutating.
-    await expect(heading).toContainText(/\S/, { timeout: ACTION_TIMEOUT });
+  // The fixture school was created with send_owner_invitation: false and no
+  // owner transfer has run yet, so owner_documentId is null — the D-OWN
+  // ambiguous case the banner exists for.
+  await openTab(page, 'admins');
+  await expect(
+    page.getByRole('alert').filter({ hasText: cat(en, 'Ops.schoolTables.ownerNone') }),
+  ).toBeVisible({ timeout: ACTION_TIMEOUT });
+});
 
-    const cards = countCards(page);
-    await expect(cards.first()).toBeVisible({ timeout: ACTION_TIMEOUT });
-    expect(await cards.count()).toBeGreaterThan(0);
+test('a Make owner confirmed on a stale page 409s with the refresh message', async ({ page }) => {
+  await loginAsOps(page);
+  await openSchool(page);
+  await openTab(page, 'admins');
+
+  // Make the page stale BEHIND the loaded UI: the API transfer to admin A
+  // succeeds (the page still believes the owner is null), so the UI's next
+  // confirm carries a stale expected owner and MUST 409.
+  expect(await transferOwner(page.request, adminA, null)).toBe(200);
+
+  const row = page
+    .getByTestId('ops-staff-table-school_admin')
+    .locator(`tbody tr[data-row-id="user:${adminB}"]`);
+  await expect(row).toBeVisible({ timeout: ACTION_TIMEOUT });
+  await row.getByRole('button', { name: cat(en, 'Ops.schoolTables.makeOwner') }).click();
+  await expect(page.locator('[data-slot="ops-make-owner-dialog"]')).toBeVisible({
+    timeout: ACTION_TIMEOUT,
   });
+  await page
+    .locator('[data-slot="ops-make-owner-dialog"]')
+    .getByRole('button', { name: cat(en, 'Ops.schoolTables.makeOwnerConfirmAction') })
+    .click();
 
-  test('an unknown school renders the not-found state, not a crash or a blank page', async ({
-    page,
-  }) => {
-    await loginAs(page, 'ops');
-    await openSchool(page, UNKNOWN_SCHOOL);
+  await expect(
+    page.getByRole('alert').filter({ hasText: cat(en, 'Ops.schoolTables.ownerConflict') }),
+  ).toBeVisible({ timeout: ACTION_TIMEOUT });
+});
 
-    // The 404 must surface as a rendered state. Either the explicit not-found
-    // alert or the error alert is acceptable; a blank page is not.
-    const alert = page.getByRole('alert').first();
-    await expect(alert).toBeVisible({ timeout: ACTION_TIMEOUT });
-    await expect(alert).toContainText(/\S/, { timeout: ACTION_TIMEOUT });
+test('the teacher class-count join renders the served counts', async ({ page }) => {
+  await loginAsOps(page);
+  await openSchool(page);
 
-    // The count cards belong to a school that loaded; they must be absent.
-    await expect(countCards(page)).toHaveCount(0);
+  // The wire is the truth: whatever the teachers read serves in
+  // `classes`, the row must render — including zero.
+  const responsePromise = page.waitForResponse(
+    (response) =>
+      response.url().includes('/api/ops/users') &&
+      response.url().includes('role=teacher') &&
+      response.request().method() === 'GET',
+  );
+  await openTab(page, 'teachers');
+  const response = await responsePromise;
+  const served = z
+    .object({
+      data: z.array(
+        z.object({
+          documentId: z.string(),
+          classes: z.array(z.unknown()),
+        }),
+      ),
+    })
+    .parse(await response.json());
+
+  const table = page.getByTestId('ops-staff-table-teacher');
+  await expect(table).toBeVisible({ timeout: ACTION_TIMEOUT });
+  for (const row of served.data) {
+    const rowLocator = table.locator(`tbody tr[data-row-id="user:${row.documentId}"]`);
+    await expect(rowLocator).toBeVisible({ timeout: ACTION_TIMEOUT });
+    await expect(rowLocator).toContainText(String(row.classes.length));
+  }
+});
+
+test('captures the stats strip and the overview at the reference width', async ({ page }) => {
+  await page.setViewportSize({ ...REFERENCE_VIEWPORT });
+  await loginAsOps(page);
+  await openSchool(page);
+
+  await expect(page.locator('[data-slot="ops-count-cards"]')).toBeVisible({
+    timeout: ACTION_TIMEOUT,
   });
+  mkdirSync(SHOTS, { recursive: true });
+  await page.screenshot({ path: path.join(SHOTS, '12-stats-tabs.png'), animations: 'disabled' });
 
-  test('captures the reference desktop and 375px widths', async ({ page }) => {
-    await page.setViewportSize({ ...REFERENCE_VIEWPORT });
-    await loginAs(page, 'ops');
-    await openSchool(page);
-    await expect(countCards(page).first()).toBeVisible({
-      timeout: ACTION_TIMEOUT,
-    });
-    const desktop = path.join(CAPTURES, 'ops-012-school-detail-desktop.png');
-    await page.screenshot({ path: desktop, fullPage: false, animations: 'disabled' });
-
-    await page.setViewportSize({ ...MOBILE_VIEWPORT });
-    await expect(countCards(page).first()).toBeVisible({
-      timeout: ACTION_TIMEOUT,
-    });
-    // The page must not scroll sideways at the narrow reference width.
-    const doc = await page.evaluate(() => ({
-      scrollWidth: document.documentElement.scrollWidth,
-      clientWidth: document.documentElement.clientWidth,
-    }));
-    expect(doc.scrollWidth, 'no horizontal overflow at 375px').toBeLessThanOrEqual(
-      doc.clientWidth + 1,
-    );
-    const mobile = path.join(CAPTURES, 'ops-012-school-detail-mobile.png');
-    await page.screenshot({ path: mobile, fullPage: false, animations: 'disabled' });
-
-    // Two captures that hash the same mean one viewport silently did not apply.
-    const [a, b] = await Promise.all([sha256(desktop), sha256(mobile)]);
-    test.info().annotations.push({ type: 'sha256-desktop', description: a });
-    test.info().annotations.push({ type: 'sha256-mobile', description: b });
-    expect(a, 'desktop and mobile captures must be byte-distinct').not.toBe(b);
+  await openTab(page, 'overview');
+  await expect(page.locator('[data-slot="ops-overview-details"]')).toBeVisible({
+    timeout: ACTION_TIMEOUT,
   });
+  await page.screenshot({ path: path.join(SHOTS, '12-overview.png'), animations: 'disabled' });
 });
