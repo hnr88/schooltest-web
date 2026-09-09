@@ -21,6 +21,10 @@ const MOBILE = { width: 375, height: 800 };
 
 test.beforeEach(async ({ page }) => paceRateWindow(page));
 
+// Dev-server first-hit compilation plus the fixed 16s limiter pace exceed the
+// 30s default long before any assertion is wrong.
+test.setTimeout(120_000);
+
 async function signIn(page: Page, email: string, password: string): Promise<void> {
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
@@ -33,23 +37,25 @@ const kitSearch = (page: Page) =>
   page.locator('[data-slot="directory-toolbar"] input[type="search"]');
 
 // The kit's own arms are the deliverable: rows, the empty state, or the kit's
-// error arm (the notifications route answers 500 for the seeded parent and the
-// articles content-type does not exist on this API stack — both backend facts
-// recorded in mvp/ops/proof/36.md; the OLD bespoke pages swallowed both as
-// "nothing found", the kit surfaces them honestly).
+// error arm (the notifications route answered 500 for the seeded parent until
+// its fix row landed, and the articles content-type does not exist on this API
+// stack — both backend facts recorded in mvp/ops/proof/36.md; the OLD bespoke
+// pages swallowed both as "nothing found", the kit surfaces them honestly).
+// The toolbar is asserted ALONE — the kit renders it alongside the loading arm,
+// so folding it into an .or() chain is a strict-mode violation, not a wait.
 async function expectAnyKitArm(page: Page, emptyTitle: string): Promise<void> {
-  await expect(
-    page
-      .locator('[data-slot="directory-toolbar"]')
-      .or(page.locator('[data-slot="directory-loading"]'))
-      .or(page.locator('[data-slot="directory-pagination"]')),
-  ).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator('[data-slot="directory-toolbar"]')).toBeVisible({
+    timeout: 20_000,
+  });
   await expect(
     page
       .locator('[data-notification-id], [data-slot="report-list-row"], tbody tr')
       .first()
-      .or(page.getByText(emptyTitle))
-      .or(page.getByText('Could not load')),
+      .or(page.locator('[data-slot="directory-loading"]'))
+      // .first(): ops/14's per-surface empty copy renders the title in more
+      // than one element (h2 + description), and an .or() chain must stay single.
+      .or(page.getByText(emptyTitle).first())
+      .or(page.getByText('Could not load').first()),
   ).toBeVisible({ timeout: 20_000 });
 }
 
@@ -72,9 +78,10 @@ test('the C-11 report list renders through the kit with search', async ({ page }
   });
 
   // The kit search reduces client-side; a nonsense needle lands the kit's
-  // no-matches state (never a bespoke empty line).
+  // no-matches state (never a bespoke empty line). .first(): ops/14's
+  // per-surface empty copy renders the title in more than one element.
   await kitSearch(page).fill('zzz-no-such-report-xyz');
-  await expect(page.getByText(cat(en, 'Report.listFilteredEmptyTitle'))).toBeVisible({
+  await expect(page.getByText(cat(en, 'Report.listFilteredEmptyTitle')).first()).toBeVisible({
     timeout: 10_000,
   });
   await page.screenshot({ path: path.join(SHOTS, '36-parent-reports-search.png') });

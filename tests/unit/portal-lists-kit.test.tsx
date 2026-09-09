@@ -94,8 +94,19 @@ const RESULT_ROWS = [
   },
 ];
 
+// The recency grouping buckets by CALENDAR day, so a literal `now - 1h`
+// fixture lands in "earlier" whenever the suite runs between 00:00 and 01:00
+// (the clock bomb three rows hit). Anchor to start-of-day instead: 00:00:05
+// today is the same calendar day as `now` for the entire day, every day.
 const NOW = new Date();
-const hourAgo = new Date(NOW.getTime() - 3_600_000).toISOString();
+const hourAgo = new Date(
+  NOW.getFullYear(),
+  NOW.getMonth(),
+  NOW.getDate(),
+  0,
+  0,
+  5,
+).toISOString();
 const lastYear = '2026-01-05T00:00:00.000Z';
 
 const NOTIFICATION_ROWS = [
