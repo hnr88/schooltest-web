@@ -160,3 +160,46 @@ export const closeTestSessionResponseSchema = z.strictObject({
   status: z.enum(['closed']),
   closed_at: z.iso.datetime(),
 });
+
+/* ── C-SIT-SETTINGS · PATCH /api/sittings/:documentId/settings (teacher 11) ── */
+
+/**
+ * Client mirror of the api contract's `sittingSettingsSchema`
+ * (schooltest-api/src/contracts/teacher-sessions.ts) — eleven camelCase keys,
+ * byte-for-byte. Strict on the REQUEST boundary only: the stored column is
+ * read leniently by C-SIT-02 and the desktop (D-34), so the mirror is used to
+ * VALIDATE what the server answered, never to reject a lenient read.
+ */
+export const sittingSettingsSchema = z.strictObject({
+  lowBw: z.boolean(),
+  skip: z.boolean(),
+  review: z.boolean(),
+  flag: z.boolean(),
+  bigText: z.boolean(),
+  lockdown: z.boolean(),
+  focusFlag: z.boolean(),
+  warn5: z.boolean(),
+  autoSubmit: z.boolean(),
+  showScore: z.boolean(),
+  timeLimit: z.number().int().min(1).max(180),
+});
+export type SittingSettings = z.infer<typeof sittingSettingsSchema>;
+
+/** The design's `defaultSettings` — what `settings: null` (never written) renders. */
+export const DEFAULT_SITTING_SETTINGS: SittingSettings = {
+  lowBw: false,
+  skip: true,
+  review: true,
+  flag: true,
+  bigText: true,
+  lockdown: true,
+  focusFlag: true,
+  warn5: true,
+  autoSubmit: true,
+  showScore: false,
+  timeLimit: 40,
+};
+
+/** PATCH accepts a PARTIAL body; unknown keys still reject — strict, not silent. */
+export const sittingSettingsPatchSchema = sittingSettingsSchema.partial();
+export type SittingSettingsPatch = z.infer<typeof sittingSettingsPatchSchema>;
