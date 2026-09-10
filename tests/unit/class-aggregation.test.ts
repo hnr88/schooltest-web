@@ -60,6 +60,9 @@ function withRoster(overrides: Array<Partial<ResultView> | null>): RosterRow[] {
   return overrides.map((override, index) => ({
     student: { document_id: `stu-${index}`, name: `Student ${index}`, initials: `S${index}`, eald_flag: false },
     result: override === null ? null : resultViewSchema.parse({ ...fixture, ...override }),
+    // scoring/10 added the row-level key. The aggregation layer under test
+    // never reads it — this literal only satisfies the widened RosterRow twin.
+    release_state: override === null ? 'nosit' : 'released',
   }));
 }
 
@@ -363,10 +366,37 @@ describe('needsSupport — a reliable decline outranks low-but-steady', () => {
 
   test('unscored rows never rank, and the cap is 5', () => {
     const rows = withScores([
-      ...Array.from({ length: 7 }, (_, i) => ({ overall: { ...fixture.overall, domain_score: 40 + i } })),
-      { overall: { ...fixture.overall, domain_score: null } },
+      // Mixed delta directions: null-delta rows are not reliable gainers, so
+      // every one of these seven ranks — the cap is what limits the list to 5.
+      ...Array.from({ length: 7 }, (_, i) => ({
+        overall: { ...fixture.overall, domain_score: 40 + i, delta: null, delta_reliable: null },
+      })),
+      { overall: { ...fixture.overall, domain_score: null, delta: null, delta_reliable: null } },
     ]);
     expect(needsSupport(rows)).toHaveLength(5);
     expect(needsSupport(rows)[0]?.overall.domain_score).toBe(40);
+    expect(needsSupport(rows).map((row) => row.overall.domain_score)).toEqual([40, 41, 42, 43, 44]);
+  });
+
+  // ops/34 — the row-scoped delta rule (orchestrator-requested construct): a
+  // reliable GAINER never ranks in needs support, a reliable DECLINE always
+  // does and ranks first, and each row is judged on ITS OWN delta — the
+  // class's improving students never hide a struggling one.
+  test('a reliable gainer never ranks in needs support; a reliable decline always does', () => {
+    const rows = withScores([
+      { overall: { ...fixture.overall, domain_score: 80, delta: 13, delta_reliable: true } },
+      { overall: { ...fixture.overall, domain_score: 82, delta: 14, delta_reliable: true } },
+      { overall: { ...fixture.overall, domain_score: 45, delta: -6, delta_reliable: true } },
+      { overall: { ...fixture.overall, domain_score: null, delta: null, delta_reliable: null } },
+    ]);
+    const ranked = needsSupport(rows);
+    // The exclusion is the semantics: the +13/+14 reliable gainers belong to
+    // the gains list; only the decline ranks in needs support.
+    expect(ranked.map((row) => row.overall.delta)).toEqual([-6]);
+    // The gainer is ranked LAST (by score), never celebrated here — but the
+    // gains list owns it, and the gains list must not carry the decline.
+    const gains = topGains(rows);
+    expect(gains.map((row) => row.overall.delta)).toEqual([14, 13]);
+    expect(gains.map((row) => row.overall.delta)).not.toContain(-6);
   });
 });
