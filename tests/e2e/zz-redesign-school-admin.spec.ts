@@ -234,13 +234,18 @@ test.describe('school admin dashboard redesign', () => {
     await railLink(page, 'account').click();
     await page.waitForURL('**/dashboard/school/account', { timeout: 20_000 });
 
-    for (const key of ['account', 'settings', 'signout'] as const) {
+    for (const key of ['details', 'plan', 'settings', 'signout'] as const) {
       await expect(
         page.getByRole('tab', { name: cat(en, `SchoolAdmin.account.tabs.${key}`), exact: true }),
       ).toBeVisible();
     }
 
     await expect(page.locator('[data-slot="account-details-card"]')).toBeVisible();
+
+    // Plan/seat/allowance content lives on the plan tab, which renders only when active.
+    await page
+      .getByRole('tab', { name: cat(en, 'SchoolAdmin.account.tabs.plan'), exact: true })
+      .click();
     await expect(page.locator('[data-slot="account-plan-card"]')).toBeVisible();
 
     const ent = (await apiJson('/api/schools/me/entitlement')).data as {
@@ -364,12 +369,25 @@ test.describe('school admin dashboard redesign', () => {
     test.setTimeout(150_000);
     await page.setViewportSize({ width: 1440, height: 900 });
     await signIn(page);
-    await page.goto('/en/dashboard/school/students');
+
+    // Pick the target deterministically instead of depending on whatever the
+    // default `createdAt:desc` ordering lands on page one: the demo school's
+    // ~134 archived students can fill that page entirely. C-CHD-01 serves
+    // `status=active`, and the roster's `q` param narrows server-side
+    // ($containsi on given/family name), so navigate straight at a KNOWN
+    // active student's name.
+    const found = (await apiJson('/api/schools/me/children?status=active&pageSize=1')).data as {
+      given_name: string | null;
+      family_name: string | null;
+    }[];
+    const target = found[0];
+    expect(target, 'the school must hold at least one active student').toBeTruthy();
+    const needle = target.given_name ?? target.family_name ?? '';
+    await page.goto(`/en/dashboard/school/students?q=${encodeURIComponent(needle)}`);
 
     // The default roster INCLUDES archived students, whose menu correctly offers
     // Edit and no Archive — so pick a row that is NOT archived rather than the
-    // first one. Getting this wrong is what made an earlier attempt fail on an
-    // absent menuitem and look like a component defect.
+    // first one. The search above guarantees one is on the page.
     const rows = page.locator('tbody tr');
     await expect(rows.first()).toBeVisible({ timeout: 60_000 });
     const active = rows.filter({ hasNot: page.getByText('Archived', { exact: true }) }).first();
