@@ -118,7 +118,7 @@ test('flow 25: the list renders every school, and the last row is reachable by s
   await expect(lastRow).toBeVisible();
 });
 
-test('flows 3, 4, 5, 30, 31, 32: a row click reaches the detail page with badges, zero counts, an enabled button and the three ops sections', async ({
+test('flows 3, 4, 5: a row click reaches the detail page with badges, zero counts and an enabled button', async ({
   page,
 }) => {
   const school = await createProspectSchool(`detail-${Date.now()}`);
@@ -156,21 +156,6 @@ test('flows 3, 4, 5, 30, 31, 32: a row click reaches the detail page with badges
     const button = page.getByRole('button', { name: cat(en, 'Ops.onboard.button'), exact: true });
     await expect(button).toBeVisible();
     await expect(button).toBeEnabled();
-
-    // Flows 30, 31, 32: the pre-existing ops sections are still on the page,
-    // asserted by their own surface markers AND their catalogue headings.
-    await expect(page.locator('[data-surface="ops-form-window"]')).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: cat(en, 'Ops.window.title'), level: 2 }),
-    ).toBeVisible();
-    await expect(page.locator('[data-slot="ops-sitting-recovery"]')).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: cat(en, 'Ops.recovery.title'), level: 2 }),
-    ).toBeVisible();
-    await expect(page.locator('[data-surface="ops-student-import"]')).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: cat(en, 'Ops.import.title'), level: 2 }),
-    ).toBeVisible();
   } finally {
     await cleanupSchool(school.documentId);
   }

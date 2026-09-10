@@ -70,22 +70,17 @@ afterEach(() => {
 });
 
 describe('the four stat cards (ops/12)', () => {
-  test('renders exactly the design’s four labels with the Teachers click-through', () => {
-    const onTeachersClick = vi.fn();
-    const host = renderSurface(<OpsSchoolCountCards school={SCHOOL} onTeachersClick={onTeachersClick} />);
+  test('renders exactly the design’s four labels, all as plain figures (ops/43, R-23)', () => {
+    const host = renderSurface(<OpsSchoolCountCards school={SCHOOL} />);
 
     const labels = [...host.querySelectorAll('[data-count-label]')].map((node) =>
       node.getAttribute('data-count-label'),
     );
     expect(labels).toEqual(['Students', 'Teachers', 'Tests this term', 'Last activity']);
 
-    // The Teachers card is the only interactive one; a click opens the staff
-    // directory through the parent's handler.
-    const teachersCard = host.querySelector<HTMLButtonElement>('[data-slot="ops-count-card-teachers"]');
-    expect(teachersCard).not.toBeNull();
-    act(() => teachersCard!.click());
-    expect(onTeachersClick).toHaveBeenCalledTimes(1);
-    expect(host.querySelectorAll('[data-slot="ops-count-card"]').length).toBe(3);
+    // R-23: no card is a click-through any more — teachers live in the drawn
+    // Teachers tab, not behind a stat card.
+    expect(host.querySelectorAll('[data-slot="ops-count-card"]').length).toBe(4);
 
     // The class count is GONE from the strip — it lives on the Classes tab
     // badge now (the design's placement), so no card may render it.

@@ -7,10 +7,6 @@ import { OpsSchoolsTable } from '@/modules/ops';
 // merge-only integration file and its `OpsPortalExports` line is applied by the
 // batch integrator. Switch to `@/modules/ops` once that line lands.
 import { OpsPortalExports } from '@/modules/ops/components/OpsPortalExports';
-// Ledger 11b / D-007: the session responses.csv export, mounted BESIDE the
-// schools export because both are ops CSV pulls of the same page's scope and
-// the operator looks for exports in one place.
-import { OpsResponsesExport } from '@/modules/ops/components/OpsResponsesExport';
 import { Skeleton } from '@/modules/design-system';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -37,9 +33,11 @@ export default function OpsSchoolsPage() {
       }
     >
       <OpsSchoolsTable />
+      {/* ops/43 (R-22): OpsResponsesExport retired — no per-session export
+          panel is drawn on `:69-200`. OpsPortalExports stays: task 09
+          (still `todo`) owns re-parenting it into the bulk Export. */}
       <div className="flex flex-col gap-3 px-4 pb-6 sm:px-6 lg:px-8">
         <OpsPortalExports />
-        <OpsResponsesExport />
       </div>
     </Suspense>
   );

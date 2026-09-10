@@ -233,8 +233,9 @@ test('the stat strip shows exactly the design’s four cards', async ({ page }) 
   // the design’s "Never" is the honest rendering — not a manufactured date.
   await expect(strip.getByText(cat(en, 'Ops.detail.neverValue'))).toBeVisible();
 
-  // The Teachers card stays the click-through (a button), the others are not.
-  await expect(page.locator('[data-slot="ops-count-card-teachers"]')).toBeVisible();
+  // R-23: the Teachers card is a plain figure now, like the other three —
+  // teachers live in the drawn Teachers tab, never behind a stat-card click.
+  await expect(strip.locator('[data-slot="ops-count-card"]')).toHaveCount(4);
 });
 
 test('tab badges follow the design’s countDisplay: zero renders no badge', async ({ page }) => {

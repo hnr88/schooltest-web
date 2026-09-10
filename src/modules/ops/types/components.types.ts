@@ -1,21 +1,9 @@
 import type { SchoolDetail, StaffUserRole, StaffUserRow } from '@schooltest/ops-contracts';
 
-import type { FormWindow, OpsForm } from '@/modules/ops/schemas/form-window.schema';
 import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
-import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
 import type { OpsSchool, OpsTeacherRow } from '@/modules/ops/types/ops.types';
 import type { OpsSchoolAdminInviteMode } from '@/modules/ops/lib/ops-school-admin-invite';
 import type { SchoolPlan } from '@/modules/school-admin';
-
-export interface OpsFormWindowEditorProps {
-  schoolDocumentId: string;
-  currentWindow: FormWindow | null;
-  forms: OpsForm[];
-}
-
-export interface OpsFormWindowProps {
-  documentId: string;
-}
 
 export interface OpsImportCreateTableProps {
   rows: PortalImportPreview['create'];
@@ -79,22 +67,6 @@ export interface OpsTeachersTableRowProps {
 
 export interface OpsSchoolCountCardsProps {
   school: SchoolDetail;
-  /** OPS-teacher-details: clicking the Teachers card opens the directory. */
-  onTeachersClick?: () => void;
-}
-
-export interface OpsSittingRecoveryDetailProps {
-  sittingDocumentId: string;
-}
-
-export interface OpsSittingRecoveryTableProps {
-  students: RecoveryMonitorStudent[];
-  resitting: boolean;
-  onResit: (studentDocumentId: string, studentName: string) => void;
-}
-
-export interface OpsSittingRecoveryProps {
-  schoolDocumentId: string;
 }
 
 export interface OpsStudentImportProps {

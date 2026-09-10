@@ -1,7 +1,13 @@
 import { z } from 'zod';
 
-// C-WIN-01 (task 68, st-mvp-pivot): the ops per-school form window — which
-// prebuilt form is live for the school's sittings, and when.
+// C-WIN-01 (task 68, st-mvp-pivot): the core forms picker source.
+//
+// ops/43 (R-19): the school-level form-window record (`formWindowSchema`,
+// `FormWindow`, `createFormWindowFormSchema`) retired with `OpsFormWindow` —
+// no form picker, form code or open/close pair is drawn on the school detail
+// (`Ops Portal.dc.html:203-320`). `opsFormSchema`/`OpsForm` stay: they are the
+// core GET /api/forms picker source, and `OpsClassesTab.tsx`'s class-level
+// Test window still reads it through `use-forms.query.ts`.
 
 // Core GET /api/forms row (the picker source — a core route, no new endpoint).
 export const opsFormSchema = z.object({
@@ -14,34 +20,3 @@ export const opsFormSchema = z.object({
 });
 
 export type OpsForm = z.infer<typeof opsFormSchema>;
-
-// Core GET /api/form-windows row with the school and form populated — the
-// C-OPS-PORTAL-052 projection the server now pins (OPS-062), which the C-WIN-01
-// PUT response already carried. Both relations are nullable because a deleted
-// form or school leaves the stored window pointing at nothing, and refusing to
-// parse that would turn a recoverable data problem into an unreadable panel.
-export const formWindowSchema = z.object({
-  documentId: z.string(),
-  opens_at: z.string(),
-  closes_at: z.string(),
-  school: z.object({ documentId: z.string() }).nullable(),
-  form: z.object({ documentId: z.string(), form_code: z.string() }).nullable(),
-});
-
-export type FormWindow = z.infer<typeof formWindowSchema>;
-
-// Ops window form: datetime-local strings in the UI, ISO datetimes on the wire.
-export function createFormWindowFormSchema(tv: (key: string) => string) {
-  return z
-    .object({
-      form_documentId: z.string().min(1, tv('formRequired')),
-      opens_at: z.string().min(1, tv('datetimeRequired')),
-      closes_at: z.string().min(1, tv('datetimeRequired')),
-    })
-    .refine((values) => Date.parse(values.opens_at) < Date.parse(values.closes_at), {
-      message: tv('order'),
-      path: ['closes_at'],
-    });
-}
-
-export type FormWindowFormValues = z.infer<ReturnType<typeof createFormWindowFormSchema>>;

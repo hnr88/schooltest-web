@@ -7,17 +7,12 @@ import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth';
 import { Alert, Badge, Button, MediaCover, Skeleton } from '@/modules/design-system';
 import { showOpsToast, useOpsWriteGate } from '@/modules/ops/actions';
-import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
 import { OpsEditSchoolDialog } from '@/modules/ops/components/OpsEditSchoolDialog';
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
 import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
 import { OpsSchoolLifecycleBanner } from '@/modules/ops/components/OpsSchoolLifecycleBanner';
-import { OpsSchoolPlanPanel } from '@/modules/ops/components/OpsSchoolPlanPanel';
 import { OpsSchoolSuspendPanel } from '@/modules/ops/components/OpsSchoolSuspendPanel';
 import { OpsSchoolTables } from '@/modules/ops/components/OpsSchoolTables';
-import { OpsSittingRecovery } from '@/modules/ops/components/OpsSittingRecovery';
-import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
-import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
 import {
   PORTAL_STATUS_VARIANTS,
   portalPlanLabelKey,
@@ -37,10 +32,13 @@ import type { OpsSchool } from '@/modules/ops/types/ops.types';
 // and — after OPS-011 paginated the directory — any school outside page 1
 // rendered as "not found" although it existed.
 //
-// Ops console school detail (task 66, st-mvp-pivot): one C-OPS-01 row —
-// lifecycle chips plus the live teacher/class/student/result counts. The
-// W8 tasks (67-70) hang the deeper management surfaces off this page; the
-// Teachers card opens the OPS-teacher-details staff directory (064).
+// ops/43 (R-18): Plan re-parented into the edit-school modal, Form
+// window/Sitting recovery retired (R-19/R-20), Student import re-parented
+// into its own modal (task 26), and the duplicate Teachers dialog removed
+// (R-23) — `OpsSchoolTables`'s Teachers tab is the one surviving instance.
+// The invitation panel stays mounted here: it is KEEP-PROTECTED (never
+// deleted, retire-ledger R-18) and the onboarding e2e suite drives Send,
+// Resend and Revoke through its own rendered buttons, not the header menu.
 export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   const t = useTranslations('Ops.detail');
   // The lifecycle words live in ONE catalogue (Ops.schools), so the list and
@@ -52,7 +50,6 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   const schoolQuery = useSchoolDetailQuery(documentId, hydrated && Boolean(token));
   const capabilities = useCapabilitiesQuery(hydrated && Boolean(token));
   const editWriteGate = useOpsWriteGate();
-  const [teachersOpen, setTeachersOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const isReadOnly = capabilities.data?.capabilities.write === false;
 
@@ -232,21 +229,12 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             {t(`onboardingStatus.${school.onboarding_status}`)}
           </Badge>
         </div>
-        {/* Spec: the Onboard School control sits near the status badges and
-            above the summary cards. */}
+        {/* KEEP-PROTECTED (retire-ledger R-18): the onboarding suite drives
+            Send/Resend/Revoke through this panel's own rendered buttons. */}
         <OpsSchoolInvitationPanel documentId={documentId} enabled={hydrated && Boolean(token)} />
       </div>
-      <OpsSchoolCountCards school={detail} onTeachersClick={() => setTeachersOpen(true)} />
-      <OpsSchoolPlanPanel documentId={documentId} plan={school.plan} />
-      <OpsFormWindow documentId={documentId} />
-      <OpsSittingRecovery schoolDocumentId={documentId} />
-      <OpsStudentImport documentId={documentId} />
+      <OpsSchoolCountCards school={detail} />
       <OpsSchoolTables schoolDocumentId={documentId} school={detail} />
-      <OpsTeachersDialog
-        schoolDocumentId={documentId}
-        open={teachersOpen}
-        onOpenChange={setTeachersOpen}
-      />
       {editOpen ? (
         <OpsEditSchoolDialog
           school={{
