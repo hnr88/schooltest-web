@@ -13,22 +13,24 @@ import {
 import { PanelHeaderRow, ScoreText, SkeletonCard, StatusPill } from '@/modules/design-system';
 import { QueryErrorFallback } from '@/modules/query-errors';
 import { ReviewQuestionRow } from '@/modules/report/components/ReviewQuestionRow';
+import { useReviewMarking } from '@/modules/report/components/ReviewDrawerWriteHalf';
 import { correctCount } from '@/modules/report/lib/review-display';
 import { useResultReviewQuery } from '@/modules/report/queries/use-result-review.query';
 
-// scoring/11 — the READ-ONLY review drawer (C-REV-1; Teacher Portal v2 T-12).
+// scoring/11 — the review drawer (C-REV-1; Teacher Portal v2 T-12), with
+// scoring/12's write half wired through useReviewMarking (C-REV-2): the rows
+// carry their accept/override/decline controls, and the footer holds the
+// result-grain comment beside the suggestion invariant.
 //
 // It WRAPS the read-only sheet primitive rather than editing it, and every cell
 // is a design-system consume — no primitive is written here.
 //
 // WHY THIS IS NOT ON THE DIRECTORY KIT, deliberately. The question rows are a
-// FIXED-LENGTH READ-ONLY list: no search, no filter, no sort, no pager, no
-// selection, no row menu, no bulk actions. The shared layer rules that adopting
-// the kit for this shape is wrong, so the rows are a plain map(). The reuse
-// rule is honoured where it applies — the cells are all shared units.
-//
-// THE WRITE HALF IS NOT HERE: accept / override / decline and the per-item note
-// are task 12. Nothing here mutates, which is what lets the footer promise it.
+// FIXED-LENGTH list: no search, no filter, no sort, no pager, no selection, no
+// row menu, no bulk actions. The shared layer rules that adopting the kit for
+// this shape is wrong, so the rows are a plain map(). The reuse rule is
+// honoured where it applies — the cells are all shared units, and the confirms
+// are the ops action kit's own dialog.
 
 function ReviewDrawer({
   resultId,
@@ -43,6 +45,7 @@ function ReviewDrawer({
   // A closed drawer must not fetch — the open flag drives the query.
   const query = useResultReviewQuery(resultId, open);
   const review = query.data;
+  const marking = useReviewMarking(resultId, review?.items ?? [], review?.teacher_comment ?? null);
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -110,6 +113,7 @@ function ReviewDrawer({
                     <ReviewQuestionRow
                       key={`${item.sequence_index}-${item.item_code}`}
                       item={item}
+                      markSlot={marking.markSlotFor(item)}
                     />
                   ))}
                 </ol>
@@ -119,8 +123,10 @@ function ReviewDrawer({
         ) : null}
 
         <SheetFooter>
+          {review ? marking.commentSection : null}
           <p className="text-meta text-muted-foreground">{t('suggestionInvariant')}</p>
         </SheetFooter>
+        {marking.confirmDialog}
       </SheetContent>
     </Sheet>
   );

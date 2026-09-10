@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import { StatusPill } from '@/modules/design-system';
 import { ReviewAssistBlock } from '@/modules/report/components/ReviewAssistBlock';
@@ -12,7 +13,14 @@ import type { ReviewItem } from '@/modules/teacher/schemas/teacher-review.schema
 // `rvItems`): what was given, what was correct, how long it took, its area and
 // its flag. The assist block only appears on an extended response.
 
-function ReviewQuestionRow({ item }: { item: ReviewItem }) {
+function ReviewQuestionRow({
+  item,
+  markSlot,
+}: {
+  item: ReviewItem;
+  /** Task 12's accept/override/decline controls, rendered under the assist. */
+  markSlot?: ReactNode;
+}) {
   const t = useTranslations('Report.review');
   const secs = secsOf(item.latency_ms);
   const given =
@@ -55,6 +63,7 @@ function ReviewQuestionRow({ item }: { item: ReviewItem }) {
       </dl>
 
       {item.response_kind === 'text' ? <ReviewAssistBlock item={item} /> : null}
+      {markSlot ?? null}
     </li>
   );
 }

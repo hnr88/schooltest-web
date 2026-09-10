@@ -87,6 +87,10 @@ export {
 } from '@/modules/report/queries/use-result-review.query';
 export {
   reviewMarkDecision,
+  reviewMarkPayload,
+  reviewResetPayload,
+  reviewSourceForValue,
   saveResultReview,
   useResultReviewMutation,
 } from '@/modules/report/queries/use-result-review.mutation';
+export { useReviewMarking } from '@/modules/report/components/ReviewDrawerWriteHalf';

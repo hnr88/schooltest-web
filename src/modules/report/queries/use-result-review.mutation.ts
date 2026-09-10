@@ -1,6 +1,8 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 
 import { strapi } from '@/lib/axios/strapi';
 import {
@@ -8,6 +10,7 @@ import {
   resultReviewSchema,
   type ResultReview,
   type ResultReviewBody,
+  type ReviewItem,
 } from '@/modules/teacher/schemas/teacher-review.schema';
 
 export type ReviewMarkDecision =
@@ -34,6 +37,65 @@ export function reviewMarkDecision(input: {
     return { kind: 'confirm', tone: 'neutral' };
   }
   return { kind: 'commit' };
+}
+
+/**
+ * The wire row ONE mark commit sends, kept pure so the source mapping is
+ * testable beside the guards. Mapping (the design's `commit` copy is the rule):
+ * a mark equal to the suggestion on a scored assist is an ACCEPT; anything
+ * else the teacher sets is an OVERRIDE; a decline-to-mark on an assist that
+ * itself declined carries the assist's own `decline_kind` beside
+ * `teacher_mark_source: 'declined'` (the contract only allows the pair
+ * `blank`/`language` there — exactly the two assist kinds that carry a
+ * decline sentence).
+ */
+export function reviewMarkPayload(
+  item: {
+    response_document_id: string;
+    rubric_score?: ReviewItem['rubric_score'];
+  },
+  value: number | null,
+  source: 'accepted' | 'overridden' | 'declined' | null,
+): ResultReviewBody['responses'][number] {
+  const assist = item.rubric_score;
+  if (source === 'declined') {
+    const kind = assist?.decline_kind;
+    return {
+      response_document_id: item.response_document_id,
+      teacher_mark: null,
+      teacher_mark_source: 'declined',
+      decline_kind: kind === 'blank' || kind === 'language' ? kind : undefined,
+    };
+  }
+  return {
+    response_document_id: item.response_document_id,
+    teacher_mark: value,
+    teacher_mark_source: source,
+  };
+}
+
+/** The reset row (`:2965`): the mark key is deleted, never zeroed. */
+export function reviewResetPayload(
+  item: { response_document_id: string },
+): ResultReviewBody['responses'][number] {
+  return {
+    response_document_id: item.response_document_id,
+    teacher_mark: null,
+    teacher_mark_source: null,
+  };
+}
+
+/** The source a scale/accept click produces on a scored (non-declined) row. */
+export function reviewSourceForValue(
+  item: { rubric_score?: ReviewItem['rubric_score'] },
+  value: number,
+): 'accepted' | 'overridden' {
+  const dimensions = item.rubric_score?.dimensions;
+  const suggested =
+    dimensions === null || dimensions === undefined
+      ? null
+      : Object.values(dimensions).reduce((total, band) => total + band, 0);
+  return suggested !== null && value === suggested ? 'accepted' : 'overridden';
 }
 
 export interface SaveResultReviewInput {

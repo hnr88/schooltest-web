@@ -1,6 +1,7 @@
 import { act, type ReactElement, type ReactNode } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { NextIntlClientProvider } from 'next-intl';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import enMessages from '@/i18n/messages/en.json';
@@ -125,7 +126,12 @@ function renderDrawer(element: ReactElement): HTMLElement {
   act(() => {
     root!.render(
       <NextIntlClientProvider locale="en" messages={enMessages} timeZone="Australia/Sydney">
-        {element}
+        {/* scoring/12: the drawer now writes (C-REV-2), so its hooks need a
+            query client — the harness provides the same live-client shape the
+            page mounts. */}
+        <QueryClientProvider client={new QueryClient()}>
+          {element}
+        </QueryClientProvider>
       </NextIntlClientProvider>,
     );
   });

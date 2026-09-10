@@ -111,6 +111,12 @@ export const reviewItemSchema = z.strictObject({
   area: str.nullable(),
   correct_key: correctKeySchema.nullable(),
   rubric_score: rubricOutputSchema.nullable(),
+  /**
+   * The rubric's own ceiling (Σ dimension scale.max from the rubric row the
+   * assist names) — the accept-or-override scale's bound, served because the
+   * browser never re-derives a rubric value. `null` renders no scale.
+   */
+  mark_max: z.number().int().min(1).nullable(),
   teacher_mark: z.number().nullable(),
   teacher_mark_source: z.enum(['accepted', 'overridden', 'declined']).nullable(),
   teacher_note: z.string().nullable(),
@@ -120,12 +126,16 @@ export const reviewItemSchema = z.strictObject({
 type ReviewItemWire = z.infer<typeof reviewItemSchema>;
 export type ReviewItem = Omit<
   ReviewItemWire,
-  'response_document_id' | 'teacher_mark' | 'teacher_mark_source' | 'teacher_note'
+  'response_document_id' | 'teacher_mark' | 'teacher_mark_source' | 'teacher_note' | 'mark_max'
 > &
   Partial<
     Pick<
       ReviewItemWire,
-      'response_document_id' | 'teacher_mark' | 'teacher_mark_source' | 'teacher_note'
+      | 'response_document_id'
+      | 'teacher_mark'
+      | 'teacher_mark_source'
+      | 'teacher_note'
+      | 'mark_max'
     >
   >;
 
