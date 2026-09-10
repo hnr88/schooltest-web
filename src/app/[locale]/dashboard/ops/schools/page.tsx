@@ -3,10 +3,6 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { OpsSchoolsTable } from '@/modules/ops';
-// OPS-019: imported by path, not through the ops barrel — the barrel is a
-// merge-only integration file and its `OpsPortalExports` line is applied by the
-// batch integrator. Switch to `@/modules/ops` once that line lands.
-import { OpsPortalExports } from '@/modules/ops/components/OpsPortalExports';
 import { Skeleton } from '@/modules/design-system';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -32,13 +28,13 @@ export default function OpsSchoolsPage() {
         </main>
       }
     >
-      <OpsSchoolsTable />
       {/* ops/43 (R-22): OpsResponsesExport retired — no per-session export
-          panel is drawn on `:69-200`. OpsPortalExports stays: task 09
-          (still `todo`) owns re-parenting it into the bulk Export. */}
-      <div className="flex flex-col gap-3 px-4 pb-6 sm:px-6 lg:px-8">
-        <OpsPortalExports />
-      </div>
+          panel is drawn on `:69-200`. ops/09 (R-07 first half): the page-body
+          export panel is retired too — the design's list screen (`:69-200`)
+          draws no export panel at all; the only export it draws is the bulk
+          action `:1480`, which OpsSchoolsTable now renders inside its own
+          bulk bar. */}
+      <OpsSchoolsTable />
     </Suspense>
   );
 }

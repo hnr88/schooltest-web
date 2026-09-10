@@ -101,3 +101,14 @@ export function filenameFromContentDisposition(header: string | undefined): stri
   const match = header?.match(/filename="([^"]+)"/);
   return match?.[1] ?? OPS_SCHOOLS_EXPORT_FALLBACK_FILENAME;
 }
+
+/**
+ * ops/09 — the row count for the bulk-Export toast. `createCsvStream`
+ * (`schooltest-api/src/utils/csv.ts`) always terminates a line with `\r\n`,
+ * header included, so splitting on it and dropping the header line is the
+ * SERVER's own row count — never `selected.length` (D-16).
+ */
+export function schoolsExportRowCount(csv: string): number {
+  const lines = csv.split('\r\n').filter((line) => line !== '');
+  return Math.max(0, lines.length - 1);
+}

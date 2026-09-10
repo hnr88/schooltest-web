@@ -448,3 +448,23 @@ test.describe('08 — row actions, typed archive, undo', () => {
     expect(writes).toEqual([]);
   });
 });
+
+/**
+ * ops/09 — Export as the first bulk action, ahead of the retained Suspend and
+ * Archive (`schools-export.spec.ts` drives Export's own download/toast/scope
+ * behaviour; this asserts only its PLACE and LABEL in the shared bar).
+ */
+test('09 — the bulk bar shows Export, Suspend, Archive in that order', async ({ authPage: page }) => {
+  await page.goto(`${SCREEN}?q=${token}`);
+  await expect(page.locator('tbody tr')).toHaveCount(2);
+  await page.locator('tbody tr').first().getByRole('checkbox').click();
+
+  const bar = page.getByRole('region', { name: /selected/i });
+  await expect(bar).toBeVisible();
+  await expect(bar.getByRole('button')).toHaveText([
+    'Export',
+    'Suspend selected',
+    'Archive selected',
+    'Clear selection',
+  ]);
+});

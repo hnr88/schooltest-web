@@ -2,6 +2,7 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import {
@@ -59,6 +60,12 @@ import { fetchSchoolDetail } from '@/modules/ops/queries/use-school-detail.query
 import { fetchSchoolVersion } from '@/modules/ops/queries/use-school-version.query';
 import { getSchoolCrestSource } from '@/modules/ops/lib/school-crest';
 import { formatRelativeTime } from '@/modules/ops/lib/relative-time';
+import {
+  parseSchoolsExportScope,
+  schoolsExportRowCount,
+} from '@/modules/ops/lib/schools-export.lib';
+import { useSchoolsExportQuery } from '@/modules/ops/queries/use-schools-export.query';
+import { saveCsvDownload } from '@/modules/school-admin';
 
 const SCHOOL_STATES = ['VIC', 'NSW', 'QLD', 'SA', 'WA', 'TAS', 'ACT', 'NT'] as const;
 const SCHOOL_SECTORS = ['government', 'non-government', 'catholic'] as const;
@@ -119,8 +126,16 @@ export function OpsSchoolsTable() {
   // The confirm copy is the design's exact contractual wording, under its own
   // `Ops.confirm.*` namespace (`{action}.{title|body|cta}` per transition).
   const tConfirm = useTranslations('Ops.confirm');
+  // ops/09 — reused verbatim from the retired page-body export panel (D-33):
+  // the failure copy already exists and the CSV endpoint/hook it names are
+  // unchanged.
+  const tExport = useTranslations('Ops.export');
   const locale = useLocale();
   const router = useRouter();
+  // ops/09 — the bulk Export's scope source (see below); `next/navigation`'s
+  // raw params, not the i18n-aware one, matching what `useOpsDirectoryState`
+  // itself writes into the URL.
+  const searchParams = useSearchParams();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   // The pictured Status page action reads the URL the RELEASE configured, which
@@ -476,6 +491,7 @@ export function OpsSchoolsTable() {
         // URL never left the list (measured over a 3s settle, no pageerror).
         router.push(`/dashboard/ops/schools/${target.documentId}`),
       write: false,
+      disabled: false,
     },
     {
       label: t('actionStatusPage'),
@@ -487,11 +503,18 @@ export function OpsSchoolsTable() {
         window.open(statusPageUrl, '_blank', 'noopener,noreferrer');
       },
       write: false,
+      disabled: false,
     },
+    // ops/28 (D-53) — mirrors OpsClassDetail.tsx:287: greyed pre-emptively
+    // for a locked write, never for the read-only offline state alone (the
+    // menu click still needs to fire so `chooseLifecycleAction`'s own
+    // `refuseWhenLocked` raises the exact toast/retry pair). `onSelect`,
+    // `write` and the confirm copy below are unchanged.
     ...schoolLifecycleActions(school.portal_status).map((action) => ({
       label: t(action.labelKey),
       destructive: action.danger,
       write: action.write,
+      disabled: action.write && writeGate.blockedReason() !== null,
       onSelect: (target: SchoolsListRow) => chooseLifecycleAction(target, action),
     })),
   ];
@@ -503,11 +526,54 @@ export function OpsSchoolsTable() {
   // uncertain / not started), never a whole-set verdict.
   const suspendRun = useOpsActionRunner(SUSPEND_SCHOOL_ACTION);
   const archiveRun = useOpsActionRunner(ARCHIVE_SCHOOL_ACTION);
+
+  // ops/09 (C-OPS-PORTAL-009, R-07 first half) — the bulk Export re-parented
+  // off the retired page-body export panel. It reads the directory's
+  // CURRENT FILTER SCOPE straight off the URL — the same source
+  // `useOpsDirectoryState` itself writes to — and never the bulk bar's
+  // selection (D-16): "Selecting rows then changing a filter does not change
+  // what Export produces." The endpoint, the hook and the filename are
+  // byte-for-byte what the panel called; only the trigger moved.
+  const exportScope = useMemo(
+    () => parseSchoolsExportScope(new URLSearchParams(searchParams)),
+    [searchParams],
+  );
+  const exportQuery = useSchoolsExportQuery(exportScope);
+  const runExport = async (): Promise<void> => {
+    const result = await exportQuery.refetch();
+    if (result.data) {
+      saveCsvDownload(result.data.csv, result.data.filename);
+      showOpsToast({
+        tone: 'ok',
+        // The row count is read off the file the server actually sent, never
+        // the selection size the operator happened to have ticked.
+        message: t('actions.exportSuccess', { count: schoolsExportRowCount(result.data.csv) }),
+      });
+      return;
+    }
+    showOpsToast({ tone: 'error', message: tExport('errorDescription') });
+  };
+
+  // ops/28 (D-53) — `disabled` mirrors OpsClassDetail.tsx:287. bulkSuspend and
+  // bulkArchive carry no local `write` literal (unchanged here — Suspend and
+  // Archive dispatch through SUSPEND_SCHOOL_ACTION/ARCHIVE_SCHOOL_ACTION,
+  // whose OWN `write: true` is what the runner already gates on), so their
+  // `disabled` reads the write gate directly rather than through `action.write`.
+  const locked = writeGate.blockedReason() !== null;
   const bulkActions = [
-    { label: t('bulkSuspend'), onRun: (targets: readonly OpsActionTarget[]) => void suspendRun.run(targets) },
+    // First, per the design (`:1480`) and the task's `Done when` order.
+    // `write: false` (D-20): a GET, so it never goes through the write gate
+    // and stays reachable for the read-only `ops_support` account.
+    { label: t('bulkExport'), write: false, disabled: false, onRun: () => void runExport() },
+    {
+      label: t('bulkSuspend'),
+      disabled: locked,
+      onRun: (targets: readonly OpsActionTarget[]) => void suspendRun.run(targets),
+    },
     {
       label: t('bulkArchive'),
       destructive: true,
+      disabled: locked,
       onRun: (targets: readonly OpsActionTarget[]) => void archiveRun.run(targets),
     },
   ];

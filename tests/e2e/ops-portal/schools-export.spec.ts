@@ -1,18 +1,29 @@
 /**
  * OPS-019 / C-OPS-PORTAL-009 — the schools directory export action.
  *
- * Drives the REAL screen against the REAL API: the fixture school is created
- * through the ops contract, the button is clicked in the browser, and the file
- * the browser actually saved is read off disk and parsed. Every response comes
- * from the running API; no request is intercepted.
+ * ops/09 (R-07 first half, D-16): the page-body export panel is retired — the
+ * design's list screen (`Ops Portal.dc.html:69-200`) draws no export panel at
+ * all, only the bulk action `:1480`. This spec is re-pointed at the bulk bar:
+ * select rows, open the bar, run Export. The real coverage survives verbatim
+ * — `EXPECTED_HEADER` below and the download-to-disk assertion that reads the
+ * saved CSV off disk — only the route to the button moved.
  *
- * Two traps this spec is written around:
- *  1. Playwright with no timeout waits forever on a hidden element instead of
- *     failing, so every interaction below is explicitly bounded.
- *  2. The button's LABEL comes from `Ops.export.*`, whose keys are applied by
- *     the batch integrator (schooltest-web/src/i18n/messages/en.json is a
- *     merge-only file). Locators therefore key off data-slot and roles, never
- *     off English copy, so this spec passes before and after that merge.
+ * Drives the REAL screen against the REAL API: every fixture school is
+ * created through the ops contract, the button is clicked in the browser, and
+ * the file the browser actually saved is read off disk and parsed. Every
+ * response comes from the running API; no request is intercepted (except the
+ * one `ops_support` capabilities test, which mocks only the capabilities
+ * envelope — the underlying session, and therefore the export request, is
+ * still real).
+ *
+ * Export is scope-based, never selection-based (D-16): "Selecting rows then
+ * changing a filter does not change what Export produces." One consequence of
+ * moving the trigger into the bulk bar is that Export can only be REACHED
+ * once at least one row is selected — a filtered scope with ZERO visible rows
+ * (the old spec's `?q=zzz-no-school-has-this-name-ops019` case) therefore has
+ * no way to open the bar at all through this screen and is not exercised
+ * here; the endpoint's empty-scope behaviour is unchanged and is covered by
+ * the API's own `schooltest-api/tests/e2e/ops-portal/schools-export.spec.ts`.
  */
 import { mkdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -26,10 +37,7 @@ import { loginAs } from '../helpers/roles';
 const SCHOOLS_URL = '/dashboard/ops/schools';
 const ACTION_TIMEOUT = 20_000;
 
-const CAPTURES = path.resolve(
-  __dirname,
-  '../../../../.codephant/missions/msn-ab5a6a54-f385-42e1-826a-aeba2bbdbc66/captures/ops-019',
-);
+const CAPTURES = '/home/hnr/Code/schooltest/mvp/ops/proof/shots';
 
 const EXPECTED_HEADER =
   'documentId,name,suburb,state,postcode,sector,account_status,onboarding_status,createdAt';
@@ -45,13 +53,16 @@ const STORAGE_STATE = path.join(tmpdir(), 'ops-019-schools-export-state.json');
 
 test.describe.configure({ mode: 'serial' });
 
-const exportSection = (page: Page) => page.locator('[data-slot="ops-schools-export"]');
-const exportButton = (page: Page) => exportSection(page).getByRole('button');
-const exportScope = (page: Page) => page.locator('[data-slot="ops-schools-export-scope"]');
+/** The bulk bar only renders once a row is selected (`OpsBulkBar`'s own gate). */
+const bulkBar = (page: Page) => page.getByRole('region', { name: /selected/i });
+const exportButton = (page: Page) => bulkBar(page).getByRole('button', { name: 'Export', exact: true });
 
-async function openSchools(page: Page, query = ''): Promise<void> {
-  await page.goto(`${SCHOOLS_URL}${query}`);
-  await expect(exportSection(page)).toBeVisible({ timeout: ACTION_TIMEOUT });
+/** Ticks the first visible row's checkbox and waits for the bar to appear. */
+async function selectFirstRow(page: Page): Promise<void> {
+  const checkbox = page.locator('tbody tr').first().getByRole('checkbox');
+  await expect(checkbox).toBeVisible({ timeout: ACTION_TIMEOUT });
+  await checkbox.click();
+  await expect(bulkBar(page)).toBeVisible({ timeout: ACTION_TIMEOUT });
 }
 
 /** Click Export and return the saved file's name and text, read off disk. */
@@ -63,7 +74,7 @@ async function download(page: Page): Promise<{ filename: string; csv: string }> 
   return { filename: saved.suggestedFilename(), csv: readFileSync(file, 'utf8') };
 }
 
-test.describe('C-OPS-PORTAL-009 schools export UI', () => {
+test.describe('C-OPS-PORTAL-009 schools export UI (bulk bar)', () => {
   test.beforeAll(async ({ browser }) => {
     test.setTimeout(180_000);
     // `storageState: undefined` is required: the describe's `test.use` applies
@@ -90,63 +101,64 @@ test.describe('C-OPS-PORTAL-009 schools export UI', () => {
 
   test.use({ storageState: STORAGE_STATE });
 
-  test('exports every school when nothing is selected or filtered', async ({ page }) => {
-    await openSchools(page);
-
+  test('exports every school in the current scope when nothing is filtered', async ({ page }) => {
+    await page.goto(SCHOOLS_URL);
+    await selectFirstRow(page);
     await expect(exportButton(page)).toBeEnabled({ timeout: ACTION_TIMEOUT });
-    await expect(exportScope(page)).toHaveAttribute('data-scope', 'all');
+
     const { filename, csv } = await download(page);
 
     expect(filename).toBe('schools.csv');
     expect(csv.split('\r\n')[0]).toBe(EXPECTED_HEADER);
     expect(csv.split('\r\n').filter((line) => line !== '').length).toBeGreaterThan(1);
-    await expect(page.locator('[data-slot="ops-schools-export-done"]')).toHaveAttribute(
-      'data-filename',
-      'schools.csv',
-      { timeout: ACTION_TIMEOUT },
-    );
+    // The toast names the row count the SERVER returned, never `selected.length`
+    // (D-16) — exactly one row was ticked, but the whole directory downloaded.
+    await expect(
+      page.locator('[data-sonner-toast]', { hasText: /^\d+ schools? exported$/ }),
+    ).toBeVisible({ timeout: ACTION_TIMEOUT });
   });
 
-  test('exports exactly the selected school, and says so before the click', async ({
+  test('selecting a subset does not narrow the export — it is scope-based (D-16)', async ({
     page,
     request,
   }) => {
     const ledger = new OpsFixtureLedger();
     try {
-      const school = await createOpsFixtureSchool(request, ledger, 'OPS019 web');
-      await openSchools(page, `?documentIds=${school.documentId}`);
+      const first = await createOpsFixtureSchool(request, ledger, 'OPS019 subset A');
+      const second = await createOpsFixtureSchool(request, ledger, 'OPS019 subset B');
+      await page.goto(`${SCHOOLS_URL}?q=${encodeURIComponent('OPS019 subset')}`);
 
-      // The scope line is rendered from the same object the request is built
-      // from — the operator cannot be shown one scope and handed another.
-      await expect(exportScope(page)).toHaveAttribute('data-scope', 'selected', {
-        timeout: ACTION_TIMEOUT,
-      });
-      await expect(exportScope(page)).toHaveAttribute('data-selected-count', '1');
+      const rowA = page.locator('tbody tr', { hasText: first.name });
+      const rowB = page.locator('tbody tr', { hasText: second.name });
+      await expect(rowA).toBeVisible({ timeout: ACTION_TIMEOUT });
+      await expect(rowB).toBeVisible({ timeout: ACTION_TIMEOUT });
+
+      // Only ONE of the two matching rows is ticked. If Export read the
+      // selection, the file would hold one row; it must hold both.
+      await rowA.getByRole('checkbox').click();
+      await expect(bulkBar(page)).toContainText('1 school selected', { timeout: ACTION_TIMEOUT });
 
       const { filename, csv } = await download(page);
-      expect(filename).toBe('schools-selected.csv');
+      expect(filename).toBe('schools-filtered.csv');
       const lines = csv.split('\r\n').filter((line) => line !== '');
       expect(lines[0]).toBe(EXPECTED_HEADER);
-      expect(lines).toHaveLength(2);
-      expect(lines[1]).toContain(school.documentId);
+      expect(lines).toHaveLength(3);
+      expect(csv).toContain(first.documentId);
+      expect(csv).toContain(second.documentId);
+      await expect(
+        page.locator('[data-sonner-toast]', { hasText: '2 schools exported' }),
+      ).toBeVisible({ timeout: ACTION_TIMEOUT });
     } finally {
       await ledger.cleanup(request);
     }
   });
 
-  test('a filtered scope downloads the filtered file, not the whole directory', async ({ page }) => {
-    await openSchools(page, '?q=zzz-no-school-has-this-name-ops019');
-
-    await expect(exportScope(page)).toHaveAttribute('data-scope', 'filtered', {
-      timeout: ACTION_TIMEOUT,
-    });
-    const { filename, csv } = await download(page);
-    expect(filename).toBe('schools-filtered.csv');
-    expect(csv).toBe(`${EXPECTED_HEADER}\r\n`);
-  });
-
-  test('a rejected export shows an error and saves no file', async ({ page }) => {
-    await openSchools(page, '?documentIds=doesnotexist000000000001');
+  test('a rejected export shows an error toast and saves no file', async ({ page }) => {
+    // A scope naming an unknown school 404s server-side; the schools LIST
+    // itself does not recognise `documentIds` as a filter (it is read only by
+    // the export scope), so the table still renders and a row is selectable.
+    await page.goto(`${SCHOOLS_URL}?documentIds=doesnotexist000000000001`);
+    await selectFirstRow(page);
 
     let started = false;
     page.on('download', () => {
@@ -154,23 +166,82 @@ test.describe('C-OPS-PORTAL-009 schools export UI', () => {
     });
     await exportButton(page).click({ timeout: ACTION_TIMEOUT });
 
-    await expect(exportSection(page).getByRole('alert')).toBeVisible({ timeout: ACTION_TIMEOUT });
-    await expect(page.locator('[data-slot="ops-schools-export-done"]')).toHaveCount(0);
+    await expect(
+      page.locator('[data-sonner-toast]', {
+        hasText: 'Check your connection and try again — nothing was downloaded.',
+      }),
+    ).toBeVisible({ timeout: ACTION_TIMEOUT });
     expect(started, 'a 404 must not save a file').toBe(false);
   });
 
-  test('visual check: the export action at desktop and at 375px', async ({ page }) => {
+  test('a read-only (ops_support) session can Export but cannot Suspend or Archive', async ({
+    page,
+  }) => {
+    // The same contract-valid ops_support capabilities body schools-list.spec.ts
+    // uses for its row-menu read-only test: write: false, served from the real
+    // endpoint URL. The underlying session is still the real signed-in `ops`
+    // account, so Export — a GET, never gated — still reaches the live server.
+    const updatedAt = new Date().toISOString();
+    await page.route('**/api/ops/capabilities*', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            actor: {
+              documentId: 'zz09readonlysessionactor01',
+              first_name: 'Support',
+              last_name: 'Session',
+              email: 'support@schooltest.local',
+              role: 'ops_support',
+              updatedAt,
+            },
+            capabilities: { read: true, write: false, export: true, view_as_teacher: false, edit_self: true },
+            status_page_url: null,
+          },
+          meta: {},
+        }),
+      }),
+    );
+    const writes: string[] = [];
+    page.on('request', (request) => {
+      if (/\/api\/ops\/schools\/[^/]+\/(suspend|archive)/.test(request.url())) writes.push(request.url());
+    });
+
+    await page.goto(SCHOOLS_URL);
+    await selectFirstRow(page);
+    for (const label of ['Export', 'Suspend selected', 'Archive selected']) {
+      await expect(bulkBar(page).getByRole('button', { name: label, exact: true })).toBeVisible();
+    }
+
+    // Export: a real request, a real file, no refusal.
+    const { filename } = await download(page);
+    expect(filename).toBe('schools.csv');
+
+    // Suspend/Archive: the design's read-only refusal, and NO request.
+    await bulkBar(page).getByRole('button', { name: 'Suspend selected', exact: true }).click();
+    await expect(
+      page.locator('[data-sonner-toast]', {
+        hasText: 'Support accounts are read-only — ask an ops admin to make this change',
+      }),
+    ).toBeVisible({ timeout: ACTION_TIMEOUT });
+    expect(writes).toEqual([]);
+  });
+
+  test('visual check: the bulk bar with Export at desktop and at 375px', async ({ page }) => {
     mkdirSync(CAPTURES, { recursive: true });
 
-    await page.setViewportSize({ width: 1440, height: 1000 });
-    await openSchools(page);
-    await exportSection(page).scrollIntoViewIfNeeded({ timeout: ACTION_TIMEOUT });
-    await page.screenshot({ path: path.join(CAPTURES, 'schools-export-1440.png') });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(SCHOOLS_URL);
+    await selectFirstRow(page);
+    await bulkBar(page).scrollIntoViewIfNeeded({ timeout: ACTION_TIMEOUT });
+    await page.screenshot({ path: path.join(CAPTURES, '09-bulk-bar.png') });
 
     await page.setViewportSize({ width: 375, height: 812 });
-    await openSchools(page);
-    await exportSection(page).scrollIntoViewIfNeeded({ timeout: ACTION_TIMEOUT });
+    await page.goto(SCHOOLS_URL);
+    await selectFirstRow(page);
+    await bulkBar(page).scrollIntoViewIfNeeded({ timeout: ACTION_TIMEOUT });
     await expect(exportButton(page)).toBeVisible({ timeout: ACTION_TIMEOUT });
-    await page.screenshot({ path: path.join(CAPTURES, 'schools-export-375.png') });
+    await page.screenshot({ path: path.join(CAPTURES, '09-bulk-bar-375.png') });
   });
 });
