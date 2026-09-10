@@ -106,14 +106,30 @@ proved everything against the live stack. Nothing was rewritten from scratch.
 the new C-SCH-05 tests correctly observed the OLD bug — the immediate resend came back **500
 Internal Server Error**, exactly the regression the test pins. The mission's standing order
 ("do NOT start, stop, build or restart" the shared servers) forbids restarting `:5500`, so the
-fix was proven on a THROWAWAY instance instead (the stack's established pattern): api built,
-`PORT=5505 strapi start` booted from the same tree and datastore, the spec run with
-`E2E_BASE_URL=http://127.0.0.1:5505`, then the throwaway SIGTERMed. Result and residual gaps:
-see the section below (updated at run time).
+fix was proven on a THROWAWAY instance instead (the stack's established pattern): api built
+from this tree, `PORT=5505 strapi start` booted over the same datastore, the spec run with
+`E2E_BASE_URL=http://127.0.0.1:5505`, then the throwaway SIGTERMed and the shared servers
+re-verified untouched (`:5500` → 204, `:3002` → 200). Results across the proof runs:
 
-**Regression sanity next to the gates:** the api spec file in this task's write-set was run
-under `--project=mutating`: the pre-existing C-SCH-01..04 contract tests passed; see the
-section below for the C-SCH-05 outcome on the throwaway.
+- vs stale shared `:5500`: 3 passed / 3 failed — the failures being the pre-fix 500s and the
+  stale `link_token_prefix` assertion (below);
+- vs throwaway `:5505` (fix live), first pass: 5 passed / 1 failed — the one failure EXPOSED A
+  REAL SECOND DEFECT: the cooldown answered **400, not 429**, because Strapi's error middleware
+  (`formatApplicationError` in `@strapi/core/dist/services/errors.js`) maps every
+  `ApplicationError` by class to 400 and ignores the ad-hoc `.status = 429` the service stamps;
+  the controller wrapper set `Retry-After` but rethrew into that mapping. **Fixed** in
+  `src/api/school/lib/school-onboarding-link.actions.ts`: the wrapper now answers the 429
+  itself, emitting the same envelope Strapi would (`data: null`, `error{status,name,message,
+  details}`) plus `Retry-After`, leaving the service owning the window decision;
+- vs throwaway `:5505` (final, both fixes live): **6 passed (2.1s), exit 0** — C-SCH-01..04
+  contract tests, cooldown 429 + `Retry-After` + `ONBOARDING_LINK_COOLDOWN` +
+  `retryAfterSeconds`, and resend-mints-new-link keeping the old link live.
+
+**Found during this proof, NOT fixed here (out of this task's write-set):** the ops resend
+endpoint (`src/api/ops/controllers/invitations.ts`, task 15's surface) uses the same
+set-`.status`-and-rethrow shape, so its cooldown very likely answers 400 instead of its
+documented 429 too — same middleware, same shape. Reported to the orchestrator for that
+surface's owner.
 
 ## Shared-state hygiene (disclosure)
 
