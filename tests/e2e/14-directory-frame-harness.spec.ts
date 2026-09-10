@@ -78,10 +78,10 @@ async function dress(target: Page, markup: string): Promise<string> {
 async function signIn(target: Page): Promise<void> {
   await target.goto('/sign-in');
   const teacher = fixtureTeacherCredentials();
-  await target.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(teacher.email);
+  await target.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(teacher.email);
   await target.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(teacher.password);
   await target
-    .getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true })
+    .getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true })
     .click();
   await target.waitForURL(/\/dashboard(\/|$)/, { timeout: 90_000 });
 }

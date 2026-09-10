@@ -101,11 +101,11 @@ async function submitResetForm(page: Page, password: string): Promise<void> {
 test('sign-in: empty submit shows Zod validation errors, no toast', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
   await page.goto('/sign-in');
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   await expect(page.getByText(cat(en, 'Auth.emailRequired'))).toBeVisible();
   await expect(page.getByText(cat(en, 'Auth.passwordRequired'))).toBeVisible();
-  await expect(page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })).toHaveAttribute(
+  await expect(page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })).toHaveAttribute(
     'aria-invalid',
     'true',
   );
@@ -115,9 +115,9 @@ test('sign-in: empty submit shows Zod validation errors, no toast', async ({ pag
 test('sign-in: invalid credentials shows inline alert + toast.error', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill('WrongPass123!');
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   await expectInlineAlert(page, cat(en, 'Auth.loginError'));
   await expectToast(page, 'error', cat(en, 'Auth.loginError'));
@@ -228,7 +228,7 @@ test('sign-up UI matches sign-in styling', async ({ page }) => {
   await page.goto('/sign-in');
   // The card paints a skeleton until the auth store hydrates — wait for the
   // real form before sampling classes (the skeleton has no animate-in).
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).waitFor();
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).waitFor();
   const signInClasses = await (await authCard(page)).getAttribute('class');
 
   await page.goto('/sign-up');
@@ -287,9 +287,9 @@ test.describe('registration + email confirmation + onboarding (serial, UI flow)'
   test('first login redirects to mandatory onboarding with skip option', async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto('/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
+    await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
     await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+    await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
     await page.waitForURL('**/onboarding');
     await expect(page).toHaveURL(/\/onboarding$/);
@@ -301,9 +301,9 @@ test.describe('registration + email confirmation + onboarding (serial, UI flow)'
   test('skip onboarding lands on /dashboard', async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto('/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
+    await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
     await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+    await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
     await page.waitForURL('**/onboarding');
 
     await page.getByRole('button', { name: cat(en, 'Onboarding.skip'), exact: true }).click();
@@ -365,9 +365,9 @@ test.describe('password reset round-trip (serial, API-seeded parent)', () => {
   test('new password signs in via UI', async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto('/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
+    await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(parent.email);
     await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(NEW_PASSWORD);
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+    await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
     await page.waitForURL('**/dashboard');
   });
 });

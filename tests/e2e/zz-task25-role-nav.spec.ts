@@ -36,9 +36,9 @@ async function signIn(page: Page, email: string, password: string): Promise<void
     await page.waitForTimeout(3_100 - sinceLast);
   }
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   lastLoginAt = Date.now();
   await page.waitForURL('**/dashboard');
 }

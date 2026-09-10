@@ -46,11 +46,11 @@ async function signInAsOps(page: Page): Promise<void> {
       // In the try: neighbouring suites restart the dev server, so even the
       // navigation can be refused — contention, not a defect.
       await page.goto('/sign-in');
-      await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(OPS_EMAIL);
+      await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(OPS_EMAIL);
       await page
         .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
         .fill(apiEnv('SEED_APIADMIN_PASSWORD'));
-      await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+      await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
       await page.waitForURL('**/dashboard', { timeout: 20_000 });
       return;
     } catch {

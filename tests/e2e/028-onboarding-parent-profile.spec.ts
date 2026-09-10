@@ -35,9 +35,9 @@ async function uiLogin(page: Page, email: string): Promise<void> {
     await page.waitForTimeout(MIN_LOGIN_INTERVAL_MS - since);
   }
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(E2E_PASSWORD);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   lastLoginAt = Date.now();
 }
 

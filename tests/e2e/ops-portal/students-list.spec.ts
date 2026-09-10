@@ -76,13 +76,13 @@ async function signInAsOps(page: Page): Promise<void> {
   await page.clock.setFixedTime(new Date(REFERENCE_CLOCK_ISO));
   await page.goto('/sign-in');
   await page
-    .getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })
+    .getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })
     .fill('apiadmin@schooltest.local', { timeout: ACTION_TIMEOUT });
   await page
     .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
     .fill(apiEnv('SEED_APIADMIN_PASSWORD'), { timeout: ACTION_TIMEOUT });
   await page
-    .getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true })
+    .getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true })
     .click({ timeout: ACTION_TIMEOUT });
   await page.waitForURL('**/dashboard', { timeout: 30_000 });
 }

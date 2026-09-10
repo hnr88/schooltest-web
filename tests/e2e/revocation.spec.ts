@@ -32,9 +32,9 @@ test('flow: a revoked (blocked) account cannot sign in through the real form', a
   setBlocked(teacher.email, true);
 
   await page.goto('/sign-in');
-  await page.getByLabel(en['Auth.emailLabel'], { exact: true }).fill(teacher.email);
+  await page.getByLabel(en['Auth.portal.emailLabel'], { exact: true }).fill(teacher.email);
   await page.getByLabel(en['Auth.passwordLabel'], { exact: true }).fill(teacher.password);
-  await page.getByRole('button', { name: en['Auth.signInButton'], exact: true }).click();
+  await page.getByRole('button', { name: en['Auth.portal.loginButton'], exact: true }).click();
 
   // It must stay on /sign-in with a visible failure — never silently succeed.
   await expect(page).toHaveURL(/\/sign-in/);

@@ -100,12 +100,12 @@ function ladderIndex(code: string): number {
 async function signInAsTeacher(page: Page): Promise<void> {
   await page.goto('/sign-in');
   await page
-    .getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })
+    .getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })
     .fill('teacher@schooltest.local');
   await page
     .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
     .fill(apiEnv('SEED_TEACHER_PASSWORD'));
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await page.waitForURL('**/dashboard');
 }
 

@@ -83,12 +83,12 @@ async function loginAsSupport(page: Page, attempts = 6): Promise<void> {
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     await page.goto('/sign-in');
     await page
-      .getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })
+      .getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })
       .fill(requireEnv('E2E_OPS_SUPPORT_EMAIL'));
     await page
       .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
       .fill(requireEnv('E2E_OPS_SUPPORT_PASSWORD'));
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+    await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
     const landed = await page
       .waitForURL(/\/dashboard(\/|$)/, { timeout: WAIT })
       .then(() => true)

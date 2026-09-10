@@ -37,13 +37,13 @@ async function opsSchools(request: APIRequestContext): Promise<ApiSchool[]> {
 async function signInAsOps(page: Page): Promise<void> {
   await page.goto('/sign-in');
   await page
-    .getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })
+    .getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })
     .fill('apiadmin@schooltest.local');
   await page
     .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
     .fill(apiEnv('SEED_APIADMIN_PASSWORD'));
   await page
-    .getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true })
+    .getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true })
     .click();
   await page.waitForURL('**/dashboard');
 }

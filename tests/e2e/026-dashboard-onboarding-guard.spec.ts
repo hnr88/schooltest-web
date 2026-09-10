@@ -39,11 +39,11 @@ function resetParentOnboarding(status: 'pending' | 'skipped' | 'completed'): voi
 
 async function submitSignInForm(page: Page): Promise<void> {
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
   await page
     .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
     .fill(SEEDED_PARENT.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 }
 
 test.describe.configure({ mode: 'serial' });

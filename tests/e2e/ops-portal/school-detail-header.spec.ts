@@ -89,9 +89,9 @@ async function loginAsSupport(page: Page): Promise<void> {
   if (!email || !password)
     throw new Error('ops/10 support proof needs E2E_OPS_SUPPORT_EMAIL/PASSWORD');
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 20_000 });
 }
 

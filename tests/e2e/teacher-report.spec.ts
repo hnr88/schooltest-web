@@ -42,9 +42,9 @@ function teacherOwnedResult(): SeededResult {
 
 async function signIn(page: Page, email: string, password: string): Promise<void> {
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await page.waitForURL('**/dashboard');
 }
 
@@ -76,7 +76,7 @@ test.describe('teacher report route guard + data layer', () => {
     await page.goto('/dashboard/reports');
     await page.waitForURL('**/sign-in');
     await expect(
-      page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }),
+      page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }),
     ).toBeVisible();
   });
 

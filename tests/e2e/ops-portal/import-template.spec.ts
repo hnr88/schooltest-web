@@ -56,9 +56,9 @@ const downloadTrigger = (page: Page) =>
 async function signInAsOps(page: Page): Promise<void> {
   await page.clock.setFixedTime(new Date(REFERENCE_CLOCK_ISO));
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(OPS.email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(OPS.email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(OPS.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await page.waitForURL('**/dashboard/ops/schools', { timeout: 90_000 });
   await page.goto(`/dashboard/ops/schools/${fixtureSchoolId()}`);
   await expect(panelOf(page)).toBeVisible({ timeout: 20_000 });
