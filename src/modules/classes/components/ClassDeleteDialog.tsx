@@ -2,22 +2,15 @@
 
 import { useTranslations } from 'next-intl';
 
-import type { SchoolClass } from '@/modules/classes/types/classes.types';
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  Button,
-} from '@/modules/design-system';
+import { OpsConfirmDialog } from '@/modules/ops';
 
 import type { ClassDeleteDialogProps } from '@/modules/classes/types/components.types';
 
 // C-CLS-04 confirm. The description carries the contract promise in plain
 // language: students are unlinked, never deleted.
+//
+// De-duplicated onto the portal's ONE confirm (U-24 / R-19). The copy keys are
+// unchanged — `Classes.deleteDialog.*` still owns every string here.
 export function ClassDeleteDialog({
   schoolClass,
   open,
@@ -28,27 +21,16 @@ export function ClassDeleteDialog({
   const t = useTranslations('Classes.deleteDialog');
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent size="sm">
-        <AlertDialogHeader>
-          <AlertDialogTitle>{t('title', { name: schoolClass.name })}</AlertDialogTitle>
-          <AlertDialogDescription>{t('description')}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className="h-11 px-4" disabled={pending}>
-            {t('cancel')}
-          </AlertDialogCancel>
-          <Button
-            type="button"
-            variant="destructive"
-            className="h-11 px-4"
-            loading={pending}
-            onClick={onConfirm}
-          >
-            {t('confirm')}
-          </Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <OpsConfirmDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title={t('title', { name: schoolClass.name })}
+      description={t('description')}
+      cancelLabel={t('cancel')}
+      confirmLabel={t('confirm')}
+      tone="destructive"
+      pending={pending}
+      onConfirm={onConfirm}
+    />
   );
 }

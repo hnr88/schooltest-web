@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
@@ -9,6 +12,10 @@ import { roleCredentials } from './helpers/credentials';
 const en = loadMessages('en');
 
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
+
+// THREE levels up: __dirname is tests/e2e, so ../../.. is the repo root.
+// (A spec one folder deeper needs FOUR — count it, do not copy it.)
+const SHOTS_05 = path.resolve(__dirname, '../../../mvp/school-admin/proof/shots');
 
 const API = process.env.API_BASE_URL ?? 'http://127.0.0.1:5500';
 
@@ -341,5 +348,70 @@ test.describe('school admin dashboard redesign', () => {
     await page.goto('/dashboard/school/children');
     await page.waitForURL('**/dashboard/school/students', { timeout: 20_000 });
     await expect(page.locator('[data-slot="school-students"]')).toBeVisible();
+  });
+
+  // school-admin/05 — the portal's ONE confirm (U-24 / R-19), on a REAL surface
+  // after the three per-module clones were collapsed onto it. Opens the confirm
+  // and never presses the destructive button: what is under test is the shared
+  // AlertDialog's guarantees and the capture, not another archive write (task
+  // 30 already round-trips that).
+  test('05: the shared confirm renders destructive on a live row and refuses backdrop dismissal', async ({
+    page,
+  }, testInfo) => {
+    // The budget must fit inside the timeout, or every cause reports as one
+    // opaque "timeout exceeded" (mvp/ops/proof/20.md §11).
+    test.setTimeout(150_000);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await signIn(page);
+    await page.goto('/en/dashboard/school/students');
+
+    // The default roster INCLUDES archived students, whose menu correctly offers
+    // Edit and no Archive — so pick a row that is NOT archived rather than the
+    // first one. Getting this wrong is what made an earlier attempt fail on an
+    // absent menuitem and look like a component defect.
+    const rows = page.locator('tbody tr');
+    await expect(rows.first()).toBeVisible({ timeout: 60_000 });
+    const active = rows.filter({ hasNot: page.getByText('Archived', { exact: true }) }).first();
+    await expect(active, 'the roster must contain a non-archived student').toBeVisible();
+    await active.getByRole('button', { name: /^Actions for / }).click();
+
+    const archiveItem = page.getByRole('menuitem', {
+      name: cat(en, 'SchoolStudents.actions.archive'),
+      exact: true,
+    });
+    await expect(archiveItem).toBeVisible();
+    await archiveItem.click();
+
+    const confirm = page.getByRole('alertdialog');
+    await expect(confirm).toBeVisible();
+    await expect(
+      confirm.getByRole('button', {
+        name: cat(en, 'SchoolStudents.archiveDialog.confirm'),
+        exact: true,
+      }),
+    ).toBeVisible();
+
+    const shot = path.join(SHOTS_05, '05-confirm-destructive.png');
+    await page.screenshot({ path: shot, fullPage: false });
+    await testInfo.attach('05-confirm-destructive', { path: shot, contentType: 'image/png' });
+    // Read the bytes BACK OFF DISK: an assertion on a fresh in-memory buffer
+    // cannot detect a wrong path or a failed write (20.md §12f).
+    const saved = readFileSync(shot);
+    expect(saved.subarray(0, 8)).toEqual(
+      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    );
+    expect({ width: saved.readUInt32BE(16), height: saved.readUInt32BE(20) }).toEqual({
+      width: 1440,
+      height: 900,
+    });
+
+    // Done when: a backdrop click does NOT dismiss the confirm.
+    await page.mouse.click(8, 8);
+    await expect(confirm).toBeVisible();
+    // Cancel closes it without firing the action.
+    await confirm
+      .getByRole('button', { name: cat(en, 'SchoolStudents.archiveDialog.cancel'), exact: true })
+      .click();
+    await expect(confirm).toBeHidden();
   });
 });

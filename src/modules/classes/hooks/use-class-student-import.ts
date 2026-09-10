@@ -3,8 +3,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions';
 import { CLASSES_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
 import { useImportStudentsMutation } from '@/modules/school-students';
 import type { ParsedStudentCsv } from '@/modules/student-import';
@@ -35,14 +35,14 @@ export function useClassStudentImport(
       .mutateAsync({ rows: parsed.rows, classDocumentId })
       .catch(() => ({ created: 0, total: parsed.rows.length, failure: null }));
     if (result.created === 0) {
-      toast.error(t(`${result.failure ?? 'generic'}Toast`));
+      showOpsToast({ tone: 'error', message: t(`${result.failure ?? 'generic'}Toast`) });
       return;
     }
     await queryClient.invalidateQueries({ queryKey: CLASSES_QUERY_KEY });
     if (result.created < result.total) {
-      toast.warning(t('partialToast', { created: result.created, total: result.total }));
+      showOpsToast({ tone: 'warn', message: t('partialToast', { created: result.created, total: result.total }) });
     } else {
-      toast.success(t('successToast', { count: result.created }));
+      showOpsToast({ tone: 'ok', message: t('successToast', { count: result.created }) });
     }
     onDone();
   };

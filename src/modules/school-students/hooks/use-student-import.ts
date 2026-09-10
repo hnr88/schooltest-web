@@ -2,8 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions';
 import { EMPTY_PARSED_CSV } from '@/modules/school-students/constants/hooks.constants';
 import { useImportStudentsMutation } from '@/modules/school-students/queries/use-import-students.mutation';
 import type { StudentImportState } from '@/modules/school-students/types/hooks.types';
@@ -28,13 +28,13 @@ export function useStudentImport(onDone: () => void): StudentImportState {
       .mutateAsync({ rows: parsed.rows, classDocumentId: classId })
       .catch(() => ({ created: 0, total: parsed.rows.length, failure: null }));
     if (result.created === 0) {
-      toast.error(t(`${result.failure ?? 'generic'}Toast`));
+      showOpsToast({ tone: 'error', message: t(`${result.failure ?? 'generic'}Toast`) });
       return;
     }
     if (result.created < result.total) {
-      toast.warning(t('partialToast', { created: result.created, total: result.total }));
+      showOpsToast({ tone: 'warn', message: t('partialToast', { created: result.created, total: result.total }) });
     } else {
-      toast.success(t('successToast', { count: result.created }));
+      showOpsToast({ tone: 'ok', message: t('successToast', { count: result.created }) });
     }
     onDone();
   };
