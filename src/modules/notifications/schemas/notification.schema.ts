@@ -1,61 +1,24 @@
-import { z } from 'zod';
-
-export const notificationCategorySchema = z.enum([
-  'account',
-  'security',
-  'children',
-  'testActivity',
-  'testResults',
-]);
-
-export const notificationPrioritySchema = z.enum(['high', 'medium', 'low']);
-
-export const notificationSchema = z.strictObject({
-  documentId: z.string().min(1),
-  eventType: z.string().min(1),
-  category: notificationCategorySchema,
-  title: z.string().min(1),
-  body: z.string().nullable(),
-  priority: notificationPrioritySchema,
-  readAt: z.iso.datetime().nullable(),
-  linkUrl: z.string().min(1).nullable(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
-
-export const notificationListParamsSchema = z.strictObject({
-  page: z.number().int().min(1),
-  pageSize: z.number().int().min(1).max(100),
-  read: z.boolean().optional(),
-  category: notificationCategorySchema.optional(),
-  // Row 09: the feed pages on the SERVER now, so its search and date sort
-  // travel with it. `eventType` was already served and simply unreachable
-  // from here — the schema being strict is what made it unreachable.
-  q: z.string().min(1).optional(),
-  sort: z.enum(['date:asc', 'date:desc']).optional(),
-  eventType: z.string().min(1).optional(),
-});
-
-export const notificationListResponseSchema = z.strictObject({
-  data: z.array(notificationSchema),
-  meta: z.strictObject({
-    pagination: z.strictObject({
-      page: z.number().int().min(1),
-      pageSize: z.number().int().min(1).max(100),
-      pageCount: z.number().int().min(0),
-      total: z.number().int().min(0),
-    }),
-    unreadCount: z.number().int().min(0),
-  }),
-});
-
-export const notificationReadResponseSchema = z.strictObject({
-  data: z.strictObject({
-    documentId: z.string().min(1),
-    readAt: z.iso.datetime(),
-  }),
-});
-
-export const notificationReadAllResponseSchema = z.strictObject({
-  data: z.strictObject({ updated: z.number().int().min(0).max(100) }),
-});
+/**
+ * Notification wire contracts — now a RE-EXPORT SHIM over
+ * `@schooltest/notification-contracts` (mvp/notifications row 02, D-05).
+ *
+ * This file used to hand-type the taxonomy-open row shape; the package is the
+ * one source now. The LENIENT variants are deliberate and named in the package:
+ * `eventType` parses as an open string at the CLIENT boundary so an older
+ * bundle renders a newer server's unknown event type instead of rejecting the
+ * whole row (see the package's `event-types.ts` for the reasoning).
+ *
+ * Public names are unchanged, so every importer of this file keeps working
+ * byte-identically.
+ */
+export {
+  notificationCategorySchema,
+  notificationListParamsSchema,
+  notificationPrioritySchema,
+} from '@schooltest/notification-contracts';
+export {
+  notificationListWireSchema as notificationListResponseSchema,
+  notificationMarkAllSchema as notificationReadAllResponseSchema,
+  notificationMarkReadSchema as notificationReadResponseSchema,
+  notificationRowWireSchema as notificationSchema,
+} from '@schooltest/notification-contracts';

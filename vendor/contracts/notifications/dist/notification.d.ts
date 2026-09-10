@@ -2,7 +2,30 @@ import { z } from 'zod';
 /** Taxonomy-authoritative: use server-side and in the parity spec. */
 export declare const notificationRowSchema: z.ZodObject<{
     documentId: z.ZodString;
-    eventType: z.ZodTypeAny<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>;
+    eventType: z.ZodEnum<{
+        account_email_confirmed: "account_email_confirmed";
+        security_password_reset_requested: "security_password_reset_requested";
+        security_password_reset_completed: "security_password_reset_completed";
+        security_password_changed: "security_password_changed";
+        student_created: "student_created";
+        student_email_fix_requested: "student_email_fix_requested";
+        session_started: "session_started";
+        session_completed: "session_completed";
+        test_results_ready: "test_results_ready";
+        test_results_updated: "test_results_updated";
+        sitting_scheduled: "sitting_scheduled";
+        device_setup_reminder: "device_setup_reminder";
+        assessment_window_opened: "assessment_window_opened";
+        assessment_window_report_shared: "assessment_window_report_shared";
+        assessment_window_cancelled: "assessment_window_cancelled";
+        result_scoring_failed: "result_scoring_failed";
+        report_recalled: "report_recalled";
+        school_suspended: "school_suspended";
+        school_archived: "school_archived";
+        school_reinstated: "school_reinstated";
+        class_teacher_assigned: "class_teacher_assigned";
+        sitting_session_terminated: "sitting_session_terminated";
+    }>;
     category: z.ZodEnum<{
         account: "account";
         security: "security";
@@ -30,7 +53,7 @@ export type NotificationRow = z.infer<typeof notificationRowSchema>;
  */
 export declare const notificationRowWireSchema: z.ZodObject<{
     documentId: z.ZodString;
-    eventType: z.ZodTypeAny<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>;
+    eventType: z.ZodString;
     category: z.ZodEnum<{
         account: "account";
         security: "security";
@@ -64,7 +87,51 @@ export declare const notificationPaginationSchema: z.ZodObject<{
  * `read` / `category` / `eventType` / `q` filters applied to the page.
  */
 export declare const notificationListSchema: z.ZodObject<{
-    data: z.ZodArray<z.ZodTypeAny<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>>;
+    data: z.ZodArray<z.ZodObject<{
+        documentId: z.ZodString;
+        eventType: z.ZodEnum<{
+            account_email_confirmed: "account_email_confirmed";
+            security_password_reset_requested: "security_password_reset_requested";
+            security_password_reset_completed: "security_password_reset_completed";
+            security_password_changed: "security_password_changed";
+            student_created: "student_created";
+            student_email_fix_requested: "student_email_fix_requested";
+            session_started: "session_started";
+            session_completed: "session_completed";
+            test_results_ready: "test_results_ready";
+            test_results_updated: "test_results_updated";
+            sitting_scheduled: "sitting_scheduled";
+            device_setup_reminder: "device_setup_reminder";
+            assessment_window_opened: "assessment_window_opened";
+            assessment_window_report_shared: "assessment_window_report_shared";
+            assessment_window_cancelled: "assessment_window_cancelled";
+            result_scoring_failed: "result_scoring_failed";
+            report_recalled: "report_recalled";
+            school_suspended: "school_suspended";
+            school_archived: "school_archived";
+            school_reinstated: "school_reinstated";
+            class_teacher_assigned: "class_teacher_assigned";
+            sitting_session_terminated: "sitting_session_terminated";
+        }>;
+        category: z.ZodEnum<{
+            account: "account";
+            security: "security";
+            children: "children";
+            testActivity: "testActivity";
+            testResults: "testResults";
+        }>;
+        title: z.ZodString;
+        body: z.ZodNullable<z.ZodString>;
+        priority: z.ZodEnum<{
+            high: "high";
+            medium: "medium";
+            low: "low";
+        }>;
+        readAt: z.ZodNullable<z.ZodISODateTime>;
+        linkUrl: z.ZodNullable<z.ZodString>;
+        createdAt: z.ZodISODateTime;
+        updatedAt: z.ZodISODateTime;
+    }, z.core.$strict>>;
     meta: z.ZodObject<{
         pagination: z.ZodObject<{
             page: z.ZodNumber;
@@ -77,7 +144,28 @@ export declare const notificationListSchema: z.ZodObject<{
 }, z.core.$strict>;
 export type NotificationListEnvelope = z.infer<typeof notificationListSchema>;
 export declare const notificationListWireSchema: z.ZodObject<{
-    data: z.ZodArray<z.ZodTypeAny<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>>;
+    data: z.ZodArray<z.ZodObject<{
+        documentId: z.ZodString;
+        eventType: z.ZodString;
+        category: z.ZodEnum<{
+            account: "account";
+            security: "security";
+            children: "children";
+            testActivity: "testActivity";
+            testResults: "testResults";
+        }>;
+        title: z.ZodString;
+        body: z.ZodNullable<z.ZodString>;
+        priority: z.ZodEnum<{
+            high: "high";
+            medium: "medium";
+            low: "low";
+        }>;
+        readAt: z.ZodNullable<z.ZodISODateTime>;
+        linkUrl: z.ZodNullable<z.ZodString>;
+        createdAt: z.ZodISODateTime;
+        updatedAt: z.ZodISODateTime;
+    }, z.core.$strict>>;
     meta: z.ZodObject<{
         pagination: z.ZodObject<{
             page: z.ZodNumber;
@@ -118,25 +206,12 @@ export declare const notificationListParamsSchema: z.ZodObject<{
     }>>;
 }, z.core.$strict>;
 /**
- * C-NOT-01 — the staff feed's SEVEN-key projection of the same rows
- * (`GET /api/schools/me/notifications`). A lossy re-projection, not a different
- * stream: row 08 proved both endpoints read through one shared reader and
- * differ only here.
+ * C-NOT-01 — the school-staff feed's projection lives in `./school-feed`, so
+ * the parent feed's row and the staff projection sit beside each other in the
+ * package and neither copy can drift (row 08: one reader, two projections).
  */
-export declare const schoolNotificationRowSchema: z.ZodObject<{
-    documentId: z.ZodString;
-    type: z.ZodString;
-    title: z.ZodString;
-    body: z.ZodNullable<z.ZodString>;
-    link: z.ZodNullable<z.ZodString>;
-    read: z.ZodBoolean;
-    createdAt: z.ZodISODateTime;
-}, z.core.$strict>;
-export type SchoolNotificationRow = z.infer<typeof schoolNotificationRowSchema>;
-/**
- * C-NOTIF-READ — `PUT /api/notifications/{documentId}/read`: idempotent, so an
- * already-read row answers its ORIGINAL `readAt`.
- */
+/** C-NOTIF-READ — `PUT /api/notifications/{documentId}/read`: idempotent, so an
+ * already-read row answers its ORIGINAL `readAt`. */
 export declare const notificationMarkReadSchema: z.ZodObject<{
     data: z.ZodObject<{
         documentId: z.ZodString;

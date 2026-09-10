@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.notificationMarkAllSchema = exports.notificationMarkReadSchema = exports.schoolNotificationRowSchema = exports.notificationListParamsSchema = exports.notificationUnreadCountSchema = exports.notificationListWireSchema = exports.notificationListSchema = exports.notificationPaginationSchema = exports.notificationRowWireSchema = exports.notificationRowSchema = void 0;
+exports.notificationMarkAllSchema = exports.notificationMarkReadSchema = exports.notificationListParamsSchema = exports.notificationUnreadCountSchema = exports.notificationListWireSchema = exports.notificationListSchema = exports.notificationPaginationSchema = exports.notificationRowWireSchema = exports.notificationRowSchema = void 0;
 const zod_1 = require("zod");
 const event_types_1 = require("./event-types");
 const str = zod_1.z.string().min(1);
@@ -15,6 +15,10 @@ const nonNegativeInt = zod_1.z.number().int().min(0);
  * lenient variants below cannot drift in their other nine keys. That is the
  * whole point — the previous three hand-copies differed only in this one field
  * and nobody could tell at a glance whether anything else had moved too.
+ *
+ * The parameter is generic (NOT `z.ZodTypeAny`): a type-any parameter infers
+ * the row's `eventType` OUTPUT as `unknown` in the emitted .d.ts, and what that
+ * key infers is the entire strict/lenient distinction.
  */
 const notificationRowShape = (eventType) => zod_1.z.strictObject({
     documentId: str,
@@ -76,24 +80,12 @@ exports.notificationListParamsSchema = zod_1.z.strictObject({
     sort: zod_1.z.enum(['date:asc', 'date:desc']).optional(),
 });
 /**
- * C-NOT-01 — the staff feed's SEVEN-key projection of the same rows
- * (`GET /api/schools/me/notifications`). A lossy re-projection, not a different
- * stream: row 08 proved both endpoints read through one shared reader and
- * differ only here.
+ * C-NOT-01 — the school-staff feed's projection lives in `./school-feed`, so
+ * the parent feed's row and the staff projection sit beside each other in the
+ * package and neither copy can drift (row 08: one reader, two projections).
  */
-exports.schoolNotificationRowSchema = zod_1.z.strictObject({
-    documentId: str,
-    type: event_types_1.notificationEventTypeWireSchema,
-    title: zod_1.z.string(),
-    body: zod_1.z.string().nullable(),
-    link: zod_1.z.string().nullable(),
-    read: zod_1.z.boolean(),
-    createdAt: iso,
-});
-/**
- * C-NOTIF-READ — `PUT /api/notifications/{documentId}/read`: idempotent, so an
- * already-read row answers its ORIGINAL `readAt`.
- */
+/** C-NOTIF-READ — `PUT /api/notifications/{documentId}/read`: idempotent, so an
+ * already-read row answers its ORIGINAL `readAt`. */
 exports.notificationMarkReadSchema = zod_1.z.strictObject({
     data: zod_1.z.strictObject({ documentId: str, readAt: iso }),
 });

@@ -1,34 +1,16 @@
-import { z } from 'zod';
-
-// C-NOT-01 school feed row (mission st-mvp-pivot, task 112): the school-staff
-// projection of a notification row - type from eventType, link from linkUrl,
-// read from readAt != null. Deliberately separate from the parent portal
-// schema (C-NOTIF-LIST), which carries category/priority/readAt fields the
-// school feed does not expose.
-export const schoolNotificationSchema = z.strictObject({
-  documentId: z.string().min(1),
-  type: z.string().min(1),
-  title: z.string().min(1),
-  body: z.string().nullable(),
-  link: z.string().min(1).nullable(),
-  read: z.boolean(),
-  createdAt: z.iso.datetime(),
-});
-
-export const schoolNotificationListParamsSchema = z.strictObject({
-  page: z.number().int().min(1),
-  pageSize: z.number().int().min(1).max(100),
-});
-
-export const schoolNotificationListResponseSchema = z.strictObject({
-  data: z.array(schoolNotificationSchema),
-  meta: z.strictObject({
-    pagination: z.strictObject({
-      page: z.number().int().min(1),
-      pageSize: z.number().int().min(1).max(100),
-      pageCount: z.number().int().min(0),
-      total: z.number().int().min(0),
-    }),
-    unreadCount: z.number().int().min(0),
-  }),
-});
+/**
+ * C-NOT-01 school feed wire contracts — now a RE-EXPORT SHIM over
+ * `@schooltest/notification-contracts` (mvp/notifications row 02, D-05; the
+ * shapes live in the package's `school-feed.ts`). The school-staff projection
+ * of a notification row — type from eventType, link from linkUrl, read from
+ * `readAt != null` — sits beside the parent feed's row in the package, so the
+ * two projections cannot drift (row 08: one reader, two projections).
+ *
+ * Public names are unchanged, so every importer of this file keeps working
+ * byte-identically.
+ */
+export {
+  schoolNotificationListParamsSchema,
+  schoolNotificationListSchema as schoolNotificationListResponseSchema,
+  schoolNotificationRowSchema as schoolNotificationSchema,
+} from '@schooltest/notification-contracts';

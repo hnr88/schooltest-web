@@ -1,29 +1,29 @@
 import { z } from 'zod';
 
-import { NOTIFICATION_DIGEST_FREQUENCIES } from '@/modules/notifications/constants/notification-preferences.constants';
-
-export const notificationDigestFrequencySchema = z.enum(NOTIFICATION_DIGEST_FREQUENCIES);
+import {
+  notificationChannelsSchema,
+  notificationDigestFrequencySchema,
+  notificationEventPreferencesSchema,
+  SUPPRESSIBLE_EVENT_KEYS,
+} from '@schooltest/notification-contracts';
 
 /**
- * Row 05 (D-01) — the six switchable EVENTS, in the order the card renders.
- * account/security events carry no key and can never be switched off, so they
- * are absent here by construction, not by a runtime check.
+ * The preference wire contracts — the PARTS come from
+ * `@schooltest/notification-contracts` (mvp/notifications row 02, D-05) so the
+ * taxonomy, the channel set and the digest frequencies have one source. The
+ * card's FORM shape stays composed here: it is the settings card's own submit
+ * body (per-EVENT switches + the global channel masters), a UI concern the
+ * package deliberately leaves to the client that renders it (row 05, D-01).
  */
-export const NOTIFICATION_EVENT_KEYS = [
-  'test_results_ready',
-  'test_results_updated',
-  'session_completed',
-  'session_started',
-  'student_created',
-  'student_email_fix_requested',
-] as const;
 
-export const notificationEventPreferencesSchema = z.strictObject(
-  Object.fromEntries(NOTIFICATION_EVENT_KEYS.map((k) => [k, z.boolean()])) as Record<
-    (typeof NOTIFICATION_EVENT_KEYS)[number],
-    z.ZodBoolean
-  >,
-);
+/**
+ * The switchable EVENTS, in the order the card renders — the package's
+ * suppressible set (account/security carry no key and can never be switched
+ * off, so they are absent by construction, not by a runtime check).
+ */
+export const NOTIFICATION_EVENT_KEYS = SUPPRESSIBLE_EVENT_KEYS;
+
+export { notificationDigestFrequencySchema, notificationEventPreferencesSchema };
 
 /**
  * What the CARD submits. Row 05: the three category booleans are NOT here any
@@ -40,20 +40,12 @@ export const notificationPreferenceFormSchema = z.strictObject({
   digestFrequency: notificationDigestFrequencySchema,
 });
 
-export const notificationPreferenceSchema = notificationPreferenceFormSchema.extend({
-  documentId: z.string().min(1),
-  account: z.boolean(),
-  security: z.boolean(),
-  // Derived server-side from the events; read-only to this client.
-  children: z.boolean(),
-  testActivity: z.boolean(),
-  testResults: z.boolean(),
-  // Nullable: a row the back-fill has not reached yet.
-  eventPreferences: z.record(z.string(), z.boolean()).nullable().optional(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
-
-export const notificationPreferenceResponseSchema = z.strictObject({
-  data: notificationPreferenceSchema,
-});
+/**
+ * What the server returns for `/api/notification-preferences/me` — the
+ * package's row (channels + categories + the locked pair + the per-event map)
+ * with this client's names.
+ */
+export {
+  notificationPreferenceResponseSchema,
+  notificationPreferenceSchema,
+} from '@schooltest/notification-contracts';
