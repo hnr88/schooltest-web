@@ -20,12 +20,12 @@ export { JoinCodePanel } from './components/JoinCodePanel';
 export { JoinCodeDisplay } from './components/JoinCodeDisplay';
 export { PastSessionsPanel } from './components/PastSessionsPanel';
 export { PastSessionsTable } from './components/PastSessionsTable';
-export { PastSessionRow } from './components/PastSessionRow';
 export { SessionMissingValue } from './components/SessionMissingValue';
 
 export { useStartTestSessionForm } from './hooks/useStartTestSessionForm';
 export { useJoinCodePanel } from './hooks/useJoinCodePanel';
 export { usePastSessions } from './hooks/usePastSessions';
+export { usePastSessionsColumns } from './hooks/usePastSessionsColumns';
 
 export { useTeacherDashboardQuery } from './queries/use-teacher-dashboard.query';
 export { useTeacherTestsQuery } from './queries/use-teacher-tests.query';
@@ -33,6 +33,7 @@ export { useTestSessionsQuery } from './queries/use-test-sessions.query';
 export { useTestSessionMonitorQuery } from './queries/use-test-session-monitor.query';
 export { useCreateTestSessionMutation } from './queries/use-create-test-session.mutation';
 export { useCloseTestSessionMutation } from './queries/use-close-test-session.mutation';
+export { useRescoreResultMutation } from './queries/use-rescore-result.mutation';
 export { useStudentDrillDownQuery } from './queries/use-student-drill-down.query';
 export { useTeacherExportMutation } from './queries/use-teacher-export.mutation';
 
@@ -41,6 +42,14 @@ export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-
 export { completionPercent, deriveDashboardStatus } from './lib/dashboard-cards';
 export { resolveJoinCodeView, testSessionMonitorHref, findTestLabel } from './lib/join-code';
 export { derivePastSessionsStatus, sessionCompletionPercent } from './lib/past-sessions';
+export {
+  PAST_SESSIONS_DEFAULT_SORT,
+  pastSessionsClientConfig,
+} from './lib/past-sessions-directory';
+export {
+  STUDENTS_RESULTS_DEFAULT_SORT,
+  studentsResultsClientConfig,
+} from './lib/students-results-directory';
 export {
   classResultsHref,
   studentResultsHref,
@@ -159,9 +168,9 @@ export type {
   PastSessionsStatus,
   PastSessionsReadCounts,
   PastSessionsTableProps,
-  PastSessionRowProps,
   SessionMissingValueProps,
 } from './types/past-sessions.types';
+
 export type {
   TeacherDashboardStatus,
   TeacherDashboardCounts,
@@ -178,6 +187,7 @@ export type {
 } from './types/teacher-export.types';
 export type {
   ResultsTabValue,
+  SkillScopeValue,
   ResultsReadStatus,
   ResultsReadCounts,
   ResultsClassRowProps,
@@ -185,14 +195,13 @@ export type {
   ClassResultsStatItem,
   ClassResultsStatProps,
   ClassResultsTabsProps,
+  ComingSoonPanelProps,
+  ClassSwitcherProps,
   ClassResultsScreenProps,
-  ResultsTabPendingProps,
 } from './types/results-shell.types';
 export type {
   StudentsTabPanelProps,
   StudentsResultsTableProps,
-  StudentResultsRowProps,
-  RosterHeadCellsProps,
   RosterStudentCellsProps,
 } from './types/students-table.types';
 export type {
