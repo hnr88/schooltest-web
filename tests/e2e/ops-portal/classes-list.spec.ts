@@ -126,7 +126,13 @@ test('the status chips and the pager drive the server, not a client-side slice',
 
   await chips.nth(0).click({ timeout: 10_000 });
   await expect(page.getByTestId('ops-classes-row').first()).toBeVisible({ timeout: 15_000 });
-  await expect(page.getByTestId('ops-classes-prev')).toBeDisabled();
+  // task 17 (kit adoption) — `ops-classes-prev` was the bespoke pager's own
+  // testid; the directory kit's pager renders a plain Button with no testid,
+  // so the documented replacement is the accessible name from the tab's own
+  // translated label, scoped to the tab so it cannot match another pager.
+  await expect(
+    page.getByTestId('ops-classes-tab').getByRole('button', { name: cat(en, 'Ops.classesTab.previousPage') }),
+  ).toBeDisabled();
 });
 
 test('visual capture: the Classes tab at the desktop reference and at 375px', async ({

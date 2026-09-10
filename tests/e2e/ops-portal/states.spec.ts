@@ -199,9 +199,14 @@ test.describe.serial('ops portal states', () => {
     });
     await signedIn(page, request);
     const tab = await openClassesTab(page, request);
-    await expect(page.getByTestId('ops-classes-loading')).toBeVisible({ timeout: ACTION_TIMEOUT });
+    // task 17 (kit adoption) — `ops-classes-loading` was the bespoke skeleton's
+    // own testid; the directory kit renders its own loading arm with the
+    // stable `data-slot="directory-loading"` marker instead, so that is the
+    // documented replacement, scoped to this tab.
+    const loading = tab.locator('[data-slot="directory-loading"]');
+    await expect(loading).toBeVisible({ timeout: ACTION_TIMEOUT });
     release();
-    await expect(page.getByTestId('ops-classes-loading')).toBeHidden({ timeout: ACTION_TIMEOUT });
+    await expect(loading).toBeHidden({ timeout: ACTION_TIMEOUT });
     // classesTab i18n keys are absent from en.json (task-19 gap), so the
     // empty surface is asserted structurally, not by message text. The
     // design-system EmptyState renders its title as a <p>, never a heading —

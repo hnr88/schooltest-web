@@ -1,32 +1,117 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { GraduationCap } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { Alert, Button, EmptyState, Skeleton } from '@/modules/design-system';
-import { OpsClassesTable } from '@/modules/ops/components/OpsClassesTable';
-import { OpsClassesToolbar } from '@/modules/ops/components/OpsClassesToolbar';
-import { useClassesFilter } from '@/modules/ops/hooks/use-classes-filter';
+import { strapi } from '@/lib/axios/strapi';
+import {
+  Alert,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  FieldShell,
+  Input,
+  NativeSelect,
+  NativeSelectOption,
+  StatusPill,
+} from '@/modules/design-system';
+import type { StatusPillTone } from '@/modules/design-system/types/data-display.types';
+import {
+  DIRECTORY_ALL,
+  DirectoryTable,
+  useDirectoryState,
+} from '@/modules/directory';
+import type {
+  DirectoryBulkAction,
+  DirectoryColumnDef,
+  DirectoryFilterDef,
+  DirectoryLabels,
+  DirectoryRowAction,
+} from '@/modules/directory';
+import {
+  describeRunOutcome,
+  showOpsToast,
+  useOpsActionRunner,
+  useOpsWriteGate,
+} from '@/modules/ops/actions';
+import type { OpsActionDefinition, OpsActionTarget } from '@/modules/ops/actions';
+import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
+import { OpsEditClassDialog } from '@/modules/ops/components/OpsEditClassDialog';
+import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
+import { classBulkActions, classRowActions } from '@/modules/ops/lib/class-actions';
+import { noValueIfMissing, opsTeacherLabel } from '@/modules/ops/lib/ops-class-detail.helpers';
+import {
+  classListStatusSchema,
+  classRowStatus,
+  classesListPath,
+  classesListQueryParams,
+  classesListResponseSchema,
+  type ClassListStatus,
+  type ClassRow,
+  type ClassesListQuery,
+} from '@/modules/ops/lib/ops-classes-contract';
+import { useAssessmentWindowCreateMutation } from '@/modules/ops/queries/use-assessment-window-create.mutation';
 import { useClassesListQuery } from '@/modules/ops/queries/use-classes-list.query';
+import { useFormsQuery } from '@/modules/ops/queries/use-forms.query';
+import { useOpsAssignTeacherMutation } from '@/modules/ops/queries/use-ops-update-class.mutation';
+import { useTeachersListQuery } from '@/modules/ops/queries/use-teachers-list.query';
 
-// OPS-038 — the Classes tab of the ops school detail (C-OPS-PORTAL-028).
-// It reads the real list operation, so an UNASSIGNED class appears: the old
-// tab derived its rows from the staff directory and could only ever show
-// classes that already had a teacher. The ?teacher= deep-link from the staff
-// directory narrows the list to one teacher's classes and can be cleared
-// without losing the other filters.
+// OPS-038 — the Classes tab of the ops school detail (C-OPS-PORTAL-028), on
+// task 02's directory kit + task 03's action kit. It reads the real list
+// operation, so an UNASSIGNED class appears: the old tab derived its rows
+// from the staff directory and could only ever show classes that already had
+// a teacher. The ?teacher= deep-link from the staff directory narrows the
+// list to one teacher's classes and can be cleared without losing the other
+// filters — `teacher` is not a kit filter (it has no visible control), so it
+// is read straight off the URL and folded into the query by hand.
+//
+// task 17 scope note: the design's header draws an Export CSV secondary and
+// a Create class primary, but NEITHER has a real endpoint yet — there is no
+// classes-list CSV export route anywhere in the backlog (only the per-class
+// roster export, task 21), and `classCreateBodySchema` does not exist on
+// disk (task 23 owns the create dialog). OP-2 forbids wiring a control to a
+// stub, so this header ships title + summary only; the buttons land with
+// tasks 21 and 23.
+
+const STATUS_TONE: Record<ClassListStatus, StatusPillTone> = {
+  active: 'success',
+  pending_setup: 'warning',
+  archived: 'neutral',
+};
+
+async function fetchClassStatus(
+  schoolDocumentId: string,
+  classDocumentId: string,
+): Promise<ClassListStatus | null> {
+  const res = await strapi.get<unknown>(classesListPath(schoolDocumentId), {
+    params: classesListQueryParams({ page: 1, pageSize: 200 }),
+    opsPortalVersioned: true,
+  });
+  const parsed = classesListResponseSchema.parse(res.data);
+  const row = parsed.data.find((candidate) => candidate.documentId === classDocumentId);
+  return row ? classRowStatus(row) : null;
+}
+
+interface ClassLifecycleTarget extends OpsActionTarget {
+  lifecycleAction: 'archive' | 'restore';
+}
 
 export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }) {
   const t = useTranslations('Ops.classesTab');
+  const tActions = useTranslations('Ops.classActions');
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const teacherParam = searchParams.get('teacher');
-  const filter = useClassesFilter(teacherParam);
-  const classes = useClassesListQuery(schoolDocumentId, filter.query, true);
-  const pagination = classes.data?.meta.pagination;
+  const teacherId = teacherParam?.trim() ?? '';
 
   const clearTeacher = useCallback(() => {
     const query = new URLSearchParams(searchParams.toString());
@@ -34,76 +119,595 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
     router.replace(query.size === 0 ? pathname : `${pathname}?${query}`, { scroll: false });
   }, [pathname, router, searchParams]);
 
-  return (
-    <div className="flex flex-col gap-3" data-testid="ops-classes-tab">
-      <OpsClassesToolbar filter={filter} />
+  const filters = useMemo<DirectoryFilterDef[]>(
+    () => [
+      {
+        key: 'status',
+        label: t('filterStatus'),
+        kind: 'chips',
+        options: [
+          { value: DIRECTORY_ALL, label: t('filterAll') },
+          ...classListStatusSchema.options.map((value) => ({ value, label: t(`status.${value}`) })),
+        ],
+      },
+      {
+        key: 'year_band',
+        label: t('filterYear'),
+        options: [
+          { value: DIRECTORY_ALL, label: t('filterAll') },
+          ...YEAR_BANDS.map((value) => ({ value, label: t(`year.${value}`) })),
+        ],
+      },
+    ],
+    [t],
+  );
 
-      {classes.isPending ? (
-        <div className="flex flex-col gap-2" data-testid="ops-classes-loading">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-      ) : classes.isError ? (
-        <Alert variant="error" title={t('errorTitle')}>
-          {t('errorDescription')}
-        </Alert>
-      ) : classes.data.data.length === 0 ? (
-        <div className="rounded-card border border-border bg-card px-6 py-6 shadow-sm">
-          <EmptyState
-            icon={GraduationCap}
-            tone="brand"
-            title={filter.isFiltered ? t('noMatchesTitle') : t('emptyTitle')}
-            description={filter.isFiltered ? t('noMatchesDescription') : t('emptyDescription')}
-            action={
-              teacherParam === null ? undefined : (
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  data-testid="ops-classes-clear-teacher"
-                  onClick={clearTeacher}
-                >
-                  {t('clearFilter')}
-                </Button>
-              )
-            }
-            className="border-none px-0 py-2"
-          />
-        </div>
-      ) : (
-        <>
-          <OpsClassesTable schoolDocumentId={schoolDocumentId} rows={classes.data.data} />
-          {pagination ? (
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-meta text-muted-foreground" data-testid="ops-classes-summary">
-                {t('showing', { showing: classes.data.data.length, total: pagination.total })}
-              </p>
-              <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  data-testid="ops-classes-prev"
-                  disabled={pagination.page <= 1}
-                  onClick={() => filter.goToPage(pagination.page - 1)}
-                >
-                  {t('previousPage')}
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  data-testid="ops-classes-next"
-                  disabled={pagination.page >= pagination.pageCount}
-                  onClick={() => filter.goToPage(pagination.page + 1)}
-                >
-                  {t('nextPage')}
-                </Button>
-              </div>
-            </div>
-          ) : null}
-        </>
-      )}
+  const state = useDirectoryState({ filters, sorts: [], defaultSort: '', preserveParams: ['teacher'] });
+
+  const query = useMemo<ClassesListQuery>(
+    () => ({
+      page: state.params.page,
+      pageSize: state.params.pageSize,
+      ...(state.params.q ? { q: state.params.q } : {}),
+      ...(state.params.filters.status
+        ? { status: state.params.filters.status as ClassListStatus }
+        : {}),
+      ...(state.params.filters.year_band ? { year_band: state.params.filters.year_band } : {}),
+      ...(teacherId === '' ? {} : { teacher: teacherId }),
+    }),
+    [state.params, teacherId],
+  );
+
+  const classes = useClassesListQuery(schoolDocumentId, query, true);
+  const rows = classes.data?.data ?? [];
+
+  const invalidateClasses = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['ops', 'schools', schoolDocumentId] });
+  }, [queryClient, schoolDocumentId]);
+
+  const writeGate = useOpsWriteGate();
+  const refuseIfReadOnly = useCallback((): boolean => {
+    const reason = writeGate.blockedReason();
+    if (reason === null) return true;
+    showOpsToast({ tone: 'error', message: reason });
+    return false;
+  }, [writeGate]);
+
+  const toastTone = (tone: 'success' | 'warning' | 'error'): 'ok' | 'warn' | 'error' =>
+    tone === 'success' ? 'ok' : tone === 'warning' ? 'warn' : 'error';
+
+  const lifecycleDefinition = useMemo<OpsActionDefinition<ClassLifecycleTarget>>(
+    () => ({
+      write: true,
+      async perform(target) {
+        await strapi.post(
+          `/api/ops/schools/${schoolDocumentId}/classes/${target.documentId}/${target.lifecycleAction}`,
+          {},
+        );
+      },
+      async readBack(target) {
+        const status = await fetchClassStatus(schoolDocumentId, target.documentId);
+        return target.lifecycleAction === 'archive'
+          ? status === 'archived'
+          : status !== null && status !== 'archived';
+      },
+      async isEligible(target) {
+        const status = await fetchClassStatus(schoolDocumentId, target.documentId);
+        return target.lifecycleAction === 'archive' ? status !== 'archived' : status === 'archived';
+      },
+    }),
+    [schoolDocumentId],
+  );
+  const lifecycleRunner = useOpsActionRunner(lifecycleDefinition);
+
+  const [singleLifecycle, setSingleLifecycle] = useState<{
+    row: ClassRow;
+    action: 'archive' | 'restore';
+  } | null>(null);
+  const [bulkArchiveTargets, setBulkArchiveTargets] = useState<readonly OpsActionTarget[] | null>(
+    null,
+  );
+  const [reassignRow, setReassignRow] = useState<ClassRow | null>(null);
+  const [editRow, setEditRow] = useState<ClassRow | null>(null);
+  const [setWindowTargets, setSetWindowTargets] = useState<readonly OpsActionTarget[] | null>(null);
+
+  const runSingleLifecycle = useCallback(async () => {
+    if (singleLifecycle === null) return;
+    const { row, action } = singleLifecycle;
+    const summary = await lifecycleRunner.run([
+      { kind: 'class', documentId: row.documentId, lifecycleAction: action },
+    ]);
+    setSingleLifecycle(null);
+    invalidateClasses();
+    const feedback = describeRunOutcome(summary, tActions('entityLabel'));
+    showOpsToast({ tone: toastTone(feedback.tone), message: feedback.message });
+  }, [singleLifecycle, lifecycleRunner, invalidateClasses, tActions]);
+
+  const runBulkArchive = useCallback(async () => {
+    if (bulkArchiveTargets === null) return;
+    const targets: ClassLifecycleTarget[] = bulkArchiveTargets.map((target) => ({
+      ...target,
+      lifecycleAction: 'archive',
+    }));
+    const summary = await lifecycleRunner.run(targets);
+    setBulkArchiveTargets(null);
+    invalidateClasses();
+    const feedback = describeRunOutcome(summary, tActions('entityLabel'));
+    showOpsToast({ tone: toastTone(feedback.tone), message: feedback.message });
+  }, [bulkArchiveTargets, lifecycleRunner, invalidateClasses, tActions]);
+
+  const rowActionsFor = useCallback(
+    (row: ClassRow): DirectoryRowAction<ClassRow>[] => {
+      const status = classRowStatus(row);
+      return classRowActions(status).map((action) => {
+        if (action.key === 'open') {
+          return {
+            label: tActions(action.labelKey),
+            write: action.write,
+            onSelect: () =>
+              router.push(`/dashboard/ops/schools/${schoolDocumentId}/classes/${row.documentId}`),
+          };
+        }
+        if (action.key === 'reassignTeacher') {
+          return {
+            label: tActions(action.labelKey),
+            write: action.write,
+            onSelect: () => {
+              if (refuseIfReadOnly()) setReassignRow(row);
+            },
+          };
+        }
+        if (action.key === 'edit') {
+          return {
+            label: tActions(action.labelKey),
+            write: action.write,
+            onSelect: () => {
+              if (refuseIfReadOnly()) setEditRow(row);
+            },
+          };
+        }
+        const lifecycleAction: 'archive' | 'restore' = action.key === 'restore' ? 'restore' : 'archive';
+        return {
+          label: tActions(action.labelKey),
+          write: action.write,
+          destructive: action.danger,
+          onSelect: () => {
+            if (refuseIfReadOnly()) setSingleLifecycle({ row, action: lifecycleAction });
+          },
+        };
+      });
+    },
+    [tActions, router, schoolDocumentId, refuseIfReadOnly],
+  );
+
+  const bulkActionDefs = useMemo<DirectoryBulkAction[]>(
+    () =>
+      classBulkActions().map((action) => {
+        if (action.key === 'setTestWindow') {
+          return {
+            label: tActions(action.labelKey),
+            write: action.write,
+            onRun: (_rows: readonly unknown[], targets: readonly OpsActionTarget[]) => {
+              if (refuseIfReadOnly()) setSetWindowTargets(targets);
+            },
+          };
+        }
+        return {
+          label: tActions(action.labelKey),
+          write: action.write,
+          destructive: action.danger,
+          eligible: (row: unknown) => classRowStatus(row as ClassRow) !== 'archived',
+          skipLabel: (skipped: number) => tActions('bulk.archiveSkip', { skipped }),
+          onRun: (_rows: readonly unknown[], targets: readonly OpsActionTarget[]) => {
+            if (refuseIfReadOnly()) setBulkArchiveTargets(targets);
+          },
+        };
+      }),
+    [tActions, refuseIfReadOnly],
+  );
+
+  const columns = useMemo<DirectoryColumnDef<ClassRow>[]>(
+    () => [
+      {
+        key: 'name',
+        header: t('columnClass'),
+        cell: (row) => (
+          <div className="flex flex-col">
+            <span className="font-medium text-foreground">{noValueIfMissing(row.name)}</span>
+            <span className="block text-meta text-muted-foreground">
+              {row.test_window === null ? t('noWindow') : row.test_window.title}
+            </span>
+          </div>
+        ),
+      },
+      {
+        key: 'teacher',
+        header: t('columnTeacher'),
+        cell: (row) =>
+          row.primary_teacher === null
+            ? t('noTeacher')
+            : opsTeacherLabel({ ...row.primary_teacher, email: null }),
+      },
+      {
+        key: 'students',
+        header: t('columnStudents'),
+        cell: (row) => <span data-testid="ops-classes-students">{String(row.student_count)}</span>,
+      },
+      {
+        key: 'year',
+        header: t('columnYear'),
+        cell: (row) => noValueIfMissing(row.year_band),
+      },
+      {
+        key: 'status',
+        header: t('columnStatus'),
+        cell: (row) => {
+          const status = classRowStatus(row);
+          return <StatusPill tone={STATUS_TONE[status]}>{t(`status.${status}`)}</StatusPill>;
+        },
+      },
+    ],
+    [t],
+  );
+
+  const labels = useMemo<Partial<DirectoryLabels>>(
+    () => ({
+      searchPlaceholder: t('searchPlaceholder'),
+      searchLabel: t('searchLabel'),
+      clearFilters: t('clearFilters'),
+      paginationLabel: t('paginationLabel'),
+      previous: t('previousPage'),
+      next: t('nextPage'),
+      showingCount: ({ showing, total }) => t('showing', { showing, total }),
+      pageCount: ({ page, pageCount, total }) => t('paginationSummary', { page, pageCount, total }),
+      selectedEntityNoun: tActions('entityLabel'),
+      emptyNoMatchesTitle: t('noMatchesTitle'),
+      emptyNoMatchesDescription: t('noMatchesDescription'),
+      errorTitle: t('errorTitle'),
+      errorStaleBanner: t('staleBanner'),
+      errorDescription: t('errorDescription'),
+      retry: t('retry'),
+      loadingLabel: t('loadingLabel'),
+    }),
+    [t, tActions],
+  );
+
+  return (
+    <div data-testid="ops-classes-tab">
+      <DirectoryTable
+        state={state}
+        query={classes}
+        rows={rows}
+        scope={[JSON.stringify(query)]}
+        meta={classes.data?.meta.pagination}
+        filters={filters}
+        chipFilterKey="status"
+        sorts={[]}
+        columns={columns}
+        selectable
+        getRowTarget={(row) => ({ kind: 'class', documentId: row.documentId })}
+        rowHref={(row) => `/dashboard/ops/schools/${schoolDocumentId}/classes/${row.documentId}`}
+        rowActions={rowActionsFor}
+        bulkActions={bulkActionDefs}
+        rowAttrs={() => ({ 'data-testid': 'ops-classes-row' })}
+        labels={labels}
+        header={{
+          title: t('headerTitle'),
+          summary: t('summary', { count: classes.data?.meta.pagination.total ?? 0 }),
+        }}
+        emptyAction={teacherId === '' ? undefined : { label: t('clearFilter'), onRun: clearTeacher }}
+        emptyCopy={{ title: t('emptyTitle'), body: t('emptyDescription') }}
+      />
+
+      {reassignRow ? (
+        <ClassReassignTeacherDialog
+          schoolDocumentId={schoolDocumentId}
+          row={reassignRow}
+          onClose={() => setReassignRow(null)}
+        />
+      ) : null}
+
+      {editRow ? (
+        <OpsEditClassDialog
+          classDocumentId={editRow.documentId}
+          schoolDocumentId={schoolDocumentId}
+          className={editRow.name ?? ''}
+          classUpdatedAt={editRow.updatedAt}
+          currentYearBand={editRow.year_band}
+          onClose={() => setEditRow(null)}
+        />
+      ) : null}
+
+      {singleLifecycle ? (
+        <OpsConfirmDialog
+          open
+          onOpenChange={(open) => {
+            if (!open && lifecycleRunner.state.status !== 'running') setSingleLifecycle(null);
+          }}
+          title={tActions(
+            singleLifecycle.action === 'archive'
+              ? 'actions.confirm.archive.title'
+              : 'actions.confirm.restore.title',
+            { name: singleLifecycle.row.name ?? '' },
+          )}
+          description={tActions(
+            singleLifecycle.action === 'archive'
+              ? 'actions.confirm.archive.body'
+              : 'actions.confirm.restore.body',
+          )}
+          confirmLabel={tActions(
+            singleLifecycle.action === 'archive'
+              ? 'actions.confirm.archive.cta'
+              : 'actions.confirm.restore.cta',
+          )}
+          cancelLabel={tActions('actions.cancel')}
+          tone={singleLifecycle.action === 'archive' ? 'destructive' : 'neutral'}
+          pending={lifecycleRunner.state.status === 'running'}
+          onConfirm={() => void runSingleLifecycle()}
+        />
+      ) : null}
+
+      {bulkArchiveTargets ? (
+        <OpsConfirmDialog
+          open
+          onOpenChange={(open) => {
+            if (!open && lifecycleRunner.state.status !== 'running') setBulkArchiveTargets(null);
+          }}
+          title={tActions('bulk.confirm.archive.title', { count: bulkArchiveTargets.length })}
+          description={tActions('bulk.confirm.archive.body')}
+          confirmLabel={tActions('bulk.confirm.archive.cta', { count: bulkArchiveTargets.length })}
+          cancelLabel={tActions('actions.cancel')}
+          tone="destructive"
+          pending={lifecycleRunner.state.status === 'running'}
+          onConfirm={() => void runBulkArchive()}
+        />
+      ) : null}
+
+      {setWindowTargets ? (
+        <ClassSetTestWindowDialog
+          schoolDocumentId={schoolDocumentId}
+          targets={setWindowTargets}
+          onDone={() => {
+            setSetWindowTargets(null);
+            invalidateClasses();
+          }}
+          onCancel={() => setSetWindowTargets(null)}
+        />
+      ) : null}
     </div>
+  );
+}
+
+function ClassReassignTeacherDialog({
+  schoolDocumentId,
+  row,
+  onClose,
+}: {
+  schoolDocumentId: string;
+  row: ClassRow;
+  onClose: () => void;
+}) {
+  const t = useTranslations('Ops.classActions.reassign');
+  const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
+  const [teacherDocumentId, setTeacherDocumentId] = useState(row.primary_teacher?.documentId ?? '');
+  const assign = useOpsAssignTeacherMutation(row.documentId, schoolDocumentId);
+
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    assign.mutate(teacherDocumentId === '' ? [] : [teacherDocumentId], { onSuccess: onClose });
+  };
+
+  return (
+    <Dialog
+      open
+      onOpenChange={(next) => {
+        if (!next && !assign.isPending) onClose();
+      }}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description', { name: row.name ?? '' })}</DialogDescription>
+        </DialogHeader>
+        <form onSubmit={submit} noValidate className="flex flex-col gap-4">
+          {assign.isError ? (
+            <Alert variant="error" title={t('errorTitle')}>
+              {t('errorDescription')}
+            </Alert>
+          ) : null}
+          <FieldShell id="ops-reassign-teacher" label={t('teacherLabel')}>
+            <NativeSelect
+              id="ops-reassign-teacher"
+              className="w-full"
+              value={teacherDocumentId}
+              onChange={(event) => setTeacherDocumentId(event.target.value)}
+            >
+              <NativeSelectOption value="">{t('noTeacherOption')}</NativeSelectOption>
+              {(teachers.data?.data ?? []).map((teacher) => (
+                <NativeSelectOption key={teacher.documentId} value={teacher.documentId}>
+                  {opsTeacherLabel(teacher)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FieldShell>
+          <DialogFooter>
+            <Button
+              type="button"
+              size="lg"
+              variant="outline"
+              onClick={onClose}
+              disabled={assign.isPending}
+            >
+              {t('cancel')}
+            </Button>
+            <Button type="submit" size="lg" loading={assign.isPending}>
+              {assign.isPending ? t('saving') : t('save')}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function ClassSetTestWindowDialog({
+  schoolDocumentId,
+  targets,
+  onDone,
+  onCancel,
+}: {
+  schoolDocumentId: string;
+  targets: readonly OpsActionTarget[];
+  onDone: () => void;
+  onCancel: () => void;
+}) {
+  const t = useTranslations('Ops.classActions.setTestWindow');
+  const tActions = useTranslations('Ops.classActions');
+  const forms = useFormsQuery(true);
+  const [title, setTitle] = useState('');
+  const [timezone, setTimezone] = useState('');
+  const [opensAt, setOpensAt] = useState('');
+  const [closesAt, setClosesAt] = useState('');
+  const [formDocumentId, setFormDocumentId] = useState('');
+  const [createErrorMessage, setCreateErrorMessage] = useState<string | null>(null);
+  const windowIdRef = useRef<string | null>(null);
+  const create = useAssessmentWindowCreateMutation(schoolDocumentId);
+
+  const assignDefinition = useMemo<OpsActionDefinition<OpsActionTarget>>(
+    () => ({
+      write: true,
+      async perform(target) {
+        await strapi.put(`/api/ops/schools/${schoolDocumentId}/classes/${target.documentId}/window`, {
+          window_documentId: windowIdRef.current,
+        });
+      },
+      async readBack(target) {
+        const res = await strapi.get<unknown>(classesListPath(schoolDocumentId), {
+          params: classesListQueryParams({ page: 1, pageSize: 200 }),
+          opsPortalVersioned: true,
+        });
+        const parsed = classesListResponseSchema.parse(res.data);
+        const row = parsed.data.find((candidate) => candidate.documentId === target.documentId);
+        return row?.test_window?.documentId === windowIdRef.current;
+      },
+    }),
+    [schoolDocumentId],
+  );
+  const assignRunner = useOpsActionRunner(assignDefinition);
+
+  const busy = create.isPending || assignRunner.state.status === 'running';
+  const invalid =
+    title.trim() === '' ||
+    timezone.trim() === '' ||
+    opensAt === '' ||
+    closesAt === '' ||
+    formDocumentId === '' ||
+    busy;
+
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (invalid) return;
+    setCreateErrorMessage(null);
+    try {
+      const created = await create.mutateAsync({
+        schoolDocumentId,
+        body: {
+          title: title.trim(),
+          class_documentIds: targets.map((target) => target.documentId),
+          forms: [{ skill: 'reading', form_documentId: formDocumentId }],
+          opens_at: new Date(opensAt).toISOString(),
+          closes_at: new Date(closesAt).toISOString(),
+          timezone: timezone.trim(),
+        },
+      });
+      windowIdRef.current = created.documentId;
+      const summary = await assignRunner.run(targets);
+      const feedback = describeRunOutcome(summary, tActions('entityLabel'));
+      showOpsToast({
+        tone: feedback.tone === 'success' ? 'ok' : feedback.tone === 'warning' ? 'warn' : 'error',
+        message: feedback.message,
+      });
+      onDone();
+    } catch {
+      setCreateErrorMessage(t('createErrorTitle'));
+    }
+  };
+
+  return (
+    <Dialog
+      open
+      onOpenChange={(next) => {
+        if (!next && !busy) onCancel();
+      }}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description', { count: targets.length })}</DialogDescription>
+        </DialogHeader>
+        <form onSubmit={(event) => void submit(event)} noValidate className="flex flex-col gap-4">
+          {createErrorMessage ? (
+            <Alert variant="error" title={createErrorMessage}>
+              {null}
+            </Alert>
+          ) : null}
+          <FieldShell id="ops-set-window-title" label={t('titleLabel')} required>
+            <Input
+              id="ops-set-window-title"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+            />
+          </FieldShell>
+          <FieldShell id="ops-set-window-timezone" label={t('timezoneLabel')} required>
+            <Input
+              id="ops-set-window-timezone"
+              value={timezone}
+              onChange={(event) => setTimezone(event.target.value)}
+            />
+          </FieldShell>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FieldShell id="ops-set-window-opens" label={t('opensLabel')} required>
+              <Input
+                id="ops-set-window-opens"
+                type="datetime-local"
+                value={opensAt}
+                onChange={(event) => setOpensAt(event.target.value)}
+              />
+            </FieldShell>
+            <FieldShell id="ops-set-window-closes" label={t('closesLabel')} required>
+              <Input
+                id="ops-set-window-closes"
+                type="datetime-local"
+                value={closesAt}
+                onChange={(event) => setClosesAt(event.target.value)}
+              />
+            </FieldShell>
+          </div>
+          <FieldShell id="ops-set-window-form" label={t('formLabel')} required>
+            <NativeSelect
+              id="ops-set-window-form"
+              className="w-full"
+              value={formDocumentId}
+              onChange={(event) => setFormDocumentId(event.target.value)}
+            >
+              <NativeSelectOption value="">{t('formPlaceholder')}</NativeSelectOption>
+              {(forms.data ?? []).map((form) => (
+                <NativeSelectOption key={form.documentId} value={form.documentId}>
+                  {form.form_code}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FieldShell>
+          <DialogFooter>
+            <Button type="button" size="lg" variant="outline" onClick={onCancel} disabled={busy}>
+              {t('cancel')}
+            </Button>
+            <Button type="submit" size="lg" loading={busy} disabled={invalid}>
+              {busy ? t('submitting') : t('submit')}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
