@@ -55,6 +55,7 @@ import {
 } from '@/modules/ops/actions';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsEditClassDialog } from '@/modules/ops/components/OpsEditClassDialog';
+import { OpsStudentImportDialog } from '@/modules/ops/components/OpsStudentImportDialog';
 import { OpsStudentProfilePanel } from '@/modules/ops/components/OpsStudentProfilePanel';
 import {
   classHeaderBadge,
@@ -134,6 +135,9 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
   const queryClient = useQueryClient();
   const query = useOpsClassDetailQuery(schoolDocumentId, classDocumentId, true);
   const [editOpen, setEditOpen] = useState(false);
+  // task 26's import modal, entered from THIS class — the one caller that
+  // pre-selects a class, per `OpsStudentImportDialogProps`.
+  const [importOpen, setImportOpen] = useState(false);
   // Row 20 — the roster is its own PAGINATED read (C-OPS-PORTAL-037); the class
   // detail deliberately serves no student array. Search and page live here and
   // go to the SERVER, so `meta.pagination.total` always describes the whole
@@ -488,15 +492,9 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
             <Pencil aria-hidden="true" className="mr-1.5 size-3.5" />
             {t('editClass')}
           </Button>
-          {/* Add students — task 26 owns the design's import MODAL scoped to
-              this class (`After: 03`, still `todo`). Until it lands this is a
-              real navigation to the school's own import panel rather than a
-              control wired to nothing (OP-2). */}
-          <Button
-            size="sm"
-            href={`/dashboard/ops/schools/${schoolDocumentId}`}
-            className="shrink-0"
-          >
+          {/* Add students — task 26's import modal, opened scoped to THIS
+              class via `initialClassDocumentId`. */}
+          <Button type="button" size="sm" onClick={() => setImportOpen(true)} className="shrink-0">
             {t('addStudents')}
           </Button>
         </div>
@@ -537,7 +535,7 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
             <Button type="button" size="sm" variant="outline" onClick={handleExport}>
               {t('exportCsv')}
             </Button>
-            <Button size="sm" href={`/dashboard/ops/schools/${schoolDocumentId}`}>
+            <Button type="button" size="sm" onClick={() => setImportOpen(true)}>
               {sharedT('studentsImportCta')}
             </Button>
           </div>
@@ -711,6 +709,13 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
       </section>
 
       <OpsStudentProfilePanel schoolDocumentId={schoolDocumentId} studentDocumentId={profileDocumentId} />
+
+      <OpsStudentImportDialog
+        schoolDocumentId={schoolDocumentId}
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        initialClassDocumentId={classDocumentId}
+      />
 
       {editOpen ? (
         <OpsEditClassDialog
