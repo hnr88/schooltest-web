@@ -2,7 +2,7 @@
 
 import { Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { PORTAL_IMPORT_TEMPLATE_COLUMNS } from '@schooltest/ops-contracts';
 
@@ -11,9 +11,7 @@ import { OpsImportPreviewTables } from '@/modules/ops/components/OpsImportPrevie
 import { useStudentImport } from '@/modules/ops/hooks/use-student-import';
 import { useClassesListQuery } from '@/modules/ops/queries/use-classes-list.query';
 import { useImportTemplateDownload } from '@/modules/ops/queries/use-import-template.query';
-import type { ImportCardState } from '@/modules/ops/types/import.types';
-
-import type { OpsStudentImportProps } from '@/modules/ops/types/components.types';
+import type { ImportCardState, OpsStudentImportPanelProps } from '@/modules/ops/types/import.types';
 
 /** Card tone per pictured state. The card is rendered, never assigned. */
 const CARD_TONE: Record<ImportCardState, 'info' | 'success' | 'warning' | 'error' | null> = {
@@ -29,19 +27,32 @@ const CARD_TONE: Record<ImportCardState, 'info' | 'success' | 'warning' | 'error
   failed: 'error',
 };
 
-// The ops student import modal (backlog task 27). Every card the HTML draws —
-// idle, validating, ready, row errors, dupes, bad type, too big, no rows,
+// The ops student import surface. Every card the HTML draws — idle,
+// validating, ready, row errors, dupes, bad type, too big, no rows,
 // uploading, failed — is a render of `importer.card`, which the hook derives
 // from server state. The class comes from the picker and rides in the request
 // body; it is never a csv column. Progress is the receipt's own processed/total
 // and nothing else, so the bar is indeterminate rather than animated when the
 // server has no numbers yet.
-export function OpsStudentImport({ documentId }: OpsStudentImportProps) {
+//
+// ops/26 — mounted twice: standalone as the `OpsSchoolDetail.tsx` panel
+// (task 43 removes that mount later), and inside `OpsStudentImportDialog` for
+// the design's modal. Both share this one implementation — Law 2.
+export function OpsStudentImport({
+  documentId,
+  initialClassDocumentId,
+  onBusyChange,
+  hideHeader,
+}: OpsStudentImportPanelProps) {
   const t = useTranslations('Ops.import');
-  const importer = useStudentImport(documentId);
+  const importer = useStudentImport(documentId, { initialClassDocumentId });
   const template = useImportTemplateDownload(documentId);
   const classes = useClassesListQuery(documentId, { page: 1, pageSize: 200 }, true);
   const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    onBusyChange?.(importer.busy);
+  }, [importer.busy, onBusyChange]);
 
   const tone = CARD_TONE[importer.card];
   // A class with no stored name cannot be offered: the picker's label IS how
@@ -63,10 +74,12 @@ export function OpsStudentImport({ documentId }: OpsStudentImportProps) {
       data-card={importer.card}
       className="flex flex-col gap-4 rounded-xl border border-border bg-card p-4"
     >
-      <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold text-foreground">{t('title')}</h2>
-        <p className="text-sm text-body">{t('description')}</p>
-      </div>
+      {hideHeader ? null : (
+        <div className="flex flex-col gap-1">
+          <h2 className="text-lg font-semibold text-foreground">{t('title')}</h2>
+          <p className="text-sm text-body">{t('description')}</p>
+        </div>
+      )}
 
       <SelectField
         id="ops-import-class"
@@ -110,13 +123,27 @@ export function OpsStudentImport({ documentId }: OpsStudentImportProps) {
 
       {tone === null ? null : (
         <Alert variant={tone} title={t(`card.${importer.card}.title`, { name: importer.fileName ?? '' })}>
-          <span data-surface="ops-import-card-body">
-            {t(`card.${importer.card}.body`, {
-              created: importer.preview?.create.length ?? 0,
-              skipped: importer.preview?.skip_existing.length ?? 0,
-              rejected: importer.preview?.reject.length ?? 0,
-            })}
-          </span>
+          <div className="flex items-start justify-between gap-3">
+            <span data-surface="ops-import-card-body">
+              {t(`card.${importer.card}.body`, {
+                created: importer.preview?.create.length ?? 0,
+                skipped: importer.preview?.skip_existing.length ?? 0,
+                rejected: importer.preview?.reject.length ?? 0,
+              })}
+            </span>
+            {/* `:1702` `changeFile` — every card except `uploading` offers it. */}
+            {importer.card === 'uploading' ? null : (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                data-surface="ops-import-change-file"
+                onClick={importer.changeFile}
+              >
+                {t('changeFileButton')}
+              </Button>
+            )}
+          </div>
         </Alert>
       )}
 
@@ -161,33 +188,30 @@ export function OpsStudentImport({ documentId }: OpsStudentImportProps) {
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          disabled={importer.csv.trim() === '' || importer.classDocumentId === null}
-          loading={importer.previewing}
-          onClick={() => void importer.runPreview()}
-        >
-          {t('previewButton')}
-        </Button>
-        <Button
-          type="button"
-          disabled={!importer.canCommit}
-          loading={importer.committing}
-          onClick={() => void importer.runCommit()}
-        >
-          {t('commitButton')}
-        </Button>
         {importer.card === 'uploading' ? (
           <Button
             type="button"
-            variant="ghost"
+            variant="outline"
             loading={importer.cancelling}
             onClick={() => void importer.runCancel()}
           >
             {t('cancelButton')}
           </Button>
-        ) : null}
+        ) : (
+          // `:1690-1702` — one CTA, soft-disabled (opacity, still clickable) so
+          // the four guards in `runCta` fire instead of the click being eaten
+          // by a native `disabled` attribute.
+          <Button
+            type="button"
+            data-surface="ops-import-cta"
+            aria-disabled={importer.ctaDisabled || undefined}
+            className={importer.ctaDisabled ? 'opacity-55' : undefined}
+            loading={importer.previewing || importer.committing}
+            onClick={() => void importer.runCta()}
+          >
+            {importer.ctaLabel}
+          </Button>
+        )}
         {importer.preview && importer.preview.reject.length > 0 ? (
           <Button type="button" variant="ghost" onClick={() => void importer.downloadErrorReport()}>
             {t('errorReportButton')}

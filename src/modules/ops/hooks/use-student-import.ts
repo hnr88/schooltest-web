@@ -2,12 +2,13 @@
 
 import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 import { type OpsImportCommit } from '@schooltest/ops-contracts';
 
 import { restFailureOf } from '@/lib/axios/strapi';
+import { showOpsToast, useOpsWriteGate } from '@/modules/ops/actions';
 import { downloadImportErrorReport } from '@/modules/ops/lib/import-error-report';
 import { usePortalImportCommitMutation } from '@/modules/ops/queries/use-import-commit.mutation';
 import {
@@ -17,7 +18,11 @@ import {
 import { usePortalImportPreviewMutation } from '@/modules/ops/queries/use-import-preview.mutation';
 import { useImportReceiptQuery } from '@/modules/ops/queries/use-import-receipt.query';
 import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
-import type { ImportCardState, StudentImportApi } from '@/modules/ops/types/import.types';
+import type {
+  ImportCardState,
+  StudentImportApi,
+  UseStudentImportOptions,
+} from '@/modules/ops/types/import.types';
 
 /** The contract's own ceiling, checked in the browser AND again on the server. */
 const MAX_BYTES = 5 * 1024 * 1024;
@@ -36,11 +41,19 @@ function looksLikeCsv(file: File): boolean {
  * server last said plus which request is in flight, so no code path can put the
  * modal into a state the data does not support.
  */
-export function useStudentImport(schoolDocumentId: string): StudentImportApi {
+export function useStudentImport(
+  schoolDocumentId: string,
+  options?: UseStudentImportOptions,
+): StudentImportApi {
   const t = useTranslations('Ops.import');
+  const writeGate = useOpsWriteGate();
   const [csv, setCsv] = useState('');
   const [fileName, setFileName] = useState<string | null>(null);
-  const [classDocumentId, setClassDocumentId] = useState<string | null>(null);
+  // ops/26 — the class page's "Add students"/"Import students" pre-selects its
+  // own class; the Students tab's entry point opens with none chosen.
+  const [classDocumentId, setClassDocumentId] = useState<string | null>(
+    options?.initialClassDocumentId ?? null,
+  );
   const [preview, setPreview] = useState<PortalImportPreview | null>(null);
   const [result, setResult] = useState<OpsImportCommit | null>(null);
   const [requestKey, setRequestKey] = useState<string | null>(null);
@@ -96,6 +109,14 @@ export function useStudentImport(schoolDocumentId: string): StudentImportApi {
     setCsv(await file.text());
   };
 
+  /** ops/26 (`:1702` `changeFile`) — back to `idle`, the class picker untouched. */
+  const changeFile = () => {
+    setFileName(null);
+    setCsv('');
+    setLocalReject(null);
+    invalidate();
+  };
+
   const handleFailure = (error: unknown) => {
     const failure = restFailureOf(error);
     if (failure?.kind === 'transport') {
@@ -127,6 +148,45 @@ export function useStudentImport(schoolDocumentId: string): StudentImportApi {
     }
   };
 
+  // `runPreview` is a new function every render; a ref keeps the effect below
+  // off the exhaustive-deps list without freezing a stale closure over it. The
+  // write happens in its own effect (never during render — the compiler
+  // forbids that) so it is always current by the time the next effect reads it.
+  const runPreviewRef = useRef(runPreview);
+  useEffect(() => {
+    runPreviewRef.current = runPreview;
+  });
+
+  // ops/26 (`:1220-1225`) — the design validates the moment a file lands, with
+  // no separate "Preview" click. A real preview needs the destination class
+  // too (duplicates are judged per class), so this fires once both are set;
+  // `preview !== null` in the guard stops it firing again on its own result.
+  useEffect(() => {
+    if (csv.trim() === '' || classDocumentId === null) return;
+    if (localReject !== null || preview !== null || previewMutation.isPending) return;
+    void runPreviewRef.current();
+  }, [csv, classDocumentId, localReject, preview, previewMutation.isPending]);
+
+  /** Shared by the persistent Undo button and the clean-outcome toast action. */
+  const performUndo = async (importDocumentId: string) => {
+    try {
+      await undoMutation.mutateAsync({ schoolDocumentId, importDocumentId });
+      setResult(null);
+      showOpsToast({ tone: 'ok', message: t('undoneToast') });
+    } catch (error) {
+      handleFailure(error);
+    }
+  };
+
+  const downloadErrorReport = async () => {
+    if (classDocumentId === null) return;
+    try {
+      await downloadImportErrorReport(schoolDocumentId, csv, classDocumentId);
+    } catch (error) {
+      handleFailure(error);
+    }
+  };
+
   const runCommit = async () => {
     if (classDocumentId === null || preview === null) return;
     const key = crypto.randomUUID();
@@ -141,7 +201,26 @@ export function useStudentImport(schoolDocumentId: string): StudentImportApi {
       });
       setResult(committed);
       setPreview(null);
-      toast.success(t('committedToast', { created: committed.created, skipped: committed.skipped }));
+      const message = t('committedToast', { created: committed.created, skipped: committed.skipped });
+      // ops/26 (`:1244-1252`) — three outcomes, three tones: a clean import is
+      // 'ok' with Undo; row errors and dupes are both 'warn', but only the
+      // row-errors toast carries an action (the design draws no action on the
+      // dupes toast, `:1246`).
+      if (committed.rejected.length > 0) {
+        showOpsToast({
+          tone: 'warn',
+          message,
+          action: { label: t('errorReportButton'), run: () => void downloadErrorReport() },
+        });
+      } else if (committed.skipped > 0) {
+        showOpsToast({ tone: 'warn', message });
+      } else {
+        showOpsToast({
+          tone: 'ok',
+          message,
+          action: { label: t('undoButton'), run: () => void performUndo(committed.import_documentId) },
+        });
+      }
     } catch (error) {
       handleFailure(error);
     }
@@ -159,7 +238,7 @@ export function useStudentImport(schoolDocumentId: string): StudentImportApi {
       }
       setResult(null);
       setUnresolved(false);
-      toast.success(t('cancelledToast'));
+      showOpsToast({ tone: 'ok', message: t('cancelledToast') });
     } catch (error) {
       handleFailure(error);
     }
@@ -167,25 +246,7 @@ export function useStudentImport(schoolDocumentId: string): StudentImportApi {
 
   const runUndo = async () => {
     if (!result) return;
-    try {
-      await undoMutation.mutateAsync({
-        schoolDocumentId,
-        importDocumentId: result.import_documentId,
-      });
-      setResult(null);
-      toast.success(t('undoneToast'));
-    } catch (error) {
-      handleFailure(error);
-    }
-  };
-
-  const downloadErrorReport = async () => {
-    if (classDocumentId === null) return;
-    try {
-      await downloadImportErrorReport(schoolDocumentId, csv, classDocumentId);
-    } catch (error) {
-      handleFailure(error);
-    }
+    await performUndo(result.import_documentId);
   };
 
   const card: ImportCardState = useMemo(() => {
@@ -219,6 +280,78 @@ export function useStudentImport(schoolDocumentId: string): StudentImportApi {
     return { available: false, reason: data.state === 'undone' ? t('undoDone') : t('undoExpired') };
   }, [receipt.data, result, t]);
 
+  // ops/26 (`:1690` `impCtaLabel`) — real counts, not the demo's fixed ones.
+  const ctaLabel = useMemo(() => {
+    const created = preview?.create.length ?? 0;
+    switch (card) {
+      case 'ready':
+        return t('ctaLabelReady', { count: created });
+      case 'rowErrors':
+        return t('ctaLabelRowErrors', { count: created });
+      case 'dupes':
+        return t('ctaLabelDupes', { count: created });
+      case 'failed':
+        return t('ctaLabelFailed');
+      case 'validating':
+        return t('ctaLabelValidating');
+      default:
+        return t('ctaLabelDefault');
+    }
+  }, [card, preview, t]);
+
+  // ops/26 (`:1699`) — opacity 0.55 on these five, or whenever the write gate
+  // itself refuses (`ops_support`, offline).
+  const softDisabledStates: readonly ImportCardState[] = [
+    'idle',
+    'validating',
+    'badType',
+    'tooBig',
+    'noRows',
+  ];
+  const ctaDisabled = softDisabledStates.includes(card) || writeGate.blockedReason() !== null;
+
+  /**
+   * ops/26 (`:1226-1240` `runImport`) — the four guards, each a form-level
+   * message with NO request sent, in the design's own order; then the write
+   * gate; then commit (or, from `failed`, retry preview or commit — whichever
+   * never got a result).
+   */
+  const runCta = async () => {
+    if (card === 'uploading') return;
+    if (fileName === null) {
+      setErrorMessage(t('guardNoFile'));
+      return;
+    }
+    if (card === 'validating') {
+      setErrorMessage(t('guardStillValidating'));
+      return;
+    }
+    if (card === 'badType' || card === 'tooBig' || card === 'noRows') {
+      setErrorMessage(t('guardCannotImport'));
+      return;
+    }
+    const blocked = writeGate.blockedReason();
+    if (blocked !== null) {
+      showOpsToast({
+        tone: 'error',
+        message: blocked,
+        ...(writeGate.retryWhenBlocked
+          ? { action: { label: writeGate.retryLabel, run: () => void runCta() } }
+          : {}),
+      });
+      return;
+    }
+    if (card === 'failed') {
+      // A dropped connection leaves the real outcome unknown — the reconcile
+      // banner already tells the operator to refresh before trying again, so
+      // the CTA must not fire a second write blind on top of an unresolved one.
+      if (unresolved) return;
+      await (preview !== null ? runCommit() : runPreview());
+      return;
+    }
+    await runCommit();
+  };
+
   return {
     csv,
     fileName,
@@ -243,11 +376,18 @@ export function useStudentImport(schoolDocumentId: string): StudentImportApi {
     committing: commitMutation.isPending,
     cancelling: cancelMutation.isPending,
     undoing: undoMutation.isPending,
+    ctaLabel,
+    ctaDisabled,
+    // `:1247` "closeModal refuses while busy" — a commit in flight is the only
+    // case that would abandon a job silently if the modal closed under it.
+    busy: commitMutation.isPending,
     onCsvChange,
     onClassChange,
     onFile,
+    changeFile,
     runPreview,
     runCommit,
+    runCta,
     runCancel,
     runUndo,
     downloadErrorReport,
