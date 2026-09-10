@@ -4657,28 +4657,52 @@
         "off": "Tắt",
         "minutes": "{minutes} phút",
         "fixed": "Cài đặt bị khóa khi phiên đã mở. Để thay đổi, hãy đóng phiên này và bắt đầu phiên mới.",
-        "rows.lowBw.label": "Chế độ băng thông thấp",
-        "rows.lowBw.desc": "Chỉ văn bản, không tải trước hình ảnh, và câu trả lời được lưu trên thiết bị rồi đồng bộ khi kết nối trở lại. Dùng khi lớp học dùng dữ liệu di động hoặc vệ tinh.",
-        "rows.skip.label": "Cho phép bỏ qua câu hỏi",
-        "rows.skip.desc": "Học sinh có thể bỏ qua một câu, làm câu khác, và quay lại trước khi nộp.",
-        "rows.review.label": "Màn hình xem lại trước khi nộp",
-        "rows.review.desc": "Danh sách cuối cùng các câu đã bỏ qua và đã đánh dấu, để không có câu nào trống do sơ suất.",
-        "rows.flag.label": "Đánh dấu câu hỏi cần xem lại",
-        "rows.flag.desc": "Học sinh có thể đánh dấu một câu để quay lại. Dấu hiệu hiển thị trên màn hình xem lại và với bạn.",
-        "rows.bigText.label": "Chữ lớn và tương phản cao",
-        "rows.bigText.desc": "Học sinh có thể phóng to chữ và chuyển sang giao diện tương phản cao bất cứ lúc nào.",
-        "rows.lockdown.label": "Cửa sổ khóa",
-        "rows.lockdown.desc": "Bài kiểm tra chiếm toàn màn hình. Các ứng dụng, thẻ khác, sao chép, dán và in đều bị chặn.",
-        "rows.focusFlag.label": "Gắn cờ khi rời cửa sổ",
-        "rows.focusFlag.desc": "Việc rời đi được ghi lại với dấu thời gian và hiển thị trên màn hình trực tiếp của bạn. Dùng khi tắt khóa.",
-        "rows.warn5.label": "Cảnh báo còn 5 phút",
-        "rows.warn5.desc": "Một dải thông báo yên tĩnh khi còn 5 phút, để đồng hồ không phải luôn trước mắt các em.",
-        "rows.autoSubmit.label": "Tự động nộp khi hết giờ",
-        "rows.autoSubmit.desc": "Tắt nghĩa là bài làm chờ bạn, và không có gì được nộp nếu không có giáo viên.",
-        "rows.showScore.label": "Hiện điểm của các em khi kết thúc",
-        "rows.showScore.desc": "Tắt nghĩa là kết quả được giữ cho đến khi bạn công bố báo cáo.",
-        "rows.timeLimit.label": "Giới hạn thời gian",
-        "rows.timeLimit.desc": "Phiên chạy trong bao lâu trước khi tự đóng."
+        "rows": {
+          "lowBw": {
+            "label": "Chế độ băng thông thấp",
+            "desc": "Chỉ văn bản, không tải trước hình ảnh, và câu trả lời được lưu trên thiết bị rồi đồng bộ khi kết nối trở lại. Dùng khi lớp học dùng dữ liệu di động hoặc vệ tinh."
+          },
+          "skip": {
+            "label": "Cho phép bỏ qua câu hỏi",
+            "desc": "Học sinh có thể bỏ qua một câu, làm câu khác, và quay lại trước khi nộp."
+          },
+          "review": {
+            "label": "Màn hình xem lại trước khi nộp",
+            "desc": "Danh sách cuối cùng các câu đã bỏ qua và đã đánh dấu, để không có câu nào trống do sơ suất."
+          },
+          "flag": {
+            "label": "Đánh dấu câu hỏi cần xem lại",
+            "desc": "Học sinh có thể đánh dấu một câu để quay lại. Dấu hiệu hiển thị trên màn hình xem lại và với bạn."
+          },
+          "bigText": {
+            "label": "Chữ lớn và tương phản cao",
+            "desc": "Học sinh có thể phóng to chữ và chuyển sang giao diện tương phản cao bất cứ lúc nào."
+          },
+          "lockdown": {
+            "label": "Cửa sổ khóa",
+            "desc": "Bài kiểm tra chiếm toàn màn hình. Các ứng dụng, thẻ khác, sao chép, dán và in đều bị chặn."
+          },
+          "focusFlag": {
+            "label": "Gắn cờ khi rời cửa sổ",
+            "desc": "Việc rời đi được ghi lại với dấu thời gian và hiển thị trên màn hình trực tiếp của bạn. Dùng khi tắt khóa."
+          },
+          "warn5": {
+            "label": "Cảnh báo còn 5 phút",
+            "desc": "Một dải thông báo yên tĩnh khi còn 5 phút, để đồng hồ không phải luôn trước mắt các em."
+          },
+          "autoSubmit": {
+            "label": "Tự động nộp khi hết giờ",
+            "desc": "Tắt nghĩa là bài làm chờ bạn, và không có gì được nộp nếu không có giáo viên."
+          },
+          "showScore": {
+            "label": "Hiện điểm của các em khi kết thúc",
+            "desc": "Tắt nghĩa là kết quả được giữ cho đến khi bạn công bố báo cáo."
+          },
+          "timeLimit": {
+            "label": "Giới hạn thời gian",
+            "desc": "Phiên chạy trong bao lâu trước khi tự đóng."
+          }
+        }
         },
         "alreadyClosedToast": "Phiên này đã được đóng trước đó. Trang hiển thị trạng thái cuối cùng.",
         "badgeClosed": "Đã đóng",

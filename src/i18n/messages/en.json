@@ -4638,28 +4638,52 @@
         "off": "Off",
         "minutes": "{minutes} min",
         "fixed": "Settings are fixed once a sitting is open. To change them, close this session and start a new one.",
-        "rows.lowBw.label": "Low-bandwidth mode",
-        "rows.lowBw.desc": "Text-only passages, no images preloaded, and answers saved on the device and synced when the connection returns. Use it when the room is on mobile data or a satellite link.",
-        "rows.skip.label": "Allow skipping questions",
-        "rows.skip.desc": "Students can leave a question, move on, and come back to it before submitting.",
-        "rows.review.label": "Review screen before submit",
-        "rows.review.desc": "A final list of skipped and flagged questions, so nothing is left blank by accident.",
-        "rows.flag.label": "Flag questions for review",
-        "rows.flag.desc": "Students can mark a question to come back to. Flags show on the review screen and to you.",
-        "rows.bigText.label": "Larger text and high contrast",
-        "rows.bigText.desc": "Students can grow the text and switch to a high-contrast theme at any point.",
-        "rows.lockdown.label": "Locked-down window",
-        "rows.lockdown.desc": "The test fills the screen. Other apps, tabs, copy, paste and printing are blocked.",
-        "rows.focusFlag.label": "Flag if they leave the window",
-        "rows.focusFlag.desc": "Leaving is recorded with a timestamp and shows on your live view. Use with lockdown off.",
-        "rows.warn5.label": "Five-minute warning",
-        "rows.warn5.desc": "One quiet banner at five minutes left, so the clock is not in front of them the whole time.",
-        "rows.autoSubmit.label": "Submit automatically at time",
-        "rows.autoSubmit.desc": "Off means the attempt waits for you, and nothing is submitted without a teacher.",
-        "rows.showScore.label": "Show them their score at the end",
-        "rows.showScore.desc": "Off holds the result until you release the report.",
-        "rows.timeLimit.label": "Time limit",
-        "rows.timeLimit.desc": "How long the sitting runs before it closes itself."
+        "rows": {
+          "lowBw": {
+            "label": "Low-bandwidth mode",
+            "desc": "Text-only passages, no images preloaded, and answers saved on the device and synced when the connection returns. Use it when the room is on mobile data or a satellite link."
+          },
+          "skip": {
+            "label": "Allow skipping questions",
+            "desc": "Students can leave a question, move on, and come back to it before submitting."
+          },
+          "review": {
+            "label": "Review screen before submit",
+            "desc": "A final list of skipped and flagged questions, so nothing is left blank by accident."
+          },
+          "flag": {
+            "label": "Flag questions for review",
+            "desc": "Students can mark a question to come back to. Flags show on the review screen and to you."
+          },
+          "bigText": {
+            "label": "Larger text and high contrast",
+            "desc": "Students can grow the text and switch to a high-contrast theme at any point."
+          },
+          "lockdown": {
+            "label": "Locked-down window",
+            "desc": "The test fills the screen. Other apps, tabs, copy, paste and printing are blocked."
+          },
+          "focusFlag": {
+            "label": "Flag if they leave the window",
+            "desc": "Leaving is recorded with a timestamp and shows on your live view. Use with lockdown off."
+          },
+          "warn5": {
+            "label": "Five-minute warning",
+            "desc": "One quiet banner at five minutes left, so the clock is not in front of them the whole time."
+          },
+          "autoSubmit": {
+            "label": "Submit automatically at time",
+            "desc": "Off means the attempt waits for you, and nothing is submitted without a teacher."
+          },
+          "showScore": {
+            "label": "Show them their score at the end",
+            "desc": "Off holds the result until you release the report."
+          },
+          "timeLimit": {
+            "label": "Time limit",
+            "desc": "How long the sitting runs before it closes itself."
+          }
+        }
         },
         "alreadyClosedToast": "This session was already closed. The page now shows its final state.",
         "badgeClosed": "Closed",

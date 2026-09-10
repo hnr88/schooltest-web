@@ -4638,28 +4638,52 @@
         "off": "关",
         "minutes": "{minutes} 分钟",
         "fixed": "考试开始后设置即被固定。如需更改，请关闭本场考试并开始新的一场。",
-        "rows.lowBw.label": "低带宽模式",
-        "rows.lowBw.desc": "仅文字文章，不预载图片，答案保存在设备上并在网络恢复后同步。适用于使用移动数据或卫星链路的教室。",
-        "rows.skip.label": "允许跳过题目",
-        "rows.skip.desc": "学生可以先跳过某题，继续作答，并在提交前回来完成。",
-        "rows.review.label": "提交前检查页",
-        "rows.review.desc": "最后列出已跳过和已标记的题目，避免因疏忽留下空白。",
-        "rows.flag.label": "标记题目以便复查",
-        "rows.flag.desc": "学生可以标记题目以便回头查看。标记会显示在检查页面和教师界面上。",
-        "rows.bigText.label": "大字号与高对比度",
-        "rows.bigText.desc": "学生可以随时放大文字并切换到高对比度主题。",
-        "rows.lockdown.label": "锁定窗口",
-        "rows.lockdown.desc": "考试占满整个屏幕。其他应用、标签页、复制、粘贴和打印都被阻止。",
-        "rows.focusFlag.label": "离开窗口时标记",
-        "rows.focusFlag.desc": "离开会被记录时间戳并显示在你的实时视图中。在未开启锁定时使用。",
-        "rows.warn5.label": "五分钟提醒",
-        "rows.warn5.desc": "剩余五分钟时显示一条安静的横幅，这样时钟不必一直摆在面前。",
-        "rows.autoSubmit.label": "到时自动提交",
-        "rows.autoSubmit.desc": "关闭意味着答卷等待你处理，没有教师就不会提交。",
-        "rows.showScore.label": "结束时显示分数",
-        "rows.showScore.desc": "关闭时，结果会保留到你发布报告为止。",
-        "rows.timeLimit.label": "时间限制",
-        "rows.timeLimit.desc": "考试运行多久后自动关闭。"
+        "rows": {
+          "lowBw": {
+            "label": "低带宽模式",
+            "desc": "仅文字文章，不预载图片，答案保存在设备上并在网络恢复后同步。适用于使用移动数据或卫星链路的教室。"
+          },
+          "skip": {
+            "label": "允许跳过题目",
+            "desc": "学生可以先跳过某题，继续作答，并在提交前回来完成。"
+          },
+          "review": {
+            "label": "提交前检查页",
+            "desc": "最后列出已跳过和已标记的题目，避免因疏忽留下空白。"
+          },
+          "flag": {
+            "label": "标记题目以便复查",
+            "desc": "学生可以标记题目以便回头查看。标记会显示在检查页面和教师界面上。"
+          },
+          "bigText": {
+            "label": "大字号与高对比度",
+            "desc": "学生可以随时放大文字并切换到高对比度主题。"
+          },
+          "lockdown": {
+            "label": "锁定窗口",
+            "desc": "考试占满整个屏幕。其他应用、标签页、复制、粘贴和打印都被阻止。"
+          },
+          "focusFlag": {
+            "label": "离开窗口时标记",
+            "desc": "离开会被记录时间戳并显示在你的实时视图中。在未开启锁定时使用。"
+          },
+          "warn5": {
+            "label": "五分钟提醒",
+            "desc": "剩余五分钟时显示一条安静的横幅，这样时钟不必一直摆在面前。"
+          },
+          "autoSubmit": {
+            "label": "到时自动提交",
+            "desc": "关闭意味着答卷等待你处理，没有教师就不会提交。"
+          },
+          "showScore": {
+            "label": "结束时显示分数",
+            "desc": "关闭时，结果会保留到你发布报告为止。"
+          },
+          "timeLimit": {
+            "label": "时间限制",
+            "desc": "考试运行多久后自动关闭。"
+          }
+        }
         },
         "alreadyClosedToast": "该场次此前已结束，页面现在显示最终状态。",
         "badgeClosed": "已结束",
