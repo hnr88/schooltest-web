@@ -118,7 +118,14 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   // ops/28 (D-53) — this file has no `refuseIf…` helper of its own (its
   // writes refuse at the runner's dispatch, inside the confirm flow); `locked`
   // is read directly off the gate for the row/bulk `disabled` below.
-  const locked = writeGate.blockedReason() !== null;
+  // `readOnly` ALONE, never `blockedReason() !== null` (which also trips
+  // offline) — offline must keep its clickable toast-with-Retry path, never
+  // go natively inert. NOTE: the move-dialog's confirm Button below (line
+  // ~374) still uses `blockedReason() !== null` directly — that is a plain
+  // Dialog button predating this row, not a DirectoryRowAction/
+  // DirectoryBulkAction, and out of this row's authorized scope; left as
+  // found, flagged rather than silently fixed.
+  const locked = writeGate.readOnly;
   const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const classOptions = opsStudentClassOptions(teachers.data?.data ?? []);
   const [profileDocumentId, setProfileDocumentId] = useState<string | null>(null);

@@ -187,8 +187,11 @@ export function OpsStaffUsersTable({
   };
 
   // ops/28 (D-53) — read once per render; every `disabled` below is
-  // `write && locked`, never inferred from anything else.
-  const locked = writeGate.blockedReason() !== null;
+  // `write && locked`, never inferred from anything else. `locked` is
+  // `readOnly` ALONE (never `blockedReason() !== null`, which also trips
+  // offline) — offline must keep its clickable toast-with-Retry path, never
+  // go natively inert.
+  const locked = writeGate.readOnly;
 
   const filters: readonly DirectoryFilterDef[] = useMemo(
     () => [

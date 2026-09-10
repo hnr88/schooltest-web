@@ -175,7 +175,10 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
   // (opposite of OpsStaffUsersTable's `refuseIfBlocked`); `locked` names the
   // write-gate state directly so `disabled: action.write && locked` reads the
   // same everywhere in this file, independent of that helper's own polarity.
-  const locked = writeGate.blockedReason() !== null;
+  // `readOnly` ALONE, never `blockedReason() !== null` (which also trips
+  // offline) — offline must keep its clickable toast-with-Retry path, never
+  // go natively inert.
+  const locked = writeGate.readOnly;
 
   const toastTone = (tone: 'success' | 'warning' | 'error'): 'ok' | 'warn' | 'error' =>
     tone === 'success' ? 'ok' : tone === 'warning' ? 'warn' : 'error';

@@ -25,6 +25,14 @@ export interface OpsWriteGate {
   blockedReason: () => string | null;
   retryWhenBlocked: boolean;
   retryLabel: string;
+  /**
+   * ops/28 (D-53 follow-up) — read-only ALONE, never offline. A kit surface
+   * uses this to grey a control pre-emptively (`disabled`); offline is
+   * transient and must keep its clickable toast-with-Retry path
+   * (`blockedReason` + `retryWhenBlocked` still own that), so a control must
+   * never go inert just because the connection dropped.
+   */
+  readOnly: boolean;
 }
 
 /** One capability + NIC preflight shared by every action-kit write. */
@@ -48,5 +56,6 @@ export function useOpsWriteGate(): OpsWriteGate {
     blockedReason,
     retryWhenBlocked: !readOnly && !online,
     retryLabel: tToast('retry'),
+    readOnly,
   };
 }

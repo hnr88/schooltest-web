@@ -154,7 +154,18 @@ test.describe.serial('OPS-075 portal capabilities', () => {
     await expect(banner(page)).toBeVisible({ timeout: WAIT });
   });
 
-  test('a support bulk write is blocked before zero lifecycle requests leave', async ({ page }) => {
+  test('a support bulk write is natively disabled, and zero lifecycle requests leave', async ({
+    page,
+  }) => {
+    // ops/28 follow-up (D-53) — read-only now greys the bulk button itself
+    // (OpsBulkBar's own `disabled`, threaded from `writeGate.readOnly`)
+    // rather than only refusing a click that reaches it: a genuinely inert
+    // control proves "zero lifecycle requests" more strongly than a refused
+    // click did, so this asserts `disabled` directly instead of clicking and
+    // waiting on a toast that a disabled button can no longer raise. The
+    // OFFLINE case below is deliberately different — `readOnly` alone drives
+    // `disabled`, never `blockedReason()` (which also trips offline), so
+    // that path stays clickable and keeps its toast-with-Retry.
     await page.setViewportSize({ width: 1440, height: 900 });
     await loginAsSupport(page);
     await page.goto('/dashboard/ops/schools');
@@ -163,13 +174,10 @@ test.describe.serial('OPS-075 portal capabilities', () => {
     await selectFirstSchool(page);
     const requests = countLifecycleRequests(page);
 
-    await page.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend'), exact: true }).click();
+    const bulkSuspend = page.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend'), exact: true });
+    await expect(bulkSuspend).toBeVisible({ timeout: WAIT });
+    await expect(bulkSuspend).toBeDisabled({ timeout: WAIT });
 
-    const message = cat(en, 'Ops.capabilities.readOnlyWriteBlocked');
-    const refusal = page.locator('[data-sonner-toast]').filter({ hasText: message });
-    await expect(refusal).toBeVisible({ timeout: WAIT });
-    await expect(refusal).toBeInViewport({ ratio: 1, timeout: WAIT });
-    await expect(refusal.getByRole('button', { name: cat(en, 'Ops.toast.retry') })).toHaveCount(0);
     expect(requests.urls).toEqual([]);
     await mkdir(PROOF_OUT, { recursive: true });
     await page.screenshot({ path: path.join(PROOF_OUT, '03-blocked-readonly.png') });

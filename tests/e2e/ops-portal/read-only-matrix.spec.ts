@@ -5,14 +5,19 @@
  * D-31: the write gate itself is task 03's action kit
  * (`useOpsActionRunner` / `useOpsWriteGate`) — every surface built on it is
  * gated by construction. This spec is the PROOF of that claim across more
- * than one surface, never a second implementation of the gate. Each case
- * below asserts the same three things per surface: the surface renders, the
- * `write: true` control still fires its `onSelect`/`onRun` (so the runner's
- * own refusal path runs), and the refusal produces the catalogue's
- * `readOnlyWriteBlocked` toast with ZERO network requests — counted, never
- * eyeballed (capabilities.spec.ts already proves this for the schools bulk
- * bar; this file extends the same proof to the row menu and to a second
- * kit-built table, the Teachers tab).
+ * than one surface, never a second implementation of the gate.
+ *
+ * TWO surfaces, two proofs, both counted rather than eyeballed:
+ *  - Bulk actions (`DirectoryBulkAction.disabled`, threaded from
+ *    `writeGate.readOnly` ALONE — never merely offline) render the control
+ *    natively `disabled`; the case below asserts that directly and that zero
+ *    requests reach the server, never a click (a disabled control cannot be
+ *    clicked, and must not be — see `capabilities.spec.ts`'s offline case,
+ *    which needs that same button to stay clickable-with-Retry).
+ *  - The row ⋯ menu (`DirectoryRowAction.disabled`) stays soft-grey and
+ *    clickable by design (`Ops Portal.dc.html:1081-1092`), so its case still
+ *    clicks the item and asserts the catalogue's `readOnlyWriteBlocked`
+ *    toast with ZERO network requests.
  *
  * Scope note, recorded rather than silently narrowed:
  *  - Task 43 (`daf0f49`) deleted OpsFormWindow, sitting-recovery and
@@ -174,9 +179,15 @@ test.describe.serial('ops/28 read-only sweep — ops_support', () => {
     await page.screenshot({ path: path.join(PROOF_OUT, '28-support-rail.png') });
   });
 
-  test('the schools list renders and its bulk write refuses with zero requests', async ({
+  test('the schools list renders and its bulk write is natively disabled, zero requests', async ({
     page,
   }) => {
+    // Bulk `disabled` is threaded from `writeGate.readOnly` alone (never
+    // `blockedReason() !== null`, which also trips offline) — a support
+    // session's bulk button is genuinely inert, not merely refused on click,
+    // so this asserts `disabled` directly rather than clicking a control
+    // that can no longer raise a toast (capabilities.spec.ts's equivalent
+    // case was updated identically).
     await page.setViewportSize({ width: 1440, height: 900 });
     await loginAsSupport(page);
     await page.goto('/dashboard/ops/schools');
@@ -185,8 +196,10 @@ test.describe.serial('ops/28 read-only sweep — ops_support', () => {
 
     await selectFirstRow(page);
     const requests = countOpsWriteRequests(page);
-    await page.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend'), exact: true }).click();
-    await expectRefusalToastAndNoRequests(page, requests);
+    const bulkSuspend = page.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend'), exact: true });
+    await expect(bulkSuspend).toBeVisible({ timeout: WAIT });
+    await expect(bulkSuspend).toBeDisabled({ timeout: WAIT });
+    expect(requests.urls, 'a disabled bulk control must reach the server ZERO times').toEqual([]);
 
     await mkdir(PROOF_OUT, { recursive: true });
     await page.screenshot({ path: path.join(PROOF_OUT, '28-support-schools.png') });
@@ -217,7 +230,7 @@ test.describe.serial('ops/28 read-only sweep — ops_support', () => {
     await expect(page).toHaveURL(/\/dashboard\/ops\/schools$/, { timeout: WAIT });
   });
 
-  test('the Teachers tab (a second kit-built table) bulk write refuses with zero requests', async ({
+  test('the Teachers tab (a second kit-built table) bulk write is natively disabled, zero requests', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -248,10 +261,13 @@ test.describe.serial('ops/28 read-only sweep — ops_support', () => {
 
     await selectFirstRow(page);
     const requests = countOpsWriteRequests(page);
-    await page
-      .getByRole('button', { name: cat(en, 'Ops.schoolTables.bulkResendInvites'), exact: true })
-      .click();
-    await expectRefusalToastAndNoRequests(page, requests);
+    const bulkResend = page.getByRole('button', {
+      name: cat(en, 'Ops.schoolTables.bulkResendInvites'),
+      exact: true,
+    });
+    await expect(bulkResend).toBeVisible({ timeout: WAIT });
+    await expect(bulkResend).toBeDisabled({ timeout: WAIT });
+    expect(requests.urls, 'a disabled bulk control must reach the server ZERO times').toEqual([]);
 
     await mkdir(PROOF_OUT, { recursive: true });
     await page.screenshot({ path: path.join(PROOF_OUT, '28-support-detail.png') });

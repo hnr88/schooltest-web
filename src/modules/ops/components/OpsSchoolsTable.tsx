@@ -506,15 +506,16 @@ export function OpsSchoolsTable() {
       disabled: false,
     },
     // ops/28 (D-53) — mirrors OpsClassDetail.tsx:287: greyed pre-emptively
-    // for a locked write, never for the read-only offline state alone (the
-    // menu click still needs to fire so `chooseLifecycleAction`'s own
+    // for a READ-ONLY session only, never merely offline — offline is
+    // transient and must keep its clickable toast-with-Retry path (the menu
+    // click still needs to fire so `chooseLifecycleAction`'s own
     // `refuseWhenLocked` raises the exact toast/retry pair). `onSelect`,
     // `write` and the confirm copy below are unchanged.
     ...schoolLifecycleActions(school.portal_status).map((action) => ({
       label: t(action.labelKey),
       destructive: action.danger,
       write: action.write,
-      disabled: action.write && writeGate.blockedReason() !== null,
+      disabled: action.write && writeGate.readOnly,
       onSelect: (target: SchoolsListRow) => chooseLifecycleAction(target, action),
     })),
   ];
@@ -559,7 +560,10 @@ export function OpsSchoolsTable() {
   // Archive dispatch through SUSPEND_SCHOOL_ACTION/ARCHIVE_SCHOOL_ACTION,
   // whose OWN `write: true` is what the runner already gates on), so their
   // `disabled` reads the write gate directly rather than through `action.write`.
-  const locked = writeGate.blockedReason() !== null;
+  // `readOnly` ALONE, never `blockedReason() !== null` — that also trips
+  // offline, and a natively-disabled bulk button would silently swallow the
+  // toast-with-Retry offline path capabilities.spec.ts:178 requires.
+  const locked = writeGate.readOnly;
   const bulkActions = [
     // First, per the design (`:1480`) and the task's `Done when` order.
     // `write: false` (D-20): a GET, so it never goes through the write gate
