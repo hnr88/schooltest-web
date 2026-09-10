@@ -144,8 +144,7 @@ test.describe('journey 06 — scoring to teacher report', () => {
     }
   });
 
-  // PENDING THE API RESTART — deliberately gated, never deleted, and never
-  // asserted against the buggy live values to manufacture a pass.
+  // THE REGRESSION THIS JOURNEY EXISTS FOR.
   //
   // `selectHistory` sorted the 8-point trend window by `sat_at`, a calendar DAY.
   // Same-day sittings therefore TIED, the ties held the sibling read's own
@@ -157,17 +156,13 @@ test.describe('journey 06 — scoring to teacher report', () => {
   //
   // FIXED in schooltest-api/src/utils/result-view-v2.ts, pinned by
   // schooltest-api/tests/unit/result-view-v2.spec.ts (the 14 real sitting
-  // timestamps replayed). :5500 is `strapi start` serving dist/, so the fix is
-  // inert there until a build+restart the ORCHESTRATOR owns. Set
-  // J06_API_RESTARTED=1 once it has happened; see
+  // timestamps replayed). This ran gated behind J06_API_RESTARTED while :5500
+  // still served a pre-fix dist/; the API was rebuilt and restarted at 23:03,
+  // the window came back [null x5, 76, 84, 41], and the gate came off. See
   // .qa/journeys/06-scoring-to-report/README.md.
   test('the trend window carries every scored sitting the generated report names', async ({
     playwright,
   }) => {
-    test.skip(
-      process.env.J06_API_RESTARTED !== '1',
-      'pending the orchestrator-owned API build+restart: :5500 serves a dist/ built before the selectHistory fix, so running this now would assert the defect instead of the contract',
-    );
     const request = await playwright.request.newContext();
     try {
       const jwt = await bearer(request, TEACHER_EMAIL);
@@ -178,14 +173,18 @@ test.describe('journey 06 — scoring to teacher report', () => {
       const history = sitting.view.history ?? [];
       expect(history.length, 'a history read must carry the window').toBeGreaterThan(0);
 
-      // The document names one overall per sitting it shows; every one of those
-      // scores must also be a point on the trend the teacher sees.
+      // CONTAINMENT, NOT EQUALITY — the widths differ ON PURPOSE: the document
+      // reports the latest sitting and its predecessor ("Reportable sittings
+      // shown | 2") while the window carries up to RESULT_HISTORY_MAX_POINTS,
+      // so equality reds on a three-sitting student (measured). The defect is
+      // one-way: the trend must never LACK a score the report states.
       const stated = reportStatedOveralls(report);
       expect(stated.length, 'a growth sitting means the report names 2+ sittings').toBeGreaterThan(1);
       const charted = history.map((point) => point.overall).filter((s): s is number => s !== null);
-      expect(charted.length, 'the trend must plot as many sittings as the report names').toBe(
-        stated.length,
-      );
+      expect(
+        charted.length,
+        'the trend cannot plot fewer scored sittings than the report names',
+      ).toBeGreaterThanOrEqual(stated.length);
       for (const score of stated) {
         expect(charted, `the trend window must carry the ${score} the report states`).toContain(
           score,
