@@ -35,6 +35,7 @@ import {
   type DirectoryRowAction,
 } from '@/modules/ops/directory';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
+import { OpsStudentImportDialog } from '@/modules/ops/components/OpsStudentImportDialog';
 import { OpsStudentProfilePanel } from '@/modules/ops/components/OpsStudentProfilePanel';
 import { OpsStudentsTable } from '@/modules/ops/components/OpsStudentsTable';
 import {
@@ -120,6 +121,9 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   const [lifecycleConfirm, setLifecycleConfirm] = useState<LifecycleConfirmState | null>(null);
   const [moveTargetRows, setMoveTargetRows] = useState<readonly OpsStudentRow[] | null>(null);
   const [destinationClassDocumentId, setDestinationClassDocumentId] = useState('');
+  // ops/26 — the tab is school-wide, never scoped to one class, so the dialog
+  // opens with no class pre-selected (task 21 supplies that from the class page).
+  const [importOpen, setImportOpen] = useState(false);
 
   const filters = useMemo<DirectoryFilterDef[]>(
     () => [
@@ -266,10 +270,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
     primary: {
       label: t('studentsImportCta'),
       write: false,
-      onSelect: () =>
-        document
-          .getElementById('ops-import-class')
-          ?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+      onSelect: () => setImportOpen(true),
     },
   };
 
@@ -302,6 +303,15 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
       <OpsStudentProfilePanel
         schoolDocumentId={schoolDocumentId}
         studentDocumentId={profileDocumentId}
+      />
+
+      {/* ops/26 — the design's IMPORT STUDENTS MODAL (`:745-817`), opened from
+          this tab's primary button. No class is in scope here, so it opens
+          with none pre-selected. */}
+      <OpsStudentImportDialog
+        schoolDocumentId={schoolDocumentId}
+        open={importOpen}
+        onOpenChange={setImportOpen}
       />
 
       {lifecycleConfirm === null || confirmAction === null || confirmAction.confirm === null ? null : (
