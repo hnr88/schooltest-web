@@ -36,7 +36,7 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
   // reuses the plan panel's own `Ops.plan` copy verbatim (D-33).
   const tPlan = useTranslations('Ops.plan');
   const [confirmingDirtyClose, setConfirmingDirtyClose] = useState(false);
-  const { form, submit, isPending, emailDomainWarning } = useSchoolEditForm({
+  const { form, submit, isPending, emailDomainWarning, fieldErrorCount } = useSchoolEditForm({
     school,
     onDone,
   });
@@ -75,6 +75,11 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
                 {errors.root.message}
               </p>
             ) : null}
+            {fieldErrorCount > 0 ? (
+              <p role="alert" className="text-sm text-destructive" data-testid="ops-edit-school-form-summary">
+                {t('formSummary', { count: fieldErrorCount })}
+              </p>
+            ) : null}
             <p className="text-sm text-body">
               {t('editVersionNote', { version: school.updatedAt })}
             </p>
@@ -97,7 +102,7 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
                 {t('cancel')}
               </Button>
               <Button type="submit" loading={isPending}>
-                {isPending ? t('submitting') : t('save')}
+                {isPending ? t('savingLabel') : t('save')}
               </Button>
             </DialogFooter>
           </form>

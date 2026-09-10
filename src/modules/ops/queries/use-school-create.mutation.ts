@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
   schoolPatchResponseSchema,
+  schoolsListResponseSchema,
   schoolWriteResultSchema,
   type SchoolCreate,
   type SchoolWriteResult,
@@ -102,4 +103,55 @@ export function schoolFieldIssues(error: unknown): Array<{ path: string; message
 export function schoolStale(error: unknown): boolean {
   const candidate = error as { response?: { status?: number } } | undefined;
   return candidate?.response?.status === 412;
+}
+
+/**
+ * Task 24 (`vSchool`) — the design and this backlog's `logic.md` both assume
+ * the server answers 409 on a genuine duplicate name. Curled live against
+ * 127.0.0.1:5500 (2026-09-10): a duplicate `name` on POST /api/schools
+ * answers **400** `ValidationError`, uniqueness enforced on the derived
+ * `slug`, never a 409 — recorded as a defect for `contracts/schools.md`.
+ * PATCH's own duplicate-name path is worse (confirmed live): it answers
+ * **500** with no field detail and PERSISTS THE RENAME ANYWAY, so it cannot
+ * be distinguished from any other 500 here — the async pre-check below is
+ * the only real defence on edit.
+ */
+export function schoolNameConflict(error: unknown): boolean {
+  const candidate = error as
+    | { response?: { status?: number; data?: { error?: { details?: { errors?: Array<{ path?: unknown }> } } } } }
+    | undefined;
+  if (candidate?.response?.status !== 400) return false;
+  const issues = candidate.response.data?.error?.details?.errors ?? [];
+  return issues.some((issue) => issue.path === 'slug' || (Array.isArray(issue.path) && issue.path.includes('slug')));
+}
+
+/**
+ * Task 24 (`vSchool`, `:1163`) — best-effort duplicate-name pre-check against
+ * the live directory. The server's own uniqueness constraint is on `slug`,
+ * not `name` (`logic.md#v-school`), so this NEVER replaces the server's
+ * answer — it only saves the round trip in the common case. Excludes the
+ * school being edited so keeping its own name never fires the rule. A failed
+ * or malformed read is swallowed: a broken pre-check must never block a
+ * submission the server would accept.
+ */
+export async function findDuplicateSchoolName(
+  name: string,
+  excludeDocumentId?: string
+): Promise<boolean> {
+  const trimmed = name.trim();
+  if (trimmed.length < 3) return false;
+  try {
+    const res = await strapi.get<unknown>('/api/ops/schools', {
+      opsPortalVersioned: true,
+      params: { q: trimmed, pageSize: 10, page: 1 },
+    });
+    const parsed = schoolsListResponseSchema.safeParse(res.data);
+    if (!parsed.success) return false;
+    const target = trimmed.toLowerCase();
+    return parsed.data.data.some(
+      (row) => row.documentId !== excludeDocumentId && (row.name ?? '').trim().toLowerCase() === target
+    );
+  } catch {
+    return false;
+  }
 }

@@ -43,6 +43,9 @@ export function OpsCreateSchoolDialog() {
     deliveryState,
     deliverySchoolDocumentId,
     setDeliveryState,
+    emailDomainWarning,
+    statusActiveWarning,
+    fieldErrorCount,
   } = useSchoolCreateForm({
     onDone: () => setOpen(false),
   });
@@ -87,6 +90,11 @@ export function OpsCreateSchoolDialog() {
                 {errors.root.message}
               </p>
             ) : null}
+            {fieldErrorCount > 0 ? (
+              <p role="alert" className="text-sm text-destructive" data-testid="ops-school-form-summary">
+                {t('formSummary', { count: fieldErrorCount })}
+              </p>
+            ) : null}
             {deliveryState === 'failed' ? (
               <div className="rounded-lg border border-border bg-muted p-3" data-testid="ops-school-delivery-failed">
                 <p className="text-sm text-body">{t('deliveryFailed')}</p>
@@ -101,7 +109,11 @@ export function OpsCreateSchoolDialog() {
                 </Button>
               </div>
             ) : null}
-            <OpsCreateSchoolFields form={form} />
+            <OpsCreateSchoolFields
+              form={form}
+              emailWarning={emailDomainWarning}
+              statusWarning={statusActiveWarning}
+            />
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => close(false)}>
                 {t('cancel')}

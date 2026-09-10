@@ -10,13 +10,26 @@ import {
   SelectField,
 } from '@/modules/design-system';
 import type { SchoolCreateFormValues, SchoolEditFormValues } from '@/modules/ops/schemas/school-create.schema';
-import type { OpsCreateSchoolFieldsProps } from '@/modules/ops/types/school-create.types';
 
 const STATE_CODES = ['VIC', 'NSW', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'];
 const SECTOR_KEYS = ['government', 'catholic', 'non-government'] as const;
 const PLAN_KEYS = ['pilot', 'standard', 'enterprise'] as const;
 const STATUS_KEYS = ['pending_setup', 'trial', 'active'] as const;
 const SCHOOL_TYPE_KEYS = ['combined', 'primary', 'secondary'] as const;
+
+/** `vSchool` field UI contract (`Ops Portal.dc.html:1145-1159`): a warning
+ *  border is amber via the `warning` design token, never a colour literal.
+ *  `SelectField` has no warning-tone trigger border (only `errorText` reaches
+ *  it) — a kit gap, so the status-Active warning below is message-only. */
+const WARNING_INPUT_CLASS = 'border-warning focus-visible:border-warning';
+
+export interface OpsCreateSchoolFieldsProps {
+  form: import('react-hook-form').UseFormReturn<SchoolCreateFormValues>;
+  /** A valid-but-non-school-domain contact email WARNS without blocking. */
+  emailWarning?: boolean;
+  /** Creating with status Active WARNS without blocking (create only). */
+  statusWarning?: boolean;
+}
 
 /**
  * OPS-013 Create School modal body. The enum OPTIONS come from the shared
@@ -27,7 +40,7 @@ const SCHOOL_TYPE_KEYS = ['combined', 'primary', 'secondary'] as const;
  * The single Primary contact field stores LOSSLESSLY as `contact_name` (task
  * 10) — never a guessed family name.
  */
-export function OpsCreateSchoolFields({ form }: { form: import('react-hook-form').UseFormReturn<SchoolCreateFormValues> }) {
+export function OpsCreateSchoolFields({ form, emailWarning, statusWarning }: OpsCreateSchoolFieldsProps) {
   const t = useTranslations('Ops.createSchool');
   const { errors } = form.formState;
 
@@ -35,14 +48,17 @@ export function OpsCreateSchoolFields({ form }: { form: import('react-hook-form'
     id: string,
     name: 'name' | 'suburb' | 'contact_name' | 'contact_email' | 'phone',
     label: string,
-    required = false
+    required = false,
+    helperText?: string,
+    warn = false
   ) => (
-    <FieldShell id={id} label={label} required={required} errorText={errors[name]?.message}>
+    <FieldShell id={id} label={label} required={required} helperText={helperText} errorText={errors[name]?.message}>
       <Input
         id={id}
         autoComplete="off"
         aria-invalid={errors[name]?.message ? true : undefined}
         aria-describedby={errors[name]?.message ? describedBy(id) : undefined}
+        className={warn && !errors[name]?.message ? WARNING_INPUT_CLASS : undefined}
         {...form.register(name as never)}
       />
     </FieldShell>
@@ -97,26 +113,38 @@ export function OpsCreateSchoolFields({ form }: { form: import('react-hook-form'
           />
         )}
       />
-      <Controller
-        control={form.control}
-        name="status"
-        render={({ field }) => (
-          <SelectField
-            id="create-school-status"
-            label={t('status')}
-            placeholder={t('statusPlaceholder')}
-            options={STATUS_KEYS.map((key) => ({ value: key, label: t(`statusOptions.${key}`) }))}
-            value={String(field.value ?? '')}
-            onValueChange={field.onChange}
-            errorText={errors.status?.message}
-          />
-        )}
-      />
-      <div className="sm:col-span-2">
-        {textField('create-school-contact-name', 'contact_name', t('contactName'), true)}
+      <div>
+        <Controller
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <SelectField
+              id="create-school-status"
+              label={t('status')}
+              placeholder={t('statusPlaceholder')}
+              options={STATUS_KEYS.map((key) => ({ value: key, label: t(`statusOptions.${key}`) }))}
+              value={String(field.value ?? '')}
+              onValueChange={field.onChange}
+              errorText={errors.status?.message}
+            />
+          )}
+        />
+        {statusWarning ? (
+          <p className="mt-1.5 text-meta font-medium text-warning" data-testid="create-school-status-warning">
+            {t('statusActiveWarning')}
+          </p>
+        ) : null}
       </div>
       <div className="sm:col-span-2">
-        {textField('create-school-contact-email', 'contact_email', t('contactEmail'), true)}
+        {textField('create-school-contact-name', 'contact_name', t('contactName'), true, t('contactHelper'))}
+      </div>
+      <div className="sm:col-span-2">
+        {textField('create-school-contact-email', 'contact_email', t('contactEmail'), true, undefined, emailWarning)}
+        {emailWarning && !errors.contact_email?.message ? (
+          <p className="mt-1.5 text-meta font-medium text-warning" data-testid="create-school-email-warning">
+            {t('emailDomainWarning')}
+          </p>
+        ) : null}
       </div>
       {textField('create-school-phone', 'phone', t('phone'))}
     </div>
@@ -126,7 +154,7 @@ export function OpsCreateSchoolFields({ form }: { form: import('react-hook-form'
 export interface OpsEditSchoolFieldsProps {
   form: import('react-hook-form').UseFormReturn<SchoolEditFormValues>;
   /** A valid-but-non-school-domain email WARNS without blocking (task 10). */
-  emailWarning?: string | null;
+  emailWarning?: boolean;
 }
 
 /**
@@ -138,6 +166,7 @@ export interface OpsEditSchoolFieldsProps {
 export function OpsEditSchoolFields({ form, emailWarning }: OpsEditSchoolFieldsProps) {
   const t = useTranslations('Ops.createSchool');
   const { errors } = form.formState;
+  const showEmailWarning = emailWarning && !errors.contact_email?.message;
 
   return (
     <div className="grid gap-4 sm:grid-cols-2" data-testid="ops-edit-school-fields">
@@ -211,16 +240,26 @@ export function OpsEditSchoolFields({ form, emailWarning }: OpsEditSchoolFieldsP
         )}
       />
       <div className="sm:col-span-2">
-        <FieldShell id="edit-school-contact-name" label={t('contactName')} required errorText={errors.contact_name?.message}>
+        <FieldShell
+          id="edit-school-contact-name"
+          label={t('contactName')}
+          required
+          helperText={t('contactHelper')}
+          errorText={errors.contact_name?.message}
+        >
           <Input id="edit-school-contact-name" {...form.register('contact_name')} />
         </FieldShell>
       </div>
       <div className="sm:col-span-2">
         <FieldShell id="edit-school-contact-email" label={t('contactEmail')} required errorText={errors.contact_email?.message}>
-          <Input id="edit-school-contact-email" {...form.register('contact_email')} />
+          <Input
+            id="edit-school-contact-email"
+            className={showEmailWarning ? WARNING_INPUT_CLASS : undefined}
+            {...form.register('contact_email')}
+          />
         </FieldShell>
-        {emailWarning ? (
-          <p className="text-sm text-amber-600 dark:text-amber-400" data-testid="edit-school-email-warning">
+        {showEmailWarning ? (
+          <p className="mt-1.5 text-meta font-medium text-warning" data-testid="edit-school-email-warning">
             {t('emailDomainWarning')}
           </p>
         ) : null}

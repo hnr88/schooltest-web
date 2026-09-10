@@ -6,10 +6,13 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions/lib/ops-toast';
 import {
-  useSchoolEditMutation,
+  findDuplicateSchoolName,
   schoolFieldIssues,
+  schoolNameConflict,
   schoolStale,
+  useSchoolEditMutation,
 } from '@/modules/ops/queries/use-school-create.mutation';
 import {
   createSchoolEditFormSchema,
@@ -26,7 +29,13 @@ import type { SchoolEditDraft } from '@/modules/ops/types/school-create.types';
  * in the form — the operator decides what to keep. Server field errors map to
  * their controls and the first bad one focuses, with every other entered value
  * preserved. `emailDomainWarning` warns on a valid non-school-domain contact
- * email without blocking (task 10).
+ * email without blocking (task 10, algorithm corrected task 24 to match
+ * `vSchool`).
+ *
+ * Task 24 — a duplicate-name PATCH is confirmed live to answer 500 with no
+ * field detail and to PERSIST THE RENAME regardless (see `schoolNameConflict`'s
+ * doc comment). The async pre-check below is therefore the only real
+ * defence here, not a nicety: it must run before the network call, not after.
  */
 export function useSchoolEditForm({
   school,
@@ -36,6 +45,7 @@ export function useSchoolEditForm({
   onDone: () => void;
 }) {
   const t = useTranslations('Ops.createSchool');
+  const tToast = useTranslations('Ops.toast');
   const tv = useTranslations('Ops.createSchool.validation');
   const schema = useMemo(() => createSchoolEditFormSchema(tv), [tv]);
   const edit = useSchoolEditMutation(school.documentId);
@@ -62,12 +72,19 @@ export function useSchoolEditForm({
     defaultValues,
   });
 
-  const emailDomainWarning = computeEmailDomainWarning(
-    form.watch('contact_email'),
-    form.watch('name')
-  );
+  const emailDomainWarning = schoolEmailDomainWarning(form.watch('contact_email'));
+  const { errors } = form.formState;
+  const fieldErrorCount = Object.keys(errors).filter((key) => key !== 'root').length;
 
   const submit = form.handleSubmit(async (values) => {
+    if (values.name.trim().toLowerCase() !== school.name.trim().toLowerCase()) {
+      const duplicate = await findDuplicateSchoolName(values.name, school.documentId);
+      if (duplicate) {
+        form.setError('name', { message: t('conflict') });
+        form.setFocus('name');
+        return;
+      }
+    }
     try {
       await edit.mutateAsync({
         documentId: school.documentId,
@@ -83,6 +100,11 @@ export function useSchoolEditForm({
         form.setError('root', { message: t('staleEdit') });
         return;
       }
+      if (schoolNameConflict(error)) {
+        form.setError('name', { message: t('conflict') });
+        form.setFocus('name');
+        return;
+      }
       const issues = schoolFieldIssues(error);
       if (issues.length > 0) {
         for (const issue of issues) {
@@ -93,30 +115,30 @@ export function useSchoolEditForm({
         form.setError('root', { message: t('fieldServerError') });
         return;
       }
-      toast.error(t('errorToast'));
+      showOpsToast({
+        tone: 'error',
+        message: t('errorToast'),
+        action: { label: tToast('retry'), run: () => submit() },
+      });
     }
   });
 
-  return { form, submit, isPending: edit.isPending, emailDomainWarning };
+  return { form, submit, isPending: edit.isPending, emailDomainWarning, fieldErrorCount };
 }
 
 /**
- * A valid non-school-domain contact email WARNS without blocking (task 10):
- * the contact address is expected on the school's own domain; a match is any
- * school-name word (4+ letters) appearing in the domain. Both inputs are
- * runtime values — there is no domain allowlist to maintain.
+ * `vSchool` (`Ops Portal.dc.html:1170`) — a syntactically valid email whose
+ * host doesn't look like a school's WARNS without blocking. This is the
+ * design's own fixed suffix check, independent of any per-school column —
+ * the per-school "domain" (`mailFor`, D-05) belongs to `vInvite`, a
+ * different modal, not this one.
  */
-function computeEmailDomainWarning(email: string, schoolName: string): string | null {
-  const at = email.lastIndexOf('@');
-  if (at === -1 || schoolName.trim() === '') return null;
-  const domain = email.slice(at + 1).toLowerCase();
-  const words = schoolName
-    .toLowerCase()
-    .split(/[^a-z]+/)
-    .filter((word) => word.length >= 4);
-  if (words.length === 0) return null;
-  if (words.some((word) => domain.includes(word))) return null;
-  return 'domain-warning';
+const EMAIL_FORMAT = /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i;
+const SCHOOL_DOMAIN_PATTERN = /\.edu(\.au)?$|\.qld|\.nsw|\.vic|\.wa|\.sa\b/i;
+
+export function schoolEmailDomainWarning(email: string): boolean {
+  const trimmed = email.trim();
+  return trimmed !== '' && EMAIL_FORMAT.test(trimmed) && !SCHOOL_DOMAIN_PATTERN.test(trimmed);
 }
 
 /** The EDIT patch carries only what the operator can see and change. */
