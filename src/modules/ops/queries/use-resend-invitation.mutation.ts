@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { strapi } from '@/lib/axios/strapi';
+import { restFailureOf, strapi } from '@/lib/axios/strapi';
 import { schoolInvitationQueryKey } from '@/modules/ops/queries/use-school-invitation.query';
 import { onboardingLinkResultSchema } from '@/modules/ops/schemas/school-invitation.schema';
 import type { OnboardingLinkResult } from '@/modules/ops/types/school-invitation.types';
@@ -28,6 +28,18 @@ export function useResendInvitationMutation() {
       await queryClient.invalidateQueries({ queryKey: ['ops', 'schools'] });
     },
   });
+}
+
+/**
+ * Task 11 — the school-detail banner's own resend outcome (`logic.md#c-resend`).
+ * A cooldown refusal proves the invite already went out; it is never a
+ * failure, so the caller must render the design's WARN wording, not an error.
+ * The server persists `invitation.resent_at` and answers 429 — this is the one
+ * place that classifies that 429 for the banner's toast, so the meaning stays
+ * in one function rather than being re-derived at each call site.
+ */
+export function isResendCooldownFailure(error: unknown): boolean {
+  return restFailureOf(error)?.kind === 'rate-limited';
 }
 
 /* --- task 15: the STAFF invitation lifecycle (ops) ----------------------- */

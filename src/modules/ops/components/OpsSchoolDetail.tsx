@@ -11,6 +11,7 @@ import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
 import { OpsEditSchoolDialog } from '@/modules/ops/components/OpsEditSchoolDialog';
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
 import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
+import { OpsSchoolLifecycleBanner } from '@/modules/ops/components/OpsSchoolLifecycleBanner';
 import { OpsSchoolPlanPanel } from '@/modules/ops/components/OpsSchoolPlanPanel';
 import { OpsSchoolSuspendPanel } from '@/modules/ops/components/OpsSchoolSuspendPanel';
 import { OpsSchoolTables } from '@/modules/ops/components/OpsSchoolTables';
@@ -19,7 +20,6 @@ import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
 import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
 import {
   PORTAL_STATUS_VARIANTS,
-  portalLifecycleBanner,
   portalPlanLabelKey,
   portalStatusLabelKey,
 } from '@/modules/ops/lib/portal-lifecycle.lib';
@@ -54,6 +54,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   const editWriteGate = useOpsWriteGate();
   const [teachersOpen, setTeachersOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const isReadOnly = capabilities.data?.capabilities.write === false;
 
   if (schoolQuery.isPending) {
     return (
@@ -113,8 +114,6 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
         }
       : null;
 
-  const banner = detail === undefined ? null : portalLifecycleBanner(detail.portal_status);
-
   if (!school || detail === undefined) {
     return (
       <main className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
@@ -148,7 +147,6 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   const openInvite = () => {
     document.querySelector<HTMLButtonElement>('[data-slot="ops-onboard-actions"] button')?.click();
   };
-  const editReadOnly = capabilities.data?.capabilities.write === false;
   const openEdit = () => {
     const blocked = editWriteGate.blockedReason();
     if (blocked !== null) {
@@ -191,14 +189,14 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3 lg:justify-end">
-            <span className="inline-flex" onClick={editReadOnly ? openEdit : undefined}>
+            <span className="inline-flex" onClick={isReadOnly ? openEdit : undefined}>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 data-testid="ops-edit-school"
-                disabled={editReadOnly}
-                onClick={editReadOnly ? undefined : openEdit}
+                disabled={isReadOnly}
+                onClick={isReadOnly ? undefined : openEdit}
               >
                 {t('editSchool')}
               </Button>
@@ -215,11 +213,15 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             />
           </div>
         </div>
-        {banner === null ? null : (
-          <Alert variant={banner.tone} title={t(banner.titleKey)}>
-            {t(banner.bodyKey)}
-          </Alert>
-        )}
+        <OpsSchoolLifecycleBanner
+          documentId={documentId}
+          schoolName={school.name}
+          status={detail.portal_status}
+          trialEndsAt={detail.trial_ends_at}
+          retentionUntil={detail.retention_until}
+          suspendedAt={detail.suspended_at}
+          enabled={hydrated && Boolean(token)}
+        />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           {/* The portal lifecycle, through the mapping the directory row also
               uses — so a school reads the same on both screens. The legacy
