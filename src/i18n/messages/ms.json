@@ -41,7 +41,20 @@
     "categoryTutorial": "Tutorial",
     "categoryGuide": "Panduan",
     "categoryOpinion": "Pendapat",
-    "createTitle": "Create article"
+    "createTitle": "Create article",
+    "fieldTitle": "Tajuk",
+    "fieldSlug": "Slug",
+    "slugPlaceholder": "my-article",
+    "fieldCategory": "Kategori",
+    "categoryPlaceholder": "Pilih kategori",
+    "fieldExcerpt": "Petikan",
+    "submit": "Cipta artikel",
+    "submitPending": "Mencipta…",
+    "createdToast": "Berjaya mencipta “{title}”",
+    "createFailedToast": "Gagal mencipta artikel",
+    "statTotal": "Jumlah",
+    "statFeatured": "Terpilih",
+    "statTotalViews": "Jumlah tontonan"
   },
   "Auth": {
     "parentViewsUnavailable": {
@@ -175,16 +188,65 @@
     "updatingPassword": "Mengemas kini kata laluan…",
     "passwordUpdated": "Kata laluan dikemas kini",
     "split": {
-      "title": "Setiap ujian, satu papan pemuka.",
-      "body": "Log masuk untuk mengikuti ujian, markah dan maklum balas AI pelajar anda di satu tempat.",
-      "benefitTests": "Jejaki setiap ujian yang ditugaskan dan tarikh akhirnya",
-      "benefitScores": "Lihat markah sebaik sahaja selesai digredkan",
-      "benefitFeedback": "Fahami kemajuan dengan maklum balas AI",
-      "legal": "© 2026 SchoolTest. Hak cipta terpelihara."
+      "eyebrow": "Portal sekolah",
+      "title": "Ujian diagnostik dan kemajuan bahasa Inggeris, sejajar dengan ACARA",
+      "statSubskillsLabel": "Subkemahiran",
+      "statSubskillsValue": "25",
+      "statYearsLabel": "Tahun",
+      "statYearsValue": "7 hingga 12",
+      "statReportedLabel": "Dilaporkan mengikut",
+      "statReportedValue": "ACARA",
+      "acknowledgement": "SchoolTest menghormati Penjaga Tradisional tanah tempat sekolah-sekolah Australia berdiri."
     },
     "wizardStepSkipped": "Step skipped",
     "sessionExpiredBody": "Sesi ops tamat selepas 30 minit tanpa aktiviti. Log masuk semula — tiada apa yang anda simpan hilang.",
-    "sessionExpiredAction": "Log masuk semula"
+    "sessionExpiredAction": "Log masuk semula",
+    "chrome": {
+      "breadcrumbHome": "Utama",
+      "breadcrumbCurrent": "Akses portal",
+      "footerPrivacy": "Pernyataan privasi",
+      "footerAccessibility": "Kebolehcapaian",
+      "copyright": "© 2026 SchoolTest",
+      "breadcrumbLabel": "laluan navigasi"
+    },
+    "portal": {
+      "signInTitle": "Log masuk ke portal",
+      "signInSubtitle": "Gunakan akaun yang dikeluarkan oleh pentadbir sekolah anda.",
+      "emailLabel": "Alamat emel",
+      "emailPlaceholder": "name@school.edu.au",
+      "passwordLabel": "Kata laluan",
+      "passwordPlaceholder": "Masukkan kata laluan anda",
+      "forgotLink": "Lupa kata laluan",
+      "loginButton": "Log masuk",
+      "loggingIn": "Sedang log masuk…",
+      "invitationNote": "Akaun portal dikeluarkan melalui jemputan. Minta koordinator EAL/D sekolah anda menjemput anda.",
+      "errorTitle": "Kami tidak dapat melogkan anda masuk",
+      "errorBody": "Emel atau kata laluan tidak betul.",
+      "errorAttempts": "{count, plural, other {# percubaan lagi sebelum akaun ini dikunci selama 15 minit.}}",
+      "incorrectPassword": "Kata laluan tidak betul",
+      "lockedBody": "Lima kegagalan log masuk berturut-turut. Atas keselamatan, akaun ini dikunci sehingga {time}. Menetapkan semula kata laluan membukanya dengan segera.",
+      "availableIn": "Log masuk — tersedia dalam {time}",
+      "forgotTitle": "Tetapkan semula kata laluan",
+      "forgotSubtitle": "Masukkan emel pada akaun portal anda. Kami akan menghantar pautan yang sah selama 30 minit.",
+      "backToLogin": "Kembali ke log masuk",
+      "sentTitle": "Semak peti masuk anda",
+      "sentBody": "Sekiranya wujud akaun untuk alamat tersebut, pautan tetapan semula sedang dihantar. Pautan ini luput 30 minit selepas dihantar dan hanya boleh digunakan sekali.",
+      "rateLimitTitle": "Bertenang seketika.",
+      "rateLimitBody": "Terlalu banyak emel tetapan semula diminta untuk alamat ini dalam sejam lalu. Anda boleh meminta yang lain dalam {time}.",
+      "rateLimitBodyNoTime": "Terlalu banyak emel tetapan semula diminta untuk alamat ini dalam sejam lalu. Sila cuba lagi sebentar lagi.",
+      "resetTitle": "Pilih kata laluan baharu",
+      "resetSubtitle": "Anda menetapkan semula kata laluan untuk <email>{email}</email>.",
+      "ruleLength": "Sekurang-kurangnya 12 aksara",
+      "ruleCharClasses": "Satu nombor dan satu simbol",
+      "ruleHistory": "Bukan salah satu daripada lima kata laluan terakhir anda",
+      "confirmLabel": "Sahkan kata laluan baharu",
+      "confirmMismatch": "Kedua-dua kata laluan mesti sepadan",
+      "passwordMin": "Gunakan sekurang-kurangnya 12 aksara.",
+      "passwordCharClasses": "Sertakan sekurang-kurangnya satu nombor dan satu simbol.",
+      "expiredBody": "Pautan tetapan semula bertahan 30 minit dan hanya berfungsi sekali. Yang ini telah dibuka, jadi ia tidak boleh digunakan lagi.",
+      "sendNewLink": "Hantar pautan baharu",
+      "doneBody": "Kata laluan anda telah dikemas kini. Log masuk dengan kata laluan baharu anda untuk kembali ke portal."
+    }
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -1502,7 +1564,8 @@
       },
       "emptyTitle": "Belum ada pemberitahuan",
       "emptyDescription": "Apabila keputusan sedia atau sekolah anda menghantar kemas kini, ia akan dipaparkan di sini."
-    }
+    },
+    "markAllCapNotice": "Tandakan semua sebagai dibaca mengosongkan {cap} pada satu masa — {remaining} akan kekal belum dibaca sehingga anda lakukan sekali lagi."
   },
   "QueryError": {
     "goneTitle": "Halaman ini tidak lagi tersedia",
@@ -3330,172 +3393,11 @@
     },
     "settings": {
       "meta": {
-        "title": "Tetapan platform",
-        "description": "Identiti tapak, lalai SEO, e-mel, had, penyelenggaraan dan pengumuman."
+        "title": "Tetapan - Operasi SchoolTest",
+        "description": "Akaun operasi dalaman untuk sesi operasi ini."
       },
-      "title": "Tetapan platform",
-      "description": "Konfigurasi masa jalan untuk seluruh platform. Perubahan berkuat kuasa serta-merta dan diaudit.",
-      "save": "Simpan tetapan",
-      "saving": "Menyimpan…",
-      "unsaved": "Anda mempunyai perubahan yang belum disimpan.",
-      "savedToast": "Tetapan disimpan.",
-      "validationToast": "Sebahagian nilai ditolak. Semak medan yang ditandakan.",
-      "errorToast": "Tetapan tidak dapat disimpan. Cuba lagi.",
-      "errorTitle": "Kami tidak dapat memuatkan tetapan",
-      "errorDescription": "Titik akhir tetapan platform tidak menjawab. Pastikan API sedang berjalan.",
-      "groups": {
-        "site": {
-          "title": "Identiti tapak",
-          "description": "Nama dan slogan yang dipaparkan di seluruh tapak awam."
-        },
-        "seo": {
-          "title": "Lalai SEO",
-          "description": "Tajuk dan penerangan sandaran bagi halaman yang tidak menetapkan sendiri."
-        },
-        "email": {
-          "title": "E-mel",
-          "description": "Cara mel transaksi dihantar."
-        },
-        "limits": {
-          "title": "Had",
-          "description": "Had sesi, muat naik, penomboran dan kadar."
-        },
-        "maintenance": {
-          "title": "Penyelenggaraan",
-          "description": "Tutup tapak awam dan terangkan sebabnya."
-        },
-        "announcement": {
-          "title": "Pengumuman",
-          "description": "Sepanduk yang dipaparkan kepada semua pelawat tapak awam."
-        }
-      },
-      "options": {
-        "info": "Maklumat",
-        "warning": "Amaran",
-        "critical": "Kritikal",
-        "smtp": "SMTP",
-        "console": "Konsol (log sahaja)"
-      },
-      "fields": {
-        "site_name": {
-          "label": "Nama tapak",
-          "helper": "Dipaparkan pada tab pelayar, tag Open Graph dan kad sosial."
-        },
-        "site_tagline": {
-          "label": "Slogan",
-          "helper": "Satu baris menerangkan produk. Digunakan dalam pengaki dan llms.txt."
-        },
-        "seo_default_title": {
-          "label": "Tajuk meta lalai",
-          "helper": "Sehingga 70 aksara. Digunakan apabila halaman tidak menetapkan tajuk sendiri."
-        },
-        "seo_default_description": {
-          "label": "Penerangan meta lalai",
-          "helper": "Sehingga 200 aksara."
-        },
-        "maintenance_mode": {
-          "label": "Mod penyelenggaraan",
-          "helper": "Paparkan sepanduk penyelenggaraan kepada pelawat awam."
-        },
-        "maintenance_message": {
-          "label": "Mesej penyelenggaraan",
-          "helper": "Dipaparkan dalam sepanduk. Nyatakan apa yang berlaku dan bila ia tamat."
-        },
-        "announcement_enabled": {
-          "label": "Papar pengumuman",
-          "helper": "Paparkan sepanduk pengumuman pada halaman awam."
-        },
-        "announcement_message": {
-          "label": "Pengumuman",
-          "helper": "Teks sepanduk."
-        },
-        "announcement_level": {
-          "label": "Tahap pengumuman",
-          "helper": "Mengawal penegasan sepanduk."
-        },
-        "session_timeout_minutes": {
-          "label": "Tamat sesi (minit)",
-          "helper": "Antara 5 dan 1440. Tempoh sesi log masuk kekal sah."
-        },
-        "upload_max_size_mb": {
-          "label": "Saiz muat naik maksimum (MB)",
-          "helper": "Antara 1 dan 100."
-        },
-        "pagination_default_page_size": {
-          "label": "Saiz halaman lalai",
-          "helper": "Antara 1 dan 100. Digunakan oleh senarai yang tidak meminta saiz."
-        },
-        "pagination_max_page_size": {
-          "label": "Saiz halaman maksimum",
-          "helper": "Antara 1 dan 200, dan tidak boleh kurang daripada lalai."
-        },
-        "email_provider": {
-          "label": "Pembekal e-mel",
-          "helper": "SMTP menghantar mel sebenar; Console hanya mencatat log."
-        },
-        "email_from_name": {
-          "label": "Nama pengirim",
-          "helper": "Nama pengirim pada mel keluar."
-        },
-        "email_from_address": {
-          "label": "Alamat pengirim",
-          "helper": "Alamat pengirim pada mel keluar."
-        },
-        "email_reply_to": {
-          "label": "Alamat balasan",
-          "helper": "Ke mana balasan pergi, jika berbeza daripada pengirim."
-        },
-        "rate_limit_auth_max": {
-          "label": "Cubaan pengesahan setiap tetingkap",
-          "helper": "Antara 1 dan 1000."
-        },
-        "rate_limit_auth_window_ms": {
-          "label": "Tetingkap pengesahan (ms)",
-          "helper": "Antara 1000 dan 3600000."
-        }
-      },
-      "testEmail": {
-        "title": "Hantar e-mel ujian",
-        "description": "Menghantar mesej sebenar melalui pembekal yang dikonfigurasikan untuk mengesahkan penghantaran.",
-        "label": "Hantar kepada",
-        "placeholder": "you@example.com",
-        "send": "Hantar e-mel ujian",
-        "sending": "Menghantar…",
-        "sentToast": "E-mel ujian dihantar kepada {to} melalui {provider}.",
-        "errorToast": "Pembekal menolak mesej itu."
-      },
-      "legal": {
-        "title": "Dokumen undang-undang",
-        "description": "Sunting halaman undang-undang awam. Perubahan yang disimpan diterbitkan serta-merta dan mengosongkan cache halaman tersebut.",
-        "slugLabel": "Dokumen",
-        "versionLabel": "Versi",
-        "effectiveDateLabel": "Tarikh berkuat kuasa",
-        "sectionHeading": "Tajuk seksyen {index}",
-        "sectionParagraphs": "Perenggan seksyen {index}",
-        "sectionParagraphsHelp": "Satu perenggan setiap baris. Senarai berbulet dikekalkan seperti adanya.",
-        "save": "Simpan dokumen",
-        "savedToast": "Disimpan. Halaman awam kini menyajikan versi {version}.",
-        "errorToast": "Dokumen tidak dapat disimpan. Cuba lagi.",
-        "loadErrorTitle": "Kami tidak dapat memuatkan dokumen ini",
-        "loadErrorDescription": "Dokumen tidak dapat dibaca. Cuba lagi, atau periksa API jika ia berterusan.",
-        "confirmTitle": "Terbitkan dokumen undang-undang ini?",
-        "confirmBody": "Halaman awam {slug} memaparkan suntingan itu serta-merta. Simpanan ini diaudit.",
-        "confirmAction": "Terbitkan",
-        "cancel": "Batal",
-        "validation": {
-          "versionRequired": "Versi perlu 1–20 aksara.",
-          "dateInvalid": "Masukkan tarikh berkuat kuasa sebagai YYYY-MM-DD.",
-          "headingRequired": "Setiap seksyen perlu tajuk.",
-          "paragraphRequired": "Setiap seksyen perlu sekurang-kurangnya satu perenggan."
-        },
-        "slugs": {
-          "privacy-policy": "Dasar Privasi",
-          "terms-of-service": "Terma Perkhidmatan",
-          "cookie-policy": "Dasar Kuki",
-          "gdpr": "GDPR"
-        }
-      },
-      "staleToast": "Tetapan ini berubah selepas anda memuatkannya. Semak nilai terkini, kemudian gunakan semula perubahan anda.",
+      "title": "Tetapan",
+      "description": "Akaun operasi dalaman",
       "account": {
         "title": "Akaun anda",
         "description": "Nama yang dipaparkan kepada operator lain dalam portal operasi.",
@@ -3505,9 +3407,7 @@
         "saving": "Menyimpan…",
         "savedToast": "Profil disimpan.",
         "errorToast": "Profil anda tidak dapat disimpan. Cuba lagi."
-      },
-      "firstName": "Nama pertama",
-      "lastName": "Nama keluarga"
+      }
     },
     "plan": {
       "title": "Pelan",
@@ -3939,6 +3839,74 @@
       "successNoInviteToast": "Sekolah dicipta. Tiada jemputan pentadbir dihantar.",
       "conflict": "Sekolah dengan nama itu sudah wujud.",
       "errorToast": "Sekolah itu tidak dapat dicipta. Tiada apa-apa yang disimpan."
+    },
+    "resultWindows": {
+      "errorTitle": "Tetingkap keputusan tidak dapat dimuatkan",
+      "errorDescription": "Pelayan menolak atau gagal membaca. Cuba semula selepas muat semula seterusnya — tiada apa-apa diubah.",
+      "title": "Tetingkap keputusan",
+      "description": "Tetingkap penilaian sejarah dan yang dijadualkan untuk kelas sekolah ini. Sat mengira cubaan rasmi yang tidak dibatalkan; skor tertunda dipaparkan berasingan, bukan sebagai sifar.",
+      "previous": "Sebelum",
+      "next": "Seterusnya",
+      "pageCount": "Halaman {page} daripada {pageCount} — {total} tetingkap",
+      "closeScheduler": "Tutup penjadual",
+      "scheduleWindow": "Jadualkan tetingkap",
+      "empty": "Tiada tetingkap keputusan lagi. Jadualkan satu untuk menjalankan ujian kemajuan rasmi untuk kelas terpilih.",
+      "status": {
+        "complete": "selesai",
+        "inProgress": "sedang berjalan",
+        "scheduled": "dijadualkan",
+        "cancelled": "dibatalkan"
+      },
+      "rowStats": "Sat {sat} daripada {eligible} · tertunda {pending}",
+      "rowAverage": " · purata {average}%",
+      "cefrPending": " · band CEFR tertunda",
+      "cefrValue": " · {cefr}",
+      "viewReport": "Lihat laporan",
+      "hideReport": "Sembunyikan laporan",
+      "downloadPdf": "Muat turun PDF",
+      "share": "Kongsi",
+      "cancel": "Batalkan",
+      "reopen": "Buka semula",
+      "pdfError": "Muat turun PDF gagal: {message}",
+      "shareResult": "Dikongsi: {sent} dihantar, {failed} gagal",
+      "shareResultFailures": " — kegagalan dinamakan dalam log audit.",
+      "shareResultOk": ".",
+      "shareError": "Kongsi gagal: {message}",
+      "cancelError": "Pembatalan gagal: {message}",
+      "reopenError": "Pembukaan semula gagal: {message}",
+      "reportErrorTitle": "Laporan tidak dapat dimuatkan",
+      "reportStats": "Layak {eligible} · sat {sat} · tertunda {pending} · cubaan dibatalkan dikecualikan {excluded}",
+      "scorePending": "skor tertunda",
+      "scorePercent": "{score}%",
+      "cefrPendingShort": "CEFR tertunda",
+      "noOfficialResults": "Tiada keputusan rasmi lagi.",
+      "skill": {
+        "reading": "membaca",
+        "listening": "mendengar",
+        "speaking": "bertutur",
+        "writing": "menulis"
+      },
+      "formTitle": "Tajuk",
+      "formTimezone": "Zon masa (IANA, cth. Australia/Melbourne)",
+      "formOpens": "Buka",
+      "formCloses": "Tutup",
+      "classesLegend": "Kelas ({count} dipilih)",
+      "formsLegend": "Borang setiap kemahiran (1–4 kemahiran)",
+      "noFormOption": "— tiada borang —",
+      "createErrorTitle": "Tetingkap tidak dijadualkan",
+      "createErrorSuffix": "{message} — tiada apa-apa ditugaskan.",
+      "scheduleSubmit": "Jadualkan",
+      "cancelSubmit": "Batal",
+      "conflictFallback": "Pelayan menolak tetingkap itu."
+    },
+    "bulkBar": {
+      "ariaSelected": "{count} {noun} dipilih",
+      "selectedOnPage": "{count} {noun} dipilih di halaman ini",
+      "cappedAt": "Pilihan dihadkan kepada {max}.",
+      "clear": "Kosongkan pilihan"
+    },
+    "typedNameConfirm": {
+      "typeToConfirm": "Taip <name>{name}</name> untuk sahkan"
     }
   },
   "RunSheet": {
@@ -4520,7 +4488,8 @@
     "llmsNotePrivate": "Papan pemuka, aliran pengesahan dan pautan jemputan/permulaan adalah peribadi dan dihalang dalam robots.txt. Ia mengandungi data pelajar dan tidak boleh dirangkak.",
     "llmsNoteSitemap": "Indeks boleh baca mesin bagi setiap URL awam berada di {url}.",
     "llmsNotes": "Nota",
-    "llmsPages": "Halaman"
+    "llmsPages": "Halaman",
+    "siteDescription": "Penilaian diagnostik bahasa Inggeris untuk kelas EAL/D Australia."
   },
   "StudentImport": {
     "downloadTemplate": "Download CSV template",
@@ -4643,61 +4612,61 @@
       },
       "live": {
         "settings": {
-        "control": "Tetapan ujian",
-        "title": "Tetapan sesi",
-        "subtitle": "Apa yang sesi ini jalankan.",
-        "count": "{on} daripada {total} dihidupkan",
-        "close": "Tutup tetapan",
-        "on": "Hidup",
-        "off": "Mati",
-        "minutes": "{minutes} min",
-        "fixed": "Tetapan dikunci selepas sesi dibuka. Untuk mengubahnya, tutup sesi ini dan mulakan sesi baharu.",
-        "rows": {
-          "lowBw": {
-            "label": "Mod jalur lebar rendah",
-            "desc": "Petikan teks sahaja, tiada imej dimuatkan lebih awal, dan jawapan disimpan pada peranti dan disegerakkan apabila sambungan kembali. Guna apabila kelas dalam data mudah alih atau pautan satelit."
-          },
-          "skip": {
-            "label": "Benarkan langkau soalan",
-            "desc": "Murid boleh tinggalkan soalan, teruskan, dan kembali padanya sebelum menghantar."
-          },
-          "review": {
-            "label": "Skrin semakan sebelum hantar",
-            "desc": "Senarai akhir soalan yang dilangkau dan ditanda, supaya tiada jawapan kosong secara tidak sengaja."
-          },
-          "flag": {
-            "label": "Tanda soalan untuk semakan",
-            "desc": "Murid boleh tanda soalan untuk kembali semula. Tanda ditunjukkan pada skrin semakan dan kepada anda."
-          },
-          "bigText": {
-            "label": "Teks lebih besar dan kontras tinggi",
-            "desc": "Murid boleh besarkan teks dan tukar ke tema kontras tinggi pada bila-bila masa."
-          },
-          "lockdown": {
-            "label": "Tetingkap berkunci",
-            "desc": "Ujian memenuhi skrin. Apl lain, tab, salin, tampal dan cetak disekat."
-          },
-          "focusFlag": {
-            "label": "Tanda jika mereka tinggalkan tetingkap",
-            "desc": "Pergiannya direkodkan dengan cap masa dan muncul pada paparan langsung anda. Guna dengan kunci dimatikan."
-          },
-          "warn5": {
-            "label": "Amaran lima minit",
-            "desc": "Satu banner senyap pada lima minit terakhir, supaya jam tidak sentiasa di depan mereka."
-          },
-          "autoSubmit": {
-            "label": "Hantar automatik pada masa",
-            "desc": "Mati bermakna percubaan menunggu anda, dan tiada yang dihantar tanpa guru."
-          },
-          "showScore": {
-            "label": "Tunjukkan skor mereka pada akhir",
-            "desc": "Mati menahan keputusan sehingga anda lepaskan laporan itu."
-          },
-          "timeLimit": {
-            "label": "Had masa",
-            "desc": "Berapa lama sesi berjalan sebelum ia menutup dirinya."
+          "control": "Tetapan ujian",
+          "title": "Tetapan sesi",
+          "subtitle": "Apa yang sesi ini jalankan.",
+          "count": "{on} daripada {total} dihidupkan",
+          "close": "Tutup tetapan",
+          "on": "Hidup",
+          "off": "Mati",
+          "minutes": "{minutes} min",
+          "fixed": "Tetapan dikunci selepas sesi dibuka. Untuk mengubahnya, tutup sesi ini dan mulakan sesi baharu.",
+          "rows": {
+            "lowBw": {
+              "label": "Mod jalur lebar rendah",
+              "desc": "Petikan teks sahaja, tiada imej dimuatkan lebih awal, dan jawapan disimpan pada peranti dan disegerakkan apabila sambungan kembali. Guna apabila kelas dalam data mudah alih atau pautan satelit."
+            },
+            "skip": {
+              "label": "Benarkan langkau soalan",
+              "desc": "Murid boleh tinggalkan soalan, teruskan, dan kembali padanya sebelum menghantar."
+            },
+            "review": {
+              "label": "Skrin semakan sebelum hantar",
+              "desc": "Senarai akhir soalan yang dilangkau dan ditanda, supaya tiada jawapan kosong secara tidak sengaja."
+            },
+            "flag": {
+              "label": "Tanda soalan untuk semakan",
+              "desc": "Murid boleh tanda soalan untuk kembali semula. Tanda ditunjukkan pada skrin semakan dan kepada anda."
+            },
+            "bigText": {
+              "label": "Teks lebih besar dan kontras tinggi",
+              "desc": "Murid boleh besarkan teks dan tukar ke tema kontras tinggi pada bila-bila masa."
+            },
+            "lockdown": {
+              "label": "Tetingkap berkunci",
+              "desc": "Ujian memenuhi skrin. Apl lain, tab, salin, tampal dan cetak disekat."
+            },
+            "focusFlag": {
+              "label": "Tanda jika mereka tinggalkan tetingkap",
+              "desc": "Pergiannya direkodkan dengan cap masa dan muncul pada paparan langsung anda. Guna dengan kunci dimatikan."
+            },
+            "warn5": {
+              "label": "Amaran lima minit",
+              "desc": "Satu banner senyap pada lima minit terakhir, supaya jam tidak sentiasa di depan mereka."
+            },
+            "autoSubmit": {
+              "label": "Hantar automatik pada masa",
+              "desc": "Mati bermakna percubaan menunggu anda, dan tiada yang dihantar tanpa guru."
+            },
+            "showScore": {
+              "label": "Tunjukkan skor mereka pada akhir",
+              "desc": "Mati menahan keputusan sehingga anda lepaskan laporan itu."
+            },
+            "timeLimit": {
+              "label": "Had masa",
+              "desc": "Berapa lama sesi berjalan sebelum ia menutup dirinya."
+            }
           }
-        }
         },
         "alreadyClosedToast": "Sesi ini sudah ditutup. Halaman kini menunjukkan keadaan akhirnya.",
         "badgeClosed": "Ditutup",
@@ -5017,7 +4986,8 @@
         "actionOpen": "Buka",
         "loadingLabel": "Memuatkan pelajar",
         "noMatchesTitle": "Tiada pelajar sepadan",
-        "noMatchesDescription": "Tiada pelajar sepadan dengan carian, penapis atau isihan semasa."
+        "noMatchesDescription": "Tiada pelajar sepadan dengan carian, penapis atau isihan semasa.",
+        "sortAcaraPhase": "Fasa ACARA"
       },
       "drillDown": {
         "meta": {
@@ -5119,5 +5089,146 @@
       "students": "Pelajar ({count, plural, other {# pelajar}})",
       "studentsTotal": "Pelajar ({count, plural, other {# padanan}})"
     }
+  },
+  "Results": {
+    "scoringFailed": "Pemarkahan untuk sessi ini gagal — keputusan tidak tersedia. Tiada apa-apa dipaparkan dan bukannya laporan separa; sessi tersebut akan dinilai semula.",
+    "confidenceWarning": "⚠ Keyakinan rendah — keputusan mungkin tidak mencerminkan keupayaan sebenar murid ini",
+    "confidenceNormal": "Usaha sah · Keyakinan normal · {answered} daripada {total} item dijawab{minutes}",
+    "confidenceMinutes": " · {minutes} min",
+    "ariaSkillSwitcher": "Kemahiran",
+    "deltaPts": "{arrow} {growth} mata",
+    "acaraBadge": "ACARA: {phase}",
+    "gatePassed": "Laluan keluar: lulus",
+    "gateNotYet": "Laluan keluar: belum lulus",
+    "gatePassedState": "lulus",
+    "gateNotYetState": "belum lulus",
+    "exitGate": "Laluan keluar: {state}",
+    "comingSoon": "akan datang",
+    "skillReading": "Membaca",
+    "skillListening": "Mendengar",
+    "skillSpeaking": "Bercakap",
+    "skillWriting": "Menulis",
+    "skillDecoding": "Penyahkodan",
+    "skillVocabulary": "Kosa kata",
+    "skillGrammar": "Tatabahasa",
+    "skillGist": "Isi utama",
+    "skillDetail": "Butiran",
+    "skillInference": "Simpulan",
+    "skillCritical": "Pembacaan kritikal",
+    "notYetAssessed": "Belum dinilai",
+    "steady": "Tetap",
+    "bandSecure": "Mantap",
+    "bandDeveloping": "Berkembang",
+    "bandEmerging": "Mula terbentuk",
+    "bandNotYet": "Belum lagi",
+    "section3NotReached": "Bahagian 3 belum dicapai",
+    "movementHeading": "Pergerakan sejak sessi pertama",
+    "ariaScoreMovement": "Pergerakan skor",
+    "bandMovement": "Pergerakan band",
+    "bandMovementLower": "pergerakan band",
+    "deltaPtsShort": "{delta} mata",
+    "trendHeading": "Kemajuan membaca dari semasa ke semasa",
+    "trendFirstSitting": "Sessi pertama — trend muncul mulai ujian kedua",
+    "trendSittings": "{count, plural, other {# sessi}} sejak {month}",
+    "trendDeltaReliability": "{delta} ({reliability})",
+    "reliable": "boleh dipercayai",
+    "withinError": "dalam ralat",
+    "trendBestGain": "Penambahbaikan terbesar: {skill} +{delta} mata",
+    "attrDecoding": "Penyahkodan",
+    "attrVocabularyB1": "Kosa kata B1",
+    "attrGist": "Isi utama",
+    "attrDetail": "Butiran",
+    "attrInference": "Simpulan",
+    "checklistHeading": "Jalan ke peringkat menyatukan",
+    "consolidatingMet": "Menyatukan — memenuhi semua keperluan",
+    "notAssessedThisSitting": "tidak dinilai pada sessi ini",
+    "scorePercent": "{score}%",
+    "exitGateSection3": "Laluan keluar (Bahagian 3)",
+    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
+    "vocabStrandSingle": "{assessed} · {gap}",
+    "askAria": "Tanya AI tentang keputusan ini",
+    "askHeading": "Tanya AI",
+    "askPlaceholder": "Tanya tentang keputusan ini…",
+    "askSubmit": "Tanya",
+    "askPending": "Menanya…",
+    "askSuggested1": "Kemahiran manakah yang bertambah baik sejak ujian lepas?",
+    "askSuggested2": "Apakah yang perlu saya ajar seterusnya?",
+    "askSuggested3": "Bagaimanakah kosa kata berkembang merentas struktur?",
+    "askSuggested4": "Adakah murid lulus laluan keluar, dan apakah maksudnya?",
+    "downloadLlm": "Muat turun untuk LLM (.md)",
+    "printReport": "Cetak laporan",
+    "printTitle": "Laporan membaca — {student}{date}",
+    "commentaryAria": "Analisis murid",
+    "commentaryHeading": "Analisis murid",
+    "commentaryHeadingOffline": "Analisis murid (ringkasan luar talian)",
+    "copyDeidentified": "Salin (tanpa identiti)",
+    "copied": "Disalin",
+    "errorPatternsHeading": "Bagaimana {name} tersalah jawab",
+    "errorPatternFallbackNote": "Memilih jawapan salah jenis ini.",
+    "errorPatternInsight": "{label} ialah kesilapan paling kerap {name} — {pct}% daripada jawapan salah.",
+    "errorPattern": {
+      "literalMatch": {
+        "label": "Menyalin teks",
+        "note": "Memilih jawapan yang menyalin teks perkata demi perkata."
+      },
+      "overinference": {
+        "label": "Menafsir lebih",
+        "note": "Memilih jawapan yang melampaui apa yang dikatakan teks."
+      },
+      "worldKnowledge": {
+        "label": "Pengetahuan luar",
+        "note": "Memilih jawapan yang benar di dunia tetapi tidak dinyatakan dalam teks."
+      },
+      "grammaticalDecoy": {
+        "label": "Perangkap tatabahasa",
+        "note": "Memilih jawapan yang padan dari segi tatabahasa tetapi bukan maknanya."
+      },
+      "phonologicalNeighbour": {
+        "label": "Bunyi serupa",
+        "note": "Memilih jawapan yang berbunyi seperti perkataan dalam teks."
+      },
+      "orthographicNeighbour": {
+        "label": "Ejaan serupa",
+        "note": "Memilih jawapan yang dieja seperti perkataan dalam teks."
+      },
+      "semanticNeighbour": {
+        "label": "Maksud hampir",
+        "note": "Memilih jawapan yang hampir maksudnya tetapi tidak disokong teks."
+      }
+    },
+    "fallbackNoOverall": "Tiada skor keseluruhan bagi sessi ini.",
+    "fallbackOverall": "Pembacaan keseluruhan berada pada {score}%.",
+    "fallbackGrowthSteady": " Skor tetap berbanding sessi rasmi sebelumnya — tiada perubahan didakwa.",
+    "fallbackGrowthBand": " Skor bergerak antara band berbanding sessi rasmi sebelumnya.",
+    "fallbackGrowthPoints": " Skor berubah sebanyak {delta} mata berbanding sessi rasmi sebelumnya.",
+    "fallbackStrengthNeed": "Kemahiran terkuat: {best} ({bestScore}%). Keperluan terbesar: {worst} ({worstScore}%).",
+    "fallbackCritical": "Pembacaan kritikal memperoleh {score}% dengan laluan keluar {state} — keputusan laluan, bukan band.",
+    "fallbackGatePassed": "lulus",
+    "fallbackGateNotMet": "belum dipenuhi",
+    "fallbackCommonSlip": "Kesilapan paling kerap: {label} ({pct}% daripada jawapan salah).",
+    "fallbackVocabA2Only": "Kosa kata sessi ini hanya struktur A2 ({a2}); B1 tidak dinilai, jadi tiada skor gabungan didakwa. Fokus pengajaran: terus mengukuhkan kosa kata A2 sebelum sessi B1.",
+    "fallbackVocabB1Only": "Kosa kata sessi ini hanya struktur B1 ({b1}); A2 tidak dinilai, jadi tiada skor gabungan didakwa. Fokus pengajaran: bina atas kosa kata B1 yang kini jelas.",
+    "fallbackVocabBlend": "Kosa kata menggabungkan kedua-dua struktur pada {blended} (A2 {a2}, B1 {b1}). Fokus pengajaran: kembangkan struktur yang lebih lemah sebelum sessi akan datang.",
+    "fallbackNoScore": "tiada skor",
+    "fallbackNotAssessed": "tidak dinilai"
+  },
+  "Components": {
+    "pagination": "paginasi",
+    "previous": "Sebelum",
+    "next": "Seterusnya",
+    "goToPreviousPage": "Pergi ke halaman sebelum",
+    "goToNextPage": "Pergi ke halaman seterusnya",
+    "morePages": "Lagi halaman",
+    "breadcrumb": "laluan navigasi",
+    "more": "Lagi",
+    "previousSlide": "Slaid sebelum",
+    "nextSlide": "Slaid seterusnya",
+    "close": "Tutup",
+    "sidebar": "Bar sisi",
+    "sidebarDescription": "Memaparkan bar sisi mudah alih.",
+    "toggleSidebar": "Togol bar sisi",
+    "loading": "Memuatkan",
+    "commandPalette": "Palet Perintah",
+    "commandPaletteDescription": "Cari perintah untuk dijalankan..."
   }
 }

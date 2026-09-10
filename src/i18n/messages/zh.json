@@ -41,7 +41,20 @@
     "categoryTutorial": "教程",
     "categoryGuide": "指南",
     "categoryOpinion": "观点",
-    "createTitle": "Create article"
+    "createTitle": "Create article",
+    "fieldTitle": "标题",
+    "fieldSlug": "Slug",
+    "slugPlaceholder": "my-article",
+    "fieldCategory": "分类",
+    "categoryPlaceholder": "选择分类",
+    "fieldExcerpt": "摘要",
+    "submit": "创建文章",
+    "submitPending": "创建中…",
+    "createdToast": "已创建“{title}”",
+    "createFailedToast": "创建文章失败",
+    "statTotal": "总数",
+    "statFeatured": "推荐",
+    "statTotalViews": "总浏览量"
   },
   "Auth": {
     "parentViewsUnavailable": {
@@ -175,16 +188,65 @@
     "updatingPassword": "正在更新密码…",
     "passwordUpdated": "密码已更新",
     "split": {
-      "title": "所有测试，尽在一个面板。",
-      "body": "登录后即可在一处查看学生的测试、成绩和 AI 反馈。",
-      "benefitTests": "跟踪每一次布置的测试和截止日期",
-      "benefitScores": "评分完成即刻查看成绩",
-      "benefitFeedback": "通过 AI 反馈了解学习进度",
-      "legal": "© 2026 SchoolTest。保留所有权利。"
+      "eyebrow": "学校门户",
+      "title": "对标 ACARA 的英语诊断与进度测评",
+      "statSubskillsLabel": "子技能",
+      "statSubskillsValue": "25",
+      "statYearsLabel": "年级",
+      "statYearsValue": "7 至 12 年级",
+      "statReportedLabel": "报告基准",
+      "statReportedValue": "ACARA",
+      "acknowledgement": "SchoolTest 谨向澳大利亚学校所在土地的传统守护者致敬。"
     },
     "wizardStepSkipped": "Step skipped",
     "sessionExpiredBody": "运维会话在闲置 30 分钟后结束。请重新登录 — 您已保存的内容不会丢失。",
-    "sessionExpiredAction": "重新登录"
+    "sessionExpiredAction": "重新登录",
+    "chrome": {
+      "breadcrumbHome": "首页",
+      "breadcrumbCurrent": "门户登录",
+      "footerPrivacy": "隐私声明",
+      "footerAccessibility": "无障碍",
+      "copyright": "© 2026 SchoolTest",
+      "breadcrumbLabel": "面包屑导航"
+    },
+    "portal": {
+      "signInTitle": "登录门户",
+      "signInSubtitle": "使用学校管理员为您发放的账户。",
+      "emailLabel": "电子邮箱地址",
+      "emailPlaceholder": "name@school.edu.au",
+      "passwordLabel": "密码",
+      "passwordPlaceholder": "输入您的密码",
+      "forgotLink": "忘记密码",
+      "loginButton": "登录",
+      "loggingIn": "正在登录…",
+      "invitationNote": "门户账户仅通过邀请发放。请联系学校的 EAL/D 协调员邀请您加入。",
+      "errorTitle": "无法登录",
+      "errorBody": "电子邮箱或密码不正确。",
+      "errorAttempts": "{count, plural, other {此账户再尝试 # 次后将被锁定 15 分钟。}}",
+      "incorrectPassword": "密码不正确",
+      "lockedBody": "连续五次登录失败。出于安全考虑，此账户将锁定至 {time}。重设密码可立即解锁。",
+      "availableIn": "登录 — {time}后可用",
+      "forgotTitle": "重设密码",
+      "forgotSubtitle": "输入门户账户的电子邮箱，我们将发送一个 30 分钟内有效的链接。",
+      "backToLogin": "返回登录",
+      "sentTitle": "请查收邮箱",
+      "sentBody": "如果该地址存在账户，重设链接正在发送途中。链接在发送 30 分钟后失效，且只能使用一次。",
+      "rateLimitTitle": "请稍作等待。",
+      "rateLimitBody": "过去一小时内该地址请求的重设邮件过多。您可以在 {time} 后再次请求。",
+      "rateLimitBodyNoTime": "过去一小时内该地址请求的重设邮件过多。请稍后再试。",
+      "resetTitle": "设置新密码",
+      "resetSubtitle": "您正在为 <email>{email}</email> 重设密码。",
+      "ruleLength": "至少 12 个字符",
+      "ruleCharClasses": "一个数字和一个符号",
+      "ruleHistory": "不得是您最近使用的五个密码之一",
+      "confirmLabel": "确认新密码",
+      "confirmMismatch": "两次输入的密码必须一致",
+      "passwordMin": "至少使用 12 个字符。",
+      "passwordCharClasses": "必须包含至少一个数字和一个符号。",
+      "expiredBody": "重设链接有效期为 30 分钟，且只能使用一次。此链接已被打开，因此无法再次使用。",
+      "sendNewLink": "发送新链接",
+      "doneBody": "您的密码已更新。请使用新密码登录以返回门户。"
+    }
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -1502,7 +1564,8 @@
       },
       "emptyTitle": "暂无通知",
       "emptyDescription": "当成绩就绪或学校发送更新时，将显示在这里。"
-    }
+    },
+    "markAllCapNotice": "全部标为已读每次最多处理 {cap} 条，其余 {remaining} 条在你再次操作前仍为未读。"
   },
   "QueryError": {
     "goneTitle": "此页面已不存在",
@@ -3320,172 +3383,11 @@
     },
     "settings": {
       "meta": {
-        "title": "平台设置",
-        "description": "站点标识、SEO 默认值、邮件、限额、维护与公告。"
+        "title": "设置 - SchoolTest 运维",
+        "description": "本次运维会话的内部运维账户。"
       },
-      "title": "平台设置",
-      "description": "面向整个平台的运行时配置。更改立即生效并记入审计日志。",
-      "save": "保存设置",
-      "saving": "保存中…",
-      "unsaved": "有未保存的更改。",
-      "savedToast": "设置已保存。",
-      "validationToast": "部分值被拒绝，请检查高亮的字段。",
-      "errorToast": "设置保存失败，请重试。",
-      "errorTitle": "无法加载设置",
-      "errorDescription": "平台设置接口没有响应，请确认 API 正在运行。",
-      "groups": {
-        "site": {
-          "title": "站点标识",
-          "description": "公开站点各处显示的名称与标语。"
-        },
-        "seo": {
-          "title": "SEO 默认值",
-          "description": "页面未自行设置时使用的标题与描述。"
-        },
-        "email": {
-          "title": "邮件",
-          "description": "事务性邮件的发送方式。"
-        },
-        "limits": {
-          "title": "限额",
-          "description": "会话、上传、分页与频率限制。"
-        },
-        "maintenance": {
-          "title": "维护",
-          "description": "关闭公开站点并说明原因。"
-        },
-        "announcement": {
-          "title": "公告",
-          "description": "向公开站点所有访客展示的横幅。"
-        }
-      },
-      "options": {
-        "info": "信息",
-        "warning": "警告",
-        "critical": "严重",
-        "smtp": "SMTP",
-        "console": "仅记录日志"
-      },
-      "fields": {
-        "site_name": {
-          "label": "站点名称",
-          "helper": "显示在浏览器标签、Open Graph 标签和社交卡片中。"
-        },
-        "site_tagline": {
-          "label": "标语",
-          "helper": "一句话描述产品，用于页脚和 llms.txt。"
-        },
-        "seo_default_title": {
-          "label": "默认元标题",
-          "helper": "最多 70 个字符，页面未设置标题时使用。"
-        },
-        "seo_default_description": {
-          "label": "默认元描述",
-          "helper": "最多 200 个字符。"
-        },
-        "maintenance_mode": {
-          "label": "维护模式",
-          "helper": "向公开访客显示维护横幅。"
-        },
-        "maintenance_message": {
-          "label": "维护说明",
-          "helper": "显示在横幅中，说明情况与结束时间。"
-        },
-        "announcement_enabled": {
-          "label": "显示公告",
-          "helper": "在公开页面显示公告横幅。"
-        },
-        "announcement_message": {
-          "label": "公告内容",
-          "helper": "横幅文本。"
-        },
-        "announcement_level": {
-          "label": "公告级别",
-          "helper": "控制横幅的强调程度。"
-        },
-        "session_timeout_minutes": {
-          "label": "会话超时（分钟）",
-          "helper": "5 至 1440。登录会话的有效时长。"
-        },
-        "upload_max_size_mb": {
-          "label": "最大上传大小（MB）",
-          "helper": "1 至 100。"
-        },
-        "pagination_default_page_size": {
-          "label": "默认每页条数",
-          "helper": "1 至 100，用于未指定条数的列表。"
-        },
-        "pagination_max_page_size": {
-          "label": "最大每页条数",
-          "helper": "1 至 200，且不得小于默认值。"
-        },
-        "email_provider": {
-          "label": "邮件服务商",
-          "helper": "SMTP 发送真实邮件；Console 仅记录日志。"
-        },
-        "email_from_name": {
-          "label": "发件人名称",
-          "helper": "外发邮件的发件人名称。"
-        },
-        "email_from_address": {
-          "label": "发件人地址",
-          "helper": "外发邮件的发件地址。"
-        },
-        "email_reply_to": {
-          "label": "回复地址",
-          "helper": "与发件人不同时，回复将发往此处。"
-        },
-        "rate_limit_auth_max": {
-          "label": "每个窗口的认证尝试次数",
-          "helper": "1 至 1000。"
-        },
-        "rate_limit_auth_window_ms": {
-          "label": "认证窗口（毫秒）",
-          "helper": "1000 至 3600000。"
-        }
-      },
-      "testEmail": {
-        "title": "发送测试邮件",
-        "description": "通过当前配置的服务商发送真实邮件，以确认送达。",
-        "label": "发送至",
-        "placeholder": "you@example.com",
-        "send": "发送测试邮件",
-        "sending": "发送中…",
-        "sentToast": "测试邮件已通过 {provider} 发送至 {to}。",
-        "errorToast": "服务商拒绝了该邮件。"
-      },
-      "legal": {
-        "title": "法律文件",
-        "description": "编辑公开的法律页面。保存后立即发布，并清除这些页面的缓存。",
-        "slugLabel": "文件",
-        "versionLabel": "版本",
-        "effectiveDateLabel": "生效日期",
-        "sectionHeading": "第 {index} 节标题",
-        "sectionParagraphs": "第 {index} 节正文",
-        "sectionParagraphsHelp": "每行一个段落。项目符号列表保持原样。",
-        "save": "保存文件",
-        "savedToast": "已保存。公开页面现在提供 {version} 版。",
-        "errorToast": "文件保存失败，请重试。",
-        "loadErrorTitle": "无法加载此文件",
-        "loadErrorDescription": "读取文件失败。请重试；若持续出现，请检查 API。",
-        "confirmTitle": "发布这份法律文件？",
-        "confirmBody": "公开的{slug}页面会立即反映此次修改。保存会记入审计日志。",
-        "confirmAction": "发布",
-        "cancel": "取消",
-        "validation": {
-          "versionRequired": "版本需为 1–20 个字符。",
-          "dateInvalid": "生效日期请按 YYYY-MM-DD 填写。",
-          "headingRequired": "每一节都需要标题。",
-          "paragraphRequired": "每一节至少需要一个段落。"
-        },
-        "slugs": {
-          "privacy-policy": "隐私政策",
-          "terms-of-service": "服务条款",
-          "cookie-policy": "Cookie 政策",
-          "gdpr": "GDPR"
-        }
-      },
-      "staleToast": "自您加载后，这些设置已被更改。请查看最新值，然后重新应用您的修改。",
+      "title": "设置",
+      "description": "内部运维账户",
       "account": {
         "title": "您的账户",
         "description": "在运维门户中向其他运维人员显示的姓名。",
@@ -3495,9 +3397,7 @@
         "saving": "保存中…",
         "savedToast": "资料已保存。",
         "errorToast": "资料保存失败，请重试。"
-      },
-      "firstName": "名",
-      "lastName": "姓"
+      }
     },
     "plan": {
       "title": "方案",
@@ -3929,6 +3829,74 @@
       "successNoInviteToast": "学校已创建。尚未发送管理员邀请。",
       "conflict": "已存在同名学校。",
       "errorToast": "无法创建该学校。未保存任何内容。"
+    },
+    "resultWindows": {
+      "errorTitle": "无法加载结果窗口",
+      "errorDescription": "服务器拒绝或读取失败。请在下次刷新后重试 — 未更改任何内容。",
+      "title": "结果窗口",
+      "description": "该校班级的历史及已排期的评估窗口。应考人数仅统计正式且未作废的尝试；待出成绩单独显示，绝不显示为零。",
+      "previous": "上一页",
+      "next": "下一页",
+      "pageCount": "第 {page} 页，共 {pageCount} 页 — 共 {total} 个窗口",
+      "closeScheduler": "关闭排期器",
+      "scheduleWindow": "排期窗口",
+      "empty": "尚无结果窗口。请排期一个窗口，为所选班级运行正式的进度测试。",
+      "status": {
+        "complete": "已完成",
+        "inProgress": "进行中",
+        "scheduled": "已排期",
+        "cancelled": "已取消"
+      },
+      "rowStats": "已考 {sat}/{eligible} · 待出 {pending}",
+      "rowAverage": " · 平均 {average}%",
+      "cefrPending": " · CEFR 档位待定",
+      "cefrValue": " · {cefr}",
+      "viewReport": "查看报告",
+      "hideReport": "隐藏报告",
+      "downloadPdf": "下载 PDF",
+      "share": "分享",
+      "cancel": "取消",
+      "reopen": "重新开放",
+      "pdfError": "PDF 下载失败：{message}",
+      "shareResult": "已分享：发送 {sent}，失败 {failed}",
+      "shareResultFailures": " — 失败名单见审计日志。",
+      "shareResultOk": "。",
+      "shareError": "分享失败：{message}",
+      "cancelError": "取消失败：{message}",
+      "reopenError": "重新开放失败：{message}",
+      "reportErrorTitle": "无法加载报告",
+      "reportStats": "应考 {eligible} · 已考 {sat} · 待出 {pending} · 排除已作废尝试 {excluded}",
+      "scorePending": "成绩待出",
+      "scorePercent": "{score}%",
+      "cefrPendingShort": "CEFR 待定",
+      "noOfficialResults": "尚无正式结果。",
+      "skill": {
+        "reading": "阅读",
+        "listening": "听力",
+        "speaking": "口语",
+        "writing": "写作"
+      },
+      "formTitle": "标题",
+      "formTimezone": "时区（IANA，如 Australia/Melbourne）",
+      "formOpens": "开放时间",
+      "formCloses": "关闭时间",
+      "classesLegend": "班级（已选 {count} 个）",
+      "formsLegend": "每项技能的表单（1–4 项技能）",
+      "noFormOption": "— 无表单 —",
+      "createErrorTitle": "窗口未能排期",
+      "createErrorSuffix": "{message} — 未分配任何内容。",
+      "scheduleSubmit": "排期",
+      "cancelSubmit": "取消",
+      "conflictFallback": "服务器拒绝了该窗口操作。"
+    },
+    "bulkBar": {
+      "ariaSelected": "已选择 {count} 个{noun}",
+      "selectedOnPage": "本页已选择 {count} 个{noun}",
+      "cappedAt": "最多只能选择 {max} 项。",
+      "clear": "清除选择"
+    },
+    "typedNameConfirm": {
+      "typeToConfirm": "输入 <name>{name}</name> 以确认"
     }
   },
   "RunSheet": {
@@ -4510,7 +4478,8 @@
     "llmsNotePrivate": "控制台、身份验证流程以及邀请/入驻链接均为私有内容，已在 robots.txt 中禁止抓取。这些页面包含学生数据，不得抓取。",
     "llmsNoteSitemap": "所有公开网址的机器可读索引位于 {url}。",
     "llmsNotes": "说明",
-    "llmsPages": "页面"
+    "llmsPages": "页面",
+    "siteDescription": "面向澳大利亚 EAL/D 课堂的英语诊断测评。"
   },
   "StudentImport": {
     "downloadTemplate": "Download CSV template",
@@ -4633,61 +4602,61 @@
       },
       "live": {
         "settings": {
-        "control": "考试设置",
-        "title": "会话设置",
-        "subtitle": "本次考试所使用的设置。",
-        "count": "{total} 项中已开启 {on} 项",
-        "close": "关闭设置",
-        "on": "开",
-        "off": "关",
-        "minutes": "{minutes} 分钟",
-        "fixed": "考试开始后设置即被固定。如需更改，请关闭本场考试并开始新的一场。",
-        "rows": {
-          "lowBw": {
-            "label": "低带宽模式",
-            "desc": "仅文字文章，不预载图片，答案保存在设备上并在网络恢复后同步。适用于使用移动数据或卫星链路的教室。"
-          },
-          "skip": {
-            "label": "允许跳过题目",
-            "desc": "学生可以先跳过某题，继续作答，并在提交前回来完成。"
-          },
-          "review": {
-            "label": "提交前检查页",
-            "desc": "最后列出已跳过和已标记的题目，避免因疏忽留下空白。"
-          },
-          "flag": {
-            "label": "标记题目以便复查",
-            "desc": "学生可以标记题目以便回头查看。标记会显示在检查页面和教师界面上。"
-          },
-          "bigText": {
-            "label": "大字号与高对比度",
-            "desc": "学生可以随时放大文字并切换到高对比度主题。"
-          },
-          "lockdown": {
-            "label": "锁定窗口",
-            "desc": "考试占满整个屏幕。其他应用、标签页、复制、粘贴和打印都被阻止。"
-          },
-          "focusFlag": {
-            "label": "离开窗口时标记",
-            "desc": "离开会被记录时间戳并显示在你的实时视图中。在未开启锁定时使用。"
-          },
-          "warn5": {
-            "label": "五分钟提醒",
-            "desc": "剩余五分钟时显示一条安静的横幅，这样时钟不必一直摆在面前。"
-          },
-          "autoSubmit": {
-            "label": "到时自动提交",
-            "desc": "关闭意味着答卷等待你处理，没有教师就不会提交。"
-          },
-          "showScore": {
-            "label": "结束时显示分数",
-            "desc": "关闭时，结果会保留到你发布报告为止。"
-          },
-          "timeLimit": {
-            "label": "时间限制",
-            "desc": "考试运行多久后自动关闭。"
+          "control": "考试设置",
+          "title": "会话设置",
+          "subtitle": "本次考试所使用的设置。",
+          "count": "{total} 项中已开启 {on} 项",
+          "close": "关闭设置",
+          "on": "开",
+          "off": "关",
+          "minutes": "{minutes} 分钟",
+          "fixed": "考试开始后设置即被固定。如需更改，请关闭本场考试并开始新的一场。",
+          "rows": {
+            "lowBw": {
+              "label": "低带宽模式",
+              "desc": "仅文字文章，不预载图片，答案保存在设备上并在网络恢复后同步。适用于使用移动数据或卫星链路的教室。"
+            },
+            "skip": {
+              "label": "允许跳过题目",
+              "desc": "学生可以先跳过某题，继续作答，并在提交前回来完成。"
+            },
+            "review": {
+              "label": "提交前检查页",
+              "desc": "最后列出已跳过和已标记的题目，避免因疏忽留下空白。"
+            },
+            "flag": {
+              "label": "标记题目以便复查",
+              "desc": "学生可以标记题目以便回头查看。标记会显示在检查页面和教师界面上。"
+            },
+            "bigText": {
+              "label": "大字号与高对比度",
+              "desc": "学生可以随时放大文字并切换到高对比度主题。"
+            },
+            "lockdown": {
+              "label": "锁定窗口",
+              "desc": "考试占满整个屏幕。其他应用、标签页、复制、粘贴和打印都被阻止。"
+            },
+            "focusFlag": {
+              "label": "离开窗口时标记",
+              "desc": "离开会被记录时间戳并显示在你的实时视图中。在未开启锁定时使用。"
+            },
+            "warn5": {
+              "label": "五分钟提醒",
+              "desc": "剩余五分钟时显示一条安静的横幅，这样时钟不必一直摆在面前。"
+            },
+            "autoSubmit": {
+              "label": "到时自动提交",
+              "desc": "关闭意味着答卷等待你处理，没有教师就不会提交。"
+            },
+            "showScore": {
+              "label": "结束时显示分数",
+              "desc": "关闭时，结果会保留到你发布报告为止。"
+            },
+            "timeLimit": {
+              "label": "时间限制",
+              "desc": "考试运行多久后自动关闭。"
+            }
           }
-        }
         },
         "alreadyClosedToast": "该场次此前已结束，页面现在显示最终状态。",
         "badgeClosed": "已结束",
@@ -5007,7 +4976,8 @@
         "actionOpen": "打开",
         "loadingLabel": "正在加载学生",
         "noMatchesTitle": "没有匹配的学生",
-        "noMatchesDescription": "没有学生符合当前的搜索、筛选或排序。"
+        "noMatchesDescription": "没有学生符合当前的搜索、筛选或排序。",
+        "sortAcaraPhase": "ACARA 阶段"
       },
       "drillDown": {
         "meta": {
@@ -5109,5 +5079,146 @@
       "students": "学生（{count, plural, other {# 名学生}}）",
       "studentsTotal": "学生（{count, plural, other {# 个匹配}}）"
     }
+  },
+  "Results": {
+    "scoringFailed": "本次考试的评分失败 — 结果不可用。系统不会显示部分报告，而是不显示任何内容；该场考试将重新评分。",
+    "confidenceWarning": "⚠ 置信度低 — 结果可能无法反映该学生的真实能力",
+    "confidenceNormal": "作答有效 · 置信度正常 · 已答 {answered}/{total} 题{minutes}",
+    "confidenceMinutes": " · {minutes} 分钟",
+    "ariaSkillSwitcher": "技能",
+    "deltaPts": "{arrow} {growth} 分",
+    "acaraBadge": "ACARA：{phase}",
+    "gatePassed": "达标线：已通过",
+    "gateNotYet": "达标线：尚未通过",
+    "gatePassedState": "已通过",
+    "gateNotYetState": "尚未通过",
+    "exitGate": "达标线：{state}",
+    "comingSoon": "即将推出",
+    "skillReading": "阅读",
+    "skillListening": "听力",
+    "skillSpeaking": "口语",
+    "skillWriting": "写作",
+    "skillDecoding": "解码",
+    "skillVocabulary": "词汇",
+    "skillGrammar": "语法",
+    "skillGist": "主旨理解",
+    "skillDetail": "细节把握",
+    "skillInference": "推理",
+    "skillCritical": "批判性阅读",
+    "notYetAssessed": "尚未评估",
+    "steady": "持平",
+    "bandSecure": "稳固",
+    "bandDeveloping": "发展中",
+    "bandEmerging": "起步",
+    "bandNotYet": "尚未达到",
+    "section3NotReached": "未进入第 3 部分",
+    "movementHeading": "自首次考试以来的变化",
+    "ariaScoreMovement": "分数变化",
+    "bandMovement": "档位变化",
+    "bandMovementLower": "档位变化",
+    "deltaPtsShort": "{delta} 分",
+    "trendHeading": "阅读进步趋势",
+    "trendFirstSitting": "首次考试 — 从第二次测试开始显示趋势",
+    "trendSittings": "自{month}以来共 {count, plural, other {# 次考试}}",
+    "trendDeltaReliability": "{delta}（{reliability}）",
+    "reliable": "可靠",
+    "withinError": "在误差范围内",
+    "trendBestGain": "最大进步：{skill} +{delta} 分",
+    "attrDecoding": "解码",
+    "attrVocabularyB1": "词汇 B1",
+    "attrGist": "主旨理解",
+    "attrDetail": "细节把握",
+    "attrInference": "推理",
+    "checklistHeading": "通往巩固阶段的路径",
+    "consolidatingMet": "巩固阶段 — 已满足全部要求",
+    "notAssessedThisSitting": "本次考试未评估",
+    "scorePercent": "{score}%",
+    "exitGateSection3": "达标线（第 3 部分）",
+    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
+    "vocabStrandSingle": "{assessed} · {gap}",
+    "askAria": "就此结果询问 AI",
+    "askHeading": "询问 AI",
+    "askPlaceholder": "就此结果提问…",
+    "askSubmit": "提问",
+    "askPending": "提问中…",
+    "askSuggested1": "自上次测试以来哪些技能有所提高？",
+    "askSuggested2": "我接下来应该教什么？",
+    "askSuggested3": "词汇在各子项上发展如何？",
+    "askSuggested4": "该学生是否通过了达标线？这意味着什么？",
+    "downloadLlm": "下载给 LLM 使用（.md）",
+    "printReport": "打印报告",
+    "printTitle": "阅读报告 — {student}{date}",
+    "commentaryAria": "学生分析",
+    "commentaryHeading": "学生分析",
+    "commentaryHeadingOffline": "学生分析（离线摘要）",
+    "copyDeidentified": "复制（已去标识）",
+    "copied": "已复制",
+    "errorPatternsHeading": "{name}的失分方式",
+    "errorPatternFallbackNote": "选择了这类错误答案。",
+    "errorPatternInsight": "{label} 是{name}最常见的失误 — 占错误答案的 {pct}%。",
+    "errorPattern": {
+      "literalMatch": {
+        "label": "照抄原文",
+        "note": "选择了逐字照抄原文的答案。"
+      },
+      "overinference": {
+        "label": "过度推断",
+        "note": "选择了超出原文所述内容的答案。"
+      },
+      "worldKnowledge": {
+        "label": "依赖外部知识",
+        "note": "选择了在现实中属实但原文未提及的答案。"
+      },
+      "grammaticalDecoy": {
+        "label": "语法陷阱",
+        "note": "选择了语法上通顺但意思不符的答案。"
+      },
+      "phonologicalNeighbour": {
+        "label": "发音相近",
+        "note": "选择了与原文单词发音相近的答案。"
+      },
+      "orthographicNeighbour": {
+        "label": "拼写相近",
+        "note": "选择了与原文单词拼写相近的答案。"
+      },
+      "semanticNeighbour": {
+        "label": "词义相近",
+        "note": "选择了意思相近但原文并不支持的答案。"
+      }
+    },
+    "fallbackNoOverall": "本次考试没有总分。",
+    "fallbackOverall": "阅读总分为 {score}%。",
+    "fallbackGrowthSteady": " 与上一次正式考试相比分数持平 — 不主张有任何变化。",
+    "fallbackGrowthBand": " 与上一次正式考试相比，分数在档位之间发生了移动。",
+    "fallbackGrowthPoints": " 与上一次正式考试相比，分数变化了 {delta} 分。",
+    "fallbackStrengthNeed": "最强技能：{best}（{bestScore}%）。最需加强：{worst}（{worstScore}%）。",
+    "fallbackCritical": "批判性阅读得 {score} 分，达标线{state} — 这是达标结果，不是档位。",
+    "fallbackGatePassed": "已通过",
+    "fallbackGateNotMet": "尚未满足",
+    "fallbackCommonSlip": "最常见失误：{label}（占错误答案的 {pct}%）。",
+    "fallbackVocabA2Only": "本次词汇仅评估了 A2 子项（{a2}）；未评估 B1，因此不主张混合分数。教学重点：在 B1 考试前继续巩固 A2 词汇。",
+    "fallbackVocabB1Only": "本次词汇仅评估了 B1 子项（{b1}）；未评估 A2，因此不主张混合分数。教学重点：在已展现的 B1 词汇基础上继续提升。",
+    "fallbackVocabBlend": "词汇综合两个子项为 {blended}（A2 {a2}，B1 {b1}）。教学重点：在下次考试前加强较弱的子项。",
+    "fallbackNoScore": "无分数",
+    "fallbackNotAssessed": "未评估"
+  },
+  "Components": {
+    "pagination": "分页",
+    "previous": "上一页",
+    "next": "下一页",
+    "goToPreviousPage": "转到上一页",
+    "goToNextPage": "转到下一页",
+    "morePages": "更多页面",
+    "breadcrumb": "面包屑导航",
+    "more": "更多",
+    "previousSlide": "上一张幻灯片",
+    "nextSlide": "下一张幻灯片",
+    "close": "关闭",
+    "sidebar": "侧边栏",
+    "sidebarDescription": "显示移动端侧边栏。",
+    "toggleSidebar": "切换侧边栏",
+    "loading": "加载中",
+    "commandPalette": "命令面板",
+    "commandPaletteDescription": "搜索要运行的命令..."
   }
 }

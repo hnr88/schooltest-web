@@ -41,7 +41,20 @@
     "categoryTutorial": "튜토리얼",
     "categoryGuide": "가이드",
     "categoryOpinion": "오피니언",
-    "createTitle": "Create article"
+    "createTitle": "Create article",
+    "fieldTitle": "제목",
+    "fieldSlug": "슬러그",
+    "slugPlaceholder": "my-article",
+    "fieldCategory": "카테고리",
+    "categoryPlaceholder": "카테고리 선택",
+    "fieldExcerpt": "요약",
+    "submit": "아티클 만들기",
+    "submitPending": "만드는 중…",
+    "createdToast": "“{title}”이(가) 생성되었습니다",
+    "createFailedToast": "아티클 생성에 실패했습니다",
+    "statTotal": "전체",
+    "statFeatured": "추천",
+    "statTotalViews": "총 조회수"
   },
   "Auth": {
     "parentViewsUnavailable": {
@@ -175,16 +188,65 @@
     "updatingPassword": "비밀번호를 업데이트하는 중…",
     "passwordUpdated": "비밀번호가 업데이트되었습니다",
     "split": {
-      "title": "모든 테스트를 하나의 대시보드에서.",
-      "body": "로그인하여 학생의 테스트, 점수, AI 피드백을 한곳에서 확인하세요.",
-      "benefitTests": "배정된 모든 테스트와 마감일 추적",
-      "benefitScores": "채점 즉시 점수 확인",
-      "benefitFeedback": "AI 피드백으로 학습 진행 상황 파악",
-      "legal": "© 2026 SchoolTest. 모든 권리 보유."
+      "eyebrow": "스쿨 포털",
+      "title": "ACARA에 맞춘 영어 진단 및 성장 평가",
+      "statSubskillsLabel": "하위 기술",
+      "statSubskillsValue": "25",
+      "statYearsLabel": "학년",
+      "statYearsValue": "7~12",
+      "statReportedLabel": "보고 기준",
+      "statReportedValue": "ACARA",
+      "acknowledgement": "SchoolTest는 호주 학교가 자리한 땅의 전통적 소유자들에게 경의를 표합니다."
     },
     "wizardStepSkipped": "Step skipped",
     "sessionExpiredBody": "운영 세션은 30분간 활동이 없으면 종료됩니다. 다시 로그인해 주세요 — 저장한 내용은 사라지지 않았습니다.",
-    "sessionExpiredAction": "다시 로그인"
+    "sessionExpiredAction": "다시 로그인",
+    "chrome": {
+      "breadcrumbHome": "홈",
+      "breadcrumbCurrent": "포털 접속",
+      "footerPrivacy": "개인정보 처리 방침",
+      "footerAccessibility": "접근성",
+      "copyright": "© 2026 SchoolTest",
+      "breadcrumbLabel": "탐색 경로"
+    },
+    "portal": {
+      "signInTitle": "포털에 로그인",
+      "signInSubtitle": "학교 관리자가 발급한 계정을 사용하세요.",
+      "emailLabel": "이메일 주소",
+      "emailPlaceholder": "name@school.edu.au",
+      "passwordLabel": "비밀번호",
+      "passwordPlaceholder": "비밀번호를 입력하세요",
+      "forgotLink": "비밀번호 찾기",
+      "loginButton": "로그인",
+      "loggingIn": "로그인 중…",
+      "invitationNote": "포털 계정은 초대를 통해서만 발급됩니다. 학교의 EAL/D 코디네이터에게 초대를 요청하세요.",
+      "errorTitle": "로그인할 수 없습니다",
+      "errorBody": "이메일 또는 비밀번호가 올바르지 않습니다.",
+      "errorAttempts": "{count, plural, other {이 계정이 15분간 잠기기까지 #번의 시도가 남았습니다.}}",
+      "incorrectPassword": "비밀번호가 올바르지 않습니다",
+      "lockedBody": "연속 5회 로그인에 실패했습니다. 보안을 위해 이 계정은 {time}까지 잠깁니다. 비밀번호를 재설정하면 즉시 잠금이 해제됩니다.",
+      "availableIn": "로그인 — {time} 후 가능",
+      "forgotTitle": "비밀번호 재설정",
+      "forgotSubtitle": "포털 계정의 이메일을 입력하세요. 30분간 유효한 재설정 링크를 보내드립니다.",
+      "backToLogin": "로그인으로 돌아가기",
+      "sentTitle": "받은 편지함을 확인하세요",
+      "sentBody": "해당 주소로 등록된 계정이 있다면 재설정 링크를 보내드립니다. 링크는 발송 30분 후 만료되며 한 번만 사용할 수 있습니다.",
+      "rateLimitTitle": "조금만 기다려 주세요.",
+      "rateLimitBody": "지난 1시간 동안 이 주소로 재설정 이메일이 너무 많이 요청되었습니다. {time} 후에 다시 요청할 수 있습니다.",
+      "rateLimitBodyNoTime": "지난 1시간 동안 이 주소로 재설정 이메일이 너무 많이 요청되었습니다. 잠시 후 다시 시도해 주세요.",
+      "resetTitle": "새 비밀번호 선택",
+      "resetSubtitle": "<email>{email}</email> 계정의 비밀번호를 재설정합니다.",
+      "ruleLength": "12자 이상",
+      "ruleCharClasses": "숫자와 특수문자 각 1개 이상",
+      "ruleHistory": "최근 사용한 5개 비밀번호와 달라야 합니다",
+      "confirmLabel": "새 비밀번호 확인",
+      "confirmMismatch": "두 비밀번호가 일치해야 합니다",
+      "passwordMin": "12자 이상이어야 합니다.",
+      "passwordCharClasses": "숫자와 특수문자를 각 1개 이상 포함해야 합니다.",
+      "expiredBody": "재설정 링크는 30분 동안 한 번만 유효합니다. 이 링크는 이미 사용되어 더 이상 사용할 수 없습니다.",
+      "sendNewLink": "새 링크 보내기",
+      "doneBody": "비밀번호가 변경되었습니다. 새 비밀번호로 로그인하여 포털로 돌아가세요."
+    }
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -1502,7 +1564,8 @@
       },
       "emptyTitle": "아직 알림이 없습니다",
       "emptyDescription": "결과가 준비되거나 학교에서 업데이트를 보낼 때 여기에 표시됩니다."
-    }
+    },
+    "markAllCapNotice": "한 번에 최대 {cap}개까지 읽음으로 표시됩니다. {remaining}개는 다시 실행할 때까지 읽지 않음으로 남습니다."
   },
   "QueryError": {
     "goneTitle": "이 페이지는 더 이상 사용할 수 없습니다",
@@ -3330,172 +3393,11 @@
     },
     "settings": {
       "meta": {
-        "title": "플랫폼 설정",
-        "description": "사이트 정보, SEO 기본값, 이메일, 제한, 점검 및 공지."
+        "title": "설정 - SchoolTest 운영",
+        "description": "이 운영 세션의 내부 운영 계정입니다."
       },
-      "title": "플랫폼 설정",
-      "description": "플랫폼 전체의 런타임 설정입니다. 변경 사항은 즉시 적용되고 감사 기록에 남습니다.",
-      "save": "설정 저장",
-      "saving": "저장 중…",
-      "unsaved": "저장하지 않은 변경 사항이 있습니다.",
-      "savedToast": "설정을 저장했습니다.",
-      "validationToast": "일부 값이 거부되었습니다. 강조된 항목을 확인하세요.",
-      "errorToast": "설정을 저장하지 못했습니다. 다시 시도하세요.",
-      "errorTitle": "설정을 불러오지 못했습니다",
-      "errorDescription": "플랫폼 설정 엔드포인트가 응답하지 않았습니다. API가 실행 중인지 확인하세요.",
-      "groups": {
-        "site": {
-          "title": "사이트 정보",
-          "description": "공개 사이트 전반에 표시되는 이름과 태그라인."
-        },
-        "seo": {
-          "title": "SEO 기본값",
-          "description": "페이지가 자체 값을 지정하지 않을 때 사용할 제목과 설명."
-        },
-        "email": {
-          "title": "이메일",
-          "description": "트랜잭션 메일 발송 방식."
-        },
-        "limits": {
-          "title": "제한",
-          "description": "세션, 업로드, 페이지네이션, 속도 제한."
-        },
-        "maintenance": {
-          "title": "점검",
-          "description": "공개 사이트를 닫고 사유를 안내합니다."
-        },
-        "announcement": {
-          "title": "공지",
-          "description": "공개 사이트의 모든 방문자에게 표시되는 배너."
-        }
-      },
-      "options": {
-        "info": "정보",
-        "warning": "경고",
-        "critical": "심각",
-        "smtp": "SMTP",
-        "console": "콘솔(기록만)"
-      },
-      "fields": {
-        "site_name": {
-          "label": "사이트 이름",
-          "helper": "브라우저 탭, Open Graph 태그, 소셜 카드에 표시됩니다."
-        },
-        "site_tagline": {
-          "label": "태그라인",
-          "helper": "제품을 한 줄로 설명합니다. 푸터와 llms.txt에 사용됩니다."
-        },
-        "seo_default_title": {
-          "label": "기본 메타 제목",
-          "helper": "최대 70자. 페이지가 제목을 지정하지 않을 때 사용됩니다."
-        },
-        "seo_default_description": {
-          "label": "기본 메타 설명",
-          "helper": "최대 200자."
-        },
-        "maintenance_mode": {
-          "label": "점검 모드",
-          "helper": "공개 방문자에게 점검 배너를 표시합니다."
-        },
-        "maintenance_message": {
-          "label": "점검 안내",
-          "helper": "배너에 표시됩니다. 상황과 종료 시점을 알려주세요."
-        },
-        "announcement_enabled": {
-          "label": "공지 표시",
-          "helper": "공개 페이지에 공지 배너를 표시합니다."
-        },
-        "announcement_message": {
-          "label": "공지 내용",
-          "helper": "배너 문구."
-        },
-        "announcement_level": {
-          "label": "공지 수준",
-          "helper": "배너의 강조 정도를 정합니다."
-        },
-        "session_timeout_minutes": {
-          "label": "세션 만료(분)",
-          "helper": "5~1440. 로그인 세션이 유지되는 시간."
-        },
-        "upload_max_size_mb": {
-          "label": "최대 업로드 크기(MB)",
-          "helper": "1~100."
-        },
-        "pagination_default_page_size": {
-          "label": "기본 페이지 크기",
-          "helper": "1~100. 크기를 지정하지 않은 목록에 사용됩니다."
-        },
-        "pagination_max_page_size": {
-          "label": "최대 페이지 크기",
-          "helper": "1~200이며 기본값보다 작을 수 없습니다."
-        },
-        "email_provider": {
-          "label": "이메일 공급자",
-          "helper": "SMTP는 실제 메일을 보내고 Console은 기록만 합니다."
-        },
-        "email_from_name": {
-          "label": "보내는 사람 이름",
-          "helper": "발신 메일에 표시되는 이름."
-        },
-        "email_from_address": {
-          "label": "보내는 주소",
-          "helper": "발신 메일의 주소."
-        },
-        "email_reply_to": {
-          "label": "회신 주소",
-          "helper": "발신 주소와 다를 경우 회신이 도착할 주소."
-        },
-        "rate_limit_auth_max": {
-          "label": "구간당 인증 시도 횟수",
-          "helper": "1~1000."
-        },
-        "rate_limit_auth_window_ms": {
-          "label": "인증 구간(ms)",
-          "helper": "1000~3600000."
-        }
-      },
-      "testEmail": {
-        "title": "테스트 이메일 보내기",
-        "description": "설정된 공급자를 통해 실제 메일을 보내 전달을 확인합니다.",
-        "label": "받는 사람",
-        "placeholder": "you@example.com",
-        "send": "테스트 이메일 보내기",
-        "sending": "보내는 중…",
-        "sentToast": "{provider}(으)로 {to}에 테스트 이메일을 보냈습니다.",
-        "errorToast": "공급자가 메일을 거부했습니다."
-      },
-      "legal": {
-        "title": "법률 문서",
-        "description": "공개 법률 페이지를 편집합니다. 저장한 변경은 즉시 게시되고 해당 페이지의 캐시를 비웁니다.",
-        "slugLabel": "문서",
-        "versionLabel": "버전",
-        "effectiveDateLabel": "시행일",
-        "sectionHeading": "{index}번 섹션 제목",
-        "sectionParagraphs": "{index}번 섹션 본문",
-        "sectionParagraphsHelp": "한 줄에 한 문단씩 입력하세요. 목록은 입력한 그대로 유지됩니다.",
-        "save": "문서 저장",
-        "savedToast": "저장했습니다. 공개 페이지는 이제 {version} 버전을 제공합니다.",
-        "errorToast": "문서를 저장하지 못했습니다. 다시 시도하세요.",
-        "loadErrorTitle": "이 문서를 불러오지 못했습니다",
-        "loadErrorDescription": "문서를 읽지 못했습니다. 다시 시도하고, 계속되면 API를 확인하세요.",
-        "confirmTitle": "이 법률 문서를 게시할까요?",
-        "confirmBody": "공개 {slug} 페이지에 수정이 즉시 반영됩니다. 저장은 감사 기록에 남습니다.",
-        "confirmAction": "게시",
-        "cancel": "취소",
-        "validation": {
-          "versionRequired": "버전은 1~20자여야 합니다.",
-          "dateInvalid": "시행일을 YYYY-MM-DD 형식으로 입력하세요.",
-          "headingRequired": "모든 섹션에는 제목이 필요합니다.",
-          "paragraphRequired": "모든 섹션에는 문단이 최소 하나 필요합니다."
-        },
-        "slugs": {
-          "privacy-policy": "개인정보 처리방침",
-          "terms-of-service": "서비스 이용약관",
-          "cookie-policy": "쿠키 정책",
-          "gdpr": "GDPR"
-        }
-      },
-      "staleToast": "불러온 뒤 이 설정이 변경되었습니다. 최신 값을 확인한 다음 변경 사항을 다시 적용하세요.",
+      "title": "설정",
+      "description": "내부 운영 계정",
       "account": {
         "title": "내 계정",
         "description": "운영 포털에서 다른 운영 담당자에게 표시되는 이름입니다.",
@@ -3505,9 +3407,7 @@
         "saving": "저장 중…",
         "savedToast": "프로필을 저장했습니다.",
         "errorToast": "프로필을 저장하지 못했습니다. 다시 시도하세요."
-      },
-      "firstName": "이름",
-      "lastName": "성"
+      }
     },
     "plan": {
       "title": "플랜",
@@ -3939,6 +3839,74 @@
       "successNoInviteToast": "학교가 생성되었습니다. 관리자 초대장은 발송되지 않았습니다.",
       "conflict": "같은 이름의 학교가 이미 있습니다.",
       "errorToast": "해당 학교를 생성할 수 없습니다. 아무것도 저장되지 않았습니다."
+    },
+    "resultWindows": {
+      "errorTitle": "결과 창을 불러오지 못했습니다",
+      "errorDescription": "서버가 읽기를 거부했거나 실패했습니다. 다음 새로고침 이후 다시 시도하세요 — 아무 것도 변경되지 않았습니다.",
+      "title": "결과 창",
+      "description": "이 학교 학급의 과거 및 예정된 평가 창입니다. 응시 수는 공식적이고 무효화되지 않은 시도만 계산하며, 대기 중인 점수는 0이 아닌 별도로 표시됩니다.",
+      "previous": "이전",
+      "next": "다음",
+      "pageCount": "{pageCount}페이지 중 {page}페이지 — 총 {total}개 창",
+      "closeScheduler": "예약 도구 닫기",
+      "scheduleWindow": "창 예약",
+      "empty": "아직 결과 창이 없습니다. 선택한 학급의 공식 진도 평가를 위해 하나를 예약하세요.",
+      "status": {
+        "complete": "완료",
+        "inProgress": "진행 중",
+        "scheduled": "예정됨",
+        "cancelled": "취소됨"
+      },
+      "rowStats": "응시 {eligible}명 중 {sat}명 · 대기 {pending}",
+      "rowAverage": " · 평균 {average}%",
+      "cefrPending": " · CEFR 등급 대기 중",
+      "cefrValue": " · {cefr}",
+      "viewReport": "보고서 보기",
+      "hideReport": "보고서 숨기기",
+      "downloadPdf": "PDF 다운로드",
+      "share": "공유",
+      "cancel": "취소",
+      "reopen": "다시 열기",
+      "pdfError": "PDF 다운로드 실패: {message}",
+      "shareResult": "공유됨: {sent}건 전송, {failed}건 실패",
+      "shareResultFailures": " — 실패 항목은 감사 로그에 기록됩니다.",
+      "shareResultOk": ".",
+      "shareError": "공유 실패: {message}",
+      "cancelError": "취소 실패: {message}",
+      "reopenError": "다시 열기 실패: {message}",
+      "reportErrorTitle": "보고서를 불러오지 못했습니다",
+      "reportStats": "대상 {eligible} · 응시 {sat} · 대기 {pending} · 무효화된 시도 제외 {excluded}",
+      "scorePending": "점수 대기 중",
+      "scorePercent": "{score}%",
+      "cefrPendingShort": "CEFR 대기 중",
+      "noOfficialResults": "아직 공식 결과가 없습니다.",
+      "skill": {
+        "reading": "읽기",
+        "listening": "듣기",
+        "speaking": "말하기",
+        "writing": "쓰기"
+      },
+      "formTitle": "제목",
+      "formTimezone": "시간대 (IANA, 예: Australia/Melbourne)",
+      "formOpens": "시작",
+      "formCloses": "종료",
+      "classesLegend": "학급 ({count}개 선택됨)",
+      "formsLegend": "영역별 폼 (1–4개 영역)",
+      "noFormOption": "— 폼 없음 —",
+      "createErrorTitle": "창이 예약되지 않았습니다",
+      "createErrorSuffix": "{message} — 아무 것도 할당되지 않았습니다.",
+      "scheduleSubmit": "예약",
+      "cancelSubmit": "취소",
+      "conflictFallback": "서버가 창 작업을 거부했습니다."
+    },
+    "bulkBar": {
+      "ariaSelected": "{count}개 {noun} 선택됨",
+      "selectedOnPage": "이 페이지에서 {count}개 {noun} 선택됨",
+      "cappedAt": "선택은 최대 {max}개로 제한됩니다.",
+      "clear": "선택 해제"
+    },
+    "typedNameConfirm": {
+      "typeToConfirm": "확인하려면 <name>{name}</name>을(를) 입력하세요"
     }
   },
   "RunSheet": {
@@ -4520,7 +4488,8 @@
     "llmsNotePrivate": "대시보드, 인증 절차, 초대/온보딩 링크는 비공개이며 robots.txt에서 차단됩니다. 학생 데이터를 포함하므로 크롤링해서는 안 됩니다.",
     "llmsNoteSitemap": "모든 공개 URL의 기계 판독용 색인은 {url}에 있습니다.",
     "llmsNotes": "참고",
-    "llmsPages": "페이지"
+    "llmsPages": "페이지",
+    "siteDescription": "호주 EAL/D 교실을 위한 영어 진단 평가."
   },
   "StudentImport": {
     "downloadTemplate": "Download CSV template",
@@ -4643,61 +4612,61 @@
       },
       "live": {
         "settings": {
-        "control": "시험 설정",
-        "title": "세션 설정",
-        "subtitle": "이 세션에 적용된 설정입니다.",
-        "count": "{total}개 중 {on}개 켜짐",
-        "close": "설정 닫기",
-        "on": "켜짐",
-        "off": "꺼짐",
-        "minutes": "{minutes}분",
-        "fixed": "세션이 시작되면 설정을 변경할 수 없습니다. 변경하려면 이 세션을 종료하고 새 세션을 시작하세요.",
-        "rows": {
-          "lowBw": {
-            "label": "저대역폭 모드",
-            "desc": "텍스트 전용 지문, 이미지 미리 불러오기 없음, 답안은 기기에 저장 후 연결이 복구되면 동기화됩니다. 모바일 데이터나 위성 회선 환경에서 사용하세요."
-          },
-          "skip": {
-            "label": "문제 건너뛰기 허용",
-            "desc": "학생이 문제를 건너뛰었다가 제출 전에 다시 돌아올 수 있습니다."
-          },
-          "review": {
-            "label": "제출 전 검토 화면",
-            "desc": "건너뛴 문제와 표시된 문제의 최종 목록으로, 실수로 빈 답안을 남기지 않습니다."
-          },
-          "flag": {
-            "label": "검토용 문제 표시",
-            "desc": "학생이 문제를 표시하여 다시 확인할 수 있습니다. 표시는 검토 화면과 교사 화면에 모두 나타납니다."
-          },
-          "bigText": {
-            "label": "큰 글씨 및 고대비",
-            "desc": "학생이 언제든 글자 크기를 키우고 고대비 테마로 전환할 수 있습니다."
-          },
-          "lockdown": {
-            "label": "잠금 창 모드",
-            "desc": "시험이 화면을 채웁니다. 다른 앱, 탭, 복사, 붙여넣기, 인쇄가 차단됩니다."
-          },
-          "focusFlag": {
-            "label": "창 이탈 시 표시",
-            "desc": "화면을 벗어나면 시각과 함께 기록되어 실시간 화면에 표시됩니다. 잠금 모드가 꺼져 있을 때 사용하세요."
-          },
-          "warn5": {
-            "label": "5분 남음 알림",
-            "desc": "남은 시간 5분에 조용한 배너 한 번으로 알려 주어 시계를 계속 보지 않아도 됩니다."
-          },
-          "autoSubmit": {
-            "label": "시간 종료 시 자동 제출",
-            "desc": "끄면 교사가 확인할 때까지 제출되지 않습니다."
-          },
-          "showScore": {
-            "label": "종료 후 점수 표시",
-            "desc": "끄면 보고서를 공개하기 전까지 결과가 표시되지 않습니다."
-          },
-          "timeLimit": {
-            "label": "시간 제한",
-            "desc": "세션이 스스로 종료하기까지의 시간입니다."
+          "control": "시험 설정",
+          "title": "세션 설정",
+          "subtitle": "이 세션에 적용된 설정입니다.",
+          "count": "{total}개 중 {on}개 켜짐",
+          "close": "설정 닫기",
+          "on": "켜짐",
+          "off": "꺼짐",
+          "minutes": "{minutes}분",
+          "fixed": "세션이 시작되면 설정을 변경할 수 없습니다. 변경하려면 이 세션을 종료하고 새 세션을 시작하세요.",
+          "rows": {
+            "lowBw": {
+              "label": "저대역폭 모드",
+              "desc": "텍스트 전용 지문, 이미지 미리 불러오기 없음, 답안은 기기에 저장 후 연결이 복구되면 동기화됩니다. 모바일 데이터나 위성 회선 환경에서 사용하세요."
+            },
+            "skip": {
+              "label": "문제 건너뛰기 허용",
+              "desc": "학생이 문제를 건너뛰었다가 제출 전에 다시 돌아올 수 있습니다."
+            },
+            "review": {
+              "label": "제출 전 검토 화면",
+              "desc": "건너뛴 문제와 표시된 문제의 최종 목록으로, 실수로 빈 답안을 남기지 않습니다."
+            },
+            "flag": {
+              "label": "검토용 문제 표시",
+              "desc": "학생이 문제를 표시하여 다시 확인할 수 있습니다. 표시는 검토 화면과 교사 화면에 모두 나타납니다."
+            },
+            "bigText": {
+              "label": "큰 글씨 및 고대비",
+              "desc": "학생이 언제든 글자 크기를 키우고 고대비 테마로 전환할 수 있습니다."
+            },
+            "lockdown": {
+              "label": "잠금 창 모드",
+              "desc": "시험이 화면을 채웁니다. 다른 앱, 탭, 복사, 붙여넣기, 인쇄가 차단됩니다."
+            },
+            "focusFlag": {
+              "label": "창 이탈 시 표시",
+              "desc": "화면을 벗어나면 시각과 함께 기록되어 실시간 화면에 표시됩니다. 잠금 모드가 꺼져 있을 때 사용하세요."
+            },
+            "warn5": {
+              "label": "5분 남음 알림",
+              "desc": "남은 시간 5분에 조용한 배너 한 번으로 알려 주어 시계를 계속 보지 않아도 됩니다."
+            },
+            "autoSubmit": {
+              "label": "시간 종료 시 자동 제출",
+              "desc": "끄면 교사가 확인할 때까지 제출되지 않습니다."
+            },
+            "showScore": {
+              "label": "종료 후 점수 표시",
+              "desc": "끄면 보고서를 공개하기 전까지 결과가 표시되지 않습니다."
+            },
+            "timeLimit": {
+              "label": "시간 제한",
+              "desc": "세션이 스스로 종료하기까지의 시간입니다."
+            }
           }
-        }
         },
         "alreadyClosedToast": "이 세션은 이미 종료되어 있었습니다. 최종 상태를 표시합니다.",
         "badgeClosed": "종료",
@@ -5017,7 +4986,8 @@
         "actionOpen": "열기",
         "loadingLabel": "학생 불러오는 중",
         "noMatchesTitle": "일치하는 학생이 없습니다",
-        "noMatchesDescription": "현재 검색·필터·정렬과 일치하는 학생이 없습니다."
+        "noMatchesDescription": "현재 검색·필터·정렬과 일치하는 학생이 없습니다.",
+        "sortAcaraPhase": "ACARA 단계"
       },
       "drillDown": {
         "meta": {
@@ -5119,5 +5089,146 @@
       "students": "학생 ({count, plural, other {#명}})",
       "studentsTotal": "학생 ({count, plural, other {#건 일치}})"
     }
+  },
+  "Results": {
+    "scoringFailed": "이번 응시의 채점에 실패했습니다 — 결과를 표시할 수 없습니다. 부분 보고서 대신 아무 내용도 표시하지 않으며, 해당 응시는 다시 채점됩니다.",
+    "confidenceWarning": "⚠ 신뢰도 낮음 — 결과가 이 학생의 실제 능력을 반영하지 않을 수 있습니다",
+    "confidenceNormal": "학습 노력 유효 · 신뢰도 정상 · 총 {total}문항 중 {answered}문항 응답{minutes}",
+    "confidenceMinutes": " · {minutes}분",
+    "ariaSkillSwitcher": "영역",
+    "deltaPts": "{arrow} {growth}점",
+    "acaraBadge": "ACARA: {phase}",
+    "gatePassed": "통과 기준: 통과",
+    "gateNotYet": "통과 기준: 아직 미통과",
+    "gatePassedState": "통과",
+    "gateNotYetState": "아직 미통과",
+    "exitGate": "통과 기준: {state}",
+    "comingSoon": "곧 제공",
+    "skillReading": "읽기",
+    "skillListening": "듣기",
+    "skillSpeaking": "말하기",
+    "skillWriting": "쓰기",
+    "skillDecoding": "디코딩",
+    "skillVocabulary": "어휘",
+    "skillGrammar": "문법",
+    "skillGist": "핵심 내용 파악",
+    "skillDetail": "세부 정보",
+    "skillInference": "추론",
+    "skillCritical": "비판적 읽기",
+    "notYetAssessed": "아직 평가되지 않음",
+    "steady": "변화 없음",
+    "bandSecure": "안정",
+    "bandDeveloping": "발달",
+    "bandEmerging": "출현",
+    "bandNotYet": "아직 아님",
+    "section3NotReached": "섹션 3에 도달하지 않음",
+    "movementHeading": "첫 응시 이후의 변화",
+    "ariaScoreMovement": "점수 변화",
+    "bandMovement": "밴드 이동",
+    "bandMovementLower": "밴드 이동",
+    "deltaPtsShort": "{delta}점",
+    "trendHeading": "시간에 따른 읽기 진전",
+    "trendFirstSitting": "첫 응시입니다 — 두 번째 검사부터 추이가 표시됩니다",
+    "trendSittings": "{month} 이후 {count, plural, other {#회 응시}}",
+    "trendDeltaReliability": "{delta} ({reliability})",
+    "reliable": "신뢰할 수 있음",
+    "withinError": "오차 범위 내",
+    "trendBestGain": "가장 큰 향상: {skill} +{delta}점",
+    "attrDecoding": "디코딩",
+    "attrVocabularyB1": "어휘 B1",
+    "attrGist": "핵심 내용 파악",
+    "attrDetail": "세부 정보",
+    "attrInference": "추론",
+    "checklistHeading": "통합(Consolidating) 단계까지의 경로",
+    "consolidatingMet": "통합 단계 — 모든 요건을 충족했습니다",
+    "notAssessedThisSitting": "이번 응시에서 평가하지 않음",
+    "scorePercent": "{score}%",
+    "exitGateSection3": "통과 기준 (섹션 3)",
+    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
+    "vocabStrandSingle": "{assessed} · {gap}",
+    "askAria": "이 결과에 대해 AI에게 물어보기",
+    "askHeading": "AI에게 물어보기",
+    "askPlaceholder": "이 결과에 대해 궁금한 점을 입력하세요…",
+    "askSubmit": "질문하기",
+    "askPending": "질문 중…",
+    "askSuggested1": "지난 검사 이후 어떤 영역이 향상되었나요?",
+    "askSuggested2": "다음으로 무엇을 가르쳐야 할까요?",
+    "askSuggested3": "어휘 영역이 하위 영역별로 어떻게 발전하고 있나요?",
+    "askSuggested4": "학생이 통과 기준을 충족했나요? 그것은 무엇을 의미하나요?",
+    "downloadLlm": "LLM용 다운로드 (.md)",
+    "printReport": "보고서 인쇄",
+    "printTitle": "읽기 보고서 — {student}{date}",
+    "commentaryAria": "학생 분석",
+    "commentaryHeading": "학생 분석",
+    "commentaryHeadingOffline": "학생 분석 (오프라인 요약)",
+    "copyDeidentified": "복사 (개인정보 제거)",
+    "copied": "복사됨",
+    "errorPatternsHeading": "{name} 학생의 오류 유형",
+    "errorPatternFallbackNote": "이 유형의 오답을 선택했습니다.",
+    "errorPatternInsight": "{label}은(는) {name} 학생에게 가장 흔한 실수입니다 — 오답의 {pct}%입니다.",
+    "errorPattern": {
+      "literalMatch": {
+        "label": "본문 그대로 베끼기",
+        "note": "본문을 그대로 복사한 답을 골랐습니다."
+      },
+      "overinference": {
+        "label": "과도한 추론",
+        "note": "본문이 말하는 것 이상으로 나아간 답을 골랐습니다."
+      },
+      "worldKnowledge": {
+        "label": "배경지식 의존",
+        "note": "세상에서는 사실이지만 본문에 나오지 않은 답을 골랐습니다."
+      },
+      "grammaticalDecoy": {
+        "label": "문법 함정",
+        "note": "문법에는 맞지만 의미는 맞지 않은 답을 골랐습니다."
+      },
+      "phonologicalNeighbour": {
+        "label": "비슷한 발음",
+        "note": "본문의 단어와 발음이 비슷한 답을 골랐습니다."
+      },
+      "orthographicNeighbour": {
+        "label": "비슷한 철자",
+        "note": "본문의 단어와 철자가 비슷한 답을 골랐습니다."
+      },
+      "semanticNeighbour": {
+        "label": "의미가 비슷함",
+        "note": "의미는 비슷하지만 본문이 뒷받침하지 않는 답을 골랐습니다."
+      }
+    },
+    "fallbackNoOverall": "이번 응시의 전체 점수가 없습니다.",
+    "fallbackOverall": "전체 읽기 점수는 {score}%입니다.",
+    "fallbackGrowthSteady": " 이전 공식 응시 대비 점수가 변하지 않았습니다 — 변화를 주장하지 않습니다.",
+    "fallbackGrowthBand": " 이전 공식 응시 대비 점수가 밴드 사이에서 이동했습니다.",
+    "fallbackGrowthPoints": " 이전 공식 응시 대비 점수가 {delta}점 변했습니다.",
+    "fallbackStrengthNeed": "가장 강한 영역: {best} ({bestScore}%). 가장 시급한 영역: {worst} ({worstScore}%).",
+    "fallbackCritical": "비판적 읽기는 {score}점이며 통과 기준은 {state} — 밴드가 아닌 통과 결과입니다.",
+    "fallbackGatePassed": "통과",
+    "fallbackGateNotMet": "아직 미충족",
+    "fallbackCommonSlip": "가장 흔한 실수: {label} (오답의 {pct}%).",
+    "fallbackVocabA2Only": "이번 응시의 어휘는 A2 하위 영역만 평가했습니다 ({a2}). B1은 평가하지 않아 혼합 점수를 주장하지 않습니다. 지도 초점: B1 응시 전까지 A2 어휘를 계속 다져주세요.",
+    "fallbackVocabB1Only": "이번 응시의 어휘는 B1 하위 영역만 평가했습니다 ({b1}). A2는 평가하지 않아 혼합 점수를 주장하지 않습니다. 지도 초점: 확인된 B1 어휘를 바탕으로 발전시켜 주세요.",
+    "fallbackVocabBlend": "어휘는 두 하위 영역을 혼합하여 {blended}입니다 (A2 {a2}, B1 {b1}). 지도 초점: 다음 응시 전까지 더 약한 하위 영역을 키워주세요.",
+    "fallbackNoScore": "점수 없음",
+    "fallbackNotAssessed": "평가 안 함"
+  },
+  "Components": {
+    "pagination": "페이지 매김",
+    "previous": "이전",
+    "next": "다음",
+    "goToPreviousPage": "이전 페이지로 이동",
+    "goToNextPage": "다음 페이지로 이동",
+    "morePages": "더 많은 페이지",
+    "breadcrumb": "탐색 경로",
+    "more": "더 보기",
+    "previousSlide": "이전 슬라이드",
+    "nextSlide": "다음 슬라이드",
+    "close": "닫기",
+    "sidebar": "사이드바",
+    "sidebarDescription": "모바일 사이드바를 표시합니다.",
+    "toggleSidebar": "사이드바 전환",
+    "loading": "불러오는 중",
+    "commandPalette": "명령 팔레트",
+    "commandPaletteDescription": "실행할 명령을 검색하세요..."
   }
 }

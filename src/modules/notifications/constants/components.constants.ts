@@ -33,3 +33,12 @@ export const HELPER_CLASSES = {
   warning: 'text-warning-ink',
   muted: 'text-body',
 } as const;
+
+/**
+ * Row 09 (F-04) — the server marks at most this many rows per call
+ * (`schooltest-api/src/api/notification/lib/notification.constants.ts` MARK_ALL_CAP),
+ * and the response schema already encodes the cap (`updated: max(100)`). The
+ * button was disabled only on `unreadCount === 0`, so 150 unread left 50
+ * behind and explained nothing. The UI now says so.
+ */
+export const MARK_ALL_READ_CAP = 100;

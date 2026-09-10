@@ -28,6 +28,12 @@ export const notificationListParamsSchema = z.strictObject({
   pageSize: z.number().int().min(1).max(100),
   read: z.boolean().optional(),
   category: notificationCategorySchema.optional(),
+  // Row 09: the feed pages on the SERVER now, so its search and date sort
+  // travel with it. `eventType` was already served and simply unreachable
+  // from here — the schema being strict is what made it unreachable.
+  q: z.string().min(1).optional(),
+  sort: z.enum(['date:asc', 'date:desc']).optional(),
+  eventType: z.string().min(1).optional(),
 });
 
 export const notificationListResponseSchema = z.strictObject({

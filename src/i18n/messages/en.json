@@ -41,7 +41,20 @@
     "categoryTutorial": "Tutorial",
     "categoryGuide": "Guide",
     "categoryOpinion": "Opinion",
-    "createTitle": "Create article"
+    "createTitle": "Create article",
+    "fieldTitle": "Title",
+    "fieldSlug": "Slug",
+    "slugPlaceholder": "my-article",
+    "fieldCategory": "Category",
+    "categoryPlaceholder": "Select a category",
+    "fieldExcerpt": "Excerpt",
+    "submit": "Create article",
+    "submitPending": "Creating…",
+    "createdToast": "Created “{title}”",
+    "createFailedToast": "Failed to create article",
+    "statTotal": "Total",
+    "statFeatured": "Featured",
+    "statTotalViews": "Total views"
   },
   "Auth": {
     "parentViewsUnavailable": {
@@ -178,12 +191,61 @@
     "updatingPassword": "Updating password…",
     "passwordUpdated": "Password updated",
     "split": {
-      "title": "Every test, one dashboard.",
-      "body": "Sign in to follow your students' tests, scores, and AI feedback in one place.",
-      "benefitTests": "Track every assigned test and deadline",
-      "benefitScores": "See scores the moment they're graded",
-      "benefitFeedback": "Understand progress with AI feedback",
-      "legal": "© 2026 SchoolTest. All rights reserved."
+      "eyebrow": "School portal",
+      "title": "English language diagnostic and progress testing, aligned to ACARA",
+      "statSubskillsLabel": "Subskills",
+      "statSubskillsValue": "25",
+      "statYearsLabel": "Year levels",
+      "statYearsValue": "7 to 12",
+      "statReportedLabel": "Reported on",
+      "statReportedValue": "ACARA",
+      "acknowledgement": "SchoolTest acknowledges the Traditional Custodians of the lands on which Australian schools stand."
+    },
+    "chrome": {
+      "breadcrumbHome": "Home",
+      "breadcrumbCurrent": "Portal access",
+      "footerPrivacy": "Privacy statement",
+      "footerAccessibility": "Accessibility",
+      "copyright": "© 2026 SchoolTest",
+      "breadcrumbLabel": "Breadcrumb"
+    },
+    "portal": {
+      "signInTitle": "Log in to the portal",
+      "signInSubtitle": "Use the account your school administrator issued.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "name@school.edu.au",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "forgotLink": "Forgot password",
+      "loginButton": "Log in",
+      "loggingIn": "Logging in…",
+      "invitationNote": "Portal accounts are issued by invitation. Ask your school's EAL/D coordinator to invite you.",
+      "errorTitle": "We couldn't log you in",
+      "errorBody": "The email or password is incorrect.",
+      "errorAttempts": "{count, plural, one {One attempt remains before this account is locked for 15 minutes.} other {# attempts remain before this account is locked for 15 minutes.}}",
+      "incorrectPassword": "Incorrect password",
+      "lockedBody": "Five failed logins in a row. For security this account is locked until {time}. Resetting your password unlocks it immediately.",
+      "availableIn": "Log in — available in {time}",
+      "forgotTitle": "Reset your password",
+      "forgotSubtitle": "Enter the email on your portal account. We'll send a link that stays valid for 30 minutes.",
+      "backToLogin": "Back to log in",
+      "sentTitle": "Check your inbox",
+      "sentBody": "If an account exists for that address, a reset link is on its way. The link expires 30 minutes after it was sent and can only be used once.",
+      "rateLimitTitle": "Slow down a moment.",
+      "rateLimitBody": "Too many reset emails have been requested for this address in the last hour. You can request another in {time}.",
+      "rateLimitBodyNoTime": "Too many reset emails have been requested for this address in the last hour. Please try again soon.",
+      "resetTitle": "Choose a new password",
+      "resetSubtitle": "You're resetting the password for <email>{email}</email>.",
+      "ruleLength": "At least 12 characters",
+      "ruleCharClasses": "One number and one symbol",
+      "ruleHistory": "Not one of your last five passwords",
+      "confirmLabel": "Confirm new password",
+      "confirmMismatch": "Both passwords must match",
+      "passwordMin": "Use at least 12 characters.",
+      "passwordCharClasses": "Include at least one number and one symbol.",
+      "expiredBody": "Reset links last 30 minutes and work once. This one has already been opened, so it can no longer be used.",
+      "sendNewLink": "Send a new link",
+      "doneBody": "Your password has been updated. Log in with your new password to return to the portal."
     }
   },
   "LocaleSwitcher": {
@@ -1502,7 +1564,8 @@
       },
       "emptyTitle": "No notifications yet",
       "emptyDescription": "When results are ready or your school sends an update, it will appear here."
-    }
+    },
+    "markAllCapNotice": "Marking all read clears {cap} at a time — {remaining} will stay unread until you do it again."
   },
   "QueryError": {
     "goneTitle": "This page is no longer available",
@@ -3808,52 +3871,12 @@
       "incompleteDescription": "Some students have not finished, so the results below are partial."
     },
     "settings": {
-      "legal": {
-        "title": "Legal documents",
-        "description": "Edit the public legal pages. A saved change is published immediately and busts the pages' cache.",
-        "slugLabel": "Document",
-        "versionLabel": "Version",
-        "effectiveDateLabel": "Effective date",
-        "sectionHeading": "Section {index} heading",
-        "sectionParagraphs": "Section {index} paragraphs",
-        "sectionParagraphsHelp": "One paragraph per line. Bullet lists are kept as they are.",
-        "save": "Save document",
-        "savedToast": "Saved. The public page now serves version {version}.",
-        "errorToast": "The document could not be saved. Try again.",
-        "loadErrorTitle": "We could not load this document",
-        "loadErrorDescription": "The document could not be read. Retry, or check the API if it persists.",
-        "confirmTitle": "Publish this legal document?",
-        "confirmBody": "The public {slug} page reflects the edit immediately. The save is audited.",
-        "confirmAction": "Publish",
-        "cancel": "Cancel",
-        "validation": {
-          "versionRequired": "A version of 1–20 characters is required.",
-          "dateInvalid": "Enter the effective date as YYYY-MM-DD.",
-          "headingRequired": "Every section needs a heading.",
-          "paragraphRequired": "Every section needs at least one paragraph."
-        },
-        "slugs": {
-          "privacy-policy": "Privacy policy",
-          "terms-of-service": "Terms of service",
-          "cookie-policy": "Cookie policy",
-          "gdpr": "GDPR"
-        }
-      },
       "meta": {
-        "title": "Platform settings",
-        "description": "Site identity, SEO defaults, email, limits, maintenance and announcements."
+        "title": "Settings - SchoolTest ops",
+        "description": "The internal operations account for this ops session."
       },
-      "title": "Platform settings",
-      "description": "Runtime configuration for the whole platform. Changes take effect immediately and are audited.",
-      "save": "Save settings",
-      "saving": "Saving…",
-      "unsaved": "You have unsaved changes.",
-      "savedToast": "Settings saved.",
-      "validationToast": "Some values were rejected. Check the highlighted fields.",
-      "errorToast": "Settings could not be saved. Try again.",
-      "staleToast": "These settings changed since you loaded them. Review the latest values, then reapply your changes.",
-      "errorTitle": "We could not load the settings",
-      "errorDescription": "The platform settings endpoint did not answer. Check that the API is running.",
+      "title": "Settings",
+      "description": "Internal operations account",
       "account": {
         "title": "Your account",
         "description": "The name shown to other operators in the ops portal.",
@@ -3863,130 +3886,7 @@
         "saving": "Saving…",
         "savedToast": "Profile saved.",
         "errorToast": "Your profile could not be saved. Try again."
-      },
-      "groups": {
-        "site": {
-          "title": "Site identity",
-          "description": "The name and tagline shown across the public site."
-        },
-        "seo": {
-          "title": "SEO defaults",
-          "description": "Fallback title and description for public pages that do not set their own."
-        },
-        "email": {
-          "title": "Email",
-          "description": "How transactional mail leaves the platform."
-        },
-        "limits": {
-          "title": "Limits",
-          "description": "Session, upload, pagination and rate-limit bounds."
-        },
-        "maintenance": {
-          "title": "Maintenance",
-          "description": "Close the public site and explain why."
-        },
-        "announcement": {
-          "title": "Announcement",
-          "description": "A banner shown to everyone on the public site."
-        }
-      },
-      "options": {
-        "info": "Info",
-        "warning": "Warning",
-        "critical": "Critical",
-        "smtp": "SMTP",
-        "console": "Console (log only)"
-      },
-      "fields": {
-        "site_name": {
-          "label": "Site name",
-          "helper": "Shown in the browser tab, Open Graph tags and the social card."
-        },
-        "site_tagline": {
-          "label": "Tagline",
-          "helper": "One line describing the product. Used in the footer and llms.txt."
-        },
-        "seo_default_title": {
-          "label": "Default meta title",
-          "helper": "Up to 70 characters. Used where a page sets no title of its own."
-        },
-        "seo_default_description": {
-          "label": "Default meta description",
-          "helper": "Up to 200 characters."
-        },
-        "maintenance_mode": {
-          "label": "Maintenance mode",
-          "helper": "Show a maintenance banner to public visitors."
-        },
-        "maintenance_message": {
-          "label": "Maintenance message",
-          "helper": "Shown in the banner. Say what is happening and when it ends."
-        },
-        "announcement_enabled": {
-          "label": "Show announcement",
-          "helper": "Display the announcement banner on public pages."
-        },
-        "announcement_message": {
-          "label": "Announcement",
-          "helper": "The banner text."
-        },
-        "announcement_level": {
-          "label": "Announcement level",
-          "helper": "Controls the banner's emphasis."
-        },
-        "session_timeout_minutes": {
-          "label": "Session timeout (minutes)",
-          "helper": "Between 5 and 1440. How long a signed-in session stays valid."
-        },
-        "upload_max_size_mb": {
-          "label": "Maximum upload size (MB)",
-          "helper": "Between 1 and 100."
-        },
-        "pagination_default_page_size": {
-          "label": "Default page size",
-          "helper": "Between 1 and 100. Used by lists that do not ask for a size."
-        },
-        "pagination_max_page_size": {
-          "label": "Maximum page size",
-          "helper": "Between 1 and 200, and never below the default."
-        },
-        "email_provider": {
-          "label": "Email provider",
-          "helper": "SMTP sends real mail; Console only logs it."
-        },
-        "email_from_name": {
-          "label": "From name",
-          "helper": "The sender name on outgoing mail."
-        },
-        "email_from_address": {
-          "label": "From address",
-          "helper": "The sender address on outgoing mail."
-        },
-        "email_reply_to": {
-          "label": "Reply-to address",
-          "helper": "Where replies go, if different from the sender."
-        },
-        "rate_limit_auth_max": {
-          "label": "Auth attempts per window",
-          "helper": "Between 1 and 1000."
-        },
-        "rate_limit_auth_window_ms": {
-          "label": "Auth window (ms)",
-          "helper": "Between 1000 and 3600000."
-        }
-      },
-      "testEmail": {
-        "title": "Send a test email",
-        "description": "Sends a real message through the configured provider so you can confirm delivery.",
-        "label": "Send to",
-        "placeholder": "you@example.com",
-        "send": "Send test email",
-        "sending": "Sending…",
-        "sentToast": "Test email sent to {to} via {provider}.",
-        "errorToast": "The provider rejected the message."
-      },
-      "firstName": "First name",
-      "lastName": "Last name"
+      }
     },
     "plan": {
       "title": "Plan",
@@ -4418,6 +4318,74 @@
       "errorTitle": "We could not load the activity.",
       "errorDescription": "Check your connection and try again.",
       "retry": "Try again"
+    },
+    "resultWindows": {
+      "errorTitle": "Result windows could not be loaded",
+      "errorDescription": "The server refused or failed the read. Retry after the next reload — nothing was changed.",
+      "title": "Result windows",
+      "description": "Historical and scheduled assessment windows for this school's classes. Sat counts official, non-invalidated attempts; pending scores are shown separately, never as zero.",
+      "previous": "Previous",
+      "next": "Next",
+      "pageCount": "Page {page} of {pageCount} — {total} windows",
+      "closeScheduler": "Close scheduler",
+      "scheduleWindow": "Schedule window",
+      "empty": "No result windows yet. Schedule one to run official progress tests for selected classes.",
+      "status": {
+        "complete": "complete",
+        "inProgress": "in progress",
+        "scheduled": "scheduled",
+        "cancelled": "cancelled"
+      },
+      "rowStats": "Sat {sat} of {eligible} · pending {pending}",
+      "rowAverage": " · average {average}%",
+      "cefrPending": " · CEFR band pending",
+      "cefrValue": " · {cefr}",
+      "viewReport": "View report",
+      "hideReport": "Hide report",
+      "downloadPdf": "Download PDF",
+      "share": "Share",
+      "cancel": "Cancel",
+      "reopen": "Reopen",
+      "pdfError": "The PDF download failed: {message}",
+      "shareResult": "Shared: {sent} sent, {failed} failed",
+      "shareResultFailures": " — the failures are named in the audit log.",
+      "shareResultOk": ".",
+      "shareError": "Share failed: {message}",
+      "cancelError": "Cancel failed: {message}",
+      "reopenError": "Reopen failed: {message}",
+      "reportErrorTitle": "Report could not be loaded",
+      "reportStats": "Eligible {eligible} · sat {sat} · pending {pending} · invalidated attempts excluded {excluded}",
+      "scorePending": "score pending",
+      "scorePercent": "{score}%",
+      "cefrPendingShort": "CEFR pending",
+      "noOfficialResults": "No official results yet.",
+      "skill": {
+        "reading": "reading",
+        "listening": "listening",
+        "speaking": "speaking",
+        "writing": "writing"
+      },
+      "formTitle": "Title",
+      "formTimezone": "Timezone (IANA, e.g. Australia/Melbourne)",
+      "formOpens": "Opens",
+      "formCloses": "Closes",
+      "classesLegend": "Classes ({count} selected)",
+      "formsLegend": "Forms per skill (1–4 skills)",
+      "noFormOption": "— no form —",
+      "createErrorTitle": "The window was not scheduled",
+      "createErrorSuffix": "{message} — nothing was assigned.",
+      "scheduleSubmit": "Schedule",
+      "cancelSubmit": "Cancel",
+      "conflictFallback": "The server refused the window."
+    },
+    "bulkBar": {
+      "ariaSelected": "{count} {noun} selected",
+      "selectedOnPage": "{count} {noun} selected on this page",
+      "cappedAt": "Selection is capped at {max}.",
+      "clear": "Clear selection"
+    },
+    "typedNameConfirm": {
+      "typeToConfirm": "Type <name>{name}</name> to confirm"
     }
   },
   "RunSheet": {
@@ -4510,7 +4478,8 @@
     "llmsNotePrivate": "The dashboard, the authentication flows and the invitation/onboarding links are private and are disallowed in robots.txt. They hold student data and must not be crawled.",
     "llmsNoteSitemap": "The machine-readable index of every public URL is at {url}.",
     "llmsNotes": "Notes",
-    "llmsPages": "Pages"
+    "llmsPages": "Pages",
+    "siteDescription": "Diagnostic English assessment for Australian EAL/D classrooms."
   },
   "StudentImport": {
     "downloadTemplate": "Download CSV template",
@@ -4633,61 +4602,61 @@
       },
       "live": {
         "settings": {
-        "control": "Test settings",
-        "title": "Session settings",
-        "subtitle": "What this sitting is running with.",
-        "count": "{on} of {total} on",
-        "close": "Close settings",
-        "on": "On",
-        "off": "Off",
-        "minutes": "{minutes} min",
-        "fixed": "Settings are fixed once a sitting is open. To change them, close this session and start a new one.",
-        "rows": {
-          "lowBw": {
-            "label": "Low-bandwidth mode",
-            "desc": "Text-only passages, no images preloaded, and answers saved on the device and synced when the connection returns. Use it when the room is on mobile data or a satellite link."
-          },
-          "skip": {
-            "label": "Allow skipping questions",
-            "desc": "Students can leave a question, move on, and come back to it before submitting."
-          },
-          "review": {
-            "label": "Review screen before submit",
-            "desc": "A final list of skipped and flagged questions, so nothing is left blank by accident."
-          },
-          "flag": {
-            "label": "Flag questions for review",
-            "desc": "Students can mark a question to come back to. Flags show on the review screen and to you."
-          },
-          "bigText": {
-            "label": "Larger text and high contrast",
-            "desc": "Students can grow the text and switch to a high-contrast theme at any point."
-          },
-          "lockdown": {
-            "label": "Locked-down window",
-            "desc": "The test fills the screen. Other apps, tabs, copy, paste and printing are blocked."
-          },
-          "focusFlag": {
-            "label": "Flag if they leave the window",
-            "desc": "Leaving is recorded with a timestamp and shows on your live view. Use with lockdown off."
-          },
-          "warn5": {
-            "label": "Five-minute warning",
-            "desc": "One quiet banner at five minutes left, so the clock is not in front of them the whole time."
-          },
-          "autoSubmit": {
-            "label": "Submit automatically at time",
-            "desc": "Off means the attempt waits for you, and nothing is submitted without a teacher."
-          },
-          "showScore": {
-            "label": "Show them their score at the end",
-            "desc": "Off holds the result until you release the report."
-          },
-          "timeLimit": {
-            "label": "Time limit",
-            "desc": "How long the sitting runs before it closes itself."
+          "control": "Test settings",
+          "title": "Session settings",
+          "subtitle": "What this sitting is running with.",
+          "count": "{on} of {total} on",
+          "close": "Close settings",
+          "on": "On",
+          "off": "Off",
+          "minutes": "{minutes} min",
+          "fixed": "Settings are fixed once a sitting is open. To change them, close this session and start a new one.",
+          "rows": {
+            "lowBw": {
+              "label": "Low-bandwidth mode",
+              "desc": "Text-only passages, no images preloaded, and answers saved on the device and synced when the connection returns. Use it when the room is on mobile data or a satellite link."
+            },
+            "skip": {
+              "label": "Allow skipping questions",
+              "desc": "Students can leave a question, move on, and come back to it before submitting."
+            },
+            "review": {
+              "label": "Review screen before submit",
+              "desc": "A final list of skipped and flagged questions, so nothing is left blank by accident."
+            },
+            "flag": {
+              "label": "Flag questions for review",
+              "desc": "Students can mark a question to come back to. Flags show on the review screen and to you."
+            },
+            "bigText": {
+              "label": "Larger text and high contrast",
+              "desc": "Students can grow the text and switch to a high-contrast theme at any point."
+            },
+            "lockdown": {
+              "label": "Locked-down window",
+              "desc": "The test fills the screen. Other apps, tabs, copy, paste and printing are blocked."
+            },
+            "focusFlag": {
+              "label": "Flag if they leave the window",
+              "desc": "Leaving is recorded with a timestamp and shows on your live view. Use with lockdown off."
+            },
+            "warn5": {
+              "label": "Five-minute warning",
+              "desc": "One quiet banner at five minutes left, so the clock is not in front of them the whole time."
+            },
+            "autoSubmit": {
+              "label": "Submit automatically at time",
+              "desc": "Off means the attempt waits for you, and nothing is submitted without a teacher."
+            },
+            "showScore": {
+              "label": "Show them their score at the end",
+              "desc": "Off holds the result until you release the report."
+            },
+            "timeLimit": {
+              "label": "Time limit",
+              "desc": "How long the sitting runs before it closes itself."
+            }
           }
-        }
         },
         "alreadyClosedToast": "This session was already closed. The page now shows its final state.",
         "badgeClosed": "Closed",
@@ -5007,7 +4976,8 @@
         "actionOpen": "Open",
         "loadingLabel": "Loading students",
         "noMatchesTitle": "No students match",
-        "noMatchesDescription": "No student matches the current search, filter or sort."
+        "noMatchesDescription": "No student matches the current search, filter or sort.",
+        "sortAcaraPhase": "ACARA phase"
       },
       "drillDown": {
         "meta": {
@@ -5109,5 +5079,146 @@
       "students": "Students ({count, plural, one {# student} other {# students}})",
       "studentsTotal": "Students ({count, plural, one {# match} other {# matches}})"
     }
+  },
+  "Results": {
+    "scoringFailed": "Scoring failed for this sitting — the result is not available. Nothing is shown rather than a partial report; the sitting will be re-scored.",
+    "confidenceWarning": "⚠ Low confidence — results may not reflect this student's ability",
+    "confidenceNormal": "Effort valid · Normal confidence · {answered} of {total} items answered{minutes}",
+    "confidenceMinutes": " · {minutes} min",
+    "ariaSkillSwitcher": "Skill",
+    "deltaPts": "{arrow} {growth} pts",
+    "acaraBadge": "ACARA: {phase}",
+    "gatePassed": "Exit gate: passed",
+    "gateNotYet": "Exit gate: not yet",
+    "gatePassedState": "passed",
+    "gateNotYetState": "not yet",
+    "exitGate": "Exit gate: {state}",
+    "comingSoon": "coming soon",
+    "skillReading": "Reading",
+    "skillListening": "Listening",
+    "skillSpeaking": "Speaking",
+    "skillWriting": "Writing",
+    "skillDecoding": "Decoding",
+    "skillVocabulary": "Vocabulary",
+    "skillGrammar": "Grammar",
+    "skillGist": "Gist",
+    "skillDetail": "Detail",
+    "skillInference": "Inference",
+    "skillCritical": "Critical Reading",
+    "notYetAssessed": "Not yet assessed",
+    "steady": "Steady",
+    "bandSecure": "Secure",
+    "bandDeveloping": "Developing",
+    "bandEmerging": "Emerging",
+    "bandNotYet": "Not yet",
+    "section3NotReached": "Section 3 not reached",
+    "movementHeading": "Movement since the first sitting",
+    "ariaScoreMovement": "Score movement",
+    "bandMovement": "Band movement",
+    "bandMovementLower": "band movement",
+    "deltaPtsShort": "{delta} pts",
+    "trendHeading": "Reading progress over time",
+    "trendFirstSitting": "First sitting — trend appears from the second test",
+    "trendSittings": "{count, plural, one {# sitting} other {# sittings}} since {month}",
+    "trendDeltaReliability": "{delta} ({reliability})",
+    "reliable": "reliable",
+    "withinError": "within error",
+    "trendBestGain": "Best gain: {skill} +{delta} pts",
+    "attrDecoding": "Decoding",
+    "attrVocabularyB1": "Vocabulary B1",
+    "attrGist": "Gist",
+    "attrDetail": "Detail",
+    "attrInference": "Inference",
+    "checklistHeading": "Path to consolidating",
+    "consolidatingMet": "Consolidating — meets all requirements",
+    "notAssessedThisSitting": "not assessed this sitting",
+    "scorePercent": "{score}%",
+    "exitGateSection3": "Exit gate (Section 3)",
+    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
+    "vocabStrandSingle": "{assessed} · {gap}",
+    "askAria": "Ask AI about this result",
+    "askHeading": "Ask AI",
+    "askPlaceholder": "Ask about this result…",
+    "askSubmit": "Ask",
+    "askPending": "Asking…",
+    "askSuggested1": "Which skills improved since the last test?",
+    "askSuggested2": "What should I teach next?",
+    "askSuggested3": "How is Vocabulary developing across the strands?",
+    "askSuggested4": "Did the student pass the exit gate, and what does that mean?",
+    "downloadLlm": "Download for LLM (.md)",
+    "printReport": "Print report",
+    "printTitle": "Reading report — {student}{date}",
+    "commentaryAria": "Student analysis",
+    "commentaryHeading": "Student analysis",
+    "commentaryHeadingOffline": "Student analysis (offline summary)",
+    "copyDeidentified": "Copy (de-identified)",
+    "copied": "Copied",
+    "errorPatternsHeading": "How {name} gets it wrong",
+    "errorPatternFallbackNote": "Chose this kind of wrong answer.",
+    "errorPatternInsight": "{label} is {name}'s most common slip — {pct}% of the wrong answers.",
+    "errorPattern": {
+      "literalMatch": {
+        "label": "Copies the text",
+        "note": "Picked the answer that copies the text word-for-word."
+      },
+      "overinference": {
+        "label": "Reads too much in",
+        "note": "Chose an answer that goes beyond what the text says."
+      },
+      "worldKnowledge": {
+        "label": "Outside knowledge",
+        "note": "Chose an answer that is true in the world but not stated in the text."
+      },
+      "grammaticalDecoy": {
+        "label": "Grammar trap",
+        "note": "Chose an answer that fits the grammar but not the meaning."
+      },
+      "phonologicalNeighbour": {
+        "label": "Sounds like",
+        "note": "Chose an answer that sounds like a word in the text."
+      },
+      "orthographicNeighbour": {
+        "label": "Looks like",
+        "note": "Chose an answer that is spelled like a word in the text."
+      },
+      "semanticNeighbour": {
+        "label": "Close in meaning",
+        "note": "Chose an answer close in meaning but not the one the text supports."
+      }
+    },
+    "fallbackNoOverall": "No overall score is available for this sitting.",
+    "fallbackOverall": "Overall reading stands at {score}%.",
+    "fallbackGrowthSteady": "The score is steady against the previous official sitting — no change is claimed.",
+    "fallbackGrowthBand": "The score moved between bands against the previous official sitting.",
+    "fallbackGrowthPoints": "The score changed by {delta} points against the previous official sitting.",
+    "fallbackStrengthNeed": "Strongest skill: {best} ({bestScore}%). Greatest need: {worst} ({worstScore}%).",
+    "fallbackCritical": "Critical Reading scored {score}% with the exit gate {state} — a gate result, not a band.",
+    "fallbackGatePassed": "passed",
+    "fallbackGateNotMet": "not yet met",
+    "fallbackCommonSlip": "Most common slip: {label} ({pct}% of wrong answers).",
+    "fallbackVocabA2Only": "Vocabulary this sitting is the A2 strand alone ({a2}); B1 was not assessed, so no blend is claimed. Teaching focus: keep consolidating A2 word knowledge before the B1 sitting.",
+    "fallbackVocabB1Only": "Vocabulary this sitting is the B1 strand alone ({b1}); A2 was not assessed, so no blend is claimed. Teaching focus: build on the B1 vocabulary now in evidence.",
+    "fallbackVocabBlend": "Vocabulary blends the two strands at {blended} (A2 {a2}, B1 {b1}). Teaching focus: grow the weaker strand before the next sitting.",
+    "fallbackNoScore": "no score",
+    "fallbackNotAssessed": "not assessed"
+  },
+  "Components": {
+    "pagination": "pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "morePages": "More pages",
+    "breadcrumb": "breadcrumb",
+    "more": "More",
+    "previousSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "close": "Close",
+    "sidebar": "Sidebar",
+    "sidebarDescription": "Displays the mobile sidebar.",
+    "toggleSidebar": "Toggle Sidebar",
+    "loading": "Loading",
+    "commandPalette": "Command Palette",
+    "commandPaletteDescription": "Search for a command to run..."
   }
 }

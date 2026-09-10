@@ -41,7 +41,20 @@
     "categoryTutorial": "Hướng dẫn",
     "categoryGuide": "Cẩm nang",
     "categoryOpinion": "Góc nhìn",
-    "createTitle": "Create article"
+    "createTitle": "Create article",
+    "fieldTitle": "Tiêu đề",
+    "fieldSlug": "Slug",
+    "slugPlaceholder": "my-article",
+    "fieldCategory": "Danh mục",
+    "categoryPlaceholder": "Chọn danh mục",
+    "fieldExcerpt": "Tóm tắt",
+    "submit": "Tạo bài viết",
+    "submitPending": "Đang tạo…",
+    "createdToast": "Đã tạo “{title}”",
+    "createFailedToast": "Không thể tạo bài viết",
+    "statTotal": "Tổng",
+    "statFeatured": "Nổi bật",
+    "statTotalViews": "Tổng lượt xem"
   },
   "Auth": {
     "parentViewsUnavailable": {
@@ -175,16 +188,65 @@
     "updatingPassword": "Đang cập nhật mật khẩu…",
     "passwordUpdated": "Đã cập nhật mật khẩu",
     "split": {
-      "title": "Mọi bài kiểm tra, một bảng điều khiển.",
-      "body": "Đăng nhập để theo dõi bài kiểm tra, điểm số và phản hồi AI của học sinh tại một nơi.",
-      "benefitTests": "Theo dõi mọi bài kiểm tra được giao và hạn nộp",
-      "benefitScores": "Xem điểm ngay khi được chấm",
-      "benefitFeedback": "Nắm bắt tiến bộ qua phản hồi AI",
-      "legal": "© 2026 SchoolTest. Bảo lưu mọi quyền."
+      "eyebrow": "Cổng trường học",
+      "title": "Kiểm tra chẩn đoán và tiến bộ tiếng Anh, phù hợp với ACARA",
+      "statSubskillsLabel": "Kỹ năng thành phần",
+      "statSubskillsValue": "25",
+      "statYearsLabel": "Cấp lớp",
+      "statYearsValue": "7 đến 12",
+      "statReportedLabel": "Báo cáo theo",
+      "statReportedValue": "ACARA",
+      "acknowledgement": "SchoolTest xin tri ân những Người Giữ Đất truyền thống trên vùng đất mà các trường học Úc đang đứng."
     },
     "wizardStepSkipped": "Step skipped",
     "sessionExpiredBody": "Phiên vận hành kết thúc sau 30 phút không hoạt động. Vui lòng đăng nhập lại — những gì bạn đã lưu không bị mất.",
-    "sessionExpiredAction": "Đăng nhập lại"
+    "sessionExpiredAction": "Đăng nhập lại",
+    "chrome": {
+      "breadcrumbHome": "Trang chủ",
+      "breadcrumbCurrent": "Truy cập cổng",
+      "footerPrivacy": "Tuyên bố quyền riêng tư",
+      "footerAccessibility": "Khả năng truy cập",
+      "copyright": "© 2026 SchoolTest",
+      "breadcrumbLabel": "đường dẫn điều hướng"
+    },
+    "portal": {
+      "signInTitle": "Đăng nhập cổng thông tin",
+      "signInSubtitle": "Sử dụng tài khoản do quản trị viên trường của bạn cấp.",
+      "emailLabel": "Địa chỉ email",
+      "emailPlaceholder": "name@school.edu.au",
+      "passwordLabel": "Mật khẩu",
+      "passwordPlaceholder": "Nhập mật khẩu của bạn",
+      "forgotLink": "Quên mật khẩu",
+      "loginButton": "Đăng nhập",
+      "loggingIn": "Đang đăng nhập…",
+      "invitationNote": "Tài khoản cổng chỉ được cấp qua lời mời. Hãy yêu cầu điều phối viên EAL/D của trường mời bạn.",
+      "errorTitle": "Chúng tôi không thể đăng nhập cho bạn",
+      "errorBody": "Email hoặc mật khẩu không chính xác.",
+      "errorAttempts": "{count, plural, other {Còn # lần thử trước khi tài khoản này bị khóa trong 15 phút.}}",
+      "incorrectPassword": "Mật khẩu không chính xác",
+      "lockedBody": "Năm lần đăng nhập thất bại liên tiếp. Vì bảo mật, tài khoản này bị khóa đến {time}. Đặt lại mật khẩu sẽ mở khóa ngay lập tức.",
+      "availableIn": "Đăng nhập — khả dụng sau {time}",
+      "forgotTitle": "Đặt lại mật khẩu",
+      "forgotSubtitle": "Nhập email của tài khoản cổng của bạn. Chúng tôi sẽ gửi một liên kết có hiệu lực trong 30 phút.",
+      "backToLogin": "Quay lại đăng nhập",
+      "sentTitle": "Kiểm tra hộp thư của bạn",
+      "sentBody": "Nếu tồn tại tài khoản cho địa chỉ đó, liên kết đặt lại đang được gửi đến. Liên kết hết hạn 30 phút sau khi gửi và chỉ dùng được một lần.",
+      "rateLimitTitle": "Hãy chậm lại một chút.",
+      "rateLimitBody": "Quá nhiều email đặt lại đã được yêu cầu cho địa chỉ này trong giờ vừa qua. Bạn có thể yêu cầu thêm sau {time}.",
+      "rateLimitBodyNoTime": "Quá nhiều email đặt lại đã được yêu cầu cho địa chỉ này trong giờ vừa qua. Vui lòng thử lại sau.",
+      "resetTitle": "Chọn mật khẩu mới",
+      "resetSubtitle": "Bạn đang đặt lại mật khẩu cho <email>{email}</email>.",
+      "ruleLength": "Ít nhất 12 ký tự",
+      "ruleCharClasses": "Một chữ số và một ký hiệu",
+      "ruleHistory": "Không trùng một trong năm mật khẩu gần nhất của bạn",
+      "confirmLabel": "Xác nhận mật khẩu mới",
+      "confirmMismatch": "Cả hai mật khẩu phải trùng khớp",
+      "passwordMin": "Sử dụng ít nhất 12 ký tự.",
+      "passwordCharClasses": "Bao gồm ít nhất một chữ số và một ký hiệu.",
+      "expiredBody": "Liên kết đặt lại có hiệu lực 30 phút và chỉ dùng một lần. Liên kết này đã được mở nên không thể sử dụng nữa.",
+      "sendNewLink": "Gửi liên kết mới",
+      "doneBody": "Mật khẩu của bạn đã được cập nhật. Đăng nhập bằng mật khẩu mới để quay lại cổng thông tin."
+    }
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -1502,7 +1564,8 @@
       },
       "emptyTitle": "Chưa có thông báo nào",
       "emptyDescription": "Khi kết quả sẵn sàng hoặc trường của bạn gửi cập nhật, nội dung đó sẽ xuất hiện ở đây."
-    }
+    },
+    "markAllCapNotice": "Đánh dấu tất cả đã đọc sẽ xoá {cap} mục mỗi lần — {remaining} mục sẽ vẫn chưa đọc cho đến khi bạn làm lại."
   },
   "QueryError": {
     "goneTitle": "Trang này không còn nữa",
@@ -3339,172 +3402,11 @@
     },
     "settings": {
       "meta": {
-        "title": "Cài đặt nền tảng",
-        "description": "Nhận diện trang, mặc định SEO, email, giới hạn, bảo trì và thông báo."
+        "title": "Cài đặt - Vận hành SchoolTest",
+        "description": "Tài khoản vận hành nội bộ cho phiên vận hành này."
       },
-      "title": "Cài đặt nền tảng",
-      "description": "Cấu hình thời gian chạy cho toàn nền tảng. Thay đổi có hiệu lực ngay và được ghi nhật ký.",
-      "save": "Lưu cài đặt",
-      "saving": "Đang lưu…",
-      "unsaved": "Bạn có thay đổi chưa lưu.",
-      "savedToast": "Đã lưu cài đặt.",
-      "validationToast": "Một số giá trị bị từ chối. Kiểm tra các trường được đánh dấu.",
-      "errorToast": "Không lưu được cài đặt. Vui lòng thử lại.",
-      "errorTitle": "Không tải được cài đặt",
-      "errorDescription": "Endpoint cài đặt nền tảng không phản hồi. Hãy kiểm tra API có đang chạy không.",
-      "groups": {
-        "site": {
-          "title": "Nhận diện trang",
-          "description": "Tên và khẩu hiệu hiển thị trên toàn bộ trang công khai."
-        },
-        "seo": {
-          "title": "Mặc định SEO",
-          "description": "Tiêu đề và mô tả dự phòng cho trang không tự đặt."
-        },
-        "email": {
-          "title": "Email",
-          "description": "Cách thư giao dịch được gửi đi."
-        },
-        "limits": {
-          "title": "Giới hạn",
-          "description": "Giới hạn phiên, tải lên, phân trang và tần suất."
-        },
-        "maintenance": {
-          "title": "Bảo trì",
-          "description": "Đóng trang công khai và giải thích lý do."
-        },
-        "announcement": {
-          "title": "Thông báo",
-          "description": "Biểu ngữ hiển thị cho mọi khách truy cập trang công khai."
-        }
-      },
-      "options": {
-        "info": "Thông tin",
-        "warning": "Cảnh báo",
-        "critical": "Nghiêm trọng",
-        "smtp": "SMTP",
-        "console": "Console (chỉ ghi log)"
-      },
-      "fields": {
-        "site_name": {
-          "label": "Tên trang",
-          "helper": "Hiển thị trên tab trình duyệt, thẻ Open Graph và thẻ chia sẻ."
-        },
-        "site_tagline": {
-          "label": "Khẩu hiệu",
-          "helper": "Một dòng mô tả sản phẩm. Dùng ở chân trang và llms.txt."
-        },
-        "seo_default_title": {
-          "label": "Tiêu đề meta mặc định",
-          "helper": "Tối đa 70 ký tự. Dùng khi trang không tự đặt tiêu đề."
-        },
-        "seo_default_description": {
-          "label": "Mô tả meta mặc định",
-          "helper": "Tối đa 200 ký tự."
-        },
-        "maintenance_mode": {
-          "label": "Chế độ bảo trì",
-          "helper": "Hiển thị biểu ngữ bảo trì cho khách truy cập công khai."
-        },
-        "maintenance_message": {
-          "label": "Thông báo bảo trì",
-          "helper": "Hiển thị trong biểu ngữ. Nêu rõ điều gì đang diễn ra và khi nào kết thúc."
-        },
-        "announcement_enabled": {
-          "label": "Hiển thị thông báo",
-          "helper": "Hiển thị biểu ngữ thông báo trên các trang công khai."
-        },
-        "announcement_message": {
-          "label": "Nội dung thông báo",
-          "helper": "Văn bản biểu ngữ."
-        },
-        "announcement_level": {
-          "label": "Mức thông báo",
-          "helper": "Quyết định mức độ nhấn mạnh của biểu ngữ."
-        },
-        "session_timeout_minutes": {
-          "label": "Hết hạn phiên (phút)",
-          "helper": "Từ 5 đến 1440. Thời gian phiên đăng nhập còn hiệu lực."
-        },
-        "upload_max_size_mb": {
-          "label": "Kích thước tải lên tối đa (MB)",
-          "helper": "Từ 1 đến 100."
-        },
-        "pagination_default_page_size": {
-          "label": "Số mục mỗi trang mặc định",
-          "helper": "Từ 1 đến 100. Dùng cho danh sách không yêu cầu kích thước."
-        },
-        "pagination_max_page_size": {
-          "label": "Số mục mỗi trang tối đa",
-          "helper": "Từ 1 đến 200 và không nhỏ hơn giá trị mặc định."
-        },
-        "email_provider": {
-          "label": "Nhà cung cấp email",
-          "helper": "SMTP gửi thư thật; Console chỉ ghi log."
-        },
-        "email_from_name": {
-          "label": "Tên người gửi",
-          "helper": "Tên người gửi trên thư đi."
-        },
-        "email_from_address": {
-          "label": "Địa chỉ người gửi",
-          "helper": "Địa chỉ người gửi trên thư đi."
-        },
-        "email_reply_to": {
-          "label": "Địa chỉ trả lời",
-          "helper": "Nơi nhận thư trả lời, nếu khác người gửi."
-        },
-        "rate_limit_auth_max": {
-          "label": "Số lần xác thực mỗi khoảng",
-          "helper": "Từ 1 đến 1000."
-        },
-        "rate_limit_auth_window_ms": {
-          "label": "Khoảng xác thực (ms)",
-          "helper": "Từ 1000 đến 3600000."
-        }
-      },
-      "testEmail": {
-        "title": "Gửi email thử",
-        "description": "Gửi một thư thật qua nhà cung cấp đã cấu hình để xác nhận việc gửi.",
-        "label": "Gửi tới",
-        "placeholder": "you@example.com",
-        "send": "Gửi email thử",
-        "sending": "Đang gửi…",
-        "sentToast": "Đã gửi email thử tới {to} qua {provider}.",
-        "errorToast": "Nhà cung cấp đã từ chối thư."
-      },
-      "legal": {
-        "title": "Văn bản pháp lý",
-        "description": "Chỉnh sửa các trang pháp lý công khai. Thay đổi đã lưu được công bố ngay và xóa cache của các trang đó.",
-        "slugLabel": "Văn bản",
-        "versionLabel": "Phiên bản",
-        "effectiveDateLabel": "Ngày hiệu lực",
-        "sectionHeading": "Tiêu đề mục {index}",
-        "sectionParagraphs": "Nội dung mục {index}",
-        "sectionParagraphsHelp": "Mỗi dòng một đoạn. Danh sách gạch đầu dòng được giữ nguyên.",
-        "save": "Lưu văn bản",
-        "savedToast": "Đã lưu. Trang công khai hiện dùng phiên bản {version}.",
-        "errorToast": "Không lưu được văn bản. Vui lòng thử lại.",
-        "loadErrorTitle": "Không tải được văn bản này",
-        "loadErrorDescription": "Không đọc được văn bản. Hãy thử lại, hoặc kiểm tra API nếu vẫn lỗi.",
-        "confirmTitle": "Công bố văn bản pháp lý này?",
-        "confirmBody": "Trang công khai {slug} sẽ phản ánh thay đổi ngay lập tức. Việc lưu được ghi nhật ký.",
-        "confirmAction": "Công bố",
-        "cancel": "Hủy",
-        "validation": {
-          "versionRequired": "Phiên bản phải dài 1–20 ký tự.",
-          "dateInvalid": "Nhập ngày hiệu lực theo dạng YYYY-MM-DD.",
-          "headingRequired": "Mỗi mục cần một tiêu đề.",
-          "paragraphRequired": "Mỗi mục cần ít nhất một đoạn."
-        },
-        "slugs": {
-          "privacy-policy": "Chính sách quyền riêng tư",
-          "terms-of-service": "Điều khoản dịch vụ",
-          "cookie-policy": "Chính sách cookie",
-          "gdpr": "GDPR"
-        }
-      },
-      "staleToast": "Các cài đặt này đã thay đổi từ lúc bạn tải trang. Hãy xem các giá trị mới nhất rồi áp dụng lại thay đổi của bạn.",
+      "title": "Cài đặt",
+      "description": "Tài khoản vận hành nội bộ",
       "account": {
         "title": "Tài khoản của bạn",
         "description": "Tên hiển thị cho những người vận hành khác trong cổng vận hành.",
@@ -3514,9 +3416,7 @@
         "saving": "Đang lưu…",
         "savedToast": "Đã lưu hồ sơ.",
         "errorToast": "Không lưu được hồ sơ của bạn. Vui lòng thử lại."
-      },
-      "firstName": "Tên",
-      "lastName": "Họ"
+      }
     },
     "plan": {
       "title": "Gói",
@@ -3948,6 +3848,74 @@
       "successNoInviteToast": "Đã tạo trường học. Chưa gửi lời mời quản trị viên.",
       "conflict": "Đã có trường với tên này.",
       "errorToast": "Không thể tạo trường học đó. Chưa lưu gì cả."
+    },
+    "resultWindows": {
+      "errorTitle": "Không thể tải các kỳ kết quả",
+      "errorDescription": "Máy chủ từ chối hoặc đọc thất bại. Thử lại sau lần tải trang tới — không có gì bị thay đổi.",
+      "title": "Các kỳ kết quả",
+      "description": "Các kỳ đánh giá trong quá khứ và đã lên lịch cho các lớp của trường này. Số lượt thi chỉ tính các lần làm bài chính thức, không bị vô hiệu; điểm đang chờ được hiển thị riêng, không bao giờ là số 0.",
+      "previous": "Trước",
+      "next": "Sau",
+      "pageCount": "Trang {page} trên {pageCount} — {total} kỳ",
+      "closeScheduler": "Đóng bộ lập lịch",
+      "scheduleWindow": "Lên lịch kỳ đánh giá",
+      "empty": "Chưa có kỳ kết quả nào. Lên lịch một kỳ để chạy bài kiểm tra tiến độ chính thức cho các lớp đã chọn.",
+      "status": {
+        "complete": "hoàn thành",
+        "inProgress": "đang diễn ra",
+        "scheduled": "đã lên lịch",
+        "cancelled": "đã hủy"
+      },
+      "rowStats": "Đã thi {sat}/{eligible} · đang chờ {pending}",
+      "rowAverage": " · trung bình {average}%",
+      "cefrPending": " · đang chờ bậc CEFR",
+      "cefrValue": " · {cefr}",
+      "viewReport": "Xem báo cáo",
+      "hideReport": "Ẩn báo cáo",
+      "downloadPdf": "Tải PDF",
+      "share": "Chia sẻ",
+      "cancel": "Hủy",
+      "reopen": "Mở lại",
+      "pdfError": "Tải PDF thất bại: {message}",
+      "shareResult": "Đã chia sẻ: gửi {sent}, thất bại {failed}",
+      "shareResultFailures": " — các lỗi được nêu trong nhật ký kiểm toán.",
+      "shareResultOk": ".",
+      "shareError": "Chia sẻ thất bại: {message}",
+      "cancelError": "Hủy thất bại: {message}",
+      "reopenError": "Mở lại thất bại: {message}",
+      "reportErrorTitle": "Không thể tải báo cáo",
+      "reportStats": "Đủ điều kiện {eligible} · đã thi {sat} · đang chờ {pending} · loại trừ các lần vô hiệu {excluded}",
+      "scorePending": "đang chờ điểm",
+      "scorePercent": "{score}%",
+      "cefrPendingShort": "đang chờ CEFR",
+      "noOfficialResults": "Chưa có kết quả chính thức.",
+      "skill": {
+        "reading": "đọc",
+        "listening": "nghe",
+        "speaking": "nói",
+        "writing": "viết"
+      },
+      "formTitle": "Tiêu đề",
+      "formTimezone": "Múi giờ (IANA, vd. Australia/Melbourne)",
+      "formOpens": "Mở",
+      "formCloses": "Đóng",
+      "classesLegend": "Các lớp (đã chọn {count})",
+      "formsLegend": "Phiếu theo kỹ năng (1–4 kỹ năng)",
+      "noFormOption": "— không có phiếu —",
+      "createErrorTitle": "Kỳ đánh giá chưa được lập lịch",
+      "createErrorSuffix": "{message} — không có gì được chỉ định.",
+      "scheduleSubmit": "Lên lịch",
+      "cancelSubmit": "Hủy",
+      "conflictFallback": "Máy chủ đã từ chối kỳ đánh giá này."
+    },
+    "bulkBar": {
+      "ariaSelected": "Đã chọn {count} {noun}",
+      "selectedOnPage": "{count} {noun} được chọn trên trang này",
+      "cappedAt": "Số lượng chọn tối đa là {max}.",
+      "clear": "Bỏ chọn tất cả"
+    },
+    "typedNameConfirm": {
+      "typeToConfirm": "Nhập <name>{name}</name> để xác nhận"
     }
   },
   "RunSheet": {
@@ -4529,7 +4497,8 @@
     "llmsNotePrivate": "Bảng điều khiển, các luồng xác thực và liên kết mời/thiết lập là riêng tư và bị chặn trong robots.txt. Chúng chứa dữ liệu học sinh và không được thu thập.",
     "llmsNoteSitemap": "Chỉ mục máy đọc được của mọi URL công khai nằm tại {url}.",
     "llmsNotes": "Ghi chú",
-    "llmsPages": "Trang"
+    "llmsPages": "Trang",
+    "siteDescription": "Đánh giá chẩn đoán tiếng Anh cho các lớp EAL/D tại Úc."
   },
   "StudentImport": {
     "downloadTemplate": "Download CSV template",
@@ -4652,61 +4621,61 @@
       },
       "live": {
         "settings": {
-        "control": "Cài đặt bài kiểm tra",
-        "title": "Cài đặt phiên",
-        "subtitle": "Phiên này đang chạy với những cài đặt sau.",
-        "count": "{on} trên {total} đang bật",
-        "close": "Đóng cài đặt",
-        "on": "Bật",
-        "off": "Tắt",
-        "minutes": "{minutes} phút",
-        "fixed": "Cài đặt bị khóa khi phiên đã mở. Để thay đổi, hãy đóng phiên này và bắt đầu phiên mới.",
-        "rows": {
-          "lowBw": {
-            "label": "Chế độ băng thông thấp",
-            "desc": "Chỉ văn bản, không tải trước hình ảnh, và câu trả lời được lưu trên thiết bị rồi đồng bộ khi kết nối trở lại. Dùng khi lớp học dùng dữ liệu di động hoặc vệ tinh."
-          },
-          "skip": {
-            "label": "Cho phép bỏ qua câu hỏi",
-            "desc": "Học sinh có thể bỏ qua một câu, làm câu khác, và quay lại trước khi nộp."
-          },
-          "review": {
-            "label": "Màn hình xem lại trước khi nộp",
-            "desc": "Danh sách cuối cùng các câu đã bỏ qua và đã đánh dấu, để không có câu nào trống do sơ suất."
-          },
-          "flag": {
-            "label": "Đánh dấu câu hỏi cần xem lại",
-            "desc": "Học sinh có thể đánh dấu một câu để quay lại. Dấu hiệu hiển thị trên màn hình xem lại và với bạn."
-          },
-          "bigText": {
-            "label": "Chữ lớn và tương phản cao",
-            "desc": "Học sinh có thể phóng to chữ và chuyển sang giao diện tương phản cao bất cứ lúc nào."
-          },
-          "lockdown": {
-            "label": "Cửa sổ khóa",
-            "desc": "Bài kiểm tra chiếm toàn màn hình. Các ứng dụng, thẻ khác, sao chép, dán và in đều bị chặn."
-          },
-          "focusFlag": {
-            "label": "Gắn cờ khi rời cửa sổ",
-            "desc": "Việc rời đi được ghi lại với dấu thời gian và hiển thị trên màn hình trực tiếp của bạn. Dùng khi tắt khóa."
-          },
-          "warn5": {
-            "label": "Cảnh báo còn 5 phút",
-            "desc": "Một dải thông báo yên tĩnh khi còn 5 phút, để đồng hồ không phải luôn trước mắt các em."
-          },
-          "autoSubmit": {
-            "label": "Tự động nộp khi hết giờ",
-            "desc": "Tắt nghĩa là bài làm chờ bạn, và không có gì được nộp nếu không có giáo viên."
-          },
-          "showScore": {
-            "label": "Hiện điểm của các em khi kết thúc",
-            "desc": "Tắt nghĩa là kết quả được giữ cho đến khi bạn công bố báo cáo."
-          },
-          "timeLimit": {
-            "label": "Giới hạn thời gian",
-            "desc": "Phiên chạy trong bao lâu trước khi tự đóng."
+          "control": "Cài đặt bài kiểm tra",
+          "title": "Cài đặt phiên",
+          "subtitle": "Phiên này đang chạy với những cài đặt sau.",
+          "count": "{on} trên {total} đang bật",
+          "close": "Đóng cài đặt",
+          "on": "Bật",
+          "off": "Tắt",
+          "minutes": "{minutes} phút",
+          "fixed": "Cài đặt bị khóa khi phiên đã mở. Để thay đổi, hãy đóng phiên này và bắt đầu phiên mới.",
+          "rows": {
+            "lowBw": {
+              "label": "Chế độ băng thông thấp",
+              "desc": "Chỉ văn bản, không tải trước hình ảnh, và câu trả lời được lưu trên thiết bị rồi đồng bộ khi kết nối trở lại. Dùng khi lớp học dùng dữ liệu di động hoặc vệ tinh."
+            },
+            "skip": {
+              "label": "Cho phép bỏ qua câu hỏi",
+              "desc": "Học sinh có thể bỏ qua một câu, làm câu khác, và quay lại trước khi nộp."
+            },
+            "review": {
+              "label": "Màn hình xem lại trước khi nộp",
+              "desc": "Danh sách cuối cùng các câu đã bỏ qua và đã đánh dấu, để không có câu nào trống do sơ suất."
+            },
+            "flag": {
+              "label": "Đánh dấu câu hỏi cần xem lại",
+              "desc": "Học sinh có thể đánh dấu một câu để quay lại. Dấu hiệu hiển thị trên màn hình xem lại và với bạn."
+            },
+            "bigText": {
+              "label": "Chữ lớn và tương phản cao",
+              "desc": "Học sinh có thể phóng to chữ và chuyển sang giao diện tương phản cao bất cứ lúc nào."
+            },
+            "lockdown": {
+              "label": "Cửa sổ khóa",
+              "desc": "Bài kiểm tra chiếm toàn màn hình. Các ứng dụng, thẻ khác, sao chép, dán và in đều bị chặn."
+            },
+            "focusFlag": {
+              "label": "Gắn cờ khi rời cửa sổ",
+              "desc": "Việc rời đi được ghi lại với dấu thời gian và hiển thị trên màn hình trực tiếp của bạn. Dùng khi tắt khóa."
+            },
+            "warn5": {
+              "label": "Cảnh báo còn 5 phút",
+              "desc": "Một dải thông báo yên tĩnh khi còn 5 phút, để đồng hồ không phải luôn trước mắt các em."
+            },
+            "autoSubmit": {
+              "label": "Tự động nộp khi hết giờ",
+              "desc": "Tắt nghĩa là bài làm chờ bạn, và không có gì được nộp nếu không có giáo viên."
+            },
+            "showScore": {
+              "label": "Hiện điểm của các em khi kết thúc",
+              "desc": "Tắt nghĩa là kết quả được giữ cho đến khi bạn công bố báo cáo."
+            },
+            "timeLimit": {
+              "label": "Giới hạn thời gian",
+              "desc": "Phiên chạy trong bao lâu trước khi tự đóng."
+            }
           }
-        }
         },
         "alreadyClosedToast": "Phiên này đã được đóng trước đó. Trang hiển thị trạng thái cuối cùng.",
         "badgeClosed": "Đã đóng",
@@ -5026,7 +4995,8 @@
         "actionOpen": "Mở",
         "loadingLabel": "Đang tải học sinh",
         "noMatchesTitle": "Không có học sinh nào khớp",
-        "noMatchesDescription": "Không có học sinh nào khớp với tìm kiếm, bộ lọc hoặc sắp xếp hiện tại."
+        "noMatchesDescription": "Không có học sinh nào khớp với tìm kiếm, bộ lọc hoặc sắp xếp hiện tại.",
+        "sortAcaraPhase": "Giai đoạn ACARA"
       },
       "drillDown": {
         "meta": {
@@ -5128,5 +5098,146 @@
       "students": "Học sinh ({count, plural, other {# học sinh}})",
       "studentsTotal": "Học sinh ({count, plural, other {# kết quả}})"
     }
+  },
+  "Results": {
+    "scoringFailed": "Chấm điểm cho lần thi này thất bại — không có kết quả để hiển thị. Không hiện gì thay vì một báo cáo thiếu; lần thi này sẽ được chấm lại.",
+    "confidenceWarning": "⚠ Độ tin cậy thấp — kết quả có thể không phản ánh đúng năng lực của học sinh này",
+    "confidenceNormal": "Nỗ lực hợp lệ · Độ tin cậy bình thường · Đã trả lời {answered}/{total} câu{minutes}",
+    "confidenceMinutes": " · {minutes} phút",
+    "ariaSkillSwitcher": "Kỹ năng",
+    "deltaPts": "{arrow} {growth} điểm",
+    "acaraBadge": "ACARA: {phase}",
+    "gatePassed": "Cửa ối: đạt",
+    "gateNotYet": "Cửa ối: chưa đạt",
+    "gatePassedState": "đạt",
+    "gateNotYetState": "chưa đạt",
+    "exitGate": "Cửa ối: {state}",
+    "comingSoon": "sắp ra mắt",
+    "skillReading": "Đọc",
+    "skillListening": "Nghe",
+    "skillSpeaking": "Nói",
+    "skillWriting": "Viết",
+    "skillDecoding": "Giải mã",
+    "skillVocabulary": "Từ vựng",
+    "skillGrammar": "Ngữ pháp",
+    "skillGist": "Ý chính",
+    "skillDetail": "Chi tiết",
+    "skillInference": "Suy luận",
+    "skillCritical": "Đọc phản biện",
+    "notYetAssessed": "Chưa được đánh giá",
+    "steady": "Ổn định",
+    "bandSecure": "Vững",
+    "bandDeveloping": "Đang phát triển",
+    "bandEmerging": "Bắt đầu hình thành",
+    "bandNotYet": "Chưa đạt",
+    "section3NotReached": "Chưa đến Phần 3",
+    "movementHeading": "Thay đổi kể từ lần thi đầu tiên",
+    "ariaScoreMovement": "Biến động điểm",
+    "bandMovement": "Chuyển bậc",
+    "bandMovementLower": "chuyển bậc",
+    "deltaPtsShort": "{delta} điểm",
+    "trendHeading": "Tiến bộ đọc theo thời gian",
+    "trendFirstSitting": "Lần thi đầu tiên — xu hướng xuất hiện từ bài kiểm tra thứ hai",
+    "trendSittings": "{count, plural, other {# lần thi}} kể từ {month}",
+    "trendDeltaReliability": "{delta} ({reliability})",
+    "reliable": "đáng tin cậy",
+    "withinError": "trong sai số",
+    "trendBestGain": "Cải thiện tốt nhất: {skill} +{delta} điểm",
+    "attrDecoding": "Giải mã",
+    "attrVocabularyB1": "Từ vựng B1",
+    "attrGist": "Ý chính",
+    "attrDetail": "Chi tiết",
+    "attrInference": "Suy luận",
+    "checklistHeading": "Lộ trình đến giai đoạn củng cố",
+    "consolidatingMet": "Củng cố — đáp ứng mọi yêu cầu",
+    "notAssessedThisSitting": "không được đánh giá trong lần thi này",
+    "scorePercent": "{score}%",
+    "exitGateSection3": "Cửa ối (Phần 3)",
+    "vocabStrandsBoth": "A2 {a2} · B1 {b1}",
+    "vocabStrandSingle": "{assessed} · {gap}",
+    "askAria": "Hỏi AI về kết quả này",
+    "askHeading": "Hỏi AI",
+    "askPlaceholder": "Hỏi về kết quả này…",
+    "askSubmit": "Hỏi",
+    "askPending": "Đang hỏi…",
+    "askSuggested1": "Kỹ năng nào đã tiến bộ kể từ bài kiểm tra trước?",
+    "askSuggested2": "Tôi nên dạy gì tiếp theo?",
+    "askSuggested3": "Từ vựng đang phát triển thế nào qua các phân mục?",
+    "askSuggested4": "Học sinh có đạt cửa ối không, và điều đó nghĩa là gì?",
+    "downloadLlm": "Tải xuống cho LLM (.md)",
+    "printReport": "In báo cáo",
+    "printTitle": "Báo cáo đọc — {student}{date}",
+    "commentaryAria": "Phân tích học sinh",
+    "commentaryHeading": "Phân tích học sinh",
+    "commentaryHeadingOffline": "Phân tích học sinh (tóm tắt ngoại tuyến)",
+    "copyDeidentified": "Sao chép (đã ẩn danh)",
+    "copied": "Đã sao chép",
+    "errorPatternsHeading": "{name} hay sai ở đâu",
+    "errorPatternFallbackNote": "Đã chọn loại câu trả lời sai này.",
+    "errorPatternInsight": "{label} là lỗi phổ biến nhất của {name} — chiếm {pct}% số câu trả lời sai.",
+    "errorPattern": {
+      "literalMatch": {
+        "label": "Chép nguyên văn",
+        "note": "Đã chọn câu trả lời chép nguyên văn từng chữ từ bài đọc."
+      },
+      "overinference": {
+        "label": "Suy diễn quá mức",
+        "note": "Đã chọn câu trả lời đi xa hơn những gì bài đọc nêu."
+      },
+      "worldKnowledge": {
+        "label": "Dùng kiến thức ngoài",
+        "note": "Đã chọn câu trả lời đúng ngoài đời nhưng bài đọc không nêu."
+      },
+      "grammaticalDecoy": {
+        "label": "Bẫy ngữ pháp",
+        "note": "Đã chọn câu trả lời hợp ngữ pháp nhưng không đúng nghĩa."
+      },
+      "phonologicalNeighbour": {
+        "label": "Âm giống",
+        "note": "Đã chọn câu trả lời nghe giống một từ trong bài đọc."
+      },
+      "orthographicNeighbour": {
+        "label": "Chính tả giống",
+        "note": "Đã chọn câu trả lời viết giống một từ trong bài đọc."
+      },
+      "semanticNeighbour": {
+        "label": "Nghĩa gần",
+        "note": "Đã chọn câu trả lời nghĩa gần nhưng bài đọc không hỗ trợ."
+      }
+    },
+    "fallbackNoOverall": "Không có điểm tổng cho lần thi này.",
+    "fallbackOverall": "Điểm đọc tổng thể ở mức {score}%.",
+    "fallbackGrowthSteady": " Điểm ổn định so với lần thi chính thức trước — không tuyên bố có thay đổi.",
+    "fallbackGrowthBand": " Điểm đã chuyển bậc so với lần thi chính thức trước.",
+    "fallbackGrowthPoints": " Điểm thay đổi {delta} điểm so với lần thi chính thức trước.",
+    "fallbackStrengthNeed": "Kỹ năng mạnh nhất: {best} ({bestScore}%). Cần cải thiện nhất: {worst} ({worstScore}%).",
+    "fallbackCritical": "Đọc phản biện đạt {score}% với cửa ối {state} — kết quả cửa ối, không phải bậc.",
+    "fallbackGatePassed": "đạt",
+    "fallbackGateNotMet": "chưa đạt",
+    "fallbackCommonSlip": "Lỗi phổ biến nhất: {label} ({pct}% số câu trả lời sai).",
+    "fallbackVocabA2Only": "Từ vựng lần thi này chỉ có phân mục A2 ({a2}); B1 không được đánh giá nên không tuyên bố điểm hợp nhất. Trọng tâm dạy học: tiếp tục củng cố từ vựng A2 trước buổi thi B1.",
+    "fallbackVocabB1Only": "Từ vựng lần thi này chỉ có phân mục B1 ({b1}); A2 không được đánh giá nên không tuyên bố điểm hợp nhất. Trọng tâm dạy học: phát triển từ vựng B1 đang thể hiện rõ.",
+    "fallbackVocabBlend": "Từ vựng hợp nhất hai phân mục ở mức {blended} (A2 {a2}, B1 {b1}). Trọng tâm dạy học: phát triển phân mục yếu hơn trước buổi thi tới.",
+    "fallbackNoScore": "không có điểm",
+    "fallbackNotAssessed": "không đánh giá"
+  },
+  "Components": {
+    "pagination": "phân trang",
+    "previous": "Trước",
+    "next": "Sau",
+    "goToPreviousPage": "Đến trang trước",
+    "goToNextPage": "Đến trang sau",
+    "morePages": "Thêm trang",
+    "breadcrumb": "đường dẫn điều hướng",
+    "more": "Thêm",
+    "previousSlide": "Trang trình bày trước",
+    "nextSlide": "Trang trình bày sau",
+    "close": "Đóng",
+    "sidebar": "Thanh bên",
+    "sidebarDescription": "Hiển thị thanh bên trên thiết bị di động.",
+    "toggleSidebar": "Bật/tắt thanh bên",
+    "loading": "Đang tải",
+    "commandPalette": "Bảng lệnh",
+    "commandPaletteDescription": "Tìm kiếm lệnh để chạy..."
   }
 }
