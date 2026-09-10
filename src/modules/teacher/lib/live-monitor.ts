@@ -31,10 +31,11 @@ export function deriveLiveMonitorStatus(counts: LiveMonitorReadCounts): LiveMoni
  * counts the tiles itself: the server already partitioned the roster, and a
  * client-side recount could disagree with the grid it sits above.
  *
- * All six partitions are required by C-TS-3, including terminal scoring failure.
+ * All eight partitions are C-TS-3 since teacher/12; the two new counters
+ * coalesce to 0 only when the payload predates the server's own half.
  */
 export function monitorSummaryItems(summary: MonitorSummary): readonly MonitorSummaryItem[] {
-  return MONITOR_SUMMARY_ORDER.map((key) => ({ key, value: summary[key] }));
+  return MONITOR_SUMMARY_ORDER.map((key) => ({ key, value: summary[key] ?? 0 }));
 }
 
 /**

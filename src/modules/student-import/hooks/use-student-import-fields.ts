@@ -9,10 +9,11 @@ import type { ParsedStudentCsv } from '@/modules/student-import/types/student-im
 
 // Local text state for the shared import fields. A dropped or browsed file is
 // read into the SAME csv text the paste box shows, so the two intakes are one
-// value the admin can still edit, and every change re-parses and reports up.
-// Nothing here talks to the network: the host page owns the mutation.
+// value the admin can still edit, and every change re-parses and reports up —
+// BOTH the parsed view for the counts and the raw text the preview/commit
+// engine consumes. Nothing here talks to the network: the host owns the write.
 export function useStudentImportFields(
-  onChange: (parsed: ParsedStudentCsv) => void,
+  onChange: (parsed: ParsedStudentCsv, csv: string) => void,
 ): StudentImportFieldsState {
   const [csv, setCsvText] = useState('');
   const [isDragging, setIsDragging] = useState(false);
@@ -20,7 +21,7 @@ export function useStudentImportFields(
 
   const setCsv = (text: string) => {
     setCsvText(text);
-    onChange(parseStudentCsv(text));
+    onChange(parseStudentCsv(text), text);
   };
 
   const readFile = async (file: File | undefined) => {

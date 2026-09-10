@@ -11,7 +11,6 @@ export { studentDisplayName } from './hooks/use-student-row-actions';
 export { useCreateStudentMutation } from './queries/use-create-student.mutation';
 export { useUpdateStudentMutation } from './queries/use-update-student.mutation';
 export { useArchiveStudentMutation } from './queries/use-archive-student.mutation';
-export { useImportStudentsMutation } from './queries/use-import-students.mutation';
 export { classifyStudentError } from './lib/classify-student-error';
 // Shared by the class-detail drill-down (spec §2 subtitle) so the level and
 // first-language vocabulary is identical to the Students page.

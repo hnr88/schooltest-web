@@ -71,6 +71,7 @@ export {
 } from './constants/results.constants';
 
 export {
+  connectionStateSchema,
   masteryBandSchema,
   monitorStateSchema,
   testVariantSchema,

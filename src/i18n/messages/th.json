@@ -2470,7 +2470,10 @@
         "joined": "เข้าร่วมแล้ว",
         "in_progress": "กำลังสอบ",
         "submitted": "ส่งแล้ว",
-        "stalled": "หยุดชะงัก"
+        "stalled": "หยุดชะงัก",
+        "scoring_failed": "การให้คะแนนล้มเหลว",
+        "absent": "ขาด",
+        "paused": "หยุดชั่วคราว"
       },
       "codeShownCount": "แสดงรหัสให้ {count} คน",
       "closeCta": "ปิดการสอบ",
@@ -2504,6 +2507,20 @@
       "confirmBody": "การทำข้อสอบปัจจุบันจะสิ้นสุดลง และนักเรียนสามารถเข้าร่วมใหม่ได้ด้วยรหัสเข้าสอบ",
       "cancel": "ยกเลิก",
       "confirm": "ใช่ สอบใหม่"
+    },
+    "activity": {
+      "title": "กิจกรรมของเซสชัน",
+      "subtitle": "ทุกการดำเนินการระหว่างการสอบนี้ และผู้ที่ดำเนินการ",
+      "loading": "กำลังโหลดร่องรอยกิจกรรม…",
+      "error": "ไม่สามารถโหลดร่องรอยกิจกรรมได้",
+      "empty": "ยังไม่มีกิจกรรมใดๆ ในการสอบนี้",
+      "truncated": "แสดง {shown} รายการล่าสุดจากทั้งหมด {total} รายการ บันทึกทั้งหมดจะถูกเก็บไว้กับเซสชันเพื่อการอุทธรณ์",
+      "appealsNote": "บันทึกทั้งหมดจะถูกเก็บไว้กับเซสชันเพื่อการอุทธรณ์",
+      "logIncident": "บันทึกเหตุการณ์",
+      "noteLabel": "บันทึกย่อเหตุการณ์",
+      "notePlaceholder": "เกิดอะไรขึ้น? (เก็บไว้กับบันทึกเซสชัน)",
+      "incidentLogged": "บันทึกเหตุการณ์แล้ว",
+      "cancel": "ยกเลิก"
     },
     "runSheetLink": "เปิดใบคู่มือ"
   },
@@ -2583,7 +2600,10 @@
         "emptyDescription": "มอบหมายครูผู้นี้จากกล่องโต้ตอบ 'แก้ไขชั้นเรียน' ของชั้นเรียน",
         "completed": "{done} จาก {total} คนทำแบบทดสอบ A เสร็จแล้ว",
         "students": "{count, plural, other {# นักเรียน}}",
-        "openLabel": "เปิดชั้นเรียน {name}"
+        "openLabel": "เปิดชั้นเรียน {name}",
+        "removeLabel": "นำออกจาก {name}",
+        "removeErrorTitle": "ไม่สามารถนำครูออกจากชั้นเรียนนี้ได้",
+        "removeErrorDescription": "ชั้นเรียนไม่ได้ถูกเปลี่ยนแปลง ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"
       },
       "accountPanel": {
         "title": "รายละเอียดบัญชี",
@@ -2595,6 +2615,17 @@
         "lastActive": "ใช้งานล่าสุด",
         "neverActive": "ยังไม่เคยเปิดการสอบ",
         "roleNone": "ไม่มีบทบาท"
+      },
+      "assignDialog": {
+        "title": "มอบหมายให้ชั้นเรียน",
+        "description": "เลือกทุกชั้นเรียนที่ {name} สอน การยกเลิกการเลือกชั้นเรียนจะนำครูออกจากชั้นนั้น",
+        "classesLegend": "{count, plural, other {เลือกไว้ # ชั้นเรียน}}",
+        "empty": "ยังไม่มีชั้นเรียนในโรงเรียนของคุณ",
+        "submit": "บันทึกการเปลี่ยนแปลง",
+        "submitting": "Saving...",
+        "cancel": "ยกเลิก",
+        "errorTitle": "ไม่สามารถอัปเดตชั้นเรียนนี้ได้",
+        "errorDescription": "ชั้นเรียนไม่ได้ถูกเปลี่ยนแปลง ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"
       }
     },
     "meta": {
@@ -2798,7 +2829,12 @@
         "seatsToast": "แพ็กเกจของคุณไม่มีที่นั่งเหลือสำหรับนักเรียนเหล่านี้",
         "forbiddenToast": "คุณไม่มีสิทธิ์เพิ่มนักเรียน",
         "genericToast": "ดำเนินการไม่สำเร็จ ลองอีกครั้ง",
-        "duplicateToast": "มีนักเรียนเหล่านี้อยู่แล้ว ตรวจสอบอีเมลแล้วลองอีกครั้ง"
+        "duplicateToast": "มีนักเรียนเหล่านี้อยู่แล้ว ตรวจสอบอีเมลแล้วลองอีกครั้ง",
+        "rejectedToast": "{count, plural, other {แถวต้องแก้ไขก่อนนำเข้า}}",
+        "alreadyImportedToast": "นักเรียนในไฟล์นี้ลงทะเบียนอยู่แล้วทั้งหมด",
+        "successSkippedToast": "นำเข้า {created} คน, {skipped, plural, other {ลงทะเบียนแล้ว}}.",
+        "seatCapToast": "โรงเรียนของคุณไม่มีที่นั่งเหลือแล้ว ติดต่อ SchoolTest เพื่อเพิ่มที่นั่ง",
+        "schoolInactiveToast": "บัญชีโรงเรียนของคุณไม่ได้ใช้งาน จึงไม่สามารถเพิ่มนักเรียนได้ในขณะนี้"
       },
       "roster": {
         "searchPlaceholder": "ค้นหานักเรียน",
@@ -2817,7 +2853,47 @@
         "filteredEmptyTitle": "ไม่มีนักเรียนที่ตรงกับตัวกรองเหล่านี้",
         "filteredEmptyDescription": "ลองค้นหาอื่นหรือล้างตัวกรอง",
         "loading": "กำลังโหลดนักเรียน",
-        "errorStaleBanner": "การรีเฟรชล่าสุดล้มเหลว — นักเรียนด้านล่างคือรายการสุดท้ายที่เซิร์ฟเวอร์ส่งมา"
+        "errorStaleBanner": "การรีเฟรชล่าสุดล้มเหลว — นักเรียนด้านล่างคือรายการสุดท้ายที่เซิร์ฟเวอร์ส่งมา",
+        "removeStudentAria": "นำ {name} ออกจากชั้นเรียนนี้"
+      },
+      "addStudent": "เพิ่มนักเรียน",
+      "rosterErrorTitle": "อัปเดตรายชื่อไม่สำเร็จ",
+      "rosterErrorDescription": "เกิดปัญหาขณะอัปเดตนักเรียนของชั้นเรียนนี้ ไม่มีการเปลี่ยนแปลงใด ๆ โปรดลองอีกครั้ง",
+      "dismiss": "ปิด",
+      "studentsAddedToast": "{count, plural, other {เพิ่มนักเรียน # คนเข้าชั้นเรียนแล้ว}}",
+      "studentRemovedToast": "นำ {name} ออกจากชั้นเรียนแล้ว",
+      "teachers": {
+        "label": "ครู",
+        "add": "เพิ่มครู",
+        "removeAria": "นำ {name} ออกจากชั้นเรียนนี้",
+        "savedToast": "อัปเดตข้อมูลครูแล้ว",
+        "errorTitle": "อัปเดตครูไม่สำเร็จ",
+        "errorDescription": "เกิดปัญหาขณะบันทึกครูของชั้นเรียนนี้ โปรดลองอีกครั้ง",
+        "retry": "ลองอีกครั้ง",
+        "pickerTitle": "เพิ่มครู",
+        "pickerDescription": "เลือกครูผู้สอนชั้นเรียน {className}",
+        "pickerLoadError": "โหลดรายชื่อครูไม่สำเร็จ",
+        "pickerLoadErrorDescription": "โปรดลองอีกครั้งในภายหลัง",
+        "pickerEmpty": "ครูทุกคนในโรงเรียนของคุณสอนชั้นเรียนนี้อยู่แล้ว",
+        "cancel": "ยกเลิก",
+        "save": "เพิ่มเข้าชั้นเรียน",
+        "saving": "กำลังเพิ่ม…"
+      },
+      "studentPicker": {
+        "title": "เพิ่มนักเรียน",
+        "description": "เลือกนักเรียนที่อยู่ในชั้นเรียน {className}",
+        "moveWarning": "นักเรียนที่อยู่ชั้นเรียนอื่นจะถูกย้าย — นักเรียนหนึ่งคนอยู่ได้ชั้นเรียนเดียว",
+        "searchLabel": "ค้นหานักเรียน",
+        "searchPlaceholder": "ค้นหาตามชื่อ",
+        "currentClassHint": "อยู่ชั้นเรียน {className} — จะถูกย้าย",
+        "noClassHint": "ยังไม่ได้สังกัดชั้นเรียน",
+        "loadError": "โหลดรายชื่อนักเรียนไม่สำเร็จ",
+        "loadErrorDescription": "โปรดลองอีกครั้งในภายหลัง",
+        "empty": "นักเรียนที่กำลังศึกษาทุกคนในโรงเรียนของคุณอยู่ในชั้นเรียนนี้แล้ว",
+        "noMatches": "ไม่พบนักเรียนที่ตรงกับ \"{query}\"",
+        "cancel": "ยกเลิก",
+        "save": "เพิ่มเข้าชั้นเรียน",
+        "saving": "กำลังเพิ่ม…"
       }
     },
     "title": "ชั้นเรียน",
@@ -3124,7 +3200,10 @@
       "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
       "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
       "forbiddenToast": "You do not have permission to add students.",
-      "genericToast": "No students were imported. Try again."
+      "genericToast": "No students were imported. Try again.",
+      "rejectedToast": "{count, plural, other {แถวต้องแก้ไขก่อนนำเข้า}}",
+      "alreadyImportedToast": "นักเรียนในไฟล์นี้ลงทะเบียนอยู่แล้วทั้งหมด",
+      "successSkippedToast": "นำเข้า {created} คน, {skipped, plural, other {ลงทะเบียนแล้ว}}."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3267,6 +3346,7 @@
         "undoExpired": "ไม่สามารถเลิกทำได้อีก โหลดใหม่เพื่อดูสถานะปัจจุบัน",
         "undoError": "บันทึกการเปลี่ยนแปลงไม่ได้ โหลดใหม่แล้วลองอีกครั้ง",
         "typedMismatch": "พิมพ์ชื่อให้ตรงกับที่แสดงเพื่อยืนยัน",
+        "exportSuccess": "{count, plural, other {ส่งออกโรงเรียน # แห่งแล้ว}}",
         "success": {
           "activate": "เปิดใช้งาน {name} แล้ว",
           "reactivate": "เปิดใช้งาน {name} อีกครั้งแล้ว",
@@ -3301,6 +3381,7 @@
         "non-government": "นอกภาครัฐ",
         "catholic": "คาทอลิก"
       },
+      "bulkExport": "ส่งออก",
       "bulkSuspend": "ระงับโรงเรียนที่เลือก",
       "bulkArchive": "เก็บถาวรโรงเรียนที่เลือก"
     },
@@ -3395,6 +3476,8 @@
         "restore": "กู้คืนโรงเรียน",
         "suspend": "ระงับโรงเรียน",
         "archive": "เก็บถาวรโรงเรียน",
+        "recalculateSeats": "คำนวณที่นั่งใหม่",
+        "recalculateSeatsSuccess": "คำนวณที่นั่งใหม่แล้ว: ใช้ไป {used} จาก {total} ที่นั่ง",
         "undo": "เลิกทำ",
         "success": "อัปเดต {name} แล้ว",
         "undoSuccess": "กู้คืน {name} แล้ว",
@@ -3572,70 +3655,8 @@
         }
       }
     },
-    "recovery": {
-      "title": "การกู้คืนรอบสอบ",
-      "description": "ทำให้รอบสอบที่มีปัญหาเป็นโมฆะ หรืออนุญาตให้นักเรียนสอบใหม่ รอบสอบที่เป็นโมฆะจะถูกตัดออกจากการรายงานอย่างเป็นทางการ",
-      "pickerLabel": "รอบสอบ",
-      "pickerPlaceholder": "เลือกรอบสอบ",
-      "noClass": "ไม่มีชั้นเรียน",
-      "empty": "โรงเรียนนี้ยังไม่มีรอบสอบ",
-      "loadingMonitor": "กำลังโหลดนักเรียน...",
-      "loadErrorTitle": "ไม่สามารถโหลดรอบสอบได้",
-      "loadErrorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
-      "retry": "ลองอีกครั้ง",
-      "invalidateButton": "ทำให้รอบสอบนี้เป็นโมฆะ",
-      "invalidatedNotice": "รอบสอบนี้ถูกทำให้เป็นโมฆะแล้ว นักเรียนสามารถสอบใหม่ได้",
-      "confirmTitle": "ทำให้รอบสอบนี้เป็นโมฆะ?",
-      "confirmBody": "การสอบที่กำลังทำอยู่จะสิ้นสุดลง และทุกผลสอบของรอบนี้จะถูกตัดออกจากการรายงานอย่างเป็นทางการ นักเรียนสามารถสอบใหม่ได้",
-      "cancel": "ยกเลิก",
-      "confirm": "ทำให้เป็นโมฆะ",
-      "invalidatedToast": "ทำให้รอบสอบเป็นโมฆะแล้ว",
-      "errorToast": "ไม่สามารถทำให้รอบสอบเป็นโมฆะได้ ลองอีกครั้ง",
-      "forbiddenToast": "คุณไม่มีสิทธิ์กู้คืนรอบสอบ",
-      "resitButton": "สอบใหม่",
-      "resitToast": "{name} สามารถสอบใหม่ได้",
-      "resitErrorToast": "ไม่สามารถอนุญาตให้สอบใหม่ได้ ลองอีกครั้ง",
-      "columnStudent": "นักเรียน",
-      "columnState": "สถานะ",
-      "columnActions": "การดำเนินการ",
-      "state": {
-        "not_joined": "ยังไม่เข้าร่วม",
-        "joined": "เข้าร่วมแล้ว",
-        "in_progress": "กำลังทำ",
-        "submitted": "ส่งแล้ว",
-        "stalled": "หยุดชะงัก"
-      }
-    },
     "window": {
-      "title": "ช่วงเวลาข้อสอบที่ใช้งาน",
-      "description": "เลือกข้อสอบที่ใช้กับรอบสอบของโรงเรียนนี้ และเวลาเปิดปิดช่วงสอบ",
-      "currentNone": "ยังไม่ได้ตั้งช่วงเวลาให้โรงเรียนนี้",
-      "currentForm": "ข้อสอบที่ใช้งาน: {formCode}",
-      "currentPeriod": "เปิด {opens} ปิด {closes}",
-      "lockedBadge": "ล็อกแล้ว - มีนักเรียนสอบข้อสอบนี้แล้ว",
-      "formLabel": "ข้อสอบ",
-      "formPlaceholder": "เลือกข้อสอบ",
-      "opensLabel": "เปิด",
-      "closesLabel": "ปิด",
-      "saveButton": "บันทึกช่วงเวลา",
-      "savingButton": "กำลังบันทึก...",
-      "savedToast": "บันทึกช่วงเวลาแล้ว {formCode} ใช้งานกับโรงเรียนนี้แล้ว",
-      "saveErrorTitle": "ไม่สามารถบันทึกช่วงเวลาได้",
-      "lockedError": "ข้อสอบนี้ถูกล็อกเพราะมีนักเรียนสอบแล้ว ไม่สามารถย้ายช่วงเวลาไปยังข้อสอบอื่นในช่วงเดียวกันได้",
-      "errorToast": "ไม่สามารถบันทึกช่วงเวลาได้ ลองอีกครั้ง",
-      "forbiddenToast": "เฉพาะทีม ops ของ SchoolTest เท่านั้นที่เปลี่ยนช่วงเวลาข้อสอบได้",
-      "loadErrorTitle": "ไม่สามารถโหลดช่วงเวลาข้อสอบได้",
-      "loadErrorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
-      "retry": "ลองอีกครั้ง",
-      "validation": {
-        "formRequired": "เลือกข้อสอบ",
-        "datetimeRequired": "เลือกวันที่และเวลา",
-        "order": "เวลาเปิดต้องอยู่ก่อนเวลาปิด"
-      },
-      "integrityTitle": "ช่วงเวลาสอบนี้มีปัญหาความถูกต้องของข้อมูล",
-      "integrityDescription": "{count, plural, other {ต้องตรวจสอบการสอบ # รอบก่อนจึงจะเผยแพร่ผลได้}}",
-      "incompleteTitle": "ช่วงเวลาสอบนี้ยังไม่สมบูรณ์",
-      "incompleteDescription": "นักเรียนบางคนยังทำไม่เสร็จ ผลด้านล่างจึงยังไม่สมบูรณ์"
+      "title": "ช่วงเวลาข้อสอบที่ใช้งาน"
     },
     "settings": {
       "meta": {
@@ -3750,6 +3771,24 @@
         "loadError": "ไม่สามารถโหลดครู",
         "loadErrorDescription": "ไม่สามารถอ่านรายชื่อบุคลากรของโรงเรียน",
         "saveErrorTitle": "ไม่สามารถบันทึกได้"
+      },
+      "create": {
+        "title": "สร้างชั้นเรียน",
+        "description": "ชั้นเรียนใช้จัดกลุ่มนักเรียนสำหรับช่วงเวลาสอบและการรายงานผล",
+        "submit": "สร้างชั้นเรียน",
+        "creating": "กำลังสร้าง…"
+      },
+      "form": {
+        "nameRequired": "ต้องระบุชื่อชั้นเรียน",
+        "nameDuplicate": "โรงเรียนนี้มีชั้นเรียนชื่อนี้อยู่แล้ว",
+        "windowNeedsTeacher": "กำหนดครูก่อนตั้งค่าช่วงเวลาสอบ",
+        "noTeacherWarning": "ยังไม่มีครู — ชั้นเรียนจะยังอยู่ในสถานะรอการตั้งค่า",
+        "noWindowOption": "ยังไม่มีช่วงเวลา",
+        "testWindowLabel": "กรอบเวลาทดสอบ",
+        "formSummary": "{count, plural, other {# ช่องต้องการความสนใจ}}",
+        "saveErrorGeneric": "ไม่สามารถบันทึกชั้นเรียนได้ — ไม่มีการเปลี่ยนแปลง",
+        "savedToast": "อัปเดต {name} แล้ว",
+        "createdToast": "สร้าง {name} แล้ว"
       },
       "rosterSearchPlaceholder": "ค้นหานักเรียน",
       "rosterCount": "{count, plural, =0 {ไม่มีนักเรียน} other {นักเรียน # คน}}",
@@ -3989,57 +4028,6 @@
         }
       }
     },
-    "inspection": {
-      "title": "การตรวจสอบแบบทดสอบ",
-      "description": "องค์ประกอบของแบบทดสอบที่ช่วงเวลานี้ชี้ไป: ทุกข้อพร้อมประเภทข้อสอบ ขั้น เวกเตอร์คุณลักษณะแบบ Q-matrix และเฉลย รวมทั้งข้อสอบยึดโยงและสถานะการล็อก สำหรับฝ่ายปฏิบัติการเท่านั้น — นี่เป็นหน้าจอเดียวที่แสดงเฉลย",
-      "show": "ตรวจสอบแบบทดสอบ",
-      "hide": "ซ่อนการตรวจสอบ",
-      "errorTitle": "โหลดการตรวจสอบแบบทดสอบไม่สำเร็จ",
-      "errorDescription": "เซิร์ฟเวอร์ปฏิเสธหรืออ่านไม่สำเร็จ ไม่มีการเปลี่ยนแปลงใด — ลองอีกครั้ง หรือตรวจสอบว่าแบบทดสอบของช่วงเวลานี้ยังอยู่",
-      "formCode": "แบบทดสอบ {formCode}",
-      "itemCount": "{count, plural, other {# items}}",
-      "anchors": "ข้อสอบยึดโยง: {codes}",
-      "anchorsNone": "ไม่มีข้อสอบยึดโยง",
-      "lockedBadge": "ล็อกแล้ว — มีการส่งคำตอบแล้ว",
-      "unlockedBadge": "ไม่ได้ล็อก",
-      "columnItem": "ข้อสอบ",
-      "columnTaskType": "ประเภทข้อสอบ",
-      "columnStage": "ขั้น",
-      "columnVector": "เวกเตอร์คุณลักษณะ",
-      "columnKey": "เฉลย",
-      "formSelectLabel": "แบบทดสอบที่จะตรวจสอบ",
-      "noLiveWindow": "โรงเรียนนี้ไม่มีช่วงเวลาแบบทดสอบที่ใช้งานอยู่ ดังนั้นตัวเลือกด้านบนเป็นเพียงแบบทดสอบที่กำลังตรวจสอบ — ไม่ใช่แบบทดสอบที่การสอบของโรงเรียนนี้ใช้อยู่",
-      "notLiveForm": "กำลังตรวจสอบแบบทดสอบอื่นที่ไม่ใช่แบบทดสอบที่ใช้งานอยู่ของช่วงเวลานี้ ({formCode})"
-    },
-    "responsesExport": {
-      "title": "คำตอบของการสอบ (CSV)",
-      "description": "การส่งออกข้อมูลดิบระดับข้อสอบของการสอบหนึ่งครั้งเพื่อวิเคราะห์แบบออฟไลน์: หนึ่งแถวต่อหนึ่งคำตอบที่บันทึกไว้ ตามลำดับที่แสดง เซิร์ฟเวอร์ต้องการรหัสการสอบและเป็นผู้ตั้งชื่อไฟล์",
-      "sessionLabel": "รหัสเอกสารการสอบ",
-      "sessionPlaceholder": "เช่น dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "ดาวน์โหลด responses.csv",
-      "downloading": "กำลังเตรียมการส่งออก…",
-      "downloaded": "ดาวน์โหลด {filename} แล้ว",
-      "errorTitle": "ดาวน์โหลดการส่งออกคำตอบไม่สำเร็จ",
-      "errorDescription": "เซิร์ฟเวอร์ปฏิเสธการส่งออกและไม่มีไฟล์ถูกเขียน ตรวจสอบรหัสการสอบ — การสอบที่ไม่รู้จักจะได้ไฟล์ว่าง คำขอที่ผิดรูปแบบจะได้ข้อผิดพลาด"
-    },
-    "viewAsTeacher": {
-      "openCta": "ดูในมุมมองของครู",
-      "openAriaLabel": "ดูในมุมมองของครู {teacher} — เป็นการสวมสิทธิ์ และถูกบันทึกในบันทึกการตรวจสอบ",
-      "panelLabel": "ดูในมุมมองของครู — การสวมสิทธิ์",
-      "impersonationTitle": "มุมมองสวมสิทธิ์",
-      "impersonationSubject": "คุณเห็นสิ่งที่ {teacher} เห็นตรงตามจริง — ชั้นเรียนและการสอบของครูคนนั้นเท่านั้น ไม่กว้างกว่านี้",
-      "auditedNotice": "การเข้าถึงครั้งนี้ถูกบันทึกในบันทึกการตรวจสอบภายใต้บัญชีของคุณ พร้อมชื่อครูและเวลา",
-      "close": "ปิด",
-      "errorTitle": "โหลดหน้าจอของครูไม่สำเร็จ",
-      "errorDescription": "เซิร์ฟเวอร์ปฏิเสธหรืออ่านไม่สำเร็จ ไม่มีการเปลี่ยนแปลงใด — บุคลากรคนนี้อาจไม่ใช่บัญชีครู (ไดเรกทอรีนี้รวมผู้ดูแลโรงเรียนด้วย) อาจไม่มีอยู่แล้ว หรืออาจไม่ได้ผูกกับโรงเรียนใด",
-      "classCount": "{count, plural, other {# classes}}",
-      "sittingCount": "{count, plural, other {# sittings}}",
-      "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "ช่วงชั้นปี {yearBand}",
-      "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "ครูคนนี้ไม่มีชั้นเรียน",
-      "noSittings": "ครูคนนี้ยังไม่มีการสอบ"
-    },
     "export": {
       "title": "ส่งออกโรงเรียน",
       "cta": "ดาวน์โหลด CSV",
@@ -4216,7 +4204,15 @@
       "staffResendCooldown": "เพิ่งส่งคำเชิญนี้ซ้ำ ลองอีกครั้งใน {seconds} วินาที",
       "staffResendError": "ไม่สามารถส่งคำเชิญซ้ำได้ ลองอีกครั้ง",
       "staffRevokeSuccess": "คำเชิญสำหรับ {email} ถูกเพิกถอนแล้ว ลิงก์ใช้งานไม่ได้อีกต่อไป",
-      "staffRevokeError": "ไม่สามารถเพิกถอนคำเชิญได้ รีเฟรชรายการแล้วลองอีกครั้ง"
+      "staffRevokeError": "ไม่สามารถเพิกถอนคำเชิญได้ รีเฟรชรายการแล้วลองอีกครั้ง",
+      "formTitleAdmin": "เชิญผู้ดูแลโรงเรียน",
+      "formTitleTeacher": "เชิญครู",
+      "formSubtitle": "พวกเขาจะได้รับคำเชิญทางอีเมลไปยัง {school}",
+      "roleNoteTeacher": "ครูจะเห็นเฉพาะชั้นเรียนและผลลัพธ์ของตนเองเท่านั้น",
+      "roleNoteAdmin": "ผู้ดูแลโรงเรียนจัดการบุคลากร ชั้นเรียน นักเรียน และช่วงเวลาสอบของโรงเรียนนี้",
+      "alreadyHasAccessError": "บุคคลนี้มีสิทธิ์เข้าถึง {school} อยู่แล้ว",
+      "outsideDomainWarning": "อยู่นอกโดเมน {domain} — พวกเขาจะต้องได้รับการอนุมัติเมื่อเข้าสู่ระบบครั้งแรก",
+      "noNameWarning": "หากไม่มีชื่อ อีเมลคำเชิญจะระบุถึงกล่องจดหมายเท่านั้น"
     },
     "createSchool": {
       "button": "สร้างโรงเรียน",
@@ -4259,7 +4255,8 @@
         "tooLong": "ใช้ไม่เกิน 100 ตัวอักษร",
         "emailTooLong": "ใช้ไม่เกิน 255 ตัวอักษร",
         "emailInvalid": "กรอกอีเมลที่ถูกต้อง",
-        "nameTooShort": "ใช้ 3 ตัวอักษรขึ้นไป"
+        "nameTooShort": "ใช้ 3 ตัวอักษรขึ้นไป",
+        "phoneInvalid": "กรุณากรอกหมายเลขโทรศัพท์ที่ถูกต้อง"
       },
       "editTitle": "แก้ไขโรงเรียน",
       "editDescription": "อัปเดตโปรไฟล์ แผน และผู้ติดต่อของ {name} การบันทึกจะเขียนการแก้ไขโรงเรียนแบบมีเวอร์ชัน",
@@ -4281,7 +4278,11 @@
       "successToast": "สร้างโรงเรียนแล้ว — คำเชิญผู้ดูแลส่งไปยัง {email} แล้ว",
       "successNoInviteToast": "สร้างโรงเรียนแล้ว ไม่มีการส่งคำเชิญผู้ดูแล",
       "conflict": "มีโรงเรียนชื่อนี้อยู่แล้ว",
-      "errorToast": "ไม่สามารถสร้างโรงเรียนนี้ได้ ไม่มีอะไรถูกบันทึก"
+      "errorToast": "ไม่สามารถสร้างโรงเรียนนี้ได้ ไม่มีอะไรถูกบันทึก",
+      "contactHelper": "จำเป็น — บุคคลนี้จะได้รับคำเชิญเจ้าของโรงเรียน",
+      "statusActiveWarning": "การสร้างในสถานะใช้งานอยู่จะเริ่มเรียกเก็บเงินตั้งแต่วันนี้",
+      "savingLabel": "กำลังบันทึก…",
+      "formSummary": "{count, plural, other {# ช่องต้องการความสนใจ}}"
     },
     "resultWindows": {
       "errorTitle": "โหลดหน้าต่างผลลัพธ์ไม่สำเร็จ",
@@ -4940,7 +4941,7 @@
     "browse": "browse",
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
-    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "pastePlaceholder": "ชื่อจริง,นามสกุล,วันเกิด,ระดับชั้น,ภาษาแม่",
     "classLabel": "Class",
     "classPlaceholder": "Select a class"
   },
@@ -5115,6 +5116,10 @@
         "badgeClosed": "ปิดแล้ว",
         "badgeLive": "สด",
         "closeSessionCta": "ปิดเซสชัน",
+        "connectionNoted": "การเชื่อมต่อ: {connection}",
+        "connectionOffline": "ออฟไลน์",
+        "connectionOnline": "ออนไลน์",
+        "connectionWeak": "สัญญาณอ่อน",
         "endDialogCancel": "เปิดไว้ต่อ",
         "endDialogConfirm": "จบรอบสอบ",
         "endDialogDescription": "นักเรียนที่ยังทำอยู่จะถูกส่งคำตอบตามที่ทำไว้ และรหัสเข้าร่วมจะใช้ไม่ได้อีก การดำเนินการนี้ย้อนกลับไม่ได้",
@@ -5141,15 +5146,19 @@
         "stallCaption": "{minutes, plural, other {ช่องจะเปลี่ยนเป็นสีเหลืองอำพันเมื่อไม่มีการเคลื่อนไหวเกิน # นาที}}",
         "startedAgo": "{minutes, plural, =0 {รอบสอบเริ่มเมื่อสักครู่} other {รอบสอบเริ่มมาแล้ว # นาที}}",
         "stateInProgress": "กำลังทำ",
+        "stateAbsent": "ขาด",
         "stateJoined": "เข้าร่วมแล้ว",
         "stateNotJoined": "ยังไม่เข้าร่วม",
+        "statePaused": "หยุดชั่วคราว",
         "stateScoringFailed": "การให้คะแนนล้มเหลว",
         "stateStalled": "หยุดนิ่ง",
         "stateSubmitted": "ส่งแล้ว",
+        "summaryAbsent": "ขาด",
         "summaryExpected": "คาดว่าเข้าสอบ",
         "summaryInProgress": "กำลังทำ",
         "summaryJoined": "เข้าร่วมแล้ว",
         "summaryLabel": "ตัวเลขสรุปของรอบสอบ",
+        "summaryPaused": "หยุดชั่วคราว",
         "summaryScoringFailed": "การให้คะแนนล้มเหลว",
         "summaryStalled": "หยุดนิ่ง",
         "summarySubmitted": "ส่งแล้ว",

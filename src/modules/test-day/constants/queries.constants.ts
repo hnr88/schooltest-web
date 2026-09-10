@@ -5,3 +5,5 @@ export const SITTING_HISTORY_QUERY_KEY = ['test-day', 'sitting-history'] as cons
 export const SITTING_MONITOR_QUERY_KEY = ['test-day', 'monitor'] as const;
 
 export const SITTING_SUMMARY_QUERY_KEY = ['test-day', 'sitting-summary'] as const;
+
+export const SITTING_ACTIVITY_QUERY_KEY = ['test-day', 'sitting-activity'] as const;

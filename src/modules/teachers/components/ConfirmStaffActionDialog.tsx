@@ -34,6 +34,7 @@ export function ConfirmStaffActionDialog({
       cancelLabel={cancelLabel}
       confirmLabel={confirmLabel}
       tone={destructive ? 'destructive' : 'neutral'}
+      className="sm:data-[size=sm]:max-w-[450px]"
       pending={pending}
       onConfirm={onConfirm}
     />

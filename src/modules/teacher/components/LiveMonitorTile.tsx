@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import {
+  MONITOR_CONNECTION_LABEL_KEY,
   MONITOR_STATE_LABEL_KEY,
   MONITOR_STATE_THEME,
 } from '@/modules/teacher/constants/live-monitor.constants';
@@ -28,6 +29,8 @@ function LiveMonitorTile({ student }: LiveMonitorTileProps) {
   const detail = monitorTileDetail(student);
   const detailText = detail === null ? stateWord : t(detail.key, detail.values);
   const signals = monitorTileSignals(student);
+  // Optional on the mirror (a pre-widening payload omits it); null hides the chip.
+  const connection = student.connection ?? null;
 
   return (
     <li
@@ -48,6 +51,11 @@ function LiveMonitorTile({ student }: LiveMonitorTileProps) {
               state: stateWord,
               detail: detailText,
             })}
+        {connection === null
+          ? null
+          : ` ${t('connectionNoted', {
+              connection: t(MONITOR_CONNECTION_LABEL_KEY[connection]),
+            })}`}
         {signals === null ? null : ` ${t('signalsNoted', { count: signals })}`}
       </span>
 
@@ -57,6 +65,15 @@ function LiveMonitorTile({ student }: LiveMonitorTileProps) {
           <span className={cn('truncate text-body-sm font-semibold', theme.name)}>
             {student.display_name}
           </span>
+          {connection === null ? null : (
+            <span
+              data-slot="live-monitor-connection"
+              data-connection={student.connection}
+              className="mt-0.5 w-fit rounded-full bg-surface-inset px-2 py-0.5 text-meta text-body"
+            >
+              {t(MONITOR_CONNECTION_LABEL_KEY[connection])}
+            </span>
+          )}
           <span className={cn('truncate text-meta', theme.detail)}>{detailText}</span>
           {signals === null ? null : (
             <span

@@ -2470,7 +2470,10 @@
         "joined": "Telah menyertai",
         "in_progress": "Sedang berjalan",
         "submitted": "Telah diserahkan",
-        "stalled": "Terhenti"
+        "stalled": "Terhenti",
+        "scoring_failed": "Pemarkahan gagal",
+        "absent": "Tidak hadir",
+        "paused": "Dijeda"
       },
       "codeShownCount": "Kod ditunjukkan kepada {count}",
       "closeCta": "Tutup sesi ujian",
@@ -2504,6 +2507,20 @@
       "confirmBody": "Percubaan semasa mereka akan ditamatkan dan mereka boleh menyertai semula dengan kod akses.",
       "cancel": "Batal",
       "confirm": "Ya, ujian semula"
+    },
+    "activity": {
+      "title": "Aktiviti sesi",
+      "subtitle": "Setiap tindakan semasa ujian ini, dan siapa yang melakukannya",
+      "loading": "Memuatkan jejak aktiviti…",
+      "error": "Jejak aktiviti tidak dapat dimuatkan.",
+      "empty": "Belum ada apa-apa yang berlaku dalam ujian ini.",
+      "truncated": "Menunjukkan {shown} daripada {total} entri terakhir. Jejak penuh disimpan bersama sesi untuk rayuan.",
+      "appealsNote": "Jejak penuh disimpan bersama sesi untuk rayuan.",
+      "logIncident": "Catat insiden",
+      "noteLabel": "Nota insiden",
+      "notePlaceholder": "Apa yang berlaku? (disimpan bersama rekod sesi)",
+      "incidentLogged": "Insiden dicatat.",
+      "cancel": "Batal"
     },
     "runSheetLink": "Buka lembaran panduan"
   },
@@ -2583,7 +2600,10 @@
         "emptyDescription": "Tugaskan guru ini dari dialog Edit kelas sesebuah kelas.",
         "completed": "{done} daripada {total} telah menyiapkan Ujian A",
         "students": "{count, plural, other {# pelajar}}",
-        "openLabel": "Buka kelas {name}"
+        "openLabel": "Buka kelas {name}",
+        "removeLabel": "Keluarkan daripada {name}",
+        "removeErrorTitle": "Kami tidak dapat mengeluarkan guru dari kelas ini",
+        "removeErrorDescription": "Kelas tidak diubah. Semak sambungan anda dan cuba lagi."
       },
       "accountPanel": {
         "title": "Butiran akaun",
@@ -2595,6 +2615,17 @@
         "lastActive": "Aktif terakhir",
         "neverActive": "Belum pernah membuka sesi ujian",
         "roleNone": "Tiada peranan"
+      },
+      "assignDialog": {
+        "title": "Tetapkan kepada kelas",
+        "description": "Tandakan setiap kelas yang diajar oleh {name}. Nyatandakan kelas untuk mengeluarkan mereka.",
+        "classesLegend": "{count, plural, other {# kelas dipilih}}",
+        "empty": "Tiada kelas di sekolah anda lagi.",
+        "submit": "Simpan perubahan",
+        "submitting": "Saving...",
+        "cancel": "Batal",
+        "errorTitle": "Kami tidak dapat mengemas kini kelas ini",
+        "errorDescription": "Kelas tidak diubah. Semak sambungan anda dan cuba lagi."
       }
     },
     "meta": {
@@ -2798,7 +2829,12 @@
         "seatsToast": "Pelan anda tidak mempunyai tempat yang tinggal untuk murid ini.",
         "forbiddenToast": "Anda tidak mempunyai kebenaran untuk menambah murid.",
         "genericToast": "Tindakan itu tidak berjaya. Cuba lagi.",
-        "duplicateToast": "Murid tersebut sudah wujud. Semak e-mel dan cuba lagi."
+        "duplicateToast": "Murid tersebut sudah wujud. Semak e-mel dan cuba lagi.",
+        "rejectedToast": "{count, plural, other {baris perlu diperbaiki sebelum import}}",
+        "alreadyImportedToast": "Semua pelajar dalam fail ini sudah berdaftar di sekolah anda.",
+        "successSkippedToast": "{created} diimport, {skipped, plural, other {sudah berdaftar}}.",
+        "seatCapToast": "Sekolah anda tiada tempat duduk lagi. Hubungi SchoolTest untuk menambah tempat.",
+        "schoolInactiveToast": "Akaun sekolah anda tidak aktif, jadi pelajar tidak boleh ditambah buat masa ini."
       },
       "roster": {
         "searchPlaceholder": "Cari murid",
@@ -2817,7 +2853,47 @@
         "filteredEmptyTitle": "Tiada murid sepadan dengan penapis tersebut.",
         "filteredEmptyDescription": "Cuba carian lain atau kosongkan penapis.",
         "loading": "Memuatkan murid",
-        "errorStaleBanner": "Muat semula terkini gagal — murid di bawah ialah senarai terakhir yang dihidupkan pelayan."
+        "errorStaleBanner": "Muat semula terkini gagal — murid di bawah ialah senarai terakhir yang dihidupkan pelayan.",
+        "removeStudentAria": "Keluarkan {name} dari kelas ini"
+      },
+      "addStudent": "Tambah murid",
+      "rosterErrorTitle": "Tidak dapat mengemas kini senarai",
+      "rosterErrorDescription": "Masalah berlaku semasa mengemas kini murid kelas ini. Tiada perubahan dibuat — cuba lagi.",
+      "dismiss": "Tutup",
+      "studentsAddedToast": "{count, plural, other {# murid ditambah ke dalam kelas.}}",
+      "studentRemovedToast": "{name} telah dikeluarkan dari kelas.",
+      "teachers": {
+        "label": "Guru",
+        "add": "Tambah guru",
+        "removeAria": "Keluarkan {name} dari kelas ini",
+        "savedToast": "Guru dikemas kini.",
+        "errorTitle": "Tidak dapat mengemas kini guru",
+        "errorDescription": "Masalah berlaku semasa menyimpan guru kelas ini. Cuba lagi.",
+        "retry": "Cuba lagi",
+        "pickerTitle": "Tambah guru",
+        "pickerDescription": "Pilih guru yang mengajar kelas {className}.",
+        "pickerLoadError": "Tidak dapat memuatkan senarai guru.",
+        "pickerLoadErrorDescription": "Cuba lagi sebentar lagi.",
+        "pickerEmpty": "Semua guru di sekolah anda sudah mengajar kelas ini.",
+        "cancel": "Batal",
+        "save": "Tambah ke kelas",
+        "saving": "Menambah…"
+      },
+      "studentPicker": {
+        "title": "Tambah murid",
+        "description": "Pilih murid yang tergolong dalam kelas {className}.",
+        "moveWarning": "Murid yang sudah dalam kelas lain akan dipindahkan — satu murid hanya tergolong dalam satu kelas.",
+        "searchLabel": "Cari murid",
+        "searchPlaceholder": "Cari mengikut nama",
+        "currentClassHint": "Dalam kelas {className} — akan dipindahkan",
+        "noClassHint": "Belum ditugaskan ke mana-mana kelas",
+        "loadError": "Tidak dapat memuatkan senarai murid.",
+        "loadErrorDescription": "Cuba lagi sebentar lagi.",
+        "empty": "Semua murid aktif di sekolah anda sudah berada dalam kelas ini.",
+        "noMatches": "Tiada murid sepadan dengan \"{query}\".",
+        "cancel": "Batal",
+        "save": "Tambah ke kelas",
+        "saving": "Menambah…"
       }
     },
     "title": "Kelas",
@@ -3124,7 +3200,10 @@
       "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
       "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
       "forbiddenToast": "You do not have permission to add students.",
-      "genericToast": "No students were imported. Try again."
+      "genericToast": "No students were imported. Try again.",
+      "rejectedToast": "{count, plural, other {baris perlu diperbaiki sebelum import}}",
+      "alreadyImportedToast": "Semua pelajar dalam fail ini sudah berdaftar di sekolah anda.",
+      "successSkippedToast": "{created} diimport, {skipped, plural, other {sudah berdaftar}}."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3267,6 +3346,7 @@
         "undoExpired": "Buat asal tidak lagi tersedia. Muat semula untuk melihat keadaan semasa.",
         "undoError": "Perubahan tidak dapat disimpan. Muat semula dan cuba lagi.",
         "typedMismatch": "Taip nama seperti yang ditunjukkan untuk mengesahkan.",
+        "exportSuccess": "{count, plural, other {# sekolah dieksport}}",
         "success": {
           "activate": "{name} diaktifkan",
           "reactivate": "{name} diaktifkan semula",
@@ -3301,6 +3381,7 @@
         "non-government": "Bukan kerajaan",
         "catholic": "Katolik"
       },
+      "bulkExport": "Eksport",
       "bulkSuspend": "Gantung sekolah dipilih",
       "bulkArchive": "Arkib sekolah dipilih"
     },
@@ -3395,6 +3476,8 @@
         "restore": "Pulihkan sekolah",
         "suspend": "Gantung sekolah",
         "archive": "Arkibkan sekolah",
+        "recalculateSeats": "Kira semula tempat duduk",
+        "recalculateSeatsSuccess": "Tempat duduk dikira semula: {used} daripada {total} digunakan.",
         "undo": "Buat asal",
         "success": "{name} dikemas kini.",
         "undoSuccess": "{name} dipulihkan.",
@@ -3572,70 +3655,8 @@
         }
       }
     },
-    "recovery": {
-      "title": "Pemulihan sesi ujian",
-      "description": "Batalkan sesi ujian yang bermasalah atau benarkan murid menduduki ujian semula. Sesi yang dibatalkan dikecualikan daripada pelaporan rasmi.",
-      "pickerLabel": "Sesi ujian",
-      "pickerPlaceholder": "Pilih sesi ujian",
-      "noClass": "Tiada kelas",
-      "empty": "Sekolah ini belum mempunyai sesi ujian.",
-      "loadingMonitor": "Memuatkan murid...",
-      "loadErrorTitle": "Sesi ujian tidak dapat dimuatkan",
-      "loadErrorDescription": "Semak sambungan anda dan cuba lagi.",
-      "retry": "Cuba lagi",
-      "invalidateButton": "Batalkan sesi ujian ini",
-      "invalidatedNotice": "Sesi ujian ini telah dibatalkan. Murid boleh menduduki ujian semula.",
-      "confirmTitle": "Batalkan sesi ujian ini?",
-      "confirmBody": "Ujian yang sedang berjalan akan ditamatkan dan setiap keputusan daripada sesi ini dikecualikan daripada pelaporan rasmi. Murid boleh menduduki ujian semula.",
-      "cancel": "Batal",
-      "confirm": "Batalkan",
-      "invalidatedToast": "Sesi ujian dibatalkan.",
-      "errorToast": "Sesi ujian tidak dapat dibatalkan. Cuba lagi.",
-      "forbiddenToast": "Anda tidak mempunyai akses kepada pemulihan sesi ujian.",
-      "resitButton": "Ujian semula",
-      "resitToast": "{name} boleh menduduki ujian semula.",
-      "resitErrorToast": "Ujian semula tidak dapat dibenarkan. Cuba lagi.",
-      "columnStudent": "Murid",
-      "columnState": "Status",
-      "columnActions": "Tindakan",
-      "state": {
-        "not_joined": "Belum menyertai",
-        "joined": "Telah menyertai",
-        "in_progress": "Sedang berjalan",
-        "submitted": "Telah diserahkan",
-        "stalled": "Terhenti"
-      }
-    },
     "window": {
-      "title": "Tetingkap borang aktif",
-      "description": "Pilih borang yang aktif untuk sesi sekolah ini dan bila tetingkap dibuka serta ditutup.",
-      "currentNone": "Tiada tetingkap ditetapkan untuk sekolah ini lagi.",
-      "currentForm": "Borang aktif: {formCode}",
-      "currentPeriod": "Dibuka {opens}, ditutup {closes}.",
-      "lockedBadge": "Dikunci - murid telah menduduki borang ini",
-      "formLabel": "Borang",
-      "formPlaceholder": "Pilih borang",
-      "opensLabel": "Dibuka",
-      "closesLabel": "Ditutup",
-      "saveButton": "Simpan tetingkap",
-      "savingButton": "Menyimpan...",
-      "savedToast": "Tetingkap disimpan. {formCode} kini aktif untuk sekolah ini.",
-      "saveErrorTitle": "Tetingkap tidak dapat disimpan",
-      "lockedError": "Borang ini dikunci kerana murid telah mendudukinya. Tetingkap tidak boleh dipindahkan ke borang lain untuk tempoh yang sama.",
-      "errorToast": "Tetingkap tidak dapat disimpan. Cuba lagi.",
-      "forbiddenToast": "Hanya pasukan ops SchoolTest boleh mengubah tetingkap borang.",
-      "loadErrorTitle": "Tetingkap borang tidak dapat dimuatkan",
-      "loadErrorDescription": "Semak sambungan anda dan cuba lagi.",
-      "retry": "Cuba lagi",
-      "validation": {
-        "formRequired": "Pilih borang.",
-        "datetimeRequired": "Pilih tarikh dan masa.",
-        "order": "Masa buka mesti sebelum masa tutup."
-      },
-      "integrityTitle": "Tetingkap ini mempunyai masalah integriti.",
-      "integrityDescription": "{count, plural, other {# sesi perlu disemak sebelum keputusan dapat diterbitkan}}",
-      "incompleteTitle": "Tetingkap ini belum lengkap.",
-      "incompleteDescription": "Sesetengah murid belum selesai, jadi keputusan di bawah adalah separa."
+      "title": "Tetingkap borang aktif"
     },
     "settings": {
       "meta": {
@@ -3750,6 +3771,24 @@
         "loadError": "Tidak dapat memuat guru",
         "loadErrorDescription": "Direktori kakitangan sekolah tidak dapat dibaca.",
         "saveErrorTitle": "Tidak dapat disimpan"
+      },
+      "create": {
+        "title": "Cipta kelas",
+        "description": "Kelas mengumpulkan murid untuk tempoh ujian dan pelaporan.",
+        "submit": "Cipta kelas",
+        "creating": "Mencipta…"
+      },
+      "form": {
+        "nameRequired": "Nama kelas diperlukan",
+        "nameDuplicate": "Sekolah ini sudah mempunyai kelas dengan nama itu",
+        "windowNeedsTeacher": "Tetapkan guru sebelum menetapkan tempoh ujian",
+        "noTeacherWarning": "Belum ada guru — kelas kekal dalam Menunggu persediaan",
+        "noWindowOption": "Belum ada tempoh",
+        "testWindowLabel": "Tetingkap ujian",
+        "formSummary": "{count, plural, other {# medan memerlukan perhatian}}",
+        "saveErrorGeneric": "Tidak dapat menyimpan kelas — tiada apa yang berubah",
+        "savedToast": "{name} dikemas kini",
+        "createdToast": "{name} dicipta"
       },
       "rosterSearchPlaceholder": "Cari murid",
       "rosterCount": "{count, plural, =0 {Tiada murid} other {# murid}}",
@@ -3989,57 +4028,6 @@
         }
       }
     },
-    "inspection": {
-      "title": "Pemeriksaan borang",
-      "description": "Komposisi borang yang ditunjuk oleh tetingkap ini: setiap item dengan jenis tugasan, peringkat, vektor atribut matriks-Q dan jawapan betulnya, serta item sauh dan keadaan kunci. Operasi sahaja — inilah satu-satunya paparan yang menunjukkan jawapan.",
-      "show": "Periksa borang",
-      "hide": "Sembunyikan pemeriksaan",
-      "errorTitle": "Pemeriksaan borang tidak dapat dimuatkan",
-      "errorDescription": "Pelayan menolak atau gagal membaca. Tiada apa-apa diubah — cuba lagi, atau pastikan borang tetingkap ini masih ada.",
-      "formCode": "Borang {formCode}",
-      "itemCount": "{count, plural, other {# items}}",
-      "anchors": "Item sauh: {codes}",
-      "anchorsNone": "Tiada item sauh",
-      "lockedBadge": "Dikunci — satu sesi ujian telah dihantar",
-      "unlockedBadge": "Tidak dikunci",
-      "columnItem": "Item",
-      "columnTaskType": "Jenis tugasan",
-      "columnStage": "Peringkat",
-      "columnVector": "Vektor atribut",
-      "columnKey": "Jawapan betul",
-      "formSelectLabel": "Borang untuk diperiksa",
-      "noLiveWindow": "Tiada tetingkap borang yang aktif untuk sekolah ini, jadi pilihan di atas hanyalah borang yang sedang diperiksa — bukan borang yang digunakan oleh sesi ujian sekolah ini sekarang.",
-      "notLiveForm": "Memeriksa borang selain borang aktif tetingkap ini ({formCode})."
-    },
-    "responsesExport": {
-      "title": "Respons sesi (CSV)",
-      "description": "Eksport mentah peringkat item bagi SATU sesi untuk analisis luar talian: satu baris bagi setiap respons yang disimpan, mengikut urutan paparan. Pelayan memerlukan id sesi dan pelayan yang menamakan fail itu.",
-      "sessionLabel": "Id dokumen sesi",
-      "sessionPlaceholder": "cth. dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "Muat turun responses.csv",
-      "downloading": "Menyediakan eksport…",
-      "downloaded": "{filename} dimuat turun",
-      "errorTitle": "Eksport respons tidak dapat dimuat turun",
-      "errorDescription": "Pelayan menolak eksport dan tiada fail ditulis. Semak id sesi — sesi yang tidak dikenali memberi eksport kosong, permintaan yang tidak sah memberi ralat."
-    },
-    "viewAsTeacher": {
-      "openCta": "Lihat sebagai guru",
-      "openAriaLabel": "Lihat sebagai guru {teacher} — penyamaran, direkodkan dalam lejar audit",
-      "panelLabel": "Lihat sebagai guru — penyamaran",
-      "impersonationTitle": "Paparan penyamaran",
-      "impersonationSubject": "Anda melihat tepat apa yang dilihat oleh {teacher} — kelas dan sesi ujian mereka, tiada yang lebih luas.",
-      "auditedNotice": "Akses ini direkodkan dalam lejar audit terhadap akaun anda, bersama guru dan masanya.",
-      "close": "Tutup",
-      "errorTitle": "Paparan guru tidak dapat dimuatkan",
-      "errorDescription": "Pelayan menolak atau gagal membaca. Tiada apa-apa diubah — kakitangan ini mungkin bukan akaun guru (direktori ini juga menyenaraikan pentadbir sekolah), mungkin tidak lagi wujud, atau tidak dipautkan kepada sekolah.",
-      "classCount": "{count, plural, other {# classes}}",
-      "sittingCount": "{count, plural, other {# sittings}}",
-      "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "Kumpulan tahun {yearBand}",
-      "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "Guru ini tidak memegang kelas.",
-      "noSittings": "Guru ini tiada sesi ujian."
-    },
     "export": {
       "title": "Eksport sekolah",
       "cta": "Muat turun CSV",
@@ -4216,7 +4204,15 @@
       "staffResendCooldown": "Jemputan ini baru dihantar semula. Cuba lagi dalam {seconds}s.",
       "staffResendError": "Jemputan tidak dapat dihantar semula. Cuba lagi.",
       "staffRevokeSuccess": "Jemputan untuk {email} dibatalkan. Pautannya tidak lagi berfungsi.",
-      "staffRevokeError": "Jemputan tidak dapat dibatalkan. Muat semula senarai dan cuba lagi."
+      "staffRevokeError": "Jemputan tidak dapat dibatalkan. Muat semula senarai dan cuba lagi.",
+      "formTitleAdmin": "Jemput pentadbir sekolah",
+      "formTitleTeacher": "Jemput guru",
+      "formSubtitle": "Mereka akan menerima jemputan e-mel ke {school}.",
+      "roleNoteTeacher": "Guru hanya melihat kelas dan keputusan mereka sendiri.",
+      "roleNoteAdmin": "Pentadbir sekolah menguruskan kakitangan, kelas, pelajar dan tempoh ujian untuk sekolah ini.",
+      "alreadyHasAccessError": "Orang ini sudah mempunyai akses kepada {school}.",
+      "outsideDomainWarning": "Di luar {domain} — mereka perlu kelulusan pada log masuk pertama.",
+      "noNameWarning": "Tanpa nama, e-mel jemputan ditujukan kepada peti mel sahaja."
     },
     "createSchool": {
       "button": "Cipta sekolah",
@@ -4259,7 +4255,8 @@
         "tooLong": "Gunakan 100 aksara atau kurang",
         "emailTooLong": "Gunakan 255 aksara atau kurang",
         "emailInvalid": "Masukkan alamat e-mel yang sah",
-        "nameTooShort": "Gunakan sekurang-kurangnya 3 aksara"
+        "nameTooShort": "Gunakan sekurang-kurangnya 3 aksara",
+        "phoneInvalid": "Masukkan nombor telefon yang sah"
       },
       "editTitle": "Edit sekolah",
       "editDescription": "Kemas kini profil, pelan dan kenalan {name}. Simpanan menulis suntingan sekolah dengan kawalan versi.",
@@ -4281,7 +4278,11 @@
       "successToast": "Sekolah dicipta — jemputan pentadbir dihantar kepada {email}.",
       "successNoInviteToast": "Sekolah dicipta. Tiada jemputan pentadbir dihantar.",
       "conflict": "Sekolah dengan nama itu sudah wujud.",
-      "errorToast": "Sekolah itu tidak dapat dicipta. Tiada apa-apa yang disimpan."
+      "errorToast": "Sekolah itu tidak dapat dicipta. Tiada apa-apa yang disimpan.",
+      "contactHelper": "Wajib — orang ini akan menerima jemputan pemilik",
+      "statusActiveWarning": "Mencipta sebagai Aktif memulakan pengebilan hari ini",
+      "savingLabel": "Menyimpan…",
+      "formSummary": "{count, plural, other {# medan memerlukan perhatian}}"
     },
     "resultWindows": {
       "errorTitle": "Tetingkap keputusan tidak dapat dimuatkan",
@@ -4940,7 +4941,7 @@
     "browse": "browse",
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
-    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "pastePlaceholder": "nama pertama,nama keluarga,tarikh lahir,tahun persekolahan,bahasa utama",
     "classLabel": "Class",
     "classPlaceholder": "Select a class"
   },
@@ -5115,6 +5116,10 @@
         "badgeClosed": "Ditutup",
         "badgeLive": "Langsung",
         "closeSessionCta": "Tutup sesi",
+        "connectionNoted": "Sambungan: {connection}",
+        "connectionOffline": "Luar talian",
+        "connectionOnline": "Dalam talian",
+        "connectionWeak": "Sambungan lemah",
         "endDialogCancel": "Biarkan terbuka",
         "endDialogConfirm": "Tamatkan sesi",
         "endDialogDescription": "Sesiapa yang masih menjawab akan dihantar seadanya, dan kod sertai berhenti berfungsi. Tindakan ini tidak boleh dibatalkan.",
@@ -5141,15 +5146,19 @@
         "stallCaption": "{minutes, plural, other {Petak bertukar kuning selepas # minit tiada aktiviti.}}",
         "startedAgo": "{minutes, plural, =0 {Sesi baru sahaja dimulakan} other {Sesi dimulakan # min lalu}}",
         "stateInProgress": "Sedang berjalan",
+        "stateAbsent": "Tidak hadir",
         "stateJoined": "Sertai",
         "stateNotJoined": "Belum sertai",
+        "statePaused": "Dijeda",
         "stateScoringFailed": "Pemarkahan gagal",
         "stateStalled": "Terhenti",
         "stateSubmitted": "Dihantar",
+        "summaryAbsent": "Tidak hadir",
         "summaryExpected": "Dijangka",
         "summaryInProgress": "Sedang berjalan",
         "summaryJoined": "Sertai",
         "summaryLabel": "Kiraan sesi",
+        "summaryPaused": "Dijeda",
         "summaryScoringFailed": "Pemarkahan gagal",
         "summaryStalled": "Terhenti",
         "summarySubmitted": "Dihantar",

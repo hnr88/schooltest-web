@@ -5,7 +5,7 @@ import { expect, test } from '@playwright/test';
 import type { MonitorState } from '@/modules/teacher/types/teacher.types';
 
 import { cat } from './helpers/i18n';
-import { apiLogin } from './helpers/teacher-auth-rail';
+import { API_BASE, apiLogin } from './helpers/teacher-auth-rail';
 import { plural } from './helpers/teacher-dashboard-live';
 import { findSittingsCovering, readMonitor } from './helpers/teacher-live-monitor-api';
 import {
@@ -118,6 +118,10 @@ test('flow 10 — an in-progress tile is blue and prints "Stage X of 3"', async 
   expect(mine.stage, 'the first answer lands in stage 1').toBe(1);
   expect(wire.summary).toMatchObject({ in_progress: 1, joined: 0, stalled: 0 });
   expectInProgressRows(student.sessionDocumentId, mine.stage);
+  // teacher/12 — a just-answered student's newest response is seconds old, so
+  // the derivation answers online and the tile prints its chip; the text
+  // carriers below assert it through expectTileText.
+  expect(mine.connection, 'a student who just answered is connection-online').toBe('online');
 
   await page.setViewportSize(DESKTOP);
   await signIn(page, 'teacher');
@@ -197,4 +201,45 @@ test('flow 12 — the idle student turns amber with the inactivity duration', as
   );
   expect(idleSeconds(session), 'the student stayed idle throughout').toBeGreaterThan(aged - 5);
   expectDistinctPaints(paints);
+});
+
+// teacher/12 — flow 12b: C-SIT-06's absent mark outranks the flow states, so
+// the tile goes grey "Absent" whatever the session got up to, the summary
+// counts it, and the tile derives NO connection (null on the terminal arms).
+// The mark is CLEARED before the flow ends — sibling lanes read this database.
+test('flow 12b — a marked-absent student is grey, "Absent", and connectionless', async ({
+  page,
+  request,
+}) => {
+  if (!student) throw new Error('flow 10 left no student to mark absent');
+  const id = student.studentDocumentId;
+  const marked = await request.post(`${API_BASE}/api/sittings/${sittingId}/absent`, {
+    headers: { Authorization: `Bearer ${jwt}` },
+    data: { student_documentId: id, absent: true },
+  });
+  expect(marked.ok(), 'C-SIT-06 refused the absent mark').toBeTruthy();
+
+  const wire = await waitForState(request, jwt, sittingId, id, 'absent');
+  const mine = tileOf(wire, id);
+  expect(mine.absent, 'the C-SIT-06 flag round-trips beside the state').toBe(true);
+  expect(wire.summary.absent, 'the summary counts the absent tile').toBe(1);
+  expect(mine.connection, 'an absent tile derives no connection').toBeNull();
+
+  await page.setViewportSize(DESKTOP);
+  await signIn(page, 'teacher');
+  await openMonitor(page, sittingId);
+  paints.absent = await expectStateGrid(page, wire.students, 'absent');
+  await page.screenshot({ path: path.join(SHOTS, '12-flow-absent.png'), fullPage: true });
+
+  // RESTORE: the roster reads present again, and the tile returns to its flow.
+  const cleared = await request.post(`${API_BASE}/api/sittings/${sittingId}/absent`, {
+    headers: { Authorization: `Bearer ${jwt}` },
+    data: { student_documentId: id, absent: false },
+  });
+  expect(cleared.ok(), 'C-SIT-06 refused the absent clear').toBeTruthy();
+  await waitForState(request, jwt, sittingId, id, 'in_progress');
+  await page.reload();
+  await openMonitor(page, sittingId);
+  const restored = await readMonitor(request, jwt, sittingId);
+  await expectTileText(page, tileOf(restored, id));
 });

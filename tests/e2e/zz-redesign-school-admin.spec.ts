@@ -5,6 +5,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
 import { roleCredentials } from './helpers/credentials';
+import { loginAs } from './helpers/roles';
 
 // School admin dashboard redesign (tasks/aug-5-2026/school-admin-dashboard-redesign.md).
 // Drives the five redesigned surfaces against the REAL API on :5500 with the
@@ -19,12 +20,11 @@ const SHOTS_05 = path.resolve(__dirname, '../../../mvp/school-admin/proof/shots'
 
 const API = process.env.API_BASE_URL ?? 'http://127.0.0.1:5500';
 
+// Sign-in goes through helpers/roles loginAs — the same real-UI sign-in every
+// other school-admin spec uses. This spec's inline copy drifted onto a stale
+// Auth.emailLabel namespace and stranded every test on /sign-in.
 async function signIn(page: Page): Promise<void> {
-  await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SCHOOL_ADMIN.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(SCHOOL_ADMIN.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL('**/dashboard/school', { timeout: 30_000 });
+  await loginAs(page, 'schoolAdmin');
 }
 
 async function apiJson(path: string): Promise<Record<string, unknown>> {
@@ -103,7 +103,7 @@ test.describe('school admin dashboard redesign', () => {
     await expect(home.locator('input, textarea, select')).toHaveCount(0);
   });
 
-  test('Classes: reshaped table columns and the Add class modal with CSV import', async ({
+  test('Classes: reshaped table columns and the Add class modal (name + teacher only)', async ({
     page,
   }) => {
     await signIn(page);
@@ -124,33 +124,33 @@ test.describe('school admin dashboard redesign', () => {
     await expect(dialog).toBeVisible({ timeout: 10_000 });
     await expect(dialog.getByText(cat(en, 'Classes.addForm.title'), { exact: true })).toBeVisible();
 
-    // Class details + the shared import flow: template, drop zone, paste area.
-    // exact:false — FieldShell appends a required "*" to the accessible name.
+    // P-03: the add-class modal is name + teacher picker ONLY — the CSV import
+    // block left it, so there is exactly ONE import flow (the shared dialog on
+    // the preview→commit engine), never a second one hidden in class create.
     await expect(
       dialog.getByLabel(cat(en, 'Classes.addForm.name'), { exact: false }),
     ).toBeVisible();
     await expect(
       dialog.getByRole('button', { name: cat(en, 'StudentImport.downloadTemplate'), exact: true }),
-    ).toBeVisible();
-    await expect(dialog.locator('[data-slot="student-import-fields"]')).toBeVisible();
-    await expect(
-      dialog.getByText(cat(en, 'StudentImport.dropPrompt'), { exact: false }),
-    ).toBeVisible();
-    await expect(
-      dialog.getByLabel(cat(en, 'StudentImport.pasteLabel'), { exact: true }),
-    ).toBeVisible();
+    ).toHaveCount(0);
+    await expect(dialog.locator('[data-slot="student-import-fields"]')).toHaveCount(0);
   });
 
-  test('Classes: the CSV template downloads with the spec header row', async ({ page }) => {
+  test('Students: the CSV template downloads with the portal header row', async ({ page }) => {
     await signIn(page);
-    await page.goto('/dashboard/school/classes');
-    await page.getByRole('button', { name: cat(en, 'Classes.addButton'), exact: true }).click();
-    await expect(page.getByRole('dialog')).toBeVisible({ timeout: 10_000 });
+    await railLink(page, 'students').click();
+    await page.waitForURL('**/dashboard/school/students', { timeout: 20_000 });
+
+    await page
+      .getByRole('button', { name: cat(en, 'SchoolStudents.importButton'), exact: true })
+      .first()
+      .click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible({ timeout: 10_000 });
 
     const [download] = await Promise.all([
       page.waitForEvent('download'),
-      page
-        .getByRole('dialog')
+      dialog
         .getByRole('button', { name: cat(en, 'StudentImport.downloadTemplate'), exact: true })
         .click(),
     ]);
@@ -158,7 +158,8 @@ test.describe('school admin dashboard redesign', () => {
     const chunks: Buffer[] = [];
     for await (const chunk of stream) chunks.push(chunk as Buffer);
     const header = Buffer.concat(chunks).toString('utf8').split('\n')[0].trim();
-    expect(header).toBe('first name,last name,email,first language,proficiency level');
+    // The ONE vocabulary shared with the ops portal and the server's validator.
+    expect(header).toBe('given name,family name,date of birth,year level,home language');
   });
 
   test('Teachers: roster renders live rows and the edit modal opens', async ({ page }) => {

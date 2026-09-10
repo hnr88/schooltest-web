@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import {
+  connectionStateSchema,
   monitorStateSchema,
   teacherClassRefSchema,
   teacherCountSchema,
@@ -84,6 +85,14 @@ export const monitorSummarySchema = z.strictObject({
   stalled: teacherCountSchema,
   /** Lane E's terminal `scoring_failed` counter. */
   scoring_failed: teacherCountSchema,
+  /**
+   * teacher/12 — the two new states are counted like the rest. OPTIONAL on
+   * the web mirror only: a payload emitted before the API's half still parses
+   * (the mirror's own tolerance rule), and `monitorSummaryItems` coalesces a
+   * missing counter to 0. The API contract itself requires them.
+   */
+  absent: teacherCountSchema.optional(),
+  paused: teacherCountSchema.optional(),
 });
 
 /* ── C-PR-1 read side · proctoring signals on a monitor tile (rule 35) ───── */
@@ -143,6 +152,16 @@ export const monitorStudentSchema = z.strictObject({
   total_stages: teacherCountSchema.nullable(),
   inactive_minutes: z.number().nonnegative().nullable(),
   proctoring: proctoringSummarySchema.nullable(),
+  /**
+   * teacher/12 — absence and pause, both as booleans beside the STATE, and
+   * the D-07 connection recency (null on the three terminal states). OPTIONAL
+   * on the web mirror only, so a payload emitted before the API's half still
+   * parses — the mirror tolerates an older server, never the reverse. The
+   * API contract itself requires all three.
+   */
+  absent: z.boolean().optional(),
+  paused: z.boolean().optional(),
+  connection: connectionStateSchema.optional(),
 });
 
 export const testSessionMonitorResponseSchema = z.strictObject({
@@ -203,3 +222,37 @@ export const DEFAULT_SITTING_SETTINGS: SittingSettings = {
 /** PATCH accepts a PARTIAL body; unknown keys still reject — strict, not silent. */
 export const sittingSettingsPatchSchema = sittingSettingsSchema.partial();
 export type SittingSettingsPatch = z.infer<typeof sittingSettingsPatchSchema>;
+
+/* ── C-SIT-ACTIVITY · GET+POST /api/sittings/:documentId/activity (teacher 13) ── */
+
+/**
+ * Client mirror of the api contract's sitting-activity schemas
+ * (schooltest-api/src/contracts/teacher-sessions.ts). The read is a service
+ * projection over the audit ledger — `detail` never reaches the wire — and
+ * `total` counts the WHOLE trail while `entries` truncates to `limit`
+ * (default 8, max 50): the panel's "last 8 of N" note renders from exactly
+ * these two fields.
+ */
+export const sittingActivityLimitDefault = 8;
+export const sittingActivityLimitMax = 50;
+
+export const sittingActivityEntrySchema = z.strictObject({
+  occurred_at: z.iso.datetime(),
+  action: z.string().max(120),
+  actor_label: z.string().min(1),
+  kind: z.enum(['info', 'warn']),
+});
+export type SittingActivityEntry = z.infer<typeof sittingActivityEntrySchema>;
+
+export const sittingActivityFeedSchema = z.strictObject({
+  entries: z.array(sittingActivityEntrySchema),
+  total: z.number().int().nonnegative(),
+});
+export type SittingActivityFeed = z.infer<typeof sittingActivityFeedSchema>;
+
+/** The ONE write a teacher can type (Log an incident). `actor` is never in the body. */
+export const sittingActivityAppendSchema = z.strictObject({
+  note: z.string().trim().min(1).max(120),
+  kind: z.enum(['info', 'warn']),
+});
+export type SittingActivityAppend = z.infer<typeof sittingActivityAppendSchema>;

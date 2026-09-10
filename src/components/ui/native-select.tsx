@@ -39,7 +39,10 @@ function NativeSelectOption({
   return (
     <option
       data-slot="native-select-option"
-      className={cn("bg-[Canvas] text-[CanvasText]", className)}
+      className={cn(
+        "bg-popover text-popover-foreground [&:checked]:bg-popover [&:checked]:text-popover-foreground",
+        className
+      )}
       {...props}
     />
   )

@@ -1,6 +1,7 @@
 import type { z } from 'zod';
 
 import type {
+  connectionStateSchema,
   dashboardClassSchema,
   dashboardLiveSessionSchema,
   masteryBandSchema,
@@ -23,6 +24,8 @@ import type {
 export type ReadingAttribute = z.infer<typeof readingAttributeSchema>;
 export type MasteryBand = z.infer<typeof masteryBandSchema>;
 export type MonitorState = z.infer<typeof monitorStateSchema>;
+/** The three connection labels a live tile can print; null never reaches it. */
+export type MonitorConnection = Exclude<z.infer<typeof connectionStateSchema>, null>;
 export type TestVariant = z.infer<typeof testVariantSchema>;
 export type TestProgressState = z.infer<typeof testProgressStateSchema>;
 export type TeacherMasteryBands = z.infer<typeof teacherMasteryBandsSchema>;

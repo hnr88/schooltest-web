@@ -49,7 +49,7 @@ export function AssignTeachersDialog({
 
   return (
     <Dialog open onOpenChange={(next) => { if (!next) onClose(); }}>
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-lg">
+      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-[520px]">
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>

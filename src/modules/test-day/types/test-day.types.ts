@@ -5,7 +5,18 @@
 
 export type SittingStatus = 'open' | 'closed';
 
-export type SittingStudentState = 'not_joined' | 'joined' | 'in_progress' | 'submitted' | 'stalled';
+// teacher/12 — the same eight members as the teacher read's MonitorState:
+// the widen is up-only, and `deriveRowState`'s client-only `code_shown` stays
+// OUT of this union (it is a reveal state, never a wire state).
+export type SittingStudentState =
+  | 'not_joined'
+  | 'joined'
+  | 'in_progress'
+  | 'submitted'
+  | 'stalled'
+  | 'scoring_failed'
+  | 'absent'
+  | 'paused';
 
 // C-SIT-05 derived row state (task 90, mvp-updates §4.5.3): the backend enum
 // is unchanged; the monitor intersects not_joined with the UI-only reveal

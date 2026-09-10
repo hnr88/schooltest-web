@@ -1,10 +1,19 @@
-import { AlertCircle, Check, LoaderCircle, UserCheck, UserX, XCircle } from 'lucide-react';
+import {
+  AlertCircle,
+  Check,
+  LoaderCircle,
+  Pause,
+  UserCheck,
+  UserMinus,
+  UserX,
+  XCircle,
+} from 'lucide-react';
 
 import type {
   MonitorSummaryKey,
   MonitorTileTheme,
 } from '@/modules/teacher/types/live-monitor.types';
-import type { MonitorState } from '@/modules/teacher/types/teacher.types';
+import type { MonitorConnection, MonitorState } from '@/modules/teacher/types/teacher.types';
 
 /**
  * The live grid's refetch cadence in MILLISECONDS. This is a transport concern —
@@ -19,19 +28,26 @@ export const MONITOR_POLL_INTERVAL_MS = 5_000;
  * (loudest first, not-joined last), exactly as wireframe `09` view 2.
  * `scoring_failed` leads: a result that exhausted its R retries is the one
  * tile a teacher must act on, so it can never sort beneath the routine ones.
+ * teacher/12 adds `paused` directly beside `stalled` (the design's own
+ * chipFor gives both the same amber) and `absent` in the quiet neutral group
+ * beside `joined` — `sortMonitorStudents` never sees an unlisted member, so
+ * nothing can sort above `scoring_failed` by accident.
  */
 export const MONITOR_STATE_ORDER: readonly MonitorState[] = [
   'scoring_failed',
   'submitted',
   'in_progress',
+  'paused',
   'stalled',
+  'absent',
   'joined',
   'not_joined',
 ];
 
 /**
  * The stat tiles above the grid, in the wireframe's left-to-right order, with
- * the operator counter appended after `stalled`.
+ * the operator counter appended after `stalled` and teacher/12's two new
+ * counters after it.
  */
 export const MONITOR_SUMMARY_ORDER: readonly MonitorSummaryKey[] = [
   'expected',
@@ -40,6 +56,8 @@ export const MONITOR_SUMMARY_ORDER: readonly MonitorSummaryKey[] = [
   'submitted',
   'stalled',
   'scoring_failed',
+  'absent',
+  'paused',
 ];
 
 /**
@@ -77,6 +95,26 @@ export const MONITOR_STATE_THEME: Record<MonitorState, MonitorTileTheme> = {
     name: 'text-warning-ink',
     detail: 'text-warning-ink',
   },
+  // teacher/12 — the design's own chipFor gives Paused the SAME amber as
+  // Stalled (`:3366–3372`), so a paused room never reads as an error; the
+  // Pause glyph shape carries the difference (WCAG 2.2 AA 1.4.1).
+  paused: {
+    icon: Pause,
+    iconClass: '',
+    tile: 'border-warning-strong bg-warning-soft text-warning-ink',
+    name: 'text-warning-ink',
+    detail: 'text-warning-ink',
+  },
+  // teacher/12 — Absent is grey (`:3370`), not an alarm: the student was
+  // marked absent, there is nothing to act on. The UserMinus glyph keeps the
+  // state readable in greyscale beside the other neutral tiles.
+  absent: {
+    icon: UserMinus,
+    iconClass: '',
+    tile: 'border-transparent bg-surface-inset text-muted-foreground',
+    name: 'text-muted-foreground',
+    detail: 'text-muted-foreground',
+  },
   joined: {
     icon: UserCheck,
     iconClass: '',
@@ -102,9 +140,21 @@ export const MONITOR_STATE_LABEL_KEY: Record<MonitorState, string> = {
   scoring_failed: 'stateScoringFailed',
   submitted: 'stateSubmitted',
   in_progress: 'stateInProgress',
+  paused: 'statePaused',
   stalled: 'stateStalled',
+  absent: 'stateAbsent',
   joined: 'stateJoined',
   not_joined: 'stateNotJoined',
+};
+
+/**
+ * The connection chip printed beneath a tile's name (teacher/12, design
+ * `:3515–3552`). `null` connections render no chip at all.
+ */
+export const MONITOR_CONNECTION_LABEL_KEY: Record<MonitorConnection, string> = {
+  online: 'connectionOnline',
+  weak: 'connectionWeak',
+  offline: 'connectionOffline',
 };
 
 /** The label under each stat tile, same namespace. */
@@ -115,6 +165,8 @@ export const MONITOR_SUMMARY_LABEL_KEY: Record<MonitorSummaryKey, string> = {
   submitted: 'summarySubmitted',
   stalled: 'summaryStalled',
   scoring_failed: 'summaryScoringFailed',
+  absent: 'summaryAbsent',
+  paused: 'summaryPaused',
 };
 
 /** Ink for the stat-tile VALUE; the label beneath it always carries the meaning. */
@@ -125,4 +177,6 @@ export const MONITOR_SUMMARY_VALUE_CLASS: Record<MonitorSummaryKey, string> = {
   submitted: 'text-success-ink',
   stalled: 'text-warning-ink',
   scoring_failed: 'text-danger-ink',
+  absent: 'text-muted-foreground',
+  paused: 'text-warning-ink',
 };

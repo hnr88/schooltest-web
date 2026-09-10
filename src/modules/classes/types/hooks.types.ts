@@ -4,11 +4,11 @@ export interface StrapiErrorEnvelope {
   error?: { message?: string };
 }
 
-// The class-detail CSV import state (spec §1 "Import students"), on top of the
-// shared C-CHD-02 batch write. No class selector: the target class is fixed.
+// The class-detail CSV import state (spec §1 "Import students"), on the shared
+// preview→commit engine. No class selector: the target class is fixed.
 export interface ClassStudentImportState {
   parsed: ParsedStudentCsv;
-  setParsed: (parsed: ParsedStudentCsv) => void;
+  setParsed: (parsed: ParsedStudentCsv, csv: string) => void;
   canSubmit: boolean;
   pending: boolean;
   submit: () => Promise<void>;

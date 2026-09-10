@@ -6,24 +6,22 @@ import { Controller } from 'react-hook-form';
 import { useAddClassForm } from '@/modules/classes/hooks/use-add-class-form';
 import { teacherOption } from '@/modules/classes/lib/class-form.helpers';
 import {
-  Alert,
   Button,
   DialogFooter,
   FieldShell,
   Input,
   SelectField,
-  Separator,
 } from '@/modules/design-system';
-import { StudentImportFields } from '@/modules/student-import';
 
 import type { AddClassFormProps } from '@/modules/classes/types/components.types';
 
-// The spec §2 add-class body: class details, a divider, then the shared student
-// import block. No `classes` prop is passed to StudentImportFields — the class
-// is the one being created in this very submit, so there is nothing to pick.
+// The spec §2 add-class body (P-03): name + teacher picker + summary, and
+// nothing else — the CSV import block left this modal, so there is exactly ONE
+// import flow (the shared dialog) and ONE engine behind it. Students join the
+// new class through the class-detail or Students-page import dialog.
 export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
   const t = useTranslations('Classes.addForm');
-  const { form, submit, parsed, setParsed, pending } = useAddClassForm(onClose);
+  const { form, submit, pending } = useAddClassForm(onClose);
   const {
     register,
     control,
@@ -57,17 +55,6 @@ export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
           )}
         />
       </div>
-      <Separator />
-      <div className="flex flex-col gap-1">
-        <h3 className="text-base font-semibold text-foreground">{t('importTitle')}</h3>
-        <p className="text-sm text-body">{t('importDescription')}</p>
-      </div>
-      <StudentImportFields onChange={setParsed} />
-      {parsed.errors.length > 0 ? (
-        <Alert variant="warning" title={t('importErrorsTitle')}>
-          {t('importErrorsDescription', { count: parsed.errors.length })}
-        </Alert>
-      ) : null}
       <DialogFooter>
         <Button type="button" variant="secondary" onClick={onClose} disabled={pending}>
           {t('cancel')}

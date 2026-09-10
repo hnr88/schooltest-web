@@ -7,6 +7,12 @@ export const STATE_TONES: Record<SittingStudentState, PillTone> = {
   in_progress: 'warning',
   submitted: 'success',
   stalled: 'danger',
+  // teacher/12 — scoring_failed keeps the operator's danger; Paused shares
+  // Stalled's chip entirely (the design's chipFor groups them); Absent is the
+  // quiet neutral grey, nothing to act on.
+  scoring_failed: 'danger',
+  paused: 'danger',
+  absent: 'neutral',
 };
 
 export const STATE_ORDER: readonly MonitorRowState[] = [
@@ -16,6 +22,9 @@ export const STATE_ORDER: readonly MonitorRowState[] = [
   'in_progress',
   'submitted',
   'stalled',
+  'scoring_failed',
+  'absent',
+  'paused',
 ];
 
 export const LINK_CLASSES =

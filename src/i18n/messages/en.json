@@ -2959,7 +2959,10 @@
         "joined": "Joined",
         "in_progress": "In progress",
         "submitted": "Submitted",
-        "stalled": "Stalled"
+        "stalled": "Stalled",
+        "scoring_failed": "Scoring failed",
+        "absent": "Absent",
+        "paused": "Paused"
       },
       "codeShownCount": "Code shown to {count}",
       "closeCta": "Close sitting",
@@ -2993,6 +2996,20 @@
       "confirmBody": "Their current attempt ends and they can join again with the access code.",
       "cancel": "Cancel",
       "confirm": "Yes, re-sit"
+    },
+    "activity": {
+      "title": "Session activity",
+      "subtitle": "Every action taken during this sitting, and who took it",
+      "loading": "Loading the activity trail…",
+      "error": "The activity trail could not be loaded.",
+      "empty": "Nothing has happened in this sitting yet.",
+      "truncated": "Showing the last {shown} of {total} entries. The full trail is kept with the session for appeals.",
+      "appealsNote": "The full trail is kept with the session for appeals.",
+      "logIncident": "Log an incident",
+      "noteLabel": "Incident note",
+      "notePlaceholder": "What happened? (kept with the session record)",
+      "incidentLogged": "Incident logged.",
+      "cancel": "Cancel"
     },
     "runSheetLink": "Open the run sheet"
   },
@@ -3072,7 +3089,10 @@
         "emptyDescription": "Assign this teacher from a class's Edit class dialog.",
         "completed": "{done} of {total} Test A completed",
         "students": "{count, plural, one {# student} other {# students}}",
-        "openLabel": "Open class {name}"
+        "openLabel": "Open class {name}",
+        "removeLabel": "Remove from {name}",
+        "removeErrorTitle": "We could not remove the teacher from this class",
+        "removeErrorDescription": "The class was not changed. Check your connection and try again."
       },
       "accountPanel": {
         "title": "Account details",
@@ -3084,6 +3104,17 @@
         "lastActive": "Last active",
         "neverActive": "Never opened a sitting",
         "roleNone": "No role"
+      },
+      "assignDialog": {
+        "title": "Assign to classes",
+        "description": "Tick every class {name} teaches. Unticking a class removes them from it.",
+        "classesLegend": "{count, plural, one {# class selected} other {# classes selected}}",
+        "empty": "No classes exist for your school yet.",
+        "submit": "Save changes",
+        "submitting": "Saving...",
+        "cancel": "Cancel",
+        "errorTitle": "We could not update this class",
+        "errorDescription": "The class was not changed. Check your connection and try again."
       }
     },
     "meta": {
@@ -3277,7 +3308,12 @@
         "duplicateToast": "Those students already exist. Check the emails and try again.",
         "seatsToast": "Your plan has no seats left for these students.",
         "forbiddenToast": "You do not have permission to add students.",
-        "genericToast": "That did not work. Try again."
+        "genericToast": "That did not work. Try again.",
+        "rejectedToast": "{count, plural, one {# row needs fixing before anything can be imported} other {# rows need fixing before anything can be imported}}",
+        "alreadyImportedToast": "Every student in this file is already in your school.",
+        "successSkippedToast": "{created} imported, {skipped, plural, one {# already enrolled} other {# already enrolled}}.",
+        "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
+        "schoolInactiveToast": "Your school account is not active, so students cannot be added right now."
       },
       "roster": {
         "searchPlaceholder": "Search students",
@@ -3296,7 +3332,47 @@
         "filteredEmptyTitle": "No students match those filters.",
         "filteredEmptyDescription": "Try a different search or clear the filters.",
         "loading": "Loading students",
-        "errorStaleBanner": "The latest refresh failed — the students below are the last ones the server served."
+        "errorStaleBanner": "The latest refresh failed — the students below are the last ones the server served.",
+        "removeStudentAria": "Remove {name} from this class"
+      },
+      "addStudent": "Add student",
+      "rosterErrorTitle": "Could not update the roster",
+      "rosterErrorDescription": "Something went wrong while updating this class's students. No changes were made — try again.",
+      "dismiss": "Dismiss",
+      "studentsAddedToast": "{count, plural, one {Added # student to the class.} other {Added # students to the class.}}",
+      "studentRemovedToast": "Removed {name} from the class.",
+      "teachers": {
+        "label": "Teachers",
+        "add": "Add teacher",
+        "removeAria": "Remove {name} from this class",
+        "savedToast": "Teachers updated.",
+        "errorTitle": "Could not update the teachers",
+        "errorDescription": "Something went wrong while saving this class's teachers. Try again.",
+        "retry": "Retry",
+        "pickerTitle": "Add teachers",
+        "pickerDescription": "Choose the teachers who teach {className}.",
+        "pickerLoadError": "Could not load the teachers list.",
+        "pickerLoadErrorDescription": "Try again in a moment.",
+        "pickerEmpty": "Every teacher at your school already teaches this class.",
+        "cancel": "Cancel",
+        "save": "Add to class",
+        "saving": "Adding…"
+      },
+      "studentPicker": {
+        "title": "Add students",
+        "description": "Choose the students who belong to {className}.",
+        "moveWarning": "A student already in another class will be moved — a student belongs to one class at a time.",
+        "searchLabel": "Search students",
+        "searchPlaceholder": "Search by name",
+        "currentClassHint": "In {className} — will be moved",
+        "noClassHint": "Not in a class yet",
+        "loadError": "Could not load the students list.",
+        "loadErrorDescription": "Try again in a moment.",
+        "empty": "Every active student at your school is already in this class.",
+        "noMatches": "No students match \"{query}\".",
+        "cancel": "Cancel",
+        "save": "Add to class",
+        "saving": "Adding…"
       }
     },
     "title": "Classes",
@@ -3603,7 +3679,10 @@
       "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
       "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
       "forbiddenToast": "You do not have permission to add students.",
-      "genericToast": "No students were imported. Try again."
+      "genericToast": "No students were imported. Try again.",
+      "rejectedToast": "{count, plural, one {# row needs fixing before anything can be imported} other {# rows need fixing before anything can be imported}}",
+      "alreadyImportedToast": "Every student in this file is already in your school.",
+      "successSkippedToast": "{created} imported, {skipped, plural, one {# already enrolled} other {# already enrolled}}."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3731,6 +3810,7 @@
       "unnamedSchool": "Unnamed school",
       "actionOpen": "Open school",
       "actionStatusPage": "Status page",
+      "bulkExport": "Export",
       "bulkSuspend": "Suspend selected",
       "bulkArchive": "Archive selected",
       "statusPageUnconfigured": "This release has no status page URL configured.",
@@ -3748,6 +3828,7 @@
         "undoExpired": "Undo is no longer available. Refresh to see the current state.",
         "undoError": "The change could not be saved. Refresh and try again.",
         "typedMismatch": "Type the name exactly as shown to confirm.",
+        "exportSuccess": "{count, plural, one {# school exported} other {# schools exported}}",
         "success": {
           "activate": "{name} activated",
           "reactivate": "{name} reactivated",
@@ -3874,6 +3955,8 @@
         "restore": "Restore school",
         "suspend": "Suspend school",
         "archive": "Archive school",
+        "recalculateSeats": "Recalculate seats",
+        "recalculateSeatsSuccess": "Seats recalculated: {used} of {total} used.",
         "undo": "Undo",
         "success": "{name} updated.",
         "undoSuccess": "{name} was restored.",
@@ -4051,70 +4134,8 @@
         }
       }
     },
-    "recovery": {
-      "title": "Sitting recovery",
-      "description": "Invalidate a broken sitting or let a student sit again. Invalidated sittings are excluded from official reporting.",
-      "pickerLabel": "Sitting",
-      "pickerPlaceholder": "Select a sitting",
-      "noClass": "No class",
-      "empty": "This school has no sittings yet.",
-      "loadingMonitor": "Loading students...",
-      "loadErrorTitle": "The sitting could not be loaded",
-      "loadErrorDescription": "Check your connection and try again.",
-      "retry": "Try again",
-      "invalidateButton": "Invalidate this sitting",
-      "invalidatedNotice": "This sitting has been invalidated. Students can sit again.",
-      "confirmTitle": "Invalidate this sitting?",
-      "confirmBody": "In-progress tests are ended and every result from this sitting is excluded from official reporting. Students can sit again.",
-      "cancel": "Cancel",
-      "confirm": "Invalidate",
-      "invalidatedToast": "Sitting invalidated.",
-      "errorToast": "The sitting could not be invalidated. Try again.",
-      "forbiddenToast": "You do not have access to sitting recovery.",
-      "resitButton": "Re-sit",
-      "resitToast": "{name} can sit again.",
-      "resitErrorToast": "The re-sit could not be allowed. Try again.",
-      "columnStudent": "Student",
-      "columnState": "Status",
-      "columnActions": "Actions",
-      "state": {
-        "not_joined": "Not joined",
-        "joined": "Joined",
-        "in_progress": "In progress",
-        "submitted": "Submitted",
-        "stalled": "Stalled"
-      }
-    },
     "window": {
-      "title": "Live form window",
-      "description": "Choose which form is live for this school's sittings, and when the window opens and closes.",
-      "currentNone": "No window has been set for this school yet.",
-      "currentForm": "Live form: {formCode}",
-      "currentPeriod": "Opens {opens}, closes {closes}.",
-      "lockedBadge": "Locked - students have already sat this form",
-      "formLabel": "Form",
-      "formPlaceholder": "Choose a form",
-      "opensLabel": "Opens",
-      "closesLabel": "Closes",
-      "saveButton": "Save window",
-      "savingButton": "Saving...",
-      "savedToast": "Window saved. {formCode} is now live for this school.",
-      "saveErrorTitle": "The window could not be saved",
-      "lockedError": "This form is locked because students have already sat it. The window cannot be moved to a different form for the same period.",
-      "errorToast": "The window could not be saved. Try again.",
-      "forbiddenToast": "Only the SchoolTest ops team can change form windows.",
-      "loadErrorTitle": "We could not load the form window",
-      "loadErrorDescription": "Check your connection and try again.",
-      "retry": "Try again",
-      "validation": {
-        "formRequired": "Choose a form.",
-        "datetimeRequired": "Choose a date and time.",
-        "order": "The opening time must be before the closing time."
-      },
-      "integrityTitle": "This window has integrity problems.",
-      "integrityDescription": "{count, plural, one {# sitting needs review} other {# sittings need review}} before results can be published.",
-      "incompleteTitle": "This window is not complete.",
-      "incompleteDescription": "Some students have not finished, so the results below are partial."
+      "title": "Live form window"
     },
     "settings": {
       "meta": {
@@ -4229,6 +4250,24 @@
         "loadError": "Could not load teachers",
         "loadErrorDescription": "The school's teacher directory could not be read.",
         "saveErrorTitle": "Could not save"
+      },
+      "create": {
+        "title": "Create a class",
+        "description": "Classes group students for test windows and reporting.",
+        "submit": "Create class",
+        "creating": "Creating…"
+      },
+      "form": {
+        "nameRequired": "Class name is required",
+        "nameDuplicate": "This school already has a class with that name",
+        "windowNeedsTeacher": "Assign a teacher before setting a test window",
+        "noTeacherWarning": "No teacher yet — the class stays in Pending setup",
+        "noWindowOption": "No window yet",
+        "testWindowLabel": "Test window",
+        "formSummary": "{count, plural, one {# field needs attention} other {# fields need attention}}",
+        "saveErrorGeneric": "Couldn't save the class — nothing was changed",
+        "savedToast": "{name} updated",
+        "createdToast": "{name} created"
       },
       "rosterSearchPlaceholder": "Search students",
       "rosterCount": "{count, plural, =0 {No students} one {# student} other {# students}}",
@@ -4626,7 +4665,15 @@
       "staffResendCooldown": "This invitation was just resent. Try again in {seconds}s.",
       "staffResendError": "The invitation could not be resent. Try again.",
       "staffRevokeSuccess": "The invitation for {email} was revoked. Its link no longer works.",
-      "staffRevokeError": "The invitation could not be revoked. Refresh the list and try again."
+      "staffRevokeError": "The invitation could not be revoked. Refresh the list and try again.",
+      "formTitleAdmin": "Invite a school admin",
+      "formTitleTeacher": "Invite a teacher",
+      "formSubtitle": "They receive an email invitation to {school}.",
+      "roleNoteTeacher": "Teachers see only their own classes and results.",
+      "roleNoteAdmin": "School admins manage staff, classes, students and test windows for this school.",
+      "alreadyHasAccessError": "This person already has access to {school}.",
+      "outsideDomainWarning": "Outside {domain} — they'll need approval on first sign-in.",
+      "noNameWarning": "Without a name the invitation email is addressed to the mailbox."
     },
     "createSchool": {
       "button": "Create school",
@@ -4669,7 +4716,8 @@
         "tooLong": "Use 100 characters or fewer",
         "emailTooLong": "Use 255 characters or fewer",
         "emailInvalid": "Enter a valid email address",
-        "nameTooShort": "Use at least 3 characters"
+        "nameTooShort": "Use at least 3 characters",
+        "phoneInvalid": "Enter a valid phone number"
       },
       "editTitle": "Edit school",
       "editDescription": "Update {name}'s profile, plan and contact. Saving writes the versioned school edit.",
@@ -4691,58 +4739,11 @@
       "successToast": "School created — the admin invitation went to {email}.",
       "successNoInviteToast": "School created. No admin invitation was sent.",
       "conflict": "A school with that name already exists.",
-      "errorToast": "That school could not be created. Nothing was saved."
-    },
-    "inspection": {
-      "title": "Form inspection",
-      "description": "The composition of the form this window points at: every item with its task type, stage, Q-matrix attribute vector and correct key, plus the anchor items and the lock state. Ops-only — this is the only surface that shows keys.",
-      "show": "Inspect form",
-      "hide": "Hide inspection",
-      "errorTitle": "The form inspection could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — retry, or check that this window's form still exists.",
-      "formCode": "Form {formCode}",
-      "itemCount": "{count, plural, one {# item} other {# items}}",
-      "anchors": "Anchors: {codes}",
-      "anchorsNone": "No anchor items",
-      "lockedBadge": "Locked — a sitting has been submitted",
-      "unlockedBadge": "Not locked",
-      "columnItem": "Item",
-      "columnTaskType": "Task type",
-      "columnStage": "Stage",
-      "columnVector": "Attribute vector",
-      "columnKey": "Correct key",
-      "formSelectLabel": "Form to inspect",
-      "noLiveWindow": "No form window is live for this school, so the selection above is the form being inspected — not a form this school's sittings currently use.",
-      "notLiveForm": "Inspecting a form other than this window's live form ({formCode})."
-    },
-    "responsesExport": {
-      "title": "Session responses (CSV)",
-      "description": "The raw item-level export of ONE session for offline analysis: one row per stored response, in presentation order. The server requires a session id and names the file.",
-      "sessionLabel": "Session document id",
-      "sessionPlaceholder": "e.g. dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "Download responses.csv",
-      "downloading": "Preparing the export...",
-      "downloaded": "Downloaded {filename}",
-      "errorTitle": "The responses export could not be downloaded",
-      "errorDescription": "The server refused the export and no file was written. Check the session id — an unknown session returns an empty export, a malformed request returns an error."
-    },
-    "viewAsTeacher": {
-      "openCta": "View as teacher",
-      "openAriaLabel": "View as teacher {teacher} — impersonation, recorded in the audit log",
-      "panelLabel": "View as teacher — impersonation",
-      "impersonationTitle": "Impersonation view",
-      "impersonationSubject": "You are seeing exactly what {teacher} sees — their classes and their sittings, nothing wider.",
-      "auditedNotice": "This access is recorded in the audit log against your account, with the teacher and the time.",
-      "close": "Close",
-      "errorTitle": "The teacher view could not be loaded",
-      "errorDescription": "The server refused or failed the read. Nothing was changed — this staff member may not be a teacher account (this directory also lists school admins), may no longer exist, or may not be linked to a school.",
-      "classCount": "{count, plural, one {# class} other {# classes}}",
-      "sittingCount": "{count, plural, one {# sitting} other {# sittings}}",
-      "monitorCount": "{count, plural, one {# monitor payload} other {# monitor payloads}}",
-      "classMeta": "Year band {yearBand}",
-      "studentCount": "{count, plural, one {# student} other {# students}}",
-      "noClasses": "This teacher holds no classes.",
-      "noSittings": "This teacher has no sittings."
+      "errorToast": "That school could not be created. Nothing was saved.",
+      "contactHelper": "Required — this person receives the owner invitation",
+      "statusActiveWarning": "Creating as Active starts billing today",
+      "savingLabel": "Saving…",
+      "formSummary": "{count, plural, one {# field needs attention} other {# fields need attention}}"
     },
     "export": {
       "title": "Export schools",
@@ -4930,7 +4931,7 @@
     "browse": "browse",
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
-    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "pastePlaceholder": "given name,family name,date of birth,year level,home language",
     "classLabel": "Class",
     "classPlaceholder": "Select a class"
   },
@@ -5105,6 +5106,10 @@
         "badgeClosed": "Closed",
         "badgeLive": "Live",
         "closeSessionCta": "Close session",
+        "connectionNoted": "Connection: {connection}",
+        "connectionOffline": "Offline",
+        "connectionOnline": "Online",
+        "connectionWeak": "Weak connection",
         "endDialogCancel": "Keep it open",
         "endDialogConfirm": "End session",
         "endDialogDescription": "Anyone still working has their test submitted as it stands, and the join code stops working. This cannot be undone.",
@@ -5131,15 +5136,19 @@
         "stallCaption": "{minutes, plural, one {A tile turns amber after # minute with no activity.} other {A tile turns amber after # minutes with no activity.}}",
         "startedAgo": "{minutes, plural, =0 {Session started just now} other {Session started # min ago}}",
         "stateInProgress": "In progress",
+        "stateAbsent": "Absent",
         "stateJoined": "Joined",
         "stateNotJoined": "Not joined",
+        "statePaused": "Paused",
         "stateScoringFailed": "Scoring failed",
         "stateStalled": "Stalled",
         "stateSubmitted": "Submitted",
+        "summaryAbsent": "Absent",
         "summaryExpected": "Expected",
         "summaryInProgress": "In progress",
         "summaryJoined": "Joined",
         "summaryLabel": "Session counters",
+        "summaryPaused": "Paused",
         "summaryScoringFailed": "Scoring failed",
         "summaryStalled": "Stalled",
         "summarySubmitted": "Submitted",

@@ -41,8 +41,9 @@ export function deriveRowState(
   return student.state;
 }
 
-// Summary counts keyed by row state. The six buckets always sum to the
-// roster, so a staggered sitting reads unambiguously.
+// Summary counts keyed by row state. The buckets always sum to the roster
+// (teacher/12 completes the vocabulary at eight states + the client-only
+// reveal), so a staggered sitting reads unambiguously.
 export function summarizeRowStates(
   students: MonitorStudent[],
   revealedIds: ReadonlySet<string>,
@@ -54,6 +55,9 @@ export function summarizeRowStates(
     in_progress: 0,
     submitted: 0,
     stalled: 0,
+    scoring_failed: 0,
+    absent: 0,
+    paused: 0,
   };
   for (const student of students) {
     counts[deriveRowState(student, revealedIds)] += 1;

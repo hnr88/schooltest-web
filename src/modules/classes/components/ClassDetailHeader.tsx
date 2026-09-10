@@ -3,22 +3,20 @@
 import { PencilIcon, UploadIcon, UserIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { ClassTeacherPanel } from '@/modules/classes/components/ClassTeacherPanel';
 import { Button } from '@/modules/design-system';
-import { teacherDisplayName } from '@/modules/classes/lib/class-detail.helpers';
 
 import type { ClassDetailHeaderProps } from '@/modules/classes/types/components.types';
 
-// Spec §1 header: class name as the page h1, the assigned teacher and the
-// student count as a subtitle, and the two actions. The teacher is DISPLAYED
-// here — assignment moved into the edit dialog, so this surface holds no
-// checkbox and no save button.
+// Spec §1 header: class name as the page h1, the student count as a subtitle,
+// the assigned teachers as removable chips with their own picker dialog, and
+// the two actions. This surface still holds no checkbox and no save button.
 export function ClassDetailHeader({
   schoolClass,
   onEdit,
   onImport,
 }: ClassDetailHeaderProps) {
   const t = useTranslations('Classes.detail');
-  const teacher = teacherDisplayName(schoolClass.teacher);
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -27,13 +25,10 @@ export function ClassDetailHeader({
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-body">
           <span className="flex items-center gap-1.5">
             <UserIcon className="size-4" aria-hidden />
-            {teacher === null ? t('teacherUnassigned') : teacher}
+            {t('studentCount', { count: schoolClass.student_count })}
           </span>
-          <span aria-hidden className="text-muted-foreground">
-            |
-          </span>
-          <span>{t('studentCount', { count: schoolClass.student_count })}</span>
         </div>
+        <ClassTeacherPanel schoolClass={schoolClass} />
       </div>
       <div className="flex flex-wrap gap-2">
         <Button type="button" size="lg" variant="secondary" onClick={onEdit}>

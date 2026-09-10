@@ -82,6 +82,7 @@ export interface OpsConfirmDialogProps {
    * One alert line; the typed mismatch flash takes precedence while it is live.
    */
   error?: string | null;
+  className?: string;
   onConfirm: () => void;
 }
 
@@ -111,6 +112,7 @@ export function OpsConfirmDialog({
   notice,
   typed,
   error = null,
+  className,
   onConfirm,
 }: OpsConfirmDialogProps) {
   const tTyped = useTranslations('Ops.typedNameConfirm');
@@ -130,7 +132,7 @@ export function OpsConfirmDialog({
     (typed !== undefined && mismatchFlash ? typed.mismatchMessage : null) ?? error;
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent size="sm">
+      <AlertDialogContent size="sm" className={className}>
         {media ? <div className="mb-1">{media}</div> : null}
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">

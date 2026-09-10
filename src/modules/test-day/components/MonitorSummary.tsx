@@ -6,7 +6,8 @@ import type { MonitorSummaryProps } from '@/modules/test-day/types/components.ty
 import { STATE_ORDER } from '@/modules/test-day/constants/components.constants';
 
 // Live-board summary (task 90): one count per row state including code_shown,
-// so the six buckets visibly sum to the roster during a staggered sitting.
+// so the buckets visibly sum to the roster during a staggered sitting
+// (teacher/12 completes the vocabulary at eight states + the reveal).
 export function MonitorSummary({ counts }: MonitorSummaryProps) {
   const t = useTranslations('TestDay.monitor');
 

@@ -1,8 +1,7 @@
 import {
-  ACARA_PHASES,
-  FIRST_LANGUAGES,
-  STUDENT_IMPORT_COLUMNS,
+  STUDENT_IMPORT_ALL_COLUMNS,
   STUDENT_IMPORT_FIELD_ERRORS,
+  STUDENT_IMPORT_YEAR_PATTERN,
 } from '@/modules/student-import/constants/student-import.constants';
 import { studentImportRowSchema } from '@/modules/student-import/schemas/student-import.schema';
 import type {
@@ -10,11 +9,12 @@ import type {
   ParsedStudentRowError,
 } from '@/modules/student-import/types/student-import.types';
 
-// Pure reader for the shared student-import CSV (spec §2/§4). The header row is
-// optional and columns are positional in template order, so a paste of bare data
-// lines works exactly like the downloaded template. Records are physical lines —
-// a quoted cell may hold a comma ("Nguyen, Thi") but not a newline, which is the
-// one RFC 4180 case a paste box realistically never produces.
+// Pure reader for the shared student-import CSV (the portal vocabulary). The
+// header row is optional and columns are positional in template order, so a
+// paste of bare data lines works exactly like the downloaded template. Records
+// are physical lines — a quoted cell may hold a comma ("Nguyen, Thi") but not a
+// newline, which is the one RFC 4180 case a paste box realistically never
+// produces.
 
 const BOM = '\uFEFF';
 
@@ -62,33 +62,29 @@ function isHeaderRecord(cells: readonly string[]): boolean {
   return (
     filled.length > 0 &&
     filled.every((value) =>
-      (STUDENT_IMPORT_COLUMNS as readonly string[]).includes(normalise(value)),
+      (STUDENT_IMPORT_ALL_COLUMNS as readonly string[]).includes(normalise(value)),
     )
   );
-}
-
-/**
- * Blank stays null (the field is optional server-side); an unmappable value is
- * handed back verbatim so the row schema rejects it and it surfaces as an error
- * row rather than a silent default.
- */
-function matchPicklist(options: readonly string[], raw: string): string | null {
-  if (raw === '') return null;
-  return options.find((option) => normalise(option) === normalise(raw)) ?? raw;
 }
 
 const cellAt = (cells: readonly string[], index: number): string => cells[index] ?? '';
 
 function toCandidate(cells: readonly string[], line: number): Record<string, unknown> {
-  const familyName = cellAt(cells, 1);
-  const email = cellAt(cells, 2);
+  const yearRaw = cellAt(cells, 3);
+  const studentKey = cellAt(cells, 5);
   return {
     line,
     given_name: cellAt(cells, 0),
-    family_name: familyName === '' ? null : familyName,
-    email: email === '' ? null : email,
-    first_language: matchPicklist(FIRST_LANGUAGES, cellAt(cells, 3)),
-    acara_phase: matchPicklist(ACARA_PHASES, cellAt(cells, 4)),
+    family_name: cellAt(cells, 1),
+    date_of_birth: cellAt(cells, 2),
+    // A whole number parses to its number (the schema range-checks it); anything
+    // else travels as the raw text so the schema rejects it and the error row
+    // can quote the offending value.
+    year_level: STUDENT_IMPORT_YEAR_PATTERN.test(yearRaw)
+      ? Number.parseInt(yearRaw, 10)
+      : yearRaw,
+    first_language: cellAt(cells, 4),
+    student_key: studentKey === '' ? null : studentKey,
   };
 }
 
@@ -98,14 +94,17 @@ function toRowErrors(
   paths: readonly PropertyKey[],
 ): ParsedStudentRowError[] {
   const errors: ParsedStudentRowError[] = [];
+  const seen = new Set<string>();
   for (const path of paths) {
-    const field = STUDENT_IMPORT_FIELD_ERRORS[path as keyof typeof STUDENT_IMPORT_FIELD_ERRORS];
-    if (!field) continue;
+    const key = String(path);
+    const field = STUDENT_IMPORT_FIELD_ERRORS[key as keyof typeof STUDENT_IMPORT_FIELD_ERRORS];
+    if (!field || seen.has(key)) continue;
+    seen.add(key);
     errors.push({
       line,
       column: field.column,
       reason: field.reason,
-      value: cellAt(cells, STUDENT_IMPORT_COLUMNS.indexOf(field.column)),
+      value: cellAt(cells, STUDENT_IMPORT_ALL_COLUMNS.indexOf(field.column)),
     });
   }
   return errors;

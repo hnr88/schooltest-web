@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { DIRECTORY_DEFAULT_LABELS, DirectoryError } from '@/modules/directory';
+import { SessionActivityPanel } from '@/modules/test-day';
 import { useRecordCrumb } from '@/modules/shell';
 import { LiveMonitorGrid } from '@/modules/teacher/components/LiveMonitorGrid';
 import { LiveMonitorHeader } from '@/modules/teacher/components/LiveMonitorHeader';
@@ -76,6 +77,11 @@ function LiveMonitorScreen({ sittingDocumentId }: LiveMonitorScreenProps) {
             <LiveMonitorGrid students={monitor.students} />
             <LiveMonitorLegend stallThresholdMinutes={monitor.stallThresholdMinutes} />
           </div>
+
+          {/* C-SIT-ACTIVITY (teacher task 13) — the trail rides the monitor's
+              ready branch; task 18 mounts the same panel for class-scoped
+              S09d. The scope is a prop, never a forked copy. */}
+          <SessionActivityPanel sittingDocumentId={sittingDocumentId} scope="sitting" />
         </>
       ) : null}
     </main>

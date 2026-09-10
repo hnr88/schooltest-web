@@ -5,7 +5,7 @@ export type StudentFormTarget = { mode: 'create' } | { mode: 'edit'; student: Sc
 
 export interface StudentImportState {
   parsed: ParsedStudentCsv;
-  setParsed: (parsed: ParsedStudentCsv) => void;
+  setParsed: (parsed: ParsedStudentCsv, csv: string) => void;
   classId: string;
   setClassId: (documentId: string) => void;
   canSubmit: boolean;

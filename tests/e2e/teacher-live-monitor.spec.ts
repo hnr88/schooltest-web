@@ -10,7 +10,13 @@ import { cat, loadMessages } from './helpers/i18n';
 import { plural } from './helpers/teacher-dashboard-live';
 import { apiLogin } from './helpers/teacher-auth-rail';
 import { findSittingsCovering, readMonitor } from './helpers/teacher-live-monitor-api';
-import { readSessions } from './helpers/teacher-past-sessions-api';
+import {
+  closeSession,
+  createSession,
+  readClasses,
+  readSessions,
+  readTests,
+} from './helpers/teacher-past-sessions-api';
 import { signIn } from './helpers/teacher-rail';
 
 // Task 037 / contract C-TS-3 — the live monitoring grid at
@@ -27,7 +33,9 @@ const STATE_LABEL_KEY: Record<MonitorState, string> = {
   scoring_failed: 'stateScoringFailed',
   submitted: 'stateSubmitted',
   in_progress: 'stateInProgress',
+  paused: 'statePaused',
   stalled: 'stateStalled',
+  absent: 'stateAbsent',
   joined: 'stateJoined',
   not_joined: 'stateNotJoined',
 };
@@ -39,6 +47,8 @@ const SUMMARY_LABEL_KEY = {
   submitted: 'summarySubmitted',
   stalled: 'summaryStalled',
   scoring_failed: 'summaryScoringFailed',
+  absent: 'summaryAbsent',
+  paused: 'summaryPaused',
 } as const;
 
 /** The one line of extra fact a tile prints, rendered from the REAL catalog string. */
@@ -170,5 +180,51 @@ test.describe('C-TS-3 live monitoring grid', () => {
     await expect(page.locator('[data-slot="live-monitor-stat"]')).toHaveCount(0);
 
     await page.screenshot({ path: path.join(SHOTS, 'vfy037-live-monitor-404.png') });
+  });
+
+  // teacher task 11 — the "Test settings" control and its read-only modal.
+  // The sitting below is created NOW and its settings are never patched, so
+  // every value the modal prints is the design default: `sitting.settings` is
+  // not carried by the C-TS-3 read, and the null arm IS the live arm.
+  test('teacher task 11 — the Test settings control and the read-only modal', async ({
+    page,
+    request,
+  }) => {
+    const jwt = await apiLogin(request, 'teacher');
+    const classes = await readClasses(request, jwt);
+    const testA = (await readTests(request, jwt)).find((entry) => entry.variant === 'A');
+    expect(classes[0], 'the teacher owns no class').toBeTruthy();
+    expect(testA, 'C-TD-2 offers no Test A form').toBeTruthy();
+    const sittingId = await createSession(
+      request,
+      jwt,
+      classes[0].class_document_id,
+      testA?.form_document_id ?? '',
+    );
+
+    try {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await signIn(page, 'teacher');
+      await openMonitor(page, sittingId);
+
+      const control = page.locator('[data-slot="live-monitor-settings-control"]');
+      await expect(control).toContainText(cat(en, `${LIVE}.settings.control`));
+      await page.screenshot({ path: path.join(SHOTS, '11-test-settings-count.png'), fullPage: true });
+
+      await control.click();
+      const modal = page.locator('[data-slot="session-settings-modal"]');
+      await expect(modal).toBeVisible();
+      await expect(modal).toContainText(cat(en, `${LIVE}.settings.title`));
+      await expect(modal).toContainText(cat(en, `${LIVE}.settings.fixed`));
+      // READ-ONLY: the rows are label + state pill; there is nothing to flip.
+      await expect(modal.locator('input')).toHaveCount(0);
+      await page.screenshot({ path: path.join(SHOTS, '11-session-settings-modal.png') });
+      await page.screenshot({ path: path.join(SHOTS, '11-settings-null-defaults.png') });
+
+      await modal.getByRole('button', { name: cat(en, `${LIVE}.settings.close`) }).click();
+      await expect(modal).toBeHidden();
+    } finally {
+      await closeSession(request, jwt, sittingId);
+    }
   });
 });

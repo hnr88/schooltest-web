@@ -2479,7 +2479,10 @@
         "joined": "Đã tham gia",
         "in_progress": "Đang làm bài",
         "submitted": "Đã nộp",
-        "stalled": "Bị gián đoạn"
+        "stalled": "Bị gián đoạn",
+        "scoring_failed": "Chấm điểm thất bại",
+        "absent": "Vắng mặt",
+        "paused": "Tạm dừng"
       },
       "codeShownCount": "Đã hiện mã cho {count}",
       "closeCta": "Đóng buổi kiểm tra",
@@ -2513,6 +2516,20 @@
       "confirmBody": "Bài làm hiện tại của học sinh sẽ kết thúc và học sinh có thể tham gia lại bằng mã truy cập.",
       "cancel": "Huỷ",
       "confirm": "Đồng ý, cho thi lại"
+    },
+    "activity": {
+      "title": "Hoạt động của buổi thi",
+      "subtitle": "Mọi thao tác trong buổi thi này, và người thực hiện",
+      "loading": "Đang tải nhật ký hoạt động…",
+      "error": "Không thể tải nhật ký hoạt động.",
+      "empty": "Chưa có gì diễn ra trong buổi thi này.",
+      "truncated": "Đang hiển thị {shown} trong tổng số {total} mục gần nhất. Toàn bộ nhật ký được lưu cùng buổi thi để phục vụ kháng nghị.",
+      "appealsNote": "Toàn bộ nhật ký được lưu cùng buổi thi để phục vụ kháng nghị.",
+      "logIncident": "Ghi nhận sự cố",
+      "noteLabel": "Ghi chú sự cố",
+      "notePlaceholder": "Chuyện gì đã xảy ra? (được lưu cùng hồ sơ buổi thi)",
+      "incidentLogged": "Đã ghi nhận sự cố.",
+      "cancel": "Huỷ"
     },
     "runSheetLink": "Mở phiếu hướng dẫn"
   },
@@ -2592,7 +2609,10 @@
         "emptyDescription": "Hãy phân công giáo viên này từ hộp thoại Sửa lớp của một lớp.",
         "completed": "{done} trên {total} đã hoàn thành Bài kiểm tra A",
         "students": "{count, plural, other {# học sinh}}",
-        "openLabel": "Mở lớp {name}"
+        "openLabel": "Mở lớp {name}",
+        "removeLabel": "Xóa khỏi {name}",
+        "removeErrorTitle": "Không thể xóa giáo viên khỏi lớp này",
+        "removeErrorDescription": "Lớp học không bị thay đổi. Kiểm tra kết nối và thử lại."
       },
       "accountPanel": {
         "title": "Chi tiết tài khoản",
@@ -2604,6 +2624,17 @@
         "lastActive": "Hoạt động lần cuối",
         "neverActive": "Chưa bao giờ mở bài kiểm tra",
         "roleNone": "Không có vai trò"
+      },
+      "assignDialog": {
+        "title": "Phân công vào lớp",
+        "description": "Chọn mọi lớp mà {name} dạy. Bỏ chọn một lớp sẽ xóa giáo viên khỏi lớp đó.",
+        "classesLegend": "{count, plural, other {# lớp được chọn}}",
+        "empty": "Trường của bạn chưa có lớp nào.",
+        "submit": "Lưu thay đổi",
+        "submitting": "Saving...",
+        "cancel": "Hủy",
+        "errorTitle": "Không thể cập nhật lớp này",
+        "errorDescription": "Lớp học không bị thay đổi. Kiểm tra kết nối và thử lại."
       }
     },
     "meta": {
@@ -2807,7 +2838,12 @@
         "seatsToast": "Gói của bạn không còn chỗ cho những học sinh này.",
         "forbiddenToast": "Bạn không có quyền thêm học sinh.",
         "genericToast": "Thao tác không thành công. Hãy thử lại.",
-        "duplicateToast": "Những học sinh đó đã tồn tại. Hãy kiểm tra email rồi thử lại."
+        "duplicateToast": "Những học sinh đó đã tồn tại. Hãy kiểm tra email rồi thử lại.",
+        "rejectedToast": "{count, plural, other {hàng cần sửa trước khi nhập}}",
+        "alreadyImportedToast": "Tất cả học sinh trong tệp này đã được ghi danh tại trường của bạn.",
+        "successSkippedToast": "Đã nhập {created}, {skipped, plural, other {đã ghi danh}}.",
+        "seatCapToast": "Trường của bạn đã hết chỗ. Liên hệ SchoolTest để thêm chỗ.",
+        "schoolInactiveToast": "Tài khoản trường của bạn chưa được kích hoạt nên hiện không thể thêm học sinh."
       },
       "roster": {
         "searchPlaceholder": "Tìm học sinh",
@@ -2826,7 +2862,47 @@
         "filteredEmptyTitle": "Không có học sinh nào khớp bộ lọc đó.",
         "filteredEmptyDescription": "Hãy thử tìm kiếm khác hoặc xoá bộ lọc.",
         "loading": "Đang tải học sinh",
-        "errorStaleBanner": "Bản làm mới gần nhất thất bại — các học sinh bên dưới là danh sách cuối máy chủ trả về."
+        "errorStaleBanner": "Bản làm mới gần nhất thất bại — các học sinh bên dưới là danh sách cuối máy chủ trả về.",
+        "removeStudentAria": "Xóa {name} khỏi lớp này"
+      },
+      "addStudent": "Thêm học sinh",
+      "rosterErrorTitle": "Không thể cập nhật danh sách lớp",
+      "rosterErrorDescription": "Đã xảy ra sự cố khi cập nhật học sinh của lớp này. Chưa có thay đổi nào — hãy thử lại.",
+      "dismiss": "Đóng",
+      "studentsAddedToast": "{count, plural, other {Đã thêm # học sinh vào lớp.}}",
+      "studentRemovedToast": "Đã xóa {name} khỏi lớp.",
+      "teachers": {
+        "label": "Giáo viên",
+        "add": "Thêm giáo viên",
+        "removeAria": "Xóa {name} khỏi lớp này",
+        "savedToast": "Đã cập nhật giáo viên.",
+        "errorTitle": "Không thể cập nhật giáo viên",
+        "errorDescription": "Đã xảy ra sự cố khi lưu giáo viên của lớp này. Hãy thử lại.",
+        "retry": "Thử lại",
+        "pickerTitle": "Thêm giáo viên",
+        "pickerDescription": "Chọn giáo viên dạy lớp {className}.",
+        "pickerLoadError": "Không thể tải danh sách giáo viên.",
+        "pickerLoadErrorDescription": "Vui lòng thử lại sau.",
+        "pickerEmpty": "Mọi giáo viên trong trường của bạn đều đã dạy lớp này.",
+        "cancel": "Hủy",
+        "save": "Thêm vào lớp",
+        "saving": "Đang thêm…"
+      },
+      "studentPicker": {
+        "title": "Thêm học sinh",
+        "description": "Chọn học sinh thuộc lớp {className}.",
+        "moveWarning": "Học sinh đang ở lớp khác sẽ được chuyển — mỗi học sinh chỉ thuộc một lớp.",
+        "searchLabel": "Tìm học sinh",
+        "searchPlaceholder": "Tìm theo tên",
+        "currentClassHint": "Đang học lớp {className} — sẽ được chuyển",
+        "noClassHint": "Chưa thuộc lớp nào",
+        "loadError": "Không thể tải danh sách học sinh.",
+        "loadErrorDescription": "Vui lòng thử lại sau.",
+        "empty": "Tất cả học sinh đang học tại trường của bạn đều đã ở lớp này.",
+        "noMatches": "Không có học sinh nào khớp \"{query}\".",
+        "cancel": "Hủy",
+        "save": "Thêm vào lớp",
+        "saving": "Đang thêm…"
       }
     },
     "title": "Lớp học",
@@ -3133,7 +3209,10 @@
       "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
       "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
       "forbiddenToast": "You do not have permission to add students.",
-      "genericToast": "No students were imported. Try again."
+      "genericToast": "No students were imported. Try again.",
+      "rejectedToast": "{count, plural, other {hàng cần sửa trước khi nhập}}",
+      "alreadyImportedToast": "Tất cả học sinh trong tệp này đã được ghi danh tại trường của bạn.",
+      "successSkippedToast": "Đã nhập {created}, {skipped, plural, other {đã ghi danh}}."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3276,6 +3355,7 @@
         "undoExpired": "Không thể hoàn tác nữa. Hãy tải lại để xem trạng thái hiện tại.",
         "undoError": "Không thể lưu thay đổi. Hãy tải lại và thử lại.",
         "typedMismatch": "Nhập đúng tên như hiển thị để xác nhận.",
+        "exportSuccess": "{count, plural, other {Đã xuất # trường}}",
         "success": {
           "activate": "Đã kích hoạt {name}.",
           "reactivate": "Đã kích hoạt lại {name}.",
@@ -3310,6 +3390,7 @@
         "non-government": "Ngoài công lập",
         "catholic": "Công giáo"
       },
+      "bulkExport": "Xuất",
       "bulkSuspend": "Tạm ngưng trường đã chọn",
       "bulkArchive": "Lưu trữ trường đã chọn"
     },
@@ -3404,6 +3485,8 @@
         "restore": "Khôi phục trường",
         "suspend": "Tạm ngưng trường",
         "archive": "Lưu trữ trường",
+        "recalculateSeats": "Tính lại số chỗ",
+        "recalculateSeatsSuccess": "Đã tính lại số chỗ: {used}/{total} đã dùng.",
         "undo": "Hoàn tác",
         "success": "Đã cập nhật {name}.",
         "undoSuccess": "Đã khôi phục {name}.",
@@ -3581,70 +3664,8 @@
         }
       }
     },
-    "recovery": {
-      "title": "Khôi phục buổi thi",
-      "description": "Vô hiệu một buổi thi bị lỗi hoặc cho phép học sinh thi lại. Các buổi thi bị vô hiệu sẽ bị loại khỏi báo cáo chính thức.",
-      "pickerLabel": "Buổi thi",
-      "pickerPlaceholder": "Chọn buổi thi",
-      "noClass": "Không có lớp",
-      "empty": "Trường này chưa có buổi thi nào.",
-      "loadingMonitor": "Đang tải học sinh...",
-      "loadErrorTitle": "Không thể tải buổi thi",
-      "loadErrorDescription": "Kiểm tra kết nối của bạn và thử lại.",
-      "retry": "Thử lại",
-      "invalidateButton": "Vô hiệu buổi thi này",
-      "invalidatedNotice": "Buổi thi này đã bị vô hiệu. Học sinh có thể thi lại.",
-      "confirmTitle": "Vô hiệu buổi thi này?",
-      "confirmBody": "Các bài thi đang làm sẽ kết thúc và mọi kết quả của buổi thi này bị loại khỏi báo cáo chính thức. Học sinh có thể thi lại.",
-      "cancel": "Huỷ",
-      "confirm": "Vô hiệu",
-      "invalidatedToast": "Đã vô hiệu buổi thi.",
-      "errorToast": "Không thể vô hiệu buổi thi. Hãy thử lại.",
-      "forbiddenToast": "Bạn không có quyền khôi phục buổi thi.",
-      "resitButton": "Thi lại",
-      "resitToast": "{name} có thể thi lại.",
-      "resitErrorToast": "Không thể cho phép thi lại. Hãy thử lại.",
-      "columnStudent": "Học sinh",
-      "columnState": "Trạng thái",
-      "columnActions": "Thao tác",
-      "state": {
-        "not_joined": "Chưa tham gia",
-        "joined": "Đã tham gia",
-        "in_progress": "Đang làm",
-        "submitted": "Đã nộp",
-        "stalled": "Bị đứng"
-      }
-    },
     "window": {
-      "title": "Khung giờ đề thi đang dùng",
-      "description": "Chọn đề thi đang dùng cho các ca thi của trường này và thời điểm mở, đóng khung giờ.",
-      "currentNone": "Trường này chưa có khung giờ nào.",
-      "currentForm": "Đề đang dùng: {formCode}",
-      "currentPeriod": "Mở {opens}, đóng {closes}.",
-      "lockedBadge": "Đã khoá - học sinh đã làm đề này",
-      "formLabel": "Đề thi",
-      "formPlaceholder": "Chọn đề thi",
-      "opensLabel": "Mở",
-      "closesLabel": "Đóng",
-      "saveButton": "Lưu khung giờ",
-      "savingButton": "Đang lưu...",
-      "savedToast": "Đã lưu khung giờ. {formCode} hiện đang dùng cho trường này.",
-      "saveErrorTitle": "Không lưu được khung giờ",
-      "lockedError": "Đề này đã bị khoá vì học sinh đã làm. Không thể chuyển khung giờ sang đề khác trong cùng khoảng thời gian.",
-      "errorToast": "Không lưu được khung giờ. Hãy thử lại.",
-      "forbiddenToast": "Chỉ đội ops SchoolTest mới được thay đổi khung giờ đề thi.",
-      "loadErrorTitle": "Không tải được khung giờ đề thi",
-      "loadErrorDescription": "Kiểm tra kết nối rồi thử lại.",
-      "retry": "Thử lại",
-      "validation": {
-        "formRequired": "Hãy chọn đề thi.",
-        "datetimeRequired": "Hãy chọn ngày và giờ.",
-        "order": "Thời điểm mở phải trước thời điểm đóng."
-      },
-      "integrityTitle": "Khung giờ này có vấn đề về tính toàn vẹn của dữ liệu.",
-      "integrityDescription": "{count, plural, other {cần xem lại # ca thi trước khi có thể công bố kết quả}}",
-      "incompleteTitle": "Khung giờ này chưa hoàn tất.",
-      "incompleteDescription": "Một số học sinh chưa hoàn thành nên kết quả bên dưới chỉ là một phần."
+      "title": "Khung giờ đề thi đang dùng"
     },
     "settings": {
       "meta": {
@@ -3759,6 +3780,24 @@
         "loadError": "Không thể tải giáo viên",
         "loadErrorDescription": "Không thể đọc danh bạ nhân sự của trường.",
         "saveErrorTitle": "Không thể lưu"
+      },
+      "create": {
+        "title": "Tạo lớp",
+        "description": "Lớp học nhóm học sinh lại để phục vụ đợt thi và báo cáo.",
+        "submit": "Tạo lớp",
+        "creating": "Đang tạo…"
+      },
+      "form": {
+        "nameRequired": "Tên lớp là bắt buộc",
+        "nameDuplicate": "Trường này đã có lớp mang tên đó",
+        "windowNeedsTeacher": "Chỉ định giáo viên trước khi đặt đợt thi",
+        "noTeacherWarning": "Chưa có giáo viên — lớp vẫn ở trạng thái Chờ thiết lập",
+        "noWindowOption": "Chưa có đợt thi",
+        "testWindowLabel": "Cửa sổ bài kiểm tra",
+        "formSummary": "{count, plural, other {# trường cần được chú ý}}",
+        "saveErrorGeneric": "Không thể lưu lớp — không có gì thay đổi",
+        "savedToast": "Đã cập nhật {name}",
+        "createdToast": "Đã tạo {name}"
       },
       "rosterSearchPlaceholder": "Tìm học sinh",
       "rosterCount": "{count, plural, =0 {Không có học sinh} other {# học sinh}}",
@@ -3998,57 +4037,6 @@
         }
       }
     },
-    "inspection": {
-      "title": "Kiểm tra đề",
-      "description": "Thành phần của đề mà kỳ kiểm tra này trỏ tới: từng câu hỏi kèm loại câu, giai đoạn, vectơ thuộc tính ma trận Q và đáp án đúng, cùng các câu neo và trạng thái khóa. Chỉ dành cho vận hành — đây là màn hình duy nhất hiển thị đáp án.",
-      "show": "Xem đề",
-      "hide": "Ẩn phần kiểm tra",
-      "errorTitle": "Không tải được phần kiểm tra đề",
-      "errorDescription": "Máy chủ từ chối hoặc đọc thất bại. Không có gì bị thay đổi — hãy thử lại, hoặc kiểm tra xem đề của kỳ kiểm tra này còn tồn tại không.",
-      "formCode": "Đề {formCode}",
-      "itemCount": "{count, plural, other {# items}}",
-      "anchors": "Câu neo: {codes}",
-      "anchorsNone": "Không có câu neo",
-      "lockedBadge": "Đã khóa — đã có bài làm được gửi",
-      "unlockedBadge": "Chưa khóa",
-      "columnItem": "Câu hỏi",
-      "columnTaskType": "Loại câu hỏi",
-      "columnStage": "Giai đoạn",
-      "columnVector": "Vectơ thuộc tính",
-      "columnKey": "Đáp án đúng",
-      "formSelectLabel": "Đề cần xem",
-      "noLiveWindow": "Trường này không có kỳ kiểm tra nào đang hoạt động, nên lựa chọn ở trên chỉ là đề đang được xem — không phải đề mà các bài làm của trường đang dùng.",
-      "notLiveForm": "Đang xem một đề khác với đề đang hoạt động của kỳ kiểm tra này ({formCode})."
-    },
-    "responsesExport": {
-      "title": "Phản hồi bài làm (CSV)",
-      "description": "Bản xuất thô theo từng câu của MỘT bài làm để phân tích ngoại tuyến: mỗi phản hồi đã lưu là một dòng, theo thứ tự xuất hiện. Máy chủ yêu cầu id bài làm và tự đặt tên tệp.",
-      "sessionLabel": "Id tài liệu bài làm",
-      "sessionPlaceholder": "ví dụ dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "Tải responses.csv",
-      "downloading": "Đang chuẩn bị bản xuất…",
-      "downloaded": "Đã tải {filename}",
-      "errorTitle": "Không tải được bản xuất phản hồi",
-      "errorDescription": "Máy chủ từ chối bản xuất và không tệp nào được ghi. Hãy kiểm tra id bài làm — bài làm không tồn tại trả về bản xuất rỗng, yêu cầu sai định dạng trả về lỗi."
-    },
-    "viewAsTeacher": {
-      "openCta": "Xem với vai trò giáo viên",
-      "openAriaLabel": "Xem với vai trò giáo viên {teacher} — xem thay, được ghi vào nhật ký kiểm toán",
-      "panelLabel": "Xem với vai trò giáo viên — xem thay",
-      "impersonationTitle": "Màn hình xem thay giáo viên",
-      "impersonationSubject": "Bạn đang thấy đúng những gì {teacher} thấy — các lớp và các bài làm của họ, không rộng hơn.",
-      "auditedNotice": "Lần truy cập này được ghi vào nhật ký kiểm toán dưới tài khoản của bạn, kèm giáo viên và thời điểm.",
-      "close": "Đóng",
-      "errorTitle": "Không tải được màn hình giáo viên",
-      "errorDescription": "Máy chủ từ chối hoặc đọc thất bại. Không có gì bị thay đổi — nhân sự này có thể không phải tài khoản giáo viên (danh sách này cũng gồm quản trị viên trường), có thể không còn tồn tại, hoặc chưa được gắn với trường nào.",
-      "classCount": "{count, plural, other {# classes}}",
-      "sittingCount": "{count, plural, other {# sittings}}",
-      "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "Khối lớp {yearBand}",
-      "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "Giáo viên này không phụ trách lớp nào.",
-      "noSittings": "Giáo viên này chưa có bài làm nào."
-    },
     "export": {
       "title": "Xuất trường học",
       "cta": "Tải CSV",
@@ -4225,7 +4213,15 @@
       "staffResendCooldown": "Lời mời này vừa được gửi lại. Hãy thử lại sau {seconds} giây.",
       "staffResendError": "Không gửi lại được lời mời. Hãy thử lại.",
       "staffRevokeSuccess": "Lời mời cho {email} đã được thu hồi. Liên kết của nó không còn hoạt động.",
-      "staffRevokeError": "Không thu hồi được lời mời. Hãy làm mới danh sách rồi thử lại."
+      "staffRevokeError": "Không thu hồi được lời mời. Hãy làm mới danh sách rồi thử lại.",
+      "formTitleAdmin": "Mời quản trị viên trường",
+      "formTitleTeacher": "Mời giáo viên",
+      "formSubtitle": "Họ sẽ nhận được lời mời qua email tới {school}.",
+      "roleNoteTeacher": "Giáo viên chỉ thấy lớp học và kết quả của riêng mình.",
+      "roleNoteAdmin": "Quản trị viên trường quản lý nhân viên, lớp học, học sinh và các đợt kiểm tra cho trường này.",
+      "alreadyHasAccessError": "Người này đã có quyền truy cập vào {school}.",
+      "outsideDomainWarning": "Ngoài miền {domain} — họ sẽ cần được phê duyệt khi đăng nhập lần đầu.",
+      "noNameWarning": "Nếu không có tên, email lời mời sẽ được gửi đến hộp thư."
     },
     "createSchool": {
       "button": "Tạo trường học",
@@ -4268,7 +4264,8 @@
         "tooLong": "Dùng tối đa 100 ký tự",
         "emailTooLong": "Dùng tối đa 255 ký tự",
         "emailInvalid": "Nhập địa chỉ email hợp lệ",
-        "nameTooShort": "Dùng ít nhất 3 ký tự"
+        "nameTooShort": "Dùng ít nhất 3 ký tự",
+        "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ"
       },
       "editTitle": "Sửa trường",
       "editDescription": "Cập nhật hồ sơ, gói và liên hệ của {name}. Việc lưu sẽ ghi lại chỉnh sửa trường có phiên bản.",
@@ -4290,7 +4287,11 @@
       "successToast": "Đã tạo trường học — lời mời quản trị viên đã gửi tới {email}.",
       "successNoInviteToast": "Đã tạo trường học. Chưa gửi lời mời quản trị viên.",
       "conflict": "Đã có trường với tên này.",
-      "errorToast": "Không thể tạo trường học đó. Chưa lưu gì cả."
+      "errorToast": "Không thể tạo trường học đó. Chưa lưu gì cả.",
+      "contactHelper": "Bắt buộc — người này sẽ nhận được lời mời chủ sở hữu",
+      "statusActiveWarning": "Tạo ở trạng thái Hoạt động sẽ bắt đầu tính phí ngay hôm nay",
+      "savingLabel": "Đang lưu…",
+      "formSummary": "{count, plural, other {# trường cần được chú ý}}"
     },
     "resultWindows": {
       "errorTitle": "Không thể tải các kỳ kết quả",
@@ -4949,7 +4950,7 @@
     "browse": "browse",
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
-    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "pastePlaceholder": "tên,tên họ,ngày sinh,khối lớp,ngôn ngữ chính",
     "classLabel": "Class",
     "classPlaceholder": "Select a class"
   },
@@ -5124,6 +5125,10 @@
         "badgeClosed": "Đã đóng",
         "badgeLive": "Trực tiếp",
         "closeSessionCta": "Đóng phiên",
+        "connectionNoted": "Kết nối: {connection}",
+        "connectionOffline": "Ngoại tuyến",
+        "connectionOnline": "Trực tuyến",
+        "connectionWeak": "Kết nối yếu",
         "endDialogCancel": "Vẫn mở",
         "endDialogConfirm": "Kết thúc phiên",
         "endDialogDescription": "Học sinh đang làm bài sẽ được nộp bài ở trạng thái hiện tại và mã tham gia sẽ ngừng hoạt động. Không thể hoàn tác.",
@@ -5150,15 +5155,19 @@
         "stallCaption": "{minutes, plural, other {Ô chuyển sang màu hổ phách sau # phút không hoạt động.}}",
         "startedAgo": "{minutes, plural, =0 {Phiên vừa bắt đầu} other {Phiên đã bắt đầu # phút trước}}",
         "stateInProgress": "Đang làm",
+        "stateAbsent": "Vắng mặt",
         "stateJoined": "Đã tham gia",
         "stateNotJoined": "Chưa tham gia",
+        "statePaused": "Tạm dừng",
         "stateScoringFailed": "Chấm điểm thất bại",
         "stateStalled": "Bị dừng",
         "stateSubmitted": "Đã nộp",
+        "summaryAbsent": "Vắng mặt",
         "summaryExpected": "Dự kiến",
         "summaryInProgress": "Đang làm",
         "summaryJoined": "Đã tham gia",
         "summaryLabel": "Số liệu của phiên",
+        "summaryPaused": "Tạm dừng",
         "summaryScoringFailed": "Chấm điểm thất bại",
         "summaryStalled": "Bị dừng",
         "summarySubmitted": "Đã nộp",

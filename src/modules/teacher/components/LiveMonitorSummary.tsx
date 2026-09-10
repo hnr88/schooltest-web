@@ -10,10 +10,10 @@ import {
 import type { LiveMonitorSummaryProps } from '@/modules/teacher/types/live-monitor.types';
 
 // The stat tiles above the grid: Expected · Joined · In progress · Submitted ·
-// Stalled · Scoring failed (.qa/DESIGN.md §Live monitoring + Lane E's operator
-// signal). Every number is C-TS-3's own `summary` — the portal never counts the
-// tiles below to fill these in, so the row can never disagree with the grid;
-// the sixth stat appears only once the server's summary carries it.
+// Stalled · Scoring failed + teacher/12's Absent · Paused (.qa/DESIGN.md
+// §Live monitoring + Lane E's operator signal). Every number is C-TS-3's own
+// `summary` — the portal never counts the tiles below to fill these in, so
+// the row can never disagree with the grid.
 //
 // A real <dl>: each label is the term for its value, so the pairing survives a
 // screen reader and the value's ink is decoration on top of a printed label.
@@ -25,7 +25,7 @@ function LiveMonitorSummary({ items }: LiveMonitorSummaryProps) {
     <dl
       data-slot="live-monitor-summary"
       aria-label={t('summaryLabel')}
-      className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-8"
     >
       {items.map((item) => (
         <div

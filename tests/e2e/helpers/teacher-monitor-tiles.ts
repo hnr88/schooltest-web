@@ -20,7 +20,9 @@ export const MONITOR_LABEL_KEY: Record<MonitorState, string> = {
   scoring_failed: 'stateScoringFailed',
   submitted: 'stateSubmitted',
   in_progress: 'stateInProgress',
+  paused: 'statePaused',
   stalled: 'stateStalled',
+  absent: 'stateAbsent',
   joined: 'stateJoined',
   not_joined: 'stateNotJoined',
 };
@@ -56,17 +58,36 @@ export function detailLine(wire: MonitorStudent): string {
   return cat(en, `${LIVE}.${MONITOR_LABEL_KEY[wire.state]}`);
 }
 
+/** teacher/12 — the connection chip's catalog key per wire label. */
+const CONNECTION_LABEL_KEY: Record<'online' | 'weak' | 'offline', string> = {
+  online: 'connectionOnline',
+  weak: 'connectionWeak',
+  offline: 'connectionOffline',
+};
+
 /** The sentence a screen reader hears — the state named in words, not in tint. */
 function srSentence(wire: MonitorStudent, detail: string, word: string): string {
-  if (detail === word) {
-    return cat(en, `${LIVE}.tileAria`)
-      .replace('{name}', wire.display_name)
-      .replace('{state}', word);
-  }
-  return cat(en, `${LIVE}.tileAriaDetail`)
-    .replace('{name}', wire.display_name)
-    .replace('{state}', word)
-    .replace('{detail}', detail);
+  const base =
+    detail === word
+      ? cat(en, `${LIVE}.tileAria`)
+          .replace('{name}', wire.display_name)
+          .replace('{state}', word)
+      : cat(en, `${LIVE}.tileAriaDetail`)
+          .replace('{name}', wire.display_name)
+          .replace('{state}', word)
+          .replace('{detail}', detail);
+  // teacher/12 — the connection chip's word joins the sentence whenever the
+  // payload carries one, exactly as the tile renders it.
+  const connection = wire.connection ?? null;
+  const connectionNote =
+    connection === null
+      ? ''
+      : ' ' +
+        cat(en, `${LIVE}.connectionNoted`).replace(
+          '{connection}',
+          cat(en, `${LIVE}.${CONNECTION_LABEL_KEY[connection]}`),
+        );
+  return base + connectionNote;
 }
 
 /** Asserts one tile's state AS TEXT, and hands the element back for the paint check. */
@@ -80,6 +101,16 @@ export async function expectTileText(page: Page, wire: MonitorStudent): Promise<
   await expect(tile).toContainText(wire.display_name);
   await expect(tile).toContainText(detail);
   await expect(tile.locator('.sr-only')).toHaveText(srSentence(wire, detail, word));
+  // teacher/12 — the connection chip beneath the name: absent from the tile
+  // when the derivation answers null, labelled from the catalog otherwise.
+  const connection = wire.connection ?? null;
+  const chip = tile.locator('[data-slot="live-monitor-connection"]');
+  if (connection === null) {
+    await expect(chip).toHaveCount(0);
+  } else {
+    await expect(chip).toHaveAttribute('data-connection', connection);
+    await expect(chip).toHaveText(cat(en, `${LIVE}.${CONNECTION_LABEL_KEY[connection]}`));
+  }
   return tile;
 }
 
@@ -97,6 +128,10 @@ export function untouchedSummary(expected: number): Record<string, number> {
     submitted: 0,
     stalled: 0,
     scoring_failed: 0,
+    // teacher/12 — the two new counters ship with the payload; nobody is in
+    // either state on a fresh sitting.
+    absent: 0,
+    paused: 0,
   };
 }
 

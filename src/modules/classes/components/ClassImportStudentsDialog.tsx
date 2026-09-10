@@ -35,7 +35,7 @@ export function ClassImportStudentsDialog({
         if (!next) onClose();
       }}
     >
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-xl">
+      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-[560px]">
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description', { name: className })}</DialogDescription>

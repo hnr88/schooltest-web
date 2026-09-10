@@ -11,9 +11,10 @@ import {
 import type { LiveMonitorLegendProps } from '@/modules/teacher/types/live-monitor.types';
 
 // The legend of every tile state (.qa/DESIGN.md §Live monitoring — the brief's
-// prose names four, the wireframe and C-TS-3's `MonitorState` both have five,
-// plus Lane E's `scoring_failed` operator state for a result whose R retries
-// were exhausted).
+// prose names four, the wireframe had five, Lane E added `scoring_failed` and
+// teacher/12 completes the vocabulary at eight with `absent` and `paused`).
+// It renders straight off MONITOR_STATE_ORDER, so the legend can never list a
+// state the grid cannot render, nor hide one it can.
 //
 // The caption prints `stall_threshold_minutes` STRAIGHT from the C-TS-3 payload,
 // which the server sources from `Config.stall_threshold_minutes`. No number is

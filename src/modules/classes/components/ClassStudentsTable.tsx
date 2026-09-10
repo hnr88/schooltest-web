@@ -1,5 +1,6 @@
 'use client';
 
+import { XIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -13,6 +14,7 @@ import {
   type DirectoryFilterDef,
   type DirectoryLabels,
   type DirectoryQueryStatus,
+  type DirectoryRowAction,
   type DirectorySortDef,
 } from '@/modules/directory';
 import { StatusPill } from '@/modules/design-system';
@@ -54,6 +56,8 @@ import type {
 export interface ClassStudentsTableKitProps extends ClassStudentsTableProps {
   /** The consumer's query status; the kit's loading/error/stale arms read it. */
   query?: DirectoryQueryStatus;
+  onRemoveStudent?: (student: ClassDetailStudent) => void;
+  removingDocumentIds?: ReadonlySet<string>;
 }
 
 const IDLE_QUERY: DirectoryQueryStatus = {
@@ -111,6 +115,8 @@ export function ClassStudentsTable({
   classDocumentId,
   students,
   query = IDLE_QUERY,
+  onRemoveStudent,
+  removingDocumentIds,
 }: ClassStudentsTableKitProps) {
   const t = useTranslations('Classes.detail.roster');
   const detail = useTranslations('Classes.detail');
@@ -215,6 +221,25 @@ export function ClassStudentsTable({
     ];
   }, [table]);
 
+  const rowActions = useMemo<
+    ((row: ClassDetailStudent) => readonly DirectoryRowAction<ClassDetailStudent>[]) | undefined
+  >(() => {
+    if (!onRemoveStudent) return undefined;
+    return (row) => {
+      if (removingDocumentIds?.has(row.documentId)) return [];
+      return [
+        {
+          label: t('removeStudentAria', { name: studentDisplayName(row) }),
+          onSelect: (target) => onRemoveStudent(target),
+          destructive: true,
+          quick: true,
+          icon: XIcon,
+          write: true,
+        },
+      ];
+    };
+  }, [onRemoveStudent, removingDocumentIds, t]);
+
   return (
     <div data-slot="class-students-table">
       <DirectoryTable
@@ -230,6 +255,7 @@ export function ClassStudentsTable({
         sorts={sorts}
         columns={columns}
         labels={labels}
+        rowActions={rowActions}
       />
     </div>
   );

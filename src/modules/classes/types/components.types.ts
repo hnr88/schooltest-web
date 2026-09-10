@@ -2,6 +2,7 @@ import type {
   ClassDetail,
   ClassDetailStudent,
   ClassDetailSummary,
+  ClassDetailTeacher,
   ClassStudentDetail,
   StudentTestResult,
   SubskillKey,
@@ -12,6 +13,7 @@ import type {
   ClassTestCompletionDisplay,
   SchoolClass,
 } from '@/modules/classes/types/classes.types';
+import type { SchoolStudent } from '@/modules/school-students';
 import type { SchoolTeacher } from '@/modules/teachers';
 
 export interface AddClassDialogProps {
@@ -81,6 +83,27 @@ export interface ClassDetailHeaderProps {
   schoolClass: ClassDetail;
   onEdit: () => void;
   onImport: () => void;
+}
+
+export interface ClassTeacherPanelProps {
+  schoolClass: ClassDetail;
+}
+
+export interface ClassTeachersPickerDialogProps {
+  className: string;
+  currentTeacher: ClassDetailTeacher | null;
+  pending: boolean;
+  onSubmit: (teacherDocumentIds: string[]) => Promise<boolean>;
+  onClose: () => void;
+}
+
+export interface ClassStudentsPickerDialogProps {
+  classDocumentId: string;
+  className: string;
+  roster: ClassDetailStudent[];
+  pending: boolean;
+  onSubmit: (students: SchoolStudent[]) => Promise<boolean>;
+  onClose: () => void;
 }
 
 export interface ClassSummaryCardsProps {

@@ -9,9 +9,11 @@ export interface StudentImportClassOption {
 
 // The class selector is optional by construction: Classes (spec §2) creates the
 // class in the same submit and omits `classes`, Students (spec §4) passes the
-// school's classes and the selector appears.
+// school's classes and the selector appears. `onChange` reports BOTH the parsed
+// view (for the counts and the per-row errors) and the raw csv text (what the
+// preview/commit engine consumes).
 export interface StudentImportFieldsProps {
-  onChange: (parsed: ParsedStudentCsv) => void;
+  onChange: (parsed: ParsedStudentCsv, csv: string) => void;
   classes?: readonly StudentImportClassOption[];
   classId?: string;
   onClassChange?: (documentId: string) => void;

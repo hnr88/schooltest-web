@@ -12,3 +12,6 @@ export type { RevealAuditEntry } from './types/stores.types';
 export type { ClassSitting, SittingMonitor, MonitorStudent } from './types/test-day.types';
 export type { SittingHistoryRow } from './types/sitting-history.types';
 export type { SittingSummary } from './types/sitting-summary.types';
+export { SessionActivityPanel } from './components/SessionActivityPanel';
+export { useSittingActivityQuery } from './queries/use-sitting-activity.query';
+export { useLogIncidentMutation } from './queries/use-log-incident.mutation';

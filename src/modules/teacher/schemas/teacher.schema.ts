@@ -26,11 +26,13 @@ export const readingAttributeSchema = z.enum(['R1', 'R2', 'R3', 'R4', 'R5', 'R6'
 export const masteryBandSchema = z.enum(['mastered', 'approaching', 'not_yet', 'not_assessed']);
 
 /**
- * Per-student live tile state on the C-TS-3 monitoring grid. `scoring_failed`
- * (Lane E's terminal result state) is the OPERATOR signal: a student whose
- * result exhausted its R retries must never read as merely "submitted". The
- * server derives it; this enum only accepts it — the web tolerates payloads
- * from before the API emits the state, never the reverse.
+ * Per-student live tile state on the C-TS3/C-SIT-02 monitoring grids — ONE
+ * vocabulary of eight. `scoring_failed` (Lane E's terminal result state) is
+ * the OPERATOR signal: a student whose result exhausted its R retries must
+ * never read as merely "submitted". teacher/12 adds `absent` (C-SIT-06's
+ * mark-absent) and `paused` (the room is paused; the pause writer is task
+ * 17's). The server derives them; this enum only accepts them — the web
+ * tolerates payloads from before the API emits a state, never the reverse.
  */
 export const monitorStateSchema = z.enum([
   'not_joined',
@@ -39,7 +41,17 @@ export const monitorStateSchema = z.enum([
   'submitted',
   'stalled',
   'scoring_failed',
+  'absent',
+  'paused',
 ]);
+
+/**
+ * D-07 answer-arrival recency on a monitor tile — a server derivation over
+ * the newest `api::response.response` against two `Config` thresholds, never
+ * a link probe. Nullable exactly as the API contract declares it: `null` on
+ * the three terminal states (`not_joined`, `submitted`, `scoring_failed`).
+ */
+export const connectionStateSchema = z.enum(['online', 'weak', 'offline']).nullable();
 
 /** The A/B parallel reading diagnostic pair (DECISIONS.md A2). */
 export const testVariantSchema = z.enum(['A', 'B']);

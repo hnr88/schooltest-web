@@ -2470,7 +2470,10 @@
         "joined": "已加入",
         "in_progress": "进行中",
         "submitted": "已提交",
-        "stalled": "停滞"
+        "stalled": "停滞",
+        "scoring_failed": "评分失败",
+        "absent": "缺席",
+        "paused": "已暂停"
       },
       "codeShownCount": "已向 {count} 人出示访问码",
       "closeCta": "关闭测验",
@@ -2504,6 +2507,20 @@
       "confirmBody": "当前的作答将结束，学生可以使用访问码重新加入。",
       "cancel": "取消",
       "confirm": "确认重考"
+    },
+    "activity": {
+      "title": "会话活动",
+      "subtitle": "本次考试中的每一项操作，以及执行者",
+      "loading": "正在加载活动记录…",
+      "error": "无法加载活动记录。",
+      "empty": "本次考试暂无任何活动记录。",
+      "truncated": "显示最近 {shown} 条，共 {total} 条。完整记录随会话保存，以备申诉。",
+      "appealsNote": "完整记录随会话保存，以备申诉。",
+      "logIncident": "记录事件",
+      "noteLabel": "事件备注",
+      "notePlaceholder": "发生了什么？（随会话记录保存）",
+      "incidentLogged": "事件已记录。",
+      "cancel": "取消"
     },
     "runSheetLink": "打开流程单"
   },
@@ -2583,7 +2600,10 @@
         "emptyDescription": "请在某个班级的“编辑班级”对话框中为该教师分配班级。",
         "completed": "{total} 人中 {done} 人已完成测试 A",
         "students": "{count, plural, other {# 名学生}}",
-        "openLabel": "打开班级 {name}"
+        "openLabel": "打开班级 {name}",
+        "removeLabel": "从{name}移除",
+        "removeErrorTitle": "无法将该教师移出班级",
+        "removeErrorDescription": "班级未发生更改。请检查网络连接后重试。"
       },
       "accountPanel": {
         "title": "账号详情",
@@ -2595,6 +2615,17 @@
         "lastActive": "最近活动",
         "neverActive": "从未开启过考试",
         "roleNone": "无角色"
+      },
+      "assignDialog": {
+        "title": "分配到班级",
+        "description": "勾选{name}负责的每个班级。取消勾选的班级将移除该教师。",
+        "classesLegend": "{count, plural, other {已选 # 个班级}}",
+        "empty": "您的学校还没有班级。",
+        "submit": "保存更改",
+        "submitting": "Saving...",
+        "cancel": "取消",
+        "errorTitle": "无法更新该班级",
+        "errorDescription": "班级未发生更改。请检查网络连接后重试。"
       }
     },
     "meta": {
@@ -2788,7 +2819,12 @@
         "duplicateToast": "这些学生已存在，请检查邮箱后重试。",
         "seatsToast": "您的方案已没有可用名额。",
         "forbiddenToast": "您没有权限添加学生。",
-        "genericToast": "操作未成功，请重试。"
+        "genericToast": "操作未成功，请重试。",
+        "rejectedToast": "{count, plural, other {行需要修正后才能导入}}",
+        "alreadyImportedToast": "此文件中的学生均已在本校注册。",
+        "successSkippedToast": "已导入 {created} 人，{skipped, plural, other {人已注册}}。",
+        "seatCapToast": "您的学校已没有剩余名额。请联系 SchoolTest 添加名额。",
+        "schoolInactiveToast": "您的学校账户未激活，目前无法添加学生。"
       },
       "roster": {
         "searchPlaceholder": "搜索学生",
@@ -2807,7 +2843,47 @@
         "filteredEmptyTitle": "没有学生符合这些筛选条件。",
         "filteredEmptyDescription": "请尝试其他搜索或清除筛选。",
         "loading": "正在加载学生",
-        "errorStaleBanner": "最近一次刷新失败 — 以下学生是服务器最后返回的列表。"
+        "errorStaleBanner": "最近一次刷新失败 — 以下学生是服务器最后返回的列表。",
+        "removeStudentAria": "将 {name} 移出本班"
+      },
+      "addStudent": "添加学生",
+      "rosterErrorTitle": "无法更新班级名册",
+      "rosterErrorDescription": "更新本班学生时出现问题，未做任何更改，请重试。",
+      "dismiss": "关闭",
+      "studentsAddedToast": "{count, plural, other {已将 # 名学生添加到班级。}}",
+      "studentRemovedToast": "已将 {name} 移出班级。",
+      "teachers": {
+        "label": "教师",
+        "add": "添加教师",
+        "removeAria": "将 {name} 移出本班",
+        "savedToast": "教师已更新。",
+        "errorTitle": "无法更新教师",
+        "errorDescription": "保存本班教师时出现问题，请重试。",
+        "retry": "重试",
+        "pickerTitle": "添加教师",
+        "pickerDescription": "选择负责 {className} 的教师。",
+        "pickerLoadError": "无法加载教师列表。",
+        "pickerLoadErrorDescription": "请稍后重试。",
+        "pickerEmpty": "学校的所有教师都已负责本班。",
+        "cancel": "取消",
+        "save": "添加到班级",
+        "saving": "正在添加…"
+      },
+      "studentPicker": {
+        "title": "添加学生",
+        "description": "选择属于 {className} 的学生。",
+        "moveWarning": "已在其他班级的学生将被调动——每名学生只属于一个班级。",
+        "searchLabel": "搜索学生",
+        "searchPlaceholder": "按姓名搜索",
+        "currentClassHint": "现属 {className} ——将被调动",
+        "noClassHint": "尚未分入班级",
+        "loadError": "无法加载学生列表。",
+        "loadErrorDescription": "请稍后重试。",
+        "empty": "学校的所有在读学生都已在本班。",
+        "noMatches": "没有匹配“{query}”的学生。",
+        "cancel": "取消",
+        "save": "添加到班级",
+        "saving": "正在添加…"
       }
     },
     "title": "班级",
@@ -3114,7 +3190,10 @@
       "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
       "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
       "forbiddenToast": "You do not have permission to add students.",
-      "genericToast": "No students were imported. Try again."
+      "genericToast": "No students were imported. Try again.",
+      "rejectedToast": "{count, plural, other {行需要修正后才能导入}}",
+      "alreadyImportedToast": "此文件中的学生均已在本校注册。",
+      "successSkippedToast": "已导入 {created} 人，{skipped, plural, other {人已注册}}。"
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3257,6 +3336,7 @@
         "undoExpired": "无法再撤销。刷新以查看当前状态。",
         "undoError": "无法保存更改。请刷新后重试。",
         "typedMismatch": "请输入与显示完全一致的名称以确认。",
+        "exportSuccess": "{count, plural, other {已导出 # 所学校}}",
         "success": {
           "activate": "{name} 已启用。",
           "reactivate": "{name} 已重新启用。",
@@ -3291,6 +3371,7 @@
         "non-government": "非公立",
         "catholic": "天主教学校"
       },
+      "bulkExport": "导出",
       "bulkSuspend": "暂停所选学校",
       "bulkArchive": "归档所选学校"
     },
@@ -3385,6 +3466,8 @@
         "restore": "恢复学校",
         "suspend": "暂停学校",
         "archive": "归档学校",
+        "recalculateSeats": "重新计算席位",
+        "recalculateSeatsSuccess": "席位已重新计算：已使用 {used}/{total}。",
         "undo": "撤销",
         "success": "{name} 已更新。",
         "undoSuccess": "{name} 已恢复。",
@@ -3562,70 +3645,8 @@
         }
       }
     },
-    "recovery": {
-      "title": "考试场次恢复",
-      "description": "作废出现问题的考试场次,或让学生重新参加考试。已作废的场次不计入正式报告。",
-      "pickerLabel": "考试场次",
-      "pickerPlaceholder": "选择考试场次",
-      "noClass": "无班级",
-      "empty": "该学校还没有考试场次。",
-      "loadingMonitor": "正在加载学生...",
-      "loadErrorTitle": "无法加载考试场次",
-      "loadErrorDescription": "请检查网络连接后重试。",
-      "retry": "重试",
-      "invalidateButton": "作废此考试场次",
-      "invalidatedNotice": "此考试场次已作废。学生可以重新参加考试。",
-      "confirmTitle": "作废此考试场次?",
-      "confirmBody": "进行中的测试将被结束,该场次的所有结果均不计入正式报告。学生可以重新参加考试。",
-      "cancel": "取消",
-      "confirm": "作废",
-      "invalidatedToast": "考试场次已作废。",
-      "errorToast": "无法作废该考试场次,请重试。",
-      "forbiddenToast": "您没有权限进行考试场次恢复。",
-      "resitButton": "重新考试",
-      "resitToast": "{name} 可以重新参加考试了。",
-      "resitErrorToast": "无法允许重新考试,请重试。",
-      "columnStudent": "学生",
-      "columnState": "状态",
-      "columnActions": "操作",
-      "state": {
-        "not_joined": "未加入",
-        "joined": "已加入",
-        "in_progress": "进行中",
-        "submitted": "已提交",
-        "stalled": "停滞"
-      }
-    },
     "window": {
-      "title": "生效试卷窗口",
-      "description": "选择该校场次使用哪份试卷，以及窗口的开启和关闭时间。",
-      "currentNone": "该校尚未设置窗口。",
-      "currentForm": "生效试卷：{formCode}",
-      "currentPeriod": "开启 {opens}，关闭 {closes}。",
-      "lockedBadge": "已锁定 - 已有学生参加过该试卷",
-      "formLabel": "试卷",
-      "formPlaceholder": "选择试卷",
-      "opensLabel": "开启时间",
-      "closesLabel": "关闭时间",
-      "saveButton": "保存窗口",
-      "savingButton": "正在保存...",
-      "savedToast": "窗口已保存。{formCode} 现已对该校生效。",
-      "saveErrorTitle": "窗口保存失败",
-      "lockedError": "该试卷已锁定，因为已有学生参加过。同一时间段内不能将窗口改到另一份试卷。",
-      "errorToast": "窗口保存失败。请重试。",
-      "forbiddenToast": "只有 SchoolTest 运维团队可以更改试卷窗口。",
-      "loadErrorTitle": "无法加载试卷窗口",
-      "loadErrorDescription": "请检查网络连接后重试。",
-      "retry": "重试",
-      "validation": {
-        "formRequired": "请选择试卷。",
-        "datetimeRequired": "请选择日期和时间。",
-        "order": "开启时间必须早于关闭时间。"
-      },
-      "integrityTitle": "该窗口存在完整性问题。",
-      "integrityDescription": "{count, plural, other {需先核对 # 个场次，然后才能发布结果}}",
-      "incompleteTitle": "该窗口尚未完成。",
-      "incompleteDescription": "部分学生尚未完成，因此以下结果并不完整。"
+      "title": "生效试卷窗口"
     },
     "settings": {
       "meta": {
@@ -3740,6 +3761,24 @@
         "loadError": "无法加载教师",
         "loadErrorDescription": "无法读取学校的教职员目录。",
         "saveErrorTitle": "无法保存"
+      },
+      "create": {
+        "title": "创建班级",
+        "description": "班级用于按考试时段和报告对学生分组。",
+        "submit": "创建班级",
+        "creating": "创建中…"
+      },
+      "form": {
+        "nameRequired": "班级名称为必填项",
+        "nameDuplicate": "该学校已存在同名班级",
+        "windowNeedsTeacher": "设置考试时段前请先指定任课教师",
+        "noTeacherWarning": "尚未指定教师 — 班级将保持待设置状态",
+        "noWindowOption": "尚无考试时段",
+        "testWindowLabel": "测试窗口",
+        "formSummary": "{count, plural, other {# 个字段需要注意}}",
+        "saveErrorGeneric": "无法保存班级 — 未做任何更改",
+        "savedToast": "{name} 已更新",
+        "createdToast": "{name} 已创建"
       },
       "rosterSearchPlaceholder": "搜索学生",
       "rosterCount": "{count, plural, =0 {没有学生} other {# 名学生}}",
@@ -3979,57 +4018,6 @@
         }
       }
     },
-    "inspection": {
-      "title": "试卷检视",
-      "description": "此窗口所指向试卷的构成：每道题的题型、阶段、Q 矩阵属性向量与正确答案，以及锚题和锁定状态。仅限运维 — 这是唯一显示答案的界面。",
-      "show": "检视试卷",
-      "hide": "隐藏检视",
-      "errorTitle": "无法加载试卷检视",
-      "errorDescription": "服务器拒绝或读取失败，未做任何更改 — 请重试，或确认此窗口的试卷仍然存在。",
-      "formCode": "试卷 {formCode}",
-      "itemCount": "{count, plural, other {# items}}",
-      "anchors": "锚题：{codes}",
-      "anchorsNone": "没有锚题",
-      "lockedBadge": "已锁定 — 已有考试提交",
-      "unlockedBadge": "未锁定",
-      "columnItem": "题目",
-      "columnTaskType": "题型",
-      "columnStage": "阶段",
-      "columnVector": "属性向量",
-      "columnKey": "正确答案",
-      "formSelectLabel": "要检视的试卷",
-      "noLiveWindow": "这所学校没有生效的试卷窗口，因此上面选中的只是被检视的试卷 — 并非该校考试当前使用的试卷。",
-      "notLiveForm": "正在检视的试卷不是此窗口生效的试卷（{formCode}）。"
-    },
-    "responsesExport": {
-      "title": "考试作答（CSV）",
-      "description": "单场考试的原始逐题导出，供离线分析：每条已存作答一行，按呈现顺序排列。服务器要求提供考试 ID，并由服务器命名文件。",
-      "sessionLabel": "考试文档 ID",
-      "sessionPlaceholder": "例如 dyvqpiunc7a4mibn2f6fnwwu",
-      "cta": "下载 responses.csv",
-      "downloading": "正在准备导出…",
-      "downloaded": "已下载 {filename}",
-      "errorTitle": "无法下载作答导出",
-      "errorDescription": "服务器拒绝了导出，未写入任何文件。请检查考试 ID — 未知的考试会返回空导出，格式错误的请求会返回错误。"
-    },
-    "viewAsTeacher": {
-      "openCta": "以教师身份查看",
-      "openAriaLabel": "以教师 {teacher} 的身份查看 — 模拟身份，会记入审计日志",
-      "panelLabel": "以教师身份查看 — 模拟身份",
-      "impersonationTitle": "模拟身份视图",
-      "impersonationSubject": "您看到的正是 {teacher} 所看到的内容 — 他们的班级与考试，不含更多范围。",
-      "auditedNotice": "此次访问会以您的账户记入审计日志，并附带该教师与时间。",
-      "close": "关闭",
-      "errorTitle": "无法加载教师视图",
-      "errorDescription": "服务器拒绝或读取失败，未做任何更改 — 该员工可能不是教师账户（此目录也包含学校管理员）、可能已不存在，或未关联到任何学校。",
-      "classCount": "{count, plural, other {# classes}}",
-      "sittingCount": "{count, plural, other {# sittings}}",
-      "monitorCount": "{count, plural, other {# monitor payloads}}",
-      "classMeta": "年级段 {yearBand}",
-      "studentCount": "{count, plural, other {# students}}",
-      "noClasses": "这位教师没有任何班级。",
-      "noSittings": "这位教师没有任何考试。"
-    },
     "export": {
       "title": "导出学校",
       "cta": "下载 CSV",
@@ -4206,7 +4194,15 @@
       "staffResendCooldown": "此邀请刚刚重新发送。请在 {seconds} 秒后重试。",
       "staffResendError": "无法重新发送邀请。请重试。",
       "staffRevokeSuccess": "{email} 的邀请已被撤销。其链接已失效。",
-      "staffRevokeError": "无法撤销邀请。请刷新列表后重试。"
+      "staffRevokeError": "无法撤销邀请。请刷新列表后重试。",
+      "formTitleAdmin": "邀请学校管理员",
+      "formTitleTeacher": "邀请教师",
+      "formSubtitle": "他们将收到发往 {school} 的邮件邀请。",
+      "roleNoteTeacher": "教师只能查看自己的班级和成绩。",
+      "roleNoteAdmin": "学校管理员负责管理本校的教职工、班级、学生和考试时段。",
+      "alreadyHasAccessError": "此人已拥有 {school} 的访问权限。",
+      "outsideDomainWarning": "超出 {domain} 域 —— 首次登录时需要批准。",
+      "noNameWarning": "如果没有姓名，邀请邮件将只以邮箱地址称呼。"
     },
     "createSchool": {
       "button": "创建学校",
@@ -4249,7 +4245,8 @@
         "tooLong": "请使用 100 个字符以内",
         "emailTooLong": "请使用 255 个字符以内",
         "emailInvalid": "请输入有效的电子邮件地址",
-        "nameTooShort": "请至少使用 3 个字符"
+        "nameTooShort": "请至少使用 3 个字符",
+        "phoneInvalid": "请输入有效的电话号码"
       },
       "editTitle": "编辑学校",
       "editDescription": "更新 {name} 的资料、套餐和联系方式。保存将写入带版本控制的学校修改。",
@@ -4271,7 +4268,11 @@
       "successToast": "学校已创建——管理员邀请已发送至 {email}。",
       "successNoInviteToast": "学校已创建。尚未发送管理员邀请。",
       "conflict": "已存在同名学校。",
-      "errorToast": "无法创建该学校。未保存任何内容。"
+      "errorToast": "无法创建该学校。未保存任何内容。",
+      "contactHelper": "必填 — 此人将收到所有者邀请",
+      "statusActiveWarning": "以「启用」状态创建将从今天开始计费",
+      "savingLabel": "保存中…",
+      "formSummary": "{count, plural, other {# 个字段需要注意}}"
     },
     "resultWindows": {
       "errorTitle": "无法加载结果窗口",
@@ -4930,7 +4931,7 @@
     "browse": "browse",
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
-    "pastePlaceholder": "first name,last name,email,first language,proficiency level",
+    "pastePlaceholder": "名,姓,出生日期,年级,第一语言",
     "classLabel": "Class",
     "classPlaceholder": "Select a class"
   },
@@ -5105,6 +5106,10 @@
         "badgeClosed": "已结束",
         "badgeLive": "进行中",
         "closeSessionCta": "关闭场次",
+        "connectionNoted": "连接：{connection}",
+        "connectionOffline": "离线",
+        "connectionOnline": "在线",
+        "connectionWeak": "连接较弱",
         "endDialogCancel": "继续开放",
         "endDialogConfirm": "结束场次",
         "endDialogDescription": "仍在作答的学生将按当前进度提交，加入码随即失效。此操作无法撤销。",
@@ -5131,15 +5136,19 @@
         "stallCaption": "{minutes, plural, other {超过 # 分钟无活动后，色块变为琥珀色。}}",
         "startedAgo": "{minutes, plural, =0 {场次刚刚开始} other {场次已开始 # 分钟}}",
         "stateInProgress": "作答中",
+        "stateAbsent": "缺席",
         "stateJoined": "已加入",
         "stateNotJoined": "未加入",
+        "statePaused": "已暂停",
         "stateScoringFailed": "评分失败",
         "stateStalled": "已停滞",
         "stateSubmitted": "已提交",
+        "summaryAbsent": "缺席",
         "summaryExpected": "应参加",
         "summaryInProgress": "作答中",
         "summaryJoined": "已加入",
         "summaryLabel": "场次统计",
+        "summaryPaused": "已暂停",
         "summaryScoringFailed": "评分失败",
         "summaryStalled": "已停滞",
         "summarySubmitted": "已提交",

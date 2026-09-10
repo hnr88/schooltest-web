@@ -6,12 +6,18 @@ import { z } from 'zod';
 
 export const sittingStatusSchema = z.enum(['open', 'closed']);
 
+// teacher/12 — ONE vocabulary across both reads: C-SIT-02's state widens UP
+// to `monitorStateSchema`'s eight members (never narrowed down). The read is
+// a plain object mirror, so payloads from before the widen still parse.
 export const sittingStudentStateSchema = z.enum([
   'not_joined',
   'joined',
   'in_progress',
   'submitted',
   'stalled',
+  'scoring_failed',
+  'absent',
+  'paused',
 ]);
 
 // Teacher-scoped GET /api/sittings row (create returns the same shape, so one

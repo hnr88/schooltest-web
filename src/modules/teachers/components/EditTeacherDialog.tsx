@@ -71,7 +71,7 @@ export function EditTeacherDialog({ row, onClose }: EditTeacherDialogProps) {
         if (!next) onClose();
       }}
     >
-      <DialogContent>
+      <DialogContent className="sm:max-w-[520px]">
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
