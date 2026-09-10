@@ -14,7 +14,7 @@ import path from 'node:path';
 import { expect, test, type Page, type Request } from '@playwright/test';
 
 import { apiEnv } from '../helpers/auth-db';
-import { namedRetry } from '../helpers/api-named-retry';
+import { HOOK_TIMEOUT_MS, namedRetry, TOTAL_BUDGET_MS } from '../helpers/api-named-retry';
 import { cat, loadMessages } from '../helpers/i18n';
 import {
   OpsFixtureLedger,
@@ -95,6 +95,16 @@ test.describe('ops staff directory (C-OPS-PORTAL-015)', () => {
   test.beforeAll(async ({ browser, request }) => {
     // Hooks do not inherit describe.configure's timeout.
     test.setTimeout(240_000);
+    // ops/12: the retry budget (175s) must fit INSIDE this hook's timeout, or
+    // every environment fault reads as an opaque hang. Fail fast if the
+    // headroom is ever removed.
+    if (test.info().timeout < TOTAL_BUDGET_MS) {
+      throw new Error(
+        `HOOK TIMEOUT TOO SMALL — the beforeAll fixture chain runs the ` +
+          `named-failure budget (TOTAL_BUDGET_MS=${TOTAL_BUDGET_MS}) but this ` +
+          `hook's timeout is ${test.info().timeout}ms.`,
+      );
+    }
     mkdirSync(CAPTURES, { recursive: true });
     const context = await browser.newContext({ baseURL: BASE_URL });
     const page = await context.newPage();

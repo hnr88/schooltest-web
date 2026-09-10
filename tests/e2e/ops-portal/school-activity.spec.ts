@@ -61,6 +61,11 @@ async function openSchool(page: Page): Promise<void> {
 }
 
 test.describe('ops school activity card (C-OPS-PORTAL-010)', () => {
+  // ops/12: the named-retry budget (175s) lives inside these tests' sign-in
+  // path, so the tests need the same headroom the other adopting specs give
+  // their hooks.
+  test.describe.configure({ timeout: 240_000 });
+
   test.beforeAll(() => {
     mkdirSync(CAPTURES, { recursive: true });
   });

@@ -22,7 +22,12 @@ import { z } from 'zod';
 
 import { REFERENCE_VIEWPORT } from '@/modules/ops/hooks/use-visual-reference';
 import { apiEnv } from '../helpers/auth-db';
-import { certifyApiState, namedRetry } from '../helpers/api-named-retry';
+import {
+  certifyApiState,
+  HOOK_TIMEOUT_MS,
+  namedRetry,
+  TOTAL_BUDGET_MS,
+} from '../helpers/api-named-retry';
 import { roleCredentials } from '../helpers/credentials';
 import { cat, loadMessages } from '../helpers/i18n';
 import { paceRateWindow } from '../helpers/pace';
@@ -134,6 +139,17 @@ test.describe.configure({ timeout: 240_000, retries: 1 });
 test.describe.configure({ mode: 'serial' });
 
 test.beforeAll(async ({ request }) => {
+  // The retry budget (175s) must fit INSIDE the enclosing hook timeout, or
+  // every cause looks like a hang. Guard BEFORE spending anything.
+  if (test.info().timeout < TOTAL_BUDGET_MS) {
+    throw new Error(
+      `HOOK TIMEOUT TOO SMALL — this spec's beforeAll runs the named-failure ` +
+        `budget (TOTAL_BUDGET_MS=${TOTAL_BUDGET_MS}) but the hook timeout is ` +
+        `${test.info().timeout}ms. Configure HOOK_TIMEOUT_MS (see ` +
+        `helpers/api-named-retry.ts) before running.`,
+    );
+  }
+  test.setTimeout(HOOK_TIMEOUT_MS);
   // API state gate (ops/12, orchestrator-directed): classify BEFORE spending
   // any attempt budget — serving proceeds; a SUPERVISOR CHURN or a BOOT STOP
   // throws named with the evidence, because neither is fixable by retrying.

@@ -22,7 +22,30 @@ import { execSync } from 'node:child_process';
 
 const ATTEMPTS = 4;
 const PER_ATTEMPT_CAP_MS = 90_000;
-const TOTAL_BUDGET_MS = 175_000;
+
+/**
+ * TOTAL time the retry chain may spend, and the hook timeout every adopting
+ * spec MUST configure.
+ *
+ * WHY THIS NUMBER EXISTS (orchestrator's spec error, ops/12's finding):
+ * Playwright's default `beforeAll` hook timeout is 30s. This helper's budget
+ * is 175s across 4 attempts. A 175s budget inside a 30s hook means the hook
+ * dies before any classification runs — so 'WEDGED' / 'API BOOT STOP' /
+ * 'RATE-LIMITED (429)' become structurally unreachable and every environment
+ * fault reads as an opaque hang. The adopting spec must raise its hook
+ * timeout to at least HOOK_TIMEOUT_MS (exported alongside) or the named
+ * classes are dead code.
+ */
+export const TOTAL_BUDGET_MS = 175_000;
+
+/**
+ * The hook timeout every spec adopting this helper must configure for its
+ * `beforeAll` (via `test.setTimeout(HOOK_TIMEOUT_MS)` inside the hook, or
+ * `test.describe.configure({ timeout })`), with headroom above
+ * TOTAL_BUDGET_MS. See TOTAL_BUDGET_MS for the failure this prevents.
+ */
+export const HOOK_TIMEOUT_MS = 240_000;
+
 const RATE_LIMITED_WAIT_MS = 45_000;
 const RESTART_WAIT_MS = 15_000;
 
