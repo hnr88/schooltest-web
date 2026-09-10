@@ -49,20 +49,50 @@ function classify(error: unknown): { label: string; waitMs: number } {
 export interface ApiState {
   /** true = the API answered (serviceable). */
   serving: boolean;
-  /** 'restart-window' = child just replaced, retry after the wait. 'boot-stop' = failing to come up, escalate. 'supervisor-churn' = something outside the fleet is relaunching the API. 'serving' = fine. */
-  state: 'serving' | 'restart-window' | 'boot-stop' | 'supervisor-churn';
+  /** 'wedged' = the watcher parked after a clean shutdown and ignores change events. 'supervisor-churn' = something outside the fleet is relaunching the API. 'boot-stop' = failing to come up, escalate. 'restart-window' = child just replaced, retry after the wait. 'serving' = fine. */
+  state: 'serving' | 'restart-window' | 'boot-stop' | 'wedged' | 'supervisor-churn';
   /** The measured evidence: child etimes, log lines, health code. */
   evidence: string;
 }
 
 const API_BASE_DEFAULT = 'http://127.0.0.1:5500';
 
-function supervisorPid(): string {
+/**
+ * ops/20's envstate technique (fleet standing rule): a `pgrep -f` SUBSTRING
+ * match matches its own command line and every shell carrying the string —
+ * three samples then show phantom churn on a healthy API. Filter by
+ * `/proc/<pid>/comm` (the process NAME), require `cwd` = `schooltest-api`,
+ * and explicitly exclude our own pid and our parent.
+ */
+function findStrapiSupervisors(selfPid: number): string[] {
+  const parentPid = process.ppid ? String(process.ppid) : '';
+  let all: string[] = [];
   try {
-    return execSync("pgrep -f 'strapi develop' | head -1", { encoding: 'utf8' }).trim();
+    all = execSync('ls /proc 2>/dev/null', { encoding: 'utf8' })
+      .split('\n')
+      .map((entry) => entry.trim())
+      .filter((entry) => /^\d+$/.test(entry));
   } catch {
-    return '';
+    return [];
   }
+  const supervisors: string[] = [];
+  for (const pid of all) {
+    if (pid === String(selfPid) || pid === parentPid) continue;
+    try {
+      const comm = execSync(`cat /proc/${pid}/comm 2>/dev/null`, { encoding: 'utf8' }).trim();
+      if (comm !== 'node') continue;
+      const cwd = execSync(`readlink /proc/${pid}/cwd 2>/dev/null`, { encoding: 'utf8' }).trim();
+      if (!cwd.endsWith('/schooltest-api')) continue;
+      const cmdline = execSync(`tr '\\0' ' ' < /proc/${pid}/cmdline 2>/dev/null`, {
+        encoding: 'utf8',
+      });
+      if (!cmdline.includes('strapi')) continue;
+      supervisors.push(pid);
+    } catch {
+      // The process vanished mid-scan — it was never a candidate.
+    }
+  }
+  return supervisors;
 }
 
 function childAgesOf(supervisor: string): number[] {
@@ -111,36 +141,37 @@ function healthOnce(apiBase: string): string {
 }
 
 /** A single sample: health + supervisor children + watcher-log tail. */
-function sampleOnce(apiBase: string): ApiState {
+function sampleOnce(apiBase: string, supervisors: string[]): ApiState {
   const health = healthOnce(apiBase);
   if (health.startsWith('2')) {
     return { serving: true, state: 'serving', evidence: `health=${health}` };
   }
 
-  const supervisor = supervisorPid();
-  const childAges = childAgesOf(supervisor);
+  const childAges = supervisors.flatMap((supervisor) => childAgesOf(supervisor));
   const ages =
     childAges.length > 0 ? `child etimes [${childAges.join(', ')}s]` : 'no watcher children';
-  let evidence = `health=${health || '000'}; supervisor=${supervisor || 'none'}; ${ages}`;
+  let evidence = `health=${health || '000'}; supervisors=[${supervisors.join(', ')}]; ${ages}`;
 
   let logLines = '';
-  try {
-    const firstChild = execSync(`pgrep -P ${supervisor} 2>/dev/null | head -1`, {
-      encoding: 'utf8',
-    }).trim();
-    if (firstChild !== '') {
+  for (const supervisor of supervisors) {
+    try {
+      const firstChild = execSync(`pgrep -P ${supervisor} 2>/dev/null | head -1`, {
+        encoding: 'utf8',
+      }).trim();
+      if (firstChild === '') continue;
       // readlink -f resolves the REAL log file on disk — it survives every
-      // child respawn, which is exactly when the evidence is needed.
+      // child respawn, which is exactly when the evidence is needed. Newer
+      // processes may report a pipe instead of a path; branch on the result.
       const logFile = execSync(`readlink -f /proc/${firstChild}/fd/1 2>/dev/null`, {
         encoding: 'utf8',
       }).trim();
       if (logFile.startsWith('/')) {
         logLines = execSync(`tail -c 2000 '${logFile}' 2>/dev/null`, { encoding: 'utf8' });
+        break;
       }
+    } catch {
+      // Try the next child / fall back to the newest relaunch log.
     }
-  } catch {
-    // fd/1 unreadable — the child may be gone; the relaunch-log fallback in
-    // the caller still applies.
   }
   if (logLines === '') logLines = watcherLogTail();
 
@@ -148,66 +179,92 @@ function sampleOnce(apiBase: string): ApiState {
     .split('\n')
     .find((line) => /ReferenceError|has been shut down|TypeScript compilation failed|Error:/i.test(line));
 
-  if (childAges.length > 0 && Math.min(...childAges) >= 40) {
-    // An OLD child plus no service: failing to come up, not restarting.
+  if (crashLine !== undefined) {
     return {
       serving: false,
       state: 'boot-stop',
-      evidence:
-        evidence + (crashLine ? `; watcher log: ${crashLine.trim()}` : '; watcher log unreadable'),
+      evidence: evidence + `; watcher log: ${crashLine.trim()}`,
     };
   }
   return { serving: false, state: 'restart-window', evidence };
 }
 
 /**
- * ops/12 (orchestrator-directed): distinguish THREE down-states of the shared
- * :5500 watcher, because they have three different cures:
+ * ops/12 (orchestrator-directed): classify the down-state of the shared
+ * :5500 watcher — FOUR states with FOUR different cures:
  *  - RESTART WINDOW: a young child was just replaced; recovers in 20-30s —
  *    wait 15s and retry.
- *  - BOOT STOP: an old child (or none) with no service — the process is
- *    failing to come up; retrying cannot fix it. Throw named, escalate.
- *  - SUPERVISOR CHURN: the supervisor PID itself changes between samples —
- *    something OUTSIDE this fleet is relaunching the API. No retry can fix
- *    it either; escalate.
- *
- * `ps` proves liveness, NOT serviceability, and the :5500 listener pid never
- * changes across watcher restarts — so the discriminators are the minimum
- * child etimes, the supervisor pid time series, and the child's stdout LOG
- * (a ReferenceError there means STOP AND ESCALATE, do not spend attempts).
- *
- * ONE health request; the supervisor sampling is process-table only. Never
- * more than three samples ~20s apart — a time series, not a probe loop.
+ *  - BOOT STOP: an old child (or none) with a crash line in the watcher log —
+ *    the process keeps retrying the identical crash. Throw named, escalate.
+ *  - WEDGED: the log shows a CLEAN shutdown ("Strapi has been shut down")
+ *    with no error line inside a live watcher, and the tree compiles — the
+ *    watcher is parked and ignores change events. Remedy: an orchestrator
+ *    restart, not a retry. Throw named, escalate.
+ *  - SUPERVISOR CHURN: the supervisor pid itself changes between samples —
+ *    something OUTSIDE this fleet is relaunching the API. Escalate.
  */
-export function detectApiState(apiBase = API_BASE_DEFAULT): ApiState {
-  return sampleOnce(apiBase);
+export function classifyDownState(input: {
+  supervisors: readonly string[];
+  childAges: readonly number[];
+  logTail: string;
+}): Extract<ApiState['state'], 'restart-window' | 'boot-stop' | 'wedged'> {
+  const shutDown = /Strapi has been shut down/i.test(input.logTail);
+  const crash = /ReferenceError|TypeScript compilation failed|\bError:/i.test(input.logTail);
+  // A clean shutdown with NO error line, inside a live watcher, is the WEDGED
+  // signature; a crash line is a BOOT STOP regardless of child age.
+  if (shutDown && !crash && input.supervisors.length > 0) return 'wedged';
+  if (crash) return 'boot-stop';
+  if (input.childAges.length > 0 && Math.min(...input.childAges) >= 40) return 'boot-stop';
+  return 'restart-window';
 }
 
+/**
+ * ops/12 (orchestrator-directed): certify the shared :5500 before a lane run.
+ * ONE health request; if it answers, this returns immediately — the churn
+ * sampling never runs on a healthy API. If the API is down, the supervisor
+ * pid is sampled three times ~20s apart (process-table only, no API load):
+ * a CHANGING pid is supervisor churn from an outside relauncher, and a
+ * stable one is classified from children and watcher log. Negative control:
+ * on a stable single supervisor the classifier can never return
+ * 'supervisor-churn' — churn requires a measured pid change.
+ */
 export async function certifyApiState(
   apiBase = API_BASE_DEFAULT,
-  samples = 3,
-  gapMs = 20_000,
+  opts?: { samples?: number; gapMs?: number },
 ): Promise<ApiState> {
-  const first = sampleOnce(apiBase);
-  if (first.serving || first.state === 'boot-stop') return first;
+  const first = sampleOnce(apiBase, findStrapiSupervisors(process.pid));
+  if (first.serving) return first;
 
-  // Down and not yet classified as a boot stop: is the supervisor churning?
+  const samples = opts?.samples ?? 3;
+  const gapMs = opts?.gapMs ?? 20_000;
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-  const pids = [supervisorPid()];
+  const pidSeries: string[] = [findStrapiSupervisors(process.pid).join(',')];
   for (let i = 1; i < samples; i += 1) {
     await sleep(gapMs);
-    pids.push(supervisorPid());
+    pidSeries.push(findStrapiSupervisors(process.pid).join(','));
   }
-  if (new Set(pids).size > 1) {
+  if (new Set(pidSeries).size > 1) {
     return {
       serving: false,
       state: 'supervisor-churn',
-      evidence: `supervisor pid changed ${pids.join(' -> ')} — something outside this fleet is relaunching the API; a run started into this fails for reasons no retry can fix`,
+      evidence: `${first.evidence}; supervisor pid series changed: ${pidSeries.join(' -> ')} — something outside this fleet is relaunching the API; a run started into this fails for reasons no retry can fix`,
     };
   }
-  // Stable supervisor: one re-classification now that the samples have aged
-  // any young child past the restart-window ambiguity.
-  return sampleOnce(apiBase);
+
+  const supervisors = findStrapiSupervisors(process.pid);
+  const childAges = supervisors.flatMap((supervisor) => childAgesOf(supervisor));
+  const state = classifyDownState({
+    supervisors,
+    childAges,
+    logTail: watcherLogTail(),
+  });
+  return {
+    serving: false,
+    state,
+    evidence: `${first.evidence}; pid series stable: ${pidSeries.join(' == ')}; watcher log tail: ${
+      watcherLogTail || ''
+    }${''}`,
+  };
 }
 
 /**
