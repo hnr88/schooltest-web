@@ -64,6 +64,10 @@ export const TRAIL_LABELS: Readonly<Record<string, string>> = {
   '/dashboard/school/teachers': 'Shell.nav.teachers',
   // --- teacher --------------------------------------------------------------
   '/dashboard/teach/notifications': 'Shell.nav.notifications',
+  // The school-staff settings route (notifications/06, D-08) — teacher AND
+  // school_admin, so it sits with the other school-staff teach entry and reuses
+  // the existing Shell.nav.settings label rather than adding a second one.
+  '/dashboard/teach/settings': 'Shell.nav.settings',
   '/dashboard/teach/classes': 'Shell.nav.classes',
   '/dashboard/teach/classes/[documentId]/test-day': 'Navigation.testDay',
   '/dashboard/teach/results': 'Navigation.results',

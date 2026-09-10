@@ -42,6 +42,15 @@ export const RESULTS_HREF = '/dashboard/results';
 // /dashboard/reports route.
 export const REPORTS_HREF = '/dashboard/reports';
 
+// School-staff settings (notifications/06, D-08). The user menu's Settings item
+// sends teacher and school_admin HERE instead of /dashboard/settings: that route
+// is the parent portal's, behind ParentGuard + the parent-views mask, while
+// GET/PUT /api/notification-preferences/me is granted to every role and gates
+// the events staff actually receive. NOT a rail entry — the teacher rail stays
+// the design's two entries (R-10/D-33) and the school admin's Account tile is
+// row school-admin/24's — so this const has exactly one consumer, UserMenu.
+export const STAFF_SETTINGS_HREF = '/dashboard/teach/settings';
+
 // School admin home (task 27 builds the page; the school-scoped API routes
 // answer 403 to every other role, so the whole section is role-scoped).
 export const SCHOOL_HREF = '/dashboard/school';
