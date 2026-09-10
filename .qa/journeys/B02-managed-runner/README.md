@@ -434,3 +434,63 @@ and the operator can clear it by hand between waves.
 - `ops-session-expired.spec.ts` and `teacher-sidebar.spec.ts:187` — the GAP-6
   expired-session wall — are red headless.
 - `settings-tabs.spec.ts:69` red headless; `students-list.spec.ts` all 8 skipped.
+
+---
+
+## 11. A runId is NOT durable evidence: the managed store prunes at ~10 runs
+
+Discovered at 20:57Z, an hour after §9 was written, and it invalidates the way
+this whole mission has been citing proof. The managed run store keeps only about
+the last ten runs. Measured on this task's own six runs:
+
+```
+aea2a74d  green api run   result STILL readable via tests.result; 0 files (non-UI, expected)
+3d8af24e  teacher-sidebar 2 files SURVIVING
+f25e1143  flow 12         PRUNED   <- the teacher-dashboard snapshot §10 was built on
+9f36d3b2  auth-logo       PRUNED   <- false-pass evidence
+3a16cb78  auth-logo       PRUNED   <- false-pass evidence
+ee6b2a75  a11y-auth       PRUNED
+(12 run directories retained in total, fleet-wide)
+```
+
+So four of the six screenshot paths this README cited an hour ago are gone, and
+`tests.result` on a pruned runId answers "No retained result". The J06 worker hit
+the same wall independently on its own green run `13bc094e` — which passed 2/0
+with a retained PNG and now has neither.
+
+**What this means for anyone judging a task tonight:** a bare runId is a pointer
+that expires, not evidence. Copy the attachments into the row's `.qa/journeys/`
+folder and COMMIT them, then cite the committed path. That is what §12 does.
+
+**What was lost and what it costs.** The pruned screenshots were my own
+attachments for §10, so §10's *artifacts* are gone while its *claim* stands
+harder than before: the J06 worker reached the identical diagnosis independently
+from its own snapshots (tab parked as `parent` on the "Not part of this release"
+screen, identical screenshot hash across two runs four minutes apart), and the
+scheduler has since broadcast it to the fleet as "the tell", listing five void
+runs across four agents on four unrelated specs — including my `3d8af24e`. I did
+not re-run anything to replace the lost images: the tab is still parked, the
+fleet has been told not to navigate it, and those runs are now formally void.
+
+Two facts from that broadcast worth keeping here, because they bound what §10
+said was possible:
+- `page.context().clearCookies()` is **REFUSED** — "CDP session does not belong
+  to this Browser tab". So a spec cannot clear the tab from inside even in
+  principle, which closes the last option §10 left open.
+- The reset is the orchestrator's/operator's call. Meanwhile the Playwright CLI
+  is the *sounder* evidence for anything that signs in, not a lesser fallback,
+  and non-UI managed runs are unaffected.
+
+## 12. The durable evidence twin (cite these, not the runIds)
+
+`.qa/journeys/B02-managed-runner/evidence/`
+
+| file | what it proves |
+|---|---|
+| `aea2a74d-green-managed-run.json` | The runner EXECUTES. Verbatim `tests.result`: `status passed`, `exitCode 0`, `errors []`, `summary { passed: 14, failed: 0, skipped: 0, durationMs: 1144 }`, 14 results all `passed`, under taskId `314e7af0-…`, with **no `project`** in the request. The exact inverse of `summary: null` / `results: []`. |
+| `3d8af24e-teacher-sidebar-30s-timeout-parked-tab.png` | The §10 defect, on the one run whose attachment survived: a teacher-rail test that is green headless (7 passed) dying at exactly 30s in-tab. |
+| `3d8af24e-teacher-sidebar-error-context.md` | Its error context, naming the timeout rather than any assertion — the signature of a form that never rendered. |
+
+Plus the three shots committed in `dd51a1f` under `shots/`, and the command
+output pasted in §9: web `typecheck` exit 0, web `lint` exit 0, and the command
+that rejected attempt 1 now `3 passed (49.5s)` exit 0.
