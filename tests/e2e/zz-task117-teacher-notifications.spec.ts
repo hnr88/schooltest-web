@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
+import { HOOK_TIMEOUT_MS } from './helpers/api-named-retry';
 import { loginAsParent } from './helpers/auth';
 import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 import { runSql } from './helpers/auth-db';
@@ -97,6 +98,12 @@ test.describe('task 117: teacher notification flow vs the live stack', () => {
   let notificationTitle: string;
 
   test.beforeAll(async ({ request }) => {
+    // ops/12 (1c5104f): the hook budget must EXCEED the retry budget it
+    // contains. Playwright's default beforeAll timeout is 30s against a 175s
+    // ride-out, so without this an environment fault arrives as an opaque
+    // hook hang instead of a named class. First statement, not an options
+    // argument — that overload does not exist in Playwright 1.61.1.
+    test.setTimeout(HOOK_TIMEOUT_MS);
     // Setup: flag a fixture roster child as the teacher (C-CHD-05), which
     // dispatches a real student_email_fix_requested notification to the
     // school's school_admin through the live pipeline.
@@ -206,6 +213,71 @@ test.describe('task 117: teacher notification flow vs the live stack', () => {
   test('teacher: bell view-all lands on the same teach feed', async ({ page }) => {
     await signIn(page, TEACHER, '**/dashboard**');
     await openFeedViaBell(page, '**/dashboard/teach/notifications');
+  });
+
+  // teacher/30 — THE UNREAD DISTINCTION, ASSERTED DIRECTLY AND BY COUNT.
+  //
+  // The row's "unread rows stay visually distinct under every filter" bullet is
+  // VACUOUS on this surface: the endpoint takes page/pageSize only, so no
+  // filter is offered and nothing was asserting the distinction at all. A
+  // vacuous pass is worse than a weak one — it does not even try. So the
+  // property that bullet exists to protect is pinned here on its own merits,
+  // independent of filtering, and it stays pinned if someone later widens the
+  // endpoint and adds the filter.
+  //
+  // COUNTED, three ways that must agree: N unread rows -> N unread tiles -> N
+  // mark-read controls. A "some unread row looks unread" check would pass with
+  // one row styled correctly and the rest broken.
+  test('teacher: unread rows are visually distinct, and every one carries a mark-read control', async ({
+    page,
+  }) => {
+    await signIn(page, TEACHER, '**/dashboard**');
+    await openFeedViaBell(page, '**/dashboard/teach/notifications');
+    const screen = page.locator('[data-surface="teacher-notifications"]');
+    await expect(screen).toBeVisible({ timeout: 20_000 });
+
+    // teacher/30 — WAIT FOR THE PAGE TO SETTLE BEFORE COUNTING. This is the
+    // server-mode difference and it cost this test a silent skip on its first
+    // live run: the surface becomes visible while the kit is still in its
+    // loading arm, so a `count()` taken the instant the surface appears reads 0
+    // rows and the guard below then skipped a test that had 20 unread rows to
+    // check. A count is only meaningful once at least one row has rendered, so
+    // that is asserted with a retrying expectation first.
+    const allRows = screen.locator('[data-slot="school-notification-item"]');
+    await expect(allRows.first(), 'a feed row renders before anything is counted').toBeVisible({
+      timeout: 20_000,
+    });
+
+    const unreadRows = screen.locator('[data-slot="school-notification-item"][data-read="false"]');
+    const readRows = screen.locator('[data-slot="school-notification-item"][data-read="true"]');
+    const unreadCount = await unreadRows.count();
+
+    // The guard SURVIVES, but only for genuine absence — a feed whose visible
+    // page really carries no unread row. It is no longer reachable by a race.
+    test.skip(
+      unreadCount === 0,
+      'feed has no unread row on this page — the distinction cannot be exercised',
+    );
+
+    // One mark-read control per unread row, counted rather than sampled.
+    await expect(
+      screen.getByRole('button', { name: cat(en, 'Notifications.markRead'), exact: true }),
+    ).toHaveCount(unreadCount);
+
+    // Every unread tile carries the unread weight; no unread row is styled read.
+    for (let index = 0; index < unreadCount; index += 1) {
+      const tile = unreadRows.nth(index).locator('> span').first();
+      await expect(tile, `unread row ${index} carries the unread tile weight`).toHaveClass(
+        /bg-foreground/,
+      );
+    }
+
+    // And a read row, where one exists, carries the READ treatment — the other
+    // half of the distinction. Without this the test would pass if every row
+    // were styled unread.
+    if ((await readRows.count()) > 0) {
+      await expect(readRows.first().locator('> span').first()).toHaveClass(/bg-divider/);
+    }
   });
 
   // teacher/30 — THE PAGINATION BOUNDARY DID NOT MOVE. The migration to the
