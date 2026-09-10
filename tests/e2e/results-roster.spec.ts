@@ -1,10 +1,11 @@
 import path from 'node:path';
 import { mkdirSync, readFileSync } from 'node:fs';
 
-import { expect, test, type Page, type Route } from '@playwright/test';
+import { expect, test, type BrowserContext, type Page, type Route } from '@playwright/test';
 
 import { cat, icu } from './helpers/i18n';
-import { en, signIn } from './helpers/teacher-rail';
+import { formSignInCount, signedInContext } from './helpers/auth-state';
+import { en } from './helpers/teacher-rail';
 
 // Task 33 — Screen A, the class roster, proven against a FIXTURE roster payload
 // served by route interception on `/api/my/students/results?class=` (the task 23
@@ -55,10 +56,18 @@ function rosterPayload() {
 test.describe('task 33 — the class roster (Screen A)', () => {
   let rosterRequests: number;
   let page: Page;
+  let context: BrowserContext;
 
   test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-    await signIn(page, 'teacher');
+    // ONE form sign-in for the whole file, reused as storage state. This used to
+    // drive the real /sign-in form per TEST — six logins for six tests, against
+    // an API that allows 20 per minute per IP shared with the api suite. The
+    // pacing constant in teacher-rail is module state, so it cannot coordinate
+    // across concurrent runs; the fixture removes the logins instead of pacing
+    // them.
+    ({ context, page } = await signedInContext(browser, 'teacher', {
+      viewport: { width: 1280, height: 900 },
+    }));
     rosterRequests = 0;
     await page.route('**/api/my/students/results*', async (route: Route) => {
       rosterRequests += 1;
@@ -69,7 +78,15 @@ test.describe('task 33 — the class roster (Screen A)', () => {
   });
 
   test.afterEach(async () => {
-    await page.close();
+    await context.close();
+  });
+
+  // THE SAVING, ASSERTED RATHER THAN TRUSTED. The value of the fixture is a
+  // number, and a number nothing checks decays the first time someone
+  // reintroduces a per-test login. Six tests in this file; exactly ONE form
+  // sign-in for all of them.
+  test.afterAll(() => {
+    expect(formSignInCount(), 'one form sign-in for the whole file').toBe(1);
   });
 
   test('ONE roster call serves the surface; the table renders the whole roster', async () => {

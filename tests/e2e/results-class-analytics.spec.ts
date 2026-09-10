@@ -1,10 +1,11 @@
 import path from 'node:path';
 import { mkdirSync, readFileSync } from 'node:fs';
 
-import { expect, test, type Page, type Route } from '@playwright/test';
+import { expect, test, type BrowserContext, type Page, type Route } from '@playwright/test';
 
 import { cat, icu } from './helpers/i18n';
-import { en, signIn } from './helpers/teacher-rail';
+import { formSignInCount, signedInContext } from './helpers/auth-state';
+import { en } from './helpers/teacher-rail';
 
 // Task 34 — Screen B, the class analytics, proven against a FIXTURE roster
 // payload served by route interception (same contract shape as the roster spec).
@@ -49,10 +50,15 @@ test.describe('task 34 — class analytics (Screen B)', () => {
   let rosterRequests: number;
   let retiredRequests: string[];
   let page: Page;
+  let context: BrowserContext;
 
   test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-    await signIn(page, 'teacher');
+    // ONE form sign-in for the whole file, reused as storage state — see
+    // helpers/auth-state.ts. Five tests here previously meant five real form
+    // logins against a 20/min limiter shared with the api suite.
+    ({ context, page } = await signedInContext(browser, 'teacher', {
+      viewport: { width: 1280, height: 900 },
+    }));
     rosterRequests = 0;
     retiredRequests = [];
     await page.route('**/api/my/students/results*', async (route: Route) => {
@@ -70,7 +76,13 @@ test.describe('task 34 — class analytics (Screen B)', () => {
   });
 
   test.afterEach(async () => {
-    await page.close();
+    await context.close();
+  });
+
+  // THE SAVING, ASSERTED. Five tests, exactly ONE form sign-in — a number
+  // nothing checks decays the first time a per-test login reappears.
+  test.afterAll(() => {
+    expect(formSignInCount(), 'one form sign-in for the whole file').toBe(1);
   });
 
   test('switching tabs issues no new request', async () => {
