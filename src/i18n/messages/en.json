@@ -619,6 +619,10 @@
     "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
+    "schoolSwitch": {
+      "yourSchools": "Your schools",
+      "unavailable": "School unavailable"
+    },
     "nav": {
       "overview": "Overview",
       "myChildren": "My children",

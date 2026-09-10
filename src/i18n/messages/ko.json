@@ -619,6 +619,10 @@
     "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
+    "schoolSwitch": {
+      "yourSchools": "나의 학교",
+      "unavailable": "학교 정보를 사용할 수 없음"
+    },
     "nav": {
       "overview": "개요",
       "myChildren": "내 자녀",

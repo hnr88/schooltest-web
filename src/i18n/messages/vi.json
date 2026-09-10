@@ -619,6 +619,10 @@
     "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
+    "schoolSwitch": {
+      "yourSchools": "Trường của bạn",
+      "unavailable": "Không có thông tin trường học"
+    },
     "nav": {
       "overview": "Tổng quan",
       "myChildren": "Con của tôi",

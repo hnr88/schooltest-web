@@ -26,3 +26,14 @@ export type {
   ParticipationClassRow,
   SchoolParticipation,
 } from './types/participation.types';
+// Multi-tenant school switcher (school selector).
+export { useSchoolMembershipsQuery } from './queries/use-school-memberships.query';
+export { useSwitchSchool, useClearActiveSchoolOnScopeError } from './hooks/use-switch-school';
+export { useActiveSchoolStore } from './stores/use-active-school-store';
+export {
+  schoolMembershipSchema,
+  schoolMembershipsResponseSchema,
+  formatSchoolMembershipSubLine,
+  type SchoolMembership,
+  type SchoolMemberships,
+} from './schemas/school-memberships.schema';

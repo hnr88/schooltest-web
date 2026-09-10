@@ -15,8 +15,9 @@ import {
 } from '@/modules/design-system';
 import { usePathname } from '@/i18n/navigation';
 import { useAuth } from '@/modules/auth';
-import { TEACHER_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
+import { SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
 import { useTeacherDashboardQuery } from '@/modules/teacher';
+import { SchoolSwitcher } from '@/modules/shell/components/SchoolSwitcher';
 import { RailSectionLabel } from '@/modules/shell/components/RailSectionLabel';
 import { SidebarLogoLink } from '@/modules/shell/components/SidebarLogoLink';
 import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
@@ -87,6 +88,14 @@ function AppSidebar() {
     <Sidebar collapsible="icon" className={RAIL_CLASSES}>
       <SidebarHeader className="shrink-0 px-4 pt-7 pb-0 group-data-[collapsible=icon]:px-1">
         <SidebarLogoLink />
+        {/* Multi-tenant school switcher (School Admin Portal.dc.html:26–48):
+            the school block + "Your schools" menu, for the school_admin rail
+            ONLY. Role-gated — every other portal's rail is byte-identical. */}
+        {roleType === SCHOOL_ADMIN_ROLE_TYPE ? (
+          <div className="pt-5 group-data-[collapsible=icon]:hidden">
+            <SchoolSwitcher />
+          </div>
+        ) : null}
       </SidebarHeader>
       {/* The COLLAPSED rail is a clipping surface: the vendored SidebarContent adds
           `group-data-[collapsible=icon]:overflow-hidden` and the first nav item sits

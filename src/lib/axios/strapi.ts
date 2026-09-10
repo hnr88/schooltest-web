@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosHeaders } from 'axios';
 
 import { classifyRestFailure, portalVersionHeader, type RestFailure } from '@schooltest/ops-contracts';
 
+import { getActiveSchoolDocumentId } from '@/lib/axios/active-school';
 import { env } from '@/lib/env';
 
 export { parseDataEnvelope } from '@schooltest/ops-contracts';
@@ -122,6 +123,22 @@ strapi.interceptors.request.use((config) => {
         : new AxiosHeaders(config.headers as Record<string, string> | undefined);
     headers.set('Authorization', `Bearer ${token}`);
     config.headers = headers;
+  }
+  // Multi-tenant school switcher: every school-scoped route resolves the
+  // ACTIVE school from this header when the rail switcher has one picked.
+  // Absent header = the legacy single-school resolution, byte for byte — the
+  // holder is only ever set by the school_admin switcher (and cleared on auth
+  // change), so teacher/parent/ops requests are untouched.
+  if (url === '/api/schools/me' || url.startsWith('/api/schools/me/')) {
+    const activeSchoolDocumentId = getActiveSchoolDocumentId();
+    if (activeSchoolDocumentId) {
+      const headers =
+        config.headers instanceof AxiosHeaders
+          ? config.headers
+          : new AxiosHeaders(config.headers as Record<string, string> | undefined);
+      headers.set('X-School-DocumentId', activeSchoolDocumentId);
+      config.headers = headers;
+    }
   }
   // Opt-in only, and deliberately independent of the block above: the version
   // header selects a wire shape, it carries no authority. A request that opts

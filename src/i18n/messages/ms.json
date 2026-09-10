@@ -619,6 +619,10 @@
     "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
+    "schoolSwitch": {
+      "yourSchools": "Sekolah anda",
+      "unavailable": "Maklumat sekolah tidak tersedia"
+    },
     "nav": {
       "overview": "Ringkasan",
       "myChildren": "Anak saya",

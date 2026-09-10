@@ -619,6 +619,10 @@
     "activityUpdatedDetail": "Profile details were updated"
   },
   "Shell": {
+    "schoolSwitch": {
+      "yourSchools": "โรงเรียนของคุณ",
+      "unavailable": "ไม่สามารถแสดงข้อมูลโรงเรียน"
+    },
     "nav": {
       "overview": "ภาพรวม",
       "myChildren": "บุตรหลานของฉัน",
