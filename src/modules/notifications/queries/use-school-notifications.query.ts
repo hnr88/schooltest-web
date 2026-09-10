@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
-import { NOTIFICATIONS_QUERY_KEY } from '@/modules/notifications/constants/queries.constants';
 import {
   schoolNotificationListParamsSchema,
   schoolNotificationListResponseSchema,

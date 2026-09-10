@@ -208,6 +208,65 @@ test.describe('task 117: teacher notification flow vs the live stack', () => {
     await openFeedViaBell(page, '**/dashboard/teach/notifications');
   });
 
+  // teacher/30 — THE PAGINATION BOUNDARY DID NOT MOVE. The migration to the
+  // generic kit could have silently turned this SERVER-paginated feed into a
+  // client-mode single read of 100 rows (ops/36's NotificationFeedList is
+  // `mode: 'client'`), which would lose every notification past the hundredth
+  // and break paging entirely. D-17 forbids moving the boundary.
+  //
+  // PAIRED, because a lone "page 1 renders" assertion would pass IDENTICALLY
+  // under the regression it is meant to catch: the first assertion pins the
+  // server page size at 20, the second proves a SECOND page is actually
+  // reachable — which a single 100-row client read could never offer.
+  test('teacher: the feed is still SERVER-paginated at 20 per page, and page 2 is reachable', async ({
+    page,
+    request,
+  }) => {
+    const token = await login(request, TEACHER);
+    // The wire, first: the endpoint still answers with pageSize 20.
+    const first = await fetchWithRetry(() =>
+      request.get(`${API}/api/schools/me/notifications?page=1&pageSize=20`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    );
+    const firstBody = (await first.json()) as {
+      data: SchoolFeedRow[];
+      meta: { pagination: { page: number; pageSize: number; pageCount: number; total: number } };
+    };
+    expect(firstBody.meta.pagination.pageSize, 'the server page size is unchanged').toBe(20);
+    expect(firstBody.data.length).toBeLessThanOrEqual(20);
+
+    // THE SENSITIVITY HALF: with more than one page of rows, page 2 must serve
+    // a DIFFERENT set. Skipped honestly when the fixture has only one page —
+    // an absent second page is not evidence either way.
+    test.skip(
+      firstBody.meta.pagination.pageCount < 2,
+      'fixture feed has a single page — the second-page half cannot be exercised',
+    );
+    const second = await fetchWithRetry(() =>
+      request.get(`${API}/api/schools/me/notifications?page=2&pageSize=20`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    );
+    const secondBody = (await second.json()) as { data: SchoolFeedRow[] };
+    expect(secondBody.data.length, 'page 2 serves rows').toBeGreaterThan(0);
+    const firstIds = firstBody.data.map((row) => row.documentId);
+    expect(
+      secondBody.data.every((row) => !firstIds.includes(row.documentId)),
+      'page 2 is a different set, not a re-serve of page 1',
+    ).toBe(true);
+
+    // And the screen itself offers the kit's pager rather than a bespoke one.
+    await signIn(page, TEACHER, '**/dashboard**');
+    await openFeedViaBell(page, '**/dashboard/teach/notifications');
+    const screen = page.locator('[data-surface="teacher-notifications"]');
+    await expect(screen).toBeVisible({ timeout: 20_000 });
+    await expect(
+      screen.locator('[data-slot="directory-pagination"]'),
+      'the kit owns the pager on this surface',
+    ).toHaveCount(1);
+  });
+
   test('parent: bell view-all still lands on the parent feed', async ({ page }) => {
     await loginAsParent(page);
     await page
