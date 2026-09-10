@@ -14,6 +14,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.4.0
         version: 5.4.0(react-hook-form@7.81.0(react@19.2.7))
+      '@schooltest/notification-contracts':
+        specifier: file:vendor/contracts/notifications
+        version: file:vendor/contracts/notifications(zod@4.4.3)
       '@schooltest/ops-contracts':
         specifier: file:vendor/contracts/ops
         version: file:vendor/contracts/ops(zod@4.4.3)
@@ -1131,6 +1134,11 @@ packages:
 
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
+
+  '@schooltest/notification-contracts@file:vendor/contracts/notifications':
+    resolution: {directory: vendor/contracts/notifications, type: directory}
+    peerDependencies:
+      zod: ^4.4.3
 
   '@schooltest/ops-contracts@file:vendor/contracts/ops':
     resolution: {directory: vendor/contracts/ops, type: directory}
@@ -5343,6 +5351,10 @@ snapshots:
   '@rolldown/pluginutils@1.0.1': {}
 
   '@rtsao/scc@1.1.0': {}
+
+  '@schooltest/notification-contracts@file:vendor/contracts/notifications(zod@4.4.3)':
+    dependencies:
+      zod: 4.4.3
 
   '@schooltest/ops-contracts@file:vendor/contracts/ops(zod@4.4.3)':
     dependencies:
