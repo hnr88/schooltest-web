@@ -34,6 +34,11 @@ import { signIn } from './helpers/teacher-rail';
 const en = loadMessages('en');
 
 test.describe('journey 06 — scoring to teacher report', () => {
+  // Leg 1 does not fit the 30s default: real /sign-in, two page loads, ~25
+  // assertions — measured 7s quiet, 29.2s under fleet load, and it timed out in
+  // the managed in-tab run. Every wait inside is already bounded.
+  test.slow();
+
   test('a real scored sitting reaches the results surface and the generated report unchanged', async ({
     page,
     playwright,
@@ -154,12 +159,10 @@ test.describe('journey 06 — scoring to teacher report', () => {
   // Measured live: `history[].overall` = [null x7, 41] for a student whose prior
   // sittings scored 76 and 84, while the report printed "84 -> 41".
   //
-  // FIXED in schooltest-api/src/utils/result-view-v2.ts, pinned by
-  // schooltest-api/tests/unit/result-view-v2.spec.ts (the 14 real sitting
-  // timestamps replayed). This ran gated behind J06_API_RESTARTED while :5500
-  // still served a pre-fix dist/; the API was rebuilt and restarted at 23:03,
-  // the window came back [null x5, 76, 84, 41], and the gate came off. See
-  // .qa/journeys/06-scoring-to-report/README.md.
+  // FIXED in schooltest-api/src/utils/result-view-v2.ts, pinned by its unit spec
+  // (the 14 real sitting timestamps replayed). Ran gated behind
+  // J06_API_RESTARTED while :5500 served a pre-fix dist/; after the 23:03
+  // rebuild the window read [null x5, 76, 84, 41] and the gate came off.
   test('the trend window carries every scored sitting the generated report names', async ({
     playwright,
   }) => {

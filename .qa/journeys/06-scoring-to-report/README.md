@@ -268,21 +268,30 @@ checksum afterwards:
 - trend window: asserting a score the report never states (`[...stated, 999]`) →
   `✘ Error: the trend window must carry the 999 the report states`.
 
-**Managed-runner limitation, reported rather than worked around.** Codephant
-`tests.run` could not execute this (or any) spec: all 10 retained runs in
-`tests.history` — 4 different agents, 3 different specs, both the web and api suites, with
-and without `uiUrl`, across the whole day — fail identically after ~0.3–1.0 s with
-`did not produce a readable JSON report` / `Playwright exited with code 1`, before
-collecting a single test. Not specific to this spec, and not reproducible from the
-invocation the config documents: `CI=1 node ./node_modules/@playwright/test/cli.js test …`
-passes here (1 passed, 1 skipped, exit 0), and `reuseExistingServer: true` — the previously
-recorded cause — is already in `playwright.config.ts`. The spec was therefore verified with
-`pnpm exec playwright test`, with the screenshots above taken **inside** the spec. The
-runner itself needs a look; it is outside this task's write set.
+**Managed run: GREEN.** `tests.run` runId **13bc094e-4179-48c4-a9bf-0678d641f2a0** —
+`status: passed`, `exitCode: 0`, **2 passed / 0 failed / 0 skipped**, 12.06 s, with the in-tab
+`codephant-browser` PNG retained in Automated Tests (it shows the real report surface carrying
+25 / 25 / 25 / 25 / 28 / 25 / 49, signed in as `t2-alvarez`).
 
-The spec uses the `page` fixture (never `browser.newPage()`), so it is ready for the managed
-runner the moment that works.
+Getting there took two fixes that are worth recording, because the first is not mine:
 
+1. **The runner itself was broken for every agent all day** — 10/10 retained runs died in under a
+   second with `did not produce a readable JSON report`. I raised that as row B02 and handed over my
+   measurements; its worker found the cause: the app's `buildRunArgs` pushes `['--project', value]`
+   as two argv tokens and then appends the positional file filter, and Playwright's
+   `--project <name...>` is variadic, so commander eats the filter as a second project name. The
+   workaround is simply to **omit `project`** in `tests.run` (schooltest-web has exactly one
+   project, `chromium`, so the in-tab Chromium requirement still holds). Their full diagnosis is in
+   `schooltest-web/.qa/journeys/B02-managed-runner/README.md`.
+2. **Leg 1 needed an honest timeout.** With the runner finally executing, the first managed attempt
+   (runId `1bf0231c-…`) timed out at the 30 s default on the sign-in page. That was real, not
+   flake: leg 1 drives the live `/sign-in` form, two full page loads and ~25 assertions, and a
+   direct run had already been measured at **29.2 s under fleet load** — passing with 0.8 s of
+   margin. It carries `test.slow()` now. Every wait inside it was already bounded, so this raises
+   the ceiling on the whole journey rather than masking a slow surface.
+
+The spec drives the `page` fixture, never `browser.newPage()`, which is what lets the managed
+runner use the project's own visible tab.
 ## 8. Collateral repair — not part of J06's scope
 
 `schooltest-api/tests/e2e/result-review.spec.ts:308` referenced `ownerRow`, declared
