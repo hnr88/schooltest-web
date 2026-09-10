@@ -2,37 +2,124 @@
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   OPS_STUDENT_STATUSES,
+  type OpsStudentRow,
   type OpsStudentsListQuery,
 } from '@schooltest/ops-contracts';
 
-import { useOpsDirectoryState } from '@/modules/ops/directory';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  SelectField,
+} from '@/modules/design-system';
+import {
+  describeRunOutcome,
+  showOpsToast,
+  useOpsActionRunner,
+  useOpsWriteGate,
+  type OpsActionSummary,
+  type OpsActionTarget,
+} from '@/modules/ops/actions';
+import {
+  useOpsDirectoryState,
+  type DirectoryBulkAction,
+  type DirectoryFilterDef,
+  type DirectoryHeaderDef,
+  type DirectoryRowAction,
+} from '@/modules/ops/directory';
+import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsStudentProfilePanel } from '@/modules/ops/components/OpsStudentProfilePanel';
 import { OpsStudentsTable } from '@/modules/ops/components/OpsStudentsTable';
 import {
+  DEACTIVATE_ACTION,
+  MOVE_CLASS_ACTION,
+  REACTIVATE_ACTION,
+  studentRowActions,
+  type StudentActionKey,
+} from '@/modules/ops/lib/student-actions';
+import {
   OPS_STUDENT_YEAR_LEVELS,
   opsStudentClassOptions,
+  opsStudentDestinationClassOptions,
+  opsStudentFullName,
   opsStudentStatusFilterValue,
   opsStudentStatusLabelKey,
 } from '@/modules/ops/lib/ops-students-list.helpers';
+import {
+  deactivateStudentAction,
+  moveStudentClassAction,
+  reactivateStudentAction,
+  type MoveStudentClassTarget,
+} from '@/modules/ops/queries/use-student-actions.mutation';
+import { useClassesListQuery } from '@/modules/ops/queries/use-classes-list.query';
 import { useTeachersListQuery } from '@/modules/ops/queries/use-teachers-list.query';
 import { useStudentsListQuery } from '@/modules/ops/queries/use-students-list.query';
 
-import type { DirectoryFilterDef } from '@/modules/ops/directory';
 import type { OpsStudentsTabProps } from '@/modules/ops/types/students-list.types';
 
-// C-OPS-PORTAL-035 (OPS-045) — the ops Students tab, on the task-04 directory
-// kit (the spec's "OpsStudentsFilters collapses into the kit"): the kit owns
-// the URL <-> state sync, the empty/error states and the pager, while every
-// filter here maps to a REAL server filter — status, year (7..12) and class —
-// so the count under the table always describes the whole filtered scope.
-// The endpoint declares no sort parameter, so the kit gets an empty sort list.
+interface LifecycleConfirmState {
+  key: Extract<StudentActionKey, 'deactivate' | 'reactivate'>;
+  row: OpsStudentRow;
+}
+
+/**
+ * `OpsBulkBar`'s consumers all reach for `outcomeToast` (task 03's one-sentence
+ * run summary), which is not part of the actions barrel's public surface yet
+ * (`actions/index.ts` is out of this task's Touches). Composed here from the
+ * two pieces that ARE exported — same tone mapping, same Refresh action.
+ */
+function studentOutcomeToast(summary: OpsActionSummary): void {
+  const feedback = describeRunOutcome(summary, 'student');
+  const tone = feedback.tone === 'success' ? 'ok' : feedback.tone === 'warning' ? 'warn' : 'error';
+  showOpsToast({
+    tone,
+    message: feedback.message,
+    ...(feedback.needsReconciliation
+      ? { action: { label: 'Refresh', run: () => window.location.reload() } }
+      : feedback.action
+        ? { action: feedback.action }
+        : {}),
+  });
+}
+
+/**
+ * C-OPS-PORTAL-035 (OPS-045) — the ops Students tab, on the task-04 directory
+ * kit (the spec's "OpsStudentsFilters collapses into the kit"): the kit owns
+ * the URL <-> state sync, the empty/error states and the pager, while every
+ * filter here maps to a REAL server filter — status, year (7..12) and class —
+ * so the count under the table always describes the whole filtered scope.
+ * The endpoint declares no sort parameter, so the kit gets an empty sort list.
+ *
+ * ops/18 — the design's chips, row menu (View profile / Move class /
+ * Deactivate|Reactivate) and bulk bar (Move class / Deactivate), `:1352-1376`,
+ * `:1439`, `:1465-1492`. Move class and Deactivate/Reactivate run through the
+ * SAME action-kit runner every write goes through (task 03). The design's
+ * bulk/header Export is NOT wired: there is no school-scoped students CSV
+ * endpoint (checked exhaustively — the only students CSVs in the API are the
+ * import template and the import error report, neither of which return a
+ * student roster), and the row schema carries `given_name`/`family_name`
+ * with no `student_key` to de-identify with, so a client-built CSV would ship
+ * PII the task's own contract note forbids. Removed rather than stubbed
+ * (orchestrator ruling, 2026-09-10) — a real students export is future work
+ * for whichever task adds the endpoint.
+ */
 export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   const t = useTranslations('Ops.schoolTables');
+  const queryClient = useQueryClient();
+  const writeGate = useOpsWriteGate();
   const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const classOptions = opsStudentClassOptions(teachers.data?.data ?? []);
   const [profileDocumentId, setProfileDocumentId] = useState<string | null>(null);
+  const [lifecycleConfirm, setLifecycleConfirm] = useState<LifecycleConfirmState | null>(null);
+  const [moveTargetRows, setMoveTargetRows] = useState<readonly OpsStudentRow[] | null>(null);
+  const [destinationClassDocumentId, setDestinationClassDocumentId] = useState('');
 
   const filters = useMemo<DirectoryFilterDef[]>(
     () => [
@@ -87,23 +174,194 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   );
 
   const students = useStudentsListQuery(schoolDocumentId, query, true);
+  const total = students.data?.meta.pagination.total ?? 0;
+
+  const destinationClasses = useClassesListQuery(
+    schoolDocumentId,
+    { pageSize: 200 },
+    moveTargetRows !== null,
+  );
+  const destinationOptions = opsStudentDestinationClassOptions(destinationClasses.data?.data ?? []);
+
+  const invalidateStudents = () => {
+    void queryClient.invalidateQueries({ queryKey: ['ops', 'schools', schoolDocumentId, 'students'] });
+  };
+
+  const openMoveDialog = (rows: readonly OpsStudentRow[]) => {
+    setDestinationClassDocumentId('');
+    setMoveTargetRows(rows);
+  };
+
+  const deactivateRunner = useOpsActionRunner(deactivateStudentAction(schoolDocumentId));
+  const reactivateRunner = useOpsActionRunner(reactivateStudentAction(schoolDocumentId));
+  const moveRunner = useOpsActionRunner(
+    moveStudentClassAction(schoolDocumentId, destinationClassDocumentId),
+  );
+
+  const runLifecycleConfirmed = async () => {
+    if (lifecycleConfirm === null) return;
+    const runner = lifecycleConfirm.key === 'deactivate' ? deactivateRunner : reactivateRunner;
+    const target: OpsActionTarget = { kind: 'student', documentId: lifecycleConfirm.row.documentId };
+    const summary = await runner.run([target]);
+    setLifecycleConfirm(null);
+    invalidateStudents();
+    studentOutcomeToast(summary);
+  };
+
+  const runMoveConfirmed = async () => {
+    if (moveTargetRows === null || destinationClassDocumentId === '') return;
+    const targets: MoveStudentClassTarget[] = moveTargetRows.map((row) => ({
+      kind: 'student',
+      documentId: row.documentId,
+      expectedClassDocumentId: row.class?.documentId ?? null,
+    }));
+    const summary = await moveRunner.run(targets);
+    setMoveTargetRows(null);
+    invalidateStudents();
+    studentOutcomeToast(summary);
+  };
+
+  const rowActions = (row: OpsStudentRow): readonly DirectoryRowAction<OpsStudentRow>[] =>
+    studentRowActions(row.status).map((action) => ({
+      label: t(action.labelKey),
+      write: action.write,
+      destructive: action.danger,
+      onSelect: () => {
+        if (action.key === 'viewProfile') {
+          setProfileDocumentId(row.documentId);
+          return;
+        }
+        if (action.key === 'moveClass') {
+          openMoveDialog([row]);
+          return;
+        }
+        setLifecycleConfirm({ key: action.key as 'deactivate' | 'reactivate', row });
+      },
+    }));
+
+  const bulkActions: readonly DirectoryBulkAction[] = [
+    {
+      label: t(MOVE_CLASS_ACTION.labelKey),
+      write: true,
+      onRun: (rows) => openMoveDialog(rows as readonly OpsStudentRow[]),
+    },
+    {
+      label: t('studentsBulkDeactivate'),
+      write: true,
+      destructive: true,
+      eligible: (row) => (row as OpsStudentRow).status !== 'archived',
+      skipLabel: (count) => t('studentsBulkDeactivateSkip', { count }),
+      onRun: (_rows, targets) => {
+        void deactivateRunner.run(targets).then((summary) => {
+          invalidateStudents();
+          studentOutcomeToast(summary);
+        });
+      },
+    },
+  ];
+
+  const header: DirectoryHeaderDef = {
+    title: t('tab.students'),
+    summary: t('studentsHeaderSummary', { count: total }),
+    primary: {
+      label: t('studentsImportCta'),
+      write: false,
+      onSelect: () =>
+        document
+          .getElementById('ops-import-class')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+    },
+  };
+
+  const confirmAction =
+    lifecycleConfirm === null ? null : lifecycleConfirm.key === 'deactivate' ? DEACTIVATE_ACTION : REACTIVATE_ACTION;
+  const lifecycleRunning =
+    deactivateRunner.state.status === 'running' || reactivateRunner.state.status === 'running';
 
   return (
     <div className="flex flex-col gap-4">
-    <OpsStudentsTable
-      state={state}
-      filters={filters}
-      rows={students.data?.data ?? []}
-      meta={students.data?.meta.pagination}
-      query={students}
-      rowActions={(row) => [
-        { label: t('opsProfileOpen'), onSelect: () => setProfileDocumentId(row.documentId) },
-      ]}
-    />
+      <OpsStudentsTable
+        state={state}
+        filters={filters}
+        chipFilterKey="status"
+        header={header}
+        rows={students.data?.data ?? []}
+        meta={students.data?.meta.pagination}
+        query={students}
+        bulkActions={bulkActions}
+        scope={[
+          schoolDocumentId,
+          state.params.page,
+          state.params.q,
+          state.params.filters.status,
+          state.params.filters.class,
+          state.params.filters.year_level,
+        ]}
+        rowActions={rowActions}
+      />
       <OpsStudentProfilePanel
         schoolDocumentId={schoolDocumentId}
         studentDocumentId={profileDocumentId}
       />
+
+      {lifecycleConfirm === null || confirmAction === null || confirmAction.confirm === null ? null : (
+        <OpsConfirmDialog
+          open
+          onOpenChange={(open) => {
+            if (!open && !lifecycleRunning) setLifecycleConfirm(null);
+          }}
+          title={t(confirmAction.confirm.titleKey, { name: opsStudentFullName(lifecycleConfirm.row) })}
+          description={t(confirmAction.confirm.bodyKey)}
+          confirmLabel={t(confirmAction.confirm.ctaKey)}
+          cancelLabel={t('makeOwnerCancel')}
+          tone={confirmAction.danger ? 'destructive' : 'neutral'}
+          pending={lifecycleRunning}
+          onConfirm={() => void runLifecycleConfirmed()}
+        />
+      )}
+
+      <Dialog
+        open={moveTargetRows !== null}
+        onOpenChange={(open) => {
+          if (!open && moveRunner.state.status !== 'running') setMoveTargetRows(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('studentsMoveClassTitle')}</DialogTitle>
+            <DialogDescription>
+              {t('studentsMoveClassBody', { count: moveTargetRows?.length ?? 1 })}
+            </DialogDescription>
+          </DialogHeader>
+          <SelectField
+            id="ops-students-move-class-destination"
+            label={t('studentsMoveClassDestinationLabel')}
+            placeholder={t('studentsMoveClassPlaceholder')}
+            value={destinationClassDocumentId}
+            onValueChange={setDestinationClassDocumentId}
+            options={destinationOptions}
+            disabled={moveRunner.state.status === 'running'}
+          />
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={moveRunner.state.status === 'running'}
+              onClick={() => setMoveTargetRows(null)}
+            >
+              {t('makeOwnerCancel')}
+            </Button>
+            <Button
+              type="button"
+              loading={moveRunner.state.status === 'running'}
+              disabled={destinationClassDocumentId === '' || writeGate.blockedReason() !== null}
+              onClick={() => void runMoveConfirmed()}
+            >
+              {t('studentsMoveClassCta', { count: moveTargetRows?.length ?? 1 })}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

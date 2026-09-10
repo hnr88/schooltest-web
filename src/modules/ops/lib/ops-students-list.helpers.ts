@@ -98,3 +98,18 @@ export function opsStudentClassOptions(
     .map(([value, label]) => ({ value, label }))
     .sort((left, right) => left.label.localeCompare(right.label));
 }
+
+/**
+ * The Move class destination picker's options (C-OPS-PORTAL-028 classes of
+ * THIS school only — the endpoint is already school-scoped, the server
+ * re-asserts it on write). A class with no stored name cannot be offered: the
+ * label is how the operator tells classes apart.
+ */
+export function opsStudentDestinationClassOptions(
+  classes: readonly { documentId: string; name: string | null }[],
+): { value: string; label: string }[] {
+  return classes
+    .filter((klass): klass is { documentId: string; name: string } => klass.name !== null)
+    .map((klass) => ({ value: klass.documentId, label: klass.name }))
+    .sort((left, right) => left.label.localeCompare(right.label));
+}

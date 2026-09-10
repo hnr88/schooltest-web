@@ -6,8 +6,11 @@ import type { OpsStudentRow } from '@schooltest/ops-contracts';
 
 import {
   OpsDirectoryTable,
+  type DirectoryBulkAction,
   type DirectoryColumnDef,
+  type DirectoryEmptyCopy,
   type DirectoryFilterDef,
+  type DirectoryHeaderDef,
   type DirectoryLabels,
   type DirectoryMeta,
   type DirectoryQueryStatus,
@@ -32,6 +35,14 @@ export interface OpsStudentsTableProps {
   meta?: DirectoryMeta;
   filters: readonly DirectoryFilterDef[];
   rowActions?: (row: OpsStudentRow) => readonly DirectoryRowAction<OpsStudentRow>[];
+  /** ops/18 — the design's Move class / Deactivate bulk set (`:1465-1492`). */
+  bulkActions?: readonly DirectoryBulkAction[];
+  /** ops/18 — the tab-body header: title, "N enrolled" summary, Import/Export CSV. */
+  header?: DirectoryHeaderDef;
+  /** ops/18 — the design's Active/Pending setup/Archived chips (`:368-374`) replace the status select. */
+  chipFilterKey?: string;
+  emptyCopy?: DirectoryEmptyCopy;
+  scope?: readonly unknown[];
 }
 
 // The C-OPS-PORTAL-035 roster grid rendered THROUGH the task-04 directory kit:
@@ -40,7 +51,19 @@ export interface OpsStudentsTableProps {
 // cell is served data — a student with no class, no year, no ACARA phase or no
 // result renders the shared "no value" dash rather than an invented figure,
 // and `percentage === 0` is a real score that renders as "0%".
-export function OpsStudentsTable({ state, query, rows, meta, filters, rowActions }: OpsStudentsTableProps) {
+export function OpsStudentsTable({
+  state,
+  query,
+  rows,
+  meta,
+  filters,
+  rowActions,
+  bulkActions,
+  header,
+  chipFilterKey,
+  emptyCopy,
+  scope,
+}: OpsStudentsTableProps) {
   const t = useTranslations('Ops.schoolTables');
   const format = useFormatter();
 
@@ -115,10 +138,16 @@ export function OpsStudentsTable({ state, query, rows, meta, filters, rowActions
       query={query}
       rows={rows}
       getRowTarget={(row) => ({ kind: 'student', documentId: row.documentId })}
+      selectable
+      scope={scope}
       meta={meta}
       filters={filters}
       sorts={[]}
       rowActions={rowActions}
+      bulkActions={bulkActions}
+      header={header}
+      chipFilterKey={chipFilterKey}
+      emptyCopy={emptyCopy}
       columns={columns}
       labels={labels}
     />
