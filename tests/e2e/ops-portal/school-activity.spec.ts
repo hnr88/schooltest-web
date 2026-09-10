@@ -12,14 +12,18 @@
 import { mkdirSync } from 'node:fs';
 import path from 'node:path';
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { apiEnv } from '../helpers/auth-db';
 import { namedRetry } from '../helpers/api-named-retry';
 import { cat, loadMessages } from '../helpers/i18n';
 
 const en = loadMessages('en');
-const SCHOOL_A = 'a19wa9lrmloi95ab9m4gmxqk';
+// FIXTURE HISTORY (measured 2026-09-10): the hardcoded SCHOOL_A id
+// 'a19wa9lrmloi95ab9m4gmxqk' is a DEAD row — the schools table no longer
+// carries it, so the page 404'd and the count-card assertions passed vacuously
+// over a page that never loaded. The school is now RESOLVED AT RUNTIME from
+// the live ops schools list instead of a hardcoded id.
 const OPS_EMAIL = 'apiadmin@schooltest.local';
 const ACTION_TIMEOUT = 15_000;
 const CAPTURES = path.resolve(
@@ -53,8 +57,31 @@ function recordActivityRequests(page: Page): string[] {
   return seen;
 }
 
-async function openSchool(page: Page): Promise<void> {
-  await page.goto(`/dashboard/ops/schools/${SCHOOL_A}`);
+/** Resolve one LIVE school documentId from the ops schools list. */
+async function resolveSchoolDocumentId(request: APIRequestContext): Promise<string> {
+  const auth = await request.post('/api/auth/local', {
+    data: { identifier: OPS_EMAIL, password: apiEnv('SEED_APIADMIN_PASSWORD') },
+  });
+  expect(auth.status(), await auth.text()).toBe(200);
+  const jwt = ((await auth.json()) as { jwt: string }).jwt;
+  const list = await request.get('/api/ops/schools?pageSize=1', {
+    headers: { Authorization: `Bearer ${jwt}` },
+  });
+  expect(list.status(), await list.text()).toBe(200);
+  const body = (await list.json()) as { data: Array<{ documentId: string }> };
+  const first = body.data?.[0]?.documentId;
+  expect(first, 'at least one live school exists for the activity card').toBeTruthy();
+  return first;
+}
+
+async function openSchool(page: Page, schoolDocumentId: string): Promise<void> {
+  await page.goto(`/dashboard/ops/schools/${schoolDocumentId}`);
+  // THE LOAD PRECONDITION the tests always lacked: the school detail surface
+  // must actually render before anything asserts on its contents — a 404 or
+  // an unloaded page renders the same emptiness a getByTestId would miss.
+  await expect(page.locator('[data-surface="ops-school-detail"]')).toBeVisible({
+    timeout: ACTION_TIMEOUT,
+  });
   await expect(page.getByTestId('ops-count-card').first()).toBeVisible({
     timeout: ACTION_TIMEOUT,
   });
@@ -75,7 +102,8 @@ test.describe('ops school activity card (C-OPS-PORTAL-010)', () => {
   }) => {
     const requests = recordActivityRequests(page);
     await signInAsOps(page);
-    await openSchool(page);
+    const schoolDocumentId = await resolveSchoolDocumentId(page.request);
+    await openSchool(page, schoolDocumentId);
 
     const card = page.getByTestId('ops-activity-card');
     await expect(card).toBeVisible({ timeout: ACTION_TIMEOUT });
@@ -83,7 +111,7 @@ test.describe('ops school activity card (C-OPS-PORTAL-010)', () => {
     // The page asked for THIS school's feed through the versioned contract.
     expect(requests.length).toBeGreaterThan(0);
     for (const url of requests) {
-      expect(url).toContain(`school=${SCHOOL_A}`);
+      expect(url).toContain(`school=${schoolDocumentId}`);
     }
 
     // The card renders rows or the explicit empty state — never a blank and
@@ -111,7 +139,8 @@ test.describe('ops school activity card (C-OPS-PORTAL-010)', () => {
   test('the card holds the page at the 375px reference width', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await signInAsOps(page);
-    await openSchool(page);
+    const schoolDocumentId = await resolveSchoolDocumentId(page.request);
+    await openSchool(page, schoolDocumentId);
 
     const card = page.getByTestId('ops-activity-card');
     await expect(card).toBeVisible({ timeout: ACTION_TIMEOUT });
