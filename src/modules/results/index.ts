@@ -9,7 +9,7 @@ export { DISPLAY_SKILL_ORDER, displaySkills } from './lib/display-skills';
 export type { DisplaySkillReading } from './lib/display-skills';
 export { ConfidenceStrip } from './components/ConfidenceStrip';
 export { ConsolidatingChecklist } from './components/ConsolidatingChecklist';
-export { ErrorPatternsPanel, ERROR_PATTERN_COPY } from './components/ErrorPatternsPanel';
+export { ErrorPatternsPanel } from './components/ErrorPatternsPanel';
 export { PrintReportButton } from './components/PrintReportButton';
 export { ProgressTrendChart } from './components/ProgressTrendChart';
 export { AskAiPanel } from './components/AskAiPanel';

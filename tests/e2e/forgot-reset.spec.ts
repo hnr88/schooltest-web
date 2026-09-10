@@ -7,7 +7,7 @@ import {
   sha256,
   userResetToken,
 } from './helpers/auth-db';
-import { cat, escapeRegExp, loadMessages } from './helpers/i18n';
+import { cat, loadMessages } from './helpers/i18n';
 import {
   API_BASE_URL,
   expectStyledEmail,
@@ -33,10 +33,6 @@ const SUITE_START = new Date();
 const NEW_PASSWORD = 'NewPass1234!';
 const usedEmails: string[] = [];
 
-const countdownName = new RegExp(
-  escapeRegExp(cat(en, 'Auth.resendEmailCountdown')).replace('\\{time\\}', '\\d+:\\d{2}'),
-);
-
 test.afterAll(() => {
   for (const email of usedEmails) deleteAuthEmailRows(email);
 });
@@ -45,13 +41,13 @@ async function submitForgotForm(page: Page, email: string): Promise<void> {
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
   await page.getByRole('button', { name: cat(en, 'Auth.sendResetLink'), exact: true }).click();
   await expect(
-    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.sentTitle') }),
+    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.portal.sentTitle') }),
   ).toBeVisible();
 }
 
 async function submitResetForm(page: Page, password: string): Promise<void> {
   await page.getByLabel(cat(en, 'Auth.newPasswordLabel'), { exact: true }).fill(password);
-  await page.getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true }).fill(password);
+  await page.getByLabel(cat(en, 'Auth.portal.confirmLabel'), { exact: true }).fill(password);
   await page.getByRole('button', { name: cat(en, 'Auth.resetButton'), exact: true }).click();
 }
 
@@ -68,8 +64,9 @@ async function expectExpiredLinkState(page: Page): Promise<void> {
   await expect(
     page.getByRole('heading', { level: 1, name: cat(en, 'Auth.expiredLinkTitle') }),
   ).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.portal.expiredBody'))).toBeVisible();
   await expect(
-    page.getByRole('link', { name: cat(en, 'Auth.requestNewLink'), exact: true }),
+    page.getByRole('link', { name: cat(en, 'Auth.portal.sendNewLink'), exact: true }),
   ).toHaveAttribute('href', '/forgot-password');
 }
 
@@ -78,16 +75,16 @@ test('en: flow 2 — wrong password → inline error → forgot link → sent st
 }) => {
   await page.setViewportSize(DESKTOP);
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill('WrongPass123!');
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill('WrongPass123!');
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   const alert = page.locator('[data-slot="alert"]');
   await expect(alert).toBeVisible();
-  await expect(alert).toContainText(cat(en, 'Auth.loginError'));
+  await expect(alert).toContainText(cat(en, 'Auth.portal.errorTitle'));
 
   await page
-    .getByRole('link', { name: cat(en, 'Auth.forgotPasswordLink'), exact: true })
+    .getByRole('link', { name: cat(en, 'Auth.portal.forgotLink'), exact: true })
     .click();
   await page.waitForURL('**/forgot-password');
 
@@ -96,8 +93,9 @@ test('en: flow 2 — wrong password → inline error → forgot link → sent st
   const email = freshEmail('flow2');
   usedEmails.push(email);
   await submitForgotForm(page, email);
-  await expect(page.getByText(cat(en, 'Auth.sentSuccess'))).toBeVisible();
-  await expect(page.getByRole('button', { name: countdownName })).toBeDisabled();
+  await expect(
+    page.getByRole('link', { name: cat(en, 'Auth.portal.backToLogin'), exact: true }),
+  ).toBeVisible();
 });
 
 test('en: /reset-password without a code renders the invalid-link state immediately', async ({
@@ -112,7 +110,7 @@ test('en: a garbage ?code= submit swaps the card to the invalid-link error state
 }) => {
   await page.goto('/reset-password?code=deadbeef');
   await expect(
-    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.resetTitle') }),
+    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.portal.resetTitle') }),
   ).toBeVisible();
   await submitResetForm(page, NEW_PASSWORD);
   await expectInvalidLinkState(page);
@@ -174,9 +172,9 @@ test.describe('reset round-trips against registered parents (serial, D20)', () =
       .getByRole('menuitem', { name: cat(en, 'Shell.userMenu.signOut'), exact: true })
       .click();
     await page.waitForURL('**/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
-    await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(NEW_PASSWORD);
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+    await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(parent.email);
+    await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill(NEW_PASSWORD);
+    await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
     await page.waitForURL('**/dashboard');
   });
 

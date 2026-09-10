@@ -53,6 +53,7 @@ import {
   type OpsActionTarget,
   type OpsBulkBarAction,
 } from '@/modules/ops/actions';
+import { OpsAssignTeacherDialog } from '@/modules/ops/components/OpsAssignTeacherDialog';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsEditClassDialog } from '@/modules/ops/components/OpsEditClassDialog';
 import { OpsStudentImportDialog } from '@/modules/ops/components/OpsStudentImportDialog';
@@ -78,13 +79,9 @@ import {
 } from '@/modules/ops/queries/use-class-roster-actions.mutation';
 import { useClassRosterQuery } from '@/modules/ops/queries/use-class-roster.query';
 import { opsClassDetailQueryKey, useOpsClassDetailQuery } from '@/modules/ops/queries/use-ops-class-detail.query';
-import { useTeachersListQuery } from '@/modules/ops/queries/use-teachers-list.query';
 import { useResultWindowsQuery } from '@/modules/ops/queries/use-result-windows.query';
 import type { MoveStudentClassTarget } from '@/modules/ops/queries/use-student-actions.mutation';
-import {
-  useOpsAssignClassWindowMutation,
-  useOpsAssignTeacherMutation,
-} from '@/modules/ops/queries/use-ops-update-class.mutation';
+import { useOpsAssignClassWindowMutation } from '@/modules/ops/queries/use-ops-update-class.mutation';
 
 import type { OpsClassDetailProps } from '@/modules/ops/types/components.types';
 
@@ -94,12 +91,13 @@ import type { OpsClassDetailProps } from '@/modules/ops/types/components.types';
 // class" roster. Task 21 adds every roster WRITE the design draws: the
 // row/bulk Move class and Remove from class (through the action kit's
 // runner), the real Export CSV (C-OPS-CLASS-EXPORT) and the Add-students
-// entry points. Assign teacher and the window select are UNCHANGED — tasks
-// 22/23 replace them with the design's modals; until then this screen leaves
-// the pickers working exactly as task 20 shipped them.
+// entry points. Task 22 replaces task 20's inline teacher NativeSelect with
+// the design's Assign Teacher modal (`OpsAssignTeacherDialog` +
+// `OpsTeacherPicker`, shared with task 23's class form). The window select
+// is UNCHANGED — task 23 or a later row carries it into its own modal.
 /** The roster page size. The server caps pageSize at 200 and refuses more. */
 const ROSTER_PAGE_SIZE = 25;
-/** "Get everything" page size for the aggregate roster read (D-08) and the class-status/destination lookup — same pattern `teachersQuery`/`windowsQuery` already use on this page. */
+/** "Get everything" page size for the aggregate roster read (D-08) and the class-status/destination lookup — same pattern `windowsQuery` already uses on this page. */
 const ALL_PAGE_SIZE = 200;
 
 const STATUS_TONE: Record<ClassListStatus, StatusPillTone> = {
@@ -135,6 +133,9 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
   const queryClient = useQueryClient();
   const query = useOpsClassDetailQuery(schoolDocumentId, classDocumentId, true);
   const [editOpen, setEditOpen] = useState(false);
+  // Task 22 — the design's Assign Teacher modal, replacing task 20's inline
+  // NativeSelect. Mounted only while open, matching `editOpen` above.
+  const [assignTeacherOpen, setAssignTeacherOpen] = useState(false);
   // task 26's import modal, entered from THIS class — the one caller that
   // pre-selects a class, per `OpsStudentImportDialogProps`.
   const [importOpen, setImportOpen] = useState(false);
@@ -162,12 +163,10 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
     { page: 1, pageSize: ALL_PAGE_SIZE },
     true,
   );
-  // Task 20 — the class-scoped assignment + named-window controls. The picker
-  // rows always carry the EMAIL so long or duplicate names can never be
-  // confused; the API enforces the same eligibility the picker shows.
-  const teachersQuery = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
+  // Task 20 — the class-scoped named-window control (kept). The assign-
+  // teacher fetch that used to live here now belongs to `OpsAssignTeacherDialog`,
+  // mounted only while the modal is open (task 22).
   const windowsQuery = useResultWindowsQuery(schoolDocumentId, { page: 1, pageSize: 200 });
-  const assignTeacher = useOpsAssignTeacherMutation(classDocumentId, schoolDocumentId);
   const assignWindow = useOpsAssignClassWindowMutation(classDocumentId, schoolDocumentId);
   // The class-detail read (`opsClassDetailSchema`) carries no `archived_at` —
   // it cannot tell "archived" from "active"/"pending setup" on its own. The
@@ -367,8 +366,9 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
   // satisfy one caller is how a function loses a field another row depends on.
   // Passing null is honest — the helper falls back to the tree's no-value dash
   // if a teacher somehow has no name — and nothing user-facing is lost, because
-  // the assignment picker below still carries every teacher's email from
-  // `teachersQuery`, which is where a long or duplicate name gets disambiguated.
+  // the Assign Teacher modal's own picker carries every teacher's email from
+  // its own `useTeachersListQuery` read, which is where a long or duplicate
+  // name gets disambiguated.
   const teacherName = classDetail.primary_teacher
     ? opsTeacherLabel({ ...classDetail.primary_teacher, email: null })
     : t('noTeacher');
@@ -438,28 +438,30 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <NativeSelect
-            aria-label={t('classTeacher')}
+          {/* Task 22 — the design's fixed "Assign teacher" pill (`Ops
+              Portal.dc.html:435`), opening `OpsAssignTeacherDialog`. Greyed
+              AND refused for `ops_support`: kept clickable so the refusal
+              toast fires, matching the roster row-action pattern below
+              rather than a native `disabled` (which would swallow the
+              click entirely). */}
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
             data-slot="ops-class-assign-teacher"
-            className="w-64"
-            value={classDetail.primary_teacher?.documentId ?? ''}
-            disabled={assignTeacher.isPending}
-            onChange={(event) =>
-              assignTeacher.mutate(
-                event.target.value === '' ? [] : [event.target.value],
-              )
-            }
+            className={writeGate.blockedReason() !== null ? 'shrink-0 text-slate-400' : 'shrink-0'}
+            aria-disabled={writeGate.blockedReason() !== null ? true : undefined}
+            onClick={() => {
+              const blocked = writeGate.blockedReason();
+              if (blocked !== null) {
+                showOpsToast({ tone: 'error', message: blocked });
+                return;
+              }
+              setAssignTeacherOpen(true);
+            }}
           >
-            <NativeSelectOption value="">{t('noTeacher')}</NativeSelectOption>
-            {(teachersQuery.data?.data ?? []).map((teacher) => (
-              <NativeSelectOption key={teacher.documentId} value={teacher.documentId}>
-                {/* EMAIL on every option: long or duplicate names are
-                    disambiguated by the address, never by truncation. */}
-                {opsTeacherLabel(teacher)}
-                {teacher.email ? ` · ${teacher.email}` : ''}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
+            {t('assign.trigger')}
+          </Button>
           <NativeSelect
             aria-label={windowTitle('title')}
             data-slot="ops-class-assign-window"
@@ -725,6 +727,16 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
           classUpdatedAt={classDetail.updated_at ?? null}
           currentYearBand={classDetail.year_band}
           onClose={() => setEditOpen(false)}
+        />
+      ) : null}
+
+      {assignTeacherOpen ? (
+        <OpsAssignTeacherDialog
+          schoolDocumentId={schoolDocumentId}
+          classDocumentId={classDetail.documentId}
+          className={classDetail.name ?? ''}
+          currentTeacherDocumentId={classDetail.primary_teacher?.documentId ?? null}
+          onClose={() => setAssignTeacherOpen(false)}
         />
       ) : null}
 

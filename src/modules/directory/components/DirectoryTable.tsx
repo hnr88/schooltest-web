@@ -30,7 +30,6 @@ import { cn } from '@/lib/utils';
 import type { OpsActionTarget } from '@/modules/ops/actions';
 import { QueryErrorFallback } from '@/modules/query-errors';
 
-import { DIRECTORY_DEFAULT_LABELS } from '../constants/directory.constants';
 import {
   DIRECTORY_STICKY_SCROLL_CLASS,
   DIRECTORY_TABLE_SCROLL_CLASS,
@@ -202,6 +201,10 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
   // without duplicating it. R-15 bend (kit reads no catalogue): deliberately
   // narrow — two existing keys, one namespace, recorded as a deviation.
   const tQueryError = useTranslations('QueryError');
+  // Translated defaults for every label a caller did not override — the old
+  // English DIRECTORY_DEFAULT_LABELS merge leaked fallback copy in any locale
+  // whenever a consumer passed a Partial set.
+  const tDefaults = useTranslations('Directory.defaults');
   // Narrowed once, at the discriminant: `columns` exists only for `table`,
   // `renderRow` + the concrete list layout only for the other three.
   const tableColumns = isTable ? props.columns : undefined;
@@ -209,8 +212,37 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
     !isTable && props.layout !== undefined && props.layout !== 'table' ? props.layout : undefined;
   const listRenderRow = isTable ? undefined : props.renderRow;
   const labels = useMemo<DirectoryLabels>(
-    () => ({ ...DIRECTORY_DEFAULT_LABELS, ...labelOverrides }),
-    [labelOverrides],
+    () => ({
+      searchPlaceholder: tDefaults('searchPlaceholder'),
+      searchLabel: tDefaults('searchLabel'),
+      filtersLabel: tDefaults('filtersLabel'),
+      sortLabel: tDefaults('sortLabel'),
+      layoutLabel: tDefaults('layoutLabel'),
+      clearFilters: tDefaults('clearFilters'),
+      paginationLabel: tDefaults('paginationLabel'),
+      previous: tDefaults('previous'),
+      next: tDefaults('next'),
+      rowMenuLabel: tDefaults('rowMenuLabel'),
+      selectAllLabel: tDefaults('selectAllLabel'),
+      selectRowLabel: (rowKey) => tDefaults('selectRowLabel', { key: rowKey }),
+      showingCount: ({ showing, total }) => tDefaults('showingCount', { showing, total }),
+      pageCount: ({ page, pageCount, total }) => tDefaults('pageCount', { page, pageCount, total }),
+      selectedEntityNoun: tDefaults('selectedEntityNoun'),
+      emptyNoneTitle: tDefaults('emptyNoneTitle'),
+      emptyNoneDescription: tDefaults('emptyNoneDescription'),
+      emptyNoMatchesTitle: tDefaults('emptyNoMatchesTitle'),
+      emptyNoMatchesDescription: tDefaults('emptyNoMatchesDescription'),
+      errorTitle: tDefaults('errorTitle'),
+      errorStaleBanner: tDefaults('errorStaleBanner'),
+      errorDescription: tDefaults('errorDescription'),
+      retry: tDefaults('retry'),
+      loadingLabel: tDefaults('loadingLabel'),
+      exportLabel: tDefaults('exportLabel'),
+      primaryActionLabel: tDefaults('primaryActionLabel'),
+      chipAllLabel: tDefaults('chipAllLabel'),
+      ...labelOverrides,
+    }),
+    [tDefaults, labelOverrides],
   );
   // ops/14 — the per-surface empty copy layers on top of the resolved labels
   // for the empty-none arm only; without `emptyCopy` this is the same object.

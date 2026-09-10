@@ -3613,7 +3613,20 @@
       "panelTitle": "Student details",
       "unnamed": "Unnamed student",
       "notFoundTitle": "We could not find that student",
-      "notFoundDescription": "They may have been removed, or they belong to another school."
+      "notFoundDescription": "They may have been removed, or they belong to another school.",
+      "editButton": "Edit",
+      "classPanel": {
+        "title": "Class",
+        "currentLabel": "Current class",
+        "none": "Not assigned to a class",
+        "assignLabel": "Assign to class",
+        "assignPlaceholder": "Choose a class",
+        "assignAction": "Assign",
+        "removeAction": "Remove from class",
+        "noClasses": "No classes to assign yet.",
+        "errorTitle": "The class change could not be saved",
+        "errorDescription": "Check your connection and try again."
+      }
     }
   },
   "Ops": {
@@ -3861,7 +3874,6 @@
         "restore": "Restore school",
         "suspend": "Suspend school",
         "archive": "Archive school",
-        "recalculateSeats": "Recalculate seats",
         "undo": "Undo",
         "success": "{name} updated.",
         "undoSuccess": "{name} was restored.",
@@ -4238,7 +4250,25 @@
       "rosterRemoveConfirmTitleRow": "Remove {name} from {className}?",
       "rosterRemoveConfirmTitleBulk": "{count, plural, one {Remove # student from {className}?} other {Remove # students from {className}?}}",
       "rosterRemoveConfirmBody": "They stay enrolled at the school and can be added to another class.",
-      "rosterRemoveConfirmCtaBulk": "Remove {count}"
+      "rosterRemoveConfirmCtaBulk": "Remove {count}",
+      "assign": {
+        "trigger": "Assign teacher",
+        "title": "Assign a teacher",
+        "description": "Choose the teacher responsible for {className}.",
+        "cta": "Assign teacher",
+        "assigning": "Assigning…",
+        "errorTitle": "Could not assign",
+        "errorNoSelection": "Choose a teacher to assign.",
+        "errorAlreadyTeaches": "{name} already teaches {className}.",
+        "errorStalePicker": "That teacher is no longer eligible — the list has been refreshed.",
+        "errorMessage": "Couldn't assign the teacher — {className} is unchanged.",
+        "successMessage": "{name} assigned to {className}"
+      }
+    },
+    "teacherPicker": {
+      "subLabel": "{email} · {count, plural, =0 {0 classes} one {# class} other {# classes}}",
+      "emptyTitle": "No eligible teachers",
+      "emptyDescription": "Every teacher at this school is suspended or unavailable."
     },
     "classesTab": {
       "columnClass": "Class",

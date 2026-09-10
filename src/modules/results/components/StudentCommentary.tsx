@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { deidentify } from '@/modules/results/lib/deidentify';
 
@@ -21,6 +22,7 @@ export function StudentCommentary({
   studentName: string;
   source: 'llm' | 'fallback';
 }) {
+  const t = useTranslations('Results');
   const [copied, setCopied] = useState(false);
 
   const copy = useCallback(async () => {
@@ -31,10 +33,10 @@ export function StudentCommentary({
   if (paragraphs.length === 0) return null;
 
   return (
-    <section data-slot="student-commentary" data-source={source} aria-label="Student analysis" className="flex flex-col gap-2">
+    <section data-slot="student-commentary" data-source={source} aria-label={t('commentaryAria')} className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-2">
         <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">
-          Student analysis{source === 'fallback' ? ' (offline summary)' : ''}
+          {source === 'fallback' ? t('commentaryHeadingOffline') : t('commentaryHeading')}
         </h2>
         <button
           type="button"
@@ -42,7 +44,7 @@ export function StudentCommentary({
           onClick={() => void copy()}
           className="print-hidden w-fit rounded-full border border-border px-3 py-1 text-caption font-semibold hover:bg-muted"
         >
-          {copied ? 'Copied' : 'Copy (de-identified)'}
+          {copied ? t('copied') : t('copyDeidentified')}
         </button>
       </div>
       {paragraphs.map((paragraph, index) => (

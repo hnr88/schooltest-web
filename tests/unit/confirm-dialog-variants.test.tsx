@@ -1,6 +1,15 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, test, vi } from 'vitest';
+
+import { NextIntlClientProvider } from 'next-intl';
+
+const enMessages = JSON.parse(
+  readFileSync(resolve(process.cwd(), 'src/i18n/messages/en.json'), 'utf8'),
+) as Record<string, unknown>;
 
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 
@@ -20,7 +29,11 @@ function mount(ui: React.ReactElement) {
   host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
-  act(() => root!.render(ui));
+  act(() =>
+    root!.render(
+      <NextIntlClientProvider locale="en" messages={enMessages}>{ui}</NextIntlClientProvider>,
+    ),
+  );
 }
 
 afterEach(() => {

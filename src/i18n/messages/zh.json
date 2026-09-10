@@ -1573,7 +1573,7 @@
     "unread": "未读",
     "read": "已读",
     "today": "今天",
-    "earlier": "Earlier",
+    "earlier": "更早",
     "yesterday": "昨天",
     "unreadCount": "{count, plural, =0 {没有未读通知} other {# 条未读通知}}",
     "emptyTitle": "您已了解所有更新",
@@ -1593,9 +1593,9 @@
       "testActivity": "测试活动",
       "testResults": "测试结果"
     },
-    "filterLabel": "Filter notifications by category",
+    "filterLabel": "按类别筛选通知",
     "filters": {
-      "all": "All"
+      "all": "全部"
     },
     "teacherFeed": {
       "meta": {
@@ -3124,7 +3124,20 @@
       "panelTitle": "Student details",
       "unnamed": "Unnamed student",
       "notFoundTitle": "We could not find that student",
-      "notFoundDescription": "They may have been removed, or they belong to another school."
+      "notFoundDescription": "They may have been removed, or they belong to another school.",
+      "editButton": "编辑",
+      "classPanel": {
+        "title": "班级",
+        "currentLabel": "当前班级",
+        "none": "尚未分配班级",
+        "assignLabel": "分配到班级",
+        "assignPlaceholder": "选择班级",
+        "assignAction": "分配",
+        "removeAction": "移出班级",
+        "noClasses": "暂无可分配的班级。",
+        "errorTitle": "无法保存班级更改",
+        "errorDescription": "请检查网络连接后重试。"
+      }
     }
   },
   "Ops": {
@@ -3372,7 +3385,6 @@
         "restore": "恢复学校",
         "suspend": "暂停学校",
         "archive": "归档学校",
-        "recalculateSeats": "重新计算席位",
         "undo": "撤销",
         "success": "{name} 已更新。",
         "undoSuccess": "{name} 已恢复。",
@@ -3749,7 +3761,25 @@
       "rosterRemoveConfirmTitleRow": "要将{name}从{className}移除吗?",
       "rosterRemoveConfirmTitleBulk": "{count, plural, other {要将 # 名学生从{className}移除吗?}}",
       "rosterRemoveConfirmBody": "学生仍保留学校学籍,可添加到其他班级。",
-      "rosterRemoveConfirmCtaBulk": "移除 {count} 名"
+      "rosterRemoveConfirmCtaBulk": "移除 {count} 名",
+      "assign": {
+        "trigger": "分配教师",
+        "title": "分配教师",
+        "description": "为{className}选择负责的教师。",
+        "cta": "分配教师",
+        "assigning": "分配中…",
+        "errorTitle": "无法分配",
+        "errorNoSelection": "请选择要分配的教师。",
+        "errorAlreadyTeaches": "{name}已经是{className}的教师。",
+        "errorStalePicker": "该教师已不再符合条件——列表已刷新。",
+        "errorMessage": "无法分配教师——{className}未发生变化。",
+        "successMessage": "已将{name}分配至{className}"
+      }
+    },
+    "teacherPicker": {
+      "subLabel": "{email} · {count, plural, =0 {没有班级} other {# 个班级}}",
+      "emptyTitle": "没有符合条件的教师",
+      "emptyDescription": "该校所有教师均已被停用或不可用。"
     },
     "schoolTables": {
       "title": "学校目录",

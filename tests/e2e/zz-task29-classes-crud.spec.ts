@@ -1,6 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
-import { cat, loadMessages } from './helpers/i18n';
+import { cat, icu, loadMessages } from './helpers/i18n';
 import { roleCredentials } from './helpers/credentials';
 
 // Task 29 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -42,11 +42,17 @@ async function apiClasses(request: APIRequestContext, jwt: string): Promise<Scho
 }
 
 async function signIn(page: Page): Promise<void> {
+  // ops/30 — the portal auth redesign moved the accessible labels to
+  // Auth.portal.* (invitation-only portal: no Google, no sign-up link).
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SCHOOL_ADMIN.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(SCHOOL_ADMIN.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-  await page.waitForURL('**/dashboard/school', { timeout: 30_000 });
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(SCHOOL_ADMIN.email);
+  await page
+    .getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true })
+    .fill(SCHOOL_ADMIN.password);
+  await page
+    .getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true })
+    .click();
+  await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 30_000 });
 }
 
 test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
@@ -95,7 +101,12 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
 
     // EDIT (C-CLS-03): the redesign permits only name + one teacher and must
     // not replace the roster as the legacy assignment form did.
-    await page.getByRole('button', { name: `Actions for ${className}`, exact: true }).click();
+    // ops/30 — the row actions render through the shared directory kit now:
+    // two inline quick actions (edit/delete) plus the ⋯ overflow, whose
+    // trigger carries the kit's static row-menu label scoped to the row.
+    await row
+      .getByRole('button', { name: cat(en, 'Classes.actions.rowMenuLabel'), exact: true })
+      .click();
     await page
       .getByRole('menuitem', { name: cat(en, 'Classes.actions.edit'), exact: true })
       .click();
@@ -122,7 +133,10 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     expect(created?.teachers).toHaveLength(1);
 
     // DELETE (C-CLS-04): the confirm copy states children are not deleted.
-    await page.getByRole('button', { name: `Actions for ${editedName}`, exact: true }).click();
+    // Same kit row-menu contract as the edit step above.
+    await editedRow
+      .getByRole('button', { name: cat(en, 'Classes.actions.rowMenuLabel'), exact: true })
+      .click();
     await page
       .getByRole('menuitem', { name: cat(en, 'Classes.actions.delete'), exact: true })
       .click();
@@ -143,5 +157,68 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     // API cross-check: the class is gone.
     classes = await apiClasses(request, jwt);
     expect(classes.find((entry) => entry.name === editedName)).toBeUndefined();
+  });
+
+  // ops/30 — the classes list renders through the shared directory kit in
+  // client mode: the search, the year-band filter and the sorts reduce the
+  // loaded array, and every choice round-trips through the URL.
+  test('ops/30: the classes list is a kit list — search, year-band filter and sort round-trip', async ({
+    page,
+    request,
+  }) => {
+    const jwt = await login(request);
+    const classes = await apiClasses(request, jwt);
+    expect(classes.length).toBeGreaterThan(0);
+
+    await signIn(page);
+    await page.goto('/en/dashboard/school/classes');
+
+    const screen = page.locator('[data-slot="school-classes"]');
+    const table = screen.locator('[data-slot="school-classes-table"]');
+    await expect(table).toBeVisible({ timeout: 20_000 });
+    await expect(table.locator('[data-directory-row]').first()).toBeVisible({ timeout: 20_000 });
+
+    // SEARCH narrows to the needle. Client mode's count line describes the
+    // FILTERED set — "1 of 1" after narrowing, "N of N" before — never the
+    // loaded length beside a narrowed list (ops/30 Done-when).
+    const showingLine = (showing: number, total: number) =>
+      screen.getByText(
+        icu(cat(en, 'Classes.list.showingCount'), {
+          showing: String(showing),
+          total: String(total),
+        }),
+      );
+    const search = screen.getByLabel(cat(en, 'Classes.list.searchLabel'), { exact: true });
+    await expect(showingLine(classes.length, classes.length)).toBeVisible();
+    await search.fill('Room 4');
+    const room4 = classes.filter((entry) => entry.name.includes('Room 4')).length;
+    await expect
+      .poll(async () => table.locator('[data-directory-row]').count(), { timeout: 10_000 })
+      .toBe(room4);
+    await expect(showingLine(room4, room4)).toBeVisible();
+
+    // CLEAR FILTERS restores the whole list and the URL.
+    await screen.getByRole('button', { name: cat(en, 'Classes.list.clearFilters'), exact: true }).click();
+    await expect
+      .poll(async () => table.locator('[data-directory-row]').count(), { timeout: 10_000 })
+      .toBe(classes.length);
+
+    // SORT round-trips through the URL and reorders the rows.
+    await screen.getByLabel(cat(en, 'Classes.list.sortLabel'), { exact: true }).click();
+    await page.getByRole('option', { name: cat(en, 'Classes.list.sortNameDesc'), exact: true }).click();
+    await page.waitForURL('**/dashboard/school/classes?**sort=name:desc**');
+    const alphaLast = [...classes].sort((a, b) => b.name.localeCompare(a.name))[0];
+    await expect(
+      table.locator('[data-directory-row]').first().locator('td').first(),
+    ).toContainText(alphaLast.name);
+
+    // YEAR-BAND FILTER round-trips and matches the API's band membership.
+    await screen.getByLabel(cat(en, 'Classes.table.columnYearBand'), { exact: true }).click();
+    await page.getByRole('option', { name: cat(en, 'Classes.yearBands.7_9'), exact: true }).click();
+    await page.waitForURL('**/dashboard/school/classes?**year_band=7_9**');
+    const banded = classes.filter((entry) => entry.year_band === '7_9');
+    await expect
+      .poll(async () => table.locator('[data-directory-row]').count(), { timeout: 10_000 })
+      .toBe(banded.length);
   });
 });

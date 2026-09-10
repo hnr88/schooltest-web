@@ -1573,7 +1573,7 @@
     "unread": "Chưa đọc",
     "read": "Đã đọc",
     "today": "Hôm nay",
-    "earlier": "Earlier",
+    "earlier": "Trước đó",
     "yesterday": "Hôm qua",
     "unreadCount": "{count, plural, =0 {Không có thông báo chưa đọc} one {# thông báo chưa đọc} other {# thông báo chưa đọc}}",
     "emptyTitle": "Bạn đã cập nhật mọi thứ",
@@ -1593,9 +1593,9 @@
       "testActivity": "Hoạt động kiểm tra",
       "testResults": "Kết quả kiểm tra"
     },
-    "filterLabel": "Filter notifications by category",
+    "filterLabel": "Lọc thông báo theo danh mục",
     "filters": {
-      "all": "All"
+      "all": "Tất cả"
     },
     "teacherFeed": {
       "meta": {
@@ -3143,7 +3143,20 @@
       "panelTitle": "Student details",
       "unnamed": "Unnamed student",
       "notFoundTitle": "We could not find that student",
-      "notFoundDescription": "They may have been removed, or they belong to another school."
+      "notFoundDescription": "They may have been removed, or they belong to another school.",
+      "editButton": "Chỉnh sửa",
+      "classPanel": {
+        "title": "Lớp",
+        "currentLabel": "Lớp hiện tại",
+        "none": "Chưa được phân vào lớp",
+        "assignLabel": "Phân vào lớp",
+        "assignPlaceholder": "Chọn lớp",
+        "assignAction": "Phân vào lớp",
+        "removeAction": "Rời khỏi lớp",
+        "noClasses": "Chưa có lớp nào để phân.",
+        "errorTitle": "Không thể lưu thay đổi lớp học",
+        "errorDescription": "Vui lòng kiểm tra kết nối và thử lại."
+      }
     }
   },
   "Ops": {
@@ -3391,7 +3404,6 @@
         "restore": "Khôi phục trường",
         "suspend": "Tạm ngưng trường",
         "archive": "Lưu trữ trường",
-        "recalculateSeats": "Tính lại số chỗ",
         "undo": "Hoàn tác",
         "success": "Đã cập nhật {name}.",
         "undoSuccess": "Đã khôi phục {name}.",
@@ -3768,7 +3780,25 @@
       "rosterRemoveConfirmTitleRow": "Xóa {name} khỏi {className}?",
       "rosterRemoveConfirmTitleBulk": "{count, plural, other {Xóa # học sinh khỏi {className}?}}",
       "rosterRemoveConfirmBody": "Học sinh vẫn được ghi danh tại trường và có thể được thêm vào lớp khác.",
-      "rosterRemoveConfirmCtaBulk": "Xóa {count}"
+      "rosterRemoveConfirmCtaBulk": "Xóa {count}",
+      "assign": {
+        "trigger": "Phân công giáo viên",
+        "title": "Phân công giáo viên",
+        "description": "Chọn giáo viên phụ trách {className}.",
+        "cta": "Phân công giáo viên",
+        "assigning": "Đang phân công…",
+        "errorTitle": "Không thể phân công",
+        "errorNoSelection": "Vui lòng chọn giáo viên để phân công.",
+        "errorAlreadyTeaches": "{name} đã dạy lớp {className}.",
+        "errorStalePicker": "Giáo viên đó không còn đủ điều kiện — danh sách đã được làm mới.",
+        "errorMessage": "Không thể phân công giáo viên — {className} không thay đổi.",
+        "successMessage": "Đã phân công {name} cho {className}"
+      }
+    },
+    "teacherPicker": {
+      "subLabel": "{email} · {count, plural, =0 {Không có lớp} other {# lớp}}",
+      "emptyTitle": "Không có giáo viên đủ điều kiện",
+      "emptyDescription": "Tất cả giáo viên của trường này đều bị đình chỉ hoặc không khả dụng."
     },
     "schoolTables": {
       "title": "Danh bạ trường học",

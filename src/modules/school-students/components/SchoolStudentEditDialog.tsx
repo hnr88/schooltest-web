@@ -36,7 +36,7 @@ export function SchoolStudentEditDialog({ student, classes, onClose }: SchoolStu
         if (!next) onClose();
       }}
     >
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-xl">
+      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-[560px]">
         <DialogHeader>
           <DialogTitle>{t('editTitle', { name: studentDisplayName(student) })}</DialogTitle>
           <DialogDescription>{t('editDescription')}</DialogDescription>

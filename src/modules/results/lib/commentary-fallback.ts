@@ -1,5 +1,10 @@
-import { ERROR_PATTERN_COPY } from '@/modules/results/components/ErrorPatternsPanel';
 import type { DiagnosticExport, DiagnosticExportSkill } from '@schooltest/scoring-contracts';
+
+/** The translator shape the wiring layer passes in (`useTranslations('Results')`). */
+export type ResultsTranslate = (
+  key: string,
+  values?: Record<string, string | number>,
+) => string;
 
 /**
  * The export skill union, narrowed by its OWN discriminators (three variants
@@ -34,33 +39,36 @@ function isBanded(
  * the ≥35 dominant type, and the vocab strand gap. The client never computes or
  * re-thresholds a delta. Critical Reading is described by SCORE and GATE STATE
  * only — never in band language (D13: it has no posterior, so it has no band).
+ *
+ * Every sentence is a message key — the wiring layer passes its
+ * `useTranslations('Results')` so the commentary renders in the active locale.
  */
 
-export function fallbackParagraphs(bundle: DiagnosticExport): string[] {
+export function fallbackParagraphs(bundle: DiagnosticExport, t: ResultsTranslate): string[] {
   return [
-    positionParagraph(bundle),
-    strengthAndErrorsParagraph(bundle),
-    vocabularyParagraph(bundle),
+    positionParagraph(bundle, t),
+    strengthAndErrorsParagraph(bundle, t),
+    vocabularyParagraph(bundle, t),
   ];
 }
 
-function overallGrowthPhrase(bundle: DiagnosticExport): string {
+function overallGrowthPhrase(bundle: DiagnosticExport, t: ResultsTranslate): string {
   const { delta_display: display } = bundle.overall;
   if (display === null) return '';
-  if (display === 'steady') return ' The score is steady against the previous official sitting — no change is claimed.';
-  if (display === 'band_movement') return ' The score moved between bands against the previous official sitting.';
-  return ` The score changed by ${display} points against the previous official sitting.`;
+  if (display === 'steady') return ` ${t('fallbackGrowthSteady')}`;
+  if (display === 'band_movement') return ` ${t('fallbackGrowthBand')}`;
+  return ` ${t('fallbackGrowthPoints', { delta: display })}`;
 }
 
-function positionParagraph(bundle: DiagnosticExport): string {
+function positionParagraph(bundle: DiagnosticExport, t: ResultsTranslate): string {
   const overall = bundle.overall.domain_score === null
-    ? 'No overall score is available for this sitting.'
-    : `Overall reading stands at ${bundle.overall.domain_score}%.`;
-  return `${overall}${overallGrowthPhrase(bundle)}`;
+    ? t('fallbackNoOverall')
+    : t('fallbackOverall', { score: bundle.overall.domain_score });
+  return `${overall}${overallGrowthPhrase(bundle, t)}`;
 }
 
 /** §4.4 comparison — band-carrying skills only; Critical sits outside the scale (ruling 4a). */
-function strengthAndErrorsParagraph(bundle: DiagnosticExport): string {
+function strengthAndErrorsParagraph(bundle: DiagnosticExport, t: ResultsTranslate): string {
   // A for-loop rather than filter().map(): the type predicate narrows the
   // ELEMENT, and a destructuring tuple would silently drop the narrowing.
   const assessed: Array<{ skill: string; score: number }> = [];
@@ -76,32 +84,61 @@ function strengthAndErrorsParagraph(bundle: DiagnosticExport): string {
   );
   const parts: string[] = [];
   if (best !== null && worst !== null && best.skill !== worst.skill) {
-    parts.push(`Strongest skill: ${best.skill} (${best.score}%). Greatest need: ${worst.skill} (${worst.score}%).`);
+    parts.push(t('fallbackStrengthNeed', {
+      best: t(`skill${best.skill}`),
+      bestScore: best.score,
+      worst: t(`skill${worst.skill}`),
+      worstScore: worst.score,
+    }));
   }
   const critical = bundle.skills.Critical;
   if (critical && isGateSkill(critical)) {
     parts.push(
-      `Critical Reading scored ${critical.domain_score}% with the exit gate ${critical.gate_passed ? 'passed' : 'not yet met'} — a gate result, not a band.`,
+      t('fallbackCritical', {
+        score: critical.domain_score,
+        state: critical.gate_passed ? t('fallbackGatePassed') : t('fallbackGateNotMet'),
+      }),
     );
   }
   const dominant = bundle.error_patterns.reduce<{ type: string; pct: number } | null>(
     (top, pattern) => (top === null || pattern.pct > top.pct ? { type: pattern.type, pct: pattern.pct } : top), null,
   );
   if (dominant !== null && dominant.pct >= 35) {
-    parts.push(`Most common slip: ${ERROR_PATTERN_COPY[dominant.type]?.label ?? dominant.type} (${dominant.pct}% of wrong answers).`);
+    const known = PATTERN_KEY[dominant.type];
+    parts.push(t('fallbackCommonSlip', {
+      label: known !== undefined ? t(`errorPattern.${known}.label`) : dominant.type,
+      pct: dominant.pct,
+    }));
   }
   return parts.join(' ');
 }
 
-function vocabularyParagraph(bundle: DiagnosticExport): string {
+function vocabularyParagraph(bundle: DiagnosticExport, t: ResultsTranslate): string {
   const vocab = bundle.vocab;
   if (vocab.single_strand === 'a2') {
-    return `Vocabulary this sitting is the A2 strand alone (${vocab.a2.domain_score === null ? 'no score' : `${vocab.a2.domain_score}%`}); B1 was not assessed, so no blend is claimed. Teaching focus: keep consolidating A2 word knowledge before the B1 sitting.`;
+    return t('fallbackVocabA2Only', {
+      a2: vocab.a2.domain_score === null ? t('fallbackNoScore') : t('scorePercent', { score: vocab.a2.domain_score }),
+    });
   }
   if (vocab.single_strand === 'b1') {
-    return `Vocabulary this sitting is the B1 strand alone (${vocab.b1.domain_score === null ? 'no score' : `${vocab.b1.domain_score}%`}); A2 was not assessed, so no blend is claimed. Teaching focus: build on the B1 vocabulary now in evidence.`;
+    return t('fallbackVocabB1Only', {
+      b1: vocab.b1.domain_score === null ? t('fallbackNoScore') : t('scorePercent', { score: vocab.b1.domain_score }),
+    });
   }
-  const a2 = vocab.a2.domain_score === null ? 'not assessed' : `${vocab.a2.domain_score}%`;
-  const b1 = vocab.b1.domain_score === null ? 'not assessed' : `${vocab.b1.domain_score}%`;
-  return `Vocabulary blends the two strands at ${vocab.blended === null ? 'no score' : `${vocab.blended}%`} (A2 ${a2}, B1 ${b1}). Teaching focus: grow the weaker strand before the next sitting.`;
+  return t('fallbackVocabBlend', {
+    blended: vocab.blended === null ? t('fallbackNoScore') : t('scorePercent', { score: vocab.blended }),
+    a2: vocab.a2.domain_score === null ? t('fallbackNotAssessed') : t('scorePercent', { score: vocab.a2.domain_score }),
+    b1: vocab.b1.domain_score === null ? t('fallbackNotAssessed') : t('scorePercent', { score: vocab.b1.domain_score }),
+  });
 }
+
+/** Error-pattern type → message-key fragment (shared with ErrorPatternsPanel). */
+export const PATTERN_KEY: Record<string, string> = {
+  literal_match: 'literalMatch',
+  overinference: 'overinference',
+  world_knowledge: 'worldKnowledge',
+  grammatical_decoy: 'grammaticalDecoy',
+  phonological_neighbour: 'phonologicalNeighbour',
+  orthographic_neighbour: 'orthographicNeighbour',
+  semantic_neighbour: 'semanticNeighbour',
+};

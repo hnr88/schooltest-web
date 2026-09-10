@@ -147,6 +147,14 @@ const ALLOWLIST: readonly Exemption[] = [
     value: /^\{\w+\}\s*→\s*\{\w+\}$/,
     why: "an arrow between interpolations (e.g. \"{from} → {to}\", Teacher.results progress/score deltas): the arrow IS the rendering — no words to translate, and localising the glyph would break the delta layout",
   },
+  {
+    key: 'Ops.resultWindows.scorePercent',
+    why: 'a bare "{score}%" interpolation — the percent sign is punctuation, identical in every locale',
+  },
+  {
+    key: 'Ops.resultWindows.cefrValue',
+    why: '" · {cefr}" — an interpunct separator plus the CEFR proper noun as an interpolation; no prose to translate',
+  },
 ];
 
 function exempt(locale: string, key: string, value: string): boolean {

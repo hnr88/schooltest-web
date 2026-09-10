@@ -64,9 +64,9 @@ test.describe('registration with email confirmation (serial, D20)', () => {
     await expect(page.getByText(cat(en, 'Auth.emailConfirmedBanner'))).toBeVisible();
 
     // The confirmed account can now sign in with its own credentials.
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
+    await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(parent.email);
     await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(parent.password);
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+    await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
     await page.waitForURL('**/dashboard');
     const jwt = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
     expect(jwt).toMatch(/^eyJ/);
@@ -89,9 +89,9 @@ test.describe('registration with email confirmation (serial, D20)', () => {
     expect(body.user?.confirmed).toBe(false);
 
     await page.goto('/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
+    await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(parent.email);
     await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(parent.password);
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+    await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
     // C-AUTH-LOGIN's sanctioned message-based branch → Auth.notConfirmedError,
     // distinct from the generic loginError, and never a redirect.

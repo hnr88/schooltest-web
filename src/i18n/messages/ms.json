@@ -1573,7 +1573,7 @@
     "unread": "Belum dibaca",
     "read": "Dibaca",
     "today": "Hari ini",
-    "earlier": "Earlier",
+    "earlier": "Lebih awal",
     "yesterday": "Semalam",
     "unreadCount": "{count, plural, =0 {Tiada pemberitahuan belum dibaca} one {# pemberitahuan belum dibaca} other {# pemberitahuan belum dibaca}}",
     "emptyTitle": "Anda sudah mengikuti semua kemas kini",
@@ -1593,9 +1593,9 @@
       "testActivity": "Aktiviti ujian",
       "testResults": "Keputusan ujian"
     },
-    "filterLabel": "Filter notifications by category",
+    "filterLabel": "Tapis pemberitahuan mengikut kategori",
     "filters": {
-      "all": "All"
+      "all": "Semua"
     },
     "teacherFeed": {
       "meta": {
@@ -3134,7 +3134,20 @@
       "panelTitle": "Student details",
       "unnamed": "Unnamed student",
       "notFoundTitle": "We could not find that student",
-      "notFoundDescription": "They may have been removed, or they belong to another school."
+      "notFoundDescription": "They may have been removed, or they belong to another school.",
+      "editButton": "Edit",
+      "classPanel": {
+        "title": "Kelas",
+        "currentLabel": "Kelas semasa",
+        "none": "Belum ditugaskan ke kelas",
+        "assignLabel": "Tugaskan ke kelas",
+        "assignPlaceholder": "Pilih kelas",
+        "assignAction": "Tugaskan",
+        "removeAction": "Keluarkan dari kelas",
+        "noClasses": "Tiada kelas untuk ditugaskan lagi.",
+        "errorTitle": "Perubahan kelas tidak dapat disimpan",
+        "errorDescription": "Semak sambungan anda dan cuba lagi."
+      }
     }
   },
   "Ops": {
@@ -3382,7 +3395,6 @@
         "restore": "Pulihkan sekolah",
         "suspend": "Gantung sekolah",
         "archive": "Arkibkan sekolah",
-        "recalculateSeats": "Kira semula tempat duduk",
         "undo": "Buat asal",
         "success": "{name} dikemas kini.",
         "undoSuccess": "{name} dipulihkan.",
@@ -3759,7 +3771,25 @@
       "rosterRemoveConfirmTitleRow": "Keluarkan {name} daripada {className}?",
       "rosterRemoveConfirmTitleBulk": "{count, plural, other {Keluarkan # murid daripada {className}?}}",
       "rosterRemoveConfirmBody": "Mereka kekal berdaftar di sekolah dan boleh ditambah ke kelas lain.",
-      "rosterRemoveConfirmCtaBulk": "Keluarkan {count}"
+      "rosterRemoveConfirmCtaBulk": "Keluarkan {count}",
+      "assign": {
+        "trigger": "Tugaskan guru",
+        "title": "Tugaskan guru",
+        "description": "Pilih guru yang bertanggungjawab untuk {className}.",
+        "cta": "Tugaskan guru",
+        "assigning": "Menugaskan…",
+        "errorTitle": "Tidak dapat menugaskan",
+        "errorNoSelection": "Pilih guru untuk ditugaskan.",
+        "errorAlreadyTeaches": "{name} sudah mengajar {className}.",
+        "errorStalePicker": "Guru itu tidak lagi layak — senarai telah disegarkan.",
+        "errorMessage": "Tidak dapat menugaskan guru — {className} tidak berubah.",
+        "successMessage": "{name} telah ditugaskan ke {className}"
+      }
+    },
+    "teacherPicker": {
+      "subLabel": "{email} · {count, plural, =0 {Tiada kelas} other {# kelas}}",
+      "emptyTitle": "Tiada guru yang layak",
+      "emptyDescription": "Semua guru di sekolah ini digantung atau tidak tersedia."
     },
     "schoolTables": {
       "title": "Direktori sekolah",

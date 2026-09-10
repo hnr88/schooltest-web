@@ -11,6 +11,7 @@ export { useClassStudentQuery } from './queries/use-class-student.query';
 export { useCreateClassMutation } from './queries/use-create-class.mutation';
 export { useUpdateClassMutation } from './queries/use-update-class.mutation';
 export { useDeleteClassMutation } from './queries/use-delete-class.mutation';
+export { useUpdateClassTeachersMutation } from './queries/use-update-class-teachers.mutation';
 export type { ClassTeacher, SchoolClass } from './types/classes.types';
 export type {
   AcaraPhase,

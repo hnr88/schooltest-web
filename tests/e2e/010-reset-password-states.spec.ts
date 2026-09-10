@@ -30,7 +30,7 @@ async function requestResetCode(
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
   await page.getByRole('button', { name: cat(en, 'Auth.sendResetLink'), exact: true }).click();
   await expect(
-    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.sentTitle') }),
+    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.portal.sentTitle') }),
   ).toBeVisible();
   const message = await latestMessage(request, parent.email, 2);
   return extractToken(message.HTML, RESET_LINK_RE, flow);
@@ -56,22 +56,24 @@ test('reset password renders the contracted form, expired and completion states'
   const successCode = await requestResetCode(page, request, '010-success');
   await page.goto(`/reset-password?code=${successCode}`);
   await page.getByLabel(cat(en, 'Auth.newPasswordLabel'), { exact: true }).fill(NEW_PASSWORD);
-  await expect(page.getByText(cat(en, 'Auth.passwordRuleByteLimit'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.portal.ruleLength'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.portal.ruleCharClasses'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.portal.ruleHistory'))).toBeVisible();
   await page
-    .getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true })
+    .getByLabel(cat(en, 'Auth.portal.confirmLabel'), { exact: true })
     .fill('Different1234!');
   await page.getByRole('button', { name: cat(en, 'Auth.resetButton'), exact: true }).click();
-  await expect(page.getByText(cat(en, 'Auth.passwordMismatch'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.portal.confirmMismatch'))).toBeVisible();
   await captureState(page, 'new-password');
 
   await page
-    .getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true })
+    .getByLabel(cat(en, 'Auth.portal.confirmLabel'), { exact: true })
     .fill(NEW_PASSWORD);
   await page.getByRole('button', { name: cat(en, 'Auth.resetButton'), exact: true }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: cat(en, 'Auth.passwordUpdatedTitle') }),
   ).toBeVisible();
-  await expect(page.getByText(cat(en, 'Auth.passwordUpdatedBody'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.portal.doneBody'))).toBeVisible();
   await expect(
     page.getByRole('link', { name: cat(en, 'Auth.continueToDashboard'), exact: true }),
   ).toHaveAttribute('href', '/dashboard');
@@ -83,12 +85,12 @@ test('reset password renders the contracted form, expired and completion states'
   await page.goto(`/reset-password?code=${expiredCode}`);
   await page.getByLabel(cat(en, 'Auth.newPasswordLabel'), { exact: true }).fill(NEW_PASSWORD);
   await page
-    .getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true })
+    .getByLabel(cat(en, 'Auth.portal.confirmLabel'), { exact: true })
     .fill(NEW_PASSWORD);
   await page.getByRole('button', { name: cat(en, 'Auth.resetButton'), exact: true }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: cat(en, 'Auth.expiredLinkTitle') }),
   ).toBeVisible();
-  await expect(page.getByText(cat(en, 'Auth.expiredLinkBody'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.portal.expiredBody'))).toBeVisible();
   await captureState(page, 'expired-link');
 });

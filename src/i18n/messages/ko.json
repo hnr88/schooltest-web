@@ -1573,7 +1573,7 @@
     "unread": "읽지 않음",
     "read": "읽음",
     "today": "오늘",
-    "earlier": "Earlier",
+    "earlier": "이전",
     "yesterday": "어제",
     "unreadCount": "{count, plural, =0 {읽지 않은 알림 없음} other {읽지 않은 알림 #개}}",
     "emptyTitle": "모두 확인했습니다",
@@ -1593,9 +1593,9 @@
       "testActivity": "시험 활동",
       "testResults": "시험 결과"
     },
-    "filterLabel": "Filter notifications by category",
+    "filterLabel": "카테고리별로 알림 필터링",
     "filters": {
-      "all": "All"
+      "all": "전체"
     },
     "teacherFeed": {
       "meta": {
@@ -3134,7 +3134,20 @@
       "panelTitle": "Student details",
       "unnamed": "Unnamed student",
       "notFoundTitle": "We could not find that student",
-      "notFoundDescription": "They may have been removed, or they belong to another school."
+      "notFoundDescription": "They may have been removed, or they belong to another school.",
+      "editButton": "편집",
+      "classPanel": {
+        "title": "학급",
+        "currentLabel": "현재 학급",
+        "none": "아직 배정된 학급이 없습니다",
+        "assignLabel": "학급 배정",
+        "assignPlaceholder": "학급을 선택하세요",
+        "assignAction": "배정",
+        "removeAction": "학급에서 제외",
+        "noClasses": "배정할 수 있는 학급이 아직 없습니다.",
+        "errorTitle": "학급 변경을 저장하지 못했습니다",
+        "errorDescription": "연결 상태를 확인하고 다시 시도하세요."
+      }
     }
   },
   "Ops": {
@@ -3382,7 +3395,6 @@
         "restore": "학교 복원",
         "suspend": "학교 일시 중지",
         "archive": "학교 보관",
-        "recalculateSeats": "좌석 재계산",
         "undo": "실행 취소",
         "success": "{name}이(가) 업데이트되었습니다.",
         "undoSuccess": "{name}이(가) 복원되었습니다.",
@@ -3759,7 +3771,25 @@
       "rosterRemoveConfirmTitleRow": "{name}님을 {className}에서 제거할까요?",
       "rosterRemoveConfirmTitleBulk": "{count, plural, other {학생 #명을 {className}에서 제거할까요?}}",
       "rosterRemoveConfirmBody": "학생은 학교에 계속 등록된 상태로 남으며 다른 클래스에 추가할 수 있습니다.",
-      "rosterRemoveConfirmCtaBulk": "{count}명 제거"
+      "rosterRemoveConfirmCtaBulk": "{count}명 제거",
+      "assign": {
+        "trigger": "교사 배정",
+        "title": "교사 배정",
+        "description": "{className}을(를) 담당할 교사를 선택하세요.",
+        "cta": "교사 배정",
+        "assigning": "배정 중…",
+        "errorTitle": "배정하지 못했습니다",
+        "errorNoSelection": "배정할 교사를 선택하세요.",
+        "errorAlreadyTeaches": "{name}은(는) 이미 {className}을(를) 담당하고 있습니다.",
+        "errorStalePicker": "해당 교사는 더 이상 배정할 수 없습니다 — 목록을 새로고침했습니다.",
+        "errorMessage": "교사를 배정하지 못했습니다 — {className}은(는) 변경되지 않았습니다.",
+        "successMessage": "{name}이(가) {className}에 배정되었습니다"
+      }
+    },
+    "teacherPicker": {
+      "subLabel": "{email} · {count, plural, =0 {배정된 학급 없음} other {학급 #개}}",
+      "emptyTitle": "배정 가능한 교사 없음",
+      "emptyDescription": "이 학교의 모든 교사가 정지되었거나 배정할 수 없습니다."
     },
     "schoolTables": {
       "title": "학교 디렉터리",

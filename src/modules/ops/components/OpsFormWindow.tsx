@@ -160,6 +160,7 @@ const WINDOW_SKILLS = ['reading', 'listening', 'speaking', 'writing'] as const;
  * unknown-state fallback (em dash) because the server can only send null.
  */
 function OpsResultWindowsSection({ schoolDocumentId }: { schoolDocumentId: string }) {
+  const t = useTranslations('Ops.resultWindows');
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState<WindowStatus | undefined>(undefined);
   const [creating, setCreating] = useState(false);
@@ -171,8 +172,8 @@ function OpsResultWindowsSection({ schoolDocumentId }: { schoolDocumentId: strin
   if (windows.isError) {
     return (
       <div data-testid="ops-result-windows-error">
-        <Alert variant="error" title="Result windows could not be loaded">
-          The server refused or failed the read. Retry after the next reload — nothing was changed.
+        <Alert variant="error" title={t('errorTitle')}>
+          {t('errorDescription')}
         </Alert>
       </div>
     );
@@ -182,11 +183,8 @@ function OpsResultWindowsSection({ schoolDocumentId }: { schoolDocumentId: strin
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-border bg-background p-3" data-testid="ops-result-windows">
       <div className="flex flex-col gap-1">
-        <h3 className="text-base font-semibold text-foreground">Result windows</h3>
-        <p className="text-sm text-body">
-          Historical and scheduled assessment windows for this school&apos;s classes. Sat counts official,
-          non-invalidated attempts; pending scores are shown separately, never as zero.
-        </p>
+        <h3 className="text-base font-semibold text-foreground">{t('title')}</h3>
+        <p className="text-sm text-body">{t('description')}</p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <Button
@@ -196,7 +194,7 @@ function OpsResultWindowsSection({ schoolDocumentId }: { schoolDocumentId: strin
           onClick={() => setPage((current) => Math.max(1, current - 1))}
           disabled={!meta || page <= 1}
         >
-          Previous
+          {t('previous')}
         </Button>
         <Button
           type="button"
@@ -205,18 +203,18 @@ function OpsResultWindowsSection({ schoolDocumentId }: { schoolDocumentId: strin
           onClick={() => setPage((current) => (meta && page < meta.pageCount ? current + 1 : current))}
           disabled={!meta || page >= (meta.pageCount ?? 1)}
         >
-          Next
+          {t('next')}
         </Button>
         <span className="text-sm text-body">
-          {meta ? `Page ${meta.page} of ${meta.pageCount} — ${meta.total} windows` : ''}
+          {meta ? t('pageCount', { page: meta.page, pageCount: meta.pageCount, total: meta.total }) : ''}
         </span>
         <Button type="button" size="sm" onClick={() => setCreating((open) => !open)}>
-          {creating ? 'Close scheduler' : 'Schedule window'}
+          {creating ? t('closeScheduler') : t('scheduleWindow')}
         </Button>
       </div>
       {rows.length === 0 ? (
         <p className="text-sm text-body" data-testid="ops-result-windows-empty">
-          No result windows yet. Schedule one to run official progress tests for selected classes.
+          {t('empty')}
         </p>
       ) : (
         <ul className="flex flex-col gap-2">
@@ -228,17 +226,19 @@ function OpsResultWindowsSection({ schoolDocumentId }: { schoolDocumentId: strin
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-foreground">{row.title}</span>
-                <Badge variant={STATUS_VARIANTS[row.status] ?? 'default'}>{row.status}</Badge>
+                <Badge variant={STATUS_VARIANTS[row.status as WindowStatus] ?? 'default'}>
+                  {t(`status.${STATUS_KEY[row.status as WindowStatus] ?? row.status}`)}
+                </Badge>
               </div>
               <p className="text-sm text-body">
                 {format(parseISO(row.opens_at), DATE_TIME)} – {format(parseISO(row.closes_at), DATE_TIME)}
               </p>
               <p className="text-sm text-body">
-                Sat {row.sat} of {row.eligible} · pending {Math.max(row.eligible - row.sat, 0)}
+                {t('rowStats', { sat: row.sat, eligible: row.eligible, pending: Math.max(row.eligible - row.sat, 0) })}
                 {row.average_percentage === null
                   ? ''
-                  : ` · average ${row.average_percentage}%`}
-                {row.average_cefr === null ? ' · CEFR band pending' : ` · ${row.average_cefr}`}
+                  : t('rowAverage', { average: row.average_percentage })}
+                {row.average_cefr === null ? t('cefrPending') : t('cefrValue', { cefr: row.average_cefr })}
               </p>
               <OpsWindowRowActions schoolDocumentId={schoolDocumentId} row={row} />
             </li>
@@ -251,6 +251,13 @@ function OpsResultWindowsSection({ schoolDocumentId }: { schoolDocumentId: strin
     </div>
   );
 }
+
+const STATUS_KEY: Record<WindowStatus, string> = {
+  complete: 'complete',
+  in_progress: 'inProgress',
+  scheduled: 'scheduled',
+  cancelled: 'cancelled',
+};
 
 type WindowFormBinding = { skill: 'reading' | 'listening' | 'speaking' | 'writing'; form_documentId: string };
 
@@ -276,6 +283,7 @@ function OpsWindowRowActions({
   schoolDocumentId: string;
   row: { documentId: string; title: string; status: string; opens_at: string; closes_at: string };
 }) {
+  const t = useTranslations('Ops.resultWindows');
   const [open, setOpen] = useState(false);
   const share = useWindowShareMutation(schoolDocumentId);
   const cancel = useWindowCancelMutation(schoolDocumentId);
@@ -301,7 +309,7 @@ function OpsWindowRowActions({
           size="sm"
           onClick={() => setOpen((current) => !current)}
         >
-          {open ? 'Hide report' : 'View report'}
+          {open ? t('hideReport') : t('viewReport')}
         </Button>
         <Button
           type="button"
@@ -316,7 +324,7 @@ function OpsWindowRowActions({
             )
           }
         >
-          Download PDF
+          {t('downloadPdf')}
         </Button>
         {row.status !== 'cancelled' ? (
           <Button
@@ -327,7 +335,7 @@ function OpsWindowRowActions({
             disabled={share.isPending}
             onClick={() => share.mutate({ schoolDocumentId, windowDocumentId: row.documentId })}
           >
-            Share
+            {t('share')}
           </Button>
         ) : null}
         {row.status === 'scheduled' ? (
@@ -339,7 +347,7 @@ function OpsWindowRowActions({
             disabled={cancel.isPending}
             onClick={() => cancel.mutate({ schoolDocumentId, windowDocumentId: row.documentId })}
           >
-            Cancel
+            {t('cancel')}
           </Button>
         ) : null}
         {row.status === 'complete' ? (
@@ -351,60 +359,63 @@ function OpsWindowRowActions({
             disabled={reopen.isPending}
             onClick={() => reopen.mutate({ schoolDocumentId, windowDocumentId: row.documentId })}
           >
-            Reopen
+            {t('reopen')}
           </Button>
         ) : null}
       </div>
       {pdf.isError ? (
         <p role="alert" className="text-sm text-destructive">
-          The PDF download failed: {conflictMessage(pdf.error)}
+          {t('pdfError', { message: conflictMessage(pdf.error, t('conflictFallback')) })}
         </p>
       ) : null}
       {share.isSuccess ? (
         <p className="text-sm text-body" data-testid="ops-window-share-result">
-          Shared: {share.data.sent} sent, {share.data.failed} failed
-          {share.data.failed > 0 ? ' — the failures are named in the audit log.' : '.'}
+          {t('shareResult', { sent: share.data.sent, failed: share.data.failed })}
+          {share.data.failed > 0 ? t('shareResultFailures') : t('shareResultOk')}
         </p>
       ) : null}
       {share.isError ? (
         <p role="alert" className="text-sm text-destructive">
-          Share failed: {conflictMessage(share.error)}
+          {t('shareError', { message: conflictMessage(share.error, t('conflictFallback')) })}
         </p>
       ) : null}
       {cancel.isError ? (
         <p role="alert" className="text-sm text-destructive">
-          Cancel failed: {conflictMessage(cancel.error)}
+          {t('cancelError', { message: conflictMessage(cancel.error, t('conflictFallback')) })}
         </p>
       ) : null}
       {reopen.isError ? (
         <p role="alert" className="text-sm text-destructive">
-          Reopen failed: {conflictMessage(reopen.error)}
+          {t('reopenError', { message: conflictMessage(reopen.error, t('conflictFallback')) })}
         </p>
       ) : null}
       {open ? (
         <div className="flex flex-col gap-1 rounded-lg border border-border bg-background p-2" data-testid={`ops-window-report-${row.documentId}`}>
           {report.isPending ? <Skeleton className="h-4 w-1/2" /> : null}
           {report.isError ? (
-            <Alert variant="error" title="Report could not be loaded">
-              {conflictMessage(report.error)}
+            <Alert variant="error" title={t('reportErrorTitle')}>
+              {conflictMessage(report.error, t('conflictFallback'))}
             </Alert>
           ) : null}
           {report.isSuccess ? (
             <>
               <p className="text-sm text-body">
-                Eligible {report.data.data.eligible} · sat {report.data.data.sat} · pending{' '}
-                {Math.max(report.data.data.eligible - report.data.data.sat, 0)} · invalidated attempts excluded{' '}
-                {report.data.data.excluded_invalidated}
+                {t('reportStats', {
+                  eligible: report.data.data.eligible,
+                  sat: report.data.data.sat,
+                  pending: Math.max(report.data.data.eligible - report.data.data.sat, 0),
+                  excluded: report.data.data.excluded_invalidated,
+                })}
               </p>
               <ul className="flex flex-col gap-1">
                 {report.data.data.results.map((result) => (
                   <li key={result.result_documentId} className="text-sm text-body">
                     {result.student_documentId} —{' '}
-                    {result.percentage === null ? 'score pending' : `${result.percentage}%`} (
-                    {result.cefr_level ?? 'CEFR pending'})
+                    {result.percentage === null ? t('scorePending') : t('scorePercent', { score: result.percentage })} (
+                    {result.cefr_level ?? t('cefrPendingShort')})
                   </li>
                 ))}
-                {report.data.data.results.length === 0 ? <li className="text-sm text-body">No official results yet.</li> : null}
+                {report.data.data.results.length === 0 ? <li className="text-sm text-body">{t('noOfficialResults')}</li> : null}
               </ul>
             </>
           ) : null}
@@ -428,6 +439,7 @@ function OpsAssessmentWindowCreateForm({
   schoolDocumentId: string;
   onDone: () => void;
 }) {
+  const t = useTranslations('Ops.resultWindows');
   const classes = useClassesListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const forms = useFormsQuery(true);
   const [title, setTitle] = useState('');
@@ -482,25 +494,25 @@ function OpsAssessmentWindowCreateForm({
       }}
     >
       <label className="flex flex-col gap-1 text-sm">
-        <span className="font-medium text-foreground">Title</span>
+        <span className="font-medium text-foreground">{t('formTitle')}</span>
         <Input value={title} onChange={(event) => setTitle(event.target.value)} maxLength={255} />
       </label>
       <label className="flex flex-col gap-1 text-sm">
-        <span className="font-medium text-foreground">Timezone (IANA, e.g. Australia/Melbourne)</span>
+        <span className="font-medium text-foreground">{t('formTimezone')}</span>
         <Input value={timezone} onChange={(event) => setTimezone(event.target.value)} maxLength={100} />
       </label>
       <div className="grid grid-cols-2 gap-2">
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-foreground">Opens</span>
+          <span className="font-medium text-foreground">{t('formOpens')}</span>
           <Input type="datetime-local" value={opensAt} onChange={(event) => setOpensAt(event.target.value)} />
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-foreground">Closes</span>
+          <span className="font-medium text-foreground">{t('formCloses')}</span>
           <Input type="datetime-local" value={closesAt} onChange={(event) => setClosesAt(event.target.value)} />
         </label>
       </div>
       <fieldset className="flex flex-col gap-1">
-        <legend className="text-sm font-medium text-foreground">Classes ({selectedClasses.length} selected)</legend>
+        <legend className="text-sm font-medium text-foreground">{t('classesLegend', { count: selectedClasses.length })}</legend>
         <div className="flex max-h-48 flex-col gap-1 overflow-y-auto rounded-lg border border-border p-2">
           {(classes.data?.data ?? []).map((row) => (
             <label key={row.documentId} className="flex items-center gap-2 text-sm">
@@ -520,16 +532,16 @@ function OpsAssessmentWindowCreateForm({
         </div>
       </fieldset>
       <fieldset className="flex flex-col gap-1">
-        <legend className="text-sm font-medium text-foreground">Forms per skill (1–4 skills)</legend>
+        <legend className="text-sm font-medium text-foreground">{t('formsLegend')}</legend>
         {WINDOW_SKILLS.map((skill) => (
           <label key={skill} className="flex items-center gap-2 text-sm">
-            <span className="w-20 text-body">{skill}</span>
+            <span className="w-20 text-body">{t(`skill.${skill}`)}</span>
             <select
               className="rounded-md border border-border bg-background p-1 text-sm"
               value={bindings[skill] ?? ''}
               onChange={(event) => setBindings((current) => ({ ...current, [skill]: event.target.value }))}
             >
-              <option value="">— no form —</option>
+              <option value="">{t('noFormOption')}</option>
               {(forms.data ?? [])
                 .filter((form) => form.skill === skill)
                 .map((form) => (
@@ -542,27 +554,27 @@ function OpsAssessmentWindowCreateForm({
         ))}
       </fieldset>
       {create.isError ? (
-        <Alert variant="error" title="The window was not scheduled">
-          {conflictMessage(create.error)} — nothing was assigned.
+        <Alert variant="error" title={t('createErrorTitle')}>
+          {t('createErrorSuffix', { message: conflictMessage(create.error, t('conflictFallback')) })}
         </Alert>
       ) : null}
       <div className="flex items-center gap-2">
         <Button type="submit" size="sm" loading={create.isPending} disabled={invalid}>
-          Schedule
+          {t('scheduleSubmit')}
         </Button>
         <Button type="button" variant="outline" size="sm" onClick={onDone}>
-          Cancel
+          {t('cancelSubmit')}
         </Button>
       </div>
     </form>
   );
 }
 
-/** The 409/400 body is the shared error envelope — surface its message. */
-function conflictMessage(error: unknown): string {
+/** The 409/400 body is the shared error envelope — surface its message (fallback copy translated by the caller). */
+function conflictMessage(error: unknown, fallback: string): string {
   if (error && typeof error === 'object' && 'message' in error) {
     const message = (error as { message?: unknown }).message;
     if (typeof message === 'string' && message !== '') return message;
   }
-  return 'The server refused the window.';
+  return fallback;
 }

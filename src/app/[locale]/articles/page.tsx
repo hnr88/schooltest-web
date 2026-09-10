@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 import { NOINDEX_ROBOTS } from '@/modules/seo';
 
@@ -9,13 +10,14 @@ import { ArticlesList, ArticleStatsCards, CreateArticleForm } from '@/modules/ar
 // which a bare robots Disallow line cannot express.
 export const metadata: Metadata = { robots: NOINDEX_ROBOTS };
 
-export default function ArticlesPage() {
+export default async function ArticlesPage() {
+  const t = await getTranslations('Articles');
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 py-12">
       <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Articles</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
         <p className="text-sm text-muted-foreground">
-          Example module wired end-to-end to the Strapi <code>article</code> API.
+          {t('description')}
         </p>
       </header>
 

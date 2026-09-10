@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { Button } from '@/modules/design-system';
 import { OPS_SELECTION_MAX } from '@/modules/ops/actions/constants/ops-action.constants';
 
@@ -35,20 +37,21 @@ export function OpsBulkBar({
   busy = false,
   onClear,
 }: OpsBulkBarProps) {
+  const t = useTranslations('Ops.bulkBar');
   if (count === 0) return null;
   const noun = count === 1 ? entityLabel : `${entityLabel}s`;
   return (
     <div
       role="region"
-      aria-label={`${count} ${noun} selected`}
+      aria-label={t('ariaSelected', { count, noun })}
       className="flex flex-wrap items-center gap-3 rounded-2xl border bg-card px-4 py-3"
     >
       <p className="text-sm font-semibold">
-        {count} {noun} selected on this page
+        {t('selectedOnPage', { count, noun })}
       </p>
       {atCap ? (
         <p className="text-sm text-muted-foreground">
-          Selection is capped at {OPS_SELECTION_MAX}.
+          {t('cappedAt', { max: OPS_SELECTION_MAX })}
         </p>
       ) : null}
       <div className="ms-auto flex flex-wrap items-center gap-2">
@@ -65,7 +68,7 @@ export function OpsBulkBar({
           </Button>
         ))}
         <Button type="button" size="sm" variant="ghost" disabled={busy} onClick={onClear}>
-          Clear selection
+          {t('clear')}
         </Button>
       </div>
     </div>

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -56,6 +58,7 @@ export function OpsTypedNameConfirm({
   errorMessage,
   onConfirm,
 }: OpsTypedNameConfirmProps) {
+  const t = useTranslations('Ops.typedNameConfirm');
   const inputId = 'ops-typed-name-confirm';
   const errorId = `${inputId}-error`;
   return (
@@ -67,7 +70,9 @@ export function OpsTypedNameConfirm({
         </AlertDialogHeader>
         <div className="flex flex-col gap-2">
           <Label htmlFor={inputId}>
-            Type <span className="font-semibold">{requiredName}</span> to confirm
+            {t.rich('typeToConfirm', {
+              name: (chunks) => <span className="font-semibold">{chunks}</span>,
+            })}
           </Label>
           <Input
             id={inputId}

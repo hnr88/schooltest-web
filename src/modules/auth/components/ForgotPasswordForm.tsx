@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Lock } from 'lucide-react';
+import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,14 +14,25 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordInput,
 } from '@/modules/auth/schemas/forgot-password.schema';
-import type { ForgotPasswordErrorKey } from '@/modules/auth/types/auth.types';
+import type { ForgotPasswordErrorKey, StrapiErrorBody } from '@/modules/auth/types/auth.types';
 import { Alert, Button } from '@/modules/design-system';
 
 import type { ForgotPasswordFormProps } from '@/modules/auth/types/components.types';
 
-// Request state of the forgot-password card (§14.3): blue lock tile, title +
+function getRateLimitRetrySeconds(error: unknown): number | undefined {
+  if (!isAxiosError<StrapiErrorBody>(error)) return undefined;
+  const retryAfterSeconds = error.response?.data?.error?.details?.retryAfterSeconds;
+  return typeof retryAfterSeconds === 'number' &&
+    Number.isFinite(retryAfterSeconds) &&
+    retryAfterSeconds > 0
+    ? retryAfterSeconds
+    : undefined;
+}
+
+// Request state of the forgot-password card (design 'forgot' scenario): title +
 // helper copy, email field, primary submit. Success is enumeration-safe — the
-// parent swaps to the sent state for ANY accepted email.
+// parent swaps to the sent state for ANY accepted email; an initial-send 429
+// lands on the sent state with its rate-limit strip instead of a form error.
 export function ForgotPasswordForm({ onSent }: ForgotPasswordFormProps) {
   const t = useTranslations('Auth');
   const forgotPassword = useForgotPasswordMutation();
@@ -44,7 +55,14 @@ export function ForgotPasswordForm({ onSent }: ForgotPasswordFormProps) {
       },
       onError: (error) => {
         const key = classifyForgotPasswordError(error);
-        setFormError(key);
+        if (key === 'tooManyRequests') {
+          onSent(values.email, {
+            rateLimited: true,
+            retrySeconds: getRateLimitRetrySeconds(error),
+          });
+        } else {
+          setFormError(key);
+        }
         toast.error(t(key));
       },
     });
@@ -52,15 +70,9 @@ export function ForgotPasswordForm({ onSent }: ForgotPasswordFormProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      <span
-        aria-hidden="true"
-        className="flex size-11 items-center justify-center rounded-tile bg-blue-50 text-blue-600"
-      >
-        <Lock className="size-5" />
-      </span>
       <div className="flex flex-col gap-2">
-        <h1 className="text-auth-title font-bold text-foreground">{t('forgotTitle')}</h1>
-        <p className="text-body-md text-body">{t('forgotSubtitle')}</p>
+        <h1 className="text-auth-title font-bold text-foreground">{t('portal.forgotTitle')}</h1>
+        <p className="text-body-md text-muted-foreground">{t('portal.forgotSubtitle')}</p>
       </div>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
         {formError ? (

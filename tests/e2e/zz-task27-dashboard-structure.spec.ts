@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
+import { fixtureClassId } from './helpers/fixture-class';
 import { roleCredentials } from './helpers/credentials';
 
 // Task 27 (st-mvp-pivot) targeted live checks — NOT part of the suite.
@@ -26,9 +27,12 @@ async function signIn(
   finalUrl: string,
 ): Promise<void> {
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  // The auth redesign moved the form labels into the Auth.portal namespace
+  // ("Email address" / "Log in"); the retired flat "Email"/"Sign in" keys no
+  // longer match the rendered form. Same form, same actions — current copy only.
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill(password);
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await page.waitForURL(`**${finalUrl}`, { timeout: 30_000 });
 }
 
@@ -64,8 +68,11 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     }
 
     // TeacherGuard keeps a school_admin out of the teacher section. R-12
-    // retired the section root, so the guard is proven on a surviving route.
-    await page.goto('/dashboard/teach/classes');
+    // retired the section root, so the guard is proven on a surviving guarded
+    // RECORD route — the bare /dashboard/teach/classes segment has no
+    // page.tsx and 404s before any guard runs, so the id resolves from the
+    // seed by name (the shared fixtureClassId idiom).
+    await page.goto(`/dashboard/teach/classes/${fixtureClassId()}`);
     await page.waitForURL('**/dashboard/school', { timeout: 20_000 });
     await expect(page.locator('[data-surface="teacher-results"]')).toHaveCount(0);
   });
@@ -107,8 +114,9 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     });
 
     // scoring/10 (R-12): the teach ROOT is retired (404 for everyone); a
-    // surviving guarded teach route still bounces a parent to /dashboard.
-    await page.goto('/dashboard/teach/classes');
+    // surviving guarded teach record route still bounces a parent to /dashboard
+    // (the bare classes segment has no page, so the id resolves from the seed).
+    await page.goto(`/dashboard/teach/classes/${fixtureClassId()}`);
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
     await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible({
       timeout: 20_000,
@@ -130,9 +138,9 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     await page.goto('/dashboard/school');
     await page.waitForURL('**/sign-in', { timeout: 20_000 });
 
-    // scoring/10 (R-12): the teach root is gone; a surviving guarded route
-    // still bounces an anonymous visitor to /sign-in.
-    await page.goto('/dashboard/teach/classes');
+    // scoring/10 (R-12): the teach root is gone; a surviving guarded teach
+    // record route still bounces an anonymous visitor to /sign-in.
+    await page.goto(`/dashboard/teach/classes/${fixtureClassId()}`);
     await page.waitForURL('**/sign-in', { timeout: 20_000 });
   });
 });

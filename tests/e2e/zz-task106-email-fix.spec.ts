@@ -85,9 +85,12 @@ async function openAdminChildren(page: Page) {
   await page.goto('/en/dashboard/school/students');
   const screen = page.locator('[data-surface="school-admin-students"]');
   await expect(screen).toBeVisible({ timeout: 20_000 });
-  // The family name is the unique search needle (debounced 300ms); the row
-  // assertion retries until the filtered page lands.
-  await screen.locator('#students-search').fill(CHILD_FAMILY);
+  // The family name is the unique search needle (the kit debounces 200ms
+  // before the server read); the row assertion retries until the filtered
+  // page lands. Task 31: the search input is the directory kit toolbar's now.
+  await screen
+    .getByLabel(cat(en, 'SchoolStudents.filters.searchLabel'), { exact: true })
+    .fill(CHILD_FAMILY);
   const row = screen.getByRole('row', { name: new RegExp(CHILD_NAME) });
   await expect(row).toBeVisible();
   return { screen, row };
@@ -222,11 +225,10 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     await expect(adminFixBadge(row)).toBeVisible();
 
     // Edit dialog: row actions -> Edit child -> set the corrected email -> Save.
+    // Task 31: the row menu is the directory kit's — ONE shared accessible
+    // name, selected inside the (unique) row.
     await row
-      .getByRole('button', {
-        name: icu(cat(en, 'SchoolStudents.actions.menuLabel'), { name: CHILD_NAME }),
-        exact: true,
-      })
+      .getByRole('button', { name: cat(en, 'SchoolStudents.list.rowMenuLabel'), exact: true })
       .click();
     await page
       .getByRole('menuitem', { name: cat(en, 'SchoolStudents.actions.edit'), exact: true })
@@ -251,7 +253,9 @@ test.describe('task 106: email-fix handoff loop vs the live stack', () => {
     await page.reload();
     const reloadedScreen = page.locator('[data-surface="school-admin-students"]');
     await expect(reloadedScreen).toBeVisible({ timeout: 20_000 });
-    await reloadedScreen.locator('#students-search').fill(CHILD_FAMILY);
+    await reloadedScreen
+      .getByLabel(cat(en, 'SchoolStudents.filters.searchLabel'), { exact: true })
+      .fill(CHILD_FAMILY);
     const clearedRow = reloadedScreen.getByRole('row', { name: new RegExp(CHILD_NAME) });
     await expect(clearedRow).toBeVisible();
     await expect(adminFixBadge(clearedRow)).toHaveCount(0);

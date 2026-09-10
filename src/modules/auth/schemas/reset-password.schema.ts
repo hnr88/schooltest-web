@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
-import { isResetPasswordWithinByteLimit } from '@/modules/auth/lib/reset-password-policy';
+import {
+  hasResetPasswordCharClasses,
+  isResetPasswordWithinByteLimit,
+} from '@/modules/auth/lib/reset-password-policy';
 
 // Messages are Auth-namespace keys (sign-up.schema.ts pattern). Bounds mirror
 // C-AUTH-RESET. `code` is NOT a form field — the card injects it from the
@@ -10,11 +13,13 @@ export const resetPasswordSchema = z
     password: z
       .string()
       .min(1, 'passwordRequired')
+      .min(12, 'portal.passwordMin')
+      .refine(hasResetPasswordCharClasses, 'portal.passwordCharClasses')
       .refine(isResetPasswordWithinByteLimit, 'passwordTooLong'),
     passwordConfirmation: z.string().min(1, 'confirmPasswordRequired'),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
-    message: 'passwordMismatch',
+    message: 'portal.confirmMismatch',
     path: ['passwordConfirmation'],
   });
 

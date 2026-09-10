@@ -1,5 +1,7 @@
 'use client';
 
+import { useLocale, useTranslations } from 'next-intl';
+
 import type { ResultView } from '@schooltest/scoring-contracts';
 
 /**
@@ -17,6 +19,8 @@ import type { ResultView } from '@schooltest/scoring-contracts';
  * arrive with the config endpoint; the axis notes that below.
  */
 export function ProgressTrendChart({ view }: { view: ResultView }) {
+  const t = useTranslations('Results');
+  const locale = useLocale();
   const history = view.history ?? [];
   if (history.length === 0) return null;
 
@@ -31,16 +35,16 @@ export function ProgressTrendChart({ view }: { view: ResultView }) {
     .join(' ');
 
   const first = new Date(history[0].sat_at);
-  const firstMonth = first.toLocaleString('en', { month: 'long', year: 'numeric' });
+  const firstMonth = first.toLocaleString(locale, { month: 'long', year: 'numeric' });
   const best = bestReliableGain(view);
 
   return (
-    <section data-slot="progress-trend" aria-label="Reading progress over time" className="flex flex-col gap-2">
-      <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">Reading progress over time</h2>
+    <section data-slot="progress-trend" aria-label={t('trendHeading')} className="flex flex-col gap-2">
+      <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">{t('trendHeading')}</h2>
 
       {history.length === 1 ? (
         <p data-slot="trend-first-sitting" className="text-caption text-muted-foreground">
-          First sitting — trend appears from the second test
+          {t('trendFirstSitting')}
         </p>
       ) : (
         <svg data-slot="trend-chart" viewBox="0 0 100 100" preserveAspectRatio="none" className="h-24 w-full" role="img">
@@ -61,15 +65,29 @@ export function ProgressTrendChart({ view }: { view: ResultView }) {
       )}
 
       <p data-slot="trend-summary" className="text-caption text-muted-foreground">
-        {history.length} sitting{history.length === 1 ? '' : 's'} since {firstMonth}
+        {t('trendSittings', { count: history.length, month: firstMonth })}
         {view.overall.delta_display !== null
-          ? ` · ${view.overall.delta_display === 'band_movement' ? 'band movement' : `${view.overall.delta_display} pts`} (${view.overall.delta_reliable ? 'reliable' : 'within error'})`
+          ? ` · ${t('trendDeltaReliability', {
+              delta:
+                view.overall.delta_display === 'band_movement'
+                  ? t('bandMovementLower')
+                  : t('deltaPtsShort', { delta: view.overall.delta_display }),
+              reliability: view.overall.delta_reliable ? t('reliable') : t('withinError'),
+            })}`
           : ''}
-        {best !== null ? ` · Best gain: ${best.skill} +${best.delta} pts` : ''}
+        {best !== null ? ` · ${t('trendBestGain', { skill: t(ATTRIBUTE_KEY[best.skill] ?? best.skill), delta: best.delta })}` : ''}
       </p>
     </section>
   );
 }
+
+const ATTRIBUTE_KEY: Record<string, string> = {
+  Decoding: 'attrDecoding',
+  'Vocab_B1': 'attrVocabularyB1',
+  Gist: 'attrGist',
+  Detail: 'attrDetail',
+  Inference: 'attrInference',
+};
 
 /** §4.3 "Best gain": the largest RELIABLE positive attribute delta; omitted when none qualifies. */
 function bestReliableGain(view: ResultView): { skill: string; delta: number } | null {

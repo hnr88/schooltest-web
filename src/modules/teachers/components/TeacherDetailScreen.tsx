@@ -1,18 +1,19 @@
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, XIcon } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth';
-import { useSchoolClassesQuery } from '@/modules/classes';
+import { useSchoolClassesQuery, useUpdateClassTeachersMutation } from '@/modules/classes';
 import {
   Alert,
   AvatarTint,
   Badge,
   Button,
   DataPanel,
+  IconButton,
   MiniStatTile,
   Skeleton,
   getAvatarTone,
@@ -20,8 +21,10 @@ import {
 import { useParticipationQuery } from '@/modules/school-admin';
 import { ProgressDeltaPill, progressDelta } from '@/modules/teacher';
 import { EditTeacherDialog } from '@/modules/teachers/components/EditTeacherDialog';
+import { AssignClassesDialog } from '@/modules/teachers/components/AssignClassesDialog';
 import { STATUS_VARIANTS } from '@/modules/teachers/constants/components.constants';
 import { useStaffRows } from '@/modules/teachers/hooks/use-staff-rows';
+import { removeTeacherPatch } from '@/modules/teachers/lib/teacher-class-membership';
 import { useInvitationsQuery } from '@/modules/teachers/queries/use-invitations.query';
 import { useTeacherNeedsAttentionQuery } from '@/modules/teachers/queries/use-teacher-needs-attention.query';
 import { useTeachersQuery, type ParsedSchoolTeacher } from '@/modules/teachers/queries/use-teachers.query';
@@ -83,6 +86,8 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
     enabled && row?.kind === 'teacher',
   );
   const [editOpen, setEditOpen] = useState(false);
+  const [assignOpen, setAssignOpen] = useState(false);
+  const removeClassTeachers = useUpdateClassTeachersMutation();
 
   const isPending =
     !enabled ||
@@ -223,7 +228,7 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
             <Button type="button" variant="outline" onClick={() => setEditOpen(true)}>
               {t('editButton')}
             </Button>
-            <Button type="button" render={<Link href="/dashboard/school/classes" />}>
+            <Button type="button" onClick={() => setAssignOpen(true)}>
               {t('assignButton')}
             </Button>
           </div>
@@ -244,6 +249,13 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
               {t('classesPanel.count', { count: row.classes.length })}
             </span>
           </div>
+          {removeClassTeachers.isError ? (
+            <div className="px-4 pb-3">
+              <Alert variant="error" title={t('classesPanel.removeErrorTitle')}>
+                {t('classesPanel.removeErrorDescription')}
+              </Alert>
+            </div>
+          ) : null}
           {row.classes.length === 0 ? (
             <div className="flex flex-col gap-1 border-t border-border px-4 py-6 text-center">
               <p className="text-sm font-semibold text-foreground">{t('classesPanel.emptyTitle')}</p>
@@ -254,6 +266,7 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
               {row.classes.map((klass) => {
                 const schoolClass = classesById.get(klass.documentId);
                 const participation = participationById.get(klass.documentId);
+                const removePatch = removeTeacherPatch(schoolClass, row.documentId);
                 const facts: string[] = [];
                 if (participation) {
                   facts.push(
@@ -270,23 +283,35 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
                 }
                 return (
                   <li key={klass.documentId} className="border-t border-border first:border-t-0">
-                    <Link
-                      href={`/dashboard/school/classes/${klass.documentId}`}
-                      aria-label={t('classesPanel.openLabel', { name: klass.name })}
-                      className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-hover"
-                    >
-                      {schoolClass?.year_band ? (
-                        <Badge variant="outline">{schoolClass.year_band}</Badge>
-                      ) : null}
-                      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                        <span className="truncate text-sm font-semibold text-foreground">
-                          {klass.name}
-                        </span>
-                        {facts.length > 0 ? (
-                          <span className="truncate text-meta text-body">{facts.join(' · ')}</span>
+                    <div className="flex items-center gap-1 pr-2">
+                      <Link
+                        href={`/dashboard/school/classes/${klass.documentId}`}
+                        aria-label={t('classesPanel.openLabel', { name: klass.name })}
+                        className="flex min-w-0 flex-1 items-center gap-3 py-3 pl-4 transition-colors hover:bg-surface-hover"
+                      >
+                        {schoolClass?.year_band ? (
+                          <Badge variant="outline">{schoolClass.year_band}</Badge>
                         ) : null}
-                      </span>
-                    </Link>
+                        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                          <span className="truncate text-sm font-semibold text-foreground">
+                            {klass.name}
+                          </span>
+                          {facts.length > 0 ? (
+                            <span className="truncate text-meta text-body">{facts.join(' · ')}</span>
+                          ) : null}
+                        </span>
+                      </Link>
+                      <IconButton
+                        icon={XIcon}
+                        label={t('classesPanel.removeLabel', { name: klass.name })}
+                        size="sm"
+                        tone="ghost"
+                        disabled={removeClassTeachers.isPending || removePatch === null}
+                        onClick={() => {
+                          if (removePatch) removeClassTeachers.mutate(removePatch);
+                        }}
+                      />
+                    </div>
                   </li>
                 );
               })}
@@ -397,6 +422,15 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
       </DataPanel>
 
       {editOpen ? <EditTeacherDialog row={row} onClose={() => setEditOpen(false)} /> : null}
+      {assignOpen ? (
+        <AssignClassesDialog
+          teacherDocumentId={row.documentId}
+          teacherName={displayName}
+          classes={classesQuery.data ?? []}
+          onClose={() => setAssignOpen(false)}
+          onAssigned={refetch}
+        />
+      ) : null}
     </main>
   );
 }

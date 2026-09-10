@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import type { Band, DisplaySkill } from '@schooltest/scoring-contracts';
 
 import { cn } from '@/lib/utils';
@@ -18,6 +20,16 @@ import { cn } from '@/lib/utils';
  * four bands are posterior cuts and the gate has no posterior), so it shows a
  * gate state line instead, styled as designed rather than looking broken.
  */
+const SKILL_KEY: Record<DisplaySkill, string> = {
+  Decoding: 'skillDecoding',
+  Vocabulary: 'skillVocabulary',
+  Grammar: 'skillGrammar',
+  Gist: 'skillGist',
+  Detail: 'skillDetail',
+  Inference: 'skillInference',
+  Critical: 'skillCritical',
+};
+
 export function SubskillCard({
   skill,
   domainScore,
@@ -40,6 +52,7 @@ export function SubskillCard({
   gatePassed?: boolean | null;
   tag?: 'strength' | 'focus';
 }) {
+  const t = useTranslations('Results');
   const assessed = domainScore !== null;
 
   return (
@@ -56,11 +69,11 @@ export function SubskillCard({
         tag === 'focus' && 'ring-1 ring-warning',
       )}
     >
-      <span className="text-meta font-semibold">{skill}</span>
+      <span className="text-meta font-semibold">{t(SKILL_KEY[skill] ?? skill)}</span>
 
       {!assessed ? (
         <span data-slot="skill-gap" className="text-caption font-semibold">
-          Not yet assessed
+          {t('notYetAssessed')}
         </span>
       ) : (
         <>
@@ -80,7 +93,7 @@ export function SubskillCard({
           data-band={status}
           className={cn('w-fit rounded-full px-2 py-0.5 text-caption font-bold uppercase', BAND_CHIP_CLASS[status])}
         >
-          {BAND_LABEL[status]}
+          {t(BAND_KEY[status] ?? status)}
         </span>
       ) : null}
 
@@ -90,11 +103,11 @@ export function SubskillCard({
         </span>
       ) : deltaDisplay === 'steady' ? (
         <span data-slot="skill-delta" data-delta="steady" className="text-caption text-muted-foreground">
-          Steady
+          {t('steady')}
         </span>
       ) : deltaDisplay !== null ? (
         <span data-slot="skill-delta" data-delta={deltaDisplay} className="text-caption font-semibold">
-          {deltaDisplay.startsWith('-') ? '↓' : '↑'} {deltaDisplay} pts
+          {t('deltaPts', { arrow: deltaDisplay.startsWith('-') ? '↓' : '↑', growth: deltaDisplay })}
         </span>
       ) : null}
 
@@ -108,7 +121,7 @@ export function SubskillCard({
           data-gate={gatePassed === null ? 'not_reached' : gatePassed ? 'passed' : 'not_yet'}
           className="text-caption font-semibold"
         >
-          {gatePassed === null ? 'Section 3 not reached' : `Exit gate: ${gatePassed ? 'passed' : 'not yet'}`}
+          {gatePassed === null ? t('section3NotReached') : t('exitGate', { state: gatePassed ? t('gatePassedState') : t('gateNotYetState') })}
         </span>
       ) : null}
     </li>
@@ -122,16 +135,16 @@ export const BAND_CHIP_CLASS = {
   not_yet: 'bg-danger-soft text-danger-ink',
 } as const;
 
-export const BAND_LABEL = {
-  secure: 'Secure',
-  developing: 'Developing',
-  emerging: 'Emerging',
-  not_yet: 'Not yet',
-} as const;
+const BAND_KEY: Record<keyof typeof BAND_CHIP_CLASS, string> = {
+  secure: 'bandSecure',
+  developing: 'bandDeveloping',
+  emerging: 'bandEmerging',
+  not_yet: 'bandNotYet',
+};
 
-const ASSESSED_BANDS: readonly string[] = Object.keys(BAND_LABEL);
+const ASSESSED_BANDS: readonly string[] = Object.keys(BAND_KEY);
 
 /** A gap card (including a not-assessed vocab blend) never renders a chip. */
-function isAssessedBand(status: Band | null): status is keyof typeof BAND_LABEL {
+function isAssessedBand(status: Band | null): status is keyof typeof BAND_CHIP_CLASS {
   return status !== null && ASSESSED_BANDS.includes(status);
 }

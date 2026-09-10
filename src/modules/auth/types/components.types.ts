@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
-import type { LoginLockout, PasswordRuleState } from '@/modules/auth/types/auth.types';
+import type { LoginLockout, ResetPasswordRuleStates } from '@/modules/auth/types/auth.types';
 
 export interface AuthBackLinkProps {
   label: string;
@@ -32,11 +32,12 @@ export interface AuthSplitLayoutProps {
 }
 
 export interface ForgotPasswordFormProps {
-  onSent: (email: string) => void;
+  onSent: (email: string, options?: { rateLimited?: boolean; retrySeconds?: number }) => void;
 }
 
 export interface ForgotPasswordSentStateProps {
-  email: string;
+  rateLimited?: boolean;
+  retrySeconds?: number;
 }
 
 export interface GoogleButtonProps {
@@ -63,6 +64,7 @@ export interface PasswordFieldProps {
   visible: boolean;
   onToggleVisible: () => void;
   toggleLabel: string;
+  hideToggle?: boolean;
   error?: string;
   registration: UseFormRegisterReturn;
   labelAccessory?: ReactNode;
@@ -88,7 +90,7 @@ export interface ResetPasswordFormProps {
 }
 
 export interface ResetPasswordRuleChecklistProps {
-  state: PasswordRuleState;
+  states: ResetPasswordRuleStates;
 }
 
 export interface SchoolAdminGuardProps {

@@ -28,15 +28,40 @@ describe('reset password contract', () => {
     expect(isResetPasswordWithinByteLimit('😀'.repeat(19))).toBe(false);
   });
 
-  it('does not invent a minimum length and rejects passwords over 72 bytes', () => {
-    expect(
-      resetPasswordSchema.safeParse({ password: 'a', passwordConfirmation: 'a' }).success,
-    ).toBe(true);
-    const result = resetPasswordSchema.safeParse({
-      password: 'a'.repeat(73),
-      passwordConfirmation: 'a'.repeat(73),
+  it('enforces the 12-character minimum, digit+symbol rule and 72-byte ceiling', () => {
+    const tooShort = resetPasswordSchema.safeParse({
+      password: 'Ab1!a'.padEnd(11, 'a'),
+      passwordConfirmation: 'Ab1!a'.padEnd(11, 'a'),
     });
-    expect(result.success).toBe(false);
-    if (!result.success) expect(result.error.issues[0]?.message).toBe('passwordTooLong');
+    expect(tooShort.success).toBe(false);
+    if (!tooShort.success) expect(tooShort.error.issues[0]?.message).toBe('portal.passwordMin');
+
+    const noCharClasses = resetPasswordSchema.safeParse({
+      password: 'a'.repeat(12),
+      passwordConfirmation: 'a'.repeat(12),
+    });
+    expect(noCharClasses.success).toBe(false);
+    if (!noCharClasses.success)
+      expect(noCharClasses.error.issues[0]?.message).toBe('portal.passwordCharClasses');
+
+    const valid = resetPasswordSchema.safeParse({
+      password: 'a'.repeat(11) + '1!',
+      passwordConfirmation: 'a'.repeat(11) + '1!',
+    });
+    expect(valid.success).toBe(true);
+
+    const mismatch = resetPasswordSchema.safeParse({
+      password: 'a'.repeat(11) + '1!',
+      passwordConfirmation: 'b'.repeat(11) + '1!',
+    });
+    expect(mismatch.success).toBe(false);
+    if (!mismatch.success) expect(mismatch.error.issues[0]?.message).toBe('portal.confirmMismatch');
+
+    const overCeiling = resetPasswordSchema.safeParse({
+      password: `Ab1!${'a'.repeat(69)}`,
+      passwordConfirmation: `Ab1!${'a'.repeat(69)}`,
+    });
+    expect(overCeiling.success).toBe(false);
+    if (!overCeiling.success) expect(overCeiling.error.issues[0]?.message).toBe('passwordTooLong');
   });
 });

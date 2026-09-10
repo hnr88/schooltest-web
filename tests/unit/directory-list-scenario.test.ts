@@ -183,6 +183,40 @@ const QUERY_MESSAGES = {
     goneDescription: 'This page is no longer available.',
     retry: 'Retry',
   },
+  // The table now resolves untranslated label keys from Directory.defaults;
+  // these mirror the en catalogue (and DIRECTORY_DEFAULT_LABELS) so the arm
+  // assertions keep asserting real rendered copy.
+  Directory: {
+    defaults: {
+      searchPlaceholder: 'Search',
+      searchLabel: 'Search',
+      filtersLabel: 'Filters',
+      sortLabel: 'Sort',
+      layoutLabel: 'Layout',
+      clearFilters: 'Clear filters',
+      paginationLabel: 'Pagination',
+      previous: 'Previous',
+      next: 'Next',
+      rowMenuLabel: 'Row actions',
+      selectAllLabel: 'Select all rows on this page',
+      selectRowLabel: 'Select row {key}',
+      showingCount: 'Showing {showing} of {total}',
+      pageCount: 'Page {page} of {pageCount} — {total} total',
+      selectedEntityNoun: 'row',
+      emptyNoneTitle: 'Nothing here yet',
+      emptyNoneDescription: 'Items appear here as soon as they are created.',
+      emptyNoMatchesTitle: 'No matches',
+      emptyNoMatchesDescription: 'Nothing matches the current search and filters.',
+      errorTitle: 'Could not load this list',
+      errorStaleBanner: 'The latest refresh failed — the rows below are the last ones the server served.',
+      errorDescription: 'Something went wrong while loading this list.',
+      retry: 'Retry',
+      loadingLabel: 'Loading',
+      exportLabel: 'Export CSV',
+      primaryActionLabel: 'Open',
+      chipAllLabel: 'All',
+    },
+  },
 };
 
 function fakeDirectoryState(overrides: Partial<DirectoryStateApi> = {}): DirectoryStateApi {

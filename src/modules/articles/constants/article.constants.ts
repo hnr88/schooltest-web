@@ -2,8 +2,9 @@ export const ARTICLE_CATEGORIES = ['news', 'tutorial', 'guide', 'opinion'] as co
 
 import type { ArticleStats } from '@/modules/articles/types/article.types';
 
-export const STAT_ITEMS: ReadonlyArray<{ key: keyof ArticleStats; label: string }> = [
-  { key: 'total', label: 'Total' },
-  { key: 'featured', label: 'Featured' },
-  { key: 'totalViews', label: 'Total views' },
+/** Labels are message keys under the `Articles` namespace, resolved by the card. */
+export const STAT_ITEMS: ReadonlyArray<{ key: keyof ArticleStats; labelKey: string }> = [
+  { key: 'total', labelKey: 'statTotal' },
+  { key: 'featured', labelKey: 'statFeatured' },
+  { key: 'totalViews', labelKey: 'statTotalViews' },
 ];

@@ -5,6 +5,7 @@ import { createElement, type ReactElement } from 'react';
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 
+import { NextIntlClientProvider } from 'next-intl';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { diagnosticExportSchema } from '@schooltest/scoring-contracts';
@@ -15,6 +16,28 @@ import { fallbackParagraphs } from '@/modules/results/lib/commentary-fallback';
 import { deidentify } from '@/modules/results/lib/deidentify';
 import { askClaude, llmPayload } from '@/modules/results/lib/llm-client';
 import { renderStudentMarkdown } from '@/modules/results/lib/llm-export';
+
+const enMessages = JSON.parse(
+  readFileSync(resolve(process.cwd(), 'src/i18n/messages/en.json'), 'utf8'),
+) as Record<string, unknown>;
+
+/** English translator over the real en catalogue (Results scope) — also proves every key the fallback uses exists. */
+function tEn(key: string, values?: Record<string, string | number>): string {
+  const results = enMessages.Results as Record<string, unknown>;
+  const found: unknown = key.split('.').reduce<unknown>(
+    (node, part) => (node !== null && typeof node === 'object' ? (node as Record<string, unknown>)[part] : undefined),
+    results,
+  );
+  if (typeof found !== 'string') throw new Error(`missing en message: Results.${key}`);
+  let out = found;
+  for (const [name, value] of Object.entries(values ?? {})) {
+    out = out.replaceAll(`{${name}}`, String(value));
+  }
+  return out;
+}
+
+/** createElement-friendly alias: the provider's TS type demands children in props, the lint rule forbids it. */
+const IntlProvider = NextIntlClientProvider as unknown as (props: Record<string, unknown>) => ReactElement;
 
 /**
  * Task 32 — Screen C part 3, the privacy-critical surface. THE test is the
@@ -90,7 +113,7 @@ describe('the LLM payload — D5 leak guard (asserted on the serialised request)
 
 describe('the gated-fields fallback (LLM unavailable)', () => {
   test('three paragraphs, generated from the same gated fields', () => {
-    const paragraphs = fallbackParagraphs(bundle);
+    const paragraphs = fallbackParagraphs(bundle, tEn);
     expect(paragraphs).toHaveLength(3);
     expect(paragraphs[0]).toContain('Overall reading stands at 74%');
     expect(paragraphs[0]).toContain('+15 points'); // delta_display verbatim — raw delta 13 is NOT recomputed
@@ -103,14 +126,14 @@ describe('the gated-fields fallback (LLM unavailable)', () => {
 
   test('DONE-WHEN: a steady fixture produces fallback copy that claims NO growth', () => {
     const steady = { ...bundle, overall: { ...bundle.overall, delta_display: 'steady' as const } };
-    const [first] = fallbackParagraphs(steady);
+    const [first] = fallbackParagraphs(steady, tEn);
     expect(first).toContain('steady against the previous official sitting');
     expect(first).not.toMatch(/\+\d+ points|rose|increased|improved/);
   });
 
   test('band movement is described as a band move, never a fabricated point figure', () => {
     const moved = { ...bundle, overall: { ...bundle.overall, delta_display: 'band_movement' as const } };
-    const [first] = fallbackParagraphs(moved);
+    const [first] = fallbackParagraphs(moved, tEn);
     expect(first).toContain('moved between bands');
     expect(first).not.toMatch(/\d+ points/);
   });
@@ -153,11 +176,15 @@ describe('the components', () => {
     const writeText = vi.fn<(text: string) => Promise<void>>().mockResolvedValue(undefined);
     Object.assign(navigator, { clipboard: { writeText } });
     const { host, unmount } = render(
-      createElement(StudentCommentary, {
-        paragraphs: fallbackParagraphs(bundle),
-        studentName: 'Amelia Ngo',
-        source: 'fallback',
-      }),
+      createElement(
+        IntlProvider,
+        { locale: 'en', messages: enMessages },
+        createElement(StudentCommentary, {
+          paragraphs: fallbackParagraphs(bundle, tEn),
+          studentName: 'Amelia Ngo',
+          source: 'fallback',
+        }),
+      ),
     );
     expect(host.querySelectorAll('[data-slot="commentary-paragraph"]')).toHaveLength(3);
     expect(host.querySelector('[data-slot="student-commentary"]')?.getAttribute('data-source')).toBe('fallback');
@@ -179,7 +206,11 @@ describe('the components', () => {
     const anchorClick = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => undefined);
     const onAsk = vi.fn();
     const { host, unmount } = render(
-      createElement(AskAiPanel, { bundle, answer: null, pending: false, onAsk }),
+      createElement(
+        IntlProvider,
+        { locale: 'en', messages: enMessages },
+        createElement(AskAiPanel, { bundle, answer: null, pending: false, onAsk }),
+      ),
     );
     const chip = host.querySelector('[data-slot="ask-ai-chip"]');
     act(() => chip?.dispatchEvent(new MouseEvent('click', { bubbles: true })));

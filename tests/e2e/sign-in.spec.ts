@@ -31,29 +31,29 @@ test('en: renders the §14.1 split-panel sign-in with forgot link, axe clean', a
     cat(en, 'Auth.meta.description'),
   );
   await expect(
-    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.signInTitle') }),
+    page.getByRole('heading', { level: 1, name: cat(en, 'Auth.portal.signInTitle') }),
   ).toBeVisible();
-  await expect(page.getByText(cat(en, 'Auth.signInSubtitle'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.portal.signInSubtitle'))).toBeVisible();
 
-  // Google button: outline anchor to the real api connect route (task 14 wires OAuth).
-  const google = page.getByRole('link', { name: cat(en, 'Auth.googleButton'), exact: true });
-  await expect(google).toBeVisible();
-  await expect(google).toHaveAttribute('href', /\/api\/connect\/google$/);
-
-  await expect(page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })).toBeVisible();
-  await expect(page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })).toBeVisible();
+  // The portal design is invitation-only: no Google button, no show-password
+  // toggle, no sign-up prompt on the sign-in card.
+  await expect(page.getByRole('link', { name: cat(en, 'Auth.googleButton'), exact: true })).toHaveCount(0);
   await expect(
     page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }),
-  ).toHaveAttribute('aria-pressed', 'false');
-  await expect(
-    page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }),
-  ).toBeVisible();
-  const signUp = page.getByRole('link', { name: cat(en, 'Auth.signUp'), exact: true });
-  await expect(signUp).toHaveAttribute('href', '/sign-up');
+  ).toHaveCount(0);
+  await expect(page.getByRole('link', { name: cat(en, 'Auth.signUp'), exact: true })).toHaveCount(0);
+  await expect(page.getByText(cat(en, 'Auth.portal.invitationNote'))).toBeVisible();
 
-  // §14.1 restored the forgot-password link (task 017, C-UI-AUTH-PAGES).
+  await expect(page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })).toBeVisible();
+  await expect(page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }),
+  ).toBeVisible();
+
+  // §14.1 restored the forgot-password link (task 017, C-UI-AUTH-PAGES); the
+  // portal design moves it into the password label row.
   const forgot = page.getByRole('link', {
-    name: cat(en, 'Auth.forgotPasswordLink'),
+    name: cat(en, 'Auth.portal.forgotLink'),
     exact: true,
   });
   await expect(forgot).toBeVisible();
@@ -61,7 +61,7 @@ test('en: renders the §14.1 split-panel sign-in with forgot link, axe clean', a
 
   // Split-panel left navy panel is visible at 1280px (hidden <1024px).
   await expect(page.getByText(cat(en, 'Auth.split.title'))).toBeVisible();
-  await expect(page.getByText(cat(en, 'Auth.split.benefitTests'))).toBeVisible();
+  await expect(page.getByText(cat(en, 'Auth.split.acknowledgement'))).toBeVisible();
   await page.setViewportSize({ width: 768, height: 800 });
   await expect(page.getByText(cat(en, 'Auth.split.title'))).toBeHidden();
   await page.setViewportSize(DESKTOP);
@@ -98,10 +98,10 @@ test('en: ?confirmed=1 renders the email-confirmed banner above the form', async
 
 test('en: empty submit shows translated field validation, no api call', async ({ page }) => {
   await page.goto('/sign-in');
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await expect(page.getByText(cat(en, 'Auth.emailRequired'))).toBeVisible();
   await expect(page.getByText(cat(en, 'Auth.passwordRequired'))).toBeVisible();
-  await expect(page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })).toHaveAttribute(
+  await expect(page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })).toHaveAttribute(
     'aria-invalid',
     'true',
   );
@@ -114,13 +114,19 @@ test('en: wrong password renders the styled inline error (never a Strapi page)',
 }) => {
   await page.setViewportSize(DESKTOP);
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(PARENT.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill('WrongPass123!');
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill('WrongPass123!');
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   const alert = page.locator('[data-slot="alert"]');
   await expect(alert).toBeVisible();
-  await expect(alert).toContainText(cat(en, 'Auth.loginError'));
+  await expect(alert).toContainText(cat(en, 'Auth.portal.errorTitle'));
+  await expect(alert).toContainText(cat(en, 'Auth.portal.errorBody'));
+  await expect(alert).toContainText(/attempts? remain/i);
+  await expect(page.getByText(cat(en, 'Auth.incorrectPassword'), { exact: true })).toBeVisible();
+  await expect(
+    page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }),
+  ).toHaveAttribute('aria-invalid', 'true');
   await expect(page).toHaveURL(/\/sign-in$/);
   const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
   expect(token).toBeNull();
@@ -129,9 +135,9 @@ test('en: wrong password renders the styled inline error (never a Strapi page)',
 
 test('en: seeded parent login stores the JWT and lands on a real /dashboard', async ({ page }) => {
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(PARENT.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(PARENT.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill(PARENT.password);
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   // /dashboard (task 15) renders a real, guarded shell — not a 404 — and shows
   // the authenticated parent's real username fetched from GET /api/users/me.
@@ -146,7 +152,7 @@ test('en: an existing token redirects the card to /dashboard', async ({ context,
   await page.goto('/sign-in');
   // No flash: the sign-in form is never painted for a session that is about to
   // be redirected — the card renders its session-checking skeleton instead.
-  await expect(page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })).toHaveCount(0);
+  await expect(page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })).toHaveCount(0);
   await page.waitForURL('**/dashboard');
 });
 
@@ -154,12 +160,12 @@ test('zh: /zh/sign-in renders the Chinese card from the zh catalog', async ({ pa
   await page.setViewportSize(DESKTOP);
   await page.goto('/zh/sign-in');
   await expect(
-    page.getByRole('heading', { level: 1, name: cat(zh, 'Auth.signInTitle') }),
+    page.getByRole('heading', { level: 1, name: cat(zh, 'Auth.portal.signInTitle') }),
   ).toBeVisible();
   await expect(
-    page.getByRole('button', { name: cat(zh, 'Auth.signInButton'), exact: true }),
+    page.getByRole('button', { name: cat(zh, 'Auth.portal.loginButton'), exact: true }),
   ).toBeVisible();
-  await expect(page.getByLabel(cat(zh, 'Auth.emailLabel'), { exact: true })).toBeVisible();
-  await expect(page.getByLabel(cat(zh, 'Auth.passwordLabel'), { exact: true })).toBeVisible();
+  await expect(page.getByLabel(cat(zh, 'Auth.portal.emailLabel'), { exact: true })).toBeVisible();
+  await expect(page.getByLabel(cat(zh, 'Auth.portal.passwordLabel'), { exact: true })).toBeVisible();
   await page.screenshot({ path: path.join(SCREENSHOTS, 'sign-in-zh.png') });
 });

@@ -1,6 +1,15 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
+import { NextIntlClientProvider } from 'next-intl';
+
+const enMessages = JSON.parse(
+  readFileSync(resolve(process.cwd(), 'src/i18n/messages/en.json'), 'utf8'),
+) as Record<string, unknown>;
 
 import { DirectoryBulkBar } from '@/modules/directory/components/DirectoryBulkBar';
 import { partitionSelection } from '@/modules/directory/lib/directory-eligibility';
@@ -109,11 +118,13 @@ describe('DirectoryBulkBar zero-eligible dispatch', () => {
   ): void {
     act(() => {
       root.render(
-        <DirectoryBulkBar<Row>
-          selection={selection}
-          bulkActions={bulkActions}
-          labels={DIRECTORY_DEFAULT_LABELS}
-        />,
+        <NextIntlClientProvider locale="en" messages={enMessages}>
+          <DirectoryBulkBar<Row>
+            selection={selection}
+            bulkActions={bulkActions}
+            labels={DIRECTORY_DEFAULT_LABELS}
+          />
+        </NextIntlClientProvider>,
       );
     });
   }

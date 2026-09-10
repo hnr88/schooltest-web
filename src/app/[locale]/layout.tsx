@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
 import '../globals.css';
 import { Providers } from '@/modules/providers';
@@ -29,22 +29,30 @@ const googleSans = localFont({
   fallback: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'sans-serif'],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-  // The brand is `SchoolTest` (see SITE_NAME) — the lowercase `Schooltest` here
-  // disagreed with `og:site_name` and the generated card on every page.
-  title: {
-    default: SITE_NAME,
-    template: `%s · ${SITE_NAME}`,
-  },
-  description: 'Diagnostic English assessment for Australian EAL/D classrooms.',
-  openGraph: {
-    type: 'website',
-    url: '/',
-    title: SITE_NAME,
-    description: 'Diagnostic English assessment for Australian EAL/D classrooms.',
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Seo' });
+  return {
+    metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+    // The brand is `SchoolTest` (see SITE_NAME) — the lowercase `Schooltest` here
+    // disagreed with `og:site_name` and the generated card on every page.
+    title: {
+      default: SITE_NAME,
+      template: `%s · ${SITE_NAME}`,
+    },
+    description: t('siteDescription'),
+    openGraph: {
+      type: 'website',
+      url: '/',
+      title: SITE_NAME,
+      description: t('siteDescription'),
+    },
+  };
+}
 
 export default async function RootLayout({
   children,

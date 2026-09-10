@@ -1,6 +1,5 @@
 'use client';
 
-import { KeyRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { PasswordField } from '@/modules/auth/components/PasswordField';
@@ -10,8 +9,10 @@ import { Alert, Button } from '@/modules/design-system';
 
 import type { ResetPasswordFormProps } from '@/modules/auth/types/components.types';
 
-// Form state of the reset-password card (§14.3 reuse): blue key tile, title +
-// helper copy, two PasswordFields, primary submit.
+// Form state of the reset-password card (design 'reset' scenario): title, two
+// plain PasswordFields (no visibility toggle per the kit's hideToggle), the
+// three-rule checklist and the primary submit. The reset API never exposes the
+// code-linked email before success, so the design's email subtitle is omitted.
 export function ResetPasswordForm({
   code,
   onExpiredCode,
@@ -19,31 +20,16 @@ export function ResetPasswordForm({
   onSuccess,
 }: ResetPasswordFormProps) {
   const t = useTranslations('Auth');
-  const {
-    register,
-    errors,
-    onSubmit,
-    formError,
-    passwordRuleState,
-    isPending,
-    showPassword,
-    toggleShowPassword,
-    showConfirmPassword,
-    toggleShowConfirmPassword,
-  } = useResetPasswordForm({ code, onExpiredCode, onInvalidCode, onSuccess });
+  const { register, errors, onSubmit, formError, ruleStates, isPending } = useResetPasswordForm({
+    code,
+    onExpiredCode,
+    onInvalidCode,
+    onSuccess,
+  });
 
   return (
     <div className="flex flex-col gap-5">
-      <span
-        aria-hidden="true"
-        className="flex size-11 items-center justify-center rounded-tile bg-blue-50 text-blue-600"
-      >
-        <KeyRound className="size-5" />
-      </span>
-      <div className="flex flex-col gap-2">
-        <h1 className="text-auth-title font-bold text-foreground">{t('resetTitle')}</h1>
-        <p className="text-body-md text-body">{t('resetSubtitle')}</p>
-      </div>
+      <h1 className="text-auth-title font-bold text-foreground">{t('portal.resetTitle')}</h1>
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
         {formError ? (
           <Alert variant="error" title={t(formError)}>
@@ -53,23 +39,25 @@ export function ResetPasswordForm({
         <PasswordField
           id="reset-password"
           label={t('newPasswordLabel')}
-          placeholder={t('newPasswordPlaceholder')}
+          placeholder=""
           autoComplete="new-password"
-          visible={showPassword}
-          onToggleVisible={toggleShowPassword}
-          toggleLabel={t(showPassword ? 'hidePassword' : 'showPassword')}
+          visible={false}
+          onToggleVisible={() => {}}
+          toggleLabel=""
+          hideToggle
           error={errors.password?.message ? t(errors.password.message) : undefined}
           registration={register('password')}
         />
-        <ResetPasswordRuleChecklist state={passwordRuleState} />
+        <ResetPasswordRuleChecklist states={ruleStates} />
         <PasswordField
           id="reset-confirm-password"
-          label={t('confirmPasswordLabel')}
-          placeholder={t('confirmPasswordPlaceholder')}
+          label={t('portal.confirmLabel')}
+          placeholder=""
           autoComplete="new-password"
-          visible={showConfirmPassword}
-          onToggleVisible={toggleShowConfirmPassword}
-          toggleLabel={t(showConfirmPassword ? 'hideConfirmPassword' : 'showConfirmPassword')}
+          visible={false}
+          onToggleVisible={() => {}}
+          toggleLabel=""
+          hideToggle
           error={
             errors.passwordConfirmation?.message ? t(errors.passwordConfirmation.message) : undefined
           }

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import type { ResultView } from '@schooltest/scoring-contracts';
 
 import { displaySkills } from '@/modules/results/lib/display-skills';
@@ -22,6 +24,7 @@ import { SubskillCard } from './SubskillCard';
  * with one line.
  */
 export function SubskillCardGrid({ view }: { view: ResultView }) {
+  const t = useTranslations('Results');
   const tiles = displaySkills(view);
   const banded = tiles.filter((tile) => tile.source !== 'gate');
   const assessed = banded.filter((tile) => tile.domain_score !== null);
@@ -38,7 +41,7 @@ export function SubskillCardGrid({ view }: { view: ResultView }) {
           deltaDisplay={deltaDisplayOf(view, tile)}
           bandBefore={bandOf(view, tile, 'band_before')}
           bandAfter={bandOf(view, tile, 'band_after')}
-          strandLine={tile.skill === 'Vocabulary' ? vocabStrandLine(view) : undefined}
+          strandLine={tile.skill === 'Vocabulary' ? vocabStrandLine(view, t) : undefined}
           gatePassed={tile.skill === 'Critical' ? view.gate.passed : undefined}
           tag={tags.get(tile.skill)}
         />
@@ -63,13 +66,14 @@ function bandOf(view: ResultView, tile: DisplaySkillReading, key: 'band_before' 
 }
 
 /** §4.4 vocab strand line: both strands, or the single assessed strand + the honest gap. */
-function vocabStrandLine(view: ResultView): string {
+function vocabStrandLine(view: ResultView, t: (key: string, values?: Record<string, string | number>) => string): string {
+  const percent = (score: number | null): string => (score === null ? '—' : `${score}%`);
   if (view.vocab.single_strand === null) {
-    return `A2 ${view.vocab.a2.domain_score === null ? '—' : `${view.vocab.a2.domain_score}%`} · B1 ${view.vocab.b1.domain_score === null ? '—' : `${view.vocab.b1.domain_score}%`}`;
+    return t('vocabStrandsBoth', { a2: percent(view.vocab.a2.domain_score), b1: percent(view.vocab.b1.domain_score) });
   }
   return view.vocab.single_strand === 'a2'
-    ? `A2 ${view.vocab.a2.domain_score}% · B1 not assessed this sitting`
-    : `B1 ${view.vocab.b1.domain_score}% · A2 not assessed this sitting`;
+    ? t('vocabStrandSingle', { assessed: `A2 ${percent(view.vocab.a2.domain_score)}`, gap: `B1 ${t('notAssessedThisSitting')}` })
+    : t('vocabStrandSingle', { assessed: `B1 ${percent(view.vocab.b1.domain_score)}`, gap: `A2 ${t('notAssessedThisSitting')}` });
 }
 
 function strengthAndFocus(assessed: DisplaySkillReading[]): Map<string, 'strength' | 'focus'> {

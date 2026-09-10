@@ -6,7 +6,6 @@ import { cat } from './helpers/i18n';
 import { apiLogin } from './helpers/teacher-auth-rail';
 import {
   DASHBOARD_SURFACE,
-  expectedBannerDetail,
   expectedCard,
   readBanner,
   readCard,
@@ -124,7 +123,7 @@ test.describe('flow 3 — class rows carry the live counts', () => {
   });
 });
 
-test.describe('flow 4 — the yellow banner appears while the session is live', () => {
+test.describe('flow 4 — the live strip names the sitting while a session is live', () => {
   test('no banner names a sitting the server has not reported as live', async () => {
     const wire = await readDashboard(request, jwt);
     const banner = await readBanner(page);
@@ -162,19 +161,18 @@ test.describe('flow 4 — the yellow banner appears while the session is live', 
     expect(banner, 'no banner while a sitting is open').not.toBeNull();
     expect(banner?.sittingId).toBe(started.sitting_document_id);
     expect(banner?.pill).toBe(cat(en, `${LIVE}.live`));
-    expect(banner?.title).toBe(cat(en, `${LIVE}.title`));
-    expect(banner?.detail).toBe(expectedBannerDetail(en, live));
-    expect(banner?.detail).toContain(started.code);
-    expect(banner?.linkName.trim()).toBe(cat(en, `${LIVE}.viewLive`));
+    // ops/10 retired the dashboard's yellow banner — the live strip card now
+    // names the sitting in its own link text (class, join code, variant),
+    // links straight to the live monitor, and the state stays spelled in
+    // words via the pill, never colour alone.
+    expect(banner?.linkName).toContain(live.class_name);
+    expect(banner?.linkName).toContain(started.code);
+    expect(banner?.linkName).toContain(tests[0].label);
     expect(banner?.linkHref).toBe(`/dashboard/test-sessions/${started.sitting_document_id}`);
-    // "A yellow banner" (.qa/DESIGN.md §Dashboard) — the resolved hue, and the
-    // state also spelled out in words above, never colour alone.
-    expect(banner?.hue, `banner tint ${banner?.background} is not yellow`).toBeGreaterThan(30);
-    expect(banner?.hue, `banner tint ${banner?.background} is not yellow`).toBeLessThan(110);
     expect(banner?.linkBox.height, 'WCAG 2.2 AA target size').toBeGreaterThanOrEqual(44);
     await page.screenshot({ path: path.join(SHOTS, '051-flow4-live-banner.png'), fullPage: true });
 
-    await page.getByRole('link', { name: cat(en, `${LIVE}.viewLive`) }).click();
+    await page.locator(`[data-sitting-id="${started.sitting_document_id}"]`).click();
     await page.waitForURL(`**/dashboard/test-sessions/${started.sitting_document_id}`);
     await expect(page.locator('[data-surface="teacher-live-monitor"]')).toHaveAttribute(
       'data-status',

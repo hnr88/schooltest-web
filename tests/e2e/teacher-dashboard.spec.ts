@@ -35,6 +35,10 @@ test.describe('teacher dashboard (C-TD-1)', () => {
   const apiCalls: string[] = [];
 
   test.beforeAll(async ({ browser }) => {
+    // Lane recipe (proof/07/14): a cold dev-server compile or an API restart
+    // window outlives the 30s hook default; Playwright 1.61 takes the budget
+    // from setTimeout INSIDE the hook.
+    test.setTimeout(180_000);
     // AxeBuilder rejects a page from browser.newPage() — it needs a context.
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     page = await context.newPage();
@@ -118,7 +122,9 @@ test.describe('teacher dashboard (C-TD-1)', () => {
       ['mobile-375', 375, 812],
     ] as const) {
       await page.setViewportSize({ width, height });
-      await expect(page.locator('[data-slot="teacher-class-cards"]')).toBeVisible();
+      // The retired dashboard's `teacher-class-cards` slot is R-01 territory;
+      // the class list's own container is the results screen's list section.
+      await expect(page.locator('[data-slot="teacher-classes-list"]')).toBeVisible();
 
       const overflow = await measureOverflow(page);
       expect(overflow.doc, `${name} page scrolls horizontally`).toBe(0);

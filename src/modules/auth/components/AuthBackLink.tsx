@@ -6,12 +6,11 @@ import { Link } from '@/i18n/navigation';
 
 import type { AuthBackLinkProps } from '@/modules/auth/types/components.types';
 
-// "← Back to sign in" (design spec 06 §1.3:12) — centred, 14/600, primary ink.
 export function AuthBackLink({ label }: AuthBackLinkProps) {
   return (
     <Link
       href="/sign-in"
-      className="group inline-flex min-h-11 items-center justify-center gap-1.5 self-center rounded-sm px-1 text-body-md font-semibold text-primary transition-colors duration-150 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      className="group inline-flex min-h-11 items-center justify-center gap-2 self-center rounded-sm px-1 text-[14.5px] font-semibold text-[#1D4ED8] no-underline hover:text-[#0E2350] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
     >
       <ArrowLeft
         aria-hidden="true"

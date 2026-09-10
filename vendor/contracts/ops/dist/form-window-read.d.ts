@@ -22,24 +22,24 @@ export declare const FORM_WINDOW_READ_DEFAULT_PAGE_SIZE = 25;
 export declare const FORM_WINDOW_READ_PATH = "/api/form-windows";
 export declare const formWindowSchoolRefSchema: z.ZodPreprocess<z.ZodObject<{
     documentId: z.ZodString;
-}, z.core.$strict>, unknown>;
+}, z.core.$strict>>;
 export declare const formWindowFormRefSchema: z.ZodPreprocess<z.ZodObject<{
     documentId: z.ZodString;
     form_code: z.ZodString;
-}, z.core.$strict>, unknown>;
+}, z.core.$strict>>;
 /** The contracted Window: both relations present, exactly five keys. */
 export declare const formWindowRowSchema: z.ZodPreprocess<z.ZodObject<{
     documentId: z.ZodString;
     school: z.ZodPreprocess<z.ZodObject<{
         documentId: z.ZodString;
-    }, z.core.$strict>, unknown>;
+    }, z.core.$strict>>;
     form: z.ZodPreprocess<z.ZodObject<{
         documentId: z.ZodString;
         form_code: z.ZodString;
-    }, z.core.$strict>, unknown>;
+    }, z.core.$strict>>;
     opens_at: z.ZodString;
     closes_at: z.ZodString;
-}, z.core.$strict>, unknown>;
+}, z.core.$strict>>;
 export type FormWindowRow = z.infer<typeof formWindowRowSchema>;
 /**
  * The same row as it can actually arrive. A relation that was deleted comes
@@ -50,14 +50,14 @@ export declare const formWindowWireRowSchema: z.ZodPreprocess<z.ZodObject<{
     documentId: z.ZodString;
     school: z.ZodNullable<z.ZodPreprocess<z.ZodObject<{
         documentId: z.ZodString;
-    }, z.core.$strict>, unknown>>;
+    }, z.core.$strict>>>;
     form: z.ZodNullable<z.ZodPreprocess<z.ZodObject<{
         documentId: z.ZodString;
         form_code: z.ZodString;
-    }, z.core.$strict>, unknown>>;
+    }, z.core.$strict>>>;
     opens_at: z.ZodString;
     closes_at: z.ZodString;
-}, z.core.$strict>, unknown>;
+}, z.core.$strict>>;
 export type FormWindowWireRow = z.infer<typeof formWindowWireRowSchema>;
 export declare const formWindowPaginationSchema: z.ZodObject<{
     page: z.ZodNumber;
@@ -72,14 +72,14 @@ export declare const formWindowListSchema: z.ZodObject<{
         documentId: z.ZodString;
         school: z.ZodNullable<z.ZodPreprocess<z.ZodObject<{
             documentId: z.ZodString;
-        }, z.core.$strict>, unknown>>;
+        }, z.core.$strict>>>;
         form: z.ZodNullable<z.ZodPreprocess<z.ZodObject<{
             documentId: z.ZodString;
             form_code: z.ZodString;
-        }, z.core.$strict>, unknown>>;
+        }, z.core.$strict>>>;
         opens_at: z.ZodString;
         closes_at: z.ZodString;
-    }, z.core.$strict>, unknown>>;
+    }, z.core.$strict>>>;
     meta: z.ZodObject<{
         pagination: z.ZodObject<{
             page: z.ZodNumber;

@@ -36,7 +36,7 @@ async function captureState(page: Page, state: string): Promise<void> {
 }
 
 async function submitLogin(page: Page): Promise<void> {
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 }
 
 test('sign-in renders live attempts remaining and account lockout states', async ({
@@ -50,15 +50,15 @@ test('sign-in renders live attempts remaining and account lockout states', async
 
   await page.setViewportSize(DESKTOP);
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill('unknown-014@schooltest.test');
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(WRONG_PASSWORD);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill('unknown-014@schooltest.test');
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill(WRONG_PASSWORD);
   await submitLogin(page);
   await expect(
     page.locator('[data-slot="alert"]').getByText(cat(en, 'Auth.loginError'), { exact: true }),
   ).toBeVisible();
   await expect(page.getByText(/attempts? remain/i)).toHaveCount(0);
 
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(parent.email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(parent.email);
   await submitLogin(page);
   await expect(page.getByText(/4 attempts remain/i)).toBeVisible();
   await expect(page.getByText(cat(en, 'Auth.incorrectPassword'), { exact: true })).toBeVisible();
@@ -67,7 +67,9 @@ test('sign-in renders live attempts remaining and account lockout states', async
   for (const remaining of [3, 2, 1]) {
     await page.waitForTimeout(ATTEMPT_INTERVAL_MS);
     await submitLogin(page);
-    await expect(page.getByText(new RegExp(`${remaining} attempts? remain`, 'i'))).toBeVisible();
+    const attemptsCopy =
+      remaining === 1 ? /one attempt remains/i : new RegExp(`${remaining} attempts remain`, 'i');
+    await expect(page.getByText(attemptsCopy)).toBeVisible();
   }
 
   await page.waitForTimeout(ATTEMPT_INTERVAL_MS);
@@ -80,6 +82,8 @@ test('sign-in renders live attempts remaining and account lockout states', async
     'href',
     '/forgot-password',
   );
-  await expect(page.getByRole('button', { name: /Sign in — available in \d+:\d{2}/ })).toBeDisabled();
+  await expect(
+    page.getByRole('button', { name: /Log in — available in \d+:\d{2}/ }),
+  ).toBeDisabled();
   await captureState(page, 'account-locked');
 });

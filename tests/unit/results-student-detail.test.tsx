@@ -1,11 +1,22 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { createElement } from 'react';
+import { createElement, type ReactElement } from 'react';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
+import { NextIntlClientProvider } from 'next-intl';
+
+const enMessages = JSON.parse(
+  readFileSync(resolve(process.cwd(), 'src/i18n/messages/en.json'), 'utf8'),
+) as Record<string, unknown>;
+
+/** createElement-friendly provider: children as an argument satisfies both TS and the lint rule. */
+const IntlProvider = NextIntlClientProvider as unknown as (
+  props: Record<string, unknown>,
+) => ReactElement;
 
 import { resultViewSchema } from '@schooltest/scoring-contracts';
 
@@ -37,7 +48,15 @@ function renderScreen(v: ReturnType<typeof resultViewSchema.parse>): HTMLElement
   host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
-  act(() => root!.render(createElement(StudentResultScreen, { view: v, student })));
+  act(() =>
+    root!.render(
+      createElement(
+        IntlProvider,
+        { locale: 'en', messages: enMessages },
+        createElement(StudentResultScreen, { view: v, student }),
+      ),
+    ),
+  );
   return host;
 }
 
@@ -131,7 +150,15 @@ describe('consolidating checklist (§4.7)', () => {
     const host = document.createElement('div');
     document.body.appendChild(host);
     const standalone = createRoot(host);
-    act(() => standalone.render(createElement(ConsolidatingChecklist, { view })));
+    act(() =>
+      standalone.render(
+        createElement(
+          IntlProvider,
+          { locale: 'en', messages: enMessages },
+          createElement(ConsolidatingChecklist, { view }),
+        ),
+      ),
+    );
     expect(host.querySelectorAll('[data-slot="checklist-row"]')).toHaveLength(5);
     act(() => standalone.unmount());
     host.remove();

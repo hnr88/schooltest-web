@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import type { ResultView } from '@schooltest/scoring-contracts';
 
 import { cn } from '@/lib/utils';
@@ -17,13 +19,22 @@ import { cn } from '@/lib/utils';
  * When `acara_phase === "consolidating"` the checklist is replaced by the
  * meets-all-requirements banner.
  */
+const ATTRIBUTE_KEY: Record<string, string> = {
+  Inference: 'attrInference',
+  'Vocab_B1': 'attrVocabularyB1',
+  Gist: 'attrGist',
+  Detail: 'attrDetail',
+};
+
 export function ConsolidatingChecklist({ view }: { view: ResultView }) {
+  const t = useTranslations('Results');
+
   if (view.acara_phase === 'consolidating') {
     return (
-      <section data-slot="consolidating-banner" aria-label="Path to consolidating" className="flex flex-col gap-1">
-        <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">Path to consolidating</h2>
+      <section data-slot="consolidating-banner" aria-label={t('checklistHeading')} className="flex flex-col gap-1">
+        <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">{t('checklistHeading')}</h2>
         <p data-slot="consolidating-banner-text" className="rounded-tile bg-success-soft px-3 py-2 text-body font-semibold text-success-ink">
-          Consolidating — meets all requirements
+          {t('consolidatingMet')}
         </p>
       </section>
     );
@@ -34,15 +45,15 @@ export function ConsolidatingChecklist({ view }: { view: ResultView }) {
     const assessed = entry !== undefined && entry.status !== 'not_assessed';
     return {
       key: attribute,
-      label: attribute === 'Vocab_B1' ? 'Vocabulary B1' : attribute,
+      label: t(ATTRIBUTE_KEY[attribute] ?? attribute),
       met: assessed && entry.status === 'secure',
       current: assessed ? entry.domain_score : null,
     };
   });
 
   return (
-    <section data-slot="consolidating-checklist" aria-label="Path to consolidating" className="flex flex-col gap-2">
-      <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">Path to consolidating</h2>
+    <section data-slot="consolidating-checklist" aria-label={t('checklistHeading')} className="flex flex-col gap-2">
+      <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">{t('checklistHeading')}</h2>
       <ul className="flex flex-col gap-1.5">
         {attributeRows.map((row) => (
           <li key={row.key} data-slot="checklist-row" data-row={row.key} data-met={row.met} className="flex items-center justify-between gap-2">
@@ -53,7 +64,7 @@ export function ConsolidatingChecklist({ view }: { view: ResultView }) {
               {row.label}
             </span>
             <span className="text-caption tabular-nums text-muted-foreground">
-              {row.current === null ? 'not assessed this sitting' : `${row.current}%`}
+              {row.current === null ? t('notAssessedThisSitting') : t('scorePercent', { score: row.current })}
             </span>
           </li>
         ))}
@@ -62,10 +73,14 @@ export function ConsolidatingChecklist({ view }: { view: ResultView }) {
             <span aria-hidden className={cn('mr-2', view.gate.passed === true ? 'text-success-ink' : 'text-muted-foreground')}>
               {view.gate.passed === true ? '✓' : '○'}
             </span>
-            Exit gate (Section 3)
+            {t('exitGateSection3')}
           </span>
           <span className="text-caption tabular-nums text-muted-foreground">
-            {view.gate.passed === null ? 'Section 3 not reached' : view.gate.domain_score === null ? '—' : `${view.gate.domain_score}%`}
+            {view.gate.passed === null
+              ? t('section3NotReached')
+              : view.gate.domain_score === null
+                ? '—'
+                : t('scorePercent', { score: view.gate.domain_score })}
           </span>
         </li>
       </ul>

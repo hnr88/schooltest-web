@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { renderStudentMarkdown } from '@/modules/results/lib/llm-export';
 import type { DiagnosticExport } from '@schooltest/scoring-contracts';
@@ -13,12 +14,7 @@ import type { DiagnosticExport } from '@schooltest/scoring-contracts';
  * BUNDLE and triggers the browser download; the bundle is the de-identified
  * context, so the file carries no name and no posteriors by construction.
  */
-const SUGGESTED_QUESTIONS = [
-  'Which skills improved since the last test?',
-  'What should I teach next?',
-  'How is Vocabulary developing across the strands?',
-  'Did the student pass the exit gate, and what does that mean?',
-];
+const SUGGESTED_QUESTION_KEYS = ['askSuggested1', 'askSuggested2', 'askSuggested3', 'askSuggested4'] as const;
 
 function downloadMarkdown(markdown: string, sittingNumber: number): void {
   const blob = new Blob([markdown], { type: 'text/markdown' });
@@ -41,21 +37,22 @@ export function AskAiPanel({
   pending: boolean;
   onAsk: (question: string) => void;
 }) {
+  const t = useTranslations('Results');
   const [question, setQuestion] = useState('');
 
   return (
-    <section data-slot="ask-ai" aria-label="Ask AI about this result" className="flex flex-col gap-2">
-      <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">Ask AI</h2>
+    <section data-slot="ask-ai" aria-label={t('askAria')} className="flex flex-col gap-2">
+      <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">{t('askHeading')}</h2>
       <div data-slot="ask-ai-chips" className="flex flex-wrap gap-1.5">
-        {SUGGESTED_QUESTIONS.map((chip) => (
+        {SUGGESTED_QUESTION_KEYS.map((key) => (
           <button
-            key={chip}
+            key={key}
             type="button"
             data-slot="ask-ai-chip"
-            onClick={() => setQuestion(chip)}
+            onClick={() => setQuestion(t(key))}
             className="print-hidden rounded-full bg-muted px-3 py-1 text-caption font-semibold text-muted-foreground hover:bg-accent"
           >
-            {chip}
+            {t(key)}
           </button>
         ))}
       </div>
@@ -70,7 +67,7 @@ export function AskAiPanel({
           data-slot="ask-ai-input"
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
-          placeholder="Ask about this result…"
+          placeholder={t('askPlaceholder')}
           className="w-full rounded-tile border border-border px-3 py-2 text-body-md"
         />
         <button
@@ -79,7 +76,7 @@ export function AskAiPanel({
           disabled={pending || question.trim().length === 0}
           className="print-hidden rounded-tile bg-primary px-4 py-2 text-caption font-semibold text-primary-foreground disabled:opacity-50"
         >
-          {pending ? 'Asking…' : 'Ask'}
+          {pending ? t('askPending') : t('askSubmit')}
         </button>
       </form>
       {answer !== null ? <p data-slot="ask-ai-answer" className="text-body-md text-pretty">{answer}</p> : null}
@@ -89,7 +86,7 @@ export function AskAiPanel({
         onClick={() => downloadMarkdown(renderStudentMarkdown(bundle), bundle.sitting.number)}
         className="print-hidden w-fit rounded-full border border-border px-3 py-1.5 text-caption font-semibold hover:bg-muted"
       >
-        Download for LLM (.md)
+        {t('downloadLlm')}
       </button>
     </section>
   );

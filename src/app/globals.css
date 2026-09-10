@@ -42,11 +42,11 @@
   --text-page-title: 1.625rem;
   --text-page-title--line-height: 1.2;
   --text-page-title--letter-spacing: -0.015em;
-  /* Auth screen h2 (spec 06 §1.1/§1.2: 28/1.2/-0.015em) — the login, register
-     and 404 headline step, between --text-page-title (26) and --text-h2 (32). */
-  --text-auth-title: 1.75rem;
-  --text-auth-title--line-height: 1.2;
-  --text-auth-title--letter-spacing: -0.015em;
+  /* Auth screen h2 (Portal Auth design: 32/1.16/-0.024em) — the login, register
+     and 404 headline step. */
+  --text-auth-title: 2rem;
+  --text-auth-title--line-height: 1.16;
+  --text-auth-title--letter-spacing: -0.024em;
   --text-panel-title: 1.0625rem;
   --text-panel-title--line-height: 1.35;
   --text-lede: 0.90625rem;
@@ -298,9 +298,9 @@
   --container-landing: 1200px;
   --container-content: 1240px;
   --container-hero: 1360px;
-  /* Auth column widths (spec 06 §1.6): 420px form/card column, 560px register
-     column and login brand panel. */
-  --container-auth: 420px;
+  /* Auth column widths (Portal Auth design): 440px form/card column, 560px
+     register column and login brand panel. */
+  --container-auth: 440px;
   --container-auth-wide: 560px;
   /* 820px — the portal's single-column measure cap. `.qa/design/spec/03` §4.1 and
      §5.1 both open with `max-width:820px` on the Settings and Notifications

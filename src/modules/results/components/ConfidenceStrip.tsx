@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import type { ResultView } from '@schooltest/scoring-contracts';
 
 /**
@@ -14,6 +16,7 @@ import type { ResultView } from '@schooltest/scoring-contracts';
  * rather than printing a fabricated duration.
  */
 export function ConfidenceStrip({ view }: { view: ResultView }) {
+  const t = useTranslations('Results');
   const normal = view.effort_valid === true && view.low_confidence === false;
 
   if (!normal) {
@@ -26,7 +29,7 @@ export function ConfidenceStrip({ view }: { view: ResultView }) {
         role="status"
         className="rounded-tile bg-warning-soft px-3 py-2 text-caption font-semibold text-warning-ink"
       >
-        ⚠ Low confidence — results may not reflect this student&apos;s ability
+        {t('confidenceWarning')}
       </p>
     );
   }
@@ -38,8 +41,11 @@ export function ConfidenceStrip({ view }: { view: ResultView }) {
       role="status"
       className="rounded-tile bg-muted px-3 py-2 text-caption text-muted-foreground"
     >
-      Effort valid · Normal confidence · {view.items_answered} of {view.items_total} items answered
-      {view.duration_minutes === null ? '' : ` · ${view.duration_minutes} min`}
+      {t('confidenceNormal', {
+        answered: view.items_answered,
+        total: view.items_total,
+        minutes: view.duration_minutes === null ? '' : t('confidenceMinutes', { minutes: view.duration_minutes }),
+      })}
     </p>
   );
 }

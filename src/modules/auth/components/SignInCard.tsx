@@ -5,8 +5,6 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { Link, useRouter } from '@/i18n/navigation';
-import { AuthDivider } from '@/modules/auth/components/AuthDivider';
-import { GoogleButton } from '@/modules/auth/components/GoogleButton';
 import { SignInForm } from '@/modules/auth/components/SignInForm';
 import { SignInLockedState } from '@/modules/auth/components/SignInLockedState';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
@@ -15,10 +13,9 @@ import { Alert, Logo, Skeleton } from '@/modules/design-system';
 import type { SignInCardProps } from '@/modules/auth/types/components.types';
 import type { LoginLockout } from '@/modules/auth/types/auth.types';
 
-// Right-hand form column of the login split (design spec 06 §1.1): a bare 420px
-// stack on the page background — no card chrome — at a 24px rhythm. Google keeps
-// its DOM position ABOVE the credential fields (the §1.4 compact-card ordering)
-// because tests/e2e/a11y-auth.spec.ts pins the focus order logo → Google → email.
+// Right-hand form column of the login split (design "Portal auth" §login): a
+// bare 420px stack on the page background — no card chrome — at a 24px rhythm.
+// The portal is invitation-only: no Google button, no sign-up prompt.
 export function SignInCard({
   hasGoogleError = false,
   hasSessionExpired = false,
@@ -67,10 +64,10 @@ export function SignInCard({
       ) : (
         <>
           <div className="flex flex-col gap-2">
-            <h1 className="text-auth-title font-bold text-foreground">{t('signInTitle')}</h1>
+            <h1 className="text-auth-title font-bold text-foreground">{t('portal.signInTitle')}</h1>
             {/* text-muted-foreground on --background measures a razor-thin 4.51:1 —
                 text-body (--color-body) clears it at ~7.19:1. */}
-            <p className="text-body-md text-body">{t('signInSubtitle')}</p>
+            <p className="text-body-md text-body">{t('portal.signInSubtitle')}</p>
           </div>
           {showConfirmedBanner ? (
         // C-AUTH-CONFIRM lands here via /sign-in?confirmed=1 — success strip
@@ -93,18 +90,8 @@ export function SignInCard({
               {null}
             </Alert>
           ) : null}
-          <GoogleButton className="w-full" />
-          <AuthDivider label={t('orDivider')} />
           <SignInForm onLocked={setLockout} />
-          <p className="text-center text-body-md text-body">
-            {t('noAccount')}{' '}
-            <Link
-              href="/sign-up"
-              className="rounded-sm font-semibold text-primary transition-colors duration-150 hover:text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            >
-              {t('signUp')}
-            </Link>
-          </p>
+          <p className="text-[13.5px] leading-relaxed text-[#64748B]">{t('portal.invitationNote')}</p>
         </>
       )}
     </div>

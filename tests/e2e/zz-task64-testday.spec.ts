@@ -145,9 +145,14 @@ test.describe('task 64: teacher test-day screen vs live C-SIT-01/02/03', () => {
       ).toBeVisible({ timeout: 20_000 });
 
       // Re-sit with the confirm dialog: the attempt ends and the row leaves the
-      // joined state...
+      // joined state... (ops/35: the action moved INTO the kit's ⋯ row menu —
+      // the consequential write stays out of the inline quick-action slots per
+      // the task's watch-out — but the same confirm dialog opens from it.)
       await sofiaRow
-        .getByRole('button', { name: cat(en, 'TestDay.resit.cta'), exact: true })
+        .getByRole('button', { name: cat(en, 'TestDay.monitor.rowMenuLabel'), exact: true })
+        .click();
+      await page
+        .getByRole('menuitem', { name: cat(en, 'TestDay.resit.cta'), exact: true })
         .click();
       await page
         .getByRole('button', { name: cat(en, 'TestDay.resit.confirm'), exact: true })
@@ -322,5 +327,171 @@ test.describe('teacher/08: folded console captures', () => {
     for (const sitting of await listClassSittings(request, jwt)) {
       if (sitting.status === 'open') await closeSitting(request, jwt, sitting.documentId);
     }
+  });
+});
+
+// ops/35 — the live monitor renders through the shared directory kit. The one
+// real risk the task names: a poll must not reset the operator's view. These
+// tests drive a REAL sitting through the UI, arm every kit control (toolbar
+// sort select, sitting-status chips, debounced search), then wait out THREE
+// measured background poll cycles (each one counted off the wire, never
+// assumed) and assert filter, sort, page, scroll and row order all survive.
+// The 1440x900 capture is taken from the SURVIVING state, so the screenshot
+// itself is the visual record of the persistence.
+test.describe('ops/35: test-day monitor kit adoption — the view survives the sitting polls', () => {
+  test.describe.configure({ mode: 'serial', timeout: 240_000 });
+  const SHOTS = path.resolve(process.cwd(), '..', 'mvp', 'ops', 'proof', 'shots');
+
+  interface MonitorStudentPayload {
+    documentId: string;
+    given_name: string;
+    family_name: string;
+    email: string | null;
+  }
+
+  async function getMonitorPayload(
+    request: APIRequestContext,
+    jwt: string,
+    sittingDocumentId: string,
+  ): Promise<MonitorStudentPayload[]> {
+    const res = await fetchWithRetry(() =>
+      request.get(`${API}/api/sittings/${sittingDocumentId}/monitor`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      }),
+    );
+    expect(res.ok()).toBeTruthy();
+    return ((await res.json()) as { data: { students: MonitorStudentPayload[] } }).data.students;
+  }
+
+  const displayNameOf = (student: MonitorStudentPayload): string =>
+    [student.given_name, student.family_name].filter(Boolean).join(' ');
+
+  test('filter, sort, page and scroll survive three measured poll cycles', async ({
+    page,
+    request,
+  }) => {
+    const jwt = await login(request, TEACHER);
+    await ensureSofiaEmail(request);
+    for (const sitting of await listClassSittings(request, jwt)) {
+      if (sitting.status === 'open') await closeSitting(request, jwt, sitting.documentId);
+    }
+
+    // Every /monitor request is counted off the wire — the survival window is
+    // proven to contain at least three polls, never assumed from the clock.
+    let monitorRequests = 0;
+    page.on('request', (req) => {
+      if (/\/api\/sittings\/[^/]+\/monitor/.test(req.url())) monitorRequests += 1;
+    });
+
+    try {
+      await signIn(page, TEACHER);
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(TEST_DAY_URL);
+      const screen = page.locator('[data-surface="teacher-test-day"]');
+      await expect(screen).toBeVisible({ timeout: 20_000 });
+      const start = screen.getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true });
+      await expect(start).toBeVisible({ timeout: 15_000 });
+      await start.click();
+
+      const board = screen.locator('[data-slot="monitor-table"]');
+      await expect(board).toBeVisible({ timeout: 15_000 });
+      const rows = board.locator('[data-directory-row]');
+      await expect(rows.first()).toBeVisible({ timeout: 15_000 });
+
+      const sittingId = (await listClassSittings(request, jwt))[0].documentId;
+      const students = await getMonitorPayload(request, jwt, sittingId);
+      expect(students.length).toBeGreaterThan(0);
+
+      // 1 — SORT by progress through the kit's toolbar select.
+      await board.getByLabel(cat(en, 'TestDay.monitor.sortLabel')).click();
+      await page
+        .getByRole('option', { name: cat(en, 'TestDay.monitor.sortProgressAsc') })
+        .click();
+      await expect(page).toHaveURL(/monitor-sort=progress(:|%3A)asc/);
+
+      // 2 — FILTER by sitting status through the kit's chip row. A fresh
+      // sitting has everyone not_joined, so the filter keeps every row while
+      // still round-tripping through the URL.
+      await board
+        .getByRole('group', { name: cat(en, 'TestDay.monitor.filterStatusLabel') })
+        .getByRole('button', { name: cat(en, 'TestDay.monitor.state.not_joined') })
+        .click();
+      await expect(page).toHaveURL(/monitor-status=not_joined/);
+      await expect(rows).toHaveCount(students.length, { timeout: 10_000 });
+
+      // 3 — SEARCH for one student (the full display name keeps the needle
+      // honest; the expected count is derived from the same payload).
+      const needle = displayNameOf(students[0]);
+      const expectedMatches = students.filter((student) =>
+        [displayNameOf(student), student.email ?? '']
+          .filter(Boolean)
+          .some((text) => text.toLowerCase().includes(needle.toLowerCase())),
+      );
+      await board.getByLabel(cat(en, 'TestDay.monitor.searchLabel')).fill(needle);
+      await expect(rows).toHaveCount(expectedMatches.length, { timeout: 10_000 });
+      await expect(page).toHaveURL(/monitor-q=/);
+
+      // 4 — SCROLL: the page window, and the kit's table region when it
+      // actually overflows (recorded honestly — a short roster has no
+      // overflow and the region assertion degrades to identity).
+      await page.evaluate(() => window.scrollTo(0, 500));
+      const region = board.locator('[data-slot="monitor-table-scroll"]');
+      const scrollState = await region.evaluate((el) => {
+        el.scrollTop = el.scrollHeight;
+        return { top: el.scrollTop, scrollable: el.scrollHeight > el.clientHeight };
+      });
+      console.log('MONITOR REGION SCROLLABLE', scrollState.scrollable);
+      const orderBefore = await rows.evaluateAll((els) =>
+        els.map((el) => el.getAttribute('data-student')),
+      );
+
+      // THE WINDOW: three measured poll cycles.
+      const pollsBefore = monitorRequests;
+      await expect
+        .poll(() => monitorRequests - pollsBefore, { timeout: 45_000, intervals: [1_000] })
+        .toBeGreaterThanOrEqual(3);
+      console.log('MONITOR POLLS IN WINDOW', monitorRequests - pollsBefore);
+
+      // Nothing reset: sort, filter, search, page, scroll, row order.
+      await expect(page).toHaveURL(/monitor-sort=progress(:|%3A)asc/);
+      await expect(page).toHaveURL(/monitor-status=not_joined/);
+      await expect(page).toHaveURL(/monitor-q=/);
+      await expect(page).not.toHaveURL(/monitor-page/);
+      await expect(board.getByLabel(cat(en, 'TestDay.monitor.sortLabel'))).toContainText(
+        cat(en, 'TestDay.monitor.sortProgressAsc'),
+      );
+      await expect(board.getByLabel(cat(en, 'TestDay.monitor.searchLabel'))).toHaveValue(needle);
+      await expect(
+        board
+          .getByRole('group', { name: cat(en, 'TestDay.monitor.filterStatusLabel') })
+          .getByRole('button', { name: cat(en, 'TestDay.monitor.state.not_joined') }),
+      ).toHaveAttribute('aria-pressed', 'true');
+      await expect(rows).toHaveCount(expectedMatches.length);
+      const orderAfter = await rows.evaluateAll((els) =>
+        els.map((el) => el.getAttribute('data-student')),
+      );
+      expect(orderAfter).toEqual(orderBefore);
+      expect(await page.evaluate(() => window.scrollY)).toBe(500);
+      expect(await region.evaluate((el) => el.scrollTop)).toBe(scrollState.top);
+      // The page axis: still page 1 of 1, pager alive, no page param written.
+      const pager = board.getByRole('navigation', {
+        name: cat(en, 'TestDay.monitor.paginationLabel'),
+      });
+      await expect(pager).toBeVisible();
+      await expect(pager).toContainText('1');
+    } finally {
+      // The capture rides on this test's surviving state when it passes; the
+      // tidy-up below is the standard leave-nothing-open contract.
+      for (const sitting of await listClassSittings(request, jwt)) {
+        if (sitting.status === 'open') await closeSitting(request, jwt, sitting.documentId);
+      }
+    }
+
+    // Capture FROM the surviving state: the shot is the visual record that
+    // the controls above are still applied after three real polls.
+    const board = page.locator('[data-slot="monitor-table"]');
+    await board.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+    await page.screenshot({ path: path.join(SHOTS, '35-monitor.png') });
+    console.log('CAPTURE', path.join(SHOTS, '35-monitor.png'));
   });
 });

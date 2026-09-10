@@ -2,10 +2,14 @@
 
 import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth';
+import { useSchoolClassesQuery } from '@/modules/classes';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
+import { SchoolStudentEditDialog } from '@/modules/school-students/components/SchoolStudentEditDialog';
+import { StudentClassPanel } from '@/modules/school-students/components/StudentClassPanel';
 import { StudentRecordPanel } from '@/modules/school-students/components/StudentRecordPanel';
 import { studentDisplayName } from '@/modules/school-students/hooks/use-student-row-actions';
 import { useSchoolStudentQuery } from '@/modules/school-students/queries/use-school-student.query';
@@ -25,11 +29,20 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
   const hydrated = useAuthStore((state) => state.hydrated);
   const enabled = hydrated && Boolean(token);
   const studentQuery = useSchoolStudentQuery(documentId, enabled);
+  const classesQuery = useSchoolClassesQuery(enabled);
+  const [editOpen, setEditOpen] = useState(false);
 
-  const isPending = !enabled || studentQuery.isPending;
+  const isPending = !enabled || studentQuery.isPending || classesQuery.isPending;
+  const isError = studentQuery.isError || classesQuery.isError;
   const student = studentQuery.data ?? null;
+  const classes = classesQuery.data ?? [];
   const name = student === null ? '' : studentDisplayName(student);
   const heading = name === '' ? t('detail.unnamed') : name;
+
+  const refetchAll = () => {
+    void studentQuery.refetch();
+    void classesQuery.refetch();
+  };
 
   return (
     <main
@@ -46,7 +59,7 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
           <Skeleton className="h-8 w-64" />
           <Skeleton className="h-64 w-full" />
         </div>
-      ) : studentQuery.isError ? (
+      ) : isError ? (
         <Alert
           variant="error"
           title={t('errorTitle')}
@@ -55,8 +68,8 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
               type="button"
               variant="outline"
               size="sm"
-              loading={studentQuery.isFetching}
-              onClick={() => void studentQuery.refetch()}
+              loading={studentQuery.isFetching || classesQuery.isFetching}
+              onClick={refetchAll}
             >
               {t('retry')}
             </Button>
@@ -71,8 +84,21 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
       ) : (
         <>
           <RecordCrumb label={heading} />
-          <h1 className="text-2xl font-semibold text-foreground">{heading}</h1>
+          <div className="flex max-w-2xl flex-wrap items-start justify-between gap-4">
+            <h1 className="text-2xl font-semibold text-foreground">{heading}</h1>
+            <Button type="button" variant="outline" onClick={() => setEditOpen(true)}>
+              {t('detail.editButton')}
+            </Button>
+          </div>
           <StudentRecordPanel student={student} />
+          <StudentClassPanel student={student} classes={classes} />
+          {editOpen ? (
+            <SchoolStudentEditDialog
+              student={student}
+              classes={classes}
+              onClose={() => setEditOpen(false)}
+            />
+          ) : null}
         </>
       )}
     </main>

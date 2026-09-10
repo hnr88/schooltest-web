@@ -4,7 +4,7 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
 import { SEEDED_PARENT } from './helpers/auth';
-import { cat, home, loadMessages } from './helpers/i18n';
+import { cat, loadMessages } from './helpers/i18n';
 import { collectSmallTargets, watchErrors } from './helpers/ui';
 
 // Task 24: the consolidated a11y (axe) + responsive (375/1280) + focus-order
@@ -190,24 +190,16 @@ test.describe('sign-in — a11y + responsive + focus order', () => {
       // Regression guard for the exact elements task 12 already measured
       // ≥44×44px (`h-11`/`size-11`) — re-checked here at BOTH viewports.
       await expectAtLeast44px(
-        page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }),
+        page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }),
         `/sign-in @ ${viewport.width}px email input`,
       );
       await expectAtLeast44px(
-        page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }),
+        page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }),
         `/sign-in @ ${viewport.width}px password input`,
       );
       await expectAtLeast44px(
-        page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }),
-        `/sign-in @ ${viewport.width}px show-password toggle`,
-      );
-      await expectAtLeast44px(
-        page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }),
+        page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }),
         `/sign-in @ ${viewport.width}px submit button`,
-      );
-      await expectAtLeast44px(
-        page.getByRole('link', { name: cat(en, 'Auth.googleButton'), exact: true }),
-        `/sign-in @ ${viewport.width}px Google button`,
       );
       await page.screenshot({
         path: path.join(
@@ -220,39 +212,29 @@ test.describe('sign-in — a11y + responsive + focus order', () => {
     expect(errors, errors.join('\n')).toEqual([]);
   });
 
-  test('focus order: logo → Google → email → password → toggle → submit → sign-up link', async ({
-    page,
-  }) => {
+  test('focus order: logo → email → forgot link → password → submit', async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto('/sign-in');
     await expectForwardFocusOrder(page, [
       {
         label: 'logo home link',
-        locator: page.getByRole('link', { name: home(en, 'footer.logoAlt'), exact: true }),
-      },
-      {
-        label: 'Google button',
-        locator: page.getByRole('link', { name: cat(en, 'Auth.googleButton'), exact: true }),
+        locator: page.getByRole('link', { name: cat(en, 'Shell.sidebar.logoAlt'), exact: true }),
       },
       {
         label: 'email input',
-        locator: page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }),
+        locator: page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }),
+      },
+      {
+        label: 'forgot-password link',
+        locator: page.getByRole('link', { name: cat(en, 'Auth.portal.forgotLink'), exact: true }),
       },
       {
         label: 'password input',
-        locator: page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }),
-      },
-      {
-        label: 'show-password toggle',
-        locator: page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }),
+        locator: page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }),
       },
       {
         label: 'sign-in submit',
-        locator: page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }),
-      },
-      {
-        label: 'sign-up link',
-        locator: page.getByRole('link', { name: cat(en, 'Auth.signUp'), exact: true }),
+        locator: page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }),
       },
     ]);
   });
@@ -319,7 +301,7 @@ test.describe('sign-up — a11y + responsive + focus order', () => {
     await expectForwardFocusOrder(page, [
       {
         label: 'logo home link',
-        locator: page.getByRole('link', { name: home(en, 'footer.logoAlt'), exact: true }),
+        locator: page.getByRole('link', { name: cat(en, 'Shell.sidebar.logoAlt'), exact: true }),
       },
       {
         label: 'Google button',
@@ -386,7 +368,7 @@ test.describe('forgot-password — a11y + responsive + focus order', () => {
         `/forgot-password @ ${viewport.width}px submit button`,
       );
       await expectAtLeast44px(
-        page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+        page.getByRole('link', { name: cat(en, 'Auth.portal.backToLogin'), exact: true }),
         `/forgot-password @ ${viewport.width}px back link`,
       );
       await page.screenshot({
@@ -406,7 +388,7 @@ test.describe('forgot-password — a11y + responsive + focus order', () => {
     await expectForwardFocusOrder(page, [
       {
         label: 'logo home link',
-        locator: page.getByRole('link', { name: home(en, 'footer.logoAlt'), exact: true }),
+        locator: page.getByRole('link', { name: cat(en, 'Shell.sidebar.logoAlt'), exact: true }),
       },
       {
         label: 'email input',
@@ -418,7 +400,7 @@ test.describe('forgot-password — a11y + responsive + focus order', () => {
       },
       {
         label: 'back-to-sign-in link',
-        locator: page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+        locator: page.getByRole('link', { name: cat(en, 'Auth.portal.backToLogin'), exact: true }),
       },
     ]);
   });
@@ -435,7 +417,7 @@ test.describe('reset-password — a11y + responsive + focus order', () => {
       await page.goto('/reset-password?code=axe-test-code');
       await page.waitForLoadState('networkidle');
       await expect(
-        page.getByRole('heading', { level: 1, name: cat(en, 'Auth.resetTitle'), exact: true }),
+        page.getByRole('heading', { level: 1, name: cat(en, 'Auth.portal.resetTitle'), exact: true }),
       ).toBeVisible();
       await expectAxeClean(page, `/reset-password?code=... @ ${viewport.width}px`);
       await expectNoHorizontalScroll(page, `/reset-password?code=... @ ${viewport.width}px`);
@@ -444,24 +426,25 @@ test.describe('reset-password — a11y + responsive + focus order', () => {
         page.getByLabel(cat(en, 'Auth.newPasswordLabel'), { exact: true }),
         `/reset-password form @ ${viewport.width}px new-password input`,
       );
+      // The portal reset design (kit's hideToggle) ships NO visibility toggles
+      // on either reset field — pinned here so a reintroduced toggle cannot
+      // silently diverge from the design.
+      await expect(
+        page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }),
+      ).toHaveCount(0);
       await expectAtLeast44px(
-        page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }).first(),
-        `/reset-password form @ ${viewport.width}px show-password toggle`,
-      );
-      await expectAtLeast44px(
-        page.getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true }),
+        page.getByLabel(cat(en, 'Auth.portal.confirmLabel'), { exact: true }),
         `/reset-password form @ ${viewport.width}px confirm-password input`,
       );
-      await expectAtLeast44px(
-        page.getByRole('button', { name: cat(en, 'Auth.showConfirmPassword'), exact: true }).first(),
-        `/reset-password form @ ${viewport.width}px show-confirm-password toggle`,
-      );
+      await expect(
+        page.getByRole('button', { name: cat(en, 'Auth.showConfirmPassword'), exact: true }),
+      ).toHaveCount(0);
       await expectAtLeast44px(
         page.getByRole('button', { name: cat(en, 'Auth.resetButton'), exact: true }),
         `/reset-password form @ ${viewport.width}px submit button`,
       );
       await expectAtLeast44px(
-        page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+        page.getByRole('link', { name: cat(en, 'Auth.portal.backToLogin'), exact: true }),
         `/reset-password form @ ${viewport.width}px back link`,
       );
       await page.screenshot({
@@ -495,7 +478,7 @@ test.describe('reset-password — a11y + responsive + focus order', () => {
         `/reset-password invalid @ ${viewport.width}px request-new-link link`,
       );
       await expectAtLeast44px(
-        page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+        page.getByRole('link', { name: cat(en, 'Auth.portal.backToLogin'), exact: true }),
         `/reset-password invalid @ ${viewport.width}px back link`,
       );
       await page.screenshot({
@@ -511,33 +494,26 @@ test.describe('reset-password — a11y + responsive + focus order', () => {
     expect(errors, errors.join('\n')).toEqual([]);
   });
 
-  test('focus order: logo → new password → toggle → confirm → toggle → submit → back link', async ({
-    page,
-  }) => {
+  test('focus order: logo → new password → confirm → submit → back link', async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto('/reset-password?code=axe-test-code');
+    // The portal reset design ships no visibility toggles (kit's hideToggle);
+    // pinned absent so the focus sequence below stays the designed one.
+    await expect(
+      page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }),
+    ).toHaveCount(0);
     await expectForwardFocusOrder(page, [
       {
         label: 'logo home link',
-        locator: page.getByRole('link', { name: home(en, 'footer.logoAlt'), exact: true }),
+        locator: page.getByRole('link', { name: cat(en, 'Shell.sidebar.logoAlt'), exact: true }),
       },
       {
         label: 'new-password input',
         locator: page.getByLabel(cat(en, 'Auth.newPasswordLabel'), { exact: true }),
       },
       {
-        label: 'show-password toggle',
-        locator: page.getByRole('button', { name: cat(en, 'Auth.showPassword'), exact: true }).first(),
-      },
-      {
         label: 'confirm-password input',
-        locator: page.getByLabel(cat(en, 'Auth.confirmPasswordLabel'), { exact: true }),
-      },
-      {
-        label: 'show-confirm-password toggle',
-        locator: page
-          .getByRole('button', { name: cat(en, 'Auth.showConfirmPassword'), exact: true })
-          .first(),
+        locator: page.getByLabel(cat(en, 'Auth.portal.confirmLabel'), { exact: true }),
       },
       {
         label: 'reset-password submit',
@@ -545,7 +521,7 @@ test.describe('reset-password — a11y + responsive + focus order', () => {
       },
       {
         label: 'back-to-sign-in link',
-        locator: page.getByRole('link', { name: cat(en, 'Auth.backToSignIn'), exact: true }),
+        locator: page.getByRole('link', { name: cat(en, 'Auth.portal.backToLogin'), exact: true }),
       },
     ]);
   });

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { loginAsParent, SEEDED_PARENT } from './helpers/auth';
+import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
 
@@ -46,7 +46,14 @@ test('en: parent password login through the real UI lands on /dashboard with bot
       response.request().method() === 'GET' && response.url().includes('/api/my/students'),
   );
 
-  await loginAsParent(page);
+  // Drives the real /sign-in form directly with the portal-design labels (the
+  // shared loginAsParent helper predates the redesign and carries the old copy).
+  await page.goto('/sign-in');
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
+  await page
+    .getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true })
+    .fill(SEEDED_PARENT.password);
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   await expect(page).toHaveURL(/\/dashboard$/);
 
@@ -113,15 +120,15 @@ test('en: empty submit shows translated field-level zod errors, never calls the 
   });
 
   await page.goto('/sign-in');
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   await expect(page.getByText(cat(en, 'Auth.emailRequired'))).toBeVisible();
   await expect(page.getByText(cat(en, 'Auth.passwordRequired'))).toBeVisible();
-  await expect(page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })).toHaveAttribute(
+  await expect(page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })).toHaveAttribute(
     'aria-invalid',
     'true',
   );
-  await expect(page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })).toHaveAttribute(
+  await expect(page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true })).toHaveAttribute(
     'aria-invalid',
     'true',
   );

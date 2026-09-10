@@ -62,7 +62,7 @@ export function ResetPasswordCard({ code }: ResetPasswordCardProps) {
         />
       ) : null}
       {view === 'form' || view === 'invalid' ? (
-        <AuthBackLink label={t('backToSignIn')} />
+        <AuthBackLink label={t('portal.backToLogin')} />
       ) : null}
     </div>
   );

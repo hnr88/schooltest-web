@@ -16,7 +16,9 @@ import type { StudentsTabPanelProps } from '@/modules/teacher/types/students-tab
 // ops/34: search, the ACARA phase filter, the sorts and every state are the
 // directory kit's (the bespoke phase select retired into the kit's filter
 // def — same field, same semantics). The panel keeps only the loaded order:
-// `sortRosterRows` is what the kit's default `roster` sort preserves.
+// task 14's default `score:asc` sort compares exactly `sortRosterRows`, and
+// the pre-sort keeps the attention order canonical before any kit comparator
+// runs.
 function StudentsTabPanel({ classDocumentId, rows }: StudentsTabPanelProps) {
   const t = useTranslations('Teacher.results.students');
   const ordered = useMemo(() => sortRosterRows(rows), [rows]);

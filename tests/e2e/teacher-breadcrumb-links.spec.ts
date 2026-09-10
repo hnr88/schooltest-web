@@ -27,6 +27,7 @@
  */
 import { expect, test, type Browser, type BrowserContext, type Page } from '@playwright/test';
 
+import { fixtureClassId } from './helpers/fixture-class';
 import { loadMessages } from './helpers/i18n';
 import { loginAs } from './helpers/roles';
 
@@ -61,11 +62,16 @@ test.describe('D-009 — teacher breadcrumbs never link to a missing page', () =
 
   let context: BrowserContext;
   let page: Page;
-  // Real hrefs taken from the teacher home, never constructed: the two routes
-  // take DIFFERENT params (`classes/[documentId]` vs `results/[classId]`), and
-  // an id that does not resolve renders an empty state whose trail proves
-  // nothing.
-  const recordPath: Record<'classes' | 'results', string> = { classes: '', results: '' };
+  // Both record routes take the SAME id namespace (a class documentId), and the
+  // ids resolve from the SEED by name through the shared fixtureClassId idiom —
+  // real rows, never fabricated. (The previous source — scraping the teach
+  // record hrefs off the teacher home — is retired DOM: scoring/10 (R-16) made
+  // /dashboard/results the teacher home, and task 06's kit rows link the
+  // /dashboard/results/<id> records, not the guarded /dashboard/teach ones.)
+  const recordPath: Record<'classes' | 'results', string> = {
+    classes: `/dashboard/teach/classes/${fixtureClassId()}`,
+    results: `/dashboard/teach/results/${fixtureClassId()}`,
+  };
 
   async function openRecord(surface: 'classes' | 'results'): Promise<string> {
     const path = recordPath[surface];
@@ -78,21 +84,6 @@ test.describe('D-009 — teacher breadcrumbs never link to a missing page', () =
     context = await browser.newContext();
     page = await context.newPage();
     await loginAs(page, 'teacher');
-    await page.goto('/dashboard/results');
-    // scoring/10 (R-16): the teacher's home surface is the class list; each
-    // results-class-row links to the class results record. `/test-day` is a
-    // child of the classes segment, so it is excluded rather than mistaken for
-    // the roster route.
-    for (const surface of ['classes', 'results'] as const) {
-      const link = page
-        .locator(`a[href*="/dashboard/teach/${surface}/"]:not([href$="/test-day"])`)
-        .first();
-      await expect(link, `the teacher home links to a ${surface} record`).toBeVisible({
-        timeout: 20_000,
-      });
-      recordPath[surface] = (await link.getAttribute('href')) ?? '';
-      expect(recordPath[surface], `a ${surface} href was read from the teacher home`).not.toBe('');
-    }
   });
 
   test.afterAll(async () => {

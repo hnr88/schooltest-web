@@ -7,12 +7,12 @@ import {
 import { fetchSchoolVersion } from '@/modules/ops/queries/use-school-version.query';
 
 /**
- * Bulk Suspend / Archive for the schools directory (task 12 lifecycle, task 05
- * runner, task 07 selection). There is deliberately NO bulk endpoint: each
- * selected school goes through the SAME single-school lifecycle write the
- * detail panel uses — the server's one-transaction, FOR UPDATE-locked,
- * compare-and-swap path with the ledger audit row — so a bulk run inherits
- * exactly the guarantees (and the exact coded errors) of the single action.
+ * Bulk Suspend / Archive for the schools directory. There is deliberately NO
+ * bulk endpoint: each selected school goes through the SAME single-school
+ * lifecycle write the detail panel and the row menu use — task `10`'s shared
+ * substrate (`school-lifecycle-actions.ts` + `use-school-suspend.mutation.ts`),
+ * the task `05` runner, task `07` selection — so a bulk run inherits exactly
+ * the guarantees (and the exact coded errors) of the single action.
  *
  * Honesty rules the runner enforces on top: every item is READ BACK through an
  * authorized detail read before it may count as success, an acknowledged write

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { skillSchema, type ResultView } from '@schooltest/scoring-contracts';
 
 import { cn } from '@/lib/utils';
@@ -26,7 +28,15 @@ function initialsOf(student: StudentIdentity): string {
   return student.initials || student.name.slice(0, 2).toUpperCase();
 }
 
+const SKILL_KEY: Record<string, string> = {
+  reading: 'skillReading',
+  listening: 'skillListening',
+  speaking: 'skillSpeaking',
+  writing: 'skillWriting',
+};
+
 export function StudentResultHeader({ view, student }: { view: ResultView; student: StudentIdentity }) {
+  const t = useTranslations('Results');
   const growth = view.overall.delta_display;
   const arrow = growth !== null && (growth.startsWith('+') ? '↑' : growth.startsWith('-') ? '↓' : null);
   const nonReading = skillSchema.options.filter((skill) => skill !== view.skill);
@@ -53,12 +63,12 @@ export function StudentResultHeader({ view, student }: { view: ResultView; stude
             data-delta={growth}
             className="rounded-full bg-primary-soft px-2 py-0.5 text-caption font-semibold text-primary-ink"
           >
-            {arrow ? `${arrow} ${growth} pts` : growth}
+            {arrow ? t('deltaPts', { arrow, growth }) : growth}
           </span>
         ) : null}
         {view.acara_phase !== null ? (
           <span data-slot="acara-badge" className="rounded-full bg-muted px-2 py-0.5 text-caption font-semibold">
-            ACARA: {view.acara_phase}
+            {t('acaraBadge', { phase: view.acara_phase })}
           </span>
         ) : null}
         {view.gate.passed !== null ? (
@@ -70,14 +80,14 @@ export function StudentResultHeader({ view, student }: { view: ResultView; stude
               view.gate.passed ? 'bg-success-soft text-success-ink' : 'bg-warning-soft text-warning-ink',
             )}
           >
-            Exit gate: {view.gate.passed ? 'passed' : 'not yet'}
+            {view.gate.passed ? t('gatePassed') : t('gateNotYet')}
           </span>
         ) : null}
       </div>
 
       {/* Skill switcher (§4.1): reading is the only assessed skill; the rest are
           honest coming-soon entries, never a silent empty tab. */}
-      <nav data-slot="skill-switcher" aria-label="Skill" className="flex gap-1">
+      <nav data-slot="skill-switcher" aria-label={t('ariaSkillSwitcher')} className="flex gap-1">
         {[view.skill, ...nonReading].map((skill) => (
           <span
             key={skill}
@@ -89,7 +99,8 @@ export function StudentResultHeader({ view, student }: { view: ResultView; stude
               skill === view.skill ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground',
             )}
           >
-            {skill === view.skill ? skill : `${skill} — coming soon`}
+            {t(SKILL_KEY[skill] ?? skill)}
+            {skill === view.skill ? null : ` — ${t('comingSoon')}`}
           </span>
         ))}
       </nav>

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import type { DisplaySkill, ResultView } from '@schooltest/scoring-contracts';
 
 import { DISPLAY_SKILL_ORDER } from '@/modules/results/lib/display-skills';
@@ -76,15 +78,25 @@ function growthOf(view: ResultView, skill: Exclude<DisplaySkill, 'Critical'>): G
   };
 }
 
+const SKILL_KEY: Record<DisplaySkill, string> = {
+  Decoding: 'skillDecoding',
+  Vocabulary: 'skillVocabulary',
+  Grammar: 'skillGrammar',
+  Gist: 'skillGist',
+  Detail: 'skillDetail',
+  Inference: 'skillInference',
+  Critical: 'skillCritical',
+};
+
 /** Tiny inline polyline over the real points; a single non-null point is a dot. */
-export function Sparkline({ points }: { points: Array<number | null> }) {
+export function Sparkline({ points, label }: { points: Array<number | null>; label?: string }) {
   const height = 24;
   const coords = points.map((score, index) =>
     score === null ? null : `${(index / Math.max(points.length - 1, 1)) * 100},${height - (score / 100) * height}`,
   );
   const drawn = coords.filter((c): c is string => c !== null);
   return (
-    <svg data-slot="movement-sparkline" viewBox={`0 0 100 ${height}`} className="h-6 w-24" role="img" aria-label="Score movement">
+    <svg data-slot="movement-sparkline" viewBox={`0 0 100 ${height}`} className="h-6 w-24" role="img" aria-label={label}>
       {drawn.length >= 2 ? <polyline points={drawn.join(' ')} fill="none" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" /> : null}
       {drawn.map((point) => {
         const [cx, cy] = point.split(',');
@@ -95,19 +107,24 @@ export function Sparkline({ points }: { points: Array<number | null> }) {
 }
 
 export function SkillMovementSparklines({ view }: { view: ResultView }) {
+  const t = useTranslations('Results');
   const rows = sparklineRows(view);
   if (rows.length === 0) return null;
   return (
-    <section data-slot="movement-sparklines" aria-label="Movement since the first sitting" className="flex flex-col gap-2">
-      <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">Movement since the first sitting</h2>
+    <section data-slot="movement-sparklines" aria-label={t('movementHeading')} className="flex flex-col gap-2">
+      <h2 className="text-caption font-bold uppercase tracking-wide text-muted-foreground">{t('movementHeading')}</h2>
       <ul className="flex flex-col gap-1.5">
         {rows.map((row) => (
           <li key={row.skill} data-slot="movement-row" data-skill={row.skill} className="flex items-center gap-3">
-            <span className="w-24 shrink-0 text-caption font-semibold">{row.skill}</span>
-            <Sparkline points={row.points} />
+            <span className="w-24 shrink-0 text-caption font-semibold">{t(SKILL_KEY[row.skill] ?? row.skill)}</span>
+            <Sparkline points={row.points} label={t('ariaScoreMovement')} />
             {row.deltaDisplay !== null ? (
               <span data-slot="movement-delta" data-delta={row.deltaDisplay} className="text-caption font-semibold">
-                {row.deltaDisplay === 'steady' ? 'Steady' : row.deltaDisplay === 'band_movement' ? 'Band movement' : `${row.deltaDisplay} pts`}
+                {row.deltaDisplay === 'steady'
+                  ? t('steady')
+                  : row.deltaDisplay === 'band_movement'
+                    ? t('bandMovement')
+                    : t('deltaPts', { arrow: row.deltaDisplay.startsWith('-') ? '↓' : '↑', growth: row.deltaDisplay })}
               </span>
             ) : null}
           </li>

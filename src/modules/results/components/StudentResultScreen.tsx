@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import type { ResultView } from '@schooltest/scoring-contracts';
 
 import { ConfidenceStrip } from './ConfidenceStrip';
@@ -26,12 +28,13 @@ import { SubskillCardGrid } from './SubskillCardGrid';
  * strand, empty error patterns (section absent, never an empty panel).
  */
 export function StudentResultScreen({ view, student }: { view: ResultView; student: StudentIdentity }) {
+  const t = useTranslations('Results');
+
   if (view.status === 'scoring_failed') {
     return (
       <div data-slot="result-screen" data-state="scoring_failed" className="flex flex-col gap-2 p-4">
         <p data-slot="scoring-failed" className="text-body font-semibold text-danger-ink">
-          Scoring failed for this sitting — the result is not available. Nothing is shown rather than a partial
-          report; the sitting will be re-scored.
+          {t('scoringFailed')}
         </p>
       </div>
     );

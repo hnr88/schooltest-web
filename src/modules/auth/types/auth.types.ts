@@ -120,6 +120,12 @@ export type ResetPasswordErrorKey =
 
 export type PasswordRuleState = 'pending' | 'met' | 'unmet';
 
+export interface ResetPasswordRuleStates {
+  length: PasswordRuleState;
+  charClasses: PasswordRuleState;
+  history: PasswordRuleState;
+}
+
 export type ResetPasswordView = 'form' | 'invalid' | 'expired' | 'success';
 
 export type ChangePasswordErrorKey =

@@ -165,4 +165,94 @@ test.describe('class detail (spec §1)', () => {
       ).toBe(true);
     }
   });
+
+  // ops/30 — the roster renders through the shared directory kit: search over
+  // the student's name, the test-status filter and the name sort round-trip
+  // through the URL, and the rows carry the kit's row contract.
+  test('flow 6: the roster is a kit list — search, status filter and sort round-trip', async ({
+    page,
+  }) => {
+    await loginAs(page, 'schoolAdmin');
+    const detail = await apiClassDetail(page.request, await schoolAdminJwt(page.request));
+    await gotoClassDetail(page);
+
+    const table = page.locator('[data-slot="class-students-table"]');
+    await expect(table).toBeVisible();
+    await expect(table.locator('[data-directory-row]')).toHaveCount(detail.students.length);
+
+    // The row-level status aggregate the kit filter filters on: both slots
+    // decided, any started/pending mix reads as in progress.
+    const statusOf = (student: (typeof detail.students)[number]) => {
+      const statuses = ['A', 'B'].map(
+        (slot) => student.tests.find((test) => test.test_id === slot)?.status ?? 'not_started',
+      );
+      if (statuses.every((status) => status === 'not_started')) return 'not_started';
+      if (statuses.every((status) => status === 'completed')) return 'completed';
+      return 'in_progress';
+    };
+
+    // SEARCH narrows to the name needle, then a nonsense needle hands the body
+    // to the kit's no-matches arm; Clear filters restores the served roster.
+    const needle = fullName(detail.students[0]);
+    const search = table.getByLabel(cat(en, 'Classes.detail.roster.searchLabel'), { exact: true });
+    await search.fill(needle);
+    await expect
+      .poll(
+        async () =>
+          table.locator('[data-directory-row]').count(),
+        { timeout: 10_000 },
+      )
+      .toBe(
+        detail.students.filter((student) =>
+          fullName(student).toLowerCase().includes(needle.toLowerCase()),
+        ).length,
+      );
+    await search.fill('zzzznomatchzzzz');
+    await expect(
+      table.getByRole('heading', { name: cat(en, 'Classes.detail.roster.filteredEmptyTitle') }),
+    ).toBeVisible();
+    await table
+      .getByRole('button', { name: cat(en, 'Classes.detail.roster.clearFilters') })
+      .click();
+    await expect(table.locator('[data-directory-row]')).toHaveCount(detail.students.length);
+
+    // STATUS filter round-trips through the URL and matches the aggregate.
+    const buckets = ['completed', 'in_progress', 'not_started'].map((status) => ({
+      status,
+      count: detail.students.filter((student) => statusOf(student) === status).length,
+    }));
+    const bucket = buckets.reduce((best, candidate) =>
+      candidate.count > best.count ? candidate : best,
+    );
+    await table
+      .getByLabel(cat(en, 'Classes.detail.roster.filterStatusLabel'), { exact: true })
+      .click();
+    await page
+      .getByRole('option', {
+        name: cat(
+          en,
+          bucket.status === 'completed'
+            ? 'Classes.detail.table.statusDone'
+            : bucket.status === 'in_progress'
+              ? 'Classes.detail.table.statusInProgress'
+              : 'Classes.detail.table.statusNotStarted',
+        ),
+        exact: true,
+      })
+      .click();
+    await page.waitForURL(/status=/);
+    await expect(table.locator('[data-directory-row]')).toHaveCount(bucket.count);
+
+    // SORT round-trips through the URL and reorders the rows.
+    await table.getByLabel(cat(en, 'Classes.detail.roster.sortLabel'), { exact: true }).click();
+    await page
+      .getByRole('option', { name: cat(en, 'Classes.detail.roster.sortNameDesc'), exact: true })
+      .click();
+    await page.waitForURL(/sort=name:desc/);
+    await expect(table.locator('[data-directory-row]')).toHaveCount(bucket.count);
+    const names = (await table.locator('[data-directory-row] td:first-child').allInnerTexts()).map(
+      (value) => value.trim(),
+    );
+    expect(names).toEqual([...names].sort((a, b) => b.localeCompare(a)));
+  });
 });

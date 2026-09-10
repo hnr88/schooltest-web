@@ -1,11 +1,14 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { STAT_ITEMS } from '@/modules/articles/constants/article.constants';
 import { useArticleStatsQuery } from '@/modules/articles/queries/use-article-stats.query';
 
 export function ArticleStatsCards() {
+  const t = useTranslations('Articles');
   const { data, isLoading } = useArticleStatsQuery();
 
   return (
@@ -14,7 +17,7 @@ export function ArticleStatsCards() {
         <Card key={item.key}>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              {item.label}
+              {t(item.labelKey)}
             </CardTitle>
           </CardHeader>
           <CardContent>

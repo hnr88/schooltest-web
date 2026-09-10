@@ -1,6 +1,21 @@
-import { ERROR_PATTERN_COPY } from '@/modules/results/components/ErrorPatternsPanel';
 import type { ClassExport } from '@/modules/results/schemas/class-export.schema';
 import type { DiagnosticExport, DiagnosticExportSkill } from '@schooltest/scoring-contracts';
+
+/**
+ * English labels for the exported markdown document. The .md download is a
+ * DATA ARTIFACT for LLM consumption (like the CSV import template), so it
+ * stays English by design; the on-screen UI copy for the same taxonomy lives
+ * in the Results messages (errorPattern.*).
+ */
+const ERROR_PATTERN_LABEL: Record<string, string> = {
+  literal_match: 'Copies the text',
+  overinference: 'Reads too much in',
+  world_knowledge: 'Outside knowledge',
+  grammatical_decoy: 'Grammar trap',
+  phonological_neighbour: 'Sounds like',
+  orthographic_neighbour: 'Looks like',
+  semantic_neighbour: 'Close in meaning',
+};
 
 /**
  * The three-variant union, narrowed by ITS OWN discriminators (task 38's
@@ -71,7 +86,7 @@ export function renderStudentMarkdown(bundle: DiagnosticExport): string {
   if (bundle.error_patterns.length > 0) {
     lines.push('## Error patterns');
     for (const pattern of bundle.error_patterns) {
-      lines.push(`- ${ERROR_PATTERN_COPY[pattern.type]?.label ?? pattern.type}: ${pattern.count} of the wrong answers (${pattern.pct}%)`);
+      lines.push(`- ${ERROR_PATTERN_LABEL[pattern.type] ?? pattern.type}: ${pattern.count} of the wrong answers (${pattern.pct}%)`);
     }
     lines.push('');
   }

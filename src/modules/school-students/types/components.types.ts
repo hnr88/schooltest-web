@@ -1,7 +1,8 @@
 import type { SchoolClass } from '@/modules/classes';
+import type { DirectoryFilterDef, DirectoryMeta, DirectoryQueryStatus, DirectoryStateApi } from '@/modules/directory';
 import type { StudentFormTarget } from '@/modules/school-students/types/hooks.types';
 import type { SchoolStudentFormValues } from '@/modules/school-students/schemas/school-student.schema';
-import type { SchoolStudent, SchoolStudentLevelFilter, SchoolStudentRecord, SchoolStudentsPagination } from '@/modules/school-students/types/school-students.types';
+import type { SchoolStudent, SchoolStudentRecord } from '@/modules/school-students/types/school-students.types';
 import type { UseFormReturn } from 'react-hook-form';
 
 export interface ArchiveStudentDialogProps {
@@ -23,30 +24,17 @@ export interface StudentsHeaderProps {
   onImport: () => void;
 }
 
-export interface StudentsFilterBarProps {
-  search: string;
-  classId: string;
-  level: SchoolStudentLevelFilter;
-  classes: SchoolClass[];
-  onSearch: (value: string) => void;
-  onClass: (value: string) => void;
-  onLevel: (value: SchoolStudentLevelFilter) => void;
-}
-
-export interface StudentsPaginationProps {
-  pagination: SchoolStudentsPagination;
-  onPage: (page: number) => void;
-}
-
+// Task 31 — the roster table renders through the shared directory kit: the
+// state, filter defs, query status and pagination meta flow straight through,
+// and the dialogs the row actions open stay screen-owned.
 export interface StudentsTableProps {
-  rows: SchoolStudent[];
-  filtered: boolean;
+  state: DirectoryStateApi;
+  filters: readonly DirectoryFilterDef[];
+  query: DirectoryQueryStatus;
+  rows: readonly SchoolStudent[];
+  meta?: DirectoryMeta;
   onEdit: (student: SchoolStudent) => void;
-}
-
-export interface StudentsTableRowProps {
-  student: SchoolStudent;
-  onEdit: () => void;
+  onArchive: (student: SchoolStudent) => void;
 }
 
 export interface SchoolStudentDetailScreenProps {
@@ -59,11 +47,6 @@ export interface StudentRecordPanelProps {
 
 export interface StudentLevelBadgeProps {
   phase: string | null;
-}
-
-export interface StudentRowActionsProps {
-  student: SchoolStudent;
-  onEdit: () => void;
 }
 
 export interface StudentImportDialogProps {

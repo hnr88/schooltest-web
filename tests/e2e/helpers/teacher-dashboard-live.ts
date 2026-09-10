@@ -47,8 +47,11 @@ export async function installPersonaSampler(page: Page): Promise<void> {
       const teacher = content.querySelector('[data-surface="teacher-results"]');
       if (teacher) return `teacher:${teacher.getAttribute('data-status')}`;
       if (content.querySelector('[data-surface="parent-overview"]')) return 'PARENT:overview';
-      // The parent skeleton owns .shimmer-sweep; the teacher's uses animate-pulse.
-      if (content.querySelector('.shimmer-sweep')) return 'PARENT:skeleton';
+      // Since task 10 (R-16) the role gate holds EVERY sectioned role on
+      // DashboardSkeleton (shimmer-sweep) while /api/users/me resolves, so a
+      // shimmer frame is the role-gate hold, not a parent persona painting —
+      // the parent leak guard is the parent-overview surface check above.
+      if (content.querySelector('.shimmer-sweep')) return 'PENDING:role-gate';
       const main = content.querySelector('main');
       if (main) return `UNKNOWN-MAIN:${(main.textContent ?? '').trim().slice(0, 40)}`;
       return '';

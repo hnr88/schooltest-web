@@ -134,11 +134,11 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     // (invited / expired / deactivated) do. `data-status` is the row's state.
     await expect(staffRow).toHaveAttribute('data-status', 'active');
 
-    // C-TCH-02 deactivate (confirmed), then reactivate (confirmed).
-    const displayName = `${INVITED.first} ${INVITED.last}`;
-    await staffRow
-      .getByLabel(cat(en, 'Teachers.actions.menuLabel').replace('{name}', displayName))
-      .click();
+    // C-TCH-02 deactivate (confirmed), then reactivate (confirmed). ops/32
+    // moved the table onto the shared directory kit, whose row-menu trigger
+    // carries ONE shared label (rowMenuLabel), not a per-row name.
+    const menuLabel = cat(en, 'Teachers.table.rowMenuLabel');
+    await staffRow.getByLabel(menuLabel, { exact: true }).click();
     await page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.deactivate') }).click();
     await page
       .getByRole('button', { name: cat(en, 'Teachers.actions.deactivateConfirm'), exact: true })
@@ -147,9 +147,7 @@ test.describe('task 23: invitation flow + teachers screen', () => {
       staffRow.getByText(cat(en, 'Teachers.table.status.deactivated'), { exact: true }),
     ).toBeVisible({ timeout: 20_000 });
 
-    await staffRow
-      .getByLabel(cat(en, 'Teachers.actions.menuLabel').replace('{name}', displayName))
-      .click();
+    await staffRow.getByLabel(menuLabel, { exact: true }).click();
     await page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.reactivate') }).click();
     await page
       .getByRole('button', { name: cat(en, 'Teachers.actions.reactivateConfirm'), exact: true })
@@ -161,10 +159,7 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     await inviteViaUi(page, REISSUED.first, REISSUED.last, REISSUED.email);
     const reissuedRow = surface.locator('tr', { hasText: REISSUED.email });
     await expect(reissuedRow).toBeVisible({ timeout: 20_000 });
-    const reName = `${REISSUED.first} ${REISSUED.last}`;
-    await reissuedRow
-      .getByLabel(cat(en, 'Teachers.actions.menuLabel').replace('{name}', reName))
-      .click();
+    await reissuedRow.getByLabel(menuLabel, { exact: true }).click();
     await page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.reissue') }).click();
     await expect(
       reissuedRow.getByText(cat(en, 'Teachers.table.status.invited'), { exact: true }),
@@ -172,9 +167,7 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     const newToken = await inviteTokenFor(request, REISSUED.email);
     expect(newToken).toMatch(/^[a-f0-9]{64}$/);
 
-    await reissuedRow
-      .getByLabel(cat(en, 'Teachers.actions.menuLabel').replace('{name}', reName))
-      .click();
+    await reissuedRow.getByLabel(menuLabel, { exact: true }).click();
     await page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.revoke') }).click();
     await page
       .getByRole('button', { name: cat(en, 'Teachers.actions.revokeConfirm'), exact: true })

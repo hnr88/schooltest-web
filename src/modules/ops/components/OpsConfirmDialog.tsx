@@ -1,6 +1,8 @@
 'use client';
 
 import { AlertTriangle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 
 import {
@@ -13,7 +15,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Button,
+  Input,
+  Label,
 } from '@/modules/design-system';
+import { typedNameMatches } from '@/modules/ops/actions';
 
 /**
  * `confirm`   — Cancel + a confirming action (the default).
@@ -34,6 +39,26 @@ export interface OpsConfirmNotice {
   body: ReactNode;
 }
 
+/**
+ * The design's typed-name gate (`Ops Portal.dc.html:830-842`, `:1633-1649`),
+ * carried as ONE additive prop so the generic dialog stays a plain confirm for
+ * every existing caller. Unlike the kit's `OpsTypedNameConfirm` — which
+ * disables its action until the name matches — the design keeps the confirming
+ * action CLICKABLE at 0.55 opacity (`:1638` `ctaOpacity: (busy || !typedOk) ?
+ * 0.55 : 1`) and answers a mismatched press with
+ * "Type the name exactly as shown to confirm." (`:1649`), so a locked gate is
+ * still legible to an operator who presses it. A matched press (or no gate at
+ * all) reaches `onConfirm` unchanged.
+ */
+export interface OpsConfirmTypedGate {
+  /** The exact name the operator must retype. */
+  requiredName: string;
+  value: string;
+  onChange: (value: string) => void;
+  /** Shown when the action is pressed while the name does not match. */
+  mismatchMessage: string;
+}
+
 export interface OpsConfirmDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -50,6 +75,13 @@ export interface OpsConfirmDialogProps {
   media?: ReactNode;
   /** Optional warning callout. Collapses when absent. */
   notice?: OpsConfirmNotice | null;
+  /** The typed-name gate. Absent: a plain confirm, byte-identical to before. */
+  typed?: OpsConfirmTypedGate;
+  /**
+   * A failure the dialog owns (the server's refusal, kept by the confirm hook).
+   * One alert line; the typed mismatch flash takes precedence while it is live.
+   */
+  error?: string | null;
   onConfirm: () => void;
 }
 
@@ -77,12 +109,25 @@ export function OpsConfirmDialog({
   dispatched = false,
   media,
   notice,
+  typed,
+  error = null,
   onConfirm,
 }: OpsConfirmDialogProps) {
+  const tTyped = useTranslations('Ops.typedNameConfirm');
+  const typedInputId = 'ops-confirm-typed-name';
+  // A mismatched press flashes the design's message; typing clears it. The
+  // dialog mounts fresh per open (consumers render it only while open), so no
+  // stale flash survives a reopen.
+  const [mismatchFlash, setMismatchFlash] = useState(false);
   const destructive = tone === 'destructive';
   // An advisory has nothing to accept; a dispatched two-step can no longer be
   // recalled. In both cases the footer is a single dismissal.
   const actionable = variant === 'advisory' ? false : !(variant === 'two-step' && dispatched);
+  const nameOk = typed === undefined || typedNameMatches(typed.value, typed.requiredName);
+  // The design dims a not-yet-satisfied typed action without disabling it.
+  const dimmed = typed !== undefined && !nameOk;
+  const alertMessage =
+    (typed !== undefined && mismatchFlash ? typed.mismatchMessage : null) ?? error;
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent size="sm">
@@ -101,6 +146,32 @@ export function OpsConfirmDialog({
             {notice.body}
           </Alert>
         ) : null}
+        {typed === undefined ? null : (
+          <div className="flex flex-col gap-2">
+            <Label htmlFor={typedInputId}>
+              {tTyped.rich('typeToConfirm', {
+                name: (chunks) => <span className="font-semibold">{chunks}</span>,
+              })}
+            </Label>
+            <Input
+              id={typedInputId}
+              value={typed.value}
+              autoComplete="off"
+              disabled={pending}
+              aria-invalid={alertMessage !== null}
+              aria-describedby={alertMessage === null ? undefined : `${typedInputId}-error`}
+              onChange={(event) => {
+                setMismatchFlash(false);
+                typed.onChange(event.target.value);
+              }}
+            />
+          </div>
+        )}
+        {alertMessage === null ? null : (
+          <p id={`${typedInputId}-error`} role="alert" className="text-sm text-destructive">
+            {alertMessage}
+          </p>
+        )}
         <AlertDialogFooter>
           <AlertDialogCancel className="h-11 px-4" disabled={pending}>
             {cancelLabel}
@@ -109,9 +180,16 @@ export function OpsConfirmDialog({
             <Button
               type="button"
               variant={destructive ? 'destructive' : 'default'}
-              className="h-11 px-4"
+              className={dimmed ? 'h-11 px-4 opacity-55' : 'h-11 px-4'}
               loading={pending}
-              onClick={onConfirm}
+              aria-disabled={dimmed || undefined}
+              onClick={() => {
+                if (dimmed) {
+                  setMismatchFlash(true);
+                  return;
+                }
+                onConfirm();
+              }}
             >
               {confirmLabel}
             </Button>

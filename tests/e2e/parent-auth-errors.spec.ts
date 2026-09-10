@@ -24,9 +24,9 @@ test('en: wrong password stays on /sign-in with the styled translated error, no 
       response.request().method() === 'POST' && response.url().endsWith('/api/auth/local'),
   );
 
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill('WrongPass123!');
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill('WrongPass123!');
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   const loginResponse = await loginResponsePromise;
   expect(loginResponse.status()).toBe(400);
@@ -35,7 +35,9 @@ test('en: wrong password stays on /sign-in with the styled translated error, no 
 
   const alert = page.locator('[data-slot="alert"]');
   await expect(alert).toBeVisible();
-  await expect(alert).toContainText(cat(en, 'Auth.loginError'));
+  await expect(alert).toContainText(cat(en, 'Auth.portal.errorTitle'));
+  await expect(alert).toContainText(cat(en, 'Auth.portal.errorBody'));
+  await expect(page.getByText(cat(en, 'Auth.incorrectPassword'), { exact: true })).toBeVisible();
   await expect(page.getByText(RAW_STRAPI_MESSAGE)).toHaveCount(0);
   await expect(page).toHaveURL(/\/sign-in$/);
   const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
@@ -66,10 +68,10 @@ test('en: unknown email gets the same styled translated error (enumeration-safe)
   );
 
   await page
-    .getByLabel(cat(en, 'Auth.emailLabel'), { exact: true })
+    .getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })
     .fill('no-such-parent-e2e@schooltest.local');
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill('WhateverPass123!');
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill('WhateverPass123!');
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
 
   const loginResponse = await loginResponsePromise;
   expect(loginResponse.status()).toBe(400);

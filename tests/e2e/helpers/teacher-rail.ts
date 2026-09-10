@@ -95,9 +95,9 @@ async function signInAccount(page: Page, email: string, secret: string): Promise
     await page.waitForTimeout(MIN_LOGIN_INTERVAL_MS - sinceLast);
   }
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(apiEnv(secret));
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill(apiEnv(secret));
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   lastLoginAt = Date.now();
   await page.waitForURL('**/dashboard');
 }

@@ -113,6 +113,24 @@ export interface OpsAssignTeacherInput {
 }
 
 /**
+ * Task 22 — thrown when the server refuses the PICKED teacher (403: not a
+ * teacher of this school, blocked, or not yet confirmed — the exact
+ * `assertAssignableTeachers` boundary the assign route enforces). The picker
+ * was fetched a moment earlier and is now stale; the caller refetches the
+ * teacher list and reports it rather than retrying the same request blind.
+ * Named after the 412 pattern `OpsClassEditStaleError` already sets in this
+ * file. (The contract record's Errors list also names 422 for this case; the
+ * live route answers 403 for every eligibility refusal it throws — verified
+ * against `127.0.0.1:5500`, see proof/22.md — so both are caught here.)
+ */
+export class OpsAssignTeacherIneligibleError extends Error {
+  constructor() {
+    super('this teacher is no longer eligible for this class — refresh and re-pick');
+    this.name = 'OpsAssignTeacherIneligibleError';
+  }
+}
+
+/**
  * Task 20 — the class-assignment write (POST /ops/classes/:documentId/
  * assign-teacher). The SUBMITTED list is the whole assignment: one documentId
  * to assign, an empty array to UNASSIGN deliberately. The server answers
@@ -123,11 +141,18 @@ export function useOpsAssignTeacherMutation(classDocumentId: string, schoolDocum
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (teacherDocumentIds: string[]): Promise<{ changed: boolean }> => {
-      const res = await strapi.post(`/api/ops/classes/${classDocumentId}/assign-teacher`, {
-        teacher_documentIds: teacherDocumentIds,
-      });
-      const changed = (res.data as { meta?: { changed?: boolean } })?.meta?.changed !== false;
-      return { changed };
+      try {
+        const res = await strapi.post(`/api/ops/classes/${classDocumentId}/assign-teacher`, {
+          teacher_documentIds: teacherDocumentIds,
+        });
+        const changed = (res.data as { meta?: { changed?: boolean } })?.meta?.changed !== false;
+        return { changed };
+      } catch (error) {
+        if (isAxiosError(error) && (error.response?.status === 403 || error.response?.status === 422)) {
+          throw new OpsAssignTeacherIneligibleError();
+        }
+        throw error;
+      }
     },
     onSuccess: async () => {
       // A changed assignment moves class + roster + BOTH teachers' counts.

@@ -195,9 +195,13 @@ test.describe('task 124: absent toggle + still-to-sit checklist vs live C-SIT-02
       await sofiaRow.getByRole('button', { name: markLabel, exact: true }).click();
 
       // The row restyles: muted flag on the row, an "Absent" badge joins the
-      // toggle's own label, and the toggle flips to the clear action.
+      // name, and the toggle flips to the clear action.
+      // ops/35: the absent action is a kit quick-action ICON button now — its
+      // "Mark {name} as absent" label is an aria-label, not visible text — so
+      // the row's one visible "Absent" is the name badge (was 2: badge +
+      // toggle text).
       await expect(sofiaRow).toHaveAttribute('data-absent', 'true', { timeout: 30_000 });
-      await expect(sofiaRow.getByText(absentLabel, { exact: true })).toHaveCount(2);
+      await expect(sofiaRow.getByText(absentLabel, { exact: true })).toHaveCount(1);
       await expect(sofiaRow.getByRole('button', { name: clearLabel, exact: true })).toBeVisible();
 
       // The still-to-sit panel drops her and the count falls by one.
@@ -226,7 +230,9 @@ test.describe('task 124: absent toggle + still-to-sit checklist vs live C-SIT-02
       await expect(sofiaRow.getByRole('button', { name: markLabel, exact: true })).toBeVisible({
         timeout: 30_000,
       });
-      await expect(sofiaRow.getByText(absentLabel, { exact: true })).toHaveCount(1);
+      // ops/35: no visible "Absent" text remains — the badge is gone and the
+      // kit icon button carries only an aria-label (was 1: the toggle text).
+      await expect(sofiaRow.getByText(absentLabel, { exact: true })).toHaveCount(0);
       await expect(
         panel.getByText(formatStillToSitCount(countTemplate, initialCount), { exact: true }),
       ).toBeVisible({ timeout: 30_000 });

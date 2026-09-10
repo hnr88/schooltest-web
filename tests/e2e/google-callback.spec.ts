@@ -4,19 +4,22 @@ import { expect, test } from '@playwright/test';
 import { cat, loadMessages } from './helpers/i18n';
 import { watchErrors } from './helpers/ui';
 
-// Task 14 verification: the Google button on both auth cards is a real link to
-// the api's connect route (C-AUTH-GOOGLE), and /auth/google/callback forwards
-// its incoming query to the REAL api on :5500. Real Google OAuth stays BLOCKED
-// (D5 — no GOOGLE_CLIENT_ID/SECRET exist anywhere), so both exercisable paths
-// here hit the api's genuine env-gated "This provider is disabled" 400 (task 9)
-// — never a synthetic/mocked jwt. Assertions derive from the message catalogs.
+// Task 14 verification: /auth/google/callback forwards its incoming query to
+// the REAL api on :5500. (The portal sign-in card dropped its Google button in
+// the invitation-only redesign; /sign-up still renders it, asserted below.)
+// Real Google OAuth stays BLOCKED (D5 — no GOOGLE_CLIENT_ID/SECRET exist
+// anywhere), so both exercisable paths here hit the api's genuine env-gated
+// "This provider is disabled" 400 (task 9) — never a synthetic/mocked jwt.
+// Assertions derive from the message catalogs.
 const en = loadMessages('en');
 
-test('en: sign-in card Google button links to the real connect route', async ({ page }) => {
+test('en: sign-in card no longer renders a Google button (invitation-only portal)', async ({
+  page,
+}) => {
   await page.goto('/sign-in');
-  const google = page.getByRole('link', { name: cat(en, 'Auth.googleButton'), exact: true });
-  await expect(google).toHaveAttribute('href', /\/api\/connect\/google$/);
-  await expect(google).toHaveAttribute('title', cat(en, 'Auth.googleTitle'));
+  await expect(
+    page.getByRole('link', { name: cat(en, 'Auth.googleButton'), exact: true }),
+  ).toHaveCount(0);
 });
 
 test('en: sign-up card also has the Google button, wired the same way', async ({ page }) => {

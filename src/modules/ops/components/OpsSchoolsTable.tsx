@@ -1,12 +1,23 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import {
+  formatResourceVersion,
+  type PortalStatus,
+} from '@schooltest/ops-contracts';
 
+import { restFailureOf, strapi } from '@/lib/axios/strapi';
 import { useRouter } from '@/i18n/navigation';
-import { useOpsActionRunner } from '@/modules/ops/actions';
-import type { OpsActionTarget } from '@/modules/ops/actions';
+import {
+  showOpsToast,
+  useOpsActionRunner,
+  useOpsConfirmAction,
+  useOpsWriteGate,
+} from '@/modules/ops/actions';
+import type { OpsActionDefinition, OpsActionTarget } from '@/modules/ops/actions';
 import {
   ARCHIVE_SCHOOL_ACTION,
   SUSPEND_SCHOOL_ACTION,
@@ -16,6 +27,7 @@ import type { SchoolsListRow } from '@schooltest/ops-contracts';
 
 import { useAuthStore } from '@/modules/auth';
 import { Badge, MediaCover } from '@/modules/design-system';
+import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsCreateSchoolDialog } from '@/modules/ops/components/OpsCreateSchoolDialog';
 import {
   DIRECTORY_ALL,
@@ -23,6 +35,7 @@ import {
   useOpsDirectoryState,
   type DirectoryColumnDef,
   type DirectoryFilterDef,
+  type DirectoryRowAction,
 } from '@/modules/ops/directory';
 import { OpsSchoolsPills } from '@/modules/ops/components/OpsSchoolsPills';
 import {
@@ -30,8 +43,20 @@ import {
   portalPlanLabelKey,
   portalStatusLabelKey,
 } from '@/modules/ops/lib/portal-lifecycle.lib';
+import {
+  schoolLifecycleActions,
+  type SchoolLifecycleAction,
+  type SchoolLifecycleActionKey,
+} from '@/modules/ops/lib/school-lifecycle-actions';
 import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
 import { useSchoolsListQuery } from '@/modules/ops/queries/use-schools-list.query';
+import { useSchoolLifecycleUndoMutation } from '@/modules/ops/queries/use-school-lifecycle-undo.mutation';
+import {
+  archiveSchool,
+  suspendSchool,
+} from '@/modules/ops/queries/use-school-suspend.mutation';
+import { fetchSchoolDetail } from '@/modules/ops/queries/use-school-detail.query';
+import { fetchSchoolVersion } from '@/modules/ops/queries/use-school-version.query';
 import { getSchoolCrestSource } from '@/modules/ops/lib/school-crest';
 import { formatRelativeTime } from '@/modules/ops/lib/relative-time';
 
@@ -39,6 +64,25 @@ const SCHOOL_STATES = ['VIC', 'NSW', 'QLD', 'SA', 'WA', 'TAS', 'ACT', 'NT'] as c
 const SCHOOL_SECTORS = ['government', 'non-government', 'catholic'] as const;
 const PORTAL_PLANS = ['pilot', 'standard', 'enterprise'] as const;
 const ONBOARDING = ['not_started', 'link_sent', 'in_progress', 'submitted', 'complete'] as const;
+
+/** The five status-conditional lifecycle keys; edit/invite are navigations. */
+type LifecycleActionKey = Exclude<SchoolLifecycleActionKey, 'editDetails' | 'inviteAdmin'>;
+
+interface LifecycleTarget extends OpsActionTarget {
+  lifecycleAction: LifecycleActionKey;
+  targetStatus: PortalStatus;
+}
+
+/** The server-minted handle C-OPS-PORTAL-018 undoes (suspend and archive only). */
+interface LifecycleActionHandle {
+  actionDocumentId: string;
+}
+
+/** The row + action the open confirm acts on — what the operator saw, never re-read. */
+interface SchoolsConfirmTarget {
+  school: SchoolsListRow;
+  action: SchoolLifecycleAction;
+}
 
 /** Nulls never reach a formatter: a school with no suburb still renders a row. */
 function metaLine(
@@ -72,6 +116,9 @@ function metaLine(
  */
 export function OpsSchoolsTable() {
   const t = useTranslations('Ops.schools');
+  // The confirm copy is the design's exact contractual wording, under its own
+  // `Ops.confirm.*` namespace (`{action}.{title|body|cta}` per transition).
+  const tConfirm = useTranslations('Ops.confirm');
   const locale = useLocale();
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
@@ -163,6 +210,195 @@ export function OpsSchoolsTable() {
   const state = useOpsDirectoryState({ filters: allFilters, sorts, defaultSort: 'name:asc' });
   const live = useSchoolsListQuery(state.params, hydrated && Boolean(token));
 
+  // ---- the row lifecycle (task 08's list integration of task 10's substrate) --
+  const queryClient = useQueryClient();
+  const writeGate = useOpsWriteGate();
+  const undo = useSchoolLifecycleUndoMutation();
+  const actionHandle = useRef<LifecycleActionHandle | null>(null);
+  const lastFailure = useRef<unknown>(null);
+  const [confirmTarget, setConfirmTarget] = useState<SchoolsConfirmTarget | null>(null);
+
+  // The single-school lifecycle write, defined HERE (not in a shared lib)
+  // because the Undo handle must be captured in the caller's closure: the
+  // runner discards `perform`'s return value, so the action_documentId the
+  // toast needs can only travel through a ref this component owns. Same shape
+  // the detail panel (task 10) runs — one transactional endpoint per action,
+  // the version the list actually showed quoted in If-Match, and an authorized
+  // read-back before anything counts as success.
+  const lifecycleActionDefinition = useMemo<OpsActionDefinition<LifecycleTarget>>(() => {
+    return {
+      write: true,
+      async perform(target) {
+        try {
+          const version = await fetchSchoolVersion(target.documentId);
+          const resourceVersion = formatResourceVersion(version.updatedAt);
+
+          if (target.lifecycleAction === 'suspend') {
+            const result = await suspendSchool({
+              schoolDocumentId: target.documentId,
+              version: resourceVersion,
+            });
+            actionHandle.current = { actionDocumentId: result.action_documentId };
+            return result;
+          }
+
+          if (target.lifecycleAction === 'archive') {
+            const result = await archiveSchool({
+              schoolDocumentId: target.documentId,
+              version: resourceVersion,
+            });
+            actionHandle.current = { actionDocumentId: result.action_documentId };
+            return result;
+          }
+
+          if (target.lifecycleAction === 'restore') {
+            const response = await strapi.post<unknown>(
+              `/api/ops/schools/${target.documentId}/restore`,
+              {},
+              { opsPortalVersioned: true, headers: { 'If-Match': resourceVersion } },
+            );
+            return response.data;
+          }
+
+          if (target.lifecycleAction === 'activate' || target.lifecycleAction === 'reactivate') {
+            const response = await strapi.post<unknown>(
+              `/api/ops/schools/${target.documentId}/activate`,
+              {},
+              { opsPortalVersioned: true },
+            );
+            return response.data;
+          }
+
+          throw new Error(`Unsupported school lifecycle action: ${target.lifecycleAction}`);
+        } catch (error) {
+          // Kept for the confirm dialog: the server's own refusal (a 409 says
+          // the school is already in the target state) must reach the operator
+          // verbatim, not as an invented success or a generic failure.
+          lastFailure.current = error;
+          throw error;
+        }
+      },
+      async readBack(target) {
+        return (await fetchSchoolDetail(target.documentId)).portal_status === target.targetStatus;
+      },
+      async isEligible(target) {
+        return (await fetchSchoolDetail(target.documentId)).portal_status !== target.targetStatus;
+      },
+    };
+  }, []);
+  const lifecycleRunner = useOpsActionRunner(lifecycleActionDefinition);
+
+  /** C-OPS-PORTAL-018 with the returned action_documentId. A 410 says the
+   * window closed — one plain message, never a retry. */
+  const runLifecycleUndo = async (
+    school: SchoolsListRow,
+    handle: LifecycleActionHandle,
+  ): Promise<void> => {
+    const displayName = school.name ?? t('unnamedSchool');
+    try {
+      const version = await fetchSchoolVersion(school.documentId);
+      await undo.mutateAsync({
+        schoolDocumentId: school.documentId,
+        actionDocumentId: handle.actionDocumentId,
+        version: formatResourceVersion(version.updatedAt),
+      });
+      await queryClient.invalidateQueries({ queryKey: ['ops', 'schools'] });
+      showOpsToast({ tone: 'ok', message: t('actions.undoSuccess', { name: displayName }) });
+    } catch (error) {
+      const failure = restFailureOf(error);
+      if (failure?.kind === 'contract' && failure.status === 410) {
+        showOpsToast({ tone: 'warn', message: t('actions.undoExpired') });
+        return;
+      }
+      showOpsToast({ tone: 'error', message: t('actions.undoError') });
+    }
+  };
+
+  const runLifecycleWrite = async (): Promise<void> => {
+    if (confirmTarget === null) return;
+    const { school, action } = confirmTarget;
+    if (action.targetStatus === undefined) return;
+    actionHandle.current = null;
+    lastFailure.current = null;
+    const summary = await lifecycleRunner.run([
+      {
+        kind: 'school',
+        documentId: school.documentId,
+        lifecycleAction: action.key as LifecycleActionKey,
+        targetStatus: action.targetStatus,
+      },
+    ]);
+    if (!summary.allSucceeded) {
+      // Rejected writes stay in the dialog: rethrowing makes useOpsConfirmAction
+      // surface the server's envelope message (the 409's honest refusal) and
+      // keeps the dialog open instead of toasting a fake success.
+      throw lastFailure.current ?? new Error('The change could not be saved.');
+    }
+    // The row must move NOW, not on a later refocus.
+    await queryClient.invalidateQueries({ queryKey: ['ops', 'schools'] });
+    const displayName = school.name ?? t('unnamedSchool');
+    const handle = actionHandle.current as LifecycleActionHandle | null;
+    showOpsToast({
+      tone: 'ok',
+      // The design's own per-transition line (`:1259-1265`): "{name} suspended".
+      message: t(`actions.success.${action.key}`, { name: displayName }),
+      ...(handle === null
+        ? {}
+        : {
+            action: {
+              label: t('actions.undo'),
+              run: () => void runLifecycleUndo(school, handle),
+            },
+          }),
+    });
+  };
+
+  const confirmAction = useOpsConfirmAction({
+    // Present only while an Archive confirm is open — the CTA then stays at
+    // 0.55 opacity until the typed name matches (nameSatisfied recomputes per
+    // render from the open target).
+    typed: confirmTarget?.action.typed === true ? (confirmTarget.school.name ?? '') : undefined,
+    onConfirm: runLifecycleWrite,
+  });
+
+  /** The design's lock (`:1082`/`:1087`): a locked entry stays in the menu and
+   * its click fires the refusal toast with NO request; offline refusals carry
+   * Retry, which re-runs the choice (never the write past its confirm). */
+  const refuseWhenLocked = (retry: () => void): boolean => {
+    const reason = writeGate.blockedReason();
+    if (reason === null) return true;
+    showOpsToast({
+      tone: 'error',
+      message: reason,
+      ...(writeGate.retryWhenBlocked
+        ? { action: { label: writeGate.retryLabel, run: retry } }
+        : {}),
+    });
+    return false;
+  };
+
+  const chooseLifecycleAction = (school: SchoolsListRow, action: SchoolLifecycleAction): void => {
+    const retry = () => chooseLifecycleAction(school, action);
+    if (action.key === 'editDetails' || action.key === 'inviteAdmin') {
+      // The design's edit/invite modals belong to tasks 24 and 25; until they
+      // exist the entries route to the detail surface where both flows live,
+      // gated exactly like the detail panel's own Edit/Invite (write: true).
+      if (refuseWhenLocked(retry)) {
+        router.push(`/dashboard/ops/schools/${school.documentId}`);
+      }
+      return;
+    }
+    if (action.targetStatus === undefined) return;
+    if (!refuseWhenLocked(retry)) return;
+    // The confirm is raised from the action, not from inside the menu's DOM —
+    // the menu closes on outside click and must not take the confirm with it.
+    // The typed draft clears per open (the design's askConfirm does the same);
+    // it survives errors WITHIN a session because the hook never clears it there.
+    confirmAction.setTypedName('');
+    setConfirmTarget({ school, action });
+    confirmAction.openDialog();
+  };
+
   const columns: readonly DirectoryColumnDef<SchoolsListRow>[] = useMemo(
     () => [
       {
@@ -223,7 +459,13 @@ export function OpsSchoolsTable() {
   // Every action closes over the row it was built for, so the target is the
   // school actually clicked. Two schools sharing a name stay separate targets
   // because the documentId, not the label, is what is captured.
-  const rowActions = () => [
+  //
+  // The design's row menu (`:1258-1266`), from task 10's shared status/action
+  // table — never a second status→actions map: Open school, then the existing
+  // Status page, then Edit details / Invite admin, the ONE status-conditional
+  // entry, and Archive school unless already archived. `write` is the
+  // substrate's own per-action flag (D-20), carried so the kit's gate sees it.
+  const rowActions = (school: SchoolsListRow): readonly DirectoryRowAction<SchoolsListRow>[] => [
     {
       label: t('actionOpen'),
       onSelect: (target: SchoolsListRow) =>
@@ -233,6 +475,7 @@ export function OpsSchoolsTable() {
         // locale-aware stack bounced off — the click closed the menu and the
         // URL never left the list (measured over a 3s settle, no pageerror).
         router.push(`/dashboard/ops/schools/${target.documentId}`),
+      write: false,
     },
     {
       label: t('actionStatusPage'),
@@ -243,7 +486,14 @@ export function OpsSchoolsTable() {
         }
         window.open(statusPageUrl, '_blank', 'noopener,noreferrer');
       },
+      write: false,
     },
+    ...schoolLifecycleActions(school.portal_status).map((action) => ({
+      label: t(action.labelKey),
+      destructive: action.danger,
+      write: action.write,
+      onSelect: (target: SchoolsListRow) => chooseLifecycleAction(target, action),
+    })),
   ];
 
   // Bulk Suspend / Archive (task 12 lifecycle through the task 05 runner):
@@ -318,6 +568,37 @@ export function OpsSchoolsTable() {
         }}
         emptyAction={{ label: t('createSchool'), onRun: openCreateSchool }}
       />
+
+      {/* The row confirm, raised from the action and rendered at the screen's
+          level — never inside the menu's DOM, so an outside click that closes
+          the ⋯ menu cannot take the confirm with it. Rendered only while the
+          hook holds it open, so each open is a fresh dialog. */}
+      {confirmTarget === null || !confirmAction.open ? null : (
+        <OpsConfirmDialog
+          open
+          onOpenChange={(nextOpen) => (nextOpen ? confirmAction.openDialog() : confirmAction.closeDialog())}
+          title={tConfirm(`${confirmTarget.action.key}.title`, {
+            name: confirmTarget.school.name ?? t('unnamedSchool'),
+          })}
+          description={tConfirm(`${confirmTarget.action.key}.body`)}
+          confirmLabel={tConfirm(`${confirmTarget.action.key}.cta`)}
+          cancelLabel={t('actions.cancel')}
+          tone={confirmTarget.action.danger ? 'destructive' : 'neutral'}
+          pending={confirmAction.pending}
+          error={confirmAction.errorMessage}
+          typed={
+            confirmTarget.action.typed
+              ? {
+                  requiredName: confirmTarget.school.name ?? '',
+                  value: confirmAction.typedName,
+                  onChange: confirmAction.setTypedName,
+                  mismatchMessage: t('actions.typedMismatch'),
+                }
+              : undefined
+          }
+          onConfirm={() => void confirmAction.confirm()}
+        />
+      )}
     </main>
   );
 }

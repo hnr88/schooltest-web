@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -23,6 +24,7 @@ import {
 } from '@/modules/articles/schemas/article.schema';
 
 export function CreateArticleForm() {
+  const t = useTranslations('Articles');
   const { mutateAsync, isPending } = useCreateArticleMutation();
   const form = useForm<CreateArticleInput>({
     resolver: zodResolver(createArticleSchema),
@@ -39,10 +41,10 @@ export function CreateArticleForm() {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       const article = await mutateAsync(values);
-      toast.success(`Created “${article.title}”`);
+      toast.success(t('createdToast', { title: article.title }));
       form.reset();
     } catch {
-      toast.error('Failed to create article');
+      toast.error(t('createFailedToast'));
     }
   });
 
@@ -52,19 +54,19 @@ export function CreateArticleForm() {
     <form onSubmit={onSubmit}>
       <FieldGroup>
         <Field>
-          <FieldLabel htmlFor="title">Title</FieldLabel>
+          <FieldLabel htmlFor="title">{t('fieldTitle')}</FieldLabel>
           <Input id="title" {...form.register('title')} />
           {errors.title ? <FieldError>{errors.title.message}</FieldError> : null}
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="slug">Slug</FieldLabel>
-          <Input id="slug" placeholder="my-article" {...form.register('slug')} />
+          <FieldLabel htmlFor="slug">{t('fieldSlug')}</FieldLabel>
+          <Input id="slug" placeholder={t('slugPlaceholder')} {...form.register('slug')} />
           {errors.slug ? <FieldError>{errors.slug.message}</FieldError> : null}
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="category">Category</FieldLabel>
+          <FieldLabel htmlFor="category">{t('fieldCategory')}</FieldLabel>
           <Select
             value={form.watch('category')}
             onValueChange={(value) =>
@@ -72,12 +74,12 @@ export function CreateArticleForm() {
             }
           >
             <SelectTrigger id="category">
-              <SelectValue placeholder="Select a category" />
+              <SelectValue placeholder={t('categoryPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
               {ARTICLE_CATEGORIES.map((category) => (
                 <SelectItem key={category} value={category} className="capitalize">
-                  {category}
+                  {t(`category${category[0].toUpperCase()}${category.slice(1)}`)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -85,13 +87,13 @@ export function CreateArticleForm() {
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="excerpt">Excerpt</FieldLabel>
+          <FieldLabel htmlFor="excerpt">{t('fieldExcerpt')}</FieldLabel>
           <Textarea id="excerpt" rows={3} {...form.register('excerpt')} />
           {errors.excerpt ? <FieldError>{errors.excerpt.message}</FieldError> : null}
         </Field>
 
         <Button type="submit" disabled={isPending} className="w-fit">
-          {isPending ? 'Creating…' : 'Create article'}
+          {isPending ? t('submitPending') : t('submit')}
         </Button>
       </FieldGroup>
     </form>

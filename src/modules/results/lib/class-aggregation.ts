@@ -1,4 +1,4 @@
-import { DISPLAY_SKILL_ORDER, displaySkills } from '@/modules/results/lib/display-skills';
+import { displaySkills } from '@/modules/results/lib/display-skills';
 import type { DisplaySkill, ResultView } from '@schooltest/scoring-contracts';
 
 import type { RosterRow } from '@/modules/results/types/roster.types';
@@ -101,6 +101,3 @@ export function scoredCount(rows: readonly RosterRow[]): { scored: number; total
     total: rows.length,
   };
 }
-
-/** Canonical display order — re-exported for the roster row's tie-breaks so no caller re-derives it. */
-export const ROSTER_SKILL_ORDER: readonly DisplaySkill[] = DISPLAY_SKILL_ORDER;

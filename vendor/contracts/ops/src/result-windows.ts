@@ -161,14 +161,25 @@ export const AssessmentWindowCreateOperation: OpsOperation<
   errors: [400, 401, 403, 404, 409, 429, 500],
 });
 
-/** C-OPS-PORTAL-074 — PUT /api/ops/classes/{documentId}/test-window */
+/**
+ * C-OPS-PORTAL-074 — PUT /api/ops/schools/{documentId}/classes/{classDocumentId}/window
+ *
+ * Task 22 / D-26 (X-02): the path is CORRECTED here to the route that has
+ * always been deployed (`schooltest-api/src/api/class/routes/02-custom-ops-
+ * class.ts`, handler `api::class.class.opsAssignClassWindow`). The record
+ * previously declared `/api/ops/classes/{documentId}/test-window`, a path
+ * nothing has ever served — verified live: the old path answers 405, the
+ * corrected one answers 200 (proof/22.md). The route itself is never
+ * renamed: `api::class.class.opsAssignClassWindow` is the permission grant
+ * and renaming it would drop the grant at boot.
+ */
 export const ClassWindowAssignOperation: OpsOperation<
   typeof classWindowAssignBodySchema,
   typeof classWindowAssignResponseSchema
 > = Object.freeze({
   contractId: 'C-OPS-PORTAL-074',
   method: 'PUT',
-  path: '/api/ops/classes/{documentId}/test-window',
+  path: '/api/ops/schools/{documentId}/classes/{classDocumentId}/window',
   request: classWindowAssignBodySchema,
   response: classWindowAssignResponseSchema,
   success: 200,

@@ -21,7 +21,6 @@ export const TD = 'Teacher.dashboard';
 // whose surface marker is `teacher-results` (ResultsScreen). The split screen
 // and the pre-v2 dashboard it superseded are both retired.
 export const DASHBOARD_SURFACE = '[data-surface="teacher-results"]';
-const BANNER = '[data-slot="teacher-live-session-banner"]';
 
 /** C-TD-1, read Node-side and strict-parsed through the SHIPPED Zod mirror. */
 export async function readDashboard(
@@ -104,18 +103,37 @@ export interface BannerView {
   linkBox: { width: number; height: number };
 }
 
-/** The rendered banner, or `null` when the page carries none. */
+/**
+ * The rendered banner, or `null` when the page carries none.
+ *
+ * Since task 06 the results surface mounts the live STRIP (`live-strip-card`,
+ * the design's navy :77–88 card) rather than the yellow `:1817`-style banner
+ * section — the strip card carries the same `data-sitting-id` and links the
+ * same monitor href. Both markers are read; on the strip card the title/detail
+ * selectors resolve empty, which is the honest reading of what the surface
+ * actually renders.
+ */
 export async function readBanner(page: Page): Promise<BannerView | null> {
-  const banner = page.locator(BANNER);
+  const banner = page
+    .locator('[data-slot="live-strip-card"], [data-slot="teacher-live-session-banner"]')
+    .first();
   if ((await banner.count()) === 0) return null;
-  const link = banner.getByRole('link');
+  // The strip card IS the whole-card link; the yellow section wraps a child one.
+  const link = (await banner.getAttribute('href')) !== null ? banner : banner.getByRole('link');
   const box = await link.boundingBox();
   if (box === null) throw new Error('the banner link has no box');
+  // Yellow-section-only selectors (#teacher-live-session-title, the detail <p>)
+  // do not exist on the strip card — they resolve to '' there instead of
+  // auto-waiting 30s for retired DOM.
+  const optionalText = async (sub: ReturnType<Page['locator']>): Promise<string> => {
+    const count = await sub.count();
+    return count > 0 ? ((await sub.first().textContent()) ?? '') : '';
+  };
   return {
     sittingId: (await banner.getAttribute('data-sitting-id')) ?? '',
-    pill: (await banner.locator('[data-slot="status-pill"]').textContent()) ?? '',
-    title: (await banner.locator('#teacher-live-session-title').textContent()) ?? '',
-    detail: (await banner.locator('p:not([id])').textContent()) ?? '',
+    pill: (await optionalText(banner.locator('[data-slot="status-pill"]'))) ?? '',
+    title: (await optionalText(banner.locator('#teacher-live-session-title'))) ?? '',
+    detail: (await optionalText(banner.locator('p:not([id])'))) ?? '',
     linkName: await link.innerText(),
     linkHref: (await link.getAttribute('href')) ?? '',
     background: await banner.evaluate((node) => getComputedStyle(node).backgroundColor),

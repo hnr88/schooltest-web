@@ -1573,7 +1573,7 @@
     "unread": "ยังไม่อ่าน",
     "read": "อ่านแล้ว",
     "today": "วันนี้",
-    "earlier": "Earlier",
+    "earlier": "ก่อนหน้านี้",
     "yesterday": "เมื่อวาน",
     "unreadCount": "{count, plural, =0 {ไม่มีการแจ้งเตือนที่ยังไม่อ่าน} other {การแจ้งเตือนที่ยังไม่อ่าน # รายการ}}",
     "emptyTitle": "คุณติดตามทุกอย่างแล้ว",
@@ -1593,9 +1593,9 @@
       "testActivity": "กิจกรรมการทดสอบ",
       "testResults": "ผลการทดสอบ"
     },
-    "filterLabel": "Filter notifications by category",
+    "filterLabel": "กรองการแจ้งเตือนตามหมวดหมู่",
     "filters": {
-      "all": "All"
+      "all": "ทั้งหมด"
     },
     "teacherFeed": {
       "meta": {
@@ -3134,7 +3134,20 @@
       "panelTitle": "Student details",
       "unnamed": "Unnamed student",
       "notFoundTitle": "We could not find that student",
-      "notFoundDescription": "They may have been removed, or they belong to another school."
+      "notFoundDescription": "They may have been removed, or they belong to another school.",
+      "editButton": "แก้ไข",
+      "classPanel": {
+        "title": "ชั้นเรียน",
+        "currentLabel": "ชั้นเรียนปัจจุบัน",
+        "none": "ยังไม่ได้ถูกจัดเข้าชั้นเรียน",
+        "assignLabel": "จัดเข้าชั้นเรียน",
+        "assignPlaceholder": "เลือกชั้นเรียน",
+        "assignAction": "จัดเข้าชั้นเรียน",
+        "removeAction": "นำออกจากชั้นเรียน",
+        "noClasses": "ยังไม่มีชั้นเรียนให้จัดเข้า",
+        "errorTitle": "ไม่สามารถบันทึกการเปลี่ยนชั้นเรียนได้",
+        "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"
+      }
     }
   },
   "Ops": {
@@ -3382,7 +3395,6 @@
         "restore": "กู้คืนโรงเรียน",
         "suspend": "ระงับโรงเรียน",
         "archive": "เก็บถาวรโรงเรียน",
-        "recalculateSeats": "คำนวณที่นั่งใหม่",
         "undo": "เลิกทำ",
         "success": "อัปเดต {name} แล้ว",
         "undoSuccess": "กู้คืน {name} แล้ว",
@@ -3759,7 +3771,25 @@
       "rosterRemoveConfirmTitleRow": "นำ {name} ออกจาก {className} หรือไม่",
       "rosterRemoveConfirmTitleBulk": "{count, plural, other {นำนักเรียน # คนออกจาก {className} หรือไม่}}",
       "rosterRemoveConfirmBody": "นักเรียนจะยังคงลงทะเบียนกับโรงเรียนและสามารถเพิ่มเข้าชั้นเรียนอื่นได้",
-      "rosterRemoveConfirmCtaBulk": "นำออก {count} คน"
+      "rosterRemoveConfirmCtaBulk": "นำออก {count} คน",
+      "assign": {
+        "trigger": "มอบหมายครู",
+        "title": "มอบหมายครู",
+        "description": "เลือกครูที่รับผิดชอบ {className}",
+        "cta": "มอบหมายครู",
+        "assigning": "กำลังมอบหมาย…",
+        "errorTitle": "มอบหมายไม่สำเร็จ",
+        "errorNoSelection": "โปรดเลือกครูที่จะมอบหมาย",
+        "errorAlreadyTeaches": "{name} สอน {className} อยู่แล้ว",
+        "errorStalePicker": "ครูคนนั้นไม่มีสิทธิ์อีกต่อไป — รายการได้รับการรีเฟรชแล้ว",
+        "errorMessage": "ไม่สามารถมอบหมายครูได้ — {className} ไม่มีการเปลี่ยนแปลง",
+        "successMessage": "มอบหมาย {name} ให้กับ {className} แล้ว"
+      }
+    },
+    "teacherPicker": {
+      "subLabel": "{email} · {count, plural, =0 {ไม่มีชั้นเรียน} other {# ชั้นเรียน}}",
+      "emptyTitle": "ไม่มีครูที่มีสิทธิ์",
+      "emptyDescription": "ครูทุกคนในโรงเรียนนี้ถูกระงับหรือไม่พร้อมใช้งาน"
     },
     "schoolTables": {
       "title": "ไดเรกทอรีโรงเรียน",

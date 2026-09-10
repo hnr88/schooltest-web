@@ -38,11 +38,11 @@ export async function loginAsParent(page: Page): Promise<void> {
     await page.waitForTimeout(MIN_LOGIN_INTERVAL_MS - sinceLast);
   }
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(SEEDED_PARENT.email);
   await page
-    .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
+    .getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true })
     .fill(SEEDED_PARENT.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   lastLoginSubmittedAt = Date.now();
   await page.waitForURL('**/dashboard');
 }

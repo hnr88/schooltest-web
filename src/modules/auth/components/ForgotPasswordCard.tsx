@@ -22,6 +22,8 @@ export function ForgotPasswordCard() {
   const hydrated = useAuthStore((state) => state.hydrated);
   const hydrate = useAuthStore((state) => state.hydrate);
   const [sentEmail, setSentEmail] = useState<string | null>(null);
+  const [rateLimited, setRateLimited] = useState(false);
+  const [retrySeconds, setRetrySeconds] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     if (!hydrated) hydrate();
@@ -41,11 +43,17 @@ export function ForgotPasswordCard() {
         <Logo alt={tShell('logoAlt')} height={30} />
       </Link>
       {sentEmail ? (
-        <ForgotPasswordSentState email={sentEmail} />
+        <ForgotPasswordSentState rateLimited={rateLimited} retrySeconds={retrySeconds} />
       ) : (
-        <ForgotPasswordForm onSent={setSentEmail} />
+        <ForgotPasswordForm
+          onSent={(email, options) => {
+            setSentEmail(email);
+            setRateLimited(options?.rateLimited ?? false);
+            setRetrySeconds(options?.retrySeconds);
+          }}
+        />
       )}
-      <AuthBackLink label={t('backToSignIn')} />
+      <AuthBackLink label={t('portal.backToLogin')} />
     </div>
   );
 }
