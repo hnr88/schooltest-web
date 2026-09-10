@@ -1,12 +1,14 @@
 import path from 'node:path';
 
-import { expect, type APIRequestContext } from '@playwright/test';
+import { expect, type APIRequestContext, type Page } from '@playwright/test';
 
 import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
 import { teacherExportPath } from '@/modules/teacher/lib/teacher-export';
 import { resultViewSchema, type ResultView } from '@schooltest/scoring-contracts';
 
 import { API_BASE } from './teacher-results-live';
+import { en, navLink, signIn } from './teacher-rail';
+import { cat } from './i18n';
 
 /**
  * Journey 06 live reads — the ORACLE the spec compares the portal against.
@@ -137,4 +139,49 @@ export function reportStatedOveralls(report: string): number[] {
   return [...report.matchAll(/\| Overall score \| (\d+) \/ 100 \|/g)].map((match) =>
     Number(match[1]),
   );
+}
+
+/**
+ * Sign in as the journey teacher, OWNING the session rather than inheriting it.
+ *
+ * WHY THIS EXISTS. The managed runner drives the project's SHARED visible
+ * Browser tab, and that tab arrives carrying whatever session the previous run
+ * left. Measured (runId ecc366d3): the tab held a peer's PARENT session, so
+ * `/sign-in` was redirected away by the already-authenticated guard, the form
+ * fields never rendered, and `signIn`'s fill waited out the whole 90s test
+ * timeout — the failure then reads as "my journey is slow" while the snapshot
+ * shows the parent portal's "Not part of this release" screen. The auth token
+ * lives in `localStorage` (`readClientToken`, src/lib/axios/strapi.ts), so
+ * cookies alone are not enough to clear it.
+ *
+ * This is the same class of defect as the shared-fixture failures elsewhere in
+ * this mission — a spec assuming exclusive ownership of a shared resource —
+ * except the resource is the browser tab's session rather than a seeded row.
+ *
+ * PAGE-LEVEL ONLY, deliberately. `page.context().clearCookies()` is REFUSED
+ * here — "Protocol error (Storage.clearCookies): CDP session does not belong to
+ * this Browser tab" (runId e5e6fc4c) — because the context belongs to the host,
+ * not to the test. It is also unnecessary: this app's session is a token in
+ * `localStorage`, not a cookie, so clearing page storage is what actually signs
+ * the previous persona out. `signIn` then navigates again, and the app boots
+ * with no token and renders the real form.
+ *
+ * The identity is then ASSERTED, so a wrong persona fails in seconds naming
+ * what it found instead of timing out somewhere later.
+ */
+export async function signInAsJourneyTeacher(page: Page): Promise<void> {
+  await page.goto('/sign-in');
+  await page.evaluate(() => {
+    try {
+      window.localStorage.clear();
+      window.sessionStorage.clear();
+    } catch {
+      // A tab that refuses storage access is already clean enough to sign in.
+    }
+  });
+  await signIn(page, 'teacher');
+  await expect(
+    navLink(page, cat(en, 'Shell.nav.results')),
+    'signed in as the teacher persona, not whoever held the shared tab',
+  ).toBeVisible({ timeout: 20_000 });
 }

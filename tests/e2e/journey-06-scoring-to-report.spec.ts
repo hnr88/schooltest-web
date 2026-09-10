@@ -12,11 +12,11 @@ import {
   pickScoredSitting,
   reportSkillScore,
   reportStatedOveralls,
+  signInAsJourneyTeacher,
   type ScoredSitting,
 } from './helpers/journey-06-live';
 import { TEACHER_EMAIL, bearer } from './helpers/teacher-results-live';
 import { cat, loadMessages } from './helpers/i18n';
-import { signIn } from './helpers/teacher-rail';
 
 /**
  * JOURNEY 06 — scoring is correct and the teacher report reflects it.
@@ -61,7 +61,7 @@ test.describe('journey 06 — scoring to teacher report', () => {
     // project's own visible Browser tab and refuses a context of our making.
     await page.setViewportSize(JOURNEY_06_VIEWPORT);
     {
-      await signIn(page, 'teacher');
+      await signInAsJourneyTeacher(page);
 
       // ── 1. THE RESULTS SURFACE ────────────────────────────────────────────
       await page.goto(
