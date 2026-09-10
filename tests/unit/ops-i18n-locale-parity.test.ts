@@ -173,7 +173,25 @@ function flatEntries(node: Catalog, prefix = ''): Array<[string, unknown]> {
   );
 }
 
-const enOps = new Map(flatEntries(en).filter(([k]) => k.startsWith('Ops.')));
+/**
+ * mvp/notifications row 14 — the guarded prefixes.
+ *
+ * The content half was `Ops.`-only, so a `Notifications.*` or
+ * `Settings.notificationPreferences.*` key could hold the ENGLISH sentence in
+ * all five other locales and every test still passed — key PRESENCE was
+ * guarded, translation was not. Notifications is now cornerstone product
+ * surface across four portals, so it joins the guard.
+ *
+ * Measured cost of widening at the time: exactly 3 keys x 5 locales
+ * (`Notifications.earlier`, `.filterLabel`, `.filters.all`), all translated in
+ * the same change rather than allow-listed — an exemption is for a value that
+ * is CORRECTLY identical, never for unfinished work.
+ */
+const GUARDED_PREFIXES = ['Ops.', 'Notifications.', 'Settings.notificationPreferences.'] as const;
+
+const enOps = new Map(
+  flatEntries(en).filter(([k]) => GUARDED_PREFIXES.some((prefix) => k.startsWith(prefix))),
+);
 
 describe('Ops i18n content parity', () => {
   it('every allowlist exemption carries a justification', () => {
@@ -183,7 +201,7 @@ describe('Ops i18n content parity', () => {
     expect(ALLOWLIST.filter((e) => e.key === undefined && e.value === undefined)).toEqual([]);
   });
 
-  it.each(LOCALES)('%s translates every Ops value it holds — no English left on the screen', (locale) => {
+  it.each(LOCALES)('%s translates every guarded value it holds — no English left on the screen', (locale) => {
     const catalog = JSON.parse(
       readFileSync(path.join(WEB_ROOT, 'src', 'i18n', 'messages', `${locale}.json`), 'utf8'),
     ) as Catalog;
