@@ -63,6 +63,17 @@ const API_BASE_DEFAULT = 'http://127.0.0.1:5500';
  * three samples then show phantom churn on a healthy API. Filter by
  * `/proc/<pid>/comm` (the process NAME), require `cwd` = `schooltest-api`,
  * and explicitly exclude our own pid and our parent.
+ *
+ * ORDER MATTERS, and it is why the checks are stacked in this sequence:
+ * `comm` does the EXCLUDING (a `bash -c` shell carrying the search string has
+ * comm 'bash', not 'node', so the self-match trap is dead before the cmdline
+ * is ever consulted) — and the cmdline contains() only NARROWS what survives.
+ * A peer's typecheck / vitest / playwright invocation in schooltest-api is
+ * also `comm == 'node'` with this cwd, which is why the positive `strapi`
+ * cmdline requirement exists: without it, short-lived tool processes would
+ * legitimately change the supervisor set between samples and fabricate
+ * 'supervisor-churn' on a healthy API. Do not "simplify" by dropping either
+ * gate.
  */
 function findStrapiSupervisors(selfPid: number): string[] {
   const parentPid = process.ppid ? String(process.ppid) : '';
@@ -87,6 +98,11 @@ function findStrapiSupervisors(selfPid: number): string[] {
         encoding: 'utf8',
       });
       if (!cmdline.includes('strapi')) continue;
+      // A `strapi develop` supervisor is long-lived; a candidate only a few
+      // seconds old is a transient tool (typecheck, vitest, playwright) and
+      // will vanish by the next sample. These are tools, not supervisors.
+      const etimes = Number(execSync(`ps -o etimes= -p ${pid} 2>/dev/null`, { encoding: 'utf8' }).trim());
+      if (Number.isFinite(etimes) && etimes < 45) continue;
       supervisors.push(pid);
     } catch {
       // The process vanished mid-scan — it was never a candidate.
