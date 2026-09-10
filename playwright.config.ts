@@ -41,7 +41,13 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  reporter: 'html',
+  // ADD, never replace: the managed Codephant runner needs a READABLE JSON
+  // report, and an html-only reporter made it fail for EVERY web row all night
+  // with "did not produce a readable JSON report" after 324ms — a launch
+  // failure that reads exactly like a host/desktop limitation, so it was
+  // reported as one in three cut-notes and a morning brief before the cause was
+  // found. `html` is kept because the local report workflow depends on it.
+  reporter: [['html'], ['json', { outputFile: 'test-results/results.json' }]],
   use: {
     baseURL,
     trace: 'on-first-retry',
