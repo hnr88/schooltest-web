@@ -143,3 +143,51 @@ references and `teacher-sidebar` signs in through the already-correct
 `teacher-rail.ts`. Two hazards, one identical symptom. The tell: parked tab shows
 **a persona you never signed in as**; a key mismatch shows the sign-in form
 rendered correctly with the locator simply not matching.
+
+---
+
+## Addendum — the `passwordLabel` convention, decided
+
+**Decision (orchestrator, 2026-09-11): leave `zz-task31` as it is, and do NOT
+re-touch the 49 reverted lines.** Recorded here with the reasoning rather than as
+a bare instruction, because the reasoning is the reusable part:
+
+`Auth.passwordLabel` is **not a retired key**. `SignUpForm.tsx:73` and
+`ForgotPasswordForm.tsx:85` still render from that block, so a spec citing it is
+citing a LIVE key whose value merely happens to equal the portal one — latent,
+not broken. Against that, aligning the convention upward would be 49
+behaviour-free lines across files that live rows own, in a shared checkout where
+collisions have cost this mission more than inconsistency has.
+
+**The convention, for anyone writing or fixing a sign-in spec:** a spec that
+targets `/sign-in` SHOULD cite `Auth.portal.*` for all three labels, because
+`Auth.portal.*` is what `SignInForm` actually renders.
+
+**The residual risk, stated plainly so it is a five-minute fix and not another
+four hours:** if `Auth.portal.passwordLabel` ever diverges from
+`Auth.passwordLabel`, every sign-in spec still citing the old key breaks
+**silently**, in exactly the way `emailLabel` just did — a timeout that reads as
+a product bug. The 49 lines listed in this commit's history are the ones to
+sweep, and `git log -S 'Auth.portal.passwordLabel'` finds them.
+
+## Addendum — third surface added to the passing sample
+
+```
+$ pnpm exec playwright test tests/e2e/zz-task30-students.spec.ts tests/e2e/zz-task99-teach-groups.spec.ts --project=chromium --workers=1
+  ✓ task 30: children v2 round-trip vs live C-CHD-01..04 ›
+      add with email/L1/ACARA -> roster -> edit -> archive frees the seat   15.5s
+```
+That is a school-admin students round-trip signing in through the corrected
+labels — a third surface alongside role-nav guards and the teacher roster, so the
+sample is 7 tests across 3 surfaces.
+
+Two further downstream failures in the same run, same category as the four
+already recorded (they reach the form, then fail for their own reasons):
+- `zz-task30-students.spec.ts:211` and `:338` — the task-31 server-mode directory
+  kit: the three params reaching the endpoint, and the server-bound pager. Fails
+  after a successful sign-in and after the roster round-trip in the same file
+  passed, so not a label problem. Candidate cause worth checking first: the kit's
+  surface is visible while still loading, so a count at first paint reads zero.
+- `zz-task99-teach-groups.spec.ts:86` — fails in 103ms on an API-baseline
+  assertion (`groups are coherent with the mastery rows and the catalog`), i.e.
+  before any page interaction. A data/contract question, not a UI one.
