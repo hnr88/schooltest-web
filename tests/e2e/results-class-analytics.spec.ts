@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { readFileSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 
 import { expect, test, type Page, type Route } from '@playwright/test';
 
@@ -34,9 +34,14 @@ const student = (id: string, name: string) => ({ document_id: id, name, initials
 
 function rosterPayload() {
   return [
-    { student: student('stu-a', 'Ada Becker'), result: view({ overall: { domain_score: 55, delta: -6, delta_reliable: true, delta_display: '−6' }, effort_valid: true, low_confidence: null }) },
-    { student: student('stu-b', 'Ben Carter'), result: view({ overall: { domain_score: 80, delta: 12, delta_reliable: true, delta_display: '+12' }, effort_valid: true, low_confidence: null }) },
-    { student: student('stu-c', 'Cem Demir'), result: view({ overall: { domain_score: 70, delta: null, delta_reliable: null, delta_display: null }, effort_valid: true, low_confidence: null }) },
+    // ops/34 — each result carries ITS OWN student's document_id (a real
+    // payload does), so the Progress tab's view->row mapping can resolve which
+    // row each ranked view belongs to.
+    // scoring/10 — every row carries release_state beside result (the strict
+    // mirror rejects the row without it).
+    { student: student('stu-a', 'Ada Becker'), result: view({ student_document_id: 'stu-a', overall: { domain_score: 55, delta: -6, delta_reliable: true, delta_display: '-6' }, effort_valid: true, low_confidence: null }), release_state: 'released' },
+    { student: student('stu-b', 'Ben Carter'), result: view({ student_document_id: 'stu-b', overall: { domain_score: 80, delta: 12, delta_reliable: true, delta_display: '+12' }, effort_valid: true, low_confidence: null }), release_state: 'released' },
+    { student: student('stu-c', 'Cem Demir'), result: view({ student_document_id: 'stu-c', overall: { domain_score: 70, delta: null, delta_reliable: null, delta_display: null }, effort_valid: true, low_confidence: null }), release_state: 'held' },
   ];
 }
 
@@ -75,7 +80,7 @@ test.describe('task 34 — class analytics (Screen B)', () => {
     await tabs.filter({ hasText: cat(en, 'Teacher.results.tabs.progress') }).click();
     await expect(page.locator('[data-slot="class-progress"]')).toBeVisible();
     await tabs.filter({ hasText: cat(en, 'Teacher.results.tabs.students') }).click();
-    await expect(page.locator('[data-slot="students-results-table"]')).toBeVisible();
+    await expect(page.locator('[data-slot="students-tab-panel"] [data-slot="table"]')).toBeVisible();
     // The ONE roster read served every tab; nothing else fired.
     expect(rosterRequests, 'one roster read for all four tab visits').toBe(1);
   });
@@ -108,5 +113,16 @@ test.describe('task 34 — class analytics (Screen B)', () => {
       await page.getByRole('tab').filter({ hasText: cat(en, `Teacher.results.tabs.${tab}`) }).click();
     }
     expect(retiredRequests, JSON.stringify(retiredRequests)).toEqual([]);
+  });
+
+  // SCORING/10 proof capture: the progress tab (chart placeholder — the honest
+  // deferred state, D-SC-06's own refusal to fake it) at 1440×900.
+  test('capture: the class progress chart region at 1440×900', async () => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const shots = path.resolve(process.cwd(), '../mvp/scoring/proof/shots');
+    mkdirSync(shots, { recursive: true });
+    await page.getByRole('tab').filter({ hasText: cat(en, 'Teacher.results.tabs.progress') }).click();
+    await expect(page.locator('[data-slot="progress-chart-placeholder"]')).toBeVisible();
+    await page.screenshot({ path: path.join(shots, '10-class-progress-chart.png'), fullPage: false });
   });
 });
