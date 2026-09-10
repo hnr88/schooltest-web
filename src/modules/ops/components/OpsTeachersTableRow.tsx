@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Check, Eye, Pencil, Trash2, X } from 'lucide-react';
+import { Check, Pencil, Trash2, X } from 'lucide-react';
 
 import { Button, FieldShell, Input } from '@/modules/design-system';
 import {
@@ -32,10 +32,8 @@ export function OpsTeachersTableRow({
   savePending,
   removePending,
   error,
-  onViewAs,
 }: OpsPortalTeacherRowProps) {
   const t = useTranslations('Ops.teachers');
-  const viewAs = useTranslations('Ops.viewAsTeacher');
   const classes = teacherClassLabel(row.classes);
   const specialty = row.teaching_specialty ?? t('noSpecialty');
   const lastActive = teacherLastActiveLabel(row.last_active_at) ?? t('noActivity');
@@ -162,22 +160,6 @@ export function OpsTeachersTableRow({
       </td>
       <td className="py-2">
         <div className="flex justify-end gap-1">
-          {/* Ledger 11c — the audited impersonation read. The visible label
-              says "View as teacher" and the accessible name says it is
-              impersonation, because the operator must know what the click is
-              before it is recorded against them. */}
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            data-slot="ops-view-as-teacher-open"
-            data-teacher={row.documentId}
-            aria-label={viewAs('openAriaLabel', { teacher: row.email ?? row.documentId })}
-            onClick={() => onViewAs(row.documentId)}
-          >
-            <Eye aria-hidden="true" className="size-4" />
-            {viewAs('openCta')}
-          </Button>
           <Button
             type="button"
             variant="ghost"

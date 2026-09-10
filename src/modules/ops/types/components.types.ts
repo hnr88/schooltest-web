@@ -57,12 +57,6 @@ export interface OpsTeachersTableRowProps {
   savePending: boolean;
   removePending: boolean;
   error: string | null;
-  /**
-   * Ledger 11c — opens the audited view-as-teacher panel for this row. The row
-   * only reports the click; the dialog owns which teacher is being viewed, so
-   * two rows can never have a panel open at once.
-   */
-  onViewAs: (documentId: string) => void;
 }
 
 export interface OpsSchoolCountCardsProps {

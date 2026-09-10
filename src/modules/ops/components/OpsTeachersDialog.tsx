@@ -39,13 +39,6 @@ export function OpsTeachersDialog({
   const directory = useOpsTeachersDirectory(schoolDocumentId, open);
   const actions = useOpsTeacherRowActions(schoolDocumentId);
   const result = directory.listQuery.data;
-  // ops/43 (R-22): the view-as-teacher panel this row's click used to open is
-  // retired — no impersonation control is drawn anywhere in the export. The
-  // row's own "View as teacher" button is `OpsTeachersTableRow.tsx`'s (D-56 /
-  // R-22 boundary: that file is out of this task's write set), so `onViewAs`
-  // stays a required prop with an inert handler rather than an orphaned
-  // import of the deleted panel.
-  const onViewAs = () => {};
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -109,7 +102,6 @@ export function OpsTeachersDialog({
                   savePending={actions.savePending}
                   removePending={actions.removePending}
                   error={actions.error}
-                  onViewAs={onViewAs}
                 />
               )}
             />
