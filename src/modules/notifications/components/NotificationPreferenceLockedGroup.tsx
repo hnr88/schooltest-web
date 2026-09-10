@@ -13,6 +13,12 @@ import { NOTE_ID } from '@/modules/notifications/constants/components.constants'
 // Always-on rows stay rendered, checked and disabled — they mirror server state and
 // never enter the form or the PUT payload. One callout carries the explanation for
 // the whole group and every row points aria-describedby at it.
+// P-08 — these switches ASSERT, they do not mirror. They used to render
+// `preferences?.[field] ?? true`, so a row with `account:false` (writable in
+// the Strapi admin even though the API whitelist excludes it) would have drawn
+// an OFF switch directly under a heading promising it cannot be switched off.
+// The server treats account/security as non-suppressible unconditionally
+// (dispatch.ts NON_SUPPRESSIBLE), so `true` is the truth, not a guess.
 function NotificationPreferenceLockedGroup({
   preferences,
 }: {
@@ -33,7 +39,7 @@ function NotificationPreferenceLockedGroup({
             title={t(item.titleKey)}
             description={t(item.descriptionKey)}
             describedById={NOTE_ID}
-            checked={preferences?.[item.field] ?? true}
+            checked={true /* P-08 */}
             disabled
             onCheckedChange={() => undefined}
           />

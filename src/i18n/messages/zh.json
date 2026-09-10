@@ -377,7 +377,13 @@
     "tableRowScience": "Science Test",
     "tableRowHistory": "History Exam",
     "tableRowReading": "Reading Check",
-    "tableShowing": "Showing 1–4 of 12",
+    "tableShowing": "Showing {showing} of {total}",
+    "tableSearchPlaceholder": "Search tests…",
+    "tableSortLabel": "Sort",
+    "tableRowMenu": "Row actions",
+    "tableRowOpen": "Open",
+    "tableExport": "Export",
+    "tablePageCount": "Page {page} of {pageCount} — {total} total",
     "progressLabel": "Average score progress",
     "avatarAlt": "Teacher avatar",
     "breadcrumbDashboard": "Dashboard",
@@ -838,7 +844,6 @@
           "daily": "每天早上约 6:30 发送一封摘要邮件。帐户和安全警报仍会立即送达。",
           "weekly": "每周一早上约 6:30 发送一封摘要邮件。帐户和安全警报仍会立即送达。"
         },
-        "deferredOption": "{label}——即将推出",
         "emailOffNotice": "选择此项时不会发送任何可选电子邮件。账户和安全提醒仍会送达。"
       },
       "alwaysOnTitle": "账户和安全更新始终开启",
@@ -869,11 +874,46 @@
       "saved": "通知偏好设置已保存。",
       "saveError": "无法保存您的通知偏好设置。",
       "loadErrorTitle": "无法加载您的通知偏好设置。",
-      "loadErrorDescription": "请重试以加载已保存的通知设置。"
+      "loadErrorDescription": "请重试以加载已保存的通知设置。",
+      "eventsTitle": "你会收到哪些通知",
+      "events": {
+        "testResultsReady": {
+          "title": "测试结果",
+          "description": "报告就绪后立即通过邮件和推送通知你。"
+        },
+        "testResultsUpdated": {
+          "title": "结果已更新",
+          "description": "当你已查看的报告被修订时。"
+        },
+        "sessionCompleted": {
+          "title": "测试完成",
+          "description": "当你的学生完成测试时。"
+        },
+        "sessionStarted": {
+          "title": "测试开始",
+          "description": "当你的学生开始测试时。"
+        },
+        "studentCreated": {
+          "title": "已添加学生",
+          "description": "当有学生被添加到你的账户时。"
+        },
+        "studentEmailFix": {
+          "title": "登录邮箱需更正",
+          "description": "当学生在考试日前需要更正邮箱时。"
+        }
+      }
     },
     "language": {
       "title": "Language",
       "description": "Choose the language SchoolTest uses across the app."
+    },
+    "staff": {
+      "title": "通知设置",
+      "subtitle": "选择您要接收的学校更新及其发送方式。",
+      "meta": {
+        "title": "通知设置 — SchoolTest",
+        "description": "管理 SchoolTest 如何就成绩、测试场次和学校通知提醒您。"
+      }
     }
   },
   "SchoolSearch": {
@@ -2306,6 +2346,26 @@
     },
     "testDay": {
       "history": {
+        "searchPlaceholder": "搜索测验场次",
+        "searchLabel": "搜索测验场次",
+        "filterOutcomeLabel": "结果",
+        "filterOutcomeAll": "全部结果",
+        "sortLabel": "排序",
+        "clearFilters": "清除筛选",
+        "paginationLabel": "历史页码",
+        "previous": "上一页",
+        "next": "下一页",
+        "rowMenuLabel": "行操作",
+        "showingCount": "显示 {total} 个场次中的 {showing} 个",
+        "pageCount": "第 {page} 页，共 {pageCount} 页 · 共 {total} 个",
+        "sortOpenedDesc": "开放时间：最新在前",
+        "sortOpenedAsc": "开放时间：最早在前",
+        "openAction": "打开",
+        "filteredEmptyTitle": "没有匹配的测验场次",
+        "filteredEmptyDescription": "没有测验场次符合当前的搜索和结果筛选。",
+        "errorStaleBanner": "最近一次刷新失败 — 下方行是服务器最后返回的列表。",
+        "errorDescription": "请检查网络连接后重试。",
+        "retry": "重试",
         "title": "测验场次历史",
         "loading": "正在加载测验场次历史...",
         "loadError": "无法加载测验场次历史，请重试。",
@@ -2372,6 +2432,29 @@
       "closedNote": "本场测验已关闭。重新开放后学生才能加入。"
     },
     "monitor": {
+      "searchPlaceholder": "搜索学生",
+      "searchLabel": "搜索学生",
+      "filterStatusLabel": "测验状态",
+      "filterStatusAll": "全部状态",
+      "sortLabel": "排序",
+      "clearFilters": "清除筛选",
+      "paginationLabel": "班级进度页码",
+      "previous": "上一页",
+      "next": "下一页",
+      "rowMenuLabel": "行操作",
+      "showingCount": "显示 {total} 名学生中的 {showing} 名",
+      "pageCount": "第 {page} 页，共 {pageCount} 页 · 共 {total} 人",
+      "sortNameAsc": "姓名 A-Z",
+      "sortNameDesc": "姓名 Z-A",
+      "sortProgressAsc": "进度：从低到高",
+      "sortProgressDesc": "进度：从高到低",
+      "emptyTitle": "名册中没有学生",
+      "emptyBody": "学生加入班级名册后会显示在这里。",
+      "filteredEmptyTitle": "没有匹配的学生",
+      "filteredEmptyDescription": "没有学生符合当前的搜索和状态筛选。",
+      "errorStaleBanner": "最近一次刷新失败 — 下方学生是服务器最后返回的名册。",
+      "errorDescription": "请检查网络连接后重试。",
+      "retry": "重试",
       "title": "班级进度",
       "liveNote": "测验开放期间会自动更新。",
       "loading": "正在加载班级名单...",
@@ -2561,7 +2644,29 @@
         "invited": "已邀请",
         "expired": "已过期"
       },
-      "noValue": "—"
+      "noValue": "—",
+      "filterAll": "全部",
+      "statusActive": "在职",
+      "statusInvited": "已邀请",
+      "statusSuspended": "已停用",
+      "sortNameAsc": "姓名 A–Z",
+      "sortNameDesc": "姓名 Z–A",
+      "searchPlaceholder": "搜索员工",
+      "searchLabel": "搜索员工",
+      "sortLabel": "排序",
+      "clearFilters": "清除筛选",
+      "paginationLabel": "员工页码",
+      "previous": "上一页",
+      "next": "下一页",
+      "rowMenuLabel": "行操作",
+      "showingCount": "显示 {total} 名员工中的 {showing} 名",
+      "pageCount": "第 {page} 页，共 {pageCount} 页 · 共 {total} 人",
+      "emptyTitle": "暂无教师",
+      "emptyBody": "学校管理员发出邀请后，教师会显示在这里。",
+      "noMatchesTitle": "没有符合此筛选条件的项目",
+      "noMatchesBody": "请尝试其他状态。",
+      "staleBanner": "最近一次刷新失败 — 下方行是服务器最后返回的数据。",
+      "loading": "正在加载员工..."
     },
     "actions": {
       "menuLabel": "{name} 的操作",
@@ -2684,6 +2789,25 @@
         "seatsToast": "您的方案已没有可用名额。",
         "forbiddenToast": "您没有权限添加学生。",
         "genericToast": "操作未成功，请重试。"
+      },
+      "roster": {
+        "searchPlaceholder": "搜索学生",
+        "searchLabel": "搜索学生",
+        "filterStatusLabel": "测试状态",
+        "filterStatusAll": "全部状态",
+        "sortLabel": "排序",
+        "sortNameAsc": "姓名 A–Z",
+        "sortNameDesc": "姓名 Z–A",
+        "clearFilters": "清除筛选",
+        "paginationLabel": "分页",
+        "previous": "上一页",
+        "next": "下一页",
+        "showingCount": "正在显示 {total} 名学生中的 {showing} 名",
+        "pageCount": "第 {page} 页，共 {pageCount} 页 — 共 {total} 名学生",
+        "filteredEmptyTitle": "没有学生符合这些筛选条件。",
+        "filteredEmptyDescription": "请尝试其他搜索或清除筛选。",
+        "loading": "正在加载学生",
+        "errorStaleBanner": "最近一次刷新失败 — 以下学生是服务器最后返回的列表。"
       }
     },
     "title": "班级",
@@ -2715,10 +2839,34 @@
       "required": "此字段为必填项。",
       "tooLong": "内容过长。"
     },
+    "list": {
+      "searchPlaceholder": "搜索班级",
+      "searchLabel": "搜索班级",
+      "filterYearBandAll": "全部年级段",
+      "sortLabel": "排序",
+      "sortNameAsc": "姓名 A–Z",
+      "sortNameDesc": "姓名 Z–A",
+      "sortStudentsDesc": "学生最多",
+      "sortStudentsAsc": "学生最少",
+      "clearFilters": "清除筛选",
+      "paginationLabel": "分页",
+      "previous": "上一页",
+      "next": "下一页",
+      "rowMenuLabel": "行操作",
+      "showingCount": "正在显示 {total} 个班级中的 {showing} 个",
+      "pageCount": "第 {page} 页，共 {pageCount} 页 — 共 {total} 个班级",
+      "emptyTitle": "还没有班级",
+      "emptyBody": "添加第一个班级即可开始。",
+      "filteredEmptyTitle": "没有班级符合这些筛选条件。",
+      "filteredEmptyDescription": "请尝试其他搜索或清除筛选。",
+      "loading": "正在加载班级",
+      "errorStaleBanner": "最近一次刷新失败 — 以下班级是服务器最后返回的列表。"
+    },
     "actions": {
       "menuLabel": "{name} 的操作",
       "edit": "编辑班级",
-      "delete": "删除班级"
+      "delete": "删除班级",
+      "rowMenuLabel": "操作"
     },
     "deleteDialog": {
       "title": "删除 {name}？",
@@ -2861,6 +3009,16 @@
       "next": "下一页",
       "pageOf": "第 {page} 页，共 {pageCount} 页"
     },
+    "list": {
+      "rowMenuLabel": "操作",
+      "showingCount": "显示 {total} 名学生中的 {showing} 名",
+      "staleBanner": "最近一次刷新失败——以下行是服务器最后返回的列表。",
+      "loading": "正在加载学生",
+      "clearFilters": "清除筛选",
+      "paginationLabel": "学生分页",
+      "emptyTitle": "暂无学生",
+      "noMatchesDescription": "尝试其他姓名或清除筛选。"
+    },
     "actions": {
       "menuLabel": "{name} 的操作",
       "edit": "编辑学生",
@@ -2983,6 +3141,33 @@
       "retry": "重试",
       "undo": "撤销"
     },
+    "confirm": {
+      "activate": {
+        "title": "启用 {name}？",
+        "body": "当前方案开始计费，所有受邀员工都将获得访问权限。",
+        "cta": "启用"
+      },
+      "reactivate": {
+        "title": "重新启用 {name}？",
+        "body": "员工和学生将立即恢复访问，已安排的测试窗口也会恢复。",
+        "cta": "重新启用"
+      },
+      "restore": {
+        "title": "恢复 {name}？",
+        "body": "学校将回到待设置状态。归档期间不会删除任何数据。",
+        "cta": "恢复"
+      },
+      "suspend": {
+        "title": "暂停 {name}？",
+        "body": "员工和学生将无法访问，直到重新启用。正在进行的测试窗口将暂停。",
+        "cta": "暂停学校"
+      },
+      "archive": {
+        "title": "归档 {name}？",
+        "body": "学校将从活动列表中隐藏并停止计费。数据保留 24 个月。",
+        "cta": "归档学校"
+      }
+    },
     "schools": {
       "meta": {
         "title": "学校 - SchoolTest 运维",
@@ -3045,6 +3230,28 @@
       "actionOpen": "打开学校",
       "actionStatusPage": "状态页",
       "statusPageUnconfigured": "此版本未配置状态页地址。",
+      "actions": {
+        "editDetails": "编辑详情",
+        "inviteAdmin": "邀请管理员",
+        "activate": "启用学校",
+        "reactivate": "重新启用学校",
+        "restore": "恢复学校",
+        "suspend": "暂停学校",
+        "archive": "归档学校",
+        "undo": "撤销",
+        "cancel": "取消",
+        "undoSuccess": "更改已撤销 — {name} 已恢复为之前的状态。",
+        "undoExpired": "无法再撤销。刷新以查看当前状态。",
+        "undoError": "无法保存更改。请刷新后重试。",
+        "typedMismatch": "请输入与显示完全一致的名称以确认。",
+        "success": {
+          "activate": "{name} 已启用。",
+          "reactivate": "{name} 已重新启用。",
+          "restore": "{name} 已恢复。",
+          "suspend": "{name} 已暂停。",
+          "archive": "{name} 已归档。"
+        }
+      },
       "emptyNoneTitle": "暂无学校",
       "emptyNoneDescription": "创建第一所学校即可开始。",
       "emptySearchTitle": "没有符合搜索条件的学校",
@@ -3113,19 +3320,24 @@
       "banner": {
         "trial": {
           "title": "试用",
-          "body": "这所学校正在试用。请在试用结束前激活，以保持测试窗口继续运行。"
+          "body": "这所学校正在试用。请在试用结束前激活，以保持测试窗口继续运行。",
+          "bodyWithDate": "这所学校的试用期至 {date} 结束。请在此之前激活，以保持测试窗口继续运行。"
         },
         "pending_setup": {
           "title": "设置未完成",
-          "body": "尚无管理员接受所有者邀请。在此之前无法进行其他设置。"
+          "body": "尚无管理员接受所有者邀请。在此之前无法进行其他设置。",
+          "cta": "重新发送所有者邀请",
+          "resendCooldown": "发给 {name} 的邀请在不到一分钟前刚发出 — 请稍候再重新发送"
         },
         "suspended": {
           "title": "这所学校已停用",
-          "body": "员工与学生无法访问，测试窗口已暂停。"
+          "body": "员工与学生无法访问，测试窗口已暂停。",
+          "bodyWithInterval": "已停用{interval}。员工与学生无法访问，测试窗口已暂停。"
         },
         "archived": {
           "title": "这所学校已归档",
-          "body": "计费已停止，员工无法访问。数据将保留至保留期限。"
+          "body": "计费已停止，员工无法访问。数据将保留至保留期限。",
+          "bodyWithDate": "计费已停止，员工无法访问。数据将保留至 {date}。"
         }
       },
       "suspend": {
@@ -3160,6 +3372,7 @@
         "restore": "恢复学校",
         "suspend": "暂停学校",
         "archive": "归档学校",
+        "recalculateSeats": "重新计算席位",
         "undo": "撤销",
         "success": "{name} 已更新。",
         "undoSuccess": "{name} 已恢复。",
@@ -3232,6 +3445,7 @@
     "import": {
       "title": "导入学生",
       "description": "上传填好的模板电子表格或粘贴 CSV。请先检查预览，确认后才会保存。",
+      "descriptionForSchool": "上传 CSV，将学生加入 {name}。",
       "dropTitle": "将填写完成的 CSV 拖到此处",
       "dropHint": "拖入文件，或在下方选择——所有预览计数均来自服务器。",
       "dropActive": "松开以载入文件",
@@ -3286,6 +3500,17 @@
       "columnYearLevel": "年级",
       "columnStudentKey": "学生标识",
       "columnMatchedStudent": "匹配到的学生",
+      "changeFileButton": "更换文件",
+      "ctaLabelReady": "导入 {count} 名学生",
+      "ctaLabelRowErrors": "导入 {count} 行有效数据",
+      "ctaLabelDupes": "导入 {count} 名新学生",
+      "ctaLabelFailed": "重试导入",
+      "ctaLabelValidating": "正在检查…",
+      "ctaLabelDefault": "导入学生",
+      "guardNoFile": "请选择要导入的 CSV 文件。",
+      "guardStillValidating": "文件仍在检查中 — 请稍候。",
+      "guardCannotImport": "此文件无法导入，请选择其他文件。",
+      "closeBlockedToast": "正在保存 — 请稍候",
       "card": {
         "validating": {
           "title": "正在检查 {name}…",
@@ -3512,7 +3737,19 @@
       "rosterErrorBody": "无法加载班级学生名册。班级信息显示在上方。",
       "rosterPageOf": "第 {page} 页，共 {pageCount} 页",
       "rosterPrev": "上一页",
-      "rosterNext": "下一页"
+      "rosterNext": "下一页",
+      "backToClasses": "← 所有班级",
+      "addStudents": "添加学生",
+      "exportCsv": "导出 CSV",
+      "noWindowAssigned": "未分配考试窗口",
+      "rosterLabel": "显示 {shown} / 共 {total} · 按最近活动排序",
+      "entityLabel": "学生",
+      "summaryTestsCompletedValue": "{completed} / {enrolled}",
+      "rosterActionRemove": "从班级移除",
+      "rosterRemoveConfirmTitleRow": "要将{name}从{className}移除吗?",
+      "rosterRemoveConfirmTitleBulk": "{count, plural, other {要将 # 名学生从{className}移除吗?}}",
+      "rosterRemoveConfirmBody": "学生仍保留学校学籍,可添加到其他班级。",
+      "rosterRemoveConfirmCtaBulk": "移除 {count} 名"
     },
     "schoolTables": {
       "title": "学校目录",
@@ -3529,6 +3766,8 @@
       "teachersNote": "该校的教职员工。编辑和移除请通过 Manage teachers（C-TCH-04/C-TCH-03 重写端点）。",
       "teachersEmptyTitle": "该校没有教师",
       "teachersEmptyDescription": "该校还没有教职员工。",
+      "teachersHeaderTitle": "教师",
+      "teachersHeaderSummary": "{teachers} 位教师 · 覆盖 {classes} 个班级",
       "manageTeachers": "管理教师",
       "classesNote": "班级通过学校教职员目录获取。学生人数和测试窗口不由 ops API 提供。",
       "classesEmptyTitle": "未找到班级",
@@ -3611,7 +3850,104 @@
       "ownerNoneDescription": "这所学校早于所有权记录，且当时有多位管理员，因此未自动指定所有者。请明确选择一位。",
       "ownerConflict": "自本页加载后所有权已变更。请刷新目录并重新确认。",
       "ownerNotEligible": "新的所有者必须是这所学校的在职管理员。",
-      "ownerTransferred": "所有权已转移。"
+      "ownerTransferred": "所有权已转移。",
+      "studentsHeaderSummary": "已注册 {count} 人 · 显示最近活动",
+      "studentsImportCta": "导入学生",
+      "studentsActionMoveClass": "转班",
+      "studentsActionDeactivate": "停用学生",
+      "studentsActionReactivate": "重新启用学生",
+      "studentsDeactivateConfirmTitle": "停用 {name}？",
+      "studentsDeactivateConfirmBody": "该学生的成绩将保留，但无法参加新的测试。",
+      "studentsDeactivateConfirmCta": "停用",
+      "studentsReactivateConfirmTitle": "重新启用 {name}？",
+      "studentsReactivateConfirmBody": "该学生将重新加入班级，并可以参加已安排的测试。",
+      "studentsReactivateConfirmCta": "重新启用",
+      "studentsMoveClassTitle": "转到其他班级",
+      "studentsMoveClassBody": "{count, plural, other {已选的 # 名学生将转到下方选择的班级。}}",
+      "studentsMoveClassDestinationLabel": "目标班级",
+      "studentsMoveClassPlaceholder": "选择班级",
+      "studentsMoveClassCta": "{count, plural, other {转移 # 名学生}}",
+      "studentsBulkDeactivate": "停用",
+      "studentsBulkDeactivateSkip": "{count} 人已停用",
+      "adminsHeaderTitle": "学校管理员",
+      "adminsHeaderSummary": "已邀请 {invited} 人 · 活跃 {active} 人",
+      "statusInvited": "已邀请",
+      "accountActionSuccess": "{name} 已更新。",
+      "bulkResendInvites": "重新发送邀请",
+      "bulkExport": "导出",
+      "bulkRemove": "移除",
+      "editAccessTitle": "编辑 {name} 的访问权限",
+      "editAccessDescription": "选择此账户在本校的角色。",
+      "editAccessRoleAdmin": "学校管理员",
+      "editAccessRoleTeacher": "教师",
+      "editAccessCancel": "取消",
+      "editAccessSave": "保存",
+      "editAccessSuccess": "{name} 的访问权限已更新。",
+      "editAccessError": "无法更新访问权限。请重试。",
+      "actions": {
+        "editAccess": "编辑访问权限",
+        "viewClasses": "查看班级",
+        "resendInvite": "重新发送邀请",
+        "removeFromSchool": "从学校移除",
+        "suspendAdmin": "暂停管理员",
+        "reactivateAdmin": "重新启用管理员",
+        "suspendTeacher": "暂停教师",
+        "reactivateTeacher": "重新启用教师",
+        "confirm": {
+          "suspendAdmin": {
+            "title": "暂停 {name}？",
+            "body": "在重新启用之前，他们将无法访问此学校。",
+            "cta": "暂停"
+          },
+          "reactivateAdmin": {
+            "title": "重新启用 {name}？",
+            "body": "他们将立即恢复对此学校的访问权限。",
+            "cta": "重新启用"
+          },
+          "removeAdmin": {
+            "title": "移除 {name}？",
+            "body": "他们的访问权限将立即终止。他们创建的报告仍保留在学校。",
+            "cta": "移除管理员"
+          },
+          "suspendTeacher": {
+            "title": "暂停 {name}？",
+            "body": "他们的班级保持不变，但在重新启用之前将无法访问。",
+            "cta": "暂停"
+          },
+          "reactivateTeacher": {
+            "title": "重新启用 {name}？",
+            "body": "他们将恢复对班级的访问权限。",
+            "cta": "重新启用"
+          },
+          "removeTeacher": {
+            "title": "移除 {name}？",
+            "body": "他们的班级需要重新分配给其他教师。",
+            "cta": "移除教师"
+          }
+        }
+      },
+      "bulkConfirm": {
+        "suspendAdmin": {
+          "title": "暂停 {count} 名管理员？",
+          "body": "在重新启用之前，他们将无法访问此学校。",
+          "cta": "暂停 {count} 名"
+        },
+        "removeAdmin": {
+          "title": "移除 {count} 名管理员？",
+          "body": "他们的访问权限将立即终止。他们创建的报告仍保留在学校。",
+          "cta": "移除 {count} 名"
+        },
+        "suspendTeacher": {
+          "title": "暂停 {count} 名教师？",
+          "body": "他们的班级保持不变，但在重新启用之前将无法访问。",
+          "cta": "暂停 {count} 名"
+        },
+        "removeTeacher": {
+          "title": "移除 {count} 名教师？",
+          "body": "他们的班级需要重新分配。",
+          "cta": "移除 {count} 名"
+        }
+      }
     },
     "inspection": {
       "title": "试卷检视",
@@ -3705,6 +4041,14 @@
       "previousPage": "上一页",
       "nextPage": "下一页",
       "clearFilter": "清除教师筛选",
+      "headerTitle": "班级",
+      "summary": "共 {count} 个班级，涵盖 7–12 年级",
+      "clearFilters": "清除筛选",
+      "paginationLabel": "班级分页",
+      "paginationSummary": "第 {page} 页，共 {pageCount} 页 — 总计 {total} 条",
+      "staleBanner": "最近一次刷新失败 — 下方显示的是服务器最后提供的数据。",
+      "retry": "重试",
+      "loadingLabel": "正在加载班级",
       "status": {
         "active": "活跃",
         "pending_setup": "待设置",
@@ -3713,6 +4057,66 @@
       "year": {
         "7_9": "7–9 年级",
         "10_12": "10–12 年级"
+      }
+    },
+    "classActions": {
+      "actions": {
+        "open": "打开班级",
+        "reassignTeacher": "重新分配教师",
+        "edit": "编辑班级",
+        "archive": "归档班级",
+        "restore": "恢复班级",
+        "cancel": "取消",
+        "confirm": {
+          "archive": {
+            "title": "要归档{name}吗？",
+            "body": "学生仍保留在学校的注册状态，但该班级会对教师隐藏。",
+            "cta": "归档班级"
+          },
+          "restore": {
+            "title": "要恢复{name}吗？",
+            "body": "该班级及其学生将返回活跃列表。",
+            "cta": "恢复班级"
+          }
+        }
+      },
+      "entityLabel": "班级",
+      "bulk": {
+        "setTestWindow": "设置测试窗口",
+        "archive": "归档",
+        "archiveSkip": "{skipped} 个已归档",
+        "confirm": {
+          "archive": {
+            "title": "要归档 {count} 个班级吗？",
+            "body": "学生仍保留在学校的注册状态，但这些班级会对教师隐藏。",
+            "cta": "归档 {count} 个"
+          }
+        }
+      },
+      "reassign": {
+        "title": "重新分配教师",
+        "description": "为{name}选择一位新教师。",
+        "teacherLabel": "教师",
+        "noTeacherOption": "未分配教师",
+        "cancel": "取消",
+        "save": "保存",
+        "saving": "保存中…",
+        "errorTitle": "无法重新分配教师",
+        "errorDescription": "教师重新分配失败，请重试。"
+      },
+      "setTestWindow": {
+        "title": "设置测试窗口",
+        "description": "创建一个测试窗口并分配给已选择的 {count} 个班级。",
+        "titleLabel": "标题",
+        "timezoneLabel": "时区",
+        "opensLabel": "开始",
+        "closesLabel": "结束",
+        "formLabel": "阅读试卷",
+        "formPlaceholder": "选择试卷",
+        "cancel": "取消",
+        "submit": "创建并分配",
+        "submitting": "创建中…",
+        "createErrorTitle": "无法创建测试窗口"
       }
     },
     "staffInvitations": {
@@ -5229,5 +5633,36 @@
     "loading": "加载中",
     "commandPalette": "命令面板",
     "commandPaletteDescription": "搜索要运行的命令..."
+  },
+  "Directory": {
+    "defaults": {
+      "searchPlaceholder": "搜索",
+      "searchLabel": "搜索",
+      "filtersLabel": "筛选",
+      "sortLabel": "排序",
+      "layoutLabel": "布局",
+      "clearFilters": "清除筛选",
+      "paginationLabel": "分页",
+      "previous": "上一页",
+      "next": "下一页",
+      "rowMenuLabel": "行操作",
+      "selectAllLabel": "选择本页所有行",
+      "selectRowLabel": "选择行 {key}",
+      "showingCount": "显示 {showing}/{total}",
+      "pageCount": "第 {page} 页，共 {pageCount} 页 — 总计 {total}",
+      "selectedEntityNoun": "行",
+      "emptyNoneTitle": "这里还没有内容",
+      "emptyNoneDescription": "条目创建后会立即显示在这里。",
+      "emptyNoMatchesTitle": "无匹配结果",
+      "emptyNoMatchesDescription": "没有条目与当前的搜索和筛选匹配。",
+      "errorTitle": "无法加载此列表",
+      "errorStaleBanner": "最近一次刷新失败 — 下方各行是服务器最后返回的数据。",
+      "errorDescription": "加载此列表时出现问题。",
+      "retry": "重试",
+      "loadingLabel": "加载中",
+      "exportLabel": "导出 CSV",
+      "primaryActionLabel": "打开",
+      "chipAllLabel": "全部"
+    }
   }
 }

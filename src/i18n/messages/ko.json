@@ -377,7 +377,13 @@
     "tableRowScience": "Science Test",
     "tableRowHistory": "History Exam",
     "tableRowReading": "Reading Check",
-    "tableShowing": "Showing 1–4 of 12",
+    "tableShowing": "Showing {showing} of {total}",
+    "tableSearchPlaceholder": "Search tests…",
+    "tableSortLabel": "Sort",
+    "tableRowMenu": "Row actions",
+    "tableRowOpen": "Open",
+    "tableExport": "Export",
+    "tablePageCount": "Page {page} of {pageCount} — {total} total",
     "progressLabel": "Average score progress",
     "avatarAlt": "Teacher avatar",
     "breadcrumbDashboard": "Dashboard",
@@ -838,7 +844,6 @@
           "daily": "매일 오전 6시 30분경 한 통의 요약 이메일이 도착합니다. 계정 및 보안 알림은 즉시 도착합니다.",
           "weekly": "매주 월요일 오전 6시 30분경 한 통의 요약 이메일이 도착합니다. 계정 및 보안 알림은 즉시 도착합니다."
         },
-        "deferredOption": "{label} — 준비 중",
         "emailOffNotice": "이 설정에서는 선택 이메일이 발송되지 않습니다. 계정 및 보안 알림은 계속 발송됩니다."
       },
       "alwaysOnTitle": "계정 및 보안 업데이트는 항상 켜져 있습니다",
@@ -869,11 +874,46 @@
       "saved": "알림 설정이 저장되었습니다.",
       "saveError": "알림 설정을 저장할 수 없습니다.",
       "loadErrorTitle": "알림 설정을 불러올 수 없습니다.",
-      "loadErrorDescription": "저장된 알림 설정을 다시 불러오세요."
+      "loadErrorDescription": "저장된 알림 설정을 다시 불러오세요.",
+      "eventsTitle": "알림을 받을 항목",
+      "events": {
+        "testResultsReady": {
+          "title": "시험 결과",
+          "description": "리포트가 준비되는 즉시 이메일과 푸시로 알립니다."
+        },
+        "testResultsUpdated": {
+          "title": "결과 업데이트",
+          "description": "이미 확인한 리포트가 수정된 경우."
+        },
+        "sessionCompleted": {
+          "title": "시험 종료",
+          "description": "학생이 시험을 마쳤을 때."
+        },
+        "sessionStarted": {
+          "title": "시험 시작",
+          "description": "학생이 시험을 시작했을 때."
+        },
+        "studentCreated": {
+          "title": "학생 추가",
+          "description": "계정에 학생이 추가되었을 때."
+        },
+        "studentEmailFix": {
+          "title": "로그인 주소 확인 필요",
+          "description": "시험일 전에 학생 이메일 수정이 필요할 때."
+        }
+      }
     },
     "language": {
       "title": "Language",
       "description": "Choose the language SchoolTest uses across the app."
+    },
+    "staff": {
+      "title": "알림 설정",
+      "subtitle": "받을 학교 업데이트와 전달 방법을 선택하세요.",
+      "meta": {
+        "title": "알림 설정 — SchoolTest",
+        "description": "SchoolTest가 성적, 시험 세션, 학교 공지를 알리는 방법을 관리하세요."
+      }
     }
   },
   "SchoolSearch": {
@@ -2306,6 +2346,26 @@
     },
     "testDay": {
       "history": {
+        "searchPlaceholder": "시험 세션 검색",
+        "searchLabel": "시험 세션 검색",
+        "filterOutcomeLabel": "결과",
+        "filterOutcomeAll": "전체 결과",
+        "sortLabel": "정렬",
+        "clearFilters": "필터 지우기",
+        "paginationLabel": "기록 페이지",
+        "previous": "이전",
+        "next": "다음",
+        "rowMenuLabel": "행 작업",
+        "showingCount": "전체 {total}개 중 {showing}개 표시",
+        "pageCount": "{pageCount}페이지 중 {page}페이지 · 총 {total}개",
+        "sortOpenedDesc": "시작 시간: 최신순",
+        "sortOpenedAsc": "시작 시간: 과거순",
+        "openAction": "열기",
+        "filteredEmptyTitle": "일치하는 시험 세션이 없습니다",
+        "filteredEmptyDescription": "현재 검색 및 결과 필터와 일치하는 시험 세션이 없습니다.",
+        "errorStaleBanner": "마지막 새로 고침이 실패했습니다 — 아래 행들은 서버가 마지막으로 응답한 목록입니다.",
+        "errorDescription": "연결을 확인하고 다시 시도해 주세요.",
+        "retry": "다시 시도",
         "title": "시험 세션 기록",
         "loading": "시험 세션 기록을 불러오는 중...",
         "loadError": "시험 세션 기록을 불러올 수 없습니다. 다시 시도하세요.",
@@ -2372,6 +2432,29 @@
       "closedNote": "이 시험 세션은 닫혀 있습니다. 학생이 참여하려면 다시 여세요."
     },
     "monitor": {
+      "searchPlaceholder": "학생 검색",
+      "searchLabel": "학생 검색",
+      "filterStatusLabel": "시험 상태",
+      "filterStatusAll": "전체 상태",
+      "sortLabel": "정렬",
+      "clearFilters": "필터 지우기",
+      "paginationLabel": "진행 상황 페이지",
+      "previous": "이전",
+      "next": "다음",
+      "rowMenuLabel": "행 작업",
+      "showingCount": "전체 {total}명 중 {showing}명 표시",
+      "pageCount": "{pageCount}페이지 중 {page}페이지 · 총 {total}명",
+      "sortNameAsc": "이름 A-Z",
+      "sortNameDesc": "이름 Z-A",
+      "sortProgressAsc": "진행도: 낮은 순",
+      "sortProgressDesc": "진행도: 높은 순",
+      "emptyTitle": "명단에 학생이 없습니다",
+      "emptyBody": "학급 명단에 추가된 학생이 여기에 표시됩니다.",
+      "filteredEmptyTitle": "일치하는 학생이 없습니다",
+      "filteredEmptyDescription": "현재 검색 및 상태 필터와 일치하는 학생이 없습니다.",
+      "errorStaleBanner": "마지막 새로 고침이 실패했습니다 — 아래 학생들은 서버가 마지막으로 응답한 명단입니다.",
+      "errorDescription": "연결을 확인하고 다시 시도해 주세요.",
+      "retry": "다시 시도",
       "title": "학급 진행 상황",
       "liveNote": "시험이 열려 있는 동안 자동으로 업데이트됩니다.",
       "loading": "학급을 불러오는 중...",
@@ -2561,7 +2644,29 @@
         "invited": "초대됨",
         "expired": "만료됨"
       },
-      "noValue": "—"
+      "noValue": "—",
+      "filterAll": "전체",
+      "statusActive": "재직",
+      "statusInvited": "초대됨",
+      "statusSuspended": "정지",
+      "sortNameAsc": "이름 오름차순",
+      "sortNameDesc": "이름 내림차순",
+      "searchPlaceholder": "교직원 검색",
+      "searchLabel": "교직원 검색",
+      "sortLabel": "정렬",
+      "clearFilters": "필터 지우기",
+      "paginationLabel": "교직원 페이지",
+      "previous": "이전",
+      "next": "다음",
+      "rowMenuLabel": "행 작업",
+      "showingCount": "전체 {total}명 중 {showing}명 표시",
+      "pageCount": "{pageCount}페이지 중 {page}페이지 · 총 {total}명",
+      "emptyTitle": "아직 교사가 없습니다",
+      "emptyBody": "학교 관리자가 초대하면 교사가 여기에 표시됩니다.",
+      "noMatchesTitle": "이 필터와 일치하는 항목이 없습니다",
+      "noMatchesBody": "다른 상태를 시도해 보세요.",
+      "staleBanner": "최신 새로고침에 실패했습니다. 아래 행은 서버가 마지막으로 제공한 목록입니다.",
+      "loading": "교직원 불러오는 중..."
     },
     "actions": {
       "menuLabel": "{name} 작업",
@@ -2694,6 +2799,25 @@
         "forbiddenToast": "학생을 추가할 권한이 없습니다.",
         "genericToast": "작업에 실패했습니다. 다시 시도하세요.",
         "duplicateToast": "해당 학생들은 이미 존재합니다. 이메일을 확인한 뒤 다시 시도하세요."
+      },
+      "roster": {
+        "searchPlaceholder": "학생 검색",
+        "searchLabel": "학생 검색",
+        "filterStatusLabel": "시험 상태",
+        "filterStatusAll": "전체 상태",
+        "sortLabel": "정렬",
+        "sortNameAsc": "이름 가나다순",
+        "sortNameDesc": "이름 역순",
+        "clearFilters": "필터 지우기",
+        "paginationLabel": "페이지네이션",
+        "previous": "이전",
+        "next": "다음",
+        "showingCount": "전체 {total}명 중 {showing}명 학생 표시 중",
+        "pageCount": "{pageCount}페이지 중 {page}페이지 — 총 {total}명",
+        "filteredEmptyTitle": "해당 필터와 일치하는 학생이 없습니다.",
+        "filteredEmptyDescription": "다른 검색어를 시도하거나 필터를 지우세요.",
+        "loading": "학생 불러오는 중",
+        "errorStaleBanner": "최신 새로 고침에 실패했습니다 — 아래 학생들은 서버가 마지막으로 응답한 목록입니다."
       }
     },
     "title": "학급",
@@ -2725,10 +2849,34 @@
       "required": "필수 입력 항목입니다.",
       "tooLong": "입력 내용이 너무 깁니다."
     },
+    "list": {
+      "searchPlaceholder": "학급 검색",
+      "searchLabel": "학급 검색",
+      "filterYearBandAll": "전체 학년 밴드",
+      "sortLabel": "정렬",
+      "sortNameAsc": "이름 가나다순",
+      "sortNameDesc": "이름 역순",
+      "sortStudentsDesc": "학생 수 많은 순",
+      "sortStudentsAsc": "학생 수 적은 순",
+      "clearFilters": "필터 지우기",
+      "paginationLabel": "페이지네이션",
+      "previous": "이전",
+      "next": "다음",
+      "rowMenuLabel": "행 작업",
+      "showingCount": "전체 {total}개 중 {showing}개 학급 표시 중",
+      "pageCount": "{pageCount}페이지 중 {page}페이지 — 총 {total}개 학급",
+      "emptyTitle": "아직 학급이 없습니다",
+      "emptyBody": "첫 학급을 추가하여 시작하세요.",
+      "filteredEmptyTitle": "해당 필터와 일치하는 학급이 없습니다.",
+      "filteredEmptyDescription": "다른 검색어를 시도하거나 필터를 지우세요.",
+      "loading": "학급 불러오는 중",
+      "errorStaleBanner": "최신 새로 고침에 실패했습니다 — 아래 학급들은 서버가 마지막으로 응답한 목록입니다."
+    },
     "actions": {
       "menuLabel": "{name} 작업",
       "edit": "학급 편집",
-      "delete": "학급 삭제"
+      "delete": "학급 삭제",
+      "rowMenuLabel": "작업"
     },
     "deleteDialog": {
       "title": "{name}을(를) 삭제하시겠습니까?",
@@ -2871,6 +3019,16 @@
       "next": "다음",
       "pageOf": "{pageCount}페이지 중 {page}페이지"
     },
+    "list": {
+      "rowMenuLabel": "작업",
+      "showingCount": "{total}명 중 {showing}명 표시",
+      "staleBanner": "최신 새로고침에 실패했습니다 — 아래 행은 서버가 마지막으로 전달한 목록입니다.",
+      "loading": "학생을 불러오는 중",
+      "clearFilters": "필터 지우기",
+      "paginationLabel": "학생 페이지네이션",
+      "emptyTitle": "아직 학생이 없습니다",
+      "noMatchesDescription": "다른 이름으로 검색하거나 필터를 지워 보세요."
+    },
     "actions": {
       "menuLabel": "{name} 작업",
       "edit": "학생 편집",
@@ -2993,6 +3151,33 @@
       "retry": "다시 시도",
       "undo": "실행 취소"
     },
+    "confirm": {
+      "activate": {
+        "title": "{name}을(를) 활성화하시겠습니까?",
+        "body": "현재 요금제가 청구되고 초대한 모든 직원이 액세스할 수 있습니다.",
+        "cta": "활성화"
+      },
+      "reactivate": {
+        "title": "{name}을(를) 재활성화하시겠습니까?",
+        "body": "직원과 학생이 즉시 액세스하고 예약된 테스트 창이 재개됩니다.",
+        "cta": "재활성화"
+      },
+      "restore": {
+        "title": "{name}을(를) 복원하시겠습니까?",
+        "body": "학교가 설정 대기 상태로 돌아갑니다. 보관 중에는 데이터가 삭제되지 않습니다.",
+        "cta": "복원"
+      },
+      "suspend": {
+        "title": "{name}을(를) 일시 중지하시겠습니까?",
+        "body": "재활성화할 때까지 직원과 학생이 액세스할 수 없으며 진행 중인 테스트 창이 일시 중지됩니다.",
+        "cta": "학교 일시 중지"
+      },
+      "archive": {
+        "title": "{name}을(를) 보관하시겠습니까?",
+        "body": "학교가 활성 목록에서 숨겨지고 청구가 중지됩니다. 데이터는 24개월 동안 보존됩니다.",
+        "cta": "학교 보관"
+      }
+    },
     "schools": {
       "meta": {
         "title": "학교 - SchoolTest 운영",
@@ -3055,6 +3240,28 @@
       "actionOpen": "학교 열기",
       "actionStatusPage": "상태 페이지",
       "statusPageUnconfigured": "이 릴리스에는 상태 페이지 URL이 설정되어 있지 않습니다.",
+      "actions": {
+        "editDetails": "세부 정보 편집",
+        "inviteAdmin": "관리자 초대",
+        "activate": "학교 활성화",
+        "reactivate": "학교 재활성화",
+        "restore": "학교 복원",
+        "suspend": "학교 일시 중지",
+        "archive": "학교 보관",
+        "undo": "실행 취소",
+        "cancel": "취소",
+        "undoSuccess": "변경이 되돌려졌습니다. {name}이(가) 이전 상태로 돌아왔습니다.",
+        "undoExpired": "실행 취소를 사용할 수 없습니다. 현재 상태를 보려면 새로 고침하세요.",
+        "undoError": "변경 사항을 저장하지 못했습니다. 새로 고친 후 다시 시도하세요.",
+        "typedMismatch": "확인하려면 표시된 이름을 정확히 입력하세요.",
+        "success": {
+          "activate": "{name}이(가) 활성화되었습니다.",
+          "reactivate": "{name}이(가) 재활성화되었습니다.",
+          "restore": "{name}이(가) 복원되었습니다.",
+          "suspend": "{name}이(가) 일시 중지되었습니다.",
+          "archive": "{name}이(가) 보관되었습니다."
+        }
+      },
       "emptyNoneTitle": "학교가 없습니다",
       "emptyNoneDescription": "첫 학교를 만들어 시작하세요.",
       "emptySearchTitle": "검색과 일치하는 학교가 없습니다",
@@ -3123,19 +3330,24 @@
       "banner": {
         "trial": {
           "title": "체험",
-          "body": "이 학교는 체험 중입니다. 체험이 끝난 뒤에도 시험 기간을 유지하려면 활성화하세요."
+          "body": "이 학교는 체험 중입니다. 체험이 끝난 뒤에도 시험 기간을 유지하려면 활성화하세요.",
+          "bodyWithDate": "이 학교는 {date}까지 체험 기간입니다. 체험이 끝난 뒤에도 시험 기간을 유지하려면 활성화하세요."
         },
         "pending_setup": {
           "title": "설정이 완료되지 않았습니다",
-          "body": "아직 소유자 초대를 수락한 관리자가 없습니다. 수락 전에는 다른 설정을 진행할 수 없습니다."
+          "body": "아직 소유자 초대를 수락한 관리자가 없습니다. 수락 전에는 다른 설정을 진행할 수 없습니다.",
+          "cta": "소유자 초대장 다시 보내기",
+          "resendCooldown": "{name}에게 보낸 초대장이 1분 이내에 발송되었습니다 — 다시 보내려면 잠시 기다려 주세요"
         },
         "suspended": {
           "title": "이 학교는 정지되었습니다",
-          "body": "교직원과 학생은 접근할 수 없고 시험 기간은 중지되었습니다."
+          "body": "교직원과 학생은 접근할 수 없고 시험 기간은 중지되었습니다.",
+          "bodyWithInterval": "{interval} 정지되었습니다. 교직원과 학생은 접근할 수 없고 시험 기간은 중지되었습니다."
         },
         "archived": {
           "title": "이 학교는 보관되었습니다",
-          "body": "청구가 중단되었고 교직원은 접근할 수 없습니다. 데이터는 보존 기한까지 유지됩니다."
+          "body": "청구가 중단되었고 교직원은 접근할 수 없습니다. 데이터는 보존 기한까지 유지됩니다.",
+          "bodyWithDate": "청구가 중단되었고 교직원은 접근할 수 없습니다. 데이터는 {date}까지 보존됩니다."
         }
       },
       "suspend": {
@@ -3170,6 +3382,7 @@
         "restore": "학교 복원",
         "suspend": "학교 일시 중지",
         "archive": "학교 보관",
+        "recalculateSeats": "좌석 재계산",
         "undo": "실행 취소",
         "success": "{name}이(가) 업데이트되었습니다.",
         "undoSuccess": "{name}이(가) 복원되었습니다.",
@@ -3242,6 +3455,7 @@
     "import": {
       "title": "학생 가져오기",
       "description": "작성된 템플릿 스프레드시트를 업로드하거나 CSV를 붙여 넣으세요. 저장하기 전에 미리보기를 확인하세요.",
+      "descriptionForSchool": "CSV를 업로드하여 {name}에 학생을 추가하세요.",
       "dropTitle": "작성한 CSV를 여기에 놓으세요",
       "dropHint": "파일을 끌어다 놓거나 아래에서 선택하세요 — 모든 미리보기 수치는 서버에서 제공됩니다.",
       "dropActive": "놓으면 파일을 불러옵니다",
@@ -3296,6 +3510,17 @@
       "columnYearLevel": "학년",
       "columnStudentKey": "학생 키",
       "columnMatchedStudent": "일치한 학생",
+      "changeFileButton": "파일 변경",
+      "ctaLabelReady": "학생 {count}명 가져오기",
+      "ctaLabelRowErrors": "유효한 {count}행 가져오기",
+      "ctaLabelDupes": "신규 학생 {count}명 가져오기",
+      "ctaLabelFailed": "가져오기 재시도",
+      "ctaLabelValidating": "확인 중…",
+      "ctaLabelDefault": "학생 가져오기",
+      "guardNoFile": "가져올 CSV 파일을 선택하세요.",
+      "guardStillValidating": "파일을 확인하는 중입니다 — 잠시만 기다려 주세요.",
+      "guardCannotImport": "이 파일은 가져올 수 없습니다. 다른 파일을 선택하세요.",
+      "closeBlockedToast": "저장 중입니다 — 잠시 기다려 주세요",
       "card": {
         "validating": {
           "title": "{name} 확인 중…",
@@ -3522,7 +3747,19 @@
       "rosterErrorBody": "클래스 명단을 불러오지 못했습니다. 클래스 정보는 위에 표시됩니다.",
       "rosterPageOf": "{pageCount}페이지 중 {page}페이지",
       "rosterPrev": "이전",
-      "rosterNext": "다음"
+      "rosterNext": "다음",
+      "backToClasses": "← 전체 클래스",
+      "addStudents": "학생 추가",
+      "exportCsv": "CSV로 내보내기",
+      "noWindowAssigned": "배정된 응시 기간 없음",
+      "rosterLabel": "{total}명 중 {shown}명 표시 · 최근 활동순",
+      "entityLabel": "학생",
+      "summaryTestsCompletedValue": "{enrolled}명 중 {completed}명",
+      "rosterActionRemove": "클래스에서 제거",
+      "rosterRemoveConfirmTitleRow": "{name}님을 {className}에서 제거할까요?",
+      "rosterRemoveConfirmTitleBulk": "{count, plural, other {학생 #명을 {className}에서 제거할까요?}}",
+      "rosterRemoveConfirmBody": "학생은 학교에 계속 등록된 상태로 남으며 다른 클래스에 추가할 수 있습니다.",
+      "rosterRemoveConfirmCtaBulk": "{count}명 제거"
     },
     "schoolTables": {
       "title": "학교 디렉터리",
@@ -3539,6 +3776,8 @@
       "teachersNote": "이 학교의 교직원. 편집 및 제거는 Manage teachers(C-TCH-04/C-TCH-03 재작성 엔드포인트)를 통해 제공됩니다.",
       "teachersEmptyTitle": "이 학교에 교사 없음",
       "teachersEmptyDescription": "이 학교에는 아직 교직원이 없습니다.",
+      "teachersHeaderTitle": "교사",
+      "teachersHeaderSummary": "교사 {teachers}명 · 담당 학급 {classes}개",
       "manageTeachers": "교사 관리",
       "classesNote": "클래스는 학교 교직원 디렉터리를 통해 조회됩니다. 학생 수와 테스트 창은 ops API에서 제공되지 않습니다.",
       "classesEmptyTitle": "클래스를 찾을 수 없음",
@@ -3621,7 +3860,104 @@
       "ownerNoneDescription": "이 학교는 소유권 기록보다 먼저 만들어졌고 관리자가 여러 명이어서 소유자가 자동으로 지정되지 않았습니다. 직접 한 명을 선택하세요.",
       "ownerConflict": "이 페이지를 불러온 뒤 소유권이 변경되었습니다. 목록을 새로 고치고 다시 확인하세요.",
       "ownerNotEligible": "새 소유자는 이 학교의 활성 관리자여야 합니다.",
-      "ownerTransferred": "소유권을 이전했습니다."
+      "ownerTransferred": "소유권을 이전했습니다.",
+      "studentsHeaderSummary": "{count}명 등록됨 · 최근 활동 표시",
+      "studentsImportCta": "학생 가져오기",
+      "studentsActionMoveClass": "반 이동",
+      "studentsActionDeactivate": "학생 비활성화",
+      "studentsActionReactivate": "학생 재활성화",
+      "studentsDeactivateConfirmTitle": "{name}님을 비활성화하시겠습니까?",
+      "studentsDeactivateConfirmBody": "결과는 유지되지만 새로운 시험에 응시할 수 없습니다.",
+      "studentsDeactivateConfirmCta": "비활성화",
+      "studentsReactivateConfirmTitle": "{name}님을 재활성화하시겠습니까?",
+      "studentsReactivateConfirmBody": "학생은 반에 다시 합류하여 예정된 시험에 응시할 수 있습니다.",
+      "studentsReactivateConfirmCta": "재활성화",
+      "studentsMoveClassTitle": "다른 반으로 이동",
+      "studentsMoveClassBody": "{count, plural, other {선택한 학생 #명이 아래에서 선택한 반으로 이동합니다.}}",
+      "studentsMoveClassDestinationLabel": "이동할 반",
+      "studentsMoveClassPlaceholder": "반 선택",
+      "studentsMoveClassCta": "{count, plural, other {학생 #명 이동}}",
+      "studentsBulkDeactivate": "비활성화",
+      "studentsBulkDeactivateSkip": "{count}명은 이미 비활성화됨",
+      "adminsHeaderTitle": "학교 관리자",
+      "adminsHeaderSummary": "초대 {invited}명 · 활성 {active}명",
+      "statusInvited": "초대됨",
+      "accountActionSuccess": "{name}이(가) 업데이트되었습니다.",
+      "bulkResendInvites": "초대 재전송",
+      "bulkExport": "내보내기",
+      "bulkRemove": "제거",
+      "editAccessTitle": "{name}의 액세스 편집",
+      "editAccessDescription": "이 계정이 이 학교에서 가질 역할을 선택하세요.",
+      "editAccessRoleAdmin": "학교 관리자",
+      "editAccessRoleTeacher": "교사",
+      "editAccessCancel": "취소",
+      "editAccessSave": "저장",
+      "editAccessSuccess": "{name}의 액세스가 업데이트되었습니다.",
+      "editAccessError": "액세스를 업데이트하지 못했습니다. 다시 시도하세요.",
+      "actions": {
+        "editAccess": "액세스 편집",
+        "viewClasses": "학급 보기",
+        "resendInvite": "초대 재전송",
+        "removeFromSchool": "학교에서 제거",
+        "suspendAdmin": "관리자 일시 중지",
+        "reactivateAdmin": "관리자 재활성화",
+        "suspendTeacher": "교사 일시 중지",
+        "reactivateTeacher": "교사 재활성화",
+        "confirm": {
+          "suspendAdmin": {
+            "title": "{name}을(를) 일시 중지하시겠습니까?",
+            "body": "재활성화할 때까지 이 학교에 대한 액세스 권한을 잃습니다.",
+            "cta": "일시 중지"
+          },
+          "reactivateAdmin": {
+            "title": "{name}을(를) 재활성화하시겠습니까?",
+            "body": "즉시 이 학교에 대한 액세스 권한을 되찾습니다.",
+            "cta": "재활성화"
+          },
+          "removeAdmin": {
+            "title": "{name}을(를) 제거하시겠습니까?",
+            "body": "액세스 권한이 즉시 종료됩니다. 작성한 보고서는 학교에 남습니다.",
+            "cta": "관리자 제거"
+          },
+          "suspendTeacher": {
+            "title": "{name}을(를) 일시 중지하시겠습니까?",
+            "body": "학급은 그대로 유지되지만 재활성화할 때까지 액세스 권한을 잃습니다.",
+            "cta": "일시 중지"
+          },
+          "reactivateTeacher": {
+            "title": "{name}을(를) 재활성화하시겠습니까?",
+            "body": "학급에 대한 액세스 권한을 되찾습니다.",
+            "cta": "재활성화"
+          },
+          "removeTeacher": {
+            "title": "{name}을(를) 제거하시겠습니까?",
+            "body": "학급을 다른 교사에게 재배정해야 합니다.",
+            "cta": "교사 제거"
+          }
+        }
+      },
+      "bulkConfirm": {
+        "suspendAdmin": {
+          "title": "관리자 {count}명을 일시 중지하시겠습니까?",
+          "body": "재활성화할 때까지 이 학교에 대한 액세스 권한을 잃습니다.",
+          "cta": "{count}명 일시 중지"
+        },
+        "removeAdmin": {
+          "title": "관리자 {count}명을 제거하시겠습니까?",
+          "body": "액세스 권한이 즉시 종료됩니다. 작성한 보고서는 학교에 남습니다.",
+          "cta": "{count}명 제거"
+        },
+        "suspendTeacher": {
+          "title": "교사 {count}명을 일시 중지하시겠습니까?",
+          "body": "학급은 그대로 유지되지만 재활성화할 때까지 액세스 권한을 잃습니다.",
+          "cta": "{count}명 일시 중지"
+        },
+        "removeTeacher": {
+          "title": "교사 {count}명을 제거하시겠습니까?",
+          "body": "학급을 재배정해야 합니다.",
+          "cta": "{count}명 제거"
+        }
+      }
     },
     "inspection": {
       "title": "시험지 검토",
@@ -3715,6 +4051,14 @@
       "previousPage": "이전 페이지",
       "nextPage": "다음 페이지",
       "clearFilter": "교사 필터 지우기",
+      "headerTitle": "학급",
+      "summary": "7~12학년 전체 {count}개 학급",
+      "clearFilters": "필터 지우기",
+      "paginationLabel": "학급 페이지 이동",
+      "paginationSummary": "{pageCount}페이지 중 {page}페이지 — 총 {total}개",
+      "staleBanner": "최신 새로고침에 실패했습니다 — 아래 목록은 서버가 마지막으로 제공한 결과입니다.",
+      "retry": "다시 시도",
+      "loadingLabel": "학급을 불러오는 중",
       "status": {
         "active": "활성",
         "pending_setup": "설정 대기",
@@ -3723,6 +4067,66 @@
       "year": {
         "7_9": "7~9학년",
         "10_12": "10~12학년"
+      }
+    },
+    "classActions": {
+      "actions": {
+        "open": "학급 열기",
+        "reassignTeacher": "교사 재배정",
+        "edit": "학급 수정",
+        "archive": "학급 보관",
+        "restore": "학급 복원",
+        "cancel": "취소",
+        "confirm": {
+          "archive": {
+            "title": "{name}을(를) 보관하시겠습니까?",
+            "body": "학생은 학교에 계속 등록된 상태로 유지되지만 이 학급은 교사에게 보이지 않습니다.",
+            "cta": "학급 보관"
+          },
+          "restore": {
+            "title": "{name}을(를) 복원하시겠습니까?",
+            "body": "학급이 학생과 함께 활성 목록으로 돌아갑니다.",
+            "cta": "학급 복원"
+          }
+        }
+      },
+      "entityLabel": "학급",
+      "bulk": {
+        "setTestWindow": "시험 기간 설정",
+        "archive": "보관",
+        "archiveSkip": "{skipped}개는 이미 보관됨",
+        "confirm": {
+          "archive": {
+            "title": "학급 {count}개를 보관하시겠습니까?",
+            "body": "학생은 학교에 계속 등록된 상태로 유지되지만 이 학급들은 교사에게 보이지 않습니다.",
+            "cta": "{count}개 보관"
+          }
+        }
+      },
+      "reassign": {
+        "title": "교사 재배정",
+        "description": "{name}에 배정할 새 교사를 선택하세요.",
+        "teacherLabel": "교사",
+        "noTeacherOption": "배정된 교사 없음",
+        "cancel": "취소",
+        "save": "저장",
+        "saving": "저장 중…",
+        "errorTitle": "교사를 재배정하지 못했습니다",
+        "errorDescription": "교사를 재배정하지 못했습니다. 다시 시도하세요."
+      },
+      "setTestWindow": {
+        "title": "시험 기간 설정",
+        "description": "시험 기간을 만들어 선택한 학급 {count}개에 배정합니다.",
+        "titleLabel": "제목",
+        "timezoneLabel": "시간대",
+        "opensLabel": "시작",
+        "closesLabel": "종료",
+        "formLabel": "읽기 폼",
+        "formPlaceholder": "폼을 선택하세요",
+        "cancel": "취소",
+        "submit": "만들고 배정",
+        "submitting": "만드는 중…",
+        "createErrorTitle": "시험 기간을 만들지 못했습니다"
       }
     },
     "staffInvitations": {
@@ -5239,5 +5643,36 @@
     "loading": "불러오는 중",
     "commandPalette": "명령 팔레트",
     "commandPaletteDescription": "실행할 명령을 검색하세요..."
+  },
+  "Directory": {
+    "defaults": {
+      "searchPlaceholder": "검색",
+      "searchLabel": "검색",
+      "filtersLabel": "필터",
+      "sortLabel": "정렬",
+      "layoutLabel": "레이아웃",
+      "clearFilters": "필터 지우기",
+      "paginationLabel": "페이지 매김",
+      "previous": "이전",
+      "next": "다음",
+      "rowMenuLabel": "행 작업",
+      "selectAllLabel": "이 페이지의 모든 행 선택",
+      "selectRowLabel": "{key}행 선택",
+      "showingCount": "전체 {total}개 중 {showing}개 표시",
+      "pageCount": "{pageCount}페이지 중 {page}페이지 — 총 {total}개",
+      "selectedEntityNoun": "행",
+      "emptyNoneTitle": "아직 아무 것도 없습니다",
+      "emptyNoneDescription": "생성되는 대로 여기에 표시됩니다.",
+      "emptyNoMatchesTitle": "일치 항목 없음",
+      "emptyNoMatchesDescription": "현재 검색 및 필터와 일치하는 항목이 없습니다.",
+      "errorTitle": "이 목록을 불러올 수 없습니다",
+      "errorStaleBanner": "마지막 새로 고침에 실패했습니다 — 아래 행은 서버가 마지막으로 제공한 목록입니다.",
+      "errorDescription": "이 목록을 불러오는 중 문제가 발생했습니다.",
+      "retry": "다시 시도",
+      "loadingLabel": "불러오는 중",
+      "exportLabel": "CSV 내보내기",
+      "primaryActionLabel": "열기",
+      "chipAllLabel": "전체"
+    }
   }
 }

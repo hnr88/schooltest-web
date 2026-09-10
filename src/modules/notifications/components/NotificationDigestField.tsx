@@ -15,7 +15,6 @@ import {
   NOTIFICATION_DIGEST_FREQUENCIES,
   NOTIFICATION_SELECT_TRIGGER_CLASS,
 } from '@/modules/notifications/constants/notification-preferences.constants';
-import { isSelectableDigestFrequency } from '@/modules/notifications/lib/notification-preferences';
 import type {
   NotificationDigestFrequency,
   NotificationPreferenceFormValues,
@@ -29,16 +28,15 @@ function NotificationDigestField({
   form: UseFormReturn<NotificationPreferenceFormValues>;
 }) {
   const t = useTranslations('Settings');
-  const options = NOTIFICATION_DIGEST_FREQUENCIES.map((value) => {
-    const label = t(`notificationPreferences.digest.options.${value}`);
-    return {
-      value,
-      label: isSelectableDigestFrequency(value)
-        ? label
-        : t('notificationPreferences.digest.deferredOption', { label }),
-      disabled: !isSelectableDigestFrequency(value),
-    };
-  });
+  // P-07: the "coming soon" gate is gone. NOTIFICATION_DIGEST_SELECTABLE_FREQUENCIES
+  // had become identical to NOTIFICATION_DIGEST_FREQUENCIES, so
+  // `isSelectableDigestFrequency` always returned true and the deferred/disabled
+  // branch could never fire — dead code plus an unreachable i18n key. Every
+  // frequency is genuinely honoured by the digest worker.
+  const options = NOTIFICATION_DIGEST_FREQUENCIES.map((value) => ({
+    value,
+    label: t(`notificationPreferences.digest.options.${value}`),
+  }));
 
   return (
     <Controller
@@ -64,7 +62,7 @@ function NotificationDigestField({
             </SelectTrigger>
             <SelectContent>
               {options.map((option) => (
-                <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
+                <SelectItem key={option.value} value={option.value}>
                   {option.label}
                 </SelectItem>
               ))}

@@ -25,6 +25,14 @@ export interface NotificationPreferenceToggleConfig {
   helperKey?: string;
 }
 
+/** Row 05 — one per-event switch. `event` is a key of the form's event map. */
+export interface NotificationPreferenceEventConfig {
+  event: keyof NotificationPreferenceFormValues['eventPreferences'];
+  titleKey: string;
+  descriptionKey: string;
+  helperKey?: string;
+}
+
 export interface NotificationPreferenceLockedConfig {
   field: NotificationPreferenceLockedField;
   titleKey: string;

@@ -377,7 +377,13 @@
     "tableRowScience": "Science Test",
     "tableRowHistory": "History Exam",
     "tableRowReading": "Reading Check",
-    "tableShowing": "Showing 1–4 of 12",
+    "tableShowing": "Showing {showing} of {total}",
+    "tableSearchPlaceholder": "Search tests…",
+    "tableSortLabel": "Sort",
+    "tableRowMenu": "Row actions",
+    "tableRowOpen": "Open",
+    "tableExport": "Export",
+    "tablePageCount": "Page {page} of {pageCount} — {total} total",
     "progressLabel": "Average score progress",
     "avatarAlt": "Teacher avatar",
     "breadcrumbDashboard": "Dashboard",
@@ -838,7 +844,6 @@
           "daily": "อีเมลสรุปหนึ่งฉบับทุกเช้าประมาณ 6:30 น. การแจ้งเตือนบัญชีและความปลอดภัยยังคงมาถึงทันที",
           "weekly": "อีเมลสรุปหนึ่งฉบับทุกเช้าวันจันทร์ประมาณ 6:30 น. การแจ้งเตือนบัญชีและความปลอดภัยยังคงมาถึงทันที"
         },
-        "deferredOption": "{label} — เร็ว ๆ นี้",
         "emailOffNotice": "จะไม่มีการส่งอีเมลที่เลือกได้ขณะเลือกตัวเลือกนี้ การแจ้งเตือนบัญชีและความปลอดภัยจะยังคงถูกส่ง"
       },
       "alwaysOnTitle": "การอัปเดตบัญชีและความปลอดภัยเปิดอยู่เสมอ",
@@ -869,11 +874,46 @@
       "saved": "บันทึกการตั้งค่าการแจ้งเตือนแล้ว",
       "saveError": "ไม่สามารถบันทึกการตั้งค่าการแจ้งเตือนได้",
       "loadErrorTitle": "ไม่สามารถโหลดการตั้งค่าการแจ้งเตือนได้",
-      "loadErrorDescription": "โปรดลองโหลดการตั้งค่าการแจ้งเตือนที่บันทึกไว้อีกครั้ง"
+      "loadErrorDescription": "โปรดลองโหลดการตั้งค่าการแจ้งเตือนที่บันทึกไว้อีกครั้ง",
+      "eventsTitle": "สิ่งที่จะแจ้งให้คุณทราบ",
+      "events": {
+        "testResultsReady": {
+          "title": "ผลการทดสอบ",
+          "description": "อีเมลและพุชทันทีที่รายงานพร้อม"
+        },
+        "testResultsUpdated": {
+          "title": "ผลที่อัปเดต",
+          "description": "เมื่อรายงานที่คุณดูแล้วถูกแก้ไข"
+        },
+        "sessionCompleted": {
+          "title": "ทำแบบทดสอบเสร็จ",
+          "description": "เมื่อนักเรียนของคุณทำแบบทดสอบเสร็จ"
+        },
+        "sessionStarted": {
+          "title": "เริ่มทำแบบทดสอบ",
+          "description": "เมื่อนักเรียนของคุณเริ่มทำแบบทดสอบ"
+        },
+        "studentCreated": {
+          "title": "เพิ่มนักเรียนแล้ว",
+          "description": "เมื่อมีการเพิ่มนักเรียนในบัญชีของคุณ"
+        },
+        "studentEmailFix": {
+          "title": "ต้องแก้ไขอีเมลเข้าสู่ระบบ",
+          "description": "เมื่อนักเรียนต้องแก้อีเมลก่อนวันสอบ"
+        }
+      }
     },
     "language": {
       "title": "Language",
       "description": "Choose the language SchoolTest uses across the app."
+    },
+    "staff": {
+      "title": "การตั้งค่าการแจ้งเตือน",
+      "subtitle": "เลือกการอัปเดตของโรงเรียนที่คุณต้องการรับและวิธีส่งให้คุณ",
+      "meta": {
+        "title": "การตั้งค่าการแจ้งเตือน — SchoolTest",
+        "description": "จัดการวิธีที่ SchoolTest แจ้งเตือนคุณเกี่ยวกับผลสอบ เซสชันการสอบ และประกาศของโรงเรียน"
+      }
     }
   },
   "SchoolSearch": {
@@ -2306,6 +2346,26 @@
     },
     "testDay": {
       "history": {
+        "searchPlaceholder": "ค้นหารอบการสอบ",
+        "searchLabel": "ค้นหารอบการสอบ",
+        "filterOutcomeLabel": "ผลลัพธ์",
+        "filterOutcomeAll": "ทุกผลลัพธ์",
+        "sortLabel": "จัดเรียง",
+        "clearFilters": "ล้างตัวกรอง",
+        "paginationLabel": "หน้าประวัติ",
+        "previous": "ก่อนหน้า",
+        "next": "ถัดไป",
+        "rowMenuLabel": "การทำงานของแถว",
+        "showingCount": "แสดง {showing} จาก {total} รอบ",
+        "pageCount": "หน้า {page} จาก {pageCount} · รวม {total} รอบ",
+        "sortOpenedDesc": "เวลาเปิด: ใหม่ก่อน",
+        "sortOpenedAsc": "เวลาเปิด: เก่าก่อน",
+        "openAction": "เปิด",
+        "filteredEmptyTitle": "ไม่มีรอบการสอบที่ตรงกัน",
+        "filteredEmptyDescription": "ไม่มีรอบการสอบที่ตรงกับการค้นหาและตัวกรองผลลัพธ์ปัจจุบัน",
+        "errorStaleBanner": "การรีเฟรชล่าสุดล้มเหลว — แถวด้านล่างคือรายการล่าสุดที่เซิร์ฟเวอร์ส่งกลับมา",
+        "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+        "retry": "ลองอีกครั้ง",
         "title": "ประวัติรอบการสอบ",
         "loading": "กำลังโหลดประวัติรอบการสอบ...",
         "loadError": "ไม่สามารถโหลดประวัติรอบการสอบได้ โปรดลองอีกครั้ง",
@@ -2372,6 +2432,29 @@
       "closedNote": "รอบการสอบนี้ปิดแล้ว เปิดอีกครั้งเพื่อให้นักเรียนเข้าร่วมได้"
     },
     "monitor": {
+      "searchPlaceholder": "ค้นหานักเรียน",
+      "searchLabel": "ค้นหานักเรียน",
+      "filterStatusLabel": "สถานะรอบการสอบ",
+      "filterStatusAll": "ทุกสถานะ",
+      "sortLabel": "จัดเรียง",
+      "clearFilters": "ล้างตัวกรอง",
+      "paginationLabel": "หน้าความคืบหน้าของชั้นเรียน",
+      "previous": "ก่อนหน้า",
+      "next": "ถัดไป",
+      "rowMenuLabel": "การทำงานของแถว",
+      "showingCount": "แสดง {showing} จาก {total} คน",
+      "pageCount": "หน้า {page} จาก {pageCount} · รวม {total} คน",
+      "sortNameAsc": "ชื่อ A-Z",
+      "sortNameDesc": "ชื่อ Z-A",
+      "sortProgressAsc": "ความคืบหน้า: น้อยไปมาก",
+      "sortProgressDesc": "ความคืบหน้า: มากไปน้อย",
+      "emptyTitle": "ไม่มีนักเรียนในรายชื่อนี้",
+      "emptyBody": "นักเรียนจะปรากฏที่นี่เมื่ออยู่ในรายชื่อของชั้นเรียน",
+      "filteredEmptyTitle": "ไม่มีนักเรียนที่ตรงกัน",
+      "filteredEmptyDescription": "ไม่มีนักเรียนที่ตรงกับการค้นหาและตัวกรองสถานะปัจจุบัน",
+      "errorStaleBanner": "การรีเฟรชล่าสุดล้มเหลว — นักเรียนด้านล่างคือรายการล่าสุดที่เซิร์ฟเวอร์ส่งกลับมา",
+      "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+      "retry": "ลองอีกครั้ง",
       "title": "ความคืบหน้าของชั้นเรียน",
       "liveNote": "อัปเดตอัตโนมัติขณะที่รอบการสอบเปิดอยู่",
       "loading": "กำลังโหลดรายชื่อชั้นเรียน...",
@@ -2561,7 +2644,29 @@
         "invited": "เชิญแล้ว",
         "expired": "หมดอายุแล้ว"
       },
-      "noValue": "—"
+      "noValue": "—",
+      "filterAll": "ทั้งหมด",
+      "statusActive": "ใช้งานอยู่",
+      "statusInvited": "เชิญแล้ว",
+      "statusSuspended": "ถูกระงับ",
+      "sortNameAsc": "ชื่อ (ก–ฮ)",
+      "sortNameDesc": "ชื่อ (ฮ–ก)",
+      "searchPlaceholder": "ค้นหาบุคลากร",
+      "searchLabel": "ค้นหาบุคลากร",
+      "sortLabel": "จัดเรียง",
+      "clearFilters": "ล้างตัวกรอง",
+      "paginationLabel": "หน้าบุคลากร",
+      "previous": "ก่อนหน้า",
+      "next": "ถัดไป",
+      "rowMenuLabel": "การทำงานของแถว",
+      "showingCount": "แสดง {showing} จาก {total} คน",
+      "pageCount": "หน้า {page} จาก {pageCount} · รวม {total} คน",
+      "emptyTitle": "ยังไม่มีครู",
+      "emptyBody": "ครูจะปรากฏที่นี่เมื่อผู้ดูแลโรงเรียนส่งคำเชิญ",
+      "noMatchesTitle": "ไม่มีรายการที่ตรงกับตัวกรองนี้",
+      "noMatchesBody": "ลองใช้สถานะอื่น",
+      "staleBanner": "การรีเฟรชล่าสุดล้มเหลว — แถวด้านล่างคือรายการล่าสุดที่เซิร์ฟเวอร์ส่งมา",
+      "loading": "กำลังโหลดบุคลากร..."
     },
     "actions": {
       "menuLabel": "การดำเนินการสำหรับ {name}",
@@ -2694,6 +2799,25 @@
         "forbiddenToast": "คุณไม่มีสิทธิ์เพิ่มนักเรียน",
         "genericToast": "ดำเนินการไม่สำเร็จ ลองอีกครั้ง",
         "duplicateToast": "มีนักเรียนเหล่านี้อยู่แล้ว ตรวจสอบอีเมลแล้วลองอีกครั้ง"
+      },
+      "roster": {
+        "searchPlaceholder": "ค้นหานักเรียน",
+        "searchLabel": "ค้นหานักเรียน",
+        "filterStatusLabel": "สถานะการทดสอบ",
+        "filterStatusAll": "ทุกสถานะ",
+        "sortLabel": "จัดเรียง",
+        "sortNameAsc": "ชื่อ A–Z",
+        "sortNameDesc": "ชื่อ Z–A",
+        "clearFilters": "ล้างตัวกรอง",
+        "paginationLabel": "การแบ่งหน้า",
+        "previous": "ก่อนหน้า",
+        "next": "ถัดไป",
+        "showingCount": "กำลังแสดง {showing} จาก {total} นักเรียน",
+        "pageCount": "หน้า {page} จาก {pageCount} — รวม {total} นักเรียน",
+        "filteredEmptyTitle": "ไม่มีนักเรียนที่ตรงกับตัวกรองเหล่านี้",
+        "filteredEmptyDescription": "ลองค้นหาอื่นหรือล้างตัวกรอง",
+        "loading": "กำลังโหลดนักเรียน",
+        "errorStaleBanner": "การรีเฟรชล่าสุดล้มเหลว — นักเรียนด้านล่างคือรายการสุดท้ายที่เซิร์ฟเวอร์ส่งมา"
       }
     },
     "title": "ชั้นเรียน",
@@ -2725,10 +2849,34 @@
       "required": "จำเป็นต้องกรอกช่องนี้",
       "tooLong": "ยาวเกินไป"
     },
+    "list": {
+      "searchPlaceholder": "ค้นหาชั้นเรียน",
+      "searchLabel": "ค้นหาชั้นเรียน",
+      "filterYearBandAll": "ทุกช่วงชั้นปี",
+      "sortLabel": "จัดเรียง",
+      "sortNameAsc": "ชื่อ A–Z",
+      "sortNameDesc": "ชื่อ Z–A",
+      "sortStudentsDesc": "นักเรียนมากที่สุด",
+      "sortStudentsAsc": "นักเรียนน้อยที่สุด",
+      "clearFilters": "ล้างตัวกรอง",
+      "paginationLabel": "การแบ่งหน้า",
+      "previous": "ก่อนหน้า",
+      "next": "ถัดไป",
+      "rowMenuLabel": "การทำงานของแถว",
+      "showingCount": "กำลังแสดง {showing} จาก {total} ชั้นเรียน",
+      "pageCount": "หน้า {page} จาก {pageCount} — รวม {total} ชั้นเรียน",
+      "emptyTitle": "ยังไม่มีชั้นเรียน",
+      "emptyBody": "เพิ่มชั้นเรียนแรกของคุณเพื่อเริ่มต้น",
+      "filteredEmptyTitle": "ไม่มีชั้นเรียนที่ตรงกับตัวกรองเหล่านี้",
+      "filteredEmptyDescription": "ลองค้นหาอื่นหรือล้างตัวกรอง",
+      "loading": "กำลังโหลดชั้นเรียน",
+      "errorStaleBanner": "การรีเฟรชล่าสุดล้มเหลว — ชั้นเรียนด้านล่างคือรายการสุดท้ายที่เซิร์ฟเวอร์ส่งมา"
+    },
     "actions": {
       "menuLabel": "การดำเนินการสำหรับ {name}",
       "edit": "แก้ไขชั้นเรียน",
-      "delete": "ลบชั้นเรียน"
+      "delete": "ลบชั้นเรียน",
+      "rowMenuLabel": "การทำงาน"
     },
     "deleteDialog": {
       "title": "ลบ {name}?",
@@ -2871,6 +3019,16 @@
       "next": "ถัดไป",
       "pageOf": "หน้า {page} จาก {pageCount}"
     },
+    "list": {
+      "rowMenuLabel": "การดำเนินการ",
+      "showingCount": "แสดง {showing} จาก {total}",
+      "staleBanner": "การรีเฟรชล่าสุดล้มเหลว — แถวด้านล่างคือรายการล่าสุดที่เซิร์ฟเวอร์ส่งมา",
+      "loading": "กำลังโหลดนักเรียน",
+      "clearFilters": "ล้างตัวกรอง",
+      "paginationLabel": "การแบ่งหน้านักเรียน",
+      "emptyTitle": "ยังไม่มีนักเรียน",
+      "noMatchesDescription": "ลองค้นด้วยชื่ออื่นหรือล้างตัวกรอง"
+    },
     "actions": {
       "menuLabel": "การดำเนินการสำหรับ {name}",
       "edit": "แก้ไขนักเรียน",
@@ -2993,6 +3151,33 @@
       "retry": "ลองอีกครั้ง",
       "undo": "เลิกทำ"
     },
+    "confirm": {
+      "activate": {
+        "title": "เปิดใช้งาน {name} หรือไม่?",
+        "body": "เริ่มเรียกเก็บเงินตามแผนปัจจุบัน และพนักงานที่ได้รับเชิญทั้งหมดจะเข้าถึงได้",
+        "cta": "เปิดใช้งาน"
+      },
+      "reactivate": {
+        "title": "เปิดใช้งาน {name} อีกครั้งหรือไม่?",
+        "body": "พนักงานและนักเรียนจะเข้าถึงได้ทันที และช่วงเวลาการทดสอบที่กำหนดไว้จะดำเนินต่อ",
+        "cta": "เปิดใช้งานอีกครั้ง"
+      },
+      "restore": {
+        "title": "กู้คืน {name} หรือไม่?",
+        "body": "โรงเรียนจะกลับสู่สถานะรอการตั้งค่า ข้อมูลจะไม่ถูกลบขณะเก็บถาวร",
+        "cta": "กู้คืน"
+      },
+      "suspend": {
+        "title": "ระงับ {name} หรือไม่?",
+        "body": "พนักงานและนักเรียนจะเข้าถึงไม่ได้จนกว่าจะเปิดใช้งานอีกครั้ง ช่วงเวลาทดสอบที่กำลังดำเนินการจะหยุดชั่วคราว",
+        "cta": "ระงับโรงเรียน"
+      },
+      "archive": {
+        "title": "เก็บถาวร {name} หรือไม่?",
+        "body": "โรงเรียนจะถูกซ่อนจากรายการที่ใช้งานอยู่และหยุดเรียกเก็บเงิน ข้อมูลจะเก็บไว้ 24 เดือน",
+        "cta": "เก็บถาวรโรงเรียน"
+      }
+    },
     "schools": {
       "meta": {
         "title": "โรงเรียน - ปฏิบัติการ SchoolTest",
@@ -3055,6 +3240,28 @@
       "actionOpen": "เปิดโรงเรียน",
       "actionStatusPage": "หน้าสถานะ",
       "statusPageUnconfigured": "รุ่นนี้ยังไม่ได้ตั้งค่า URL ของหน้าสถานะ",
+      "actions": {
+        "editDetails": "แก้ไขรายละเอียด",
+        "inviteAdmin": "เชิญผู้ดูแล",
+        "activate": "เปิดใช้งานโรงเรียน",
+        "reactivate": "เปิดใช้งานโรงเรียนอีกครั้ง",
+        "restore": "กู้คืนโรงเรียน",
+        "suspend": "ระงับโรงเรียน",
+        "archive": "เก็บถาวรโรงเรียน",
+        "undo": "เลิกทำ",
+        "cancel": "ยกเลิก",
+        "undoSuccess": "ย้อนการเปลี่ยนแปลงแล้ว — {name} กลับสู่สถานะเดิม",
+        "undoExpired": "ไม่สามารถเลิกทำได้อีก โหลดใหม่เพื่อดูสถานะปัจจุบัน",
+        "undoError": "บันทึกการเปลี่ยนแปลงไม่ได้ โหลดใหม่แล้วลองอีกครั้ง",
+        "typedMismatch": "พิมพ์ชื่อให้ตรงกับที่แสดงเพื่อยืนยัน",
+        "success": {
+          "activate": "เปิดใช้งาน {name} แล้ว",
+          "reactivate": "เปิดใช้งาน {name} อีกครั้งแล้ว",
+          "restore": "กู้คืน {name} แล้ว",
+          "suspend": "ระงับ {name} แล้ว",
+          "archive": "เก็บถาวร {name} แล้ว"
+        }
+      },
       "emptyNoneTitle": "ยังไม่มีโรงเรียน",
       "emptyNoneDescription": "สร้างโรงเรียนแรกเพื่อเริ่มต้น",
       "emptySearchTitle": "ไม่พบโรงเรียนที่ตรงกับการค้นหา",
@@ -3123,19 +3330,24 @@
       "banner": {
         "trial": {
           "title": "ทดลองใช้",
-          "body": "โรงเรียนนี้อยู่ในช่วงทดลองใช้ เปิดใช้งานเพื่อให้ช่วงเวลาสอบดำเนินต่อหลังสิ้นสุดการทดลองใช้"
+          "body": "โรงเรียนนี้อยู่ในช่วงทดลองใช้ เปิดใช้งานเพื่อให้ช่วงเวลาสอบดำเนินต่อหลังสิ้นสุดการทดลองใช้",
+          "bodyWithDate": "โรงเรียนนี้อยู่ในช่วงทดลองใช้จนถึง {date} เปิดใช้งานเพื่อให้ช่วงเวลาสอบดำเนินต่อหลังจากนั้น"
         },
         "pending_setup": {
           "title": "การตั้งค่ายังไม่เสร็จ",
-          "body": "ยังไม่มีผู้ดูแลรับคำเชิญเป็นเจ้าของ จึงยังตั้งค่าอย่างอื่นไม่ได้จนกว่าจะมีผู้รับ"
+          "body": "ยังไม่มีผู้ดูแลรับคำเชิญเป็นเจ้าของ จึงยังตั้งค่าอย่างอื่นไม่ได้จนกว่าจะมีผู้รับ",
+          "cta": "ส่งคำเชิญเจ้าของอีกครั้ง",
+          "resendCooldown": "คำเชิญถึง {name} เพิ่งถูกส่งไปเมื่อไม่ถึงหนึ่งนาทีที่แล้ว — โปรดรอก่อนส่งอีกครั้ง"
         },
         "suspended": {
           "title": "โรงเรียนนี้ถูกระงับ",
-          "body": "บุคลากรและนักเรียนไม่มีสิทธิ์เข้าถึง และช่วงเวลาสอบถูกหยุดชั่วคราว"
+          "body": "บุคลากรและนักเรียนไม่มีสิทธิ์เข้าถึง และช่วงเวลาสอบถูกหยุดชั่วคราว",
+          "bodyWithInterval": "ถูกระงับ{interval} บุคลากรและนักเรียนไม่มีสิทธิ์เข้าถึง และช่วงเวลาสอบถูกหยุดชั่วคราว"
         },
         "archived": {
           "title": "โรงเรียนนี้ถูกเก็บถาวรแล้ว",
-          "body": "การเรียกเก็บเงินหยุดแล้วและบุคลากรไม่มีสิทธิ์เข้าถึง ข้อมูลจะถูกเก็บไว้จนถึงวันสิ้นสุดการเก็บรักษา"
+          "body": "การเรียกเก็บเงินหยุดแล้วและบุคลากรไม่มีสิทธิ์เข้าถึง ข้อมูลจะถูกเก็บไว้จนถึงวันสิ้นสุดการเก็บรักษา",
+          "bodyWithDate": "การเรียกเก็บเงินหยุดแล้วและบุคลากรไม่มีสิทธิ์เข้าถึง ข้อมูลจะถูกเก็บไว้จนถึง {date}"
         }
       },
       "suspend": {
@@ -3170,6 +3382,7 @@
         "restore": "กู้คืนโรงเรียน",
         "suspend": "ระงับโรงเรียน",
         "archive": "เก็บถาวรโรงเรียน",
+        "recalculateSeats": "คำนวณที่นั่งใหม่",
         "undo": "เลิกทำ",
         "success": "อัปเดต {name} แล้ว",
         "undoSuccess": "กู้คืน {name} แล้ว",
@@ -3242,6 +3455,7 @@
     "import": {
       "title": "นำเข้านักเรียน",
       "description": "อัปโหลดสเปรดชีตเทมเพลตที่กรอกแล้วหรือวาง CSV ตรวจสอบตัวอย่างก่อนบันทึก",
+      "descriptionForSchool": "อัปโหลด CSV เพื่อเพิ่มนักเรียนเข้า {name}",
       "dropTitle": "วางไฟล์ CSV ที่กรอกแล้วที่นี่",
       "dropHint": "ลากไฟล์เข้ามาหรือเลือกด้านล่าง — ทุกตัวเลขพรีวิวมาจากเซิร์ฟเวอร์",
       "dropActive": "ปล่อยเพื่อโหลดไฟล์",
@@ -3296,6 +3510,17 @@
       "columnYearLevel": "ระดับชั้น",
       "columnStudentKey": "รหัสนักเรียน",
       "columnMatchedStudent": "นักเรียนที่จับคู่ได้",
+      "changeFileButton": "เปลี่ยนไฟล์",
+      "ctaLabelReady": "นำเข้านักเรียน {count} คน",
+      "ctaLabelRowErrors": "นำเข้า {count} แถวที่ถูกต้อง",
+      "ctaLabelDupes": "นำเข้านักเรียนใหม่ {count} คน",
+      "ctaLabelFailed": "ลองนำเข้าอีกครั้ง",
+      "ctaLabelValidating": "กำลังตรวจ…",
+      "ctaLabelDefault": "นำเข้านักเรียน",
+      "guardNoFile": "เลือกไฟล์ CSV ที่จะนำเข้า",
+      "guardStillValidating": "กำลังตรวจสอบไฟล์อยู่ — กรุณารอสักครู่",
+      "guardCannotImport": "ไม่สามารถนำเข้าไฟล์นี้ได้ โปรดเลือกไฟล์อื่น",
+      "closeBlockedToast": "กำลังบันทึกอยู่ — กรุณารอสักครู่",
       "card": {
         "validating": {
           "title": "กำลังตรวจ {name}…",
@@ -3522,7 +3747,19 @@
       "rosterErrorBody": "ไม่สามารถโหลดรายชื่อนักเรียนของชั้นเรียนได้ ข้อมูลชั้นเรียนแสดงอยู่ด้านบน",
       "rosterPageOf": "หน้า {page} จาก {pageCount}",
       "rosterPrev": "ก่อนหน้า",
-      "rosterNext": "ถัดไป"
+      "rosterNext": "ถัดไป",
+      "backToClasses": "← ชั้นเรียนทั้งหมด",
+      "addStudents": "เพิ่มนักเรียน",
+      "exportCsv": "ส่งออกเป็น CSV",
+      "noWindowAssigned": "ยังไม่ได้กำหนดรอบการสอบ",
+      "rosterLabel": "แสดง {shown} จาก {total} · กิจกรรมล่าสุด",
+      "entityLabel": "นักเรียน",
+      "summaryTestsCompletedValue": "{completed} จาก {enrolled}",
+      "rosterActionRemove": "นำออกจากชั้นเรียน",
+      "rosterRemoveConfirmTitleRow": "นำ {name} ออกจาก {className} หรือไม่",
+      "rosterRemoveConfirmTitleBulk": "{count, plural, other {นำนักเรียน # คนออกจาก {className} หรือไม่}}",
+      "rosterRemoveConfirmBody": "นักเรียนจะยังคงลงทะเบียนกับโรงเรียนและสามารถเพิ่มเข้าชั้นเรียนอื่นได้",
+      "rosterRemoveConfirmCtaBulk": "นำออก {count} คน"
     },
     "schoolTables": {
       "title": "ไดเรกทอรีโรงเรียน",
@@ -3539,6 +3776,8 @@
       "teachersNote": "บุคลากรการสอนของโรงเรียนนี้ การแก้ไขและลบผ่านจัดการครู (เอนด์พอยต์ C-TCH-04/C-TCH-03)",
       "teachersEmptyTitle": "ไม่มีครูสำหรับโรงเรียนนี้",
       "teachersEmptyDescription": "โรงเรียนนี้ยังไม่มีบุคลากรการสอน",
+      "teachersHeaderTitle": "ครู",
+      "teachersHeaderSummary": "ครู {teachers} คน · ครอบคลุม {classes} ชั้นเรียน",
       "manageTeachers": "จัดการครู",
       "classesNote": "ชั้นเรียนดึงผ่านไดเรกทอรีบุคลากรของโรงเรียน จำนวนนักเรียนและกรอบเวลาทดสอบไม่ถูกให้บริการโดย API ops",
       "classesEmptyTitle": "ไม่พบชั้นเรียน",
@@ -3621,7 +3860,104 @@
       "ownerNoneDescription": "โรงเรียนนี้มีอยู่ก่อนระบบบันทึกความเป็นเจ้าของ และมีผู้ดูแลมากกว่าหนึ่งคน จึงไม่มีการกำหนดเจ้าของโดยอัตโนมัติ โปรดเลือกอย่างชัดเจนหนึ่งคน",
       "ownerConflict": "ความเป็นเจ้าของเปลี่ยนไปหลังจากโหลดหน้านี้ โปรดรีเฟรชไดเรกทอรีแล้วยืนยันอีกครั้ง",
       "ownerNotEligible": "เจ้าของคนใหม่ต้องเป็นผู้ดูแลที่ใช้งานอยู่ของโรงเรียนนี้",
-      "ownerTransferred": "โอนความเป็นเจ้าของแล้ว"
+      "ownerTransferred": "โอนความเป็นเจ้าของแล้ว",
+      "studentsHeaderSummary": "ลงทะเบียน {count} คน · แสดงกิจกรรมล่าสุด",
+      "studentsImportCta": "นำเข้านักเรียน",
+      "studentsActionMoveClass": "ย้ายชั้นเรียน",
+      "studentsActionDeactivate": "ปิดใช้งานนักเรียน",
+      "studentsActionReactivate": "เปิดใช้งานนักเรียนอีกครั้ง",
+      "studentsDeactivateConfirmTitle": "ปิดใช้งาน {name} ใช่หรือไม่",
+      "studentsDeactivateConfirmBody": "นักเรียนยังคงเก็บผลคะแนนไว้ แต่จะไม่สามารถเข้าสอบใหม่ได้",
+      "studentsDeactivateConfirmCta": "ปิดใช้งาน",
+      "studentsReactivateConfirmTitle": "เปิดใช้งาน {name} อีกครั้งใช่หรือไม่",
+      "studentsReactivateConfirmBody": "นักเรียนจะกลับเข้าชั้นเรียนและสามารถเข้าสอบตามกำหนดการได้",
+      "studentsReactivateConfirmCta": "เปิดใช้งานอีกครั้ง",
+      "studentsMoveClassTitle": "ย้ายไปชั้นเรียนอื่น",
+      "studentsMoveClassBody": "{count, plural, other {นักเรียนที่เลือก # คนจะย้ายไปยังชั้นเรียนที่คุณเลือกด้านล่าง}}",
+      "studentsMoveClassDestinationLabel": "ชั้นเรียนปลายทาง",
+      "studentsMoveClassPlaceholder": "เลือกชั้นเรียน",
+      "studentsMoveClassCta": "{count, plural, other {ย้ายนักเรียน # คน}}",
+      "studentsBulkDeactivate": "ปิดใช้งาน",
+      "studentsBulkDeactivateSkip": "{count} คนปิดใช้งานแล้ว",
+      "adminsHeaderTitle": "ผู้ดูแลโรงเรียน",
+      "adminsHeaderSummary": "เชิญแล้ว {invited} · ใช้งานอยู่ {active}",
+      "statusInvited": "เชิญแล้ว",
+      "accountActionSuccess": "อัปเดต {name} แล้ว",
+      "bulkResendInvites": "ส่งคำเชิญอีกครั้ง",
+      "bulkExport": "ส่งออก",
+      "bulkRemove": "นำออก",
+      "editAccessTitle": "แก้ไขสิทธิ์การเข้าถึงของ {name}",
+      "editAccessDescription": "เลือกบทบาทของบัญชีนี้ในโรงเรียนนี้",
+      "editAccessRoleAdmin": "ผู้ดูแลโรงเรียน",
+      "editAccessRoleTeacher": "ครู",
+      "editAccessCancel": "ยกเลิก",
+      "editAccessSave": "บันทึก",
+      "editAccessSuccess": "อัปเดตสิทธิ์การเข้าถึงของ {name} แล้ว",
+      "editAccessError": "ไม่สามารถอัปเดตสิทธิ์การเข้าถึงได้ ลองอีกครั้ง",
+      "actions": {
+        "editAccess": "แก้ไขสิทธิ์การเข้าถึง",
+        "viewClasses": "ดูชั้นเรียน",
+        "resendInvite": "ส่งคำเชิญอีกครั้ง",
+        "removeFromSchool": "นำออกจากโรงเรียน",
+        "suspendAdmin": "ระงับผู้ดูแล",
+        "reactivateAdmin": "เปิดใช้งานผู้ดูแลอีกครั้ง",
+        "suspendTeacher": "ระงับครู",
+        "reactivateTeacher": "เปิดใช้งานครูอีกครั้ง",
+        "confirm": {
+          "suspendAdmin": {
+            "title": "ระงับ {name} หรือไม่?",
+            "body": "จะสูญเสียสิทธิ์เข้าถึงโรงเรียนนี้จนกว่าจะเปิดใช้งานอีกครั้ง",
+            "cta": "ระงับ"
+          },
+          "reactivateAdmin": {
+            "title": "เปิดใช้งาน {name} อีกครั้งหรือไม่?",
+            "body": "จะได้รับสิทธิ์เข้าถึงโรงเรียนนี้คืนทันที",
+            "cta": "เปิดใช้งานอีกครั้ง"
+          },
+          "removeAdmin": {
+            "title": "นำ {name} ออกหรือไม่?",
+            "body": "สิทธิ์การเข้าถึงจะสิ้นสุดทันที รายงานที่สร้างไว้จะยังอยู่กับโรงเรียน",
+            "cta": "นำผู้ดูแลออก"
+          },
+          "suspendTeacher": {
+            "title": "ระงับ {name} หรือไม่?",
+            "body": "ชั้นเรียนจะยังคงอยู่ แต่จะสูญเสียสิทธิ์เข้าถึงจนกว่าจะเปิดใช้งานอีกครั้ง",
+            "cta": "ระงับ"
+          },
+          "reactivateTeacher": {
+            "title": "เปิดใช้งาน {name} อีกครั้งหรือไม่?",
+            "body": "จะได้รับสิทธิ์เข้าถึงชั้นเรียนคืน",
+            "cta": "เปิดใช้งานอีกครั้ง"
+          },
+          "removeTeacher": {
+            "title": "นำ {name} ออกหรือไม่?",
+            "body": "ต้องมอบหมายชั้นเรียนใหม่ให้ครูคนอื่น",
+            "cta": "นำครูออก"
+          }
+        }
+      },
+      "bulkConfirm": {
+        "suspendAdmin": {
+          "title": "ระงับผู้ดูแล {count} คนหรือไม่?",
+          "body": "จะสูญเสียสิทธิ์เข้าถึงโรงเรียนนี้จนกว่าจะเปิดใช้งานอีกครั้ง",
+          "cta": "ระงับ {count} คน"
+        },
+        "removeAdmin": {
+          "title": "นำผู้ดูแล {count} คนออกหรือไม่?",
+          "body": "สิทธิ์การเข้าถึงจะสิ้นสุดทันที รายงานที่สร้างไว้จะยังอยู่กับโรงเรียน",
+          "cta": "นำ {count} คนออก"
+        },
+        "suspendTeacher": {
+          "title": "ระงับครู {count} คนหรือไม่?",
+          "body": "ชั้นเรียนจะยังคงอยู่ แต่จะสูญเสียสิทธิ์เข้าถึงจนกว่าจะเปิดใช้งานอีกครั้ง",
+          "cta": "ระงับ {count} คน"
+        },
+        "removeTeacher": {
+          "title": "นำครู {count} คนออกหรือไม่?",
+          "body": "ต้องมอบหมายชั้นเรียนใหม่",
+          "cta": "นำ {count} คนออก"
+        }
+      }
     },
     "inspection": {
       "title": "การตรวจสอบแบบทดสอบ",
@@ -3715,6 +4051,14 @@
       "previousPage": "หน้าก่อนหน้า",
       "nextPage": "หน้าถัดไป",
       "clearFilter": "ล้างตัวกรองครู",
+      "headerTitle": "ชั้นเรียน",
+      "summary": "{count} ชั้นเรียนในปี 7–12",
+      "clearFilters": "ล้างตัวกรอง",
+      "paginationLabel": "การแบ่งหน้าชั้นเรียน",
+      "paginationSummary": "หน้า {page} จาก {pageCount} — รวม {total} รายการ",
+      "staleBanner": "การรีเฟรชล่าสุดล้มเหลว — แถวด้านล่างคือข้อมูลล่าสุดที่เซิร์ฟเวอร์ส่งมา",
+      "retry": "ลองอีกครั้ง",
+      "loadingLabel": "กำลังโหลดชั้นเรียน",
       "status": {
         "active": "ใช้งานอยู่",
         "pending_setup": "รอการตั้งค่า",
@@ -3723,6 +4067,66 @@
       "year": {
         "7_9": "ปี 7–9",
         "10_12": "ปี 10–12"
+      }
+    },
+    "classActions": {
+      "actions": {
+        "open": "เปิดชั้นเรียน",
+        "reassignTeacher": "มอบหมายครูใหม่",
+        "edit": "แก้ไขชั้นเรียน",
+        "archive": "เก็บถาวรชั้นเรียน",
+        "restore": "กู้คืนชั้นเรียน",
+        "cancel": "ยกเลิก",
+        "confirm": {
+          "archive": {
+            "title": "เก็บถาวร {name} ใช่หรือไม่",
+            "body": "นักเรียนยังคงลงทะเบียนกับโรงเรียนอยู่ แต่ชั้นเรียนนี้จะถูกซ่อนจากครู",
+            "cta": "เก็บถาวรชั้นเรียน"
+          },
+          "restore": {
+            "title": "กู้คืน {name} ใช่หรือไม่",
+            "body": "ชั้นเรียนจะกลับไปอยู่ในรายการที่ใช้งานอยู่พร้อมนักเรียน",
+            "cta": "กู้คืนชั้นเรียน"
+          }
+        }
+      },
+      "entityLabel": "ชั้นเรียน",
+      "bulk": {
+        "setTestWindow": "ตั้งช่วงเวลาสอบ",
+        "archive": "เก็บถาวร",
+        "archiveSkip": "{skipped} รายการเก็บถาวรแล้ว",
+        "confirm": {
+          "archive": {
+            "title": "เก็บถาวรชั้นเรียน {count} รายการใช่หรือไม่",
+            "body": "นักเรียนยังคงลงทะเบียนกับโรงเรียนอยู่ แต่ชั้นเรียนเหล่านี้จะถูกซ่อนจากครู",
+            "cta": "เก็บถาวร {count} รายการ"
+          }
+        }
+      },
+      "reassign": {
+        "title": "มอบหมายครูใหม่",
+        "description": "เลือกครูคนใหม่สำหรับ {name}",
+        "teacherLabel": "ครู",
+        "noTeacherOption": "ยังไม่ได้กำหนดครู",
+        "cancel": "ยกเลิก",
+        "save": "บันทึก",
+        "saving": "กำลังบันทึก…",
+        "errorTitle": "มอบหมายครูใหม่ไม่สำเร็จ",
+        "errorDescription": "ไม่สามารถมอบหมายครูใหม่ได้ โปรดลองอีกครั้ง"
+      },
+      "setTestWindow": {
+        "title": "ตั้งช่วงเวลาสอบ",
+        "description": "สร้างช่วงเวลาสอบและกำหนดให้กับชั้นเรียนที่เลือก {count} รายการ",
+        "titleLabel": "ชื่อ",
+        "timezoneLabel": "เขตเวลา",
+        "opensLabel": "เปิด",
+        "closesLabel": "ปิด",
+        "formLabel": "แบบทดสอบการอ่าน",
+        "formPlaceholder": "เลือกแบบทดสอบ",
+        "cancel": "ยกเลิก",
+        "submit": "สร้างและกำหนด",
+        "submitting": "กำลังสร้าง…",
+        "createErrorTitle": "สร้างช่วงเวลาสอบไม่สำเร็จ"
       }
     },
     "staffInvitations": {
@@ -5239,5 +5643,36 @@
     "loading": "กำลังโหลด",
     "commandPalette": "ชุดคำสั่ง",
     "commandPaletteDescription": "ค้นหาคำสั่งที่ต้องการเรียกใช้..."
+  },
+  "Directory": {
+    "defaults": {
+      "searchPlaceholder": "ค้นหา",
+      "searchLabel": "ค้นหา",
+      "filtersLabel": "ตัวกรอง",
+      "sortLabel": "จัดเรียง",
+      "layoutLabel": "เลย์เอาต์",
+      "clearFilters": "ล้างตัวกรอง",
+      "paginationLabel": "การแบ่งหน้า",
+      "previous": "ก่อนหน้า",
+      "next": "ถัดไป",
+      "rowMenuLabel": "การกระทำของแถว",
+      "selectAllLabel": "เลือกทุกแถวในหน้านี้",
+      "selectRowLabel": "เลือกแถว {key}",
+      "showingCount": "แสดง {showing} จาก {total}",
+      "pageCount": "หน้า {page} จาก {pageCount} — รวม {total}",
+      "selectedEntityNoun": "แถว",
+      "emptyNoneTitle": "ยังไม่มีรายการ",
+      "emptyNoneDescription": "รายการจะปรากฏที่นี่ทันทีที่สร้าง",
+      "emptyNoMatchesTitle": "ไม่มีรายการที่ตรงกัน",
+      "emptyNoMatchesDescription": "ไม่มีรายการตรงกับการค้นหาและตัวกรองปัจจุบัน",
+      "errorTitle": "ไม่สามารถโหลดรายการนี้",
+      "errorStaleBanner": "การรีเฟรชล่าสุดล้มเหลว — แถวด้านล่างคือข้อมูลล่าสุดที่เซิร์ฟเวอร์ส่งมา",
+      "errorDescription": "เกิดปัญหาขณะโหลดรายการนี้",
+      "retry": "ลองอีกครั้ง",
+      "loadingLabel": "กำลังโหลด",
+      "exportLabel": "ส่งออก CSV",
+      "primaryActionLabel": "เปิด",
+      "chipAllLabel": "ทั้งหมด"
+    }
   }
 }

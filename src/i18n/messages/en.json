@@ -377,7 +377,13 @@
     "tableRowScience": "Science Test",
     "tableRowHistory": "History Exam",
     "tableRowReading": "Reading Check",
-    "tableShowing": "Showing 1–4 of 12",
+    "tableShowing": "Showing {showing} of {total}",
+    "tableSearchPlaceholder": "Search tests…",
+    "tableSortLabel": "Sort",
+    "tableRowMenu": "Row actions",
+    "tableRowOpen": "Open",
+    "tableExport": "Export",
+    "tablePageCount": "Page {page} of {pageCount} — {total} total",
     "progressLabel": "Average score progress",
     "avatarAlt": "Teacher avatar",
     "breadcrumbDashboard": "Dashboard",
@@ -838,7 +844,6 @@
           "daily": "One digest email every morning at about 6:30 am. Account and security alerts still arrive immediately.",
           "weekly": "One digest email every Monday morning at about 6:30 am. Account and security alerts still arrive immediately."
         },
-        "deferredOption": "{label} — coming soon",
         "emailOffNotice": "No optional email will be sent while this is selected. Account and security alerts still arrive."
       },
       "alwaysOnTitle": "Account and security updates stay on",
@@ -869,11 +874,46 @@
       "saved": "Notification preferences saved.",
       "saveError": "We couldn't save your notification preferences.",
       "loadErrorTitle": "We couldn't load your notification preferences.",
-      "loadErrorDescription": "Please retry to load your saved notification settings."
+      "loadErrorDescription": "Please retry to load your saved notification settings.",
+      "eventsTitle": "What you are told about",
+      "events": {
+        "testResultsReady": {
+          "title": "Test results",
+          "description": "Email and push as soon as a report is ready."
+        },
+        "testResultsUpdated": {
+          "title": "Updated results",
+          "description": "When a report you have already seen is revised."
+        },
+        "sessionCompleted": {
+          "title": "Test finished",
+          "description": "When your student finishes a test."
+        },
+        "sessionStarted": {
+          "title": "Test started",
+          "description": "When your student begins a test."
+        },
+        "studentCreated": {
+          "title": "Student added",
+          "description": "When a student is added to your account."
+        },
+        "studentEmailFix": {
+          "title": "Sign-in address flagged",
+          "description": "When a student needs a corrected email before test day."
+        }
+      }
     },
     "language": {
       "title": "Language",
       "description": "Choose the language SchoolTest uses across the app."
+    },
+    "staff": {
+      "title": "Notification settings",
+      "subtitle": "Choose which school updates reach you and how they are delivered.",
+      "meta": {
+        "title": "Notification settings — SchoolTest",
+        "description": "Manage how SchoolTest notifies you about results, test sessions and school notices."
+      }
     }
   },
   "SchoolSearch": {
@@ -2795,6 +2835,26 @@
     },
     "testDay": {
       "history": {
+        "searchPlaceholder": "Search sittings",
+        "searchLabel": "Search sittings",
+        "filterOutcomeLabel": "Outcome",
+        "filterOutcomeAll": "All outcomes",
+        "sortLabel": "Sort",
+        "clearFilters": "Clear filters",
+        "paginationLabel": "History pages",
+        "previous": "Previous",
+        "next": "Next",
+        "rowMenuLabel": "Row actions",
+        "showingCount": "Showing {showing} of {total} sittings",
+        "pageCount": "Page {page} of {pageCount} · {total} total",
+        "sortOpenedDesc": "Opened: newest first",
+        "sortOpenedAsc": "Opened: oldest first",
+        "openAction": "Open",
+        "filteredEmptyTitle": "No sittings match",
+        "filteredEmptyDescription": "No sitting matches the current search and outcome filter.",
+        "errorStaleBanner": "The latest refresh failed — the rows below are the last ones the server served.",
+        "errorDescription": "Check your connection and try again.",
+        "retry": "Retry",
         "title": "Sitting history",
         "loading": "Loading sitting history...",
         "loadError": "The sitting history could not be loaded. Try again.",
@@ -2861,6 +2921,29 @@
       "closedNote": "This sitting is closed. Reopen it to let students join."
     },
     "monitor": {
+      "searchPlaceholder": "Search students",
+      "searchLabel": "Search students",
+      "filterStatusLabel": "Sitting status",
+      "filterStatusAll": "All statuses",
+      "sortLabel": "Sort",
+      "clearFilters": "Clear filters",
+      "paginationLabel": "Class progress pages",
+      "previous": "Previous",
+      "next": "Next",
+      "rowMenuLabel": "Row actions",
+      "showingCount": "Showing {showing} of {total} students",
+      "pageCount": "Page {page} of {pageCount} · {total} total",
+      "sortNameAsc": "Name A-Z",
+      "sortNameDesc": "Name Z-A",
+      "sortProgressAsc": "Progress: least first",
+      "sortProgressDesc": "Progress: most first",
+      "emptyTitle": "No students on this roster",
+      "emptyBody": "Students appear here once they are on the class roster.",
+      "filteredEmptyTitle": "No students match",
+      "filteredEmptyDescription": "No student matches the current search and status filter.",
+      "errorStaleBanner": "The latest refresh failed — the students below are the last ones the server served.",
+      "errorDescription": "Check your connection and try again.",
+      "retry": "Retry",
       "title": "Class progress",
       "liveNote": "Updates automatically while the sitting is open.",
       "loading": "Loading the class...",
@@ -3050,7 +3133,29 @@
         "invited": "Invited",
         "expired": "Expired"
       },
-      "noValue": "—"
+      "noValue": "—",
+      "filterAll": "All",
+      "statusActive": "Active",
+      "statusInvited": "Invited",
+      "statusSuspended": "Suspended",
+      "sortNameAsc": "Name A–Z",
+      "sortNameDesc": "Name Z–A",
+      "searchPlaceholder": "Search staff",
+      "searchLabel": "Search staff",
+      "sortLabel": "Sort",
+      "clearFilters": "Clear filters",
+      "paginationLabel": "Staff pages",
+      "previous": "Previous",
+      "next": "Next",
+      "rowMenuLabel": "Row actions",
+      "showingCount": "Showing {showing} of {total} staff",
+      "pageCount": "Page {page} of {pageCount} · {total} total",
+      "emptyTitle": "No teachers yet",
+      "emptyBody": "Teachers appear here once a school admin invites them.",
+      "noMatchesTitle": "Nothing matches this filter",
+      "noMatchesBody": "Try a different status.",
+      "staleBanner": "The latest refresh failed — the rows below are the last ones the server served.",
+      "loading": "Loading staff"
     },
     "actions": {
       "menuLabel": "Actions for {name}",
@@ -3173,6 +3278,25 @@
         "seatsToast": "Your plan has no seats left for these students.",
         "forbiddenToast": "You do not have permission to add students.",
         "genericToast": "That did not work. Try again."
+      },
+      "roster": {
+        "searchPlaceholder": "Search students",
+        "searchLabel": "Search students",
+        "filterStatusLabel": "Test status",
+        "filterStatusAll": "All statuses",
+        "sortLabel": "Sort",
+        "sortNameAsc": "Name A–Z",
+        "sortNameDesc": "Name Z–A",
+        "clearFilters": "Clear filters",
+        "paginationLabel": "Pagination",
+        "previous": "Previous",
+        "next": "Next",
+        "showingCount": "Showing {showing} of {total} students",
+        "pageCount": "Page {page} of {pageCount} — {total} students",
+        "filteredEmptyTitle": "No students match those filters.",
+        "filteredEmptyDescription": "Try a different search or clear the filters.",
+        "loading": "Loading students",
+        "errorStaleBanner": "The latest refresh failed — the students below are the last ones the server served."
       }
     },
     "title": "Classes",
@@ -3204,10 +3328,34 @@
       "required": "This field is required.",
       "tooLong": "That is too long."
     },
+    "list": {
+      "searchPlaceholder": "Search classes",
+      "searchLabel": "Search classes",
+      "filterYearBandAll": "All year bands",
+      "sortLabel": "Sort",
+      "sortNameAsc": "Name A–Z",
+      "sortNameDesc": "Name Z–A",
+      "sortStudentsDesc": "Most students",
+      "sortStudentsAsc": "Fewest students",
+      "clearFilters": "Clear filters",
+      "paginationLabel": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "rowMenuLabel": "Row actions",
+      "showingCount": "Showing {showing} of {total} classes",
+      "pageCount": "Page {page} of {pageCount} — {total} classes",
+      "emptyTitle": "No classes yet",
+      "emptyBody": "Add your first class to get started.",
+      "filteredEmptyTitle": "No classes match those filters.",
+      "filteredEmptyDescription": "Try a different search or clear the filters.",
+      "loading": "Loading classes",
+      "errorStaleBanner": "The latest refresh failed — the classes below are the last ones the server served."
+    },
     "actions": {
       "menuLabel": "Actions for {name}",
       "edit": "Edit class",
-      "delete": "Delete class"
+      "delete": "Delete class",
+      "rowMenuLabel": "Actions"
     },
     "deleteDialog": {
       "title": "Delete {name}?",
@@ -3350,6 +3498,16 @@
       "next": "Next",
       "pageOf": "Page {page} of {pageCount}"
     },
+    "list": {
+      "rowMenuLabel": "Actions",
+      "showingCount": "Showing {showing} of {total}",
+      "staleBanner": "The latest refresh failed — the rows below are the last ones the server served.",
+      "loading": "Loading students",
+      "clearFilters": "Clear filters",
+      "paginationLabel": "Students pagination",
+      "emptyTitle": "No students yet",
+      "noMatchesDescription": "Try a different name or clear the filters."
+    },
     "actions": {
       "menuLabel": "Actions for {name}",
       "edit": "Edit student",
@@ -3472,6 +3630,33 @@
       "retry": "Retry",
       "undo": "Undo"
     },
+    "confirm": {
+      "activate": {
+        "title": "Activate {name}?",
+        "body": "Billing starts on the current plan and all invited staff get access.",
+        "cta": "Activate"
+      },
+      "reactivate": {
+        "title": "Reactivate {name}?",
+        "body": "Staff and students regain access immediately and scheduled test windows resume.",
+        "cta": "Reactivate"
+      },
+      "restore": {
+        "title": "Restore {name}?",
+        "body": "The school returns to Pending setup. No data is deleted while archived.",
+        "cta": "Restore"
+      },
+      "suspend": {
+        "title": "Suspend {name}?",
+        "body": "Staff and students lose access until reactivated. Test windows in progress are paused.",
+        "cta": "Suspend school"
+      },
+      "archive": {
+        "title": "Archive {name}?",
+        "body": "The school is hidden from the active list and billing stops. Data is retained for 24 months.",
+        "cta": "Archive school"
+      }
+    },
     "schools": {
       "meta": {
         "title": "Schools - SchoolTest ops",
@@ -3536,6 +3721,28 @@
       "bulkSuspend": "Suspend selected",
       "bulkArchive": "Archive selected",
       "statusPageUnconfigured": "This release has no status page URL configured.",
+      "actions": {
+        "editDetails": "Edit details",
+        "inviteAdmin": "Invite admin",
+        "activate": "Activate school",
+        "reactivate": "Reactivate school",
+        "restore": "Restore school",
+        "suspend": "Suspend school",
+        "archive": "Archive school",
+        "undo": "Undo",
+        "cancel": "Cancel",
+        "undoSuccess": "Change reverted — {name} is back to its previous status.",
+        "undoExpired": "Undo is no longer available. Refresh to see the current state.",
+        "undoError": "The change could not be saved. Refresh and try again.",
+        "typedMismatch": "Type the name exactly as shown to confirm.",
+        "success": {
+          "activate": "{name} activated",
+          "reactivate": "{name} reactivated",
+          "restore": "{name} restored",
+          "suspend": "{name} suspended",
+          "archive": "{name} archived"
+        }
+      },
       "emptyNoneTitle": "No schools yet",
       "emptyNoneDescription": "Create the first school to get started.",
       "emptySearchTitle": "No schools match your search",
@@ -3602,19 +3809,24 @@
       "banner": {
         "trial": {
           "title": "Trial",
-          "body": "This school is on a trial. Activate it to keep test windows running once the trial ends."
+          "body": "This school is on a trial. Activate it to keep test windows running once the trial ends.",
+          "bodyWithDate": "This school is on a trial until {date}. Activate it to keep test windows running after that."
         },
         "pending_setup": {
           "title": "Setup incomplete",
-          "body": "No admin has accepted the owner invitation yet. Nothing else can be set up until they do."
+          "body": "No admin has accepted the owner invitation yet. Nothing else can be set up until they do.",
+          "cta": "Resend owner invite",
+          "resendCooldown": "Invite to {name} went out less than a minute ago — wait before resending"
         },
         "suspended": {
           "title": "This school is suspended",
-          "body": "Staff and students have no access and test windows are paused."
+          "body": "Staff and students have no access and test windows are paused.",
+          "bodyWithInterval": "Suspended {interval}. Staff and students have no access and test windows are paused."
         },
         "archived": {
           "title": "This school is archived",
-          "body": "Billing has stopped and staff have no access. Data is retained until the retention date."
+          "body": "Billing has stopped and staff have no access. Data is retained until the retention date.",
+          "bodyWithDate": "Billing has stopped and staff have no access. Data is retained until {date}."
         }
       },
       "suspend": {
@@ -3649,6 +3861,7 @@
         "restore": "Restore school",
         "suspend": "Suspend school",
         "archive": "Archive school",
+        "recalculateSeats": "Recalculate seats",
         "undo": "Undo",
         "success": "{name} updated.",
         "undoSuccess": "{name} was restored.",
@@ -3721,6 +3934,7 @@
     "import": {
       "title": "Import students",
       "description": "Upload the completed template spreadsheet or paste the CSV. Check the preview before anything is saved.",
+      "descriptionForSchool": "Upload a CSV to add students to {name}.",
       "dropTitle": "Drop the completed CSV here",
       "dropHint": "Drag the file in, or pick it below — every preview count comes from the server.",
       "dropActive": "Release to load the file",
@@ -3775,6 +3989,17 @@
       "columnYearLevel": "Year level",
       "columnStudentKey": "Student key",
       "columnMatchedStudent": "Matched student",
+      "changeFileButton": "Change file",
+      "ctaLabelReady": "Import {count} students",
+      "ctaLabelRowErrors": "Import {count} valid rows",
+      "ctaLabelDupes": "Import {count} new students",
+      "ctaLabelFailed": "Retry import",
+      "ctaLabelValidating": "Checking…",
+      "ctaLabelDefault": "Import students",
+      "guardNoFile": "Choose a CSV file to import.",
+      "guardStillValidating": "Still checking the file — one moment.",
+      "guardCannotImport": "This file can't be imported. Choose another file.",
+      "closeBlockedToast": "Still saving — hold on",
       "card": {
         "validating": {
           "title": "Checking {name}...",
@@ -4001,7 +4226,19 @@
       "rosterErrorBody": "The class roster could not be loaded. The class itself is shown above.",
       "rosterPageOf": "Page {page} of {pageCount}",
       "rosterPrev": "Previous",
-      "rosterNext": "Next"
+      "rosterNext": "Next",
+      "backToClasses": "← All classes",
+      "addStudents": "Add students",
+      "exportCsv": "Export CSV",
+      "noWindowAssigned": "No window assigned",
+      "rosterLabel": "{shown} of {total} shown · most recent activity",
+      "entityLabel": "student",
+      "summaryTestsCompletedValue": "{completed} of {enrolled}",
+      "rosterActionRemove": "Remove from class",
+      "rosterRemoveConfirmTitleRow": "Remove {name} from {className}?",
+      "rosterRemoveConfirmTitleBulk": "{count, plural, one {Remove # student from {className}?} other {Remove # students from {className}?}}",
+      "rosterRemoveConfirmBody": "They stay enrolled at the school and can be added to another class.",
+      "rosterRemoveConfirmCtaBulk": "Remove {count}"
     },
     "classesTab": {
       "columnClass": "Class",
@@ -4026,6 +4263,14 @@
       "previousPage": "Previous page",
       "nextPage": "Next page",
       "clearFilter": "Clear teacher filter",
+      "headerTitle": "Classes",
+      "summary": "{count} classes across Years 7–12",
+      "clearFilters": "Clear filters",
+      "paginationLabel": "Classes pagination",
+      "paginationSummary": "Page {page} of {pageCount} — {total} total",
+      "staleBanner": "The latest refresh failed — the rows below are the last ones the server served.",
+      "retry": "Retry",
+      "loadingLabel": "Loading classes",
       "status": {
         "active": "Active",
         "pending_setup": "Pending setup",
@@ -4034,6 +4279,66 @@
       "year": {
         "7_9": "Years 7–9",
         "10_12": "Years 10–12"
+      }
+    },
+    "classActions": {
+      "actions": {
+        "open": "Open class",
+        "reassignTeacher": "Reassign teacher",
+        "edit": "Edit class",
+        "archive": "Archive class",
+        "restore": "Restore class",
+        "cancel": "Cancel",
+        "confirm": {
+          "archive": {
+            "title": "Archive {name}?",
+            "body": "Students stay enrolled at the school but the class is hidden from teachers.",
+            "cta": "Archive class"
+          },
+          "restore": {
+            "title": "Restore {name}?",
+            "body": "The class returns to the active list with its students.",
+            "cta": "Restore class"
+          }
+        }
+      },
+      "entityLabel": "class",
+      "bulk": {
+        "setTestWindow": "Set test window",
+        "archive": "Archive",
+        "archiveSkip": "{skipped} already archived",
+        "confirm": {
+          "archive": {
+            "title": "Archive {count} classes?",
+            "body": "Students stay enrolled at the school but the classes are hidden from teachers.",
+            "cta": "Archive {count}"
+          }
+        }
+      },
+      "reassign": {
+        "title": "Reassign teacher",
+        "description": "Choose a new teacher for {name}.",
+        "teacherLabel": "Teacher",
+        "noTeacherOption": "No teacher assigned",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saving": "Saving…",
+        "errorTitle": "Could not reassign teacher",
+        "errorDescription": "The teacher could not be reassigned. Try again."
+      },
+      "setTestWindow": {
+        "title": "Set test window",
+        "description": "Create a test window and assign it to {count} selected classes.",
+        "titleLabel": "Title",
+        "timezoneLabel": "Timezone",
+        "opensLabel": "Opens",
+        "closesLabel": "Closes",
+        "formLabel": "Reading form",
+        "formPlaceholder": "Choose a form",
+        "cancel": "Cancel",
+        "submit": "Create and assign",
+        "submitting": "Creating…",
+        "createErrorTitle": "Could not create the test window"
       }
     },
     "schoolTables": {
@@ -4052,6 +4357,8 @@
       "teachersNote": "Teaching staff for this school. Edit and remove are offered through Manage teachers (the C-TCH-04/C-TCH-03 rewrite endpoints).",
       "teachersEmptyTitle": "No teachers for this school",
       "teachersEmptyDescription": "This school has no teaching staff yet.",
+      "teachersHeaderTitle": "Teachers",
+      "teachersHeaderSummary": "{teachers} teachers · {classes} classes covered",
       "manageTeachers": "Manage teachers",
       "classesNote": "Classes retrieved through the school's staff directory. Student count and test window are not served by the ops API.",
       "classesEmptyTitle": "No classes found",
@@ -4133,7 +4440,104 @@
       "ownerNoneDescription": "This school predates the ownership record and had more than one administrator, so no owner was assigned automatically. Choose one explicitly.",
       "ownerConflict": "Ownership changed since this page loaded. Refresh the directory and confirm again.",
       "ownerNotEligible": "The new owner must be an active administrator of this school.",
-      "ownerTransferred": "Ownership transferred."
+      "ownerTransferred": "Ownership transferred.",
+      "studentsHeaderSummary": "{count} enrolled · showing recent activity",
+      "studentsImportCta": "Import students",
+      "studentsActionMoveClass": "Move class",
+      "studentsActionDeactivate": "Deactivate student",
+      "studentsActionReactivate": "Reactivate student",
+      "studentsDeactivateConfirmTitle": "Deactivate {name}?",
+      "studentsDeactivateConfirmBody": "They keep their results but cannot sit new tests.",
+      "studentsDeactivateConfirmCta": "Deactivate",
+      "studentsReactivateConfirmTitle": "Reactivate {name}?",
+      "studentsReactivateConfirmBody": "They rejoin their class and can sit scheduled tests.",
+      "studentsReactivateConfirmCta": "Reactivate",
+      "studentsMoveClassTitle": "Move to another class",
+      "studentsMoveClassBody": "{count, plural, one {This student moves to the class you choose below.} other {These # students move to the class you choose below.}}",
+      "studentsMoveClassDestinationLabel": "Destination class",
+      "studentsMoveClassPlaceholder": "Choose a class",
+      "studentsMoveClassCta": "{count, plural, one {Move student} other {Move # students}}",
+      "studentsBulkDeactivate": "Deactivate",
+      "studentsBulkDeactivateSkip": "{count} already deactivated",
+      "adminsHeaderTitle": "School admins",
+      "adminsHeaderSummary": "{invited} invited · {active} active",
+      "statusInvited": "Invited",
+      "accountActionSuccess": "{name} updated.",
+      "bulkResendInvites": "Resend invites",
+      "bulkExport": "Export",
+      "bulkRemove": "Remove",
+      "editAccessTitle": "Edit access for {name}",
+      "editAccessDescription": "Choose the role this account has at this school.",
+      "editAccessRoleAdmin": "School admin",
+      "editAccessRoleTeacher": "Teacher",
+      "editAccessCancel": "Cancel",
+      "editAccessSave": "Save",
+      "editAccessSuccess": "{name}'s access was updated.",
+      "editAccessError": "Could not update access. Try again.",
+      "actions": {
+        "editAccess": "Edit access",
+        "viewClasses": "View classes",
+        "resendInvite": "Resend invite",
+        "removeFromSchool": "Remove from school",
+        "suspendAdmin": "Suspend admin",
+        "reactivateAdmin": "Reactivate admin",
+        "suspendTeacher": "Suspend teacher",
+        "reactivateTeacher": "Reactivate teacher",
+        "confirm": {
+          "suspendAdmin": {
+            "title": "Suspend {name}?",
+            "body": "They lose access to this school until reactivated.",
+            "cta": "Suspend"
+          },
+          "reactivateAdmin": {
+            "title": "Reactivate {name}?",
+            "body": "They regain access to this school immediately.",
+            "cta": "Reactivate"
+          },
+          "removeAdmin": {
+            "title": "Remove {name}?",
+            "body": "Their access ends immediately. Reports they created stay with the school.",
+            "cta": "Remove admin"
+          },
+          "suspendTeacher": {
+            "title": "Suspend {name}?",
+            "body": "Their classes stay in place but they lose access until reactivated.",
+            "cta": "Suspend"
+          },
+          "reactivateTeacher": {
+            "title": "Reactivate {name}?",
+            "body": "They regain access to their classes.",
+            "cta": "Reactivate"
+          },
+          "removeTeacher": {
+            "title": "Remove {name}?",
+            "body": "Their classes need reassigning to another teacher.",
+            "cta": "Remove teacher"
+          }
+        }
+      },
+      "bulkConfirm": {
+        "suspendAdmin": {
+          "title": "Suspend {count} admins?",
+          "body": "They lose access to this school until reactivated.",
+          "cta": "Suspend {count}"
+        },
+        "removeAdmin": {
+          "title": "Remove {count} admins?",
+          "body": "Their access ends immediately. Reports they created stay with the school.",
+          "cta": "Remove {count}"
+        },
+        "suspendTeacher": {
+          "title": "Suspend {count} teachers?",
+          "body": "Their classes stay in place but they lose access until reactivated.",
+          "cta": "Suspend {count}"
+        },
+        "removeTeacher": {
+          "title": "Remove {count} teachers?",
+          "body": "Their classes will need reassigning.",
+          "cta": "Remove {count}"
+        }
+      }
     },
     "staffInvitations": {
       "title": "Staff invitations",
@@ -5229,5 +5633,36 @@
     "loading": "Loading",
     "commandPalette": "Command Palette",
     "commandPaletteDescription": "Search for a command to run..."
+  },
+  "Directory": {
+    "defaults": {
+      "searchPlaceholder": "Search",
+      "searchLabel": "Search",
+      "filtersLabel": "Filters",
+      "sortLabel": "Sort",
+      "layoutLabel": "Layout",
+      "clearFilters": "Clear filters",
+      "paginationLabel": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "rowMenuLabel": "Row actions",
+      "selectAllLabel": "Select all rows on this page",
+      "selectRowLabel": "Select row {key}",
+      "showingCount": "Showing {showing} of {total}",
+      "pageCount": "Page {page} of {pageCount} — {total} total",
+      "selectedEntityNoun": "row",
+      "emptyNoneTitle": "Nothing here yet",
+      "emptyNoneDescription": "Items appear here as soon as they are created.",
+      "emptyNoMatchesTitle": "No matches",
+      "emptyNoMatchesDescription": "Nothing matches the current search and filters.",
+      "errorTitle": "Could not load this list",
+      "errorStaleBanner": "The latest refresh failed — the rows below are the last ones the server served.",
+      "errorDescription": "Something went wrong while loading this list.",
+      "retry": "Retry",
+      "loadingLabel": "Loading",
+      "exportLabel": "Export CSV",
+      "primaryActionLabel": "Open",
+      "chipAllLabel": "All"
+    }
   }
 }

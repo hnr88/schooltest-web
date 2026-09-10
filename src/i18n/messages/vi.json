@@ -377,7 +377,13 @@
     "tableRowScience": "Science Test",
     "tableRowHistory": "History Exam",
     "tableRowReading": "Reading Check",
-    "tableShowing": "Showing 1–4 of 12",
+    "tableShowing": "Showing {showing} of {total}",
+    "tableSearchPlaceholder": "Search tests…",
+    "tableSortLabel": "Sort",
+    "tableRowMenu": "Row actions",
+    "tableRowOpen": "Open",
+    "tableExport": "Export",
+    "tablePageCount": "Page {page} of {pageCount} — {total} total",
     "progressLabel": "Average score progress",
     "avatarAlt": "Teacher avatar",
     "breadcrumbDashboard": "Dashboard",
@@ -838,7 +844,6 @@
           "daily": "Một email tổng hợp mỗi sáng vào khoảng 6:30. Cảnh báo tài khoản và bảo mật vẫn đến ngay lập tức.",
           "weekly": "Một email tổng hợp mỗi sáng thứ Hai vào khoảng 6:30. Cảnh báo tài khoản và bảo mật vẫn đến ngay lập tức."
         },
-        "deferredOption": "{label} — sắp có",
         "emailOffNotice": "Sẽ không có email tùy chọn nào được gửi khi bạn chọn mục này. Cảnh báo tài khoản và bảo mật vẫn được gửi."
       },
       "alwaysOnTitle": "Cập nhật tài khoản và bảo mật luôn bật",
@@ -869,11 +874,46 @@
       "saved": "Đã lưu tùy chọn thông báo.",
       "saveError": "Không thể lưu tùy chọn thông báo của bạn.",
       "loadErrorTitle": "Không thể tải tùy chọn thông báo của bạn.",
-      "loadErrorDescription": "Vui lòng thử lại để tải các cài đặt thông báo đã lưu."
+      "loadErrorDescription": "Vui lòng thử lại để tải các cài đặt thông báo đã lưu.",
+      "eventsTitle": "Những việc bạn được thông báo",
+      "events": {
+        "testResultsReady": {
+          "title": "Kết quả bài kiểm tra",
+          "description": "Email và push ngay khi báo cáo sẵn sàng."
+        },
+        "testResultsUpdated": {
+          "title": "Kết quả được cập nhật",
+          "description": "Khi báo cáo bạn đã xem được chỉnh sửa."
+        },
+        "sessionCompleted": {
+          "title": "Đã làm xong bài",
+          "description": "Khi học sinh của bạn hoàn thành bài kiểm tra."
+        },
+        "sessionStarted": {
+          "title": "Bắt đầu làm bài",
+          "description": "Khi học sinh của bạn bắt đầu bài kiểm tra."
+        },
+        "studentCreated": {
+          "title": "Đã thêm học sinh",
+          "description": "Khi một học sinh được thêm vào tài khoản của bạn."
+        },
+        "studentEmailFix": {
+          "title": "Cần sửa địa chỉ đăng nhập",
+          "description": "Khi học sinh cần email đúng trước ngày kiểm tra."
+        }
+      }
     },
     "language": {
       "title": "Language",
       "description": "Choose the language SchoolTest uses across the app."
+    },
+    "staff": {
+      "title": "Cài đặt thông báo",
+      "subtitle": "Chọn các cập nhật của trường bạn nhận được và cách gửi chúng.",
+      "meta": {
+        "title": "Cài đặt thông báo — SchoolTest",
+        "description": "Quản lý cách SchoolTest thông báo cho bạn về kết quả, phiên kiểm tra và thông báo của trường."
+      }
     }
   },
   "SchoolSearch": {
@@ -2315,6 +2355,26 @@
     },
     "testDay": {
       "history": {
+        "searchPlaceholder": "Tìm buổi kiểm tra",
+        "searchLabel": "Tìm buổi kiểm tra",
+        "filterOutcomeLabel": "Kết quả",
+        "filterOutcomeAll": "Mọi kết quả",
+        "sortLabel": "Sắp xếp",
+        "clearFilters": "Xóa bộ lọc",
+        "paginationLabel": "Trang lịch sử",
+        "previous": "Trước",
+        "next": "Tiếp theo",
+        "rowMenuLabel": "Thao tác hàng",
+        "showingCount": "Hiển thị {showing} trên {total} buổi",
+        "pageCount": "Trang {page} trên {pageCount} · tổng {total}",
+        "sortOpenedDesc": "Thời gian mở: mới nhất trước",
+        "sortOpenedAsc": "Thời gian mở: cũ nhất trước",
+        "openAction": "Mở",
+        "filteredEmptyTitle": "Không có buổi kiểm tra phù hợp",
+        "filteredEmptyDescription": "Không có buổi kiểm tra nào phù hợp với tìm kiếm và bộ lọc kết quả hiện tại.",
+        "errorStaleBanner": "Bước làm mới gần nhất thất bại — các dòng bên dưới là danh sách cuối cùng máy chủ trả về.",
+        "errorDescription": "Kiểm tra kết nối và thử lại.",
+        "retry": "Thử lại",
         "title": "Lịch sử buổi kiểm tra",
         "loading": "Đang tải lịch sử buổi kiểm tra...",
         "loadError": "Không thể tải lịch sử buổi kiểm tra. Hãy thử lại.",
@@ -2381,6 +2441,29 @@
       "closedNote": "Buổi kiểm tra này đã đóng. Mở lại để học sinh có thể tham gia."
     },
     "monitor": {
+      "searchPlaceholder": "Tìm học sinh",
+      "searchLabel": "Tìm học sinh",
+      "filterStatusLabel": "Trạng thái buổi kiểm tra",
+      "filterStatusAll": "Mọi trạng thái",
+      "sortLabel": "Sắp xếp",
+      "clearFilters": "Xóa bộ lọc",
+      "paginationLabel": "Trang tiến độ của lớp",
+      "previous": "Trước",
+      "next": "Tiếp theo",
+      "rowMenuLabel": "Thao tác hàng",
+      "showingCount": "Hiển thị {showing} trên {total} học sinh",
+      "pageCount": "Trang {page} trên {pageCount} · tổng {total}",
+      "sortNameAsc": "Tên A-Z",
+      "sortNameDesc": "Tên Z-A",
+      "sortProgressAsc": "Tiến độ: thấp trước",
+      "sortProgressDesc": "Tiến độ: cao trước",
+      "emptyTitle": "Không có học sinh trong danh sách này",
+      "emptyBody": "Học sinh sẽ xuất hiện ở đây khi có trong danh sách của lớp.",
+      "filteredEmptyTitle": "Không có học sinh phù hợp",
+      "filteredEmptyDescription": "Không có học sinh nào phù hợp với tìm kiếm và bộ lọc trạng thái hiện tại.",
+      "errorStaleBanner": "Bước làm mới gần nhất thất bại — các học sinh bên dưới là danh sách cuối cùng máy chủ trả về.",
+      "errorDescription": "Kiểm tra kết nối và thử lại.",
+      "retry": "Thử lại",
       "title": "Tiến độ của lớp",
       "liveNote": "Tự động cập nhật khi buổi kiểm tra đang mở.",
       "loading": "Đang tải danh sách lớp...",
@@ -2570,7 +2653,29 @@
         "invited": "Đã mời",
         "expired": "Đã hết hạn"
       },
-      "noValue": "—"
+      "noValue": "—",
+      "filterAll": "Tất cả",
+      "statusActive": "Đang hoạt động",
+      "statusInvited": "Đã mờ",
+      "statusSuspended": "Bị đình chỉ",
+      "sortNameAsc": "Tên A–Z",
+      "sortNameDesc": "Tên Z–A",
+      "searchPlaceholder": "Tìm nhân viên",
+      "searchLabel": "Tìm nhân viên",
+      "sortLabel": "Sắp xếp",
+      "clearFilters": "Xóa bộ lọc",
+      "paginationLabel": "Trang nhân viên",
+      "previous": "Trước",
+      "next": "Tiếp theo",
+      "rowMenuLabel": "Thao tác hàng",
+      "showingCount": "Hiển thị {showing} trên {total} nhân viên",
+      "pageCount": "Trang {page} trên {pageCount} · tổng {total}",
+      "emptyTitle": "Chưa có giáo viên nào",
+      "emptyBody": "Giáo viên sẽ xuất hiện ở đây sau khi quản trị viên trường gửi lời mời.",
+      "noMatchesTitle": "Không có mục nào khớp bộ lọc này",
+      "noMatchesBody": "Hãy thử trạng thái khác.",
+      "staleBanner": "Lần làm mới gần nhất thất bại — các hàng bên dưới là dữ liệu mới nhất máy chủ đã trả về.",
+      "loading": "Đang tải nhân viên..."
     },
     "actions": {
       "menuLabel": "Thao tác cho {name}",
@@ -2703,6 +2808,25 @@
         "forbiddenToast": "Bạn không có quyền thêm học sinh.",
         "genericToast": "Thao tác không thành công. Hãy thử lại.",
         "duplicateToast": "Những học sinh đó đã tồn tại. Hãy kiểm tra email rồi thử lại."
+      },
+      "roster": {
+        "searchPlaceholder": "Tìm học sinh",
+        "searchLabel": "Tìm học sinh",
+        "filterStatusLabel": "Trạng thái bài kiểm tra",
+        "filterStatusAll": "Tất cả trạng thái",
+        "sortLabel": "Sắp xếp",
+        "sortNameAsc": "Tên A–Z",
+        "sortNameDesc": "Tên Z–A",
+        "clearFilters": "Xoá bộ lọc",
+        "paginationLabel": "Phân trang",
+        "previous": "Trước",
+        "next": "Sau",
+        "showingCount": "Đang hiển thị {showing} trên {total} học sinh",
+        "pageCount": "Trang {page} trên {pageCount} — tổng {total} học sinh",
+        "filteredEmptyTitle": "Không có học sinh nào khớp bộ lọc đó.",
+        "filteredEmptyDescription": "Hãy thử tìm kiếm khác hoặc xoá bộ lọc.",
+        "loading": "Đang tải học sinh",
+        "errorStaleBanner": "Bản làm mới gần nhất thất bại — các học sinh bên dưới là danh sách cuối máy chủ trả về."
       }
     },
     "title": "Lớp học",
@@ -2734,10 +2858,34 @@
       "required": "Trường này là bắt buộc.",
       "tooLong": "Nội dung quá dài."
     },
+    "list": {
+      "searchPlaceholder": "Tìm lớp học",
+      "searchLabel": "Tìm lớp học",
+      "filterYearBandAll": "Tất cả khối lớp",
+      "sortLabel": "Sắp xếp",
+      "sortNameAsc": "Tên A–Z",
+      "sortNameDesc": "Tên Z–A",
+      "sortStudentsDesc": "Nhiều học sinh nhất",
+      "sortStudentsAsc": "Ít học sinh nhất",
+      "clearFilters": "Xoá bộ lọc",
+      "paginationLabel": "Phân trang",
+      "previous": "Trước",
+      "next": "Sau",
+      "rowMenuLabel": "Thao tác hàng",
+      "showingCount": "Đang hiển thị {showing} trên {total} lớp học",
+      "pageCount": "Trang {page} trên {pageCount} — tổng {total} lớp học",
+      "emptyTitle": "Chưa có lớp học nào",
+      "emptyBody": "Thêm lớp học đầu tiên để bắt đầu.",
+      "filteredEmptyTitle": "Không có lớp học nào khớp bộ lọc đó.",
+      "filteredEmptyDescription": "Hãy thử tìm kiếm khác hoặc xoá bộ lọc.",
+      "loading": "Đang tải lớp học",
+      "errorStaleBanner": "Bản làm mới gần nhất thất bại — các lớp bên dưới là danh sách cuối máy chủ trả về."
+    },
     "actions": {
       "menuLabel": "Thao tác cho {name}",
       "edit": "Chỉnh sửa lớp",
-      "delete": "Xoá lớp"
+      "delete": "Xoá lớp",
+      "rowMenuLabel": "Thao tác"
     },
     "deleteDialog": {
       "title": "Xoá {name}?",
@@ -2880,6 +3028,16 @@
       "next": "Sau",
       "pageOf": "Trang {page} / {pageCount}"
     },
+    "list": {
+      "rowMenuLabel": "Thao tác",
+      "showingCount": "Đang hiển thị {showing} trên {total}",
+      "staleBanner": "Bản làm mới gần nhất thất bại — các dòng dưới đây là danh sách cuối cùng máy chủ đã trả về.",
+      "loading": "Đang tải học sinh",
+      "clearFilters": "Xóa bộ lọc",
+      "paginationLabel": "Phân trang học sinh",
+      "emptyTitle": "Chưa có học sinh nào",
+      "noMatchesDescription": "Thử tên khác hoặc xóa bộ lọc."
+    },
     "actions": {
       "menuLabel": "Thao tác cho {name}",
       "edit": "Sửa học sinh",
@@ -3002,6 +3160,33 @@
       "retry": "Thử lại",
       "undo": "Hoàn tác"
     },
+    "confirm": {
+      "activate": {
+        "title": "Kích hoạt {name}?",
+        "body": "Gói hiện tại bắt đầu được tính phí và tất cả nhân viên được mời sẽ có quyền truy cập.",
+        "cta": "Kích hoạt"
+      },
+      "reactivate": {
+        "title": "Kích hoạt lại {name}?",
+        "body": "Nhân viên và học sinh có quyền truy cập ngay và các cửa sổ kiểm tra đã lên lịch sẽ tiếp tục.",
+        "cta": "Kích hoạt lại"
+      },
+      "restore": {
+        "title": "Khôi phục {name}?",
+        "body": "Trường trở lại trạng thái Đang chờ thiết lập. Dữ liệu không bị xóa khi lưu trữ.",
+        "cta": "Khôi phục"
+      },
+      "suspend": {
+        "title": "Tạm ngưng {name}?",
+        "body": "Nhân viên và học sinh mất quyền truy cập cho đến khi kích hoạt lại. Các cửa sổ kiểm tra đang diễn ra sẽ tạm dừng.",
+        "cta": "Tạm ngưng trường"
+      },
+      "archive": {
+        "title": "Lưu trữ {name}?",
+        "body": "Trường bị ẩn khỏi danh sách đang hoạt động và thanh toán dừng lại. Dữ liệu được giữ trong 24 tháng.",
+        "cta": "Lưu trữ trường"
+      }
+    },
     "schools": {
       "meta": {
         "title": "Trường học - Vận hành SchoolTest",
@@ -3064,6 +3249,28 @@
       "actionOpen": "Mở trường",
       "actionStatusPage": "Trang trạng thái",
       "statusPageUnconfigured": "Bản phát hành này chưa cấu hình URL trang trạng thái.",
+      "actions": {
+        "editDetails": "Sửa thông tin",
+        "inviteAdmin": "Mời quản trị viên",
+        "activate": "Kích hoạt trường",
+        "reactivate": "Kích hoạt lại trường",
+        "restore": "Khôi phục trường",
+        "suspend": "Tạm ngưng trường",
+        "archive": "Lưu trữ trường",
+        "undo": "Hoàn tác",
+        "cancel": "Hủy",
+        "undoSuccess": "Đã hoàn tác thay đổi — {name} trở lại trạng thái trước đó.",
+        "undoExpired": "Không thể hoàn tác nữa. Hãy tải lại để xem trạng thái hiện tại.",
+        "undoError": "Không thể lưu thay đổi. Hãy tải lại và thử lại.",
+        "typedMismatch": "Nhập đúng tên như hiển thị để xác nhận.",
+        "success": {
+          "activate": "Đã kích hoạt {name}.",
+          "reactivate": "Đã kích hoạt lại {name}.",
+          "restore": "Đã khôi phục {name}.",
+          "suspend": "Đã tạm ngưng {name}.",
+          "archive": "Đã lưu trữ {name}."
+        }
+      },
       "emptyNoneTitle": "Chưa có trường nào",
       "emptyNoneDescription": "Hãy tạo trường đầu tiên để bắt đầu.",
       "emptySearchTitle": "Không có trường khớp với tìm kiếm",
@@ -3132,19 +3339,24 @@
       "banner": {
         "trial": {
           "title": "Dùng thử",
-          "body": "Trường này đang dùng thử. Hãy kích hoạt để các kỳ kiểm tra tiếp tục chạy sau khi thời gian dùng thử kết thúc."
+          "body": "Trường này đang dùng thử. Hãy kích hoạt để các kỳ kiểm tra tiếp tục chạy sau khi thời gian dùng thử kết thúc.",
+          "bodyWithDate": "Trường này đang dùng thử đến {date}. Hãy kích hoạt để các kỳ kiểm tra tiếp tục chạy sau đó."
         },
         "pending_setup": {
           "title": "Thiết lập chưa hoàn tất",
-          "body": "Chưa có quản trị viên nào nhận lời mời làm chủ sở hữu. Chưa thể thiết lập gì thêm cho đến khi đó."
+          "body": "Chưa có quản trị viên nào nhận lời mời làm chủ sở hữu. Chưa thể thiết lập gì thêm cho đến khi đó.",
+          "cta": "Gửi lại lời mời chủ sở hữu",
+          "resendCooldown": "Lời mời gửi tới {name} vừa được gửi chưa đầy một phút trước — hãy đợi trước khi gửi lại"
         },
         "suspended": {
           "title": "Trường này đang bị đình chỉ",
-          "body": "Nhân sự và học sinh không có quyền truy cập, các kỳ kiểm tra bị tạm dừng."
+          "body": "Nhân sự và học sinh không có quyền truy cập, các kỳ kiểm tra bị tạm dừng.",
+          "bodyWithInterval": "Bị đình chỉ {interval}. Nhân sự và học sinh không có quyền truy cập, các kỳ kiểm tra bị tạm dừng."
         },
         "archived": {
           "title": "Trường này đã được lưu trữ",
-          "body": "Việc thanh toán đã dừng và nhân sự không còn quyền truy cập. Dữ liệu được giữ đến hết thời hạn lưu."
+          "body": "Việc thanh toán đã dừng và nhân sự không còn quyền truy cập. Dữ liệu được giữ đến hết thời hạn lưu.",
+          "bodyWithDate": "Việc thanh toán đã dừng và nhân sự không còn quyền truy cập. Dữ liệu được giữ đến {date}."
         }
       },
       "suspend": {
@@ -3179,6 +3391,7 @@
         "restore": "Khôi phục trường",
         "suspend": "Tạm ngưng trường",
         "archive": "Lưu trữ trường",
+        "recalculateSeats": "Tính lại số chỗ",
         "undo": "Hoàn tác",
         "success": "Đã cập nhật {name}.",
         "undoSuccess": "Đã khôi phục {name}.",
@@ -3251,6 +3464,7 @@
     "import": {
       "title": "Nhập học sinh",
       "description": "Tải lên bảng tính mẫu đã điền hoặc dán CSV. Hãy kiểm tra bản xem trước trước khi lưu.",
+      "descriptionForSchool": "Tải lên tệp CSV để thêm học sinh vào {name}.",
       "dropTitle": "Thả tệp CSV đã điền vào đây",
       "dropHint": "Kéo tệp vào, hoặc chọn bên dưới — mọi số liệu xem trước đều đến từ máy chủ.",
       "dropActive": "Thả để tải tệp",
@@ -3305,6 +3519,17 @@
       "columnYearLevel": "Khối lớp",
       "columnStudentKey": "Mã học sinh",
       "columnMatchedStudent": "Học sinh khớp",
+      "changeFileButton": "Đổi tệp",
+      "ctaLabelReady": "Nhập {count} học sinh",
+      "ctaLabelRowErrors": "Nhập {count} dòng hợp lệ",
+      "ctaLabelDupes": "Nhập {count} học sinh mới",
+      "ctaLabelFailed": "Thử nhập lại",
+      "ctaLabelValidating": "Đang kiểm tra…",
+      "ctaLabelDefault": "Nhập học sinh",
+      "guardNoFile": "Chọn một tệp CSV để nhập.",
+      "guardStillValidating": "Vẫn đang kiểm tra tệp — vui lòng đợi một chút.",
+      "guardCannotImport": "Không thể nhập tệp này. Hãy chọn tệp khác.",
+      "closeBlockedToast": "Đang lưu — vui lòng đợi",
       "card": {
         "validating": {
           "title": "Đang kiểm tra {name}…",
@@ -3531,7 +3756,19 @@
       "rosterErrorBody": "Không thể tải danh sách học sinh của lớp. Thông tin lớp được hiển thị ở trên.",
       "rosterPageOf": "Trang {page} trên {pageCount}",
       "rosterPrev": "Trước",
-      "rosterNext": "Sau"
+      "rosterNext": "Sau",
+      "backToClasses": "← Tất cả lớp học",
+      "addStudents": "Thêm học sinh",
+      "exportCsv": "Xuất CSV",
+      "noWindowAssigned": "Chưa gán đợt thi",
+      "rosterLabel": "Hiện {shown} trong {total} · hoạt động gần đây nhất",
+      "entityLabel": "học sinh",
+      "summaryTestsCompletedValue": "{completed} trên {enrolled}",
+      "rosterActionRemove": "Xóa khỏi lớp",
+      "rosterRemoveConfirmTitleRow": "Xóa {name} khỏi {className}?",
+      "rosterRemoveConfirmTitleBulk": "{count, plural, other {Xóa # học sinh khỏi {className}?}}",
+      "rosterRemoveConfirmBody": "Học sinh vẫn được ghi danh tại trường và có thể được thêm vào lớp khác.",
+      "rosterRemoveConfirmCtaBulk": "Xóa {count}"
     },
     "schoolTables": {
       "title": "Danh bạ trường học",
@@ -3548,6 +3785,8 @@
       "teachersNote": "Đội ngũ giảng dạy của trường này. Sửa và xóa được cung cấp qua Quản lý giáo viên (điểm viết lại C-TCH-04/C-TCH-03).",
       "teachersEmptyTitle": "Không có giáo viên cho trường này",
       "teachersEmptyDescription": "Trường này chưa có đội ngũ giảng dạy.",
+      "teachersHeaderTitle": "Giáo viên",
+      "teachersHeaderSummary": "{teachers} giáo viên · {classes} lớp được phụ trách",
       "manageTeachers": "Quản lý giáo viên",
       "classesNote": "Lớp học được lấy qua danh bạ nhân sự của trường. Số học sinh và cửa sổ bài kiểm tra không được API ops cung cấp.",
       "classesEmptyTitle": "Không tìm thấy lớp học",
@@ -3630,7 +3869,104 @@
       "ownerNoneDescription": "Trường này có trước khi hồ sơ quyền sở hữu ra đời và có nhiều hơn một quản trị viên, nên không có chủ sở hữu nào được gán tự động. Hãy chọn rõ một người.",
       "ownerConflict": "Quyền sở hữu đã thay đổi từ lúc trang này được tải. Hãy làm mới danh sách và xác nhận lại.",
       "ownerNotEligible": "Chủ sở hữu mới phải là quản trị viên đang hoạt động của trường này.",
-      "ownerTransferred": "Đã chuyển quyền sở hữu."
+      "ownerTransferred": "Đã chuyển quyền sở hữu.",
+      "studentsHeaderSummary": "{count} đã đăng ký · hiển thị hoạt động gần đây",
+      "studentsImportCta": "Nhập học sinh",
+      "studentsActionMoveClass": "Chuyển lớp",
+      "studentsActionDeactivate": "Vô hiệu hóa học sinh",
+      "studentsActionReactivate": "Kích hoạt lại học sinh",
+      "studentsDeactivateConfirmTitle": "Vô hiệu hóa {name}?",
+      "studentsDeactivateConfirmBody": "Học sinh vẫn giữ kết quả nhưng không thể tham gia bài kiểm tra mới.",
+      "studentsDeactivateConfirmCta": "Vô hiệu hóa",
+      "studentsReactivateConfirmTitle": "Kích hoạt lại {name}?",
+      "studentsReactivateConfirmBody": "Học sinh trở lại lớp và có thể tham gia các bài kiểm tra đã lên lịch.",
+      "studentsReactivateConfirmCta": "Kích hoạt lại",
+      "studentsMoveClassTitle": "Chuyển sang lớp khác",
+      "studentsMoveClassBody": "{count, plural, other {# học sinh đã chọn sẽ chuyển sang lớp bạn chọn bên dưới.}}",
+      "studentsMoveClassDestinationLabel": "Lớp đích",
+      "studentsMoveClassPlaceholder": "Chọn lớp",
+      "studentsMoveClassCta": "{count, plural, other {Chuyển # học sinh}}",
+      "studentsBulkDeactivate": "Vô hiệu hóa",
+      "studentsBulkDeactivateSkip": "{count} đã bị vô hiệu hóa",
+      "adminsHeaderTitle": "Quản trị viên trường",
+      "adminsHeaderSummary": "{invited} đã mời · {active} đang hoạt động",
+      "statusInvited": "Đã mời",
+      "accountActionSuccess": "Đã cập nhật {name}.",
+      "bulkResendInvites": "Gửi lại lời mời",
+      "bulkExport": "Xuất",
+      "bulkRemove": "Xóa",
+      "editAccessTitle": "Sửa quyền truy cập cho {name}",
+      "editAccessDescription": "Chọn vai trò của tài khoản này tại trường.",
+      "editAccessRoleAdmin": "Quản trị viên trường",
+      "editAccessRoleTeacher": "Giáo viên",
+      "editAccessCancel": "Hủy",
+      "editAccessSave": "Lưu",
+      "editAccessSuccess": "Đã cập nhật quyền truy cập của {name}.",
+      "editAccessError": "Không thể cập nhật quyền truy cập. Hãy thử lại.",
+      "actions": {
+        "editAccess": "Sửa quyền truy cập",
+        "viewClasses": "Xem lớp học",
+        "resendInvite": "Gửi lại lời mời",
+        "removeFromSchool": "Xóa khỏi trường",
+        "suspendAdmin": "Tạm ngưng quản trị viên",
+        "reactivateAdmin": "Kích hoạt lại quản trị viên",
+        "suspendTeacher": "Tạm ngưng giáo viên",
+        "reactivateTeacher": "Kích hoạt lại giáo viên",
+        "confirm": {
+          "suspendAdmin": {
+            "title": "Tạm ngưng {name}?",
+            "body": "Họ mất quyền truy cập trường này cho đến khi được kích hoạt lại.",
+            "cta": "Tạm ngưng"
+          },
+          "reactivateAdmin": {
+            "title": "Kích hoạt lại {name}?",
+            "body": "Họ lấy lại quyền truy cập trường này ngay lập tức.",
+            "cta": "Kích hoạt lại"
+          },
+          "removeAdmin": {
+            "title": "Xóa {name}?",
+            "body": "Quyền truy cập của họ kết thúc ngay lập tức. Báo cáo họ đã tạo vẫn thuộc về trường.",
+            "cta": "Xóa quản trị viên"
+          },
+          "suspendTeacher": {
+            "title": "Tạm ngưng {name}?",
+            "body": "Lớp học của họ vẫn giữ nguyên nhưng họ mất quyền truy cập cho đến khi được kích hoạt lại.",
+            "cta": "Tạm ngưng"
+          },
+          "reactivateTeacher": {
+            "title": "Kích hoạt lại {name}?",
+            "body": "Họ lấy lại quyền truy cập vào lớp học của mình.",
+            "cta": "Kích hoạt lại"
+          },
+          "removeTeacher": {
+            "title": "Xóa {name}?",
+            "body": "Lớp học của họ cần được phân công lại cho giáo viên khác.",
+            "cta": "Xóa giáo viên"
+          }
+        }
+      },
+      "bulkConfirm": {
+        "suspendAdmin": {
+          "title": "Tạm ngưng {count} quản trị viên?",
+          "body": "Họ mất quyền truy cập trường này cho đến khi được kích hoạt lại.",
+          "cta": "Tạm ngưng {count}"
+        },
+        "removeAdmin": {
+          "title": "Xóa {count} quản trị viên?",
+          "body": "Quyền truy cập của họ kết thúc ngay lập tức. Báo cáo họ đã tạo vẫn thuộc về trường.",
+          "cta": "Xóa {count}"
+        },
+        "suspendTeacher": {
+          "title": "Tạm ngưng {count} giáo viên?",
+          "body": "Lớp học của họ vẫn giữ nguyên nhưng họ mất quyền truy cập cho đến khi được kích hoạt lại.",
+          "cta": "Tạm ngưng {count}"
+        },
+        "removeTeacher": {
+          "title": "Xóa {count} giáo viên?",
+          "body": "Lớp học của họ cần được phân công lại.",
+          "cta": "Xóa {count}"
+        }
+      }
     },
     "inspection": {
       "title": "Kiểm tra đề",
@@ -3724,6 +4060,14 @@
       "previousPage": "Trang trước",
       "nextPage": "Trang sau",
       "clearFilter": "Xóa bộ lọc giáo viên",
+      "headerTitle": "Lớp học",
+      "summary": "{count} lớp học từ Lớp 7–12",
+      "clearFilters": "Xóa bộ lọc",
+      "paginationLabel": "Phân trang lớp học",
+      "paginationSummary": "Trang {page} trên {pageCount} — tổng {total}",
+      "staleBanner": "Lần làm mới gần nhất không thành công — các hàng bên dưới là dữ liệu gần nhất máy chủ đã gửi.",
+      "retry": "Thử lại",
+      "loadingLabel": "Đang tải lớp học",
       "status": {
         "active": "Đang hoạt động",
         "pending_setup": "Chờ thiết lập",
@@ -3732,6 +4076,66 @@
       "year": {
         "7_9": "Lớp 7–9",
         "10_12": "Lớp 10–12"
+      }
+    },
+    "classActions": {
+      "actions": {
+        "open": "Mở lớp học",
+        "reassignTeacher": "Đổi giáo viên",
+        "edit": "Sửa lớp học",
+        "archive": "Lưu trữ lớp học",
+        "restore": "Khôi phục lớp học",
+        "cancel": "Hủy",
+        "confirm": {
+          "archive": {
+            "title": "Lưu trữ {name}?",
+            "body": "Học sinh vẫn được ghi danh tại trường nhưng lớp học này sẽ bị ẩn khỏi giáo viên.",
+            "cta": "Lưu trữ lớp học"
+          },
+          "restore": {
+            "title": "Khôi phục {name}?",
+            "body": "Lớp học sẽ quay lại danh sách đang hoạt động cùng với học sinh.",
+            "cta": "Khôi phục lớp học"
+          }
+        }
+      },
+      "entityLabel": "lớp học",
+      "bulk": {
+        "setTestWindow": "Đặt kỳ kiểm tra",
+        "archive": "Lưu trữ",
+        "archiveSkip": "{skipped} lớp đã được lưu trữ",
+        "confirm": {
+          "archive": {
+            "title": "Lưu trữ {count} lớp học?",
+            "body": "Học sinh vẫn được ghi danh tại trường nhưng các lớp học này sẽ bị ẩn khỏi giáo viên.",
+            "cta": "Lưu trữ {count}"
+          }
+        }
+      },
+      "reassign": {
+        "title": "Đổi giáo viên",
+        "description": "Chọn giáo viên mới cho {name}.",
+        "teacherLabel": "Giáo viên",
+        "noTeacherOption": "Chưa phân công giáo viên",
+        "cancel": "Hủy",
+        "save": "Lưu",
+        "saving": "Đang lưu…",
+        "errorTitle": "Không thể đổi giáo viên",
+        "errorDescription": "Không thể phân công lại giáo viên. Vui lòng thử lại."
+      },
+      "setTestWindow": {
+        "title": "Đặt kỳ kiểm tra",
+        "description": "Tạo một kỳ kiểm tra và gán cho {count} lớp học đã chọn.",
+        "titleLabel": "Tiêu đề",
+        "timezoneLabel": "Múi giờ",
+        "opensLabel": "Bắt đầu",
+        "closesLabel": "Kết thúc",
+        "formLabel": "Đề đọc hiểu",
+        "formPlaceholder": "Chọn đề thi",
+        "cancel": "Hủy",
+        "submit": "Tạo và gán",
+        "submitting": "Đang tạo…",
+        "createErrorTitle": "Không thể tạo kỳ kiểm tra"
       }
     },
     "staffInvitations": {
@@ -5248,5 +5652,36 @@
     "loading": "Đang tải",
     "commandPalette": "Bảng lệnh",
     "commandPaletteDescription": "Tìm kiếm lệnh để chạy..."
+  },
+  "Directory": {
+    "defaults": {
+      "searchPlaceholder": "Tìm kiếm",
+      "searchLabel": "Tìm kiếm",
+      "filtersLabel": "Bộ lọc",
+      "sortLabel": "Sắp xếp",
+      "layoutLabel": "Bố cục",
+      "clearFilters": "Xóa bộ lọc",
+      "paginationLabel": "Phân trang",
+      "previous": "Trước",
+      "next": "Sau",
+      "rowMenuLabel": "Thao tác hàng",
+      "selectAllLabel": "Chọn tất cả các hàng trên trang này",
+      "selectRowLabel": "Chọn hàng {key}",
+      "showingCount": "Đang hiển thị {showing}/{total}",
+      "pageCount": "Trang {page} trên {pageCount} — tổng {total}",
+      "selectedEntityNoun": "hàng",
+      "emptyNoneTitle": "Chưa có gì ở đây",
+      "emptyNoneDescription": "Mục sẽ xuất hiện ở đây ngay khi được tạo.",
+      "emptyNoMatchesTitle": "Không có kết quả khớp",
+      "emptyNoMatchesDescription": "Không có mục nào khớp tìm kiếm và bộ lọc hiện tại.",
+      "errorTitle": "Không thể tải danh sách này",
+      "errorStaleBanner": "Lần làm mới gần nhất thất bại — các hàng dưới đây là dữ liệu cuối cùng máy chủ trả về.",
+      "errorDescription": "Đã xảy ra lỗi khi tải danh sách này.",
+      "retry": "Thử lại",
+      "loadingLabel": "Đang tải",
+      "exportLabel": "Xuất CSV",
+      "primaryActionLabel": "Mở",
+      "chipAllLabel": "Tất cả"
+    }
   }
 }

@@ -4,9 +4,10 @@ import type { UseFormReturn } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 
 import {
-  NOTIFICATION_CATEGORY_TOGGLES,
   NOTIFICATION_CHANNEL_TOGGLES,
+  NOTIFICATION_EVENT_TOGGLES,
 } from '@/modules/notifications/constants/notification-preferences.constants';
+import { NotificationPreferenceEventGroup } from '@/modules/notifications/components/NotificationPreferenceEventGroup';
 import { NotificationPreferenceToggleGroup } from '@/modules/notifications/components/NotificationPreferenceToggleGroup';
 import type { NotificationPreferenceFormValues } from '@/modules/notifications/types/notification-preference.types';
 
@@ -24,9 +25,9 @@ function NotificationPreferenceFields({
         items={NOTIFICATION_CHANNEL_TOGGLES}
         form={form}
       />
-      <NotificationPreferenceToggleGroup
-        title={t('notificationPreferences.categoriesTitle')}
-        items={NOTIFICATION_CATEGORY_TOGGLES}
+      <NotificationPreferenceEventGroup
+        title={t('notificationPreferences.eventsTitle')}
+        items={NOTIFICATION_EVENT_TOGGLES}
         form={form}
         divided
       />

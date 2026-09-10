@@ -1,4 +1,5 @@
 import type {
+  NotificationPreferenceEventConfig,
   NotificationPreferenceFormValues,
   NotificationPreferenceLockedConfig,
   NotificationPreferenceToggleConfig,
@@ -24,28 +25,20 @@ export const NOTIFICATION_SELECT_TRIGGER_CLASS =
 // The schema rejects anything outside this set, so the two can never drift silently.
 export const NOTIFICATION_DIGEST_FREQUENCIES = ['immediate', 'daily', 'weekly', 'off'] as const;
 
-// Which of the wire values this deployment can actually HONOUR. The digest
-// sender landed with the notification-digest BullMQ queue (schooltest-api
-// src/services/notifications/digest.ts; daily 06:30 + weekly Mon 06:30
-// server-local, live-proven against Mailpit 2026-08-18), so every wire value
-// is honourable today. Keep this gate: it is what stops the UI ever offering
-// a frequency the backend would silently suppress (the original black hole).
-export const NOTIFICATION_DIGEST_SELECTABLE_FREQUENCIES = [
-  'immediate',
-  'daily',
-  'weekly',
-  'off',
-] as const;
-
 export const NOTIFICATION_PREFERENCE_DEFAULTS: NotificationPreferenceFormValues = {
   emailEnabled: true,
   smsEnabled: true,
   inAppEnabled: true,
   pushEnabled: true,
-  children: true,
-  testActivity: true,
-  testResults: true,
   digestFrequency: 'immediate',
+  eventPreferences: {
+    test_results_ready: true,
+    test_results_updated: true,
+    session_completed: true,
+    session_started: true,
+    student_created: true,
+    student_email_fix_requested: true,
+  },
 };
 
 export const NOTIFICATION_CHANNEL_TOGGLES: readonly NotificationPreferenceToggleConfig[] = [
@@ -72,23 +65,51 @@ export const NOTIFICATION_CHANNEL_TOGGLES: readonly NotificationPreferenceToggle
   },
 ];
 
-export const NOTIFICATION_CATEGORY_TOGGLES: readonly NotificationPreferenceToggleConfig[] = [
+/**
+ * Row 05 (D-01) — per-EVENT switches, replacing the three category toggles.
+ * The design (`Parent Portal.dc.html:653-664`) draws event rows, each bundling
+ * its channels in prose; the channel switches above stay the global master per
+ * transport. Order matches the design's reading order, results first.
+ */
+export const NOTIFICATION_EVENT_TOGGLES: readonly NotificationPreferenceEventConfig[] = [
   {
-    field: 'children',
-    titleKey: 'notificationPreferences.categories.children.title',
-    descriptionKey: 'notificationPreferences.categories.children.description',
+    event: 'test_results_ready',
+    titleKey: 'notificationPreferences.events.testResultsReady.title',
+    descriptionKey: 'notificationPreferences.events.testResultsReady.description',
   },
   {
-    field: 'testActivity',
-    titleKey: 'notificationPreferences.categories.testActivity.title',
-    descriptionKey: 'notificationPreferences.categories.testActivity.description',
+    event: 'test_results_updated',
+    titleKey: 'notificationPreferences.events.testResultsUpdated.title',
+    descriptionKey: 'notificationPreferences.events.testResultsUpdated.description',
   },
   {
-    field: 'testResults',
-    titleKey: 'notificationPreferences.categories.testResults.title',
-    descriptionKey: 'notificationPreferences.categories.testResults.description',
+    event: 'session_completed',
+    titleKey: 'notificationPreferences.events.sessionCompleted.title',
+    descriptionKey: 'notificationPreferences.events.sessionCompleted.description',
+  },
+  {
+    event: 'session_started',
+    titleKey: 'notificationPreferences.events.sessionStarted.title',
+    descriptionKey: 'notificationPreferences.events.sessionStarted.description',
+  },
+  {
+    event: 'student_created',
+    titleKey: 'notificationPreferences.events.studentCreated.title',
+    descriptionKey: 'notificationPreferences.events.studentCreated.description',
+  },
+  {
+    event: 'student_email_fix_requested',
+    titleKey: 'notificationPreferences.events.studentEmailFix.title',
+    descriptionKey: 'notificationPreferences.events.studentEmailFix.description',
   },
 ];
+
+/** category -> its events, so a legacy row's category can seed the six switches. */
+export const NOTIFICATION_EVENTS_BY_CATEGORY: Readonly<Record<string, readonly string[]>> = {
+  children: ['student_created', 'student_email_fix_requested'],
+  testActivity: ['session_started', 'session_completed'],
+  testResults: ['test_results_ready', 'test_results_updated'],
+};
 
 export const NOTIFICATION_LOCKED_CATEGORIES: readonly NotificationPreferenceLockedConfig[] = [
   {
