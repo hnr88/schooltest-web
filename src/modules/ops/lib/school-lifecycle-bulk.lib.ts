@@ -11,8 +11,9 @@ import { fetchSchoolVersion } from '@/modules/ops/queries/use-school-version.que
  * bulk endpoint: each selected school goes through the SAME single-school
  * lifecycle write the detail panel and the row menu use — task `10`'s shared
  * substrate (`school-lifecycle-actions.ts` + `use-school-suspend.mutation.ts`),
- * the task `05` runner, task `07` selection — so a bulk run inherits exactly
- * the guarantees (and the exact coded errors) of the single action.
+ * task `03`'s action kit (the runner AND the selection it bulk-runs over) —
+ * so a bulk run inherits exactly the guarantees (and the exact coded errors)
+ * of the single action.
  *
  * Honesty rules the runner enforces on top: every item is READ BACK through an
  * authorized detail read before it may count as success, an acknowledged write

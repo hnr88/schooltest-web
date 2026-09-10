@@ -58,7 +58,13 @@ export function useSchoolSuspendMutation() {
   });
 }
 
-/* --- task 12: archive, restore and the Undo window ----------------------- */
+/* --- archive, restore and undo (pre-existing on this file; task `10` now owns
+ * the canonical Undo substrate at `use-school-lifecycle-undo.mutation.ts` —
+ * `useSchoolUndoMutation` below has zero importers repo-wide and is NOT the
+ * one task `08`'s list wires up (see `use-school-lifecycle-undo.mutation.ts`).
+ * Left in place: Law 3 forbids removing an export without a `Retires:` entry,
+ * and this row's `Retires:` is empty. Routed for whoever next owns retirement
+ * of the duplicate. ------------------------------------------------------ */
 
 /** C-OPS-PORTAL-016 — the typed-name half lives in the UI; this body key IS the server's guard. */
 export async function archiveSchool({
