@@ -79,9 +79,14 @@ test('flows 11, 12, 13: sending toasts the spec copy and both badges change with
   ).toBeVisible();
   await expect(page.getByRole('dialog')).toBeHidden();
 
-  // Flows 12 and 13 — both badges update in place, with no manual reload.
+  // Flows 12 and 13 — the statuses update in place, with no manual reload.
+  // The portal-lifecycle redesign (ops rows 10-11) renders the school's ONE
+  // lifecycle pill in the hero, from the same mapping the list row uses: a
+  // school whose owner invite is out but whose onboarding has not completed
+  // reads "Pending setup". The onboarding chip stays beside it; the legacy
+  // account-status chip renders nowhere on the page any more.
   await expect(
-    page.getByText(cat(en, 'Ops.detail.accountStatus.invited'), { exact: true }),
+    page.getByText(cat(en, 'Ops.schools.portalStatus.pending_setup'), { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByText(cat(en, 'Ops.detail.onboardingStatus.link_sent'), { exact: true }),
@@ -108,7 +113,7 @@ test('flow 34: exactly one active invitation exists, with no duplicate rows', as
   expect(activeLinkCount(school.documentId)).toBe(1);
 });
 
-test('flow 14: the schools list reflects Invited / Invitation sent after navigating back', async ({
+test('flow 14: the schools list reflects the invited school after navigating back', async ({
   page,
 }) => {
   await loginAs(page, 'ops');
@@ -116,21 +121,28 @@ test('flow 14: the schools list reflects Invited / Invitation sent after navigat
   await page.getByRole('link', { name: cat(en, 'Ops.detail.backToSchools'), exact: true }).click();
   await page.waitForURL('**/dashboard/ops/schools');
 
+  // The kit list is server-paginated (25/page over the 300+ seeded schools),
+  // so the fixture row is only on screen once the server-side search narrows
+  // the directory to it.
+  const search = page.locator('[data-slot="directory-toolbar"] input[type="search"]');
+  await search.fill(school.name);
+
+  // The list row carries the same lifecycle pill the detail hero renders —
+  // one status, one label, both surfaces (portal-lifecycle.lib).
   const row = page.getByRole('row').filter({ hasText: school.name });
   await row.scrollIntoViewIfNeeded();
   await expect(
-    row.getByText(cat(en, 'Ops.schools.accountStatus.invited'), { exact: true }),
-  ).toBeVisible();
-  await expect(
-    row.getByText(cat(en, 'Ops.schools.onboardingStatus.link_sent'), { exact: true }),
+    row.getByText(cat(en, 'Ops.schools.portalStatus.pending_setup'), { exact: true }),
   ).toBeVisible();
 
   // It survives a full reload — the list is reading the server, not a cache.
+  // The search param survives in the URL state, so the filtered row re-renders.
   await page.reload();
+  await search.fill(school.name);
   const reloaded = page.getByRole('row').filter({ hasText: school.name });
   await reloaded.scrollIntoViewIfNeeded();
   await expect(
-    reloaded.getByText(cat(en, 'Ops.schools.accountStatus.invited'), { exact: true }),
+    reloaded.getByText(cat(en, 'Ops.schools.portalStatus.pending_setup'), { exact: true }),
   ).toBeVisible();
 });
 
@@ -142,7 +154,11 @@ test('flow 27: the emailed magic link authenticates the school admin into the on
 
   // A brand-new browser context would be ideal, but this page has never signed
   // in as anyone but ops — the link is the ONLY credential the wizard needs.
-  await page.goto(link);
+  // The email's absolute host is the mailer's configured WEB_APP_URL, which on
+  // this stack still names the retired :3101; the token is the credential, so
+  // the wizard is opened at the link's PATH on the app under test.
+  const linkUrl = new URL(link);
+  await page.goto(linkUrl.pathname + linkUrl.search);
   await expect(
     page.getByRole('heading', { name: cat(en, 'SchoolOnboarding.school.title') }),
   ).toBeVisible();

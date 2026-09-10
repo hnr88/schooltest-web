@@ -29,9 +29,12 @@ const PASSWORD = 'Task23!pass';
 
 async function signIn(page: Page, email: string, password: string): Promise<void> {
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  // The sign-in form moved to the Auth.portal.* copy ("Email address" / "Log
+  // in to the portal"); the legacy Auth.emailLabel keys this helper filled
+  // render nowhere, so the fill timed out before it typed.
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(email);
+  await page.getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true }).fill(password);
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await page.waitForURL('**/dashboard**', { timeout: 30_000 });
 }
 
@@ -113,11 +116,17 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     await expect(page.getByText(cat(en, 'Invite.roles.teacher'), { exact: true })).toBeVisible();
 
     // C-INV-06 accepts and lands signed in on the teacher dashboard.
+    // The accept form gained required first/last name fields; a submit
+    // without them fails client-side validation and never activates.
+    await page.locator('#invite-first-name').fill(INVITED.first);
+    await page.locator('#invite-last-name').fill(INVITED.last);
     await page.locator('#invite-password').fill(PASSWORD);
     await page.locator('#invite-confirm-password').fill(PASSWORD);
     await page.getByRole('button', { name: cat(en, 'Invite.form.submit'), exact: true }).click();
-    await page.waitForURL('**/dashboard/teach', { timeout: 30_000 });
-    await expect(page.locator('[data-surface="teacher-home"]')).toBeVisible({ timeout: 20_000 });
+    // teacher/10 retired the teach-home cluster: the teacher's home surface is
+    // the class list at /dashboard/results (ROLE_DESTINATIONS).
+    await page.waitForURL('**/dashboard/results', { timeout: 30_000 });
+    await expect(page.locator('[data-surface="teacher-results"]')).toBeVisible({ timeout: 20_000 });
 
     // The accepted link now renders the used screen (409).
     await page.goto(`/en/invite/${token}`);
@@ -202,7 +211,9 @@ test.describe('task 23: invitation flow + teachers screen', () => {
     await signIn(page, TEACHER.email, TEACHER.password);
     await page.goto('/dashboard/school/teachers');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
-    await expect(page.locator('[data-surface="teacher-dashboard"]')).toBeVisible();
+    // teacher/10 retired the teacher-dashboard surface; the teacher's home is
+    // the results surface now.
+    await expect(page.locator('[data-surface="teacher-results"]')).toBeVisible();
     await expect(page.locator('[data-surface="school-admin-teachers"]')).toHaveCount(0);
   });
 });

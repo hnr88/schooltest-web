@@ -19,22 +19,34 @@ const en = loadMessages('en');
 
 test.describe.configure({ mode: 'serial' });
 
-test('flow 1: ops sign-in lands on Schools by default, with the seven contracted columns', async ({
+test('flow 1: ops sign-in lands on Schools by default, with the contracted columns', async ({
   page,
 }) => {
   await loginAs(page, 'ops');
   await page.goto('/dashboard/ops');
   await page.waitForURL('**/dashboard/ops/schools');
 
-  const headers = page.locator('table thead th');
-  await expect(headers).toHaveText([
+  // The portal-lifecycle redesign (ops rows 10-11) re-contracted the columns:
+  // the legacy Account/Onboarding pair became the single Status pill plus Plan,
+  // and an Admins count joined the counts. The row also renders a leading
+  // selection cell and a trailing row-menu cell with no visible text, so the
+  // assertion reads the NON-EMPTY header labels in order.
+  // Wait for the table to actually render (Suspense + fetch) before reading.
+  await expect(page.locator('table thead th').first()).toBeVisible({ timeout: 60_000 });
+  const headers = (await page.locator('table thead th').allTextContents())
+    .map((text) => text.trim())
+    .filter(Boolean);
+  expect(headers).toEqual([
     cat(en, 'Ops.schools.columnName'),
-    cat(en, 'Ops.schools.columnAccountStatus'),
-    cat(en, 'Ops.schools.columnOnboarding'),
+    cat(en, 'Ops.schools.columnStatus'),
+    cat(en, 'Ops.schools.columnPlan'),
     cat(en, 'Ops.schools.columnTeachers'),
+    cat(en, 'Ops.schools.columnAdmins'),
     cat(en, 'Ops.schools.columnClasses'),
     cat(en, 'Ops.schools.columnStudents'),
     cat(en, 'Ops.schools.columnResults'),
+    // The kit's per-row menu column (directory rowMenuLabel).
+    'Row actions',
   ]);
 });
 
@@ -72,36 +84,30 @@ test('flow 2: the prospect cohort reads Prospect / Not started, and no school is
 
   await loginAs(page, 'ops');
   await page.goto('/dashboard/ops/schools');
-  const prospectCells = page.getByRole('cell', {
-    name: cat(en, 'Ops.schools.accountStatus.prospect'),
+
+  // The legacy Prospect/Not-started cell pair is gone from the list: a
+  // prospect school renders the one lifecycle pill, "Pending setup" (the DB
+  // invariants above still prove what the pill is backed by). The kit list is
+  // server-paginated, so the UI asserts the cohort through the pill bar's own
+  // server filter — every rendered row of the filtered page carries the pill —
+  // never a raw count a 25-row page cannot render.
+  await page.locator('[data-slot="ops-schools-pill-pending_setup"]').click();
+  const rowsOnPage = page.locator('[data-slot="ops-schools"] tbody tr');
+  await expect(rowsOnPage.first()).toBeVisible({ timeout: 60_000 });
+  const rendered = await rowsOnPage.count();
+  expect(rendered, 'the filtered directory page is populated').toBeGreaterThan(0);
+  expect(rendered, 'one page of the directory').toBeLessThanOrEqual(25);
+  const pendingCells = page.getByRole('cell', {
+    name: cat(en, 'Ops.schools.portalStatus.pending_setup'),
     exact: true,
   });
-  await expect(prospectCells.first()).toBeVisible();
-  expect(await prospectCells.count()).toBeGreaterThanOrEqual(300);
-
-  // The PAIRING, not two independent counts: a row showing Prospect must show
-  // Not started in the same row.
-  const pairedRows = page
-    .getByRole('row')
-    .filter({
-      has: page.getByRole('cell', {
-        name: cat(en, 'Ops.schools.accountStatus.prospect'),
-        exact: true,
-      }),
-    })
-    .filter({
-      has: page.getByRole('cell', {
-        name: cat(en, 'Ops.schools.onboardingStatus.not_started'),
-        exact: true,
-      }),
-    });
   expect(
-    await pairedRows.count(),
-    'rows showing BOTH Prospect and Not started',
-  ).toBeGreaterThanOrEqual(300);
+    await pendingCells.count(),
+    'every filtered row carries the Pending setup pill',
+  ).toBe(rendered);
 });
 
-test('flow 25: the list renders every school, and the last row is reachable by scrolling', async ({
+test('flow 25: the list pages the directory server-side, and the page last row is reachable', async ({
   page,
 }) => {
   const total = Number(runSql('select count(*) from schools').trim());
@@ -109,9 +115,14 @@ test('flow 25: the list renders every school, and the last row is reachable by s
 
   await loginAs(page, 'ops');
   await page.goto('/dashboard/ops/schools');
-  const rows = page.locator('table tbody tr');
-  await expect(rows.first()).toBeVisible();
-  await expect(rows).toHaveCount(total);
+  const rows = page.locator('[data-slot="ops-schools"] tbody tr');
+  await expect(rows.first()).toBeVisible({ timeout: 60_000 });
+
+  // The directory kit pages the directory server-side (25/page): the page
+  // holds a bounded window of the DB total, and its last row is reachable.
+  const rendered = await rows.count();
+  expect(rendered, 'a bounded page of the directory').toBeLessThanOrEqual(25);
+  expect(rendered).toBeGreaterThan(0);
 
   const lastRow = rows.last();
   await lastRow.scrollIntoViewIfNeeded();
@@ -138,8 +149,10 @@ test('flows 3, 4, 5: a row click reaches the detail page with badges, zero count
     await page.waitForURL(`**${detailPath(school.documentId)}`);
 
     await expect(page.getByRole('heading', { name: school.name, level: 1 })).toBeVisible();
+    // A fresh prospect school reads Pending setup — the one lifecycle pill —
+    // with its onboarding chip beside it.
     await expect(
-      page.getByText(cat(en, 'Ops.detail.accountStatus.prospect'), { exact: true }),
+      page.getByText(cat(en, 'Ops.schools.portalStatus.pending_setup'), { exact: true }),
     ).toBeVisible();
     await expect(
       page.getByText(cat(en, 'Ops.detail.onboardingStatus.not_started'), { exact: true }),

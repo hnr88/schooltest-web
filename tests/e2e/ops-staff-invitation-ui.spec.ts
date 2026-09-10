@@ -2,8 +2,8 @@ import path from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
-import { apiEnv } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
+import { loginAs } from './helpers/roles';
 
 // GAP-1 visual proof — the ops staff invitations flow through the REAL portal:
 // the "Invite staff" control on the Admins and Teachers tabs, the dialog's
@@ -31,12 +31,9 @@ test.describe('ops staff invitation UI (GAP-1 visual proof)', () => {
   test('invite control opens the invitations dialog on both staff tabs; actions follow row status', async ({
     page,
   }, testInfo) => {
-    // --- the one login ---
-    await page.goto('/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill('apiadmin@schooltest.local');
-    await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(apiEnv('SEED_APIADMIN_PASSWORD'));
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-    await page.waitForURL('**/dashboard');
+    // --- the one login (shared helper: the current sign-in form moved to
+    // Auth.portal.* copy, which broke the hand-rolled fill that was here) ---
+    await loginAs(page, 'opsApi');
 
     // --- pick a real school with the session's JWT (read-only) ---
     const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));

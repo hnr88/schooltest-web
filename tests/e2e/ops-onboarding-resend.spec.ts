@@ -13,7 +13,12 @@ import {
   inviteViaApi,
   type FixtureSchool,
 } from './helpers/ops-onboarding';
-import { activeLinkCount, magicLinkFromEmail, messagesTo } from './helpers/ops-onboarding-db';
+import {
+  activeLinkCount,
+  backdateOnboardingLink,
+  magicLinkFromEmail,
+  messagesTo,
+} from './helpers/ops-onboarding-db';
 import { loginAs } from './helpers/roles';
 
 const en = loadMessages('en');
@@ -75,9 +80,11 @@ test('flows 15, 16, 28: at Invitation Sent the button is gone, replaced by the i
   await expect(panel.getByRole('button', { name: t('resend'), exact: true })).toBeEnabled();
   await expect(panel.getByRole('button', { name: t('revoke'), exact: true })).toBeEnabled();
 
-  // The badges agree with the state.
+  // The lifecycle pill and the onboarding chip agree with the state: an
+  // invited-but-not-onboarded school reads Pending setup (the one lifecycle
+  // label the redesign renders) with Invitation sent beside it.
   await expect(
-    page.getByText(cat(en, 'Ops.detail.accountStatus.invited'), { exact: true }),
+    page.getByText(cat(en, 'Ops.schools.portalStatus.pending_setup'), { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByText(cat(en, 'Ops.detail.onboardingStatus.link_sent'), { exact: true }),
@@ -90,6 +97,9 @@ test('flows 17, 18: Resend delivers a NEW magic link to the same contact, and th
   const before = (await messagesTo(contactEmail)).length;
   expect(before).toBeGreaterThanOrEqual(1);
 
+  // The task-11 cooldown refuses a resend inside 60s of the last link; move
+  // the test clock so the click below is answered with a new link, not a 429.
+  backdateOnboardingLink(school.documentId);
   await loginAs(page, 'ops');
   await openDetail(page, school.documentId);
   await page.getByRole('button', { name: t('resend'), exact: true }).click();

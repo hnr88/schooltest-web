@@ -23,7 +23,9 @@ const ACT = 10_000;
 
 const PAGE = '/dashboard/ops/schools';
 const dialog = '[data-slot="ops-create-school-dialog"]';
-const trigger = '[data-action="open-create-school"]';
+// The header button renders data-testid (ops-create-school), not a
+// data-action attribute — the mount point is the table header row.
+const trigger = '[data-testid="ops-create-school"]';
 const table = '[data-slot="ops-schools"]';
 const search = '#ops-schools-search';
 

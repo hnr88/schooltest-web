@@ -14,7 +14,12 @@ import {
   resendViaApi,
   type FixtureSchool,
 } from './helpers/ops-onboarding';
-import { linkStatuses, schoolContact, schoolStatuses } from './helpers/ops-onboarding-db';
+import {
+  backdateOnboardingLink,
+  linkStatuses,
+  schoolContact,
+  schoolStatuses,
+} from './helpers/ops-onboarding-db';
 import { loginAs } from './helpers/roles';
 
 const en = loadMessages('en');
@@ -44,6 +49,9 @@ test.beforeAll(async () => {
   firstLink = invited.body.data.url;
 
   // A resend as well, so revoke has to invalidate MORE than one link (D-40).
+  // The task-11 resend cooldown (60s, server clock) refuses an immediate
+  // resend, so the test moves the clock first instead of sleeping it out.
+  backdateOnboardingLink(school.documentId);
   const resent = await resendViaApi(school.documentId);
   expect(resent.status).toBe(200);
   secondLink = resent.body.data.url;
@@ -70,15 +78,15 @@ test('flows 19, 20, 22: revoking resets both statuses in place and re-enables th
     page.locator('[data-sonner-toast]').getByText(t('revokeSuccess'), { exact: true }),
   ).toBeVisible();
 
-  // Flows 19 and 20 — both badges reset without a manual reload.
-  await expect(
-    page.getByText(cat(en, 'Ops.detail.accountStatus.prospect'), { exact: true }),
-  ).toBeVisible();
+  // Flows 19 and 20 — the statuses reset without a manual reload. The
+  // lifecycle pill reads Pending setup both before and after (a prospect and
+  // an invited school share it), so the visible flip is the onboarding chip:
+  // Invitation sent → Not started. The Postgres assertion below pins the rest.
   await expect(
     page.getByText(cat(en, 'Ops.detail.onboardingStatus.not_started'), { exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText(cat(en, 'Ops.detail.accountStatus.invited'), { exact: true }),
+    page.getByText(cat(en, 'Ops.detail.onboardingStatus.link_sent'), { exact: true }),
   ).toHaveCount(0);
 
   // Flow 22 — the Onboard School button is enabled again.
@@ -89,7 +97,7 @@ test('flows 19, 20, 22: revoking resets both statuses in place and re-enables th
   // ops can see who was invited (the spec allows re-inviting with new details).
   await page.reload();
   await expect(
-    page.getByText(cat(en, 'Ops.detail.accountStatus.prospect'), { exact: true }),
+    page.getByText(cat(en, 'Ops.detail.onboardingStatus.not_started'), { exact: true }),
   ).toBeVisible();
   expect(schoolStatuses(school.documentId)).toEqual({
     account: 'prospect',

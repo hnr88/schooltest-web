@@ -17,40 +17,16 @@
  * marketing site hazard does not apply — these ARE schooltest-web specs), API
  * on :5500, Postgres on :5540.
  */
-import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
-
 import { expect, test } from '@playwright/test';
 
+// apiEnv + runSql come from the SHARED helper: this file used to carry its own
+// private copies, and the private runSql called the `psql` binary directly —
+// on hosts without a psql client it crashed with ENOENT instead of using the
+// docker fallback the shared helper provides.
+import { apiEnv, runSql } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 
 const en = loadMessages('en');
-
-/** Read one value from schooltest-api/.env (DATABASE_*, SEED_*). */
-function apiEnv(key: string): string {
-  const file = path.resolve(process.cwd(), '..', 'schooltest-api', '.env');
-  for (const line of readFileSync(file, 'utf8').split('\n')) {
-    const match = line.match(/^([A-Z0-9_]+)=(.*)$/);
-    if (match && match[1] === key) return match[2].replace(/^(['"])(.*)\1$/, '$2');
-  }
-  throw new Error(`[e2e] ${key} missing from schooltest-api/.env`);
-}
-
-/** One SQL scalar through psql against the dev database (reads only). */
-function runSql(sql: string): string {
-  return execFileSync(
-    'psql',
-    [
-      '-h', apiEnv('DATABASE_HOST'),
-      '-p', apiEnv('DATABASE_PORT'),
-      '-U', apiEnv('DATABASE_USERNAME'),
-      '-d', apiEnv('DATABASE_NAME'),
-      '-t', '-A', '-c', sql,
-    ],
-    { env: { ...process.env, PGPASSWORD: apiEnv('DATABASE_PASSWORD') }, encoding: 'utf8' },
-  ).trim();
-}
 
 const API_BASE = 'http://127.0.0.1:5500';
 

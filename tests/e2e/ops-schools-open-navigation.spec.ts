@@ -2,8 +2,8 @@ import path from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
-import { apiEnv } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
+import { loginAs } from './helpers/roles';
 
 // The schools table's "Open school" row action drives a CLIENT-SIDE
 // router.push to the school detail route. It used to be dead: the table took
@@ -34,12 +34,9 @@ test.describe('ops schools — Open school row action', () => {
       if (message.type() === 'error') consoleErrors.push(message.text());
     });
 
-    // --- the one login ---
-    await page.goto('/sign-in');
-    await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill('apiadmin@schooltest.local');
-    await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(apiEnv('SEED_APIADMIN_PASSWORD'));
-    await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
-    await page.waitForURL('**/dashboard');
+    // --- the one login (the shared helper drives the current sign-in form;
+    // the hand-rolled fill below died when the form moved to Auth.portal.*) ---
+    await loginAs(page, 'opsApi');
 
     // --- the row id comes from the app's own authenticated list response ---
     const listPromise = page.waitForResponse(
@@ -75,7 +72,8 @@ test.describe('ops schools — Open school row action', () => {
     // --- desktop capture of the working navigation ---
     const desktop = await page.screenshot();
     await testInfo.attach('open-school-desktop', { body: desktop, contentType: 'image/png' });
-    const { writeFile } = await import('node:fs/promises');
+    const { mkdir, writeFile } = await import('node:fs/promises');
+    await mkdir(CAPTURES, { recursive: true });
     await writeFile(path.join(CAPTURES, 'open-school-desktop.png'), desktop);
 
     // --- zero console errors across the whole visit ---

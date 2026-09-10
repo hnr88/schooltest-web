@@ -74,3 +74,24 @@ export async function magicLinkFromEmail(email: string, count = 1): Promise<stri
   }
   throw new Error(`[e2e] mailpit never delivered ${count} message(s) to ${email}`);
 }
+
+/**
+ * Task-11 cooldown clock: age the school's newest onboarding link past the
+ * 60s resend cooldown so a spec can resend immediately. Same test-hygiene
+ * pattern as auth-db's backdateResetIssuance — the server clock decides, the
+ * test moves it. Returns the number of rows moved.
+ */
+export function backdateOnboardingLink(documentId: string): number {
+  const moved = runSql(
+    `with moved as (
+       update school_onboardings so set created_at = so.created_at - interval '61 seconds'
+       where exists (
+         select 1 from school_onboardings_school_lnk l
+           join schools sc on sc.id = l.school_id
+          where l.school_onboarding_id = so.id and sc.document_id = ${lit(documentId)}
+       )
+       returning 1
+     ) select count(*) from moved`,
+  );
+  return Number.parseInt(moved, 10);
+}
