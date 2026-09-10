@@ -48,7 +48,11 @@ function ReviewDrawer({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         data-surface="result-review"
-        className="flex w-full flex-col gap-6 overflow-y-auto sm:max-w-xl"
+        // The width must carry the SAME variant chain as the primitive's own
+        // `data-[side=right]:sm:max-w-sm` — a bare `sm:max-w-xl` has lower
+        // specificity, loses silently, and the drawer renders at 384px with
+        // its strip and band digits clipped off the sheet's edges.
+        className="flex w-full flex-col gap-6 overflow-y-auto data-[side=right]:sm:max-w-xl"
       >
         <SheetHeader>
           <SheetTitle>{t('title')}</SheetTitle>

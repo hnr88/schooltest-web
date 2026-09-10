@@ -72,6 +72,15 @@ const SERVER_ONLY = [
   'teacherExportDisposition',
   'testVariantForFormCode',
   'testVariantLabel',
+  // teacher-sessions sitting-activity block (api 6eee094): the limits and the
+  // frozen-message copy are SERVER thresholds and server-composed copy, and
+  // `sittingActivityQuerySchema` validates a server query string — nothing the
+  // portal parses, so the mirror deliberately does not restate them.
+  'SITTING_ACTIVITY_LIMIT_DEFAULT',
+  'SITTING_ACTIVITY_LIMIT_MAX',
+  'SITTING_ACTIVITY_NOTE_MAX',
+  'SITTING_SETTINGS_FROZEN_MESSAGE',
+  'sittingActivityQuerySchema',
 ].sort();
 
 // Portal-side names with no same-file server twin: two live in the server's
@@ -80,6 +89,22 @@ const SERVER_ONLY = [
 // with a capture group so one expression both validates and names the file.
 const WEB_ONLY = [
   'TEACHER_EXPORT_DISPOSITION_PATTERN',
+  // The retired v1 C-TR reads (insights / progress / the drill-down's
+  // class-student read): their surfaces died with e90c58b and da22e85, but the
+  // web mirror still exports their schemas. They stay listed here until the
+  // mirror owner retires the exports themselves — deleting them from this
+  // file is a mirror edit, not a spec edit.
+  'classInsightsResponseSchema',
+  'classStudentRowSchema',
+  'classStudentsResponseSchema',
+  'classStudentsSummarySchema',
+  'insightGroupKeySchema',
+  'insightGroupSchema',
+  'insightMasterySchema',
+  // The portal's own band-tone vocabulary constant, mirrored for the
+  // MASTERY_BAND_TONE assertion below; the server keeps the band vocabulary
+  // in a module this spec does not diff.
+  'masteryBandSchema',
   // scoring/11: the review mirror restates two schemas the server keeps in
   // OTHER modules — the answer key (`keys.ts`) and the response flags
   // (`responses.ts`). Same situation as the two vocab names below: the portal
@@ -88,8 +113,18 @@ const WEB_ONLY = [
   'correctKeySchema',
   'responseFlagsSchema',
   'readingAttributeSchema',
+  // Web-local copies of the server's sitting-activity limits, used to render
+  // remaining-capacity hints; the server constants are the authority, these
+  // are the portal's display defaults and carry no server twin in this diff.
+  'sittingActivityLimitDefault',
+  'sittingActivityLimitMax',
   'sittingStatusSchema',
   'stageSchema',
+  'studentDrillDownResponseSchema',
+  'studentProgressSchema',
+  'studentSubskillSchema',
+  'studentTestCellSchema',
+  'studentTestResultSchema',
 ].sort();
 
 function shapeKeys(schema: unknown): string[] | null {
@@ -175,14 +210,12 @@ function executableSource(file: string): string {
     .replaceAll('=>', '');
 }
 
-// The paths .qa/CONTRACTS.md gives the eleven operations the PORTAL calls,
-// with every `${…}` interpolation normalised to `:param`. The three C-TR-5/6/7
-// export routes are built by `teacherExportPath` and asserted separately.
+// Re-measured 2026-09-10 (scoring/11). The v1 classes/:param/insights,
+// /progress and /students reads died with their surfaces (e90c58b) or the
+// drill-down repoint (da22e85); the rescore read (scoring/09, C-RSC-1) is
+// new. Every entry is a real contract path, normalised to :param.
 const CONTRACT_PATHS = [
-  '/api/teacher/classes/:param/insights',
-  '/api/teacher/classes/:param/progress',
-  '/api/teacher/classes/:param/students',
-  '/api/teacher/classes/:param/students/:param',
+  '/api/results/:param/rescore',
   '/api/teacher/dashboard',
   '/api/teacher/test-sessions',
   '/api/teacher/test-sessions/:param/close',
@@ -193,19 +226,26 @@ const CONTRACT_PATHS = [
 test.describe('teacher module — the data layer is the real typed Axios instance', () => {
   test('every query hook imports the shared instance and calls a real contract path', () => {
     const queryFiles = teacherSourceFiles(path.join(TEACHER_MODULE_DIR, 'queries'));
-    expect(queryFiles).toHaveLength(11);
+    // Re-measured 2026-09-10 (scoring/11): the v1 progress/insights hooks were
+    // retired with their surfaces (e90c58b), so nine hooks remain.
+    expect(queryFiles).toHaveLength(9);
 
     const called = new Set<string>();
     for (const file of queryFiles) {
       const source = readFileSync(file, 'utf8');
-      // ONE documented exception: the C-TR-5/6/7 export mutation. Those routes
-      // answer `text/markdown` with the filename in `Content-Disposition`, a
-      // header `strapi::cors` does not expose, so cross-origin browser JS reads
-      // it as null (measured in Chromium). Its GET therefore happens in the
-      // Server Function, which uses the SAME shared instance — asserted below.
+      // TWO documented exceptions. The C-TR-5/6/7 export mutation answers
+      // `text/markdown` with the filename in `Content-Disposition`, a header
+      // `strapi::cors` does not expose, so cross-origin browser JS reads it as
+      // null (measured in Chromium); its GET happens in the Server Function,
+      // which uses the SAME shared instance — asserted below. And the student
+      // drill-down is a COMPOSITION hook (da22e85): it fires no axios call of
+      // its own, it composes the shared results-module hooks, so it must
+      // import them and inherits the shared instance through those.
       const expected = file.endsWith('use-teacher-export.mutation.ts')
         ? "import { downloadTeacherExport } from '@/modules/teacher/actions/teacher-export.action';"
-        : "import { strapi } from '@/lib/axios/strapi';";
+        : file.endsWith('use-student-drill-down.query.ts')
+          ? "import { useClassResultsQuery } from '@/modules/results/queries/use-class-results.query';"
+          : "import { strapi } from '@/lib/axios/strapi';";
       expect(source.includes(expected), file).toBe(true);
       expect(/\bfetch\(|axios\.create|new XMLHttpRequest/.test(source), file).toBe(false);
       for (const [, url] of source.matchAll(/['"`](\/api\/[^'"`]*)['"`]/g)) {
