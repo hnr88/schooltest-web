@@ -1859,7 +1859,8 @@
       "scoring": "채점 중",
       "partial_pending": "일부 대기 중",
       "complete": "완료",
-      "scoring_failed": "채점 실패"
+      "scoring_failed": "채점 실패",
+      "manual_scoring": "수동 채점"
     },
     "review": {
       "assistHeading": "Extended response — marking assist",

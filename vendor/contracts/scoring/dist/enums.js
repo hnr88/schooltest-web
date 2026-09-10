@@ -97,8 +97,19 @@ exports.errorPatternTypeSchema = zod_1.z.enum([
 exports.skillSchema = zod_1.z.enum(['reading', 'listening', 'speaking', 'writing']);
 /** spec v2 §6.3 `scope` — the two skill families a result can report on. */
 exports.resultScopeSchema = zod_1.z.enum(['receptive', 'productive']);
-/** Doc 1 s.3.8 `result_status`. */
-exports.resultStatusSchema = zod_1.z.enum(['scoring', 'partial_pending', 'complete', 'scoring_failed']);
+/**
+ * Doc 1 s.3.8 `result_status`. `manual_scoring` (scoring/09, C-RSC-1) is the
+ * module's only enum change: a result raised to the assessment team after its
+ * R retries were exhausted. A reader that has not widened throws on the
+ * unknown member, so every declaration of this vocabulary moves together.
+ */
+exports.resultStatusSchema = zod_1.z.enum([
+    'scoring',
+    'partial_pending',
+    'complete',
+    'scoring_failed',
+    'manual_scoring',
+]);
 /** Doc 1 s.3.19 `result_destination`. House rule 10: transient never aggregates. */
 exports.resultDestinationSchema = zod_1.z.enum(['transient', 'official']);
 /** Doc 1 s.3.18 `readiness`. */

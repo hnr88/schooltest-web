@@ -119,8 +119,19 @@ export type Skill = z.infer<typeof skillSchema>;
 export const resultScopeSchema = z.enum(['receptive', 'productive']);
 export type ResultScope = z.infer<typeof resultScopeSchema>;
 
-/** Doc 1 s.3.8 `result_status`. */
-export const resultStatusSchema = z.enum(['scoring', 'partial_pending', 'complete', 'scoring_failed']);
+/**
+ * Doc 1 s.3.8 `result_status`. `manual_scoring` (scoring/09, C-RSC-1) is the
+ * module's only enum change: a result raised to the assessment team after its
+ * R retries were exhausted. A reader that has not widened throws on the
+ * unknown member, so every declaration of this vocabulary moves together.
+ */
+export const resultStatusSchema = z.enum([
+  'scoring',
+  'partial_pending',
+  'complete',
+  'scoring_failed',
+  'manual_scoring',
+]);
 export type ResultStatus = z.infer<typeof resultStatusSchema>;
 
 /** Doc 1 s.3.19 `result_destination`. House rule 10: transient never aggregates. */

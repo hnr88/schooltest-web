@@ -114,6 +114,37 @@ describe('the student-result read (GET /api/results/{id})', () => {
     expect(entry).not.toHaveProperty('prob');
     expect(entry).not.toHaveProperty('prob_se');
   });
+
+  // scoring/09 — the raised status (`manual_scoring`, the module's only enum
+  // change) must parse through BOTH arms of this layer: the v1 legacy view it
+  // is normally raised from, and a stamped v2 row. A parser that has not
+  // widened throws on the unknown z.enum member.
+  test('parses a RAISED (manual_scoring) row through the legacy arm', async () => {
+    const raised = {
+      ...scoringFailedFixture,
+      document_id: 'res-raised-0001',
+      status: 'manual_scoring',
+    };
+    get.mockResolvedValueOnce({ data: raised });
+
+    const payload = await fetchStudentResult('res-raised-0001');
+
+    expect(payload.kind).toBe('legacy');
+    if (payload.kind !== 'legacy') throw new Error('raised fixture must dispatch to legacy');
+    expect(payload.view.status).toBe('manual_scoring');
+  });
+
+  test('parses a RAISED status on a stamped v2 row through the v2 arm', async () => {
+    const base = resultViewSchema.parse(resultViewFixture);
+    const raised = { ...base, status: 'manual_scoring' as const };
+    get.mockResolvedValueOnce({ data: raised });
+
+    const payload = await fetchStudentResult(String(raised.document_id));
+
+    expect(payload.kind).toBe('v2');
+    if (payload.kind !== 'v2') throw new Error('raised v2 fixture must dispatch to v2');
+    expect(payload.view.status).toBe('manual_scoring');
+  });
 });
 
 describe('the class-results read (GET /api/my/students/results?class=)', () => {

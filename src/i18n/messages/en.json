@@ -1859,7 +1859,8 @@
       "scoring": "Scoring",
       "partial_pending": "Partially pending",
       "complete": "Complete",
-      "scoring_failed": "Scoring failed"
+      "scoring_failed": "Scoring failed",
+      "manual_scoring": "Manual scoring"
     },
     "review": {
       "assistHeading": "Extended response — marking assist",

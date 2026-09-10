@@ -1859,7 +1859,8 @@
       "scoring": "Đang chấm",
       "partial_pending": "Chờ một phần",
       "complete": "Hoàn tất",
-      "scoring_failed": "Chấm điểm thất bại"
+      "scoring_failed": "Chấm điểm thất bại",
+      "manual_scoring": "Chấm điểm thủ công"
     },
     "review": {
       "assistHeading": "Extended response — marking assist",

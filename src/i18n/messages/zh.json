@@ -1859,7 +1859,8 @@
       "scoring": "评分中",
       "partial_pending": "部分待定",
       "complete": "已完成",
-      "scoring_failed": "评分失败"
+      "scoring_failed": "评分失败",
+      "manual_scoring": "人工评分"
     },
     "review": {
       "assistHeading": "Extended response — marking assist",

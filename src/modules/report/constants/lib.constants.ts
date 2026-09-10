@@ -32,4 +32,7 @@ export const RESULT_STATUS_TONES: Record<ResultStatus, StatusPillTone> = {
   partial_pending: 'info',
   complete: 'success',
   scoring_failed: 'danger',
+  // Raised to the assessment team (scoring/09): queued, not failed — the
+  // informational tone, not danger.
+  manual_scoring: 'info',
 };

@@ -1859,7 +1859,8 @@
       "scoring": "กำลังตรวจ",
       "partial_pending": "รอบางส่วน",
       "complete": "เสร็จสิ้น",
-      "scoring_failed": "การให้คะแนนล้มเหลว"
+      "scoring_failed": "การให้คะแนนล้มเหลว",
+      "manual_scoring": "ให้คะแนนด้วยตนเอง"
     },
     "review": {
       "assistHeading": "Extended response — marking assist",

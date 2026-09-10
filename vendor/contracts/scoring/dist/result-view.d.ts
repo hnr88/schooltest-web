@@ -210,6 +210,7 @@ export declare const resultViewSchema: z.ZodObject<{
         partial_pending: "partial_pending";
         complete: "complete";
         scoring_failed: "scoring_failed";
+        manual_scoring: "manual_scoring";
     }>;
     destination: z.ZodEnum<{
         transient: "transient";

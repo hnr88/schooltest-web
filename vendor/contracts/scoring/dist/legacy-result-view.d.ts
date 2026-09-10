@@ -163,6 +163,7 @@ export declare const legacyResultViewBaseSchema: z.ZodObject<{
         partial_pending: "partial_pending";
         complete: "complete";
         scoring_failed: "scoring_failed";
+        manual_scoring: "manual_scoring";
     }>;
     attributes: z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnion<readonly [z.ZodObject<{
         status: z.ZodUnion<readonly [z.ZodEnum<{
@@ -257,6 +258,7 @@ export declare const legacyResultViewSchema: z.ZodObject<{
         partial_pending: "partial_pending";
         complete: "complete";
         scoring_failed: "scoring_failed";
+        manual_scoring: "manual_scoring";
     }>;
     attributes: z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnion<readonly [z.ZodObject<{
         status: z.ZodUnion<readonly [z.ZodEnum<{
@@ -348,6 +350,7 @@ export declare const legacyResultViewSchema: z.ZodObject<{
             partial_pending: "partial_pending";
             complete: "complete";
             scoring_failed: "scoring_failed";
+            manual_scoring: "manual_scoring";
         }>;
         attributes: z.ZodNullable<z.ZodRecord<z.ZodString, z.ZodUnion<readonly [z.ZodObject<{
             status: z.ZodUnion<readonly [z.ZodEnum<{

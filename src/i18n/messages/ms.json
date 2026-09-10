@@ -1859,7 +1859,8 @@
       "scoring": "Sedang dimarkah",
       "partial_pending": "Sebahagian tertunda",
       "complete": "Selesai",
-      "scoring_failed": "Pemarkahan gagal"
+      "scoring_failed": "Pemarkahan gagal",
+      "manual_scoring": "Pemarkahan manual"
     },
     "review": {
       "assistHeading": "Extended response — marking assist",
