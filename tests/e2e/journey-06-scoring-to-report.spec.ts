@@ -34,9 +34,8 @@ import { cat, loadMessages } from './helpers/i18n';
 const en = loadMessages('en');
 
 test.describe('journey 06 — scoring to teacher report', () => {
-  // Leg 1 does not fit the 30s default: real /sign-in, two page loads, ~25
-  // assertions — measured 7s quiet, 29.2s under fleet load, and it timed out in
-  // the managed in-tab run. Every wait inside is already bounded.
+  // Three surfaces, two page loads and ~25 assertions do not fit the 30s
+  // default: measured 7s quiet but 29.2s under fleet load. Every wait is bounded.
   test.slow();
 
   test('a real scored sitting reaches the results surface and the generated report unchanged', async ({

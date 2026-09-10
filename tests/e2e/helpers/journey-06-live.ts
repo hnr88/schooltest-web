@@ -142,43 +142,29 @@ export function reportStatedOveralls(report: string): number[] {
 }
 
 /**
- * Sign in as the journey teacher, OWNING the session rather than inheriting it.
+ * Sign in as the journey teacher through the REAL form, then ASSERT the persona.
  *
- * WHY THIS EXISTS. The managed runner drives the project's SHARED visible
- * Browser tab, and that tab arrives carrying whatever session the previous run
- * left. Measured (runId ecc366d3): the tab held a peer's PARENT session, so
- * `/sign-in` was redirected away by the already-authenticated guard, the form
- * fields never rendered, and `signIn`'s fill waited out the whole 90s test
- * timeout — the failure then reads as "my journey is slow" while the snapshot
- * shows the parent portal's "Not part of this release" screen. The auth token
- * lives in `localStorage` (`readClientToken`, src/lib/axios/strapi.ts), so
- * cookies alone are not enough to clear it.
+ * The assertion is the point. The managed runner drives the project's SHARED
+ * visible tab, which arrives carrying whatever session the previous run left.
+ * Measured: it held a PARENT session, so `/sign-in` is redirected to
+ * `/dashboard` by the already-authenticated guard, the fields never render, and
+ * the fill waits out the whole timeout — six false reds across three agents, one
+ * burning 240s. Captured in
+ * `.qa/journeys/06-scoring-to-report/shots/99-shared-tab-parked-on-parent-session.png`.
  *
- * This is the same class of defect as the shared-fixture failures elsewhere in
- * this mission — a spec assuming exclusive ownership of a shared resource —
- * except the resource is the browser tab's session rather than a seeded row.
+ * A TEST CANNOT DISPLACE THAT SESSION, and all three routes were tried:
+ * `page.context().clearCookies()` is refused (the context is the host's — "CDP
+ * session does not belong to this Browser tab"); clearing `localStorage` does
+ * not shift it either, so the session is not only the `app.auth.token` bearer;
+ * and there is no sign-out ROUTE to navigate to. It needs a sign-out click or a
+ * tab reset from outside the suite.
  *
- * PAGE-LEVEL ONLY, deliberately. `page.context().clearCookies()` is REFUSED
- * here — "Protocol error (Storage.clearCookies): CDP session does not belong to
- * this Browser tab" (runId e5e6fc4c) — because the context belongs to the host,
- * not to the test. It is also unnecessary: this app's session is a token in
- * `localStorage`, not a cookie, so clearing page storage is what actually signs
- * the previous persona out. `signIn` then navigates again, and the app boots
- * with no token and renders the real form.
- *
- * The identity is then ASSERTED, so a wrong persona fails in seconds naming
- * what it found instead of timing out somewhere later.
+ * So this asserts the persona instead of pretending it can fix it: a tab held by
+ * someone else fails in seconds NAMING what it found, rather than as a mute
+ * timeout that reads like a slow journey and invites raising the limit — the
+ * trap that cost another worker four minutes.
  */
 export async function signInAsJourneyTeacher(page: Page): Promise<void> {
-  await page.goto('/sign-in');
-  await page.evaluate(() => {
-    try {
-      window.localStorage.clear();
-      window.sessionStorage.clear();
-    } catch {
-      // A tab that refuses storage access is already clean enough to sign in.
-    }
-  });
   await signIn(page, 'teacher');
   await expect(
     navLink(page, cat(en, 'Shell.nav.results')),
