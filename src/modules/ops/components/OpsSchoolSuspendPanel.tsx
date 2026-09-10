@@ -33,6 +33,11 @@ import { archiveSchool, suspendSchool } from '@/modules/ops/queries/use-school-s
 import { fetchSchoolDetail } from '@/modules/ops/queries/use-school-detail.query';
 import { fetchSchoolVersion } from '@/modules/ops/queries/use-school-version.query';
 import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
+import {
+  onboardingEligibility,
+  useOnboardingReadQuery,
+} from '@/modules/ops/queries/use-onboarding-read.query';
+import { useRevokeInvitationMutation } from '@/modules/ops/queries/use-revoke-invitation.mutation';
 import { useSchoolLifecycleUndoMutation } from '@/modules/ops/queries/use-school-lifecycle-undo.mutation';
 
 import type { OpsSchoolSuspendPanelProps } from '@/modules/ops/types/school-suspend.types';
@@ -73,12 +78,18 @@ export function OpsSchoolSuspendPanel({
   onChanged,
 }: PanelProps) {
   const t = useTranslations('Ops.detail');
+  // Reuses the invitation panel's own `Ops.onboard` copy verbatim (D-33) for
+  // the ⋯ menu's Revoke entry, which reuses ITS mutation too (d-38/D-13).
+  const tOnboard = useTranslations('Ops.onboard');
   const status = portalStatus ?? fallbackPortalStatus(school.account_status);
   const primary = primarySchoolLifecycleAction(status);
   const actions = schoolLifecycleActions(status);
   const capabilities = useCapabilitiesQuery(enabled);
   const writeGate = useOpsWriteGate();
   const undo = useSchoolLifecycleUndoMutation();
+  const invitation = useOnboardingReadQuery(school.documentId, enabled);
+  const canRevoke = invitation.data ? onboardingEligibility(invitation.data).canRevoke : false;
+  const revokeInvitation = useRevokeInvitationMutation();
   const actionHandle = useRef<ActionHandle | null>(null);
   const [selectedAction, setSelectedAction] = useState<SchoolLifecycleAction | null>(null);
   const [typedName, setTypedName] = useState('');
@@ -158,6 +169,18 @@ export function OpsSchoolSuspendPanel({
     if (reason === null) return true;
     showOpsToast({ tone: 'error', message: reason });
     return false;
+  };
+
+  // Task 13: revoke re-parented from the invitation panel — same mutation,
+  // same outcome, a second drawn entry point (retire-ledger.md#d-38).
+  const runRevoke = async () => {
+    if (!refuseNonLifecycleWrite()) return;
+    try {
+      await revokeInvitation.mutateAsync(school.documentId);
+      showOpsToast({ tone: 'ok', message: tOnboard('revokeSuccess') });
+    } catch {
+      showOpsToast({ tone: 'error', message: tOnboard('revokeError') });
+    }
   };
 
   const chooseAction = (action: SchoolLifecycleAction) => {
@@ -278,6 +301,15 @@ export function OpsSchoolSuspendPanel({
               {t(action.labelKey)}
             </DropdownMenuItem>
           ))}
+          {canRevoke ? (
+            <DropdownMenuItem
+              aria-disabled={readOnly ? true : undefined}
+              className={readOnly ? 'text-slate-400' : ''}
+              onClick={() => void runRevoke()}
+            >
+              {tOnboard('revoke')}
+            </DropdownMenuItem>
+          ) : null}
         </DropdownMenuContent>
       </DropdownMenu>
       {selectedCopy === null || isTyped ? null : (

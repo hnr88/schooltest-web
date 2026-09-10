@@ -11,10 +11,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  SelectField,
 } from '@/modules/design-system';
+import { SCHOOL_PLAN_OPTIONS } from '@/modules/ops/constants/components.constants';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsEditSchoolFields } from '@/modules/ops/components/OpsCreateSchoolFields';
 import { useSchoolEditForm } from '@/modules/ops/hooks/use-school-edit-form';
+import { useSchoolPlan } from '@/modules/ops/hooks/use-school-plan';
 
 import type { OpsEditSchoolDialogProps } from '@/modules/ops/types/school-create.types';
 
@@ -29,11 +32,15 @@ import type { OpsEditSchoolDialogProps } from '@/modules/ops/types/school-create
  */
 export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps) {
   const t = useTranslations('Ops.createSchool');
+  // Licence tier (`plan`, distinct from the form's `portal_plan` select above):
+  // reuses the plan panel's own `Ops.plan` copy verbatim (D-33).
+  const tPlan = useTranslations('Ops.plan');
   const [confirmingDirtyClose, setConfirmingDirtyClose] = useState(false);
   const { form, submit, isPending, emailDomainWarning } = useSchoolEditForm({
     school,
     onDone,
   });
+  const { assign: assignPlan, pending: planPending } = useSchoolPlan(school.documentId);
   const { errors, isDirty } = form.formState;
 
   const close = (next: boolean) => {
@@ -72,6 +79,19 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
               {t('editVersionNote', { version: school.updatedAt })}
             </p>
             <OpsEditSchoolFields form={form} emailWarning={emailDomainWarning} />
+            <SelectField
+              id="edit-school-license-plan"
+              label={tPlan('label')}
+              placeholder={tPlan('placeholder')}
+              helperText={tPlan('helper')}
+              options={SCHOOL_PLAN_OPTIONS.map((option) => ({
+                value: option,
+                label: tPlan(`options.${option}`),
+              }))}
+              value={school.plan ?? ''}
+              onValueChange={(value) => void assignPlan(value)}
+              disabled={planPending}
+            />
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => close(false)}>
                 {t('cancel')}
