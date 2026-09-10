@@ -196,10 +196,19 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
   const segmented = data.locator('[data-slot="segmented-control"]');
   for (const key of ['segmentedWeek', 'segmentedMonth', 'segmentedYear'] as const)
     await expect(segmented.getByRole('button', { name: ds(en, key), exact: true })).toBeVisible();
-  await expect(data.locator('[data-slot="table-caption"]')).toHaveText(ds(en, 'tableCaption'));
+  // Row 46 — the Table exhibit renders through `@/modules/directory`: the
+  // caption became the kit's header `<h2>`, and the pager is the kit's own
+  // Previous/Next buttons (`role=button`, never `role=link`).
+  const directory = data.locator('[data-slot="directory"]');
+  await expect(
+    directory.getByRole('heading', { level: 2, name: ds(en, 'tableCaption'), exact: true }),
+  ).toBeVisible();
+  await expect(
+    directory.getByRole('button', { name: ds(en, 'tableExport'), exact: true }),
+  ).toBeVisible();
   // Scoped to the table: the TimelineRow exhibits below re-use the same two test names
   // as row titles, which is deliberate showcase copy, not a duplicated row.
-  const table = data.locator('[data-slot="table"]');
+  const table = directory.locator('[data-slot="table"]');
   for (const key of [
     'tableRowMath',
     'tableRowScience',
@@ -208,9 +217,15 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
   ] as const)
     await expect(table.getByText(ds(en, key), { exact: true })).toBeVisible();
   await expect(table.locator('[data-slot="status-badge"]')).toHaveCount(4);
-  await expect(data.getByText(ds(en, 'tableShowing'), { exact: true })).toBeVisible();
-  await expect(data.getByRole('link', { name: ds(en, 'paginationPreviousAria') })).toBeVisible();
-  await expect(data.getByRole('link', { name: ds(en, 'paginationNextAria') })).toBeVisible();
+  await expect(
+    directory.getByText(icu(ds(en, 'tableShowing'), { showing: '4', total: '4' }), { exact: true }),
+  ).toBeVisible();
+  await expect(
+    directory.getByRole('button', { name: ds(en, 'paginationPrevious'), exact: true }),
+  ).toBeVisible();
+  await expect(
+    directory.getByRole('button', { name: ds(en, 'paginationNext'), exact: true }),
+  ).toBeVisible();
   await expect(data.getByRole('navigation', { name: ds(en, 'breadcrumbNavAria') })).toBeVisible();
   const feedback = page.locator('#feedback');
   await expect(feedback.getByRole('progressbar', { name: ds(en, 'progressLabel') })).toHaveCount(3);

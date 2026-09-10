@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { getTranslations } from 'next-intl/server';
 
 import {
@@ -16,6 +18,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { Section } from '@/modules/design-system/components/layout';
@@ -59,7 +62,9 @@ async function DataSection() {
         />
       </div>
       <Separator className="my-8" />
-      <DataTable />
+      <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+        <DataTable />
+      </Suspense>
       <Separator className="my-8" />
       <Breadcrumb aria-label={t('breadcrumbNavAria')}>
         <BreadcrumbList>
