@@ -85,4 +85,11 @@ export interface StudentRevealDialogProps {
 
 export interface TestDayScreenProps {
   classDocumentId: string;
+  /**
+   * teacher/08 — the console folded into the class shell's `live` tab: renders
+   * a `<div>` instead of the route's `<main>` so the tab mount cannot produce a
+   * duplicate main landmark (the ResultsScreen precedent). Every marker and the
+   * run-sheet link are preserved either way.
+   */
+  embedded?: boolean;
 }

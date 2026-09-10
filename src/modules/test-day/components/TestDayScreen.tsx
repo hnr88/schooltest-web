@@ -25,7 +25,7 @@ import type { TestDayScreenProps } from '@/modules/test-day/types/components.typ
 // sitting. The UI resolves the exact A/B document id from C-TD-2 and sends it
 // explicitly, satisfying D-32 without exposing a second picker on this legacy
 // one-click surface.
-export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
+export function TestDayScreen({ classDocumentId, embedded = false }: TestDayScreenProps) {
   const t = useTranslations('TestDay');
   const sittings = useClassSittingsQuery(classDocumentId);
   const current = sittings.data?.[0] ?? null;
@@ -41,8 +41,12 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
 
   const className = current?.class?.name ?? sittings.data?.[0]?.class?.name ?? null;
 
+  // teacher/08 — `embedded` is the class-shell tab mount: a `<div>` there keeps
+  // the page to ONE `<main>` landmark; the standalone route keeps its `<main>`.
+  const Shell = embedded ? 'div' : 'main';
+
   return (
-    <main
+    <Shell
       data-slot="test-day"
       data-surface="teacher-test-day"
       className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
@@ -114,6 +118,6 @@ export function TestDayScreen({ classDocumentId }: TestDayScreenProps) {
         </>
       ) : null}
       <SittingHistoryTable classDocumentId={classDocumentId} />
-    </main>
+    </Shell>
   );
 }
