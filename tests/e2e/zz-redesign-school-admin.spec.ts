@@ -373,7 +373,11 @@ test.describe('school admin dashboard redesign', () => {
     await expect(rows.first()).toBeVisible({ timeout: 60_000 });
     const active = rows.filter({ hasNot: page.getByText('Archived', { exact: true }) }).first();
     await expect(active, 'the roster must contain a non-archived student').toBeVisible();
-    await active.getByRole('button', { name: /^Actions for / }).click();
+    // ops/31 — the kit's row menu carries the generic `list.rowMenuLabel`
+    // ("Actions"), not the retired per-row `actions.menuLabel`
+    // ("Actions for {name}"). The locator is scoped to one row, so an
+    // exact generic name is unambiguous.
+    await active.getByRole('button', { name: 'Actions', exact: true }).click();
 
     const archiveItem = page.getByRole('menuitem', {
       name: cat(en, 'SchoolStudents.actions.archive'),
