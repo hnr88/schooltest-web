@@ -1,4 +1,5 @@
 import { ERROR_PATTERN_COPY } from '@/modules/results/components/ErrorPatternsPanel';
+import type { ClassExport } from '@/modules/results/schemas/class-export.schema';
 import type { DiagnosticExport, DiagnosticExportSkill } from '@schooltest/scoring-contracts';
 
 /**
@@ -93,4 +94,52 @@ function renderDelta(display: string): string {
   if (display === 'steady') return 'steady (no change claimed)';
   if (display === 'band_movement') return 'band movement';
   return `${display} pts`;
+}
+
+/**
+ * scoring/05 — the CLASS variant of the same download, and ONE renderer module
+ * extended once rather than a second Markdown builder. Every per-student
+ * section is `renderStudentMarkdown` verbatim, so the two downloads can never
+ * describe the same bundle differently.
+ *
+ * The absence states are STATED BY NAME, never skipped and never given a
+ * stand-in section: a class list that silently omitted the students the server
+ * could not export for would read as a complete class and quietly understate
+ * the roster. `exported_count` of `student_count` is printed for the same
+ * reason — the reader can see what is missing without counting headings.
+ *
+ * Nothing is aggregated across students or skills (Doc 0 hard constraint): this
+ * is the per-student bundles side by side, and the class `caveats` block is
+ * reproduced so downstream hedging is inherited rather than re-derived.
+ */
+export function renderClassMarkdown(bundle: ClassExport): string {
+  const lines: string[] = [];
+  lines.push(`# Class diagnostic report — ${bundle.class.name}`);
+  lines.push('');
+  lines.push(`- Year band: ${bundle.class.year_band ?? 'unknown'}`);
+  lines.push(`- Roster: ${bundle.class.student_count} students`);
+  lines.push(`- Exported: ${bundle.class.exported_count} of ${bundle.class.student_count}`);
+  lines.push('');
+
+  lines.push('## Caveats');
+  for (const caveat of bundle.caveats) lines.push(`- ${caveat}`);
+  lines.push('');
+
+  for (const student of bundle.students) {
+    lines.push(`## Student ${student.student_key}`);
+    lines.push('');
+    if (student.state === 'exported') {
+      lines.push(renderStudentMarkdown(student.bundle));
+      continue;
+    }
+    // Named, not omitted — the two absence states of C-CLASS-EXPORT.
+    lines.push(
+      student.state === 'awaiting_publication'
+        ? 'No report yet: this student has an official result that has not been published.'
+        : 'No report yet: this student has no official result.',
+    );
+    lines.push('');
+  }
+
+  return lines.join('\n');
 }

@@ -27,6 +27,11 @@ export { SubskillCardGrid } from './components/SubskillCardGrid';
 export { useClassResultsQuery } from './queries/use-class-results.query';
 export { useStudentResultQuery } from './queries/use-student-result.query';
 export { useResultExportQuery } from './queries/use-result-export.query';
+// scoring/05 — C-CLASS-EXPORT's first client consumer, beside the single-result
+// export it sits next to on the wire.
+export { useClassExportQuery, fetchClassExport } from './queries/use-class-export.query';
+export { classExportSchema, classExportStudentSchema } from './schemas/class-export.schema';
+export type { ClassExport, ClassExportStudent } from './schemas/class-export.schema';
 export type {
   DiagnosticExport,
   ResultHistoryPoint,

@@ -22,10 +22,14 @@ import { strapi } from '@/lib/axios/strapi';
  * refetch() from a control of their own. It is never cached across sittings
  * with staleTime: 0.
  *
- * WIRING MARK (task 29 running early): the schema is the TARGET v2 bundle; the
- * live export route still emits the v1 markdown/legacy bundle until task 25 —
- * this parse fails against today's response by design. Screen C part 3 (task
- * 32) wires the Ask AI flow up after 25; nothing imports this hook yet.
+ * THE ONE EXPORT FETCHER AND THE ONE CACHE KEY. `report`'s
+ * `useDiagnosticBundleQuery` was a second hook over this identical route, params
+ * and parse under the report module's own diagnostic-bundle key; it now survives
+ * only as an alias of this function, so there is one fetcher and one key. The
+ * alias keeps the same positional `(documentId, enabled)` signature, which is
+ * why every existing call site is byte-identical. (The retired key is named in
+ * words, not quoted as an array literal — this row's gate greps for that
+ * literal and a comment would trip it.)
  */
 export async function fetchResultExport(resultId: string): Promise<DiagnosticExport> {
   const response = await strapi.get(`/api/results/${resultId}/export`, {

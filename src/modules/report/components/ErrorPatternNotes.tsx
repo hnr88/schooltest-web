@@ -8,7 +8,9 @@ import {
   buildErrorPatterns,
   hasDiagnosticBundle,
 } from '@/modules/report/lib/error-patterns-view-model';
-import { useDiagnosticBundleQuery } from '@/modules/report/queries/use-diagnostic-bundle.query';
+// scoring/05 — repointed to the ONE export fetcher. Aliased on import so this
+// component's derived-`enabled` call site below stays byte-identical.
+import { useResultExportQuery as useDiagnosticBundleQuery } from '@/modules/results/queries/use-result-export.query';
 import type { ResultView } from '@/modules/report/types/report.types';
 
 // E11-07 — the distractor-type notes on the teacher report. Five honest states
