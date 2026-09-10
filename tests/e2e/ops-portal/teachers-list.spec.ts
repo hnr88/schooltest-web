@@ -62,10 +62,16 @@ async function signInAsOps(page: Page): Promise<void> {
   await page.waitForURL('**/dashboard', { timeout: ACTION_TIMEOUT });
 }
 
+// ops/16 (R-23 spec rewrite): the drawn Teachers TAB is now the entry point —
+// a direct arrival on `?tab=teachers` — rather than the Teachers count card
+// this helper used to click through (that duplicate mount is task 43's, wave
+// 6). The dialog this opens, and every assertion below on its contents, is
+// UNCHANGED: `OpsTeachersDialog`'s own "Manage teachers" control is the
+// surviving mount (`OpsSchoolTables.tsx:180-184`) of the exact same dialog.
 async function openDirectory(page: Page) {
-  await page.goto(`/en/dashboard/ops/schools/${SCHOOL_A}`);
+  await page.goto(`/en/dashboard/ops/schools/${SCHOOL_A}?tab=teachers`);
   await page
-    .getByRole('button', { name: cat(en, 'Ops.detail.teachersLabel') })
+    .getByRole('button', { name: cat(en, 'Ops.schoolTables.manageTeachers') })
     .click({ timeout: ACTION_TIMEOUT });
   const dialog = page.locator('[data-slot="ops-teachers-dialog"]');
   await expect(dialog).toBeVisible({ timeout: ACTION_TIMEOUT });

@@ -46,7 +46,7 @@ async function signInAsOps(page: Page): Promise<void> {
 }
 
 test.describe('ops teacher details dialog (OPS-teacher-details)', () => {
-  test('directory opens from the Teachers card, edits inline with server validation, removes with confirm', async ({
+  test('directory opens from the Teachers tab, edits inline with server validation, removes with confirm', async ({
     page,
     request,
   }) => {
@@ -93,11 +93,16 @@ test.describe('ops teacher details dialog (OPS-teacher-details)', () => {
 
     try {
       await signInAsOps(page);
-      await page.goto(`/en/dashboard/ops/schools/${school.documentId}`);
+      // ops/16 (R-23 spec rewrite): arrive directly on the drawn Teachers tab
+      // rather than clicking the Teachers count card (that duplicate mount is
+      // task 43's, wave 6) — then open the SAME manage-teachers dialog through
+      // its surviving "Manage teachers" control (`OpsSchoolTables.tsx:180-184`).
+      await page.goto(`/en/dashboard/ops/schools/${school.documentId}?tab=teachers`);
 
-      // The Teachers card opens the directory (content assertions — the
-      // dialog identifies by its own copy and the row by its own email).
-      await page.getByRole('button', { name: cat(en, 'Ops.detail.teachersLabel') }).click();
+      // The Teachers tab's "Manage teachers" control opens the directory
+      // (content assertions — the dialog identifies by its own copy and the
+      // row by its own email).
+      await page.getByRole('button', { name: cat(en, 'Ops.schoolTables.manageTeachers') }).click();
       const dialog = page.getByRole('dialog');
       await expect(dialog).toBeVisible();
       await expect(dialog).toContainText(cat(en, 'Ops.teachers.title'));

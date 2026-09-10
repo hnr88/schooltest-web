@@ -111,14 +111,19 @@ function toDirectoryAction(
  * C-OPS-PORTAL-015 — one directory for both people tabs (Admins:
  * role=school_admin, Teachers: role=teacher), now on the task 04 kit.
  *
- * task 15: the Admins tab's five row actions and four bulk actions
- * (`logic.md#c-row-actions`, `#c-bulk`), plus the merged Invited chip. An
+ * task 15 built the Admins tab's five row actions and four bulk actions
+ * (`logic.md#c-row-actions`, `#c-bulk`), plus the merged Invited chip, behind
+ * a chrome gate (`hasChrome`, driven by the caller supplying `headerTitle`).
+ * task 16 opened that same gate for Teachers, which shares every one of these
+ * behaviours except two teacher-only pieces: the header summary text
+ * (`headerSummary` override — "N teachers · M classes covered" instead of
+ * "N invited · M active") and the "View classes" row action (`onViewClasses`
+ * — `write: false`, no confirm, a deep link rather than a mutation). An
  * ACCEPTED user's actions come from the shared `staffAccountRowActions`
  * table; a PENDING invitation's (Edit access reopens the invite dialog,
  * Resend, Revoke) are wired here directly, off the invitation actions task 19
  * already ships (`use-{resend,revoke}-invitation.mutation.ts`) — they are not
- * part of the shared table because Teachers (task 16) never merges
- * invitations into its own table.
+ * part of the shared table because it has no teacher/admin split of its own.
  *
  * `blocked` is the filter key on the wire and in the URL; its FOUR values are
  * `''` (all), `'false'` (active), `'true'` (suspended) and `'invited'` — the
@@ -134,8 +139,21 @@ export function OpsStaffUsersTable({
   classCounts,
   ownership,
   headerTitle,
+  headerSummary,
   onInvite,
-}: OpsStaffUsersTableProps & { headerTitle?: string; onInvite?: () => void }) {
+  onViewClasses,
+}: OpsStaffUsersTableProps & {
+  headerTitle?: string;
+  /** Overrides the default "N invited · M active" header summary — task 16's
+   * Teachers tab supplies its own "N teachers · M classes covered" text
+   * instead, since the invited/active tally is an Admins-shaped stat. */
+  headerSummary?: string;
+  onInvite?: () => void;
+  /** Teacher surface only (`staff-actions.ts`'s `VIEW_CLASSES`, `write:
+   * false`, no confirm) — the row's deep link into the Classes tab. Admins
+   * never renders this action, so Admins never passes this prop. */
+  onViewClasses?: (documentId: string) => void;
+}) {
   const t = useTranslations('Ops.schoolTables');
   const tInvitations = useTranslations('Ops.staffInvitations');
   const format = useFormatter();
@@ -143,12 +161,13 @@ export function OpsStaffUsersTable({
   const writeGate = useOpsWriteGate();
   const surface = role === 'teacher' ? 'teacher' : 'admin';
   const invitationRole = invitationRoleOf(role);
-  // task 15 is the Admins tab only. `OpsTeachersTab.tsx` still calls this
-  // component today (task 16 has not yet migrated it onto the dedicated
-  // kit table) and passes neither prop — every merged-invitation behaviour
-  // below (chip, header, row/bulk menus) is gated on this so that existing
-  // call site renders BYTE-IDENTICAL to before this task.
-  const isAdmins = headerTitle !== undefined;
+  // task 15 built the merged-invitation chrome (chip, header, row/bulk menus)
+  // gated on the caller supplying a header title, so `OpsAdminsTab.tsx` (which
+  // does) and `OpsTeachersTab.tsx` (task 16, which now does too) share one
+  // directory implementation instead of two. Neither tab renders the kit
+  // header without one, so the gate is a reliable proxy for "this call site
+  // wants the full kit chrome".
+  const hasChrome = headerTitle !== undefined;
 
   const refuseIfBlocked = (): boolean => {
     const reason = writeGate.blockedReason();
@@ -165,19 +184,19 @@ export function OpsStaffUsersTable({
         options: [
           { value: DIRECTORY_ALL, label: t('statusAll') },
           { value: 'false', label: t('statusActive') },
-          // Admins only: Teachers keeps its original three options
-          // byte-identical, since it has no merged-invitation view yet.
-          ...(isAdmins ? [{ value: STATUS_INVITED, label: t('statusInvited') }] : []),
+          // The merged Invited arm (both surfaces, once a caller opts into
+          // the kit chrome — design draws it for Admins and Teachers alike).
+          ...(hasChrome ? [{ value: STATUS_INVITED, label: t('statusInvited') }] : []),
           { value: 'true', label: t('statusSuspended') },
         ],
       },
     ],
-    [t, isAdmins],
+    [t, hasChrome],
   );
 
   const state = useOpsDirectoryState({ filters, sorts: SORTS, defaultSort: 'name:asc' });
   const statusFilter = state.params.filters.blocked;
-  const showingInvited = isAdmins && statusFilter === STATUS_INVITED;
+  const showingInvited = hasChrome && statusFilter === STATUS_INVITED;
 
   const usersQuery = useStaffUsersQuery(
     {
@@ -217,13 +236,16 @@ export function OpsStaffUsersTable({
     enabled && showingInvited && invitationRole !== null,
   );
 
-  // The header summary ("N invited · M active") reads the SAME query keys the
-  // table itself uses at those filter values, so react-query serves it from
-  // cache once either arm has been visited instead of a third, wasted fetch.
-  // Admins only: Teachers renders no header and never needs these totals.
+  // The default header summary ("N invited · M active") reads the SAME query
+  // keys the table itself uses at those filter values, so react-query serves
+  // it from cache once either arm has been visited instead of a third, wasted
+  // fetch. Only fetched when a caller does NOT supply its own `headerSummary`
+  // (task 16's Teachers tab computes "N teachers · M classes covered" itself,
+  // off data it already holds, and has no use for an invited/active tally).
+  const needsDefaultSummary = hasChrome && headerSummary === undefined;
   const activeCountQuery = useStaffUsersQuery(
     { schoolDocumentId, role, page: 1, blocked: false },
-    enabled && isAdmins,
+    enabled && needsDefaultSummary,
   );
   const invitedCountQuery = useStaffInvitationsQuery(
     {
@@ -232,12 +254,14 @@ export function OpsStaffUsersTable({
       status: 'invited',
       page: 1,
     },
-    enabled && isAdmins && invitationRole !== null,
+    enabled && needsDefaultSummary && invitationRole !== null,
   );
-  const headerSummary = t('adminsHeaderSummary', {
-    invited: invitedCountQuery.data?.meta.pagination.total ?? 0,
-    active: activeCountQuery.data?.meta.pagination.total ?? 0,
-  });
+  const resolvedHeaderSummary =
+    headerSummary ??
+    t('adminsHeaderSummary', {
+      invited: invitedCountQuery.data?.meta.pagination.total ?? 0,
+      active: activeCountQuery.data?.meta.pagination.total ?? 0,
+    });
 
   const invalidateAccounts = () => queryClient.invalidateQueries({ queryKey: staffUsersSchoolKey(schoolDocumentId) });
   const invalidateInvitations = () =>
@@ -388,6 +412,13 @@ export function OpsStaffUsersTable({
     const actions = staffAccountRowActions(surface, status).map((action) => {
       if (action.key === 'editAccess') {
         return toDirectoryAction(action, t(action.labelKey), () => openEditAccess(user));
+      }
+      // Teacher surface only (`staffAccountRowActions` never returns this key
+      // for 'admin'). `write: false`, no confirm — a read-only navigation, so
+      // it never routes through `refuseIfBlocked`/`setConfirmState` like the
+      // write actions below it do.
+      if (action.key === 'viewClasses') {
+        return toDirectoryAction(action, t(action.labelKey), () => onViewClasses?.(user.documentId));
       }
       return toDirectoryAction(action, t(action.labelKey), () => {
         if (refuseIfBlocked()) return;
@@ -601,30 +632,31 @@ export function OpsStaffUsersTable({
         rowAttrs={(row) => ({ 'data-row-id': rowIdentity(row) })}
         meta={showingInvited ? invitationsQuery.data?.meta.pagination : usersQuery.data?.meta.pagination}
         filters={filters}
-        chipFilterKey={isAdmins ? 'blocked' : undefined}
+        chipFilterKey={hasChrome ? 'blocked' : undefined}
         sorts={SORTS}
         columns={columns}
-        selectable={isAdmins}
-        rowActions={isAdmins ? rowActions : undefined}
-        bulkActions={isAdmins ? bulkActions : undefined}
+        selectable={hasChrome}
+        rowActions={hasChrome ? rowActions : undefined}
+        bulkActions={hasChrome ? bulkActions : undefined}
         header={
-          isAdmins
+          hasChrome
             ? {
                 title: headerTitle,
-                summary: headerSummary,
+                summary: resolvedHeaderSummary,
                 // No `label`: the design's "Export CSV" is the kit's own
                 // default fallback (`DesignSystem.directory.exportCsv`) for
                 // the header's secondary slot; the bulk bar's "Export"
                 // (below) is a shorter, separately-drawn label at `:1470`.
                 //
-                // No `primary`: the design's Invite admin lives at
-                // `OpsAdminsTab.tsx`'s own `data-testid="ops-admins-invite"`
-                // control instead of this slot — see the comment there.
+                // No `primary`: the design's Invite admin/teacher lives at
+                // `OpsAdminsTab.tsx`/`OpsTeachersTab.tsx`'s own
+                // `data-testid="ops-{admins,teachers}-invite"` control instead
+                // of this slot — see the comment there.
                 secondary: { write: false, onSelect: () => void runExport() },
               }
             : undefined
         }
-        emptyCopy={isAdmins ? { title: emptyTitle, body: emptyDescription } : undefined}
+        emptyCopy={hasChrome ? { title: emptyTitle, body: emptyDescription } : undefined}
         labels={{
           searchPlaceholder: t('searchPlaceholder'),
           searchLabel: t('searchLabel'),
