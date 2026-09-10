@@ -70,13 +70,13 @@ import { useFormsQuery } from '@/modules/ops/queries/use-forms.query';
 // filters — `teacher` is not a kit filter (it has no visible control), so it
 // is read straight off the URL and folded into the query by hand.
 //
-// task 17 scope note: the design's header draws an Export CSV secondary and
-// a Create class primary, but NEITHER has a real endpoint yet — there is no
-// classes-list CSV export route anywhere in the backlog (only the per-class
-// roster export, task 21), and `classCreateBodySchema` does not exist on
-// disk (task 23 owns the create dialog). OP-2 forbids wiring a control to a
-// stub, so this header ships title + summary only; the buttons land with
-// tasks 21 and 23.
+// header scope, updated 2026-09-10: the design draws an Export CSV secondary
+// and a Create class primary. The Create primary is now REAL — task 23 added
+// `classCreateBodySchema` and curl-proved `POST .../classes` -> 201 — so it is
+// wired below to task 23's dialog in create mode. Export CSV is still NOT
+// wired: no classes-list CSV route exists anywhere in the backlog (only the
+// per-class roster export, task 21), and OP-2 forbids wiring a control to a
+// stub. See decisions.md#d-53.
 
 const STATUS_TONE: Record<ClassListStatus, StatusPillTone> = {
   active: 'success',
@@ -104,6 +104,7 @@ interface ClassLifecycleTarget extends OpsActionTarget {
 export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }) {
   const t = useTranslations('Ops.classesTab');
   const tActions = useTranslations('Ops.classActions');
+  const tCreate = useTranslations('Ops.classDetail.create');
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -216,6 +217,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
   );
   const [reassignRow, setReassignRow] = useState<ClassRow | null>(null);
   const [editRow, setEditRow] = useState<ClassRow | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
   const [setWindowTargets, setSetWindowTargets] = useState<readonly OpsActionTarget[] | null>(null);
 
   const runSingleLifecycle = useCallback(async () => {
@@ -407,6 +409,13 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
         header={{
           title: t('headerTitle'),
           summary: t('summary', { count: classes.data?.meta.pagination.total ?? 0 }),
+          primary: {
+            label: tCreate('submit'),
+            write: true,
+            onSelect: () => {
+              if (refuseIfReadOnly()) setCreateOpen(true);
+            },
+          },
         }}
         emptyAction={teacherId === '' ? undefined : { label: t('clearFilter'), onRun: clearTeacher }}
         emptyCopy={{ title: t('emptyTitle'), body: t('emptyDescription') }}
@@ -419,6 +428,14 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           className={reassignRow.name ?? ''}
           currentTeacherDocumentId={reassignRow.primary_teacher?.documentId ?? null}
           onClose={() => setReassignRow(null)}
+        />
+      ) : null}
+
+      {createOpen ? (
+        <OpsEditClassDialog
+          mode="create"
+          schoolDocumentId={schoolDocumentId}
+          onClose={() => setCreateOpen(false)}
         />
       ) : null}
 
