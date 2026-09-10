@@ -3,6 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { SEEDED_PARENT } from './helpers/auth';
 import { runSql } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 
 // Task 026 verification: the dashboard onboarding guard redirects a parent with
 // pending onboarding to /onboarding, and lets parents with completed/skipped
@@ -47,6 +48,22 @@ async function submitSignInForm(page: Page): Promise<void> {
 }
 
 test.describe.configure({ mode: 'serial' });
+
+// TASK 46 MASKS EVERY ASSERTION IN THIS FILE, so it is gated rather than left
+// silently red. `/onboarding` is wrapped in ParentGuard (onboarding/layout.tsx:11)
+// and so is the whole (portal) group ((portal)/layout.tsx:13), so with
+// NEXT_PUBLIC_PARENT_VIEWS_ENABLED off a parent gets ParentViewsUnavailable and
+// ParentGuard NEVER RENDERS CHILDREN — which means DashboardOnboardingGuard
+// never mounts and its `router.replace('/onboarding')` never runs. Measured:
+// "navigated to http://localhost:3002/dashboard" then waitForURL('**/onboarding')
+// burns its 30s. A short-circuit, not a redirect.
+//
+// The product is obeying a recorded decision; this spec asserts the behaviour
+// that decision masked. Gating it says so out loud and restores the coverage
+// automatically the moment the flag flips on. It is deliberately BEFORE the
+// beforeAll: that hook rewrites the shared seeded parent to `pending`, and this
+// file's own header notes other dashboard specs need it left `skipped`.
+skipWhenParentPortalMasked();
 
 test.beforeAll(() => {
   resetParentOnboarding('pending');

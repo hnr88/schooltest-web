@@ -1,0 +1,32 @@
+MEASURED, not inferred. Playwright CLI, chromium, workers=1, 2026-09-11.
+
+--- 026-dashboard-onboarding-guard BEFORE the gate ---
+Error: page.waitForURL: Test timeout of 30000ms exceeded.
+waiting for navigation to "**/onboarding" until "load"
+  navigated to "http://localhost:3002/dashboard"
+  1 failed, 2 did not run
+
+--- 026 AFTER the gate (skipWhenParentPortalMasked) ---
+  3 skipped
+  shared parent onboarding row still reads: skipped   <- beforeAll did NOT fire
+  with NEXT_PUBLIC_PARENT_VIEWS_ENABLED=true: 3 tests collected  <- coverage gated, not deleted
+
+--- unified-search (parent -> /dashboard/search, PREDICTED masked) ---
+  5 failed   (every test in the file)
+
+--- model check ---
+The gate tests TEACHER_REPORTS_PATH before the parent branch, so a parent at
+/dashboard/reports PASSES. teacher-report.spec.ts is therefore predicted to pass
+and to need NO change — the negative control on the model.
+
+--- teacher-report.spec.ts (the NEGATIVE CONTROL) ---
+  4 passed, 2 failed
+  The PARENT test ("a parent account gets no rail entry and is redirected off the
+  report route") is among the PASSES — confirming the model: the gate tests
+  TEACHER_REPORTS_PATH before the parent branch, so a parent at /dashboard/reports
+  passes and that spec needs NO parent-gating.
+  Its 2 failures are a DIFFERENT stale-decision case, not this one:
+    :85  asserts the teacher "Reports" RAIL ENTRY — retired by R-11 (teacher-rail.ts
+         records "with `reports` retired (R-11) a teacher has zero primary items")
+    :132 a productive-skill (writing) result — a data-shape gap, not the gate
+  Same family as Task 46 (spec outlived a recorded decision), different decision.
