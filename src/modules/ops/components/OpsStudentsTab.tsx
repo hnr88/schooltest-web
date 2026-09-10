@@ -120,11 +120,11 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   // is read directly off the gate for the row/bulk `disabled` below.
   // `readOnly` ALONE, never `blockedReason() !== null` (which also trips
   // offline) — offline must keep its clickable toast-with-Retry path, never
-  // go natively inert. NOTE: the move-dialog's confirm Button below (line
-  // ~374) still uses `blockedReason() !== null` directly — that is a plain
-  // Dialog button predating this row, not a DirectoryRowAction/
-  // DirectoryBulkAction, and out of this row's authorized scope; left as
-  // found, flagged rather than silently fixed.
+  // go natively inert. The move-dialog's confirm Button below (~:381) reads
+  // `readOnly` for the same reason: it is a plain Dialog button rather than a
+  // DirectoryRowAction/DirectoryBulkAction, but the offline hazard is
+  // identical — gating it on `blockedReason()` would leave an operator whose
+  // connection dropped with a dead confirm and no Retry.
   const locked = writeGate.readOnly;
   const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const classOptions = opsStudentClassOptions(teachers.data?.data ?? []);
@@ -378,7 +378,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
             <Button
               type="button"
               loading={moveRunner.state.status === 'running'}
-              disabled={destinationClassDocumentId === '' || writeGate.blockedReason() !== null}
+              disabled={destinationClassDocumentId === '' || writeGate.readOnly}
               onClick={() => void runMoveConfirmed()}
             >
               {t('studentsMoveClassCta', { count: moveTargetRows?.length ?? 1 })}
