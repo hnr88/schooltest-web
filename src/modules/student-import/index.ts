@@ -1,4 +1,5 @@
 export { StudentImportFields } from './components/StudentImportFields';
+export { StudentImportRejectList } from './components/StudentImportRejectList';
 export { parseStudentCsv } from './lib/parse-student-csv';
 export { useImportStudentsMutation } from './queries/use-import-students.mutation';
 export { buildStudentCsvTemplate, downloadStudentCsvTemplate } from './lib/student-csv-template';
@@ -28,4 +29,5 @@ export type {
   StudentImportClassOption,
   StudentImportFieldsProps,
   StudentImportFieldsState,
+  StudentImportRejectListProps,
 } from './types/components.types';

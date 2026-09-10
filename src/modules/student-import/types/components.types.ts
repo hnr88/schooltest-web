@@ -1,6 +1,10 @@
+import type { OpsImportReject } from '@schooltest/ops-contracts';
 import type { ChangeEvent, DragEvent, RefObject } from 'react';
 
-import type { ParsedStudentCsv } from '@/modules/student-import/types/student-import.types';
+import type {
+  ParsedStudentCsv,
+  ParsedStudentRowError,
+} from '@/modules/student-import/types/student-import.types';
 
 export interface StudentImportClassOption {
   documentId: string;
@@ -40,4 +44,13 @@ export interface StudentImportFieldsState {
   onDragOver: (event: DragEvent<HTMLElement>) => void;
   onDragLeave: () => void;
   onDrop: (event: DragEvent<HTMLElement>) => void;
+}
+
+// The per-row reject list takes BOTH sources it may have to report: the client
+// parser's errors (pre-submit) and the server's refused rows (post-commit).
+// Neither is optional — an empty array is the honest "nothing to report", and
+// an absent prop would let a caller forget one source silently.
+export interface StudentImportRejectListProps {
+  parseErrors: readonly ParsedStudentRowError[];
+  serverRejects: readonly OpsImportReject[];
 }

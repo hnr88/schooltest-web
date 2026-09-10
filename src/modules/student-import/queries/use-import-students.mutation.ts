@@ -3,10 +3,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
 
-import {
-  opsImportCommitResultSchema,
-  opsImportReceiptSchema,
-} from '@schooltest/ops-contracts';
+import { opsImportCommitResultSchema, opsImportReceiptSchema } from '@schooltest/ops-contracts';
+import type { OpsImportReject } from '@schooltest/ops-contracts';
 
 import { idempotencyHeaders, strapi } from '@/lib/axios/strapi';
 import { portalImportPreviewSchema } from '@/modules/ops/schemas/import.schema';
@@ -27,8 +25,14 @@ export interface ImportStudentsInput {
 }
 
 export type ImportStudentsResult =
-  | { kind: 'rejected'; rejected: number }
-  | { kind: 'committed'; created: number; skipped: number };
+  | { kind: 'rejected'; rejected: readonly OpsImportReject[] }
+  | {
+      kind: 'committed';
+      created: number;
+      skipped: number;
+      /** The rows the server refused, each with its csv row number and reason. */
+      rejected: readonly OpsImportReject[];
+    };
 
 /** 36 chars — inside the contract's 16..128 request-key bounds. */
 function mintRequestKey(): string {
@@ -49,14 +53,19 @@ async function importStudentsRequest({
 }: ImportStudentsInput): Promise<ImportStudentsResult> {
   // Validate first, write second — the preview is never trusted (the commit
   // re-validates server-side); it exists so a file with broken rows is named
-  // BEFORE anything is created.
-  const preview = await strapi.post<{ data: unknown }>(
-    '/api/schools/me/import-students/preview',
-    { csv, class_documentId: classDocumentId },
-  );
+  // BEFORE anything is created, and so an all-bad file writes nothing at all.
+  const preview = await strapi.post<{ data: unknown }>('/api/schools/me/import-students/preview', {
+    csv,
+    class_documentId: classDocumentId,
+  });
   const validated = portalImportPreviewSchema.parse(preview.data.data);
-  if (validated.reject.length > 0) {
-    return { kind: 'rejected', rejected: validated.reject.length };
+  // A file whose EVERY row is bad has nothing to write: name the rows and stop.
+  // A file with SOME bad rows still commits. The server validates row by row,
+  // creates the good ones and returns the bad ones per row, so one broken line
+  // no longer throws away the rest of the roster — which is what refusing the
+  // whole commit here used to do.
+  if (validated.create.length === 0 && validated.skip_existing.length === 0) {
+    return { kind: 'rejected', rejected: validated.reject };
   }
 
   const requestKey = mintRequestKey();
@@ -67,7 +76,12 @@ async function importStudentsRequest({
       { headers: idempotencyHeaders(requestKey) },
     );
     const result = opsImportCommitResultSchema.parse(commit.data.data);
-    return { kind: 'committed', created: result.created, skipped: result.skipped };
+    return {
+      kind: 'committed',
+      created: result.created,
+      skipped: result.skipped,
+      rejected: result.rejected,
+    };
   } catch (error) {
     // A commit that lost its CONNECTION (no response) may still have landed:
     // ask the receipt instead of re-sending the write. A server REFUSAL (4xx/
@@ -83,6 +97,7 @@ async function importStudentsRequest({
           kind: 'committed',
           created: stored.result.created,
           skipped: stored.result.skipped,
+          rejected: stored.result.rejected,
         };
       }
     }

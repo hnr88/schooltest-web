@@ -4963,7 +4963,17 @@
     "pasteLabel": "Or paste CSV data",
     "pastePlaceholder": "ชื่อจริง,นามสกุล,วันเกิด,ระดับชั้น,ภาษาแม่",
     "classLabel": "Class",
-    "classPlaceholder": "Select a class"
+    "classPlaceholder": "Select a class",
+    "rejectHeading": "{count, plural, one {# row could not be imported} other {# rows could not be imported}}",
+    "rejectColumnRow": "Row",
+    "rejectColumnReason": "What to fix",
+    "reasons": {
+      "givenNameRequired": "Given name is required",
+      "familyNameRequired": "Family name is required",
+      "dobInvalid": "Date of birth must be a real date in YYYY-MM-DD form",
+      "yearLevelInvalid": "Year level must be a whole number from 7 to 12",
+      "homeLanguageRequired": "Home language is required"
+    }
   },
   "Teacher": {
     "dashboard": {

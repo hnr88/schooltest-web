@@ -12,13 +12,14 @@ import {
   DialogTitle,
 } from '@/modules/design-system';
 import { useStudentImport } from '@/modules/school-students/hooks/use-student-import';
-import { StudentImportFields } from '@/modules/student-import';
+import { StudentImportFields, StudentImportRejectList } from '@/modules/student-import';
 
 import type { StudentImportDialogProps } from '@/modules/school-students/types/components.types';
 
 // Spec §4 "Import students": the shared CSV flow with the class selector shown,
 // so the admin picks the class every parsed row is created into. Row counts come
-// from the parser, never from a guess about what the file contained.
+// from the parser, never from a guess about what the file contained, and the
+// rows that could not be imported are named ONE BY ONE under them.
 export function StudentImportDialog({ classes, onClose }: StudentImportDialogProps) {
   const t = useTranslations('SchoolStudents.import');
   const importState = useStudentImport(onClose);
@@ -44,11 +45,12 @@ export function StudentImportDialog({ classes, onClose }: StudentImportDialogPro
         <p className="text-meta text-body">
           {t('readyCount', { count: importState.parsed.rows.length })}
         </p>
-        {importState.parsed.errors.length > 0 ? (
-          <p className="text-meta font-medium text-destructive">
-            {t('errorCount', { count: importState.parsed.errors.length })}
-          </p>
-        ) : null}
+        {/* The count line is gone: the list below names the same rows AND says
+            which line each one is, so the two together only said it twice. */}
+        <StudentImportRejectList
+          parseErrors={importState.parsed.errors}
+          serverRejects={importState.rejects}
+        />
         <DialogFooter>
           <Button type="button" variant="outline" onClick={onClose} disabled={importState.pending}>
             {t('cancel')}
