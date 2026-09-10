@@ -106,13 +106,14 @@ test.describe('task 63: teacher roster with email flags vs live C-CHD-01/03', ()
     ).length;
 
     await signIn(page, TEACHER);
-    await page.goto('/en/dashboard/teach');
-    const home = page.locator('[data-surface="teacher-home"]');
+    // scoring/10 (R-12/R-16): /dashboard/teach is retired; the teacher's home
+    // surface is the class list at /dashboard/results, and the roster screen
+    // keeps its guarded route below it.
+    await page.goto('/en/dashboard/results');
+    const home = page.locator('[data-surface="teacher-results"]');
     await expect(home).toBeVisible({ timeout: 20_000 });
     await expect(home.getByText(CLASS_NAME, { exact: true })).toBeVisible();
-    const card = home.locator('[data-slot="teach-home-class-card"]', { hasText: CLASS_NAME });
-    await card.getByRole('link', { name: cat(en, 'Teach.home.rosterLink'), exact: true }).click();
-    await page.waitForURL(`**/dashboard/teach/classes/${CLASS_ID}`);
+    await page.goto(`/en/dashboard/teach/classes/${CLASS_ID}`);
 
     const screen = page.locator('[data-surface="teacher-roster"]');
     await expect(screen).toBeVisible();

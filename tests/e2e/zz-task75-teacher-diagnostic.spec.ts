@@ -129,14 +129,13 @@ test.describe('task 75: teacher diagnostic dashboard vs live C-RPT-01', () => {
     expect(diagnostic.heatmap.length).toBeGreaterThan(0);
 
     await signIn(page, TEACHER);
-    await page.goto('/en/dashboard/teach');
-    const home = page.locator('[data-surface="teacher-home"]');
+    // scoring/10 (R-12/R-16): the teacher home is /dashboard/results and the
+    // diagnostic screen keeps its guarded route under /dashboard/teach.
+    await page.goto('/en/dashboard/results');
+    const home = page.locator('[data-surface="teacher-results"]');
     await expect(home).toBeVisible({ timeout: 20_000 });
-    await home
-      .locator('li', { hasText: CLASS_NAME })
-      .getByRole('link', { name: cat(en, 'Teach.home.resultsLink'), exact: true })
-      .click();
-    await page.waitForURL(`**/dashboard/teach/results/${CLASS_ID}`);
+    await expect(home.getByText(CLASS_NAME, { exact: true })).toBeVisible();
+    await page.goto(`/en/dashboard/teach/results/${CLASS_ID}`);
 
     const screen = page.locator('[data-surface="teacher-diagnostic"]');
     await expect(screen).toBeVisible();

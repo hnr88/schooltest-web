@@ -78,10 +78,11 @@ test.describe('D-009 — teacher breadcrumbs never link to a missing page', () =
     context = await browser.newContext();
     page = await context.newPage();
     await loginAs(page, 'teacher');
-    await page.goto('/dashboard/teach');
-    // The teacher home links per class (TeachHomeClassCard): one link to the
-    // roster, one to the results. `/test-day` is a child of the classes segment,
-    // so it is excluded rather than mistaken for the roster route.
+    await page.goto('/dashboard/results');
+    // scoring/10 (R-16): the teacher's home surface is the class list; each
+    // results-class-row links to the class results record. `/test-day` is a
+    // child of the classes segment, so it is excluded rather than mistaken for
+    // the roster route.
     for (const surface of ['classes', 'results'] as const) {
       const link = page
         .locator(`a[href*="/dashboard/teach/${surface}/"]:not([href$="/test-day"])`)

@@ -1,8 +1,4 @@
-export { TeacherDashboardGate } from './components/TeacherDashboardGate';
-export { TeacherDashboardScreen } from './components/TeacherDashboardScreen';
-export { TeacherDashboardSplitScreen } from './components/TeacherDashboardSplitScreen';
 export { TeacherLiveSessionBanner } from './components/TeacherLiveSessionBanner';
-export { TeacherClassCard } from './components/TeacherClassCard';
 export { TeacherClassCompletionRow } from './components/TeacherClassCompletionRow';
 export { TestSessionsScreen } from './components/TestSessionsScreen';
 export { ResultsScreen } from './components/ResultsScreen';
@@ -174,9 +170,7 @@ export type {
 export type {
   TeacherDashboardStatus,
   TeacherDashboardCounts,
-  TeacherClassCardProps,
   TeacherClassCompletionRowProps,
-  TeacherDashboardGateProps,
 } from './types/teacher-dashboard.types';
 export type {
   TeacherExportKind,

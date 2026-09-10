@@ -1,4 +1,3 @@
-export { TeacherHomeScreen } from './components/TeacherHomeScreen';
 export { RosterScreen } from './components/RosterScreen';
 export { RosterTable } from './components/RosterTable';
 export { DiagnosticDashboard } from './components/DiagnosticDashboard';
@@ -10,15 +9,6 @@ export { useClassDiagnosticQuery, classDiagnosticQueryOptions } from './queries/
 export { CycleBanner } from './components/CycleBanner';
 export { useClassCycleQuery } from './queries/use-class-cycle.query';
 export { CLASS_CYCLE_QUERY_KEY } from '@/modules/teach/constants/queries.constants';
-export { TeachHomeClassCard } from './components/TeachHomeClassCard';
-export { useTeachHomeQuery } from './queries/use-teach-home.query';
-export { TEACH_HOME_QUERY_KEY } from '@/modules/teach/constants/queries.constants';
-export type {
-  TeachHome,
-  TeachHomeClass,
-  TeachHomeDiagnosticSummary,
-  TeachHomeMonitorSummary,
-} from './types/teach-home.types';
 export type { RosterChild } from './types/roster.types';
 export type { ClassDiagnostic, DiagnosticMasteryRow, DiagnosticStatus } from './types/diagnostic.types';
 export type { ClassProgress, ProgressStudent, ProgressTransition } from './types/progress.types';

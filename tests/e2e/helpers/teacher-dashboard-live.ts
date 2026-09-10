@@ -33,8 +33,9 @@ export function plural(template: string, count: number): string {
 /**
  * Classifies the painted persona once per animation frame, installed BEFORE the
  * first app script so a single wrong-persona frame cannot hide between
- * assertions. `/dashboard` serves two personas (A4) and the losing one must
- * never paint — it would also issue its own reads.
+ * assertions. Since task 10 (R-16) `/dashboard` redirects a teacher to
+ * `/dashboard/results`, so the teacher arm reads the results surface; the
+ * losing persona must never paint — it would also issue its own reads.
  */
 export async function installPersonaSampler(page: Page): Promise<void> {
   await page.addInitScript(() => {
@@ -43,8 +44,7 @@ export async function installPersonaSampler(page: Page): Promise<void> {
     const classify = (): string => {
       const content = document.querySelector('[data-slot="dashboard-content"]');
       if (!content) return '';
-      if (content.querySelector('[data-slot="dashboard-persona-pending"]')) return 'gate:pending';
-      const teacher = content.querySelector('[data-surface="teacher-dashboard"]');
+      const teacher = content.querySelector('[data-surface="teacher-results"]');
       if (teacher) return `teacher:${teacher.getAttribute('data-status')}`;
       if (content.querySelector('[data-surface="parent-overview"]')) return 'PARENT:overview';
       // The parent skeleton owns .shimmer-sweep; the teacher's uses animate-pulse.

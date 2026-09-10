@@ -63,7 +63,6 @@ export const TRAIL_LABELS: Readonly<Record<string, string>> = {
   '/dashboard/school/classes': 'Shell.nav.classes',
   '/dashboard/school/teachers': 'Shell.nav.teachers',
   // --- teacher --------------------------------------------------------------
-  '/dashboard/teach': 'Shell.nav.teach',
   '/dashboard/teach/notifications': 'Shell.nav.notifications',
   '/dashboard/teach/classes': 'Shell.nav.classes',
   '/dashboard/teach/classes/[documentId]/test-day': 'Navigation.testDay',
@@ -72,14 +71,6 @@ export const TRAIL_LABELS: Readonly<Record<string, string>> = {
   // --- ops console ----------------------------------------------------------
   '/dashboard/ops': 'Shell.nav.ops',
   '/dashboard/ops/schools': 'Navigation.opsSchools',
-  '/dashboard/ops/timers': 'Navigation.opsTimers',
-  '/dashboard/ops/users': 'Navigation.opsUsers',
-  '/dashboard/ops/invitations': 'Navigation.opsInvitations',
-  '/dashboard/ops/content': 'Navigation.opsContent',
-  '/dashboard/ops/system': 'Navigation.opsSystem',
-  '/dashboard/ops/comms': 'Navigation.opsComms',
-  '/dashboard/ops/flags': 'Navigation.opsFlags',
-  '/dashboard/ops/audit': 'Navigation.opsAudit',
   '/dashboard/ops/settings': 'Navigation.opsSettings',
 };
 

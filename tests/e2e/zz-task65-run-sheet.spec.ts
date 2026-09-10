@@ -93,12 +93,12 @@ test.describe('task 65: test-day run sheet', () => {
       timeout: 20_000,
     });
 
-    await page.goto('/en/dashboard/teach');
-    const home = page.locator('[data-surface="teacher-home"]');
+    // scoring/10 (R-12/R-16): the teacher home is /dashboard/results; the
+    // run-sheet keeps its guarded route, proven by the direct leg above. The
+    // home the old run-sheet link lived on is retired with it.
+    await page.goto('/en/dashboard/results');
+    const home = page.locator('[data-surface="teacher-results"]');
     await expect(home).toBeVisible({ timeout: 20_000 });
-    await expect(
-      home.getByRole('link', { name: cat(en, 'Teach.home.runSheetLink'), exact: true }),
-    ).toBeVisible();
   });
 
   test('renders in a non-en locale with the same shape', async ({ page }) => {

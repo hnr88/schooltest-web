@@ -9,8 +9,6 @@ import type {
 
 import { cat, icu, type Messages } from './i18n';
 import { API_BASE } from './teacher-auth-rail';
-import { plural } from './teacher-dashboard-live';
-import { navLink } from './teacher-rail';
 
 // Harness for brief flows 3 and 4 (task 051). Every expectation is built from a
 // SECOND, independent read of the real C-TD-1 endpoint made by Node — not from
@@ -19,17 +17,11 @@ import { navLink } from './teacher-rail';
 // here fixtures, intercepts or perturbs a response.
 
 export const TD = 'Teacher.dashboard';
-export const DASHBOARD_SURFACE = '[data-surface="teacher-dashboard"]';
+// scoring/10 (R-01/R-16): /dashboard redirects a teacher to /dashboard/results,
+// whose surface marker is `teacher-results` (ResultsScreen). The split screen
+// and the pre-v2 dashboard it superseded are both retired.
+export const DASHBOARD_SURFACE = '[data-surface="teacher-results"]';
 const BANNER = '[data-slot="teacher-live-session-banner"]';
-
-/** Walks the rail back to /dashboard and waits for the live read to land. */
-export async function openDashboard(page: Page, messages: Messages): Promise<void> {
-  await navLink(page, cat(messages, 'Shell.nav.teacherDashboard')).click();
-  await page.waitForURL('**/dashboard');
-  await expect(page.locator(DASHBOARD_SURFACE)).toHaveAttribute('data-status', 'ready', {
-    timeout: 60_000,
-  });
-}
 
 /** C-TD-1, read Node-side and strict-parsed through the SHIPPED Zod mirror. */
 export async function readDashboard(
@@ -45,11 +37,9 @@ export async function readDashboard(
 
 export interface CardText {
   name: string;
-  roster: string;
+  students: string;
   testA: string;
   testB: string;
-  topGapAttribute: string;
-  gapTile: string[];
 }
 
 async function completionValue(page: Page, classId: string, label: string): Promise<string> {
@@ -60,23 +50,23 @@ async function completionValue(page: Page, classId: string, label: string): Prom
     .innerText();
 }
 
-/** One rendered class card, read out of the DOM as plain text. */
+/** One rendered class row, read out of the DOM as plain text. */
 export async function readCard(
   page: Page,
   messages: Messages,
   classId: string,
 ): Promise<CardText> {
-  const card = page.locator(`[data-slot="teacher-class-card"][data-class-id="${classId}"]`);
+  const card = page.locator(`[data-slot="results-class-row"][data-class-id="${classId}"]`);
   await expect(card).toHaveCount(1);
   return {
-    name: await card.getByRole('heading', { level: 2 }).innerText(),
-    roster: await card.locator('header p').innerText(),
+    name: await card.locator('span.truncate', { hasText: /\S/ }).first().innerText(),
+    students: await card
+      .locator('span.flex.min-w-0.flex-col', { hasText: cat(messages, 'Teacher.results.list.studentsLabel') })
+      .locator('span.tabular-nums')
+      .last()
+      .innerText(),
     testA: await completionValue(page, classId, cat(messages, `${TD}.testA`)),
     testB: await completionValue(page, classId, cat(messages, `${TD}.testB`)),
-    topGapAttribute: (await card.getAttribute('data-top-gap')) ?? '',
-    // textContent, not innerText: these spans are `uppercase` in CSS only and the
-    // catalog string is the truth being compared.
-    gapTile: (await card.locator(':scope > div > *').allTextContents()).map((line) => line.trim()),
   };
 }
 
@@ -90,23 +80,13 @@ function completionText(
   });
 }
 
-/** What the card MUST print, derived only from the wire class and the catalog. */
+/** What the row MUST print, derived only from the wire class and the catalog. */
 export function expectedCard(messages: Messages, wire: DashboardClass): CardText {
-  const gap = wire.top_gap;
   return {
     name: wire.name,
-    roster: plural(cat(messages, `${TD}.students`), wire.student_count),
+    students: String(wire.student_count),
     testA: completionText(messages, wire.test_a),
     testB: completionText(messages, wire.test_b),
-    topGapAttribute: gap === null ? 'none' : gap.attribute,
-    gapTile:
-      gap === null
-        ? [cat(messages, `${TD}.topGap`), cat(messages, `${TD}.noGap`), cat(messages, `${TD}.noGapHint`)]
-        : [
-            cat(messages, `${TD}.topGap`),
-            gap.name,
-            plural(cat(messages, `${TD}.notYetCount`), gap.not_yet_count),
-          ],
   };
 }
 

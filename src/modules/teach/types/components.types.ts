@@ -2,7 +2,6 @@ import type { DirectoryQueryStatus } from '@/modules/directory';
 import type { DiagnosticGroup, DiagnosticHeatmapRow, DiagnosticMasteryRow } from '@/modules/teach/types/diagnostic.types';
 import type { ProgressTransition } from '@/modules/teach/types/progress.types';
 import type { RosterChild } from '@/modules/teach/types/roster.types';
-import type { TeachHomeClass, TeachHomeDiagnosticSummary, TeachHomeMonitorSummary } from '@/modules/teach/types/teach-home.types';
 import type { ReactNode } from 'react';
 
 export interface CycleBannerProps {
@@ -20,10 +19,6 @@ export interface DiagnosticDashboardProps {
 export interface DiagnosticPrintHeaderProps {
   classLabel: string;
   formCode: string | null;
-}
-
-export interface DiagnosticSummaryPanelProps {
-  diagnostic: TeachHomeDiagnosticSummary | null;
 }
 
 export interface ExportMarkdownButtonProps {
@@ -51,12 +46,6 @@ export interface MasteryTableProps {
   query: DirectoryQueryStatus;
 }
 
-export interface MonitorSummaryPanelProps {
-  monitor: TeachHomeMonitorSummary | null;
-}
-
-export type MonitorStateKey = keyof TeachHomeMonitorSummary;
-
 export interface ProgressPanelProps {
   classId: string;
 }
@@ -77,8 +66,4 @@ export interface RosterTableProps {
 export interface StudentMasteryDrilldownProps {
   row: DiagnosticMasteryRow;
   onClose: () => void;
-}
-
-export interface TeachHomeClassCardProps {
-  classSummary: TeachHomeClass;
 }

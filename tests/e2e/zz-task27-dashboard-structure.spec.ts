@@ -63,24 +63,27 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
       await expect(page.locator(`[data-surface="${surface}"]`)).toBeVisible({ timeout: 20_000 });
     }
 
-    // TeacherGuard keeps a school_admin out of the teacher section.
-    await page.goto('/dashboard/teach');
+    // TeacherGuard keeps a school_admin out of the teacher section. R-12
+    // retired the section root, so the guard is proven on a surviving route.
+    await page.goto('/dashboard/teach/classes');
     await page.waitForURL('**/dashboard/school', { timeout: 20_000 });
-    await expect(page.locator('[data-surface="teacher-home"]')).toHaveCount(0);
+    await expect(page.locator('[data-surface="teacher-results"]')).toHaveCount(0);
   });
 
   test('teacher: /dashboard renders the teacher dashboard; school section bounces', async ({
     page,
   }) => {
     await signIn(page, TEACHER.email, TEACHER.password, '/dashboard');
-    await expect(page.locator('[data-surface="teacher-dashboard"]')).toBeVisible({
+    // scoring/10 (R-16): the teacher is now redirected to the class list.
+    await page.waitForURL('**/dashboard/results', { timeout: 20_000 });
+    await expect(page.locator('[data-surface="teacher-results"]')).toBeVisible({
       timeout: 20_000,
     });
 
     // SchoolAdminGuard bounces a teacher to the role-filtered dashboard.
     await page.goto('/dashboard/school');
-    await page.waitForURL('**/dashboard', { timeout: 20_000 });
-    await expect(page.locator('[data-surface="teacher-dashboard"]')).toBeVisible();
+    await page.waitForURL('**/dashboard/results', { timeout: 20_000 });
+    await expect(page.locator('[data-surface="teacher-results"]')).toBeVisible();
     await expect(page.locator('[data-surface="school-admin-home"]')).toHaveCount(0);
   });
 
@@ -103,7 +106,9 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
       timeout: 20_000,
     });
 
-    await page.goto('/dashboard/teach');
+    // scoring/10 (R-12): the teach ROOT is retired (404 for everyone); a
+    // surviving guarded teach route still bounces a parent to /dashboard.
+    await page.goto('/dashboard/teach/classes');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
     await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible({
       timeout: 20_000,
@@ -125,7 +130,9 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     await page.goto('/dashboard/school');
     await page.waitForURL('**/sign-in', { timeout: 20_000 });
 
-    await page.goto('/dashboard/teach');
+    // scoring/10 (R-12): the teach root is gone; a surviving guarded route
+    // still bounces an anonymous visitor to /sign-in.
+    await page.goto('/dashboard/teach/classes');
     await page.waitForURL('**/sign-in', { timeout: 20_000 });
   });
 });

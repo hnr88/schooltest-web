@@ -22,8 +22,10 @@ const en = loadMessages('en');
 const TD = 'Teacher.dashboard';
 const SCREENSHOTS = path.resolve(process.cwd(), '..', '.qa', 'screenshots');
 
-const surface = (page: Page) => page.locator('[data-surface="teacher-dashboard"]');
-const cards = (page: Page) => page.locator('[data-slot="teacher-class-card"]');
+// scoring/10 (R-16): /dashboard redirects a teacher to /dashboard/results,
+// whose class list renders `teacher-results` over `results-class-row` rows.
+const surface = (page: Page) => page.locator('[data-surface="teacher-results"]');
+const cards = (page: Page) => page.locator('[data-slot="results-class-row"]');
 
 test.describe.configure({ mode: 'serial' });
 
@@ -72,15 +74,17 @@ test.describe('teacher dashboard (C-TD-1)', () => {
 
   test('every card equals the live payload the render consumed', async () => {
     expect(wire.length).toBeGreaterThan(0);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(cat(en, `${TD}.title`));
+    // scoring/10 (R-16): the teacher lands on the class list, whose h1 is the
+    // results screen's own — not the retired dashboard's title.
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(cat(en, 'Teacher.results.title'));
     await expect(cards(page)).toHaveCount(wire.length);
 
     for (const klass of wire) {
       const card = page.locator(`[data-class-id="${klass.class_document_id}"]`);
-      await expect(card.getByRole('heading', { level: 2 })).toHaveText(klass.name);
-      await expect(
-        card.getByText(plural(cat(en, `${TD}.students`), klass.student_count), { exact: true }),
-      ).toBeVisible();
+      await expect(card.getByText(klass.name, { exact: true })).toBeVisible();
+      // The row prints the roster as label + bare count (no plural sentence).
+      await expect(card.getByText(cat(en, 'Teacher.results.list.studentsLabel'))).toBeVisible();
+      await expect(card.getByText(String(klass.student_count), { exact: true })).toBeVisible();
 
       for (const [labelKey, completion] of [
         [`${TD}.testA`, klass.test_a],
@@ -101,17 +105,10 @@ test.describe('teacher dashboard (C-TD-1)', () => {
           }),
         ).toHaveCount(1);
       }
-
-      const gap = klass.top_gap;
-      await expect(card).toHaveAttribute('data-top-gap', gap ? gap.attribute : 'none');
-      if (gap) {
-        await expect(card.getByText(gap.name, { exact: true })).toBeVisible();
-        await expect(
-          card.getByText(plural(cat(en, `${TD}.notYetCount`), gap.not_yet_count), { exact: true }),
-        ).toBeVisible();
-      } else {
-        await expect(card.getByText(cat(en, `${TD}.noGap`), { exact: true })).toBeVisible();
-      }
+      // The retired card's `data-top-gap` tile is R-01 territory: the results
+      // row's contract carries the A/B completions and the derived status —
+      // the subskill gap moved to the class results detail's skill tabs.
+      await expect(card).not.toHaveAttribute('data-top-gap');
     }
   });
 
@@ -129,7 +126,7 @@ test.describe('teacher dashboard (C-TD-1)', () => {
       expect(overflow.columns).toBe(width === 1280 ? Math.min(2, wire.length) : 1);
 
       const results = await new AxeBuilder({ page })
-        .include('[data-surface="teacher-dashboard"]')
+        .include('[data-surface="teacher-results"]')
         .analyze();
       // Only landmark best-practice rules are tolerated: SidebarInset is itself a
       // <main>, so every screen module in this app nests one. Shell-wide, and the

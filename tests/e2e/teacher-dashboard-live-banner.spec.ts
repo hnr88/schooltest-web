@@ -8,7 +8,6 @@ import {
   DASHBOARD_SURFACE,
   expectedBannerDetail,
   expectedCard,
-  openDashboard,
   readBanner,
   readCard,
   readDashboard,
@@ -38,6 +37,14 @@ const LIVE = 'Teacher.dashboard.liveBanner';
 
 test.describe.configure({ mode: 'serial' });
 
+/** R-10 removed the Dashboard rail entry — navigate straight to /dashboard. */
+async function gotoDashboard(): Promise<void> {
+  await page.goto('/dashboard');
+  await expect(page.locator(DASHBOARD_SURFACE)).toHaveAttribute('data-status', 'ready', {
+    timeout: 60_000,
+  });
+}
+
 let page: Page;
 let request: APIRequestContext;
 let jwt: string;
@@ -65,18 +72,23 @@ test.afterAll(async () => {
   await request.dispose();
 });
 
-test.describe('flow 3 — class cards carry the live counts and the top subskill gap', () => {
-  test('every card equals the class C-TD-1 answered, field for field', async () => {
+// scoring/10 (R-01/R-16): /dashboard redirects a teacher to /dashboard/results,
+// so flow 3 runs UN-SKIPPED against the class list the redirect lands on — the
+// results-class-row tiles render the C-TD-1 A/B completions (task 06's
+// re-parented TeacherClassCompletionRow). The old card's top-subskill-gap tile
+// is retired DOM: the row's contract is name + completions + derived status.
+test.describe('flow 3 — class rows carry the live counts', () => {
+  test('every row equals the class C-TD-1 answered, field for field', async () => {
     const wire = await readDashboard(request, jwt);
     expect(wire.classes.length, 'the teacher owns no class').toBeGreaterThan(0);
-    await expect(page.locator('[data-slot="teacher-class-card"]')).toHaveCount(
+    await expect(page.locator('[data-slot="results-class-row"]')).toHaveCount(
       wire.classes.length,
     );
 
     for (const klass of wire.classes) {
       expect(
         await readCard(page, en, klass.class_document_id),
-        `card ${klass.name} drifted from C-TD-1`,
+        `row ${klass.name} drifted from C-TD-1`,
       ).toEqual(expectedCard(en, klass));
     }
 
@@ -86,7 +98,6 @@ test.describe('flow 3 — class cards carry the live counts and the top subskill
       0,
     );
     expect(completed, 'no completion anywhere — nothing was really asserted').toBeGreaterThan(0);
-    expect(wire.classes.some((klass) => klass.top_gap !== null)).toBe(true);
 
     await page.screenshot({ path: path.join(SHOTS, '051-flow3-class-cards.png'), fullPage: true });
   });
@@ -146,7 +157,7 @@ test.describe('flow 4 — the yellow banner appears while the session is live', 
     expect(listed?.status).toBe('open');
     expect(sittingRow(started.sitting_document_id)).toEqual({ status: 'open', closed_at: '' });
 
-    await openDashboard(page, en);
+    await gotoDashboard();
     const banner = await readBanner(page);
     expect(banner, 'no banner while a sitting is open').not.toBeNull();
     expect(banner?.sittingId).toBe(started.sitting_document_id);
@@ -180,7 +191,7 @@ test.describe('flow 4 — the yellow banner appears while the session is live', 
     expect(row.status).toBe('closed');
     expect(row.closed_at.length, 'closed_at was not stamped').toBeGreaterThan(0);
 
-    await openDashboard(page, en);
+    await gotoDashboard();
     const wire = await readDashboard(request, jwt);
     expect(wire.live_session?.sitting_document_id).not.toBe(closing.sitting_document_id);
     await expect(page.locator(`[data-sitting-id="${closing.sitting_document_id}"]`)).toHaveCount(0);

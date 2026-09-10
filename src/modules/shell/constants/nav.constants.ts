@@ -1,19 +1,12 @@
 import {
   BarChart3,
-  ClipboardList,
-  FileChartColumn,
-  Flag,
+  Clock,
   LayoutDashboard,
   LayoutGrid,
-  Mail,
   School,
   Search,
-  Server,
   Settings,
-  ShieldCheck,
   SlidersHorizontal,
-  SquareCheckBig,
-  Timer,
   User,
   Users,
 } from 'lucide-react';
@@ -35,15 +28,18 @@ import type {
 export const SEARCH_HREF = '/dashboard/search';
 
 // The teacher section (.qa/DECISIONS.md A4). `/dashboard` serves two personas:
-// the rail's teacher Dashboard entry points here and the page branches on role.
-// These SUPERSEDE the older '/dashboard/teach' rail entry, which the brief caps
-// out — the route itself survives, it simply leaves the rail.
+// the page branches on role and every role but teacher has its own home here.
+// These SUPERSEDE the older '/dashboard/teach' rail entry — the route itself
+// survives, it simply leaves the rail.
 export const TEACHER_DASHBOARD_HREF = '/dashboard';
 export const TEST_SESSIONS_HREF = '/dashboard/test-sessions';
 export const RESULTS_HREF = '/dashboard/results';
 
-// Teacher-only report surface (E11-01). Role-scoped rather than unconditional:
-// C-11/C-4 answer 403 to a parent, so an always-visible entry would be a dead link.
+// Teacher-only report surface (E11-01). Its rail entry retired (R-11, teacher
+// task 03 — the design's two-entry rail carries no Reports destination), the
+// const stays for its four live consumers (MasteryTable, StudentMasteryDrilldown,
+// the retired teacher home's own constants, shell/index.ts) and the retained
+// /dashboard/reports route.
 export const REPORTS_HREF = '/dashboard/reports';
 
 // School admin home (task 27 builds the page; the school-scoped API routes
@@ -60,24 +56,15 @@ export const ACCOUNT_HREF = `${SCHOOL_HREF}/account`;
 // The root itself is NOT a rail destination: /dashboard/ops only redirects to
 // /dashboard/ops/schools, and an `exact: false` entry on it would read active on
 // every child route alongside the real one.
+//
+// The rail itself is the design's TWO entries (Ops Portal.dc.html:25-47):
+// Schools under Operations and Settings under Account. The five console
+// entries (timers/system/audit/comms/flags) left the rail here — R-01…R-06 —
+// and their routes keep serving until task 41 retires the screens (R-09…R-14).
 export const OPS_HREF = '/dashboard/ops';
 
 export const OPS_SCHOOLS_HREF = `${OPS_HREF}/schools`;
-export const OPS_TIMERS_HREF = `${OPS_HREF}/timers`;
 export const OPS_SETTINGS_HREF = `${OPS_HREF}/settings`;
-
-// The three consoles that landed after this rail was written. Each page exists
-// (System 2ee7ccb, Audit e542728, Comms 3c94805) and each was reachable ONLY by
-// typing its URL until these entries; the trail registry already names all three
-// for the breadcrumbs, so nothing here invents a route or a label.
-export const OPS_SYSTEM_HREF = `${OPS_HREF}/system`;
-export const OPS_AUDIT_HREF = `${OPS_HREF}/audit`;
-export const OPS_COMMS_HREF = `${OPS_HREF}/comms`;
-
-// The fourth console (Flags 6cb9cde + acb51e6), reachable only by URL until this
-// entry for the same reason the three above were: its page and its trail label
-// both already existed.
-export const OPS_FLAGS_HREF = `${OPS_HREF}/flags`;
 
 export const NAV_ITEMS: readonly NavItem[] = [
   {
@@ -97,14 +84,6 @@ export const NAV_ITEMS: readonly NavItem[] = [
     group: 'primary',
     roles: [PARENT_ROLE_TYPE],
     parentViews: true,
-  },
-  {
-    labelKey: 'reports',
-    href: REPORTS_HREF,
-    icon: FileChartColumn,
-    exact: false,
-    group: 'primary',
-    roles: [TEACHER_ROLE_TYPE],
   },
   {
     labelKey: 'search',
@@ -176,75 +155,36 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: [OPS_ROLE_TYPE],
   },
   {
-    labelKey: 'opsTimers',
-    href: OPS_TIMERS_HREF,
-    icon: Timer,
-    exact: false,
-    group: 'primary',
-    roles: [OPS_ROLE_TYPE],
-  },
-  {
+    // The design's Account entry (Ops Portal.dc.html:34-39): group 'account'
+    // pins it to the sidebar footer beside the school admin's Account. The
+    // footer renders a Separator rather than an "Account" overline, and keeping
+    // that shared rendering is D-42's deliberate label fidelity departure.
     labelKey: 'opsSettings',
     href: OPS_SETTINGS_HREF,
     icon: SlidersHorizontal,
     exact: false,
-    group: 'primary',
+    group: 'account',
     roles: [OPS_ROLE_TYPE],
   },
-  // Appended rather than interleaved: the existing ops positions stay exactly
-  // where they were, which keeps this slice to the three entries it was asked for.
   {
-    labelKey: 'opsSystem',
-    href: OPS_SYSTEM_HREF,
-    icon: Server,
+    // The design's two-entry rail (Teacher Portal v2.dc.html:29–35): Classes
+    // (the results surface) ahead of Live sessions (test sessions), under the
+    // TEACHER VIEW overline. R-10 retired the teacherDashboard entry — the
+    // /dashboard route and TEACHER_DASHBOARD_HREF keep serving the other roles.
+    // Strings stay (D-33): "Results" and "Test sessions" keep their keys; only
+    // the order and the design's icons — the 2×2 grid at :30 and the clock at
+    // :33 — changed.
+    labelKey: 'results',
+    href: RESULTS_HREF,
+    icon: LayoutGrid,
     exact: false,
-    group: 'primary',
-    roles: [OPS_ROLE_TYPE],
-  },
-  {
-    labelKey: 'opsAudit',
-    href: OPS_AUDIT_HREF,
-    icon: ShieldCheck,
-    exact: false,
-    group: 'primary',
-    roles: [OPS_ROLE_TYPE],
-  },
-  {
-    labelKey: 'opsComms',
-    href: OPS_COMMS_HREF,
-    icon: Mail,
-    exact: false,
-    group: 'primary',
-    roles: [OPS_ROLE_TYPE],
-  },
-  {
-    labelKey: 'opsFlags',
-    href: OPS_FLAGS_HREF,
-    icon: Flag,
-    exact: false,
-    group: 'primary',
-    roles: [OPS_ROLE_TYPE],
-  },
-  {
-    labelKey: 'teacherDashboard',
-    href: TEACHER_DASHBOARD_HREF,
-    icon: LayoutDashboard,
-    exact: true,
     group: 'teach',
     roles: [TEACHER_ROLE_TYPE],
   },
   {
     labelKey: 'testSessions',
     href: TEST_SESSIONS_HREF,
-    icon: ClipboardList,
-    exact: false,
-    group: 'teach',
-    roles: [TEACHER_ROLE_TYPE],
-  },
-  {
-    labelKey: 'results',
-    href: RESULTS_HREF,
-    icon: SquareCheckBig,
+    icon: Clock,
     exact: false,
     group: 'teach',
     roles: [TEACHER_ROLE_TYPE],
@@ -259,12 +199,15 @@ export const ACCOUNT_NAV_ITEMS = NAV_ITEMS.filter((item) => item.group === 'acco
 // rendered as a section. The rail list itself is the UNFILTERED NAV_ITEMS —
 // buildNavSections restricts the render to the groups named here. Pre-filtering
 // the list upstream of it (the deleted PRIMARY_NAV_ITEMS, group === 'primary')
-// is what dropped the teacher's three 'teach' entries before render (B3, fixed
+// is what dropped the teacher's 'teach' entries before render (B3, fixed
 // identically here and in upstream 5c0841e).
 export const NAV_GROUP_ORDER: readonly NavGroup[] = ['primary', 'teach'];
 
 export const NAV_GROUP_LABEL_KEYS: Record<NavGroup, NavGroupLabelKey> = {
   primary: 'manage',
-  teach: 'teach',
+  // Teacher Portal v2.dc.html:27 — the design's TEACHER VIEW overline. The old
+  // `teach` key stays in every catalogue (D-33: no i18n key is deleted); the
+  // teach group is teacher-only, so no other role ever reads the new word.
+  teach: 'teacherView',
   account: 'manage',
 };

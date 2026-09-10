@@ -26,8 +26,8 @@ import type { RosterRow } from '@/modules/results/types/roster.types';
 // ClassResultsScreen), so no second breadcrumb is added here.
 //
 // Named ...RosterProps (not ClassResultsHeaderProps): the results-shell type of
-// that name still carries C-TR-1's `summary` for TeacherDashboardSplitScreen,
-// which is not this task's surface.
+// that name still carries C-TR-1's `summary` legacy, which is not this task's
+// surface (the split screen that used it retired with scoring/10's R-16).
 interface ClassRosterHeaderProps {
   className: string;
   rows: readonly RosterRow[];

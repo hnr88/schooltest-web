@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import { DashboardRoleGate, DashboardScreen } from '@/modules/dashboard';
-import { TeacherDashboardGate, TeacherDashboardSplitScreen } from '@/modules/teacher';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Dashboard.meta');
@@ -13,30 +12,22 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// `/dashboard` serves THREE personas, and the split is deliberate.
+// `/dashboard` redirects every sectioned persona to its own root and renders
+// the parent Overview for what remains.
 //
 // The parent auth gate lives in the (portal) route group layout, so this page
 // only renders content. DashboardRoleGate (task 27) redirects a resolved
-// school_admin to /dashboard/school and an ops user to /dashboard/ops — those
-// sections are whole apps of their own, so they get their own root.
-//
-// A teacher is NOT redirected any more (.qa/DECISIONS.md A4: ONE shell, role
-// filtered). `/dashboard` IS the teacher's Dashboard — the rail's
-// TEACHER_DASHBOARD_HREF points here — so `teacher` was removed from
-// ROLE_DESTINATIONS and the branch happens in-place instead. The role is only
-// knowable client-side (the JWT lives in localStorage), so TeacherDashboardGate
-// is a client gate that mounts exactly one of the two screens; the parent
-// Overview is untouched for every non-teacher role.
-//
-// The teacher screen mounted here is Dash C (Split) — the layout the operator
-// locked. It was first mounted only at /dashboard/teach, which nothing in the
-// rail links to, so the rail's TEACHER_DASHBOARD_HREF ('/dashboard') still
-// rendered the pre-v2 TeacherDashboardScreen and the redesign was unreachable
-// by navigation. Both routes now render the same split screen.
+// school_admin to /dashboard/school, an ops user to /dashboard/ops and —
+// since task 10 retired the two superseded teacher dashboards (R-01/R-16) —
+// a TEACHER to /dashboard/results, whose class list is the teacher's home
+// surface. The old in-place branch (A4: one shell, role filtered) is reversed
+// here: ROLE_DESTINATIONS now carries the teacher row like every other
+// sectioned role. The parent Overview remains the fallback for every role
+// without its own root.
 export default function DashboardPage() {
   return (
     <DashboardRoleGate>
-      <TeacherDashboardGate teacher={<TeacherDashboardSplitScreen />} fallback={<DashboardScreen />} />
+      <DashboardScreen />
     </DashboardRoleGate>
   );
 }
