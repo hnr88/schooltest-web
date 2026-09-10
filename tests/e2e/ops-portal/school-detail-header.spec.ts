@@ -7,12 +7,14 @@
  * ops proof directory for each state.
  */
 import { mkdir } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from '../helpers/i18n';
 import { apiEnv } from '../helpers/auth-db';
+import { HOOK_TIMEOUT_MS, TOTAL_BUDGET_MS } from '../helpers/api-named-retry';
 import { loginAs } from '../helpers/roles';
 
 const API = process.env.E2E_API_URL ?? 'http://127.0.0.1:5500';
@@ -61,7 +63,11 @@ async function createFixture(
   }
   const name = `OPS10 ${status} ${Date.now().toString(36)}`;
   const response = await request.post(`${API}/api/schools`, {
-    headers: { Authorization: `Bearer ${jwt}`, 'X-Ops-Portal-Version': '1' },
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      'X-Ops-Portal-Version': '1',
+      'Idempotency-Key': randomUUID(),
+    },
     data: {
       name,
       contact_email: `${status}.${Date.now()}@fixture.schooltest.local`,
@@ -89,15 +95,16 @@ async function loginAsSupport(page: Page): Promise<void> {
   await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 20_000 });
 }
 
-test.describe.configure({ mode: 'serial' });
+test.describe.configure({ mode: 'serial', timeout: HOOK_TIMEOUT_MS });
 
-test.beforeAll(
-  async ({ request }) => {
-    await mkdir(CAPTURES, { recursive: true });
-    for (const status of statuses) fixtures.set(status, await createFixture(request, status));
-  },
-  { timeout: 240_000 },
-);
+test.beforeAll(async ({ request }, testInfo) => {
+  testInfo.setTimeout(HOOK_TIMEOUT_MS);
+  if (testInfo.timeout < TOTAL_BUDGET_MS) {
+    throw new Error(`HOOK TIMEOUT TOO SMALL: ${testInfo.timeout}ms`);
+  }
+  await mkdir(CAPTURES, { recursive: true });
+  for (const status of statuses) fixtures.set(status, await createFixture(request, status));
+});
 
 test.afterAll(async ({ request }) => {
   for (const fixture of [...fixtures.values()].reverse()) {
