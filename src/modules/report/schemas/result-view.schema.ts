@@ -98,6 +98,13 @@ export type LegacyResultView = z.infer<typeof legacyResultViewSchema>;
  * whole list rather than v1 rows — so the union is what the fixed endpoint
  * actually serves, not a loosening: both members stay strict, and a row that is
  * neither shape still fails the parse.
+ *
+ * SCORING/10: the ROSTER form (`?class=`) is a different shape and is mirrored
+ * in `results/schemas/roster.schema.ts`. This legacy array gains none of that
+ * row's keys — no row-level `release_state`, and `history` stays omitted inside
+ * a v2 row (the flag flip is roster-only) — so this union needed no widening;
+ * the view-level keys it does carry (`recalled_at`, `release_state`, `history`)
+ * flow from the shared package schema.
  */
 export const myStudentsResultsResponseSchema = z.array(
   z.union([resultViewSchema, legacyResultViewSchema])
