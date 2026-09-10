@@ -21,6 +21,7 @@ export const DIRECTORY_PARAMS = {
   q: 'q',
   sort: 'sort',
   page: 'page',
+  layout: 'layout',
 } as const;
 
 /**
@@ -33,6 +34,7 @@ export const DIRECTORY_DEFAULT_LABELS: DirectoryLabels = {
   searchLabel: 'Search',
   filtersLabel: 'Filters',
   sortLabel: 'Sort',
+  layoutLabel: 'Layout',
   clearFilters: 'Clear filters',
   paginationLabel: 'Pagination',
   previous: 'Previous',
@@ -54,4 +56,8 @@ export const DIRECTORY_DEFAULT_LABELS: DirectoryLabels = {
   errorDescription: 'Something went wrong while loading this list.',
   retry: 'Retry',
   loadingLabel: 'Loading',
+  // ops/14 — tab-frame defaults; every adopting surface overrides them.
+  exportLabel: 'Export CSV',
+  primaryActionLabel: 'Open',
+  chipAllLabel: 'All',
 };

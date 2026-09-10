@@ -1,17 +1,16 @@
 import type { Page } from '@playwright/test';
 
 // Task 047. `collectSmallTargets` (helpers/ui.ts) measures `getBoundingClientRect()`
-// on the control itself. That is right for a normal button, and WRONG for the
-// row-overlay pattern the Students table uses: `StudentResultsRow` renders ONE real
-// <Link> whose `after:absolute after:inset-0` stretches the pointer target across the
-// whole table row, so the anchor's own box is just the text run ("Fatema R." = 63×17)
-// while the target a finger actually hits is the row (848×56 at 1280px).
+// on the control itself. That is right for a normal button, and WRONG for any
+// control whose pointer target is bigger than its own box (an overlay link): when
+// a control's ::after is absolutely positioned, the box that receives the pointer
+// is its offset parent, so that is the box measured.
 //
-// This collector measures the EFFECTIVE target instead of relaxing the floor:
-// when a control's ::after is absolutely positioned, the box that receives the
-// pointer is its offset parent, so that is the box measured. Nothing is excluded and
-// no rule is loosened — teacher-a11y-semantics.spec.ts independently hit-tests the
-// row's corners with `elementFromPoint` to prove the overlay really does answer.
+// ops/34 — the Students table's row renders through the shared directory kit,
+// whose §L-rownav contract drops the whole-row overlay deliberately; the row's
+// link now measures ≥44×44 by its OWN box (teacher-a11y-semantics.spec.ts pins
+// that directly). Nothing is excluded and no rule is loosened — the offset-parent
+// measurement stays for any surface that still ships an overlay target.
 
 const MIN_TARGET_PX = 43; // 44px floor minus 1px for sub-pixel layout
 

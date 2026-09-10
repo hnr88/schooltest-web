@@ -217,6 +217,13 @@ export declare const legacyResultViewBaseSchema: z.ZodObject<{
         official: "official";
     }>;
     published_at: z.ZodNullable<z.ZodISODateTime>;
+    recalled_at: z.ZodNullable<z.ZodISODateTime>;
+    release_state: z.ZodEnum<{
+        held: "held";
+        released: "released";
+        recalled: "recalled";
+        manual: "manual";
+    }>;
     previous_result_document_id: z.ZodNullable<z.ZodString>;
     session_document_id: z.ZodNullable<z.ZodString>;
     model_version: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -304,6 +311,13 @@ export declare const legacyResultViewSchema: z.ZodObject<{
         official: "official";
     }>;
     published_at: z.ZodNullable<z.ZodISODateTime>;
+    recalled_at: z.ZodNullable<z.ZodISODateTime>;
+    release_state: z.ZodEnum<{
+        held: "held";
+        released: "released";
+        recalled: "recalled";
+        manual: "manual";
+    }>;
     previous_result_document_id: z.ZodNullable<z.ZodString>;
     session_document_id: z.ZodNullable<z.ZodString>;
     model_version: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -388,6 +402,13 @@ export declare const legacyResultViewSchema: z.ZodObject<{
             official: "official";
         }>;
         published_at: z.ZodNullable<z.ZodISODateTime>;
+        recalled_at: z.ZodNullable<z.ZodISODateTime>;
+        release_state: z.ZodEnum<{
+            held: "held";
+            released: "released";
+            recalled: "recalled";
+            manual: "manual";
+        }>;
         previous_result_document_id: z.ZodNullable<z.ZodString>;
         session_document_id: z.ZodNullable<z.ZodString>;
         model_version: z.ZodOptional<z.ZodNullable<z.ZodString>>;

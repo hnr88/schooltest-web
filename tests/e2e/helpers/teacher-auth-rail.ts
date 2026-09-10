@@ -15,19 +15,17 @@ import { ACCOUNTS, en, navLink, navLinks } from './teacher-rail';
 
 export type RailSpec = readonly { readonly key: string; readonly href: string }[];
 
-/** Flow 1: the teacher rail — the "Teach" trio (B3) plus the E11-01 Reports entry under "Manage". */
+/** Flow 1: the teacher rail — the design's two destinations (teacher task 03, R-10/R-11). */
 export const TEACHER_RAIL: RailSpec = [
-  { key: 'Shell.nav.reports', href: '/dashboard/reports' },
-  { key: 'Shell.nav.teacherDashboard', href: '/dashboard' },
-  { key: 'Shell.nav.testSessions', href: '/dashboard/test-sessions' },
   { key: 'Shell.nav.results', href: '/dashboard/results' },
+  { key: 'Shell.nav.testSessions', href: '/dashboard/test-sessions' },
 ];
 
 // Flow 2: the seeded platform account carries the 'ops' role on this stack, and
-// .qa/DECISIONS.md A4 keeps its holders on the ops rail — never the teacher trio.
+// .qa/DECISIONS.md A4 keeps its holders on the ops rail — never the teacher two.
+// Current ops rail (ops chrome restructure): Schools primary, Settings footer.
 export const OPS_RAIL: RailSpec = [
   { key: 'Shell.nav.opsSchools', href: '/dashboard/ops/schools' },
-  { key: 'Shell.nav.opsTimers', href: '/dashboard/ops/timers' },
   { key: 'Shell.nav.opsSettings', href: '/dashboard/ops/settings' },
 ];
 

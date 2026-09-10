@@ -8,6 +8,8 @@
     "status": "complete",
     "destination": "official",
     "published_at": "2026-09-07T18:35:56.149Z",
+    "recalled_at": null,
+    "release_state": "released",
     "provisional": "field_test",
     "model_version": "reading-3model/1",
     "overall": {
@@ -152,6 +154,8 @@
     "supplementary": null,
     "destination": "official",
     "published_at": null,
+    "recalled_at": null,
+    "release_state": "manual",
     "previous_result_document_id": null,
     "session_document_id": "bxfsu52462t94gngktwxzvib",
     "model_version": null,

@@ -119,3 +119,34 @@ describe('server mode page pass-through', () => {
     expect(queryParams.page).toBe(999);
   });
 });
+
+// ops/34 — `variant: 'none'` (useDirectoryState) resolves the state to an
+// infinite pageSize: the WHOLE loaded array on one page, the pager never
+// rendered (C-TS-2's unbounded history). Math.ceil(total / Infinity) would
+// read 0, so the reducer states its own meta.
+describe('ops/34 — the unbounded page (infinite pageSize)', () => {
+  test('an infinite pageSize returns EVERY row on page 1 with single-page meta', () => {
+    const { rows, meta } = applyClientDirectoryMode(
+      ROWS,
+      params({ pageSize: Number.POSITIVE_INFINITY }),
+      CONFIG,
+    );
+    expect(rows).toHaveLength(ROWS.length);
+    expect(meta).toEqual({
+      page: 1,
+      pageSize: Number.POSITIVE_INFINITY,
+      pageCount: 1,
+      total: ROWS.length,
+    });
+  });
+
+  test('an infinite pageSize on an EMPTY array still yields a defined empty meta', () => {
+    const { rows, meta } = applyClientDirectoryMode(
+      [],
+      params({ pageSize: Number.POSITIVE_INFINITY }),
+      CONFIG,
+    );
+    expect(rows).toEqual([]);
+    expect(meta).toEqual({ page: 1, pageSize: Number.POSITIVE_INFINITY, pageCount: 0, total: 0 });
+  });
+});

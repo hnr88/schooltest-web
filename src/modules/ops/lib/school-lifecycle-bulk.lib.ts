@@ -25,6 +25,7 @@ async function currentStatus(documentId: string): Promise<string> {
 }
 
 export const SUSPEND_SCHOOL_ACTION: OpsActionDefinition<OpsActionTarget> = {
+  write: true,
   async perform(target) {
     const version = (await fetchSchoolVersion(target.documentId)).updatedAt;
     await suspendSchool({ schoolDocumentId: target.documentId, version });
@@ -38,6 +39,7 @@ export const SUSPEND_SCHOOL_ACTION: OpsActionDefinition<OpsActionTarget> = {
 };
 
 export const ARCHIVE_SCHOOL_ACTION: OpsActionDefinition<OpsActionTarget> = {
+  write: true,
   async perform(target) {
     const version = (await fetchSchoolVersion(target.documentId)).updatedAt;
     await archiveSchool({ schoolDocumentId: target.documentId, version });

@@ -1,9 +1,6 @@
 import type { TestVariant } from '@/modules/teacher/types/teacher.types';
 import type { ResultView } from '@schooltest/scoring-contracts';
-import type {
-  StudentProgress,
-  StudentTestResult,
-} from '@/modules/teacher/types/teacher-result.types';
+import type { StudentTestResult } from '@/modules/teacher/types/teacher-result.types';
 
 export interface StudentDrillDownScreenProps {
   classDocumentId: string;
@@ -57,19 +54,6 @@ export type AcaraShiftView =
   | { kind: 'same'; phase: string }
   | { kind: 'moved'; from: string; to: string }
   | { kind: 'unknown' };
-
-export interface StudentComparisonStripProps {
-  /** C-TR-2's own `progress` object — present only when both tests are comparable. */
-  progress: StudentProgress;
-  /** The older test (`tests[1]`): its `variant` names the strip, its `score` is the "from". */
-  earlier: StudentTestResult;
-  /** The newest test (`tests[0]`): the "to" of every difference on the strip. */
-  latest: StudentTestResult;
-}
-
-export interface TestNotCompletedCardProps {
-  variant: TestVariant;
-}
 
 // Moved from the deleted `types/class-progress.types.ts` (task 34) — these two
 // serve the drill-down's comparison strip now.

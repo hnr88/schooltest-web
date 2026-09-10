@@ -4,10 +4,11 @@ import { useCallback, useState } from 'react';
 
 import { restFailureOf } from '@/lib/axios/strapi';
 import { typedNameMatches } from '@/modules/ops/actions/lib/ops-typed-name';
+import type { OpsTypedNameConfirmProps } from '@/modules/ops/actions/components/OpsTypedNameConfirm';
 
 export interface OpsConfirmActionOptions {
   /** Present for the typed-name variant; the operator must retype it exactly. */
-  requiredName?: string;
+  typed?: string;
   /** Runs on confirm. Resolves only once the write is proven applied. */
   onConfirm: () => Promise<void>;
 }
@@ -22,14 +23,19 @@ export interface OpsConfirmActionOptions {
  * The typed draft survives every error, including a server error, because
  * clearing it would make the operator retype a school name to retry.
  */
-export function useOpsConfirmAction({ requiredName, onConfirm }: OpsConfirmActionOptions) {
+type OpsTypedNameConfirmBindings = Omit<
+  OpsTypedNameConfirmProps,
+  'title' | 'description' | 'confirmLabel' | 'cancelLabel'
+>;
+
+export function useOpsConfirmAction({ typed, onConfirm }: OpsConfirmActionOptions) {
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState(false);
   const [dispatched, setDispatched] = useState(false);
   const [typedName, setTypedName] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const nameSatisfied = requiredName === undefined || typedNameMatches(typedName, requiredName);
+  const nameSatisfied = typed === undefined || typedNameMatches(typedName, typed);
   const canConfirm = nameSatisfied && !pending;
 
   const openDialog = useCallback(() => {
@@ -66,6 +72,21 @@ export function useOpsConfirmAction({ requiredName, onConfirm }: OpsConfirmActio
     }
   }, [canConfirm, onConfirm]);
 
+  const typedConfirmProps: OpsTypedNameConfirmBindings | null =
+    typed === undefined
+      ? null
+      : {
+          open,
+          onOpenChange: (nextOpen) => (nextOpen ? openDialog() : closeDialog()),
+          requiredName: typed,
+          typedName,
+          onTypedNameChange: setTypedName,
+          pending,
+          canConfirm,
+          errorMessage,
+          onConfirm: () => void confirm(),
+        };
+
   return {
     open,
     pending,
@@ -79,5 +100,7 @@ export function useOpsConfirmAction({ requiredName, onConfirm }: OpsConfirmActio
     openDialog,
     closeDialog,
     confirm,
+    /** Spread into OpsTypedNameConfirm; callers supply only its visible copy. */
+    typedConfirmProps,
   };
 }

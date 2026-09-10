@@ -168,3 +168,64 @@ export const ClassesListOperation: OpsOperation<
 
 /** `{ data: ClassRow }` — used when a single row is read back for assertions. */
 export const classRowEnvelopeSchema = dataEnvelope(classRowSchema);
+
+/* ------------------------------------------------------------------ *
+ * Class lifecycle — C-OPS-CLASS-ARCHIVE / C-OPS-CLASS-RESTORE.
+ *
+ * DECLARATIONS ONLY. No route, controller, grant or client hook exists for
+ * either path yet; task 06 implements both against these symbols so the server
+ * it writes and the table that calls it start from one definition. The status
+ * rule needs nothing new: `classRowStatus` above already reads `archived_at`,
+ * so archiving changes a value, never the wire shape.
+ * ------------------------------------------------------------------ */
+
+/**
+ * Both writes take an EMPTY body. Which operation it is comes from the path,
+ * never from a payload key, and the strict object means a caller cannot smuggle
+ * `archived_at` — or a school/class reference — past the route scope. Restore
+ * reuses this schema rather than restating it: one empty-body definition for
+ * the pair, so the two cannot drift apart.
+ */
+export const classArchiveBodySchema = z.strictObject({});
+export type ClassArchiveBody = z.infer<typeof classArchiveBodySchema>;
+
+/**
+ * C-OPS-CLASS-ARCHIVE. 200 with `archived_at` set. No `student.class` link is
+ * touched (D-18): the roster survives the archive, and the row reads `archived`
+ * from the timestamp alone.
+ *
+ * `errors` is the contract record's list verbatim — [400, 401, 403, 404, 409].
+ * It is deliberately shorter than the read operations' list above: the record
+ * is the signature (RUN.md law 4), so the codes are not widened here to match
+ * a sibling.
+ */
+export const ClassArchiveOperation: OpsOperation<
+  typeof classArchiveBodySchema,
+  typeof classRowEnvelopeSchema
+> = Object.freeze({
+  contractId: 'C-OPS-CLASS-ARCHIVE',
+  method: 'POST',
+  path: '/api/ops/schools/{documentId}/classes/{classDocumentId}/archive',
+  request: classArchiveBodySchema,
+  response: classRowEnvelopeSchema,
+  success: 200,
+  errors: [400, 401, 403, 404, 409],
+});
+
+/**
+ * C-OPS-CLASS-RESTORE. 200 with `archived_at` cleared to null. A restored class
+ * returns to `active` or `pending_setup` purely by derivation — there is no
+ * stored status to reconcile, which is why restore needs no body either.
+ */
+export const ClassRestoreOperation: OpsOperation<
+  typeof classArchiveBodySchema,
+  typeof classRowEnvelopeSchema
+> = Object.freeze({
+  contractId: 'C-OPS-CLASS-RESTORE',
+  method: 'POST',
+  path: '/api/ops/schools/{documentId}/classes/{classDocumentId}/restore',
+  request: classArchiveBodySchema,
+  response: classRowEnvelopeSchema,
+  success: 200,
+  errors: [400, 401, 403, 404, 409],
+});

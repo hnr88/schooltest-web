@@ -5,11 +5,23 @@
 export const RESULTS_PATH = '/dashboard/results';
 
 /**
- * The four tabs .qa/DESIGN.md §Results names, in wireframe order. `exit` is the
- * "Exit predictions — Coming soon" tab: it is selectable and readable, and it
- * carries NO actionable content (brief flow 26).
+ * The six tabs of the class shell, in the design export's label order
+ * (`Teacher Portal v2.dc.html:3154–3166`): Students · Class progress ·
+ * Teaching insights · Exit predictions · Family reports · Live sessions.
+ * Widened from four for teacher/07 — `progress` and `insights` swap, and
+ * `reports`/`live` join as TAB VALUES, never routes ([D-20]; tasks 25 and 08
+ * fill their panels). The design's `v:'results'` is NOT adopted: the existing
+ * value `students` stays, or `DEFAULT_RESULTS_TAB` and `isResultsTabValue`
+ * would break ([D-05] — existing copy and values stay).
  */
-export const RESULTS_TAB_ORDER = ['students', 'insights', 'progress', 'exit'] as const;
+export const RESULTS_TAB_ORDER = [
+  'students',
+  'progress',
+  'insights',
+  'exit',
+  'reports',
+  'live',
+] as const;
 
 export const DEFAULT_RESULTS_TAB = 'students';
 

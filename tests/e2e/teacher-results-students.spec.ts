@@ -45,6 +45,17 @@ async function openClassDetail(documentId: string, target: Page = page): Promise
   );
 }
 
+/**
+ * ops/34 — the harness's `detail` went opt-in (helper line 55) when the C-TR-1
+ * route retired, so every use site narrows through this guard instead of a
+ * non-null assertion: a missing detail is a stated precondition failure, not a
+ * silent `undefined` walk.
+ */
+function requireDetail(): NonNullable<LiveResults['detail']> {
+  if (!live.detail) throw new Error('[e2e] live C-TR-1 detail unavailable — the route retired; re-point this spec');
+  return live.detail;
+}
+
 test.beforeAll(async ({ browser, playwright }) => {
   live = await readLiveResults(playwright);
   page = await signedInTeacherPage(browser);
@@ -57,7 +68,7 @@ test.afterAll(async () => {
 
 test.describe('Students tab (C-TR-1)', () => {
   test('two-level header: Test A and Test B each span Status · Score · ACARA', async () => {
-    const table = page.locator('[data-slot="students-results-table"]');
+    const table = page.locator('[data-slot="students-tab-panel"] [data-slot="table"]');
     await expect(table).toBeVisible();
 
     const student = table.locator('thead tr').first().locator('th').first();
@@ -91,7 +102,7 @@ test.describe('Students tab (C-TR-1)', () => {
   });
 
   test('every real student renders the server status, score and ACARA per test', async () => {
-    await expectStudentRows(page, live.detail);
+    await expectStudentRows(page, requireDetail());
 
     await page.screenshot({
       path: path.join(SCREENSHOTS, 'task-041-students-tab-table.png'),
@@ -126,12 +137,15 @@ test.describe('Students tab (C-TR-1)', () => {
   });
 
   test('a row activates by KEYBOARD through to that student’s drill-down', async () => {
-    await openClassDetail(live.detail.class.document_id);
-    const first = live.detail.students[0];
+    const detail = requireDetail();
+    await openClassDetail(detail.class.document_id);
+    const first = detail.students[0];
     const row = studentRow(page, first.student_document_id);
-    const link = row.locator('th[scope="row"] a');
+    // ops/34 — the kit's §L-rownav anchor: the FIRST cell's content is the row's
+    // one real link (locale-aware, tab-reachable), labelled with the student's name.
+    const link = row.locator('a[data-row-href]');
 
-    const href = drillDownPath(live.detail.class.document_id, first.student_document_id);
+    const href = drillDownPath(detail.class.document_id, first.student_document_id);
     await expect(link).toHaveAttribute('href', new RegExp(`${href}$`));
 
     const box = await row.boundingBox();
@@ -144,22 +158,21 @@ test.describe('Students tab (C-TR-1)', () => {
     expect(new URL(page.url()).pathname.endsWith(href)).toBe(true);
   });
 
-  test('clicking anywhere in the row — not just the name — reaches the same student', async () => {
-    await openClassDetail(live.detail.class.document_id);
-    const last = live.detail.students[live.detail.students.length - 1];
+  test('the row’s Open action — the kit’s quick action, `write: false` — reaches the same student', async () => {
+    const detail = requireDetail();
+    await openClassDetail(detail.class.document_id);
+    const last = detail.students[detail.students.length - 1];
 
-    // A real pointer click at the coordinates of the LAST cell of the row, not a
-    // synthetic click on the anchor. Playwright's actionability check proves the
-    // point on the way past: `locator.click()` on that cell is refused because the
-    // row link's overlay intercepts the pointer there — which is exactly the
-    // wireframe's "clickable row", served by ONE real, keyboard-reachable anchor.
-    const cell = studentCell(studentRow(page, last.student_document_id), 'acara', 'B');
-    await cell.scrollIntoViewIfNeeded();
-    const box = await cell.boundingBox();
-    if (!box) throw new Error('[e2e] the last row of the Students table has no box');
-    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    // ops/34 — the whole-row pointer overlay is GONE by kit contract (a row
+    // menu plus an invisible overlay over it is the nested-interactive failure
+    // axe reports). Navigation is explicit now: the first-cell anchor, and the
+    // row's `Open` quick action, which this test drives with a real click.
+    const row = studentRow(page, last.student_document_id);
+    const open = row.getByRole('button', { name: studentsLabel('actionOpen') });
+    await open.scrollIntoViewIfNeeded();
+    await open.click();
 
-    const href = drillDownPath(live.detail.class.document_id, last.student_document_id);
+    const href = drillDownPath(detail.class.document_id, last.student_document_id);
     await page.waitForURL(`**${href}`);
     expect(new URL(page.url()).pathname.endsWith(href)).toBe(true);
   });

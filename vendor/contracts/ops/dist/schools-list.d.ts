@@ -46,14 +46,19 @@ export declare const portalStatusSchema: z.ZodEnum<{
 }>;
 export type PortalStatus = z.infer<typeof portalStatusSchema>;
 /**
- * GAP-15: the designed "last_active_at:desc" sort is withheld until the
- * last_active_at column exists (OPS-005); sorting a column that is not there
- * would silently degrade to another order.
+ * The four sorts the design's dropdown offers (`Ops Portal.dc.html:104`):
+ * Name A-Z, Most students, Recently active, Newest. GAP-15 is DISCHARGED —
+ * `last_active_at` is a real column (OPS-005), so the designed
+ * `last_active_at:desc` sort is served rather than withheld.
+ *
+ * Added as a fourth ENUM MEMBER, so every previously valid `sort` value stays
+ * valid and a caller that omits `sort` is unaffected.
  */
 export declare const schoolsListSortSchema: z.ZodEnum<{
     "name:asc": "name:asc";
     "student_count:desc": "student_count:desc";
     "createdAt:desc": "createdAt:desc";
+    "last_active_at:desc": "last_active_at:desc";
 }>;
 export type SchoolsListSort = z.infer<typeof schoolsListSortSchema>;
 export declare const schoolsListQuerySchema: z.ZodObject<{
@@ -98,6 +103,7 @@ export declare const schoolsListQuerySchema: z.ZodObject<{
         "name:asc": "name:asc";
         "student_count:desc": "student_count:desc";
         "createdAt:desc": "createdAt:desc";
+        "last_active_at:desc": "last_active_at:desc";
     }>>;
 }, z.core.$strict>;
 export type SchoolsListQuery = z.infer<typeof schoolsListQuerySchema>;
@@ -166,6 +172,7 @@ export declare const schoolsListRowSchema: z.ZodObject<{
     }>>;
     createdAt: z.ZodNullable<z.ZodString>;
     updatedAt: z.ZodString;
+    last_active_at: z.ZodNullable<z.ZodISODateTime>;
     cover_image_url: z.ZodNullable<z.ZodString>;
 }, z.core.$strict>;
 export type SchoolsListRow = z.infer<typeof schoolsListRowSchema>;
@@ -242,6 +249,7 @@ export declare const schoolsListResponseSchema: z.ZodObject<{
         }>>;
         createdAt: z.ZodNullable<z.ZodString>;
         updatedAt: z.ZodString;
+        last_active_at: z.ZodNullable<z.ZodISODateTime>;
         cover_image_url: z.ZodNullable<z.ZodString>;
     }, z.core.$strict>>;
     meta: z.ZodObject<{
@@ -321,6 +329,7 @@ declare const schoolsListDataSchema: z.ZodObject<{
         }>>;
         createdAt: z.ZodNullable<z.ZodString>;
         updatedAt: z.ZodString;
+        last_active_at: z.ZodNullable<z.ZodISODateTime>;
         cover_image_url: z.ZodNullable<z.ZodString>;
     }, z.core.$strict>>;
 }, z.core.$strict>;

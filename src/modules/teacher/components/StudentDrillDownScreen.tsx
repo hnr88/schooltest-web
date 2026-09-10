@@ -1,34 +1,54 @@
 'use client';
 
-import { ClipboardList } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { ClipboardList } from 'lucide-react';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, Button, EmptyState } from '@/modules/design-system';
+import { Alert, Button, EmptyState, getInitials } from '@/modules/design-system';
 import { useRecordCrumb } from '@/modules/shell';
-import { StudentDrillDownBody } from '@/modules/teacher/components/StudentDrillDownBody';
-import { StudentDrillDownHeader } from '@/modules/teacher/components/StudentDrillDownHeader';
+import { StudentResultScreen } from '@/modules/results';
+import { ComingSoonPanel } from '@/modules/teacher/components/ComingSoonPanel';
+import { SkillSelect } from '@/modules/teacher/components/SkillSelect';
+import { TeacherExportButton } from '@/modules/teacher/components/TeacherExportButton';
 import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
+import { DEFAULT_SKILL_SCOPE } from '@/modules/teacher/lib/skill-scope';
+import type { SkillScopeValue } from '@/modules/teacher/types/results-shell.types';
+import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-dashboard.query';
 import { useStudentDrillDownQuery } from '@/modules/teacher/queries/use-student-drill-down.query';
 import type { StudentDrillDownScreenProps } from '@/modules/teacher/types/student-drill-down.types';
 
 // /dashboard/results/<classDocumentId>/students/<studentDocumentId> — the
 // drill-down behind every row of the Students tab, served by the CANONICAL
-// reads (web repoint, pre-24): the class roster names the student and carries
-// their latest result reference, and ONE `GET /results/{id}` returns the v2
-// view with `history`. The retired C-TR-2 read is gone from this page.
+// reads: the class roster names the student and carries their latest result
+// reference, and ONE `GET /results/{id}` returns the v2 view with `history`.
+// The retired C-TR-2 read is gone from this page.
+//
+// teacher/15 — the success branch re-parents the RICH body (R-NARROW-01):
+// `StudentResultScreen` — header with initials, confidence strip, trend chart,
+// seven subskill cards, sparklines, error patterns, checklist, print — replaces
+// the seven-row skill list. `SkillSelect` + the S04d coming-soon panel present
+// the three skills the contract marks "soon" (no enum change, no notify
+// control — OP-2); Back to Reading restores Reading.
 //
 // States are the shared hooks': pending -> skeleton, error -> retryable alert
-// (a failed read renders the error branch and nothing else — no zeroed tiles
-// and no grey grid standing in for a 403 or a 404), empty -> the server's own
-// "no completed test yet" for a roster student without an official Result.
+// (a failed read renders the error branch and nothing else), empty -> the
+// server's own "no completed test yet" for a roster student without an
+// official Result.
 function StudentDrillDownScreen({
   classDocumentId,
   studentDocumentId,
 }: StudentDrillDownScreenProps) {
   const t = useTranslations('Teacher.results.drillDown');
+  const tSkills = useTranslations('Teacher.results.skills');
+  const tExport = useTranslations('Teacher.results.export');
   const tSection = useTranslations('Teacher.results');
   const drillDown = useStudentDrillDownQuery(classDocumentId, studentDocumentId);
+  const dashboard = useTeacherDashboardQuery();
+  const [skill, setSkill] = useState<SkillScopeValue>(DEFAULT_SKILL_SCOPE);
+  const className =
+    dashboard.data?.classes.find((entry) => entry.class_document_id === classDocumentId)?.name ??
+    classDocumentId;
 
   useRecordCrumb(
     drillDown.status === 'success' ? drillDown.data.displayName : null,
@@ -91,12 +111,42 @@ function StudentDrillDownScreen({
 
       {drillDown.status === 'success' ? (
         <>
-          <StudentDrillDownHeader
-            studentDocumentId={drillDown.data.studentDocumentId}
-            displayName={drillDown.data.displayName}
-            classDocumentId={classDocumentId}
-          />
-          <StudentDrillDownBody view={drillDown.data.view} />
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <SkillSelect skill={skill} onValueChange={setSkill} />
+            {skill === 'reading' ? (
+              <TeacherExportButton
+                request={{
+                  kind: 'student',
+                  classDocumentId,
+                  studentDocumentId,
+                }}
+                label={tExport('studentButton')}
+                variant="outline"
+              />
+            ) : (
+              <Button variant="outline" size="sm" onClick={() => setSkill('reading')}>
+                {t('backToReading')}
+              </Button>
+            )}
+          </div>
+          {skill === 'reading' ? (
+            <StudentResultScreen
+              view={drillDown.data.view}
+              student={{
+                name: drillDown.data.displayName,
+                className,
+                initials: getInitials(drillDown.data.displayName),
+              }}
+            />
+          ) : (
+            <ComingSoonPanel
+              title={tSkills('comingSoonTitle', { skill: tSkills(skill) })}
+              description={t('comingSoonBody', {
+                student: drillDown.data.displayName.split(' ')[0] ?? drillDown.data.displayName,
+                skill: tSkills(skill),
+              })}
+            />
+          )}
         </>
       ) : null}
     </div>

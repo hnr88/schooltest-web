@@ -34,7 +34,7 @@ import type { SidebarNavItemProps } from '@/modules/shell/types/shell.types';
 //
 // Collapsed rail (the slice has no collapsed state at all — defined here once): the
 // same solid active slab squared to 40x40 with the 18px icon centred.
-function SidebarNavItem({ item, label, isActive, onNavigate }: SidebarNavItemProps) {
+function SidebarNavItem({ item, label, isActive, onNavigate, trailing }: SidebarNavItemProps) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -46,6 +46,7 @@ function SidebarNavItem({ item, label, isActive, onNavigate }: SidebarNavItemPro
       >
         <item.icon aria-hidden="true" strokeWidth={1.8} />
         <span className="min-w-0 truncate group-data-[collapsible=icon]:hidden">{label}</span>
+        {trailing ?? null}
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

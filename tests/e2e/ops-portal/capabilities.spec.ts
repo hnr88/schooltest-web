@@ -30,6 +30,7 @@ const OUT = path.resolve(
   __dirname,
   '../../../../.codephant/missions/msn-ab5a6a54-f385-42e1-826a-aeba2bbdbc66/captures/ops-075',
 );
+const PROOF_OUT = path.resolve(__dirname, '../../../../mvp/ops/proof/shots');
 const WAIT = 20_000;
 const SCHOOLS_URL = '**/dashboard/ops/schools';
 
@@ -82,6 +83,27 @@ async function loginAsOps(page: Page, attempts = 6): Promise<void> {
 const banner = (page: Page) => page.locator('[data-slot="ops-capabilities-read-only"]');
 const statusPage = (page: Page) => page.locator('[data-slot="ops-status-page"]');
 
+async function selectFirstSchool(page: Page): Promise<void> {
+  const checkbox = page
+    .locator('[data-slot="directory"] tbody')
+    .getByRole('checkbox')
+    .first();
+  await expect(checkbox).toBeVisible({ timeout: WAIT });
+  await checkbox.click();
+  await expect(page.getByRole('region', { name: /selected/ })).toBeVisible({ timeout: WAIT });
+}
+
+function countLifecycleRequests(page: Page): { urls: string[] } {
+  const requests = { urls: [] as string[] };
+  page.on('request', (request) => {
+    const pathname = new URL(request.url()).pathname;
+    if (/^\/api\/(?:ops\/)?schools\/[^/]+(?:\/(?:suspend|archive))?$/.test(pathname)) {
+      requests.urls.push(`${request.method()} ${pathname}`);
+    }
+  });
+  return requests;
+}
+
 test.describe.configure({ timeout: 240_000 });
 
 test.describe.serial('OPS-075 portal capabilities', () => {
@@ -130,6 +152,54 @@ test.describe.serial('OPS-075 portal capabilities', () => {
     await expect(page).toHaveURL(/\/dashboard\/ops\/schools$/, { timeout: WAIT });
     await expect(page.locator('[data-surface="ops-schools"]')).toBeVisible({ timeout: WAIT });
     await expect(banner(page)).toBeVisible({ timeout: WAIT });
+  });
+
+  test('a support bulk write is blocked before zero lifecycle requests leave', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await loginAsSupport(page);
+    await page.goto('/dashboard/ops/schools');
+    await page.waitForURL(SCHOOLS_URL, { timeout: WAIT });
+    await expect(banner(page)).toBeVisible({ timeout: WAIT });
+    await selectFirstSchool(page);
+    const requests = countLifecycleRequests(page);
+
+    await page.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend'), exact: true }).click();
+
+    const message = cat(en, 'Ops.capabilities.readOnlyWriteBlocked');
+    const refusal = page.locator('[data-sonner-toast]').filter({ hasText: message });
+    await expect(refusal).toBeVisible({ timeout: WAIT });
+    await expect(refusal).toBeInViewport({ ratio: 1, timeout: WAIT });
+    await expect(refusal.getByRole('button', { name: cat(en, 'Ops.toast.retry') })).toHaveCount(0);
+    expect(requests.urls).toEqual([]);
+    await mkdir(PROOF_OUT, { recursive: true });
+    await page.screenshot({ path: path.join(PROOF_OUT, '03-blocked-readonly.png') });
+  });
+
+  test('an offline bulk write is not started and offers Retry', async ({ page, context }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await loginAsOps(page);
+    await page.goto('/dashboard/ops/schools');
+    await page.waitForURL(SCHOOLS_URL, { timeout: WAIT });
+    await selectFirstSchool(page);
+    const requests = countLifecycleRequests(page);
+
+    await context.setOffline(true);
+    try {
+      await page.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend'), exact: true }).click();
+
+      const message = cat(en, 'Ops.capabilities.offlineWriteBlocked');
+      const refusal = page.locator('[data-sonner-toast]').filter({ hasText: message });
+      await expect(refusal).toBeVisible({ timeout: WAIT });
+      await expect(refusal).toBeInViewport({ ratio: 1, timeout: WAIT });
+      await expect(
+        refusal.getByRole('button', { name: cat(en, 'Ops.toast.retry'), exact: true }),
+      ).toBeVisible({ timeout: WAIT });
+      expect(requests.urls).toEqual([]);
+      await mkdir(PROOF_OUT, { recursive: true });
+      await page.screenshot({ path: path.join(PROOF_OUT, '03-blocked-offline.png') });
+    } finally {
+      await context.setOffline(false);
+    }
   });
 
   test('a full ops session renders no read-only banner at all', async ({ page }) => {

@@ -1,8 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OnboardingSendOperation = exports.OnboardingReadOperation = exports.schoolInvitationStateSchema = exports.revokeInvitationResultSchema = exports.onboardingLinkResultSchema = exports.onboardingContactSchema = exports.emptyInvitationBodySchema = exports.onboardingInviteBodySchema = exports.opsPortalVersionSchema = exports.OPS_PORTAL_VERSION = exports.OPS_PORTAL_VERSION_HEADER = exports.invitationEnvelope = exports.errorEnvelopeSchema = exports.fieldIssueSchema = exports.onboardingStatusSchema = exports.accountStatusSchema = exports.documentIdSchema = void 0;
+exports.OnboardingSendOperation = exports.OnboardingReadOperation = exports.listPageShape = exports.paginationMetaSchema = exports.schoolInvitationStateSchema = exports.revokeInvitationResultSchema = exports.onboardingLinkResultSchema = exports.onboardingContactSchema = exports.emptyInvitationBodySchema = exports.onboardingInviteBodySchema = exports.opsPortalVersionSchema = exports.OPS_PORTAL_VERSION = exports.OPS_PORTAL_VERSION_HEADER = exports.invitationEnvelope = exports.errorEnvelopeSchema = exports.fieldIssueSchema = exports.onboardingStatusSchema = exports.accountStatusSchema = exports.documentIdSchema = void 0;
 exports.isErrorEnvelopeForStatus = isErrorEnvelopeForStatus;
 exports.dataEnvelope = dataEnvelope;
+exports.listEnvelope = listEnvelope;
+exports.listQuery = listQuery;
+exports.listQueryParams = listQueryParams;
+exports.listQueryKey = listQueryKey;
 /**
  * @schooltest/ops-contracts — OPS-006.
  *
@@ -155,6 +159,114 @@ exports.schoolInvitationStateSchema = zod_1.z.strictObject({
 });
 function operation(op) {
     return Object.freeze(op);
+}
+/* ------------------------------------------------------------------ *
+ * List derivations (SHARED-LAYER U-26, U-27, U-28, U-29, U-06).
+ *
+ * ONE definition of the list page shape, its envelope, its query encoding and
+ * its cache key, so the four cannot drift apart. Before this block the
+ * `{page,pageSize,pageCount,total}` object was written longhand in six list
+ * contracts and the query encoder was written per operation.
+ *
+ * The bounds below are the SERVER's bounds, copied from the one place that
+ * enforces them (`schooltest-api/src/api/ops/lib/ops-pagination.ts:20-21,31-32`
+ * and its `q` cap at `:70`), so a client cannot build a request the server is
+ * obliged to refuse. They are duplicated as VALUES only because this package
+ * must not import anything server-side; `parseListQuery` in that same file is
+ * the single runtime enforcer.
+ * ------------------------------------------------------------------ */
+const LIST_PAGE_MAX = 100000;
+const LIST_PAGE_SIZE_MAX = 200;
+const LIST_Q_MAX = 120;
+/**
+ * U-26 — the pagination block every A-family list meta carries.
+ *
+ * `pageCount` is non-negative rather than `min(1)`: an empty list reports 0
+ * pages, never 1 (see `opsPaginationMeta`). No maximum is declared here — the
+ * six contracts that pin their own `COUNT_MAX`/`INT32_MAX` ceilings keep them
+ * until the task that next edits each re-points it, so this schema never
+ * silently widens a contract it did not write.
+ */
+exports.paginationMetaSchema = zod_1.z.strictObject({
+    page: zod_1.z.number().int().min(1),
+    pageSize: zod_1.z.number().int().min(1),
+    pageCount: zod_1.z.number().int().min(0),
+    total: zod_1.z.number().int().min(0),
+});
+/**
+ * U-27 — `{ data: Row[], meta: { pagination } & Extra }` for one list read.
+ *
+ * Sibling of `dataEnvelope`, which serves the single-object families; this one
+ * serves family A only (SHARED-LAYER R-27 keeps the six envelope families
+ * apart). `metaExtras` is how a list adds its own meta — `status_counts`, an
+ * options list — WITHOUT re-declaring `pagination`.
+ */
+function listEnvelope(row, metaExtras) {
+    return zod_1.z.strictObject({
+        data: zod_1.z.array(row),
+        meta: zod_1.z.strictObject({
+            pagination: exports.paginationMetaSchema,
+            ...(metaExtras ?? {}),
+        }),
+    });
+}
+/**
+ * U-28 — the three params EVERY ops list accepts, at the server's own bounds.
+ * `q` is trimmed before the length check, matching `parseOpsQuery`.
+ */
+exports.listPageShape = {
+    page: zod_1.z.number().int().min(1).max(LIST_PAGE_MAX).optional(),
+    pageSize: zod_1.z.number().int().min(1).max(LIST_PAGE_SIZE_MAX).optional(),
+    q: zod_1.z.string().trim().max(LIST_Q_MAX).optional(),
+};
+/**
+ * U-28 — a strict list query: the three shared params plus this operation's
+ * own filters and sorts. STRICT, so a caller that invents a param fails the
+ * parse here instead of being silently ignored by the server.
+ */
+function listQuery(shape) {
+    return zod_1.z.strictObject({ ...exports.listPageShape, ...shape });
+}
+/**
+ * Shared encoder for U-29 and U-06 — one loop, so a key dropped by the query
+ * encoder can never still appear in the cache key.
+ *
+ * `undefined` and `''` are DROPPED rather than sent: an absent filter and a
+ * filter explicitly set to empty are the same request, and sending `?q=` would
+ * make two identical reads cache under two different keys.
+ */
+function encodeListParams(parsed) {
+    const params = {};
+    if (parsed === null || typeof parsed !== 'object')
+        return params;
+    for (const [key, value] of Object.entries(parsed)) {
+        if (value === undefined || value === '')
+            continue;
+        params[key] = String(value);
+    }
+    return params;
+}
+/**
+ * U-29 — parse a list query, then encode it as URL params.
+ *
+ * Promoted from `classesListQueryParams`, whose body was already generic; the
+ * per-operation encoders become thin wrappers over this. Parsing FIRST is the
+ * point: an out-of-bounds page never reaches the wire.
+ */
+function listQueryParams(schema, query) {
+    return encodeListParams(schema.parse(query));
+}
+/**
+ * U-06 — the cache key for one contracted list read.
+ *
+ * `[op.contractId, params]`: THE CONTRACT ID IS THE CACHE NAMESPACE, so a key
+ * and a contract can never point at different things, and two operations
+ * cannot collide unless they share a contract id. The query is parsed through
+ * the operation's OWN request schema, so a key can never be built from a query
+ * the operation would reject.
+ */
+function listQueryKey(op, query) {
+    return Object.freeze([op.contractId, encodeListParams(op.request.parse(query))]);
 }
 /** C-OPS-PORTAL-011 — GET /api/schools/{documentId}/onboarding-invitation */
 exports.OnboardingReadOperation = operation({

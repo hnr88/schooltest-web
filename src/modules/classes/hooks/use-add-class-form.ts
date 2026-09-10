@@ -6,8 +6,8 @@ import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions';
 import { CLASSES_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
 import { toStudentCreateBody } from '@/modules/classes/lib/add-class.helpers';
 import { useCreateClassMutation } from '@/modules/classes/queries/use-create-class.mutation';
@@ -48,7 +48,7 @@ export function useAddClassForm(onClose: () => void) {
       });
     } catch (error) {
       const forbidden = isAxiosError(error) && error.response?.status === 403;
-      toast.error(forbidden ? t('forbiddenToast') : t('errorToast'));
+      showOpsToast({ tone: 'error', message: forbidden ? t('forbiddenToast') : t('errorToast') });
       return;
     }
 
@@ -63,11 +63,11 @@ export function useAddClassForm(onClose: () => void) {
     await queryClient.invalidateQueries({ queryKey: CLASSES_QUERY_KEY });
 
     if (failed > 0) {
-      toast.error(t('importFailedToast', { name: values.name, count: failed }));
+      showOpsToast({ tone: 'error', message: t('importFailedToast', { name: values.name, count: failed }) });
     } else if (parsed.rows.length > 0) {
-      toast.success(t('createdWithStudentsToast', { name: values.name, count: parsed.rows.length }));
+      showOpsToast({ tone: 'ok', message: t('createdWithStudentsToast', { name: values.name, count: parsed.rows.length }) });
     } else {
-      toast.success(t('createdToast', { name: values.name }));
+      showOpsToast({ tone: 'ok', message: t('createdToast', { name: values.name }) });
     }
     onClose();
   });

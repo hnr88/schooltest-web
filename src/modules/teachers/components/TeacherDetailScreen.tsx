@@ -24,22 +24,33 @@ import { STATUS_VARIANTS } from '@/modules/teachers/constants/components.constan
 import { useStaffRows } from '@/modules/teachers/hooks/use-staff-rows';
 import { useInvitationsQuery } from '@/modules/teachers/queries/use-invitations.query';
 import { useTeacherNeedsAttentionQuery } from '@/modules/teachers/queries/use-teacher-needs-attention.query';
-import { useTeachersQuery } from '@/modules/teachers/queries/use-teachers.query';
+import { useTeachersQuery, type ParsedSchoolTeacher } from '@/modules/teachers/queries/use-teachers.query';
+
+// R-16: the role TYPE maps to the invite flow's existing role labels — value
+// → i18n key, the raw enum never reaches the DOM.
+const ROLE_TYPE_LABEL_KEYS: Record<
+  NonNullable<ParsedSchoolTeacher['role']>,
+  'roleTeacher' | 'roleSchoolAdmin'
+> = {
+  teacher: 'roleTeacher',
+  school_admin: 'roleSchoolAdmin',
+};
 
 // School admin Teacher detail (mission tasks 013 + 019, design-audit.md
 // "Teachers list and Teacher detail"). Renders ONLY what the existing API
-// serves: the header (identity, status, email), three KPI tiles (Classes /
+// serves: the header (identity, status, and since task 07 the email · role ·
+// lastActive meta line the design draws), three KPI tiles (Classes /
 // Students / Test A completed — each a count or sum of server-computed
 // per-class figures, never a client-recomputed aggregate), the Assigned
 // classes list with per-class completion from C-RPT-04 buckets, Account
-// details, and (task 019) the Students-needing-attention panel from GAP-01's
+// details (Email, Role, Status, Added, Last active), and (task 019) the
+// Students-needing-attention panel from GAP-01's
 // GET /schools/me/teachers/:documentId/needs-attention. That panel keeps its
 // three states strictly distinct: PENDING is a skeleton, ERROR is an alert
 // with retry, and only a SUCCESSFUL empty list renders "Everyone is on
 // track." — an absent or failed read must never read as all-clear. Still
-// deliberately absent, as unserveable contract gaps (GAP-02/03/04): the
-// Recent activity panel, the avg-reading-score tile, and the role/last-active
-// header fields.
+// deliberately absent, as unserved contract gaps (C-TCH-06/07, task 17): the
+// Recent activity panel and the avg-reading-score tile.
 function initialsOf(first: string, last: string, email: string): string {
   const initials = `${first.trim().charAt(0)}${last.trim().charAt(0)}`.trim();
   return (initials || email.trim().charAt(0)).toUpperCase();
@@ -48,6 +59,8 @@ function initialsOf(first: string, last: string, email: string): string {
 export function TeacherDetailScreen({ documentId }: { documentId: string }) {
   const t = useTranslations('Teachers.detail');
   const tStatus = useTranslations('Teachers.table.status');
+  const tInvite = useTranslations('Teachers.invite');
+  const tTable = useTranslations('Teachers.table');
   const format = useFormatter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
@@ -153,6 +166,19 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
   }
 
   const displayName = `${row.first_name} ${row.last_name}`.trim() || row.email;
+  // C-TCH-01 fields the merged StaffRow does not carry: read them off the
+  // parsed list row itself. role/last_active_at/createdAt are optional in the
+  // schema (the C-TCH-04 PATCH row serves none), so every one falls back:
+  // a NULL last_active_at says "never opened a sitting" — never a creation
+  // date and never the bare em dash.
+  const teacher = teachersQuery.data?.find((candidate) => candidate.documentId === documentId);
+  const roleLabel = teacher?.role ? tInvite(ROLE_TYPE_LABEL_KEYS[teacher.role]) : t('accountPanel.roleNone');
+  const addedLabel = teacher?.createdAt
+    ? format.dateTime(new Date(teacher.createdAt), { day: 'numeric', month: 'short', year: 'numeric' })
+    : tTable('noValue');
+  const lastActiveLabel = teacher?.last_active_at
+    ? format.dateTime(new Date(teacher.last_active_at), { day: 'numeric', month: 'short', year: 'numeric' })
+    : t('accountPanel.neverActive');
   const studentsTotal = row.classes.reduce(
     (sum, klass) => sum + (classesById.get(klass.documentId)?.student_count ?? 0),
     0,
@@ -188,7 +214,9 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
                 <h1 className="truncate text-2xl font-semibold text-foreground">{displayName}</h1>
                 <Badge variant={STATUS_VARIANTS[row.status]}>{tStatus(row.status)}</Badge>
               </div>
-              <p className="truncate text-sm text-body">{row.email}</p>
+              <p data-slot="teacher-detail-meta" className="truncate text-sm text-body">
+                {[row.email, roleLabel, lastActiveLabel].join(' · ')}
+              </p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -279,10 +307,22 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
               <dd className="truncate text-sm font-medium text-foreground">{row.email}</dd>
             </div>
             <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
+              <dt className="text-meta text-body">{t('accountPanel.role')}</dt>
+              <dd className="truncate text-sm font-medium text-foreground">{roleLabel}</dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
               <dt className="text-meta text-body">{t('accountPanel.status')}</dt>
               <dd>
                 <Badge variant={STATUS_VARIANTS[row.status]}>{tStatus(row.status)}</Badge>
               </dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
+              <dt className="text-meta text-body">{t('accountPanel.added')}</dt>
+              <dd className="truncate text-sm font-medium text-foreground">{addedLabel}</dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
+              <dt className="text-meta text-body">{t('accountPanel.lastActive')}</dt>
+              <dd className="truncate text-sm font-medium text-foreground">{lastActiveLabel}</dd>
             </div>
           </dl>
         </DataPanel>

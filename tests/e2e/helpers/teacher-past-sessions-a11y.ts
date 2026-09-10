@@ -7,7 +7,11 @@ import type { Page } from '@playwright/test';
 // helpers measure the real browser (Tab, PageDown, computed focus ring) rather
 // than asserting the attributes are present in the markup.
 
-export const SCROLLER = '[data-slot="past-sessions-scroller"]';
+// ops/34 — the past-sessions list renders through the shared directory kit;
+// the region the keyboard half measures is now the kit's own focusable scroll
+// region (tabIndex 0 + the sticky scroll recipe) inside the panel's section.
+export const SCROLLER =
+  '[data-slot="past-sessions"] [data-slot="directory"] > div[tabindex="0"]';
 const PANEL = '[data-slot="past-sessions"]';
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 

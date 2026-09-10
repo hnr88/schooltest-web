@@ -7,6 +7,8 @@
  * endpoints that already exist.
  */
 export { useOpsActionRunner } from './hooks/use-ops-action-runner';
+export { opsWriteBlockedReason, useOpsWriteGate } from './hooks/use-ops-write-gate';
+export type { OpsWriteGate } from './hooks/use-ops-write-gate';
 export { useOpsConfirmAction } from './hooks/use-ops-confirm-action';
 export type { OpsConfirmActionOptions } from './hooks/use-ops-confirm-action';
 export { useOpsSelection } from './hooks/use-ops-selection';
@@ -19,6 +21,8 @@ export type { OpsTypedNameConfirmProps } from './components/OpsTypedNameConfirm'
 
 export { describeRunOutcome } from './lib/ops-action-feedback';
 export type { OpsActionFeedback, OpsActionFeedbackTone } from './lib/ops-action-feedback';
+export { showOpsToast } from './lib/ops-toast';
+export type { OpsToastAction, OpsToastInput, OpsToastTone } from './lib/ops-toast';
 export {
   downloadOpsFile,
   downloadOpsFiles,
@@ -30,6 +34,7 @@ export { normaliseTypedName, typedNameMatches } from './lib/ops-typed-name';
 export {
   headerCheckboxState,
   selectionKey,
+  selectedRows,
   selectedTargets,
   targetFromKey,
 } from './lib/ops-selection';

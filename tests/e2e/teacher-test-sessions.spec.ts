@@ -2,11 +2,14 @@ import path from 'node:path';
 
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
-import type { CreateTestSessionResponse } from '@/modules/teacher/types/teacher-session.types';
+import type {
+  CreateTestSessionResponse,
+  TeacherTestSession,
+} from '@/modules/teacher/types/teacher-session.types';
 
 import { runSql } from './helpers/auth-db';
 import { cat, icu, loadMessages } from './helpers/i18n';
-import { apiLogin } from './helpers/teacher-auth-rail';
+import { apiLoginRetried } from './helpers/ops34-api-retry';
 import { sittingRow } from './helpers/teacher-end-session';
 import { readMonitor } from './helpers/teacher-live-monitor-api';
 import {
@@ -14,7 +17,12 @@ import {
   rosterEmails,
   type JoinedStudent,
 } from './helpers/teacher-live-monitor-join';
-import { closeSession, readClasses, readTests } from './helpers/teacher-past-sessions-api';
+import {
+  closeSession,
+  readClasses,
+  readSessions,
+  readTests,
+} from './helpers/teacher-past-sessions-api';
 import { signIn } from './helpers/teacher-rail';
 import { startSessionViaUi } from './helpers/teacher-start-session-ui';
 import {
@@ -55,7 +63,7 @@ test.beforeAll(async ({ browser, playwright }) => {
   // two teacher segments outlives the 30s hook default on this machine.
   test.setTimeout(240_000);
   request = await playwright.request.newContext();
-  jwt = await apiLogin(request, 'teacher');
+  jwt = await apiLoginRetried(request, 'teacher');
   page = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
   await signIn(page, 'teacher');
 });
@@ -88,7 +96,13 @@ test.describe('flow 5 — pick a class and a test, then Generate join code', () 
     expect(started.status).toBe('open');
     expect(started.variant).toBe(tests[0].variant);
     expect(started.class.document_id).toBe(classes[0].class_document_id);
-    expect(started.code, 'C-TS-1 minted something other than READ-####').toMatch(/^READ-\d{4}$/);
+    // FORMAT (operator ruling 2026-09-09, api code.constants.ts:22 — CODE_DIGITS is
+    // the source of truth for the width): the board code is SIX BARE DIGITS — the
+    // READ-#### prefix is retired, so the assertion follows the contract bytes,
+    // not the old pattern. Web cannot import the api package, so the width is
+    // duplicated here DELIBERATELY: if the minted format ever changes again, this
+    // line and code.constants.ts:22 must move together.
+    expect(started.code, 'C-TS-1 minted something other than six bare digits').toMatch(/^\d{6}$/);
     expect(Number.isNaN(Date.parse(started.opened_at))).toBe(false);
 
     // The row itself, and the uniqueness the code's index promises.
@@ -187,5 +201,97 @@ test.describe('flow 8 — Go live shows the grid with every student tile', () =>
     }
     await expect(page.locator('[data-slot="live-monitor-code"]')).toContainText(announced);
     await page.screenshot({ path: path.join(SHOTS, '052-flow8-monitor-grid.png'), fullPage: true });
+  });
+});
+
+// teacher/09 — the live roll-up on this page (LiveSessionsByClass + IdleClassChips
+// on the shared kit). The sittings here are REAL product creations through the
+// real C-TS-1 UI — the same thing flow 5 does — never seeded rows; each one this
+// describe opens it also closes (C-TS-4), leaving nothing behind. Captures are
+// in-spec at 1440x900 per the board's proof rule.
+test.describe('flow 9 — teacher/09 the live roll-up', () => {
+  const mine: string[] = [];
+
+  test('the roll-up groups the open sittings by class and the idle chips complement them', async () => {
+    test.setTimeout(240_000);
+    const classes = await readClasses(request, jwt);
+    const tests = await readTests(request, jwt);
+    const first = await startSessionViaUi(page, en, classes[0].name, tests[0].label);
+    mine.push(first.sitting_document_id);
+    const second = await startSessionViaUi(page, en, classes[0].name, tests[1]?.label ?? tests[0].label);
+    mine.push(second.sitting_document_id);
+    if (classes.length > 1) {
+      const third = await startSessionViaUi(page, en, classes[1].name, tests[0].label);
+      mine.push(third.sitting_document_id);
+    }
+
+    await page.goto('/en/dashboard/test-sessions');
+    await expect(page.locator('[data-slot="teacher-live-rollup"]')).toBeVisible({
+      timeout: 120_000,
+    });
+    for (const id of mine) {
+      await expect(
+        page.locator(`[data-slot="live-session-card"][data-sitting-id="${id}"]`),
+      ).toBeVisible();
+    }
+    // The roll-up sub-line names the real session count, whatever the shared DB
+    // carries besides this describe's own sittings.
+    await expect(page.locator('[data-slot="teacher-live-rollup"] p[role="status"]')).toContainText(
+      /running|/,
+    );
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.screenshot({
+      path: path.join(SHOTS, '09-rollup-populated.png'),
+      fullPage: true,
+    });
+    if (classes.length > 1) {
+      await page.screenshot({
+        path: path.join(SHOTS, '09-rollup-two-classes.png'),
+        fullPage: true,
+      });
+    }
+  });
+
+  test('with nothing open the empty sentence and the idle chips render, at 1440x900', async () => {
+    test.setTimeout(240_000);
+    // The EMPTY state must be REACHED, not assumed: close EVERY open sitting
+    // the caller owns — this describe's and any residue a shared DB kept —
+    // through the real C-TS-4, then verify server-side that zero are open.
+    // History rows are never deleted; the past table keeps them all.
+    const openBefore = (await readSessions(request, jwt)).filter((s) => s.status === 'open');
+    for (const session of openBefore) {
+      await closeSession(request, jwt, session.sitting_document_id);
+    }
+    const openAfter = (await readSessions(request, jwt)).filter(
+      (s: TeacherTestSession) => s.status === 'open',
+    );
+    expect(
+      openAfter,
+      'the roll-up cannot read empty while an owned sitting is open',
+    ).toHaveLength(0);
+
+    await page.goto('/en/dashboard/test-sessions');
+    const rollup = page.locator('[data-slot="teacher-live-rollup"]');
+    await expect(rollup).toBeVisible({ timeout: 120_000 });
+    // SETTLE before counting: the sub-line renders only once BOTH reads have
+    // answered — a first-paint card count reads zero inside the loading arm
+    // for the wrong reason (server-mode `visible` is not loaded).
+    await expect(rollup.locator('p[role="status"]')).toContainText(
+      cat(en, 'Teacher.testSessions.rollup.nothingRunning').split('.')[0],
+      { timeout: 60_000 },
+    );
+    await expect(page.locator('[data-slot="live-session-card"]')).toHaveCount(0);
+    await expect(
+      rollup.getByText(cat(en, 'Teacher.testSessions.rollup.emptyTitle')),
+    ).toBeVisible();
+
+    const classes = await readClasses(request, jwt);
+    const idleChips = page.locator('[data-slot="teacher-idle-classes"] button');
+    await expect(idleChips).toHaveCount(classes.length, { timeout: 30_000 });
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.screenshot({ path: path.join(SHOTS, '09-empty.png'), fullPage: true });
+    await page.screenshot({ path: path.join(SHOTS, '09-idle-chips.png'), fullPage: true });
   });
 });

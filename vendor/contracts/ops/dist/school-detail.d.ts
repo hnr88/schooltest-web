@@ -13,8 +13,9 @@
  * with OPS-002/OPS-013/OPS-017 and are now read from the row and emitted. They
  * are declared nullable here even though contracts.openapi.json declares
  * portal_plan/portal_status/billing_status non-nullable — see GAP-02-BACKFILL.
- * Three columns still do not exist (last_active_at, archived_at,
- * owner_documentId); they are recorded as GAPs and never invented.
+ * ONE column still does not exist (owner_documentId); it is recorded as a GAP
+ * and never invented. `archived_at` landed with task 08 and `last_active_at`
+ * with OPS-005, so both are read from the row and emitted.
  */
 import { z } from 'zod';
 import { type OpsOperation } from './core';
@@ -22,8 +23,13 @@ import { type OpsOperation } from './core';
  * GAP register for this operation. Each entry names the missing column and the
  * task that lands it, so nobody re-derives a value from an unrelated field.
  *
- * GAP-02-C  last_active_at   -> OPS-005  (declared, always null — AC-2)
- * GAP-02-D  archived_at      -> OPS-005  (withheld; see below)
+ * GAP-02-C  last_active_at   -> DISCHARGED by OPS-005. The column exists and
+ *                               the real value is served. NULL now means
+ *                               "never active" (rendered "Never"), not
+ *                               "no column".
+ * GAP-02-D  archived_at      -> DISCHARGED. The note was STALE, not the column
+ *                               (X-07): `schools/schema.json` has declared
+ *                               `archived_at: datetime` since task 08.
  * GAP-02-J  owner_documentId -> OPS-014 ownership migration; "Make owner" is a
  *                               required action whose backing column does not
  *                               exist yet, so the field is withheld rather than
@@ -39,7 +45,7 @@ import { type OpsOperation } from './core';
  * column owners: a backfill migration, or a contract amendment making the three
  * nullable. Consumers must handle null until then.
  */
-export declare const SCHOOL_DETAIL_GAPS: readonly ["last_active_at"];
+export declare const SCHOOL_DETAIL_GAPS: readonly [];
 export type SchoolDetailGap = (typeof SCHOOL_DETAIL_GAPS)[number];
 export declare const schoolDetailSchema: z.ZodObject<{
     documentId: z.ZodString;

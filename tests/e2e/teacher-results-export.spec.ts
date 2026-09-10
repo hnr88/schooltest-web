@@ -36,6 +36,18 @@ const copy = (key: string) => cat(en, `Teacher.results.export.${key}`);
 const tab = (key: string) => cat(en, `Teacher.results.tabs.${key}`);
 
 let live: LiveResults;
+
+/**
+ * ops/34 (orchestrator-authorised foreign fix) — the harness's `detail` went
+ * opt-in when the C-TR-1 route retired (410 Gone), so every use site narrows
+ * through this guard instead of a non-null assertion: a missing detail is a
+ * stated precondition failure, never a silent `undefined` walk.
+ */
+function requireDetail(): NonNullable<LiveResults['detail']> {
+  if (!live.detail) throw new Error('[e2e] live C-TR-1 detail unavailable — the route retired; re-point this spec');
+  return live.detail;
+}
+
 let page: Page;
 
 test.beforeAll(async ({ browser, playwright }) => {
@@ -92,7 +104,7 @@ test('Teaching insights: the class export panel downloads C-TR-5 verbatim', asyn
   expectSameDocument(downloaded, server);
   expectDeIdentified(
     downloaded.body,
-    live.detail.students.map((student) => student.display_name),
+    requireDetail().students.map((student) => student.display_name),
   );
   await expect(page.locator('[data-slot="teacher-export-error"]')).toHaveCount(0);
 });
@@ -117,13 +129,13 @@ test('Progress: the class export panel downloads C-TR-6 verbatim', async ({ play
   expectSameDocument(downloaded, server);
   expectDeIdentified(
     downloaded.body,
-    live.detail.students.map((student) => student.display_name),
+    requireDetail().students.map((student) => student.display_name),
   );
 });
 
 test('Student drill-down: "Export for AI" downloads C-TR-7 verbatim', async ({ playwright }) => {
   const classDocumentId = live.classes[0].class_document_id;
-  const student = live.detail.students.find((row) => row.test_a.state === 'done');
+  const student = requireDetail().students.find((row) => row.test_a.state === 'done');
   if (!student) throw new Error('[e2e] no student in this class has completed Test A');
   const studentDocumentId = student.student_document_id;
 
@@ -162,7 +174,7 @@ test('Student drill-down: "Export for AI" downloads C-TR-7 verbatim', async ({ p
 // or self-composed file would otherwise look identical to a working one.
 test('a failed export states the failure in TEXT and saves no file', async () => {
   const classDocumentId = live.classes[0].class_document_id;
-  const student = live.detail.students.find((row) => row.test_a.state === 'done');
+  const student = requireDetail().students.find((row) => row.test_a.state === 'done');
   if (!student) throw new Error('[e2e] no student in this class has completed Test A');
 
   await page.goto(studentResultsHref(classDocumentId, student.student_document_id));

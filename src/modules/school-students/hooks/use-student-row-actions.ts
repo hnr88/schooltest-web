@@ -2,8 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions';
 import { classifyStudentError } from '@/modules/school-students/lib/classify-student-error';
 import { useArchiveStudentMutation } from '@/modules/school-students/queries/use-archive-student.mutation';
 import type { SchoolStudent } from '@/modules/school-students/types/school-students.types';
@@ -22,13 +22,13 @@ export function useStudentRowActions(student: SchoolStudent) {
   const handleArchive = async () => {
     try {
       await archive.mutateAsync(student.documentId);
-      toast.success(t('successToast', { name: studentDisplayName(student) }));
+      showOpsToast({ tone: 'ok', message: t('successToast', { name: studentDisplayName(student) }) });
       setArchiveOpen(false);
     } catch (error) {
       // Archive can only 403 on role/school scope — the seat gate lives on
       // create — so the contract codes collapse to the generic failure here.
       const kind = classifyStudentError(error);
-      toast.error(t(kind === 'forbidden' ? 'forbiddenToast' : 'genericToast'));
+      showOpsToast({ tone: 'error', message: t(kind === 'forbidden' ? 'forbiddenToast' : 'genericToast') });
     }
   };
 

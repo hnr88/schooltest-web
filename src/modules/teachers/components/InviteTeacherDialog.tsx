@@ -5,7 +5,6 @@ import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
 import {
   Button,
@@ -18,6 +17,7 @@ import {
   FieldShell,
   Input,
 } from '@/modules/design-system';
+import { showOpsToast } from '@/modules/ops/actions';
 import { serverMessage } from '@/modules/teachers/lib/server-message';
 import { useInviteTeacherMutation } from '@/modules/teachers/queries/use-invite-teacher.mutation';
 import {
@@ -66,14 +66,14 @@ export function InviteTeacherDialog({
   const submit = async (values: InviteTeacherValues) => {
     try {
       await invite.mutateAsync({ values, role });
-      toast.success(t('successToast', { email: values.email }));
+      showOpsToast({ tone: 'ok', message: t('successToast', { email: values.email }) });
       close(false);
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 409) {
         setError('email', { message: serverMessage(error) ?? t('alreadyInSchool') });
         return;
       }
-      toast.error(serverMessage(error) ?? t('errorToast'));
+      showOpsToast({ tone: 'error', message: serverMessage(error) ?? t('errorToast') });
     }
   };
 

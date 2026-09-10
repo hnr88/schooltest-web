@@ -6,7 +6,7 @@ import { findTestLabel } from '@/modules/teacher/lib/join-code';
 import type { TeacherTest } from '@/modules/teacher/types/teacher.types';
 
 import { cat } from './helpers/i18n';
-import { apiLogin } from './helpers/teacher-auth-rail';
+import { apiLoginRetried } from './helpers/ops34-api-retry';
 import {
   closeSession,
   createSession,
@@ -44,7 +44,7 @@ test.beforeAll(async ({ browser, playwright }) => {
   // visit; the 30s hook default is not enough for a cold segment on this machine.
   test.setTimeout(180_000);
   request = await playwright.request.newContext();
-  jwt = await apiLogin(request, 'teacher');
+  jwt = await apiLoginRetried(request, 'teacher');
   tests = await readTests(request, jwt);
   // A context, not browser.newPage(): axe-core injects through the context.
   page = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
@@ -113,8 +113,11 @@ test.describe('Past sessions table (C-TS-2)', () => {
   });
 
   test('real table semantics, a status word on every row, and no sideways scroll', async () => {
-    const table = page.locator('[data-slot="past-sessions-table"]');
-    const heads = table.locator('thead th[scope="col"]');
+    // ops/34 — the list is the shared directory kit's table now; the kit's
+    // <table> carries the design-system's own data-slot, and body rows are
+    // plain <tr> (the kit's §L-rownav anchor replaces the scope="row" cell).
+    const table = page.locator('[data-slot="past-sessions"] [data-slot="table"]');
+    const heads = table.locator('thead [data-slot="table-head"]');
     await expect(heads).toHaveCount(4);
     await expect(heads.nth(0)).toHaveText(cat(en, `${NS}.class`));
     await expect(heads.nth(1)).toHaveText(cat(en, `${NS}.test`));
@@ -122,7 +125,7 @@ test.describe('Past sessions table (C-TS-2)', () => {
     await expect(heads.nth(3)).toHaveText(cat(en, `${NS}.completed`));
 
     const rowCount = await pastSessionRows(page).count();
-    await expect(table.locator('tbody th[scope="row"]')).toHaveCount(rowCount);
+    await expect(table.locator('tbody tr')).toHaveCount(rowCount);
 
     // WCAG 2.2 AA 1.4.1: the tinted pill is never the only carrier of the state.
     const words = new Set((await scrapeRows(page)).map((row) => row.statusWord));
@@ -166,11 +169,21 @@ test.describe('Past sessions table (C-TS-2)', () => {
     await openTestSessions(page);
 
     const rendered = await scrapeRows(page);
-    expect(rendered).toHaveLength(before.length);
-    expect(rendered[0].date).toBe('');
-    expect(rendered[0].dateIso).toBe('');
-    expect(rendered[0].missing).toContain(cat(en, `${NS}.noDate`));
-    expect(rendered[0].className).toBe(before[0].class.name);
+    // The property under test is the NULLED row's explicit absence — an
+    // ABSOLUTE page length cannot hold against the SHARED dev DB (a foreign
+    // closed row landed between the two reads; measured 157 -> 158 on
+    // 2026-09-10), so the count is only a sanity floor and the row assertions
+    // below carry the test (orchestrator ruling, chat-7402674b).
+    expect(rendered.length, 'the wire served a non-empty history').toBeGreaterThan(0);
+    // ops/34 — the kit's default date:desc sort orders NULLS LAST (the
+    // contract's own rule), so the nulled session renders at the END of the
+    // history rather than at the wire's first slot. Its absence stays
+    // explicit: no date, the noDate words, in the row it belongs to.
+    const nulledRow = rendered[rendered.length - 1];
+    expect(nulledRow.className).toBe(before[0].class.name);
+    expect(nulledRow.date).toBe('');
+    expect(nulledRow.dateIso).toBe('');
+    expect(nulledRow.missing).toContain(cat(en, `${NS}.noDate`));
     await expect(pastSessionsPanel(page)).toHaveAttribute('data-status', 'ready');
 
     await page.unroute('**/api/teacher/test-sessions');

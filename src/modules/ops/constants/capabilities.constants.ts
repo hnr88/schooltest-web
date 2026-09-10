@@ -4,7 +4,8 @@ export const CAPABILITIES_TRANSLATION_NAMESPACE = 'Ops.capabilities';
 
 /**
  * The exact reference copy from `mvp/ops/Ops Portal.dc.html` — the read-only
- * banner at lines 60-64 and the error-screen actions at lines 133-135.
+ * banner at lines 60-64, the error-screen actions at lines 133-135 and the
+ * offline strip at lines 51-58.
  *
  * These are the fallbacks the component renders until the `Ops.capabilities`
  * keys land in every locale file (one integrator owns `src/i18n/messages/*`).
@@ -12,6 +13,9 @@ export const CAPABILITIES_TRANSLATION_NAMESPACE = 'Ops.capabilities';
  * English never regresses to a raw key path in the meantime.
  */
 export const CAPABILITIES_COPY = {
+  offlineTitle: 'You’re offline',
+  offlineBody: 'Browsing cached data. Changes won’t save until the connection is back.',
+  offlineRetry: 'Retry connection',
   readOnlyTitle: 'Read-only session',
   readOnlyBody:
     'Support accounts can view everything and export, but can’t change school data.',

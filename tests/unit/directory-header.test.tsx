@@ -201,10 +201,54 @@ describe('ops/14 directory tab frame', () => {
     );
   });
 
-  test('emptyCopy overrides the empty arm; the labels stand when it is absent', () => {
+  test('emptyCopy overrides the empty arm exactly once — h2 title, p body, never doubled', () => {
     renderTable({ rows: [], emptyCopy: { title: 'No admins yet', body: 'Invite the first one.' } });
-    expect(container.textContent).toContain('No admins yet');
-    expect(container.textContent).toContain('Invite the first one.');
+    // The title must exist in EXACTLY ONE element (the h2). This is the
+    // non-vacuous form: the original case passed while the title rendered in
+    // both the h2 and EmptyState's own <p> (the kit's CSS suppression failed
+    // live twice). Counting elements is what catches it.
+    const titleNodes = [...container.querySelectorAll('*')].filter(
+      (node) => node.childElementCount === 0 && node.textContent === 'No admins yet',
+    );
+    expect(titleNodes).toHaveLength(1);
+    expect(titleNodes[0]!.tagName).toBe('H2');
+    // The h2 and the description carry DIFFERENT text — the body slot must
+    // never inherit the title.
+    const heading = titleNodes[0]!;
+    const description = [...container.querySelectorAll('p')].find((node) =>
+      node.textContent.includes('Invite the first one.'),
+    )!;
+    expect(description).not.toBeUndefined();
+    expect(description.textContent).not.toBe(heading.textContent);
+  });
+
+  test('the error arm is also single-title: h2 carries it, EmptyState does not repeat it', () => {
+    const failing: DirectoryQueryStatus = {
+      isPending: false,
+      isError: true,
+      isFetching: false,
+      refetch: () => {},
+      error: new Error('boom'),
+    };
+    act(() => {
+      root.render(
+        <DirectoryTable<Row>
+          state={fakeState()}
+          query={failing}
+          rows={[]}
+          getRowKey={(row) => row.id}
+          filters={FILTERS}
+          sorts={[]}
+          columns={COLUMNS}
+          labels={{ ...DIRECTORY_DEFAULT_LABELS, errorTitle: 'Could not load this list' }}
+        />,
+      );
+    });
+    const titleNodes = [...container.querySelectorAll('*')].filter(
+      (node) => node.childElementCount === 0 && node.textContent === 'Could not load this list',
+    );
+    expect(titleNodes).toHaveLength(1);
+    expect(titleNodes[0]!.tagName).toBe('H2');
   });
 
   test('DirectoryChips falls back to the kit All label for an unlabelled sentinel', () => {

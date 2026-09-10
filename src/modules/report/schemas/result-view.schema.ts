@@ -1,13 +1,9 @@
 import { z } from 'zod';
 
 import {
-  bandSchema,
-  cefrBandSchema,
-  readinessSchema,
-  resultDestinationSchema,
-  resultStatusSchema,
+  legacyResultViewSchema as packageLegacyResultViewSchema,
+  legacyStoredAttributeStatusSchema,
   resultViewSchema,
-  skillSchema,
 } from '@schooltest/scoring-contracts';
 
 // C-4 `ResultView` — the hand-written mirror that used to live here was
@@ -61,10 +57,7 @@ export type {
 // strict parse cannot silently drop such a row into the error fallback. Stored
 // statuses are rendered VERBATIM as localized text — never recomputed, never
 // turned into bars or scores.
-const legacyStoredStatusSchema = z.union([
-  bandSchema,
-  z.enum(['mastered', 'emerging', 'not_mastered', 'not_assessed']),
-]);
+const legacyStoredStatusSchema = legacyStoredAttributeStatusSchema;
 export type LegacyStoredStatus = z.infer<typeof legacyStoredStatusSchema>;
 
 // The assessed wire member carries posterior AUDIT fields
@@ -87,29 +80,10 @@ const legacyAttributeEntrySchema = z.union([
   z.literal('not_assessed'),
 ]);
 
-export const legacyResultViewSchema = z.strictObject({
-  document_id: z.string(),
-  scope: z.enum(['skill', 'combined']),
-  skill: skillSchema.nullable(),
-  status: resultStatusSchema,
+// The package owns the envelope. This one override deliberately keeps a
+// stripping z.object at the Axios boundary; `.extend()` also preserves `.shape`.
+export const legacyResultViewSchema = packageLegacyResultViewSchema.extend({
   attributes: z.record(z.string(), legacyAttributeEntrySchema).nullable(),
-  provisional: z.literal('field_test').nullish(),
-  display_label: z.string().nullable(),
-  acara_phase: z.string().nullable(),
-  cefr_band: cefrBandSchema.nullable(),
-  readiness: readinessSchema.nullable(),
-  low_confidence: z.boolean().nullable(),
-  effort_valid: z.boolean().nullable(),
-  productive_scores: z.record(z.string(), z.unknown()).nullable(),
-  supplementary: z.unknown().nullable(),
-  destination: resultDestinationSchema,
-  published_at: z.string().nullable(),
-  previous_result_document_id: z.string().nullable(),
-  session_document_id: z.string().nullable(),
-  model_version: z.string().min(1).nullish(),
-  legacy_caveat: z.literal('pilot_diagnostic_earlier_model').nullish(),
-  narrative: z.unknown().nullish(),
-  combined_children: z.array(z.unknown()).optional(),
 });
 export type LegacyResultView = z.infer<typeof legacyResultViewSchema>;
 

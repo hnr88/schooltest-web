@@ -15,11 +15,13 @@ import {
 } from '@/modules/design-system';
 import { usePathname } from '@/i18n/navigation';
 import { useAuth } from '@/modules/auth';
+import { TEACHER_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
+import { useTeacherDashboardQuery } from '@/modules/teacher';
 import { RailSectionLabel } from '@/modules/shell/components/RailSectionLabel';
 import { SidebarLogoLink } from '@/modules/shell/components/SidebarLogoLink';
 import { SidebarNavItem } from '@/modules/shell/components/SidebarNavItem';
 import { UserMenu } from '@/modules/shell/components/UserMenu';
-import { ACCOUNT_NAV_ITEMS, NAV_ITEMS } from '@/modules/shell/constants/nav.constants';
+import { ACCOUNT_NAV_ITEMS, NAV_ITEMS, TEST_SESSIONS_HREF } from '@/modules/shell/constants/nav.constants';
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
 import { buildNavSections } from '@/modules/shell/lib/nav-sections';
 import { filterNavByParentViews, filterNavByRole } from '@/modules/shell/lib/nav-visible';
@@ -65,6 +67,18 @@ function AppSidebar() {
   );
   const accountNavItems = filterNavByRole(filterNavByParentViews(ACCOUNT_NAV_ITEMS), roleType);
 
+  // teacher/06 — the rail's live dot (Teacher Portal v2.dc.html:34): the
+  // Live-sessions entry pulses while ANY owned class has an open sitting. It
+  // reads the same C-TD-1 derived fields the classes list does — one server
+  // derivation (D-60), so the rail can never disagree with the LIVE NOW badges
+  // — and OP-2 keeps it a real number: the query never runs for a non-teacher
+  // (`enabled`), a failed/in-flight read renders no dot, and the dot is gone on
+  // the next read after the last close.
+  const isTeacher = roleType === TEACHER_ROLE_TYPE;
+  const dashboard = useTeacherDashboardQuery(isTeacher);
+  const hasLiveSessions =
+    isTeacher && (dashboard.data?.classes.some((c) => c.open_session_count > 0) ?? false);
+
   // collapsible="none" returns before the primitive's isMobile Sheet branch, so it
   // must stay "icon"; max-md:hidden guards the pre-hydration frame (isMobile is false
   // until the media query subscribes). The Sheet branch ignores className entirely,
@@ -92,6 +106,15 @@ function AppSidebar() {
                     label={t(`nav.${item.labelKey}`)}
                     isActive={isNavItemActive(pathname, item)}
                     onNavigate={() => setOpenMobile(false)}
+                    trailing={
+                      item.href === TEST_SESSIONS_HREF && hasLiveSessions ? (
+                        <span
+                          data-slot="rail-live-dot"
+                          aria-hidden="true"
+                          className="ml-auto size-2.5 shrink-0 animate-pulse rounded-full bg-destructive motion-reduce:animate-none group-data-[collapsible=icon]:hidden"
+                        />
+                      ) : undefined
+                    }
                   />
                 ))}
               </SidebarMenu>

@@ -12,6 +12,7 @@ import {
   readLiveResults,
   resultsRows,
   signedInTeacherPage,
+  TEACHER_EMAIL,
   type LiveResults,
 } from './helpers/teacher-results-live';
 
@@ -19,7 +20,8 @@ import {
 // against the RUNNING app on :3000 and the REAL Strapi. Every expected number is
 // read live from C-TD-1 / C-TR-1 in beforeAll and compared to the rendered DOM;
 // nothing in this file is a fixture, and no threshold is computed here.
-// The four-tab frame is proven by teacher-results-tabs.spec.ts.
+// The class-results tab frame is proven by teacher-results-tabs.spec.ts (task 07
+// widens it to six and may not edit this file).
 
 // ONE sign-in for the whole file (see signedInTeacherPage): the API's auth guard
 // rate-limits POST /api/auth/local per IP, so a per-test login is flaky by
@@ -27,16 +29,28 @@ import {
 test.describe.configure({ mode: 'serial' });
 
 let live: LiveResults;
+
+/**
+ * ops/34 (orchestrator-authorised foreign fix) — the harness's `detail` went
+ * opt-in when the C-TR-1 route retired (410 Gone), so every use site narrows
+ * through this guard instead of a non-null assertion: a missing detail is a
+ * stated precondition failure, never a silent `undefined` walk.
+ */
+function requireDetail(): NonNullable<LiveResults['detail']> {
+  if (!live.detail) throw new Error('[e2e] live C-TR-1 detail unavailable — the route retired; re-point this spec');
+  return live.detail;
+}
+
 let page: Page;
 
 test.beforeAll(async ({ browser, playwright }) => {
-  live = await readLiveResults(playwright);
+  live = await readLiveResults(playwright, TEACHER_EMAIL, { withDetail: false });
   page = await signedInTeacherPage(browser);
   await openResultsList(page);
 });
 
 test.afterAll(async () => {
-  await page.close();
+  if (page) await page.close();
 });
 
 test.describe('Results class list (C-TD-1)', () => {
@@ -75,11 +89,17 @@ test.describe('Results class list (C-TD-1)', () => {
   });
 });
 
+// teacher/06 — C-TR-1 answers 410 Gone (retired by scoring task 24) and the
+// class-detail surface is teacher/07's in-flight rebuild, so these header
+// assertions SKIP with that reason until the replacement read lands. The LIST
+// half of this file (C-TD-1) is unaffected and still proven above.
 test.describe('Results class detail header (C-TR-1 summary)', () => {
+
   test('prints the server summary verbatim: roster, A/B completed, avg score, top gap', async () => {
+    test.skip(!live?.detail, 'C-TR-1 is 410 Gone (scoring task 24); detail harness returns with task 07');
     await backToResultsList(page);
     await openFirstClass(page, live);
-    const { class: klass, summary } = live.detail;
+    const { class: klass, summary } = requireDetail();
 
     await expect(page.getByRole('heading', { level: 1, name: klass.name })).toBeVisible();
     await expect(page.locator('[data-slot="class-results-header"]')).toContainText(
@@ -135,6 +155,7 @@ test.describe('Results class detail header (C-TR-1 summary)', () => {
   });
 
   test('one h1, and the summary is a named region wrapping a real description list', async () => {
+    test.skip(!live?.detail, 'C-TR-1 is 410 Gone (scoring task 24); detail harness returns with task 07');
     await backToResultsList(page);
     await openFirstClass(page, live);
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);

@@ -5,20 +5,38 @@
  * filter def, the sort select, and Clear filters. The controls are the design
  * system's canonical ones (DS §06 SelectField); every value change goes
  * through the state hook, which owns the URL write and the page reset.
+ *
+ * teacher/06 — an optional `layoutControl` renders the segmented tiles ⇄ list
+ * toggle (U-05's axis made a control): a view choice that changes the BODY and
+ * nothing else, written through the same URL-backed state.
+ *
+ * school-admin/02 — the per-filter loop is gone: the defs render through the
+ * ONE §L-filters renderer (`DirectoryFilters`), whose `kind: undefined` arm
+ * is the exact SelectField this file used to loop, so every existing consumer
+ * renders unchanged while the seven other kinds become available.
  */
 import { useId } from 'react';
 import { Search } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button, SelectField } from '@/modules/design-system';
 import { Input } from '@/components/ui/input';
 
 import { DIRECTORY_ALL } from '../constants/directory.constants';
+import { DirectoryFilters } from './DirectoryFilters';
 import type {
   DirectoryFilterDef,
   DirectoryLabels,
+  DirectoryLayoutOption,
   DirectorySortDef,
   DirectoryStateApi,
 } from '../types/directory.types';
+
+export interface DirectoryLayoutControl {
+  value: string;
+  onChange: (layout: string) => void;
+  options: readonly DirectoryLayoutOption[];
+}
 
 interface DirectoryToolbarProps<Row> {
   state: DirectoryStateApi;
@@ -27,6 +45,7 @@ interface DirectoryToolbarProps<Row> {
   labels: DirectoryLabels;
   showing: number;
   total: number;
+  layoutControl?: DirectoryLayoutControl;
 }
 
 export function DirectoryToolbar<Row>({
@@ -36,6 +55,7 @@ export function DirectoryToolbar<Row>({
   labels,
   showing,
   total,
+  layoutControl,
 }: DirectoryToolbarProps<Row>) {
   const idPrefix = useId();
 
@@ -60,17 +80,13 @@ export function DirectoryToolbar<Row>({
             onChange={(event) => state.setSearchInput(event.target.value)}
           />
         </div>
-        {filters.map((def) => (
-          <SelectField
-            key={def.key}
-            id={`${idPrefix}-filter-${def.key}`}
-            label={def.label}
-            placeholder={def.label}
-            options={def.options.map((option) => ({ value: option.value, label: option.label }))}
-            value={state.params.filters[def.key] ?? DIRECTORY_ALL}
-            onValueChange={(next) => state.setFilter(def.key, next)}
-          />
-        ))}
+        <DirectoryFilters
+          filters={filters}
+          value={(key) => state.params.filters[key] ?? DIRECTORY_ALL}
+          onValueChange={state.setFilter}
+          labels={labels}
+          idPrefix={idPrefix}
+        />
         {sorts.length > 0 ? (
           <SelectField
             id={`${idPrefix}-sort`}
@@ -83,6 +99,36 @@ export function DirectoryToolbar<Row>({
         ) : null}
       </div>
       <div className="flex items-center gap-3">
+        {layoutControl ? (
+          <div
+            role="group"
+            aria-label={labels.layoutLabel}
+            data-slot="directory-layout-toggle"
+            className="flex gap-0.5 rounded-lg bg-surface-inset p-0.5"
+          >
+            {layoutControl.options.map((option) => {
+              const active = option.value === layoutControl.value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  title={option.label}
+                  aria-label={option.label}
+                  aria-pressed={active}
+                  onClick={() => layoutControl.onChange(option.value)}
+                  className={cn(
+                    'inline-flex h-8 w-8.5 items-center justify-center rounded-md transition-colors motion-reduce:transition-none',
+                    active
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <option.icon aria-hidden="true" className="size-4" />
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
         {total > 0 ? (
           <p className="text-sm text-muted-foreground" role="status">
             {labels.showingCount({ showing, total })}

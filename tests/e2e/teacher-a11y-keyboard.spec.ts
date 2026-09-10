@@ -77,7 +77,7 @@ test('KEYBOARD: Arrow/Home/End move between tabs and Enter activates the focused
   await page.setViewportSize(DESKTOP);
   await openReady(page, classUrl(), 'teacher-class-results');
   const tabs = page.getByRole('tab');
-  await expect(tabs).toHaveCount(4);
+  await expect(tabs).toHaveCount(6);
   await tabs.first().focus();
   await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'true');
 
@@ -93,7 +93,7 @@ test('KEYBOARD: Arrow/Home/End move between tabs and Enter activates the focused
   await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'false');
 
   await page.keyboard.press('End');
-  await expect(tabs.nth(3)).toBeFocused();
+  await expect(tabs.nth(5)).toBeFocused();
   await page.keyboard.press('Home');
   await expect(tabs.nth(0)).toBeFocused();
 });

@@ -12,6 +12,14 @@
  * one. Nothing here widens to accept the v1 shape.
  */
 import { z } from 'zod';
+/** Result-grain release states; session-grain states never belong in a view. */
+export declare const resultViewReleaseStateSchema: z.ZodEnum<{
+    held: "held";
+    released: "released";
+    recalled: "recalled";
+    manual: "manual";
+}>;
+export type ResultViewReleaseState = z.infer<typeof resultViewReleaseStateSchema>;
 /**
  * One assessed attribute on the view. `band_before`/`band_after` are present
  * only on the band-movement path (§6.2: a skill outside `ANCHORED_SKILLS` gets
@@ -208,6 +216,13 @@ export declare const resultViewSchema: z.ZodObject<{
         official: "official";
     }>;
     published_at: z.ZodNullable<z.ZodISODateTime>;
+    recalled_at: z.ZodNullable<z.ZodISODateTime>;
+    release_state: z.ZodEnum<{
+        held: "held";
+        released: "released";
+        recalled: "recalled";
+        manual: "manual";
+    }>;
     provisional: z.ZodNullable<z.ZodLiteral<"field_test">>;
     model_version: z.ZodEnum<{
         "reading-3model/1": "reading-3model/1";

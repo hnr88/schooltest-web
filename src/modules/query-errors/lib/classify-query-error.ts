@@ -23,7 +23,11 @@ export function classifyQueryError(error: unknown): QueryErrorState {
       return { kind: 'gone' };
     }
     if (status === 403) {
-      return { kind: 'gone' };
+      // teacher/04 — D-04. 403 is the role check only ("wrong kind of
+      // account"), so it is the forbidden arm, not a dead link. The arm and
+      // its six-locale copy already existed in QueryErrorFallback; this flip
+      // is what makes them render.
+      return { kind: 'forbidden' };
     }
     return { kind: 'broken', cause: 'http', status };
   }

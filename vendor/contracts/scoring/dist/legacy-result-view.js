@@ -23,6 +23,7 @@ exports.isLegacyAssessedAttributeEntry = isLegacyAssessedAttributeEntry;
  */
 const zod_1 = require("zod");
 const enums_1 = require("./enums");
+const result_view_1 = require("./result-view");
 const str = zod_1.z.string().min(1);
 /**
  * LISTENING's own three-band vocabulary, cut from Config's
@@ -128,6 +129,8 @@ exports.legacyResultViewBaseSchema = zod_1.z.strictObject({
     supplementary: exports.legacyResultSupplementarySchema.nullable(),
     destination: enums_1.resultDestinationSchema,
     published_at: zod_1.z.iso.datetime().nullable(),
+    recalled_at: zod_1.z.iso.datetime().nullable(),
+    release_state: result_view_1.resultViewReleaseStateSchema,
     previous_result_document_id: str.nullable(),
     session_document_id: str.nullable(),
     // Task 07 legacy tagging (spec v2 §0.4, memo §7).

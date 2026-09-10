@@ -27,6 +27,7 @@ export type { DirectorySelectionApi as OpsDirectorySelectionApi } from '@/module
  * compile error inside one of the seven importers this task may not touch.
  */
 export { DirectoryList as OpsDirectoryList } from '@/modules/directory';
+export { DirectoryFilters as OpsDirectoryFilters } from '@/modules/directory';
 export type {
   DirectoryGroupDef as OpsDirectoryGroupDef,
   DirectoryLayout as OpsDirectoryLayout,
@@ -36,4 +37,18 @@ export type {
   DirectoryRowGroup as OpsDirectoryRowGroup,
   DirectoryRowNavProps as OpsDirectoryRowNavProps,
   DirectoryRowTargetProps as OpsDirectoryRowTargetProps,
+} from '@/modules/directory';
+
+/**
+ * school-admin/02 — §L-filters (U-07) and §L-modes (U-10). The same rule as
+ * teacher/01's appendix: every NEW export is aliased too, so no importer of
+ * the old namespace is ever one missing name away from a compile error.
+ */
+export type {
+  DirectoryFilterKind as OpsDirectoryFilterKind,
+  DirectoryFilterValue as OpsDirectoryFilterValue,
+  DirectoryPaginationDef as OpsDirectoryPaginationDef,
+  DirectoryPendingFilterDef as OpsDirectoryPendingFilterDef,
+  ListPredicates as OpsListPredicates,
+  ListSource as OpsListSource,
 } from '@/modules/directory';

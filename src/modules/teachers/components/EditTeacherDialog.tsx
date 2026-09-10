@@ -5,7 +5,6 @@ import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
 import {
   Button,
@@ -18,6 +17,7 @@ import {
   FieldShell,
   Input,
 } from '@/modules/design-system';
+import { showOpsToast } from '@/modules/ops/actions';
 import { serverMessage } from '@/modules/teachers/lib/server-message';
 import { useUpdateTeacherMutation } from '@/modules/teachers/queries/use-update-teacher.mutation';
 import {
@@ -52,7 +52,7 @@ export function EditTeacherDialog({ row, onClose }: EditTeacherDialogProps) {
   const submit = async (values: EditTeacherValues) => {
     try {
       await update.mutateAsync({ documentId: row.documentId, values });
-      toast.success(t('successToast', { name: `${values.first_name} ${values.last_name}` }));
+      showOpsToast({ tone: 'ok', message: t('successToast', { name: `${values.first_name} ${values.last_name}` }) });
       onClose();
     } catch (error) {
       const status = isAxiosError(error) ? error.response?.status : undefined;
@@ -60,7 +60,7 @@ export function EditTeacherDialog({ row, onClose }: EditTeacherDialogProps) {
         setError('email', { message: serverMessage(error) ?? t('emailInUse') });
         return;
       }
-      toast.error(serverMessage(error) ?? t('errorToast'));
+      showOpsToast({ tone: 'error', message: serverMessage(error) ?? t('errorToast') });
     }
   };
 

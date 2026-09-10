@@ -1,5 +1,3 @@
-import path from 'node:path';
-
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat, escapeRegExp, loadMessages } from './helpers/i18n';
@@ -20,29 +18,12 @@ const en = loadMessages('en');
 const railLink = (page: Page, key: string) =>
   page.locator(`a[data-sidebar="menu-button"][aria-label="${cat(en, `Shell.nav.${key}`)}"]`);
 
-// Each surface names its OWN root selector. The three original consoles carry
-// `data-surface`; System and Comms carry both, and the Audit console page has no
-// `data-surface` at all — its root is the component's `data-slot`. Selecting what
-// each page actually renders beats adding an attribute to three consoles this
-// slice was told not to touch.
+// Each surface names its OWN root selector. mvp/ops task 41 (R-09…R-14) retired
+// the five console rows; the two drawn surfaces remain, trimmed never deleted.
 const OPS_SURFACES = [
   { key: 'opsSchools', href: '/dashboard/ops/schools', selector: '[data-surface="ops-schools"]' },
-  { key: 'opsTimers', href: '/dashboard/ops/timers', selector: '[data-surface="ops-section-timers"]' },
   { key: 'opsSettings', href: '/dashboard/ops/settings', selector: '[data-surface="ops-settings"]' },
-  // The three consoles that shipped without a rail entry and were reachable only
-  // by typing the URL (System 2ee7ccb, Audit e542728, Comms 3c94805).
-  { key: 'opsSystem', href: '/dashboard/ops/system', selector: '[data-surface="ops-system"]' },
-  { key: 'opsAudit', href: '/dashboard/ops/audit', selector: '[data-slot="ops-audit-console"]' },
-  { key: 'opsComms', href: '/dashboard/ops/comms', selector: '[data-surface="ops-comms"]' },
-  // The fourth console, same story one slice later (Flags 6cb9cde + acb51e6).
-  { key: 'opsFlags', href: '/dashboard/ops/flags', selector: '[data-surface="ops-flags"]' },
 ] as const;
-
-// The mission captures directory sits at the PROJECT ROOT; this spec lives two
-// levels down inside schooltest-web.
-const CAPTURES =
-  process.env.CAPTURES_DIR
-  ?? path.resolve(__dirname, '..', '..', '..', '.codephant', 'missions', 'msn-0da39441-f845-426b-88a1-037c9eb98442', 'captures');
 
 test.describe('ops sidebar navigation', () => {
   test('the rail carries one link per ops surface', async ({ page }) => {
@@ -132,44 +113,6 @@ test.describe('ops sidebar navigation', () => {
     await expect(
       page.locator('a[data-sidebar="menu-button"][href$="/dashboard/ops/tools"]'),
     ).toHaveCount(0);
-  });
-
-  test('the four rail-less consoles now render in the rail at desktop and 375', async ({ page }) => {
-    await loginAs(page, 'ops');
-    await expect(railLink(page, 'opsSchools')).toBeVisible({ timeout: 20_000 });
-
-    const NEW_ENTRIES = ['opsSystem', 'opsAudit', 'opsComms', 'opsFlags'] as const;
-
-    // Desktop: the rail is open, so every entry is visible with its label.
-    await page.setViewportSize({ width: 1440, height: 900 });
-    for (const key of NEW_ENTRIES) {
-      await expect(railLink(page, key), `${key} desktop`).toBeVisible();
-    }
-    await page.screenshot({ path: path.join(CAPTURES, 'nav-consoles-desktop.png'), fullPage: true });
-    await test.info().attach('nav-consoles-desktop', {
-      body: await page.screenshot({ fullPage: true }),
-      contentType: 'image/png',
-    });
-
-    // 375: the rail collapses into a sheet and UNMOUNTS its items — asserting them
-    // while it is shut would be asserting nothing. So open it through the topbar
-    // trigger the way a person would, then require the entries to be really
-    // visible at that width.
-    await page.setViewportSize({ width: 375, height: 780 });
-    await page.getByRole('button', { name: cat(en, 'Shell.topbar.toggleNav') }).click();
-    for (const key of NEW_ENTRIES) {
-      await expect(railLink(page, key), `${key} 375`).toBeVisible({ timeout: 10_000 });
-    }
-    // Capture the OPEN sheet with animations frozen. A fullPage shot here caught
-    // the rail mid-fade behind the page underneath — technically passing, useless
-    // as evidence.
-    const sheet = page.locator('[data-slot="sidebar"], [data-sidebar="sidebar"]').first();
-    const shot = { animations: 'disabled' as const };
-    await sheet.screenshot({ path: path.join(CAPTURES, 'nav-consoles-375.png'), ...shot });
-    await test.info().attach('nav-consoles-375', {
-      body: await sheet.screenshot(shot),
-      contentType: 'image/png',
-    });
   });
 
   test('the ad-hoc links the rail replaced are gone from the schools header', async ({ page }) => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 
@@ -15,7 +15,8 @@ import {
 import type { SchoolsListRow } from '@schooltest/ops-contracts';
 
 import { useAuthStore } from '@/modules/auth';
-import { Badge } from '@/modules/design-system';
+import { Badge, MediaCover } from '@/modules/design-system';
+import { OpsCreateSchoolDialog } from '@/modules/ops/components/OpsCreateSchoolDialog';
 import {
   DIRECTORY_ALL,
   OpsDirectoryTable,
@@ -31,6 +32,8 @@ import {
 } from '@/modules/ops/lib/portal-lifecycle.lib';
 import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
 import { useSchoolsListQuery } from '@/modules/ops/queries/use-schools-list.query';
+import { getSchoolCrestSource } from '@/modules/ops/lib/school-crest';
+import { formatRelativeTime } from '@/modules/ops/lib/relative-time';
 
 const SCHOOL_STATES = ['VIC', 'NSW', 'QLD', 'SA', 'WA', 'TAS', 'ACT', 'NT'] as const;
 const SCHOOL_SECTORS = ['government', 'non-government', 'catholic'] as const;
@@ -38,8 +41,18 @@ const PORTAL_PLANS = ['pilot', 'standard', 'enterprise'] as const;
 const ONBOARDING = ['not_started', 'link_sent', 'in_progress', 'submitted', 'complete'] as const;
 
 /** Nulls never reach a formatter: a school with no suburb still renders a row. */
-function metaLine(school: SchoolsListRow): string {
-  return [school.suburb, school.state].filter((part): part is string => Boolean(part)).join(' ');
+function metaLine(
+  school: SchoolsListRow,
+  translate: (key: string) => string,
+  locale: string,
+): string {
+  const location = [school.suburb, school.state]
+    .filter((part): part is string => Boolean(part))
+    .join(' ');
+  const sector = school.sector ? translate(`sector.${school.sector}`) : null;
+  const plan = `${translate(`portalPlan.${school.portal_plan}`)} ${translate('planSuffix')}`;
+  const active = `${translate('activePrefix')} ${formatRelativeTime(school.last_active_at, new Date(), locale)}`;
+  return [sector, location, plan, active].filter((part): part is string => Boolean(part)).join(' · ');
 }
 
 /**
@@ -59,6 +72,7 @@ function metaLine(school: SchoolsListRow): string {
  */
 export function OpsSchoolsTable() {
   const t = useTranslations('Ops.schools');
+  const locale = useLocale();
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
@@ -134,6 +148,7 @@ export function OpsSchoolsTable() {
       { value: 'name:asc', label: t('sortName') },
       { value: 'student_count:desc', label: t('sortStudents') },
       { value: 'createdAt:desc', label: t('sortCreated') },
+      { value: 'last_active_at:desc', label: t('sortRecent') },
     ],
     [t],
   );
@@ -156,9 +171,18 @@ export function OpsSchoolsTable() {
         sortable: true,
         sortValues: { asc: 'name:asc', desc: 'name:asc' },
         cell: (school) => (
-          <div className="flex flex-col">
-            <span className="font-medium text-foreground">{school.name ?? t('unnamedSchool')}</span>
-            <span className="text-meta text-body">{metaLine(school)}</span>
+          <div className="flex items-center gap-3">
+            <MediaCover
+              src={getSchoolCrestSource(school.cover_image_url)}
+              alt={school.name ?? t('unnamedSchool')}
+              ratio="square"
+              sizes="52px"
+              className="size-13 shrink-0 rounded-panel"
+            />
+            <div className="flex min-w-0 flex-col">
+              <span className="font-medium text-foreground">{school.name ?? t('unnamedSchool')}</span>
+              <span className="text-meta text-body">{metaLine(school, t, locale)}</span>
+            </div>
           </div>
         ),
       },
@@ -193,7 +217,7 @@ export function OpsSchoolsTable() {
       },
       { key: 'results_count', header: t('columnResults'), cell: (school) => school.results_count },
     ],
-    [t],
+    [locale, t],
   );
 
   // Every action closes over the row it was built for, so the target is the
@@ -238,15 +262,24 @@ export function OpsSchoolsTable() {
     },
   ];
 
+  const openCreateSchool = () => {
+    document.querySelector<HTMLButtonElement>('[data-testid="ops-create-school"]')?.click();
+  };
+  const hasSearch = Boolean(state.params.q);
+  const hasFilters = Object.values(state.params.filters).some((value) => value !== DIRECTORY_ALL);
+
   return (
     <main
       data-slot="ops-schools"
       data-surface="ops-schools"
       className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
-        <p className="text-sm text-body">{t('description')}</p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
+          <p className="text-sm text-body">{t('description')}</p>
+        </div>
+        <OpsCreateSchoolDialog />
       </div>
 
       <OpsSchoolsPills
@@ -273,11 +306,17 @@ export function OpsSchoolsTable() {
           searchLabel: t('searchLabel'),
           emptyNoneTitle: t('emptyNoneTitle'),
           emptyNoneDescription: t('emptyNoneDescription'),
-          emptyNoMatchesTitle: t('noMatches'),
+          emptyNoMatchesTitle: hasSearch ? t('emptySearchTitle') : t('emptyFilterTitle'),
+          emptyNoMatchesDescription: hasSearch
+            ? t('emptySearchDescription')
+            : t('emptyFilterDescription'),
+          clearFilters: hasSearch && !hasFilters ? t('clearSearch') : t('clearFilters'),
+          showingCount: ({ showing, total }) => t('showing', { showing, total }),
           errorTitle: t('errorTitle'),
           errorDescription: t('errorDescription'),
           retry: t('retry'),
         }}
+        emptyAction={{ label: t('createSchool'), onRun: openCreateSchool }}
       />
     </main>
   );

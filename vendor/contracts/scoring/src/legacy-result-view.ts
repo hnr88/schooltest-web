@@ -27,6 +27,7 @@ import {
   resultStatusSchema,
   skillSchema,
 } from './enums';
+import { resultViewReleaseStateSchema } from './result-view';
 
 const str = z.string().min(1);
 
@@ -151,6 +152,8 @@ export const legacyResultViewBaseSchema = z.strictObject({
   supplementary: legacyResultSupplementarySchema.nullable(),
   destination: resultDestinationSchema,
   published_at: z.iso.datetime().nullable(),
+  recalled_at: z.iso.datetime().nullable(),
+  release_state: resultViewReleaseStateSchema,
   previous_result_document_id: str.nullable(),
   session_document_id: str.nullable(),
   // Task 07 legacy tagging (spec v2 §0.4, memo §7).

@@ -26,7 +26,7 @@ function ProgressMoverRow({ row }: ProgressMoverRowProps) {
   const score = view?.overall.domain_score;
 
   return (
-    <li
+    <div
       data-slot="progress-mover"
       data-student-id={row.student.document_id}
       className="flex flex-wrap items-center justify-between gap-2"
@@ -47,7 +47,7 @@ function ProgressMoverRow({ row }: ProgressMoverRowProps) {
           />
         ) : null}
       </span>
-    </li>
+    </div>
   );
 }
 

@@ -11,10 +11,6 @@ import { OpsPortalExports } from '@/modules/ops/components/OpsPortalExports';
 // schools export because both are ops CSV pulls of the same page's scope and
 // the operator looks for exports in one place.
 import { OpsResponsesExport } from '@/modules/ops/components/OpsResponsesExport';
-// OPS-013: imported by path, not through the ops barrel — the barrel is a
-// merge-only integration file and its `OpsCreateSchoolDialog` line is applied
-// by the batch integrator. Switch to `@/modules/ops` once that line lands.
-import { OpsCreateSchoolDialog } from '@/modules/ops/components/OpsCreateSchoolDialog';
 import { Skeleton } from '@/modules/design-system';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,7 +38,6 @@ export default function OpsSchoolsPage() {
     >
       <OpsSchoolsTable />
       <div className="flex flex-col gap-3 px-4 pb-6 sm:px-6 lg:px-8">
-        <OpsCreateSchoolDialog />
         <OpsPortalExports />
         <OpsResponsesExport />
       </div>

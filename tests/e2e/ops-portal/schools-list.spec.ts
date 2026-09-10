@@ -10,14 +10,14 @@
  */
 import { randomUUID } from 'node:crypto';
 
-import { expect, type APIRequestContext } from '@playwright/test';
+import { expect, type APIRequestContext, type TestInfo } from '@playwright/test';
 
 import { apiEnv } from '../helpers/auth-db';
 import { test } from '../helpers/auth-fixture';
 
 const API = process.env.E2E_API_URL ?? 'http://127.0.0.1:5500';
 const SCREEN = '/en/dashboard/ops/schools';
-const CAPTURES = '/home/hnr/Code/schooltest/.codephant/missions/msn-ab5a6a54-f385-42e1-826a-aeba2bbdbc66/captures';
+const CAPTURES = '/home/hnr/Code/schooltest/mvp/ops/proof/shots';
 
 let jwt = '';
 const token = `ops011w${Date.now().toString(36)}`;
@@ -37,9 +37,11 @@ async function createFixture(request: APIRequestContext, name: string, state: st
     data: {
       name,
       contact_email: `${token}@fixture.schooltest.local`,
+      contact_name: `${name} Contact`,
       suburb: 'Probeville',
       state,
       sector: 'government',
+      portal: { plan: 'standard', status: 'active', send_owner_invitation: false },
     },
   });
   expect([200, 201]).toContain(res.status());
@@ -91,7 +93,7 @@ test('search round-trips through the URL and matches the fixture school', async 
 });
 
 test('state and sort params drive the server query and survive reload', async ({ authPage: page }) => {
-  await page.goto(`${SCREEN}?state=TAS&q=${token}&sort=student_count:desc`);
+  await page.goto(`${SCREEN}?state=TAS&q=${token}&sort=last_active_at:desc`);
   await expect(page.locator('[data-slot="ops-schools"]')).toBeVisible();
   await expect(page.locator('tbody tr')).toHaveCount(1);
   await expect(page.getByRole('link', { name: `${token} Tas Gov` })).toBeVisible();
@@ -102,15 +104,60 @@ test('state and sort params drive the server query and survive reload', async ({
   await expect(page.locator('tbody tr')).toHaveCount(1);
 });
 
-test('visual captures: reference desktop and 375px, identical data, real rows', async ({ authPage: page }) => {
+test('crest fallback, count scope, recent sort, and header create are real', async ({ authPage: page }, testInfo: TestInfo) => {
+  const failedRequests: string[] = [];
+  page.on('requestfailed', (request) => {
+    if (request.url().includes('/uploads/')) failedRequests.push(request.url());
+  });
+  await page.goto(`${SCREEN}?q=${token}`);
+  await expect(page.locator('tbody tr')).toHaveCount(2);
+  await expect(page.getByRole('status').filter({ hasText: /Showing 2 of 2 schools/ })).toBeVisible();
+  await expect(page.locator('[data-slot="media-cover"][data-empty]')).toHaveCount(2);
+  await expect(page.locator('tbody')).toContainText('Never');
+  await expect(page.getByRole('button', { name: /create school/i })).toBeVisible();
+  await page.getByRole('button', { name: /create school/i }).click();
+  await expect(page.locator('[data-slot="ops-create-school-dialog"]')).toBeVisible();
+  await page.getByRole('button', { name: /cancel/i }).click();
+  expect(failedRequests).toEqual([]);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const crest = await page.screenshot({ path: `${CAPTURES}/07-crest-fallback.png`, fullPage: false });
+  await testInfo.attach('07-crest-fallback.png', { body: crest, contentType: 'image/png' });
+
+  const sort = page.getByLabel(/sort/i);
+  await sort.click();
+  await page.getByRole('option', { name: /recently active/i }).click();
+  await expect(page).toHaveURL(/sort=last_active_at%3Adesc|sort=last_active_at:desc/);
+  await page.reload();
+  await expect(page).toHaveURL(/sort=last_active_at%3Adesc|sort=last_active_at:desc/);
+});
+
+test('search no-match empty state offers a clear-search action', async ({ authPage: page }, testInfo: TestInfo) => {
+  await page.goto(`${SCREEN}?q=${token}-no-match`);
+  await expect(page.getByRole('heading', { name: /no schools match your search/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /clear search/i })).toBeVisible();
+  const shot = await page.screenshot({ path: `${CAPTURES}/07-empty-no-search-match.png`, fullPage: false });
+  await testInfo.attach('07-empty-no-search-match.png', { body: shot, contentType: 'image/png' });
+});
+
+test('filter no-match empty state offers a clear-filters action', async ({ authPage: page }, testInfo: TestInfo) => {
+  await page.goto(`${SCREEN}?state=ACT&sector=catholic&plan=enterprise&onboarding=complete`);
+  await expect(page.getByRole('heading', { name: /no schools match these filters/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /clear filters/i })).toBeVisible();
+  const shot = await page.screenshot({ path: `${CAPTURES}/07-empty-no-filter-match.png`, fullPage: false });
+  await testInfo.attach('07-empty-no-filter-match.png', { body: shot, contentType: 'image/png' });
+});
+
+test('visual captures: reference desktop and 375px, identical data, real rows', async ({ authPage: page }, testInfo: TestInfo) => {
   await page.goto(`${SCREEN}?q=${token}`);
   await expect(page.locator('tbody tr')).toHaveCount(2);
 
-  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.setViewportSize({ width: 1440, height: 900 });
   await expect(page.locator('[data-slot="ops-schools"]')).toBeVisible();
-  await page.screenshot({ path: `${CAPTURES}/ops011-schools-list-1440x1000.png`, fullPage: false });
+  const desktop = await page.screenshot({ path: `${CAPTURES}/07-schools-list.png`, fullPage: false });
+  await testInfo.attach('07-schools-list.png', { body: desktop, contentType: 'image/png' });
 
   await page.setViewportSize({ width: 375, height: 800 });
   await expect(page.locator('[data-slot="ops-schools"]')).toBeVisible();
-  await page.screenshot({ path: `${CAPTURES}/ops011-schools-list-375x800.png`, fullPage: false });
+  const mobile = await page.screenshot({ path: `${CAPTURES}/07-schools-list-mobile.png`, fullPage: false });
+  await testInfo.attach('07-schools-list-mobile.png', { body: mobile, contentType: 'image/png' });
 });

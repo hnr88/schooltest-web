@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 export type NavLabelKey =
   | 'overview'
@@ -14,34 +15,24 @@ export type NavLabelKey =
   | 'account'
   | 'teach'
   | 'opsSchools'
-  | 'opsTimers'
   | 'opsSettings'
-  // The three consoles that landed after the rail was written (System 2ee7ccb,
-  // Audit e542728, Comms 3c94805). Their `Navigation.*` labels already existed —
-  // the trail registry defines them for the breadcrumbs — so these keys join the
-  // union rather than introducing new copy.
-  | 'opsSystem'
-  | 'opsAudit'
-  | 'opsComms'
-  // The fourth console, same story one slice later: the Flags console (6cb9cde)
-  // shipped URL-only because the rail slice above was scoped before it existed.
-  // `Navigation.opsFlags` already names it for the breadcrumb.
-  | 'opsFlags'
-  | 'teacherDashboard'
   | 'testSessions'
   | 'results';
 
 // ONE shell, role filtered — never a second sidebar (.qa/DECISIONS.md A4).
 // `primary` is the destination list under the "Manage" overline (parent, school
-// admin and ops all render here, role-scoped); `teach` is the teacher's
-// Dashboard · Test sessions · Results; `account` is the single pinned-bottom
-// entry the redesign spec places behind a divider (spec §Sidebar Navigation).
+// admin and ops all render here, role-scoped); `teach` is the teacher's two-entry
+// rail — Results (Classes) · Test sessions (Live sessions), Teacher Portal
+// v2.dc.html:29–35; `account` is the single pinned-bottom entry the redesign
+// spec places behind a divider (spec §Sidebar Navigation).
 // A group with no visible item renders nothing, so no account ever sees a bare
 // overline.
 export type NavGroup = 'primary' | 'teach' | 'account';
 
 // The `Shell.sidebar.groups.*` catalog key a group's overline renders.
-export type NavGroupLabelKey = 'manage' | 'teach';
+// `teacherView` is the design's TEACHER VIEW overline (:27); `teach` stays a
+// valid member — no i18n key is deleted (D-33) — it is simply no longer mapped.
+export type NavGroupLabelKey = 'manage' | 'teach' | 'teacherView';
 
 // The `Shell.userMenu.roles.*` catalog key the rail's user card renders.
 export type UserRoleLabelKey = 'parent' | 'teacher' | 'admin' | 'student';
@@ -95,6 +86,12 @@ export interface SidebarNavItemProps {
   label: string;
   isActive: boolean;
   onNavigate: () => void;
+  /**
+   * teacher/06 — an optional trailing node rendered at the item's far edge
+   * (the design's pulsing live dot on the Live-sessions entry, `:34`). Pure
+   * presentation: the data behind it stays with the caller.
+   */
+  trailing?: ReactNode;
 }
 
 export interface RecordCrumbState {

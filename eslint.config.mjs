@@ -11,6 +11,8 @@ const eslintConfig = [
       'out/**',
       'build/**',
       'node_modules/**',
+      // Deployment mirrors are validated at their canonical contract packages.
+      'vendor/**',
       'next-env.d.ts',
       // shadcn/Base UI primitives are vendored and must never be edited/linted.
       'src/components/ui/**',

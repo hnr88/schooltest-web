@@ -11,19 +11,23 @@
  * No state is manufactured with canned UI data.
  *
  * Two designed states from mvp/tasks/ops/06-portal-states.md are NOT pinned
- * here because they have no backing production path in the ops portal:
+ * here because they had no backing production path in the ops portal:
  *  - the `?error=session` sign-in overlay: use-require-ops.ts redirects to a
  *    PLAIN /sign-in (no query), so the overlay is unreachable from ops;
- *  - the offline banner: no such surface exists in the shell.
- * Both are flagged to the orchestrator in the task report instead of being
- * faked.
+ *  - (formerly) the offline banner — the shell had no such surface until
+ *    mvp/ops task 04 shipped `OpsPortalCapabilities`' offline strip; the two
+ *    `offline strip` tests below now pin it for real.
  *
- * NOTE for tasks 02/31 (authorization enforcement): the ops_support
- * assertions below pin CURRENT committed truth — the read-only banner
- * renders and reads still work. When 02/31 land server-side enforcement,
- * the read assertions stay valid; if client-visible behaviour changes,
- * those tasks own updating this spec.
+ * NOTE (mvp/ops task 04): the `restricted:` test below pins ONLY the
+ * ops_support read-only banner — the chrome this task ships. The ops_support
+ * read/write matrix (which tabs and reads render for a support session) is
+ * owned END TO END by task 28 (`After: 04,41,42`); it was transferred there
+ * explicitly when this file's former Classes-tab assertions proved to be that
+ * task's surface, not this one's.
  */
+import { mkdir } from 'node:fs/promises';
+import path from 'node:path';
+
 import { expect, test, type APIRequestContext, type Page, type Route } from '@playwright/test';
 import { OPS_PORTAL_VERSION_HEADER } from '@schooltest/ops-contracts';
 
@@ -33,12 +37,23 @@ import {
   OpsFixturePrerequisiteError,
   fixtureAuthContext,
 } from '../helpers/ops-portal';
+import { loginAs } from '../helpers/roles';
 
 const en = loadMessages('en');
 const AUTH_TOKEN_KEY = 'app.auth.token';
 const ACTION_TIMEOUT = 20_000;
 const SCHOOL_A_NAME = 'SchoolTest Demo School A';
 const CLASSES_GLOB = '**/api/ops/schools/*/classes*';
+const SHOTS = path.resolve(__dirname, '../../../../mvp/ops/proof/shots');
+const VIEWPORT = { width: 1440, height: 900 };
+
+async function shot(page: Page, name: string): Promise<void> {
+  await mkdir(SHOTS, { recursive: true });
+  await page.screenshot({ path: path.join(SHOTS, name) });
+}
+
+const railLink = (page: Page, href: string) =>
+  page.locator(`a[data-sidebar="menu-button"][href="${href}"]`);
 
 function corsHeaders(): Record<string, string> {
   return {
@@ -130,8 +145,11 @@ async function seededSchoolId(request: APIRequestContext, name: string): Promise
   const cached = schoolCache.get(name);
   if (cached) return cached;
   const jwt = await opsToken(request);
+  // The seed now carries 314 schools (105 pages), so the fixture school is no
+  // longer on page 1 — read it through the list's OWN `q` search instead of
+  // paging (task 04 helper repair; the route and filters are the endpoint's).
   const res = await request.get(
-    `${process.env.E2E_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:5500'}/api/ops/schools`,
+    `${process.env.E2E_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:5500'}/api/ops/schools?q=${encodeURIComponent(name)}`,
     { headers: { authorization: `Bearer ${jwt}`, [OPS_PORTAL_VERSION_HEADER]: '1' } },
   );
   if (!res.ok()) throw new OpsFixturePrerequisiteError(`schools list failed: ${res.status()}`);
@@ -185,9 +203,13 @@ test.describe.serial('ops portal states', () => {
     release();
     await expect(page.getByTestId('ops-classes-loading')).toBeHidden({ timeout: ACTION_TIMEOUT });
     // classesTab i18n keys are absent from en.json (task-19 gap), so the
-    // empty surface is asserted structurally, not by message text.
+    // empty surface is asserted structurally, not by message text. The
+    // design-system EmptyState renders its title as a <p>, never a heading —
+    // assert its stable data-slot (task-04 re-point; was getByRole('heading')).
     await expect(tab.getByTestId('ops-classes-row')).toHaveCount(0, { timeout: ACTION_TIMEOUT });
-    await expect(tab.getByRole('heading').first()).toBeVisible({ timeout: ACTION_TIMEOUT });
+    await expect(tab.locator('[data-slot="empty-state"]').first()).toBeVisible({
+      timeout: ACTION_TIMEOUT,
+    });
   });
 
   test('empty: no rows and a next-action surface when the list is empty', async ({ page, request }) => {
@@ -195,7 +217,9 @@ test.describe.serial('ops portal states', () => {
     await signedIn(page, request);
     const tab = await openClassesTab(page, request);
     await expect(tab.getByTestId('ops-classes-row')).toHaveCount(0, { timeout: ACTION_TIMEOUT });
-    await expect(tab.getByRole('heading').first()).toBeVisible({ timeout: ACTION_TIMEOUT });
+    await expect(tab.locator('[data-slot="empty-state"]').first()).toBeVisible({
+      timeout: ACTION_TIMEOUT,
+    });
   });
 
   test('load error: a 500 envelope renders the error state', async ({ page, request }) => {
@@ -225,30 +249,200 @@ test.describe.serial('ops portal states', () => {
     await expect(tab.getByRole('alert')).toBeVisible({ timeout: ACTION_TIMEOUT });
   });
 
-  test('restricted: ops_support sees the read-only banner and reads still render', async ({
-    page,
-    request,
-  }) => {
-    // Pins CURRENT committed truth (see header note): banner renders, reads
-    // work. Tasks 02/31 own any change to this when enforcement lands.
+  test('restricted: ops_support sees the read-only banner', async ({ page, request }) => {
+    // Task 04 pins ONLY the read-only banner — the strip this task's chrome
+    // ships. The ops_support read/write matrix (which tabs and reads render
+    // for a support session) transferred END TO END to task 28 (`ops_support`:
+    // the rail, and the read-only sweep — After: 04,41,42; D-19/D-31) by
+    // explicit orchestrator ruling: the former Classes-tab assertions here
+    // were that task's and they left with it. Explicit transfer, not a
+    // weakened assertion.
     await supportSignedIn(page, request);
-    const schoolId = await seededSchoolId(request, SCHOOL_A_NAME);
-    await gotoSchool(page, schoolId);
+    await page.goto('/dashboard/ops/schools').then(() => undefined);
     await expect(
       page.locator('[data-slot="ops-capabilities-read-only"][data-ops-role="ops_support"]'),
     ).toBeVisible({ timeout: ACTION_TIMEOUT });
-    await page
-      .getByRole('tab', { name: cat(en, 'Ops.schoolTables.tab.classes') })
-      .click({ timeout: ACTION_TIMEOUT });
-    await expect(page.getByTestId('ops-classes-tab')).toBeVisible({ timeout: ACTION_TIMEOUT });
   });
 
-  test('expired: an invalid token redirects to plain /sign-in', async ({ page }) => {
-    // The designed `?error=session` overlay has NO backing production path in
-    // ops (use-require-ops.ts redirects to plain /sign-in), so this pins the
-    // real redirect only. Flagged to the orchestrator; not faked here.
+  test('expired: a boot-invalid token renders the wall over the guard and never redirects', async ({
+    page,
+  }) => {
+    // GAP-6 as shipped: the committed boundary raises the sessionExpired flag
+    // on the first auth-invalid response and useRequireOps stops
+    // bounce-redirecting while it stands — the wall IS the expired state, for
+    // a boot-invalid token exactly as for a mid-session one (the rail suite's
+    // `expired wall:` test pins that second, kept-tree path). The old redirect
+    // expectation contradicted the Keeps-working rule it sat under; corrected
+    // to the current task contract by orchestrator ruling. No auth change.
     await seedToken(page, INVALID_TOKEN);
     await page.goto('/dashboard/ops').then(() => undefined);
-    await expect(page).toHaveURL(/\/sign-in/, { timeout: ACTION_TIMEOUT });
+    await expect(page.locator('[data-slot="ops-session-expired"]')).toBeVisible({
+      timeout: ACTION_TIMEOUT,
+    });
+    await expect(page).not.toHaveURL(/sign-in/, { timeout: ACTION_TIMEOUT });
   });
+});
+
+// mvp/ops task 04 (Ops Portal.dc.html:51-58): the offline strip, driven by the
+// browser's own online/offline events through useOnlineStatus — no canned UI
+// state, the context actually leaves the network. Both tests drive the schools
+// list (a surviving route) directly — no fixture-school dependency.
+test.describe('offline strip', () => {
+  test('going offline renders the strip with Retry connection; coming back removes it without a reload', async ({
+    page,
+    request,
+  }) => {
+    await page.setViewportSize(VIEWPORT);
+    await signedIn(page, request);
+    await page.goto('/dashboard/ops/schools').then(() => undefined);
+    // Go offline only once the page is FULLY interactive: the rail link is a
+    // client-rendered element, so its visibility proves hydration finished and
+    // the chunk graph is loaded — cutting the network mid-chunk would kill
+    // hydration itself and no hook could ever observe the offline event.
+    await expect(railLink(page, '/dashboard/ops/schools')).toBeVisible({
+      timeout: ACTION_TIMEOUT,
+    });
+    await expect(page.locator('[data-slot="ops-offline-strip"]')).toHaveCount(0, {
+      timeout: ACTION_TIMEOUT,
+    });
+
+    // A marker set before going offline must survive the whole episode: the
+    // strip has to clear through the online EVENT, never through a reload.
+    await page.evaluate(() => {
+      (window as { __offlineProbe?: number }).__offlineProbe = 1;
+    });
+
+    await page.context().setOffline(true);
+    const strip = page.locator('[data-slot="ops-offline-strip"]');
+    await expect(strip).toBeVisible({ timeout: ACTION_TIMEOUT });
+    await expect(strip.locator('[data-slot="ops-offline-retry"]')).toBeVisible();
+    await expect(strip).toContainText(cat(en, 'Ops.capabilities.offlineRetry'));
+    await shot(page, '04-offline-strip.png');
+
+    await page.context().setOffline(false);
+    await expect(page.locator('[data-slot="ops-offline-strip"]')).toBeHidden({
+      timeout: ACTION_TIMEOUT,
+    });
+    expect(
+      await page.evaluate(() => (window as { __offlineProbe?: number }).__offlineProbe),
+    ).toBe(1);
+  });
+
+  test('offline outranks read-only: a support session sees the offline strip, not the read-only one', async ({
+    page,
+    request,
+  }) => {
+    await supportSignedIn(page, request);
+    await page.goto('/dashboard/ops/schools').then(() => undefined);
+    const readOnly = page.locator('[data-slot="ops-capabilities-read-only"]');
+    await expect(readOnly).toBeVisible({ timeout: ACTION_TIMEOUT });
+
+    await page.context().setOffline(true);
+    await expect(page.locator('[data-slot="ops-offline-strip"]')).toBeVisible({
+      timeout: ACTION_TIMEOUT,
+    });
+    await expect(readOnly).toBeHidden();
+  });
+});
+
+// mvp/ops task 04 — R-01…R-06 and R-26 (Ops Portal.dc.html:25-47, 49-66):
+// the rail is the design's two-region layout, and the dashboard topbar is
+// gated out of /dashboard/ops/** — asserted per portal, never assumed.
+test.describe('ops rail and topbar gate', () => {
+  test('the rail is the two-region design: one Operations entry, one Account entry, five consoles gone', async ({
+    page,
+  }) => {
+    await page.setViewportSize(VIEWPORT);
+    await loginAs(page, 'ops');
+    await page.goto('/dashboard/ops/schools');
+
+    // PRIMARY region — exactly one Operations entry, named Schools, inside the
+    // scroll content and nowhere else.
+    await expect(railLink(page, '/dashboard/ops/schools')).toHaveCount(1);
+    await expect(railLink(page, '/dashboard/ops/schools')).toContainText(
+      cat(en, 'Shell.nav.opsSchools'),
+    );
+    // ACCOUNT region — exactly one Settings entry, in the footer nav.
+    await expect(
+      page.locator('[data-slot="sidebar-footer"] a[data-sidebar="menu-button"][href="/dashboard/ops/settings"]'),
+    ).toHaveCount(1);
+    await expect(railLink(page, '/dashboard/ops/settings')).toContainText(
+      cat(en, 'Shell.nav.opsSettings'),
+    );
+    // The five retired console destinations are absent from every region.
+    for (const dest of ['timers', 'system', 'audit', 'comms', 'flags']) {
+      await expect(railLink(page, `/dashboard/ops/${dest}`)).toHaveCount(0);
+    }
+    // R-26: no bell block and no breadcrumb row above the ops page body.
+    await expect(page.locator('[data-slot="topbar-actions"]')).toHaveCount(0);
+    await expect(
+      page.getByRole('navigation', { name: cat(en, 'Shell.topbar.breadcrumbLabel') }),
+    ).toHaveCount(0);
+
+    await shot(page, '04-rail.png');
+  });
+
+  test('below md the rail collapses to a sheet; SidebarTrigger opens it and both entries mount', async ({
+    page,
+  }) => {
+    await loginAs(page, 'ops');
+    await page.setViewportSize({ width: 767, height: 900 });
+    await page.goto('/dashboard/ops/schools');
+
+    // The sheet unmounts its items while shut (ops-nav.spec:154-159 pattern).
+    await expect(railLink(page, '/dashboard/ops/schools')).toHaveCount(0);
+    await page.getByRole('button', { name: cat(en, 'Shell.topbar.toggleNav') }).click();
+    await expect(railLink(page, '/dashboard/ops/schools')).toBeVisible();
+    await expect(railLink(page, '/dashboard/ops/settings')).toBeVisible();
+
+    await shot(page, '04-rail-sheet-md.png');
+  });
+
+  test('expired wall: a mid-session invalidation renders the wall over the kept tree', async ({
+    page,
+    request,
+  }) => {
+    await page.setViewportSize(VIEWPORT);
+    await signedIn(page, request);
+    await page.goto('/dashboard/ops/schools');
+    await expect(railLink(page, '/dashboard/ops/schools')).toBeVisible({ timeout: ACTION_TIMEOUT });
+
+    // Kill the token the way a server-side revocation would, then force a
+    // client-side read: the boundary raises the flag and the wall renders —
+    // no redirect, no reload, the kept tree still beneath it.
+    await page.evaluate(([key]) => {
+      window.localStorage.setItem(key, 'invalid-token-for-task-04-wall');
+    }, [AUTH_TOKEN_KEY]);
+    await railLink(page, '/dashboard/ops/settings').click();
+    const wall = page.locator('[data-slot="ops-session-expired"]');
+    await expect(wall).toBeVisible({ timeout: ACTION_TIMEOUT });
+    await expect(page).not.toHaveURL(/sign-in/);
+    // D-14: the configured timeout, never the design's sample 30 minutes —
+    // or the honest no-number sentence if the read never answered.
+    await expect(wall).not.toContainText('after 30 minutes');
+
+    await shot(page, '04-expired-wall.png');
+  });
+
+  for (const [role, path, shotName] of [
+    ['schoolAdmin', '/dashboard/school', '04-school-topbar-intact.png'],
+    ['teacher', '/dashboard', '04-teacher-topbar-intact.png'],
+    ['parent', '/dashboard', '04-parent-topbar-intact.png'],
+  ] as const) {
+    test(`R-26 gated, not deleted: the ${role} portal keeps its topbar, crumb trail and bell`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(VIEWPORT);
+      await loginAs(page, role);
+      await page.goto(path);
+      await expect(page.locator('[data-slot="topbar-actions"]')).toBeVisible({
+        timeout: ACTION_TIMEOUT,
+      });
+      await expect(
+        page.getByRole('navigation', { name: cat(en, 'Shell.topbar.breadcrumbLabel') }),
+      ).toBeVisible({ timeout: ACTION_TIMEOUT });
+
+      await shot(page, shotName);
+    });
+  }
 });

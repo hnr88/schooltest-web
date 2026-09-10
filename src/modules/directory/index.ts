@@ -24,6 +24,20 @@ export {
   DirectoryStaleBanner,
 } from './components/DirectoryStates';
 export { DirectoryToolbar } from './components/DirectoryToolbar';
+// school-admin/02 — §L-filters (U-07): the ONE renderer for all eight kinds
+// and its per-kind table (kind info, value codecs, totality helpers).
+export { DirectoryFilters, type DirectoryFiltersProps } from './components/DirectoryFilters';
+export {
+  DIRECTORY_FILTER_KINDS,
+  DIRECTORY_TOGGLE_ON,
+  directoryFilterKindOf,
+  directoryFilterNeedsPredicate,
+  directoryFilterParamOf,
+  directoryFilterValueOf,
+  equalityBy,
+  type AnyDirectoryFilterDef,
+  type DirectoryFilterKindInfo,
+} from './lib/directory-filter-kinds';
 export { DirectoryList, type DirectoryListLayout } from './components/DirectoryList';
 export { useDirectoryState } from './hooks/use-directory-state';
 export {
@@ -75,7 +89,15 @@ export type {
   DirectoryClientResult,
   DirectoryColumnDef,
   DirectoryFilterDef,
+  DirectoryFilterKind,
+  DirectoryFilterValue,
   DirectoryFilterValues,
+  DirectoryPaginationDef,
+  DirectoryPendingFilterDef,
+  FilterKeys,
+  ListPredicates,
+  ListSortValue,
+  ListSource,
   DirectoryHeaderAction,
   DirectoryHeaderDef,
   DirectoryEmptyCopy,

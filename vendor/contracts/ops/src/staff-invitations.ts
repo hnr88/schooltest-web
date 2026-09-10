@@ -22,7 +22,7 @@
  */
 import { z } from 'zod';
 
-import { documentIdSchema, type OpsOperation } from './core';
+import { dataEnvelope, documentIdSchema, type OpsOperation } from './core';
 
 const EMAIL_MAX = 255;
 const NAME_MAX = 100;
@@ -192,4 +192,67 @@ export const StaffInvitationsOperation: OpsOperation<
   response: staffInvitationsResponseSchema,
   success: 200,
   errors: [400, 401, 403, 404, 429, 500],
+});
+
+/* ------------------------------------------------------------------ *
+ * C-OPS-INV-CREATE — POST /api/ops/schools/{documentId}/{admin|teacher}-invitations.
+ *
+ * DECLARATION ONLY. Task 25 moves the server and the web hook onto these
+ * symbols; today the same shape is maintained twice, in the controller's own
+ * parser (`schooltest-api/src/api/school/lib/school-invitation-write.actions.ts`)
+ * and in the web dialog, which is the duplication this record retires.
+ *
+ * READ BEFORE IMPLEMENTING: the two deployed parsers do NOT both match the
+ * record this schema encodes. The unversioned parser takes
+ * `{ email, first_name, last_name, role }` and rejects `message` as an unknown
+ * field; the versioned parser (X-Ops-Portal-Version) takes
+ * `{ email, display_name, message?, access_model?, role }` and rejects
+ * `first_name`/`last_name`. The record — `{ first_name, last_name, email,
+ * message? }`, strict, no `role` — is the frozen signature (RUN.md law 4) and
+ * is what this declaration states; reconciling the two live parsers with it is
+ * task 25's work, not task 01's, and it is a wire change on at least one of
+ * the two paths.
+ * ------------------------------------------------------------------ */
+
+/** No length is recorded for `message`; this bound is declared here, not derived. */
+const INVITE_MESSAGE_MAX = 1000;
+
+/**
+ * The invite body. `role` is NOT a body key: the path segment
+ * (`admin-invitations` / `teacher-invitations`) forces it server-side, so a
+ * caller cannot promote a teacher invite into an admin one by sending a field.
+ * Names and address are trimmed, so a padded value is accepted rather than
+ * 400'd — the same rule `onboardingInviteBodySchema` applies in ./core.
+ */
+export const staffInviteBodySchema = z.strictObject({
+  first_name: z.string().trim().min(1).max(NAME_MAX),
+  last_name: z.string().trim().min(1).max(NAME_MAX),
+  email: z.string().trim().max(EMAIL_MAX).pipe(z.email()),
+  message: z.string().trim().max(INVITE_MESSAGE_MAX).optional(),
+});
+export type StaffInviteBody = z.infer<typeof staffInviteBodySchema>;
+
+/** 201 body — the created invitation as the list already projects it. */
+export const staffInviteResponseSchema = dataEnvelope(staffInvitationRowSchema);
+export type StaffInviteResponse = z.infer<typeof staffInviteResponseSchema>;
+
+/**
+ * C-OPS-INV-CREATE. 201 on create; 409 when the address already has access to
+ * this school, or when the single-admin rule refuses a second one.
+ *
+ * `path` carries the record's `{admin|teacher}` alternation because ONE
+ * operation serves both routes — the role is the segment. `errors` is the
+ * record's list verbatim: [400, 401, 403, 404, 409].
+ */
+export const StaffInviteOperation: OpsOperation<
+  typeof staffInviteBodySchema,
+  typeof staffInviteResponseSchema
+> = Object.freeze({
+  contractId: 'C-OPS-INV-CREATE',
+  method: 'POST',
+  path: '/api/ops/schools/{documentId}/{admin|teacher}-invitations',
+  request: staffInviteBodySchema,
+  response: staffInviteResponseSchema,
+  success: 201,
+  errors: [400, 401, 403, 404, 409],
 });

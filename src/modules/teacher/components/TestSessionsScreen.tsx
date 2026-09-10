@@ -1,6 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 
+import { IdleClassChips } from '@/modules/teacher/components/IdleClassChips';
 import { JoinCodePanel } from '@/modules/teacher/components/JoinCodePanel';
+import { LiveSessionsByClass } from '@/modules/teacher/components/LiveSessionsByClass';
 import { PastSessionsPanel } from '@/modules/teacher/components/PastSessionsPanel';
 import { StartTestSessionPanel } from '@/modules/teacher/components/StartTestSessionPanel';
 
@@ -22,6 +24,8 @@ export async function TestSessionsScreen() {
         <p className="text-lede text-muted-foreground">{t('description')}</p>
       </div>
 
+      <LiveSessionsByClass />
+      <IdleClassChips />
       <StartTestSessionPanel />
       <JoinCodePanel />
       <PastSessionsPanel />

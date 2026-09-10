@@ -114,6 +114,11 @@ export const TEACHER_AUTH_FAILURE_STATUS = {
 
 /* ── C-TD-1 · GET /api/teacher/dashboard ───────────────────────────────── */
 
+/**
+ * The derived class status — MIRROR of `dashboardClassSchema` in
+ * schooltest-api/src/contracts/teacher.ts (D-60: a server derivation; the
+ * client applies no cut of its own and never re-derives it).
+ */
 export const dashboardClassSchema = z.strictObject({
   class_document_id: teacherDocumentIdSchema,
   name: str,
@@ -122,6 +127,8 @@ export const dashboardClassSchema = z.strictObject({
   test_a: testCompletionSchema,
   test_b: testCompletionSchema,
   top_gap: topGapSchema.nullable(),
+  status: z.enum(['sitting_now', 'scheduled', 'no_tests_yet', 'complete']),
+  open_session_count: teacherCountSchema,
 });
 
 /** The caller's most recently opened `status:'open'` sitting, else `null`. */
@@ -136,6 +143,8 @@ export const dashboardLiveSessionSchema = z.strictObject({
 export const teacherDashboardResponseSchema = z.strictObject({
   classes: z.array(dashboardClassSchema),
   live_session: dashboardLiveSessionSchema.nullable(),
+  /** Every open sitting of every owned class, BESIDE the singular above (additive). */
+  live_sessions: z.array(dashboardLiveSessionSchema),
 });
 
 /* ── C-TD-2 · GET /api/teacher/tests ───────────────────────────────────── */

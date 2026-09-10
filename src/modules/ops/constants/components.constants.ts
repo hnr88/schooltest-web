@@ -1,4 +1,3 @@
-import type { SectionTimersFormValues } from '@/modules/ops/schemas/section-timers.schema';
 import type { SchoolPlan } from '@/modules/school-admin';
 
 export const DATE_TIME = 'd MMM yyyy, HH:mm';
@@ -8,8 +7,3 @@ export const DATE_TIME = 'd MMM yyyy, HH:mm';
 // switch - there is no self-serve path onto it.
 export const SCHOOL_PLAN_OPTIONS: readonly SchoolPlan[] = ['trial', 'full_license'];
 
-export const SECTION_FIELDS: ReadonlyArray<{ stage: number; name: keyof SectionTimersFormValues }> = [
-  { stage: 1, name: 'section1' },
-  { stage: 2, name: 'section2' },
-  { stage: 3, name: 'section3' },
-];

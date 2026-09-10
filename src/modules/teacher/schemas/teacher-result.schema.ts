@@ -16,11 +16,14 @@ import {
   topGapSchema,
 } from '@/modules/teacher/schemas/teacher.schema';
 
-// TEACHER RESULTS — client mirror of C-TR-1..3 (.qa/CONTRACTS.md;
-// schooltest-api/src/contracts/teacher-results.ts), field for field. C-TR-4
-// lives in the sibling teacher-progress.schema.ts. Every number below is
-// DERIVED SERVER-SIDE from persisted rows; the portal computes none of them and
-// re-thresholds none of them.
+// TEACHER RESULTS — client mirror of C-TR-1..3 (.qa/CONTRACTS.md is the only
+// authority — the schemas here parse the legacy wire the retired routes once
+// served), field for field. C-TR-4 lives in the sibling
+// teacher-progress.schema.ts. Every number below is DERIVED SERVER-SIDE from
+// persisted rows; the portal computes none of them and re-thresholds none of
+// them. (X-02, teacher/15: an earlier comment cited
+// `schooltest-api/src/contracts/teacher-results.ts`, which has never existed
+// on disk — do not go looking for it.)
 
 const str = z.string().min(1);
 

@@ -35,11 +35,20 @@ export const portalStatusSchema = z.enum(['active', 'trial', 'pending_setup', 's
 export type PortalStatus = z.infer<typeof portalStatusSchema>;
 
 /**
- * GAP-15: the designed "last_active_at:desc" sort is withheld until the
- * last_active_at column exists (OPS-005); sorting a column that is not there
- * would silently degrade to another order.
+ * The four sorts the design's dropdown offers (`Ops Portal.dc.html:104`):
+ * Name A-Z, Most students, Recently active, Newest. GAP-15 is DISCHARGED —
+ * `last_active_at` is a real column (OPS-005), so the designed
+ * `last_active_at:desc` sort is served rather than withheld.
+ *
+ * Added as a fourth ENUM MEMBER, so every previously valid `sort` value stays
+ * valid and a caller that omits `sort` is unaffected.
  */
-export const schoolsListSortSchema = z.enum(['name:asc', 'student_count:desc', 'createdAt:desc']);
+export const schoolsListSortSchema = z.enum([
+  'name:asc',
+  'student_count:desc',
+  'createdAt:desc',
+  'last_active_at:desc',
+]);
 export type SchoolsListSort = z.infer<typeof schoolsListSortSchema>;
 
 export const schoolsListQuerySchema = z.strictObject({
@@ -90,6 +99,13 @@ export const schoolsListRowSchema = z.strictObject({
   sector: sectorSchema.nullable(),
   createdAt: z.string().nullable(),
   updatedAt: z.string(),
+  /**
+   * Last known activity instant (OPS-005). An ISO instant, never a formatted
+   * string: D-09 puts relative formatting ("2h ago") in the client, so the
+   * server stays locale-free. NULL is a real, rendered value — the design maps
+   * it to "Never" (`Ops Portal.dc.html:1496`) — and never means "unknown".
+   */
+  last_active_at: z.iso.datetime().nullable(),
   /** Resolved from the school's coverImage media relation; null when unset. */
   cover_image_url: z.string().nullable(),
 });

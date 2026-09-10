@@ -94,6 +94,8 @@ export type RubricOutput = z.infer<typeof rubricOutputSchema>;
 
 /** One question row, in served order. */
 export const reviewItemSchema = z.strictObject({
+  /** Strapi v5 identity used by C-REV-2 to write this exact response row. */
+  response_document_id: z.string().min(1),
   sequence_index: z.number().int().min(0),
   item_code: str,
   prompt: str.nullable(),
@@ -109,8 +111,23 @@ export const reviewItemSchema = z.strictObject({
   area: str.nullable(),
   correct_key: correctKeySchema.nullable(),
   rubric_score: rubricOutputSchema.nullable(),
+  teacher_mark: z.number().nullable(),
+  teacher_mark_source: z.enum(['accepted', 'overridden', 'declined']).nullable(),
+  teacher_note: z.string().nullable(),
 });
-export type ReviewItem = z.infer<typeof reviewItemSchema>;
+// Keep old read-only fixture literals source-compatible while the wire schema
+// remains strict and requires the three C-REV-2 fields from the server.
+type ReviewItemWire = z.infer<typeof reviewItemSchema>;
+export type ReviewItem = Omit<
+  ReviewItemWire,
+  'response_document_id' | 'teacher_mark' | 'teacher_mark_source' | 'teacher_note'
+> &
+  Partial<
+    Pick<
+      ReviewItemWire,
+      'response_document_id' | 'teacher_mark' | 'teacher_mark_source' | 'teacher_note'
+    >
+  >;
 
 /** The whole review read. */
 export const resultReviewSchema = z.strictObject({
@@ -119,6 +136,7 @@ export const resultReviewSchema = z.strictObject({
   release_state: str,
   skill: str.nullable(),
   cefr_band: str.nullable(),
+  teacher_comment: z.string().nullable(),
   item_count: z.number().int().min(0),
   items: z.array(reviewItemSchema),
 }).superRefine((body, ctx) => {
@@ -143,3 +161,40 @@ export const resultReviewSchema = z.strictObject({
   }
 });
 export type ResultReview = z.infer<typeof resultReviewSchema>;
+
+/** C-REV-2 — the three human sources; the worker-owned suggestion is not writable. */
+export const teacherMarkSchema = z.enum(['accepted', 'overridden', 'declined']).nullable();
+export type TeacherMarkSource = z.infer<typeof teacherMarkSchema>;
+
+const resultReviewResponseBodySchema = z
+  .strictObject({
+    response_document_id: z.string().min(1),
+    teacher_mark: z.number().finite().nullable(),
+    teacher_mark_source: teacherMarkSchema,
+    teacher_note: z.string().nullable().optional(),
+    decline_kind: rubricDeclineKindSchema.optional(),
+  })
+  .superRefine((body, ctx) => {
+    const declined = body.teacher_mark_source === 'declined';
+    const validDeclineKind = body.decline_kind === 'blank' || body.decline_kind === 'language';
+    if (declined && !validDeclineKind) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['teacher_mark_source'],
+        message: 'declined marks require a blank or language decline',
+      });
+    }
+    if (!declined && body.decline_kind !== undefined && validDeclineKind) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['decline_kind'],
+        message: 'blank and language declines require teacher_mark_source declined',
+      });
+    }
+  });
+
+export const resultReviewBodySchema = z.strictObject({
+  responses: z.array(resultReviewResponseBodySchema),
+  comment: z.string().nullable().optional(),
+});
+export type ResultReviewBody = z.infer<typeof resultReviewBodySchema>;

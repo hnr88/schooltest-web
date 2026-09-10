@@ -3,7 +3,6 @@ import type { SchoolDetail, StaffUserRole, StaffUserRow } from '@schooltest/ops-
 import type { FormWindow, OpsForm } from '@/modules/ops/schemas/form-window.schema';
 import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
 import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
-import type { SectionTimersMeta, TimerSection } from '@/modules/ops/schemas/section-timers.schema';
 import type { OpsSchool, OpsTeacherRow } from '@/modules/ops/types/ops.types';
 import type { OpsSchoolAdminInviteMode } from '@/modules/ops/lib/ops-school-admin-invite';
 import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
@@ -84,11 +83,6 @@ export interface OpsSchoolCountCardsProps {
   school: SchoolDetail;
   /** OPS-teacher-details: clicking the Teachers card opens the directory. */
   onTeachersClick?: () => void;
-}
-
-export interface OpsSectionTimersFormProps {
-  sections: TimerSection[];
-  meta: SectionTimersMeta | null;
 }
 
 export interface OpsSettingsControlProps {

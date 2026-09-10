@@ -6,20 +6,24 @@ import { fixtureClassId } from './helpers/fixture-class';
 import { fixtureTeacherCredentials } from './helpers/credentials';
 
 // Task 111 (st-mvp-pivot) targeted live check - NOT part of the suite.
-// Teacher cycle banner (mvp-updates 4.5, C-TEACH-02): the banner on the class
-// page must agree with the live GET /api/schools/me/classes/:documentId/cycle
-// payload (position, window dates, live form code - never hardcoded here),
-// sit above the class content, and carry no ACARA phase text. The unscheduled
-// branch needs a school with no live form, which the fixture never has, so it
-// is covered structurally: the browser's cycle call is stubbed to the
-// contract's unscheduled payload and the empty-state copy is asserted from
-// the en catalog. No fixture mutation anywhere in this spec.
+// Teacher cycle banner (mvp-updates 4.5, C-TEACH-02): the banner must agree with
+// the live GET /api/schools/me/classes/:documentId/cycle payload (position,
+// window dates, live form code - never hardcoded here) and carry no ACARA phase
+// text. teacher/06 re-parented it from the class page onto the class-list
+// header (Teacher Portal v2.dc.html:66), so this spec is RE-POINTED, never
+// deleted: the banner now lives above the classes list and reads the cycle of
+// the teacher's first owned class. The unscheduled branch needs a school with
+// no live form, which the fixture never has, so it is covered structurally: the
+// browser's cycle call is stubbed to the contract's unscheduled payload and the
+// empty-state copy is asserted from the en catalog. No fixture mutation anywhere
+// in this spec.
 const en = loadMessages('en');
 
 const API = 'http://127.0.0.1:5500';
 const TEACHER = fixtureTeacherCredentials();
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
-const CLASS_URL = `/en/dashboard/teach/classes/${CLASS_ID}`;
+// teacher/06 (C2): the banner re-parented to the class-list header.
+const CLASS_URL = '/en/dashboard/results';
 
 type CyclePosition = 'test_a' | 'test_b' | 'unscheduled';
 
@@ -107,15 +111,15 @@ test.describe('task 111: teacher cycle banner vs live C-TEACH-02', () => {
       }
     }
 
-    // The banner renders above the class content (the roster surface).
-    const roster = page.locator('[data-surface="teacher-roster"]');
-    await expect(roster).toBeVisible({ timeout: 20_000 });
+    // The banner renders above the classes list (its new host surface).
+    const list = page.locator('[data-slot="teacher-classes-list"]');
+    await expect(list).toBeVisible({ timeout: 20_000 });
     const bannerBox = await banner.boundingBox();
-    const rosterBox = await roster.boundingBox();
+    const listBox = await list.boundingBox();
     expect(bannerBox).not.toBeNull();
-    expect(rosterBox).not.toBeNull();
-    if (bannerBox && rosterBox) {
-      expect(bannerBox.y + bannerBox.height).toBeLessThanOrEqual(rosterBox.y);
+    expect(listBox).not.toBeNull();
+    if (bannerBox && listBox) {
+      expect(bannerBox.y + bannerBox.height).toBeLessThanOrEqual(listBox.y);
     }
 
     // Teacher-only surface: no ACARA phase text anywhere in the rendered page.

@@ -51,7 +51,14 @@ test.describe('ops session expired wall (GAP-6 visual proof)', () => {
     const card = page.locator('[data-slot="ops-session-expired"]');
     await card.waitFor({ state: 'visible', timeout: 60_000 });
     await expect(card).toContainText(cat(en, 'Auth.sessionExpired'));
-    await expect(card).toContainText(cat(en, 'Auth.sessionExpiredBody'));
+    // D-14 (mvp/ops task 04): a HARD RELOAD is the no-cache case — the settings
+    // read is born disabled here (the guard enables it only for a live session)
+    // and the QueryClient cache died with the reload, so the wall renders the
+    // no-timeout sentence rather than inventing a number. The old
+    // Auth.sessionExpiredBody "30 minutes" assertion contradicted that shipped
+    // behaviour.
+    await expect(card).toContainText(cat(en, 'Ops.capabilities.sessionExpiredBodyNoTimeout'));
+    await expect(card).not.toContainText(/after \d+ minutes/);
     const action = card.getByRole('link', { name: cat(en, 'Auth.sessionExpiredAction') });
     await expect(action).toBeVisible();
     await expect(action).toHaveAttribute('href', /\/sign-in$/);

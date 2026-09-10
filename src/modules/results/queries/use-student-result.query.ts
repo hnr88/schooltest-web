@@ -5,21 +5,25 @@ import { useQuery } from '@tanstack/react-query';
 import { resultViewSchema, type ResultView } from '@schooltest/scoring-contracts';
 
 import { strapi } from '@/lib/axios/strapi';
+import {
+  legacyResultViewSchema,
+  type LegacyResultView,
+} from '@/modules/report/schemas/result-view.schema';
+
+export type ResultPayload =
+  { kind: 'v2'; view: ResultView } | { kind: 'legacy'; view: LegacyResultView };
 
 /**
- * spec v2 §6.3 — the canonical read: GET /api/results/{documentId}, `history`
- * included (official, same-model-version sittings, oldest first, last 8).
- * Ownership is the server's job (admin any, student own, teacher own-students
- * OFFICIAL only), so the portal never filters and never retries a 403/404.
- *
- * WIRING MARK (task 29 running early): the schema is the TARGET v2 view; the
- * live API still emits the v1 shape until tasks 16 and 23 — this parse fails
- * against today's response by design. Screen C (task 30) wires up after 23;
- * nothing imports this hook yet.
+ * C-4 canonical read: GET /api/results/{documentId}, with same-model history.
+ * Ownership is the server's job, so the portal never filters and never retries
+ * a 403/404. Current reading rows use v2; legacy, listening and scoring_failed
+ * rows retain the server's legacy view.
  */
-export async function fetchStudentResult(resultId: string): Promise<ResultView> {
+export async function fetchStudentResult(resultId: string): Promise<ResultPayload> {
   const response = await strapi.get(`/api/results/${resultId}`);
-  return resultViewSchema.parse(response.data);
+  const v2 = resultViewSchema.safeParse(response.data);
+  if (v2.success) return { kind: 'v2', view: v2.data };
+  return { kind: 'legacy', view: legacyResultViewSchema.parse(response.data) };
 }
 
 export function useStudentResultQuery(resultId: string, enabled = true) {
@@ -31,3 +35,5 @@ export function useStudentResultQuery(resultId: string, enabled = true) {
     retry: false,
   });
 }
+
+export const useResultQuery = useStudentResultQuery;

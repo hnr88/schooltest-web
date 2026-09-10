@@ -5,8 +5,8 @@ import { isAxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions';
 import { useUpdateClassMutation } from '@/modules/classes/queries/use-update-class.mutation';
 import {
   createEditClassFormSchema,
@@ -40,17 +40,17 @@ export function useEditClassForm(schoolClass: EditClassTarget, onClose: () => vo
         teacher_documentIds:
           values.teacher_documentId === '' ? [] : [values.teacher_documentId],
       });
-      toast.success(t('savedToast', { name: values.name }));
+      showOpsToast({ tone: 'ok', message: t('savedToast', { name: values.name }) });
       onClose();
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 403) {
         // C-CLS-03 tenancy failures carry the server reason (e.g. a teacher
         // outside the school); surface it verbatim when present.
         const envelope = error.response.data as StrapiErrorEnvelope | undefined;
-        toast.error(envelope?.error?.message ?? t('forbiddenToast'));
+        showOpsToast({ tone: 'error', message: envelope?.error?.message ?? t('forbiddenToast') });
         return;
       }
-      toast.error(t('errorToast'));
+      showOpsToast({ tone: 'error', message: t('errorToast') });
     }
   });
 

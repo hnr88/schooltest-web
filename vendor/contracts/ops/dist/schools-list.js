@@ -22,11 +22,20 @@ exports.portalPlanSchema = zod_1.z.enum(['pilot', 'standard', 'enterprise']);
 /** GAP-12 (derived portal_status needs portal_plan/OPS-002 + archived_at/OPS-005). */
 exports.portalStatusSchema = zod_1.z.enum(['active', 'trial', 'pending_setup', 'suspended', 'archived']);
 /**
- * GAP-15: the designed "last_active_at:desc" sort is withheld until the
- * last_active_at column exists (OPS-005); sorting a column that is not there
- * would silently degrade to another order.
+ * The four sorts the design's dropdown offers (`Ops Portal.dc.html:104`):
+ * Name A-Z, Most students, Recently active, Newest. GAP-15 is DISCHARGED —
+ * `last_active_at` is a real column (OPS-005), so the designed
+ * `last_active_at:desc` sort is served rather than withheld.
+ *
+ * Added as a fourth ENUM MEMBER, so every previously valid `sort` value stays
+ * valid and a caller that omits `sort` is unaffected.
  */
-exports.schoolsListSortSchema = zod_1.z.enum(['name:asc', 'student_count:desc', 'createdAt:desc']);
+exports.schoolsListSortSchema = zod_1.z.enum([
+    'name:asc',
+    'student_count:desc',
+    'createdAt:desc',
+    'last_active_at:desc',
+]);
 exports.schoolsListQuerySchema = zod_1.z.strictObject({
     page: zod_1.z.number().int().min(1).max(100000).optional(),
     pageSize: zod_1.z.number().int().min(1).max(200).optional(),
@@ -71,6 +80,13 @@ exports.schoolsListRowSchema = zod_1.z.strictObject({
     sector: exports.sectorSchema.nullable(),
     createdAt: zod_1.z.string().nullable(),
     updatedAt: zod_1.z.string(),
+    /**
+     * Last known activity instant (OPS-005). An ISO instant, never a formatted
+     * string: D-09 puts relative formatting ("2h ago") in the client, so the
+     * server stays locale-free. NULL is a real, rendered value — the design maps
+     * it to "Never" (`Ops Portal.dc.html:1496`) — and never means "unknown".
+     */
+    last_active_at: zod_1.z.iso.datetime().nullable(),
     /** Resolved from the school's coverImage media relation; null when unset. */
     cover_image_url: zod_1.z.string().nullable(),
 });

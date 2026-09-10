@@ -41,9 +41,20 @@ export function applyClientDirectoryMode<Row>(
   if (comparator) result = [...result].sort(comparator);
 
   const total = result.length;
-  const pageCount = Math.ceil(total / params.pageSize);
+  // ops/34 — `variant: 'none'` (useDirectoryState) arrives as an infinite
+  // pageSize: one page carrying the WHOLE loaded array, the pager never
+  // rendered. Math.ceil(total / Infinity) would read 0, so the unbounded arm
+  // states its own meta: a single page whenever the array is non-empty.
+  const pageCount = Number.isFinite(params.pageSize)
+    ? Math.ceil(total / params.pageSize)
+    : total === 0
+      ? 0
+      : 1;
   const page = pageCount === 0 ? 1 : clampPage(params.page, pageCount);
-  const start = (page - 1) * params.pageSize;
+  // `(page - 1) * Infinity` is NaN, and `slice(NaN, NaN)` returns [] — the
+  // unbounded arm must state its own window start instead of multiplying.
+  const start =
+    params.pageSize === Number.POSITIVE_INFINITY ? 0 : (page - 1) * params.pageSize;
   const meta: DirectoryMeta = { page, pageSize: params.pageSize, pageCount, total };
 
   return { rows: result.slice(start, start + params.pageSize), meta };

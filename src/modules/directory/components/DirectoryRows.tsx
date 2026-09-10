@@ -31,10 +31,11 @@ import type {
   DirectoryColumnDef,
   DirectoryGroupDef,
   DirectoryLabels,
+  DirectoryMarkupAttrs,
   DirectoryRowAction,
   DirectoryRowApi,
-  DirectoryStateApi,
   DirectorySelectionApi,
+  DirectoryStateApi,
 } from '../types/directory.types';
 
 interface DirectoryRowsProps<Row> {
@@ -55,6 +56,10 @@ interface DirectoryRowsProps<Row> {
   rowHref?: (row: Row) => string;
   /** U-44 — for a row that opens a panel rather than navigating. Never `onClick` on the `<tr>`. */
   onRowSelect?: (row: Row) => void;
+  /** U-17 — pin the header row to the region's scrollport (`sticky top-0`). */
+  sticky?: boolean;
+  /** ops/34 — the surface's per-row markers (`data-*` slot/status), merged onto each body row. */
+  rowAttrs?: (row: Row) => DirectoryMarkupAttrs<HTMLTableRowElement>;
 }
 
 export function DirectoryRows<Row>({
@@ -70,6 +75,8 @@ export function DirectoryRows<Row>({
   groupBy,
   rowHref,
   onRowSelect,
+  sticky = false,
+  rowAttrs,
 }: DirectoryRowsProps<Row>) {
   const leading = selectable ? 1 : 0;
   const trailing = rowActions ? 1 : 0;
@@ -84,10 +91,26 @@ export function DirectoryRows<Row>({
     groupBy,
   });
 
+  // Flat row index per group, for §L-a11y A5's `data-directory-row-index` —
+  // DirectoryTable's row-removal focus lands on the nearest survivor by it.
+  const groupOffsets = new Map<string, number>();
+  let running = 0;
+  for (const group of groups) {
+    groupOffsets.set(group.key, running);
+    running += group.rows.length;
+  }
+
   return (
     <Table>
-      <TableHeader>
-        <TableRow>
+      {/* ops/34 — the sticky recipe pins the THEAD, not the <tr>: sticky on a
+          table row inside a collapsed-border table does not hold, and the
+          proven pre-kit pattern (`PastSessionsTable`'s old header) stuck the
+          THEAD itself. The header row keeps its own classes for the visual
+          state; the pin lives here where the scrollport is chosen. */}
+      <TableHeader className={sticky ? 'sticky top-0 z-10 bg-card' : undefined}>
+        <TableRow
+          data-sticky={sticky || undefined}
+        >
           {selectable ? (
             <TableHead className="w-10">
               <Checkbox
@@ -129,8 +152,15 @@ export function DirectoryRows<Row>({
                 </TableCell>
               </TableRow>
             )}
-            {group.rows.map(({ row, api }) => (
-              <TableRow key={api.key} data-selected={api.selected || undefined} data-last={api.last || undefined}>
+            {group.rows.map(({ row, api }, indexInGroup) => (
+              <TableRow
+                key={api.key}
+                data-selected={api.selected || undefined}
+                data-last={api.last || undefined}
+                data-directory-row
+                data-directory-row-index={(groupOffsets.get(group.key) ?? 0) + indexInGroup}
+                {...rowAttrs?.(row)}
+              >
                 {selectable ? (
                   <TableCell>
                     <Checkbox
@@ -152,7 +182,7 @@ export function DirectoryRows<Row>({
                   </TableCell>
                 ))}
                 {rowActions ? (
-                  <TableCell>
+                  <TableCell data-directory-row-menu>
                     <RowActions api={api} row={row} labels={labels} />
                   </TableCell>
                 ) : null}
@@ -160,18 +190,10 @@ export function DirectoryRows<Row>({
             ))}
           </Fragment>
         ))}
-        {rows.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={colSpan} className="py-10 text-center text-muted-foreground">
-              {labels.emptyNoMatchesTitle}
-            </TableCell>
-          </TableRow>
-        ) : null}
       </TableBody>
     </Table>
   );
 }
-
 /**
  * §L-rownav. The whole-row link is the FIRST cell's content as an `<a>`, never
  * `after:absolute after:inset-0` on a row that also carries a menu — that shape

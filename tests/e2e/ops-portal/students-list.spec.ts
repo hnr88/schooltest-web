@@ -25,12 +25,22 @@ import {
 
 import { apiEnv } from '../helpers/auth-db';
 import { cat, loadMessages } from '../helpers/i18n';
+import {
+  OpsFixtureLedger,
+  createOpsFixtureSchool,
+  createOpsFixtureStudents,
+  setOpsFixtureSeats,
+} from '../helpers/ops-portal';
+import { deleteStudents } from '../helpers/student-cleanup';
 
 const en = loadMessages('en');
 const API = process.env.E2E_API_URL ?? process.env.E2E_API_BASE_URL ?? 'http://127.0.0.1:5500';
 
-// Seeded demo school A (3 teachers, 1 class, 4 students).
-const SCHOOL_A = 'a19wa9lrmloi95ab9m4gmxqk';
+// Fixture school with 4 active students, created in beforeAll through the real
+// contracts (the seeded demo school this spec once pointed at is absent at HEAD).
+let schoolId = '';
+let studentIds: string[] = [];
+const ledger = new OpsFixtureLedger();
 
 const ACTION_TIMEOUT = 10_000;
 const REFERENCE_CLOCK_ISO = '2026-09-05T09:00:00.000Z';
@@ -55,7 +65,7 @@ async function opsJwt(request: APIRequestContext): Promise<string> {
 
 /** The same read the portal makes, parsed through the shared contract. */
 async function apiStudents(request: APIRequestContext, jwt: string) {
-  const res = await request.get(`${API}${opsStudentsListPath(SCHOOL_A, { pageSize: 200 })}`, {
+  const res = await request.get(`${API}${opsStudentsListPath(schoolId, { pageSize: 200 })}`, {
     headers: { Authorization: `Bearer ${jwt}` },
   });
   expect(res.status(), await res.text()).toBe(200);
@@ -78,7 +88,7 @@ async function signInAsOps(page: Page): Promise<void> {
 }
 
 async function openStudentsTab(page: Page): Promise<void> {
-  await page.goto(`/dashboard/ops/schools/${SCHOOL_A}`);
+  await page.goto(`/dashboard/ops/schools/${schoolId}`);
   // By ROLE, never by text: the metric strip carries a plain "Students" label.
   await page
     .getByRole('tab', { name: cat(en, 'Ops.schoolTables.tab.students'), exact: true })
@@ -89,8 +99,17 @@ async function openStudentsTab(page: Page): Promise<void> {
 test.use({ viewport: DESKTOP, actionTimeout: ACTION_TIMEOUT });
 
 test.describe('OPS-045 ops Students tab', () => {
-  test.beforeAll(async () => {
+  test.beforeAll(async ({ request }) => {
     await mkdir(CAPTURES, { recursive: true });
+    const school = await createOpsFixtureSchool(request, ledger, 'ops-045');
+    schoolId = school.documentId;
+    await setOpsFixtureSeats(request, schoolId);
+    studentIds = await createOpsFixtureStudents(request, schoolId, 4);
+  });
+
+  test.afterAll(async ({ request }) => {
+    await deleteStudents(request, studentIds);
+    await ledger.cleanup(request);
   });
 
   test('renders the served roster — every row and total comes from the API', async ({

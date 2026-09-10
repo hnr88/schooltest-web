@@ -230,3 +230,23 @@ describe('D-25 — pageSize comes from the surface, and the kit never assumes 20
     expect(handle.current.params.pageSize).toBe(50);
   });
 });
+
+// ── ops/34 — `variant: 'none'` is the unbounded-history idiom ────────────────
+//
+// The C-TS-2 past-sessions history must never sit truncated behind a pager
+// (the pre-kit bespoke scroller rendered every row). The clamp machinery above
+// can never express that — every finite number is capped — so `'none'` resolves
+// the state to an infinite pageSize (client mode only; the wire contract caps
+// a server page at 200, so there the idiom is a loud config error instead of a
+// pager-less surface silently truncating at the cap).
+
+describe("ops/34 — pagination variant 'none' resolves to an unbounded client state", () => {
+  test("client mode + 'none' resolves pageSize to infinity — no clamp can cap the history", () => {
+    const handle = renderHook({ mode: 'client', pageSize: 25, pagination: { variant: 'none' } });
+    expect(handle.current.params.pageSize).toBe(Number.POSITIVE_INFINITY);
+  });
+
+  test("server mode + 'none' is a loud config error, not a pager-less truncate at the cap", () => {
+    expect(() => renderHook({ pagination: { variant: 'none' } })).toThrow(/client-mode only/);
+  });
+});

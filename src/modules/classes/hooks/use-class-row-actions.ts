@@ -2,8 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions';
 import { useDeleteClassMutation } from '@/modules/classes/queries/use-delete-class.mutation';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 
@@ -17,10 +17,10 @@ export function useClassRowActions(schoolClass: SchoolClass) {
   const handleDelete = async () => {
     try {
       await remove.mutateAsync(schoolClass.documentId);
-      toast.success(t('successToast', { name: schoolClass.name }));
+      showOpsToast({ tone: 'ok', message: t('successToast', { name: schoolClass.name }) });
       setDeleteOpen(false);
     } catch {
-      toast.error(t('errorToast'));
+      showOpsToast({ tone: 'error', message: t('errorToast') });
     }
   };
 

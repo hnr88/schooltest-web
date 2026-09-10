@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resultViewSchema = exports.resultNarrativeSchema = exports.RESULT_HISTORY_MAX_POINTS = exports.resultHistoryPointSchema = exports.resultViewVocabSchema = exports.resultViewVocabStrandSchema = exports.resultViewGateSchema = exports.resultViewOverallSchema = exports.resultViewAttributeSchema = exports.resultViewAttributeScoredSchema = void 0;
+exports.resultViewSchema = exports.resultNarrativeSchema = exports.RESULT_HISTORY_MAX_POINTS = exports.resultHistoryPointSchema = exports.resultViewVocabSchema = exports.resultViewVocabStrandSchema = exports.resultViewGateSchema = exports.resultViewOverallSchema = exports.resultViewAttributeSchema = exports.resultViewAttributeScoredSchema = exports.resultViewReleaseStateSchema = void 0;
 /**
  * `ResultView` v2 — the read model of GET /results/{documentId} (spec v2 §6.3).
  *
@@ -19,6 +19,13 @@ const result_view_supplementary_1 = require("./result-view.supplementary");
 const core_1 = require("./core");
 const enums_1 = require("./enums");
 const stored_result_1 = require("./stored-result");
+/** Result-grain release states; session-grain states never belong in a view. */
+exports.resultViewReleaseStateSchema = zod_1.z.enum([
+    'held',
+    'released',
+    'recalled',
+    'manual',
+]);
 /**
  * The growth triplet (spec v2 §6.2). All three are null together when there is
  * no comparable previous official same-model-version Result.
@@ -137,6 +144,8 @@ exports.resultViewSchema = zod_1.z.strictObject({
     status: enums_1.resultStatusSchema,
     destination: enums_1.resultDestinationSchema,
     published_at: zod_1.z.iso.datetime().nullable(),
+    recalled_at: zod_1.z.iso.datetime().nullable(),
+    release_state: exports.resultViewReleaseStateSchema,
     provisional: enums_1.provisionalSchema.nullable(),
     model_version: enums_1.modelVersionSchema,
     overall: exports.resultViewOverallSchema,

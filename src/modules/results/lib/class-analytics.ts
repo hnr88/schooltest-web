@@ -93,10 +93,15 @@ export function vocabStrandMeans(rows: readonly ResultView[]): { a2: StrandMean;
   return { a2: mean(a2), b1: mean(b1) };
 }
 
-/** Top reliable gains: `overall.delta` desc where `delta_reliable` and numeric, capped at 5; band_movement cannot rank, and no delta is ever computed client-side. Rows return IN ORDER — the caller names students from the wrapper's `student` block. */
+/** Top reliable gains: a RELIABLE POSITIVE `overall.delta`, desc, capped at 5; band_movement cannot rank, and no delta is ever computed client-side. ops/34: a reliable NEGATIVE delta is a decline — it belongs in needsSupport, never in the gains list (the ranked lists render one mover per qualifying row, so an absent direction check put declining students on the gains board). Rows return IN ORDER — the caller names students from the wrapper's `student` block. */
 export function topGains(rows: readonly ResultView[]): ResultView[] {
   return rows
-    .filter((row) => row.overall.delta_reliable === true && row.overall.delta !== null)
+    .filter(
+      (row) =>
+        row.overall.delta_reliable === true &&
+        row.overall.delta !== null &&
+        row.overall.delta > 0,
+    )
     .sort((a, b) => (b.overall.delta as number) - (a.overall.delta as number))
     .slice(0, 5);
 }
@@ -105,8 +110,12 @@ export function topGains(rows: readonly ResultView[]): ResultView[] {
 export function needsSupport(rows: readonly ResultView[]): ResultView[] {
   const isReliableDecline = (row: ResultView): boolean =>
     row.overall.delta_reliable === true && row.overall.delta !== null && row.overall.delta < 0;
+  // ops/34 — a reliable GAINER is the gains list's row, not a support candidate:
+  // the same student must not be celebrated and flagged at once.
+  const isReliableGainer = (row: ResultView): boolean =>
+    row.overall.delta_reliable === true && row.overall.delta !== null && row.overall.delta > 0;
   return rows
-    .filter((row) => row.overall.domain_score !== null)
+    .filter((row) => row.overall.domain_score !== null && !isReliableGainer(row))
     .sort((a, b) => {
       const aDecline = isReliableDecline(a) ? 0 : 1;
       const bDecline = isReliableDecline(b) ? 0 : 1;

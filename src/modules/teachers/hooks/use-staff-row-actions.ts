@@ -2,8 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions';
 import { serverMessage } from '@/modules/teachers/lib/server-message';
 import { useReissueInvitationMutation } from '@/modules/teachers/queries/use-reissue-invitation.mutation';
 import { useRemoveTeacherMutation } from '@/modules/teachers/queries/use-remove-teacher.mutation';
@@ -53,9 +53,9 @@ export function useStaffRowActions(row: StaffRow) {
   const handleReissue = async () => {
     try {
       await reissue.mutateAsync(row.documentId);
-      toast.success(t('reissuedToast', { email: row.email }));
+      showOpsToast({ tone: 'ok', message: t('reissuedToast', { email: row.email }) });
     } catch {
-      toast.error(t('errorToast'));
+      showOpsToast({ tone: 'error', message: t('errorToast') });
     }
   };
 
@@ -63,22 +63,20 @@ export function useStaffRowActions(row: StaffRow) {
     try {
       if (confirmAction === 'revoke') {
         await revoke.mutateAsync(row.documentId);
-        toast.success(t('revokedToast', { email: row.email }));
+        showOpsToast({ tone: 'ok', message: t('revokedToast', { email: row.email }) });
       } else if (confirmAction === 'deactivate') {
         await deactivate.mutateAsync(row.documentId);
-        toast.success(t('deactivatedToast', { name }));
+        showOpsToast({ tone: 'ok', message: t('deactivatedToast', { name }) });
       } else if (confirmAction === 'reactivate') {
         await reactivate.mutateAsync(row.documentId);
-        toast.success(t('reactivatedToast', { name }));
+        showOpsToast({ tone: 'ok', message: t('reactivatedToast', { name }) });
       } else if (confirmAction === 'remove') {
         const result = await remove.mutateAsync(row.documentId);
-        toast.success(
-          t('removedToast', { name, classes: result.classes_unassigned }),
-        );
+        showOpsToast({ tone: 'ok', message: t('removedToast', { name, classes: result.classes_unassigned }), });
       }
       setConfirmAction(null);
     } catch (error) {
-      toast.error(serverMessage(error) ?? t('errorToast'));
+      showOpsToast({ tone: 'error', message: serverMessage(error) ?? t('errorToast') });
     }
   };
 

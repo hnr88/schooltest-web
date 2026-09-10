@@ -7,6 +7,8 @@
   "status": "complete",
   "destination": "official",
   "published_at": "2026-08-31T02:15:00.000Z",
+  "recalled_at": null,
+  "release_state": "released",
   "provisional": null,
   "model_version": "reading-3model/1",
   "overall": {

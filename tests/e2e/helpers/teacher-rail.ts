@@ -12,27 +12,27 @@ export const en = loadMessages('en');
 export const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 export const DESKTOP = { width: 1280, height: 800 };
 
-// The "Teach" trio B3 restored (group 'teach') — the section the sidebar's old
-// group === 'primary' pre-filter dropped before render (fixed identically here
-// and in upstream 5c0841e).
+// The teach group after teacher task 03 (R-10/R-11): the design's two-entry rail
+// (Teacher Portal v2.dc.html:29–35) — Results ("Classes", :29–31) ahead of Test
+// sessions ("Live sessions", :32–35) under the TEACHER VIEW overline. The
+// teacherDashboard entry is retired; /dashboard keeps serving every other role.
 export const TEACHER_NAV = [
-  { key: 'Shell.nav.teacherDashboard', href: '/dashboard' },
-  { key: 'Shell.nav.testSessions', href: '/dashboard/test-sessions' },
   { key: 'Shell.nav.results', href: '/dashboard/results' },
+  { key: 'Shell.nav.testSessions', href: '/dashboard/test-sessions' },
 ] as const;
 
-// E11-01 later added a teacher-scoped Reports entry under the "Manage" section
-// (group 'primary'), so a teacher's whole rail is now FOUR entries, in DOM order:
-// Manage (reports) then Teach (the trio). Rail-count assertions use this list.
-export const TEACHER_RAIL_NAV = [
-  { key: 'Shell.nav.reports', href: '/dashboard/reports' },
-  ...TEACHER_NAV,
-] as const;
+// A teacher's whole rail is now EXACTLY these two entries — with `reports`
+// retired (R-11) a teacher has zero `primary` items, buildNavSections drops the
+// empty group, and one section sits under one overline. Rail-count assertions
+// use this list.
+export const TEACHER_RAIL_NAV = [...TEACHER_NAV] as const;
 
-// The ops console rail after removing the Pipeline and Tools surfaces.
+// The ops console rail in its current shape (ops chrome restructure, pinned by
+// tests/unit/ops-school-admin.test.ts): ONE primary destination (Schools) plus
+// the Settings entry pinned to the footer's account group. Re-pointed here —
+// never deleted — so the teacher/03 retirement screenshots assert today's rail.
 export const OPS_NAV = [
   { key: 'Shell.nav.opsSchools', href: '/dashboard/ops/schools' },
-  { key: 'Shell.nav.opsTimers', href: '/dashboard/ops/timers' },
   { key: 'Shell.nav.opsSettings', href: '/dashboard/ops/settings' },
 ] as const;
 

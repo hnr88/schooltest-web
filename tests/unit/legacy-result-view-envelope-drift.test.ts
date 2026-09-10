@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 
 import { expect, test } from 'vitest';
 
+import { legacyResultViewSchema as packageLegacyResultViewSchema } from '@schooltest/scoring-contracts';
+
 import { legacyResultViewSchema } from '@/modules/report/schemas/result-view.schema';
 
 /**
@@ -55,6 +57,14 @@ test('the web legacy envelope mirrors the server contract key-for-key', async ()
   // of a placement parent cannot fall into the error fallback.
   expect(webKeys.filter((key) => !serverKeys.includes(key))).toEqual(['combined_children']);
   expect(serverKeys.filter((key) => !webKeys.includes(key))).toEqual([]);
+});
+
+test('the package legacy schema supplies the complete envelope before the local strip override', async () => {
+  const serverKeys = Object.keys((await loadAuthority()).shape).sort();
+  const packageKeys = Object.keys(packageLegacyResultViewSchema.shape).sort();
+
+  expect(packageKeys.filter((key) => !serverKeys.includes(key))).toEqual(['combined_children']);
+  expect(serverKeys.filter((key) => !packageKeys.includes(key))).toEqual([]);
 });
 
 test('the two keys whose drift broke the desktop are pinned on the web envelope', async () => {

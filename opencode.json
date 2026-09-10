@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "codephant": {
+      "type": "local",
+      "command": [
+        "/opt/Codephant/codephant.bin",
+        "/opt/Codephant/resources/mcp-server/dist/index.mjs"
+      ],
+      "environment": {
+        "TARGET_PORT": "3100",
+        "CODEPHANT_APP_SESSION": "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImxvY2FsQGNvZGVwaGFudC5hcHAiLCJuYW1lIjoibG9jYWwiLCJpYXQiOjE3ODg4NTU3NzgsImV4cCI6MTc4OTQ2MDU3OCwic3ViIjoibG9jYWxAY29kZXBoYW50LmFwcCJ9.aihEh0MjhRwav04bQVx-puPK_DISP0YsaqSupEVy4K0",
+        "CODEPHANT_MCP_SCOPE": "standard",
+        "CODEPHANT_MCP_ENTRY": "/opt/Codephant/resources/mcp-server/dist/index.mjs",
+        "ELECTRON_RUN_AS_NODE": "1",
+        "PATH": "/home/hnr/.local/bin:/home/hnr/.local/share/pnpm:/home/hnr/.nvm/versions/node/v26.7.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/hnr/.lmstudio/bin:/home/hnr/.local/share/pnpm/bin"
+      },
+      "enabled": true
+    }
+  }
+}

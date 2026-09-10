@@ -1,7 +1,12 @@
 /**
  * Mission st-legal-seo-ops E2E flows 7–13 and 20 (task 212): breadcrumbs
- * everywhere — public pages, legal pages, settings, the ops console, and deep
- * nested dashboard routes — with the JSON-LD trail matching the visible one.
+ * everywhere — public pages, legal pages, settings and deep nested dashboard
+ * routes — with the JSON-LD trail matching the visible one.
+ *
+ * The ops console flow (former `:144-160`) is DELETED by mvp/ops task 04 under
+ * R-26: `/dashboard/ops/**` draws no topbar, so it draws no breadcrumb row —
+ * the design replaces the crumb trail with in-page back links. Every other
+ * portal keeps its trail and its flow here.
  *
  * Dashboard assertions sign in through the REAL form with the seeded accounts.
  * No account is ever created through the UI.
@@ -139,23 +144,5 @@ test.describe('dashboard breadcrumbs', () => {
     expect(labels.length, 'record crumb missing').toBe(4);
     expect(labels[3], 'the record crumb must be a name, never a documentId').not.toBe(documentId);
     expect(className, 'the record crumb must name the record').toContain(labels[3]);
-  });
-
-  test('flow: the ops console shows breadcrumbs on every surface', async ({ page }) => {
-    await loginAs(page, 'ops');
-
-    for (const [path, expected] of [
-      [
-        '/dashboard/ops/schools',
-        [en['Shell.topbar.dashboard'], en['Shell.nav.ops'], en['Navigation.opsSchools']],
-      ],
-      [
-        '/dashboard/ops/timers',
-        [en['Shell.topbar.dashboard'], en['Shell.nav.ops'], en['Navigation.opsTimers']],
-      ],
-    ] as const) {
-      await page.goto(path);
-      expect(await crumbLabels(page, en['Shell.topbar.breadcrumbLabel']), path).toEqual([...expected]);
-    }
   });
 });

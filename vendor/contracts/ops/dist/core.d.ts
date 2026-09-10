@@ -137,6 +137,78 @@ export interface OpsOperation<Req extends z.ZodType, Res extends z.ZodType> {
     readonly success: number;
     readonly errors: readonly number[];
 }
+/**
+ * U-26 — the pagination block every A-family list meta carries.
+ *
+ * `pageCount` is non-negative rather than `min(1)`: an empty list reports 0
+ * pages, never 1 (see `opsPaginationMeta`). No maximum is declared here — the
+ * six contracts that pin their own `COUNT_MAX`/`INT32_MAX` ceilings keep them
+ * until the task that next edits each re-points it, so this schema never
+ * silently widens a contract it did not write.
+ */
+export declare const paginationMetaSchema: z.ZodObject<{
+    page: z.ZodNumber;
+    pageSize: z.ZodNumber;
+    pageCount: z.ZodNumber;
+    total: z.ZodNumber;
+}, z.core.$strict>;
+export type PaginationMeta = z.infer<typeof paginationMetaSchema>;
+/**
+ * U-27 — `{ data: Row[], meta: { pagination } & Extra }` for one list read.
+ *
+ * Sibling of `dataEnvelope`, which serves the single-object families; this one
+ * serves family A only (SHARED-LAYER R-27 keeps the six envelope families
+ * apart). `metaExtras` is how a list adds its own meta — `status_counts`, an
+ * options list — WITHOUT re-declaring `pagination`.
+ */
+export declare function listEnvelope<Row extends z.ZodType, Extra extends z.ZodRawShape = Record<string, never>>(row: Row, metaExtras?: Extra): z.ZodObject<{
+    data: z.ZodArray<Row>;
+    meta: z.ZodObject<{
+        pagination: z.ZodObject<{
+            page: z.ZodNumber;
+            pageSize: z.ZodNumber;
+            pageCount: z.ZodNumber;
+            total: z.ZodNumber;
+        }, z.core.$strict>;
+    } & Extra extends infer T ? { -readonly [P in keyof T]: T[P]; } : never, z.core.$strict>;
+}, z.core.$strict>;
+/**
+ * U-28 — the three params EVERY ops list accepts, at the server's own bounds.
+ * `q` is trimmed before the length check, matching `parseOpsQuery`.
+ */
+export declare const listPageShape: {
+    page: z.ZodOptional<z.ZodNumber>;
+    pageSize: z.ZodOptional<z.ZodNumber>;
+    q: z.ZodOptional<z.ZodString>;
+};
+/**
+ * U-28 — a strict list query: the three shared params plus this operation's
+ * own filters and sorts. STRICT, so a caller that invents a param fails the
+ * parse here instead of being silently ignored by the server.
+ */
+export declare function listQuery<S extends z.ZodRawShape>(shape: S): z.ZodObject<{
+    page: z.ZodOptional<z.ZodNumber>;
+    pageSize: z.ZodOptional<z.ZodNumber>;
+    q: z.ZodOptional<z.ZodString>;
+} & S extends infer T ? { -readonly [P in keyof T]: T[P]; } : never, z.core.$strict>;
+/**
+ * U-29 — parse a list query, then encode it as URL params.
+ *
+ * Promoted from `classesListQueryParams`, whose body was already generic; the
+ * per-operation encoders become thin wrappers over this. Parsing FIRST is the
+ * point: an out-of-bounds page never reaches the wire.
+ */
+export declare function listQueryParams<S extends z.ZodObject<z.ZodRawShape>>(schema: S, query: z.input<S>): Record<string, string>;
+/**
+ * U-06 — the cache key for one contracted list read.
+ *
+ * `[op.contractId, params]`: THE CONTRACT ID IS THE CACHE NAMESPACE, so a key
+ * and a contract can never point at different things, and two operations
+ * cannot collide unless they share a contract id. The query is parsed through
+ * the operation's OWN request schema, so a key can never be built from a query
+ * the operation would reject.
+ */
+export declare function listQueryKey<Req extends z.ZodType, Res extends z.ZodType>(op: OpsOperation<Req, Res>, query: z.input<Req>): readonly [contractId: string, params: Record<string, string>];
 /** C-OPS-PORTAL-011 — GET /api/schools/{documentId}/onboarding-invitation */
 export declare const OnboardingReadOperation: OpsOperation<z.ZodObject<{}, z.core.$strict>, z.ZodObject<{
     data: z.ZodObject<{

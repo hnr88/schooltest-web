@@ -39,6 +39,8 @@ export interface OpsActionResultItem {
  * report a 2xx as a finished write.
  */
 export interface OpsActionDefinition<TTarget extends OpsActionTarget = OpsActionTarget> {
+  /** False only for reads/downloads that must remain available to support users. */
+  write: boolean;
   /** Dispatch the single-item write. Rejects with the axios error on failure. */
   perform: (target: TTarget, signal: AbortSignal) => Promise<unknown>;
   /** True when the write is visible through an authorized read. */

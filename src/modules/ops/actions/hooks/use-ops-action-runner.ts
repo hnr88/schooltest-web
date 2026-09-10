@@ -4,13 +4,17 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { restFailureOf } from '@/lib/axios/strapi';
 import { OPS_ACTION_MAX_IN_FLIGHT } from '@/modules/ops/actions/constants/ops-action.constants';
+import { useOpsWriteGate } from '@/modules/ops/actions/hooks/use-ops-write-gate';
 import {
   dispositionOfFailure,
-  envelopeOfDisposition,
-  statusOfDisposition,
   type OpsActionDisposition,
 } from '@/modules/ops/actions/lib/ops-action-disposition';
+import {
+  settleOpsActionItem,
+  summariseOpsActionRun,
+} from '@/modules/ops/actions/lib/ops-action-run';
 import { selectionKey } from '@/modules/ops/actions/lib/ops-selection';
+import { showOpsToast } from '@/modules/ops/actions/lib/ops-toast';
 import type {
   OpsActionDefinition,
   OpsActionResultItem,
@@ -30,57 +34,6 @@ const IDLE: OpsActionRunState = {
 };
 
 /**
- * Ask the API whether the write is visible. A read that itself fails answers
- * `null` — "still unknown" — because a failed read is not evidence of a failed
- * write, and treating it as one is how a bulk run comes to claim a rollback it
- * never observed.
- */
-async function readBackOrUnknown<T extends OpsActionTarget>(
-  definition: OpsActionDefinition<T>,
-  target: T,
-): Promise<boolean | null> {
-  try {
-    return await definition.readBack(target);
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Decide one item's terminal outcome from what the transport proved plus, where
- * the transport proved nothing, what an authorized read can see.
- *
- * The asymmetry is deliberate. A settled 4xx is the server declining, so the
- * item is `failed` without a read. Everything else that touched the wire is
- * read back, and a read that cannot confirm leaves the item `uncertain` rather
- * than inventing either verdict.
- */
-async function settleItem<T extends OpsActionTarget>(
-  definition: OpsActionDefinition<T>,
-  target: T,
-  disposition: OpsActionDisposition,
-): Promise<OpsActionResultItem> {
-  const base = {
-    documentId: target.documentId,
-    kind: target.kind,
-    status: statusOfDisposition(disposition),
-    error: envelopeOfDisposition(disposition),
-  };
-
-  if (disposition.kind === 'refused') return { ...base, outcome: 'failed' };
-  if (disposition.kind === 'denied' || disposition.kind === 'unauthenticated') {
-    return { ...base, outcome: 'failed' };
-  }
-  if (disposition.kind === 'cooldown') return { ...base, outcome: 'failed' };
-
-  const applied = await readBackOrUnknown(definition, target);
-  if (applied === true) return { ...base, outcome: 'success' };
-  // Acknowledged but not visible, or never acknowledged at all: both are open
-  // questions, and neither is a rollback anyone watched happen.
-  return { ...base, outcome: 'uncertain' };
-}
-
-/**
  * The one runner every ops action and bulk action goes through.
  *
  * It dispatches at most `OPS_ACTION_MAX_IN_FLIGHT` single-item writes at a
@@ -90,13 +43,49 @@ async function settleItem<T extends OpsActionTarget>(
  */
 export function useOpsActionRunner<T extends OpsActionTarget>(definition: OpsActionDefinition<T>) {
   const [state, setState] = useState<OpsActionRunState>(IDLE);
+  const writeGate = useOpsWriteGate();
   const abortRef = useRef<AbortController | null>(null);
   const cancelledRef = useRef(false);
   const definitionRef = useRef(definition);
+  const writeGateRef = useRef(writeGate);
   definitionRef.current = definition;
+  writeGateRef.current = writeGate;
 
-  const execute = useCallback(async (targets: readonly T[]) => {
-    if (targets.length === 0) return;
+  const execute = useCallback(async function runTargets(
+    targets: readonly T[],
+  ): Promise<OpsActionSummary> {
+    if (targets.length === 0) return summariseOpsActionRun([], 0);
+
+    if (definitionRef.current.write) {
+      const gate = writeGateRef.current;
+      const reason = gate.blockedReason();
+      if (reason !== null) {
+        const results: OpsActionResultItem[] = targets.map((target) => ({
+          documentId: target.documentId,
+          kind: target.kind,
+          outcome: 'not_started',
+          status: null,
+          error: null,
+        }));
+        setState({ ...IDLE, status: 'settled', total: targets.length, results });
+        showOpsToast({
+          tone: 'error',
+          message: reason,
+          ...(gate.retryWhenBlocked
+            ? {
+                action: {
+                  label: gate.retryLabel,
+                  run: async () => {
+                    await runTargets(targets);
+                  },
+                },
+              }
+            : {}),
+        });
+        return summariseOpsActionRun(results, targets.length);
+      }
+    }
+
     const controller = new AbortController();
     abortRef.current = controller;
     cancelledRef.current = false;
@@ -141,7 +130,7 @@ export function useOpsActionRunner<T extends OpsActionTarget>(definition: OpsAct
           const seconds = disposition.retryAfterSeconds;
           setState((previous) => ({ ...previous, cooldownSeconds: seconds }));
         }
-        record(await settleItem(definitionRef.current, target, disposition));
+        record(await settleOpsActionItem(definitionRef.current, target, disposition));
         setState((previous) => ({ ...previous, inFlight: previous.inFlight - 1 }));
       }
     };
@@ -150,6 +139,7 @@ export function useOpsActionRunner<T extends OpsActionTarget>(definition: OpsAct
     await Promise.all(Array.from({ length: lanes }, worker));
     abortRef.current = null;
     setState((previous) => ({ ...previous, status: 'settled', inFlight: 0 }));
+    return summariseOpsActionRun(results, targets.length);
   }, []);
 
   /** Stop dispatching. In-flight work is still settled and still reported. */
@@ -187,23 +177,10 @@ export function useOpsActionRunner<T extends OpsActionTarget>(definition: OpsAct
     setState(IDLE);
   }, []);
 
-  const summary: OpsActionSummary = useMemo(() => {
-    const count = (outcome: OpsActionResultItem['outcome']) =>
-      state.results.filter((item) => item.outcome === outcome).length;
-    const succeeded = count('success');
-    const uncertain = count('uncertain');
-    return {
-      succeeded,
-      failed: count('failed'),
-      notStarted: count('not_started'),
-      uncertain,
-      // Every accepted target, read back. A shorter result list means the run
-      // is unfinished, and an unfinished run is never an all-success run.
-      allSucceeded:
-        state.total > 0 && state.results.length === state.total && succeeded === state.total,
-      hasUnresolved: uncertain > 0,
-    };
-  }, [state.results, state.total]);
+  const summary: OpsActionSummary = useMemo(
+    () => summariseOpsActionRun(state.results, state.total),
+    [state.results, state.total],
+  );
 
   return { state, summary, run: execute, cancel, retryUnsettled, reset };
 }

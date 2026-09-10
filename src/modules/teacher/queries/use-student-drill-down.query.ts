@@ -62,15 +62,21 @@ export function useStudentDrillDownQuery(
     resultDocumentId ?? '',
     Boolean(enabled) && resultDocumentId !== null,
   );
+  const resultView = result.data?.kind === 'v2' ? result.data.view : undefined;
 
   const refetch = refetchAll(roster.refetch, result.refetch);
 
   const resultPending = resultDocumentId !== null && result.isPending;
   if (roster.isPending || resultPending) return { status: 'pending', refetch };
-  if (roster.isError || result.isError || roster.data === undefined) {
+  if (
+    roster.isError ||
+    result.isError ||
+    roster.data === undefined ||
+    result.data?.kind === 'legacy'
+  ) {
     return { status: 'error', refetch };
   }
-  if (row === null || row.result === null || result.data === undefined) {
+  if (row === null || row.result === null || resultView === undefined) {
     // The student IS on the roster but holds no official Result — the server's
     // own "nothing completed yet", rendered as the empty state.
     return { status: 'empty', refetch };
@@ -80,7 +86,7 @@ export function useStudentDrillDownQuery(
     data: {
       studentDocumentId,
       displayName: row.student.name,
-      view: result.data,
+      view: resultView,
     },
     refetch,
   };

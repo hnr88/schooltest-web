@@ -10,7 +10,10 @@
  * "Module not found: Can't resolve '../../../../../mvp/contracts/ops/src/...'").
  */
 export {
+  ClassArchiveOperation,
+  ClassRestoreOperation,
   ClassesListOperation,
+  classArchiveBodySchema,
   classListSortSchema,
   classListStatusSchema,
   classRowEnvelopeSchema,
@@ -27,6 +30,7 @@ export {
   classesListResponseSchema,
 } from '@schooltest/ops-contracts';
 export type {
+  ClassArchiveBody,
   ClassListSort,
   ClassListStatus,
   ClassRow,

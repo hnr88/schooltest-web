@@ -44,6 +44,15 @@ import {
 } from './enums';
 import { errorPatternSchema } from './stored-result';
 
+/** Result-grain release states; session-grain states never belong in a view. */
+export const resultViewReleaseStateSchema = z.enum([
+  'held',
+  'released',
+  'recalled',
+  'manual',
+]);
+export type ResultViewReleaseState = z.infer<typeof resultViewReleaseStateSchema>;
+
 /**
  * The growth triplet (spec v2 §6.2). All three are null together when there is
  * no comparable previous official same-model-version Result.
@@ -183,6 +192,8 @@ export const resultViewSchema = z.strictObject({
   status: resultStatusSchema,
   destination: resultDestinationSchema,
   published_at: z.iso.datetime().nullable(),
+  recalled_at: z.iso.datetime().nullable(),
+  release_state: resultViewReleaseStateSchema,
   provisional: provisionalSchema.nullable(),
   model_version: modelVersionSchema,
 

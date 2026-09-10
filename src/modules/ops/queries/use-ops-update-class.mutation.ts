@@ -5,6 +5,7 @@ import { isAxiosError } from 'axios';
 
 import { strapi } from '@/lib/axios/strapi';
 import { opsClassDetailQueryKey } from '@/modules/ops/queries/use-ops-class-detail.query';
+import { classRowEnvelopeSchema } from '@/modules/ops/lib/ops-classes-contract';
 
 /** Thrown on 412: the class moved under the form — the DRAFT is intact; refresh and reapply. */
 export class OpsClassEditStaleError extends Error {
@@ -64,6 +65,44 @@ export function useOpsUpdateClassMutation() {
       void queryClient.invalidateQueries({
         queryKey: opsClassDetailQueryKey(input.classDocumentId),
       });
+    },
+  });
+}
+
+export interface OpsClassLifecycleInput {
+  classDocumentId: string;
+  schoolDocumentId: string;
+}
+
+async function changeOpsClassLifecycle(
+  input: OpsClassLifecycleInput,
+  action: 'archive' | 'restore',
+) {
+  const res = await strapi.post(
+    `/api/ops/schools/${input.schoolDocumentId}/classes/${input.classDocumentId}/${action}`,
+    {},
+  );
+  return classRowEnvelopeSchema.parse(res.data).data;
+}
+
+export function useOpsArchiveClassMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: OpsClassLifecycleInput) => changeOpsClassLifecycle(input, 'archive'),
+    onSuccess: async (_data, input) => {
+      await queryClient.invalidateQueries({ queryKey: ['ops', 'schools', input.schoolDocumentId] });
+      await queryClient.invalidateQueries({ queryKey: opsClassDetailQueryKey(input.classDocumentId) });
+    },
+  });
+}
+
+export function useOpsRestoreClassMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: OpsClassLifecycleInput) => changeOpsClassLifecycle(input, 'restore'),
+    onSuccess: async (_data, input) => {
+      await queryClient.invalidateQueries({ queryKey: ['ops', 'schools', input.schoolDocumentId] });
+      await queryClient.invalidateQueries({ queryKey: opsClassDetailQueryKey(input.classDocumentId) });
     },
   });
 }

@@ -30,11 +30,18 @@ function AppTopbar() {
   // OWN search — the ⌘K global Search dialog (School Admin Portal artboard
   // shell). Strictly pathname-gated so every other portal is untouched.
   const inSchoolPortal = pathname.startsWith('/dashboard/school');
+  // R-26 (Ops Portal.dc.html:49-66): the ops portal's <main> opens with the
+  // offline strip and no chrome row — the design draws no topbar, breadcrumb,
+  // search field or bell for ops (census: topbar/breadcrumb/notification/bell
+  // → 0). GATED, never deleted: the crumb trail and bell keep rendering for
+  // the parent, school-admin and teacher portals, and SidebarTrigger stays
+  // unconditional because it is the only opener of the rail sheet below md.
+  const inOpsPortal = pathname.startsWith('/dashboard/ops');
 
   return (
     <header className="flex shrink-0 animate-in items-center gap-3 px-4 duration-300 ease-out-expo fade-in slide-in-from-top-2 motion-reduce:animate-none sm:px-6 lg:px-8">
       <SidebarTrigger aria-label={t('topbar.toggleNav')} className={CONTROL_CLASSES} />
-      <TopbarBreadcrumb />
+      {!inOpsPortal && <TopbarBreadcrumb />}
       <span aria-hidden="true" className="flex-1" />
       {inSchoolPortal ? (
         <SchoolSearchLauncher className="h-11 shrink-0 gap-2 rounded-full bg-card px-4 shadow-sm transition-[transform,background-color] hover:-translate-y-px hover:bg-card focus-visible:ring-primary motion-reduce:hover:translate-y-0" />
@@ -48,9 +55,11 @@ function AppTopbar() {
           />
         )
       )}
-      <div data-slot="topbar-actions" className={BELL_SKIN_CLASSES}>
-        <NotificationBell />
-      </div>
+      {!inOpsPortal && (
+        <div data-slot="topbar-actions" className={BELL_SKIN_CLASSES}>
+          <NotificationBell />
+        </div>
+      )}
     </header>
   );
 }

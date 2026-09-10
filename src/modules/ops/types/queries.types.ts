@@ -1,5 +1,4 @@
 import type { OnboardSchoolValues } from '@/modules/ops/schemas/school-invitation.schema';
-import type { SectionTimersMeta, TimerSection } from '@/modules/ops/schemas/section-timers.schema';
 import type { SchoolPlan } from '@/modules/school-admin';
 
 export interface PutFormWindowInput {
@@ -32,7 +31,3 @@ export interface OpsResitInput {
   studentDocumentId: string;
 }
 
-export interface SectionTimersState {
-  sections: TimerSection[];
-  meta: SectionTimersMeta | null;
-}

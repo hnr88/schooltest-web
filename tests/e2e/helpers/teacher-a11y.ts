@@ -1,12 +1,19 @@
 import path from 'node:path';
 
 import { AxeBuilder } from '@axe-core/playwright';
-import { expect, type Browser, type Page, type PlaywrightWorkerArgs } from '@playwright/test';
+import {
+  expect,
+  type APIRequestContext,
+  type Browser,
+  type Page,
+  type PlaywrightWorkerArgs,
+} from '@playwright/test';
 
-import type { ClassStudentRow } from '@/modules/teacher/types/teacher-result.types';
+import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
+import { teacherDashboardResponseSchema } from '@/modules/teacher/schemas/teacher.schema';
 
+import { bearer } from './teacher-results-live';
 import { signIn } from './teacher-rail';
-import { readClassStudentsLive, readLiveResults } from './teacher-results-live';
 import { waitForAnimationsSettled } from './ui';
 
 // Task 047 harness — the axe leg for /dashboard and /dashboard/results at both
@@ -91,36 +98,62 @@ export interface A11ySurface {
   oneTestStudentId: string;
 }
 
-const isDone = (cell: { state: string }): boolean => cell.state === 'done';
+async function readJson(
+  request: APIRequestContext,
+  jwt: string,
+  url: string,
+): Promise<{ status: number; body: unknown }> {
+  const response = await request.get(url, { headers: { Authorization: `Bearer ${jwt}` } });
+  return { status: response.status(), body: await response.json().catch(() => null) };
+}
 
 /**
- * The live surface this pass needs, resolved from C-TD-1 + C-TR-1: the first class
- * the seeded teacher owns, a student with BOTH tests complete (the only shape that
- * can show a comparison strip + a collapsed older test) and a student with exactly
- * one. A class that cannot supply both shapes throws instead of quietly narrowing
- * the audit.
+ * teacher/15 — RE-POINTED to the SURVIVING student reads (orchestrator ruling,
+ * chat-26560d5a): C-TD-1 for the classes, `GET /api/my/students/results?class=`
+ * for the roster. The retired C-TR-1/2 reads answer 410 and are NEVER called
+ * again — not directly, not via a fallback, not behind a flag.
+ *
+ * The two shapes come from the v2 view's own `history[]`: a result carrying two
+ * or more sittings is the "comparison" shape, exactly one is the first-sitting
+ * shape. The comparison STRIP itself retired with R-03, so history length is
+ * the honest split — the a11y assertions target the rendered drill-down, which
+ * the surviving reads serve completely.
  */
 export async function readA11ySurface(
   playwright: PlaywrightWorkerArgs['playwright'],
 ): Promise<A11ySurface> {
-  const live = await readLiveResults(playwright);
-  for (const klass of live.classes) {
-    const detail = await readClassStudentsLive(playwright, klass.class_document_id);
-    const two = detail.students.find(
-      (row: ClassStudentRow) => isDone(row.test_a) && isDone(row.test_b),
-    );
-    const one = detail.students.find(
-      (row: ClassStudentRow) => isDone(row.test_a) !== isDone(row.test_b),
-    );
-    if (two && one) {
-      return {
-        classDocumentId: klass.class_document_id,
-        twoTestStudentId: two.student_document_id,
-        oneTestStudentId: one.student_document_id,
-      };
+  const request = await playwright.request.newContext();
+  try {
+    const jwt = await bearer(request);
+    const dash = await readJson(request, jwt, '/api/teacher/dashboard');
+    if (dash.status !== 200) throw new Error(`[e2e] C-TD-1 answered ${dash.status}`);
+    const classes = teacherDashboardResponseSchema.parse(dash.body).classes;
+
+    for (const klass of classes) {
+      const roster = await readJson(
+        request,
+        jwt,
+        `/api/my/students/results?class=${klass.class_document_id}`,
+      );
+      if (roster.status !== 200) {
+        throw new Error(`[e2e] the roster read answered ${roster.status} for ${klass.name}`);
+      }
+      const rows = classRosterResponseSchema.parse(roster.body);
+      const sittingsOf = (row: (typeof rows)[number]): number => row.result?.history?.length ?? 0;
+      const two = rows.find((row) => sittingsOf(row) >= 2);
+      const one = rows.find((row) => sittingsOf(row) === 1);
+      if (two && one) {
+        return {
+          classDocumentId: klass.class_document_id,
+          twoTestStudentId: two.student.document_id,
+          oneTestStudentId: one.student.document_id,
+        };
+      }
     }
+    throw new Error('[e2e] no seeded class carries both a two-sitting and a one-sitting student');
+  } finally {
+    await request.dispose();
   }
-  throw new Error('[e2e] no seeded class carries both a two-test and a one-test student');
 }
 
 /**

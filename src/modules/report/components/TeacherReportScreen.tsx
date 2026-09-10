@@ -15,7 +15,7 @@ import { ViewToggle } from '@/modules/report/components/ViewToggle';
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { resolveDisplayLabel } from '@/modules/report/lib/display-label';
 import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
-import { useResultQuery } from '@/modules/report/queries/use-result.query';
+import { useResultQuery } from '@/modules/results/queries/use-student-result.query';
 import type { ReportViewMode } from '@/modules/report/types/report-view.types';
 import { RecordCrumb } from '@/modules/shell';
 

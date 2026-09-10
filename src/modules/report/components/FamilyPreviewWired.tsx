@@ -29,7 +29,7 @@ export function FamilyPreviewWired({ resultId }: { resultId: string }) {
     );
   }
 
-  if (query.isError || query.data === undefined) {
+  if (query.isError || query.data === undefined || query.data.kind !== 'v2') {
     return (
       <Alert
         variant="error"
@@ -50,5 +50,5 @@ export function FamilyPreviewWired({ resultId }: { resultId: string }) {
     );
   }
 
-  return <ParentReportView view={buildFamilyPreview(query.data)} />;
+  return <ParentReportView view={buildFamilyPreview(query.data.view)} />;
 }

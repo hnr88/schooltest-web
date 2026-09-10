@@ -46,8 +46,8 @@ test.afterAll(async () => {
 
 async function auditTabs(width: number): Promise<void> {
   const tabs = page.getByRole('tab');
-  await expect(tabs).toHaveCount(4);
-  for (let index = 0; index < 4; index += 1) {
+  await expect(tabs).toHaveCount(6);
+  for (let index = 0; index < 6; index += 1) {
     const tab = tabs.nth(index);
     const name = ((await tab.textContent()) ?? '').trim();
     await tab.click();
@@ -71,7 +71,7 @@ for (const viewport of [DESKTOP, MOBILE]) {
     });
   });
 
-  test(`AXE: /dashboard/results list + 4 tabs are clean @ ${width}px`, async () => {
+  test(`AXE: /dashboard/results list + 6 tabs are clean @ ${width}px`, async () => {
     await page.setViewportSize(viewport);
     await openReady(page, '/dashboard/results', 'teacher-results');
     await expectTeacherAxeClean(page, `/dashboard/results @ ${width}px`);

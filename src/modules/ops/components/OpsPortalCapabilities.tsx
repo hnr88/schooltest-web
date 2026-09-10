@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Lock, TriangleAlert } from 'lucide-react';
+import { Lock, TriangleAlert, WifiOff } from 'lucide-react';
 
 import { Button } from '@/modules/design-system';
 import {
@@ -9,18 +9,26 @@ import {
   CAPABILITIES_TRANSLATION_NAMESPACE,
   type CapabilitiesCopyKey,
 } from '@/modules/ops/constants/capabilities.constants';
+import { useOnlineStatus } from '@/modules/ops/hooks/use-online-status';
 import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
 
 const STRIP = 'flex flex-wrap items-center gap-4 rounded-2xl border px-5 py-4';
 
 // The portal's top banner region (mvp/ops/Ops Portal.dc.html:49-66): the
-// read-only session strip a support account sees, and the pictured
-// "Try again" / "Status page" actions when the server cannot say what this
-// account may do. Full ops renders nothing, exactly as the reference does.
+// offline strip (:51-58), the read-only session strip a support account sees,
+// and the pictured "Try again" / "Status page" actions when the server cannot
+// say what this account may do. Full ops renders nothing, exactly as the
+// reference does.
+//
+// One region, one strip: precedence is offline > read-only > capabilities
+// error, so a session is never told two things in two places. The offline
+// strip and the action kit's offline write gate (task 03) read the ONE
+// useOnlineStatus listener, so the banner and the refusal cannot disagree.
 export function OpsPortalCapabilities() {
   const t = useTranslations(CAPABILITIES_TRANSLATION_NAMESPACE);
   const copy = (key: CapabilitiesCopyKey): string => (t.has(key) ? t(key) : CAPABILITIES_COPY[key]);
   const query = useCapabilitiesQuery();
+  const online = useOnlineStatus();
   const statusPage = (
     <StatusPageAction
       label={copy('statusPage')}
@@ -28,6 +36,45 @@ export function OpsPortalCapabilities() {
       url={query.data?.status_page_url ?? null}
     />
   );
+
+  if (!online) {
+    return (
+      <section data-slot="ops-offline-strip" className={`${STRIP} border-destructive/25 bg-destructive/8`}>
+        <WifiOff aria-hidden className="size-5 shrink-0 text-destructive" />
+        <div className="min-w-[220px] flex-1">
+          <p className="text-sm font-semibold text-destructive">{copy('offlineTitle')}</p>
+          <p className="mt-0.5 text-sm text-body">{copy('offlineBody')}</p>
+        </div>
+        <Button
+          type="button"
+          size="sm"
+          variant="destructive"
+          data-slot="ops-offline-retry"
+          onClick={() => void query.refetch()}
+        >
+          {copy('offlineRetry')}
+        </Button>
+      </section>
+    );
+  }
+
+  const data = query.data;
+  if (data && !data.capabilities.write) {
+    return (
+      <section
+        data-slot="ops-capabilities-read-only"
+        data-ops-role={data.actor.role}
+        className={`${STRIP} border-border bg-muted`}
+      >
+        <Lock aria-hidden className="size-5 shrink-0 text-body" />
+        <div className="min-w-[220px] flex-1">
+          <p className="text-sm font-semibold text-foreground">{copy('readOnlyTitle')}</p>
+          <p className="mt-0.5 text-sm text-body">{copy('readOnlyBody')}</p>
+        </div>
+        {statusPage}
+      </section>
+    );
+  }
 
   if (query.isError) {
     return (
@@ -54,23 +101,7 @@ export function OpsPortalCapabilities() {
     );
   }
 
-  const data = query.data;
-  if (!data || data.capabilities.write) return null;
-
-  return (
-    <section
-      data-slot="ops-capabilities-read-only"
-      data-ops-role={data.actor.role}
-      className={`${STRIP} border-border bg-muted`}
-    >
-      <Lock aria-hidden className="size-5 shrink-0 text-body" />
-      <div className="min-w-[220px] flex-1">
-        <p className="text-sm font-semibold text-foreground">{copy('readOnlyTitle')}</p>
-        <p className="mt-0.5 text-sm text-body">{copy('readOnlyBody')}</p>
-      </div>
-      {statusPage}
-    </section>
-  );
+  return null;
 }
 
 const ACTION_CLASS =

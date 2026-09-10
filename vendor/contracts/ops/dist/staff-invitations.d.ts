@@ -221,3 +221,55 @@ export declare function staffInvitationInvitedDaysAgo(invitedAt: string | null, 
 export declare function staffInvitationHasUserAccount(status: StaffInvitationStatus | null): boolean;
 /** C-OPS-PORTAL-016 — GET /api/ops/invitations */
 export declare const StaffInvitationsOperation: OpsOperation<typeof staffInvitationsQuerySchema, typeof staffInvitationsResponseSchema>;
+/**
+ * The invite body. `role` is NOT a body key: the path segment
+ * (`admin-invitations` / `teacher-invitations`) forces it server-side, so a
+ * caller cannot promote a teacher invite into an admin one by sending a field.
+ * Names and address are trimmed, so a padded value is accepted rather than
+ * 400'd — the same rule `onboardingInviteBodySchema` applies in ./core.
+ */
+export declare const staffInviteBodySchema: z.ZodObject<{
+    first_name: z.ZodString;
+    last_name: z.ZodString;
+    email: z.ZodPipe<z.ZodString, z.ZodEmail>;
+    message: z.ZodOptional<z.ZodString>;
+}, z.core.$strict>;
+export type StaffInviteBody = z.infer<typeof staffInviteBodySchema>;
+/** 201 body — the created invitation as the list already projects it. */
+export declare const staffInviteResponseSchema: z.ZodObject<{
+    data: z.ZodObject<{
+        documentId: z.ZodString;
+        email: z.ZodNullable<z.ZodString>;
+        first_name: z.ZodNullable<z.ZodString>;
+        last_name: z.ZodNullable<z.ZodString>;
+        role: z.ZodNullable<z.ZodEnum<{
+            teacher: "teacher";
+            school_admin: "school_admin";
+        }>>;
+        status: z.ZodNullable<z.ZodEnum<{
+            invited: "invited";
+            revoked: "revoked";
+            accepted: "accepted";
+            expired: "expired";
+        }>>;
+        expires_at: z.ZodNullable<z.ZodISODateTime>;
+        accepted_at: z.ZodNullable<z.ZodISODateTime>;
+        revoked_at: z.ZodNullable<z.ZodISODateTime>;
+        school: z.ZodNullable<z.ZodObject<{
+            documentId: z.ZodString;
+            name: z.ZodNullable<z.ZodString>;
+        }, z.core.$strict>>;
+        display_name: z.ZodNullable<z.ZodString>;
+        invited_at: z.ZodNullable<z.ZodISODateTime>;
+    }, z.core.$strict>;
+}, z.core.$strict>;
+export type StaffInviteResponse = z.infer<typeof staffInviteResponseSchema>;
+/**
+ * C-OPS-INV-CREATE. 201 on create; 409 when the address already has access to
+ * this school, or when the single-admin rule refuses a second one.
+ *
+ * `path` carries the record's `{admin|teacher}` alternation because ONE
+ * operation serves both routes — the role is the segment. `errors` is the
+ * record's list verbatim: [400, 401, 403, 404, 409].
+ */
+export declare const StaffInviteOperation: OpsOperation<typeof staffInviteBodySchema, typeof staffInviteResponseSchema>;

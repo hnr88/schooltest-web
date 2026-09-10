@@ -6,6 +6,9 @@ import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { OpsSessionExpiredCard } from '@/modules/auth/components/OpsSessionExpiredCard';
 import { useRequireOps } from '@/modules/auth/hooks/use-require-ops';
 import { Skeleton } from '@/modules/design-system';
+// Imported by path, not through the `@/modules/ops` barrel: the barrel is
+// integrated separately (the same recorded reason as dashboard/ops/layout.tsx).
+import { usePlatformSettingsQuery } from '@/modules/ops/queries/use-platform-settings.query';
 
 import type { OpsGuardProps } from '@/modules/auth/types/components.types';
 
@@ -20,9 +23,16 @@ import type { OpsGuardProps } from '@/modules/auth/types/components.types';
 // over the kept-alive tree — the operator sees why, and their screen is not
 // yanked away. A deliberate sign-out never raises the flag, so the normal
 // redirect paths are untouched.
+//
+// D-14: the wall names the CONFIGURED session timeout. The read lives HERE,
+// not in the shared card (TeacherGuard mounts it too): it runs only while a
+// live authenticated ops guard is up and the session is NOT expired, so an
+// expired or non-ops token never issues the ops-only request, and the card
+// receives the last good answer from the cache while it shows.
 export function OpsGuard({ children }: OpsGuardProps) {
   const { isReady } = useRequireOps();
   const sessionExpired = useAuthStore((state) => state.sessionExpired);
+  const settings = usePlatformSettingsQuery(isReady && !sessionExpired);
 
   const content = isReady ? (
     children
@@ -41,7 +51,7 @@ export function OpsGuard({ children }: OpsGuardProps) {
     return (
       <>
         {content}
-        <OpsSessionExpiredCard />
+        <OpsSessionExpiredCard timeoutMinutes={settings.data?.session_timeout_minutes} />
       </>
     );
   }

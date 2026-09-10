@@ -16,6 +16,11 @@ export function useRequireTeacher() {
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const hydrate = useAuthStore((state) => state.hydrate);
+  // U-25 (GAP-6): the design-drawn expired state. While it stands, the guard
+  // stops bounce-redirecting — the caller renders the session-expired card over
+  // the kept-alive tree instead of yanking the teacher to /sign-in. Mirrors
+  // use-require-ops.ts line for line.
+  const sessionExpired = useAuthStore((state) => state.sessionExpired);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,10 +35,12 @@ export function useRequireTeacher() {
   const isRejected = meQuery.isError;
 
   useEffect(() => {
+    if (sessionExpired) return;
     if (hydrated && !hasToken) router.replace('/sign-in');
-  }, [hydrated, hasToken, router]);
+  }, [sessionExpired, hydrated, hasToken, router]);
 
   useEffect(() => {
+    if (sessionExpired) return;
     if (!isResolved) return;
     if (isRejected) {
       router.replace('/sign-in');
@@ -42,11 +49,12 @@ export function useRequireTeacher() {
     // Security finding 3: a signed-in non-teacher must not see the content
     // while nothing redirects — send them somewhere their role can open.
     if (!isTeacher) router.replace('/dashboard');
-  }, [isResolved, isRejected, isTeacher, router]);
+  }, [sessionExpired, isResolved, isRejected, isTeacher, router]);
 
   return {
     isReady: isResolved && !isRejected && isTeacher,
     isTeacher,
     roleType,
+    sessionExpired,
   };
 }

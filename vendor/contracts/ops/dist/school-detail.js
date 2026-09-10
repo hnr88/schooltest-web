@@ -17,8 +17,9 @@ exports.schoolDetailPath = schoolDetailPath;
  * with OPS-002/OPS-013/OPS-017 and are now read from the row and emitted. They
  * are declared nullable here even though contracts.openapi.json declares
  * portal_plan/portal_status/billing_status non-nullable — see GAP-02-BACKFILL.
- * Three columns still do not exist (last_active_at, archived_at,
- * owner_documentId); they are recorded as GAPs and never invented.
+ * ONE column still does not exist (owner_documentId); it is recorded as a GAP
+ * and never invented. `archived_at` landed with task 08 and `last_active_at`
+ * with OPS-005, so both are read from the row and emitted.
  */
 const zod_1 = require("zod");
 const core_1 = require("./core");
@@ -31,8 +32,13 @@ const school_create_1 = require("./school-create");
  * GAP register for this operation. Each entry names the missing column and the
  * task that lands it, so nobody re-derives a value from an unrelated field.
  *
- * GAP-02-C  last_active_at   -> OPS-005  (declared, always null — AC-2)
- * GAP-02-D  archived_at      -> OPS-005  (withheld; see below)
+ * GAP-02-C  last_active_at   -> DISCHARGED by OPS-005. The column exists and
+ *                               the real value is served. NULL now means
+ *                               "never active" (rendered "Never"), not
+ *                               "no column".
+ * GAP-02-D  archived_at      -> DISCHARGED. The note was STALE, not the column
+ *                               (X-07): `schools/schema.json` has declared
+ *                               `archived_at: datetime` since task 08.
  * GAP-02-J  owner_documentId -> OPS-014 ownership migration; "Make owner" is a
  *                               required action whose backing column does not
  *                               exist yet, so the field is withheld rather than
@@ -49,9 +55,16 @@ const school_create_1 = require("./school-create");
  * nullable. Consumers must handle null until then.
  */
 exports.SCHOOL_DETAIL_GAPS = Object.freeze([
-    // archived_at and owner_documentId LEFT this list with backlog task 08:
-    // both columns exist now, so they are served rather than withheld.
-    'last_active_at',
+// EMPTY, and deliberately so. archived_at and owner_documentId left with
+// task 08; last_active_at left with OPS-005. Every field this operation
+// declares is now backed by a real column.
+//
+// Emptying this is LOAD-BEARING, not tidying: the conformance spec asserts
+// that a gap the contract still DECLARES must be served as a literal null
+// (`school-detail.spec.ts:117`). Leaving `last_active_at` here would demand
+// null forever and fail the moment the column carries a value — the spec is
+// written so that landing a column moves the field between categories with
+// no edit there.
 ]);
 exports.schoolDetailSchema = zod_1.z.strictObject({
     documentId: core_1.documentIdSchema,
@@ -106,7 +119,11 @@ exports.schoolDetailSchema = zod_1.z.strictObject({
     /* ---- timestamps ------------------------------------------------------ */
     createdAt: zod_1.z.string().nullable(),
     updatedAt: zod_1.z.string(),
-    /** GAP-02-C: no last_active_at column yet (OPS-005). Always null. */
+    /**
+     * Real column since OPS-005. An ISO instant (D-09 keeps relative formatting
+     * client-side); NULL means the school has never been active and renders
+     * "Never" (`Ops Portal.dc.html:1496`).
+     */
     last_active_at: zod_1.z.string().nullable(),
     /** Resolved from the coverImage media relation; null when unset. The portal
      *  renders a neutral fallback for null — never a prototype photo (AC-2). */

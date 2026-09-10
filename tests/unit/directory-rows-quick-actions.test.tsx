@@ -34,6 +34,8 @@ function fakeState(): DirectoryStateApi {
     setFilter: vi.fn(),
     setSort: vi.fn(),
     setPage: vi.fn(),
+    layout: 'table',
+    setLayout: vi.fn(),
     clearFilters: vi.fn(),
     hasActiveControls: false,
   };
@@ -45,6 +47,7 @@ function fakeSelection(): DirectorySelectionApi<Row> {
     atCap: false,
     headerState: 'none',
     targets: [],
+    selectedRows: [],
     isSelected: () => false,
     toggleRow: vi.fn(),
     toggleAllOnPage: vi.fn(),

@@ -84,3 +84,17 @@ export function selectedTargets(
 export function selectionAtCap(selected: ReadonlySet<string>): boolean {
   return selected.size >= OPS_SELECTION_MAX;
 }
+
+/**
+ * teacher/05 — selected ROWS, in the page's own order, capped. The row
+ * counterpart of `selectedTargets`: same keys, same order, same cap, so the
+ * two always describe the same selection (pinned by unit test against a page
+ * longer than `OPS_SELECTION_MAX`).
+ */
+export function selectedRows<Row>(
+  selected: ReadonlySet<string>,
+  page: readonly Row[],
+  targetOf: (row: Row) => OpsActionTarget,
+): Row[] {
+  return page.filter((row) => selected.has(selectionKey(targetOf(row)))).slice(0, OPS_SELECTION_MAX);
+}

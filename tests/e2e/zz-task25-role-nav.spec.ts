@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat, loadMessages } from './helpers/i18n';
@@ -6,20 +8,38 @@ import { roleCredentials } from './helpers/credentials';
 
 // Task 25 (st-mvp-pivot) targeted live checks — NOT part of the suite.
 // Seeded credentials from .qa/DECISIONS.md D-04. Verifies:
-//  - school_admin nav items resolve per role (teacher absent / school_admin present)
+//  - school_admin nav items resolve per role (teacher rail entries absent / school_admin present)
 //  - TeacherGuard now redirects a signed-in non-teacher off /dashboard/reports
 //  - the parent dashboard surface still renders unchanged
+// teacher task 03 adds the retirement proof captures here: the school-admin and
+// parent rails at 1440×900 for mvp/teacher/proof/03.md — the parent "rail" is
+// the masked unavailable screen with NO rail at all, captured as behaviour
+// evidence beside the executable assertions above.
 const en = loadMessages('en');
+
+const PROOF_VIEWPORT = { width: 1440, height: 900 } as const;
+const PROOF_SHOTS = path.resolve(process.cwd(), '..', 'mvp', 'teacher', 'proof', 'shots');
 
 const TEACHER = roleCredentials('teacher');
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 const PARENT = roleCredentials('parent');
 
+// The API allows 20 POST /api/auth/local per minute per IP (measured); the
+// helper-driven specs pace their own submissions at a 3.1s floor. This spec's
+// local signIn used to bypass that and trip the limiter whenever the five
+// task-03 specs ran back-to-back — pace it identically.
+let lastLoginAt = 0;
+
 async function signIn(page: Page, email: string, password: string): Promise<void> {
+  const sinceLast = Date.now() - lastLoginAt;
+  if (lastLoginAt !== 0 && sinceLast < 3_100) {
+    await page.waitForTimeout(3_100 - sinceLast);
+  }
   await page.goto('/sign-in');
   await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(email);
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(password);
   await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  lastLoginAt = Date.now();
   await page.waitForURL('**/dashboard');
 }
 
@@ -29,9 +49,13 @@ const navLink = (page: Page, key: string) =>
   page.locator(`a[data-sidebar="menu-button"][aria-label="${cat(en, `Shell.nav.${key}`)}"]`);
 
 test.describe('task 25: role nav wiring + guard fixes', () => {
-  test('teacher: school_admin items absent, reports present', async ({ page }) => {
+  test('teacher: school_admin items absent, the retired reports entry absent (R-11)', async ({
+    page,
+  }) => {
     await signIn(page, TEACHER.email, TEACHER.password);
-    await expect(navLink(page, 'reports')).toBeVisible({ timeout: 20_000 });
+    // teacher task 03 retired the reports rail entry (R-11) — the route keeps
+    // serving, the entry is gone.
+    await expect(navLink(page, 'reports')).toHaveCount(0);
     await expect(navLink(page, 'school')).toHaveCount(0);
     await expect(navLink(page, 'classes')).toHaveCount(0);
     await expect(navLink(page, 'students')).toHaveCount(0);
@@ -54,6 +78,14 @@ test.describe('task 25: role nav wiring + guard fixes', () => {
     await expect(page.locator('a[data-sidebar="menu-button"][href$="/school/analytics"]')).toHaveCount(0);
     await expect(navLink(page, 'reports')).toHaveCount(0);
 
+    // Proof capture for mvp/teacher/proof/03.md — the school-admin rail is
+    // byte-unchanged by the teacher retirement (R-10/R-11), at 1440×900.
+    await page.setViewportSize(PROOF_VIEWPORT);
+    await page.screenshot({
+      path: path.join(PROOF_SHOTS, '03-rail-school-admin.png'),
+      animations: 'disabled',
+    });
+
     await page.goto('/dashboard/reports');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
     await expect(page.locator('[data-surface="teacher-report-list"]')).toHaveCount(0);
@@ -71,6 +103,14 @@ test.describe('task 25: role nav wiring + guard fixes', () => {
     await expect(navLink(page, 'overview')).toHaveCount(0);
     await expect(navLink(page, 'reports')).toHaveCount(0);
     await expect(navLink(page, 'school')).toHaveCount(0);
+
+    // Proof capture for mvp/teacher/proof/03.md — the parent portal is masked:
+    // the unavailable screen and NO rail at all, unchanged (1440×900).
+    await page.setViewportSize(PROOF_VIEWPORT);
+    await page.screenshot({
+      path: path.join(PROOF_SHOTS, '03-rail-parent.png'),
+      animations: 'disabled',
+    });
 
     await page.goto('/dashboard/reports');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });

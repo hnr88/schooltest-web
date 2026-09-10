@@ -10,20 +10,13 @@ export interface StudentsTabPanelProps {
   rows: RosterRow[];
 }
 
+/** ops/34 — the roster table is the kit's `client`-mode table; rows arrive in the loaded (attention) order. */
 export interface StudentsResultsTableProps {
   classDocumentId: string;
   rows: RosterRow[];
 }
 
-export interface StudentResultsRowProps {
-  classDocumentId: string;
-  row: RosterRow;
-}
-
-/** The single-level column headers of the roster table (no props — one group). */
-export interface RosterHeadCellsProps {}
-
-/** The five data cells of one roster row: Score · Growth · Weakest skill · ACARA · Confidence. */
+/** One roster data cell of the kit's table (Score · Growth · Weakest skill · ACARA · Confidence). */
 export interface RosterStudentCellsProps {
   row: RosterRow;
 }

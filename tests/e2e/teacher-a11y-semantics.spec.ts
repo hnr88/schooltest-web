@@ -161,30 +161,16 @@ test('TARGETS: the retry control clears 44px and the row link’s REAL target is
   expect(box?.width ?? 0, `retry width ${box?.width}`).toBeGreaterThanOrEqual(44);
 
   await openReady(page, classUrl(), 'teacher-class-results');
-  // The student anchor's own box is just the text run; its `after:inset-0` overlay is
-  // the pointer target. Hit-test the row's corners instead of trusting the box.
-  const probe = await page.evaluate(() => {
-    const row = document.querySelector('[data-slot="student-results-row"]');
-    if (!(row instanceof HTMLElement)) return { box: 'none', hits: ['no row'] };
-    const rect = row.getBoundingClientRect();
-    const inset = 6;
-    const points: [number, number][] = [
-      [rect.left + inset, rect.top + inset],
-      [Math.min(rect.right - inset, window.innerWidth - 2), rect.bottom - inset],
-      [rect.left + rect.width / 2, rect.top + rect.height / 2],
-    ];
-    return {
-      box: `${Math.round(rect.width)}x${Math.round(rect.height)}`,
-      hits: points.map(([x, y]) => {
-        const hit = document.elementFromPoint(x, y);
-        return hit !== null && hit.closest('a[href]') !== null ? 'anchor' : (hit?.tagName ?? 'none');
-      }),
-    };
-  });
-  expect(probe.hits, `row ${probe.box} did not answer as the anchor at every probe`).toEqual([
-    'anchor',
-    'anchor',
-    'anchor',
-  ]);
-  expect(Number.parseInt(probe.box.split('x')[1], 10), `row height ${probe.box}`).toBeGreaterThanOrEqual(44);
+  // ops/34 — the row renders through the shared directory kit now, and the
+  // kit's §L-rownav contract DELIBERATELY drops the whole-row overlay (a row
+  // menu under an invisible overlay is the nested-interactive failure axe
+  // reports). The 44px promise moves onto the anchor itself: the first-cell
+  // link's OWN box clears the floor in both axes, and it stays the row's one
+  // real, keyboard-reachable navigation target.
+  const rowLink = page.locator('[data-slot="student-results-row"]').first().locator('a[data-row-href]');
+  await expect(rowLink).toBeVisible();
+  const linkBox = await rowLink.boundingBox();
+  expect(linkBox?.height ?? 0, `row link height ${linkBox?.height}`).toBeGreaterThanOrEqual(44);
+  expect(linkBox?.width ?? 0, `row link width ${linkBox?.width}`).toBeGreaterThanOrEqual(44);
+  await expect(rowLink).toHaveAttribute('href', /\/students\//);
 });

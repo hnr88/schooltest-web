@@ -58,7 +58,10 @@ const catalogFor = (locale: string): Catalog =>
 
 describe('Ops i18n locale parity', () => {
   it('the en Ops namespace is non-trivial — an empty census proves nothing', () => {
-    expect(enOpsKeys.length).toBeGreaterThan(1000);
+    // Floor recalibrated 2026-09-09 for mvp/ops task 41 (R-09…R-14): retiring the
+    // six console i18n groups legitimately shrank the Ops slice (measured: 1115 keys at HEAD → 774 now).
+    // The floor still catches an empty or gutted catalog, which is its only job.
+    expect(enOpsKeys.length).toBeGreaterThan(700);
   });
 
   it.each(LOCALES)('%s carries every en Ops.* key — no raw keys for non-en operators', (locale) => {
@@ -70,7 +73,11 @@ describe('Ops i18n locale parity', () => {
 
 describe('catalog-wide i18n key parity (non-Ops trees included)', () => {
   it('the en catalog is non-trivial', () => {
-    expect(enAllKeys.length).toBeGreaterThan(4000);
+    // Floor recalibrated 2026-09-09 for mvp/ops task 41: the same retirement
+    // took the whole catalog (measured: 4189 keys at HEAD → 3841 now). Both ratios below keep the
+    // guard's real purpose — a non-empty catalog that is strictly larger than
+    // its Ops slice — while accepting the ruled removals.
+    expect(enAllKeys.length).toBeGreaterThan(3500);
     // And it must be strictly larger than the Ops slice, or "catalog-wide"
     // would silently mean "Ops-only" again.
     expect(enAllKeys.length).toBeGreaterThan(enOpsKeys.length + 2000);
@@ -134,7 +141,11 @@ const ALLOWLIST: readonly Exemption[] = [
   { value: /^ACARA:$/, why: 'the ACARA proper noun as a field label — the colon is punctuation, not English' },
   {
     value: /^\{\w+\}\s*\/\s*(\{\w+\}|\d+)$/,
-    why: 'a fraction built from interpolations (e.g. "{completed} / {total}", "{score} / 100"): there is no prose to translate, and rewriting the separator would break the reading order the component lays out',
+    why: "a fraction built from interpolations (e.g. \"{completed} / {total}\", \"{score} / 100\"): there is no prose to translate, and rewriting the separator would break the reading order the component lays out",
+  },
+  {
+    value: /^\{\w+\}\s*→\s*\{\w+\}$/,
+    why: "an arrow between interpolations (e.g. \"{from} → {to}\", Teacher.results progress/score deltas): the arrow IS the rendering — no words to translate, and localising the glyph would break the delta layout",
   },
 ];
 
@@ -207,6 +218,8 @@ const TRANSLATED_TREES = [
   'Classes.studentDetail.',
   'Classes.studentDetailMeta.',
   'Shell.nav.',
+  'Shell.sidebar.groups.',
+  'Teacher.results.',
   'Auth.sessionExpired',
 ] as const;
 
@@ -219,7 +232,7 @@ describe('non-Ops i18n content parity (the trees this slice translated)', () => 
     expect(enTranslated.size).toBeGreaterThan(80);
   });
 
-  it.each(LOCALES)('%s translates the Classes/Shell.nav/Auth-session trees', (locale) => {
+  it.each(LOCALES)('%s translates the Classes/Shell.nav/Shell-sidebar-groups/Teacher.results/Auth-session trees', (locale) => {
     const catalog = catalogFor(locale);
     const still = flatEntries(catalog)
       .filter(([key, value]) => {

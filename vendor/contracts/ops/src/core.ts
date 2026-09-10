@@ -202,6 +202,131 @@ function operation<Req extends z.ZodType, Res extends z.ZodType>(
   return Object.freeze(op);
 }
 
+/* ------------------------------------------------------------------ *
+ * List derivations (SHARED-LAYER U-26, U-27, U-28, U-29, U-06).
+ *
+ * ONE definition of the list page shape, its envelope, its query encoding and
+ * its cache key, so the four cannot drift apart. Before this block the
+ * `{page,pageSize,pageCount,total}` object was written longhand in six list
+ * contracts and the query encoder was written per operation.
+ *
+ * The bounds below are the SERVER's bounds, copied from the one place that
+ * enforces them (`schooltest-api/src/api/ops/lib/ops-pagination.ts:20-21,31-32`
+ * and its `q` cap at `:70`), so a client cannot build a request the server is
+ * obliged to refuse. They are duplicated as VALUES only because this package
+ * must not import anything server-side; `parseListQuery` in that same file is
+ * the single runtime enforcer.
+ * ------------------------------------------------------------------ */
+
+const LIST_PAGE_MAX = 100_000;
+const LIST_PAGE_SIZE_MAX = 200;
+const LIST_Q_MAX = 120;
+
+/**
+ * U-26 — the pagination block every A-family list meta carries.
+ *
+ * `pageCount` is non-negative rather than `min(1)`: an empty list reports 0
+ * pages, never 1 (see `opsPaginationMeta`). No maximum is declared here — the
+ * six contracts that pin their own `COUNT_MAX`/`INT32_MAX` ceilings keep them
+ * until the task that next edits each re-points it, so this schema never
+ * silently widens a contract it did not write.
+ */
+export const paginationMetaSchema = z.strictObject({
+  page: z.number().int().min(1),
+  pageSize: z.number().int().min(1),
+  pageCount: z.number().int().min(0),
+  total: z.number().int().min(0),
+});
+export type PaginationMeta = z.infer<typeof paginationMetaSchema>;
+
+/**
+ * U-27 — `{ data: Row[], meta: { pagination } & Extra }` for one list read.
+ *
+ * Sibling of `dataEnvelope`, which serves the single-object families; this one
+ * serves family A only (SHARED-LAYER R-27 keeps the six envelope families
+ * apart). `metaExtras` is how a list adds its own meta — `status_counts`, an
+ * options list — WITHOUT re-declaring `pagination`.
+ */
+export function listEnvelope<
+  Row extends z.ZodType,
+  Extra extends z.ZodRawShape = Record<string, never>,
+>(row: Row, metaExtras?: Extra) {
+  return z.strictObject({
+    data: z.array(row),
+    meta: z.strictObject({
+      pagination: paginationMetaSchema,
+      ...((metaExtras ?? {}) as Extra),
+    }),
+  });
+}
+
+/**
+ * U-28 — the three params EVERY ops list accepts, at the server's own bounds.
+ * `q` is trimmed before the length check, matching `parseOpsQuery`.
+ */
+export const listPageShape = {
+  page: z.number().int().min(1).max(LIST_PAGE_MAX).optional(),
+  pageSize: z.number().int().min(1).max(LIST_PAGE_SIZE_MAX).optional(),
+  q: z.string().trim().max(LIST_Q_MAX).optional(),
+};
+
+/**
+ * U-28 — a strict list query: the three shared params plus this operation's
+ * own filters and sorts. STRICT, so a caller that invents a param fails the
+ * parse here instead of being silently ignored by the server.
+ */
+export function listQuery<S extends z.ZodRawShape>(shape: S) {
+  return z.strictObject({ ...listPageShape, ...shape });
+}
+
+/**
+ * Shared encoder for U-29 and U-06 — one loop, so a key dropped by the query
+ * encoder can never still appear in the cache key.
+ *
+ * `undefined` and `''` are DROPPED rather than sent: an absent filter and a
+ * filter explicitly set to empty are the same request, and sending `?q=` would
+ * make two identical reads cache under two different keys.
+ */
+function encodeListParams(parsed: unknown): Record<string, string> {
+  const params: Record<string, string> = {};
+  if (parsed === null || typeof parsed !== 'object') return params;
+  for (const [key, value] of Object.entries(parsed as Record<string, unknown>)) {
+    if (value === undefined || value === '') continue;
+    params[key] = String(value);
+  }
+  return params;
+}
+
+/**
+ * U-29 — parse a list query, then encode it as URL params.
+ *
+ * Promoted from `classesListQueryParams`, whose body was already generic; the
+ * per-operation encoders become thin wrappers over this. Parsing FIRST is the
+ * point: an out-of-bounds page never reaches the wire.
+ */
+export function listQueryParams<S extends z.ZodObject<z.ZodRawShape>>(
+  schema: S,
+  query: z.input<S>,
+): Record<string, string> {
+  return encodeListParams(schema.parse(query));
+}
+
+/**
+ * U-06 — the cache key for one contracted list read.
+ *
+ * `[op.contractId, params]`: THE CONTRACT ID IS THE CACHE NAMESPACE, so a key
+ * and a contract can never point at different things, and two operations
+ * cannot collide unless they share a contract id. The query is parsed through
+ * the operation's OWN request schema, so a key can never be built from a query
+ * the operation would reject.
+ */
+export function listQueryKey<Req extends z.ZodType, Res extends z.ZodType>(
+  op: OpsOperation<Req, Res>,
+  query: z.input<Req>,
+): readonly [contractId: string, params: Record<string, string>] {
+  return Object.freeze([op.contractId, encodeListParams(op.request.parse(query))] as const);
+}
+
 /** C-OPS-PORTAL-011 — GET /api/schools/{documentId}/onboarding-invitation */
 export const OnboardingReadOperation = operation({
   contractId: 'C-OPS-PORTAL-011',

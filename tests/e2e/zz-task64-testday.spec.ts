@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { fetchWithRetry, loginCached } from './helpers/http';
@@ -207,5 +209,118 @@ test.describe('task 64: teacher test-day screen vs live C-SIT-01/02/03', () => {
       screen.getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true }),
     ).toBeVisible();
     await expect(screen.locator('[data-slot="code-reveal-card"]')).toHaveCount(0);
+  });
+});
+
+
+// teacher/08 — the folded console states, captured IN-SPEC at 1440x900. Every
+// state is driven through the real product (real C-SIT-01 create, real join,
+// real close control) — nothing is seeded or mocked into a screenshot.
+test.describe('teacher/08: folded console captures', () => {
+  test.describe.configure({ mode: 'serial', timeout: 240_000 });
+  const SHOTS = path.resolve(process.cwd(), '..', 'mvp', 'teacher', 'proof', 'shots');
+  const shot = (page: Page, name: string) => page.screenshot({ path: path.join(SHOTS, name), fullPage: true });
+
+  test('console route + the working close-confirm', async ({ page, request }) => {
+    const jwt = await login(request, TEACHER);
+    await ensureSofiaEmail(request);
+    for (const sitting of await listClassSittings(request, jwt)) {
+      if (sitting.status === 'open') await closeSitting(request, jwt, sitting.documentId);
+    }
+    await signIn(page, TEACHER);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(TEST_DAY_URL);
+    const screen = page.locator('[data-surface="teacher-test-day"]');
+    await expect(screen).toBeVisible({ timeout: 30_000 });
+    await shot(page, '08-console-route.png');
+
+    const start = screen.getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true });
+    await expect(start).toBeVisible({ timeout: 30_000 });
+    await start.click();
+    const card = screen.locator('[data-slot="code-reveal-card"]');
+    await expect(card).toBeVisible({ timeout: 30_000 });
+    await card.getByRole('button', { name: cat(en, 'TestDay.code.revealCta'), exact: true }).click();
+    const codeEl = card.locator('[data-slot="access-code"]');
+    await expect(codeEl).toBeVisible({ timeout: 30_000 });
+    const code = ((await codeEl.textContent()) ?? '').trim();
+    const join = await joinAsSofia(request, code);
+    expect(join.ok()).toBeTruthy();
+
+    await screen
+      .getByRole('button', { name: cat(en, 'TestDay.monitor.closeCta'), exact: true })
+      .click();
+    const dialog = page.locator('[role="alertdialog"]');
+    await expect(dialog).toBeVisible({ timeout: 15_000 });
+    await shot(page, '08-close-confirm-working.png');
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+    await closeSitting(request, jwt, code === '' ? '' : (await listClassSittings(request, jwt))[0].documentId);
+  });
+
+  test('console tab with an open sitting, then the navy no-sitting panel', async ({ page, request }) => {
+    const jwt = await login(request, TEACHER);
+    await signIn(page, TEACHER);
+    await page.setViewportSize({ width: 1440, height: 900 });
+
+    // Open one real sitting through the test-day console's own start control.
+    await page.goto(TEST_DAY_URL);
+    const screen = page.locator('[data-surface="teacher-test-day"]');
+    await expect(screen).toBeVisible({ timeout: 30_000 });
+    const start = screen.getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true });
+    await expect(start).toBeVisible({ timeout: 30_000 });
+    await start.click();
+    await expect(screen.locator('[data-slot="code-reveal-card"]')).toBeVisible({ timeout: 30_000 });
+
+    // The class shell's Live sessions tab IS the embedded console.
+    await page.goto(`/en/dashboard/results/${CLASS_ID}`);
+    await page.getByRole('tab', { name: cat(en, 'Teacher.results.tabs.live') }).click();
+    await expect(
+      page.locator('[data-slot="test-day"][data-surface="teacher-test-day"]'),
+    ).toBeVisible({ timeout: 30_000 });
+    await shot(page, '08-console-tab.png');
+  });
+
+  test('nothing open: the navy no-sitting panel + previous sessions + the quiet close-confirm', async ({ page, request }) => {
+    const jwt = await login(request, TEACHER);
+    await signIn(page, TEACHER);
+    await page.setViewportSize({ width: 1440, height: 900 });
+
+    // Close EVERY open sitting for the class (real C-SIT close) so the
+    // no-sitting state is genuinely reached on the class shell's live tab.
+    for (const sitting of await listClassSittings(request, jwt)) {
+      if (sitting.status === 'open') await closeSitting(request, jwt, sitting.documentId);
+    }
+    await page.goto(`/en/dashboard/results/${CLASS_ID}`);
+    await page.getByRole('tab', { name: cat(en, 'Teacher.results.tabs.live') }).click();
+    await expect(
+      page.locator('[data-slot="test-day"][data-surface="teacher-test-day"]'),
+    ).toBeVisible({ timeout: 30_000 });
+    await shot(page, '08-no-sitting.png');
+
+    // Previous-sessions history on the test-day route.
+    await page.goto(TEST_DAY_URL);
+    await expect(page.locator('[data-slot="test-day"]')).toBeVisible({ timeout: 30_000 });
+    await shot(page, '08-previous-sessions.png');
+
+    // Quiet close-confirm: a fresh sitting nobody has joined.
+    await page.goto(TEST_DAY_URL);
+    const screen = page.locator('[data-surface="teacher-test-day"]');
+    await expect(screen).toBeVisible({ timeout: 30_000 });
+    const start = screen.getByRole('button', { name: cat(en, 'TestDay.startCta'), exact: true });
+    await expect(start).toBeVisible({ timeout: 30_000 });
+    await start.click();
+    await expect(screen.locator('[data-slot="code-reveal-card"]')).toBeVisible({ timeout: 30_000 });
+    await screen
+      .getByRole('button', { name: cat(en, 'TestDay.monitor.closeCta'), exact: true })
+      .click();
+    const dialog = page.locator('[role="alertdialog"]');
+    await expect(dialog).toBeVisible({ timeout: 15_000 });
+    await shot(page, '08-close-confirm-quiet.png');
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+    // Leave nothing open behind: close through the real endpoint.
+    for (const sitting of await listClassSittings(request, jwt)) {
+      if (sitting.status === 'open') await closeSitting(request, jwt, sitting.documentId);
+    }
   });
 });

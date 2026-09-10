@@ -14,11 +14,12 @@ import { ACCOUNTS, DESKTOP, en, groupLabels, navLink, sidebar, signIn } from './
 // Task 050 — brief flows 1 and 2 of 28 (.qa/E2E-FLOWS.md). The regression proof
 // that the ONE role-filtered shell (.qa/DECISIONS.md A4) scopes the rail by role:
 //
-//   Flow 1  a TEACHER signs in → the rail is EXACTLY Reports (Manage) · Dashboard · Test sessions · Results (Teach)
-//   Flow 2  an OPS account signs in → the five ops destinations, none of the teacher trio
+//   Flow 1  a TEACHER signs in → the rail is EXACTLY Results · Test sessions
+//           (teacher task 03's two-entry design rail, one TEACHER VIEW overline)
+//   Flow 2  an OPS account signs in → the ops destinations, none of the teacher two
 //
-// EXACT SET, never "the three are present": `expectExactRail` compares the whole
-// rendered `label|href` list with `toEqual`, so a fifth entry surviving for a
+// EXACT SET, never "the two are present": `expectExactRail` compares the whole
+// rendered `label|href` list with `toEqual`, so a third entry surviving for a
 // teacher (Search, Settings, …) FAILS this spec instead of slipping past
 // a containment check.
 //
@@ -45,16 +46,17 @@ test.describe('flows 1-2 — teacher auth + sidebar scoping', () => {
     expect(identity.role?.type).toBe('teacher');
   });
 
-  test('flow 1 — a teacher signs in and the rail is EXACTLY Reports, Dashboard, Test sessions, Results', async ({
+  test('flow 1 — a teacher signs in and the rail is EXACTLY Results, Test sessions', async ({
     page,
   }) => {
     await signIn(page, 'teacher');
     await expectExactRail(page, TEACHER_RAIL);
 
-    // Two sections in NAV_GROUP_ORDER: Manage (reports) then Teach (the trio).
-    await expect(groupLabels(page)).toHaveCount(2);
-    await expect(groupLabels(page).first()).toHaveText(cat(en, 'Shell.sidebar.groups.manage'));
-    await expect(groupLabels(page).last()).toHaveText(cat(en, 'Shell.sidebar.groups.teach'));
+    // ONE group label: with `reports` retired a teacher has zero `primary`
+    // items, the empty Manage group is dropped, and the two destinations sit
+    // under the new TEACHER VIEW overline (design :25–35).
+    await expect(groupLabels(page)).toHaveCount(1);
+    await expect(groupLabels(page)).toHaveText(cat(en, 'Shell.sidebar.groups.teacherView'));
     // The role chip lives in the sidebar's user-menu trigger (UserMenu), not a
     // dedicated slot anymore.
     const userMenu = sidebar(page).getByRole('button', {
@@ -77,9 +79,8 @@ test.describe('flows 1-2 — teacher auth + sidebar scoping', () => {
     await signIn(page, 'ops');
     await expectExactRail(page, OPS_RAIL);
 
-    // Named explicitly, not only through the derived sweep. The teacher Dashboard
-    // entry shares `/dashboard` with other roles' homes, so that one is absent
-    // by LABEL; the other two are absent by label AND by destination.
+    // Named explicitly, not only through the derived sweep. All teacher rail
+    // entries are absent from the ops rail by label AND by destination.
     for (const item of TEACHER_RAIL) {
       await expect(
         navLink(page, cat(en, item.key)),
@@ -92,7 +93,9 @@ test.describe('flows 1-2 — teacher auth + sidebar scoping', () => {
     await expect(groupLabels(page)).toHaveCount(1);
     await expect(groupLabels(page)).toHaveText(cat(en, 'Shell.sidebar.groups.manage'));
 
-    await page.goto('/dashboard/ops/timers');
+    // mvp/ops task 41 (R-09): /dashboard/ops/timers retired — the hard-load
+    // proof moved to the surviving Settings route, assertions unchanged.
+    await page.goto('/dashboard/ops/settings');
     await expectExactRail(page, OPS_RAIL);
   });
 

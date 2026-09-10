@@ -33,6 +33,7 @@ async function listInvitationStatuses(
 }
 
 export const STAFF_RESEND_INVITATION_ACTION: OpsActionDefinition<OpsActionTarget> = {
+  write: true,
   async perform(target) {
     await resendStaffInvitation(target.documentId);
   },

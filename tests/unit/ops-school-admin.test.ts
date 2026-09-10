@@ -15,28 +15,29 @@ describe('ops school-admin controls', () => {
   });
 
   it('does not promote Pipeline or Tools in the ops rail', () => {
-    const hrefs = filterNavByRole(NAV_ITEMS, OPS_ROLE_TYPE).map((item) => item.href);
+    // mvp/ops task 04 (R-01…R-06, Ops Portal.dc.html:25-47): the rail is the
+    // design's two-region layout, asserted per region — ONE primary
+    // Operations entry and ONE Account/footer entry. Still exhaustive on
+    // purpose, which is what makes it catch a promoted Pipeline or Tools
+    // entry at all, and it is why adding a rail entry has to be acknowledged
+    // HERE rather than passing silently.
+    const opsItems = filterNavByRole(NAV_ITEMS, OPS_ROLE_TYPE);
+    const primary = opsItems.filter((item) => item.group === 'primary').map((item) => item.href);
+    const account = opsItems.filter((item) => item.group === 'account').map((item) => item.href);
 
-    // The System / Audit / Communications consoles joined the rail once their
-    // pages existed (2ee7ccb, e542728, 3c94805), and the Flags console the same
-    // way one slice later (6cb9cde); before that each was reachable only by
-    // typing the URL. They are APPENDED, so the original three keep their
-    // positions — this list is exhaustive on purpose, which is what makes it catch
-    // a promoted Pipeline or Tools entry at all, and it is why adding a rail
-    // entry has to be acknowledged HERE rather than passing silently.
-    expect(hrefs).toEqual([
-      '/dashboard/ops/schools',
-      '/dashboard/ops/timers',
-      '/dashboard/ops/settings',
-      '/dashboard/ops/system',
-      '/dashboard/ops/audit',
-      '/dashboard/ops/comms',
-      '/dashboard/ops/flags',
-    ]);
+    expect(primary).toEqual(['/dashboard/ops/schools']);
+    expect(account).toEqual(['/dashboard/ops/settings']);
+
+    const hrefs = [...primary, ...account];
     // The intent this test was written for, asserted directly rather than left
-    // implicit in the list above.
+    // implicit in the lists above.
     expect(hrefs).not.toContain('/dashboard/ops/pipeline');
     expect(hrefs).not.toContain('/dashboard/ops/tools');
+    // The five retired console entries are absent from every region (R-01…R-06):
+    // their routes keep serving until task 41, but the rail no longer links to them.
+    for (const dest of ['timers', 'system', 'audit', 'comms', 'flags']) {
+      expect(hrefs).not.toContain(`/dashboard/ops/${dest}`);
+    }
     // Every ops rail destination must be a page that exists — the defect this
     // slice fixes was the inverse (pages with no entry), and the opposite defect
     // is a dead link.

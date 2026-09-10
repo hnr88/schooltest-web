@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
+import { showOpsToast } from '@/modules/ops/actions';
 import { classifyStudentError } from '@/modules/school-students/lib/classify-student-error';
 import {
   buildStudentCreateBody,
@@ -61,17 +61,17 @@ export function useStudentForm(target: StudentFormTarget, onDone: () => void) {
     try {
       if (target.mode === 'create') {
         await create.mutateAsync(buildStudentCreateBody(values));
-        toast.success(t('createdToast', { name: displayName(values) }));
+        showOpsToast({ tone: 'ok', message: t('createdToast', { name: displayName(values) }) });
       } else {
         const body = buildStudentUpdateBody(values, initialValues(target));
         if (Object.keys(body).length > 0) {
           await update.mutateAsync({ documentId: target.student.documentId, body });
-          toast.success(t('updatedToast', { name: displayName(values) }));
+          showOpsToast({ tone: 'ok', message: t('updatedToast', { name: displayName(values) }) });
         }
       }
       onDone();
     } catch (error) {
-      toast.error(t(`${classifyStudentError(error)}Toast`));
+      showOpsToast({ tone: 'error', message: t(`${classifyStudentError(error)}Toast`) });
     }
   });
 

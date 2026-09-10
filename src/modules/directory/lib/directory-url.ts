@@ -18,6 +18,7 @@ import {
 import type {
   DirectoryFilterDef,
   DirectoryFilterValues,
+  DirectoryLayout,
   DirectoryQueryParams,
   DirectoryUrlState,
 } from '../types/directory.types';
@@ -30,9 +31,13 @@ export function clampPage(raw: number, pageCount?: number): number {
   return raw;
 }
 
-/** The canonical default every surface resets to ("Clear filters"). */
+/**
+ * The canonical default every surface resets to ("Clear filters"). `layout` is
+ * deliberately NOT an active control — a tiles ⇄ list swap is a view choice,
+ * so neither `hasActiveControls` nor "Clear filters" snaps the view back.
+ */
 export function defaultUrlState(defaultSort: string): DirectoryUrlState {
-  return { q: '', filters: {}, sort: defaultSort, page: 1 };
+  return { q: '', filters: {}, sort: defaultSort, page: 1, layout: '' };
 }
 
 export function isDefaultUrlState(state: DirectoryUrlState, defaultSort: string): boolean {
@@ -59,22 +64,49 @@ function parseFilterValue(options: readonly string[], raw: string | null): strin
   return options.includes(raw) ? raw : DIRECTORY_ALL;
 }
 
+/**
+ * ops/34 — `prefix` namespaces every param this surface reads and writes, so
+ * one page can host SEVERAL kit instances (two ranked watch lists, say) without
+ * their `q`/`sort`/`page` colliding in the one query string. Empty (default) is
+ * today's behaviour byte-for-byte; filters are prefixed with their def key the
+ * same way (`<prefix><key>`).
+ *
+ * teacher/06 — when `layouts` is configured, the (prefixed) `layout` param
+ * carries the URL's body choice, validated fail-open to `defaultLayout`;
+ * unconfigured surfaces read and write no layout param at all.
+ */
 export function parseDirectoryParams(
   params: URLSearchParams,
   filters: readonly DirectoryFilterDef[],
   defaultSort: string,
+  prefix = '',
+  layouts?: readonly DirectoryLayout[],
+  defaultLayout?: DirectoryLayout,
+  sorts?: readonly string[],
 ): DirectoryUrlState {
-  const rawPage = Number(params.get(DIRECTORY_PARAMS.page));
+  const rawPage = Number(params.get(`${prefix}${DIRECTORY_PARAMS.page}`));
+  const rawLayout = params.get(`${prefix}${DIRECTORY_PARAMS.layout}`);
+  const rawSort = params.get(`${prefix}${DIRECTORY_PARAMS.sort}`);
   const state: DirectoryUrlState = {
-    q: sanitizeQuery(params.get(DIRECTORY_PARAMS.q) ?? ''),
+    q: sanitizeQuery(params.get(`${prefix}${DIRECTORY_PARAMS.q}`) ?? ''),
     filters: {},
-    sort: defaultSort,
+    // ops/34 — the sort round-trips (the schools-filter pattern this file
+    // mirrors reads it back with `oneOf`): a value on the surface's sort list
+    // survives a reload, anything else degrades to the default.
+    sort:
+      rawSort !== null && rawSort !== '' && (sorts === undefined || sorts.includes(rawSort))
+        ? rawSort
+        : defaultSort,
     page: clampPage(rawPage),
+    layout:
+      layouts !== undefined && rawLayout !== null && layouts.includes(rawLayout as DirectoryLayout)
+        ? rawLayout
+        : (defaultLayout ?? ''),
   };
   for (const def of filters) {
     state.filters[def.key] = parseFilterValue(
       def.options.map((option) => option.value),
-      params.get(def.key),
+      params.get(`${prefix}${def.key}`),
     );
   }
   return state;
@@ -83,15 +115,46 @@ export function parseDirectoryParams(
 export function serializeDirectoryParams(
   state: DirectoryUrlState,
   defaultSort: string,
+  prefix = '',
+  defaultLayout?: DirectoryLayout,
 ): URLSearchParams {
   const params = new URLSearchParams();
-  if (state.q !== '') params.set(DIRECTORY_PARAMS.q, state.q);
+  if (state.q !== '') params.set(`${prefix}${DIRECTORY_PARAMS.q}`, state.q);
   for (const [key, value] of Object.entries(state.filters)) {
-    if (value !== DIRECTORY_ALL) params.set(key, value);
+    if (value !== DIRECTORY_ALL) params.set(`${prefix}${key}`, value);
   }
-  if (state.sort !== defaultSort) params.set(DIRECTORY_PARAMS.sort, state.sort);
-  if (state.page > 1) params.set(DIRECTORY_PARAMS.page, String(state.page));
+  if (state.sort !== defaultSort) params.set(`${prefix}${DIRECTORY_PARAMS.sort}`, state.sort);
+  if (state.page > 1) params.set(`${prefix}${DIRECTORY_PARAMS.page}`, String(state.page));
+  if (defaultLayout !== undefined && state.layout !== '' && state.layout !== defaultLayout) {
+    params.set(`${prefix}${DIRECTORY_PARAMS.layout}`, state.layout);
+  }
   return params;
+}
+
+/**
+ * school-admin/03 (U-15 D-c) — carry a surface's own params across a kit write.
+ *
+ * `serializeDirectoryParams` deliberately builds a FRESH URLSearchParams so a
+ * stale param cannot survive a control change. That is also why the four tabbed
+ * detail screens had to rescue `?tab=` by hand (OpsSchoolTables.tsx:50-56). This
+ * copies only the NAMED keys back: copying everything would resurrect exactly
+ * the stale params the fresh build exists to drop.
+ *
+ * Pure, and it never overwrites a key the kit itself just wrote — the kit's own
+ * state stays authoritative for the params it owns.
+ */
+export function preserveNamedParams(
+  target: URLSearchParams,
+  /** Structural, so next/navigation's ReadonlyURLSearchParams fits without a cast. */
+  source: { get(name: string): string | null },
+  keys: readonly string[],
+): URLSearchParams {
+  for (const key of keys) {
+    if (target.has(key)) continue;
+    const value = source.get(key);
+    if (value !== null && value !== '') target.set(key, value);
+  }
+  return target;
 }
 
 /**

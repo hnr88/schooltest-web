@@ -17,7 +17,7 @@ export { ObservationList } from './components/ObservationList';
 export { ErrorPatternNotes } from './components/ErrorPatternNotes';
 export { ErrorPatternHeading, ErrorPatternNotice } from './components/ErrorPatternNotice';
 export { ReportSkeleton } from './components/ReportSkeleton';
-export { useResultQuery } from './queries/use-result.query';
+export { useStudentResultQuery as useResultQuery } from '@/modules/results/queries/use-student-result.query';
 export { useDiagnosticBundleQuery } from './queries/use-diagnostic-bundle.query';
 export { useMyStudentResultsQuery } from './queries/use-my-student-results.query';
 export {
@@ -80,3 +80,13 @@ export type {
   ErrorPattern,
   ErrorPatternsView,
 } from './types/error-pattern.types';
+export { ReviewDrawer } from '@/modules/report/components/ReviewDrawer';
+export {
+  fetchResultReview,
+  useResultReviewQuery,
+} from '@/modules/report/queries/use-result-review.query';
+export {
+  reviewMarkDecision,
+  saveResultReview,
+  useResultReviewMutation,
+} from '@/modules/report/queries/use-result-review.mutation';

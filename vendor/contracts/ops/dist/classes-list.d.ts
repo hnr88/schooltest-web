@@ -210,3 +210,29 @@ export declare const classRowEnvelopeSchema: z.ZodObject<{
         }, z.core.$strict>>;
     }, z.core.$strict>;
 }, z.core.$strict>;
+/**
+ * Both writes take an EMPTY body. Which operation it is comes from the path,
+ * never from a payload key, and the strict object means a caller cannot smuggle
+ * `archived_at` — or a school/class reference — past the route scope. Restore
+ * reuses this schema rather than restating it: one empty-body definition for
+ * the pair, so the two cannot drift apart.
+ */
+export declare const classArchiveBodySchema: z.ZodObject<{}, z.core.$strict>;
+export type ClassArchiveBody = z.infer<typeof classArchiveBodySchema>;
+/**
+ * C-OPS-CLASS-ARCHIVE. 200 with `archived_at` set. No `student.class` link is
+ * touched (D-18): the roster survives the archive, and the row reads `archived`
+ * from the timestamp alone.
+ *
+ * `errors` is the contract record's list verbatim — [400, 401, 403, 404, 409].
+ * It is deliberately shorter than the read operations' list above: the record
+ * is the signature (RUN.md law 4), so the codes are not widened here to match
+ * a sibling.
+ */
+export declare const ClassArchiveOperation: OpsOperation<typeof classArchiveBodySchema, typeof classRowEnvelopeSchema>;
+/**
+ * C-OPS-CLASS-RESTORE. 200 with `archived_at` cleared to null. A restored class
+ * returns to `active` or `pending_setup` purely by derivation — there is no
+ * stored status to reconcile, which is why restore needs no body either.
+ */
+export declare const ClassRestoreOperation: OpsOperation<typeof classArchiveBodySchema, typeof classRowEnvelopeSchema>;

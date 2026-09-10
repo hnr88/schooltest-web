@@ -20,6 +20,7 @@ import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
 import { roleCredentials } from './credentials';
 import { cat } from './i18n';
 import { apiEnv, runSql } from './auth-db';
+import { fetchWithRetry } from './http';
 import { en, navLink, signIn } from './teacher-rail';
 
 // Task 040 harness. Everything the Results shell spec compares the DOM against is
@@ -50,16 +51,22 @@ export const TEACHER_EMAIL = roleCredentials('teacher').email;
 
 export interface LiveResults {
   classes: readonly DashboardClass[];
-  detail: ClassStudentsResponse;
+  /** undefined when read with `{ withDetail: false }` (C-TR-1 is 410 Gone). */
+  detail?: ClassStudentsResponse;
 }
 
 export async function bearer(
   request: APIRequestContext,
   teacherEmail: string = TEACHER_EMAIL,
 ): Promise<string> {
-  const response = await request.post(`${API_BASE}/api/auth/local`, {
-    data: { identifier: teacherEmail, password: apiEnv('SEED_TEACHER_PASSWORD') },
-  });
+  // The auth limiter (20/min, config/plugins.ts:37) is saturated when several
+  // rows sign in from the same window — ride out a 429 with the established
+  // retry helper instead of failing the file's beforeAll.
+  const response = await fetchWithRetry(() =>
+    request.post(`${API_BASE}/api/auth/local`, {
+      data: { identifier: teacherEmail, password: apiEnv('SEED_TEACHER_PASSWORD') },
+    }),
+  );
   if (!response.ok()) {
     throw new Error(`[e2e] teacher sign-in failed: ${response.status()} ${await response.text()}`);
   }
@@ -89,7 +96,13 @@ async function readJson(
 export async function readLiveResults(
   playwright: PlaywrightWorkerArgs['playwright'],
   teacherEmail: string = TEACHER_EMAIL,
+  options: { withDetail?: boolean } = {},
 ): Promise<LiveResults> {
+  // teacher/06 — the C-TR-1 read answers 410 Gone since scoring task 24
+  // retired the route, so the class-detail half of this harness is opt-in:
+  // list-only callers (teacher-results-shell) pass { withDetail: false } and
+  // the detail consumer skips with that reason instead of the whole file
+  // aborting in beforeAll.
   const request = await playwright.request.newContext();
   try {
     const jwt = await bearer(request, teacherEmail);
@@ -99,11 +112,15 @@ export async function readLiveResults(
     const classes = teacherDashboardResponseSchema.parse(dash.body).classes;
     if (classes.length === 0) throw new Error('[e2e] the seeded teacher owns no class');
 
-    const first = classes[0].class_document_id;
-    const detail = await readJson(request, jwt, `/api/teacher/classes/${first}/students`);
-    if (detail.status !== 200) throw new Error(`[e2e] C-TR-1 answered ${detail.status}`);
+    let detail: ClassStudentsResponse | undefined;
+    if (options.withDetail !== false) {
+      const first = classes[0].class_document_id;
+      const detailRes = await readJson(request, jwt, `/api/teacher/classes/${first}/students`);
+      if (detailRes.status !== 200) throw new Error(`[e2e] C-TR-1 answered ${detailRes.status}`);
+      detail = classStudentsResponseSchema.parse(detailRes.body);
+    }
 
-    return { classes, detail: classStudentsResponseSchema.parse(detail.body) };
+    return { classes, detail };
   } finally {
     await request.dispose();
   }

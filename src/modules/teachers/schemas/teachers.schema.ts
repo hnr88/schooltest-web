@@ -12,6 +12,17 @@ export const schoolTeacherSchema = z.object({
   first_name: z.string().nullable(),
   last_name: z.string().nullable(),
   blocked: z.boolean(),
+  // C-TCH-01: the server already serves the role TYPE (teacher | school_admin),
+  // max(sittings.opened_at) as last_active_at and the account's createdAt —
+  // declared from task 07 so the detail screen stops dropping them. All three
+  // are optional+nullable ON PURPOSE: the C-TCH-04 PATCH response is the
+  // six-key projectTeacherRow and is parsed with this same schema
+  // (use-update-teacher.mutation.ts), so a required key would turn every
+  // successful teacher edit into a parse error. A NULL last_active_at means
+  // "never opened a sitting" — it is never a creation date.
+  role: z.enum(['teacher', 'school_admin']).nullable().optional(),
+  last_active_at: z.string().nullable().optional(),
+  createdAt: z.string().nullable().optional(),
   classes: z.array(z.object({ documentId: z.string(), name: z.string() })),
 });
 

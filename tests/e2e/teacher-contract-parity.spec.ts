@@ -11,11 +11,13 @@ import {
 import * as webExport from '@/modules/teacher/schemas/teacher-export.schema';
 import * as webProgress from '@/modules/teacher/schemas/teacher-progress.schema';
 import * as webResults from '@/modules/teacher/schemas/teacher-result.schema';
+import * as webReview from '@/modules/teacher/schemas/teacher-review.schema';
 import * as webSessions from '@/modules/teacher/schemas/teacher-session.schema';
 import * as webTeacher from '@/modules/teacher/schemas/teacher.schema';
 
 import * as apiExport from '../../../schooltest-api/src/contracts/teacher-export';
 import * as apiProgress from '../../../schooltest-api/src/contracts/teacher-progress';
+import * as apiReview from '../../../schooltest-api/src/contracts/review';
 import * as apiSessions from '../../../schooltest-api/src/contracts/teacher-sessions';
 import * as apiTeacher from '../../../schooltest-api/src/contracts/teacher';
 import { readingAttributeSchema, stageSchema } from '../../../schooltest-api/src/contracts/vocab';
@@ -33,6 +35,7 @@ const API: Record<string, unknown> = {
   ...apiSessions,
   ...apiProgress,
   ...apiExport,
+  ...apiReview,
 };
 
 const WEB: Record<string, unknown> = {
@@ -41,6 +44,7 @@ const WEB: Record<string, unknown> = {
   ...webResults,
   ...webProgress,
   ...webExport,
+  ...webReview,
 };
 
 // Server-owned names the PORTAL DELIBERATELY DOES NOT MIRROR, each for a reason
@@ -76,6 +80,13 @@ const SERVER_ONLY = [
 // with a capture group so one expression both validates and names the file.
 const WEB_ONLY = [
   'TEACHER_EXPORT_DISPOSITION_PATTERN',
+  // scoring/11: the review mirror restates two schemas the server keeps in
+  // OTHER modules — the answer key (`keys.ts`) and the response flags
+  // (`responses.ts`). Same situation as the two vocab names below: the portal
+  // needs them to parse C-REV-1, and neither has a twin in the review module
+  // this spec diffs against.
+  'correctKeySchema',
+  'responseFlagsSchema',
   'readingAttributeSchema',
   'sittingStatusSchema',
   'stageSchema',

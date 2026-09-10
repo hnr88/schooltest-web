@@ -14,15 +14,22 @@
  */
 import { useMemo } from 'react';
 
-import { useOpsSelection, type OpsActionTarget } from '@/modules/ops/actions';
+import { selectedRows as selectedRowsOf, useOpsSelection, type OpsActionTarget } from '@/modules/ops/actions';
 
 import type { DirectorySelectionApi } from '../types/directory.types';
 
 export interface DirectorySelectionOptions<Row> {
   /** The rows currently on screen — "select all" means exactly these. */
   page: readonly Row[];
-  /** Names a row as a bulk-action target (`kind` + `documentId`). */
-  getRowTarget: (row: Row) => OpsActionTarget;
+  /**
+   * Names a row as a bulk-action target (`kind` + `documentId`). U-11:
+   * OPTIONAL — required by the type only while the surface is `selectable`.
+   * When absent the selection is INERT (no checkboxes render, nothing can be
+   * toggled) and the hook mints NO fake targets: the engine's page is empty
+   * and the row predicates answer false. A non-selectable row's identity is
+   * `getRowKey` (or the target fallback) in `resolveRowKey`, never from here.
+   */
+  getRowTarget?: (row: Row) => OpsActionTarget;
   /**
    * Everything that scopes the page — school, tab, filters, page number. Any
    * change clears the selection (the engine's wrong-tenant guard).
@@ -35,16 +42,28 @@ export function useDirectorySelection<Row>({
   getRowTarget,
   scope,
 }: DirectorySelectionOptions<Row>): DirectorySelectionApi<Row> {
-  const targets = useMemo(() => page.map(getRowTarget), [page, getRowTarget]);
+  const targets = useMemo(
+    () => (getRowTarget ? page.map(getRowTarget) : []),
+    [page, getRowTarget],
+  );
   const selection = useOpsSelection({ page: targets, scope });
+  const selectedRows = useMemo(
+    () => (getRowTarget ? selectedRowsOf(selection.selectedKeys, page, getRowTarget) : []),
+    [selection.selectedKeys, page, getRowTarget],
+  );
 
   return {
     count: selection.count,
     atCap: selection.atCap,
     headerState: selection.headerState,
     targets: selection.targets,
-    isSelected: (row: Row) => selection.isRowSelected(getRowTarget(row)),
-    toggleRow: (row: Row) => selection.toggleRow(getRowTarget(row)),
+    selectedRows,
+    isSelected: getRowTarget
+      ? (row: Row) => selection.isRowSelected(getRowTarget(row))
+      : () => false,
+    toggleRow: getRowTarget
+      ? (row: Row) => selection.toggleRow(getRowTarget(row))
+      : () => undefined,
     toggleAllOnPage: selection.toggleAllOnPage,
     clear: selection.clear,
   };
