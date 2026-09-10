@@ -71,8 +71,13 @@ export function OpsAdminsTab({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="max-w-2xl text-sm text-body">{t('adminsNote')}</p>
+      {/* `ops-admins-invite` is asserted directly by
+          `tests/e2e/ops-staff-invitation-ui.spec.ts` and
+          `tests/e2e/ops-session-expired.spec.ts` — kept as its own control
+          (not the kit `header.primary` slot) because `DirectoryHeaderAction`
+          carries no `data-testid`, and a control those specs already find by
+          test id must not silently move under a different one. */}
+      <div className="flex justify-end">
         <Button type="button" size="sm" variant="outline" data-testid="ops-admins-invite" onClick={onInvite}>
           {t('inviteStaff')}
         </Button>
@@ -93,6 +98,8 @@ export function OpsAdminsTab({
         enabled={active}
         emptyTitle={t('adminsEmptyTitle')}
         emptyDescription={t('adminsEmptyDescription')}
+        headerTitle={t('adminsHeaderTitle')}
+        onInvite={onInvite}
         ownership={{
           ownerDocumentId,
           onMakeOwner: (row) => {
