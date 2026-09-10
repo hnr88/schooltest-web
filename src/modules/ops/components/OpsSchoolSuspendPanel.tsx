@@ -1,207 +1,321 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { MoreHorizontal } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useMemo, useRef, useState } from 'react';
+import { formatResourceVersion, type PortalStatus } from '@schooltest/ops-contracts';
 
-import { OpsTypedNameConfirm } from '@/modules/ops/actions';
-import { Button } from '@/modules/design-system';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { restFailureOf, strapi } from '@/lib/axios/strapi';
+import { IconButton, Button } from '@/modules/design-system';
+import {
+  OpsTypedNameConfirm,
+  showOpsToast,
+  useOpsActionRunner,
+  useOpsWriteGate,
+} from '@/modules/ops/actions';
+import type { OpsActionDefinition, OpsActionTarget } from '@/modules/ops/actions';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
-import { useSchoolArchiveMutation } from '@/modules/ops/queries/use-school-suspend.mutation';
-import { useSchoolRestoreMutation } from '@/modules/ops/queries/use-school-suspend.mutation';
-import { useSchoolSuspendMutation } from '@/modules/ops/queries/use-school-suspend.mutation';
-import { useSchoolUndoMutation } from '@/modules/ops/queries/use-school-suspend.mutation';
-import { useSchoolVersionQuery } from '@/modules/ops/queries/use-school-version.query';
-import { useSchoolSuspendAction } from '@/modules/ops/hooks/use-school-suspend-action';
+import {
+  primarySchoolLifecycleAction,
+  schoolLifecycleActions,
+} from '@/modules/ops/lib/school-lifecycle-actions';
+import type {
+  SchoolLifecycleAction,
+  SchoolLifecycleActionKey,
+} from '@/modules/ops/lib/school-lifecycle-actions';
+import { archiveSchool, suspendSchool } from '@/modules/ops/queries/use-school-suspend.mutation';
+import { fetchSchoolDetail } from '@/modules/ops/queries/use-school-detail.query';
+import { fetchSchoolVersion } from '@/modules/ops/queries/use-school-version.query';
+import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
+import { useSchoolLifecycleUndoMutation } from '@/modules/ops/queries/use-school-lifecycle-undo.mutation';
 
 import type { OpsSchoolSuspendPanelProps } from '@/modules/ops/types/school-suspend.types';
 
-/**
- * C-OPS-PORTAL-005/016/017/18 — the school detail's lifecycle actions.
- *
- * The controls only render for a state the operation accepts: an active school
- * suspends or archives (archive demands the typed school name AND quotes the
- * row version as expected_updated_at), a suspended school activates again and
- * offers Undo strictly while the SERVER window (undo_expires_at) is open, and
- * an archived school restores. The server refuses everything else — this only
- * avoids dead buttons.
- */
-export function OpsSchoolSuspendPanel({ school, enabled }: OpsSchoolSuspendPanelProps) {
-  const t = useTranslations('Ops.detail.suspend');
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [archiveOpen, setArchiveOpen] = useState(false);
+type PanelProps = OpsSchoolSuspendPanelProps & {
+  portalStatus?: PortalStatus;
+  onEdit?: () => void;
+  onInvite?: () => void;
+  onChanged?: () => void | Promise<void>;
+};
+
+type LifecycleActionKey = Exclude<SchoolLifecycleActionKey, 'editDetails' | 'inviteAdmin'>;
+
+interface LifecycleTarget extends OpsActionTarget {
+  lifecycleAction: LifecycleActionKey;
+  targetStatus: PortalStatus;
+}
+
+interface ActionHandle {
+  actionDocumentId: string;
+}
+
+function fallbackPortalStatus(
+  accountStatus: OpsSchoolSuspendPanelProps['school']['account_status'],
+): PortalStatus {
+  if (accountStatus === 'closed') return 'archived';
+  if (accountStatus === 'suspended') return 'suspended';
+  return 'active';
+}
+
+/** The detail header's derived primary action and per-status overflow menu. */
+export function OpsSchoolSuspendPanel({
+  school,
+  enabled,
+  portalStatus,
+  onEdit,
+  onInvite,
+  onChanged,
+}: PanelProps) {
+  const t = useTranslations('Ops.detail');
+  const status = portalStatus ?? fallbackPortalStatus(school.account_status);
+  const primary = primarySchoolLifecycleAction(status);
+  const actions = schoolLifecycleActions(status);
+  const capabilities = useCapabilitiesQuery(enabled);
+  const writeGate = useOpsWriteGate();
+  const undo = useSchoolLifecycleUndoMutation();
+  const actionHandle = useRef<ActionHandle | null>(null);
+  const [selectedAction, setSelectedAction] = useState<SchoolLifecycleAction | null>(null);
   const [typedName, setTypedName] = useState('');
-  const accountStatus = school.account_status;
 
-  const version = useSchoolVersionQuery(school.documentId, enabled);
-  const action = useSchoolSuspendAction({
-    documentId: school.documentId,
-    schoolName: school.name,
-    enabled: enabled && accountStatus !== 'suspended' && accountStatus !== 'closed',
-  });
-  const archive = useSchoolArchiveMutation();
-  const restore = useSchoolRestoreMutation();
-  const undo = useSchoolUndoMutation();
+  const actionDefinition = useMemo<OpsActionDefinition<LifecycleTarget>>(
+    () => ({
+      write: true,
+      async perform(target) {
+        const version = await fetchSchoolVersion(target.documentId);
+        const resourceVersion = formatResourceVersion(version.updatedAt);
 
-  const versionHeader = version.data ? undefined : undefined;
-  void versionHeader;
-  const isArchived = accountStatus === 'closed';
-  const isSuspended = accountStatus === 'suspended';
-  // The Undo window is the SERVER deadline carried by the suspend result —
-  // never a client-side 60-second timer started at click time.
-  const undoResult = action.result;
-  // Re-evaluate the SERVER deadline once a second while it matters; the clock
-  // only decides whether the button renders — the window itself is the
-  // server's (undo_expires_at from the action's commit).
-  const [nowMs, setNowMs] = useState(0);
-  useEffect(() => {
-    if (!undoResult) return;
-    const tick = () => setNowMs(Date.now());
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [undoResult]);
-  const undoOpen =
-    undoResult !== undefined && new Date(undoResult.undo_expires_at).getTime() > nowMs;
+        if (target.lifecycleAction === 'suspend') {
+          const result = await suspendSchool({
+            schoolDocumentId: target.documentId,
+            version: resourceVersion,
+          });
+          actionHandle.current = {
+            actionDocumentId: result.action_documentId,
+          };
+          return result;
+        }
 
-  if (isArchived) {
-    return (
-      <div data-slot="ops-school-suspend" data-account-status={accountStatus} className="flex flex-wrap items-center gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          data-action="restore-school"
-          disabled={!version.isSuccess || restore.isPending}
-          onClick={() => {
-            if (version.data) {
-              restore.mutate({
-                schoolDocumentId: school.documentId,
-                version: `"${version.data.updatedAt}"`,
-              });
+        if (target.lifecycleAction === 'archive') {
+          const result = await archiveSchool({
+            schoolDocumentId: target.documentId,
+            version: resourceVersion,
+          });
+          actionHandle.current = {
+            actionDocumentId: result.action_documentId,
+          };
+          return result;
+        }
+
+        if (target.lifecycleAction === 'restore') {
+          const response = await strapi.post<unknown>(
+            `/api/ops/schools/${target.documentId}/restore`,
+            {},
+            { opsPortalVersioned: true, headers: { 'If-Match': resourceVersion } },
+          );
+          return response.data;
+        }
+
+        if (target.lifecycleAction === 'activate' || target.lifecycleAction === 'reactivate') {
+          const response = await strapi.post<unknown>(
+            `/api/ops/schools/${target.documentId}/activate`,
+            {},
+            { opsPortalVersioned: true },
+          );
+          return response.data;
+        }
+
+        throw new Error(`Unsupported school lifecycle action: ${target.lifecycleAction}`);
+      },
+      async readBack(target) {
+        return (await fetchSchoolDetail(target.documentId)).portal_status === target.targetStatus;
+      },
+      async isEligible(target) {
+        return (await fetchSchoolDetail(target.documentId)).portal_status !== target.targetStatus;
+      },
+    }),
+    [],
+  );
+  const runner = useOpsActionRunner(actionDefinition);
+  const readOnly = capabilities.data?.capabilities.write === false;
+
+  const actionCopy = (action: SchoolLifecycleAction) => {
+    if (action.confirm === null) return null;
+    return {
+      title: t(action.confirm.titleKey, { name: school.name }),
+      body: t(action.confirm.bodyKey),
+      cta: t(action.confirm.ctaKey),
+    };
+  };
+
+  const refuseNonLifecycleWrite = (): boolean => {
+    const reason = writeGate.blockedReason();
+    if (reason === null) return true;
+    showOpsToast({ tone: 'error', message: reason });
+    return false;
+  };
+
+  const chooseAction = (action: SchoolLifecycleAction) => {
+    if (action.key === 'editDetails') {
+      if (refuseNonLifecycleWrite()) onEdit?.();
+      return;
+    }
+    if (action.key === 'inviteAdmin') {
+      if (refuseNonLifecycleWrite()) onInvite?.();
+      return;
+    }
+    if (!refuseNonLifecycleWrite()) return;
+    setTypedName('');
+    setSelectedAction(action);
+  };
+
+  const runSelectedAction = async () => {
+    if (selectedAction === null || selectedAction.targetStatus === undefined) return;
+    const action = selectedAction;
+    if (action.key === 'editDetails' || action.key === 'inviteAdmin') return;
+    const lifecycleAction = action.key as LifecycleActionKey;
+    const targetStatus = action.targetStatus;
+    if (targetStatus === undefined) return;
+    actionHandle.current = null;
+    const summary = await runner.run([
+      {
+        kind: 'school',
+        documentId: school.documentId,
+        lifecycleAction,
+        targetStatus,
+      },
+    ]);
+    setSelectedAction(null);
+    setTypedName('');
+
+    if (!summary.allSucceeded) {
+      showOpsToast({ tone: 'error', message: t('actions.error') });
+      return;
+    }
+
+    await onChanged?.();
+    const handle = actionHandle.current as ActionHandle | null;
+    if (handle === null) {
+      showOpsToast({ tone: 'ok', message: t('actions.success', { name: school.name }) });
+      return;
+    }
+
+    showOpsToast({
+      tone: 'ok',
+      message: t('actions.success', { name: school.name }),
+      action: {
+        label: t('actions.undo'),
+        run: async () => {
+          try {
+            const version = await fetchSchoolVersion(school.documentId);
+            await undo.mutateAsync({
+              schoolDocumentId: school.documentId,
+              actionDocumentId: handle.actionDocumentId,
+              version: formatResourceVersion(version.updatedAt),
+            });
+            await onChanged?.();
+            showOpsToast({ tone: 'ok', message: t('actions.undoSuccess', { name: school.name }) });
+          } catch (error) {
+            const failure = restFailureOf(error);
+            if (failure?.kind === 'contract' && failure.status === 410) {
+              showOpsToast({ tone: 'warn', message: t('actions.undoExpired') });
+              return;
             }
-          }}
-        >
-          {t('restore')}
-        </Button>
-      </div>
-    );
-  }
+            showOpsToast({ tone: 'error', message: t('actions.error') });
+          }
+        },
+      },
+    });
+  };
 
-  if (isSuspended) {
-    return (
-      <div data-slot="ops-school-suspend" data-account-status={accountStatus} className="flex flex-wrap items-center gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          data-action="activate-school"
-          disabled={!version.isSuccess || restore.isPending}
-          onClick={() => {
-            if (version.data) {
-              restore.mutate({
-                schoolDocumentId: school.documentId,
-                version: `"${version.data.updatedAt}"`,
-              });
-            }
-          }}
-        >
-          {t('activate')}
-        </Button>
-        {undoOpen ? (
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            data-action="undo-lifecycle"
-            disabled={!version.isSuccess || undo.isPending}
-            onClick={() => {
-              if (version.data && undoResult) {
-                undo.mutate({
-                  schoolDocumentId: school.documentId,
-                  actionDocumentId: undoResult.action_documentId,
-                  version: `"${version.data.updatedAt}"`,
-                });
-              }
-            }}
-          >
-            {t('undo')}
-          </Button>
-        ) : null}
-      </div>
-    );
-  }
+  const selectedCopy = selectedAction === null ? null : actionCopy(selectedAction);
+  const isTyped = selectedAction?.typed === true;
+  const typedNameMatches = typedName.trim() === school.name;
 
   return (
     <div
       data-slot="ops-school-suspend"
-      data-account-status={accountStatus}
+      data-account-status={school.account_status}
+      data-portal-status={status}
       className="flex flex-wrap items-center gap-3"
     >
-      <Button
-        type="button"
-        variant="destructive"
-        size="sm"
-        data-action="suspend-school"
-        disabled={!action.ready}
-        loading={action.pending}
-        onClick={() => setConfirmOpen(true)}
+      <span
+        className="inline-flex"
+        onClick={readOnly ? refuseNonLifecycleWrite : undefined}
+        onKeyDown={readOnly ? refuseNonLifecycleWrite : undefined}
       >
-        {t('action')}
-      </Button>
-      <Button
-        type="button"
-        variant="destructive"
-        size="sm"
-        data-action="archive-school"
-        disabled={!version.isSuccess || archive.isPending}
-        onClick={() => setArchiveOpen(true)}
-      >
-        {t('archive')}
-      </Button>
-      <OpsConfirmDialog
-        open={confirmOpen}
-        onOpenChange={setConfirmOpen}
-        title={t('confirmTitle', { name: school.name })}
-        description={t('confirmBody')}
-        confirmLabel={t('confirmCta')}
-        cancelLabel={t('cancel')}
-        tone="destructive"
-        pending={action.pending}
-        onConfirm={() => {
-          void action.confirm().then((done) => {
-            if (done) setConfirmOpen(false);
-          });
-        }}
-      />
-      <OpsTypedNameConfirm
-        open={archiveOpen}
-        onOpenChange={setArchiveOpen}
-        // `archiveTitle` is "Archive {name}?" — it MUST be given the name. Without
-        // it next-intl throws IntlError FORMATTING_ERROR and the dialog renders
-        // the raw key instead of a title. The sibling `archiveBody` below always
-        // passed it; this one did not.
-        title={t('archiveTitle', { name: school.name })}
-        description={t('archiveBody', { name: school.name })}
-        requiredName={school.name}
-        typedName={typedName}
-        onTypedNameChange={setTypedName}
-        canConfirm={typedName.trim() === school.name}
-        errorMessage={t('archiveNameMismatch')}
-        confirmLabel={t('archiveCta')}
-        cancelLabel={t('cancel')}
-        pending={archive.isPending}
-        onConfirm={() => {
-          if (version.data) {
-            archive.mutate(
-              {
-                schoolDocumentId: school.documentId,
-                version: `"${version.data.updatedAt}"`,
-              },
-              { onSuccess: () => { setArchiveOpen(false); setTypedName(''); } },
-            );
+        <Button
+          type="button"
+          variant={primary.danger ? 'destructive' : 'default'}
+          size="sm"
+          data-action={`primary-${primary.key}`}
+          disabled={readOnly}
+          onClick={readOnly ? undefined : () => chooseAction(primary)}
+        >
+          {t(primary.labelKey)}
+        </Button>
+      </span>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={<IconButton icon={MoreHorizontal} label={t('actions.menuLabel')} size="sm" />}
+        />
+        <DropdownMenuContent align="end">
+          {actions.map((action) => (
+            <DropdownMenuItem
+              key={action.key}
+              variant={action.danger ? 'destructive' : 'default'}
+              aria-disabled={readOnly && action.write ? true : undefined}
+              className={`${action.danger ? 'text-destructive' : ''}${
+                readOnly && action.write ? 'text-slate-400' : ''
+              }`}
+              onClick={() => chooseAction(action)}
+            >
+              {t(action.labelKey)}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {selectedCopy === null || isTyped ? null : (
+        <OpsConfirmDialog
+          open
+          onOpenChange={(open) => {
+            if (!open && !runner.state.inFlight) setSelectedAction(null);
+          }}
+          title={selectedCopy.title}
+          description={selectedCopy.body}
+          confirmLabel={selectedCopy.cta}
+          cancelLabel={t('actions.cancel')}
+          tone={selectedAction?.danger ? 'destructive' : 'neutral'}
+          pending={runner.state.status === 'running'}
+          onConfirm={() => void runSelectedAction()}
+        />
+      )}
+      {selectedCopy === null || !isTyped ? null : (
+        <OpsTypedNameConfirm
+          open
+          onOpenChange={(open) => {
+            if (!open && !runner.state.inFlight) setSelectedAction(null);
+          }}
+          title={selectedCopy.title}
+          description={selectedCopy.body}
+          requiredName={school.name}
+          typedName={typedName}
+          onTypedNameChange={setTypedName}
+          canConfirm={typedNameMatches}
+          errorMessage={
+            typedName.length === 0 || typedNameMatches ? null : t('suspend.archiveNameMismatch')
           }
-        }}
-      />
+          confirmLabel={selectedCopy.cta}
+          cancelLabel={t('actions.cancel')}
+          pending={runner.state.status === 'running'}
+          onConfirm={() => void runSelectedAction()}
+        />
+      )}
     </div>
   );
 }

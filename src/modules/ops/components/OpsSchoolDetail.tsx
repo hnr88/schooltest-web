@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth';
-import { Alert, Badge, Button, Skeleton } from '@/modules/design-system';
+import { Alert, Badge, Button, MediaCover, Skeleton } from '@/modules/design-system';
+import { showOpsToast, useOpsWriteGate } from '@/modules/ops/actions';
 import { OpsFormWindow } from '@/modules/ops/components/OpsFormWindow';
 import { OpsEditSchoolDialog } from '@/modules/ops/components/OpsEditSchoolDialog';
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
@@ -22,7 +23,9 @@ import {
   portalPlanLabelKey,
   portalStatusLabelKey,
 } from '@/modules/ops/lib/portal-lifecycle.lib';
+import { getSchoolCrestSource } from '@/modules/ops/lib/school-crest';
 import { useSchoolDetailQuery } from '@/modules/ops/queries/use-school-detail.query';
+import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
 import { ONBOARDING_STATUS_VARIANTS } from '@/modules/school-admin';
 
 import type { OpsSchoolDetailProps } from '@/modules/ops/types/components.types';
@@ -43,9 +46,12 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   // The lifecycle words live in ONE catalogue (Ops.schools), so the list and
   // this page cannot drift apart in wording either.
   const tSchools = useTranslations('Ops.schools');
+  const locale = useLocale();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const schoolQuery = useSchoolDetailQuery(documentId, hydrated && Boolean(token));
+  const capabilities = useCapabilitiesQuery(hydrated && Boolean(token));
+  const editWriteGate = useOpsWriteGate();
   const [teachersOpen, setTeachersOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
 
@@ -90,7 +96,10 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
   // here keeps the child components on their existing non-null OpsSchool
   // contract without inventing a substitute name or lifecycle value.
   const school: OpsSchool | null =
-    detail && detail.name !== null && detail.account_status !== null && detail.onboarding_status !== null
+    detail &&
+    detail.name !== null &&
+    detail.account_status !== null &&
+    detail.onboarding_status !== null
       ? {
           documentId: detail.documentId,
           name: detail.name,
@@ -116,6 +125,39 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
     );
   }
 
+  const location = [detail.suburb, detail.state]
+    .filter((part): part is string => Boolean(part))
+    .join(' ');
+  const sector = detail.sector ? tSchools(`sector.${detail.sector}`) : null;
+  const plan = detail.portal_plan
+    ? `${tSchools(portalPlanLabelKey(detail.portal_plan))} ${tSchools('planSuffix')}`
+    : null;
+  const created = detail.createdAt
+    ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(
+        new Date(detail.createdAt),
+      )
+    : null;
+  const detailMeta = [
+    sector,
+    location || null,
+    plan,
+    created ? `${t('createdPrefix')} ${created}` : null,
+  ]
+    .filter((part): part is string => Boolean(part))
+    .join(' · ');
+  const openInvite = () => {
+    document.querySelector<HTMLButtonElement>('[data-slot="ops-onboard-actions"] button')?.click();
+  };
+  const editReadOnly = capabilities.data?.capabilities.write === false;
+  const openEdit = () => {
+    const blocked = editWriteGate.blockedReason();
+    if (blocked !== null) {
+      showOpsToast({ tone: 'error', message: blocked });
+      return;
+    }
+    setEditOpen(true);
+  };
+
   return (
     <main
       data-slot="ops-school-detail"
@@ -129,7 +171,50 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
         >
           {t('backToSchools')}
         </Link>
-        <h1 className="text-2xl font-semibold text-foreground">{school.name}</h1>
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex min-w-0 items-start gap-4">
+            <MediaCover
+              src={getSchoolCrestSource(detail.cover_image_url)}
+              alt={school.name}
+              ratio="square"
+              sizes="76px"
+              className="size-[76px] shrink-0 rounded-panel"
+            />
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="text-2xl font-semibold text-foreground">{school.name}</h1>
+                <Badge variant={PORTAL_STATUS_VARIANTS[detail.portal_status]}>
+                  {tSchools(portalStatusLabelKey(detail.portal_status))}
+                </Badge>
+              </div>
+              {detailMeta ? <p className="mt-2 text-sm text-body">{detailMeta}</p> : null}
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 lg:justify-end">
+            <span className="inline-flex" onClick={editReadOnly ? openEdit : undefined}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                data-testid="ops-edit-school"
+                disabled={editReadOnly}
+                onClick={editReadOnly ? undefined : openEdit}
+              >
+                {t('editSchool')}
+              </Button>
+            </span>
+            <OpsSchoolSuspendPanel
+              school={school}
+              enabled={hydrated && Boolean(token)}
+              portalStatus={detail.portal_status}
+              onEdit={openEdit}
+              onInvite={openInvite}
+              onChanged={() => {
+                void schoolQuery.refetch();
+              }}
+            />
+          </div>
+        </div>
         {banner === null ? null : (
           <Alert variant={banner.tone} title={t(banner.titleKey)}>
             {t(banner.bodyKey)}
@@ -140,26 +225,10 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
               uses — so a school reads the same on both screens. The legacy
               onboarding chip stays beside it: account_status and
               onboarding_status are independent and neither is replaced. */}
-          <Badge variant={PORTAL_STATUS_VARIANTS[detail.portal_status]}>
-            {tSchools(portalStatusLabelKey(detail.portal_status))}
-          </Badge>
           <Badge variant="outline">{tSchools(portalPlanLabelKey(detail.portal_plan))}</Badge>
           <Badge variant={ONBOARDING_STATUS_VARIANTS[school.onboarding_status]}>
             {t(`onboardingStatus.${school.onboarding_status}`)}
           </Badge>
-          <OpsSchoolSuspendPanel school={school} enabled={hydrated && Boolean(token)} />
-          {/* Task 10: the EDIT entry — the same modal surface as create, driven
-              by the loaded school draft, writing the versioned PATCH with
-              If-Match quoting THIS page's updatedAt. */}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            data-testid="ops-edit-school"
-            onClick={() => setEditOpen(true)}
-          >
-            {t('editSchool')}
-          </Button>
         </div>
         {/* Spec: the Onboard School control sits near the status badges and
             above the summary cards. */}
