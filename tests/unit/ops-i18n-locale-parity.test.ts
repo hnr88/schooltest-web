@@ -132,12 +132,6 @@ const ALLOWLIST: readonly Exemption[] = [
     key: 'Ops.import.placeholder',
     why: 'a LITERAL CSV header row the uploaded file must contain — translating it would tell the operator to write headers the importer rejects',
   },
-  {
-    key: 'Ops.settings.testEmail.placeholder',
-    why: 'an example address on the RFC 2606 reserved domain; localising the local part would suggest a real mailbox',
-  },
-  { key: 'Ops.system.info.fields.nodeVersion', why: 'product name: the runtime is called Node everywhere' },
-  { key: 'Ops.system.info.fields.strapiVersion', why: 'product name: Strapi' },
   { value: /^ACARA:$/, why: 'the ACARA proper noun as a field label — the colon is punctuation, not English' },
   {
     value: /^\{\w+\}\s*\/\s*(\{\w+\}|\d+)$/,
