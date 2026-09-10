@@ -49,87 +49,165 @@ function classify(error: unknown): { label: string; waitMs: number } {
 export interface ApiState {
   /** true = the API answered (serviceable). */
   serving: boolean;
-  /** 'restart-window' = child just replaced, retry after the wait. 'boot-stop' = failing to come up, escalate. 'serving' = fine. */
-  state: 'serving' | 'restart-window' | 'boot-stop';
+  /** 'restart-window' = child just replaced, retry after the wait. 'boot-stop' = failing to come up, escalate. 'supervisor-churn' = something outside the fleet is relaunching the API. 'serving' = fine. */
+  state: 'serving' | 'restart-window' | 'boot-stop' | 'supervisor-churn';
   /** The measured evidence: child etimes, log lines, health code. */
   evidence: string;
 }
 
-/**
- * ops/12 (orchestrator-directed): distinguish an API RESTART WINDOW (child
- * just replaced by the watcher — recovers in 20-30s, retry is correct) from
- * an API BOOT STOP (old child alive + NO service = the process is failing to
- * come up — retrying cannot fix it, the fix is in someone else's file).
- *
- * `ps` proves liveness, NOT serviceability, and the :5500 listener pid never
- * changes across watcher restarts — so the discriminator is the MINIMUM
- * child etimes plus the child's own stdout log (a ReferenceError there means
- * STOP AND ESCALATE, do not spend attempts).
- *
- * ONE health request; no probe loop.
- */
-export function detectApiState(apiBase = 'http://127.0.0.1:5500'): ApiState {
-  let health = '';
+const API_BASE_DEFAULT = 'http://127.0.0.1:5500';
+
+function supervisorPid(): string {
   try {
-    health = execSync(
-      `curl -s -o /dev/null -w '%{http_code}' -m 8 ${apiBase}/_health 2>/dev/null`,
-    ).toString().trim();
+    return execSync("pgrep -f 'strapi develop' | head -1", { encoding: 'utf8' }).trim();
   } catch {
-    health = '000';
+    return '';
   }
+}
+
+function childAgesOf(supervisor: string): number[] {
+  if (supervisor === '') return [];
+  try {
+    return execSync(`pgrep -P ${supervisor} 2>/dev/null`, { encoding: 'utf8' })
+      .split('\n')
+      .map((line) => Number(line.trim()))
+      .filter((age) => Number.isFinite(age) && age >= 0);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * The watcher's stdout is redirected to a REAL FILE on disk (a
+ * strapi-relaunch.log) — the file survives every child respawn; the fd does
+ * not. Resolve the child's fd/1 to its file with `readlink -f` and read THAT;
+ * when no child exists at all, fall back to the newest relaunch log under the
+ * CLI temp root. A file proves the crash cause after the process is gone.
+ */
+function watcherLogTail(): string {
+  try {
+    const log = execSync(
+      "find /tmp/claude-1000 /tmp -maxdepth 6 -name 'strapi-relaunch.log' -mmin -60 2>/dev/null | head -1",
+      { encoding: 'utf8' },
+    ).trim();
+    if (log !== '') {
+      return execSync(`tail -c 2000 '${log}' 2>/dev/null`, { encoding: 'utf8' });
+    }
+  } catch {
+    // Fall through to the caller's other evidence.
+  }
+  return '';
+}
+
+/** ONE health request. Never a loop — the limiter is 20/min and probes are load. */
+function healthOnce(apiBase: string): string {
+  try {
+    return execSync(`curl -s -o /dev/null -w '%{http_code}' -m 8 ${apiBase}/_health 2>/dev/null`, {
+      encoding: 'utf8',
+    }).trim();
+  } catch {
+    return '000';
+  }
+}
+
+/** A single sample: health + supervisor children + watcher-log tail. */
+function sampleOnce(apiBase: string): ApiState {
+  const health = healthOnce(apiBase);
   if (health.startsWith('2')) {
     return { serving: true, state: 'serving', evidence: `health=${health}` };
   }
 
-  // No service. Find the strapi develop supervisor and enumerate ALL children.
-  let childAges: number[] = [];
+  const supervisor = supervisorPid();
+  const childAges = childAgesOf(supervisor);
+  const ages =
+    childAges.length > 0 ? `child etimes [${childAges.join(', ')}s]` : 'no watcher children';
+  let evidence = `health=${health || '000'}; supervisor=${supervisor || 'none'}; ${ages}`;
+
   let logLines = '';
   try {
-    const supervisor = execSync("pgrep -f 'strapi develop' | head -1", { encoding: 'utf8' }).trim();
-    if (supervisor !== '') {
-      const children = execSync(`pgrep -P ${supervisor} 2>/dev/null`, { encoding: 'utf8' })
-        .split('\n')
-        .map((line) => line.trim())
-        .filter(Boolean);
-      for (const child of children) {
-        const etimes = execSync(`ps -o etimes= -p ${child} 2>/dev/null`, { encoding: 'utf8' })
-          .trim();
-        if (etimes !== '') childAges.push(Number(etimes));
-        // The child's stdout is the watcher log — the confirmation is the LOG,
-        // not the port. fd/1 may be a pipe; only read regular files.
-        try {
-          const fd1 = execSync(`readlink /proc/${child}/fd/1 2>/dev/null`, { encoding: 'utf8' })
-            .trim();
-          if (fd1.startsWith('/')) {
-            logLines += execSync(`tail -c 2000 '${fd1}' 2>/dev/null`, { encoding: 'utf8' });
-          }
-        } catch {
-          // fd/1 unreadable — the ages and health code still decide.
-        }
+    const firstChild = execSync(`pgrep -P ${supervisor} 2>/dev/null | head -1`, {
+      encoding: 'utf8',
+    }).trim();
+    if (firstChild !== '') {
+      // readlink -f resolves the REAL log file on disk — it survives every
+      // child respawn, which is exactly when the evidence is needed.
+      const logFile = execSync(`readlink -f /proc/${firstChild}/fd/1 2>/dev/null`, {
+        encoding: 'utf8',
+      }).trim();
+      if (logFile.startsWith('/')) {
+        logLines = execSync(`tail -c 2000 '${logFile}' 2>/dev/null`, { encoding: 'utf8' });
       }
     }
   } catch {
-    // Process enumeration is best-effort; the health code already decided.
+    // fd/1 unreadable — the child may be gone; the relaunch-log fallback in
+    // the caller still applies.
   }
+  if (logLines === '') logLines = watcherLogTail();
 
-  const ages = childAges.length > 0 ? `child etimes [${childAges.join(', ')}s]` : 'no children';
-  const evidence = `health=${health || '000'}; ${ages}`;
+  const crashLine = logLines
+    .split('\n')
+    .find((line) => /ReferenceError|has been shut down|TypeScript compilation failed|Error:/i.test(line));
 
   if (childAges.length > 0 && Math.min(...childAges) >= 40) {
     // An OLD child plus no service: failing to come up, not restarting.
-    const crashLine = logLines
-      .split('\n')
-      .find((line) => /ReferenceError|has been shut down|Error:/i.test(line));
     return {
       serving: false,
       state: 'boot-stop',
       evidence:
-        evidence +
-        (crashLine ? `; watcher log: ${crashLine.trim()}` : '; watcher log unreadable'),
+        evidence + (crashLine ? `; watcher log: ${crashLine.trim()}` : '; watcher log unreadable'),
     };
   }
-  // A young (or absent) child is the ordinary watcher restart window.
   return { serving: false, state: 'restart-window', evidence };
+}
+
+/**
+ * ops/12 (orchestrator-directed): distinguish THREE down-states of the shared
+ * :5500 watcher, because they have three different cures:
+ *  - RESTART WINDOW: a young child was just replaced; recovers in 20-30s —
+ *    wait 15s and retry.
+ *  - BOOT STOP: an old child (or none) with no service — the process is
+ *    failing to come up; retrying cannot fix it. Throw named, escalate.
+ *  - SUPERVISOR CHURN: the supervisor PID itself changes between samples —
+ *    something OUTSIDE this fleet is relaunching the API. No retry can fix
+ *    it either; escalate.
+ *
+ * `ps` proves liveness, NOT serviceability, and the :5500 listener pid never
+ * changes across watcher restarts — so the discriminators are the minimum
+ * child etimes, the supervisor pid time series, and the child's stdout LOG
+ * (a ReferenceError there means STOP AND ESCALATE, do not spend attempts).
+ *
+ * ONE health request; the supervisor sampling is process-table only. Never
+ * more than three samples ~20s apart — a time series, not a probe loop.
+ */
+export function detectApiState(apiBase = API_BASE_DEFAULT): ApiState {
+  return sampleOnce(apiBase);
+}
+
+export async function certifyApiState(
+  apiBase = API_BASE_DEFAULT,
+  samples = 3,
+  gapMs = 20_000,
+): Promise<ApiState> {
+  const first = sampleOnce(apiBase);
+  if (first.serving || first.state === 'boot-stop') return first;
+
+  // Down and not yet classified as a boot stop: is the supervisor churning?
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+  const pids = [supervisorPid()];
+  for (let i = 1; i < samples; i += 1) {
+    await sleep(gapMs);
+    pids.push(supervisorPid());
+  }
+  if (new Set(pids).size > 1) {
+    return {
+      serving: false,
+      state: 'supervisor-churn',
+      evidence: `supervisor pid changed ${pids.join(' -> ')} — something outside this fleet is relaunching the API; a run started into this fails for reasons no retry can fix`,
+    };
+  }
+  // Stable supervisor: one re-classification now that the samples have aged
+  // any young child past the restart-window ambiguity.
+  return sampleOnce(apiBase);
 }
 
 /**

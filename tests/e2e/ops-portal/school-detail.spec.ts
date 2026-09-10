@@ -22,7 +22,7 @@ import { z } from 'zod';
 
 import { REFERENCE_VIEWPORT } from '@/modules/ops/hooks/use-visual-reference';
 import { apiEnv } from '../helpers/auth-db';
-import { detectApiState, namedRetry } from '../helpers/api-named-retry';
+import { certifyApiState, namedRetry } from '../helpers/api-named-retry';
 import { roleCredentials } from '../helpers/credentials';
 import { cat, loadMessages } from '../helpers/i18n';
 import { paceRateWindow } from '../helpers/pace';
@@ -134,15 +134,28 @@ test.describe.configure({ timeout: 240_000, retries: 1 });
 test.describe.configure({ mode: 'serial' });
 
 test.beforeAll(async ({ request }) => {
-  // API BOOT STOP gate (ops/12, orchestrator-directed): an old watcher child
-  // with no :5500 service is a crash-loop that retrying cannot fix — fail fast
-  // with the watcher-log evidence instead of spending the attempt budget.
-  const apiState = detectApiState();
+  // API state gate (ops/12, orchestrator-directed): classify BEFORE spending
+  // any attempt budget — serving proceeds; a SUPERVISOR CHURN or a BOOT STOP
+  // throws named with the evidence, because neither is fixable by retrying.
+  const apiState = await certifyApiState();
+  if (apiState.state === 'supervisor-churn') {
+    throw new Error(`SUPERVISOR CHURN — ${apiState.evidence}`);
+  }
   if (apiState.state === 'boot-stop') {
     throw new Error(
-      `API BOOT STOP — :5500 is crash-looping, not restarting. Retry cannot fix it; ` +
+      `API BOOT STOP — :5500 is failing to come up, not restarting. Retry cannot fix it; ` +
         `the fix is in another row's file. Evidence: ${apiState.evidence}`,
     );
+  }
+  if (apiState.state === 'restart-window') {
+    // One 15s restart-window wait + re-classification; still down = escalate.
+    await new Promise((resolve) => setTimeout(resolve, 15_000));
+    const retry = await certifyApiState();
+    if (!retry.serving) {
+      throw new Error(
+        `API NOT SERVING after a restart-window wait — state: ${retry.state}. Evidence: ${retry.evidence}`,
+      );
+    }
   }
   await withNamedRetries('create the fixture school and staff', async () => {
     const school = await createOpsFixtureSchool(request, ledger, 'ops-012');
