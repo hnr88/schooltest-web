@@ -2501,7 +2501,11 @@
       "absentLabel": "Tidak hadir",
       "markAbsentLabel": "Tandakan {name} sebagai tidak hadir",
       "clearAbsentLabel": "Tandakan {name} sebagai hadir",
-      "absentErrorToast": "Tanda tidak hadir tidak dapat disimpan. Cuba lagi."
+      "absentErrorToast": "Tanda tidak hadir tidak dapat disimpan. Cuba lagi.",
+      "closeConfirmTitle": "Tutup sesi ujian ini?",
+      "closeConfirmBody": "Sesiapa yang masih menjawab akan dihantar seadanya, dan kod penyertaan berhenti berfungsi. Tindakan ini tidak boleh dibatalkan.",
+      "closeConfirmCancel": "Kekalkan dibuka",
+      "closeConfirmCta": "Tutup sesi ujian"
     },
     "needsToSit": {
       "title": "Belum menduduki ujian",

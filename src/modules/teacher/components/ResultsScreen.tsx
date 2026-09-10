@@ -194,7 +194,7 @@ function ResultsScreen() {
         <div className="flex min-w-0 flex-col gap-1">
           <h1 className="text-portal-title font-bold text-foreground">{tResults('title')}</h1>
           <p className="text-lede text-body">{tResults('description')}</p>
-          <p className="text-body-sm text-muted-foreground">{tList('adminNote')}</p>
+          <p className="text-body-sm text-body">{tList('adminNote')}</p>
         </div>
         {status === 'ready' && classes.length > 0 ? (
           <CycleBanner documentId={classes[0].class_document_id} />
@@ -205,7 +205,7 @@ function ResultsScreen() {
         <section data-slot="live-strip" className="flex flex-col gap-2.5">
           <p
             data-slot="live-strip-label"
-            className="flex items-center gap-2 text-[11.5px] font-medium tracking-wider text-muted-foreground uppercase"
+            className="flex items-center gap-2 text-[11.5px] font-medium tracking-wider text-body uppercase"
           >
             {tList('liveStripLabel', { count: liveSessions.length })}
             <span

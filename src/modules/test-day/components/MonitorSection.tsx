@@ -1,10 +1,19 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { Button } from '@/modules/design-system';
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  Button,
+} from '@/modules/design-system';
 import { effectiveRevealedIds, summarizeRowStates } from '@/modules/test-day/lib/monitor-row-state';
 import { useCloseReopenMutation } from '@/modules/test-day/queries/use-close-reopen.mutation';
 import { useMarkAbsentMutation } from '@/modules/test-day/queries/use-mark-absent.mutation';
@@ -23,12 +32,18 @@ import type { MonitorSectionProps } from '@/modules/test-day/types/components.ty
 // component size limit; the table itself is a dumb renderer. The summary line
 // (task 90) counts the derived row states including code_shown so a staggered
 // sitting visibly sums to the roster.
+//
+// Closing asks for confirmation first (the design's `ask` guard on every close
+// path): the cascade submits in-flight attempts as they stand, so the CTA is
+// destructive and says so in words. Reopening stays direct — nobody's attempt
+// is harmed by reopening.
 export function MonitorSection({ sitting }: MonitorSectionProps) {
   const t = useTranslations('TestDay.monitor');
   const monitor = useSittingMonitorQuery(sitting.documentId);
   const closeReopen = useCloseReopenMutation();
   const resit = useResitMutation();
   const markAbsent = useMarkAbsentMutation();
+  const [confirmClose, setConfirmClose] = useState(false);
   const resitPendingId = resit.isPending ? (resit.variables?.studentDocumentId ?? null) : null;
   const absentPendingId = markAbsent.isPending
     ? (markAbsent.variables?.studentDocumentId ?? null)
@@ -44,24 +59,61 @@ export function MonitorSection({ sitting }: MonitorSectionProps) {
     return summarizeRowStates(monitor.data.students, revealedIds);
   }, [monitor.data, revealEntries]);
 
+  const closeSitting = () => {
+    closeReopen.mutate({ sittingDocumentId: sitting.documentId, action: 'close' });
+    setConfirmClose(false);
+  };
+
   return (
     <section className="flex flex-col gap-3" aria-label={t('title')}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-foreground">{t('title')}</h2>
-        <Button
-          type="button"
-          variant="outline"
-          className="min-h-11 px-4"
-          loading={closeReopen.isPending}
-          onClick={() =>
-            closeReopen.mutate({
-              sittingDocumentId: sitting.documentId,
-              action: sitting.status === 'open' ? 'close' : 'reopen',
-            })
-          }
-        >
-          {sitting.status === 'open' ? t('closeCta') : t('reopenCta')}
-        </Button>
+        {sitting.status === 'open' ? (
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              className="min-h-11 px-4"
+              loading={closeReopen.isPending}
+              onClick={() => setConfirmClose(true)}
+            >
+              {t('closeCta')}
+            </Button>
+            <AlertDialog open={confirmClose} onOpenChange={setConfirmClose}>
+              <AlertDialogContent size="sm" data-slot="close-sitting-dialog">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t('closeConfirmTitle')}</AlertDialogTitle>
+                  <AlertDialogDescription>{t('closeConfirmBody')}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="h-11 px-4" disabled={closeReopen.isPending}>
+                    {t('closeConfirmCancel')}
+                  </AlertDialogCancel>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    className="h-11 px-4"
+                    data-slot="close-sitting-confirm"
+                    loading={closeReopen.isPending}
+                    onClick={closeSitting}
+                  >
+                    {t('closeConfirmCta')}
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </>
+        ) : (
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 px-4"
+            loading={closeReopen.isPending}
+            onClick={() => closeReopen.mutate({ sittingDocumentId: sitting.documentId, action: 'reopen' })}
+          >
+            {t('reopenCta')}
+          </Button>
+        )}
       </div>
       <p className="text-sm text-muted-foreground">{t('liveNote')}</p>
       {monitor.isPending ? (

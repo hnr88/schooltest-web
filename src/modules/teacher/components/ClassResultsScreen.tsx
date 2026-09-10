@@ -3,8 +3,6 @@
 import { Fragment, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { Plus } from 'lucide-react';
-
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, Button } from '@/modules/design-system';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -54,11 +52,7 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
   const router = useRouter();
   const roster = useClassResultsQuery(classDocumentId);
   const dashboard = useTeacherDashboardQuery();
-  const tTestDay = useTranslations('TestDay');
   const classSittings = useClassSittingsQuery(classDocumentId);
-  const hasOpenSitting = (classSittings.data ?? []).some(
-    (sitting) => sitting.status === 'open',
-  );
   const classCard = dashboard.data?.classes.find(
     (entry) => entry.class_document_id === classDocumentId,
   );
@@ -95,29 +89,16 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
     />
   ) : null;
 
-  // teacher/08 — the `live` tab is the folded console: an open sitting mounts
-  // the test-day console (embedded: the shell keeps ONE main landmark); none
-  // renders the navy no-sitting panel (:1040–1047, the surface's own copy,
-  // cross-namespace). Start new session navigates to the test-day route until
-  // task 22 ships the modal.
+  // teacher/08 — the `live` tab is the folded console, in BOTH arms (embedded:
+  // the shell keeps ONE main landmark). With nothing open the console renders
+  // its own quiet no-sitting panel and start control (:1040–1047, :2169) —
+  // the surface never swaps to a different component.
   const livePanel = classSittings.isPending ? (
     <p className="text-sm text-muted-foreground">{t('loading')}</p>
   ) : classSittings.isError ? (
     <p role="alert" className="text-sm text-danger-ink">{t('errorDescription')}</p>
-  ) : hasOpenSitting ? (
-    <TestDayScreen embedded classDocumentId={classDocumentId} />
   ) : (
-    <div className="flex flex-col gap-4 rounded-[10px] bg-primary p-8 text-primary-foreground sm:p-9">
-      <p className="text-[22px] font-semibold leading-tight">{tTestDay('emptyTitle')}</p>
-      <p className="max-w-[60ch] text-sm text-primary-foreground/70">{tTestDay('emptyBody')}</p>
-      <Link
-        href={`/dashboard/teach/classes/${classDocumentId}/test-day`}
-        className="inline-flex w-fit items-center gap-2.5 rounded-[10px] bg-white px-5 py-3 text-sm font-semibold text-primary transition-colors duration-150 hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-      >
-        <Plus aria-hidden="true" className="size-4" />
-        {tTestDay('startCta')}
-      </Link>
-    </div>
+    <TestDayScreen embedded classDocumentId={classDocumentId} />
   );
 
   return (

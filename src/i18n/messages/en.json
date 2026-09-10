@@ -2990,7 +2990,11 @@
       "absentLabel": "Absent",
       "markAbsentLabel": "Mark {name} as absent",
       "clearAbsentLabel": "Mark {name} as present",
-      "absentErrorToast": "The absent mark could not be saved. Try again."
+      "absentErrorToast": "The absent mark could not be saved. Try again.",
+      "closeConfirmTitle": "Close this sitting?",
+      "closeConfirmBody": "Anyone still working has their test submitted as it stands, and the join code stops working. This cannot be undone.",
+      "closeConfirmCancel": "Keep it open",
+      "closeConfirmCta": "Close sitting"
     },
     "needsToSit": {
       "title": "Still to sit",

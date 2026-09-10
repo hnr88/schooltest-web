@@ -34,9 +34,13 @@ async function login(
 
 async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(credentials.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  // The sign-in form's copy moved to the Auth.portal namespace (4afb591); the
+  // retired Auth.* labels ("Email" / "Sign in") no longer match any control.
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(credentials.email);
+  await page
+    .getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true })
+    .fill(credentials.password);
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
   // layer rides out any 429 on the auth POST, so allow for that here.
@@ -134,7 +138,9 @@ test.describe('task 64: teacher test-day screen vs live C-SIT-01/02/03', () => {
       const codeEl = card.locator('[data-slot="access-code"]');
       await expect(codeEl).toBeVisible({ timeout: 15_000 });
       const code = ((await codeEl.textContent()) ?? '').trim();
-      expect(code).toMatch(/^[A-Z]+-\d+$/);
+      // Operator ruling 2026-09-09 (api code.constants.ts:22): the board code is
+      // SIX BARE DIGITS — the old WORD-## pattern this spec once pinned is retired.
+      expect(code).toMatch(/^\d{6}$/);
 
       // A real student join through the public route flips the monitor row live
       // (5 s poll, no reload).
@@ -166,12 +172,19 @@ test.describe('task 64: teacher test-day screen vs live C-SIT-01/02/03', () => {
       const rejoinBody = (await rejoin.json()) as { session: { resumed: boolean } };
       expect(rejoinBody.session.resumed).toBe(false);
 
-      // Close: the pill flips, reveal is disabled, and join is blocked (400).
+      // Close: the design's confirm guard stands between the CTA and the
+      // cascade — the destructive confirm really closes, and the pill flips,
+      // reveal is disabled, and join is blocked (400).
       await card
         .getByRole('button', { name: cat(en, 'TestDay.code.hideCta'), exact: true })
         .click();
       await screen
         .getByRole('button', { name: cat(en, 'TestDay.monitor.closeCta'), exact: true })
+        .click();
+      const closeDialog = page.locator('[data-slot="close-sitting-dialog"]');
+      await expect(closeDialog).toBeVisible({ timeout: 15_000 });
+      await closeDialog
+        .getByRole('button', { name: cat(en, 'TestDay.monitor.closeConfirmCta'), exact: true })
         .click();
       await expect(
         screen.locator('h1').locator('xpath=following-sibling::*[@data-slot="status-pill"]'),

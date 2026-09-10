@@ -7,13 +7,17 @@ import type {
 } from '@/modules/teacher/types/teacher-session.types';
 import type { MonitorState } from '@/modules/teacher/types/teacher.types';
 
+import { fetchWithRetry } from './http';
 import { API_BASE } from './teacher-auth-rail';
 
 // Task 037 — the read half of the live-monitoring harness (C-TS-3); the join half
 // lives in teacher-live-monitor-join.ts. Nothing here fixtures a tile: every state
 // is read LIVE off the same Strapi the browser polls and parsed through the
 // SHIPPED Zod mirror, so a payload that diverges from .qa/CONTRACTS.md throws here
-// instead of being matched loosely.
+// instead of being matched loosely. Reads ride 429s out via fetchWithRetry: the
+// per-IP budget is shared by every lane on this stack, so a shared-window 429 is
+// transport noise, not a contract failure — the strict 200 assert still applies
+// after the ride-out.
 
 /** C-TS-3 — the whole live payload, strict-parsed. */
 export async function readMonitor(
@@ -21,9 +25,10 @@ export async function readMonitor(
   jwt: string,
   sittingDocumentId: string,
 ): Promise<TestSessionMonitorResponse> {
-  const response = await request.get(
-    `${API_BASE}/api/teacher/test-sessions/${sittingDocumentId}/monitor`,
-    { headers: { Authorization: `Bearer ${jwt}` } },
+  const response = await fetchWithRetry(() =>
+    request.get(`${API_BASE}/api/teacher/test-sessions/${sittingDocumentId}/monitor`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
   );
   expect(response.status(), `GET monitor ${sittingDocumentId}`).toBe(200);
   return testSessionMonitorResponseSchema.parse(await response.json());

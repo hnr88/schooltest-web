@@ -90,7 +90,7 @@ function SkillCells({ classCard }: { classCard: DashboardClass }) {
   return (
     <div className="grid grid-cols-2 gap-2 border-t border-divider pt-3 sm:grid-cols-4">
       <div className="col-span-2 flex min-w-0 flex-col gap-2 rounded-lg border border-divider bg-surface-well p-2.5 sm:col-span-1">
-        <span className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+        <span className="text-[10px] font-semibold tracking-wider text-body uppercase">
           {t('reading')}
         </span>
         <TeacherClassCompletionRow label={tDash('testA')} completion={classCard.test_a} />
@@ -108,10 +108,10 @@ function ResultsClassSoonCell({ label }: { label: string }) {
   const t = useTranslations('Teacher.results.list');
   return (
     <div className="flex min-w-0 flex-col gap-1.5 rounded-lg border border-divider bg-surface-inset p-2.5">
-      <span className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+      <span className="text-[10px] font-semibold tracking-wider text-body uppercase">
         {label}
       </span>
-      <span className="text-[11.5px] font-semibold tracking-wide text-muted-foreground/60 uppercase">
+      <span className="text-[11.5px] font-semibold tracking-wide text-body uppercase">
         {t('soon')}
       </span>
     </div>

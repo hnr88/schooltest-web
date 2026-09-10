@@ -106,9 +106,15 @@ async function apiChildren(request: APIRequestContext, jwt: string): Promise<Chi
 
 async function signIn(page: Page): Promise<void> {
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(SCHOOL_ADMIN_A.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(SCHOOL_ADMIN_A.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  // The sign-in form's copy moved to the Auth.portal namespace (4afb591); the
+  // retired Auth.* labels ("Email" / "Sign in") no longer match any control.
+  await page
+    .getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })
+    .fill(SCHOOL_ADMIN_A.email);
+  await page
+    .getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true })
+    .fill(SCHOOL_ADMIN_A.password);
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await page.waitForURL('**/dashboard/school', { timeout: 30_000 });
 }
 

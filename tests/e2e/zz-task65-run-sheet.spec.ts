@@ -18,9 +18,13 @@ const RUN_SHEET_URL = '/en/dashboard/teach/run-sheet';
 
 async function signIn(page: Page): Promise<void> {
   await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.emailLabel'), { exact: true }).fill(TEACHER.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(TEACHER.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.signInButton'), exact: true }).click();
+  // The sign-in form's copy moved to the Auth.portal namespace (4afb591); the
+  // retired Auth.* labels ("Email" / "Sign in") no longer match any control.
+  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(TEACHER.email);
+  await page
+    .getByLabel(cat(en, 'Auth.portal.passwordLabel'), { exact: true })
+    .fill(TEACHER.password);
+  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
   // late role redirect can never hijack the goto that follows. The axios
   // layer rides out any 429 on the auth POST, so allow for that here.

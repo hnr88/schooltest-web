@@ -2501,7 +2501,11 @@
       "absentLabel": "결석",
       "markAbsentLabel": "{name} 학생을 결석으로 표시",
       "clearAbsentLabel": "{name} 학생을 출석으로 표시",
-      "absentErrorToast": "결석 표시를 저장하지 못했습니다. 다시 시도해 주세요."
+      "absentErrorToast": "결석 표시를 저장하지 못했습니다. 다시 시도해 주세요.",
+      "closeConfirmTitle": "이 시험을 닫으시겠습니까?",
+      "closeConfirmBody": "아직 응시 중인 학생의 답안은 현재 상태로 제출되고, 참가 코드는 더 이상 작동하지 않습니다. 이 작업은 되돌릴 수 없습니다.",
+      "closeConfirmCancel": "열어 두기",
+      "closeConfirmCta": "시험 닫기"
     },
     "needsToSit": {
       "title": "아직 응시하지 않은 학생",

@@ -77,6 +77,7 @@ async function openMonitor(page: Page, sittingDocumentId: string): Promise<void>
 async function expectGridMatchesPayload(
   page: Page,
   monitor: TestSessionMonitorResponse,
+  reread: () => Promise<TestSessionMonitorResponse>,
 ): Promise<void> {
   for (const [key, labelKey] of Object.entries(SUMMARY_LABEL_KEY)) {
     const value = monitor.summary[key as MonitorSummaryKey];
@@ -95,7 +96,29 @@ async function expectGridMatchesPayload(
     await expect(tile).toHaveAttribute('data-state', student.state);
     await expect(tile).toContainText(student.display_name);
     // WCAG 2.2 AA 1.4.1: the state is TEXT on the tile, not only a tint.
-    await expect(tile).toContainText(detailText(student));
+    // A LIVE attempt's detail line moves under the monitor's own poll —
+    // `No activity N min` ticks at the minute boundary and stages advance —
+    // so a fixed payload read once raced the paint and failed on 572 vs 573.
+    // For those two states the painted text is compared against a FRESH
+    // server read inside expect.poll; static states keep the direct assert.
+    const liveDetail =
+      (student.state === 'stalled' && student.inactive_minutes !== null) ||
+      (student.state === 'in_progress' && student.stage !== null && student.total_stages !== null);
+    if (liveDetail) {
+      await expect
+        .poll(async () => {
+          const fresh = await reread();
+          const row = fresh.students.find(
+            (candidate) => candidate.student_document_id === student.student_document_id,
+          );
+          if (!row) return 'row gone from the payload';
+          const painted = ((await tile.textContent()) ?? '').replace(/\s+/g, ' ');
+          return painted.includes(detailText(row)) ? 'current' : painted;
+        })
+        .toBe('current');
+    } else {
+      await expect(tile).toContainText(detailText(student));
+    }
     await expect(tile.locator('.sr-only')).toContainText(
       cat(en, `${LIVE}.${STATE_LABEL_KEY[student.state]}`),
     );
@@ -136,7 +159,9 @@ test.describe('C-TS-3 live monitoring grid', () => {
       const fresh = await readMonitor(request, jwt, monitor.sitting.document_id);
       await openMonitor(page, fresh.sitting.document_id);
       await expect(page.locator('h1')).toContainText(fresh.sitting.class.name);
-      await expectGridMatchesPayload(page, fresh);
+      await expectGridMatchesPayload(page, fresh, () =>
+        readMonitor(request, jwt, monitor.sitting.document_id),
+      );
 
       // The legend names all six states, and prints the server's own threshold.
       const legend = page.locator('[data-slot="live-monitor-legend"]');

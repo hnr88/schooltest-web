@@ -18,8 +18,8 @@ function TeacherClassCompletionRow({ label, completion }: TeacherClassCompletion
   });
 
   return (
-    <div className="flex min-w-0 flex-col gap-1.5">
-      <dt className="text-meta font-semibold text-muted-foreground">{label}</dt>
+    <dl className="flex min-w-0 flex-col gap-1.5">
+      <dt className="text-meta font-semibold text-body">{label}</dt>
       <dd className="min-w-0">
         <CompletionCell
           value={completionPercent(completion)}
@@ -31,7 +31,7 @@ function TeacherClassCompletionRow({ label, completion }: TeacherClassCompletion
           })}
         />
       </dd>
-    </div>
+    </dl>
   );
 }
 

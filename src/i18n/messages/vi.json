@@ -2510,7 +2510,11 @@
       "absentLabel": "Vắng mặt",
       "markAbsentLabel": "Đánh dấu {name} vắng mặt",
       "clearAbsentLabel": "Đánh dấu {name} có mặt",
-      "absentErrorToast": "Không lưu được đánh dấu vắng mặt. Vui lòng thử lại."
+      "absentErrorToast": "Không lưu được đánh dấu vắng mặt. Vui lòng thử lại.",
+      "closeConfirmTitle": "Đóng buổi kiểm tra này?",
+      "closeConfirmBody": "Ai vẫn đang làm bài sẽ được nộp theo trạng thái hiện tại và mã tham gia sẽ ngừng hoạt động. Thao tác này không thể hoàn tác.",
+      "closeConfirmCancel": "Giữ mở",
+      "closeConfirmCta": "Đóng buổi kiểm tra"
     },
     "needsToSit": {
       "title": "Chưa làm bài",

@@ -2501,7 +2501,11 @@
       "absentLabel": "缺席",
       "markAbsentLabel": "将 {name} 标记为缺席",
       "clearAbsentLabel": "将 {name} 标记为出席",
-      "absentErrorToast": "无法保存缺席标记，请重试。"
+      "absentErrorToast": "无法保存缺席标记，请重试。",
+      "closeConfirmTitle": "关闭此测验？",
+      "closeConfirmBody": "仍在作答的学生的试卷会按当前答案提交，加入代码也将失效。此操作无法撤消。",
+      "closeConfirmCancel": "保持开放",
+      "closeConfirmCta": "关闭测验"
     },
     "needsToSit": {
       "title": "尚未参加",

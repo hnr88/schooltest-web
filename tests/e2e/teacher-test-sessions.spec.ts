@@ -129,6 +129,9 @@ test.describe('flow 6 — the code is displayed prominently for reading aloud', 
     await expect(panel().getByText(cat(en, `${JOIN}.helper`), { exact: true })).toBeVisible();
 
     const shown = panel().getByText(announced, { exact: true });
+    // The roll-up's live cards sit ABOVE the panel, so the code can be painted
+    // below the fold; a teacher scrolls it into view before reading it aloud.
+    await shown.scrollIntoViewIfNeeded();
     await expect(shown).toBeInViewport();
     const ink = await panelInk(panel(), announced);
     // --text-display clamps to 36px at its floor; the read-aloud code must be it.

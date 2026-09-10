@@ -167,9 +167,12 @@ test.describe('teacher dashboard (C-TD-1)', () => {
       body.classes[0].top_gap = null;
     });
     const first = cards(page).first();
-    await expect(first).toHaveAttribute('data-top-gap', 'none');
-    await expect(first.getByText(cat(en, `${TD}.noGap`), { exact: true })).toBeVisible();
-    await expect(first.getByText(cat(en, `${TD}.noGapHint`), { exact: true })).toBeVisible();
+    // R-01 retired the card's top-gap tile (the subskill gap lives in the class
+    // detail's skill tabs now), so the honest treatment of a null gap is: no
+    // gap tile at all, no fabricated zero, and the growth cell's no-value dash.
+    await expect(first).not.toHaveAttribute('data-top-gap');
+    await expect(first.getByText(cat(en, `${TD}.noGap`), { exact: true })).toHaveCount(0);
+    await expect(first.getByText(cat(en, 'Teacher.results.list.noValue'), { exact: true })).toBeVisible();
     expect(await first.innerText()).not.toMatch(/\b0 students not yet\b/);
     await page.unroute('**/api/teacher/dashboard');
   });
