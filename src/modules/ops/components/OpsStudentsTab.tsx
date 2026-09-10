@@ -115,6 +115,10 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   const t = useTranslations('Ops.schoolTables');
   const queryClient = useQueryClient();
   const writeGate = useOpsWriteGate();
+  // ops/28 (D-53) — this file has no `refuseIf…` helper of its own (its
+  // writes refuse at the runner's dispatch, inside the confirm flow); `locked`
+  // is read directly off the gate for the row/bulk `disabled` below.
+  const locked = writeGate.blockedReason() !== null;
   const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const classOptions = opsStudentClassOptions(teachers.data?.data ?? []);
   const [profileDocumentId, setProfileDocumentId] = useState<string | null>(null);
@@ -230,6 +234,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
       label: t(action.labelKey),
       write: action.write,
       destructive: action.danger,
+      disabled: action.write && locked,
       onSelect: () => {
         if (action.key === 'viewProfile') {
           setProfileDocumentId(row.documentId);
@@ -247,12 +252,14 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
     {
       label: t(MOVE_CLASS_ACTION.labelKey),
       write: true,
+      disabled: locked,
       onRun: (rows) => openMoveDialog(rows as readonly OpsStudentRow[]),
     },
     {
       label: t('studentsBulkDeactivate'),
       write: true,
       destructive: true,
+      disabled: locked,
       eligible: (row) => (row as OpsStudentRow).status !== 'archived',
       skipLabel: (count) => t('studentsBulkDeactivateSkip', { count }),
       onRun: (_rows, targets) => {

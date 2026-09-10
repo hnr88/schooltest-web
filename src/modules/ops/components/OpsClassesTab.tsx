@@ -171,6 +171,11 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
     showOpsToast({ tone: 'error', message: reason });
     return false;
   }, [writeGate]);
+  // ops/28 (D-53) — `refuseIfReadOnly` above returns true when NOT blocked
+  // (opposite of OpsStaffUsersTable's `refuseIfBlocked`); `locked` names the
+  // write-gate state directly so `disabled: action.write && locked` reads the
+  // same everywhere in this file, independent of that helper's own polarity.
+  const locked = writeGate.blockedReason() !== null;
 
   const toastTone = (tone: 'success' | 'warning' | 'error'): 'ok' | 'warn' | 'error' =>
     tone === 'success' ? 'ok' : tone === 'warning' ? 'warn' : 'error';
@@ -243,6 +248,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           return {
             label: tActions(action.labelKey),
             write: action.write,
+            disabled: action.write && locked,
             onSelect: () =>
               router.push(`/dashboard/ops/schools/${schoolDocumentId}/classes/${row.documentId}`),
           };
@@ -251,6 +257,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           return {
             label: tActions(action.labelKey),
             write: action.write,
+            disabled: action.write && locked,
             onSelect: () => {
               if (refuseIfReadOnly()) setReassignRow(row);
             },
@@ -260,6 +267,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           return {
             label: tActions(action.labelKey),
             write: action.write,
+            disabled: action.write && locked,
             onSelect: () => {
               if (refuseIfReadOnly()) setEditRow(row);
             },
@@ -270,13 +278,14 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           label: tActions(action.labelKey),
           write: action.write,
           destructive: action.danger,
+          disabled: action.write && locked,
           onSelect: () => {
             if (refuseIfReadOnly()) setSingleLifecycle({ row, action: lifecycleAction });
           },
         };
       });
     },
-    [tActions, router, schoolDocumentId, refuseIfReadOnly],
+    [tActions, router, schoolDocumentId, refuseIfReadOnly, locked],
   );
 
   const bulkActionDefs = useMemo<DirectoryBulkAction[]>(
@@ -286,6 +295,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           return {
             label: tActions(action.labelKey),
             write: action.write,
+            disabled: action.write && locked,
             onRun: (_rows: readonly unknown[], targets: readonly OpsActionTarget[]) => {
               if (refuseIfReadOnly()) setSetWindowTargets(targets);
             },
@@ -295,6 +305,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           label: tActions(action.labelKey),
           write: action.write,
           destructive: action.danger,
+          disabled: action.write && locked,
           eligible: (row: unknown) => classRowStatus(row as ClassRow) !== 'archived',
           skipLabel: (skipped: number) => tActions('bulk.archiveSkip', { skipped }),
           onRun: (_rows: readonly unknown[], targets: readonly OpsActionTarget[]) => {
@@ -302,7 +313,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           },
         };
       }),
-    [tActions, refuseIfReadOnly],
+    [tActions, refuseIfReadOnly, locked],
   );
 
   const columns = useMemo<DirectoryColumnDef<ClassRow>[]>(

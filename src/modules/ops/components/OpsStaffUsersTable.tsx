@@ -99,12 +99,22 @@ function rowIdentity(row: StaffDirectoryRow): string {
   return staffRowId({ kind: row.kind, documentId: row.row.documentId });
 }
 
+// ops/28 (D-53) — `staff-actions.ts` is a pure descriptor table with no
+// hooks, so the write-gate's locked state cannot live there; `locked` is
+// threaded in from the component at every call site instead.
 function toDirectoryAction(
   action: StaffRowAction,
   label: string,
   onSelect: () => void,
+  locked: boolean,
 ): DirectoryRowAction<StaffDirectoryRow> {
-  return { label, write: action.write, destructive: action.danger, onSelect };
+  return {
+    label,
+    write: action.write,
+    destructive: action.danger,
+    disabled: action.write && locked,
+    onSelect,
+  };
 }
 
 /**
@@ -175,6 +185,10 @@ export function OpsStaffUsersTable({
     showOpsToast({ tone: 'error', message: reason });
     return true;
   };
+
+  // ops/28 (D-53) — read once per render; every `disabled` below is
+  // `write && locked`, never inferred from anything else.
+  const locked = writeGate.blockedReason() !== null;
 
   const filters: readonly DirectoryFilterDef[] = useMemo(
     () => [
@@ -389,6 +403,7 @@ export function OpsStaffUsersTable({
         {
           label: t('actions.editAccess'),
           write: true,
+          disabled: locked,
           onSelect: () => {
             if (refuseIfBlocked()) return;
             onInvite?.();
@@ -397,12 +412,14 @@ export function OpsStaffUsersTable({
         {
           label: t('actions.resendInvite'),
           write: true,
+          disabled: locked,
           onSelect: () => void resendInvitation(invitation),
         },
         {
           label: tInvitations('staffActionRevoke'),
           write: true,
           destructive: true,
+          disabled: locked,
           onSelect: () => void revokeInvitation(invitation),
         },
       ];
@@ -411,19 +428,24 @@ export function OpsStaffUsersTable({
     const status: StaffAccountStatus = user.blocked ? 'suspended' : 'active';
     const actions = staffAccountRowActions(surface, status).map((action) => {
       if (action.key === 'editAccess') {
-        return toDirectoryAction(action, t(action.labelKey), () => openEditAccess(user));
+        return toDirectoryAction(action, t(action.labelKey), () => openEditAccess(user), locked);
       }
       // Teacher surface only (`staffAccountRowActions` never returns this key
       // for 'admin'). `write: false`, no confirm — a read-only navigation, so
       // it never routes through `refuseIfBlocked`/`setConfirmState` like the
       // write actions below it do.
       if (action.key === 'viewClasses') {
-        return toDirectoryAction(action, t(action.labelKey), () => onViewClasses?.(user.documentId));
+        return toDirectoryAction(action, t(action.labelKey), () => onViewClasses?.(user.documentId), locked);
       }
-      return toDirectoryAction(action, t(action.labelKey), () => {
-        if (refuseIfBlocked()) return;
-        setConfirmState({ row: user, action });
-      });
+      return toDirectoryAction(
+        action,
+        t(action.labelKey),
+        () => {
+          if (refuseIfBlocked()) return;
+          setConfirmState({ row: user, action });
+        },
+        locked,
+      );
     });
     // C-OPS-PORTAL-027 — Make owner, the design's third row action
     // (`:1306`), between Edit access and Suspend/Reactivate. Never offered
@@ -436,6 +458,7 @@ export function OpsStaffUsersTable({
       actions.splice(1, 0, {
         label: t('makeOwner'),
         write: true,
+        disabled: locked,
         onSelect: () => {
           if (refuseIfBlocked()) return;
           if (ownership.pendingDocumentId !== null) return;
@@ -484,6 +507,7 @@ export function OpsStaffUsersTable({
     {
       label: t('bulkResendInvites'),
       write: true,
+      disabled: locked,
       eligible: (row) => {
         const staffRow = row as StaffDirectoryRow;
         return staffRow.kind === 'invitation' && (staffRow.row.status === 'invited' || staffRow.row.status === 'expired');
@@ -499,12 +523,14 @@ export function OpsStaffUsersTable({
     {
       label: t('bulkExport'),
       write: false,
+      disabled: false,
       onRun: () => void runExport(),
     },
     {
       label: t(accountBulkSuspend.labelKey),
       destructive: true,
       write: true,
+      disabled: locked,
       eligible: (row) => {
         const staffRow = row as StaffDirectoryRow;
         return staffRow.kind === 'user' && !staffRow.row.blocked;
@@ -518,6 +544,7 @@ export function OpsStaffUsersTable({
       label: t(accountBulkRemove.labelKey),
       destructive: true,
       write: true,
+      disabled: locked,
       onRun: (_rows, targets) => {
         if (refuseIfBlocked()) return;
         setBulkConfirm({ key: 'remove', targets });
