@@ -210,6 +210,38 @@ export declare const classRowEnvelopeSchema: z.ZodObject<{
         }, z.core.$strict>>;
     }, z.core.$strict>;
 }, z.core.$strict>;
+export declare const classCreateBodySchema: z.ZodObject<{
+    name: z.ZodString;
+    year_band: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, z.core.$strict>;
+export type ClassCreateBody = z.infer<typeof classCreateBodySchema>;
+/** The PARTIAL row `opsCreateClass` actually projects — see the block comment above. */
+export declare const classCreateRowSchema: z.ZodObject<{
+    documentId: z.ZodString;
+    name: z.ZodNullable<z.ZodString>;
+    year_band: z.ZodNullable<z.ZodString>;
+    teachers: z.ZodArray<z.ZodObject<{
+        documentId: z.ZodString;
+        first_name: z.ZodNullable<z.ZodString>;
+        last_name: z.ZodNullable<z.ZodString>;
+    }, z.core.$strict>>;
+    student_count: z.ZodNumber;
+}, z.core.$strict>;
+export type ClassCreateRow = z.infer<typeof classCreateRowSchema>;
+export declare const classCreateResponseSchema: z.ZodObject<{
+    data: z.ZodObject<{
+        documentId: z.ZodString;
+        name: z.ZodNullable<z.ZodString>;
+        year_band: z.ZodNullable<z.ZodString>;
+        teachers: z.ZodArray<z.ZodObject<{
+            documentId: z.ZodString;
+            first_name: z.ZodNullable<z.ZodString>;
+            last_name: z.ZodNullable<z.ZodString>;
+        }, z.core.$strict>>;
+        student_count: z.ZodNumber;
+    }, z.core.$strict>;
+}, z.core.$strict>;
+export declare const ClassCreateOperation: OpsOperation<typeof classCreateBodySchema, typeof classCreateResponseSchema>;
 /**
  * Both writes take an EMPTY body. Which operation it is comes from the path,
  * never from a payload key, and the strict object means a caller cannot smuggle

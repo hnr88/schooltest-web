@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ClassRestoreOperation = exports.ClassArchiveOperation = exports.classArchiveBodySchema = exports.classRowEnvelopeSchema = exports.ClassesListOperation = exports.classesListRequestSchema = exports.classesListResponseSchema = exports.classesListQuerySchema = exports.classesListPaginationSchema = exports.classRowSchema = exports.classTestWindowSchema = exports.classSchoolRefSchema = exports.classTeacherRefSchema = exports.classListSortSchema = exports.classListStatusSchema = exports.timestampSchema = void 0;
+exports.ClassRestoreOperation = exports.ClassArchiveOperation = exports.classArchiveBodySchema = exports.ClassCreateOperation = exports.classCreateResponseSchema = exports.classCreateRowSchema = exports.classCreateBodySchema = exports.classRowEnvelopeSchema = exports.ClassesListOperation = exports.classesListRequestSchema = exports.classesListResponseSchema = exports.classesListQuerySchema = exports.classesListPaginationSchema = exports.classRowSchema = exports.classTestWindowSchema = exports.classSchoolRefSchema = exports.classTeacherRefSchema = exports.classListSortSchema = exports.classListStatusSchema = exports.timestampSchema = void 0;
 exports.classRowStatus = classRowStatus;
 exports.classesListQueryParams = classesListQueryParams;
 exports.classesListPath = classesListPath;
@@ -147,6 +147,58 @@ exports.ClassesListOperation = Object.freeze({
 });
 /** `{ data: ClassRow }` — used when a single row is read back for assertions. */
 exports.classRowEnvelopeSchema = (0, core_1.dataEnvelope)(exports.classRowSchema);
+/* ------------------------------------------------------------------ *
+ * Class create — C-OPS-CLASS-CREATE. Task 23.
+ *
+ * Row 17 flagged this schema as missing and left class creation out of
+ * `OpsClassesTab.tsx` for exactly that reason (OP-2: no control wired to a
+ * stub). Verified live against `127.0.0.1:5500` before writing this
+ * (`proof/23.md`) rather than trusting `contracts/classes.md`'s existing
+ * record, which is WRONG on two counts:
+ *
+ *  - The record's `request` shape adds `teacher_documentId?` and
+ *    `test_window_documentId?`. The deployed route
+ *    (`api::class.class.opsCreateClass`) accepts ONLY `name` and
+ *    `year_band` — a relation key (`teacher_documentIds` OR the record's
+ *    singular `teacher_documentId`) is a named 400
+ *    ("this ops write accepts name and year_band only; teacher assignment
+ *    is the assign-teacher route (task 20)" / "unknown field"). Assigning a
+ *    teacher or a window on create is therefore a SEPARATE follow-up call —
+ *    `ClassCreateOperation` below is name/year_band only, by design.
+ *  - The record's `response` is `dataEnvelope(classRowSchema)` (the full
+ *    row). The deployed handler returns a PARTIAL row —
+ *    `{ documentId, name, year_band, teachers, student_count }` — missing
+ *    `archived_at`, `school`, `primary_teacher`, `updatedAt` and
+ *    `test_window`. `classRowSchema` is `strictObject`, so parsing the real
+ *    response against it would THROW. `classCreateResponseSchema` below is
+ *    the shape the server actually returns.
+ *  - The record lists 409 among the create errors. No 409 path exists for
+ *    this route — a duplicate name (case-insensitive, verified) answers
+ *    **400** `ValidationError` with `details.fields: ['name']`, never 409.
+ *    `errors` below is the verified list only.
+ */
+exports.classCreateBodySchema = zod_1.z.strictObject({
+    name: zod_1.z.string().trim().min(1).max(NAME_MAX),
+    year_band: zod_1.z.string().max(YEAR_BAND_MAX).nullable().optional(),
+});
+/** The PARTIAL row `opsCreateClass` actually projects — see the block comment above. */
+exports.classCreateRowSchema = zod_1.z.strictObject({
+    documentId: core_1.documentIdSchema,
+    name: zod_1.z.string().max(NAME_MAX).nullable(),
+    year_band: zod_1.z.string().max(YEAR_BAND_MAX).nullable(),
+    teachers: zod_1.z.array(exports.classTeacherRefSchema).max(MAX_TEACHERS_PER_CLASS),
+    student_count: zod_1.z.number().int().min(0).max(INT32_MAX),
+});
+exports.classCreateResponseSchema = (0, core_1.dataEnvelope)(exports.classCreateRowSchema);
+exports.ClassCreateOperation = Object.freeze({
+    contractId: 'C-OPS-CLASS-CREATE',
+    method: 'POST',
+    path: '/api/ops/schools/{documentId}/classes',
+    request: exports.classCreateBodySchema,
+    response: exports.classCreateResponseSchema,
+    success: 201,
+    errors: [400, 401, 403, 404],
+});
 /* ------------------------------------------------------------------ *
  * Class lifecycle — C-OPS-CLASS-ARCHIVE / C-OPS-CLASS-RESTORE.
  *

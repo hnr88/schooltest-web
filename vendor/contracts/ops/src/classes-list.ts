@@ -170,6 +170,67 @@ export const ClassesListOperation: OpsOperation<
 export const classRowEnvelopeSchema = dataEnvelope(classRowSchema);
 
 /* ------------------------------------------------------------------ *
+ * Class create — C-OPS-CLASS-CREATE. Task 23.
+ *
+ * Row 17 flagged this schema as missing and left class creation out of
+ * `OpsClassesTab.tsx` for exactly that reason (OP-2: no control wired to a
+ * stub). Verified live against `127.0.0.1:5500` before writing this
+ * (`proof/23.md`) rather than trusting `contracts/classes.md`'s existing
+ * record, which is WRONG on two counts:
+ *
+ *  - The record's `request` shape adds `teacher_documentId?` and
+ *    `test_window_documentId?`. The deployed route
+ *    (`api::class.class.opsCreateClass`) accepts ONLY `name` and
+ *    `year_band` — a relation key (`teacher_documentIds` OR the record's
+ *    singular `teacher_documentId`) is a named 400
+ *    ("this ops write accepts name and year_band only; teacher assignment
+ *    is the assign-teacher route (task 20)" / "unknown field"). Assigning a
+ *    teacher or a window on create is therefore a SEPARATE follow-up call —
+ *    `ClassCreateOperation` below is name/year_band only, by design.
+ *  - The record's `response` is `dataEnvelope(classRowSchema)` (the full
+ *    row). The deployed handler returns a PARTIAL row —
+ *    `{ documentId, name, year_band, teachers, student_count }` — missing
+ *    `archived_at`, `school`, `primary_teacher`, `updatedAt` and
+ *    `test_window`. `classRowSchema` is `strictObject`, so parsing the real
+ *    response against it would THROW. `classCreateResponseSchema` below is
+ *    the shape the server actually returns.
+ *  - The record lists 409 among the create errors. No 409 path exists for
+ *    this route — a duplicate name (case-insensitive, verified) answers
+ *    **400** `ValidationError` with `details.fields: ['name']`, never 409.
+ *    `errors` below is the verified list only.
+ */
+export const classCreateBodySchema = z.strictObject({
+  name: z.string().trim().min(1).max(NAME_MAX),
+  year_band: z.string().max(YEAR_BAND_MAX).nullable().optional(),
+});
+export type ClassCreateBody = z.infer<typeof classCreateBodySchema>;
+
+/** The PARTIAL row `opsCreateClass` actually projects — see the block comment above. */
+export const classCreateRowSchema = z.strictObject({
+  documentId: documentIdSchema,
+  name: z.string().max(NAME_MAX).nullable(),
+  year_band: z.string().max(YEAR_BAND_MAX).nullable(),
+  teachers: z.array(classTeacherRefSchema).max(MAX_TEACHERS_PER_CLASS),
+  student_count: z.number().int().min(0).max(INT32_MAX),
+});
+export type ClassCreateRow = z.infer<typeof classCreateRowSchema>;
+
+export const classCreateResponseSchema = dataEnvelope(classCreateRowSchema);
+
+export const ClassCreateOperation: OpsOperation<
+  typeof classCreateBodySchema,
+  typeof classCreateResponseSchema
+> = Object.freeze({
+  contractId: 'C-OPS-CLASS-CREATE',
+  method: 'POST',
+  path: '/api/ops/schools/{documentId}/classes',
+  request: classCreateBodySchema,
+  response: classCreateResponseSchema,
+  success: 201,
+  errors: [400, 401, 403, 404],
+});
+
+/* ------------------------------------------------------------------ *
  * Class lifecycle — C-OPS-CLASS-ARCHIVE / C-OPS-CLASS-RESTORE.
  *
  * DECLARATIONS ONLY. No route, controller, grant or client hook exists for
