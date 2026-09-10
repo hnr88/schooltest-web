@@ -18,7 +18,13 @@ export function staffInvitationsQueryKey(params: StaffInvitationsQuery) {
   return [...OPS_STAFF_INVITATIONS_QUERY_KEY, params] as const;
 }
 
-async function fetchStaffInvitations(
+// task 19 (Law-1): exported so every reader of C-OPS-PORTAL-016 — the
+// paginated hook below AND `staff-invite-bulk.lib.ts`'s single-invitation
+// eligibility check — goes through this ONE call and ONE schema. There is no
+// `GET /api/ops/invitations/:documentId`; the list is the only authorized
+// read, so a caller that needs one row's status still calls this with the
+// scope it actually has (school/role/status) and finds the row itself.
+export async function fetchStaffInvitations(
   params: StaffInvitationsQuery,
 ): Promise<StaffInvitationsResponse> {
   const res = await strapi.get<unknown>('/api/ops/invitations', {
