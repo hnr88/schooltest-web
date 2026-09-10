@@ -51,20 +51,31 @@ export function writeStallThreshold(minutes: number): number {
 /**
  * Seconds since the student last did anything, derived from the SAME rows C-TS-3
  * derives `inactive_minutes` from: newest `response.presented_at`, else
- * `session.started_at`. These columns are `timestamp without time zone` holding
- * local wall time (the API converts on the wire), so `localtimestamp` is the
- * matching clock.
+ * `session.started_at`.
+ *
+ * The age is computed in JS, not in SQL: these `timestamp without time zone`
+ * columns hold the API HOST's local wall time (node-pg writes a JS Date in its
+ * own frame and reads it back in the same one), while `localtimestamp` is the
+ * POSTGRES CONTAINER's wall clock — UTC in this stack against a +03:00 host, so
+ * a `localtimestamp - presented_at` age read three hours NEGATIVE and flow 12
+ * burned a 180s deadline waiting for an age that could never cross zero. The
+ * shipped C-TS-3 path never touches a DB clock (teacher-monitor.ts does
+ * `now - Date.parse(last_activity)` in absolute JS time); parsing the raw wall
+ * string in the same local frame node-pg uses is that same absolute math on the
+ * same rows, correct on any host/container TZ split.
  */
 export function idleSeconds(sessionDocumentId: string): number {
-  return Number(
-    runSql(
-      `select extract(epoch from (localtimestamp - coalesce(
-          (select max(r.presented_at) from responses r
-             join responses_session_lnk l on l.response_id = r.id
-            where l.session_id = s.id), s.started_at)))
-         from sessions s where s.document_id = '${sessionDocumentId}'`,
-    ),
-  );
+  const raw = runSql(
+    `select coalesce(
+        (select max(r.presented_at)::text from responses r
+           join responses_session_lnk l on l.response_id = r.id
+          where l.session_id = s.id), s.started_at::text)
+       from sessions s where s.document_id = '${sessionDocumentId}'`,
+  ).trim();
+  const last = new Date(raw.replace(' ', 'T'));
+  if (Number.isNaN(last.getTime()))
+    throw new Error(`unparseable last-activity wall time for ${sessionDocumentId}: ${raw}`);
+  return Math.floor((Date.now() - last.getTime()) / 1000);
 }
 
 const POLL_MS = 2_000;
