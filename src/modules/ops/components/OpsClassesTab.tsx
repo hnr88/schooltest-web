@@ -41,6 +41,7 @@ import {
   useOpsWriteGate,
 } from '@/modules/ops/actions';
 import type { OpsActionDefinition, OpsActionTarget } from '@/modules/ops/actions';
+import { OpsAssignTeacherDialog } from '@/modules/ops/components/OpsAssignTeacherDialog';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsEditClassDialog } from '@/modules/ops/components/OpsEditClassDialog';
 import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
@@ -59,8 +60,6 @@ import {
 import { useAssessmentWindowCreateMutation } from '@/modules/ops/queries/use-assessment-window-create.mutation';
 import { useClassesListQuery } from '@/modules/ops/queries/use-classes-list.query';
 import { useFormsQuery } from '@/modules/ops/queries/use-forms.query';
-import { useOpsAssignTeacherMutation } from '@/modules/ops/queries/use-ops-update-class.mutation';
-import { useTeachersListQuery } from '@/modules/ops/queries/use-teachers-list.query';
 
 // OPS-038 — the Classes tab of the ops school detail (C-OPS-PORTAL-028), on
 // task 02's directory kit + task 03's action kit. It reads the real list
@@ -400,9 +399,11 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
       />
 
       {reassignRow ? (
-        <ClassReassignTeacherDialog
+        <OpsAssignTeacherDialog
           schoolDocumentId={schoolDocumentId}
-          row={reassignRow}
+          classDocumentId={reassignRow.documentId}
+          className={reassignRow.name ?? ''}
+          currentTeacherDocumentId={reassignRow.primary_teacher?.documentId ?? null}
           onClose={() => setReassignRow(null)}
         />
       ) : null}
@@ -475,78 +476,6 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
         />
       ) : null}
     </div>
-  );
-}
-
-function ClassReassignTeacherDialog({
-  schoolDocumentId,
-  row,
-  onClose,
-}: {
-  schoolDocumentId: string;
-  row: ClassRow;
-  onClose: () => void;
-}) {
-  const t = useTranslations('Ops.classActions.reassign');
-  const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
-  const [teacherDocumentId, setTeacherDocumentId] = useState(row.primary_teacher?.documentId ?? '');
-  const assign = useOpsAssignTeacherMutation(row.documentId, schoolDocumentId);
-
-  const submit = (event: React.FormEvent) => {
-    event.preventDefault();
-    assign.mutate(teacherDocumentId === '' ? [] : [teacherDocumentId], { onSuccess: onClose });
-  };
-
-  return (
-    <Dialog
-      open
-      onOpenChange={(next) => {
-        if (!next && !assign.isPending) onClose();
-      }}
-    >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description', { name: row.name ?? '' })}</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-          {assign.isError ? (
-            <Alert variant="error" title={t('errorTitle')}>
-              {t('errorDescription')}
-            </Alert>
-          ) : null}
-          <FieldShell id="ops-reassign-teacher" label={t('teacherLabel')}>
-            <NativeSelect
-              id="ops-reassign-teacher"
-              className="w-full"
-              value={teacherDocumentId}
-              onChange={(event) => setTeacherDocumentId(event.target.value)}
-            >
-              <NativeSelectOption value="">{t('noTeacherOption')}</NativeSelectOption>
-              {(teachers.data?.data ?? []).map((teacher) => (
-                <NativeSelectOption key={teacher.documentId} value={teacher.documentId}>
-                  {opsTeacherLabel(teacher)}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FieldShell>
-          <DialogFooter>
-            <Button
-              type="button"
-              size="lg"
-              variant="outline"
-              onClick={onClose}
-              disabled={assign.isPending}
-            >
-              {t('cancel')}
-            </Button>
-            <Button type="submit" size="lg" loading={assign.isPending}>
-              {assign.isPending ? t('saving') : t('save')}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
   );
 }
 
