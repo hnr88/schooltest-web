@@ -15,6 +15,11 @@ import type { MyStudentsResultsRow } from '@/modules/report/schemas/result-view.
 // row, its own v1 view for the two populations v2 refuses (`scoring_failed`,
 // listening). Parsing v2 alone made every one of those rows an error fallback —
 // and, until the server was fixed, made the whole list a 400.
+//
+// SCORING/10: this LEGACY form is deliberately unchanged by the roster row's
+// new keys — no `release_state` (it lives on the roster wrapper only) and no
+// `history` inside a v2 row (the flag flip is roster-only). This hook keeps its
+// own cache key; folding it into the class read is mvp/teacher's (D-SC-12).
 export async function fetchMyStudentResults(): Promise<MyStudentsResultsRow[]> {
   const response = await strapi.get('/api/my/students/results');
   return myStudentsResultsResponseSchema.parse(response.data);

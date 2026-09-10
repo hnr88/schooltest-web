@@ -11,8 +11,13 @@ import type { RosterRow } from '@/modules/results/types/roster.types';
  * already scoped server-side to this teacher's own class. Answers ONE ROW PER
  * ROSTER STUDENT (task 23 contract), `result: null` where the student holds no
  * official Result — so unscored students are rows at all, "No result yet" can
- * render, and a scored/total tile can carry the real roster size. Rows OMIT
- * `history` for payload size; the aggregation layer never reads it.
+ * render, and a scored/total tile can carry the real roster size.
+ *
+ * SCORING/10 — rows carry `release_state` beside `result`, and a v2 `result`
+ * carries `history[]` (the package's 8-point window, oldest first) for the
+ * class chart and subskill sparklines. This hook keeps its own cache key; the
+ * duplicate report read (`use-my-student-results.query.ts`) is mvp/teacher's to
+ * fold (D-SC-12) — extended, never merged here.
  *
  * WIRING (task 33): this is the ONE read behind the class detail — the header
  * tiles, the Students tab and both Screen B tabs all consume this payload. The
