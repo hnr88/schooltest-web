@@ -150,6 +150,18 @@ export interface DirectoryRowAction<Row> {
   icon?: LucideIcon;
   /** Declared mutating action — task 03's action-kit gate consumes this flag; never inferred from the label (D-20). */
   write?: boolean;
+  /**
+   * ops/28 (D-53) — renders greyed and `aria-disabled` in the row's ⋯ menu
+   * (and its inline `quick` icon, if any), but does NOT stop `onSelect` from
+   * running: task 03's action kit (`useOpsActionRunner`) is what actually
+   * refuses a blocked `write` action and raises the toast (D-31), and a hard
+   * disable here would swallow that refusal — and its toast — silently. The
+   * design draws exactly this: a locked kebab item stays clickable and shows
+   * the blocked-reason toast (`Ops Portal.dc.html:1081-1092`). Optional and
+   * unset by every existing consumer, so this is a pure capability add — no
+   * surface's behaviour changes until it starts passing `disabled`.
+   */
+  disabled?: boolean;
 }
 
 /**
@@ -178,6 +190,18 @@ export interface DirectoryBulkAction<Row = unknown> {
   eligible?: (row: Row) => boolean;
   /** R-15 copy by prop — read only when some selected rows were skipped. */
   skipLabel?: (skipped: number) => string;
+  /**
+   * ops/28 (D-53) — forwarded verbatim to `OpsBulkBarAction.disabled` (native
+   * HTML `disabled`), the same field `OpsClassDetail`'s bespoke bulk bar
+   * already derives from `write && writeGate.blockedReason() !== null`. A
+   * disabled bulk control is genuinely inert (no dispatch, no toast) — unlike
+   * `DirectoryRowAction.disabled` above — because every ops portal page
+   * already carries the persistent read-only banner explaining why (D-53's
+   * routing note); the per-row kebab has no such standing explanation, which
+   * is why it stays clickable-to-refuse instead. Optional and unset by every
+   * existing consumer, so this is a pure capability add.
+   */
+  disabled?: boolean;
 }
 
 /** The pagination block every versioned directory serves as `meta.pagination`. */

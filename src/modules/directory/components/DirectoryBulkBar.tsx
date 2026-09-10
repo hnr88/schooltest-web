@@ -60,6 +60,12 @@ export function DirectoryBulkBar<Row>({
           ? action.label
           : `${action.label} (${eligible.length} of ${selection.selectedRows.length})`,
       destructive: action.destructive,
+      // ops/28 (D-53) — forwarded verbatim to OpsBulkBar's own `disabled`
+      // (native HTML disabled); see DirectoryBulkAction.disabled for why a
+      // bulk control is allowed to go fully inert where a row's kebab item
+      // is not. Unset by every existing consumer, so this changes nothing
+      // until a surface starts passing it.
+      disabled: action.disabled === true,
       onSelect: () =>
         action.onRun(
           eligible.map((pair) => pair.row),

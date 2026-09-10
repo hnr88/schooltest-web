@@ -11,6 +11,8 @@ import {
   Users,
 } from 'lucide-react';
 
+import { OPS_SUPPORT_ROLE_TYPE } from '@schooltest/ops-contracts';
+
 import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import {
   OPS_ROLE_TYPE,
@@ -161,7 +163,11 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: School,
     exact: false,
     group: 'primary',
-    roles: [OPS_ROLE_TYPE],
+    // ops/28 (D-19, OPS-075): after tasks 04/41 this and opsSettings are the
+    // only two ops rail entries left, so `ops_support` — admitted by the same
+    // isOpsPortalRole guard as `ops` (use-require-ops.ts) — must be granted
+    // here too, or the guard lets it in to a rail with nothing on it.
+    roles: [OPS_ROLE_TYPE, OPS_SUPPORT_ROLE_TYPE],
   },
   {
     // The design's Account entry (Ops Portal.dc.html:34-39): group 'account'
@@ -173,7 +179,9 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: SlidersHorizontal,
     exact: false,
     group: 'account',
-    roles: [OPS_ROLE_TYPE],
+    // ops/28 — support's one permitted write (the account card, task 42) lives
+    // here; see opsSchools above for why the role is added.
+    roles: [OPS_ROLE_TYPE, OPS_SUPPORT_ROLE_TYPE],
   },
   {
     // The design's two-entry rail (Teacher Portal v2.dc.html:29–35): Classes

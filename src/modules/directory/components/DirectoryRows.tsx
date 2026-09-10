@@ -272,6 +272,12 @@ function RowActions<Row>({ api, row, labels }: { api: DirectoryRowApi<Row>; row:
           label={action.label}
           size="sm"
           tone={action.destructive ? 'danger' : undefined}
+          // ops/28 (D-53) — visual-only: `aria-disabled` + a muted class, not
+          // the native `disabled` attribute, so `onSelect` still runs and a
+          // write-gated action's refusal toast still fires (D-31). See
+          // DirectoryRowAction.disabled.
+          aria-disabled={action.disabled === true || undefined}
+          className={action.disabled ? 'opacity-50' : undefined}
           onClick={() => action.onSelect(row)}
         />
       ))}
@@ -291,7 +297,20 @@ function RowMenu<Row>({ actions, row, labels }: RowMenuProps<Row>) {
         {actions.map((action) => (
           <DropdownMenuItem
             key={action.label}
-            className={action.destructive ? 'text-destructive' : undefined}
+            // ops/28 (D-53) — `disabled` greys the item via `aria-disabled`,
+            // never the native `disabled` prop (or a `data-disabled` attr —
+            // `DropdownMenuItem`'s own class list already wires
+            // `data-disabled:pointer-events-none`, which would block the
+            // click below just as the native prop would). See
+            // DirectoryRowAction.disabled for why that click must stay live.
+            aria-disabled={action.disabled === true || undefined}
+            className={
+              action.disabled
+                ? 'text-muted-foreground'
+                : action.destructive
+                  ? 'text-destructive'
+                  : undefined
+            }
             // onClick, NOT onSelect: this is Base UI's Menu.Item, which has no
             // onSelect prop — that is Radix's API. React binds the name as the
             // DOM text-selection event instead, so the handler sat silent
