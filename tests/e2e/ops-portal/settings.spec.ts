@@ -1,22 +1,17 @@
 /**
- * C-OPS-PORTAL-031 — the browser half of the settings WRITE and the ops
- * self-profile card.
+ * C-OPS-PORTAL-031 — the browser half of the ops self-profile card.
  *
- * Three things are proven here that an API test cannot:
- *  1. A save through the real form persists: the tagline written in the UI is
- *     what the API serves afterwards, and the singleton is restored in a
- *     finally so a red run never leaves the row dirty.
- *  2. A stale edit (412 SETTINGS_VERSION_STALE) is named by a toast and the
- *     typed draft survives — no refetch hydrates over what the operator wrote.
- *  3. The account card renames the signed-in operator through
- *     PATCH /api/ops/profile and the capabilities read serves the new name;
- *     the original names are restored in a finally (a null original is
- *     restored to a neutral fixture value and the receipt is logged).
+ * Proven here, and provable no other way: the account card renames the
+ * signed-in operator through PATCH /api/ops/profile and the capabilities read
+ * serves the new name; the original names are restored in a finally (a null
+ * original is restored to a neutral fixture value and the receipt is
+ * logged).
  *
- * ops_support coverage stays in the API spec (403 on both writes) and in
- * retained-tools.spec.ts (the support surface on this route); this file
- * mints ONE ops login, reused as storage state, inside the shared 20/minute
- * auth budget. Behavioural spec: no visual captures.
+ * Task 42 (R-15) retired the six-group platform-settings form this file used
+ * to drive — that WRITE and its stale-edit (412) behaviour no longer have UI
+ * to test. ops_support coverage stays in the API spec (403 on both writes);
+ * this file mints ONE ops login, reused as storage state, inside the shared
+ * 20/minute auth budget. Behavioural spec: no visual captures.
  */
 import { expect, test } from '@playwright/test';
 
@@ -31,10 +26,8 @@ import { loginAs } from '../helpers/roles';
 import {
   ACTION_TIMEOUT,
   API_BASE_URL,
-  READY,
   SETTINGS_ROUTE,
   STORAGE_STATE,
-  liveSettings,
   opsJwt,
   waitForApi,
 } from './settings-read.helpers';
@@ -73,20 +66,6 @@ test.beforeEach(async () => {
   await waitForApi(90_000);
 });
 
-/** Writes the singleton back through the real endpoint as ops. */
-async function putSettings(patch: Record<string, unknown>): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/platform-settings`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${await opsJwt()}`,
-      'Content-Type': 'application/json',
-      'X-Ops-Portal-Version': '1',
-    },
-    body: JSON.stringify(patch),
-  });
-  if (!res.ok) throw new Error(`[e2e] settings restore failed: HTTP ${res.status}`);
-}
-
 type Actor = { first_name: string | null; last_name: string | null };
 
 /** The operator row exactly as the capabilities read serves it. */
@@ -115,73 +94,6 @@ async function patchProfile(firstName: string, lastName: string): Promise<void> 
 test.describe.configure({ mode: 'serial' });
 
 test.describe('C-OPS-PORTAL-031 settings write', () => {
-  test('a saved change is what the API serves afterwards', async ({ page }) => {
-    const original = (await liveSettings()).site_tagline as string | null;
-    const probe = `ops-031 probe ${Date.now()}`;
-    try {
-      await page.goto(SETTINGS_ROUTE);
-      await expect(page.locator(READY)).toBeVisible({ timeout: ACTION_TIMEOUT });
-
-      await page.locator('#setting-site_tagline').fill(probe);
-      await page
-        .getByRole('button', { name: cat(en, 'Ops.settings.save'), exact: true })
-        .click({ timeout: ACTION_TIMEOUT });
-      await expect(
-        page.getByText(cat(en, 'Ops.settings.savedToast'), { exact: true }),
-      ).toBeVisible({ timeout: ACTION_TIMEOUT });
-
-      expect((await liveSettings()).site_tagline, 'the read-back must serve the saved value').toBe(
-        probe,
-      );
-    } finally {
-      // The singleton is shared with every other suite: always put it back,
-      // and a failed restore fails the test with the values as the receipt.
-      try {
-        await putSettings({ site_tagline: original });
-      } catch (error) {
-        throw new Error(
-          `[e2e] RESTORE FAILED — site_tagline left as ${JSON.stringify(probe)}, ` +
-            `original was ${JSON.stringify(original)}: ${String(error)}`,
-        );
-      }
-    }
-  });
-
-  test('a stale edit is named and the typed draft survives', async ({ page }) => {
-    const staleBody = {
-      data: null,
-      error: {
-        status: 412,
-        name: 'PreconditionFailedError',
-        message: 'the settings changed since you loaded them',
-        details: { code: 'SETTINGS_VERSION_STALE' },
-      },
-    };
-    await page.route('**/api/platform-settings', async (route) => {
-      if (route.request().method() !== 'PUT') return route.fallback();
-      await route.fulfill({
-        status: 412,
-        contentType: 'application/json',
-        body: JSON.stringify(staleBody),
-      });
-    });
-
-    await page.goto(SETTINGS_ROUTE);
-    await expect(page.locator(READY)).toBeVisible({ timeout: ACTION_TIMEOUT });
-
-    const draft = `stale draft ${Date.now()}`;
-    await page.locator('#setting-site_tagline').fill(draft);
-    await page
-      .getByRole('button', { name: cat(en, 'Ops.settings.save'), exact: true })
-      .click({ timeout: ACTION_TIMEOUT });
-
-    await expect(
-      page.getByText(cat(en, 'Ops.settings.staleToast'), { exact: true }),
-    ).toBeVisible({ timeout: ACTION_TIMEOUT });
-    // No refetch, no values-hydration: what the operator typed is still there.
-    await expect(page.locator('#setting-site_tagline')).toHaveValue(draft);
-  });
-
   test('the account card renames the operator and the read serves the new name', async ({
     page,
   }) => {

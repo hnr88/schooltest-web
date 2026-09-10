@@ -18,8 +18,9 @@ import { roleCredentials } from '../helpers/credentials';
 export const API_BASE_URL =
   process.env.E2E_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:5500';
 export const SETTINGS_ROUTE = '/dashboard/ops/settings';
-export const READY = '[data-surface="ops-platform-settings"][data-state="ready"]';
-export const RETRY = '[data-ops-action="settings-retry"]';
+// Task 42 (R-15): the six-group platform-settings form retired, so "ready"
+// is the account card — the only drawn Settings content.
+export const READY = '[data-slot="ops-account-card"][data-ops-scope="ops-account"]';
 export const STORAGE_STATE = path.join(os.tmpdir(), 'schooltest-ops-077-state.json');
 export const ACTION_TIMEOUT = 15_000;
 

@@ -1,15 +1,16 @@
 /**
  * OPS-077 / C-OPS-PORTAL-067 — the browser half of the settings read.
  *
- * Three things are proven here that an API test cannot:
- *  1. The web's response schema and the SHARED contract module agree. They are
- *     mirrors today (the shared package's own node_modules carries a different
- *     zod build, so app code cannot import the module source yet), and this
- *     guard fails the moment one of them drifts from the other.
- *  2. A failed read looks different from a slow one and from an empty one, and
- *     the failure surface offers a retry that really refetches.
- *  3. Returning to the screen re-reads the row instead of presenting a cached
- *     configuration as the current one.
+ * Task 42 (R-15) retired the six-group platform-settings FORM from this
+ * route: the account card is the only drawn Settings content
+ * (`Ops Portal.dc.html:531-543`), and GET /api/platform-settings no longer
+ * has a consumer on this screen — task 04's session-expired card reads it
+ * instead, for `session_timeout_minutes` (D-14). Two things are proven here
+ * that an API test cannot:
+ *  1. The web's response schema and the SHARED contract module still agree —
+ *     the endpoint keeps serving even though this screen stopped reading it.
+ *  2. The settings screen renders exactly the design (heading, sub-line, one
+ *     account card) and never issues its own platform-settings request.
  *
  * Sign-in happens ONCE through the real form and is reused as storage state:
  * four form logins for one read is what turns a green contract into a red 429.
@@ -33,7 +34,6 @@ import { loginAs } from '../helpers/roles';
 import {
   ACTION_TIMEOUT,
   READY,
-  RETRY,
   SETTINGS_ROUTE,
   STORAGE_STATE,
   capture,
@@ -104,72 +104,31 @@ test.describe('C-OPS-PORTAL-067 settings read', () => {
     expect(webSettingsSchema.safeParse(withoutTagline).success).toBe(false);
   });
 
-  test('ops sees the real stored values, versioned, at desktop and 375px', async ({ page }) => {
-    const live = await liveSettings();
-    const versions = settingsReads(page);
-    await page.clock.setFixedTime(new Date(REFERENCE_CLOCK_ISO));
-    await page.goto(SETTINGS_ROUTE);
-
-    const form = page.locator(READY);
-    await expect(form).toBeVisible({ timeout: ACTION_TIMEOUT });
-    // The system settings are their own ops-only surface, separate from the
-    // internal operations account card on the same route.
-    await expect(form).toHaveAttribute('data-ops-scope', 'ops-only');
-
-    await expect(page.locator('#setting-site_name')).toHaveValue(String(live.site_name));
-    await expect(page.locator('#setting-session_timeout_minutes')).toHaveValue(
-      String(live.session_timeout_minutes),
-    );
-    await expect(page.locator('#setting-email_from_address')).toHaveValue(
-      String(live.email_from_address ?? ''),
-    );
-    expect(versions.length).toBeGreaterThan(0);
-    expect(versions.every((value) => value === '1')).toBe(true);
-    console.log('CAPTURE', await capture(page, 'settings-desktop'));
-
-    await page.setViewportSize(MOBILE_VIEWPORT);
-    await expect(form).toBeVisible({ timeout: ACTION_TIMEOUT });
-    console.log('CAPTURE', await capture(page, 'settings-mobile'));
-  });
-
-  test('a failed read is named and retryable, never an empty-looking form', async ({ page }) => {
-    await page.route('**/api/platform-settings', async (route) => {
-      await route.fulfill({
-        status: 500,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          data: null,
-          error: { status: 500, name: 'ApplicationError', message: 'probe', details: {} },
-        }),
-      });
-    });
-
-    await page.goto(SETTINGS_ROUTE);
-    const retry = page.locator(RETRY);
-    await expect(retry).toBeVisible({ timeout: ACTION_TIMEOUT });
-    await expect(page.getByRole('alert').first()).toBeVisible({ timeout: ACTION_TIMEOUT });
-    // A failure must NOT render the editor: an empty form reads as "nothing is
-    // configured", which is a different and untrue statement.
-    await expect(page.locator('[data-surface="ops-platform-settings"]')).toHaveCount(0);
-    console.log('CAPTURE', await capture(page, 'settings-load-failure'));
-
-    await page.unroute('**/api/platform-settings');
-    await retry.click({ timeout: ACTION_TIMEOUT });
-    await expect(page.locator(READY)).toBeVisible({ timeout: ACTION_TIMEOUT });
-  });
-
-  test('returning to the screen re-reads the row instead of showing a cached one', async ({
+  test('the settings screen renders exactly the design and reads no platform settings', async ({
     page,
   }) => {
     const reads = settingsReads(page);
+    await page.clock.setFixedTime(new Date(REFERENCE_CLOCK_ISO));
     await page.goto(SETTINGS_ROUTE);
-    await expect(page.locator(READY)).toBeVisible({ timeout: ACTION_TIMEOUT });
-    const afterFirst = reads.length;
-    expect(afterFirst).toBeGreaterThan(0);
 
-    await page.goto('/dashboard/ops/schools');
-    await page.goto(SETTINGS_ROUTE);
     await expect(page.locator(READY)).toBeVisible({ timeout: ACTION_TIMEOUT });
-    expect(reads.length, 'the second visit must issue its own read').toBeGreaterThan(afterFirst);
+    // One heading, one sub-line, one account card — nothing else on the
+    // screen (`Ops Portal.dc.html:531-543`). The retired form and its panels
+    // are gone.
+    await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+    await expect(page.locator('[data-surface="ops-platform-settings"]')).toHaveCount(0);
+    await expect(page.locator('[data-slot="ops-legal-editor"]')).toHaveCount(0);
+    console.log('CAPTURE', await capture(page, 'settings-desktop'));
+
+    await page.setViewportSize(MOBILE_VIEWPORT);
+    await expect(page.locator(READY)).toBeVisible({ timeout: ACTION_TIMEOUT });
+    console.log('CAPTURE', await capture(page, 'settings-mobile'));
+
+    // The read moved to task 04's session-expired card; this screen must not
+    // reissue it on its own account.
+    expect(
+      reads,
+      'the settings screen must not read GET /api/platform-settings any more',
+    ).toEqual([]);
   });
 });

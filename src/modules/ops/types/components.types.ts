@@ -5,9 +5,7 @@ import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
 import type { RecoveryMonitorStudent } from '@/modules/ops/types/schemas.types';
 import type { OpsSchool, OpsTeacherRow } from '@/modules/ops/types/ops.types';
 import type { OpsSchoolAdminInviteMode } from '@/modules/ops/lib/ops-school-admin-invite';
-import type { PlatformSettingsForm } from '@/modules/ops/types/platform-settings.types';
 import type { SchoolPlan } from '@/modules/school-admin';
-import type { UseFormReturn } from 'react-hook-form';
 
 export interface OpsFormWindowEditorProps {
   schoolDocumentId: string;
@@ -83,14 +81,6 @@ export interface OpsSchoolCountCardsProps {
   school: SchoolDetail;
   /** OPS-teacher-details: clicking the Teachers card opens the directory. */
   onTeachersClick?: () => void;
-}
-
-export interface OpsSettingsControlProps {
-  readonly form: UseFormReturn<PlatformSettingsForm>;
-  readonly field: keyof PlatformSettingsForm;
-  readonly label: string;
-  readonly helperText?: string;
-  readonly optionLabel: (option: string) => string;
 }
 
 export interface OpsSittingRecoveryDetailProps {

@@ -8,7 +8,7 @@ export { OpsOnboardSchoolDialog } from './components/OpsOnboardSchoolDialog';
 export { OpsStudentImport } from './components/OpsStudentImport';
 export { OpsFormWindow } from './components/OpsFormWindow';
 export { OpsSittingRecovery } from './components/OpsSittingRecovery';
-export { OpsPlatformSettings } from './components/OpsPlatformSettings';
+export { OpsAccountCard } from './components/OpsAccountCard';
 export { usePlatformSettingsQuery } from './queries/use-platform-settings.query';
 export { useSchoolInvitationQuery } from './queries/use-school-invitation.query';
 export { useOnboardSchoolMutation } from './queries/use-onboard-school.mutation';
