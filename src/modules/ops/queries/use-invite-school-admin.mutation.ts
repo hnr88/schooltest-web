@@ -1,6 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { staffInviteBodySchema } from '@schooltest/ops-contracts';
 
 import { strapi } from '@/lib/axios/strapi';
 import {
@@ -37,8 +38,14 @@ export function useInviteSchoolAdminMutation() {
 export interface InviteStaffInput {
   schoolDocumentId: string;
   role: 'school_admin' | 'teacher';
-  /** The single pictured Name field. May be blank — the email greets the mailbox. */
-  display_name: string;
+  /**
+   * Task 25 (D-12/D-13) — the design's single "Full name" field, already split
+   * into the two required columns on the form side. `last_name` is never
+   * blank: a single-token name fills both, so the wire never sees an empty
+   * NOT-NULL column.
+   */
+  first_name: string;
+  last_name: string;
   email: string;
   message?: string;
 }
@@ -52,19 +59,25 @@ export interface InviteStaffInput {
  * rule 1 forbids — and would let the two drift apart on the client the way
  * they had drifted on the server.
  *
- * `access_model: 'managed_admins'` is what allows a school a second admin;
- * the server still owns the single-owner invariant.
+ * Task 25 (D-13) — the request body is now the ONE shared `StaffInviteBody`
+ * shape (`staffInviteBodySchema`, `@schooltest/ops-contracts`), imported
+ * rather than re-declared: `{ email, first_name, last_name, message? }`. The
+ * server's own `X-Ops-Portal-Version` header (sent below) still selects
+ * `access_model: 'managed_admins'` and the `delivery` outcome server-side —
+ * that plumbing is internal to the controller/service pair and never part of
+ * this wire shape.
  */
 async function inviteStaff(input: InviteStaffInput): Promise<StaffInviteResult> {
   const path = input.role === 'school_admin' ? 'admin-invitations' : 'teacher-invitations';
+  const body = staffInviteBodySchema.parse({
+    first_name: input.first_name,
+    last_name: input.last_name,
+    email: input.email,
+    ...(input.message === undefined || input.message === '' ? {} : { message: input.message }),
+  });
   const res = await strapi.post<{ data: unknown }>(
     `/api/ops/schools/${input.schoolDocumentId}/${path}`,
-    {
-      display_name: input.display_name,
-      email: input.email,
-      access_model: 'managed_admins',
-      ...(input.message === undefined || input.message === '' ? {} : { message: input.message }),
-    },
+    body,
     { opsPortalVersioned: true },
   );
   return staffInviteResultSchema.parse(res.data.data);
