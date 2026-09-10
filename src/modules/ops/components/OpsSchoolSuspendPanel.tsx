@@ -37,6 +37,7 @@ import {
   onboardingEligibility,
   useOnboardingReadQuery,
 } from '@/modules/ops/queries/use-onboarding-read.query';
+import { useRecalculateSeatsMutation } from '@/modules/ops/queries/use-school-recalculate-seats.mutation';
 import { useRevokeInvitationMutation } from '@/modules/ops/queries/use-revoke-invitation.mutation';
 import { useSchoolLifecycleUndoMutation } from '@/modules/ops/queries/use-school-lifecycle-undo.mutation';
 
@@ -90,6 +91,7 @@ export function OpsSchoolSuspendPanel({
   const invitation = useOnboardingReadQuery(school.documentId, enabled);
   const canRevoke = invitation.data ? onboardingEligibility(invitation.data).canRevoke : false;
   const revokeInvitation = useRevokeInvitationMutation();
+  const recalculateSeats = useRecalculateSeatsMutation();
   const actionHandle = useRef<ActionHandle | null>(null);
   const [selectedAction, setSelectedAction] = useState<SchoolLifecycleAction | null>(null);
   const [typedName, setTypedName] = useState('');
@@ -180,6 +182,25 @@ export function OpsSchoolSuspendPanel({
       showOpsToast({ tone: 'ok', message: tOnboard('revokeSuccess') });
     } catch {
       showOpsToast({ tone: 'error', message: tOnboard('revokeError') });
+    }
+  };
+
+  // Task 13: real endpoint (C-OPSS-08) — recounts active students against the
+  // school's entitlement row. No entitlement row is a genuine 404, surfaced
+  // as an error, never a false success.
+  const runRecalculateSeats = async () => {
+    if (!refuseNonLifecycleWrite()) return;
+    try {
+      const result = await recalculateSeats.mutateAsync(school.documentId);
+      showOpsToast({
+        tone: 'ok',
+        message: t('actions.recalculateSeatsSuccess', {
+          used: result.seats_used,
+          total: result.seats_total,
+        }),
+      });
+    } catch {
+      showOpsToast({ tone: 'error', message: t('actions.error') });
     }
   };
 
@@ -310,6 +331,13 @@ export function OpsSchoolSuspendPanel({
               {tOnboard('revoke')}
             </DropdownMenuItem>
           ) : null}
+          <DropdownMenuItem
+            aria-disabled={readOnly ? true : undefined}
+            className={readOnly ? 'text-slate-400' : ''}
+            onClick={() => void runRecalculateSeats()}
+          >
+            {t('actions.recalculateSeats')}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       {selectedCopy === null || isTyped ? null : (
