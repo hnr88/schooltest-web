@@ -5,7 +5,7 @@ import {
   attachImportShot,
   csvFor,
   csvWithBadRows,
-  deleteImportProbes,
+  retireImportProbes,
 } from './helpers/class-import';
 import {
   apiClassDetail,
@@ -26,13 +26,13 @@ const PROBE_ROWS = [`Import Probe ${STAMP}A`, `Import Probe ${STAMP}B`];
 /** The good rows of the MIXED file (flow 13b) — a separate pair, same class. */
 const MIXED_GOOD_ROWS = [`Mixed Probe ${STAMP}A`, `Mixed Probe ${STAMP}B`];
 
-// Every probe id this file creates, deleted after each test even when the test
-// FAILED first — a run that died mid-flow-13 left two archived probes behind,
-// which is exactly how the school-wide roster filled up with them.
+// Every probe id this file creates is deleted after each test even when the
+// test FAILED first; the retire helper also sweeps the fixture class for any
+// student still carrying this run's stamp, so a mid-flow death leaves nothing.
 const probeRegister: string[] = [];
 
 test.afterEach(async ({ request }) => {
-  await deleteImportProbes(request, probeRegister.splice(0));
+  await retireImportProbes(request, probeRegister.splice(0), STAMP);
 });
 
 test.describe.configure({ mode: 'serial' });

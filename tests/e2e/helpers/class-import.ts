@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import { expect, type APIRequestContext, type Page, type TestInfo } from '@playwright/test';
 
-import { API } from './class-detail';
+import { API, apiClassDetail, EMPTY_CLASS_ID, schoolAdminJwt } from './class-detail';
 import { deleteStudents } from './student-cleanup';
 
 // Shared plumbing for the class-scoped CSV import specs (spec §1 flows 13/13b):
@@ -102,4 +102,29 @@ export async function deleteImportProbes(
   documentIds: readonly string[],
 ): Promise<void> {
   await deleteStudents(request, documentIds);
+}
+
+/**
+ * afterEach retirement for the import specs: delete the registered probes, then
+ * sweep the fixture class for any student still carrying THIS run's stamp — the
+ * leak a flow dying before it could register its probes used to cause (flow 12's
+ * "fixture empty class must have no students" failure). Best-effort like
+ * `deleteStudents`: it must never fail a test that already passed.
+ */
+export async function retireImportProbes(
+  request: APIRequestContext,
+  documentIds: readonly string[],
+  stamp: number,
+): Promise<void> {
+  await deleteStudents(request, documentIds);
+  try {
+    const jwt = await schoolAdminJwt(request);
+    const detail = await apiClassDetail(request, jwt, EMPTY_CLASS_ID);
+    const strays = detail.students
+      .filter((student) => (student.family_name ?? '').includes(`Probe ${stamp}`))
+      .map((student) => student.documentId);
+    await deleteStudents(request, strays);
+  } catch {
+    // A sweep failure must not mask the test's own result.
+  }
 }
