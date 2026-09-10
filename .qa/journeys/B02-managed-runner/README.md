@@ -292,3 +292,145 @@ console.log('EXIT:', res.status, 'signal:', res.signal, 'error:', res.error && r
 console.log('ELAPSED_MS:', Date.now() - started);
 console.log('REPORT EXISTS:', fs.existsSync(reportFile), fs.existsSync(reportFile) ? fs.statSync(reportFile).size + ' bytes' : '');
 ```
+
+---
+
+## 9. Re-verification after the attempt-1 rejection (2026-09-10, 20:15–20:35 UTC)
+
+Attempt 1 was rejected on its regression command, not on the runner:
+
+```
+$ pnpm --dir schooltest-web exec playwright test tests/e2e/class-detail-empty-import.spec.ts --project=chromium --workers=1
+  Error: fixture empty class must have no students
+  Expected: 0   Received: 2        ← flow 12, class-detail-empty-import.spec.ts:48
+```
+
+### 9.1 That red was fixture pollution, and it is now fixed
+
+`dd51a1f` is an evidence-only commit — `git show --name-only` is four paths under
+`.qa/journeys/B02-managed-runner/`, zero spec files and zero config files:
+
+```
+$ git show --name-only --format="" dd51a1f | grep -Ec '\.spec\.ts|playwright\.config\.ts'
+0
+```
+
+The `Received: 2` was two **live probe students left on the empty fixture class**
+by a crashed run of this same spec's flow 13 — the leak its own docblock predicts
+("a run that died mid-flow-13 left two archived probes behind"):
+
+```sql
+select s.document_id, s.given_name, s.status, s.created_at
+  from students s
+  join students_class_lnk l on l.student_id = s.id
+  join classes c on c.id = l.class_id
+ where c.name = 'EAL/D Year 8 - Room 5 (no students)';
+
+ zwkwlhjpcc4on8xjfib1zin0 | Repro1789067662A     | archived | 22:14:22
+ d0s2vjvtk6pgcrilphr64f7u | Repro1789067662B     | archived | 22:14:22
+ pyeqqcl13rdz8q5kgymx0522 | Mixed1789067687A     | archived | 22:14:47
+ h9elyjbj5rnnvzwsfcbvjoxl | Import Probe …171A   | ACTIVE   | 23:12:52
+ p0bxr13rzck9trkn7s9jgpo2 | Import Probe …171B   | ACTIVE   | 23:12:52
+```
+
+`Import Probe <stamp>A/B` is `PROBE_ROWS` in the spec, and the stamp decodes to
+`2026-09-10T20:12:37.171Z` — **seven minutes after** `dd51a1f` was committed
+(20:05:04Z). No live process owned that spec, so the rows were orphans, and they
+red flow 12 permanently for every later run.
+
+Cleared through the spec's OWN documented cleanup route (`deleteStudents` →
+`DELETE /api/students/:documentId` as the seeded `apiadmin`), never raw SQL and
+never a spec edit:
+
+```
+DELETE h9elyjbj5rnnvzwsfcbvjoxl -> 204
+DELETE p0bxr13rzck9trkn7s9jgpo2 -> 204
+active students on the empty fixture class: 0
+```
+
+The rejection's own command then passes, and its `afterEach` leaves the class at
+0 again:
+
+```
+$ pnpm exec playwright test tests/e2e/class-detail-empty-import.spec.ts --project=chromium --workers=1
+  3 passed (18.9s)      exit 0
+```
+
+### 9.2 The runner: proven again, and the failure mode reproduced on demand
+
+Fresh runs under this task (`314e7af0-50f2-48c3-8c55-7dc3df9d1416`):
+
+| runId | request | outcome |
+|---|---|---|
+| `aea2a74d-a242-485c-bf68-9c6ebf8a3f4c` | api unit, no `project` | **passed 14 / failed 0, exit 0** |
+| `f25e1143-a55e-4f39-9269-188bf6b8ebde` | in-tab, class-detail-empty-import | executed; 1 failed 2 skipped, screenshot retained |
+| `9f36d3b2-…`, `3a16cb78-…` | in-tab, auth-logo | executed; 1 passed 1 failed, screenshots retained |
+| `ee6b2a75-…`, `3d8af24e-…` | in-tab, a11y-auth / teacher-sidebar | executed; screenshots retained |
+
+Every one produced a populated `summary`, per-test `results` and a retained
+`codephant-browser:<runId>` PNG. **The `project` argument remains the only way to
+reproduce the original death**, and a peer did so independently while this was
+being re-verified — run `38b8d522-312b-4f61-8a93-a737f73c3c15` (J03 worker):
+
+```
+request: { uiUrl: …, mode: 'file', file: '…/journey-03-import-students.spec.ts', project: 'chromium' }
+finished in 1.054s   exitCode 1   summary: null   results: []
+errors: "schooltest-web: did not produce a readable JSON report." / …
+```
+
+Nine of the ten retained runs omit `project` and all nine executed; the one that
+passes it is the one that died. Two of the nine were fully green **in-tab** runs
+by other callers: `989ce2dd-ffe7-4582-a93b-6641a68a901c` (the orchestrator's own,
+auth-logo, 2 passed, 2 screenshots) and `13bc094e-4179-48c4-a9bf-0678d641f2a0`
+(J06, journey-06, 2 passed).
+
+## 10. The SECOND defect: the visible tab is shared, and its session persists
+
+This is what actually stops in-tab UI evidence now, and it is not the runner's
+argument bug. `uiUrl` runs reuse the one visible Codephant Browser tab **and its
+localStorage**. The app keeps its JWT in `app.auth.token` there
+(`src/lib/axios/strapi.ts:22`), so a session left behind by a previous run — any
+agent's — is still signed in when the next run starts.
+
+Every spec that drives the real form then **hangs**: `loginAs`/`signIn` does
+`page.goto('/sign-in')`, an authenticated app redirects that to `/dashboard`, and
+`getByLabel(emailLabel)` waits for a field that is no longer on the page until the
+test times out. Not a login failure — a missing form.
+
+Evidence, all with the tab's own retained snapshot showing a *dashboard* where an
+auth page was expected:
+
+| run | spec | in-tab | headless, same tree |
+|---|---|---|---|
+| `f25e1143` | class-detail-empty-import flow 12 | timeout 30s; snapshot = `t2-alvarez` **Teacher** on /dashboard/results | **3 passed** |
+| `3d8af24e` | teacher-sidebar (teacher rail) | timeout 30s | **7 passed** (1 unrelated red) |
+| `052df2c5` (J01) | journey-01-ops-invite-school | timeout 240s | — |
+| `1bf0231c` (J06) | journey-06 | timeout 30s | — |
+
+**It also produces false passes.** `auth-logo` asserts exactly one visible
+`[data-slot="logo"]` on each auth route. In-tab, its *desktop* leg passed while
+the tab sat on a teacher dashboard — because the dashboard rail renders that same
+`data-slot`. Only the *mobile* leg failed, and only because the rail is collapsed
+at 375px (`3a16cb78`, `9f36d3b2`; both `2 passed` headless). An in-tab green on a
+polluted tab can mean nothing.
+
+Specs that seed the token themselves are immune: `ee6b2a75` (a11y-auth, which
+`addInitScript`s `app.auth.token`) rendered the seeded parent account correctly.
+
+**There is no in-repo remedy.** The app's only sign-out path is React state —
+`SchoolAccountScreen` holds the tab in `useState<AccountTab>('details')`
+(`src/modules/school-admin/components/SchoolAccountScreen.tsx:20`), so no URL
+reaches `AccountSignOutPanel` and the tab cannot be cleared by navigation. The
+fix belongs to the runner: **clear storage (or use a fresh context) for each
+`uiUrl` run**, exactly as `--project` belongs to `buildRunArgs`. Until then, an
+in-tab spec must either seed its own token or run while the tab is signed out,
+and the operator can clear it by hand between waves.
+
+### Unrelated reds observed while probing (for B04 / the orchestrator)
+
+- The parent portal is now gated — "Not part of this release", string live in a
+  peer's **uncommitted** `src/i18n/messages/en.json`. `a11y-auth.spec.ts` went
+  green (10 passed, 20:26Z) → red (20:30Z) with no commit in between.
+- `ops-session-expired.spec.ts` and `teacher-sidebar.spec.ts:187` — the GAP-6
+  expired-session wall — are red headless.
+- `settings-tabs.spec.ts:69` red headless; `students-list.spec.ts` all 8 skipped.
