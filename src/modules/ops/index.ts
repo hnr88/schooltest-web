@@ -6,20 +6,9 @@ export { OpsSchoolInvitationPanel } from './components/OpsSchoolInvitationPanel'
 export { OpsSchoolCountCards } from './components/OpsSchoolCountCards';
 export { OpsOnboardSchoolDialog } from './components/OpsOnboardSchoolDialog';
 export { OpsStudentImport } from './components/OpsStudentImport';
-export { OpsSectionTimers } from './components/OpsSectionTimers';
-/* ledger 6 — the Audit console (audit ledger + API tokens) */
-export { OpsAuditConsole } from './components/OpsAuditConsole';
-/* ledger 7 — the Comms console (templates, email log, both composers) */
-export { OpsCommsConsole } from './components/OpsCommsConsole';
-/* ledger 9 — the Flags console (registry toggle + the three settings editors) */
-export { OpsFlagsConsole } from './components/OpsFlagsConsole';
 export { OpsFormWindow } from './components/OpsFormWindow';
 export { OpsSittingRecovery } from './components/OpsSittingRecovery';
 export { OpsPlatformSettings } from './components/OpsPlatformSettings';
-export { OpsSystemConsole } from './components/OpsSystemConsole';
-export { OpsContentConsole } from './components/OpsContentConsole';
-export { OpsPipelinePanel } from './components/OpsPipelinePanel';
-export { OpsSystemMaintenance } from './components/OpsSystemMaintenance';
 export { usePlatformSettingsQuery } from './queries/use-platform-settings.query';
 export { useSchoolInvitationQuery } from './queries/use-school-invitation.query';
 export { useOnboardSchoolMutation } from './queries/use-onboard-school.mutation';
@@ -39,7 +28,20 @@ export type { PlatformSettings, PlatformSettingsForm } from './types/platform-se
 export { OpsFormInspection } from './components/OpsFormInspection';
 export { OpsResponsesExport } from './components/OpsResponsesExport';
 export { OpsViewAsTeacherPanel } from './components/OpsViewAsTeacherPanel';
+// The portal's ONE confirm (U-24 / R-19). Exported here so the school-admin
+// modules stop shipping near-identical clones of it; a seventh is forbidden.
+export { OpsConfirmDialog } from './components/OpsConfirmDialog';
+export type {
+  OpsConfirmDialogProps,
+  OpsConfirmNotice,
+  OpsConfirmVariant,
+} from './components/OpsConfirmDialog';
 export { useFormInspectionQuery } from './queries/use-form-inspection.query';
 export { useResponsesCsvQuery } from './queries/use-responses-csv.query';
 export { useViewAsTeacherQuery } from './queries/use-view-as-teacher.query';
 export type { OpsResponsesCsvFile } from './types/inspection.types';
+
+/* ops/34 (D-71 pattern): the ONE append-only export line, so the teacher
+   monitor's online gate consumes the portal's ONE listener through this
+   barrel — never a second copy of the hook. */
+export { useOnlineStatus } from './hooks/use-online-status';

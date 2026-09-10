@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, Button } from '@/modules/design-system';
+import { DIRECTORY_DEFAULT_LABELS, DirectoryError } from '@/modules/directory';
 import { useRecordCrumb } from '@/modules/shell';
 import { LiveMonitorGrid } from '@/modules/teacher/components/LiveMonitorGrid';
 import { LiveMonitorHeader } from '@/modules/teacher/components/LiveMonitorHeader';
@@ -45,22 +45,19 @@ function LiveMonitorScreen({ sittingDocumentId }: LiveMonitorScreenProps) {
       ) : null}
 
       {monitor.status === 'error' ? (
-        <Alert
-          variant="error"
-          title={t('errorTitle')}
-          action={
-            <Button
-              variant="outline"
-              size="sm"
-              loading={monitor.isRefetching}
-              onClick={monitor.retry}
-            >
-              {t('retry')}
-            </Button>
-          }
-        >
-          {t('errorDescription')}
-        </Alert>
+        // ops/34 — the kit's error state replaces the bespoke Alert: the same
+        // copy (title, description, retry) with the kit's focus-managed
+        // heading, so a failed live read looks like every other list's.
+        <DirectoryError
+          labels={{
+            ...DIRECTORY_DEFAULT_LABELS,
+            errorTitle: t('errorTitle'),
+            errorDescription: t('errorDescription'),
+            retry: t('retry'),
+          }}
+          onRetry={monitor.retry}
+          retrying={monitor.isRefetching}
+        />
       ) : null}
 
       {monitor.status === 'ready' && monitor.sitting && monitor.stallThresholdMinutes !== null ? (

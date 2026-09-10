@@ -1,9 +1,9 @@
 'use client';
 
-import { Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { EmptyState } from '@/modules/design-system';
+import { DIRECTORY_DEFAULT_LABELS, DirectoryEmpty } from '@/modules/directory';
+import { useOnlineStatus } from '@/modules/ops';
 import { LiveMonitorTile } from '@/modules/teacher/components/LiveMonitorTile';
 import type { LiveMonitorGridProps } from '@/modules/teacher/types/live-monitor.types';
 
@@ -12,18 +12,33 @@ import type { LiveMonitorGridProps } from '@/modules/teacher/types/live-monitor.
 // real C-TS-3 row: a roster with no students renders the empty state rather than
 // a grid of placeholders.
 //
+// ops/34 — the empty state is the KIT's empty arm (same copy, kit chrome), and
+// it may only speak while the network is there: with TanStack Query an offline
+// read PAUSES (isError stays false and data never arrives), so an offline
+// teacher must never be told the roster is empty — the gate keeps the silence
+// honest even if the status machine above ever changes. The grid itself stays a
+// hand-rolled tile board ON PURPOSE: its data is polled (C-TS-3), and routing
+// live rows through the kit's filter pipeline would re-render and reset scroll
+// on every tick — the row-action contract and the states are the adoption; the
+// refresh behaviour is not.
+//
 // Fixed responsive columns rather than an arbitrary `minmax()` track, per the
 // project's Tailwind rule against arbitrary values.
 function LiveMonitorGrid({ students }: LiveMonitorGridProps) {
   const t = useTranslations('Teacher.testSessions.live');
+  const online = useOnlineStatus();
 
   if (students.length === 0) {
+    if (!online) return null;
     return (
-      <EmptyState
-        icon={Users}
-        title={t('rosterEmptyTitle')}
-        description={t('rosterEmptyDescription')}
-        className="border-none px-0 py-2"
+      <DirectoryEmpty
+        variant="none"
+        onClearFilters={() => {}}
+        labels={{
+          ...DIRECTORY_DEFAULT_LABELS,
+          emptyNoneTitle: t('rosterEmptyTitle'),
+          emptyNoneDescription: t('rosterEmptyDescription'),
+        }}
       />
     );
   }
