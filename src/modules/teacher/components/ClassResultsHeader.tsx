@@ -1,6 +1,7 @@
 'use client';
 
 import { useFormatter, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import { ClassResultsStat } from '@/modules/teacher/components/ClassResultsStat';
 import type { ClassResultsStatItem } from '@/modules/teacher/types/results-shell.types';
@@ -30,9 +31,11 @@ import type { RosterRow } from '@/modules/results/types/roster.types';
 interface ClassRosterHeaderProps {
   className: string;
   rows: readonly RosterRow[];
+  /** The header class select the screen builds — same cached C-TD-1 read. */
+  switcher: ReactNode;
 }
 
-function ClassResultsHeader({ className, rows }: ClassRosterHeaderProps) {
+function ClassResultsHeader({ className, rows, switcher }: ClassRosterHeaderProps) {
   const t = useTranslations('Teacher.results.detail');
   const format = useFormatter();
   const views = resultViewsOf(rows);
@@ -75,14 +78,22 @@ function ClassResultsHeader({ className, rows }: ClassRosterHeaderProps) {
 
   return (
     <header data-slot="class-results-header" className="flex flex-col gap-4">
-      <div className="flex min-w-0 flex-col gap-1">
-        <h1 className="text-portal-title font-bold break-words text-foreground">{className}</h1>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex min-w-0 flex-col gap-1">
+          <h1 className="text-portal-title font-bold break-words text-foreground">{className}</h1>
+          {/*
+            `--color-body` (#475569), not `--muted-foreground` (#64748B): this line
+            sits on the dashboard well (#EEF2F7), where axe measured muted at
+            4.23:1 for 12.5px text — under the 4.5:1 floor. Body ink is 6.74:1.
+          */}
+          <p className="text-meta text-body">{t('students', { count: rows.length })}</p>
+        </div>
         {/*
-          `--color-body` (#475569), not `--muted-foreground` (#64748B): this line
-          sits on the dashboard well (#EEF2F7), where axe measured muted at
-          4.23:1 for 12.5px text — under the 4.5:1 floor. Body ink is 6.74:1.
+          The design's class switcher (`:531–540`, `order:9` — the select trails
+          the row). It carries no visible label in the export, so its accessible
+          name is rendered by ClassSwitcher itself.
         */}
-        <p className="text-meta text-body">{t('students', { count: rows.length })}</p>
+        {switcher}
       </div>
 
       {/*
