@@ -3,15 +3,12 @@ import { expect, test } from '@playwright/test';
 import {
   archiveImportProbes,
   attachImportShot,
+  createImportClass,
   csvWithBadRows,
+  deleteImportClasses,
   deleteImportProbes,
 } from './helpers/class-import';
-import {
-  apiClassDetail,
-  EMPTY_CLASS_ID,
-  gotoClassDetail,
-  schoolAdminJwt,
-} from './helpers/class-detail';
+import { apiClassDetail, gotoClassDetail, schoolAdminJwt } from './helpers/class-detail';
 import { cat, loadMessages } from './helpers/i18n';
 import { loginAs } from './helpers/roles';
 
@@ -23,17 +20,19 @@ import { loginAs } from './helpers/roles';
 // the imported students after a FULL browser reload. 1440x900 shots land in
 // .qa/journeys/03-import-students/shots/ via helpers/class-import.ts.
 //
-// Probes are created through the real UI flow and retired through the real
-// writes: archived after the class-count assertion, then deleted by afterEach
-// so a re-run starts from the same empty fixture class.
+// Probes are created through the real UI flow into a class THIS run creates,
+// then retired through the real writes: archived after the class-count
+// assertion, deleted by afterEach along with the class itself.
 const en = loadMessages('en');
 const STAMP = Date.now();
 const GOOD_ROWS = [`Journey03 Probe ${STAMP}A`, `Journey03 Probe ${STAMP}B`];
 
 const probeRegister: string[] = [];
+const classRegister: string[] = [];
 
 test.afterEach(async ({ request }) => {
   await deleteImportProbes(request, probeRegister.splice(0));
+  await deleteImportClasses(request, classRegister.splice(0));
 });
 
 test('a CSV with good and broken rows imports the good ones, names the bad ones per row, and they persist after reload', async ({
@@ -42,9 +41,11 @@ test('a CSV with good and broken rows imports the good ones, names the bad ones 
   await page.setViewportSize({ width: 1440, height: 900 });
   await loginAs(page, 'schoolAdmin');
   const jwt = await schoolAdminJwt(page.request);
-  const before = await apiClassDetail(page.request, jwt, EMPTY_CLASS_ID);
+  const classId = await createImportClass(page.request, jwt, `Journey03 Import Class ${STAMP}`);
+  classRegister.push(classId);
+  const before = await apiClassDetail(page.request, jwt, classId);
 
-  await gotoClassDetail(page, EMPTY_CLASS_ID);
+  await gotoClassDetail(page, classId);
   await page
     .getByRole('button', { name: cat(en, 'Classes.detail.importStudents') })
     .first()
@@ -82,7 +83,7 @@ test('a CSV with good and broken rows imports the good ones, names the bad ones 
   await attachImportShot(page, testInfo, 'j03-mixed-csv-server-rejects');
 
   // The SERVER really holds the two good students, on THIS class.
-  const afterImport = await apiClassDetail(page.request, jwt, EMPTY_CLASS_ID);
+  const afterImport = await apiClassDetail(page.request, jwt, classId);
   expect(afterImport.student_count).toBe(before.student_count + GOOD_ROWS.length);
   const created = afterImport.students.filter((student) =>
     GOOD_ROWS.some((name) => name.startsWith(student.given_name ?? '')),
@@ -103,6 +104,6 @@ test('a CSV with good and broken rows imports the good ones, names the bad ones 
 
   // Archive, assert the class is back at its found count, afterEach deletes.
   await archiveImportProbes(page.request, jwt, probeIds);
-  const restored = await apiClassDetail(page.request, jwt, EMPTY_CLASS_ID);
+  const restored = await apiClassDetail(page.request, jwt, classId);
   expect(restored.student_count).toBe(before.student_count);
 });

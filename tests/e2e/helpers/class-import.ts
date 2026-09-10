@@ -128,3 +128,53 @@ export async function retireImportProbes(
     // A sweep failure must not mask the test's own result.
   }
 }
+
+/**
+ * A throwaway class for one import run, created through the real school-admin
+ * write. The import flows use THIS instead of the shared empty-class fixture:
+ * a run dying mid-flow must not poison the invariant another flow asserts
+ * about a fixture it does not own.
+ */
+export async function createImportClass(
+  request: APIRequestContext,
+  jwt: string,
+  name: string,
+): Promise<string> {
+  const res = await request.post(`${API}/api/schools/me/classes`, {
+    headers: { Authorization: `Bearer ${jwt}` },
+    data: { name },
+  });
+  expect(res.status(), `create class ${name} -> ${await res.text()}`).toBe(201);
+  const body = (await res.json()) as { data: { documentId: string } };
+  return body.data.documentId;
+}
+
+/**
+ * Dispose of the run's classes, LAST — after `retireImportProbes` has deleted
+ * the registered students. The server unlinks a deleted class's students rather
+ * than deleting them, so any stray still on the class (a flow that died before
+ * it could register its probes) is deleted HERE first, or it would leak onto
+ * the school roster. Best-effort like `deleteStudents`: a disposal failure
+ * must not fail a test that passed.
+ */
+export async function deleteImportClasses(
+  request: APIRequestContext,
+  documentIds: readonly string[],
+): Promise<void> {
+  if (documentIds.length === 0) return;
+  try {
+    const jwt = await schoolAdminJwt(request);
+    for (const documentId of documentIds) {
+      const detail = await apiClassDetail(request, jwt, documentId);
+      await deleteStudents(
+        request,
+        detail.students.map((student) => student.documentId),
+      );
+      await request.delete(`${API}/api/schools/me/classes/${documentId}`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+    }
+  } catch {
+    // A disposal failure must not mask the test's own result.
+  }
+}
