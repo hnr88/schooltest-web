@@ -2781,6 +2781,15 @@
       "description": "한 학생의 읽기 테스트 결과와 하위 기능별 분석."
     },
     "studentDetail": {
+      "history": {
+        "heading": "테스트 기록",
+        "rowTitle": "테스트 {slot} — 읽기 진도",
+        "completedWithDuration": "{date} 완료 · {minutes}분",
+        "completedPlain": "{date} 완료",
+        "started": "{date} 시작 · 미제출",
+        "inProgress": "진행 중 · 미제출",
+        "notStarted": "시작하지 않음"
+      },
       "backLink": "{name}(으)로 돌아가기",
       "backLinkFallback": "학급으로 돌아가기",
       "notFoundTitle": "이 학생을 찾을 수 없습니다",

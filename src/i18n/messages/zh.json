@@ -2755,6 +2755,15 @@
       "description": "单个学生的阅读测试成绩与分项技能明细。"
     },
     "studentDetail": {
+      "history": {
+        "heading": "测试历史",
+        "rowTitle": "测试 {slot} — 阅读 进度",
+        "completedWithDuration": "已完成于 {date} · {minutes} 分钟",
+        "completedPlain": "已完成于 {date}",
+        "started": "开始于 {date} · 未提交",
+        "inProgress": "进行中 · 未提交",
+        "notStarted": "未开始"
+      },
       "backLink": "返回 {name}",
       "backLinkFallback": "返回班级",
       "notFoundTitle": "找不到该学生",

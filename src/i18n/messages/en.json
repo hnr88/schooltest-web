@@ -3244,6 +3244,15 @@
       "description": "One student's reading test results and subskill breakdown."
     },
     "studentDetail": {
+      "history": {
+        "heading": "Test history",
+        "rowTitle": "Test {slot} — Reading progress",
+        "completedWithDuration": "Completed {date} · {minutes} min",
+        "completedPlain": "Completed {date}",
+        "started": "Started {date} · not submitted",
+        "inProgress": "In progress · not submitted",
+        "notStarted": "Not started"
+      },
       "backLink": "Back to {name}",
       "backLinkFallback": "Back to the class",
       "notFoundTitle": "We could not find this student",

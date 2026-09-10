@@ -45,6 +45,12 @@ export const studentTestResultSchema = z.strictObject({
   overall_score: z.number().int().min(0).max(100).nullable(),
   acara_phase: z.enum(ACARA_PHASES).nullable(),
   subskills: subskillsSchema.nullable(),
+  // C-CLS-06 (task 09): the sitting's instants from the shared server
+  // projection (class/lib/class-detail-build.ts#buildStudentTests).
+  // `completed_at` is null on anything not ended; the history panel derives
+  // the duration client-side and renders nothing for a null half.
+  started_at: z.iso.datetime().nullable(),
+  completed_at: z.iso.datetime().nullable(),
 });
 
 export const classDetailTeacherSchema = z.strictObject({

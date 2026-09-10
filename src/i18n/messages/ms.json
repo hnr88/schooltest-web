@@ -2781,6 +2781,15 @@
       "description": "Keputusan ujian bacaan seorang murid dan pecahan subkemahirannya."
     },
     "studentDetail": {
+      "history": {
+        "heading": "Sejarah ujian",
+        "rowTitle": "Ujian {slot} — Membaca progres",
+        "completedWithDuration": "Selesai {date} · {minutes} min",
+        "completedPlain": "Selesai {date}",
+        "started": "Dimulakan {date} · tidak dihantar",
+        "inProgress": "Sedang dijalankan · tidak dihantar",
+        "notStarted": "Belum dimulakan"
+      },
       "backLink": "Kembali ke {name}",
       "backLinkFallback": "Kembali ke kelas",
       "notFoundTitle": "Kami tidak dapat menemui murid ini",

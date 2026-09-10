@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth';
 import { StudentTestCard } from '@/modules/classes/components/StudentTestCard';
+import { StudentTestHistoryPanel } from '@/modules/classes/components/StudentTestHistoryPanel';
 import { TEST_SLOTS } from '@/modules/classes/constants/subskills.constants';
 import { studentDisplayName, testFor } from '@/modules/classes/lib/class-detail.helpers';
 import { useClassStudentQuery } from '@/modules/classes/queries/use-class-student.query';
@@ -96,6 +97,9 @@ export function ClassStudentDetailScreen({
               }
               return <StudentTestCard key={slot} test={test} />;
             })}
+            {/* S06h (task 09): the dated test-history rows — built once here,
+                mounted again by task 26's merged /students/[documentId] screen. */}
+            <StudentTestHistoryPanel tests={student.tests} />
           </div>
         </>
       )}

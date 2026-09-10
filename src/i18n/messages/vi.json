@@ -2790,6 +2790,15 @@
       "description": "Kết quả bài kiểm tra đọc của một học sinh và phân tích theo kỹ năng thành phần."
     },
     "studentDetail": {
+      "history": {
+        "heading": "Lịch sử bài kiểm tra",
+        "rowTitle": "Bài kiểm tra {slot} — Đọc tiến độ",
+        "completedWithDuration": "Hoàn thành {date} · {minutes} phút",
+        "completedPlain": "Hoàn thành {date}",
+        "started": "Bắt đầu {date} · chưa nộp",
+        "inProgress": "Đang thực hiện · chưa nộp",
+        "notStarted": "Chưa bắt đầu"
+      },
       "backLink": "Quay lại {name}",
       "backLinkFallback": "Quay lại lớp",
       "notFoundTitle": "Chúng tôi không tìm thấy học sinh này",

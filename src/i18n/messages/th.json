@@ -2781,6 +2781,15 @@
       "description": "ผลการทดสอบการอ่านของนักเรียนหนึ่งคน พร้อมการแยกตามทักษะย่อย"
     },
     "studentDetail": {
+      "history": {
+        "heading": "ประวัติการทดสอบ",
+        "rowTitle": "การทดสอบ {slot} — การอ่าน ความก้าวหน้า",
+        "completedWithDuration": "เสร็จสิ้น {date} · {minutes} นาที",
+        "completedPlain": "เสร็จสิ้น {date}",
+        "started": "เริ่ม {date} · ยังไม่ส่ง",
+        "inProgress": "กำลังดำเนินการ · ยังไม่ส่ง",
+        "notStarted": "ยังไม่เริ่ม"
+      },
       "backLink": "กลับไปที่ {name}",
       "backLinkFallback": "กลับไปที่ชั้นเรียน",
       "notFoundTitle": "เราไม่พบนักเรียนคนนี้",
