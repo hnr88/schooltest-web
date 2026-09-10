@@ -5,6 +5,7 @@ import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
 import { uploadStudentMedia } from './helpers/wizard-fill';
 import { deleteStudents } from './helpers/student-cleanup';
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
@@ -66,6 +67,15 @@ async function loadFeed(page: Page, token: string): Promise<void> {
 }
 
 // Global API limiter headroom (120 req/min): pace each test — see helpers/pace.ts.
+// TASK 46 MASKS EVERY DESTINATION THIS FILE ASSERTS. The (portal) group is wrapped
+// in ParentGuard ((portal)/layout.tsx:13), so with NEXT_PUBLIC_PARENT_VIEWS_ENABLED
+// off a parent gets ParentViewsUnavailable and the guard NEVER RENDERS CHILDREN —
+// the surface never mounts and the spec times out with no error and an unchanged
+// URL. The product is obeying a recorded decision; this spec asserts what that
+// decision masked. Gating says so out loud and restores the coverage the moment
+// the flag flips on. See .qa/journeys/parent-views-gate/README.md.
+skipWhenParentPortalMasked();
+
 test.beforeEach(async ({ page }) => paceRateWindow(page));
 
 test('notification mutations show a localized error when the real API refuses the request', async ({

@@ -7,6 +7,7 @@ import { expect, test, type APIRequestContext, type APIResponse } from '@playwri
 import { SEEDED_PARENT } from './helpers/auth';
 import { cat, loadMessages } from './helpers/i18n';
 import { paceRateWindow } from './helpers/pace';
+import { skipWhenParentPortalMasked } from './helpers/parent-portal';
 
 const en = loadMessages('en');
 const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:5500';
@@ -74,6 +75,15 @@ function deleteSubscription(
 ): Promise<APIResponse> {
   return request.delete(`${API_BASE_URL}/api/push-subscriptions`, { headers, data: { endpoint } });
 }
+
+// TASK 46 MASKS EVERY DESTINATION THIS FILE ASSERTS. The (portal) group is wrapped
+// in ParentGuard ((portal)/layout.tsx:13), so with NEXT_PUBLIC_PARENT_VIEWS_ENABLED
+// off a parent gets ParentViewsUnavailable and the guard NEVER RENDERS CHILDREN —
+// the surface never mounts and the spec times out with no error and an unchanged
+// URL. The product is obeying a recorded decision; this spec asserts what that
+// decision masked. Gating says so out loud and restores the coverage the moment
+// the flag flips on. See .qa/journeys/parent-views-gate/README.md.
+skipWhenParentPortalMasked();
 
 test.describe.configure({ mode: 'serial' });
 
