@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, Button, Tabs } from '@/modules/design-system';
 import { useRecordCrumb } from '@/modules/shell';
+import { ClassReportsDialog } from '@/modules/teacher/components/ClassReportsDialog';
 import { ClassResultsHeader } from '@/modules/teacher/components/ClassResultsHeader';
 import { ClassResultsTabPanels } from '@/modules/teacher/components/ClassResultsTabPanels';
 import { ClassResultsTabs } from '@/modules/teacher/components/ClassResultsTabs';
@@ -112,6 +113,7 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
           )}
         </Tabs>
       ) : null}
+      {classCard === undefined ? null : <ClassReportsDialog classCard={classCard} rows={rows} />}
     </TeacherPageCard>
   );
 }

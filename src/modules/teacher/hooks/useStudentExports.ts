@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { showOpsToast } from '@/modules/ops/actions';
 import { studentResultQueryOptions } from '@/modules/results';
+import { useStudentReportLabels } from '@/modules/teacher/hooks/useStudentReportLabels';
 import { writeClassSummaryWindow } from '@/modules/teacher/lib/print/class-summary-print';
 import { buildStudentReportHtml } from '@/modules/teacher/lib/print/student-report-print';
 import { saveTeacherExportFile } from '@/modules/teacher/lib/teacher-export-download';
@@ -13,10 +14,8 @@ import { carerReport } from '@/modules/teacher/lib/v2/carer-report';
 import { studentDetail } from '@/modules/teacher/lib/v2/student-detail';
 import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-dashboard.query';
 import { useTeacherExportMutation } from '@/modules/teacher/queries/use-teacher-export.mutation';
-import type { StudentReportLabels } from '@/modules/teacher/types/class-summary-print.types';
 import type { StudentExportsApi } from '@/modules/teacher/types/students-table.types';
 import type { StudentsTabRow } from '@/modules/teacher/types/v2-class-tabs.types';
-import type { StudentDetailView } from '@/modules/teacher/types/v2-student-detail.types';
 
 /**
  * The Students tab's two row exports, both real:
@@ -32,45 +31,12 @@ export function useStudentExports(classDocumentId: string): StudentExportsApi {
   const queryClient = useQueryClient();
   const locale = useLocale();
   const t = useTranslations('TeacherPortal.students');
-  const tVm = useTranslations('TeacherPortal.viewModel');
-  const tKit = useTranslations('TeacherPortal.kit');
   const dashboard = useTeacherDashboardQuery();
   const llm = useTeacherExportMutation();
   const [pdfPendingId, setPdfPendingId] = useState<string | null>(null);
   const className =
     dashboard.data?.classes.find((entry) => entry.class_document_id === classDocumentId)?.name ?? '';
-
-  const footer = (date: string, { count, since }: StudentDetailView['tiles']['sittings']) => {
-    const time = since === null ? Number.NaN : Date.parse(since);
-    if (count === 0 || Number.isNaN(time)) return t('print.footer', { name: className, date });
-    const month = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(time);
-    return t('print.footerSittings', { name: className, date, count, since: month });
-  };
-
-  const labelsFor = (name: string, date: string, detail: StudentDetailView): StudentReportLabels => ({
-    title: t('print.title', { name }),
-    assessment: t('print.assessment'),
-    brand: t('print.brand'),
-    overall: t('print.overall'),
-    phase: t('print.phase'),
-    growth: t('print.growth'),
-    subskills: t('print.subskills'),
-    subskill: t('print.subskill'),
-    score: t('print.score'),
-    band: t('print.band'),
-    focus: t('print.focus'),
-    strength: t('print.strength'),
-    focusArea: t('print.focusArea'),
-    vocabulary: t('print.vocabulary'),
-    everyday: t('print.everyday'),
-    academic: t('print.academic'),
-    canDo: t('print.canDo'),
-    next: t('print.next'),
-    footer: footer(date, detail.tiles.sittings),
-    noValue: tKit('noValue'),
-    points: (value) => t('print.points', { value }),
-    viewModel: (key) => tVm(key),
-  });
+  const labelsFor = useStudentReportLabels(className);
 
   const printReport = async (row: StudentsTabRow, resultId: string, target: Window) => {
     const payload = await queryClient.fetchQuery(studentResultQueryOptions(resultId));

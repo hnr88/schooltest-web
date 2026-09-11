@@ -1,21 +1,30 @@
+import type { RosterRow } from '@/modules/results';
+
 import { STUDENT_REPORT_PRINT_CSS } from '@/modules/teacher/constants/class-summary-print.constants';
 import { GROWTH_STEADY_KEY } from '@/modules/teacher/constants/v2-i18n.constants';
 import { escapeHtml, tile } from '@/modules/teacher/lib/print/class-summary-print';
 import { formatDelta } from '@/modules/teacher/lib/teacher-kit';
+import { carerReport } from '@/modules/teacher/lib/v2/carer-report';
+import { studentDetail } from '@/modules/teacher/lib/v2/student-detail';
 import type {
   StudentReportInput,
   StudentReportLabels,
+  StudentReportPage,
+  StudentReportsDocument,
+  StudentReportsMeta,
 } from '@/modules/teacher/types/class-summary-print.types';
+import type { ScoredRosterRow } from '@/modules/teacher/types/class-reports.types';
 import type { CarerLine } from '@/modules/teacher/types/v2-family.types';
 import type { SubskillCard } from '@/modules/teacher/types/v2-student-detail.types';
 import type { GrowthView, ScoredSkill, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
 
 /**
- * The student reading report behind the Students tab's PDF button (design
- * `printStudentReport`, l.2247), on the class report's print helpers. Every
+ * The student reading report (design `printStudentReport`, l.2247), on the class
+ * report's print helpers: one student from the Students tab's PDF button, or every
+ * scored student of the roster read, one page each, from the Reports modal. Every
  * value comes from `studentDetail()` / `carerReport()` over the student's
- * `GET /api/results/:id`; a missing value prints the dash, never a number.
- * Every interpolated string is escaped.
+ * ResultView; a missing value prints the dash, never a number. Every interpolated
+ * string is escaped.
  */
 
 function percent(value: number | null, labels: StudentReportLabels): string {
@@ -52,7 +61,7 @@ function lineList(kind: 'canDo' | 'next', lines: readonly CarerLine[], labels: S
   );
 }
 
-export function buildStudentReportHtml(input: StudentReportInput, labels: StudentReportLabels): string {
+function reportPage(input: StudentReportInput, labels: StudentReportLabels): string {
   const { detail, carer } = input;
   const { strongest, weakest, vocab } = detail.analysis;
   const focus = weakest !== null && weakest.skill !== strongest?.skill ? weakest : null;
@@ -62,8 +71,7 @@ export function buildStudentReportHtml(input: StudentReportInput, labels: Studen
     carer.ealdNoteKey === null ? '' : `<div class="note">${escapeHtml(labels.viewModel(carer.ealdNoteKey))}</div>`;
 
   return [
-    `<!doctype html><html lang="${escapeHtml(input.lang)}"><head><meta charset="utf-8">`,
-    `<title>${escapeHtml(labels.title)}</title><style>${STUDENT_REPORT_PRINT_CSS}</style></head><body><div class="wrap">`,
+    '<div class="wrap page">',
     `<div class="head"><div><h1>${escapeHtml(input.name)}</h1><div class="sub">${escapeHtml(sub)}</div></div>`,
     `<div class="brand">${escapeHtml(labels.brand)}</div></div>`,
     '<div class="kpis">',
@@ -84,6 +92,46 @@ export function buildStudentReportHtml(input: StudentReportInput, labels: Studen
     lineList('canDo', carer.canDo, labels),
     lineList('next', carer.next, labels),
     note,
-    `<div class="foot">${escapeHtml(labels.footer)}</div></div></body></html>`,
+    `<div class="foot">${escapeHtml(labels.footer)}</div></div>`,
   ].join('');
+}
+
+function reportDocument(doc: StudentReportsDocument, pages: readonly string[]): string {
+  return [
+    `<!doctype html><html lang="${escapeHtml(doc.lang)}"><head><meta charset="utf-8">`,
+    `<title>${escapeHtml(doc.title)}</title><style>${STUDENT_REPORT_PRINT_CSS}</style></head><body>`,
+    ...pages,
+    '</body></html>',
+  ].join('');
+}
+
+export function buildStudentReportHtml(input: StudentReportInput, labels: StudentReportLabels): string {
+  return reportDocument({ title: labels.title, lang: input.lang }, [reportPage(input, labels)]);
+}
+
+/** Many students in ONE print document, a page each (`.page + .page` breaks before). */
+export function buildStudentReportsHtml(pages: readonly StudentReportPage[], doc: StudentReportsDocument): string {
+  return reportDocument(
+    doc,
+    pages.map((page) => reportPage(page.input, page.labels)),
+  );
+}
+
+/** The roster students with a scored result (the modal's "N students"), name A–Z. */
+export function scoredRosterRows(roster: readonly RosterRow[]): ScoredRosterRow[] {
+  return roster
+    .flatMap(({ student, result }) =>
+      result === null || result.overall.domain_score === null ? [] : [{ student, result }],
+    )
+    .sort((a, b) => a.student.name.localeCompare(b.student.name));
+}
+
+/** One report input per scored roster student, name A–Z; the unscored get no page. */
+export function scoredStudentInputs(roster: readonly RosterRow[], meta: StudentReportsMeta): StudentReportInput[] {
+  return scoredRosterRows(roster).map(({ student, result }) => ({
+      ...meta,
+      name: student.name,
+      detail: studentDetail(result),
+      carer: carerReport(result, student),
+    }));
 }

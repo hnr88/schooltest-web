@@ -6397,7 +6397,76 @@
         "close": "关闭"
       }
     },
-    "reports": {},
+    "reports": {
+      "title": "报告与数据",
+      "sub": "为校长、其他教师、家长或 AI 助手下载报告和数据",
+      "blocked": "{name} 目前还没有已计分的结果，暂无可报告的内容。请先组织一次测验。",
+      "produceLabel": "要生成的内容",
+      "kinds": {
+        "student": {
+          "label": "学生报告",
+          "desc": "每名学生一页：等级、子技能分析和下一步。"
+        },
+        "class": {
+          "label": "班级摘要",
+          "desc": "{name} 的平均分、等级分布和技能短板，汇总在一张表中。"
+        },
+        "ai": {
+          "label": "AI 数据（去标识化）",
+          "desc": "可粘贴到 AI 助手中的 Markdown —— 班级摘要，或每名学生一份档案。不含姓名或可识别身份的信息。"
+        }
+      },
+      "formatLabel": "格式",
+      "formats": {
+        "pdf": "PDF",
+        "csv": "CSV",
+        "print": "打印",
+        "markdown": "Markdown"
+      },
+      "generate": "生成 · {count, plural, other {# 名学生}}",
+      "openPrint": "打开打印视图 · {count, plural, other {# 名学生}}",
+      "pickStudents": "选择要包含的学生",
+      "cancel": "取消",
+      "print": {
+        "studentsTitle": "学生报告 — {name}"
+      },
+      "toast": {
+        "pdfOpened": "已打开{name}的{report} — 请在打印对话框中另存为 PDF。",
+        "printOpened": "已在打印视图中打开{name}的{report}。",
+        "csvSaved": "已将{name}的{report}下载为 CSV。",
+        "aiSaved": "{count, plural, other {已下载 # 份去标识化档案。}}",
+        "aiFailed": "{total} 份去标识化档案中有 {failed} 份未能下载。请重试。",
+        "popupBlocked": "请允许弹出窗口以打开报告。",
+        "failed": "无法准备{name}的{report}。请重试。"
+      },
+      "csv": {
+        "student": "学生",
+        "score": "分数 (%)",
+        "phase": "ACARA 阶段",
+        "growth": "成长（分）",
+        "skillScore": "{skill} (%)",
+        "skillBand": "{skill}等级",
+        "averages": "班级平均",
+        "measure": "指标",
+        "value": "数值",
+        "classAverage": "班级平均分 (%)",
+        "scored": "有计分结果的学生",
+        "roster": "名单中的学生",
+        "upSinceLast": "较上次测验提升（分）",
+        "paired": "有上次测验的学生",
+        "topGap": "最大短板",
+        "phases": "ACARA 阶段分布",
+        "students": "学生人数",
+        "share": "占比 (%)",
+        "subskills": "子技能短板",
+        "subskill": "子技能",
+        "mean": "班级平均分 (%)",
+        "assessed": "已评估学生",
+        "secure": "达到稳固",
+        "gatePassed": "通过达标线",
+        "flag": "标记"
+      }
+    },
     "student": {
       "crumbClasses": "班级",
       "backTitle": "返回{class}",

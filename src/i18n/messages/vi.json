@@ -6416,7 +6416,76 @@
         "close": "Đóng"
       }
     },
-    "reports": {},
+    "reports": {
+      "title": "Báo cáo và dữ liệu",
+      "sub": "Tải báo cáo và dữ liệu cho hiệu trưởng, giáo viên khác, phụ huynh hoặc trợ lý AI",
+      "blocked": "Chưa có kết quả nào được chấm cho {name}, nên chưa có gì để báo cáo. Hãy tổ chức một buổi thi trước.",
+      "produceLabel": "Nội dung cần tạo",
+      "kinds": {
+        "student": {
+          "label": "Báo cáo học sinh",
+          "desc": "Mỗi học sinh một trang: mức, phân tích kỹ năng con, bước tiếp theo."
+        },
+        "class": {
+          "label": "Tóm tắt lớp",
+          "desc": "Điểm trung bình, phân bố mức và khoảng trống kỹ năng của {name} trong một trang."
+        },
+        "ai": {
+          "label": "Dữ liệu cho AI (ẩn danh)",
+          "desc": "Markdown để dán vào trợ lý AI — tóm tắt lớp, hoặc hồ sơ từng học sinh. Không có tên hay thông tin nhận dạng."
+        }
+      },
+      "formatLabel": "Định dạng",
+      "formats": {
+        "pdf": "PDF",
+        "csv": "CSV",
+        "print": "In",
+        "markdown": "Markdown"
+      },
+      "generate": "Tạo · {count, plural, other {# học sinh}}",
+      "openPrint": "Mở chế độ xem in · {count, plural, other {# học sinh}}",
+      "pickStudents": "Chọn học sinh để đưa vào",
+      "cancel": "Hủy",
+      "print": {
+        "studentsTitle": "Báo cáo học sinh — {name}"
+      },
+      "toast": {
+        "pdfOpened": "Đã mở {report} của {name} — lưu thành PDF từ hộp thoại in.",
+        "printOpened": "Đã mở {report} của {name} ở chế độ xem in.",
+        "csvSaved": "Đã tải {report} của {name} dưới dạng CSV.",
+        "aiSaved": "{count, plural, other {Đã tải xuống # hồ sơ ẩn danh.}}",
+        "aiFailed": "Không thể tải {failed}/{total} hồ sơ ẩn danh. Hãy thử lại.",
+        "popupBlocked": "Hãy cho phép cửa sổ bật lên để mở báo cáo.",
+        "failed": "Không thể chuẩn bị {report} của {name}. Hãy thử lại."
+      },
+      "csv": {
+        "student": "Học sinh",
+        "score": "Điểm (%)",
+        "phase": "Giai đoạn ACARA",
+        "growth": "Tiến bộ (điểm)",
+        "skillScore": "{skill} (%)",
+        "skillBand": "Mức {skill}",
+        "averages": "Điểm trung bình lớp",
+        "measure": "Chỉ số",
+        "value": "Giá trị",
+        "classAverage": "Điểm trung bình lớp (%)",
+        "scored": "Học sinh đã có điểm",
+        "roster": "Học sinh trong danh sách",
+        "upSinceLast": "Tăng so với buổi thi trước (điểm)",
+        "paired": "Học sinh có buổi thi trước",
+        "topGap": "Khoảng trống lớn nhất",
+        "phases": "Phân bố giai đoạn ACARA",
+        "students": "Số học sinh",
+        "share": "Tỷ lệ (%)",
+        "subskills": "Khoảng trống kỹ năng con",
+        "subskill": "Kỹ năng con",
+        "mean": "Trung bình lớp (%)",
+        "assessed": "Học sinh được đánh giá",
+        "secure": "Ở mức Vững",
+        "gatePassed": "Đạt ngưỡng đầu ra",
+        "flag": "Đánh dấu"
+      }
+    },
     "student": {
       "crumbClasses": "Lớp học",
       "backTitle": "Quay lại {class}",

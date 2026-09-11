@@ -6397,7 +6397,76 @@
         "close": "Close"
       }
     },
-    "reports": {},
+    "reports": {
+      "title": "Reports and data",
+      "sub": "Download reports and data for principals, other teachers, parents or AI assistants",
+      "blocked": "Nothing has been scored for {name} yet, so there is nothing to report on. Run a sitting first.",
+      "produceLabel": "What to produce",
+      "kinds": {
+        "student": {
+          "label": "Student reports",
+          "desc": "One page per student: band, subskill breakdown, next steps."
+        },
+        "class": {
+          "label": "Class summary",
+          "desc": "Averages, band spread and skill gaps for {name} in a single sheet."
+        },
+        "ai": {
+          "label": "Data for AI (de-identified)",
+          "desc": "Markdown to paste into an AI assistant — a class summary, or one profile per student. No names or identifying details."
+        }
+      },
+      "formatLabel": "Format",
+      "formats": {
+        "pdf": "PDF",
+        "csv": "CSV",
+        "print": "Print",
+        "markdown": "Markdown"
+      },
+      "generate": "Generate · {count, plural, one {# student} other {# students}}",
+      "openPrint": "Open print view · {count, plural, one {# student} other {# students}}",
+      "pickStudents": "Pick students to include",
+      "cancel": "Cancel",
+      "print": {
+        "studentsTitle": "Student reports — {name}"
+      },
+      "toast": {
+        "pdfOpened": "{report} for {name} opened — save as PDF from the print dialog.",
+        "printOpened": "{report} for {name} opened in a print view.",
+        "csvSaved": "{report} for {name} downloaded as CSV.",
+        "aiSaved": "{count, plural, one {# de-identified profile downloaded.} other {# de-identified profiles downloaded.}}",
+        "aiFailed": "{failed} of {total} de-identified profiles could not be downloaded. Try again.",
+        "popupBlocked": "Allow pop-ups to open the reports.",
+        "failed": "Could not prepare {report} for {name}. Try again."
+      },
+      "csv": {
+        "student": "Student",
+        "score": "Score (%)",
+        "phase": "ACARA phase",
+        "growth": "Growth (pts)",
+        "skillScore": "{skill} (%)",
+        "skillBand": "{skill} band",
+        "averages": "Class averages",
+        "measure": "Measure",
+        "value": "Value",
+        "classAverage": "Class average (%)",
+        "scored": "Students with a scored result",
+        "roster": "Students on the roster",
+        "upSinceLast": "Up since last sitting (pts)",
+        "paired": "Students with a previous sitting",
+        "topGap": "Top gap",
+        "phases": "ACARA phase spread",
+        "students": "Students",
+        "share": "Share (%)",
+        "subskills": "Subskill gaps",
+        "subskill": "Subskill",
+        "mean": "Class mean (%)",
+        "assessed": "Students assessed",
+        "secure": "At Secure",
+        "gatePassed": "Passed exit gate",
+        "flag": "Flag"
+      }
+    },
     "student": {
       "crumbClasses": "Classes",
       "backTitle": "Back to {class}",

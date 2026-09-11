@@ -32,4 +32,5 @@ export const STUDENT_REPORT_PRINT_CSS = [
   '.lines{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.lines li{font-size:13.5px;color:#3D4A5C;line-height:1.5;background:#FAFBFC;border:1px solid #ECEEF2;border-radius:9px;padding:12px 14px}',
   '.note{margin-top:16px;background:#FDF9EF;border:1px solid #EBD9AE;border-radius:9px;padding:14px 16px;font-size:12.5px;line-height:1.6;color:#6B5A38}',
+  '.page+.page{break-before:page}',
 ].join('');

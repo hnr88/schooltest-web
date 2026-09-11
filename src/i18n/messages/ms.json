@@ -6407,7 +6407,76 @@
         "close": "Tutup"
       }
     },
-    "reports": {},
+    "reports": {
+      "title": "Laporan dan data",
+      "sub": "Muat turun laporan dan data untuk pengetua, guru lain, ibu bapa atau pembantu AI",
+      "blocked": "Belum ada apa-apa yang diberi skor untuk {name}, jadi tiada apa-apa untuk dilaporkan. Jalankan sesi ujian dahulu.",
+      "produceLabel": "Apa yang hendak dihasilkan",
+      "kinds": {
+        "student": {
+          "label": "Laporan murid",
+          "desc": "Satu halaman bagi setiap murid: tahap, pecahan subkemahiran, langkah seterusnya."
+        },
+        "class": {
+          "label": "Ringkasan kelas",
+          "desc": "Purata, taburan tahap dan jurang kemahiran untuk {name} dalam satu helaian."
+        },
+        "ai": {
+          "label": "Data untuk AI (tanpa pengenalan)",
+          "desc": "Markdown untuk ditampal ke dalam pembantu AI — ringkasan kelas, atau satu profil bagi setiap murid. Tiada nama atau butiran pengenalan."
+        }
+      },
+      "formatLabel": "Format",
+      "formats": {
+        "pdf": "PDF",
+        "csv": "CSV",
+        "print": "Cetak",
+        "markdown": "Markdown"
+      },
+      "generate": "Jana · {count, plural, one {# murid} other {# murid}}",
+      "openPrint": "Buka paparan cetak · {count, plural, one {# murid} other {# murid}}",
+      "pickStudents": "Pilih murid untuk disertakan",
+      "cancel": "Batal",
+      "print": {
+        "studentsTitle": "Laporan murid — {name}"
+      },
+      "toast": {
+        "pdfOpened": "{report} untuk {name} telah dibuka — simpan sebagai PDF daripada dialog cetak.",
+        "printOpened": "{report} untuk {name} telah dibuka dalam paparan cetak.",
+        "csvSaved": "{report} untuk {name} telah dimuat turun sebagai CSV.",
+        "aiSaved": "{count, plural, one {# profil tanpa pengenalan telah dimuat turun.} other {# profil tanpa pengenalan telah dimuat turun.}}",
+        "aiFailed": "{failed} daripada {total} profil tanpa pengenalan tidak dapat dimuat turun. Cuba lagi.",
+        "popupBlocked": "Benarkan tetingkap timbul untuk membuka laporan.",
+        "failed": "Tidak dapat menyediakan {report} untuk {name}. Cuba lagi."
+      },
+      "csv": {
+        "student": "Murid",
+        "score": "Skor (%)",
+        "phase": "Fasa ACARA",
+        "growth": "Pertumbuhan (mata)",
+        "skillScore": "{skill} (%)",
+        "skillBand": "Tahap {skill}",
+        "averages": "Purata kelas",
+        "measure": "Ukuran",
+        "value": "Nilai",
+        "classAverage": "Purata kelas (%)",
+        "scored": "Murid dengan keputusan berskor",
+        "roster": "Murid dalam senarai",
+        "upSinceLast": "Naik sejak sesi lepas (mata)",
+        "paired": "Murid dengan sesi sebelumnya",
+        "topGap": "Jurang utama",
+        "phases": "Taburan fasa ACARA",
+        "students": "Murid",
+        "share": "Bahagian (%)",
+        "subskills": "Jurang subkemahiran",
+        "subskill": "Subkemahiran",
+        "mean": "Min kelas (%)",
+        "assessed": "Murid dinilai",
+        "secure": "Pada tahap Teguh",
+        "gatePassed": "Lulus laluan keluar",
+        "flag": "Tanda"
+      }
+    },
     "student": {
       "crumbClasses": "Kelas",
       "backTitle": "Kembali ke {class}",

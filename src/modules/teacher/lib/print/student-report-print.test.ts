@@ -3,8 +3,12 @@ import { afterEach, describe, expect, test, vi } from 'vitest';
 import en from '@/i18n/messages/en.json';
 import t2Dashboard from '@/modules/teacher/lib/__fixtures__/teacher-dashboard.t2.json';
 import { escapeHtml, writeClassSummaryWindow } from '@/modules/teacher/lib/print/class-summary-print';
-import { buildStudentReportHtml } from '@/modules/teacher/lib/print/student-report-print';
-import { t2ResultAmara, t2ResultDilnoza, t2Row } from '@/modules/teacher/lib/v2/__fixtures__/t2';
+import {
+  buildStudentReportHtml,
+  buildStudentReportsHtml,
+  scoredStudentInputs,
+} from '@/modules/teacher/lib/print/student-report-print';
+import { t2ResultAmara, t2ResultDilnoza, t2Roster, t2Row } from '@/modules/teacher/lib/v2/__fixtures__/t2';
 import { carerReport } from '@/modules/teacher/lib/v2/carer-report';
 import { studentDetail } from '@/modules/teacher/lib/v2/student-detail';
 import type { StudentReportInput, StudentReportLabels } from '@/modules/teacher/types/class-summary-print.types';
@@ -139,5 +143,44 @@ describe('buildStudentReportHtml — edge cases derived from the recorded Dilnoz
     expect(target.document.querySelector('h1')?.textContent).toBe(input.name);
     await new Promise((resolve) => setTimeout(resolve, 300));
     expect(printSpy).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('buildStudentReportsHtml — every scored student of the recorded t2 roster, a page each', () => {
+  const inputs = scoredStudentInputs(t2Roster, { className, date: DATE, lang: 'en' });
+  const title = `Student reports — ${className}`;
+  const html = buildStudentReportsHtml(
+    inputs.map((input) => ({ input, labels })),
+    { title, lang: 'en' },
+  );
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const scored = t2Roster.filter((row) => row.result !== null && row.result.overall.domain_score !== null);
+
+  test('one page per scored roster student, name A–Z; an unscored student gets none', () => {
+    expect(scored.length).toBeGreaterThan(1);
+    expect(doc.querySelectorAll('.page')).toHaveLength(scored.length);
+    expect(texts(doc, '.page h1')).toEqual(scored.map((row) => row.student.name).sort((a, b) => a.localeCompare(b)));
+  });
+
+  test("each page prints that student's own served score and the class line", () => {
+    for (const page of Array.from(doc.querySelectorAll('.page'))) {
+      const row = t2Roster.find((entry) => entry.student.name === page.querySelector('h1')?.textContent);
+      expect(page.querySelector('.kpi .v')?.textContent).toBe(`${row?.result?.overall.domain_score}%`);
+      expect(page.querySelector('.sub')?.textContent).toBe(`${className} · ${print.assessment} · ${DATE}`);
+    }
+  });
+
+  test('one document with the modal title and language; every page after the first breaks before it', () => {
+    expect(doc.title).toBe(title);
+    expect(doc.documentElement.lang).toBe('en');
+    expect(html.match(/<html/g)).toHaveLength(1);
+    expect(html).toContain('.page+.page{break-before:page}');
+  });
+
+  test('derived: a roster with no scored student yields no pages', () => {
+    const unscored = t2Roster.map((row) => ({ ...row, result: null }));
+    expect(scoredStudentInputs(unscored, { className, date: DATE, lang: 'en' })).toEqual([]);
+    const empty = new DOMParser().parseFromString(buildStudentReportsHtml([], { title, lang: 'en' }), 'text/html');
+    expect(empty.querySelectorAll('.page')).toHaveLength(0);
   });
 });

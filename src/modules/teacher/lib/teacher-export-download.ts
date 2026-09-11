@@ -12,10 +12,15 @@ import type { TeacherExportFile } from '@/modules/teacher/types/teacher-export.t
  * same tick can race the save on other engines.
  */
 export function saveTeacherExportFile(file: TeacherExportFile): void {
-  const url = URL.createObjectURL(new Blob([file.body], { type: TEACHER_EXPORT_CONTENT_TYPE }));
+  saveTextFile(file.body, file.filename, TEACHER_EXPORT_CONTENT_TYPE);
+}
+
+/** The same download path for a document the portal built itself (the Reports modal's CSV). */
+export function saveTextFile(body: string, filename: string, type: string): void {
+  const url = URL.createObjectURL(new Blob([body], { type }));
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = file.filename;
+  anchor.download = filename;
   anchor.rel = 'noopener';
   anchor.hidden = true;
   document.body.append(anchor);

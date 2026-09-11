@@ -83,6 +83,20 @@ export interface StudentReportInput {
   carer: CarerReportView;
 }
 
+/** What every page of a many-student report shares. */
+export type StudentReportsMeta = Pick<StudentReportInput, 'className' | 'date' | 'lang'>;
+
+/** One student's page of the many-student print document (Reports modal). */
+export interface StudentReportPage {
+  input: StudentReportInput;
+  labels: StudentReportLabels;
+}
+
+export interface StudentReportsDocument {
+  title: string;
+  lang: string;
+}
+
 export interface StudentReportLabels {
   title: string;
   assessment: string;
