@@ -5776,6 +5776,123 @@
     "reports": {},
     "student": {},
     "askAi": {},
-    "review": {}
+    "review": {},
+    "viewModel": {
+      "phase": {
+        "beginning": "Permulaan",
+        "emerging": "Peralihan",
+        "developing": "Berkembang",
+        "consolidating": "Mantap",
+        "notSat": "Tidak menduduki"
+      },
+      "phaseSub": {
+        "beginning": "Fasa permulaan",
+        "emerging": "Fasa peralihan",
+        "developing": "Fasa berkembang",
+        "consolidating": "Fasa mantap"
+      },
+      "skill": {
+        "decoding": "Penyahkodan",
+        "vocabulary": "Kosa kata",
+        "grammar": "Tatabahasa",
+        "gist": "Isi utama",
+        "detail": "Butiran",
+        "inference": "Simpulan",
+        "critical": "Membaca kritis"
+      },
+      "skillBlurb": {
+        "decoding": "Mengenal perkataan dengan tepat dan lancar",
+        "vocabulary": "Mengetahui maksud perkataan mengikut konteks",
+        "grammar": "Struktur ayat dan bentuk kata",
+        "gist": "Memahami idea utama dan tujuan sesuatu teks",
+        "detail": "Mencari fakta khusus dan maklumat yang dinyatakan",
+        "inference": "Membaca yang tersirat untuk memahami maksud",
+        "critical": "Menilai niat, nada dan sudut pandangan penulis"
+      },
+      "attribute": {
+        "decoding": "Penyahkodan",
+        "vocabA2": "Kosa kata harian (A2)",
+        "vocabB1": "Kosa kata akademik (B1)",
+        "grammar": "Tatabahasa",
+        "gist": "Isi utama",
+        "detail": "Butiran",
+        "inference": "Simpulan",
+        "notYetAssessed": "Belum dinilai"
+      },
+      "band": {
+        "secure": "Teguh",
+        "developing": "Berkembang",
+        "emerging": "Baharu muncul",
+        "notYet": "Belum lagi"
+      },
+      "gate": {
+        "passed": "Laluan keluar: lulus",
+        "notYet": "Laluan keluar: belum lulus"
+      },
+      "expected": {
+        "at": "Pada tahap dijangka",
+        "approaching": "Menghampiri tahap dijangka",
+        "below": "Di bawah tahap dijangka"
+      },
+      "release": {
+        "label": {
+          "held": "Ditahan untuk anda",
+          "released": "Dikeluarkan kepada penjaga",
+          "recalled": "Ditarik balik",
+          "manual": "Pemarkahan manual",
+          "absent": "Perlu ujian semula",
+          "nosit": "Perlu ujian semula",
+          "open": "Masih menduduki"
+        },
+        "why": {
+          "held": "Sudah dimarkahkan dan sedia. Tiada apa-apa sampai kepada penjaga sehingga anda mengeluarkannya.",
+          "released": "Penjaga boleh membacanya · dikeluarkan {at}",
+          "releasedUndated": "Penjaga boleh membacanya",
+          "recalled": "Ditarik balik selepas percubaan dibuka semula. Penjaga telah dimaklumkan bahawa keputusan sedang disemak.",
+          "manual": "Dimarkahkan secara manual oleh pasukan penilaian, biasanya dalam masa dua hari bekerja. Tiada apa-apa boleh dikeluarkan sehingga markah diterima.",
+          "absent": "Ditanda tidak hadir dalam sesi ini. Tempah sesi susulan sebelum tahapnya berusia empat bulan.",
+          "nosit": "Tidak pernah log masuk ke sesi ini, jadi tiada apa-apa untuk dilaporkan.",
+          "open": "Percubaan mereka masih terbuka. Keputusan akan dipaparkan di sini selepas diserahkan dan dimarkahkan."
+        }
+      },
+      "carer": {
+        "summary": "Inilah yang dilihat oleh penjaga. Ia melaporkan bacaan dalam bahasa Inggeris bagi satu ujian sahaja, dan tiada perkara lain tentang {first}.",
+        "ealdNote": "Bacaan dalam bahasa Inggeris masih berkembang bersama kemahiran itu sendiri, jadi skor ini ialah had bawah dan bukannya had atas. Sebarang penaakulan yang ditulis dalam bahasa lain tidak dimarkahkan.",
+        "can": {
+          "decoding": "Mengenal perkataan dengan tepat dan lancar.",
+          "vocabA2": "Mengetahui maksud perkataan harian mengikut konteks.",
+          "vocabB1": "Mengetahui maksud perkataan akademik mengikut konteks.",
+          "grammar": "Memahami struktur ayat dan bentuk kata.",
+          "gist": "Memahami idea utama dan tujuan sesuatu teks.",
+          "detail": "Mencari maklumat yang dinyatakan secara langsung dalam petikan.",
+          "inference": "Membaca yang tersirat untuk memahami maksud."
+        },
+        "next": {
+          "decoding": "Latih penyahkodan: mengenal perkataan dengan tepat dan lancar.",
+          "vocabA2": "Latih kosa kata harian: maksud perkataan biasa mengikut konteks.",
+          "vocabB1": "Latih kosa kata akademik: maksud perkataan subjek mengikut konteks.",
+          "grammar": "Latih tatabahasa: struktur ayat dan bentuk kata.",
+          "gist": "Latih isi utama: memahami idea utama dan tujuan sesuatu teks.",
+          "detail": "Latih butiran: mencari fakta khusus dan maklumat yang dinyatakan.",
+          "inference": "Latih simpulan: membaca yang tersirat untuk memahami maksud."
+        }
+      },
+      "flag": {
+        "classFocus": "Fokus kelas",
+        "classStrength": "Kekuatan kelas"
+      },
+      "tag": {
+        "focusArea": "Bidang fokus",
+        "strength": "Kekuatan"
+      },
+      "chart": {
+        "sitting": "Sesi {n}",
+        "classTip": "Sesi {n} · {when} · purata kelas {value}%",
+        "studentTip": "Sesi {n} · {when} · {value}%"
+      },
+      "growth": {
+        "steady": "tetap"
+      }
+    }
   }
 }

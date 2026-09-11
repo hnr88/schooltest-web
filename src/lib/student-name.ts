@@ -44,3 +44,7 @@ export function getStudentInitials(student: StudentNameParts): string {
     .toUpperCase();
   return initials || '?';
 }
+
+export function getStudentFirstName(fullName: string): string {
+  return fullName.trim().split(/\s+/)[0] ?? '';
+}

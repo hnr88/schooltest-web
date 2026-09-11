@@ -5776,6 +5776,123 @@
     "reports": {},
     "student": {},
     "askAi": {},
-    "review": {}
+    "review": {},
+    "viewModel": {
+      "phase": {
+        "beginning": "시작",
+        "emerging": "도입",
+        "developing": "발달",
+        "consolidating": "정착",
+        "notSat": "미응시"
+      },
+      "phaseSub": {
+        "beginning": "시작 단계",
+        "emerging": "도입 단계",
+        "developing": "발달 단계",
+        "consolidating": "정착 단계"
+      },
+      "skill": {
+        "decoding": "디코딩",
+        "vocabulary": "어휘",
+        "grammar": "문법",
+        "gist": "핵심 내용 파악",
+        "detail": "세부 정보",
+        "inference": "추론",
+        "critical": "비판적 읽기"
+      },
+      "skillBlurb": {
+        "decoding": "단어를 정확하고 유창하게 알아보기",
+        "vocabulary": "문맥 속 단어의 뜻 알기",
+        "grammar": "문장 수준의 구조와 단어 형태",
+        "gist": "글의 요지와 목적 파악하기",
+        "detail": "구체적인 사실과 명시된 정보 찾기",
+        "inference": "행간을 읽어 의미 추론하기",
+        "critical": "글쓴이의 의도, 어조, 관점 판단하기"
+      },
+      "attribute": {
+        "decoding": "디코딩",
+        "vocabA2": "일상 어휘 (A2)",
+        "vocabB1": "학업 어휘 (B1)",
+        "grammar": "문법",
+        "gist": "핵심 내용 파악",
+        "detail": "세부 정보",
+        "inference": "추론",
+        "notYetAssessed": "아직 평가되지 않음"
+      },
+      "band": {
+        "secure": "안정",
+        "developing": "발전 중",
+        "emerging": "초기",
+        "notYet": "아직 아님"
+      },
+      "gate": {
+        "passed": "통과 기준: 통과",
+        "notYet": "통과 기준: 아직 미통과"
+      },
+      "expected": {
+        "at": "기대 수준",
+        "approaching": "기대 수준에 근접",
+        "below": "기대 수준 미만"
+      },
+      "release": {
+        "label": {
+          "held": "보류 중",
+          "released": "보호자에게 공개됨",
+          "recalled": "회수됨",
+          "manual": "수동 채점",
+          "absent": "재응시 필요",
+          "nosit": "재응시 필요",
+          "open": "응시 중"
+        },
+        "why": {
+          "held": "채점이 끝나 공개할 준비가 되었습니다. 공개하기 전까지는 보호자에게 아무것도 전달되지 않습니다.",
+          "released": "보호자가 볼 수 있음 · {at}에 공개",
+          "releasedUndated": "보호자가 볼 수 있음",
+          "recalled": "응시가 다시 열려 회수되었습니다. 보호자에게는 결과를 검토 중이라고 안내했습니다.",
+          "manual": "평가팀이 직접 채점하며 보통 2영업일 이내에 완료됩니다. 채점이 끝나기 전에는 공개할 수 없습니다.",
+          "absent": "이번 응시에서 결석 처리되었습니다. 수준 정보가 4개월이 지나기 전에 보충 응시를 예약하세요.",
+          "nosit": "이번 응시에 로그인한 적이 없어 보고할 내용이 없습니다.",
+          "open": "응시가 아직 진행 중입니다. 제출되고 채점되면 결과가 여기에 표시됩니다."
+        }
+      },
+      "carer": {
+        "summary": "보호자에게 보이는 화면입니다. 한 번의 시험으로 측정한 영어 읽기만 보고하며, {first} 학생에 대한 다른 내용은 포함하지 않습니다.",
+        "ealdNote": "영어 읽기 능력이 해당 기술과 함께 아직 발달 중이므로 이 점수는 상한이 아니라 하한으로 보아야 합니다. 다른 언어로 쓴 추론은 채점하지 않았습니다.",
+        "can": {
+          "decoding": "단어를 정확하고 유창하게 알아봅니다.",
+          "vocabA2": "일상 단어가 문맥에서 어떤 뜻인지 압니다.",
+          "vocabB1": "학업 단어가 문맥에서 어떤 뜻인지 압니다.",
+          "grammar": "문장 수준의 구조와 단어 형태를 이해합니다.",
+          "gist": "글의 요지와 목적을 파악합니다.",
+          "detail": "글에 직접 나와 있는 정보를 찾습니다.",
+          "inference": "행간을 읽어 의미를 추론합니다."
+        },
+        "next": {
+          "decoding": "디코딩 연습하기: 단어를 정확하고 유창하게 알아보기.",
+          "vocabA2": "일상 어휘 연습하기: 흔한 단어가 문맥에서 어떤 뜻인지 알기.",
+          "vocabB1": "학업 어휘 연습하기: 교과 단어가 문맥에서 어떤 뜻인지 알기.",
+          "grammar": "문법 연습하기: 문장 수준의 구조와 단어 형태.",
+          "gist": "핵심 내용 파악 연습하기: 글의 요지와 목적 파악하기.",
+          "detail": "세부 정보 연습하기: 구체적인 사실과 명시된 정보 찾기.",
+          "inference": "추론 연습하기: 행간을 읽어 의미 추론하기."
+        }
+      },
+      "flag": {
+        "classFocus": "학급 중점",
+        "classStrength": "학급 강점"
+      },
+      "tag": {
+        "focusArea": "중점 영역",
+        "strength": "강점"
+      },
+      "chart": {
+        "sitting": "{n}회차",
+        "classTip": "{n}회차 · {when} · 학급 평균 {value}%",
+        "studentTip": "{n}회차 · {when} · {value}%"
+      },
+      "growth": {
+        "steady": "변화 없음"
+      }
+    }
   }
 }

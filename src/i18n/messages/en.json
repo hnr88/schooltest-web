@@ -5766,6 +5766,123 @@
     "reports": {},
     "student": {},
     "askAi": {},
-    "review": {}
+    "review": {},
+    "viewModel": {
+      "phase": {
+        "beginning": "Beginning",
+        "emerging": "Emerging",
+        "developing": "Developing",
+        "consolidating": "Consolidating",
+        "notSat": "Not sat"
+      },
+      "phaseSub": {
+        "beginning": "Beginning phase",
+        "emerging": "Emerging phase",
+        "developing": "Developing phase",
+        "consolidating": "Consolidating phase"
+      },
+      "skill": {
+        "decoding": "Decoding",
+        "vocabulary": "Vocabulary",
+        "grammar": "Grammar",
+        "gist": "Gist",
+        "detail": "Detail",
+        "inference": "Inference",
+        "critical": "Critical reading"
+      },
+      "skillBlurb": {
+        "decoding": "Recognising words accurately and fluently",
+        "vocabulary": "Knowing what words mean in context",
+        "grammar": "Sentence-level structure and word forms",
+        "gist": "Grasping the main idea and purpose of a text",
+        "detail": "Locating specific facts and stated information",
+        "inference": "Reading between the lines to work out meaning",
+        "critical": "Weighing a writer’s intent, tone and point of view"
+      },
+      "attribute": {
+        "decoding": "Decoding",
+        "vocabA2": "Everyday vocabulary (A2)",
+        "vocabB1": "Academic vocabulary (B1)",
+        "grammar": "Grammar",
+        "gist": "Gist",
+        "detail": "Detail",
+        "inference": "Inference",
+        "notYetAssessed": "Not yet assessed"
+      },
+      "band": {
+        "secure": "Secure",
+        "developing": "Developing",
+        "emerging": "Emerging",
+        "notYet": "Not yet"
+      },
+      "gate": {
+        "passed": "Exit gate: passed",
+        "notYet": "Exit gate: not yet"
+      },
+      "expected": {
+        "at": "At expected",
+        "approaching": "Approaching expected",
+        "below": "Below expected"
+      },
+      "release": {
+        "label": {
+          "held": "Held for you",
+          "released": "Released to carer",
+          "recalled": "Recalled",
+          "manual": "Manual scoring",
+          "absent": "Needs a re-sit",
+          "nosit": "Needs a re-sit",
+          "open": "Still sitting"
+        },
+        "why": {
+          "held": "Scored and ready. Nothing reaches the carer until you release it.",
+          "released": "Carer can read it · released {at}",
+          "releasedUndated": "Carer can read it",
+          "recalled": "Withdrawn after the attempt was reopened. The carer has been told the result is under review.",
+          "manual": "Scored by hand by the assessment team, usually within two working days. Nothing can be released until it lands.",
+          "absent": "Marked absent in this sitting. Book a catch-up before their level is four months old.",
+          "nosit": "Never signed in to this sitting, so there is nothing to report.",
+          "open": "Their attempt is still open. The result appears here once it is submitted and scored."
+        }
+      },
+      "carer": {
+        "summary": "This is what the carer sees. It reports reading in English on one test, and nothing else about {first}.",
+        "ealdNote": "Reading in English is still developing alongside the skill itself, so this score is a floor rather than a ceiling. Any reasoning written in another language was not marked.",
+        "can": {
+          "decoding": "Recognises words accurately and fluently.",
+          "vocabA2": "Knows what everyday words mean in context.",
+          "vocabB1": "Knows what academic words mean in context.",
+          "grammar": "Follows sentence-level structure and word forms.",
+          "gist": "Grasps the main idea and purpose of a text.",
+          "detail": "Finds information that is stated directly in the passage.",
+          "inference": "Reads between the lines to work out meaning."
+        },
+        "next": {
+          "decoding": "Work on decoding: recognising words accurately and fluently.",
+          "vocabA2": "Work on everyday vocabulary: what common words mean in context.",
+          "vocabB1": "Work on academic vocabulary: what subject words mean in context.",
+          "grammar": "Work on grammar: sentence-level structure and word forms.",
+          "gist": "Work on gist: grasping the main idea and purpose of a text.",
+          "detail": "Work on detail: locating specific facts and stated information.",
+          "inference": "Work on inference: reading between the lines to work out meaning."
+        }
+      },
+      "flag": {
+        "classFocus": "Class focus",
+        "classStrength": "Class strength"
+      },
+      "tag": {
+        "focusArea": "Focus area",
+        "strength": "Strength"
+      },
+      "chart": {
+        "sitting": "Sitting {n}",
+        "classTip": "Sitting {n} · {when} · class average {value}%",
+        "studentTip": "Sitting {n} · {when} · {value}%"
+      },
+      "growth": {
+        "steady": "steady"
+      }
+    }
   }
 }

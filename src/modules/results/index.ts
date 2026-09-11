@@ -42,3 +42,14 @@ export type {
   ResultViewOverall,
   ResultViewVocab,
 } from './types/result.types';
+export { classAverage, resultViewsOf, scoredCount, strongestSkill, weakestSkill } from './lib/class-aggregation';
+export {
+  needsSupport,
+  progressDelta,
+  secureCounts,
+  subskillAverages,
+  topGains,
+  vocabStrandMeans,
+} from './lib/class-analytics';
+export { classRosterResponseSchema } from './schemas/roster.schema';
+export type { RosterReleaseState, RosterRow, RosterStudent } from './types/roster.types';

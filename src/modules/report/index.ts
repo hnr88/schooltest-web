@@ -94,3 +94,5 @@ export {
   useResultReviewMutation,
 } from '@/modules/report/queries/use-result-review.mutation';
 export { useReviewMarking } from '@/modules/report/components/ReviewDrawerWriteHalf';
+export { resolveAttributeDelta } from './lib/attribute-view-model';
+export type { AttributeDeltaView } from './types/attribute.types';

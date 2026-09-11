@@ -5785,6 +5785,123 @@
     "reports": {},
     "student": {},
     "askAi": {},
-    "review": {}
+    "review": {},
+    "viewModel": {
+      "phase": {
+        "beginning": "Bắt đầu",
+        "emerging": "Mới hình thành",
+        "developing": "Đang phát triển",
+        "consolidating": "Củng cố",
+        "notSat": "Chưa làm bài"
+      },
+      "phaseSub": {
+        "beginning": "Giai đoạn bắt đầu",
+        "emerging": "Giai đoạn mới hình thành",
+        "developing": "Giai đoạn đang phát triển",
+        "consolidating": "Giai đoạn củng cố"
+      },
+      "skill": {
+        "decoding": "Giải mã",
+        "vocabulary": "Từ vựng",
+        "grammar": "Ngữ pháp",
+        "gist": "Ý chính",
+        "detail": "Chi tiết",
+        "inference": "Suy luận",
+        "critical": "Đọc phản biện"
+      },
+      "skillBlurb": {
+        "decoding": "Nhận biết từ chính xác và trôi chảy",
+        "vocabulary": "Hiểu nghĩa của từ trong ngữ cảnh",
+        "grammar": "Cấu trúc câu và hình thái từ",
+        "gist": "Nắm được ý chính và mục đích của văn bản",
+        "detail": "Tìm các sự kiện cụ thể và thông tin được nêu",
+        "inference": "Đọc giữa các dòng để suy ra ý nghĩa",
+        "critical": "Đánh giá ý định, giọng điệu và quan điểm của tác giả"
+      },
+      "attribute": {
+        "decoding": "Giải mã",
+        "vocabA2": "Từ vựng thông dụng (A2)",
+        "vocabB1": "Từ vựng học thuật (B1)",
+        "grammar": "Ngữ pháp",
+        "gist": "Ý chính",
+        "detail": "Chi tiết",
+        "inference": "Suy luận",
+        "notYetAssessed": "Chưa đánh giá"
+      },
+      "band": {
+        "secure": "Vững",
+        "developing": "Đang phát triển",
+        "emerging": "Bắt đầu hình thành",
+        "notYet": "Chưa đạt"
+      },
+      "gate": {
+        "passed": "Ngưỡng đầu ra: đã đạt",
+        "notYet": "Ngưỡng đầu ra: chưa đạt"
+      },
+      "expected": {
+        "at": "Đạt mức kỳ vọng",
+        "approaching": "Gần mức kỳ vọng",
+        "below": "Dưới mức kỳ vọng"
+      },
+      "release": {
+        "label": {
+          "held": "Đang giữ lại",
+          "released": "Đã gửi cho phụ huynh",
+          "recalled": "Đã thu hồi",
+          "manual": "Chấm điểm thủ công",
+          "absent": "Cần thi lại",
+          "nosit": "Cần thi lại",
+          "open": "Đang làm bài"
+        },
+        "why": {
+          "held": "Đã chấm và sẵn sàng. Phụ huynh sẽ không nhận được gì cho đến khi bạn gửi.",
+          "released": "Phụ huynh có thể đọc · đã gửi {at}",
+          "releasedUndated": "Phụ huynh có thể đọc",
+          "recalled": "Đã rút lại sau khi bài làm được mở lại. Phụ huynh đã được thông báo rằng kết quả đang được xem xét.",
+          "manual": "Được nhóm đánh giá chấm thủ công, thường trong vòng hai ngày làm việc. Chưa thể gửi gì cho đến khi có điểm.",
+          "absent": "Được đánh dấu vắng mặt trong buổi thi này. Hãy đặt buổi thi bù trước khi kết quả mức độ của học sinh quá bốn tháng.",
+          "nosit": "Chưa từng đăng nhập vào buổi thi này nên không có gì để báo cáo.",
+          "open": "Bài làm vẫn đang mở. Kết quả sẽ hiện ở đây khi bài được nộp và chấm điểm."
+        }
+      },
+      "carer": {
+        "summary": "Đây là những gì phụ huynh nhìn thấy. Báo cáo chỉ nói về khả năng đọc tiếng Anh trong một bài kiểm tra, không nói gì khác về {first}.",
+        "ealdNote": "Khả năng đọc tiếng Anh vẫn đang phát triển song song với chính kỹ năng này, vì vậy điểm số này là mức sàn chứ không phải mức trần. Mọi lập luận viết bằng ngôn ngữ khác đều không được chấm.",
+        "can": {
+          "decoding": "Nhận biết từ chính xác và trôi chảy.",
+          "vocabA2": "Hiểu nghĩa của từ thông dụng trong ngữ cảnh.",
+          "vocabB1": "Hiểu nghĩa của từ học thuật trong ngữ cảnh.",
+          "grammar": "Nắm được cấu trúc câu và hình thái từ.",
+          "gist": "Nắm được ý chính và mục đích của văn bản.",
+          "detail": "Tìm được thông tin được nêu trực tiếp trong đoạn văn.",
+          "inference": "Đọc giữa các dòng để suy ra ý nghĩa."
+        },
+        "next": {
+          "decoding": "Luyện giải mã: nhận biết từ chính xác và trôi chảy.",
+          "vocabA2": "Luyện từ vựng thông dụng: nghĩa của từ thường gặp trong ngữ cảnh.",
+          "vocabB1": "Luyện từ vựng học thuật: nghĩa của từ chuyên môn trong ngữ cảnh.",
+          "grammar": "Luyện ngữ pháp: cấu trúc câu và hình thái từ.",
+          "gist": "Luyện nắm ý chính: hiểu ý chính và mục đích của văn bản.",
+          "detail": "Luyện đọc chi tiết: tìm sự kiện cụ thể và thông tin được nêu.",
+          "inference": "Luyện suy luận: đọc giữa các dòng để suy ra ý nghĩa."
+        }
+      },
+      "flag": {
+        "classFocus": "Trọng tâm của lớp",
+        "classStrength": "Thế mạnh của lớp"
+      },
+      "tag": {
+        "focusArea": "Cần tập trung",
+        "strength": "Thế mạnh"
+      },
+      "chart": {
+        "sitting": "Lần {n}",
+        "classTip": "Lần {n} · {when} · trung bình lớp {value}%",
+        "studentTip": "Lần {n} · {when} · {value}%"
+      },
+      "growth": {
+        "steady": "ổn định"
+      }
+    }
   }
 }

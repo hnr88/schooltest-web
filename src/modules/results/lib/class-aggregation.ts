@@ -37,6 +37,13 @@ export function weakestSkill(view: ResultView): { skill: DisplaySkill; score: nu
   return weakest === null ? null : { skill: weakest.skill, score: weakest.score };
 }
 
+export function strongestSkill(view: ResultView): { skill: DisplaySkill; score: number } | null {
+  return displaySkills(view).reduce<{ skill: DisplaySkill; score: number } | null>((best, tile) => {
+    if (tile.source === 'gate' || tile.domain_score === null) return best;
+    return best === null || tile.domain_score > best.score ? { skill: tile.skill, score: tile.domain_score } : best;
+  }, null);
+}
+
 /** Class average over SCORED rows only — excluding unscored students (correctly) changes the denominator; `null` when no row is scored. */
 export function classAverage(rows: readonly ResultView[]): number | null {
   const scored = rows.map((row) => row.overall.domain_score).filter((score): score is number => score !== null);
