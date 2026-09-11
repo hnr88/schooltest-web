@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { useOnlineStatus } from '@/modules/ops/hooks/use-online-status';
@@ -43,13 +43,25 @@ export function useOpsWriteGate(): OpsWriteGate {
   const tToast = useTranslations('Ops.toast');
   const readOnly = capabilities.data?.capabilities.write === false;
 
+  // The refusal verdict must be read at CALL time, never at render time: a
+  // refusal toast's Retry action keeps the closure it was built with across
+  // reconnections, so a `blockedReason` bound to the render-time `online`
+  // would re-raise the offline refusal forever after the network returned.
+  // The effect-synced refs give every closure — however stale — the live
+  // capability + connectivity, the same guarantee `useOpsActionRunner`'s
+  // `writeGateRef` gives the runner.
+  const latest = useRef({ readOnly, online });
+  useEffect(() => {
+    latest.current = { readOnly, online };
+  }, [online, readOnly]);
+
   const blockedReason = useCallback(
     () =>
-      opsWriteBlockedReason(readOnly, online, {
+      opsWriteBlockedReason(latest.current.readOnly, latest.current.online, {
         readOnly: tCapabilities('readOnlyWriteBlocked'),
         offline: tCapabilities('offlineWriteBlocked'),
       }),
-    [online, readOnly, tCapabilities],
+    [tCapabilities],
   );
 
   return {

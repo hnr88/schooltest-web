@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Info } from 'lucide-react';
 
 import { Button } from '@/modules/design-system';
+import { showOpsToast, useOpsWriteGate } from '@/modules/ops/actions';
 import {
   OpsDialog,
   OpsDialogBody,
@@ -37,6 +38,11 @@ export function OpsCreateSchoolDialog() {
   const t = useTranslations('Ops.createSchool');
   const [open, setOpen] = useState(false);
   const [confirmingDirtyClose, setConfirmingDirtyClose] = useState(false);
+  // The trigger is the one write entry point on the schools LIST, so it goes
+  // through the same preflight as every other surface: a read-only session is
+  // refused with the catalogue toast, an offline one with toast + Retry —
+  // and neither opens the form, so no request can leave the browser.
+  const writeGate = useOpsWriteGate();
   const {
     form,
     submit,
@@ -81,7 +87,20 @@ export function OpsCreateSchoolDialog() {
       <Button
         data-testid="ops-create-school"
         className="h-11 rounded-full px-[22px]"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          const reason = writeGate.blockedReason();
+          if (reason !== null) {
+            showOpsToast({
+              tone: 'error',
+              message: reason,
+              ...(writeGate.retryWhenBlocked
+                ? { action: { label: writeGate.retryLabel, run: () => setOpen(true) } }
+                : {}),
+            });
+            return;
+          }
+          setOpen(true);
+        }}
       >
         {t('button')}
       </Button>

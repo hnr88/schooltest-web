@@ -115,13 +115,22 @@ function countOpsWriteRequests(page: Page): { urls: string[] } {
 }
 
 async function selectFirstRow(page: Page): Promise<void> {
+  // The directory grid is flex-row markup (`div[data-directory-row]`), not a
+  // `<table>` — the kit rebuilt the table arm without a tbody (see the
+  // DirectoryRows header note), so row checkboxes are scoped to the rows.
   const checkbox = page
-    .locator('[data-slot="directory"] tbody')
+    .locator('[data-slot="directory"] div[data-directory-row]')
     .getByRole('checkbox')
     .first();
   await expect(checkbox).toBeVisible({ timeout: WAIT });
   await checkbox.click();
-  await expect(page.getByRole('region', { name: /selected/ })).toBeVisible({ timeout: WAIT });
+  // The bulk bar announces the selection as `role="status"` text ("N … selected
+  // on this page"), not a named region (DirectoryBulkBar markup).
+  await expect(
+    page
+      .locator('[data-slot="directory-bulk-bar"] [role="status"]')
+      .filter({ hasText: /selected/ }),
+  ).toBeVisible({ timeout: WAIT });
 }
 
 async function expectRefusalToastAndNoRequests(
@@ -213,17 +222,21 @@ test.describe.serial('ops/28 read-only sweep — ops_support', () => {
     await page.goto('/dashboard/ops/schools');
     await page.waitForURL(SCHOOLS_URL, { timeout: WAIT });
 
-    const firstRow = page.locator('[data-slot="directory"] tbody tr[data-directory-row]').first();
+    const firstRow = page.locator('[data-slot="directory"] div[data-directory-row]').first();
     await expect(firstRow).toBeVisible({ timeout: WAIT });
     // The row menu trigger has no visible text — it is the icon button inside
     // `DirectoryRows`' own menu cell (`data-directory-row-menu`), labelled by
-    // the kit's `rowMenuLabel`, which every ops directory shares.
-    await firstRow.locator('[data-directory-row-menu] [data-slot="icon-button"]').click();
+    // the kit's `rowMenuLabel`, which every ops directory shares. The trigger
+    // is a plain button (the kit dropped the `data-slot="icon-button"` skin).
+    await firstRow.locator('[data-directory-row-menu] button').click();
 
     const requests = countOpsWriteRequests(page);
+    // `aria-disabled` keeps the click live for a real pointer by design (the
+    // refusal toast IS the behaviour), but Playwright's own actionability
+    // treats it as disabled — force the click a pointer would make.
     await page
       .getByRole('menuitem', { name: cat(en, 'Ops.schools.actions.editDetails'), exact: true })
-      .click();
+      .click({ force: true });
     await expectRefusalToastAndNoRequests(page, requests);
     // Refused: `chooseLifecycleAction` never calls router.push for a locked
     // write, so the URL stays on the list — the click did not "work anyway".
@@ -238,21 +251,24 @@ test.describe.serial('ops/28 read-only sweep — ops_support', () => {
     await page.goto('/dashboard/ops/schools');
     await page.waitForURL(SCHOOLS_URL, { timeout: WAIT });
 
-    const firstSchool = page.locator('[data-slot="directory"] tbody tr[data-directory-row]').first();
+    const firstSchool = page.locator('[data-slot="directory"] div[data-directory-row]').first();
     await expect(firstSchool).toBeVisible({ timeout: WAIT });
     // The schools list has no row-href link — "Open school" (write: false,
     // OpsSchoolsTable.tsx) is the only navigation, in the row menu itself.
-    await firstSchool.locator('[data-directory-row-menu] [data-slot="icon-button"]').click();
+    await firstSchool.locator('[data-directory-row-menu] button').click();
     await page.getByRole('menuitem', { name: cat(en, 'Ops.schools.actionOpen'), exact: true }).click();
     await page.waitForURL(/\/dashboard\/ops\/schools\/[^/]+$/, { timeout: WAIT });
 
     await page
       .getByRole('tab', { name: cat(en, 'Ops.schoolTables.tab.teachers'), exact: true })
-      .click();
+      // Bounded: when the detail read is denied the page renders the error card
+      // and no tab ever mounts — fail diagnosably fast instead of eating the
+      // suite-wide timeout.
+      .click({ timeout: WAIT });
     await page.waitForURL(/[?&]tab=teachers/, { timeout: WAIT });
 
     const hasRows = await page
-      .locator('[data-slot="directory"] tbody')
+      .locator('[data-slot="directory"] div[data-directory-row]')
       .getByRole('checkbox')
       .first()
       .isVisible({ timeout: WAIT })
