@@ -24,13 +24,17 @@ export function ClassTeacherPanel({ schoolClass }: ClassTeacherPanelProps) {
   const update = useUpdateClassTeachersMutation();
   const [adding, setAdding] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [retryFn, setRetryFn] = useState<(() => void) | null>(null);
+  // Wrapped in an object: a bare `(() => void) | null` state would make React
+  // treat every setter call as a functional updater — it CALLS the function,
+  // which re-fired apply() (and the PATCH) once per queued update, storming
+  // the class-detail PATCH endpoint until React killed the render loop.
+  const [retryFn, setRetryFn] = useState<{ run: () => void } | null>(null);
 
   const teacher = schoolClass.teacher;
   const teacherName = teacherDisplayName(teacher);
 
   async function apply(teacherDocumentIds: string[], onRetry: () => void): Promise<boolean> {
-    setRetryFn(onRetry);
+    setRetryFn({ run: onRetry });
     setFailed(false);
     try {
       await update.mutateAsync({ documentId: schoolClass.documentId, teacherDocumentIds });
@@ -100,7 +104,7 @@ export function ClassTeacherPanel({ schoolClass }: ClassTeacherPanelProps) {
               size="sm"
               onClick={() => {
                 setFailed(false);
-                retryFn?.();
+                retryFn?.run();
               }}
             >
               {t('retry')}
