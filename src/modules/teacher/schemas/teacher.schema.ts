@@ -159,7 +159,7 @@ export const dashboardClassSchema = z.strictObject({
   status: z.enum(['sitting_now', 'scheduled', 'no_tests_yet', 'complete']),
   open_session_count: teacherCountSchema,
   reading: dashboardClassReadingSchema.optional(),
-  /** The most common `student.year_level` on the active roster; null when none is set. */
+  /** The most common `student.year_level` on the active roster (a tie goes to the lower year); null when none is set. */
   year_level: z.number().int().nullable().optional(),
 });
 

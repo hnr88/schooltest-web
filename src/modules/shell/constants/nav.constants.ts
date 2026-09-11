@@ -1,6 +1,5 @@
 import {
   BarChart3,
-  Clock,
   LayoutDashboard,
   LayoutGrid,
   School,
@@ -19,6 +18,10 @@ import {
   SCHOOL_ADMIN_ROLE_TYPE,
   TEACHER_ROLE_TYPE,
 } from '@/modules/auth/constants/role.constants';
+import {
+  TeacherClassesIcon,
+  TeacherLiveSessionsIcon,
+} from '@/modules/shell/constants/teacher-rail-icons.constants';
 import type {
   NavGroup,
   NavGroupLabelKey,
@@ -188,12 +191,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     // (the results surface) ahead of Live sessions (test sessions), under the
     // TEACHER VIEW overline. R-10 retired the teacherDashboard entry — the
     // /dashboard route and TEACHER_DASHBOARD_HREF keep serving the other roles.
-    // Strings stay (D-33): "Results" and "Test sessions" keep their keys; only
-    // the order and the design's icons — the 2×2 grid at :30 and the clock at
-    // :33 — changed.
+    // Keys stay (D-33): `results` and `testSessions` now carry the design's words
+    // ("Classes", "Live sessions") in every catalogue, and the icons are the
+    // design's own nodes (teacher-rail-icons.constants.ts, :30 and :33).
     labelKey: 'results',
     href: RESULTS_HREF,
-    icon: LayoutGrid,
+    icon: TeacherClassesIcon,
     exact: false,
     group: 'teach',
     roles: [TEACHER_ROLE_TYPE],
@@ -201,7 +204,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     labelKey: 'testSessions',
     href: TEST_SESSIONS_HREF,
-    icon: Clock,
+    icon: TeacherLiveSessionsIcon,
     exact: false,
     group: 'teach',
     roles: [TEACHER_ROLE_TYPE],
@@ -228,3 +231,17 @@ export const NAV_GROUP_LABEL_KEYS: Record<NavGroup, NavGroupLabelKey> = {
   teach: 'teacherView',
   account: 'manage',
 };
+
+// Routes only a teacher can open (each sits behind TeacherGuard). While the role is
+// still resolving, these decide the frame (lib/teacher-frame.ts), so a hard load never
+// flashes the shared topbar. /dashboard/teach/{notifications,settings} are
+// school-staff routes and stay off this list.
+export const TEACHER_FRAME_PATHS: readonly string[] = [
+  RESULTS_HREF,
+  TEST_SESSIONS_HREF,
+  REPORTS_HREF,
+  '/dashboard/teacher',
+  '/dashboard/teach/classes',
+  '/dashboard/teach/results',
+  '/dashboard/teach/run-sheet',
+];

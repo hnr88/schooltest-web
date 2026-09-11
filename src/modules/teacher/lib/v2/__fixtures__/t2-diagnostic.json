@@ -1,0 +1,1047 @@
+{
+  "class": {
+    "documentId": "qves8wrtl7r9ctw49jivm8gl",
+    "name": "Reading 8B — Alvarez",
+    "year_band": "7_9"
+  },
+  "form_code": "SPK-PROG-A-79",
+  "sat_count": 20,
+  "roster_count": 20,
+  "mastery": [
+    {
+      "student_ref": "Amara B.",
+      "student_document_id": "zfia18l6ps0q2hed4f3ts2k2",
+      "latest_result_document_id": "ju10dv80g8syf4rt7n2a4umh",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_yet",
+          "prob": 0.000136688173033573
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.0995644454600829
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_yet",
+          "prob": 1.86768878651532e-05
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151661287321585
+        }
+      ]
+    },
+    {
+      "student_ref": "Bilal B.",
+      "student_document_id": "gc7mk2jcd1x2i6adsmmlfq3e",
+      "latest_result_document_id": "k2zuzs50pqb4ezxhdaoviapv",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_assessed",
+          "prob": null
+        }
+      ]
+    },
+    {
+      "student_ref": "Chen B.",
+      "student_document_id": "qwoxudb9mkq5ar6044wy6gmu",
+      "latest_result_document_id": "isrggthwhtpn33yn7s5xu8w8",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_assessed",
+          "prob": null
+        }
+      ]
+    },
+    {
+      "student_ref": "Dilnoza B.",
+      "student_document_id": "cxjfszn4s2domw78yrn3ze7i",
+      "latest_result_document_id": "gdijynxot3d31d0pt053jv37",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.00849578726040759
+        },
+        {
+          "code": "Detail",
+          "status": "not_yet",
+          "prob": 0.000151659161864093
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.0637021465208048
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 2.95727650525192e-07
+        },
+        {
+          "code": "Inference",
+          "status": "emerging",
+          "prob": 0.480077547154417
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 3.49513116964463e-05
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151659161864094
+        }
+      ]
+    },
+    {
+      "student_ref": "Eitan B.",
+      "student_document_id": "p15b2qwpx7j0s7ky6eunl1hc",
+      "latest_result_document_id": "wqbdhhdzoxbvocul21ic2iyb",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.00849578726040759
+        },
+        {
+          "code": "Detail",
+          "status": "not_yet",
+          "prob": 0.000136688173033573
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.0995644454600829
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 2.95727650525192e-07
+        },
+        {
+          "code": "Inference",
+          "status": "not_yet",
+          "prob": 1.86768878651532e-05
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 3.49513116964463e-05
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151661287321585
+        }
+      ]
+    },
+    {
+      "student_ref": "Farida B.",
+      "student_document_id": "u1h37a09j6qybj2mz37f3jgt",
+      "latest_result_document_id": "kzcs26zokcj9rcu4lqozfnvj",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.00849578726040759
+        },
+        {
+          "code": "Detail",
+          "status": "not_yet",
+          "prob": 0.000136688173033573
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.0995644454600829
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 2.95727650525192e-07
+        },
+        {
+          "code": "Inference",
+          "status": "not_yet",
+          "prob": 1.86768878651532e-05
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 3.49513116964463e-05
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151661287321585
+        }
+      ]
+    },
+    {
+      "student_ref": "Gia B.",
+      "student_document_id": "t9ad3ja7xwgdcnbchtiuqqta",
+      "latest_result_document_id": "r6aqv24s6ngsfs1svr9uz894",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.000151680693181874
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.075647253977231
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151680693180768
+        }
+      ]
+    },
+    {
+      "student_ref": "Hamza B.",
+      "student_document_id": "nkrfim7y4f7hllcyfaji7jft",
+      "latest_result_document_id": "lhytqw21h3lwa5vo5jpiau8i",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.000151680693181874
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.075647253977231
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151680693180768
+        }
+      ]
+    },
+    {
+      "student_ref": "Ines B.",
+      "student_document_id": "d53ftxw0b1z3dxju5q56oerh",
+      "latest_result_document_id": "wkdjyd9qithhml1jbk51x0rn",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.000151680693181874
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.0637021465208047
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24
+        },
+        {
+          "code": "Inference",
+          "status": "emerging",
+          "prob": 0.480077547154417
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151680693180768
+        }
+      ]
+    },
+    {
+      "student_ref": "Jae-won B.",
+      "student_document_id": "nz804sr1odenbnht9pfgmo3v",
+      "latest_result_document_id": "nh1b8l69tgb6235uog95897f",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.000151680693181874
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.075647253977231
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151680693180768
+        }
+      ]
+    },
+    {
+      "student_ref": "Kaveh B.",
+      "student_document_id": "f7unlanstpq938tjlswl1zka",
+      "latest_result_document_id": "yjnnxkpm75xtm09xlzn5rmr8",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.00849578726040759
+        },
+        {
+          "code": "Detail",
+          "status": "not_yet",
+          "prob": 0.000136688173033573
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.0995644454600829
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 2.95727650525192e-07
+        },
+        {
+          "code": "Inference",
+          "status": "not_yet",
+          "prob": 1.86768878651532e-05
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 3.49513116964463e-05
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151661287321585
+        }
+      ]
+    },
+    {
+      "student_ref": "Lucia B.",
+      "student_document_id": "ug1btz3nvklcx06aqw915wzw",
+      "latest_result_document_id": "cx91eyf734emnri8lz38g5xu",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_assessed",
+          "prob": null
+        }
+      ]
+    },
+    {
+      "student_ref": "Mihail B.",
+      "student_document_id": "qhpesgsxvvejpx433eggqc8y",
+      "latest_result_document_id": "eme21h0k6amgb63nsxgk97vb",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.000151680693181874
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.0637021465208047
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24
+        },
+        {
+          "code": "Inference",
+          "status": "emerging",
+          "prob": 0.480077547154417
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151680693180768
+        }
+      ]
+    },
+    {
+      "student_ref": "Nour B.",
+      "student_document_id": "zfds2ab0z9fgebagt6t0540f",
+      "latest_result_document_id": "xtiq8mhowkgaopo1f5fqgh03",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_assessed",
+          "prob": null
+        }
+      ]
+    },
+    {
+      "student_ref": "Oluwaseun B.",
+      "student_document_id": "pww9v4axu1r0uwcm76n16e0v",
+      "latest_result_document_id": "ahw2evweu8rtjmrv8ocojfm5",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.000151680693181874
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 0.0637021465208047
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24
+        },
+        {
+          "code": "Inference",
+          "status": "emerging",
+          "prob": 0.480077547154417
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.000151680693180768
+        }
+      ]
+    },
+    {
+      "student_ref": "Panit B.",
+      "student_document_id": "oj29gkpz8vuwmxsrvzzkqaqn",
+      "latest_result_document_id": "oxsspr0j3a8qfq2s2vpf5tuz",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_assessed",
+          "prob": null
+        }
+      ]
+    },
+    {
+      "student_ref": "Qadir B.",
+      "student_document_id": "zqp4wrok2uowug6asi1u4mnb",
+      "latest_result_document_id": "ype1galxeebm6v3dw8aqiu87",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_assessed",
+          "prob": null
+        }
+      ]
+    },
+    {
+      "student_ref": "Rosa B.",
+      "student_document_id": "p8dnh8rp6vzp4bb5y6gjx2fn",
+      "latest_result_document_id": "l31jddc7yw5zin2xfp4lzsvr",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_assessed",
+          "prob": null
+        }
+      ]
+    },
+    {
+      "student_ref": "Sunniva B.",
+      "student_document_id": "roidqaw12yjn6ov008oc9mhk",
+      "latest_result_document_id": "dg3t6ajm96eumbqs908wf25s",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Detail",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Gist",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Grammar",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Inference",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_assessed",
+          "prob": null
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_assessed",
+          "prob": null
+        }
+      ]
+    },
+    {
+      "student_ref": "Tenzin B.",
+      "student_document_id": "x9ri6ax951ye18ar2xjt8ryj",
+      "latest_result_document_id": "c4spxfi7zl5igexcqt16c7ch",
+      "attributes": [
+        {
+          "code": "Decoding",
+          "status": "not_yet",
+          "prob": 0.187279271477778
+        },
+        {
+          "code": "Detail",
+          "status": "not_yet",
+          "prob": 0.000151062661993083
+        },
+        {
+          "code": "Gist",
+          "status": "not_yet",
+          "prob": 5.61766994290721e-06
+        },
+        {
+          "code": "Grammar",
+          "status": "not_yet",
+          "prob": 8.97790367742853e-09
+        },
+        {
+          "code": "Inference",
+          "status": "not_yet",
+          "prob": 2.02266387065061e-05
+        },
+        {
+          "code": "Vocab_A2",
+          "status": "not_yet",
+          "prob": 2.84156262580413e-05
+        },
+        {
+          "code": "Vocab_B1",
+          "status": "not_yet",
+          "prob": 0.00407867646121754
+        }
+      ]
+    }
+  ],
+  "heatmap": [
+    {
+      "item_code": "1A",
+      "section": 1,
+      "correct": 12,
+      "responses": 110,
+      "fraction": 0.10909090909090909
+    },
+    {
+      "item_code": "1B",
+      "section": 1,
+      "correct": 40,
+      "responses": 85,
+      "fraction": 0.47058823529411764
+    },
+    {
+      "item_code": "2A",
+      "section": 1,
+      "correct": 11,
+      "responses": 77,
+      "fraction": 0.14285714285714285
+    },
+    {
+      "item_code": "2B",
+      "section": 1,
+      "correct": 28,
+      "responses": 68,
+      "fraction": 0.4117647058823529
+    },
+    {
+      "item_code": "2C",
+      "section": 1,
+      "correct": 24,
+      "responses": 48,
+      "fraction": 0.5
+    },
+    {
+      "item_code": "2D",
+      "section": 1,
+      "correct": 4,
+      "responses": 48,
+      "fraction": 0.08333333333333333
+    },
+    {
+      "item_code": "3A",
+      "section": 1,
+      "correct": 8,
+      "responses": 68,
+      "fraction": 0.11764705882352941
+    },
+    {
+      "item_code": "3B",
+      "section": 1,
+      "correct": 63,
+      "responses": 152,
+      "fraction": 0.4144736842105263
+    },
+    {
+      "item_code": "2F",
+      "section": 2,
+      "correct": 59,
+      "responses": 216,
+      "fraction": 0.27314814814814814
+    },
+    {
+      "item_code": "4A",
+      "section": 2,
+      "correct": 68,
+      "responses": 106,
+      "fraction": 0.6415094339622641
+    },
+    {
+      "item_code": "4B",
+      "section": 2,
+      "correct": 38,
+      "responses": 105,
+      "fraction": 0.3619047619047619
+    },
+    {
+      "item_code": "4D",
+      "section": 2,
+      "correct": 69,
+      "responses": 133,
+      "fraction": 0.518796992481203
+    },
+    {
+      "item_code": "5A",
+      "section": 2,
+      "correct": 37,
+      "responses": 166,
+      "fraction": 0.22289156626506024
+    },
+    {
+      "item_code": "5B",
+      "section": 2,
+      "correct": 28,
+      "responses": 81,
+      "fraction": 0.345679012345679
+    },
+    {
+      "item_code": "5C",
+      "section": 2,
+      "correct": 32,
+      "responses": 104,
+      "fraction": 0.3076923076923077
+    },
+    {
+      "item_code": "6A",
+      "section": 2,
+      "correct": 8,
+      "responses": 104,
+      "fraction": 0.07692307692307693
+    },
+    {
+      "item_code": "6B",
+      "section": 2,
+      "correct": 28,
+      "responses": 75,
+      "fraction": 0.37333333333333335
+    },
+    {
+      "item_code": "2G",
+      "section": 3,
+      "correct": 11,
+      "responses": 93,
+      "fraction": 0.11827956989247312
+    },
+    {
+      "item_code": "7A",
+      "section": 3,
+      "correct": 50,
+      "responses": 86,
+      "fraction": 0.5813953488372093
+    },
+    {
+      "item_code": "7B",
+      "section": 3,
+      "correct": 21,
+      "responses": 65,
+      "fraction": 0.3230769230769231
+    },
+    {
+      "item_code": "7C",
+      "section": 3,
+      "correct": 33,
+      "responses": 52,
+      "fraction": 0.6346153846153846
+    }
+  ],
+  "groups": [
+    {
+      "limiting_attribute": "Decoding",
+      "student_refs": [
+        "Eitan B.",
+        "Farida B.",
+        "Gia B.",
+        "Hamza B.",
+        "Jae-won B.",
+        "Kaveh B.",
+        "Tenzin B."
+      ],
+      "count": 7
+    },
+    {
+      "limiting_attribute": "Detail",
+      "student_refs": [
+        "Amara B."
+      ],
+      "count": 1
+    },
+    {
+      "limiting_attribute": "Inference",
+      "student_refs": [
+        "Dilnoza B.",
+        "Ines B.",
+        "Mihail B.",
+        "Oluwaseun B."
+      ],
+      "count": 4
+    },
+    {
+      "limiting_attribute": "not_yet_assessed",
+      "student_refs": [
+        "Bilal B.",
+        "Chen B.",
+        "Lucia B.",
+        "Nour B.",
+        "Panit B.",
+        "Qadir B.",
+        "Rosa B.",
+        "Sunniva B."
+      ],
+      "count": 8
+    }
+  ]
+}

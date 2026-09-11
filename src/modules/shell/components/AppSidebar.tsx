@@ -13,6 +13,7 @@ import {
   SidebarMenu,
   useSidebar,
 } from '@/modules/design-system';
+import { cn } from '@/lib/utils';
 import { usePathname } from '@/i18n/navigation';
 import { useAuth } from '@/modules/auth';
 import { SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
@@ -26,7 +27,14 @@ import { ACCOUNT_NAV_ITEMS, NAV_ITEMS, TEST_SESSIONS_HREF } from '@/modules/shel
 import { isNavItemActive } from '@/modules/shell/lib/nav-active';
 import { buildNavSections } from '@/modules/shell/lib/nav-sections';
 import { filterNavByParentViews, filterNavByRole } from '@/modules/shell/lib/nav-visible';
-import { RAIL_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
+import { isTeacherFrame } from '@/modules/shell/lib/teacher-frame';
+import {
+  RAIL_CLASSES,
+  TEACHER_FOOTER_RULE_CLASSES,
+  TEACHER_LIVE_DOT_CLASSES,
+  TEACHER_RAIL_CLASSES,
+} from '@/modules/shell/constants/shell-classes.constants';
+import type { ShellSkin } from '@/modules/shell/types/shell.types';
 
 // THE DETACHED RAIL (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:2):
 // `width:248px; background:#FFFFFF; border-radius:24px; box-shadow:0 1px 2px
@@ -47,12 +55,19 @@ import { RAIL_CLASSES } from '@/modules/shell/constants/shell-classes.constants'
 // The entrance is the shell's own (the slice has no motion at all, spec §11.1/§11.5):
 // the card fades and slides in from the frame edge once on mount — transform and
 // opacity only, and nothing at all under prefers-reduced-motion.
+//
+// TEACHER PORTAL V2 (Teacher Portal v2.dc.html:25–53) repaints the card for the
+// teacher only: radius 10, a 1px #ECEEF2 border and no float shadow, a 40px logo, the
+// design's nav states and a ruled user card. isTeacherFrame() is the one gate, and
+// `data-frame` hands it to the page frame (dashboard/layout.tsx).
 function AppSidebar() {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();
   const { user } = useAuth();
   const t = useTranslations('Shell');
   const roleType = user?.role?.type ?? null;
+  const teacherFrame = isTeacherFrame(roleType, pathname);
+  const skin: ShellSkin = teacherFrame ? 'teacher' : 'default';
   // ONE shell, role filtered (A4). The primary list is split into its rendered
   // sections — "Manage" for the parent/school-admin/ops destinations, "Teach"
   // for the teacher's three — and an empty group renders nothing at all, so a
@@ -69,25 +84,27 @@ function AppSidebar() {
   const accountNavItems = filterNavByRole(filterNavByParentViews(ACCOUNT_NAV_ITEMS), roleType);
 
   // teacher/06 — the rail's live dot (Teacher Portal v2.dc.html:34): the
-  // Live-sessions entry pulses while ANY owned class has an open sitting. It
-  // reads the same C-TD-1 derived fields the classes list does — one server
-  // derivation (D-60), so the rail can never disagree with the LIVE NOW badges
-  // — and OP-2 keeps it a real number: the query never runs for a non-teacher
-  // (`enabled`), a failed/in-flight read renders no dot, and the dot is gone on
-  // the next read after the last close.
+  // Live-sessions entry pulses while the teacher has ANY live session — C-TD-1's
+  // `live_sessions`, the list the design itself counts (`allLive`). OP-2 keeps it a
+  // real number: the query never runs for a non-teacher (`enabled`), a
+  // failed/in-flight read renders no dot, and the dot is gone on the next read
+  // after the last close.
   const isTeacher = roleType === TEACHER_ROLE_TYPE;
   const dashboard = useTeacherDashboardQuery(isTeacher);
-  const hasLiveSessions =
-    isTeacher && (dashboard.data?.classes.some((c) => c.open_session_count > 0) ?? false);
+  const hasLiveSessions = isTeacher && (dashboard.data?.live_sessions.length ?? 0) > 0;
 
   // collapsible="none" returns before the primitive's isMobile Sheet branch, so it
   // must stay "icon"; max-md:hidden guards the pre-hydration frame (isMobile is false
   // until the media query subscribes). The Sheet branch ignores className entirely,
   // so none of the detach geometry leaks into the 375px nav.
   return (
-    <Sidebar collapsible="icon" className={RAIL_CLASSES}>
+    <Sidebar
+      collapsible="icon"
+      className={teacherFrame ? TEACHER_RAIL_CLASSES : RAIL_CLASSES}
+      data-frame={teacherFrame ? 'teacher' : undefined}
+    >
       <SidebarHeader className="shrink-0 px-4 pt-7 pb-0 group-data-[collapsible=icon]:px-1">
-        <SidebarLogoLink />
+        <SidebarLogoLink skin={skin} />
         {/* Multi-tenant school switcher (School Admin Portal.dc.html:26–48):
             the school block + "Your schools" menu, for the school_admin rail
             ONLY. Role-gated — every other portal's rail is byte-identical. */}
@@ -106,7 +123,9 @@ function AppSidebar() {
         <nav className="flex flex-1 flex-col">
           {navSections.map((section) => (
             <Fragment key={section.group}>
-              <RailSectionLabel>{t(`sidebar.groups.${section.labelKey}`)}</RailSectionLabel>
+              <RailSectionLabel className={teacherFrame ? 'leading-tight' : undefined}>
+                {t(`sidebar.groups.${section.labelKey}`)}
+              </RailSectionLabel>
               <SidebarMenu className="gap-0.5">
                 {section.items.map((item) => (
                   <SidebarNavItem
@@ -115,13 +134,10 @@ function AppSidebar() {
                     label={t(`nav.${item.labelKey}`)}
                     isActive={isNavItemActive(pathname, item)}
                     onNavigate={() => setOpenMobile(false)}
+                    skin={skin}
                     trailing={
                       item.href === TEST_SESSIONS_HREF && hasLiveSessions ? (
-                        <span
-                          data-slot="rail-live-dot"
-                          aria-hidden="true"
-                          className="ml-auto size-2.5 shrink-0 animate-pulse rounded-full bg-destructive motion-reduce:animate-none group-data-[collapsible=icon]:hidden"
-                        />
+                        <span data-slot="rail-live-dot" aria-hidden="true" className={TEACHER_LIVE_DOT_CLASSES} />
                       ) : undefined
                     }
                   />
@@ -131,7 +147,13 @@ function AppSidebar() {
           ))}
         </nav>
       </SidebarContent>
-      <SidebarFooter className="mt-auto shrink-0 gap-3.5 px-4 pt-3.5 pb-4 group-data-[collapsible=icon]:px-1">
+      <SidebarFooter
+        className={cn(
+          'mt-auto shrink-0 gap-3.5 px-4 pt-3.5 pb-4 group-data-[collapsible=icon]:px-1',
+          teacherFrame && 'gap-0 pt-0',
+        )}
+      >
+        {teacherFrame ? <div aria-hidden="true" className={TEACHER_FOOTER_RULE_CLASSES} /> : null}
         {accountNavItems.length > 0 ? (
           <nav aria-label={t('nav.account')} className="flex flex-col gap-3.5">
             <Separator className="bg-divider" />
@@ -148,7 +170,7 @@ function AppSidebar() {
             </SidebarMenu>
           </nav>
         ) : null}
-        <UserMenu />
+        <UserMenu skin={skin} />
       </SidebarFooter>
     </Sidebar>
   );

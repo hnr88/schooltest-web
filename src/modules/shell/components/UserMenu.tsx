@@ -1,6 +1,6 @@
 'use client';
 
-import { LogOut, Settings } from 'lucide-react';
+import { ChevronUp, LogOut, Settings } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { useRouter } from '@/i18n/navigation';
@@ -15,7 +15,8 @@ import {
 import { getUserInitials } from '@/modules/shell/lib/user-initials';
 import { LABELLED_ROLE_TYPES } from '@/modules/shell/constants/role-label.constants';
 import { STAFF_SETTINGS_HREF } from '@/modules/shell/constants/nav.constants';
-import { USER_CARD_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
+import { USER_MENU_SKIN_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
+import type { ShellSkin } from '@/modules/shell/types/shell.types';
 
 // The rail's USER AREA (.qa/design/spec/01 §1.2, portal--detached-sidebar.html:24-30):
 // `margin-top:14px; background:#F4F6FA; border-radius:16px; padding:12px 14px; gap:11px`
@@ -29,7 +30,10 @@ import { USER_CARD_CLASSES } from '@/modules/shell/constants/shell-classes.const
 // including a missing role while the me query settles — renders no label,
 // never a wrong one (the hardcoded "Parent account" mislabelled every staff
 // role).
-function UserMenu() {
+// `skin="teacher"` (Teacher Portal v2.dc.html:39–52): the design's card — one navy
+// initial, name, role and an up chevron — over a menu that holds Sign out only; the
+// design draws no Settings row for a teacher.
+function UserMenu({ skin = 'default' }: { skin?: ShellSkin }) {
   const t = useTranslations('Shell');
   const router = useRouter();
   const { user, logout } = useAuth();
@@ -38,6 +42,8 @@ function UserMenu() {
     return <Skeleton className="h-15 w-full rounded-panel" />;
   }
 
+  const classes = USER_MENU_SKIN_CLASSES[skin];
+  const isTeacherSkin = skin === 'teacher';
   const roleType = user.role?.type ?? null;
   const roleLabel =
     roleType !== null && LABELLED_ROLE_TYPES.includes(roleType) ? t(`userMenu.roles.${roleType}`) : null;
@@ -63,27 +69,36 @@ function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger aria-label={t('topbar.userMenuLabel')} className={USER_CARD_CLASSES}>
-        <span
-          aria-hidden="true"
-          className="grid size-9 shrink-0 place-items-center rounded-full bg-navy-900 text-caption font-semibold text-white"
-        >
-          {getUserInitials(user.username)}
+      <DropdownMenuTrigger aria-label={t('topbar.userMenuLabel')} className={classes.card}>
+        <span aria-hidden="true" className={classes.avatar}>
+          {getUserInitials(user.username, isTeacherSkin ? 1 : 2)}
         </span>
-        <span className="flex min-w-0 flex-col gap-px group-data-[collapsible=icon]:hidden">
-          <span className="truncate text-body-sm font-semibold text-foreground">
-            {user.username}
-          </span>
-          {roleLabel !== null ? <span className="truncate text-xs text-body">{roleLabel}</span> : null}
+        <span className={classes.text}>
+          <span className={classes.name}>{user.username}</span>
+          {roleLabel !== null ? <span className={classes.role}>{roleLabel}</span> : null}
         </span>
+        {isTeacherSkin ? (
+          <ChevronUp
+            aria-hidden="true"
+            strokeWidth={2}
+            className="size-[15px] shrink-0 text-[#6B7280] group-data-[collapsible=icon]:hidden"
+          />
+        ) : null}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" side="top" sideOffset={8} className="w-56">
-        <DropdownMenuItem onClick={() => router.push(settingsHref)}>
-          <Settings aria-hidden="true" />
-          {t('userMenu.settings')}
-        </DropdownMenuItem>
-        <DropdownMenuItem variant="destructive" onClick={handleSignOut}>
-          <LogOut aria-hidden="true" />
+      <DropdownMenuContent
+        align="start"
+        side="top"
+        sideOffset={isTeacherSkin ? 10 : 8}
+        className={classes.content}
+      >
+        {isTeacherSkin ? null : (
+          <DropdownMenuItem onClick={() => router.push(settingsHref)}>
+            <Settings aria-hidden="true" />
+            {t('userMenu.settings')}
+          </DropdownMenuItem>
+        )}
+        <DropdownMenuItem variant="destructive" className={classes.signOut} onClick={handleSignOut}>
+          <LogOut aria-hidden="true" strokeWidth={isTeacherSkin ? 1.8 : undefined} />
           {t('userMenu.signOut')}
         </DropdownMenuItem>
       </DropdownMenuContent>

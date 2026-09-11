@@ -565,6 +565,57 @@
   }
 }
 
+/* Teacher Portal v2 live dots (`Teacher Portal v2.dc.html:17–19`): `om-pulse`
+   fades a dot to .35 and back — 1.4s on badges and the rail, 1.6s (`-slow`) on
+   the live strip and join code; `om-pulse-ring` expands a red ring around the
+   class header's "Sitting now" dot. Opacity/shadow only; reduced motion stops
+   both. */
+@keyframes om-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes om-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 oklch(0.576 0.209 29.48 / 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 6px oklch(0.576 0.209 29.48 / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.576 0.209 29.48 / 0);
+  }
+}
+
+@utility animate-om-pulse {
+  animation: om-pulse 1.4s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility animate-om-pulse-slow {
+  animation: om-pulse 1.6s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility animate-om-pulse-ring {
+  animation: om-pulse-ring 1.5s ease-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
 /* Canonical loading sweep (`st-shimmer`, 1.4s ease infinite) — a moving sheen on
    a static base, so it degrades to the flat base tint under reduced motion. */
 @keyframes st-shimmer {

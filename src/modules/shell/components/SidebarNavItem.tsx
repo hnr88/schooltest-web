@@ -3,7 +3,10 @@
 import { SidebarMenuButton, SidebarMenuItem } from '@/modules/design-system';
 import { Link } from '@/i18n/navigation';
 import type { NavItem } from '@/modules/shell/types/shell.types';
-import { NAV_ITEM_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
+import {
+  NAV_ITEM_CLASSES,
+  TEACHER_NAV_ITEM_CLASSES,
+} from '@/modules/shell/constants/shell-classes.constants';
 
 import type { SidebarNavItemProps } from '@/modules/shell/types/shell.types';
 
@@ -34,14 +37,24 @@ import type { SidebarNavItemProps } from '@/modules/shell/types/shell.types';
 //
 // Collapsed rail (the slice has no collapsed state at all — defined here once): the
 // same solid active slab squared to 40x40 with the 18px icon centred.
-function SidebarNavItem({ item, label, isActive, onNavigate, trailing }: SidebarNavItemProps) {
+//
+// `skin="teacher"` (Teacher Portal v2): the same geometry with the design's own
+// states — the light #EEF1F6 active tile instead of the navy slab.
+function SidebarNavItem({
+  item,
+  label,
+  isActive,
+  onNavigate,
+  trailing,
+  skin = 'default',
+}: SidebarNavItemProps) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         isActive={isActive}
         tooltip={label}
         aria-label={label}
-        className={NAV_ITEM_CLASSES}
+        className={skin === 'teacher' ? TEACHER_NAV_ITEM_CLASSES : NAV_ITEM_CLASSES}
         render={<Link href={item.href} onClick={onNavigate} />}
       >
         <item.icon aria-hidden="true" strokeWidth={1.8} />

@@ -708,8 +708,8 @@
       "opsSettings": "Tetapan platform",
       "account": "Akaun",
       "teacherDashboard": "Papan pemuka",
-      "testSessions": "Sesi ujian",
-      "results": "Keputusan"
+      "testSessions": "Sesi langsung",
+      "results": "Kelas"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",

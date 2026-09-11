@@ -708,8 +708,8 @@
       "opsSettings": "Cài đặt nền tảng",
       "account": "Tài khoản",
       "teacherDashboard": "Bảng điều khiển",
-      "testSessions": "Phiên kiểm tra",
-      "results": "Kết quả"
+      "testSessions": "Phiên trực tiếp",
+      "results": "Lớp học"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",

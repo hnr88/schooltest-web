@@ -708,8 +708,8 @@
       "opsSettings": "Platform settings",
       "account": "Account",
       "teacherDashboard": "Dashboard",
-      "testSessions": "Test sessions",
-      "results": "Results"
+      "testSessions": "Live sessions",
+      "results": "Classes"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",

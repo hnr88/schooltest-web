@@ -84,6 +84,8 @@ export interface ComingSoonPanelProps {
   title: string;
   description: string;
   showSkillChips?: boolean;
+  /** Padding differs per scope (class 44/24/20, Exit predictions 44/24/30). */
+  className?: string;
 }
 
 /** The header class select, over the same cached C-TD-1 `classes[]` the screen reads. */

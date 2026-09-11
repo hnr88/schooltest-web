@@ -3,10 +3,12 @@
 import { useTranslations } from 'next-intl';
 
 import { SidebarTrigger, TopbarSearchTrigger } from '@/modules/design-system';
+import { useAuth } from '@/modules/auth';
 import { parentViewsEnabled } from '@/modules/flags';
 import { SchoolSearchLauncher } from '@/modules/school-command';
 import { TopbarBreadcrumb } from '@/modules/shell/components/TopbarBreadcrumb';
 import { SEARCH_HREF } from '@/modules/shell/constants/nav.constants';
+import { isTeacherFrame } from '@/modules/shell/lib/teacher-frame';
 import { NotificationBell } from '@/modules/notifications';
 import { BELL_SKIN_CLASSES, CONTROL_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
 import { usePathname } from '@/i18n/navigation';
@@ -26,6 +28,7 @@ import { usePathname } from '@/i18n/navigation';
 function AppTopbar() {
   const t = useTranslations('Shell');
   const pathname = usePathname();
+  const { user } = useAuth();
   // Task 025: inside /dashboard/school the topbar carries the school portal's
   // OWN search — the ⌘K global Search dialog (School Admin Portal artboard
   // shell). Strictly pathname-gated so every other portal is untouched.
@@ -34,9 +37,20 @@ function AppTopbar() {
   // offline strip and no chrome row — the design draws no topbar, breadcrumb,
   // search field or bell for ops (census: topbar/breadcrumb/notification/bell
   // → 0). GATED, never deleted: the crumb trail and bell keep rendering for
-  // the parent, school-admin and teacher portals, and SidebarTrigger stays
+  // the parent and school-admin portals, and SidebarTrigger stays
   // unconditional because it is the only opener of the rail sheet below md.
   const inOpsPortal = pathname.startsWith('/dashboard/ops');
+
+  // Teacher Portal v2 (Teacher Portal v2.dc.html:23–56) draws NO topbar: no crumb,
+  // search or bell. Below md the rail is a Sheet whose only opener is this trigger,
+  // so the teacher keeps the trigger there and gets nothing at all from md up.
+  if (isTeacherFrame(user?.role?.type ?? null, pathname)) {
+    return (
+      <header className="flex shrink-0 items-center px-4 sm:px-6 md:hidden">
+        <SidebarTrigger aria-label={t('topbar.toggleNav')} className={CONTROL_CLASSES} />
+      </header>
+    );
+  }
 
   return (
     <header className="flex shrink-0 animate-in items-center gap-3 px-4 duration-300 ease-out-expo fade-in slide-in-from-top-2 motion-reduce:animate-none sm:px-6 lg:px-8">

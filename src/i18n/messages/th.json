@@ -708,8 +708,8 @@
       "opsSettings": "การตั้งค่าแพลตฟอร์ม",
       "account": "บัญชี",
       "teacherDashboard": "แดชบอร์ด",
-      "testSessions": "รอบสอบ",
-      "results": "ผลการสอบ"
+      "testSessions": "รอบสอบสด",
+      "results": "ชั้นเรียน"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",

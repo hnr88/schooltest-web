@@ -1,0 +1,77 @@
+import { LayoutGrid, List } from 'lucide-react';
+
+import type {
+  TeacherButtonSize,
+  TeacherButtonTone,
+} from '@/modules/teacher/types/teacher-kit-controls.types';
+
+/**
+ * Teacher Portal v2 kit — control classes, drawn to the design's values
+ * (research/design-surfaces.md §8.4). The theme's `rounded-lg`/`rounded-xl`
+ * are 10/14px here, so every radius is written in pixels.
+ */
+
+/** The kit's keyboard focus ring (the design draws none; WCAG 2.4.7 needs one). */
+export const KIT_FOCUS_RING =
+  'outline-none focus-visible:ring-2 focus-visible:ring-navy-900/25 focus-visible:ring-offset-1';
+
+export const TEACHER_BUTTON_TONES: Record<TeacherButtonTone, string> = {
+  primary: 'border-transparent bg-navy-900 text-white hover:bg-navy-800',
+  outline: 'border-[#E5E7EB] bg-white text-navy-900 hover:border-navy-900 hover:bg-[#FAFBFC]',
+  secondary: 'border-[#E5E7EB] bg-white text-[#374151] hover:bg-[#F5F6F8]',
+  ghost: 'border-transparent bg-transparent text-[#6B7280] hover:bg-transparent hover:text-[#DC2626]',
+  dangerOutline: 'border-[#E9C4C0] bg-white text-[#B42318] hover:bg-[#FDEEEC]',
+  inverse: 'border-transparent bg-white text-navy-900 hover:bg-[#F5F6F8]',
+};
+
+export const TEACHER_BUTTON_SIZES: Record<TeacherButtonSize, string> = {
+  xs: 'h-8 gap-1.5 rounded-[8px] px-3 text-[12.5px] font-semibold',
+  sm: 'h-[34px] gap-2 rounded-[9px] px-3.5 text-[13px] font-medium',
+  md: 'h-[38px] gap-2 rounded-[9px] px-4 text-[13.5px] font-medium',
+  lg: 'h-10 gap-2 rounded-[10px] px-4 text-[13.5px] font-semibold',
+  xl: 'h-[42px] gap-2 rounded-[8px] px-[18px] text-[13.5px] font-semibold',
+  '2xl': 'h-[46px] gap-[9px] rounded-[10px] px-5 text-[14.5px] font-semibold',
+};
+
+export const PILL_SEARCH_VARIANTS: Record<'grey' | 'white', { root: string; icon: string }> = {
+  grey: {
+    root: 'h-9 gap-[9px] rounded-[9px] border-transparent bg-[#F5F6F8] px-3 hover:border-[#E5E7EB]',
+    icon: 'size-3.5 text-[#9CA3AF]',
+  },
+  white: {
+    root: 'gap-2.5 rounded-[12px] border-[#ECEEF2] bg-white px-[15px]',
+    icon: 'size-[15px] text-[#6B7280]',
+  },
+};
+
+export const PILL_SEARCH_HEIGHTS: Record<'md' | 'lg', string> = {
+  md: 'h-10',
+  lg: 'h-[42px]',
+};
+
+export const PILL_SELECT_SIZES: Record<'sm' | 'md' | 'lg' | 'xl', string> = {
+  sm: 'h-9 rounded-[9px] border-[#E5E7EB] px-[11px] text-[13.5px] font-medium text-[#374151]',
+  md: 'h-[38px] rounded-[9px] border-[#E5E7EB] pr-8 pl-[13px] text-[13px] font-semibold text-navy-900',
+  lg: 'h-10 rounded-[10px] border-[#ECEEF2] px-3 text-[13.5px] font-semibold text-navy-900',
+  xl: 'h-[42px] rounded-[12px] border-[#ECEEF2] px-[14px] text-[13.5px] font-medium text-navy-900',
+};
+
+export const VIEW_TOGGLE_OPTIONS = [
+  { value: 'tiles', Icon: LayoutGrid },
+  { value: 'list', Icon: List },
+] as const;
+
+export const VIEW_TOGGLE_ACTIVE = 'bg-white text-navy-900 shadow-[0_1px_2px_rgba(14,35,80,0.12)]';
+export const VIEW_TOGGLE_IDLE = 'bg-transparent text-[#9CA3AF] hover:text-navy-900';
+
+export const FILTER_PILL_SIZES: Record<'sm' | 'md', string> = {
+  sm: 'px-[15px] py-2',
+  md: 'h-[34px] px-3.5',
+};
+
+export const FILTER_PILL_ACTIVE = 'border-navy-900 bg-navy-900 font-semibold text-white';
+export const FILTER_PILL_IDLE =
+  'border-[#E4E9F2] bg-white font-medium text-[#3D4A5C] hover:border-navy-900';
+
+export const BACK_BUTTON_CLASS =
+  'mr-0.5 inline-flex h-[30px] items-center gap-[5px] rounded-[8px] border border-[#E5E7EB] bg-[#F3F5F9] pr-[11px] pl-2 text-[12.5px] font-semibold text-navy-900 transition-colors hover:bg-[#E8EEFB] motion-reduce:transition-none';

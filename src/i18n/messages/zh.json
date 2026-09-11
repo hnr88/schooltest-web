@@ -708,8 +708,8 @@
       "opsSettings": "平台设置",
       "account": "账户",
       "teacherDashboard": "控制面板",
-      "testSessions": "测验场次",
-      "results": "成绩"
+      "testSessions": "实时场次",
+      "results": "班级"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",

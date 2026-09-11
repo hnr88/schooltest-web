@@ -32,10 +32,15 @@ export const metadata: Metadata = { robots: NOINDEX_ROBOTS };
 // SchoolAdminGuard / TeacherGuard in their own layouts. The well moved from the
 // scroll container to the frame itself — with the rail detached, the background
 // has to run BEHIND it.
+//
+// TEACHER PORTAL V2 (Teacher Portal v2.dc.html:13, :55) repaints this frame for the
+// teacher only: a #F7F8FA page and the main column's `padding:0 4px 8px 8px`. The
+// rail marks itself `data-frame="teacher"` (AppSidebar, the one role gate), so both
+// are CSS :has() selectors and every other role's frame is unchanged.
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider
-      className="h-svh min-h-0 overflow-hidden bg-surface-well"
+      className="h-svh min-h-0 overflow-hidden bg-surface-well has-[[data-frame=teacher]]:bg-[#F7F8FA]"
       style={{ '--sidebar-width': '296px', '--sidebar-width-icon': '96px' } as CSSProperties}
     >
       <AppSidebar />
@@ -44,7 +49,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <AppTopbar />
           <div
             data-slot="dashboard-content"
-            className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scroll-smooth motion-reduce:scroll-auto"
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scroll-smooth motion-reduce:scroll-auto group-has-[[data-frame=teacher]]/sidebar-wrapper:pr-1 group-has-[[data-frame=teacher]]/sidebar-wrapper:pb-2 group-has-[[data-frame=teacher]]/sidebar-wrapper:pl-2"
           >
             {children}
           </div>

@@ -92,6 +92,21 @@ export interface SidebarNavItemProps {
    * presentation: the data behind it stays with the caller.
    */
   trailing?: ReactNode;
+  skin?: ShellSkin;
+}
+
+// Which frame the shell chrome paints. 'teacher' is Teacher Portal v2 (the bordered
+// rail, no topbar); every other role keeps 'default'.
+export type ShellSkin = 'default' | 'teacher';
+
+export interface UserMenuSkinClasses {
+  card: string;
+  avatar: string;
+  text: string;
+  name: string;
+  role: string;
+  content: string;
+  signOut?: string;
 }
 
 export interface RecordCrumbState {

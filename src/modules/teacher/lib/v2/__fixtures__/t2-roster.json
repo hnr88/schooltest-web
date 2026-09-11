@@ -1,0 +1,3915 @@
+[
+  {
+    "student": {
+      "document_id": "nz804sr1odenbnht9pfgmo3v",
+      "name": "Jae-won Baptiste",
+      "initials": "JB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "nh1b8l69tgb6235uog95897f",
+      "session_document_id": "f2xcnfxpu44ut8aneu7l13r3",
+      "student_document_id": "nz804sr1odenbnht9pfgmo3v",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 38,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 56,
+      "items_total": 94,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 29,
+          "se": 13.8,
+          "status": "not_yet",
+          "prob": 0.075647253977231,
+          "prob_se": 0.264432877953811,
+          "items_seen": 8,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24,
+          "prob_se": 1.16096056468762e-12,
+          "items_seen": 20,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 0.000151680693181874,
+          "prob_se": 0.0123149375211241,
+          "items_seen": 42,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15,
+          "prob_se": 3.32153482073822e-08,
+          "items_seen": 16,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151680693180768,
+          "prob_se": 0.0123149375210792,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "insufficient_evidence": true,
+          "items_seen": 2
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 21,
+          "pct": 50
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 14,
+          "pct": 33
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 5,
+          "pct": 12
+        },
+        {
+          "type": "literal_match",
+          "count": 2,
+          "pct": 5
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": 38,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": null,
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.125,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "ug1btz3nvklcx06aqw915wzw",
+      "name": "Lucia Baptiste",
+      "initials": "LB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "cx91eyf734emnri8lz38g5xu",
+      "session_document_id": "q9jevcxzjry3idkhaxuclwiy",
+      "student_document_id": "ug1btz3nvklcx06aqw915wzw",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": null,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": "not_assessed",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 0,
+      "items_total": 66,
+      "duration_minutes": 0,
+      "attributes": {
+        "Gist": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "items_seen": 0
+        }
+      },
+      "vocab": {
+        "blended": null,
+        "status": "not_assessed",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": null
+        },
+        "single_strand": null
+      },
+      "error_patterns": [],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 44
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "utdw3hopi2sofw1f2gewjs04",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "gc7mk2jcd1x2i6adsmmlfq3e",
+      "name": "Bilal Baptiste",
+      "initials": "BB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "k2zuzs50pqb4ezxhdaoviapv",
+      "session_document_id": "vklnw40zy1k41wv8wk3xhx9b",
+      "student_document_id": "gc7mk2jcd1x2i6adsmmlfq3e",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 54,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": null,
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 3,
+      "items_total": 66,
+      "duration_minutes": 1,
+      "attributes": {
+        "Gist": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "insufficient_evidence": true,
+          "items_seen": 3
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "items_seen": 0
+        }
+      },
+      "vocab": {
+        "blended": null,
+        "status": "not_assessed",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": null
+        },
+        "single_strand": null
+      },
+      "error_patterns": [],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": 44,
+          "attributes": {
+            "Decoding": 26,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 54,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "tfrtieitmho696tul7a8pnoi",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "zfia18l6ps0q2hed4f3ts2k2",
+      "name": "Amara Baptiste",
+      "initials": "AB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "ju10dv80g8syf4rt7n2a4umh",
+      "session_document_id": "gufmfot7m3xnx8s8f8qqcbqh",
+      "student_document_id": "zfia18l6ps0q2hed4f3ts2k2",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 42,
+        "provisional_transform": true,
+        "delta": 2,
+        "delta_reliable": true,
+        "delta_display": "steady"
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": null,
+      "gate": {
+        "passed": false,
+        "domain_score": 47,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 65,
+      "items_total": 66,
+      "duration_minutes": 3,
+      "attributes": {
+        "Gist": {
+          "domain_score": 29,
+          "se": 12.7,
+          "status": "not_yet",
+          "prob": 0.0995644454600829,
+          "prob_se": 0.299418380632033,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Detail": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 0.000136688173033573,
+          "prob_se": 0.0116905726710425,
+          "items_seen": 13,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151661287321585,
+          "prob_se": 0.0123141498356774,
+          "items_seen": 9,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Inference": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 1.86768878651532e-05,
+          "prob_se": 0.00432163615301114,
+          "items_seen": 11,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": 0,
+        "delta_reliable": false,
+        "delta_display": "steady",
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": "b1"
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 13,
+          "pct": 36
+        },
+        {
+          "type": "literal_match",
+          "count": 11,
+          "pct": 31
+        },
+        {
+          "type": "overinference",
+          "count": 8,
+          "pct": 22
+        },
+        {
+          "type": "world_knowledge",
+          "count": 4,
+          "pct": 11
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 42,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": 25,
+            "Grammar": null,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 47
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 42,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": 25,
+            "Grammar": null,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 47
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": 25,
+            "Grammar": null,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": 25,
+            "Grammar": null,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 40
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": 42,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": 25,
+            "Grammar": null,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 47
+          }
+        }
+      ],
+      "previous_result_document_id": "rlmzv833mdjyw50v6cimc8m8",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": 0
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "pww9v4axu1r0uwcm76n16e0v",
+      "name": "Oluwaseun Baptiste",
+      "initials": "OB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "ahw2evweu8rtjmrv8ocojfm5",
+      "session_document_id": "nayi2tco6fsxkxtht4ote8u8",
+      "student_document_id": "pww9v4axu1r0uwcm76n16e0v",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 38,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 59,
+      "items_total": 94,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 28,
+          "se": 11.3,
+          "status": "not_yet",
+          "prob": 0.0637021465208047,
+          "prob_se": 0.244221585961288,
+          "items_seen": 10,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "insufficient_evidence": true,
+          "items_seen": 1
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24,
+          "prob_se": 1.16096056468762e-12,
+          "items_seen": 20,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 0.000151680693181874,
+          "prob_se": 0.0123149375211241,
+          "items_seen": 42,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15,
+          "prob_se": 3.32153482073822e-08,
+          "items_seen": 16,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151680693180768,
+          "prob_se": 0.0123149375210792,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "domain_score": 49,
+          "se": 25.5,
+          "status": "emerging",
+          "prob": 0.480077547154417,
+          "prob_se": 0.499602938214554,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 21,
+          "pct": 48
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 14,
+          "pct": 32
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 5,
+          "pct": 11
+        },
+        {
+          "type": "literal_match",
+          "count": 3,
+          "pct": 7
+        },
+        {
+          "type": "overinference",
+          "count": 1,
+          "pct": 2
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": 38,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 28,
+            "Detail": null,
+            "Inference": 49,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": null,
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.125,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "qhpesgsxvvejpx433eggqc8y",
+      "name": "Mihail Baptiste",
+      "initials": "MB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "eme21h0k6amgb63nsxgk97vb",
+      "session_document_id": "hvv4rpjg9w4jw4kp4jrudxlg",
+      "student_document_id": "qhpesgsxvvejpx433eggqc8y",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 38,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 59,
+      "items_total": 94,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 28,
+          "se": 11.3,
+          "status": "not_yet",
+          "prob": 0.0637021465208047,
+          "prob_se": 0.244221585961288,
+          "items_seen": 10,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "insufficient_evidence": true,
+          "items_seen": 1
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24,
+          "prob_se": 1.16096056468762e-12,
+          "items_seen": 20,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 0.000151680693181874,
+          "prob_se": 0.0123149375211241,
+          "items_seen": 42,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15,
+          "prob_se": 3.32153482073822e-08,
+          "items_seen": 16,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151680693180768,
+          "prob_se": 0.0123149375210792,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "domain_score": 49,
+          "se": 25.5,
+          "status": "emerging",
+          "prob": 0.480077547154417,
+          "prob_se": 0.499602938214554,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 21,
+          "pct": 48
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 14,
+          "pct": 32
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 5,
+          "pct": 11
+        },
+        {
+          "type": "literal_match",
+          "count": 3,
+          "pct": 7
+        },
+        {
+          "type": "overinference",
+          "count": 1,
+          "pct": 2
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": 38,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 28,
+            "Detail": null,
+            "Inference": 49,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": null,
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.125,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "oj29gkpz8vuwmxsrvzzkqaqn",
+      "name": "Panit Baptiste",
+      "initials": "PB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "oxsspr0j3a8qfq2s2vpf5tuz",
+      "session_document_id": "va57xmmdwurrvi4fodjb7f30",
+      "student_document_id": "oj29gkpz8vuwmxsrvzzkqaqn",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": null,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": "not_assessed",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 0,
+      "items_total": 66,
+      "duration_minutes": 0,
+      "attributes": {
+        "Gist": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "items_seen": 0
+        }
+      },
+      "vocab": {
+        "blended": null,
+        "status": "not_assessed",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": null
+        },
+        "single_strand": null
+      },
+      "error_patterns": [],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 44
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "j0dg0iiluwi7diil30t1xux3",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "zqp4wrok2uowug6asi1u4mnb",
+      "name": "Qadir Baptiste",
+      "initials": "QB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "ype1galxeebm6v3dw8aqiu87",
+      "session_document_id": "o1eugempwsa93fsqmls6twdu",
+      "student_document_id": "zqp4wrok2uowug6asi1u4mnb",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": null,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": "not_assessed",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 0,
+      "items_total": 66,
+      "duration_minutes": 1,
+      "attributes": {
+        "Gist": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "items_seen": 0
+        }
+      },
+      "vocab": {
+        "blended": null,
+        "status": "not_assessed",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": null
+        },
+        "single_strand": null
+      },
+      "error_patterns": [],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": 38,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 28,
+            "Detail": null,
+            "Inference": 49,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "ac597nzmveesoz957y3ej4p5",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "x9ri6ax951ye18ar2xjt8ryj",
+      "name": "Tenzin Baptiste",
+      "initials": "TB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "c4spxfi7zl5igexcqt16c7ch",
+      "session_document_id": "aqximycwfaz6lr1dzd7sswls",
+      "student_document_id": "x9ri6ax951ye18ar2xjt8ryj",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 37,
+        "provisional_transform": true,
+        "delta": 0,
+        "delta_reliable": false,
+        "delta_display": "steady"
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": false,
+        "domain_score": 50,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 66,
+      "items_total": 66,
+      "duration_minutes": 8,
+      "attributes": {
+        "Gist": {
+          "domain_score": 25,
+          "se": 0.1,
+          "status": "not_yet",
+          "prob": 5.61766994290721e-06,
+          "prob_se": 0.00237015577224191,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Detail": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 0.000151062661993083,
+          "prob_se": 0.0122898267711646,
+          "items_seen": 13,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 8.97790367742853e-09,
+          "prob_se": 9.47517999661525e-05,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Decoding": {
+          "domain_score": 28,
+          "se": 7.2,
+          "status": "not_yet",
+          "prob": 0.187279271477778,
+          "prob_se": 0.390135548178489,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0.3,
+          "status": "not_yet",
+          "prob": 2.84156262580413e-05,
+          "prob_se": 0.00533055520656392,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 4.1,
+          "status": "not_yet",
+          "prob": 0.00407867646121754,
+          "prob_se": 0.0637341420240537,
+          "items_seen": 9,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        },
+        "Inference": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 2.02266387065061e-05,
+          "prob_se": 0.00449735806775408,
+          "items_seen": 11,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "not_yet",
+          "band_after": "not_yet"
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": 0,
+        "delta_reliable": false,
+        "delta_display": "steady",
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 15,
+          "pct": 31
+        },
+        {
+          "type": "literal_match",
+          "count": 12,
+          "pct": 25
+        },
+        {
+          "type": "overinference",
+          "count": 9,
+          "pct": 19
+        },
+        {
+          "type": "world_knowledge",
+          "count": 6,
+          "pct": 13
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 4,
+          "pct": 8
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 2,
+          "pct": 4
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 37,
+          "attributes": {
+            "Decoding": 28,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 25,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 53
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 37,
+          "attributes": {
+            "Decoding": 28,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 25,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 53
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": 37,
+          "attributes": {
+            "Decoding": 28,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 25,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 50
+          }
+        }
+      ],
+      "previous_result_document_id": "hzrkyb4y8hiio0z1c0bcjogp",
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.16666666666666666,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": 0.25
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "t9ad3ja7xwgdcnbchtiuqqta",
+      "name": "Gia Baptiste",
+      "initials": "GB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "r6aqv24s6ngsfs1svr9uz894",
+      "session_document_id": "wfwhgy0lei3jwlkm0bc7lfhw",
+      "student_document_id": "t9ad3ja7xwgdcnbchtiuqqta",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 38,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 56,
+      "items_total": 94,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 29,
+          "se": 13.8,
+          "status": "not_yet",
+          "prob": 0.075647253977231,
+          "prob_se": 0.264432877953811,
+          "items_seen": 8,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24,
+          "prob_se": 1.16096056468762e-12,
+          "items_seen": 20,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 0.000151680693181874,
+          "prob_se": 0.0123149375211241,
+          "items_seen": 42,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15,
+          "prob_se": 3.32153482073822e-08,
+          "items_seen": 16,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151680693180768,
+          "prob_se": 0.0123149375210792,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "insufficient_evidence": true,
+          "items_seen": 2
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 21,
+          "pct": 50
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 14,
+          "pct": 33
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 5,
+          "pct": 12
+        },
+        {
+          "type": "literal_match",
+          "count": 2,
+          "pct": 5
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": 38,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": null,
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.125,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "nkrfim7y4f7hllcyfaji7jft",
+      "name": "Hamza Baptiste",
+      "initials": "HB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "lhytqw21h3lwa5vo5jpiau8i",
+      "session_document_id": "w6fjqanr2a7q39mdyj9ma53v",
+      "student_document_id": "nkrfim7y4f7hllcyfaji7jft",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 38,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 56,
+      "items_total": 94,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 29,
+          "se": 13.8,
+          "status": "not_yet",
+          "prob": 0.075647253977231,
+          "prob_se": 0.264432877953811,
+          "items_seen": 8,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24,
+          "prob_se": 1.16096056468762e-12,
+          "items_seen": 20,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 0.000151680693181874,
+          "prob_se": 0.0123149375211241,
+          "items_seen": 42,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15,
+          "prob_se": 3.32153482073822e-08,
+          "items_seen": 16,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151680693180768,
+          "prob_se": 0.0123149375210792,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "insufficient_evidence": true,
+          "items_seen": 2
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 21,
+          "pct": 50
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 14,
+          "pct": 33
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 5,
+          "pct": 12
+        },
+        {
+          "type": "literal_match",
+          "count": 2,
+          "pct": 5
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": 38,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": null,
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.125,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "roidqaw12yjn6ov008oc9mhk",
+      "name": "Sunniva Baptiste",
+      "initials": "SB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "dg3t6ajm96eumbqs908wf25s",
+      "session_document_id": "ib5v24n15f2aavgk6vf1hp37",
+      "student_document_id": "roidqaw12yjn6ov008oc9mhk",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": null,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": "not_assessed",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 0,
+      "items_total": 66,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "items_seen": 0
+        }
+      },
+      "vocab": {
+        "blended": null,
+        "status": "not_assessed",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": null
+        },
+        "single_strand": null
+      },
+      "error_patterns": [],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "l24033adnvn5z6ck3eeowz5o",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "cxjfszn4s2domw78yrn3ze7i",
+      "name": "Dilnoza Baptiste",
+      "initials": "DB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "gdijynxot3d31d0pt053jv37",
+      "session_document_id": "jrtbfs4p5dadqy3tb4n8x36u",
+      "student_document_id": "cxjfszn4s2domw78yrn3ze7i",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 41,
+        "provisional_transform": true,
+        "delta": -43,
+        "delta_reliable": true,
+        "delta_display": "-45"
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 39,
+      "items_total": 66,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 28,
+          "se": 10.9,
+          "status": "not_yet",
+          "prob": 0.0637021465208048,
+          "prob_se": 0.244221585961288,
+          "items_seen": 10,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "secure",
+          "band_after": "not_yet"
+        },
+        "Detail": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 0.000151659161864093,
+          "prob_se": 0.0123140635601216,
+          "items_seen": 9,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "secure",
+          "band_after": "not_yet"
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 2.95727650525192e-07,
+          "prob_se": 0.000543808388194177,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "secure",
+          "band_after": "not_yet"
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 1.7,
+          "status": "not_yet",
+          "prob": 0.00849578726040759,
+          "prob_se": 0.0917802204139513,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "secure",
+          "band_after": "not_yet"
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 3.49513116964463e-05,
+          "prob_se": 0.0059118601220138,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "secure",
+          "band_after": "not_yet"
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151659161864094,
+          "prob_se": 0.0123140635601217,
+          "items_seen": 9,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "secure",
+          "band_after": "not_yet"
+        },
+        "Inference": {
+          "domain_score": 49,
+          "se": 25.5,
+          "status": "emerging",
+          "prob": 0.480077547154417,
+          "prob_se": 0.499602938214554,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": "band_movement",
+          "band_before": "secure",
+          "band_after": "emerging"
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": -65,
+        "delta_reliable": true,
+        "delta_display": "-65",
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 11,
+          "pct": 41
+        },
+        {
+          "type": "literal_match",
+          "count": 8,
+          "pct": 30
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 3,
+          "pct": 11
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 3,
+          "pct": 11
+        },
+        {
+          "type": "overinference",
+          "count": 2,
+          "pct": 7
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 76,
+          "attributes": {
+            "Decoding": 90,
+            "Vocabulary": 90,
+            "Grammar": 90,
+            "Gist": 84,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 84,
+          "attributes": {
+            "Decoding": 90,
+            "Vocabulary": 90,
+            "Grammar": 90,
+            "Gist": 90,
+            "Detail": 90,
+            "Inference": 90,
+            "Critical": 86
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 41,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 28,
+            "Detail": 25,
+            "Inference": 49,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "v7x6mpib694x0majp6551ugg",
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.3333333333333333,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "qwoxudb9mkq5ar6044wy6gmu",
+      "name": "Chen Baptiste",
+      "initials": "CB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "isrggthwhtpn33yn7s5xu8w8",
+      "session_document_id": "ewgf01swmhqyxy9fvvkrx4fo",
+      "student_document_id": "qwoxudb9mkq5ar6044wy6gmu",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": null,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": "not_assessed",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 0,
+      "items_total": 66,
+      "duration_minutes": 73,
+      "attributes": {
+        "Gist": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "items_seen": 0
+        }
+      },
+      "vocab": {
+        "blended": null,
+        "status": "not_assessed",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": null
+        },
+        "single_strand": null
+      },
+      "error_patterns": [],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 39,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 41,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 43
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 41,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 43
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 73,
+          "attributes": {
+            "Decoding": 90,
+            "Vocabulary": 90,
+            "Grammar": 90,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "r5sx37duuopdk7wbew5qvvpv",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "p15b2qwpx7j0s7ky6eunl1hc",
+      "name": "Eitan Baptiste",
+      "initials": "EB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "wqbdhhdzoxbvocul21ic2iyb",
+      "session_document_id": "dd820ggw14nkbtn8dmw0i1ht",
+      "student_document_id": "p15b2qwpx7j0s7ky6eunl1hc",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 40,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": false,
+        "domain_score": 60,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 55,
+      "items_total": 66,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 29,
+          "se": 12.7,
+          "status": "not_yet",
+          "prob": 0.0995644454600829,
+          "prob_se": 0.299418380632033,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 0.000136688173033573,
+          "prob_se": 0.0116905726710425,
+          "items_seen": 13,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 2.95727650525192e-07,
+          "prob_se": 0.000543808388194177,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 1.7,
+          "status": "not_yet",
+          "prob": 0.00849578726040759,
+          "prob_se": 0.0917802204139513,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 3.49513116964463e-05,
+          "prob_se": 0.0059118601220138,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151661287321585,
+          "prob_se": 0.0123141498356774,
+          "items_seen": 9,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 1.86768878651532e-05,
+          "prob_se": 0.00432163615301114,
+          "items_seen": 11,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 17,
+          "pct": 43
+        },
+        {
+          "type": "literal_match",
+          "count": 10,
+          "pct": 25
+        },
+        {
+          "type": "overinference",
+          "count": 4,
+          "pct": 10
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 3,
+          "pct": 8
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 3,
+          "pct": 8
+        },
+        {
+          "type": "world_knowledge",
+          "count": 3,
+          "pct": 8
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 60
+          }
+        }
+      ],
+      "previous_result_document_id": "sjajjddfd40zclplkhtsonao",
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.3333333333333333,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": 0
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "f7unlanstpq938tjlswl1zka",
+      "name": "Kaveh Baptiste",
+      "initials": "KB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "yjnnxkpm75xtm09xlzn5rmr8",
+      "session_document_id": "ip9995vrw3u5jukgf6t7xyh2",
+      "student_document_id": "f7unlanstpq938tjlswl1zka",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 40,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": false,
+        "domain_score": 43,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 57,
+      "items_total": 66,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 29,
+          "se": 12.7,
+          "status": "not_yet",
+          "prob": 0.0995644454600829,
+          "prob_se": 0.299418380632033,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 0.000136688173033573,
+          "prob_se": 0.0116905726710425,
+          "items_seen": 13,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 2.95727650525192e-07,
+          "prob_se": 0.000543808388194177,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 1.7,
+          "status": "not_yet",
+          "prob": 0.00849578726040759,
+          "prob_se": 0.0917802204139513,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 3.49513116964463e-05,
+          "prob_se": 0.0059118601220138,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151661287321585,
+          "prob_se": 0.0123141498356774,
+          "items_seen": 9,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 1.86768878651532e-05,
+          "prob_se": 0.00432163615301114,
+          "items_seen": 11,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 17,
+          "pct": 40
+        },
+        {
+          "type": "literal_match",
+          "count": 10,
+          "pct": 24
+        },
+        {
+          "type": "overinference",
+          "count": 5,
+          "pct": 12
+        },
+        {
+          "type": "world_knowledge",
+          "count": 4,
+          "pct": 10
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 3,
+          "pct": 7
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 3,
+          "pct": 7
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 43
+          }
+        }
+      ],
+      "previous_result_document_id": "zpao91fm3ds65c7zj7tq87is",
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.3333333333333333,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": 0
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "zfds2ab0z9fgebagt6t0540f",
+      "name": "Nour Baptiste",
+      "initials": "NB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "xtiq8mhowkgaopo1f5fqgh03",
+      "session_document_id": "y1l061rvm16lkp5rjajtjcnf",
+      "student_document_id": "zfds2ab0z9fgebagt6t0540f",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": null,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": "not_assessed",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 50,
+      "items_total": 66,
+      "duration_minutes": 2,
+      "attributes": {
+        "Gist": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "items_seen": 0
+        }
+      },
+      "vocab": {
+        "blended": null,
+        "status": "not_assessed",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": null
+        },
+        "single_strand": null
+      },
+      "error_patterns": [],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 50
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "v2rf0o3fw2f4wiklo7ad7yt7",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "d53ftxw0b1z3dxju5q56oerh",
+      "name": "Ines Baptiste",
+      "initials": "IB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "wkdjyd9qithhml1jbk51x0rn",
+      "session_document_id": "xyqer627diom2cipesckrr0q",
+      "student_document_id": "d53ftxw0b1z3dxju5q56oerh",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 38,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 59,
+      "items_total": 94,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 28,
+          "se": 11.3,
+          "status": "not_yet",
+          "prob": 0.0637021465208047,
+          "prob_se": 0.244221585961288,
+          "items_seen": 10,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "insufficient_evidence": true,
+          "items_seen": 1
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.34782943275979e-24,
+          "prob_se": 1.16096056468762e-12,
+          "items_seen": 20,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 0.000151680693181874,
+          "prob_se": 0.0123149375211241,
+          "items_seen": 42,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 1.10325935653765e-15,
+          "prob_se": 3.32153482073822e-08,
+          "items_seen": 16,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151680693180768,
+          "prob_se": 0.0123149375210792,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "domain_score": 49,
+          "se": 25.5,
+          "status": "emerging",
+          "prob": 0.480077547154417,
+          "prob_se": 0.499602938214554,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 21,
+          "pct": 48
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 14,
+          "pct": 32
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 5,
+          "pct": 11
+        },
+        {
+          "type": "literal_match",
+          "count": 3,
+          "pct": 7
+        },
+        {
+          "type": "overinference",
+          "count": 1,
+          "pct": 2
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": 38,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 28,
+            "Detail": null,
+            "Inference": 49,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": null,
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.125,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "u1h37a09j6qybj2mz37f3jgt",
+      "name": "Farida Baptiste",
+      "initials": "FB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "kzcs26zokcj9rcu4lqozfnvj",
+      "session_document_id": "and7dctzjkpf2etf3t6llsly",
+      "student_document_id": "u1h37a09j6qybj2mz37f3jgt",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 40,
+        "provisional_transform": true,
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null
+      },
+      "acara_phase": "beginning",
+      "transitioning_attribute": null,
+      "readiness": "not_yet",
+      "gate": {
+        "passed": false,
+        "domain_score": 50,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 56,
+      "items_total": 66,
+      "duration_minutes": 77,
+      "attributes": {
+        "Gist": {
+          "domain_score": 29,
+          "se": 12.7,
+          "status": "not_yet",
+          "prob": 0.0995644454600829,
+          "prob_se": 0.299418380632033,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Detail": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 0.000136688173033573,
+          "prob_se": 0.0116905726710425,
+          "items_seen": 13,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Grammar": {
+          "domain_score": 25,
+          "se": 0,
+          "status": "not_yet",
+          "prob": 2.95727650525192e-07,
+          "prob_se": 0.000543808388194177,
+          "items_seen": 4,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Decoding": {
+          "domain_score": 25,
+          "se": 1.7,
+          "status": "not_yet",
+          "prob": 0.00849578726040759,
+          "prob_se": 0.0917802204139513,
+          "items_seen": 14,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_A2": {
+          "domain_score": 25,
+          "se": 0.4,
+          "status": "not_yet",
+          "prob": 3.49513116964463e-05,
+          "prob_se": 0.0059118601220138,
+          "items_seen": 6,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Vocab_B1": {
+          "domain_score": 25,
+          "se": 0.8,
+          "status": "not_yet",
+          "prob": 0.000151661287321585,
+          "prob_se": 0.0123141498356774,
+          "items_seen": 9,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        },
+        "Inference": {
+          "domain_score": 25,
+          "se": 0.2,
+          "status": "not_yet",
+          "prob": 1.86768878651532e-05,
+          "prob_se": 0.00432163615301114,
+          "items_seen": 11,
+          "delta": null,
+          "delta_reliable": null,
+          "delta_display": null
+        }
+      },
+      "vocab": {
+        "blended": 25,
+        "status": "not_yet",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": 25
+        },
+        "b1": {
+          "domain_score": 25
+        },
+        "single_strand": null
+      },
+      "error_patterns": [
+        {
+          "type": "semantic_neighbour",
+          "count": 17,
+          "pct": 41
+        },
+        {
+          "type": "literal_match",
+          "count": 10,
+          "pct": 24
+        },
+        {
+          "type": "overinference",
+          "count": 5,
+          "pct": 12
+        },
+        {
+          "type": "grammatical_decoy",
+          "count": 3,
+          "pct": 7
+        },
+        {
+          "type": "orthographic_neighbour",
+          "count": 3,
+          "pct": 7
+        },
+        {
+          "type": "world_knowledge",
+          "count": 3,
+          "pct": 7
+        }
+      ],
+      "history": [
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-09",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 50
+          }
+        }
+      ],
+      "previous_result_document_id": "ateadg6bnhvzh2rrhx0au7ui",
+      "narrative": null,
+      "cefr_band": "pre_A1",
+      "display_label": "Beginning English",
+      "supplementary": {
+        "vocab_band_a2_accuracy": 0.3333333333333333,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": 0
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  },
+  {
+    "student": {
+      "document_id": "p8dnh8rp6vzp4bb5y6gjx2fn",
+      "name": "Rosa Baptiste",
+      "initials": "RB",
+      "eald_flag": false
+    },
+    "result": {
+      "document_id": "l31jddc7yw5zin2xfp4lzsvr",
+      "session_document_id": "abzi03b106odc3c219q0dl9w",
+      "student_document_id": "p8dnh8rp6vzp4bb5y6gjx2fn",
+      "skill": "reading",
+      "scope": "receptive",
+      "status": "complete",
+      "destination": "official",
+      "published_at": null,
+      "recalled_at": null,
+      "release_state": "held",
+      "provisional": "field_test",
+      "model_version": "reading-3model/1",
+      "overall": {
+        "domain_score": 45,
+        "provisional_transform": true,
+        "delta": 5,
+        "delta_reliable": true,
+        "delta_display": "+5"
+      },
+      "acara_phase": null,
+      "transitioning_attribute": null,
+      "readiness": null,
+      "gate": {
+        "passed": null,
+        "domain_score": null,
+        "provisional_cut": true
+      },
+      "effort_valid": true,
+      "low_confidence": null,
+      "items_answered": 1,
+      "items_total": 66,
+      "duration_minutes": 2,
+      "attributes": {
+        "Gist": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Detail": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Grammar": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Decoding": {
+          "status": "not_assessed",
+          "insufficient_evidence": true,
+          "items_seen": 1
+        },
+        "Vocab_A2": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Vocab_B1": {
+          "status": "not_assessed",
+          "items_seen": 0
+        },
+        "Inference": {
+          "status": "not_assessed",
+          "items_seen": 0
+        }
+      },
+      "vocab": {
+        "blended": null,
+        "status": "not_assessed",
+        "delta": null,
+        "delta_reliable": null,
+        "delta_display": null,
+        "a2": {
+          "domain_score": null
+        },
+        "b1": {
+          "domain_score": null
+        },
+        "single_strand": null
+      },
+      "error_patterns": [],
+      "history": [
+        {
+          "sat_at": "2026-09-10",
+          "overall": null,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        },
+        {
+          "sat_at": "2026-09-10",
+          "overall": 40,
+          "attributes": {
+            "Decoding": 25,
+            "Vocabulary": 25,
+            "Grammar": 25,
+            "Gist": 29,
+            "Detail": 25,
+            "Inference": 25,
+            "Critical": 44
+          }
+        },
+        {
+          "sat_at": "2026-09-11",
+          "overall": 45,
+          "attributes": {
+            "Decoding": null,
+            "Vocabulary": null,
+            "Grammar": null,
+            "Gist": null,
+            "Detail": null,
+            "Inference": null,
+            "Critical": null
+          }
+        }
+      ],
+      "previous_result_document_id": "debpd5y7kzs27h125ydu7fj9",
+      "narrative": null,
+      "cefr_band": null,
+      "display_label": null,
+      "supplementary": {
+        "vocab_band_a2_accuracy": null,
+        "vocab_band_b1_accuracy": null,
+        "vocab_band_b2_accuracy": null
+      },
+      "productive_scores": null
+    },
+    "release_state": "held"
+  }
+]

@@ -1,0 +1,252 @@
+{
+  "document_id": "ju10dv80g8syf4rt7n2a4umh",
+  "session_document_id": "gufmfot7m3xnx8s8f8qqcbqh",
+  "student_document_id": "zfia18l6ps0q2hed4f3ts2k2",
+  "skill": "reading",
+  "scope": "receptive",
+  "status": "complete",
+  "destination": "official",
+  "published_at": null,
+  "recalled_at": null,
+  "release_state": "held",
+  "provisional": "field_test",
+  "model_version": "reading-3model/1",
+  "overall": {
+    "domain_score": 42,
+    "provisional_transform": true,
+    "delta": 2,
+    "delta_reliable": true,
+    "delta_display": "steady"
+  },
+  "acara_phase": null,
+  "transitioning_attribute": null,
+  "readiness": null,
+  "gate": {
+    "passed": false,
+    "domain_score": 47,
+    "provisional_cut": true
+  },
+  "effort_valid": true,
+  "low_confidence": null,
+  "items_answered": 65,
+  "items_total": 66,
+  "duration_minutes": 3,
+  "attributes": {
+    "Gist": {
+      "domain_score": 29,
+      "se": 12.7,
+      "status": "not_yet",
+      "prob": 0.0995644454600829,
+      "prob_se": 0.299418380632033,
+      "items_seen": 14,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": "band_movement",
+      "band_before": "not_yet",
+      "band_after": "not_yet"
+    },
+    "Detail": {
+      "domain_score": 25,
+      "se": 0.4,
+      "status": "not_yet",
+      "prob": 0.000136688173033573,
+      "prob_se": 0.0116905726710425,
+      "items_seen": 13,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": "band_movement",
+      "band_before": "not_yet",
+      "band_after": "not_yet"
+    },
+    "Grammar": {
+      "status": "not_assessed",
+      "items_seen": 0
+    },
+    "Decoding": {
+      "status": "not_assessed",
+      "items_seen": 0
+    },
+    "Vocab_A2": {
+      "status": "not_assessed",
+      "items_seen": 0
+    },
+    "Vocab_B1": {
+      "domain_score": 25,
+      "se": 0.8,
+      "status": "not_yet",
+      "prob": 0.000151661287321585,
+      "prob_se": 0.0123141498356774,
+      "items_seen": 9,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": "band_movement",
+      "band_before": "not_yet",
+      "band_after": "not_yet"
+    },
+    "Inference": {
+      "domain_score": 25,
+      "se": 0.2,
+      "status": "not_yet",
+      "prob": 1.86768878651532e-05,
+      "prob_se": 0.00432163615301114,
+      "items_seen": 11,
+      "delta": null,
+      "delta_reliable": null,
+      "delta_display": "band_movement",
+      "band_before": "not_yet",
+      "band_after": "not_yet"
+    }
+  },
+  "vocab": {
+    "blended": 25,
+    "status": "not_yet",
+    "delta": 0,
+    "delta_reliable": false,
+    "delta_display": "steady",
+    "a2": {
+      "domain_score": null
+    },
+    "b1": {
+      "domain_score": 25
+    },
+    "single_strand": "b1"
+  },
+  "error_patterns": [
+    {
+      "type": "semantic_neighbour",
+      "count": 13,
+      "pct": 36
+    },
+    {
+      "type": "literal_match",
+      "count": 11,
+      "pct": 31
+    },
+    {
+      "type": "overinference",
+      "count": 8,
+      "pct": 22
+    },
+    {
+      "type": "world_knowledge",
+      "count": 4,
+      "pct": 11
+    }
+  ],
+  "history": [
+    {
+      "sat_at": "2026-09-10",
+      "overall": null,
+      "attributes": {
+        "Decoding": null,
+        "Vocabulary": null,
+        "Grammar": null,
+        "Gist": null,
+        "Detail": null,
+        "Inference": null,
+        "Critical": null
+      }
+    },
+    {
+      "sat_at": "2026-09-10",
+      "overall": null,
+      "attributes": {
+        "Decoding": null,
+        "Vocabulary": null,
+        "Grammar": null,
+        "Gist": null,
+        "Detail": null,
+        "Inference": null,
+        "Critical": null
+      }
+    },
+    {
+      "sat_at": "2026-09-10",
+      "overall": null,
+      "attributes": {
+        "Decoding": null,
+        "Vocabulary": null,
+        "Grammar": null,
+        "Gist": null,
+        "Detail": null,
+        "Inference": null,
+        "Critical": null
+      }
+    },
+    {
+      "sat_at": "2026-09-10",
+      "overall": 42,
+      "attributes": {
+        "Decoding": null,
+        "Vocabulary": 25,
+        "Grammar": null,
+        "Gist": 29,
+        "Detail": 25,
+        "Inference": 25,
+        "Critical": 47
+      }
+    },
+    {
+      "sat_at": "2026-09-10",
+      "overall": 42,
+      "attributes": {
+        "Decoding": null,
+        "Vocabulary": 25,
+        "Grammar": null,
+        "Gist": 29,
+        "Detail": 25,
+        "Inference": 25,
+        "Critical": 47
+      }
+    },
+    {
+      "sat_at": "2026-09-10",
+      "overall": 40,
+      "attributes": {
+        "Decoding": null,
+        "Vocabulary": 25,
+        "Grammar": null,
+        "Gist": 29,
+        "Detail": 25,
+        "Inference": 25,
+        "Critical": null
+      }
+    },
+    {
+      "sat_at": "2026-09-10",
+      "overall": 40,
+      "attributes": {
+        "Decoding": null,
+        "Vocabulary": 25,
+        "Grammar": null,
+        "Gist": 29,
+        "Detail": 25,
+        "Inference": 25,
+        "Critical": 40
+      }
+    },
+    {
+      "sat_at": "2026-09-11",
+      "overall": 42,
+      "attributes": {
+        "Decoding": null,
+        "Vocabulary": 25,
+        "Grammar": null,
+        "Gist": 29,
+        "Detail": 25,
+        "Inference": 25,
+        "Critical": 47
+      }
+    }
+  ],
+  "previous_result_document_id": "rlmzv833mdjyw50v6cimc8m8",
+  "narrative": null,
+  "cefr_band": null,
+  "display_label": null,
+  "supplementary": {
+    "vocab_band_a2_accuracy": null,
+    "vocab_band_b1_accuracy": null,
+    "vocab_band_b2_accuracy": 0
+  },
+  "productive_scores": null
+}

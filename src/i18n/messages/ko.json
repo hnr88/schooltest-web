@@ -708,8 +708,8 @@
       "opsSettings": "플랫폼 설정",
       "account": "계정",
       "teacherDashboard": "대시보드",
-      "testSessions": "테스트 세션",
-      "results": "결과"
+      "testSessions": "실시간 세션",
+      "results": "학급"
     },
     "sidebar": {
       "logoAlt": "SchoolTest",
