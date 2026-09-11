@@ -1,64 +1,87 @@
 'use client';
 
+import { Download, Sparkle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { AvatarTint, getAvatarTone, getInitials } from '@/modules/design-system';
-import { TeacherExportButton } from '@/modules/teacher/components/TeacherExportButton';
+import { StudentOverallChip } from '@/modules/teacher/components/StudentOverallChip';
+import { StudentSkillSelect } from '@/modules/teacher/components/StudentSkillSelect';
+import { InitialsAvatar } from '@/modules/teacher/components/v2/InitialsAvatar';
+import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
+import {
+  STUDENT_HEADER_BUTTON_CLASS,
+  STUDENT_I18N_NAMESPACE,
+} from '@/modules/teacher/constants/student-detail.constants';
 import type { StudentDrillDownHeaderProps } from '@/modules/teacher/types/student-drill-down.types';
 
-// .qa/DESIGN.md §Student drill-down header: initials and the student's name as
-// the page's h1. The trail "Dashboard / Results / <class> / <student>" is the
-// app's ONE breadcrumb in the topbar (the screen publishes the name through the
-// shell's useRecordCrumb), so no second breadcrumb is added here.
-//
-// The wireframe's "Export for AI" button sits opposite the name. It downloads
-// this student's Markdown, de-identified SERVER-SIDE to `S01`-style ids — and
-// the line under it says so, because the name printed to the LEFT of it is
-// exactly what does NOT travel.
+// The student header (`Teacher Portal v2.dc.html:315–344`): initials, name and class,
+// the skill select, the server's de-identified Markdown export (C-TR-7), Ask AI and the
+// navy overall chip. A refused export is said in text under the actions, never swallowed.
 function StudentDrillDownHeader({
-  studentDocumentId,
-  displayName,
-  classDocumentId,
+  studentName,
+  className,
+  overall,
+  actions,
+  skill,
+  onValueChange,
 }: StudentDrillDownHeaderProps) {
-  const t = useTranslations('Teacher.results.drillDown');
+  const t = useTranslations(STUDENT_I18N_NAMESPACE);
   const tExport = useTranslations('Teacher.results.export');
 
   return (
-    <header
-      data-slot="student-drill-down-header"
-      className="flex flex-wrap items-start justify-between gap-4"
-    >
-      <div className="flex min-w-0 items-start gap-3">
-        <AvatarTint
-          initials={getInitials(displayName)}
-          tone={getAvatarTone(studentDocumentId)}
-          size="lg"
-        />
-        <div className="flex min-w-0 flex-col gap-1">
-          <h1 className="text-portal-title font-bold break-words text-foreground">
-            {displayName}
-          </h1>
+    <div data-slot="student-drill-down-header" className="flex flex-col gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-5">
+        <div className="flex min-w-0 items-center gap-4">
+          <InitialsAvatar name={studentName} size="xl" tone="blue" className="flex-none" />
+          <div className="min-w-0">
+            <h1 className="text-[25px] font-semibold tracking-[-0.02em] break-words text-navy-900">
+              {studentName}
+            </h1>
+            <p data-slot="student-meta" className="mt-[3px] text-[13.5px] text-[#6B7280]">
+              {t('subtitle', { class: className })}
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-3.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <StudentSkillSelect skill={skill} onValueChange={onValueChange} />
+            {actions === null ? null : (
+              <>
+                <TeacherButton
+                  tone="outline"
+                  size="md"
+                  data-slot="student-export-button"
+                  title={t('exportTitle')}
+                  loading={actions.exportPending}
+                  onClick={actions.exportMarkdown}
+                  className={STUDENT_HEADER_BUTTON_CLASS}
+                >
+                  <Download aria-hidden="true" className="size-[15px]" strokeWidth={2} />
+                  {t('export')}
+                </TeacherButton>
+                <TeacherButton
+                  tone="primary"
+                  size="md"
+                  data-slot="student-ask-ai-button"
+                  title={t('askAiTitle')}
+                  aria-expanded={actions.askAiOpen}
+                  onClick={actions.askAi}
+                  className={STUDENT_HEADER_BUTTON_CLASS}
+                >
+                  <Sparkle aria-hidden="true" className="size-[15px]" strokeWidth={2} />
+                  {actions.askAiOpen ? t('hideAi') : t('askAi')}
+                </TeacherButton>
+              </>
+            )}
+          </div>
+          {overall === null ? null : <StudentOverallChip overall={overall} />}
         </div>
       </div>
-
-      <div className="flex flex-col items-start gap-2 sm:max-w-xs sm:items-end">
-        <TeacherExportButton
-          request={{
-            kind: 'student',
-            classDocumentId,
-            studentDocumentId,
-          }}
-          label={tExport('studentButton')}
-          variant="outline"
-        />
-        <p
-          data-slot="teacher-export-footnote"
-          className="text-meta text-body sm:text-right text-pretty"
-        >
-          {tExport('studentFootnote')}
+      {actions?.exportFailed ? (
+        <p role="alert" data-slot="teacher-export-error" className="self-end text-[12.5px] text-[#B42318]">
+          {tExport('failed')}
         </p>
-      </div>
-    </header>
+      ) : null}
+    </div>
   );
 }
 

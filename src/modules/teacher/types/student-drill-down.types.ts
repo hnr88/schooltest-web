@@ -1,27 +1,130 @@
 import type { TestVariant } from '@/modules/teacher/types/teacher.types';
-import type { ResultView } from '@schooltest/scoring-contracts';
 import type { StudentTestResult } from '@/modules/teacher/types/teacher-result.types';
+import type { SkillScopeValue } from '@/modules/teacher/types/results-shell.types';
+import type { BreadcrumbsProps } from '@/modules/teacher/types/teacher-kit-controls.types';
+import type { StudentChartGeometry } from '@/modules/teacher/types/v2-chart.types';
+import type { StudentDetailView, SubskillCard } from '@/modules/teacher/types/v2-student-detail.types';
 
 export interface StudentDrillDownScreenProps {
   classDocumentId: string;
   studentDocumentId: string;
+}
+
+/**
+ * One piece of student-page copy: a key under `TeacherPortal.student` (or
+ * `TeacherPortal.viewModel` when `ns` says so) plus what fills its placeholders —
+ * raw values, view-model labels (verbatim or lower-cased) and ISO dates printed as
+ * a short month.
+ */
+export interface TextDescriptor {
+  key: string;
+  ns?: 'viewModel';
+  values?: Readonly<Record<string, string | number>>;
+  labels?: Readonly<Record<string, string>>;
+  lowerLabels?: Readonly<Record<string, string>>;
+  months?: Readonly<Record<string, string>>;
+}
+
+export type ProgressTileId = 'baseline' | 'latest' | 'growth' | 'sittings';
+
+/** One cell of the progress card's 2×2 grid; `value: null` prints the kit dash, `fg: null` is navy. */
+export interface ProgressTile {
+  id: ProgressTileId;
+  label: TextDescriptor;
+  value: TextDescriptor | null;
+  fg: string | null;
+}
+
+export type StudentPageStatus = 'pending' | 'error' | 'empty' | 'success';
+
+/** The page's real actions: the C-TR-7 markdown download, a clipboard copy and the Ask AI drawer. */
+export interface StudentDetailActions {
+  exportPending: boolean;
+  /** The last export was refused or failed; the header says so in text. */
+  exportFailed: boolean;
+  exportMarkdown: () => void;
+  /** The Ask AI drawer is open for this student (the CTA reads "Hide AI"). */
+  askAiOpen: boolean;
+  /** Opens the drawer, or closes it when it is open. */
+  askAi: () => void;
+  copy: (text: string) => void;
+}
+
+export interface StudentSkillSelectProps {
+  skill: SkillScopeValue;
+  onValueChange: (skill: SkillScopeValue) => void;
+}
+
+export interface StudentDrillDownHeaderProps extends StudentSkillSelectProps {
+  studentName: string;
+  className: string;
+  /** `null` while the student has no scored result: no chip and no actions. */
+  overall: StudentDetailView['overall'] | null;
+  actions: StudentDetailActions | null;
 }
 
 export interface StudentDrillDownBodyProps {
-  /** The RAW v2 view; the body builds its own display model from it. */
-  view: ResultView;
+  view: StudentDetailView;
+  firstName: string;
+  onCopy: (text: string) => void;
 }
 
-export interface StudentDrillDownHeaderProps {
-  studentDocumentId: string;
-  displayName: string;
-  /** Owner of the C-TR-7 export route — the student's own id alone cannot address it. */
-  classDocumentId: string;
+export interface StudentProgressChartProps {
+  chart: StudentChartGeometry;
 }
 
-export interface StudentDrillDownScreenProps {
-  classDocumentId: string;
-  studentDocumentId: string;
+export interface StudentSubskillCardProps {
+  card: SubskillCard;
+}
+
+export interface StudentAnalysisCardProps {
+  paragraphs: readonly string[];
+  onCopy: () => void;
+}
+
+export interface StudentComingSoonProps extends StudentSkillSelectProps {
+  firstName: string;
+}
+
+export interface StudentOverallChipProps {
+  overall: StudentDetailView['overall'];
+}
+
+export interface StudentProgressPanelProps {
+  view: StudentDetailView;
+}
+
+export type StudentTranslate = (key: string, values?: Record<string, string | number>) => string;
+
+/** What resolving a `TextDescriptor` needs: both catalogs, a short-month printer and a lower-caser. */
+export interface StudentTextTranslators {
+  t: StudentTranslate;
+  tVm: StudentTranslate;
+  month: (iso: string) => string;
+  lower: (text: string) => string;
+}
+
+export interface StudentText {
+  text: (descriptor: TextDescriptor) => string;
+  /** A sitting date as the chart's axis prints it ("Sep"); an undated sitting is blank. */
+  month: (iso: string | null) => string;
+  /** A sitting date as the chart's tooltip prints it ("September 2026"). */
+  monthYear: (iso: string | null) => string;
+  analysis: (view: StudentDetailView, first: string) => string[];
+}
+
+/** `useStudentDrillDownPage`: the page's read state, the student's view, the skill and the actions. */
+export interface StudentDrillDownPage {
+  status: StudentPageStatus;
+  retry: () => void;
+  className: string;
+  studentName: string | null;
+  firstName: string;
+  view: StudentDetailView | null;
+  skill: SkillScopeValue;
+  setSkill: (skill: SkillScopeValue) => void;
+  actions: StudentDetailActions;
+  crumbs: BreadcrumbsProps;
 }
 
 /**

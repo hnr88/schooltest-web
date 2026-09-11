@@ -71,29 +71,29 @@ test.describe('journey 06 — scoring to teacher report', () => {
       await expect(surface).toHaveAttribute('data-status', 'success', { timeout: 30_000 });
 
       // The headline is `overall.domain_score` — never a mean of the cards.
-      const headline = page.locator('[data-slot="overall-score"]');
+      const headline = page.locator('[data-slot="student-overall-score"]');
       await expect(headline).toBeInViewport();
       await expect(headline).toHaveText(`${overall}%`);
 
-      // …and each of the seven display tiles carries ITS OWN server value: the
+      // …and each of the seven subskill cards carries ITS OWN server value: the
       // blend for Vocabulary, the gate score for Critical, the attribute
-      // elsewhere — and an absence renders as an absence, never as 0.
+      // elsewhere — and an absence renders as the kit dash, never as 0.
       for (const tile of displaySkills(view)) {
-        const card = page.locator(`[data-slot="skill-card"][data-skill="${tile.skill}"]`);
+        const card = page.locator(`[data-slot="student-subskill"][data-skill="${tile.skill}"]`);
         await expect(card).toHaveAttribute('data-assessed', String(tile.domain_score !== null));
-        if (tile.domain_score === null) {
-          await expect(card.locator('[data-slot="skill-score"]')).toHaveCount(0);
-          await expect(card.locator('[data-slot="skill-gap"]')).toBeVisible();
-        } else {
-          await expect(card.locator('[data-slot="skill-score"]')).toHaveText(`${tile.domain_score}%`);
-        }
-      }
-      if (view.acara_phase !== null) {
-        await expect(page.locator('[data-slot="acara-badge"]')).toHaveText(
-          cat(en, 'Results.acaraBadge').replace('{phase}', view.acara_phase),
+        await expect(card.locator('[data-slot="student-subskill-score"]')).toHaveText(
+          tile.domain_score === null ? cat(en, 'TeacherPortal.kit.noValue') : `${tile.domain_score}%`,
         );
       }
-      await page.locator('[data-slot="skill-card-grid"]').scrollIntoViewIfNeeded();
+      if (view.acara_phase !== null) {
+        await expect(page.locator('[data-slot="student-progress"] [data-slot="status-pill"]')).toHaveText(
+          cat(en, 'TeacherPortal.student.phaseChip').replace(
+            '{phase}',
+            cat(en, `TeacherPortal.viewModel.phaseSub.${view.acara_phase.toLowerCase()}`),
+          ),
+        );
+      }
+      await page.locator('[data-slot="student-subskills"]').scrollIntoViewIfNeeded();
       await page.screenshot({
         path: path.join(JOURNEY_06_SHOTS, '01-results-surface.png'),
         fullPage: true,

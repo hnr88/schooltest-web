@@ -15,13 +15,23 @@ import type {
  *
  * Saving happens in `onSuccess`, so a failed or refused export (403 foreign class,
  * 404 unknown class/student or a progress export with no Test B) writes NO file and
- * leaves `isError` true for the button to surface.
+ * leaves `isError` true for the button to surface. `onSaved` runs once the file has
+ * been handed to the browser (the student page confirms the download with it).
  */
-export function useTeacherExportDownload(request: TeacherExportRequest): TeacherExportDownload {
+export function useTeacherExportDownload(
+  request: TeacherExportRequest,
+  onSaved?: () => void,
+): TeacherExportDownload {
   const mutation = useTeacherExportMutation();
 
   return {
-    start: () => mutation.mutate(request, { onSuccess: saveTeacherExportFile }),
+    start: () =>
+      mutation.mutate(request, {
+        onSuccess: (file) => {
+          saveTeacherExportFile(file);
+          onSaved?.();
+        },
+      }),
     isPending: mutation.isPending,
     isError: mutation.isError,
   };
