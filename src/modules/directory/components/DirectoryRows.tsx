@@ -292,7 +292,9 @@ function RowMenu<Row>({ actions, row, labels }: RowMenuProps<Row>) {
           </button>
         }
       />
-      <DropdownMenuContent align="end" className="w-[218px]">
+      {/* pixel-audit 2026-09-11 — the row menu is the design's 224px/radius-16
+          panel (`Ops Portal.dc.html:404`; the kit wrapper owns the radius). */}
+      <DropdownMenuContent align="end" className="w-[224px]">
         {actions.map((action) => (
           <DropdownMenuItem
             key={action.label}

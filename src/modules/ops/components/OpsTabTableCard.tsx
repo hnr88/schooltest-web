@@ -38,6 +38,12 @@ const CARD_CSS = cn(
   '[&_[data-slot=directory-rows]]:px-0',
   '[&_[data-slot=directory-loading]]:px-0',
   '[&_[data-slot=directory-empty]]:px-0',
+  // pixel-audit 2026-09-11 — the design's TAB-TABLE rows pad 16px 10px
+  // (`Ops Portal.dc.html:387`), while the schools LIST rows keep 18px 10px
+  // (`:156`). The kit's grid row is one shared element, so the tab-table card
+  // tightens its own rows' block padding to 16px; the 10px inline padding is
+  // the kit's own `px-2.5` and stays.
+  '[&_[data-directory-row]]:py-4',
 );
 
 /**

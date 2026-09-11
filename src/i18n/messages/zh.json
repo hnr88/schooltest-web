@@ -3869,7 +3869,7 @@
       "adminsNote": "该校的学校管理员。邀请管理员请使用概览标签页上的 Onboard School 邀请面板。此处不显示最后登录字段（系统未记录）。",
       "adminsEmptyTitle": "该校没有管理员",
       "adminsEmptyDescription": "该校还没有管理员帐户。",
-      "teachersNote": "该校的教职员工。编辑和移除请通过 Manage teachers（C-TCH-04/C-TCH-03 重写端点）。",
+      "teachersNote": "该校的教职员工。编辑和移除请通过 Manage teachers 进行。",
       "teachersEmptyTitle": "该校没有教师",
       "teachersEmptyDescription": "该校还没有教职员工。",
       "teachersHeaderTitle": "教师",

@@ -3879,7 +3879,7 @@
       "adminsNote": "Pentadbir sekolah bagi sekolah ini. Untuk menjemput pentadbir, gunakan panel jemputan Onboard School pada tab Gambaran Keseluruhan. Direktori ini tidak menyenaraikan medan log masuk terakhir (sistem tidak merekodkannya).",
       "adminsEmptyTitle": "Tiada pentadbir untuk sekolah ini",
       "adminsEmptyDescription": "Sekolah ini belum mempunyai akaun pentadbir.",
-      "teachersNote": "Kakitangan pengajar bagi sekolah ini. Sunting dan alih keluar ditawarkan melalui Urus guru (titik tulis semula C-TCH-04/C-TCH-03).",
+      "teachersNote": "Kakitangan pengajar bagi sekolah ini. Sunting dan alih keluar ditawarkan melalui Urus guru.",
       "teachersEmptyTitle": "Tiada guru untuk sekolah ini",
       "teachersEmptyDescription": "Sekolah ini belum mempunyai kakitangan pengajar.",
       "teachersHeaderTitle": "Guru",

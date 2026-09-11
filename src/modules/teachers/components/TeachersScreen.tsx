@@ -64,7 +64,11 @@ export function TeachersScreen() {
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
+          {/* pixel-audit 2026-09-11 — the design's 30px/500/-0.02em page h1
+              (`School Admin Portal.dc.html:541`). */}
+          <h1 className="text-[30px] leading-tight font-medium tracking-[-0.02em] text-foreground">
+            {t('title')}
+          </h1>
           {isPending ? <Skeleton className="h-4 w-48" /> : null}
           {!isPending && !isError ? (
             <p className="text-sm text-body">

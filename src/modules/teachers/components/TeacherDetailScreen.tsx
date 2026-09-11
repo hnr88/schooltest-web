@@ -47,7 +47,8 @@ const ROLE_TYPE_LABEL_KEYS: Record<
 // 611-735): back link, navy avatar + name + status pill + meta line, the
 // action row (edit · assign · ⋯ menu over the same confirm-guarded account
 // actions the list rows serve), the KPI tiles (label-over-value, white 20px
-// cards), the Assigned classes card (year-band tile, name+sub, per-class
+// cards), the Assigned classes card (first-word class-name tile, name+sub,
+// per-class
 // completion from C-RPT-04, students, chevron — plus the remove control the
 // real contract needs), and the Account details / Students-needing-attention
 // pair on the design's side-by-side grid. That attention panel keeps its
@@ -247,7 +248,11 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
           </span>
           <div className="min-w-[220px] flex-1">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-2xl font-semibold text-foreground">{displayName}</h1>
+              {/* pixel-audit 2026-09-11 — the design's 28px/500/-0.02em detail
+                  h1 (`School Admin Portal.dc.html:622`). */}
+              <h1 className="text-[28px] leading-tight font-medium tracking-[-0.02em] text-foreground">
+                {displayName}
+              </h1>
               {statusPill}
             </div>
             <p data-slot="teacher-detail-meta" className="mt-[5px] truncate text-body-md text-muted-foreground">
@@ -337,14 +342,17 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
                     aria-label={t('classesPanel.openLabel', { name: klass.name })}
                     className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3.5 gap-y-2.5 py-3.5"
                   >
-                    {schoolClass?.year_band ? (
-                      <span
-                        aria-hidden
-                        className="grid size-9.5 shrink-0 place-items-center rounded-xl bg-[#EEF1F6] px-1 text-center text-[12.5px] font-bold text-foreground"
-                      >
-                        {schoolClass.year_band}
-                      </span>
-                    ) : null}
+                    {/* pixel-audit 2026-09-11 — the design's class tile carries
+                        the class's own short name — its FIRST WORD (`School
+                        Admin Portal.dc.html:666-670`; the design data builds
+                        `badge: c.name.split(' ')[0]`) — never the year band
+                        and never blank (`:620-635`). */}
+                    <span
+                      aria-hidden
+                      className="grid size-9.5 shrink-0 place-items-center rounded-tile bg-[#EEF1F6] px-1 text-center text-[12.5px] font-bold text-foreground"
+                    >
+                      {klass.name.trim().split(/\s+/)[0]}
+                    </span>
                     <span className="block min-w-[150px] flex-[3_1_200px]">
                       <span className="block truncate text-[14.5px] font-semibold text-foreground">
                         {klass.name}

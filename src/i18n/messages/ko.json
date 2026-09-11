@@ -3879,7 +3879,7 @@
       "adminsNote": "이 학교의 학교 관리자. 관리자 초대는 개요 탭의 Onboard School 초대 패널을 사용하세요. 이 디렉터리는 마지막 로그인 필드를 표시하지 않습니다(시스템이 기록하지 않음).",
       "adminsEmptyTitle": "이 학교에 관리자 없음",
       "adminsEmptyDescription": "이 학교에는 아직 관리자 계정이 없습니다.",
-      "teachersNote": "이 학교의 교직원. 편집 및 제거는 Manage teachers(C-TCH-04/C-TCH-03 재작성 엔드포인트)를 통해 제공됩니다.",
+      "teachersNote": "이 학교의 교직원. 편집 및 제거는 Manage teachers를 통해 제공됩니다.",
       "teachersEmptyTitle": "이 학교에 교사 없음",
       "teachersEmptyDescription": "이 학교에는 아직 교직원이 없습니다.",
       "teachersHeaderTitle": "교사",

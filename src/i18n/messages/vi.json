@@ -3888,7 +3888,7 @@
       "adminsNote": "Quản trị viên trường của trường này. Để mời quản trị viên, hãy dùng bảng mời Onboard School trên tab Tổng quan. Danh bạ này không hiển thị trường đăng nhập lần cuối (hệ thống không lưu).",
       "adminsEmptyTitle": "Không có quản trị viên cho trường này",
       "adminsEmptyDescription": "Trường này chưa có tài khoản quản trị viên.",
-      "teachersNote": "Đội ngũ giảng dạy của trường này. Sửa và xóa được cung cấp qua Quản lý giáo viên (điểm viết lại C-TCH-04/C-TCH-03).",
+      "teachersNote": "Đội ngũ giảng dạy của trường này. Sửa và xóa được cung cấp qua Quản lý giáo viên.",
       "teachersEmptyTitle": "Không có giáo viên cho trường này",
       "teachersEmptyDescription": "Trường này chưa có đội ngũ giảng dạy.",
       "teachersHeaderTitle": "Giáo viên",
