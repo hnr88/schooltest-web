@@ -1,0 +1,99 @@
+{
+  "model_version": "reading-3model/1",
+  "student": {
+    "year_group": 5,
+    "first_language": "Arabic",
+    "l1_literate": true
+  },
+  "sitting": {
+    "date": "2026-08-31",
+    "number": 4,
+    "weeks_since_previous": 11
+  },
+  "overall": {
+    "domain_score": 74,
+    "delta_display": "+15"
+  },
+  "acara_phase": "developing",
+  "readiness": "approaching",
+  "skills": {
+    "Decoding": {
+      "domain_score": 92,
+      "status": "secure",
+      "delta_display": "band_movement",
+      "descriptor": "Reads unfamiliar words accurately by sounding them out"
+    },
+    "Vocabulary": {
+      "domain_score": 76,
+      "status": "secure",
+      "delta_display": "steady"
+    },
+    "Grammar": {
+      "domain_score": 72,
+      "status": "secure",
+      "delta_display": "+10"
+    },
+    "Gist": {
+      "status": "not_assessed",
+      "insufficient_evidence": true,
+      "items_seen": 2
+    },
+    "Detail": {
+      "domain_score": 74,
+      "status": "developing",
+      "delta_display": "steady"
+    },
+    "Inference": {
+      "domain_score": 80,
+      "status": "secure",
+      "delta_display": "+15"
+    },
+    "Critical": {
+      "domain_score": 70,
+      "gate_passed": false
+    }
+  },
+  "vocab": {
+    "blended": 76,
+    "status": "secure",
+    "delta_display": "steady",
+    "a2": {
+      "domain_score": 90
+    },
+    "b1": {
+      "domain_score": 54
+    },
+    "single_strand": null
+  },
+  "gate": {
+    "passed": false,
+    "domain_score": 70
+  },
+  "error_patterns": [
+    {
+      "type": "literal_match",
+      "count": 9,
+      "pct": 45
+    },
+    {
+      "type": "overinference",
+      "count": 5,
+      "pct": 25
+    }
+  ],
+  "history": [
+    {
+      "sat_at": "2026-02-12",
+      "overall": 61
+    },
+    {
+      "sat_at": "2026-08-31",
+      "overall": 74
+    }
+  ],
+  "caveats": [
+    "Based on a single sitting; treat as one piece of evidence alongside classroom observation.",
+    "The overall score uses a provisional interim transform pending standard setting.",
+    "The Section 3 exit cut is provisional pending standard setting."
+  ]
+}

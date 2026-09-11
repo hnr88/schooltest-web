@@ -1,0 +1,54 @@
+{
+  "schema_version": "score-resp/1",
+  "model_version": "reading-3model/1",
+  "session_key": "sess-fixture-0001",
+  "reference_sets_version": "ref-fixture-0000-A",
+  "items_scored": 90,
+  "matrix_1": {
+    "attributes": ["Decoding", "Vocab_A2", "Grammar"],
+    "profile_posterior": [0.02, 0.05, 0.13, 0.8],
+    "map_profile": [1, 1, 1],
+    "items_scored": 42
+  },
+  "matrix_2": {
+    "attributes": ["Vocab_B1", "Gist", "Detail", "Inference"],
+    "profile_posterior": [
+      0.01, 0.02, 0.02, 0.03, 0.02, 0.03, 0.04, 0.08, 0.02, 0.03, 0.03, 0.05, 0.04, 0.07, 0.11,
+      0.4
+    ],
+    "map_profile": [1, 1, 1, 1],
+    "items_scored": 36
+  },
+  "attribute_posteriors": {
+    "Decoding": { "prob": 0.98, "prob_se": 0.02, "items_seen": 14 },
+    "Vocab_A2": { "prob": 0.93, "prob_se": 0.05, "items_seen": 14 },
+    "Grammar": { "prob": 0.85, "prob_se": 0.08, "items_seen": 14 },
+    "Vocab_B1": { "prob": 0.31, "prob_se": 0.11, "items_seen": 9 },
+    "Gist": { "prob": 0.62, "prob_se": 0.12, "items_seen": 9 },
+    "Detail": { "prob": 0.71, "prob_se": 0.1, "items_seen": 9 },
+    "Inference": { "prob": 0.85, "prob_se": 0.07, "items_seen": 9 }
+  },
+  "attribute_scores": {
+    "Decoding": { "domain_score": 92, "se": 4.1 },
+    "Vocab_A2": { "domain_score": 90, "se": 3.8 },
+    "Grammar": { "domain_score": 72, "se": 5.0 },
+    "Vocab_B1": { "domain_score": 54, "se": 6.2 },
+    "Gist": { "domain_score": 68, "se": 5.5 },
+    "Detail": { "domain_score": 74, "se": 4.9 },
+    "Inference": { "domain_score": 80, "se": 4.4 }
+  },
+  "scale_score": { "theta": 1.24, "se": 0.34, "domain_score": 74, "provisional_transform": true },
+  "gate": {
+    "passed": false,
+    "theta": 0.41,
+    "se": 0.52,
+    "domain_score": 70,
+    "provisional_cut": true
+  },
+  "warnings": [
+    {
+      "code": "testlet_dependence_ignored",
+      "detail": "Items share passage RDG-PASSAGE-07; local dependence is not modelled in v1 (memo §7)."
+    }
+  ]
+}

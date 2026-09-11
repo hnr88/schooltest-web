@@ -1,0 +1,1198 @@
+{
+  "_note": "TEST DATA, not standard-setting values. Every slip, guess, p_by_latent_group, difficulty, transform a/b and Section 3 cut below is a SEEDED PLACEHOLDER (memo §9 forbids inventing calibrated or standard-setting values in product code). The item-bank structure and counts are real (memo §1, design-spec task tables); the parameters are not.",
+  "generator_version": "golden/1",
+  "generator_seed": 20261118,
+  "frozen_at": "2026-09-07T00:00:00Z",
+  "matrix": 2,
+  "generating_profile": [
+    1,
+    0,
+    1,
+    0
+  ],
+  "generating_profile_index": 11,
+  "attributes": [
+    "Vocab_B1",
+    "Gist",
+    "Detail",
+    "Inference"
+  ],
+  "expected_domain_scores": {
+    "Vocab_B1": 94,
+    "Gist": 9,
+    "Detail": 93,
+    "Inference": 9
+  },
+  "request": {
+    "schema_version": "score-req/1",
+    "model_version": "reading-3model/1",
+    "session_key": "golden-m2-1010",
+    "responses": [
+      {
+        "item_code": "RDG-4A-001",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0829, 0.9372]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.6154
+      },
+      {
+        "item_code": "RDG-4A-002",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0729, 0.9143]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.0535
+      },
+      {
+        "item_code": "RDG-4A-003",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1089, 0.9338]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 1.7815
+      },
+      {
+        "item_code": "RDG-4A-004",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0955, 0.9551]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.5048
+      },
+      {
+        "item_code": "RDG-4A-005",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0921, 0.9548]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.1668
+      },
+      {
+        "item_code": "RDG-4B-001",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0974, 0.9175]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.5138
+      },
+      {
+        "item_code": "RDG-4B-002",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1043, 0.914]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 1.6269
+      },
+      {
+        "item_code": "RDG-4B-003",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0763, 0.9385]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.9637
+      },
+      {
+        "item_code": "RDG-4B-004",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0939, 0.9125]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.0718
+      },
+      {
+        "item_code": "RDG-4C-001",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1015, 0.9245]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 1.604
+      },
+      {
+        "item_code": "RDG-4C-002",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1194, 0.9089]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.0609
+      },
+      {
+        "item_code": "RDG-4C-003",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.071, 0.9467]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.3836
+      },
+      {
+        "item_code": "RDG-4C-004",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0767, 0.9156]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.1939
+      },
+      {
+        "item_code": "RDG-4D-001",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0721, 0.491, 0.491, 0.9374]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.6502
+      },
+      {
+        "item_code": "RDG-4D-002",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1059, 0.4192, 0.4192, 0.918]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.7603
+      },
+      {
+        "item_code": "RDG-4D-003",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0949, 0.492, 0.492, 0.9143]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.0534
+      },
+      {
+        "item_code": "RDG-5A-001",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1106, 0.9292]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.5318
+      },
+      {
+        "item_code": "RDG-5A-002",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1061, 0.9226]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.1664
+      },
+      {
+        "item_code": "RDG-5A-003",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1193, 0.9433]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.3234
+      },
+      {
+        "item_code": "RDG-5A-004",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0715, 0.9473]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.4471
+      },
+      {
+        "item_code": "RDG-5D-001",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0978, 0.9468]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.4258
+      },
+      {
+        "item_code": "RDG-5D-002",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0624, 0.9252]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 1.9078
+      },
+      {
+        "item_code": "RDG-5D-003",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0752, 0.9514]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.6122
+      },
+      {
+        "item_code": "RDG-5B-001",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0889, 0.4459, 0.4459, 0.9258]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 1.1973
+      },
+      {
+        "item_code": "RDG-5B-002",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1067, 0.5428, 0.5428, 0.9252]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.7517
+      },
+      {
+        "item_code": "RDG-5B-003",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1087, 0.5496, 0.5496, 0.942]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.1831
+      },
+      {
+        "item_code": "RDG-5B-004",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0738, 0.5382, 0.5382, 0.9307]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.2561
+      },
+      {
+        "item_code": "RDG-5C-001",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0934, 0.4253, 0.4253, 0.9109]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 1.0968
+      },
+      {
+        "item_code": "RDG-5C-002",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1114, 0.548, 0.548, 0.9268]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -1.7703
+      },
+      {
+        "item_code": "RDG-5C-003",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          1,
+          1,
+          0
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0951, 0.4851, 0.4851, 0.9435]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.5354
+      },
+      {
+        "item_code": "RDG-6A-001",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.1111, 0.9002]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": -0.0297
+      },
+      {
+        "item_code": "RDG-6A-002",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0998, 0.9502]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 1.628
+      },
+      {
+        "item_code": "RDG-6A-003",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0614, 0.9263]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 1.4913
+      },
+      {
+        "item_code": "RDG-6B-001",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0671, 0.9158]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.6327
+      },
+      {
+        "item_code": "RDG-6B-002",
+        "score": 1,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0881, 0.9268]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.22
+      },
+      {
+        "item_code": "RDG-6B-003",
+        "score": 0,
+        "stage": 2,
+        "attribute_vector": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "matrix": 2,
+        "model_type": "gdina",
+        "params": {
+          "p_by_latent_group": [0.0914, 0.9182]
+        },
+        "anchor": true,
+        "block_id": null,
+        "difficulty": 0.9618
+      }
+    ],
+    "reference_sets": {
+      "version": "ref-fixture-golden-golden/1",
+      "skills": {
+        "Vocab_B1": [
+          {
+            "item_code": "REF-VOC-01",
+            "attribute_vector": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.115, 0.9487]
+            }
+          },
+          {
+            "item_code": "REF-VOC-02",
+            "attribute_vector": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.1167, 0.9125]
+            }
+          },
+          {
+            "item_code": "REF-VOC-03",
+            "attribute_vector": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.0997, 0.946]
+            }
+          },
+          {
+            "item_code": "REF-VOC-04",
+            "attribute_vector": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.064, 0.9343]
+            }
+          }
+        ],
+        "Gist": [
+          {
+            "item_code": "REF-GIS-01",
+            "attribute_vector": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.1144, 0.9081]
+            }
+          },
+          {
+            "item_code": "REF-GIS-02",
+            "attribute_vector": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.0826, 0.9111]
+            }
+          },
+          {
+            "item_code": "REF-GIS-03",
+            "attribute_vector": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.1015, 0.921]
+            }
+          },
+          {
+            "item_code": "REF-GIS-04",
+            "attribute_vector": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.0695, 0.9334]
+            }
+          }
+        ],
+        "Detail": [
+          {
+            "item_code": "REF-DET-01",
+            "attribute_vector": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.1036, 0.9035]
+            }
+          },
+          {
+            "item_code": "REF-DET-02",
+            "attribute_vector": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.0835, 0.9584]
+            }
+          },
+          {
+            "item_code": "REF-DET-03",
+            "attribute_vector": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.1, 0.9389]
+            }
+          },
+          {
+            "item_code": "REF-DET-04",
+            "attribute_vector": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "params": {
+              "p_by_latent_group": [0.1198, 0.9226]
+            }
+          }
+        ],
+        "Inference": [
+          {
+            "item_code": "REF-INF-01",
+            "attribute_vector": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "params": {
+              "p_by_latent_group": [0.1097, 0.9501]
+            }
+          },
+          {
+            "item_code": "REF-INF-02",
+            "attribute_vector": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "params": {
+              "p_by_latent_group": [0.0852, 0.9341]
+            }
+          },
+          {
+            "item_code": "REF-INF-03",
+            "attribute_vector": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "params": {
+              "p_by_latent_group": [0.0655, 0.9264]
+            }
+          },
+          {
+            "item_code": "REF-INF-04",
+            "attribute_vector": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "params": {
+              "p_by_latent_group": [0.0833, 0.9009]
+            }
+          }
+        ]
+      },
+      "overall_pool": {
+        "items": [
+          {
+            "item_code": "RDG-4A-001",
+            "difficulty": -0.6154
+          },
+          {
+            "item_code": "RDG-4A-002",
+            "difficulty": -1.0535
+          },
+          {
+            "item_code": "RDG-4A-003",
+            "difficulty": 1.7815
+          },
+          {
+            "item_code": "RDG-4A-004",
+            "difficulty": -0.5048
+          },
+          {
+            "item_code": "RDG-4A-005",
+            "difficulty": -1.1668
+          },
+          {
+            "item_code": "RDG-4B-001",
+            "difficulty": 0.5138
+          },
+          {
+            "item_code": "RDG-4B-002",
+            "difficulty": 1.6269
+          },
+          {
+            "item_code": "RDG-4B-003",
+            "difficulty": 0.9637
+          },
+          {
+            "item_code": "RDG-4B-004",
+            "difficulty": 0.0718
+          },
+          {
+            "item_code": "RDG-4C-001",
+            "difficulty": 1.604
+          },
+          {
+            "item_code": "RDG-4C-002",
+            "difficulty": -1.0609
+          },
+          {
+            "item_code": "RDG-4C-003",
+            "difficulty": -1.3836
+          },
+          {
+            "item_code": "RDG-4C-004",
+            "difficulty": -1.1939
+          },
+          {
+            "item_code": "RDG-4D-001",
+            "difficulty": 0.6502
+          },
+          {
+            "item_code": "RDG-4D-002",
+            "difficulty": -1.7603
+          },
+          {
+            "item_code": "RDG-4D-003",
+            "difficulty": -0.0534
+          },
+          {
+            "item_code": "RDG-5A-001",
+            "difficulty": 0.5318
+          },
+          {
+            "item_code": "RDG-5A-002",
+            "difficulty": -0.1664
+          },
+          {
+            "item_code": "RDG-5A-003",
+            "difficulty": -0.3234
+          },
+          {
+            "item_code": "RDG-5A-004",
+            "difficulty": -0.4471
+          },
+          {
+            "item_code": "RDG-5D-001",
+            "difficulty": -1.4258
+          },
+          {
+            "item_code": "RDG-5D-002",
+            "difficulty": 1.9078
+          },
+          {
+            "item_code": "RDG-5D-003",
+            "difficulty": -1.6122
+          },
+          {
+            "item_code": "RDG-5B-001",
+            "difficulty": 1.1973
+          },
+          {
+            "item_code": "RDG-5B-002",
+            "difficulty": -0.7517
+          },
+          {
+            "item_code": "RDG-5B-003",
+            "difficulty": -0.1831
+          },
+          {
+            "item_code": "RDG-5B-004",
+            "difficulty": 0.2561
+          },
+          {
+            "item_code": "RDG-5C-001",
+            "difficulty": 1.0968
+          },
+          {
+            "item_code": "RDG-5C-002",
+            "difficulty": -1.7703
+          },
+          {
+            "item_code": "RDG-5C-003",
+            "difficulty": -0.5354
+          },
+          {
+            "item_code": "RDG-6A-001",
+            "difficulty": -0.0297
+          },
+          {
+            "item_code": "RDG-6A-002",
+            "difficulty": 1.628
+          },
+          {
+            "item_code": "RDG-6A-003",
+            "difficulty": 1.4913
+          },
+          {
+            "item_code": "RDG-6B-001",
+            "difficulty": 0.6327
+          },
+          {
+            "item_code": "RDG-6B-002",
+            "difficulty": 0.22
+          },
+          {
+            "item_code": "RDG-6B-003",
+            "difficulty": 0.9618
+          }
+        ],
+        "transform": {
+          "kind": "linear",
+          "a": 50,
+          "b": 12
+        }
+      },
+      "section3_pool": {
+        "items": [
+          {
+            "item_code": "RDG-7A-001",
+            "difficulty": 1.4297
+          },
+          {
+            "item_code": "RDG-7A-002",
+            "difficulty": -0.1732
+          },
+          {
+            "item_code": "RDG-7A-003",
+            "difficulty": 0.3985
+          },
+          {
+            "item_code": "RDG-7A-004",
+            "difficulty": 1.9113
+          },
+          {
+            "item_code": "RDG-7A-005",
+            "difficulty": -0.3133
+          },
+          {
+            "item_code": "RDG-7A-006",
+            "difficulty": 0.8874
+          },
+          {
+            "item_code": "RDG-7A-007",
+            "difficulty": 0.5929
+          },
+          {
+            "item_code": "RDG-7A-008",
+            "difficulty": 0.1564
+          },
+          {
+            "item_code": "RDG-7A-009",
+            "difficulty": -0.238
+          },
+          {
+            "item_code": "RDG-7A-010",
+            "difficulty": -0.7512
+          },
+          {
+            "item_code": "RDG-7A-011",
+            "difficulty": 0.0507
+          },
+          {
+            "item_code": "RDG-7A-012",
+            "difficulty": 0.3756
+          }
+        ],
+        "cut": 0.75,
+        "provisional": true
+      }
+    }
+  },
+  "frozen_response": {
+    "schema_version": "score-resp/1",
+    "model_version": "reading-3model/1",
+    "session_key": "golden-m2-1010",
+    "reference_sets_version": "ref-fixture-golden-golden/1",
+    "items_scored": 36,
+    "matrix_1": {
+      "attributes": ["Decoding", "Vocab_A2", "Grammar"],
+      "profile_posterior": [0.25, 0.25, 0.25, 0.25],
+      "map_profile": [0, 0, 0],
+      "items_scored": 0
+    },
+    "matrix_2": {
+      "attributes": ["Vocab_B1", "Gist", "Detail", "Inference"],
+      "profile_posterior": [6.70208203121071e-15, 5.58800261289242e-20, 0.000122151452626506, 1.0184635658991e-09, 4.2706197594941e-20, 5.21524125953467e-27, 4.79928549997332e-11, 5.86084296081472e-18, 9.69635318901908e-09, 8.08453950629691e-14, 0.999869108319365, 8.33662011867321e-06, 6.17859305977161e-14, 7.54524056597641e-21, 3.92844883155082e-07, 4.79738529442423e-14],
+      "map_profile": [1, 0, 1, 0],
+      "items_scored": 36
+    },
+    "attribute_posteriors": {
+      "Vocab_B1": {
+        "prob": 0.99987784748091,
+        "prob_se": 0.0110515880239777,
+        "items_seen": 9
+      },
+      "Gist": {
+        "prob": 3.92892985775777e-07,
+        "prob_se": 0.000626811639498565,
+        "items_seen": 14
+      },
+      "Detail": {
+        "prob": 0.999999990303497,
+        "prob_se": 9.84708205857509e-05,
+        "items_seen": 14
+      },
+      "Inference": {
+        "prob": 8.33763871106429e-06,
+        "prob_se": 0.00288748492547494,
+        "items_seen": 9
+      }
+    },
+    "attribute_scores": {
+      "Vocab_B1": {
+        "domain_score": 94,
+        "se": 0.9
+      },
+      "Gist": {
+        "domain_score": 9,
+        "se": 0.1
+      },
+      "Detail": {
+        "domain_score": 93,
+        "se": 0
+      },
+      "Inference": {
+        "domain_score": 9,
+        "se": 0.2
+      }
+    },
+    "scale_score": {
+      "theta": 0.147367234319077,
+      "se": 0.354874995114476,
+      "domain_score": 52,
+      "provisional_transform": true
+    },
+    "gate": {
+      "passed": null
+    },
+    "warnings": []
+  }
+}

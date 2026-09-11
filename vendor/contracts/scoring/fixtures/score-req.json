@@ -1,0 +1,95 @@
+{
+  "schema_version": "score-req/1",
+  "model_version": "reading-3model/1",
+  "session_key": "sess-fixture-0001",
+  "responses": [
+    {
+      "item_code": "RDG-1A-001",
+      "score": 1,
+      "stage": 1,
+      "attribute_vector": [1, 0, 0],
+      "matrix": 1,
+      "model_type": "dina",
+      "params": { "slip": 0.1, "guess": 0.1 },
+      "anchor": true,
+      "block_id": null,
+      "difficulty": -0.8
+    },
+    {
+      "item_code": "RDG-2A-004",
+      "score": 1,
+      "stage": 1,
+      "attribute_vector": [1, 1, 0],
+      "matrix": 1,
+      "model_type": "dina",
+      "params": { "slip": 0.12, "guess": 0.2 },
+      "anchor": false,
+      "block_id": null,
+      "difficulty": -0.3
+    },
+    {
+      "item_code": "RDG-4B-011",
+      "score": 0,
+      "stage": 2,
+      "attribute_vector": [0, 1, 0, 1],
+      "matrix": 2,
+      "model_type": "gdina",
+      "params": { "delta": [0.15, 0.3, 0.25, 0.1] },
+      "anchor": true,
+      "block_id": "RDG-PASSAGE-07",
+      "difficulty": 0.4
+    },
+    {
+      "item_code": "RDG-7A-002",
+      "score": 0,
+      "stage": 3,
+      "attribute_vector": null,
+      "matrix": null,
+      "model_type": "rasch",
+      "params": null,
+      "anchor": true,
+      "block_id": "RDG-PASSAGE-12",
+      "difficulty": 1.1
+    }
+  ],
+  "reference_sets": {
+    "version": "ref-fixture-0000-A",
+    "skills": {
+      "Decoding": [
+        {
+          "item_code": "RDG-1A-001",
+          "attribute_vector": [1, 0, 0],
+          "params": { "slip": 0.1, "guess": 0.1 }
+        }
+      ],
+      "Vocab_A2": [
+        {
+          "item_code": "RDG-2A-004",
+          "attribute_vector": [1, 1, 0],
+          "params": { "slip": 0.12, "guess": 0.2 }
+        }
+      ],
+      "Gist": [
+        {
+          "item_code": "RDG-4B-011",
+          "attribute_vector": [0, 1, 0, 1],
+          "params": { "delta": [0.15, 0.3, 0.25, 0.1] }
+        }
+      ]
+    },
+    "overall_pool": {
+      "items": [
+        { "item_code": "RDG-1A-001", "difficulty": -0.8 },
+        { "item_code": "RDG-2A-004", "difficulty": -0.3 },
+        { "item_code": "RDG-4B-011", "difficulty": 0.4 },
+        { "item_code": "RDG-7A-002", "difficulty": 1.1 }
+      ],
+      "transform": { "kind": "linear", "a": 50, "b": 12 }
+    },
+    "section3_pool": {
+      "items": [{ "item_code": "RDG-7A-002", "difficulty": 1.1 }],
+      "cut": 0.75,
+      "provisional": true
+    }
+  }
+}
