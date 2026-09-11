@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
   Skeleton,
 } from '@/modules/design-system';
-import { getUserInitials } from '@/modules/shell/lib/user-initials';
+import { getUserDisplayName, getUserInitials } from '@/modules/shell/lib/user-initials';
 import { LABELLED_ROLE_TYPES } from '@/modules/shell/constants/role-label.constants';
 import { STAFF_SETTINGS_HREF } from '@/modules/shell/constants/nav.constants';
 import { USER_MENU_SKIN_CLASSES } from '@/modules/shell/constants/shell-classes.constants';
@@ -30,9 +30,9 @@ import type { ShellSkin } from '@/modules/shell/types/shell.types';
 // including a missing role while the me query settles — renders no label,
 // never a wrong one (the hardcoded "Parent account" mislabelled every staff
 // role).
-// `skin="teacher"` (Teacher Portal v2.dc.html:39–52): the design's card — one navy
-// initial, name, role and an up chevron — over a menu that holds Sign out only; the
-// design draws no Settings row for a teacher.
+// `skin="teacher"` (Teacher Portal v2.dc.html:39–52): the design's card — the
+// person's real name with its first initial, the role and an up chevron — over a
+// menu that holds Sign out only; the design draws no Settings row for a teacher.
 function UserMenu({ skin = 'default' }: { skin?: ShellSkin }) {
   const t = useTranslations('Shell');
   const router = useRouter();
@@ -44,6 +44,7 @@ function UserMenu({ skin = 'default' }: { skin?: ShellSkin }) {
 
   const classes = USER_MENU_SKIN_CLASSES[skin];
   const isTeacherSkin = skin === 'teacher';
+  const displayName = isTeacherSkin ? getUserDisplayName(user) : user.username;
   const roleType = user.role?.type ?? null;
   const roleLabel =
     roleType !== null && LABELLED_ROLE_TYPES.includes(roleType) ? t(`userMenu.roles.${roleType}`) : null;
@@ -71,10 +72,10 @@ function UserMenu({ skin = 'default' }: { skin?: ShellSkin }) {
     <DropdownMenu>
       <DropdownMenuTrigger aria-label={t('topbar.userMenuLabel')} className={classes.card}>
         <span aria-hidden="true" className={classes.avatar}>
-          {getUserInitials(user.username, isTeacherSkin ? 1 : 2)}
+          {getUserInitials(displayName, isTeacherSkin ? 1 : 2)}
         </span>
         <span className={classes.text}>
-          <span className={classes.name}>{user.username}</span>
+          <span className={classes.name}>{displayName}</span>
           {roleLabel !== null ? <span className={classes.role}>{roleLabel}</span> : null}
         </span>
         {isTeacherSkin ? (

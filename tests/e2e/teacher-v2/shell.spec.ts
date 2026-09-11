@@ -14,6 +14,12 @@ import { waitForAnimationsSettled } from '../helpers/ui';
 type Rgb = readonly [number, number, number];
 type ColourProperty = 'color' | 'backgroundColor' | 'borderTopColor';
 
+interface MeBody {
+  username: string;
+  first_name: string | null;
+  last_name: string | null;
+}
+
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
 const NAVY: Rgb = [14, 35, 80];
 const ACTIVE_TILE: Rgb = [238, 241, 246];
@@ -62,13 +68,42 @@ function rounded(values: readonly (number | undefined)[]): number[] {
   return values.map((value) => Math.round(value ?? -1));
 }
 
+/** Every console error and uncaught page error raised while on a teacher shell route. */
+function collectShellRouteErrors(page: Page): string[] {
+  const errors: string[] = [];
+  const onShellRoute = () => /\/dashboard\/(results|test-sessions)(\/|$|\?)/.test(page.url());
+  page.on('console', (message) => {
+    if (message.type() === 'error' && onShellRoute()) {
+      errors.push(`${page.url()} console.error: ${message.text()}`);
+    }
+  });
+  page.on('pageerror', (error) => {
+    if (onShellRoute()) errors.push(`${page.url()} pageerror: ${error.message}`);
+  });
+  return errors;
+}
+
 test.describe('F3 — Teacher Portal v2 shell', () => {
+  // No console error and no uncaught page error while on /dashboard/results or
+  // /dashboard/test-sessions. Checked after each test, so the proof captures still
+  // land and the failure names every error found.
+  let shellRouteErrors: string[] = [];
+  test.beforeEach(({ page }) => {
+    shellRouteErrors = collectShellRouteErrors(page);
+  });
+  test.afterEach(() => {
+    expect(shellRouteErrors, 'console/page errors on the teacher shell routes').toEqual([]);
+  });
+
   test('a teacher gets the design rail, no topbar, the user menu and working nav', async ({ page }) => {
+    // One sign-in, three routes and two captures against the live dev server: the
+    // default 30s budget is too tight when the server is recompiling under load.
+    test.setTimeout(120_000);
     const meResponse = page.waitForResponse(apiGet('/api/users/me'));
     const dashboardResponse = page.waitForResponse(apiGet('/api/teacher/dashboard'));
     await signIn(page, 'teacher');
     await page.waitForURL('**/dashboard/results');
-    const me = (await (await meResponse).json()) as { username: string };
+    const me = (await (await meResponse).json()) as MeBody;
     const dashboard = (await (await dashboardResponse).json()) as { live_sessions: unknown[] };
 
     // The rail: the design's words through the catalogue keys, TEACHER VIEW, states.
@@ -120,14 +155,17 @@ test.describe('F3 — Teacher Portal v2 shell', () => {
       await expect(dot).toHaveCount(0);
     }
 
-    // The user card: a navy initial, the signed-in name, "Teacher", one chevron.
+    // The user card: the person's real name from /api/users/me (the username only when
+    // it has none), its first initial on navy, "Teacher" and one chevron.
+    const displayName = [me.first_name, me.last_name].filter(Boolean).join(' ') || me.username;
+    test.info().annotations.push({ type: 'user card', description: displayName });
     const userCard = sidebar(page).getByRole('button', {
       name: cat(en, 'Shell.topbar.userMenuLabel'),
     });
-    await expect(userCard).toContainText(me.username);
+    await expect(userCard).toContainText(displayName);
     await expect(userCard).toContainText(cat(en, 'Shell.userMenu.roles.teacher'));
     const avatar = userCard.locator('span').first();
-    await expect(avatar).toHaveText(me.username.trim().charAt(0).toUpperCase());
+    await expect(avatar).toHaveText(displayName.charAt(0).toUpperCase());
     await expectColour(avatar, 'backgroundColor', NAVY);
     await expect(userCard.locator('svg')).toHaveCount(1);
 
@@ -142,6 +180,11 @@ test.describe('F3 — Teacher Portal v2 shell', () => {
     await expect(menu.getByRole('menuitem', { name: cat(en, 'Shell.userMenu.signOut') })).toBeVisible();
     await expectColour(userCard, 'backgroundColor', ACTIVE_TILE);
     await waitForAnimationsSettled(page);
+    // The design's menu spans the card (left:0; right:0) and sits 10px above it.
+    const menuBox = await menu.boundingBox();
+    const userBox = await userCard.boundingBox();
+    expect(rounded([menuBox?.x, menuBox?.width])).toEqual(rounded([userBox?.x, userBox?.width]));
+    expect(Math.round((userBox?.y ?? 0) - ((menuBox?.y ?? 0) + (menuBox?.height ?? 0)))).toBe(10);
     await page.screenshot({ path: path.join(PROOFS, 'shell-user-menu.png'), animations: 'disabled' });
     await page.keyboard.press('Escape');
     await expect(menu).toBeHidden();

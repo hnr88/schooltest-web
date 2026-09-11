@@ -40,7 +40,7 @@ export const TEACHER_NAV_ITEM_CLASSES =
 
 // The live dot on Live sessions (:34): 9px #DC2626 on a 1.4s ease-in-out pulse.
 export const TEACHER_LIVE_DOT_CLASSES =
-  'ml-auto size-[9px] shrink-0 animate-[pulse_1.4s_ease-in-out_infinite] rounded-full bg-destructive motion-reduce:animate-none group-data-[collapsible=icon]:hidden';
+  'ml-auto size-[9px] shrink-0 animate-om-pulse rounded-full bg-destructive motion-reduce:animate-none group-data-[collapsible=icon]:hidden';
 
 // The rule above the user card (:38): 1px #F5F6F8 with a 12px 6px margin.
 export const TEACHER_FOOTER_RULE_CLASSES = 'mx-1.5 my-3 h-px shrink-0 bg-[#F5F6F8]';
@@ -67,7 +67,7 @@ export const USER_MENU_SKIN_CLASSES: Record<ShellSkin, UserMenuSkinClasses> = {
     name: 'truncate text-[13.5px] font-semibold text-navy-900',
     role: 'mt-px truncate text-[11.5px] text-[#6B7280]',
     content:
-      'min-w-0 rounded-[10px] border border-[#F5F6F8] p-1.5 shadow-[0_16px_40px_rgba(14,35,80,0.18)] ring-0',
+      'w-(--anchor-width) min-w-0 rounded-[10px] border border-[#F5F6F8] p-1.5 shadow-[0_16px_40px_rgba(14,35,80,0.18)] ring-0',
     signOut:
       'gap-2.5 rounded-[10px] px-3 py-2.5 text-[13.5px] leading-tight font-medium data-[variant=destructive]:text-[#B42318] data-[variant=destructive]:focus:bg-[#FDEEEC] data-[variant=destructive]:focus:text-[#B42318] data-[variant=destructive]:*:[svg]:text-[#B42318]',
   },
