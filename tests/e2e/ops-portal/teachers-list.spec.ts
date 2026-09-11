@@ -24,7 +24,13 @@ import {
 } from '@schooltest/ops-contracts';
 
 import { apiEnv } from '../helpers/auth-db';
+import { HOOK_TIMEOUT_MS, namedRetry } from '../helpers/api-named-retry';
 import { cat, loadMessages } from '../helpers/i18n';
+import {
+  OpsFixtureLedger,
+  createOpsFixtureSchool,
+  createOpsFixtureTeacher,
+} from '../helpers/ops-portal';
 
 import {
   MOBILE_VIEWPORT,
@@ -35,7 +41,10 @@ import {
 
 const en = loadMessages('en');
 const API = process.env.E2E_API_URL ?? process.env.E2E_API_BASE_URL ?? 'http://127.0.0.1:5500';
-const SCHOOL_A = 'a19wa9lrmloi95ab9m4gmxqk';
+// Fixture school with one teacher, created in beforeAll through the real
+// contracts (the seeded demo school this spec once pinned is absent at HEAD).
+let schoolId = '';
+const ledger = new OpsFixtureLedger();
 const OPS_EMAIL = 'apiadmin@schooltest.local';
 const ACTION_TIMEOUT = 10_000;
 
@@ -69,7 +78,7 @@ async function signInAsOps(page: Page): Promise<void> {
 // UNCHANGED: `OpsTeachersDialog`'s own "Manage teachers" control is the
 // surviving mount (`OpsSchoolTables.tsx:180-184`) of the exact same dialog.
 async function openDirectory(page: Page) {
-  await page.goto(`/en/dashboard/ops/schools/${SCHOOL_A}?tab=teachers`);
+  await page.goto(`/en/dashboard/ops/schools/${schoolId}?tab=teachers`);
   await page
     .getByRole('button', { name: cat(en, 'Ops.schoolTables.manageTeachers') })
     .click({ timeout: ACTION_TIMEOUT });
@@ -82,11 +91,24 @@ async function openDirectory(page: Page) {
 }
 
 test.describe('C-OPS-PORTAL-021 ops teachers directory', () => {
+  test.beforeAll(async ({ request }) => {
+    test.setTimeout(HOOK_TIMEOUT_MS);
+    await namedRetry('ops-031', 'create the fixture school and teacher', async () => {
+      const school = await createOpsFixtureSchool(request, ledger, 'ops-031');
+      schoolId = school.documentId;
+      await createOpsFixtureTeacher(request, ledger, schoolId, 'ops-031');
+    });
+  });
+
+  test.afterAll(async ({ request }) => {
+    await ledger.cleanup(request);
+  });
+
   test('the live versioned body validates against the shared contract schema', async ({
     request,
   }) => {
     const jwt = await opsJwt(request);
-    const res = await request.get(`${API}/api/ops/schools/${SCHOOL_A}/teachers?pageSize=200`, {
+    const res = await request.get(`${API}/api/ops/schools/${schoolId}/teachers?pageSize=200`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
         [OPS_PORTAL_VERSION_HEADER]: OPS_PORTAL_VERSION,
@@ -127,7 +149,7 @@ test.describe('C-OPS-PORTAL-021 ops teachers directory', () => {
     // The footer reports the SERVER's total, taken from the same request the
     // browser made — not the number of rows painted.
     const jwt = await opsJwt(request);
-    const api = await request.get(`${API}/api/ops/schools/${SCHOOL_A}/teachers?pageSize=25`, {
+    const api = await request.get(`${API}/api/ops/schools/${schoolId}/teachers?pageSize=25`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
         [OPS_PORTAL_VERSION_HEADER]: OPS_PORTAL_VERSION,
