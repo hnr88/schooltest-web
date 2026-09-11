@@ -13,6 +13,7 @@ import {
   readTests,
 } from './helpers/teacher-past-sessions-api';
 import { cat } from './helpers/i18n';
+import { sectionTab } from './helpers/teacher-class-detail';
 import { readTeacherExportLive } from './helpers/teacher-export-live';
 import { bearer, openClassResults } from './helpers/teacher-results-live';
 import { en } from './helpers/teacher-rail';
@@ -35,7 +36,9 @@ test.beforeAll(async ({ browser, request }) => {
   teacherJwt = await bearer(request);
   classes = await readClasses(request, teacherJwt);
   page = await browser.newPage({ viewport: DESKTOP });
-  await loginAs(page, 'teacher2');
+  // The page is the SAME teacher the API reads above use: another teacher's page
+  // is refused this teacher's class (its roster read answers 403).
+  await loginAs(page, 'teacher');
 });
 
 test.afterAll(async ({ request }) => {
@@ -49,7 +52,7 @@ test('AI export preview renders the exact live server prompt and handles denied 
   await page.setViewportSize(DESKTOP);
   const classDocumentId = classes[0].class_document_id;
   await openClassResults(page, classDocumentId);
-  await page.getByRole('tab', { name: cat(en, 'Teacher.results.tabs.insights') }).click();
+  await sectionTab(page, 'insights').click();
   await expect
     .poll(() => page.locator('[data-slot="teaching-insights"]').getAttribute('data-status'), {
       timeout: 20_000,

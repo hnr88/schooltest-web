@@ -103,9 +103,24 @@ test.describe('task 78: admin analytics + participation + notifications', () => 
       expect(form.submitted).toBeGreaterThanOrEqual(0);
       expect(form.in_progress).toBeGreaterThanOrEqual(0);
     }
-    // Completion status ONLY: no result fields can leak into this payload.
-    const raw = JSON.stringify(body);
-    expect(raw).not.toMatch(/label|band|phase|attributes|prob|mastery/);
+    // Completion status ONLY: the body, every class row and every bucket carry exactly
+    // these fields, so no result field can leak into this payload. Fields, not values: a
+    // class may be named anything (this school holds "ZZ-probe-…" classes).
+    expect(Object.keys(body)).toEqual(['data']);
+    expect(Object.keys(body.data)).toEqual(['classes']);
+    for (const row of body.data.classes) {
+      expect(Object.keys(row).sort(), `fields of class ${row.documentId}`).toEqual([
+        'documentId',
+        'name',
+        'roster_count',
+        'teacher',
+        'test_a',
+        'test_b',
+      ]);
+      for (const form of [row.test_a, row.test_b]) {
+        expect(Object.keys(form).sort()).toEqual(['in_progress', 'not_started', 'submitted']);
+      }
+    }
 
     // Role matrix: 403 no token, 401 forged, 403 teacher, 403 parent.
     expect((await apiGet(request, `${API}/api/schools/me/participation`)).status()).toBe(403);

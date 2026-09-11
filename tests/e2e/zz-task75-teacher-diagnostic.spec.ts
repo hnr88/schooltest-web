@@ -1,303 +1,53 @@
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expect, test, type APIRequestContext } from '@playwright/test';
 
 import { fetchWithRetry, loginCached } from './helpers/http';
-import { cat, icu, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
 import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 75 (st-mvp-pivot) targeted live check — NOT part of the suite.
-// Teacher diagnostic dashboard (C-RPT-01): class mastery list across the seven
-// reading areas with the item-type heat map nested underneath (item code +
-// section only, items correct / responses), the one-click student drill-down,
-// the WYSIWYG empty state on a results-free class, and the error state on an
-// unowned class. ACARA phase never reaches the DOM (D-10 / mvp spec 4.4).
-const en = loadMessages('en');
-
+// C-RPT-01, the class diagnostic, answers only the class's own teacher and the school's
+// admin; a foreign teacher of the SAME school and a parent are refused. The owner's 200
+// sits beside the refusals, so a lone 403 cannot be a broken fixture.
+//
+// Retired with Teacher Portal v2: the teacher-facing /dashboard/teach/results diagnostic
+// screen (mastery list, heat map, drill-down, empty and refused states). Teachers read a
+// class on the class detail's Teaching insights tab and the school admin's embedded
+// diagnostic is proven there too (teacher-v2/insights-tab.spec.ts); the refused-state test
+// intercepted the network (RULE 0: real data only).
 const API = 'http://127.0.0.1:5500';
 const TEACHER = fixtureTeacherCredentials();
 const SCHOOL_ADMIN = roleCredentials('schoolAdmin');
 /**
- * A GENUINELY foreign teacher. This was `roleCredentials('teacher')` — the SAME
- * ACCOUNT as TEACHER above — so the "foreign teacher is refused" assertion below
- * was asking whether a teacher is refused their OWN class. Measured: `teacher`
- * gets 200 on CLASS_ID, so `toBe(403)` could not pass. The alias was not
- * carelessness: until teacher2 was seeded (schooltest-api 658a849) there was no
- * other teacher in the database to point it at.
- *
- * teacher2 is in the SAME school on purpose. A teacher from another school
- * would be refused for TENANCY reasons and this assertion would go green
- * without proving anything about OWNERSHIP.
+ * teacher2 is in the SAME school on purpose: a teacher from another school would be
+ * refused for TENANCY reasons, proving nothing about OWNERSHIP.
  */
 const FOREIGN_TEACHER = roleCredentials('teacher2');
 const PARENT = roleCredentials('parent');
 const CLASS_ID = fixtureClassId(); // "EAL/D Year 7 - Room 4"
-const CLASS_NAME = 'EAL/D Year 7 - Room 4';
-/**
- * teacher2's seeded class (schooltest-api 658a849), resolved by NAME — never a
- * pinned documentId (fixture-class.ts explains why no fixture can promise one).
- * The signed-in TEACHER does not own it, so the live server refuses it on
- * OWNERSHIP grounds. The error-state test below MANUFACTURES that refusal with
- * a route intercept instead of hoping the fixture produces one, so it can never
- * go green against a 404, a dead record or a crashed component — the failure
- * mode this file's old dead-id navigation had.
- */
-const FOREIGN_CLASS_NAME = 'EAL/D Year 9 - Room 6';
-const FOREIGN_CLASS_ID = fixtureClassId(FOREIGN_CLASS_NAME);
 
-async function login(
+async function diagnosticStatus(
   request: APIRequestContext,
   credentials: { email: string; password: string },
-): Promise<string> {
-  return loginCached(request, API, credentials);
+): Promise<number> {
+  const jwt = await loginCached(request, API, credentials);
+  const response = await fetchWithRetry(() =>
+    request.get(`${API}/api/schools/me/classes/${CLASS_ID}/diagnostic`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    }),
+  );
+  return response.status();
 }
 
-async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
-  await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(credentials.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
-  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
-  // late role redirect can never hijack the goto that follows. The axios
-  // layer rides out any 429 on the auth POST, so allow for that here.
-  await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 90_000 });
-}
-
-interface DiagnosticPayload {
-  sat_count: number;
-  roster_count: number;
-  mastery: Array<{
-    student_ref: string;
-    attributes: Array<{ code: string; status: string }>;
-  }>;
-  heatmap: Array<{
-    item_code: string;
-    section: number;
-    correct: number;
-    responses: number;
-    fraction: number;
-  }>;
-}
-
-test.describe('task 75: teacher diagnostic dashboard vs live C-RPT-01', () => {
+test.describe('task 75: C-RPT-01 answers only the class teacher and the school admin', () => {
   // The timeout carries the 429 ride-out budget for batch runs (helpers/http.ts).
   test.describe.configure({ mode: 'serial', timeout: 120_000 });
 
-  test('populated class: mastery list, nested heat map, drill-down, no ACARA phase', async ({
-    page,
+  test('the class teacher and the school admin 200; a foreign teacher and a parent 403', async ({
     request,
   }) => {
-    // API role matrix first: foreign teacher and parent 403, school_admin 200.
-    // The teacher's own 200 is asserted further down (diagnosticRes.ok), so the
-    // 403 below is PAIRED — a lone 403 could be a broken fixture rather than a
-    // refusal. This is the live end-to-end half of the refusal proof; the
-    // error-state test at the bottom manufactures its own 403 and cannot drift
-    // from server behaviour while this pairing stays green.
-    const foreignJwt = await login(request, FOREIGN_TEACHER);
-    const foreign = await fetchWithRetry(() =>
-      request.get(`${API}/api/schools/me/classes/${CLASS_ID}/diagnostic`, {
-        headers: { Authorization: `Bearer ${foreignJwt}` },
-      }),
-    );
-    expect(foreign.status()).toBe(403);
-    const parentJwt = await login(request, PARENT);
-    const parent = await fetchWithRetry(() =>
-      request.get(`${API}/api/schools/me/classes/${CLASS_ID}/diagnostic`, {
-        headers: { Authorization: `Bearer ${parentJwt}` },
-      }),
-    );
-    expect(parent.status()).toBe(403);
-    const adminJwt = await login(request, SCHOOL_ADMIN);
-    const admin = await fetchWithRetry(() =>
-      request.get(`${API}/api/schools/me/classes/${CLASS_ID}/diagnostic`, {
-        headers: { Authorization: `Bearer ${adminJwt}` },
-      }),
-    );
-    expect(admin.ok()).toBeTruthy();
-
-    // The fixture class keeps evolving (bulk-import roster growth, re-sit
-    // sessions): every content expectation below is computed from the live
-    // C-RPT-01 payload, never pinned to a roster size or a sitting count.
-    const teacherJwt = await login(request, TEACHER);
-    const diagnosticRes = await fetchWithRetry(() =>
-      request.get(`${API}/api/schools/me/classes/${CLASS_ID}/diagnostic`, {
-        headers: { Authorization: `Bearer ${teacherJwt}` },
-      }),
-    );
-    expect(diagnosticRes.ok()).toBeTruthy();
-    const diagnostic = ((await diagnosticRes.json()) as { data: DiagnosticPayload }).data;
-    expect(diagnostic.sat_count).toBeGreaterThan(0);
-    expect(diagnostic.heatmap.length).toBeGreaterThan(0);
-
-    await signIn(page, TEACHER);
-    // scoring/10 (R-12/R-16): the teacher home is /dashboard/results and the
-    // diagnostic screen keeps its guarded route under /dashboard/teach.
-    await page.goto('/en/dashboard/results');
-    const home = page.locator('[data-surface="teacher-results"]');
-    await expect(home).toBeVisible({ timeout: 20_000 });
-    await expect(home.getByText(CLASS_NAME, { exact: true })).toBeVisible();
-    await page.goto(`/en/dashboard/teach/results/${CLASS_ID}`);
-
-    const screen = page.locator('[data-surface="teacher-diagnostic"]');
-    await expect(screen).toBeVisible();
-    await expect(screen.getByRole('heading', { name: CLASS_NAME, exact: true })).toBeVisible();
-    await expect(
-      screen.getByText(
-        icu(cat(en, 'Teach.diagnostic.summary'), {
-          sat: String(diagnostic.sat_count),
-          roster: String(diagnostic.roster_count),
-        }),
-        { exact: false },
-      ),
-    ).toBeVisible();
-
-    // Mastery: a list (never a grid) of students with the seven area pills;
-    // every status on the wire renders at least one pill.
-    const mastery = screen.locator('[data-slot="mastery-table"]');
-    await expect(mastery).toBeVisible();
-    await expect(mastery.getByText('Sofia P.', { exact: true })).toBeVisible();
-    const statuses = new Set(
-      diagnostic.mastery.flatMap((row) => row.attributes.map((attribute) => attribute.status)),
-    );
-    for (const status of statuses) {
-      await expect(
-        mastery.getByText(cat(en, `Teach.diagnostic.status.${status}`), { exact: true }).first(),
-      ).toBeVisible();
-    }
-
-    // Heat map: nested under the mastery section, cells keyed by item code +
-    // section only, framed as items correct / responses — the rendered values
-    // equal the wire rows exactly (formatHeatmapValue in heatmap-view-model).
-    const heatmap = screen.locator('[data-slot="item-type-heatmap"]');
-    await expect(heatmap).toBeVisible();
-    const sections = [...new Set(diagnostic.heatmap.map((row) => row.section))];
-    for (const section of sections) {
-      await expect(
-        heatmap.getByText(
-          icu(cat(en, 'Teach.diagnostic.sectionHeading'), {
-            section: String(section),
-          }),
-          { exact: true },
-        ),
-      ).toBeVisible();
-    }
-    for (const row of diagnostic.heatmap) {
-      const value = `${row.correct}/${row.responses} (${Math.round(row.fraction * 100)}%)`;
-      await expect(heatmap.getByText(value, { exact: true }).first()).toBeVisible();
-    }
-    await expect(
-      heatmap.getByText(diagnostic.heatmap[0]!.item_code, { exact: true }),
-    ).toBeVisible();
-
-    // Drill-down: one click to the individual level, then close.
-    await mastery.getByRole('button', { name: /Sofia P\./ }).click();
-    const drilldown = screen.locator('[data-slot="student-mastery-drilldown"]');
-    await expect(drilldown).toBeVisible();
-    await expect(
-      drilldown.getByRole('heading', {
-        name: icu(cat(en, 'Teach.diagnostic.drilldownTitle'), { student: 'Sofia P.' }),
-        exact: true,
-      }),
-    ).toBeVisible();
-    await expect(
-      drilldown.getByText(cat(en, 'Teach.diagnostic.areas.R7'), { exact: true }),
-    ).toBeVisible();
-    await drilldown
-      .getByRole('button', { name: cat(en, 'Teach.diagnostic.drilldownClose'), exact: true })
-      .click();
-    await expect(drilldown).toHaveCount(0);
-
-    // D-10 / mvp spec 4.4: ACARA phase never reaches the teacher DOM.
-    const text = (await screen.textContent())?.toLowerCase() ?? '';
-    expect(text).not.toContain('acara');
-    expect(text).not.toContain('phase');
-  });
-
-  test('results-free class renders the WYSIWYG empty state', async ({ page, request }) => {
-    // Setup: a results-free class this spec owns (the original probe class was
-    // deleted from the shared fixture): created via C-CLS-02 with verify21
-    // assigned (C-RPT-01 object scope), deleted again at the end.
-    const adminJwt = await login(request, SCHOOL_ADMIN);
-    const teachersRes = await fetchWithRetry(() =>
-      request.get(`${API}/api/schools/me/teachers`, {
-        headers: { Authorization: `Bearer ${adminJwt}` },
-      }),
-    );
-    expect(teachersRes.ok()).toBeTruthy();
-    const teachers = (
-      (await teachersRes.json()) as { data: Array<{ documentId: string; email: string }> }
-    ).data;
-    const verify21 = teachers.find((row) => row.email === TEACHER.email);
-    expect(verify21).toBeTruthy();
-    const create = await fetchWithRetry(() =>
-      request.post(`${API}/api/schools/me/classes`, {
-        headers: { Authorization: `Bearer ${adminJwt}` },
-        data: {
-          name: `zz75 empty ${Date.now()}`,
-          year_band: '7_9',
-          teacher_documentIds: [verify21!.documentId],
-        },
-      }),
-    );
-    expect(create.status()).toBe(201);
-    const emptyClassId = ((await create.json()) as { data: { documentId: string } }).data
-      .documentId;
-
-    try {
-      await signIn(page, TEACHER);
-      await page.goto(`/en/dashboard/teach/results/${emptyClassId}`);
-      const screen = page.locator('[data-surface="teacher-diagnostic"]');
-      await expect(screen).toBeVisible({ timeout: 20_000 });
-      const empty = screen.locator('[data-slot="diagnostic-empty-state"]');
-      await expect(empty).toBeVisible();
-      // Both panels present but unpopulated: the full dashboard shape from first login.
-      await expect(
-        empty.getByText(cat(en, 'Teach.diagnostic.emptyMasteryTitle'), { exact: true }),
-      ).toBeVisible();
-      await expect(
-        empty.getByText(cat(en, 'Teach.diagnostic.emptyHeatmapTitle'), { exact: true }),
-      ).toBeVisible();
-      await expect(screen.locator('[data-slot="mastery-table"]')).toHaveCount(0);
-      await expect(screen.locator('[data-slot="item-type-heatmap"]')).toHaveCount(0);
-    } finally {
-      const cleanup = await fetchWithRetry(() =>
-        request.delete(`${API}/api/schools/me/classes/${emptyClassId}`, {
-          headers: { Authorization: `Bearer ${adminJwt}` },
-        }),
-      );
-      expect(cleanup.ok()).toBeTruthy();
-    }
-  });
-
-  test('a refused class renders the error state, never a leak', async ({ page }) => {
-    await signIn(page, TEACHER);
-    // The refusal is MANUFACTURED, not hoped for. This test used to navigate to
-    // a dead documentId: the endpoint answered 404, the SAME generic error
-    // state rendered, and the test stayed green while proving nothing about
-    // access control — 403, 404, a network fault and a crashed component were
-    // indistinguishable to it. Instead the page's own class-scoped GETs are
-    // answered with the 403 the live API really returns for a non-owner (see
-    // the paired foreign-teacher/teacher assertions in the first test), using
-    // the shape from teacher-results-export.spec.ts's injected failure: a test
-    // that controls its own failure condition cannot be fooled about which
-    // condition it tested. Flip the injected status to 200 and this goes red.
-    const refusal = `**/api/schools/me/classes/${FOREIGN_CLASS_ID}/**`;
-    await page.route(refusal, (route) =>
-      route.fulfill({
-        status: 403,
-        contentType: 'application/json',
-        body: JSON.stringify({ error: { message: 'You do not own this class' } }),
-      }),
-    );
-    try {
-      await page.goto(`/en/dashboard/teach/results/${FOREIGN_CLASS_ID}`);
-      const screen = page.locator('[data-surface="teacher-diagnostic"]');
-      await expect(screen).toBeVisible({ timeout: 20_000 });
-      await expect(
-        screen.getByRole('alert').getByText(cat(en, 'Teach.diagnostic.loadError'), { exact: true }),
-      ).toBeVisible({ timeout: 20_000 }); // TanStack default retries the 403 before isError
-      await expect(screen.locator('[data-slot="mastery-table"]')).toHaveCount(0);
-    } finally {
-      await page.unroute(refusal);
-    }
+    expect(await diagnosticStatus(request, TEACHER), 'the class teacher').toBe(200);
+    expect(await diagnosticStatus(request, SCHOOL_ADMIN), 'the school admin').toBe(200);
+    expect(await diagnosticStatus(request, FOREIGN_TEACHER), 'a foreign teacher').toBe(403);
+    expect(await diagnosticStatus(request, PARENT), 'a parent').toBe(403);
   });
 });
