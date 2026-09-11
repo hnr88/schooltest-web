@@ -233,6 +233,16 @@ export const monitorSittingSchema = z.strictObject({
   opened_at: z.iso.datetime().nullable(),
   class: teacherClassRefSchema,
   variant: testVariantSchema.nullable(),
+  /**
+   * Teacher Portal v2 B2 room controls: the room pause, when the pause in
+   * force began (null while the room runs), the room's extra time (0 when
+   * never extended) and how many extensions made it. OPTIONAL on the web
+   * mirror only; the API contract requires them.
+   */
+  paused: z.boolean().optional(),
+  paused_at: z.iso.datetime().nullable().optional(),
+  extra_seconds: teacherCountSchema.optional(),
+  extensions: teacherCountSchema.optional(),
 });
 
 export const monitorSummarySchema = z.strictObject({
@@ -320,6 +330,12 @@ export const monitorStudentSchema = z.strictObject({
   absent: z.boolean().optional(),
   paused: z.boolean().optional(),
   connection: connectionStateSchema.optional(),
+  /**
+   * Teacher Portal v2 B2: `paused` is the room's pause OR this student's own;
+   * `extra_minutes` is the time granted to this student alone (0 when none).
+   * OPTIONAL on the web mirror only; the API contract requires it.
+   */
+  extra_minutes: teacherCountSchema.optional(),
 });
 
 export const testSessionMonitorResponseSchema = z.strictObject({

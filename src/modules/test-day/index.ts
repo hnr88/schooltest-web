@@ -15,3 +15,5 @@ export type { SittingSummary } from './types/sitting-summary.types';
 export { SessionActivityPanel } from './components/SessionActivityPanel';
 export { useSittingActivityQuery } from './queries/use-sitting-activity.query';
 export { useLogIncidentMutation } from './queries/use-log-incident.mutation';
+export { useRoomControlMutation } from './queries/use-room-control.mutation';
+export { useStudentControlMutation } from './queries/use-student-control.mutation';
