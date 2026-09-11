@@ -57,3 +57,14 @@ export type { RosterReleaseState, RosterRow, RosterStudent } from './types/roste
 // ranks the class's weakest/strongest subskill on the same analytics layer.
 export { classResultsQueryOptions } from './queries/use-class-results.query';
 export { weakestFirstAverages } from './lib/class-analytics';
+export { useReleaseHeldResultsMutation, useReleaseResultMutation } from './queries/use-release-result.mutation';
+export { useRecallResultMutation } from './queries/use-recall-result.mutation';
+export { resultRecallBodySchema, resultReleaseOutcomeSchema } from './schemas/result-release.schema';
+export type {
+  RecallResultInput,
+  ReleaseBatchOutcome,
+  ReleaseFailure,
+  ResultReleaseOutcome,
+} from './types/result-release.types';
+// Teacher v2 Students tab — the student PDF report reads the result imperatively.
+export { studentResultQueryOptions } from './queries/use-student-result.query';

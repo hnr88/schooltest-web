@@ -1,6 +1,6 @@
 import type { AttributeName } from '@schooltest/scoring-contracts';
 
-import type { RosterReleaseState } from '@/modules/results';
+import type { RosterReleaseState, RosterRow } from '@/modules/results';
 import type { PhaseView, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
 
 export type ExpectedKind = 'at' | 'approaching' | 'below';
@@ -93,4 +93,73 @@ export interface CarerReportView {
   next: CarerLine[];
   ealdNoteKey: string | null;
   actions: Pick<ReleaseActions, 'release' | 'recall'>;
+}
+
+export type FamilyConfirm =
+  | { kind: 'release'; row: FamilyReportRow }
+  | { kind: 'recall'; row: FamilyReportRow }
+  | { kind: 'releaseAll' }
+  | { kind: 'nothingHeld' };
+
+export interface FamilyFailureGroup {
+  reasonKey: string;
+  names: string[];
+}
+
+export interface ReleaseBatchSummary {
+  tone: 'ok' | 'warn' | 'error';
+  released: number;
+  total: number;
+  failures: FamilyFailureGroup[];
+}
+
+export interface FamilyReportsPanelProps {
+  classDocumentId: string;
+  rows: RosterRow[];
+}
+
+export interface FamilyReportActions {
+  confirm: FamilyConfirm | null;
+  reason: string;
+  error: string | null;
+  pending: boolean;
+  setReason: (reason: string) => void;
+  askRelease: (row: FamilyReportRow) => void;
+  askRecall: (row: FamilyReportRow) => void;
+  askReleaseAll: () => void;
+  close: () => void;
+  run: () => void;
+}
+
+export interface FamilyReportsSummaryProps {
+  counts: FamilyCounts;
+  banner: FamilyBanner | null;
+}
+
+export interface FamilyReportRowItemProps {
+  row: FamilyReportRow;
+  onPreview: () => void;
+  onRelease: () => void;
+  onRecall: () => void;
+}
+
+export interface CarerReportPreviewProps {
+  report: CarerReportView;
+  classDocumentId: string;
+  className: string;
+  onClose: () => void;
+  onRelease: () => void;
+  onRecall: () => void;
+}
+
+export interface FamilyReportDialogsProps {
+  actions: FamilyReportActions;
+  counts: FamilyCounts;
+  heldCount: number;
+  className: string;
+}
+
+export interface RecallReportDialogProps {
+  actions: FamilyReportActions;
+  name: string;
 }

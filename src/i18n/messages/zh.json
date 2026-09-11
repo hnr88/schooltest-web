@@ -6013,10 +6013,155 @@
         "body": "当有足够的考试场次可供建模时，本班的预计出口水平将直接显示在这里 — 无需任何设置。"
       }
     },
-    "students": {},
+    "students": {
+      "searchPlaceholder": "搜索学生",
+      "searchLabel": "搜索学生",
+      "count": "{count, plural, other {# 名学生}}",
+      "sortLabel": "学生排序",
+      "sort": {
+        "name": "排序：姓名 A–Z",
+        "high": "排序：最高分",
+        "low": "排序：最低分",
+        "phase": "排序：ACARA 阶段"
+      },
+      "tableLabel": "学生",
+      "columns": {
+        "student": "学生",
+        "score": "分数",
+        "growth": "成长",
+        "weakest": "最薄弱的子技能",
+        "phase": "ACARA 阶段",
+        "export": "导出"
+      },
+      "percent": "{value}%",
+      "empty": "没有符合这些筛选条件的学生。",
+      "emptyRoster": "本班名单中还没有学生。",
+      "pdfTitle": "将该学生的阅读报告下载为 PDF",
+      "llmTitle": "下载供 AI 助手使用的去标识化 Markdown 档案",
+      "export": {
+        "popupBlocked": "请允许弹出窗口，以便将报告下载为 PDF。",
+        "opened": "已打开{name}的阅读报告 — 请在打印对话框中另存为 PDF。",
+        "failed": "无法生成{name}的阅读报告，请重试。",
+        "unavailable": "{name}暂无阅读报告。",
+        "saved": "已下载去标识化档案。",
+        "llmFailed": "无法下载{name}的档案，请重试。"
+      },
+      "print": {
+        "title": "阅读报告 — {name}",
+        "assessment": "阅读（EAL/D 诊断）",
+        "brand": "阅读报告",
+        "overall": "阅读总分",
+        "phase": "ACARA 阶段",
+        "growth": "成长",
+        "points": "{value} 分",
+        "subskills": "子技能明细",
+        "subskill": "子技能",
+        "score": "分数",
+        "band": "等级",
+        "focus": "重点与优势",
+        "strength": "优势",
+        "focusArea": "重点领域",
+        "vocabulary": "词汇",
+        "everyday": "日常词汇（A2）",
+        "academic": "学术词汇（B1）",
+        "canDo": "已经能做到的",
+        "next": "下一步要练习的",
+        "footer": "根据 {name} 于 {date} 的阅读诊断生成。供教师和家庭使用。",
+        "footerSittings": "根据 {name} 于 {date} 的阅读诊断生成。自 {since} 以来共 {count, plural, other {# 次测试}}。供教师和家庭使用。"
+      }
+    },
     "progress": {},
     "insights": {},
-    "familyReports": {},
+    "familyReports": {
+      "title": "家庭报告",
+      "subtitle": "向 {className} 的家庭发布结果。打开学生即可查看或导出完整报告。",
+      "releaseHeld": "{count, plural, =0 {发布暂存的报告} other {发布 # 份暂存报告}}",
+      "tiles": {
+        "scored": "已评分",
+        "released": "已发布给家长",
+        "held": "为您暂存",
+        "noResult": "尚无结果"
+      },
+      "banner": {
+        "open": "{count, plural, other {# 份作答仍未结束。}}",
+        "blocked": "{count, plural, other {# 名学生需要补考或人工评分后才能发布。}}",
+        "gaps": "现在发布，家长看到的班级情况将不完整。",
+        "complete": "本场测试的所有作答均已评分，班级情况完整。"
+      },
+      "filters": {
+        "label": "显示报告",
+        "all": "全部",
+        "held": "暂存",
+        "released": "已发布",
+        "blocked": "受阻"
+      },
+      "listLabel": "按学生列出的家庭报告",
+      "empty": "此分组中没有内容。",
+      "score": "{score}%",
+      "noResult": "无结果",
+      "actions": {
+        "preview": "预览报告",
+        "release": "发布",
+        "recall": "撤回"
+      },
+      "preview": {
+        "eyebrow": "家长报告预览",
+        "meta": "{className} · {date} 参加测试",
+        "score": "{score} / 100",
+        "canDo": "他们能做到的",
+        "next": "接下来要练习的",
+        "release": "发布给家长",
+        "recall": "撤回此报告",
+        "viewAnalysis": "查看完整分析",
+        "close": "关闭"
+      },
+      "release": {
+        "title": "发布给 {name} 的家长？",
+        "body": "发布后，家长可以立即看到等级、子技能明细和下一步建议。",
+        "bodyRecalled": "发布后，家长可以立即看到等级、子技能明细和下一步建议。此报告曾被撤回过，家长将再次看到它。",
+        "cta": "发布报告"
+      },
+      "recall": {
+        "title": "撤回 {name} 的报告？",
+        "body": "撤回后，报告将从家长门户中移除，并发送一条说明结果正在复核的通知。家长已经读过的内容无法收回。",
+        "reasonLabel": "撤回原因",
+        "reasonHint": "与结果一起保存。最多 500 个字符。",
+        "reasonRequired": "请填写撤回原因，最多 500 个字符。",
+        "cta": "撤回报告"
+      },
+      "releaseAll": {
+        "title": "{count, plural, other {发布 # 份暂存报告？}}",
+        "body": "{count, plural, other {# 名学生的家长可以立即看到等级和下一步建议。}}",
+        "open": "{count, plural, other {# 名学生仍在作答，他们的家长将看不到任何内容，可能会来询问原因。}}",
+        "blocked": "{count, plural, other {另有 # 名学生因补考或人工评分而受阻。}}",
+        "tail": "报告可以撤回，但已读内容无法收回。",
+        "cta": "{count, plural, other {发布 # 份报告}}"
+      },
+      "nothingHeld": {
+        "title": "没有暂存的报告",
+        "body": "{count, plural, =0 {{className} 中所有已评分的报告都已发送给家长。} other {{className} 中所有已评分的报告都已发送给家长。其余 # 名没有报告的学生正在等待补考、人工评分或仍在作答，无法在此发布。}}",
+        "cta": "知道了"
+      },
+      "cancel": "取消",
+      "toast": {
+        "released": "已将 {name} 的报告发布给家长",
+        "recalled": "已撤回 {name} 已发布的报告",
+        "releasedAll": "{count, plural, other {已向家长发布 # 份报告}}",
+        "releasedSome": "已发布 {total} 份暂存报告中的 {released} 份。",
+        "releasedNone": "没有暂存报告被发布。",
+        "notReleased": "未发布（{reason}）：{names}。"
+      },
+      "errors": {
+        "notReady": "结果尚未完成",
+        "notFound": "未找到该结果",
+        "forbidden": "您无权更改此结果",
+        "rateLimited": "请求过多，请一分钟后重试",
+        "transport": "连接已中断，请刷新查看当前状态",
+        "generic": "服务器未接受此更改"
+      },
+      "failedRelease": "{name} 的报告未能发布：{reason}。",
+      "failedRecall": "{name} 的报告未能撤回：{reason}。"
+    },
     "live": {},
     "liveSessions": {},
     "startSession": {},

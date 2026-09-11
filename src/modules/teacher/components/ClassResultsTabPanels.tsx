@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { TabsContent } from '@/modules/design-system';
 import { ExitPredictionsPanel } from '@/modules/teacher/components/ExitPredictionsPanel';
+import { FamilyReportsPanel } from '@/modules/teacher/components/FamilyReportsPanel';
 import { ProgressTabPanel } from '@/modules/teacher/components/ProgressTabPanel';
 import { StudentsTabPanel } from '@/modules/teacher/components/StudentsTabPanel';
 import { TeachingInsightsPanel } from '@/modules/teacher/components/TeachingInsightsPanel';
@@ -13,8 +14,7 @@ import type { ClassResultsTabPanelsProps } from '@/modules/teacher/types/results
 
 // The six tab bodies below the sticky header. Each renders inside ONE
 // `data-tab-panel="<key>"` box, so the chunk that rebuilds a body swaps one
-// line here. Base UI mounts only the selected panel. Family reports has no
-// panel yet, so its box stays empty rather than showing a stand-in.
+// line here. Base UI mounts only the selected panel.
 function ClassResultsTabPanels({ classDocumentId, rows, sessionId }: ClassResultsTabPanelsProps) {
   return (
     <>
@@ -30,7 +30,9 @@ function ClassResultsTabPanels({ classDocumentId, rows, sessionId }: ClassResult
       <TabsContent value="exit" data-tab-panel="exit" className={RESULTS_TAB_PANEL_CLASS}>
         <ExitPredictionsPanel />
       </TabsContent>
-      <TabsContent value="reports" data-tab-panel="reports" className={RESULTS_TAB_PANEL_CLASS} />
+      <TabsContent value="reports" data-tab-panel="reports" className={RESULTS_TAB_PANEL_CLASS}>
+        <FamilyReportsPanel classDocumentId={classDocumentId} rows={rows} />
+      </TabsContent>
       <TabsContent
         value="live"
         data-tab-panel="live"

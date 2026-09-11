@@ -24,7 +24,7 @@ export function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (char) => ESCAPES[char] ?? char);
 }
 
-function tile(kind: 'kpi' | 'box', label: string, value: string): string {
+export function tile(kind: 'kpi' | 'box', label: string, value: string): string {
   return `<div class="${kind}"><div class="l">${escapeHtml(label)}</div><div class="v">${escapeHtml(value)}</div></div>`;
 }
 

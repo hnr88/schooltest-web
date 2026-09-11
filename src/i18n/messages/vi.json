@@ -6032,10 +6032,155 @@
         "body": "Khi có đủ số lượt làm bài để lập mô hình, mức đầu ra dự kiến của lớp này sẽ xuất hiện ngay tại đây — không cần thiết lập."
       }
     },
-    "students": {},
+    "students": {
+      "searchPlaceholder": "Tìm học sinh",
+      "searchLabel": "Tìm học sinh",
+      "count": "{count, plural, other {# học sinh}}",
+      "sortLabel": "Sắp xếp học sinh",
+      "sort": {
+        "name": "Sắp xếp: Tên A–Z",
+        "high": "Sắp xếp: Điểm cao nhất",
+        "low": "Sắp xếp: Điểm thấp nhất",
+        "phase": "Sắp xếp: Giai đoạn ACARA"
+      },
+      "tableLabel": "Học sinh",
+      "columns": {
+        "student": "Học sinh",
+        "score": "Điểm",
+        "growth": "Tiến bộ",
+        "weakest": "Kỹ năng con yếu nhất",
+        "phase": "Giai đoạn ACARA",
+        "export": "Xuất"
+      },
+      "percent": "{value}%",
+      "empty": "Không có học sinh nào khớp với bộ lọc đó.",
+      "emptyRoster": "Danh sách lớp này chưa có học sinh nào.",
+      "pdfTitle": "Tải báo cáo đọc của học sinh này dưới dạng PDF",
+      "llmTitle": "Tải hồ sơ Markdown đã ẩn danh cho trợ lý AI",
+      "export": {
+        "popupBlocked": "Hãy cho phép cửa sổ bật lên để tải báo cáo dưới dạng PDF.",
+        "opened": "Đã mở báo cáo đọc của {name} — lưu thành PDF từ hộp thoại in.",
+        "failed": "Không thể chuẩn bị báo cáo đọc của {name}. Hãy thử lại.",
+        "unavailable": "Chưa có báo cáo đọc cho {name}.",
+        "saved": "Đã tải xuống hồ sơ ẩn danh.",
+        "llmFailed": "Không thể tải hồ sơ của {name}. Hãy thử lại."
+      },
+      "print": {
+        "title": "Báo cáo đọc — {name}",
+        "assessment": "Đọc (chẩn đoán EAL/D)",
+        "brand": "Báo cáo đọc",
+        "overall": "Đọc tổng thể",
+        "phase": "Giai đoạn ACARA",
+        "growth": "Tiến bộ",
+        "points": "{value} điểm",
+        "subskills": "Chi tiết kỹ năng con",
+        "subskill": "Kỹ năng con",
+        "score": "Điểm",
+        "band": "Mức",
+        "focus": "Trọng tâm và thế mạnh",
+        "strength": "Thế mạnh",
+        "focusArea": "Trọng tâm",
+        "vocabulary": "Từ vựng",
+        "everyday": "Thông dụng (A2)",
+        "academic": "Học thuật (B1)",
+        "canDo": "Những gì em làm được",
+        "next": "Điều cần luyện tiếp theo",
+        "footer": "Tạo từ kết quả chẩn đoán đọc của {name} vào {date}. Dành cho giáo viên và gia đình.",
+        "footerSittings": "Tạo từ kết quả chẩn đoán đọc của {name} vào {date}. {count, plural, other {# lượt làm bài}} kể từ {since}. Dành cho giáo viên và gia đình."
+      }
+    },
     "progress": {},
     "insights": {},
-    "familyReports": {},
+    "familyReports": {
+      "title": "Báo cáo gia đình",
+      "subtitle": "Công bố kết quả cho gia đình của {className}. Mở một học sinh để xem hoặc xuất báo cáo đầy đủ.",
+      "releaseHeld": "{count, plural, =0 {Công bố báo cáo đang giữ} other {Công bố # báo cáo đang giữ}}",
+      "tiles": {
+        "scored": "Đã chấm",
+        "released": "Đã công bố cho phụ huynh",
+        "held": "Đang giữ cho bạn",
+        "noResult": "Chưa có kết quả"
+      },
+      "banner": {
+        "open": "{count, plural, other {# lượt làm bài vẫn đang mở.}}",
+        "blocked": "{count, plural, other {# học sinh cần thi lại hoặc chấm thủ công trước khi có thể công bố cho các em.}}",
+        "gaps": "Công bố lúc này sẽ cho phụ huynh bức tranh lớp học còn thiếu sót.",
+        "complete": "Mọi lượt làm bài trong buổi này đã được chấm, nên bức tranh lớp học đã đầy đủ."
+      },
+      "filters": {
+        "label": "Hiển thị báo cáo",
+        "all": "Tất cả",
+        "held": "Đang giữ",
+        "released": "Đã công bố",
+        "blocked": "Bị chặn"
+      },
+      "listLabel": "Báo cáo gia đình theo học sinh",
+      "empty": "Không có gì trong nhóm này.",
+      "score": "{score}%",
+      "noResult": "Không có kết quả",
+      "actions": {
+        "preview": "Xem trước báo cáo",
+        "release": "Công bố",
+        "recall": "Thu hồi"
+      },
+      "preview": {
+        "eyebrow": "Xem trước báo cáo cho phụ huynh",
+        "meta": "{className} · làm bài ngày {date}",
+        "score": "{score} / 100",
+        "canDo": "Những gì các em làm được",
+        "next": "Điều cần luyện tiếp theo",
+        "release": "Công bố cho phụ huynh",
+        "recall": "Thu hồi báo cáo này",
+        "viewAnalysis": "Xem phân tích đầy đủ",
+        "close": "Đóng"
+      },
+      "release": {
+        "title": "Công bố cho phụ huynh của {name}?",
+        "body": "Phụ huynh có thể đọc mức độ, phân tích kỹ năng con và các bước tiếp theo ngay khi bạn công bố.",
+        "bodyRecalled": "Phụ huynh có thể đọc mức độ, phân tích kỹ năng con và các bước tiếp theo ngay khi bạn công bố. Báo cáo này đã từng bị thu hồi, nên phụ huynh sẽ thấy lại báo cáo.",
+        "cta": "Công bố báo cáo"
+      },
+      "recall": {
+        "title": "Thu hồi báo cáo của {name}?",
+        "body": "Thu hồi sẽ gỡ báo cáo khỏi cổng phụ huynh và gửi thông báo rằng kết quả đang được xem xét. Những gì phụ huynh đã đọc thì không thể rút lại.",
+        "reasonLabel": "Lý do thu hồi",
+        "reasonHint": "Được lưu cùng kết quả. Tối đa 500 ký tự.",
+        "reasonRequired": "Hãy nhập lý do thu hồi, tối đa 500 ký tự.",
+        "cta": "Thu hồi báo cáo"
+      },
+      "releaseAll": {
+        "title": "{count, plural, other {Công bố # báo cáo đang giữ?}}",
+        "body": "{count, plural, other {Phụ huynh của # học sinh có thể đọc mức độ và các bước tiếp theo ngay.}}",
+        "open": "{count, plural, other {# học sinh vẫn đang làm bài, nên phụ huynh của các em sẽ không thấy gì và có thể hỏi lý do.}}",
+        "blocked": "{count, plural, other {# học sinh khác bị chặn do cần thi lại hoặc chấm thủ công.}}",
+        "tail": "Báo cáo có thể thu hồi, nhưng không thể rút lại những gì đã đọc.",
+        "cta": "{count, plural, other {Công bố # báo cáo}}"
+      },
+      "nothingHeld": {
+        "title": "Không có báo cáo nào đang giữ",
+        "body": "{count, plural, =0 {Mọi báo cáo đã chấm trong {className} đều đã được gửi tới phụ huynh.} other {Mọi báo cáo đã chấm trong {className} đều đã được gửi tới phụ huynh. # học sinh chưa có báo cáo đang chờ thi lại, chấm thủ công hoặc vẫn đang làm bài, nên không thể công bố từ đây.}}",
+        "cta": "Đã hiểu"
+      },
+      "cancel": "Hủy",
+      "toast": {
+        "released": "Đã công bố báo cáo của {name} cho phụ huynh",
+        "recalled": "Đã thu hồi báo cáo đã công bố của {name}",
+        "releasedAll": "{count, plural, other {Đã công bố # báo cáo cho phụ huynh}}",
+        "releasedSome": "Đã công bố {released} trên {total} báo cáo đang giữ.",
+        "releasedNone": "Không có báo cáo đang giữ nào được công bố.",
+        "notReleased": "Chưa công bố ({reason}): {names}."
+      },
+      "errors": {
+        "notReady": "kết quả chưa hoàn tất",
+        "notFound": "không tìm thấy kết quả",
+        "forbidden": "bạn không thể thay đổi kết quả này",
+        "rateLimited": "quá nhiều yêu cầu, hãy thử lại sau một phút",
+        "transport": "kết nối bị ngắt, hãy tải lại để xem trạng thái hiện tại",
+        "generic": "máy chủ không chấp nhận thay đổi này"
+      },
+      "failedRelease": "Chưa công bố được báo cáo của {name}: {reason}.",
+      "failedRecall": "Chưa thu hồi được báo cáo của {name}: {reason}."
+    },
     "live": {},
     "liveSessions": {},
     "startSession": {},

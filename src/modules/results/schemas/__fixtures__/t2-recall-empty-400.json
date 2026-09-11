@@ -1,0 +1,19 @@
+{
+  "status": 400,
+  "body": {
+    "data": null,
+    "error": {
+      "status": 400,
+      "name": "ValidationError",
+      "message": "recall_reason is required (non-empty, at most 500 characters)",
+      "details": {
+        "formErrors": [],
+        "fieldErrors": {
+          "recall_reason": [
+            "Too small: expected string to have >=1 characters"
+          ]
+        }
+      }
+    }
+  }
+}

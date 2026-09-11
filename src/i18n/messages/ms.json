@@ -6023,10 +6023,155 @@
         "body": "Apabila terdapat cukup sesi ujian untuk dijadikan model, tahap keluar yang diunjurkan bagi kelas ini akan dipaparkan di sini — tiada persediaan diperlukan."
       }
     },
-    "students": {},
+    "students": {
+      "searchPlaceholder": "Cari murid",
+      "searchLabel": "Cari murid",
+      "count": "{count, plural, one {# murid} other {# murid}}",
+      "sortLabel": "Isih murid",
+      "sort": {
+        "name": "Isih: Nama A–Z",
+        "high": "Isih: Skor tertinggi",
+        "low": "Isih: Skor terendah",
+        "phase": "Isih: Fasa ACARA"
+      },
+      "tableLabel": "Murid",
+      "columns": {
+        "student": "Murid",
+        "score": "Skor",
+        "growth": "Pertumbuhan",
+        "weakest": "Subkemahiran terlemah",
+        "phase": "Fasa ACARA",
+        "export": "Eksport"
+      },
+      "percent": "{value}%",
+      "empty": "Tiada murid yang sepadan dengan penapis tersebut.",
+      "emptyRoster": "Belum ada murid dalam senarai kelas ini.",
+      "pdfTitle": "Muat turun laporan bacaan murid ini sebagai PDF",
+      "llmTitle": "Muat turun profil Markdown tanpa pengenalan untuk pembantu AI",
+      "export": {
+        "popupBlocked": "Benarkan tetingkap timbul untuk memuat turun laporan sebagai PDF.",
+        "opened": "Laporan bacaan {name} telah dibuka — simpan sebagai PDF daripada dialog cetak.",
+        "failed": "Tidak dapat menyediakan laporan bacaan {name}. Cuba lagi.",
+        "unavailable": "Belum ada laporan bacaan untuk {name}.",
+        "saved": "Profil tanpa pengenalan telah dimuat turun.",
+        "llmFailed": "Tidak dapat memuat turun profil {name}. Cuba lagi."
+      },
+      "print": {
+        "title": "Laporan bacaan — {name}",
+        "assessment": "Bacaan (diagnostik EAL/D)",
+        "brand": "Laporan bacaan",
+        "overall": "Bacaan keseluruhan",
+        "phase": "Fasa ACARA",
+        "growth": "Pertumbuhan",
+        "points": "{value} mata",
+        "subskills": "Pecahan subkemahiran",
+        "subskill": "Subkemahiran",
+        "score": "Skor",
+        "band": "Tahap",
+        "focus": "Fokus dan kekuatan",
+        "strength": "Kekuatan",
+        "focusArea": "Bidang fokus",
+        "vocabulary": "Kosa kata",
+        "everyday": "Harian (A2)",
+        "academic": "Akademik (B1)",
+        "canDo": "Perkara yang boleh dilakukan",
+        "next": "Perkara untuk diusahakan seterusnya",
+        "footer": "Dijana daripada diagnostik bacaan {name} pada {date}. Untuk kegunaan guru dan keluarga.",
+        "footerSittings": "Dijana daripada diagnostik bacaan {name} pada {date}. {count, plural, one {# sesi} other {# sesi}} sejak {since}. Untuk kegunaan guru dan keluarga."
+      }
+    },
     "progress": {},
     "insights": {},
-    "familyReports": {},
+    "familyReports": {
+      "title": "Laporan keluarga",
+      "subtitle": "Keluarkan keputusan kepada keluarga untuk {className}. Buka seorang pelajar untuk melihat atau mengeksport laporan penuh mereka.",
+      "releaseHeld": "{count, plural, =0 {Keluarkan laporan yang ditahan} other {Keluarkan # laporan yang ditahan}}",
+      "tiles": {
+        "scored": "Telah diskor",
+        "released": "Dikeluarkan kepada penjaga",
+        "held": "Ditahan untuk anda",
+        "noResult": "Belum ada keputusan"
+      },
+      "banner": {
+        "open": "{count, plural, other {# percubaan masih terbuka.}}",
+        "blocked": "{count, plural, other {# pelajar memerlukan ujian semula atau pemarkahan manual sebelum apa-apa boleh dikeluarkan untuk mereka.}}",
+        "gaps": "Mengeluarkan sekarang memberi penjaga gambaran kelas yang tidak lengkap.",
+        "complete": "Setiap percubaan dalam sesi ini telah diskor, jadi gambaran kelas adalah lengkap."
+      },
+      "filters": {
+        "label": "Tunjukkan laporan",
+        "all": "Semua",
+        "held": "Ditahan",
+        "released": "Dikeluarkan",
+        "blocked": "Tersekat"
+      },
+      "listLabel": "Laporan keluarga mengikut pelajar",
+      "empty": "Tiada apa-apa dalam kumpulan ini.",
+      "score": "{score}%",
+      "noResult": "Tiada keputusan",
+      "actions": {
+        "preview": "Pratonton laporan",
+        "release": "Keluarkan",
+        "recall": "Tarik balik"
+      },
+      "preview": {
+        "eyebrow": "Pratonton laporan penjaga",
+        "meta": "{className} · diduduki pada {date}",
+        "score": "{score} / 100",
+        "canDo": "Apa yang mereka boleh lakukan",
+        "next": "Apa yang perlu diusahakan seterusnya",
+        "release": "Keluarkan kepada penjaga",
+        "recall": "Tarik balik laporan ini",
+        "viewAnalysis": "Lihat analisis penuh",
+        "close": "Tutup"
+      },
+      "release": {
+        "title": "Keluarkan kepada penjaga {name}?",
+        "body": "Mereka boleh membaca tahap, pecahan subkemahiran dan langkah seterusnya sebaik sahaja anda mengeluarkannya.",
+        "bodyRecalled": "Mereka boleh membaca tahap, pecahan subkemahiran dan langkah seterusnya sebaik sahaja anda mengeluarkannya. Laporan ini pernah ditarik balik, jadi penjaga akan melihatnya semula.",
+        "cta": "Keluarkan laporan"
+      },
+      "recall": {
+        "title": "Tarik balik laporan {name}?",
+        "body": "Menarik balik akan mengeluarkannya dari portal ibu bapa dan menghantar nota bahawa keputusan sedang disemak. Apa yang telah mereka baca tidak boleh dibatalkan.",
+        "reasonLabel": "Sebab penarikan balik",
+        "reasonHint": "Disimpan bersama keputusan. Maksimum 500 aksara.",
+        "reasonRequired": "Berikan sebab penarikan balik, maksimum 500 aksara.",
+        "cta": "Tarik balik laporan"
+      },
+      "releaseAll": {
+        "title": "{count, plural, other {Keluarkan # laporan yang ditahan?}}",
+        "body": "{count, plural, other {Penjaga # pelajar boleh membaca tahap dan langkah seterusnya dengan segera.}}",
+        "open": "{count, plural, other {# pelajar masih menduduki ujian, jadi penjaga mereka tidak akan melihat apa-apa dan mungkin akan bertanya sebabnya.}}",
+        "blocked": "{count, plural, other {# lagi tersekat kerana ujian semula atau pemarkahan manual.}}",
+        "tail": "Laporan boleh ditarik balik, tetapi apa yang telah dibaca tidak boleh dibatalkan.",
+        "cta": "{count, plural, other {Keluarkan # laporan}}"
+      },
+      "nothingHeld": {
+        "title": "Tiada laporan yang ditahan",
+        "body": "{count, plural, =0 {Setiap laporan yang telah diskor dalam {className} telah dihantar kepada penjaganya.} other {Setiap laporan yang telah diskor dalam {className} telah dihantar kepada penjaganya. # pelajar tanpa laporan sedang menunggu ujian semula, pemarkahan manual, atau masih menduduki ujian, dan tidak boleh dikeluarkan dari sini.}}",
+        "cta": "Faham"
+      },
+      "cancel": "Batal",
+      "toast": {
+        "released": "Laporan {name} telah dikeluarkan kepada penjaganya",
+        "recalled": "Laporan {name} yang telah dikeluarkan ditarik balik",
+        "releasedAll": "{count, plural, other {# laporan telah dikeluarkan kepada penjaga}}",
+        "releasedSome": "{released} daripada {total} laporan yang ditahan telah dikeluarkan.",
+        "releasedNone": "Tiada laporan yang ditahan dikeluarkan.",
+        "notReleased": "Tidak dikeluarkan ({reason}): {names}."
+      },
+      "errors": {
+        "notReady": "keputusan belum lengkap",
+        "notFound": "keputusan tidak ditemui",
+        "forbidden": "anda tidak boleh mengubah keputusan ini",
+        "rateLimited": "terlalu banyak permintaan, cuba lagi dalam seminit",
+        "transport": "sambungan terputus, muat semula untuk melihat keadaan semasa",
+        "generic": "pelayan tidak menerima perubahan ini"
+      },
+      "failedRelease": "Laporan {name} tidak dikeluarkan: {reason}.",
+      "failedRecall": "Laporan {name} tidak ditarik balik: {reason}."
+    },
     "live": {},
     "liveSessions": {},
     "startSession": {},

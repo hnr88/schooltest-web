@@ -20,3 +20,16 @@ export const CLASS_SUMMARY_PRINT_CSS = [
   '.two .l{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9CA3AF}.two .v{font-size:15px;color:#0E2350;margin-top:6px;font-weight:600}',
   '.foot{margin-top:28px;font-size:11px;color:#9CA3AF;border-top:1px solid #ECEEF2;padding-top:12px}',
 ].join('');
+
+/**
+ * The printed student reading report (design `printStudentReport`, l.2247): the
+ * class sheet plus its band chips, and the carer lines and EAL/D note in the
+ * carer preview's own styling (l.1858–1907).
+ */
+export const STUDENT_REPORT_PRINT_CSS = [
+  CLASS_SUMMARY_PRINT_CSS,
+  '.band{display:inline-block;font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:999px}',
+  '.lines{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
+  '.lines li{font-size:13.5px;color:#3D4A5C;line-height:1.5;background:#FAFBFC;border:1px solid #ECEEF2;border-radius:9px;padding:12px 14px}',
+  '.note{margin-top:16px;background:#FDF9EF;border:1px solid #EBD9AE;border-radius:9px;padding:14px 16px;font-size:12.5px;line-height:1.6;color:#6B5A38}',
+].join('');

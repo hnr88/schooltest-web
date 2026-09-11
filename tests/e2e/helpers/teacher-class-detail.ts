@@ -17,6 +17,7 @@ export const TABS = ['students', 'progress', 'insights', 'exit', 'reports', 'liv
 export const TAB_BODIES: Partial<Record<(typeof TABS)[number], string>> = {
   progress: '[data-slot="class-progress"]',
   insights: '[data-slot="teaching-insights"]',
+  reports: '[data-slot="family-reports"]',
   exit: '[data-slot="exit-predictions-panel"]',
   live: '[data-surface="teacher-test-day"]',
 };

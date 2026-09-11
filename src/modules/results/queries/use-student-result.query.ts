@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 
 import { resultViewSchema, type ResultView } from '@schooltest/scoring-contracts';
 
@@ -26,13 +26,24 @@ export async function fetchStudentResult(resultId: string): Promise<ResultPayloa
   return { kind: 'legacy', view: legacyResultViewSchema.parse(response.data) };
 }
 
-export function useStudentResultQuery(resultId: string, enabled = true) {
-  return useQuery({
+/**
+ * The ONE key + fetcher for this read, shared by the hook and by callers that
+ * need the result imperatively (`queryClient.fetchQuery`, e.g. the Students
+ * tab's PDF report) — so both land in the same cache entry.
+ */
+export function studentResultQueryOptions(resultId: string) {
+  return queryOptions({
     queryKey: ['results', 'student', resultId],
     queryFn: () => fetchStudentResult(resultId),
-    enabled: enabled && Boolean(resultId),
     staleTime: 0,
     retry: false,
+  });
+}
+
+export function useStudentResultQuery(resultId: string, enabled = true) {
+  return useQuery({
+    ...studentResultQueryOptions(resultId),
+    enabled: enabled && Boolean(resultId),
   });
 }
 

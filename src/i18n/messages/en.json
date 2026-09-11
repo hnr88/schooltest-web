@@ -6013,10 +6013,155 @@
         "body": "Once there are enough sittings to model against, projected exit levels for this class will appear right here — no setup needed."
       }
     },
-    "students": {},
+    "students": {
+      "searchPlaceholder": "Search students",
+      "searchLabel": "Search students",
+      "count": "{count, plural, one {# student} other {# students}}",
+      "sortLabel": "Sort students",
+      "sort": {
+        "name": "Sort: Name A–Z",
+        "high": "Sort: Highest score",
+        "low": "Sort: Lowest score",
+        "phase": "Sort: ACARA phase"
+      },
+      "tableLabel": "Students",
+      "columns": {
+        "student": "Student",
+        "score": "Score",
+        "growth": "Growth",
+        "weakest": "Weakest subskill",
+        "phase": "ACARA phase",
+        "export": "Export"
+      },
+      "percent": "{value}%",
+      "empty": "No students match those filters.",
+      "emptyRoster": "No students on this class roster yet.",
+      "pdfTitle": "Download this student's reading report as a PDF",
+      "llmTitle": "Download a de-identified Markdown profile for an AI assistant",
+      "export": {
+        "popupBlocked": "Allow pop-ups to download the report as a PDF.",
+        "opened": "{name}’s reading report opened — save as PDF from the print dialog.",
+        "failed": "Could not prepare {name}’s reading report. Try again.",
+        "unavailable": "No reading report for {name} yet.",
+        "saved": "De-identified profile downloaded.",
+        "llmFailed": "Could not download {name}’s profile. Try again."
+      },
+      "print": {
+        "title": "Reading report — {name}",
+        "assessment": "Reading (EAL/D diagnostic)",
+        "brand": "Reading report",
+        "overall": "Overall reading",
+        "phase": "ACARA phase",
+        "growth": "Growth",
+        "points": "{value} pts",
+        "subskills": "Subskill breakdown",
+        "subskill": "Subskill",
+        "score": "Score",
+        "band": "Band",
+        "focus": "Focus and strengths",
+        "strength": "Strength",
+        "focusArea": "Focus area",
+        "vocabulary": "Vocabulary",
+        "everyday": "Everyday (A2)",
+        "academic": "Academic (B1)",
+        "canDo": "What they can do",
+        "next": "What to work on next",
+        "footer": "Generated from {name} reading diagnostics on {date}. For teacher and family use.",
+        "footerSittings": "Generated from {name} reading diagnostics on {date}. {count, plural, one {# sitting} other {# sittings}} since {since}. For teacher and family use."
+      }
+    },
     "progress": {},
     "insights": {},
-    "familyReports": {},
+    "familyReports": {
+      "title": "Family reports",
+      "subtitle": "Release results to families for {className}. Open a student to see or export their full report.",
+      "releaseHeld": "{count, plural, =0 {Release held reports} one {Release # held report} other {Release # held reports}}",
+      "tiles": {
+        "scored": "Scored",
+        "released": "Released to carers",
+        "held": "Held for you",
+        "noResult": "No result yet"
+      },
+      "banner": {
+        "open": "{count, plural, one {# attempt is still open.} other {# attempts are still open.}}",
+        "blocked": "{count, plural, one {# student needs a re-sit or manual scoring before anything can be released for them.} other {# students need a re-sit or manual scoring before anything can be released for them.}}",
+        "gaps": "Releasing now gives carers a class picture with gaps in it.",
+        "complete": "Every attempt in this sitting is scored, so the class picture is complete."
+      },
+      "filters": {
+        "label": "Show reports",
+        "all": "All",
+        "held": "Held",
+        "released": "Released",
+        "blocked": "Blocked"
+      },
+      "listLabel": "Family reports by student",
+      "empty": "Nothing in this group.",
+      "score": "{score}%",
+      "noResult": "No result",
+      "actions": {
+        "preview": "Preview report",
+        "release": "Release",
+        "recall": "Recall"
+      },
+      "preview": {
+        "eyebrow": "Carer report preview",
+        "meta": "{className} · sat {date}",
+        "score": "{score} / 100",
+        "canDo": "What they can do",
+        "next": "What to work on next",
+        "release": "Release to carer",
+        "recall": "Recall this report",
+        "viewAnalysis": "View full analysis",
+        "close": "Close"
+      },
+      "release": {
+        "title": "Release to {name}’s carer?",
+        "body": "They can read the band, the subskill breakdown and the next steps as soon as you release it.",
+        "bodyRecalled": "They can read the band, the subskill breakdown and the next steps as soon as you release it. This report was recalled once already, so the carer will see it again.",
+        "cta": "Release the report"
+      },
+      "recall": {
+        "title": "Recall {name}’s report?",
+        "body": "Recalling takes it out of the parent portal and sends a note saying the result is under review. What they have already read cannot be un-sent.",
+        "reasonLabel": "Reason for the recall",
+        "reasonHint": "Saved with the result. Up to 500 characters.",
+        "reasonRequired": "Give a reason for the recall, up to 500 characters.",
+        "cta": "Recall the report"
+      },
+      "releaseAll": {
+        "title": "{count, plural, one {Release # held report?} other {Release # held reports?}}",
+        "body": "{count, plural, one {The carer of # student can read the band and next steps straight away.} other {Carers of # students can read the band and next steps straight away.}}",
+        "open": "{count, plural, one {# student is still sitting, so that carer will see nothing and is likely to ask why.} other {# students are still sitting, so those carers will see nothing and are likely to ask why.}}",
+        "blocked": "{count, plural, one {# more is blocked on a re-sit or manual scoring.} other {# more are blocked on a re-sit or manual scoring.}}",
+        "tail": "Reports can be recalled, but not un-read.",
+        "cta": "{count, plural, one {Release # report} other {Release # reports}}"
+      },
+      "nothingHeld": {
+        "title": "Nothing is being held back",
+        "body": "{count, plural, =0 {Every scored report in {className} has already gone to its carer.} one {Every scored report in {className} has already gone to its carer. The # student without a report is waiting on a re-sit, on manual scoring, or is still sitting, and cannot be released from here.} other {Every scored report in {className} has already gone to its carer. The # students without a report are waiting on a re-sit, on manual scoring, or are still sitting, and cannot be released from here.}}",
+        "cta": "Got it"
+      },
+      "cancel": "Cancel",
+      "toast": {
+        "released": "Released {name}’s report to their carer",
+        "recalled": "Recalled {name}’s released report",
+        "releasedAll": "{count, plural, one {Released # report to carers} other {Released # reports to carers}}",
+        "releasedSome": "Released {released} of {total} held reports.",
+        "releasedNone": "No held report was released.",
+        "notReleased": "Not released ({reason}): {names}."
+      },
+      "errors": {
+        "notReady": "the result is not complete yet",
+        "notFound": "the result was not found",
+        "forbidden": "you cannot change this result",
+        "rateLimited": "too many requests, try again in a minute",
+        "transport": "the connection dropped, refresh to see the current state",
+        "generic": "the server did not accept the change"
+      },
+      "failedRelease": "{name}’s report was not released: {reason}.",
+      "failedRecall": "{name}’s report was not recalled: {reason}."
+    },
     "live": {},
     "liveSessions": {},
     "startSession": {},

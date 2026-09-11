@@ -1,43 +1,54 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { StudentsResultsTable } from '@/modules/teacher/components/StudentsResultsTable';
-import { sortRosterRows } from '@/modules/results/lib/roster-order';
+import { PillSearch } from '@/modules/teacher/components/v2/PillSearch';
+import { PillSelect } from '@/modules/teacher/components/v2/PillSelect';
+import { STUDENTS_SORTS } from '@/modules/teacher/constants/students-table.constants';
+import { studentsTabRows } from '@/modules/teacher/lib/v2/students-tab';
 import type { StudentsTabPanelProps } from '@/modules/teacher/types/students-table.types';
+import type { StudentsSort } from '@/modules/teacher/types/v2-class-tabs.types';
 
-// The Students tab (task 33). It renders the ONE roster read the class-detail
-// screen already made — no second request, no client-side merge and no
-// placeholder row: an empty array is only ever an EMPTY ROSTER, because a
+// The Students tab (Teacher Portal v2 `:663–721`). It renders the ONE roster read
+// the class detail already made — no second request and no placeholder row; a
 // failed read never reaches this panel (ClassResultsScreen renders its error
-// branch instead).
-//
-// ops/34: search, the ACARA phase filter, the sorts and every state are the
-// directory kit's (the bespoke phase select retired into the kit's filter
-// def — same field, same semantics). The panel keeps only the loaded order:
-// task 14's default `score:asc` sort compares exactly `sortRosterRows`, and
-// the pre-sort keeps the attention order canonical before any kit comparator
-// runs.
+// branch). Search, the matched count and the four sorts are the design's, over
+// `studentsTabRows()`.
 function StudentsTabPanel({ classDocumentId, rows }: StudentsTabPanelProps) {
-  const t = useTranslations('Teacher.results.students');
-  const ordered = useMemo(() => sortRosterRows(rows), [rows]);
+  const t = useTranslations('TeacherPortal.students');
+  const [query, setQuery] = useState('');
+  const [sort, setSort] = useState<StudentsSort>('name');
+  const view = studentsTabRows(rows, { query, sort });
 
   return (
     <section
       data-slot="students-tab-panel"
       data-student-count={rows.length}
-      aria-labelledby="students-tab-heading"
-      className="flex flex-col gap-4 rounded-card bg-card px-4 py-6 shadow-sm sm:px-6"
+      className="flex flex-col gap-3.5 leading-[normal]"
     >
-      <div className="flex min-w-0 flex-col gap-1">
-        <h2 id="students-tab-heading" className="text-panel-title font-semibold text-foreground">
-          {t('title')}
-        </h2>
-        <p className="text-meta text-muted-foreground">{t('hint')}</p>
+      <div className="flex flex-wrap items-center gap-2.5">
+        <PillSearch
+          variant="white"
+          size="lg"
+          value={query}
+          onValueChange={setQuery}
+          placeholder={t('searchPlaceholder')}
+          label={t('searchLabel')}
+        />
+        <span role="status" data-slot="students-count" className="ml-auto text-[13px] text-[#6B7280]">
+          {t('count', { count: view.matched })}
+        </span>
+        <PillSelect
+          size="xl"
+          label={t('sortLabel')}
+          value={sort}
+          options={STUDENTS_SORTS.map((value) => ({ value, label: t(`sort.${value}`) }))}
+          onValueChange={(value) => setSort(STUDENTS_SORTS.find((entry) => entry === value) ?? 'name')}
+        />
       </div>
-
-      <StudentsResultsTable classDocumentId={classDocumentId} rows={ordered} />
+      <StudentsResultsTable classDocumentId={classDocumentId} view={view} />
     </section>
   );
 }

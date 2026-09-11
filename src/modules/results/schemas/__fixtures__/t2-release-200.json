@@ -1,0 +1,10 @@
+{
+  "status": 200,
+  "body": {
+    "document_id": "nh1b8l69tgb6235uog95897f",
+    "status": "complete",
+    "release_state": "released",
+    "published_at": "2026-09-11T18:36:40.706Z",
+    "recalled_at": null
+  }
+}

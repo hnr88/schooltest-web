@@ -1,22 +1,33 @@
-import type { RosterRow } from '@/modules/results/types/roster.types';
+import type { RosterRow } from '@/modules/results';
+import type { StudentsTabRow, StudentsTabView } from '@/modules/teacher/types/v2-class-tabs.types';
 
 /**
- * Task 33 — the Students tab renders the ROSTER read (task 23 wrapper): every
- * student of the class, `result: null` where no official Result exists. The v1
- * C-TR-1 `students` array and its Test A/B cells are gone.
+ * The Students tab (Teacher Portal v2, `:663–721`) renders the ONE roster read
+ * the class detail already made: every student of the class, `result: null`
+ * where no official Result exists.
  */
 export interface StudentsTabPanelProps {
   classDocumentId: string;
   rows: RosterRow[];
 }
 
-/** ops/34 — the roster table is the kit's `client`-mode table; rows arrive in the loaded (attention) order. */
+/** The sticky-header table over the rows `studentsTabRows()` returned for the current search and sort. */
 export interface StudentsResultsTableProps {
   classDocumentId: string;
-  rows: RosterRow[];
+  view: StudentsTabView;
 }
 
-/** One roster data cell of the kit's table (Score · Growth · Weakest skill · ACARA · Confidence). */
+/** One data cell of a student row (Student · Growth · ACARA phase). */
 export interface RosterStudentCellsProps {
-  row: RosterRow;
+  row: StudentsTabRow;
+}
+
+export type StudentsColumn = 'student' | 'score' | 'growth' | 'weakest' | 'phase' | 'export';
+
+/** The row exports: PDF prints the student's reading report, LLM saves the server's de-identified Markdown. */
+export interface StudentExportsApi {
+  downloadPdf: (row: StudentsTabRow) => void;
+  downloadLlm: (row: StudentsTabRow) => void;
+  pdfPendingId: string | null;
+  llmPendingId: string | null;
 }
