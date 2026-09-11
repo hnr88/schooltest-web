@@ -6456,8 +6456,8 @@
         "pdfOpened": "Đã mở {report} của {name} — lưu thành PDF từ hộp thoại in.",
         "printOpened": "Đã mở {report} của {name} ở chế độ xem in.",
         "csvSaved": "Đã tải {report} của {name} dưới dạng CSV.",
-        "aiSaved": "{count, plural, other {Đã tải xuống # hồ sơ ẩn danh.}}",
-        "aiFailed": "Không thể tải {failed}/{total} hồ sơ ẩn danh. Hãy thử lại.",
+        "aiSaved": "{count, plural, other {Đã tải xuống bản tóm tắt lớp và # hồ sơ học sinh ẩn danh.}}",
+        "aiFailed": "Không thể tải {failed}/{total} tệp ẩn danh (bản tóm tắt lớp và hồ sơ học sinh). Hãy thử lại.",
         "popupBlocked": "Hãy cho phép cửa sổ bật lên để mở báo cáo.",
         "failed": "Không thể chuẩn bị {report} của {name}. Hãy thử lại."
       },

@@ -1,6 +1,11 @@
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
+
+import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
+import type { RosterRow } from '@/modules/results/types/roster.types';
+import { TEACHER_EXPORT_PROMPT_HEADING } from '@/modules/teacher/schemas/teacher-export.schema';
 
 import { cat, loadMessages } from '../helpers/i18n';
 import { signIn } from '../helpers/teacher-rail';
@@ -8,12 +13,14 @@ import { signIn } from '../helpers/teacher-rail';
 // Teacher Portal v2 · S1 — the Classes screen (/dashboard/results) against the
 // RUNNING web app and the REAL API as the seeded teacher. No route is stubbed:
 // every expectation is read from the page's own GET /api/teacher/dashboard and
-// GET /api/schools/me responses. Proof captures at 1440×900.
+// GET /api/schools/me responses; the LLM file is scanned against the class's
+// canonical roster read. Proof captures at 1440×900.
 
 const en = loadMessages('en');
 const C = 'TeacherPortal.classes';
 const KIT = 'TeacherPortal.kit';
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
+const API_BASE = process.env.E2E_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:5500';
 
 interface WireClass {
   class_document_id: string;
@@ -172,14 +179,33 @@ test('the tiles toggle swaps the body, keeps every class, and returns to the lis
   await expect(page).not.toHaveURL(/layout=/);
 });
 
-test('PDF prints the class report and LLM downloads the class markdown, both from the API', async () => {
+/** The class roster through the REAL canonical read, as the signed-in teacher — nothing intercepted. */
+async function rosterOf(classId: string): Promise<RosterRow[]> {
+  const token = await page.evaluate(() => window.localStorage.getItem('app.auth.token'));
+  if (token === null) throw new Error('[e2e] the signed-in page holds no API token');
+  const response = await page.request.get(`${API_BASE}/api/my/students/results?class=${classId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  expect(response.status()).toBe(200);
+  return classRosterResponseSchema.parse(await response.json());
+}
+
+test('PDF prints the class report and LLM downloads the de-identified class summary, both from the API', async () => {
   const scored = wire.classes.find(isScored);
   test.skip(scored === undefined, 'no class of this teacher has results to export');
   if (scored === undefined) return;
   const row = table().locator(`[data-class-id="${scored.class_document_id}"]`);
 
+  // TB-22: the LLM file is the server's de-identified class summary — no roster name survives in it.
   const [download] = await Promise.all([page.waitForEvent('download'), row.locator('[data-export="llm"]').click()]);
-  expect(download.suggestedFilename()).toMatch(/\.md$/);
+  expect(download.suggestedFilename()).toMatch(/^teaching-insights-.+\.md$/);
+  const markdown = readFileSync(await download.path(), 'utf8');
+  expect(markdown).toContain(TEACHER_EXPORT_PROMPT_HEADING);
+  const names = (await rosterOf(scored.class_document_id)).flatMap((entry) => entry.student.name.split(/\s+/));
+  expect(names.length, 'the roster read carries names to scan for').toBeGreaterThan(0);
+  const occurs = (name: string) =>
+    new RegExp(`(?<![\\p{L}\\p{N}])${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu').test(markdown);
+  expect(names.filter(occurs)).toEqual([]);
 
   const [popup] = await Promise.all([page.waitForEvent('popup'), row.locator('[data-export="pdf"]').click()]);
   await expect(popup.locator('h1')).toHaveText(scored.name, { timeout: 30_000 });

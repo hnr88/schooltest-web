@@ -6437,8 +6437,8 @@
         "pdfOpened": "已打开{name}的{report} — 请在打印对话框中另存为 PDF。",
         "printOpened": "已在打印视图中打开{name}的{report}。",
         "csvSaved": "已将{name}的{report}下载为 CSV。",
-        "aiSaved": "{count, plural, other {已下载 # 份去标识化档案。}}",
-        "aiFailed": "{total} 份去标识化档案中有 {failed} 份未能下载。请重试。",
+        "aiSaved": "{count, plural, other {已下载班级摘要和 # 份去标识化学生档案。}}",
+        "aiFailed": "{total} 个去标识化文件（班级摘要和学生档案）中有 {failed} 个未能下载。请重试。",
         "popupBlocked": "请允许弹出窗口以打开报告。",
         "failed": "无法准备{name}的{report}。请重试。"
       },

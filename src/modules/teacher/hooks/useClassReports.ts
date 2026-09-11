@@ -32,8 +32,9 @@ import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
  *   from the class roster read; · CSV: one record per roster student.
  * - Class summary · PDF/Print: the Classes list's class report (`useClassExports`);
  *   · CSV: the Teaching insights view model over the same roster.
- * - Data for AI: the server's de-identified Markdown, one profile per scored student
- *   (`GET /api/teacher/classes/:id/students/:sid/export`), under the server's filenames.
+ * - Data for AI: the server's de-identified Markdown under its own filenames — the class
+ *   summary (`GET /api/teacher/classes/:id/export/insights`, the Classes list's LLM file),
+ *   then one profile per scored student (`…/students/:sid/export`).
  * Every option writes a file or opens a document; a failure toasts and keeps the modal open.
  */
 export function useClassReports(classCard: DashboardClass, rows: readonly RosterRow[]): ClassReportsApi {
@@ -85,25 +86,32 @@ export function useClassReports(classCard: DashboardClass, rows: readonly Roster
     close();
   };
 
-  const saveProfiles = async () => {
-    const students = scoredRosterRows(rows).map((row) => row.student.document_id);
+  const saveAiFiles = async () => {
+    const classDocumentId = classCard.class_document_id;
+    const requests = [
+      { kind: 'insights' as const, classDocumentId },
+      ...scoredRosterRows(rows).map((row) => ({
+        kind: 'student' as const,
+        classDocumentId,
+        studentDocumentId: row.student.document_id,
+      })),
+    ];
     let saved = 0;
-    for (const studentDocumentId of students) {
-      const request = { kind: 'student' as const, classDocumentId: classCard.class_document_id, studentDocumentId };
+    for (const request of requests) {
       const file = await llm.mutateAsync(request).catch(() => null);
       if (file === null) continue;
       saveTeacherExportFile(file);
       saved += 1;
     }
-    return { saved, total: students.length };
+    return { saved, total: requests.length };
   };
 
   const generateAi = () => {
     setIsPending(true);
-    saveProfiles()
+    saveAiFiles()
       .then(({ saved, total }) => {
         if (saved === total) {
-          showOpsToast({ tone: 'ok', message: t('toast.aiSaved', { count: saved }) });
+          showOpsToast({ tone: 'ok', message: t('toast.aiSaved', { count: saved - 1 }) });
           close();
           return;
         }

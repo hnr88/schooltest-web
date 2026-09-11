@@ -6447,8 +6447,8 @@
         "pdfOpened": "{name}의 {report}이(가) 열렸습니다 — 인쇄 대화상자에서 PDF로 저장하세요.",
         "printOpened": "{name}의 {report}이(가) 인쇄 보기로 열렸습니다.",
         "csvSaved": "{name}의 {report}을(를) CSV로 다운로드했습니다.",
-        "aiSaved": "{count, plural, other {비식별 프로필 #개를 다운로드했습니다.}}",
-        "aiFailed": "비식별 프로필 {total}개 중 {failed}개를 다운로드하지 못했습니다. 다시 시도하세요.",
+        "aiSaved": "{count, plural, other {학급 요약과 비식별 학생 프로필 #개를 다운로드했습니다.}}",
+        "aiFailed": "비식별 파일(학급 요약 및 학생 프로필) {total}개 중 {failed}개를 다운로드하지 못했습니다. 다시 시도하세요.",
         "popupBlocked": "리포트를 열려면 팝업을 허용하세요.",
         "failed": "{name}의 {report}을(를) 준비하지 못했습니다. 다시 시도하세요."
       },

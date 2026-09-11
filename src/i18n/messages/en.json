@@ -6437,8 +6437,8 @@
         "pdfOpened": "{report} for {name} opened — save as PDF from the print dialog.",
         "printOpened": "{report} for {name} opened in a print view.",
         "csvSaved": "{report} for {name} downloaded as CSV.",
-        "aiSaved": "{count, plural, one {# de-identified profile downloaded.} other {# de-identified profiles downloaded.}}",
-        "aiFailed": "{failed} of {total} de-identified profiles could not be downloaded. Try again.",
+        "aiSaved": "{count, plural, one {Class summary and # de-identified student profile downloaded.} other {Class summary and # de-identified student profiles downloaded.}}",
+        "aiFailed": "{failed} of {total} de-identified files (class summary and student profiles) could not be downloaded. Try again.",
         "popupBlocked": "Allow pop-ups to open the reports.",
         "failed": "Could not prepare {report} for {name}. Try again."
       },

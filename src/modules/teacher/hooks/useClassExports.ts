@@ -6,13 +6,14 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { showOpsToast } from '@/modules/ops/actions';
 import { classResultsQueryOptions } from '@/modules/results';
-import { downloadClassExportMarkdown } from '@/modules/teach';
 import { useYearLabel } from '@/modules/teacher/hooks/useClassesDirectory';
 import { summariseClassResults } from '@/modules/teacher/lib/print/class-summary';
 import {
   buildClassSummaryHtml,
   writeClassSummaryWindow,
 } from '@/modules/teacher/lib/print/class-summary-print';
+import { saveTeacherExportFile } from '@/modules/teacher/lib/teacher-export-download';
+import { useTeacherExportMutation } from '@/modules/teacher/queries/use-teacher-export.mutation';
 import type { ClassSummaryLabels } from '@/modules/teacher/types/class-summary-print.types';
 import type {
   ClassExportPending,
@@ -25,8 +26,8 @@ import type {
  * - PDF: the class reading report printed from the roster read
  *   (`GET /api/my/students/results?class=`, the results module's own query
  *   options), in a window opened inside the click so no pop-up blocker fires;
- * - LLM: the server's de-identified class markdown
- *   (`GET /api/schools/me/classes/:id/export.md`).
+ * - LLM: the server's de-identified class summary, students as `S01…` only
+ *   (`GET /api/teacher/classes/:id/export/insights`), under the server's filename.
  * Failures surface as toasts; nothing reports a success it did not have.
  */
 export function useClassExports(): ClassExportsApi {
@@ -36,6 +37,7 @@ export function useClassExports(): ClassExportsApi {
   const tKit = useTranslations('TeacherPortal.kit');
   const tResults = useTranslations('Results');
   const yearLabel = useYearLabel();
+  const llm = useTeacherExportMutation();
   const [pending, setPending] = useState<ClassExportPending | null>(null);
 
   const labelsFor = (name: string, date: string): ClassSummaryLabels => ({
@@ -95,7 +97,9 @@ export function useClassExports(): ClassExportsApi {
 
   const downloadLlm = (row: ClassRowView) => {
     setPending({ id: row.id, kind: 'llm' });
-    downloadClassExportMarkdown(row.id)
+    llm
+      .mutateAsync({ kind: 'insights', classDocumentId: row.id })
+      .then(saveTeacherExportFile)
       .catch(() => showOpsToast({ tone: 'error', message: t('export.llmFailed', { name: row.name }) }))
       .finally(() => setPending(null));
   };

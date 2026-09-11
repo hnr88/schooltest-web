@@ -147,7 +147,8 @@ test('S9 — Reports and data: every kind and format produces a real artefact', 
   expect(valueOf('roster')).toBe(String(roster.length));
   expectNoNewErrors(errors, 'class summary');
 
-  // Data for AI: Markdown only; the server's de-identified profile per scored student, no names.
+  // Data for AI: Markdown only; the server's de-identified class summary, then one profile per
+  // scored student — no file carries a roster name.
   await open(page, 'ai');
   await expect(modal(page).locator('[data-slot="reports-format"]')).toHaveText(['Markdown']);
   await expect(modal(page)).toHaveAttribute('data-format', 'markdown');
@@ -158,7 +159,8 @@ test('S9 — Reports and data: every kind and format produces a real artefact', 
   const downloads: Download[] = [];
   page.on('download', (download) => downloads.push(download));
   await cta(page).click();
-  await expect.poll(() => downloads.length, { timeout: 180_000 }).toBe(students);
+  // The class summary leads, then one profile per scored student: students + 1 files, one toast.
+  await expect.poll(() => downloads.length, { timeout: 180_000 }).toBe(students + 1);
   await expect(page.getByText(icu(label('toast.aiSaved'), { count: students }))).toBeVisible({ timeout: 30_000 });
   const names = roster.flatMap((row) => [row.student.name, ...row.student.name.split(/\s+/).filter((part) => part.length > 2)]);
   for (const download of downloads) {
@@ -168,6 +170,14 @@ test('S9 — Reports and data: every kind and format produces a real artefact', 
     const leaked = names.filter((part) => new RegExp(`\\b${part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(markdown));
     expect(leaked, download.suggestedFilename()).toEqual([]);
   }
+  const [summaryFile, ...moreSummaries] = downloads.filter((download) =>
+    /^teaching-insights-.+\.md$/.test(download.suggestedFilename()),
+  );
+  expect(moreSummaries, 'exactly one class summary').toEqual([]);
+  if (summaryFile === undefined) throw new Error('[e2e] Data for AI saved no de-identified class summary');
+  const aiSummary = await readText(summaryFile);
+  expect(aiSummary).toContain('## ACARA phases');
+  expect(aiSummary).toMatch(/\bS01\b/);
   await expect(modal(page)).toBeHidden();
   expectNoNewErrors(errors, 'data for AI');
 });

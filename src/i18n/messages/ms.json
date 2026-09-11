@@ -6447,8 +6447,8 @@
         "pdfOpened": "{report} untuk {name} telah dibuka — simpan sebagai PDF daripada dialog cetak.",
         "printOpened": "{report} untuk {name} telah dibuka dalam paparan cetak.",
         "csvSaved": "{report} untuk {name} telah dimuat turun sebagai CSV.",
-        "aiSaved": "{count, plural, one {# profil tanpa pengenalan telah dimuat turun.} other {# profil tanpa pengenalan telah dimuat turun.}}",
-        "aiFailed": "{failed} daripada {total} profil tanpa pengenalan tidak dapat dimuat turun. Cuba lagi.",
+        "aiSaved": "{count, plural, one {Ringkasan kelas dan # profil pelajar tanpa pengenalan telah dimuat turun.} other {Ringkasan kelas dan # profil pelajar tanpa pengenalan telah dimuat turun.}}",
+        "aiFailed": "{failed} daripada {total} fail tanpa pengenalan (ringkasan kelas dan profil pelajar) tidak dapat dimuat turun. Cuba lagi.",
         "popupBlocked": "Benarkan tetingkap timbul untuk membuka laporan.",
         "failed": "Tidak dapat menyediakan {report} untuk {name}. Cuba lagi."
       },
