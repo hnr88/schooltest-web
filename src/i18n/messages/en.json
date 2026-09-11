@@ -3136,7 +3136,7 @@
         "description": "Tick every class {name} teaches. Unticking a class removes them from it.",
         "classesLegend": "{count, plural, one {# class selected} other {# classes selected}}",
         "empty": "No classes exist for your school yet.",
-        "submit": "Save teacher",
+        "submit": "Save assignment",
         "submitting": "Saving...",
         "cancel": "Cancel",
         "errorTitle": "We could not update this class",
@@ -3257,7 +3257,7 @@
       "lastName": "Last name",
       "email": "Email",
       "cancel": "Cancel",
-      "submit": "Save assignment",
+      "submit": "Save teacher",
       "submitting": "Saving...",
       "successToast": "{name} was updated.",
       "errorToast": "We could not save those changes. Try again.",
@@ -4867,7 +4867,7 @@
       "clear": "Clear selection"
     },
     "typedNameConfirm": {
-      "typeToConfirm": "Type <name>{name}</name> to confirm"
+      "typeToConfirm": "Type <name>{schoolName}</name> to confirm"
     }
   },
   "RunSheet": {

@@ -21,7 +21,7 @@ export function ClassStudentsEmpty({ onImport }: ClassStudentsEmptyProps) {
       description={t('description')}
       action={
         <div className="flex flex-wrap justify-center gap-2">
-          <Button type="button" size="lg" variant="accent" onClick={onImport}>
+          <Button type="button" size="lg" variant="navy" onClick={onImport}>
             {t('import')}
           </Button>
           <Button size="lg" variant="secondary" render={<Link href="/dashboard/school/students/new" />}>

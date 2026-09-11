@@ -34,7 +34,10 @@ export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
   return (
     <form onSubmit={submit} noValidate>
       <OpsDialogBody>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {/* pixel-audit 2026-09-11 — the design's class modal stacks the name
+            field full-width above the teacher control (class modal :906),
+            not side by side. */}
+        <div className="flex flex-col gap-4">
           <OpsFieldShell id="add-class-name" label={t('name')} errorText={errors.name?.message} required>
             <Input
               id="add-class-name"
