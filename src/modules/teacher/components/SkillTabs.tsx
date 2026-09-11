@@ -1,29 +1,27 @@
 'use client';
 
-import { BookOpen, Headphones, Mic, PenLine } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { cn } from '@/lib/utils';
 import { Tabs, TabsList, TabsTrigger } from '@/modules/design-system';
-import { SKILL_SCOPE_ORDER, isSkillLive } from '@/modules/teacher/lib/skill-scope';
+import {
+  SKILL_TAB_CLASS,
+  SKILL_TAB_ICONS,
+  SKILL_TAB_TONES,
+} from '@/modules/teacher/constants/results.constants';
+import {
+  SKILL_SCOPE_ORDER,
+  isSkillLive,
+  isSkillScopeValue,
+} from '@/modules/teacher/lib/skill-scope';
 import type { SkillScopeValue } from '@/modules/teacher/types/results-shell.types';
-import type { LucideIcon } from 'lucide-react';
-
-/** The design chip's icon, fixed per skill (`:606–630`). */
-const SKILL_ICONS: Record<SkillScopeValue, LucideIcon> = {
-  reading: BookOpen,
-  listening: Headphones,
-  writing: PenLine,
-  speaking: Mic,
-};
 
 /**
- * The four skill chips of the class shell (`Teacher Portal v2:601–638`):
- * Reading is live, the other three carry a Soon badge — and every chip stays
- * clickable, because choosing a Soon skill is how a teacher SEES the
- * coming-soon panel (logic.md #sm-skill). On the repo tab primitive, so the
- * tablist/tab roles, the roving tabindex and the Arrow/Home/End model are the
- * primitive's, not hand-rolled ARIA — the same shape `ClassResultsTabs` uses,
- * never `UnderlineTabs` (it renders a list only and cannot carry a body).
+ * The four skill cards of the class detail (`Teacher Portal v2.dc.html:598–630`):
+ * Reading is live, the other three carry a Soon chip — and every card stays
+ * clickable, because choosing a Soon skill is how a teacher SEES the coming-soon
+ * panel. On the repo tab primitive, so the tablist/tab roles, the roving
+ * tabindex and Arrow/Home/End are the primitive's, not hand-rolled ARIA.
  */
 function SkillTabs({
   value,
@@ -32,59 +30,43 @@ function SkillTabs({
   value: SkillScopeValue;
   onValueChange: (next: SkillScopeValue) => void;
 }) {
-  const t = useTranslations('Teacher.results.skills');
-  const tTabs = useTranslations('Teacher.results.tabs');
+  const t = useTranslations('TeacherPortal.classDetail');
 
   return (
-    <Tabs value={value} onValueChange={onValueChange} className="gap-0">
+    <Tabs
+      value={value}
+      onValueChange={(next) => {
+        if (isSkillScopeValue(next)) onValueChange(next);
+      }}
+      className="gap-0"
+    >
       <TabsList
         variant="default"
-        aria-label={t('listLabel')}
-        className="w-full flex-wrap gap-2 rounded-none bg-transparent p-0 group-data-horizontal/tabs:h-auto"
+        aria-label={t('skillsLabel')}
+        className="h-auto w-full flex-wrap items-stretch justify-start gap-2 rounded-none bg-transparent p-0 group-data-horizontal/tabs:h-auto"
       >
         {SKILL_SCOPE_ORDER.map((skill) => {
-          const Icon = SKILL_ICONS[skill];
+          const Icon = SKILL_TAB_ICONS[skill];
           const live = isSkillLive(skill);
-          const selected = value === skill;
+          const tone =
+            value === skill ? SKILL_TAB_TONES.selected : live ? SKILL_TAB_TONES.live : SKILL_TAB_TONES.soon;
           return (
-            <TabsTrigger
-              key={skill}
-              value={skill}
-              data-skill={skill}
-              className={`h-auto min-h-11 basis-37 flex-1 justify-start gap-2.5 rounded-xl border px-3.5 py-2.5 text-left font-semibold shadow-none data-active:shadow-none ${
-                selected
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : 'border-border bg-card text-foreground'
-              }`}
-            >
-              <Icon
-                aria-hidden="true"
-                className={`size-4.5 flex-none ${live || selected ? '' : 'opacity-55'}`}
-                strokeWidth={1.8}
-              />
+            <TabsTrigger key={skill} value={skill} data-skill={skill} className={cn(SKILL_TAB_CLASS, tone.root)}>
+              <Icon aria-hidden="true" className={cn('size-[18px] flex-none', tone.icon)} strokeWidth={1.8} />
               <span className="min-w-0 flex-1">
-                <span className="block text-body-sm">{t(skill)}</span>
-                <span
-                  className={`block text-meta font-medium ${
-                    selected
-                      ? 'text-primary-foreground/70'
-                      : live
-                        ? 'text-success-strong'
-                        : 'text-muted-foreground'
-                  }`}
-                >
-                  {live ? t('liveNow') : tTabs('comingSoon')}
+                <span className="block text-[13.5px] font-semibold">{t(`skills.${skill}`)}</span>
+                <span className={cn('block text-[11px] font-medium', tone.sub)}>
+                  {live ? t('liveNow') : t('comingSoon')}
                 </span>
               </span>
               {live ? null : (
                 <span
-                  className={`flex-none rounded-full px-1.5 py-0.5 text-micro font-bold tracking-wider uppercase ${
-                    selected
-                      ? 'bg-surface-glass text-primary-foreground'
-                      : 'bg-surface-inset text-muted-foreground'
-                  }`}
+                  className={cn(
+                    'flex-none rounded-full px-[7px] py-0.5 text-[9.5px] font-bold tracking-[0.06em] uppercase',
+                    tone.chip,
+                  )}
                 >
-                  {t('soonBadge')}
+                  {t('soon')}
                 </span>
               )}
             </TabsTrigger>

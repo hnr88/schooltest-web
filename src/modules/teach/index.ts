@@ -13,3 +13,5 @@ export type { RosterChild } from './types/roster.types';
 export type { ClassDiagnostic, DiagnosticMasteryRow, DiagnosticStatus } from './types/diagnostic.types';
 export type { ClassProgress, ProgressStudent, ProgressTransition } from './types/progress.types';
 export type { ClassCycle, CyclePosition } from './types/cycle.types';
+// Teacher v2 Classes list — the LLM export button downloads the same file.
+export { downloadClassExportMarkdown } from './lib/download-export';

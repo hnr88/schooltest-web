@@ -33,20 +33,26 @@ export const TEACHER_BUTTON_SIZES: Record<TeacherButtonSize, string> = {
   '2xl': 'h-[46px] gap-[9px] rounded-[10px] px-5 text-[14.5px] font-semibold',
 };
 
+/**
+ * The design's search boxes are content-box divs, so their drawn size is the
+ * declared size plus padding and border: grey 240+24+2 = 266 × 36+2 = 38
+ * (`classes-list.png`); white 240+30+2 = 272 × 42+2 = 44 on the Students tab
+ * (`class-detail-complete--results.png`), 40+2 = 42 on the Live tab.
+ */
 export const PILL_SEARCH_VARIANTS: Record<'grey' | 'white', { root: string; icon: string }> = {
   grey: {
-    root: 'h-9 gap-[9px] rounded-[9px] border-transparent bg-[#F5F6F8] px-3 hover:border-[#E5E7EB]',
+    root: 'h-[38px] w-[266px] gap-[9px] rounded-[9px] border-transparent bg-[#F5F6F8] px-3 hover:border-[#E5E7EB]',
     icon: 'size-3.5 text-[#9CA3AF]',
   },
   white: {
-    root: 'gap-2.5 rounded-[12px] border-[#ECEEF2] bg-white px-[15px]',
+    root: 'w-[272px] gap-2.5 rounded-[12px] border-[#ECEEF2] bg-white px-[15px]',
     icon: 'size-[15px] text-[#6B7280]',
   },
 };
 
 export const PILL_SEARCH_HEIGHTS: Record<'md' | 'lg', string> = {
-  md: 'h-10',
-  lg: 'h-[42px]',
+  md: 'h-[42px]',
+  lg: 'h-[44px]',
 };
 
 export const PILL_SELECT_SIZES: Record<'sm' | 'md' | 'lg' | 'xl', string> = {

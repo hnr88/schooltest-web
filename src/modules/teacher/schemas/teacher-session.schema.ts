@@ -23,16 +23,84 @@ export const sittingStatusSchema = z.enum(['open', 'closed']);
 /** 3.4 `stage` — the receptive stage ladder; `stage` IS `session.current_stage`. */
 export const stageSchema = z.literal([1, 2, 3]);
 
+/* ── C-SIT-SETTINGS · PATCH /api/sittings/:documentId/settings (teacher 11) ── */
+
+/**
+ * Client mirror of the api contract's `sittingSettingsSchema`
+ * (schooltest-api/src/contracts/teacher-sessions.ts) — eleven camelCase keys,
+ * byte-for-byte. Strict on the REQUEST boundary only: the stored column is
+ * read leniently by C-SIT-02 and the desktop (D-34), so the mirror is used to
+ * VALIDATE what the server answered, never to reject a lenient read. Declared
+ * ahead of C-TS-1, which takes the same settings at create.
+ */
+export const sittingSettingsSchema = z.strictObject({
+  lowBw: z.boolean(),
+  skip: z.boolean(),
+  review: z.boolean(),
+  flag: z.boolean(),
+  bigText: z.boolean(),
+  lockdown: z.boolean(),
+  focusFlag: z.boolean(),
+  warn5: z.boolean(),
+  autoSubmit: z.boolean(),
+  showScore: z.boolean(),
+  timeLimit: z.number().int().min(1).max(180),
+});
+export type SittingSettings = z.infer<typeof sittingSettingsSchema>;
+
+/** The design's `defaultSettings` — what `settings: null` (never written) renders. */
+export const DEFAULT_SITTING_SETTINGS: SittingSettings = {
+  lowBw: false,
+  skip: true,
+  review: true,
+  flag: true,
+  bigText: true,
+  lockdown: true,
+  focusFlag: true,
+  warn5: true,
+  autoSubmit: true,
+  showScore: false,
+  timeLimit: 40,
+};
+
+/** PATCH accepts a PARTIAL body; unknown keys still reject — strict, not silent. */
+export const sittingSettingsPatchSchema = sittingSettingsSchema.partial();
+export type SittingSettingsPatch = z.infer<typeof sittingSettingsPatchSchema>;
+
+/** `sitting.phase`, and `member_student_ids` (`null` is the whole class). */
+export const sittingPhaseSchema = z.enum(['scheduled', 'open', 'running', 'closed', 'cancelled']);
+export const sittingMembersSchema = z.array(str).nullable();
+
 /* ── C-TS-1 · POST /api/teacher/test-sessions ──────────────────────────── */
 
+/**
+ * The start-now keys are optional, so the original two-key body stays valid:
+ * `student_document_ids` (active students of the class, none busy),
+ * `settings` (saved at create) and `start` (server default `true`).
+ */
 export const createTestSessionBodySchema = z.strictObject({
   class_document_id: teacherDocumentIdSchema,
   form_document_id: teacherDocumentIdSchema,
+  student_document_ids: z
+    .array(teacherDocumentIdSchema)
+    .min(1)
+    .max(500)
+    .refine((ids) => new Set(ids).size === ids.length, 'must not name a student twice')
+    .optional(),
+  settings: sittingSettingsPatchSchema.optional(),
+  start: z.boolean().optional(),
+});
+
+/** 409 `details` — one test at a time per student. */
+export const testSessionBusyDetailsSchema = z.strictObject({
+  busy_student_document_ids: z.array(teacherDocumentIdSchema).min(1),
 });
 
 /**
  * 201. `code` is non-null and `status` is the literal `'open'`: C-TS-1 mints the
  * code in the same call, so a body without one is a defect, not an empty state.
+ * The start-now fields are OPTIONAL on the web mirror only (the mirror's
+ * tolerance rule); the API contract requires them.
  */
 export const createTestSessionResponseSchema = z.strictObject({
   sitting_document_id: teacherDocumentIdSchema,
@@ -41,14 +109,41 @@ export const createTestSessionResponseSchema = z.strictObject({
   variant: testVariantSchema,
   status: z.enum(['open']),
   opened_at: z.iso.datetime(),
+  phase: sittingPhaseSchema.extract(['open', 'running']).optional(),
+  settings: sittingSettingsSchema.nullable().optional(),
+  member_student_ids: sittingMembersSchema.optional(),
+  expected: teacherCountSchema.optional(),
 });
 
 /* ── C-TS-2 · GET /api/teacher/test-sessions ───────────────────────────── */
+
+/** Optional server filters and paging; `meta.pagination` answers only a paged read. */
+export const teacherTestSessionsQuerySchema = z.strictObject({
+  status: sittingStatusSchema.optional(),
+  class: teacherDocumentIdSchema.optional(),
+  page: z.number().int().min(1).optional(),
+  pageSize: z.number().int().min(1).max(100).optional(),
+});
+export type TeacherTestSessionsQuery = z.infer<typeof teacherTestSessionsQuerySchema>;
+
+export const testSessionFormSchema = z.strictObject({
+  document_id: teacherDocumentIdSchema,
+  label: str,
+  variant: testVariantSchema.nullable(),
+});
+
+/** Counted over the expected students, latest session per student. */
+export const testSessionStatsSchema = z.strictObject({
+  expected: teacherCountSchema,
+  joined: teacherCountSchema,
+  submitted: teacherCountSchema,
+});
 
 /**
  * `code`/`opened_at` are nullable because the list also carries sittings created
  * outside C-TS-1 (the `api::sitting` core create mints neither); `closed_at` is
  * null on every open row; `variant` is null when the form is not the A|B pair.
+ * The start-now fields are OPTIONAL on the web mirror only.
  */
 export const teacherTestSessionSchema = z.strictObject({
   sitting_document_id: teacherDocumentIdSchema,
@@ -60,10 +155,25 @@ export const teacherTestSessionSchema = z.strictObject({
   closed_at: z.iso.datetime().nullable(),
   completed: teacherCountSchema,
   expected: teacherCountSchema,
+  phase: sittingPhaseSchema.optional(),
+  form: testSessionFormSchema.nullable().optional(),
+  settings: sittingSettingsSchema.nullable().optional(),
+  member_student_ids: sittingMembersSchema.optional(),
+  stats: testSessionStatsSchema.optional(),
 });
 
 export const teacherTestSessionsResponseSchema = z.strictObject({
   sessions: z.array(teacherTestSessionSchema),
+  meta: z
+    .strictObject({
+      pagination: z.strictObject({
+        page: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+        pageCount: teacherCountSchema,
+        total: teacherCountSchema,
+      }),
+    })
+    .optional(),
 });
 
 /* ── C-TS-3 · GET /api/teacher/test-sessions/:documentId/monitor ────────── */
@@ -179,49 +289,6 @@ export const closeTestSessionResponseSchema = z.strictObject({
   status: z.enum(['closed']),
   closed_at: z.iso.datetime(),
 });
-
-/* ── C-SIT-SETTINGS · PATCH /api/sittings/:documentId/settings (teacher 11) ── */
-
-/**
- * Client mirror of the api contract's `sittingSettingsSchema`
- * (schooltest-api/src/contracts/teacher-sessions.ts) — eleven camelCase keys,
- * byte-for-byte. Strict on the REQUEST boundary only: the stored column is
- * read leniently by C-SIT-02 and the desktop (D-34), so the mirror is used to
- * VALIDATE what the server answered, never to reject a lenient read.
- */
-export const sittingSettingsSchema = z.strictObject({
-  lowBw: z.boolean(),
-  skip: z.boolean(),
-  review: z.boolean(),
-  flag: z.boolean(),
-  bigText: z.boolean(),
-  lockdown: z.boolean(),
-  focusFlag: z.boolean(),
-  warn5: z.boolean(),
-  autoSubmit: z.boolean(),
-  showScore: z.boolean(),
-  timeLimit: z.number().int().min(1).max(180),
-});
-export type SittingSettings = z.infer<typeof sittingSettingsSchema>;
-
-/** The design's `defaultSettings` — what `settings: null` (never written) renders. */
-export const DEFAULT_SITTING_SETTINGS: SittingSettings = {
-  lowBw: false,
-  skip: true,
-  review: true,
-  flag: true,
-  bigText: true,
-  lockdown: true,
-  focusFlag: true,
-  warn5: true,
-  autoSubmit: true,
-  showScore: false,
-  timeLimit: 40,
-};
-
-/** PATCH accepts a PARTIAL body; unknown keys still reject — strict, not silent. */
-export const sittingSettingsPatchSchema = sittingSettingsSchema.partial();
-export type SittingSettingsPatch = z.infer<typeof sittingSettingsPatchSchema>;
 
 /* ── C-SIT-ACTIVITY · GET+POST /api/sittings/:documentId/activity (teacher 13) ── */
 

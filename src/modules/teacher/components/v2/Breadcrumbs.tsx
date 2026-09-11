@@ -25,7 +25,7 @@ import type { BreadcrumbsProps } from '@/modules/teacher/types/teacher-kit-contr
 function Breadcrumbs({ items, back, className }: BreadcrumbsProps) {
   return (
     <Breadcrumb className={className}>
-      <BreadcrumbList className="gap-2 text-[13px] text-[#9CA3AF]">
+      <BreadcrumbList className="gap-2 text-[13px] text-[#6B7280]">
         {back ? (
           <BreadcrumbItem>
             <BackButton {...back} />

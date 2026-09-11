@@ -58,9 +58,13 @@ describe('Teacher v2 kit — display pieces', () => {
         <TeacherStatusPill status="scheduled" />
         <TeacherStatusPill status="sittingNow" size="lg" />
         <TeacherStatusPill status="complete" appearance="dot" />
+        <TeacherStatusPill status="complete" size="lg" />
       </div>,
     );
     const pills = view.querySelectorAll('[data-slot="status-pill"]');
+    expect(pills[4]?.textContent).toBe('Complete');
+    expect(pills[4]?.querySelector('.shrink-0.rounded-full')).toBeNull();
+    expect(pills[2]?.querySelector('.shrink-0.rounded-full')).not.toBeNull();
     expect(pills[0]?.textContent).toBe('LIVE NOW');
     expect(pills[0]?.className).toContain('bg-[#DC2626]');
     expect(pills[0]?.querySelector('.animate-om-pulse')).not.toBeNull();

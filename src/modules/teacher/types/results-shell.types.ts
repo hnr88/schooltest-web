@@ -1,11 +1,9 @@
-import type { ReactNode } from 'react';
-
 import type { RESULTS_TAB_ORDER } from '@/modules/teacher/constants/results.constants';
 import type { SKILL_SCOPE_ORDER } from '@/modules/teacher/lib/skill-scope';
 import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
-import type { ClassStudentsResponse } from '@/modules/teacher/types/teacher-result.types';
+import type { RosterRow } from '@/modules/results/types/roster.types';
 
-/** A closed set — the four tabs of .qa/DESIGN.md §Results, never a free string. */
+/** A closed set — the six tabs of the class detail, never a free string. */
 export type ResultsTabValue = (typeof RESULTS_TAB_ORDER)[number];
 
 /**
@@ -35,44 +33,20 @@ export interface ResultsClassRowProps {
   variant: 'cell' | 'tile';
 }
 
+/** The class-detail header (`Teacher Portal v2.dc.html:520–548`) over the ONE C-TD-1 read. */
 export interface ClassResultsHeaderProps {
-  className: string;
-  studentCount: number;
-  summary: ClassStudentsResponse['summary'];
+  classCard: DashboardClass;
+  /** The teacher's own classes — the switcher's options, from the same cached read. */
+  classes: readonly DashboardClass[];
+  onSwitchClass: (classDocumentId: string) => void;
 }
 
-/**
- * One cell of the class-detail summary header. `pill` carries the not-yet count
- * of the top gap — the band is spelled out in WORDS there, never colour alone;
- * `note` explains a `null` the server sent rather than filling it with a zero.
- */
-export interface ClassResultsStatItem {
-  key: string;
-  label: string;
-  value: string;
-  pill?: string;
-  note?: string;
-}
-
-export interface ClassResultsStatProps {
-  item: ClassResultsStatItem;
-}
-
-/**
- * The tab frame is a FRAME: each panel's content arrives as a node so tasks 041,
- * 044 and 045 fill their own tab without editing the shell. The tab VALUE is
- * controlled by the screen, because hiding the strip for a non-reading skill
- * must not lose the teacher's tab ("Reading restores the previous tab",
- * `:4579` + `:3089`).
- */
-export interface ClassResultsTabsProps {
-  value: ResultsTabValue;
-  onValueChange: (next: ResultsTabValue) => void;
-  students: ReactNode;
-  insights: ReactNode;
-  progress: ReactNode;
-  /** teacher/08 — the folded live console; absent keeps the panel honestly empty. */
-  live?: ReactNode;
+/** The six tab bodies below the sticky header; each renders in one `data-tab-panel` box. */
+export interface ClassResultsTabPanelsProps {
+  classDocumentId: string;
+  rows: RosterRow[];
+  /** `?session=<sittingId>` — the sitting a Monitor link opened, handed to the Live tab. */
+  sessionId: string | null;
 }
 
 /**
@@ -88,11 +62,34 @@ export interface ComingSoonPanelProps {
   className?: string;
 }
 
-/** The header class select, over the same cached C-TD-1 `classes[]` the screen reads. */
-export interface ClassSwitcherProps {
-  options: ReadonlyArray<{ value: string; label: string }>;
-  value: string;
-  onValueChange: (next: string) => void;
+/** Tab, skill and sitting as the class-detail URL carries them (`?tab=&skill=&session=`). */
+export interface ClassDetailParams {
+  tab: ResultsTabValue;
+  skill: SkillScopeValue;
+  session: string | null;
+}
+
+/** One tab or skill change; the other URL params ride along untouched. */
+export type ClassDetailPatch = Partial<Pick<ClassDetailParams, 'tab' | 'skill'>>;
+
+export interface ClassDetailParamsState extends ClassDetailParams {
+  setTab: (next: ResultsTabValue) => void;
+  setSkill: (next: SkillScopeValue) => void;
+  /** Opens another of the teacher's classes on the same tab and skill. */
+  switchClass: (classDocumentId: string) => void;
+}
+
+/**
+ * The class-detail header's two overlays: "Reports and data" (`:1626–1705`) and
+ * the class Ask AI drawer (`:550–596`). The header publishes the request; each
+ * overlay mounts once and subscribes. One overlay at a time.
+ */
+export interface ClassOverlaysState {
+  reportsOpen: boolean;
+  askAiOpen: boolean;
+  openReports: () => void;
+  openAskAi: () => void;
+  close: () => void;
 }
 
 export interface ClassResultsScreenProps {

@@ -1,119 +1,82 @@
 'use client';
 
-import { useFormatter, useTranslations } from 'next-intl';
-import type { ReactNode } from 'react';
+import { FileText, Sparkle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
-import { ClassResultsStat } from '@/modules/teacher/components/ClassResultsStat';
-import type { ClassResultsStatItem } from '@/modules/teacher/types/results-shell.types';
-import {
-  classAverage,
-  phaseSpread,
-  reliableGrowthAverage,
-  resultViewsOf,
-  scoredCount,
-} from '@/modules/results/lib/class-aggregation';
-import type { RosterRow } from '@/modules/results/types/roster.types';
+import { Breadcrumbs } from '@/modules/teacher/components/v2/Breadcrumbs';
+import { ClassBadge } from '@/modules/teacher/components/v2/ClassBadge';
+import { PillSelect } from '@/modules/teacher/components/v2/PillSelect';
+import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
+import { TeacherStatusPill } from '@/modules/teacher/components/v2/TeacherStatusPill';
+import { RESULTS_PATH } from '@/modules/teacher/constants/results.constants';
+import { CLASS_STATUS_KEY } from '@/modules/teacher/constants/teacher-kit.constants';
+import { classBadgeCode } from '@/modules/teacher/lib/teacher-kit';
+import { useClassOverlaysStore } from '@/modules/teacher/stores/use-class-overlays-store';
+import type { ClassResultsHeaderProps } from '@/modules/teacher/types/results-shell.types';
 
-// .qa/DESIGN.md §Results — class detail: the class name is the page's h1, the
-// roster size sits under it, and the four summary tiles (dashboard §2) are
-// computed from the ONE roster payload by the pure layer — class average,
-// reliable growth average (fewer than three reliable movers is "not enough
-// data"), the ACARA phase spread and scored/total. Nothing here thresholds,
-// re-weights or invents a number; every absence renders as an absence.
-//
-// The trail "Dashboard / Results / <class>" is the app's ONE breadcrumb in the
-// topbar; the class name reaches it through the shell's own useRecordCrumb (see
-// ClassResultsScreen), so no second breadcrumb is added here.
-//
-// Named ...RosterProps (not ClassResultsHeaderProps): the results-shell type of
-// that name still carries C-TR-1's `summary` legacy, which is not this task's
-// surface (the split screen that used it retired with scoring/10's R-16).
-interface ClassRosterHeaderProps {
-  className: string;
-  rows: readonly RosterRow[];
-  /** The header class select the screen builds — same cached C-TD-1 read. */
-  switcher: ReactNode;
-}
-
-function ClassResultsHeader({ className, rows, switcher }: ClassRosterHeaderProps) {
-  const t = useTranslations('Teacher.results.detail');
-  const format = useFormatter();
-  const views = resultViewsOf(rows);
-
-  const average = classAverage(views);
-  const growth = reliableGrowthAverage(views);
-  const spread = phaseSpread(rows);
-  const scored = scoredCount(rows);
-  const namedPhases = spread.filter((bucket) => bucket.phase !== null);
-  const unmeasured = spread.find((bucket) => bucket.phase === null)?.count ?? 0;
-
-  const stats: ClassResultsStatItem[] = [
-    {
-      key: 'class-average',
-      label: t('tileAverage'),
-      value: average === null ? t('noValue') : format.number(average, { maximumFractionDigits: 1 }),
-      note: average === null ? t('tileAverageNone') : undefined,
-    },
-    {
-      key: 'reliable-growth',
-      label: t('tileGrowth'),
-      value:
-        growth.state === 'average'
-          ? format.number(growth.value, { maximumFractionDigits: 1, signDisplay: 'exceptZero' })
-          : t('tileGrowthInsufficient'),
-      note: t('tileGrowthNote', { count: growth.qualifying }),
-    },
-    {
-      key: 'phase-spread',
-      label: t('tilePhases'),
-      value: t('tilePhasesValue', { count: namedPhases.length }),
-      note: unmeasured > 0 ? t('tilePhasesUnmeasured', { count: unmeasured }) : undefined,
-    },
-    {
-      key: 'scored-total',
-      label: t('tileScored'),
-      value: t('tileScoredValue', { scored: scored.scored, total: scored.total }),
-    },
-  ];
+// The class-detail header (`Teacher Portal v2.dc.html:520–548`) over the ONE
+// C-TD-1 card: breadcrumb, navy badge, name, meta, status pill, the two overlay
+// buttons and the class switcher. The meta prints only what the card carries —
+// `year_level` when set, `student_count` always; the design's "form A" has no
+// source, so it is not drawn. The switcher is last in the DOM, where the
+// design's `order:9` puts it on screen, so focus order follows the layout.
+function ClassResultsHeader({ classCard, classes, onSwitchClass }: ClassResultsHeaderProps) {
+  const t = useTranslations('TeacherPortal.classDetail');
+  const openReports = useClassOverlaysStore((state) => state.openReports);
+  const openAskAi = useClassOverlaysStore((state) => state.openAskAi);
+  const year = classCard.year_level ?? null;
+  const meta =
+    year === null
+      ? t('metaStudents', { count: classCard.student_count })
+      : t('metaYearStudents', { year, count: classCard.student_count });
 
   return (
-    <header data-slot="class-results-header" className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex min-w-0 flex-col gap-1">
-          <h1 className="text-portal-title font-bold break-words text-foreground">{className}</h1>
-          {/*
-            `--color-body` (#475569), not `--muted-foreground` (#64748B): this line
-            sits on the dashboard well (#EEF2F7), where axe measured muted at
-            4.23:1 for 12.5px text — under the 4.5:1 floor. Body ink is 6.74:1.
-          */}
-          <p className="text-meta text-body">{t('students', { count: rows.length })}</p>
+    <div data-slot="class-results-header" className="flex flex-col gap-4">
+      <Breadcrumbs
+        back={{ href: RESULTS_PATH, title: t('backTitle') }}
+        items={[{ label: t('crumbClasses'), href: RESULTS_PATH }, { label: classCard.name }]}
+      />
+      <div className="flex flex-wrap items-center gap-[18px]">
+        <ClassBadge code={classBadgeCode(classCard.name)} size="lg" tone="navy" />
+        <div className="min-w-[220px] flex-1">
+          <h1 className="text-[28px] font-medium tracking-[-0.02em] text-navy-900">{classCard.name}</h1>
+          <p data-slot="class-meta" className="mt-1 text-[14px] text-[#6B7280]">
+            {meta}
+          </p>
         </div>
-        {/*
-          The design's class switcher (`:531–540`, `order:9` — the select trails
-          the row). It carries no visible label in the export, so its accessible
-          name is rendered by ClassSwitcher itself.
-        */}
-        {switcher}
+        <TeacherStatusPill status={CLASS_STATUS_KEY[classCard.status]} size="lg" className="flex-none" />
+        <TeacherButton
+          tone="outline"
+          size="lg"
+          data-slot="class-reports-button"
+          className="flex-none"
+          onClick={() => openReports()}
+        >
+          <FileText aria-hidden="true" className="size-4" strokeWidth={1.9} />
+          {t('reports')}
+        </TeacherButton>
+        <TeacherButton
+          tone="primary"
+          size="lg"
+          data-slot="class-ask-ai-button"
+          title={t('askAiTitle')}
+          className="flex-none"
+          onClick={() => openAskAi()}
+        >
+          <Sparkle aria-hidden="true" className="size-4" strokeWidth={2} />
+          {t('askAi')}
+        </TeacherButton>
+        <PillSelect
+          size="lg"
+          data-slot="class-switcher"
+          label={t('switcherLabel')}
+          value={classCard.class_document_id}
+          options={classes.map((entry) => ({ value: entry.class_document_id, label: entry.name }))}
+          onValueChange={onSwitchClass}
+          className="flex-none"
+        />
       </div>
-
-      {/*
-        A named REGION around the list, not `aria-label` on the <dl> itself: `dl`
-        has no corresponding ARIA role, so a name put directly on it is not
-        reliably exposed (measured — Chrome reports it as DescriptionList and the
-        accessibility tree carried no name). The section is the nameable element;
-        the <dl>/<dt>/<dd> stay the semantics of the four label/value pairs.
-      */}
-      <section aria-labelledby="class-summary-heading">
-        <h2 id="class-summary-heading" className="sr-only">
-          {t('summaryLabel')}
-        </h2>
-        <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {stats.map((item) => (
-            <ClassResultsStat key={item.key} item={item} />
-          ))}
-        </dl>
-      </section>
-    </header>
+    </div>
   );
 }
 

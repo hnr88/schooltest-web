@@ -2,28 +2,28 @@
 
 import { useTranslations } from 'next-intl';
 
-// Teacher Portal.dc.html:654-663 (the Exit-predictions tab block): the design
-// ships this tab as an empty state — the heading and body below are its own
-// words, and it deliberately carries NO "Coming soon" badge: a forward promise
-// would imply capability this platform does not have. The panel stays inert on
-// purpose — no button, no link, no input, no query, and above all no predicted
-// number: a mocked-up figure here would be fabricated data.
+import { ComingSoonPanel } from '@/modules/teacher/components/ComingSoonPanel';
+
+// The Exit predictions tab (`Teacher Portal v2.dc.html:1004–1020`): the design's
+// own placeholder — a section header, then the shared coming-soon body at the
+// 44/24/30 padding. Inert on purpose: no control, no query, and no predicted
+// number, because none has been measured.
 function ExitPredictionsPanel() {
-  const t = useTranslations('Teacher.results.exitPredictions');
+  const t = useTranslations('TeacherPortal.classDetail.exit');
 
   return (
     <section
       data-slot="exit-predictions-panel"
       aria-labelledby="exit-predictions-heading"
-      className="flex flex-col gap-2 rounded-card border border-dashed border-border bg-card px-6 py-6 sm:px-7.5"
+      className="flex flex-col gap-[18px]"
     >
-      <h2
-        id="exit-predictions-heading"
-        className="text-panel-title font-semibold text-foreground"
-      >
-        {t('title')}
-      </h2>
-      <p className="max-w-prose text-body-sm text-balance text-body">{t('description')}</p>
+      <div>
+        <h2 id="exit-predictions-heading" className="text-[20px] leading-[normal] font-semibold text-navy-900">
+          {t('title')}
+        </h2>
+        <p className="mt-1.5 text-[13.5px] leading-[normal] text-[#6B7280]">{t('subtitle')}</p>
+      </div>
+      <ComingSoonPanel title={t('heading')} description={t('body')} className="pb-[30px]" />
     </section>
   );
 }

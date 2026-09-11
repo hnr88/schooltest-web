@@ -53,3 +53,7 @@ export {
 } from './lib/class-analytics';
 export { classRosterResponseSchema } from './schemas/roster.schema';
 export type { RosterReleaseState, RosterRow, RosterStudent } from './types/roster.types';
+// Teacher v2 Classes list — the PDF export reads the roster imperatively and
+// ranks the class's weakest/strongest subskill on the same analytics layer.
+export { classResultsQueryOptions } from './queries/use-class-results.query';
+export { weakestFirstAverages } from './lib/class-analytics';

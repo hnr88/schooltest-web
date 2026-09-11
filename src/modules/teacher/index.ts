@@ -187,11 +187,7 @@ export type {
   ResultsReadCounts,
   ResultsClassRowProps,
   ClassResultsHeaderProps,
-  ClassResultsStatItem,
-  ClassResultsStatProps,
-  ClassResultsTabsProps,
   ComingSoonPanelProps,
-  ClassSwitcherProps,
   ClassResultsScreenProps,
 } from './types/results-shell.types';
 export type {

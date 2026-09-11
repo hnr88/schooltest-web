@@ -40,8 +40,8 @@ function ComingSoonPanel({
       <div className="grid size-15 place-items-center rounded-[16px] bg-[#F1F3F6]">
         <Clock aria-hidden="true" className="size-[26px] text-[#5B6472]" strokeWidth={1.8} />
       </div>
-      <div className="max-w-[52ch]">
-        <h2 id={headingId} className="text-[22px] font-semibold tracking-[-0.02em] text-navy-900">
+      <div className="max-w-[52ch] text-base">
+        <h2 id={headingId} className="text-[22px] leading-[normal] font-semibold tracking-[-0.02em] text-navy-900">
           {title}
         </h2>
         <p className="mt-2.5 text-[14px] leading-[1.65] text-[#6B7280]">{description}</p>

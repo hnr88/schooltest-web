@@ -64,17 +64,19 @@ function TeacherStatusPill({
     );
   }
 
+  // The class header pill (`:541`) draws its dot only while sitting (`sittingDotDisplay`).
   const header = size === 'lg';
   return (
     <ToneChip tone={STATUS_TONE[status]} size={header ? 'xl' : 'md'} className={className}>
-      <span
-        aria-hidden="true"
-        className={cn(
-          'shrink-0 rounded-full',
-          header ? 'size-2' : 'size-1.5',
-          header && status === 'sittingNow' ? 'animate-om-pulse-ring bg-[#D92D20]' : 'bg-current',
-        )}
-      />
+      {header && status !== 'sittingNow' ? null : (
+        <span
+          aria-hidden="true"
+          className={cn(
+            'shrink-0 rounded-full',
+            header ? 'size-2 animate-om-pulse-ring bg-[#D92D20]' : 'size-1.5 bg-current',
+          )}
+        />
+      )}
       {text}
     </ToneChip>
   );

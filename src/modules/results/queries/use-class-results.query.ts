@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
 import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
@@ -33,12 +33,23 @@ export async function fetchClassResults(classId: string): Promise<RosterRow[]> {
   return classRosterResponseSchema.parse(response.data);
 }
 
-export function useClassResultsQuery(classId: string, enabled = true) {
-  return useQuery({
+/**
+ * The ONE key + fetcher for this read, shared by the hook and by callers that
+ * need the rows imperatively (`queryClient.fetchQuery`, e.g. the Classes list's
+ * PDF export) — so both land in the same cache entry.
+ */
+export function classResultsQueryOptions(classId: string) {
+  return queryOptions({
     queryKey: ['results', 'class', classId],
     queryFn: () => fetchClassResults(classId),
-    enabled: enabled && Boolean(classId),
     staleTime: 0,
     retry: false,
+  });
+}
+
+export function useClassResultsQuery(classId: string, enabled = true) {
+  return useQuery({
+    ...classResultsQueryOptions(classId),
+    enabled: enabled && Boolean(classId),
   });
 }

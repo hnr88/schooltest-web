@@ -19,6 +19,12 @@ import type {
  * v2.dc.html`; research/design-surfaces.md §8). The design draws Tailwind-gray
  * neutrals, not the slate shadcn tokens, so literal values stand where no token
  * matches; `navy-900` (#0E2350) and `navy-800` (#16326E) are the tokens that do.
+ *
+ * One deliberate deviation: the design's tertiary TEXT grey #9CA3AF (and the
+ * "Soon" #B6BCC7) sit at 2.5:1 / 1.9:1 on white, which fails WCAG AA and the
+ * teacher axe gate (`tests/e2e/teacher-a11y.spec.ts`). The kit draws tertiary
+ * text in the design's own secondary grey #6B7280 (4.8:1). Icons and hairlines
+ * keep #9CA3AF.
  */
 
 export const PAGE_CARD_VARIANTS: Record<TeacherPageCardVariant, string> = {
@@ -114,7 +120,7 @@ export const DELTA_COLOURS: Record<DeltaDirection, string> = {
   up: 'text-[#1F7A4D]',
   down: 'text-[#B42318]',
   flat: 'text-[#5B6472]',
-  none: 'text-[#9CA3AF]',
+  none: 'text-[#6B7280]',
 };
 
 export const DELTA_DS_TONE: Record<DeltaDirection, 'positive' | 'neutral' | 'negative'> = {
@@ -138,7 +144,7 @@ export const KPI_TONES: Record<KpiCardTone, string> = {
   warning: 'text-[#92610B]',
 };
 
-const KPI_LABEL = 'font-semibold tracking-[0.05em] text-[#9CA3AF] uppercase';
+const KPI_LABEL = 'font-semibold tracking-[0.05em] text-[#6B7280] uppercase';
 const KPI_VALUE = 'leading-[1.15] font-normal tracking-[-0.02em] tabular-nums';
 
 export const KPI_VARIANTS: Record<
@@ -161,7 +167,7 @@ export const KPI_VARIANTS: Record<
     root: 'px-5 py-[18px]',
     label: 'mt-2 text-[12.5px] text-[#6B7280]',
     value: 'text-[30px] leading-none font-normal tracking-[-0.03em] tabular-nums',
-    sub: 'mt-1 text-[12px] text-[#9CA3AF]',
+    sub: 'mt-1 text-[12px] text-[#6B7280]',
   },
 };
 
