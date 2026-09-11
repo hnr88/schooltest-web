@@ -1,6 +1,8 @@
 import { BookOpen, Headphones, Mic, PenLine } from 'lucide-react';
 
 import type { SkillScopeValue } from '@/modules/teacher/types/results-shell.types';
+import type { ToneChipTone } from '@/modules/teacher/types/teacher-kit.types';
+import type { MasteryFlagKind } from '@/modules/teacher/types/v2-insights.types';
 import type { LucideIcon } from 'lucide-react';
 
 // The Results surface lives on the ONE dashboard shell (ASSUMPTION A4,
@@ -88,3 +90,19 @@ export const SKILL_TAB_TONES = {
     chip: 'bg-[#EAEDF2] text-[#8A94A6]',
   },
 } as const;
+
+/** Teaching insights (`:723–871`): the design's three activity lines and the dates the tab prints. */
+export const INSIGHTS_ACTIVITY_LIMIT = 3;
+
+/** `sat_at` is a calendar date, so it is read and printed in UTC (never shifted a day). */
+export const INSIGHTS_MONTH_FORMAT = { month: 'short', timeZone: 'UTC' } as const;
+
+export const INSIGHTS_DAY_FORMAT = { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' } as const;
+
+export const INSIGHTS_ACTIVITY_TIME_FORMAT = { dateStyle: 'medium', timeStyle: 'short' } as const;
+
+/** Reading mastery flag chip (`:785`): Class focus red, Class strength green. */
+export const INSIGHTS_FLAG_CHIP_TONE: Record<MasteryFlagKind, ToneChipTone> = {
+  focus: 'danger',
+  strength: 'success',
+};

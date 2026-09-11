@@ -2319,10 +2319,15 @@
       },
       "status": {
         "mastered": "已掌握",
-        "emerging": "发展中",
+        "emerging": "初显",
         "not_mastered": "未掌握",
-        "not_assessed": "尚未评估"
+        "not_assessed": "尚未评估",
+        "secure": "稳固",
+        "developing": "发展中",
+        "not_yet": "尚未达到"
       },
+      "filteredEmptyTitle": "没有匹配的学生",
+      "filteredEmptyDescription": "没有学生符合当前的搜索。",
       "export": {
         "cta": "导出以用于您的 AI 助手",
         "downloading": "正在准备导出...",
@@ -6117,7 +6122,57 @@
       },
       "footnote": "此处每位学生的变化，都是服务器将其最近一次测试与上一次测试直接比较的结果。无法比较时，不显示任何变化。班级平均分趋势是已记录的已评分测试的简单平均。"
     },
-    "insights": {},
+    "insights": {
+      "title": "教学洞察",
+      "subtitle": "接下来教什么，教给谁。",
+      "emptyTitle": "该班级还没有学生完成测验",
+      "emptyDescription": "子技能掌握情况与建议分组均来自已完成的阅读结果，因此目前还没有可用于教学的数据。一旦有学生提交测验，这些内容便会出现在此处。",
+      "percent": "{value}%",
+      "kpi": {
+        "lastSitting": "最近一次测验",
+        "lastSittingSub": "{form} · {date}",
+        "classAverage": "班级平均分",
+        "classAverageSub": "最近一次测验",
+        "upSinceLast": "较上次测验提升",
+        "upSinceLastValue": "{value} 分",
+        "upSinceLastSub": "上次 → 最近 · {count, plural, other {# 名学生}}",
+        "upSinceLastNone": "尚无重复测验",
+        "topGap": "最大短板",
+        "topGapSub": "掌握的学生最少",
+        "participation": "参与率",
+        "participationSub": "{total} 名学生中 {scored} 名已计分"
+      },
+      "mastery": {
+        "title": "阅读掌握情况",
+        "description": "每项阅读子技能的班级平均分，最弱的在前。",
+        "secure": "{total} 人中 {secure} 人稳固",
+        "gatePassed": "{total} 人中 {passed} 人通过",
+        "notAssessed": "未评估"
+      },
+      "cohort": {
+        "title": "班级概览",
+        "phaseSpread": "ACARA 阶段分布",
+        "growth": "进步",
+        "growthText": "提高 {improved} · 持平 {held} · 下降 {slipped}",
+        "vocab": "词汇",
+        "vocabText": "日常 A2 {a2} · 学术 B1 {b1}"
+      },
+      "activity": {
+        "title": "最近动态"
+      },
+      "pairings": {
+        "title": "建议配对",
+        "intro": "让{skill}较强的同学与需要这方面帮助的同学结对。",
+        "none": "{skill}没有明显的配对 — 全班在这方面水平相近。",
+        "strong": "{score}% · 较强",
+        "support": "{score}% · 需帮助"
+      },
+      "groups": {
+        "title": "建议分组",
+        "description": "按目前制约学生的阅读领域分组。",
+        "count": "{count, plural, other {# 名学生}}"
+      }
+    },
     "familyReports": {
       "title": "家庭报告",
       "subtitle": "向 {className} 的家庭发布结果。打开学生即可查看或导出完整报告。",

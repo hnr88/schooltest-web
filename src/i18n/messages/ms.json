@@ -2319,10 +2319,15 @@
       },
       "status": {
         "mastered": "Dikuasai",
-        "emerging": "Sedang berkembang",
+        "emerging": "Baharu muncul",
         "not_mastered": "Belum dikuasai",
-        "not_assessed": "Belum dinilai"
+        "not_assessed": "Belum dinilai",
+        "secure": "Teguh",
+        "developing": "Sedang berkembang",
+        "not_yet": "Belum lagi"
       },
+      "filteredEmptyTitle": "Tiada pelajar sepadan",
+      "filteredEmptyDescription": "Tiada pelajar yang sepadan dengan carian semasa.",
       "export": {
         "cta": "Eksport untuk pembantu AI anda",
         "downloading": "Menyediakan eksport...",
@@ -6127,7 +6132,57 @@
       },
       "footnote": "Setiap perubahan murid di sini ialah perbandingan pelayan sendiri antara sesi terkini murid itu dengan sesi sebelumnya. Jika sesuatu pasangan tidak dapat dibandingkan, tiada perubahan ditunjukkan langsung. Purata kelas dari semasa ke semasa ialah purata biasa bagi sesi yang diskor dalam rekod."
     },
-    "insights": {},
+    "insights": {
+      "title": "Cerapan pengajaran",
+      "subtitle": "Apa yang perlu diajar seterusnya, dan kepada siapa.",
+      "emptyTitle": "Belum ada pelajar dalam kelas ini yang menyelesaikan ujian",
+      "emptyDescription": "Penguasaan subkemahiran dan kumpulan yang disarankan dibina daripada keputusan bacaan yang telah selesai, jadi belum ada apa-apa untuk diajar. Ia akan muncul di sini sebaik sahaja seorang pelajar menghantar ujian.",
+      "percent": "{value}%",
+      "kpi": {
+        "lastSitting": "Sesi terakhir",
+        "lastSittingSub": "{form} · {date}",
+        "classAverage": "Purata kelas",
+        "classAverageSub": "Sesi terkini",
+        "upSinceLast": "Naik sejak ujian lepas",
+        "upSinceLastValue": "{value} mata",
+        "upSinceLastSub": "Sesi sebelum → terkini · {count, plural, one {# pelajar} other {# pelajar}}",
+        "upSinceLastNone": "Belum ada sesi berulang",
+        "topGap": "Jurang utama",
+        "topGapSub": "Paling sedikit pelajar menguasai",
+        "participation": "Penyertaan",
+        "participationSub": "{scored} daripada {total} pelajar diberi skor"
+      },
+      "mastery": {
+        "title": "Penguasaan bacaan",
+        "description": "Purata kelas bagi setiap subkemahiran bacaan, yang paling lemah dahulu.",
+        "secure": "{secure} daripada {total} teguh",
+        "gatePassed": "{passed} daripada {total} lulus",
+        "notAssessed": "Tidak dinilai"
+      },
+      "cohort": {
+        "title": "Kohort sepintas lalu",
+        "phaseSpread": "Taburan fasa ACARA",
+        "growth": "Pertumbuhan",
+        "growthText": "{improved} meningkat · {held} kekal · {slipped} menurun",
+        "vocab": "Kosa kata",
+        "vocabText": "Harian A2 {a2} · Akademik B1 {b1}"
+      },
+      "activity": {
+        "title": "Aktiviti terkini"
+      },
+      "pairings": {
+        "title": "Pasangan dicadangkan",
+        "intro": "Pasangkan rakan yang kuat dalam {skill} dengan rakan yang memerlukan sokongan dalamnya.",
+        "none": "Tiada pasangan yang jelas untuk {skill} — kelas ini setara dalam kemahiran ini.",
+        "strong": "{score}% · kuat",
+        "support": "{score}% · sokongan"
+      },
+      "groups": {
+        "title": "Kumpulan dicadangkan",
+        "description": "Pelajar dikumpulkan mengikut bidang bacaan yang sedang menghalang mereka.",
+        "count": "{count, plural, one {# pelajar} other {# pelajar}}"
+      }
+    },
     "familyReports": {
       "title": "Laporan keluarga",
       "subtitle": "Keluarkan keputusan kepada keluarga untuk {className}. Buka seorang pelajar untuk melihat atau mengeksport laporan penuh mereka.",

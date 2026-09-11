@@ -1,46 +1,53 @@
 'use client';
 
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
-import { ProgressBar } from '@/modules/design-system';
+import { ToneChip } from '@/modules/teacher/components/v2/ToneChip';
+import { INSIGHTS_FLAG_CHIP_TONE } from '@/modules/teacher/constants/results.constants';
 import type { SubskillMasteryRowProps } from '@/modules/teacher/types/class-analytics.types';
 
-// One bar of the insights tab (task 34, dashboard §3): the skill's name, the
-// class AVERAGE as the bar's WIDTH ONLY, the "Mastered n of N" count read as
-// `status === "secure"` from the API — never recomputed from a score — and the
-// exclusion stated in words when any student lacks the skill ("n of N assessed").
-//
-// The bar carries no band colour and no cut: a class AVERAGE is not a posterior,
-// the ACARA band cuts live on posteriors, and no client-side threshold maps one
-// to the other (open-risk R2c). Length is decoration; the numbers are the claim.
-function SubskillMasteryRow({ entry, secure, totalStudents }: SubskillMasteryRowProps) {
-  const t = useTranslations('Teacher.results.insights');
-  const format = useFormatter();
-  const assessed = totalStudents - entry.excluded;
+// One Reading mastery row (`:782–795`): the subskill, its Class focus / Class strength
+// chip, the class mean in its band colour over an 8px bar, and "n of N secure" counted
+// from the API's `secure` status (Critical reading: how many passed the exit gate).
+function SubskillMasteryRow({ row }: SubskillMasteryRowProps) {
+  const t = useTranslations('TeacherPortal.insights');
+  const tv = useTranslations('TeacherPortal.viewModel');
+  const noValue = useTranslations('TeacherPortal.kit')('noValue');
+  const count =
+    row.assessed === 0
+      ? t('mastery.notAssessed')
+      : row.secure !== null
+        ? t('mastery.secure', { secure: row.secure, total: row.assessed })
+        : row.gatePassed !== null
+          ? t('mastery.gatePassed', { passed: row.gatePassed, total: row.assessed })
+          : noValue;
 
   return (
     <li
-      data-slot="subskill-mastery-row"
-      data-attribute={entry.skill}
-      data-excluded={entry.excluded}
-      className="flex flex-col gap-1.5"
+      data-slot="insights-mastery-row"
+      data-skill={row.skill}
+      data-mean={row.mean ?? undefined}
+      data-secure={row.secure ?? undefined}
+      data-assessed={row.assessed}
+      data-flag={row.flag?.kind}
     >
-      <div className="flex items-baseline justify-between gap-3">
-        <span className="min-w-0 text-sm font-medium text-foreground">{entry.skill}</span>
-        <span className="shrink-0 text-meta font-semibold text-muted-foreground tabular-nums">
-          {secure === null
-            ? t('averageOnly', { average: format.number(entry.average, { maximumFractionDigits: 1 }) })
-            : t('masteredCount', { mastered: secure, assessed })}
+      <div className="flex flex-wrap items-baseline gap-2.5">
+        <span className="text-[13.5px] font-semibold text-navy-900">{tv(row.labelKey)}</span>
+        {row.flag === null ? null : (
+          <ToneChip tone={INSIGHTS_FLAG_CHIP_TONE[row.flag.kind]} size="xs">
+            {tv(row.flag.labelKey)}
+          </ToneChip>
+        )}
+        <span className="ml-auto text-[13px] font-semibold tabular-nums" style={{ color: row.tone.fg }}>
+          {row.mean === null ? noValue : t('percent', { value: row.mean })}
         </span>
       </div>
-
-      <ProgressBar value={entry.average} ariaLabel={t('barLabel', { name: entry.skill })} />
-
-      {entry.excluded > 0 ? (
-        <p className="text-meta text-muted-foreground">
-          {t('excludedNote', { assessed, total: totalStudents })}
-        </p>
-      ) : null}
+      <div className="mt-2 flex items-center gap-[9px]">
+        <div aria-hidden="true" className="h-2 flex-1 overflow-hidden rounded-full" style={{ background: row.tone.bg }}>
+          <div className="h-full rounded-full" style={{ width: `${row.mean ?? 0}%`, background: row.tone.fg }} />
+        </div>
+        <span className="min-w-16 text-right text-[11.5px] whitespace-nowrap text-[#6B7280]">{count}</span>
+      </div>
     </li>
   );
 }

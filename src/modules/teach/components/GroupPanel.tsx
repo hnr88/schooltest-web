@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { diagnosticAreaCode } from '@/modules/teach/lib/diagnostic-areas';
 import type { DiagnosticGroup } from '@/modules/teach/types/diagnostic.types';
 
 import type { GroupPanelProps } from '@/modules/teach/types/components.types';
@@ -33,7 +34,7 @@ export function GroupPanel({ groups, onSelectStudent }: GroupPanelProps) {
           >
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="text-sm font-semibold text-foreground">
-                {t(`areas.${group.limiting_attribute}`)}
+                {t(`areas.${diagnosticAreaCode(group.limiting_attribute) ?? group.limiting_attribute}`)}
               </span>
               <span className="text-xs text-body">{t('groupCount', { count: group.count })}</span>
             </div>

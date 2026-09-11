@@ -1,11 +1,14 @@
+import { legacyStoredAttributeStatusSchema } from '@schooltest/scoring-contracts';
 import { z } from 'zod';
 
 // Boundary schema for the C-RPT-01 class diagnostic payload (task 75).
 // Defensive parsing at the query boundary; the UI consumes ClassDiagnostic
-// from types/diagnostic.types.ts.
+// from types/diagnostic.types.ts. `status` is the API's stored attribute
+// status: a reading band (secure | developing | emerging | not_yet |
+// not_assessed) or listening's three-band value (mastered | not_mastered).
 export const diagnosticAttributeSchema = z.object({
   code: z.string(),
-  status: z.enum(['mastered', 'emerging', 'not_mastered', 'not_assessed']),
+  status: legacyStoredAttributeStatusSchema,
   prob: z.number().nullable(),
 });
 

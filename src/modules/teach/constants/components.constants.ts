@@ -27,4 +27,7 @@ export const STATUS_TONE: Record<DiagnosticStatus, StatusPillTone> = {
   emerging: 'warning',
   not_mastered: 'danger',
   not_assessed: 'neutral',
+  secure: 'success',
+  developing: 'info',
+  not_yet: 'danger',
 };

@@ -6,7 +6,11 @@
 // attribute names and ACARA phase never appear on this surface (mvp spec 4.9,
 // 4.4).
 
-export type DiagnosticStatus = 'mastered' | 'emerging' | 'not_mastered' | 'not_assessed';
+import type { LegacyStoredAttributeStatus } from '@schooltest/scoring-contracts';
+
+// The API's stored attribute status: a reading band (secure | developing |
+// emerging | not_yet | not_assessed) or listening's mastered | not_mastered.
+export type DiagnosticStatus = LegacyStoredAttributeStatus;
 
 export interface DiagnosticAttribute {
   code: string;

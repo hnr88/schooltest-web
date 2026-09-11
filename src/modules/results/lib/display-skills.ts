@@ -1,5 +1,6 @@
 import {
   displaySkillSchema,
+  type AttributeName,
   type Band,
   type DisplaySkill,
   type ResultView,
@@ -56,4 +57,13 @@ export function displaySkills(view: ResultView): DisplaySkillReading[] {
     }
     return { skill, domain_score: attribute.domain_score, status: attribute.status, source: 'attribute' };
   });
+}
+
+/**
+ * The display skill a model attribute rolls up to — the same mapping `displaySkills`
+ * reads by: its own name, except the two vocabulary strands, which both roll up to the
+ * Vocabulary blend. Critical reading is the gate and has no attribute.
+ */
+export function displaySkillOfAttribute(attribute: AttributeName): DisplaySkill {
+  return attribute === 'Vocab_A2' || attribute === 'Vocab_B1' ? 'Vocabulary' : attribute;
 }

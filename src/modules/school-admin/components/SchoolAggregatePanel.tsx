@@ -56,7 +56,7 @@ export function SchoolAggregatePanel({ classes, onSelectClass }: SchoolAggregate
                   <th className="py-2 pr-4 text-left text-xs font-semibold text-body">
                     {t('columns.area')}
                   </th>
-                  {(['mastered', 'emerging', 'not_mastered', 'not_assessed'] as const).map((s) => (
+                  {(['secure', 'developing', 'emerging', 'not_yet', 'mastered', 'not_mastered', 'not_assessed'] as const).map((s) => (
                     <th key={s} className="px-2 py-2 text-right text-xs font-semibold text-body">
                       {td(`status.${s}`)}
                     </th>
@@ -69,8 +69,11 @@ export function SchoolAggregatePanel({ classes, onSelectClass }: SchoolAggregate
                     <th scope="row" className="py-2 pr-4 text-left text-body-sm font-medium text-foreground">
                       {td(`areas.${area.code}`)}
                     </th>
-                    <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.mastered}</td>
+                    <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.secure}</td>
+                    <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.developing}</td>
                     <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.emerging}</td>
+                    <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.not_yet}</td>
+                    <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.mastered}</td>
                     <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.not_mastered}</td>
                     <td className="px-2 py-2 text-right text-body-sm text-body tabular-nums">{area.not_assessed}</td>
                   </tr>

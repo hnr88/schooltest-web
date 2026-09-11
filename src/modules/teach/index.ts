@@ -15,3 +15,6 @@ export type { ClassProgress, ProgressStudent, ProgressTransition } from './types
 export type { ClassCycle, CyclePosition } from './types/cycle.types';
 // Teacher v2 Classes list — the LLM export button downloads the same file.
 export { downloadClassExportMarkdown } from './lib/download-export';
+// School analytics aggregate — a live diagnostic cell's code placed on its reading area.
+export { diagnosticAreaCode } from './lib/diagnostic-areas';
+export { MASTERY_AREA_CODES } from './lib/mastery-directory.lib';

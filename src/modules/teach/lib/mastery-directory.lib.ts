@@ -15,7 +15,8 @@ import type {
 // sorts the WHOLE loaded set (the reducer runs before the page window).
 //
 // Status rank is the drill-down's own ORDER semantics, not a score: mastered
-// above emerging above not mastered. `not_assessed` and a missing attribute
+// above emerging above not mastered; the reading bands secure above developing
+// above emerging above not yet. `not_assessed` and a missing attribute
 // rank UNRANKED — the design's "Not sat" rule: an absence never masquerades
 // as a low score, so it sorts last in BOTH directions, never against the
 // assessed rows (task 50's sentinel, and mvp spec: absence is never a zero).
@@ -29,6 +30,9 @@ const STATUS_RANK: Record<DiagnosticStatus, number | null> = {
   emerging: 1,
   not_mastered: 0,
   not_assessed: null,
+  secure: 3,
+  developing: 2,
+  not_yet: 0,
 };
 
 const UNRANKED = Number.POSITIVE_INFINITY;

@@ -2328,10 +2328,15 @@
       },
       "status": {
         "mastered": "Đã thành thạo",
-        "emerging": "Đang phát triển",
+        "emerging": "Bắt đầu hình thành",
         "not_mastered": "Chưa thành thạo",
-        "not_assessed": "Chưa đánh giá"
+        "not_assessed": "Chưa đánh giá",
+        "secure": "Vững",
+        "developing": "Đang phát triển",
+        "not_yet": "Chưa đạt"
       },
+      "filteredEmptyTitle": "Không có học sinh phù hợp",
+      "filteredEmptyDescription": "Không có học sinh nào phù hợp với tìm kiếm hiện tại.",
       "export": {
         "cta": "Xuất cho trợ lý AI của bạn",
         "downloading": "Đang chuẩn bị bản xuất...",
@@ -6136,7 +6141,57 @@
       },
       "footnote": "Mọi thay đổi của học sinh ở đây đều do máy chủ tự so sánh lần làm bài gần nhất của em với lần trước đó. Khi không thể so sánh một cặp, sẽ không hiển thị thay đổi nào. Điểm trung bình của lớp theo thời gian là trung bình cộng đơn giản của các lần làm bài đã chấm được ghi nhận."
     },
-    "insights": {},
+    "insights": {
+      "title": "Nhận định giảng dạy",
+      "subtitle": "Nên dạy gì tiếp theo và dạy cho ai.",
+      "emptyTitle": "Chưa có học sinh nào trong lớp này hoàn thành bài kiểm tra",
+      "emptyDescription": "Mức thành thạo từng kỹ năng con và các nhóm được đề xuất đều dựa trên kết quả đọc đã hoàn thành, nên hiện chưa có gì để dạy. Chúng sẽ xuất hiện ngay khi có học sinh nộp bài.",
+      "percent": "{value}%",
+      "kpi": {
+        "lastSitting": "Buổi thi gần nhất",
+        "lastSittingSub": "{form} · {date}",
+        "classAverage": "Điểm trung bình lớp",
+        "classAverageSub": "Buổi thi gần nhất",
+        "upSinceLast": "Tăng so với bài trước",
+        "upSinceLastValue": "{value} điểm",
+        "upSinceLastSub": "Buổi trước → gần nhất · {count, plural, other {# học sinh}}",
+        "upSinceLastNone": "Chưa có buổi thi lặp lại",
+        "topGap": "Khoảng trống lớn nhất",
+        "topGapSub": "Ít học sinh thành thạo nhất",
+        "participation": "Tỷ lệ tham gia",
+        "participationSub": "{scored}/{total} học sinh đã có điểm"
+      },
+      "mastery": {
+        "title": "Mức thành thạo đọc",
+        "description": "Điểm trung bình lớp cho từng kỹ năng đọc con, yếu nhất trước.",
+        "secure": "{secure}/{total} vững",
+        "gatePassed": "{passed}/{total} đạt",
+        "notAssessed": "Chưa đánh giá"
+      },
+      "cohort": {
+        "title": "Tổng quan cả lớp",
+        "phaseSpread": "Phân bố giai đoạn ACARA",
+        "growth": "Tiến bộ",
+        "growthText": "{improved} tiến bộ · {held} giữ nguyên · {slipped} giảm",
+        "vocab": "Từ vựng",
+        "vocabText": "Thông dụng A2 {a2} · Học thuật B1 {b1}"
+      },
+      "activity": {
+        "title": "Hoạt động gần đây"
+      },
+      "pairings": {
+        "title": "Cặp đôi gợi ý",
+        "intro": "Ghép một bạn giỏi {skill} với một bạn cần hỗ trợ về kỹ năng này.",
+        "none": "Không có cặp rõ ràng cho {skill} — lớp khá đồng đều ở kỹ năng này.",
+        "strong": "{score}% · giỏi",
+        "support": "{score}% · cần hỗ trợ"
+      },
+      "groups": {
+        "title": "Nhóm gợi ý",
+        "description": "Học sinh được nhóm theo lĩnh vực đọc đang cản trở các em.",
+        "count": "{count, plural, other {# học sinh}}"
+      }
+    },
     "familyReports": {
       "title": "Báo cáo gia đình",
       "subtitle": "Công bố kết quả cho gia đình của {className}. Mở một học sinh để xem hoặc xuất báo cáo đầy đủ.",

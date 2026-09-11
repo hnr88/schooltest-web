@@ -10,6 +10,9 @@ export interface AreaAggregate {
   emerging: number;
   not_mastered: number;
   not_assessed: number;
+  secure: number;
+  developing: number;
+  not_yet: number;
 }
 
 export interface SchoolAggregate {

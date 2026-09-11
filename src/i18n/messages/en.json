@@ -2810,8 +2810,13 @@
         "mastered": "Mastered",
         "emerging": "Emerging",
         "not_mastered": "Not mastered",
-        "not_assessed": "Not yet assessed"
+        "not_assessed": "Not yet assessed",
+        "secure": "Secure",
+        "developing": "Developing",
+        "not_yet": "Not yet"
       },
+      "filteredEmptyTitle": "No students match",
+      "filteredEmptyDescription": "No student matches the current search.",
       "export": {
         "cta": "Export for your AI assistant",
         "downloading": "Preparing the export...",
@@ -6117,7 +6122,57 @@
       },
       "footnote": "Every student change here is the server's own comparison of their latest sitting with the one before it. Where a pair cannot be compared, no change is shown at all. Class averages over time are plain averages of the scored sittings on record."
     },
-    "insights": {},
+    "insights": {
+      "title": "Teaching insights",
+      "subtitle": "What to teach next, and who to teach it to.",
+      "emptyTitle": "No student in this class has completed a test yet",
+      "emptyDescription": "Subskill mastery and suggested groups are built from completed reading results, so there is nothing to teach from yet. They appear here as soon as a student submits a test.",
+      "percent": "{value}%",
+      "kpi": {
+        "lastSitting": "Last sitting",
+        "lastSittingSub": "{form} · {date}",
+        "classAverage": "Class average",
+        "classAverageSub": "Latest sitting",
+        "upSinceLast": "Up since last test",
+        "upSinceLastValue": "{value} pts",
+        "upSinceLastSub": "Previous sitting → latest · {count, plural, one {# student} other {# students}}",
+        "upSinceLastNone": "No repeat sittings yet",
+        "topGap": "Top gap",
+        "topGapSub": "Fewest students mastered",
+        "participation": "Participation",
+        "participationSub": "{scored} of {total} students scored"
+      },
+      "mastery": {
+        "title": "Reading mastery",
+        "description": "Class average for each reading subskill, weakest first.",
+        "secure": "{secure} of {total} secure",
+        "gatePassed": "{passed} of {total} passed",
+        "notAssessed": "Not assessed"
+      },
+      "cohort": {
+        "title": "Cohort at a glance",
+        "phaseSpread": "ACARA phase spread",
+        "growth": "Growth",
+        "growthText": "{improved} improved · {held} held · {slipped} slipped",
+        "vocab": "Vocab",
+        "vocabText": "Everyday A2 {a2} · Academic B1 {b1}"
+      },
+      "activity": {
+        "title": "Recent activity"
+      },
+      "pairings": {
+        "title": "Suggested pairings",
+        "intro": "Pair a peer strong in {skill} with one who needs support in it.",
+        "none": "No clear pairings for {skill} — the class is evenly matched here.",
+        "strong": "{score}% · strong",
+        "support": "{score}% · support"
+      },
+      "groups": {
+        "title": "Suggested groups",
+        "description": "Students grouped by the reading area currently holding them back.",
+        "count": "{count, plural, one {# student} other {# students}}"
+      }
+    },
     "familyReports": {
       "title": "Family reports",
       "subtitle": "Release results to families for {className}. Open a student to see or export their full report.",

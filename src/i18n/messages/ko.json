@@ -2319,10 +2319,15 @@
       },
       "status": {
         "mastered": "마스터",
-        "emerging": "발전 중",
+        "emerging": "초기",
         "not_mastered": "미달성",
-        "not_assessed": "아직 평가되지 않음"
+        "not_assessed": "아직 평가되지 않음",
+        "secure": "안정",
+        "developing": "발전 중",
+        "not_yet": "아직 아님"
       },
+      "filteredEmptyTitle": "일치하는 학생이 없습니다",
+      "filteredEmptyDescription": "현재 검색과 일치하는 학생이 없습니다.",
       "export": {
         "cta": "AI 어시스턴트용으로 내보내기",
         "downloading": "내보내기 준비 중...",
@@ -6127,7 +6132,57 @@
       },
       "footnote": "여기에 표시된 학생별 변화는 모두 서버가 각 학생의 최근 응시를 직전 응시와 직접 비교한 결과입니다. 비교할 수 없는 경우에는 변화를 전혀 표시하지 않습니다. 시간에 따른 학급 평균은 기록된 채점 응시의 단순 평균입니다."
     },
-    "insights": {},
+    "insights": {
+      "title": "수업 인사이트",
+      "subtitle": "다음에 무엇을, 누구에게 가르칠지 알려 줍니다.",
+      "emptyTitle": "이 학급에서 시험을 완료한 학생이 아직 없습니다",
+      "emptyDescription": "하위 기능 숙달도와 추천 그룹은 완료된 읽기 결과로 만들어지므로 아직 수업에 쓸 자료가 없습니다. 학생이 시험을 제출하면 바로 여기에 표시됩니다.",
+      "percent": "{value}%",
+      "kpi": {
+        "lastSitting": "최근 시험",
+        "lastSittingSub": "{form} · {date}",
+        "classAverage": "학급 평균",
+        "classAverageSub": "최근 시험",
+        "upSinceLast": "지난 시험 대비 변화",
+        "upSinceLastValue": "{value}점",
+        "upSinceLastSub": "이전 시험 → 최근 시험 · {count, plural, other {학생 #명}}",
+        "upSinceLastNone": "아직 다시 본 시험이 없습니다",
+        "topGap": "가장 큰 격차",
+        "topGapSub": "숙달한 학생이 가장 적음",
+        "participation": "참여율",
+        "participationSub": "{total}명 중 {scored}명 채점됨"
+      },
+      "mastery": {
+        "title": "읽기 숙달도",
+        "description": "읽기 하위 기능별 학급 평균, 약한 순서대로.",
+        "secure": "{total}명 중 {secure}명 안정",
+        "gatePassed": "{total}명 중 {passed}명 통과",
+        "notAssessed": "평가되지 않음"
+      },
+      "cohort": {
+        "title": "학급 한눈에 보기",
+        "phaseSpread": "ACARA 단계 분포",
+        "growth": "성장",
+        "growthText": "향상 {improved} · 유지 {held} · 하락 {slipped}",
+        "vocab": "어휘",
+        "vocabText": "일상 A2 {a2} · 학업 B1 {b1}"
+      },
+      "activity": {
+        "title": "최근 활동"
+      },
+      "pairings": {
+        "title": "추천 짝",
+        "intro": "{skill}에 강한 학생과 도움이 필요한 학생을 짝지어 보세요.",
+        "none": "{skill}에는 뚜렷한 짝이 없습니다 — 이 영역은 학급 수준이 고릅니다.",
+        "strong": "{score}% · 강함",
+        "support": "{score}% · 지원 필요"
+      },
+      "groups": {
+        "title": "추천 그룹",
+        "description": "현재 발목을 잡고 있는 읽기 영역별로 묶은 학생들입니다.",
+        "count": "{count, plural, other {학생 #명}}"
+      }
+    },
     "familyReports": {
       "title": "가정 보고서",
       "subtitle": "{className}의 결과를 가정에 공개합니다. 학생을 열어 전체 보고서를 보거나 내보내세요.",
