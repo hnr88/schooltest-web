@@ -7,6 +7,6 @@
  * WCAG 2.1.1).
  */
 export const DIRECTORY_STICKY_SCROLL_CLASS =
-  'scroll-region max-h-[calc((100dvh-16rem)*0.9)]  overflow-y-auto overflow-x-hidden rounded-[24px] bg-card shadow-[0_1px_2px_rgba(14,35,80,0.04)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none';
+  'ops-grid-scroll rounded-[24px] bg-card shadow-[0_1px_2px_rgba(14,35,80,0.04)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none';
 
 export const DIRECTORY_TABLE_SCROLL_CLASS = DIRECTORY_STICKY_SCROLL_CLASS;

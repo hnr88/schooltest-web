@@ -6,10 +6,13 @@ import { Controller } from 'react-hook-form';
 import { useAddClassForm } from '@/modules/classes/hooks/use-add-class-form';
 import { teacherOption } from '@/modules/classes/lib/class-form.helpers';
 import {
-  Button,
-  DialogFooter,
-  FieldShell,
   Input,
+  OPS_CONTROL_CLASS,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsFieldShell,
   SelectField,
 } from '@/modules/design-system';
 
@@ -29,40 +32,44 @@ export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
   } = form;
 
   return (
-    <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <FieldShell id="add-class-name" label={t('name')} errorText={errors.name?.message} required>
-          <Input
-            id="add-class-name"
-            autoComplete="off"
-            placeholder={t('namePlaceholder')}
-            {...register('name')}
-          />
-        </FieldShell>
-        <Controller
-          control={control}
-          name="teacher_documentId"
-          render={({ field }) => (
-            <SelectField
-              id="add-class-teacher"
-              label={t('teacher')}
-              placeholder={t('teacherPlaceholder')}
-              options={teachers.map(teacherOption)}
-              value={field.value}
-              onValueChange={field.onChange}
-              disabled={teachers.length === 0}
+    <form onSubmit={submit} noValidate>
+      <OpsDialogBody>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <OpsFieldShell id="add-class-name" label={t('name')} errorText={errors.name?.message} required>
+            <Input
+              id="add-class-name"
+              autoComplete="off"
+              placeholder={t('namePlaceholder')}
+              className={OPS_CONTROL_CLASS}
+              {...register('name')}
             />
-          )}
-        />
-      </div>
-      <DialogFooter>
-        <Button type="button" variant="secondary" onClick={onClose} disabled={pending}>
+          </OpsFieldShell>
+          <Controller
+            control={control}
+            name="teacher_documentId"
+            render={({ field }) => (
+              <SelectField
+                id="add-class-teacher"
+                label={t('teacher')}
+                placeholder={t('teacherPlaceholder')}
+                options={teachers.map(teacherOption)}
+                value={field.value}
+                onValueChange={field.onChange}
+                disabled={teachers.length === 0}
+                triggerClassName={OPS_CONTROL_CLASS}
+              />
+            )}
+          />
+        </div>
+      </OpsDialogBody>
+      <OpsDialogFooter>
+        <OpsDialogCancel type="button" onClick={onClose} disabled={pending}>
           {t('cancel')}
-        </Button>
-        <Button type="submit" variant="accent" loading={pending}>
+        </OpsDialogCancel>
+        <OpsDialogCta type="submit" loading={pending}>
           {pending ? t('submitting') : t('submit')}
-        </Button>
-      </DialogFooter>
+        </OpsDialogCta>
+      </OpsDialogFooter>
     </form>
   );
 }

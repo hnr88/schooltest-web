@@ -72,7 +72,8 @@ export function TeachersScreen() {
             </p>
           ) : null}
         </div>
-        <Button size="lg" onClick={() => setInviteOpen(true)}>
+        {/* The design's navy primary (VIEW 4 header action). */}
+        <Button size="lg" variant="navy" onClick={() => setInviteOpen(true)}>
           <Plus className="size-4" aria-hidden />
           {t('addButton')}
         </Button>

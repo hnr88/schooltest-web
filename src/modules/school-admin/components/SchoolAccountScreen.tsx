@@ -12,9 +12,10 @@ import {
 import { isAccountTab } from '@/modules/school-admin/lib/account-tab';
 import type { AccountTab } from '@/modules/school-admin/types/account.types';
 
-// Spec section 5 "Account": the school's own plan, seats and test allowances
-// behind three sub-tabs. Page shell matches the rest of /dashboard/school; the
-// "Dashboard / Account" trail is the shared topbar breadcrumb.
+// VIEW 6, Account (School Admin Portal.dc.html:821-902): a single 900px
+// column — the design's one narrow measure on this view — carrying the page
+// title, the tab row and the active panel, all on the view's 20px rhythm.
+// The "Dashboard / Account" trail is the shared topbar breadcrumb.
 export function SchoolAccountScreen() {
   const t = useTranslations('SchoolAdmin');
   const [tab, setTab] = useState<AccountTab>('details');
@@ -28,28 +29,30 @@ export function SchoolAccountScreen() {
     <main
       data-slot="school-account"
       data-surface="school-admin-account"
-      className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
+      className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold text-foreground">{t('account.title')}</h1>
-        <p className="text-sm text-body">{t('account.subtitle')}</p>
-      </div>
-      <UnderlineTabs
-        options={options}
-        value={tab}
-        onValueChange={(next) => {
-          if (isAccountTab(next)) setTab(next);
-        }}
-        ariaLabel={t('account.tabsLabel')}
-        className={ACCOUNT_TABS_IDLE_INK}
-      />
-      <div
-        key={tab}
-        role="tabpanel"
-        aria-label={t(`account.tabs.${tab}`)}
-        className="flex flex-col gap-4"
-      >
-        <Panel />
+      <div className="flex max-w-4xl flex-col gap-5">
+        <div>
+          <h1 className="text-portal-title font-medium text-foreground">{t('account.title')}</h1>
+          <p className="mt-1.75 text-body-md text-muted-foreground">{t('account.subtitle')}</p>
+        </div>
+        <UnderlineTabs
+          options={options}
+          value={tab}
+          onValueChange={(next) => {
+            if (isAccountTab(next)) setTab(next);
+          }}
+          ariaLabel={t('account.tabsLabel')}
+          className={ACCOUNT_TABS_IDLE_INK}
+        />
+        <div
+          key={tab}
+          role="tabpanel"
+          aria-label={t(`account.tabs.${tab}`)}
+          className="flex flex-col gap-4.5"
+        >
+          <Panel />
+        </div>
       </div>
     </main>
   );

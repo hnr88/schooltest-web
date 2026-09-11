@@ -10,11 +10,11 @@ import { useEntitlementQuery } from '@/modules/school-admin/queries/use-entitlem
 
 // Owns the C-ENT-01 query for the Account view's "Plan" tab and maps its
 // states the same way the school overview does: skeletons while pending, an
-// Alert with retry on error, the dumb plan and allowance cards on success.
+// Alert with retry on error, the plan hero and allowance card on success.
 // Every figure the tab renders — plan, seats used/total, renewal, each
 // allowance — comes from this one payload; no second query feeds the card.
-// The artboard's "no-seats alert" is driven by the same payload's
-// seats_remaining === 0 — real data only, no client-side estimate.
+// The design's in-hero "no seats left" banner is rendered by the plan card
+// itself, keyed on the same payload's seats_remaining === 0.
 export function AccountEntitlementSection() {
   const t = useTranslations('SchoolAdmin.entitlement');
   const token = useAuthStore((state) => state.token);
@@ -57,11 +57,6 @@ export function AccountEntitlementSection() {
   return (
     <>
       <AccountPlanCard entitlement={entitlementQuery.data} />
-      {entitlementQuery.data.seats_remaining === 0 && (
-        <Alert variant="warning" title={t('seatCapTitle')}>
-          {t('seatCapReached')}
-        </Alert>
-      )}
       <AccountAllowanceCard allowances={entitlementQuery.data.allowances} />
     </>
   );

@@ -15,6 +15,7 @@ import {
   type DirectoryQueryStatus,
   type DirectorySortDef,
 } from '@/modules/directory';
+import { StatusPill } from '@/modules/design-system';
 import { ConfirmStaffActionDialog } from '@/modules/teachers/components/ConfirmStaffActionDialog';
 import { EditTeacherDialog } from '@/modules/teachers/components/EditTeacherDialog';
 import { StaffClassesCell, StaffNameCell } from '@/modules/teachers/components/StaffTableRow';
@@ -23,6 +24,9 @@ import {
   staffDirectoryClientConfig,
   useStaffRows,
 } from '@/modules/teachers/hooks/use-staff-rows';
+import {
+  STATUS_PILL_TONES,
+} from '@/modules/teachers/constants/components.constants';
 import { useInvitationsQuery } from '@/modules/teachers/queries/use-invitations.query';
 import { useTeachersQuery } from '@/modules/teachers/queries/use-teachers.query';
 
@@ -33,15 +37,18 @@ import type { StaffRow } from '@/modules/teachers/types/teachers.types';
 // invitations) rendered THROUGH the shared directory kit in `client` mode:
 // `/api/schools/me/teachers` and `/api/schools/me/invitations` return
 // unpaginated collections (D-27), so search (name + email), the design's
-// three-way status chips (Active · Invited · Suspended, derived per
+// three-way status select (Active · Invited · Suspended, derived per
 // logic.md#sm-staff from `blocked` plus the open invitation), the name sort
 // and the pager all reduce the rows `useStaffRows` already merged — the kit
 // takes presentation only, and a filter can never drop invitations, because
 // it is applied to the MERGED list, never to one query.
 //
-// The query status rides the same two react-query hooks the screen uses (same
-// keys, so no second fetch); the confirm + edit dialogs mount once here,
-// addressed by row, because the kit owns the row menu and there is no
+// Design VIEW 4 (School Admin Portal): the row is avatar+name, email, class
+// count, a status pill, then the ⋯ menu; the whole row navigates to the
+// teacher detail (an invitation has no detail, so its row links back to the
+// list). The query status rides the same two react-query hooks the screen
+// uses (same keys, so no second fetch); the confirm + edit dialogs mount once
+// here, addressed by row, because the kit owns the row menu and there is no
 // per-row component left to hold that state.
 export function TeachersTable({ rows }: TeachersTableProps) {
   const t = useTranslations('Teachers');
@@ -88,6 +95,7 @@ export function TeachersTable({ rows }: TeachersTableProps) {
     () => [
       { value: 'name:asc', label: td('sortNameAsc') },
       { value: 'name:desc', label: td('sortNameDesc') },
+      { value: 'classes:desc', label: td('sortMostClasses') },
     ],
     [td],
   );
@@ -141,15 +149,29 @@ export function TeachersTable({ rows }: TeachersTableProps) {
       {
         key: 'email',
         header: td('columnEmail'),
-        cell: (row) => row.email,
+        // The design's email column is the muted 13px line; the kit's `text`
+        // block owns the size/truncation, the cell only re-inks it.
+        grid: 'text',
+        className: 'min-w-[120px] flex-[2_1_150px]',
+        cell: (row) => <span className="text-[#7C8698]">{row.email}</span>,
       },
       {
         key: 'classes',
         header: td('columnClasses'),
+        grid: 'text',
+        className: 'min-w-[88px] flex-[1_1_100px]',
         cell: (row) => <StaffClassesCell row={row} />,
       },
+      {
+        key: 'status',
+        header: td('columnStatus'),
+        grid: 'bare',
+        cell: (row) => (
+          <StatusPill tone={STATUS_PILL_TONES[row.status]}>{t(`table.status.${row.status}`)}</StatusPill>
+        ),
+      },
     ],
-    [td],
+    [t, td],
   );
 
   const actions = useStaffTableActions();
@@ -169,8 +191,12 @@ export function TeachersTable({ rows }: TeachersTableProps) {
         columns={columns}
         rowActions={actions.rowActionsFor}
         labels={labels}
-        chipFilterKey="status"
         rowAttrs={(row) => ({ 'data-status': row.status })}
+        rowHref={(row) =>
+          row.kind === 'teacher'
+            ? `/dashboard/school/teachers/${row.documentId}`
+            : '/dashboard/school/teachers'
+        }
       />
       <ConfirmStaffActionDialog
         open={confirm !== null}

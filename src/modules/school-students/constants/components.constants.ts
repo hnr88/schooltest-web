@@ -1,13 +1,25 @@
-import type { BadgeProps } from '@/modules/design-system';
 import type { AcaraPhase } from '@/modules/school-students/types/constants.types';
 
-export const BACK_CLASSES = 'inline-flex w-fit items-center gap-1.5 text-sm font-medium text-body hover:text-foreground';
+// School Admin Portal design (:1163-1169): the soft-tint pill pairs for the
+// ACARA phases, and the lifecycle pairs from the drill-down's status pill
+// (:1409). Foreground/background kept as a pair so a pill can never mix tones.
+export interface PillTonePair {
+  fg: string;
+  bg: string;
+}
 
-// Spec §4 Level column: the four ACARA phases mapped onto the Badge tones the
-// design system already ships. No new colour is introduced here.
-export const ACARA_PHASE_BADGE_VARIANTS: Record<AcaraPhase, NonNullable<BadgeProps['variant']>> = {
-  beginning: 'error',
-  emerging: 'warning',
-  developing: 'accent',
-  consolidating: 'success',
+export const ACARA_PHASE_PILL_TONES: Record<AcaraPhase, PillTonePair> = {
+  beginning: { fg: '#92610B', bg: '#FDF3E0' },
+  emerging: { fg: '#1D4ED8', bg: '#EEF3FE' },
+  developing: { fg: '#0E7C66', bg: '#E1F5EF' },
+  consolidating: { fg: '#0E2350', bg: '#E8ECF4' },
 };
+
+export const STUDENT_STATUS_PILL_TONES: Record<'active' | 'archived', PillTonePair> = {
+  active: { fg: '#0E7C66', bg: '#E1F5EF' },
+  archived: { fg: '#92610B', bg: '#FDF3E0' },
+};
+
+// The design's back link (VIEW 3, :451): 13.5/500 #7C8698, hover blue.
+export const BACK_CLASSES =
+  'w-fit text-[13.5px] font-medium text-[#7C8698] no-underline hover:text-blue-600';

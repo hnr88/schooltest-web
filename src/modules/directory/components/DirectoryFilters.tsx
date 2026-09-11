@@ -45,9 +45,19 @@ export interface DirectoryFiltersProps<Row> {
   labels: DirectoryLabels;
   /** Select ids stay `${idPrefix}-filter-${def.key}` — the toolbar's contract. */
   idPrefix: string;
-  /** BUG-004 (ops design): selects as 40px pill selects, labels visually hidden. */
+  /** BUG-004 (ops design): selects as 40px pill selects, labels visually hidden.
+   *  Kept for call-site compatibility; the pill look is now UNCONDITIONAL (the
+   *  audit-found default-variant toolbars still drew the labelled 48px
+   *  radius-14 form selects the design nowhere draws in a toolbar). */
   pill?: boolean;
 }
+
+/** Every toolbar select is the design's 40px pill (`Ops Portal.dc.html:97-105`):
+ *  1.5px #D8DFEA border, radius 999, 13.5px/500 — and its FieldShell label is
+ *  visually hidden in BOTH variants, because the "All …" option carries the
+ *  meaning and the labelled-shell form select made the toolbar two rows tall. */
+export const DIRECTORY_TOOLBAR_TRIGGER =
+  'h-10 min-h-10 w-auto data-[size=default]:h-10 rounded-full border-[1.5px] border-[#D8DFEA] px-3.5 text-[13.5px] font-medium';
 
 interface ArmProps<Row> {
   def: AnyDirectoryFilterDef<Row>;
@@ -62,7 +72,7 @@ function pendingOptions(labels: DirectoryLabels, fallback: string): readonly Dir
   return [{ value: DIRECTORY_ALL, label: labels.chipAllLabel ?? fallback }];
 }
 
-function SelectArm<Row>({ def, raw, write, id, labels, pill }: ArmProps<Row> & { pill?: boolean }) {
+function SelectArm<Row>({ def, raw, write, id, labels }: ArmProps<Row>) {
   const pending = def.options === undefined;
   return (
     <SelectField
@@ -76,12 +86,8 @@ function SelectArm<Row>({ def, raw, write, id, labels, pill }: ArmProps<Row> & {
       value={pending ? DIRECTORY_ALL : raw}
       onValueChange={write}
       disabled={pending}
-      hideLabel={pill}
-      triggerClassName={
-        pill
-          ? 'h-10 min-h-10 w-auto data-[size=default]:h-10 rounded-full border-[1.5px] px-3.5 text-[13.5px] font-medium'
-          : undefined
-      }
+      hideLabel
+      triggerClassName={DIRECTORY_TOOLBAR_TRIGGER}
     />
   );
 }
@@ -288,7 +294,6 @@ export function DirectoryFilters<Row>({
   onValueChange,
   labels,
   idPrefix,
-  pill = false,
 }: DirectoryFiltersProps<Row>) {
   return (
     <>
@@ -301,7 +306,7 @@ export function DirectoryFilters<Row>({
           const arm = { def, raw, write, id, labels } satisfies ArmProps<Row>;
           switch (directoryFilterKindOf(def)) {
             case 'select':
-              return <SelectArm key={def.key} {...arm} pill={pill} />;
+              return <SelectArm key={def.key} {...arm} />;
             case 'chips':
               return <ChipsArm key={def.key} {...arm} />;
             case 'counted':

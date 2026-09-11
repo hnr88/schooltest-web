@@ -2,16 +2,15 @@
 
 import { useTranslations } from 'next-intl';
 
-import { Badge } from '@/modules/design-system';
-import { ACARA_PHASE_BADGE_VARIANTS } from '@/modules/school-students/constants/components.constants';
+import { ACARA_PHASE_PILL_TONES } from '@/modules/school-students/constants/components.constants';
 import { toAcaraPhase } from '@/modules/school-students/lib/student-level';
 
 import type { StudentLevelBadgeProps } from '@/modules/school-students/types/components.types';
 
-// Spec §4 Level cell. The phase drives one of the Badge tones the design system
-// already ships (beginning danger, emerging warning, developing accent,
-// consolidating success); a student with no phase on file reads as not set.
-export function StudentLevelBadge({ phase }: StudentLevelBadgeProps) {
+// School Admin Portal design phase pill (:1176, :1179): 12/600 on the phase's
+// soft tint pair, rounded-full. The row list draws it at 5px 12px, the
+// drill-down header at 6px 13px — `compact` picks the row sizing.
+export function StudentLevelBadge({ phase, compact }: StudentLevelBadgeProps) {
   const t = useTranslations('SchoolStudents');
   const level = toAcaraPhase(phase);
 
@@ -19,9 +18,19 @@ export function StudentLevelBadge({ phase }: StudentLevelBadgeProps) {
     return <span className="text-muted-foreground">{t('table.notSet')}</span>;
   }
 
+  const tone = ACARA_PHASE_PILL_TONES[level];
+
   return (
-    <Badge data-slot="student-level-badge" variant={ACARA_PHASE_BADGE_VARIANTS[level]}>
+    <span
+      data-slot="student-level-badge"
+      className={
+        compact
+          ? 'inline-block rounded-full px-3 py-[5px] text-xs font-semibold'
+          : 'inline-block rounded-full px-[13px] py-1.5 text-xs font-semibold'
+      }
+      style={{ color: tone.fg, backgroundColor: tone.bg }}
+    >
       {t(`form.acaraPhaseOption.${level}`)}
-    </Badge>
+    </span>
   );
 }

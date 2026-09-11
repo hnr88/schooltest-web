@@ -952,3 +952,12 @@
     print-color-adjust: exact;
   }
 }
+
+/* BUG-007 journeys-and-bugs — the ops/school-admin grid card cap. A plain
+   (unlayered) rule: the equivalent Tailwind arbitrary utility was present in
+   the bundle but losing the cascade, leaving grids unbounded. */
+.ops-grid-scroll {
+  max-height: calc(100dvh - 20rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}

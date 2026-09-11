@@ -29,7 +29,7 @@ export function ClassDeleteDialog({
       cancelLabel={t('cancel')}
       confirmLabel={t('confirm')}
       tone="destructive"
-      className="sm:data-[size=sm]:max-w-[450px]"
+      className="sm:max-w-[450px]"
       pending={pending}
       onConfirm={onConfirm}
     />

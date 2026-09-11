@@ -36,25 +36,29 @@ export function ClassesScreen() {
     <main
       data-slot="school-classes"
       data-surface="school-admin-classes"
-      className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
+      className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
-          <p className="text-sm text-body">{t('description')}</p>
+      <div className="flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <h1 className="text-portal-title font-medium text-foreground">{t('title')}</h1>
+          <p className="mt-[7px] text-body-md text-[#7C8698]">{t('description')}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2.5">
           <Button
-            variant="outline"
-            size="lg"
+            variant="white"
+            className="h-11 rounded-tile border border-portal-input px-5 text-sm font-semibold hover:border-navy-900 hover:bg-white"
             onClick={() => setAssignOpen(true)}
             disabled={(classesQuery.data ?? []).length === 0}
           >
             <UsersRound className="size-4" aria-hidden />
             {t('assignTeachersButton')}
           </Button>
-          <Button variant="accent" size="lg" onClick={() => setAddOpen(true)}>
-            <Plus className="size-4" aria-hidden />
+          <Button
+            variant="navy"
+            className="h-11 rounded-tile px-5 text-sm font-semibold"
+            onClick={() => setAddOpen(true)}
+          >
+            <Plus className="size-[15px]" strokeWidth={2.2} aria-hidden />
             {t('addButton')}
           </Button>
         </div>

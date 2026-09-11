@@ -36,9 +36,8 @@ export interface StudentsTableProps {
 // Task 31 — the spec §4 roster table ON the shared directory kit, SERVER mode:
 // the kit owns the toolbar (search + class/level filters), the ten state arms
 // (loading/empty/no-matches/error/stale), the pager from `meta.pagination`, and
-// the row menus; this file owns exactly the pictured columns (Name | Class |
-// First language | Level | Diagnostic) and their cells. The bespoke filter bar,
-// pager, empty row and per-row action menu are gone.
+// the row menus; this file owns the pictured cells — identity block (avatar,
+// name, first language under it), class, diagnostic, level pill.
 //
 // Slots: `data-slot="school-students-table"` names the list region and
 // `data-slot="school-students-row"` every body row — the stable contract the
@@ -89,59 +88,76 @@ export function StudentsTable({
     [t, onEdit, onArchive],
   );
 
-  // Spec §4 column order. The name cell keeps the C-CHD-05 email-fix flag and
-  // the archived pill beside the name — the reshaped table has no status
-  // column left to carry them; `rowHref` turns the whole first cell into the
-  // row's ONE link to the detail view (the kit's §L-rownav shape, which
-  // replaces the old stretched-link overlay).
+  // School Admin Portal design (VIEW 5, :787-800): the row is identity block
+  // (36px neutral avatar, 14.5/600 name, "First language: X" 12.5 below) ·
+  // class text · bold value · the phase pill · the ⋯ menu. The name cell keeps
+  // the C-CHD-05 email-fix flag and the archived pill beside the name;
+  // `rowHref` turns the first cell into the row's ONE link to the detail view.
   const columns = useMemo<readonly DirectoryColumnDef<SchoolStudent>[]>(
     () => [
       {
         key: 'name',
         header: t('table.columnName'),
-        cell: (student) => (
-          <span className="flex flex-wrap items-center gap-2 font-medium">
-            {studentDisplayName(student)}
-            {student.email_fix_requested ? (
-              <StatusPill tone="warning">{t('table.emailFixRequested')}</StatusPill>
-            ) : null}
-            {student.status === 'archived' ? (
-              <StatusPill tone="neutral">{t('table.statusArchived')}</StatusPill>
-            ) : null}
-          </span>
-        ),
+        cell: (student) => {
+          const name = studentDisplayName(student);
+          const language = toFirstLanguage(student.first_language);
+          return (
+            <span className="flex items-center gap-[13px]">
+              <span
+                aria-hidden="true"
+                className="grid size-9 shrink-0 place-items-center rounded-full bg-[#EEF1F6] text-[13px] font-semibold text-foreground"
+              >
+                {name.charAt(0).toUpperCase()}
+              </span>
+              <span className="flex min-w-0 flex-col">
+                <span className="flex flex-wrap items-center gap-2">
+                  <span className="truncate text-[14.5px] font-semibold text-foreground">
+                    {name}
+                  </span>
+                  {student.email_fix_requested ? (
+                    <StatusPill tone="warning">{t('table.emailFixRequested')}</StatusPill>
+                  ) : null}
+                  {student.status === 'archived' ? (
+                    <StatusPill tone="neutral">{t('table.statusArchived')}</StatusPill>
+                  ) : null}
+                </span>
+                <span className="mt-0.5 truncate text-meta text-[#7C8698]">
+                  {t('table.firstLanguageLine', {
+                    language: language
+                      ? t(`form.firstLanguageOption.${language}`)
+                      : t('table.notSet'),
+                  })}
+                </span>
+              </span>
+            </span>
+          );
+        },
       },
       {
         key: 'class',
         header: t('table.columnClass'),
+        grid: 'text',
         cell: (student) =>
           student.class?.name ?? (
             <span className="text-muted-foreground">{t('table.classNone')}</span>
           ),
       },
       {
-        key: 'first-language',
-        header: t('table.columnFirstLanguage'),
-        cell: (student) => {
-          const language = toFirstLanguage(student.first_language);
-          return language ? (
-            t(`form.firstLanguageOption.${language}`)
-          ) : (
-            <span className="text-muted-foreground">{t('table.notSet')}</span>
-          );
-        },
+        key: 'diagnostic',
+        header: t('table.columnDiagnostic'),
+        grid: 'bare',
+        className: 'min-w-[90px] flex-[1_1_90px] overflow-hidden',
+        cell: (student) => (
+          <span className="block truncate text-[13.5px] font-semibold text-foreground">
+            {t(`table.diagnosticOption.${toDiagnosticStatus(student.diagnostic_status)}`)}
+          </span>
+        ),
       },
       {
         key: 'level',
         header: t('table.columnLevel'),
-        cell: (student) => <StudentLevelBadge phase={student.acara_phase} />,
-      },
-      {
-        key: 'diagnostic',
-        header: t('table.columnDiagnostic'),
-        className: 'text-center text-muted-foreground',
-        cell: (student) =>
-          t(`table.diagnosticOption.${toDiagnosticStatus(student.diagnostic_status)}`),
+        grid: 'bare',
+        cell: (student) => <StudentLevelBadge phase={student.acara_phase} compact />,
       },
     ],
     [t],

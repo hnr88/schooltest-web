@@ -2,6 +2,7 @@ import type { z } from 'zod';
 
 import type {
   connectionStateSchema,
+  dashboardClassReadingSchema,
   dashboardClassSchema,
   dashboardLiveSessionSchema,
   masteryBandSchema,
@@ -35,6 +36,7 @@ export type TeacherStudentRef = z.infer<typeof teacherStudentRefSchema>;
 export type NamedAttribute = z.infer<typeof namedAttributeSchema>;
 export type TopGap = z.infer<typeof topGapSchema>;
 export type TeacherError = z.infer<typeof teacherErrorSchema>;
+export type DashboardClassReading = z.infer<typeof dashboardClassReadingSchema>;
 export type DashboardClass = z.infer<typeof dashboardClassSchema>;
 export type DashboardLiveSession = z.infer<typeof dashboardLiveSessionSchema>;
 export type TeacherDashboardResponse = z.infer<typeof teacherDashboardResponseSchema>;

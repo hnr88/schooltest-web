@@ -59,8 +59,10 @@ async function smallTargetsWithin(page: Page, root: string): Promise<string[]> {
       const style = getComputedStyle(el);
       if (style.visibility === 'hidden' || style.display === 'none') continue;
       if (el instanceof HTMLAnchorElement && el.closest('p, li, td, blockquote')) continue;
-      // Vendored shadcn primitives — see the note above.
+      // Vendored shadcn primitives — see the note above. The ops-kit close
+      // (34px round) is the migrated equivalent of the vendored 28px one.
       if (el.closest('[data-slot="dialog-close"]') || el.matches('[data-slot="dialog-close"]')) continue;
+      if (el.closest('[data-slot="ops-dialog-close"]') || el.matches('[data-slot="ops-dialog-close"]')) continue;
       if (el.matches('input, select, textarea')) continue;
       if (rect.width < MIN || rect.height < MIN) {
         const label = el.getAttribute('aria-label') ?? (el.textContent ?? '').trim().slice(0, 40);

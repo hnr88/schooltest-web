@@ -4,14 +4,13 @@ import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
-  Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
 } from '@/modules/design-system';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -72,68 +71,67 @@ export function AssignClassesDialog({
   };
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next) onClose();
       }}
     >
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-[520px]">
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description', { name: teacherName })}</DialogDescription>
-        </DialogHeader>
+      <OpsDialogContent className="sm:max-w-[520px]">
+        <OpsDialogHeader title={t('title')} sub={t('description', { name: teacherName })} />
 
         {classes.length === 0 ? (
-          <p className="text-sm text-body">{t('empty')}</p>
+          <OpsDialogBody className="py-5">
+            <p className="text-sm text-body">{t('empty')}</p>
+          </OpsDialogBody>
         ) : (
-          <fieldset className="flex flex-col gap-2">
-            <legend className="text-meta font-semibold text-foreground">
-              {t('classesLegend', { count: selected.size })}
-            </legend>
-            <div className="max-h-64 overflow-y-auto rounded-lg border border-border p-2">
-              {classes.map((klass) => (
-                <div key={klass.documentId} className="flex items-center gap-2 px-2 py-1">
-                  <Checkbox
-                    id={`assign-classes-${klass.documentId}`}
-                    checked={selected.has(klass.documentId)}
-                    onCheckedChange={() => toggle(klass.documentId)}
-                  />
-                  <Label
-                    htmlFor={`assign-classes-${klass.documentId}`}
-                    className="flex min-w-0 flex-1 items-center justify-between gap-2 text-sm font-normal"
-                  >
-                    <span className="truncate">{klass.name}</span>
-                    {klass.year_band ? (
-                      <span className="shrink-0 text-meta text-body">{klass.year_band}</span>
-                    ) : null}
-                  </Label>
-                </div>
-              ))}
-            </div>
-          </fieldset>
+          <OpsDialogBody className="py-5">
+            <fieldset className="flex flex-col gap-2">
+              <legend className="text-meta font-semibold text-foreground">
+                {t('classesLegend', { count: selected.size })}
+              </legend>
+              <div className="max-h-64 overflow-y-auto rounded-[14px] border border-[#EEF1F6] p-2">
+                {classes.map((klass) => (
+                  <div key={klass.documentId} className="flex items-center gap-2 px-2 py-1">
+                    <Checkbox
+                      id={`assign-classes-${klass.documentId}`}
+                      checked={selected.has(klass.documentId)}
+                      onCheckedChange={() => toggle(klass.documentId)}
+                    />
+                    <Label
+                      htmlFor={`assign-classes-${klass.documentId}`}
+                      className="flex min-w-0 flex-1 items-center justify-between gap-2 text-sm font-normal"
+                    >
+                      <span className="truncate">{klass.name}</span>
+                      {klass.year_band ? (
+                        <span className="shrink-0 text-meta text-body">{klass.year_band}</span>
+                      ) : null}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </fieldset>
+          </OpsDialogBody>
         )}
 
-        {mutation.isError ? (
-          <Alert variant="error" title={t('errorTitle')}>
-            {t('errorDescription')}
-          </Alert>
-        ) : null}
-
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose} disabled={mutation.isPending}>
+        <OpsDialogFooter
+          error={
+            mutation.isError ? `${t('errorTitle')}. ${t('errorDescription')}` : null
+          }
+        >
+          <OpsDialogCancel type="button" onClick={onClose} disabled={mutation.isPending}>
             {t('cancel')}
-          </Button>
-          <Button
+          </OpsDialogCancel>
+          <OpsDialogCta
             type="button"
             disabled={patches.length === 0}
             loading={mutation.isPending}
             onClick={() => void submit()}
           >
             {mutation.isPending ? t('submitting') : t('submit')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </OpsDialogCta>
+        </OpsDialogFooter>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

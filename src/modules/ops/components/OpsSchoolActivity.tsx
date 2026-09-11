@@ -6,25 +6,14 @@ import { useAuthStore } from '@/modules/auth';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { useSchoolActivityQuery } from '@/modules/ops/queries/use-school-activity.query';
 
-// Design's per-event-kind dot colours: lifecycle verbs carry their banner hue,
-// growth verbs green, everything else neutral.
-function activityDotTone(action: string): string {
-  const value = action.toLowerCase();
-  if (value.includes('suspend') || value.includes('archive') || value.includes('remove')) {
-    return 'bg-red-500';
-  }
-  if (value.includes('invite') || value.includes('resend') || value.includes('import')) {
-    return 'bg-amber-500';
-  }
-  if (
-    value.includes('activate') ||
-    value.includes('restore') ||
-    value.includes('create') ||
-    value.includes('onboard')
-  ) {
-    return 'bg-emerald-500';
-  }
-  return 'bg-blue-500';
+// ops-tabs-audit — the design's dot colours (`Ops Portal.dc.html:1504-1507`):
+// the NEWEST event carries the blue #2563EB, everything younger than a month
+// is navy #0E2350, and older entries fade to #9AA6B8. (The seed's ages — 2
+// days blue, 5 days and 2 weeks navy, 1 month grey — are the whole spec; the
+// former semantic red/amber/green mapping appears nowhere in the design.)
+function activityDotTone(index: number, ageDays: number): string {
+  if (index === 0) return 'bg-[#2563EB]';
+  return ageDays > 30 ? 'bg-[#9AA6B8]' : 'bg-[#0E2350]';
 }
 
 // C-OPS-PORTAL-010 (OPS-020) — the school overview's Recent activity card:
@@ -104,26 +93,29 @@ export function OpsSchoolActivity({ documentId }: { documentId: string }) {
         </p>
       ) : (
         <ul className="flex flex-col">
-          {rows.map((row) => (
-            <li
-              key={row.documentId}
-              data-slot="ops-activity-row"
-              data-action={row.action}
-              data-timestamp={row.timestamp}
-              className="flex gap-3.5 border-b border-[#EEF1F6] py-3 last:border-b-0"
-            >
-              <span
-                aria-hidden="true"
-                className={`mt-1.5 size-2 flex-none rounded-full ${activityDotTone(row.action)}`}
-              />
-              <div className="min-w-0 flex-1">
-                <div className="text-[13.5px] font-semibold text-foreground">{row.summary}</div>
-                <div className="mt-0.5 text-[12.5px] text-[#7C8698]">
-                  {format.relativeTime(new Date(row.timestamp), { now })}
+          {rows.map((row, index) => {
+            const ageDays = (now.getTime() - new Date(row.timestamp).getTime()) / 86_400_000;
+            return (
+              <li
+                key={row.documentId}
+                data-slot="ops-activity-row"
+                data-action={row.action}
+                data-timestamp={row.timestamp}
+                className="flex gap-3.5 border-b border-[#EEF1F6] py-3 last:border-b-0"
+              >
+                <span
+                  aria-hidden="true"
+                  className={`mt-1.5 size-2 flex-none rounded-full ${activityDotTone(index, ageDays)}`}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="text-[13.5px] font-semibold text-foreground">{row.summary}</div>
+                  <div className="mt-0.5 text-[12.5px] text-[#7C8698]">
+                    {format.relativeTime(new Date(row.timestamp), { now })}
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>

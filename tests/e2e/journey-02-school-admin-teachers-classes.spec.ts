@@ -169,7 +169,7 @@ test('school admin invites a teacher, creates a class, assigns the teacher, and 
   await teacherScreen
     .getByRole('button', { name: cat(en, 'Teachers.detail.assignButton'), exact: true })
     .click();
-  const assignDialog = page.locator('[data-slot="dialog-content"]');
+  const assignDialog = page.locator('[data-slot="ops-dialog-content"]');
   await expect(
     assignDialog.getByText(cat(en, 'Teachers.detail.assignDialog.title')),
   ).toBeVisible();

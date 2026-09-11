@@ -8,9 +8,11 @@ import type { SchoolClass } from '@/modules/classes';
 import {
   Alert,
   Button,
-  DataPanel,
+  KeyValueList,
+  KeyValueRow,
   NativeSelect,
   NativeSelectOption,
+  PanelHeaderRow,
 } from '@/modules/design-system';
 import { classAssignOptions } from '@/modules/school-students/lib/class-options';
 import { useUpdateStudentMutation } from '@/modules/school-students/queries/use-update-student.mutation';
@@ -22,6 +24,10 @@ interface StudentClassPanelProps {
   classes: readonly SchoolClass[];
 }
 
+// The class move (C-CHD-03's class_documentId write) drawn as the design's
+// card language: the 17/600 panel title, the current class as a hairline
+// key/value row, and the picker row under it. Functionality unchanged — same
+// mutation, same assign/remove buttons, same test ids.
 export function StudentClassPanel({ student, classes }: StudentClassPanelProps) {
   const t = useTranslations('SchoolStudents.detail.classPanel');
   const [selected, setSelected] = useState('');
@@ -38,33 +44,35 @@ export function StudentClassPanel({ student, classes }: StudentClassPanelProps) 
   };
 
   return (
-    <DataPanel data-slot="student-class-panel" className="max-w-2xl">
-      <div className="flex items-center justify-between gap-2 px-4 py-3">
-        <h2 className="text-sm font-semibold text-foreground">{t('title')}</h2>
-      </div>
+    <section
+      data-slot="student-class-panel"
+      className="w-full self-start rounded-card bg-card px-[30px] py-[26px] shadow-sm"
+    >
+      <PanelHeaderRow as="h2" title={t('title')} />
       {update.isError ? (
-        <div className="border-t border-border px-4 py-3">
+        <div className="mb-3">
           <Alert variant="error" title={t('errorTitle')}>
             {t('errorDescription')}
           </Alert>
         </div>
       ) : null}
-      <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
-        <span className="text-meta text-body">{t('currentLabel')}</span>
-        <span data-slot="student-class-current" className="truncate text-sm font-medium text-foreground">
-          {current === null || current.name === null ? (
-            t('none')
-          ) : (
-            <Link
-              href={`/dashboard/school/classes/${current.documentId}`}
-              className="underline-offset-2 hover:underline"
-            >
-              {current.name}
-            </Link>
-          )}
-        </span>
-      </div>
-      <div className="flex flex-wrap items-end justify-between gap-3 border-t border-border px-4 py-4">
+      <KeyValueList>
+        <KeyValueRow label={t('currentLabel')}>
+          <span data-slot="student-class-current" className="truncate">
+            {current === null || current.name === null ? (
+              t('none')
+            ) : (
+              <Link
+                href={`/dashboard/school/classes/${current.documentId}`}
+                className="underline-offset-2 hover:underline"
+              >
+                {current.name}
+              </Link>
+            )}
+          </span>
+        </KeyValueRow>
+      </KeyValueList>
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
         {options.length === 0 ? (
           <p className="text-sm text-body">{t('noClasses')}</p>
         ) : (
@@ -113,6 +121,6 @@ export function StudentClassPanel({ student, classes }: StudentClassPanelProps) 
           ) : null}
         </div>
       </div>
-    </DataPanel>
+    </section>
   );
 }

@@ -5,11 +5,10 @@ import { useTranslations } from 'next-intl';
 import { AddClassForm } from '@/modules/classes/components/AddClassForm';
 import {
   Alert,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogContent,
+  OpsDialogHeader,
   Skeleton,
 } from '@/modules/design-system';
 import { useTeachersQuery } from '@/modules/teachers';
@@ -19,39 +18,41 @@ import type { AddClassDialogProps } from '@/modules/classes/types/components.typ
 // Spec §2 "Add class modal". The teacher list (C-TCH-01) loads before the form
 // mounts so the dropdown has its options, but a failed load never blocks the
 // modal: assigning a teacher is optional, so the form still creates the class.
+// Modal chrome on the OpsDialog kit (School Admin design: class modal, 520px).
 export function AddClassDialog({ onClose }: AddClassDialogProps) {
   const t = useTranslations('Classes.addForm');
   const teachersQuery = useTeachersQuery(true);
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next) onClose();
       }}
     >
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description')}</DialogDescription>
-        </DialogHeader>
+      <OpsDialogContent className="sm:max-w-[520px]">
+        <OpsDialogHeader title={t('title')} sub={t('description')} />
         {teachersQuery.isPending ? (
-          <div className="flex flex-col gap-3">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-24 w-full" />
-            <Skeleton className="h-10 w-full" />
-          </div>
+          <OpsDialogBody>
+            <div className="flex flex-col gap-3">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </OpsDialogBody>
         ) : (
           <>
             {teachersQuery.isError ? (
-              <Alert variant="warning" title={t('teacherLoadError')}>
-                {t('teacherLoadErrorDescription')}
-              </Alert>
+              <div className="px-7 pt-6">
+                <Alert variant="warning" title={t('teacherLoadError')}>
+                  {t('teacherLoadErrorDescription')}
+                </Alert>
+              </div>
             ) : null}
             <AddClassForm teachers={teachersQuery.data ?? []} onClose={onClose} />
           </>
         )}
-      </DialogContent>
-    </Dialog>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -119,6 +118,8 @@ export interface StaffConfirmRequest {
 export interface StaffTableActions {
   /** The kit row-action list for one row, with declared `write` flags. */
   rowActionsFor: (row: StaffRow) => readonly DirectoryRowAction<StaffRow>[];
+  /** Open the edit dialog for a row from OUTSIDE the kit's menu (detail header). */
+  openEdit: (row: StaffRow) => void;
   /** The pending confirm, row included — an invitation documentId is not a user documentId. */
   confirm: StaffConfirmRequest | null;
   confirmWarning: StaffActionWarning | undefined;
@@ -134,12 +135,13 @@ export function useStaffTableActions(): StaffTableActions {
   const [confirm, setConfirm] = useState<StaffConfirmRequest | null>(null);
   const [editRow, setEditRow] = useState<StaffRow | null>(null);
 
-  // A live account gets the spec's two icon buttons — edit (C-TCH-04) and
-  // remove (C-TCH-03) — with the reversible access toggle (C-TCH-02) behind
-  // the overflow menu. An open invitation has no account to edit or remove,
-  // so its menu is reissue (C-INV-03) + revoke (C-INV-04/07) only. The kit
-  // lists every action in the menu; `quick` is an inline shortcut, not a
-  // filter, so the inline pair renders exactly the old cluster's order.
+  // sa-lists-audit — the School Admin design's teacher rows carry ONLY the ⋯
+  // menu (`School Admin Portal.dc.html:591-609`): edit (C-TCH-04), remove
+  // (C-TCH-03) and the reversible access toggle (C-TCH-02) all live in the
+  // overflow list; the former inline quick icon pair was the mismatch. An
+  // open invitation has no account to edit or remove, so its menu is reissue
+  // (C-INV-03) + revoke (C-INV-04/07) only. The kit lists every action in the
+  // menu; `quick` is an inline shortcut, not a filter.
   const rowActionsFor = (row: StaffRow): readonly DirectoryRowAction<StaffRow>[] => {
     const name = core.nameOf(row);
     if (row.kind === 'invitation') {
@@ -162,15 +164,11 @@ export function useStaffTableActions(): StaffTableActions {
     return [
       {
         label: core.t('editLabel', { name }),
-        icon: Pencil,
-        quick: true,
         write: true,
         onSelect: (target) => setEditRow(target),
       },
       {
         label: core.t('removeLabel', { name }),
-        icon: Trash2,
-        quick: true,
         destructive: true,
         write: true,
         onSelect: (target) => setConfirm({ action: 'remove', row: target }),
@@ -200,6 +198,7 @@ export function useStaffTableActions(): StaffTableActions {
 
   return {
     rowActionsFor,
+    openEdit: (row: StaffRow) => setEditRow(row),
     confirm,
     confirmWarning: confirm ? core.warningOf(confirm.action, confirm.row) : undefined,
     confirmPending: confirm ? core.pendingOf(confirm.action) : false,

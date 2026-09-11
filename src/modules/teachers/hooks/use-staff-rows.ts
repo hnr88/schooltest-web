@@ -120,5 +120,7 @@ export const staffDirectoryClientConfig: DirectoryClientConfig<StaffRow> = {
   comparators: {
     'name:asc': byStaffName,
     'name:desc': (a, b) => byStaffName(b, a),
+    // The design's second sort (VIEW 4: "Sort: Most classes").
+    'classes:desc': (a, b) => b.classes.length - a.classes.length || byStaffName(a, b),
   },
 };

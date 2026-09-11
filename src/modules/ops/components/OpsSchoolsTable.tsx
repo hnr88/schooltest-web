@@ -628,7 +628,10 @@ export function OpsSchoolsTable() {
               aria-label={t('searchLabel')}
               type="search"
               data-testid="ops-schools-search"
-              className="h-11 w-[260px] rounded-full border-transparent bg-card px-[18px] pl-10 text-sm shadow-sm"
+              // The design's header search pill (`:91`): 44px tall, 260px wide,
+              // 18px side padding, 16px icon, 10px icon-to-text gap — so the
+              // text inset is 18+16+10 = 44px (pl-11), not a bare pl-10.
+              className="h-11 w-[260px] rounded-full border-transparent bg-card px-[18px] pl-11 text-sm shadow-sm"
               placeholder={t('searchPlaceholder')}
               value={state.searchInput}
               onChange={(event) => state.setSearchInput(event.target.value)}

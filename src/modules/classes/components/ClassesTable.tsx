@@ -1,6 +1,5 @@
 'use client';
 
-import { Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
@@ -22,6 +21,7 @@ import { ClassDeleteDialog } from '@/modules/classes/components/ClassDeleteDialo
 import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
 import { useClassRowActions } from '@/modules/classes/hooks/use-class-row-actions';
 import {
+  classBadge,
   formatTestsCompleted,
   teacherNames,
 } from '@/modules/classes/lib/classes-table.helpers';
@@ -156,15 +156,29 @@ export function ClassesTable({ rows, completions, onEdit, query = IDLE_QUERY }: 
       {
         key: 'name',
         header: table('columnClass'),
-        cell: (row) => <span className="font-medium text-foreground">{row.name}</span>,
+        cell: (row) => (
+          <span className="flex items-center gap-3.5">
+            <span
+              aria-hidden="true"
+              className="grid size-[38px] flex-none place-items-center rounded-tile bg-[#EEF1F6] text-[12.5px] font-bold text-[#0E2350]"
+            >
+              {classBadge(row.name)}
+            </span>
+            <span className="text-[14.5px] font-semibold text-foreground">{row.name}</span>
+          </span>
+        ),
       },
       {
         key: 'teacher',
         header: table('columnTeacher'),
+        // sa-lists-audit — the School Admin design's row columns are PLAIN
+        // text (`School Admin Portal.dc.html:263-265`: 13.5px ink, no metric
+        // sublabel); the metric arm's "teacher" sublabel was the mismatch.
+        grid: 'text',
         cell: (row) => {
           const teacher = teacherNames(row.teachers);
           return teacher === '' ? (
-            <span className="text-muted-foreground">{table('teacherNone')}</span>
+            <span className="text-[#9AA6B8]">{table('teacherNone')}</span>
           ) : (
             teacher
           );
@@ -173,31 +187,30 @@ export function ClassesTable({ rows, completions, onEdit, query = IDLE_QUERY }: 
       {
         key: 'students',
         header: table('columnStudents'),
-        className: 'text-center tabular-nums',
+        grid: 'text',
+        className: 'tabular-nums',
         cell: (row) => row.student_count,
       },
       {
         key: 'testsCompleted',
         header: table('columnTestsCompleted'),
-        className: 'text-center',
+        grid: 'text',
         cell: (row) => {
           const testsCompleted = formatTestsCompleted(
             completions,
             row.documentId,
             row.student_count,
           );
+          // The design's completion column is ONE muted 13px line
+          // (`:266`: "{{ c.pct }} done"); the two real per-test counts read
+          // the same way as a single line, without the metric sublabel block
+          // whose overflow-hidden clipping previously ate the figures.
           return testsCompleted === null ? (
-            <span className="text-muted-foreground">{table('unknown')}</span>
+            <span className="text-[#9AA6B8]">{table('unknown')}</span>
           ) : (
-            <span className="flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-4">
-              <span className="inline-flex items-baseline gap-1.5 whitespace-nowrap">
-                <span className="text-muted-foreground">{participation('testA')}</span>
-                <span className="tabular-nums">{testsCompleted.testA}</span>
-              </span>
-              <span className="inline-flex items-baseline gap-1.5 whitespace-nowrap">
-                <span className="text-muted-foreground">{participation('testB')}</span>
-                <span className="tabular-nums">{testsCompleted.testB}</span>
-              </span>
+            <span className="whitespace-nowrap text-[13px] text-[#7C8698]">
+              {participation('testA')} {testsCompleted.testA} · {participation('testB')}{' '}
+              {testsCompleted.testB}
             </span>
           );
         },
@@ -206,21 +219,28 @@ export function ClassesTable({ rows, completions, onEdit, query = IDLE_QUERY }: 
     [completions, participation, table],
   );
 
+  // sa-lists-audit — the School Admin design's rows carry ONLY the ⋯ menu
+  // (`:268-283`); the inline quick icon pair was the Ops row's shape, so edit
+  // and delete now live in the overflow menu alone (the CRUD spec already
+  // drives both through `menuitem`).
   const rowActions = (row: SchoolClass): readonly DirectoryRowAction<SchoolClass>[] => [
     {
       label: actions('edit'),
-      icon: Pencil,
-      quick: true,
       write: true,
       onSelect: () => onEdit(row),
     },
     {
       label: actions('delete'),
-      icon: Trash2,
-      quick: true,
       destructive: true,
       write: true,
-      onSelect: () => setDeleteTarget(row),
+      // BUG (sa-acceptance pass): the confirm is fully controlled by
+      // `deleteOpen` (OpsConfirmDialog -> OpsDialog `open`), so only setting the
+      // target left the dialog on open={false} forever — "Delete class" did
+      // nothing visible and C-CLS-04 was unreachable from this roster.
+      onSelect: () => {
+        setDeleteTarget(row);
+        setDeleteOpen(true);
+      },
     },
   ];
 

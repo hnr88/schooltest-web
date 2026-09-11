@@ -43,10 +43,13 @@ export interface SchoolStudentDetailScreenProps {
 
 export interface StudentRecordPanelProps {
   student: SchoolStudentRecord;
+  onEdit: () => void;
 }
 
 export interface StudentLevelBadgeProps {
   phase: string | null;
+  /** Row-list sizing (5px 12px) instead of the drill-down's 6px 13px. */
+  compact?: boolean;
 }
 
 export interface StudentImportDialogProps {
@@ -66,4 +69,6 @@ export interface SchoolStudentFormProps {
   showAcaraPhase: boolean;
   onCancel: () => void;
   onDone: () => void;
+  /** Render the modal-kit body/footer chrome (OpsDialog kit) instead of the flat page layout. */
+  modal?: boolean;
 }

@@ -3,13 +3,13 @@
 import { useTranslations } from 'next-intl';
 
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
 } from '@/modules/design-system';
 import { useStudentImport } from '@/modules/school-students/hooks/use-student-import';
 import { StudentImportFields, StudentImportRejectList } from '@/modules/student-import';
@@ -19,53 +19,52 @@ import type { StudentImportDialogProps } from '@/modules/school-students/types/c
 // Spec §4 "Import students": the shared CSV flow with the class selector shown,
 // so the admin picks the class every parsed row is created into. Row counts come
 // from the parser, never from a guess about what the file contained, and the
-// rows that could not be imported are named ONE BY ONE under them.
+// rows that could not be imported are named ONE BY ONE under them. Modal chrome
+// on the OpsDialog kit (School Admin design: import modal, 560px).
 export function StudentImportDialog({ classes, onClose }: StudentImportDialogProps) {
   const t = useTranslations('SchoolStudents.import');
   const importState = useStudentImport(onClose);
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next) onClose();
       }}
     >
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-[560px]">
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description')}</DialogDescription>
-        </DialogHeader>
-        <StudentImportFields
-          classes={classes}
-          classId={importState.classId}
-          onClassChange={importState.setClassId}
-          onChange={importState.setParsed}
-        />
-        <p className="text-meta text-body">
-          {t('readyCount', { count: importState.parsed.rows.length })}
-        </p>
-        {/* The count line is gone: the list below names the same rows AND says
-            which line each one is, so the two together only said it twice. */}
-        <StudentImportRejectList
-          parseErrors={importState.parsed.errors}
-          serverRejects={importState.rejects}
-        />
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose} disabled={importState.pending}>
+      <OpsDialogContent className="sm:max-w-[560px]">
+        <OpsDialogHeader title={t('title')} sub={t('description')} />
+        <OpsDialogBody>
+          <StudentImportFields
+            classes={classes}
+            classId={importState.classId}
+            onClassChange={importState.setClassId}
+            onChange={importState.setParsed}
+          />
+          <p className="text-meta text-body">
+            {t('readyCount', { count: importState.parsed.rows.length })}
+          </p>
+          {/* The count line is gone: the list below names the same rows AND says
+              which line each one is, so the two together only said it twice. */}
+          <StudentImportRejectList
+            parseErrors={importState.parsed.errors}
+            serverRejects={importState.rejects}
+          />
+        </OpsDialogBody>
+        <OpsDialogFooter>
+          <OpsDialogCancel type="button" onClick={onClose} disabled={importState.pending}>
             {t('cancel')}
-          </Button>
-          <Button
+          </OpsDialogCancel>
+          <OpsDialogCta
             type="button"
-            variant="accent"
             loading={importState.pending}
             disabled={!importState.canSubmit}
             onClick={() => void importState.submit()}
           >
             {importState.pending ? t('submitting') : t('submit')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </OpsDialogCta>
+        </OpsDialogFooter>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

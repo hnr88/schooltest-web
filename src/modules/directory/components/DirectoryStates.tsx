@@ -30,17 +30,10 @@ export function DirectoryLoading({
 }) {
   return (
     <div role="status" data-slot="directory-loading" className="px-6 pt-1.5 pb-1">
-      <h2
-        ref={headingRef}
-        tabIndex={-1}
-        className="px-2.5 pt-3 pb-2 text-[13px] font-medium text-[#9AA6B8] outline-none"
-      >
-        {labels.loadingLabel}
-      </h2>
       {SKELETON_ROWS.map((row) => (
         <div
           key={row}
-          className="flex items-center gap-4 border-b border-[#F4F6FA] px-2.5 py-3.5 last:border-b-0"
+          className="flex items-center gap-4 border-b border-[#F4F6FA] px-2.5 py-3.5"
         >
           <Skeleton className="size-[52px] flex-none rounded-[14px]" />
           <div className="flex flex-1 flex-col gap-2">
@@ -50,6 +43,16 @@ export function DirectoryLoading({
           <Skeleton className="h-[26px] w-[94px] flex-none rounded-full" />
         </div>
       ))}
+      {/* The design draws the caption UNDER the skeleton rows
+          (`Ops Portal.dc.html:110-124`, "Loading schools…" last, 16/6 padding);
+          the focusable h2 stays the arm's heading either way. */}
+      <h2
+        ref={headingRef}
+        tabIndex={-1}
+        className="px-2.5 pt-4 pb-1.5 text-[13px] font-medium text-[#9AA6B8] outline-none"
+      >
+        {labels.loadingLabel}
+      </h2>
     </div>
   );
 }
@@ -69,13 +72,19 @@ export function DirectoryError({
 }) {
   return (
     <div className="px-8 py-14 text-center" data-slot="directory-error">
-      <h2 ref={headingRef} tabIndex={-1} className="text-[16px] font-semibold text-[#0E2350] outline-none">
-        {labels.errorTitle}
-      </h2>
-      <div className="mx-auto mt-4 grid size-12 place-items-center rounded-[16px] bg-[#FDEEEC] text-[#B42318]">
+      {/* The design's order (`Ops Portal.dc.html:126-138`): icon tile, then the
+          16px/600 title, then the description, then the two pill actions. */}
+      <div className="mx-auto grid size-12 place-items-center rounded-[16px] bg-[#FDEEEC] text-[#B42318]">
         <TriangleAlert className="size-[22px]" aria-hidden="true" />
       </div>
-      <p className="mx-auto mt-4 max-w-[400px] text-[13.5px] leading-relaxed text-[#7C8698]">
+      <h2
+        ref={headingRef}
+        tabIndex={-1}
+        className="mt-4 text-[16px] font-semibold text-[#0E2350] outline-none"
+      >
+        {labels.errorTitle}
+      </h2>
+      <p className="mx-auto mt-1.5 max-w-[400px] text-[13.5px] leading-relaxed text-[#7C8698]">
         {labels.errorDescription}
       </p>
       <div className="mt-5 flex justify-center gap-2.5">
@@ -132,7 +141,9 @@ export function DirectoryEmpty({
   const title = isNoMatches ? labels.emptyNoMatchesTitle : labels.emptyNoneTitle;
   return (
     <div className="px-6 py-14 text-center" data-slot="directory-empty">
-      <div className="grid size-[46px] place-items-center rounded-[14px] bg-[#F4F6FA]">
+      {/* `margin:0 auto 14px` in the design (`:188-195`) — without mx-auto the
+          icon tile hugged the card's left edge while the text centered. */}
+      <div className="mx-auto mb-3.5 grid size-[46px] place-items-center rounded-[14px] bg-[#F4F6FA]">
         {isNoMatches ? (
           <SearchX className="size-5 text-[#7C8698]" aria-hidden="true" />
         ) : (
@@ -142,7 +153,7 @@ export function DirectoryEmpty({
       <h2
         ref={headingRef}
         tabIndex={-1}
-        className="mt-3.5 text-[15px] font-semibold text-[#0E2350] outline-none"
+        className="text-[15px] font-semibold text-[#0E2350] outline-none"
       >
         {title}
       </h2>

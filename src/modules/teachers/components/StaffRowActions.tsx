@@ -1,6 +1,6 @@
 'use client';
 
-import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -39,19 +39,8 @@ export function StaffRowActions({ row }: StaffRowActionsProps) {
     <RowActionsCluster className="justify-end">
       {row.kind === 'teacher' ? (
         <>
-          <IconButton
-            icon={Pencil}
-            size="sm"
-            label={t('editLabel', { name })}
-            onClick={() => setEditOpen(true)}
-          />
-          <IconButton
-            icon={Trash2}
-            size="sm"
-            tone="danger"
-            label={t('removeLabel', { name })}
-            onClick={() => setConfirmAction('remove')}
-          />
+          {/* The design's row carries ONLY the ⋯ menu (:606); edit/remove live
+              there (and stay on the detail screen), not as inline icons. */}
           <DropdownMenu>
             <DropdownMenuTrigger
               render={

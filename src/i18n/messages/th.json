@@ -2024,6 +2024,7 @@
       "readinessTitle": "Mainstream readiness",
       "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
       "classesTitle": "Classes",
+      "viewAllClasses": "ทุกชั้นเรียน",
       "classStudents": "{count, plural, one {# student} other {# students}}",
       "classesEmptyTitle": "No classes yet",
       "classesEmptyDescription": "Classes you add for your school will appear here.",
@@ -2627,7 +2628,8 @@
         "openLabel": "เปิดชั้นเรียน {name}",
         "removeLabel": "นำออกจาก {name}",
         "removeErrorTitle": "ไม่สามารถนำครูออกจากชั้นเรียนนี้ได้",
-        "removeErrorDescription": "ชั้นเรียนไม่ได้ถูกเปลี่ยนแปลง ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"
+        "removeErrorDescription": "ชั้นเรียนไม่ได้ถูกเปลี่ยนแปลง ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+        "percentCompleted": "{percent}% เสร็จสิ้น"
       },
       "accountPanel": {
         "title": "รายละเอียดบัญชี",
@@ -2650,7 +2652,8 @@
         "cancel": "ยกเลิก",
         "errorTitle": "ไม่สามารถอัปเดตชั้นเรียนนี้ได้",
         "errorDescription": "ชั้นเรียนไม่ได้ถูกเปลี่ยนแปลง ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"
-      }
+      },
+      "moreActions": "การดำเนินการเพิ่มเติม"
     },
     "meta": {
       "title": "ครู - SchoolTest",
@@ -2700,14 +2703,14 @@
         "expired": "หมดอายุแล้ว"
       },
       "noValue": "—",
-      "filterAll": "ทั้งหมด",
+      "filterAll": "ทุกสถานะ",
       "statusActive": "ใช้งานอยู่",
       "statusInvited": "เชิญแล้ว",
       "statusSuspended": "ถูกระงับ",
       "sortNameAsc": "ชื่อ (ก–ฮ)",
       "sortNameDesc": "ชื่อ (ฮ–ก)",
-      "searchPlaceholder": "ค้นหาบุคลากร",
-      "searchLabel": "ค้นหาบุคลากร",
+      "searchPlaceholder": "ค้นหาครู",
+      "searchLabel": "ค้นหาครู",
       "sortLabel": "จัดเรียง",
       "clearFilters": "ล้างตัวกรอง",
       "paginationLabel": "หน้าบุคลากร",
@@ -2721,7 +2724,9 @@
       "noMatchesTitle": "ไม่มีรายการที่ตรงกับตัวกรองนี้",
       "noMatchesBody": "ลองใช้สถานะอื่น",
       "staleBanner": "การรีเฟรชล่าสุดล้มเหลว — แถวด้านล่างคือรายการล่าสุดที่เซิร์ฟเวอร์ส่งมา",
-      "loading": "กำลังโหลดบุคลากร..."
+      "loading": "กำลังโหลดบุคลากร...",
+      "classesCount": "{count, plural, other {# ชั้นเรียน}}",
+      "sortMostClasses": "คลาสมากที่สุด"
     },
     "actions": {
       "menuLabel": "การดำเนินการสำหรับ {name}",
@@ -3108,6 +3113,7 @@
       "columnLevel": "Level",
       "columnDiagnostic": "Diagnostic",
       "notSet": "—",
+      "firstLanguageLine": "ภาษาแรก: {language}",
       "diagnosticOption": {
         "not_started": "Not started",
         "in_progress": "In progress",
@@ -3239,6 +3245,8 @@
       "notFoundTitle": "We could not find that student",
       "notFoundDescription": "They may have been removed, or they belong to another school.",
       "editButton": "แก้ไข",
+      "editDetailsButton": "แก้ไขรายละเอียด",
+      "studentIdLabel": "รหัสนักเรียน",
       "classPanel": {
         "title": "ชั้นเรียน",
         "currentLabel": "ชั้นเรียนปัจจุบัน",
@@ -3250,7 +3258,8 @@
         "noClasses": "ยังไม่มีชั้นเรียนให้จัดเข้า",
         "errorTitle": "ไม่สามารถบันทึกการเปลี่ยนชั้นเรียนได้",
         "errorDescription": "ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง"
-      }
+      },
+      "metaLine": "ภาษาแรก: {language} · ระดับ: {level} · {class} · ID {id}"
     }
   },
   "Ops": {
@@ -5751,5 +5760,22 @@
       "primaryActionLabel": "เปิด",
       "chipAllLabel": "ทั้งหมด"
     }
+  },
+  "TeacherPortal": {
+    "shell": {},
+    "kit": {},
+    "classes": {},
+    "classDetail": {},
+    "students": {},
+    "progress": {},
+    "insights": {},
+    "familyReports": {},
+    "live": {},
+    "liveSessions": {},
+    "startSession": {},
+    "reports": {},
+    "student": {},
+    "askAi": {},
+    "review": {}
   }
 }

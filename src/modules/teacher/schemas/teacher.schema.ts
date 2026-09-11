@@ -127,9 +127,26 @@ export const TEACHER_AUTH_FAILURE_STATUS = {
 /* ── C-TD-1 · GET /api/teacher/dashboard ───────────────────────────────── */
 
 /**
+ * The class reading summary on a dashboard card — MIRROR of
+ * `dashboardClassReadingSchema` in schooltest-api/src/contracts/teacher.ts.
+ * `average` = mean `overall.domain_score` of each roster student's LATEST
+ * official complete reading result (null when none); `scored` = how many
+ * students contributed; `delta` = mean (latest − earliest this school year) over
+ * students with ≥2 such results (null when no student has two). Server-derived:
+ * the client renders these numbers and recomputes nothing.
+ */
+export const dashboardClassReadingSchema = z.strictObject({
+  average: z.number().nullable(),
+  delta: z.number().nullable(),
+  scored: teacherCountSchema,
+});
+
+/**
  * The derived class status — MIRROR of `dashboardClassSchema` in
  * schooltest-api/src/contracts/teacher.ts (D-60: a server derivation; the
- * client applies no cut of its own and never re-derives it).
+ * client applies no cut of its own and never re-derives it). `reading` and
+ * `year_level` are optional so a response from an API build before they
+ * shipped still parses.
  */
 export const dashboardClassSchema = z.strictObject({
   class_document_id: teacherDocumentIdSchema,
@@ -141,6 +158,9 @@ export const dashboardClassSchema = z.strictObject({
   top_gap: topGapSchema.nullable(),
   status: z.enum(['sitting_now', 'scheduled', 'no_tests_yet', 'complete']),
   open_session_count: teacherCountSchema,
+  reading: dashboardClassReadingSchema.optional(),
+  /** The most common `student.year_level` on the active roster; null when none is set. */
+  year_level: z.number().int().nullable().optional(),
 });
 
 /** The caller's most recently opened `status:'open'` sitting, else `null`. */

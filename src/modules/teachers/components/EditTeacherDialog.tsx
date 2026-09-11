@@ -7,15 +7,16 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  FieldShell,
   Input,
+  OPS_CONTROL_CLASS,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
+  OpsFieldShell,
 } from '@/modules/design-system';
 import { showOpsToast } from '@/modules/ops/actions';
 import { serverMessage } from '@/modules/teachers/lib/server-message';
@@ -65,54 +66,69 @@ export function EditTeacherDialog({ row, onClose }: EditTeacherDialogProps) {
   };
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next) onClose();
       }}
     >
-      <DialogContent className="sm:max-w-[520px]">
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description')}</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(submit)} noValidate className="flex flex-col gap-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FieldShell
-              id="edit-first-name"
-              label={t('firstName')}
-              errorText={errors.first_name?.message}
+      <OpsDialogContent className="sm:max-w-[520px]">
+        <OpsDialogHeader title={t('title')} sub={t('description')} />
+        <form onSubmit={handleSubmit(submit)} noValidate>
+          <OpsDialogBody>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <OpsFieldShell
+                id="edit-first-name"
+                label={t('firstName')}
+                errorText={errors.first_name?.message}
+                required
+              >
+                <Input
+                  id="edit-first-name"
+                  autoComplete="off"
+                  className={OPS_CONTROL_CLASS}
+                  {...register('first_name')}
+                />
+              </OpsFieldShell>
+              <OpsFieldShell
+                id="edit-last-name"
+                label={t('lastName')}
+                errorText={errors.last_name?.message}
+                required
+              >
+                <Input
+                  id="edit-last-name"
+                  autoComplete="off"
+                  className={OPS_CONTROL_CLASS}
+                  {...register('last_name')}
+                />
+              </OpsFieldShell>
+            </div>
+            <OpsFieldShell
+              id="edit-email"
+              label={t('email')}
+              errorText={errors.email?.message}
               required
             >
-              <Input id="edit-first-name" autoComplete="off" {...register('first_name')} />
-            </FieldShell>
-            <FieldShell
-              id="edit-last-name"
-              label={t('lastName')}
-              errorText={errors.last_name?.message}
-              required
-            >
-              <Input id="edit-last-name" autoComplete="off" {...register('last_name')} />
-            </FieldShell>
-          </div>
-          <FieldShell
-            id="edit-email"
-            label={t('email')}
-            errorText={errors.email?.message}
-            required
-          >
-            <Input id="edit-email" type="email" autoComplete="off" {...register('email')} />
-          </FieldShell>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose} disabled={update.isPending}>
+              <Input
+                id="edit-email"
+                type="email"
+                autoComplete="off"
+                className={OPS_CONTROL_CLASS}
+                {...register('email')}
+              />
+            </OpsFieldShell>
+          </OpsDialogBody>
+          <OpsDialogFooter>
+            <OpsDialogCancel type="button" onClick={onClose} disabled={update.isPending}>
               {t('cancel')}
-            </Button>
-            <Button type="submit" loading={update.isPending}>
+            </OpsDialogCancel>
+            <OpsDialogCta type="submit" loading={update.isPending}>
               {update.isPending ? t('submitting') : t('submit')}
-            </Button>
-          </DialogFooter>
+            </OpsDialogCta>
+          </OpsDialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

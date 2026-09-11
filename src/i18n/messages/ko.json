@@ -2024,6 +2024,7 @@
       "readinessTitle": "Mainstream readiness",
       "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
       "classesTitle": "Classes",
+      "viewAllClasses": "모든 학급",
       "classStudents": "{count, plural, one {# student} other {# students}}",
       "classesEmptyTitle": "No classes yet",
       "classesEmptyDescription": "Classes you add for your school will appear here.",
@@ -2627,7 +2628,8 @@
         "openLabel": "수업 열기 {name}",
         "removeLabel": "{name}에서 제외",
         "removeErrorTitle": "담당 교사를 수업에서 제외할 수 없습니다",
-        "removeErrorDescription": "수업이 변경되지 않았습니다. 연결을 확인하고 다시 시도하세요."
+        "removeErrorDescription": "수업이 변경되지 않았습니다. 연결을 확인하고 다시 시도하세요.",
+        "percentCompleted": "{percent}% 완료"
       },
       "accountPanel": {
         "title": "계정 세부정보",
@@ -2650,7 +2652,8 @@
         "cancel": "취소",
         "errorTitle": "수업을 업데이트할 수 없습니다",
         "errorDescription": "수업이 변경되지 않았습니다. 연결을 확인하고 다시 시도하세요."
-      }
+      },
+      "moreActions": "추가 작업"
     },
     "meta": {
       "title": "교사 - SchoolTest",
@@ -2700,14 +2703,14 @@
         "expired": "만료됨"
       },
       "noValue": "—",
-      "filterAll": "전체",
+      "filterAll": "전체 상태",
       "statusActive": "재직",
       "statusInvited": "초대됨",
       "statusSuspended": "정지",
       "sortNameAsc": "이름 오름차순",
       "sortNameDesc": "이름 내림차순",
-      "searchPlaceholder": "교직원 검색",
-      "searchLabel": "교직원 검색",
+      "searchPlaceholder": "교사 검색",
+      "searchLabel": "교사 검색",
       "sortLabel": "정렬",
       "clearFilters": "필터 지우기",
       "paginationLabel": "교직원 페이지",
@@ -2721,7 +2724,9 @@
       "noMatchesTitle": "이 필터와 일치하는 항목이 없습니다",
       "noMatchesBody": "다른 상태를 시도해 보세요.",
       "staleBanner": "최신 새로고침에 실패했습니다. 아래 행은 서버가 마지막으로 제공한 목록입니다.",
-      "loading": "교직원 불러오는 중..."
+      "loading": "교직원 불러오는 중...",
+      "classesCount": "{count, plural, other {#개 수업}}",
+      "sortMostClasses": "수업 많은 순"
     },
     "actions": {
       "menuLabel": "{name} 작업",
@@ -3108,6 +3113,7 @@
       "columnLevel": "Level",
       "columnDiagnostic": "Diagnostic",
       "notSet": "—",
+      "firstLanguageLine": "모국어: {language}",
       "diagnosticOption": {
         "not_started": "Not started",
         "in_progress": "In progress",
@@ -3239,6 +3245,8 @@
       "notFoundTitle": "We could not find that student",
       "notFoundDescription": "They may have been removed, or they belong to another school.",
       "editButton": "편집",
+      "editDetailsButton": "상세 정보 수정",
+      "studentIdLabel": "학생 ID",
       "classPanel": {
         "title": "학급",
         "currentLabel": "현재 학급",
@@ -3250,7 +3258,8 @@
         "noClasses": "배정할 수 있는 학급이 아직 없습니다.",
         "errorTitle": "학급 변경을 저장하지 못했습니다",
         "errorDescription": "연결 상태를 확인하고 다시 시도하세요."
-      }
+      },
+      "metaLine": "모국어: {language} · 레벨: {level} · {class} · ID {id}"
     }
   },
   "Ops": {
@@ -5751,5 +5760,22 @@
       "primaryActionLabel": "열기",
       "chipAllLabel": "전체"
     }
+  },
+  "TeacherPortal": {
+    "shell": {},
+    "kit": {},
+    "classes": {},
+    "classDetail": {},
+    "students": {},
+    "progress": {},
+    "insights": {},
+    "familyReports": {},
+    "live": {},
+    "liveSessions": {},
+    "startSession": {},
+    "reports": {},
+    "student": {},
+    "askAi": {},
+    "review": {}
   }
 }

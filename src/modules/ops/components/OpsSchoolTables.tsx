@@ -134,7 +134,7 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
             <TabsTrigger
               key={key}
               value={key}
-              className="h-auto flex-none justify-center gap-2 rounded-none border-0 border-b-[2.5px] border-b-transparent bg-transparent px-4 py-3 text-sm font-medium text-[#7C8698] hover:text-foreground data-active:mb-[-1px] data-active:border-b-primary data-active:bg-transparent data-active:font-semibold data-active:text-foreground data-active:after:opacity-0"
+              className="h-auto flex-none justify-center gap-2 rounded-none border-0 border-b-[2.5px] border-b-transparent bg-transparent px-4 py-3 text-sm font-medium text-[#7C8698] hover:text-foreground data-active:mb-[-1px] data-active:border-b-[#0E2350] data-active:bg-transparent data-active:font-semibold data-active:text-foreground data-active:after:opacity-0"
             >
               {t(`tab.${key}`)}
               {count !== null && count > 0 ? (

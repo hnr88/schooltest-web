@@ -43,13 +43,13 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
     <main
       data-slot="school-class-detail"
       data-surface="school-admin-class-detail"
-      className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
+      className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
     >
       <Link
         href="/dashboard/school/classes"
-        className="inline-flex min-h-11 w-fit items-center gap-1.5 rounded-sm py-2 text-sm font-semibold text-primary transition-colors duration-150 hover:text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        className="inline-flex min-h-11 w-fit items-center gap-1.5 rounded-sm py-1 text-[13.5px] font-medium text-[#7C8698] transition-colors duration-150 hover:text-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
-        <ArrowLeft className="size-4" aria-hidden />
+        <ArrowLeft className="size-[15px]" strokeWidth={2} aria-hidden />
         {t('backLink')}
       </Link>
       {isPending ? (
@@ -93,13 +93,14 @@ export function ClassDetailScreen({ documentId }: ClassDetailScreenProps) {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2
                 id="class-detail-students-heading"
-                className="text-lg font-semibold text-foreground"
+                className="text-panel-title font-semibold text-foreground"
               >
                 {t('studentsTitle')}
               </h2>
               <Button
                 type="button"
-                variant="secondary"
+                variant="white"
+                className="h-[42px] rounded-tile border border-portal-input px-[18px] text-[13.5px] font-semibold hover:border-navy-900 hover:bg-white"
                 disabled={roster.assigning}
                 onClick={() => setAddingStudents(true)}
               >

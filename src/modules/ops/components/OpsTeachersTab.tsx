@@ -77,28 +77,6 @@ export function OpsTeachersTab({
   return (
     <div className="flex flex-col gap-3">
       <p className="max-w-2xl text-sm text-body">{t('teachersNote')}</p>
-      {/* Design 353-368: the card-header actions (title left, buttons right).
-          The kit's DirectoryHeader only offers Export as its secondary, so these
-          stay the tab's own controls, drawn as the design's header buttons. */}
-      <div className="-mb-2 flex flex-wrap justify-end gap-2.5">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onManage}
-          className="h-10 rounded-xl border-[#D8DFEA] px-4 text-[13.5px] font-semibold hover:border-navy-900"
-        >
-          {t('manageTeachers')}
-        </Button>
-        <Button
-          type="button"
-          variant="navy"
-          data-testid="ops-teachers-invite"
-          onClick={onInvite}
-          className="h-10 rounded-xl px-[18px] text-[13.5px] font-semibold"
-        >
-          {t('inviteStaff')}
-        </Button>
-      </div>
       <OpsStaffUsersTable
         schoolDocumentId={schoolDocumentId}
         role="teacher"
@@ -110,6 +88,32 @@ export function OpsTeachersTab({
         headerSummary={t('teachersHeaderSummary', { teachers: totalTeachers, classes: classesCovered })}
         onInvite={onInvite}
         onViewClasses={viewClasses}
+        // ops-tabs-audit — design `:353-368`: the header row carries the card's
+        // actions on the title's right. Manage teachers is the outline
+        // secondary-shape control and Invite staff the navy primary; both move
+        // ONTO the card header (OpsStaffUsersTable) instead of floating above
+        // the table. `ops-teachers-invite` keeps its testid through the move.
+        headerPrimary={
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onManage}
+              className="h-10 rounded-[12px] border-[#D8DFEA] px-4 text-[13.5px] font-semibold text-[#3D4A5C] hover:border-navy-900 hover:bg-transparent hover:text-navy-900"
+            >
+              {t('manageTeachers')}
+            </Button>
+            <Button
+              type="button"
+              variant="navy"
+              data-testid="ops-teachers-invite"
+              onClick={onInvite}
+              className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
+            >
+              {t('inviteStaff')}
+            </Button>
+          </>
+        }
       />
     </div>
   );

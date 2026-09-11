@@ -208,7 +208,7 @@ test.describe('school-admin assignment + design proof', () => {
     await page.screenshot({ path: path.join(SHOTS, 'teacher-detail.png'), fullPage: true });
 
     await assignButton.click();
-    const assignDialog = page.locator('[data-slot="dialog-content"]');
+    const assignDialog = page.locator('[data-slot="ops-dialog-content"]');
     await expect(
       assignDialog.getByText(cat(en, 'Teachers.detail.assignDialog.title')),
     ).toBeVisible();
@@ -256,7 +256,7 @@ test.describe('school-admin assignment + design proof', () => {
       exact: true,
     });
     await editButton.click();
-    const editDialog = page.locator('[data-slot="dialog-content"]');
+    const editDialog = page.locator('[data-slot="ops-dialog-content"]');
     await expect(editDialog).toBeVisible();
     await page.waitForTimeout(400);
     const editBox = await editDialog.boundingBox();
@@ -320,7 +320,7 @@ test.describe('school-admin assignment + design proof', () => {
     await classScreen
       .getByRole('button', { name: cat(en, 'Classes.detail.teachers.add'), exact: true })
       .click();
-    const teacherPicker = page.locator('[data-slot="dialog-content"]');
+    const teacherPicker = page.locator('[data-slot="ops-dialog-content"]');
     await expect(
       teacherPicker.getByText(cat(en, 'Classes.detail.teachers.pickerTitle')),
     ).toBeVisible();
@@ -377,7 +377,7 @@ test.describe('school-admin assignment + design proof', () => {
     await classScreen
       .getByRole('button', { name: cat(en, 'Classes.detail.addStudent'), exact: true })
       .click();
-    const studentPicker = page.locator('[data-slot="dialog-content"]');
+    const studentPicker = page.locator('[data-slot="ops-dialog-content"]');
     await expect(
       studentPicker.getByText(cat(en, 'Classes.detail.studentPicker.title')),
     ).toBeVisible();

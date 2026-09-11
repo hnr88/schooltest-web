@@ -1,29 +1,33 @@
 'use client';
 
-import { ArrowLeft, XIcon } from 'lucide-react';
+import { ChevronRight, MoreHorizontal, XIcon } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { useAuthStore } from '@/modules/auth';
 import { useSchoolClassesQuery, useUpdateClassTeachersMutation } from '@/modules/classes';
 import {
   Alert,
-  AvatarTint,
-  Badge,
   Button,
-  DataPanel,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   IconButton,
-  MiniStatTile,
+  PanelHeaderRow,
+  PersonCell,
   Skeleton,
-  getAvatarTone,
+  StatusPill,
 } from '@/modules/design-system';
 import { useParticipationQuery } from '@/modules/school-admin';
 import { ProgressDeltaPill, progressDelta } from '@/modules/teacher';
-import { EditTeacherDialog } from '@/modules/teachers/components/EditTeacherDialog';
 import { AssignClassesDialog } from '@/modules/teachers/components/AssignClassesDialog';
-import { STATUS_VARIANTS } from '@/modules/teachers/constants/components.constants';
+import { ConfirmStaffActionDialog } from '@/modules/teachers/components/ConfirmStaffActionDialog';
+import { EditTeacherDialog } from '@/modules/teachers/components/EditTeacherDialog';
+import { STATUS_PILL_TONES } from '@/modules/teachers/constants/components.constants';
 import { useStaffRows } from '@/modules/teachers/hooks/use-staff-rows';
+import { useStaffTableActions } from '@/modules/teachers/hooks/use-staff-row-actions';
 import { removeTeacherPatch } from '@/modules/teachers/lib/teacher-class-membership';
 import { useInvitationsQuery } from '@/modules/teachers/queries/use-invitations.query';
 import { useTeacherNeedsAttentionQuery } from '@/modules/teachers/queries/use-teacher-needs-attention.query';
@@ -39,32 +43,51 @@ const ROLE_TYPE_LABEL_KEYS: Record<
   school_admin: 'roleSchoolAdmin',
 };
 
-// School admin Teacher detail (mission tasks 013 + 019, design-audit.md
-// "Teachers list and Teacher detail"). Renders ONLY what the existing API
-// serves: the header (identity, status, and since task 07 the email · role ·
-// lastActive meta line the design draws), three KPI tiles (Classes /
-// Students / Test A completed — each a count or sum of server-computed
-// per-class figures, never a client-recomputed aggregate), the Assigned
-// classes list with per-class completion from C-RPT-04 buckets, Account
-// details (Email, Role, Status, Added, Last active), and (task 019) the
-// Students-needing-attention panel from GAP-01's
-// GET /schools/me/teachers/:documentId/needs-attention. That panel keeps its
+// School admin Teacher detail, design VIEW 4b (School Admin Portal.dc.html
+// 611-735): back link, navy avatar + name + status pill + meta line, the
+// action row (edit · assign · ⋯ menu over the same confirm-guarded account
+// actions the list rows serve), the KPI tiles (label-over-value, white 20px
+// cards), the Assigned classes card (year-band tile, name+sub, per-class
+// completion from C-RPT-04, students, chevron — plus the remove control the
+// real contract needs), and the Account details / Students-needing-attention
+// pair on the design's side-by-side grid. That attention panel keeps its
 // three states strictly distinct: PENDING is a skeleton, ERROR is an alert
 // with retry, and only a SUCCESSFUL empty list renders "Everyone is on
-// track." — an absent or failed read must never read as all-clear. Still
-// deliberately absent, as unserved contract gaps (C-TCH-06/07, task 17): the
-// Recent activity panel and the avg-reading-score tile.
+// track." Renders ONLY what the existing API serves; deliberately absent, as
+// unserved contract gaps (C-TCH-06/07, task 17): the avg-reading-score tile
+// and the Recent activity panel.
 function initialsOf(first: string, last: string, email: string): string {
   const initials = `${first.trim().charAt(0)}${last.trim().charAt(0)}`.trim();
   return (initials || email.trim().charAt(0)).toUpperCase();
 }
+
+// The design's KPI tile: white 20px-radius card, uppercase micro-label over a
+// 28px bold value.
+function StatTile({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex min-w-0 flex-col gap-2 rounded-result bg-card px-6 py-5.5 shadow-[0_1px_2px_rgba(14,35,80,0.04)]">
+      <span className="truncate text-meta font-semibold uppercase tracking-[0.05em] text-[#9AA6B8]">
+        {label}
+      </span>
+      <span className="text-[28px] leading-[1.15] font-bold tracking-[-0.02em] text-foreground">
+        {value}
+      </span>
+    </div>
+  );
+}
+
+// The design's white 24px-radius card with the kit list card's hairline shadow.
+const CARD_CLASS =
+  'rounded-card bg-card shadow-[0_1px_2px_rgba(14,35,80,0.04)]';
 
 export function TeacherDetailScreen({ documentId }: { documentId: string }) {
   const t = useTranslations('Teachers.detail');
   const tStatus = useTranslations('Teachers.table.status');
   const tInvite = useTranslations('Teachers.invite');
   const tTable = useTranslations('Teachers.table');
+  const ta = useTranslations('Teachers.actions');
   const format = useFormatter();
+  const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const enabled = hydrated && Boolean(token);
@@ -85,9 +108,14 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
     documentId,
     enabled && row?.kind === 'teacher',
   );
-  const [editOpen, setEditOpen] = useState(false);
   const [assignOpen, setAssignOpen] = useState(false);
   const removeClassTeachers = useUpdateClassTeachersMutation();
+  // The header ⋯ menu serves the same confirm-guarded account actions as the
+  // list's row menu (edit · deactivate/reactivate · remove); the confirm and
+  // edit-dialog state lives in the shared hook.
+  const actions = useStaffTableActions();
+  const removing =
+    actions.confirm?.action === 'remove' && actions.confirmPending;
 
   const isPending =
     !enabled ||
@@ -113,7 +141,7 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
       <main
         data-slot="school-teacher-detail"
         data-surface="school-admin-teacher-detail"
-        className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
+        className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
       >
         <Skeleton className="h-8 w-64" />
         <Skeleton className="h-24 w-full" />
@@ -127,7 +155,7 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
       <main
         data-slot="school-teacher-detail"
         data-surface="school-admin-teacher-detail"
-        className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
+        className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
       >
         <Alert
           variant="error"
@@ -155,9 +183,9 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
       <main
         data-slot="school-teacher-detail"
         data-surface="school-admin-teacher-detail"
-        className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
+        className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
       >
-        <div className="flex flex-col gap-4 rounded-panel border border-border bg-card p-6 text-center">
+        <div className={CARD_CLASS + ' flex flex-col gap-4 p-6 text-center'}>
           <h1 className="text-2xl font-semibold text-foreground">{t('notFoundTitle')}</h1>
           <p className="text-sm text-body">{t('notFoundDescription')}</p>
           <div className="flex justify-center">
@@ -192,236 +220,292 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
     (sum, klass) => sum + (participationById.get(klass.documentId)?.test_a.submitted ?? 0),
     0,
   );
+  const statusPill = (
+    <StatusPill tone={STATUS_PILL_TONES[row.status]}>{tStatus(row.status)}</StatusPill>
+  );
 
   return (
     <main
       data-slot="school-teacher-detail"
       data-surface="school-admin-teacher-detail"
-      className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
+      className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-col gap-3">
+      {/* Header — back link, navy avatar, name + pill, meta line, actions. */}
+      <div className="flex flex-col">
         <Link
           href="/dashboard/school/teachers"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-body hover:text-foreground"
+          className="self-start text-body-sm font-medium text-muted-foreground transition-colors hover:text-primary"
         >
-          <ArrowLeft className="size-4" aria-hidden />
-          {t('back')}
+          <span aria-hidden>←</span> {t('back')}
         </Link>
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-3">
-            <AvatarTint
-              initials={initialsOf(row.first_name, row.last_name, row.email)}
-              tone={getAvatarTone(row.email)}
-              size="lg"
-            />
-            <div className="flex min-w-0 flex-col gap-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="truncate text-2xl font-semibold text-foreground">{displayName}</h1>
-                <Badge variant={STATUS_VARIANTS[row.status]}>{tStatus(row.status)}</Badge>
-              </div>
-              <p data-slot="teacher-detail-meta" className="truncate text-sm text-body">
-                {[row.email, roleLabel, lastActiveLabel].join(' · ')}
-              </p>
+        <div className="mt-3.5 flex flex-wrap items-center gap-x-4.5 gap-y-3">
+          <span
+            aria-hidden
+            className="grid size-15 shrink-0 place-items-center rounded-full bg-navy-900 text-[20px] font-semibold text-white"
+          >
+            {initialsOf(row.first_name, row.last_name, row.email)}
+          </span>
+          <div className="min-w-[220px] flex-1">
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl font-semibold text-foreground">{displayName}</h1>
+              {statusPill}
             </div>
+            <p data-slot="teacher-detail-meta" className="mt-[5px] truncate text-body-md text-muted-foreground">
+              {[row.email, roleLabel, lastActiveLabel].join(' · ')}
+            </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Button type="button" variant="outline" onClick={() => setEditOpen(true)}>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <Button type="button" variant="outline" onClick={() => actions.openEdit(row)}>
               {t('editButton')}
             </Button>
-            <Button type="button" onClick={() => setAssignOpen(true)}>
+            <Button type="button" variant="navy" onClick={() => setAssignOpen(true)}>
               {t('assignButton')}
             </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={
+                  <button
+                    type="button"
+                    aria-label={t('moreActions')}
+                    className="grid size-10 cursor-pointer place-items-center rounded-[10px] border border-input bg-card text-[#3D4A5C] transition-colors hover:border-foreground"
+                  >
+                    <MoreHorizontal className="size-[18px]" aria-hidden="true" />
+                  </button>
+                }
+              />
+              <DropdownMenuContent align="end" className="w-[218px]">
+                {actions.rowActionsFor(row).map((action) => (
+                  <DropdownMenuItem
+                    key={action.label}
+                    aria-disabled={action.disabled === true || undefined}
+                    className={action.destructive ? 'text-destructive' : undefined}
+                    onClick={() => action.onSelect(row)}
+                  >
+                    {action.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <MiniStatTile value={String(row.classes.length)} label={t('stats.classes')} />
-        <MiniStatTile value={String(studentsTotal)} label={t('stats.students')} />
-        <MiniStatTile value={String(testATotal)} label={t('stats.testA')} />
+      {/* KPI tiles — the design's label-over-value cards. The fourth design
+          tile (avg. reading score) stays absent: no endpoint serves it. */}
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-4">
+        <StatTile label={t('stats.classes')} value={String(row.classes.length)} />
+        <StatTile label={t('stats.students')} value={String(studentsTotal)} />
+        <StatTile label={t('stats.testA')} value={String(testATotal)} />
       </div>
 
-      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
-        <DataPanel className="lg:col-span-2" aria-label={t('classesPanel.title')}>
-          <div className="flex items-center justify-between gap-2 px-4 py-3">
-            <h2 className="text-sm font-semibold text-foreground">{t('classesPanel.title')}</h2>
-            <span className="text-meta text-body">
-              {t('classesPanel.count', { count: row.classes.length })}
-            </span>
-          </div>
-          {removeClassTeachers.isError ? (
-            <div className="px-4 pb-3">
-              <Alert variant="error" title={t('classesPanel.removeErrorTitle')}>
-                {t('classesPanel.removeErrorDescription')}
-              </Alert>
-            </div>
-          ) : null}
-          {row.classes.length === 0 ? (
-            <div className="flex flex-col gap-1 border-t border-border px-4 py-6 text-center">
-              <p className="text-sm font-semibold text-foreground">{t('classesPanel.emptyTitle')}</p>
-              <p className="text-sm text-body">{t('classesPanel.emptyDescription')}</p>
-            </div>
-          ) : (
-            <ul data-slot="teacher-detail-classes">
-              {row.classes.map((klass) => {
-                const schoolClass = classesById.get(klass.documentId);
-                const participation = participationById.get(klass.documentId);
-                const removePatch = removeTeacherPatch(schoolClass, row.documentId);
-                const facts: string[] = [];
-                if (participation) {
-                  facts.push(
-                    t('classesPanel.completed', {
-                      done: participation.test_a.submitted,
-                      total: participation.roster_count,
-                    }),
-                  );
-                }
-                if (schoolClass) {
-                  facts.push(
-                    t('classesPanel.students', { count: schoolClass.student_count }),
-                  );
-                }
-                return (
-                  <li key={klass.documentId} className="border-t border-border first:border-t-0">
-                    <div className="flex items-center gap-1 pr-2">
-                      <Link
-                        href={`/dashboard/school/classes/${klass.documentId}`}
-                        aria-label={t('classesPanel.openLabel', { name: klass.name })}
-                        className="flex min-w-0 flex-1 items-center gap-3 py-3 pl-4 transition-colors hover:bg-surface-hover"
-                      >
-                        {schoolClass?.year_band ? (
-                          <Badge variant="outline">{schoolClass.year_band}</Badge>
-                        ) : null}
-                        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                          <span className="truncate text-sm font-semibold text-foreground">
-                            {klass.name}
-                          </span>
-                          {facts.length > 0 ? (
-                            <span className="truncate text-meta text-body">{facts.join(' · ')}</span>
-                          ) : null}
-                        </span>
-                      </Link>
-                      <IconButton
-                        icon={XIcon}
-                        label={t('classesPanel.removeLabel', { name: klass.name })}
-                        size="sm"
-                        tone="ghost"
-                        disabled={removeClassTeachers.isPending || removePatch === null}
-                        onClick={() => {
-                          if (removePatch) removeClassTeachers.mutate(removePatch);
-                        }}
-                      />
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </DataPanel>
-
-        <DataPanel aria-label={t('accountPanel.title')}>
-          <div className="flex items-center justify-between gap-2 px-4 py-3">
-            <h2 className="text-sm font-semibold text-foreground">{t('accountPanel.title')}</h2>
-            <Button type="button" variant="ghost" size="sm" onClick={() => setEditOpen(true)}>
-              {t('accountPanel.edit')}
-            </Button>
-          </div>
-          <dl className="border-t border-border">
-            <div className="flex items-baseline justify-between gap-4 px-4 py-3">
-              <dt className="text-meta text-body">{t('accountPanel.email')}</dt>
-              <dd className="truncate text-sm font-medium text-foreground">{row.email}</dd>
-            </div>
-            <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
-              <dt className="text-meta text-body">{t('accountPanel.role')}</dt>
-              <dd className="truncate text-sm font-medium text-foreground">{roleLabel}</dd>
-            </div>
-            <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
-              <dt className="text-meta text-body">{t('accountPanel.status')}</dt>
-              <dd>
-                <Badge variant={STATUS_VARIANTS[row.status]}>{tStatus(row.status)}</Badge>
-              </dd>
-            </div>
-            <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
-              <dt className="text-meta text-body">{t('accountPanel.added')}</dt>
-              <dd className="truncate text-sm font-medium text-foreground">{addedLabel}</dd>
-            </div>
-            <div className="flex items-baseline justify-between gap-4 border-t border-border px-4 py-3">
-              <dt className="text-meta text-body">{t('accountPanel.lastActive')}</dt>
-              <dd className="truncate text-sm font-medium text-foreground">{lastActiveLabel}</dd>
-            </div>
-          </dl>
-        </DataPanel>
-      </div>
-
-      <DataPanel aria-label={t('attention.title')} data-slot="teacher-needs-attention">
-        <div className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3">
-          <h2 className="text-sm font-semibold text-foreground">{t('attention.title')}</h2>
-          <span className="text-meta text-body">{t('attention.subtitle')}</span>
+      {/* Assigned classes card. */}
+      <section className={CARD_CLASS} aria-label={t('classesPanel.title')} data-slot="teacher-detail-classes">
+        <div className="flex items-baseline justify-between gap-2 px-7 pt-5.5 pb-2">
+          <h2 className="text-panel-title font-semibold text-foreground">{t('classesPanel.title')}</h2>
+          <span className="text-[13px] text-muted-foreground">
+            {t('classesPanel.count', { count: row.classes.length })}
+          </span>
         </div>
-        {attentionQuery.isPending ? (
-          <div className="border-t border-border px-4 py-5">
-            <Skeleton className="h-10 w-full" />
-          </div>
-        ) : attentionQuery.isError ? (
-          <div className="border-t border-border px-4 py-5">
-            <Alert
-              variant="error"
-              title={t('attention.errorTitle')}
-              action={
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  loading={attentionQuery.isFetching}
-                  onClick={() => void attentionQuery.refetch()}
-                >
-                  {t('retry')}
-                </Button>
-              }
-            >
-              {t('attention.errorDescription')}
+        {removeClassTeachers.isError ? (
+          <div className="px-7 pb-3">
+            <Alert variant="error" title={t('classesPanel.removeErrorTitle')}>
+              {t('classesPanel.removeErrorDescription')}
             </Alert>
           </div>
-        ) : (attentionQuery.data?.students.length ?? 0) === 0 ? (
-          <div className="border-t border-border px-4 py-6 text-center">
-            <p className="text-sm font-semibold text-foreground">{t('attention.empty')}</p>
+        ) : null}
+        {row.classes.length === 0 ? (
+          <div className="flex flex-col gap-1 px-7 pt-3 pb-6 text-center">
+            <p className="text-[15px] font-semibold text-foreground">{t('classesPanel.emptyTitle')}</p>
+            <p className="text-body-sm text-muted-foreground">{t('classesPanel.emptyDescription')}</p>
           </div>
         ) : (
-          <ul data-slot="teacher-needs-attention-rows">
-            {attentionQuery.data?.students.map((student) => {
-              const delta = progressDelta(student.delta);
+          <ul className="px-7 pb-4">
+            {row.classes.map((klass) => {
+              const schoolClass = classesById.get(klass.documentId);
+              const participation = participationById.get(klass.documentId);
+              const removePatch = removeTeacherPatch(schoolClass, row.documentId);
+              const rosterCount = participation?.roster_count ?? 0;
+              const submitted = participation?.test_a.submitted ?? 0;
+              const percent = rosterCount > 0 ? Math.round((submitted / rosterCount) * 100) : 0;
               return (
                 <li
-                  key={student.student_document_id}
-                  className="border-t border-border first:border-t-0"
+                  key={klass.documentId}
+                  className="flex flex-wrap items-center border-b border-[#EEF1F6] pr-2 last:border-b-0"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3">
-                    <span className="flex min-w-0 flex-col gap-0.5">
-                      <span className="truncate text-sm font-medium text-foreground">
-                        {student.display_name}
+                  <Link
+                    href={`/dashboard/school/classes/${klass.documentId}`}
+                    aria-label={t('classesPanel.openLabel', { name: klass.name })}
+                    className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3.5 gap-y-2.5 py-3.5"
+                  >
+                    {schoolClass?.year_band ? (
+                      <span
+                        aria-hidden
+                        className="grid size-9.5 shrink-0 place-items-center rounded-xl bg-[#EEF1F6] px-1 text-center text-[12.5px] font-bold text-foreground"
+                      >
+                        {schoolClass.year_band}
                       </span>
-                      <span className="truncate text-meta text-body">
-                        {student.class.name ?? '—'}
+                    ) : null}
+                    <span className="block min-w-[150px] flex-[3_1_200px]">
+                      <span className="block truncate text-[14.5px] font-semibold text-foreground">
+                        {klass.name}
+                      </span>
+                      {participation ? (
+                        <span className="mt-0.5 block truncate text-[12.5px] text-muted-foreground">
+                          {t('classesPanel.completed', {
+                            done: submitted,
+                            total: rosterCount,
+                          })}
+                        </span>
+                      ) : null}
+                    </span>
+                    <span className="block min-w-[130px] flex-[2_1_150px]">
+                      <span className="block h-1.5 rounded-full bg-[#EEF1F6]">
+                        <span
+                          className="block h-full rounded-full bg-foreground"
+                          style={{ width: `${percent}%` }}
+                        />
+                      </span>
+                      <span className="mt-1.5 block text-[11.5px] text-[#9AA6B8]">
+                        {t('classesPanel.percentCompleted', { percent })}
                       </span>
                     </span>
-                    <span className="flex items-center gap-2">
-                      <span className="text-body-sm text-body tabular-nums">
-                        {t('attention.scores', { from: student.score_a, to: student.score_b })}
+                    {schoolClass ? (
+                      <span className="min-w-[96px] flex-[1_1_110px] text-body-sm text-[#3D4A5C]">
+                        {t('classesPanel.students', { count: schoolClass.student_count })}
                       </span>
-                      <ProgressDeltaPill
-                        direction={delta.direction}
-                        change={format.number(delta.magnitude, { maximumFractionDigits: 0 })}
-                      />
-                    </span>
-                  </div>
+                    ) : null}
+                    <ChevronRight className="size-4 shrink-0 text-[#9AA6B8]" aria-hidden />
+                  </Link>
+                  <IconButton
+                    icon={XIcon}
+                    label={t('classesPanel.removeLabel', { name: klass.name })}
+                    size="sm"
+                    tone="ghost"
+                    disabled={removeClassTeachers.isPending || removing || removePatch === null}
+                    onClick={() => {
+                      if (removePatch) removeClassTeachers.mutate(removePatch);
+                    }}
+                  />
                 </li>
               );
             })}
           </ul>
         )}
-      </DataPanel>
+      </section>
 
-      {editOpen ? <EditTeacherDialog row={row} onClose={() => setEditOpen(false)} /> : null}
+      {/* Account details + students needing attention, side by side. */}
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(340px,1fr))] items-start gap-5">
+        <section className={CARD_CLASS + ' px-7.5 py-6.5'} aria-label={t('accountPanel.title')}>
+          <PanelHeaderRow
+            as="h2"
+            title={t('accountPanel.title')}
+            action={
+              <Button type="button" variant="ghost" size="sm" onClick={() => actions.openEdit(row)}>
+                {t('accountPanel.edit')}
+              </Button>
+            }
+          />
+          <dl>
+            {[
+              { label: t('accountPanel.email'), value: row.email },
+              { label: t('accountPanel.role'), value: roleLabel },
+              { label: t('accountPanel.status'), value: tStatus(row.status) },
+              { label: t('accountPanel.added'), value: addedLabel },
+              { label: t('accountPanel.lastActive'), value: lastActiveLabel },
+            ].map((field) => (
+              <div
+                key={field.label}
+                className="flex items-baseline justify-between gap-4 border-b border-[#EEF1F6] py-3 last:border-b-0"
+              >
+                <dt className="text-[13px] text-muted-foreground">{field.label}</dt>
+                <dd className="truncate text-body-sm text-right font-semibold text-foreground">
+                  {field.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section className={CARD_CLASS + ' px-7.5 py-6.5'} aria-label={t('attention.title')} data-slot="teacher-needs-attention">
+          <h2 className="text-panel-title font-semibold text-foreground">{t('attention.title')}</h2>
+          <p className="mt-1 text-[13px] text-muted-foreground">{t('attention.subtitle')}</p>
+          <div className="mt-3">
+            {attentionQuery.isPending ? (
+              <Skeleton className="h-10 w-full" />
+            ) : attentionQuery.isError ? (
+              <Alert
+                variant="error"
+                title={t('attention.errorTitle')}
+                action={
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    loading={attentionQuery.isFetching}
+                    onClick={() => void attentionQuery.refetch()}
+                  >
+                    {t('retry')}
+                  </Button>
+                }
+              >
+                {t('attention.errorDescription')}
+              </Alert>
+            ) : (attentionQuery.data?.students.length ?? 0) === 0 ? (
+              <p className="py-4 text-center text-[13px] text-[#9AA6B8]">{t('attention.empty')}</p>
+            ) : (
+              <ul data-slot="teacher-needs-attention-rows">
+                {attentionQuery.data?.students.map((student) => {
+                  const delta = progressDelta(student.delta);
+                  return (
+                    <li
+                      key={student.student_document_id}
+                      className="border-b border-[#EEF1F6] py-3.5 last:border-b-0"
+                    >
+                      <PersonCell
+                        name={student.display_name}
+                        secondary={student.class.name ?? undefined}
+                        trailing={
+                          <span className="flex items-center gap-2">
+                            <span className="text-body-sm text-body tabular-nums">
+                              {t('attention.scores', { from: student.score_a, to: student.score_b })}
+                            </span>
+                            <ProgressDeltaPill
+                              direction={delta.direction}
+                              change={format.number(delta.magnitude, { maximumFractionDigits: 0 })}
+                            />
+                          </span>
+                        }
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </section>
+      </div>
+
+      <ConfirmStaffActionDialog
+        open={actions.confirm !== null}
+        onOpenChange={(open) => {
+          if (!open) actions.closeConfirm();
+        }}
+        title={actions.confirm ? ta(`${actions.confirm.action}Title`, { name: displayName }) : ''}
+        description={actions.confirm ? ta(`${actions.confirm.action}Description`) : ''}
+        warning={actions.confirmWarning}
+        cancelLabel={ta('cancel')}
+        confirmLabel={actions.confirm ? ta(`${actions.confirm.action}Confirm`) : ''}
+        destructive={actions.confirm?.action !== 'reactivate'}
+        pending={actions.confirmPending}
+        onConfirm={() => {
+          const action = actions.confirm?.action;
+          void actions.handleConfirm().then(() => {
+            // A removed account has no detail page to stay on.
+            if (action === 'remove') router.push('/dashboard/school/teachers');
+          });
+        }}
+      />
+      {actions.editRow ? <EditTeacherDialog row={actions.editRow} onClose={actions.closeEdit} /> : null}
       {assignOpen ? (
         <AssignClassesDialog
           teacherDocumentId={row.documentId}

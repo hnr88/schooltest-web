@@ -2024,6 +2024,7 @@
       "readinessTitle": "Mainstream readiness",
       "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
       "classesTitle": "Classes",
+      "viewAllClasses": "Tất cả lớp",
       "classStudents": "{count, plural, one {# student} other {# students}}",
       "classesEmptyTitle": "No classes yet",
       "classesEmptyDescription": "Classes you add for your school will appear here.",
@@ -2636,7 +2637,8 @@
         "openLabel": "Mở lớp {name}",
         "removeLabel": "Xóa khỏi {name}",
         "removeErrorTitle": "Không thể xóa giáo viên khỏi lớp này",
-        "removeErrorDescription": "Lớp học không bị thay đổi. Kiểm tra kết nối và thử lại."
+        "removeErrorDescription": "Lớp học không bị thay đổi. Kiểm tra kết nối và thử lại.",
+        "percentCompleted": "{percent}% hoàn thành"
       },
       "accountPanel": {
         "title": "Chi tiết tài khoản",
@@ -2659,7 +2661,8 @@
         "cancel": "Hủy",
         "errorTitle": "Không thể cập nhật lớp này",
         "errorDescription": "Lớp học không bị thay đổi. Kiểm tra kết nối và thử lại."
-      }
+      },
+      "moreActions": "Thao tác khác"
     },
     "meta": {
       "title": "Giáo viên - SchoolTest",
@@ -2709,14 +2712,14 @@
         "expired": "Đã hết hạn"
       },
       "noValue": "—",
-      "filterAll": "Tất cả",
+      "filterAll": "Mọi trạng thái",
       "statusActive": "Đang hoạt động",
       "statusInvited": "Đã mờ",
       "statusSuspended": "Bị đình chỉ",
       "sortNameAsc": "Tên A–Z",
       "sortNameDesc": "Tên Z–A",
-      "searchPlaceholder": "Tìm nhân viên",
-      "searchLabel": "Tìm nhân viên",
+      "searchPlaceholder": "Tìm giáo viên",
+      "searchLabel": "Tìm giáo viên",
       "sortLabel": "Sắp xếp",
       "clearFilters": "Xóa bộ lọc",
       "paginationLabel": "Trang nhân viên",
@@ -2730,7 +2733,9 @@
       "noMatchesTitle": "Không có mục nào khớp bộ lọc này",
       "noMatchesBody": "Hãy thử trạng thái khác.",
       "staleBanner": "Lần làm mới gần nhất thất bại — các hàng bên dưới là dữ liệu mới nhất máy chủ đã trả về.",
-      "loading": "Đang tải nhân viên..."
+      "loading": "Đang tải nhân viên...",
+      "classesCount": "{count, plural, other {# lớp}}",
+      "sortMostClasses": "Nhiều lớp nhất"
     },
     "actions": {
       "menuLabel": "Thao tác cho {name}",
@@ -3117,6 +3122,7 @@
       "columnLevel": "Level",
       "columnDiagnostic": "Diagnostic",
       "notSet": "—",
+      "firstLanguageLine": "Ngôn ngữ đầu tiên: {language}",
       "diagnosticOption": {
         "not_started": "Not started",
         "in_progress": "In progress",
@@ -3248,6 +3254,8 @@
       "notFoundTitle": "We could not find that student",
       "notFoundDescription": "They may have been removed, or they belong to another school.",
       "editButton": "Chỉnh sửa",
+      "editDetailsButton": "Sửa chi tiết",
+      "studentIdLabel": "Mã học sinh",
       "classPanel": {
         "title": "Lớp",
         "currentLabel": "Lớp hiện tại",
@@ -3259,7 +3267,8 @@
         "noClasses": "Chưa có lớp nào để phân.",
         "errorTitle": "Không thể lưu thay đổi lớp học",
         "errorDescription": "Vui lòng kiểm tra kết nối và thử lại."
-      }
+      },
+      "metaLine": "Ngôn ngữ đầu tiên: {language} · Cấp độ: {level} · {class} · ID {id}"
     }
   },
   "Ops": {
@@ -5760,5 +5769,22 @@
       "primaryActionLabel": "Mở",
       "chipAllLabel": "Tất cả"
     }
+  },
+  "TeacherPortal": {
+    "shell": {},
+    "kit": {},
+    "classes": {},
+    "classDetail": {},
+    "students": {},
+    "progress": {},
+    "insights": {},
+    "familyReports": {},
+    "live": {},
+    "liveSessions": {},
+    "startSession": {},
+    "reports": {},
+    "student": {},
+    "askAi": {},
+    "review": {}
   }
 }

@@ -71,24 +71,6 @@ export function OpsAdminsTab({
 
   return (
     <div className="flex flex-col gap-3">
-      {/* `ops-admins-invite` is asserted directly by
-          `tests/e2e/ops-staff-invitation-ui.spec.ts` and
-          `tests/e2e/ops-session-expired.spec.ts` — kept as its own control
-          (not the kit `header.primary` slot) because `DirectoryHeaderAction`
-          carries no `data-testid`, and a control those specs already find by
-          test id must not silently move under a different one. Drawn as the
-          design's card-header primary (`Ops Portal.dc.html:353-368`). */}
-      <div className="-mb-2 flex justify-end">
-        <Button
-          type="button"
-          variant="navy"
-          data-testid="ops-admins-invite"
-          onClick={onInvite}
-          className="h-10 rounded-xl px-[18px] text-[13.5px] font-semibold"
-        >
-          {t('inviteStaff')}
-        </Button>
-      </div>
       {ownerDocumentId === null ? (
         <Alert variant="warning" title={t('ownerNone')}>
           {t('ownerNoneDescription')}
@@ -115,6 +97,23 @@ export function OpsAdminsTab({
           },
           pendingDocumentId: transfer.isPending ? (target?.documentId ?? null) : null,
         }}
+        // ops-tabs-audit — the design's header PRIMARY (`:363-367`, "Invite
+        // admin") now rides the card's header row inside OpsStaffUsersTable
+        // instead of floating above the table. `ops-admins-invite` is asserted
+        // directly by `tests/e2e/ops-staff-invitation-ui.spec.ts` and
+        // `tests/e2e/ops-session-expired.spec.ts` — the testid moves WITH the
+        // button, so those specs keep their control.
+        headerPrimary={
+          <Button
+            type="button"
+            variant="navy"
+            data-testid="ops-admins-invite"
+            onClick={onInvite}
+            className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
+          >
+            {t('inviteStaff')}
+          </Button>
+        }
       />
 
       <Dialog open={target !== null} onOpenChange={(open) => (open ? null : setTarget(null))}>

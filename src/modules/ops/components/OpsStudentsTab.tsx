@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -31,7 +32,6 @@ import {
   useOpsDirectoryState,
   type DirectoryBulkAction,
   type DirectoryFilterDef,
-  type DirectoryHeaderDef,
   type DirectoryRowAction,
 } from '@/modules/ops/directory';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
@@ -280,14 +280,28 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
     },
   ];
 
-  const header: DirectoryHeaderDef = {
+  // ops-tabs-audit — the card header (`:352-368`): the tab's Import-students
+  // primary as the header's right-hand action. The design's Export secondary
+  // is deliberately NOT drawn next to it: there is no school-scoped students
+  // CSV endpoint (the only students CSVs are the import template and the
+  // import error report) and the row schema carries `given_name`/`family_name`
+  // with no de-identifying `student_key`, so a client-built CSV is forbidden
+  // by the contract note — a dead button would violate OP-2. Revisit when a
+  // students export endpoint lands.
+  const header = {
     title: t('tab.students'),
     summary: t('studentsHeaderSummary', { count: total }),
-    primary: {
-      label: t('studentsImportCta'),
-      write: false,
-      onSelect: () => setImportOpen(true),
-    },
+    primary: (
+      <Button
+        type="button"
+        variant="navy"
+        onClick={() => setImportOpen(true)}
+        className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
+      >
+        <Plus className="size-3.5" strokeWidth={2.2} aria-hidden="true" />
+        {t('studentsImportCta')}
+      </Button>
+    ),
   };
 
   const confirmAction =
@@ -315,6 +329,9 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
           state.params.filters.year_level,
         ]}
         rowActions={rowActions}
+        // filters-audit 2026-09-11: the design's pill toolbar arrangement
+        // (hidden labels, count right) like every other ops tab.
+        toolbarVariant="pill"
       />
       <OpsStudentProfilePanel
         schoolDocumentId={schoolDocumentId}

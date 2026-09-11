@@ -1,5 +1,7 @@
 'use client';
 
+import type { ReactNode } from 'react';
+import { Download } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
@@ -23,6 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
   SelectField,
+  StatusPill,
 } from '@/modules/design-system';
 import {
   downloadOpsFile,
@@ -32,6 +35,10 @@ import {
   type OpsActionTarget,
 } from '@/modules/ops/actions';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
+import {
+  OPS_TAB_STATUS_PILL_CLASS,
+  OpsTabTableCard,
+} from '@/modules/ops/components/OpsTabTableCard';
 import {
   DIRECTORY_ALL,
   OpsDirectoryTable,
@@ -150,6 +157,7 @@ export function OpsStaffUsersTable({
   ownership,
   headerTitle,
   headerSummary,
+  headerPrimary,
   onInvite,
   onViewClasses,
 }: OpsStaffUsersTableProps & {
@@ -158,6 +166,11 @@ export function OpsStaffUsersTable({
    * Teachers tab supplies its own "N teachers · M classes covered" text
    * instead, since the invited/active tally is an Admins-shaped stat. */
   headerSummary?: string;
+  /** ops-tabs-audit — the design's header PRIMARY (`:363-367`), rendered on
+   * the card header's right side beside the Export secondary. The callers'
+   * testid'd Invite controls ride in here so they keep their exact testids
+   * while moving onto the design's one header row. */
+  headerPrimary?: ReactNode;
   onInvite?: () => void;
   /** Teacher surface only (`staff-actions.ts`'s `VIEW_CLASSES`, `write:
    * false`, no confirm) — the row's deep link into the Classes tab. Admins
@@ -166,6 +179,9 @@ export function OpsStaffUsersTable({
 }) {
   const t = useTranslations('Ops.schoolTables');
   const tInvitations = useTranslations('Ops.staffInvitations');
+  // The design's header secondary is "Export CSV" (`:360-362`) — the same
+  // catalogue string the kit header used to fall back to.
+  const tKit = useTranslations('DesignSystem.directory');
   const format = useFormatter();
   const queryClient = useQueryClient();
   const writeGate = useOpsWriteGate();
@@ -572,20 +588,41 @@ export function OpsStaffUsersTable({
       {
         key: 'name',
         header: t('columnName'),
-        cell: (row) => (
-          <span className="font-medium text-foreground">{noValueIfMissing(row.row.display_name)}</span>
-        ),
+        // ops-tabs-audit — the design's identity block (`:386-391`): a 40px
+        // round initial avatar, the 14.5/600 name and the 12.5 #7C8698 email
+        // UNDER it, not as a column of its own. A pending invitation has no
+        // display name yet, so its email IS the title and no sub is drawn.
+        cell: (row) => {
+          const email = row.row.email ?? null;
+          const title =
+            (row.kind === 'user' ? row.row.display_name : null) ?? email ?? '';
+          const initial = (title.charAt(0) || '?').toUpperCase();
+          return (
+            <span className="flex items-center gap-3">
+              <span
+                aria-hidden="true"
+                className="grid size-10 flex-none place-items-center rounded-full bg-[#EEF1F6] text-sm font-semibold text-[#0E2350]"
+              >
+                {initial}
+              </span>
+              <span className="flex min-w-0 flex-col">
+                <span className="truncate text-[14.5px] font-semibold text-foreground">{title}</span>
+                {email !== null && email !== title ? (
+                  <span className="mt-0.5 truncate text-[12.5px] text-[#7C8698]">{email}</span>
+                ) : null}
+              </span>
+            </span>
+          );
+        },
       },
-      // Tab-table column shapes (`Ops Portal.dc.html:386-410`): prose columns
-      // are single-line `text` blocks (no sublabel, truncated) and the status /
-      // owner badges are `bare` fixed blocks — the metric arm's grow-to-fill
-      // block was stretching badges and unbounded emails across wrapped lines.
-      { key: 'email', header: t('columnEmail'), grid: 'text', cell: (row) => noValueIfMissing(row.row.email) },
+      // The email moved into the identity block's sublabel (design `:390-391`);
+      // the former standalone email column is gone.
       ...(classCounts
         ? [
             {
               key: 'classes',
               header: t('columnClasses'),
+              grid: 'text' as const,
               cell: (row: StaffDirectoryRow) => String(classCounts[row.row.documentId] ?? 0),
             },
           ]
@@ -600,24 +637,38 @@ export function OpsStaffUsersTable({
         key: 'last_active_at',
         header: t('columnLastActive'),
         grid: 'text',
+        // The design's last text column is the muted one (`:404`): 12.5px
+        // #9AA6B8, not the 13px #3D4A5C of the prose columns.
         cell: (row) => {
           const lastActive = row.kind === 'user' ? row.row.last_active_at : null;
-          return lastActive === null
-            ? t('lastActiveUnavailable')
-            : format.dateTime(new Date(lastActive), { dateStyle: 'medium' });
+          return (
+            <span className="text-[12.5px] text-[#9AA6B8]">
+              {lastActive === null
+                ? t('lastActiveUnavailable')
+                : format.dateTime(new Date(lastActive), { dateStyle: 'medium' })}
+            </span>
+          );
         },
       },
       {
         key: 'status',
         header: t('columnStatus'),
         grid: 'bare',
+        // ops-tabs-audit — the design's 96px soft-tone pill (`:406`), NOT the
+        // solid blue `Badge`: Active green, Suspended red, and a PENDING
+        // invitation amber (`:966-977`), all at the same fixed width.
         cell: (row) =>
           row.kind === 'invitation' ? (
-            <Badge variant="outline">{t('statusInvited')}</Badge>
+            <StatusPill tone="warning" className={OPS_TAB_STATUS_PILL_CLASS}>
+              {t('statusInvited')}
+            </StatusPill>
           ) : (
-            <Badge variant={row.row.blocked ? 'error' : 'default'}>
+            <StatusPill
+              tone={row.row.blocked ? 'danger' : 'success'}
+              className={OPS_TAB_STATUS_PILL_CLASS}
+            >
               {row.row.blocked ? t('statusSuspended') : t('statusActive')}
-            </Badge>
+            </StatusPill>
           ),
       },
       // C-OPS-PORTAL-027 — present only when the caller supplies `ownership`.
@@ -647,75 +698,120 @@ export function OpsStaffUsersTable({
 
   return (
     <>
-      <OpsDirectoryTable
-        state={state}
-        query={
-          showingInvited
-            ? {
-                isPending: invitationsQuery.isPending,
-                isError: invitationsQuery.isError,
-                isFetching: invitationsQuery.isFetching,
-                refetch: invitationsQuery.refetch,
-                error: invitationsQuery.error,
-                enabled: enabled && invitationRole !== null,
-                isPlaceholderData: invitationsQuery.isPlaceholderData,
-              }
-            : {
-                isPending: usersQuery.isPending,
-                isError: usersQuery.isError,
-                isFetching: usersQuery.isFetching,
-                refetch: usersQuery.refetch,
-                error: usersQuery.error,
-                enabled,
-                isPlaceholderData: usersQuery.isPlaceholderData,
-              }
-        }
-        rows={
-          showingInvited
-            ? (invitationsQuery.data?.data ?? []).map((row): StaffDirectoryRow => ({ kind: 'invitation', row }))
-            : (usersQuery.data?.data ?? []).map((row): StaffDirectoryRow => ({ kind: 'user', row }))
-        }
-        getRowTarget={rowTarget}
-        getRowKey={rowIdentity}
-        rowAttrs={(row) => ({ 'data-row-id': rowIdentity(row) })}
-        meta={showingInvited ? invitationsQuery.data?.meta.pagination : usersQuery.data?.meta.pagination}
-        filters={filters}
-        chipFilterKey={hasChrome ? 'blocked' : undefined}
-        sorts={SORTS}
-        columns={columns}
-        selectable={hasChrome}
-        rowActions={hasChrome ? rowActions : undefined}
-        bulkActions={hasChrome ? bulkActions : undefined}
-        header={
-          hasChrome
-            ? {
-                title: headerTitle,
-                summary: resolvedHeaderSummary,
-                // No `label`: the design's "Export CSV" is the kit's own
-                // default fallback (`DesignSystem.directory.exportCsv`) for
-                // the header's secondary slot; the bulk bar's "Export"
-                // (below) is a shorter, separately-drawn label at `:1470`.
-                //
-                // No `primary`: the design's Invite admin/teacher lives at
-                // `OpsAdminsTab.tsx`/`OpsTeachersTab.tsx`'s own
-                // `data-testid="ops-{admins,teachers}-invite"` control instead
-                // of this slot — see the comment there.
-                secondary: { write: false, onSelect: () => void runExport() },
-              }
-            : undefined
-        }
-        emptyCopy={hasChrome ? { title: emptyTitle, body: emptyDescription } : undefined}
-        labels={{
-          searchPlaceholder: t('searchPlaceholder'),
-          searchLabel: t('searchLabel'),
-          emptyNoneTitle: emptyTitle,
-          emptyNoneDescription: emptyDescription,
-          emptyNoMatchesTitle: t('noMatches'),
-          errorTitle: t('errorTitle'),
-          errorDescription: t('errorDescription'),
-          retry: t('retry'),
-        }}
-      />
+      {/* ops-tabs-audit — the design's ONE tab-table card (`:352-418`): the
+          19px/600 header with its Export secondary (real — `/ops/users/export.csv`
+          honours the visible filters) and the caller's primary beside it, then
+          chips, bulk bar, rows and pager on the same card. The kit's own
+          `header` prop is left unused: its 32px header buttons and its
+          header-outside-the-card layout are the mismatches this card replaces. */}
+      {hasChrome ? (
+        <OpsTabTableCard
+          title={headerTitle}
+          summary={resolvedHeaderSummary}
+          actions={
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => void runExport()}
+                className="h-10 rounded-[12px] border-[#D8DFEA] px-4 text-[13.5px] font-semibold text-[#3D4A5C] hover:border-navy-900 hover:bg-transparent hover:text-navy-900"
+              >
+                <Download className="size-3.5" aria-hidden="true" />
+                {tKit('exportCsv')}
+              </Button>
+              {headerPrimary}
+            </>
+          }
+        >
+          <OpsDirectoryTable
+            state={state}
+            query={
+              showingInvited
+                ? {
+                    isPending: invitationsQuery.isPending,
+                    isError: invitationsQuery.isError,
+                    isFetching: invitationsQuery.isFetching,
+                    refetch: invitationsQuery.refetch,
+                    error: invitationsQuery.error,
+                    enabled: enabled && invitationRole !== null,
+                    isPlaceholderData: invitationsQuery.isPlaceholderData,
+                  }
+                : {
+                    isPending: usersQuery.isPending,
+                    isError: usersQuery.isError,
+                    isFetching: usersQuery.isFetching,
+                    refetch: usersQuery.refetch,
+                    error: usersQuery.error,
+                    enabled,
+                    isPlaceholderData: usersQuery.isPlaceholderData,
+                  }
+            }
+            rows={
+              showingInvited
+                ? (invitationsQuery.data?.data ?? []).map((row): StaffDirectoryRow => ({ kind: 'invitation', row }))
+                : (usersQuery.data?.data ?? []).map((row): StaffDirectoryRow => ({ kind: 'user', row }))
+            }
+            getRowTarget={rowTarget}
+            getRowKey={rowIdentity}
+            rowAttrs={(row) => ({ 'data-row-id': rowIdentity(row) })}
+            meta={showingInvited ? invitationsQuery.data?.meta.pagination : usersQuery.data?.meta.pagination}
+            filters={filters}
+            chipFilterKey="blocked"
+            sorts={SORTS}
+            columns={columns}
+            selectable
+            rowActions={rowActions}
+            bulkActions={bulkActions}
+            emptyCopy={{ title: emptyTitle, body: emptyDescription }}
+            labels={{
+              searchPlaceholder: t('searchPlaceholder'),
+              searchLabel: t('searchLabel'),
+              emptyNoneTitle: emptyTitle,
+              emptyNoneDescription: emptyDescription,
+              emptyNoMatchesTitle: t('noMatches'),
+              errorTitle: t('errorTitle'),
+              errorDescription: t('errorDescription'),
+              retry: t('retry'),
+            }}
+            // filters-audit 2026-09-11: the design's tab tables are ONE centered row
+            // of 40px pill controls with the count + sort at the right
+            // (`Ops Portal.dc.html:353-374`) — the default variant's labelled
+            // form-select row was the "totally different" filter bar.
+            toolbarVariant="pill"
+          />
+        </OpsTabTableCard>
+      ) : (
+        <OpsDirectoryTable
+          state={state}
+          query={{
+            isPending: usersQuery.isPending,
+            isError: usersQuery.isError,
+            isFetching: usersQuery.isFetching,
+            refetch: usersQuery.refetch,
+            error: usersQuery.error,
+            enabled,
+            isPlaceholderData: usersQuery.isPlaceholderData,
+          }}
+          rows={(usersQuery.data?.data ?? []).map((row): StaffDirectoryRow => ({ kind: 'user', row }))}
+          getRowTarget={rowTarget}
+          getRowKey={rowIdentity}
+          rowAttrs={(row) => ({ 'data-row-id': rowIdentity(row) })}
+          meta={usersQuery.data?.meta.pagination}
+          filters={filters}
+          sorts={SORTS}
+          columns={columns}
+          labels={{
+            searchPlaceholder: t('searchPlaceholder'),
+            searchLabel: t('searchLabel'),
+            emptyNoneTitle: emptyTitle,
+            emptyNoneDescription: emptyDescription,
+            emptyNoMatchesTitle: t('noMatches'),
+            errorTitle: t('errorTitle'),
+            errorDescription: t('errorDescription'),
+            retry: t('retry'),
+          }}
+        />
+      )}
 
       {confirmState === null || confirmState.action.confirm === null ? null : (
         <OpsConfirmDialog

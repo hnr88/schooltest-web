@@ -5,13 +5,13 @@ import { useTranslations } from 'next-intl';
 
 import {
   Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
   Skeleton,
 } from '@/modules/design-system';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -48,29 +48,30 @@ export function AssignTeachersDialog({
     selectedClasses.length > 0 && selectedTeachers.length > 0 && !assignMutation.isPending;
 
   return (
-    <Dialog open onOpenChange={(next) => { if (!next) onClose(); }}>
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-[520px]">
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description')}</DialogDescription>
-        </DialogHeader>
+    <OpsDialog open onOpenChange={(next) => { if (!next) onClose(); }}>
+      <OpsDialogContent className="sm:max-w-[520px]">
+        <OpsDialogHeader title={t('title')} sub={t('description')} />
 
         {teachersQuery.isPending ? (
-          <div className="flex flex-col gap-2">
-            <Skeleton className="h-9 w-full" />
-            <Skeleton className="h-9 w-full" />
-          </div>
+          <OpsDialogBody className="py-5">
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+            </div>
+          </OpsDialogBody>
         ) : teachersQuery.isError ? (
-          <Alert variant="error" title={t('errorTitle')}>
-            {t('errorDescription')}
-          </Alert>
+          <OpsDialogBody className="py-5">
+            <Alert variant="error" title={t('errorTitle')}>
+              {t('errorDescription')}
+            </Alert>
+          </OpsDialogBody>
         ) : (
-          <div className="flex flex-col gap-4">
+          <OpsDialogBody className="gap-4 py-5">
             <fieldset className="flex flex-col gap-2">
               <legend className="text-meta font-semibold text-foreground">
                 {t('classesLegend', { count: selectedClasses.length })}
               </legend>
-              <div className="max-h-44 overflow-y-auto rounded-lg border border-border p-2">
+              <div className="max-h-44 overflow-y-auto rounded-[14px] border border-[#EEF1F6] p-2">
                 {classes.map((klass) => (
                   <div key={klass.documentId} className="flex items-center gap-2 px-2 py-1">
                     <Checkbox
@@ -91,7 +92,7 @@ export function AssignTeachersDialog({
               <legend className="text-meta font-semibold text-foreground">
                 {t('teachersLegend', { count: selectedTeachers.length })}
               </legend>
-              <div className="max-h-44 overflow-y-auto rounded-lg border border-border p-2">
+              <div className="max-h-44 overflow-y-auto rounded-[14px] border border-[#EEF1F6] p-2">
                 {teachers.map((teacher) => (
                   <div key={teacher.documentId} className="flex items-center gap-2 px-2 py-1">
                     <Checkbox
@@ -115,30 +116,32 @@ export function AssignTeachersDialog({
                 ) : null}
               </div>
             </fieldset>
-          </div>
+          </OpsDialogBody>
         )}
 
-        {assignMutation.isError ? (
-          <Alert variant="error" title={t('submitErrorTitle')}>
-            {t('submitErrorDescription')}
-          </Alert>
-        ) : null}
         {assignMutation.isSuccess ? (
-          <Alert variant="success" title={t('successTitle')}>
-            {t('successDescription', {
-              classes: assignMutation.variables?.classDocumentIds.length ?? 0,
-              teachers: assignMutation.variables?.teacherDocumentIds.length ?? 0,
-            })}
-          </Alert>
+          <div className="px-7 pb-4">
+            <Alert variant="success" title={t('successTitle')}>
+              {t('successDescription', {
+                classes: assignMutation.variables?.classDocumentIds.length ?? 0,
+                teachers: assignMutation.variables?.teacherDocumentIds.length ?? 0,
+              })}
+            </Alert>
+          </div>
         ) : null}
 
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose}>
+        <OpsDialogFooter
+          error={
+            assignMutation.isError
+              ? `${t('submitErrorTitle')}. ${t('submitErrorDescription')}`
+              : null
+          }
+        >
+          <OpsDialogCancel type="button" onClick={onClose}>
             {t('cancel')}
-          </Button>
-          <Button
+          </OpsDialogCancel>
+          <OpsDialogCta
             type="button"
-            variant="accent"
             disabled={!canSubmit}
             loading={assignMutation.isPending}
             onClick={() =>
@@ -149,9 +152,9 @@ export function AssignTeachersDialog({
             }
           >
             {t('submit')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </OpsDialogCta>
+        </OpsDialogFooter>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

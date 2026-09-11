@@ -427,8 +427,13 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
       ) : null;
   }
 
-  return (
-    <section data-slot="directory" className="flex flex-col gap-4">
+  // Ops design (:352-418): a detail TAB's title/summary/buttons, toolbar and
+  // chips render INSIDE the one radius-24 card, above the bulk bar and rows.
+  // List surfaces without a `header` keep the toolbar outside the card, the
+  // way :68-108 draws the schools directory.
+  const chromeInsideCard = isTable && header !== undefined;
+  const chrome = (
+    <>
       {header ? <DirectoryHeader header={header} /> : null}
       <DirectoryToolbar
         state={state}
@@ -459,6 +464,12 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
       {scenario === 'stale' ? (
         <DirectoryStaleBanner labels={labels} onRetry={query.refetch} retrying={query.isFetching} />
       ) : null}
+    </>
+  );
+
+  return (
+    <section data-slot="directory" className="flex flex-col gap-4">
+      {chromeInsideCard ? null : chrome}
       {showRows && (query.isPlaceholderData ?? false) && !query.polled ? (
         // §L-stale-vs-loading case 2 — announce the landed page, politely.
         <span className="sr-only" aria-live="polite">
@@ -477,6 +488,11 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
             : 'rounded-xl border border-border bg-card'
         }
       >
+        {chromeInsideCard ? (
+          <div className="sticky top-0 z-10 rounded-t-3xl bg-card px-7 pb-1 pt-3">
+            {chrome}
+          </div>
+        ) : null}
         {/* ops grid — the bulk bar is the card's opening row (select-all +
             count + actions), not a separate card above it. */}
         {isTable && bulkActions.length > 0 && (showRows || selection.count > 0) ? (

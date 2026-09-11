@@ -7,13 +7,13 @@ import { teacherLabel } from '@/modules/classes/lib/class-form.helpers';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
   Skeleton,
 } from '@/modules/design-system';
 import { useTeachersQuery } from '@/modules/teachers';
@@ -55,65 +55,72 @@ export function ClassTeachersPickerDialog({
   const busy = pending || submitting;
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next) onClose();
       }}
     >
-      <DialogContent className="sm:max-w-[520px]">
-        <DialogHeader>
-          <DialogTitle>{t('pickerTitle')}</DialogTitle>
-          <DialogDescription>{t('pickerDescription', { className })}</DialogDescription>
-        </DialogHeader>
+      <OpsDialogContent className="sm:max-w-[520px]">
+        <OpsDialogHeader
+          title={t('pickerTitle')}
+          sub={t('pickerDescription', { className })}
+        />
         {teachersQuery.isPending ? (
-          <div className="flex flex-col gap-2">
-            <Skeleton className="h-11 w-full" />
-            <Skeleton className="h-11 w-full" />
-            <Skeleton className="h-11 w-full" />
-          </div>
+          <OpsDialogBody className="py-5">
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-11 w-full" />
+              <Skeleton className="h-11 w-full" />
+              <Skeleton className="h-11 w-full" />
+            </div>
+          </OpsDialogBody>
         ) : teachersQuery.isError ? (
-          <Alert variant="error" title={t('pickerLoadError')}>
-            {t('pickerLoadErrorDescription')}
-          </Alert>
+          <OpsDialogBody className="py-5">
+            <Alert variant="error" title={t('pickerLoadError')}>
+              {t('pickerLoadErrorDescription')}
+            </Alert>
+          </OpsDialogBody>
         ) : candidates.length === 0 ? (
-          <p className="py-6 text-center text-sm text-muted-foreground">{t('pickerEmpty')}</p>
+          <OpsDialogBody className="py-5">
+            <p className="py-6 text-center text-sm text-muted-foreground">{t('pickerEmpty')}</p>
+          </OpsDialogBody>
         ) : (
-          <div className="flex max-h-72 flex-col gap-2 overflow-y-auto" data-slot="class-teachers-picker">
-            {candidates.map((candidate) => (
-              <label
-                key={candidate.documentId}
-                className="flex min-h-11 items-center gap-3 rounded-lg border border-border px-3 py-2 text-sm"
-              >
-                <Checkbox
-                  aria-label={teacherLabel(candidate)}
-                  checked={picked.has(candidate.documentId)}
-                  disabled={busy}
-                  onCheckedChange={(checked) => toggle(candidate.documentId, checked === true)}
-                />
-                <span className="font-medium text-foreground">{teacherLabel(candidate)}</span>
-                <span className="ml-auto truncate text-xs text-muted-foreground">
-                  {candidate.email}
-                </span>
-              </label>
-            ))}
-          </div>
+          <OpsDialogBody className="py-5">
+            <div className="flex max-h-72 flex-col gap-2 overflow-y-auto" data-slot="class-teachers-picker">
+              {candidates.map((candidate) => (
+                <label
+                  key={candidate.documentId}
+                  className="flex min-h-11 items-center gap-3 rounded-lg border border-border px-3 py-2 text-sm"
+                >
+                  <Checkbox
+                    aria-label={teacherLabel(candidate)}
+                    checked={picked.has(candidate.documentId)}
+                    disabled={busy}
+                    onCheckedChange={(checked) => toggle(candidate.documentId, checked === true)}
+                  />
+                  <span className="font-medium text-foreground">{teacherLabel(candidate)}</span>
+                  <span className="ml-auto truncate text-xs text-muted-foreground">
+                    {candidate.email}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </OpsDialogBody>
         )}
-        <DialogFooter>
-          <Button type="button" size="lg" variant="outline" onClick={onClose} disabled={busy}>
+        <OpsDialogFooter>
+          <OpsDialogCancel type="button" onClick={onClose} disabled={busy}>
             {t('cancel')}
-          </Button>
-          <Button
+          </OpsDialogCancel>
+          <OpsDialogCta
             type="button"
-            size="lg"
             loading={busy}
             disabled={picked.size === 0}
             onClick={() => void submit()}
           >
             {busy ? t('saving') : t('save')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </OpsDialogCta>
+        </OpsDialogFooter>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

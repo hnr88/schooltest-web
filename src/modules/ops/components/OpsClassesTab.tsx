@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
+import { Plus } from 'lucide-react';
 import {
   Alert,
   Button,
@@ -22,6 +23,7 @@ import {
   StatusPill,
 } from '@/modules/design-system';
 import type { StatusPillTone } from '@/modules/design-system/types/data-display.types';
+import { OpsTabTableCard, OPS_TAB_STATUS_PILL_CLASS } from '@/modules/ops/components/OpsTabTableCard';
 import {
   DIRECTORY_ALL,
   DirectoryTable,
@@ -44,7 +46,7 @@ import type { OpsActionDefinition, OpsActionTarget } from '@/modules/ops/actions
 import { OpsAssignTeacherDialog } from '@/modules/ops/components/OpsAssignTeacherDialog';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsEditClassDialog } from '@/modules/ops/components/OpsEditClassDialog';
-import { YEAR_BANDS } from '@/modules/classes/constants/year-bands.constants';
+import { YEAR_BANDS, isYearBand } from '@/modules/classes/constants/year-bands.constants';
 import { classBulkActions, classRowActions } from '@/modules/ops/lib/class-actions';
 import { noValueIfMissing, opsTeacherLabel } from '@/modules/ops/lib/ops-class-detail.helpers';
 import {
@@ -83,6 +85,19 @@ const STATUS_TONE: Record<ClassListStatus, StatusPillTone> = {
   pending_setup: 'warning',
   archived: 'neutral',
 };
+
+/**
+ * The design's badge tile carries the YEAR NUMBER (`:1325`: `initial:
+ * c.year.replace('Year ', '')`). This platform's classes carry a BAND
+ * (`7_9`/`10_12`), so the tile shows the short range; a class with no band
+ * falls back to the class name's leading token, then the no-value dash.
+ */
+const YEAR_BADGE: Record<string, string> = { '7_9': '7–9', '10_12': '10–12' };
+function classBadgeLabel(row: ClassRow): string {
+  if (row.year_band !== null && isYearBand(row.year_band)) return YEAR_BADGE[row.year_band];
+  const name = (row.name ?? '').trim();
+  return name === '' ? '—' : (name.split(/\s+/)[0] ?? '—');
+}
 
 async function fetchClassStatus(
   schoolDocumentId: string,
@@ -326,12 +341,25 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
       {
         key: 'name',
         header: t('columnClass'),
+        // ops-tabs-audit — the design's class identity block (`:386-393`): a
+        // 40px radius-12 badge tile (the year number), then the 14.5/600 name
+        // with the test-window sub under it.
         cell: (row) => (
-          <div className="flex min-w-0 flex-col">
-            <span className="truncate font-medium text-foreground">{noValueIfMissing(row.name)}</span>
-            <span className="block truncate text-meta text-muted-foreground">
-              {row.test_window === null ? t('noWindow') : row.test_window.title}
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="grid size-10 flex-none place-items-center rounded-[12px] bg-[#EEF1F6] text-[12.5px] font-bold text-[#0E2350]"
+            >
+              {classBadgeLabel(row)}
             </span>
+            <div className="flex min-w-0 flex-col">
+              <span className="truncate text-[14.5px] font-semibold text-foreground">
+                {noValueIfMissing(row.name)}
+              </span>
+              <span className="mt-0.5 block truncate text-[12.5px] text-[#7C8698]">
+                {row.test_window === null ? t('noWindow') : row.test_window.title}
+              </span>
+            </div>
           </div>
         ),
       },
@@ -347,21 +375,39 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
       {
         key: 'students',
         header: t('columnStudents'),
+        grid: 'text',
         cell: (row) => <span data-testid="ops-classes-students">{String(row.student_count)}</span>,
       },
       {
         key: 'year',
         header: t('columnYear'),
         grid: 'text',
-        cell: (row) => noValueIfMissing(row.year_band),
+        // The design's last text column is the muted one (`:404`); a known
+        // band reads through the catalogue ("Years 7–9"), never as the raw
+        // `7_9` wire code.
+        cell: (row) => (
+          <span className="text-[12.5px] text-[#9AA6B8]">
+            {row.year_band === null
+              ? noValueIfMissing(null)
+              : isYearBand(row.year_band)
+                ? t(`year.${row.year_band}`)
+                : noValueIfMissing(row.year_band)}
+          </span>
+        ),
       },
       {
         key: 'status',
         header: t('columnStatus'),
         grid: 'bare',
+        // ops-tabs-audit — the design's 96px soft-tone pill (`:406`), fixed
+        // width, title case.
         cell: (row) => {
           const status = classRowStatus(row);
-          return <StatusPill tone={STATUS_TONE[status]}>{t(`status.${status}`)}</StatusPill>;
+          return (
+            <StatusPill tone={STATUS_TONE[status]} className={OPS_TAB_STATUS_PILL_CLASS}>
+              {t(`status.${status}`)}
+            </StatusPill>
+          );
         },
       },
     ],
@@ -392,37 +438,52 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
 
   return (
     <div data-testid="ops-classes-tab">
-      <DirectoryTable
-        state={state}
-        query={classes}
-        rows={rows}
-        scope={[JSON.stringify(query)]}
-        meta={classes.data?.meta.pagination}
-        filters={filters}
-        chipFilterKey="status"
-        sorts={[]}
-        columns={columns}
-        selectable
-        getRowTarget={(row) => ({ kind: 'class', documentId: row.documentId })}
-        rowHref={(row) => `/dashboard/ops/schools/${schoolDocumentId}/classes/${row.documentId}`}
-        rowActions={rowActionsFor}
-        bulkActions={bulkActionDefs}
-        rowAttrs={() => ({ 'data-testid': 'ops-classes-row' })}
-        labels={labels}
-        header={{
-          title: t('headerTitle'),
-          summary: t('summary', { count: classes.data?.meta.pagination.total ?? 0 }),
-          primary: {
-            label: tCreate('submit'),
-            write: true,
-            onSelect: () => {
+      {/* ops-tabs-audit — the design's ONE tab-table card (`:352-418`): the
+          19px/600 header with the Create class primary on its right (the
+          design's Export secondary is NOT drawn — no classes CSV endpoint
+          exists and OP-2 forbids wiring a control to a stub, see the file
+          header), then chips, bulk bar, rows and pager on the same card. */}
+      <OpsTabTableCard
+        title={t('headerTitle')}
+        summary={t('summary', { count: classes.data?.meta.pagination.total ?? 0 })}
+        actions={
+          <Button
+            type="button"
+            variant="navy"
+            onClick={() => {
               if (refuseIfReadOnly()) setCreateOpen(true);
-            },
-          },
-        }}
-        emptyAction={teacherId === '' ? undefined : { label: t('clearFilter'), onRun: clearTeacher }}
-        emptyCopy={{ title: t('emptyTitle'), body: t('emptyDescription') }}
-      />
+            }}
+            className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
+          >
+            <Plus className="size-3.5" strokeWidth={2.2} aria-hidden="true" />
+            {tCreate('submit')}
+          </Button>
+        }
+      >
+        <DirectoryTable
+          state={state}
+          query={classes}
+          rows={rows}
+          scope={[JSON.stringify(query)]}
+          meta={classes.data?.meta.pagination}
+          filters={filters}
+          chipFilterKey="status"
+          sorts={[]}
+          columns={columns}
+          selectable
+          getRowTarget={(row) => ({ kind: 'class', documentId: row.documentId })}
+          rowHref={(row) => `/dashboard/ops/schools/${schoolDocumentId}/classes/${row.documentId}`}
+          rowActions={rowActionsFor}
+          bulkActions={bulkActionDefs}
+          rowAttrs={() => ({ 'data-testid': 'ops-classes-row' })}
+          labels={labels}
+          emptyAction={teacherId === '' ? undefined : { label: t('clearFilter'), onRun: clearTeacher }}
+          emptyCopy={{ title: t('emptyTitle'), body: t('emptyDescription') }}
+          // filters-audit 2026-09-11: 40px pill controls, hidden labels, count +
+          // sort pill right (`Ops Portal.dc.html:353-374`).
+          toolbarVariant="pill"
+        />
+      </OpsTabTableCard>
 
       {reassignRow ? (
         <OpsAssignTeacherDialog

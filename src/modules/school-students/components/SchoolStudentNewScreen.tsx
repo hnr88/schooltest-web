@@ -1,6 +1,5 @@
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Link, useRouter } from '@/i18n/navigation';
@@ -34,12 +33,14 @@ export function SchoolStudentNewScreen() {
       className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
     >
       <Link href="/dashboard/school/students" className={BACK_CLASSES}>
-        <ArrowLeft className="size-4" aria-hidden />
+        <span aria-hidden="true">← </span>
         {t('back')}
       </Link>
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold text-foreground">{t('createTitle')}</h1>
-        <p className="text-sm text-body">{t('createDescription')}</p>
+        <h1 className="text-[30px] leading-tight font-medium tracking-[-0.02em] text-foreground">
+          {t('createTitle')}
+        </h1>
+        <p className="text-sm text-[#7C8698]">{t('createDescription')}</p>
       </div>
       {classesQuery.isPending ? (
         <div className="flex max-w-2xl flex-col gap-3">

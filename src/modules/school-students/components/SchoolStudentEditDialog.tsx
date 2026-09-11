@@ -7,11 +7,9 @@ import { useMeQuery } from '@/modules/auth';
 import { useAuthStore } from '@/modules/auth';
 import type { SchoolClass } from '@/modules/classes';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogContent,
+  OpsDialogHeader,
 } from '@/modules/design-system';
 import { SchoolStudentForm } from '@/modules/school-students/components/SchoolStudentForm';
 import { studentDisplayName } from '@/modules/school-students/hooks/use-student-row-actions';
@@ -21,7 +19,8 @@ import type { SchoolStudentEditDialogProps } from '@/modules/school-students/typ
 
 // Edit shell (C-CHD-03): mounts the form fresh per student so its defaults
 // always match the row being edited. The ACARA phase control stays behind the
-// school_admin role check (D-10), same as the add form.
+// school_admin role check (D-10), same as the add form. Modal chrome on the
+// OpsDialog kit (School Admin design: student modal, 560px).
 export function SchoolStudentEditDialog({ student, classes, onClose }: SchoolStudentEditDialogProps) {
   const t = useTranslations('SchoolStudents.form');
   const token = useAuthStore((state) => state.token);
@@ -30,25 +29,26 @@ export function SchoolStudentEditDialog({ student, classes, onClose }: SchoolStu
   const showAcaraPhase = meQuery.data?.role?.type === SCHOOL_ADMIN_ROLE_TYPE;
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next) onClose();
       }}
     >
-      <DialogContent className="max-h-dvh overflow-y-auto sm:max-w-[560px]">
-        <DialogHeader>
-          <DialogTitle>{t('editTitle', { name: studentDisplayName(student) })}</DialogTitle>
-          <DialogDescription>{t('editDescription')}</DialogDescription>
-        </DialogHeader>
+      <OpsDialogContent className="sm:max-w-[560px]">
+        <OpsDialogHeader
+          title={t('editTitle', { name: studentDisplayName(student) })}
+          sub={t('editDescription')}
+        />
         <SchoolStudentForm
           target={{ mode: 'edit', student }}
           classes={classes}
           showAcaraPhase={showAcaraPhase}
           onCancel={onClose}
           onDone={onClose}
+          modal
         />
-      </DialogContent>
-    </Dialog>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

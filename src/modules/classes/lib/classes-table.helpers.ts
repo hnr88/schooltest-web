@@ -16,6 +16,11 @@ export function teacherNames(teachers: ClassTeacher[]): string {
     .join(', ');
 }
 
+/** The badge tile's label: the class name's leading word ("8B" of "8B English"). */
+export function classBadge(name: string | null): string {
+  return (name ?? '').trim().split(/\s+/)[0] ?? '';
+}
+
 // Spec §2 "Tests completed": each student sits TWO reading tests and the column
 // shows PER-TEST completion, so BOTH C-RPT-04 slots are carried per class. The
 // numerator of each is the number of students in the class who have SUBMITTED

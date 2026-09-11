@@ -74,6 +74,7 @@ function OpsDialogHeader({
         ) : null}
       </div>
       <DialogPrimitive.Close
+        data-slot="ops-dialog-close"
         aria-label={t('close')}
         className="grid size-[34px] shrink-0 cursor-pointer place-items-center rounded-full border-none bg-[#F4F6FA] text-[15px] text-[#0E2350] transition-colors hover:bg-[#E9EDF4]"
       >

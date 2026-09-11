@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils';
 import { Button, Input, SelectField } from '@/modules/design-system';
 
 import { DIRECTORY_ALL } from '../constants/directory.constants';
-import { DirectoryFilters } from './DirectoryFilters';
+import { DIRECTORY_TOOLBAR_TRIGGER, DirectoryFilters } from './DirectoryFilters';
 import type {
   DirectoryFilterDef,
   DirectoryLabels,
@@ -46,7 +46,10 @@ interface DirectoryToolbarProps<Row> {
   total: number;
   layoutControl?: DirectoryLayoutControl;
   /** BUG-004 (ops design): 40px pill selects, hidden labels, Clear beside the
-   *  filters, count + sort pill right-aligned. */
+   *  filters, count + sort pill right-aligned. `pill` now only decides the
+   *  ARRANGEMENT — the select/search pill look is unconditional (filters-audit
+   *  2026-09-11: the default variant's labelled 48px selects were the ops
+   *  school-detail tabs' "totally different" filter row). */
   variant?: 'default' | 'pill';
   /** BUG-004 — the surface renders its own search in the page header. */
   search?: boolean;
@@ -65,8 +68,6 @@ export function DirectoryToolbar<Row>({
 }: DirectoryToolbarProps<Row>) {
   const idPrefix = useId();
   const pill = variant === 'pill';
-  const pillTrigger =
-    'h-10 min-h-10 w-auto data-[size=default]:h-10 rounded-full border-[1.5px] px-3.5 text-[13.5px] font-medium';
 
   return (
     <div
@@ -77,11 +78,9 @@ export function DirectoryToolbar<Row>({
         pill ? 'items-center gap-2.5' : 'items-end',
       )}
     >
-      {/* items-end (default variant): the labelled filter shells are ~70px
-          tall while the search field is 40px — under the default stretch the
-          search's relative wrapper grew to shell height and its absolutely
-          positioned icon centered BELOW the input, outside the box. Aligning
-          the row to the controls' baseline pins the 40px field beside them. */}
+      {/* items-end (default variant) keeps the row pinned to the controls'
+          baseline; every control in both variants is the same 40px pill now,
+          so the row reads as one line either way. */}
       <div className={cn('flex flex-wrap items-end gap-3', pill && 'items-center gap-2.5')}>
         {search ? (
           <div className="relative">
@@ -111,7 +110,6 @@ export function DirectoryToolbar<Row>({
           onValueChange={state.setFilter}
           labels={labels}
           idPrefix={idPrefix}
-          pill={pill}
         />
         {pill && state.hasActiveControls ? (
           <Button
@@ -131,6 +129,8 @@ export function DirectoryToolbar<Row>({
             options={sorts.map((option) => ({ value: option.value, label: option.label }))}
             value={state.params.sort}
             onValueChange={(next) => state.setSort(next)}
+            hideLabel
+            triggerClassName={DIRECTORY_TOOLBAR_TRIGGER}
           />
         ) : null}
       </div>
@@ -179,7 +179,7 @@ export function DirectoryToolbar<Row>({
             value={state.params.sort}
             onValueChange={(next) => state.setSort(next)}
             hideLabel
-            triggerClassName={pillTrigger}
+            triggerClassName={DIRECTORY_TOOLBAR_TRIGGER}
           />
         ) : null}
         {state.hasActiveControls && !pill ? (

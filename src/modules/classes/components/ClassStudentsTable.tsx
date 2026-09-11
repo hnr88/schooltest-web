@@ -193,7 +193,17 @@ export function ClassStudentsTable({
         key: 'student',
         header: table('columnStudent'),
         cell: (row) => (
-          <span className="font-semibold text-foreground">{studentDisplayName(row)}</span>
+          <span className="flex items-center gap-[13px]">
+            <span
+              aria-hidden="true"
+              className="grid size-9 flex-none place-items-center rounded-full bg-[#EEF1F6] text-[13px] font-semibold text-[#0E2350]"
+            >
+              {studentDisplayName(row).charAt(0)}
+            </span>
+            <span className="text-[14.5px] font-semibold text-foreground">
+              {studentDisplayName(row)}
+            </span>
+          </span>
         ),
       },
       ...TEST_SLOTS.flatMap((slot) => [

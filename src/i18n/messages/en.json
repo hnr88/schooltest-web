@@ -2513,6 +2513,7 @@
       "readinessTitle": "Mainstream readiness",
       "readinessUnavailable": "Not available — mainstream readiness requires listening, writing, and speaking tests which are not part of the current trial.",
       "classesTitle": "Classes",
+      "viewAllClasses": "All classes",
       "classStudents": "{count, plural, one {# student} other {# students}}",
       "classesEmptyTitle": "No classes yet",
       "classesEmptyDescription": "Classes you add for your school will appear here.",
@@ -3116,7 +3117,8 @@
         "openLabel": "Open class {name}",
         "removeLabel": "Remove from {name}",
         "removeErrorTitle": "We could not remove the teacher from this class",
-        "removeErrorDescription": "The class was not changed. Check your connection and try again."
+        "removeErrorDescription": "The class was not changed. Check your connection and try again.",
+        "percentCompleted": "{percent}% completed"
       },
       "accountPanel": {
         "title": "Account details",
@@ -3139,7 +3141,8 @@
         "cancel": "Cancel",
         "errorTitle": "We could not update this class",
         "errorDescription": "The class was not changed. Check your connection and try again."
-      }
+      },
+      "moreActions": "More actions"
     },
     "meta": {
       "title": "Teachers - SchoolTest",
@@ -3189,14 +3192,14 @@
         "expired": "Expired"
       },
       "noValue": "—",
-      "filterAll": "All",
+      "filterAll": "All statuses",
       "statusActive": "Active",
       "statusInvited": "Invited",
       "statusSuspended": "Suspended",
       "sortNameAsc": "Name A–Z",
       "sortNameDesc": "Name Z–A",
-      "searchPlaceholder": "Search staff",
-      "searchLabel": "Search staff",
+      "searchPlaceholder": "Search teachers",
+      "searchLabel": "Search teachers",
       "sortLabel": "Sort",
       "clearFilters": "Clear filters",
       "paginationLabel": "Staff pages",
@@ -3210,7 +3213,9 @@
       "noMatchesTitle": "Nothing matches this filter",
       "noMatchesBody": "Try a different status.",
       "staleBanner": "The latest refresh failed — the rows below are the last ones the server served.",
-      "loading": "Loading staff"
+      "loading": "Loading staff",
+      "classesCount": "{count, plural, one {# class} other {# classes}}",
+      "sortMostClasses": "Most classes"
     },
     "actions": {
       "menuLabel": "Actions for {name}",
@@ -3587,6 +3592,7 @@
       "columnLevel": "Level",
       "columnDiagnostic": "Diagnostic",
       "notSet": "—",
+      "firstLanguageLine": "First language: {language}",
       "diagnosticOption": {
         "not_started": "Not started",
         "in_progress": "In progress",
@@ -3718,6 +3724,8 @@
       "notFoundTitle": "We could not find that student",
       "notFoundDescription": "They may have been removed, or they belong to another school.",
       "editButton": "Edit",
+      "editDetailsButton": "Edit details",
+      "studentIdLabel": "Student ID",
       "classPanel": {
         "title": "Class",
         "currentLabel": "Current class",
@@ -3729,7 +3737,8 @@
         "noClasses": "No classes to assign yet.",
         "errorTitle": "The class change could not be saved",
         "errorDescription": "Check your connection and try again."
-      }
+      },
+      "metaLine": "First language: {language} · Level: {level} · {class} · ID {id}"
     }
   },
   "Ops": {
@@ -5741,5 +5750,22 @@
       "primaryActionLabel": "Open",
       "chipAllLabel": "All"
     }
+  },
+  "TeacherPortal": {
+    "shell": {},
+    "kit": {},
+    "classes": {},
+    "classDetail": {},
+    "students": {},
+    "progress": {},
+    "insights": {},
+    "familyReports": {},
+    "live": {},
+    "liveSessions": {},
+    "startSession": {},
+    "reports": {},
+    "student": {},
+    "askAi": {},
+    "review": {}
   }
 }

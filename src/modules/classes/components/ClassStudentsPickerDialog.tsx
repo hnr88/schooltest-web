@@ -11,15 +11,16 @@ import {
 } from '@/modules/classes/lib/class-roster.helpers';
 import {
   Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   Input,
-  FieldShell,
+  OPS_CONTROL_CLASS,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
+  OpsFieldShell,
   Skeleton,
 } from '@/modules/design-system';
 import { useSchoolStudentsQuery } from '@/modules/school-students';
@@ -77,90 +78,89 @@ export function ClassStudentsPickerDialog({
   const busy = pending || submitting;
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next) onClose();
       }}
     >
-      <DialogContent className="sm:max-w-[520px]">
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description', { className })}</DialogDescription>
-        </DialogHeader>
-        <p className="text-sm font-medium text-warning-ink" data-slot="class-students-move-warning">
-          {t('moveWarning')}
-        </p>
-        {studentsQuery.isPending ? (
-          <div className="flex flex-col gap-2">
-            <Skeleton className="h-11 w-full" />
-            <Skeleton className="h-11 w-full" />
-            <Skeleton className="h-11 w-full" />
-          </div>
-        ) : studentsQuery.isError ? (
-          <Alert variant="error" title={t('loadError')}>
-            {t('loadErrorDescription')}
-          </Alert>
-        ) : (
-          <>
-            <FieldShell id="class-students-picker-search" label={t('searchLabel')}>
-              <Input
-                id="class-students-picker-search"
-                autoComplete="off"
-                placeholder={t('searchPlaceholder')}
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </FieldShell>
-            {candidates.length === 0 ? (
-              <p className="py-6 text-center text-sm text-muted-foreground">{t('empty')}</p>
-            ) : visible.length === 0 ? (
-              <p className="py-6 text-center text-sm text-muted-foreground">
-                {t('noMatches', { query: query.trim() })}
-              </p>
-            ) : (
-              <div className="flex max-h-72 flex-col gap-2 overflow-y-auto" data-slot="class-students-picker">
-                {visible.map((student) => {
-                  const hint = currentClassHint(student, classDocumentId);
-                  return (
-                    <label
-                      key={student.documentId}
-                      className="flex min-h-11 items-center gap-3 rounded-lg border border-border px-3 py-2 text-sm"
-                    >
-                      <Checkbox
-                        aria-label={studentDisplayName(student)}
-                        checked={picked.has(student.documentId)}
-                        disabled={busy}
-                        onCheckedChange={(checked) => toggle(student.documentId, checked === true)}
-                      />
-                      <span className="font-medium text-foreground">
-                        {studentDisplayName(student)}
-                      </span>
-                      <span className="ml-auto truncate text-right text-xs text-muted-foreground">
-                        {hint === null ? t('noClassHint') : t('currentClassHint', { className: hint })}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            )}
-          </>
-        )}
-        <DialogFooter>
-          <Button type="button" size="lg" variant="outline" onClick={onClose} disabled={busy}>
+      <OpsDialogContent className="sm:max-w-[520px]">
+        <OpsDialogHeader title={t('title')} sub={t('description', { className })} />
+        <OpsDialogBody className="py-5">
+          <p className="text-sm font-medium text-warning-ink" data-slot="class-students-move-warning">
+            {t('moveWarning')}
+          </p>
+          {studentsQuery.isPending ? (
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-11 w-full" />
+              <Skeleton className="h-11 w-full" />
+              <Skeleton className="h-11 w-full" />
+            </div>
+          ) : studentsQuery.isError ? (
+            <Alert variant="error" title={t('loadError')}>
+              {t('loadErrorDescription')}
+            </Alert>
+          ) : (
+            <>
+              <OpsFieldShell id="class-students-picker-search" label={t('searchLabel')}>
+                <Input
+                  id="class-students-picker-search"
+                  autoComplete="off"
+                  placeholder={t('searchPlaceholder')}
+                  className={OPS_CONTROL_CLASS}
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+              </OpsFieldShell>
+              {candidates.length === 0 ? (
+                <p className="py-6 text-center text-sm text-muted-foreground">{t('empty')}</p>
+              ) : visible.length === 0 ? (
+                <p className="py-6 text-center text-sm text-muted-foreground">
+                  {t('noMatches', { query: query.trim() })}
+                </p>
+              ) : (
+                <div className="flex max-h-72 flex-col gap-2 overflow-y-auto" data-slot="class-students-picker">
+                  {visible.map((student) => {
+                    const hint = currentClassHint(student, classDocumentId);
+                    return (
+                      <label
+                        key={student.documentId}
+                        className="flex min-h-11 items-center gap-3 rounded-lg border border-border px-3 py-2 text-sm"
+                      >
+                        <Checkbox
+                          aria-label={studentDisplayName(student)}
+                          checked={picked.has(student.documentId)}
+                          disabled={busy}
+                          onCheckedChange={(checked) => toggle(student.documentId, checked === true)}
+                        />
+                        <span className="font-medium text-foreground">
+                          {studentDisplayName(student)}
+                        </span>
+                        <span className="ml-auto truncate text-right text-xs text-muted-foreground">
+                          {hint === null ? t('noClassHint') : t('currentClassHint', { className: hint })}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          )}
+        </OpsDialogBody>
+        <OpsDialogFooter>
+          <OpsDialogCancel type="button" onClick={onClose} disabled={busy}>
             {t('cancel')}
-          </Button>
-          <Button
+          </OpsDialogCancel>
+          <OpsDialogCta
             type="button"
-            size="lg"
             loading={busy}
             disabled={picked.size === 0}
             onClick={() => void submit()}
           >
             {busy ? t('saving') : t('save')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </OpsDialogCta>
+        </OpsDialogFooter>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }
