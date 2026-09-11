@@ -777,6 +777,7 @@ export function OpsSchoolsTable() {
           errorTitle: t('errorTitle'),
           errorDescription: t('errorDescription'),
           retry: t('retry'),
+          loadingLabel: t('loadingLabel'),
         }}
         emptyAction={{ label: t('createSchool'), onRun: openCreateSchool }}
         toolbarVariant="pill"

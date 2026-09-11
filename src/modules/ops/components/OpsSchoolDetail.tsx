@@ -67,8 +67,10 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
         <div className="flex gap-8 rounded-card bg-card px-[30px] py-[26px] shadow-sm">
           {['65%', '40%', '55%', '45%'].map((width) => (
             <div key={width} className="flex min-w-[140px] flex-1 flex-col gap-2.5">
-              <Skeleton className="h-2.5 w-[52%] rounded-md" />
-              <Skeleton className="h-[22px] rounded-lg" style={{ width }} />
+              {/* `Ops Portal.dc.html:259-260` — static #F4F6FA label bar, then
+                  the pulsing #EEF1F6 value bar. */}
+              <Skeleton className="h-2.5 w-[52%] animate-none rounded-md bg-[#F4F6FA]" />
+              <Skeleton className="h-[22px] rounded-lg bg-[#EEF1F6]" style={{ width }} />
             </div>
           ))}
         </div>
@@ -78,12 +80,14 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
               key={width}
               className="flex items-center gap-3.5 border-b border-[#F4F6FA] py-[13px]"
             >
-              <Skeleton className="size-[38px] shrink-0 rounded-full" />
+              {/* `:267-272` — pulse on the avatar and title bar; the meta bar
+                  and the 96x26 pill stay static. */}
+              <Skeleton className="size-[38px] shrink-0 rounded-full bg-[#EEF1F6]" />
               <div className="flex flex-1 flex-col gap-2">
-                <Skeleton className="h-3 rounded-md" style={{ width }} />
-                <Skeleton className="h-2.5 w-[28%] rounded-md" />
+                <Skeleton className="h-3 rounded-md bg-[#EEF1F6]" style={{ width }} />
+                <Skeleton className="h-2.5 w-[28%] animate-none rounded-md bg-[#F4F6FA]" />
               </div>
-              <Skeleton className="h-[26px] w-24 shrink-0 rounded-full" />
+              <Skeleton className="h-[26px] w-24 shrink-0 animate-none rounded-full bg-[#EEF1F6]" />
             </div>
           ))}
           <p className="pb-1 pt-4 text-[13px] text-[#9AA6B8]">{t('loadingData')}</p>

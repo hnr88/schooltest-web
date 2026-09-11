@@ -3824,6 +3824,7 @@
       "clearFilters": "Clear filters",
       "noMatches": "No schools match your search.",
       "showing": "Showing {showing} of {total} schools",
+      "loadingLabel": "Loading schools…",
       "pillAllSchools": "All schools",
       "filterStatus": "Status",
       "filterState": "State",
