@@ -56,7 +56,7 @@ function StudentProgressPanel({ view }: StudentProgressPanelProps) {
         >
           {progressTiles(view).map((tile) => (
             <div key={tile.id} data-tile={tile.id} className="bg-white px-3.5 py-3">
-              <dt className="text-[10.5px] font-semibold tracking-[0.05em] text-[#9CA3AF] uppercase">
+              <dt className="text-[10.5px] font-semibold tracking-[0.05em] text-[#6B7280] uppercase">
                 {text(tile.label)}
               </dt>
               <dd

@@ -44,11 +44,11 @@ export const RESULTS_TABS_LIST_CLASS =
 
 /**
  * One section tab: 14/22 padding, 15.5px, a 3px underline overlapping the row's
- * hairline; active 700 navy, idle 500 #7C8698. The primitive's `::after`
- * underline is switched off — the bottom border is the design's underline.
+ * hairline; active 700 navy, idle 500 #7C8698 drawn #6B7280 (kit AA rule). The
+ * primitive's `::after` underline is switched off — the bottom border is the design's underline.
  */
 export const RESULTS_TAB_TRIGGER_CLASS =
-  'h-auto flex-none rounded-none border-0 border-b-[3px] border-transparent -mb-px px-[22px] py-3.5 text-[15.5px] leading-[normal] font-medium text-[#7C8698] transition-colors duration-200 ease-out after:hidden hover:text-navy-900 data-active:border-navy-900 data-active:font-bold data-active:text-navy-900 motion-reduce:transition-none';
+  'h-auto flex-none rounded-none border-0 border-b-[3px] border-transparent -mb-px px-[22px] py-3.5 text-[15.5px] leading-[normal] font-medium text-[#6B7280] transition-colors duration-200 ease-out after:hidden hover:text-navy-900 data-active:border-navy-900 data-active:font-bold data-active:text-navy-900 motion-reduce:transition-none';
 
 /**
  * A tab body carries no chrome of its own — the card's 20px column gap spaces
@@ -69,7 +69,11 @@ export const SKILL_TAB_ICONS: Record<SkillScopeValue, LucideIcon> = {
 export const SKILL_TAB_CLASS =
   'h-auto flex-[1_1_150px] justify-start gap-2.5 rounded-[10px] border px-[13px] py-2.5 text-left leading-[normal] shadow-none group-data-[variant=default]/tabs-list:data-active:shadow-none';
 
-/** skillTab (design l.2729): selected navy · unselected Reading · unselected soon skill. */
+/**
+ * skillTab (design l.2729): selected navy · unselected Reading · unselected soon skill. Kit AA rule: the soon
+ * sub-label's #9CA3AF draws #6B7280, and the Soon chip's #8A94A6 draws the tab's own #5B6472 (the kit greys
+ * reach only 4.1:1 on the #EAEDF2 chip).
+ */
 export const SKILL_TAB_TONES = {
   selected: {
     root: 'border-navy-900 bg-navy-900 text-white hover:text-white data-active:border-navy-900 data-active:bg-navy-900 data-active:text-white',
@@ -86,8 +90,8 @@ export const SKILL_TAB_TONES = {
   soon: {
     root: 'border-[#ECEEF2] bg-[#F7F8FA] text-[#5B6472] hover:text-[#5B6472]',
     icon: 'opacity-55',
-    sub: 'text-[#9CA3AF]',
-    chip: 'bg-[#EAEDF2] text-[#8A94A6]',
+    sub: 'text-[#6B7280]',
+    chip: 'bg-[#EAEDF2] text-[#5B6472]',
   },
 } as const;
 

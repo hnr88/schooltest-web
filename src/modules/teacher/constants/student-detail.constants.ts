@@ -47,7 +47,6 @@ export const STUDENT_CHART_STYLE = {
   xSub: '#B6BCC7',
   pointFill: '#FFFFFF',
   axisTopY: 12,
-  phaseLabelX: 124,
 } as const;
 
 /** The kit BandChip for each server band; its tone pairs are the view model's `BAND_TONE`. */

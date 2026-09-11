@@ -38,7 +38,7 @@ function StudentProgressChart({ chart }: StudentProgressChartProps) {
         />
       ))}
       {chart.acara.map((level) => (
-        <text key={level.phase} x={STYLE.phaseLabelX} y={level.y} dy={4} fontSize={11.5} fontWeight={600} fill={STYLE.phaseLabel} textAnchor="end">
+        <text key={level.phase} x={chart.phaseLabelX} y={level.y} dy={4} fontSize={11.5} fontWeight={600} fill={STYLE.phaseLabel} textAnchor="end">
           {tVm(level.labelKey)}
         </text>
       ))}
@@ -51,7 +51,7 @@ function StudentProgressChart({ chart }: StudentProgressChartProps) {
           <title>{tVm('chart.studentTip', { n: point.n, when: monthYear(point.satAt), value: point.value })}</title>
           <circle cx={point.cx} cy={point.cy} r={14} fill="transparent" />
           <circle cx={point.cx} cy={point.cy} r={5} fill={STYLE.pointFill} stroke={STYLE.line} strokeWidth={2.5} />
-          <text x={point.cx} y={point.cy} dy={-13} fontSize={13} fontWeight={600} fill={point.valueFill} textAnchor="middle">
+          <text x={point.valueX} y={point.cy} dy={-13} fontSize={13} fontWeight={600} fill={point.valueFill} textAnchor={point.valueAnchor}>
             {t('percent', { value: point.value })}
           </text>
           <text x={point.labelX} y={chart.xLabelY} fontSize={12} fontWeight={500} fill={STYLE.xLabel} textAnchor="middle">

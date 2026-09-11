@@ -188,8 +188,10 @@ test('S4 — Class progress per design: tiles, chart, lists and subskill trends 
   await page.screenshot({ path: path.join(PROOFS, 'progress-tab-scroll.png'), animations: 'disabled' });
   expectNoNewErrors(errors, 'Class progress load');
 
-  // No serious or critical axe finding in this tab's panel, and no sideways scroll on a phone.
-  const axe = await new AxeBuilder({ page }).include('[data-tab-panel="progress"]').analyze();
+  // No serious or critical axe finding in this tab's panel or the frame's skill strip, and no sideways scroll on a phone.
+  const skillStrip = `[role="tablist"][aria-label="${cat(en, 'TeacherPortal.classDetail.skillsLabel')}"]`;
+  await expect(page.locator(skillStrip).locator('[data-skill]')).toHaveCount(4);
+  const axe = await new AxeBuilder({ page }).include('[data-tab-panel="progress"]').include(skillStrip).analyze();
   const severe = axe.violations.filter((violation) => violation.impact === 'serious' || violation.impact === 'critical');
   expect(severe.map((violation) => `${violation.id} → ${violation.nodes.map((node) => node.target.join(' ')).join(' | ')}`)).toEqual([]);
   await page.setViewportSize({ width: 375, height: 812 });

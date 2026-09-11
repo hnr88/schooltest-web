@@ -12,7 +12,6 @@ export const CLASS_CHART_STYLE = {
   line: '#0E2350',
   pointFill: '#FFFFFF',
   bandLabel: '#8A94A6',
-  bandLabelX: 114,
   xLabel: '#4B5563',
   xSub: '#B6BCC7',
 } as const;

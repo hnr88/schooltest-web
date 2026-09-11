@@ -33,7 +33,7 @@ function ProgressClassChart({ chart }: ProgressClassChartProps) {
       {chart.bands.map((band) => (
         <g key={band.phase}>
           <rect x={chart.axisX} y={band.y} width={chart.bandW} height={band.h} fill={band.fill} />
-          <text x={STYLE.bandLabelX} y={band.midY} dy={4} fontSize={11} fontWeight={600} fill={STYLE.bandLabel} textAnchor="end">
+          <text x={chart.phaseLabelX} y={band.midY} dy={4} fontSize={11} fontWeight={600} fill={STYLE.bandLabel} textAnchor="end">
             {tVm(band.labelKey)}
           </text>
         </g>
@@ -46,7 +46,7 @@ function ProgressClassChart({ chart }: ProgressClassChartProps) {
           <title>{tVm(CHART_LABEL_KEY.classTip, { n: point.n, when: monthYear(point.satAt), value: point.value })}</title>
           <circle cx={point.cx} cy={point.cy} r={15} fill="transparent" />
           <circle cx={point.cx} cy={point.cy} r={5} fill={STYLE.pointFill} stroke={STYLE.line} strokeWidth={2.5} />
-          <text x={point.cx} y={point.cy} dy={-13} fontSize={13} fontWeight={700} fill={point.valueFill} textAnchor="middle">
+          <text x={point.valueX} y={point.cy} dy={-13} fontSize={13} fontWeight={700} fill={point.valueFill} textAnchor={point.valueAnchor}>
             {t('percent', { value: point.value })}
           </text>
           <text x={point.labelX} y={chart.xLabelY} fontSize={11.5} fontWeight={500} fill={STYLE.xLabel} textAnchor="middle">

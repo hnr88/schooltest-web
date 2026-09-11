@@ -7,6 +7,7 @@ export interface ChartFrame {
   padR: number;
   padT: number;
   padB: number;
+  phaseLabelX: number;
 }
 
 export interface ChartPoint {
@@ -16,6 +17,8 @@ export interface ChartPoint {
   cx: number;
   cy: number;
   labelX: number;
+  valueX: number;
+  valueAnchor: 'start' | 'middle';
   isLast: boolean;
   valueFill: string;
 }
@@ -39,6 +42,7 @@ export interface LineChartGeometry {
   areaPath: string;
   points: ChartPoint[];
   acara: AcaraLabel[];
+  phaseLabelX: number;
   axisX: number;
   axisY: number;
   axisRight: number;

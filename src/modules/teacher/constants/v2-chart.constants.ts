@@ -1,9 +1,28 @@
 import type { ChartFrame } from '@/modules/teacher/types/v2-chart.types';
 import type { AcaraPhaseName } from '@/modules/teacher/types/v2-view-common.types';
 
-export const CLASS_CHART_FRAME: ChartFrame = { W: 720, H: 200, padL: 118, padR: 24, padT: 20, padB: 38 };
+export const CLASS_CHART_FRAME: ChartFrame = {
+  W: 720,
+  H: 200,
+  padL: 118,
+  padR: 24,
+  padT: 20,
+  padB: 38,
+  phaseLabelX: 114,
+};
 
-export const STUDENT_CHART_FRAME: ChartFrame = { W: 640, H: 250, padL: 132, padR: 18, padT: 16, padB: 44 };
+export const STUDENT_CHART_FRAME: ChartFrame = {
+  W: 640,
+  H: 250,
+  padL: 132,
+  padR: 18,
+  padT: 16,
+  padB: 44,
+  phaseLabelX: 124,
+};
+
+/** The first sitting sits on the y-axis beside the phase names, so its value starts just right of the axis. */
+export const CHART_FIRST_VALUE_INSET = 4;
 
 export const CHART_SCALE_MAX = 100;
 

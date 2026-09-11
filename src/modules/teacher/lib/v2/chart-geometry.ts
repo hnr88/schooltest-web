@@ -1,6 +1,7 @@
 import {
   ACARA_BAND_RANGES,
   ACARA_LABEL_LEVELS,
+  CHART_FIRST_VALUE_INSET,
   CHART_LAST_POINT_FILL,
   CHART_POINT_FILL,
   CHART_SCALE_MAX,
@@ -36,9 +37,10 @@ function lineChart(points: readonly SeriesPoint[], frame: ChartFrame, subOffset:
   const yOf = yScale(frame);
   const plotWidth = frame.W - frame.padL - frame.padR;
   const axisY = frame.H - frame.padB;
-  const plotted: ChartPoint[] = points.map((point, index) => {
+  const plotted = points.map((point, index): ChartPoint => {
     const cx = Math.round(frame.padL + fraction(index, points.length) * plotWidth);
     const isLast = index === points.length - 1;
+    const onAxis = index === 0 && points.length > 1;
     return {
       n: point.n,
       satAt: point.satAt,
@@ -46,6 +48,8 @@ function lineChart(points: readonly SeriesPoint[], frame: ChartFrame, subOffset:
       cx,
       cy: yOf(point.value),
       labelX: cx,
+      valueX: onAxis ? cx + CHART_FIRST_VALUE_INSET : cx,
+      valueAnchor: onAxis ? 'start' : 'middle',
       isLast,
       valueFill: isLast ? CHART_LAST_POINT_FILL : CHART_POINT_FILL,
     };
@@ -65,6 +69,7 @@ function lineChart(points: readonly SeriesPoint[], frame: ChartFrame, subOffset:
       labelKey: PHASE_LABEL_KEY[level.phase],
       y: yOf(level.value),
     })),
+    phaseLabelX: frame.phaseLabelX,
     axisX: frame.padL,
     axisY,
     axisRight: frame.W - frame.padR,

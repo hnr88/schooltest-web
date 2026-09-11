@@ -7,8 +7,10 @@ import {
   designSparkline,
   designStudentChart,
 } from '@/modules/teacher/lib/v2/__fixtures__/design-chart-oracle';
-import { t2Result, t2ResultAmara, t2ResultDilnoza } from '@/modules/teacher/lib/v2/__fixtures__/t2';
+import { t2Result, t2ResultAmara, t2ResultDilnoza, t2Roster } from '@/modules/teacher/lib/v2/__fixtures__/t2';
 import { acaraChart, sparkline, studentChart } from '@/modules/teacher/lib/v2/chart-geometry';
+import { classProgress } from '@/modules/teacher/lib/v2/class-progress';
+import type { LineChartGeometry } from '@/modules/teacher/types/v2-chart.types';
 import type { SeriesPoint } from '@/modules/teacher/types/v2-view-common.types';
 
 function recordedOverall(result: ResultView): SeriesPoint[] {
@@ -132,5 +134,67 @@ describe('sparkline — the design sparkline on recorded trajectories', () => {
 
   test('no values is an empty line with no end dot', () => {
     expect(sparkline([])).toEqual({ w: 132, h: 40, polyline: '', last: null });
+  });
+});
+
+// Label boxes at the charts' own type (`Teacher Portal v2.dc.html:409–423`, `:904–916`): a glyph 0.62em wide ('%'
+// 0.9em), 0.75em above its baseline and 0.25em below; a value sits 13px above its point, a phase name 4px below its level.
+type Box = { left: number; right: number; top: number; bottom: number };
+
+function box(text: string, x: number, baseline: number, size: number, anchor: 'start' | 'middle' | 'end'): Box {
+  const width = [...text].reduce((sum, glyph) => sum + (glyph === '%' ? 0.9 : 0.62), 0) * size;
+  const left = anchor === 'end' ? x - width : anchor === 'middle' ? x - width / 2 : x;
+  return { left, right: left + width, top: baseline - 0.75 * size, bottom: baseline + 0.25 * size };
+}
+
+const overlaps = (a: Box, b: Box) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+const month = (iso: string | null) =>
+  iso === null ? '' : new Intl.DateTimeFormat('en', { month: 'short', timeZone: 'UTC' }).format(new Date(iso));
+
+function firstPointBoxes(chart: LineChartGeometry, sittingSize: number): { design: Box; drawn: Box[] } {
+  const first = chart.points[0];
+  return {
+    design: box(`${first.value}%`, first.cx, first.cy - 13, 13, 'middle'),
+    drawn: [
+      box(`${first.value}%`, first.valueX, first.cy - 13, 13, first.valueAnchor),
+      box(`Sitting ${first.n}`, first.labelX, chart.xLabelY, sittingSize, 'middle'),
+      box(month(first.satAt), first.labelX, chart.xSubY, 10.5, 'middle'),
+    ],
+  };
+}
+
+const phaseColumn = (chart: LineChartGeometry, levels: ReadonlyArray<{ phase: string; y: number }>, size: number) =>
+  levels.map((level) => box(level.phase, chart.phaseLabelX, level.y + 4, size, 'end'));
+const clashes = (labels: Box[], column: Box[]) => labels.flatMap((label) => column.filter((name) => overlaps(label, name)));
+
+describe('first-point labels clear the phase-name column on the recorded series', () => {
+  const classChart = classProgress(t2Roster).chart;
+  const studentCharts = [t2ResultDilnoza, t2ResultAmara, ...t2Roster.flatMap((row) => (row.result ? [row.result] : []))]
+    .map((result) => studentChart(recordedOverall(result)))
+    .filter((chart) => chart.points.length > 1);
+
+  test('recorded t2 class: the design’s centred 44% prints into the band names; the drawn labels clear them', () => {
+    const column = phaseColumn(classChart, classChart.bands.map((band) => ({ phase: band.phase, y: band.midY })), 11);
+    const { design, drawn } = firstPointBoxes(classChart, 11.5);
+    expect(classChart.points[0].value).toBe(44);
+    expect(column.some((name) => overlaps(design, name))).toBe(true);
+    expect(clashes(drawn, column)).toEqual([]);
+  });
+
+  test('every recorded student series: the drawn first-point labels clear the phase names (Dilnoza’s 76% did not)', () => {
+    expect(studentCharts.length).toBeGreaterThan(2);
+    const [dilnoza] = studentCharts;
+    expect(phaseColumn(dilnoza, dilnoza.acara, 11.5).some((name) => overlaps(firstPointBoxes(dilnoza, 12).design, name))).toBe(true);
+    for (const chart of studentCharts) {
+      expect(clashes(firstPointBoxes(chart, 12).drawn, phaseColumn(chart, chart.acara, 11.5))).toEqual([]);
+    }
+  });
+
+  test('every other value label keeps the design’s centred place, as does a lone sitting', () => {
+    for (const chart of [classChart, ...studentCharts]) {
+      expect(chart.points.slice(1).every((point) => point.valueX === point.cx && point.valueAnchor === 'middle')).toBe(true);
+    }
+    expect(acaraChart(recordedOverall(t2Result('Jae-won'))).points[0]).toMatchObject({ valueX: 407, valueAnchor: 'middle' });
+    expect([classChart.phaseLabelX, studentCharts[0].phaseLabelX]).toEqual([114, 124]);
   });
 });
