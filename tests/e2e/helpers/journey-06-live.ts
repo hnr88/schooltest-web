@@ -142,6 +142,16 @@ export function reportStatedOveralls(report: string): number[] {
 }
 
 /**
+ * The document's "Overall change (precise)" cell for a C-4 delta. The producer
+ * renders that record SIGNED (student-export-document.ts, the same rule as the
+ * progress exports' `change()`): `+2`, `0`, `-43`. Only the presentation is
+ * formatted here — the number is still the one C-4 served.
+ */
+export function reportPreciseChange(delta: number): string {
+  return delta > 0 ? `+${delta}` : String(delta);
+}
+
+/**
  * Sign in as the journey teacher through the REAL form, then ASSERT the persona.
  *
  * The assertion is the point. The managed runner drives the project's SHARED

@@ -10,6 +10,7 @@ import {
   generateStudentReport,
   latestSittingSection,
   pickScoredSitting,
+  reportPreciseChange,
   reportSkillScore,
   reportStatedOveralls,
   signInAsJourneyTeacher,
@@ -139,10 +140,10 @@ test.describe('journey 06 — scoring to teacher report', () => {
           `generated report ${tile.skill} must equal C-4`,
         ).toBe(tile.domain_score === null ? null : String(tile.domain_score));
       }
-      // The growth it reports is the contract's, verbatim: the precise delta and
-      // the coarsened figure are both the server's, never re-derived here.
+      // Growth is the server's: the precise delta in the producer's signed format.
       if (view.overall.delta !== null) {
-        expect(report).toContain(`| Overall change (precise) | ${view.overall.delta} |`);
+        const precise = reportPreciseChange(view.overall.delta);
+        expect(report).toContain(`| Overall change (precise) | ${precise} |`);
         expect(report).toContain(`| Overall change (as reported) | ${view.overall.delta_display} |`);
       }
     }
