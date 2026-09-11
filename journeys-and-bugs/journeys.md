@@ -35,6 +35,17 @@ Click-tested end-to-end journeys. Status: ✅ verified (proof linked) / 🔄 fle
 - ✅ Console sweep — 24 routes, ~950 clicks, 24/24; resend-owner-invite 409 gated; logout
   403 storm (178 reqs) fixed; orphaned student links repaired.
 
+## Wave 2 verified (design-state + design journeys, 8 lanes green)
+
+- ✅ Loading states — skeleton fill/pulse/caption deltas fixed, measured. tests/proofs/ops-loading-audit/
+- ✅ Empty + no-match — tab tables use the design's plain block (:412-415); schools keep icon block; CTA 40px. tests/proofs/empty-states/
+- ✅ Load error + slow + flaky — error cards match :126-138/:243-252; recovery honest. tests/proofs/ops-design-states/
+- ✅ Offline + restricted + expired — verified pixel-exact (computed styles), no deltas. tests/proofs/ops-design-states/
+- ✅ SA design journeys — classes + teachers flows end-to-end, per-step design diffs; modal fields stacked, navy CTA, design copy. /tmp/wave2/01-41
+- ✅ Ops design journey — create→edit→invite→archive(typed)→restore→status page→recalc seats, 20 shots; typed-confirm label bug fixed (dropped school name). tests/proofs/ops-w2-journey/
+- ✅ Data honesty — 0 UI-vs-API count mismatches across 3 schools (permanent sweep spec committed).
+- ✅ Pixel residuals — dropdown 224/r16, tab rows 16px, jargon copy, SA h1s, badge tiles.
+
 ## Known open items (server/product-owned)
 - activate/trial unreachable by API (onboarding complete never written) — product decision.
 - student profile endpoint leaks numeric class.id → strict schema rejects (all profiles 500-parse).
