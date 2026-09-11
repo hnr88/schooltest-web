@@ -33,27 +33,11 @@ export interface VocabStrandMeanProps {
   mean: { average: number | null; assessed: number };
 }
 
-/** The Progress tab: reliable gains, needs support, phase spread, deferred chart. */
-export interface ProgressTabPanelProps {
-  rows: readonly RosterRow[];
-  /** The export BUTTON's route parameter — never read from; no query lives here. */
-  classDocumentId: string;
-}
-
-export interface ProgressAcaraSectionProps {
-  rows: readonly RosterRow[];
-}
-
-/** One top-gain row: the roster row wrapper, so the student is named beside the delta. */
-export interface ProgressMoverRowProps {
-  row: RosterRow;
-}
-
-/** Which ranked list of the Progress tab — a closed set, never a free string. */
-export type ProgressWatchVariant = 'gains' | 'support';
-
-/** The needs-support list: ranked wrapper rows from the pure layer, capped at 5. */
-export interface ProgressWatchListProps {
-  variant: ProgressWatchVariant;
-  rows: readonly RosterRow[];
-}
+// The Progress tab's props live beside its view types; re-exported so the barrel's type exports resolve.
+export type {
+  ProgressAcaraSectionProps,
+  ProgressMoverRowProps,
+  ProgressTabPanelProps,
+  ProgressWatchListProps,
+  ProgressWatchVariant,
+} from '@/modules/teacher/types/progress-tab.types';

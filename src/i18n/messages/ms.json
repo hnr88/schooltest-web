@@ -6080,7 +6080,53 @@
         "footerSittings": "Dijana daripada diagnostik bacaan {name} pada {date}. {count, plural, one {# sesi} other {# sesi}} sejak {since}. Untuk kegunaan guru dan keluarga."
       }
     },
-    "progress": {},
+    "progress": {
+      "title": "Kemajuan kelas",
+      "subtitle": "{count, plural, =0 {Belum ada sesi yang diskor.} other {Pergerakan kelas merentas # sesi.}}",
+      "tiles": {
+        "meanShift": {
+          "label": "Anjakan purata",
+          "sub": "Sesi sebelumnya ke sesi terkini"
+        },
+        "gained": {
+          "label": "Meningkat",
+          "sub": "{threshold} mata atau lebih"
+        },
+        "held": {
+          "label": "Kekal stabil",
+          "sub": "Dalam lingkungan {threshold} mata"
+        },
+        "slipped": {
+          "label": "Menurun",
+          "sub": "Turun {threshold} mata atau lebih"
+        }
+      },
+      "points": "{value} mata",
+      "percent": "{value}%",
+      "chart": {
+        "title": "Bacaan kelas dari semasa ke semasa",
+        "description": "Purata keseluruhan kelas mengikut sesi. Jalur berlorek ialah empat tahap perkembangan membaca ACARA.",
+        "label": "Purata kelas mengikut sesi, diplot berbanding empat tahap perkembangan membaca ACARA",
+        "legendLabel": "Tahap perkembangan membaca ACARA",
+        "summary": "Purata kelas {from}% → {to}% merentas {count} sesi ({difference} mata).",
+        "summarySingle": "Purata kelas {value}% daripada satu sesi setakat ini.",
+        "summaryEmpty": "Belum ada sesi yang diskor."
+      },
+      "top": {
+        "title": "Kemajuan tertinggi",
+        "empty": "Belum ada peningkatan yang boleh dipercayai."
+      },
+      "watch": {
+        "title": "Murid untuk diperhatikan",
+        "empty": "Belum ada murid untuk diperhatikan."
+      },
+      "subskills": {
+        "title": "Pergerakan subkemahiran dari semasa ke semasa",
+        "description": "Purata kelas bagi setiap subkemahiran membaca merentas sesi, yang paling lemah dahulu",
+        "now": "kini {value}%"
+      },
+      "footnote": "Setiap perubahan murid di sini ialah perbandingan pelayan sendiri antara sesi terkini murid itu dengan sesi sebelumnya. Jika sesuatu pasangan tidak dapat dibandingkan, tiada perubahan ditunjukkan langsung. Purata kelas dari semasa ke semasa ialah purata biasa bagi sesi yang diskor dalam rekod."
+    },
     "insights": {},
     "familyReports": {
       "title": "Laporan keluarga",

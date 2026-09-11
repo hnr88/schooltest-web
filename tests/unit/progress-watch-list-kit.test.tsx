@@ -1,85 +1,77 @@
-import { act } from 'react';
+import { act, type ReactElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, describe, expect, test, vi } from 'vitest';
+import { NextIntlClientProvider } from 'next-intl';
+import { afterEach, describe, expect, test } from 'vitest';
 
+import enMessages from '@/i18n/messages/en.json';
 import { ProgressWatchList } from '@/modules/teacher/components/ProgressWatchList';
-import type { RosterRow } from '@/modules/results/types/roster.types';
+import { t2Roster } from '@/modules/teacher/lib/v2/__fixtures__/t2';
+import { classProgress } from '@/modules/teacher/lib/v2/class-progress';
 
-// ops/34 regression — the Progress tab crashed into the app error boundary the
-// moment a scored roster rendered the watch lists: `DirectoryTable` derives row
-// identity through `resolveRowKey`, which THROWS when a row has neither
-// `getRowKey` nor `getRowTarget`, and this component initially passed neither.
-// Pins the fix: a scored roster renders through the kit without throwing.
+// The Class progress list cards (Teacher Portal v2 `:923–952`), rendered from the RECORDED
+// t2 roster through the view model: one row per mover in the view model's order, first
+// name, latest score, the server's step or "steady" — and the words, never a filler row,
+// when a list is empty.
 
 (globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
 
-vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string, values?: Record<string, unknown>) => {
-    if (values === undefined) return key;
-    return `${key}:${JSON.stringify(values)}`;
-  },
-  useFormatter: () => ({ number: (value: number) => String(value) }),
-}));
-
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
-  useSearchParams: () => new URLSearchParams(),
-}));
-
-vi.mock('@/i18n/navigation', () => ({
-  useRouter: () => ({ push: vi.fn() }),
-  usePathname: () => '/dashboard/results/x',
-}));
-
-vi.mock('@/modules/dashboard', () => ({
-  useDebouncedValue: (value: unknown) => value,
-}));
-
-function rosterRow(name: string, score: number): RosterRow {
-  return {
-    student: { document_id: name, name, initials: name.slice(0, 2), eald_flag: false },
-    result: {
-      overall: { domain_score: score, delta: 5, delta_display: `+${5}` },
-      acara_phase: 'Beginning',
-    },
-  } as unknown as RosterRow;
-}
-
-const SCORED_ROWS: readonly RosterRow[] = [rosterRow('Ana', 55), rosterRow('Ben', 70)];
+const view = classProgress(t2Roster);
 
 let root: Root | null = null;
-function mount(element: React.ReactElement): void {
+let host: HTMLDivElement | null = null;
+
+function render(ui: ReactElement): HTMLDivElement {
   const container = document.createElement('div');
   document.body.appendChild(container);
+  host = container;
   root = createRoot(container);
   act(() => {
-    root?.render(element);
+    root?.render(
+      <NextIntlClientProvider locale="en" messages={enMessages} timeZone="UTC">
+        {ui}
+      </NextIntlClientProvider>,
+    );
   });
+  return container;
 }
 
 afterEach(() => {
-  act(() => {
-    root?.unmount();
-  });
+  act(() => root?.unmount());
+  host?.remove();
   root = null;
-  document.body.innerHTML = '';
+  host = null;
 });
 
-describe('ProgressWatchList on the directory kit (ops/34)', () => {
-  test('a scored roster renders both movers through the kit without crashing', () => {
-    let thrown: unknown = null;
-    try {
-      mount(<ProgressWatchList variant="gains" rows={SCORED_ROWS} />);
-    } catch (error) {
-      thrown = error;
-    }
-    expect(
-      thrown,
-      `ProgressWatchList threw while rendering scored rows: ${
-        thrown instanceof Error ? thrown.message : String(thrown)
-      }`,
-    ).toBeNull();
-    expect(document.querySelector('[data-slot="progress-watch-list"]')).not.toBeNull();
-    expect(document.querySelectorAll('[data-slot="progress-mover"]')).toHaveLength(2);
+const texts = (container: HTMLElement, slot: string) =>
+  Array.from(container.querySelectorAll(`[data-slot="${slot}"]`), (node) => node.textContent);
+
+const moverIds = (container: HTMLElement) =>
+  Array.from(container.querySelectorAll('[data-slot="progress-mover"]'), (node) => node.getAttribute('data-student-id'));
+
+describe('ProgressWatchList — recorded t2 roster', () => {
+  test('Top progress: the reliable gains in order, a signed step then the server’s "steady"', () => {
+    const list = render(<ProgressWatchList variant="gains" movers={view.topProgress} />);
+    expect(list.querySelector('h3')?.textContent).toBe('Top progress');
+    expect(moverIds(list)).toEqual(view.topProgress.map((mover) => mover.studentDocumentId));
+    expect(texts(list, 'progress-mover-name')).toEqual(['Rosa', 'Amara']);
+    expect(texts(list, 'progress-mover-score')).toEqual(['45%', '42%']);
+    expect(texts(list, 'progress-mover-delta')).toEqual(['+5', 'steady']);
+  });
+
+  test('Students to watch: the reliable decline first, printed with a true minus', () => {
+    const list = render(<ProgressWatchList variant="support" movers={view.watch} />);
+    expect(list.querySelector('h3')?.textContent).toBe('Students to watch');
+    expect(moverIds(list)).toEqual(view.watch.map((mover) => mover.studentDocumentId));
+    expect(texts(list, 'progress-mover-name')).toEqual(['Dilnoza', 'Tenzin', 'Jae-won']);
+    const [decline] = view.watch;
+    expect(decline.growth.kind).toBe('down');
+    expect(list.querySelector('[data-slot="progress-mover"]')?.getAttribute('data-growth')).toBe('down');
+    expect(texts(list, 'progress-mover-delta')[0]).toBe(`−${Math.abs(decline.growth.points ?? Number.NaN)}`);
+  });
+
+  test('an empty list (the recorded roster with every row removed) says so and draws no row', () => {
+    const list = render(<ProgressWatchList variant="gains" movers={classProgress(t2Roster.slice(0, 0)).topProgress} />);
+    expect(list.querySelectorAll('[data-slot="progress-mover"]')).toHaveLength(0);
+    expect(list.querySelector('[data-slot="progress-watch-empty"]')?.textContent).toBe('No reliable gains yet.');
   });
 });

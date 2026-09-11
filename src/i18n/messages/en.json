@@ -6070,7 +6070,53 @@
         "footerSittings": "Generated from {name} reading diagnostics on {date}. {count, plural, one {# sitting} other {# sittings}} since {since}. For teacher and family use."
       }
     },
-    "progress": {},
+    "progress": {
+      "title": "Class progress",
+      "subtitle": "{count, plural, =0 {No scored sittings yet.} one {Class movement across # sitting.} other {Class movement across # sittings.}}",
+      "tiles": {
+        "meanShift": {
+          "label": "Mean shift",
+          "sub": "Previous sitting to latest"
+        },
+        "gained": {
+          "label": "Gained",
+          "sub": "{threshold} points or more"
+        },
+        "held": {
+          "label": "Held steady",
+          "sub": "Within {threshold} points"
+        },
+        "slipped": {
+          "label": "Slipped",
+          "sub": "{threshold} points or more down"
+        }
+      },
+      "points": "{value} pts",
+      "percent": "{value}%",
+      "chart": {
+        "title": "Class reading over time",
+        "description": "Overall class average by sitting. Shaded bands are the four ACARA reading progressions.",
+        "label": "Class average by sitting, plotted against the four ACARA reading progressions",
+        "legendLabel": "ACARA reading progressions",
+        "summary": "Class average {from}% → {to}% across {count} sittings ({difference} pts).",
+        "summarySingle": "Class average {value}% from one sitting so far.",
+        "summaryEmpty": "No scored sittings yet."
+      },
+      "top": {
+        "title": "Top progress",
+        "empty": "No reliable gains yet."
+      },
+      "watch": {
+        "title": "Students to watch",
+        "empty": "No students to watch yet."
+      },
+      "subskills": {
+        "title": "Subskill movement over time",
+        "description": "Class average for each reading subskill across the sittings, weakest first",
+        "now": "now {value}%"
+      },
+      "footnote": "Every student change here is the server's own comparison of their latest sitting with the one before it. Where a pair cannot be compared, no change is shown at all. Class averages over time are plain averages of the scored sittings on record."
+    },
     "insights": {},
     "familyReports": {
       "title": "Family reports",

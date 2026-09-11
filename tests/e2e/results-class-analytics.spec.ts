@@ -11,12 +11,12 @@ import { en } from './helpers/teacher-rail';
 // payload served by route interception (same contract shape as the roster spec).
 //
 // Done-when covered here: switching tabs issues NO new request (both analytics
-// tabs consume the ONE Screen A payload); the class progress chart renders its
-// honest deferred placeholder; and no retired `insights`/`progress` result URL
-// is ever requested — the gate that unblocks the api-side route retirement
-// (task 24).
+// tabs consume the ONE Screen A payload); the class progress chart plots no
+// sitting the payload does not carry; and no retired `insights`/`progress`
+// result URL is ever requested — the gate that unblocks the api-side route
+// retirement (task 24).
 
-const chartTitle = cat(en, 'Teacher.results.progress.chartDeferredTitle');
+const noSittings = cat(en, 'TeacherPortal.progress.chart.summaryEmpty');
 
 const FIXTURE = JSON.parse(
   readFileSync(path.resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json'), 'utf8'),
@@ -97,13 +97,14 @@ test.describe('task 34 — class analytics (Screen B)', () => {
     expect(rosterRequests, 'one roster read for all four tab visits').toBe(1);
   });
 
-  test('the class progress chart is an honest deferred placeholder', async () => {
+  test('the class progress chart plots no sitting the payload does not carry', async () => {
     await page.getByRole('tab').filter({ hasText: cat(en, 'Teacher.results.tabs.progress') }).click();
-    const placeholder = page.locator('[data-slot="progress-chart-placeholder"]');
-    await expect(placeholder).toBeVisible();
-    await expect(placeholder).toContainText(chartTitle);
-    // No fabricated chart beside it: no SVG/canvas chart lives on this tab.
-    await expect(page.locator('[data-slot="class-progress"] svg.chart, [data-slot="class-progress"] canvas')).toHaveCount(0);
+    // The fixture rows carry no history: the ACARA bands and axes draw, and not one
+    // point, line value or class average is invented to fill them.
+    const chart = page.locator('[data-slot="class-progress-chart"]');
+    await expect(chart).toBeVisible();
+    await expect(chart.locator('[data-slot="class-chart-point"]')).toHaveCount(0);
+    await expect(page.locator('[data-slot="progress-summary"]')).toHaveText(noSittings);
   });
 
   test('the ranked lists render from the payload — reliable gains and needs support', async () => {
@@ -127,14 +128,14 @@ test.describe('task 34 — class analytics (Screen B)', () => {
     expect(retiredRequests, JSON.stringify(retiredRequests)).toEqual([]);
   });
 
-  // SCORING/10 proof capture: the progress tab (chart placeholder — the honest
-  // deferred state, D-SC-06's own refusal to fake it) at 1440×900.
+  // SCORING/10 proof capture: the progress tab (the chart with no sitting to plot —
+  // D-SC-06's own refusal to fake one) at 1440×900.
   test('capture: the class progress chart region at 1440×900', async () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const shots = path.resolve(process.cwd(), '../mvp/scoring/proof/shots');
     mkdirSync(shots, { recursive: true });
     await page.getByRole('tab').filter({ hasText: cat(en, 'Teacher.results.tabs.progress') }).click();
-    await expect(page.locator('[data-slot="progress-chart-placeholder"]')).toBeVisible();
+    await expect(page.locator('[data-slot="class-progress-chart"]')).toBeVisible();
     await page.screenshot({ path: path.join(shots, '10-class-progress-chart.png'), fullPage: false });
   });
 });

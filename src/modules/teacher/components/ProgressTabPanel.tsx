@@ -1,84 +1,74 @@
 'use client';
 
-import { LineChart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { EmptyState } from '@/modules/design-system';
 import { ProgressAcaraSection } from '@/modules/teacher/components/ProgressAcaraSection';
+import { ProgressSubskillTrends } from '@/modules/teacher/components/ProgressSubskillTrends';
 import { ProgressWatchList } from '@/modules/teacher/components/ProgressWatchList';
-import { TeacherExportPanel } from '@/modules/teacher/components/TeacherExportPanel';
-import { needsSupport, topGains } from '@/modules/results/lib/class-analytics';
-import { resultViewsOf } from '@/modules/results/lib/class-aggregation';
-import type { RosterRow } from '@/modules/results/types/roster.types';
-import type { ProgressTabPanelProps } from '@/modules/teacher/types/class-analytics.types';
+import { KpiCard } from '@/modules/teacher/components/v2/KpiCard';
+import { SectionCard } from '@/modules/teacher/components/v2/SectionCard';
+import { PROGRESS_I18N_NAMESPACE } from '@/modules/teacher/constants/progress-tab.constants';
+import { PROGRESS_TILE_THRESHOLD } from '@/modules/teacher/constants/v2-thresholds.constants';
+import { progressTabView } from '@/modules/teacher/lib/progress-tab';
+import type { ProgressTabPanelProps, ProgressTileDisplay } from '@/modules/teacher/types/progress-tab.types';
 
-// The Progress tab (task 34, dashboard §3/D2). Everything renders from the ONE
-// Screen A roster payload — the panel issues no read, so switching tabs never
-// re-requests. Top reliable gains (delta desc, delta_reliable, max 5), needs
-// support (reliable declines first, then lowest score, max 5), the ACARA phase
-// spread over the WHOLE roster, and the class progress chart's honest
-// placeholder: per-class history is not served by the roster read, and a fake
-// chart is worse than a stated gap.
+// Class progress (`Teacher Portal v2.dc.html:873–1002`), from the ONE roster read the class
+// detail holds: the tiles and both lists from the server's own deltas, the chart and the
+// subskill sparklines from the class average of each sitting the roster history really
+// holds. The design's "Subskill mastery shift" table is not drawn: history carries scores,
+// not bands, per sitting, so nothing true could fill it.
 function ProgressTabPanel({ rows, classDocumentId }: ProgressTabPanelProps) {
-  const t = useTranslations('Teacher.results.progress');
-  const tExport = useTranslations('Teacher.results.export');
-  const views = resultViewsOf(rows);
-
-  // The pure layers return SCORED views in order; the wrapper carries the name.
-  const rowByStudent = new Map(rows.map((row) => [row.student.document_id, row]));
-  const asRows = (picked: typeof views): RosterRow[] =>
-    picked.flatMap((view) => {
-      const row = rowByStudent.get(view.student_document_id);
-      return row ? [row] : [];
-    });
-
-  const gains = asRows(topGains(views));
-  const support = asRows(needsSupport(views));
+  const t = useTranslations(PROGRESS_I18N_NAMESPACE);
+  const tKit = useTranslations('TeacherPortal.kit');
+  const view = progressTabView(rows);
+  const tileValue = (tile: ProgressTileDisplay) => {
+    if (tile.text === null) return tKit('noValue');
+    return tile.points ? t('points', { value: tile.text }) : tile.text;
+  };
 
   return (
-    <div data-slot="class-progress" data-status={views.length === 0 ? 'empty' : 'ready'} className="flex flex-col gap-6">
-      {views.length === 0 ? (
-        <EmptyState
-          icon={LineChart}
-          tone="brand"
-          title={t('emptyTitle')}
-          description={t('emptyDescription')}
-        />
-      ) : (
-        <>
-          <ProgressWatchList variant="gains" rows={gains} />
-          <ProgressWatchList variant="support" rows={support} />
-          <ProgressAcaraSection rows={rows} />
-
-          {/*
-            DEFERRED, stated as a gap: the class progress chart needs per-class
-            history, which the roster read deliberately omits. A placeholder that
-            names the missing input is honest; a fabricated chart is not.
-          */}
-          <div
-            data-slot="progress-chart-placeholder"
-            aria-labelledby="progress-chart-heading"
-            className="flex flex-col items-center gap-2 rounded-card border border-dashed border-border bg-surface-inset px-6 py-8 text-center"
-          >
-            <LineChart aria-hidden="true" className="size-6 text-muted-foreground" />
-            <h2 id="progress-chart-heading" className="text-body font-semibold text-foreground">
-              {t('chartDeferredTitle')}
-            </h2>
-            <p className="max-w-prose text-meta text-balance text-muted-foreground">
-              {t('chartDeferredDescription')}
-            </p>
-          </div>
-
-          <TeacherExportPanel
-            request={{ kind: 'progress', classDocumentId }}
-            headingId="class-progress-export-heading"
-            title={tExport('progressTitle')}
-            description={tExport('progressDescription')}
-            buttonLabel={tExport('progressButton')}
-            footnote={tExport('progressFootnote')}
+    <div
+      data-slot="class-progress"
+      data-status={view.status}
+      data-sittings={view.sittings}
+      data-class-id={classDocumentId}
+      className="flex flex-col gap-[18px] leading-[normal]"
+    >
+      <div>
+        <h2 className="text-[20px] font-semibold text-navy-900">{t('title')}</h2>
+        <p className="mt-1.5 text-[13.5px] text-[#6B7280]">{t('subtitle', { count: view.sittings })}</p>
+      </div>
+      <div data-slot="progress-tiles" className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-4">
+        {view.tiles.map((tile) => (
+          <KpiCard
+            key={tile.id}
+            variant="progress"
+            tone={tile.tone}
+            label={t(`tiles.${tile.id}.label`)}
+            value={
+              <span data-slot="progress-tile-value" data-tile={tile.id}>
+                {tileValue(tile)}
+              </span>
+            }
+            sub={t(`tiles.${tile.id}.sub`, { threshold: PROGRESS_TILE_THRESHOLD })}
           />
-        </>
-      )}
+        ))}
+      </div>
+      <SectionCard
+        aria-labelledby="progress-chart-heading"
+        padding="none"
+        className="gap-0 rounded-[12px] px-6 py-[22px]"
+      >
+        <div className="flex flex-wrap items-stretch gap-6">
+          <ProgressAcaraSection chart={view.chart} summary={view.summary} />
+          <div className="flex min-w-[min(230px,100%)] flex-[1_1_240px] flex-col gap-3.5">
+            <ProgressWatchList variant="gains" movers={view.topProgress} />
+            <ProgressWatchList variant="support" movers={view.watch} />
+          </div>
+        </div>
+      </SectionCard>
+      {view.trends.length > 0 ? <ProgressSubskillTrends trends={view.trends} /> : null}
+      <p className="max-w-[90ch] text-[13px] leading-[1.65] text-[#6B7280]">{t('footnote')}</p>
     </div>
   );
 }

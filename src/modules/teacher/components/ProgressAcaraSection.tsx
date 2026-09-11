@@ -2,60 +2,48 @@
 
 import { useTranslations } from 'next-intl';
 
-import { ProgressBar } from '@/modules/design-system';
-import { phaseSpread } from '@/modules/results/lib/class-aggregation';
-import type { ProgressAcaraSectionProps } from '@/modules/teacher/types/class-analytics.types';
+import { ProgressClassChart } from '@/modules/teacher/components/ProgressClassChart';
+import { PROGRESS_I18N_NAMESPACE } from '@/modules/teacher/constants/progress-tab.constants';
+import { VIEW_MODEL_I18N_NAMESPACE } from '@/modules/teacher/constants/v2-i18n.constants';
+import type { ProgressAcaraSectionProps } from '@/modules/teacher/types/progress-tab.types';
 
-// The ACARA phase spread (task 34, dashboard §3/D2): one bar per bucket over
-// the WHOLE roster, the count printed on every row. The null bucket — students
-// with no measured phase, including those with no official result yet — is its
-// own labelled row (D17), never folded into a named phase.
-//
-// NO ACARA band guide-lines anywhere (open-risk R2c): these bars count
-// students, they do not place scores on a phase axis, and the band cuts live on
-// posteriors this surface never sees.
-function ProgressAcaraSection({ rows }: ProgressAcaraSectionProps) {
-  const t = useTranslations('Teacher.results.progress');
-  const spread = phaseSpread(rows);
-  const total = rows.length;
+// "Class reading over time" (`Teacher Portal v2.dc.html:893–921`): title, the ACARA
+// legend (Beginning first), the banded chart and the class-average sentence under it.
+function ProgressAcaraSection({ chart, summary }: ProgressAcaraSectionProps) {
+  const t = useTranslations(PROGRESS_I18N_NAMESPACE);
+  const tVm = useTranslations(VIEW_MODEL_I18N_NAMESPACE);
 
   return (
-    <section
-      data-slot="progress-acara"
-      aria-labelledby="progress-acara-heading"
-      className="flex flex-col gap-4 rounded-card bg-card px-6 py-6 shadow-sm sm:px-7.5"
-    >
-      <div className="flex flex-col gap-1">
-        <h2 id="progress-acara-heading" className="text-panel-title font-bold text-foreground">
-          {t('phaseSpreadTitle')}
-        </h2>
-        <p className="text-meta text-muted-foreground">{t('phaseSpreadCaption')}</p>
-      </div>
-
-      <ul className="flex flex-col gap-3">
-        {spread.map((bucket) => (
+    <div data-slot="progress-acara" className="min-w-[min(300px,100%)] flex-[2_1_420px]">
+      <h3 id="progress-chart-heading" className="text-[15px] font-semibold text-navy-900">
+        {t('chart.title')}
+      </h3>
+      <p className="mt-[3px] text-[12.5px] text-[#6B7280]">{t('chart.description')}</p>
+      <ul aria-label={t('chart.legendLabel')} className="mt-3 flex flex-wrap items-center gap-4">
+        {chart.legend.map((band) => (
           <li
-            key={bucket.phase ?? 'unmeasured'}
-            data-slot="progress-phase-row"
-            data-phase={bucket.phase ?? 'unmeasured'}
-            className="flex flex-col gap-1"
+            key={band.phase}
+            className="inline-flex items-center gap-[7px] text-[12px] font-semibold text-[#4B5563]"
           >
-            <div className="flex items-baseline justify-between gap-3">
-              <span className="min-w-0 text-body-sm font-medium text-foreground">
-                {bucket.phase === null ? t('phaseUnmeasured') : bucket.phase}
-              </span>
-              <span className="shrink-0 text-meta font-semibold text-muted-foreground tabular-nums">
-                {t('phaseCount', { count: bucket.count, total })}
-              </span>
-            </div>
-            <ProgressBar
-              value={total === 0 ? 0 : (bucket.count / total) * 100}
-              ariaLabel={bucket.phase === null ? t('phaseUnmeasured') : bucket.phase}
+            <span
+              aria-hidden="true"
+              className="size-3 rounded-[3px] border border-[rgba(14,35,80,0.08)]"
+              style={{ backgroundColor: band.fill }}
             />
+            {tVm(band.labelKey)}
           </li>
         ))}
       </ul>
-    </section>
+      <div className="mt-3.5">
+        <ProgressClassChart chart={chart} />
+      </div>
+      <p
+        data-slot="progress-summary"
+        className="mt-3.5 border-t border-[#ECEEF2] pt-3.5 text-[13px] font-medium text-[#4B5563]"
+      >
+        {t(summary.key, summary.values)}
+      </p>
+    </div>
   );
 }
 

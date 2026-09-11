@@ -6089,7 +6089,53 @@
         "footerSittings": "Tạo từ kết quả chẩn đoán đọc của {name} vào {date}. {count, plural, other {# lượt làm bài}} kể từ {since}. Dành cho giáo viên và gia đình."
       }
     },
-    "progress": {},
+    "progress": {
+      "title": "Tiến bộ của lớp",
+      "subtitle": "{count, plural, =0 {Chưa có lần làm bài nào được chấm.} other {Sự thay đổi của lớp qua # lần làm bài.}}",
+      "tiles": {
+        "meanShift": {
+          "label": "Thay đổi trung bình",
+          "sub": "Từ lần trước đến lần gần nhất"
+        },
+        "gained": {
+          "label": "Tăng",
+          "sub": "Từ {threshold} điểm trở lên"
+        },
+        "held": {
+          "label": "Giữ ổn định",
+          "sub": "Trong phạm vi {threshold} điểm"
+        },
+        "slipped": {
+          "label": "Giảm",
+          "sub": "Giảm từ {threshold} điểm trở lên"
+        }
+      },
+      "points": "{value} điểm",
+      "percent": "{value}%",
+      "chart": {
+        "title": "Kỹ năng đọc của lớp theo thời gian",
+        "description": "Điểm trung bình chung của lớp theo từng lần làm bài. Các dải tô màu là bốn giai đoạn phát triển kỹ năng đọc của ACARA.",
+        "label": "Điểm trung bình của lớp theo từng lần làm bài, đặt trên bốn giai đoạn phát triển kỹ năng đọc của ACARA",
+        "legendLabel": "Các giai đoạn phát triển kỹ năng đọc của ACARA",
+        "summary": "Trung bình lớp {from}% → {to}% qua {count} lần làm bài ({difference} điểm).",
+        "summarySingle": "Trung bình lớp {value}% từ một lần làm bài cho đến nay.",
+        "summaryEmpty": "Chưa có lần làm bài nào được chấm."
+      },
+      "top": {
+        "title": "Tiến bộ nhiều nhất",
+        "empty": "Chưa có mức tăng đáng tin cậy nào."
+      },
+      "watch": {
+        "title": "Học sinh cần theo dõi",
+        "empty": "Chưa có học sinh nào cần theo dõi."
+      },
+      "subskills": {
+        "title": "Thay đổi kỹ năng thành phần theo thời gian",
+        "description": "Điểm trung bình của lớp cho từng kỹ năng đọc thành phần qua các lần làm bài, yếu nhất trước",
+        "now": "hiện {value}%"
+      },
+      "footnote": "Mọi thay đổi của học sinh ở đây đều do máy chủ tự so sánh lần làm bài gần nhất của em với lần trước đó. Khi không thể so sánh một cặp, sẽ không hiển thị thay đổi nào. Điểm trung bình của lớp theo thời gian là trung bình cộng đơn giản của các lần làm bài đã chấm được ghi nhận."
+    },
     "insights": {},
     "familyReports": {
       "title": "Báo cáo gia đình",

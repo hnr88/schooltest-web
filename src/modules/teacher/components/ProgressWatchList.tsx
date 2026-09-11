@@ -1,124 +1,47 @@
 'use client';
 
-import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
-import {
-  DirectoryTable,
-  applyClientDirectoryMode,
-  useDirectoryState,
-  type DirectoryLabels,
-  type DirectoryQueryStatus,
-  type DirectorySortDef,
-} from '@/modules/directory';
+import { cn } from '@/lib/utils';
 import { ProgressMoverRow } from '@/modules/teacher/components/ProgressMoverRow';
-import type { ProgressWatchListProps } from '@/modules/teacher/types/class-analytics.types';
+import { PROGRESS_I18N_NAMESPACE, PROGRESS_WATCH_VARIANT } from '@/modules/teacher/constants/progress-tab.constants';
+import type { ProgressWatchListProps } from '@/modules/teacher/types/progress-tab.types';
 
-// One ranked list of the Progress tab (task 34, dashboard §3) now rendered by
-// the shared directory kit in `rows` layout (ops/34): search by student, a
-// sort whose default `reason` value carries NO comparator — so it shows the
-// pure layer's own ranking, which IS the watch reason — plus a name sort. It
-// is a read list: no selection, no bulk bar, no row actions.
-//
-// An empty array is stated in words — the kit's empty arm renders the same
-// per-variant copy this list always used, never a swallowed error and never a
-// gap filled to make the list look inhabited.
-//
-// The Progress tab hosts TWO kit lists (gains + support), so this instance
-// writes its own prefixed slice of the query string (`watch-gains-q=`…).
-const NO_OP_QUERY: DirectoryQueryStatus = {
-  isPending: false,
-  isError: false,
-  isFetching: false,
-  refetch: () => {},
-};
-
-function ProgressWatchList({ variant, rows }: ProgressWatchListProps) {
-  const t = useTranslations('Teacher.results.progress');
-
-  const sorts = useMemo<readonly DirectorySortDef[]>(
-    () => [
-      { value: 'reason', label: t(variant === 'gains' ? 'mostImproved' : 'needsAttention') },
-      { value: 'name:asc', label: t('sortNameA2z') },
-    ],
-    [t, variant],
-  );
-
-  // The Progress tab hosts TWO kit lists (gains + support), so this instance
-  // writes its own prefixed slice of the query string (`watch-gains-q=`…) AND
-  // names its sibling's keys in `preserveParams` — prefixing alone solves name
-  // collision, but each write builds a fresh query string, so without the
-  // preserve list interacting with one list would silently reset the other.
-  const prefix = variant === 'gains' ? 'watch-gains-' : 'watch-support-';
-  const siblingPrefix = variant === 'gains' ? 'watch-support-' : 'watch-gains-';
-
-  const state = useDirectoryState({
-    filters: [],
-    sorts,
-    defaultSort: 'reason',
-    mode: 'client',
-    paramPrefix: prefix,
-    preserveParams: [`${siblingPrefix}q`, `${siblingPrefix}sort`, `${siblingPrefix}page`],
-  });
-
-  const client = applyClientDirectoryMode(rows, state.params, {
-    searchText: (row) => [row.student.name],
-    comparators: {
-      'name:asc': (a, b) => a.student.name.localeCompare(b.student.name),
-    },
-  });
-
-  const labels = useMemo<Partial<DirectoryLabels>>(
-    () => ({
-      searchPlaceholder: t('searchPlaceholder'),
-      searchLabel: t('searchLabel'),
-      sortLabel: t('sortLabel'),
-      clearFilters: t('clearFilters'),
-      showingCount: ({ showing, total }) => t('showingCount', { showing, total }),
-      pageCount: ({ page, pageCount: pages }) => t('pageCount', { page, pageCount: pages }),
-      paginationLabel: t('paginationLabel'),
-      previous: t('previous'),
-      next: t('next'),
-      emptyNoneTitle: t(variant === 'gains' ? 'topGainsEmpty' : 'needsSupportEmpty'),
-      emptyNoneDescription: t(variant === 'gains' ? 'gainsEmptyHint' : 'supportEmptyHint'),
-      loadingLabel: t('loadingLabel'),
-      errorTitle: t('errorTitle'),
-      errorDescription: t('errorDescription'),
-      retry: t('retry'),
-    }),
-    [t, variant],
-  );
+// Top progress / Students to watch (`Teacher Portal v2.dc.html:923–952`): a white card of
+// at most three movers the view model ranked from the server's own deltas. An empty
+// list says so in words; nobody is added to fill it.
+function ProgressWatchList({ variant, movers }: ProgressWatchListProps) {
+  const t = useTranslations(PROGRESS_I18N_NAMESPACE);
+  const skin = PROGRESS_WATCH_VARIANT[variant];
+  const Icon = skin.icon;
+  const headingId = `progress-watch-${variant}`;
 
   return (
-    <div
+    <section
       data-slot="progress-watch-list"
       data-variant={variant}
-      aria-labelledby={`progress-watch-${variant}`}
-      role="group"
-      className="flex flex-col gap-2"
+      aria-labelledby={headingId}
+      className="rounded-[11px] border border-[#ECEEF2] bg-white px-[18px] py-4"
     >
-      <h3 id={`progress-watch-${variant}`} className="text-base font-semibold text-foreground">
-        {t(variant === 'gains' ? 'topGainsTitle' : 'needsSupportTitle')}
+      <h3 id={headingId} className="flex items-center gap-2 text-[13px] font-semibold text-navy-900">
+        <Icon aria-hidden="true" strokeWidth={2} className={cn('size-[15px] flex-none', skin.iconClass)} />
+        {t(skin.titleKey)}
       </h3>
-
-      <DirectoryTable
-        state={state}
-        query={NO_OP_QUERY}
-        rows={client.rows}
-        meta={client.meta}
-        filters={[]}
-        sorts={sorts}
-        pagination="none"
-        layout="rows"
-        renderRow={(row) => <ProgressMoverRow row={row} />}
-        getRowKey={(row) => row.student.document_id}
-        labels={labels}
-      />
-
-      {variant === 'support' && rows.length > 0 ? (
-        <p className="text-meta text-balance text-muted-foreground">{t('needsAttentionNote')}</p>
-      ) : null}
-    </div>
+      {movers.length === 0 ? (
+        <p
+          data-slot="progress-watch-empty"
+          className="mt-2.5 border-t border-[#F3F4F6] pt-2 text-[12.5px] text-[#6B7280]"
+        >
+          {t(skin.emptyKey)}
+        </p>
+      ) : (
+        <ul className="mt-2.5 flex flex-col">
+          {movers.map((mover) => (
+            <ProgressMoverRow key={mover.studentDocumentId} mover={mover} />
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
 

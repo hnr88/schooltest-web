@@ -6080,7 +6080,53 @@
         "footerSittings": "{date}에 {name} 읽기 진단 결과로 생성되었습니다. {since} 이후 {count, plural, other {#회 응시}}. 교사 및 가정용입니다."
       }
     },
-    "progress": {},
+    "progress": {
+      "title": "학급 향상도",
+      "subtitle": "{count, plural, =0 {아직 채점된 응시 회차가 없습니다.} other {#회 응시에 걸친 학급의 변화입니다.}}",
+      "tiles": {
+        "meanShift": {
+          "label": "평균 변화",
+          "sub": "직전 응시 대비 최근 응시"
+        },
+        "gained": {
+          "label": "향상",
+          "sub": "{threshold}점 이상 상승"
+        },
+        "held": {
+          "label": "유지",
+          "sub": "{threshold}점 이내"
+        },
+        "slipped": {
+          "label": "하락",
+          "sub": "{threshold}점 이상 하락"
+        }
+      },
+      "points": "{value}점",
+      "percent": "{value}%",
+      "chart": {
+        "title": "시간에 따른 학급 읽기",
+        "description": "응시 회차별 학급 전체 평균입니다. 음영 구간은 ACARA 읽기 발달 단계 네 가지입니다.",
+        "label": "응시 회차별 학급 평균을 ACARA 읽기 발달 단계 네 가지와 함께 나타낸 그래프",
+        "legendLabel": "ACARA 읽기 발달 단계",
+        "summary": "{count}회 응시 동안 학급 평균 {from}% → {to}% ({difference}점).",
+        "summarySingle": "지금까지 1회 응시, 학급 평균 {value}%.",
+        "summaryEmpty": "아직 채점된 응시 회차가 없습니다."
+      },
+      "top": {
+        "title": "최고 향상",
+        "empty": "아직 신뢰할 만한 향상이 없습니다."
+      },
+      "watch": {
+        "title": "주의 깊게 볼 학생",
+        "empty": "아직 주의 깊게 볼 학생이 없습니다."
+      },
+      "subskills": {
+        "title": "시간에 따른 하위 기능 변화",
+        "description": "응시 회차에 걸친 읽기 하위 기능별 학급 평균, 약한 순",
+        "now": "현재 {value}%"
+      },
+      "footnote": "여기에 표시된 학생별 변화는 모두 서버가 각 학생의 최근 응시를 직전 응시와 직접 비교한 결과입니다. 비교할 수 없는 경우에는 변화를 전혀 표시하지 않습니다. 시간에 따른 학급 평균은 기록된 채점 응시의 단순 평균입니다."
+    },
     "insights": {},
     "familyReports": {
       "title": "가정 보고서",

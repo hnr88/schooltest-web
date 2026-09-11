@@ -1,53 +1,46 @@
 'use client';
 
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
-import { ProgressDeltaPill } from '@/modules/teacher/components/ProgressDeltaPill';
-import type { ProgressDirection } from '@/modules/teacher/types/student-drill-down.types';
-import type { ProgressMoverRowProps } from '@/modules/teacher/types/class-analytics.types';
+import { DeltaText } from '@/modules/teacher/components/v2/DeltaText';
+import { PROGRESS_I18N_NAMESPACE } from '@/modules/teacher/constants/progress-tab.constants';
+import { GROWTH_STEADY_KEY, VIEW_MODEL_I18N_NAMESPACE } from '@/modules/teacher/constants/v2-i18n.constants';
+import type { ProgressMoverRowProps } from '@/modules/teacher/types/progress-tab.types';
 
-// The SIGN and magnitude of the server's own `delta`, inline because the
-// drill-down lib (the helper's old home) is another surface's active rewrite.
-// Compares to zero, applies no cut, computes no difference.
-function deltaOf(value: number): { direction: ProgressDirection; magnitude: number } {
-  return { direction: value > 0 ? 'up' : value < 0 ? 'down' : 'flat', magnitude: Math.abs(value) };
-}
-
-// One student in a ranked Progress list (task 34, dashboard §3): the name, the
-// score, and the direction pill — whose WORD and magnitude come from the
-// server's numeric `delta` (reliable rows only; both lists filter upstream).
-// This is not a recomputed delta: the pill prints the server number's sign and
-// magnitude, and `delta_display` remains the roster row's verbatim field.
-function ProgressMoverRow({ row }: ProgressMoverRowProps) {
-  const t = useTranslations('Teacher.results.progress');
-  const format = useFormatter();
-  const view = row.result;
-  const delta = view === null || view.overall.delta === null ? null : deltaOf(view.overall.delta);
-  const score = view?.overall.domain_score;
+// One student in Top progress / Students to watch (`Teacher Portal v2.dc.html:929–934`):
+// first name, latest score, and the server's growth claim — its signed step, "steady"
+// within error, or the dash when the server compared nothing.
+function ProgressMoverRow({ mover }: ProgressMoverRowProps) {
+  const t = useTranslations(PROGRESS_I18N_NAMESPACE);
+  const tVm = useTranslations(VIEW_MODEL_I18N_NAMESPACE);
+  const tKit = useTranslations('TeacherPortal.kit');
+  const { growth } = mover;
 
   return (
-    <div
+    <li
       data-slot="progress-mover"
-      data-student-id={row.student.document_id}
-      className="flex flex-wrap items-center justify-between gap-2"
+      data-student-id={mover.studentDocumentId}
+      data-growth={growth.kind}
+      className="flex items-center gap-2.5 border-t border-[#F3F4F6] py-2"
     >
-      <span className="min-w-0 text-body-sm font-medium text-foreground">
-        {row.student.name}
+      <span
+        data-slot="progress-mover-name"
+        title={mover.name}
+        className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-navy-900"
+      >
+        {mover.firstName}
       </span>
-      <span className="flex items-center gap-2">
-        {typeof score === 'number' ? (
-          <span className="text-body-sm text-body tabular-nums">
-            {t('moverScore', { score: format.number(score) })}
-          </span>
-        ) : null}
-        {delta ? (
-          <ProgressDeltaPill
-            direction={delta.direction}
-            change={format.number(delta.magnitude, { maximumFractionDigits: 0 })}
-          />
-        ) : null}
+      <span data-slot="progress-mover-score" className="text-[12.5px] text-[#6B7280] tabular-nums">
+        {mover.score === null ? tKit('noValue') : t('percent', { value: mover.score })}
       </span>
-    </div>
+      <span data-slot="progress-mover-delta" className="min-w-[34px] text-right">
+        {growth.kind === 'steady' ? (
+          <span className="text-[12.5px] font-semibold text-[#6B7280]">{tVm(GROWTH_STEADY_KEY)}</span>
+        ) : (
+          <DeltaText value={growth.points} format="signed" size="sm" />
+        )}
+      </span>
+    </li>
   );
 }
 

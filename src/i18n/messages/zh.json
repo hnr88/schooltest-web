@@ -6070,7 +6070,53 @@
         "footerSittings": "根据 {name} 于 {date} 的阅读诊断生成。自 {since} 以来共 {count, plural, other {# 次测试}}。供教师和家庭使用。"
       }
     },
-    "progress": {},
+    "progress": {
+      "title": "班级进步情况",
+      "subtitle": "{count, plural, =0 {还没有已评分的测试。} other {班级在 # 次测试中的变化。}}",
+      "tiles": {
+        "meanShift": {
+          "label": "平均变化",
+          "sub": "上一次到最近一次"
+        },
+        "gained": {
+          "label": "进步",
+          "sub": "{threshold} 分或以上"
+        },
+        "held": {
+          "label": "保持稳定",
+          "sub": "{threshold} 分以内"
+        },
+        "slipped": {
+          "label": "退步",
+          "sub": "下降 {threshold} 分或以上"
+        }
+      },
+      "points": "{value} 分",
+      "percent": "{value}%",
+      "chart": {
+        "title": "班级阅读趋势",
+        "description": "每次测试的班级总体平均分。阴影区为 ACARA 阅读发展的四个阶段。",
+        "label": "每次测试的班级平均分，对照 ACARA 阅读发展的四个阶段绘制",
+        "legendLabel": "ACARA 阅读发展阶段",
+        "summary": "班级平均 {from}% → {to}%，共 {count} 次测试（{difference} 分）。",
+        "summarySingle": "班级平均 {value}%，目前只有一次测试。",
+        "summaryEmpty": "还没有已评分的测试。"
+      },
+      "top": {
+        "title": "进步最大",
+        "empty": "还没有可靠的进步。"
+      },
+      "watch": {
+        "title": "需关注的学生",
+        "empty": "暂时没有需要关注的学生。"
+      },
+      "subskills": {
+        "title": "子技能变化趋势",
+        "description": "每项阅读子技能在各次测试中的班级平均分，由弱到强",
+        "now": "当前 {value}%"
+      },
+      "footnote": "此处每位学生的变化，都是服务器将其最近一次测试与上一次测试直接比较的结果。无法比较时，不显示任何变化。班级平均分趋势是已记录的已评分测试的简单平均。"
+    },
     "insights": {},
     "familyReports": {
       "title": "家庭报告",
