@@ -295,22 +295,27 @@ export function OpsSchoolSuspendPanel({
       data-portal-status={status}
       className="flex flex-wrap items-center gap-3"
     >
-      <span
-        className="inline-flex"
-        onClick={readOnly ? refuseNonLifecycleWrite : undefined}
-        onKeyDown={readOnly ? refuseNonLifecycleWrite : undefined}
-      >
-        <Button
-          type="button"
-          variant="navy"
-          className="h-11 rounded-full px-5 text-[13.5px] font-semibold"
-          data-action={`primary-${primary.key}`}
-          disabled={readOnly}
-          onClick={readOnly ? undefined : () => chooseAction(primary)}
+      {/* pending_setup/trial have no server-reachable primary status action
+          (activation happens through onboarding), so the navy slot is empty
+          there and the ⋯ menu carries Edit/Invite/Archive. */}
+      {primary === null ? null : (
+        <span
+          className="inline-flex"
+          onClick={readOnly ? refuseNonLifecycleWrite : undefined}
+          onKeyDown={readOnly ? refuseNonLifecycleWrite : undefined}
         >
-          {t(primary.labelKey)}
-        </Button>
-      </span>
+          <Button
+            type="button"
+            variant="navy"
+            className="h-11 rounded-full px-5 text-[13.5px] font-semibold"
+            data-action={`primary-${primary.key}`}
+            disabled={readOnly}
+            onClick={readOnly ? undefined : () => chooseAction(primary)}
+          >
+            {t(primary.labelKey)}
+          </Button>
+        </span>
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger
           render={

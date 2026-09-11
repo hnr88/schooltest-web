@@ -109,8 +109,12 @@ const ARCHIVE: SchoolLifecycleAction = {
 
 const ACTIONS_BY_STATUS: Record<PortalStatus, readonly SchoolLifecycleAction[]> = {
   active: [EDIT_DETAILS, INVITE_ADMIN, STATUS_ACTIONS.suspend, ARCHIVE],
-  trial: [EDIT_DETAILS, INVITE_ADMIN, STATUS_ACTIONS.activate, ARCHIVE],
-  pending_setup: [EDIT_DETAILS, INVITE_ADMIN, STATUS_ACTIONS.activate, ARCHIVE],
+  trial: [EDIT_DETAILS, INVITE_ADMIN, ARCHIVE],
+  // pending_setup offers NO status action: the API refuses activate for a
+  // school that was never suspended ("only a suspended school can be
+  // activated"), so the entry was a guaranteed 400. Activation happens
+  // through onboarding completion, not this menu.
+  pending_setup: [EDIT_DETAILS, INVITE_ADMIN, ARCHIVE],
   suspended: [EDIT_DETAILS, INVITE_ADMIN, STATUS_ACTIONS.reactivate, ARCHIVE],
   archived: [EDIT_DETAILS, INVITE_ADMIN, STATUS_ACTIONS.restore],
 };
@@ -120,12 +124,16 @@ export function schoolLifecycleActions(status: PortalStatus): readonly SchoolLif
   return ACTIONS_BY_STATUS[status];
 }
 
-/** The header's single status action is derived, never supplied by the API. */
-export function primarySchoolLifecycleAction(status: PortalStatus): SchoolLifecycleAction {
+/** The header's single status action is derived, never supplied by the API.
+ *  Null: the status has no server-reachable primary action (pending_setup/trial). */
+export function primarySchoolLifecycleAction(
+  status: PortalStatus,
+): SchoolLifecycleAction | null {
   if (status === 'active') return STATUS_ACTIONS.suspend;
   if (status === 'suspended') return STATUS_ACTIONS.reactivate;
   if (status === 'archived') return STATUS_ACTIONS.restore;
-  return STATUS_ACTIONS.activate;
+  // pending_setup/trial have no server-reachable primary status action.
+  return null;
 }
 
 export function lifecycleActionFor(

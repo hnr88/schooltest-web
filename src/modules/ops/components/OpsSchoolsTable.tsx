@@ -14,16 +14,13 @@ import {
 import { restFailureOf, strapi } from '@/lib/axios/strapi';
 import { useRouter } from '@/i18n/navigation';
 import {
+  describeRunOutcome,
   showOpsToast,
   useOpsActionRunner,
   useOpsConfirmAction,
   useOpsWriteGate,
 } from '@/modules/ops/actions';
 import type { OpsActionDefinition, OpsActionTarget } from '@/modules/ops/actions';
-import {
-  ARCHIVE_SCHOOL_ACTION,
-  SUSPEND_SCHOOL_ACTION,
-} from '@/modules/ops/lib/school-lifecycle-bulk.lib';
 
 import type { SchoolsListRow } from '@schooltest/ops-contracts';
 
@@ -35,10 +32,12 @@ import {
   DIRECTORY_ALL,
   OpsDirectoryTable,
   useOpsDirectoryState,
+  type DirectoryBulkAction,
   type DirectoryColumnDef,
   type DirectoryFilterDef,
   type DirectoryRowAction,
 } from '@/modules/ops/directory';
+
 import { OpsSchoolsPills } from '@/modules/ops/components/OpsSchoolsPills';
 import {
   PORTAL_STATUS_VARIANTS,
@@ -84,6 +83,23 @@ interface LifecycleTarget extends OpsActionTarget {
 /** The server-minted handle C-OPS-PORTAL-018 undoes (suspend and archive only). */
 interface LifecycleActionHandle {
   actionDocumentId: string;
+}
+
+/**
+ * A bulk lifecycle target: the transition the confirm approved plus the row it
+ * came from (the undo entries must quote the row the operator SAW, exactly like
+ * the single-school flow).
+ */
+interface BulkLifecycleTarget extends OpsActionTarget {
+  school: SchoolsListRow;
+  lifecycleAction: 'suspend' | 'archive';
+  targetStatus: 'suspended' | 'archived';
+}
+
+/** One undone school + the handle that undoes it, captured during a bulk run. */
+interface BulkUndoEntry {
+  school: SchoolsListRow;
+  handle: LifecycleActionHandle;
 }
 
 /** The row + action the open confirm acts on — what the operator saw, never re-read. */
@@ -530,8 +546,82 @@ export function OpsSchoolsTable() {
   // detail panel uses - transactional, FOR UPDATE-locked, coded errors - and
   // the runner reports an honest per-row outcome (success / failed /
   // uncertain / not started), never a whole-set verdict.
-  const suspendRun = useOpsActionRunner(SUSPEND_SCHOOL_ACTION);
-  const archiveRun = useOpsActionRunner(ARCHIVE_SCHOOL_ACTION);
+  //
+  // Defined HERE (not in a shared lib) for the same reason the single-school
+  // definition above is: the Undo handles must be captured in this component's
+  // closure, because the runner discards `perform`'s return value. Each handle
+  // lands in `bulkHandles`, and the success toast's Undo reverts EVERY school
+  // the run applied.
+  const bulkHandles = useRef<BulkUndoEntry[]>([]);
+  const bulkLifecycleDefinition = useMemo<OpsActionDefinition<BulkLifecycleTarget>>(() => {
+    return {
+      write: true,
+      async perform(target) {
+        const version = await fetchSchoolVersion(target.documentId);
+        const resourceVersion = formatResourceVersion(version.updatedAt);
+        const result =
+          target.lifecycleAction === 'suspend'
+            ? await suspendSchool({ schoolDocumentId: target.documentId, version: resourceVersion })
+            : await archiveSchool({ schoolDocumentId: target.documentId, version: resourceVersion });
+        bulkHandles.current = [
+          ...bulkHandles.current,
+          { school: target.school, handle: { actionDocumentId: result.action_documentId } },
+        ];
+        return result;
+      },
+      async readBack(target) {
+        return (await fetchSchoolDetail(target.documentId)).portal_status === target.targetStatus;
+      },
+      async isEligible(target) {
+        return (await fetchSchoolDetail(target.documentId)).portal_status !== target.targetStatus;
+      },
+    };
+  }, []);
+  const bulkLifecycleRunner = useOpsActionRunner(bulkLifecycleDefinition);
+
+  // The design's bulk confirms (`Ops Portal.dc.html` bulkFor: "Suspend N
+  // schools?" → toast) — the dispatch never fires from the bulk bar click
+  // itself; the confirm owns it.
+  const [bulkConfirm, setBulkConfirm] = useState<{
+    action: 'suspend' | 'archive';
+    rows: readonly SchoolsListRow[];
+  } | null>(null);
+
+  const runBulkUndo = async (entries: readonly BulkUndoEntry[]): Promise<void> => {
+    for (const entry of entries) {
+      await runLifecycleUndo(entry.school, entry.handle);
+    }
+  };
+
+  const runBulkLifecycle = async (): Promise<void> => {
+    if (bulkConfirm === null) return;
+    const { action, rows } = bulkConfirm;
+    bulkHandles.current = [];
+    const targets: BulkLifecycleTarget[] = rows.map((school) => ({
+      kind: 'school',
+      documentId: school.documentId,
+      school,
+      lifecycleAction: action,
+      targetStatus: action === 'suspend' ? 'suspended' : 'archived',
+    }));
+    const summary = await bulkLifecycleRunner.run(targets);
+    setBulkConfirm(null);
+    // The rows and the pill counts must move NOW, not on a later refocus.
+    await queryClient.invalidateQueries({ queryKey: ['ops', 'schools'] });
+    const handles = bulkHandles.current;
+    const feedback = describeRunOutcome(
+      summary,
+      'school',
+      handles.length > 0
+        ? { label: t('actions.undo'), run: () => void runBulkUndo(handles) }
+        : undefined,
+    );
+    showOpsToast({
+      tone: feedback.tone === 'success' ? 'ok' : feedback.tone === 'warning' ? 'warn' : 'error',
+      message: feedback.message,
+      ...(feedback.action === undefined ? {} : { action: feedback.action }),
+    });
+  };
 
   // ops/09 (C-OPS-PORTAL-009, R-07 first half) — the bulk Export re-parented
   // off the retired page-body export panel. It reads the directory's
@@ -561,15 +651,20 @@ export function OpsSchoolsTable() {
   };
 
   // ops/28 (D-53) — `disabled` mirrors OpsClassDetail.tsx:287. bulkSuspend and
-  // bulkArchive carry no local `write` literal (unchanged here — Suspend and
-  // Archive dispatch through SUSPEND_SCHOOL_ACTION/ARCHIVE_SCHOOL_ACTION,
-  // whose OWN `write: true` is what the runner already gates on), so their
-  // `disabled` reads the write gate directly rather than through `action.write`.
-  // `readOnly` ALONE, never `blockedReason() !== null` — that also trips
-  // offline, and a natively-disabled bulk button would silently swallow the
-  // toast-with-Retry offline path capabilities.spec.ts:178 requires.
+  // bulkArchive open the design's bulk CONFIRM (`bulkFor` in the Ops Portal
+  // design) instead of dispatching from the click; the confirm's CTA runs the
+  // writes through `bulkLifecycleRunner`. `readOnly` ALONE, never
+  // `blockedReason() !== null` — that also trips offline, and a natively-disabled
+  // bulk button would silently swallow the toast-with-Retry offline path
+  // capabilities.spec.ts:178 requires.
+  //
+  // `eligible` states what the SERVER accepts (U-14): suspend needs an active
+  // school and archive a not-yet-archived one, so an ineligible selection shows
+  // "(0 of N)" instead of dispatching writes that can only be refused.
   const locked = writeGate.readOnly;
-  const bulkActions = [
+  // The kit types the bulk actions against `unknown` (DirectoryTable's
+  // `DirectoryBulkAction` default), so the row casts mirror OpsClassesTab's.
+  const bulkActions: readonly DirectoryBulkAction[] = [
     // First, per the design (`:1480`) and the task's `Done when` order.
     // `write: false` (D-20): a GET, so it never goes through the write gate
     // and stays reachable for the read-only `ops_support` account.
@@ -577,13 +672,21 @@ export function OpsSchoolsTable() {
     {
       label: t('bulkSuspend'),
       disabled: locked,
-      onRun: (targets: readonly OpsActionTarget[]) => void suspendRun.run(targets),
+      eligible: (row: unknown) => (row as SchoolsListRow).portal_status === 'active',
+      onRun: (rows: readonly unknown[]) => {
+        const schools = rows as readonly SchoolsListRow[];
+        if (schools.length > 0) setBulkConfirm({ action: 'suspend', rows: schools });
+      },
     },
     {
       label: t('bulkArchive'),
       destructive: true,
       disabled: locked,
-      onRun: (targets: readonly OpsActionTarget[]) => void archiveRun.run(targets),
+      eligible: (row: unknown) => (row as SchoolsListRow).portal_status !== 'archived',
+      onRun: (rows: readonly unknown[]) => {
+        const schools = rows as readonly SchoolsListRow[];
+        if (schools.length > 0) setBulkConfirm({ action: 'archive', rows: schools });
+      },
     },
   ];
 
@@ -710,6 +813,28 @@ export function OpsSchoolsTable() {
               : undefined
           }
           onConfirm={() => void confirmAction.confirm()}
+        />
+      )}
+
+      {/* The bulk confirm (the design's bulkConfirm): the count-based title and
+          the per-action consequence copy are the existing per-transition keys
+          with the localized "{count} selected schools" scope as the name, and
+          the CTA is the bulk bar's own verb. Dispatched only from here. */}
+      {bulkConfirm === null ? null : (
+        <OpsConfirmDialog
+          open
+          onOpenChange={(open) => {
+            if (!open && bulkLifecycleRunner.state.status !== 'running') setBulkConfirm(null);
+          }}
+          title={tConfirm(`${bulkConfirm.action}.title`, {
+            name: tExport('scopeSelected', { count: bulkConfirm.rows.length }),
+          })}
+          description={tConfirm(`${bulkConfirm.action}.body`)}
+          confirmLabel={bulkConfirm.action === 'suspend' ? t('bulkSuspend') : t('bulkArchive')}
+          cancelLabel={t('actions.cancel')}
+          tone="destructive"
+          pending={bulkLifecycleRunner.state.status === 'running'}
+          onConfirm={() => void runBulkLifecycle()}
         />
       )}
     </main>

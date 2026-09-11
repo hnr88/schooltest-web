@@ -7,16 +7,19 @@ import {
 
 describe('school lifecycle action derivations', () => {
   it('derives the primary action and menu from every portal status', () => {
-    expect(primarySchoolLifecycleAction('active').key).toBe('suspend');
-    expect(primarySchoolLifecycleAction('trial').key).toBe('activate');
-    expect(primarySchoolLifecycleAction('pending_setup').key).toBe('activate');
-    expect(primarySchoolLifecycleAction('suspended').key).toBe('reactivate');
-    expect(primarySchoolLifecycleAction('archived').key).toBe('restore');
+    // The API refuses activate for a school that was never suspended
+    // ("only a suspended school can be activated"), so trial/pending_setup
+    // derive NO primary action and no activate menu entry.
+    expect(primarySchoolLifecycleAction('active')?.key).toBe('suspend');
+    expect(primarySchoolLifecycleAction('trial')).toBeNull();
+    expect(primarySchoolLifecycleAction('pending_setup')).toBeNull();
+    expect(primarySchoolLifecycleAction('suspended')?.key).toBe('reactivate');
+    expect(primarySchoolLifecycleAction('archived')?.key).toBe('restore');
 
     const expectedMenus = {
       active: ['editDetails', 'inviteAdmin', 'suspend', 'archive'],
-      trial: ['editDetails', 'inviteAdmin', 'activate', 'archive'],
-      pending_setup: ['editDetails', 'inviteAdmin', 'activate', 'archive'],
+      trial: ['editDetails', 'inviteAdmin', 'archive'],
+      pending_setup: ['editDetails', 'inviteAdmin', 'archive'],
       suspended: ['editDetails', 'inviteAdmin', 'reactivate', 'archive'],
       archived: ['editDetails', 'inviteAdmin', 'restore'],
     } as const;

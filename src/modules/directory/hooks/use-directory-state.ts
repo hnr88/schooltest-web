@@ -35,7 +35,6 @@ import type {
   DirectoryFilterDef,
   DirectoryLayout,
   DirectoryQueryParams,
-  DirectorySortDef,
   DirectoryStateApi,
   DirectoryUrlState,
   UseDirectoryStateOptions,
@@ -147,6 +146,48 @@ export function useDirectoryState(options: UseDirectoryStatePrefixedOptions): Di
   // every dependency honestly — no lint suppression.
   const lastWritten = useRef<string | null>(null);
 
+  // App-Router write races (measured live on the ops schools list and the
+  // school detail tabs, 2026-09-11): a `router.replace` dispatched while
+  // another navigation is still in flight can be SWALLOWED outright, and a
+  // re-render that still carries the pre-write URL re-runs the sync effect
+  // against the stale snapshot and reverts a write that was fine. Three pieces
+  // of state make a write survive both:
+  //
+  // - `pendingState` — the write we authored but have not yet seen land in the
+  //   URL. It is the base every control composes onto (rapid writes no longer
+  //   collapse into the last one) and what the controls and the query read, so
+  //   the UI holds steady while the URL catches up.
+  // - `staleSeen` — every query string that legitimately shows up while a
+  //   write is in flight (the pre-write URL, superseded written strings). A
+  //   live URL in that set means "still catching up — re-dispatch"; anything
+  //   else means the URL moved for a reason that is not ours (Back/Forward, a
+  //   tab switch) and the pending write must be dropped.
+  const [pendingState, setPendingState] = useState<DirectoryUrlState | null>(null);
+  const pendingRef = useRef<DirectoryUrlState | null>(null);
+  const staleSeen = useRef<Set<string>>(new Set());
+  const setPending = useCallback((next: DirectoryUrlState | null) => {
+    pendingRef.current = next;
+    if (next === null) staleSeen.current = new Set();
+    setPendingState(next);
+  }, []);
+
+  // The live query string, in a ref the convergence interval can read without
+  // re-rendering (the URL lags the write by a navigation). Kept in an effect —
+  // refs are never written during render.
+  const seenRef = useRef(searchParams.toString());
+  useEffect(() => {
+    seenRef.current = searchParams.toString();
+  }, [searchParams]);
+
+  // Whether the settled search matches the CURRENT input, tracked as versions:
+  // a clear or keystroke bumps `inputVersion` immediately while the debounced
+  // `q` still reports the PREVIOUS text. Without this, a Clear filters (which
+  // writes `q` out of the URL) was followed by the effect re-writing the stale
+  // settled text back into the URL until the debounce settled — a visible
+  // revert that also re-fetched the filtered query.
+  const inputVersion = useRef(0);
+  const settledInputVersion = useRef(0);
+
   // Stable identity for the preserve list so an inline array literal from a
   // consumer cannot change `writeUrl`'s identity on every render.
   const preserveKey = (preserveParams ?? []).join(',');
@@ -176,23 +217,38 @@ export function useDirectoryState(options: UseDirectoryStatePrefixedOptions): Di
   const writeUrl = useCallback(
     (next: DirectoryUrlState) => {
       const qs = buildQs(next);
+      // Remember the strings that can legitimately show up while this write is
+      // in flight, so the convergence check can tell "still catching up" from
+      // "the URL changed for someone else's reason": the string the browser
+      // shows right now (which may differ from `lastWritten` — the raw URL can
+      // carry explicit defaults the serializer omits) and the string it was
+      // last written with.
+      staleSeen.current.add(seenRef.current);
+      if (lastWritten.current !== null) staleSeen.current.add(lastWritten.current);
       lastWritten.current = qs;
+      setPending(next);
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     },
-    [router, pathname, buildQs],
+    [router, pathname, buildQs, setPending],
   );
 
-  // The parsed URL with the SETTLED search overlaid — the state every control
-  // reads and writes through.
+  // The parsed URL with the pending write (when one is in flight) and the
+  // SETTLED search overlaid — the state every control reads and writes through.
   const state: DirectoryUrlState = useMemo(
-    () => ({ ...urlState, q }),
-    [urlState, q],
+    () => ({ ...(pendingState ?? urlState), q }),
+    [pendingState, urlState, q],
   );
+
+  // Mark the settled search as current whenever it matches the live input.
+  // Declared BEFORE the sync effect so a settle is visible to it same-pass.
+  useEffect(() => {
+    if (q === sanitizeQuery(searchInput)) settledInputVersion.current = inputVersion.current;
+  });
 
   // Once the settled search changes, it lands in the URL alongside the other
   // controls. On mount the URL is adopted as-is (the input initialised from it).
   useEffect(() => {
-    const next = parseDirectoryParams(searchParams, filters, defaultSort, paramPrefix, layouts, defaultLayout, sortValues);
+    const next = { ...(pendingRef.current ?? parseDirectoryParams(searchParams, filters, defaultSort, paramPrefix, layouts, defaultLayout, sortValues)) };
     // U-15 D-b — a CHANGED search is a new result set, so it belongs on page 1.
     // `setFilter` and `setSort` already do this; this effect did not, which left
     // page 4 pointing past a narrowed set and the server answering 400
@@ -207,34 +263,105 @@ export function useDirectoryState(options: UseDirectoryStatePrefixedOptions): Di
       lastWritten.current = qs;
       return;
     }
+    // A newer input edit is still in its debounce window (a clear, a fresh
+    // keystroke): the settled `q` is yesterday's text, and writing it would
+    // fight the edit that is about to land. Skip and wait for the settle.
+    if (settledInputVersion.current < inputVersion.current) return;
     if (qs === lastWritten.current) return;
     writeUrl(next);
   }, [q, searchParams, filters, defaultSort, paramPrefix, layouts, defaultLayout, sortValues, resetPageOnSearch, buildQs, writeUrl]);
+
+  // Convergence: the URL must end up matching the pending write. A replace
+  // dispatched while another navigation is in flight can be swallowed without
+  // ANY further render following it, so the check lives on an interval that
+  // reads the live URL from a ref: it re-dispatches until the query string
+  // matches, drops the write if the URL moved for someone else's reason, and
+  // clears the moment the write lands. The target is the pending write's OWN
+  // search — the settled-input overlay does not belong in it (during a Clear's
+  // debounce window the settled text is the value the clear just discarded).
+  useEffect(() => {
+    if (pendingState === null) return;
+    if (staleSeen.current.size === 0 && lastWritten.current !== null) {
+      staleSeen.current.add(seenRef.current);
+    }
+    const want = buildQs(pendingState);
+    const reconcile = (): boolean => {
+      const seen = seenRef.current;
+      if (seen === want || !staleSeen.current.has(seen)) {
+        // Landed, or the URL now belongs to someone else (Back/Forward, a tab
+        // switch). Either way the pending write is no longer the truth.
+        setPending(null);
+        return true;
+      }
+      return false;
+    };
+    if (reconcile()) return;
+    let attempts = 0;
+    const iv = setInterval(() => {
+      attempts += 1;
+      if (reconcile()) return;
+      if (attempts > 10) {
+        // The router has swallowed every soft retry for ~3s — it is wedged on
+        // an in-flight navigation and will drop any further replace. A hard
+        // navigation is the only remaining way this write lands; the URL is
+        // the store, so the reload restores exactly the written state. The
+        // real path is kept (next-intl's pathname drops a locale prefix).
+        const target = `${window.location.pathname}${want === '' ? '' : `?${want}`}`;
+        setPending(null);
+        if (window.location.pathname + window.location.search !== target) {
+          window.location.replace(target);
+        }
+        return;
+      }
+      // Still catching up (or the write was swallowed): re-dispatch. A
+      // replace is idempotent, so a retry racing the original is harmless.
+      writeUrl(pendingState);
+    }, 300);
+    return () => clearInterval(iv);
+  }, [pendingState, buildQs, writeUrl, setPending]);
+
+  // Back/Forward is always an external verdict: drop the pending write so the
+  // retry cannot fight the browser for the URL.
+  useEffect(() => {
+    const onPop = () => setPending(null);
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [setPending]);
+
+  // The write base is the pending write when one is in flight — composing onto
+  // it is what keeps two rapid control changes from collapsing into one.
+  const writeBase = useCallback(
+    (): DirectoryUrlState => pendingRef.current ?? urlState,
+    [urlState],
+  );
 
   const setFilter = useCallback(
     (key: string, rawValue: string) => {
       const def = filters.find((candidate) => candidate.key === key);
       const allowed = def ? def.options.map((option) => option.value) : [DIRECTORY_ALL];
       const value = allowed.includes(rawValue) ? rawValue : DIRECTORY_ALL;
+      const base = writeBase();
       // Any result-set change (applying or clearing a filter) belongs to page 1.
-      writeUrl({ ...state, filters: { ...state.filters, [key]: value }, page: 1 });
+      writeUrl({ ...base, q, filters: { ...base.filters, [key]: value }, page: 1 });
     },
-    [filters, state, writeUrl],
+    [filters, q, writeBase, writeUrl],
   );
 
   const setSort = useCallback(
     (rawSort: string) => {
       const sort = sorts.some((option) => option.value === rawSort) ? rawSort : defaultSort;
-      writeUrl({ ...state, sort, page: 1 });
+      const base = writeBase();
+      writeUrl({ ...base, q, sort, page: 1 });
     },
-    [sorts, state, defaultSort, writeUrl],
+    [sorts, q, defaultSort, writeBase, writeUrl],
   );
 
   const setPage = useCallback(
     (page: number) => {
-      writeUrl({ ...state, page: clampPage(page) });
+      const base = writeBase();
+      writeUrl({ ...base, q, page: clampPage(page) });
     },
-    [state, writeUrl],
+    [q, writeBase, writeUrl],
   );
 
   // teacher/06 — the layout toggle. A view choice, not a filter: the page and
@@ -245,16 +372,19 @@ export function useDirectoryState(options: UseDirectoryStatePrefixedOptions): Di
         layouts !== undefined && isDirectoryLayout(rawLayout) && layouts.includes(rawLayout)
           ? rawLayout
           : (defaultLayout ?? '');
-      writeUrl({ ...state, layout: value });
+      const base = writeBase();
+      writeUrl({ ...base, q, layout: value });
     },
-    [layouts, defaultLayout, state, writeUrl],
+    [layouts, defaultLayout, q, writeBase, writeUrl],
   );
 
   const clearFilters = useCallback(() => {
+    inputVersion.current += 1;
     setSearchInput('');
+    const base = writeBase();
     // The layout choice survives a clear — it is the view, not a filter.
-    writeUrl({ ...defaultUrlState(defaultSort), layout: state.layout });
-  }, [defaultSort, state.layout, writeUrl]);
+    writeUrl({ ...defaultUrlState(defaultSort), q: '', layout: base.layout });
+  }, [defaultSort, writeBase, writeUrl]);
 
   // Value-stable identity for the consumer's query key comes from the memo on
   // `state` (which only changes when a parsed value changes) plus pageSize.
@@ -262,6 +392,11 @@ export function useDirectoryState(options: UseDirectoryStatePrefixedOptions): Di
     () => toQueryParams(state, pageSize),
     [state, pageSize],
   );
+
+  const setPureSearchInput = useCallback((value: string) => {
+    inputVersion.current += 1;
+    setSearchInput(value);
+  }, []);
 
   return {
     params,
@@ -272,7 +407,7 @@ export function useDirectoryState(options: UseDirectoryStatePrefixedOptions): Di
         : (defaultLayout ?? 'table'),
     setLayout,
     searchInput,
-    setSearchInput,
+    setSearchInput: setPureSearchInput,
     setFilter,
     setSort,
     setPage,
