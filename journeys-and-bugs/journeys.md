@@ -16,13 +16,30 @@ Click-tested end-to-end journeys. Status: ✅ verified (proof linked) / 🔄 fle
 
 - ✅ **Full walkthrough** — home → classes list → class detail → students → drill-down → teachers → teacher detail → account; add/edit/delete class, assign teachers, move students, invite/revoke teacher; all dialogs round-trip and reverted. Proof: tests/proofs/sa-acceptance/ (14 shots), sa-acceptance.proof.spec.ts (14/14).
 
-## In fleet testing (8 lanes — appended here when green)
+## Fleet-verified (8 click-test lanes, all green)
 
-- 🔄 Ops list deep journeys (bulk suspend/archive + undo, row menu per item)
-- 🔄 Ops admins/teachers journeys (resend/revoke/owner/block, manage teachers)
-- 🔄 Ops classes/students journeys (window, move/deactivate/reactivate, import edge)
-- 🔄 School-admin journeys (account edit, sign out, switcher A↔B, search overlay)
-- 🔄 Every dialog/dropdown cancel + validation + error-slot path (both portals)
-- 🔄 Filter/sort/tab URL round-trips + rapid tab race
-- 🔄 Read-only (ops_support), offline retry, error cards, session expiry
-- 🔄 Console-error + dead-button sweep, every route, both portals
+- ✅ Ops list deep journeys — bulk suspend/archive now confirm + undo (were silent 400s);
+  guaranteed-400 Activate removed for pending/trial; Clear-filters race fixed. Proof: gui-test-screenshots/.
+- ✅ Ops admins/teachers — invite/resend/revoke/owner/block/export all API-proven; teacher
+  count role-filter fixed; bulk empty-target false errors fixed.
+- ✅ Ops classes/students — undo-import offer fixed; import select React error fixed; row
+  click → profile wired; move/deactivate/reactivate round-trips.
+- ✅ School-admin journeys — P0: add-teacher PATCH storm (68,262 requests) fixed; 17
+  journeys pass incl. account, switcher, sign out.
+- ✅ Dialogs/dropdowns both portals — typed-name rule unified; window-select error wipe fixed;
+  zero dead items; cancel paths API-verified write-free.
+- ✅ Filters/URL/tabs stress — 32/32; App Router swallow/revert race fixed (optimistic
+  pendingState); rapid tab desync 9/21 → 0/15 probes.
+- ✅ Read-only/offline/error — create-school write gate added (ops_support could POST!);
+  dead Retry after reconnect fixed (stale closure); expired/404/500 journeys pass.
+- ✅ Console sweep — 24 routes, ~950 clicks, 24/24; resend-owner-invite 409 gated; logout
+  403 storm (178 reqs) fixed; orphaned student links repaired.
+
+## Known open items (server/product-owned)
+- activate/trial unreachable by API (onboarding complete never written) — product decision.
+- student profile endpoint leaks numeric class.id → strict schema rejects (all profiles 500-parse).
+- PATCH /api/schools/:id returns 500 AFTER persisting (post-write validation).
+- ops_support 403 on GET school detail vs capabilities read:true — role matrix decision.
+- teacher needs-attention 400: crosswalk v3 vs active v4 (cross-repo).
+- teacher/* module has UNCOMMITTED half-refactored drill-down/results code (4 tsc errors) — WIP, not ours.
+
