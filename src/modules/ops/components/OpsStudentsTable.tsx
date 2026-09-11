@@ -205,6 +205,9 @@ export function OpsStudentsTable({
       bulkActions={bulkActions}
       chipFilterKey={chipFilterKey}
       emptyCopy={emptyCopy}
+      // ops-empty-audit — the tab tables draw the design's PLAIN empty
+      // (`Ops Portal.dc.html:412-415`): no tile, no CTA.
+      emptyDecor="plain"
       columns={columns}
       labels={labels}
       toolbarVariant={toolbarVariant}

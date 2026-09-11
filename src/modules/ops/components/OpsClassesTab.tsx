@@ -479,6 +479,11 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
           labels={labels}
           emptyAction={teacherId === '' ? undefined : { label: t('clearFilter'), onRun: clearTeacher }}
           emptyCopy={{ title: t('emptyTitle'), body: t('emptyDescription') }}
+          // ops-empty-audit — the tab tables draw the design's PLAIN empty
+          // (`Ops Portal.dc.html:412-415`): no tile, no CTA. The `emptyAction`
+          // above still renders inside it: the `?teacher=` deep-link has no
+          // other visible control to clear itself with.
+          emptyDecor="plain"
           // filters-audit 2026-09-11: 40px pill controls, hidden labels, count +
           // sort pill right (`Ops Portal.dc.html:353-374`).
           toolbarVariant="pill"

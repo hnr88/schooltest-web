@@ -45,12 +45,18 @@ export function DirectoryLoading({
           key={row}
           className="flex items-center gap-4 border-b border-[#F4F6FA] px-2.5 py-3.5"
         >
-          <Skeleton className="size-[52px] flex-none rounded-[14px]" />
+          {/* `Ops Portal.dc.html:114` — #EEF1F6 fills; the pulse sits on the
+              crest block and the title bar only — the meta bar (`:117`) and
+              the status pill (`:119`) are static. */}
+          <Skeleton className="size-[52px] flex-none rounded-[14px] bg-[#EEF1F6]" />
           <div className="flex flex-1 flex-col gap-2">
-            <Skeleton className="h-[13px] rounded-md" style={{ width: SKELETON_WIDTHS[row] }} />
-            <Skeleton className="h-[11px] w-[34%] rounded-md bg-[#F4F6FA]" />
+            <Skeleton
+              className="h-[13px] rounded-md bg-[#EEF1F6]"
+              style={{ width: SKELETON_WIDTHS[row] }}
+            />
+            <Skeleton className="h-[11px] w-[34%] animate-none rounded-md bg-[#F4F6FA]" />
           </div>
-          <Skeleton className="h-[26px] w-[94px] flex-none rounded-full" />
+          <Skeleton className="h-[26px] w-[94px] flex-none animate-none rounded-full bg-[#EEF1F6]" />
         </div>
       ))}
       {/* The design draws the caption UNDER the skeleton rows

@@ -778,6 +778,9 @@ export function OpsStaffUsersTable({
             rowActions={rowActions}
             bulkActions={bulkActions}
             emptyCopy={{ title: emptyTitle, body: emptyDescription }}
+            // ops-empty-audit — the tab tables draw the design's PLAIN empty
+            // (`Ops Portal.dc.html:412-415`): no tile, no CTA.
+            emptyDecor="plain"
             labels={{
               searchPlaceholder: t('searchPlaceholder'),
               searchLabel: t('searchLabel'),

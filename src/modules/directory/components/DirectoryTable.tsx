@@ -137,6 +137,15 @@ export interface DirectoryTableBaseProps<Row> {
    * labels' `emptyNoneTitle`/`emptyNoneDescription`; absent, the labels stand.
    */
   emptyCopy?: DirectoryEmptyCopy;
+  /**
+   * ops-empty-audit — which of the design's two empty blocks this surface
+   * draws. `'icon'` (default) is the schools-list block
+   * (`Ops Portal.dc.html:188-195`: 46px radius-14 tile + 40px navy CTA);
+   * `'plain'` is the tab-table block (`:412-415`: centered 15/600 title +
+   * 13.5 body, no icon, no CTA). Every tab table inside an OpsTabTableCard
+   * passes `'plain'`; the top-level lists keep the default.
+   */
+  emptyDecor?: 'icon' | 'plain';
   /** BUG-004 (journeys-and-bugs) — forwarded to the toolbar's `variant`. */
   toolbarVariant?: 'default' | 'pill';
   /** BUG-004 — hide the toolbar's search; the surface renders its own. */
@@ -189,6 +198,7 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
     header,
     chipFilterKey,
     emptyCopy,
+    emptyDecor,
     toolbarVariant,
     search,
     errorSecondaryAction,
@@ -389,6 +399,7 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
         labels={resolvedLabels}
         onClearFilters={state.clearFilters}
         emptyAction={emptyAction}
+        decor={emptyDecor}
         headingRef={armRef}
       />
     );
