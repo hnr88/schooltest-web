@@ -97,7 +97,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
     return (
       <main className="flex flex-1 flex-col px-4 py-6 sm:px-6 lg:px-8">
         <div className="rounded-card bg-card px-8 py-13 text-center shadow-sm">
-          <div className="mx-auto mb-4 grid size-12 place-items-center rounded-2xl bg-[#FDEEEC] text-[#B42318]">
+          <div className="mx-auto mb-4 grid size-12 place-items-center rounded-[16px] bg-[#FDEEEC] text-[#B42318]">
             <svg
               aria-hidden="true"
               width="22"
@@ -113,7 +113,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             </svg>
           </div>
           <div className="text-base font-semibold text-foreground">{t('errorTitle')}</div>
-          <p className="mx-auto mt-1.5 max-w-[400px] text-[13.5px] leading-relaxed text-[#7C8698]">
+          <p className="mx-auto mt-1.5 max-w-[400px] text-[13.5px] leading-[1.6] text-[#7C8698]">
             {t('errorDescription')}
           </p>
           <Button
