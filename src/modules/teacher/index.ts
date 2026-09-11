@@ -32,6 +32,9 @@ export { useCloseTestSessionMutation } from './queries/use-close-test-session.mu
 export { useRescoreResultMutation } from './queries/use-rescore-result.mutation';
 export { useStudentDrillDownQuery } from './queries/use-student-drill-down.query';
 export { useTeacherExportMutation } from './queries/use-teacher-export.mutation';
+export { useUpdateTestSessionMutation } from './queries/use-update-test-session.mutation';
+export { useCancelTestSessionMutation } from './queries/use-cancel-test-session.mutation';
+export { useStartTestSessionMutation } from './queries/use-start-test-session.mutation';
 
 export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-export';
 export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-setup';
@@ -133,6 +136,20 @@ export type {
   MonitorStudent,
   TestSessionMonitorResponse,
   CloseTestSessionResponse,
+  TestSessionWindow,
+  TestSessionBookedWindow,
+  BookingScheduleReason,
+  BookingScheduleError,
+  BookingScheduleErrorDetails,
+  TestSessionClash,
+  TestSessionClashDetails,
+  TestSessionBooking,
+  CreateTestSessionResult,
+  UpdateTestSessionBody,
+  UpdateTestSessionInput,
+  CancelTestSessionResponse,
+  StartTestSessionResponse,
+  TestSessionNotScheduledDetails,
 } from './types/teacher-session.types';
 export type {
   StudentTestCell,

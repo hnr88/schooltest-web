@@ -5,11 +5,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { strapi } from '@/lib/axios/strapi';
 import {
   createTestSessionBodySchema,
-  createTestSessionResponseSchema,
+  createTestSessionResultSchema,
 } from '@/modules/teacher/schemas/teacher-session.schema';
 import type {
   CreateTestSessionBody,
-  CreateTestSessionResponse,
+  CreateTestSessionResult,
 } from '@/modules/teacher/types/teacher-session.types';
 
 // C-TS-1: POST /api/teacher/test-sessions -> 201 with the minted six-digit code.
@@ -18,10 +18,13 @@ import type {
 // is the server's (F-SITTING-CODE, DECISIONS.md A3) — nothing is minted here.
 // Optional `student_document_ids`, `settings` and `start` (server default true)
 // are the start-now fields; a 409 carries `details.busy_student_document_ids`.
-async function createTestSession(body: CreateTestSessionBody): Promise<CreateTestSessionResponse> {
+// With `window` it BOOKS instead: the 201 is a booking (`phase: 'scheduled'`,
+// `code: null`), a refused window is a 400 with `details.schedule_errors` and a
+// clash is a 409 with `details.clashes`.
+async function createTestSession(body: CreateTestSessionBody): Promise<CreateTestSessionResult> {
   const payload = createTestSessionBodySchema.parse(body);
   const response = await strapi.post('/api/teacher/test-sessions', payload);
-  return createTestSessionResponseSchema.parse(response.data);
+  return createTestSessionResultSchema.parse(response.data);
 }
 
 export function useCreateTestSessionMutation() {

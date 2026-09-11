@@ -71,24 +71,67 @@ export type SittingSettingsPatch = z.infer<typeof sittingSettingsPatchSchema>;
 export const sittingPhaseSchema = z.enum(['scheduled', 'open', 'running', 'closed', 'cancelled']);
 export const sittingMembersSchema = z.array(str).nullable();
 
+/* ── Booking window (Teacher Portal v2 "Schedule a window") ─────────────── */
+
+/**
+ * A booking is a sitting with `phase: 'scheduled'`, `status: 'open'`, no code
+ * and no `opened_at`; the server opens it at `opens_at` and closes it at
+ * `closes_at`. The 07:00–19:00 rule is read in the school's zone, echoed back
+ * as `window.timezone`.
+ */
+export const testSessionWindowSchema = z.strictObject({
+  opens_at: z.iso.datetime({ offset: true }),
+  closes_at: z.iso.datetime({ offset: true }),
+});
+
+export const testSessionBookedWindowSchema = z.strictObject({
+  opens_at: z.iso.datetime(),
+  closes_at: z.iso.datetime(),
+  timezone: str,
+});
+
+/** 400 `details.schedule_errors[]`: the design's sentence per refused rule. */
+export const bookingScheduleReasonSchema = z.enum([
+  'date_passed',
+  'outside_school_hours',
+  'close_before_open',
+  'window_shorter_than_time_limit',
+  'start_earlier_today',
+]);
+
+export const bookingScheduleErrorSchema = z.strictObject({
+  reason: bookingScheduleReasonSchema,
+  message: str,
+});
+
+export const bookingScheduleErrorDetailsSchema = z.strictObject({
+  fields: z.array(str),
+  issues: z.array(str),
+  schedule_errors: z.array(bookingScheduleErrorSchema).min(1),
+});
+
+export const testSessionStudentIdsSchema = z
+  .array(teacherDocumentIdSchema)
+  .min(1)
+  .max(500)
+  .refine((ids) => new Set(ids).size === ids.length, 'must not name a student twice');
+
 /* ── C-TS-1 · POST /api/teacher/test-sessions ──────────────────────────── */
 
 /**
  * The start-now keys are optional, so the original two-key body stays valid:
  * `student_document_ids` (active students of the class, none busy),
- * `settings` (saved at create) and `start` (server default `true`).
+ * `settings` (saved at create) and `start` (server default `true`). `window`
+ * books it instead (the 201 is then a booking); the server refuses it with
+ * `start: true`.
  */
 export const createTestSessionBodySchema = z.strictObject({
   class_document_id: teacherDocumentIdSchema,
   form_document_id: teacherDocumentIdSchema,
-  student_document_ids: z
-    .array(teacherDocumentIdSchema)
-    .min(1)
-    .max(500)
-    .refine((ids) => new Set(ids).size === ids.length, 'must not name a student twice')
-    .optional(),
+  student_document_ids: testSessionStudentIdsSchema.optional(),
   settings: sittingSettingsPatchSchema.optional(),
   start: z.boolean().optional(),
+  window: testSessionWindowSchema.optional(),
 });
 
 /** 409 `details` — one test at a time per student. */
@@ -117,9 +160,13 @@ export const createTestSessionResponseSchema = z.strictObject({
 
 /* ── C-TS-2 · GET /api/teacher/test-sessions ───────────────────────────── */
 
-/** Optional server filters and paging; `meta.pagination` answers only a paged read. */
+/**
+ * Optional server filters and paging; `meta.pagination` answers only a paged
+ * read. `status`: `open` excludes bookings, `scheduled` is the bookings (sorted
+ * by `window.opens_at`), `closed` includes cancelled bookings.
+ */
 export const teacherTestSessionsQuerySchema = z.strictObject({
-  status: sittingStatusSchema.optional(),
+  status: z.enum(['open', 'closed', 'scheduled']).optional(),
   class: teacherDocumentIdSchema.optional(),
   page: z.number().int().min(1).optional(),
   pageSize: z.number().int().min(1).max(100).optional(),
@@ -160,6 +207,7 @@ export const teacherTestSessionSchema = z.strictObject({
   settings: sittingSettingsSchema.nullable().optional(),
   member_student_ids: sittingMembersSchema.optional(),
   stats: testSessionStatsSchema.optional(),
+  window: testSessionBookedWindowSchema.nullable().optional(),
 });
 
 export const teacherTestSessionsResponseSchema = z.strictObject({
@@ -288,6 +336,73 @@ export const closeTestSessionResponseSchema = z.strictObject({
   sitting_document_id: teacherDocumentIdSchema,
   status: z.enum(['closed']),
   closed_at: z.iso.datetime(),
+});
+
+/* ── Bookings · C-TS-5 PATCH · C-TS-6 cancel · C-TS-7 start ─────────────── */
+
+/** One booking (or booked sitting now running) a student is already in during the window. */
+export const testSessionClashSchema = z.strictObject({
+  sitting_document_id: teacherDocumentIdSchema,
+  phase: sittingPhaseSchema.extract(['scheduled', 'open', 'running']),
+  form: testSessionFormSchema.nullable(),
+  opens_at: z.iso.datetime(),
+  closes_at: z.iso.datetime(),
+  student_document_ids: z.array(teacherDocumentIdSchema).min(1),
+});
+
+/** 409 `details` for a window clash (the design's "Booked into test A at 09:15"). */
+export const testSessionClashDetailsSchema = z.strictObject({
+  busy_student_document_ids: z.array(teacherDocumentIdSchema).min(1),
+  clashes: z.array(testSessionClashSchema),
+});
+
+/** A booking: `phase: 'scheduled'`, no code, no `opened_at`. */
+export const testSessionBookingSchema = z.strictObject({
+  sitting_document_id: teacherDocumentIdSchema,
+  code: z.null(),
+  class: teacherClassRefSchema,
+  variant: testVariantSchema,
+  form: testSessionFormSchema,
+  status: z.enum(['open']),
+  phase: z.enum(['scheduled']),
+  opened_at: z.null(),
+  window: testSessionBookedWindowSchema,
+  settings: sittingSettingsSchema.nullable(),
+  member_student_ids: sittingMembersSchema,
+  expected: teacherCountSchema,
+});
+
+/** C-TS-1 201: the started sitting, or with `window` the booking. */
+export const createTestSessionResultSchema = z.union([
+  createTestSessionResponseSchema,
+  testSessionBookingSchema,
+]);
+
+/** C-TS-5 PATCH body; `student_document_ids: null` is the whole class again. */
+export const updateTestSessionBodySchema = z
+  .strictObject({
+    window: testSessionWindowSchema.optional(),
+    form_document_id: teacherDocumentIdSchema.optional(),
+    student_document_ids: testSessionStudentIdsSchema.nullable().optional(),
+    settings: sittingSettingsPatchSchema.optional(),
+  })
+  .refine((body) => Object.values(body).some((value) => value !== undefined), {
+    message: 'send at least one of window, form_document_id, student_document_ids, settings',
+  });
+
+export const cancelTestSessionResponseSchema = z.strictObject({
+  sitting_document_id: teacherDocumentIdSchema,
+  status: z.enum(['closed']),
+  phase: z.enum(['cancelled']),
+  closed_at: z.iso.datetime(),
+});
+
+/** C-TS-7: starting a booking answers C-TS-1's started sitting. */
+export const startTestSessionResponseSchema = createTestSessionResponseSchema;
+
+/** 409 `details` once the sitting is no longer a booking. */
+export const testSessionNotScheduledDetailsSchema = z.strictObject({
+  phase: sittingPhaseSchema,
 });
 
 /* ── C-SIT-ACTIVITY · GET+POST /api/sittings/:documentId/activity (teacher 13) ── */
