@@ -4,8 +4,12 @@ import {
   reviewMarkDecision,
   reviewMarkPayload,
   reviewResetPayload,
+  reviewSavePayload,
   reviewSourceForValue,
 } from '@/modules/report/queries/use-result-review.mutation';
+import { resultReviewSchema } from '@/modules/teacher/schemas/teacher-review.schema';
+
+import reading from './fixtures/result-review-reading.live.json';
 
 describe('review setMark guards', () => {
   it('requires a destructive confirmation for zero on a declined response', () => {
@@ -79,5 +83,58 @@ describe('review mark payloads', () => {
       teacher_mark: null,
       teacher_mark_source: null,
     });
+  });
+});
+
+// "Save comments" over the review recorded from the live API (t2's reading
+// result): the rows, their served marks and the served comment are real.
+describe('the "Save comments" payload (live reading review)', () => {
+  const review = resultReviewSchema.parse(reading.review);
+  const [first, second] = review.items;
+
+  it('is null when nothing changed', () => {
+    expect(
+      reviewSavePayload({ items: review.items, notes: {}, comment: '', servedComment: review.teacher_comment }),
+    ).toBeNull();
+    expect(
+      reviewSavePayload({
+        items: review.items,
+        notes: { [second.response_document_id]: second.teacher_note ?? '' },
+        comment: '   ',
+        servedComment: review.teacher_comment,
+      }),
+    ).toBeNull();
+  });
+
+  it('sends only the changed note, re-sending that row’s served mark, plus the changed comment', () => {
+    expect(
+      reviewSavePayload({
+        items: review.items,
+        notes: { [first.response_document_id]: 'Check the rule.' },
+        comment: 'Well done.',
+        servedComment: review.teacher_comment,
+      }),
+    ).toEqual({
+      responses: [
+        {
+          response_document_id: first.response_document_id,
+          teacher_mark: first.teacher_mark,
+          teacher_mark_source: first.teacher_mark_source,
+          teacher_note: 'Check the rule.',
+        },
+      ],
+      comment: 'Well done.',
+    });
+  });
+
+  it('leaves the comment out when only a note changed', () => {
+    const body = reviewSavePayload({
+      items: review.items,
+      notes: { [first.response_document_id]: 'Check the rule.' },
+      comment: review.teacher_comment ?? '',
+      servedComment: review.teacher_comment,
+    });
+    expect(body).not.toHaveProperty('comment');
+    expect(body?.responses).toHaveLength(1);
   });
 });

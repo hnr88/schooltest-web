@@ -1,0 +1,20 @@
+{
+ "recordedAt": "2026-09-11T08:26:49.000Z",
+ "source": {
+  "student": "GET /api/students/nz804sr1odenbnht9pfgmo3v?fields[0]=given_name&fields[1]=family_name&populate[class][fields][0]=name as t2@schooltest.local (HTTP 200)"
+ },
+ "response": {
+  "data": {
+   "id": 38,
+   "documentId": "nz804sr1odenbnht9pfgmo3v",
+   "given_name": "Jae-won",
+   "family_name": "Baptiste",
+   "class": {
+    "id": 6,
+    "documentId": "qves8wrtl7r9ctw49jivm8gl",
+    "name": "Reading 8B — Alvarez"
+   }
+  },
+  "meta": {}
+ }
+}

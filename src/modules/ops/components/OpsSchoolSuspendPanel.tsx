@@ -17,6 +17,7 @@ import {
 import {
   OpsTypedNameConfirm,
   showOpsToast,
+  typedNameMatches,
   useOpsActionRunner,
   useOpsWriteGate,
 } from '@/modules/ops/actions';
@@ -280,7 +281,12 @@ export function OpsSchoolSuspendPanel({
 
   const selectedCopy = selectedAction === null ? null : actionCopy(selectedAction);
   const isTyped = selectedAction?.typed === true;
-  const typedNameMatches = typedName.trim() === school.name;
+  // The portal's ONE typed-name rule (`ops-typed-name`): NFC-normalise, trim,
+  // collapse whitespace runs, case-fold. A raw `===` here was the one gate that
+  // rejected a name the rest of the app accepts (autocapitalise, double space,
+  // composed accents), so the typed Archive confirm was unreachable from this
+  // surface for input every other typed-name confirm treats as a match.
+  const nameOk = typedNameMatches(typedName, school.name);
 
   return (
     <div
@@ -373,9 +379,9 @@ export function OpsSchoolSuspendPanel({
           requiredName={school.name}
           typedName={typedName}
           onTypedNameChange={setTypedName}
-          canConfirm={typedNameMatches}
+          canConfirm={nameOk}
           errorMessage={
-            typedName.length === 0 || typedNameMatches ? null : t('suspend.archiveNameMismatch')
+            typedName.length === 0 || nameOk ? null : t('suspend.archiveNameMismatch')
           }
           confirmLabel={selectedCopy.cta}
           cancelLabel={t('actions.cancel')}

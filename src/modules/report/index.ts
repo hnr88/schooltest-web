@@ -94,5 +94,8 @@ export {
   useResultReviewMutation,
 } from '@/modules/report/queries/use-result-review.mutation';
 export { useReviewMarking } from '@/modules/report/components/ReviewDrawerWriteHalf';
+export { ReviewSubmissionLauncher } from '@/modules/report/components/ReviewSubmissionLauncher';
+export { reviewSavePayload } from '@/modules/report/queries/use-result-review.mutation';
+export type { ReviewDrawerProps, ReviewHeaderContext } from '@/modules/report/types/review.types';
 export { resolveAttributeDelta } from './lib/attribute-view-model';
 export type { AttributeDeltaView } from './types/attribute.types';

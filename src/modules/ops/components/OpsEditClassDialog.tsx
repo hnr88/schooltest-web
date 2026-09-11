@@ -397,7 +397,10 @@ export function OpsEditClassDialog({
                 ]}
                 onValueChange={(value) => {
                   setWindowOverride(value === '' ? null : value);
-                  clearErrors('teacherDocumentId');
+                  // A control with no field of its own clears the form-level
+                  // summary only — never an UNRELATED field's pending error
+                  // (same rule the year-band select follows above).
+                  clearErrors();
                 }}
                 triggerClassName={OPS_CONTROL_CLASS}
               />

@@ -1,0 +1,408 @@
+{
+ "recordedAt": "2026-09-11T07:39:01.000Z",
+ "source": {
+  "review": "GET /api/results/eihr3redx298urctfyjn9wbo/review as teacher@schooltest.local"
+ },
+ "review": {
+  "document_id": "eihr3redx298urctfyjn9wbo",
+  "status": "scoring",
+  "release_state": "held",
+  "skill": "writing",
+  "cefr_band": null,
+  "teacher_comment": null,
+  "item_count": 12,
+  "items": [
+   {
+    "response_document_id": "cnc9m7we6ipdqlaykw0g1j05",
+    "sequence_index": 0,
+    "item_code": "WRT-C1-001",
+    "prompt": null,
+    "response_kind": "text",
+    "task_type": "c1",
+    "given": {
+     "text": "answer"
+    },
+    "is_correct": false,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "constructed",
+     "accepted": [
+      "school"
+     ],
+     "normaliser": "au_default"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "nb2yby9jst4u4sw3ugxuf6hj",
+    "sequence_index": 1,
+    "item_code": "WRT-C2-001",
+    "prompt": null,
+    "response_kind": "text",
+    "task_type": "c2",
+    "given": {
+     "text": "answer"
+    },
+    "is_correct": false,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "constructed",
+     "accepted": [
+      "The bus was late this morning."
+     ],
+     "normaliser": "au_caps_sensitive",
+     "partial_rule": "c2_content_words"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "wt1id94qba9b66nd5zi7kl3n",
+    "sequence_index": 2,
+    "item_code": "WRT-C3-001",
+    "prompt": "Finish the word. I drink a glass of w____ every day.",
+    "response_kind": "text",
+    "task_type": "c3",
+    "given": {
+     "text": "answer"
+    },
+    "is_correct": false,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "constructed",
+     "accepted": [
+      "water"
+     ],
+     "normaliser": "au_default"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "z9l8kbso7h2wh3i9bkdrl9ox",
+    "sequence_index": 3,
+    "item_code": "WRT-C4-001",
+    "prompt": null,
+    "response_kind": "text",
+    "task_type": "c4",
+    "given": {
+     "gaps": {
+      "g1": "x",
+      "g2": "x",
+      "g3": "x",
+      "g4": "x",
+      "g5": "x",
+      "g6": "x"
+     }
+    },
+    "is_correct": false,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "constructed",
+     "accepted": [
+      "to",
+      "at",
+      "do",
+      "under",
+      "with",
+      "for"
+     ],
+     "normaliser": "au_default"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "iwyhkio4rutz1j0zt608blcx",
+    "sequence_index": 4,
+    "item_code": "WRT-C5-001",
+    "prompt": "Correct the word in brackets. Yesterday I [go] to the beach with my cousins.",
+    "response_kind": "text",
+    "task_type": "c5",
+    "given": {
+     "text": "answer"
+    },
+    "is_correct": false,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "constructed",
+     "accepted": [
+      "Yesterday I went to the beach with my cousins."
+     ],
+     "normaliser": "au_default"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "gg0g4y9j8tk14cov8u1fkmn6",
+    "sequence_index": 5,
+    "item_code": "WRT-C6-001",
+    "prompt": null,
+    "response_kind": "text",
+    "task_type": "c6",
+    "given": {
+     "order": [
+      "football",
+      "on",
+      "we",
+      "play",
+      "Saturdays"
+     ]
+    },
+    "is_correct": false,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "constructed",
+     "accepted": [
+      "We play football on Saturdays.",
+      "On Saturdays we play football."
+     ],
+     "normaliser": "au_default"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "aweuplag7h5twvq5qcyq9l4q",
+    "sequence_index": 6,
+    "item_code": "WRT-C7-001",
+    "prompt": "Join the two sentences into one sentence. It was raining. We stayed inside.",
+    "response_kind": "text",
+    "task_type": "c7",
+    "given": {
+     "text": "answer"
+    },
+    "is_correct": false,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "constructed",
+     "accepted": [
+      "Because it was raining, we stayed inside.",
+      "Because it was raining we stayed inside.",
+      "We stayed inside because it was raining.",
+      "As it was raining, we stayed inside.",
+      "As it was raining we stayed inside.",
+      "We stayed inside as it was raining.",
+      "Since it was raining, we stayed inside.",
+      "Since it was raining we stayed inside.",
+      "We stayed inside since it was raining."
+     ],
+     "normaliser": "au_default",
+     "partial_rule": "c7_subordination_coordination"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "m27aci28zss5bse5hocl7hyn",
+    "sequence_index": 7,
+    "item_code": "WRT-C8A-001",
+    "prompt": "Your friend was away from school today. Write an email to your friend. Tell them what happened in class. Ask how they are feeling.",
+    "response_kind": "text",
+    "task_type": "c8a",
+    "given": {
+     "text": "Hi Sam, thank you for your message about the weekend trip. I would love to come to the beach with you and your family on Saturday. Please tell me what time we should meet and what food I need to bring. See you soon, Alex."
+    },
+    "is_correct": null,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "provider_scored",
+     "provider": "writing_llm",
+     "rubric_ref": "wrt_c8a_email_informal_v0"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "ntoz559ivdbpw1dez8ybzjfy",
+    "sequence_index": 8,
+    "item_code": "WRT-C8B-001",
+    "prompt": "You were sick yesterday and missed the maths test. Write an email to your teacher, Ms Lee. Say why you were away. Ask when you can do the test.",
+    "response_kind": "text",
+    "task_type": "c8b",
+    "given": {
+     "text": "Hi Sam, thank you for your message about the weekend trip. I would love to come to the beach with you and your family on Saturday. Please tell me what time we should meet and what food I need to bring. See you soon, Alex."
+    },
+    "is_correct": null,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "provider_scored",
+     "provider": "writing_llm",
+     "rubric_ref": "wrt_c8b_email_semiformal_v0"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "g3ckpxxt0z8isp3uu4drhynl",
+    "sequence_index": 9,
+    "item_code": "WRT-C8C-001",
+    "prompt": "Your class wants a new bin for cans and bottles. Write an email to the principal, Mrs Ross. Say why the school needs it. Ask her to help.",
+    "response_kind": "text",
+    "task_type": "c8c",
+    "given": {
+     "text": "Hi Sam, thank you for your message about the weekend trip. I would love to come to the beach with you and your family on Saturday. Please tell me what time we should meet and what food I need to bring. See you soon, Alex."
+    },
+    "is_correct": null,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "provider_scored",
+     "provider": "writing_llm",
+     "rubric_ref": "wrt_c8c_email_formal_v0"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "trc759euxkxnj47a45wx9drg",
+    "sequence_index": 10,
+    "item_code": "WRT-C9-001",
+    "prompt": "Some people think students should wear a school uniform. Others do not agree. What do you think? Give reasons for your opinion.",
+    "response_kind": "text",
+    "task_type": "c9",
+    "given": {
+     "text": "Many students think that wearing a school uniform is boring, but I believe it is a good idea for several reasons. First, a uniform saves time in the morning because you do not have to choose your clothes. Second, it helps everyone feel equal, so students are not judged by the price of their clothes. Finally, a uniform makes the school feel like one community and it is easy to see who belongs to our school on excursions. For these reasons, I think all schools should ask their students to wear a simple uniform every day."
+    },
+    "is_correct": null,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "provider_scored",
+     "provider": "writing_llm",
+     "rubric_ref": "wrt_c9_essay_v0"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   },
+   {
+    "response_document_id": "vx8dkdwumefuvvpdqgxi5v4x",
+    "sequence_index": 11,
+    "item_code": "WRT-C10-001",
+    "prompt": "Last week your class went on a trip. Write a paragraph about what happened. Use these ideas to help you: where you went, what you did first, what happened next, how it ended.",
+    "response_kind": "text",
+    "task_type": "c10",
+    "given": {
+     "text": "My favourite place in the city is the public library near the river. It is quiet and warm, and there are thousands of books on every subject you can imagine. After school I often sit by the big window, read a story and watch the boats go past. The library is free for everyone, so it is a special place where anyone can learn something new."
+    },
+    "is_correct": null,
+    "latency_ms": 20000,
+    "flags": {
+     "timeout": false,
+     "tts_used": false,
+     "accommodation": null
+    },
+    "area": null,
+    "correct_key": {
+     "type": "provider_scored",
+     "provider": "writing_llm",
+     "rubric_ref": "wrt_c10_paragraph_v0"
+    },
+    "rubric_score": null,
+    "mark_max": null,
+    "teacher_mark": null,
+    "teacher_mark_source": null,
+    "teacher_note": null
+   }
+  ]
+ }
+}

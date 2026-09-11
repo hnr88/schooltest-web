@@ -10,6 +10,7 @@ import { QueryErrorFallback } from '@/modules/query-errors';
 import { LegacyReportBody } from '@/modules/report/components/LegacyReportBody';
 import { ParentReportView } from '@/modules/report/components/ParentReportView';
 import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
+import { ReviewSubmissionLauncher } from '@/modules/report/components/ReviewSubmissionLauncher';
 import { TeacherReportBody } from '@/modules/report/components/TeacherReportBody';
 import { ViewToggle } from '@/modules/report/components/ViewToggle';
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
@@ -76,6 +77,7 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
         className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
       >
         {legacyCrumb ? <RecordCrumb label={legacyCrumb} /> : null}
+        <ReviewSubmissionLauncher resultDocumentId={resultDocumentId} view={data.view} />
         <LegacyReportBody view={data.view} />
       </main>
     );
@@ -99,6 +101,8 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
       className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
     >
       <RecordCrumb label={parentViews && view === 'parent' ? parentCrumb : teacherCrumb} />
+
+      <ReviewSubmissionLauncher resultDocumentId={resultDocumentId} view={result} />
 
       {parentViews && <ViewToggle value={view} onChange={setView} />}
 

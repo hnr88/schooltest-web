@@ -1,38 +1,24 @@
-import { act, type ReactElement, type ReactNode } from 'react';
-import { createRoot, type Root } from 'react-dom/client';
-import { NextIntlClientProvider } from 'next-intl';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { ReactNode } from 'react';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import enMessages from '@/i18n/messages/en.json';
+import { strapi } from '@/lib/axios/strapi';
+import { showOpsToast } from '@/modules/ops/actions';
 import { ReviewDrawer } from '@/modules/report/components/ReviewDrawer';
 
-import type { ReviewItem } from '@/modules/teacher/schemas/teacher-review.schema';
+import reading from './fixtures/result-review-reading.live.json';
+import { fill, press, renderDrawer, settle, typeInto, unmountDrawer } from './review-drawer.harness';
 
-(globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
-
-// scoring/11 — the review drawer's four MARKING-ASSIST VARIANTS, over
-// constructed fixtures.
-//
-// This is the assertion the row exists to make, and it cannot be made live: the
-// four outcomes depend on what a model happened to write about a particular
-// student's extended response, so a live feed offers whichever variants its
-// data contains and silently omits the rest. Constructed rows make all four
-// observable, and make the SUPPRESSION rule falsifiable — that only `blank`
-// and `language` withhold a suggestion, while `over_ceiling` and `offtopic`
-// carry a note and still suggest. Getting that backwards either hides a
-// suggestion the teacher should see or offers one where the design says no
-// honest mark can be proposed, and nothing else in the tree would catch it.
-//
-// Only the data hook is mocked, at its own boundary; the drawer, its rows and
-// the assist block are all real.
+// Teacher Portal v2 S31 — the review drawer over t2's REAL reading review,
+// recorded from the live API with the live roster row's name, class and phase
+// as header context (see the fixture's `source`). The drawer, its rows, its
+// query, its mutation and the strict schema are all real; only the HTTP client
+// is replaced at its boundary, so the PUT body the drawer sends can be read.
 
 vi.mock('@/i18n/navigation', () => ({
-  Link: ({ href, children }: { href: string; children?: ReactNode }) => (
-    <a href={href}>{children}</a>
-  ),
+  Link: ({ href, children }: { href: string; children?: ReactNode }) => <a href={href}>{children}</a>,
   useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
-  usePathname: () => '/dashboard/teach',
+  usePathname: () => '/dashboard/reports',
 }));
 
 vi.mock('next/navigation', () => ({
@@ -40,212 +26,154 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
-vi.mock('@/modules/report/queries/use-result-review.query', () => ({
-  useResultReviewQuery: vi.fn(),
+vi.mock('@/lib/axios/strapi', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/axios/strapi')>()),
+  strapi: { get: vi.fn(), put: vi.fn() },
 }));
 
-import { useResultReviewQuery } from '@/modules/report/queries/use-result-review.query';
+vi.mock('@/modules/ops/actions', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/modules/ops/actions')>()),
+  showOpsToast: vi.fn(),
+}));
 
-const reviewMock = useResultReviewQuery as unknown as ReturnType<typeof vi.fn>;
-
-const QUERY_OK = <T,>(data: T) => ({
-  data,
-  error: null,
-  isError: false,
-  isFetching: false,
-  isPending: false,
-  isLoading: false,
-  refetch: vi.fn(),
-});
-
-const RUBRIC_BASE = {
-  provider: 'writing_llm' as const,
-  rubric_ref: 'RDG-EXT-1',
-  rubric_version: 3,
-  model: 'test-model',
-  scored_at: '2026-09-10T00:00:00.000Z',
-};
-
-/** An extended-response row carrying whichever assist body the case needs. */
-const extendedRow = (rubric: ReviewItem['rubric_score'], sequence = 1): ReviewItem => ({
-  sequence_index: sequence,
-  item_code: `EXT-${sequence}`,
-  prompt: 'Explain what “holding its breath” means in this passage.',
-  response_kind: 'text',
-  task_type: 'extended',
-  given: 'The town was afraid.',
-  is_correct: null,
-  latency_ms: 91_500,
-  flags: null,
-  area: 'Inference',
-  correct_key: null,
-      rubric_score: rubric,
-});
-
-const receptiveRow: ReviewItem = {
-  sequence_index: 0,
-  item_code: 'MC-1',
-  prompt: 'Which word means the same as “quiet”?',
-  response_kind: 'mc',
-  task_type: 'mc_text',
-  given: 'silent',
-  is_correct: true,
-  latency_ms: 4_200,
-  flags: { timeout: false, tts_used: false, accommodation: null },
-  area: 'Vocabulary',
-  correct_key: { type: 'single' },
-      rubric_score: null,
-};
-
-const review = (items: ReviewItem[]) => ({
-  document_id: 'res-0000000000000000000001',
-  status: 'complete',
-  release_state: 'released',
-  skill: 'receptive',
-  cefr_band: 'A2',
-  item_count: items.length,
-  items,
-});
-
-let host: HTMLElement | null = null;
-let root: Root | null = null;
+const getMock = vi.mocked(strapi.get);
+const putMock = vi.mocked(strapi.put);
+const toastMock = vi.mocked(showOpsToast);
+const COPY = enMessages.TeacherPortal.review;
+const READING = enMessages.Report.skills.reading;
+const ctx = reading.context;
 
 afterEach(() => {
-  if (root) act(() => root!.unmount());
-  host?.remove();
-  root = null;
-  host = null;
+  unmountDrawer();
   vi.clearAllMocks();
 });
 
-/** The sheet portals into document.body, so assertions read the body. */
-function renderDrawer(element: ReactElement): HTMLElement {
-  host = document.createElement('div');
-  document.body.appendChild(host);
-  root = createRoot(host);
-  act(() => {
-    root!.render(
-      <NextIntlClientProvider locale="en" messages={enMessages} timeZone="Australia/Sydney">
-        {/* scoring/12: the drawer now writes (C-REV-2), so its hooks need a
-            query client — the harness provides the same live-client shape the
-            page mounts. */}
-        <QueryClientProvider client={new QueryClient()}>
-          {element}
-        </QueryClientProvider>
-      </NextIntlClientProvider>,
-    );
+const openReading = (onOpenChange = vi.fn()) => (
+  <ReviewDrawer
+    resultDocumentId={reading.review.document_id}
+    open
+    onOpenChange={onOpenChange}
+    studentName={ctx.studentName}
+    testLabel={READING}
+    className={ctx.className}
+    phase={ctx.phase}
+  />
+);
+
+describe('the review drawer over the live reading review', () => {
+  test('the header names the student, the test and the class, and tallies the served judgements', async () => {
+    getMock.mockResolvedValue({ data: reading.review });
+    const body = renderDrawer(openReading());
+    await settle();
+
+    expect(getMock).toHaveBeenCalledWith(`/api/results/${reading.review.document_id}/review`);
+    const items = reading.review.items;
+    const correct = items.filter((item) => item.is_correct === true).length;
+    const header = body.querySelector('[data-slot="review-header"]');
+    expect(header?.querySelector('[data-slot="sheet-title"]')?.textContent).toBe(ctx.studentName);
+    expect(header?.textContent).toContain(`${READING} · ${ctx.className}`);
+    const strip = body.querySelector('[data-slot="review-strip"]')?.textContent ?? '';
+    expect(strip).toContain(fill(COPY.scoreChip, { correct, total: items.length }));
+    expect(strip).toContain(`${Math.round((correct / items.length) * 100)}%`);
+    expect(strip).toContain(COPY.phase[ctx.phase as keyof typeof COPY.phase]);
+    expect(body.querySelector('[data-slot="review-note-summary"]')?.textContent).toBe('No comments yet');
   });
-  return document.body;
-}
 
-const open = () => <ReviewDrawer resultId="res-1" open onOpenChange={vi.fn()} />;
+  test('every served row renders what they answered, and the key only when the judgement is wrong', async () => {
+    getMock.mockResolvedValue({ data: reading.review });
+    const body = renderDrawer(openReading());
+    await settle();
 
-const COPY = enMessages.Report.review;
-
-describe('the review drawer', () => {
-  test('a receptive row renders given / correct / secs and NO assist block', () => {
-    reviewMock.mockReturnValue(QUERY_OK(review([receptiveRow])));
-    const body = renderDrawer(open());
-
-    expect(body.querySelectorAll('[data-slot="review-question-row"]').length).toBe(1);
-    // secs are DERIVED in the client from the served milliseconds.
-    expect(body.textContent).toContain('4.2');
-    expect(body.textContent).toContain('silent');
-    // The served area label, rendered as given.
-    expect(body.textContent).toContain('Vocabulary');
-    // No rubric block on a receptive row — not an empty one, none at all.
+    const items = reading.review.items;
+    const rows = body.querySelectorAll('[data-slot="review-question-row"]');
+    expect(rows).toHaveLength(items.length);
+    const wrong = items.findIndex((item) => item.is_correct === false);
+    const row = rows[wrong];
+    expect(row.textContent).toContain(fill(COPY.questionNumber, { n: wrong + 1 }));
+    expect(row.textContent).toContain(items[wrong].prompt);
+    expect(row.querySelector('[data-slot="review-question-mark"]')?.textContent).toBe(COPY.incorrect);
+    expect(row.querySelector('[data-slot="review-given"]')?.textContent).toBe(
+      fill(COPY.option, { id: items[wrong].given.option_id.toUpperCase() }),
+    );
+    expect(row.querySelector('[data-slot="review-key"]')?.textContent).toBe(
+      fill(COPY.option, { id: items[wrong].correct_key.answer.toUpperCase() }),
+    );
+    expect(row.textContent).toContain(
+      fill(COPY.timeOnQuestion, { secs: Math.round(items[wrong].latency_ms / 1000) }),
+    );
+    const right = items.findIndex((item) => item.is_correct === true);
+    expect(rows[right].querySelector('[data-slot="review-question-mark"]')?.textContent).toBe(COPY.correct);
+    expect(rows[right].querySelector('[data-slot="review-key"]')).toBeNull();
+    // A reading sitting carries no rubric-marked response, so no extended card.
     expect(body.querySelector('[data-slot="review-assist"]')).toBeNull();
-    expect(body.querySelector('[data-slot="review-awaiting-mark"]')).toBeNull();
   });
 
-  test('an unmarked extended row says it is awaiting a mark, and suggests nothing', () => {
-    reviewMock.mockReturnValue(QUERY_OK(review([extendedRow(null)])));
-    const body = renderDrawer(open());
+  test('"Save comments" sends ONE PUT — the comment and the changed note, the row re-sending its mark — then closes', async () => {
+    getMock.mockResolvedValue({ data: reading.review });
+    putMock.mockResolvedValue({ data: reading.review });
+    const onOpenChange = vi.fn();
+    const body = renderDrawer(openReading(onOpenChange));
+    await settle();
 
-    expect(body.querySelector('[data-slot="review-awaiting-mark"]')?.textContent).toBe(
-      COPY.awaitingMark,
-    );
-    // The defect this guards: a fabricated suggestion on a row nobody marked.
-    expect(body.querySelector('[data-slot="review-assist"]')).toBeNull();
-    expect(body.querySelectorAll('[data-slot="review-question-row"]')[0]?.getAttribute(
-      'data-correct',
-    )).toBe('unmarked');
+    const overall = 'Keeps going when a passage gets long.';
+    const note = 'Re-read the spelling rule before choosing.';
+    typeInto(body.querySelector<HTMLTextAreaElement>('[data-slot="review-comment"]'), overall);
+    typeInto(body.querySelector<HTMLTextAreaElement>('[data-slot="review-question-row"] textarea'), note);
+    expect(body.querySelector('[data-slot="review-note-summary"]')?.textContent).toBe('2 comments written');
+
+    press(body.querySelector('[data-slot="review-save"]'));
+    await settle();
+
+    const first = reading.review.items[0];
+    expect(putMock).toHaveBeenCalledTimes(1);
+    expect(putMock).toHaveBeenCalledWith(`/api/results/${reading.review.document_id}/review`, {
+      responses: [
+        {
+          response_document_id: first.response_document_id,
+          teacher_mark: first.teacher_mark,
+          teacher_mark_source: first.teacher_mark_source,
+          teacher_note: note,
+        },
+      ],
+      comment: overall,
+    });
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+    expect(toastMock).toHaveBeenCalledWith({
+      tone: 'ok',
+      message: `Saved 2 comments on ${ctx.studentName}’s ${READING} submission`,
+    });
   });
 
-  test.each([
-    ['blank', true],
-    ['language', true],
-    ['over_ceiling', false],
-    ['offtopic', false],
-  ] as const)(
-    'the %s variant declines=%s — only a decline withholds the suggestion',
-    (kind, shouldDecline) => {
-      const declining = kind === 'blank' || kind === 'language';
-      reviewMock.mockReturnValue(
-        QUERY_OK(
-          review([
-            extendedRow({
-              ...RUBRIC_BASE,
-              // A declining body carries NO bands and never zero-fills them;
-              // a noting body is a scored body and does carry them.
-              ...(declining
-                ? {
-                    decline_kind: kind,
-                    decline_reason: `stored reason for ${kind}`,
-                  }
-                : { dimensions: { Inference: 2, Evidence: 1 } }),
-            }),
-          ]),
-        ),
-      );
-      const body = renderDrawer(open());
+  test('saving with nothing written sends nothing and reports the review', async () => {
+    getMock.mockResolvedValue({ data: reading.review });
+    const onOpenChange = vi.fn();
+    const body = renderDrawer(openReading(onOpenChange));
+    await settle();
 
-      const assist = body.querySelector('[data-slot="review-assist"]');
-      expect(assist, 'the assist block renders for every variant').not.toBeNull();
-      expect(assist?.getAttribute('data-declined')).toBe(String(shouldDecline));
+    press(body.querySelector('[data-slot="review-save"]'));
+    await settle();
 
-      const needsJudgement = body.querySelector('[data-slot="review-needs-judgement"]');
-      const footer = body.querySelector('[data-slot="review-assist-footer"]');
-
-      if (shouldDecline) {
-        expect(needsJudgement?.textContent).toBe(COPY.needsJudgement);
-        expect(footer?.textContent).toBe(COPY.noSuggestion);
-        // The model's own sentence, verbatim — not an i18n key.
-        expect(body.querySelector('[data-slot="review-decline-reason"]')?.textContent).toBe(
-          `stored reason for ${kind}`,
-        );
-      } else {
-        // A note still suggests: no judgement banner, and the invariant footer.
-        expect(needsJudgement).toBeNull();
-        expect(footer?.textContent).toBe(COPY.suggestionInvariant);
-        expect(body.querySelector('[data-slot="review-criteria"]')).not.toBeNull();
-      }
-    },
-  );
-
-  test('the strip counts the SERVED judgements and shows the served band', () => {
-    // Two correct out of three rows, band A2 — three numbers that cannot be
-    // confused for one another if the wiring is right.
-    const items = [
-      receptiveRow,
-      { ...receptiveRow, sequence_index: 2, item_code: 'MC-2' },
-      { ...receptiveRow, sequence_index: 3, item_code: 'MC-3', is_correct: false },
-    ];
-    reviewMock.mockReturnValue(QUERY_OK(review(items)));
-    const body = renderDrawer(open());
-
-    expect(body.querySelector('[data-slot="review-strip"]')?.textContent).toContain('2/3');
-    expect(body.querySelector('[data-slot="review-strip"]')?.textContent).toContain('A2');
-    expect(body.querySelectorAll('[data-slot="review-question-row"]').length).toBe(3);
+    expect(putMock).not.toHaveBeenCalled();
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+    expect(toastMock).toHaveBeenCalledWith({
+      tone: 'ok',
+      message: `Reviewed ${ctx.studentName}’s ${READING} submission`,
+    });
   });
 
-  test('a sitting with no responses says so instead of rendering an empty list', () => {
-    reviewMock.mockReturnValue(QUERY_OK(review([])));
-    const body = renderDrawer(open());
+  test('a refused save keeps the drawer open and says it was not saved', async () => {
+    getMock.mockResolvedValue({ data: reading.review });
+    putMock.mockRejectedValue(new Error('Network Error'));
+    const onOpenChange = vi.fn();
+    const body = renderDrawer(openReading(onOpenChange));
+    await settle();
 
-    expect(body.querySelector('[data-slot="review-empty"]')?.textContent).toContain(
-      COPY.emptyTitle,
-    );
-    expect(body.querySelector('[data-slot="review-questions"]')).toBeNull();
+    typeInto(body.querySelector<HTMLTextAreaElement>('[data-slot="review-comment"]'), 'A comment.');
+    press(body.querySelector('[data-slot="review-save"]'));
+    await settle();
+
+    expect(body.querySelector('[data-slot="review-status"]')?.textContent).toBe(COPY.saveFailed);
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(toastMock).not.toHaveBeenCalled();
   });
 });
