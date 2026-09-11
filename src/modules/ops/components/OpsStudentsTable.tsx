@@ -37,6 +37,8 @@ export interface OpsStudentsTableProps {
   meta?: DirectoryMeta;
   filters: readonly DirectoryFilterDef[];
   rowActions?: (row: OpsStudentRow) => readonly DirectoryRowAction<OpsStudentRow>[];
+  /** U-44/§L-rownav — a row click opens the profile panel (rowHref XOR onRowSelect). */
+  onRowSelect?: (row: OpsStudentRow) => void;
   /** ops/18 — the design's Move class / Deactivate bulk set (`:1465-1492`). */
   bulkActions?: readonly DirectoryBulkAction[];
   /**
@@ -78,6 +80,7 @@ export function OpsStudentsTable({
   meta,
   filters,
   rowActions,
+  onRowSelect,
   bulkActions,
   header,
   chipFilterKey,
@@ -198,6 +201,7 @@ export function OpsStudentsTable({
       filters={filters}
       sorts={[]}
       rowActions={rowActions}
+      onRowSelect={onRowSelect}
       bulkActions={bulkActions}
       chipFilterKey={chipFilterKey}
       emptyCopy={emptyCopy}

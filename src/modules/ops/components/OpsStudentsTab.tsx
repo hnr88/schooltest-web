@@ -329,6 +329,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
           state.params.filters.year_level,
         ]}
         rowActions={rowActions}
+        onRowSelect={(row) => setProfileDocumentId(row.documentId)}
         // filters-audit 2026-09-11: the design's pill toolbar arrangement
         // (hidden labels, count right) like every other ops tab.
         toolbarVariant="pill"

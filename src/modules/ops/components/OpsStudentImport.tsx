@@ -160,7 +160,7 @@ export function OpsStudentImport({
         label={t('classLabel')}
         placeholder={t('classPlaceholder')}
         options={classOptions}
-        value={importer.classDocumentId ?? undefined}
+        value={importer.classDocumentId ?? ''}
         onValueChange={(value) => importer.onClassChange(value)}
         helperText={t('classHelper')}
         required
