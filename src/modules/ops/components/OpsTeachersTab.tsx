@@ -52,7 +52,16 @@ export function OpsTeachersTab({
   // accounts, their status and their real activity come from C-OPS-PORTAL-015.
   // Neither read invents the other's data. The query only runs while its own
   // tab is selected, so opening the page does not fetch four tabs' worth.
-  const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, active);
+  // `role: 'teacher'` scopes the read to the rows this tab renders — the
+  // directory also answers school_admins, and without the filter they inflated
+  // the header summary ("6 teachers" above a 4-row table whose tab badge,
+  // count card and pager all said 4) and would have counted an admin's classes
+  // toward "classes covered".
+  const teachers = useTeachersListQuery(
+    schoolDocumentId,
+    { page: 1, pageSize: 200, role: 'teacher' },
+    active,
+  );
   const teacherRows = teachers.data?.data ?? [];
   const classCounts = Object.fromEntries(
     teacherRows.map((teacher) => [teacher.documentId, teacher.classes.length]),

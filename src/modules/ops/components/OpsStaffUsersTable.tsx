@@ -516,12 +516,19 @@ export function OpsStaffUsersTable({
     }
     const userTargets = bulkConfirm.targets.filter((target) => target.kind === 'user');
     const invitationTargets = bulkConfirm.targets.filter((target) => target.kind === 'invitation');
+    // Mixed selection: each arm runs only over what it actually owns. The
+    // runner answers `allSucceeded: false` for an EMPTY target set (total 0
+    // means nothing succeeded), so running — or summarising — an empty arm
+    // would toast the generic error over a fully successful bulk remove.
     const [userSummary, invitationSummary] = await Promise.all([
-      removeUserRunner.run(userTargets),
-      revokeRunner.run(invitationTargets),
+      userTargets.length > 0 ? removeUserRunner.run(userTargets) : null,
+      invitationTargets.length > 0 ? revokeRunner.run(invitationTargets) : null,
     ]);
     setBulkConfirm(null);
-    if (!userSummary.allSucceeded || !invitationSummary.allSucceeded) {
+    if (userSummary !== null && !userSummary.allSucceeded) {
+      showOpsToast({ tone: 'error', message: t('errorDescription') });
+    }
+    if (invitationSummary !== null && !invitationSummary.allSucceeded) {
       showOpsToast({ tone: 'error', message: t('errorDescription') });
     }
     await Promise.all([invalidateAccounts(), invalidateInvitations()]);
@@ -543,6 +550,10 @@ export function OpsStaffUsersTable({
       },
       onRun: (_rows, targets) => {
         if (refuseIfBlocked()) return;
+        // The kit hands back only the ELIGIBLE targets; a selection of accepted
+        // accounts makes that set empty, and running it would toast the generic
+        // error over a no-op (`allSucceeded` is false whenever total is 0).
+        if (targets.length === 0) return;
         void resendRunner.run(targets).then(async (summary) => {
           await invalidateInvitations();
           if (!summary.allSucceeded) showOpsToast({ tone: 'error', message: t('errorDescription') });
@@ -566,6 +577,10 @@ export function OpsStaffUsersTable({
       },
       onRun: (_rows, targets) => {
         if (refuseIfBlocked()) return;
+        // Same empty-eligible guard as Resend invites: confirming a run over
+        // zero targets would only produce the runner's false `allSucceeded:
+        // false` and a spurious error toast.
+        if (targets.length === 0) return;
         setBulkConfirm({ key: 'suspend', targets });
       },
     },
