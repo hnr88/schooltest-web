@@ -1,5 +1,14 @@
 import type { AssessedBand, AttributeName } from '@/modules/report/schemas/result-view.schema';
 
+// The server's movement CLAIM (`delta_display`) resolved into what a row can
+// say: a signed coarse step verbatim, `steady`, or a band pair. A band movement
+// whose bands are absent or retired names the movement and invents no band.
+export type AttributeDeltaView =
+  | { kind: 'points'; display: string }
+  | { kind: 'steady' }
+  | { kind: 'bands'; before: AssessedBand; after: AssessedBand }
+  | { kind: 'band_movement' };
+
 // E11-09. A zero-evidence attribute has NO domain_score field to default to 0
 // and NO delta field to default to 0 — the shape itself makes the false claim
 // unrepresentable. Posterior fields are audit-only and never reach a view.
@@ -10,7 +19,7 @@ export type AttributeRowView =
       status: AssessedBand;
       domainScore: number;
       itemsSeen: number;
-      deltaDisplay: string | null;
+      delta: AttributeDeltaView | null;
       deltaReliable: boolean | null;
     }
   | {

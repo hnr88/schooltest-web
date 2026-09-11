@@ -119,3 +119,21 @@ export function buildStudentDrillDownView(view: ResultView): StudentDrillDownVie
     tests,
   };
 }
+
+/**
+ * The topbar trail for /dashboard/results/<class>/students/<student>: the
+ * student's name, with the class crumb named by the CLASS — never its
+ * documentId. Nothing is published until both names are known, so the trail
+ * ends at Results rather than showing an id or repeating the student.
+ */
+export function drillDownCrumb(
+  studentName: string | null,
+  className: string | null,
+  classDocumentId: string,
+): { label: string; ancestors: Record<string, string> } | null {
+  if (!studentName || !className) return null;
+  return {
+    label: studentName,
+    ancestors: { [`/dashboard/results/${classDocumentId}`]: className },
+  };
+}

@@ -6,11 +6,12 @@ import { StatusPill, TrendDelta } from '@/modules/design-system';
 import { AttributeTrack } from '@/modules/report/components/AttributeTrack';
 import { EvidenceCount } from '@/modules/report/components/EvidenceCount';
 import { ATTRIBUTE_STATUS_TONE } from '@/modules/report/constants/mastery.constants';
-import type { AttributeRowView } from '@/modules/report/types/attribute.types';
+import type { AttributeDeltaView, AttributeRowView } from '@/modules/report/types/attribute.types';
 import { ROW_CLASS } from '@/modules/report/constants/components.constants';
 
-function deltaTone(deltaDisplay: string): 'positive' | 'negative' | 'neutral' {
-  const first = deltaDisplay.charAt(0);
+function deltaTone(delta: AttributeDeltaView): 'positive' | 'negative' | 'neutral' {
+  if (delta.kind !== 'points') return 'neutral';
+  const first = delta.display.charAt(0);
   if (first === '+') return 'positive';
   if (first === '-' || first === '−') return 'negative';
   return 'neutral';
@@ -20,7 +21,8 @@ function deltaTone(deltaDisplay: string): 'positive' | 'negative' | 'neutral' {
 // the evidence count and the delta; the NOT-ASSESSED arm shows a hatched empty
 // track and a sentence, with no score, no delta and no evidence meter. The
 // score comes from `domain_score` only — posterior fields are audit-only and
-// never rendered — and the delta is `delta_display` verbatim.
+// never rendered — and the delta is the server's claim in words: a signed step
+// verbatim, `steady` and band pairs through the catalogue, never a raw token.
 export function AttributeMasteryRow({
   row,
   scaleMax,
@@ -33,9 +35,16 @@ export function AttributeMasteryRow({
   index: number;
 }) {
   const t = useTranslations('Report');
+  const tResults = useTranslations('Results');
   const name = t(`attributes.${row.name}`);
   const statusKey = row.state === 'assessed' ? row.status : 'not_assessed';
   const score = row.state === 'assessed' ? String(row.domainScore) : null;
+  const deltaWords = (delta: AttributeDeltaView): string => {
+    if (delta.kind === 'points') return delta.display;
+    if (delta.kind === 'steady') return tResults('steady');
+    if (delta.kind === 'band_movement') return tResults('bandMovement');
+    return `${t(`attributeStatus.${delta.before}`)} → ${t(`attributeStatus.${delta.after}`)}`;
+  };
 
   return (
     <li
@@ -66,10 +75,10 @@ export function AttributeMasteryRow({
       {row.state === 'assessed' ? (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           <EvidenceCount itemsSeen={row.itemsSeen} scaleMax={scaleMax} />
-          {row.deltaDisplay !== null ? (
+          {row.delta !== null ? (
             <TrendDelta
-              tone={deltaTone(row.deltaDisplay)}
-              label={t('deltaSincePrevious', { delta: row.deltaDisplay })}
+              tone={deltaTone(row.delta)}
+              label={t('deltaSincePrevious', { delta: deltaWords(row.delta) })}
             />
           ) : null}
         </div>

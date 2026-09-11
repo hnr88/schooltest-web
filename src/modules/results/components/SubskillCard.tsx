@@ -99,7 +99,12 @@ export function SubskillCard({
 
       {deltaDisplay === 'band_movement' ? (
         <span data-slot="skill-delta" data-delta="band_movement" className="text-caption font-semibold">
-          {bandBefore} → {bandAfter}
+          {bandBefore !== undefined &&
+          bandAfter !== undefined &&
+          Object.hasOwn(BAND_KEY, bandBefore) &&
+          Object.hasOwn(BAND_KEY, bandAfter)
+            ? `${t(BAND_KEY[bandBefore as keyof typeof BAND_KEY])} → ${t(BAND_KEY[bandAfter as keyof typeof BAND_KEY])}`
+            : t('bandMovement')}
         </span>
       ) : deltaDisplay === 'steady' ? (
         <span data-slot="skill-delta" data-delta="steady" className="text-caption text-muted-foreground">

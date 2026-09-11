@@ -167,7 +167,7 @@ describe('Screen C part 1 — header, confidence, trend, seven cards', () => {
     const screen = renderScreen(view);
     const decodingDelta = screen.querySelector('[data-slot="skill-card"][data-skill="Decoding"] [data-slot="skill-delta"]');
     expect(decodingDelta?.getAttribute('data-delta')).toBe('band_movement');
-    expect(decodingDelta?.textContent).toBe('developing → secure');
+    expect(decodingDelta?.textContent).toBe('Developing → Secure');
   });
 
   test('vocab strand lines: both strands normally, the honest gap when single-strand', () => {

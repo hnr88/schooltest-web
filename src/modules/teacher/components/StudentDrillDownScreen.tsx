@@ -13,6 +13,7 @@ import { SkillSelect } from '@/modules/teacher/components/SkillSelect';
 import { TeacherExportButton } from '@/modules/teacher/components/TeacherExportButton';
 import { TEACHER_RETRY_BUTTON_CLASS } from '@/modules/teacher/constants/a11y.constants';
 import { DEFAULT_SKILL_SCOPE } from '@/modules/teacher/lib/skill-scope';
+import { drillDownCrumb } from '@/modules/teacher/lib/student-drill-down-view';
 import type { SkillScopeValue } from '@/modules/teacher/types/results-shell.types';
 import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-dashboard.query';
 import { useStudentDrillDownQuery } from '@/modules/teacher/queries/use-student-drill-down.query';
@@ -46,16 +47,17 @@ function StudentDrillDownScreen({
   const drillDown = useStudentDrillDownQuery(classDocumentId, studentDocumentId);
   const dashboard = useTeacherDashboardQuery();
   const [skill, setSkill] = useState<SkillScopeValue>(DEFAULT_SKILL_SCOPE);
-  const className =
+  const knownClassName =
     dashboard.data?.classes.find((entry) => entry.class_document_id === classDocumentId)?.name ??
-    classDocumentId;
-
-  useRecordCrumb(
+    null;
+  const className = knownClassName ?? classDocumentId;
+  const crumb = drillDownCrumb(
     drillDown.status === 'success' ? drillDown.data.displayName : null,
-    drillDown.status === 'success'
-      ? { [`/dashboard/results/${classDocumentId}`]: classDocumentId }
-      : undefined,
+    knownClassName,
+    classDocumentId,
   );
+
+  useRecordCrumb(crumb?.label ?? null, crumb?.ancestors);
 
   return (
     <div

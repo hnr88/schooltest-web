@@ -71,7 +71,9 @@ export function ProgressTrendChart({ view }: { view: ResultView }) {
               delta:
                 view.overall.delta_display === 'band_movement'
                   ? t('bandMovementLower')
-                  : t('deltaPtsShort', { delta: view.overall.delta_display }),
+                  : view.overall.delta_display === 'steady'
+                    ? t('steady')
+                    : t('deltaPtsShort', { delta: view.overall.delta_display }),
               reliability: view.overall.delta_reliable ? t('reliable') : t('withinError'),
             })}`
           : ''}

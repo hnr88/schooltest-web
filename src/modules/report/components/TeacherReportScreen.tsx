@@ -1,7 +1,7 @@
 'use client';
 
 import { FileSearch } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Button } from '@/modules/design-system';
@@ -13,8 +13,8 @@ import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
 import { TeacherReportBody } from '@/modules/report/components/TeacherReportBody';
 import { ViewToggle } from '@/modules/report/components/ViewToggle';
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
-import { resolveDisplayLabel } from '@/modules/report/lib/display-label';
 import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
+import { reportCrumbLabel } from '@/modules/report/lib/report-crumb';
 import { useResultQuery } from '@/modules/results/queries/use-student-result.query';
 import type { ReportViewMode } from '@/modules/report/types/report-view.types';
 import { RecordCrumb } from '@/modules/shell';
@@ -28,6 +28,7 @@ import { RecordCrumb } from '@/modules/shell';
 // posterior value are absent from the DOM, not merely invisible (E11-15).
 export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: string }) {
   const t = useTranslations('Report');
+  const format = useFormatter();
   const [view, setView] = useState<ReportViewMode>('teacher');
   const { data, error, isError, isFetching, isLoading, refetch } = useResultQuery(resultDocumentId);
   // Task 46 (st-mvp-pivot): the parent audience toggle is masked, not deleted,
@@ -65,28 +66,30 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
   }
 
   // Legacy-r7 rows (and any other non-v2 view) never reach the view-models:
-  // they render their stored statements as text via `LegacyReportBody`.
+  // they render their stored statements as text via `LegacyReportBody`. With no
+  // stored label the trail ends at Reports — a raw documentId is never a crumb.
   if (data.kind === 'legacy') {
+    const legacyCrumb = data.view.display_label ?? data.view.acara_phase;
     return (
       <main
         data-surface="teacher-report"
         className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
       >
-        <RecordCrumb
-          label={data.view.display_label ?? data.view.acara_phase ?? resultDocumentId}
-        />
+        {legacyCrumb ? <RecordCrumb label={legacyCrumb} /> : null}
         <LegacyReportBody view={data.view} />
       </main>
     );
   }
 
   const result = data.view;
-  const displayLabel = resolveDisplayLabel(result);
   const attributes = buildAttributePanel(result);
   const evidence = attributes.state === 'rows' ? attributes.evidence : null;
   const parent = buildFamilyPreview(result);
-  const teacherCrumb =
-    displayLabel.state === 'derived' ? displayLabel.label : t(displayLabel.absentKey);
+  const teacherCrumb = reportCrumbLabel(
+    result,
+    (skill) => t(`skills.${skill}`),
+    (iso) => format.dateTime(new Date(iso), { dateStyle: 'medium' }),
+  );
   const parentCrumb = parent.phase.label ?? t('parentHeadlinePending');
 
   return (
