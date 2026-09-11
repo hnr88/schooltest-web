@@ -22,6 +22,10 @@ import {
   isResendCooldownFailure,
   useResendInvitationMutation,
 } from '@/modules/ops/queries/use-resend-invitation.mutation';
+import {
+  onboardingEligibility,
+  useOnboardingReadQuery,
+} from '@/modules/ops/queries/use-onboarding-read.query';
 
 export interface OpsSchoolLifecycleBannerProps {
   documentId: string;
@@ -78,6 +82,15 @@ export function OpsSchoolLifecycleBanner({
   const resendOwnerInvite = useResendInvitationMutation();
   const lastResendAtRef = useRef<number | null>(null); // logic.md#c-resend's 60s client cooldown
 
+  // The pending_setup CTA is a resend, and a resend is only real for a school
+  // that actually holds an owner invitation (`link_sent` + stored contact) —
+  // anything else 409s. Same react-query key as the invitation panel, so this
+  // read costs nothing extra on the detail page. Hidden until proven (CTA off
+  // while the read settles) rather than shown and refused.
+  const invitation = useOnboardingReadQuery(documentId, enabled);
+  const canResendOwnerInvite =
+    invitation.data !== undefined && onboardingEligibility(invitation.data).canResend;
+
   const isReadOnly = capabilities.data?.capabilities.write === false;
   const capabilitiesCopy = (key: CapabilitiesCopyKey): string =>
     tCapabilities.has(key) ? tCapabilities(key) : CAPABILITIES_COPY[key];
@@ -85,6 +98,7 @@ export function OpsSchoolLifecycleBanner({
   const banner = portalLifecycleBanner({
     status,
     readOnly: isReadOnly,
+    canResendOwnerInvite,
     trialEndsAtDisplay: formatDate(locale, trialEndsAt),
     retentionUntilDisplay: formatDate(locale, retentionUntil),
     suspendedIntervalDisplay: suspendedAt ? formatRelativeTime(suspendedAt, new Date(), locale) : null,

@@ -105,6 +105,11 @@ export interface PortalLifecycleBannerInput {
   status: PortalStatus;
   /** True for an `ops_support` session — outranks every status arm below. */
   readOnly: boolean;
+  /** The school actually holds a resendable owner invitation (`link_sent` +
+   * stored contact — `onboardingEligibility().canResend`). The server 409s a
+   * resend for a pending_setup school that has no invitation, so the
+   * pending_setup CTA only mounts when this is true (C-OPS-PORTAL-012). */
+  canResendOwnerInvite: boolean;
   /** Pre-formatted for the active locale; null when the column has no value. */
   trialEndsAtDisplay: string | null;
   retentionUntilDisplay: string | null;
@@ -126,6 +131,7 @@ export interface PortalLifecycleBannerInput {
 export function portalLifecycleBanner({
   status,
   readOnly,
+  canResendOwnerInvite,
   trialEndsAtDisplay,
   retentionUntilDisplay,
   suspendedIntervalDisplay,
@@ -164,7 +170,10 @@ export function portalLifecycleBanner({
       tone,
       titleKey: 'banner.pending_setup.title',
       bodyKey: 'banner.pending_setup.body',
-      cta: PENDING_SETUP_CTA,
+      // "Resend owner invite" is only truthful for a school that HAS an owner
+      // invitation on the wire; without one the server 409s the resend, so the
+      // banner stands without a CTA (the invitation panel owns send/revoke).
+      cta: canResendOwnerInvite ? PENDING_SETUP_CTA : null,
     };
   }
 

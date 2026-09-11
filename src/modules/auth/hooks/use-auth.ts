@@ -28,8 +28,16 @@ export function useAuth() {
 
   const logout = () => {
     setToken(null);
-    queryClient.setQueryData(['auth', 'me'], null);
-    queryClient.removeQueries({ queryKey: ['auth', 'me'] });
+    // Sign-out must not leave authenticated traffic in the air: mounted queries
+    // outside the auth module (the notifications poll among them) keep
+    // refetching with the dead token until their screen unmounts, and every
+    // refetch storms the console with 401/403. Cancel what is in flight and
+    // drop every cached server payload — not just ['auth','me'] — so nothing
+    // signed-in survives the token (privacy as much as noise). Observers that
+    // are still mounted refetch once more at most, and the caller's redirect
+    // to /sign-in unmounts them inside that window.
+    void queryClient.cancelQueries();
+    queryClient.removeQueries();
     router.refresh();
   };
 

@@ -11,8 +11,8 @@ const NO_DATES = {
   suspendedIntervalDisplay: null,
 };
 
-function bannerFor(status: PortalStatus, readOnly = false) {
-  return portalLifecycleBanner({ status, readOnly, ...NO_DATES });
+function bannerFor(status: PortalStatus, readOnly = false, canResendOwnerInvite = false) {
+  return portalLifecycleBanner({ status, readOnly, canResendOwnerInvite, ...NO_DATES });
 }
 
 describe('portalLifecycleBanner precedence', () => {
@@ -28,7 +28,7 @@ describe('portalLifecycleBanner precedence', () => {
       bodyKey: 'banner.trial.body',
       cta: { kind: 'activate', labelKey: 'actions.activate', write: true },
     });
-    expect(bannerFor('pending_setup')).toMatchObject({
+    expect(bannerFor('pending_setup', false, true)).toMatchObject({
       kind: 'lifecycle',
       tone: 'warning',
       titleKey: 'banner.pending_setup.title',
@@ -51,6 +51,25 @@ describe('portalLifecycleBanner precedence', () => {
     });
   });
 
+  it('a pending_setup school WITHOUT a resendable owner invite gets no CTA — the server 409s that resend', () => {
+    // onboarding never started (no invitation, no contact) or already submitted:
+    // `onboardingEligibility().canResend` is false, so the banner stands alone
+    // instead of offering a write the API refuses (sweep finding, 2026-09-11).
+    expect(bannerFor('pending_setup', false, false)).toMatchObject({
+      kind: 'lifecycle',
+      tone: 'warning',
+      titleKey: 'banner.pending_setup.title',
+      bodyKey: 'banner.pending_setup.body',
+      cta: null,
+    });
+  });
+
+  it('the resend gate is pending_setup-specific: every other CTA mounts regardless of it', () => {
+    expect(bannerFor('trial', false, false)).toMatchObject({ cta: { kind: 'activate' } });
+    expect(bannerFor('suspended', false, false)).toMatchObject({ cta: { kind: 'reactivate' } });
+    expect(bannerFor('archived', false, false)).toMatchObject({ cta: { kind: 'restore' } });
+  });
+
   it('the read-only session outranks every one of the four lifecycle banners', () => {
     for (const status of ['trial', 'pending_setup', 'suspended', 'archived', 'active'] as const) {
       expect(bannerFor(status, true)).toEqual({ kind: 'read-only', tone: 'info' });
@@ -59,7 +78,7 @@ describe('portalLifecycleBanner precedence', () => {
 
   it('every lifecycle CTA is a write action; the read-only banner carries none at all', () => {
     for (const status of ['trial', 'pending_setup', 'suspended', 'archived'] as const) {
-      const banner = bannerFor(status);
+      const banner = bannerFor(status, false, status === 'pending_setup');
       expect(banner?.kind).toBe('lifecycle');
       if (banner?.kind === 'lifecycle') expect(banner.cta?.write).toBe(true);
     }
@@ -71,6 +90,7 @@ describe('portalLifecycleBanner precedence', () => {
     const withDate = portalLifecycleBanner({
       status: 'trial',
       readOnly: false,
+      canResendOwnerInvite: false,
       ...NO_DATES,
       trialEndsAtDisplay: '16 Sep 2026',
     });
@@ -88,6 +108,7 @@ describe('portalLifecycleBanner precedence', () => {
     const withDate = portalLifecycleBanner({
       status: 'archived',
       readOnly: false,
+      canResendOwnerInvite: false,
       ...NO_DATES,
       retentionUntilDisplay: '1 Feb 2028',
     });
@@ -102,6 +123,7 @@ describe('portalLifecycleBanner precedence', () => {
     const withInterval = portalLifecycleBanner({
       status: 'suspended',
       readOnly: false,
+      canResendOwnerInvite: false,
       ...NO_DATES,
       suspendedIntervalDisplay: '6 wk. ago',
     });

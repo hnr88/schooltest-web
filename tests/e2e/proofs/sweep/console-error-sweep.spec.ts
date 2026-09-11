@@ -31,6 +31,7 @@ import { loginAs } from '../../helpers/roles';
 import {
   attachCapture,
   captureErrors,
+  KNOWN_BACKEND_DEFECTS,
   newCaptures,
   SWEEP_INSTRUMENTS,
   sweepRoute,
@@ -48,7 +49,8 @@ interface RouteSpec {
   path: string;
 }
 
-test.describe.configure({ mode: 'serial', timeout: 300_000 });
+// Dev-server first-hit compiles dominate the budget: 600s per route slot.
+test.describe.configure({ mode: 'serial', timeout: 600_000 });
 
 const cap: SweepCaptures = newCaptures();
 let page: Page;
@@ -85,6 +87,13 @@ async function runRouteSweep(spec: RouteSpec, role: 'ops' | 'schoolAdmin'): Prom
 
   const result = await sweepRoute(page, spec.path, {
     onReauth: () => loginAs(page, role),
+    enterTeardown: (label) => {
+      cap.suppressing = true;
+      cap.suppressed.push(`--- teardown window opened by "${label}" on ${spec.name} ---`);
+    },
+    exitTeardown: () => {
+      cap.suppressing = false;
+    },
     onFullyInert: (r) => {
       if (cap.allConsole.length === consoleBefore) {
         console.log(
@@ -98,14 +107,38 @@ async function runRouteSweep(spec: RouteSpec, role: 'ops' | 'schoolAdmin'): Prom
 
   console.log(
     `[sweep] ${spec.name}: buttons=${result.buttons} clicked=${result.clicked}` +
+      (result.unvisited > 0 ? ` unvisited=${result.unvisited} (walk budget)` : '') +
+      (cap.suppressed.length > 0
+        ? ` teardownSuppressed=${cap.suppressed.length} (sign-out window, see log)`
+        : '') +
       (result.inert.length > 0
         ? ` inert=${JSON.stringify(result.inert)} (inert alone is not a failure)`
         : ''),
   );
+  if (cap.suppressed.length > 0) {
+    console.log(`[sweep-teardown] ${spec.name} suppressed:\n${cap.suppressed.slice(0, 8).join('\n')}`);
+    cap.suppressed.length = 0;
+  }
   const found = captureErrors(cap).slice(errorsBefore);
+  // Strict zero for everything the web owns. The only tolerated entries are
+  // exact, cited cross-repo defects (KNOWN_BACKEND_DEFECTS) — each one is
+  // still printed loudly so it cannot decay into accepted background noise.
+  const allowed = KNOWN_BACKEND_DEFECTS.filter(
+    (known) =>
+      known.route.test(spec.name) &&
+      found.some((error) => known.pattern.test(error)),
+  );
+  for (const known of allowed) {
+    console.log(
+      `[sweep-known-backend-defect] ${spec.name}: ${known.pattern.source} — OWNING REPO: ${known.cite}`,
+    );
+  }
+  const unexpected = found.filter(
+    (error) => !allowed.some((known) => known.pattern.test(error)),
+  );
   expect(
-    found,
-    `${spec.name} erupted ${found.length} error(s):\n${found.join('\n')}`,
+    unexpected,
+    `${spec.name} erupted ${unexpected.length} error(s):\n${unexpected.join('\n')}`,
   ).toEqual([]);
 }
 
