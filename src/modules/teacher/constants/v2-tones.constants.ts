@@ -1,36 +1,42 @@
 import type { AssessedBand } from '@schooltest/scoring-contracts';
 
 import type { RosterReleaseState } from '@/modules/results';
+import {
+  BAND_TONE as KIT_BAND_TONE,
+  PHASE_TONE as KIT_PHASE_TONE,
+} from '@/modules/teacher/constants/teacher-kit.constants';
+import { TONE_CHIP_INK } from '@/modules/teacher/constants/teacher-kit-tones.constants';
 import type { BannerTone, ExpectedKind } from '@/modules/teacher/types/v2-family.types';
 import type { AcaraPhaseName, GrowthKind, ViewTone } from '@/modules/teacher/types/v2-view-common.types';
 
-const GREEN: ViewTone = { fg: '#1F7A4D', bg: '#E9F6EF' };
-const BLUE: ViewTone = { fg: '#1A3B8B', bg: '#EAF0FB' };
-const AMBER: ViewTone = { fg: '#92610B', bg: '#FDF4E3' };
-const AMBER_SOFT: ViewTone = { fg: '#92610B', bg: '#FDF3E0' };
-const RED: ViewTone = { fg: '#B42318', bg: '#FDEEEC' };
-const SLATE: ViewTone = { fg: '#5A6478', bg: '#EEF1F6' };
-const NAVY: ViewTone = { fg: '#0E2350', bg: '#EEF1F6' };
+// The chip pairs are the kit's (TONE_CHIP_INK), and so is the pair each phase and
+// band takes (the kit's PHASE_TONE / BAND_TONE): the view models only read them.
+const GREEN = TONE_CHIP_INK.success;
+const AMBER = TONE_CHIP_INK.warning;
+const AMBER_SOFT = TONE_CHIP_INK.today;
+const RED = TONE_CHIP_INK.danger;
+const SLATE = TONE_CHIP_INK.slate;
+const NAVY = TONE_CHIP_INK.navy;
 
 export const PHASE_TONE: Readonly<Record<AcaraPhaseName, ViewTone>> = {
-  Consolidating: GREEN,
-  Developing: BLUE,
-  Emerging: AMBER,
-  Beginning: RED,
+  Consolidating: TONE_CHIP_INK[KIT_PHASE_TONE.consolidating],
+  Developing: TONE_CHIP_INK[KIT_PHASE_TONE.developing],
+  Emerging: TONE_CHIP_INK[KIT_PHASE_TONE.emerging],
+  Beginning: TONE_CHIP_INK[KIT_PHASE_TONE.beginning],
 };
 
 export const NOT_SAT_TONE: ViewTone = RED;
 
 export const BAND_TONE: Readonly<Record<AssessedBand, ViewTone>> = {
-  secure: GREEN,
-  developing: BLUE,
-  emerging: AMBER,
-  not_yet: RED,
+  secure: TONE_CHIP_INK[KIT_BAND_TONE.secure],
+  developing: TONE_CHIP_INK[KIT_BAND_TONE.developing],
+  emerging: TONE_CHIP_INK[KIT_BAND_TONE.emerging],
+  not_yet: TONE_CHIP_INK[KIT_BAND_TONE.notYet],
 };
 
 export const GATE_TONE: Readonly<Record<'passed' | 'notYet', ViewTone>> = { passed: GREEN, notYet: AMBER };
 
-export const UNASSESSED_TONE: ViewTone = { fg: '#5B6472', bg: '#F1F3F6' };
+export const UNASSESSED_TONE: ViewTone = TONE_CHIP_INK.neutral;
 
 export const EXPECTED_TONE: Readonly<Record<ExpectedKind, ViewTone>> = {
   at: NAVY,

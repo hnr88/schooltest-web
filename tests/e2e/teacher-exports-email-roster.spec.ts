@@ -1,9 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
-import type { TeacherExportKind } from '@/modules/teacher/types/teacher-export.types';
-
+import { sectionTab } from './helpers/teacher-class-detail';
 import { downloadFrom, expectSameDocument } from './helpers/teacher-export-live';
-import { expectProgressNumbers } from './helpers/teacher-export-markdown';
 import {
   dbClassRoster,
   expectAnonymisedIds,
@@ -11,20 +9,19 @@ import {
   readExportResponse,
   type RosterIdentity,
 } from './helpers/teacher-export-privacy';
-import { cat } from './helpers/i18n';
-import { en } from './helpers/teacher-rail';
 import {
   openClassResults,
-  readClassProgressLive,
   readLiveResults,
   signedInTeacherPage,
+  TEACHER_EMAIL,
 } from './helpers/teacher-results-live';
 
-// Sibling of teacher-exports.spec.ts (200-line rule), same flows 21 + 25 — run
-// against the teacher's OTHER class, the one whose roster students actually HAVE
-// email addresses in Postgres. On the first class every `email` column is empty, so
-// the email leg of the de-identification sweep could not bite there; here all five
-// forbidden fields are non-empty for every student, and the sweep asserts it.
+// Flow 21 against the teacher's class whose roster students actually HAVE email
+// addresses in Postgres: all five forbidden fields are non-empty for every student,
+// so the de-identification sweep of the Teaching insights export (C-TR-5) bites on
+// the email leg too. The class list is C-TD-1 alone (the C-TR-1 detail answers 410).
+// Flow 25 (the progress export) retired with the Progress export panel, which the
+// Teacher Portal v2 design dropped.
 
 test.describe.configure({ mode: 'serial' });
 
@@ -33,7 +30,7 @@ let classDocumentId: string;
 let roster: RosterIdentity[];
 
 test.beforeAll(async ({ browser, playwright }) => {
-  const live = await readLiveResults(playwright);
+  const live = await readLiveResults(playwright, TEACHER_EMAIL, { withDetail: false });
   for (const entry of live.classes) {
     const candidate = dbClassRoster(entry.class_document_id);
     if (candidate.every((row) => row.email && row.studentKey && row.givenName && row.familyName)) {
@@ -50,14 +47,13 @@ test.afterAll(async () => {
   await page?.close();
 });
 
-async function downloadTab(kind: Extract<TeacherExportKind, 'insights' | 'progress'>) {
+async function downloadInsights() {
   await openClassResults(page, classDocumentId);
-  await page.getByRole('tab', { name: cat(en, `Teacher.results.tabs.${kind}`) }).click();
-  const slot = kind === 'insights' ? 'teaching-insights' : 'class-progress';
-  await expect(page.locator(`[data-slot="${slot}"]`)).toHaveAttribute('data-status', 'ready', {
-    timeout: 20_000,
+  await sectionTab(page, 'insights').click();
+  await expect(page.locator('[data-slot="teaching-insights"]')).toHaveAttribute('data-status', 'ready', {
+    timeout: 30_000,
   });
-  return downloadFrom(page.locator(`button[data-export-kind="${kind}"]`));
+  return downloadFrom(page.locator('button[data-export-kind="insights"]'));
 }
 
 /** All five forbidden fields are populated here, so 5 values per student are searched. */
@@ -69,18 +65,8 @@ function expectFullSweep(file: { body: string; filename: string }): void {
 
 test('flow 21 on the emailed roster: the insights .md leaks no email', async ({ playwright }) => {
   const server = await readExportResponse(playwright, { kind: 'insights', classDocumentId });
-  const downloaded = await downloadTab('insights');
+  const downloaded = await downloadInsights();
   expect(downloaded.filename).toBe(server.filename);
   expectSameDocument(downloaded, server);
   expectFullSweep(downloaded);
-});
-
-test('flow 25 on the emailed roster: the progress .md leaks no email', async ({ playwright }) => {
-  const progress = await readClassProgressLive(playwright, classDocumentId);
-  const server = await readExportResponse(playwright, { kind: 'progress', classDocumentId });
-  const downloaded = await downloadTab('progress');
-  expect(downloaded.filename).toBe(server.filename);
-  expectSameDocument(downloaded, server);
-  expectFullSweep(downloaded);
-  expectProgressNumbers(downloaded.body, progress, roster);
 });

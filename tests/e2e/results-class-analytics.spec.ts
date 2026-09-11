@@ -1,141 +1,63 @@
-import path from 'node:path';
-import { mkdirSync, readFileSync } from 'node:fs';
+import { expect, test, type Page } from '@playwright/test';
 
-import { expect, test, type BrowserContext, type Page, type Route } from '@playwright/test';
+import { TABS, frame, sectionTab } from './helpers/teacher-class-detail';
+import { signIn } from './helpers/teacher-rail';
+import { readLiveResults, TEACHER_EMAIL } from './helpers/teacher-results-live';
 
-import { cat, icu } from './helpers/i18n';
-import { formSignInCount, signedInContext } from './helpers/auth-state';
-import { en } from './helpers/teacher-rail';
+// Task 34 — the class analytics gates on the REAL API as the journey teacher (t2), with
+// no interception: every section tab of the class detail is served by the ONE roster
+// read (GET /api/my/students/results?class=), and no retired C-TR-3 / C-TR-4 result
+// route (/api/teacher/classes/:id/insights | /progress) is ever requested — the gate
+// behind the api-side route retirement (scoring task 24). What the Class progress tab
+// draws is proven on the live roster by teacher-v2/progress-tab.spec.ts.
 
-// Task 34 — Screen B, the class analytics, proven against a FIXTURE roster
-// payload served by route interception (same contract shape as the roster spec).
-//
-// Done-when covered here: switching tabs issues NO new request (both analytics
-// tabs consume the ONE Screen A payload); the class progress chart plots no
-// sitting the payload does not carry; and no retired `insights`/`progress`
-// result URL is ever requested — the gate that unblocks the api-side route
-// retirement (task 24).
+test.describe.configure({ mode: 'serial' });
 
-const noSittings = cat(en, 'TeacherPortal.progress.chart.summaryEmpty');
+const ROSTER_PATH = '/api/my/students/results';
+const isRetired = (url: string): boolean =>
+  url.includes('/teacher/classes/') && (url.includes('/insights') || url.includes('/progress'));
 
-const FIXTURE = JSON.parse(
-  readFileSync(path.resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json'), 'utf8'),
-) as Record<string, unknown>;
+let page: Page;
+let classDocumentId: string;
+const rosterReads: string[] = [];
+const retiredReads: string[] = [];
 
-function view(overrides: Record<string, unknown>): Record<string, unknown> {
-  return {
-    ...FIXTURE,
-    history: undefined,
-    ...overrides,
-    overall: { ...(FIXTURE.overall as Record<string, unknown>), ...(overrides.overall as object) },
-  };
-}
-
-const student = (id: string, name: string) => ({ document_id: id, name, initials: '??', eald_flag: false });
-
-function rosterPayload() {
-  return [
-    // ops/34 — each result carries ITS OWN student's document_id (a real
-    // payload does), so the Progress tab's view->row mapping can resolve which
-    // row each ranked view belongs to.
-    // scoring/10 — every row carries release_state beside result (the strict
-    // mirror rejects the row without it).
-    { student: student('stu-a', 'Ada Becker'), result: view({ student_document_id: 'stu-a', overall: { domain_score: 55, delta: -6, delta_reliable: true, delta_display: '-6' }, effort_valid: true, low_confidence: null }), release_state: 'released' },
-    { student: student('stu-b', 'Ben Carter'), result: view({ student_document_id: 'stu-b', overall: { domain_score: 80, delta: 12, delta_reliable: true, delta_display: '+12' }, effort_valid: true, low_confidence: null }), release_state: 'released' },
-    { student: student('stu-c', 'Cem Demir'), result: view({ student_document_id: 'stu-c', overall: { domain_score: 70, delta: null, delta_reliable: null, delta_display: null }, effort_valid: true, low_confidence: null }), release_state: 'held' },
-  ];
-}
-
-test.describe('task 34 — class analytics (Screen B)', () => {
-  let rosterRequests: number;
-  let retiredRequests: string[];
-  let page: Page;
-  let context: BrowserContext;
-
-  test.beforeEach(async ({ browser }) => {
-    // ONE form sign-in for the whole file, reused as storage state — see
-    // helpers/auth-state.ts. Five tests here previously meant five real form
-    // logins against a 20/min limiter shared with the api suite.
-    ({ context, page } = await signedInContext(browser, 'teacher', {
-      viewport: { width: 1280, height: 900 },
-    }));
-    rosterRequests = 0;
-    retiredRequests = [];
-    await page.route('**/api/my/students/results*', async (route: Route) => {
-      rosterRequests += 1;
-      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(rosterPayload()) });
-    });
-    // The retired C-TR-3/C-TR-4 result routes must never be touched again.
-    const retired = (url: string): boolean =>
-      url.includes('/teacher/classes/') && (url.includes('/insights') || url.includes('/progress'));
-    page.on('request', (request) => {
-      if (retired(request.url())) retiredRequests.push(request.url());
-    });
-    await page.goto('/dashboard/results/cls-fixture-34');
-    await expect(page.locator('[data-surface="teacher-class-results"]')).toHaveAttribute('data-status', 'ready', { timeout: 20_000 });
-  });
-
-  test.afterEach(async () => {
-    await context.close();
-  });
-
-  // THE SAVING, ASSERTED. Five tests, exactly ONE form sign-in — a number
-  // nothing checks decays the first time a per-test login reappears.
-  test.afterAll(() => {
-    expect(formSignInCount(), 'one form sign-in for the whole file').toBe(1);
-  });
-
-  test('switching tabs issues no new request', async () => {
-    const tabs = page.getByRole('tab');
-    await tabs.filter({ hasText: cat(en, 'Teacher.results.tabs.insights') }).click();
-    await expect(page.locator('[data-slot="teaching-insights"]')).toBeVisible();
-    await tabs.filter({ hasText: cat(en, 'Teacher.results.tabs.progress') }).click();
-    await expect(page.locator('[data-slot="class-progress"]')).toBeVisible();
-    await tabs.filter({ hasText: cat(en, 'Teacher.results.tabs.students') }).click();
-    await expect(page.locator('[data-slot="students-tab-panel"] [data-slot="table"]')).toBeVisible();
-    // The ONE roster read served every tab; nothing else fired.
-    expect(rosterRequests, 'one roster read for all four tab visits').toBe(1);
-  });
-
-  test('the class progress chart plots no sitting the payload does not carry', async () => {
-    await page.getByRole('tab').filter({ hasText: cat(en, 'Teacher.results.tabs.progress') }).click();
-    // The fixture rows carry no history: the ACARA bands and axes draw, and not one
-    // point, line value or class average is invented to fill them.
-    const chart = page.locator('[data-slot="class-progress-chart"]');
-    await expect(chart).toBeVisible();
-    await expect(chart.locator('[data-slot="class-chart-point"]')).toHaveCount(0);
-    await expect(page.locator('[data-slot="progress-summary"]')).toHaveText(noSittings);
-  });
-
-  test('the ranked lists render from the payload — reliable gains and needs support', async () => {
-    await page.getByRole('tab').filter({ hasText: cat(en, 'Teacher.results.tabs.progress') }).click();
-    // Top gains: Ben (+12) before Cem — wait, Cem has no reliable delta and is
-    // dropped; Ada's −6 is a reliable NEGATIVE and is not a gain.
-    const gains = page.locator('[data-slot="progress-watch-list"][data-variant="gains"] [data-slot="progress-mover"]');
-    await expect(gains).toHaveCount(1);
-    await expect(gains.first()).toHaveAttribute('data-student-id', 'stu-b');
-    // Needs support: Ada's reliable decline ranks FIRST, ahead of Cem's steady 70.
-    const support = page.locator('[data-slot="progress-watch-list"][data-variant="support"] [data-slot="progress-mover"]');
-    await expect(support).toHaveCount(2);
-    await expect(support.first()).toHaveAttribute('data-student-id', 'stu-a');
-    await expect(support.last()).toHaveAttribute('data-student-id', 'stu-c');
-  });
-
-  test('no retired insights/progress result URL is ever requested', async () => {
-    for (const tab of ['insights', 'progress', 'students']) {
-      await page.getByRole('tab').filter({ hasText: cat(en, `Teacher.results.tabs.${tab}`) }).click();
+test.beforeAll(async ({ browser, playwright }) => {
+  test.setTimeout(180_000);
+  const [first] = (await readLiveResults(playwright, TEACHER_EMAIL, { withDetail: false })).classes;
+  if (first === undefined) throw new Error('[e2e] the journey teacher owns no class');
+  classDocumentId = first.class_document_id;
+  page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  page.on('request', (request) => {
+    const url = new URL(request.url());
+    if (request.method() === 'GET' && url.pathname === ROSTER_PATH && url.searchParams.get('class') === classDocumentId) {
+      rosterReads.push(request.url());
     }
-    expect(retiredRequests, JSON.stringify(retiredRequests)).toEqual([]);
+    if (isRetired(request.url())) retiredReads.push(request.url());
   });
+  await signIn(page, 'teacher');
+});
 
-  // SCORING/10 proof capture: the progress tab (the chart with no sitting to plot —
-  // D-SC-06's own refusal to fake one) at 1440×900.
-  test('capture: the class progress chart region at 1440×900', async () => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    const shots = path.resolve(process.cwd(), '../mvp/scoring/proof/shots');
-    mkdirSync(shots, { recursive: true });
-    await page.getByRole('tab').filter({ hasText: cat(en, 'Teacher.results.tabs.progress') }).click();
-    await expect(page.locator('[data-slot="class-progress-chart"]')).toBeVisible();
-    await page.screenshot({ path: path.join(shots, '10-class-progress-chart.png'), fullPage: false });
-  });
+test.afterAll(async () => {
+  await page?.close();
+});
+
+test('every section tab is served by the ONE roster read', async () => {
+  rosterReads.length = 0;
+  await page.goto(`/dashboard/results/${classDocumentId}`);
+  await expect(frame(page)).toHaveAttribute('data-status', 'ready', { timeout: 30_000 });
+  for (const key of [...TABS.slice(1), TABS[0]]) {
+    await sectionTab(page, key).click();
+    await expect(sectionTab(page, key)).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator(`[data-tab-panel="${key}"]`)).toBeVisible();
+  }
+  expect(rosterReads, 'one roster read for the load and every tab visit').toHaveLength(1);
+});
+
+test('no retired insights / progress result URL is ever requested', async () => {
+  for (const key of TABS) {
+    await sectionTab(page, key).click();
+    await expect(page.locator(`[data-tab-panel="${key}"]`)).toBeVisible();
+  }
+  expect(retiredReads, JSON.stringify(retiredReads)).toEqual([]);
 });

@@ -25,8 +25,11 @@ export interface LiveRollupGroup {
   name: string;
   year: ClassYear | null;
   studentCount: number;
-  /** Roster students outside every live sitting; 0 once one sits the whole class. */
-  freeCount: number;
+  /**
+   * Roster students no live sitting holds, by the server's rule (lib/student-availability.ts);
+   * null until every whole-class sitting's monitor has answered.
+   */
+  freeCount: number | null;
   sittings: LiveRollupSitting[];
 }
 

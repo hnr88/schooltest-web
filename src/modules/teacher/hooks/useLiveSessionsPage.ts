@@ -1,7 +1,11 @@
 'use client';
 
+import { useQueries } from '@tanstack/react-query';
+
 import { deriveLiveRollup } from '@/modules/teacher/lib/live-rollup';
+import { sittingsNeedingMonitor } from '@/modules/teacher/lib/student-availability';
 import { useTeacherDashboardQuery } from '@/modules/teacher/queries/use-teacher-dashboard.query';
+import { testSessionMonitorQueryOptions } from '@/modules/teacher/queries/use-test-session-monitor.query';
 import { useTestSessionsQuery } from '@/modules/teacher/queries/use-test-sessions.query';
 import type { TeacherTestSessionsQuery } from '@/modules/teacher/schemas/teacher-session.schema';
 
@@ -10,14 +14,18 @@ const BOOKINGS: TeacherTestSessionsQuery = { status: 'scheduled' };
 
 /**
  * The Live sessions page's reads — the teacher's open sittings and bookings
- * (C-TS-2, each row with the server's stats and window) and the class cards
- * (C-TD-1) — and the one roll-up derived from them. The bookings read never
- * blocks the live part of the page; it reports its own state.
+ * (C-TS-2, each row with the server's stats and window), the class cards
+ * (C-TD-1) and the monitor (C-TS-3) of every whole-class sitting, which alone
+ * knows who is mid-test — and the one roll-up derived from them. The bookings
+ * read never blocks the live part of the page; it reports its own state.
  */
 export function useLiveSessionsPage() {
   const sessions = useTestSessionsQuery(true, OPEN_SITTINGS);
   const bookings = useTestSessionsQuery(true, BOOKINGS);
   const dashboard = useTeacherDashboardQuery();
+  const wholeClassIds = sittingsNeedingMonitor(sessions.data?.sessions ?? []);
+  const monitorReads = useQueries({ queries: wholeClassIds.map((id) => testSessionMonitorQueryOptions(id)) });
+  const monitors = Object.fromEntries(wholeClassIds.map((id, index) => [id, monitorReads[index]?.data]));
   const status: 'loading' | 'error' | 'ready' =
     sessions.isError || dashboard.isError
       ? 'error'
@@ -28,7 +36,7 @@ export function useLiveSessionsPage() {
 
   return {
     status,
-    rollup: deriveLiveRollup(rows, dashboard.data?.classes ?? []),
+    rollup: deriveLiveRollup(rows, dashboard.data?.classes ?? [], monitors),
     isBookingsError: bookings.isError,
     isRetrying: sessions.isFetching || dashboard.isFetching || bookings.isFetching,
     retry: () => {

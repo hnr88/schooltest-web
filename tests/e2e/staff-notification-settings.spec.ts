@@ -317,8 +317,10 @@ test('the user menu sends school staff to the staff route and a parent to /dashb
   page,
   request,
 }) => {
-  const teacherToken = await login(request, TEACHER);
-  await signInAs(page, teacherToken);
+  // A teacher's user card is Sign out only (Teacher Portal v2; teacher-v2/shell.spec.ts
+  // pins it), so the school admin is the staff role whose user menu carries Settings.
+  const adminToken = await login(request, SCHOOL_ADMIN);
+  await signInAs(page, adminToken);
   await page.goto('/dashboard');
   await page.getByRole('button', { name: cat(en, 'Shell.topbar.userMenuLabel') }).click();
   await page.getByRole('menuitem', { name: cat(en, 'Shell.userMenu.settings') }).click();

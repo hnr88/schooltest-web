@@ -1,9 +1,11 @@
+import { phaseFromServer } from '@/modules/teacher/lib/v2/phase';
 import type {
   AcaraPhaseKey,
   BandKey,
   DeltaDirection,
   DeltaFormat,
 } from '@/modules/teacher/types/teacher-kit.types';
+import type { AcaraPhaseName } from '@/modules/teacher/types/v2-view-common.types';
 
 /**
  * Teacher Portal v2 kit — the pure helpers behind the presentational pieces.
@@ -61,13 +63,21 @@ export function formatDelta(
   return { text: `${arrow} ${signed}`, direction };
 }
 
-const PHASE_KEYS: readonly AcaraPhaseKey[] = ['beginning', 'emerging', 'developing', 'consolidating'];
+const PHASE_KEY: Readonly<Record<AcaraPhaseName, AcaraPhaseKey>> = {
+  Beginning: 'beginning',
+  Emerging: 'emerging',
+  Developing: 'developing',
+  Consolidating: 'consolidating',
+};
 
-/** A served ACARA phase label ("Developing", "Developing phase") → kit key; `null` when unmeasured or unknown. */
+/**
+ * A served ACARA phase ("Developing", "developing_to_consolidating", "Developing
+ * phase") → kit key, through the ONE phase normaliser (`lib/v2/phase.ts`);
+ * `null` when unmeasured or unknown.
+ */
 export function acaraPhaseKey(value: string | null | undefined): AcaraPhaseKey | null {
-  if (value === null || value === undefined) return null;
-  const lower = value.trim().toLowerCase();
-  return PHASE_KEYS.find((key) => lower.startsWith(key)) ?? null;
+  const phase = phaseFromServer(value ?? null);
+  return phase === null ? null : PHASE_KEY[phase];
 }
 
 const BAND_ALIASES: Readonly<Record<string, BandKey>> = {

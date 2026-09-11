@@ -1,12 +1,14 @@
 /**
  * The Live sessions roll-up (Teacher Portal v2.dc.html:218–299). Pure: it
- * reads C-TS-2's sitting rows and C-TD-1's class cards and adds no read. A row
- * is live when it is open and neither booked nor over — a booking is
- * `status: 'open'` + `phase: 'scheduled'` and is never live. The group set and
- * the idle set are complementary and exhaustive over the teacher's classes.
+ * reads C-TS-2's sitting rows, C-TD-1's class cards and the monitors (C-TS-3)
+ * of the whole-class sittings, and adds no read. A row is live when it is open
+ * and neither booked nor over — a booking is `status: 'open'` + `phase:
+ * 'scheduled'` and is never live. The group set and the idle set are
+ * complementary and exhaustive over the teacher's classes.
  */
 import { classYearOf } from '@/modules/teacher/lib/classes-directory';
 import { classResultsHref } from '@/modules/teacher/lib/results-shell';
+import { busyStudents, sittingsNeedingMonitor } from '@/modules/teacher/lib/student-availability';
 import type {
   LiveRollup,
   LiveRollupBooking,
@@ -15,7 +17,10 @@ import type {
   LiveRollupSitting,
 } from '@/modules/teacher/types/live-sessions.types';
 import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
-import type { TeacherTestSession } from '@/modules/teacher/types/teacher-session.types';
+import type {
+  TeacherTestSession,
+  TestSessionMonitorResponse,
+} from '@/modules/teacher/types/teacher-session.types';
 
 const NOT_LIVE_PHASES: ReadonlySet<string> = new Set(['scheduled', 'closed', 'cancelled']);
 
@@ -53,34 +58,43 @@ function toBooking(session: TeacherTestSession): LiveRollupBooking {
   };
 }
 
-function freeCountOf(studentCount: number, sittings: readonly LiveRollupSitting[]): number {
-  if (sittings.some((sitting) => sitting.memberIds === null)) return 0;
-  const busy = new Set(sittings.flatMap((sitting) => sitting.memberIds ?? []));
-  return Math.max(0, studentCount - busy.size);
+/**
+ * Roster students no live sitting holds, by the server's own rule
+ * (lib/student-availability.ts); null until the monitor of every whole-class
+ * sitting has answered, since only it knows who is mid-test.
+ */
+function freeCountOf(
+  studentCount: number,
+  live: readonly TeacherTestSession[],
+  monitors: Readonly<Record<string, TestSessionMonitorResponse | undefined>>,
+): number | null {
+  if (sittingsNeedingMonitor(live).some((id) => monitors[id] === undefined)) return null;
+  return Math.max(0, studentCount - busyStudents(live, monitors).size);
 }
 
 /** Live sittings grouped under their class cards, bookings in served order, idle classes. */
 export function deriveLiveRollup(
   sessions: readonly TeacherTestSession[],
   classes: readonly DashboardClass[],
+  monitors: Readonly<Record<string, TestSessionMonitorResponse | undefined>>,
 ): LiveRollup {
-  const liveByClass = new Map<string, LiveRollupSitting[]>();
+  const liveByClass = new Map<string, TeacherTestSession[]>();
   const bookings: LiveRollupBooking[] = [];
   for (const session of sessions) {
     if (isBooking(session)) {
       bookings.push(toBooking(session));
     } else if (isLiveSitting(session)) {
-      const sittings = liveByClass.get(session.class.document_id) ?? [];
-      sittings.push(toSitting(session));
-      liveByClass.set(session.class.document_id, sittings);
+      const live = liveByClass.get(session.class.document_id) ?? [];
+      live.push(session);
+      liveByClass.set(session.class.document_id, live);
     }
   }
 
   const groups: LiveRollupGroup[] = [];
   const idleClasses: LiveRollupIdleClass[] = [];
   for (const klass of classes) {
-    const sittings = liveByClass.get(klass.class_document_id);
-    if (sittings === undefined) {
+    const live = liveByClass.get(klass.class_document_id);
+    if (live === undefined) {
       idleClasses.push({
         classDocumentId: klass.class_document_id,
         name: klass.name,
@@ -92,8 +106,8 @@ export function deriveLiveRollup(
         name: klass.name,
         year: classYearOf(klass),
         studentCount: klass.student_count,
-        freeCount: freeCountOf(klass.student_count, sittings),
-        sittings,
+        freeCount: freeCountOf(klass.student_count, live, monitors),
+        sittings: live.map(toSitting),
       });
     }
   }

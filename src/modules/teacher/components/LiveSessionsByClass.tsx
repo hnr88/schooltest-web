@@ -19,6 +19,7 @@ function LiveSessionsByClass({
   onAddSession: (classDocumentId: string) => void;
 }) {
   const t = useTranslations('TeacherPortal.liveSessions');
+  const tKit = useTranslations('TeacherPortal.kit');
   const yearLabel = useYearLabel();
 
   if (groups.length === 0) {
@@ -36,6 +37,7 @@ function LiveSessionsByClass({
       {groups.map((group) => {
         const year = yearLabel(group.year);
         const headingId = `live-class-${group.classDocumentId}`;
+        const free = group.freeCount;
         return (
           <section
             key={group.classDocumentId}
@@ -57,9 +59,9 @@ function LiveSessionsByClass({
                 </p>
               </div>
               <span data-slot="live-class-free" className="text-[12.5px] text-[#6B7280]">
-                {group.freeCount > 0 ? t('free', { count: group.freeCount }) : t('everyoneBusy')}
+                {free === null ? tKit('noValue') : free > 0 ? t('free', { count: free }) : t('everyoneBusy')}
               </span>
-              {group.freeCount > 0 ? (
+              {free !== null && free > 0 ? (
                 <TeacherButton
                   tone="secondary"
                   size="sm"

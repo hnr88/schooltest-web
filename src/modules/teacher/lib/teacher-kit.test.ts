@@ -1,11 +1,24 @@
 import { describe, expect, test } from 'vitest';
 
+import { TONE_CHIP_CLASSES } from '@/modules/teacher/constants/teacher-kit.constants';
+import { TONE_CHIP_INK } from '@/modules/teacher/constants/teacher-kit-tones.constants';
 import {
   acaraPhaseKey,
   bandKey,
   classBadgeCode,
   formatDelta,
 } from '@/modules/teacher/lib/teacher-kit';
+import type { ToneChipTone } from '@/modules/teacher/types/teacher-kit.types';
+
+describe('the kit tone pairs', () => {
+  test('each chip class draws exactly its ink pair (navy ink is the navy-900 token)', () => {
+    for (const [tone, ink] of Object.entries(TONE_CHIP_INK) as [ToneChipTone, { fg: string; bg: string }][]) {
+      const text = tone === 'navy' ? 'text-navy-900' : `text-[${ink.fg}]`;
+      expect(TONE_CHIP_CLASSES[tone]).toBe(`bg-[${ink.bg}] ${text}`);
+    }
+    expect(Object.keys(TONE_CHIP_INK).sort()).toEqual(Object.keys(TONE_CHIP_CLASSES).sort());
+  });
+});
 
 describe('classBadgeCode', () => {
   test('takes the first year-and-section token', () => {
@@ -45,6 +58,7 @@ describe('acaraPhaseKey and bandKey', () => {
   test('normalise served labels and refuse unknowns', () => {
     expect(acaraPhaseKey('Developing')).toBe('developing');
     expect(acaraPhaseKey('Consolidating phase')).toBe('consolidating');
+    expect(acaraPhaseKey('developing_to_consolidating')).toBe('developing');
     expect(acaraPhaseKey(null)).toBeNull();
     expect(acaraPhaseKey('Advanced')).toBeNull();
     expect(bandKey('not_yet')).toBe('notYet');

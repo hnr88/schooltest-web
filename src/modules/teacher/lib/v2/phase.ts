@@ -14,9 +14,10 @@ export function phaseFromScore(score: number): AcaraPhaseName {
   return PHASE_SCORE_CUTS.find((cut) => score >= cut.min)?.phase ?? PHASE_SCORE_FLOOR;
 }
 
+/** A served phase code or label ("developing_to_consolidating", "Developing phase") → design phase; null when unknown. */
 export function phaseFromServer(value: string | null): AcaraPhaseName | null {
   if (value === null) return null;
-  return SERVER_PHASE_MAP[value.trim().toLowerCase()] ?? null;
+  return SERVER_PHASE_MAP[value.trim().toLowerCase().replace(/\s+phase$/, '')] ?? null;
 }
 
 export function phaseView(phase: AcaraPhaseName, source: PhaseSource): PhaseView {

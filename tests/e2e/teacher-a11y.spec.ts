@@ -13,13 +13,14 @@ import {
   signedInTeacherContextPage,
   type A11ySurface,
 } from './helpers/teacher-a11y';
+import { TABS, sectionTabs } from './helpers/teacher-class-detail';
 import { watchErrors } from './helpers/ui';
 
-// TASK 047 — the axe leg of the WCAG 2.2 AA pass over the two pages this task owns:
-//   /dashboard (teacher class cards + the live-session banner)
-//   /dashboard/results (class list → 4 tabs → student drill-down, one- and two-test)
-// at 1280×900 AND 375×812, plus the REAL error frame of the class detail (an unknown
-// class id, so C-TR-1 answers 404 — a real failure, never an injected one).
+// TASK 047 — the axe leg of the WCAG 2.2 AA pass over the teacher's Classes pages
+// (Teacher Portal v2): the Classes list (a teacher's /dashboard lands there), the class
+// detail's six section tabs, and the student page (one- and two-test), at 1280×900 AND
+// 375×812, plus the REAL error frame of the class detail (an unknown class id, which
+// the live reads refuse — a real failure, never an injected one).
 //
 // /dashboard/test-sessions and the live monitor are DEFERRED (task 053 owns them):
 // this file must not be read as whole-surface coverage.
@@ -45,9 +46,9 @@ test.afterAll(async () => {
 });
 
 async function auditTabs(width: number): Promise<void> {
-  const tabs = page.getByRole('tab');
-  await expect(tabs).toHaveCount(6);
-  for (let index = 0; index < 6; index += 1) {
+  const tabs = sectionTabs(page).getByRole('tab');
+  await expect(tabs).toHaveCount(TABS.length);
+  for (let index = 0; index < TABS.length; index += 1) {
     const tab = tabs.nth(index);
     const name = ((await tab.textContent()) ?? '').trim();
     await tab.click();
@@ -60,20 +61,11 @@ async function auditTabs(width: number): Promise<void> {
 for (const viewport of [DESKTOP, MOBILE]) {
   const width = viewport.width;
 
-  test(`AXE: teacher /dashboard has zero serious/critical violations @ ${width}px`, async () => {
+  test(`AXE: the Classes landing + the six section tabs are clean @ ${width}px`, async () => {
     await page.setViewportSize(viewport);
-    await openReady(page, '/dashboard', 'teacher-dashboard');
-    await expectTeacherAxeClean(page, `/dashboard @ ${width}px`);
-    await expectNoHorizontalScroll(page, `/dashboard @ ${width}px`);
-    await page.screenshot({
-      path: path.join(SCREENSHOTS, `047-teacher-dashboard-${width}.png`),
-      fullPage: true,
-    });
-  });
-
-  test(`AXE: /dashboard/results list + 6 tabs are clean @ ${width}px`, async () => {
-    await page.setViewportSize(viewport);
-    await openReady(page, '/dashboard/results', 'teacher-results');
+    // /dashboard hands a teacher to the Classes list; audit it where it lands.
+    await openReady(page, '/dashboard', 'teacher-results');
+    await expect(page).toHaveURL(/\/dashboard\/results$/);
     await expectTeacherAxeClean(page, `/dashboard/results @ ${width}px`);
     await expectNoHorizontalScroll(page, `/dashboard/results @ ${width}px`);
     await page.screenshot({
@@ -99,10 +91,12 @@ for (const viewport of [DESKTOP, MOBILE]) {
       ['two-test', surface.twoTestStudentId],
       ['one-test', surface.oneTestStudentId],
     ] as const) {
-      await openReady(
-        page,
-        `/dashboard/results/${surface.classDocumentId}/students/${studentDocumentId}`,
-        'teacher-student-drill-down',
+      // The Teacher Portal v2 student page reports its settled read as `success`.
+      await page.goto(`/dashboard/results/${surface.classDocumentId}/students/${studentDocumentId}`);
+      await expect(page.locator('[data-surface="teacher-student-drill-down"]')).toHaveAttribute(
+        'data-status',
+        'success',
+        { timeout: 20_000 },
       );
       await expectTeacherAxeClean(page, `drill-down ${label} @ ${width}px`);
       await expectNoHorizontalScroll(page, `drill-down ${label} @ ${width}px`);
@@ -116,8 +110,8 @@ for (const viewport of [DESKTOP, MOBILE]) {
   test(`AXE: the class-detail ERROR frame is clean and keeps ONE h1 @ ${width}px`, async () => {
     await page.setViewportSize(viewport);
     await page.goto(`/dashboard/results/${UNKNOWN_CLASS}`);
-    // A real 404 from C-TR-1 for a class id that does not exist — not a stubbed
-    // response, and the reason the READY h1 (the class name) cannot render.
+    // A class id outside the teacher's own classes — a real refusal from the live
+    // reads, not a stubbed response, and the reason the READY h1 cannot render.
     await expect(page.locator('[data-surface="teacher-class-results"]')).toHaveAttribute(
       'data-status',
       'error',

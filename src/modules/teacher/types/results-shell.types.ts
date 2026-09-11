@@ -22,17 +22,6 @@ export interface ResultsReadCounts {
   itemCount: number;
 }
 
-export interface ResultsClassRowProps {
-  classCard: DashboardClass;
-  /**
-   * teacher/06 — the layout axis's two renderings of ONE class. `'cell'` is the
-   * class column's content inside the kit's whole-row anchor (no Link of its
-   * own, or the row would nest interactives); `'tile'` owns its whole-card
-   * anchor, as §L-rownav requires of non-table layouts.
-   */
-  variant: 'cell' | 'tile';
-}
-
 /** The class-detail header (`Teacher Portal v2.dc.html:520–548`) over the ONE C-TD-1 read. */
 export interface ClassResultsHeaderProps {
   classCard: DashboardClass;

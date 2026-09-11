@@ -1,5 +1,3 @@
-export { TeacherLiveSessionBanner } from './components/TeacherLiveSessionBanner';
-export { TeacherClassCompletionRow } from './components/TeacherClassCompletionRow';
 export { TestSessionsScreen } from './components/TestSessionsScreen';
 export { ResultsScreen } from './components/ResultsScreen';
 export { ClassResultsScreen } from './components/ClassResultsScreen';
@@ -9,19 +7,7 @@ export { TeachingInsightsPanel } from './components/TeachingInsightsPanel';
 export { StudentsTabPanel } from './components/StudentsTabPanel';
 export { StudentsResultsTable } from './components/StudentsResultsTable';
 export { StudentDrillDownScreen } from './components/StudentDrillDownScreen';
-export { StartTestSessionPanel } from './components/StartTestSessionPanel';
-export { StartTestSessionForm } from './components/StartTestSessionForm';
-export { TestSessionSelect } from './components/TestSessionSelect';
-export { JoinCodePanel } from './components/JoinCodePanel';
-export { JoinCodeDisplay } from './components/JoinCodeDisplay';
-export { PastSessionsPanel } from './components/PastSessionsPanel';
-export { PastSessionsTable } from './components/PastSessionsTable';
 export { SessionMissingValue } from './components/SessionMissingValue';
-
-export { useStartTestSessionForm } from './hooks/useStartTestSessionForm';
-export { useJoinCodePanel } from './hooks/useJoinCodePanel';
-export { usePastSessions } from './hooks/usePastSessions';
-export { usePastSessionsColumns } from './hooks/usePastSessionsColumns';
 
 export { useTeacherDashboardQuery } from './queries/use-teacher-dashboard.query';
 export { useTeacherTestsQuery } from './queries/use-teacher-tests.query';
@@ -37,18 +23,7 @@ export { useCancelTestSessionMutation } from './queries/use-cancel-test-session.
 export { useStartTestSessionMutation } from './queries/use-start-test-session.mutation';
 
 export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-export';
-export { toClassOptions, toTestOptions, deriveSetupStatus } from './lib/session-setup';
-export { completionPercent, deriveDashboardStatus } from './lib/dashboard-cards';
 export { resolveJoinCodeView, testSessionMonitorHref, findTestLabel } from './lib/join-code';
-export { derivePastSessionsStatus, sessionCompletionPercent } from './lib/past-sessions';
-export {
-  PAST_SESSIONS_DEFAULT_SORT,
-  pastSessionsClientConfig,
-} from './lib/past-sessions-directory';
-export {
-  STUDENTS_RESULTS_DEFAULT_SORT,
-  studentsResultsClientConfig,
-} from './lib/students-results-directory';
 export {
   classResultsHref,
   studentResultsHref,
@@ -56,17 +31,7 @@ export {
   isResultsTabValue,
 } from './lib/results-shell';
 export { MASTERY_BAND_TONE } from './constants/mastery.constants';
-export {
-  TEST_SESSION_SELECT_TRIGGER_CLASS,
-  START_TEST_SESSION_DEFAULTS,
-} from './constants/test-session-setup.constants';
 export { TEST_SESSIONS_PATH } from './constants/join-code.constants';
-export {
-  PAST_SESSION_STATUS_TONE,
-  PAST_SESSION_STATUS_LABEL_KEY,
-  PAST_SESSIONS_ROW_CLASS,
-  PAST_SESSIONS_SCROLL_CLASS,
-} from './constants/past-sessions.constants';
 export {
   RESULTS_PATH,
   RESULTS_TAB_ORDER,
@@ -164,32 +129,15 @@ export type {
 // Scoring task 24: the progress/insights barrel re-exports are gone with their
 // surfaces. The schema/type FILES stay — the export-derivation test cluster
 // still reads them until 70459cff's re-point settles.
-export type {
-  StartTestSessionFormValues,
-  TestSessionSetupStatus,
-  TestSessionSetupCounts,
-  TestSessionSelectProps,
-  StartTestSessionFormProps,
-} from './types/session-setup.types';
+export type { StartTestSessionFormValues } from './types/session-setup.types';
 export type {
   JoinCodeReady,
   JoinCodeUnavailable,
   JoinCodeAbsent,
   JoinCodeView,
-  JoinCodeDisplayProps,
 } from './types/join-code.types';
-export type {
-  PastSessionsStatus,
-  PastSessionsReadCounts,
-  PastSessionsTableProps,
-  SessionMissingValueProps,
-} from './types/past-sessions.types';
+export type { SessionMissingValueProps } from './types/past-sessions.types';
 
-export type {
-  TeacherDashboardStatus,
-  TeacherDashboardCounts,
-  TeacherClassCompletionRowProps,
-} from './types/teacher-dashboard.types';
 export type {
   TeacherExportKind,
   TeacherExportDocument,
@@ -202,7 +150,6 @@ export type {
   SkillScopeValue,
   ResultsReadStatus,
   ResultsReadCounts,
-  ResultsClassRowProps,
   ClassResultsHeaderProps,
   ComingSoonPanelProps,
   ClassResultsScreenProps,

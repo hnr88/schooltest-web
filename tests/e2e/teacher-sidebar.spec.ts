@@ -146,16 +146,13 @@ test.describe('teacher rail scoping (A4)', () => {
       timeout: 20_000,
     });
     await expect(
-      page.getByRole('heading', { level: 1, name: cat(en, 'Teacher.testSessions.title') }),
+      page.getByRole('heading', { level: 1, name: cat(en, 'TeacherPortal.liveSessions.title') }),
     ).toBeVisible();
-    // Task 034 replaced this page's placeholder with the real "Start a test
-    // session" panel, so the discriminator moved to the panel's own heading.
-    await expect(
-      page.getByRole('heading', {
-        level: 2,
-        name: cat(en, 'Teacher.testSessions.setup.panelTitle'),
-      }),
-    ).toBeVisible();
+    // The Live sessions page (Teacher Portal v2) replaced the setup panel, so the
+    // discriminator is the page's own "Start new session" action.
+    await expect(page.locator('[data-slot="start-session-button"]')).toHaveText(
+      cat(en, 'TeacherPortal.liveSessions.startSession'),
+    );
     await expect(navLink(page, cat(en, 'Shell.nav.testSessions'))).toHaveAttribute(
       'data-active',
       /.*/,
@@ -165,7 +162,7 @@ test.describe('teacher rail scoping (A4)', () => {
     await page.waitForURL('**/dashboard/results');
     await expect(page.locator('[data-surface="teacher-results"]')).toBeVisible({ timeout: 20_000 });
     await expect(
-      page.getByRole('heading', { level: 1, name: cat(en, 'Teacher.results.title') }),
+      page.getByRole('heading', { level: 1, name: cat(en, 'TeacherPortal.classes.title') }),
     ).toBeVisible();
     // Task 040 replaced this page's placeholder with the real Results class list,
     // so the discriminator moved to a live class row read from GET /api/teacher/dashboard.

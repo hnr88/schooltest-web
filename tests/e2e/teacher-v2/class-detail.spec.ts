@@ -57,7 +57,7 @@ test.describe('S2 — Teacher Portal v2 class detail frame', () => {
     await expect(sectionTab(page, 'students')).toHaveAttribute('aria-selected', 'true');
     await expect(page.locator('[data-tab-panel="students"]')).toBeVisible();
     await page.screenshot({ path: path.join(PROOFS, 'class-detail-frame.png'), animations: 'disabled' });
-    expectNoNewErrors(errors, 'class detail load (Students)', { studentsBody: true });
+    expectNoNewErrors(errors, 'class detail load (Students)');
 
     // Every tab rewrites ?tab= and shows its own panel; Students (the default) drops the param.
     for (const key of [...TABS.slice(1), TABS[0]]) {
@@ -69,7 +69,7 @@ test.describe('S2 — Teacher Portal v2 class detail frame', () => {
       const body = TAB_BODIES[key];
       if (body !== undefined) await expect(panel.locator(body)).toBeVisible({ timeout: 30_000 });
       if (key === 'students') await expect(panel).toBeVisible();
-      expectNoNewErrors(errors, `tab switch to ${key}`, { studentsBody: key === 'students' });
+      expectNoNewErrors(errors, `tab switch to ${key}`);
     }
 
     // The sticky block stays pinned to the top of the scroll column.

@@ -29,9 +29,3 @@ export interface JoinCodeAbsent {
 }
 
 export type JoinCodeView = JoinCodeReady | JoinCodeUnavailable | JoinCodeAbsent;
-
-export interface JoinCodeDisplayProps {
-  view: JoinCodeReady;
-  isCopied: boolean;
-  onCopy: () => void;
-}

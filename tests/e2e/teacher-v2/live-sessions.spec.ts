@@ -19,6 +19,7 @@ import {
   readTests,
 } from '../helpers/teacher-past-sessions-api';
 import { signIn, signInTeacher } from '../helpers/teacher-rail';
+import { busyStudentIds } from '../helpers/teacher-start-session-api';
 
 // S12 — /dashboard/test-sessions per Teacher Portal v2.dc.html:218–299 on the REAL
 // API, no interception. Setup opens a real two-student sitting on t2's class
@@ -99,10 +100,7 @@ test('the new sitting renders with its real code, members and counts', async () 
     const year = tClasses('yearLevel', { level: klass.year_level });
     await expect(block).toContainText(t('classMeta', { year, count: klass.student_count }));
   }
-  const busy = mine.some((entry) => entry.member_student_ids === null)
-    ? klass.student_count
-    : new Set(mine.flatMap((entry) => entry.member_student_ids ?? [])).size;
-  const free = klass.student_count - busy;
+  const free = klass.student_count - (await busyStudentIds(request, jwt, klass.class_document_id)).size;
   await expect(block.locator('[data-slot="live-class-free"]')).toHaveText(
     free > 0 ? t('free', { count: free }) : t('everyoneBusy'),
   );

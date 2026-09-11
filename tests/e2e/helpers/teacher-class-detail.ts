@@ -87,18 +87,6 @@ export async function expectHeader(page: Page, card: DashboardClass, classes: re
   await expect(switcher.locator('option')).toHaveText(classes.map((entry) => entry.name));
 }
 
-/**
- * The pre-v2 Students body (StudentsTabPanel → StudentsResultsTable → RosterScoreCell in
- * RosterStudentCells.tsx) renders a <td> inside the directory kit's <div> rows, and React
- * logs that nesting twice. That body belongs to the Students-tab chunk; the two messages
- * are matched by their exact signature, only on steps that mount it, so nothing else can
- * hide behind the allowance.
- */
-const STUDENTS_BODY_NESTING = [
-  /cannot be a child of <%s>[\s\S]*<td> div/,
-  /cannot contain a nested %s[\s\S]*div <td>/,
-];
-
 /** Records (without asserting) errors raised by a surface outside this frame. */
 export function setAsideErrors(errors: string[], surface: string): void {
   for (const message of errors.splice(0)) {
@@ -107,16 +95,6 @@ export function setAsideErrors(errors: string[], surface: string): void {
 }
 
 /** Drains the console/page errors seen since the last call; none may come from the frame. */
-export function expectNoNewErrors(errors: string[], step: string, options: { studentsBody?: boolean } = {}) {
-  const fresh = errors.splice(0);
-  const known = options.studentsBody
-    ? fresh.filter((message) => STUDENTS_BODY_NESTING.some((signature) => signature.test(message)))
-    : [];
-  for (const message of known) {
-    test.info().annotations.push({ type: 'known:students-body-nesting', description: message.slice(0, 400) });
-  }
-  expect(
-    fresh.filter((message) => !known.includes(message)),
-    `console/page errors at: ${step}`,
-  ).toEqual([]);
+export function expectNoNewErrors(errors: string[], step: string) {
+  expect(errors.splice(0), `console/page errors at: ${step}`).toEqual([]);
 }
