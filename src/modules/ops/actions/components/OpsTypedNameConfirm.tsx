@@ -70,8 +70,13 @@ export function OpsTypedNameConfirm({
         </AlertDialogHeader>
         <div className="flex flex-col gap-2">
           <Label htmlFor={inputId}>
+            {/* `name` is the rich TAG; the name itself interpolates through
+                `schoolName` — the old `<name>{name}</name>` message made
+                next-intl interpolate the tag callback, which dropped the name
+                and logged a functions-as-children error. */}
             {t.rich('typeToConfirm', {
               name: (chunks) => <span className="font-semibold">{chunks}</span>,
+              schoolName: requiredName,
             })}
           </Label>
           <Input

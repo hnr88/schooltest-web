@@ -4388,7 +4388,7 @@
       "clear": "ล้างการเลือก"
     },
     "typedNameConfirm": {
-      "typeToConfirm": "พิมพ์ <name>{name}</name> เพื่อยืนยัน"
+      "typeToConfirm": "พิมพ์ <name>{schoolName}</name> เพื่อยืนยัน"
     }
   },
   "RunSheet": {

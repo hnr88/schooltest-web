@@ -4378,7 +4378,7 @@
       "clear": "清除选择"
     },
     "typedNameConfirm": {
-      "typeToConfirm": "输入 <name>{name}</name> 以确认"
+      "typeToConfirm": "输入 <name>{schoolName}</name> 以确认"
     }
   },
   "RunSheet": {

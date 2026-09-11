@@ -4388,7 +4388,7 @@
       "clear": "Kosongkan pilihan"
     },
     "typedNameConfirm": {
-      "typeToConfirm": "Taip <name>{name}</name> untuk sahkan"
+      "typeToConfirm": "Taip <name>{schoolName}</name> untuk sahkan"
     }
   },
   "RunSheet": {

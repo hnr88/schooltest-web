@@ -4388,7 +4388,7 @@
       "clear": "선택 해제"
     },
     "typedNameConfirm": {
-      "typeToConfirm": "확인하려면 <name>{name}</name>을(를) 입력하세요"
+      "typeToConfirm": "확인하려면 <name>{schoolName}</name>을(를) 입력하세요"
     }
   },
   "RunSheet": {
