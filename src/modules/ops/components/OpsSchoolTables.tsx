@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/modules/design-system';
 import { DIRECTORY_PARAMS } from '@/modules/ops/directory';
@@ -83,9 +83,27 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
   // a hand-edited or stale URL must not leave the page blank.
   const tab: Tab = isTab(raw) ? raw : 'overview';
 
-  const onTabChange = useCallback(
-    (next: string) => {
-      const params = new URLSearchParams(searchParams.toString());
+  // App-Router tab race (measured live, 2026-09-11): two tab switches in quick
+  // succession lose the second — the replace dispatched while the first is
+  // still in flight is swallowed, and BOTH the URL and this controlled Tabs
+  // settle back on the first tab (9 of 21 rapid-click probes desynced).
+  // `pendingTab` is the last click the operator made: the UI shows it
+  // immediately, an effect keeps re-dispatching the replace until the URL's
+  // tab agrees, and it drops the moment the URL catches up or moves for
+  // someone else's reason (Back/Forward).
+  const [pendingTab, setPendingTab] = useState<Tab | null>(null);
+  // The tab this render shows: the last click while its URL write is in
+  // flight, else the URL's tab. The panel `active` gates read off it too, so
+  // an optimistic switch starts its tab's queries immediately.
+  const effectiveTab: Tab = pendingTab ?? tab;
+  const seenRef = useRef(searchParams.toString());
+  useEffect(() => {
+    seenRef.current = searchParams.toString();
+  }, [searchParams]);
+
+  const tabHref = useCallback(
+    (next: Tab) => {
+      const params = new URLSearchParams(seenRef.current);
       if (next === 'overview') params.delete(TAB_PARAM);
       else params.set(TAB_PARAM, next);
       // Each tab is its own directory, and the kit's URL params are page-global
@@ -96,15 +114,73 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       // the one place that knows the directory scope just changed.
       for (const param of DIRECTORY_SCOPED_PARAMS) params.delete(param);
       const query = params.toString();
-      router.replace(query === '' ? pathname : `${pathname}?${query}`, { scroll: false });
+      return query === '' ? pathname : `${pathname}?${query}`;
     },
-    [pathname, router, searchParams],
+    [pathname],
   );
+
+  const replaceTab = useCallback(
+    (next: Tab) => {
+      router.replace(tabHref(next), { scroll: false });
+    },
+    [router, tabHref],
+  );
+
+  const onTabChange = useCallback(
+    (next: string) => {
+      const tab_ = isTab(next) ? next : 'overview';
+      setPendingTab(tab_);
+      replaceTab(tab_);
+    },
+    [replaceTab],
+  );
+
+  // Convergence: re-dispatch until the URL's tab matches the pending click.
+  // A swallowed replace can leave NO render behind to retry from, so the check
+  // lives on an interval reading the live query string from a ref.
+  useEffect(() => {
+    if (pendingTab === null) return;
+    let attempts = 0;
+    const reconcile = (): boolean => {
+      const seenTab = new URLSearchParams(seenRef.current).get(TAB_PARAM) ?? 'overview';
+      if (seenTab === pendingTab) {
+        setPendingTab(null);
+        return true;
+      }
+      return false;
+    };
+    if (reconcile()) return;
+    const iv = setInterval(() => {
+      attempts += 1;
+      if (reconcile()) return;
+      if (attempts > 10) {
+        // The router has swallowed every soft retry for ~3s — it is wedged on
+        // an in-flight navigation and will drop any further replace. A hard
+        // navigation is the only remaining way the last click lands in the
+        // URL; the deep-link render restores the exact tab from it. The real
+        // path is kept (next-intl's pathname drops a locale prefix).
+        const href = tabHref(pendingTab);
+        const query = href.includes('?') ? `?${href.split('?').slice(1).join('?')}` : '';
+        setPendingTab(null);
+        window.location.replace(window.location.pathname + query);
+        return;
+      }
+      replaceTab(pendingTab);
+    }, 300);
+    return () => clearInterval(iv);
+  }, [pendingTab, replaceTab, tabHref]);
+
+  // Back/Forward picks the tab, never the pending click.
+  useEffect(() => {
+    const onPop = () => setPendingTab(null);
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   return (
     <Tabs
       key={schoolDocumentId}
-      value={tab}
+      value={effectiveTab}
       onValueChange={onTabChange}
       className="flex flex-col gap-4"
     >
@@ -162,7 +238,7 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
         <OpsAdminsTab
           schoolDocumentId={schoolDocumentId}
           ownerDocumentId={school.owner_documentId}
-          active={tab === 'admins'}
+          active={effectiveTab === 'admins'}
           onInvite={openInvitations}
         />
       </TabsContent>
@@ -170,7 +246,7 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       <TabsContent value="teachers">
         <OpsTeachersTab
           schoolDocumentId={schoolDocumentId}
-          active={tab === 'teachers'}
+          active={effectiveTab === 'teachers'}
           onManage={() => setTeachersOpen(true)}
           onInvite={openInvitations}
         />
