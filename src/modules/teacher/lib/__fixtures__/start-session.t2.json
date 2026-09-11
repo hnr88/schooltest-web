@@ -1,0 +1,1439 @@
+{
+  "recorded_at": "2026-09-11T18:28:31.920Z",
+  "teacher": "t2@schooltest.local",
+  "class_document_id": "qves8wrtl7r9ctw49jivm8gl",
+  "tests": {
+    "tests": [
+      {
+        "form_document_id": "j6lers626yexsdacat60i52x",
+        "variant": "A",
+        "label": "Reading diagnostic — Test A",
+        "skill": "reading"
+      },
+      {
+        "form_document_id": "zlwdhpicf2fybmwanbhmwe4l",
+        "variant": "B",
+        "label": "Reading diagnostic — Test B",
+        "skill": "reading"
+      }
+    ]
+  },
+  "dashboard": {
+    "classes": [
+      {
+        "class_document_id": "qves8wrtl7r9ctw49jivm8gl",
+        "name": "Reading 8B — Alvarez",
+        "year_band": "7_9",
+        "student_count": 20,
+        "test_a": {
+          "completed": 7,
+          "total": 20
+        },
+        "test_b": {
+          "completed": 0,
+          "total": 20
+        },
+        "top_gap": null,
+        "status": "sitting_now",
+        "open_session_count": 2,
+        "reading": {
+          "average": 42,
+          "delta": 1.7,
+          "scored": 19
+        },
+        "year_level": 8
+      }
+    ],
+    "live_session": {
+      "sitting_document_id": "udi8k0wp2ovbrcen9mgy790z",
+      "code": "656113",
+      "class_name": "Reading 8B — Alvarez",
+      "test_variant": null,
+      "opened_at": "2026-09-11T03:17:13.558Z"
+    },
+    "live_sessions": [
+      {
+        "sitting_document_id": "udi8k0wp2ovbrcen9mgy790z",
+        "code": "656113",
+        "class_name": "Reading 8B — Alvarez",
+        "test_variant": null,
+        "opened_at": "2026-09-11T03:17:13.558Z"
+      },
+      {
+        "sitting_document_id": "c5dr38783e82nrvs9idl7nj7",
+        "code": "273249",
+        "class_name": "Reading 8B — Alvarez",
+        "test_variant": null,
+        "opened_at": "2026-09-11T03:16:54.778Z"
+      }
+    ]
+  },
+  "open": {
+    "sessions": [
+      {
+        "sitting_document_id": "udi8k0wp2ovbrcen9mgy790z",
+        "code": "656113",
+        "status": "open",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": null,
+        "opened_at": "2026-09-11T03:17:13.558Z",
+        "closed_at": null,
+        "completed": 0,
+        "expected": 20,
+        "phase": "running",
+        "form": {
+          "document_id": "k5ahyqaftcvj6cjjpagu1xaj",
+          "label": "SPK-PROG-A-79",
+          "variant": null
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 1,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "c5dr38783e82nrvs9idl7nj7",
+        "code": "273249",
+        "status": "open",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": null,
+        "opened_at": "2026-09-11T03:16:54.778Z",
+        "closed_at": null,
+        "completed": 0,
+        "expected": 20,
+        "phase": "running",
+        "form": {
+          "document_id": "ts9vcd4w2xa9c8m78nmspvsc",
+          "label": "LST-PROG-A-79",
+          "variant": null
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 1,
+          "submitted": 0
+        }
+      }
+    ]
+  },
+  "closed": {
+    "sessions": [
+      {
+        "sitting_document_id": "kmsre82m409w98cln17k7yxk",
+        "code": "300125",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T18:12:26.816Z",
+        "closed_at": "2026-09-11T18:12:26.923Z",
+        "completed": 0,
+        "expected": 2,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": [
+          "zfia18l6ps0q2hed4f3ts2k2",
+          "gc7mk2jcd1x2i6adsmmlfq3e"
+        ],
+        "stats": {
+          "expected": 2,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "qhacrwhqjvvude22fukbw7kc",
+        "code": "866556",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:54.339Z",
+        "closed_at": "2026-09-11T03:16:54.379Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "mp21gn8s1wy1kj504gkavcqa",
+        "code": "152932",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:54.272Z",
+        "closed_at": "2026-09-11T03:17:32.869Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": {
+          "lowBw": false,
+          "skip": true,
+          "review": true,
+          "flag": true,
+          "bigText": true,
+          "lockdown": true,
+          "focusFlag": true,
+          "warn5": true,
+          "autoSubmit": false,
+          "showScore": false,
+          "timeLimit": 40
+        },
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "oz5uyakwvtqcyqjqvo1t9fos",
+        "code": "123627",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:53.993Z",
+        "closed_at": "2026-09-11T03:16:54.058Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "g54z0ssbsy1us3a1o68wrcz1",
+        "code": "213874",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:53.919Z",
+        "closed_at": "2026-09-11T03:17:32.620Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "x9yiptrutguowed08yto020p",
+        "code": "531431",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:53.708Z",
+        "closed_at": "2026-09-11T03:17:32.378Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "hrqud2opoj852m8fcwgi53kp",
+        "code": "316635",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:53.647Z",
+        "closed_at": "2026-09-11T03:16:53.690Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "b0jmmtzrqooo9y2e8sy76p4s",
+        "code": "554788",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:53.332Z",
+        "closed_at": "2026-09-11T03:16:53.370Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "njxsf6r3eys73omzgylkyl7l",
+        "code": "868895",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:53.262Z",
+        "closed_at": "2026-09-11T03:17:32.156Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "pzrjgjds3p0ficne78oshgqd",
+        "code": "000236",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:46.308Z",
+        "closed_at": "2026-09-11T03:20:02.826Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 1,
+          "submitted": 1
+        }
+      },
+      {
+        "sitting_document_id": "pfs5pdv10cibms5vasaupioz",
+        "code": "765707",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:16:40.532Z",
+        "closed_at": "2026-09-11T03:16:40.659Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "u99at10ukn3bik742x5sg29u",
+        "code": "863262",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:07:17.194Z",
+        "closed_at": "2026-09-11T03:07:24.290Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 1,
+          "submitted": 1
+        }
+      },
+      {
+        "sitting_document_id": "j8am9nrv33x05vnv98laez67",
+        "code": "333859",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:07:16.591Z",
+        "closed_at": "2026-09-11T03:07:16.629Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "p1kjxa411z9lj9k2xf85g6b1",
+        "code": "524869",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:07:16.536Z",
+        "closed_at": "2026-09-11T03:07:24.489Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": {
+          "lowBw": false,
+          "skip": true,
+          "review": true,
+          "flag": true,
+          "bigText": true,
+          "lockdown": true,
+          "focusFlag": true,
+          "warn5": true,
+          "autoSubmit": false,
+          "showScore": false,
+          "timeLimit": 40
+        },
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "wjd3mkfbhlw6jzzkzyzx7f0q",
+        "code": "395085",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:07:16.306Z",
+        "closed_at": "2026-09-11T03:07:16.337Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "nvuai86ggwbhg53x0qd9ff82",
+        "code": "324767",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:07:16.057Z",
+        "closed_at": "2026-09-11T03:07:23.964Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "gnljcjz3bybbdg6mqlu47rh8",
+        "code": "281774",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:07:16.010Z",
+        "closed_at": "2026-09-11T03:07:16.045Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "cbvtlx5hmo66wkc4w4f62zjf",
+        "code": "400889",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:07:15.696Z",
+        "closed_at": "2026-09-11T03:07:15.742Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "ckdvztgwrkwi6ib2dmx96f97",
+        "code": "867834",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T03:07:15.626Z",
+        "closed_at": "2026-09-11T03:07:23.755Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      },
+      {
+        "sitting_document_id": "u192nzw3hpl3pcvf19oahasx",
+        "code": "880287",
+        "status": "closed",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": "A",
+        "opened_at": "2026-09-11T02:31:17.083Z",
+        "closed_at": "2026-09-11T02:31:17.122Z",
+        "completed": 0,
+        "expected": 20,
+        "phase": "closed",
+        "form": {
+          "document_id": "j6lers626yexsdacat60i52x",
+          "label": "Reading diagnostic — Test A",
+          "variant": "A"
+        },
+        "settings": null,
+        "member_student_ids": null,
+        "stats": {
+          "expected": 20,
+          "joined": 0,
+          "submitted": 0
+        }
+      }
+    ],
+    "meta": {
+      "pagination": {
+        "page": 1,
+        "pageSize": 20,
+        "pageCount": 39,
+        "total": 773
+      }
+    }
+  },
+  "monitors": {
+    "udi8k0wp2ovbrcen9mgy790z": {
+      "sitting": {
+        "document_id": "udi8k0wp2ovbrcen9mgy790z",
+        "code": "656113",
+        "status": "open",
+        "opened_at": "2026-09-11T03:17:13.558Z",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": null
+      },
+      "stall_threshold_minutes": 5,
+      "summary": {
+        "expected": 20,
+        "joined": 0,
+        "in_progress": 0,
+        "submitted": 0,
+        "stalled": 1,
+        "scoring_failed": 0,
+        "absent": 0,
+        "paused": 0
+      },
+      "students": [
+        {
+          "student_document_id": "zfia18l6ps0q2hed4f3ts2k2",
+          "display_name": "Amara B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "gc7mk2jcd1x2i6adsmmlfq3e",
+          "display_name": "Bilal B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "qwoxudb9mkq5ar6044wy6gmu",
+          "display_name": "Chen B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "cxjfszn4s2domw78yrn3ze7i",
+          "display_name": "Dilnoza B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "p15b2qwpx7j0s7ky6eunl1hc",
+          "display_name": "Eitan B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "u1h37a09j6qybj2mz37f3jgt",
+          "display_name": "Farida B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "t9ad3ja7xwgdcnbchtiuqqta",
+          "display_name": "Gia B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "nkrfim7y4f7hllcyfaji7jft",
+          "display_name": "Hamza B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "d53ftxw0b1z3dxju5q56oerh",
+          "display_name": "Ines B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "nz804sr1odenbnht9pfgmo3v",
+          "display_name": "Jae-won B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "f7unlanstpq938tjlswl1zka",
+          "display_name": "Kaveh B.",
+          "state": "stalled",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": 911,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": "offline"
+        },
+        {
+          "student_document_id": "ug1btz3nvklcx06aqw915wzw",
+          "display_name": "Lucia B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "qhpesgsxvvejpx433eggqc8y",
+          "display_name": "Mihail B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "zfds2ab0z9fgebagt6t0540f",
+          "display_name": "Nour B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "pww9v4axu1r0uwcm76n16e0v",
+          "display_name": "Oluwaseun B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "oj29gkpz8vuwmxsrvzzkqaqn",
+          "display_name": "Panit B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "zqp4wrok2uowug6asi1u4mnb",
+          "display_name": "Qadir B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "p8dnh8rp6vzp4bb5y6gjx2fn",
+          "display_name": "Rosa B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "roidqaw12yjn6ov008oc9mhk",
+          "display_name": "Sunniva B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "x9ri6ax951ye18ar2xjt8ryj",
+          "display_name": "Tenzin B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        }
+      ]
+    },
+    "c5dr38783e82nrvs9idl7nj7": {
+      "sitting": {
+        "document_id": "c5dr38783e82nrvs9idl7nj7",
+        "code": "273249",
+        "status": "open",
+        "opened_at": "2026-09-11T03:16:54.778Z",
+        "class": {
+          "document_id": "qves8wrtl7r9ctw49jivm8gl",
+          "name": "Reading 8B — Alvarez"
+        },
+        "variant": null
+      },
+      "stall_threshold_minutes": 5,
+      "summary": {
+        "expected": 20,
+        "joined": 0,
+        "in_progress": 0,
+        "submitted": 0,
+        "stalled": 1,
+        "scoring_failed": 0,
+        "absent": 0,
+        "paused": 0
+      },
+      "students": [
+        {
+          "student_document_id": "zfia18l6ps0q2hed4f3ts2k2",
+          "display_name": "Amara B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "gc7mk2jcd1x2i6adsmmlfq3e",
+          "display_name": "Bilal B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "qwoxudb9mkq5ar6044wy6gmu",
+          "display_name": "Chen B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "cxjfszn4s2domw78yrn3ze7i",
+          "display_name": "Dilnoza B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "p15b2qwpx7j0s7ky6eunl1hc",
+          "display_name": "Eitan B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "u1h37a09j6qybj2mz37f3jgt",
+          "display_name": "Farida B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "t9ad3ja7xwgdcnbchtiuqqta",
+          "display_name": "Gia B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "nkrfim7y4f7hllcyfaji7jft",
+          "display_name": "Hamza B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "d53ftxw0b1z3dxju5q56oerh",
+          "display_name": "Ines B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "nz804sr1odenbnht9pfgmo3v",
+          "display_name": "Jae-won B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "f7unlanstpq938tjlswl1zka",
+          "display_name": "Kaveh B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "ug1btz3nvklcx06aqw915wzw",
+          "display_name": "Lucia B.",
+          "state": "stalled",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": 911,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": "offline"
+        },
+        {
+          "student_document_id": "qhpesgsxvvejpx433eggqc8y",
+          "display_name": "Mihail B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "zfds2ab0z9fgebagt6t0540f",
+          "display_name": "Nour B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "pww9v4axu1r0uwcm76n16e0v",
+          "display_name": "Oluwaseun B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "oj29gkpz8vuwmxsrvzzkqaqn",
+          "display_name": "Panit B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "zqp4wrok2uowug6asi1u4mnb",
+          "display_name": "Qadir B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "p8dnh8rp6vzp4bb5y6gjx2fn",
+          "display_name": "Rosa B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "roidqaw12yjn6ov008oc9mhk",
+          "display_name": "Sunniva B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        },
+        {
+          "student_document_id": "x9ri6ax951ye18ar2xjt8ryj",
+          "display_name": "Tenzin B.",
+          "state": "not_joined",
+          "stage": null,
+          "total_stages": null,
+          "inactive_minutes": null,
+          "proctoring": null,
+          "absent": false,
+          "paused": false,
+          "connection": null
+        }
+      ]
+    }
+  },
+  "roster": [
+    {
+      "student": {
+        "document_id": "nz804sr1odenbnht9pfgmo3v",
+        "name": "Jae-won Baptiste",
+        "initials": "JB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "ug1btz3nvklcx06aqw915wzw",
+        "name": "Lucia Baptiste",
+        "initials": "LB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "gc7mk2jcd1x2i6adsmmlfq3e",
+        "name": "Bilal Baptiste",
+        "initials": "BB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "zfia18l6ps0q2hed4f3ts2k2",
+        "name": "Amara Baptiste",
+        "initials": "AB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "pww9v4axu1r0uwcm76n16e0v",
+        "name": "Oluwaseun Baptiste",
+        "initials": "OB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "qhpesgsxvvejpx433eggqc8y",
+        "name": "Mihail Baptiste",
+        "initials": "MB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "oj29gkpz8vuwmxsrvzzkqaqn",
+        "name": "Panit Baptiste",
+        "initials": "PB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "zqp4wrok2uowug6asi1u4mnb",
+        "name": "Qadir Baptiste",
+        "initials": "QB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "x9ri6ax951ye18ar2xjt8ryj",
+        "name": "Tenzin Baptiste",
+        "initials": "TB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "t9ad3ja7xwgdcnbchtiuqqta",
+        "name": "Gia Baptiste",
+        "initials": "GB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "nkrfim7y4f7hllcyfaji7jft",
+        "name": "Hamza Baptiste",
+        "initials": "HB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "roidqaw12yjn6ov008oc9mhk",
+        "name": "Sunniva Baptiste",
+        "initials": "SB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "cxjfszn4s2domw78yrn3ze7i",
+        "name": "Dilnoza Baptiste",
+        "initials": "DB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "qwoxudb9mkq5ar6044wy6gmu",
+        "name": "Chen Baptiste",
+        "initials": "CB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "p15b2qwpx7j0s7ky6eunl1hc",
+        "name": "Eitan Baptiste",
+        "initials": "EB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "f7unlanstpq938tjlswl1zka",
+        "name": "Kaveh Baptiste",
+        "initials": "KB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "zfds2ab0z9fgebagt6t0540f",
+        "name": "Nour Baptiste",
+        "initials": "NB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "d53ftxw0b1z3dxju5q56oerh",
+        "name": "Ines Baptiste",
+        "initials": "IB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "u1h37a09j6qybj2mz37f3jgt",
+        "name": "Farida Baptiste",
+        "initials": "FB",
+        "eald_flag": false
+      }
+    },
+    {
+      "student": {
+        "document_id": "p8dnh8rp6vzp4bb5y6gjx2fn",
+        "name": "Rosa Baptiste",
+        "initials": "RB",
+        "eald_flag": false
+      }
+    }
+  ],
+  "create_400_not_on_roster": {
+    "status": 400,
+    "body": {
+      "data": null,
+      "error": {
+        "status": 400,
+        "name": "ValidationError",
+        "message": "student_document_ids must be active students of this class",
+        "details": {
+          "fields": [
+            "student_document_ids"
+          ],
+          "issues": [
+            "student_document_ids: qves8wrtl7r9ctw49jivm8gl is not an active student of this class"
+          ]
+        }
+      }
+    }
+  },
+  "create_409_busy": {
+    "status": 409,
+    "body": {
+      "data": null,
+      "error": {
+        "status": 409,
+        "name": "ConflictError",
+        "message": "A student can only sit one test at a time: some of these students are already sitting a test in this class.",
+        "details": {
+          "busy_student_document_ids": [
+            "nz804sr1odenbnht9pfgmo3v"
+          ]
+        }
+      }
+    }
+  }
+}

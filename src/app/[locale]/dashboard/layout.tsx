@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { SidebarInset, SidebarProvider } from '@/modules/design-system';
 import { AppSidebar, AppTopbar } from '@/modules/shell';
 import { NOINDEX_ROBOTS } from '@/modules/seo';
+import { StartSessionHost } from '@/modules/teacher';
 
 // The whole dashboard tree is private: robots.txt disallows it, and this
 // declaration keeps every nested route noindex even if a crawler reaches one
@@ -55,6 +56,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </SidebarInset>
+      {/* Teacher only (the host renders nothing for any other role): the ONE
+          "Start a new session" modal every teacher screen opens. */}
+      <StartSessionHost />
     </SidebarProvider>
   );
 }

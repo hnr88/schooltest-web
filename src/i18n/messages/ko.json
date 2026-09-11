@@ -6173,8 +6173,240 @@
       "failedRecall": "{name} 학생의 보고서를 회수하지 못했습니다: {reason}."
     },
     "live": {},
-    "liveSessions": {},
-    "startSession": {},
+    "liveSessions": {
+      "title": "실시간 세션",
+      "summary": "{classes, plural, other {#개 반}}에서 {sessions, plural, other {#개 세션}}이 진행 중입니다. 학생은 한 번에 하나의 시험만 응시할 수 있습니다.",
+      "summaryNone": "진행 중인 세션이 없습니다. 같은 반의 학생들도 서로 다른 버전을 동시에 응시할 수 있습니다.",
+      "startSession": "새 세션 시작",
+      "loading": "실시간 세션을 불러오는 중…",
+      "loadError": "실시간 세션을 불러오지 못했습니다.",
+      "retry": "다시 시도",
+      "classMeta": "{year} · 학생 {count, plural, other {#명}}",
+      "classMetaNoYear": "학생 {count, plural, other {#명}}",
+      "everyoneBusy": "모든 학생이 세션에 참여 중입니다",
+      "free": "학생 {count, plural, other {#명}}이 다른 버전을 시작할 수 있습니다",
+      "addSession": "세션 추가",
+      "whoWhole": "학생 {count, plural, other {#명}} · 반 전체",
+      "whoSelected": "선택한 학생 {count, plural, other {#명}}",
+      "progress": "{joined}명 참여 · {total}명 중 {submitted}명 제출",
+      "monitor": "모니터",
+      "close": "종료",
+      "empty": "지금 진행 중인 세션이 없습니다. 세션을 시작하면 참여 코드가 열립니다.",
+      "closeConfirm": {
+        "title": "이 세션을 종료할까요?",
+        "titleWorking": "아직 응시 중인 학생이 {count, plural, other {#명}} 있습니다. 종료할까요?",
+        "body": "{code}({className})에서 아직 응시 중인 학생은 즉시 접근 권한을 잃고, 제출하지 않은 답안은 현재 상태 그대로 제출됩니다. 이 작업은 되돌릴 수 없습니다.",
+        "cta": "세션 종료",
+        "cancel": "취소"
+      },
+      "scheduledLabel": "예약된 세션 {count, plural, other {#개}}",
+      "bookingWhoWhole": "학생 {count, plural, other {#명}} · 반 전체 · {className}",
+      "bookingWhoSelected": "선택한 학생 {count, plural, other {#명}} · {className}",
+      "idleTitle": "진행 중인 세션이 없는 반",
+      "idleChip": "{name} · {count}",
+      "idleEmpty": "모든 반에서 하나 이상의 세션이 진행 중입니다.",
+      "scheduledTitle": "예약된 세션",
+      "bookingsError": "예약된 세션을 불러오지 못했습니다.",
+      "chipToday": "오늘",
+      "chipScheduled": "예정됨",
+      "when": "{date} · {start}–{end}",
+      "startNow": "지금 시작",
+      "cancelBooking": "취소",
+      "edit": "수정",
+      "startConfirm": {
+        "title": "이 세션을 지금 시작할까요?",
+        "body": "{date} {start}에 예약된 세션입니다. 지금 시작하면 참여 코드가 즉시 열리고 일정에서 제거되므로, 나중 시간대를 기다리는 사람에게 알려야 합니다.",
+        "cta": "지금 시작",
+        "cancel": "취소"
+      },
+      "cancelConfirm": {
+        "title": "이 세션을 취소할까요?",
+        "body": "{date} {start}에 예정된 {className} 예약이 삭제되며, 해당 학생들은 다른 세션에 예약될 수 있습니다. 아무것도 보관되지 않습니다.",
+        "cta": "세션 취소",
+        "cancel": "닫기"
+      },
+      "startedToast": "{className}의 예약된 세션을 {start} 시간대보다 먼저 시작했습니다",
+      "cancelledToast": "{date}에 예정된 {className} 세션을 취소했습니다",
+      "startError": "세션을 시작하지 못했습니다. 다시 시도하세요.",
+      "cancelError": "예약을 취소하지 못했습니다. 다시 시도하세요."
+    },
+    "startSession": {
+      "title": "새 세션 시작",
+      "titleEdit": "예약된 세션 편집",
+      "titleDemo": "교사 체험",
+      "sub": {
+        "now": "세션이 시작되면 서버에서 참여 코드가 열립니다.",
+        "later": "참여 코드는 시간대가 열릴 때 생성됩니다. 학생은 시작 시간 전에 입장할 수 없습니다.",
+        "demo": "버전을 골라 학생이 보는 그대로 직접 응시해 보세요."
+      },
+      "when": {
+        "label": "시기",
+        "now": {
+          "label": "지금 시작",
+          "desc": "참여 코드를 바로 엽니다."
+        },
+        "later": {
+          "label": "시간대 예약",
+          "desc": "날짜와 시간을 예약합니다. 그 외 시간에는 아무도 참여할 수 없습니다."
+        },
+        "demo": {
+          "label": "교사 체험",
+          "desc": "직접 응시해 보세요. 점수는 매기지 않습니다."
+        }
+      },
+      "schedule": {
+        "date": "날짜",
+        "opens": "시작",
+        "closes": "종료",
+        "note": "{window}분 동안 열림 · {limit}분 시험 · {closes}에 자동으로 종료됩니다. 학교 운영 시간은 07:00~19:00입니다.",
+        "noteError": "세션은 07:00~19:00 사이에 진행됩니다.",
+        "errors": {
+          "pickDate": "이 세션의 날짜를 선택하세요.",
+          "datePassed": "이미 지난 날짜입니다.",
+          "setBothTimes": "시작 시간과 종료 시간을 모두 설정하세요.",
+          "outsideHours": "세션은 07:00~19:00 사이에만 진행할 수 있습니다. 시간대를 학교 운영 시간 안으로 옮기세요.",
+          "closeBeforeOpen": "종료 시간은 시작 시간보다 뒤여야 합니다.",
+          "windowShort": "시간대는 {window}분이지만 시험 시간은 {limit}분입니다. 시간대를 넓히거나 설정에서 제한 시간을 줄이세요.",
+          "earlierToday": "그 시작 시간은 오늘 이미 지났습니다. 더 늦은 시간을 고르거나 지금 바로 세션을 시작하세요."
+        }
+      },
+      "tabs": {
+        "listLabel": "세션 구성",
+        "test": "시험",
+        "students": "학생",
+        "settings": "설정",
+        "testSub": "{variant} 버전 · {className}",
+        "studentsAvailable": "{total}명 중 {free}명 가능",
+        "studentsSelected": "{count}명 선택됨",
+        "settingsSkipOn": "건너뛰기 켬 · {limit}분",
+        "settingsSkipOff": "건너뛰기 끔 · {limit}분"
+      },
+      "test": {
+        "skill": "영역",
+        "skills": {
+          "reading": "읽기",
+          "listening": "듣기",
+          "speaking": "말하기",
+          "writing": "쓰기"
+        },
+        "demoNote": "체험 시작을 누르면 학생이 보는 그대로 시험을 여는 비공개 자동 로그인 링크가 만들어집니다. 점수를 매기거나 기록하지 않습니다. 이 링크는 교사, 학교 관리자, 운영 계정에서만 작동하며 학생이나 학부모는 사용할 수 없습니다.",
+        "class": "학급",
+        "classOption": "{name} · {year}학년 · {count, plural, other {#명}}",
+        "classOptionNoYear": "{name} · {count, plural, other {#명}}",
+        "test": "시험"
+      },
+      "students": {
+        "whoSitsIt": "응시 대상",
+        "whole": "학급 전체",
+        "everyoneNow": "이미 응시 중인 학생을 제외한 전원",
+        "everyoneLater": "해당 시간에 가능한 전원",
+        "wholeDescNow": "{className} 학생 {total}명 중 {free}명이 지금 시작할 수 있습니다.",
+        "wholeDescLater": "{className} 학생 {total}명 중 {free}명이 그 시간대에 가능합니다.",
+        "selected": "선택한 학생",
+        "selectedDesc": "응시할 학생을 고르세요. 나머지 학생은 같은 시간에 다른 버전을 응시할 수 있습니다.",
+        "pickCount": "{total}명 중 {count}명 선택됨",
+        "pickNone": "아직 선택한 학생이 없습니다",
+        "alreadySitting": "{form} 응시 중",
+        "alreadySittingTest": "이미 시험 응시 중",
+        "bookedInto": "{time} {form} 예약됨",
+        "noFreeNow": "{className}의 모든 학생이 이미 시험을 응시 중입니다. 다른 시험을 시작하기 전에 이 학급의 세션 하나를 닫거나 다른 학급을 고르세요.",
+        "noFreeLater": "{className}의 모든 학생이 그 시간대에 이미 다른 세션에 예약되어 있습니다. 시간을 옮기거나 겹치는 예약을 취소하세요.",
+        "loadError": "응시 가능한 학생을 확인하지 못했습니다.",
+        "retry": "다시 시도",
+        "noStudents": "이 학급에는 활성 학생이 없습니다.",
+        "rosterLabel": "{className} 학생"
+      },
+      "settings": {
+        "sections": {
+          "during": "시험 중",
+          "access": "접근성 및 지원",
+          "security": "시험 조건",
+          "timing": "시간"
+        },
+        "summary": {
+          "onOf": "{total}개 중 {on}개 켬",
+          "lockedDown": "잠금",
+          "openFlagged": "열림, 이탈 표시",
+          "open": "열림",
+          "timingAuto": "{limit}분 · 자동 제출",
+          "timingWaits": "{limit}분 · 교사 대기"
+        },
+        "timeLimit": "제한 시간",
+        "timeLimitDesc": "세션이 열린 시점이 아니라 학생이 시작한 시점부터 카운트다운됩니다.",
+        "minutes": "{count}분",
+        "toggles": {
+          "lowBw": {
+            "label": "저대역폭 모드",
+            "desc": "텍스트 전용 지문, 이미지 미리 불러오지 않음, 답안은 기기에 저장했다가 연결이 돌아오면 동기화합니다. 교실이 모바일 데이터나 위성 회선을 쓸 때 사용하세요."
+          },
+          "skip": {
+            "label": "문항 건너뛰기 허용",
+            "desc": "학생이 문항을 남겨 두고 넘어갔다가 제출 전에 다시 돌아올 수 있습니다."
+          },
+          "review": {
+            "label": "제출 전 검토 화면",
+            "desc": "건너뛴 문항과 표시한 문항을 마지막에 모아 보여 주어 실수로 빈칸을 남기지 않게 합니다."
+          },
+          "flag": {
+            "label": "검토할 문항 표시",
+            "desc": "학생이 다시 볼 문항을 표시할 수 있습니다. 표시는 검토 화면과 교사에게 보입니다."
+          },
+          "bigText": {
+            "label": "큰 글씨와 고대비",
+            "desc": "학생이 언제든 글씨를 키우고 고대비 테마로 바꿀 수 있습니다."
+          },
+          "lockdown": {
+            "label": "잠금 창",
+            "desc": "시험이 화면을 가득 채웁니다. 다른 앱, 탭, 복사, 붙여넣기, 인쇄가 차단됩니다."
+          },
+          "focusFlag": {
+            "label": "창을 벗어나면 표시",
+            "desc": "창을 벗어난 기록이 시각과 함께 남고 실시간 화면에 표시됩니다. 잠금을 끈 상태에서 사용하세요."
+          },
+          "warn5": {
+            "label": "5분 전 알림",
+            "desc": "남은 시간 5분에 조용한 배너를 한 번 띄워, 시계가 계속 눈앞에 있지 않게 합니다."
+          },
+          "autoSubmit": {
+            "label": "시간이 되면 자동 제출",
+            "desc": "끄면 응시 내용이 교사를 기다리며, 교사 없이는 아무것도 제출되지 않습니다."
+          },
+          "showScore": {
+            "label": "마지막에 점수 보여 주기",
+            "desc": "끄면 보고서를 공개할 때까지 결과를 보류합니다."
+          }
+        }
+      },
+      "facts": {
+        "sitting": "{className} 응시",
+        "students": "{count, plural, other {#명}}",
+        "latestAverage": "최근 평균",
+        "average": "{value}%",
+        "notTested": "아직 시험 없음",
+        "lastSession": "마지막 세션",
+        "noneYet": "아직 없음"
+      },
+      "cta": {
+        "startDemo": "체험 시작",
+        "selectToStart": "시작할 학생을 선택하세요",
+        "selectToSchedule": "예약할 학생을 선택하세요",
+        "fixTiming": "시간을 수정해야 예약할 수 있습니다",
+        "start": "세션 시작 · {count, plural, other {#명}}",
+        "save": "변경 사항 저장 · {count, plural, other {#명}}",
+        "schedule": "세션 예약 · {count, plural, other {#명}}",
+        "cancel": "취소",
+        "demoPending": "교사 체험 링크는 아직 사용할 수 없습니다.",
+        "checking": "응시 가능한 학생 확인 중…"
+      },
+      "state": {
+        "loadError": "학급과 시험을 불러오지 못했습니다.",
+        "retry": "다시 시도",
+        "noClasses": "아직 시험을 볼 학급이 없습니다. 학교 관리자에게 학급 배정을 요청하세요.",
+        "noTests": "지금 시작할 수 있는 시험이 없습니다.",
+        "bookingGone": "이 예약은 이미 열렸거나 닫혔거나 취소되었습니다.",
+        "close": "닫기"
+      }
+    },
     "reports": {},
     "student": {
       "crumbClasses": "학급",

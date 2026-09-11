@@ -6163,8 +6163,240 @@
       "failedRecall": "{name} 的报告未能撤回：{reason}。"
     },
     "live": {},
-    "liveSessions": {},
-    "startSession": {},
+    "liveSessions": {
+      "title": "实时场次",
+      "summary": "{sessions, plural, other {# 个场次}}正在 {classes, plural, other {# 个班级}}中进行。每名学生同一时间只能参加一场考试。",
+      "summaryNone": "当前没有进行中的场次。同一班级的不同学生可以同时参加不同版本。",
+      "startSession": "开始新考试",
+      "loading": "正在加载实时场次…",
+      "loadError": "无法加载实时场次。",
+      "retry": "重试",
+      "classMeta": "{year} · {count, plural, other {# 名学生}}",
+      "classMetaNoYear": "{count, plural, other {# 名学生}}",
+      "everyoneBusy": "所有学生都已在场次中",
+      "free": "{count, plural, other {# 名学生}}可以开始另一个版本",
+      "addSession": "添加场次",
+      "whoWhole": "{count, plural, other {# 名学生}} · 全班",
+      "whoSelected": "{count, plural, other {# 名选定学生}}",
+      "progress": "{joined} 人已加入 · {total} 人中 {submitted} 人已提交",
+      "monitor": "监控",
+      "close": "关闭",
+      "empty": "目前没有正在进行的场次。开始一个场次即可开放加入码。",
+      "closeConfirm": {
+        "title": "要关闭这个场次吗？",
+        "titleWorking": "仍有 {count, plural, other {# 名学生}}在作答，确定关闭吗？",
+        "body": "仍在 {code}（{className}）中作答的学生将立即失去访问权限，未提交的答案将按原样提交。此操作无法撤销。",
+        "cta": "关闭场次",
+        "cancel": "取消"
+      },
+      "scheduledLabel": "已安排 {count, plural, other {# 个场次}}",
+      "bookingWhoWhole": "{count, plural, other {# 名学生}} · 全班 · {className}",
+      "bookingWhoSelected": "{count, plural, other {# 名选定学生}} · {className}",
+      "idleTitle": "没有进行中场次的班级",
+      "idleChip": "{name} · {count}",
+      "idleEmpty": "每个班级都至少有一个场次正在进行。",
+      "scheduledTitle": "已安排的场次",
+      "bookingsError": "无法加载已安排的场次。",
+      "chipToday": "今天",
+      "chipScheduled": "已排期",
+      "when": "{date} · {start}–{end}",
+      "startNow": "立即开始",
+      "cancelBooking": "取消",
+      "edit": "编辑",
+      "startConfirm": {
+        "title": "现在开始这个场次吗？",
+        "body": "该场次预约在 {date} {start}。现在开始会立即开放加入码并将其从日程中移除，因此需要通知等待原定时段的人。",
+        "cta": "立即开始",
+        "cancel": "取消"
+      },
+      "cancelConfirm": {
+        "title": "要取消这个场次吗？",
+        "body": "{className} 在 {date} {start} 的预约将被删除，这些学生可以被安排到其他场次。不会保留任何内容。",
+        "cta": "取消场次",
+        "cancel": "关闭"
+      },
+      "startedToast": "已提前开始 {className} 原定于 {start} 的场次",
+      "cancelledToast": "已取消 {className} 在 {date} 的场次",
+      "startError": "无法开始该场次，请重试。",
+      "cancelError": "无法取消该预约，请重试。"
+    },
+    "startSession": {
+      "title": "开始新考试",
+      "titleEdit": "编辑已预约的考试",
+      "titleDemo": "教师体验",
+      "sub": {
+        "now": "考试开始后，服务器会立即开放加入码。",
+        "later": "加入码会在时间段开始时生成。学生无法在开始时间前进入。",
+        "demo": "选择一个版本亲自作答，看到的与学生完全一样。"
+      },
+      "when": {
+        "label": "时间",
+        "now": {
+          "label": "立即开始",
+          "desc": "马上开放加入码。"
+        },
+        "later": {
+          "label": "预约时间段",
+          "desc": "预订日期和时间。时间段之外任何人都无法加入。"
+        },
+        "demo": {
+          "label": "教师体验",
+          "desc": "亲自作答。不计分。"
+        }
+      },
+      "schedule": {
+        "date": "日期",
+        "opens": "开始",
+        "closes": "结束",
+        "note": "开放 {window} 分钟 · {limit} 分钟考试 · 于 {closes} 自动结束。在校时间为 07:00 至 19:00。",
+        "noteError": "考试在 07:00 至 19:00 之间进行。",
+        "errors": {
+          "pickDate": "请为本场考试选择日期。",
+          "datePassed": "该日期已经过去。",
+          "setBothTimes": "请同时设置开始和结束时间。",
+          "outsideHours": "考试只能在 07:00 至 19:00 之间进行。请把时间段移到在校时间内。",
+          "closeBeforeOpen": "结束时间必须晚于开始时间。",
+          "windowShort": "时间段为 {window} 分钟，但考试需要 {limit} 分钟。请延长时间段，或在设置中缩短时限。",
+          "earlierToday": "该开始时间在今天已经过去。请选择更晚的时间，或改为立即开始。"
+        }
+      },
+      "tabs": {
+        "listLabel": "考试设置",
+        "test": "考试",
+        "students": "学生",
+        "settings": "设置",
+        "testSub": "版本 {variant} · {className}",
+        "studentsAvailable": "{total} 人中 {free} 人可参加",
+        "studentsSelected": "已选 {count} 人",
+        "settingsSkipOn": "允许跳题 · {limit} 分钟",
+        "settingsSkipOff": "不允许跳题 · {limit} 分钟"
+      },
+      "test": {
+        "skill": "技能",
+        "skills": {
+          "reading": "阅读",
+          "listening": "听力",
+          "speaking": "口语",
+          "writing": "写作"
+        },
+        "demoNote": "点击“开始体验”会创建一个私密的自动登录链接，为你打开这场考试，看到的与学生完全一样。不会计分，也不会记录。该链接仅适用于教师、学校管理员和运营账户——绝不适用于学生或家长。",
+        "class": "班级",
+        "classOption": "{name} · {year} 年级 · {count, plural, other {# 名学生}}",
+        "classOptionNoYear": "{name} · {count, plural, other {# 名学生}}",
+        "test": "考试"
+      },
+      "students": {
+        "whoSitsIt": "参加人员",
+        "whole": "全班",
+        "everyoneNow": "所有尚未在考的学生",
+        "everyoneLater": "该时间段有空的所有学生",
+        "wholeDescNow": "{className} 的 {total} 名学生中有 {free} 名可以立即开始。",
+        "wholeDescLater": "{className} 的 {total} 名学生中有 {free} 名在该时间段有空。",
+        "selected": "选定的学生",
+        "selectedDesc": "选择参加的学生。其余学生可以同时参加其他版本。",
+        "pickCount": "已选 {count} / {total}",
+        "pickNone": "尚未选择学生",
+        "alreadySitting": "正在参加 {form}",
+        "alreadySittingTest": "正在参加考试",
+        "bookedInto": "已预约 {time} 的 {form}",
+        "noFreeNow": "{className} 的所有学生都在考试中。请先结束该班的一场考试，或选择其他班级，再开始新的考试。",
+        "noFreeLater": "{className} 的所有学生在该时间段都已预约了考试。请调整时间，或取消冲突的预约。",
+        "loadError": "无法确认哪些学生可以参加。",
+        "retry": "重试",
+        "noStudents": "该班级没有在读学生。",
+        "rosterLabel": "{className} 的学生"
+      },
+      "settings": {
+        "sections": {
+          "during": "考试期间",
+          "access": "无障碍与支持",
+          "security": "考试条件",
+          "timing": "时间"
+        },
+        "summary": {
+          "onOf": "已开启 {on} / {total}",
+          "lockedDown": "已锁定",
+          "openFlagged": "开放，会标记",
+          "open": "开放",
+          "timingAuto": "{limit} 分钟 · 自动提交",
+          "timingWaits": "{limit} 分钟 · 等待教师"
+        },
+        "timeLimit": "时限",
+        "timeLimitDesc": "从学生开始作答时倒计时，而不是从考试开放时。",
+        "minutes": "{count} 分钟",
+        "toggles": {
+          "lowBw": {
+            "label": "低带宽模式",
+            "desc": "仅文字篇章，不预加载图片，答案先保存在设备上，连接恢复后再同步。适用于教室使用移动数据或卫星网络时。"
+          },
+          "skip": {
+            "label": "允许跳题",
+            "desc": "学生可以先跳过某题，继续作答，并在提交前返回。"
+          },
+          "review": {
+            "label": "提交前检查页",
+            "desc": "最后列出跳过和标记的题目，避免意外留空。"
+          },
+          "flag": {
+            "label": "标记待复查的题目",
+            "desc": "学生可以标记要回看的题目。标记会显示在检查页上，你也能看到。"
+          },
+          "bigText": {
+            "label": "大字号与高对比度",
+            "desc": "学生可随时放大文字并切换到高对比度主题。"
+          },
+          "lockdown": {
+            "label": "锁定窗口",
+            "desc": "考试占满屏幕。其他应用、标签页、复制、粘贴和打印都会被阻止。"
+          },
+          "focusFlag": {
+            "label": "离开窗口时标记",
+            "desc": "离开会连同时间戳一起记录，并显示在你的实时视图中。在关闭锁定时使用。"
+          },
+          "warn5": {
+            "label": "五分钟提醒",
+            "desc": "剩余五分钟时出现一次安静的横幅提醒，避免时钟一直出现在学生眼前。"
+          },
+          "autoSubmit": {
+            "label": "到时自动提交",
+            "desc": "关闭后作答会等待你处理，没有教师参与就不会提交。"
+          },
+          "showScore": {
+            "label": "结束时显示分数",
+            "desc": "关闭后结果会保留，直到你发布报告。"
+          }
+        }
+      },
+      "facts": {
+        "sitting": "参加 {className}",
+        "students": "{count, plural, other {# 名学生}}",
+        "latestAverage": "最近平均分",
+        "average": "{value}%",
+        "notTested": "尚未测试",
+        "lastSession": "上一场考试",
+        "noneYet": "暂无"
+      },
+      "cta": {
+        "startDemo": "开始体验",
+        "selectToStart": "请选择要开始的学生",
+        "selectToSchedule": "请选择要预约的学生",
+        "fixTiming": "请先修正时间再预约",
+        "start": "开始考试 · {count, plural, other {# 名学生}}",
+        "save": "保存更改 · {count, plural, other {# 名学生}}",
+        "schedule": "预约考试 · {count, plural, other {# 名学生}}",
+        "cancel": "取消",
+        "demoPending": "教师体验链接暂不可用。",
+        "checking": "正在确认可参加的学生…"
+      },
+      "state": {
+        "loadError": "无法加载你的班级和考试。",
+        "retry": "重试",
+        "noClasses": "你还没有可以测试的班级。请让学校管理员把你加入班级。",
+        "noTests": "目前没有可以开始的考试。",
+        "bookingGone": "该预约已经开放、结束或被取消。",
+        "close": "关闭"
+      }
+    },
     "reports": {},
     "student": {
       "crumbClasses": "班级",

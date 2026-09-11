@@ -221,6 +221,24 @@ test.describe('teacher rail scoping (A4)', () => {
       animations: 'disabled',
     });
     await page.setViewportSize(DESKTOP);
+
+    // Sign in again must END the dead session: /sign-in used to read the stale
+    // in-memory token and bounce straight back to this wall, forever.
+    await action.click();
+    await page.waitForURL('**/sign-in');
+    await expect(page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })).toBeVisible({
+      timeout: 20_000,
+    });
+    await page.waitForTimeout(2_000);
+    expect(new URL(page.url()).pathname).toMatch(/\/sign-in$/);
+    await expect(card).toHaveCount(0);
+
+    await signIn(page, 'teacher');
+    await page.goto('/dashboard/results');
+    await expect(page.locator('[data-surface="teacher-results"]')).toBeVisible({
+      timeout: 20_000,
+    });
+    await expect(card).toHaveCount(0);
   });
 
   // The parent portal is disabled in this release (Auth.parentViewsUnavailable):

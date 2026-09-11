@@ -1,190 +1,195 @@
-import { act } from 'react';
-import { createElement } from 'react';
+import { act, createElement, type ReactNode } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import { IdleClassChips } from '@/modules/teacher/components/IdleClassChips';
-import { LiveSessionsByClass } from '@/modules/teacher/components/LiveSessionsByClass';
-import { deriveLiveRollup } from '@/modules/teacher/lib/live-rollup';
-import {
-  CLASS_OAK,
-  CLASS_PINE,
-  CLASS_ROSE,
-  SITTING_OAK_A,
-  SITTING_ROSE_A,
-  SITTING_ROSE_B,
-  makeClass,
-  makeSitting,
-} from './fixtures/teacher-live-rollup-fixtures';
-import { makeQueryStubs } from './fixtures/teacher-live-rollup-fixtures';
+import { LiveSessionCard } from '@/modules/teacher/components/LiveSessionCard';
+import fixtureTeacherDashboard from '@/modules/teacher/lib/__fixtures__/teacher-dashboard.fixture-teacher.json';
+import t2Dashboard from '@/modules/teacher/lib/__fixtures__/teacher-dashboard.t2.json';
+import t2Open from '@/modules/teacher/lib/__fixtures__/test-sessions-open.t2.json';
+import { deriveLiveRollup, liveTabHref, progressPercent, stillWorking } from '@/modules/teacher/lib/live-rollup';
+import { teacherTestSessionsResponseSchema } from '@/modules/teacher/schemas/teacher-session.schema';
+import { teacherDashboardResponseSchema } from '@/modules/teacher/schemas/teacher.schema';
+import type { TeacherTestSession } from '@/modules/teacher/types/teacher-session.types';
 
-// teacher/09 — the live roll-up. A POPULATED live state is structurally
-// unproducible on the shared dev DB, so the populated roll-up is proven here
-// with constructed fixtures, asserted by COUNT, with literal expectations that
-// do not derive from the code under test. `next-intl` is mocked to answer the
-// COMPOUND path (`Teacher.testSessions.rollup.<key>`), so an assertion also
-// fails if a key moves to the wrong namespace.
+// S12 — the Live sessions roll-up on RECORDED answers: t2's GET
+// /api/teacher/test-sessions?status=open (two whole-class sittings + one two-student
+// sitting) and recorded C-TD-1 dashboards. Edge cases derive from a recorded row.
+
+const endSession = vi.hoisted(() => ({ isConfirmOpen: false, isPending: false, confirm: vi.fn() }));
 
 vi.mock('next-intl', () => ({
-  useTranslations: (namespace: string) => (key: string) => `${namespace}.${key}`,
+  useTranslations:
+    (namespace: string) =>
+    (key: string, values?: Record<string, unknown>) =>
+      values ? `${namespace}.${key}${JSON.stringify(values)}` : `${namespace}.${key}`,
 }));
-
-vi.mock('@/modules/teacher/components/EndSessionDialog', () => ({
-  EndSessionDialog: () => null,
-}));
-
-// The card's Monitor button renders through next-intl's locale-aware <Link>,
-// which needs a provider this bare createRoot render has no reason to stand up
-// (the directory-layout.test.tsx precedent): a plain anchor preserves the
-// href assertions and nothing else about the Link is under test here.
 vi.mock('@/i18n/navigation', () => ({
-  Link: ({ href, children, ...rest }: { href: string; children: React.ReactNode }) =>
+  Link: ({ href, children, ...rest }: { href: string; children: ReactNode }) =>
     createElement('a', { href, ...rest }, children),
 }));
-
-const stubs = makeQueryStubs();
-
-vi.mock('@/modules/teacher/queries/use-test-sessions.query', () => ({
-  useTestSessionsQuery: () => stubs.sessions,
-}));
-vi.mock('@/modules/teacher/queries/use-teacher-dashboard.query', () => ({
-  useTeacherDashboardQuery: () => stubs.dashboard,
-}));
-vi.mock('@/modules/teacher/queries/use-teacher-tests.query', () => ({
-  useTeacherTestsQuery: () => stubs.tests,
-}));
-vi.mock('@/modules/teacher/queries/use-close-test-session.mutation', () => ({
-  useCloseTestSessionMutation: () => ({ isPending: stubs.close.isPending, mutate: stubs.close.mutate }),
+vi.mock('@/modules/teacher/hooks/useEndSession', () => ({ useEndSession: () => endSession }));
+vi.mock('@/modules/ops', () => ({
+  OpsConfirmDialog: ({ title, description }: { title: string; description: string }) =>
+    createElement('div', { role: 'alertdialog' }, `${title}|${description}`),
 }));
 
 (globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
 
+const sessions = teacherTestSessionsResponseSchema.parse(t2Open).sessions;
+const t2Classes = teacherDashboardResponseSchema.parse(t2Dashboard).classes;
+const otherClasses = teacherDashboardResponseSchema.parse(fixtureTeacherDashboard).classes;
+
+function recorded(predicate: (row: TeacherTestSession) => boolean): TeacherTestSession {
+  const row = sessions.find(predicate);
+  if (row === undefined) throw new Error('the recorded answer lacks this row');
+  return row;
+}
+const selected = recorded((row) => Array.isArray(row.member_student_ids));
+const whole = recorded((row) => row.member_student_ids === null);
+
 let host: HTMLDivElement;
 let root: Root | null = null;
-
-function render(element: Parameters<typeof createRoot>[0] extends never ? never : React.ReactNode): void {
+function render(element: ReactNode): void {
   host = document.body.appendChild(document.createElement('div'));
   act(() => {
     root = createRoot(host);
     root.render(element);
   });
 }
-
 afterEach(() => {
   if (root) act(() => root?.unmount());
   host?.remove();
   root = null;
+  endSession.isConfirmOpen = false;
   vi.clearAllMocks();
 });
 
-describe('deriveLiveRollup — the populated roll-up, proven with constructed fixtures', () => {
-  test('two classes hold their sittings, the third class is idle, sets are complementary', () => {
-    const classes = [CLASS_ROSE, CLASS_OAK, CLASS_PINE];
-    const sessions = [SITTING_ROSE_A, SITTING_ROSE_B, SITTING_OAK_A];
-    const rollup = deriveLiveRollup(sessions, classes);
-    expect(rollup.groups).toHaveLength(2);
-    expect(rollup.idleClasses).toHaveLength(1);
-    expect(rollup.groups[0]?.name).toBe('Rosewood');
-    expect(rollup.groups[0]?.sittings).toHaveLength(2);
+describe('deriveLiveRollup — on the recorded t2 answer', () => {
+  const rollup = deriveLiveRollup(sessions, t2Classes);
+  const group = rollup.groups[0];
+
+  test('the one class holds all three open sittings; nothing idle, nothing booked', () => {
+    expect(rollup.groups).toHaveLength(1);
+    expect(group?.name).toBe('Reading 8B — Alvarez');
+    expect(group?.year).toEqual({ kind: 'band', from: 7, to: 9 });
+    expect(group?.sittings).toHaveLength(3);
     expect(rollup.openSessionCount).toBe(3);
-    expect(rollup.openClassCount).toBe(2);
-    expect(rollup.allClassesBusy).toBe(false);
-  });
-
-  test('group set and idle set are disjoint and exhaustive over the teacher’s classes', () => {
-    const classes = [CLASS_ROSE, CLASS_OAK, CLASS_PINE];
-    const sessions = [SITTING_ROSE_A, SITTING_OAK_A];
-    const rollup = deriveLiveRollup(sessions, classes);
-    const grouped = rollup.groups.map((group) => group.classDocumentId).sort();
-    const idle = rollup.idleClasses.map((klass) => klass.classDocumentId).sort();
-    expect(grouped.length + idle.length).toBe(classes.length);
-    expect(grouped.filter((key) => idle.includes(key))).toHaveLength(0);
-  });
-
-  test('closed sittings drop out; a class left with none becomes idle', () => {
-    const closedRose = makeSitting({
-      classDocumentId: CLASS_ROSE.class_document_id,
-      className: CLASS_ROSE.name,
-      status: 'closed',
-    });
-    const rollup = deriveLiveRollup([closedRose], [CLASS_ROSE]);
-    expect(rollup.groups).toHaveLength(0);
-    expect(rollup.idleClasses).toHaveLength(1);
-    expect(rollup.allClassesBusy).toBe(false);
-  });
-
-  test('every class busy flips the all-busy sentence on', () => {
-    const rollup = deriveLiveRollup([SITTING_ROSE_A], [CLASS_ROSE]);
+    expect(rollup.openClassCount).toBe(1);
+    expect(rollup.idleClasses).toHaveLength(0);
+    expect(rollup.bookings).toHaveLength(0);
     expect(rollup.allClassesBusy).toBe(true);
   });
 
-  test('no classes and no sessions answer the empty roll-up, never a guess', () => {
-    const rollup = deriveLiveRollup([], []);
-    expect(rollup.groups).toHaveLength(0);
-    expect(rollup.idleClasses).toHaveLength(0);
-    expect(rollup.openSessionCount).toBe(0);
-    expect(rollup.allClassesBusy).toBe(false);
+  test('each sitting carries the served code, form label, members and stats', () => {
+    const card = group?.sittings.find((s) => s.documentId === selected.sitting_document_id);
+    expect(card).toMatchObject({
+      code: '300125',
+      formLabel: 'Reading diagnostic — Test A',
+      memberIds: selected.member_student_ids,
+      expected: 2,
+      joined: 0,
+      submitted: 0,
+    });
+    const wholeCard = group?.sittings.find((s) => s.documentId === whole.sitting_document_id);
+    expect(wholeCard).toMatchObject({ memberIds: null, expected: 20, joined: 1, submitted: 0 });
+  });
+
+  test('a whole-class sitting leaves nobody free; members alone leave the rest free', () => {
+    expect(group?.freeCount).toBe(0);
+    expect(deriveLiveRollup([selected], t2Classes).groups[0]?.freeCount).toBe(18);
+  });
+
+  test('an open booking (phase scheduled) is never live; closed and cancelled rows drop out', () => {
+    const booking: TeacherTestSession = { ...selected, phase: 'scheduled', code: null };
+    const withBooking = deriveLiveRollup([booking], t2Classes);
+    expect(booking.status).toBe('open');
+    expect(withBooking.groups).toHaveLength(0);
+    expect(withBooking.openSessionCount).toBe(0);
+    expect(withBooking.idleClasses).toHaveLength(1);
+    expect(withBooking.bookings).toEqual([
+      expect.objectContaining({ className: 'Reading 8B — Alvarez', expected: 2 }),
+    ]);
+    const closed: TeacherTestSession = { ...whole, status: 'closed', phase: 'closed' };
+    const cancelled: TeacherTestSession = { ...selected, phase: 'cancelled' };
+    expect(deriveLiveRollup([closed, cancelled], t2Classes).groups).toHaveLength(0);
+  });
+
+  test('with nothing open every class is idle and none is busy', () => {
+    const idle = deriveLiveRollup([], otherClasses);
+    expect(idle.groups).toHaveLength(0);
+    expect(idle.idleClasses).toHaveLength(otherClasses.length);
+    expect(idle.allClassesBusy).toBe(false);
   });
 });
 
-describe('LiveSessionsByClass — rendered from the same fixtures', () => {
-  beforeEach(() => {
-    stubs.sessions = { data: { sessions: [SITTING_ROSE_A, SITTING_ROSE_B, SITTING_OAK_A] }, isPending: false, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    stubs.dashboard = { data: { classes: [CLASS_ROSE, CLASS_OAK, CLASS_PINE] }, isPending: false, isError: false, isFetching: false, error: null, refetch: vi.fn() };
+describe('card figures', () => {
+  const [card] = deriveLiveRollup([selected], t2Classes).groups[0]?.sittings ?? [];
+
+  test('Monitor opens the class on its Live tab with this sitting', () => {
+    expect(liveTabHref(selected.class.document_id, selected.sitting_document_id)).toBe(
+      `/dashboard/results/${selected.class.document_id}?tab=live&session=${selected.sitting_document_id}`,
+    );
   });
 
-  test('populated: two group headings and three cards — by count (idle chips are the sibling island)', () => {
-    render(createElement(LiveSessionsByClass));
-    expect(host.querySelectorAll('[data-slot="live-session-card"]').length).toBe(3);
-    expect(host.textContent).toContain('Teacher.testSessions.rollup.schoolSummary');
-    expect(host.textContent).toContain('Teacher.testSessions.rollup.groupHeading');
+  test('bar = submitted of expected; still working = joined − submitted', () => {
+    expect(card && progressPercent(card)).toBe(0);
+    expect(card && stillWorking(card)).toBe(0);
+    const half = { ...selected, stats: { expected: 2, joined: 2, submitted: 1 } };
+    const [halfCard] = deriveLiveRollup([half], t2Classes).groups[0]?.sittings ?? [];
+    expect(halfCard && progressPercent(halfCard)).toBe(50);
+    expect(halfCard && stillWorking(halfCard)).toBe(1);
   });
 
-  test('each card’s Monitor lands on that sitting’s literal monitor URL', () => {
-    render(createElement(LiveSessionsByClass));
-    const monitors = host.querySelectorAll<HTMLAnchorElement>('[data-slot="live-session-card"] a');
-    const hrefs = Array.from(monitors).map((anchor) => anchor.getAttribute('href'));
-    expect(hrefs).toContain(`/dashboard/test-sessions/${SITTING_ROSE_A.sitting_document_id}`);
-    expect(hrefs).toContain(`/dashboard/test-sessions/${SITTING_OAK_A.sitting_document_id}`);
-  });
-
-  test('OFFLINE + pending: the disconnect notice renders and the empty never does', () => {
-    stubs.sessions = { data: undefined, isPending: true, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    stubs.dashboard = { data: undefined, isPending: true, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    Object.defineProperty(navigator, 'onLine', { value: false, configurable: true });
-    try {
-      render(createElement(LiveSessionsByClass));
-      expect(host.textContent).toContain('Teacher.testSessions.rollup.offlineTitle');
-      expect(host.textContent).not.toContain('Teacher.testSessions.rollup.emptyTitle');
-      expect(host.textContent).not.toContain('Teacher.testSessions.rollup.nothingRunning');
-    } finally {
-      Object.defineProperty(navigator, 'onLine', { value: true, configurable: true });
-    }
-  });
-
-  test('online with nothing open: the kit empty arm renders the design sentence, zero cards', () => {
-    stubs.sessions = { data: { sessions: [] }, isPending: false, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    stubs.dashboard = { data: { classes: [CLASS_ROSE] }, isPending: false, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    render(createElement(LiveSessionsByClass));
-    expect(host.querySelectorAll('[data-slot="live-session-card"]').length).toBe(0);
-    expect(host.textContent).toContain('Teacher.testSessions.rollup.nothingRunning');
-    expect(host.textContent).toContain('Teacher.testSessions.rollup.emptyTitle');
+  test('a row without stats shows no counts, never zeros', () => {
+    const bare = { ...selected, stats: undefined };
+    const [bareCard] = deriveLiveRollup([bare], t2Classes).groups[0]?.sittings ?? [];
+    expect(bareCard).toMatchObject({ joined: null, submitted: null });
+    expect(bareCard && stillWorking(bareCard)).toBeNull();
   });
 });
 
-describe('IdleClassChips — the idle row and the all-busy sentence', () => {
-  test('one chip per idle class, none for busy ones', () => {
-    stubs.sessions = { data: { sessions: [SITTING_ROSE_A] }, isPending: false, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    stubs.dashboard = { data: { classes: [CLASS_ROSE, CLASS_OAK] }, isPending: false, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    render(createElement(IdleClassChips));
-    expect(host.querySelectorAll('[data-slot="teacher-idle-classes"] button').length).toBe(1);
+describe('LiveSessionCard and IdleClassChips — rendered from the recorded rows', () => {
+  const liveCard = deriveLiveRollup([whole], t2Classes).groups[0]?.sittings[0];
+  const renderCard = () => {
+    if (liveCard === undefined) throw new Error('no card');
+    render(createElement(LiveSessionCard, { sitting: liveCard, classLabel: 'Reading 8B — Alvarez' }));
+  };
+
+  test('the card prints the served code, the whole-class line, the counts and the Live-tab link', () => {
+    renderCard();
+    expect(host.querySelector('[data-slot="live-session-code"]')?.textContent).toBe('656113');
+    expect(host.textContent).toContain('TeacherPortal.liveSessions.whoWhole{"count":20}');
+    expect(host.querySelector('[data-slot="live-session-progress"]')?.textContent).toBe(
+      'TeacherPortal.liveSessions.progress{"joined":1,"submitted":0,"total":20}',
+    );
+    expect(host.querySelector('a')?.getAttribute('href')).toBe(
+      liveTabHref(whole.class.document_id, whole.sitting_document_id),
+    );
   });
 
-  test('every class busy replaces the chips with the all-busy sentence', () => {
-    stubs.sessions = { data: { sessions: [SITTING_ROSE_A] }, isPending: false, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    stubs.dashboard = { data: { classes: [CLASS_ROSE] }, isPending: false, isError: false, isFetching: false, error: null, refetch: vi.fn() };
-    render(createElement(IdleClassChips));
-    expect(host.querySelectorAll('[data-slot="teacher-idle-classes"] button').length).toBe(0);
-    expect(host.textContent).toContain('Teacher.testSessions.rollup.allBusy');
+  test('the close confirm names how many are still working, the code and the class', () => {
+    endSession.isConfirmOpen = true;
+    renderCard();
+    const dialog = host.querySelector('[role="alertdialog"]')?.textContent ?? '';
+    expect(dialog).toContain('TeacherPortal.liveSessions.closeConfirm.titleWorking{"count":1}');
+    expect(dialog).toContain('"code":"656113","className":"Reading 8B — Alvarez"');
+  });
+
+  test('one chip per idle class, and a chip starts a session for that class', () => {
+    const onStart = vi.fn();
+    render(createElement(IdleClassChips, { classes: deriveLiveRollup([], otherClasses).idleClasses, onStart }));
+    const chips = host.querySelectorAll<HTMLButtonElement>('[data-slot="teacher-idle-classes"] button');
+    expect(chips).toHaveLength(otherClasses.length);
+    act(() => chips[0]?.click());
+    expect(onStart).toHaveBeenCalledWith(otherClasses[0]?.class_document_id);
+  });
+
+  test('no idle class: the design sentence instead of chips', () => {
+    render(createElement(IdleClassChips, { classes: [], onStart: vi.fn() }));
+    expect(host.querySelectorAll('button')).toHaveLength(0);
+    expect(host.textContent).toBe(
+      'TeacherPortal.liveSessions.idleTitleTeacherPortal.liveSessions.idleEmpty',
+    );
   });
 });

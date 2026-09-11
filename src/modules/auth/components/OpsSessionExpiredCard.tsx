@@ -3,6 +3,7 @@
 import { Clock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { Button } from '@/modules/design-system';
 import { CAPABILITIES_TRANSLATION_NAMESPACE } from '@/modules/ops/constants/capabilities.constants';
 
@@ -18,9 +19,14 @@ import { CAPABILITIES_TRANSLATION_NAMESPACE } from '@/modules/ops/constants/capa
 // sentence renders WITHOUT a number rather than a wrong one (D-14). A wall
 // that only an expired session can see therefore never issues a request that
 // an expired (or non-ops) token cannot be answered for.
+//
+// "Sign in again" ends the dead session before it navigates: the axios boundary
+// clears only the STORED token, so the store still holds it and /sign-in would
+// bounce that token straight back to /dashboard and this wall, in a loop.
 export function OpsSessionExpiredCard({ timeoutMinutes }: { timeoutMinutes?: number }) {
   const t = useTranslations('Auth');
   const tCapabilities = useTranslations(CAPABILITIES_TRANSLATION_NAMESPACE);
+  const setToken = useAuthStore((state) => state.setToken);
 
   return (
     <div
@@ -43,6 +49,7 @@ export function OpsSessionExpiredCard({ timeoutMinutes }: { timeoutMinutes?: num
         <Button
           type="button"
           href="/sign-in"
+          onClick={() => setToken(null)}
           className="mt-[22px] h-[46px] w-full rounded-full bg-[#0E2350] text-sm font-semibold text-white hover:bg-[#16326E]"
         >
           {t('sessionExpiredAction')}

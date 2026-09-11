@@ -1,34 +1,78 @@
-import { getTranslations } from 'next-intl/server';
+'use client';
+
+import { Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { IdleClassChips } from '@/modules/teacher/components/IdleClassChips';
-import { JoinCodePanel } from '@/modules/teacher/components/JoinCodePanel';
 import { LiveSessionsByClass } from '@/modules/teacher/components/LiveSessionsByClass';
-import { PastSessionsPanel } from '@/modules/teacher/components/PastSessionsPanel';
-import { StartTestSessionPanel } from '@/modules/teacher/components/StartTestSessionPanel';
+import { ScheduledSessions } from '@/modules/teacher/components/ScheduledSessions';
+import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
+import { TeacherPageCard } from '@/modules/teacher/components/v2/TeacherPageCard';
+import { TeacherPageHeader } from '@/modules/teacher/components/v2/TeacherPageHeader';
+import { useLiveSessionsPage } from '@/modules/teacher/hooks/useLiveSessionsPage';
+import { useStartSessionStore } from '@/modules/teacher/stores/use-start-session-store';
 
-// /dashboard/test-sessions — the destination behind the teacher rail's "Test
-// sessions" entry. The page shell stays a Server Component; only the setup
-// panel is a client island, because only it holds form state and live reads.
-// The join-code panel (035), past sessions table (036) and live grid (037)
-// land beside the panel in their own tasks.
-export async function TestSessionsScreen() {
-  const t = await getTranslations('Teacher.testSessions');
+const STATE_LINE = 'border-t border-[#ECEEF2] px-8 py-12 text-center text-[13.5px] text-[#6B7280]';
+
+// /dashboard/test-sessions — the school-wide Live sessions screen (Teacher
+// Portal v2.dc.html:218–299). Every start goes through the one
+// Start-new-session modal's store.
+function TestSessionsScreen() {
+  const t = useTranslations('TeacherPortal.liveSessions');
+  const openStartSession = useStartSessionStore((store) => store.open);
+  const { status, rollup, retry, isRetrying, isBookingsError, retryBookings } = useLiveSessionsPage();
+  const startFor = (classId: string) => openStartSession({ classId });
+
+  let subtitle: string | undefined;
+  if (status === 'ready') {
+    subtitle =
+      rollup.openSessionCount > 0
+        ? t('summary', { sessions: rollup.openSessionCount, classes: rollup.openClassCount })
+        : t('summaryNone');
+  }
 
   return (
-    <main
-      data-surface="teacher-test-sessions"
-      className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
-    >
-      <div className="flex flex-col gap-1">
-        <h1 className="text-portal-title font-bold text-foreground">{t('title')}</h1>
-        <p className="text-lede text-muted-foreground">{t('description')}</p>
-      </div>
-
-      <LiveSessionsByClass />
-      <IdleClassChips />
-      <StartTestSessionPanel />
-      <JoinCodePanel />
-      <PastSessionsPanel />
-    </main>
+    <TeacherPageCard data-surface="teacher-test-sessions" data-status={status} className="mb-2">
+      <TeacherPageHeader
+        title={t('title')}
+        subtitle={subtitle}
+        actions={
+          <TeacherButton data-slot="start-session-button" onClick={() => openStartSession()}>
+            <Plus aria-hidden="true" className="size-[15px]" strokeWidth={2} />
+            {t('startSession')}
+          </TeacherButton>
+        }
+      />
+      {status === 'loading' ? (
+        <p role="status" className={STATE_LINE}>
+          {t('loading')}
+        </p>
+      ) : null}
+      {status === 'error' ? (
+        <div role="alert" className={`flex flex-col items-center gap-3 ${STATE_LINE}`}>
+          {t('loadError')}
+          <TeacherButton tone="secondary" size="sm" loading={isRetrying} onClick={retry}>
+            {t('retry')}
+          </TeacherButton>
+        </div>
+      ) : null}
+      {status === 'ready' ? (
+        <>
+          <LiveSessionsByClass groups={rollup.groups} onAddSession={startFor} />
+          {rollup.bookings.length > 0 || isBookingsError ? (
+            <ScheduledSessions
+              bookings={rollup.bookings}
+              isError={isBookingsError}
+              onRetry={retryBookings}
+            />
+          ) : null}
+          {rollup.groups.length + rollup.idleClasses.length > 0 ? (
+            <IdleClassChips classes={rollup.idleClasses} onStart={startFor} />
+          ) : null}
+        </>
+      ) : null}
+    </TeacherPageCard>
   );
 }
+
+export { TestSessionsScreen };

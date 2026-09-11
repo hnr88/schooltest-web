@@ -6182,8 +6182,240 @@
       "failedRecall": "Chưa thu hồi được báo cáo của {name}: {reason}."
     },
     "live": {},
-    "liveSessions": {},
-    "startSession": {},
+    "liveSessions": {
+      "title": "Phiên trực tiếp",
+      "summary": "{sessions, plural, other {# phiên}} đang diễn ra ở {classes, plural, other {# lớp}}. Mỗi học sinh chỉ có thể làm một bài kiểm tra tại một thời điểm.",
+      "summaryNone": "Không có phiên nào đang diễn ra. Các học sinh khác nhau trong cùng một lớp có thể làm các phiên bản khác nhau cùng lúc.",
+      "startSession": "Bắt đầu phiên mới",
+      "loading": "Đang tải các phiên trực tiếp…",
+      "loadError": "Không thể tải các phiên trực tiếp.",
+      "retry": "Thử lại",
+      "classMeta": "{year} · {count, plural, other {# học sinh}}",
+      "classMetaNoYear": "{count, plural, other {# học sinh}}",
+      "everyoneBusy": "Mọi học sinh đều đang ở trong một phiên",
+      "free": "{count, plural, other {# học sinh}} có thể bắt đầu một phiên bản khác",
+      "addSession": "Thêm phiên",
+      "whoWhole": "{count, plural, other {# học sinh}} · cả lớp",
+      "whoSelected": "{count, plural, other {# học sinh được chọn}}",
+      "progress": "{joined} đã tham gia · {submitted} đã nộp trên {total}",
+      "monitor": "Theo dõi",
+      "close": "Đóng",
+      "empty": "Hiện không có phiên nào đang diễn ra. Hãy bắt đầu một phiên để mở mã tham gia.",
+      "closeConfirm": {
+        "title": "Đóng phiên này?",
+        "titleWorking": "Đóng khi còn {count, plural, other {# học sinh}} đang làm bài?",
+        "body": "Học sinh còn đang làm bài trong {code} ({className}) sẽ mất quyền truy cập ngay lập tức và mọi câu trả lời chưa nộp sẽ được nộp nguyên trạng. Không thể hoàn tác thao tác này.",
+        "cta": "Đóng phiên",
+        "cancel": "Hủy"
+      },
+      "scheduledLabel": "{count, plural, other {# phiên đã lên lịch}}",
+      "bookingWhoWhole": "{count, plural, other {# học sinh}} · cả lớp · {className}",
+      "bookingWhoSelected": "{count, plural, other {# học sinh được chọn}} · {className}",
+      "idleTitle": "Các lớp không có phiên nào đang diễn ra",
+      "idleChip": "{name} · {count}",
+      "idleEmpty": "Lớp nào cũng có ít nhất một phiên đang diễn ra.",
+      "scheduledTitle": "Phiên đã lên lịch",
+      "bookingsError": "Không thể tải các phiên đã lên lịch.",
+      "chipToday": "Hôm nay",
+      "chipScheduled": "Đã lên lịch",
+      "when": "{date} · {start}–{end}",
+      "startNow": "Bắt đầu ngay",
+      "cancelBooking": "Hủy",
+      "edit": "Chỉnh sửa",
+      "startConfirm": {
+        "title": "Bắt đầu phiên này ngay bây giờ?",
+        "body": "Phiên này được đặt vào {date} lúc {start}. Bắt đầu ngay sẽ mở mã tham gia lập tức và xóa phiên khỏi lịch, vì vậy cần báo cho những ai đang chờ khung giờ sau.",
+        "cta": "Bắt đầu ngay",
+        "cancel": "Hủy"
+      },
+      "cancelConfirm": {
+        "title": "Hủy phiên này?",
+        "body": "Lịch đặt cho {className} vào {date} lúc {start} sẽ bị xóa và các học sinh đó có thể được đặt vào phiên khác. Không có gì được giữ lại.",
+        "cta": "Hủy phiên",
+        "cancel": "Đóng"
+      },
+      "startedToast": "Đã bắt đầu phiên đã lên lịch của {className} trước khung giờ {start}",
+      "cancelledToast": "Đã hủy phiên đã lên lịch của {className} vào {date}",
+      "startError": "Không thể bắt đầu phiên. Hãy thử lại.",
+      "cancelError": "Không thể hủy lịch đặt. Hãy thử lại."
+    },
+    "startSession": {
+      "title": "Bắt đầu phiên mới",
+      "titleEdit": "Sửa phiên đã lên lịch",
+      "titleDemo": "Dùng thử cho giáo viên",
+      "sub": {
+        "now": "Mã tham gia sẽ mở trên máy chủ ngay khi phiên bắt đầu.",
+        "later": "Mã tham gia được tạo khi khung giờ mở. Học sinh không thể vào trước giờ bắt đầu.",
+        "demo": "Chọn một phiên bản và tự làm bài, đúng như học sinh nhìn thấy."
+      },
+      "when": {
+        "label": "Khi nào",
+        "now": {
+          "label": "Bắt đầu ngay",
+          "desc": "Mở mã tham gia ngay lập tức."
+        },
+        "later": {
+          "label": "Lên lịch khung giờ",
+          "desc": "Đặt ngày và giờ. Không ai có thể tham gia ngoài khung giờ đó."
+        },
+        "demo": {
+          "label": "Dùng thử cho giáo viên",
+          "desc": "Tự làm bài. Không chấm điểm."
+        }
+      },
+      "schedule": {
+        "date": "Ngày",
+        "opens": "Mở",
+        "closes": "Đóng",
+        "note": "Mở trong {window} phút · bài kiểm tra {limit} phút · tự động đóng lúc {closes}. Giờ học là 07:00 đến 19:00.",
+        "noteError": "Phiên diễn ra trong khoảng 07:00 đến 19:00.",
+        "errors": {
+          "pickDate": "Chọn ngày cho phiên này.",
+          "datePassed": "Ngày đó đã qua.",
+          "setBothTimes": "Đặt cả giờ bắt đầu và giờ đóng.",
+          "outsideHours": "Phiên chỉ có thể diễn ra trong khoảng 07:00 đến 19:00. Hãy dời khung giờ vào giờ học.",
+          "closeBeforeOpen": "Giờ đóng phải sau giờ bắt đầu.",
+          "windowShort": "Khung giờ là {window} phút nhưng bài kiểm tra cần {limit} phút. Hãy nới rộng khung giờ hoặc rút ngắn thời gian làm bài trong Cài đặt.",
+          "earlierToday": "Giờ bắt đầu đó đã qua trong hôm nay. Hãy chọn giờ muộn hơn, hoặc bắt đầu phiên ngay."
+        }
+      },
+      "tabs": {
+        "listLabel": "Thiết lập phiên",
+        "test": "Bài kiểm tra",
+        "students": "Học sinh",
+        "settings": "Cài đặt",
+        "testSub": "Phiên bản {variant} · {className}",
+        "studentsAvailable": "{free}/{total} sẵn sàng",
+        "studentsSelected": "Đã chọn {count}",
+        "settingsSkipOn": "Cho bỏ qua · {limit} phút",
+        "settingsSkipOff": "Không cho bỏ qua · {limit} phút"
+      },
+      "test": {
+        "skill": "Kỹ năng",
+        "skills": {
+          "reading": "Đọc",
+          "listening": "Nghe",
+          "speaking": "Nói",
+          "writing": "Viết"
+        },
+        "demoNote": "Bắt đầu dùng thử sẽ tạo một liên kết tự đăng nhập riêng tư mở bài kiểm tra cho bạn, đúng như học sinh nhìn thấy. Không có gì được chấm điểm hay ghi lại. Liên kết chỉ dùng được cho tài khoản giáo viên, quản trị trường và vận hành — không bao giờ cho học sinh hay phụ huynh.",
+        "class": "Lớp",
+        "classOption": "{name} · Khối {year} · {count, plural, other {# học sinh}}",
+        "classOptionNoYear": "{name} · {count, plural, other {# học sinh}}",
+        "test": "Bài kiểm tra"
+      },
+      "students": {
+        "whoSitsIt": "Ai làm bài",
+        "whole": "Cả lớp",
+        "everyoneNow": "Tất cả những ai chưa làm bài",
+        "everyoneLater": "Tất cả những ai rảnh vào lúc đó",
+        "wholeDescNow": "{free}/{total} học sinh trong {className} có thể bắt đầu ngay.",
+        "wholeDescLater": "{free}/{total} học sinh trong {className} rảnh trong khung giờ đó.",
+        "selected": "Học sinh được chọn",
+        "selectedDesc": "Chọn ai làm bài. Những em còn lại có thể làm phiên bản khác cùng lúc.",
+        "pickCount": "Đã chọn {count}/{total}",
+        "pickNone": "Chưa chọn học sinh nào",
+        "alreadySitting": "Đang làm {form}",
+        "alreadySittingTest": "Đang làm một bài kiểm tra",
+        "bookedInto": "Đã đặt vào {form} lúc {time}",
+        "noFreeNow": "Mọi học sinh trong {className} đều đang làm bài kiểm tra. Hãy đóng một phiên của lớp, hoặc chọn lớp khác, trước khi bắt đầu phiên mới.",
+        "noFreeLater": "Mọi học sinh trong {className} đều đã được đặt vào một phiên trong khung giờ đó. Hãy dời giờ, hoặc hủy lịch bị trùng.",
+        "loadError": "Chúng tôi không kiểm tra được ai đang rảnh để làm bài.",
+        "retry": "Thử lại",
+        "noStudents": "Lớp này không có học sinh đang hoạt động.",
+        "rosterLabel": "Học sinh trong {className}"
+      },
+      "settings": {
+        "sections": {
+          "during": "Trong khi làm bài",
+          "access": "Truy cập và hỗ trợ",
+          "security": "Điều kiện làm bài",
+          "timing": "Thời gian"
+        },
+        "summary": {
+          "onOf": "Bật {on}/{total}",
+          "lockedDown": "Đã khóa",
+          "openFlagged": "Mở, có đánh dấu",
+          "open": "Mở",
+          "timingAuto": "{limit} phút · tự nộp",
+          "timingWaits": "{limit} phút · chờ bạn"
+        },
+        "timeLimit": "Thời gian làm bài",
+        "timeLimitDesc": "Đếm ngược khi học sinh bắt đầu, không phải từ lúc phiên mở.",
+        "minutes": "{count} phút",
+        "toggles": {
+          "lowBw": {
+            "label": "Chế độ băng thông thấp",
+            "desc": "Đoạn văn chỉ có chữ, không tải trước hình ảnh, câu trả lời được lưu trên thiết bị và đồng bộ khi có kết nối trở lại. Dùng khi phòng học dùng dữ liệu di động hoặc kết nối vệ tinh."
+          },
+          "skip": {
+            "label": "Cho phép bỏ qua câu hỏi",
+            "desc": "Học sinh có thể để lại một câu, làm tiếp và quay lại trước khi nộp."
+          },
+          "review": {
+            "label": "Màn hình xem lại trước khi nộp",
+            "desc": "Danh sách cuối gồm các câu đã bỏ qua và đã đánh dấu, để không câu nào bị bỏ trống vì sơ ý."
+          },
+          "flag": {
+            "label": "Đánh dấu câu hỏi để xem lại",
+            "desc": "Học sinh có thể đánh dấu câu để quay lại. Dấu hiển thị trên màn hình xem lại và với bạn."
+          },
+          "bigText": {
+            "label": "Chữ lớn và độ tương phản cao",
+            "desc": "Học sinh có thể phóng to chữ và chuyển sang giao diện tương phản cao bất cứ lúc nào."
+          },
+          "lockdown": {
+            "label": "Cửa sổ khóa",
+            "desc": "Bài kiểm tra chiếm toàn màn hình. Ứng dụng khác, thẻ, sao chép, dán và in đều bị chặn."
+          },
+          "focusFlag": {
+            "label": "Đánh dấu nếu rời cửa sổ",
+            "desc": "Việc rời cửa sổ được ghi lại kèm thời gian và hiển thị trên màn hình trực tiếp của bạn. Dùng khi tắt chế độ khóa."
+          },
+          "warn5": {
+            "label": "Cảnh báo năm phút",
+            "desc": "Một biểu ngữ nhẹ nhàng khi còn năm phút, để đồng hồ không luôn hiện trước mắt các em."
+          },
+          "autoSubmit": {
+            "label": "Tự động nộp khi hết giờ",
+            "desc": "Tắt nghĩa là bài làm sẽ chờ bạn, và không có gì được nộp khi không có giáo viên."
+          },
+          "showScore": {
+            "label": "Cho xem điểm khi kết thúc",
+            "desc": "Tắt sẽ giữ kết quả cho đến khi bạn công bố báo cáo."
+          }
+        }
+      },
+      "facts": {
+        "sitting": "Lớp làm bài {className}",
+        "students": "{count, plural, other {# học sinh}}",
+        "latestAverage": "Điểm trung bình gần nhất",
+        "average": "{value}%",
+        "notTested": "Chưa kiểm tra",
+        "lastSession": "Phiên gần nhất",
+        "noneYet": "Chưa có"
+      },
+      "cta": {
+        "startDemo": "Bắt đầu dùng thử",
+        "selectToStart": "Chọn học sinh để bắt đầu",
+        "selectToSchedule": "Chọn học sinh để lên lịch",
+        "fixTiming": "Sửa thời gian để lên lịch",
+        "start": "Bắt đầu phiên · {count, plural, other {# học sinh}}",
+        "save": "Lưu thay đổi · {count, plural, other {# học sinh}}",
+        "schedule": "Lên lịch phiên · {count, plural, other {# học sinh}}",
+        "cancel": "Hủy",
+        "demoPending": "Liên kết dùng thử cho giáo viên chưa có sẵn.",
+        "checking": "Đang kiểm tra ai rảnh…"
+      },
+      "state": {
+        "loadError": "Chúng tôi không tải được lớp và bài kiểm tra của bạn.",
+        "retry": "Thử lại",
+        "noClasses": "Bạn chưa có lớp nào để kiểm tra. Hãy nhờ quản trị trường thêm bạn vào một lớp.",
+        "noTests": "Hiện chưa có bài kiểm tra nào để bắt đầu.",
+        "bookingGone": "Lịch này đã mở, đã đóng hoặc đã bị hủy.",
+        "close": "Đóng"
+      }
+    },
     "reports": {},
     "student": {
       "crumbClasses": "Lớp học",

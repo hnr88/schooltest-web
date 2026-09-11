@@ -1,0 +1,88 @@
+{
+    "sessions": [
+        {
+            "sitting_document_id": "kmsre82m409w98cln17k7yxk",
+            "code": "300125",
+            "status": "open",
+            "class": {
+                "document_id": "qves8wrtl7r9ctw49jivm8gl",
+                "name": "Reading 8B \u2014 Alvarez"
+            },
+            "variant": "A",
+            "opened_at": "2026-09-11T18:12:26.816Z",
+            "closed_at": null,
+            "completed": 0,
+            "expected": 2,
+            "phase": "running",
+            "form": {
+                "document_id": "j6lers626yexsdacat60i52x",
+                "label": "Reading diagnostic \u2014 Test A",
+                "variant": "A"
+            },
+            "settings": null,
+            "member_student_ids": [
+                "zfia18l6ps0q2hed4f3ts2k2",
+                "gc7mk2jcd1x2i6adsmmlfq3e"
+            ],
+            "stats": {
+                "expected": 2,
+                "joined": 0,
+                "submitted": 0
+            }
+        },
+        {
+            "sitting_document_id": "udi8k0wp2ovbrcen9mgy790z",
+            "code": "656113",
+            "status": "open",
+            "class": {
+                "document_id": "qves8wrtl7r9ctw49jivm8gl",
+                "name": "Reading 8B \u2014 Alvarez"
+            },
+            "variant": null,
+            "opened_at": "2026-09-11T03:17:13.558Z",
+            "closed_at": null,
+            "completed": 0,
+            "expected": 20,
+            "phase": "running",
+            "form": {
+                "document_id": "k5ahyqaftcvj6cjjpagu1xaj",
+                "label": "SPK-PROG-A-79",
+                "variant": null
+            },
+            "settings": null,
+            "member_student_ids": null,
+            "stats": {
+                "expected": 20,
+                "joined": 1,
+                "submitted": 0
+            }
+        },
+        {
+            "sitting_document_id": "c5dr38783e82nrvs9idl7nj7",
+            "code": "273249",
+            "status": "open",
+            "class": {
+                "document_id": "qves8wrtl7r9ctw49jivm8gl",
+                "name": "Reading 8B \u2014 Alvarez"
+            },
+            "variant": null,
+            "opened_at": "2026-09-11T03:16:54.778Z",
+            "closed_at": null,
+            "completed": 0,
+            "expected": 20,
+            "phase": "running",
+            "form": {
+                "document_id": "ts9vcd4w2xa9c8m78nmspvsc",
+                "label": "LST-PROG-A-79",
+                "variant": null
+            },
+            "settings": null,
+            "member_student_ids": null,
+            "stats": {
+                "expected": 20,
+                "joined": 1,
+                "submitted": 0
+            }
+        }
+    ]
+}

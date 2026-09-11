@@ -14,12 +14,18 @@ export const useStartSessionStore = create<StartSessionState>((set) => ({
   classId: null,
   mode: null,
   studentIds: NO_STUDENTS,
+  tab: null,
+  editSittingId: null,
+  openCount: 0,
   open: (options = {}) =>
-    set({
+    set((state) => ({
       isOpen: true,
       classId: options.classId ?? null,
-      mode: options.mode ?? null,
+      mode: options.editSittingId ? 'later' : (options.mode ?? null),
       studentIds: options.studentIds ?? NO_STUDENTS,
-    }),
+      tab: options.tab ?? null,
+      editSittingId: options.editSittingId ?? null,
+      openCount: state.openCount + 1,
+    })),
   close: () => set({ isOpen: false }),
 }));

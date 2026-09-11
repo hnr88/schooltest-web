@@ -6173,8 +6173,240 @@
       "failedRecall": "Laporan {name} tidak ditarik balik: {reason}."
     },
     "live": {},
-    "liveSessions": {},
-    "startSession": {},
+    "liveSessions": {
+      "title": "Sesi langsung",
+      "summary": "{sessions, plural, other {# sesi}} sedang berjalan merentasi {classes, plural, other {# kelas}}. Seorang murid hanya boleh menduduki satu ujian pada satu masa.",
+      "summaryNone": "Tiada sesi yang berjalan. Murid yang berbeza dalam kelas yang sama boleh menduduki versi berbeza serentak.",
+      "startSession": "Mulakan sesi baharu",
+      "loading": "Memuatkan sesi langsung…",
+      "loadError": "Sesi langsung tidak dapat dimuatkan.",
+      "retry": "Cuba lagi",
+      "classMeta": "{year} · {count, plural, other {# murid}}",
+      "classMetaNoYear": "{count, plural, other {# murid}}",
+      "everyoneBusy": "Setiap murid berada dalam sesi",
+      "free": "{count, plural, other {# murid}} bebas untuk memulakan versi lain",
+      "addSession": "Tambah sesi",
+      "whoWhole": "{count, plural, other {# murid}} · seluruh kelas",
+      "whoSelected": "{count, plural, other {# murid terpilih}}",
+      "progress": "{joined} menyertai · {submitted} menghantar daripada {total}",
+      "monitor": "Pantau",
+      "close": "Tutup",
+      "empty": "Tiada sesi yang berjalan sekarang. Mulakan sesi untuk membuka kod sertai.",
+      "closeConfirm": {
+        "title": "Tutup sesi ini?",
+        "titleWorking": "Tutup sedangkan {count, plural, other {# murid}} masih menjawab?",
+        "body": "Murid yang masih menjawab dalam {code} ({className}) akan hilang akses serta-merta dan jawapan yang belum dihantar akan dihantar seadanya. Tindakan ini tidak boleh dibuat asal.",
+        "cta": "Tutup sesi",
+        "cancel": "Batal"
+      },
+      "scheduledLabel": "{count, plural, other {# sesi dijadualkan}}",
+      "bookingWhoWhole": "{count, plural, other {# murid}} · seluruh kelas · {className}",
+      "bookingWhoSelected": "{count, plural, other {# murid terpilih}} · {className}",
+      "idleTitle": "Kelas tanpa sesi berjalan",
+      "idleChip": "{name} · {count}",
+      "idleEmpty": "Setiap kelas mempunyai sekurang-kurangnya satu sesi berjalan.",
+      "scheduledTitle": "Sesi dijadualkan",
+      "bookingsError": "Sesi yang dijadualkan tidak dapat dimuatkan.",
+      "chipToday": "Hari ini",
+      "chipScheduled": "Dijadualkan",
+      "when": "{date} · {start}–{end}",
+      "startNow": "Mulakan sekarang",
+      "cancelBooking": "Batal",
+      "edit": "Sunting",
+      "startConfirm": {
+        "title": "Mulakan sesi ini sekarang?",
+        "body": "Sesi ini ditempah pada {date} jam {start}. Memulakannya sekarang membuka kod sertai serta-merta dan mengeluarkannya daripada jadual, jadi sesiapa yang menjangkakan slot kemudian perlu diberitahu.",
+        "cta": "Mulakan sekarang",
+        "cancel": "Batal"
+      },
+      "cancelConfirm": {
+        "title": "Batalkan sesi ini?",
+        "body": "Tempahan untuk {className} pada {date} jam {start} dibuang dan murid tersebut bebas ditempah di tempat lain. Tiada apa-apa yang disimpan.",
+        "cta": "Batalkan sesi",
+        "cancel": "Tutup"
+      },
+      "startedToast": "Sesi yang dijadualkan untuk {className} dimulakan lebih awal daripada slot {start}",
+      "cancelledToast": "Sesi yang dijadualkan untuk {className} pada {date} telah dibatalkan",
+      "startError": "Sesi tidak dapat dimulakan. Cuba lagi.",
+      "cancelError": "Tempahan tidak dapat dibatalkan. Cuba lagi."
+    },
+    "startSession": {
+      "title": "Mulakan sesi baharu",
+      "titleEdit": "Sunting sesi berjadual",
+      "titleDemo": "Demo guru",
+      "sub": {
+        "now": "Kod sertai dibuka pada pelayan sebaik sahaja sesi bermula.",
+        "later": "Kod sertai dijana apabila tetingkap dibuka. Murid tidak boleh masuk sebelum masa mula.",
+        "demo": "Pilih versi dan jawab sendiri, tepat seperti yang dilihat murid."
+      },
+      "when": {
+        "label": "Bila",
+        "now": {
+          "label": "Mulakan sekarang",
+          "desc": "Membuka kod sertai serta-merta."
+        },
+        "later": {
+          "label": "Jadualkan tetingkap",
+          "desc": "Menempah tarikh dan masa. Tiada sesiapa boleh menyertai di luarnya."
+        },
+        "demo": {
+          "label": "Demo guru",
+          "desc": "Jawab sendiri. Tiada markah diberikan."
+        }
+      },
+      "schedule": {
+        "date": "Tarikh",
+        "opens": "Dibuka",
+        "closes": "Ditutup",
+        "note": "Dibuka selama {window} minit · ujian {limit} minit · ditutup secara automatik pada {closes}. Waktu sekolah ialah 07:00 hingga 19:00.",
+        "noteError": "Sesi berjalan antara 07:00 dan 19:00.",
+        "errors": {
+          "pickDate": "Pilih tarikh untuk sesi ini.",
+          "datePassed": "Tarikh itu telah berlalu.",
+          "setBothTimes": "Tetapkan masa mula dan masa tutup.",
+          "outsideHours": "Sesi hanya boleh berjalan antara 07:00 dan 19:00. Alihkan tetingkap ke dalam waktu sekolah.",
+          "closeBeforeOpen": "Masa tutup mesti selepas masa mula.",
+          "windowShort": "Tetingkap ialah {window} minit tetapi ujian memerlukan {limit}. Luaskan tetingkap atau pendekkan had masa di bawah Tetapan.",
+          "earlierToday": "Masa mula itu lebih awal hari ini. Pilih masa kemudian, atau mulakan sesi sekarang."
+        }
+      },
+      "tabs": {
+        "listLabel": "Persediaan sesi",
+        "test": "Ujian",
+        "students": "Murid",
+        "settings": "Tetapan",
+        "testSub": "Versi {variant} · {className}",
+        "studentsAvailable": "{free} daripada {total} tersedia",
+        "studentsSelected": "{count} dipilih",
+        "settingsSkipOn": "Langkau dihidupkan · {limit} min",
+        "settingsSkipOff": "Langkau dimatikan · {limit} min"
+      },
+      "test": {
+        "skill": "Kemahiran",
+        "skills": {
+          "reading": "Membaca",
+          "listening": "Mendengar",
+          "speaking": "Bertutur",
+          "writing": "Menulis"
+        },
+        "demoNote": "Mulakan demo mencipta pautan log masuk automatik peribadi yang membuka ujian untuk anda, tepat seperti yang dilihat murid. Tiada apa yang dimarkah atau direkodkan. Pautan hanya berfungsi untuk akaun guru, pentadbir sekolah dan ops — tidak sekali-kali untuk murid atau ibu bapa.",
+        "class": "Kelas",
+        "classOption": "{name} · Tahun {year} · {count, plural, other {# murid}}",
+        "classOptionNoYear": "{name} · {count, plural, other {# murid}}",
+        "test": "Ujian"
+      },
+      "students": {
+        "whoSitsIt": "Siapa yang menduduki",
+        "whole": "Seluruh kelas",
+        "everyoneNow": "Semua yang belum menduduki ujian",
+        "everyoneLater": "Semua yang lapang pada masa itu",
+        "wholeDescNow": "{free} daripada {total} murid dalam {className} boleh bermula sekarang.",
+        "wholeDescLater": "{free} daripada {total} murid dalam {className} lapang dalam tetingkap itu.",
+        "selected": "Murid terpilih",
+        "selectedDesc": "Pilih siapa yang menduduki. Yang lain boleh menduduki versi lain pada masa yang sama.",
+        "pickCount": "{count} daripada {total} dipilih",
+        "pickNone": "Belum ada murid dipilih",
+        "alreadySitting": "Sedang menduduki {form}",
+        "alreadySittingTest": "Sedang menduduki ujian",
+        "bookedInto": "Ditempah untuk {form} pada {time}",
+        "noFreeNow": "Setiap murid dalam {className} sedang menduduki ujian. Tutup salah satu sesinya, atau pilih kelas lain, sebelum memulakan yang lain.",
+        "noFreeLater": "Setiap murid dalam {className} sudah ditempah dalam sesi pada tetingkap itu. Alihkan masa, atau batalkan tempahan yang bertindih.",
+        "loadError": "Kami tidak dapat menyemak siapa yang lapang untuk menduduki.",
+        "retry": "Cuba lagi",
+        "noStudents": "Kelas ini tiada murid aktif.",
+        "rosterLabel": "Murid dalam {className}"
+      },
+      "settings": {
+        "sections": {
+          "during": "Semasa ujian",
+          "access": "Akses dan sokongan",
+          "security": "Syarat ujian",
+          "timing": "Masa"
+        },
+        "summary": {
+          "onOf": "{on} daripada {total} dihidupkan",
+          "lockedDown": "Dikunci",
+          "openFlagged": "Terbuka, ditanda",
+          "open": "Terbuka",
+          "timingAuto": "{limit} min · hantar automatik",
+          "timingWaits": "{limit} min · menunggu anda"
+        },
+        "timeLimit": "Had masa",
+        "timeLimitDesc": "Mengira detik sebaik sahaja murid bermula, bukan dari saat sesi dibuka.",
+        "minutes": "{count} min",
+        "toggles": {
+          "lowBw": {
+            "label": "Mod lebar jalur rendah",
+            "desc": "Petikan teks sahaja, tiada imej dimuat awal, dan jawapan disimpan pada peranti lalu disegerakkan apabila sambungan kembali. Gunakan apabila bilik menggunakan data mudah alih atau pautan satelit."
+          },
+          "skip": {
+            "label": "Benarkan melangkau soalan",
+            "desc": "Murid boleh meninggalkan soalan, teruskan, dan kembali kepadanya sebelum menghantar."
+          },
+          "review": {
+            "label": "Skrin semakan sebelum hantar",
+            "desc": "Senarai akhir soalan yang dilangkau dan ditanda, supaya tiada yang tertinggal kosong secara tidak sengaja."
+          },
+          "flag": {
+            "label": "Tanda soalan untuk semakan",
+            "desc": "Murid boleh menanda soalan untuk kembali. Tanda dipaparkan pada skrin semakan dan kepada anda."
+          },
+          "bigText": {
+            "label": "Teks lebih besar dan kontras tinggi",
+            "desc": "Murid boleh membesarkan teks dan menukar kepada tema kontras tinggi pada bila-bila masa."
+          },
+          "lockdown": {
+            "label": "Tetingkap dikunci",
+            "desc": "Ujian memenuhi skrin. Aplikasi lain, tab, salin, tampal dan cetak disekat."
+          },
+          "focusFlag": {
+            "label": "Tanda jika mereka keluar dari tetingkap",
+            "desc": "Keluar direkodkan dengan cap masa dan dipaparkan pada paparan langsung anda. Gunakan apabila kunci dimatikan."
+          },
+          "warn5": {
+            "label": "Amaran lima minit",
+            "desc": "Satu sepanduk senyap apabila tinggal lima minit, supaya jam tidak berada di hadapan mereka sepanjang masa."
+          },
+          "autoSubmit": {
+            "label": "Hantar secara automatik apabila tamat masa",
+            "desc": "Dimatikan bermaksud cubaan menunggu anda, dan tiada apa dihantar tanpa guru."
+          },
+          "showScore": {
+            "label": "Tunjukkan markah mereka pada akhir",
+            "desc": "Dimatikan menahan keputusan sehingga anda melepaskan laporan."
+          }
+        }
+      },
+      "facts": {
+        "sitting": "Menduduki {className}",
+        "students": "{count, plural, other {# murid}}",
+        "latestAverage": "Purata terkini",
+        "average": "{value}%",
+        "notTested": "Belum diuji",
+        "lastSession": "Sesi terakhir",
+        "noneYet": "Belum ada"
+      },
+      "cta": {
+        "startDemo": "Mulakan demo",
+        "selectToStart": "Pilih murid untuk bermula",
+        "selectToSchedule": "Pilih murid untuk dijadualkan",
+        "fixTiming": "Betulkan masa untuk menjadualkan",
+        "start": "Mulakan sesi · {count, plural, other {# murid}}",
+        "save": "Simpan perubahan · {count, plural, other {# murid}}",
+        "schedule": "Jadualkan sesi · {count, plural, other {# murid}}",
+        "cancel": "Batal",
+        "demoPending": "Pautan demo guru belum tersedia.",
+        "checking": "Menyemak siapa yang lapang…"
+      },
+      "state": {
+        "loadError": "Kami tidak dapat memuatkan kelas dan ujian anda.",
+        "retry": "Cuba lagi",
+        "noClasses": "Anda belum mempunyai kelas untuk diuji. Minta pentadbir sekolah menambah anda ke kelas.",
+        "noTests": "Tiada ujian yang boleh dimulakan sekarang.",
+        "bookingGone": "Tempahan ini telah dibuka, ditutup atau dibatalkan.",
+        "close": "Tutup"
+      }
+    },
     "reports": {},
     "student": {
       "crumbClasses": "Kelas",

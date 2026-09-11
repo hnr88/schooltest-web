@@ -270,3 +270,13 @@ export type {
   LiveMonitorTileProps,
   LiveMonitorLegendProps,
 } from './types/live-monitor.types';
+
+// Start a new session (Teacher Portal v2 S25–S28): the ONE modal, mounted once in the
+// dashboard frame; a screen in any module opens it through the store.
+export { StartSessionHost } from './components/start-session/StartSessionHost';
+export { useStartSessionStore } from './stores/use-start-session-store';
+export type {
+  StartSessionMode,
+  StartSessionTab,
+  StartSessionOptions,
+} from './types/start-session.types';

@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
 import { MONITOR_POLL_INTERVAL_MS } from '@/modules/teacher/constants/live-monitor.constants';
@@ -17,13 +17,23 @@ async function fetchTestSessionMonitor(documentId: string): Promise<TestSessionM
   return testSessionMonitorResponseSchema.parse(response.data);
 }
 
-export function useTestSessionMonitorQuery(documentId: string, enabled = true) {
-  return useQuery({
+/**
+ * The ONE key + fetcher for this read, shared by the hook and by callers that
+ * need several sittings at once (the start modal's busy check, via useQueries).
+ */
+export function testSessionMonitorQueryOptions(documentId: string) {
+  return queryOptions({
     queryKey: ['teacher', 'test-session-monitor', documentId],
     queryFn: () => fetchTestSessionMonitor(documentId),
-    enabled: enabled && Boolean(documentId),
     staleTime: 0,
     retry: false,
+  });
+}
+
+export function useTestSessionMonitorQuery(documentId: string, enabled = true) {
+  return useQuery({
+    ...testSessionMonitorQueryOptions(documentId),
+    enabled: enabled && Boolean(documentId),
     // The grid is live: TanStack Query owns the cadence (task 037), so there is
     // no hand-rolled timer and no socket. Polling STOPS once the sitting is
     // closed — a closed sitting's grid is final, and a failed read must not
