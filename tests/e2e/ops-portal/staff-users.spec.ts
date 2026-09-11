@@ -41,24 +41,45 @@ const CAPTURES = path.resolve(
 );
 
 async function signInAsOps(page: Page): Promise<void> {
+  let lastError: unknown;
+  let lastAuthStatus: number | undefined;
+  page.on('response', (response) => {
+    if (response.url().includes('/api/auth/local')) lastAuthStatus = response.status();
+  });
   for (let attempt = 1; attempt <= 6; attempt += 1) {
     try {
       // In the try: neighbouring suites restart the dev server, so even the
       // navigation can be refused — contention, not a defect.
-      await page.goto('/sign-in');
-      await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(OPS_EMAIL);
+      await page.goto('/sign-in', { timeout: ACTION_TIMEOUT });
+      await page
+        .getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true })
+        .fill(OPS_EMAIL, { timeout: ACTION_TIMEOUT });
       await page
         .getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true })
-        .fill(apiEnv('SEED_APIADMIN_PASSWORD'));
-      await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
+        .fill(apiEnv('SEED_APIADMIN_PASSWORD'), { timeout: ACTION_TIMEOUT });
+      await page
+        .getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true })
+        .click({ timeout: ACTION_TIMEOUT });
       await page.waitForURL('**/dashboard', { timeout: 20_000 });
       return;
-    } catch {
+    } catch (error) {
+      lastError = error;
+      // Logged per attempt: the hook's own timeout can fire mid-loop, before
+      // the final throw below ever runs.
+      console.warn(
+        `[e2e] ops sign-in attempt ${attempt} failed — last auth status ${lastAuthStatus ?? 'none'}, ` +
+          `URL ${page.url()}: ${error instanceof Error ? error.message : String(error)}`,
+      );
       // Ride out the shared 60s per-IP login window and try again.
       await page.waitForTimeout(15_000);
     }
   }
-  throw new Error('[e2e] ops sign-in never reached the dashboard');
+  const reason = lastError instanceof Error ? lastError.message : String(lastError);
+  throw new Error(
+    `[e2e] ops sign-in never reached the dashboard after 6 attempts — ` +
+      `last auth status ${lastAuthStatus ?? 'none'}, last URL ${page.url()}, last error: ${reason}`,
+    { cause: lastError },
+  );
 }
 
 /** Every /api/ops/users request the page made, in order. */

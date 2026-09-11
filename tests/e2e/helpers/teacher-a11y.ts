@@ -12,7 +12,7 @@ import {
 import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
 import { teacherDashboardResponseSchema } from '@/modules/teacher/schemas/teacher.schema';
 
-import { bearer } from './teacher-results-live';
+import { API_BASE, bearer } from './teacher-results-live';
 import { signIn } from './teacher-rail';
 import { waitForAnimationsSettled } from './ui';
 
@@ -103,7 +103,12 @@ async function readJson(
   jwt: string,
   url: string,
 ): Promise<{ status: number; body: unknown }> {
-  const response = await request.get(url, { headers: { Authorization: `Bearer ${jwt}` } });
+  // The runner-level request context inherits the config's :3002 baseURL, and
+  // the Next app serves no /api routes — a relative path 404s against it, so
+  // these reads must name the Strapi origin explicitly.
+  const response = await request.get(url.startsWith('http') ? url : `${API_BASE}${url}`, {
+    headers: { Authorization: `Bearer ${jwt}` },
+  });
   return { status: response.status(), body: await response.json().catch(() => null) };
 }
 
