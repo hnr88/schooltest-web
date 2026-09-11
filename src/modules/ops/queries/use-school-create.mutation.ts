@@ -89,21 +89,13 @@ export function useSchoolEditMutation(schoolDocumentId: string) {
   });
 }
 
-/** Field issues from the standard 400 envelope, for the form's per-control errors. */
-export function schoolFieldIssues(error: unknown): Array<{ path: string; message: string }> {
-  const candidate = error as
-    | { response?: { data?: { error?: { details?: { errors?: Array<{ path?: string; message?: string }> } } } } }
-    | undefined;
-  return (candidate?.response?.data?.error?.details?.errors ?? [])
-    .filter((issue) => issue.path && issue.path !== '(root)' && issue.path !== 'If-Match')
-    .map((issue) => ({ path: String(issue.path), message: String(issue.message) }));
-}
-
-/** True when the write was refused because the school moved under the operator. */
-export function schoolStale(error: unknown): boolean {
-  const candidate = error as { response?: { status?: number } } | undefined;
-  return candidate?.response?.status === 412;
-}
+/**
+ * school-admin/04 (U-19): lifted to `@/lib/form-errors`, where the 400 envelope
+ * is PARSED against `errorEnvelopeSchema` / `fieldIssueSchema` instead of
+ * optional-chained through `unknown`. The names stay as re-exports, so no
+ * caller changes.
+ */
+export { serverIssues as schoolFieldIssues, isStaleWrite as schoolStale } from '@/lib/form-errors';
 
 /**
  * Task 24 (`vSchool`) — the design and this backlog's `logic.md` both assume
