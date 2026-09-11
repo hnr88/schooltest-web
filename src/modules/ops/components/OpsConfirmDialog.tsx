@@ -1,24 +1,24 @@
 'use client';
 
-import { AlertTriangle } from 'lucide-react';
+import { CircleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 
 import {
-  Alert,
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  Button,
   Input,
   Label,
+  OPS_CONTROL_CLASS,
+  OpsDialog,
+  OpsDialogCancel,
+  OpsDialogClose,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogDescription,
+  OpsDialogTitle,
 } from '@/modules/design-system';
 import { typedNameMatches } from '@/modules/ops/actions';
+import { cn } from '@/lib/utils';
 
 /**
  * `confirm`   — Cancel + a confirming action (the default).
@@ -47,8 +47,8 @@ export interface OpsConfirmNotice {
  * action CLICKABLE at 0.55 opacity (`:1638` `ctaOpacity: (busy || !typedOk) ?
  * 0.55 : 1`) and answers a mismatched press with
  * "Type the name exactly as shown to confirm." (`:1649`), so a locked gate is
- * still legible to an operator who presses it. A matched press (or no gate at
- * all) reaches `onConfirm` unchanged.
+ * still legible to an operator who presses it. A matched press (or no gate
+ * at all) reaches `onConfirm` unchanged.
  */
 export interface OpsConfirmTypedGate {
   /** The exact name the operator must retype. */
@@ -86,13 +86,14 @@ export interface OpsConfirmDialogProps {
   onConfirm: () => void;
 }
 
-// The portal's ONE confirm. Built on the AlertDialog primitive so every variant
-// dismisses only through its explicit buttons — an alert dialog does not close
-// on a backdrop click — and while pending BOTH buttons disable, so an in-flight
-// action can neither be double-fired nor lose its confirmation state. The
-// destructive tone differs from the neutral one semantically, not just in
-// colour: it carries the warning icon and the destructive button variant, and
-// is for copy that names the irreversible consequence.
+// The portal's ONE confirm, rebuilt on the ops modal chrome (`:819-841`:
+// 460px, panel padding 28, 44px tone icon tile, 19px title, 14px body, 46px
+// typed input, right-aligned pill row) with `disablePointerDismissal` so every
+// variant still dismisses only through its explicit buttons, and while pending
+// BOTH buttons disable, so an in-flight action can neither be double-fired nor
+// lose its confirmation state. The destructive tone differs from the neutral
+// one semantically, not just in colour: it carries the warning icon and the
+// destructive button, and is for copy that names the irreversible consequence.
 //
 // Every string is a prop. That is what lets the three former per-module clones
 // (staff action, class delete, student archive) keep their own contractual copy
@@ -131,73 +132,88 @@ export function OpsConfirmDialog({
   const alertMessage =
     (typed !== undefined && mismatchFlash ? typed.mismatchMessage : null) ?? error;
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent size="sm" className={className}>
-        {media ? <div className="mb-1">{media}</div> : null}
-        <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2">
-            {destructive ? (
-              <AlertTriangle className="size-4 shrink-0 text-destructive" aria-hidden />
-            ) : null}
-            {title}
-          </AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        {notice ? (
-          <Alert variant="warning" title={notice.title}>
-            {notice.body}
-          </Alert>
-        ) : null}
-        {typed === undefined ? null : (
-          <div className="flex flex-col gap-2">
-            <Label htmlFor={typedInputId}>
-              {tTyped.rich('typeToConfirm', {
-                name: (chunks) => <span className="font-semibold">{chunks}</span>,
-              })}
-            </Label>
-            <Input
-              id={typedInputId}
-              value={typed.value}
-              autoComplete="off"
-              disabled={pending}
-              aria-invalid={alertMessage !== null}
-              aria-describedby={alertMessage === null ? undefined : `${typedInputId}-error`}
-              onChange={(event) => {
-                setMismatchFlash(false);
-                typed.onChange(event.target.value);
-              }}
-            />
+    <OpsDialog open={open} onOpenChange={onOpenChange} disablePointerDismissal>
+      <OpsDialogContent role="alertdialog" className={cn('sm:max-w-[460px]', className)}>
+        <div className="p-7">
+          {media ? <div className="mb-4">{media}</div> : null}
+          <div
+            aria-hidden="true"
+            className={
+              'mb-4 grid size-11 place-items-center rounded-[14px] ' +
+              (destructive ? 'bg-[#FEE4E2] text-[#B42318]' : 'bg-[#F4F6FA] text-[#0E2350]')
+            }
+          >
+            <CircleAlert className="size-5" />
           </div>
-        )}
-        {alertMessage === null ? null : (
-          <p id={`${typedInputId}-error`} role="alert" className="text-sm text-destructive">
-            {alertMessage}
-          </p>
-        )}
-        <AlertDialogFooter>
-          <AlertDialogCancel className="h-11 px-4" disabled={pending}>
-            {cancelLabel}
-          </AlertDialogCancel>
-          {actionable ? (
-            <Button
-              type="button"
-              variant={destructive ? 'destructive' : 'default'}
-              className={dimmed ? 'h-11 px-4 opacity-55' : 'h-11 px-4'}
-              loading={pending}
-              aria-disabled={dimmed || undefined}
-              onClick={() => {
-                if (dimmed) {
-                  setMismatchFlash(true);
-                  return;
-                }
-                onConfirm();
-              }}
-            >
-              {confirmLabel}
-            </Button>
+          <OpsDialogTitle className="text-[19px] leading-tight">{title}</OpsDialogTitle>
+          <OpsDialogDescription className="mt-2.5 text-sm leading-relaxed text-[#64748B]">
+            {description}
+          </OpsDialogDescription>
+          {notice ? (
+            <div className="mt-4 rounded-[14px] bg-[#F4F6FA] px-4 py-3 text-[13px] leading-relaxed text-[#3D4A5C]">
+              <p className="font-semibold text-[#0E2350]">{notice.title}</p>
+              <p className="mt-1">{notice.body}</p>
+            </div>
           ) : null}
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          {typed === undefined ? null : (
+            <div className="mt-[18px] flex flex-col">
+              <Label htmlFor={typedInputId} className="mb-[7px] text-[12.5px] font-semibold text-[#0E2350]">
+                {tTyped.rich('typeToConfirm', {
+                  name: (chunks) => <span className="font-semibold">{chunks}</span>,
+                })}
+              </Label>
+              <Input
+                id={typedInputId}
+                value={typed.value}
+                autoComplete="off"
+                disabled={pending}
+                className={`h-[46px] rounded-xl ${OPS_CONTROL_CLASS}`}
+                aria-invalid={alertMessage !== null}
+                aria-describedby={alertMessage === null ? undefined : `${typedInputId}-error`}
+                onChange={(event) => {
+                  setMismatchFlash(false);
+                  typed.onChange(event.target.value);
+                }}
+              />
+            </div>
+          )}
+          {alertMessage === null ? null : (
+            <p
+              id={`${typedInputId}-error`}
+              role="alert"
+              className="mt-3 flex items-center gap-2 text-[12.5px] font-semibold text-[#B42318]"
+            >
+              <CircleAlert aria-hidden="true" className="size-3.5 shrink-0" />
+              {alertMessage}
+            </p>
+          )}
+          <div className="mt-6 flex items-center justify-end gap-2.5">
+            <OpsDialogClose render={<OpsDialogCancel disabled={pending} />}>
+              {cancelLabel}
+            </OpsDialogClose>
+            {actionable ? (
+              <OpsDialogCta
+                type="button"
+                loading={pending}
+                aria-disabled={dimmed || undefined}
+                className={cn(
+                  destructive && 'bg-[#B42318] hover:bg-[#91201A]',
+                  dimmed && 'opacity-55',
+                )}
+                onClick={() => {
+                  if (dimmed) {
+                    setMismatchFlash(true);
+                    return;
+                  }
+                  onConfirm();
+                }}
+              >
+                {confirmLabel}
+              </OpsDialogCta>
+            ) : null}
+          </div>
+        </div>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

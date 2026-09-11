@@ -2,7 +2,6 @@
 
 import { useTranslations } from 'next-intl';
 
-import { KeyValueList, KeyValueRow } from '@/modules/design-system';
 import { portalPlanLabelKey } from '@/modules/ops/lib/portal-lifecycle.lib';
 import { OpsSchoolActivity } from '@/modules/ops/components/OpsSchoolActivity';
 
@@ -45,6 +44,8 @@ export function OpsOverviewTab({ school }: { school: SchoolDetail }) {
       label: t('fieldPlan'),
       value: plan ?? t('unknown'),
     },
+    // The header's badge row is gone from the design; onboarding lives here.
+    { label: t('fieldOnboarding'), value: tDetail(`onboardingStatus.${school.onboarding_status}`) },
     { label: t('fieldContact'), value: school.contact_name ?? t('unknown') },
     { label: t('fieldEmail'), value: school.contact_email ?? t('unknown') },
     { label: t('fieldPhone'), value: school.phone ?? t('unknown') },
@@ -55,26 +56,35 @@ export function OpsOverviewTab({ school }: { school: SchoolDetail }) {
   };
 
   return (
-    <div className="grid gap-5 lg:grid-cols-2">
-      <section data-slot="ops-overview-details" className="rounded-card bg-card p-7 shadow-sm">
-        <div className="mb-3 flex items-center justify-between gap-3">
+    <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(340px,1fr))]">
+      <section
+        data-slot="ops-overview-details"
+        className="rounded-card bg-card px-[30px] py-[26px] shadow-sm"
+      >
+        <div className="mb-3.5 flex items-center justify-between gap-3">
           <h2 className="text-base font-semibold text-foreground">{tDetail('detailsCardTitle')}</h2>
           <button
             type="button"
             data-testid="ops-overview-edit"
             onClick={openEdit}
-            className="text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none"
+            className="px-1 py-1.5 text-[13px] font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none"
           >
             {tDetail('detailsEditLabel')}
           </button>
         </div>
-        <KeyValueList>
+        <dl>
           {rows.map((row) => (
-            <KeyValueRow key={row.label} label={row.label}>
-              {row.value}
-            </KeyValueRow>
+            <div
+              key={row.label}
+              className="flex justify-between gap-4 border-b border-[#EEF1F6] py-3 last:border-b-0"
+            >
+              <dt className="text-[13px] text-[#7C8698]">{row.label}</dt>
+              <dd className="min-w-0 text-right text-[13.5px] font-semibold text-foreground">
+                {row.value}
+              </dd>
+            </div>
           ))}
-        </KeyValueList>
+        </dl>
       </section>
       <OpsSchoolActivity documentId={school.documentId} />
     </div>

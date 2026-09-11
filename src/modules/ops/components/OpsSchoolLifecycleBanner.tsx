@@ -156,6 +156,7 @@ export function OpsSchoolLifecycleBanner({
           banner.cta === null ? undefined : (
             <BannerCtaButton
               cta={banner.cta}
+              tone={banner.tone}
               isReadOnly={isReadOnly}
               onRun={runBannerCta}
               label={t(banner.cta.labelKey)}
@@ -169,14 +170,23 @@ export function OpsSchoolLifecycleBanner({
   );
 }
 
+/** Design 227: CTA = 38px white pill, border/ink in the banner's tone colour. */
+const CTA_TONE_CLASSES: Record<string, string> = {
+  info: 'border-blue-600 text-blue-700',
+  warning: 'border-amber-600 text-amber-700',
+  error: 'border-red-600 text-red-600',
+};
+
 /** The banner's single CTA — greyed with a refusal in a support session. */
 function BannerCtaButton({
   cta,
+  tone,
   isReadOnly,
   label,
   onRun,
 }: {
   cta: PortalLifecycleBannerCta;
+  tone: string;
   isReadOnly: boolean;
   label: string;
   onRun: (cta: PortalLifecycleBannerCta) => void;
@@ -192,6 +202,7 @@ function BannerCtaButton({
         data-banner-cta={cta.kind}
         disabled={isReadOnly}
         onClick={isReadOnly ? undefined : run}
+        className={`h-[38px] rounded-full border bg-card px-[18px] text-[13px] font-semibold ${CTA_TONE_CLASSES[tone] ?? ''}`}
       >
         {label}
       </Button>

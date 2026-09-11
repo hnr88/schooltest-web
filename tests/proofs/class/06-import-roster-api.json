@@ -1,0 +1,32 @@
+[
+  {
+    "documentId": "a53lfjko60u6cktgj6q0ky1v",
+    "given_name": "Zzprobe mtwixtdb",
+    "family_name": "One",
+    "year_level": 7,
+    "first_language": "English",
+    "acara_phase": null,
+    "status": "active",
+    "class": {
+      "documentId": "ldir80prpa3oruquwazfaaau",
+      "name": "EAL/D Year 7 - Room 4"
+    },
+    "latest_result": null,
+    "updatedAt": "2026-09-11T05:37:10.520Z"
+  },
+  {
+    "documentId": "sbxr71oh57juetraw1k8xx38",
+    "given_name": "Zzprobe mtwixtdb",
+    "family_name": "Two",
+    "year_level": 7,
+    "first_language": "Mandarin",
+    "acara_phase": null,
+    "status": "active",
+    "class": {
+      "documentId": "ldir80prpa3oruquwazfaaau",
+      "name": "EAL/D Year 7 - Room 4"
+    },
+    "latest_result": null,
+    "updatedAt": "2026-09-11T05:37:10.531Z"
+  }
+]

@@ -82,9 +82,15 @@ export interface FieldShellProps {
   disabled?: boolean;
   labelId?: string;
   className?: string;
+  /** Pill toolbars (ops design): the label stays for a11y, visually hidden. */
+  hideLabel?: boolean;
 }
 
 export interface SelectFieldProps {
+  /** Extra classes for the trigger only (pill toolbars), merged after TRIGGER. */
+  triggerClassName?: string;
+  /** Pill toolbars (ops design): visually hide the label, keep it for a11y. */
+  hideLabel?: boolean;
   id: string;
   label: string;
   options: readonly ChoiceOption[];

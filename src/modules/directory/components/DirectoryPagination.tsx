@@ -36,6 +36,8 @@ interface DirectoryPaginationProps {
   variant?: DirectoryPaginationVariant;
 }
 
+const PILL_BUTTON_CLASS = 'h-8 rounded-full bg-card px-4';
+
 export function DirectoryPagination({
   meta,
   onPageChange,
@@ -107,13 +109,14 @@ export function DirectoryPagination({
       data-slot="directory-pagination"
       className="flex items-center justify-end gap-3"
     >
-      <p className="text-sm text-muted-foreground" role="status">
+      <p className="text-[13px] text-muted-foreground" role="status">
         {labels.pageCount({ page: meta.page, pageCount: meta.pageCount, total: meta.total })}
       </p>
       <Button
         type="button"
         variant="outline"
         size="sm"
+        className={PILL_BUTTON_CLASS}
         disabled={meta.page <= 1}
         onClick={() => onPageChange(meta.page - 1)}
       >
@@ -123,6 +126,7 @@ export function DirectoryPagination({
         type="button"
         variant="outline"
         size="sm"
+        className={PILL_BUTTON_CLASS}
         disabled={meta.page >= meta.pageCount}
         onClick={() => onPageChange(meta.page + 1)}
       >

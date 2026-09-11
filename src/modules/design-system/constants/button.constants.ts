@@ -15,17 +15,14 @@ export const VARIANT_CLASSES = {
     'bg-destructive text-white hover:bg-red-700 dark:bg-destructive dark:hover:bg-red-600',
 } satisfies Record<ExtendedButtonVariant, string>;
 
-// The `after:` block on sm/default is a POINTER target, not a drawn box: the
-// canonical 32px and 40px pills stay exactly 32 and 40 on screen while a real
-// document.elementFromPoint scan resolves 46. The pseudo-element's containing block
-// is the PADDING box and the primitive's base carries `border border-transparent`,
-// so the inset is measured from 30/38 rather than 32/40 — that is why sm takes 8px
-// where default takes 4px. lg (44) and xl (48) already clear the minimum drawn, so
-// they get no pseudo at all.
+// journeys-and-bugs BUG-001 — the design system's canonical sizes, drawn to the
+// pixel: sm ≈34px (7px 13px, radius 8), default 40px (10px 18px, radius 10),
+// lg ≈46px (13px 26px, radius 12), xl 48px. The `after:` block on sm/default
+// remains a POINTER target, not a drawn box.
 export const SIZE_CLASSES = {
-  sm: 'relative h-8 gap-1.5 rounded-md px-3.5 text-caption after:absolute after:inset-x-0 after:-inset-y-2',
+  sm: 'relative h-[34px] gap-1.5 rounded-[8px] px-[13px] text-[13px] after:absolute after:inset-x-0 after:-inset-y-1.5',
   default:
-    'relative h-10 gap-2 rounded-lg px-4.5 text-sm after:absolute after:inset-x-0 after:-inset-y-1',
-  lg: 'h-11 gap-2 rounded-xl px-6.5 text-button',
+    'relative h-10 gap-2 rounded-[10px] px-[18px] text-sm after:absolute after:inset-x-0 after:-inset-y-1',
+  lg: 'h-[46px] gap-2 rounded-xl px-[26px] text-[15px]',
   xl: 'h-12 gap-2 px-7 rounded-xl text-button',
 } satisfies Record<ExtendedButtonSize, string>;

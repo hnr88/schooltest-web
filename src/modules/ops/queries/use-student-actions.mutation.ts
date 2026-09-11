@@ -125,6 +125,13 @@ function invalidateStudent(
   void queryClient.invalidateQueries({
     queryKey: [...studentsListQueryPrefix(schoolDocumentId), studentDocumentId, 'profile'],
   });
+  // A move/deactivate changes the classes list's student_count, the class
+  // detail card and the roster — same invalidation the roster-side copy of
+  // these actions already performs (use-class-roster-actions.mutation.ts).
+  void queryClient.invalidateQueries({
+    queryKey: ['ops', 'schools', schoolDocumentId, 'classes'],
+  });
+  void queryClient.invalidateQueries({ queryKey: ['ops', 'schools', schoolDocumentId] });
 }
 
 /** Direct, non-bulk mutation hooks — kept for callers outside the action-kit runner. */

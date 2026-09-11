@@ -4,11 +4,10 @@ import { useTranslations } from 'next-intl';
 import { useRef } from 'react';
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogContent,
+  OpsDialogHeader,
 } from '@/modules/design-system';
 import { showOpsToast } from '@/modules/ops/actions';
 import { OpsStudentImport } from '@/modules/ops/components/OpsStudentImport';
@@ -17,7 +16,7 @@ import { useSchoolDetailQuery } from '@/modules/ops/queries/use-school-detail.qu
 import type { OpsStudentImportDialogProps } from '@/modules/ops/types/import.types';
 
 /**
- * ops/26 (`:745-817` IMPORT STUDENTS MODAL) — the Dialog wrapper the design
+ * ops/26 (`:744-817` IMPORT STUDENTS MODAL) — the Dialog wrapper the design
  * draws around the existing import surface (`retire-ledger.md#r-21`'s
  * RE-PARENT half). `OpsStudentImport` keeps every card, guard and mutation;
  * this file supplies only what the design adds on top of the panel that
@@ -52,25 +51,28 @@ export function OpsStudentImportDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent data-slot="ops-student-import-dialog" className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>
-            {school.data?.name
+    <OpsDialog open={open} onOpenChange={handleOpenChange}>
+      <OpsDialogContent data-slot="ops-student-import-dialog" className="sm:max-w-[560px]">
+        <OpsDialogHeader
+          title={t('title')}
+          sub={
+            school.data?.name
               ? t('descriptionForSchool', { name: school.data.name })
-              : t('description')}
-          </DialogDescription>
-        </DialogHeader>
-        <OpsStudentImport
-          documentId={schoolDocumentId}
-          initialClassDocumentId={initialClassDocumentId}
-          onBusyChange={(busy) => {
-            busyRef.current = busy;
-          }}
-          hideHeader
+              : t('description')
+          }
         />
-      </DialogContent>
-    </Dialog>
+        <OpsDialogBody className="gap-0 px-0 py-0">
+          <OpsStudentImport
+            documentId={schoolDocumentId}
+            initialClassDocumentId={initialClassDocumentId}
+            onBusyChange={(busy) => {
+              busyRef.current = busy;
+            }}
+            hideHeader
+            onCancel={() => handleOpenChange(false)}
+          />
+        </OpsDialogBody>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

@@ -1,30 +1,25 @@
 'use client';
 
 /**
- * Task 02 — the directory's distinct non-data states. The three empty states
- * the task demands stay separate: nothing yet (create), no matches (clear
- * filters), read failure (retry). A failed refetch with previously served
- * rows shows an explicit stale banner over those rows — never a false empty
- * tenant (the rows on screen are the server's last answer, kept by
- * keepPreviousData in the consumer's query).
- *
- * teacher/04 — §L-a11y A5: every arm's title is a REAL, visible, focusable
- * `<h2>` carrying `tabIndex={-1}`. When the body machine swaps from rows to
- * this arm, DirectoryTable moves focus to the heading, so a keyboard operator
- * lands on the arm's own title — announced with its name, out of the tab
- * order, and never on a wrapper or `<body>`. The EmptyState composite draws
- * icon/description/action only (ops/14: `title={''}` — its own title `<p>` is
- * structurally absent, so the h2 IS the one title; the old CSS-suppression
- * class was retired here after failing live twice, untestable in jsdom).
+ * ops grid — the directory's non-data states, drawn as the design cards
+ * (`Ops Portal.dc.html:110-138, 188-195`). The §L-a11y A5 scaffolding is
+ * unchanged: every arm's title is a real, focusable `<h2>` the body machine
+ * moves focus onto.
  */
-import { Inbox, SearchX, TriangleAlert } from 'lucide-react';
+import { GraduationCap, SearchX, TriangleAlert } from 'lucide-react';
 import type { Ref } from 'react';
 
-import { Alert, Button, EmptyState, Skeleton } from '@/modules/design-system';
+import { Skeleton } from '@/modules/design-system';
 
 import type { DirectoryLabels } from '../types/directory.types';
 
 const SKELETON_ROWS = [0, 1, 2, 3, 4];
+const SKELETON_WIDTHS = ['46%', '62%', '38%', '54%', '42%'];
+
+const NAVY_PILL =
+  'h-[42px] rounded-full bg-[#0E2350] px-[22px] text-[13.5px] font-semibold text-white hover:bg-[#16326E]';
+const WHITE_PILL =
+  'h-[42px] rounded-full border border-[#D8DFEA] bg-white px-5 text-[13.5px] font-semibold text-[#0E2350]';
 
 export function DirectoryLoading({
   labels,
@@ -34,18 +29,26 @@ export function DirectoryLoading({
   headingRef?: Ref<HTMLHeadingElement>;
 }) {
   return (
-    <div role="status" data-slot="directory-loading" className="flex flex-col gap-3 p-6">
+    <div role="status" data-slot="directory-loading" className="px-6 pt-1.5 pb-1">
       <h2
         ref={headingRef}
         tabIndex={-1}
-        className="text-sm font-medium text-muted-foreground outline-none"
+        className="px-2.5 pt-3 pb-2 text-[13px] font-medium text-[#9AA6B8] outline-none"
       >
         {labels.loadingLabel}
       </h2>
-      <Skeleton className="h-9 w-1/3" />
-      <Skeleton className="h-4 w-1/2" />
       {SKELETON_ROWS.map((row) => (
-        <Skeleton key={row} className="h-10 w-full" />
+        <div
+          key={row}
+          className="flex items-center gap-4 border-b border-[#F4F6FA] px-2.5 py-3.5 last:border-b-0"
+        >
+          <Skeleton className="size-[52px] flex-none rounded-[14px]" />
+          <div className="flex flex-1 flex-col gap-2">
+            <Skeleton className="h-[13px] rounded-md" style={{ width: SKELETON_WIDTHS[row] }} />
+            <Skeleton className="h-[11px] w-[34%] rounded-md bg-[#F4F6FA]" />
+          </div>
+          <Skeleton className="h-[26px] w-[94px] flex-none rounded-full" />
+        </div>
       ))}
     </div>
   );
@@ -56,35 +59,35 @@ export function DirectoryError({
   onRetry,
   retrying,
   headingRef,
+  secondaryAction,
 }: {
   labels: DirectoryLabels;
   onRetry: () => void;
   retrying: boolean;
   headingRef?: Ref<HTMLHeadingElement>;
+  secondaryAction?: { label: string; onRun: () => void };
 }) {
   return (
-    <div>
-      <h2
-        ref={headingRef}
-        tabIndex={-1}
-        className="mt-6 text-center font-semibold outline-none"
-      >
+    <div className="px-8 py-14 text-center" data-slot="directory-error">
+      <h2 ref={headingRef} tabIndex={-1} className="text-[16px] font-semibold text-[#0E2350] outline-none">
         {labels.errorTitle}
       </h2>
-      {/* ops/14 fix — description-only: the h2 is the ONE title (same defect as
-          the empty arms; the CSS suppression below is not testable and failed
-          live). */}
-      <EmptyState
-        icon={TriangleAlert}
-        tone="muted"
-        title={''}
-        description={labels.errorDescription}
-        action={
-          <Button type="button" variant="outline" size="sm" loading={retrying} onClick={onRetry}>
-            {labels.retry}
-          </Button>
-        }
-      />
+      <div className="mx-auto mt-4 grid size-12 place-items-center rounded-[16px] bg-[#FDEEEC] text-[#B42318]">
+        <TriangleAlert className="size-[22px]" aria-hidden="true" />
+      </div>
+      <p className="mx-auto mt-4 max-w-[400px] text-[13.5px] leading-relaxed text-[#7C8698]">
+        {labels.errorDescription}
+      </p>
+      <div className="mt-5 flex justify-center gap-2.5">
+        <button type="button" disabled={retrying} onClick={onRetry} className={`${NAVY_PILL} cursor-pointer disabled:opacity-60`}>
+          {labels.retry}
+        </button>
+        {secondaryAction ? (
+          <button type="button" onClick={secondaryAction.onRun} className={`${WHITE_PILL} cursor-pointer`}>
+            {secondaryAction.label}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -99,17 +102,16 @@ export function DirectoryStaleBanner({
   retrying: boolean;
 }) {
   return (
-    <Alert
-      variant="warning"
-      title={labels.errorStaleBanner}
-      action={
-        <Button type="button" variant="outline" size="sm" loading={retrying} onClick={onRetry}>
-          {labels.retry}
-        </Button>
-      }
+    <div
+      role="status"
+      data-slot="directory-stale-banner"
+      className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3"
     >
-      {labels.errorDescription}
-    </Alert>
+      <p className="text-sm font-semibold text-foreground">{labels.errorStaleBanner}</p>
+      <button type="button" disabled={retrying} onClick={onRetry} className={`${NAVY_PILL} h-8 px-4 text-[13px] disabled:opacity-60`}>
+        {labels.retry}
+      </button>
+    </div>
   );
 }
 
@@ -126,56 +128,42 @@ export function DirectoryEmpty({
   emptyAction?: { label: string; onRun: () => void };
   headingRef?: Ref<HTMLHeadingElement>;
 }) {
-  const title = variant === 'no-matches' ? labels.emptyNoMatchesTitle : labels.emptyNoneTitle;
-  // ops/14 fix — the EmptyState gets NO title string: the arm's `<h2>` above
-  // is the ONE title, and passing the same string into EmptyState's own `<p>`
-  // rendered it twice on screen and once per node to screen readers (the CSS
-  // suppression below could not be trusted — it is invisible to unit tests
-  // and failed twice in live runs). Description-only, structurally.
-  if (variant === 'no-matches') {
-    return (
-      <div>
-        <h2
-          ref={headingRef}
-          tabIndex={-1}
-          className="mt-6 text-center font-semibold outline-none"
-        >
-          {title}
-        </h2>
-        <EmptyState
-          icon={SearchX}
-          title={''}
-          description={labels.emptyNoMatchesDescription}
-          action={
-            <Button type="button" variant="outline" size="sm" onClick={onClearFilters}>
-              {labels.clearFilters}
-            </Button>
-          }
-        />
-      </div>
-    );
-  }
+  const isNoMatches = variant === 'no-matches';
+  const title = isNoMatches ? labels.emptyNoMatchesTitle : labels.emptyNoneTitle;
   return (
-    <div>
+    <div className="px-6 py-14 text-center" data-slot="directory-empty">
+      <div className="grid size-[46px] place-items-center rounded-[14px] bg-[#F4F6FA]">
+        {isNoMatches ? (
+          <SearchX className="size-5 text-[#7C8698]" aria-hidden="true" />
+        ) : (
+          <GraduationCap className="size-5 text-[#7C8698]" aria-hidden="true" />
+        )}
+      </div>
       <h2
         ref={headingRef}
         tabIndex={-1}
-        className="mt-6 text-center font-semibold outline-none"
+        className="mt-3.5 text-[15px] font-semibold text-[#0E2350] outline-none"
       >
         {title}
       </h2>
-      <EmptyState
-        icon={Inbox}
-        title={''}
-        description={labels.emptyNoneDescription}
-        action={
-          emptyAction ? (
-            <Button type="button" size="sm" onClick={emptyAction.onRun}>
-              {emptyAction.label}
-            </Button>
-          ) : undefined
-        }
-      />
+      <p className="mt-1.5 text-[13.5px] text-[#7C8698]">
+        {isNoMatches ? labels.emptyNoMatchesDescription : labels.emptyNoneDescription}
+      </p>
+      <div className="mt-[18px]">
+        {isNoMatches ? (
+          <button
+            type="button"
+            onClick={onClearFilters}
+            className={`${NAVY_PILL} h-10 cursor-pointer px-5`}
+          >
+            {labels.clearFilters}
+          </button>
+        ) : emptyAction ? (
+          <button type="button" onClick={emptyAction.onRun} className={`${NAVY_PILL} h-10 cursor-pointer px-5`}>
+            {emptyAction.label}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }

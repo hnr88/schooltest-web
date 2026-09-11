@@ -3,16 +3,17 @@
 import { useTranslations } from 'next-intl';
 
 import {
-  Button,
   describedBy,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  FieldShell,
   Input,
+  OPS_CONTROL_CLASS,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
+  OpsFieldShell,
 } from '@/modules/design-system';
 import { useOnboardSchoolForm } from '@/modules/ops/hooks/use-onboard-school-form';
 
@@ -52,70 +53,71 @@ export function OpsOnboardSchoolDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={close}>
-      <DialogContent data-slot="ops-onboard-dialog">
-        <DialogHeader>
-          <DialogTitle>{t('dialogTitle')}</DialogTitle>
-          <DialogDescription>{t('dialogDescription')}</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FieldShell
-              id="onboard-first-name"
-              label={t('firstName')}
-              errorText={errors.first_name?.message}
-              required
-            >
-              <Input
+    <OpsDialog open={open} onOpenChange={close}>
+      <OpsDialogContent data-slot="ops-onboard-dialog" className="sm:max-w-[540px]">
+        <OpsDialogHeader title={t('dialogTitle')} sub={t('dialogDescription')} />
+        <form onSubmit={submit} noValidate>
+          <OpsDialogBody>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <OpsFieldShell
                 id="onboard-first-name"
-                autoComplete="off"
-                {...aria('onboard-first-name', errors.first_name?.message)}
-                {...form.register('first_name')}
-              />
-            </FieldShell>
-            <FieldShell
-              id="onboard-last-name"
-              label={t('lastName')}
-              errorText={errors.last_name?.message}
+                label={t('firstName')}
+                errorText={errors.first_name?.message}
+                required
+              >
+                <Input
+                  id="onboard-first-name"
+                  autoComplete="off"
+                  className={`h-12 rounded-xl ${OPS_CONTROL_CLASS}`}
+                  {...aria('onboard-first-name', errors.first_name?.message)}
+                  {...form.register('first_name')}
+                />
+              </OpsFieldShell>
+              <OpsFieldShell
+                id="onboard-last-name"
+                label={t('lastName')}
+                errorText={errors.last_name?.message}
+                required
+              >
+                <Input
+                  id="onboard-last-name"
+                  autoComplete="off"
+                  className={`h-12 rounded-xl ${OPS_CONTROL_CLASS}`}
+                  {...aria('onboard-last-name', errors.last_name?.message)}
+                  {...form.register('last_name')}
+                />
+              </OpsFieldShell>
+            </div>
+            <OpsFieldShell
+              id="onboard-email"
+              label={t('email')}
+              errorText={errors.contact_email?.message}
               required
             >
               <Input
-                id="onboard-last-name"
+                id="onboard-email"
+                type="email"
                 autoComplete="off"
-                {...aria('onboard-last-name', errors.last_name?.message)}
-                {...form.register('last_name')}
+                className={`h-12 rounded-xl ${OPS_CONTROL_CLASS}`}
+                {...aria('onboard-email', errors.contact_email?.message)}
+                {...form.register('contact_email')}
               />
-            </FieldShell>
-          </div>
-          <FieldShell
-            id="onboard-email"
-            label={t('email')}
-            errorText={errors.contact_email?.message}
-            required
-          >
-            <Input
-              id="onboard-email"
-              type="email"
-              autoComplete="off"
-              {...aria('onboard-email', errors.contact_email?.message)}
-              {...form.register('contact_email')}
-            />
-          </FieldShell>
-          <DialogFooter>
-            <Button
+            </OpsFieldShell>
+          </OpsDialogBody>
+          <OpsDialogFooter>
+            <OpsDialogCancel
               type="button"
-              variant="outline"
               onClick={() => close(false)}
               disabled={isPending}
             >
               {t('cancel')}
-            </Button>
-            <Button type="submit" loading={isPending}>
+            </OpsDialogCancel>
+            <OpsDialogCta type="submit" loading={isPending}>
               {isPending ? t('submitting') : t('submit')}
-            </Button>
-          </DialogFooter>
+            </OpsDialogCta>
+          </OpsDialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

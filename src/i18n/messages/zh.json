@@ -3525,7 +3525,8 @@
             "cta": "归档学校"
           }
         }
-      }
+      },
+      "loadingData": "正在加载学校数据…"
     },
     "onboard": {
       "button": "邀请学校管理员",
@@ -3687,7 +3688,9 @@
         "save": "保存资料",
         "saving": "保存中…",
         "savedToast": "资料已保存。",
-        "errorToast": "资料保存失败，请重试。"
+        "errorToast": "资料保存失败，请重试。",
+        "edit": "编辑",
+        "role": "运营"
       }
     },
     "plan": {
@@ -4040,7 +4043,8 @@
           "body": "他们的班级需要重新分配。",
           "cta": "移除 {count} 名"
         }
-      }
+      },
+      "fieldOnboarding": "入驻进度"
     },
     "export": {
       "title": "导出学校",

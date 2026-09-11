@@ -76,9 +76,16 @@ export function OpsAdminsTab({
           `tests/e2e/ops-session-expired.spec.ts` — kept as its own control
           (not the kit `header.primary` slot) because `DirectoryHeaderAction`
           carries no `data-testid`, and a control those specs already find by
-          test id must not silently move under a different one. */}
-      <div className="flex justify-end">
-        <Button type="button" size="sm" variant="outline" data-testid="ops-admins-invite" onClick={onInvite}>
+          test id must not silently move under a different one. Drawn as the
+          design's card-header primary (`Ops Portal.dc.html:353-368`). */}
+      <div className="-mb-2 flex justify-end">
+        <Button
+          type="button"
+          variant="navy"
+          data-testid="ops-admins-invite"
+          onClick={onInvite}
+          className="h-10 rounded-xl px-[18px] text-[13.5px] font-semibold"
+        >
           {t('inviteStaff')}
         </Button>
       </div>

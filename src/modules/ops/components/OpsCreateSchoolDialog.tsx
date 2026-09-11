@@ -2,15 +2,17 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { Info } from 'lucide-react';
 
+import { Button } from '@/modules/design-system';
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
 } from '@/modules/design-system';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsCreateSchoolFields } from '@/modules/ops/components/OpsCreateSchoolFields';
@@ -65,66 +67,70 @@ export function OpsCreateSchoolDialog() {
     setOpen(false);
   };
 
+  const footerError =
+    deliveryState === 'failed' ? (
+      <span data-testid="ops-school-delivery-failed">{t('deliveryFailed')}</span>
+    ) : errors.root?.message ? (
+      <span data-testid="ops-school-form-root-error">{errors.root.message}</span>
+    ) : fieldErrorCount > 0 ? (
+      <span data-testid="ops-school-form-summary">{t('formSummary', { count: fieldErrorCount })}</span>
+    ) : null;
+
   return (
     <>
-      <Button data-testid="ops-create-school" onClick={() => setOpen(true)}>
+      <Button
+        data-testid="ops-create-school"
+        className="h-11 rounded-full px-[22px]"
+        onClick={() => setOpen(true)}
+      >
         {t('button')}
       </Button>
-      <Dialog open={open} onOpenChange={close}>
-        <DialogContent data-slot="ops-create-school-dialog">
-          <DialogHeader>
-            <DialogTitle>{t('title')}</DialogTitle>
-            <DialogDescription>{t('description')}</DialogDescription>
-          </DialogHeader>
+      <OpsDialog open={open} onOpenChange={close}>
+        <OpsDialogContent data-slot="ops-create-school-dialog" className="sm:max-w-[640px]">
+          <OpsDialogHeader title={t('title')} sub={t('description')} />
           <form
             noValidate
-            className="flex flex-col gap-4"
             onSubmit={(event) => {
               event.preventDefault();
               submit(event);
             }}
           >
-            <p className="text-sm text-muted-foreground">{t('callout')}</p>
-            {errors.root?.message ? (
-              <p role="alert" className="text-sm text-destructive" data-testid="ops-school-form-root-error">
-                {errors.root.message}
-              </p>
-            ) : null}
-            {fieldErrorCount > 0 ? (
-              <p role="alert" className="text-sm text-destructive" data-testid="ops-school-form-summary">
-                {t('formSummary', { count: fieldErrorCount })}
-              </p>
-            ) : null}
-            {deliveryState === 'failed' ? (
-              <div className="rounded-lg border border-border bg-muted p-3" data-testid="ops-school-delivery-failed">
-                <p className="text-sm text-body">{t('deliveryFailed')}</p>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  loading={resend.isPending}
-                  onClick={() => resend.mutate(deliverySchoolDocumentId ?? '')}
-                >
-                  {t('resendInvitation')}
-                </Button>
+            <OpsDialogBody>
+              <OpsCreateSchoolFields
+                form={form}
+                emailWarning={emailDomainWarning}
+                statusWarning={statusActiveWarning}
+              />
+              <div className="flex items-start gap-[11px] rounded-[14px] bg-[#F4F6FA] px-4 py-3.5 text-[13px] leading-relaxed text-[#3D4A5C]">
+                <Info aria-hidden="true" className="mt-0.5 size-4 flex-none text-[#2563EB]" />
+                <p>{t('callout')}</p>
               </div>
-            ) : null}
-            <OpsCreateSchoolFields
-              form={form}
-              emailWarning={emailDomainWarning}
-              statusWarning={statusActiveWarning}
-            />
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => close(false)}>
+              {deliveryState === 'failed' ? (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-[14px] border border-[#F3C6C1] bg-white px-4 py-3">
+                  <p className="text-[13px] text-[#B42318]">{t('deliveryFailed')}</p>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    loading={resend.isPending}
+                    onClick={() => resend.mutate(deliverySchoolDocumentId ?? '')}
+                  >
+                    {t('resendInvitation')}
+                  </Button>
+                </div>
+              ) : null}
+            </OpsDialogBody>
+            <OpsDialogFooter error={footerError}>
+              <OpsDialogCancel type="button" onClick={() => close(false)}>
                 {t('cancel')}
-              </Button>
-              <Button type="submit" loading={isPending}>
+              </OpsDialogCancel>
+              <OpsDialogCta type="submit" loading={isPending}>
                 {isPending ? t('submitting') : t('submit')}
-              </Button>
-            </DialogFooter>
+              </OpsDialogCta>
+            </OpsDialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+        </OpsDialogContent>
+      </OpsDialog>
       <OpsConfirmDialog
         open={confirmingDirtyClose}
         onOpenChange={(next) => setConfirmingDirtyClose(next)}

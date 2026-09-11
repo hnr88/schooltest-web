@@ -3544,7 +3544,8 @@
             "cta": "Lưu trữ trường"
           }
         }
-      }
+      },
+      "loadingData": "Đang tải dữ liệu trường…"
     },
     "onboard": {
       "button": "Mời quản trị viên trường",
@@ -3706,7 +3707,9 @@
         "save": "Lưu hồ sơ",
         "saving": "Đang lưu…",
         "savedToast": "Đã lưu hồ sơ.",
-        "errorToast": "Không lưu được hồ sơ của bạn. Vui lòng thử lại."
+        "errorToast": "Không lưu được hồ sơ của bạn. Vui lòng thử lại.",
+        "edit": "Chỉnh sửa",
+        "role": "vận hành"
       }
     },
     "plan": {
@@ -4059,7 +4062,8 @@
           "body": "Lớp học của họ cần được phân công lại.",
           "cta": "Xóa {count}"
         }
-      }
+      },
+      "fieldOnboarding": "Thiết lập ban đầu"
     },
     "export": {
       "title": "Xuất trường học",

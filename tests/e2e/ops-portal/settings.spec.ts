@@ -106,6 +106,11 @@ test.describe('C-OPS-PORTAL-031 settings write', () => {
         page.locator('[data-slot="ops-account-card"][data-ops-scope="ops-account"]'),
       ).toBeVisible({ timeout: ACTION_TIMEOUT });
 
+      // The rename form lives behind the profile card's Edit pill (design BUG-006).
+      await page.getByTestId('ops-account-edit').click({ timeout: ACTION_TIMEOUT });
+      await expect(page.locator('#ops-profile-first-name')).toBeVisible({
+        timeout: ACTION_TIMEOUT,
+      });
       await page.locator('#ops-profile-first-name').fill(probe.first);
       await page.locator('#ops-profile-last-name').fill(probe.last);
       await page

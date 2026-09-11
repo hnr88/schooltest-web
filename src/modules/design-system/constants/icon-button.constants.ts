@@ -3,18 +3,13 @@ import type {
   IconButtonTone,
 } from '@/modules/design-system/types/primitives.types';
 
-// The VISUAL box stays canonical; the ::after inset — the idiom already proven in
-// SidebarNavItem — grows the POINTER target so every icon-only control in the app
-// clears the touch-target rule without being drawn bigger.
-// Each inset is 1px MORE than the arithmetic 44px minimum, giving 46x46. Sizing the
-// pseudo-element to exactly 44 leaves zero tolerance: an element laid out on a
-// fractional x/y loses ~1px to device-pixel rounding at the boundary, and a real
-// pointer hit test then measures 42-43. The extra pixel per side is what makes the
-// target 44 in practice rather than only on paper.
+// journeys-and-bugs BUG-001 — canonical icon square per the design system:
+// sm 32px / radius 8, md 38×38 / radius 10, lg 44px / radius 12. The ::after
+// inset keeps growing the POINTER target beyond the drawn box.
 export const SIZE_CLASSES: Record<IconButtonSize, string> = {
-  sm: 'size-7.5 rounded-md after:-inset-2 [&_svg]:size-3.5',
-  md: 'size-8 rounded-md after:-inset-1.75 [&_svg]:size-3.75',
-  lg: 'size-9.5 rounded-lg after:-inset-1 [&_svg]:size-4.25',
+  sm: 'size-8 rounded-[8px] after:-inset-1.5 [&_svg]:size-3.5',
+  md: 'size-[38px] rounded-[10px] after:-inset-[3px] [&_svg]:size-[17px]',
+  lg: 'size-11 rounded-xl after:-inset-0.5 [&_svg]:size-[19px]',
 };
 
 export const TONE_CLASSES: Record<IconButtonTone, string> = {

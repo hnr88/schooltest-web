@@ -62,6 +62,10 @@ async function createFixture(
     jwt = ((await login.json()) as { jwt: string }).jwt;
   }
   const name = `OPS10 ${status} ${Date.now().toString(36)}`;
+  // The create contract only accepts portal.status pending_setup|trial|active
+  // (a suspended/archived school must move through the lifecycle services), so
+  // those two are CREATED active and then moved with the lifecycle endpoints.
+  const createStatus = status === 'suspended' || status === 'archived' ? 'active' : status;
   const response = await request.post(`${API}/api/schools`, {
     headers: {
       Authorization: `Bearer ${jwt}`,
@@ -75,12 +79,36 @@ async function createFixture(
       suburb: 'Probeville',
       state: 'NSW',
       sector: 'government',
-      portal: { plan: 'standard', status, send_owner_invitation: false },
+      portal: { plan: 'standard', status: createStatus, send_owner_invitation: false },
     },
   });
   expect([200, 201]).toContain(response.status());
   const body = (await response.json()) as { data: { documentId: string } };
-  return { documentId: body.data.documentId, name };
+  const documentId = body.data.documentId;
+
+  if (status === 'suspended' || status === 'archived') {
+    const detail = await request.get(`${API}/api/ops/schools/${documentId}`, {
+      headers: { Authorization: `Bearer ${jwt}`, 'X-Ops-Portal-Version': '1' },
+    });
+    expect(detail.ok()).toBeTruthy();
+    const { updatedAt } = ((await detail.json()) as { data: { updatedAt: string } }).data;
+    const lifecyclePath = status === 'suspended' ? 'suspend' : 'archive';
+    // Suspend reads the version from If-Match; archive wants it in the body as
+    // `expected_updated_at` (use-school-suspend.mutation.ts archiveSchool).
+    const moved = await request.post(`${API}/api/ops/schools/${documentId}/${lifecyclePath}`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        'X-Ops-Portal-Version': '1',
+        ...(status === 'suspended' ? { 'If-Match': `"${updatedAt}"` } : {}),
+      },
+      data: status === 'suspended' ? {} : { expected_updated_at: updatedAt },
+    });
+    expect(
+      [200, 201],
+      `${status} lifecycle move: ${moved.status()} ${await moved.text()}`,
+    ).toContain(moved.status());
+  }
+  return { documentId, name };
 }
 
 async function loginAsSupport(page: Page): Promise<void> {

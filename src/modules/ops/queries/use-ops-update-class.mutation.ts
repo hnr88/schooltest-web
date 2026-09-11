@@ -41,7 +41,10 @@ async function updateOpsClass(input: OpsUpdateClassInput): Promise<unknown> {
     // instead of a silent clobber.
     const res = await strapi.patch(
       `/api/ops/schools/${input.schoolDocumentId}/classes/${input.classDocumentId}`,
-      { data: { name: input.name, year_band: input.yearBand } },
+      // Unwrapped body — the ops class router 400s an unknown `data` field
+      // (verified live against :5500: `{data:{...}}` -> 400 "unknown field:
+      // data", the unwrapped body -> 200; the create route was never wrapped).
+      { name: input.name, year_band: input.yearBand },
       { headers: input.classUpdatedAt ? { 'If-Match': input.classUpdatedAt } : {} },
     );
     return res.data;

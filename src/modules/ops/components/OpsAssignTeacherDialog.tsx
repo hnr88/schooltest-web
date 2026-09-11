@@ -6,13 +6,13 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import {
   Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
   Skeleton,
 } from '@/modules/design-system';
 import { showOpsToast } from '@/modules/ops/actions';
@@ -87,60 +87,54 @@ export function OpsAssignTeacherDialog({
   };
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next && !assign.isPending) onClose();
       }}
     >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t('assign.title')}</DialogTitle>
-          <DialogDescription>{t('assign.description', { className })}</DialogDescription>
-        </DialogHeader>
+      <OpsDialogContent className="sm:max-w-[520px]">
+        <OpsDialogHeader
+          title={t('assign.title')}
+          sub={t('assign.description', { className })}
+        />
 
-        {formError ? (
-          <Alert variant="error" title={t('assign.errorTitle')}>
-            {formError}
-          </Alert>
-        ) : null}
+        <OpsDialogBody className="py-5">
+          {teachersQuery.isPending ? (
+            <Skeleton className="h-40 w-full rounded-card" />
+          ) : teachersQuery.isError ? (
+            <Alert variant="error" title={t('edit.loadError')}>
+              {t('edit.loadErrorDescription')}
+            </Alert>
+          ) : (
+            <OpsTeacherPicker
+              teachers={teachers}
+              selectedDocumentId={selectedDocumentId}
+              onSelect={setSelectedDocumentId}
+              ariaLabel={t('classTeacher')}
+              variant="assign"
+            />
+          )}
+        </OpsDialogBody>
 
-        {teachersQuery.isPending ? (
-          <Skeleton className="h-40 w-full rounded-card" />
-        ) : teachersQuery.isError ? (
-          <Alert variant="error" title={t('edit.loadError')}>
-            {t('edit.loadErrorDescription')}
-          </Alert>
-        ) : (
-          <OpsTeacherPicker
-            teachers={teachers}
-            selectedDocumentId={selectedDocumentId}
-            onSelect={setSelectedDocumentId}
-            ariaLabel={t('classTeacher')}
-          />
-        )}
-
-        <DialogFooter>
-          <Button
+        <OpsDialogFooter error={formError}>
+          <OpsDialogCancel
             type="button"
-            size="lg"
-            variant="outline"
             onClick={onClose}
             disabled={assign.isPending}
           >
             {detailT('actions.cancel')}
-          </Button>
-          <Button
+          </OpsDialogCancel>
+          <OpsDialogCta
             type="button"
-            size="lg"
             loading={assign.isPending}
             disabled={teachersQuery.isPending || teachersQuery.isError}
             onClick={submit}
           >
             {assign.isPending ? t('assign.assigning') : t('assign.cta')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </OpsDialogCta>
+        </OpsDialogFooter>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

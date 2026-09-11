@@ -14,6 +14,10 @@ export interface OpsTeacherPickerProps {
   onSelect: (documentId: string) => void;
   /** Caller-supplied so each surface (this row's dialog, task 23's form) keeps its own wording. */
   ariaLabel: string;
+  /** `form` — the class form's list (12px rows, 32px avatars); `assign` — the
+   *  assign modal's (13px rows, 34px avatars) (`Ops Portal.dc.html:722-731`,
+   *  `:736-743`). */
+  variant?: 'form' | 'assign';
 }
 
 // Task 22 — the design's radio-row teacher picker (`Ops Portal.dc.html:722-
@@ -30,6 +34,7 @@ export function OpsTeacherPicker({
   selectedDocumentId,
   onSelect,
   ariaLabel,
+  variant = 'form',
 }: OpsTeacherPickerProps) {
   const t = useTranslations('Ops.teacherPicker');
   const eligible = teachers.filter((teacher) => !teacher.blocked);
@@ -45,8 +50,14 @@ export function OpsTeacherPicker({
     );
   }
 
+  const assign = variant === 'assign';
+
   return (
-    <div role="radiogroup" aria-label={ariaLabel} className="overflow-hidden rounded-card border border-border">
+    <div
+      role="radiogroup"
+      aria-label={ariaLabel}
+      className="overflow-hidden rounded-[14px] border border-[#EEF1F6]"
+    >
       {eligible.map((teacher, index) => {
         const selected = teacher.documentId === selectedDocumentId;
         const label = opsTeacherLabel(teacher);
@@ -58,29 +69,33 @@ export function OpsTeacherPicker({
             aria-checked={selected}
             onClick={() => onSelect(teacher.documentId)}
             className={cn(
-              'flex w-full items-center gap-3 px-4 py-3 text-left transition-colors',
-              index > 0 && 'border-t border-border',
-              selected ? 'bg-secondary/60' : 'bg-card hover:bg-surface-inset',
+              'flex w-full items-center gap-[13px] px-4 text-left transition-colors',
+              assign ? 'py-[13px]' : 'py-3',
+              index > 0 && 'border-t border-[#EEF1F6]',
+              selected ? 'bg-[#F4F6FA]' : 'bg-white hover:bg-[#F8FAFF]',
             )}
           >
             <span
               aria-hidden="true"
               className={cn(
                 'grid size-5 flex-none place-items-center rounded-full border-2',
-                selected ? 'border-foreground' : 'border-border',
+                selected ? 'border-[#0E2350]' : 'border-[#C4CEDC]',
               )}
             >
-              {selected ? <span className="size-2 rounded-full bg-foreground" /> : null}
+              {selected ? <span className="size-[9px] rounded-full bg-[#0E2350]" /> : null}
             </span>
             <span
               aria-hidden="true"
-              className="grid size-8 flex-none place-items-center rounded-full bg-secondary text-xs font-semibold text-foreground"
+              className={cn(
+                'grid flex-none place-items-center rounded-full bg-[#EEF1F6] font-semibold text-[#0E2350]',
+                assign ? 'size-[34px] text-[13px]' : 'size-8 text-[12.5px]',
+              )}
             >
               {label.charAt(0).toUpperCase()}
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-semibold text-foreground">{label}</span>
-              <span className="block truncate text-xs text-muted-foreground">
+              <span className="block truncate text-sm font-semibold text-[#0E2350]">{label}</span>
+              <span className="mt-px block truncate text-xs text-[#7C8698]">
                 {t('subLabel', { email: teacher.email ?? '—', count: teacher.classes.length })}
               </span>
             </span>

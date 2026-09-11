@@ -76,7 +76,12 @@ async function editSchool(input: SchoolEditPayload): Promise<SchoolWriteResult> 
     opsPortalVersioned: true,
     headers: { 'If-Match': input.ifMatch },
   });
-  return schoolPatchResponseSchema.parse(res.data).data;
+  // The legacy PATCH wire carries an extra top-level `meta` key beside
+  // `data`; parsing only the `data` member keeps the strict result schema
+  // without rejecting the response over the unrelated envelope key (the
+  // create path above already does the same).
+  const body = res.data as { data?: unknown };
+  return schoolPatchResponseSchema.parse({ data: body.data }).data;
 }
 
 export function useSchoolEditMutation(schoolDocumentId: string) {

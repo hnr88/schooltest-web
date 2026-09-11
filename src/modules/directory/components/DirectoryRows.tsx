@@ -1,30 +1,30 @@
 'use client';
 
 /**
- * Task 02 — the directory table shell: header with sortable column buttons
- * (asc/desc toggle, the server sort value pair decides what is written), the
- * selection column, and body rows with the per-row action menu. The sort tie
- * rule itself is server-side (declared sort + documentId ascending, nulls
- * last) — the client only ever sends one of the declared values.
- *
- * teacher/01 — this is now the `table` arm of the `layout` axis (U-05). Its row
- * identity, selection state and action lists come from `lib/directory-row-api.ts`,
- * the same factory `DirectoryList` uses, so the two bodies cannot disagree. It
- * also gained `groupBy` heading rows and §L-rownav's `rowHref` / `onRowSelect`.
+ * ops grid — the `table` layout arm rebuilt as the design's data grid
+ * (`Ops Portal.dc.html:155-186`): no `<table>` and no column-header row, just
+ * flex rows inside the white card with the columns labelled inline (each metric
+ * block carries its own sublabel). Row identity, selection and action lists
+ * still come from `lib/directory-row-api.ts`, and the §L-rownav / §L-a11y
+ * scaffolding (`data-directory-row*`, first-cell anchor) is unchanged — only
+ * the element shape moved. Sort lives in the toolbar's select.
  */
-import { Fragment, type ReactNode } from 'react';
-import { ArrowDown, ArrowUp, MoreHorizontal, type LucideIcon } from 'lucide-react';
+import { Fragment, type MouseEvent, type ReactNode } from 'react';
+import { MoreHorizontal, type LucideIcon } from 'lucide-react';
 
-import { Link } from '@/i18n/navigation';
+import { cn } from '@/lib/utils';
+
+import { Link, useRouter } from '@/i18n/navigation';
 import type { OpsActionTarget } from '@/modules/ops/actions';
-import { IconButton, RowActionsCluster, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/modules/design-system';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
-  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  IconButton,
+  RowActionsCluster,
+} from '@/modules/design-system';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
+import { Checkbox } from '@/components/ui/checkbox';
 
 import { buildDirectoryRowGroups } from '../lib/directory-row-api';
 import type {
@@ -38,8 +38,11 @@ import type {
   DirectoryStateApi,
 } from '../types/directory.types';
 
+const CHECKBOX_GRID_CLASS = 'size-5 rounded-[6px] border-[1.5px] [&_svg]:size-3';
+
 interface DirectoryRowsProps<Row> {
-  state: DirectoryStateApi;
+  /** Kept for the descriptor contract; sorting lives in the toolbar's select. */
+  state?: DirectoryStateApi;
   columns: readonly DirectoryColumnDef<Row>[];
   rows: readonly Row[];
   /** U-11 — optional now; required by the descriptor only while `selectable`. */
@@ -50,20 +53,20 @@ interface DirectoryRowsProps<Row> {
   selection: DirectorySelectionApi<Row>;
   rowActions?: (row: Row) => readonly DirectoryRowAction<Row>[];
   labels: DirectoryLabels;
-  /** U-05 — a full-width heading row per group, in this layout. */
+  /** U-05 — a heading row per group, rendered as a full-width label row. */
   groupBy?: DirectoryGroupDef<Row>;
-  /** U-44 — the first cell becomes the anchor; the rest of the row is not clickable. */
+  /** U-44 — the whole row navigates; the click never fires from a control. */
   rowHref?: (row: Row) => string;
-  /** U-44 — for a row that opens a panel rather than navigating. Never `onClick` on the `<tr>`. */
+  /** U-44 — for a row that opens a panel rather than navigating. */
   onRowSelect?: (row: Row) => void;
-  /** U-17 — pin the header row to the region's scrollport (`sticky top-0`). */
+  /** Kept for the descriptor contract; the card itself is the scrollport. */
   sticky?: boolean;
-  /** ops/34 — the surface's per-row markers (`data-*` slot/status), merged onto each body row. */
-  rowAttrs?: (row: Row) => DirectoryMarkupAttrs<HTMLTableRowElement>;
+  /** ops/34 — the surface's per-row markers (`data-*` slot/status), merged onto each row. */
+  rowAttrs?: (row: Row) => DirectoryMarkupAttrs<HTMLDivElement>;
 }
 
 export function DirectoryRows<Row>({
-  state,
+  state: _state,
   columns,
   rows,
   getRowTarget,
@@ -75,12 +78,22 @@ export function DirectoryRows<Row>({
   groupBy,
   rowHref,
   onRowSelect,
-  sticky = false,
   rowAttrs,
 }: DirectoryRowsProps<Row>) {
-  const leading = selectable ? 1 : 0;
-  const trailing = rowActions ? 1 : 0;
-  const colSpan = columns.length + leading + trailing;
+  const router = useRouter();
+
+  // BUG-005 — clicking anywhere on a row is its PRIMARY action; the click is
+  // dropped when it landed inside a real interactive element.
+  const onRowClick = (row: Row) => (event: MouseEvent<HTMLDivElement>) => {
+    if (event.defaultPrevented) return;
+    if ((event.target as HTMLElement).closest('a,button,input,label,[role="menuitem"]')) return;
+    if (rowHref) {
+      router.push(rowHref(row));
+      return;
+    }
+    onRowSelect?.(row);
+  };
+  const rowClickable = rowHref !== undefined || onRowSelect !== undefined;
 
   const groups = buildDirectoryRowGroups({
     rows,
@@ -91,8 +104,6 @@ export function DirectoryRows<Row>({
     groupBy,
   });
 
-  // Flat row index per group, for §L-a11y A5's `data-directory-row-index` —
-  // DirectoryTable's row-removal focus lands on the nearest survivor by it.
   const groupOffsets = new Map<string, number>();
   let running = 0;
   for (const group of groups) {
@@ -101,104 +112,109 @@ export function DirectoryRows<Row>({
   }
 
   return (
-    <Table>
-      {/* ops/34 — the sticky recipe pins the THEAD, not the <tr>: sticky on a
-          table row inside a collapsed-border table does not hold, and the
-          proven pre-kit pattern (`PastSessionsTable`'s old header) stuck the
-          THEAD itself. The header row keeps its own classes for the visual
-          state; the pin lives here where the scrollport is chosen. */}
-      <TableHeader className={sticky ? 'sticky top-0 z-10 bg-card' : undefined}>
-        <TableRow
-          data-sticky={sticky || undefined}
-        >
-          {selectable ? (
-            <TableHead className="w-10">
-              <Checkbox
-                aria-label={labels.selectAllLabel}
-                checked={selection.headerState === 'all'}
-                onCheckedChange={() => selection.toggleAllOnPage()}
-              />
-            </TableHead>
-          ) : null}
-          {columns.map((column) => (
-            <TableHead key={column.key} className={column.className} aria-sort={ariaSortOf(state, column)}>
-              {column.sortable && column.sortValues ? (
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1 hover:text-foreground"
-                  onClick={() => toggleSort(state, column)}
-                >
-                  {column.header}
-                  {state.params.sort === column.sortValues.asc ? <ArrowUp className="size-3.5" /> : null}
-                  {state.params.sort === column.sortValues.desc ? <ArrowDown className="size-3.5" /> : null}
-                </button>
-              ) : (
-                column.header
+    <div data-slot="directory-rows" className="px-6 pt-1.5 pb-1">
+      {groups.map((group) => (
+        <Fragment key={group.key}>
+          {group.heading === null ? null : (
+            <div className="px-2.5 pt-4 pb-1 text-sm font-medium text-muted-foreground">
+              {group.heading}
+            </div>
+          )}
+          {group.rows.map(({ row, api }, indexInGroup) => (
+            <div
+              key={api.key}
+              data-selected={api.selected || undefined}
+              data-last={api.last || undefined}
+              data-directory-row
+              data-directory-row-index={(groupOffsets.get(group.key) ?? 0) + indexInGroup}
+              onClick={rowClickable ? onRowClick(row) : undefined}
+              className={cn(
+                'flex flex-wrap items-center gap-x-3.5 gap-y-3 rounded-[10px] border-b border-[#EEF1F6] px-2.5 py-[18px] hover:bg-[#F8FAFF]',
+                indexInGroup === group.rows.length - 1 ? 'border-b-0' : null,
+                rowClickable ? 'cursor-pointer' : undefined,
               )}
-            </TableHead>
+              {...rowAttrs?.(row)}
+            >
+              {selectable ? (
+                <Checkbox
+                  aria-label={labels.selectRowLabel(api.key)}
+                  checked={api.selected}
+                  onCheckedChange={() => api.onToggleSelect()}
+                  className={cn('flex-none', CHECKBOX_GRID_CLASS)}
+                />
+              ) : null}
+              {columns.map((column, columnIndex) => (
+                <ColumnBlock
+                  key={column.key}
+                  column={column}
+                  columnIndex={columnIndex}
+                  row={row}
+                  rowHref={rowHref}
+                  onRowSelect={onRowSelect}
+                />
+              ))}
+              {rowActions ? (
+                <div data-directory-row-menu className="relative ms-auto flex flex-none items-center">
+                  <RowActions api={api} row={row} labels={labels} />
+                </div>
+              ) : null}
+            </div>
           ))}
-          {rowActions ? <TableHead className="w-12">
-            <span className="sr-only">{labels.rowMenuLabel}</span>
-          </TableHead> : null}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {groups.map((group) => (
-          <Fragment key={group.key}>
-            {group.heading === null ? null : (
-              <TableRow data-slot="directory-group-heading">
-                <TableCell colSpan={colSpan} className="bg-muted/50 text-sm font-medium text-muted-foreground">
-                  {group.heading}
-                </TableCell>
-              </TableRow>
-            )}
-            {group.rows.map(({ row, api }, indexInGroup) => (
-              <TableRow
-                key={api.key}
-                data-selected={api.selected || undefined}
-                data-last={api.last || undefined}
-                data-directory-row
-                data-directory-row-index={(groupOffsets.get(group.key) ?? 0) + indexInGroup}
-                {...rowAttrs?.(row)}
-              >
-                {selectable ? (
-                  <TableCell>
-                    <Checkbox
-                      aria-label={labels.selectRowLabel(api.key)}
-                      checked={api.selected}
-                      onCheckedChange={() => api.onToggleSelect()}
-                    />
-                  </TableCell>
-                ) : null}
-                {columns.map((column, columnIndex) => (
-                  <TableCell key={column.key} className={column.className}>
-                    {columnIndex === 0 ? (
-                      <FirstCell row={row} rowHref={rowHref} onRowSelect={onRowSelect}>
-                        {column.cell(row)}
-                      </FirstCell>
-                    ) : (
-                      column.cell(row)
-                    )}
-                  </TableCell>
-                ))}
-                {rowActions ? (
-                  <TableCell data-directory-row-menu>
-                    <RowActions api={api} row={row} labels={labels} />
-                  </TableCell>
-                ) : null}
-              </TableRow>
-            ))}
-          </Fragment>
-        ))}
-      </TableBody>
-    </Table>
+        </Fragment>
+      ))}
+    </div>
   );
 }
+
+/** First column defaults to the title block, the rest to metric blocks. */
+function ColumnBlock<Row>({
+  column,
+  columnIndex,
+  row,
+  rowHref,
+  onRowSelect,
+}: {
+  column: DirectoryColumnDef<Row>;
+  columnIndex: number;
+  row: Row;
+  rowHref?: (row: Row) => string;
+  onRowSelect?: (row: Row) => void;
+}) {
+  const kind = column.grid ?? (columnIndex === 0 ? 'title' : 'metric');
+  if (kind === 'bare') {
+    return <div className={cn('flex-none', column.className)}>{column.cell(row)}</div>;
+  }
+  if (kind === 'title') {
+    return (
+      <div className={cn('min-w-[140px] flex-[3_1_200px] overflow-hidden', column.className)}>
+        <FirstCell row={row} rowHref={rowHref} onRowSelect={onRowSelect}>
+          {column.cell(row)}
+        </FirstCell>
+      </div>
+    );
+  }
+  if (kind === 'text') {
+    // The tab-table's text column (`Ops Portal.dc.html:398-400`): one 13px
+    // line, no sublabel, ellipsised — it SHRINKS and TRUNCATES instead of
+    // forcing the row to wrap around its longest word (an email or a UUID
+    // fixture string was pushing whole rows onto two scattered lines).
+    return (
+      <div className={cn('min-w-[80px] flex-[1_1_100px] overflow-hidden', column.className)}>
+        <div className="truncate text-[13px] leading-5 text-[#3D4A5C]">{column.cell(row)}</div>
+      </div>
+    );
+  }
+  return (
+    <div className={cn('min-w-[56px] flex-[1_1_80px] overflow-hidden', column.className)}>
+      <div className="truncate text-sm font-semibold text-foreground">{column.cell(row)}</div>
+      <div className="mt-0.5 truncate text-xs lowercase text-[#9AA6B8]">{column.header}</div>
+    </div>
+  );
+}
+
 /**
- * §L-rownav. The whole-row link is the FIRST cell's content as an `<a>`, never
- * `after:absolute after:inset-0` on a row that also carries a menu — that shape
- * is the nested-interactive failure axe reports, and it is the defect this
- * replaces rather than the pattern to copy. `rowActions` stay outside the link.
+ * §L-rownav. The whole-row link is the FIRST block's content as an `<a>`, never
+ * an overlay on a row that also carries a menu. `rowActions` stay outside the link.
  */
 function FirstCell<Row>({
   row,
@@ -213,34 +229,19 @@ function FirstCell<Row>({
 }) {
   if (rowHref) {
     return (
-      <Link href={rowHref(row)} data-row-href className="hover:underline">
+      <Link href={rowHref(row)} data-row-href className="block hover:underline">
         {children}
       </Link>
     );
   }
   if (onRowSelect) {
     return (
-      <button type="button" data-row-select className="text-left hover:underline" onClick={() => onRowSelect(row)}>
+      <button type="button" data-row-select className="block text-left hover:underline" onClick={() => onRowSelect(row)}>
         {children}
       </button>
     );
   }
   return <>{children}</>;
-}
-
-function toggleSort<Row>(state: DirectoryStateApi, column: DirectoryColumnDef<Row>): void {
-  if (!column.sortValues) return;
-  state.setSort(state.params.sort === column.sortValues.asc ? column.sortValues.desc : column.sortValues.asc);
-}
-
-function ariaSortOf<Row>(
-  state: DirectoryStateApi,
-  column: DirectoryColumnDef<Row>,
-): 'ascending' | 'descending' | undefined {
-  if (!column.sortValues) return undefined;
-  if (state.params.sort === column.sortValues.asc) return 'ascending';
-  if (state.params.sort === column.sortValues.desc) return 'descending';
-  return undefined;
 }
 
 interface RowMenuProps<Row> {
@@ -251,14 +252,7 @@ interface RowMenuProps<Row> {
 
 type QuickRowAction<Row> = DirectoryRowAction<Row> & { icon: LucideIcon };
 
-/**
- * Up to two `quick` actions render inline as icon buttons ahead of the menu;
- * the menu still lists every action, so inline is a shortcut, not a filter.
- * `quick` without `icon` is menu-only (there is nothing to draw).
- *
- * teacher/01: both lists now arrive on `DirectoryRowApi`, derived by
- * `lib/directory-row-api.ts` — the cap is applied in one place for every layout.
- */
+/** Up to two `quick` actions render inline ahead of the ⋯ menu; the menu lists every action. */
 function RowActions<Row>({ api, row, labels }: { api: DirectoryRowApi<Row>; row: Row; labels: DirectoryLabels }) {
   if (api.actions.length === 0) return null;
   const quick = api.quickActions.filter((action): action is QuickRowAction<Row> => Boolean(action.icon));
@@ -272,10 +266,7 @@ function RowActions<Row>({ api, row, labels }: { api: DirectoryRowApi<Row>; row:
           label={action.label}
           size="sm"
           tone={action.destructive ? 'danger' : undefined}
-          // ops/28 (D-53) — visual-only: `aria-disabled` + a muted class, not
-          // the native `disabled` attribute, so `onSelect` still runs and a
-          // write-gated action's refusal toast still fires (D-31). See
-          // DirectoryRowAction.disabled.
+          // ops/28 (D-53) — visual-only disable so `onSelect` still runs.
           aria-disabled={action.disabled === true || undefined}
           className={action.disabled ? 'opacity-50' : undefined}
           onClick={() => action.onSelect(row)}
@@ -291,18 +282,22 @@ function RowMenu<Row>({ actions, row, labels }: RowMenuProps<Row>) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        render={<IconButton icon={MoreHorizontal} label={labels.rowMenuLabel} size="sm" />}
+        render={
+          <button
+            type="button"
+            aria-label={labels.rowMenuLabel}
+            className="grid size-9 cursor-pointer place-items-center rounded-full bg-transparent text-[#3D4A5C] transition-colors hover:bg-[#EEF1F6]"
+          >
+            <MoreHorizontal className="size-[18px]" aria-hidden="true" />
+          </button>
+        }
       />
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="w-[218px]">
         {actions.map((action) => (
           <DropdownMenuItem
             key={action.label}
-            // ops/28 (D-53) — `disabled` greys the item via `aria-disabled`,
-            // never the native `disabled` prop (or a `data-disabled` attr —
-            // `DropdownMenuItem`'s own class list already wires
-            // `data-disabled:pointer-events-none`, which would block the
-            // click below just as the native prop would). See
-            // DirectoryRowAction.disabled for why that click must stay live.
+            // ops/28 (D-53) — `aria-disabled` greys the item but keeps the
+            // click live so a write-gated action's refusal toast still fires.
             aria-disabled={action.disabled === true || undefined}
             className={
               action.disabled
@@ -312,11 +307,8 @@ function RowMenu<Row>({ actions, row, labels }: RowMenuProps<Row>) {
                   : undefined
             }
             // onClick, NOT onSelect: this is Base UI's Menu.Item, which has no
-            // onSelect prop — that is Radix's API. React binds the name as the
-            // DOM text-selection event instead, so the handler sat silent
-            // through every click (menu opens, item "activates", nothing
-            // runs, no error) — the schools table's dead "Open school" was
-            // this, not the router.
+            // onSelect prop — React would bind the text-selection event instead
+            // and the handler would sit silent through every click.
             onClick={() => action.onSelect(row)}
           >
             {action.label}

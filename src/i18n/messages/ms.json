@@ -3535,7 +3535,8 @@
             "cta": "Arkibkan sekolah"
           }
         }
-      }
+      },
+      "loadingData": "Memuatkan data sekolah…"
     },
     "onboard": {
       "button": "Jemput pentadbir sekolah",
@@ -3697,7 +3698,9 @@
         "save": "Simpan profil",
         "saving": "Menyimpan…",
         "savedToast": "Profil disimpan.",
-        "errorToast": "Profil anda tidak dapat disimpan. Cuba lagi."
+        "errorToast": "Profil anda tidak dapat disimpan. Cuba lagi.",
+        "edit": "Edit",
+        "role": "operasi"
       }
     },
     "plan": {
@@ -4050,7 +4053,8 @@
           "body": "Kelas mereka perlu diagihkan semula.",
           "cta": "Alih keluar {count}"
         }
-      }
+      },
+      "fieldOnboarding": "Onboarding"
     },
     "export": {
       "title": "Eksport sekolah",

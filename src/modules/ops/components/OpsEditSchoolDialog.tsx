@@ -3,13 +3,14 @@
 import { useTranslations } from 'next-intl';
 
 import {
-  Button,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  OPS_CONTROL_CLASS,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogClose,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
   SelectField,
 } from '@/modules/design-system';
 import { FormDialogShell, FormShell } from '@/modules/forms';
@@ -60,16 +61,10 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
         cancelLabel: t('dirtyCloseCancel'),
       }}
     >
-      <DialogContent data-slot="ops-edit-school-dialog">
-        <DialogHeader>
-          <DialogTitle>{t('editTitle')}</DialogTitle>
-          <DialogDescription>
-            {t('editDescription', { name: school.name })}
-          </DialogDescription>
-        </DialogHeader>
+      <OpsDialogContent data-slot="ops-edit-school-dialog" className="sm:max-w-[640px]">
+        <OpsDialogHeader title={t('editTitle')} sub={t('editDescription', { name: school.name })} />
         <FormShell
           id="ops-edit-school"
-          className="flex flex-col gap-4"
           rootError={errors.root?.message ?? null}
           submitting={isPending}
           onSubmit={(event) => {
@@ -77,38 +72,44 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
             submit(event);
           }}
         >
-          {fieldErrorCount > 0 ? (
-            <p role="alert" className="text-sm text-destructive" data-testid="ops-edit-school-form-summary">
-              {t('formSummary', { count: fieldErrorCount })}
+          <OpsDialogBody>
+            <p className="text-[13px] leading-relaxed text-[#7C8698]">
+              {t('editVersionNote', { version: school.updatedAt })}
             </p>
-          ) : null}
-          <p className="text-sm text-body">
-            {t('editVersionNote', { version: school.updatedAt })}
-          </p>
-          <OpsEditSchoolFields form={form} emailWarning={emailDomainWarning} />
-          <SelectField
-            id="edit-school-license-plan"
-            label={tPlan('label')}
-            placeholder={tPlan('placeholder')}
-            helperText={tPlan('helper')}
-            options={SCHOOL_PLAN_OPTIONS.map((option) => ({
-              value: option,
-              label: tPlan(`options.${option}`),
-            }))}
-            value={school.plan ?? ''}
-            onValueChange={(value) => void assignPlan(value)}
-            disabled={planPending}
-          />
-          <DialogFooter>
-            <DialogClose render={<Button type="button" variant="outline" />}>
+            <OpsEditSchoolFields form={form} emailWarning={emailDomainWarning} />
+            <SelectField
+              id="edit-school-license-plan"
+              label={tPlan('label')}
+              placeholder={tPlan('placeholder')}
+              helperText={tPlan('helper')}
+              options={SCHOOL_PLAN_OPTIONS.map((option) => ({
+                value: option,
+                label: tPlan(`options.${option}`),
+              }))}
+              value={school.plan ?? ''}
+              onValueChange={(value) => void assignPlan(value)}
+              disabled={planPending}
+              triggerClassName={OPS_CONTROL_CLASS}
+            />
+          </OpsDialogBody>
+          <OpsDialogFooter
+            error={
+              fieldErrorCount > 0 ? (
+                <span data-testid="ops-edit-school-form-summary">
+                  {t('formSummary', { count: fieldErrorCount })}
+                </span>
+              ) : null
+            }
+          >
+            <OpsDialogClose render={<OpsDialogCancel type="button" />}>
               {t('cancel')}
-            </DialogClose>
-            <Button type="submit" loading={isPending}>
+            </OpsDialogClose>
+            <OpsDialogCta type="submit" loading={isPending}>
               {isPending ? t('savingLabel') : t('save')}
-            </Button>
-          </DialogFooter>
+            </OpsDialogCta>
+          </OpsDialogFooter>
         </FormShell>
-      </DialogContent>
+      </OpsDialogContent>
     </FormDialogShell>
   );
 }

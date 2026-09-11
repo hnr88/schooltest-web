@@ -23,9 +23,11 @@ function FieldShell({
   disabled,
   labelId,
   className,
+  hideLabel,
 }: FieldShellProps) {
   const labelClass = cn(
     'text-body-sm font-semibold',
+    hideLabel && 'sr-only',
     disabled ? 'text-muted-foreground' : 'text-secondary-foreground',
   );
   return (

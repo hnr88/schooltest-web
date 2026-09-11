@@ -29,6 +29,8 @@ function SelectField({
   required,
   disabled,
   className,
+  hideLabel,
+  triggerClassName,
 }: SelectFieldProps) {
   return (
     <FieldShell
@@ -39,6 +41,7 @@ function SelectField({
       required={required}
       disabled={disabled}
       className={className}
+      hideLabel={hideLabel}
     >
       <Select
         value={value}
@@ -46,12 +49,13 @@ function SelectField({
         onValueChange={(next) => onValueChange?.(next ?? '')}
         disabled={disabled}
         required={required}
+        items={options.map((option) => ({ value: option.value, label: option.label }))}
       >
         <SelectTrigger
           id={id}
           aria-invalid={errorText ? true : undefined}
           aria-describedby={describedBy(id, helperText, errorText)}
-          className={cn(TRIGGER, errorText && 'border-destructive')}
+          className={cn(TRIGGER, triggerClassName, errorText && 'border-destructive')}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

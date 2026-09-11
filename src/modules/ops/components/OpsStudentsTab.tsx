@@ -169,7 +169,9 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
     [t, classOptions],
   );
 
-  const state = useOpsDirectoryState({ filters, sorts: [], defaultSort: '' });
+  // Preserve ?tab= — without it any filter/page change rewrites the URL and
+  // the detail page flips back to the Overview tab.
+  const state = useOpsDirectoryState({ filters, sorts: [], defaultSort: '', preserveParams: ['tab'] });
 
   // The kit stores filter values as strings; the contract wants the status
   // enum and a NUMERIC year — narrowed/decoded once, here.

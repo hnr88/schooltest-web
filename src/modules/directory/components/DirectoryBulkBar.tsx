@@ -1,28 +1,22 @@
 'use client';
 
 /**
- * Task 02 — the bulk bar, rendered by the task 05 action kit's OpsBulkBar
- * (composed, never reimplemented — house rule 1). The bar shows only while a
- * selection exists; the actions receive the selected targets in page order and
- * decide their own side effects. The cap notice and the "on this page" wording
- * come from the shared bar, so every ops surface states selection the same way.
+ * ops grid — the bulk bar as the grid card's opening row
+ * (`Ops Portal.dc.html:142-154`): select-all checkbox, count label, the
+ * actions right-aligned as flat 32px buttons and a Clear pill. With nothing
+ * selected it still renders the select-all checkbox (the old THEAD's control)
+ * and hides the action cluster, exactly as the design's toggled bar does.
  *
- * teacher/05 (U-14, U-21): each action is partitioned into eligible and
- * skipped rows before dispatch. The button carries the design's per-action
- * "N of M" count label, the skip sentence renders beside the bar from the
- * action's own `skipLabel` copy (R-15 — the kit reads no catalogue), and
- * `onRun` receives ONLY the eligible rows and targets. With zero eligible
- * rows the action still dispatches — `onRun([], [])` exactly once — and the
- * KIT raises no confirm, no toast and no disabled state: the design's
- * "Nothing to <action>" advisory is the SURFACE's, through U-24.
- *
- * U-24 SEAM (school-admin/05, not yet landed): the zero-eligible advisory
- * variant of OpsConfirmDialog does not exist yet. The surface that consumes
- * this bar wires it when school-admin/05 lands — grep this file or
- * mvp/teacher/proof/05.md for U-24; never rebuild the dialog here.
+ * teacher/05 (U-14, U-21) partitioning is unchanged: each action receives only
+ * its eligible rows/targets, and `onRun([], [])` still dispatches on an empty
+ * eligible set.
  */
-import { OpsBulkBar, type OpsActionTarget } from '@/modules/ops/actions';
+import { useTranslations } from 'next-intl';
 
+import { Checkbox } from '@/components/ui/checkbox';
+
+import type { OpsActionTarget } from '@/modules/ops/actions';
+import { OPS_SELECTION_MAX } from '@/modules/ops/actions/constants/ops-action.constants';
 import { partitionSelection } from '../lib/directory-eligibility';
 import type { DirectoryBulkAction, DirectoryLabels, DirectorySelectionApi } from '../types/directory.types';
 
@@ -37,10 +31,10 @@ export function DirectoryBulkBar<Row>({
   bulkActions,
   labels,
 }: DirectoryBulkBarProps<Row>) {
-  if (selection.count === 0) return null;
+  const t = useTranslations('Ops.bulkBar');
+  const noun = selection.count === 1 ? labels.selectedEntityNoun : `${labels.selectedEntityNoun}s`;
+  const hasSelection = selection.count > 0;
 
-  // Index-paired rows and targets: selectedRows and targets are pinned to the
-  // same order and cap (unit test), so pairs[i] is one selected item whole.
   type SelectionPair = { row: Row; target: OpsActionTarget };
   const pairs: readonly SelectionPair[] = selection.selectedRows.map((row, index) => ({
     row,
@@ -60,11 +54,7 @@ export function DirectoryBulkBar<Row>({
           ? action.label
           : `${action.label} (${eligible.length} of ${selection.selectedRows.length})`,
       destructive: action.destructive,
-      // ops/28 (D-53) — forwarded verbatim to OpsBulkBar's own `disabled`
-      // (native HTML disabled); see DirectoryBulkAction.disabled for why a
-      // bulk control is allowed to go fully inert where a row's kebab item
-      // is not. Unset by every existing consumer, so this changes nothing
-      // until a surface starts passing it.
+      // ops/28 (D-53) — forwarded verbatim as the native HTML disabled.
       disabled: action.disabled === true,
       onSelect: () =>
         action.onRun(
@@ -83,16 +73,51 @@ export function DirectoryBulkBar<Row>({
     .filter((sentence): sentence is string => sentence !== null);
 
   return (
-    <div>
-      <OpsBulkBar
-        count={selection.count}
-        atCap={selection.atCap}
-        entityLabel={labels.selectedEntityNoun}
-        actions={mapped.map(({ skipSentence: _skip, ...action }) => action)}
-        onClear={selection.clear}
+    <div
+      className="flex flex-wrap items-center gap-3.5 border-b border-[#EEF1F6] px-6 pt-4 pb-3.5"
+      data-slot="directory-bulk-bar"
+    >
+      <Checkbox
+        aria-label={labels.selectAllLabel}
+        checked={selection.headerState === 'all'}
+        indeterminate={selection.headerState === 'some'}
+        onCheckedChange={() => selection.toggleAllOnPage()}
+        className="size-5 rounded-[6px] border-[1.5px] [&_svg]:size-3"
       />
+      <span role="status" className="text-[13px] font-semibold text-foreground">
+        {hasSelection ? t('selectedOnPage', { count: selection.count, noun }) : labels.selectAllLabel}
+      </span>
+      {hasSelection && selection.atCap ? (
+        <span className="text-[13px] text-muted-foreground">{t('cappedAt', { max: OPS_SELECTION_MAX })}</span>
+      ) : null}
+      {hasSelection ? (
+        <div className="ms-auto flex flex-wrap items-center gap-2">
+          {mapped.map((action) => (
+            <button
+              key={action.id}
+              type="button"
+              disabled={action.disabled === true}
+              onClick={action.onSelect}
+              className={
+                action.destructive === true
+                  ? 'h-8 cursor-pointer rounded-lg bg-transparent px-3 text-[13px] font-semibold text-destructive hover:bg-[#F4F6FA] disabled:cursor-not-allowed disabled:opacity-50'
+                  : 'h-8 cursor-pointer rounded-lg bg-transparent px-3 text-[13px] font-semibold text-foreground hover:bg-[#F4F6FA] disabled:cursor-not-allowed disabled:opacity-50'
+              }
+            >
+              {action.label}
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={selection.clear}
+            className="h-8 cursor-pointer rounded-full bg-transparent px-3 text-[13px] font-semibold text-muted-foreground hover:bg-[#F4F6FA]"
+          >
+            {t('clear')}
+          </button>
+        </div>
+      ) : null}
       {skipSentences.length > 0 ? (
-        <p data-slot="directory-bulk-skip" className="text-meta text-muted-foreground">
+        <p data-slot="directory-bulk-skip" className="w-full text-meta text-muted-foreground">
           {skipSentences.join(' ')}
         </p>
       ) : null}

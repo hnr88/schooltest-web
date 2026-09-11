@@ -108,7 +108,13 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       onValueChange={onTabChange}
       className="flex flex-col gap-4"
     >
-      <TabsList aria-label={t('title')} className="overflow-x-auto">
+      {/* Design 292-297: underline tabs — 14px text, 12px 16px padding, active
+          600 weight with a 2.5px underline overlapping a full-width 1px rule. */}
+      <TabsList
+        aria-label={t('title')}
+        variant="line"
+        className="w-full justify-start gap-1 overflow-x-auto rounded-none border-b border-[#DFE5EE] bg-transparent px-1 py-0 group-data-horizontal/tabs:h-auto"
+      >
         {TAB_ORDER.map((key) => {
           // The design's tab count badges (`:296-298`), fed from the detail
           // read; the Overview tab has no count. A zero count renders NO badge
@@ -125,13 +131,17 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
                     ? school.student_count
                     : null;
           return (
-            <TabsTrigger key={key} value={key} className="gap-2">
+            <TabsTrigger
+              key={key}
+              value={key}
+              className="h-auto flex-none justify-center gap-2 rounded-none border-0 border-b-[2.5px] border-b-transparent bg-transparent px-4 py-3 text-sm font-medium text-[#7C8698] hover:text-foreground data-active:mb-[-1px] data-active:border-b-primary data-active:bg-transparent data-active:font-semibold data-active:text-foreground data-active:after:opacity-0"
+            >
               {t(`tab.${key}`)}
               {count !== null && count > 0 ? (
                 <span
                   aria-hidden="true"
                   data-testid={`ops-tab-count-${key}`}
-                  className="rounded-full bg-muted px-2 py-0.5 text-[11.5px] font-bold leading-none text-muted-foreground"
+                  className="rounded-full bg-[#E8ECF4] px-2 py-0.5 text-[11.5px] font-bold leading-none text-[#7C8698]"
                 >
                   {count}
                 </span>

@@ -142,7 +142,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
     [t],
   );
 
-  const state = useDirectoryState({ filters, sorts: [], defaultSort: '', preserveParams: ['teacher'] });
+  const state = useDirectoryState({ filters, sorts: [], defaultSort: '', preserveParams: ['teacher', 'tab'] });
 
   const query = useMemo<ClassesListQuery>(
     () => ({
@@ -327,9 +327,9 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
         key: 'name',
         header: t('columnClass'),
         cell: (row) => (
-          <div className="flex flex-col">
-            <span className="font-medium text-foreground">{noValueIfMissing(row.name)}</span>
-            <span className="block text-meta text-muted-foreground">
+          <div className="flex min-w-0 flex-col">
+            <span className="truncate font-medium text-foreground">{noValueIfMissing(row.name)}</span>
+            <span className="block truncate text-meta text-muted-foreground">
               {row.test_window === null ? t('noWindow') : row.test_window.title}
             </span>
           </div>
@@ -338,6 +338,7 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
       {
         key: 'teacher',
         header: t('columnTeacher'),
+        grid: 'text',
         cell: (row) =>
           row.primary_teacher === null
             ? t('noTeacher')
@@ -351,11 +352,13 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
       {
         key: 'year',
         header: t('columnYear'),
+        grid: 'text',
         cell: (row) => noValueIfMissing(row.year_band),
       },
       {
         key: 'status',
         header: t('columnStatus'),
+        grid: 'bare',
         cell: (row) => {
           const status = classRowStatus(row);
           return <StatusPill tone={STATUS_TONE[status]}>{t(`status.${status}`)}</StatusPill>;

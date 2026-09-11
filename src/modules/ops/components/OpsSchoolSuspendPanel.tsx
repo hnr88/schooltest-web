@@ -5,14 +5,15 @@ import { useTranslations } from 'next-intl';
 import { useMemo, useRef, useState } from 'react';
 import { formatResourceVersion, type PortalStatus } from '@schooltest/ops-contracts';
 
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
+import { restFailureOf, strapi } from '@/lib/axios/strapi';
 import {
-  DropdownMenu,
+  Button,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { restFailureOf, strapi } from '@/lib/axios/strapi';
-import { IconButton, Button } from '@/modules/design-system';
+  IconButton,
+} from '@/modules/design-system';
 import {
   OpsTypedNameConfirm,
   showOpsToast,
@@ -295,8 +296,8 @@ export function OpsSchoolSuspendPanel({
       >
         <Button
           type="button"
-          variant={primary.danger ? 'destructive' : 'default'}
-          size="sm"
+          variant="navy"
+          className="h-11 rounded-full px-5 text-[13.5px] font-semibold"
           data-action={`primary-${primary.key}`}
           disabled={readOnly}
           onClick={readOnly ? undefined : () => chooseAction(primary)}
@@ -306,9 +307,15 @@ export function OpsSchoolSuspendPanel({
       </span>
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<IconButton icon={MoreHorizontal} label={t('actions.menuLabel')} size="sm" />}
+          render={
+            <IconButton
+              icon={MoreHorizontal}
+              label={t('actions.menuLabel')}
+              className="size-11 rounded-full border-[#D8DFEA] hover:border-navy-900 hover:bg-card"
+            />
+          }
         />
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="min-w-[236px]">
           {actions.map((action) => (
             <DropdownMenuItem
               key={action.key}

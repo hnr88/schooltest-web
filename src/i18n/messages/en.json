@@ -4014,7 +4014,8 @@
             "cta": "Archive school"
           }
         }
-      }
+      },
+      "loadingData": "Loading school data…"
     },
     "onboard": {
       "button": "Invite school admin",
@@ -4176,7 +4177,9 @@
         "save": "Save profile",
         "saving": "Saving…",
         "savedToast": "Profile saved.",
-        "errorToast": "Your profile could not be saved. Try again."
+        "errorToast": "Your profile could not be saved. Try again.",
+        "edit": "Edit",
+        "role": "operations"
       }
     },
     "plan": {
@@ -4630,7 +4633,8 @@
           "body": "Their classes will need reassigning.",
           "cta": "Remove {count}"
         }
-      }
+      },
+      "fieldOnboarding": "Onboarding"
     },
     "staffInvitations": {
       "title": "Staff invitations",

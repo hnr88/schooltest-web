@@ -7,17 +7,17 @@ import { isAxiosError } from 'axios';
 
 import {
   Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  FieldShell,
   Input,
-  NativeSelect,
-  NativeSelectOption,
+  OPS_CONTROL_CLASS,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogCancel,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogFooter,
+  OpsDialogHeader,
+  OpsFieldShell,
+  SelectField,
   Skeleton,
 } from '@/modules/design-system';
 import { showOpsToast, useOpsWriteGate } from '@/modules/ops/actions';
@@ -294,124 +294,122 @@ export function OpsEditClassDialog({
   const blockedReason = writeGate.blockedReason();
 
   return (
-    <Dialog
+    <OpsDialog
       open
       onOpenChange={(next) => {
         if (!next && !closing) onClose();
       }}
     >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{isEdit ? t('title') : createT('title')}</DialogTitle>
-          <DialogDescription>{isEdit ? t('description') : createT('description')}</DialogDescription>
-        </DialogHeader>
+      <OpsDialogContent className="sm:max-w-[560px]">
+        <OpsDialogHeader
+          title={isEdit ? t('title') : createT('title')}
+          sub={isEdit ? t('description') : createT('description')}
+        />
 
-        <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-          {formError ? (
-            <Alert variant="error" title={t('saveErrorTitle')}>
-              {formError}
-            </Alert>
-          ) : null}
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FieldShell
-              id="ops-class-form-name"
-              label={t('nameLabel')}
-              required
-              errorText={fieldErrors.name}
-            >
-              <Input
+        <form onSubmit={submit} noValidate>
+          <OpsDialogBody>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <OpsFieldShell
                 id="ops-class-form-name"
-                autoComplete="off"
-                aria-invalid={fieldErrors.name ? true : undefined}
-                value={name}
-                onChange={(event) => {
-                  setName(event.target.value);
-                  clearErrors('name');
-                }}
-              />
-            </FieldShell>
-            <FieldShell id="ops-class-form-year" label={labels('yearBand')}>
-              <NativeSelect
-                id="ops-class-form-year"
-                value={yearBand}
-                onChange={(event) => {
-                  setYearBand(event.target.value);
-                  clearErrors();
-                }}
+                label={t('nameLabel')}
+                required
+                errorText={fieldErrors.name}
               >
-                <NativeSelectOption value="">{labels('notAvailable')}</NativeSelectOption>
-                {YEAR_BANDS.map((band) => (
-                  <NativeSelectOption key={band} value={band}>
-                    {classesTabT(`year.${band}`)}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
-            </FieldShell>
-          </div>
+                <Input
+                  id="ops-class-form-name"
+                  autoComplete="off"
+                  aria-invalid={fieldErrors.name ? true : undefined}
+                  value={name}
+                  className={`h-12 rounded-xl ${OPS_CONTROL_CLASS}`}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                    clearErrors('name');
+                  }}
+                />
+              </OpsFieldShell>
+              <OpsFieldShell id="ops-class-form-year" label={labels('yearBand')}>
+                <SelectField
+                  id="ops-class-form-year"
+                  label={labels('yearBand')}
+                  placeholder={labels('notAvailable')}
+                  hideLabel
+                  value={yearBand}
+                  options={[
+                    { value: '', label: labels('notAvailable') },
+                    ...YEAR_BANDS.map((band) => ({ value: band, label: classesTabT(`year.${band}`) })),
+                  ]}
+                  onValueChange={(value) => {
+                    setYearBand(value);
+                    clearErrors();
+                  }}
+                  triggerClassName={OPS_CONTROL_CLASS}
+                />
+              </OpsFieldShell>
+            </div>
 
-          <div className="flex flex-col gap-1.5">
-            <span className="text-body-sm font-semibold text-secondary-foreground">
-              {labels('classTeacher')}
-            </span>
-            {waitingOnDetail || teachersQuery.isPending ? (
-              <Skeleton className="h-40 w-full rounded-card" />
-            ) : teachersQuery.isError ? (
-              <Alert variant="error" title={t('loadError')}>
-                {t('loadErrorDescription')}
-              </Alert>
-            ) : (
-              <OpsTeacherPicker
-                teachers={teachers}
-                selectedDocumentId={teacherDocumentId}
-                onSelect={(documentId) => {
-                  // A plain radiogroup, matching `OpsAssignTeacherDialog`'s
-                  // own `onSelect` (task 22): picking a teacher never
-                  // toggles off — the design draws no "none" row, and this
-                  // form invents no unassign gesture the design does not.
-                  setTeacherOverride(documentId);
+            <div className="flex flex-col">
+              <span className="mb-[9px] text-[12.5px] leading-none font-semibold text-[#0E2350]">
+                {labels('classTeacher')}
+              </span>
+              {waitingOnDetail || teachersQuery.isPending ? (
+                <Skeleton className="h-40 w-full rounded-card" />
+              ) : teachersQuery.isError ? (
+                <Alert variant="error" title={t('loadError')}>
+                  {t('loadErrorDescription')}
+                </Alert>
+              ) : (
+                <OpsTeacherPicker
+                  teachers={teachers}
+                  selectedDocumentId={teacherDocumentId}
+                  onSelect={(documentId) => {
+                    // A plain radiogroup, matching `OpsAssignTeacherDialog`'s
+                    // own `onSelect` (task 22): picking a teacher never
+                    // toggles off — the design draws no "none" row, and this
+                    // form invents no unassign gesture the design does not.
+                    setTeacherOverride(documentId);
+                    clearErrors('teacherDocumentId');
+                  }}
+                  ariaLabel={labels('classTeacher')}
+                />
+              )}
+              {teacherError ? (
+                <p className="mt-1.5 text-xs font-medium text-[#B42318]">{teacherError}</p>
+              ) : teacherWarning ? (
+                <p className="mt-1.5 text-xs font-medium text-warning">{teacherWarning}</p>
+              ) : null}
+            </div>
+
+            <OpsFieldShell id="ops-class-form-window" label={formT('testWindowLabel')}>
+              <SelectField
+                id="ops-class-form-window"
+                label={formT('testWindowLabel')}
+                placeholder={formT('noWindowOption')}
+                hideLabel
+                value={testWindowDocumentId ?? ''}
+                disabled={waitingOnDetail || windowsQuery.isPending}
+                options={[
+                  { value: '', label: formT('noWindowOption') },
+                  ...windows.map((window) => ({
+                    value: window.documentId,
+                    label: window.title,
+                    disabled: window.status === 'cancelled' || window.status === 'complete',
+                  })),
+                ]}
+                onValueChange={(value) => {
+                  setWindowOverride(value === '' ? null : value);
                   clearErrors('teacherDocumentId');
                 }}
-                ariaLabel={labels('classTeacher')}
+                triggerClassName={OPS_CONTROL_CLASS}
               />
-            )}
-            {teacherError ? (
-              <p className="flex items-center gap-1.5 text-meta font-medium text-destructive">{teacherError}</p>
-            ) : teacherWarning ? (
-              <p className="text-meta font-medium text-warning">{teacherWarning}</p>
-            ) : null}
-          </div>
+            </OpsFieldShell>
+          </OpsDialogBody>
 
-          <FieldShell id="ops-class-form-window" label={formT('testWindowLabel')}>
-            <NativeSelect
-              id="ops-class-form-window"
-              value={testWindowDocumentId ?? ''}
-              disabled={waitingOnDetail || windowsQuery.isPending}
-              onChange={(event) => {
-                setWindowOverride(event.target.value === '' ? null : event.target.value);
-                clearErrors('teacherDocumentId');
-              }}
-            >
-              <NativeSelectOption value="">{formT('noWindowOption')}</NativeSelectOption>
-              {windows.map((window) => (
-                <NativeSelectOption
-                  key={window.documentId}
-                  value={window.documentId}
-                  disabled={window.status === 'cancelled' || window.status === 'complete'}
-                >
-                  {window.title}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FieldShell>
-
-          <DialogFooter>
-            <Button type="button" size="lg" variant="outline" onClick={onClose} disabled={isSubmitting}>
+          <OpsDialogFooter error={formError}>
+            <OpsDialogCancel type="button" onClick={onClose} disabled={isSubmitting}>
               {t('cancel')}
-            </Button>
-            <Button
+            </OpsDialogCancel>
+            <OpsDialogCta
               type="submit"
-              size="lg"
               loading={isSubmitting}
               aria-disabled={blockedReason !== null || waitingOnDetail || undefined}
               className={blockedReason !== null ? 'opacity-60' : undefined}
@@ -424,10 +422,10 @@ export function OpsEditClassDialog({
               }}
             >
               {isSubmitting ? (isEdit ? t('saving') : createT('creating')) : isEdit ? t('save') : createT('submit')}
-            </Button>
-          </DialogFooter>
+            </OpsDialogCta>
+          </OpsDialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }

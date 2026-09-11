@@ -285,8 +285,11 @@ test.describe.serial('ops/28 read-only sweep — ops_support', () => {
     await expect(card).toBeVisible({ timeout: WAIT });
 
     const probe = { first: 'OpsSupportProbe', last: `Rename${Date.now() % 100_000}` };
+    // The rename form lives behind the profile card's Edit pill (design BUG-006).
+    await page.getByTestId('ops-account-edit').click({ timeout: WAIT });
     const firstInput = page.locator('#ops-profile-first-name');
     const lastInput = page.locator('#ops-profile-last-name');
+    await expect(firstInput).toBeVisible({ timeout: WAIT });
     const originalFirst = await firstInput.inputValue();
     const originalLast = await lastInput.inputValue();
 
@@ -302,6 +305,9 @@ test.describe.serial('ops/28 read-only sweep — ops_support', () => {
         page.getByText(cat(en, 'Ops.settings.account.savedToast'), { exact: true }),
       ).toBeVisible({ timeout: WAIT });
     } finally {
+      // The modal auto-closed on save — reopen before restoring the original name.
+      await page.getByTestId('ops-account-edit').click({ timeout: WAIT }).catch(() => {});
+      await expect(firstInput).toBeVisible({ timeout: WAIT });
       await firstInput.fill(originalFirst || 'Ops');
       await lastInput.fill(originalLast || 'Support');
       await page

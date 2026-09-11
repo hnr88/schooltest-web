@@ -1,6 +1,6 @@
 // Form primitives — re-exports of the read-only ui layer.
-export { Input } from '@/components/ui/input';
-export { Textarea } from '@/components/ui/textarea';
+export { Input } from '@/modules/design-system/components/input';
+export { Textarea } from '@/modules/design-system/components/textarea';
 export { Label } from '@/components/ui/label';
 export { Checkbox } from '@/components/ui/checkbox';
 export { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';

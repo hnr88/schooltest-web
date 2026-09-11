@@ -59,12 +59,15 @@ function recordActivityRequests(page: Page): string[] {
 
 /** Resolve one LIVE school documentId from the ops schools list. */
 async function resolveSchoolDocumentId(request: APIRequestContext): Promise<string> {
-  const auth = await request.post('/api/auth/local', {
+  // The Playwright `request` fixture's baseURL is the WEB app; these API reads
+  // must be absolute or they land on Next (a 404 HTML page), not Strapi.
+  const API = process.env.E2E_API_URL ?? 'http://127.0.0.1:5500';
+  const auth = await request.post(`${API}/api/auth/local`, {
     data: { identifier: OPS_EMAIL, password: apiEnv('SEED_APIADMIN_PASSWORD') },
   });
   expect(auth.status(), await auth.text()).toBe(200);
   const jwt = ((await auth.json()) as { jwt: string }).jwt;
-  const list = await request.get('/api/ops/schools?pageSize=1', {
+  const list = await request.get(`${API}/api/ops/schools?pageSize=1`, {
     headers: { Authorization: `Bearer ${jwt}` },
   });
   expect(list.status(), await list.text()).toBe(200);
@@ -82,7 +85,7 @@ async function openSchool(page: Page, schoolDocumentId: string): Promise<void> {
   await expect(page.locator('[data-surface="ops-school-detail"]')).toBeVisible({
     timeout: ACTION_TIMEOUT,
   });
-  await expect(page.getByTestId('ops-count-card').first()).toBeVisible({
+  await expect(page.locator('[data-slot="ops-count-card"]').first()).toBeVisible({
     timeout: ACTION_TIMEOUT,
   });
 }
@@ -105,7 +108,7 @@ test.describe('ops school activity card (C-OPS-PORTAL-010)', () => {
     const schoolDocumentId = await resolveSchoolDocumentId(page.request);
     await openSchool(page, schoolDocumentId);
 
-    const card = page.getByTestId('ops-activity-card');
+    const card = page.locator('[data-slot="ops-activity-card"]');
     await expect(card).toBeVisible({ timeout: ACTION_TIMEOUT });
 
     // The page asked for THIS school's feed through the versioned contract.
@@ -116,8 +119,8 @@ test.describe('ops school activity card (C-OPS-PORTAL-010)', () => {
 
     // The card renders rows or the explicit empty state — never a blank and
     // never a dump of the raw ledger detail.
-    const rows = page.getByTestId('ops-activity-row');
-    const empty = page.getByTestId('ops-activity-empty');
+    const rows = page.locator('[data-slot="ops-activity-row"]');
+    const empty = page.locator('[data-slot="ops-activity-empty"]');
     await expect(rows.or(empty).first()).toBeVisible({ timeout: ACTION_TIMEOUT });
 
     const rowCount = await rows.count();
@@ -142,7 +145,7 @@ test.describe('ops school activity card (C-OPS-PORTAL-010)', () => {
     const schoolDocumentId = await resolveSchoolDocumentId(page.request);
     await openSchool(page, schoolDocumentId);
 
-    const card = page.getByTestId('ops-activity-card');
+    const card = page.locator('[data-slot="ops-activity-card"]');
     await expect(card).toBeVisible({ timeout: ACTION_TIMEOUT });
     const box = await card.boundingBox();
     expect(box).not.toBeNull();

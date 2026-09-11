@@ -44,13 +44,18 @@ export function OpsSchoolCountCards({ school }: OpsSchoolCountCardsProps) {
   ];
 
   return (
-    <div data-slot="ops-count-cards" className="flex flex-wrap rounded-card bg-card p-6 shadow-sm">
+    // Design 281-289: ONE white card, radius 24, padding 24px 30px, hairline
+    // #EEF1F6 dividers between the four stats.
+    <div
+      data-slot="ops-count-cards"
+      className="flex flex-wrap rounded-card bg-card px-[30px] py-6 shadow-sm"
+    >
       {cards.map((card, index) => (
         <Fragment key={card.label}>
           {index > 0 ? (
             <div
               aria-hidden="true"
-              className="mx-6 hidden w-px self-stretch bg-divider sm:block"
+              className="mx-6 hidden w-px self-stretch bg-[#EEF1F6] sm:block"
             />
           ) : null}
           <div
@@ -58,10 +63,10 @@ export function OpsSchoolCountCards({ school }: OpsSchoolCountCardsProps) {
             data-count-label={card.label}
             className="flex min-w-[140px] flex-1 flex-col gap-1.5 py-1"
           >
-            <span className="text-caption text-muted-foreground">{card.label}</span>
+            <span className="text-xs text-[#9AA6B8]">{card.label}</span>
             <span
               data-slot="ops-count-value"
-              className="text-2xl font-bold tracking-tight text-foreground"
+              className="text-2xl font-bold tracking-[-0.01em] text-foreground"
             >
               {card.value}
             </span>

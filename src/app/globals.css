@@ -543,6 +543,28 @@
   max-height: 88dvh;
 }
 
+/* Ops modal open entrance (`Ops Portal.dc.html` `om-rise`): 8px rise + fade,
+   .18s ease-out. Animates `transform` only so it composes with the centering
+   `translate` utilities on the fixed panel. */
+@keyframes om-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-om-rise {
+  animation: om-rise 0.18s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
 /* Canonical loading sweep (`st-shimmer`, 1.4s ease infinite) — a moving sheen on
    a static base, so it degrades to the flat base tint under reduced motion. */
 @keyframes st-shimmer {

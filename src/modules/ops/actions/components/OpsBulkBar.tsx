@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/modules/design-system';
 import { OPS_SELECTION_MAX } from '@/modules/ops/actions/constants/ops-action.constants';
 
@@ -13,6 +14,13 @@ export interface OpsBulkBarAction {
   onSelect: () => void;
 }
 
+export interface OpsBulkBarSelectAll {
+  checked: boolean;
+  indeterminate: boolean;
+  onCheckedChange: () => void;
+  ariaLabel: string;
+}
+
 export interface OpsBulkBarProps {
   count: number;
   /** True once the page-scoped cap stopped the selection growing. */
@@ -22,6 +30,10 @@ export interface OpsBulkBarProps {
   actions: readonly OpsBulkBarAction[];
   busy?: boolean;
   onClear: () => void;
+  /** In-card variant: renders the select-all box and the row even at 0 selected. */
+  selectAll?: OpsBulkBarSelectAll;
+  /** Label shown beside the checkbox while nothing is selected. */
+  idleLabel?: string;
 }
 
 /**
@@ -36,41 +48,60 @@ export function OpsBulkBar({
   actions,
   busy = false,
   onClear,
+  selectAll,
+  idleLabel,
 }: OpsBulkBarProps) {
   const t = useTranslations('Ops.bulkBar');
-  if (count === 0) return null;
+  if (count === 0 && selectAll === undefined) return null;
   const noun = count === 1 ? entityLabel : `${entityLabel}s`;
+  const label = count > 0 ? t('selectedOnPage', { count, noun }) : (idleLabel ?? '');
   return (
     <div
-      role="region"
-      aria-label={t('ariaSelected', { count, noun })}
-      className="flex flex-wrap items-center gap-3 rounded-2xl border bg-card px-4 py-3"
+      {...(count > 0 ? { role: 'region', 'aria-label': t('ariaSelected', { count, noun }) } : {})}
+      className="flex flex-wrap items-center gap-3.5 border-b border-[#EEF1F6] py-1 pb-3.5"
     >
-      <p className="text-sm font-semibold">
-        {t('selectedOnPage', { count, noun })}
-      </p>
-      {atCap ? (
-        <p className="text-sm text-muted-foreground">
-          {t('cappedAt', { max: OPS_SELECTION_MAX })}
-        </p>
+      {selectAll ? (
+        <Checkbox
+          aria-label={selectAll.ariaLabel}
+          className="size-5 flex-none rounded-md"
+          checked={selectAll.checked}
+          indeterminate={selectAll.indeterminate}
+          onCheckedChange={selectAll.onCheckedChange}
+        />
       ) : null}
-      <div className="ms-auto flex flex-wrap items-center gap-2">
-        {actions.map((action) => (
+      {label ? <span className="text-[13px] font-semibold text-foreground">{label}</span> : null}
+      {atCap ? (
+        <span className="text-[12.5px] text-muted-foreground">{t('cappedAt', { max: OPS_SELECTION_MAX })}</span>
+      ) : null}
+      {count > 0 ? (
+        <div className="ms-auto flex flex-wrap items-center gap-2">
+          {actions.map((action) => (
+            <Button
+              key={action.id}
+              type="button"
+              variant="ghost"
+              className={
+                action.destructive === true
+                  ? 'h-8 rounded-lg px-3 text-[13px] font-semibold text-destructive hover:bg-[#F4F6FA]'
+                  : 'h-8 rounded-lg px-3 text-[13px] font-semibold text-foreground hover:bg-[#F4F6FA]'
+              }
+              disabled={busy || action.disabled === true}
+              onClick={action.onSelect}
+            >
+              {action.label}
+            </Button>
+          ))}
           <Button
-            key={action.id}
             type="button"
-            size="sm"
-            variant={action.destructive === true ? 'destructive' : 'outline'}
-            disabled={busy || action.disabled === true}
-            onClick={action.onSelect}
+            variant="ghost"
+            className="h-8 rounded-full px-3 text-[13px] font-semibold text-[#7C8698]"
+            disabled={busy}
+            onClick={onClear}
           >
-            {action.label}
+            {t('clear')}
           </Button>
-        ))}
-        <Button type="button" size="sm" variant="ghost" disabled={busy} onClick={onClear}>
-          {t('clear')}
-        </Button>
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 }

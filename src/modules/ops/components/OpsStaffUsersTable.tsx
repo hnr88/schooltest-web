@@ -211,7 +211,17 @@ export function OpsStaffUsersTable({
     [t, hasChrome],
   );
 
-  const state = useOpsDirectoryState({ filters, sorts: SORTS, defaultSort: 'name:asc' });
+  // The school detail keeps the selected tab in the URL (`OpsSchoolTables`).
+  // The directory's own URL writes serialize ONLY the kit's params, so without
+  // naming `tab` here every chip/search/sort/page change replaced the URL
+  // without `?tab=…` and the whole tab block silently flipped to Overview
+  // mid-interaction (found live: choosing the Invited chip on Admins).
+  const state = useOpsDirectoryState({
+    filters,
+    sorts: SORTS,
+    defaultSort: 'name:asc',
+    preserveParams: ['tab'],
+  });
   const statusFilter = state.params.filters.blocked;
   const showingInvited = hasChrome && statusFilter === STATUS_INVITED;
 
@@ -566,7 +576,11 @@ export function OpsStaffUsersTable({
           <span className="font-medium text-foreground">{noValueIfMissing(row.row.display_name)}</span>
         ),
       },
-      { key: 'email', header: t('columnEmail'), cell: (row) => noValueIfMissing(row.row.email) },
+      // Tab-table column shapes (`Ops Portal.dc.html:386-410`): prose columns
+      // are single-line `text` blocks (no sublabel, truncated) and the status /
+      // owner badges are `bare` fixed blocks — the metric arm's grow-to-fill
+      // block was stretching badges and unbounded emails across wrapped lines.
+      { key: 'email', header: t('columnEmail'), grid: 'text', cell: (row) => noValueIfMissing(row.row.email) },
       ...(classCounts
         ? [
             {
@@ -579,11 +593,13 @@ export function OpsStaffUsersTable({
       {
         key: 'specialty',
         header: t('columnSpecialty'),
+        grid: 'text',
         cell: (row) => noValueIfMissing(row.kind === 'user' ? row.row.teaching_specialty : null),
       },
       {
         key: 'last_active_at',
         header: t('columnLastActive'),
+        grid: 'text',
         cell: (row) => {
           const lastActive = row.kind === 'user' ? row.row.last_active_at : null;
           return lastActive === null
@@ -594,6 +610,7 @@ export function OpsStaffUsersTable({
       {
         key: 'status',
         header: t('columnStatus'),
+        grid: 'bare',
         cell: (row) =>
           row.kind === 'invitation' ? (
             <Badge variant="outline">{t('statusInvited')}</Badge>
@@ -611,6 +628,7 @@ export function OpsStaffUsersTable({
             {
               key: 'ownership',
               header: t('columnOwnership'),
+              grid: 'bare' as const,
               cell: (row: StaffDirectoryRow) =>
                 row.kind === 'user' && ownership.ownerDocumentId === row.row.documentId ? (
                   <Badge variant="accent">{t('ownerBadge')}</Badge>

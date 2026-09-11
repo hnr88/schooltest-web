@@ -199,6 +199,25 @@ export type {
   SegmentedControlSize,
 } from './types/design-system.types';
 export * from './primitives'; // read-only ui primitives (single import surface)
+// Ops modal chrome (`Ops Portal.dc.html:547-842`) — design-system layer over
+// @base-ui/react/dialog, never the vendored components/ui/dialog.
+export {
+  OpsDialog,
+  OpsDialogTitle,
+  OpsDialogDescription,
+  OpsDialogTrigger,
+  OpsDialogClose,
+  OpsDialogContent,
+  OpsDialogHeader,
+  OpsDialogBody,
+  OpsDialogFooter,
+  OpsDialogError,
+  OpsDialogCancel,
+  OpsDialogCta,
+  OpsDialogDangerCancel,
+  OpsFieldShell,
+  OPS_CONTROL_CLASS,
+} from './components/ops-modal';
 export * from './components/showcase'; // showcase
 export { BAR_CHART_SERIES_CLASSES } from './constants/bar-chart.constants';
 export type { BarChartBar } from './types/record.types';

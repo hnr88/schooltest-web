@@ -25,11 +25,13 @@ export default async function OpsSettingsPage() {
       data-surface="ops-settings"
       className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
-        <p className="text-sm text-body">{t('description')}</p>
+      <div className="flex flex-col gap-1.5">
+        <h1 className="text-[30px] font-medium tracking-[-0.02em] text-[#0E2350]">{t('title')}</h1>
+        <p className="text-sm text-[#7C8698]">{t('description')}</p>
       </div>
-      <OpsAccountCard />
+      <div className="max-w-[820px]">
+        <OpsAccountCard />
+      </div>
     </main>
   );
 }

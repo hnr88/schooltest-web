@@ -1,6 +1,7 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { Search } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
@@ -27,7 +28,7 @@ import {
 import type { SchoolsListRow } from '@schooltest/ops-contracts';
 
 import { useAuthStore } from '@/modules/auth';
-import { Badge, MediaCover } from '@/modules/design-system';
+import { Badge, Input, MediaCover } from '@/modules/design-system';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsCreateSchoolDialog } from '@/modules/ops/components/OpsCreateSchoolDialog';
 import {
@@ -428,25 +429,23 @@ export function OpsSchoolsTable() {
               alt={school.name ?? t('unnamedSchool')}
               ratio="square"
               sizes="52px"
-              className="size-13 shrink-0 rounded-panel"
+              className="size-13 shrink-0 rounded-[14px]"
             />
             <div className="flex min-w-0 flex-col">
-              <span className="font-medium text-foreground">{school.name ?? t('unnamedSchool')}</span>
-              <span className="text-meta text-body">{metaLine(school, t, locale)}</span>
+              <span className="text-[15.5px] font-semibold text-foreground">{school.name ?? t('unnamedSchool')}</span>
+              <span className="mt-[3px] truncate text-[12.5px] text-body">{metaLine(school, t, locale)}</span>
             </div>
           </div>
         ),
       },
       {
-        key: 'portal_status',
-        header: t('columnStatus'),
-        // Same mapping the detail page uses — one status, one label, one tone.
-        cell: (school) => (
-          <Badge variant={PORTAL_STATUS_VARIANTS[school.portal_status]}>
-            {t(portalStatusLabelKey(school.portal_status))}
-          </Badge>
-        ),
+        key: 'student_count',
+        header: t('columnStudents'),
+        sortable: true,
+        sortValues: { asc: 'student_count:desc', desc: 'student_count:desc' },
+        cell: (school) => school.student_count,
       },
+      { key: 'admin_count', header: t('columnAdmins'), cell: (school) => school.admin_count },
       {
         key: 'portal_plan',
         header: t('columnPlan'),
@@ -457,16 +456,22 @@ export function OpsSchoolsTable() {
         header: t('columnTeachers'),
         cell: (school) => school.portal_teacher_count,
       },
-      { key: 'admin_count', header: t('columnAdmins'), cell: (school) => school.admin_count },
       { key: 'class_count', header: t('columnClasses'), cell: (school) => school.class_count },
-      {
-        key: 'student_count',
-        header: t('columnStudents'),
-        sortable: true,
-        sortValues: { asc: 'student_count:desc', desc: 'student_count:desc' },
-        cell: (school) => school.student_count,
-      },
       { key: 'results_count', header: t('columnResults'), cell: (school) => school.results_count },
+      {
+        key: 'portal_status',
+        header: t('columnStatus'),
+        grid: 'bare',
+        // Same mapping the detail page uses — one status, one label, one tone.
+        cell: (school) => (
+          <Badge
+            variant={PORTAL_STATUS_VARIANTS[school.portal_status]}
+            className="w-[94px] justify-center rounded-full px-[13px] py-1.5 text-xs font-semibold"
+          >
+            {t(portalStatusLabelKey(school.portal_status))}
+          </Badge>
+        ),
+      },
     ],
     [locale, t],
   );
@@ -585,6 +590,13 @@ export function OpsSchoolsTable() {
   const openCreateSchool = () => {
     document.querySelector<HTMLButtonElement>('[data-testid="ops-create-school"]')?.click();
   };
+  const openStatusPage = () => {
+    if (statusPageUrl === null) {
+      toast.error(t('statusPageUnconfigured'));
+      return;
+    }
+    window.open(statusPageUrl, '_blank', 'noopener,noreferrer');
+  };
   const hasSearch = Boolean(state.params.q);
   const hasFilters = Object.values(state.params.filters).some((value) => value !== DIRECTORY_ALL);
 
@@ -592,14 +604,38 @@ export function OpsSchoolsTable() {
     <main
       data-slot="ops-schools"
       data-surface="ops-schools"
-      className="flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8"
+      className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-foreground">{t('title')}</h1>
-          <p className="text-sm text-body">{t('description')}</p>
+      {/* BUG-004 (journeys-and-bugs) — the design's header row: caption + 32px
+          title on the left; the 44px pill search and the 44px pill Create
+          school on the right. The search writes the SAME kit state the toolbar
+          search used to own, so URL round-tripping and Clear filters are
+          unchanged — only the control moved. */}
+      <div className="flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <p className="mb-1.5 text-[13px] text-body">{t('description')}</p>
+          <h1 className="text-[32px] leading-tight font-medium tracking-[-0.02em] text-foreground">
+            {t('title')}
+          </h1>
         </div>
-        <OpsCreateSchoolDialog />
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="relative">
+            <Search
+              aria-hidden="true"
+              className="pointer-events-none absolute left-[18px] top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            />
+            <Input
+              aria-label={t('searchLabel')}
+              type="search"
+              data-testid="ops-schools-search"
+              className="h-11 w-[260px] rounded-full border-transparent bg-card px-[18px] pl-10 text-sm shadow-sm"
+              placeholder={t('searchPlaceholder')}
+              value={state.searchInput}
+              onChange={(event) => state.setSearchInput(event.target.value)}
+            />
+          </div>
+          <OpsCreateSchoolDialog />
+        </div>
       </div>
 
       <OpsSchoolsPills
@@ -637,6 +673,10 @@ export function OpsSchoolsTable() {
           retry: t('retry'),
         }}
         emptyAction={{ label: t('createSchool'), onRun: openCreateSchool }}
+        toolbarVariant="pill"
+        search={false}
+        errorSecondaryAction={{ label: t('actionStatusPage'), onRun: openStatusPage }}
+        rowHref={(school) => `/dashboard/ops/schools/${school.documentId}`}
       />
 
       {/* The row confirm, raised from the action and rendered at the screen's

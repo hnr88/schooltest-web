@@ -114,11 +114,11 @@ export interface DirectoryTableBaseProps<Row> {
    */
   regionAttrs?: DirectoryMarkupAttrs<HTMLDivElement>;
   /**
-   * ops/34 — attributes merged onto every `<table>` body row, so a migrating
+   * ops/34 — attributes merged onto every grid body row, so a migrating
    * surface keeps its ROW-level markers (row slot, status) on the kit's
    * contract instead of forking the body. Absent: rows carry only the kit's.
    */
-  rowAttrs?: (row: Row) => DirectoryMarkupAttrs<HTMLTableRowElement>;
+  rowAttrs?: (row: Row) => DirectoryMarkupAttrs<HTMLDivElement>;
   /**
    * ops/14 — the design's tab-body header (`Ops Portal.dc.html:353-368`):
    * title, one-line summary, the Export secondary and an optional contextual
@@ -137,6 +137,15 @@ export interface DirectoryTableBaseProps<Row> {
    * labels' `emptyNoneTitle`/`emptyNoneDescription`; absent, the labels stand.
    */
   emptyCopy?: DirectoryEmptyCopy;
+  /** BUG-004 (journeys-and-bugs) — forwarded to the toolbar's `variant`. */
+  toolbarVariant?: 'default' | 'pill';
+  /** BUG-004 — hide the toolbar's search; the surface renders its own. */
+  search?: boolean;
+  /**
+   * ops grid — the error arm's secondary white-pill action (the design's
+   * "Status page"): rendered beside Try again when a surface has one.
+   */
+  errorSecondaryAction?: { label: string; onRun: () => void };
 }
 
 /**
@@ -169,7 +178,10 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
     emptyAction,
     groupBy,
     labels: labelOverrides,
-    sticky = false,
+    // BUG-007 (journeys-and-bugs) — sticky defaults ON: the grid card scrolls
+    // inline under a capped height and the column header stays pinned while
+    // rows scroll under it, on every surface, unless a consumer opts out.
+    sticky = true,
     layoutOptions,
     pagination = 'meta',
     regionAttrs,
@@ -177,6 +189,9 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
     header,
     chipFilterKey,
     emptyCopy,
+    toolbarVariant,
+    search,
+    errorSecondaryAction,
   } = props;
   // ops/14 — one filter, one control, BY CONSTRUCTION: `chipFilterKey` selects
   // the def out of `filters`; the kit renders it as chips and the toolbar
@@ -364,6 +379,7 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
         onRetry={query.refetch}
         retrying={query.isFetching}
         headingRef={armRef}
+        secondaryAction={errorSecondaryAction}
       />
     );
   } else if (scenario === 'empty-no-matches' || scenario === 'empty-none') {
@@ -381,7 +397,6 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
     body =
       isTable && tableColumns ? (
         <DirectoryRows
-          state={state}
           columns={tableColumns}
           rows={rows}
           getRowTarget={getRowTarget}
@@ -393,7 +408,6 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
           groupBy={groupBy}
           rowHref={props.rowHref}
           onRowSelect={props.onRowSelect}
-          sticky={sticky}
           rowAttrs={rowAttrs}
         />
       ) : listLayout && listRenderRow ? (
@@ -423,6 +437,8 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
         labels={labels}
         showing={rows.length}
         total={total}
+        variant={toolbarVariant}
+        search={search}
         layoutControl={
           layoutOptions && layoutOptions.length > 1
             ? {
@@ -443,9 +459,6 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
       {scenario === 'stale' ? (
         <DirectoryStaleBanner labels={labels} onRetry={query.refetch} retrying={query.isFetching} />
       ) : null}
-      {selection.count > 0 && bulkActions.length > 0 ? (
-        <DirectoryBulkBar selection={selection} bulkActions={bulkActions} labels={labels} />
-      ) : null}
       {showRows && (query.isPlaceholderData ?? false) && !query.polled ? (
         // §L-stale-vs-loading case 2 — announce the landed page, politely.
         <span className="sr-only" aria-live="polite">
@@ -464,6 +477,11 @@ export function DirectoryTable<Row>(props: DirectoryTableProps<Row>) {
             : 'rounded-xl border border-border bg-card'
         }
       >
+        {/* ops grid — the bulk bar is the card's opening row (select-all +
+            count + actions), not a separate card above it. */}
+        {isTable && bulkActions.length > 0 && (showRows || selection.count > 0) ? (
+          <DirectoryBulkBar selection={selection} bulkActions={bulkActions} labels={labels} />
+        ) : null}
         {body}
       </div>
       {pagination === 'meta' && meta ? (

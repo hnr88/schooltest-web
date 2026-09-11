@@ -10,15 +10,16 @@ import { staffUsersResponseSchema } from '@schooltest/ops-contracts';
 import {
   Alert,
   Button,
-  Dialog,
   Input,
-  Label,
+  OPS_CONTROL_CLASS,
+  OpsDialog,
+  OpsDialogBody,
+  OpsDialogContent,
+  OpsDialogCta,
+  OpsDialogHeader,
+  OpsFieldShell,
   SelectField,
   Textarea,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   EmptyState,
   Skeleton,
 } from '@/modules/design-system';
@@ -126,87 +127,85 @@ export function OpsStaffInvitationDialog({
   }, [cooldownSeconds]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent data-slot="ops-staff-invitations-dialog" className="max-w-4xl">
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description')}</DialogDescription>
-        </DialogHeader>
+    <OpsDialog open={open} onOpenChange={onOpenChange}>
+      <OpsDialogContent data-slot="ops-staff-invitations-dialog" className="sm:max-w-4xl">
+        <OpsDialogHeader title={t('title')} sub={t('description')} />
+        <OpsDialogBody>
+          <StaffInviteForm schoolDocumentId={schoolDocumentId} />
 
-        <StaffInviteForm schoolDocumentId={schoolDocumentId} />
-
-        <OpsStaffInvitationFilters
-          role={filter.role}
-          status={filter.status}
-          onRoleChange={filter.chooseRole}
-          onStatusChange={filter.chooseStatus}
-        />
-
-        {invitations.isPending ? (
-          <div className="flex flex-col gap-2" data-slot="ops-staff-invitations-loading">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-2/3" />
-          </div>
-        ) : invitations.isError ? (
-          <Alert variant="error" title={t('errorTitle')}>
-            {t('errorDescription')}
-          </Alert>
-        ) : invitations.data.data.length === 0 ? (
-          <EmptyState
-            icon={MailX}
-            tone="brand"
-            title={filter.isFiltered ? t('emptyFilteredTitle') : t('emptyTitle')}
-            description={filter.isFiltered ? t('emptyFilteredDescription') : t('emptyDescription')}
+          <OpsStaffInvitationFilters
+            role={filter.role}
+            status={filter.status}
+            onRoleChange={filter.chooseRole}
+            onStatusChange={filter.chooseStatus}
           />
-        ) : (
-          <OpsStaffInvitationTable
-            rows={invitations.data.data}
-            // "As of the read" — the query's own receipt timestamp, so the row
-            // ages are a pure function of the data, not of when React rendered.
-            nowMs={invitations.dataUpdatedAt}
-            renderActions={(row) => (
-              <OpsStaffInvitationRowActions
-                row={row}
-                cooldownSeconds={cooldownSeconds}
-                onCooldown={setCooldownSeconds}
-              />
-            )}
-          />
-        )}
 
-        {pagination ? (
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-meta text-muted-foreground" data-slot="ops-staff-invitations-total">
-              {t('summary', { total: pagination.total })}
-            </p>
-            <div className="flex items-center gap-2">
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                disabled={pagination.page <= 1}
-                onClick={() => filter.goToPage(Math.max(1, pagination.page - 1))}
-              >
-                {t('previous')}
-              </Button>
-              <span className="text-meta text-muted-foreground">
-                {t('page', { page: pagination.page, pageCount: pagination.pageCount })}
-              </span>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                disabled={pagination.page >= pagination.pageCount}
-                onClick={() => filter.goToPage(pagination.page + 1)}
-              >
-                {t('next')}
-              </Button>
+          {invitations.isPending ? (
+            <div className="flex flex-col gap-2" data-slot="ops-staff-invitations-loading">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-2/3" />
             </div>
-          </div>
-        ) : null}
-      </DialogContent>
-    </Dialog>
+          ) : invitations.isError ? (
+            <Alert variant="error" title={t('errorTitle')}>
+              {t('errorDescription')}
+            </Alert>
+          ) : invitations.data.data.length === 0 ? (
+            <EmptyState
+              icon={MailX}
+              tone="brand"
+              title={filter.isFiltered ? t('emptyFilteredTitle') : t('emptyTitle')}
+              description={filter.isFiltered ? t('emptyFilteredDescription') : t('emptyDescription')}
+            />
+          ) : (
+            <OpsStaffInvitationTable
+              rows={invitations.data.data}
+              // "As of the read" — the query's own receipt timestamp, so the row
+              // ages are a pure function of the data, not of when React rendered.
+              nowMs={invitations.dataUpdatedAt}
+              renderActions={(row) => (
+                <OpsStaffInvitationRowActions
+                  row={row}
+                  cooldownSeconds={cooldownSeconds}
+                  onCooldown={setCooldownSeconds}
+                />
+              )}
+            />
+          )}
+
+          {pagination ? (
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-meta text-muted-foreground" data-slot="ops-staff-invitations-total">
+                {t('summary', { total: pagination.total })}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  disabled={pagination.page <= 1}
+                  onClick={() => filter.goToPage(Math.max(1, pagination.page - 1))}
+                >
+                  {t('previous')}
+                </Button>
+                <span className="text-meta text-muted-foreground">
+                  {t('page', { page: pagination.page, pageCount: pagination.pageCount })}
+                </span>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  disabled={pagination.page >= pagination.pageCount}
+                  onClick={() => filter.goToPage(pagination.page + 1)}
+                >
+                  {t('next')}
+                </Button>
+              </div>
+            </div>
+          ) : null}
+        </OpsDialogBody>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }
 
@@ -311,17 +310,64 @@ function StaffInviteForm({ schoolDocumentId }: { schoolDocumentId: string }) {
   return (
     <form
       data-slot="ops-staff-invite-form"
-      className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4"
+      className="flex flex-col gap-[18px] rounded-[16px] border border-[#EEF1F6] bg-white p-5"
       onSubmit={(event) => {
         event.preventDefault();
         void submit();
       }}
     >
       <div>
-        <h3 className="text-sm font-semibold text-foreground">{roleTitle}</h3>
-        <p className="text-meta text-muted-foreground">
+        <h3 className="text-sm font-semibold text-[#0E2350]">{roleTitle}</h3>
+        <p className="mt-0.5 text-[13px] text-[#7C8698]">
           {t('formSubtitle', { school: schoolName })}
         </p>
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <OpsFieldShell id="ops-invite-name" label={t('inviteNameLabel')}>
+          {/* One Full name field, as pictured; D-12 splits it on submit. */}
+          <Input
+            id="ops-invite-name"
+            value={values.fullName}
+            autoComplete="off"
+            className={`h-12 rounded-xl ${OPS_CONTROL_CLASS}`}
+            onChange={(event) => set('fullName', event.target.value)}
+          />
+          {rules.noName ? (
+            <p className="mt-1.5 text-xs font-medium text-warning" data-slot="ops-invite-name-warning">
+              {t('noNameWarning')}
+            </p>
+          ) : null}
+        </OpsFieldShell>
+        <OpsFieldShell id="ops-invite-email" label={t('inviteEmailLabel')} required>
+          <Input
+            id="ops-invite-email"
+            type="email"
+            required
+            value={values.email}
+            className={`h-12 rounded-xl ${OPS_CONTROL_CLASS}`}
+            onChange={(event) => {
+              setServerConflict(false);
+              set('email', event.target.value);
+            }}
+          />
+          {rules.emailError === 'required' ? (
+            <p className="mt-1.5 text-xs font-medium text-[#B42318]" data-slot="ops-invite-email-error">
+              {tv('required')}
+            </p>
+          ) : rules.emailError === 'invalid' ? (
+            <p className="mt-1.5 text-xs font-medium text-[#B42318]" data-slot="ops-invite-email-error">
+              {tv('emailInvalid')}
+            </p>
+          ) : rules.emailError === 'exists' ? (
+            <p className="mt-1.5 text-xs font-medium text-[#B42318]" data-slot="ops-invite-email-error">
+              {t('alreadyHasAccessError', { school: schoolName })}
+            </p>
+          ) : rules.outsideDomain ? (
+            <p className="mt-1.5 text-xs font-medium text-warning" data-slot="ops-invite-email-warning">
+              {t('outsideDomainWarning', { domain: domainHost ?? '' })}
+            </p>
+          ) : null}
+        </OpsFieldShell>
       </div>
       <SelectField
         id="ops-invite-role"
@@ -333,64 +379,20 @@ function StaffInviteForm({ schoolDocumentId }: { schoolDocumentId: string }) {
         ]}
         value={values.role}
         onValueChange={(value) => set('role', value === 'school_admin' ? 'school_admin' : 'teacher')}
+        triggerClassName={OPS_CONTROL_CLASS}
       />
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="ops-invite-name">{t('inviteNameLabel')}</Label>
-        {/* One Full name field, as pictured; D-12 splits it on submit. */}
-        <Input
-          id="ops-invite-name"
-          value={values.fullName}
-          autoComplete="off"
-          onChange={(event) => set('fullName', event.target.value)}
-        />
-        {rules.noName ? (
-          <p className="text-meta text-warning" data-slot="ops-invite-name-warning">
-            {t('noNameWarning')}
-          </p>
-        ) : null}
+      <div className="flex items-start gap-[11px] rounded-[14px] bg-[#F4F6FA] px-4 py-3.5 text-[13px] leading-relaxed text-[#3D4A5C]">
+        {roleNote}
       </div>
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="ops-invite-email">{t('inviteEmailLabel')}</Label>
-        <Input
-          id="ops-invite-email"
-          type="email"
-          required
-          value={values.email}
-          onChange={(event) => {
-            setServerConflict(false);
-            set('email', event.target.value);
-          }}
-        />
-        {rules.emailError === 'required' ? (
-          <p className="text-meta text-destructive" data-slot="ops-invite-email-error">
-            {tv('required')}
-          </p>
-        ) : rules.emailError === 'invalid' ? (
-          <p className="text-meta text-destructive" data-slot="ops-invite-email-error">
-            {tv('emailInvalid')}
-          </p>
-        ) : rules.emailError === 'exists' ? (
-          <p className="text-meta text-destructive" data-slot="ops-invite-email-error">
-            {t('alreadyHasAccessError', { school: schoolName })}
-          </p>
-        ) : rules.outsideDomain ? (
-          <p className="text-meta text-warning" data-slot="ops-invite-email-warning">
-            {t('outsideDomainWarning', { domain: domainHost ?? '' })}
-          </p>
-        ) : null}
-      </div>
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="ops-invite-message">{t('inviteMessageLabel')}</Label>
+      <OpsFieldShell id="ops-invite-message" label={t('inviteMessageLabel')}>
         <Textarea
           id="ops-invite-message"
           rows={3}
+          className="h-[92px] resize-y rounded-xl text-sm"
           value={values.message}
           onChange={(event) => set('message', event.target.value)}
         />
-      </div>
-      <div className="flex items-start gap-2 rounded-lg bg-muted p-3 text-meta text-muted-foreground">
-        {roleNote}
-      </div>
+      </OpsFieldShell>
 
       {invite.data?.delivery === 'sent' ? (
         <Alert variant="success" title={t('inviteSentTitle')}>
@@ -413,9 +415,9 @@ function StaffInviteForm({ schoolDocumentId }: { schoolDocumentId: string }) {
       ) : null}
 
       <div>
-        <Button type="submit" loading={invite.isPending} disabled={blocked}>
+        <OpsDialogCta type="submit" loading={invite.isPending} disabled={blocked}>
           {t('inviteSubmit')}
-        </Button>
+        </OpsDialogCta>
       </div>
     </form>
   );

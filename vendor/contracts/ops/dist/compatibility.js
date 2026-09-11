@@ -35,6 +35,7 @@ exports.PORTAL_CORS_ALLOW_HEADERS = [
     core_1.OPS_PORTAL_VERSION_HEADER,
     'Idempotency-Key',
     'If-Match',
+    'X-School-DocumentId',
 ];
 /** Headers a browser must be allowed to READ cross-origin. */
 exports.PORTAL_CORS_EXPOSE_HEADERS = ['Content-Disposition', 'Retry-After'];

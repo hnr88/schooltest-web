@@ -12,7 +12,11 @@ import {
 import { useOnlineStatus } from '@/modules/ops/hooks/use-online-status';
 import { useCapabilitiesQuery } from '@/modules/ops/queries/use-capabilities.query';
 
-const STRIP = 'flex flex-wrap items-center gap-4 rounded-2xl border px-5 py-4';
+// Ops Portal.dc.html:51-66 — 16px radius, 14px 18px padding, spec hexes.
+const STRIP = 'flex flex-wrap items-center gap-3.5 rounded-[16px] border px-[18px] py-[14px]';
+
+const RETRY_CLASS =
+  'inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-[#B42318] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#9a1d14] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
 // The portal's top banner region (mvp/ops/Ops Portal.dc.html:49-66): the
 // offline strip (:51-58), the read-only session strip a support account sees,
@@ -39,21 +43,23 @@ export function OpsPortalCapabilities() {
 
   if (!online) {
     return (
-      <section data-slot="ops-offline-strip" className={`${STRIP} border-destructive/25 bg-destructive/8`}>
-        <WifiOff aria-hidden className="size-5 shrink-0 text-destructive" />
+      <section
+        data-slot="ops-offline-strip"
+        className={`${STRIP} border-[#F3C6C1] bg-[#FDEEEC]`}
+      >
+        <WifiOff aria-hidden className="size-[18px] shrink-0 text-[#B42318]" />
         <div className="min-w-[220px] flex-1">
-          <p className="text-sm font-semibold text-destructive">{copy('offlineTitle')}</p>
-          <p className="mt-0.5 text-sm text-body">{copy('offlineBody')}</p>
+          <p className="text-[13.5px] font-semibold text-[#B42318]">{copy('offlineTitle')}</p>
+          <p className="mt-0.5 text-[13px] text-[#7A2E28]">{copy('offlineBody')}</p>
         </div>
-        <Button
+        <button
           type="button"
-          size="sm"
-          variant="destructive"
           data-slot="ops-offline-retry"
+          className={RETRY_CLASS}
           onClick={() => void query.refetch()}
         >
           {copy('offlineRetry')}
-        </Button>
+        </button>
       </section>
     );
   }
@@ -64,12 +70,12 @@ export function OpsPortalCapabilities() {
       <section
         data-slot="ops-capabilities-read-only"
         data-ops-role={data.actor.role}
-        className={`${STRIP} border-border bg-muted`}
+        className={`${STRIP} border-[#DFE5EE] bg-[#F1F3F7]`}
       >
-        <Lock aria-hidden className="size-5 shrink-0 text-body" />
+        <Lock aria-hidden className="size-[18px] shrink-0 text-[#3D4A5C]" />
         <div className="min-w-[220px] flex-1">
-          <p className="text-sm font-semibold text-foreground">{copy('readOnlyTitle')}</p>
-          <p className="mt-0.5 text-sm text-body">{copy('readOnlyBody')}</p>
+          <p className="text-[13.5px] font-semibold text-[#0E2350]">{copy('readOnlyTitle')}</p>
+          <p className="mt-0.5 text-[13px] text-[#7C8698]">{copy('readOnlyBody')}</p>
         </div>
         {statusPage}
       </section>

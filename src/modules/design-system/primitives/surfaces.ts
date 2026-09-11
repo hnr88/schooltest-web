@@ -34,7 +34,6 @@ export {
 export {
   Dialog,
   DialogClose,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -43,6 +42,7 @@ export {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+export { DialogContent } from '@/modules/design-system/components/dialog-content';
 export {
   AlertDialog,
   AlertDialogAction,

@@ -57,15 +57,19 @@ export function OpsSchoolsPills({ counts, selected, onSelect }: OpsSchoolsPillsP
             aria-pressed={active}
             data-slot={`ops-schools-pill-${pill.value}`}
             onClick={() => onSelect(pill.value)}
-            className={`rounded-full border px-3 py-1 text-sm font-medium transition-colors ${
+            className={`inline-flex h-[38px] items-center gap-2 rounded-full px-[15px] text-[13.5px] font-medium transition-colors ${
               active
-                ? 'border-primary bg-primary text-primary-foreground'
-                : 'border-border bg-card text-foreground hover:border-primary'
+                ? 'border-[1.5px] border-primary bg-primary text-primary-foreground'
+                : 'border-[1.5px] border-border bg-card text-foreground hover:border-primary'
             }`}
           >
             {t(pill.labelKey)}
             {counts === undefined ? null : (
-              <span className={active ? 'ml-2 opacity-80' : 'ml-2 text-muted-foreground'}>
+              <span
+                className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                  active ? 'bg-white/20 text-primary-foreground' : 'bg-muted text-muted-foreground'
+                }`}
+              >
                 {counts[pill.countKey]}
               </span>
             )}

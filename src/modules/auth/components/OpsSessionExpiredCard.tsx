@@ -1,5 +1,6 @@
 'use client';
 
+import { Clock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/modules/design-system';
@@ -27,20 +28,25 @@ export function OpsSessionExpiredCard({ timeoutMinutes }: { timeoutMinutes?: num
       role="alertdialog"
       aria-modal="true"
       aria-label={t('sessionExpired')}
-      className="fixed inset-0 z-50 grid place-items-center bg-black/10 p-6 supports-backdrop-filter:backdrop-blur-xs"
+      className="fixed inset-0 z-50 grid place-items-center bg-[rgba(14,35,80,0.72)] p-6 backdrop-blur-[3px]"
     >
-      <div className="flex w-full max-w-md flex-col gap-4 rounded-card border border-border bg-card p-8 shadow-lg">
-        <h2 className="text-xl font-semibold text-foreground">{t('sessionExpired')}</h2>
-        <p className="text-sm text-body">
+      <div className="w-[420px] max-w-full rounded-[24px] bg-white p-8 text-center shadow-[0_28px_56px_rgba(0,0,0,0.28)]">
+        <div className="mx-auto mb-4 grid size-12 place-items-center rounded-[16px] bg-[#EEF3FE] text-[#2563EB]">
+          <Clock aria-hidden className="size-[22px]" />
+        </div>
+        <h2 className="text-[19px] font-semibold text-[#0E2350]">{t('sessionExpired')}</h2>
+        <p className="mt-2.5 text-sm leading-[1.6] text-[#64748B]">
           {timeoutMinutes === undefined
             ? tCapabilities('sessionExpiredBodyNoTimeout')
             : tCapabilities('sessionExpiredBodyWithTimeout', { minutes: timeoutMinutes })}
         </p>
-        <div>
-          <Button type="button" href="/sign-in">
-            {t('sessionExpiredAction')}
-          </Button>
-        </div>
+        <Button
+          type="button"
+          href="/sign-in"
+          className="mt-[22px] h-[46px] w-full rounded-full bg-[#0E2350] text-sm font-semibold text-white hover:bg-[#16326E]"
+        >
+          {t('sessionExpiredAction')}
+        </Button>
       </div>
     </div>
   );

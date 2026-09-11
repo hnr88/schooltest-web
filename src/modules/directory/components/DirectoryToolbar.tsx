@@ -19,8 +19,7 @@ import { useId } from 'react';
 import { Search } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Button, SelectField } from '@/modules/design-system';
-import { Input } from '@/components/ui/input';
+import { Button, Input, SelectField } from '@/modules/design-system';
 
 import { DIRECTORY_ALL } from '../constants/directory.constants';
 import { DirectoryFilters } from './DirectoryFilters';
@@ -46,6 +45,11 @@ interface DirectoryToolbarProps<Row> {
   showing: number;
   total: number;
   layoutControl?: DirectoryLayoutControl;
+  /** BUG-004 (ops design): 40px pill selects, hidden labels, Clear beside the
+   *  filters, count + sort pill right-aligned. */
+  variant?: 'default' | 'pill';
+  /** BUG-004 — the surface renders its own search in the page header. */
+  search?: boolean;
 }
 
 export function DirectoryToolbar<Row>({
@@ -56,38 +60,70 @@ export function DirectoryToolbar<Row>({
   showing,
   total,
   layoutControl,
+  variant = 'default',
+  search = true,
 }: DirectoryToolbarProps<Row>) {
   const idPrefix = useId();
+  const pill = variant === 'pill';
+  const pillTrigger =
+    'h-10 min-h-10 w-auto data-[size=default]:h-10 rounded-full border-[1.5px] px-3.5 text-[13.5px] font-medium';
 
   return (
     <div
       data-slot="directory-toolbar"
-      className="flex flex-wrap items-end justify-between gap-3"
+      data-variant={variant}
+      className={cn(
+        'flex flex-wrap justify-between gap-3',
+        pill ? 'items-center gap-2.5' : 'items-end',
+      )}
     >
-      <div className="flex flex-wrap items-end gap-3">
-        <div className="relative">
-          <Search
-            aria-hidden="true"
-            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-          />
-          <Input
-            id={`${idPrefix}-search`}
-            aria-label={labels.searchLabel}
-            type="search"
-            className="w-64 pl-9"
-            placeholder={labels.searchPlaceholder}
-            value={state.searchInput}
-            onChange={(event) => state.setSearchInput(event.target.value)}
-          />
-        </div>
+      {/* items-end (default variant): the labelled filter shells are ~70px
+          tall while the search field is 40px — under the default stretch the
+          search's relative wrapper grew to shell height and its absolutely
+          positioned icon centered BELOW the input, outside the box. Aligning
+          the row to the controls' baseline pins the 40px field beside them. */}
+      <div className={cn('flex flex-wrap items-end gap-3', pill && 'items-center gap-2.5')}>
+        {search ? (
+          <div className="relative">
+            <Search
+              aria-hidden="true"
+              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            />
+            <Input
+              id={`${idPrefix}-search`}
+              aria-label={labels.searchLabel}
+              type="search"
+              // 40px pill search in BOTH variants — the design's toolbar is one
+              // align-items:center row of 40px controls (`Ops Portal.dc.html:91-107`).
+              // The canonical Input is h-12 (BUG-003); left at that height the
+              // field towered over the 40px selects/chips beside it and the row
+              // (items-end under FieldShell labels) read as broken.
+              className="h-10 w-64 rounded-full border-transparent pl-9 shadow-sm"
+              placeholder={labels.searchPlaceholder}
+              value={state.searchInput}
+              onChange={(event) => state.setSearchInput(event.target.value)}
+            />
+          </div>
+        ) : null}
         <DirectoryFilters
           filters={filters}
           value={(key) => state.params.filters[key] ?? DIRECTORY_ALL}
           onValueChange={state.setFilter}
           labels={labels}
           idPrefix={idPrefix}
+          pill={pill}
         />
-        {sorts.length > 0 ? (
+        {pill && state.hasActiveControls ? (
+          <Button
+            type="button"
+            variant="ghost"
+            className="h-10 rounded-full px-4 text-[13.5px] font-semibold text-blue-600"
+            onClick={state.clearFilters}
+          >
+            {labels.clearFilters}
+          </Button>
+        ) : null}
+        {sorts.length > 0 && !pill ? (
           <SelectField
             id={`${idPrefix}-sort`}
             label={labels.sortLabel}
@@ -130,11 +166,23 @@ export function DirectoryToolbar<Row>({
           </div>
         ) : null}
         {total > 0 ? (
-          <p className="text-sm text-muted-foreground" role="status">
+          <p className={cn('text-sm text-muted-foreground', pill && 'text-[13px]')} role="status">
             {labels.showingCount({ showing, total })}
           </p>
         ) : null}
-        {state.hasActiveControls ? (
+        {sorts.length > 0 && pill ? (
+          <SelectField
+            id={`${idPrefix}-sort`}
+            label={labels.sortLabel}
+            placeholder={labels.sortLabel}
+            options={sorts.map((option) => ({ value: option.value, label: option.label }))}
+            value={state.params.sort}
+            onValueChange={(next) => state.setSort(next)}
+            hideLabel
+            triggerClassName={pillTrigger}
+          />
+        ) : null}
+        {state.hasActiveControls && !pill ? (
           <Button type="button" variant="outline" size="sm" onClick={state.clearFilters}>
             {labels.clearFilters}
           </Button>

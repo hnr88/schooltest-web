@@ -102,27 +102,33 @@ export function OpsStudentsTable({
       {
         key: 'class',
         header: t('columnClass'),
+        // Tab-table column shape (`Ops Portal.dc.html:386-410`): single-line
+        // 13px text, no sublabel, truncated — not the metric arm's grow block.
         cell: (row) => noValueIfMissing(row.class?.name ?? null),
       },
       {
         key: 'year',
         header: t('columnYear'),
+        grid: 'text',
         cell: (row) =>
           row.year_level === null ? noValueIfMissing(null) : t('yearLevelValue', { year: row.year_level }),
       },
       {
         key: 'level',
         header: t('columnLevel'),
+        grid: 'text',
         cell: (row) => noValueIfMissing(opsStudentCefrLevel(row)),
       },
       {
         key: 'latest-result',
         header: t('columnLatestResult'),
+        grid: 'text',
         cell: (row) => opsStudentLatestResultLabel(row, formatDate) ?? t('studentsNoResult'),
       },
       {
         key: 'status',
         header: t('columnStatus'),
+        grid: 'bare',
         cell: (row) => (
           <Badge variant={opsStudentStatusTone(row.status)}>
             {t(opsStudentStatusLabelKey(row.status))}

@@ -137,6 +137,14 @@ export interface DirectoryColumnDef<Row> {
   sortValues?: DirectorySortValues;
   /** Extra classes for the header AND body cells of this column. */
   className?: string;
+  /**
+   * How the grid arm lays this column out: `title` (name block, first column
+   * default), `metric` (value + inline sublabel, the default for the rest),
+   * `text` (the tab-table's single-line 13px column — no sublabel, truncated;
+   * `Ops Portal.dc.html:398-400`) or `bare` (cell as-is, e.g. a fixed-width
+   * status pill).
+   */
+  grid?: 'title' | 'metric' | 'text' | 'bare';
 }
 
 /** One row action: every action lives in the ⋯ menu; up to two `quick` ones also render inline. */
