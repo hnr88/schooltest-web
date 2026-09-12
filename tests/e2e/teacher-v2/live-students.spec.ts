@@ -12,6 +12,7 @@ import {
 import { sittingMonitorSchema } from '@/modules/test-day/schemas/test-day.schema';
 import type { DashboardClass } from '@/modules/teacher/types/teacher.types';
 
+import { databaseUnavailable, runSql } from '../helpers/auth-db';
 import { apiLoginRetried } from '../helpers/ops34-api-retry';
 import { API_BASE } from '../helpers/teacher-auth-rail';
 import { answerFirstItem } from '../helpers/teacher-live-monitor-join';
@@ -37,11 +38,45 @@ let klass: DashboardClass;
 let sittingId = '';
 const working = { id: '', jwt: '', session: '', name: '', email: '' };
 const waiting = { id: '', name: '', email: '' };
+// TB-37: the Result this spec drove into `scoring_failed`, and the whole stored
+// row as it stood first, so teardown always puts it back byte for byte.
+const failure = { resultId: '', row: '' };
+
+/**
+ * The columns a REAL scoring failure leaves empty. Checked against the seeded
+ * failure qsk4zocjr8zl63qg9tb2zu8w, whose every measure column is NULL: the
+ * C-9 job faults before `result-storage-v2.compose` writes anything, so
+ * `markScoringFailed` flips the status of a row that never got measures
+ * (house rule 8). Nulling them is what makes the surfaces behave as they do
+ * for a real failure — the roster cannot state a row with no `model_version`,
+ * and the C-4 view dispatches it to v1 instead of rejecting a half-v2 row.
+ */
+const MEASURE_COLUMNS = [
+  'attributes',
+  'overall',
+  'gate',
+  'vocab',
+  'error_patterns',
+  'model_version',
+  'reference_sets_version',
+  'display_label',
+  'acara_phase',
+  'cefr_band',
+  'readiness',
+  'low_confidence',
+  'effort_valid',
+  'productive_scores',
+  'supplementary',
+  'scoring_warnings',
+  'transitioning_attribute',
+] as const;
+const RESTORED_COLUMNS = ['status', ...MEASURE_COLUMNS].join(', ');
 
 const auth = () => ({ Authorization: `Bearer ${jwt}` });
-const section = () => page.locator('[data-slot="live-students"]');
-const card = (studentId: string) =>
-  section().locator(`[data-slot="live-student-card"][data-student-id="${studentId}"]`);
+// `on` defaults to the shared page; the TB-37 test passes its own FRESH page.
+const section = (on: Page = page) => on.locator('[data-slot="live-students"]');
+const card = (studentId: string, on: Page = page) =>
+  section(on).locator(`[data-slot="live-student-card"][data-student-id="${studentId}"]`);
 
 async function monitor() {
   const response = await request.get(`${API_BASE}/api/teacher/test-sessions/${sittingId}/monitor`, {
@@ -69,11 +104,25 @@ async function studentStatus(): Promise<{ paused: boolean; extra_seconds: number
   return (await response.json()) as { paused: boolean; extra_seconds: number | null; submitted_by_teacher: boolean };
 }
 
+/** The Result row's own status, straight out of Postgres. */
+const resultStatus = (resultId: string) =>
+  runSql(`select status from results where document_id = '${resultId}'`);
+
+/** The whole stored row as JSON, and that JSON back onto the columns it holds. */
+const resultRow = (resultId: string) =>
+  runSql(`select row_to_json(r)::text from results r where document_id = '${resultId}'`);
+const restoreResultRow = (resultId: string, row: string) =>
+  runSql(
+    `update results set (${RESTORED_COLUMNS}) =` +
+      ` (select ${RESTORED_COLUMNS} from jsonb_populate_record(null::results, $row$${row}$row$::jsonb))` +
+      ` where document_id = '${resultId}'`,
+  );
+
 /** Opens a row's kebab and returns its popup. */
-async function openMenu(studentId: string): Promise<Locator> {
-  await card(studentId).scrollIntoViewIfNeeded();
-  await card(studentId).locator('[data-slot="live-row-menu"]').click();
-  const menu = page.locator('[data-slot="dropdown-menu-content"]');
+async function openMenu(studentId: string, on: Page = page): Promise<Locator> {
+  await card(studentId, on).scrollIntoViewIfNeeded();
+  await card(studentId, on).locator('[data-slot="live-row-menu"]').click();
+  const menu = on.locator('[data-slot="dropdown-menu-content"]');
   await expect(menu).toBeVisible();
   await expect(menu).toHaveAttribute('data-open', '');
   return menu;
@@ -155,6 +204,8 @@ test.beforeAll(async ({ browser, playwright }) => {
 });
 
 test.afterAll(async () => {
+  // Every column the failure below overwrote, back to what the row held.
+  if (failure.resultId !== '') restoreResultRow(failure.resultId, failure.row);
   if (sittingId !== '') {
     const row = (await readSessions(request, jwt)).find((entry) => entry.sitting_document_id === sittingId);
     if (row?.status === 'open') await closeSession(request, jwt, sittingId);
@@ -284,4 +335,76 @@ test('force submit ends the attempt and its submission opens in the review drawe
   await expect(drawer).toBeVisible({ timeout: 30_000 });
   await expect(drawer).toContainText(working.name);
   await page.screenshot({ path: path.join(PROOFS, 'live-students-review.png') });
+});
+
+// TB-37 — the Scoring failed row's own actions, on a page that has never seen a
+// force submit. Nothing a teacher can reach produces a scoring failure on demand
+// (Lane E flips the row only after the C-9 retry ladder is exhausted), so the
+// Result the force submit above created is written into the shape a REAL failure
+// leaves: `status: 'scoring_failed'` with no measures and no `model_version` —
+// exactly the row the seeded failure qsk4zocjr8zl63qg9tb2zu8w holds, and exactly
+// what `src/workers/r-scoring.failure.ts markScoringFailed` + house rule 8 write.
+// Everything after that is the real stack: C-TS-3 reports the state and names the
+// Result on its tile, the class roster answers no Result for that session, the tab
+// is opened FRESH, and the row's own "Retry scoring" is the C-RSC-1 write that
+// puts the paper back on the r-scoring queue. Teardown restores the whole row.
+test('a scoring-failed row offers Retry scoring on a fresh load, with no force submit in that page session', async () => {
+  // Two monitor polls, a cold page load and a real r-scoring round trip: the
+  // 30s default cannot hold this one.
+  test.setTimeout(180_000);
+  test.skip(databaseUnavailable(), 'no dev database to drive the scoring failure with');
+  const submitted = await tileOf(working.id);
+  const resultId = submitted?.result_document_id ?? '';
+  expect(resultId, 'TB-37: the C-TS-3 tile names the Result of the session it reports').not.toBe('');
+  failure.row = resultRow(resultId);
+  failure.resultId = resultId;
+  runSql(
+    `update results set status = 'scoring_failed', ${MEASURE_COLUMNS.map((column) => `${column} = null`).join(', ')}` +
+      ` where document_id = '${resultId}'`,
+  );
+
+  await expect.poll(async () => (await tileOf(working.id))?.state, { timeout: 30_000 }).toBe('scoring_failed');
+  expect((await tileOf(working.id))?.result_document_id, 'the failed tile keeps the id').toBe(resultId);
+
+  // The other half of the premise, off the real roster read the Live tab merges:
+  // it names no Result for THIS session, so the tile is the only source there is.
+  const rosterResponse = await request.get(`${API_BASE}/api/my/students/results?class=${klass.class_document_id}`, {
+    headers: auth(),
+  });
+  expect(rosterResponse.status(), 'GET /api/my/students/results').toBe(200);
+  const roster = (await rosterResponse.json()) as {
+    student: { document_id: string };
+    result: { session_document_id: string } | null;
+  }[];
+  const rosterRow = roster.find((entry) => entry.student.document_id === working.id);
+  expect(rosterRow?.result?.session_document_id ?? null, 'the roster names no Result for this session').not.toBe(
+    working.session,
+  );
+
+  // A cold load: its own document, its own React state, no remembered force submit.
+  const fresh = await page.context().newPage();
+  await fresh.goto(`/dashboard/results/${klass.class_document_id}?tab=live&session=${sittingId}`);
+  await expect(section(fresh)).toHaveAttribute('data-status', 'ready', { timeout: 60_000 });
+  await expect(card(working.id, fresh)).toHaveAttribute('data-status', 'scoring_failed', { timeout: 30_000 });
+  await expect(card(working.id, fresh)).toContainText(t('status.scoring_failed'));
+  await expect(card(working.id, fresh).locator('[data-slot="live-student-detail"]')).toHaveText(
+    t('detail.scoringFailed'),
+  );
+
+  const menu = await openMenu(working.id, fresh);
+  // The popup fades in (Base UI, 100ms); catching it mid-animation would prove
+  // nothing. Shot BEFORE the assertion, so a regression leaves the empty menu
+  // it drew as its own evidence rather than no picture at all.
+  await fresh.waitForTimeout(400);
+  await fresh.screenshot({ path: path.join(PROOFS, 'live-students-scoring-failed.png') });
+  await expect(menu.locator('[data-action="retry"]')).toHaveText(t('action.retry'));
+
+  const [rescore] = await Promise.all([
+    fresh.waitForResponse((response) => response.url().includes(`/results/${resultId}/rescore`)),
+    menu.locator('[data-action="retry"]').click(),
+  ]);
+  expect(rescore.status(), 'the row action is the real C-RSC-1 write').toBe(202);
+  await expect.poll(() => resultStatus(resultId), { timeout: 30_000 }).not.toBe('scoring_failed');
+  await expect(card(working.id, fresh)).toHaveAttribute('data-status', 'submitted', { timeout: 30_000 });
+  await fresh.close();
 });

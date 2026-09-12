@@ -25,8 +25,9 @@ const act = (key: LiveRowActionKey, destructive = false): LiveRowAction => ({ ke
 
 /**
  * The row menu per status. Review and re-score need this sitting's real Result
- * id; retry and manual scoring need it too, so a Scoring failed row offers them
- * only when a force submit made here returned that id.
+ * id; retry and manual scoring need it too, and since TB-37 the C-TS-3 tile
+ * carries it, so a Scoring failed row offers them on a cold page load — no
+ * longer only after a force submit made here returned that id.
  */
 export function rowActionsFor(row: LiveStudentRow, retried: ReadonlySet<string>): LiveRowAction[] {
   switch (row.status) {

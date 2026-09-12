@@ -17,6 +17,7 @@ import {
   t2Live409,
   t2LivePaused,
   t2LiveRunning,
+  t2LiveScoringFailed,
   t2LiveStalled,
 } from '@/modules/teacher/lib/v2/__fixtures__/t2-live';
 import type { LiveMonitorTile, LiveStudentRow } from '@/modules/teacher/types/live-students.types';
@@ -196,6 +197,42 @@ describe('row menu per status — design §6.2 on real endpoints only', () => {
     const known = named(rowsOf(failed, t2Roster, new Map([[qadirId, resultId]])), 'Qadir');
     expect(keys(known)).toEqual(['retry']);
     expect(keys(known, new Set([resultId]))).toEqual(['raiseManual']);
+  });
+
+  // TB-37 — the cold-load case, on the recorded sitting that really holds one.
+  it('takes a scoring-failed row’s Result id off the tile when the roster has no row for that session', () => {
+    const row = rowsOf(t2LiveScoringFailed).find((entry) => entry.status === 'scoring_failed');
+    if (row === undefined) throw new Error('the recorded sitting has no scoring-failed student');
+    const tile = tileOf(t2LiveScoringFailed, row.studentId);
+    const rosterResult = rosterOf(row.studentId).result;
+
+    // The premise, read off the two recordings: the tile names THIS session's
+    // Result, the roster row names a DIFFERENT session's official one — so with
+    // no force submit in this page session the tile is the only source there is.
+    expect(tile.result_document_id).not.toBeNull();
+    expect(row.sessionId).not.toBeNull();
+    expect(rosterResult?.session_document_id).not.toBe(row.sessionId);
+    expect(rosterResult?.document_id).not.toBe(tile.result_document_id);
+
+    expect(row.resultId).toBe(tile.result_document_id);
+    expect(row.resultScored).toBe(false);
+    expect(keys(row)).toEqual(['retry']);
+    expect(keys(row, new Set([row.resultId ?? '']))).toEqual(['raiseManual']);
+  });
+
+  // Derived from the same recording: the roster row the API documents for a
+  // scoring-failed attempt (`result: null`) leaves the tile alone as the source.
+  it('still takes it off the tile when the roster row carries no Result at all', () => {
+    const row = rowsOf(t2LiveScoringFailed).find((entry) => entry.status === 'scoring_failed');
+    if (row === undefined) throw new Error('the recorded sitting has no scoring-failed student');
+    const roster = t2Roster.map((entry) =>
+      entry.student.document_id === row.studentId ? { ...entry, result: null } : entry,
+    );
+    const cold = rowsOf(t2LiveScoringFailed, roster).find((entry) => entry.status === 'scoring_failed');
+    if (cold === undefined) throw new Error('the derived roster dropped the scoring-failed row');
+    expect(cold.resultId).toBe(tileOf(t2LiveScoringFailed, row.studentId).result_document_id);
+    expect(cold.resultScored).toBe(false);
+    expect(keys(cold)).toEqual(['retry']);
   });
 });
 

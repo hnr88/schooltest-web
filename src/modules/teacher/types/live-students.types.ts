@@ -28,7 +28,12 @@ export interface LiveStudentRow {
   connection: LiveConnection | null;
   extraMinutes: number;
   sessionId: string | null;
-  /** This sitting's Result: the roster's for this session, or one a force submit returned. */
+  /**
+   * This sitting's Result: the roster's for this session, the C-TS-3 tile's own
+   * `result_document_id` (TB-37 — what a cold load has for a `scoring_failed`
+   * attempt, which the roster reports as `result: null`), or one a force submit
+   * returned.
+   */
   resultId: string | null;
   /** The roster holds that Result as scored (`complete`, official). */
   resultScored: boolean;
