@@ -5903,7 +5903,8 @@
         "everyday": "Thông dụng (A2)",
         "academic": "Học thuật (B1)",
         "footer": "Được tạo từ chẩn đoán đọc của {name} vào {date}. Dành cho giáo viên và nhà trường."
-      }
+      },
+      "soonValue": "–"
     },
     "classDetail": {
       "backTitle": "Quay lại Lớp học",

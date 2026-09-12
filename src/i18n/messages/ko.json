@@ -5894,7 +5894,8 @@
         "everyday": "일상 어휘 (A2)",
         "academic": "학업 어휘 (B1)",
         "footer": "{date}에 {name} 읽기 진단에서 생성됨. 교사 및 학교용."
-      }
+      },
+      "soonValue": "–"
     },
     "classDetail": {
       "backTitle": "학급 목록으로 돌아가기",

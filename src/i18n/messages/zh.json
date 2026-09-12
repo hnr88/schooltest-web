@@ -5884,7 +5884,8 @@
         "everyday": "日常（A2）",
         "academic": "学术（B1）",
         "footer": "根据 {name} 的阅读诊断于 {date} 生成。供教师和学校使用。"
-      }
+      },
+      "soonValue": "–"
     },
     "classDetail": {
       "backTitle": "返回班级列表",

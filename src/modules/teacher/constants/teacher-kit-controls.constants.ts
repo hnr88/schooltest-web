@@ -15,13 +15,21 @@ import type {
 export const KIT_FOCUS_RING =
   'outline-none focus-visible:ring-2 focus-visible:ring-navy-900/25 focus-visible:ring-offset-1';
 
+/**
+ * `primary`, `ghost` and `inverse` draw no border at all (`border:none` in the
+ * design, e.g. `:66`, `:256`, `:1046`), so they use `border-0` and not a
+ * transparent 1px border — that border made every one of them 2px wider (P1
+ * row 19). `outline`'s hover is the design's border-only `#0E2350` (`:542`,
+ * `:1701`, `:476`, `:331`); the PDF/LLM pair, the one place the design also
+ * tints the face (`:200`, `:705`), adds `#FAFBFC` itself (P1 row 23).
+ */
 export const TEACHER_BUTTON_TONES: Record<TeacherButtonTone, string> = {
-  primary: 'border-transparent bg-navy-900 text-white hover:bg-navy-800',
-  outline: 'border-[#E5E7EB] bg-white text-navy-900 hover:border-navy-900 hover:bg-[#FAFBFC]',
+  primary: 'border-0 bg-navy-900 text-white hover:bg-navy-800',
+  outline: 'border-[#E5E7EB] bg-white text-navy-900 hover:border-navy-900 hover:bg-white',
   secondary: 'border-[#E5E7EB] bg-white text-[#374151] hover:bg-[#F5F6F8]',
-  ghost: 'border-transparent bg-transparent text-[#6B7280] hover:bg-transparent hover:text-[#DC2626]',
+  ghost: 'border-0 bg-transparent text-[#6B7280] hover:bg-transparent hover:text-[#DC2626]',
   dangerOutline: 'border-[#E9C4C0] bg-white text-[#B42318] hover:bg-[#FDEEEC]',
-  inverse: 'border-transparent bg-white text-navy-900 hover:bg-[#F5F6F8]',
+  inverse: 'border-0 bg-white text-navy-900 hover:bg-[#F5F6F8]',
 };
 
 export const TEACHER_BUTTON_SIZES: Record<TeacherButtonSize, string> = {

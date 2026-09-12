@@ -5884,7 +5884,8 @@
         "everyday": "Everyday (A2)",
         "academic": "Academic (B1)",
         "footer": "Generated from {name} reading diagnostics on {date}. For teacher and school use."
-      }
+      },
+      "soonValue": "–"
     },
     "classDetail": {
       "backTitle": "Back to Classes",
