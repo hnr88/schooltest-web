@@ -6,7 +6,9 @@ import { ScheduledSessionCard } from '@/modules/teacher/components/ScheduledSess
 import type { LiveRollupBooking } from '@/modules/teacher/types/live-sessions.types';
 
 // Teacher Portal v2.dc.html:1244–1263 — this class's bookings (C-TS-2 `scheduled`),
-// each card with Start now / Edit / Cancel from the Live sessions page.
+// each card with Start now / Edit / Cancel. The Live tab draws its own, heavier
+// card here (`variant="live"`, P1 round 2 · N2): the test is the title, the chip
+// is a pill and Cancel keeps the destructive tone the Live sessions page drops.
 function BookedForLater({ bookings }: { bookings: readonly LiveRollupBooking[] }) {
   const t = useTranslations('TeacherPortal.live.history');
 
@@ -17,7 +19,7 @@ function BookedForLater({ bookings }: { bookings: readonly LiveRollupBooking[] }
       </h3>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-3.5">
         {bookings.map((booking) => (
-          <ScheduledSessionCard key={booking.documentId} booking={booking} heading="test" />
+          <ScheduledSessionCard key={booking.documentId} booking={booking} variant="live" />
         ))}
       </div>
     </section>

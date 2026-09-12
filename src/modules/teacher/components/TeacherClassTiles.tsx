@@ -71,7 +71,7 @@ function TeacherClassTile({ row }: { row: ClassRowView }) {
         </span>
         <span className="min-w-0">
           <span className={cn('block', TILE_EYEBROW)}>{t('tile.growth')}</span>
-          <span className="mt-1 block">
+          <span className="mt-1 block text-[15px]">
             <DeltaText value={row.readingDelta} format="signed" size="lg" />
           </span>
         </span>

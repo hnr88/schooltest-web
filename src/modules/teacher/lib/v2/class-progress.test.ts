@@ -1,3 +1,4 @@
+import { GROWTH_FG } from '@/modules/teacher/constants/v2-tones.constants';
 import { describe, expect, test } from 'vitest';
 
 import type { DisplaySkill } from '@schooltest/scoring-contracts';
@@ -63,7 +64,7 @@ describe('classProgress — recorded t2 roster', () => {
         name: 'Amara Baptiste',
         firstName: 'Amara',
         score: 42,
-        growth: { kind: 'steady', delta: 2, points: null, reliable: true, fg: '#9CA3AF' },
+        growth: { kind: 'steady', delta: 2, points: null, reliable: true, fg: GROWTH_FG.steady },
       },
     ]);
   });
@@ -108,7 +109,7 @@ describe('classProgress — edge cases derived from the recorded roster', () => 
   test('empty roster (every recorded row removed): nothing is invented', () => {
     const empty = classProgress(t2Roster.slice(0, 0));
     expect(empty.tiles.map((tile) => tile.value)).toEqual([null, 0, 0, 0]);
-    expect(empty.tiles[0].fg).toBe('#B6BCC7');
+    expect(empty.tiles[0].fg).toBe(GROWTH_FG.none);
     expect(empty).toMatchObject({ paired: 0, series: [], summary: null, topProgress: [], watch: [] });
     expect(empty.chart.points).toEqual([]);
     expect(empty.subskillTrends.every((entry) => entry.now === null && entry.values.length === 0 && entry.difference === null)).toBe(true);

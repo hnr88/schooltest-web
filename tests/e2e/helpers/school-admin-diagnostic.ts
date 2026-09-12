@@ -87,6 +87,60 @@ export async function openBandedClass(page: Page, bodies: readonly ClassDiagnost
   return target;
 }
 
+// TB-12 — the MASTERY TABLE + student drill-down half. The status a cell shows is
+// re-derived here from the diagnostic the page itself received, with NO app code:
+// the area a wire code lands on (`areaOf`), then, where both vocabulary strands
+// land on Vocabulary, the LIMITING one — the lowest-ranked banded status, a band
+// always beating the other strand's absence.
+const STATUS_RANK: Readonly<Record<string, number | null>> = {
+  not_yet: 0,
+  not_mastered: 0,
+  emerging: 1,
+  developing: 2,
+  mastered: 2,
+  secure: 3,
+  not_assessed: null,
+};
+
+/** The status the given area's cell must carry for this row, or 'none' for the em dash. */
+export function expectedAreaStatus(row: ClassDiagnostic['mastery'][number], area: string): string {
+  let best: { status: string; rank: number | null } | null = null;
+  for (const attribute of row.attributes) {
+    if (areaOf(attribute.code) !== area) continue;
+    const rank = STATUS_RANK[attribute.status] ?? null;
+    if (best === null || (rank !== null && (best.rank === null || rank < best.rank))) {
+      best = { status: attribute.status, rank };
+    }
+  }
+  return best?.status ?? 'none';
+}
+
+/** Every mastery row in the table's default order (name asc, documentId tie-break), with its seven cells. */
+export function expectedMasteryTable(diagnostic: ClassDiagnostic): { ref: string; areas: string[] }[] {
+  return [...diagnostic.mastery]
+    .sort(
+      (a, b) =>
+        a.student_ref.localeCompare(b.student_ref) ||
+        a.student_document_id.localeCompare(b.student_document_id),
+    )
+    .map((row) => ({
+      ref: row.student_ref,
+      areas: AREA_CODES.map((code) => expectedAreaStatus(row, code)),
+    }));
+}
+
+/** The rendered mastery table, row by row: the student name and each area cell's status marker. */
+export function renderedMasteryTable(table: Locator): Promise<{ ref: string; areas: string[] }[]> {
+  return table.locator('[data-directory-row]').evaluateAll((rows) =>
+    rows.map((row) => ({
+      ref: row.querySelector('[data-row-select] span')?.textContent?.trim() ?? '',
+      areas: Array.from(row.querySelectorAll('[data-slot="mastery-area"]')).map(
+        (cell) => cell.getAttribute('data-status') ?? '',
+      ),
+    })),
+  );
+}
+
 /** The aggregate table's rows in area order: the area code and its status counts in column order. */
 export function expectedAggregate(diagnostics: readonly ClassDiagnostic[]): { code: string; counts: number[] }[] {
   const counts = new Map<string, Record<string, number>>();

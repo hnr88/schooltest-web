@@ -12,9 +12,10 @@ import type {
 } from '@/modules/teacher/types/live-students.types';
 
 // Teacher Portal v2.dc.html:3296–3345, 3618–3632 — the Live tab's student list
-// over the REAL reads: the teacher monitor (C-TS-3) owns each student's state
-// and progress, the sitting monitor (C-SIT-02) their full name, email and
-// session, and the class roster the Result of that session.
+// over the REAL reads: the teacher monitor (C-TS-3) owns each student's state,
+// progress and (TB-37) the Result id of the session its own tile reports, the
+// sitting monitor (C-SIT-02) their full name, email and session, and the class
+// roster the Result of that session.
 
 function fullName(row: MonitorStudent): string {
   return [row.given_name, row.family_name].filter(Boolean).join(' ').trim();
@@ -48,7 +49,17 @@ export function buildLiveRows({ tiles, sittingRows, roster, forcedResults }: Liv
       connection: tile.connection ?? null,
       extraMinutes: tile.extra_minutes ?? 0,
       sessionId,
-      resultId: own?.document_id ?? forcedResults.get(tile.student_document_id) ?? null,
+      // TB-37 — in order of authority: the roster's row for THIS session (the
+      // official Result, whose `status` also decides `resultScored`), then the
+      // C-TS-3 tile's own per-session id, which a COLD load carries where the
+      // roster cannot — a real `scoring_failed` attempt holds no measures, so
+      // the roster's row for that student is `result: null` or an OLDER scored
+      // sitting's — then the id a force submit made here answered with.
+      resultId:
+        own?.document_id ??
+        tile.result_document_id ??
+        forcedResults.get(tile.student_document_id) ??
+        null,
       resultScored: own?.status === 'complete',
       neverSat: rosterRow?.release_state === 'nosit',
       emptyAttempt: isEmptyAttempt(tile),

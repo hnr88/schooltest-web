@@ -46,10 +46,13 @@ export interface FamilyCounts {
   total: number;
   scored: number;
   released: number;
+  /** Held AND scored: the rows the release buttons can act on (TB-40). */
   held: number;
   recalled: number;
   open: number;
   blocked: number;
+  /** Held but carrying no `domain_score` — counted under `noResult`, never under `scored` (TB-40). */
+  unscored: number;
   noResult: number;
 }
 
@@ -61,6 +64,7 @@ export interface FamilyBanner {
   kind: 'incomplete' | 'complete';
   open: number;
   blocked: number;
+  unscored: number;
   tone: BannerTone;
 }
 

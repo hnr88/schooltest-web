@@ -19,7 +19,6 @@ export { StudentCommentary } from './components/StudentCommentary';
 export { StudentResultHeader } from './components/StudentResultHeader';
 export { deidentify } from './lib/deidentify';
 export { fallbackParagraphs } from './lib/commentary-fallback';
-export { LLM_ENDPOINT, askClaude, buildAskPrompt, buildCommentaryPrompt, llmPayload } from './lib/llm-client';
 export { renderStudentMarkdown } from './lib/llm-export';
 export type { StudentIdentity } from './components/StudentResultHeader';
 export { StudentResultScreen } from './components/StudentResultScreen';

@@ -4,9 +4,12 @@ import { useTranslations } from 'next-intl';
 import { X } from 'lucide-react';
 
 import { Link } from '@/i18n/navigation';
-import { StatusPill, type StatusPillTone } from '@/modules/design-system';
+import { StatusPill } from '@/modules/design-system';
 import { REPORTS_HREF } from '@/modules/shell';
-import type { DiagnosticMasteryRow, DiagnosticStatus } from '@/modules/teach/types/diagnostic.types';
+import {
+  masteryAreaAttribute,
+  MASTERY_AREA_CODES,
+} from '@/modules/teach/lib/mastery-directory.lib';
 
 import type { StudentMasteryDrilldownProps } from '@/modules/teach/types/components.types';
 import { STATUS_TONE } from '@/modules/teach/constants/components.constants';
@@ -18,6 +21,13 @@ import { STATUS_TONE } from '@/modules/teach/constants/components.constants';
 // (C-RPT-01 v2 latest_result_document_id), the drill links one click further
 // to the full teacher report for that result; students with no result yet get
 // the not-assessed note instead, never a dead link.
+//
+// TB-12: the list walks the seven AREAS and asks `masteryAreaAttribute` which
+// of the row's attributes lands on each — the same placement the table column
+// above it uses, so the drill and the row it came from always agree. Walking
+// the wire attributes instead named them by their raw code (a missing
+// `Teach.diagnostic.areas.Decoding` key) and listed Vocabulary twice, once per
+// strand.
 export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldownProps) {
   const t = useTranslations('Teach.diagnostic');
 
@@ -41,19 +51,27 @@ export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldow
         </button>
       </div>
       <ul className="flex flex-col gap-2">
-        {row.attributes.map((attribute) => (
-          <li
-            key={attribute.code}
-            className="flex items-center justify-between gap-4 rounded-lg border border-border px-3 py-2"
-          >
-            <span className="text-sm font-medium text-foreground">
-              {t(`areas.${attribute.code}`)}
-            </span>
-            <StatusPill tone={STATUS_TONE[attribute.status]}>
-              {t(`status.${attribute.status}`)}
-            </StatusPill>
-          </li>
-        ))}
+        {MASTERY_AREA_CODES.map((code) => {
+          const attribute = masteryAreaAttribute(row, code);
+          return (
+            <li
+              key={code}
+              data-slot="drilldown-area"
+              data-area={code}
+              data-status={attribute?.status ?? 'none'}
+              className="flex items-center justify-between gap-4 rounded-lg border border-border px-3 py-2"
+            >
+              <span className="text-sm font-medium text-foreground">{t(`areas.${code}`)}</span>
+              {attribute ? (
+                <StatusPill tone={STATUS_TONE[attribute.status]}>
+                  {t(`status.${attribute.status}`)}
+                </StatusPill>
+              ) : (
+                <span className="text-sm text-muted-foreground">—</span>
+              )}
+            </li>
+          );
+        })}
       </ul>
       {row.latest_result_document_id ? (
         <Link

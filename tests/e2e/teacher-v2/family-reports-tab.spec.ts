@@ -3,6 +3,8 @@ import path from 'node:path';
 
 import { expect, test, type Page } from '@playwright/test';
 
+import type { ResultView } from '@schooltest/scoring-contracts';
+
 import { READY, expectNoNewErrors, frame, setAsideErrors } from '../helpers/teacher-class-detail';
 import {
   expectedTiles,
@@ -26,6 +28,16 @@ import { watchErrors } from '../helpers/ui';
 // the UI, each state confirmed on the API, and afterAll writes the row's prior values back.
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
 const REASON = 'E2E family-reports check: recalled and restored by the spec';
+
+// P1 parity row 6 — a HELD result with no `overall.domain_score` never claims "Scored and
+// ready"; it says what the result's own `status` reports, neutral when that says no more.
+const HELD_UNSCORED_WHY: Record<ResultView['status'], string> = {
+  scoring: 'heldScoring',
+  partial_pending: 'heldScoring',
+  manual_scoring: 'manual',
+  scoring_failed: 'heldScoringFailed',
+  complete: 'heldNoScore',
+};
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
@@ -67,6 +79,29 @@ test('S6 — Family reports: live tiles, carer preview, release and recall one h
     await expect(tile.locator('div').first(), `tile ${key}`).toHaveText(String(value));
   }
   await expect(panel.locator('[data-action="release-held"]')).toHaveText(icu(fr('releaseHeld'), { count: tiles.held }));
+
+  // TB-40 — the banner says exactly what the served roster holds: it may only claim
+  // completeness when every attempt really carries a score.
+  const open = roster.filter((entry) => entry.release_state === 'open').length;
+  const blocked = roster.filter((entry) => ['manual', 'absent', 'nosit'].includes(entry.release_state)).length;
+  const unscored = roster.filter(
+    (entry) => entry.release_state === 'held' && (entry.result?.overall.domain_score ?? null) === null,
+  ).length;
+  const gaps = open + blocked + unscored;
+  const banner = panel.locator('[data-slot="family-report-banner"]');
+  await expect(banner).toHaveAttribute('data-kind', gaps === 0 ? 'complete' : 'incomplete');
+  await expect(banner).toHaveText(
+    gaps === 0
+      ? fr('banner.complete')
+      : [
+          open > 0 ? icu(fr('banner.open'), { count: open }) : null,
+          unscored > 0 ? icu(fr('banner.unscored'), { count: unscored }) : null,
+          blocked > 0 ? icu(fr('banner.blocked'), { count: blocked }) : null,
+          fr('banner.gaps'),
+        ]
+          .filter((part) => part !== null)
+          .join(' '),
+  );
   const rows = panel.locator('[data-slot="family-report-row"]');
   await expect(rows).toHaveCount(roster.length);
   for (const entry of roster) {
@@ -78,9 +113,36 @@ test('S6 — Family reports: live tiles, carer preview, release and recall one h
     await expect(row.locator('[data-slot="family-report-score"]')).toHaveText(
       score !== null ? `${score}%` : entry.result === null ? fr('noResult') : '—',
     );
+    if (entry.release_state === 'held' && entry.result !== null) {
+      await expect(
+        row.getByText(vm('release.why.held'), { exact: true }),
+        `"Scored and ready" only with a score: ${entry.student.name}`,
+      ).toHaveCount(score === null ? 0 : 1);
+      if (score === null) await expect(row).toContainText(vm(`release.why.${HELD_UNSCORED_WHY[entry.result.status]}`));
+    }
   }
+  // TB-40 — the bulk confirm counts the same gaps the banner does. Opened and CANCELLED:
+  // nothing is released here.
+  await panel.locator('[data-action="release-held"]').click();
+  const releaseAll = page.getByRole('alertdialog');
+  await expect(releaseAll).toContainText(
+    [
+      icu(fr('releaseAll.body'), { count: tiles.held }),
+      open > 0 ? icu(fr('releaseAll.open'), { count: open }) : null,
+      unscored > 0 ? icu(fr('releaseAll.unscored'), { count: unscored }) : null,
+      blocked > 0 ? icu(fr('releaseAll.blocked'), { count: blocked }) : null,
+      fr('releaseAll.tail'),
+    ]
+      .filter((part) => part !== null)
+      .join(' '),
+  );
+  await releaseAll.getByRole('button', { name: fr('cancel'), exact: true }).click();
+  await expect(releaseAll).toBeHidden();
+
   await panel.getByRole('button', { name: fr('filters.held'), exact: true }).click();
   await expect(rows).toHaveCount(tiles.held);
+  await panel.getByRole('button', { name: fr('filters.blocked'), exact: true }).click();
+  await expect(rows, 'the Blocked pill holds everything the "No result yet" tile counts').toHaveCount(tiles.noResult);
   await panel.getByRole('button', { name: fr('filters.all'), exact: true }).click();
   await expect(rows).toHaveCount(roster.length);
   await page.screenshot({ path: path.join(PROOFS, 'family-reports-tab.png'), animations: 'disabled' });
@@ -97,6 +159,14 @@ test('S6 — Family reports: live tiles, carer preview, release and recall one h
   await expect(preview.getByRole('heading', { name, exact: true })).toBeVisible();
   await expect(preview.locator('[data-slot="carer-report-score"]')).toHaveText(`${target.result.overall.domain_score} / 100`);
   await expect(preview).toContainText(vm('release.label.held'));
+  // P1 parity row 8 — the meta line writes the day before the month ("sat 31 August"). The
+  // date is the sitting the API reports, reassembled here day-first from the same ISO day.
+  const satAt = target.result.history?.at(-1)?.sat_at;
+  if (satAt !== undefined) {
+    const day = Number(satAt.split('-')[2]);
+    const month = new Intl.DateTimeFormat('en', { month: 'long', timeZone: 'UTC' }).format(new Date(satAt));
+    await expect(preview.locator('p', { hasText: card.name })).toContainText(`${day} ${month}`);
+  }
   await expect(preview.getByRole('link', { name: fr('preview.viewAnalysis') })).toHaveAttribute(
     'href',
     new RegExp(`/dashboard/results/${card.class_document_id}/students/${target.student.document_id}$`),

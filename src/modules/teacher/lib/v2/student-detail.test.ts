@@ -1,3 +1,4 @@
+import { GROWTH_FG } from '@/modules/teacher/constants/v2-tones.constants';
 import { describe, expect, test } from 'vitest';
 
 import type { DisplaySkill } from '@schooltest/scoring-contracts';
@@ -131,7 +132,7 @@ describe('studentDetail — recorded Amara (single-strand vocabulary, scored gat
   });
 
   test('a single-strand student shows no A2 strand; the steady vocabulary is steady', () => {
-    expect(card(view, 'Vocabulary')).toMatchObject({ strands: { a2: null, b1: 25 }, delta: { kind: 'steady', fg: '#9CA3AF' } });
+    expect(card(view, 'Vocabulary')).toMatchObject({ strands: { a2: null, b1: 25 }, delta: { kind: 'steady', fg: GROWTH_FG.steady } });
   });
 
   test('not-assessed skills carry no score, band, movement or trajectory', () => {

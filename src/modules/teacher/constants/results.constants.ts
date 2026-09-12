@@ -112,8 +112,9 @@ export const INSIGHTS_FLAG_CHIP_TONE: Record<MasteryFlagKind, ToneChipTone> = {
 };
 
 /**
- * TB-31: the class header's Ask AI stays hidden until S11 mounts the real `/teacher/ask`
- * class drawer — no drawer subscribes to a class-scope request yet, so a visible button
- * would open nothing (RULE 0). S11 turns this on with the drawer.
+ * TB-31, CLOSED: `ClassAskAiDrawer` subscribes to the class-scope request and asks the
+ * real C-TA-1 `POST /api/teacher/ask`, so the header's Ask AI opens a drawer that
+ * answers from this class's own results. The flag stays as the one place that decides
+ * whether the button is drawn, so a future scope without a drawer can hide it again.
  */
-export const CLASS_ASK_AI_ENABLED = false;
+export const CLASS_ASK_AI_ENABLED = true;

@@ -10,6 +10,7 @@ import {
   subskillDeltaText,
 } from '@/modules/teacher/lib/student-detail-text';
 import { t2Result, t2ResultAmara, t2ResultDilnoza } from '@/modules/teacher/lib/v2/__fixtures__/t2';
+import { GROWTH_FG } from '@/modules/teacher/constants/v2-tones.constants';
 import { studentDetail } from '@/modules/teacher/lib/v2/student-detail';
 import type { StudentDetailView, SubskillCard } from '@/modules/teacher/types/v2-student-detail.types';
 
@@ -100,7 +101,7 @@ describe('student detail text — recorded Amara (server "steady", single B1 str
       id: 'growth',
       label: { key: 'tiles.growth' },
       value: { ns: 'viewModel', key: 'growth.steady' },
-      fg: '#9CA3AF',
+      fg: GROWTH_FG.steady,
     });
     expect(subskillDeltaText(card(view, 'Vocabulary').delta)).toEqual({ ns: 'viewModel', key: 'growth.steady' });
   });
@@ -151,7 +152,7 @@ describe('student detail text — other recorded roster rows', () => {
   test('Jae-won: no growth from the server, so no chip, a dash tile and no growth sentence', () => {
     const view = studentDetail(t2Result('Jae-won'));
     expect(overallDeltaText(view.overall.growth)).toBeNull();
-    expect(tile(view, 'growth')).toMatchObject({ value: null, fg: '#B6BCC7' });
+    expect(tile(view, 'growth')).toMatchObject({ value: null, fg: GROWTH_FG.none });
     expect(studentAnalysis(view, 'Jae-won')[0]).toEqual([
       { key: 'analysis.overall', values: { first: 'Jae-won', score: 38 }, labels: { phase: 'phase.beginning' } },
     ]);

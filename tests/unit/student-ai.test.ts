@@ -6,7 +6,7 @@ import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { NextIntlClientProvider } from 'next-intl';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { diagnosticExportSchema } from '@schooltest/scoring-contracts';
 
@@ -14,7 +14,6 @@ import { AskAiPanel } from '@/modules/results';
 import { StudentCommentary } from '@/modules/results';
 import { fallbackParagraphs } from '@/modules/results/lib/commentary-fallback';
 import { deidentify } from '@/modules/results/lib/deidentify';
-import { askClaude, llmPayload } from '@/modules/results/lib/llm-client';
 import { renderStudentMarkdown } from '@/modules/results/lib/llm-export';
 
 const enMessages = JSON.parse(
@@ -40,76 +39,21 @@ function tEn(key: string, values?: Record<string, string | number>): string {
 const IntlProvider = NextIntlClientProvider as unknown as (props: Record<string, unknown>) => ReactElement;
 
 /**
- * Task 32 — Screen C part 3, the privacy-critical surface. THE test is the
- * one that catches the D5 violation: both LLM features send the EXPORT BUNDLE
- * plus the prompt and NEVER ResultView fields, so the serialised request
- * carries no `prob`, no `theta` and no student name. Assertions run on
- * JSON.stringify(payload) — the bytes that would leave the browser — not on
- * the object we believe we passed.
+ * Task 32 — Screen C part 3. The D5 payload guard that used to live here went
+ * with `results/lib/llm-client.ts`: that "marked call site" POSTed to
+ * `/api/ai/result-commentary`, a gateway that was never built, and the real LLM
+ * surface is now C-TA-1 `POST /api/teacher/ask` — which never sees a name at
+ * all (the API anonymises server-side) and is covered by
+ * `modules/teacher/lib/ask-ai-thread.test.ts` plus
+ * `tests/e2e/teacher-v2/ask-ai.spec.ts`. What remains here is the commentary
+ * fallback, the de-identifying copy button and the markdown export.
  */
-
-vi.mock('@/lib/axios/strapi', () => ({
-  strapi: { post: vi.fn() },
-}));
-
-import { strapi } from '@/lib/axios/strapi';
-
-const post = vi.mocked(strapi.post);
 
 const bundle = diagnosticExportSchema.parse(
   JSON.parse(
     readFileSync(resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/diagnostic-export.json'), 'utf8'),
   ),
 );
-
-beforeEach(() => {
-  post.mockReset();
-});
-
-describe('the LLM payload — D5 leak guard (asserted on the serialised request)', () => {
-  test('commentary payload: bundle + prompt only; no prob, no theta, no name', () => {
-    const payload = llmPayload(bundle);
-    const serialised = JSON.stringify(payload);
-    expect(serialised).not.toMatch(/"prob"/);
-    expect(serialised).not.toMatch(/theta/i);
-    expect(serialised.toLowerCase()).not.toContain('amelia');
-    expect(Object.keys(payload)).toEqual(['prompt', 'context']);
-    expect(payload.context.skills.Critical).toMatchObject({ domain_score: 70 });
-  });
-
-  test('ask payload: exactly prompt + context + the question; still clean', () => {
-    const payload = llmPayload(bundle, 'Which skills improved?');
-    const serialised = JSON.stringify(payload);
-    expect(Object.keys(payload)).toEqual(['prompt', 'context', 'question']);
-    expect(serialised).not.toMatch(/"prob"/);
-    expect(serialised).not.toMatch(/theta/i);
-    expect(serialised.toLowerCase()).not.toContain('amelia');
-    expect(payload.question).toBe('Which skills improved?');
-  });
-
-  test('the prompt itself carries the honesty guardrails', () => {
-    const { prompt } = llmPayload(bundle);
-    expect(prompt).toContain('DO NOT CLAIM GROWTH');
-    expect(prompt).toContain('never with band words');
-    expect(prompt).toContain('never recompute or estimate a delta');
-  });
-
-  test('the ResultView would LEAK — proving the bundle is the only safe context', () => {
-    // The view the same sitting produces carries prob/prob_se. This documents
-    // WHY D5 exists rather than asserting product behaviour.
-    const view = JSON.parse(
-      readFileSync(resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json'), 'utf8'),
-    ) as { attributes: Record<string, { prob: number }> };
-    expect(JSON.stringify(view)).toMatch(/"prob"/);
-  });
-
-  test('askClaude posts the payload to the marked endpoint and returns the text', async () => {
-    post.mockResolvedValueOnce({ data: 'Three paragraphs about the sitting.' } as never);
-    const answer = await askClaude(llmPayload(bundle));
-    expect(answer).toBe('Three paragraphs about the sitting.');
-    expect(post).toHaveBeenCalledWith('/api/ai/result-commentary', llmPayload(bundle), { responseType: 'text' });
-  });
-});
 
 describe('the gated-fields fallback (LLM unavailable)', () => {
   test('three paragraphs, generated from the same gated fields', () => {

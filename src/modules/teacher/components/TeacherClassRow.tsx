@@ -56,8 +56,10 @@ function TeacherClassRow({ row, exports }: TeacherClassRowProps) {
       </td>
       {SOON_COLUMNS.map((column) => (
         <td key={column} className={CLASSES_TD}>
+          {/* The design's not-yet-built columns carry an en dash (`:192–194`), not the
+              kit's em dash for a missing value (P1 row 17). */}
           <span aria-hidden="true" className="text-[14px] font-medium text-[#C9CFD8]">
-            {tKit('noValue')}
+            {t('soonValue')}
           </span>
           <span className="sr-only">{t('soonLabel')}</span>
         </td>

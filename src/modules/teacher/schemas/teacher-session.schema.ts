@@ -163,7 +163,9 @@ export const createTestSessionResponseSchema = z.strictObject({
 /**
  * Optional server filters and paging; `meta.pagination` answers only a paged
  * read. `status`: `open` excludes bookings, `scheduled` is the bookings (sorted
- * by `window.opens_at`), `closed` includes cancelled bookings.
+ * by `window.opens_at`), `closed` is the sittings that actually RAN — api b10's
+ * TB-50 filter drops every never-opened row, so a cancelled or lapsed booking is
+ * in neither list and only in the unfiltered answer.
  */
 export const teacherTestSessionsQuerySchema = z.strictObject({
   status: z.enum(['open', 'closed', 'scheduled']).optional(),
@@ -336,6 +338,15 @@ export const monitorStudentSchema = z.strictObject({
    * OPTIONAL on the web mirror only; the API contract requires it.
    */
   extra_minutes: teacherCountSchema.optional(),
+  /**
+   * TB-37: the Result of the session THIS tile reports — the same id a force
+   * submit answers with, null while the attempt has none. It is what the Live
+   * tab's "Retry scoring" / "Raise for manual scoring" row actions act on, so
+   * a `scoring_failed` row no longer depends on a force submit having happened
+   * in the same page session. OPTIONAL on the web mirror only (a payload from
+   * a server without the API half still parses); the API contract requires it.
+   */
+  result_document_id: teacherDocumentIdSchema.nullable().optional(),
 });
 
 export const testSessionMonitorResponseSchema = z.strictObject({

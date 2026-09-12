@@ -154,7 +154,7 @@ export function useReviewMarking(
         cancelLabel={t('cancel')}
         pending={confirmAction.pending}
         error={confirmAction.errorMessage}
-        className="sm:max-w-[440px]"
+        skin="teacher"
         onConfirm={() => void confirmAction.confirm()}
       />
     ) : null;

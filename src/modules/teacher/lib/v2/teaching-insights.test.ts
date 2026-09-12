@@ -1,3 +1,4 @@
+import { GROWTH_FG } from '@/modules/teacher/constants/v2-tones.constants';
 import { describe, expect, test } from 'vitest';
 
 import { t2Diagnostic, t2Roster } from '@/modules/teacher/lib/v2/__fixtures__/t2';
@@ -103,7 +104,7 @@ describe('teachingInsights — empty roster (every recorded row removed): nothin
     expect(empty.kpis).toEqual({
       lastSitting: { satAt: null, formCode: null },
       classAverage: null,
-      upSinceLast: { value: null, paired: 0, fg: '#B6BCC7' },
+      upSinceLast: { value: null, paired: 0, fg: GROWTH_FG.none },
       topGap: null,
       participation: { percent: null, scored: 0, total: 0 },
     });

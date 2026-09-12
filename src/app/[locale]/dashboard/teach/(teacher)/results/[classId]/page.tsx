@@ -1,38 +1,18 @@
-import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
-
-import { DiagnosticDashboard, ExportMarkdownButton, ProgressPanel } from '@/modules/teach';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('Teach.diagnostic.meta');
-  return {
-    title: t('title'),
-    description: t('description'),
-    openGraph: { title: t('title'), description: t('description') },
-  };
-}
+import { redirect } from '@/i18n/navigation';
+import { classResultsHref } from '@/modules/teacher';
 
 interface TeachDiagnosticPageProps {
-  params: Promise<{ classId: string }>;
+  params: Promise<{ locale: string; classId: string }>;
 }
 
-// Teacher results page (tasks 75-77, st-mvp-pivot): the C-RPT-01 class
-// mastery profiles plus the nested item-type heat map, with the C-RPT-02
-// progress panel (Test B against the Test A benchmark) under it and the
-// C-RPT-03 markdown export button in the dashboard header (mvp spec 4.10 -
-// the teacher pastes the file into their own AI assistant). All three keep
-// their WYSIWYG empty states until the data exists. The TeacherGuard in the
-// section layout keeps this teacher-only; the reporting scoping keeps it
-// own-classes-only.
+// RETIRED (Teacher Portal v2, R1 PART B). The C-RPT-01/02 diagnostic dashboard
+// this route rendered (tasks 75-77) is the class detail's Teaching insights and
+// Class progress tabs now. Its C-RPT-03 "Export for AI" button went with it:
+// `export.md` carries every roster first name + initial (TB-22), and the class
+// AI export is B7's de-identified `/export/insights` inside the Reports modal.
+// `DiagnosticDashboard` / `ProgressPanel` themselves stay — the school-admin
+// analytics screen still mounts both.
 export default async function TeachDiagnosticPage({ params }: TeachDiagnosticPageProps) {
-  const { classId } = await params;
-  return (
-    <>
-      <DiagnosticDashboard
-        classId={classId}
-        actions={<ExportMarkdownButton classId={classId} />}
-      />
-      <ProgressPanel classId={classId} />
-    </>
-  );
+  const { locale, classId } = await params;
+  redirect({ href: `${classResultsHref(classId)}?tab=insights`, locale });
 }

@@ -34,9 +34,11 @@ export const TEACHER_LOGO_LINK_CLASSES =
   'relative mb-6.5 ml-3 self-start rounded-md transition-[opacity,transform] duration-200 ease-out after:absolute after:-inset-2.5 hover:-translate-y-px hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 group-data-[collapsible=icon]:mb-6 group-data-[collapsible=icon]:ml-0';
 
 // Nav item (:29/:32, states from nav() at :2972): active 600 navy on #EEF1F6, idle
-// 500 #5B6879 (5.6:1 on white, AA as drawn) on transparent.
+// 500 #5B6879 (5.6:1 on white, AA as drawn) on transparent. The design gives the
+// item no hover and no press state (P1 row 24), so the sidebar primitive's own
+// hover/active accents are neutralised rather than restyled; the focus ring stays.
 export const TEACHER_NAV_ITEM_CLASSES =
-  'relative h-auto gap-3 overflow-visible rounded-tile px-3.5 py-2.75 text-lede leading-tight font-medium text-[#5B6879] transition-[color,background-color,transform] duration-200 ease-out after:absolute after:-inset-0.75 hover:bg-[#F5F6F8] hover:text-navy-900 focus-visible:ring-2 focus-visible:ring-primary active:scale-98 active:bg-[#F5F6F8] active:text-navy-900 data-active:bg-[#EEF1F6] data-active:font-semibold data-active:text-navy-900 data-active:hover:bg-[#EEF1F6] data-active:hover:text-navy-900 data-active:active:bg-[#EEF1F6] data-active:active:text-navy-900 motion-reduce:transition-none motion-reduce:active:scale-100 group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! [&_svg]:size-4.5';
+  'relative h-auto gap-3 overflow-visible rounded-tile px-3.5 py-2.75 text-lede leading-tight font-medium text-[#5B6879] after:absolute after:-inset-0.75 hover:bg-transparent hover:text-[#5B6879] focus-visible:ring-2 focus-visible:ring-primary active:bg-transparent active:text-[#5B6879] data-active:bg-[#EEF1F6] data-active:font-semibold data-active:text-navy-900 data-active:hover:bg-[#EEF1F6] data-active:hover:text-navy-900 data-active:active:bg-[#EEF1F6] data-active:active:text-navy-900 group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! [&_svg]:size-4.5';
 
 // The live dot on Live sessions (:34): 9px #DC2626 on a 1.4s ease-in-out pulse.
 export const TEACHER_LIVE_DOT_CLASSES =

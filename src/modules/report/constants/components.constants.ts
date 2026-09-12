@@ -37,7 +37,7 @@ export const REVIEW_EYEBROW =
 
 export const REVIEW_CHIP = 'rounded-full px-[11px] py-1 text-xs font-semibold';
 
-export const REVIEW_ANSWER_BOX = 'flex-[1_1_200px] rounded-lg border border-[#ECEEF2] px-3.5 py-[11px]';
+export const REVIEW_ANSWER_BOX = 'flex-[1_1_200px] rounded-[8px] border border-[#ECEEF2] px-3.5 py-[11px]';
 
 export const REVIEW_TONE_CHIP = {
   full: 'bg-[#E9F6EF] text-[#1F7A4D]',

@@ -8,6 +8,9 @@ import { cn } from '@/lib/utils';
 import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
 import type { ExportButtonsProps } from '@/modules/teacher/types/teacher-kit-controls.types';
 
+/** The only outline buttons whose hover also tints the face (`:200`, `:705`). */
+const EXPORT_HOVER = 'hover:bg-[#FAFBFC]';
+
 /**
  * Teacher Portal v2 — the PDF / LLM export pair (`Teacher Portal
  * v2.dc.html:200–205`, `:283`): two 32px outline buttons, download-tray and
@@ -39,6 +42,7 @@ function ExportButtons({
       <TeacherButton
         tone="outline"
         size="xs"
+        className={EXPORT_HOVER}
         data-export="pdf"
         title={pdfTitle}
         loading={pdfPending}
@@ -51,6 +55,7 @@ function ExportButtons({
       <TeacherButton
         tone="outline"
         size="xs"
+        className={EXPORT_HOVER}
         data-export="llm"
         title={llmTitle}
         loading={llmPending}

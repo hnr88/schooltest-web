@@ -117,11 +117,10 @@ function StartSessionBody({
       <ModalFooter
         label={!isDemo && vm.isChecking ? t('cta.checking') : t(`cta.${vm.cta.labelKey}`, { count: vm.cta.count })}
         canSubmit={vm.canSubmit}
-        isBusy={vm.isPending || vm.isChecking}
+        isBusy={vm.isPending || (!isDemo && vm.isChecking)}
         onSubmit={vm.onSubmit}
         onCancel={close}
         error={vm.failure?.message || null}
-        note={isDemo ? t('cta.demoPending') : null}
       />
     </div>
   );

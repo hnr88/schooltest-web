@@ -7,6 +7,7 @@ import { useRouter } from '@/i18n/navigation';
 import { LIVE_SESSIONS_HREF, LIVE_TAB_HREF } from '@/modules/teacher/constants/start-session.constants';
 import { describeStartSessionFailure } from '@/modules/teacher/lib/start-session-errors';
 import { useCreateTestSessionMutation } from '@/modules/teacher/queries/use-create-test-session.mutation';
+import { useTeacherDemoLinkMutation } from '@/modules/teacher/queries/use-teacher-demo-link.mutation';
 import { useUpdateTestSessionMutation } from '@/modules/teacher/queries/use-update-test-session.mutation';
 import { useStartSessionStore } from '@/modules/teacher/stores/use-start-session-store';
 import type { StartSessionFailure } from '@/modules/teacher/types/start-session-modal.types';
@@ -25,8 +26,10 @@ export function useStartSessionSubmit(timeZone: string) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const close = useStartSessionStore((state) => state.close);
+  const showDemoLink = useStartSessionStore((state) => state.showDemoLink);
   const create = useCreateTestSessionMutation();
   const update = useUpdateTestSessionMutation();
+  const demo = useTeacherDemoLinkMutation();
   const [failure, setFailure] = useState<StartSessionFailure | null>(null);
 
   const onError = (error: unknown) => {
@@ -41,7 +44,7 @@ export function useStartSessionSubmit(timeZone: string) {
 
   return {
     failure,
-    isPending: create.isPending || update.isPending,
+    isPending: create.isPending || update.isPending || demo.isPending,
     startNow: (body: CreateTestSessionBody) => {
       setFailure(null);
       create.mutate(body, {
@@ -56,6 +59,20 @@ export function useStartSessionSubmit(timeZone: string) {
     saveBooking: (documentId: string, body: UpdateTestSessionBody) => {
       setFailure(null);
       update.mutate({ documentId, body }, { onSuccess: () => finish(LIVE_SESSIONS_HREF), onError });
+    },
+    // C-TT-DEMO (TB-17). Unlike the other three this writes no sitting, so it neither
+    // navigates nor invalidates: the minted link replaces the modal with the design's
+    // S29 dialog, and a refusal (403 a non-teacher role, 429 the shared magic-link
+    // budget) stays in the modal in the server's own words.
+    startDemo: (formDocumentId: string, testLabel: string) => {
+      setFailure(null);
+      demo.mutate(
+        { form_document_id: formDocumentId },
+        {
+          onSuccess: (link) => showDemoLink({ link, testLabel }),
+          onError: (error) => setFailure(describeStartSessionFailure(error, timeZone)),
+        },
+      );
     },
   };
 }

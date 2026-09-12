@@ -15,6 +15,8 @@ import type { TestSessionMonitorResponse } from '@/modules/teacher/types/teacher
 // Teacher Portal v2.dc.html:1124–1145 — Connection: the monitor's per-student
 // connection over whoever is still working, and Low-bandwidth mode written to the
 // sitting's settings (C-SIT-SETTINGS allows `lowBw` while open). Collapsed by default.
+// The toggle's design height is content-box 42px + a 1px border = a 44px drawn box
+// (P1 round 2 · N10).
 function ConnectionAccordion({
   sittingDocumentId,
   monitor,
@@ -78,7 +80,7 @@ function ConnectionAccordion({
             disabled={write.isPending}
             onClick={flip}
             className={cn(
-              'flex h-[42px] items-center gap-3 rounded-[8px] border border-[#D8DFEA] bg-white px-4 transition-colors hover:border-navy-900 disabled:opacity-60',
+              'flex h-[44px] items-center gap-3 rounded-[8px] border border-[#D8DFEA] bg-white px-4 transition-colors hover:border-navy-900 disabled:opacity-60',
               KIT_FOCUS_RING,
             )}
           >

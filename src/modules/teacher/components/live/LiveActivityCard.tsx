@@ -9,6 +9,12 @@ import { useSittingActivityQuery } from '@/modules/test-day';
 
 // Teacher Portal v2.dc.html:1207–1221 — Session activity: the server's trail for
 // this sitting (C-SIT-ACTIVITY, last 8 of `total`), re-read while the sitting is live.
+// The API records TEACHER actions only — there is no "session opened" or "student
+// joined" row — so a sitting nobody has acted on returns `{entries:[],total:0}` and
+// the design's seeded list has no live equivalent (P1 round 2 · N6). The design draws
+// no empty state for this card, so the empty line below borrows the one the design
+// gives the other list in this tab, Previous sessions (`:1286`): 36px of padding,
+// centred, 13.5px `#6B7280`. Inventing an "Opened session" row would be a falsehood.
 function LiveActivityCard({ sittingDocumentId }: { sittingDocumentId: string }) {
   const t = useTranslations('TeacherPortal.live.activity');
   const locale = useLocale();
@@ -31,6 +37,12 @@ function LiveActivityCard({ sittingDocumentId }: { sittingDocumentId: string }) 
         <p role="alert" className="mt-3.5 text-[13px] text-[#B42318]">
           {t('loadError')}
         </p>
+      ) : entries.length === 0 ? (
+        feed.isPending ? null : (
+          <p data-slot="live-activity-empty" className="py-9 text-center text-[13.5px] text-[#6B7280]">
+            {t('empty')}
+          </p>
+        )
       ) : (
         <ol className="mt-3.5 flex flex-col">
           {entries.map((entry, index) => (

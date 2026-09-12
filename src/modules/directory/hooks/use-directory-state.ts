@@ -73,6 +73,29 @@ export interface UseDirectoryStatePrefixedOptions extends UseDirectoryStateOptio
    * Defaults to `DIRECTORY_PAGE_SIZE_MAX` — every existing consumer unchanged.
    */
   maxPageSize?: number;
+  /**
+   * teacher/FX-URL1 (TB-08 + FLAKE-01) — write the URL with
+   * `window.history.replaceState` instead of `router.replace`. OPT-IN, default
+   * `false`: every existing consumer keeps today's App-Router navigation.
+   *
+   * MEASURED on the teacher Classes list (12 layout writes, :3002, 2026-09-12):
+   * the body swaps in 21–278 ms, but `router.replace` is SWALLOWED and the
+   * address bar takes 1470–5585 ms (median 1626) to settle, because the
+   * convergence interval below has to re-dispatch it 3–11 times at 300 ms
+   * apiece — each retry costing its own RSC round-trip — and three of the
+   * twelve exhausted the retries and fell back to a full page reload. Two of
+   * twelve therefore MISSED Playwright's 5 s expectation (TB-08/FLAKE-01's
+   * four failures today); shallow, the same twelve settle in 27–68 ms.
+   *
+   * A surface whose filtering is PURELY CLIENT-SIDE (`mode: 'client'`, the
+   * reduction done by `applyClientDirectoryMode` over an already-loaded array)
+   * renders nothing new on the server, so the round-trip buys it nothing. The
+   * App Router supports `history.replaceState` for search-param-only updates
+   * and `useSearchParams` still observes it, so the write is synchronous and
+   * cannot be swallowed at all. Do NOT set this where the URL drives a server
+   * render or a route-level read — there the navigation IS the point.
+   */
+  shallow?: boolean;
 }
 
 /** The kit's layout union, at runtime — the URL carries it as a bare string. */
@@ -98,6 +121,7 @@ export function useDirectoryState(options: UseDirectoryStatePrefixedOptions): Di
     defaultLayout,
     resetPageOnSearch = true,
     preserveParams,
+    shallow = false,
   } = options;
   // D-25 — the ceiling is the SURFACE's, not the kit's. 200 only as the default.
   const maxPageSize = Math.max(
@@ -227,9 +251,21 @@ export function useDirectoryState(options: UseDirectoryStatePrefixedOptions): Di
       if (lastWritten.current !== null) staleSeen.current.add(lastWritten.current);
       lastWritten.current = qs;
       setPending(next);
+      if (shallow) {
+        // The shallow write lands in the address bar synchronously — there is
+        // no in-flight navigation for it to be swallowed by, so the pending /
+        // re-dispatch machinery below has nothing to do. `seenRef` is advanced
+        // here rather than waited for: the convergence effect reads the LIVE
+        // URL through that ref, and we have just set the live URL ourselves.
+        // The real path is used (next-intl's `pathname` drops a locale prefix),
+        // exactly as the hard-navigation fallback below does.
+        window.history.replaceState(null, '', `${window.location.pathname}${qs === '' ? '' : `?${qs}`}`);
+        seenRef.current = qs;
+        return;
+      }
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     },
-    [router, pathname, buildQs, setPending],
+    [router, pathname, buildQs, setPending, shallow],
   );
 
   // The parsed URL with the pending write (when one is in flight) and the

@@ -15,6 +15,7 @@ import {
 import { StatusPill } from '@/modules/design-system';
 import { REPORTS_HREF } from '@/modules/shell';
 import {
+  masteryAreaAttribute,
   masteryClientConfig,
   masterySorts,
   MASTERY_AREA_CODES,
@@ -32,6 +33,10 @@ import type { DiagnosticMasteryRow } from '@/modules/teach/types/diagnostic.type
 // round-trips through the URL so it survives a reload. A missing attribute is
 // an honest em dash, never a fabricated status. The row link to the full
 // report keeps its `mastery-report-link` slot (task 126/129 contract).
+//
+// TB-12: a column is a reading AREA, and the live payload names a scored
+// student's cells by model attribute — so the cell asks `masteryAreaAttribute`
+// which of the row's attributes lands on the column, never `code === code`.
 
 export function MasteryTable({ rows, onSelect, query }: MasteryTableProps) {
   const t = useTranslations('Teach.diagnostic');
@@ -131,12 +136,15 @@ export function MasteryTable({ rows, onSelect, query }: MasteryTableProps) {
 
 function AreaCell({ row, code }: { row: DiagnosticMasteryRow; code: string }) {
   const t = useTranslations('Teach.diagnostic');
-  const attribute = row.attributes.find((entry) => entry.code === code);
-  if (!attribute) {
-    return <span className="text-muted-foreground">—</span>;
-  }
+  const attribute = masteryAreaAttribute(row, code);
   return (
-    <StatusPill tone={STATUS_TONE[attribute.status]}>{t(`status.${attribute.status}`)}</StatusPill>
+    <span data-slot="mastery-area" data-area={code} data-status={attribute?.status ?? 'none'}>
+      {attribute ? (
+        <StatusPill tone={STATUS_TONE[attribute.status]}>{t(`status.${attribute.status}`)}</StatusPill>
+      ) : (
+        <span className="text-muted-foreground">—</span>
+      )}
+    </span>
   );
 }
 

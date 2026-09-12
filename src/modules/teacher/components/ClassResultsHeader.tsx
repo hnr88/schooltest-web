@@ -62,7 +62,11 @@ function ClassResultsHeader({ classCard, classes, onSwitchClass }: ClassResultsH
             size="lg"
             data-slot="class-ask-ai-button"
             title={t('askAiTitle')}
-            className="flex-none"
+            // P1 round 2 row N9: the design draws THIS navy button with a 1px
+            // same-colour border (`:545`), so it is 97px wide, not 95. The kit's
+            // `primary` tone stays `border-0` (round 1 row 19) — the border is a
+            // per-instance override, here and on the student header.
+            className="flex-none border border-navy-900"
             onClick={() => openAskAi()}
           >
             <Sparkle aria-hidden="true" className="size-4" strokeWidth={2} />

@@ -69,10 +69,21 @@ export function useStartSessionModal({ initial, classes, tests, editSittingId }:
   const count = sittingCount(form.scope, free, pickedFree);
   const cta = ctaView({ mode: form.mode, isEdit, count, scheduleErrorCount: errors.length });
   const isChecking = data.rosterPending || data.busyPending;
-  const canSubmit = form.mode !== 'demo' && cta.canGo && !isChecking && !submit.isPending;
+  const test = tests.find((entry) => entry.form_document_id === form.formId);
+  // TB-17: the demo mints a link for the picked FORM alone, so it neither waits for
+  // the roster nor needs a student — only a test to sit.
+  const canSubmit =
+    form.mode === 'demo'
+      ? test !== undefined && !submit.isPending
+      : cta.canGo && !isChecking && !submit.isPending;
 
   const onSubmit = () => {
     if (!canSubmit) return;
+    if (form.mode === 'demo') {
+      if (test === undefined) return;
+      submit.startDemo(test.form_document_id, test.label);
+      return;
+    }
     if (form.mode === 'now') {
       submit.startNow(startNowBody(form, pickedFree));
       return;
@@ -87,7 +98,7 @@ export function useStartSessionModal({ initial, classes, tests, editSittingId }:
     ...formApi,
     isEdit,
     klass: classes.find((entry) => entry.class_document_id === form.classId),
-    test: tests.find((entry) => entry.form_document_id === form.formId),
+    test,
     data,
     errors,
     free,

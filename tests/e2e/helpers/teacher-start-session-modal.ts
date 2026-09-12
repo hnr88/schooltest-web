@@ -39,11 +39,24 @@ export async function openFromClasses(page: Page, title: string): Promise<void> 
   await expect(modal(page).getByRole('heading', { name: title })).toBeVisible({ timeout: 30_000 });
 }
 
-/** "Last session" as the modal renders it: the browser's zone, the app locale's day + short month. */
+/**
+ * "Last session" as the design writes it (`:2602` "31 Aug"): the browser's zone, the app
+ * locale's day and short month, the DAY FIRST (P1 parity row 8). Built here from the parts,
+ * so the expectation is the design's order and not whatever order the app chose.
+ */
 export async function lastSessionText(page: Page, openedAt: string | null, noneYet: string): Promise<string> {
   if (openedAt === null) return noneYet;
   const timeZone = await page.evaluate(() => Intl.DateTimeFormat().resolvedOptions().timeZone);
-  return new Intl.DateTimeFormat('en', { day: '2-digit', month: 'short', timeZone }).format(new Date(openedAt));
+  const parts = new Intl.DateTimeFormat('en', { day: '2-digit', month: 'short', timeZone }).formatToParts(
+    new Date(openedAt),
+  );
+  const value = (type: 'day' | 'month') => parts.find((part) => part.type === type)?.value ?? '';
+  return `${value('day')} ${value('month')}`;
+}
+
+/** The drawn height of one box, for the design's exact geometry (P1 parity rows 14, 16). */
+export async function boxHeight(target: Locator): Promise<number> {
+  return (await target.boundingBox())?.height ?? 0;
 }
 
 /** Waits until the modal has read the roster, the busy check and the facts (no "—" left). */

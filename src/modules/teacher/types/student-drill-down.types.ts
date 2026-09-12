@@ -10,6 +10,14 @@ export interface StudentDrillDownScreenProps {
   studentDocumentId: string;
 }
 
+/** The student scope of the Ask AI drawer (design S13); the class id scopes C-TA-1. */
+export interface StudentAskAiDrawerProps {
+  view: StudentDetailView;
+  firstName: string;
+  classDocumentId: string;
+  studentDocumentId: string;
+}
+
 /**
  * One piece of student-page copy: a key under `TeacherPortal.student` (or
  * `TeacherPortal.viewModel` when `ns` says so) plus what fills its placeholders —

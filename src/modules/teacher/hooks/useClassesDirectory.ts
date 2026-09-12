@@ -76,6 +76,15 @@ export function useClassesDirectory(classes: readonly DashboardClass[]): Classes
     layouts: CLASSES_LAYOUTS,
     defaultLayout: 'table',
     pagination: { variant: 'none' },
+    // TB-08 / FLAKE-01 — this screen filters PURELY on the client: the C-TD-1
+    // array is already loaded and `applyClientDirectoryMode` (below) reduces
+    // it, so `/dashboard/results` renders nothing new on the server for a
+    // search, a filter, a sort or a layout. The App-Router navigation the kit
+    // writes by default was therefore a round-trip that bought this screen
+    // nothing and cost it the address bar: measured on :3002, the body swapped
+    // in 21–278 ms while the URL took 1470–5585 ms to settle. Shallow, the
+    // write is synchronous.
+    shallow: true,
   });
   const view = useMemo(
     () => applyClientDirectoryMode(classes, state.params, CLASSES_CLIENT_CONFIG),

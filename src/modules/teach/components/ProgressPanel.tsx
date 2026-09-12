@@ -7,7 +7,10 @@ import { ProgressMovementRow } from '@/modules/teach/components/ProgressMovement
 import type { ResultView } from '@schooltest/scoring-contracts';
 
 import { useClassResultsQuery } from '@/modules/results/queries/use-class-results.query';
-import { buildStudentDrillDownView } from '@/modules/teacher/lib/student-drill-down-view';
+import {
+  buildStudentDrillDownView,
+  drillDownLabelKey,
+} from '@/modules/teacher/lib/student-drill-down-view';
 
 import type { ProgressPanelProps } from '@/modules/teach/types/components.types';
 
@@ -71,7 +74,7 @@ export function ProgressPanel({ classId }: ProgressPanelProps) {
                     <ProgressMovementRow
                       key={skill.attribute}
                       attribute={skill.attribute}
-                      label={td(`areas.${labelKey(skill.attribute)}`)}
+                      label={td(`areas.${drillDownLabelKey(skill.attribute)}`)}
                       deltaDisplay={skill.deltaDisplay}
                       bandBefore={skill.bandBefore}
                       bandAfter={skill.bandAfter}
@@ -85,17 +88,4 @@ export function ProgressPanel({ classId }: ProgressPanelProps) {
       ) : null}
     </section>
   );
-}
-
-/** Label-only i18n key: the areas map is presentation vocabulary. */
-function labelKey(attribute: string): string {
-  const keys: Record<string, string> = {
-    Decoding: 'R1',
-    Vocabulary: 'R2',
-    Grammar: 'R3',
-    Gist: 'R4',
-    Detail: 'R5',
-    Inference: 'R6',
-  };
-  return keys[attribute] ?? attribute;
 }

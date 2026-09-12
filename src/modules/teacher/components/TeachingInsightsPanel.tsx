@@ -19,6 +19,8 @@ import type { TeachingInsightsPanelProps } from '@/modules/teacher/types/class-a
 // sittings. A section without real data behind it is left out. "Ask your class"
 // (`:744–774`) has no opener in the design and is not built. The AI export panel stays
 // below the design's sections until "Reports and data" carries the class export.
+// The root carries `leading-[normal]` (P1 round 2 · N13) like every other teacher tab
+// panel: `TabsContent`'s `text-sm` otherwise forces a 20px line-height on every line here.
 function TeachingInsightsPanel({ rows, classDocumentId }: TeachingInsightsPanelProps) {
   const t = useTranslations('TeacherPortal.insights');
   const tExport = useTranslations('Teacher.results.export');
@@ -27,7 +29,11 @@ function TeachingInsightsPanel({ rows, classDocumentId }: TeachingInsightsPanelP
   const hasGroups = view.groups.length > 0;
 
   return (
-    <div data-slot="teaching-insights" data-status={hasResults ? 'ready' : 'empty'} className="flex flex-col gap-[18px]">
+    <div
+      data-slot="teaching-insights"
+      data-status={hasResults ? 'ready' : 'empty'}
+      className="flex flex-col gap-[18px] leading-[normal]"
+    >
       <div>
         <h2 className="text-[20px] font-semibold text-navy-900">{t('title')}</h2>
         <p className="mt-1.5 text-[13.5px] text-[#6B7280]">{t('subtitle')}</p>

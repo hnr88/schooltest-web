@@ -76,6 +76,9 @@ const UNMIRRORED_BASELINE: readonly string[] = [
   'sessions',
   'sittings',
   'stimulus',
+  // Teacher Portal v2 B4 shipped the api side of `POST /teacher/ask`; the web
+  // mirror lands with S11, which wires the Ask AI drawers to it.
+  'teacher-ask',
   'teacher-trial',
 ];
 

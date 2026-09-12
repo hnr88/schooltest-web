@@ -17,6 +17,8 @@ import { useLiveTab } from '@/modules/teacher/hooks/useLiveTab';
 // the selected sitting's Run the sitting card, connection, students (S7b's
 // section), activity, then bookings and previous sessions; "No sitting open"
 // when nothing is live. `data-surface="teacher-test-day"` is kept for the specs.
+// The root carries `leading-[normal]` (P1 round 2 · N4) like every other teacher tab
+// panel: `TabsContent`'s `text-sm` otherwise forces a 20px line-height on every line here.
 function LiveTabPanel({ classDocumentId, sessionId }: { classDocumentId: string; sessionId: string | null }) {
   const t = useTranslations('TeacherPortal.live.header');
   const tKit = useTranslations('TeacherPortal.kit');
@@ -35,6 +37,15 @@ function LiveTabPanel({ classDocumentId, sessionId }: { classDocumentId: string;
         : klass.yearLevel === null
           ? t('subtitleIdleNoYear', { className: klass.name, count: klass.studentCount })
           : t('subtitleIdle', { className: klass.name, count: klass.studentCount, year: klass.yearLevel });
+  // P1 round 2 · N3 — when to draw the "Previous sessions" block. The design hangs it on
+  // `live.blockDisplay` (`:1265`) = `liveBlank ? 'none' : 'block'` (`:4060`), and
+  // `liveBlank = !sitOpen && !classSessions.length && !schedList(sel.name).length
+  // && !this.sitting.past.some(...)` (`:3731`): the block goes ONLY when the class has
+  // nothing at all — no open sitting, no booking, no sitting that ever ran. That is the
+  // condition below, so the tab already follows the design's rule. The design shot
+  // `class-detail-complete--live` carries no block because its sample class has no past
+  // sittings, which is DATA (RULE 0), not a rule that a class without a live sitting hides
+  // its history — every real class with a Complete status has closed sittings.
   const showHistory = sitting !== null || live.bookings.length > 0 || live.history.length > 0 || live.historyError;
 
   return (
@@ -43,7 +54,7 @@ function LiveTabPanel({ classDocumentId, sessionId }: { classDocumentId: string;
       data-surface="teacher-test-day"
       data-status={live.status}
       data-sitting-id={sitting?.sitting_document_id}
-      className="flex flex-col gap-[18px]"
+      className="flex flex-col gap-[18px] leading-[normal]"
     >
       <div>
         <h2 className="text-[20px] font-semibold text-navy-900">{t('title')}</h2>
