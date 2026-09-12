@@ -64,6 +64,40 @@ describe('ops/33 mastery directory config', () => {
     ).toBe(true);
   });
 
+  // TB-12: a live class diagnostic names a SCORED student's cells by model
+  // attribute (Decoding, Vocab_A2, …), so the area comparators must sort by the
+  // attribute that lands on the column. Comparing `code === 'R1'` left every
+  // scored row unranked, which silently reduced each subskill sort to name order.
+  test('an area sort ranks the live attribute names that land on the column', () => {
+    const live = [
+      masteryRow({ student_ref: 'Ann', attributes: [{ code: 'Decoding', status: 'not_yet', prob: 0.1 }] }),
+      masteryRow({ student_ref: 'Bea', attributes: [{ code: 'Decoding', status: 'emerging', prob: 0.4 }] }),
+      masteryRow({ student_ref: 'Cat', attributes: [{ code: 'Decoding', status: 'secure', prob: 0.9 }] }),
+    ];
+    expect([...live].sort(masteryClientConfig.comparators!['R1:asc']!).map((row) => row.student_ref)).toEqual(['Ann', 'Bea', 'Cat']);
+    expect([...live].sort(masteryClientConfig.comparators!['R1:desc']!).map((row) => row.student_ref)).toEqual(['Cat', 'Bea', 'Ann']);
+  });
+
+  test('the vocabulary column ranks on the LIMITING strand of the two', () => {
+    const vocab = [
+      masteryRow({
+        student_ref: 'Ann',
+        attributes: [
+          { code: 'Vocab_A2', status: 'secure', prob: 0.9 },
+          { code: 'Vocab_B1', status: 'not_yet', prob: 0.1 },
+        ],
+      }),
+      masteryRow({
+        student_ref: 'Bea',
+        attributes: [
+          { code: 'Vocab_A2', status: 'developing', prob: 0.6 },
+          { code: 'Vocab_B1', status: 'developing', prob: 0.6 },
+        ],
+      }),
+    ];
+    expect([...vocab].sort(masteryClientConfig.comparators!['R2:asc']!).map((row) => row.student_ref)).toEqual(['Ann', 'Bea']);
+  });
+
   test('search matches only the student name', () => {
     expect(masteryClientConfig.searchText!(MASTERED)).toEqual(['Ann']);
   });

@@ -2277,7 +2277,9 @@
         "emerging": "đang phát triển",
         "not_mastered": "chưa thành thạo"
       },
-      "notAssessedLine": "Chưa được đánh giá trong một hoặc cả hai bài kiểm tra: {areas}"
+      "notAssessedLine": "Chưa được đánh giá trong một hoặc cả hai bài kiểm tra: {areas}",
+      "notYetAssessed": "Chưa được đánh giá",
+      "transitionSteadyShort": "giữ nguyên"
     }
   },
   "TestDay": {

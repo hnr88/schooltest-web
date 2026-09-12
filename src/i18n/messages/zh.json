@@ -2268,7 +2268,9 @@
         "emerging": "发展中",
         "not_mastered": "未掌握"
       },
-      "notAssessedLine": "在一次或两次测试中未评估:{areas}"
+      "notAssessedLine": "在一次或两次测试中未评估:{areas}",
+      "notYetAssessed": "尚未评估",
+      "transitionSteadyShort": "保持"
     }
   },
   "TestDay": {

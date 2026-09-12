@@ -2757,7 +2757,9 @@
         "emerging": "emerging",
         "not_mastered": "not mastered"
       },
-      "notAssessedLine": "Not assessed on one or both tests: {areas}"
+      "notAssessedLine": "Not assessed on one or both tests: {areas}",
+      "notYetAssessed": "Not yet assessed",
+      "transitionSteadyShort": "steady"
     }
   },
   "TestDay": {

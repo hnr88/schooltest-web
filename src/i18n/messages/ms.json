@@ -2268,7 +2268,9 @@
         "emerging": "sedang berkembang",
         "not_mastered": "belum dikuasai"
       },
-      "notAssessedLine": "Tidak dinilai pada salah satu atau kedua-dua ujian: {areas}"
+      "notAssessedLine": "Tidak dinilai pada salah satu atau kedua-dua ujian: {areas}",
+      "notYetAssessed": "Belum dinilai",
+      "transitionSteadyShort": "kekal"
     }
   },
   "TestDay": {

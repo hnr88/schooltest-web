@@ -1,7 +1,9 @@
 import { attributeNameSchema } from '@schooltest/scoring-contracts';
 
 import { DISPLAY_SKILL_ORDER, displaySkillOfAttribute } from '@/modules/results';
-import { MASTERY_AREA_CODES, type MasteryAreaCode } from '@/modules/teach/lib/mastery-directory.lib';
+import { MASTERY_AREA_CODES } from '@/modules/teach/constants/lib.constants';
+
+import type { MasteryAreaCode } from '@/modules/teach/types/lib.types';
 
 // The seven teach areas R1..R7 (`Teach.diagnostic.areas.*`) are the seven display skills in
 // display order. A live class diagnostic names a scored student's cells by model attribute and

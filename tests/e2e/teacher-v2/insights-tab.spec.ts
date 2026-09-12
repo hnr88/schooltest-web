@@ -11,10 +11,12 @@ import {
   AGGREGATE_STATUSES,
   areaLabel,
   expectedAggregate,
+  expectedMasteryTable,
   failedResponses,
   openBandedClass,
   openSchoolAnalytics,
   renderedAggregate,
+  renderedMasteryTable,
 } from '../helpers/school-admin-diagnostic';
 import { READY, expectNoNewErrors, frame, setAsideErrors, waitForDashboard } from '../helpers/teacher-class-detail';
 import {
@@ -42,6 +44,10 @@ import { watchErrors } from '../helpers/ui';
 const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'teacher-v2');
 const pct = (value: number) => icu(insights('percent'), { value: String(value) });
 const note = (type: string, value: unknown) => test.info().annotations.push({ type, description: JSON.stringify(value) });
+/** The seven teach reading areas, in the order the mastery table columns and the drill-down list them. */
+const AREA_CODES = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7'] as const;
+/** The six skills the Progress panel renders a movement row for — Critical reading is the gate, not a skill. */
+const MOVEMENT_SKILLS = ['Decoding', 'Vocabulary', 'Grammar', 'Gist', 'Detail', 'Inference'] as const;
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
@@ -184,6 +190,97 @@ test.describe('S5 — Teaching insights tab', () => {
     await page.screenshot({ path: path.join(PROOFS, 'insights-school-admin-class.png'), animations: 'disabled' });
     expect(messages.filter((message) => message.includes('MISSING_MESSAGE')), 'no missing catalog message').toEqual([]);
     expect(pageErrors, 'no page error').toEqual([]);
+  });
+
+  // FX-TB12 — the other half of TB-12. The mastery grid and the student drill-down
+  // looked their cells up by area code R1..R7 while the live diagnostic names a scored
+  // student's cells by model attribute, so every cell of a scored class was an em dash
+  // on this screen; the drill-down printed raw catalog keys and listed Vocabulary twice.
+  // Progress renders on the same screen, where ProgressMovementRow called two
+  // `Teach.progress` keys that existed in no catalogue.
+  test('TB-12: the school-admin mastery table and student drill-down carry the live statuses', async ({ page }) => {
+    test.setTimeout(180_000);
+    mkdirSync(PROOFS, { recursive: true });
+    const errors = watchErrors(page);
+    const missing: string[] = [];
+    page.on('console', (message) => {
+      if (message.text().includes('MISSING_MESSAGE')) missing.push(message.text());
+    });
+    const { bodies, failed } = await openSchoolAnalytics(page, errors);
+    const rosterBody = pageJson(page, '/api/my/students/results?class=');
+    const target = await openBandedClass(page, bodies);
+
+    // Every column is a labelled reading area, never a raw code.
+    const mastery = page.locator('[data-slot="mastery-table"]');
+    await expect(mastery).toBeVisible();
+    for (const code of AREA_CODES) {
+      await expect(mastery).toContainText(areaLabel(code));
+    }
+    await expect(mastery).not.toContainText('Teach.diagnostic.areas.');
+    await expect(mastery).not.toContainText('Teach.diagnostic.status.');
+
+    // Every cell equals the status re-derived in the harness from the diagnostic the page got.
+    const expectedRows = expectedMasteryTable(target);
+    await expect(mastery.locator('[data-directory-row]')).toHaveCount(expectedRows.length);
+    const renderedRows = await renderedMasteryTable(mastery);
+    expect(renderedRows).toEqual(expectedRows);
+    note('mastery-rows', renderedRows);
+
+    // The bug this closes: a scored class showed nothing but em dashes.
+    const banded = renderedRows.flatMap((row) => row.areas).filter((status) => status !== 'none' && status !== 'not_assessed');
+    expect(banded.length, 'the banded class renders real statuses, not a wall of em dashes').toBeGreaterThan(0);
+
+    // Drill one click down on a student the live payload bands, and the seven area
+    // rows carry exactly the statuses their table row carried.
+    const drillIndex = expectedRows.findIndex((row) => row.areas.some((status) => status !== 'none' && status !== 'not_assessed'));
+    const drillRef = expectedRows[drillIndex]!;
+    const drillRow = mastery.locator('[data-directory-row]').nth(drillIndex);
+    await expect(drillRow.locator('[data-row-select]')).toHaveText(drillRef.ref);
+    await drillRow.locator('[data-row-select]').scrollIntoViewIfNeeded();
+    await drillRow.locator('[data-row-select]').click();
+    const drilldown = page.locator('[data-slot="student-mastery-drilldown"]');
+    await expect(drilldown).toBeVisible();
+    await expect(drilldown).toContainText(drillRef.ref);
+    const areaRows = drilldown.locator('[data-slot="drilldown-area"]');
+    await expect(areaRows).toHaveCount(7);
+    expect(
+      await areaRows.evaluateAll((rows) => rows.map((row) => row.getAttribute('data-status') ?? '')),
+    ).toEqual(drillRef.areas);
+    await expect(areaRows).toHaveText(AREA_CODES.map((code) => new RegExp(`^${areaLabel(code)}`)));
+    note('drilldown', drillRef);
+
+    // Progress is on the same screen. ProgressMovementRow called `Teach.progress.notYetAssessed`
+    // and `Teach.progress.transitionSteadyShort`, which no catalogue carried — a MISSING_MESSAGE
+    // for every gap row and every "steady" row. Both branches are asserted against the movement
+    // the SERVER rendered on the roster this page received; nothing here recomputes a delta.
+    const progress = page.locator('[data-surface="teacher-progress"]');
+    await expect(progress).toBeVisible();
+    const movements = progress.locator('[data-slot="progress-movement"]');
+    const deltas = parseRoster(await rosterBody)
+      .flatMap((row) => (row.result === null ? [] : [row.result]))
+      .flatMap((result) =>
+        MOVEMENT_SKILLS.map((skill) => {
+          if (skill === 'Vocabulary') return result.vocab.delta_display;
+          const entry = result.attributes[skill];
+          return entry === undefined || entry.status === 'not_assessed' ? null : entry.delta_display;
+        }),
+      );
+    expect(deltas.length, 'the scored class carries server-rendered movement').toBeGreaterThan(0);
+    await expect(movements).toHaveCount(deltas.length);
+    const withText = (key: string) => movements.filter({ hasText: cat(en, `Teach.progress.${key}`) });
+    if (deltas.some((delta) => delta === null)) await expect(withText('notYetAssessed').first()).toBeVisible();
+    if (deltas.some((delta) => delta === 'steady')) await expect(withText('transitionSteadyShort').first()).toBeVisible();
+    note('progress-deltas', { rows: deltas.length, steady: deltas.filter((d) => d === 'steady').length, gaps: deltas.filter((d) => d === null).length });
+    await expect(progress).not.toContainText('Teach.progress.');
+
+    await page.screenshot({ path: path.join(PROOFS, 'sa-analytics-mastery.png'), animations: 'disabled' });
+    await drilldown.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: path.join(PROOFS, 'sa-analytics-drilldown.png'), animations: 'disabled' });
+    await movements.first().scrollIntoViewIfNeeded();
+    await page.screenshot({ path: path.join(PROOFS, 'sa-analytics-progress.png'), animations: 'disabled' });
+    expect(missing, 'no MISSING_MESSAGE on the school-admin analytics drill-down').toEqual([]);
+    expectNoNewErrors(errors, 'school-admin analytics drill-down (TB-12)');
+    expect(failed, 'no failing request on the analytics drill-down').toEqual([]);
   });
 
   test('TB-21: the school-admin drill-down loads Progress — B6 admits a school_admin to the canonical roster read', async ({ page }) => {

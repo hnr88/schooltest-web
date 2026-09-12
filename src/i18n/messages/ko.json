@@ -2268,7 +2268,9 @@
         "emerging": "발전 중",
         "not_mastered": "미달성"
       },
-      "notAssessedLine": "한 번 또는 두 번의 테스트에서 평가되지 않음: {areas}"
+      "notAssessedLine": "한 번 또는 두 번의 테스트에서 평가되지 않음: {areas}",
+      "notYetAssessed": "아직 평가되지 않음",
+      "transitionSteadyShort": "유지"
     }
   },
   "TestDay": {
