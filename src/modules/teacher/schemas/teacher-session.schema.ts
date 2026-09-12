@@ -336,6 +336,15 @@ export const monitorStudentSchema = z.strictObject({
    * OPTIONAL on the web mirror only; the API contract requires it.
    */
   extra_minutes: teacherCountSchema.optional(),
+  /**
+   * TB-37: the Result of the session THIS tile reports — the same id a force
+   * submit answers with, null while the attempt has none. It is what the Live
+   * tab's "Retry scoring" / "Raise for manual scoring" row actions act on, so
+   * a `scoring_failed` row no longer depends on a force submit having happened
+   * in the same page session. OPTIONAL on the web mirror only (a payload from
+   * a server without the API half still parses); the API contract requires it.
+   */
+  result_document_id: teacherDocumentIdSchema.nullable().optional(),
 });
 
 export const testSessionMonitorResponseSchema = z.strictObject({
