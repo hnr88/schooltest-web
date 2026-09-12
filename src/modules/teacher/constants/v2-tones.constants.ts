@@ -58,8 +58,12 @@ export const GROWTH_FG: Readonly<Record<GrowthKind, string>> = {
   up: '#1F7A4D',
   down: '#B42318',
   flat: '#5B6472',
-  steady: '#9CA3AF',
-  none: '#B6BCC7',
+  // The kit's AA rule (tracker "Accepted deviations"): the design's #9CA3AF and
+  // #B6BCC7 are drawn #6B7280 / #64748B. Both carry real text here — the growth
+  // delta chip and the growth tile's value — so axe flags the design's own greys
+  // as serious colour-contrast on the student page (TB-49).
+  steady: '#6B7280',
+  none: '#64748B',
 };
 
 export const CLASS_FLAG_TONE: Readonly<Record<'focus' | 'strength', ViewTone>> = { focus: RED, strength: GREEN };

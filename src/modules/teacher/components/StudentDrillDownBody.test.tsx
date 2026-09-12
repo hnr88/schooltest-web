@@ -1,3 +1,4 @@
+import { GROWTH_FG } from '@/modules/teacher/constants/v2-tones.constants';
 import { act, type ReactElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { NextIntlClientProvider } from 'next-intl';
@@ -83,12 +84,19 @@ describe('student page body — recorded Dilnoza (reliable fall, 8 sittings)', (
   });
 });
 
+/** The tone map is hex; the DOM reports rgb(). One conversion, so the expectation
+ * follows GROWTH_FG instead of restating a colour that the kit's AA rule can move. */
+function rgbOf(hex: string): string {
+  const n = Number.parseInt(hex.slice(1), 16);
+  return `rgb(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255})`;
+}
+
 describe('student page body — recorded Amara (server "steady")', () => {
   test('steady is the server word in grey, never a number', () => {
     const page = render(<StudentDrillDownBody view={studentDetail(t2ResultAmara)} firstName="Amara" onCopy={vi.fn()} />);
     const growth = page.querySelector<HTMLElement>('[data-tile="growth"] dd');
     expect(growth?.textContent).toBe('steady');
-    expect(growth?.style.color).toBe('rgb(156, 163, 175)');
+    expect(growth?.style.color).toBe(rgbOf(GROWTH_FG.steady));
     expect(page.querySelector('[data-slot="student-analysis"] p')?.textContent).toContain('held steady');
   });
 });

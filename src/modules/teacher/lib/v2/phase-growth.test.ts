@@ -1,3 +1,4 @@
+import { GROWTH_FG } from '@/modules/teacher/constants/v2-tones.constants';
 import { describe, expect, test } from 'vitest';
 
 import { t2Result, t2ResultDilnoza } from '@/modules/teacher/lib/v2/__fixtures__/t2';
@@ -88,7 +89,7 @@ describe('growthFromServer — the server movement claim, never recomputed', () 
       delta: 2,
       points: null,
       reliable: true,
-      fg: '#9CA3AF',
+      fg: GROWTH_FG.steady,
     });
   });
 
@@ -102,7 +103,7 @@ describe('growthFromServer — the server movement claim, never recomputed', () 
       delta: null,
       points: null,
       reliable: null,
-      fg: '#B6BCC7',
+      fg: GROWTH_FG.none,
     });
   });
 
