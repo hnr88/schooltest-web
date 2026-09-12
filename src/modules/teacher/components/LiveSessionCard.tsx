@@ -6,7 +6,7 @@ import { OpsConfirmDialog } from '@/modules/ops';
 import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
 import { TeacherStatusPill } from '@/modules/teacher/components/v2/TeacherStatusPill';
 import { useEndSession } from '@/modules/teacher/hooks/useEndSession';
-import { liveTabHref, progressPercent, stillWorking } from '@/modules/teacher/lib/live-rollup';
+import { liveTabHref, progressPercent } from '@/modules/teacher/lib/live-rollup';
 import type { LiveRollupSitting } from '@/modules/teacher/types/live-sessions.types';
 
 // Teacher Portal v2.dc.html:242–260 — one live sitting: LIVE badge, the served
@@ -17,7 +17,6 @@ function LiveSessionCard({ sitting, classLabel }: { sitting: LiveRollupSitting; 
   const tKit = useTranslations('TeacherPortal.kit');
   const end = useEndSession(sitting.documentId);
   const noValue = tKit('noValue');
-  const working = stillWorking(sitting);
   const who =
     sitting.memberIds === null
       ? t('whoWhole', { count: sitting.expected })
@@ -71,12 +70,12 @@ function LiveSessionCard({ sitting, classLabel }: { sitting: LiveRollupSitting; 
           open
           onOpenChange={end.setConfirmOpen}
           tone="destructive"
-          title={working ? t('closeConfirm.titleWorking', { count: working }) : t('closeConfirm.title')}
+          title={t('closeConfirm.title')}
           description={t('closeConfirm.body', { code: sitting.code ?? noValue, className: classLabel })}
           confirmLabel={t('closeConfirm.cta')}
           cancelLabel={t('closeConfirm.cancel')}
           pending={end.isPending}
-          className="sm:max-w-[440px]"
+          skin="teacher"
           onConfirm={end.confirm}
         />
       ) : null}

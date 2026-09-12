@@ -48,7 +48,7 @@ function FamilyReportDialogs({ actions, counts, heldCount, className }: FamilyRe
       cancelLabel={t('cancel')}
       pending={actions.pending}
       error={actions.error}
-      className="sm:max-w-[440px]"
+      skin="teacher"
       onConfirm={actions.run}
     />
   );

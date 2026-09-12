@@ -18,6 +18,7 @@ import {
   OpsDialogTitle,
 } from '@/modules/design-system';
 import { typedNameMatches } from '@/modules/ops/actions';
+import { OPS_CONFIRM_SKIN_CLASSES } from '@/modules/ops/constants/components.constants';
 import { cn } from '@/lib/utils';
 
 /**
@@ -32,6 +33,9 @@ import { cn } from '@/lib/utils';
  *               claims to undo a dispatch).
  */
 export type OpsConfirmVariant = 'confirm' | 'advisory' | 'two-step';
+
+/** `ops` — the portal's own chrome (the default). `teacher` — Teacher Portal v2's confirm. */
+export type OpsConfirmSkin = keyof typeof OPS_CONFIRM_SKIN_CLASSES;
 
 /** The conditional consequence, rendered outside the description's <p>. */
 export interface OpsConfirmNotice {
@@ -82,6 +86,12 @@ export interface OpsConfirmDialogProps {
    * One alert line; the typed mismatch flash takes precedence while it is live.
    */
   error?: string | null;
+  /**
+   * Absent (`ops`): the portal's confirm, unchanged. `teacher`: Teacher Portal v2's
+   * confirm (`Teacher Portal v2.dc.html:1846-1853`) — no tone tile, the action leads
+   * a left-aligned row, and the panel, type and buttons take the design's values.
+   */
+  skin?: OpsConfirmSkin;
   className?: string;
   onConfirm: () => void;
 }
@@ -113,6 +123,7 @@ export function OpsConfirmDialog({
   notice,
   typed,
   error = null,
+  skin = 'ops',
   className,
   onConfirm,
 }: OpsConfirmDialogProps) {
@@ -131,24 +142,44 @@ export function OpsConfirmDialog({
   const dimmed = typed !== undefined && !nameOk;
   const alertMessage =
     (typed !== undefined && mismatchFlash ? typed.mismatchMessage : null) ?? error;
+  const skinClasses = OPS_CONFIRM_SKIN_CLASSES[skin];
+  // The teacher design has no tone tile and leads its row with the action (`:1850-1852`).
+  const teacher = skin === 'teacher';
+  const action = actionable ? (
+    <OpsDialogCta
+      type="button"
+      loading={pending}
+      aria-disabled={dimmed || undefined}
+      className={cn(skinClasses.cta, destructive && 'bg-[#B42318] hover:bg-[#91201A]', dimmed && 'opacity-55')}
+      onClick={() => {
+        if (dimmed) {
+          setMismatchFlash(true);
+          return;
+        }
+        onConfirm();
+      }}
+    >
+      {confirmLabel}
+    </OpsDialogCta>
+  ) : null;
   return (
     <OpsDialog open={open} onOpenChange={onOpenChange} disablePointerDismissal>
-      <OpsDialogContent role="alertdialog" className={cn('sm:max-w-[460px]', className)}>
-        <div className="p-7">
+      <OpsDialogContent role="alertdialog" className={cn(skinClasses.panel, className)}>
+        <div className={skinClasses.inner}>
           {media ? <div className="mb-4">{media}</div> : null}
-          <div
-            aria-hidden="true"
-            className={
-              'mb-4 grid size-11 place-items-center rounded-[14px] ' +
-              (destructive ? 'bg-[#FEE4E2] text-[#B42318]' : 'bg-[#F4F6FA] text-[#0E2350]')
-            }
-          >
-            <CircleAlert className="size-5" />
-          </div>
-          <OpsDialogTitle className="text-[19px] leading-tight">{title}</OpsDialogTitle>
-          <OpsDialogDescription className="mt-2.5 text-sm leading-relaxed text-[#64748B]">
-            {description}
-          </OpsDialogDescription>
+          {teacher ? null : (
+            <div
+              aria-hidden="true"
+              className={
+                'mb-4 grid size-11 place-items-center rounded-[14px] ' +
+                (destructive ? 'bg-[#FEE4E2] text-[#B42318]' : 'bg-[#F4F6FA] text-[#0E2350]')
+              }
+            >
+              <CircleAlert className="size-5" />
+            </div>
+          )}
+          <OpsDialogTitle className={skinClasses.title}>{title}</OpsDialogTitle>
+          <OpsDialogDescription className={skinClasses.description}>{description}</OpsDialogDescription>
           {notice ? (
             <div className="mt-4 rounded-[14px] bg-[#F4F6FA] px-4 py-3 text-[13px] leading-relaxed text-[#3D4A5C]">
               <p className="font-semibold text-[#0E2350]">{notice.title}</p>
@@ -192,30 +223,12 @@ export function OpsConfirmDialog({
               {alertMessage}
             </p>
           )}
-          <div className="mt-6 flex items-center justify-end gap-2.5">
-            <OpsDialogClose render={<OpsDialogCancel disabled={pending} />}>
+          <div className={skinClasses.actions}>
+            {teacher ? action : null}
+            <OpsDialogClose render={<OpsDialogCancel disabled={pending} className={skinClasses.cancel} />}>
               {cancelLabel}
             </OpsDialogClose>
-            {actionable ? (
-              <OpsDialogCta
-                type="button"
-                loading={pending}
-                aria-disabled={dimmed || undefined}
-                className={cn(
-                  destructive && 'bg-[#B42318] hover:bg-[#91201A]',
-                  dimmed && 'opacity-55',
-                )}
-                onClick={() => {
-                  if (dimmed) {
-                    setMismatchFlash(true);
-                    return;
-                  }
-                  onConfirm();
-                }}
-              >
-                {confirmLabel}
-              </OpsDialogCta>
-            ) : null}
+            {teacher ? null : action}
           </div>
         </div>
       </OpsDialogContent>

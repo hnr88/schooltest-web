@@ -12,7 +12,14 @@ import type { LiveRollupBooking } from '@/modules/teacher/types/live-sessions.ty
 // Teacher Portal v2.dc.html:272–285 — one booking: class, Today/Scheduled chip,
 // the window in the school's zone, the form, who sits it, Start now (C-TS-7),
 // Edit (the Start-new-session modal on this booking) and Cancel (C-TS-6).
-function ScheduledSessionCard({ booking }: { booking: LiveRollupBooking }) {
+// `heading="test"` is the class Live tab's card (`:1248–1259`): the test is the title.
+function ScheduledSessionCard({
+  booking,
+  heading = 'class',
+}: {
+  booking: LiveRollupBooking;
+  heading?: 'class' | 'test';
+}) {
   const t = useTranslations('TeacherPortal.liveSessions');
   const tKit = useTranslations('TeacherPortal.kit');
   const openStartSession = useStartSessionStore((store) => store.open);
@@ -32,7 +39,9 @@ function ScheduledSessionCard({ booking }: { booking: LiveRollupBooking }) {
       className="flex flex-col gap-2 rounded-[11px] border border-[#ECEEF2] bg-[#FAFBFC] px-[18px] py-4"
     >
       <div className="flex items-baseline justify-between gap-2.5">
-        <h3 className="text-[14.5px] font-medium text-navy-900">{booking.className}</h3>
+        <h3 className="text-[14.5px] font-medium text-navy-900">
+          {heading === 'test' ? (booking.formLabel ?? noValue) : booking.className}
+        </h3>
         {when ? (
           <ToneChip
             tone={when.isToday ? 'today' : 'navy'}
@@ -46,7 +55,9 @@ function ScheduledSessionCard({ booking }: { booking: LiveRollupBooking }) {
       <p data-slot="scheduled-session-when" className="text-[13.5px] font-medium text-[#374151]">
         {when ? t('when', { date: when.date, start: when.start, end: when.end }) : noValue}
       </p>
-      <p className="text-[12.5px] text-[#6B7280]">{booking.formLabel ?? noValue}</p>
+      {heading === 'test' ? null : (
+        <p className="text-[12.5px] text-[#6B7280]">{booking.formLabel ?? noValue}</p>
+      )}
       <p className="text-[12.5px] text-[#6B7280]">{who}</p>
       <div className="mt-1 flex flex-wrap gap-2">
         <TeacherButton size="sm" onClick={() => setConfirming('start')}>
@@ -81,7 +92,7 @@ function ScheduledSessionCard({ booking }: { booking: LiveRollupBooking }) {
           confirmLabel={t(`${confirming}Confirm.cta`)}
           cancelLabel={t(`${confirming}Confirm.cancel`)}
           pending={isPending}
-          className="sm:max-w-[440px]"
+          skin="teacher"
           onConfirm={confirm}
         />
       )}
