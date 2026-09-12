@@ -83,7 +83,12 @@ function StudentDrillDownScreen({ classDocumentId, studentDocumentId }: StudentD
             onValueChange={page.setSkill}
           />
           <StudentDrillDownBody view={ready.view} firstName={page.firstName} onCopy={page.actions.copy} />
-          <StudentAskAiDrawer view={ready.view} firstName={page.firstName} studentDocumentId={studentDocumentId} />
+          <StudentAskAiDrawer
+            view={ready.view}
+            firstName={page.firstName}
+            classDocumentId={classDocumentId}
+            studentDocumentId={studentDocumentId}
+          />
         </>
       ) : null}
 

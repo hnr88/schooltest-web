@@ -6186,7 +6186,7 @@
           "speaking": "Bertutur",
           "writing": "Menulis"
         },
-        "demoNote": "Mulakan demo mencipta pautan log masuk automatik peribadi yang membuka ujian untuk anda, tepat seperti yang dilihat murid. Tiada apa yang dimarkah atau direkodkan. Pautan hanya berfungsi untuk akaun guru, pentadbir sekolah dan ops — tidak sekali-kali untuk murid atau ibu bapa.",
+        "demoNote": "Mulakan demo mencipta pautan log masuk automatik peribadi yang membuka ujian untuk anda, tepat seperti yang dilihat murid. Tiada apa yang dimarkah atau direkodkan. Pautan itu log masuk sebagai akaun guru anda sendiri, hanya boleh digunakan sekali dan tamat tempoh sebentar lagi — murid dan ibu bapa tidak sekali-kali boleh menggunakannya.",
         "class": "Kelas",
         "classOption": "{name} · Tahun {year} · {count, plural, other {# murid}}",
         "classOptionNoYear": "{name} · {count, plural, other {# murid}}",
@@ -6292,7 +6292,6 @@
         "save": "Simpan perubahan · {count, plural, other {# murid}}",
         "schedule": "Jadualkan sesi · {count, plural, other {# murid}}",
         "cancel": "Batal",
-        "demoPending": "Pautan demo guru belum tersedia.",
         "checking": "Menyemak siapa yang lapang…"
       },
       "state": {
@@ -6302,6 +6301,15 @@
         "noTests": "Tiada ujian yang boleh dimulakan sekarang.",
         "bookingGone": "Tempahan ini telah dibuka, ditutup atau dibatalkan.",
         "close": "Tutup"
+      },
+      "demoLink": {
+        "title": "Pautan demo anda sudah sedia",
+        "subtitle": "{test} · log masuk sebagai anda sendiri. Tiada apa yang dimarkah atau direkodkan.",
+        "copy": "Salin pautan",
+        "copied": "Disalin",
+        "warning": "Pautan ini log masuk sebagai akaun guru anda sendiri. Ia berfungsi sekali sahaja dan tamat tempoh pada {expires}; murid dan ibu bapa tidak sekali-kali boleh menggunakannya.",
+        "open": "Buka demo",
+        "done": "Selesai"
       }
     },
     "reports": {
@@ -6445,11 +6453,6 @@
       "ask": {
         "title": "Tanya tentang bacaan {first}",
         "grounded": "Berasaskan data membaca {first}",
-        "speakStatus": "Mod bertutur aktif · jawapan dibacakan",
-        "speak": "Tutur",
-        "speakOn": "Tutur aktif",
-        "speakTitle": "Mod bertutur — bacakan jawapan dengan kuat",
-        "close": "Tutup",
         "intro": "Tanya apa-apa tentang keputusan membaca {first}. Jawapan hanya berasaskan {count, plural, =0 {borang terkini} other {# borang}} yang diduduki {first} tahun ini.",
         "suggest": {
           "change": "Apakah yang berubah pada skor {first}?",
@@ -6461,29 +6464,47 @@
           "focus": "Apakah yang perlu saya fokuskan bersama {first} seterusnya?",
           "vocab": "Bagaimanakah kosa kata {first}?"
         },
-        "placeholder": "Tanya soalan tentang skor ini…",
-        "listening": "Mendengar…",
-        "inputLabel": "Soalan anda",
-        "mic": "Tuturkan soalan anda",
-        "send": "Hantar",
-        "speakMode": "Mod bertutur",
-        "micUnavailable": "Input suara tidak tersedia dalam pelayar ini. Taip soalan anda di bawah.",
-        "keywords": {
-          "change": "berubah|ubah|naik|turun|kemajuan|mengapa|kenapa|merosot",
-          "focus": "fokus|seterusnya|tingkatkan|sasaran|usahakan",
-          "vocab": "kosa kata|perkataan|bahasa"
-        },
-        "answer": {
-          "change": "Apa yang menggerakkan skor {first}",
-          "focus": "Fokus seterusnya",
-          "vocab": "Gambaran kosa kata",
-          "generic": "Tentang bacaan {first}"
-        },
-        "noData": "Borang terkini {first} belum cukup untuk menjawab soalan itu.",
-        "more": "Tanya tentang apa yang berubah, fokus seterusnya atau kosa katanya untuk butiran lanjut."
+        "placeholder": "Tanya soalan tentang skor ini…"
       }
     },
-    "askAi": {},
+    "askAi": {
+      "speak": "Tutur",
+      "speakOn": "Tutur aktif",
+      "speakTitle": "Mod bertutur — bacakan jawapan dengan kuat",
+      "speakStatus": "Mod bertutur aktif · jawapan dibacakan",
+      "speakMode": "Mod bertutur",
+      "micUnavailable": "Input suara tidak tersedia dalam pelayar ini. Taip soalan anda di bawah.",
+      "close": "Tutup",
+      "mic": "Tuturkan soalan anda",
+      "send": "Hantar",
+      "inputLabel": "Soalan anda",
+      "listening": "Mendengar…",
+      "thinking": "Meneliti keputusan…",
+      "unavailableTitle": "Pembantu AI tidak tersedia",
+      "rateLimitedTitle": "Terlalu banyak soalan",
+      "rejectedTitle": "Soalan itu tidak dihantar",
+      "offlineTitle": "Tiada jawapan — pelayan tidak dapat dihubungi",
+      "offlineBody": "Portal tidak dapat menghubungi pelayan, jadi tiada jawapan untuk dipaparkan. Tiada apa-apa yang berubah.",
+      "retryAfter": "Cuba lagi dalam {seconds, plural, other {# saat}}.",
+      "class": {
+        "title": "Tanya tentang {name}",
+        "grounded": "Berasaskan data membaca {name}",
+        "intro": "Tanya apa-apa tentang {name}. Jawapan hanya berasaskan keputusan membaca kelas ini.",
+        "placeholder": "Tanya soalan tentang keputusan kelas ini…",
+        "refusedTitle": "Tidak dapat menjawabnya daripada keputusan kelas ini",
+        "grounding": "Berasaskan {scored, plural, other {# murid}} yang mempunyai keputusan semasa · {sittings, plural, =0 {tiada sesi selesai} other {# sesi selesai}}.",
+        "partialCohort": "Hanya {scored} daripada {total} murid mempunyai keputusan semasa, jadi apa-apa tentang kelas secara keseluruhan berasaskan kohort separa. Anggap ia sebagai petunjuk sahaja.",
+        "suggest": {
+          "teach": "Apakah yang perlu saya ajar seterusnya?",
+          "moved": "Bagaimanakah kelas ini berubah?",
+          "vocab": "Bagaimanakah kosa kata kelas ini?"
+        }
+      },
+      "student": {
+        "refusedTitle": "Tidak dapat menjawabnya daripada keputusan murid ini",
+        "grounding": "Berasaskan {sittings, plural, =0 {tiada sesi selesai} other {# sesi selesai}}."
+      }
+    },
     "review": {
       "title": "Semak serahan",
       "close": "Tutup",

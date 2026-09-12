@@ -81,6 +81,11 @@ export interface ClassOverlaysState {
   close: () => void;
 }
 
+/** The class scope of the Ask AI drawer (design S16), mounted once by the class detail. */
+export interface ClassAskAiDrawerProps {
+  classCard: DashboardClass;
+}
+
 export interface ClassResultsScreenProps {
   classDocumentId: string;
 }

@@ -64,3 +64,13 @@ export const CHOICE_CARD_SIZES = {
   test: { box: 'gap-3.5 px-[18px] py-4', dot: 'size-[22px]', inner: 'size-2', label: 'text-[15px]', desc: 'mt-[3px] text-[12.5px]' },
   scope: { box: 'gap-3.5 px-[18px] py-[15px]', dot: 'size-[22px]', inner: 'size-2', label: 'text-[15px]', desc: 'mt-[3px] text-[12.5px]' },
 } as const;
+
+/**
+ * "Your demo link is ready" (design S29, `:1601–1625`): white panel, r16, 560 wide,
+ * 30/32 padding. The panel is content-box in the design, so its drawn width is
+ * 560 + 64 (`overlay-demo-link.png`: x 410–1030).
+ */
+export const DEMO_LINK_PANEL_CLASS = 'block w-[624px] max-w-full rounded-[16px] bg-white px-8 py-[30px] leading-[normal]';
+
+/** The demo token's own expiry, printed as a time a teacher can read. */
+export const DEMO_LINK_EXPIRY_FORMAT = { hour: '2-digit', minute: '2-digit' } as const;

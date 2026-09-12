@@ -109,14 +109,15 @@ test('S3 — the student page per design: header, progress, subskills, analysis,
   expect(download.suggestedFilename()).toMatch(/\.md$/);
   await expect(page.getByText(student('exported'))).toBeVisible();
 
-  // Ask AI: the drawer opens, a suggestion is answered under its topic, Escape closes it.
+  // Ask AI: the drawer opens on this student's own copy, and Escape closes it. The
+  // conversation itself (C-TA-1, a real model answer or the contracted 503) is driven
+  // by `ask-ai.spec.ts` — TB-09 removed the keyword router this used to assert.
   const askButton = header.getByRole('button', { name: student('askAi') });
   await askButton.click();
   const drawer = page.getByRole('dialog', { name: student('ask.title').replace('{first}', first) });
   await expect(drawer).toBeVisible();
   await expect(header.locator('[data-slot="student-ask-ai-button"]')).toHaveText(student('hideAi'));
-  await drawer.locator('[data-slot="student-ask-suggestion"][data-intent="focus"]').click();
-  await expect(drawer.locator('[data-slot="student-ask-answer-title"]').last()).toHaveText(student('ask.answer.focus'));
+  await expect(drawer.locator('[data-slot="ask-ai-suggestion"]')).toHaveCount(3);
   await page.screenshot({ path: path.join(PROOFS, 'student-ask-ai.png'), animations: 'disabled' });
   await page.keyboard.press('Escape');
   await expect(drawer).toBeHidden();

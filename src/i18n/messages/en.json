@@ -6176,7 +6176,7 @@
           "speaking": "Speaking",
           "writing": "Writing"
         },
-        "demoNote": "Start demo creates a private auto-login link that opens the test for you, exactly as a student sees it. Nothing is scored or recorded. The link only works for teacher, school-admin and ops accounts — never students or parents.",
+        "demoNote": "Start demo creates a private auto-login link that opens the test for you, exactly as a student sees it. Nothing is scored or recorded. The link signs in as your own teacher account, is single use and expires shortly — students and parents can never use it.",
         "class": "Class",
         "classOption": "{name} · Year {year} · {count, plural, one {# student} other {# students}}",
         "classOptionNoYear": "{name} · {count, plural, one {# student} other {# students}}",
@@ -6282,7 +6282,6 @@
         "save": "Save changes · {count, plural, one {# student} other {# students}}",
         "schedule": "Schedule session · {count, plural, one {# student} other {# students}}",
         "cancel": "Cancel",
-        "demoPending": "Teacher demo links are not available yet.",
         "checking": "Checking who is free…"
       },
       "state": {
@@ -6292,6 +6291,15 @@
         "noTests": "No tests are available to start right now.",
         "bookingGone": "This booking has already opened, closed or been cancelled.",
         "close": "Close"
+      },
+      "demoLink": {
+        "title": "Your demo link is ready",
+        "subtitle": "{test} · signs you in as yourself. Nothing is scored or recorded.",
+        "copy": "Copy link",
+        "copied": "Copied",
+        "warning": "This link signs in as your own teacher account. It works once and expires at {expires}; students and parents can never use it.",
+        "open": "Open the demo",
+        "done": "Done"
       }
     },
     "reports": {
@@ -6435,11 +6443,6 @@
       "ask": {
         "title": "Ask about {first}’s reading",
         "grounded": "Grounded in {first}’s reading data",
-        "speakStatus": "Speak mode on · answers read aloud",
-        "speak": "Speak",
-        "speakOn": "Speak on",
-        "speakTitle": "Speak mode — read answers aloud",
-        "close": "Close",
         "intro": "Ask anything about {first}’s reading results. Answers are grounded only in {count, plural, =0 {the latest form} one {the one form} other {the # forms}} {first} has sat this year.",
         "suggest": {
           "change": "What changed in {first}’s score?",
@@ -6451,29 +6454,47 @@
           "focus": "What should I focus on with {first} next?",
           "vocab": "How is {first}’s vocabulary?"
         },
-        "placeholder": "Ask a question about these scores…",
-        "listening": "Listening…",
-        "inputLabel": "Your question",
-        "mic": "Speak your question",
-        "send": "Send",
-        "speakMode": "Speak mode",
-        "micUnavailable": "Voice input isn’t available in this browser. Type your question below instead.",
-        "keywords": {
-          "change": "change|move|drop|gain|progress|why|backwards",
-          "focus": "focus|next|improve|target|work on",
-          "vocab": "vocab|word|language"
-        },
-        "answer": {
-          "change": "What moved {first}’s score",
-          "focus": "Where to focus next",
-          "vocab": "Vocabulary picture",
-          "generic": "On {first}’s reading"
-        },
-        "noData": "{first}’s latest form does not carry enough to answer that yet.",
-        "more": "Ask about what changed, where to focus next, or their vocabulary for more detail."
+        "placeholder": "Ask a question about these scores…"
       }
     },
-    "askAi": {},
+    "askAi": {
+      "speak": "Speak",
+      "speakOn": "Speak on",
+      "speakTitle": "Speak mode — read answers aloud",
+      "speakStatus": "Speak mode on · answers read aloud",
+      "speakMode": "Speak mode",
+      "micUnavailable": "Voice input isn’t available in this browser. Type your question below instead.",
+      "close": "Close",
+      "mic": "Speak your question",
+      "send": "Send",
+      "inputLabel": "Your question",
+      "listening": "Listening…",
+      "thinking": "Reading the results…",
+      "unavailableTitle": "The assistant is unavailable",
+      "rateLimitedTitle": "Too many questions",
+      "rejectedTitle": "That question was not sent",
+      "offlineTitle": "No answer — the server could not be reached",
+      "offlineBody": "The portal could not reach the server, so there is no answer to show. Nothing was changed.",
+      "retryAfter": "Try again in {seconds, plural, one {# second} other {# seconds}}.",
+      "class": {
+        "title": "Ask about {name}",
+        "grounded": "Grounded in {name}’s reading data",
+        "intro": "Ask anything about {name}. Answers are grounded only in this class’s reading results.",
+        "placeholder": "Ask a question about this class’s results…",
+        "refusedTitle": "Cannot answer that from this class’s results",
+        "grounding": "Drawn from {scored, plural, one {# student} other {# students}} with a current result · {sittings, plural, =0 {no completed sittings} one {# completed sitting} other {# completed sittings}}.",
+        "partialCohort": "Only {scored} of {total} students have a current result, so anything about the class as a whole is drawn from a partial cohort. Treat it as indicative.",
+        "suggest": {
+          "teach": "What should I teach next?",
+          "moved": "How has the class moved?",
+          "vocab": "How is the class’s vocabulary?"
+        }
+      },
+      "student": {
+        "refusedTitle": "Cannot answer that from this student’s results",
+        "grounding": "Drawn from {sittings, plural, =0 {no completed sittings} one {# completed sitting} other {# completed sittings}}."
+      }
+    },
     "review": {
       "title": "Review submission",
       "close": "Close",

@@ -6176,7 +6176,7 @@
           "speaking": "口语",
           "writing": "写作"
         },
-        "demoNote": "点击“开始体验”会创建一个私密的自动登录链接，为你打开这场考试，看到的与学生完全一样。不会计分，也不会记录。该链接仅适用于教师、学校管理员和运营账户——绝不适用于学生或家长。",
+        "demoNote": "点击“开始体验”会创建一个私密的自动登录链接，为你打开这场考试，看到的与学生完全一样。不会计分，也不会记录。该链接以你自己的教师账户登录，仅可使用一次且很快过期——学生和家长绝不能使用。",
         "class": "班级",
         "classOption": "{name} · {year} 年级 · {count, plural, other {# 名学生}}",
         "classOptionNoYear": "{name} · {count, plural, other {# 名学生}}",
@@ -6282,7 +6282,6 @@
         "save": "保存更改 · {count, plural, other {# 名学生}}",
         "schedule": "预约考试 · {count, plural, other {# 名学生}}",
         "cancel": "取消",
-        "demoPending": "教师体验链接暂不可用。",
         "checking": "正在确认可参加的学生…"
       },
       "state": {
@@ -6292,6 +6291,15 @@
         "noTests": "目前没有可以开始的考试。",
         "bookingGone": "该预约已经开放、结束或被取消。",
         "close": "关闭"
+      },
+      "demoLink": {
+        "title": "你的体验链接已就绪",
+        "subtitle": "{test} · 以你自己的身份登录。不会计分，也不会记录。",
+        "copy": "复制链接",
+        "copied": "已复制",
+        "warning": "该链接以你自己的教师账户登录，仅可使用一次，并将在 {expires} 过期；学生和家长绝不能使用。",
+        "open": "打开体验",
+        "done": "完成"
       }
     },
     "reports": {
@@ -6435,11 +6443,6 @@
       "ask": {
         "title": "询问 {first} 的阅读情况",
         "grounded": "基于 {first} 的阅读数据",
-        "speakStatus": "朗读模式已开启 · 回答将被朗读",
-        "speak": "朗读",
-        "speakOn": "朗读已开",
-        "speakTitle": "朗读模式——大声朗读回答",
-        "close": "关闭",
         "intro": "可以就 {first} 的阅读结果提出任何问题。回答仅基于 {first} 本学年{count, plural, =0 {最新一次} other {已完成的 # 次}}测试。",
         "suggest": {
           "change": "{first} 的分数有什么变化？",
@@ -6451,29 +6454,47 @@
           "focus": "下一步我应该帮 {first} 重点关注什么？",
           "vocab": "{first} 的词汇情况如何？"
         },
-        "placeholder": "就这些分数提问…",
-        "listening": "正在聆听…",
-        "inputLabel": "你的问题",
-        "mic": "说出你的问题",
-        "send": "发送",
-        "speakMode": "朗读模式",
-        "micUnavailable": "此浏览器不支持语音输入。请在下方输入你的问题。",
-        "keywords": {
-          "change": "变化|改变|变动|下降|进步|退步|为什么",
-          "focus": "重点|下一步|提高|改进|目标|练习|关注",
-          "vocab": "词汇|单词|词语|语言"
-        },
-        "answer": {
-          "change": "{first} 的分数有何变化",
-          "focus": "下一步的重点",
-          "vocab": "词汇情况",
-          "generic": "关于 {first} 的阅读"
-        },
-        "noData": "{first} 最新一次测试的数据还不足以回答这个问题。",
-        "more": "可以继续询问分数变化、下一步重点或词汇情况。"
+        "placeholder": "就这些分数提问…"
       }
     },
-    "askAi": {},
+    "askAi": {
+      "speak": "朗读",
+      "speakOn": "朗读已开",
+      "speakTitle": "朗读模式——大声朗读回答",
+      "speakStatus": "朗读模式已开启 · 回答将被朗读",
+      "speakMode": "朗读模式",
+      "micUnavailable": "此浏览器不支持语音输入。请在下方输入你的问题。",
+      "close": "关闭",
+      "mic": "说出你的问题",
+      "send": "发送",
+      "inputLabel": "你的问题",
+      "listening": "正在聆听…",
+      "thinking": "正在查看结果…",
+      "unavailableTitle": "AI 助手暂时不可用",
+      "rateLimitedTitle": "提问过于频繁",
+      "rejectedTitle": "该问题未被发送",
+      "offlineTitle": "没有回答——无法连接服务器",
+      "offlineBody": "门户无法连接服务器，因此没有可显示的回答。没有任何内容被更改。",
+      "retryAfter": "请在 {seconds} 秒后重试。",
+      "class": {
+        "title": "询问 {name}",
+        "grounded": "基于 {name} 的阅读数据",
+        "intro": "可以就 {name} 提出任何问题。回答仅基于本班的阅读结果。",
+        "placeholder": "就本班的结果提问…",
+        "refusedTitle": "无法根据本班的结果回答该问题",
+        "grounding": "基于 {scored} 名有当前结果的学生 · {sittings, plural, =0 {尚无已完成的测试} other {# 次已完成的测试}}。",
+        "partialCohort": "{total} 名学生中只有 {scored} 名有当前结果，因此关于全班的任何结论都来自部分样本，仅供参考。",
+        "suggest": {
+          "teach": "下一步应该教什么？",
+          "moved": "全班有哪些变化？",
+          "vocab": "全班的词汇情况如何？"
+        }
+      },
+      "student": {
+        "refusedTitle": "无法根据这名学生的结果回答该问题",
+        "grounding": "基于{sittings, plural, =0 {尚无已完成的测试} other {# 次已完成的测试}}。"
+      }
+    },
     "review": {
       "title": "查看提交",
       "close": "关闭",

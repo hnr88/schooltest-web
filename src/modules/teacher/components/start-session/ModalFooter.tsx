@@ -22,7 +22,6 @@ function ModalFooter({
   onSubmit,
   onCancel,
   error,
-  note,
 }: {
   label: string;
   canSubmit: boolean;
@@ -30,7 +29,6 @@ function ModalFooter({
   onSubmit: () => void;
   onCancel: () => void;
   error: string | null;
-  note: string | null;
 }) {
   const t = useTranslations('TeacherPortal.startSession.cta');
   return (
@@ -41,7 +39,6 @@ function ModalFooter({
           {error}
         </p>
       ) : null}
-      {note ? <p className="mb-3 text-[13px] leading-[1.5] text-[#6B7280]">{note}</p> : null}
       <div className="flex flex-wrap items-center gap-2.5">
         <button
           type="button"

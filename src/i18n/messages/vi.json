@@ -6195,7 +6195,7 @@
           "speaking": "Nói",
           "writing": "Viết"
         },
-        "demoNote": "Bắt đầu dùng thử sẽ tạo một liên kết tự đăng nhập riêng tư mở bài kiểm tra cho bạn, đúng như học sinh nhìn thấy. Không có gì được chấm điểm hay ghi lại. Liên kết chỉ dùng được cho tài khoản giáo viên, quản trị trường và vận hành — không bao giờ cho học sinh hay phụ huynh.",
+        "demoNote": "Bắt đầu dùng thử sẽ tạo một liên kết tự đăng nhập riêng tư mở bài kiểm tra cho bạn, đúng như học sinh nhìn thấy. Không có gì được chấm điểm hay ghi lại. Liên kết đăng nhập bằng chính tài khoản giáo viên của bạn, chỉ dùng được một lần và sẽ hết hạn sớm — học sinh và phụ huynh không bao giờ dùng được.",
         "class": "Lớp",
         "classOption": "{name} · Khối {year} · {count, plural, other {# học sinh}}",
         "classOptionNoYear": "{name} · {count, plural, other {# học sinh}}",
@@ -6301,7 +6301,6 @@
         "save": "Lưu thay đổi · {count, plural, other {# học sinh}}",
         "schedule": "Lên lịch phiên · {count, plural, other {# học sinh}}",
         "cancel": "Hủy",
-        "demoPending": "Liên kết dùng thử cho giáo viên chưa có sẵn.",
         "checking": "Đang kiểm tra ai rảnh…"
       },
       "state": {
@@ -6311,6 +6310,15 @@
         "noTests": "Hiện chưa có bài kiểm tra nào để bắt đầu.",
         "bookingGone": "Lịch này đã mở, đã đóng hoặc đã bị hủy.",
         "close": "Đóng"
+      },
+      "demoLink": {
+        "title": "Liên kết dùng thử của bạn đã sẵn sàng",
+        "subtitle": "{test} · đăng nhập bằng chính tài khoản của bạn. Không có gì được chấm điểm hay ghi lại.",
+        "copy": "Sao chép liên kết",
+        "copied": "Đã sao chép",
+        "warning": "Liên kết này đăng nhập bằng chính tài khoản giáo viên của bạn. Nó chỉ dùng được một lần và hết hạn lúc {expires}; học sinh và phụ huynh không bao giờ dùng được.",
+        "open": "Mở bản dùng thử",
+        "done": "Xong"
       }
     },
     "reports": {
@@ -6454,11 +6462,6 @@
       "ask": {
         "title": "Hỏi về kỹ năng đọc của {first}",
         "grounded": "Dựa trên dữ liệu đọc của {first}",
-        "speakStatus": "Đã bật chế độ đọc · câu trả lời được đọc to",
-        "speak": "Đọc to",
-        "speakOn": "Đang đọc to",
-        "speakTitle": "Chế độ đọc — đọc to câu trả lời",
-        "close": "Đóng",
         "intro": "Hỏi bất cứ điều gì về kết quả đọc của {first}. Câu trả lời chỉ dựa trên {count, plural, =0 {bài gần nhất} other {# bài}} {first} đã làm trong năm nay.",
         "suggest": {
           "change": "Điểm của {first} thay đổi thế nào?",
@@ -6470,29 +6473,47 @@
           "focus": "Tiếp theo tôi nên cùng {first} tập trung vào gì?",
           "vocab": "Từ vựng của {first} thế nào?"
         },
-        "placeholder": "Đặt câu hỏi về các điểm số này…",
-        "listening": "Đang nghe…",
-        "inputLabel": "Câu hỏi của bạn",
-        "mic": "Nói câu hỏi của bạn",
-        "send": "Gửi",
-        "speakMode": "Chế độ đọc",
-        "micUnavailable": "Trình duyệt này không hỗ trợ nhập bằng giọng nói. Hãy gõ câu hỏi bên dưới.",
-        "keywords": {
-          "change": "thay đổi|tăng|giảm|tiến bộ|tại sao|vì sao|thụt lùi",
-          "focus": "tập trung|tiếp theo|cải thiện|mục tiêu|luyện",
-          "vocab": "từ vựng|từ ngữ|ngôn ngữ"
-        },
-        "answer": {
-          "change": "Điều gì làm điểm của {first} thay đổi",
-          "focus": "Nên tập trung vào đâu tiếp theo",
-          "vocab": "Bức tranh từ vựng",
-          "generic": "Về kỹ năng đọc của {first}"
-        },
-        "noData": "Bài gần nhất của {first} chưa đủ dữ liệu để trả lời câu hỏi này.",
-        "more": "Hãy hỏi thêm về điều gì đã thay đổi, nên tập trung vào đâu tiếp theo hoặc từ vựng của học sinh."
+        "placeholder": "Đặt câu hỏi về các điểm số này…"
       }
     },
-    "askAi": {},
+    "askAi": {
+      "speak": "Đọc to",
+      "speakOn": "Đang đọc to",
+      "speakTitle": "Chế độ đọc — đọc to câu trả lời",
+      "speakStatus": "Đã bật chế độ đọc · câu trả lời được đọc to",
+      "speakMode": "Chế độ đọc",
+      "micUnavailable": "Trình duyệt này không hỗ trợ nhập bằng giọng nói. Hãy gõ câu hỏi bên dưới.",
+      "close": "Đóng",
+      "mic": "Nói câu hỏi của bạn",
+      "send": "Gửi",
+      "inputLabel": "Câu hỏi của bạn",
+      "listening": "Đang nghe…",
+      "thinking": "Đang đọc kết quả…",
+      "unavailableTitle": "Trợ lý AI hiện không dùng được",
+      "rateLimitedTitle": "Quá nhiều câu hỏi",
+      "rejectedTitle": "Câu hỏi này chưa được gửi đi",
+      "offlineTitle": "Không có câu trả lời — không kết nối được máy chủ",
+      "offlineBody": "Cổng thông tin không kết nối được máy chủ nên không có câu trả lời để hiển thị. Không có gì bị thay đổi.",
+      "retryAfter": "Hãy thử lại sau {seconds} giây.",
+      "class": {
+        "title": "Hỏi về {name}",
+        "grounded": "Dựa trên dữ liệu đọc của {name}",
+        "intro": "Hỏi bất cứ điều gì về {name}. Câu trả lời chỉ dựa trên kết quả đọc của lớp này.",
+        "placeholder": "Đặt câu hỏi về kết quả của lớp này…",
+        "refusedTitle": "Không thể trả lời điều đó từ kết quả của lớp này",
+        "grounding": "Dựa trên {scored} học sinh có kết quả hiện hành · {sittings, plural, =0 {chưa có bài thi hoàn tất} other {# bài thi đã hoàn tất}}.",
+        "partialCohort": "Chỉ {scored} trong {total} học sinh có kết quả hiện hành, nên mọi nhận định về cả lớp đều dựa trên một nhóm chưa đầy đủ. Hãy xem đây là thông tin tham khảo.",
+        "suggest": {
+          "teach": "Tiếp theo tôi nên dạy gì?",
+          "moved": "Cả lớp đã tiến bộ thế nào?",
+          "vocab": "Từ vựng của cả lớp thế nào?"
+        }
+      },
+      "student": {
+        "refusedTitle": "Không thể trả lời điều đó từ kết quả của học sinh này",
+        "grounding": "Dựa trên {sittings, plural, =0 {chưa có bài thi hoàn tất} other {# bài thi đã hoàn tất}}."
+      }
+    },
     "review": {
       "title": "Xem bài nộp",
       "close": "Đóng",

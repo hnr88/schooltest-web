@@ -6186,7 +6186,7 @@
           "speaking": "말하기",
           "writing": "쓰기"
         },
-        "demoNote": "체험 시작을 누르면 학생이 보는 그대로 시험을 여는 비공개 자동 로그인 링크가 만들어집니다. 점수를 매기거나 기록하지 않습니다. 이 링크는 교사, 학교 관리자, 운영 계정에서만 작동하며 학생이나 학부모는 사용할 수 없습니다.",
+        "demoNote": "체험 시작을 누르면 학생이 보는 그대로 시험을 여는 비공개 자동 로그인 링크가 만들어집니다. 점수를 매기거나 기록하지 않습니다. 이 링크는 본인의 교사 계정으로 로그인되며 한 번만 사용할 수 있고 곧 만료됩니다. 학생이나 학부모는 사용할 수 없습니다.",
         "class": "학급",
         "classOption": "{name} · {year}학년 · {count, plural, other {#명}}",
         "classOptionNoYear": "{name} · {count, plural, other {#명}}",
@@ -6292,7 +6292,6 @@
         "save": "변경 사항 저장 · {count, plural, other {#명}}",
         "schedule": "세션 예약 · {count, plural, other {#명}}",
         "cancel": "취소",
-        "demoPending": "교사 체험 링크는 아직 사용할 수 없습니다.",
         "checking": "응시 가능한 학생 확인 중…"
       },
       "state": {
@@ -6302,6 +6301,15 @@
         "noTests": "지금 시작할 수 있는 시험이 없습니다.",
         "bookingGone": "이 예약은 이미 열렸거나 닫혔거나 취소되었습니다.",
         "close": "닫기"
+      },
+      "demoLink": {
+        "title": "체험 링크가 준비되었습니다",
+        "subtitle": "{test} · 본인 계정으로 로그인됩니다. 점수를 매기거나 기록하지 않습니다.",
+        "copy": "링크 복사",
+        "copied": "복사됨",
+        "warning": "이 링크는 본인의 교사 계정으로 로그인합니다. 한 번만 사용할 수 있고 {expires}에 만료되며, 학생이나 학부모는 사용할 수 없습니다.",
+        "open": "체험 열기",
+        "done": "완료"
       }
     },
     "reports": {
@@ -6445,11 +6453,6 @@
       "ask": {
         "title": "{first} 학생의 읽기에 대해 묻기",
         "grounded": "{first} 학생의 읽기 데이터를 근거로 답합니다",
-        "speakStatus": "음성 모드 켜짐 · 답변을 소리 내어 읽습니다",
-        "speak": "음성",
-        "speakOn": "음성 켜짐",
-        "speakTitle": "음성 모드 — 답변을 소리 내어 읽기",
-        "close": "닫기",
         "intro": "{first} 학생의 읽기 결과에 대해 무엇이든 물어보세요. 답변은 {first} 학생이 올해 응시한 {count, plural, =0 {최근 시험지} other {시험지 #개}}만을 근거로 합니다.",
         "suggest": {
           "change": "{first} 학생의 점수는 어떻게 바뀌었나요?",
@@ -6461,29 +6464,47 @@
           "focus": "{first} 학생과 다음에 무엇에 집중해야 하나요?",
           "vocab": "{first} 학생의 어휘는 어떤가요?"
         },
-        "placeholder": "이 점수에 대해 질문하세요…",
-        "listening": "듣는 중…",
-        "inputLabel": "질문",
-        "mic": "질문을 말하기",
-        "send": "보내기",
-        "speakMode": "음성 모드",
-        "micUnavailable": "이 브라우저에서는 음성 입력을 사용할 수 없습니다. 아래에 질문을 입력하세요.",
-        "keywords": {
-          "change": "바뀌|변화|변했|올랐|떨어|하락|향상|진전|왜",
-          "focus": "집중|다음|개선|목표|지도|연습",
-          "vocab": "어휘|단어|낱말|언어"
-        },
-        "answer": {
-          "change": "{first} 학생의 점수를 움직인 것",
-          "focus": "다음에 집중할 영역",
-          "vocab": "어휘 현황",
-          "generic": "{first} 학생의 읽기에 대하여"
-        },
-        "noData": "{first} 학생의 최근 시험지에는 이 질문에 답할 만큼의 정보가 아직 없습니다.",
-        "more": "무엇이 바뀌었는지, 다음에 무엇에 집중할지, 어휘는 어떤지 더 물어보세요."
+        "placeholder": "이 점수에 대해 질문하세요…"
       }
     },
-    "askAi": {},
+    "askAi": {
+      "speak": "음성",
+      "speakOn": "음성 켜짐",
+      "speakTitle": "음성 모드 — 답변을 소리 내어 읽기",
+      "speakStatus": "음성 모드 켜짐 · 답변을 소리 내어 읽습니다",
+      "speakMode": "음성 모드",
+      "micUnavailable": "이 브라우저에서는 음성 입력을 사용할 수 없습니다. 아래에 질문을 입력하세요.",
+      "close": "닫기",
+      "mic": "질문을 말하기",
+      "send": "보내기",
+      "inputLabel": "질문",
+      "listening": "듣는 중…",
+      "thinking": "결과를 살펴보는 중…",
+      "unavailableTitle": "AI 도우미를 사용할 수 없습니다",
+      "rateLimitedTitle": "질문이 너무 많습니다",
+      "rejectedTitle": "질문이 전송되지 않았습니다",
+      "offlineTitle": "답변 없음 — 서버에 연결하지 못했습니다",
+      "offlineBody": "포털이 서버에 연결하지 못해 표시할 답변이 없습니다. 변경된 내용은 없습니다.",
+      "retryAfter": "{seconds}초 후에 다시 시도하세요.",
+      "class": {
+        "title": "{name}에 대해 묻기",
+        "grounded": "{name}의 읽기 데이터를 근거로 답합니다",
+        "intro": "{name}에 대해 무엇이든 물어보세요. 답변은 이 학급의 읽기 결과만을 근거로 합니다.",
+        "placeholder": "이 학급의 결과에 대해 질문하세요…",
+        "refusedTitle": "이 학급의 결과만으로는 답할 수 없습니다",
+        "grounding": "현재 결과가 있는 학생 {scored}명 · 완료된 시험 {sittings}회를 근거로 합니다.",
+        "partialCohort": "학생 {total}명 중 {scored}명만 현재 결과가 있으므로, 학급 전체에 대한 내용은 일부 집단을 근거로 한 것입니다. 참고용으로만 보세요.",
+        "suggest": {
+          "teach": "다음에 무엇을 가르쳐야 하나요?",
+          "moved": "학급은 어떻게 변화했나요?",
+          "vocab": "학급의 어휘는 어떤가요?"
+        }
+      },
+      "student": {
+        "refusedTitle": "이 학생의 결과만으로는 답할 수 없습니다",
+        "grounding": "완료된 시험 {sittings}회를 근거로 합니다."
+      }
+    },
     "review": {
       "title": "제출물 검토",
       "close": "닫기",

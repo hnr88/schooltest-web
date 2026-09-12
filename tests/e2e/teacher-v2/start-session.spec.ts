@@ -188,7 +188,7 @@ test('S8 — Start now makes a real session the desktop joins; schedule, edit an
       expect(await bookingWindowHm(request, jwt, klass.class_document_id, booked[0], 'closes_at')).toBe('10:00');
     });
 
-    await test.step('Teacher demo: the drawn demo layout; the link waits for the demo-link endpoint', async () => {
+    await test.step('Teacher demo: the drawn demo layout, with Start demo now live (TB-17)', async () => {
       await openFromClasses(page, t('title'));
       await choice(dialog, 'demo').click();
       await expect(dialog.getByRole('heading', { name: t('titleDemo') })).toBeVisible();
@@ -196,8 +196,11 @@ test('S8 — Start now makes a real session the desktop joins; schedule, edit an
       await expect(dialog.getByRole('tablist')).toHaveCount(0);
       await expect(dialog.locator('[data-slot="start-session-facts"]')).toHaveCount(0);
       await expect(cta).toHaveText(t('cta.startDemo'));
-      await expect(cta).toHaveAttribute('aria-disabled', 'true');
-      await expect(dialog).toContainText(t('cta.demoPending'));
+      // TB-17 CLOSED: the CTA mints a real C-TT-DEMO link, so it is no longer the
+      // honest-disabled button with its "not available yet" note. The mint itself and
+      // the "Your demo link is ready" dialog are driven by `ask-ai.spec.ts`, which owns
+      // the teacher's 10-per-hour magic-link budget in one place.
+      await expect(cta).not.toHaveAttribute('aria-disabled', 'true');
       await shot(page, 'start-session-demo');
       await dialog.getByRole('button', { name: t('cta.cancel') }).click();
       await expect(dialog).toHaveCount(0);

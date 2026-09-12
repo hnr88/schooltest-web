@@ -17,6 +17,7 @@ export const useStartSessionStore = create<StartSessionState>((set) => ({
   tab: null,
   editSittingId: null,
   openCount: 0,
+  demoLink: null,
   open: (options = {}) =>
     set((state) => ({
       isOpen: true,
@@ -26,6 +27,11 @@ export const useStartSessionStore = create<StartSessionState>((set) => ({
       tab: options.tab ?? null,
       editSittingId: options.editSittingId ?? null,
       openCount: state.openCount + 1,
+      demoLink: null,
     })),
   close: () => set({ isOpen: false }),
+  // The minted link takes the modal's place (design S29): the form is done with, and
+  // leaving both open would stack two dialogs over each other.
+  showDemoLink: (demoLink) => set({ isOpen: false, demoLink }),
+  clearDemoLink: () => set({ demoLink: null }),
 }));

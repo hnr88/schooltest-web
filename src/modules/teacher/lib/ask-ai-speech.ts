@@ -1,4 +1,4 @@
-import type { SpeechRecognitionCtor } from '@/modules/teacher/types/student-ask.types';
+import type { SpeechRecognitionCtor } from '@/modules/teacher/types/ask-ai.types';
 
 /** The browser's speech recognizer (standard or Chromium-prefixed), or `null` where it has none. */
 export function speechRecognitionCtor(): SpeechRecognitionCtor | null {
