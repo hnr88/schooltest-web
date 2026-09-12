@@ -9,6 +9,7 @@ import {
   expectNoHorizontalScroll,
   expectTeacherAxeClean,
   openReady,
+  openStudentReady,
   readA11ySurface,
   signedInTeacherContextPage,
   type A11ySurface,
@@ -87,17 +88,14 @@ for (const viewport of [DESKTOP, MOBILE]) {
 
   test(`AXE: the student drill-down is clean for one AND two tests @ ${width}px`, async () => {
     await page.setViewportSize(viewport);
-    for (const [label, studentDocumentId] of [
+    const shapes: ReadonlyArray<readonly [string, string]> = [
       ['two-test', surface.twoTestStudentId],
-      ['one-test', surface.oneTestStudentId],
-    ] as const) {
-      // The Teacher Portal v2 student page reports its settled read as `success`.
-      await page.goto(`/dashboard/results/${surface.classDocumentId}/students/${studentDocumentId}`);
-      await expect(page.locator('[data-surface="teacher-student-drill-down"]')).toHaveAttribute(
-        'data-status',
-        'success',
-        { timeout: 20_000 },
-      );
+      ...(surface.oneTestStudentId === null
+        ? []
+        : ([['one-test', surface.oneTestStudentId]] as const)),
+    ];
+    for (const [label, studentDocumentId] of shapes) {
+      await openStudentReady(page, surface.classDocumentId, studentDocumentId);
       await expectTeacherAxeClean(page, `drill-down ${label} @ ${width}px`);
       await expectNoHorizontalScroll(page, `drill-down ${label} @ ${width}px`);
       await page.screenshot({

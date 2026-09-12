@@ -1,19 +1,21 @@
-import { readFile } from 'node:fs/promises';
-
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expect, test, type APIRequestContext } from '@playwright/test';
 
 import { fetchWithRetry, loginCached } from './helpers/http';
-import { cat, loadMessages } from './helpers/i18n';
 import { fixtureClassId } from './helpers/fixture-class';
 import { fixtureTeacherCredentials, roleCredentials } from './helpers/credentials';
 
 // Task 77 (st-mvp-pivot) targeted live check — NOT part of the suite.
 // C-RPT-03 markdown LLM export (mvp spec 4.10): the API role matrix and
-// headers, then the visible export button on the teacher results page - the
-// downloaded file must carry every rostered student as "Firstname L.", the
+// headers - the file must carry every rostered student as "Firstname L.", the
 // seven reading areas in plain words, honest not-yet-assessed lines, and NEVER
 // a surname, an email, an ACARA phase or a probability.
-const en = loadMessages('en');
+//
+// R1 PART B: the UI half of this spec is GONE with its surface. `export.md`
+// names students ("Amara B.", TB-22), and its only web caller was the retired
+// `/dashboard/teach/results/<class>` page's "Export for AI" button. The class
+// AI export a teacher reaches now is B7's de-identified `/export/insights`
+// inside the Reports modal (`teacher-results-export.spec.ts`), so what is left
+// here is the API contract itself, which the route still serves.
 
 const API = 'http://127.0.0.1:5500';
 const TEACHER = fixtureTeacherCredentials();
@@ -26,17 +28,6 @@ async function login(
   credentials: { email: string; password: string },
 ): Promise<string> {
   return loginCached(request, API, credentials);
-}
-
-async function signIn(page: Page, credentials: { email: string; password: string }): Promise<void> {
-  await page.goto('/sign-in');
-  await page.getByLabel(cat(en, 'Auth.portal.emailLabel'), { exact: true }).fill(credentials.email);
-  await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(credentials.password);
-  await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
-  // Wait for the SETTLED role landing (not the transient /dashboard hop), so a
-  // late role redirect can never hijack the goto that follows. The axios
-  // layer rides out any 429 on the auth POST, so allow for that here.
-  await page.waitForURL(/\/dashboard(\/|$)/, { timeout: 90_000 });
 }
 
 // C-RPT-03 is a pure composition of the C-RPT-01/C-RPT-02 payloads; these two
@@ -180,38 +171,4 @@ test.describe('task 77: markdown LLM export (C-RPT-03)', () => {
     expect(unknown.status()).toBe(404);
   });
 
-  test('UI: the export button downloads the same markdown from the results page', async ({
-    page,
-  }) => {
-    await signIn(page, TEACHER);
-    await page.goto(`/en/dashboard/teach/results/${CLASS_ID}`);
-    const screen = page.locator('[data-surface="teacher-diagnostic"]');
-    await expect(screen).toBeVisible({ timeout: 20_000 });
-
-    const exportSlot = screen.locator('[data-slot="export-markdown"]');
-    await expect(exportSlot).toBeVisible();
-    const button = exportSlot.getByRole('button', {
-      name: cat(en, 'Teach.diagnostic.export.cta'),
-      exact: true,
-    });
-    await expect(button).toBeVisible();
-
-    const [download] = await Promise.all([page.waitForEvent('download'), button.click()]);
-    expect(download.suggestedFilename()).toBe('eal-d-year-7-room-4-diagnostic.md');
-
-    const path = await download.path();
-    expect(path).toBeTruthy();
-    const body = await readFile(path!, 'utf-8');
-    expect(body).toContain('# EAL/D Year 7 - Room 4 - reading profiles');
-    expect(body).toContain('### Sofia P.');
-    expect(body).toContain('## How to use this file');
-    expect(body).toContain('## Student profiles');
-    expect(body).not.toMatch(/petrov|kim\b|alpha|beta/i);
-    expect(body).not.toContain('@');
-    expect(body).not.toMatch(/acara|phase/i);
-
-    // The button settled back to its resting state (no error alert).
-    await expect(button).toBeVisible();
-    await expect(exportSlot.getByRole('alert')).toHaveCount(0);
-  });
 });

@@ -23,8 +23,9 @@ import { waitForAnimationsSettled } from './ui';
 // this repo, not two. Every route argument is a LIVE document id read from
 // C-TD-1/C-TR-1 — there is no class id or student id literal in this lane.
 //
-// /dashboard/test-sessions and the live monitor are NOT covered here: task 053
-// owns them, and task 047's own file records them as deferred.
+// R1 PART B: the teacher's `/dashboard` no longer has a surface of its own (the
+// rail lands on the Classes list) and the live monitor is retired, so the audited
+// set is the three v2 pages: Classes, the class detail, and the student page.
 
 export const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 export const DESKTOP = { width: 1280, height: 900 } as const;
@@ -95,7 +96,15 @@ export async function expectNoHorizontalScroll(page: Page, label: string): Promi
 export interface A11ySurface {
   classDocumentId: string;
   twoTestStudentId: string;
-  oneTestStudentId: string;
+  /**
+   * A student whose latest result carries EXACTLY ONE sitting — the first-sitting
+   * render, which draws no growth and no comparison. It is `null` when the live
+   * seed happens to carry none: every audited student has sat twice. The legs that
+   * need that shape say so out loud and skip it rather than audit a second
+   * two-sitting student under the wrong name (this really happens — a journey run
+   * on the same database gives its students their second sitting).
+   */
+  oneTestStudentId: string | null;
 }
 
 async function readJson(
@@ -134,6 +143,8 @@ export async function readA11ySurface(
     if (dash.status !== 200) throw new Error(`[e2e] C-TD-1 answered ${dash.status}`);
     const classes = teacherDashboardResponseSchema.parse(dash.body).classes;
 
+    const seen: string[] = [];
+    let fallback: A11ySurface | null = null;
     for (const klass of classes) {
       const roster = await readJson(
         request,
@@ -147,15 +158,27 @@ export async function readA11ySurface(
       const sittingsOf = (row: (typeof rows)[number]): number => row.result?.history?.length ?? 0;
       const two = rows.find((row) => sittingsOf(row) >= 2);
       const one = rows.find((row) => sittingsOf(row) === 1);
-      if (two && one) {
-        return {
-          classDocumentId: klass.class_document_id,
-          twoTestStudentId: two.student.document_id,
-          oneTestStudentId: one.student.document_id,
-        };
-      }
+      seen.push(
+        `${klass.name}: ${rows.length} rows, ${rows.filter((row) => sittingsOf(row) >= 2).length} with two+ sittings, ${rows.filter((row) => sittingsOf(row) === 1).length} with one`,
+      );
+      if (two === undefined) continue;
+      const surface: A11ySurface = {
+        classDocumentId: klass.class_document_id,
+        twoTestStudentId: two.student.document_id,
+        oneTestStudentId: one?.student.document_id ?? null,
+      };
+      if (one !== undefined) return surface;
+      fallback ??= surface;
     }
-    throw new Error('[e2e] no seeded class carries both a two-sitting and a one-sitting student');
+    if (fallback !== null) {
+      console.log(
+        `[a11y surface] no student with exactly ONE sitting on the seed — the first-sitting legs are skipped. Inspected: ${seen.join(' | ')}`,
+      );
+      return fallback;
+    }
+    throw new Error(
+      `[e2e] no seeded class carries a student with a scored sitting. Inspected: ${seen.join(' | ')}`,
+    );
   } finally {
     await request.dispose();
   }
@@ -186,6 +209,25 @@ export async function openReady(page: Page, url: string, surface: string): Promi
   });
 }
 
+/**
+ * TB-30: the v2 student page (`StudentDrillDownScreen`, chunk S10) publishes the
+ * TanStack query's own status, so its settled frame is `success` — never the
+ * `ready` word the other three surfaces use. Both a11y legs waited on `ready`
+ * here and timed out; this is the one place that difference is spelled out.
+ */
+export async function openStudentReady(
+  page: Page,
+  classDocumentId: string,
+  studentDocumentId: string,
+): Promise<void> {
+  await page.goto(`/dashboard/results/${classDocumentId}/students/${studentDocumentId}`);
+  await expect(page.locator('[data-surface="teacher-student-drill-down"]')).toHaveAttribute(
+    'data-status',
+    'success',
+    { timeout: 20_000 },
+  );
+}
+
 /** Every focusable element the browser's own tab order visits, with its focus indicator. */
 export interface FocusStop {
   tag: string;
@@ -206,14 +248,50 @@ export async function tabStops(page: Page, steps: number): Promise<FocusStop[]> 
         if (!(el instanceof HTMLElement)) {
           return { tag: 'none', name: '', hasRing: false, width: 0, height: 0, isDevChrome: true };
         }
-        const style = getComputedStyle(el);
         const box = el.getBoundingClientRect();
+        // WCAG 2.4.7 asks whether the focus indicator is VISIBLE, not where it is
+        // drawn. Reading `outline`/`box-shadow` off the focused element alone misses
+        // two shapes this design uses constantly: a ring painted on the element's own
+        // `::after` (the stretched row link) and a border the WRAPPER changes on
+        // `:focus-within` (the pill search field). So the indicator is measured as a
+        // DIFFERENCE: snapshot the element, its pseudo-elements and three ancestors
+        // while focused, blur, snapshot again, then restore focus. Anything that
+        // changes is an indicator; nothing changing is a real failure. A static
+        // box-shadow (a card) no longer counts as a ring, which makes this stricter
+        // than the check it replaces, not looser.
+        const snapshot = (node: Element): string => {
+          const own = getComputedStyle(node);
+          const after = getComputedStyle(node, '::after');
+          const before = getComputedStyle(node, '::before');
+          return [own, after, before]
+            .map((style) =>
+              [
+                style.outlineWidth,
+                style.outlineStyle,
+                style.outlineColor,
+                style.outlineOffset,
+                style.boxShadow,
+                style.borderColor,
+                style.borderWidth,
+                style.backgroundColor,
+                style.textDecorationLine,
+                style.content,
+              ].join(','),
+            )
+            .join('|');
+        };
+        const chain: Element[] = [];
+        for (let node: Element | null = el; node !== null && chain.length < 4; node = node.parentElement) {
+          chain.push(node);
+        }
+        const focused = chain.map(snapshot);
+        el.blur();
+        const blurred = chain.map(snapshot);
+        el.focus({ preventScroll: true });
         return {
           tag: el.tagName.toLowerCase(),
           name: (el.getAttribute('aria-label') ?? el.textContent ?? '').trim().slice(0, 40),
-          hasRing:
-            (Number.parseFloat(style.outlineWidth) > 0 && style.outlineStyle !== 'none') ||
-            style.boxShadow !== 'none',
+          hasRing: focused.some((value, position) => value !== blurred[position]),
           width: Math.round(box.width),
           height: Math.round(box.height),
           // Dev-server chrome only, none of which exists in a production build: the

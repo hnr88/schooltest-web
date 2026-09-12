@@ -2192,102 +2192,7 @@
     }
   },
   "Teach": {
-    "CycleBanner": {
-      "label": "Chu kỳ kiểm tra của lớp này",
-      "testA": "Lớp này đang làm Test A",
-      "testB": "Lớp này đang làm Test B",
-      "window": "Thời gian kiểm tra: {opens} đến {closes}",
-      "formCode": "Mẫu {code}",
-      "unscheduled": "Lớp này chưa có bài kiểm tra nào được lên lịch. Ngày kiểm tra sẽ xuất hiện ở đây khi đợt kiểm tra mở."
-    },
-    "meta": {
-      "title": "Bảng điều khiển giáo viên - SchoolTest",
-      "description": "Trang giảng dạy của bạn: lớp học và báo cáo."
-    },
-    "home": {
-      "title": "Bảng điều khiển giáo viên",
-      "subtitle": "Báo cáo cho các lớp của bạn đã sẵn sàng trong mục Báo cáo.",
-      "reportsCta": "Mở báo cáo",
-      "classesTitle": "Các lớp của bạn",
-      "classesLoading": "Đang tải các lớp...",
-      "classesError": "Không thể tải lớp của bạn. Hãy thử lại.",
-      "classesEmpty": "Bạn chưa được phân công vào lớp nào. Quản trị viên trường có thể thêm bạn vào lớp.",
-      "rosterLink": "Danh sách",
-      "testDayLink": "Ngày kiểm tra",
-      "runSheetLink": "Phiếu hướng dẫn ngày kiểm tra",
-      "resultsLink": "Kết quả",
-      "panels": {
-        "diagnostic": {
-          "title": "Chẩn đoán",
-          "satLabel": "Đã làm bài kiểm tra",
-          "satValue": "{sat} trong {roster} học sinh",
-          "latestFormLabel": "Đề mới nhất",
-          "latestFormMissing": "Chưa làm bài",
-          "masteredLabel": "Lĩnh vực đọc đã thành thạo",
-          "masteredValue": "{pct}% của lớp",
-          "empty": "Dữ liệu chẩn đoán sắp có - bảng sẽ hiển thị khi học sinh làm Bài kiểm tra A."
-        },
-        "monitor": {
-          "title": "Buổi kiểm tra trực tiếp",
-          "states": {
-            "not_joined": "Chưa tham gia",
-            "joined": "Đã tham gia",
-            "in_progress": "Đang làm bài",
-            "submitted": "Đã nộp",
-            "stalled": "Bị gián đoạn"
-          },
-          "empty": "Hiện không có buổi kiểm tra nào đang diễn ra."
-        }
-      }
-    },
-    "roster": {
-      "meta": {
-        "title": "Danh sách lớp - SchoolTest",
-        "description": "Kiểm tra danh sách lớp trước ngày kiểm tra: tên, trạng thái và email đăng nhập."
-      },
-      "title": "Danh sách lớp",
-      "subtitle": "Đảm bảo mọi học sinh đều đăng nhập được vào ngày kiểm tra. Việc sửa email do quản trị viên trường thực hiện.",
-      "backLink": "Quay lại các lớp của bạn",
-      "loading": "Đang tải danh sách...",
-      "loadError": "Không thể tải danh sách. Hãy thử lại.",
-      "emptyTitle": "Không có học sinh nào",
-      "emptyBody": "Lớp này chưa có học sinh, hoặc bạn chưa được phân công vào lớp.",
-      "columnName": "Tên",
-      "columnStatus": "Trạng thái",
-      "columnEmail": "Email",
-      "columnActions": "Thao tác",
-      "statusActive": "Đang học",
-      "statusArchived": "Đã lưu trữ",
-      "emailMissing": "Cần email trước ngày kiểm tra",
-      "emailMissingHint": "Học sinh không có email sẽ không đăng nhập được vào ngày kiểm tra. Hãy nhờ quản trị viên trường thêm các email còn thiếu.",
-      "emailFixAction": "Báo email cần sửa",
-      "emailFixPending": "Đã yêu cầu sửa",
-      "emailFixSuccessToast": "Đã yêu cầu quản trị viên trường sửa email này.",
-      "emailFixErrorToast": "Không thể gửi yêu cầu sửa email. Hãy thử lại.",
-      "testDayLink": "Đi đến ngày kiểm tra",
-      "searchPlaceholder": "Tìm học sinh",
-      "searchLabel": "Tìm học sinh",
-      "sortLabel": "Sắp xếp",
-      "filterStatusLabel": "Trạng thái",
-      "filterStatusAll": "Mọi trạng thái",
-      "sortNameAsc": "Tên A–Z",
-      "sortNameDesc": "Tên Z–A",
-      "showingCount": "Hiển thị {showing} trên {total} học sinh",
-      "pageCount": "Trang {page} trên {pageCount} · tổng {total}",
-      "previous": "Trước",
-      "next": "Tiếp theo",
-      "paginationLabel": "Trang danh sách",
-      "rowMenuLabel": "Thao tác hàng",
-      "clearFilters": "Xóa bộ lọc",
-      "errorStaleBanner": "Bước làm mới gần nhất thất bại — các học sinh bên dưới là danh sách cuối cùng máy chủ trả về.",
-      "errorDescription": "Kiểm tra kết nối và thử lại.",
-      "retry": "Thử lại"
-    },
     "diagnostic": {
-      "meta": {
-        "title": "Chẩn đoán lớp học - SchoolTest",
-        "description": "Hồ sơ đọc của lớp bạn, với bằng chứng từng câu hỏi bên dưới."
-      },
       "backLink": "Quay lại lớp của bạn",
       "title": "Chẩn đoán lớp học",
       "subtitle": "Lớp bạn đọc được những gì, với bằng chứng bài kiểm tra bên dưới.",
@@ -2337,11 +2242,6 @@
       },
       "filteredEmptyTitle": "Không có học sinh phù hợp",
       "filteredEmptyDescription": "Không có học sinh nào phù hợp với tìm kiếm hiện tại.",
-      "export": {
-        "cta": "Xuất cho trợ lý AI của bạn",
-        "downloading": "Đang chuẩn bị bản xuất...",
-        "error": "Không thể tải xuống bản xuất. Hãy thử lại."
-      },
       "searchPlaceholder": "Tìm học sinh",
       "searchLabel": "Tìm học sinh",
       "sortLabel": "Sắp xếp",
@@ -2378,190 +2278,15 @@
         "not_mastered": "chưa thành thạo"
       },
       "notAssessedLine": "Chưa được đánh giá trong một hoặc cả hai bài kiểm tra: {areas}"
-    },
-    "testDay": {
-      "history": {
-        "searchPlaceholder": "Tìm buổi kiểm tra",
-        "searchLabel": "Tìm buổi kiểm tra",
-        "filterOutcomeLabel": "Kết quả",
-        "filterOutcomeAll": "Mọi kết quả",
-        "sortLabel": "Sắp xếp",
-        "clearFilters": "Xóa bộ lọc",
-        "paginationLabel": "Trang lịch sử",
-        "previous": "Trước",
-        "next": "Tiếp theo",
-        "rowMenuLabel": "Thao tác hàng",
-        "showingCount": "Hiển thị {showing} trên {total} buổi",
-        "pageCount": "Trang {page} trên {pageCount} · tổng {total}",
-        "sortOpenedDesc": "Thời gian mở: mới nhất trước",
-        "sortOpenedAsc": "Thời gian mở: cũ nhất trước",
-        "openAction": "Mở",
-        "filteredEmptyTitle": "Không có buổi kiểm tra phù hợp",
-        "filteredEmptyDescription": "Không có buổi kiểm tra nào phù hợp với tìm kiếm và bộ lọc kết quả hiện tại.",
-        "errorStaleBanner": "Bước làm mới gần nhất thất bại — các dòng bên dưới là danh sách cuối cùng máy chủ trả về.",
-        "errorDescription": "Kiểm tra kết nối và thử lại.",
-        "retry": "Thử lại",
-        "title": "Lịch sử buổi kiểm tra",
-        "loading": "Đang tải lịch sử buổi kiểm tra...",
-        "loadError": "Không thể tải lịch sử buổi kiểm tra. Hãy thử lại.",
-        "emptyTitle": "Lớp này chưa có buổi kiểm tra nào",
-        "emptyBody": "Khi bạn bắt đầu một buổi kiểm tra, buổi đó sẽ xuất hiện ở đây để bạn xem lại số học sinh đã tham gia và đã nộp bài.",
-        "missingValue": "-",
-        "columns": {
-          "opened": "Thời gian mở",
-          "code": "Mã",
-          "form": "Đề thi",
-          "status": "Trạng thái",
-          "joined": "Đã tham gia",
-          "submitted": "Đã nộp"
-        },
-        "status": {
-          "open": "Đang mở",
-          "closed": "Đã đóng"
-        },
-        "joinedCount": "{joined}/{total}",
-        "submittedCount": "{submitted}/{total}"
-      },
-      "summary": {
-        "title": "Tóm tắt buổi kiểm tra",
-        "loading": "Đang tải tóm tắt buổi kiểm tra...",
-        "loadError": "Không thể tải tóm tắt buổi kiểm tra. Hãy thử lại.",
-        "codeLine": "Mã {code}",
-        "counts": {
-          "sat": "Đã dự thi",
-          "absent": "Vắng mặt",
-          "needsResit": "Cần thi lại",
-          "resultsPending": "Kết quả đang chờ",
-          "resultsReady": "Kết quả đã có"
-        },
-        "pendingNote": "{count, plural, other {# kết quả vẫn đang được chuẩn bị và sẽ xuất hiện ở đây khi sẵn sàng.}}"
-      }
     }
   },
   "TestDay": {
-    "meta": {
-      "title": "Ngày kiểm tra - SchoolTest",
-      "description": "Bắt đầu buổi kiểm tra, công bố mã truy cập và theo dõi tiến độ của lớp theo thời gian thực."
-    },
-    "title": "Ngày kiểm tra",
-    "titleWithClass": "Ngày kiểm tra: {className}",
-    "subtitle": "Bắt đầu buổi kiểm tra, công bố mã truy cập và theo dõi tiến độ của từng học sinh theo thời gian thực.",
-    "backLink": "Quay lại danh sách lớp",
-    "loading": "Đang tải buổi kiểm tra...",
-    "loadError": "Không thể tải buổi kiểm tra. Hãy thử lại.",
-    "emptyTitle": "Chưa có buổi kiểm tra nào",
-    "emptyBody": "Bắt đầu một buổi kiểm tra để nhận mã truy cập cho lớp này.",
-    "startCta": "Bắt đầu kiểm tra",
-    "startError": "Không thể bắt đầu buổi kiểm tra. Hãy thử lại.",
-    "closedStartHint": "Buổi kiểm tra này đã đóng. Bắt đầu buổi mới khi lớp làm bài kiểm tra tiếp theo.",
-    "status": {
-      "open": "Đang mở",
-      "closed": "Đã đóng"
-    },
-    "code": {
-      "title": "Mã truy cập",
-      "formLine": "Đề {formCode}",
-      "hint": "Học sinh nhập mã này và email của trường để bắt đầu.",
-      "revealCta": "Công bố mã",
-      "hideCta": "Ẩn mã",
-      "closedNote": "Buổi kiểm tra này đã đóng. Mở lại để học sinh có thể tham gia."
-    },
     "monitor": {
-      "searchPlaceholder": "Tìm học sinh",
-      "searchLabel": "Tìm học sinh",
-      "filterStatusLabel": "Trạng thái buổi kiểm tra",
-      "filterStatusAll": "Mọi trạng thái",
-      "sortLabel": "Sắp xếp",
-      "clearFilters": "Xóa bộ lọc",
-      "paginationLabel": "Trang tiến độ của lớp",
-      "previous": "Trước",
-      "next": "Tiếp theo",
-      "rowMenuLabel": "Thao tác hàng",
-      "showingCount": "Hiển thị {showing} trên {total} học sinh",
-      "pageCount": "Trang {page} trên {pageCount} · tổng {total}",
-      "sortNameAsc": "Tên A-Z",
-      "sortNameDesc": "Tên Z-A",
-      "sortProgressAsc": "Tiến độ: thấp trước",
-      "sortProgressDesc": "Tiến độ: cao trước",
-      "emptyTitle": "Không có học sinh trong danh sách này",
-      "emptyBody": "Học sinh sẽ xuất hiện ở đây khi có trong danh sách của lớp.",
-      "filteredEmptyTitle": "Không có học sinh phù hợp",
-      "filteredEmptyDescription": "Không có học sinh nào phù hợp với tìm kiếm và bộ lọc trạng thái hiện tại.",
-      "errorStaleBanner": "Bước làm mới gần nhất thất bại — các học sinh bên dưới là danh sách cuối cùng máy chủ trả về.",
-      "errorDescription": "Kiểm tra kết nối và thử lại.",
-      "retry": "Thử lại",
-      "title": "Tiến độ của lớp",
-      "liveNote": "Tự động cập nhật khi buổi kiểm tra đang mở.",
-      "loading": "Đang tải danh sách lớp...",
-      "loadError": "Không thể tải tiến độ của lớp. Hãy thử lại.",
-      "columnName": "Tên",
-      "columnEmail": "Email",
-      "columnStatus": "Trạng thái",
-      "columnAction": "Thi lại",
-      "emailMissing": "Chưa có email",
-      "state": {
-        "not_joined": "Chưa tham gia",
-        "code_shown": "Đã hiện mã",
-        "joined": "Đã tham gia",
-        "in_progress": "Đang làm bài",
-        "submitted": "Đã nộp",
-        "stalled": "Bị gián đoạn",
-        "scoring_failed": "Chấm điểm thất bại",
-        "absent": "Vắng mặt",
-        "paused": "Tạm dừng"
-      },
-      "codeShownCount": "Đã hiện mã cho {count}",
-      "closeCta": "Đóng buổi kiểm tra",
-      "reopenCta": "Mở lại",
-      "absentLabel": "Vắng mặt",
-      "markAbsentLabel": "Đánh dấu {name} vắng mặt",
-      "clearAbsentLabel": "Đánh dấu {name} có mặt",
-      "absentErrorToast": "Không lưu được đánh dấu vắng mặt. Vui lòng thử lại.",
-      "closeConfirmTitle": "Đóng buổi kiểm tra này?",
-      "closeConfirmBody": "Ai vẫn đang làm bài sẽ được nộp theo trạng thái hiện tại và mã tham gia sẽ ngừng hoạt động. Thao tác này không thể hoàn tác.",
-      "closeConfirmCancel": "Giữ mở",
-      "closeConfirmCta": "Đóng buổi kiểm tra"
-    },
-    "needsToSit": {
-      "title": "Chưa làm bài",
-      "count": "{count, plural, other {Còn # học sinh chưa làm bài}}",
-      "empty": "Mọi học sinh đã tham gia hoặc nộp bài. Học sinh được đánh dấu vắng mặt có thể làm bài sau."
-    },
-    "studentReveal": {
-      "title": "Đưa mã truy cập cho {name}",
-      "intro": "{name} nhập mã này cùng email của trường để bắt đầu.",
-      "onlyThisStudent": "Chỉ đưa mã này cho {name}.",
-      "copyCta": "Sao chép mã",
-      "copiedToast": "Đã sao chép mã",
-      "copyErrorToast": "Không sao chép được mã. Thử lại.",
-      "emailMissingNote": "Danh sách lớp chưa có email của trường - hãy bổ sung email trước khi công bố mã.",
-      "closedNote": "Buổi kiểm tra này đã đóng. Mở lại để công bố mã.",
-      "unmintedNote": "Hãy công bố mã của lớp trước.",
-      "closeCta": "Đóng",
-      "actionLabel": "Công bố mã cho {name}"
-    },
-    "resit": {
-      "cta": "Thi lại",
-      "confirmTitle": "Cho {name} thi lại?",
-      "confirmBody": "Bài làm hiện tại của học sinh sẽ kết thúc và học sinh có thể tham gia lại bằng mã truy cập.",
-      "cancel": "Huỷ",
-      "confirm": "Đồng ý, cho thi lại"
+      "absentErrorToast": "Không lưu được đánh dấu vắng mặt. Vui lòng thử lại."
     },
     "activity": {
-      "title": "Hoạt động của buổi thi",
-      "subtitle": "Mọi thao tác trong buổi thi này, và người thực hiện",
-      "loading": "Đang tải nhật ký hoạt động…",
-      "error": "Không thể tải nhật ký hoạt động.",
-      "empty": "Chưa có gì diễn ra trong buổi thi này.",
-      "truncated": "Đang hiển thị {shown} trong tổng số {total} mục gần nhất. Toàn bộ nhật ký được lưu cùng buổi thi để phục vụ kháng nghị.",
-      "appealsNote": "Toàn bộ nhật ký được lưu cùng buổi thi để phục vụ kháng nghị.",
-      "logIncident": "Ghi nhận sự cố",
-      "noteLabel": "Ghi chú sự cố",
-      "notePlaceholder": "Chuyện gì đã xảy ra? (được lưu cùng hồ sơ buổi thi)",
-      "incidentLogged": "Đã ghi nhận sự cố.",
-      "cancel": "Huỷ"
-    },
-    "runSheetLink": "Mở phiếu hướng dẫn"
+      "incidentLogged": "Đã ghi nhận sự cố."
+    }
   },
   "Invite": {
     "meta": {
@@ -4405,52 +4130,6 @@
       "typeToConfirm": "Nhập <name>{schoolName}</name> để xác nhận"
     }
   },
-  "RunSheet": {
-    "meta": {
-      "title": "Phiếu hướng dẫn ngày kiểm tra - SchoolTest",
-      "description": "Những điều cần nói và làm trước, trong và sau buổi kiểm tra."
-    },
-    "title": "Phiếu hướng dẫn ngày kiểm tra",
-    "subtitle": "Tất cả những gì bạn cần để tổ chức buổi kiểm tra, theo từng bước. Hãy in ra và để gần bạn.",
-    "backLink": "Quay lại các lớp của bạn",
-    "printCta": "In phiếu này",
-    "before": {
-      "title": "Trước ngày kiểm tra",
-      "itemOne": "Kiểm tra danh sách lớp từ trước: mỗi học sinh cần đúng email của trường để đăng nhập. Hãy sửa mọi email sai trước ngày kiểm tra.",
-      "itemTwo": "Vào ngày kiểm tra, mở màn hình ngày kiểm tra của lớp và bắt đầu một buổi kiểm tra.",
-      "rosterLink": "Mở các lớp của bạn"
-    },
-    "start": {
-      "title": "Khi bắt đầu",
-      "itemOne": "Công bố mã truy cập trên màn hình ngày kiểm tra và viết mã lên bảng.",
-      "itemTwo": "Học sinh mở ứng dụng SchoolTest, nhập mã và email của trường, rồi bắt đầu."
-    },
-    "say": {
-      "title": "Những điều cần nói với học sinh",
-      "intro": "Hãy nói với cả lớp trước khi các em bắt đầu:",
-      "lineOne": "Bài kiểm tra có ba phần.",
-      "lineTwo": "Mỗi phần sẽ khó hơn một chút, nên đừng lo nếu các em thấy vậy.",
-      "lineThree": "Nếu không biết câu trả lời, hãy chọn đáp án mà em nghĩ là đúng nhất rồi làm tiếp.",
-      "lineFour": "Khi hết giờ, ứng dụng sẽ tự chuyển em sang phần tiếp theo.",
-      "lineFive": "Giữa các phần, em có thể nghỉ một chút và bấm tiếp tục khi đã sẵn sàng."
-    },
-    "during": {
-      "title": "Trong khi kiểm tra",
-      "itemOne": "Đi quanh lớp và giám sát như bình thường.",
-      "itemTwo": "Danh sách tiến độ của lớp trên màn hình ngày kiểm tra cho biết ai đã tham gia, ai đang làm bài và ai đã nộp bài.",
-      "itemThree": "Bạn không thể tạm dừng hay thay đổi bài kiểm tra, và không cần bắt đầu thời gian nghỉ. Mỗi học sinh tự bấm tiếp tục khi sẵn sàng."
-    },
-    "trouble": {
-      "title": "Nếu có sự cố",
-      "itemOne": "Học sinh vắng mặt có thể kiểm tra sau. Giữ buổi kiểm tra mở hoặc bắt đầu buổi mới khi em quay lại, và công bố mã cho em.",
-      "itemTwo": "Nếu ứng dụng bị lỗi hoặc máy tính hết pin, chọn Thi lại bên cạnh tên học sinh trên màn hình ngày kiểm tra. Học sinh tham gia lại bằng mã và email của trường."
-    },
-    "after": {
-      "title": "Sau khi kiểm tra",
-      "itemOne": "Khi tất cả học sinh đã nộp bài, hãy đóng buổi kiểm tra trên màn hình ngày kiểm tra.",
-      "itemTwo": "Kết quả sẽ xuất hiện trên bảng điều khiển của bạn khi việc chấm điểm hoàn tất."
-    }
-  },
   "Eald": {
     "meta": {
       "homeTitle": "SchoolTest: Một dạng bài kiểm tra tiếng Anh khác",
@@ -5013,153 +4692,14 @@
         "title": "Phiên kiểm tra — SchoolTest",
         "description": "Bắt đầu bài chẩn đoán đọc hiểu cho một lớp, chia sẻ mã tham gia và theo dõi phiên trực tiếp."
       },
-      "title": "Phiên kiểm tra",
-      "description": "Bắt đầu một phiên cho lớp, chia sẻ mã tham gia và theo dõi trực tiếp.",
       "setup": {
         "classRequired": "Hãy chọn lớp cần kiểm tra.",
         "testRequired": "Hãy chọn bài kiểm tra cho phiên này."
       },
       "live": {
-        "settings": {
-          "control": "Cài đặt bài kiểm tra",
-          "title": "Cài đặt phiên",
-          "subtitle": "Phiên này đang chạy với những cài đặt sau.",
-          "count": "{on} trên {total} đang bật",
-          "close": "Đóng cài đặt",
-          "on": "Bật",
-          "off": "Tắt",
-          "minutes": "{minutes} phút",
-          "fixed": "Cài đặt bị khóa khi phiên đã mở. Để thay đổi, hãy đóng phiên này và bắt đầu phiên mới.",
-          "rows": {
-            "lowBw": {
-              "label": "Chế độ băng thông thấp",
-              "desc": "Chỉ văn bản, không tải trước hình ảnh, và câu trả lời được lưu trên thiết bị rồi đồng bộ khi kết nối trở lại. Dùng khi lớp học dùng dữ liệu di động hoặc vệ tinh."
-            },
-            "skip": {
-              "label": "Cho phép bỏ qua câu hỏi",
-              "desc": "Học sinh có thể bỏ qua một câu, làm câu khác, và quay lại trước khi nộp."
-            },
-            "review": {
-              "label": "Màn hình xem lại trước khi nộp",
-              "desc": "Danh sách cuối cùng các câu đã bỏ qua và đã đánh dấu, để không có câu nào trống do sơ suất."
-            },
-            "flag": {
-              "label": "Đánh dấu câu hỏi cần xem lại",
-              "desc": "Học sinh có thể đánh dấu một câu để quay lại. Dấu hiệu hiển thị trên màn hình xem lại và với bạn."
-            },
-            "bigText": {
-              "label": "Chữ lớn và tương phản cao",
-              "desc": "Học sinh có thể phóng to chữ và chuyển sang giao diện tương phản cao bất cứ lúc nào."
-            },
-            "lockdown": {
-              "label": "Cửa sổ khóa",
-              "desc": "Bài kiểm tra chiếm toàn màn hình. Các ứng dụng, thẻ khác, sao chép, dán và in đều bị chặn."
-            },
-            "focusFlag": {
-              "label": "Gắn cờ khi rời cửa sổ",
-              "desc": "Việc rời đi được ghi lại với dấu thời gian và hiển thị trên màn hình trực tiếp của bạn. Dùng khi tắt khóa."
-            },
-            "warn5": {
-              "label": "Cảnh báo còn 5 phút",
-              "desc": "Một dải thông báo yên tĩnh khi còn 5 phút, để đồng hồ không phải luôn trước mắt các em."
-            },
-            "autoSubmit": {
-              "label": "Tự động nộp khi hết giờ",
-              "desc": "Tắt nghĩa là bài làm chờ bạn, và không có gì được nộp nếu không có giáo viên."
-            },
-            "showScore": {
-              "label": "Hiện điểm của các em khi kết thúc",
-              "desc": "Tắt nghĩa là kết quả được giữ cho đến khi bạn công bố báo cáo."
-            },
-            "timeLimit": {
-              "label": "Giới hạn thời gian",
-              "desc": "Phiên chạy trong bao lâu trước khi tự đóng."
-            }
-          }
-        },
         "alreadyClosedToast": "Phiên này đã được đóng trước đó. Trang hiển thị trạng thái cuối cùng.",
-        "badgeClosed": "Đã đóng",
-        "badgeLive": "Trực tiếp",
-        "closeSessionCta": "Đóng phiên",
-        "connectionNoted": "Kết nối: {connection}",
-        "connectionOffline": "Ngoại tuyến",
-        "connectionOnline": "Trực tuyến",
-        "connectionWeak": "Kết nối yếu",
-        "endDialogCancel": "Vẫn mở",
-        "endDialogConfirm": "Kết thúc phiên",
-        "endDialogDescription": "Học sinh đang làm bài sẽ được nộp bài ở trạng thái hiện tại và mã tham gia sẽ ngừng hoạt động. Không thể hoàn tác.",
-        "endDialogTitle": "Kết thúc phiên của {className}?",
         "endErrorToast": "Không kết thúc được phiên. Phiên vẫn đang mở — hãy thử lại.",
-        "endSession": "Kết thúc phiên",
-        "endedToast": "Đã kết thúc phiên. Mã tham gia không còn hiệu lực.",
-        "errorDescription": "Lưới để trống thay vì đoán ai đã tham gia. Phiên có thể thuộc giáo viên khác hoặc không còn tồn tại.",
-        "errorTitle": "Không tải được phiên trực tiếp này",
-        "gridLabel": "Lưới trạng thái học sinh",
-        "legendLabel": "Ý nghĩa màu của mỗi ô",
-        "loading": "Đang tải phiên trực tiếp",
-        "meta": {
-          "title": "Phiên trực tiếp — SchoolTest",
-          "description": "Theo dõi bài kiểm tra đọc trực tiếp: ai đã tham gia, đang làm, đã nộp và ai bị dừng."
-        },
-        "noActivity": "Không hoạt động {minutes} phút",
-        "noCode": "Phiên này không được cấp mã tham gia",
-        "retry": "Thử lại",
-        "rosterEmptyDescription": "Phiên này không có học sinh đang hoạt động để theo dõi. Hãy thêm học sinh vào lớp rồi mở lại trang này.",
-        "rosterEmptyTitle": "Danh sách lớp này chưa có học sinh",
-        "signalsNoted": "Đã ghi nhận {count} lời nhắc",
-        "stageOf": "Chặng {stage} trên {total}",
-        "stallCaption": "{minutes, plural, other {Ô chuyển sang màu hổ phách sau # phút không hoạt động.}}",
-        "startedAgo": "{minutes, plural, =0 {Phiên vừa bắt đầu} other {Phiên đã bắt đầu # phút trước}}",
-        "stateInProgress": "Đang làm",
-        "stateAbsent": "Vắng mặt",
-        "stateJoined": "Đã tham gia",
-        "stateNotJoined": "Chưa tham gia",
-        "statePaused": "Tạm dừng",
-        "stateScoringFailed": "Chấm điểm thất bại",
-        "stateStalled": "Bị dừng",
-        "stateSubmitted": "Đã nộp",
-        "summaryAbsent": "Vắng mặt",
-        "summaryExpected": "Dự kiến",
-        "summaryInProgress": "Đang làm",
-        "summaryJoined": "Đã tham gia",
-        "summaryLabel": "Số liệu của phiên",
-        "summaryPaused": "Tạm dừng",
-        "summaryScoringFailed": "Chấm điểm thất bại",
-        "summaryStalled": "Bị dừng",
-        "summarySubmitted": "Đã nộp",
-        "tileAria": "{name}: {state}",
-        "tileAriaDetail": "{name}: {state} — {detail}",
-        "tileAverage": "Trung bình lớp",
-        "tileAverageNone": "Chưa có kết quả được chấm điểm",
-        "tileGrowth": "Tăng trưởng đáng tin cậy",
-        "tileGrowthInsufficient": "Chưa đủ dữ liệu",
-        "tileGrowthNote": "{count, plural, other {# thay đổi đáng tin cậy}}",
-        "tilePhases": "Phân bố giai đoạn ACARA",
-        "tilePhasesUnmeasured": "{count, plural, other {# học sinh chưa đo lường}}",
-        "tilePhasesValue": "{count, plural, other {# giai đoạn}}",
-        "tileScored": "Đã chấm điểm",
-        "tileScoredValue": "{scored}/{total} đã chấm điểm",
-        "title": "{className} — {testLabel}"
-      },
-      "rollup": {
-        "schoolSummary": "{sessions, plural, other {# phiên}} đang diễn ra tại {classes, plural, other {# lớp}}. Mỗi học sinh chỉ thi một bài trong cùng một thời điểm.",
-        "nothingRunning": "Không có gì đang diễn ra. Các học sinh khác nhau trong cùng một lớp có thể thi các phiên bản khác nhau cùng lúc.",
-        "groupHeading": "{name} · {meta} · {free}",
-        "groupMeta": "{yearBand} · {students, plural, other {# học sinh}}",
-        "groupMetaNoYear": "{students, plural, other {# học sinh}}",
-        "everyStudentInSession": "Tất cả học sinh đều đang trong phiên thi.",
-        "emptyTitle": "Hiện không có phiên thi nào đang diễn ra.",
-        "emptyBody": "Bắt đầu một phiên để tạo mã tham gia.",
-        "idleHeading": "Các lớp không có gì đang diễn ra",
-        "allBusy": "Mọi lớp đều có ít nhất một phiên đang diễn ra.",
-        "chipLabel": "{name} · {students, plural, other {# học sinh}}",
-        "who": "{students, plural, other {# học sinh}} · cả lớp",
-        "livePill": "ĐANG DIỄN RA",
-        "monitor": "Theo dõi",
-        "close": "Đóng",
-        "testLabelMissing": "Không có nhãn bài thi",
-        "offlineTitle": "Có vẻ bạn đang ngoại tuyến.",
-        "offlineBody": "Bảng theo dõi trực tiếp cần kết nối mạng. Nó sẽ cập nhật ngay khi bạn trực tuyến trở lại."
+        "endedToast": "Đã kết thúc phiên. Mã tham gia không còn hiệu lực."
       }
     },
     "results": {

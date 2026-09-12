@@ -1,12 +1,7 @@
 import type { DirectoryQueryStatus } from '@/modules/directory';
 import type { DiagnosticGroup, DiagnosticHeatmapRow, DiagnosticMasteryRow } from '@/modules/teach/types/diagnostic.types';
 import type { ProgressTransition } from '@/modules/teach/types/progress.types';
-import type { RosterChild } from '@/modules/teach/types/roster.types';
 import type { ReactNode } from 'react';
-
-export interface CycleBannerProps {
-  documentId: string;
-}
 
 export interface DiagnosticDashboardProps {
   classId: string;
@@ -19,10 +14,6 @@ export interface DiagnosticDashboardProps {
 export interface DiagnosticPrintHeaderProps {
   classLabel: string;
   formCode: string | null;
-}
-
-export interface ExportMarkdownButtonProps {
-  classId: string;
 }
 
 export interface GroupPanelProps {
@@ -52,15 +43,6 @@ export interface ProgressPanelProps {
 
 export interface ProgressTransitionRowProps {
   transition: ProgressTransition;
-}
-
-export interface RosterScreenProps {
-  documentId: string;
-}
-
-export interface RosterTableProps {
-  rows: RosterChild[];
-  query: DirectoryQueryStatus;
 }
 
 export interface StudentMasteryDrilldownProps {

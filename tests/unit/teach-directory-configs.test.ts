@@ -5,35 +5,20 @@ import {
   masterySorts,
   MASTERY_AREA_CODES,
 } from '@/modules/teach/lib/mastery-directory.lib';
-import {
-  rosterClientConfig,
-  rosterFilters,
-  rosterSorts,
-} from '@/modules/teach/lib/roster-directory.lib';
 
 import type { DiagnosticMasteryRow } from '@/modules/teach/types/diagnostic.types';
-import type { RosterChild } from '@/modules/teach/types/roster.types';
 
-// ops/33 — the roster and mastery surfaces moved onto the shared directory
-// kit in `client` mode, so the behaviour the surfaces used to hand-roll now
-// lives in these two pure configs. These tests pin exactly that behaviour:
-// the honest-absence sort rule, the status filter, the searchable text and
-// the kit contract that EVERY sortable column's sort values are offered in
-// the sorts list (useDirectoryState falls back to the default sort for any
-// value the list does not declare, so a missing pair would silently kill a
-// column header's sort toggle).
-
-function rosterRow(overrides: Partial<RosterChild> & { documentId: string }): RosterChild {
-  return {
-    given_name: null,
-    family_name: null,
-    email: null,
-    status: 'active',
-    email_fix_requested: false,
-    class: null,
-    ...overrides,
-  };
-}
+// ops/33 — the mastery surface moved onto the shared directory kit in `client`
+// mode, so the behaviour the surface used to hand-roll now lives in this pure
+// config. These tests pin exactly that behaviour: the honest-absence sort rule,
+// the searchable text and the kit contract that EVERY sortable column's sort
+// values are offered in the sorts list (useDirectoryState falls back to the
+// default sort for any value the list does not declare, so a missing pair would
+// silently kill a column header's sort toggle).
+//
+// R1 PART B: the ROSTER half of this file went with `teach/RosterScreen` — the
+// class roster is the v2 Students tab now, on `teacher/lib/v2/students-tab.ts`
+// (its own unit tests) and the same shared kit.
 
 function masteryRow(
   overrides: Partial<DiagnosticMasteryRow> & { student_ref: string },
@@ -45,50 +30,6 @@ function masteryRow(
     ...overrides,
   };
 }
-
-const ROSTER_ROWS: RosterChild[] = [
-  rosterRow({ documentId: 'b2', given_name: 'Amy', family_name: 'Zed', status: 'archived' }),
-  rosterRow({ documentId: 'a1', given_name: 'Zoe', family_name: 'Ann', email: 'zoe@x.test' }),
-];
-
-describe('ops/33 roster directory config', () => {
-  test('sorts by display name in both directions, documentId as the tiebreak', () => {
-    const asc = [...ROSTER_ROWS].sort(rosterClientConfig.comparators!['name:asc']!);
-    const desc = [...ROSTER_ROWS].sort(rosterClientConfig.comparators!['name:desc']!);
-    expect(asc.map((row) => row.documentId)).toEqual(['b2', 'a1']);
-    expect(desc.map((row) => row.documentId)).toEqual(['a1', 'b2']);
-  });
-
-  test('the status filter predicate passes only the exact status', () => {
-    const predicate = rosterClientConfig.filterPredicates!.status!;
-    expect(ROSTER_ROWS.filter((row) => predicate(row, 'archived'))).toHaveLength(1);
-    expect(ROSTER_ROWS.filter((row) => predicate(row, 'active'))).toHaveLength(1);
-  });
-
-  test('search matches the display name and the email', () => {
-    const text = rosterClientConfig.searchText!;
-    expect(text(ROSTER_ROWS[0]!).join(' ').toLowerCase()).toContain('amy zed');
-    expect(text(ROSTER_ROWS[1]!).join(' ')).toContain('zoe@x.test');
-  });
-
-  test('the status filter offers the ALL sentinel first and the sorts declare both directions', () => {
-    const filters = rosterFilters({
-      label: 'Status',
-      all: 'all',
-      active: 'active',
-      archived: 'archived',
-    });
-    expect(filters[0]!.options.map((option) => option.value)).toEqual([
-      'all',
-      'active',
-      'archived',
-    ]);
-    expect(rosterSorts({ asc: 'A', desc: 'D' }).map((sort) => sort.value)).toEqual([
-      'name:asc',
-      'name:desc',
-    ]);
-  });
-});
 
 const MASTERED: DiagnosticMasteryRow = masteryRow({
   student_ref: 'Ann',

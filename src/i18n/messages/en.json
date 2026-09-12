@@ -2672,102 +2672,7 @@
     }
   },
   "Teach": {
-    "CycleBanner": {
-      "label": "Test cycle for this class",
-      "testA": "This class is working on Test A",
-      "testB": "This class is working on Test B",
-      "window": "Test window: {opens} to {closes}",
-      "formCode": "Form {code}",
-      "unscheduled": "No test is scheduled for this class yet. The dates will appear here once a test window opens."
-    },
-    "meta": {
-      "title": "Teacher dashboard - SchoolTest",
-      "description": "Your teaching home: classes and reports."
-    },
-    "home": {
-      "title": "Teacher dashboard",
-      "subtitle": "Reports for your classes are ready under Reports.",
-      "reportsCta": "Open reports",
-      "classesTitle": "Your classes",
-      "classesLoading": "Loading your classes...",
-      "classesError": "Your classes could not be loaded. Try again.",
-      "classesEmpty": "You are not assigned to a class yet. Your school administrator can add you to one.",
-      "rosterLink": "Roster",
-      "testDayLink": "Test day",
-      "runSheetLink": "Test-day run sheet",
-      "resultsLink": "Results",
-      "panels": {
-        "diagnostic": {
-          "title": "Diagnostic",
-          "satLabel": "Sat the test",
-          "satValue": "{sat} of {roster} students",
-          "latestFormLabel": "Latest form",
-          "latestFormMissing": "Not sat yet",
-          "masteredLabel": "Reading areas mastered",
-          "masteredValue": "{pct}% of the class",
-          "empty": "Diagnostic data coming - panels fill in once students have sat Test A."
-        },
-        "monitor": {
-          "title": "Live sitting",
-          "states": {
-            "not_joined": "Not joined",
-            "joined": "Joined",
-            "in_progress": "In progress",
-            "submitted": "Submitted",
-            "stalled": "Stalled"
-          },
-          "empty": "No sitting running right now."
-        }
-      }
-    },
-    "roster": {
-      "meta": {
-        "title": "Class roster - SchoolTest",
-        "description": "Check your class roster ahead of test day: names, status and sign-in emails."
-      },
-      "title": "Class roster",
-      "subtitle": "Check every student can sign in on test day. Email fixes are made by your school administrator.",
-      "backLink": "Back to your classes",
-      "loading": "Loading the roster...",
-      "loadError": "The roster could not be loaded. Try again.",
-      "emptyTitle": "No students to show",
-      "emptyBody": "There are no students in this class yet, or you are not assigned to it.",
-      "columnName": "Name",
-      "columnStatus": "Status",
-      "columnEmail": "Email",
-      "columnActions": "Actions",
-      "statusActive": "Active",
-      "statusArchived": "Archived",
-      "emailMissing": "Email needed before test day",
-      "emailMissingHint": "Students without an email cannot sign in on test day. Ask your school administrator to add the missing emails.",
-      "emailFixAction": "Report email for fixing",
-      "emailFixPending": "Fix requested",
-      "emailFixSuccessToast": "Your school administrator has been asked to fix this email.",
-      "emailFixErrorToast": "The email fix could not be requested. Try again.",
-      "testDayLink": "Go to test day",
-      "searchPlaceholder": "Search students",
-      "searchLabel": "Search students",
-      "sortLabel": "Sort",
-      "filterStatusLabel": "Status",
-      "filterStatusAll": "All statuses",
-      "sortNameAsc": "Name A–Z",
-      "sortNameDesc": "Name Z–A",
-      "showingCount": "Showing {showing} of {total} students",
-      "pageCount": "Page {page} of {pageCount} · {total} total",
-      "previous": "Previous",
-      "next": "Next",
-      "paginationLabel": "Roster pages",
-      "rowMenuLabel": "Row actions",
-      "clearFilters": "Clear filters",
-      "errorStaleBanner": "The latest refresh failed — the students below are the last ones the server served.",
-      "errorDescription": "Check your connection and try again.",
-      "retry": "Retry"
-    },
     "diagnostic": {
-      "meta": {
-        "title": "Class diagnostic - SchoolTest",
-        "description": "Reading profiles for your class, with the item evidence underneath."
-      },
       "backLink": "Back to your classes",
       "title": "Class diagnostic",
       "subtitle": "What your class can do in reading, with the test evidence underneath.",
@@ -2817,11 +2722,6 @@
       },
       "filteredEmptyTitle": "No students match",
       "filteredEmptyDescription": "No student matches the current search.",
-      "export": {
-        "cta": "Export for your AI assistant",
-        "downloading": "Preparing the export...",
-        "error": "The export could not be downloaded. Try again."
-      },
       "searchPlaceholder": "Search students",
       "searchLabel": "Search students",
       "sortLabel": "Sort",
@@ -2858,190 +2758,15 @@
         "not_mastered": "not mastered"
       },
       "notAssessedLine": "Not assessed on one or both tests: {areas}"
-    },
-    "testDay": {
-      "history": {
-        "searchPlaceholder": "Search sittings",
-        "searchLabel": "Search sittings",
-        "filterOutcomeLabel": "Outcome",
-        "filterOutcomeAll": "All outcomes",
-        "sortLabel": "Sort",
-        "clearFilters": "Clear filters",
-        "paginationLabel": "History pages",
-        "previous": "Previous",
-        "next": "Next",
-        "rowMenuLabel": "Row actions",
-        "showingCount": "Showing {showing} of {total} sittings",
-        "pageCount": "Page {page} of {pageCount} · {total} total",
-        "sortOpenedDesc": "Opened: newest first",
-        "sortOpenedAsc": "Opened: oldest first",
-        "openAction": "Open",
-        "filteredEmptyTitle": "No sittings match",
-        "filteredEmptyDescription": "No sitting matches the current search and outcome filter.",
-        "errorStaleBanner": "The latest refresh failed — the rows below are the last ones the server served.",
-        "errorDescription": "Check your connection and try again.",
-        "retry": "Retry",
-        "title": "Sitting history",
-        "loading": "Loading sitting history...",
-        "loadError": "The sitting history could not be loaded. Try again.",
-        "emptyTitle": "No sittings yet for this class",
-        "emptyBody": "When you start a sitting it will appear here, so you can look back at who joined and submitted.",
-        "missingValue": "-",
-        "columns": {
-          "opened": "Opened",
-          "code": "Code",
-          "form": "Form",
-          "status": "Status",
-          "joined": "Joined",
-          "submitted": "Submitted"
-        },
-        "status": {
-          "open": "Open",
-          "closed": "Closed"
-        },
-        "joinedCount": "{joined}/{total}",
-        "submittedCount": "{submitted}/{total}"
-      },
-      "summary": {
-        "title": "Sitting summary",
-        "loading": "Loading the sitting summary...",
-        "loadError": "The sitting summary could not be loaded. Try again.",
-        "codeLine": "Code {code}",
-        "counts": {
-          "sat": "Sat",
-          "absent": "Absent",
-          "needsResit": "Needs a re-sit",
-          "resultsPending": "Results pending",
-          "resultsReady": "Results ready"
-        },
-        "pendingNote": "{count, plural, one {# result is still on its way and will appear here when it is ready.} other {# results are still on their way and will appear here when they are ready.}}"
-      }
     }
   },
   "TestDay": {
-    "meta": {
-      "title": "Test day - SchoolTest",
-      "description": "Start the sitting, reveal the access code and watch your class live."
-    },
-    "title": "Test day",
-    "titleWithClass": "Test day: {className}",
-    "subtitle": "Start the sitting, reveal the access code and follow each student's progress live.",
-    "backLink": "Back to the roster",
-    "loading": "Loading the sitting...",
-    "loadError": "The sitting could not be loaded. Try again.",
-    "emptyTitle": "No sitting started",
-    "emptyBody": "Start a sitting to get an access code for this class.",
-    "startCta": "Start a sitting",
-    "startError": "The sitting could not be started. Try again.",
-    "closedStartHint": "This sitting is closed. Start a new sitting when this class sits the next test.",
-    "status": {
-      "open": "Open",
-      "closed": "Closed"
-    },
-    "code": {
-      "title": "Access code",
-      "formLine": "Form {formCode}",
-      "hint": "Students enter this code and their school email to start.",
-      "revealCta": "Reveal code",
-      "hideCta": "Hide code",
-      "closedNote": "This sitting is closed. Reopen it to let students join."
-    },
     "monitor": {
-      "searchPlaceholder": "Search students",
-      "searchLabel": "Search students",
-      "filterStatusLabel": "Sitting status",
-      "filterStatusAll": "All statuses",
-      "sortLabel": "Sort",
-      "clearFilters": "Clear filters",
-      "paginationLabel": "Class progress pages",
-      "previous": "Previous",
-      "next": "Next",
-      "rowMenuLabel": "Row actions",
-      "showingCount": "Showing {showing} of {total} students",
-      "pageCount": "Page {page} of {pageCount} · {total} total",
-      "sortNameAsc": "Name A-Z",
-      "sortNameDesc": "Name Z-A",
-      "sortProgressAsc": "Progress: least first",
-      "sortProgressDesc": "Progress: most first",
-      "emptyTitle": "No students on this roster",
-      "emptyBody": "Students appear here once they are on the class roster.",
-      "filteredEmptyTitle": "No students match",
-      "filteredEmptyDescription": "No student matches the current search and status filter.",
-      "errorStaleBanner": "The latest refresh failed — the students below are the last ones the server served.",
-      "errorDescription": "Check your connection and try again.",
-      "retry": "Retry",
-      "title": "Class progress",
-      "liveNote": "Updates automatically while the sitting is open.",
-      "loading": "Loading the class...",
-      "loadError": "The class progress could not be loaded. Try again.",
-      "columnName": "Name",
-      "columnEmail": "Email",
-      "columnStatus": "Status",
-      "columnAction": "Re-sit",
-      "emailMissing": "No email",
-      "state": {
-        "not_joined": "Not joined",
-        "code_shown": "Code shown",
-        "joined": "Joined",
-        "in_progress": "In progress",
-        "submitted": "Submitted",
-        "stalled": "Stalled",
-        "scoring_failed": "Scoring failed",
-        "absent": "Absent",
-        "paused": "Paused"
-      },
-      "codeShownCount": "Code shown to {count}",
-      "closeCta": "Close sitting",
-      "reopenCta": "Reopen sitting",
-      "absentLabel": "Absent",
-      "markAbsentLabel": "Mark {name} as absent",
-      "clearAbsentLabel": "Mark {name} as present",
-      "absentErrorToast": "The absent mark could not be saved. Try again.",
-      "closeConfirmTitle": "Close this sitting?",
-      "closeConfirmBody": "Anyone still working has their test submitted as it stands, and the join code stops working. This cannot be undone.",
-      "closeConfirmCancel": "Keep it open",
-      "closeConfirmCta": "Close sitting"
-    },
-    "needsToSit": {
-      "title": "Still to sit",
-      "count": "{count, plural, =0 {No one still to sit} one {# student still to sit} other {# students still to sit}}",
-      "empty": "Everyone has joined or submitted. Students marked absent can sit later."
-    },
-    "studentReveal": {
-      "title": "Give {name} the access code",
-      "intro": "{name} enters this code with their school email to start.",
-      "onlyThisStudent": "Give this code to {name} only.",
-      "copyCta": "Copy code",
-      "copiedToast": "Code copied",
-      "copyErrorToast": "The code could not be copied. Try again.",
-      "emailMissingNote": "No school email on the roster - fix the email before revealing the code.",
-      "closedNote": "This sitting is closed. Reopen it to reveal the code.",
-      "unmintedNote": "Reveal the class code first.",
-      "closeCta": "Close",
-      "actionLabel": "Reveal the code to {name}"
-    },
-    "resit": {
-      "cta": "Re-sit",
-      "confirmTitle": "Re-sit {name}?",
-      "confirmBody": "Their current attempt ends and they can join again with the access code.",
-      "cancel": "Cancel",
-      "confirm": "Yes, re-sit"
+      "absentErrorToast": "The absent mark could not be saved. Try again."
     },
     "activity": {
-      "title": "Session activity",
-      "subtitle": "Every action taken during this sitting, and who took it",
-      "loading": "Loading the activity trail…",
-      "error": "The activity trail could not be loaded.",
-      "empty": "Nothing has happened in this sitting yet.",
-      "truncated": "Showing the last {shown} of {total} entries. The full trail is kept with the session for appeals.",
-      "appealsNote": "The full trail is kept with the session for appeals.",
-      "logIncident": "Log an incident",
-      "noteLabel": "Incident note",
-      "notePlaceholder": "What happened? (kept with the session record)",
-      "incidentLogged": "Incident logged.",
-      "cancel": "Cancel"
-    },
-    "runSheetLink": "Open the run sheet"
+      "incidentLogged": "Incident logged."
+    }
   },
   "Invite": {
     "meta": {
@@ -4875,52 +4600,6 @@
       "typeToConfirm": "Type <name>{schoolName}</name> to confirm"
     }
   },
-  "RunSheet": {
-    "meta": {
-      "title": "Test-day run sheet - SchoolTest",
-      "description": "What to say and do before, during and after the sitting."
-    },
-    "title": "Test-day run sheet",
-    "subtitle": "Everything you need to run the sitting, step by step. Print it out and keep it close by.",
-    "backLink": "Back to your classes",
-    "printCta": "Print this sheet",
-    "before": {
-      "title": "Before the day",
-      "itemOne": "Check your class list ahead of time: every student needs their correct school email to log in. Fix any wrong emails before test day.",
-      "itemTwo": "On the day, open the test-day screen for your class and start a sitting.",
-      "rosterLink": "Open your classes"
-    },
-    "start": {
-      "title": "When you start",
-      "itemOne": "Reveal the access code on the test-day screen and write it on the board.",
-      "itemTwo": "Students open the SchoolTest app, enter the code and their school email, and begin."
-    },
-    "say": {
-      "title": "What to tell your students",
-      "intro": "Say this to the class before they begin:",
-      "lineOne": "The test has three parts.",
-      "lineTwo": "Each part gets a bit harder, so do not worry if it feels that way.",
-      "lineThree": "If you do not know an answer, have your best guess and move on.",
-      "lineFour": "When the time runs out, the app moves you on by itself.",
-      "lineFive": "Between the parts you can take a moment, and tap continue when you are ready."
-    },
-    "during": {
-      "title": "During the test",
-      "itemOne": "Walk the room and supervise as you normally would.",
-      "itemTwo": "The class progress list on the test-day screen shows who has joined, who is working and who has submitted.",
-      "itemThree": "You cannot pause or change the test, and you do not need to start the breaks. Each student taps continue when they are ready."
-    },
-    "trouble": {
-      "title": "If something goes wrong",
-      "itemOne": "A student who is away sits later. Keep the sitting open or start a new one when they are back, and reveal the code for them.",
-      "itemTwo": "If the app crashes or a laptop goes flat, choose Re-sit next to the student's name on the test-day screen. The student joins again with the code and their school email."
-    },
-    "after": {
-      "title": "After the test",
-      "itemOne": "When every student has submitted, close the sitting on the test-day screen.",
-      "itemTwo": "Results appear on your dashboard once the scoring has finished."
-    }
-  },
   "Navigation": {
     "analytics": "Analytics",
     "article": "Article",
@@ -4994,153 +4673,14 @@
         "title": "Test sessions — SchoolTest",
         "description": "Start a reading diagnostic for a class, share the join code and follow the session live."
       },
-      "title": "Test sessions",
-      "description": "Start a session for a class, share the join code, and follow it live.",
       "setup": {
         "classRequired": "Select a class to test.",
         "testRequired": "Select which test this session runs."
       },
       "live": {
-        "settings": {
-          "control": "Test settings",
-          "title": "Session settings",
-          "subtitle": "What this sitting is running with.",
-          "count": "{on} of {total} on",
-          "close": "Close settings",
-          "on": "On",
-          "off": "Off",
-          "minutes": "{minutes} min",
-          "fixed": "Settings are fixed once a sitting is open. To change them, close this session and start a new one.",
-          "rows": {
-            "lowBw": {
-              "label": "Low-bandwidth mode",
-              "desc": "Text-only passages, no images preloaded, and answers saved on the device and synced when the connection returns. Use it when the room is on mobile data or a satellite link."
-            },
-            "skip": {
-              "label": "Allow skipping questions",
-              "desc": "Students can leave a question, move on, and come back to it before submitting."
-            },
-            "review": {
-              "label": "Review screen before submit",
-              "desc": "A final list of skipped and flagged questions, so nothing is left blank by accident."
-            },
-            "flag": {
-              "label": "Flag questions for review",
-              "desc": "Students can mark a question to come back to. Flags show on the review screen and to you."
-            },
-            "bigText": {
-              "label": "Larger text and high contrast",
-              "desc": "Students can grow the text and switch to a high-contrast theme at any point."
-            },
-            "lockdown": {
-              "label": "Locked-down window",
-              "desc": "The test fills the screen. Other apps, tabs, copy, paste and printing are blocked."
-            },
-            "focusFlag": {
-              "label": "Flag if they leave the window",
-              "desc": "Leaving is recorded with a timestamp and shows on your live view. Use with lockdown off."
-            },
-            "warn5": {
-              "label": "Five-minute warning",
-              "desc": "One quiet banner at five minutes left, so the clock is not in front of them the whole time."
-            },
-            "autoSubmit": {
-              "label": "Submit automatically at time",
-              "desc": "Off means the attempt waits for you, and nothing is submitted without a teacher."
-            },
-            "showScore": {
-              "label": "Show them their score at the end",
-              "desc": "Off holds the result until you release the report."
-            },
-            "timeLimit": {
-              "label": "Time limit",
-              "desc": "How long the sitting runs before it closes itself."
-            }
-          }
-        },
         "alreadyClosedToast": "This session was already closed. The page now shows its final state.",
-        "badgeClosed": "Closed",
-        "badgeLive": "Live",
-        "closeSessionCta": "Close session",
-        "connectionNoted": "Connection: {connection}",
-        "connectionOffline": "Offline",
-        "connectionOnline": "Online",
-        "connectionWeak": "Weak connection",
-        "endDialogCancel": "Keep it open",
-        "endDialogConfirm": "End session",
-        "endDialogDescription": "Anyone still working has their test submitted as it stands, and the join code stops working. This cannot be undone.",
-        "endDialogTitle": "End the session for {className}?",
         "endErrorToast": "Could not end the session. It is still open — try again.",
-        "endSession": "End session",
-        "endedToast": "Session ended. The join code no longer works.",
-        "errorDescription": "The grid stays empty rather than guess who has joined. The session may belong to another teacher, or may no longer exist.",
-        "errorTitle": "Could not load this live session",
-        "gridLabel": "Student status grid",
-        "legendLabel": "What each tile colour means",
-        "loading": "Loading the live session",
-        "meta": {
-          "title": "Live session — SchoolTest",
-          "description": "Follow a reading diagnostic live: who has joined, who is working, who has submitted and who has stalled."
-        },
-        "noActivity": "No activity {minutes} min",
-        "noCode": "No join code was minted for this session",
-        "retry": "Try again",
-        "rosterEmptyDescription": "This session has no active students to monitor. Add students to the class, then reopen this page.",
-        "rosterEmptyTitle": "No students on this class roster",
-        "signalsNoted": "{count, plural, one {# reminder noted} other {# reminders noted}}",
-        "stageOf": "Stage {stage} of {total}",
-        "stallCaption": "{minutes, plural, one {A tile turns amber after # minute with no activity.} other {A tile turns amber after # minutes with no activity.}}",
-        "startedAgo": "{minutes, plural, =0 {Session started just now} other {Session started # min ago}}",
-        "stateInProgress": "In progress",
-        "stateAbsent": "Absent",
-        "stateJoined": "Joined",
-        "stateNotJoined": "Not joined",
-        "statePaused": "Paused",
-        "stateScoringFailed": "Scoring failed",
-        "stateStalled": "Stalled",
-        "stateSubmitted": "Submitted",
-        "summaryAbsent": "Absent",
-        "summaryExpected": "Expected",
-        "summaryInProgress": "In progress",
-        "summaryJoined": "Joined",
-        "summaryLabel": "Session counters",
-        "summaryPaused": "Paused",
-        "summaryScoringFailed": "Scoring failed",
-        "summaryStalled": "Stalled",
-        "summarySubmitted": "Submitted",
-        "tileAria": "{name}: {state}",
-        "tileAriaDetail": "{name}: {state} — {detail}",
-        "tileAverage": "Class average",
-        "tileAverageNone": "No scored results yet",
-        "tileGrowth": "Reliable growth",
-        "tileGrowthInsufficient": "Not enough data",
-        "tileGrowthNote": "{count, plural, one {# reliable mover} other {# reliable movers}}",
-        "tilePhases": "ACARA phase spread",
-        "tilePhasesUnmeasured": "{count, plural, one {# student unmeasured} other {# students unmeasured}}",
-        "tilePhasesValue": "{count, plural, one {# phase} other {# phases}}",
-        "tileScored": "Scored",
-        "tileScoredValue": "{scored} of {total} scored",
-        "title": "{className} — {testLabel}"
-      },
-      "rollup": {
-        "schoolSummary": "{sessions, plural, one {# session} other {# sessions}} running across {classes, plural, one {# class} other {# classes}}. A student can only sit one test at a time.",
-        "nothingRunning": "Nothing running. Different students in the same class can sit different versions side by side.",
-        "groupHeading": "{name} · {meta} · {free}",
-        "groupMeta": "{yearBand} · {students, plural, one {# student} other {# students}}",
-        "groupMetaNoYear": "{students, plural, one {# student} other {# students}}",
-        "everyStudentInSession": "Every student is in a session.",
-        "emptyTitle": "Nothing is running right now.",
-        "emptyBody": "Start a session to open a join code.",
-        "idleHeading": "Classes with nothing running",
-        "allBusy": "Every class has at least one session running.",
-        "chipLabel": "{name} · {students, plural, one {# student} other {# students}}",
-        "who": "{students, plural, one {# student} other {# students}} · whole class",
-        "livePill": "LIVE",
-        "monitor": "Monitor",
-        "close": "Close",
-        "testLabelMissing": "Test label unavailable",
-        "offlineTitle": "You appear to be offline.",
-        "offlineBody": "The live roll-up needs a connection. It will update as soon as you are back online."
+        "endedToast": "Session ended. The join code no longer works."
       }
     },
     "results": {

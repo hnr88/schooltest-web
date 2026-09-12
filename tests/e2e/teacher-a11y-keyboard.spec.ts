@@ -1,22 +1,29 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { cat } from './helpers/i18n';
+import { sectionTab, sectionTabs } from './helpers/teacher-class-detail';
 import {
   DESKTOP,
   MOBILE,
   openReady,
+  openStudentReady,
   readA11ySurface,
   signedInTeacherContextPage,
   tabStops,
   type A11ySurface,
 } from './helpers/teacher-a11y';
-import { undersizedTargets } from './helpers/teacher-a11y-targets';
+import { MIN_TARGET_PX, undersizedTargets } from './helpers/teacher-a11y-targets';
 import { en } from './helpers/teacher-rail';
 
-// TASK 047, the KEYBOARD leg axe cannot see: a VISIBLE focus indicator on every stop
-// the browser's own tab order visits, the four tabs operable by Arrow/Home/End, and
-// focus management in the one dialog these pages own (the 375px nav Sheet).
-// /dashboard/test-sessions and the live monitor are DEFERRED (task 053 owns them).
+// TASK 047, the KEYBOARD leg axe cannot see, on the Teacher Portal v2 pages: a
+// VISIBLE focus indicator on every stop the browser's own tab order visits, the six
+// section tabs operable by Arrow/Home/End, and focus management in the one dialog
+// these pages own (the 375px nav Sheet).
+//
+// TB-30: a teacher's `/dashboard` lands on the Classes list and the retired
+// `teacher-dashboard` surface never renders, so the audited set is Classes, the
+// class detail and the student page — and the student page's settled read is
+// `success`, not `ready` (`openStudentReady`).
 test.describe.configure({ mode: 'serial' });
 
 let page: Page;
@@ -33,14 +40,17 @@ test.afterAll(async () => {
 
 const classUrl = (): string => `/dashboard/results/${surface.classDocumentId}`;
 
-test('KEYBOARD: every tab stop on both pages shows a visible focus indicator', async () => {
+test('KEYBOARD: every tab stop on every v2 page shows a visible focus indicator', async () => {
   await page.setViewportSize(DESKTOP);
-  for (const [label, url, slot] of [
-    ['/dashboard', '/dashboard', 'teacher-dashboard'],
-    ['/dashboard/results', '/dashboard/results', 'teacher-results'],
-    ['class detail', classUrl(), 'teacher-class-results'],
+  for (const [label, open] of [
+    ['/dashboard/results', () => openReady(page, '/dashboard/results', 'teacher-results')],
+    ['class detail', () => openReady(page, classUrl(), 'teacher-class-results')],
+    [
+      'student page',
+      () => openStudentReady(page, surface.classDocumentId, surface.twoTestStudentId),
+    ],
   ] as const) {
-    await openReady(page, url, slot);
+    await open();
     const stops = await tabStops(page, 16);
     // `isDevChrome` drops the dev-server-only stops (TanStack devtools trigger, the
     // Next.js dev overlay element, and BODY once the order wraps) — none ship.
@@ -60,7 +70,10 @@ test('KEYBOARD: the tab panel Base UI makes focusable now carries a ring too', a
   await page.setViewportSize(DESKTOP);
   await openReady(page, classUrl(), 'teacher-class-results');
   const panel = page.locator('[data-slot="tabs-content"]:visible');
-  await page.getByRole('tab').first().focus();
+  // The class detail carries TWO tab lists — the skill strip and the section row —
+  // and Base UI gives each a roving tabindex, so `getByRole('tab').first()` is the
+  // skill strip's Reading, not a section tab. The panel follows the SECTION row.
+  await sectionTab(page, 'students').focus();
   await page.keyboard.press('Tab');
   await expect(panel).toBeFocused();
   const indicator = await panel.evaluate((el) => {
@@ -76,7 +89,7 @@ test('KEYBOARD: the tab panel Base UI makes focusable now carries a ring too', a
 test('KEYBOARD: Arrow/Home/End move between tabs and Enter activates the focused one', async () => {
   await page.setViewportSize(DESKTOP);
   await openReady(page, classUrl(), 'teacher-class-results');
-  const tabs = page.getByRole('tab');
+  const tabs = sectionTabs(page).getByRole('tab');
   await expect(tabs).toHaveCount(6);
   await tabs.first().focus();
   await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'true');
@@ -98,20 +111,29 @@ test('KEYBOARD: Arrow/Home/End move between tabs and Enter activates the focused
   await expect(tabs.nth(0)).toBeFocused();
 });
 
-test('375px: no undersized target on either page and the nav dialog manages focus', async () => {
+test('375px: no undersized target on any v2 page and the nav dialog manages focus', async () => {
   await page.setViewportSize(MOBILE);
-  for (const [url, slot] of [
-    ['/dashboard', 'teacher-dashboard'],
-    ['/dashboard/results', 'teacher-results'],
-    [classUrl(), 'teacher-class-results'],
-    [`${classUrl()}/students/${surface.twoTestStudentId}`, 'teacher-student-drill-down'],
+  // TB-33 (recorded decision): the floor these pages are held to is the DESIGN plus
+  // WCAG 2.2 AA 2.5.8 — 24x24 CSS px, with 2.5.8's own Inline exception. The rule and
+  // the reasoning live in `helpers/teacher-a11y-targets.ts`; the old 44px floor
+  // (WCAG 2.5.5 AAA) is not silently relaxed, it is superseded there by name.
+  for (const [label, open] of [
+    ['/dashboard/results', () => openReady(page, '/dashboard/results', 'teacher-results')],
+    ['class detail', () => openReady(page, classUrl(), 'teacher-class-results')],
+    [
+      'student page',
+      () => openStudentReady(page, surface.classDocumentId, surface.twoTestStudentId),
+    ],
   ] as const) {
-    await openReady(page, url, slot);
+    await open();
     const small = await undersizedTargets(page);
-    expect(small, `${url} @ 375px undersized targets:\n${small.join('\n')}`).toEqual([]);
+    expect(
+      small,
+      `${label} @ 375px targets under ${MIN_TARGET_PX}px (TB-33):\n${small.join('\n')}`,
+    ).toEqual([]);
   }
 
-  await openReady(page, '/dashboard', 'teacher-dashboard');
+  await openReady(page, '/dashboard/results', 'teacher-results');
   const trigger = page.getByRole('button', {
     name: cat(en, 'Shell.topbar.toggleNav'),
     exact: true,

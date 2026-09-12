@@ -2183,102 +2183,7 @@
     }
   },
   "Teach": {
-    "CycleBanner": {
-      "label": "本班测试周期",
-      "testA": "本班正在进行 Test A",
-      "testB": "本班正在进行 Test B",
-      "window": "测试时间:{opens} 至 {closes}",
-      "formCode": "表单 {code}",
-      "unscheduled": "本班暂未安排测试。测试窗口开放后,日期将显示在这里。"
-    },
-    "meta": {
-      "title": "教师控制面板 - SchoolTest",
-      "description": "您的教学主页：班级和报告。"
-    },
-    "home": {
-      "title": "教师控制面板",
-      "subtitle": "您班级的报告可在“报告”中查看。",
-      "reportsCta": "打开报告",
-      "classesTitle": "您的班级",
-      "classesLoading": "正在加载班级...",
-      "classesError": "无法加载您的班级，请重试。",
-      "classesEmpty": "您还没有被分配到班级。学校管理员可以将您加入班级。",
-      "rosterLink": "名册",
-      "testDayLink": "测试日",
-      "runSheetLink": "测验日流程单",
-      "resultsLink": "结果",
-      "panels": {
-        "diagnostic": {
-          "title": "诊断",
-          "satLabel": "已参加测试",
-          "satValue": "{roster} 名学生中的 {sat} 名",
-          "latestFormLabel": "最新试卷",
-          "latestFormMissing": "尚未参加",
-          "masteredLabel": "已掌握的阅读领域",
-          "masteredValue": "全班的 {pct}%",
-          "empty": "诊断数据即将提供，学生参加测试 A 后面板将显示内容。"
-        },
-        "monitor": {
-          "title": "实时测验",
-          "states": {
-            "not_joined": "未加入",
-            "joined": "已加入",
-            "in_progress": "进行中",
-            "submitted": "已提交",
-            "stalled": "停滞"
-          },
-          "empty": "当前没有正在进行的测验。"
-        }
-      }
-    },
-    "roster": {
-      "meta": {
-        "title": "班级名册 - SchoolTest",
-        "description": "在测试日前查看班级名册：姓名、状态和登录邮箱。"
-      },
-      "title": "班级名册",
-      "subtitle": "确认每位学生都能在测试日登录。邮箱修改由学校管理员负责。",
-      "backLink": "返回您的班级",
-      "loading": "正在加载名册...",
-      "loadError": "无法加载名册，请重试。",
-      "emptyTitle": "暂无学生",
-      "emptyBody": "该班级还没有学生，或者您未被分配到该班级。",
-      "columnName": "姓名",
-      "columnStatus": "状态",
-      "columnEmail": "邮箱",
-      "columnActions": "操作",
-      "statusActive": "在读",
-      "statusArchived": "已归档",
-      "emailMissing": "测试日前需要添加邮箱",
-      "emailMissingHint": "没有邮箱的学生将无法在测试日登录。请联系学校管理员添加缺失的邮箱。",
-      "emailFixAction": "报告需要修改的邮箱",
-      "emailFixPending": "已请求修改",
-      "emailFixSuccessToast": "已请学校管理员修改此邮箱。",
-      "emailFixErrorToast": "无法请求修改邮箱，请重试。",
-      "testDayLink": "前往测试日",
-      "searchPlaceholder": "搜索学生",
-      "searchLabel": "搜索学生",
-      "sortLabel": "排序",
-      "filterStatusLabel": "状态",
-      "filterStatusAll": "全部状态",
-      "sortNameAsc": "姓名 A–Z",
-      "sortNameDesc": "姓名 Z–A",
-      "showingCount": "显示 {total} 名学生中的 {showing} 名",
-      "pageCount": "第 {page} 页，共 {pageCount} 页 · 共 {total} 人",
-      "previous": "上一页",
-      "next": "下一页",
-      "paginationLabel": "名册页码",
-      "rowMenuLabel": "行操作",
-      "clearFilters": "清除筛选",
-      "errorStaleBanner": "最近一次刷新失败 — 下方学生是服务器最后返回的名册。",
-      "errorDescription": "请检查网络连接后重试。",
-      "retry": "重试"
-    },
     "diagnostic": {
-      "meta": {
-        "title": "班级诊断 - SchoolTest",
-        "description": "班级的阅读概况，以及背后的题目证据。"
-      },
       "backLink": "返回你的班级",
       "title": "班级诊断",
       "subtitle": "班级在每个阅读领域的表现，以及背后的测试证据。",
@@ -2328,11 +2233,6 @@
       },
       "filteredEmptyTitle": "没有匹配的学生",
       "filteredEmptyDescription": "没有学生符合当前的搜索。",
-      "export": {
-        "cta": "导出以用于您的 AI 助手",
-        "downloading": "正在准备导出...",
-        "error": "无法下载导出文件，请重试。"
-      },
       "searchPlaceholder": "搜索学生",
       "searchLabel": "搜索学生",
       "sortLabel": "排序",
@@ -2369,190 +2269,15 @@
         "not_mastered": "未掌握"
       },
       "notAssessedLine": "在一次或两次测试中未评估:{areas}"
-    },
-    "testDay": {
-      "history": {
-        "searchPlaceholder": "搜索测验场次",
-        "searchLabel": "搜索测验场次",
-        "filterOutcomeLabel": "结果",
-        "filterOutcomeAll": "全部结果",
-        "sortLabel": "排序",
-        "clearFilters": "清除筛选",
-        "paginationLabel": "历史页码",
-        "previous": "上一页",
-        "next": "下一页",
-        "rowMenuLabel": "行操作",
-        "showingCount": "显示 {total} 个场次中的 {showing} 个",
-        "pageCount": "第 {page} 页，共 {pageCount} 页 · 共 {total} 个",
-        "sortOpenedDesc": "开放时间：最新在前",
-        "sortOpenedAsc": "开放时间：最早在前",
-        "openAction": "打开",
-        "filteredEmptyTitle": "没有匹配的测验场次",
-        "filteredEmptyDescription": "没有测验场次符合当前的搜索和结果筛选。",
-        "errorStaleBanner": "最近一次刷新失败 — 下方行是服务器最后返回的列表。",
-        "errorDescription": "请检查网络连接后重试。",
-        "retry": "重试",
-        "title": "测验场次历史",
-        "loading": "正在加载测验场次历史...",
-        "loadError": "无法加载测验场次历史，请重试。",
-        "emptyTitle": "这个班级还没有测验场次",
-        "emptyBody": "开始一场测验后，它会显示在这里，方便你回顾加入和提交情况。",
-        "missingValue": "-",
-        "columns": {
-          "opened": "开放时间",
-          "code": "访问码",
-          "form": "试卷",
-          "status": "状态",
-          "joined": "已加入",
-          "submitted": "已提交"
-        },
-        "status": {
-          "open": "开放中",
-          "closed": "已关闭"
-        },
-        "joinedCount": "{joined}/{total}",
-        "submittedCount": "{submitted}/{total}"
-      },
-      "summary": {
-        "title": "测验场次摘要",
-        "loading": "正在加载测验场次摘要...",
-        "loadError": "无法加载测验场次摘要，请重试。",
-        "codeLine": "访问码 {code}",
-        "counts": {
-          "sat": "已参加",
-          "absent": "缺席",
-          "needsResit": "需要重考",
-          "resultsPending": "成绩待出",
-          "resultsReady": "成绩已出"
-        },
-        "pendingNote": "{count, plural, other {# 份成绩仍在生成中，就绪后会显示在这里。}}"
-      }
     }
   },
   "TestDay": {
-    "meta": {
-      "title": "测试日 - SchoolTest",
-      "description": "开始测验、公布访问码并实时查看班级进度。"
-    },
-    "title": "测试日",
-    "titleWithClass": "测试日：{className}",
-    "subtitle": "开始测验，公布访问码，并实时跟进每位学生的进度。",
-    "backLink": "返回名册",
-    "loading": "正在加载测验场次...",
-    "loadError": "无法加载测验场次，请重试。",
-    "emptyTitle": "尚未开始测验场次",
-    "emptyBody": "开始一场测验，为这个班级获取访问码。",
-    "startCta": "开始测验",
-    "startError": "无法开始测验，请重试。",
-    "closedStartHint": "本场测验已关闭。班级下次测验时，请开始新的测验场次。",
-    "status": {
-      "open": "开放中",
-      "closed": "已关闭"
-    },
-    "code": {
-      "title": "访问码",
-      "formLine": "试卷 {formCode}",
-      "hint": "学生输入此访问码和学校邮箱即可开始。",
-      "revealCta": "公布访问码",
-      "hideCta": "隐藏访问码",
-      "closedNote": "本场测验已关闭。重新开放后学生才能加入。"
-    },
     "monitor": {
-      "searchPlaceholder": "搜索学生",
-      "searchLabel": "搜索学生",
-      "filterStatusLabel": "测验状态",
-      "filterStatusAll": "全部状态",
-      "sortLabel": "排序",
-      "clearFilters": "清除筛选",
-      "paginationLabel": "班级进度页码",
-      "previous": "上一页",
-      "next": "下一页",
-      "rowMenuLabel": "行操作",
-      "showingCount": "显示 {total} 名学生中的 {showing} 名",
-      "pageCount": "第 {page} 页，共 {pageCount} 页 · 共 {total} 人",
-      "sortNameAsc": "姓名 A-Z",
-      "sortNameDesc": "姓名 Z-A",
-      "sortProgressAsc": "进度：从低到高",
-      "sortProgressDesc": "进度：从高到低",
-      "emptyTitle": "名册中没有学生",
-      "emptyBody": "学生加入班级名册后会显示在这里。",
-      "filteredEmptyTitle": "没有匹配的学生",
-      "filteredEmptyDescription": "没有学生符合当前的搜索和状态筛选。",
-      "errorStaleBanner": "最近一次刷新失败 — 下方学生是服务器最后返回的名册。",
-      "errorDescription": "请检查网络连接后重试。",
-      "retry": "重试",
-      "title": "班级进度",
-      "liveNote": "测验开放期间会自动更新。",
-      "loading": "正在加载班级名单...",
-      "loadError": "无法加载班级进度，请重试。",
-      "columnName": "姓名",
-      "columnEmail": "邮箱",
-      "columnStatus": "状态",
-      "columnAction": "重考",
-      "emailMissing": "无邮箱",
-      "state": {
-        "not_joined": "未加入",
-        "code_shown": "已出示访问码",
-        "joined": "已加入",
-        "in_progress": "进行中",
-        "submitted": "已提交",
-        "stalled": "停滞",
-        "scoring_failed": "评分失败",
-        "absent": "缺席",
-        "paused": "已暂停"
-      },
-      "codeShownCount": "已向 {count} 人出示访问码",
-      "closeCta": "关闭测验",
-      "reopenCta": "重新开放",
-      "absentLabel": "缺席",
-      "markAbsentLabel": "将 {name} 标记为缺席",
-      "clearAbsentLabel": "将 {name} 标记为出席",
-      "absentErrorToast": "无法保存缺席标记，请重试。",
-      "closeConfirmTitle": "关闭此测验？",
-      "closeConfirmBody": "仍在作答的学生的试卷会按当前答案提交，加入代码也将失效。此操作无法撤消。",
-      "closeConfirmCancel": "保持开放",
-      "closeConfirmCta": "关闭测验"
-    },
-    "needsToSit": {
-      "title": "尚未参加",
-      "count": "{count, plural, other {还有 # 名学生尚未参加}}",
-      "empty": "所有学生都已加入或提交。标记为缺席的学生可以稍后补考。"
-    },
-    "studentReveal": {
-      "title": "把访问码交给 {name}",
-      "intro": "{name} 输入此访问码和学校邮箱即可开始。",
-      "onlyThisStudent": "请只把访问码交给 {name}。",
-      "copyCta": "复制访问码",
-      "copiedToast": "访问码已复制",
-      "copyErrorToast": "无法复制访问码，请重试。",
-      "emailMissingNote": "名册上没有学校邮箱。请先补全邮箱，再公布访问码。",
-      "closedNote": "本场测验已关闭。重新开放后才能公布访问码。",
-      "unmintedNote": "请先公布班级访问码。",
-      "closeCta": "关闭",
-      "actionLabel": "向 {name} 公布访问码"
-    },
-    "resit": {
-      "cta": "重考",
-      "confirmTitle": "让{name}重考？",
-      "confirmBody": "当前的作答将结束，学生可以使用访问码重新加入。",
-      "cancel": "取消",
-      "confirm": "确认重考"
+      "absentErrorToast": "无法保存缺席标记，请重试。"
     },
     "activity": {
-      "title": "会话活动",
-      "subtitle": "本次考试中的每一项操作，以及执行者",
-      "loading": "正在加载活动记录…",
-      "error": "无法加载活动记录。",
-      "empty": "本次考试暂无任何活动记录。",
-      "truncated": "显示最近 {shown} 条，共 {total} 条。完整记录随会话保存，以备申诉。",
-      "appealsNote": "完整记录随会话保存，以备申诉。",
-      "logIncident": "记录事件",
-      "noteLabel": "事件备注",
-      "notePlaceholder": "发生了什么？（随会话记录保存）",
-      "incidentLogged": "事件已记录。",
-      "cancel": "取消"
-    },
-    "runSheetLink": "打开流程单"
+      "incidentLogged": "事件已记录。"
+    }
   },
   "Invite": {
     "meta": {
@@ -4386,52 +4111,6 @@
       "typeToConfirm": "输入 <name>{schoolName}</name> 以确认"
     }
   },
-  "RunSheet": {
-    "meta": {
-      "title": "测验日流程单 - SchoolTest",
-      "description": "测验开始前、进行中和结束后要说的每一句话和要做的每一件事。"
-    },
-    "title": "测验日流程单",
-    "subtitle": "按步骤完成本场测验所需的全部内容。把它打印出来放在手边。",
-    "backLink": "返回您的班级",
-    "printCta": "打印此流程单",
-    "before": {
-      "title": "测验日之前",
-      "itemOne": "提前核对您的班级名单：每位学生都需要正确的学校邮箱才能登录。请在测验日之前改好所有填错的邮箱。",
-      "itemTwo": "当天，打开您班级的测验日页面并开始一场测验。",
-      "rosterLink": "打开您的班级"
-    },
-    "start": {
-      "title": "开始时",
-      "itemOne": "在测验日页面公布访问码，并把它写在黑板上。",
-      "itemTwo": "学生打开 SchoolTest 应用，输入访问码和学校邮箱，然后开始作答。"
-    },
-    "say": {
-      "title": "对学生说的话",
-      "intro": "在学生开始之前，对全班说：",
-      "lineOne": "测验分为三个部分。",
-      "lineTwo": "每个部分会难一点，感觉变难是正常的，不用担心。",
-      "lineThree": "如果不知道答案，凭感觉选一个最合适的，然后继续做下一题。",
-      "lineFour": "时间到了，应用会自动带你进入下一部分。",
-      "lineFive": "每个部分之间可以休息一下，准备好了就点继续。"
-    },
-    "during": {
-      "title": "测验进行中",
-      "itemOne": "像平时一样在教室里巡视、监考。",
-      "itemTwo": "测验日页面上的班级进度列表会显示谁已加入、谁在作答、谁已提交。",
-      "itemThree": "您不能暂停或更改测验，也不需要开始休息环节。每位学生准备好后自己点继续。"
-    },
-    "trouble": {
-      "title": "如果出现问题",
-      "itemOne": "缺席的学生可以稍后补考。保持本场测验开放，或等他们回来后开始新的一场，并为他们公布访问码。",
-      "itemTwo": "如果应用崩溃或笔记本电脑没电，在测验日页面该学生姓名旁选择“重考”。学生用访问码和学校邮箱重新加入。"
-    },
-    "after": {
-      "title": "测验结束后",
-      "itemOne": "所有学生都提交后，在测验日页面关闭本场测验。",
-      "itemTwo": "评分完成后，结果会显示在您的仪表盘上。"
-    }
-  },
   "Eald": {
     "meta": {
       "homeTitle": "SchoolTest：一种不一样的英语测试",
@@ -4994,153 +4673,14 @@
         "title": "测验场次 — SchoolTest",
         "description": "为班级开启阅读诊断测验，分享加入码，并实时跟进场次进度。"
       },
-      "title": "测验场次",
-      "description": "为班级开启测验场次，分享加入码，并实时跟进。",
       "setup": {
         "classRequired": "请选择要测验的班级。",
         "testRequired": "请选择本场次要进行的测验。"
       },
       "live": {
-        "settings": {
-          "control": "考试设置",
-          "title": "会话设置",
-          "subtitle": "本次考试所使用的设置。",
-          "count": "{total} 项中已开启 {on} 项",
-          "close": "关闭设置",
-          "on": "开",
-          "off": "关",
-          "minutes": "{minutes} 分钟",
-          "fixed": "考试开始后设置即被固定。如需更改，请关闭本场考试并开始新的一场。",
-          "rows": {
-            "lowBw": {
-              "label": "低带宽模式",
-              "desc": "仅文字文章，不预载图片，答案保存在设备上并在网络恢复后同步。适用于使用移动数据或卫星链路的教室。"
-            },
-            "skip": {
-              "label": "允许跳过题目",
-              "desc": "学生可以先跳过某题，继续作答，并在提交前回来完成。"
-            },
-            "review": {
-              "label": "提交前检查页",
-              "desc": "最后列出已跳过和已标记的题目，避免因疏忽留下空白。"
-            },
-            "flag": {
-              "label": "标记题目以便复查",
-              "desc": "学生可以标记题目以便回头查看。标记会显示在检查页面和教师界面上。"
-            },
-            "bigText": {
-              "label": "大字号与高对比度",
-              "desc": "学生可以随时放大文字并切换到高对比度主题。"
-            },
-            "lockdown": {
-              "label": "锁定窗口",
-              "desc": "考试占满整个屏幕。其他应用、标签页、复制、粘贴和打印都被阻止。"
-            },
-            "focusFlag": {
-              "label": "离开窗口时标记",
-              "desc": "离开会被记录时间戳并显示在你的实时视图中。在未开启锁定时使用。"
-            },
-            "warn5": {
-              "label": "五分钟提醒",
-              "desc": "剩余五分钟时显示一条安静的横幅，这样时钟不必一直摆在面前。"
-            },
-            "autoSubmit": {
-              "label": "到时自动提交",
-              "desc": "关闭意味着答卷等待你处理，没有教师就不会提交。"
-            },
-            "showScore": {
-              "label": "结束时显示分数",
-              "desc": "关闭时，结果会保留到你发布报告为止。"
-            },
-            "timeLimit": {
-              "label": "时间限制",
-              "desc": "考试运行多久后自动关闭。"
-            }
-          }
-        },
         "alreadyClosedToast": "该场次此前已结束，页面现在显示最终状态。",
-        "badgeClosed": "已结束",
-        "badgeLive": "进行中",
-        "closeSessionCta": "关闭场次",
-        "connectionNoted": "连接：{connection}",
-        "connectionOffline": "离线",
-        "connectionOnline": "在线",
-        "connectionWeak": "连接较弱",
-        "endDialogCancel": "继续开放",
-        "endDialogConfirm": "结束场次",
-        "endDialogDescription": "仍在作答的学生将按当前进度提交，加入码随即失效。此操作无法撤销。",
-        "endDialogTitle": "确定结束 {className} 的场次吗？",
         "endErrorToast": "无法结束场次，它仍处于开放状态，请重试。",
-        "endSession": "结束场次",
-        "endedToast": "场次已结束，加入码已失效。",
-        "errorDescription": "网格保持为空而不猜测谁已加入。该场次可能属于其他教师，或已不存在。",
-        "errorTitle": "无法加载此实时场次",
-        "gridLabel": "学生状态网格",
-        "legendLabel": "各色块的含义",
-        "loading": "正在加载实时场次",
-        "meta": {
-          "title": "实时场次 — SchoolTest",
-          "description": "实时跟踪阅读诊断：谁已加入、正在作答、已提交，以及谁停滞了。"
-        },
-        "noActivity": "已 {minutes} 分钟无活动",
-        "noCode": "此场次未生成加入码",
-        "retry": "重试",
-        "rosterEmptyDescription": "此场次没有可监看的在读学生。请先向班级添加学生，然后重新打开本页。",
-        "rosterEmptyTitle": "此班级名单暂无学生",
-        "signalsNoted": "已记录 {count} 次提醒",
-        "stageOf": "第 {stage} 阶段 / 共 {total} 阶段",
-        "stallCaption": "{minutes, plural, other {超过 # 分钟无活动后，色块变为琥珀色。}}",
-        "startedAgo": "{minutes, plural, =0 {场次刚刚开始} other {场次已开始 # 分钟}}",
-        "stateInProgress": "作答中",
-        "stateAbsent": "缺席",
-        "stateJoined": "已加入",
-        "stateNotJoined": "未加入",
-        "statePaused": "已暂停",
-        "stateScoringFailed": "评分失败",
-        "stateStalled": "已停滞",
-        "stateSubmitted": "已提交",
-        "summaryAbsent": "缺席",
-        "summaryExpected": "应参加",
-        "summaryInProgress": "作答中",
-        "summaryJoined": "已加入",
-        "summaryLabel": "场次统计",
-        "summaryPaused": "已暂停",
-        "summaryScoringFailed": "评分失败",
-        "summaryStalled": "已停滞",
-        "summarySubmitted": "已提交",
-        "tileAria": "{name}: {state}",
-        "tileAriaDetail": "{name}: {state} — {detail}",
-        "tileAverage": "班级平均",
-        "tileAverageNone": "暂无已评分结果",
-        "tileGrowth": "可靠成长",
-        "tileGrowthInsufficient": "数据不足",
-        "tileGrowthNote": "{count, plural, other {# 个可靠变化}}",
-        "tilePhases": "ACARA 阶段分布",
-        "tilePhasesUnmeasured": "{count, plural, other {# 名学生未测量}}",
-        "tilePhasesValue": "{count, plural, other {# 个阶段}}",
-        "tileScored": "已评分",
-        "tileScoredValue": "{total} 人中 {scored} 人已评分",
-        "title": "{className} — {testLabel}"
-      },
-      "rollup": {
-        "schoolSummary": "{sessions} 个进行中的会话，分布在 {classes} 个班级。每名学生同一时间只能参加一场测试。",
-        "nothingRunning": "当前没有进行中的测试。同一班级的不同学生可以同时参加不同版本的测试。",
-        "groupHeading": "{name} · {meta} · {free}",
-        "groupMeta": "{yearBand} · {students} 名学生",
-        "groupMetaNoYear": "{students} 名学生",
-        "everyStudentInSession": "所有学生都在会话中。",
-        "emptyTitle": "当前没有进行中的会话。",
-        "emptyBody": "开始一个会话以生成加入代码。",
-        "idleHeading": "没有进行中测试的班级",
-        "allBusy": "每个班级都至少有一个会话正在进行。",
-        "chipLabel": "{name} · {students} 名学生",
-        "who": "{students} 名学生 · 全班",
-        "livePill": "进行中",
-        "monitor": "监控",
-        "close": "关闭",
-        "testLabelMissing": "测试标签不可用",
-        "offlineTitle": "你似乎已离线。",
-        "offlineBody": "实时概览需要网络连接。重新联网后将立即更新。"
+        "endedToast": "场次已结束，加入码已失效。"
       }
     },
     "results": {

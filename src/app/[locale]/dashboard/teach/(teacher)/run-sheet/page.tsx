@@ -1,22 +1,15 @@
-import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
+import { TEST_SESSIONS_PATH } from '@/modules/teacher';
 
-import { RunSheetScreen } from '@/modules/test-day';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('RunSheet.meta');
-  return {
-    title: t('title'),
-    description: t('description'),
-    openGraph: { title: t('title'), description: t('description') },
-  };
+interface RunSheetPageProps {
+  params: Promise<{ locale: string }>;
 }
 
-// Test-day run sheet (task 65, st-mvp-pivot; mvp-updates §4.5 step 4): a
-// static, printable guide for the sitting, linked from the test-day screen
-// and teacher home. The TeacherGuard in the teach layout keeps it
-// teacher-only; it is not per-class, so the roster link points back to the
-// teacher's class list.
-export default function RunSheetPage() {
-  return <RunSheetScreen />;
+// RETIRED (Teacher Portal v2, R1 PART B). The printable test-day run sheet
+// (task 65) belonged to the old console; the design has no run sheet, and the
+// sitting is run from the class Live sessions tab. The route hands over to the
+// Live sessions page, which is where a teacher goes to run one now.
+export default async function RunSheetPage({ params }: RunSheetPageProps) {
+  const { locale } = await params;
+  redirect({ href: TEST_SESSIONS_PATH, locale });
 }

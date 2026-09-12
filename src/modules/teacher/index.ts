@@ -23,7 +23,7 @@ export { useCancelTestSessionMutation } from './queries/use-cancel-test-session.
 export { useStartTestSessionMutation } from './queries/use-start-test-session.mutation';
 
 export { teacherExportPath, parseTeacherExportFilename } from './lib/teacher-export';
-export { resolveJoinCodeView, testSessionMonitorHref, findTestLabel } from './lib/join-code';
+export { testSessionMonitorHref, findTestLabel } from './lib/join-code';
 export {
   classResultsHref,
   studentResultsHref,
@@ -130,12 +130,6 @@ export type {
 // surfaces. The schema/type FILES stay — the export-derivation test cluster
 // still reads them until 70459cff's re-point settles.
 export type { StartTestSessionFormValues } from './types/session-setup.types';
-export type {
-  JoinCodeReady,
-  JoinCodeUnavailable,
-  JoinCodeAbsent,
-  JoinCodeView,
-} from './types/join-code.types';
 export type { SessionMissingValueProps } from './types/past-sessions.types';
 
 export type {
@@ -179,44 +173,10 @@ export type {
   ProgressWatchVariant,
 } from './types/class-analytics.types';
 
-// Live monitoring grid (task 037, C-TS-3).
-export { LiveMonitorScreen } from './components/LiveMonitorScreen';
-export { LiveMonitorHeader } from './components/LiveMonitorHeader';
-export { LiveMonitorSummary } from './components/LiveMonitorSummary';
-export { LiveMonitorGrid } from './components/LiveMonitorGrid';
-export { LiveMonitorTile } from './components/LiveMonitorTile';
-export { LiveMonitorLegend } from './components/LiveMonitorLegend';
-export { useLiveMonitor } from './hooks/useLiveMonitor';
-export {
-  deriveLiveMonitorStatus,
-  monitorSummaryItems,
-  monitorTileDetail,
-  sortMonitorStudents,
-  sessionElapsedMinutes,
-} from './lib/live-monitor';
-export {
-  MONITOR_POLL_INTERVAL_MS,
-  MONITOR_STATE_ORDER,
-  MONITOR_SUMMARY_ORDER,
-  MONITOR_STATE_THEME,
-  MONITOR_STATE_LABEL_KEY,
-  MONITOR_SUMMARY_LABEL_KEY,
-} from './constants/live-monitor.constants';
-export type {
-  MonitorSummaryKey,
-  MonitorTileTheme,
-  MonitorSummaryItem,
-  MonitorTileDetail,
-  LiveMonitorReadStatus,
-  LiveMonitorReadCounts,
-  LiveMonitorState,
-  LiveMonitorScreenProps,
-  LiveMonitorHeaderProps,
-  LiveMonitorSummaryProps,
-  LiveMonitorGridProps,
-  LiveMonitorTileProps,
-  LiveMonitorLegendProps,
-} from './types/live-monitor.types';
+// The C-TS-3 monitoring grid (task 037) is RETIRED — the class Live sessions tab
+// replaced it (R1 PART B). `/dashboard/test-sessions/<sitting>` hands over to that
+// tab, and this is the client hop that resolves the sitting's class.
+export { SittingMonitorRedirect } from './components/SittingMonitorRedirect';
 
 // Start a new session (Teacher Portal v2 S25–S28): the ONE modal, mounted once in the
 // dashboard frame; a screen in any module opens it through the store.

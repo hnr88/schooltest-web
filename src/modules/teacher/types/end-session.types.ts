@@ -1,5 +1,3 @@
-import type { MonitorSitting } from '@/modules/teacher/types/teacher-session.types';
-
 /**
  * What POST /api/teacher/test-sessions/:documentId/close actually answered.
  *
@@ -29,17 +27,4 @@ export interface EndSessionState {
   openConfirm: () => void;
   setConfirmOpen: (open: boolean) => void;
   confirm: () => void;
-}
-
-export interface EndSessionControlProps {
-  sitting: MonitorSitting;
-}
-
-export interface EndSessionDialogProps {
-  /** The CLASS's name (not a CSS class) — the dialog names what is being ended. */
-  sessionClassName: string;
-  open: boolean;
-  isPending: boolean;
-  onOpenChange: (open: boolean) => void;
-  onConfirm: () => void;
 }

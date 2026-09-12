@@ -67,12 +67,11 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
       await expect(page.locator(`[data-surface="${surface}"]`)).toBeVisible({ timeout: 20_000 });
     }
 
-    // TeacherGuard keeps a school_admin out of the teacher section. R-12
-    // retired the section root, so the guard is proven on a surviving guarded
-    // RECORD route — the bare /dashboard/teach/classes segment has no
-    // page.tsx and 404s before any guard runs, so the id resolves from the
-    // seed by name (the shared fixtureClassId idiom).
-    await page.goto(`/dashboard/teach/classes/${fixtureClassId()}`);
+    // TeacherGuard keeps a school_admin out of the teacher section. R1 PART B
+    // turned every surviving /dashboard/teach record route into a redirect onto
+    // the v2 class detail, so the guard is proven on that destination directly —
+    // the id resolves from the seed by name (the shared fixtureClassId idiom).
+    await page.goto(`/dashboard/results/${fixtureClassId()}`);
     await page.waitForURL('**/dashboard/school', { timeout: 20_000 });
     await expect(page.locator('[data-surface="teacher-results"]')).toHaveCount(0);
   });
@@ -94,7 +93,7 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     await expect(page.locator('[data-surface="school-admin-home"]')).toHaveCount(0);
   });
 
-  test('parent: portal masked flag-OFF; school + teach sections bounce to /dashboard', async ({
+  test('parent: portal masked flag-OFF; school + teacher sections bounce to /dashboard', async ({
     page,
   }) => {
     await signIn(page, PARENT.email, PARENT.password, '/dashboard');
@@ -105,7 +104,7 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
       timeout: 20_000,
     });
     expect(page.url()).not.toContain('/dashboard/school');
-    expect(page.url()).not.toContain('/dashboard/teach');
+    expect(page.url()).not.toContain('/dashboard/results');
 
     await page.goto('/dashboard/school');
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
@@ -113,10 +112,10 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
       timeout: 20_000,
     });
 
-    // scoring/10 (R-12): the teach ROOT is retired (404 for everyone); a
-    // surviving guarded teach record route still bounces a parent to /dashboard
-    // (the bare classes segment has no page, so the id resolves from the seed).
-    await page.goto(`/dashboard/teach/classes/${fixtureClassId()}`);
+    // scoring/10 (R-12): the teach ROOT is retired; R1 PART B redirected its
+    // record routes onto the v2 class detail, whose TeacherGuard still bounces a
+    // parent to /dashboard (the id resolves from the seed).
+    await page.goto(`/dashboard/results/${fixtureClassId()}`);
     await page.waitForURL('**/dashboard', { timeout: 20_000 });
     await expect(page.locator('[data-slot="parent-views-unavailable"]')).toBeVisible({
       timeout: 20_000,
@@ -132,15 +131,15 @@ test.describe('task 27: dashboard route structure + role redirect', () => {
     await expect(page).toHaveURL(/\/dashboard\/settings/, { timeout: 20_000 });
   });
 
-  test('signed out: /dashboard/school and /dashboard/teach bounce to /sign-in', async ({
+  test('signed out: /dashboard/school and the teacher class detail bounce to /sign-in', async ({
     page,
   }) => {
     await page.goto('/dashboard/school');
     await page.waitForURL('**/sign-in', { timeout: 20_000 });
 
-    // scoring/10 (R-12): the teach root is gone; a surviving guarded teach
-    // record route still bounces an anonymous visitor to /sign-in.
-    await page.goto(`/dashboard/teach/classes/${fixtureClassId()}`);
+    // scoring/10 (R-12): the teach root is gone; the v2 class detail its record
+    // routes now redirect to still bounces an anonymous visitor to /sign-in.
+    await page.goto(`/dashboard/results/${fixtureClassId()}`);
     await page.waitForURL('**/sign-in', { timeout: 20_000 });
   });
 });

@@ -2183,102 +2183,7 @@
     }
   },
   "Teach": {
-    "CycleBanner": {
-      "label": "Kitaran ujian untuk kelas ini",
-      "testA": "Kelas ini sedang menduduki Test A",
-      "testB": "Kelas ini sedang menduduki Test B",
-      "window": "Tetingkap ujian: {opens} hingga {closes}",
-      "formCode": "Borang {code}",
-      "unscheduled": "Tiada ujian dijadualkan untuk kelas ini lagi. Tarikh akan muncul di sini apabila tetingkap ujian dibuka."
-    },
-    "meta": {
-      "title": "Papan pemuka guru - SchoolTest",
-      "description": "Laman mengajar anda: kelas dan laporan."
-    },
-    "home": {
-      "title": "Papan pemuka guru",
-      "subtitle": "Laporan untuk kelas anda sedia di bawah Laporan.",
-      "reportsCta": "Buka laporan",
-      "classesTitle": "Kelas anda",
-      "classesLoading": "Memuatkan kelas anda...",
-      "classesError": "Kelas anda tidak dapat dimuatkan. Cuba lagi.",
-      "classesEmpty": "Anda belum ditugaskan ke mana-mana kelas. Pentadbir sekolah anda boleh menambah anda ke kelas.",
-      "rosterLink": "Senarai nama",
-      "testDayLink": "Hari ujian",
-      "runSheetLink": "Lembaran panduan hari ujian",
-      "resultsLink": "Keputusan",
-      "panels": {
-        "diagnostic": {
-          "title": "Diagnostik",
-          "satLabel": "Telah menduduki ujian",
-          "satValue": "{sat} daripada {roster} murid",
-          "latestFormLabel": "Borang terkini",
-          "latestFormMissing": "Belum menduduki",
-          "masteredLabel": "Bidang membaca yang dikuasai",
-          "masteredValue": "{pct}% daripada kelas",
-          "empty": "Data diagnostik akan datang - panel akan diisi sebaik sahaja murid menduduki Ujian A."
-        },
-        "monitor": {
-          "title": "Sesi ujian langsung",
-          "states": {
-            "not_joined": "Belum menyertai",
-            "joined": "Telah menyertai",
-            "in_progress": "Sedang berjalan",
-            "submitted": "Telah diserahkan",
-            "stalled": "Terhenti"
-          },
-          "empty": "Tiada sesi ujian sedang berjalan buat masa ini."
-        }
-      }
-    },
-    "roster": {
-      "meta": {
-        "title": "Senarai nama kelas - SchoolTest",
-        "description": "Semak senarai nama kelas sebelum hari ujian: nama, status dan e-mel log masuk."
-      },
-      "title": "Senarai nama kelas",
-      "subtitle": "Pastikan setiap murid boleh log masuk pada hari ujian. Pembetulan e-mel dilakukan oleh pentadbir sekolah anda.",
-      "backLink": "Kembali ke kelas anda",
-      "loading": "Memuatkan senarai nama...",
-      "loadError": "Senarai nama tidak dapat dimuatkan. Cuba lagi.",
-      "emptyTitle": "Tiada murid untuk dipaparkan",
-      "emptyBody": "Belum ada murid dalam kelas ini, atau anda tidak ditugaskan ke kelas ini.",
-      "columnName": "Nama",
-      "columnStatus": "Status",
-      "columnEmail": "E-mel",
-      "columnActions": "Tindakan",
-      "statusActive": "Aktif",
-      "statusArchived": "Diarkibkan",
-      "emailMissing": "E-mel diperlukan sebelum hari ujian",
-      "emailMissingHint": "Murid tanpa e-mel tidak dapat log masuk pada hari ujian. Minta pentadbir sekolah anda menambah e-mel yang tiada.",
-      "emailFixAction": "Laporkan e-mel untuk dibetulkan",
-      "emailFixPending": "Pembetulan diminta",
-      "emailFixSuccessToast": "Pentadbir sekolah anda telah diminta untuk membetulkan e-mel ini.",
-      "emailFixErrorToast": "Pembetulan e-mel tidak dapat diminta. Cuba lagi.",
-      "testDayLink": "Pergi ke hari ujian",
-      "searchPlaceholder": "Cari pelajar",
-      "searchLabel": "Cari pelajar",
-      "sortLabel": "Isih",
-      "filterStatusLabel": "Status",
-      "filterStatusAll": "Semua status",
-      "sortNameAsc": "Nama A–Z",
-      "sortNameDesc": "Nama Z–A",
-      "showingCount": "Menunjukkan {showing} daripada {total} pelajar",
-      "pageCount": "Halaman {page} daripada {pageCount} · {total} jumlah",
-      "previous": "Sebelumnya",
-      "next": "Seterusnya",
-      "paginationLabel": "Halaman senarai",
-      "rowMenuLabel": "Tindakan baris",
-      "clearFilters": "Kosongkan penapis",
-      "errorStaleBanner": "Muat semula terakhir gagal — pelajar di bawah ialah senarai terakhir yang dihantar oleh pelayan.",
-      "errorDescription": "Semak sambungan anda dan cuba lagi.",
-      "retry": "Cuba lagi"
-    },
     "diagnostic": {
-      "meta": {
-        "title": "Diagnostik kelas - SchoolTest",
-        "description": "Profil membaca kelas anda, dengan bukti item di bawahnya."
-      },
       "backLink": "Kembali ke kelas anda",
       "title": "Diagnostik kelas",
       "subtitle": "Apa yang kelas anda mampu dalam membaca, dengan bukti ujian di bawahnya.",
@@ -2328,11 +2233,6 @@
       },
       "filteredEmptyTitle": "Tiada pelajar sepadan",
       "filteredEmptyDescription": "Tiada pelajar yang sepadan dengan carian semasa.",
-      "export": {
-        "cta": "Eksport untuk pembantu AI anda",
-        "downloading": "Menyediakan eksport...",
-        "error": "Eksport tidak dapat dimuat turun. Cuba lagi."
-      },
       "searchPlaceholder": "Cari pelajar",
       "searchLabel": "Cari pelajar",
       "sortLabel": "Isih",
@@ -2369,190 +2269,15 @@
         "not_mastered": "belum dikuasai"
       },
       "notAssessedLine": "Tidak dinilai pada salah satu atau kedua-dua ujian: {areas}"
-    },
-    "testDay": {
-      "history": {
-        "searchPlaceholder": "Cari sesi ujian",
-        "searchLabel": "Cari sesi ujian",
-        "filterOutcomeLabel": "Hasil",
-        "filterOutcomeAll": "Semua hasil",
-        "sortLabel": "Isih",
-        "clearFilters": "Kosongkan penapis",
-        "paginationLabel": "Halaman sejarah",
-        "previous": "Sebelumnya",
-        "next": "Seterusnya",
-        "rowMenuLabel": "Tindakan baris",
-        "showingCount": "Menunjukkan {showing} daripada {total} sesi",
-        "pageCount": "Halaman {page} daripada {pageCount} · {total} jumlah",
-        "sortOpenedDesc": "Dibuka: terbaharu dahulu",
-        "sortOpenedAsc": "Dibuka: terlama dahulu",
-        "openAction": "Buka",
-        "filteredEmptyTitle": "Tiada sesi sepadan",
-        "filteredEmptyDescription": "Tiada sesi sepadan dengan carian dan penapis hasil semasa.",
-        "errorStaleBanner": "Muat semula terakhir gagal — baris di bawah ialah senarai terakhir yang dihantar oleh pelayan.",
-        "errorDescription": "Semak sambungan anda dan cuba lagi.",
-        "retry": "Cuba lagi",
-        "title": "Sejarah sesi ujian",
-        "loading": "Memuatkan sejarah sesi ujian...",
-        "loadError": "Sejarah sesi ujian tidak dapat dimuatkan. Cuba lagi.",
-        "emptyTitle": "Belum ada sesi ujian untuk kelas ini",
-        "emptyBody": "Apabila anda memulakan sesi ujian, ia akan muncul di sini supaya anda dapat menyemak semula siapa yang menyertai dan menghantar.",
-        "missingValue": "-",
-        "columns": {
-          "opened": "Dibuka",
-          "code": "Kod",
-          "form": "Borang",
-          "status": "Status",
-          "joined": "Menyertai",
-          "submitted": "Dihantar"
-        },
-        "status": {
-          "open": "Dibuka",
-          "closed": "Ditutup"
-        },
-        "joinedCount": "{joined}/{total}",
-        "submittedCount": "{submitted}/{total}"
-      },
-      "summary": {
-        "title": "Ringkasan sesi ujian",
-        "loading": "Memuatkan ringkasan sesi ujian...",
-        "loadError": "Ringkasan sesi ujian tidak dapat dimuatkan. Cuba lagi.",
-        "codeLine": "Kod {code}",
-        "counts": {
-          "sat": "Menduduki",
-          "absent": "Tidak hadir",
-          "needsResit": "Perlu ujian semula",
-          "resultsPending": "Keputusan belum siap",
-          "resultsReady": "Keputusan sudah siap"
-        },
-        "pendingNote": "{count, plural, other {# keputusan masih disediakan dan akan muncul di sini apabila siap.}}"
-      }
     }
   },
   "TestDay": {
-    "meta": {
-      "title": "Hari ujian - SchoolTest",
-      "description": "Mulakan sesi ujian, dedahkan kod akses dan pantau kemajuan kelas secara langsung."
-    },
-    "title": "Hari ujian",
-    "titleWithClass": "Hari ujian: {className}",
-    "subtitle": "Mulakan ujian, dedahkan kod akses dan ikuti kemajuan setiap murid secara langsung.",
-    "backLink": "Kembali ke senarai nama",
-    "loading": "Memuatkan sesi ujian...",
-    "loadError": "Sesi ujian tidak dapat dimuatkan. Cuba lagi.",
-    "emptyTitle": "Tiada sesi ujian dimulakan",
-    "emptyBody": "Mulakan sesi ujian untuk mendapatkan kod akses bagi kelas ini.",
-    "startCta": "Mulakan ujian",
-    "startError": "Sesi ujian tidak dapat dimulakan. Cuba lagi.",
-    "closedStartHint": "Sesi ujian ini ditutup. Mulakan sesi baharu apabila kelas ini menduduki ujian seterusnya.",
-    "status": {
-      "open": "Dibuka",
-      "closed": "Ditutup"
-    },
-    "code": {
-      "title": "Kod akses",
-      "formLine": "Borang {formCode}",
-      "hint": "Murid memasukkan kod ini dan e-mel sekolah mereka untuk bermula.",
-      "revealCta": "Dedahkan kod",
-      "hideCta": "Sembunyikan kod",
-      "closedNote": "Sesi ujian ini ditutup. Buka semula untuk membenarkan murid menyertai."
-    },
     "monitor": {
-      "searchPlaceholder": "Cari pelajar",
-      "searchLabel": "Cari pelajar",
-      "filterStatusLabel": "Status sesi ujian",
-      "filterStatusAll": "Semua status",
-      "sortLabel": "Isih",
-      "clearFilters": "Kosongkan penapis",
-      "paginationLabel": "Halaman kemajuan kelas",
-      "previous": "Sebelumnya",
-      "next": "Seterusnya",
-      "rowMenuLabel": "Tindakan baris",
-      "showingCount": "Menunjukkan {showing} daripada {total} pelajar",
-      "pageCount": "Halaman {page} daripada {pageCount} · {total} jumlah",
-      "sortNameAsc": "Nama A-Z",
-      "sortNameDesc": "Nama Z-A",
-      "sortProgressAsc": "Kemajuan: paling sedikit dahulu",
-      "sortProgressDesc": "Kemajuan: paling banyak dahulu",
-      "emptyTitle": "Tiada pelajar dalam senarai ini",
-      "emptyBody": "Pelajar akan muncul di sini sebaik sahaja mereka berada dalam senarai nama kelas.",
-      "filteredEmptyTitle": "Tiada pelajar sepadan",
-      "filteredEmptyDescription": "Tiada pelajar sepadan dengan carian dan penapis status semasa.",
-      "errorStaleBanner": "Muat semula terakhir gagal — pelajar di bawah ialah senarai terakhir yang dihantar oleh pelayan.",
-      "errorDescription": "Semak sambungan anda dan cuba lagi.",
-      "retry": "Cuba lagi",
-      "title": "Kemajuan kelas",
-      "liveNote": "Dikemas kini secara automatik semasa sesi ujian dibuka.",
-      "loading": "Memuatkan kelas...",
-      "loadError": "Kemajuan kelas tidak dapat dimuatkan. Cuba lagi.",
-      "columnName": "Nama",
-      "columnEmail": "E-mel",
-      "columnStatus": "Status",
-      "columnAction": "Ujian semula",
-      "emailMissing": "Tiada e-mel",
-      "state": {
-        "not_joined": "Belum menyertai",
-        "code_shown": "Kod ditunjukkan",
-        "joined": "Telah menyertai",
-        "in_progress": "Sedang berjalan",
-        "submitted": "Telah diserahkan",
-        "stalled": "Terhenti",
-        "scoring_failed": "Pemarkahan gagal",
-        "absent": "Tidak hadir",
-        "paused": "Dijeda"
-      },
-      "codeShownCount": "Kod ditunjukkan kepada {count}",
-      "closeCta": "Tutup sesi ujian",
-      "reopenCta": "Buka semula",
-      "absentLabel": "Tidak hadir",
-      "markAbsentLabel": "Tandakan {name} sebagai tidak hadir",
-      "clearAbsentLabel": "Tandakan {name} sebagai hadir",
-      "absentErrorToast": "Tanda tidak hadir tidak dapat disimpan. Cuba lagi.",
-      "closeConfirmTitle": "Tutup sesi ujian ini?",
-      "closeConfirmBody": "Sesiapa yang masih menjawab akan dihantar seadanya, dan kod penyertaan berhenti berfungsi. Tindakan ini tidak boleh dibatalkan.",
-      "closeConfirmCancel": "Kekalkan dibuka",
-      "closeConfirmCta": "Tutup sesi ujian"
-    },
-    "needsToSit": {
-      "title": "Belum menduduki ujian",
-      "count": "{count, plural, other {# pelajar belum menduduki ujian}}",
-      "empty": "Semua pelajar telah menyertai atau menghantar. Pelajar yang ditandakan tidak hadir boleh menduduki ujian kemudian."
-    },
-    "studentReveal": {
-      "title": "Beri {name} kod akses",
-      "intro": "{name} memasukkan kod ini dengan e-mel sekolah mereka untuk bermula.",
-      "onlyThisStudent": "Beri kod ini kepada {name} sahaja.",
-      "copyCta": "Salin kod",
-      "copiedToast": "Kod disalin",
-      "copyErrorToast": "Kod tidak dapat disalin. Cuba lagi.",
-      "emailMissingNote": "Tiada e-mel sekolah dalam senarai - betulkan e-mel sebelum mendedahkan kod.",
-      "closedNote": "Sesi ujian ini ditutup. Buka semula untuk mendedahkan kod.",
-      "unmintedNote": "Dedahkan kod kelas dahulu.",
-      "closeCta": "Tutup",
-      "actionLabel": "Dedahkan kod kepada {name}"
-    },
-    "resit": {
-      "cta": "Ujian semula",
-      "confirmTitle": "Ujian semula untuk {name}?",
-      "confirmBody": "Percubaan semasa mereka akan ditamatkan dan mereka boleh menyertai semula dengan kod akses.",
-      "cancel": "Batal",
-      "confirm": "Ya, ujian semula"
+      "absentErrorToast": "Tanda tidak hadir tidak dapat disimpan. Cuba lagi."
     },
     "activity": {
-      "title": "Aktiviti sesi",
-      "subtitle": "Setiap tindakan semasa ujian ini, dan siapa yang melakukannya",
-      "loading": "Memuatkan jejak aktiviti…",
-      "error": "Jejak aktiviti tidak dapat dimuatkan.",
-      "empty": "Belum ada apa-apa yang berlaku dalam ujian ini.",
-      "truncated": "Menunjukkan {shown} daripada {total} entri terakhir. Jejak penuh disimpan bersama sesi untuk rayuan.",
-      "appealsNote": "Jejak penuh disimpan bersama sesi untuk rayuan.",
-      "logIncident": "Catat insiden",
-      "noteLabel": "Nota insiden",
-      "notePlaceholder": "Apa yang berlaku? (disimpan bersama rekod sesi)",
-      "incidentLogged": "Insiden dicatat.",
-      "cancel": "Batal"
-    },
-    "runSheetLink": "Buka lembaran panduan"
+      "incidentLogged": "Insiden dicatat."
+    }
   },
   "Invite": {
     "meta": {
@@ -4396,52 +4121,6 @@
       "typeToConfirm": "Taip <name>{schoolName}</name> untuk sahkan"
     }
   },
-  "RunSheet": {
-    "meta": {
-      "title": "Lembaran panduan hari ujian - SchoolTest",
-      "description": "Apa yang perlu diucapkan dan dilakukan sebelum, semasa dan selepas ujian."
-    },
-    "title": "Lembaran panduan hari ujian",
-    "subtitle": "Semua yang anda perlukan untuk menjalankan ujian, langkah demi langkah. Cetak dan simpan di sisi anda.",
-    "backLink": "Kembali ke kelas anda",
-    "printCta": "Cetak lembaran ini",
-    "before": {
-      "title": "Sebelum hari ujian",
-      "itemOne": "Semak senarai kelas anda lebih awal: setiap murid memerlukan e-mel sekolah yang betul untuk log masuk. Baiki sebarang e-mel yang salah sebelum hari ujian.",
-      "itemTwo": "Pada hari ujian, buka skrin hari ujian untuk kelas anda dan mulakan sesi ujian.",
-      "rosterLink": "Buka kelas anda"
-    },
-    "start": {
-      "title": "Semasa memulakan",
-      "itemOne": "Dedahkan kod akses pada skrin hari ujian dan tuliskannya di papan.",
-      "itemTwo": "Murid membuka aplikasi SchoolTest, memasukkan kod dan e-mel sekolah mereka, kemudian mula."
-    },
-    "say": {
-      "title": "Apa yang perlu diberitahu kepada murid",
-      "intro": "Ucapkan ini kepada kelas sebelum mereka mula:",
-      "lineOne": "Ujian ini mempunyai tiga bahagian.",
-      "lineTwo": "Setiap bahagian menjadi lebih sukar sedikit, jadi jangan risau jika ia terasa begitu.",
-      "lineThree": "Jika anda tidak tahu jawapan, cuba teka sebaik mungkin dan teruskan.",
-      "lineFour": "Apabila masa tamat, aplikasi akan mengalihkan anda dengan sendirinya.",
-      "lineFive": "Di antara bahagian, anda boleh berehat sebentar dan tekan sambung apabila sudah bersedia."
-    },
-    "during": {
-      "title": "Semasa ujian",
-      "itemOne": "Berjalan di sekitar kelas dan mengawasi seperti biasa.",
-      "itemTwo": "Senarai kemajuan kelas pada skrin hari ujian menunjukkan siapa yang telah menyertai, siapa yang sedang menjawab dan siapa yang telah menghantar.",
-      "itemThree": "Anda tidak boleh menjeda atau mengubah ujian, dan anda tidak perlu memulakan waktu rehat. Setiap murid menekan sambung apabila mereka bersedia."
-    },
-    "trouble": {
-      "title": "Jika berlaku masalah",
-      "itemOne": "Murid yang tidak hadir boleh menduduki ujian kemudian. Biarkan sesi terbuka atau mulakan sesi baharu apabila mereka kembali, dan dedahkan kod untuk mereka.",
-      "itemTwo": "Jika aplikasi terhenti atau bateri komputer riba habis, pilih Ujian semula di sebelah nama murid pada skrin hari ujian. Murid menyertai semula dengan kod dan e-mel sekolah mereka."
-    },
-    "after": {
-      "title": "Selepas ujian",
-      "itemOne": "Apabila semua murid telah menghantar, tutup sesi pada skrin hari ujian.",
-      "itemTwo": "Keputusan akan muncul pada papan pemuka anda setelah pemarkahan selesai."
-    }
-  },
   "Eald": {
     "meta": {
       "homeTitle": "SchoolTest: Ujian bahasa Inggeris yang berbeza",
@@ -5004,153 +4683,14 @@
         "title": "Sesi ujian — SchoolTest",
         "description": "Mulakan diagnostik bacaan untuk sebuah kelas, kongsi kod sertai dan pantau sesi secara langsung."
       },
-      "title": "Sesi ujian",
-      "description": "Mulakan sesi untuk sesebuah kelas, kongsi kod sertai dan pantau secara langsung.",
       "setup": {
         "classRequired": "Pilih kelas yang hendak diuji.",
         "testRequired": "Pilih ujian yang akan dijalankan dalam sesi ini."
       },
       "live": {
-        "settings": {
-          "control": "Tetapan ujian",
-          "title": "Tetapan sesi",
-          "subtitle": "Apa yang sesi ini jalankan.",
-          "count": "{on} daripada {total} dihidupkan",
-          "close": "Tutup tetapan",
-          "on": "Hidup",
-          "off": "Mati",
-          "minutes": "{minutes} min",
-          "fixed": "Tetapan dikunci selepas sesi dibuka. Untuk mengubahnya, tutup sesi ini dan mulakan sesi baharu.",
-          "rows": {
-            "lowBw": {
-              "label": "Mod jalur lebar rendah",
-              "desc": "Petikan teks sahaja, tiada imej dimuatkan lebih awal, dan jawapan disimpan pada peranti dan disegerakkan apabila sambungan kembali. Guna apabila kelas dalam data mudah alih atau pautan satelit."
-            },
-            "skip": {
-              "label": "Benarkan langkau soalan",
-              "desc": "Murid boleh tinggalkan soalan, teruskan, dan kembali padanya sebelum menghantar."
-            },
-            "review": {
-              "label": "Skrin semakan sebelum hantar",
-              "desc": "Senarai akhir soalan yang dilangkau dan ditanda, supaya tiada jawapan kosong secara tidak sengaja."
-            },
-            "flag": {
-              "label": "Tanda soalan untuk semakan",
-              "desc": "Murid boleh tanda soalan untuk kembali semula. Tanda ditunjukkan pada skrin semakan dan kepada anda."
-            },
-            "bigText": {
-              "label": "Teks lebih besar dan kontras tinggi",
-              "desc": "Murid boleh besarkan teks dan tukar ke tema kontras tinggi pada bila-bila masa."
-            },
-            "lockdown": {
-              "label": "Tetingkap berkunci",
-              "desc": "Ujian memenuhi skrin. Apl lain, tab, salin, tampal dan cetak disekat."
-            },
-            "focusFlag": {
-              "label": "Tanda jika mereka tinggalkan tetingkap",
-              "desc": "Pergiannya direkodkan dengan cap masa dan muncul pada paparan langsung anda. Guna dengan kunci dimatikan."
-            },
-            "warn5": {
-              "label": "Amaran lima minit",
-              "desc": "Satu banner senyap pada lima minit terakhir, supaya jam tidak sentiasa di depan mereka."
-            },
-            "autoSubmit": {
-              "label": "Hantar automatik pada masa",
-              "desc": "Mati bermakna percubaan menunggu anda, dan tiada yang dihantar tanpa guru."
-            },
-            "showScore": {
-              "label": "Tunjukkan skor mereka pada akhir",
-              "desc": "Mati menahan keputusan sehingga anda lepaskan laporan itu."
-            },
-            "timeLimit": {
-              "label": "Had masa",
-              "desc": "Berapa lama sesi berjalan sebelum ia menutup dirinya."
-            }
-          }
-        },
         "alreadyClosedToast": "Sesi ini sudah ditutup. Halaman kini menunjukkan keadaan akhirnya.",
-        "badgeClosed": "Ditutup",
-        "badgeLive": "Langsung",
-        "closeSessionCta": "Tutup sesi",
-        "connectionNoted": "Sambungan: {connection}",
-        "connectionOffline": "Luar talian",
-        "connectionOnline": "Dalam talian",
-        "connectionWeak": "Sambungan lemah",
-        "endDialogCancel": "Biarkan terbuka",
-        "endDialogConfirm": "Tamatkan sesi",
-        "endDialogDescription": "Sesiapa yang masih menjawab akan dihantar seadanya, dan kod sertai berhenti berfungsi. Tindakan ini tidak boleh dibatalkan.",
-        "endDialogTitle": "Tamatkan sesi untuk {className}?",
         "endErrorToast": "Tidak dapat menamatkan sesi. Ia masih terbuka — cuba lagi.",
-        "endSession": "Tamatkan sesi",
-        "endedToast": "Sesi telah ditamatkan. Kod sertai tidak lagi berfungsi.",
-        "errorDescription": "Grid kekal kosong dan tidak meneka siapa telah sertai. Sesi ini mungkin milik guru lain atau sudah tidak ada.",
-        "errorTitle": "Tidak dapat memuatkan sesi langsung ini",
-        "gridLabel": "Grid status murid",
-        "legendLabel": "Makna setiap warna petak",
-        "loading": "Memuatkan sesi langsung",
-        "meta": {
-          "title": "Sesi langsung — SchoolTest",
-          "description": "Ikuti diagnostik bacaan secara langsung: siapa telah sertai, sedang menjawab, telah hantar dan yang terhenti."
-        },
-        "noActivity": "Tiada aktiviti {minutes} min",
-        "noCode": "Tiada kod sertai dijana untuk sesi ini",
-        "retry": "Cuba lagi",
-        "rosterEmptyDescription": "Sesi ini tiada murid aktif untuk dipantau. Tambah murid ke kelas, kemudian buka semula halaman ini.",
-        "rosterEmptyTitle": "Tiada murid dalam senarai kelas ini",
-        "signalsNoted": "{count} peringatan direkodkan",
-        "stageOf": "Tahap {stage} daripada {total}",
-        "stallCaption": "{minutes, plural, other {Petak bertukar kuning selepas # minit tiada aktiviti.}}",
-        "startedAgo": "{minutes, plural, =0 {Sesi baru sahaja dimulakan} other {Sesi dimulakan # min lalu}}",
-        "stateInProgress": "Sedang berjalan",
-        "stateAbsent": "Tidak hadir",
-        "stateJoined": "Sertai",
-        "stateNotJoined": "Belum sertai",
-        "statePaused": "Dijeda",
-        "stateScoringFailed": "Pemarkahan gagal",
-        "stateStalled": "Terhenti",
-        "stateSubmitted": "Dihantar",
-        "summaryAbsent": "Tidak hadir",
-        "summaryExpected": "Dijangka",
-        "summaryInProgress": "Sedang berjalan",
-        "summaryJoined": "Sertai",
-        "summaryLabel": "Kiraan sesi",
-        "summaryPaused": "Dijeda",
-        "summaryScoringFailed": "Pemarkahan gagal",
-        "summaryStalled": "Terhenti",
-        "summarySubmitted": "Dihantar",
-        "tileAria": "{name}: {state}",
-        "tileAriaDetail": "{name}: {state} — {detail}",
-        "tileAverage": "Purata kelas",
-        "tileAverageNone": "Tiada keputusan berskoran lagi",
-        "tileGrowth": "Pertumbuhan boleh dipercayai",
-        "tileGrowthInsufficient": "Data tidak mencukupi",
-        "tileGrowthNote": "{count, plural, other {# penggerak boleh dipercayai}}",
-        "tilePhases": "Taburan fasa ACARA",
-        "tilePhasesUnmeasured": "{count, plural, other {# murid tidak diukur}}",
-        "tilePhasesValue": "{count, plural, other {# fasa}}",
-        "tileScored": "Berskoran",
-        "tileScoredValue": "{scored} daripada {total} berskoran",
-        "title": "{className} — {testLabel}"
-      },
-      "rollup": {
-        "schoolSummary": "{sessions, plural, other {# sesi}} sedang berjalan merentas {classes, plural, other {# kelas}}. Seorang pelajar hanya boleh menduduki satu ujian pada satu masa.",
-        "nothingRunning": "Tiada yang berjalan. Pelajar yang berbeza dalam kelas yang sama boleh menduduki versi berbeza pada masa yang sama.",
-        "groupHeading": "{name} · {meta} · {free}",
-        "groupMeta": "{yearBand} · {students, plural, other {# murid}}",
-        "groupMetaNoYear": "{students, plural, other {# murid}}",
-        "everyStudentInSession": "Setiap murid sedang dalam sesi.",
-        "emptyTitle": "Tiada sesi sedang berjalan sekarang.",
-        "emptyBody": "Mulakan sesi untuk menjana kod penyertaan.",
-        "idleHeading": "Kelas tanpa sebarang sesi berjalan",
-        "allBusy": "Setiap kelas mempunyai sekurang-kurangnya satu sesi yang sedang berjalan.",
-        "chipLabel": "{name} · {students, plural, other {# murid}}",
-        "who": "{students, plural, other {# murid}} · seluruh kelas",
-        "livePill": "SEDANG BERJALAN",
-        "monitor": "Pantau",
-        "close": "Tutup",
-        "testLabelMissing": "Label ujian tidak tersedia",
-        "offlineTitle": "Anda nampaknya luar talian.",
-        "offlineBody": "Ringkasan langsung memerlukan sambungan. Ia akan dikemas kini sebaik sahaja anda kembali dalam talian."
+        "endedToast": "Sesi telah ditamatkan. Kod sertai tidak lagi berfungsi."
       }
     },
     "results": {

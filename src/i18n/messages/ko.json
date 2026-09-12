@@ -2183,102 +2183,7 @@
     }
   },
   "Teach": {
-    "CycleBanner": {
-      "label": "학급 테스트 주기",
-      "testA": "이 학급은 Test A를 진행 중입니다",
-      "testB": "이 학급은 Test B를 진행 중입니다",
-      "window": "시험 기간: {opens} ~ {closes}",
-      "formCode": "폼 {code}",
-      "unscheduled": "이 학급에는 아직 예정된 테스트가 없습니다. 시험 기간이 열리면 날짜가 여기에 표시됩니다."
-    },
-    "meta": {
-      "title": "교사 대시보드 - SchoolTest",
-      "description": "교사 홈: 학급과 리포트."
-    },
-    "home": {
-      "title": "교사 대시보드",
-      "subtitle": "학급 리포트는 리포트 메뉴에서 확인할 수 있습니다.",
-      "reportsCta": "리포트 열기",
-      "classesTitle": "내 학급",
-      "classesLoading": "학급을 불러오는 중...",
-      "classesError": "학급을 불러올 수 없습니다. 다시 시도하세요.",
-      "classesEmpty": "아직 학급에 배정되지 않았습니다. 학교 관리자가 학급에 추가해 줄 수 있습니다.",
-      "rosterLink": "명단",
-      "testDayLink": "테스트 데이",
-      "runSheetLink": "시험 당일 진행표",
-      "resultsLink": "결과",
-      "panels": {
-        "diagnostic": {
-          "title": "진단",
-          "satLabel": "시험 응시",
-          "satValue": "{roster}명 중 {sat}명",
-          "latestFormLabel": "최신 폼",
-          "latestFormMissing": "아직 응시하지 않음",
-          "masteredLabel": "마스터한 읽기 영역",
-          "masteredValue": "학급의 {pct}%",
-          "empty": "진단 데이터가 곧 제공됩니다. 학생들이 Test A를 응시하면 패널이 채워집니다."
-        },
-        "monitor": {
-          "title": "실시간 시험",
-          "states": {
-            "not_joined": "미참여",
-            "joined": "참여함",
-            "in_progress": "진행 중",
-            "submitted": "제출됨",
-            "stalled": "멈춤"
-          },
-          "empty": "현재 진행 중인 시험이 없습니다."
-        }
-      }
-    },
-    "roster": {
-      "meta": {
-        "title": "학급 명단 - SchoolTest",
-        "description": "시험일 전에 학급 명단을 확인하세요: 이름, 상태, 로그인 이메일."
-      },
-      "title": "학급 명단",
-      "subtitle": "모든 학생이 시험일에 로그인할 수 있는지 확인하세요. 이메일 수정은 학교 관리자가 담당합니다.",
-      "backLink": "내 학급으로 돌아가기",
-      "loading": "명단을 불러오는 중...",
-      "loadError": "명단을 불러올 수 없습니다. 다시 시도하세요.",
-      "emptyTitle": "표시할 학생이 없습니다",
-      "emptyBody": "이 학급에 아직 학생이 없거나, 이 학급에 배정되지 않았습니다.",
-      "columnName": "이름",
-      "columnStatus": "상태",
-      "columnEmail": "이메일",
-      "columnActions": "작업",
-      "statusActive": "재적",
-      "statusArchived": "보관됨",
-      "emailMissing": "시험일 전에 이메일 필요",
-      "emailMissingHint": "이메일이 없는 학생은 시험일에 로그인할 수 없습니다. 학교 관리자에게 누락된 이메일을 추가해 달라고 요청하세요.",
-      "emailFixAction": "이메일 수정 요청",
-      "emailFixPending": "수정 요청됨",
-      "emailFixSuccessToast": "학교 관리자에게 이 이메일 수정을 요청했습니다.",
-      "emailFixErrorToast": "이메일 수정을 요청할 수 없습니다. 다시 시도하세요.",
-      "testDayLink": "테스트 데이로 이동",
-      "searchPlaceholder": "학생 검색",
-      "searchLabel": "학생 검색",
-      "sortLabel": "정렬",
-      "filterStatusLabel": "상태",
-      "filterStatusAll": "전체 상태",
-      "sortNameAsc": "이름 오름차순",
-      "sortNameDesc": "이름 내림차순",
-      "showingCount": "전체 {total}명 중 {showing}명 표시",
-      "pageCount": "{pageCount}페이지 중 {page}페이지 · 총 {total}명",
-      "previous": "이전",
-      "next": "다음",
-      "paginationLabel": "명단 페이지",
-      "rowMenuLabel": "행 작업",
-      "clearFilters": "필터 지우기",
-      "errorStaleBanner": "마지막 새로 고침이 실패했습니다 — 아래 학생들은 서버가 마지막으로 응답한 명단입니다.",
-      "errorDescription": "연결을 확인하고 다시 시도해 주세요.",
-      "retry": "다시 시도"
-    },
     "diagnostic": {
-      "meta": {
-        "title": "학급 진단 - SchoolTest",
-        "description": "학급의 읽기 프로필과 그 근거가 되는 문항 증거입니다."
-      },
       "backLink": "내 학급으로 돌아가기",
       "title": "학급 진단",
       "subtitle": "학급의 읽기 능력과 그 아래 놓인 시험 증거입니다.",
@@ -2328,11 +2233,6 @@
       },
       "filteredEmptyTitle": "일치하는 학생이 없습니다",
       "filteredEmptyDescription": "현재 검색과 일치하는 학생이 없습니다.",
-      "export": {
-        "cta": "AI 어시스턴트용으로 내보내기",
-        "downloading": "내보내기 준비 중...",
-        "error": "내보내기를 다운로드할 수 없습니다. 다시 시도하세요."
-      },
       "searchPlaceholder": "학생 검색",
       "searchLabel": "학생 검색",
       "sortLabel": "정렬",
@@ -2369,190 +2269,15 @@
         "not_mastered": "미달성"
       },
       "notAssessedLine": "한 번 또는 두 번의 테스트에서 평가되지 않음: {areas}"
-    },
-    "testDay": {
-      "history": {
-        "searchPlaceholder": "시험 세션 검색",
-        "searchLabel": "시험 세션 검색",
-        "filterOutcomeLabel": "결과",
-        "filterOutcomeAll": "전체 결과",
-        "sortLabel": "정렬",
-        "clearFilters": "필터 지우기",
-        "paginationLabel": "기록 페이지",
-        "previous": "이전",
-        "next": "다음",
-        "rowMenuLabel": "행 작업",
-        "showingCount": "전체 {total}개 중 {showing}개 표시",
-        "pageCount": "{pageCount}페이지 중 {page}페이지 · 총 {total}개",
-        "sortOpenedDesc": "시작 시간: 최신순",
-        "sortOpenedAsc": "시작 시간: 과거순",
-        "openAction": "열기",
-        "filteredEmptyTitle": "일치하는 시험 세션이 없습니다",
-        "filteredEmptyDescription": "현재 검색 및 결과 필터와 일치하는 시험 세션이 없습니다.",
-        "errorStaleBanner": "마지막 새로 고침이 실패했습니다 — 아래 행들은 서버가 마지막으로 응답한 목록입니다.",
-        "errorDescription": "연결을 확인하고 다시 시도해 주세요.",
-        "retry": "다시 시도",
-        "title": "시험 세션 기록",
-        "loading": "시험 세션 기록을 불러오는 중...",
-        "loadError": "시험 세션 기록을 불러올 수 없습니다. 다시 시도하세요.",
-        "emptyTitle": "이 학급에는 아직 시험 세션이 없습니다",
-        "emptyBody": "시험을 시작하면 여기에 표시되어 참여와 제출 현황을 다시 확인할 수 있습니다.",
-        "missingValue": "-",
-        "columns": {
-          "opened": "시작 시간",
-          "code": "코드",
-          "form": "시험지",
-          "status": "상태",
-          "joined": "참여",
-          "submitted": "제출"
-        },
-        "status": {
-          "open": "열림",
-          "closed": "닫힘"
-        },
-        "joinedCount": "{joined}/{total}",
-        "submittedCount": "{submitted}/{total}"
-      },
-      "summary": {
-        "title": "시험 세션 요약",
-        "loading": "시험 세션 요약을 불러오는 중...",
-        "loadError": "시험 세션 요약을 불러올 수 없습니다. 다시 시도하세요.",
-        "codeLine": "코드 {code}",
-        "counts": {
-          "sat": "응시",
-          "absent": "결석",
-          "needsResit": "재응시 필요",
-          "resultsPending": "결과 대기 중",
-          "resultsReady": "결과 준비됨"
-        },
-        "pendingNote": "{count, plural, other {결과 #건이 아직 준비 중이며 완료되면 여기에 표시됩니다.}}"
-      }
     }
   },
   "TestDay": {
-    "meta": {
-      "title": "테스트 데이 - SchoolTest",
-      "description": "시험을 시작하고 접속 코드를 공개하며 학급 진행 상황을 실시간으로 확인하세요."
-    },
-    "title": "테스트 데이",
-    "titleWithClass": "테스트 데이: {className}",
-    "subtitle": "시험을 시작하고 접속 코드를 공개하며 각 학생의 진행 상황을 실시간으로 따라가세요.",
-    "backLink": "명단으로 돌아가기",
-    "loading": "시험 세션을 불러오는 중...",
-    "loadError": "시험 세션을 불러올 수 없습니다. 다시 시도하세요.",
-    "emptyTitle": "시작된 시험 세션이 없습니다",
-    "emptyBody": "시험을 시작해 이 학급의 접속 코드를 받으세요.",
-    "startCta": "시험 시작",
-    "startError": "시험을 시작할 수 없습니다. 다시 시도하세요.",
-    "closedStartHint": "이 시험 세션은 닫혀 있습니다. 이 학급이 다음 시험을 볼 때 새 세션을 시작하세요.",
-    "status": {
-      "open": "열림",
-      "closed": "닫힘"
-    },
-    "code": {
-      "title": "접속 코드",
-      "formLine": "시험지 {formCode}",
-      "hint": "학생은 이 코드와 학교 이메일을 입력해 시작합니다.",
-      "revealCta": "코드 공개",
-      "hideCta": "코드 숨기기",
-      "closedNote": "이 시험 세션은 닫혀 있습니다. 학생이 참여하려면 다시 여세요."
-    },
     "monitor": {
-      "searchPlaceholder": "학생 검색",
-      "searchLabel": "학생 검색",
-      "filterStatusLabel": "시험 상태",
-      "filterStatusAll": "전체 상태",
-      "sortLabel": "정렬",
-      "clearFilters": "필터 지우기",
-      "paginationLabel": "진행 상황 페이지",
-      "previous": "이전",
-      "next": "다음",
-      "rowMenuLabel": "행 작업",
-      "showingCount": "전체 {total}명 중 {showing}명 표시",
-      "pageCount": "{pageCount}페이지 중 {page}페이지 · 총 {total}명",
-      "sortNameAsc": "이름 A-Z",
-      "sortNameDesc": "이름 Z-A",
-      "sortProgressAsc": "진행도: 낮은 순",
-      "sortProgressDesc": "진행도: 높은 순",
-      "emptyTitle": "명단에 학생이 없습니다",
-      "emptyBody": "학급 명단에 추가된 학생이 여기에 표시됩니다.",
-      "filteredEmptyTitle": "일치하는 학생이 없습니다",
-      "filteredEmptyDescription": "현재 검색 및 상태 필터와 일치하는 학생이 없습니다.",
-      "errorStaleBanner": "마지막 새로 고침이 실패했습니다 — 아래 학생들은 서버가 마지막으로 응답한 명단입니다.",
-      "errorDescription": "연결을 확인하고 다시 시도해 주세요.",
-      "retry": "다시 시도",
-      "title": "학급 진행 상황",
-      "liveNote": "시험이 열려 있는 동안 자동으로 업데이트됩니다.",
-      "loading": "학급을 불러오는 중...",
-      "loadError": "학급 진행 상황을 불러올 수 없습니다. 다시 시도하세요.",
-      "columnName": "이름",
-      "columnEmail": "이메일",
-      "columnStatus": "상태",
-      "columnAction": "재응시",
-      "emailMissing": "이메일 없음",
-      "state": {
-        "not_joined": "미참여",
-        "code_shown": "코드 표시됨",
-        "joined": "참여함",
-        "in_progress": "진행 중",
-        "submitted": "제출됨",
-        "stalled": "멈춤",
-        "scoring_failed": "채점 실패",
-        "absent": "결석",
-        "paused": "일시중지"
-      },
-      "codeShownCount": "{count}명에게 코드 표시됨",
-      "closeCta": "시험 닫기",
-      "reopenCta": "다시 열기",
-      "absentLabel": "결석",
-      "markAbsentLabel": "{name} 학생을 결석으로 표시",
-      "clearAbsentLabel": "{name} 학생을 출석으로 표시",
-      "absentErrorToast": "결석 표시를 저장하지 못했습니다. 다시 시도해 주세요.",
-      "closeConfirmTitle": "이 시험을 닫으시겠습니까?",
-      "closeConfirmBody": "아직 응시 중인 학생의 답안은 현재 상태로 제출되고, 참가 코드는 더 이상 작동하지 않습니다. 이 작업은 되돌릴 수 없습니다.",
-      "closeConfirmCancel": "열어 두기",
-      "closeConfirmCta": "시험 닫기"
-    },
-    "needsToSit": {
-      "title": "아직 응시하지 않은 학생",
-      "count": "{count, plural, other {아직 응시하지 않은 학생 #명}}",
-      "empty": "모든 학생이 참여했거나 제출했습니다. 결석으로 표시된 학생은 나중에 응시할 수 있습니다."
-    },
-    "studentReveal": {
-      "title": "{name} 학생에게 접속 코드 알려 주기",
-      "intro": "{name} 학생은 이 코드와 학교 이메일을 입력해 시작합니다.",
-      "onlyThisStudent": "이 코드는 {name} 학생에게만 알려 주세요.",
-      "copyCta": "코드 복사",
-      "copiedToast": "코드를 복사했습니다",
-      "copyErrorToast": "코드를 복사할 수 없습니다. 다시 시도하세요.",
-      "emailMissingNote": "명단에 학교 이메일이 없습니다. 코드를 공개하기 전에 이메일을 추가하세요.",
-      "closedNote": "이 시험 세션은 닫혀 있습니다. 코드를 공개하려면 다시 여세요.",
-      "unmintedNote": "먼저 학급 코드를 공개하세요.",
-      "closeCta": "닫기",
-      "actionLabel": "{name} 학생에게 코드 공개"
-    },
-    "resit": {
-      "cta": "재응시",
-      "confirmTitle": "{name} 학생을 재응시시킬까요?",
-      "confirmBody": "현재 응시는 종료되며 학생은 접속 코드로 다시 참여할 수 있습니다.",
-      "cancel": "취소",
-      "confirm": "재응시 확인"
+      "absentErrorToast": "결석 표시를 저장하지 못했습니다. 다시 시도해 주세요."
     },
     "activity": {
-      "title": "세션 활동",
-      "subtitle": "이 시험 진행 중의 모든 조치와 수행한 사람",
-      "loading": "활동 기록을 불러오는 중…",
-      "error": "활동 기록을 불러올 수 없습니다.",
-      "empty": "아직 이 시험에서 기록된 활동이 없습니다.",
-      "truncated": "전체 {total}개 중 최근 {shown}개를 표시합니다. 전체 기록은 이의 신청을 위해 세션과 함께 보관됩니다.",
-      "appealsNote": "전체 기록은 이의 신청을 위해 세션과 함께 보관됩니다.",
-      "logIncident": "이슈 기록",
-      "noteLabel": "이슈 메모",
-      "notePlaceholder": "무슨 일이 있었나요? (세션 기록에 보관됨)",
-      "incidentLogged": "이슈가 기록되었습니다.",
-      "cancel": "취소"
-    },
-    "runSheetLink": "진행표 열기"
+      "incidentLogged": "이슈가 기록되었습니다."
+    }
   },
   "Invite": {
     "meta": {
@@ -4396,52 +4121,6 @@
       "typeToConfirm": "확인하려면 <name>{schoolName}</name>을(를) 입력하세요"
     }
   },
-  "RunSheet": {
-    "meta": {
-      "title": "시험 당일 진행표 - SchoolTest",
-      "description": "시험 전, 시험 중, 시험 후에 해야 할 말과 해야 할 일."
-    },
-    "title": "시험 당일 진행표",
-    "subtitle": "시험을 진행하는 데 필요한 모든 내용을 단계별로 정리했습니다. 인쇄해서 곁에 두세요.",
-    "backLink": "내 학급으로 돌아가기",
-    "printCta": "진행표 인쇄",
-    "before": {
-      "title": "시험 전",
-      "itemOne": "미리 학급 명단을 확인하세요. 모든 학생이 로그인하려면 정확한 학교 이메일이 필요합니다. 잘못된 이메일은 시험 전에 수정하세요.",
-      "itemTwo": "시험 당일에는 해당 학급의 시험 당일 화면을 열고 시험을 시작하세요.",
-      "rosterLink": "내 학급 열기"
-    },
-    "start": {
-      "title": "시작할 때",
-      "itemOne": "시험 당일 화면에서 접속 코드를 공개하고 칠판에 적어 주세요.",
-      "itemTwo": "학생들은 SchoolTest 앱을 열고 코드와 학교 이메일을 입력한 뒤 시작합니다."
-    },
-    "say": {
-      "title": "학생들에게 할 말",
-      "intro": "학생들이 시작하기 전에 반 전체에 이렇게 말하세요.",
-      "lineOne": "시험은 세 부분으로 나뉘어 있어.",
-      "lineTwo": "각 부분은 조금씩 더 어려워지니까, 어렵게 느껴져도 걱정하지 마.",
-      "lineThree": "답을 모르겠으면 네가 생각하기에 가장 맞는 것을 고르고 다음으로 넘어가도 돼.",
-      "lineFour": "시간이 끝나면 앱이 알아서 다음으로 넘겨 줘.",
-      "lineFive": "부분 사이에는 잠깐 쉬어도 되고, 준비되면 계속하기를 누르면 돼."
-    },
-    "during": {
-      "title": "시험 중",
-      "itemOne": "평소처럼 교실을 돌아다니며 감독하세요.",
-      "itemTwo": "시험 당일 화면의 학급 진행 목록에서 누가 접속했고, 누가 풀고 있고, 누가 제출했는지 확인할 수 있습니다.",
-      "itemThree": "시험을 일시 정지하거나 바꿀 수는 없고, 쉬는 시간을 시작할 필요도 없습니다. 각 학생이 준비되면 직접 계속하기를 누릅니다."
-    },
-    "trouble": {
-      "title": "문제가 생겼을 때",
-      "itemOne": "결석한 학생은 나중에 응시할 수 있습니다. 시험을 열어 두거나, 돌아왔을 때 새 시험을 시작하고 그 학생에게 코드를 공개하세요.",
-      "itemTwo": "앱이 꺼지거나 노트북 배터리가 방전되면 시험 당일 화면에서 해당 학생 이름 옆의 재응시를 선택하세요. 학생은 코드와 학교 이메일로 다시 접속합니다."
-    },
-    "after": {
-      "title": "시험이 끝난 후",
-      "itemOne": "모든 학생이 제출하면 시험 당일 화면에서 시험을 종료하세요.",
-      "itemTwo": "채점이 끝나면 대시보드에서 결과를 확인할 수 있습니다."
-    }
-  },
   "Eald": {
     "meta": {
       "homeTitle": "SchoolTest: 다른 종류의 영어 테스트",
@@ -5004,153 +4683,14 @@
         "title": "테스트 세션 — SchoolTest",
         "description": "학급의 읽기 진단 세션을 시작하고 참여 코드를 공유하며 실시간으로 확인하세요."
       },
-      "title": "테스트 세션",
-      "description": "학급 세션을 시작하고 참여 코드를 공유하며 실시간으로 확인합니다.",
       "setup": {
         "classRequired": "테스트할 학급을 선택하세요.",
         "testRequired": "이 세션에서 진행할 테스트를 선택하세요."
       },
       "live": {
-        "settings": {
-          "control": "시험 설정",
-          "title": "세션 설정",
-          "subtitle": "이 세션에 적용된 설정입니다.",
-          "count": "{total}개 중 {on}개 켜짐",
-          "close": "설정 닫기",
-          "on": "켜짐",
-          "off": "꺼짐",
-          "minutes": "{minutes}분",
-          "fixed": "세션이 시작되면 설정을 변경할 수 없습니다. 변경하려면 이 세션을 종료하고 새 세션을 시작하세요.",
-          "rows": {
-            "lowBw": {
-              "label": "저대역폭 모드",
-              "desc": "텍스트 전용 지문, 이미지 미리 불러오기 없음, 답안은 기기에 저장 후 연결이 복구되면 동기화됩니다. 모바일 데이터나 위성 회선 환경에서 사용하세요."
-            },
-            "skip": {
-              "label": "문제 건너뛰기 허용",
-              "desc": "학생이 문제를 건너뛰었다가 제출 전에 다시 돌아올 수 있습니다."
-            },
-            "review": {
-              "label": "제출 전 검토 화면",
-              "desc": "건너뛴 문제와 표시된 문제의 최종 목록으로, 실수로 빈 답안을 남기지 않습니다."
-            },
-            "flag": {
-              "label": "검토용 문제 표시",
-              "desc": "학생이 문제를 표시하여 다시 확인할 수 있습니다. 표시는 검토 화면과 교사 화면에 모두 나타납니다."
-            },
-            "bigText": {
-              "label": "큰 글씨 및 고대비",
-              "desc": "학생이 언제든 글자 크기를 키우고 고대비 테마로 전환할 수 있습니다."
-            },
-            "lockdown": {
-              "label": "잠금 창 모드",
-              "desc": "시험이 화면을 채웁니다. 다른 앱, 탭, 복사, 붙여넣기, 인쇄가 차단됩니다."
-            },
-            "focusFlag": {
-              "label": "창 이탈 시 표시",
-              "desc": "화면을 벗어나면 시각과 함께 기록되어 실시간 화면에 표시됩니다. 잠금 모드가 꺼져 있을 때 사용하세요."
-            },
-            "warn5": {
-              "label": "5분 남음 알림",
-              "desc": "남은 시간 5분에 조용한 배너 한 번으로 알려 주어 시계를 계속 보지 않아도 됩니다."
-            },
-            "autoSubmit": {
-              "label": "시간 종료 시 자동 제출",
-              "desc": "끄면 교사가 확인할 때까지 제출되지 않습니다."
-            },
-            "showScore": {
-              "label": "종료 후 점수 표시",
-              "desc": "끄면 보고서를 공개하기 전까지 결과가 표시되지 않습니다."
-            },
-            "timeLimit": {
-              "label": "시간 제한",
-              "desc": "세션이 스스로 종료하기까지의 시간입니다."
-            }
-          }
-        },
         "alreadyClosedToast": "이 세션은 이미 종료되어 있었습니다. 최종 상태를 표시합니다.",
-        "badgeClosed": "종료",
-        "badgeLive": "진행 중",
-        "closeSessionCta": "세션 닫기",
-        "connectionNoted": "연결: {connection}",
-        "connectionOffline": "오프라인",
-        "connectionOnline": "온라인",
-        "connectionWeak": "연결 불안정",
-        "endDialogCancel": "계속 열어 두기",
-        "endDialogConfirm": "세션 종료",
-        "endDialogDescription": "아직 응시 중인 학생의 답안은 현재 상태로 제출되며 참여 코드는 더 이상 사용할 수 없습니다. 이 작업은 되돌릴 수 없습니다.",
-        "endDialogTitle": "{className} 세션을 종료할까요?",
         "endErrorToast": "세션을 종료할 수 없습니다. 아직 열려 있으니 다시 시도하세요.",
-        "endSession": "세션 종료",
-        "endedToast": "세션이 종료되었습니다. 참여 코드는 더 이상 사용할 수 없습니다.",
-        "errorDescription": "누가 참여했는지 추측하지 않고 그리드를 비워 둡니다. 다른 교사의 세션이거나 더 이상 존재하지 않을 수 있습니다.",
-        "errorTitle": "이 실시간 세션을 불러오지 못했습니다",
-        "gridLabel": "학생 상태 그리드",
-        "legendLabel": "타일 색상의 의미",
-        "loading": "실시간 세션을 불러오는 중",
-        "meta": {
-          "title": "실시간 세션 — SchoolTest",
-          "description": "읽기 진단을 실시간으로 확인하세요. 참여, 진행, 제출, 정지 상태가 한눈에 보입니다."
-        },
-        "noActivity": "{minutes}분간 활동 없음",
-        "noCode": "이 세션에는 참여 코드가 발급되지 않았습니다",
-        "retry": "다시 시도",
-        "rosterEmptyDescription": "모니터링할 활성 학생이 없습니다. 학급에 학생을 추가한 뒤 이 페이지를 다시 열어 주세요.",
-        "rosterEmptyTitle": "이 학급 명단에 학생이 없습니다",
-        "signalsNoted": "기록된 알림 {count}회",
-        "stageOf": "{total}단계 중 {stage}단계",
-        "stallCaption": "{minutes, plural, other {활동이 #분 이상 없으면 타일이 주황색으로 바뀝니다.}}",
-        "startedAgo": "{minutes, plural, =0 {세션이 방금 시작되었습니다} other {세션 시작 후 #분 경과}}",
-        "stateInProgress": "진행 중",
-        "stateAbsent": "결석",
-        "stateJoined": "참여함",
-        "stateNotJoined": "미참여",
-        "statePaused": "일시중지",
-        "stateScoringFailed": "채점 실패",
-        "stateStalled": "정지",
-        "stateSubmitted": "제출 완료",
-        "summaryAbsent": "결석",
-        "summaryExpected": "대상",
-        "summaryInProgress": "진행 중",
-        "summaryJoined": "참여",
-        "summaryLabel": "세션 집계",
-        "summaryPaused": "일시중지",
-        "summaryScoringFailed": "채점 실패",
-        "summaryStalled": "정지",
-        "summarySubmitted": "제출",
-        "tileAria": "{name}: {state}",
-        "tileAriaDetail": "{name}: {state} — {detail}",
-        "tileAverage": "학급 평균",
-        "tileAverageNone": "아직 채점된 결과 없음",
-        "tileGrowth": "신뢰할 수 있는 성장",
-        "tileGrowthInsufficient": "데이터 부족",
-        "tileGrowthNote": "{count, plural, other {신뢰할 수 있는 변화 #건}}",
-        "tilePhases": "ACARA 단계 분포",
-        "tilePhasesUnmeasured": "{count, plural, other {측정되지 않은 학생 #명}}",
-        "tilePhasesValue": "{count, plural, other {단계 #개}}",
-        "tileScored": "채점됨",
-        "tileScoredValue": "총 {total}명 중 {scored}명 채점됨",
-        "title": "{className} — {testLabel}"
-      },
-      "rollup": {
-        "schoolSummary": "{sessions, plural, other {#개 세션이}} {classes, plural, other {#개 학급에서}} 진행 중입니다. 한 학생은 한 번에 하나의 시험만 볼 수 있습니다.",
-        "nothingRunning": "진행 중인 세션이 없습니다. 같은 학급의 다른 학생들은 서로 다른 버전을 동시에 응시할 수 있습니다.",
-        "groupHeading": "{name} · {meta} · {free}",
-        "groupMeta": "{yearBand} · {students, plural, other {학생 #명}}",
-        "groupMetaNoYear": "{students, plural, other {학생 #명}}",
-        "everyStudentInSession": "모든 학생이 세션에 참여 중입니다.",
-        "emptyTitle": "지금 진행 중인 세션이 없습니다.",
-        "emptyBody": "세션을 시작하여 참가 코드를 생성하세요.",
-        "idleHeading": "진행 중인 것이 없는 학급",
-        "allBusy": "모든 학급에 최소 하나의 세션이 진행 중입니다.",
-        "chipLabel": "{name} · {students, plural, other {학생 #명}}",
-        "who": "{students, plural, other {학생 #명}} · 전체 학급",
-        "livePill": "진행 중",
-        "monitor": "모니터링",
-        "close": "닫기",
-        "testLabelMissing": "시험 레이블을 사용할 수 없음",
-        "offlineTitle": "오프라인인 것 같습니다.",
-        "offlineBody": "실시간 현황에는 연결이 필요합니다. 다시 연결되면 즉시 업데이트됩니다."
+        "endedToast": "세션이 종료되었습니다. 참여 코드는 더 이상 사용할 수 없습니다."
       }
     },
     "results": {
