@@ -65,7 +65,11 @@ function StudentDrillDownHeader({
                   title={t('askAiTitle')}
                   aria-expanded={actions.askAiOpen}
                   onClick={actions.askAi}
-                  className={STUDENT_HEADER_BUTTON_CLASS}
+                  // P1 round 2 row N9: the design draws THIS navy button with a
+                  // 1px same-colour border (`:334`) — 94px on "Ask AI" and 99px
+                  // on "Hide AI", not 92 and 97. The kit's `primary` tone keeps
+                  // `border-0` (round 1 row 19).
+                  className={`${STUDENT_HEADER_BUTTON_CLASS} border border-navy-900`}
                 >
                   <Sparkle aria-hidden="true" className="size-[15px]" strokeWidth={2} />
                   {actions.askAiOpen ? t('hideAi') : t('askAi')}

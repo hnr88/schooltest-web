@@ -5,11 +5,10 @@ import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+  OpsDialog,
+  OpsDialogContent,
+  OpsDialogDescription,
+  OpsDialogTitle,
 } from '@/modules/design-system';
 import { SITTING_TOGGLE_KEYS } from '@/modules/teacher/constants/live-tab.constants';
 import { KIT_FOCUS_RING } from '@/modules/teacher/constants/teacher-kit-controls.constants';
@@ -24,6 +23,12 @@ import { DEFAULT_SITTING_SETTINGS, type SittingSettings } from '@/modules/teache
 //
 // A sitting with `settings: null` renders from the design defaults (:2615) —
 // never a blank list.
+//
+// P1 round 2 row N5: it hangs off `OpsDialog`/`OpsDialogContent` (the same
+// chrome as every other teacher overlay) so the backdrop is the design's
+// rgba(14,35,80,.42) with no blur; the vendored `ui/dialog` overlay is
+// black/10 + `backdrop-blur-xs` and takes no className. The panel classes are
+// unchanged — it already measured 620×738 r12 at the design's x/y.
 interface SettingRow {
   label: string;
   desc: string;
@@ -73,19 +78,20 @@ function SessionSettingsModal({
   ];
 
   return (
-    <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
-      <DialogContent
-        showCloseButton={false}
+    <OpsDialog open={open} onOpenChange={(next) => !next && onClose()}>
+      <OpsDialogContent
         data-slot="session-settings-modal"
         data-settings-count={`${onCount} of ${ROW_ORDER.length} on`}
         className="flex max-h-[82vh] flex-col gap-0 overflow-hidden rounded-[12px] p-0 leading-[normal] shadow-[0_28px_56px_rgba(0,0,0,0.22)] sm:max-w-[620px]"
       >
-        <DialogHeader className="flex-row items-center gap-3.5 border-b border-[#ECEEF2] px-[26px] py-[22px] text-left">
+        <div className="flex flex-row items-center gap-3.5 border-b border-[#ECEEF2] px-[26px] py-[22px] text-left">
           <div className="min-w-0 flex-1">
-            <DialogTitle className="text-[18px] font-semibold tracking-[-0.01em] text-navy-900">{t('title')}</DialogTitle>
-            <DialogDescription className="mt-1 text-[13px] text-[#6B7280]">
+            <OpsDialogTitle className="text-[18px] font-semibold tracking-[-0.01em] text-navy-900">
+              {t('title')}
+            </OpsDialogTitle>
+            <OpsDialogDescription className="mt-1 text-[13px] text-[#6B7280]">
               {t('subtitle', { on: onCount, total: ROW_ORDER.length })}
-            </DialogDescription>
+            </OpsDialogDescription>
           </div>
           <button
             type="button"
@@ -98,7 +104,7 @@ function SessionSettingsModal({
           >
             <X aria-hidden="true" className="size-4" />
           </button>
-        </DialogHeader>
+        </div>
         <div className="min-h-0 overflow-y-auto px-[26px] pt-1.5 pb-5">
           {rows.map((row) => (
             <div
@@ -117,8 +123,8 @@ function SessionSettingsModal({
           ))}
           <p className="pt-3.5 text-[12.5px] leading-normal text-[#6B7280]">{t('fixed')}</p>
         </div>
-      </DialogContent>
-    </Dialog>
+      </OpsDialogContent>
+    </OpsDialog>
   );
 }
 

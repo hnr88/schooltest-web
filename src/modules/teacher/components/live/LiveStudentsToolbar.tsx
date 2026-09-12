@@ -9,7 +9,10 @@ import { isLiveFilter } from '@/modules/teacher/lib/live-students';
 import type { LiveFilter } from '@/modules/teacher/types/live-students.types';
 
 // Teacher Portal v2.dc.html:1147–1156 — search, the six filter pills and the
-// "n of m students" tally, all over the sitting's real members.
+// "n of m students" tally, all over the sitting's real members. The Live tab is the
+// only surface the design draws the search box at `padding:0 14px` (`:1148`; the
+// Students tab is 15px, `:670`), so the 14px is an override on this instance and never
+// on the shared `PILL_SEARCH_VARIANTS.white` (P1 round 2 · N11).
 function LiveStudentsToolbar({
   query,
   onQuery,
@@ -35,7 +38,7 @@ function LiveStudentsToolbar({
         onValueChange={onQuery}
         placeholder={t('searchPlaceholder')}
         label={t('searchLabel')}
-        className="w-[270px]"
+        className="w-[270px] px-[14px]"
       />
       <FilterPills
         size="sm"

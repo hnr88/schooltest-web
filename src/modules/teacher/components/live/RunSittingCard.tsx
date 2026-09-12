@@ -29,7 +29,9 @@ function SettingsGlyph() {
 
 // Teacher Portal v2.dc.html:1062–1113 — "Run the sitting": LIVE NOW, then the join
 // code, the test (the served form, the server's stall threshold, the real settings)
-// and the room controls, split by 1px hairlines.
+// and the room controls, split by 1px hairlines. The 3-column strip also carries the
+// design's `border-bottom:1px solid #EEF1F6` (`:1076`), a hairline just inside the
+// card's own bottom border (P1 round 2 · N12).
 function RunSittingCard({
   sitting,
   monitor,
@@ -58,7 +60,7 @@ function RunSittingCard({
         <TeacherStatusPill status="live" size="lg" />
         <span className="text-[12.5px] text-[#6B7280]">{t('subtitle')}</span>
       </div>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-px bg-[#EEF1F6]">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-px border-b border-[#EEF1F6] bg-[#EEF1F6]">
         <JoinCodeCell sitting={sitting} monitor={monitor} />
         <div data-slot="run-sitting-test" className="flex flex-col bg-white px-6 py-[22px]">
           <span className={LIVE_EYEBROW_CLASS}>{t('test')}</span>
