@@ -19,11 +19,11 @@ async function updateSettings(input: {
   sittingDocumentId: string;
   patch: SittingSettingsPatch;
 }): Promise<SittingSettings> {
-  const response = await strapi.patch(
+  const response = await strapi.patch<{ data: unknown }>(
     `/api/sittings/${input.sittingDocumentId}/settings`,
     { data: input.patch },
   );
-  return sittingSettingsSchema.parse(response.data);
+  return sittingSettingsSchema.parse(response.data.data);
 }
 
 export function useSittingSettingsMutation(sittingDocumentId: string) {
@@ -34,6 +34,7 @@ export function useSittingSettingsMutation(sittingDocumentId: string) {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['test-day', 'sittings', sittingDocumentId] });
       void queryClient.invalidateQueries({ queryKey: ['test-day', 'monitor', sittingDocumentId] });
+      void queryClient.invalidateQueries({ queryKey: ['teacher'] });
     },
   });
 }

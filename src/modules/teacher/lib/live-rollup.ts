@@ -46,7 +46,7 @@ function toSitting(session: TeacherTestSession): LiveRollupSitting {
   };
 }
 
-function toBooking(session: TeacherTestSession): LiveRollupBooking {
+export function toBooking(session: TeacherTestSession): LiveRollupBooking {
   return {
     documentId: session.sitting_document_id,
     classDocumentId: session.class.document_id,

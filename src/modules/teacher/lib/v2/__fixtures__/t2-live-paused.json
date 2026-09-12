@@ -1,0 +1,149 @@
+{
+  "teacher": {
+    "sitting": {
+      "document_id": "rte1gi7sxvapsylua8vxsbe3",
+      "code": "199958",
+      "status": "open",
+      "opened_at": "2026-09-11T20:33:15.198Z",
+      "class": {
+        "document_id": "qves8wrtl7r9ctw49jivm8gl",
+        "name": "Reading 8B — Alvarez"
+      },
+      "variant": "A",
+      "paused": false,
+      "paused_at": null,
+      "extra_seconds": 0,
+      "extensions": 0
+    },
+    "stall_threshold_minutes": 5,
+    "summary": {
+      "expected": 4,
+      "joined": 0,
+      "in_progress": 1,
+      "submitted": 0,
+      "stalled": 0,
+      "scoring_failed": 0,
+      "absent": 1,
+      "paused": 1
+    },
+    "students": [
+      {
+        "student_document_id": "zqp4wrok2uowug6asi1u4mnb",
+        "display_name": "Qadir B.",
+        "state": "in_progress",
+        "stage": 1,
+        "total_stages": 3,
+        "inactive_minutes": null,
+        "proctoring": null,
+        "absent": false,
+        "paused": false,
+        "connection": "online",
+        "extra_minutes": 10
+      },
+      {
+        "student_document_id": "p8dnh8rp6vzp4bb5y6gjx2fn",
+        "display_name": "Rosa B.",
+        "state": "paused",
+        "stage": null,
+        "total_stages": null,
+        "inactive_minutes": null,
+        "proctoring": null,
+        "absent": false,
+        "paused": true,
+        "connection": null,
+        "extra_minutes": 0
+      },
+      {
+        "student_document_id": "roidqaw12yjn6ov008oc9mhk",
+        "display_name": "Sunniva B.",
+        "state": "absent",
+        "stage": null,
+        "total_stages": null,
+        "inactive_minutes": null,
+        "proctoring": null,
+        "absent": true,
+        "paused": false,
+        "connection": null,
+        "extra_minutes": 0
+      },
+      {
+        "student_document_id": "x9ri6ax951ye18ar2xjt8ryj",
+        "display_name": "Tenzin B.",
+        "state": "not_joined",
+        "stage": null,
+        "total_stages": null,
+        "inactive_minutes": null,
+        "proctoring": null,
+        "absent": false,
+        "paused": false,
+        "connection": null,
+        "extra_minutes": 0
+      }
+    ]
+  },
+  "sitting": {
+    "sitting": {
+      "documentId": "rte1gi7sxvapsylua8vxsbe3",
+      "code": "199958",
+      "status": "open",
+      "paused": false,
+      "paused_at": null,
+      "extra_seconds": 0,
+      "extensions": 0
+    },
+    "students": [
+      {
+        "documentId": "zqp4wrok2uowug6asi1u4mnb",
+        "given_name": "Qadir",
+        "family_name": "Baptiste",
+        "email": "a2s17@schooltest.local",
+        "extra_minutes": 10,
+        "state": "in_progress",
+        "session_documentId": "rf0x6g3ucv3zwatqi8hv5vt6",
+        "paused": false,
+        "connection": "online",
+        "absent": false,
+        "needs_to_sit": false
+      },
+      {
+        "documentId": "p8dnh8rp6vzp4bb5y6gjx2fn",
+        "given_name": "Rosa",
+        "family_name": "Baptiste",
+        "email": "a2s18@schooltest.local",
+        "extra_minutes": 0,
+        "state": "paused",
+        "session_documentId": "h2sohcmx7pu2q6nc906oo6wl",
+        "paused": true,
+        "connection": null,
+        "absent": false,
+        "needs_to_sit": false
+      },
+      {
+        "documentId": "roidqaw12yjn6ov008oc9mhk",
+        "given_name": "Sunniva",
+        "family_name": "Baptiste",
+        "email": "a2s19@schooltest.local",
+        "extra_minutes": 0,
+        "state": "absent",
+        "session_documentId": null,
+        "paused": false,
+        "connection": null,
+        "absent": true,
+        "needs_to_sit": false
+      },
+      {
+        "documentId": "x9ri6ax951ye18ar2xjt8ryj",
+        "given_name": "Tenzin",
+        "family_name": "Baptiste",
+        "email": "a2s20@schooltest.local",
+        "extra_minutes": 0,
+        "state": "not_joined",
+        "session_documentId": null,
+        "paused": false,
+        "connection": null,
+        "absent": false,
+        "needs_to_sit": true
+      }
+    ]
+  }
+}

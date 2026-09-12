@@ -38,8 +38,8 @@ vi.mock('@/i18n/navigation', () => ({
 vi.mock('@/modules/teacher/hooks/useEndSession', () => ({ useEndSession: () => endSession }));
 vi.mock('@/modules/teacher/hooks/useClassesDirectory', () => ({ useYearLabel: () => () => null }));
 vi.mock('@/modules/ops', () => ({
-  OpsConfirmDialog: ({ title, description }: { title: string; description: string }) =>
-    createElement('div', { role: 'alertdialog' }, `${title}|${description}`),
+  OpsConfirmDialog: ({ title, description, skin }: { title: string; description: string; skin?: string }) =>
+    createElement('div', { role: 'alertdialog', 'data-skin': skin }, `${title}|${description}`),
 }));
 
 (globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
@@ -200,12 +200,16 @@ describe('LiveSessionCard and IdleClassChips — rendered from the recorded rows
     );
   });
 
-  test('the close confirm names how many are still working, the code and the class', () => {
+  test('the close confirm asks the one question even with a student working, in the teacher skin', () => {
     endSession.isConfirmOpen = true;
     renderCard();
-    const dialog = host.querySelector('[role="alertdialog"]')?.textContent ?? '';
-    expect(dialog).toContain('TeacherPortal.liveSessions.closeConfirm.titleWorking{"count":1}');
-    expect(dialog).toContain('"code":"656113","className":"Reading 8B — Alvarez"');
+    // The recorded sitting has 1 joined, 0 submitted; this page still asks "Close this
+    // session?" (Teacher Portal v2.dc.html:4602) — the working-count title is the Live tab's (:4069).
+    expect(liveCard && stillWorking(liveCard)).toBe(1);
+    const dialog = host.querySelector('[role="alertdialog"]');
+    expect(dialog?.textContent).toMatch(/^TeacherPortal\.liveSessions\.closeConfirm\.title\|/);
+    expect(dialog?.textContent).toContain('"code":"656113","className":"Reading 8B — Alvarez"');
+    expect(dialog?.getAttribute('data-skin')).toBe('teacher');
   });
 
   test('one chip per idle class, and a chip starts a session for that class', () => {

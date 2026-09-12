@@ -17,3 +17,6 @@ export { useSittingActivityQuery } from './queries/use-sitting-activity.query';
 export { useLogIncidentMutation } from './queries/use-log-incident.mutation';
 export { useRoomControlMutation } from './queries/use-room-control.mutation';
 export { useStudentControlMutation } from './queries/use-student-control.mutation';
+export { useSittingMonitorQuery } from './queries/use-sitting-monitor.query';
+export { useMarkAbsentMutation } from './queries/use-mark-absent.mutation';
+export { sittingMonitorSchema } from './schemas/test-day.schema';

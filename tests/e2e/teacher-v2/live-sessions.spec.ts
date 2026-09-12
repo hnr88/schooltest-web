@@ -128,15 +128,13 @@ test('Close asks first, then the API reports the sitting closed and the card is 
   test.setTimeout(120_000);
   await page.goto('/dashboard/test-sessions');
   await expect(card()).toBeVisible({ timeout: 60_000 });
-  const row = liveOf(await readSessions(request, jwt)).find((entry) => entry.sitting_document_id === sittingId);
-  const working = (row?.stats?.joined ?? 0) - (row?.stats?.submitted ?? 0);
-
   await card().getByRole('button', { name: t('close'), exact: true }).click();
   const dialog = page.getByRole('alertdialog');
-  await expect(dialog).toContainText(
-    working > 0 ? t('closeConfirm.titleWorking', { count: working }) : t('closeConfirm.title'),
-  );
+  // Teacher Portal v2.dc.html:4602 — this page always asks the one question (the
+  // working-count title is the class Live tab's, :4069); the CTA leads the row (:1851).
+  await expect(dialog.getByRole('heading')).toHaveText(t('closeConfirm.title'));
   await expect(dialog).toContainText(t('closeConfirm.body', { code, className: klass.name }));
+  await expect(dialog.getByRole('button')).toHaveText([t('closeConfirm.cta'), t('closeConfirm.cancel')]);
   await page.screenshot({
     path: path.join(PROOFS, 'live-sessions-close-confirm.png'),
     animations: 'disabled',

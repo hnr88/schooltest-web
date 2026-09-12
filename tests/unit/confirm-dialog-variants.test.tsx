@@ -138,3 +138,47 @@ describe('OpsConfirmDialog — pending disables both buttons', () => {
     expect(buttons.every((b) => b.disabled)).toBe(true);
   });
 });
+
+// FX-P1 A — the teacher skin is opt-in; without `skin` the portal's confirm is untouched.
+describe('OpsConfirmDialog — skin', () => {
+  const panelClass = () => document.body.querySelector('[data-slot="ops-dialog-content"]')?.className ?? '';
+  const buttons = () => [...document.body.querySelectorAll('button')];
+
+  test('default (ops): tone tile, Cancel then the action in a right-aligned pill row, 460px r24 white panel', () => {
+    mount(<OpsConfirmDialog {...BASE} tone="destructive" />);
+    expect(buttonTexts()).toEqual(['Cancel', 'Remove']);
+    expect(panelClass()).toContain('sm:max-w-[460px]');
+    expect(panelClass()).toContain('rounded-[24px]');
+    expect(panelClass()).toContain('bg-white');
+    expect(buttons()[0]?.parentElement?.className).toContain('justify-end');
+    expect(buttons().every((b) => b.className.includes('rounded-full') && b.className.includes('h-11'))).toBe(true);
+    expect(document.body.querySelector('[aria-hidden="true"].size-11')).not.toBeNull();
+  });
+
+  test('teacher: no tone tile, the action leads a left-aligned row of 46px r8 buttons in the #FAFBFC r11 panel', () => {
+    mount(<OpsConfirmDialog {...BASE} tone="destructive" skin="teacher" />);
+    expect(buttonTexts()).toEqual(['Remove', 'Cancel']);
+    expect(panelClass()).toContain('sm:max-w-[500px]');
+    expect(panelClass()).toContain('rounded-[11px]');
+    expect(panelClass()).toContain('bg-[#FAFBFC]');
+    expect(panelClass()).not.toContain('rounded-[24px]');
+    expect(panelClass()).not.toContain('bg-white');
+    const [cta, cancel] = buttons();
+    expect(cta?.parentElement?.className).not.toContain('justify-end');
+    for (const cls of ['h-[46px]', 'rounded-[8px]', 'px-[22px]', 'font-bold', 'border-0', 'bg-[#B42318]']) {
+      expect(cta?.className).toContain(cls);
+    }
+    for (const cls of ['h-[46px]', 'rounded-[8px]', 'border-[#E5E7EB]']) expect(cancel?.className).toContain(cls);
+    expect(cancel?.className).not.toContain('rounded-full');
+    expect(document.body.querySelector('h2')?.className).toContain('tracking-[-0.01em]');
+    expect(document.body.querySelector('p')?.className).toContain('text-[#6B7280]');
+    expect(document.body.querySelector('p')?.className).toContain('leading-[1.55]');
+    expect(document.body.querySelector('svg')).toBeNull();
+  });
+
+  test('teacher: pending still disables both buttons and a server error still shows', () => {
+    mount(<OpsConfirmDialog {...BASE} skin="teacher" pending error="The server refused." />);
+    expect(buttons().every((b) => b.disabled)).toBe(true);
+    expect(document.body.querySelector('[role="alert"]')?.textContent).toContain('The server refused.');
+  });
+});

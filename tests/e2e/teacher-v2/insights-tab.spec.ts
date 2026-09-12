@@ -186,7 +186,7 @@ test.describe('S5 — Teaching insights tab', () => {
     expect(pageErrors, 'no page error').toEqual([]);
   });
 
-  test.fixme('TB-21: school-admin ProgressPanel reads the teacher/parent-scoped roster (403) — B6 turns this on', async ({ page }) => {
+  test('TB-21: the school-admin drill-down loads Progress — B6 admits a school_admin to the canonical roster read', async ({ page }) => {
     const errors = watchErrors(page);
     const { bodies, failed } = await openSchoolAnalytics(page, errors);
     await openBandedClass(page, bodies);
