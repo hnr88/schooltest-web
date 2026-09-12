@@ -6041,7 +6041,8 @@
         "subtitle": "Every action taken during this sitting, and who took it.",
         "note": "The full trail is kept with the session for appeals.",
         "noteTruncated": "Showing the last {shown} of {total} entries. The full trail is kept with the session for appeals.",
-        "loadError": "The session activity could not be loaded."
+        "loadError": "The session activity could not be loaded.",
+        "empty": "No actions have been taken in this sitting yet."
       },
       "history": {
         "bookedTitle": "Booked for later",

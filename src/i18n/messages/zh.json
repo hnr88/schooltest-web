@@ -6041,7 +6041,8 @@
         "subtitle": "本场考试期间的每一项操作，以及操作者。",
         "note": "完整记录会与场次一同保存，以备申诉之用。",
         "noteTruncated": "显示 {total} 条记录中最近的 {shown} 条。完整记录会与场次一同保存，以备申诉之用。",
-        "loadError": "无法加载场次活动。"
+        "loadError": "无法加载场次活动。",
+        "empty": "本场考试还没有任何操作。"
       },
       "history": {
         "bookedTitle": "已预约",

@@ -6051,7 +6051,8 @@
         "subtitle": "Setiap tindakan yang diambil semasa sesi ini, dan siapa yang mengambilnya.",
         "note": "Jejak penuh disimpan bersama sesi untuk rayuan.",
         "noteTruncated": "Menunjukkan {shown} terakhir daripada {total} entri. Jejak penuh disimpan bersama sesi untuk rayuan.",
-        "loadError": "Aktiviti sesi tidak dapat dimuatkan."
+        "loadError": "Aktiviti sesi tidak dapat dimuatkan.",
+        "empty": "Belum ada tindakan diambil dalam sesi ini."
       },
       "history": {
         "bookedTitle": "Ditempah untuk kemudian",

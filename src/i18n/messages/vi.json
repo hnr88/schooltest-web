@@ -6060,7 +6060,8 @@
         "subtitle": "Mọi thao tác đã thực hiện trong phiên này, và ai đã thực hiện.",
         "note": "Toàn bộ nhật ký được giữ cùng phiên để phục vụ khiếu nại.",
         "noteTruncated": "Đang hiển thị {shown} mục gần nhất trong {total} mục. Toàn bộ nhật ký được giữ cùng phiên để phục vụ khiếu nại.",
-        "loadError": "Không tải được hoạt động của phiên."
+        "loadError": "Không tải được hoạt động của phiên.",
+        "empty": "Chưa có thao tác nào được thực hiện trong phiên này."
       },
       "history": {
         "bookedTitle": "Đã đặt cho sau này",
