@@ -21,9 +21,13 @@ async function fetchSittingActivity(sittingDocumentId: string): Promise<SittingA
   return sittingActivityFeedSchema.parse(res.data.data);
 }
 
-export function useSittingActivityQuery(sittingDocumentId: string) {
+export function useSittingActivityQuery(
+  sittingDocumentId: string,
+  options: { refetchInterval?: number } = {},
+) {
   return useQuery({
     queryKey: [...SITTING_ACTIVITY_QUERY_KEY, sittingDocumentId],
     queryFn: () => fetchSittingActivity(sittingDocumentId),
+    refetchInterval: options.refetchInterval ?? false,
   });
 }

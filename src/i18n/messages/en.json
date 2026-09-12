@@ -6165,7 +6165,355 @@
       "failedRelease": "{name}’s report was not released: {reason}.",
       "failedRecall": "{name}’s report was not recalled: {reason}."
     },
-    "live": {},
+    "live": {
+      "students": {
+        "loading": "Loading students…",
+        "loadError": "The students in this sitting could not be loaded.",
+        "searchPlaceholder": "Search students",
+        "searchLabel": "Search students by name or email",
+        "filtersLabel": "Show students",
+        "count": "{shown} of {total, plural, one {# student} other {# students}}",
+        "selectStudents": "Select students",
+        "selected": "{count} selected",
+        "selectAll": "Select every student shown",
+        "selectOne": "Select {name}",
+        "clear": "Clear",
+        "empty": "No students match those filters.",
+        "footnote": "{count} of {total} students in this session have not signed in yet.",
+        "emailNeeded": "Email needed before test day",
+        "menuLabel": "Actions for {name}",
+        "cancel": "Cancel",
+        "gotIt": "Got it",
+        "incidentNote": "Logged an incident for {name}",
+        "filter": {
+          "all": "All",
+          "inProgress": "In progress",
+          "paused": "Paused",
+          "submitted": "Submitted",
+          "attention": "Needs attention",
+          "notJoined": "Not joined"
+        },
+        "status": {
+          "not_joined": "Not joined",
+          "joined": "Joined",
+          "in_progress": "In progress",
+          "paused": "Paused",
+          "stalled": "Stalled",
+          "submitted": "Submitted",
+          "scoring_failed": "Scoring failed",
+          "absent": "Absent"
+        },
+        "connection": {
+          "online": "Online",
+          "weak": "Weak signal",
+          "offline": "Offline · saving on device"
+        },
+        "detail": {
+          "notJoined": "No sign-in yet",
+          "joined": "Waiting to start",
+          "absent": "Marked absent in this sitting",
+          "scoringFailed": "Server could not score the attempt",
+          "idle": "No activity for {minutes} min",
+          "stage": "Stage {stage} of {total}",
+          "stageOnly": "Stage {stage}"
+        },
+        "action": {
+          "markAbsent": "Mark absent",
+          "undoAbsent": "Undo absent",
+          "pause": "Pause attempt",
+          "resume": "Resume attempt",
+          "extend": "Allow 10 more minutes",
+          "forceSubmit": "Force submit",
+          "relaunch": "Relaunch on a new device",
+          "incident": "Log an incident",
+          "retry": "Retry scoring",
+          "raiseManual": "Retry scoring again",
+          "review": "Review submission",
+          "rescore": "Re-score attempt"
+        },
+        "confirm": {
+          "markAbsent": {
+            "title": "Mark {name} absent?",
+            "body": "{name} is excluded from this sitting’s results and moves to the re-sit queue. You can undo this while the session is open.",
+            "cta": "Mark absent"
+          },
+          "undoAbsent": {
+            "title": "Bring {name} back into this sitting?",
+            "body": "They return as not joined and can use the code again.",
+            "cta": "Undo absence"
+          },
+          "pause": {
+            "title": "Pause {name}’s attempt?",
+            "body": "Their timer stops and the screen locks until you resume. Use this for a toilet break or a room evacuation.",
+            "cta": "Pause"
+          },
+          "relaunch": {
+            "title": "Relaunch for {name}?",
+            "body": "Their idle clock restarts so they can rejoin with the same code, on this device or another. Answers already saved are kept.",
+            "cta": "Relaunch"
+          },
+          "forceSubmit": {
+            "title": "Force submit for {name}?",
+            "body": "The attempt is submitted exactly as it stands, including blank answers, and is scored. {name} cannot return to it.",
+            "cta": "Force submit"
+          },
+          "forceEmpty": {
+            "title": "Force submit an empty attempt?",
+            "body": "This attempt has no answers recorded at all — {name} has not completed a single question. Force submitting scores it with nothing in it and puts that result on the report as a reading result. A re-sit is almost certainly the right call instead.",
+            "cta": "Submit with no answers"
+          },
+          "rescore": {
+            "title": "Re-score {name}?",
+            "body": "Existing marks and band placement are replaced. Reports already shared for this student will change.",
+            "cta": "Re-score"
+          },
+          "raiseManual": {
+            "title": "Scoring failed again",
+            "body": "The second attempt to score {name}’s paper failed too. Their answers are not lost. Nothing you can do in this room will fix it — the next step is to raise it so the paper is scored manually, which keeps the attempt and avoids a re-sit.",
+            "cta": "Raise for manual scoring"
+          }
+        },
+        "done": {
+          "markAbsent": "Marked {name} absent",
+          "undoAbsent": "Cleared the absence for {name}",
+          "pause": "Paused {name}’s attempt",
+          "resume": "Resumed {name}’s attempt",
+          "extend": "Gave {name} 10 extra minutes",
+          "forceSubmit": "Force-submitted {name}’s attempt",
+          "relaunch": "Restarted {name}’s idle clock",
+          "retry": "Retried scoring for {name}",
+          "raiseManual": "Raised {name}’s paper for manual scoring",
+          "rescore": "Re-scored {name}’s attempt"
+        },
+        "error": {
+          "not_running": "This sitting is not running, so {name}’s attempt cannot be changed.",
+          "already_paused": "{name}’s attempt is already paused.",
+          "not_paused": "{name}’s own attempt is not paused. If the whole room is paused, resume it from Room controls.",
+          "no_active_attempt": "{name} has no attempt in progress in this sitting.",
+          "notOnRoster": "{name} is not on this sitting’s roster.",
+          "badRequest": "The server refused that request for {name}.",
+          "conflict": "{name}’s result cannot be changed that way right now.",
+          "generic": "That did not go through for {name}. Try again."
+        },
+        "batch": {
+          "label": "Actions for the selected students",
+          "tally": "{hit} of {selected}",
+          "students": "{count, plural, one {# student} other {# students}}",
+          "skipped": "{count, plural, one {1 selected student is} other {# selected students are}} skipped: {reason}.",
+          "nothingBody": "None of the {students} you selected can be actioned this way — {reason}.",
+          "partial": "{done} of {total} done.",
+          "pause": {
+            "label": "Pause",
+            "title": "Pause {students}?",
+            "body": "Their timers stop and their screens lock until you resume them.",
+            "cta": "Pause",
+            "only": "only students mid-attempt can be paused",
+            "nothing": "Nothing to pause",
+            "done": "Paused {students}"
+          },
+          "extend": {
+            "label": "Allow extra time",
+            "title": "Give {students} 10 more minutes?",
+            "body": "Their time limit is extended by 10 minutes for this sitting only. It is recorded against the session.",
+            "cta": "Allow extra time",
+            "only": "extra time applies only to attempts still open",
+            "nothing": "Nothing to allow extra time",
+            "done": "Gave {students} 10 extra minutes"
+          },
+          "rescore": {
+            "label": "Re-score",
+            "title": "Re-score {students}?",
+            "body": "Existing marks and band placement are replaced. Reports already shared with the school will change.",
+            "cta": "Re-score",
+            "only": "only submitted attempts that have been scored can be re-scored",
+            "nothing": "Nothing to re-score",
+            "done": "Re-scored {students}"
+          },
+          "absent": {
+            "label": "Mark absent",
+            "title": "Mark {students} absent?",
+            "body": "They are excluded from this sitting’s results and move to the re-sit queue.",
+            "cta": "Mark absent",
+            "only": "a student mid-attempt has to be force-submitted first",
+            "nothing": "Nothing to mark absent",
+            "done": "Marked {students} absent"
+          }
+        },
+        "resit": {
+          "title": "Waiting on a re-sit",
+          "note": "Students who missed a sitting or whose attempt could not be scored. A catch-up session can run alongside a live one.",
+          "empty": "Nobody is waiting on a re-sit for this class.",
+          "start": "Start a catch-up session · {count, plural, one {# student} other {# students}}",
+          "reason": {
+            "absent": "Marked absent in this sitting",
+            "scoringFailed": "Scoring failed · attempt kept",
+            "neverSat": "Has not sat any version yet"
+          }
+        }
+      },
+      "header": {
+        "title": "Test day",
+        "subtitleLive": "{className} · {test} · {count, plural, one {# student} other {# students}} · live now",
+        "subtitleIdle": "{className} · {count, plural, one {# student} other {# students}} · Year {year} · no sitting open",
+        "subtitleIdleNoYear": "{className} · {count, plural, one {# student} other {# students}} · no sitting open",
+        "loading": "Loading the sitting…",
+        "loadError": "The sitting could not be loaded.",
+        "retry": "Try again"
+      },
+      "noSitting": {
+        "title": "No sitting open",
+        "body": "Pick the test, generate the join code, then read it out to the room.",
+        "start": "Start new session"
+      },
+      "room": {
+        "title": "Run the sitting",
+        "subtitle": "Join code, test settings and room controls",
+        "joinCode": "Join code",
+        "copy": "Copy code",
+        "copied": "Copied",
+        "copyError": "The code could not be copied. Read it out from the screen instead.",
+        "close": "Close sitting",
+        "test": "Test",
+        "testTitle": "{className} — {test}",
+        "stallMeta": "Stalled is flagged after {minutes, plural, one {# minute} other {# minutes}} without activity",
+        "settings": "Test settings",
+        "settingsCount": "{on} of {total} on",
+        "controls": "Room controls",
+        "metaRunning": "Pausing stops every timer at once and puts the whole room on a pause screen — use it when you need to talk to the class.",
+        "metaPaused": "Every timer is stopped and every student is on the pause screen. They cannot read or answer questions until you resume.",
+        "pausedAt": "Paused at {time}",
+        "extraSoFar": "Extra time so far: +{minutes} min across {count, plural, one {# extension} other {# extensions}}.",
+        "pause": "Pause test",
+        "resume": "Resume test",
+        "extend": "+{minutes} min",
+        "closeConfirm": {
+          "bodyNone": "Everyone has submitted or been accounted for, so closing {code} only stops the code being used again. This cannot be undone.",
+          "bodyStops": "Closing {code} stops the code being used again.",
+          "bodyWorking": "{names} will lose access mid-test and their answers are submitted as they stand, which will score them on a paper they had not finished.",
+          "namesMore": "{names} and {count} more",
+          "offline": "{count, plural, one {# device is offline, so answers still on that device} other {# devices are offline, so answers still on those devices}} will never reach the server.",
+          "notJoined": "{count, plural, one {# student has} other {# students have}} not signed in and will go to the re-sit queue.",
+          "undone": "This cannot be undone."
+        },
+        "pauseConfirm": {
+          "title": "Pause the test for everyone?",
+          "body": "Every timer stops and {count, plural, one {the # student still working sees} other {all # students still working see}} a pause screen until you resume. Nothing they have written is lost.",
+          "cta": "Pause test",
+          "cancel": "Cancel"
+        },
+        "nobodyConfirm": {
+          "title": "Nobody is working right now",
+          "body": "Every student in {code} has either submitted, not signed in, or is already paused, so there is nothing left to pause. If you need to stop the room from being rejoined, close the sitting instead.",
+          "cta": "Got it",
+          "cancel": "Cancel"
+        },
+        "extendConfirm": {
+          "title": "Add {minutes} minutes for the whole room?",
+          "body": "Every open attempt in this session gets {minutes} more minutes. You can do this as many times as you need; each one is recorded against the session.",
+          "bodyOnTop": "Every open attempt in this session gets {minutes} more minutes, on top of the {already} minutes already added. You can do this as many times as you need; each one is recorded against the session.",
+          "cta": "Add {minutes} minutes",
+          "cancel": "Cancel"
+        },
+        "errors": {
+          "notRunning": "This sitting is not running any more, so the room controls cannot act on it.",
+          "alreadyPaused": "The room is already paused.",
+          "notPaused": "The room is not paused.",
+          "noActiveAttempt": "Nobody in this sitting has an attempt in progress.",
+          "notFound": "This sitting could not be found. It may already be closed.",
+          "invalid": "The server refused that request.",
+          "failed": "That did not go through. Try again."
+        }
+      },
+      "connection": {
+        "title": "Connection",
+        "summary": "{online} online · {weak} weak · {offline} offline · of {working} still working",
+        "metaOffline": "{count, plural, one {# device has} other {# devices have}} dropped out. Their answers are saving locally and will sync the moment the connection returns, so nothing is lost and their timer keeps running.",
+        "metaAll": "Every device in the room is reporting in. Answers sync as they are given.",
+        "lowBwOn": "Low-bandwidth mode on",
+        "lowBwOff": "Low-bandwidth mode off",
+        "lowBwError": "Low-bandwidth mode could not be changed. Try again."
+      },
+      "settingsPanel": {
+        "title": "Session settings",
+        "subtitle": "What this sitting is running with. {on} of {total} on.",
+        "close": "Close settings",
+        "on": "On",
+        "off": "Off",
+        "minutes": "{minutes} min",
+        "fixed": "Settings are fixed once a sitting is open. To change them, close this session and start a new one.",
+        "rows": {
+          "lowBw": {
+            "label": "Low-bandwidth mode",
+            "desc": "Text-only passages, no images preloaded, and answers saved on the device and synced when the connection returns. Use it when the room is on mobile data or a satellite link."
+          },
+          "skip": {
+            "label": "Allow skipping questions",
+            "desc": "Students can leave a question, move on, and come back to it before submitting."
+          },
+          "review": {
+            "label": "Review screen before submit",
+            "desc": "A final list of skipped and flagged questions, so nothing is left blank by accident."
+          },
+          "flag": {
+            "label": "Flag questions for review",
+            "desc": "Students can mark a question to come back to. Flags show on the review screen and to you."
+          },
+          "bigText": {
+            "label": "Larger text and high contrast",
+            "desc": "Students can grow the text and switch to a high-contrast theme at any point."
+          },
+          "lockdown": {
+            "label": "Locked-down window",
+            "desc": "The test fills the screen. Other apps, tabs, copy, paste and printing are blocked."
+          },
+          "focusFlag": {
+            "label": "Flag if they leave the window",
+            "desc": "Leaving is recorded with a timestamp and shows on your live view. Use with lockdown off."
+          },
+          "warn5": {
+            "label": "Five-minute warning",
+            "desc": "One quiet banner at five minutes left, so the clock is not in front of them the whole time."
+          },
+          "autoSubmit": {
+            "label": "Submit automatically at time",
+            "desc": "Off means the attempt waits for you, and nothing is submitted without a teacher."
+          },
+          "showScore": {
+            "label": "Show them their score at the end",
+            "desc": "Off holds the result until you release the report."
+          },
+          "timeLimit": {
+            "label": "Time limit",
+            "desc": "How long each student gets, before any extension you add during the sitting."
+          }
+        }
+      },
+      "activity": {
+        "title": "Session activity",
+        "subtitle": "Every action taken during this sitting, and who took it.",
+        "note": "The full trail is kept with the session for appeals.",
+        "noteTruncated": "Showing the last {shown} of {total} entries. The full trail is kept with the session for appeals.",
+        "loadError": "The session activity could not be loaded."
+      },
+      "history": {
+        "bookedTitle": "Booked for later",
+        "pastTitle": "Previous sessions",
+        "pastSubtitle": "Sessions run for this class.",
+        "columns": {
+          "test": "Test",
+          "code": "Join code",
+          "date": "Date",
+          "completed": "Completed",
+          "status": "Status"
+        },
+        "completed": "{done} / {total}",
+        "live": "Live",
+        "closed": "Closed",
+        "empty": "No sessions have been run for this class yet.",
+        "loadError": "Previous sessions could not be loaded.",
+        "truncated": "Showing the {count} most recent sessions."
+      }
+    },
     "liveSessions": {
       "title": "Live sessions",
       "summary": "{sessions, plural, one {# session} other {# sessions}} running across {classes, plural, one {# class} other {# classes}}. A student can only sit one test at a time.",

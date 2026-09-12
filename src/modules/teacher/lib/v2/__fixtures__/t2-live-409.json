@@ -1,0 +1,15 @@
+{
+  "status": 409,
+  "body": {
+    "data": null,
+    "error": {
+      "status": 409,
+      "name": "ConflictError",
+      "message": "Rosa B.'s attempt is already paused",
+      "details": {
+        "reason": "already_paused",
+        "phase": "running"
+      }
+    }
+  }
+}

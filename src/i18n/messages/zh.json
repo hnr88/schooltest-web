@@ -6165,7 +6165,355 @@
       "failedRelease": "{name} 的报告未能发布：{reason}。",
       "failedRecall": "{name} 的报告未能撤回：{reason}。"
     },
-    "live": {},
+    "live": {
+      "students": {
+        "loading": "正在加载学生…",
+        "loadError": "无法加载本场考试的学生名单。",
+        "searchPlaceholder": "搜索学生",
+        "searchLabel": "按姓名或邮箱搜索学生",
+        "filtersLabel": "显示学生",
+        "count": "{total, plural, other {# 名学生}}中的 {shown} 名",
+        "selectStudents": "选择学生",
+        "selected": "已选 {count} 名",
+        "selectAll": "选择当前显示的全部学生",
+        "selectOne": "选择 {name}",
+        "clear": "清除",
+        "empty": "没有符合该筛选条件的学生。",
+        "footnote": "本场考试 {total} 名学生中有 {count} 名尚未登录。",
+        "emailNeeded": "考试日之前需要填写邮箱",
+        "menuLabel": "{name} 的操作",
+        "cancel": "取消",
+        "gotIt": "知道了",
+        "incidentNote": "已为 {name} 记录一次情况",
+        "filter": {
+          "all": "全部",
+          "inProgress": "作答中",
+          "paused": "已暂停",
+          "submitted": "已提交",
+          "attention": "需要关注",
+          "notJoined": "未加入"
+        },
+        "status": {
+          "not_joined": "未加入",
+          "joined": "已加入",
+          "in_progress": "作答中",
+          "paused": "已暂停",
+          "stalled": "停滞",
+          "submitted": "已提交",
+          "scoring_failed": "评分失败",
+          "absent": "缺考"
+        },
+        "connection": {
+          "online": "在线",
+          "weak": "信号弱",
+          "offline": "离线 · 正保存在设备上"
+        },
+        "detail": {
+          "notJoined": "尚未登录",
+          "joined": "等待开始",
+          "absent": "本场考试已标记为缺考",
+          "scoringFailed": "服务器无法为该次作答评分",
+          "idle": "已有 {minutes} 分钟没有动作",
+          "stage": "第 {stage} 阶段，共 {total} 阶段",
+          "stageOnly": "第 {stage} 阶段"
+        },
+        "action": {
+          "markAbsent": "标记缺考",
+          "undoAbsent": "撤销缺考",
+          "pause": "暂停作答",
+          "resume": "继续作答",
+          "extend": "再给 10 分钟",
+          "forceSubmit": "强制提交",
+          "relaunch": "在其他设备上重新开始",
+          "incident": "记录情况",
+          "retry": "重新评分",
+          "raiseManual": "再次尝试评分",
+          "review": "查看提交内容",
+          "rescore": "重新评分本次作答"
+        },
+        "confirm": {
+          "markAbsent": {
+            "title": "将 {name} 标记为缺考？",
+            "body": "{name} 将不计入本场考试的结果，并转入补考队列。本场考试开着时，你可以撤销该操作。",
+            "cta": "标记缺考"
+          },
+          "undoAbsent": {
+            "title": "让 {name} 回到本场考试？",
+            "body": "该学生会回到未加入状态，可以再次使用该加入码。",
+            "cta": "撤销缺考"
+          },
+          "pause": {
+            "title": "暂停 {name} 的作答？",
+            "body": "计时会停止，屏幕会锁定，直到你让其继续。适用于去洗手间或教室疏散。",
+            "cta": "暂停"
+          },
+          "relaunch": {
+            "title": "为 {name} 重新开始？",
+            "body": "无操作计时会重新开始，学生可以用同一个加入码在本设备或其他设备上重新进入。已保存的答案会保留。",
+            "cta": "重新开始"
+          },
+          "forceSubmit": {
+            "title": "强制提交 {name} 的作答？",
+            "body": "作答将按当前状态原样提交并评分，包括留空的题目。{name} 无法再回到这次作答。",
+            "cta": "强制提交"
+          },
+          "forceEmpty": {
+            "title": "强制提交一份空白作答？",
+            "body": "这次作答完全没有记录到任何答案——{name} 一道题也没有完成。强制提交会按空白内容评分，并把该结果作为阅读结果写入报告。安排补考几乎肯定更合适。",
+            "cta": "以空白作答提交"
+          },
+          "rescore": {
+            "title": "重新评分 {name} 的作答？",
+            "body": "现有分数和等级会被替换。已经共享的该学生报告也会随之改变。",
+            "cta": "重新评分"
+          },
+          "raiseManual": {
+            "title": "评分再次失败",
+            "body": "第二次为 {name} 的答卷评分同样失败了。学生的答案没有丢失。在考场里做什么都无法解决——下一步是提交人工评分，这样可以保留这次作答并免去补考。",
+            "cta": "提交人工评分"
+          }
+        },
+        "done": {
+          "markAbsent": "已将 {name} 标记为缺考",
+          "undoAbsent": "已撤销 {name} 的缺考",
+          "pause": "已暂停 {name} 的作答",
+          "resume": "已让 {name} 继续作答",
+          "extend": "已给 {name} 增加 10 分钟",
+          "forceSubmit": "已强制提交 {name} 的作答",
+          "relaunch": "已重置 {name} 的无操作计时",
+          "retry": "已为 {name} 重新发起评分",
+          "raiseManual": "已将 {name} 的答卷提交人工评分",
+          "rescore": "已重新评分 {name} 的作答"
+        },
+        "error": {
+          "not_running": "本场考试未在进行中，无法更改 {name} 的作答。",
+          "already_paused": "{name} 的作答已经处于暂停状态。",
+          "not_paused": "{name} 本人的作答并未暂停。如果是整个考场被暂停，请在考场控制中恢复。",
+          "no_active_attempt": "{name} 在本场考试中没有正在进行的作答。",
+          "notOnRoster": "{name} 不在本场考试的名单中。",
+          "badRequest": "服务器拒绝了针对 {name} 的该请求。",
+          "conflict": "目前无法以这种方式更改 {name} 的结果。",
+          "generic": "针对 {name} 的请求没有成功，请重试。"
+        },
+        "batch": {
+          "label": "对所选学生的操作",
+          "tally": "{selected} 名中的 {hit} 名",
+          "students": "{count, plural, other {# 名学生}}",
+          "skipped": "{count, plural, other {已选的 # 名学生}}被跳过：{reason}。",
+          "nothingBody": "你所选的 {students} 中没有谁可以这样操作——{reason}。",
+          "partial": "{total} 名中已完成 {done} 名。",
+          "pause": {
+            "label": "暂停",
+            "title": "暂停 {students}？",
+            "body": "他们的计时会停止，屏幕会锁定，直到你让其继续。",
+            "cta": "暂停",
+            "only": "只有正在作答的学生才能暂停",
+            "nothing": "没有可暂停的学生",
+            "done": "已暂停 {students}"
+          },
+          "extend": {
+            "label": "增加时间",
+            "title": "给 {students} 再加 10 分钟？",
+            "body": "仅本场考试的限时延长 10 分钟，并会记录在本场考试中。",
+            "cta": "增加时间",
+            "only": "只有仍在进行的作答才能增加时间",
+            "nothing": "没有可增加时间的学生",
+            "done": "已给 {students} 增加 10 分钟"
+          },
+          "rescore": {
+            "label": "重新评分",
+            "title": "重新评分 {students} 的作答？",
+            "body": "现有分数和等级会被替换。已与学校共享的报告也会随之改变。",
+            "cta": "重新评分",
+            "only": "只有已提交且已评分的作答才能重新评分",
+            "nothing": "没有可重新评分的作答",
+            "done": "已重新评分 {students} 的作答"
+          },
+          "absent": {
+            "label": "标记缺考",
+            "title": "将 {students} 标记为缺考？",
+            "body": "他们将不计入本场考试的结果，并转入补考队列。",
+            "cta": "标记缺考",
+            "only": "正在作答的学生需要先强制提交",
+            "nothing": "没有可标记缺考的学生",
+            "done": "已将 {students} 标记为缺考"
+          }
+        },
+        "resit": {
+          "title": "等待补考",
+          "note": "错过考试或作答无法评分的学生。补考场次可以与正在进行的场次同时进行。",
+          "empty": "本班没有学生在等待补考。",
+          "start": "开始补考场次 · {count, plural, other {# 名学生}}",
+          "reason": {
+            "absent": "本场考试已标记为缺考",
+            "scoringFailed": "评分失败 · 作答已保留",
+            "neverSat": "还没有考过任何版本"
+          }
+        }
+      },
+      "header": {
+        "title": "考试日",
+        "subtitleLive": "{className} · {test} · {count} 名学生 · 正在进行",
+        "subtitleIdle": "{className} · {count} 名学生 · {year} 年级 · 没有开启的场次",
+        "subtitleIdleNoYear": "{className} · {count} 名学生 · 没有开启的场次",
+        "loading": "正在加载场次…",
+        "loadError": "无法加载该场次。",
+        "retry": "重试"
+      },
+      "noSitting": {
+        "title": "没有开启的场次",
+        "body": "选择考试，生成加入码，然后读给全班听。",
+        "start": "开始新场次"
+      },
+      "room": {
+        "title": "主持这场考试",
+        "subtitle": "加入码、考试设置与教室控制",
+        "joinCode": "加入码",
+        "copy": "复制加入码",
+        "copied": "已复制",
+        "copyError": "无法复制加入码，请直接从屏幕上读出。",
+        "close": "关闭场次",
+        "test": "考试",
+        "testTitle": "{className} — {test}",
+        "stallMeta": "超过 {minutes} 分钟没有活动即标记为停滞",
+        "settings": "考试设置",
+        "settingsCount": "{total} 项中已开启 {on} 项",
+        "controls": "教室控制",
+        "metaRunning": "暂停会同时停止所有计时，并让整间教室进入暂停画面——需要对全班讲话时使用。",
+        "metaPaused": "所有计时已停止，全部学生都停留在暂停画面。在你恢复之前，他们无法阅读或作答。",
+        "pausedAt": "已于 {time} 暂停",
+        "extraSoFar": "目前已加时：{count} 次延长，共 +{minutes} 分钟。",
+        "pause": "暂停考试",
+        "resume": "继续考试",
+        "extend": "+{minutes} 分钟",
+        "closeConfirm": {
+          "bodyNone": "所有人都已提交或已处理，因此关闭 {code} 只会让这个加入码不能再使用。此操作无法撤销。",
+          "bodyStops": "关闭 {code} 会让这个加入码不能再使用。",
+          "bodyWorking": "{names} 将在考试途中失去访问权限，答案按当前状态提交，并以未完成的试卷计分。",
+          "namesMore": "{names} 等 {count} 人",
+          "offline": "有 {count} 台设备处于离线状态，仍留在这些设备上的答案将无法送达服务器。",
+          "notJoined": "有 {count} 名学生尚未登录，将进入补考队列。",
+          "undone": "此操作无法撤销。"
+        },
+        "pauseConfirm": {
+          "title": "要为所有人暂停考试吗？",
+          "body": "所有计时都会停止，仍在作答的 {count} 名学生会看到暂停画面，直到你恢复为止。他们已写下的内容不会丢失。",
+          "cta": "暂停考试",
+          "cancel": "取消"
+        },
+        "nobodyConfirm": {
+          "title": "现在没有人在作答",
+          "body": "{code} 中的每名学生都已提交、尚未登录，或已经处于暂停状态，因此没有可暂停的对象。如果需要防止再次加入本场，请改为关闭场次。",
+          "cta": "知道了",
+          "cancel": "取消"
+        },
+        "extendConfirm": {
+          "title": "为整间教室增加 {minutes} 分钟吗？",
+          "body": "本场次中所有进行中的答卷都会增加 {minutes} 分钟。你可以按需要多次执行，每次都会记录在本场次中。",
+          "bodyOnTop": "本场次中所有进行中的答卷都会增加 {minutes} 分钟，在已增加的 {already} 分钟之上。你可以按需要多次执行，每次都会记录在本场次中。",
+          "cta": "增加 {minutes} 分钟",
+          "cancel": "取消"
+        },
+        "errors": {
+          "notRunning": "本场次已不再进行，无法使用教室控制。",
+          "alreadyPaused": "这间教室已经处于暂停状态。",
+          "notPaused": "这间教室并未暂停。",
+          "noActiveAttempt": "本场次中没有正在进行的答卷。",
+          "notFound": "找不到这个场次，它可能已被关闭。",
+          "invalid": "服务器拒绝了该请求。",
+          "failed": "操作未成功，请重试。"
+        }
+      },
+      "connection": {
+        "title": "连接",
+        "summary": "在线 {online} · 信号弱 {weak} · 离线 {offline} · 仍在作答 {working} 人",
+        "metaOffline": "有 {count} 台设备掉线。答案正保存在本机，连接恢复后会立即同步，因此不会丢失，计时也继续运行。",
+        "metaAll": "教室里的每台设备都在正常上报。答案随作答即时同步。",
+        "lowBwOn": "低带宽模式已开启",
+        "lowBwOff": "低带宽模式已关闭",
+        "lowBwError": "无法更改低带宽模式，请重试。"
+      },
+      "settingsPanel": {
+        "title": "会话设置",
+        "subtitle": "本次考试所使用的设置。{total} 项中已开启 {on} 项。",
+        "close": "关闭设置",
+        "on": "开",
+        "off": "关",
+        "minutes": "{minutes} 分钟",
+        "fixed": "考试开始后设置即被固定。如需更改，请关闭本场考试并开始新的一场。",
+        "rows": {
+          "lowBw": {
+            "label": "低带宽模式",
+            "desc": "仅文字文章，不预载图片，答案保存在设备上并在网络恢复后同步。适用于使用移动数据或卫星链路的教室。"
+          },
+          "skip": {
+            "label": "允许跳过题目",
+            "desc": "学生可以先跳过某题，继续作答，并在提交前回来完成。"
+          },
+          "review": {
+            "label": "提交前检查页",
+            "desc": "最后列出已跳过和已标记的题目，避免因疏忽留下空白。"
+          },
+          "flag": {
+            "label": "标记题目以便复查",
+            "desc": "学生可以标记题目以便回头查看。标记会显示在检查页面和教师界面上。"
+          },
+          "bigText": {
+            "label": "大字号与高对比度",
+            "desc": "学生可以随时放大文字并切换到高对比度主题。"
+          },
+          "lockdown": {
+            "label": "锁定窗口",
+            "desc": "考试占满整个屏幕。其他应用、标签页、复制、粘贴和打印都被阻止。"
+          },
+          "focusFlag": {
+            "label": "离开窗口时标记",
+            "desc": "离开会被记录时间戳并显示在你的实时视图中。在未开启锁定时使用。"
+          },
+          "warn5": {
+            "label": "五分钟提醒",
+            "desc": "剩余五分钟时显示一条安静的横幅，这样时钟不必一直摆在面前。"
+          },
+          "autoSubmit": {
+            "label": "到时自动提交",
+            "desc": "关闭意味着答卷等待你处理，没有教师就不会提交。"
+          },
+          "showScore": {
+            "label": "结束时显示分数",
+            "desc": "关闭时，结果会保留到你发布报告为止。"
+          },
+          "timeLimit": {
+            "label": "时间限制",
+            "desc": "每名学生拥有的时间，不含你在考试期间额外增加的时间。"
+          }
+        }
+      },
+      "activity": {
+        "title": "场次活动",
+        "subtitle": "本场考试期间的每一项操作，以及操作者。",
+        "note": "完整记录会与场次一同保存，以备申诉之用。",
+        "noteTruncated": "显示 {total} 条记录中最近的 {shown} 条。完整记录会与场次一同保存，以备申诉之用。",
+        "loadError": "无法加载场次活动。"
+      },
+      "history": {
+        "bookedTitle": "已预约",
+        "pastTitle": "以往场次",
+        "pastSubtitle": "为这个班级举行过的场次。",
+        "columns": {
+          "test": "考试",
+          "code": "加入码",
+          "date": "日期",
+          "completed": "已完成",
+          "status": "状态"
+        },
+        "completed": "{done} / {total}",
+        "live": "进行中",
+        "closed": "已关闭",
+        "empty": "这个班级还没有举行过任何场次。",
+        "loadError": "无法加载以往场次。",
+        "truncated": "显示最近的 {count} 个场次。"
+      }
+    },
     "liveSessions": {
       "title": "实时场次",
       "summary": "{sessions, plural, other {# 个场次}}正在 {classes, plural, other {# 个班级}}中进行。每名学生同一时间只能参加一场考试。",

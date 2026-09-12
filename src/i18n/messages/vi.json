@@ -6184,7 +6184,355 @@
       "failedRelease": "Chưa công bố được báo cáo của {name}: {reason}.",
       "failedRecall": "Chưa thu hồi được báo cáo của {name}: {reason}."
     },
-    "live": {},
+    "live": {
+      "students": {
+        "loading": "Đang tải danh sách học sinh…",
+        "loadError": "Không tải được danh sách học sinh của buổi thi này.",
+        "searchPlaceholder": "Tìm học sinh",
+        "searchLabel": "Tìm học sinh theo tên hoặc email",
+        "filtersLabel": "Hiển thị học sinh",
+        "count": "{shown} trong {total, plural, other {# học sinh}}",
+        "selectStudents": "Chọn học sinh",
+        "selected": "Đã chọn {count}",
+        "selectAll": "Chọn mọi học sinh đang hiển thị",
+        "selectOne": "Chọn {name}",
+        "clear": "Bỏ chọn",
+        "empty": "Không có học sinh nào khớp với bộ lọc đó.",
+        "footnote": "{count} trong {total} học sinh của buổi thi này chưa đăng nhập.",
+        "emailNeeded": "Cần email trước ngày thi",
+        "menuLabel": "Thao tác cho {name}",
+        "cancel": "Hủy",
+        "gotIt": "Đã hiểu",
+        "incidentNote": "Đã ghi nhận sự cố cho {name}",
+        "filter": {
+          "all": "Tất cả",
+          "inProgress": "Đang làm bài",
+          "paused": "Đang tạm dừng",
+          "submitted": "Đã nộp",
+          "attention": "Cần chú ý",
+          "notJoined": "Chưa vào"
+        },
+        "status": {
+          "not_joined": "Chưa vào",
+          "joined": "Đã vào",
+          "in_progress": "Đang làm bài",
+          "paused": "Đang tạm dừng",
+          "stalled": "Đứng yên",
+          "submitted": "Đã nộp",
+          "scoring_failed": "Chấm điểm thất bại",
+          "absent": "Vắng mặt"
+        },
+        "connection": {
+          "online": "Trực tuyến",
+          "weak": "Tín hiệu yếu",
+          "offline": "Ngoại tuyến · đang lưu trên thiết bị"
+        },
+        "detail": {
+          "notJoined": "Chưa đăng nhập lần nào",
+          "joined": "Đang chờ bắt đầu",
+          "absent": "Được đánh dấu vắng mặt ở buổi thi này",
+          "scoringFailed": "Máy chủ không chấm được bài làm này",
+          "idle": "Không hoạt động {minutes} phút",
+          "stage": "Chặng {stage} trên {total}",
+          "stageOnly": "Chặng {stage}"
+        },
+        "action": {
+          "markAbsent": "Đánh dấu vắng mặt",
+          "undoAbsent": "Bỏ đánh dấu vắng mặt",
+          "pause": "Tạm dừng bài làm",
+          "resume": "Tiếp tục bài làm",
+          "extend": "Cho thêm 10 phút",
+          "forceSubmit": "Buộc nộp bài",
+          "relaunch": "Mở lại trên thiết bị khác",
+          "incident": "Ghi nhận sự cố",
+          "retry": "Chấm lại",
+          "raiseManual": "Thử chấm lại lần nữa",
+          "review": "Xem lại bài nộp",
+          "rescore": "Chấm lại bài làm"
+        },
+        "confirm": {
+          "markAbsent": {
+            "title": "Đánh dấu {name} vắng mặt?",
+            "body": "{name} bị loại khỏi kết quả của buổi thi này và chuyển sang hàng chờ thi lại. Bạn có thể hoàn tác khi buổi thi còn mở.",
+            "cta": "Đánh dấu vắng mặt"
+          },
+          "undoAbsent": {
+            "title": "Đưa {name} trở lại buổi thi này?",
+            "body": "Học sinh trở về trạng thái chưa vào và có thể dùng lại mã.",
+            "cta": "Bỏ đánh dấu vắng mặt"
+          },
+          "pause": {
+            "title": "Tạm dừng bài làm của {name}?",
+            "body": "Đồng hồ của học sinh dừng lại và màn hình bị khóa cho tới khi bạn cho tiếp tục. Dùng khi các em đi vệ sinh hoặc phải sơ tán khỏi phòng.",
+            "cta": "Tạm dừng"
+          },
+          "relaunch": {
+            "title": "Mở lại cho {name}?",
+            "body": "Đồng hồ không hoạt động được đặt lại để học sinh vào lại bằng chính mã đó, trên thiết bị này hay thiết bị khác. Các câu trả lời đã lưu vẫn được giữ.",
+            "cta": "Mở lại"
+          },
+          "forceSubmit": {
+            "title": "Buộc nộp bài của {name}?",
+            "body": "Bài làm được nộp đúng như hiện trạng, kể cả các câu bỏ trống, và được chấm. {name} không thể quay lại bài nữa.",
+            "cta": "Buộc nộp bài"
+          },
+          "forceEmpty": {
+            "title": "Buộc nộp một bài chưa có câu trả lời nào?",
+            "body": "Bài làm này chưa ghi nhận câu trả lời nào — {name} chưa làm câu nào cả. Buộc nộp sẽ chấm bài trống đó và kết quả sẽ vào báo cáo như một kết quả đọc hiểu. Cho thi lại gần như chắc chắn là lựa chọn đúng hơn.",
+            "cta": "Nộp khi chưa có câu trả lời"
+          },
+          "rescore": {
+            "title": "Chấm lại bài của {name}?",
+            "body": "Điểm và mức band hiện có sẽ bị thay thế. Báo cáo đã chia sẻ cho học sinh này cũng sẽ thay đổi.",
+            "cta": "Chấm lại"
+          },
+          "raiseManual": {
+            "title": "Chấm điểm lại thất bại",
+            "body": "Lần chấm thứ hai cho bài của {name} cũng thất bại y như vậy. Các câu trả lời không mất đi. Không có thao tác nào trong phòng thi sửa được việc này — bước tiếp theo là chuyển bài cho người chấm thủ công, cách này giữ nguyên bài làm và tránh phải thi lại.",
+            "cta": "Chuyển cho chấm thủ công"
+          }
+        },
+        "done": {
+          "markAbsent": "Đã đánh dấu {name} vắng mặt",
+          "undoAbsent": "Đã bỏ đánh dấu vắng mặt cho {name}",
+          "pause": "Đã tạm dừng bài làm của {name}",
+          "resume": "Đã cho {name} làm bài tiếp",
+          "extend": "Đã cho {name} thêm 10 phút",
+          "forceSubmit": "Đã buộc nộp bài của {name}",
+          "relaunch": "Đã đặt lại đồng hồ không hoạt động của {name}",
+          "retry": "Đã cho chấm lại bài của {name}",
+          "raiseManual": "Đã chuyển bài của {name} cho chấm thủ công",
+          "rescore": "Đã chấm lại bài của {name}"
+        },
+        "error": {
+          "not_running": "Buổi thi này không còn diễn ra nên không thể thay đổi bài làm của {name}.",
+          "already_paused": "Bài làm của {name} đang tạm dừng rồi.",
+          "not_paused": "Riêng bài làm của {name} không bị tạm dừng. Nếu cả phòng đang tạm dừng, hãy cho tiếp tục ở phần Điều khiển phòng thi.",
+          "no_active_attempt": "{name} không có bài làm nào đang diễn ra trong buổi thi này.",
+          "notOnRoster": "{name} không có trong danh sách của buổi thi này.",
+          "badRequest": "Máy chủ từ chối yêu cầu đó cho {name}.",
+          "conflict": "Hiện chưa thể thay đổi kết quả của {name} theo cách đó.",
+          "generic": "Yêu cầu cho {name} không thành công. Hãy thử lại."
+        },
+        "batch": {
+          "label": "Thao tác cho các học sinh đã chọn",
+          "tally": "{hit} trong {selected}",
+          "students": "{count, plural, other {# học sinh}}",
+          "skipped": "{count, plural, other {# học sinh đã chọn}} bị bỏ qua: {reason}.",
+          "nothingBody": "Không học sinh nào trong {students} bạn đã chọn có thể xử lý theo cách này — {reason}.",
+          "partial": "Đã xong {done} trên {total}.",
+          "pause": {
+            "label": "Tạm dừng",
+            "title": "Tạm dừng {students}?",
+            "body": "Đồng hồ của các em dừng lại và màn hình bị khóa cho tới khi bạn cho tiếp tục.",
+            "cta": "Tạm dừng",
+            "only": "chỉ tạm dừng được học sinh đang làm bài",
+            "nothing": "Không có ai để tạm dừng",
+            "done": "Đã tạm dừng {students}"
+          },
+          "extend": {
+            "label": "Cho thêm thời gian",
+            "title": "Cho {students} thêm 10 phút?",
+            "body": "Thời gian làm bài tăng thêm 10 phút, chỉ trong buổi thi này. Việc này được ghi lại cùng buổi thi.",
+            "cta": "Cho thêm thời gian",
+            "only": "chỉ cộng thêm thời gian được cho bài làm còn mở",
+            "nothing": "Không có ai để cho thêm thời gian",
+            "done": "Đã cho {students} thêm 10 phút"
+          },
+          "rescore": {
+            "label": "Chấm lại",
+            "title": "Chấm lại bài của {students}?",
+            "body": "Điểm và mức band hiện có sẽ bị thay thế. Báo cáo đã chia sẻ với nhà trường cũng sẽ thay đổi.",
+            "cta": "Chấm lại",
+            "only": "chỉ chấm lại được bài đã nộp và đã có điểm",
+            "nothing": "Không có bài nào để chấm lại",
+            "done": "Đã chấm lại bài của {students}"
+          },
+          "absent": {
+            "label": "Đánh dấu vắng mặt",
+            "title": "Đánh dấu {students} vắng mặt?",
+            "body": "Các em bị loại khỏi kết quả của buổi thi này và chuyển sang hàng chờ thi lại.",
+            "cta": "Đánh dấu vắng mặt",
+            "only": "học sinh đang làm bài phải được buộc nộp trước",
+            "nothing": "Không có ai để đánh dấu vắng mặt",
+            "done": "Đã đánh dấu {students} vắng mặt"
+          }
+        },
+        "resit": {
+          "title": "Đang chờ thi lại",
+          "note": "Những học sinh đã lỡ một buổi thi hoặc có bài không chấm được. Buổi thi bù có thể chạy song song với một buổi đang diễn ra.",
+          "empty": "Lớp này không có ai đang chờ thi lại.",
+          "start": "Mở buổi thi bù · {count, plural, other {# học sinh}}",
+          "reason": {
+            "absent": "Được đánh dấu vắng mặt ở buổi thi này",
+            "scoringFailed": "Chấm điểm thất bại · bài làm được giữ lại",
+            "neverSat": "Chưa làm phiên bản nào"
+          }
+        }
+      },
+      "header": {
+        "title": "Ngày kiểm tra",
+        "subtitleLive": "{className} · {test} · {count, plural, other {# học sinh}} · đang diễn ra",
+        "subtitleIdle": "{className} · {count, plural, other {# học sinh}} · Khối {year} · không có phiên nào mở",
+        "subtitleIdleNoYear": "{className} · {count, plural, other {# học sinh}} · không có phiên nào mở",
+        "loading": "Đang tải phiên…",
+        "loadError": "Không tải được phiên.",
+        "retry": "Thử lại"
+      },
+      "noSitting": {
+        "title": "Không có phiên nào mở",
+        "body": "Chọn bài kiểm tra, tạo mã tham gia, rồi đọc to cho cả lớp.",
+        "start": "Bắt đầu phiên mới"
+      },
+      "room": {
+        "title": "Điều hành phiên",
+        "subtitle": "Mã tham gia, cài đặt bài kiểm tra và điều khiển phòng",
+        "joinCode": "Mã tham gia",
+        "copy": "Sao chép mã",
+        "copied": "Đã sao chép",
+        "copyError": "Không sao chép được mã. Hãy đọc trực tiếp từ màn hình.",
+        "close": "Đóng phiên",
+        "test": "Bài kiểm tra",
+        "testTitle": "{className} — {test}",
+        "stallMeta": "Bị đánh dấu đình trệ sau {minutes, plural, other {# phút}} không hoạt động",
+        "settings": "Cài đặt bài kiểm tra",
+        "settingsCount": "{on} trên {total} đang bật",
+        "controls": "Điều khiển phòng",
+        "metaRunning": "Tạm dừng sẽ dừng mọi đồng hồ cùng lúc và đưa cả phòng sang màn hình tạm dừng — dùng khi bạn cần nói chuyện với lớp.",
+        "metaPaused": "Mọi đồng hồ đã dừng và tất cả học sinh đang ở màn hình tạm dừng. Các em không thể đọc hay trả lời câu hỏi cho đến khi bạn tiếp tục.",
+        "pausedAt": "Đã tạm dừng lúc {time}",
+        "extraSoFar": "Thời gian cộng thêm đến giờ: +{minutes} phút qua {count, plural, other {# lần gia hạn}}.",
+        "pause": "Tạm dừng bài kiểm tra",
+        "resume": "Tiếp tục bài kiểm tra",
+        "extend": "+{minutes} phút",
+        "closeConfirm": {
+          "bodyNone": "Mọi người đã nộp hoặc đã được xử lý, nên đóng {code} chỉ khiến mã này không dùng được nữa. Không thể hoàn tác thao tác này.",
+          "bodyStops": "Đóng {code} khiến mã này không dùng được nữa.",
+          "bodyWorking": "{names} sẽ mất quyền truy cập giữa chừng và bài làm được nộp nguyên trạng, nên sẽ bị chấm trên một bài chưa hoàn thành.",
+          "namesMore": "{names} và {count} người nữa",
+          "offline": "{count, plural, other {# thiết bị đang ngoại tuyến, nên câu trả lời còn trên thiết bị đó}} sẽ không bao giờ đến được máy chủ.",
+          "notJoined": "{count, plural, other {# học sinh}} chưa đăng nhập và sẽ vào hàng đợi thi lại.",
+          "undone": "Không thể hoàn tác thao tác này."
+        },
+        "pauseConfirm": {
+          "title": "Tạm dừng bài kiểm tra cho tất cả?",
+          "body": "Mọi đồng hồ sẽ dừng và {count, plural, other {cả # học sinh còn đang làm bài}} sẽ thấy màn hình tạm dừng cho đến khi bạn tiếp tục. Những gì các em đã viết không bị mất.",
+          "cta": "Tạm dừng bài kiểm tra",
+          "cancel": "Hủy"
+        },
+        "nobodyConfirm": {
+          "title": "Hiện không có ai đang làm bài",
+          "body": "Mọi học sinh trong {code} đều đã nộp, chưa đăng nhập, hoặc đã bị tạm dừng, nên không còn gì để tạm dừng. Nếu bạn cần ngăn việc tham gia lại phòng này, hãy đóng phiên.",
+          "cta": "Đã hiểu",
+          "cancel": "Hủy"
+        },
+        "extendConfirm": {
+          "title": "Thêm {minutes} phút cho cả phòng?",
+          "body": "Mọi bài làm đang mở trong phiên này được thêm {minutes} phút. Bạn có thể làm việc này bao nhiêu lần tùy nhu cầu; mỗi lần đều được ghi lại cho phiên.",
+          "bodyOnTop": "Mọi bài làm đang mở trong phiên này được thêm {minutes} phút, cộng vào {already} phút đã thêm trước đó. Bạn có thể làm việc này bao nhiêu lần tùy nhu cầu; mỗi lần đều được ghi lại cho phiên.",
+          "cta": "Thêm {minutes} phút",
+          "cancel": "Hủy"
+        },
+        "errors": {
+          "notRunning": "Phiên này không còn chạy nữa, nên không thể dùng điều khiển phòng.",
+          "alreadyPaused": "Phòng này đã được tạm dừng.",
+          "notPaused": "Phòng này không ở trạng thái tạm dừng.",
+          "noActiveAttempt": "Không ai trong phiên này đang làm bài.",
+          "notFound": "Không tìm thấy phiên này. Có thể phiên đã được đóng.",
+          "invalid": "Máy chủ đã từ chối yêu cầu đó.",
+          "failed": "Thao tác không thành công. Hãy thử lại."
+        }
+      },
+      "connection": {
+        "title": "Kết nối",
+        "summary": "{online} trực tuyến · {weak} yếu · {offline} ngoại tuyến · trên {working} còn đang làm bài",
+        "metaOffline": "{count, plural, other {# thiết bị}} đã rớt mạng. Câu trả lời đang được lưu tại chỗ và sẽ đồng bộ ngay khi kết nối trở lại, nên không mất gì và đồng hồ vẫn chạy.",
+        "metaAll": "Mọi thiết bị trong phòng đều đang báo về. Câu trả lời được đồng bộ ngay khi các em trả lời.",
+        "lowBwOn": "Chế độ băng thông thấp đang bật",
+        "lowBwOff": "Chế độ băng thông thấp đang tắt",
+        "lowBwError": "Không thay đổi được chế độ băng thông thấp. Hãy thử lại."
+      },
+      "settingsPanel": {
+        "title": "Cài đặt phiên",
+        "subtitle": "Phiên này đang chạy với những cài đặt sau. {on} trên {total} đang bật.",
+        "close": "Đóng cài đặt",
+        "on": "Bật",
+        "off": "Tắt",
+        "minutes": "{minutes} phút",
+        "fixed": "Cài đặt bị khóa khi phiên đã mở. Để thay đổi, hãy đóng phiên này và bắt đầu phiên mới.",
+        "rows": {
+          "lowBw": {
+            "label": "Chế độ băng thông thấp",
+            "desc": "Chỉ văn bản, không tải trước hình ảnh, và câu trả lời được lưu trên thiết bị rồi đồng bộ khi kết nối trở lại. Dùng khi lớp học dùng dữ liệu di động hoặc vệ tinh."
+          },
+          "skip": {
+            "label": "Cho phép bỏ qua câu hỏi",
+            "desc": "Học sinh có thể bỏ qua một câu, làm câu khác, và quay lại trước khi nộp."
+          },
+          "review": {
+            "label": "Màn hình xem lại trước khi nộp",
+            "desc": "Danh sách cuối cùng các câu đã bỏ qua và đã đánh dấu, để không có câu nào trống do sơ suất."
+          },
+          "flag": {
+            "label": "Đánh dấu câu hỏi cần xem lại",
+            "desc": "Học sinh có thể đánh dấu một câu để quay lại. Dấu hiệu hiển thị trên màn hình xem lại và với bạn."
+          },
+          "bigText": {
+            "label": "Chữ lớn và tương phản cao",
+            "desc": "Học sinh có thể phóng to chữ và chuyển sang giao diện tương phản cao bất cứ lúc nào."
+          },
+          "lockdown": {
+            "label": "Cửa sổ khóa",
+            "desc": "Bài kiểm tra chiếm toàn màn hình. Các ứng dụng, thẻ khác, sao chép, dán và in đều bị chặn."
+          },
+          "focusFlag": {
+            "label": "Gắn cờ khi rời cửa sổ",
+            "desc": "Việc rời đi được ghi lại với dấu thời gian và hiển thị trên màn hình trực tiếp của bạn. Dùng khi tắt khóa."
+          },
+          "warn5": {
+            "label": "Cảnh báo còn 5 phút",
+            "desc": "Một dải thông báo yên tĩnh khi còn 5 phút, để đồng hồ không phải luôn trước mắt các em."
+          },
+          "autoSubmit": {
+            "label": "Tự động nộp khi hết giờ",
+            "desc": "Tắt nghĩa là bài làm chờ bạn, và không có gì được nộp nếu không có giáo viên."
+          },
+          "showScore": {
+            "label": "Hiện điểm của các em khi kết thúc",
+            "desc": "Tắt nghĩa là kết quả được giữ cho đến khi bạn công bố báo cáo."
+          },
+          "timeLimit": {
+            "label": "Giới hạn thời gian",
+            "desc": "Mỗi học sinh có bao nhiêu thời gian, trước khi bạn gia hạn thêm trong lúc thi."
+          }
+        }
+      },
+      "activity": {
+        "title": "Hoạt động của phiên",
+        "subtitle": "Mọi thao tác đã thực hiện trong phiên này, và ai đã thực hiện.",
+        "note": "Toàn bộ nhật ký được giữ cùng phiên để phục vụ khiếu nại.",
+        "noteTruncated": "Đang hiển thị {shown} mục gần nhất trong {total} mục. Toàn bộ nhật ký được giữ cùng phiên để phục vụ khiếu nại.",
+        "loadError": "Không tải được hoạt động của phiên."
+      },
+      "history": {
+        "bookedTitle": "Đã đặt cho sau này",
+        "pastTitle": "Các phiên trước",
+        "pastSubtitle": "Các phiên đã chạy cho lớp này.",
+        "columns": {
+          "test": "Bài kiểm tra",
+          "code": "Mã tham gia",
+          "date": "Ngày",
+          "completed": "Hoàn thành",
+          "status": "Trạng thái"
+        },
+        "completed": "{done} / {total}",
+        "live": "Đang chạy",
+        "closed": "Đã đóng",
+        "empty": "Chưa có phiên nào được chạy cho lớp này.",
+        "loadError": "Không tải được các phiên trước.",
+        "truncated": "Đang hiển thị {count} phiên gần nhất."
+      }
+    },
     "liveSessions": {
       "title": "Phiên trực tiếp",
       "summary": "{sessions, plural, other {# phiên}} đang diễn ra ở {classes, plural, other {# lớp}}. Mỗi học sinh chỉ có thể làm một bài kiểm tra tại một thời điểm.",
