@@ -1,8 +1,10 @@
 import { describe, expect, test } from 'vitest';
 
+import type { ResultView } from '@schooltest/scoring-contracts';
+
 import type { RosterRow } from '@/modules/results';
-import { t2Roster, t2Row } from '@/modules/teacher/lib/v2/__fixtures__/t2';
-import { familyReportRows } from '@/modules/teacher/lib/v2/family-reports';
+import { t2Result, t2Roster, t2Row } from '@/modules/teacher/lib/v2/__fixtures__/t2';
+import { dayFirstDate, familyReportRow, familyReportRows } from '@/modules/teacher/lib/v2/family-reports';
 import type { FamilyReportRow, FamilyReportsView } from '@/modules/teacher/types/v2-family.types';
 
 function derive(firstName: string, patch: Partial<RosterRow>): RosterRow {
@@ -49,6 +51,13 @@ describe('familyReportRows — recorded t2 roster (every recorded result is held
       expected: { kind: 'below', labelKey: 'expected.below', tone: { fg: '#B42318', bg: '#FDEEEC' } },
       actions: { preview: true, release: true, recall: false },
     });
+  });
+
+  test('a held result with no score never says "Scored and ready" (P1 row 6)', () => {
+    const unscored = view.rows.filter((row) => row.status.kind === 'held' && row.score === null);
+    expect(unscored.map((row) => row.name.split(' ')[0])).toEqual(['Lucia', 'Panit', 'Qadir', 'Sunniva', 'Chen', 'Nour']);
+    expect([...new Set(unscored.map((row) => row.whyKey))]).toEqual(['release.why.heldNoScore']);
+    expect(view.rows.filter((row) => row.whyKey === 'release.why.held').every((row) => row.score !== null)).toBe(true);
   });
 
   test('readiness drives the expected band; null or not-assessed readiness shows none', () => {
@@ -139,5 +148,61 @@ describe('familyReportRows — empty roster (every recorded row removed)', () =>
     const empty = familyReportRows(t2Roster.slice(0, 0));
     expect(empty.counts).toEqual({ total: 0, scored: 0, released: 0, held: 0, recalled: 0, open: 0, blocked: 0, noResult: 0 });
     expect(empty).toMatchObject({ rows: [], banner: null, releasableResultIds: [], filter: 'all' });
+  });
+});
+
+// P1 row 6 — every arm derived from the recorded held, unscored Lucia row by moving the
+// result's own `status`; the recorded value is `complete`, which is the neutral arm.
+describe('familyReportRows — a held result with no score reports its own scoring status', () => {
+  const unscored = t2Result('Lucia');
+  const whyOf = (status: ResultView['status']): string =>
+    familyReportRow({ ...t2Row('Lucia'), result: { ...unscored, status } }).whyKey;
+
+  test('the recorded row is held, complete and scoreless', () => {
+    expect([unscored.release_state, unscored.status, unscored.overall.domain_score]).toEqual(['held', 'complete', null]);
+  });
+
+  test('hand scoring, a failed run and a running one each say what is true', () => {
+    expect(whyOf('manual_scoring')).toBe('release.why.manual');
+    expect(whyOf('scoring_failed')).toBe('release.why.heldScoringFailed');
+    expect(whyOf('scoring')).toBe('release.why.heldScoring');
+    expect(whyOf('partial_pending')).toBe('release.why.heldScoring');
+    expect(whyOf('complete')).toBe('release.why.heldNoScore');
+  });
+
+  test('a held result WITH a score keeps the design sentence', () => {
+    const scored = t2Result('Dilnoza');
+    expect(familyReportRow({ ...t2Row('Dilnoza'), result: scored }).whyKey).toBe('release.why.held');
+    expect(familyReportRow({ ...t2Row('Dilnoza'), result: { ...scored, status: 'partial_pending' } }).whyKey).toBe(
+      'release.why.held',
+    );
+  });
+});
+
+// P1 row 8 — the design writes "sat 31 August", day before month. The date is the recorded
+// last history point of the recorded roster (2026-09-10), formatted for every catalogue.
+describe('dayFirstDate — day before month, in the reader’s own locale', () => {
+  const satAt = t2Result('Dilnoza').history?.at(-1)?.sat_at ?? '';
+  const long: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', timeZone: 'UTC' };
+
+  test('the recorded sitting date', () => {
+    expect(satAt).toBe('2026-09-10');
+  });
+
+  test('en swaps the month-first pattern; ms, th and vi already read day-first', () => {
+    expect(dayFirstDate('en', satAt, long)).toBe('10 September');
+    expect(dayFirstDate('ms', satAt, long)).toBe('10 September');
+    expect(dayFirstDate('th', satAt, long)).toBe('10 กันยายน');
+    expect(dayFirstDate('vi', satAt, long)).toBe('10 tháng 9');
+  });
+
+  test('a locale that numbers its months keeps its own order', () => {
+    expect(dayFirstDate('ko', satAt, long)).toBe('9월 10일');
+    expect(dayFirstDate('zh', satAt, long)).toBe('9月10日');
+  });
+
+  test('the design’s own dates, long and short', () => {
+    expect(dayFirstDate('en', '2026-08-31', long)).toBe('31 August');
+    expect(dayFirstDate('en', '2026-08-31', { day: 'numeric', month: 'short', timeZone: 'UTC' })).toBe('31 Aug');
   });
 });

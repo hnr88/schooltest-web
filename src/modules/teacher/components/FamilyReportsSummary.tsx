@@ -36,7 +36,7 @@ function FamilyReportsSummary({ counts, banner }: FamilyReportsSummaryProps) {
         <p
           data-slot="family-report-banner"
           data-kind={banner.kind}
-          className="max-w-[96ch] rounded-[10px] border px-[18px] py-[15px] text-[13px] leading-[1.55]"
+          className="box-content max-w-[96ch] rounded-[10px] border px-[18px] py-[15px] text-[13px] leading-[1.55]"
           style={{ color: banner.tone.fg, backgroundColor: banner.tone.bg, borderColor: banner.tone.border }}
         >
           {bannerText}

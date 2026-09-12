@@ -5748,6 +5748,9 @@
         },
         "why": {
           "held": "Đã chấm và sẵn sàng. Phụ huynh sẽ không nhận được gì cho đến khi bạn gửi.",
+          "heldNoScore": "Chưa có điểm. Phụ huynh sẽ không nhận được gì cho đến khi có điểm để gửi.",
+          "heldScoring": "Vẫn đang chấm. Điểm sẽ hiện ở đây ngay khi chấm xong.",
+          "heldScoringFailed": "Việc chấm bài làm này chưa hoàn tất. Cần kiểm tra lại trước khi có thể gửi bất cứ điều gì.",
           "released": "Phụ huynh có thể đọc · đã gửi {at}",
           "releasedUndated": "Phụ huynh có thể đọc",
           "recalled": "Đã rút lại sau khi bài làm được mở lại. Phụ huynh đã được thông báo rằng kết quả đang được xem xét.",

@@ -41,7 +41,7 @@ function FamilyReportsPanel({ classDocumentId, rows }: FamilyReportsPanelProps) 
       data-slot="family-reports"
       data-status={rows.length === 0 ? 'empty' : 'ready'}
       aria-labelledby="family-reports-title"
-      className="flex flex-col gap-[18px]"
+      className="flex flex-col gap-[18px] leading-[normal]"
     >
       <div className="flex flex-wrap items-end justify-between gap-5">
         <div className="min-w-0">

@@ -5739,6 +5739,9 @@
         },
         "why": {
           "held": "Sudah dimarkahkan dan sedia. Tiada apa-apa sampai kepada penjaga sehingga anda mengeluarkannya.",
+          "heldNoScore": "Belum dimarkahkan. Tiada apa-apa sampai kepada penjaga sehingga ada markah untuk dikeluarkan.",
+          "heldScoring": "Masih dimarkahkan. Markah akan dipaparkan di sini sebaik sahaja pemarkahan selesai.",
+          "heldScoringFailed": "Pemarkahan percubaan ini tidak selesai. Ia perlu disemak semula sebelum apa-apa boleh dikeluarkan.",
           "released": "Penjaga boleh membacanya · dikeluarkan {at}",
           "releasedUndated": "Penjaga boleh membacanya",
           "recalled": "Ditarik balik selepas percubaan dibuka semula. Penjaga telah dimaklumkan bahawa keputusan sedang disemak.",

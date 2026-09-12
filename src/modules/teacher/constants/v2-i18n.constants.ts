@@ -1,4 +1,4 @@
-import type { AssessedBand, AttributeName, DisplaySkill } from '@schooltest/scoring-contracts';
+import type { AssessedBand, AttributeName, DisplaySkill, ResultView } from '@schooltest/scoring-contracts';
 
 import type { RosterReleaseState } from '@/modules/results';
 import type { ExpectedKind } from '@/modules/teacher/types/v2-family.types';
@@ -95,6 +95,20 @@ export const RELEASE_WHY_KEY: Readonly<Record<RosterReleaseState, string>> = {
 };
 
 export const RELEASED_UNDATED_WHY_KEY = 'release.why.releasedUndated';
+
+/**
+ * A HELD result with no `overall.domain_score` never says "Scored and ready": the row
+ * reports what the result's own `status` says. `manual_scoring` reuses the hand-scoring
+ * line; a `complete` run that produced no score knows nothing more, so it stays neutral
+ * ("Not scored yet") — P1 parity row 6.
+ */
+export const HELD_UNSCORED_WHY_KEY: Readonly<Record<ResultView['status'], string>> = {
+  scoring: 'release.why.heldScoring',
+  partial_pending: 'release.why.heldScoring',
+  manual_scoring: 'release.why.manual',
+  scoring_failed: 'release.why.heldScoringFailed',
+  complete: 'release.why.heldNoScore',
+};
 
 export const CARER_CAN_KEY: Readonly<Record<AttributeName, string>> = {
   Decoding: 'carer.can.decoding',

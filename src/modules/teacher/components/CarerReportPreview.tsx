@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormatter, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import {
   OpsDialog,
@@ -14,9 +14,14 @@ import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
 import { ToneChip } from '@/modules/teacher/components/v2/ToneChip';
 import { EXPECTED_CHIP_TONE, RELEASE_CHIP_TONE } from '@/modules/teacher/constants/family-reports.constants';
 import { studentResultsHref } from '@/modules/teacher/lib/results-shell';
+import { dayFirstDate } from '@/modules/teacher/lib/v2/family-reports';
 import type { CarerLine, CarerReportPreviewProps } from '@/modules/teacher/types/v2-family.types';
 
-const FOOTER_BUTTON = 'h-11 rounded-[8px] px-5 text-[13.5px]';
+// The footer row (`:1900–1902`): the action button is 44px/0 20px/700, the two quiet ones
+// 44px/0 18px/600 — "View full analysis" hovers to a navy border, "Close" to `#F5F6F8`.
+const FOOTER_BUTTON = 'h-11 rounded-[8px] text-[13.5px]';
+const FOOTER_ACTION = `${FOOTER_BUTTON} px-5 font-bold`;
+const FOOTER_QUIET = `${FOOTER_BUTTON} px-[18px] font-semibold`;
 
 function CarerLines({ title, lines }: { title: string; lines: readonly CarerLine[] }) {
   const tView = useTranslations('TeacherPortal.viewModel');
@@ -42,18 +47,16 @@ function CarerReportPreview({ report, classDocumentId, className, onClose, onRel
   const t = useTranslations('TeacherPortal.familyReports');
   const tView = useTranslations('TeacherPortal.viewModel');
   const tKit = useTranslations('TeacherPortal.kit');
-  const format = useFormatter();
+  const locale = useLocale();
   const date =
-    report.satAt === null
-      ? null
-      : format.dateTime(new Date(report.satAt), { day: 'numeric', month: 'long', timeZone: 'UTC' });
+    report.satAt === null ? null : dayFirstDate(locale, report.satAt, { day: 'numeric', month: 'long', timeZone: 'UTC' });
 
   return (
     <OpsDialog open onOpenChange={(open) => (open ? undefined : onClose())}>
       <OpsDialogContent
         data-slot="carer-report-preview"
         data-result-id={report.resultDocumentId}
-        className="rounded-[11px] sm:max-w-[560px]"
+        className="rounded-[11px] leading-[normal] sm:max-w-[560px]"
       >
         <div className="flex items-start gap-3.5 border-b border-[#ECEEF2] px-[30px] pt-[26px] pb-5">
           <InitialsAvatar initials={report.initials} size="lg" tone="soft" />
@@ -99,14 +102,14 @@ function CarerReportPreview({ report, classDocumentId, className, onClose, onRel
           )}
           <div className="flex flex-wrap gap-2.5 border-t border-[#ECEEF2] pt-5">
             {report.actions.release ? (
-              <TeacherButton tone="primary" className={`${FOOTER_BUTTON} font-bold`} onClick={onRelease}>
+              <TeacherButton tone="primary" className={FOOTER_ACTION} onClick={onRelease}>
                 {t('preview.release')}
               </TeacherButton>
             ) : null}
             {report.actions.recall ? (
               <TeacherButton
                 tone="primary"
-                className={`${FOOTER_BUTTON} bg-[#B42318] font-bold hover:bg-[#91201A]`}
+                className={`${FOOTER_ACTION} bg-[#B42318] hover:bg-[#91201A]`}
                 onClick={onRecall}
               >
                 {t('preview.recall')}
@@ -115,7 +118,7 @@ function CarerReportPreview({ report, classDocumentId, className, onClose, onRel
             <TeacherButton
               tone="outline"
               href={studentResultsHref(classDocumentId, report.studentDocumentId)}
-              className={`${FOOTER_BUTTON} border-[#D8DFEA] font-semibold hover:border-[#D8DFEA] hover:bg-[#F5F6F8]`}
+              className={`${FOOTER_QUIET} border-[#D8DFEA] hover:border-[#0E2350] hover:bg-white`}
             >
               {t('preview.viewAnalysis')}
             </TeacherButton>
@@ -123,7 +126,7 @@ function CarerReportPreview({ report, classDocumentId, className, onClose, onRel
               render={
                 <TeacherButton
                   tone="outline"
-                  className={`${FOOTER_BUTTON} border-[#E5E7EB] font-semibold hover:border-[#E5E7EB] hover:bg-[#F5F6F8]`}
+                  className={`${FOOTER_QUIET} border-[#E5E7EB] hover:border-[#E5E7EB] hover:bg-[#F5F6F8]`}
                 />
               }
             >

@@ -5729,6 +5729,9 @@
         },
         "why": {
           "held": "Scored and ready. Nothing reaches the carer until you release it.",
+          "heldNoScore": "Not scored yet. Nothing reaches the carer until there is a score to release.",
+          "heldScoring": "Still being scored. The score appears here as soon as scoring finishes.",
+          "heldScoringFailed": "Scoring did not finish for this attempt. It needs another look before anything can be released.",
           "released": "Carer can read it · released {at}",
           "releasedUndated": "Carer can read it",
           "recalled": "Withdrawn after the attempt was reopened. The carer has been told the result is under review.",
