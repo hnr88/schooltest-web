@@ -6142,11 +6142,12 @@
         "open": "{count, plural, other {# 名学生仍在作答，他们的家长将看不到任何内容，可能会来询问原因。}}",
         "blocked": "{count, plural, other {另有 # 名学生因补考或人工评分而受阻。}}",
         "tail": "报告可以撤回，但已读内容无法收回。",
-        "cta": "{count, plural, other {发布 # 份报告}}"
+        "cta": "{count, plural, other {发布 # 份报告}}",
+        "unscored": "{count, plural, other {另有 # 名学生尚无分数。}}"
       },
       "nothingHeld": {
         "title": "没有暂存的报告",
-        "body": "{count, plural, =0 {{className} 中所有已评分的报告都已发送给家长。} other {{className} 中所有已评分的报告都已发送给家长。其余 # 名没有报告的学生正在等待补考、人工评分或仍在作答，无法在此发布。}}",
+        "body": "{count, plural, =0 {{className} 中所有已评分的报告都已发送给家长。} other {{className} 中所有已评分的报告都已发送给家长。其余 # 名没有报告的学生尚无分数、正在等待补考或人工评分，或仍在作答，无法在此发布。}}",
         "cta": "知道了"
       },
       "cancel": "取消",

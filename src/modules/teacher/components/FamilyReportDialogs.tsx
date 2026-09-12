@@ -25,6 +25,7 @@ function FamilyReportDialogs({ actions, counts, heldCount, className }: FamilyRe
             body: [
               t('releaseAll.body', { count: heldCount }),
               counts.open > 0 ? t('releaseAll.open', { count: counts.open }) : null,
+              counts.unscored > 0 ? t('releaseAll.unscored', { count: counts.unscored }) : null,
               counts.blocked > 0 ? t('releaseAll.blocked', { count: counts.blocked }) : null,
               t('releaseAll.tail'),
             ]

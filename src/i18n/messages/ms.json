@@ -6152,11 +6152,12 @@
         "open": "{count, plural, other {# pelajar masih menduduki ujian, jadi penjaga mereka tidak akan melihat apa-apa dan mungkin akan bertanya sebabnya.}}",
         "blocked": "{count, plural, other {# lagi tersekat kerana ujian semula atau pemarkahan manual.}}",
         "tail": "Laporan boleh ditarik balik, tetapi apa yang telah dibaca tidak boleh dibatalkan.",
-        "cta": "{count, plural, other {Keluarkan # laporan}}"
+        "cta": "{count, plural, other {Keluarkan # laporan}}",
+        "unscored": "{count, plural, other {# lagi belum mempunyai markah.}}"
       },
       "nothingHeld": {
         "title": "Tiada laporan yang ditahan",
-        "body": "{count, plural, =0 {Setiap laporan yang telah diskor dalam {className} telah dihantar kepada penjaganya.} other {Setiap laporan yang telah diskor dalam {className} telah dihantar kepada penjaganya. # pelajar tanpa laporan sedang menunggu ujian semula, pemarkahan manual, atau masih menduduki ujian, dan tidak boleh dikeluarkan dari sini.}}",
+        "body": "{count, plural, =0 {Setiap laporan yang telah diskor dalam {className} telah dihantar kepada penjaganya.} other {Setiap laporan yang telah diskor dalam {className} telah dihantar kepada penjaganya. # pelajar tanpa laporan masih belum mempunyai markah, sedang menunggu ujian semula atau pemarkahan manual, atau masih menduduki ujian, dan tidak boleh dikeluarkan dari sini.}}",
         "cta": "Faham"
       },
       "cancel": "Batal",

@@ -121,6 +121,24 @@ test('S6 — Family reports: live tiles, carer preview, release and recall one h
       if (score === null) await expect(row).toContainText(vm(`release.why.${HELD_UNSCORED_WHY[entry.result.status]}`));
     }
   }
+  // TB-40 — the bulk confirm counts the same gaps the banner does. Opened and CANCELLED:
+  // nothing is released here.
+  await panel.locator('[data-action="release-held"]').click();
+  const releaseAll = page.getByRole('alertdialog');
+  await expect(releaseAll).toContainText(
+    [
+      icu(fr('releaseAll.body'), { count: tiles.held }),
+      open > 0 ? icu(fr('releaseAll.open'), { count: open }) : null,
+      unscored > 0 ? icu(fr('releaseAll.unscored'), { count: unscored }) : null,
+      blocked > 0 ? icu(fr('releaseAll.blocked'), { count: blocked }) : null,
+      fr('releaseAll.tail'),
+    ]
+      .filter((part) => part !== null)
+      .join(' '),
+  );
+  await releaseAll.getByRole('button', { name: fr('cancel'), exact: true }).click();
+  await expect(releaseAll).toBeHidden();
+
   await panel.getByRole('button', { name: fr('filters.held'), exact: true }).click();
   await expect(rows).toHaveCount(tiles.held);
   await panel.getByRole('button', { name: fr('filters.blocked'), exact: true }).click();

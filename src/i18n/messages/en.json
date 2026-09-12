@@ -6142,11 +6142,12 @@
         "open": "{count, plural, one {# student is still sitting, so that carer will see nothing and is likely to ask why.} other {# students are still sitting, so those carers will see nothing and are likely to ask why.}}",
         "blocked": "{count, plural, one {# more is blocked on a re-sit or manual scoring.} other {# more are blocked on a re-sit or manual scoring.}}",
         "tail": "Reports can be recalled, but not un-read.",
-        "cta": "{count, plural, one {Release # report} other {Release # reports}}"
+        "cta": "{count, plural, one {Release # report} other {Release # reports}}",
+        "unscored": "{count, plural, one {# more has no score yet.} other {# more have no score yet.}}"
       },
       "nothingHeld": {
         "title": "Nothing is being held back",
-        "body": "{count, plural, =0 {Every scored report in {className} has already gone to its carer.} one {Every scored report in {className} has already gone to its carer. The # student without a report is waiting on a re-sit, on manual scoring, or is still sitting, and cannot be released from here.} other {Every scored report in {className} has already gone to its carer. The # students without a report are waiting on a re-sit, on manual scoring, or are still sitting, and cannot be released from here.}}",
+        "body": "{count, plural, =0 {Every scored report in {className} has already gone to its carer.} one {Every scored report in {className} has already gone to its carer. The # student without a report has no score yet, is waiting on a re-sit or on manual scoring, or is still sitting, and cannot be released from here.} other {Every scored report in {className} has already gone to its carer. The # students without a report have no score yet, are waiting on a re-sit or on manual scoring, or are still sitting, and cannot be released from here.}}",
         "cta": "Got it"
       },
       "cancel": "Cancel",

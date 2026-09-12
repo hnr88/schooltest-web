@@ -6161,11 +6161,12 @@
         "open": "{count, plural, other {# học sinh vẫn đang làm bài, nên phụ huynh của các em sẽ không thấy gì và có thể hỏi lý do.}}",
         "blocked": "{count, plural, other {# học sinh khác bị chặn do cần thi lại hoặc chấm thủ công.}}",
         "tail": "Báo cáo có thể thu hồi, nhưng không thể rút lại những gì đã đọc.",
-        "cta": "{count, plural, other {Công bố # báo cáo}}"
+        "cta": "{count, plural, other {Công bố # báo cáo}}",
+        "unscored": "{count, plural, other {# học sinh khác chưa có điểm.}}"
       },
       "nothingHeld": {
         "title": "Không có báo cáo nào đang giữ",
-        "body": "{count, plural, =0 {Mọi báo cáo đã chấm trong {className} đều đã được gửi tới phụ huynh.} other {Mọi báo cáo đã chấm trong {className} đều đã được gửi tới phụ huynh. # học sinh chưa có báo cáo đang chờ thi lại, chấm thủ công hoặc vẫn đang làm bài, nên không thể công bố từ đây.}}",
+        "body": "{count, plural, =0 {Mọi báo cáo đã chấm trong {className} đều đã được gửi tới phụ huynh.} other {Mọi báo cáo đã chấm trong {className} đều đã được gửi tới phụ huynh. # học sinh chưa có báo cáo thì chưa có điểm, đang chờ thi lại, chờ chấm thủ công hoặc vẫn đang làm bài, nên không thể công bố từ đây.}}",
         "cta": "Đã hiểu"
       },
       "cancel": "Hủy",
