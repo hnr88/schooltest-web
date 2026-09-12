@@ -6092,7 +6092,8 @@
         "open": "{count, plural, other {# 份作答仍未结束。}}",
         "blocked": "{count, plural, other {# 名学生需要补考或人工评分后才能发布。}}",
         "gaps": "现在发布，家长看到的班级情况将不完整。",
-        "complete": "本场测试的所有作答均已评分，班级情况完整。"
+        "complete": "本场测试的所有作答均已评分，班级情况完整。",
+        "unscored": "{count, plural, other {# 份作答尚无分数。}}"
       },
       "filters": {
         "label": "显示报告",

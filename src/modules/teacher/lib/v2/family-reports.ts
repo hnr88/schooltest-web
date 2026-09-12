@@ -13,6 +13,7 @@ import { expectedView, releaseActions, releaseStatus } from '@/modules/teacher/l
 import type {
   FamilyBanner,
   FamilyCounts,
+  FamilyFilter,
   FamilyReportRow,
   FamilyReportsOptions,
   FamilyReportsView,
@@ -69,10 +70,19 @@ export function familyReportRow(row: RosterRow): FamilyReportRow {
   };
 }
 
+/**
+ * The tiles count what the row really carries, not the release state alone (TB-40): a HELD
+ * result with no `overall.domain_score` is not "Scored", and it is not "Held for you" either
+ * — nothing can be released for that student yet — so it joins the open and blocked rows
+ * under "No result yet". A released result always has a score (the API refuses to release
+ * one that is not complete), so `scored` stays `released + held`.
+ */
 function familyCounts(rows: readonly FamilyReportRow[]): FamilyCounts {
   const count = (kinds: readonly RosterReleaseState[]) => rows.filter((row) => kinds.includes(row.status.kind)).length;
+  const isHeld = (row: FamilyReportRow) => row.status.kind === 'held';
   const released = count(['released']);
-  const held = count(['held']);
+  const held = rows.filter((row) => isHeld(row) && row.score !== null).length;
+  const unscored = rows.filter((row) => isHeld(row) && row.score === null).length;
   const open = count(['open']);
   const blocked = count(BLOCKED_RELEASE_KINDS);
   return {
@@ -83,28 +93,46 @@ function familyCounts(rows: readonly FamilyReportRow[]): FamilyCounts {
     recalled: count(['recalled']),
     open,
     blocked,
-    noResult: blocked + open,
+    unscored,
+    noResult: blocked + open + unscored,
   };
 }
 
+/** "Complete" means every attempt really has a score — an unscored held result is a gap (TB-40). */
 function familyBanner(counts: FamilyCounts): FamilyBanner | null {
   if (counts.total === 0) return null;
-  const kind = counts.open + counts.blocked > 0 ? 'incomplete' : 'complete';
-  return { kind, open: counts.open, blocked: counts.blocked, tone: FAMILY_BANNER_TONE[kind] };
+  const kind = counts.open + counts.blocked + counts.unscored > 0 ? 'incomplete' : 'complete';
+  return {
+    kind,
+    open: counts.open,
+    blocked: counts.blocked,
+    unscored: counts.unscored,
+    tone: FAMILY_BANNER_TONE[kind],
+  };
+}
+
+/**
+ * The pills mirror the tiles (TB-40): an unscored held row shows under Blocked — nothing can
+ * be released for it — never under "Held", which is the pill the release buttons act on.
+ */
+function matchesFilter(row: FamilyReportRow, filter: FamilyFilter): boolean {
+  const kinds = FILTER_RELEASE_KINDS[filter];
+  if (kinds === null) return true;
+  if (row.status.kind === 'held' && row.score === null) return filter === 'blocked';
+  return kinds.includes(row.status.kind);
 }
 
 export function familyReportRows(roster: readonly RosterRow[], options: FamilyReportsOptions = {}): FamilyReportsView {
   const filter = options.filter ?? 'all';
   const rows = roster.map(familyReportRow);
-  const kinds = FILTER_RELEASE_KINDS[filter];
   const counts = familyCounts(rows);
   return {
     filter,
-    rows: kinds === null ? rows : rows.filter((row) => kinds.includes(row.status.kind)),
+    rows: rows.filter((row) => matchesFilter(row, filter)),
     counts,
     banner: familyBanner(counts),
     releasableResultIds: rows.flatMap((row) =>
-      row.status.kind === 'held' && row.resultDocumentId !== null ? [row.resultDocumentId] : [],
+      row.status.kind === 'held' && row.score !== null && row.resultDocumentId !== null ? [row.resultDocumentId] : [],
     ),
   };
 }

@@ -6102,7 +6102,8 @@
         "open": "{count, plural, other {# percubaan masih terbuka.}}",
         "blocked": "{count, plural, other {# pelajar memerlukan ujian semula atau pemarkahan manual sebelum apa-apa boleh dikeluarkan untuk mereka.}}",
         "gaps": "Mengeluarkan sekarang memberi penjaga gambaran kelas yang tidak lengkap.",
-        "complete": "Setiap percubaan dalam sesi ini telah diskor, jadi gambaran kelas adalah lengkap."
+        "complete": "Setiap percubaan dalam sesi ini telah diskor, jadi gambaran kelas adalah lengkap.",
+        "unscored": "{count, plural, other {# percubaan masih belum mempunyai markah.}}"
       },
       "filters": {
         "label": "Tunjukkan laporan",

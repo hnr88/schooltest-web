@@ -6111,7 +6111,8 @@
         "open": "{count, plural, other {# lượt làm bài vẫn đang mở.}}",
         "blocked": "{count, plural, other {# học sinh cần thi lại hoặc chấm thủ công trước khi có thể công bố cho các em.}}",
         "gaps": "Công bố lúc này sẽ cho phụ huynh bức tranh lớp học còn thiếu sót.",
-        "complete": "Mọi lượt làm bài trong buổi này đã được chấm, nên bức tranh lớp học đã đầy đủ."
+        "complete": "Mọi lượt làm bài trong buổi này đã được chấm, nên bức tranh lớp học đã đầy đủ.",
+        "unscored": "{count, plural, other {# lượt làm bài chưa có điểm.}}"
       },
       "filters": {
         "label": "Hiển thị báo cáo",

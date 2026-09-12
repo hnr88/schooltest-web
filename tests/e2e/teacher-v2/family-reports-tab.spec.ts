@@ -79,6 +79,29 @@ test('S6 — Family reports: live tiles, carer preview, release and recall one h
     await expect(tile.locator('div').first(), `tile ${key}`).toHaveText(String(value));
   }
   await expect(panel.locator('[data-action="release-held"]')).toHaveText(icu(fr('releaseHeld'), { count: tiles.held }));
+
+  // TB-40 — the banner says exactly what the served roster holds: it may only claim
+  // completeness when every attempt really carries a score.
+  const open = roster.filter((entry) => entry.release_state === 'open').length;
+  const blocked = roster.filter((entry) => ['manual', 'absent', 'nosit'].includes(entry.release_state)).length;
+  const unscored = roster.filter(
+    (entry) => entry.release_state === 'held' && (entry.result?.overall.domain_score ?? null) === null,
+  ).length;
+  const gaps = open + blocked + unscored;
+  const banner = panel.locator('[data-slot="family-report-banner"]');
+  await expect(banner).toHaveAttribute('data-kind', gaps === 0 ? 'complete' : 'incomplete');
+  await expect(banner).toHaveText(
+    gaps === 0
+      ? fr('banner.complete')
+      : [
+          open > 0 ? icu(fr('banner.open'), { count: open }) : null,
+          unscored > 0 ? icu(fr('banner.unscored'), { count: unscored }) : null,
+          blocked > 0 ? icu(fr('banner.blocked'), { count: blocked }) : null,
+          fr('banner.gaps'),
+        ]
+          .filter((part) => part !== null)
+          .join(' '),
+  );
   const rows = panel.locator('[data-slot="family-report-row"]');
   await expect(rows).toHaveCount(roster.length);
   for (const entry of roster) {
@@ -100,6 +123,8 @@ test('S6 — Family reports: live tiles, carer preview, release and recall one h
   }
   await panel.getByRole('button', { name: fr('filters.held'), exact: true }).click();
   await expect(rows).toHaveCount(tiles.held);
+  await panel.getByRole('button', { name: fr('filters.blocked'), exact: true }).click();
+  await expect(rows, 'the Blocked pill holds everything the "No result yet" tile counts').toHaveCount(tiles.noResult);
   await panel.getByRole('button', { name: fr('filters.all'), exact: true }).click();
   await expect(rows).toHaveCount(roster.length);
   await page.screenshot({ path: path.join(PROOFS, 'family-reports-tab.png'), animations: 'disabled' });

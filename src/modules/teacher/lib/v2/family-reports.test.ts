@@ -19,23 +19,41 @@ function rowOf(view: FamilyReportsView, firstName: string): FamilyReportRow {
 
 describe('familyReportRows — recorded t2 roster (every recorded result is held)', () => {
   const view = familyReportRows(t2Roster);
+  const unscoredNames = ['Lucia', 'Panit', 'Qadir', 'Sunniva', 'Chen', 'Nour'];
 
-  test('counts', () => {
-    expect(view.counts).toEqual({ total: 20, scored: 20, released: 0, held: 20, recalled: 0, open: 0, blocked: 0, noResult: 0 });
-  });
-
-  test('nothing open or blocked: the complete banner', () => {
-    expect(view.banner).toEqual({
-      kind: 'complete',
+  test('counts: the 6 recorded held rows with no score are not scored and not releasable (TB-40)', () => {
+    expect(view.counts).toEqual({
+      total: 20,
+      scored: 14,
+      released: 0,
+      held: 14,
+      recalled: 0,
       open: 0,
       blocked: 0,
-      tone: { fg: '#1F7A4D', bg: '#F2FAF5', border: '#CDE9DA' },
+      unscored: 6,
+      noResult: 6,
+    });
+    expect(view.counts.scored).toBe(view.rows.filter((row) => row.score !== null).length);
+    expect(view.counts.scored + view.counts.noResult).toBe(view.counts.total);
+  });
+
+  test('an unscored held attempt is a gap, so the banner is not complete (TB-40)', () => {
+    expect(view.banner).toEqual({
+      kind: 'incomplete',
+      open: 0,
+      blocked: 0,
+      unscored: 6,
+      tone: { fg: '#92610B', bg: '#FDF9EF', border: '#EBD9AE' },
     });
   });
 
-  test('all 20 held results are releasable', () => {
-    expect(view.releasableResultIds).toHaveLength(20);
+  test('only the 14 scored held results are releasable', () => {
+    expect(view.releasableResultIds).toHaveLength(14);
     expect(view.releasableResultIds).toContain('gdijynxot3d31d0pt053jv37');
+    const unscoredIds = view.rows
+      .filter((row) => unscoredNames.includes(row.name.split(' ')[0]))
+      .map((row) => row.resultDocumentId);
+    expect(unscoredIds.every((id) => id !== null && !view.releasableResultIds.includes(id))).toBe(true);
   });
 
   test('recorded Dilnoza row', () => {
@@ -55,7 +73,7 @@ describe('familyReportRows — recorded t2 roster (every recorded result is held
 
   test('a held result with no score never says "Scored and ready" (P1 row 6)', () => {
     const unscored = view.rows.filter((row) => row.status.kind === 'held' && row.score === null);
-    expect(unscored.map((row) => row.name.split(' ')[0])).toEqual(['Lucia', 'Panit', 'Qadir', 'Sunniva', 'Chen', 'Nour']);
+    expect(unscored.map((row) => row.name.split(' ')[0])).toEqual(unscoredNames);
     expect([...new Set(unscored.map((row) => row.whyKey))]).toEqual(['release.why.heldNoScore']);
     expect(view.rows.filter((row) => row.whyKey === 'release.why.held').every((row) => row.score !== null)).toBe(true);
   });
@@ -66,11 +84,14 @@ describe('familyReportRows — recorded t2 roster (every recorded result is held
     expect(rowOf(view, 'Lucia').score).toBeNull();
   });
 
-  test('filters on the recorded roster, in roster order', () => {
+  test('filters on the recorded roster, in roster order — each pill matches its tile (TB-40)', () => {
     expect(view.rows.map((row) => row.name)).toEqual(t2Roster.map((row) => row.student.name));
-    expect(familyReportRows(t2Roster, { filter: 'held' }).rows).toHaveLength(20);
-    expect(familyReportRows(t2Roster, { filter: 'released' }).rows).toEqual([]);
-    expect(familyReportRows(t2Roster, { filter: 'blocked' }).rows).toEqual([]);
+    expect(familyReportRows(t2Roster, { filter: 'held' }).rows).toHaveLength(view.counts.held);
+    expect(familyReportRows(t2Roster, { filter: 'released' }).rows).toHaveLength(view.counts.released);
+    const blocked = familyReportRows(t2Roster, { filter: 'blocked' }).rows;
+    expect(blocked).toHaveLength(view.counts.noResult);
+    expect(blocked.map((row) => row.name.split(' ')[0])).toEqual(unscoredNames);
+    expect(familyReportRows(t2Roster, { filter: 'held' }).rows.every((row) => row.score !== null)).toBe(true);
   });
 });
 
@@ -87,7 +108,17 @@ describe('familyReportRows — every release kind, derived from recorded rows', 
   const view = familyReportRows(roster);
 
   test('counts follow the design tiles', () => {
-    expect(view.counts).toEqual({ total: 7, scored: 2, released: 1, held: 1, recalled: 1, open: 1, blocked: 3, noResult: 4 });
+    expect(view.counts).toEqual({
+      total: 7,
+      scored: 2,
+      released: 1,
+      held: 1,
+      recalled: 1,
+      open: 1,
+      blocked: 3,
+      unscored: 0,
+      noResult: 4,
+    });
   });
 
   test('anything open or blocked raises the incomplete banner', () => {
@@ -95,6 +126,7 @@ describe('familyReportRows — every release kind, derived from recorded rows', 
       kind: 'incomplete',
       open: 1,
       blocked: 3,
+      unscored: 0,
       tone: { fg: '#92610B', bg: '#FDF9EF', border: '#EBD9AE' },
     });
   });
@@ -146,7 +178,17 @@ describe('familyReportRows — every release kind, derived from recorded rows', 
 describe('familyReportRows — empty roster (every recorded row removed)', () => {
   test('zero counts and no banner', () => {
     const empty = familyReportRows(t2Roster.slice(0, 0));
-    expect(empty.counts).toEqual({ total: 0, scored: 0, released: 0, held: 0, recalled: 0, open: 0, blocked: 0, noResult: 0 });
+    expect(empty.counts).toEqual({
+      total: 0,
+      scored: 0,
+      released: 0,
+      held: 0,
+      recalled: 0,
+      open: 0,
+      blocked: 0,
+      unscored: 0,
+      noResult: 0,
+    });
     expect(empty).toMatchObject({ rows: [], banner: null, releasableResultIds: [], filter: 'all' });
   });
 });
@@ -204,5 +246,25 @@ describe('dayFirstDate — day before month, in the reader’s own locale', () =
   test('the design’s own dates, long and short', () => {
     expect(dayFirstDate('en', '2026-08-31', long)).toBe('31 August');
     expect(dayFirstDate('en', '2026-08-31', { day: 'numeric', month: 'short', timeZone: 'UTC' })).toBe('31 Aug');
+  });
+});
+
+// TB-40 — the tiles and the banner read the row, not the release state alone. Derived from
+// the recorded roster: every held row that carries a score, plus the recorded unscored one.
+describe('familyReportRows — "complete" needs every attempt to carry a score', () => {
+  const scoredOnly = t2Roster.filter((row) => row.result !== null && row.result.overall.domain_score !== null);
+
+  test('a roster whose every held result is scored is complete and fully releasable', () => {
+    const view = familyReportRows(scoredOnly);
+    expect(view.counts).toMatchObject({ total: 14, scored: 14, held: 14, unscored: 0, noResult: 0 });
+    expect(view.banner).toMatchObject({ kind: 'complete', unscored: 0 });
+    expect(view.releasableResultIds).toHaveLength(14);
+  });
+
+  test('adding back one unscored held row breaks completeness', () => {
+    const view = familyReportRows([...scoredOnly, t2Row('Lucia')]);
+    expect(view.counts).toMatchObject({ total: 15, scored: 14, held: 14, unscored: 1, noResult: 1 });
+    expect(view.banner).toMatchObject({ kind: 'incomplete', open: 0, blocked: 0, unscored: 1 });
+    expect(view.releasableResultIds).toHaveLength(14);
   });
 });

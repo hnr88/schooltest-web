@@ -70,14 +70,21 @@ export async function teacherApi(playwright: PlaywrightWorkerArgs['playwright'])
   };
 }
 
-/** The four tiles, tallied straight from the served `release_state` of every roster row. */
+/**
+ * The four tiles, tallied from what the API actually served for every roster row: the
+ * `release_state` AND the score on it. A held result with no `overall.domain_score` is not
+ * scored and cannot be released, so it counts under "No result yet" (TB-40).
+ */
 export function expectedTiles(roster: readonly RosterRow[]): Record<'scored' | 'released' | 'held' | 'noResult', number> {
   const count = (states: readonly string[]) => roster.filter((row) => states.includes(row.release_state)).length;
+  const heldRows = roster.filter((row) => row.release_state === 'held');
+  const held = heldRows.filter((row) => row.result !== null && row.result.overall.domain_score !== null).length;
+  const released = count(['released']);
   return {
-    scored: count(['held', 'released']),
-    released: count(['released']),
-    held: count(['held']),
-    noResult: count(['manual', 'absent', 'nosit', 'open']),
+    scored: released + held,
+    released,
+    held,
+    noResult: count(['manual', 'absent', 'nosit', 'open']) + (heldRows.length - held),
   };
 }
 

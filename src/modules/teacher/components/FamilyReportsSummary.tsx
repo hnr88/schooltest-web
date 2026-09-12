@@ -13,6 +13,7 @@ function FamilyReportsSummary({ counts, banner }: FamilyReportsSummaryProps) {
         ? t('banner.complete')
         : [
             banner.open > 0 ? t('banner.open', { count: banner.open }) : null,
+            banner.unscored > 0 ? t('banner.unscored', { count: banner.unscored }) : null,
             banner.blocked > 0 ? t('banner.blocked', { count: banner.blocked }) : null,
             t('banner.gaps'),
           ]

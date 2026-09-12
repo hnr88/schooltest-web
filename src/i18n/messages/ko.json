@@ -6102,7 +6102,8 @@
         "open": "{count, plural, other {#건의 응시가 아직 진행 중입니다.}}",
         "blocked": "{count, plural, other {#명의 학생은 재응시나 수동 채점이 끝나야 공개할 수 있습니다.}}",
         "gaps": "지금 공개하면 보호자는 빈틈이 있는 학급 현황을 보게 됩니다.",
-        "complete": "이번 응시의 모든 시도가 채점되어 학급 현황이 완전합니다."
+        "complete": "이번 응시의 모든 시도가 채점되어 학급 현황이 완전합니다.",
+        "unscored": "{count, plural, other {#건의 응시는 아직 점수가 없습니다.}}"
       },
       "filters": {
         "label": "보고서 보기",

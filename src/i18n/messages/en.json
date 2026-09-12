@@ -6092,7 +6092,8 @@
         "open": "{count, plural, one {# attempt is still open.} other {# attempts are still open.}}",
         "blocked": "{count, plural, one {# student needs a re-sit or manual scoring before anything can be released for them.} other {# students need a re-sit or manual scoring before anything can be released for them.}}",
         "gaps": "Releasing now gives carers a class picture with gaps in it.",
-        "complete": "Every attempt in this sitting is scored, so the class picture is complete."
+        "complete": "Every attempt in this sitting is scored, so the class picture is complete.",
+        "unscored": "{count, plural, one {# attempt has no score yet.} other {# attempts have no score yet.}}"
       },
       "filters": {
         "label": "Show reports",
