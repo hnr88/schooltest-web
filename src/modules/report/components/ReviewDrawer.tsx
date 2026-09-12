@@ -37,7 +37,7 @@ function ReviewDrawer({ resultDocumentId, open, onOpenChange, ...context }: Revi
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-[rgba(14,35,80,0.42)] transition-opacity duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0" />
         <Dialog.Popup
           data-surface="result-review"
-          className="fixed inset-y-0 right-0 z-50 flex h-full w-[720px] max-w-full flex-col overflow-y-auto bg-[#FAFBFC] text-[#0E2350] shadow-[-24px_0_56px_rgba(0,0,0,0.2)] outline-none transition-transform duration-300 ease-out-expo data-ending-style:translate-x-full data-starting-style:translate-x-full motion-reduce:transition-none"
+          className="fixed inset-y-0 right-0 z-50 flex h-full w-[720px] max-w-full flex-col overflow-y-auto bg-[#FAFBFC] leading-[normal] text-[#0E2350] shadow-[-24px_0_56px_rgba(0,0,0,0.2)] outline-none transition-transform duration-300 ease-out-expo data-ending-style:translate-x-full data-starting-style:translate-x-full motion-reduce:transition-none"
         >
           <ReviewDrawerHeader
             context={context}

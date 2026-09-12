@@ -81,7 +81,7 @@ function ReviewQuestionRow({
           <p className={REVIEW_EYEBROW}>{t('theyAnswered')}</p>
           <p
             data-slot="review-given"
-            className={cn('mt-[5px] text-sm font-semibold', unreached && 'font-normal text-[#9CA3AF] italic')}
+            className={cn('mt-[5px] text-sm leading-[normal] font-semibold', unreached && 'font-normal text-[#9CA3AF] italic')}
           >
             {unreached ? t('unreached') : print(answerOf(item.given))}
           </p>
@@ -89,7 +89,7 @@ function ReviewQuestionRow({
         {(item.is_correct === false || unreached) && key.kind !== 'none' ? (
           <div className={REVIEW_ANSWER_BOX}>
             <p className={REVIEW_EYEBROW}>{t('correctAnswer')}</p>
-            <p data-slot="review-key" className="mt-[5px] text-sm font-semibold text-[#1F7A4D]">
+            <p data-slot="review-key" className="mt-[5px] text-sm leading-[normal] font-semibold text-[#1F7A4D]">
               {print(key)}
             </p>
           </div>
@@ -102,7 +102,7 @@ function ReviewQuestionRow({
         disabled={disabled}
         onChange={(event) => onNote(event.target.value)}
         className={cn(
-          'mt-3 min-h-14 resize-y rounded-lg bg-white px-[13px] py-2.5 text-[13.5px] md:text-[13.5px]',
+          'mt-3 min-h-16 resize-y rounded-[8px] bg-white px-[13px] py-2.5 text-[13.5px] leading-[1.55] md:text-[13.5px]',
           hasText(note) ? 'border-[#0E2350]' : 'border-[#E4E9F2]',
         )}
       />

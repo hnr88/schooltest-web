@@ -71,7 +71,7 @@ function ReviewDrawerHeader({
           </span>
         ) : null}
         <div className="min-w-0 flex-1">
-          <SheetTitle className="text-[19px] leading-tight font-semibold tracking-[-0.01em] text-[#0E2350]">
+          <SheetTitle className="text-[19px] leading-[normal] font-semibold tracking-[-0.01em] text-[#0E2350]">
             {name ?? t('title')}
           </SheetTitle>
           {meta ? (
@@ -81,7 +81,7 @@ function ReviewDrawerHeader({
         <SheetClose
           aria-label={t('close')}
           className={cn(
-            'grid size-9 shrink-0 cursor-pointer place-items-center rounded-lg border border-[#ECEEF2] bg-white text-[#6B7280] transition-colors hover:border-[#0E2350]',
+            'grid size-9 shrink-0 cursor-pointer place-items-center rounded-[8px] border border-[#ECEEF2] bg-white text-[#6B7280] transition-colors hover:border-[#0E2350]',
             REVIEW_FOCUS,
           )}
         >
@@ -135,7 +135,7 @@ function ReviewCommentCard({
         placeholder={t('commentPlaceholder')}
         disabled={disabled}
         onChange={(event) => onChange(event.target.value)}
-        className="mt-3 min-h-[88px] resize-y rounded-lg border-[#ECEEF2] bg-white px-3.5 py-3 text-[13.5px] leading-[1.55] md:text-[13.5px]"
+        className="mt-3 min-h-[88px] resize-y rounded-[8px] border-[#ECEEF2] bg-white px-3.5 py-3 text-[13.5px] leading-[1.55] md:text-[13.5px]"
       />
     </section>
   );
@@ -166,7 +166,7 @@ function ReviewDrawerFooter({
         disabled={!canSave || pending}
         onClick={onSave}
         className={cn(
-          'inline-flex h-[46px] cursor-pointer items-center rounded-lg bg-[#0E2350] px-[22px] text-sm font-semibold text-white transition-colors hover:bg-[#16326E] disabled:cursor-not-allowed disabled:opacity-60',
+          'inline-flex h-[46px] cursor-pointer items-center rounded-[8px] bg-[#0E2350] px-[22px] text-sm leading-[normal] font-semibold text-white transition-colors hover:bg-[#16326E] disabled:cursor-not-allowed disabled:opacity-60',
           REVIEW_FOCUS,
         )}
       >
@@ -176,7 +176,7 @@ function ReviewDrawerFooter({
         type="button"
         onClick={onClose}
         className={cn(
-          'inline-flex h-[46px] cursor-pointer items-center rounded-lg border border-[#E5E7EB] bg-white px-5 text-sm font-semibold text-[#0E2350] transition-colors hover:bg-[#F5F6F8]',
+          'inline-flex h-[46px] cursor-pointer items-center rounded-[8px] border border-[#E5E7EB] bg-white px-5 text-sm leading-[normal] font-semibold text-[#0E2350] transition-colors hover:border-[#0E2350]',
           REVIEW_FOCUS,
         )}
       >
