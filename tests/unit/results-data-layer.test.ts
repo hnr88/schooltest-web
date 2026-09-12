@@ -26,7 +26,7 @@ import { strapi } from '@/lib/axios/strapi';
 
 const get = vi.mocked(strapi.get);
 
-const FIXTURES = resolve(process.cwd(), '../mvp/contracts/scoring/fixtures');
+const FIXTURES = resolve(process.cwd(), 'vendor/contracts/scoring/fixtures');
 const resultViewFixture: Record<string, unknown> = JSON.parse(
   readFileSync(resolve(FIXTURES, 'result-view.json'), 'utf8'),
 );

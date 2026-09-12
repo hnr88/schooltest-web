@@ -36,7 +36,7 @@ import { sparklineRows } from '@/modules/results/components/SkillMovementSparkli
 (globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
 
 const fixture: Record<string, unknown> = JSON.parse(
-  readFileSync(resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json'), 'utf8'),
+  readFileSync(resolve(process.cwd(), 'vendor/contracts/scoring/fixtures/result-view.json'), 'utf8'),
 );
 const view = resultViewSchema.parse(fixture);
 const student = { name: 'Amelia Ngo', className: '7B — Reading', initials: 'AN' };

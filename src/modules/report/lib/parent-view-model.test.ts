@@ -16,7 +16,7 @@ import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
 
 const view = resultViewSchema.parse(
   JSON.parse(
-    readFileSync(resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json'), 'utf8'),
+    readFileSync(resolve(process.cwd(), 'vendor/contracts/scoring/fixtures/result-view.json'), 'utf8'),
   ),
 );
 

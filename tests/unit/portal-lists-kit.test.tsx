@@ -301,14 +301,13 @@ describe('the articles list on the directory kit', () => {
   test('renders the served columns with the featured badge', () => {
     const host = renderSurface(<ArticlesList />);
 
-    expect(host.querySelectorAll('[data-slot="directory"] tbody tr').length).toBe(2);
+    // The kit's table arm is the design's data grid: one row per article.
+    expect(host.querySelectorAll('[data-directory-row]').length).toBe(2);
     // Newest update first (the client-mode default sort), and the featured
     // badge sits on the featured article's row only.
-    const firstRow = host.querySelectorAll('tbody tr')[0];
-    expect(firstRow.textContent).toContain('Reading beyond the classroom');
-    const phonicsRow = [...host.querySelectorAll('tbody tr')].find((row) =>
-      row.textContent?.includes('Phonics at home'),
-    );
+    const rows = [...host.querySelectorAll('[data-directory-row]')];
+    expect(rows[0]!.textContent).toContain('Reading beyond the classroom');
+    const phonicsRow = rows.find((row) => row.textContent?.includes('Phonics at home'));
     expect(phonicsRow?.textContent).toContain('Featured');
     expect(phonicsRow?.textContent).toContain('1 view');
   });
@@ -317,6 +316,6 @@ describe('the articles list on the directory kit', () => {
     const host = renderSurface(<ArticlesList />);
 
     typeIntoSearch(host, 'phonics');
-    expect(host.querySelectorAll('tbody tr').length).toBe(1);
+    expect(host.querySelectorAll('[data-directory-row]').length).toBe(1);
   });
 });

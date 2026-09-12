@@ -3441,7 +3441,7 @@
         "saving": "Menyimpan…",
         "savedToast": "Profil disimpan.",
         "errorToast": "Profil anda tidak dapat disimpan. Cuba lagi.",
-        "edit": "Edit",
+        "edit": "Sunting",
         "role": "operasi"
       }
     },
@@ -3796,7 +3796,7 @@
           "cta": "Alih keluar {count}"
         }
       },
-      "fieldOnboarding": "Onboarding"
+      "fieldOnboarding": "Penyediaan awal"
     },
     "export": {
       "title": "Eksport sekolah",

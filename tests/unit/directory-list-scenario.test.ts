@@ -156,6 +156,8 @@ vi.mock('@/i18n/navigation', () => ({
   // shape (one anchor) is what the assertions care about — nothing weakened.
   Link: (props: { href: string; children: ReactNode; style?: CSSProperties }) =>
     createElement('a', { href: props.href, style: props.style }, props.children),
+  // DirectoryRows reads the router at render time (BUG-005 whole-row click).
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
 }));
 
 interface TableRow {

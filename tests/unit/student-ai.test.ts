@@ -51,7 +51,7 @@ const IntlProvider = NextIntlClientProvider as unknown as (props: Record<string,
 
 const bundle = diagnosticExportSchema.parse(
   JSON.parse(
-    readFileSync(resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/diagnostic-export.json'), 'utf8'),
+    readFileSync(resolve(process.cwd(), 'vendor/contracts/scoring/fixtures/diagnostic-export.json'), 'utf8'),
   ),
 );
 

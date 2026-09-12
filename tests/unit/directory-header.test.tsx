@@ -48,6 +48,8 @@ vi.mock('@/i18n/navigation', () => ({
       {children}
     </a>
   ),
+  // DirectoryRows reads the router at render time (BUG-005 whole-row click).
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
 }));
 
 interface Row {

@@ -33,7 +33,7 @@ const enMessages = JSON.parse(
 
 const fixture = resultViewSchema.parse(
   JSON.parse(
-    readFileSync(resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json'), 'utf8'),
+    readFileSync(resolve(process.cwd(), 'vendor/contracts/scoring/fixtures/result-view.json'), 'utf8'),
   ),
 ) as ResultView;
 

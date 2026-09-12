@@ -155,7 +155,9 @@ describe('U-45 — pending options: disabled with the sentinel, never coerced', 
     render([{ key: 'class', label: 'Class', options: undefined }], { class: 'abc123' }, onValueChange);
     const trigger = host.querySelector<HTMLButtonElement>('#t-filter-class');
     expect(trigger?.disabled).toBe(true);
-    expect(trigger?.textContent).toContain(DIRECTORY_ALL);
+    // The sentinel option renders under the kit's "All" label; its VALUE stays
+    // DIRECTORY_ALL and the disabled trigger never writes (never coerced).
+    expect(trigger?.textContent).toContain(DIRECTORY_DEFAULT_LABELS.chipAllLabel);
     act(() => trigger?.click());
     expect(onValueChange).not.toHaveBeenCalled();
   });

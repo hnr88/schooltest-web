@@ -31,6 +31,8 @@ vi.mock('@/i18n/navigation', () => ({
       {children}
     </a>
   ),
+  // DirectoryRows reads the router at render time (BUG-005 whole-row click).
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
 }));
 
 interface Row {
@@ -167,7 +169,7 @@ describe('the layout axis — element shape per layout', () => {
     expect(container.querySelector('[role="listbox"]')).toBeNull();
   });
 
-  test('`table` stays a real <table> and carries no list markup', () => {
+  test('`table` is the design\'s data grid — [data-directory-row] rows, no <table> markup', () => {
     const container = render(
       <DirectoryRows
         state={fakeState()}
@@ -179,9 +181,11 @@ describe('the layout axis — element shape per layout', () => {
         labels={DIRECTORY_DEFAULT_LABELS}
       />,
     );
-    expect(container.querySelector('table')).not.toBeNull();
+    // ops grid (`Ops Portal.dc.html:155-186`): the table arm is flex rows now —
+    // no <table>, no list markup, one [data-directory-row] per row.
+    expect(container.querySelector('table')).toBeNull();
     expect(container.querySelector('ul')).toBeNull();
-    expect(container.querySelectorAll('tbody tr')).toHaveLength(3);
+    expect(container.querySelectorAll('[data-directory-row]')).toHaveLength(3);
   });
 
   test('DirectoryList holds no colSpan arithmetic — no <td> can escape a table', () => {
@@ -209,7 +213,7 @@ describe('groupBy works in every layout', () => {
     expect(container.querySelectorAll('ul')).toHaveLength(2);
   });
 
-  test('table layout emits a full-width heading row instead, same order', () => {
+  test('the grid emits a heading block per group, same order', () => {
     const container = render(
       <DirectoryRows
         state={fakeState()}
@@ -222,10 +226,13 @@ describe('groupBy works in every layout', () => {
         groupBy={groupBy}
       />,
     );
-    const headings = [...container.querySelectorAll('[data-slot="directory-group-heading"] td')];
-    expect(headings.map((cell) => cell.textContent)).toEqual(['Year 6 (1)', 'Year 5 (2)']);
-    // Full width: two columns, no selection column, no actions column.
-    expect(headings[0]!.getAttribute('colspan')).toBe('2');
+    // The grid's group heading is a plain block above its rows, in `order`.
+    const headings = [
+      ...container.querySelectorAll('[data-slot="directory-rows"] > div:not([data-directory-row])'),
+    ];
+    expect(headings.map((heading) => heading.textContent)).toEqual(['Year 6 (1)', 'Year 5 (2)']);
+    // Each heading precedes exactly its own group's rows.
+    expect(container.querySelectorAll('[data-directory-row]')).toHaveLength(3);
   });
 
   test('keys absent from `order` follow it, in first-seen order, stably', () => {
@@ -305,8 +312,9 @@ describe('§L-rownav — the whole-row link without a nested interactive', () =>
     const anchors = container.querySelectorAll('a[data-row-href]');
     expect(anchors).toHaveLength(1);
 
-    const cells = container.querySelectorAll('tbody td');
-    expect(cells[0]!.contains(anchors[0]!)).toBe(true);
+    // In the grid the anchor is the FIRST column block's content.
+    const row = container.querySelector('[data-directory-row]')!;
+    expect(row.firstElementChild!.contains(anchors[0]!)).toBe(true);
     expect(anchors[0]!.textContent).toBe('Alpha Primary');
 
     // The row menu is a sibling of the link, never inside it — that nesting is

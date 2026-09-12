@@ -59,19 +59,23 @@ function buttonTexts(): string[] {
 }
 
 describe('OpsConfirmDialog — four variants from one component', () => {
-  test('neutral: both buttons, no warning icon', () => {
+  test('neutral: both buttons, the blue-grey tone tile — not the red warning one', () => {
     mount(<OpsConfirmDialog {...BASE} />);
     expect(buttonTexts()).toContain('Remove');
     expect(buttonTexts()).toContain('Cancel');
-    // the warning icon is the destructive tone's marker, not the neutral one's
-    expect(document.body.querySelector('svg')).toBeNull();
+    // The ops chrome (Ops Portal.dc.html:819-841) carries a tone tile for BOTH
+    // tones; the RED tile is the destructive tone's marker, not the neutral's.
+    const tile = document.body.querySelector('[aria-hidden="true"].size-11');
+    expect(tile?.className).toContain('bg-[#F4F6FA]');
+    expect(tile?.className).not.toContain('bg-[#FEE4E2]');
   });
 
-  test('destructive: keeps both buttons and adds the warning icon', () => {
+  test('destructive: keeps both buttons and turns the tone tile red', () => {
     mount(<OpsConfirmDialog {...BASE} tone="destructive" />);
     expect(buttonTexts()).toContain('Remove');
     expect(buttonTexts()).toContain('Cancel');
-    expect(document.body.querySelector('svg')).not.toBeNull();
+    const tile = document.body.querySelector('[aria-hidden="true"].size-11');
+    expect(tile?.className).toContain('bg-[#FEE4E2]');
   });
 
   test('advisory: ONE button and no action at all', () => {

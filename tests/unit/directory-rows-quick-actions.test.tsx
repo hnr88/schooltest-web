@@ -1,4 +1,4 @@
-import { act } from 'react';
+import { act, type ReactNode } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { afterEach, describe, expect, test, vi } from 'vitest';
@@ -16,6 +16,15 @@ import type {
 // action — inline is a shortcut, not a filter.
 
 (globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
+
+// DirectoryRows pulls the locale-aware Link and the router from next-intl's
+// navigation; the real module needs an intl provider this spec doesn't mount.
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children }: { href: string; children?: ReactNode }) => (
+    <a href={href}>{children}</a>
+  ),
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
+}));
 
 interface Row {
   id: string;
