@@ -24,6 +24,7 @@ import {
 } from '../helpers/teacher-start-session-api';
 import {
   PROOFS,
+  boxHeight,
   choice,
   isLiveTab,
   isSessionWrite,
@@ -81,6 +82,12 @@ test('S8 — Start now makes a real session the desktop joins; schedule, edit an
       const average = klass.reading?.average ?? null;
       const shown = average === null ? t('facts.notTested') : t('facts.average', { value: Math.round(average) });
       await expect(dialog.locator('[data-fact="average"]')).toContainText(shown);
+      // P1 parity row 16: the design's skill card is 50px tall (a 22px dot), not 48. The When card
+      // carries the same 22px dot and stays 78px — its two-line label is the taller child.
+      expect(await boxHeight(choice(dialog, 'reading'))).toBeCloseTo(50, 0);
+      expect(await boxHeight(choice(dialog, 'reading').locator('span[aria-hidden="true"]').first())).toBeCloseTo(22, 0);
+      expect(await boxHeight(choice(dialog, 'now').locator('span[aria-hidden="true"]').first())).toBeCloseTo(22, 0);
+      expect(await boxHeight(choice(dialog, 'now'))).toBeCloseTo(78, 0);
       await shot(page, 'start-session-test');
     });
 
@@ -113,6 +120,10 @@ test('S8 — Start now makes a real session the desktop joins; schedule, edit an
       await expect(dialog.locator('[data-section="during"] > button')).toContainText(t('settings.summary.onOf', { on: 2, total: 3 }));
       await expect(dialog.locator('[data-section="timing"] > button')).toContainText(t('settings.summary.timingAuto', { limit: 30 }));
       await expect(modalTab(dialog, 'settings')).toContainText(t('tabs.settingsSkipOff', { limit: 30 }));
+      // P1 parity row 14: the design's setting row is 70.8px — an 18px label line, then 3px, then the
+      // description — and "During the test" is 272.3px over its three rows.
+      expect(await boxHeight(dialog.locator('[data-section="during"] [data-slot="toggle-row"]').first())).toBeCloseTo(70.8, 0);
+      expect(await boxHeight(dialog.locator('[data-section="during"]'))).toBeCloseTo(272.3, 0);
       await shot(page, 'start-session-settings');
     });
 

@@ -88,7 +88,7 @@ function SettingsSection({
           )}
         />
       </button>
-      <div id={bodyId} hidden={!isOpen} className="px-[18px] pb-1.5">
+      <div id={bodyId} hidden={!isOpen} className="px-[18px] pb-3">
         {id === 'timing' ? <TimeLimitRow value={settings.timeLimit} onChange={onTimeLimit} /> : null}
         {keys.map((key) => (
           <ToggleRow

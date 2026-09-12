@@ -1,6 +1,8 @@
 'use client';
 
-import { useFormatter, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+
+import { dayFirstDate } from '@/modules/teacher/lib/v2/family-reports';
 
 /**
  * "Sitting <class>" · "Latest average" · "Last session" (`mFacts`), all from live
@@ -20,13 +22,15 @@ function FactsRow({
 }) {
   const t = useTranslations('TeacherPortal.startSession.facts');
   const tKit = useTranslations('TeacherPortal.kit');
-  const format = useFormatter();
+  const locale = useLocale();
+  // "31 Aug" (`:2602`) — the day before the month, in the reader's own locale (P1 parity row 8).
+  // `opened_at` is an instant, so it reads in the teacher's own zone, not UTC.
   const lastSession =
     lastSessionAt === undefined
       ? tKit('noValue')
       : lastSessionAt === null
         ? t('noneYet')
-        : format.dateTime(new Date(lastSessionAt), { day: '2-digit', month: 'short' });
+        : dayFirstDate(locale, lastSessionAt, { day: '2-digit', month: 'short' });
   const facts = [
     { key: 'sitting', label: t('sitting', { className }), value: t('students', { count: studentCount }) },
     { key: 'average', label: t('latestAverage'), value: average === null ? t('notTested') : t('average', { value: average }) },

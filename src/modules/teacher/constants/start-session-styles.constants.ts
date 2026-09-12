@@ -40,19 +40,27 @@ export const TAB_LIST_CLASS =
 export const TAB_TRIGGER_CLASS =
   'h-auto flex-none flex-col items-start justify-start gap-0 rounded-none border-0 border-b-[3px] border-transparent -mb-px px-5 pt-3 pb-[11px] text-[14.5px] leading-[normal] font-medium text-[#6B7280] transition-colors after:hidden hover:text-navy-900 data-active:border-navy-900 data-active:font-bold data-active:text-navy-900 motion-reduce:transition-none';
 
-/** The design-system ToggleRow, redrawn as the design's setting row (`ms`, `:1492`). */
+/**
+ * The design-system ToggleRow, redrawn as the design's setting row (`ms`, `:1492`):
+ * a 70.8px row — 15px/15px around an 18px label line (`normal`, not the primitive's
+ * `text-sm` 20px), 3px, then the 18.8px description (P1 parity row 14).
+ */
 export const TOGGLE_ROW_CLASS =
-  'gap-4 border-b-0 border-t border-[#F5F6F8] py-[15px] [&_label]:text-[14px] [&_label]:text-navy-900 [&>div>span]:mt-[3px] [&>div>span]:text-[12.5px] [&>div>span]:leading-[1.5] [&>div>span]:text-[#6B7280] [&_[data-slot=switch][data-checked]]:bg-navy-900 [&_[data-slot=switch][data-unchecked]]:bg-[#D8DFEA]';
+  'gap-4 border-b-0 border-t border-[#F5F6F8] py-[15px] [&_label]:text-[14px] [&_label]:leading-[normal] [&_label]:text-navy-900 [&>div]:gap-[3px] [&>div>span]:text-[12.5px] [&>div>span]:leading-[1.5] [&>div>span]:text-[#6B7280] [&_[data-slot=switch][data-checked]]:bg-navy-900 [&_[data-slot=switch][data-unchecked]]:bg-[#D8DFEA]';
 
 export const CTA_CLASS = 'h-[50px] rounded-[8px] px-[26px] text-[15px] font-bold text-white transition-colors';
 
 export const CANCEL_CLASS =
   'h-[50px] cursor-pointer rounded-[12px] border border-[#E5E7EB] bg-white px-[22px] text-[14px] font-semibold text-navy-900 transition-colors hover:border-navy-900';
 
-/** Radio cards: "When" (`:1360`), skill (`:1408`), test (`:1432`) and scope (`:1456`). */
+/**
+ * Radio cards: "When" (`:1360`), skill (`:1408`), test (`:1432`) and scope (`:1456`).
+ * Every dot is the design's 22px — on the skill card that is the whole 48 → 50px of
+ * P1 parity row 16; the When card stays 78px, its two-line label being the taller child.
+ */
 export const CHOICE_CARD_SIZES = {
-  when: { box: 'flex-1 basis-0 gap-2.5 px-3.5 py-[13px]', dot: 'size-5', inner: 'size-[7px]', label: 'text-[14.5px]', desc: 'mt-0.5 text-[12px]' },
-  skill: { box: 'flex-1 basis-0 gap-2 px-3 py-[13px]', dot: 'size-5', inner: 'size-[7px]', label: 'text-[14px]', desc: '' },
+  when: { box: 'flex-1 basis-0 gap-2.5 px-3.5 py-[13px]', dot: 'size-[22px]', inner: 'size-[7px]', label: 'text-[14.5px]', desc: 'mt-0.5 text-[12px]' },
+  skill: { box: 'flex-1 basis-0 gap-2 px-3 py-[13px]', dot: 'size-[22px]', inner: 'size-[7px]', label: 'text-[14px]', desc: '' },
   test: { box: 'gap-3.5 px-[18px] py-4', dot: 'size-[22px]', inner: 'size-2', label: 'text-[15px]', desc: 'mt-[3px] text-[12.5px]' },
   scope: { box: 'gap-3.5 px-[18px] py-[15px]', dot: 'size-[22px]', inner: 'size-2', label: 'text-[15px]', desc: 'mt-[3px] text-[12.5px]' },
 } as const;
