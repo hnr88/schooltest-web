@@ -94,7 +94,31 @@ export const namedAttributeSchema = z.strictObject({
   name: str,
 });
 
-export const topGapSchema = namedAttributeSchema.extend({ not_yet_count: teacherCountSchema });
+/** 3.10b `top_gap.attribute` — the seven memo/model attribute names. */
+export const topGapAttributeSchema = z.enum([
+  'Decoding',
+  'Vocab_A2',
+  'Grammar',
+  'Vocab_B1',
+  'Gist',
+  'Detail',
+  'Inference',
+]);
+
+/**
+ * `top_gap` — MIRROR of `topGapSchema` in schooltest-api/src/contracts/teacher.ts
+ * (FIX_teacher_dashboard_top_gap §2.1): the attribute the most students band
+ * `not_yet` on, named by MODEL attribute (never the retired stored R1..R7
+ * codes), with the denominator `assessed_count` the gap was counted over
+ * (not-assessed entries count in neither number). The server reads the STORED
+ * status; the client re-derives nothing.
+ */
+export const topGapSchema = z.strictObject({
+  attribute: topGapAttributeSchema,
+  name: str,
+  not_yet_count: teacherCountSchema,
+  assessed_count: teacherCountSchema,
+});
 
 /** The `@strapi/utils` typed-error envelope every 4xx on this surface returns. */
 export const teacherErrorSchema = z.strictObject({

@@ -41,7 +41,12 @@ const SITTING_ID = FORM_ID;
 const NOW = new Date().toISOString();
 const CLASS_REF = { document_id: CLASS_ID, name: CLASS_NAME };
 const STUDENT_REF = { student_document_id: STUDENT_ID, display_name: 'Omar K.' };
-const TOP_GAP = { attribute: 'R6', name: 'Propositional Inference', not_yet_count: 3 };
+const TOP_GAP = {
+  attribute: 'Inference',
+  name: 'Propositional Inference',
+  not_yet_count: 3,
+  assessed_count: 12,
+};
 const COMPLETION = { completed: 2, total: 4 };
 
 const DASHBOARD = {
