@@ -34,7 +34,6 @@ import {
   sessionStatusOf,
   sittingStatusOf,
   studentsMidAttempt,
-  waitForClosedListing,
   waitForNothingLive,
   type StoredResult,
 } from '../helpers/teacher-journey';
@@ -441,18 +440,27 @@ test('6 · close the sitting: the API says closed and the tab falls back to No s
 });
 
 /**
- * Previous sessions cannot list the sitting the teacher just closed, and the cause is the
- * API's own ordering, not this spec's timing. `GET /teacher/test-sessions?status=closed`
- * sorts `opened_at:desc, createdAt:desc`, and Postgres puts NULLs FIRST on a DESC sort; a
- * CANCELLED booking never opens, so its `opened_at` is NULL and it outranks every session
- * that really ran. The Live tab reads one page (HISTORY_PAGE_SIZE = 50): measured live on
- * t2's class, page 1 is 50/50 rows with `opened_at: null` and the newest really-opened
- * sitting first appears on page 2. Turn this test on (drop `.fixme`) when the API sorts
- * NULLs last, or excludes cancelled bookings from the history list.
+ * TB-50 (was a `test.fixme`, on since the API fix). Previous sessions could not list the
+ * sitting the teacher had just closed, and the cause was the API's own ordering, not this
+ * spec's timing: `GET /teacher/test-sessions?status=closed` sorts `opened_at:desc,
+ * createdAt:desc` and Postgres puts NULLs FIRST on a DESC sort, so a booking that never
+ * opened — cancelled, or lapsed — outranked every session that really ran. The Live tab
+ * reads one page (HISTORY_PAGE_SIZE = 50): measured live on t2's class, page 1 was 50/50
+ * rows with `opened_at: null` and the newest really-opened sitting first appeared on page 2
+ * of 20. `status=closed` now answers the sessions that RAN and are over (status closed AND
+ * an `opened_at`), so the sort key is defined on every row it returns; a booking that never
+ * ran is still in the unfiltered list.
  */
-test.fixme('6b · Previous sessions lists the sitting just closed', async () => {
+test('6b · Previous sessions lists the sitting just closed', async () => {
   test.setTimeout(240_000);
-  await waitForClosedListing(page, klass.class_document_id, sittingId);
+  // No `waitForClosedListing` here. That helper's own contract is "Arm it BEFORE the
+  // click that triggers it", and the click is test 6's — by the time this test could arm
+  // it the tab has ALREADY re-read its closed list off the `['teacher']` invalidation, so
+  // the response it waits for never comes again and it times out at 90 s on a list that
+  // is already correct (measured: 6b failed exactly this way while the just-closed sitting
+  // sat at row 0 of the live `status=closed` answer). The settled state here is the ROW, and
+  // `toBeVisible` polls for it — the same assertion `live-tab.spec.ts`'s own close test
+  // makes, with no wait helper, against the same data.
   const history = live().locator(`[data-slot="live-history-row"][data-sitting-id="${sittingId}"]`);
   await expect(history).toBeVisible({ timeout: 30_000 });
   await expect(history).toContainText(t('history.closed'));
