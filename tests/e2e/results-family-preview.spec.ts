@@ -20,7 +20,9 @@ import { signIn } from './helpers/teacher-rail';
  * The DOM grep for `prob` is the allow-list proof at the rendered surface.
  */
 
-const FIXTURE = resolve(process.cwd(), '../mvp/contracts/scoring/fixtures/result-view.json');
+// In-repo vendored copy of the shared contracts fixtures (the mvp sibling does not
+// exist on every checkout — tsc/vitest were repointed the same way in 8601c65d).
+const FIXTURE = resolve(process.cwd(), 'vendor/contracts/scoring/fixtures/result-view.json');
 const view = (): Record<string, unknown> => JSON.parse(readFileSync(FIXTURE, 'utf8'));
 
 // The route sits behind TeacherGuard, so every test signs in first — the

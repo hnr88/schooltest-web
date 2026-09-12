@@ -17,7 +17,9 @@ import { expect, test } from '@playwright/test';
  * and no student name — asserted on the intercepted POST body.
  */
 
-const FIXTURES = resolve(process.cwd(), '../../mvp/contracts/scoring/fixtures');
+// In-repo vendored copy of the shared contracts fixtures (the mvp sibling does not
+// exist on every checkout — tsc/vitest were repointed the same way in 8601c65d).
+const FIXTURES = resolve(process.cwd(), 'vendor/contracts/scoring/fixtures');
 const bundle = (): unknown => JSON.parse(readFileSync(resolve(FIXTURES, 'diagnostic-export.json'), 'utf8'));
 const view = (): Record<string, unknown> => JSON.parse(readFileSync(resolve(FIXTURES, 'result-view.json'), 'utf8'));
 

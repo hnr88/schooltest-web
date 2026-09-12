@@ -58,7 +58,11 @@ raw=$(grep -RniE '\b(prob|prob_se|theta|likelihood|map_posterior)\b' src \
     ')
 
 new_leaks=""
-declare -A seen_known=()
+# bash-3.2-compatible seen-set (macOS ships 3.2; `declare -A` is bash 4+).
+# A newline-delimited string of inventory entries already matched this run,
+# with the same set-once semantics the associative array had. (Same fix the
+# app repo's copy of this script got during the overnight lint closure.)
+seen_known=""
 while IFS= read -r line; do
   [ -z "$line" ] && continue
   file="${line%%:*}"
@@ -67,7 +71,10 @@ while IFS= read -r line; do
     IFS='|' read -r efile etask esnippet <<< "$entry"
     if [ "$file" = "$efile" ] && [[ "$line" == *"$esnippet"* ]]; then
       known="yes"
-      seen_known["$entry"]=1
+      case "$seen_known" in
+        *"$entry"$'\n'*) ;;
+        *) seen_known+="$entry"$'\n' ;;
+      esac
       break
     fi
   done
@@ -77,11 +84,13 @@ while IFS= read -r line; do
 done <<< "$raw"
 
 stale=""
+n_seen=0
 for entry in "${KNOWN_LEGACY[@]}"; do
   IFS='|' read -r efile etask esnippet <<< "$entry"
-  if [ -z "${seen_known[$entry]:-}" ]; then
-    stale+="  $efile no longer carries: $esnippet — the leak is gone, retire this entry (was: $etask)"$'\n'
-  fi
+  case "$seen_known" in
+    *"$entry"$'\n'*) n_seen=$((n_seen + 1)) ;;
+    *) stale+="  $efile no longer carries: $esnippet — the leak is gone, retire this entry (was: $etask)"$'\n' ;;
+  esac
 done
 
 fail=0
@@ -96,6 +105,6 @@ if [ -n "$stale" ]; then
   fail=1
 fi
 if [ "$fail" = 0 ]; then
-  echo "check-no-posteriors: clean (${#seen_known[@]} of ${#KNOWN_LEGACY[@]} known legacy entries still present)"
+  echo "check-no-posteriors: clean ($n_seen of ${#KNOWN_LEGACY[@]} known legacy entries still present)"
 fi
 exit "$fail"

@@ -25,8 +25,9 @@ function loadEnvLocal(): void {
 
 loadEnvLocal();
 
-// This instance's web app runs on :3101 (see .qa/STACK.json). Ports 3000 and 3100
-// belong to NEIGHBOURING stacks and must never be bound by this suite.
+// This instance's web app runs on :3000 — the live dev server of THIS repo (the API's
+// CORS allow-list names it explicitly). :3100 belongs to a neighbouring stack and must
+// never be bound by this suite.
 //
 // The host is `localhost`, not `127.0.0.1`, on purpose: the API matches origins
 // by exact string, so a suite driven at 127.0.0.1 gets a CORS preflight failure
@@ -34,11 +35,13 @@ loadEnvLocal();
 // offline" on the sign-in form). Override with E2E_BASE_URL / E2E_PORT when
 // targeting another stack.
 //
-// MEASURED 2026-09-10, because the previous version of this comment named the
-// wrong port and would have argued someone back onto a broken default:
-//   schooltest-api/.env:49  FRONTEND_ORIGIN=http://localhost:3002,http://localhost:3010
-// So CORS allows 3002 and 3010 and EXCLUDES 3101. Keep this comment in step with
-// that variable, or delete it — a stale allow-list comment is worse than none.
+// MEASURED 2026-09-12 (retest wave; the 2026-09-10 measurement below had drifted —
+// the merged API dropped 3002 from its allow-list and the default went CORS-dead,
+// reproduced as a silent "You appear to be offline" on /sign-in):
+//   schooltest-api/.env:50  FRONTEND_ORIGIN=http://localhost:3000,http://localhost:3001,
+//                           http://localhost:3010 (+ the 127.0.0.1 twins)
+// So CORS allows 3000, 3001 and 3010; 3002 and 3101 are excluded. Keep this comment
+// in step with that variable, or delete it — a stale allow-list comment is worse than none.
 // DEFAULT IS THE LIVE WEB PORT, NOT 3101 — and 3101 was broken twice over:
 // Next refuses a second dev server per DIRECTORY, and the API's CORS allow-list
 // excludes 3101, so a run booted there could not talk to :5500 even if it
@@ -46,7 +49,7 @@ loadEnvLocal();
 //
 // With the live port as the default, `webServer.reuseExistingServer` (below)
 // finds the already-listening dev server and starts NOTHING. Verified: `CI` is
-// unset locally so `reuseExistingServer` is true, and :3002 answers 200. Under
+// unset locally so `reuseExistingServer` is true, and :3000 answers 200. Under
 // real CI the flag flips to false and Playwright boots on this port itself,
 // which is correct there because nothing is pre-running.
 //
@@ -57,7 +60,7 @@ loadEnvLocal();
 //
 // STILL ENV-OVERRIDABLE: E2E_PORT (or E2E_BASE_URL) wins when set, so anything
 // that deliberately wants another port keeps working.
-const port = Number(process.env.E2E_PORT ?? 3002);
+const port = Number(process.env.E2E_PORT ?? 3000);
 const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${port}`;
 
 export default defineConfig({

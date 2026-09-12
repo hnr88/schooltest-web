@@ -28,7 +28,7 @@ import { platformSettingsSchema as webSettingsSchema } from '@/modules/ops/schem
 import {
   PLATFORM_SETTINGS_KEYS,
   platformSettingsSchema as sharedSettingsSchema,
-} from '../../../../mvp/contracts/ops/src/settings-read';
+} from '../../../vendor/contracts/ops/src/settings-read';
 import { loginAs } from '../helpers/roles';
 
 import {
