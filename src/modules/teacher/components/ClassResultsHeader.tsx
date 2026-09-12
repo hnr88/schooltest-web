@@ -8,15 +8,16 @@ import { ClassBadge } from '@/modules/teacher/components/v2/ClassBadge';
 import { PillSelect } from '@/modules/teacher/components/v2/PillSelect';
 import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
 import { TeacherStatusPill } from '@/modules/teacher/components/v2/TeacherStatusPill';
-import { RESULTS_PATH } from '@/modules/teacher/constants/results.constants';
+import { CLASS_ASK_AI_ENABLED, RESULTS_PATH } from '@/modules/teacher/constants/results.constants';
 import { CLASS_STATUS_KEY } from '@/modules/teacher/constants/teacher-kit.constants';
 import { classBadgeCode } from '@/modules/teacher/lib/teacher-kit';
 import { useClassOverlaysStore } from '@/modules/teacher/stores/use-class-overlays-store';
 import type { ClassResultsHeaderProps } from '@/modules/teacher/types/results-shell.types';
 
 // The class-detail header (`Teacher Portal v2.dc.html:520–548`) over the ONE
-// C-TD-1 card: breadcrumb, navy badge, name, meta, status pill, the two overlay
-// buttons and the class switcher. The meta prints only what the card carries —
+// C-TD-1 card: breadcrumb, navy badge, name, meta, status pill, the overlay
+// buttons (Ask AI only once `CLASS_ASK_AI_ENABLED`, TB-31) and the class switcher.
+// The meta prints only what the card carries —
 // `year_level` when set, `student_count` always; the design's "form A" has no
 // source, so it is not drawn. The switcher is last in the DOM, where the
 // design's `order:9` puts it on screen, so focus order follows the layout.
@@ -55,17 +56,19 @@ function ClassResultsHeader({ classCard, classes, onSwitchClass }: ClassResultsH
           <FileText aria-hidden="true" className="size-4" strokeWidth={1.9} />
           {t('reports')}
         </TeacherButton>
-        <TeacherButton
-          tone="primary"
-          size="lg"
-          data-slot="class-ask-ai-button"
-          title={t('askAiTitle')}
-          className="flex-none"
-          onClick={() => openAskAi()}
-        >
-          <Sparkle aria-hidden="true" className="size-4" strokeWidth={2} />
-          {t('askAi')}
-        </TeacherButton>
+        {CLASS_ASK_AI_ENABLED ? (
+          <TeacherButton
+            tone="primary"
+            size="lg"
+            data-slot="class-ask-ai-button"
+            title={t('askAiTitle')}
+            className="flex-none"
+            onClick={() => openAskAi()}
+          >
+            <Sparkle aria-hidden="true" className="size-4" strokeWidth={2} />
+            {t('askAi')}
+          </TeacherButton>
+        ) : null}
         <PillSelect
           size="lg"
           data-slot="class-switcher"

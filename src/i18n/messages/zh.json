@@ -6480,7 +6480,7 @@
       "exportTitle": "下载去标识化的数据文件，供你的 AI 助手使用",
       "askAi": "问 AI",
       "askAiTitle": "就该学生的阅读成绩提问",
-      "overallLabel": "总体阅读",
+      "overallLabel": "总体\n阅读",
       "percent": "{value}%",
       "overallDelta": {
         "up": "↑ +{points} 分",

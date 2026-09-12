@@ -81,7 +81,16 @@ export async function expectHeader(page: Page, card: DashboardClass, classes: re
   );
   await expect(crumbs.locator('[aria-current="page"]')).toHaveText(card.name);
   await expect(head.getByRole('button', { name: label('reports') })).toBeVisible();
-  await expect(head.getByRole('button', { name: label('askAi') })).toHaveAttribute('title', label('askAiTitle'));
+  // TB-31: no class Ask AI that opens nothing. Until S11 mounts the class drawer the header
+  // renders no Ask AI button at all; S11 replaces this with "the button opens the drawer".
+  await expect(
+    head.getByRole('button', { name: label('askAi') }),
+    'TB-31: no dead class Ask AI',
+  ).toHaveCount(0);
+  await expect(
+    head.locator('[data-slot="class-ask-ai-button"]'),
+    'TB-31: no dead class Ask AI',
+  ).toHaveCount(0);
   const switcher = head.getByRole('combobox', { name: label('switcherLabel') });
   await expect(switcher).toHaveValue(card.class_document_id);
   await expect(switcher.locator('option')).toHaveText(classes.map((entry) => entry.name));

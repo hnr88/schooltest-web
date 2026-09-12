@@ -6490,7 +6490,7 @@
       "exportTitle": "AI 도우미용 비식별화된 데이터 파일 다운로드",
       "askAi": "AI에게 묻기",
       "askAiTitle": "이 학생의 읽기 점수에 대해 질문하기",
-      "overallLabel": "전체 읽기",
+      "overallLabel": "전체\n읽기",
       "percent": "{value}%",
       "overallDelta": {
         "up": "↑ +{points}점",

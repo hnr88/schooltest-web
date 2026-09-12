@@ -110,3 +110,10 @@ export const INSIGHTS_FLAG_CHIP_TONE: Record<MasteryFlagKind, ToneChipTone> = {
   focus: 'danger',
   strength: 'success',
 };
+
+/**
+ * TB-31: the class header's Ask AI stays hidden until S11 mounts the real `/teacher/ask`
+ * class drawer — no drawer subscribes to a class-scope request yet, so a visible button
+ * would open nothing (RULE 0). S11 turns this on with the drawer.
+ */
+export const CLASS_ASK_AI_ENABLED = false;

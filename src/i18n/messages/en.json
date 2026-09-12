@@ -6480,7 +6480,7 @@
       "exportTitle": "Download a de-identified data file for your AI assistant",
       "askAi": "Ask AI",
       "askAiTitle": "Ask a question about this student’s reading scores",
-      "overallLabel": "Overall reading",
+      "overallLabel": "Overall\nreading",
       "percent": "{value}%",
       "overallDelta": {
         "up": "↑ +{points} pts",

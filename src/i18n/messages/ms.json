@@ -6490,7 +6490,7 @@
       "exportTitle": "Muat turun fail data tanpa pengenalan diri untuk pembantu AI anda",
       "askAi": "Tanya AI",
       "askAiTitle": "Tanya soalan tentang skor membaca murid ini",
-      "overallLabel": "Membaca keseluruhan",
+      "overallLabel": "Membaca\nkeseluruhan",
       "percent": "{value}%",
       "overallDelta": {
         "up": "↑ +{points} mata",

@@ -6499,7 +6499,7 @@
       "exportTitle": "Tải tệp dữ liệu đã ẩn danh cho trợ lý AI của bạn",
       "askAi": "Hỏi AI",
       "askAiTitle": "Đặt câu hỏi về điểm đọc của học sinh này",
-      "overallLabel": "Đọc tổng thể",
+      "overallLabel": "Đọc\ntổng thể",
       "percent": "{value}%",
       "overallDelta": {
         "up": "↑ +{points} điểm",

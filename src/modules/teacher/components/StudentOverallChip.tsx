@@ -8,7 +8,9 @@ import { overallDeltaText } from '@/modules/teacher/lib/student-detail-text';
 import type { StudentOverallChipProps } from '@/modules/teacher/types/student-drill-down.types';
 
 // The navy "Overall reading" chip (`Teacher Portal v2.dc.html:338–342`): the latest
-// domain score and the server's own growth step in the colour of its direction.
+// domain score and the server's own growth step in the colour of its direction. The
+// label keeps the catalog's line break (the design's `Overall<br>reading`), so the
+// chip is only as wide as the label's longest line.
 function StudentOverallChip({ overall }: StudentOverallChipProps) {
   const t = useTranslations(STUDENT_I18N_NAMESPACE);
   const { text } = useStudentText();
@@ -16,7 +18,7 @@ function StudentOverallChip({ overall }: StudentOverallChipProps) {
 
   return (
     <div data-slot="student-overall" className="flex items-center gap-3 rounded-[11px] bg-navy-900 px-[18px] py-[11px]">
-      <span className="max-w-[5.5rem] text-[11px] leading-[1.3] font-semibold tracking-[0.05em] text-[#AEBBD6] uppercase">
+      <span className="max-w-[5.5rem] text-[11px] leading-[1.3] font-semibold tracking-[0.05em] whitespace-pre-line text-[#AEBBD6] uppercase">
         {t('overallLabel')}
       </span>
       <span

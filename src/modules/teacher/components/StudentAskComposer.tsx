@@ -56,7 +56,7 @@ function StudentAskComposer({ ask }: StudentAskComposerProps) {
           onChange={(event) => ask.setQuery(event.target.value)}
           aria-label={t('ask.inputLabel')}
           placeholder={ask.listening ? t('ask.listening') : t('ask.placeholder')}
-          className="h-[42px] min-w-0 flex-1 rounded-[10px] border border-[#3A404B] bg-[#2C313B] px-3.5 text-[13.5px] text-[#F0F2F5] outline-none placeholder:text-[#9AA1AD] focus-visible:ring-2 focus-visible:ring-[#8FA6EA]"
+          className="h-[44px] min-w-0 flex-1 rounded-[10px] border border-[#3A404B] bg-[#2C313B] px-3.5 text-[13.5px] text-[#F0F2F5] outline-none placeholder:text-[#9AA1AD] focus-visible:ring-2 focus-visible:ring-[#8FA6EA]"
         />
         <button
           type="submit"
