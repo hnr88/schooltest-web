@@ -124,12 +124,16 @@ test('flow 14: the schools list reflects the invited school after navigating bac
   // The kit list is server-paginated (25/page over the 300+ seeded schools),
   // so the fixture row is only on screen once the server-side search narrows
   // the directory to it.
-  const search = page.locator('[data-slot="directory-toolbar"] input[type="search"]');
+  // ops-grid redesign: the search pill moved out of the directory toolbar;
+  // the input keeps the app's stable testid.
+  const search = page.getByTestId('ops-schools-search');
   await search.fill(school.name);
 
   // The list row carries the same lifecycle pill the detail hero renders —
   // one status, one label, both surfaces (portal-lifecycle.lib).
-  const row = page.getByRole('row').filter({ hasText: school.name });
+  // ops-grid redesign: the directory kit renders div rows (`data-directory-row`),
+  // not table rows — `getByRole('row')` matches nothing since the redesign.
+  const row = page.locator('[data-directory-row]').filter({ hasText: school.name });
   await row.scrollIntoViewIfNeeded();
   await expect(
     row.getByText(cat(en, 'Ops.schools.portalStatus.pending_setup'), { exact: true }),
@@ -139,7 +143,7 @@ test('flow 14: the schools list reflects the invited school after navigating bac
   // The search param survives in the URL state, so the filtered row re-renders.
   await page.reload();
   await search.fill(school.name);
-  const reloaded = page.getByRole('row').filter({ hasText: school.name });
+  const reloaded = page.locator('[data-directory-row]').filter({ hasText: school.name });
   await reloaded.scrollIntoViewIfNeeded();
   await expect(
     reloaded.getByText(cat(en, 'Ops.schools.portalStatus.pending_setup'), { exact: true }),

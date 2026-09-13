@@ -112,7 +112,10 @@ test('flow 21: EVERY magic link of the school is invalidated, including the rese
   expect(linkStatuses(school.documentId)).toEqual(['revoked', 'revoked']);
 
   for (const link of [firstLink, secondLink]) {
-    await page.goto(link);
+    // The emailed host names the RETIRED :3101 (and on this box something else
+    // squats that port now) — the token is the credential, so open the link's
+    // PATH on the app under test, exactly like the send spec's flow 27.
+    await page.goto(new URL(link).pathname);
     // POSITIVE assertion: the guest sees the REVOKED screen, named from the
     // catalogue. A "the wizard heading is absent" check would also pass on a
     // blank page or a 500 (D-34).
