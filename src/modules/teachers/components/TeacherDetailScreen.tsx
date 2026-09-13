@@ -469,21 +469,28 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
                       key={student.student_document_id}
                       className="border-b border-[#EEF1F6] py-3.5 last:border-b-0"
                     >
-                      <PersonCell
-                        name={student.display_name}
-                        secondary={student.class.name ?? undefined}
-                        trailing={
-                          <span className="flex items-center gap-2">
-                            <span className="text-body-sm text-body tabular-nums">
-                              {t('attention.scores', { from: student.score_a, to: student.score_b })}
+                      {/* Design marks each attention row clickable (st.open):
+                          it opens that student's school drilldown. */}
+                      <Link
+                        href={`/dashboard/school/students/${student.student_document_id}`}
+                        className="-mx-2 block rounded-md px-2 transition-colors duration-150 hover:bg-surface-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring motion-reduce:transition-none"
+                      >
+                        <PersonCell
+                          name={student.display_name}
+                          secondary={student.class.name ?? undefined}
+                          trailing={
+                            <span className="flex items-center gap-2">
+                              <span className="text-body-sm text-body tabular-nums">
+                                {t('attention.scores', { from: student.score_a, to: student.score_b })}
+                              </span>
+                              <ProgressDeltaPill
+                                direction={delta.direction}
+                                change={format.number(delta.magnitude, { maximumFractionDigits: 0 })}
+                              />
                             </span>
-                            <ProgressDeltaPill
-                              direction={delta.direction}
-                              change={format.number(delta.magnitude, { maximumFractionDigits: 0 })}
-                            />
-                          </span>
-                        }
-                      />
+                          }
+                        />
+                      </Link>
                     </li>
                   );
                 })}
