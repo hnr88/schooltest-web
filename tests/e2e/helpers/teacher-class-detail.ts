@@ -107,3 +107,59 @@ export function setAsideErrors(errors: string[], surface: string): void {
 export function expectNoNewErrors(errors: string[], step: string) {
   expect(errors.splice(0), `console/page errors at: ${step}`).toEqual([]);
 }
+
+/**
+ * Picks, from the results directory the signed-in teacher just opened, the first
+ * class in display order whose roster meets `needs` — the shared fixture rule of
+ * the tab specs (students-tab needs two scored students; progress needs a
+ * sitting history; reports-modal needs scored students). The overnight stack is
+ * a shared environment: other waves keep adding scratch classes to the top of
+ * the directory, so "the first row" is only a fixture when its data qualifies.
+ * Walks the real UI list and the real roster reads (no interception); the
+ * roster of the chosen class is returned so the caller need not reload it.
+ */
+export async function firstClassWith(
+  page: Page,
+  needs: (roster: import('@/modules/results/types/roster.types').RosterRow[]) => boolean,
+  { max = 10 }: { max?: number } = {},
+): Promise<{ classId: string; roster: import('@/modules/results/types/roster.types').RosterRow[] }> {
+  const rows = page.locator('[data-slot="results-class-row"]');
+  await expect(rows.first()).toBeVisible({ timeout: 30_000 });
+  // The list streams in row by row: read until the id list stops growing.
+  let ids: string[] = [];
+  let stable = 0;
+  for (let tick = 0; tick < 20 && stable < 2; tick += 1) {
+    const next: string[] = await rows.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-class-id')).filter((id): id is string => id !== null),
+    );
+    stable = next.length === ids.length ? stable + 1 : 0;
+    ids = next;
+    await page.waitForTimeout(250);
+  }
+  const { classRosterResponseSchema } = await import('@/modules/results/schemas/roster.schema');
+  for (const classId of ids.slice(0, max)) {
+    await page.goto(`/dashboard/results/${classId}`);
+    // Read the roster the same way the page does — the app's own token and
+    // endpoint from inside the page — so selection cannot race React Query.
+    const apiBase = process.env.API_BASE_URL ?? 'http://localhost:5500';
+    const body = await page.evaluate(
+      async ({ id, base }: { id: string; base: string }) => {
+        const token = window.localStorage.getItem('app.auth.token');
+        const res = await fetch(`${base}/api/my/students/results?class=${id}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        if (!res.ok) return null;
+        return res.json();
+      },
+      { id: classId, base: apiBase },
+    );
+    if (body === null) continue;
+    const parsed = classRosterResponseSchema.safeParse(body);
+    if (!parsed.success) continue;
+    if (needs(parsed.data)) return { classId, roster: parsed.data };
+  }
+  throw new Error(
+    `[e2e] none of the first ${Math.min(ids.length, max)} directory classes meets the spec's roster needs ` +
+      `(ids: ${ids.slice(0, max).join(', ') || 'none'})`,
+  );
+}

@@ -1,15 +1,14 @@
 import { mkdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
-import { expect, test, type Page, type Response } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
-import { classRosterResponseSchema } from '@/modules/results/schemas/roster.schema';
 import type { RosterRow } from '@/modules/results/types/roster.types';
 import { TEACHER_EXPORT_PROMPT_HEADING } from '@/modules/teacher/schemas/teacher-export.schema';
 import { studentsTabRows } from '@/modules/teacher/lib/v2/students-tab';
 import type { StudentsSort } from '@/modules/teacher/types/v2-class-tabs.types';
 
-import { READY, expectNoNewErrors, frame, setAsideErrors } from '../helpers/teacher-class-detail';
+import { READY, expectNoNewErrors, firstClassWith, frame, setAsideErrors } from '../helpers/teacher-class-detail';
 import { cat } from '../helpers/i18n';
 import { en, signIn } from '../helpers/teacher-rail';
 import { watchErrors } from '../helpers/ui';
@@ -39,22 +38,6 @@ function countText(value: number): string {
   );
 }
 
-/** The roster body the class detail itself received for this class. */
-async function waitForRoster(page: Page, classId: string): Promise<RosterRow[]> {
-  let body: unknown;
-  await page.waitForResponse(async (response: Response) => {
-    const url = new URL(response.url());
-    if (url.pathname !== '/api/my/students/results' || url.searchParams.get('class') !== classId) return false;
-    if (response.request().method() !== 'GET' || !response.ok()) return false;
-    try {
-      body = await response.json();
-      return true;
-    } catch {
-      return false;
-    }
-  });
-  return classRosterResponseSchema.parse(body);
-}
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
@@ -65,15 +48,13 @@ test('S3 — Students tab per design: roster, scores, sort, search, LLM and PDF 
   await signIn(page, 'teacher');
   await page.waitForURL('**/dashboard/results');
 
-  const classRow = page.locator('[data-slot="results-class-row"]').first();
-  await expect(classRow).toBeVisible({ timeout: 30_000 });
-  const classId = await classRow.getAttribute('data-class-id');
-  if (classId === null) throw new Error('[e2e] the first Classes row carries no class id');
   setAsideErrors(errors, 'classes-list');
-
-  const rosterPromise = waitForRoster(page, classId);
-  await page.goto(`/dashboard/results/${classId}`);
-  const roster = await rosterPromise;
+  // The directory's first rows may be another wave's scratch classes: pick the
+  // first class in display order that actually holds two scored students.
+  const { classId, roster } = await firstClassWith(
+    page,
+    (rows) => rows.filter((row) => row.result !== null && row.result.overall.domain_score !== null).length >= 2,
+  );
   await expect(frame(page)).toHaveAttribute('data-status', READY, { timeout: 30_000 });
 
   // One row per roster student, the design's columns, the count, name A–Z by default.
