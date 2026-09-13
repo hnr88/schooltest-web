@@ -100,3 +100,50 @@ export const teacherNeedsAttentionSchema = z.object({
   classes_considered: z.number().int(),
   students: z.array(needsAttentionStudentSchema),
 });
+
+// C-TCH-06 (SA-FAIL-5): GET /api/schools/me/teachers/:documentId
+// /reading-average — the SAME reading-average statistic as the per-class tile,
+// pooled over ALL of the teacher's classes (never a mean of per-class means).
+// `avg_reading_score` is NULL when nothing was measured — "no score" is a real
+// state and never renders as 0.
+export type TeacherReadingAverage = z.infer<typeof teacherReadingAverageSchema>;
+
+export const teacherReadingAverageSchema = z.object({
+  teacher: z.object({
+    documentId: z.string(),
+    email: z.string().nullable(),
+    first_name: z.string().nullable(),
+    last_name: z.string().nullable(),
+  }),
+  classes_considered: z.number().int(),
+  tests_completed: z.number().int(),
+  scored_tests: z.number().int(),
+  avg_reading_score: z.number().nullable(),
+});
+
+// C-TCH-07 (SA-FAIL-5): GET /api/schools/me/teachers/:documentId/activity —
+// the teacher's OWN sitting lifecycle events only, newest first
+// (sitting_opened from opened_at, sitting_closed from closed_at).
+export type TeacherActivityEvent = z.infer<typeof teacherActivityEventSchema>;
+export type TeacherActivity = z.infer<typeof teacherActivitySchema>;
+
+export const teacherActivityEventSchema = z.object({
+  type: z.enum(['sitting_opened', 'sitting_closed']),
+  at: z.string(),
+  sitting: z.object({
+    documentId: z.string(),
+    code: z.string().nullable(),
+    status: z.string().nullable(),
+  }),
+  class: z.object({ documentId: z.string().nullable(), name: z.string().nullable() }),
+});
+
+export const teacherActivitySchema = z.object({
+  events: z.array(teacherActivityEventSchema),
+  pagination: z.object({
+    page: z.number().int(),
+    pageSize: z.number().int(),
+    pageCount: z.number().int(),
+    total: z.number().int(),
+  }),
+});

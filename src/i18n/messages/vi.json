@@ -2357,7 +2357,8 @@
       "stats": {
         "classes": "Lớp",
         "students": "Học sinh",
-        "testA": "Đã hoàn thành Bài kiểm tra A"
+        "testA": "Đã hoàn thành Bài kiểm tra A",
+        "avgReading": "Điểm đọc trung bình"
       },
       "classesPanel": {
         "title": "Các lớp được phân công",
@@ -2394,7 +2395,16 @@
         "errorTitle": "Không thể cập nhật lớp này",
         "errorDescription": "Lớp học không bị thay đổi. Kiểm tra kết nối và thử lại."
       },
-      "moreActions": "Thao tác khác"
+      "moreActions": "Thao tác khác",
+      "activity": {
+        "title": "Hoạt động gần đây",
+        "opened": "Đã mở bài kiểm tra cho {class}",
+        "closed": "Đã đóng bài kiểm tra cho {class}",
+        "unnamedClass": "một lớp",
+        "empty": "Chưa có hoạt động nào.",
+        "errorTitle": "Không thể tải hoạt động gần đây",
+        "errorDescription": "Hãy kiểm tra kết nối rồi thử lại."
+      }
     },
     "meta": {
       "title": "Giáo viên - SchoolTest",

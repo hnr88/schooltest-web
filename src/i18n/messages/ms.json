@@ -2348,7 +2348,8 @@
       "stats": {
         "classes": "Kelas",
         "students": "Pelajar",
-        "testA": "Ujian A selesai"
+        "testA": "Ujian A selesai",
+        "avgReading": "Purata skor membaca"
       },
       "classesPanel": {
         "title": "Kelas yang ditugaskan",
@@ -2385,7 +2386,16 @@
         "errorTitle": "Kami tidak dapat mengemas kini kelas ini",
         "errorDescription": "Kelas tidak diubah. Semak sambungan anda dan cuba lagi."
       },
-      "moreActions": "Lagi tindakan"
+      "moreActions": "Lagi tindakan",
+      "activity": {
+        "title": "Aktiviti terkini",
+        "opened": "Membuka sesi ujian untuk {class}",
+        "closed": "Menutup sesi ujian untuk {class}",
+        "unnamedClass": "satu kelas",
+        "empty": "Tiada aktiviti lagi.",
+        "errorTitle": "Kami tidak dapat memuatkan aktiviti terkini",
+        "errorDescription": "Semak sambungan anda dan cuba lagi."
+      }
     },
     "meta": {
       "title": "Guru - SchoolTest",

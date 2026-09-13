@@ -2837,7 +2837,8 @@
       "stats": {
         "classes": "Classes",
         "students": "Students",
-        "testA": "Test A completed"
+        "testA": "Test A completed",
+        "avgReading": "Avg. reading score"
       },
       "classesPanel": {
         "title": "Assigned classes",
@@ -2874,7 +2875,16 @@
         "errorTitle": "We could not update this class",
         "errorDescription": "The class was not changed. Check your connection and try again."
       },
-      "moreActions": "More actions"
+      "moreActions": "More actions",
+      "activity": {
+        "title": "Recent activity",
+        "opened": "Opened a test sitting for {class}",
+        "closed": "Closed the test sitting for {class}",
+        "unnamedClass": "a class",
+        "empty": "No activity yet.",
+        "errorTitle": "We could not load recent activity",
+        "errorDescription": "Check your connection and try again."
+      }
     },
     "meta": {
       "title": "Teachers - SchoolTest",

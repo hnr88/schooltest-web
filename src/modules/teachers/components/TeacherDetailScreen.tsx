@@ -30,7 +30,9 @@ import { useStaffRows } from '@/modules/teachers/hooks/use-staff-rows';
 import { useStaffTableActions } from '@/modules/teachers/hooks/use-staff-row-actions';
 import { removeTeacherPatch } from '@/modules/teachers/lib/teacher-class-membership';
 import { useInvitationsQuery } from '@/modules/teachers/queries/use-invitations.query';
+import { useTeacherActivityQuery } from '@/modules/teachers/queries/use-teacher-activity.query';
 import { useTeacherNeedsAttentionQuery } from '@/modules/teachers/queries/use-teacher-needs-attention.query';
+import { useTeacherReadingAverageQuery } from '@/modules/teachers/queries/use-teacher-reading-average.query';
 import { useTeachersQuery, type ParsedSchoolTeacher } from '@/modules/teachers/queries/use-teachers.query';
 
 // R-16: the role TYPE maps to the invite flow's existing role labels — value
@@ -47,16 +49,15 @@ const ROLE_TYPE_LABEL_KEYS: Record<
 // 611-735): back link, navy avatar + name + status pill + meta line, the
 // action row (edit · assign · ⋯ menu over the same confirm-guarded account
 // actions the list rows serve), the KPI tiles (label-over-value, white 20px
-// cards), the Assigned classes card (first-word class-name tile, name+sub,
+// cards — the fourth design tile is the avg-reading-score tile, C-TCH-06),
+// the Assigned classes card (first-word class-name tile, name+sub,
 // per-class
 // completion from C-RPT-04, students, chevron — plus the remove control the
-// real contract needs), and the Account details / Students-needing-attention
-// pair on the design's side-by-side grid. That attention panel keeps its
-// three states strictly distinct: PENDING is a skeleton, ERROR is an alert
-// with retry, and only a SUCCESSFUL empty list renders "Everyone is on
-// track." Renders ONLY what the existing API serves; deliberately absent, as
-// unserved contract gaps (C-TCH-06/07, task 17): the avg-reading-score tile
-// and the Recent activity panel.
+// real contract needs), the Account details / Students-needing-attention
+// pair on the design's side-by-side grid, and the Recent activity panel
+// (C-TCH-07). Those two server-fed panels keep their three states strictly
+// distinct: PENDING is a skeleton, ERROR is an alert with retry, and only a
+// SUCCESSFUL empty list renders "Everyone is on track." / "No activity yet."
 function initialsOf(first: string, last: string, email: string): string {
   const initials = `${first.trim().charAt(0)}${last.trim().charAt(0)}`.trim();
   return (initials || email.trim().charAt(0)).toUpperCase();
@@ -109,6 +110,14 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
     documentId,
     enabled && row?.kind === 'teacher',
   );
+  // C-TCH-06/07 — the fourth KPI tile and the Recent activity panel. Same
+  // enable rule as the attention panel: both are per-teacher reads that only
+  // exist once the staff row resolved to a teacher account.
+  const readingAverageQuery = useTeacherReadingAverageQuery(
+    documentId,
+    enabled && row?.kind === 'teacher',
+  );
+  const activityQuery = useTeacherActivityQuery(documentId, enabled && row?.kind === 'teacher');
   const [assignOpen, setAssignOpen] = useState(false);
   const removeClassTeachers = useUpdateClassTeachersMutation();
   // The header ⋯ menu serves the same confirm-guarded account actions as the
@@ -295,12 +304,23 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
         </div>
       </div>
 
-      {/* KPI tiles — the design's label-over-value cards. The fourth design
-          tile (avg. reading score) stays absent: no endpoint serves it. */}
+      {/* KPI tiles — the design's label-over-value cards, including the
+          fourth design tile (C-TCH-06). A NULL avg means nothing was scored
+          yet — "no value", never a misleading 0. */}
       <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-4">
         <StatTile label={t('stats.classes')} value={String(row.classes.length)} />
         <StatTile label={t('stats.students')} value={String(studentsTotal)} />
         <StatTile label={t('stats.testA')} value={String(testATotal)} />
+        <StatTile
+          label={t('stats.avgReading')}
+          value={
+            readingAverageQuery.data?.avg_reading_score != null
+              ? format.number(readingAverageQuery.data.avg_reading_score, {
+                  maximumFractionDigits: 1,
+                })
+              : tTable('noValue')
+          }
+        />
       </div>
 
       {/* Assigned classes card. */}
@@ -499,6 +519,79 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
           </div>
         </section>
       </div>
+
+      {/* Recent activity — the design's full-width feed card (School Admin
+          Portal.dc.html:719-735): one dot + title + time row per event, dot
+          colour keyed to the event type. Same three-state discipline as the
+          attention panel: skeleton, error+retry, and only-then empty. */}
+      <section
+        className={CARD_CLASS + ' px-7.5 py-6.5'}
+        aria-label={t('activity.title')}
+        data-slot="teacher-recent-activity"
+      >
+        <h2 className="text-panel-title font-semibold text-foreground">{t('activity.title')}</h2>
+        <div className="mt-3">
+          {activityQuery.isPending ? (
+            <Skeleton className="h-10 w-full" />
+          ) : activityQuery.isError ? (
+            <Alert
+              variant="error"
+              title={t('activity.errorTitle')}
+              action={
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  loading={activityQuery.isFetching}
+                  onClick={() => void activityQuery.refetch()}
+                >
+                  {t('retry')}
+                </Button>
+              }
+            >
+              {t('activity.errorDescription')}
+            </Alert>
+          ) : (activityQuery.data?.events.length ?? 0) === 0 ? (
+            <p className="py-4 text-center text-[13px] text-[#9AA6B8]">{t('activity.empty')}</p>
+          ) : (
+            <ul data-slot="teacher-activity-rows">
+              {activityQuery.data?.events.map((event, index) => (
+                <li
+                  key={`${event.type}-${event.sitting.documentId}-${index}`}
+                  className="flex gap-3.5 border-b border-[#EEF1F6] py-3.5 last:border-b-0"
+                >
+                  <span
+                    aria-hidden
+                    className={`mt-1.5 size-[9px] shrink-0 rounded-full ${
+                      event.type === 'sitting_opened' ? 'bg-[#2563EB]' : 'bg-[#0E2350]'
+                    }`}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-[14px] font-semibold text-foreground">
+                      {event.type === 'sitting_opened'
+                        ? t('activity.opened', {
+                            class: event.class.name ?? t('activity.unnamedClass'),
+                          })
+                        : t('activity.closed', {
+                            class: event.class.name ?? t('activity.unnamedClass'),
+                          })}
+                    </p>
+                    <p className="mt-0.5 text-[12.5px] text-muted-foreground">
+                      {format.dateTime(new Date(event.at), {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
 
       <ConfirmStaffActionDialog
         open={actions.confirm !== null}

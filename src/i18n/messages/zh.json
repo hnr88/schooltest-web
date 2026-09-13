@@ -2348,7 +2348,8 @@
       "stats": {
         "classes": "班级",
         "students": "学生",
-        "testA": "已完成测试 A"
+        "testA": "已完成测试 A",
+        "avgReading": "平均阅读分数"
       },
       "classesPanel": {
         "title": "所授班级",
@@ -2385,7 +2386,16 @@
         "errorTitle": "无法更新该班级",
         "errorDescription": "班级未发生更改。请检查网络连接后重试。"
       },
-      "moreActions": "更多操作"
+      "moreActions": "更多操作",
+      "activity": {
+        "title": "最近活动",
+        "opened": "开启了 {class} 的测试场次",
+        "closed": "结束了 {class} 的测试场次",
+        "unnamedClass": "某个班级",
+        "empty": "暂无活动。",
+        "errorTitle": "无法加载最近活动",
+        "errorDescription": "请检查网络连接后重试。"
+      }
     },
     "meta": {
       "title": "教师 - SchoolTest",
