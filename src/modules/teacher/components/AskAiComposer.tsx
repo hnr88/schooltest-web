@@ -71,7 +71,7 @@ function AskAiComposer({ ask, placeholder, suggestions }: AskAiComposerProps) {
           data-slot="ask-ai-send"
           aria-label={t('send')}
           title={t('send')}
-          disabled={ask.isPending}
+          disabled={ask.isPending || ask.query.trim() === ''}
           className="flex size-[42px] flex-none cursor-pointer items-center justify-center rounded-[10px] border-0 bg-[#3E6FF0] text-white outline-none focus-visible:ring-2 focus-visible:ring-[#8FA6EA] disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Send aria-hidden="true" className="size-[17px]" strokeWidth={2.2} />
