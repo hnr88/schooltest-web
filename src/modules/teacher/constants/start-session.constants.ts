@@ -21,7 +21,7 @@ export const START_SESSION_SKILLS = [
 export const SETTINGS_SECTIONS: readonly { id: SettingsSectionId; keys: readonly SettingToggleKey[] }[] = [
   { id: 'during', keys: ['skip', 'review', 'flag'] },
   { id: 'access', keys: ['bigText', 'lowBw'] },
-  { id: 'security', keys: ['lockdown', 'focusFlag'] },
+  { id: 'security', keys: ['lockdown', 'focusFlag', 'allowClose'] },
   { id: 'timing', keys: ['warn5', 'autoSubmit', 'showScore'] },
 ];
 

@@ -220,10 +220,36 @@ test.describe('task 30: children v2 round-trip vs live C-CHD-01..04', () => {
     });
     expect(classesRes.ok()).toBeTruthy();
     const classes = ((await classesRes.json()) as {
-      data: { documentId: string; name: string }[];
+      data: { documentId: string; name: string; student_count: number }[];
     }).data;
     expect(classes.length).toBeGreaterThan(0);
-    const targetClass = classes[0];
+    // The class filter must narrow to a roster that HAS rows: on a long-lived
+    // database classes[0] is whatever test class sorts first and may hold zero
+    // students, which makes the post-reload deep-link row assertion vacuous.
+    // This test composes class+beginning, so a class with students but no
+    // beginning-phase student empties the view on a long-lived database too —
+    // probe the rosters through the same server contract the kit drives and
+    // pick a class whose composed filter still yields rows.
+    const candidates = classes
+      .filter((entry) => entry.student_count > 0)
+      .sort((a, b) => b.student_count - a.student_count);
+    let targetClass = candidates[0] ?? classes[0];
+    for (const candidate of candidates.slice(0, 8)) {
+      const probe = await request.get(
+        `${API}/api/schools/me/children?class=${candidate.documentId}&level=beginning`,
+        { headers: { Authorization: `Bearer ${jwt}` } },
+      );
+      expect(probe.ok(), await probe.text()).toBeTruthy();
+      const body = (await probe.json()) as {
+        data?: unknown[];
+        meta?: { pagination?: { total?: number } };
+      };
+      const total = body.meta?.pagination?.total ?? body.data?.length ?? 0;
+      if (total > 0) {
+        targetClass = candidate;
+        break;
+      }
+    }
 
     const childrenRequests: URL[] = [];
     page.on('request', (req) => {
@@ -284,6 +310,12 @@ test.describe('task 30: children v2 round-trip vs live C-CHD-01..04', () => {
     for (const url of rosterRequests(childrenRequests)) {
       expect(url.searchParams.get('status')).toBeNull();
     }
+    // The query refetch fires BEFORE the router commits the new query string —
+    // wait for the URL to carry the filter instead of racing page.url().
+    await page.waitForURL(
+      new RegExp(`class=${targetClass.documentId}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
+      { timeout: 15_000 },
+    );
     const pageUrl = new URL(page.url());
     expect(pageUrl.searchParams.get('class')).toBe(targetClass.documentId);
     expect(pageUrl.searchParams.get('status')).toBeNull();

@@ -2597,15 +2597,15 @@
         "submitting": "Mengimport...",
         "successToast": "{count, plural, other {# murid telah diimport}}.",
         "partialToast": "{created} daripada {total} murid telah diimport.",
-        "seatsToast": "Pelan anda tidak mempunyai tempat yang tinggal untuk murid ini.",
         "forbiddenToast": "Anda tidak mempunyai kebenaran untuk menambah murid.",
         "genericToast": "Tindakan itu tidak berjaya. Cuba lagi.",
-        "duplicateToast": "Murid tersebut sudah wujud. Semak e-mel dan cuba lagi.",
         "rejectedToast": "{count, plural, other {baris perlu diperbaiki sebelum import}}",
         "alreadyImportedToast": "Semua pelajar dalam fail ini sudah berdaftar di sekolah anda.",
         "successSkippedToast": "{created} diimport, {skipped, plural, other {sudah berdaftar}}.",
         "seatCapToast": "Sekolah anda tiada tempat duduk lagi. Hubungi SchoolTest untuk menambah tempat.",
-        "schoolInactiveToast": "Akaun sekolah anda tidak aktif, jadi pelajar tidak boleh ditambah buat masa ini."
+        "schoolInactiveToast": "Akaun sekolah anda tidak aktif, jadi pelajar tidak boleh ditambah buat masa ini.",
+        "noRowsToast": "Fail ini tiada baris data untuk diimport — tambahkan sekurang-kurangnya satu baris di bawah baris pengepala.",
+        "tooBigToast": "Fail itu terlalu besar. Hadnya 5 MB."
       },
       "roster": {
         "searchPlaceholder": "Cari murid",
@@ -2975,7 +2975,9 @@
       "genericToast": "No students were imported. Try again.",
       "rejectedToast": "{count, plural, other {baris perlu diperbaiki sebelum import}}",
       "alreadyImportedToast": "Semua pelajar dalam fail ini sudah berdaftar di sekolah anda.",
-      "successSkippedToast": "{created} diimport, {skipped, plural, other {sudah berdaftar}}."
+      "successSkippedToast": "{created} diimport, {skipped, plural, other {sudah berdaftar}}.",
+      "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
+      "tooBigToast": "That file is too large. The limit is 5 MB."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -6272,6 +6274,10 @@
           "focusFlag": {
             "label": "Tanda jika mereka keluar dari tetingkap",
             "desc": "Keluar direkodkan dengan cap masa dan dipaparkan pada paparan langsung anda. Gunakan apabila kunci dimatikan."
+          },
+          "allowClose": {
+            "label": "Benarkan menutup aplikasi",
+            "desc": "Murid boleh menutup aplikasi desktop semasa ujian — aplikasi akan meminta pengesahan dahulu. Apabila dimatikan, aplikasi tidak boleh ditutup sehingga ujian dihantar."
           },
           "warn5": {
             "label": "Amaran lima minit",

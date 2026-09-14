@@ -27,7 +27,8 @@ export const stageSchema = z.literal([1, 2, 3]);
 
 /**
  * Client mirror of the api contract's `sittingSettingsSchema`
- * (schooltest-api/src/contracts/teacher-sessions.ts) — eleven camelCase keys,
+ * (schooltest-api/src/contracts/teacher-sessions.ts) — the eleven design
+ * `settingDefs` camelCase keys plus the desktop's `allowClose`,
  * byte-for-byte. Strict on the REQUEST boundary only: the stored column is
  * read leniently by C-SIT-02 and the desktop (D-34), so the mirror is used to
  * VALIDATE what the server answered, never to reject a lenient read. Declared
@@ -41,6 +42,7 @@ export const sittingSettingsSchema = z.strictObject({
   bigText: z.boolean(),
   lockdown: z.boolean(),
   focusFlag: z.boolean(),
+  allowClose: z.boolean(),
   warn5: z.boolean(),
   autoSubmit: z.boolean(),
   showScore: z.boolean(),
@@ -57,6 +59,7 @@ export const DEFAULT_SITTING_SETTINGS: SittingSettings = {
   bigText: true,
   lockdown: true,
   focusFlag: true,
+  allowClose: false,
   warn5: true,
   autoSubmit: true,
   showScore: false,

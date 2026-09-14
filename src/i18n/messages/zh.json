@@ -2587,15 +2587,15 @@
         "submitting": "导入中...",
         "successToast": "{count, plural, other {已导入 # 名学生}}。",
         "partialToast": "已导入 {total} 名学生中的 {created} 名。",
-        "duplicateToast": "这些学生已存在，请检查邮箱后重试。",
-        "seatsToast": "您的方案已没有可用名额。",
         "forbiddenToast": "您没有权限添加学生。",
         "genericToast": "操作未成功，请重试。",
         "rejectedToast": "{count, plural, other {行需要修正后才能导入}}",
         "alreadyImportedToast": "此文件中的学生均已在本校注册。",
         "successSkippedToast": "已导入 {created} 人，{skipped, plural, other {人已注册}}。",
         "seatCapToast": "您的学校已没有剩余名额。请联系 SchoolTest 添加名额。",
-        "schoolInactiveToast": "您的学校账户未激活，目前无法添加学生。"
+        "schoolInactiveToast": "您的学校账户未激活，目前无法添加学生。",
+        "noRowsToast": "此文件没有可导入的数据行——请在表头行下方至少添加一行学生数据。",
+        "tooBigToast": "文件过大。上限为 5 MB。"
       },
       "roster": {
         "searchPlaceholder": "搜索学生",
@@ -2965,7 +2965,9 @@
       "genericToast": "No students were imported. Try again.",
       "rejectedToast": "{count, plural, other {行需要修正后才能导入}}",
       "alreadyImportedToast": "此文件中的学生均已在本校注册。",
-      "successSkippedToast": "已导入 {created} 人，{skipped, plural, other {人已注册}}。"
+      "successSkippedToast": "已导入 {created} 人，{skipped, plural, other {人已注册}}。",
+      "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
+      "tooBigToast": "That file is too large. The limit is 5 MB."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -6262,6 +6264,10 @@
           "focusFlag": {
             "label": "离开窗口时标记",
             "desc": "离开会连同时间戳一起记录，并显示在你的实时视图中。在关闭锁定时使用。"
+          },
+          "allowClose": {
+            "label": "允许关闭应用",
+            "desc": "学生在测试期间可以关闭桌面应用，但应用会先要求确认。关闭后，测试提交前将无法关闭应用。"
           },
           "warn5": {
             "label": "五分钟提醒",

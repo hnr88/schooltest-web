@@ -2597,15 +2597,15 @@
         "submitting": "가져오는 중...",
         "successToast": "{count, plural, other {학생 #명을 가져왔습니다}}.",
         "partialToast": "학생 {total}명 중 {created}명을 가져왔습니다.",
-        "seatsToast": "현재 플랜에는 이 학생들을 받을 좌석이 남아 있지 않습니다.",
         "forbiddenToast": "학생을 추가할 권한이 없습니다.",
         "genericToast": "작업에 실패했습니다. 다시 시도하세요.",
-        "duplicateToast": "해당 학생들은 이미 존재합니다. 이메일을 확인한 뒤 다시 시도하세요.",
         "rejectedToast": "{count, plural, other {개 행을 수정해야 가져올 수 있습니다}}",
         "alreadyImportedToast": "이 파일의 학생은 모두 이미 학교에 등록되어 있습니다.",
         "successSkippedToast": "{created}명 가져왔습니다, {skipped, plural, other {명 이미 등록됨}}.",
         "seatCapToast": "학교의 남은 자리가 없습니다. 좌석 추가는 SchoolTest에 문의하세요.",
-        "schoolInactiveToast": "학교 계정이 활성 상태가 아니어서 지금은 학생을 추가할 수 없습니다."
+        "schoolInactiveToast": "학교 계정이 활성 상태가 아니어서 지금은 학생을 추가할 수 없습니다.",
+        "noRowsToast": "이 파일에는 가져올 데이터 행이 없습니다. 헤더 행 아래에 학생을 한 행 이상 추가하세요.",
+        "tooBigToast": "파일이 너무 큽니다. 최대 5 MB입니다."
       },
       "roster": {
         "searchPlaceholder": "학생 검색",
@@ -2975,7 +2975,9 @@
       "genericToast": "No students were imported. Try again.",
       "rejectedToast": "{count, plural, other {개 행을 수정해야 가져올 수 있습니다}}",
       "alreadyImportedToast": "이 파일의 학생은 모두 이미 학교에 등록되어 있습니다.",
-      "successSkippedToast": "{created}명 가져왔습니다, {skipped, plural, other {명 이미 등록됨}}."
+      "successSkippedToast": "{created}명 가져왔습니다, {skipped, plural, other {명 이미 등록됨}}.",
+      "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
+      "tooBigToast": "That file is too large. The limit is 5 MB."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -6272,6 +6274,10 @@
           "focusFlag": {
             "label": "창을 벗어나면 표시",
             "desc": "창을 벗어난 기록이 시각과 함께 남고 실시간 화면에 표시됩니다. 잠금을 끈 상태에서 사용하세요."
+          },
+          "allowClose": {
+            "label": "앱 닫기 허용",
+            "desc": "시험 중 학생이 데스크톱 앱을 닫을 수 있습니다. 앱이 먼저 확인을 요청합니다. 끄면 시험이 제출될 때까지 앱을 닫을 수 없습니다."
           },
           "warn5": {
             "label": "5분 전 알림",

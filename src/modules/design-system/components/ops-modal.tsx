@@ -196,16 +196,21 @@ function OpsFieldShell({
     (disabled ? 'text-[#7C8698]' : 'text-[#0E2350]') +
     (hideLabel ? ' sr-only' : '');
   const marker = required ? <span className="text-[#2563EB]">*</span> : null;
+  // The label TEXT rides in its own inline span so the blue required marker is
+  // a sibling node, not part of the label's text: exact-text locators
+  // (getByText('Email address', { exact: true })) must keep matching the
+  // caption while the rendered glyphs stay visually glued ("Email address*").
+  const labelText = <span>{label}</span>;
   return (
     <div data-slot="ops-field-shell" data-invalid={errorText ? '' : undefined} className={className ?? ''}>
       {labelId ? (
         <span id={labelId} className={labelClass}>
-          {label}
+          {labelText}
           {marker}
         </span>
       ) : (
         <label htmlFor={id} className={labelClass}>
-          {label}
+          {labelText}
           {marker}
         </label>
       )}

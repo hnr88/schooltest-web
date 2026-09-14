@@ -51,8 +51,10 @@ test.describe('ops schools — Open school row action', () => {
     expect(list.data.length).toBeGreaterThan(0);
     const documentId = list.data[0].documentId;
 
-    // The first rendered row is the response's first row.
-    const firstRow = page.locator('[data-surface="ops-schools"] tbody tr').first();
+    // The first rendered row is the response's first row. The schools list
+    // renders through the directory kit's div grid (no <tbody>): the row
+    // contract is the kit's `data-directory-row` marker.
+    const firstRow = page.locator('[data-surface="ops-schools"] [data-directory-row]').first();
     await expect(firstRow).toBeVisible({ timeout: 60_000 });
 
     // --- the REAL menu path: Row actions → Open school ---

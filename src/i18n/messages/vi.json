@@ -2606,15 +2606,15 @@
         "submitting": "Đang nhập...",
         "successToast": "{count, plural, other {Đã nhập # học sinh}}.",
         "partialToast": "Đã nhập {created} trong {total} học sinh.",
-        "seatsToast": "Gói của bạn không còn chỗ cho những học sinh này.",
         "forbiddenToast": "Bạn không có quyền thêm học sinh.",
         "genericToast": "Thao tác không thành công. Hãy thử lại.",
-        "duplicateToast": "Những học sinh đó đã tồn tại. Hãy kiểm tra email rồi thử lại.",
         "rejectedToast": "{count, plural, other {hàng cần sửa trước khi nhập}}",
         "alreadyImportedToast": "Tất cả học sinh trong tệp này đã được ghi danh tại trường của bạn.",
         "successSkippedToast": "Đã nhập {created}, {skipped, plural, other {đã ghi danh}}.",
         "seatCapToast": "Trường của bạn đã hết chỗ. Liên hệ SchoolTest để thêm chỗ.",
-        "schoolInactiveToast": "Tài khoản trường của bạn chưa được kích hoạt nên hiện không thể thêm học sinh."
+        "schoolInactiveToast": "Tài khoản trường của bạn chưa được kích hoạt nên hiện không thể thêm học sinh.",
+        "noRowsToast": "Tệp này không có dòng dữ liệu để nhập — hãy thêm ít nhất một dòng học sinh bên dưới dòng tiêu đề.",
+        "tooBigToast": "Tệp quá lớn. Giới hạn là 5 MB."
       },
       "roster": {
         "searchPlaceholder": "Tìm học sinh",
@@ -2984,7 +2984,9 @@
       "genericToast": "No students were imported. Try again.",
       "rejectedToast": "{count, plural, other {hàng cần sửa trước khi nhập}}",
       "alreadyImportedToast": "Tất cả học sinh trong tệp này đã được ghi danh tại trường của bạn.",
-      "successSkippedToast": "Đã nhập {created}, {skipped, plural, other {đã ghi danh}}."
+      "successSkippedToast": "Đã nhập {created}, {skipped, plural, other {đã ghi danh}}.",
+      "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
+      "tooBigToast": "That file is too large. The limit is 5 MB."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -6281,6 +6283,10 @@
           "focusFlag": {
             "label": "Đánh dấu nếu rời cửa sổ",
             "desc": "Việc rời cửa sổ được ghi lại kèm thời gian và hiển thị trên màn hình trực tiếp của bạn. Dùng khi tắt chế độ khóa."
+          },
+          "allowClose": {
+            "label": "Cho phép đóng ứng dụng",
+            "desc": "Học sinh có thể đóng ứng dụng desktop trong bài kiểm tra — ứng dụng sẽ yêu cầu xác nhận trước. Khi tắt, ứng dụng không thể đóng cho đến khi nộp bài."
           },
           "warn5": {
             "label": "Cảnh báo năm phút",

@@ -8,6 +8,14 @@
  * still come from `lib/directory-row-api.ts`, and the §L-rownav / §L-a11y
  * scaffolding (`data-directory-row*`, first-cell anchor) is unchanged — only
  * the element shape moved. Sort lives in the toolbar's select.
+ *
+ * ARIA repair (edit-flows sweep 2026-09-14): the div rebuild dropped the
+ * semantic table the old `<TableRow>` mount carried for free, so screen readers
+ * lost the rows and every `getByRole('row')` consumer (school classes/students
+ * specs, axe passes) went blind. The roles are restored as ATTRIBUTES — the
+ * flex layout and the visual grid are untouched: the body div is
+ * `role="table"`, each group heading and data row `role="row"`, and every
+ * direct row child a `role="cell"`.
  */
 import { Fragment, type MouseEvent, type ReactNode } from 'react';
 import { MoreHorizontal, type LucideIcon } from 'lucide-react';
@@ -112,17 +120,18 @@ export function DirectoryRows<Row>({
   }
 
   return (
-    <div data-slot="directory-rows" className="px-6 pt-1.5 pb-1">
+    <div data-slot="directory-rows" role="table" className="px-6 pt-1.5 pb-1">
       {groups.map((group) => (
         <Fragment key={group.key}>
           {group.heading === null ? null : (
-            <div className="px-2.5 pt-4 pb-1 text-sm font-medium text-muted-foreground">
-              {group.heading}
+            <div role="row" className="px-2.5 pt-4 pb-1 text-sm font-medium text-muted-foreground">
+              <div role="columnheader">{group.heading}</div>
             </div>
           )}
           {group.rows.map(({ row, api }, indexInGroup) => (
             <div
               key={api.key}
+              role="row"
               data-selected={api.selected || undefined}
               data-last={api.last || undefined}
               data-directory-row
@@ -136,12 +145,14 @@ export function DirectoryRows<Row>({
               {...rowAttrs?.(row)}
             >
               {selectable ? (
-                <Checkbox
-                  aria-label={labels.selectRowLabel(api.key)}
-                  checked={api.selected}
-                  onCheckedChange={() => api.onToggleSelect()}
-                  className={cn('flex-none', CHECKBOX_GRID_CLASS)}
-                />
+                <div role="cell" className="flex-none">
+                  <Checkbox
+                    aria-label={labels.selectRowLabel(api.key)}
+                    checked={api.selected}
+                    onCheckedChange={() => api.onToggleSelect()}
+                    className={CHECKBOX_GRID_CLASS}
+                  />
+                </div>
               ) : null}
               {columns.map((column, columnIndex) => (
                 <ColumnBlock
@@ -154,7 +165,7 @@ export function DirectoryRows<Row>({
                 />
               ))}
               {rowActions ? (
-                <div data-directory-row-menu className="relative ms-auto flex flex-none items-center">
+                <div role="cell" data-directory-row-menu className="relative ms-auto flex flex-none items-center">
                   <RowActions api={api} row={row} labels={labels} />
                 </div>
               ) : null}
@@ -182,11 +193,18 @@ function ColumnBlock<Row>({
 }) {
   const kind = column.grid ?? (columnIndex === 0 ? 'title' : 'metric');
   if (kind === 'bare') {
-    return <div className={cn('flex-none', column.className)}>{column.cell(row)}</div>;
+    return (
+      <div role="cell" className={cn('flex-none', column.className)}>
+        {column.cell(row)}
+      </div>
+    );
   }
   if (kind === 'title') {
     return (
-      <div className={cn('min-w-[140px] flex-[3_1_200px] overflow-hidden', column.className)}>
+      <div
+        role="cell"
+        className={cn('min-w-[140px] flex-[3_1_200px] overflow-hidden', column.className)}
+      >
         <FirstCell row={row} rowHref={rowHref} onRowSelect={onRowSelect}>
           {column.cell(row)}
         </FirstCell>
@@ -199,13 +217,16 @@ function ColumnBlock<Row>({
     // forcing the row to wrap around its longest word (an email or a UUID
     // fixture string was pushing whole rows onto two scattered lines).
     return (
-      <div className={cn('min-w-[80px] flex-[1_1_100px] overflow-hidden', column.className)}>
+      <div
+        role="cell"
+        className={cn('min-w-[80px] flex-[1_1_100px] overflow-hidden', column.className)}
+      >
         <div className="truncate text-[13px] leading-5 text-[#3D4A5C]">{column.cell(row)}</div>
       </div>
     );
   }
   return (
-    <div className={cn('min-w-[56px] flex-[1_1_80px] overflow-hidden', column.className)}>
+    <div role="cell" className={cn('min-w-[56px] flex-[1_1_80px] overflow-hidden', column.className)}>
       <div className="truncate text-sm font-semibold text-foreground">{column.cell(row)}</div>
       <div className="mt-0.5 truncate text-xs lowercase text-[#9AA6B8]">{column.header}</div>
     </div>

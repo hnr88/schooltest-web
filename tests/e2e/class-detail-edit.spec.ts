@@ -129,8 +129,16 @@ test.describe('edit class modal (spec §1)', () => {
     await page.reload();
     await expect(page.getByRole('heading', { level: 1, name: probeName })).toBeVisible();
 
-    // …and the Classes list shows the new name.
+    // …and the Classes list shows the new name. The kit paginates the school's
+    // classes (25 per page, name-ascending), so on a seeded database with more
+    // than one page the renamed class sits beyond page 1 — the list's OWN
+    // search narrows to it first (client-mode reducer over the loaded array).
     await page.goto('/dashboard/school/classes');
+    const classesScreen = page.locator('[data-slot="school-classes"]');
+    await expect(classesScreen).toBeVisible({ timeout: 20_000 });
+    await classesScreen
+      .getByLabel(cat(en, 'Classes.list.searchLabel'), { exact: true })
+      .fill(probeName);
     await expect(page.getByRole('link', { name: probeName, exact: true }).first()).toBeVisible();
 
     // Restore through the same real UI path.

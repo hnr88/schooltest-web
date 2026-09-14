@@ -1,6 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
-import { cat, icu, loadMessages } from './helpers/i18n';
+import { cat, loadMessages } from './helpers/i18n';
 import { roleCredentials } from './helpers/credentials';
 
 // Task 29 (st-mvp-pivot) targeted live check — NOT part of the suite.
@@ -68,8 +68,17 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
 
     const screen = page.locator('[data-slot="school-classes"]');
     await expect(screen).toBeVisible({ timeout: 20_000 });
-    // The seeded fixture class renders with its teacher chip and count.
+    // The seeded fixture class renders with its teacher chip and count. The
+    // kit paginates the school's classes (25 per page, name-ascending), so on
+    // a database with more than one page the fixture sits beyond page 1 — the
+    // list's OWN search narrows to it first (the client-mode reducer runs over
+    // the fully loaded array).
+    const search = screen.getByLabel(cat(en, 'Classes.list.searchLabel'), { exact: true });
+    await search.fill('Room 4');
     await expect(screen.getByRole('row', { name: /EAL\/D Year 7 - Room 4/ })).toBeVisible();
+    // The CRUD flow mutates a uniquely-named class; reset the needle so each
+    // step below scopes its own search instead.
+    await search.fill('');
 
     // CREATE (C-CLS-02) with a teacher picked from C-TCH-01.
     await screen.getByRole('button', { name: cat(en, 'Classes.addButton'), exact: true }).click();
@@ -85,8 +94,11 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
       .getByRole('button', { name: cat(en, 'Classes.addForm.submit'), exact: true })
       .click();
     await expect(createDialog).toBeHidden();
+    // The freshly created class sorts beyond page 1 of the paginated kit —
+    // narrow to its unique name before asserting the row.
+    await search.fill(className);
     const row = screen.getByRole('row', { name: new RegExp(className) });
-    await expect(row).toBeVisible();
+    await expect(row).toBeVisible({ timeout: 10_000 });
     await expect(row.getByText(CREATE_TEACHER_NAME, { exact: true })).toBeVisible();
 
     // API cross-check: created with the teacher, count 0, default band.
@@ -105,7 +117,7 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     // two inline quick actions (edit/delete) plus the ⋯ overflow, whose
     // trigger carries the kit's static row-menu label scoped to the row.
     await row
-      .getByRole('button', { name: cat(en, 'Classes.actions.rowMenuLabel'), exact: true })
+      .getByRole('button', { name: cat(en, 'Classes.list.rowMenuLabel'), exact: true })
       .click();
     await page
       .getByRole('menuitem', { name: cat(en, 'Classes.actions.edit'), exact: true })
@@ -120,6 +132,9 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
       .getByRole('button', { name: cat(en, 'Classes.detail.edit.save'), exact: true })
       .click();
     await expect(editDialog).toBeHidden();
+    // The active search still pins the OLD name; move the needle to the new
+    // one, then assert the renamed row.
+    await search.fill(editedName);
     const editedRow = screen.getByRole('row', { name: new RegExp(editedName) });
     await expect(editedRow).toBeVisible();
     await expect(editedRow.getByText(EDIT_TEACHER_NAME, { exact: true })).toBeVisible();
@@ -135,7 +150,7 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     // DELETE (C-CLS-04): the confirm copy states children are not deleted.
     // Same kit row-menu contract as the edit step above.
     await editedRow
-      .getByRole('button', { name: cat(en, 'Classes.actions.rowMenuLabel'), exact: true })
+      .getByRole('button', { name: cat(en, 'Classes.list.rowMenuLabel'), exact: true })
       .click();
     await page
       .getByRole('menuitem', { name: cat(en, 'Classes.actions.delete'), exact: true })
@@ -178,47 +193,47 @@ test.describe('task 29: classes CRUD round-trip vs live C-CLS-01..04', () => {
     await expect(table).toBeVisible({ timeout: 20_000 });
     await expect(table.locator('[data-directory-row]').first()).toBeVisible({ timeout: 20_000 });
 
-    // SEARCH narrows to the needle. Client mode's count line describes the
-    // FILTERED set — "1 of 1" after narrowing, "N of N" before — never the
-    // loaded length beside a narrowed list (ops/30 Done-when).
-    const showingLine = (showing: number, total: number) =>
-      screen.getByText(
-        icu(cat(en, 'Classes.list.showingCount'), {
-          showing: String(showing),
-          total: String(total),
-        }),
-      );
+    // SEARCH narrows to the needle. The kit PAGINATES the client-mode list
+    // (25 rows per page), so the count line reads "Showing <page rows> of
+    // <filtered total> classes" — assert the TOTAL half, which is the mode
+    // contract: unfiltered it names the whole loaded array, narrowed it names
+    // the filtered set (ops/30 Done-when).
+    const showingTotal = (total: number) =>
+      screen.getByText(new RegExp(`Showing \\d+ of ${total} classes`));
     const search = screen.getByLabel(cat(en, 'Classes.list.searchLabel'), { exact: true });
-    await expect(showingLine(classes.length, classes.length)).toBeVisible();
+    await expect(showingTotal(classes.length)).toBeVisible();
+    const initialRows = await table.locator('[data-directory-row]').count();
     await search.fill('Room 4');
     const room4 = classes.filter((entry) => entry.name.includes('Room 4')).length;
     await expect
       .poll(async () => table.locator('[data-directory-row]').count(), { timeout: 10_000 })
       .toBe(room4);
-    await expect(showingLine(room4, room4)).toBeVisible();
+    await expect(showingTotal(room4)).toBeVisible();
 
-    // CLEAR FILTERS restores the whole list and the URL.
+    // CLEAR FILTERS restores the unfiltered list and the URL — page 1 again
+    // carries the same window of rows it started with.
     await screen.getByRole('button', { name: cat(en, 'Classes.list.clearFilters'), exact: true }).click();
     await expect
       .poll(async () => table.locator('[data-directory-row]').count(), { timeout: 10_000 })
-      .toBe(classes.length);
+      .toBe(initialRows);
+    await expect(showingTotal(classes.length)).toBeVisible();
 
-    // SORT round-trips through the URL and reorders the rows.
+    // SORT round-trips through the URL and reorders the rows. The grid is a
+    // div kit (no <td>): the row's first cell IS the class name.
     await screen.getByLabel(cat(en, 'Classes.list.sortLabel'), { exact: true }).click();
     await page.getByRole('option', { name: cat(en, 'Classes.list.sortNameDesc'), exact: true }).click();
-    await page.waitForURL('**/dashboard/school/classes?**sort=name:desc**');
+    // The router percent-encodes the comparator colon in the query (?sort=name%3Adesc).
+    await page.waitForURL(/sort=name(?::|%3A)desc/);
     const alphaLast = [...classes].sort((a, b) => b.name.localeCompare(a.name))[0];
-    await expect(
-      table.locator('[data-directory-row]').first().locator('td').first(),
-    ).toContainText(alphaLast.name);
+    await expect(table.locator('[data-directory-row]').first()).toContainText(alphaLast.name);
 
-    // YEAR-BAND FILTER round-trips and matches the API's band membership.
+    // YEAR-BAND FILTER round-trips and matches the API's band membership — the
+    // filtered TOTAL names the band's size even when only the first page renders.
     await screen.getByLabel(cat(en, 'Classes.table.columnYearBand'), { exact: true }).click();
     await page.getByRole('option', { name: cat(en, 'Classes.yearBands.7_9'), exact: true }).click();
     await page.waitForURL('**/dashboard/school/classes?**year_band=7_9**');
     const banded = classes.filter((entry) => entry.year_band === '7_9');
-    await expect
-      .poll(async () => table.locator('[data-directory-row]').count(), { timeout: 10_000 })
-      .toBe(banded.length);
+    await expect(showingTotal(banded.length)).toBeVisible();
+    await expect(table.locator('[data-directory-row]').first()).toBeVisible();
   });
 });

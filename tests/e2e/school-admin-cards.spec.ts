@@ -139,14 +139,12 @@ test.describe('task 202 — account page renders C-SCH-01 + C-ENT-01 + the seat 
       data: {
         plan: string;
         renewal_date: string | null;
+        seats_used: number;
+        seats_total: number;
         allowances: Array<{ test_type: string; remaining: number }>;
       };
     };
     const entitlement = entitlementBody.data;
-    const analyticsBody = (await analyticsRes.json()) as {
-      data: { students_total: number; students_with_sitting: number };
-    };
-    const analytics = analyticsBody.data;
 
     await loginAs(page, 'schoolAdmin');
     await page.goto('/dashboard/school/account');
@@ -168,13 +166,17 @@ test.describe('task 202 — account page renders C-SCH-01 + C-ENT-01 + the seat 
       ROLE_CREDENTIALS.schoolAdmin.email,
     );
 
-    // Plan card: the plan label, the spec's seat pair (C-RPT-06
-    // students_with_sitting / students_total — NOT the licensing seats), and
-    // the renewal fallback.
+    // Plan card: the plan label, the C-ENT-01 LICENSING seat pair the card
+    // binds (seats_used / seats_total — the redesign "account tabs" wave
+    // deliberately dropped C-RPT-06's participation pair from this card,
+    // task 016 rejection), and the renewal fallback.
+    await page.getByRole('tab', { name: cat(en, 'SchoolAdmin.account.tabs.plan') }).click();
     const planCard = page.locator('[data-slot="account-plan-card"]');
     await expect(planCard).toContainText(cat(en, `SchoolAdmin.account.plan.${entitlement.plan}`));
     await expect(planCard).toContainText(
-      `${analytics.students_with_sitting} / ${analytics.students_total}`,
+      cat(en, 'SchoolAdmin.account.seatsValue')
+        .replace('{used}', String(entitlement.seats_used))
+        .replace('{total}', String(entitlement.seats_total)),
       { useInnerText: true },
     );
     await expect(planCard).toContainText(

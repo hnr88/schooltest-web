@@ -3076,15 +3076,15 @@
         "submitting": "Importing...",
         "successToast": "{count, plural, one {# student was imported} other {# students were imported}}.",
         "partialToast": "{created} of {total} students were imported.",
-        "duplicateToast": "Those students already exist. Check the emails and try again.",
-        "seatsToast": "Your plan has no seats left for these students.",
         "forbiddenToast": "You do not have permission to add students.",
         "genericToast": "That did not work. Try again.",
         "rejectedToast": "{count, plural, one {# row needs fixing before anything can be imported} other {# rows need fixing before anything can be imported}}",
         "alreadyImportedToast": "Every student in this file is already in your school.",
         "successSkippedToast": "{created} imported, {skipped, plural, one {# already enrolled} other {# already enrolled}}.",
         "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
-        "schoolInactiveToast": "Your school account is not active, so students cannot be added right now."
+        "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
+        "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
+        "tooBigToast": "That file is too large. The limit is 5 MB."
       },
       "roster": {
         "searchPlaceholder": "Search students",
@@ -3454,7 +3454,9 @@
       "genericToast": "No students were imported. Try again.",
       "rejectedToast": "{count, plural, one {# row needs fixing before anything can be imported} other {# rows need fixing before anything can be imported}}",
       "alreadyImportedToast": "Every student in this file is already in your school.",
-      "successSkippedToast": "{created} imported, {skipped, plural, one {# already enrolled} other {# already enrolled}}."
+      "successSkippedToast": "{created} imported, {skipped, plural, one {# already enrolled} other {# already enrolled}}.",
+      "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
+      "tooBigToast": "That file is too large. The limit is 5 MB."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -6262,6 +6264,10 @@
           "focusFlag": {
             "label": "Flag if they leave the window",
             "desc": "Leaving is recorded with a timestamp and shows on your live view. Use with lockdown off."
+          },
+          "allowClose": {
+            "label": "Allow closing the app",
+            "desc": "Students can close the desktop app during the test — the app asks them to confirm first. When off, the app cannot be closed until the test is submitted."
           },
           "warn5": {
             "label": "Five-minute warning",

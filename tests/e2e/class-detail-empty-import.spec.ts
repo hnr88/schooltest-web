@@ -92,7 +92,7 @@ test.describe('class detail empty state + import (spec §1)', () => {
     await dialog.getByRole('button', { name: cat(en, 'Classes.detail.import.submit') }).click();
     await expect(dialog).toBeHidden({ timeout: 20_000 });
 
-    await expect(page.locator('[data-surface="school-admin-class-detail"] tbody tr')).toHaveCount(
+    await expect(page.locator('[data-surface="school-admin-class-detail"] [data-directory-row]')).toHaveCount(
       before.students.length + PROBE_ROWS.length,
     );
 
@@ -114,7 +114,7 @@ test.describe('class detail empty state + import (spec §1)', () => {
 
     // …and it survives a full reload.
     await page.reload();
-    await expect(page.locator('[data-surface="school-admin-class-detail"] tbody tr')).toHaveCount(
+    await expect(page.locator('[data-surface="school-admin-class-detail"] [data-directory-row]')).toHaveCount(
       before.students.length + PROBE_ROWS.length,
     );
 
@@ -181,7 +181,7 @@ test.describe('class detail empty state + import (spec §1)', () => {
     // …and they survive a FULL browser reload on the roster itself.
     await dialog.getByRole('button', { name: cat(en, 'Classes.detail.import.cancel') }).click();
     await page.reload();
-    const roster = page.locator('[data-surface="school-admin-class-detail"] tbody tr');
+    const roster = page.locator('[data-surface="school-admin-class-detail"] [data-directory-row]');
     await expect(roster).toHaveCount(before.students.length + MIXED_GOOD_ROWS.length);
     for (const name of MIXED_GOOD_ROWS) {
       await expect(page.locator('[data-surface="school-admin-class-detail"]')).toContainText(

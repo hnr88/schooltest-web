@@ -28,9 +28,10 @@ const t = (key: string) => cat(en, `Ops.staffInvitations.${key}`);
 
 const SHOTS = path.resolve(__dirname, '..', '..', '..', '.qa', 'journeys', '01-ops-invite-school', 'shots');
 const VIEWPORT = { width: 1440, height: 900 };
-// The directory kit's search input carries a useId()-generated id; the
-// stable address is its toolbar slot + type.
-const SEARCH = '[data-slot="directory-toolbar"] input[type="search"]';
+// BUG-004 moved the schools search out of the directory toolbar into the page
+// header, where it carries the stable `ops-schools-search` test id (the
+// toolbar renders with `search={false}` on this surface).
+const SEARCH = '[data-testid="ops-schools-search"]';
 
 const STAMP = Date.now();
 const SCHOOL = {
@@ -112,7 +113,7 @@ test('J01: ops invites a school, appoints its admin, the invite is accepted, and
 
   // The school is really on the server, and the filtered list shows it.
   await page.locator(SEARCH).fill(SCHOOL.name);
-  const row = page.locator('[data-slot="ops-schools"] tbody tr', { hasText: SCHOOL.name });
+  const row = page.locator('[data-slot="ops-schools"] [data-directory-row]', { hasText: SCHOOL.name });
   await expect(row).toBeVisible({ timeout: 30_000 });
   const created = await findSchoolRow(SCHOOL.name);
   if (!created) throw new Error('the created school was not found through the ops contract');
@@ -187,19 +188,19 @@ test('J01: ops invites a school, appoints its admin, the invite is accepted, and
   await page.reload();
   await expect(page.locator('[data-slot="ops-schools"]')).toBeVisible({ timeout: 60_000 });
   await page.locator(SEARCH).fill(SCHOOL.name);
-  const reloadedRow = page.locator('[data-slot="ops-schools"] tbody tr', { hasText: SCHOOL.name });
+  const reloadedRow = page.locator('[data-slot="ops-schools"] [data-directory-row]', { hasText: SCHOOL.name });
   await expect(reloadedRow).toBeVisible({ timeout: 30_000 });
   await expect(
     reloadedRow.getByText(cat(en, 'Ops.schools.portalStatus.pending_setup'), { exact: true }),
   ).toBeVisible();
-  await expect(reloadedRow.getByRole('cell', { name: '1', exact: true })).toBeVisible();
+  await expect(reloadedRow.getByText('1', { exact: true })).toBeVisible();
   await shot(page, testInfo, '07-school-list-after-reload');
 
   await page.goto(`/dashboard/ops/schools/${schoolDocumentId}`);
   await expect(page.locator('[data-surface="ops-school-detail"]')).toBeVisible({ timeout: 60_000 });
   await page.getByRole('tab', { name: cat(en, 'Ops.schoolTables.tab.admins') }).click();
   await expect(
-    page.locator('[data-surface="ops-school-detail"] tbody tr', { hasText: ADMIN.email }),
+    page.locator('[data-surface="ops-school-detail"] [data-directory-row]', { hasText: ADMIN.email }),
   ).toBeVisible({ timeout: 30_000 });
   await shot(page, testInfo, '08-admin-attached-after-reload');
 });

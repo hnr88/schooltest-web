@@ -1,8 +1,16 @@
 export { StudentImportFields } from './components/StudentImportFields';
 export { StudentImportRejectList } from './components/StudentImportRejectList';
+export { StudentImportDialogBase } from './components/StudentImportDialogBase';
 export { parseStudentCsv } from './lib/parse-student-csv';
+export { classifyImportFailure } from './lib/classify-import-failure';
 export { useImportStudentsMutation } from './queries/use-import-students.mutation';
+export { useStudentImportFlow } from './hooks/use-student-import-flow';
 export { buildStudentCsvTemplate, downloadStudentCsvTemplate } from './lib/student-csv-template';
+export type { ImportFailure, ImportFailureKind } from './lib/classify-import-failure';
+export type {
+  StudentImportFlowState,
+  UseStudentImportFlowOptions,
+} from './hooks/use-student-import-flow';
 export {
   STUDENT_IMPORT_ALL_COLUMNS,
   STUDENT_IMPORT_COLUMNS,

@@ -2597,15 +2597,15 @@
         "submitting": "กำลังนำเข้า...",
         "successToast": "{count, plural, other {นำเข้านักเรียน # คนแล้ว}}",
         "partialToast": "นำเข้านักเรียน {created} คนจากทั้งหมด {total} คน",
-        "seatsToast": "แพ็กเกจของคุณไม่มีที่นั่งเหลือสำหรับนักเรียนเหล่านี้",
         "forbiddenToast": "คุณไม่มีสิทธิ์เพิ่มนักเรียน",
         "genericToast": "ดำเนินการไม่สำเร็จ ลองอีกครั้ง",
-        "duplicateToast": "มีนักเรียนเหล่านี้อยู่แล้ว ตรวจสอบอีเมลแล้วลองอีกครั้ง",
         "rejectedToast": "{count, plural, other {แถวต้องแก้ไขก่อนนำเข้า}}",
         "alreadyImportedToast": "นักเรียนในไฟล์นี้ลงทะเบียนอยู่แล้วทั้งหมด",
         "successSkippedToast": "นำเข้า {created} คน, {skipped, plural, other {ลงทะเบียนแล้ว}}.",
         "seatCapToast": "โรงเรียนของคุณไม่มีที่นั่งเหลือแล้ว ติดต่อ SchoolTest เพื่อเพิ่มที่นั่ง",
-        "schoolInactiveToast": "บัญชีโรงเรียนของคุณไม่ได้ใช้งาน จึงไม่สามารถเพิ่มนักเรียนได้ในขณะนี้"
+        "schoolInactiveToast": "บัญชีโรงเรียนของคุณไม่ได้ใช้งาน จึงไม่สามารถเพิ่มนักเรียนได้ในขณะนี้",
+        "noRowsToast": "ไฟล์นี้ไม่มีข้อมูลให้นำเข้า — เพิ่มข้อมูลนักเรียนอย่างน้อยหนึ่งแถวใต้แถวหัวตาราง",
+        "tooBigToast": "ไฟล์ใหญ่เกินไป ขีดจำกัดคือ 5 MB"
       },
       "roster": {
         "searchPlaceholder": "ค้นหานักเรียน",
@@ -2975,7 +2975,9 @@
       "genericToast": "No students were imported. Try again.",
       "rejectedToast": "{count, plural, other {แถวต้องแก้ไขก่อนนำเข้า}}",
       "alreadyImportedToast": "นักเรียนในไฟล์นี้ลงทะเบียนอยู่แล้วทั้งหมด",
-      "successSkippedToast": "นำเข้า {created} คน, {skipped, plural, other {ลงทะเบียนแล้ว}}."
+      "successSkippedToast": "นำเข้า {created} คน, {skipped, plural, other {ลงทะเบียนแล้ว}}.",
+      "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
+      "tooBigToast": "That file is too large. The limit is 5 MB."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -6272,6 +6274,10 @@
           "focusFlag": {
             "label": "แจ้งเตือนเมื่อออกจากหน้าต่าง",
             "desc": "บันทึกการออกพร้อมเวลาและแสดงในมุมมองสดของคุณ ใช้เมื่อปิดการล็อก"
+          },
+          "allowClose": {
+            "label": "อนุญาตให้ปิดแอป",
+            "desc": "นักเรียนสามารถปิดแอปเดสก์ท็อประหว่างสอบได้ โดยแอปจะขอยืนยันก่อน หากปิดไว้ จะไม่สามารถปิดแอปได้จนกว่าจะส่งข้อสอบ"
           },
           "warn5": {
             "label": "เตือนเมื่อเหลือห้านาที",
