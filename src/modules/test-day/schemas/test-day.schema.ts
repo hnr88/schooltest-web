@@ -78,7 +78,13 @@ const sittingPhaseSchema = z.enum(['scheduled', 'open', 'running', 'closed', 'ca
 export const sittingExtendMinutesSchema = z.literal([5, 10]);
 
 export const roomControlRequestSchema = z.union([
-  z.strictObject({ sittingDocumentId: documentIdSchema, action: z.enum(['pause', 'resume']) }),
+  z.strictObject({
+    sittingDocumentId: documentIdSchema,
+    // `start` is the canonical lobby control (TEA-016): the sitting exists
+    // (phase `open`), the students are waiting in the lobby, and pressing it
+    // runs the sitting — C-SITTING-START's POST /api/sittings/:id/start.
+    action: z.enum(['pause', 'resume', 'start']),
+  }),
   z.strictObject({
     sittingDocumentId: documentIdSchema,
     action: z.literal('extend'),

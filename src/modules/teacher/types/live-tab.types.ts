@@ -19,6 +19,12 @@ export interface RoomState {
   pausedAt: string | null;
   extraMinutes: number;
   extensions: number;
+  /**
+   * C-SIT-STATUS's derived phase (`open` = a planned-but-not-started lobby,
+   * `running` = live; null while an older server without the field responds).
+   * The lobby is what the "Start test" control acts on.
+   */
+  phase: 'open' | 'running' | null;
 }
 
 /** "a online · b weak · c offline · of n still working", counted over the students still working. */
@@ -59,7 +65,11 @@ export interface ConfirmCopy {
 }
 
 /** The confirm a room control opens first (design `live.roomToggle` / `live.extendOpts`). */
-export type RoomConfirm = { kind: 'pause' } | { kind: 'nobody' } | { kind: 'extend'; minutes: RoomExtendMinutes };
+export type RoomConfirm =
+  | { kind: 'pause' }
+  | { kind: 'nobody' }
+  | { kind: 'start' }
+  | { kind: 'extend'; minutes: RoomExtendMinutes };
 
 /** The class card facts the header and the no-sitting subtitle print. */
 export interface LiveTabClass {

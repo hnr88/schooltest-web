@@ -13,7 +13,10 @@ import type { TestSessionMonitorResponse } from '@/modules/teacher/types/teacher
 /**
  * The room controls behind their confirms (design `live.roomToggle` / `extendOpts`):
  * Resume acts at once; Pause asks first, or says nobody is left to pause; +5 / +10
- * asks first. A refusal closes the confirm and says why — the monitor then shows the room as it is.
+ * asks first. On a planned-but-not-started lobby (`room.phase === 'open'`) the
+ * primary control is Start test instead — C-SITTING-START runs the sitting and
+ * admits every waiting student. A refusal closes the confirm and says why — the
+ * monitor then shows the room as it is.
  */
 export function useRoomControls(
   sittingDocumentId: string,
@@ -42,11 +45,17 @@ export function useRoomControls(
         control.mutate({ sittingDocumentId, action: 'resume' }, settle);
         return;
       }
+      if (room.phase === 'open') {
+        // The lobby: Start is the canonical admit-everyone control (TEA-016).
+        setConfirm({ kind: 'start' });
+        return;
+      }
       setConfirm(hasPausable(monitor.students) ? { kind: 'pause' } : { kind: 'nobody' });
     },
     onExtend: (minutes) => setConfirm({ kind: 'extend', minutes }),
     onConfirm: () => {
-      if (confirm?.kind === 'pause') control.mutate({ sittingDocumentId, action: 'pause' }, settle);
+      if (confirm?.kind === 'start') control.mutate({ sittingDocumentId, action: 'start' }, settle);
+      else if (confirm?.kind === 'pause') control.mutate({ sittingDocumentId, action: 'pause' }, settle);
       else if (confirm?.kind === 'extend')
         control.mutate({ sittingDocumentId, action: 'extend', minutes: confirm.minutes }, settle);
       else setConfirm(null);

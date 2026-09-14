@@ -61,6 +61,9 @@ export function roomState(sitting: MonitorSitting): RoomState {
     pausedAt: paused ? (sitting.paused_at ?? null) : null,
     extraMinutes: Math.round((sitting.extra_seconds ?? 0) / 60),
     extensions: sitting.extensions ?? 0,
+    // C-SIT-STATUS on the teacher face: `open` is the lobby the "Start test"
+    // control admits; null only while an older server omits the field.
+    phase: sitting.phase === 'open' || sitting.phase === 'running' ? sitting.phase : null,
   };
 }
 

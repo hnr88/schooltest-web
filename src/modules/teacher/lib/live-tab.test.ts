@@ -96,6 +96,8 @@ describe('roomState', () => {
       pausedAt: '2026-09-11T20:24:52.989Z',
       extraMinutes: 0,
       extensions: 0,
+      // The recorded fixture predates the C-SIT-STATUS phase field — honest null.
+      phase: null,
     });
   });
 
@@ -105,7 +107,16 @@ describe('roomState', () => {
       pausedAt: null,
       extraMinutes: 5,
       extensions: 1,
+      phase: null,
     });
+  });
+
+  test('the C-SIT-STATUS phase flows through: open lobby vs running room', () => {
+    const sitting = monitor('fresh').sitting;
+    expect(roomState({ ...sitting, phase: 'open' })).toMatchObject({ phase: 'open' });
+    expect(roomState({ ...sitting, phase: 'running' })).toMatchObject({ phase: 'running' });
+    // Older server payloads without the field stay null (never a lobby).
+    expect(roomState(sitting).phase).toBeNull();
   });
 });
 

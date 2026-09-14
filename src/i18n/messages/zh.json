@@ -5549,10 +5549,12 @@
         "controls": "教室控制",
         "metaRunning": "暂停会同时停止所有计时，并让整间教室进入暂停画面——需要对全班讲话时使用。",
         "metaPaused": "所有计时已停止，全部学生都停留在暂停画面。在你恢复之前，他们无法阅读或作答。",
+        "metaLobby": "{count, plural, other {# 名学生正在等候区。开始测试后他们将直接进入第 1 题——学生端无需任何操作。}}",
         "pausedAt": "已于 {time} 暂停",
         "extraSoFar": "目前已加时：{count} 次延长，共 +{minutes} 分钟。",
         "pause": "暂停考试",
         "resume": "继续考试",
+        "start": "开始测试",
         "extend": "+{minutes} 分钟",
         "closeConfirm": {
           "bodyNone": "所有人都已提交或已处理，因此关闭 {code} 只会让这个加入码不能再使用。此操作无法撤销。",
@@ -5568,6 +5570,12 @@
           "body": "所有计时都会停止，仍在作答的 {count} 名学生会看到暂停画面，直到你恢复为止。他们已写下的内容不会丢失。",
           "cta": "暂停考试",
           "cancel": "取消"
+        },
+        "startConfirm": {
+          "title": "为所有人开始测试？",
+          "body": "在 {code} 等候区等待的每位学生都将直接进入第 1 题。加入码保持不变。",
+          "cta": "开始测试",
+          "cancel": "先不用"
         },
         "nobodyConfirm": {
           "title": "现在没有人在作答",

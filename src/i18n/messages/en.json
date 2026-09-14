@@ -5549,10 +5549,12 @@
         "controls": "Room controls",
         "metaRunning": "Pausing stops every timer at once and puts the whole room on a pause screen — use it when you need to talk to the class.",
         "metaPaused": "Every timer is stopped and every student is on the pause screen. They cannot read or answer questions until you resume.",
+        "metaLobby": "{count, plural, one {# student is waiting in the lobby. Starting the test admits them to question 1 — no one needs to press anything on their side.} other {# students are waiting in the lobby. Starting the test admits them to question 1 — no one needs to press anything on their side.}}",
         "pausedAt": "Paused at {time}",
         "extraSoFar": "Extra time so far: +{minutes} min across {count, plural, one {# extension} other {# extensions}}.",
         "pause": "Pause test",
         "resume": "Resume test",
+        "start": "Start test",
         "extend": "+{minutes} min",
         "closeConfirm": {
           "bodyNone": "Everyone has submitted or been accounted for, so closing {code} only stops the code being used again. This cannot be undone.",
@@ -5568,6 +5570,12 @@
           "body": "Every timer stops and {count, plural, one {the # student still working sees} other {all # students still working see}} a pause screen until you resume. Nothing they have written is lost.",
           "cta": "Pause test",
           "cancel": "Cancel"
+        },
+        "startConfirm": {
+          "title": "Start the test for everyone?",
+          "body": "Every student waiting in the lobby of {code} is admitted straight to question 1. The join code stays the same.",
+          "cta": "Start test",
+          "cancel": "Not yet"
         },
         "nobodyConfirm": {
           "title": "Nobody is working right now",

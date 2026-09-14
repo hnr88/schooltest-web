@@ -38,6 +38,14 @@ export function useLiveConfirmCopy() {
     confirm: RoomConfirm,
     room: { working: number; code: string; extraMinutes: number },
   ): ConfirmCopy => {
+    if (confirm.kind === 'start') {
+      return {
+        title: t('startConfirm.title'),
+        body: t('startConfirm.body', { code: room.code }),
+        cta: t('startConfirm.cta'),
+        cancel: t('startConfirm.cancel'),
+      };
+    }
     if (confirm.kind === 'pause') {
       return {
         title: t('pauseConfirm.title'),

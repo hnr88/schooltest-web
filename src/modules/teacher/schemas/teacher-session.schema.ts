@@ -248,6 +248,14 @@ export const monitorSittingSchema = z.strictObject({
   paused_at: z.iso.datetime().nullable().optional(),
   extra_seconds: teacherCountSchema.optional(),
   extensions: teacherCountSchema.optional(),
+  /**
+   * C-SIT-STATUS on the teacher face: the derived lifecycle phase, so the Live
+   * tab can tell a planned-but-not-started lobby (`open`) — whose "Start test"
+   * control admits the waiting students — from a running room (`running`).
+   * OPTIONAL on the web mirror only (a payload from a server without the API
+   * half still parses); the API contract requires it.
+   */
+  phase: sittingPhaseSchema.optional(),
 });
 
 export const monitorSummarySchema = z.strictObject({

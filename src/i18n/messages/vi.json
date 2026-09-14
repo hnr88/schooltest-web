@@ -5568,10 +5568,12 @@
         "controls": "Điều khiển phòng",
         "metaRunning": "Tạm dừng sẽ dừng mọi đồng hồ cùng lúc và đưa cả phòng sang màn hình tạm dừng — dùng khi bạn cần nói chuyện với lớp.",
         "metaPaused": "Mọi đồng hồ đã dừng và tất cả học sinh đang ở màn hình tạm dừng. Các em không thể đọc hay trả lời câu hỏi cho đến khi bạn tiếp tục.",
+        "metaLobby": "{count, plural, other {# học sinh đang chờ ở sảnh. Bắt đầu bài kiểm tra sẽ đưa họ thẳng đến câu 1 — học sinh không cần bấm gì.}}",
         "pausedAt": "Đã tạm dừng lúc {time}",
         "extraSoFar": "Thời gian cộng thêm đến giờ: +{minutes} phút qua {count, plural, other {# lần gia hạn}}.",
         "pause": "Tạm dừng bài kiểm tra",
         "resume": "Tiếp tục bài kiểm tra",
+        "start": "Bắt đầu bài kiểm tra",
         "extend": "+{minutes} phút",
         "closeConfirm": {
           "bodyNone": "Mọi người đã nộp hoặc đã được xử lý, nên đóng {code} chỉ khiến mã này không dùng được nữa. Không thể hoàn tác thao tác này.",
@@ -5587,6 +5589,12 @@
           "body": "Mọi đồng hồ sẽ dừng và {count, plural, other {cả # học sinh còn đang làm bài}} sẽ thấy màn hình tạm dừng cho đến khi bạn tiếp tục. Những gì các em đã viết không bị mất.",
           "cta": "Tạm dừng bài kiểm tra",
           "cancel": "Hủy"
+        },
+        "startConfirm": {
+          "title": "Bắt đầu bài kiểm tra cho tất cả?",
+          "body": "Mọi học sinh đang chờ ở sảnh của {code} sẽ được đưa thẳng đến câu 1. Mã tham gia vẫn giữ nguyên.",
+          "cta": "Bắt đầu bài kiểm tra",
+          "cancel": "Chưa đâu"
         },
         "nobodyConfirm": {
           "title": "Hiện không có ai đang làm bài",

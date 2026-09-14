@@ -5559,10 +5559,12 @@
         "controls": "Kawalan bilik",
         "metaRunning": "Menjeda menghentikan setiap pemasa serentak dan memaparkan skrin jeda kepada seluruh bilik — gunakannya apabila anda perlu bercakap dengan kelas.",
         "metaPaused": "Setiap pemasa berhenti dan setiap murid berada pada skrin jeda. Mereka tidak boleh membaca atau menjawab soalan sehingga anda menyambung semula.",
+        "metaLobby": "{count, plural, other {# murid sedang menunggu di ruang legar. Memulakan ujian akan membawa mereka terus ke soalan 1 — tiada apa yang perlu ditekan di pihak murid.}}",
         "pausedAt": "Dijeda pada {time}",
         "extraSoFar": "Masa tambahan setakat ini: +{minutes} min merentas {count, plural, other {# lanjutan}}.",
         "pause": "Jeda ujian",
         "resume": "Sambung ujian",
+        "start": "Mula ujian",
         "extend": "+{minutes} min",
         "closeConfirm": {
           "bodyNone": "Semua orang telah menghantar atau diambil kira, jadi menutup {code} hanya menghalang kod itu digunakan lagi. Tindakan ini tidak boleh dibuat asal.",
@@ -5578,6 +5580,12 @@
           "body": "Setiap pemasa berhenti dan {count, plural, other {kesemua # murid yang masih menjawab}} melihat skrin jeda sehingga anda menyambung semula. Apa-apa yang mereka tulis tidak hilang.",
           "cta": "Jeda ujian",
           "cancel": "Batal"
+        },
+        "startConfirm": {
+          "title": "Mulakan ujian untuk semua?",
+          "body": "Setiap murid yang menunggu di ruang legar {code} akan dibawa terus ke soalan 1. Kod penyertaan kekal sama.",
+          "cta": "Mula ujian",
+          "cancel": "Belum lagi"
         },
         "nobodyConfirm": {
           "title": "Tiada sesiapa sedang menjawab sekarang",
