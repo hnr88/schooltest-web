@@ -15,6 +15,7 @@ import { ToneChip } from '@/modules/teacher/components/v2/ToneChip';
 import { EXPECTED_CHIP_TONE, RELEASE_CHIP_TONE } from '@/modules/teacher/constants/family-reports.constants';
 import { studentResultsHref } from '@/modules/teacher/lib/results-shell';
 import { dayFirstDate } from '@/modules/teacher/lib/v2/family-reports';
+import { PrintReportButton } from '@/modules/results';
 import type { CarerLine, CarerReportPreviewProps } from '@/modules/teacher/types/v2-family.types';
 
 // The footer row (`:1900–1902`): the action button is 44px/0 20px/700, the two quiet ones
@@ -103,7 +104,7 @@ function CarerReportPreview({ report, classDocumentId, className, onClose, onRel
               {tView(report.ealdNoteKey)}
             </p>
           )}
-          <div className="flex flex-wrap gap-2.5 border-t border-[#ECEEF2] pt-5">
+          <div className="print-hidden flex flex-wrap gap-2.5 border-t border-[#ECEEF2] pt-5">
             {report.actions.release ? (
               <TeacherButton tone="primary" className={FOOTER_ACTION} onClick={onRelease}>
                 {t('preview.release')}
@@ -125,6 +126,11 @@ function CarerReportPreview({ report, classDocumentId, className, onClose, onRel
             >
               {t('preview.viewAnalysis')}
             </TeacherButton>
+            {/* TEA-065 / JF-040: the preview dialog is the teacher's face of the
+                family report, so the print control lives here — the whole shared
+                print CSS pair takes the controls off paper and the @media print
+                block in globals.css narrows the sheet to this card. */}
+            <PrintReportButton studentName={report.name} satAt={report.satAt === null ? null : report.satAt.slice(0, 10)} />
             <OpsDialogClose
               render={
                 <TeacherButton

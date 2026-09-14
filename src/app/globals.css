@@ -1005,6 +1005,29 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
+  /* TEA-065 / JF-040: the family-report preview (CarerReportPreview) is the
+     printable family report. When that dialog is open, the sheet carries the
+     report card ALONE: the app behind the modal portal disappears, the dimmed
+     backdrop never reaches paper, and the centered fixed panel becomes an
+     in-flow full-width card so a long report paginates instead of clipping at
+     one viewport. */
+  body:has([data-slot='carer-report-preview']) [data-slot='sidebar-wrapper'],
+  body:has([data-slot='carer-report-preview']) [data-slot='ops-dialog-backdrop'] {
+    display: none;
+  }
+
+  [data-slot='carer-report-preview'] {
+    position: static;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    max-height: none;
+    overflow: visible;
+    box-shadow: none;
+  }
 }
 
 /* BUG-007 journeys-and-bugs — the ops/school-admin grid card cap. A plain
