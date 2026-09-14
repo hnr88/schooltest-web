@@ -1,27 +1,23 @@
 /**
- * Task 03 (landing-pages) proof tooling — NOT a regression suite.
+ * Task 03 (landing-pages) proof tooling — re-pointed at the redesigned footer.
  *
- * Renders the three viewport-exact shots the task's Proof block asks for:
- * the redesigned footer on /eald at 1440×900 and 375px, and /zh/eald showing
- * the locale-formatted "Page last updated" date. Behavioural footer coverage
- * stays with the existing e2e suites (legal.spec, eald-journey, landing-aria).
- *
- * Operator e2e directive + its shell-Playwright correction; declared in
- * decisions.md ## During implementation. Each shot is attached via
- * testInfo.attach AND written under mvp/landing-pages/proof/shots/ so the
- * proof block's paths exist.
+ * The footer is now the hardcoded `footer[data-screen-label="Footer"]` (the
+ * old `footer.bg-navy-900` and the utility bar's own footer are gone). The
+ * acknowledgement line, the "Page last updated" date and the piloting chip are
+ * hardcoded English, so they render IDENTICALLY under every locale prefix —
+ * the cross-locale assertion flips from "translated copy" to "the same
+ * locale-independent copy".
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { expect, test, type Locator } from '@playwright/test';
 
-import { loadMessages } from './helpers/i18n';
-
 const SHOTS_DIR = path.resolve(process.cwd(), '..', 'mvp', 'landing-pages', 'proof', 'shots');
 
-const en = loadMessages('en');
-const zh = loadMessages('zh');
+const ACKNOWLEDGEMENT =
+  'SchoolTest acknowledges the Traditional Custodians of the lands on which Australian schools stand, and pays respect to Elders past and present.';
+const LAST_UPDATED = 'Page last updated 31 August 2026';
 
 async function shoot(footer: Locator, name: string): Promise<void> {
   const shot = await footer.screenshot({ type: 'png' });
@@ -31,38 +27,45 @@ async function shoot(footer: Locator, name: string): Promise<void> {
 }
 
 test.describe('task 03 footer proof shots', () => {
-  test('footer on /eald at 1440×900', async ({ page }) => {
+  test('footer on / at 1440×900', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('/eald');
-    const footer = page.locator('footer.bg-navy-900'); // task 02's utility bar ships its own <footer>
+    await page.goto('/');
+    const footer = page.locator('footer[data-screen-label="Footer"]');
     await expect(footer).toBeVisible();
-    // Pin the new blocks so a stale pre-task server cannot pass: the proof
-    // shots must show the Acknowledgement and the last-updated row.
-    await expect(footer.getByText(en['Eald.footer.acknowledgement'])).toBeVisible();
-    await expect(footer.getByText(en['Eald.footer.forSchoolsTitle'])).toBeVisible();
-    await expect(footer.getByText(/Page last updated/)).toBeVisible();
-    await shoot(footer, '03-eald-footer-1440x900');
+    // Pin the blocks a stale pre-redesign server cannot pass: the About
+    // column with its "Contact the programme team" quirk, the Acknowledgement
+    // and the last-updated row.
+    await expect(footer.getByText('SCHOOLTEST', { exact: true })).toBeVisible();
+    await expect(footer.getByText('About', { exact: true })).toBeVisible();
+    await expect(
+      footer.getByRole('link', { name: 'Contact the programme team' }),
+    ).toBeVisible();
+    await expect(footer.getByText(ACKNOWLEDGEMENT)).toBeVisible();
+    await expect(footer.getByText(LAST_UPDATED)).toBeVisible();
+    await expect(footer.getByText('© 2026 SchoolTest')).toBeVisible();
+    await expect(footer.getByText('Piloting with founding schools')).toBeVisible();
+    await shoot(footer, '03-landing-footer-1440x900');
   });
 
-  test('footer on /eald at 375px', async ({ page }) => {
+  test('footer on / at 375px', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 900 });
-    await page.goto('/eald');
-    const footer = page.locator('footer.bg-navy-900'); // task 02's utility bar ships its own <footer>
+    await page.goto('/');
+    const footer = page.locator('footer[data-screen-label="Footer"]');
     await expect(footer).toBeVisible();
-    await expect(footer.getByText(en['Eald.footer.acknowledgement'])).toBeVisible();
-    await shoot(footer, '03-eald-footer-375');
+    await expect(footer.getByText(ACKNOWLEDGEMENT)).toBeVisible();
+    await shoot(footer, '03-landing-footer-375');
   });
 
-  test('footer on /zh/eald shows the localised last-updated date', async ({ page }) => {
+  test('footer on /zh shows the locale-independent last-updated line', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('/zh/eald');
-    const footer = page.locator('footer.bg-navy-900'); // task 02's utility bar ships its own <footer>
+    await page.goto('/zh');
+    const footer = page.locator('footer[data-screen-label="Footer"]');
     await expect(footer).toBeVisible();
-    await expect(footer.getByText(zh['Eald.footer.acknowledgement'])).toBeVisible();
-    await expect(footer.getByText(/页面最后更新于/)).toBeVisible();
-    // The locale-formatted value itself (zh long date, UTC) — the copyright
-    // line also carries 2026, so match the whole last-updated string.
-    await expect(footer.getByText(/页面最后更新于 2026年8月31日/)).toBeVisible();
-    await shoot(footer, '03-zh-eald-last-updated');
+    await expect(footer.getByText(ACKNOWLEDGEMENT)).toBeVisible();
+    // The line is hardcoded English on the redesigned landing — it must NOT
+    // come out translated or locale-reformatted.
+    await expect(footer.getByText(LAST_UPDATED)).toBeVisible();
+    await expect(footer.getByText(/页面最后更新于/)).toHaveCount(0);
+    await shoot(footer, '03-zh-landing-last-updated');
   });
 });

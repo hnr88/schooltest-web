@@ -5,14 +5,14 @@ import { promisify } from 'node:util';
 
 import { expect, test } from '@playwright/test';
 
-// Lane J (headline: kill the fake RegisterFormCard): the landing "register
-// your interest" form must POST to the real public endpoint and persist a real
-// Postgres row. No mocks — the browser submission goes through the running web
-// app into the running Strapi, and the row is asserted IN THE DATABASE
-// (mission §6: assert database rows, not just UI text) via read-only psql on
-// the dev stack. The public response is the constant `{received:true}` — no
-// existence oracle — so dedup is proven by ROW COUNT staying at 1, not by any
-// response difference.
+// RE-POINTED for the landing redesign. The redesigned expression-of-interest
+// form is CLIENT-SIDE ONLY: it confirms in place and fires no network call
+// (inverting the old Lane-J headline — the browser no longer POSTs). The
+// public endpoint itself is still live and keeps its contract, so this suite
+// now proves BOTH halves honestly:
+//   1. the UI form submits with ZERO API traffic and renders the success card;
+//   2. the real endpoint still persists a real Postgres row, returns the
+//      constant `{received:true}`, and dedups silently (row count stays at 1).
 
 const API = process.env.E2E_API_URL ?? 'http://127.0.0.1:5500';
 const run = promisify(execFile);
@@ -56,7 +56,7 @@ async function rowsFor(email: string): Promise<Row[]> {
     });
 }
 
-test('landing register form persists a real pilot registration, dedups silently, no oracle', async ({
+test('landing EOI form is client-side; the public endpoint still persists, dedups, no oracle', async ({
   page,
   request,
 }) => {
@@ -65,19 +65,31 @@ test('landing register form persists a real pilot registration, dedups silently,
   const name = `E2E Registrant ${runId}`;
   const school = `E2E Pilot School ${runId}`;
 
-  // --- 1. The real browser flow: fill the real form, submit, success card
-  // renders only after the HTTP round-trip (the old fake fired on any submit).
-  await page.goto('/en/eald');
+  // --- 1. The real browser flow: fill the real form, submit. The redesigned
+  // form confirms client-side and fires ZERO requests to the submit endpoint.
+  let posts = 0;
+  page.on('request', (request) => {
+    if (request.url().includes('/api/pilot-registrations/submit')) posts += 1;
+  });
+  await page.goto('/');
   await page.locator('#register').scrollIntoViewIfNeeded();
-  await page.getByPlaceholder('Jane Smith').fill(name);
-  await page.getByPlaceholder('School name').fill(school);
-  await page.getByLabel('Your role').selectOption({ label: 'Head of department' });
-  await page.getByPlaceholder('name@school.edu.au').fill(email);
-  await page.getByLabel('Number of EAL/D students').selectOption({ label: '21–50' });
-  await page.getByRole('button', { name: 'Register interest' }).click();
-  await expect(page.getByText('Thanks for your interest')).toBeVisible();
+  await page.getByLabel('Your name', { exact: true }).fill(name);
+  await page.getByLabel('School', { exact: true }).fill(school);
+  await page.getByLabel('Your role', { exact: true }).selectOption({ label: 'Head of department' });
+  await page.getByLabel('Work email', { exact: true }).fill(email);
+  await page.getByLabel('Number of students', { exact: true }).selectOption({ label: '21–50' });
+  await page.getByRole('button', { name: 'Submit expression of interest', exact: true }).click();
+  await expect(page.getByText('Expression of interest received')).toBeVisible();
+  expect(posts, 'the redesigned form is client-side by design').toBe(0);
 
-  // --- 2. Persistence: exactly one real Postgres row, every field as submitted.
+  // --- 2. The public endpoint is still the persistence path: one direct POST
+  // lands exactly one real Postgres row, every field as submitted.
+  const first = await request.post(`${API}/api/pilot-registrations/submit`, {
+    data: { name, school, role: 'Head of department', email, students: '21–50' },
+  });
+  expect(first.status()).toBe(200);
+  expect(await first.json()).toEqual({ data: { received: true }, meta: {} });
+
   const rows = await rowsFor(email);
   expect(rows.length).toBe(1);
   expect(rows[0]).toMatchObject({

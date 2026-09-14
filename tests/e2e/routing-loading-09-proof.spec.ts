@@ -14,7 +14,7 @@ import { DISALLOWED_IN_ROBOTS, PUBLIC_PATHS } from './helpers/seo';
 
 const OUT_DIR = '../mvp/landing-pages/proof/shots';
 const LOCALES = ['en', 'zh', 'ko', 'ms', 'vi', 'th'] as const;
-const NEW_ROUTES = ['/', '/diagnose', '/teach', '/track', '/predict'] as const;
+const NEW_ROUTES = ['/', '/diagnose', '/teach', '/track', '/predict', '/report'] as const;
 const LEGACY = [
   { from: '/eald', to: '/' },
   { from: '/eald/diagnose', to: '/diagnose' },
@@ -130,7 +130,8 @@ test('route transition: the diagnose skeleton renders page-shaped chrome while t
   await page.waitForLoadState('networkidle');
 
   page.on('request', (r) => console.log('T09REQ', r.method(), r.url()));
-  await page.getByRole('link', { name: 'See a sample profile', exact: true }).click();
+  // The redesigned home reaches /diagnose through the evidence band's link.
+  await page.getByRole('link', { name: 'How the diagnostic works' }).click();
   await expect(page.locator('div.animate-pulse').first()).toBeVisible({ timeout: 45_000 });
   const shot = await page.screenshot({ path: `${OUT_DIR}/09-loading-skeleton-1440.png` });
   await testInfo.attach('09-loading-skeleton-1440', { body: shot, contentType: 'image/png' });

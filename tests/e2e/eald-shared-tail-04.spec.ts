@@ -2,43 +2,41 @@ import { resolve } from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
-import { loadMessages } from './helpers/i18n';
-
-// Task 04 proof tooling (mvp/landing-pages/tasks/04-shared-page-tail.md ## Proof):
-// renders the shared page tail on the real product pages at 1440×900, asserts the
-// design composition, and saves the graded screenshots under
-// mvp/landing-pages/proof/shots/ (also attached for the run report).
-const en = loadMessages('en');
+// Task 04 proof tooling — re-pointed at the redesigned landing's shared page
+// tail: the photo quote band, the numbered next-nav list, and the navy
+// register CTA band on the real product pages at 1440×900.
 const SHOTS = resolve(process.cwd(), '../mvp/landing-pages/proof/shots');
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
 async function settle(page: import('@playwright/test').Page): Promise<void> {
-  // ScrollReveal animates opacity/transform over 500ms once revealed.
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(300);
 }
 
-test('quote band, next-nav and register CTA band on /eald/diagnose', async ({
-  page,
-}, testInfo) => {
-  await page.goto('/eald/diagnose');
-
-  // Quote band: decorative next/image photo under the navy scrim, pull quote
-  // (t.rich keeps its <br>) and the footer line beneath it.
-  const quoteBand = page
+const quoteBand = (page: import('@playwright/test').Page) =>
+  page
     .locator('main section')
     .filter({ has: page.locator('blockquote') })
     .first();
-  await quoteBand.scrollIntoViewIfNeeded();
+
+test('quote band, next-nav and register CTA band on /diagnose', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/diagnose');
+
+  // Quote band: decorative photo under the navy scrim, pull quote and its
+  // footer line beneath it.
+  const quote = quoteBand(page);
+  await quote.scrollIntoViewIfNeeded();
   await settle(page);
-  await expect(quoteBand.locator('img')).toHaveAttribute('alt', '');
-  await expect(quoteBand.locator('blockquote p')).toContainText(
+  await expect(quote.locator('img')).toHaveAttribute('alt', '');
+  await expect(quote.locator('blockquote p')).toContainText(
     'A subskill profile is a map.',
   );
-  await expect(quoteBand.locator('blockquote footer')).toHaveText(
-    en['Eald.home.classroom.subtext'],
+  await expect(quote.locator('blockquote footer')).toHaveText(
+    '27 subskills · reading, listening, speaking and writing',
   );
-  const quoteShot = await quoteBand.screenshot({
+  const quoteShot = await quote.screenshot({
     path: resolve(SHOTS, '04-diagnose-quote-band.png'),
   });
   await testInfo.attach('04-diagnose-quote-band', {
@@ -46,32 +44,39 @@ test('quote band, next-nav and register CTA band on /eald/diagnose', async ({
     contentType: 'image/png',
   });
 
-  // Next-nav: design eyebrow + heading, one bordered card, three numbered rows
-  // (badge 01–02 blue, 03–04 teal), hairlines between rows but not after the last.
-  const nextNav = page.locator('main ol');
+  // Next-nav: eyebrow + heading, one bordered card, four numbered rows
+  // (02–05 — the redesign added the Report row), one arrow link per row.
+  const nextNav = page.locator('section[data-screen-label="Next"] ol');
   await nextNav.scrollIntoViewIfNeeded();
   await settle(page);
-  const navSection = page
-    .locator('main section')
-    .filter({ has: page.locator('ol') })
-    .first();
-  await expect(navSection.getByText(en['Eald.shared.nextEyebrow'])).toBeVisible();
+  const navSection = page.locator('section[data-screen-label="Next"]');
+  await expect(navSection.getByText('After the diagnostic', { exact: true })).toBeVisible();
   await expect(
-    navSection.getByRole('heading', { name: en['Eald.shared.nextHeading'] }),
+    navSection.getByRole('heading', { name: 'Where the profile goes next.' }),
   ).toBeVisible();
   const rows = nextNav.locator('li');
-  await expect(rows).toHaveCount(3);
-  await expect(rows.nth(0).locator('span')).toHaveText('02');
-  await expect(rows.nth(0).locator('span')).toHaveClass(/bg-blue-50/);
-  await expect(rows.nth(1).locator('span')).toHaveText('03');
-  await expect(rows.nth(1).locator('span')).toHaveClass(/bg-teal-50/);
-  await expect(rows.nth(2).locator('span')).toHaveClass(/bg-teal-50/);
-  await expect(rows.nth(2).locator('span')).toHaveText('04');
+  await expect(rows).toHaveCount(4);
+  await expect(rows.nth(0).locator('span').first()).toHaveText('02');
+  await expect(rows.nth(1).locator('span').first()).toHaveText('03');
+  await expect(rows.nth(2).locator('span').first()).toHaveText('04');
+  await expect(rows.nth(3).locator('span').first()).toHaveText('05');
+  const expected = [
+    { href: '/teach', title: 'Plan and teach from the results' },
+    { href: '/track', title: 'Track progress over time' },
+    { href: '/predict', title: 'Predict mainstream readiness' },
+    { href: '/report', title: 'Report to everyone who needs it' },
+  ];
+  for (const [i, row] of expected.entries()) {
+    await expect(rows.nth(i).locator('a')).toHaveAttribute('href', row.href);
+    await expect(rows.nth(i).getByText(row.title)).toBeVisible();
+  }
+  // Hairlines between rows, none after the last.
   const borderBottom = (row: number) =>
     rows.nth(row).evaluate((el) => getComputedStyle(el).borderBottomWidth);
-  expect(await borderBottom(0)).toBe('1px');
-  expect(await borderBottom(1)).toBe('1px');
-  expect(await borderBottom(2)).toBe('0px');
+  for (const row of [0, 1, 2]) {
+    expect(await borderBottom(row)).toBe('1px');
+  }
+  expect(await borderBottom(3)).toBe('0px');
   const navShot = await navSection.screenshot({
     path: resolve(SHOTS, '04-diagnose-next-nav.png'),
   });
@@ -80,27 +85,22 @@ test('quote band, next-nav and register CTA band on /eald/diagnose', async ({
     contentType: 'image/png',
   });
 
-  // Register CTA band: navy full-bleed, founding-schools eyebrow, heading, body,
-  // primary button and the new Evidence base button.
-  const ctaBand = page
-    .locator('main section')
-    .filter({ has: page.locator('a[href$="#evidence"]') })
-    .first();
+  // Register CTA band: navy full-bleed, founding-schools eyebrow, heading,
+  // body and the primary button.
+  const ctaBand = page.locator('section[data-screen-label="Register"]');
   await ctaBand.scrollIntoViewIfNeeded();
   await settle(page);
+  await expect(ctaBand.getByText('Founding schools', { exact: true })).toBeVisible();
   await expect(
-    ctaBand.getByText(en['Eald.home.register.foundingEyebrow'], {
-      exact: true,
-    }),
+    ctaBand.getByRole('heading', { name: 'We’re building this with founding schools.' }),
   ).toBeVisible();
   await expect(
-    ctaBand.getByRole('heading', { name: en['Eald.shared.cta.title'] }),
+    ctaBand.getByText(
+      'Pilot testing in Term 4, 2026. Get early access, direct input into the report design, and founding terms at launch.',
+    ),
   ).toBeVisible();
-  await expect(ctaBand.getByText(en['Eald.shared.cta.body'])).toBeVisible();
-  const primary = ctaBand.locator('a[href$="#register"]');
-  await expect(primary).toHaveText(en['Eald.shared.cta.button']);
-  const secondary = ctaBand.locator('a[href$="#evidence"]');
-  await expect(secondary).toHaveText(en['Eald.shared.cta.secondary']);
+  const primary = ctaBand.locator('a[href$="/#register"]');
+  await expect(primary).toHaveText(/Join the pilot/);
   const ctaShot = await ctaBand.screenshot({
     path: resolve(SHOTS, '04-diagnose-cta-band.png'),
   });
@@ -110,21 +110,27 @@ test('quote band, next-nav and register CTA band on /eald/diagnose', async ({
   });
 });
 
-test('home-page quote band (ClassroomBand) on /eald', async ({ page }, testInfo) => {
-  await page.goto('/eald');
+test('teach register band keeps the secondary evidence-base link; home quote band holds', async ({
+  page,
+}, testInfo) => {
+  // Teach's CTA band carries the extra "Evidence base" ghost button.
+  await page.goto('/teach');
+  const ctaBand = page.locator('section[data-screen-label="Register"]');
+  await expect(ctaBand.locator('a[href$="/#register"]')).toHaveText(/Join the pilot/);
+  const secondary = ctaBand.locator('a[href$="/#evidence"]');
+  await expect(secondary).toHaveText('Evidence base');
 
-  const classroomBand = page
-    .locator('main section')
-    .filter({ has: page.locator('blockquote') })
-    .first();
+  // Home quote band (ClassroomBand equivalent) keeps its pinned copy.
+  await page.goto('/');
+  const classroomBand = quoteBand(page);
   await classroomBand.scrollIntoViewIfNeeded();
   await settle(page);
   await expect(classroomBand.locator('img')).toHaveAttribute('alt', '');
   await expect(classroomBand.locator('blockquote p')).toHaveText(
-    en['Eald.home.classroom.quote'],
+    'Assessment stops being a summary and starts being a map.',
   );
   await expect(classroomBand.locator('blockquote footer')).toHaveText(
-    en['Eald.home.classroom.subtext'],
+    'Years 7–12 · Reading, listening, speaking and writing + 27 subskills',
   );
   const homeShot = await classroomBand.screenshot({
     path: resolve(SHOTS, '04-home-classroom-band.png'),

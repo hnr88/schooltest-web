@@ -1,143 +1,155 @@
 /**
- * Task 12 (landing-pages) proof tooling — NOT a regression suite.
- *
- * Renders the artefacts the task's Proof block asks for: the dark hero, the
- * evidence card and the four-series Figure 1 on /track at 1440×900, the
- * 1024px four-series legibility check, and the 375px no-sideways-scroll
- * state. Inherits the wave's paid-for lessons: `#anchor` direct locators,
- * `exact: true` text matching, and the knowledge that BarChart's own inner
- * overflow wrapper is the contained-scroll node. Authorised by the
- * orchestrator's standing end-to-end authority for task 12 (lp-w3-t12).
+ * Task 12 (landing-pages) proof tooling — re-pointed at the redesigned Track
+ * page. The dark hero, the Reading evidence card (Term 1–4 phase trail), and
+ * the four-series grouped SVG column figure at 1440×900; the 1024px legibility
+ * check; and the 375px in-viewport check. The old BarChart kit with sr-only
+ * value cells is gone — values are now <text> labels on the SVG columns.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
-import { loadMessages } from './helpers/i18n';
-
 const SHOTS_DIR = path.resolve(process.cwd(), '..', 'mvp', 'landing-pages', 'proof', 'shots');
-const SERIES = ['term1', 'term2', 'term3', 'term4'];
-const CATEGORIES = ['categoryVocabulary', 'categoryInference', 'categoryGrammar', 'categoryCritical'];
+
+// The figure's pinned data contract: 4 categories × 4 terms, values as text
+// labels above the columns, ACARA phase labels on the y axis.
 const VALUES = [
-  ['24', '42', '66', '84'],
-  ['18', '30', '52', '72'],
-  ['36', '44', '58', '68'],
-  ['16', '20', '26', '34'],
+  ['24', '42', '66', '84'], // Vocabulary
+  ['18', '30', '52', '72'], // Inference
+  ['36', '44', '58', '68'], // Grammar
+  ['16', '20', '26', '34'], // Critical reading
 ];
-const BANDS = ['bandBeginning', 'bandDeveloping', 'bandEmerging', 'bandConsolidating', 'bandIndependent'];
+const CATEGORIES = ['Vocabulary', 'Inference', 'Grammar', 'Critical'];
+const TERMS = ['Term 1', 'Term 2', 'Term 3', 'Term 4'];
+const BANDS = ['Independent', 'Consolidating', 'Developing', 'Emerging', 'Beginning'];
+const ALL_VALUES = VALUES.flat();
 
 test.describe('task 12 track page proof shots', () => {
   test('dark hero, evidence card and four-series figure at 1440×900', async ({ page }) => {
-    const en = loadMessages('en');
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/track');
 
-    // Dark full-bleed hero from task 05's variant, with the four-cell strip.
-    await expect(page.getByText(en['Eald.track.hero.title'])).toBeVisible();
-    await expect(page.getByText(en['Eald.track.hero.stat1Label'])).toBeVisible();
-    await expect(page.getByText(en['Eald.track.hero.stat4Value'], { exact: true })).toBeVisible();
-    // The CTAs reuse existing keys (D-02 budget): diagnose.hero.registerCta
-    // and footer.predict carry the exact design labels. Both strings also
-    // appear in the site chrome, so the assertions scope to #main-content.
-    const main = page.locator('#main-content');
-    await expect(main.getByText(en['Eald.diagnose.hero.registerCta'])).toBeVisible();
-    await expect(main.getByText(en['Eald.footer.predict'])).toBeVisible();
+    // Dark full-bleed hero with its four-cell fact strip and CTA.
+    const hero = page.locator('section[data-screen-label="Hero"]');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'Watch every subskill move every time you test.',
+    );
+    await expect(hero.locator('dl dd')).toHaveCount(4);
+    await expect(hero.locator('a[href="/#register"]').first()).toContainText('Join the pilot');
 
-    // Evidence card: chip + the four ordered TERMS rows. Scoped to the card —
-    // its phase strings also render as chart band labels and axis ticks. The
-    // card shows 'Consolidating' twice by design (chip + Term 4 row), so the
-    // two are asserted by their own span classes.
-    const evidenceCard = page.locator('div.rounded-3xl.border-border.bg-white');
-    await expect(evidenceCard.getByText(en['Eald.track.evidence.skill'])).toBeVisible();
-    await expect(
-      evidenceCard.locator('span.bg-teal-100', {
-        hasText: en['Eald.track.evidence.currentPhase'],
-      }),
-    ).toBeVisible();
-    for (const key of ['term1Phase', 'term2Phase', 'term3Phase', 'term4Phase']) {
-      await expect(
-        evidenceCard.locator('span.text-base.font-semibold', {
-          hasText: en[`Eald.track.evidence.${key}` as const],
-        }),
-      ).toBeVisible();
+    // Evidence card: chip + the four ordered TERM rows. Scoped to the card —
+    // its phase strings also render as chart band labels. Term 4 sits on the
+    // navy row by design.
+    const evidenceCard = page
+      .locator('section[data-screen-label="Evidence trail"] div')
+      .filter({ has: page.getByText('CONSOLIDATING', { exact: true }) })
+      .filter({ has: page.getByText('Term 4', { exact: true }) })
+      .first();
+    await expect(evidenceCard.getByText('Reading', { exact: true })).toBeVisible();
+    for (const [term, phase] of [
+      ['Term 1', 'Emerging'],
+      ['Term 2', 'Emerging'],
+      ['Term 3', 'Developing'],
+      ['Term 4', 'Consolidating'],
+    ] as const) {
+      const row = evidenceCard.locator('li').filter({ hasText: term });
+      await expect(row, `${term} row`).toContainText(phase);
     }
 
-    // Legend labels live inside the figure card (the evidence card is a
-    // different band); exact matching excludes task 01's sr-only cells.
-    const figureCard = page.locator('[data-slot="figure-card"]').first();
-    await expect(figureCard).toBeVisible();
-    for (const key of SERIES) {
-      await expect(
-        figureCard.getByText(en[`Eald.track.evidence.${key}Label` as const], { exact: true }),
-      ).toHaveCount(1);
+    // Figure chrome: caption + the four-series legend.
+    const figure = page.locator('section[data-screen-label="Progress chart"] figure');
+    await expect(figure).toBeVisible();
+    await expect(figure.getByText('Class level progress', { exact: true })).toBeVisible();
+    for (const term of TERMS) {
+      await expect(figure.getByText(term, { exact: true })).toHaveCount(1);
     }
-    // Band labels are scoped to the chart band section — 'Consolidating' and
-    // friends also render inside the evidence card, by design.
-    const chartBand = page.locator('section.border-y');
-    for (const key of BANDS) {
-      await expect(chartBand.getByText(en[`Eald.track.progress.${key}` as const])).toBeVisible();
+
+    // The SVG chart: aria-labelled, 16 grouped <rect> columns, every value
+    // exposed as text, ACARA band labels on the y axis.
+    const svg = figure.locator('svg[role="img"]');
+    await expect(svg).toHaveAttribute(
+      'aria-label',
+      'Grouped column chart showing four reading subskills measured across four school terms',
+    );
+    const rects = svg.locator('rect');
+    await expect(rects).toHaveCount(16);
+    const texts = await svg.locator('text').allTextContents();
+    for (const value of ALL_VALUES) {
+      expect(texts, `value label ${value} renders as text`).toContain(value);
     }
-    let exposed = 0;
-    const chart = page.getByRole('list', { name: en['Eald.track.progress.ariaLabel'] });
-    await expect(chart).toBeVisible();
-    for (let c = 0; c < CATEGORIES.length; c += 1) {
-      for (let s = 0; s < SERIES.length; s += 1) {
-        const text = `${en[`Eald.track.evidence.${SERIES[s]}Label` as const]} ${en[`Eald.track.progress.${CATEGORIES[c]}` as const]}: ${VALUES[c][s]}`;
-        await expect(chart.getByText(text, { exact: true })).toBeAttached();
-        exposed += 1;
-      }
+    expect(texts.filter((text) => ALL_VALUES.includes(text)), 'values render ranked').toEqual(
+      ALL_VALUES,
+    );
+    for (const band of BANDS) {
+      expect(texts, `y-axis band label ${band}`).toContain(band);
     }
-    expect(exposed).toBe(16);
-    await expect(page.getByText(en['Eald.track.progress.footnote'])).toBeVisible();
+    for (const category of CATEGORIES) {
+      expect(texts, `x-axis category label ${category}`).toContain(category);
+    }
 
     const shot = await page.screenshot({ type: 'png', fullPage: true });
     mkdirSync(SHOTS_DIR, { recursive: true });
     writeFileSync(path.join(SHOTS_DIR, '12-track-1440x900-full.png'), shot);
   });
 
-  test('four-series legend and bars stay legible at 1024px', async ({ page }) => {
-    const en = loadMessages('en');
+  test('four-series legend and columns stay legible at 1024px', async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await page.goto('/track');
 
-    const figureCard = page.locator('[data-slot="figure-card"]').first();
-    await expect(figureCard).toBeVisible();
-    const chart = page.getByRole('list', { name: en['Eald.track.progress.ariaLabel'] });
-    await expect(chart).toBeVisible();
-    for (const key of SERIES) {
-      await expect(
-        figureCard.getByText(en[`Eald.track.evidence.${key}Label` as const], { exact: true }),
-      ).toBeVisible();
+    const figure = page.locator('section[data-screen-label="Progress chart"] figure');
+    await expect(figure).toBeVisible();
+    for (const term of TERMS) {
+      await expect(figure.getByText(term, { exact: true })).toBeVisible();
     }
-    for (const key of CATEGORIES) {
-      await expect(
-        figureCard.getByText(en[`Eald.track.progress.${key}` as const], { exact: true }),
-      ).toBeVisible();
+    const svg = figure.locator('svg[role="img"]');
+    await expect(svg).toBeVisible();
+    const texts = await svg.locator('text').allTextContents();
+    for (const category of CATEGORIES) {
+      expect(texts, `x-axis category label ${category} stays rendered`).toContain(category);
     }
+    await expect(svg.locator('rect')).toHaveCount(16);
 
     const shot = await page.screenshot({ type: 'png', fullPage: true });
     mkdirSync(SHOTS_DIR, { recursive: true });
     writeFileSync(path.join(SHOTS_DIR, '12-track-1024-legend.png'), shot);
   });
 
-  test('375px: no sideways body scroll; figure and its scroll container present', async ({
+  test('375px: main content (figure included) stays inside the viewport', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 375, height: 900 });
     await page.goto('/track');
 
-    // FigureCard is the direct grid item and carries the kit's own min-w-0,
-    // so the body must not scroll sideways (task 11's finding does not apply).
-    const noSideways = await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
+    // The redesigned page keeps one contained 375px exception — the footer's
+    // nowrap acknowledgement line. Everything in <main> must fit.
+    const mainMax = await page.evaluate(
+      () =>
+        Math.max(
+          ...[...document.querySelectorAll('main, main *')].map(
+            (node) => node.getBoundingClientRect().right,
+          ),
+        ),
     );
-    expect(noSideways, 'page body must not scroll sideways at 375px').toBe(true);
+    expect(mainMax, 'every main-content node fits the 375px viewport').toBeLessThanOrEqual(376);
 
-    const scrollable = page
-      .locator('[data-slot="figure-card"] div.overflow-x-auto')
-      .last();
-    await expect(scrollable).toBeVisible();
+    const figure = page.locator('section[data-screen-label="Progress chart"] figure');
+    await expect(figure).toBeVisible();
+    const svg = figure.locator('svg[role="img"]');
+    await expect(svg).toBeVisible();
+    const widths = await svg.evaluate((node) => {
+      const parent = node.parentElement as HTMLElement;
+      const style = getComputedStyle(parent);
+      return {
+        svg: node.getBoundingClientRect().width,
+        content:
+          parent.clientWidth -
+          parseFloat(style.paddingLeft) -
+          parseFloat(style.paddingRight),
+      };
+    });
+    expect(widths.svg, 'the chart scales to its column').toBeCloseTo(widths.content, 0);
+    await expect(svg.locator('rect')).toHaveCount(16);
 
     const shot = await page.screenshot({ type: 'png', fullPage: true });
     mkdirSync(SHOTS_DIR, { recursive: true });

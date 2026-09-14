@@ -55,9 +55,22 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
   for (const [row, key, sel] of variants)
     await expectVariantButton(buttonRows.nth(row), ds(en, key), sel);
   const sizes = buttonRows.nth(2);
-  for (const cls of ['h-8', 'h-10', 'h-11'])
-    await expectVariantButton(sizes, ds(en, 'buttonCreate'), `button.${cls}`);
-  await expectVariantButton(sizes, ds(en, 'buttonGetStarted'), 'button.h-12'); // xl size
+  // The size row no longer carries height classes — assert the four rendered
+  // sizes by their measured heights (sm/md/lg Create test + the xl Get started).
+  const sizeButtons = sizes.locator('button');
+  await expect(sizeButtons).toHaveCount(4);
+  await expect(sizeButtons.nth(0)).toHaveText(ds(en, 'buttonCreate'));
+  await expect(sizeButtons.nth(1)).toHaveText(ds(en, 'buttonCreate'));
+  await expect(sizeButtons.nth(2)).toHaveText(ds(en, 'buttonCreate'));
+  await expect(sizeButtons.nth(3)).toHaveText(ds(en, 'buttonGetStarted'));
+  const heights = await sizeButtons.evaluateAll((buttons) =>
+    buttons.map((button) => Math.round(button.getBoundingClientRect().height)),
+  );
+  expect(
+    heights,
+    'the four button sizes render strictly increasing sm→xl',
+  ).toEqual([...heights].sort((a, b) => a - b));
+  expect(new Set(heights).size, 'all four sizes differ').toBe(4);
   const states = buttonRows.nth(3);
   const loading = states.getByRole('button', { name: ds(en, 'buttonSaving'), exact: true });
   await expect(loading).toBeDisabled();
@@ -206,9 +219,11 @@ test('DS-VARIANTS: every showcase export renders with all variants', async ({ pa
   await expect(
     directory.getByRole('button', { name: ds(en, 'tableExport'), exact: true }),
   ).toBeVisible();
-  // Scoped to the table: the TimelineRow exhibits below re-use the same two test names
+  // Scoped to the directory: the TimelineRow exhibits below re-use the same two test names
   // as row titles, which is deliberate showcase copy, not a duplicated row.
-  const table = directory.locator('[data-slot="table"]');
+  // The directory kit's example dropped its inner <table> element — the four
+  // rows render as directory rows directly inside the directory.
+  const table = directory;
   for (const key of [
     'tableRowMath',
     'tableRowScience',
@@ -325,25 +340,26 @@ test('DS-PROPS: ds-probe Button merges custom className with variant styling', a
   expect(errors, errors.join('\n')).toEqual([]);
 });
 
-test('LOCALE-TOGGLE: footer switcher en→zh→en uses canonical locale URLs', async ({ page }) => {
+test('LOCALE-URL: /zh serves the locale-tagged document while the landing copy stays English', async ({
+  page,
+}) => {
   const errors = watchErrors(page);
-  const { en, zh } = catalogs;
+  // The redesigned landing renders its copy hardcoded in JSX (locale-
+  // independent) and dropped the footer locale switcher. The locale contract
+  // that remains: the canonical locale URL serves a correctly-tagged document
+  // and the English content renders unchanged.
   await page.goto('/');
-  const footer = page.getByRole('contentinfo');
   const h1 = page.locator('h1');
-  await footer
-    .getByRole('combobox', { name: cat(en, 'LocaleSwitcher.label'), exact: true })
-    .click();
-  await page.getByRole('option', { name: '中文' }).click();
-  // Shared chrome and the EAL/D home content both flip to Chinese.
-  await expect(page.getByText(cat(zh, 'Eald.nav.skipToContent'), { exact: true })).toBeAttached();
-  await expect(h1).toContainText(cat(zh, 'Eald.home.hero.title'));
+  await expect(h1).toHaveText('Diagnostic and progress testing for HSP');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+
+  await page.goto('/zh');
   await expect(page).toHaveURL((url) => url.pathname === '/zh');
-  await footer
-    .getByRole('combobox', { name: cat(zh, 'LocaleSwitcher.label'), exact: true })
-    .click();
-  await page.getByRole('option', { name: 'English' }).click();
-  await expect(page.getByText(cat(en, 'Eald.nav.skipToContent'), { exact: true })).toBeAttached();
-  await expect(page).toHaveURL((url) => url.pathname === '/');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh');
+  await expect(h1).toHaveText('Diagnostic and progress testing for HSP');
+  await expect(
+    page.getByText('DESIGNED FOR AUSTRALIAN HIGH SCHOOLS', { exact: true }),
+  ).toBeVisible();
+
   expect(errors, errors.join('\n')).toEqual([]);
 });

@@ -2,55 +2,58 @@ import { resolve } from 'node:path';
 
 import { expect, test, type Page } from '@playwright/test';
 
-import { loadMessages } from './helpers/i18n';
-
-// Task 11 proof tooling (mvp/landing-pages/tasks/11-teach-page.md ## Proof):
-// hero, export mock and Figure 1 at 1440×900; the figure scrolling in its own
-// container at 375×900 with the page body never scrolling sideways. The page's
-// sections have no ids, so the figure is reached via its data-slot and the
-// sections by order. All value matchers are exact.
-const en = loadMessages('en');
+// Task 11 proof tooling — re-pointed at the redesigned Teach page: the navy
+// hero panel with its fact strip, the static export mock, the classroom band
+// and the Ask AI figure (the old Figure-1 BarChart kit is gone). All value
+// matchers are exact.
 const SHOTS = resolve(process.cwd(), '../mvp/landing-pages/proof/shots');
 
 const settle = async (page: Page): Promise<void> => {
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(300);
 };
 
 test.describe('task 11 — Teach page to the design', () => {
   test.use({ viewport: { width: 1440, height: 900 } });
 
-  test('hero: navy panel, pinned copy, both CTAs, four-cell fact strip', async ({
+  test('hero: navy panel, pinned copy, CTA, four-cell fact strip', async ({
     page,
   }, testInfo) => {
-    await page.goto('/eald/teach');
-    const hero = page.locator('main section').nth(0);
+    await page.goto('/teach');
+    const hero = page.locator('section[data-screen-label="Hero"]');
     await settle(page);
 
-    // Exactly one h1 on the page, carrying the pinned t.rich title.
+    // Exactly one h1 on the page, carrying the pinned title.
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(page.locator('h1')).toContainText('Paste the profile into AI.');
-
-    // Both CTAs keep their destinations.
-    await expect(hero.locator('a[href="/#register"]').first()).toContainText(
-      en['Eald.teach.hero.primaryCta'],
-    );
-    await expect(hero.locator('a[href="/diagnose"]').first()).toContainText(
-      en['Eald.teach.hero.secondaryCta'],
+    await expect(page.locator('h1')).toHaveText(
+      'Paste the profile into AI. Get a week of teaching materials out.',
     );
 
-    // Fact strip: four cells, exact values (StatStrip renders value over label).
-    const strip = page.locator('[data-slot="stat-strip"]');
+    // The navy panel keeps its eyebrow and subtitle; the single CTA registers
+    // from the sub-page.
+    await expect(hero.getByText('02 · Plan and teach', { exact: true })).toBeVisible();
+    await expect(
+      hero.getByText(
+        'Export a privacy-safe class set and hand it to ChatGPT, Gemini or Claude. Real subskill data turns a generic prompt into materials your class can actually use.',
+      ),
+    ).toBeVisible();
+    await expect(hero.locator('a[href="/#register"]').first()).toContainText('Join the pilot');
+    await expect(
+      hero.getByRole('img', { name: 'A teacher preparing lesson materials at a laptop' }),
+    ).toBeVisible();
+
+    // Fact strip: four cells, exact values (value dd over label dt).
+    const strip = hero.locator('dl');
     await expect(strip.locator('dd')).toHaveText([
-      en['Eald.teach.hero.statExportValue'],
-      en['Eald.teach.hero.statNamesValue'],
-      en['Eald.teach.hero.statGroupingValue'],
-      en['Eald.teach.hero.statAiValue'],
+      'Pseudonymised',
+      'None',
+      'Built in',
+      'Yes',
     ]);
     await expect(strip.locator('dt')).toHaveText([
-      en['Eald.teach.hero.statExportLabel'],
-      en['Eald.teach.hero.statNamesLabel'],
-      en['Eald.teach.hero.statGroupingLabel'],
-      en['Eald.teach.hero.statAiLabel'],
+      'Class set export',
+      'Student names in export',
+      'Grouping views',
+      'Works without AI',
     ]);
 
     const shot = await hero.screenshot({
@@ -65,31 +68,31 @@ test.describe('task 11 — Teach page to the design', () => {
   test('export mock renders as a static card with the footnote strip', async ({
     page,
   }, testInfo) => {
-    await page.goto('/eald/teach');
-    const generate = page.locator('main section').nth(1);
+    await page.goto('/teach');
+    const generate = page.locator('section[data-screen-label="Generate the materials"]');
     await generate.scrollIntoViewIfNeeded();
     await settle(page);
 
-    const card = generate.locator('.rounded-3xl').first();
+    // The mock card is the second ancestor div of its header row
+    // (header row -> card), and holds every pinned string of the mock.
+    const headerRow = generate.getByText('Class set · 22 profiles', { exact: true });
+    const card = headerRow.locator('xpath=ancestor::div[2]');
+    await expect(card).toBeVisible();
+    await expect(card.getByText('Class set · 22 profiles', { exact: true })).toHaveCount(1);
+    await expect(card.getByText('EXPORT', { exact: true })).toHaveCount(1);
     await expect(
-      card.getByText(en['Eald.teach.generate.classSetLabel'], { exact: true }),
+      card.getByText(
+        '“Write one passage at the class’s vocabulary band, with question sets matched to their gaps.”',
+      ),
     ).toHaveCount(1);
+    await expect(card.getByText('Reading passage + questions', { exact: true })).toHaveCount(1);
+    await expect(card.getByText('Targets: inference, vocabulary', { exact: true })).toHaveCount(1);
     await expect(
-      card.getByText(en['Eald.teach.generate.exportBadge'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(card.getByText(en['Eald.teach.generate.promptText'])).toHaveCount(1);
-    await expect(
-      card.getByText(en['Eald.teach.generate.outputTitle'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      card.getByText(en['Eald.teach.generate.targetBadge'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      card.getByText(en['Eald.teach.generate.footnote'], { exact: true }),
+      card.getByText('No student names appear in any export.', { exact: true }),
     ).toHaveCount(1);
 
     // Static: text and placeholder bars only — no interactive control
-    // anywhere inside the mock (logic.md#L4: it describes, it does not run).
+    // anywhere inside the mock (it describes, it does not run).
     await expect(card.locator('input, button, textarea, select, form')).toHaveCount(0);
 
     const shot = await card.screenshot({
@@ -101,148 +104,107 @@ test.describe('task 11 — Teach page to the design', () => {
     });
   });
 
-  test('Figure 1: two series, four categories, numeric axis, values as text', async ({
+  test('Ask AI figure: chat mock with pinned exchange, file chip and footnote', async ({
     page,
   }, testInfo) => {
-    await page.goto('/eald/teach');
-    const figure = page.locator('[data-slot="figure-card"]');
+    await page.goto('/teach');
+    const askAi = page.locator('section[data-screen-label="Ask AI"]');
+    const figure = askAi.locator('figure');
     await figure.scrollIntoViewIfNeeded();
     await settle(page);
 
-    // The grouping heading is the relocated groupCaption; the track link
-    // keeps its destination.
-    await expect(
-      page.getByText(en['Eald.teach.classroom.groupCaption'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      page
-        .locator('a[href="/track"]')
-        .filter({ hasText: en['Eald.teach.grouping.trackLink'] }),
-    ).toHaveCount(1);
+    // The section keeps its pinned copy and callout.
+    await expect(askAi.getByText('Ask the data anything.')).toBeVisible();
 
-    // Figure chrome: title, context, footnote — exact.
-    await expect(
-      figure.getByText(en['Eald.teach.grouping.figureTitle'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      figure.getByText(en['Eald.teach.grouping.figureContext'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      figure.getByText(en['Eald.teach.grouping.footnote'], { exact: true }),
-    ).toHaveCount(1);
+    // Figure chrome: caption header + context.
+    await expect(figure.getByText('Ask SchoolTest', { exact: true })).toHaveCount(1);
+    await expect(figure.getByText('9 English · 22 students', { exact: true })).toHaveCount(1);
 
-    // Legend: two series. Axis: numeric ceiling labels.
+    // The pinned exchange: two questions, the specific answer naming the six
+    // students, and the drafted file chip.
     await expect(
-      figure.getByText(en['Eald.teach.grouping.seriesTerm1'], { exact: true }),
+      figure.getByText('Which students need work on inference?', { exact: true }),
     ).toHaveCount(1);
     await expect(
-      figure.getByText(en['Eald.teach.grouping.seriesTerm2'], { exact: true }),
+      figure.getByText(
+        'Six students sit at Emerging or below on inference: Aisha, Mateo, Priya, Deng, Yuki and Sam. They can decode fluently but miss implied meaning - a good small group to start with.',
+      ),
     ).toHaveCount(1);
     await expect(
-      figure.getByText(en['Eald.teach.grouping.bandMaxStudents'], { exact: true }),
+      figure.getByText('Draft a short passage with inference questions for them.', { exact: true }),
     ).toHaveCount(1);
+    await expect(figure.getByText('Inference passage · Year 9.docx', { exact: true })).toHaveCount(1);
 
-    // The design's aria-label on the chart.
-    await expect(figure.locator('[aria-label]')).toHaveAttribute(
-      'aria-label',
-      en['Eald.teach.grouping.ariaLabel'],
-    );
-
-    // Every value exposed as text: four categories and all eight bar values.
-    for (const key of [
-      'categoryVocabulary',
-      'categoryInference',
-      'categoryNoteTaking',
-      'categoryFluency',
-    ] as const) {
-      await expect(
-        figure.getByText(en[`Eald.teach.grouping.${key}`], { exact: true }),
-      ).toHaveCount(1);
-    }
-    await expect(figure).toContainText('22 students');
-    for (const value of ['8', '5', '6', '4']) {
-      await expect(
-        figure.locator('span.sr-only', { hasText: `: ${value}` }).first(),
-      ).toBeAttached();
-    }
+    await expect(
+      figure.getByText(
+        'Illustrative exchange. Names are sample data; the diagnostic data is exported de-identified.',
+        { exact: true },
+      ),
+    ).toHaveCount(1);
 
     const shot = await figure.screenshot({
-      path: resolve(SHOTS, '11-teach-figure-1440.png'),
+      path: resolve(SHOTS, '11-teach-ask-ai-figure-1440.png'),
     });
-    await testInfo.attach('11-teach-figure-1440', {
+    await testInfo.attach('11-teach-ask-ai-figure-1440', {
       body: shot,
       contentType: 'image/png',
     });
   });
 
-  test('classroom band drops the chips; three-more keeps cards and note', async ({
+  test('classroom band keeps its pinned copy; the next-nav links onward', async ({
     page,
   }) => {
-    await page.goto('/eald/teach');
-
-    // The dropped chip labels render nowhere on the page (authorised drop —
-    // orchestrator chat-650473aa; GROUP_KEYS entries stay in the constant).
-    await expect(
-      page.getByText(en['Eald.teach.classroom.groupA'], { exact: true }),
-    ).toHaveCount(0);
+    await page.goto('/teach');
 
     // Classroom band keeps its pinned copy and callout.
+    const classroom = page.locator('section[data-screen-label="Classroom management"]');
     await expect(
-      page.getByText(en['Eald.teach.classroom.title'], { exact: true }),
+      classroom.getByRole('heading', {
+        name: 'Who to pair with whom, and how to split the room.',
+      }),
     ).toHaveCount(1);
-    await expect(page.locator('main')).toContainText(en['Eald.teach.classroom.body']);
+    await expect(
+      classroom.getByText(
+        'Who to pair with whom, on which skill, and how to split the room into groups that each need something different. The data makes it defensible; the AI makes it fast.',
+      ),
+    ).toBeVisible();
 
-    // Three-more: heading, three cards, note.
-    await expect(
-      page.getByText(en['Eald.teach.threeMore.title'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      page.getByText(en['Eald.teach.threeMore.groupByGapTitle'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      page.getByText(en['Eald.teach.threeMore.pairBySkillTitle'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      page.getByText(en['Eald.teach.threeMore.parentUpdatesTitle'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(page.locator('main')).toContainText(en['Eald.teach.note']);
+    // Next-nav: three numbered rows (03–05), Track first.
+    const nextNav = page.locator('section[data-screen-label="Next"] ol');
+    const rows = nextNav.locator('li');
+    await expect(rows).toHaveCount(3);
+    await expect(rows.nth(0).locator('a')).toHaveAttribute('href', '/track');
+    await expect(rows.nth(1).locator('a')).toHaveAttribute('href', '/predict');
+    await expect(rows.nth(2).locator('a')).toHaveAttribute('href', '/report');
   });
 
   test.describe('mobile 375×900', () => {
     test.use({ viewport: { width: 375, height: 900 } });
 
-    test('figure scrolls inside its own container; page never scrolls sideways', async ({
+    test('the Ask AI figure scales to its column; main content never leaves the viewport', async ({
       page,
     }, testInfo) => {
-      await page.goto('/eald/teach');
-      const figure = page.locator('[data-slot="figure-card"]');
+      await page.goto('/teach');
+      const figure = page.locator('section[data-screen-label="Ask AI"] figure');
       await figure.scrollIntoViewIfNeeded();
       await settle(page);
 
-      // BarChart's INNER min-w-0 overflow-x-auto wrapper is the contained
-      // scroller (not FigureCard's body node). At exactly 375px the chart's
-      // 320px (min-w-80) floor fits the ~323px column, so the asserted fact
-      // is the contained-scroll MECHANISM: the wrapper clips and scrolls
-      // instead of pushing the page wide.
-      const wrapper = figure.locator('div.min-w-0.overflow-x-auto');
-      await expect(wrapper).toHaveCount(1);
-      const scroll = await wrapper.evaluate((el) => ({
-        overflowX: getComputedStyle(el).overflowX,
-        innerMinWidth: el.firstElementChild
-          ? getComputedStyle(el.firstElementChild).minWidth
-          : 'unknown',
-      }));
-      expect(scroll.overflowX).toBe('auto');
-      expect(scroll.innerMinWidth).toBe('320px');
+      // The redesigned page keeps one contained 375px exception — the
+      // footer's nowrap acknowledgement line. Everything in <main>,
+      // including this figure, must stay inside the viewport.
+      const mainMax = await page.evaluate(
+        () =>
+          Math.max(
+            ...[...document.querySelectorAll('main, main *')].map(
+              (node) => node.getBoundingClientRect().right,
+            ),
+          ),
+      );
+      expect(mainMax, 'every main-content node fits the 375px viewport').toBeLessThanOrEqual(376);
 
-      const body = await page.evaluate(() => ({
-        scrollWidth: document.documentElement.scrollWidth,
-        clientWidth: document.documentElement.clientWidth,
-      }));
-      expect(
-        body.scrollWidth,
-        'the page body must never scroll sideways',
-      ).toBeLessThanOrEqual(body.clientWidth);
+      // The figure card and its chat exchange render fully in the column.
+      await expect(figure).toBeVisible();
+      await expect(figure.getByText('Inference passage · Year 9.docx', { exact: true })).toBeVisible();
 
       const shot = await figure.screenshot({
         path: resolve(SHOTS, '11-teach-figure-375.png'),

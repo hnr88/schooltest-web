@@ -1,11 +1,16 @@
 import { mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { expect, test } from '@playwright/test';
-import { loadMessages } from './helpers/i18n';
 
-const messages = loadMessages('en');
-const t = (key: string) => messages[`Eald.${key}`];
+// Task 13 proof tooling — re-pointed at the redesigned Predict page. The old
+// #predict-hero/#individual/#cohort/#cohort-photo ids and BarChart kit are
+// gone; sections are reached via their data-screen-label and the cohort chart
+// is a grouped SVG column figure with value labels as <text>.
 const out = path.resolve(process.cwd(), '../mvp/landing-pages/proof/shots');
+
+// Cohort figure contract: 4 readiness bands × 2 terms, 22 students per term.
+const COHORT_VALUES = ['9', '3', '6', '5', '5', '8', '2', '6'];
+const TICKS = ['10 students', '8', '6', '4', '2', '0'];
 
 test('Predict page preserves readiness and shows numeric cohort comparison at desktop and mobile', async ({
   page,
@@ -22,154 +27,145 @@ test('Predict page preserves readiness and shows numeric cohort comparison at de
   const response = await page.goto('/predict');
   expect(response?.status()).toBe(200);
   await page.evaluate(() => document.fonts.ready);
-  await page.locator('#predict-hero img').evaluate((img: HTMLImageElement) => img.decode());
+
+  const hero = page.locator('section[data-screen-label="Hero"]');
+  await hero.locator('img').evaluate((img: HTMLImageElement) => img.decode());
   await expect(page.locator('h1')).toHaveCount(1);
-  await expect(page.locator('h1')).toHaveText(t('predict.hero.title').replace(/<[^>]*>/g, ''));
-  await expect(page.locator('#predict-hero [data-slot="stat-strip"] dd')).toHaveText([
-    t('predict.hero.domainsValue'),
-    t('predict.hero.termValue'),
-  ]);
-  await expect(page.locator('#predict-hero [data-slot="stat-strip"] dt')).toHaveText([
-    t('predict.hero.domainsLabel'),
-    t('predict.hero.termLabel'),
-  ]);
-  await expect(page.locator('#predict-hero img')).toHaveAttribute(
-    'alt',
-    t('diagnose.hero.imageAlt'),
-  );
-  await expect(page.locator('#predict-hero a').nth(0)).toHaveAttribute('href', '/#register');
-  await expect(page.locator('#predict-hero a').nth(1)).toHaveAttribute('href', '/track');
-  await expect(page.locator('#cohort-photo a')).toHaveAttribute('href', '/diagnose');
-  for (const key of [
-    'term1Value',
-    'term3Value',
-    'blockingTitle',
-    'blockingVocabulary',
-    'blockingWriting',
-    'readinessFooter',
-  ])
-    await expect(
-      page.locator('#individual').getByText(t(`predict.individual.${key}`), { exact: true }),
-    ).toHaveCount(1);
-  for (const key of ['cohortBadge', 'exitBadge'])
-    await expect(
-      page.locator('#cohort').getByText(t(`predict.cohort.${key}`), { exact: true }),
-    ).toHaveCount(1);
-  const order = await page
-    .locator('main > section')
-    .evaluateAll((ns) => ns.map((n) => ({ id: n.id, text: n.textContent.slice(0, 110) })));
-  expect(order.slice(0, 4).map((n) => n.id)).toEqual([
-    'predict-hero',
-    'individual',
-    'cohort',
-    'cohort-photo',
-  ]);
-  expect(order).toHaveLength(7);
-  console.log('SURFACE_ORDER', JSON.stringify(order));
-  const fig = page.locator('#cohort figure');
-  const bars = fig.locator('[data-slot="bar-chart"]');
-  await expect(bars).toHaveAttribute('aria-label', t('predict.cohort.figureAriaLabel'));
-  await expect(bars.locator(':scope > li')).toHaveCount(4);
-  const heights = await bars.locator('[style]').evaluateAll((ns) => ns.map((n) => n.style.height));
-  expect(heights).toEqual(['90%', '30%', '60%', '50%', '50%', '80%', '20%', '60%']);
-  const cells = await bars.locator('.sr-only').allTextContents();
-  expect(cells).toEqual([
-    'Term 1 Under 40%: 9',
-    'Term 3 Under 40%: 3',
-    'Term 1 40–59%: 6',
-    'Term 3 40–59%: 5',
-    'Term 1 60–79%: 5',
-    'Term 3 60–79%: 8',
-    'Term 1 80%+: 2',
-    'Term 3 80%+: 6',
-  ]);
-  const counts = cells.map((s) => Number(s.split(': ').at(-1)));
-  const totals = [0, 1].map((i) => counts.filter((_, n) => n % 2 === i).reduce((a, b) => a + b, 0));
-  expect(totals).toEqual([22, 22]);
-  await expect(fig.getByText(t('predict.cohort.figureFootnote'), { exact: true })).toHaveCount(1);
-  const ticks = await bars.evaluate((ul) =>
-    [...(ul.previousElementSibling?.children ?? [])].map((n) => ({
-      text: n.textContent,
-      top: n.getBoundingClientRect().top + n.getBoundingClientRect().height / 2,
-    })),
-  );
-  expect(ticks.map((t) => t.text)).toEqual(['10 students', '8', '6', '4', '2', '0']);
-  const plot = await bars.locator('li > [aria-hidden="true"]').first().boundingBox();
-  if (!plot) throw new Error('Missing plot box');
-  expect(Math.abs(ticks[0].top - plot.y)).toBeLessThan(1);
-  expect(Math.abs(ticks[5].top - plot.y - 140)).toBeLessThan(1);
-  for (const label of ['Term 1', 'Term 3']) {
-    const legend = await fig.getByText(label, { exact: true }).boundingBox();
-    if (!legend) throw new Error('Missing legend box');
-    expect(legend.y + legend.height).toBeLessThan(plot.y);
+  await expect(page.locator('h1')).toHaveText('Know when a student is ready, and prove it.');
+  // The hero's single CTA registers from the sub-page, over the campus photo.
+  await expect(hero.locator('a[href="/#register"]').first()).toContainText('Join the pilot');
+  await expect(
+    hero.getByRole('img', { name: 'Students walking between classes on a school campus' }),
+  ).toBeVisible();
+
+  // The individual: the 34% → 81% readiness pair with the blocking chips.
+  const individual = page.locator('section[data-screen-label="The individual"]');
+  await expect(
+    individual.getByRole('heading', { name: 'Data-informed exit decisions' }),
+  ).toBeVisible();
+  await expect(individual.getByText('Mainstream readiness · one student', { exact: true })).toHaveCount(1);
+  for (const value of ['34%', '81%']) {
+    await expect(individual.getByText(value, { exact: true })).toHaveCount(1);
   }
-  console.log(
-    'READINESS_PAIR_AND_BLOCKERS',
-    JSON.stringify([
-      t('predict.individual.term1Value'),
-      t('predict.individual.term3Value'),
-      t('predict.individual.blockingVocabulary'),
-      t('predict.individual.blockingWriting'),
-    ]),
+  await expect(individual.getByText('Still holding her back', { exact: true })).toHaveCount(1);
+  for (const chip of ['Vocabulary', 'Syntax', 'Inference']) {
+    await expect(individual.getByText(chip, { exact: true })).toBeVisible();
+  }
+
+  // Cohort chart section: chips, figure chrome, SVG columns, axis, legend.
+  const cohort = page.locator('section[data-screen-label="Cohort chart"]');
+  await expect(cohort.getByText('Cohort readiness · 22 students', { exact: true })).toHaveCount(1);
+  await expect(cohort.getByText('4 projected to exit next term', { exact: true })).toHaveCount(1);
+  const fig = cohort.locator('figure');
+  await expect(fig.getByText('Figure 1 - Cohort readiness distribution', { exact: true })).toHaveCount(1);
+  await expect(fig.getByText('Year 9 · 22 students', { exact: true })).toHaveCount(1);
+  for (const term of ['Term 1', 'Term 3']) {
+    await expect(fig.getByText(term, { exact: true })).toHaveCount(1);
+  }
+  const svg = fig.locator('svg[role="img"]');
+  await expect(svg).toHaveAttribute(
+    'aria-label',
+    'Grouped column chart showing how many students in a cohort of 22 sit in each mainstream readiness band at Term 1 and Term 3',
   );
-  console.log(
-    'COHORT_FIGURE',
-    JSON.stringify({
-      heights,
-      cells,
-      totals,
-      ticks,
-      plotHeight: plot.height,
-      legendAbovePlot: true,
-    }),
+  await expect(svg.locator('rect')).toHaveCount(8);
+  // Bar value labels are the NUMERIC texts plotted over the columns (x far
+  // right of the y-axis tick labels at x=138), which keeps them separable
+  // from the numeric y ticks and the readiness band captions under the groups.
+  const barValueTexts = await svg.evaluate((node) =>
+    [...node.querySelectorAll('text')]
+      .filter(
+        (t) =>
+          Number(t.getAttribute('x') ?? 0) > 150 &&
+          /^\d+$/.test((t.textContent ?? '').trim()),
+      )
+      .map((t) => t.textContent?.trim() ?? ''),
   );
-  const frame = async (selector: string) =>
-    page
-      .locator(selector)
-      .evaluate((el) =>
-        window.scrollTo({
-          top:
-            scrollY +
-            el.getBoundingClientRect().top -
-            (document.querySelector('header')?.getBoundingClientRect().bottom ?? 0) -
-            20,
-          behavior: 'instant',
-        }),
-      );
+  expect(barValueTexts, 'value labels render in figure order').toEqual(COHORT_VALUES);
+  const texts = await svg.locator('text').allTextContents();
+  for (const band of ['Under 40%', '40–59%', '60–79%', '80% +']) {
+    expect(texts, `readiness band caption ${band}`).toContain(band);
+  }
+  for (const tick of TICKS) {
+    expect(texts, `y-axis tick ${tick}`).toContain(tick);
+  }
+  // 22 students per sitting: (9+6+5+2) and (3+5+8+6).
+  const values = COHORT_VALUES.map((value) => Number(value));
+  const totals = [0, 1].map((offset) =>
+    values.filter((_, index) => index % 2 === offset).reduce((a, b) => a + b, 0),
+  );
+  expect(totals).toEqual([22, 22]);
+
+  // Cohort photo band keeps its pinned message and content photo.
+  const photoBand = page.locator('section[data-screen-label="Cohort photo"]');
+  await expect(photoBand.locator('img')).toHaveAttribute(
+    'alt',
+    'A teacher supervising secondary students sitting an assessment on laptops',
+  );
+  await expect(
+    photoBand.getByRole('heading', { name: 'The call stays yours. The evidence is on the page.' }),
+  ).toBeVisible();
+
+  // Section order: hero, individual, cohort chart, cohort photo, then the
+  // quote / spacer / next / register tail.
+  const labels = await page
+    .locator('main > section')
+    .evaluateAll((ns) => ns.map((n) => n.getAttribute('data-screen-label')));
+  expect(labels.slice(0, 4)).toEqual(['Hero', 'The individual', 'Cohort chart', 'Cohort photo']);
+  console.log('SURFACE_ORDER', JSON.stringify(labels));
+
+  const frame = async (locator: ReturnType<typeof page.locator>) =>
+    locator.evaluate((el) =>
+      window.scrollTo({
+        top:
+          scrollY +
+          el.getBoundingClientRect().top -
+          (document.querySelector('header')?.getBoundingClientRect().bottom ?? 0) -
+          20,
+        behavior: 'instant',
+      }),
+    );
   await capture('13-hero-1440');
-  await frame('#predict-hero img');
+  await frame(hero.locator('img'));
   await capture('13-campus-1440');
-  await frame('#individual');
+  await frame(individual);
   await capture('13-readiness-1440');
-  await frame('#cohort');
+  await frame(cohort);
   await capture('13-cohort-1440');
-  await page.locator('#cohort-photo img').evaluate((img: HTMLImageElement) => img.decode());
-  await frame('#cohort-photo');
+  await photoBand.locator('img').evaluate((img: HTMLImageElement) => img.decode());
+  await frame(photoBand);
   await capture('13-photo-band-1440');
+
+  // At 375px the cohort figure scales to its column; <main> never leaves the
+  // viewport (the footer's nowrap acknowledgement line stays the one
+  // contained exception).
   await page.setViewportSize({ width: 375, height: 900 });
   await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
   await capture('13-hero-375');
-  const scroller = fig.locator('.overflow-x-auto').last();
-  const scroll = await scroller.evaluate((n) => {
-    n.scrollLeft = n.scrollWidth;
+  const mainMax = await page.evaluate(
+    () =>
+      Math.max(
+        ...[...document.querySelectorAll('main, main *')].map(
+          (node) => node.getBoundingClientRect().right,
+        ),
+      ),
+  );
+  expect(mainMax, 'every main-content node fits the 375px viewport').toBeLessThanOrEqual(376);
+  const widths = await svg.evaluate((node) => {
+    const parent = node.parentElement as HTMLElement;
+    const style = getComputedStyle(parent);
     return {
-      client: n.clientWidth,
-      scroll: n.scrollWidth,
-      left: n.scrollLeft,
-      body: document.body.scrollWidth,
-      viewport: innerWidth,
+      svg: node.getBoundingClientRect().width,
+      content: parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight),
     };
   });
-  expect(scroll.body).toBe(375);
-  expect(scroll.scroll).toBeGreaterThan(scroll.client);
-  expect(scroll.left).toBeGreaterThan(0);
-  await frame('#cohort figure');
+  expect(widths.svg, 'the cohort chart scales to its column').toBeCloseTo(widths.content, 0);
+  await frame(fig);
   await capture('13-cohort-375');
-  console.log('MOBILE_SCROLL', JSON.stringify(scroll));
-  await frame('#individual [data-slot="data-panel"]');
+  console.log('MOBILE_FIT', JSON.stringify({ mainMax: Math.round(mainMax), ...widths }));
+  await frame(individual);
   await capture('13-readiness-375');
   expect(errors).toEqual([]);
   console.log(
-    'PREDICT_CAPTURE_PASS: 4surfaces+tail,1h1,2retainedstats,34/81readiness,2blockingchips,2cohortchips,8textvalues,22/22totals,10studentaxis,3rootCTAs,internal375scroll,0pageerrors',
+    'PREDICT_CAPTURE_PASS: 4surfaces+tail,1h1,2ctas,34/81readiness,3blockingchips,2cohortchips,8textvalues,22/22totals,10studentaxis,scaled375chart,0pageerrors',
   );
 });

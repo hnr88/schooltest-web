@@ -264,7 +264,7 @@ export function LandingHomeContent() {
     <div style={{ background: '#FFFFFF', border: '1px solid #E3E8F0', borderRadius: '16px', overflow: 'hidden' }}>
       <div style={{ padding: '20px 30px', background: '#0E2350' }}><span style={{ fontSize: '12px', fontWeight: '700', letterSpacing: '.1em', textTransform: 'uppercase', color: '#FFFFFF' }}>Expression of interest</span></div>
       <div style={{ padding: '30px' }}>
-      <div id="eoi-form-wrap" hidden={submitted}>
+      {!submitted && (<div id="eoi-form-wrap" hidden={submitted}>
         <div>
           <p style={{ margin: '0', fontSize: '15px', lineHeight: '1.6', color: '#64748B' }}>Complete the form and the programme team will be in touch within a week with a sample report.</p>
           <form id="eoi-form" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '24px' }}>
@@ -281,14 +281,14 @@ export function LandingHomeContent() {
           </form>
           <p style={{ margin: '16px 0 0', fontSize: '12.5px', lineHeight: '1.6', color: '#94A3B8' }}>Pseudonymised data handling. No student names appear in any export. Read the <a href="#register" style={{ color: '#1D4ED8' }}>privacy statement</a>.</p>
         </div>
-      </div>
-      <div id="eoi-success-wrap" hidden={!submitted}>
+      </div>)}
+      {submitted && (<div id="eoi-success-wrap">
         <div role="status" style={{ padding: '10px 0' }}>
           <span style={{ display: 'inline-grid', placeItems: 'center', width: '44px', height: '44px', borderRadius: '50%', background: '#CCFBF1' }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D9488" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>
           <div style={{ fontSize: '22px', fontWeight: '700', color: '#0E2350', marginTop: '16px' }}>Expression of interest received</div>
           <div style={{ fontSize: '15px', lineHeight: '1.6', color: '#64748B', marginTop: '8px' }}>The programme team will be in touch within a week with a sample report.</div>
         </div>
-      </div>
+      </div>)}
       </div>
     </div>
   </div>

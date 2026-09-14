@@ -2,79 +2,76 @@ import { resolve } from 'node:path';
 
 import { expect, test, type Page } from '@playwright/test';
 
-import { loadMessages } from './helpers/i18n';
-
-// Task 06 proof tooling (mvp/landing-pages/tasks/06-home-programme.md ## Proof):
-// renders the About band (#programme) and the five-row programme list on the
-// real /eald page at 1440×900 and 375×900, prints and keeps the #programme
-// anchor numbers, and saves the graded screenshots under
-// mvp/landing-pages/proof/shots/ (also attached for the run report).
-const en = loadMessages('en');
+// Task 06 proof tooling — re-pointed at the redesigned landing: the About band
+// (#programme) keeps its copy, photo and fact table; the five programme
+// components became an editorial RANKED LIST (ghost numerals 01–05, arrow
+// chips) with a navy row-06 pilot band instead of the old tile grid.
 const SHOTS = resolve(process.cwd(), '../mvp/landing-pages/proof/shots');
 
 const settle = async (page: Page): Promise<void> => {
-  // ScrollReveal animates opacity/transform over 500ms once revealed.
-  await page.waitForTimeout(600);
+  // Font/image settle; the redesigned page animates nothing, but keep the
+  // beat so scroll-anchored geometry below is measured on a quiet page.
+  await page.waitForTimeout(300);
 };
 
-test.describe('task 06 — About band + five programme components', () => {
+test.describe('task 06 — About band + ranked programme list', () => {
   test.use({ viewport: { width: 1440, height: 900 } });
 
-  test('About band (#programme) renders pinned copy, badges, photo and fact table', async ({
+  test('About band (#programme) renders pinned copy, bullets, photo and fact table', async ({
     page,
   }, testInfo) => {
-    await page.goto('/eald');
+    await page.goto('/');
     const band = page.locator('section#programme');
     await band.scrollIntoViewIfNeeded();
     await settle(page);
 
-    // Heading: the EXISTING problem.title through its unchanged t.rich call.
-    await expect(band.locator('h2')).toHaveText(en['Eald.home.problem.title']);
+    // Heading + lead paragraph.
+    await expect(band.locator('h2')).toHaveText('English is so much more than four scores');
+    await expect(
+      band.getByText(
+        'Placement test scores tell you next to nothing about what a student can actually do.',
+      ),
+    ).toBeVisible();
 
-    // The three pinned paragraphs (catalogue copy — 27 subskills stays).
-    await expect(band).toContainText(en['Eald.home.problem.bodyOne']);
-    await expect(band).toContainText(en['Eald.home.problem.bodyTwo']);
-    await expect(band).toContainText(en['Eald.home.solution.body']);
-
-    // Badge row: new lead-in + the three pinned badges.
+    // The three pinned bullets (catalogue copy — 27 subskills stays).
     await expect(
-      band.getByText(en['Eald.home.about.eyebrow'], { exact: true }),
+      band.getByText("A CEFR or a stanine can't be taught to.", { exact: true }),
     ).toHaveCount(1);
+    await expect(band.getByText('One score can mean very different things.', { exact: true })).toHaveCount(1);
     await expect(
-      band.getByText(en['Eald.home.problem.badgeScore'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      band.getByText(en['Eald.home.problem.badgeCefr'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      band.getByText(en['Eald.home.problem.badgePhase'], { exact: true }),
+      band.getByText('Placement tests require six more weeks to figure them out.', { exact: true }),
     ).toHaveCount(1);
 
-    // Photo: real alt (content image, not decorative) + rendered figcaption.
-    const img = band.locator('img');
-    await expect(img).toHaveAttribute('alt', en['Eald.home.about.photoCaption']);
-    await expect(band.locator('figcaption')).toHaveText(
-      en['Eald.home.about.photoCaption'],
-    );
+    // Photo: real alt (content image, not decorative), inside the band's figure.
+    await expect(
+      band.getByRole('img', {
+        name: 'A secondary student writing in a workbook beside a laptop during class',
+      }),
+    ).toBeVisible();
 
-    // Fact table: five cells in the design's order, Status value teal.
+    // Fact table: five cells in the design's order; each cell carries a value
+    // dd and a caption dd (10 dds total).
     const dts = band.locator('dl dt');
     const dds = band.locator('dl dd');
     await expect(dts).toHaveText([
-      en['Eald.home.about.factCohortLabel'],
-      en['Eald.home.about.factSkillsLabel'],
-      en['Eald.home.about.factDeliveryLabel'],
-      en['Eald.home.about.factReportingLabel'],
-      en['Eald.home.about.factStatusLabel'],
+      'Skills',
+      'Subskills',
+      'In-classroom',
+      'Year levels',
+      'ALIGNED TO',
     ]);
     await expect(dds).toHaveText([
-      en['Eald.home.about.factCohortValue'],
-      en['Eald.home.about.factSkillsValue'],
-      en['Eald.home.about.factDeliveryValue'],
-      en['Eald.home.about.factReportingValue'],
-      en['Eald.home.about.factStatusValue'],
+      'All four skills',
+      'Reading, listening, speaking, writing',
+      '27 subskills',
+      'The detail behind each score',
+      '40 min per skill',
+      'In class, whenever you choose to test',
+      'Years 7–12',
+      'Age-appropriate, Australian contexts',
+      'ACARA',
+      'Based on the EAL/D learning progressions',
     ]);
-    await expect(dds.nth(4)).toHaveClass(/text-teal-600/);
 
     const aboutShot = await band.screenshot({
       path: resolve(SHOTS, '06-home-about-1440.png'),
@@ -85,68 +82,82 @@ test.describe('task 06 — About band + five programme components', () => {
     });
   });
 
-  test('five programme components: numbered rows, tiles, links, row 05 pill', async ({
+  test('component grid: five numbered cards with tags and "See how" pills, plus the navy row 06 pilot card', async ({
     page,
   }, testInfo) => {
-    await page.goto('/eald');
-    // The breadcrumb is also an <ol> inside main — scope to the bordered card.
-    const list = page.locator('main ol.bg-card');
-    await list.scrollIntoViewIfNeeded();
+    await page.goto('/');
+    const section = page.locator('section#what-you-get');
+    await section.scrollIntoViewIfNeeded();
     await settle(page);
-    const section = page
-      .locator('main section')
-      .filter({ has: page.locator('ol.bg-card') })
-      .first();
 
-    // Header keeps the shipped catalogue eyebrow + title.
+    // Header keeps the eyebrow, the new heading and the intro paragraph.
+    await expect(section.getByText('HOW IT WORKS', { exact: true })).toHaveCount(1);
+    await expect(section.getByRole('heading', { name: 'A different type of English test' })).toBeVisible();
     await expect(
-      section.getByText(en['Eald.home.whatYouGet.eyebrow'], { exact: true }),
-    ).toHaveCount(1);
-    await expect(
-      section.getByRole('heading', { name: en['Eald.home.whatYouGet.title'] }),
+      section.getByText(
+        'Delivered in-class whenever you want: diagnose every skill, personalize content, track growth, predict readiness, and report to families and leadership before the kettle boils.',
+      ),
     ).toBeVisible();
 
-    const rows = list.locator('li');
-    await expect(rows).toHaveCount(5);
+    // Five programme cards (numeral badge 01–05, tag, title, "See how" pill).
+    const cards = section.locator('a.st-gcard');
+    await expect(cards).toHaveCount(6);
 
-    // Numbered tiles 01–05; tints 01–02 blue, 03–04 teal, 05 navy.
-    const tileTexts = ['01', '02', '03', '04', '05'];
-    for (const [i, tile] of tileTexts.entries()) {
-      await expect(rows.nth(i).locator('span').first()).toHaveText(tile);
-    }
-    await expect(rows.nth(0).locator('span').first()).toHaveClass(/bg-blue-50/);
-    await expect(rows.nth(1).locator('span').first()).toHaveClass(/bg-blue-50/);
-    await expect(rows.nth(2).locator('span').first()).toHaveClass(/bg-teal-50/);
-    await expect(rows.nth(3).locator('span').first()).toHaveClass(/bg-teal-50/);
-    await expect(rows.nth(4).locator('span').first()).toHaveClass(/bg-navy-900/);
-
-    // Rows 01–04 keep their existing hrefs; row 05 has NO anchor at all.
-    const hrefs = [
-      '/eald/diagnose',
-      '/eald/teach',
-      '/eald/track',
-      '/eald/predict',
+    const cards_ = [
+      {
+        num: '01',
+        tag: 'Diagnose',
+        title: 'Diagnose strengths and weaknesses',
+        desc: 'Four macro skills and 27 subskills. The detail that used to take weeks of watching, visible on day one.',
+        href: '/diagnose',
+      },
+      {
+        num: '02',
+        tag: 'Teach',
+        title: 'Plan and teach',
+        desc: 'Drag and drop diagnostic data into your favourite LLM. Personalization and differentiation is no longer a Sunday night job.',
+        href: '/teach',
+      },
+      {
+        num: '03',
+        tag: 'Track',
+        title: 'Track progress over time',
+        desc: 'Retest whenever you want and watch them grow on the ACARA scale. Make empirical teaching decisions that truly move the needle.',
+        href: '/track',
+      },
+      {
+        num: '04',
+        tag: 'Predict',
+        title: 'Predict mainstream readiness',
+        desc: 'One readiness indicator across all four skills, aligned to ACARA. Exit calls you can defend.',
+        href: '/predict',
+      },
+      {
+        num: '05',
+        tag: 'Report',
+        title: 'Report to leadership and families',
+        desc: 'A profile a family can read and evidence leadership can trust. Keep everyone informed.',
+        href: '#evidence',
+      },
     ];
-    for (const [i, href] of hrefs.entries()) {
-      await expect(rows.nth(i).locator('a')).toHaveCount(1);
-      await expect(rows.nth(i).locator('a')).toHaveAttribute('href', href);
-      await expect(rows.nth(i).locator('a')).toContainText(
-        en['Eald.shared.readMore'],
-      );
+    for (const [i, card] of cards_.entries()) {
+      const target = cards.nth(i);
+      await expect(target).toHaveAttribute('href', card.href);
+      await expect(target.getByText(card.num, { exact: true })).toBeVisible();
+      await expect(target.getByText(card.tag, { exact: true })).toBeVisible();
+      await expect(target.getByText(card.title)).toBeVisible();
+      await expect(target.getByText(card.desc)).toBeVisible();
+      await expect(target.locator('.st-gcard-link')).toHaveText(/See how/);
     }
-    await expect(rows.nth(4).locator('a')).toHaveCount(0);
-    const pill = rows.nth(4).getByText(en['Eald.home.whatYouGet.inFieldTesting'], {
-      exact: true,
-    });
-    await expect(pill).toHaveCount(1);
 
-    // Hairlines between rows, none after the last.
-    const borderBottom = (row: number) =>
-      rows.nth(row).evaluate((el) => getComputedStyle(el).borderBottomWidth);
-    for (const row of [0, 1, 2, 3]) {
-      expect(await borderBottom(row)).toBe('1px');
-    }
-    expect(await borderBottom(4)).toBe('0px');
+    // Card 06: the navy pilot card — heading, body and the teal
+    // "Join the pilot" pill pointing at #register.
+    const card06 = section.locator('a.st-gcard-dark[href="#register"]');
+    await expect(card06).toHaveCount(1);
+    await expect(card06.getByText('06', { exact: true })).toBeVisible();
+    await expect(card06.getByText('Bring SchoolTest to your school')).toBeVisible();
+    await expect(card06.getByText('Pilot testing is open. Join the pilot now.')).toBeVisible();
+    await expect(card06.getByText('Join the pilot', { exact: true }).last()).toBeVisible();
 
     const listShot = await section.screenshot({
       path: resolve(SHOTS, '06-home-what-you-get-1440.png'),
@@ -156,11 +167,11 @@ test.describe('task 06 — About band + five programme components', () => {
       contentType: 'image/png',
     });
 
-    const row5Shot = await rows.nth(4).screenshot({
-      path: resolve(SHOTS, '06-row05-pill.png'),
+    const row6Shot = await card06.screenshot({
+      path: resolve(SHOTS, '06-row06-pilot-card.png'),
     });
-    await testInfo.attach('06-row05-pill', {
-      body: row5Shot,
+    await testInfo.attach('06-row06-pilot-card', {
+      body: row6Shot,
       contentType: 'image/png',
     });
   });
@@ -168,7 +179,7 @@ test.describe('task 06 — About band + five programme components', () => {
   test('#programme anchor lands below the sticky header — measured numbers', async ({
     page,
   }, testInfo) => {
-    await page.goto('/eald#programme');
+    await page.goto('/#programme');
     await settle(page);
 
     const numbers = await page.evaluate(() => {
@@ -205,16 +216,12 @@ test.describe('task 06 — About band + five programme components', () => {
   test.describe('mobile 375×900', () => {
     test.use({ viewport: { width: 375, height: 900 } });
 
-    test('About band and programme list on mobile', async ({ page }, testInfo) => {
-      await page.goto('/eald');
+    test('About band and component grid on mobile', async ({ page }, testInfo) => {
+      await page.goto('/');
       const band = page.locator('section#programme');
       await band.scrollIntoViewIfNeeded();
       await settle(page);
-      await expect(
-        band.getByText(en['Eald.home.about.eyebrow'], { exact: true }),
-      ).toHaveCount(1);
-      const dds = band.locator('dl dd');
-      await expect(dds).toHaveCount(5);
+      await expect(band.locator('dl dt')).toHaveCount(5);
       const aboutShot = await band.screenshot({
         path: resolve(SHOTS, '06-home-about-375.png'),
       });
@@ -223,15 +230,13 @@ test.describe('task 06 — About band + five programme components', () => {
         contentType: 'image/png',
       });
 
-      const list = page.locator('main ol.bg-card');
-      await list.scrollIntoViewIfNeeded();
+      const section = page.locator('section#what-you-get');
+      await section.scrollIntoViewIfNeeded();
       await settle(page);
-      await expect(list.locator('li')).toHaveCount(5);
-      const listShot = await page
-        .locator('main section')
-        .filter({ has: page.locator('ol.bg-card') })
-        .first()
-        .screenshot({ path: resolve(SHOTS, '06-home-what-you-get-375.png') });
+      await expect(section.locator('a.st-gcard')).toHaveCount(6);
+      const listShot = await section.screenshot({
+        path: resolve(SHOTS, '06-home-what-you-get-375.png'),
+      });
       await testInfo.attach('06-home-what-you-get-375', {
         body: listShot,
         contentType: 'image/png',

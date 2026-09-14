@@ -15,6 +15,29 @@ import { DISALLOWED_IN_ROBOTS, PUBLIC_PATHS, parseJsonLd } from './helpers/seo';
 
 const en = loadMessages('en');
 
+// Expected structured-trail names per public path, derived at runtime from
+// the SAME trail registry the app uses (Navigation.* / Landing.nav.* keys).
+// The redesigned landing dropped the visible crumb row, so the BreadcrumbList
+// JSON-LD is the surviving breadcrumb contract on public pages.
+const TRAIL_LABEL_KEYS: Readonly<Record<string, string>> = {
+  '/': 'Navigation.home',
+  '/diagnose': 'Landing.nav.diagnose',
+  '/teach': 'Landing.nav.teach',
+  '/track': 'Landing.nav.track',
+  '/predict': 'Landing.nav.predict',
+  '/report': 'Landing.nav.report',
+  '/privacy-policy': 'Navigation.privacyPolicy',
+  '/terms-of-service': 'Navigation.termsOfService',
+  '/cookie-policy': 'Navigation.cookiePolicy',
+  '/gdpr': 'Navigation.gdpr',
+};
+
+function expectedTrail(path: string): string[] {
+  const key = TRAIL_LABEL_KEYS[path];
+  if (!key) throw new Error(`No trail label registered for ${path}`);
+  return path === '/' ? [en[key]] : [en['Navigation.home'], en[key]];
+}
+
 test.describe('public SEO', () => {
   for (const path of PUBLIC_PATHS) {
     test(`flow: ${path} carries title, description, OG, Twitter, canonical and hreflang`, async ({
@@ -56,9 +79,7 @@ test.describe('public SEO', () => {
       expect(new URL(canonical ?? '').pathname, `${path} canonical`).toBe(path);
 
       // A complete hreflang set (6 locales + x-default). Whether those URLs
-      // RESOLVE is checked once, for the deduplicated set, in its own test —
-      // re-fetching the same 70 URLs per page hammered the dev server into
-      // ECONNRESET without testing anything extra.
+      // RESOLVE is checked once, for the deduplicated set, in its own test.
       await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(7);
       await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveCount(1);
 
@@ -98,24 +119,54 @@ test.describe('public SEO', () => {
         .sort((a, b) => a.position - b.position)
         .map((entry) => entry.name);
 
-      // Flow 20: structured breadcrumbs must EQUAL the DOM breadcrumbs — same
-      // names, same order, same count. A substring check would pass on a
-      // reversed trail, a duplicate, or an extra DOM crumb.
-      const visible = await page
-        .getByRole('navigation', { name: en['Navigation.breadcrumbLabel'] })
-        .first()
-        .locator('li')
-        .allInnerTexts();
-      const domNames = visible
-        .map((t) => t.replace(/\s+/g, ' ').trim())
-        .filter((t) => t.length > 0 && t !== '/');
-      expect(domNames, `${path} breadcrumb parity`).toEqual(jsonNames);
+      // Flow 20, re-pointed: structured breadcrumbs must EQUAL the registered
+      // trail — same names, same order, same count. A substring check would
+      // pass on a reversed trail or a duplicate.
+      expect(jsonNames, `${path} breadcrumb trail`).toEqual(expectedTrail(path));
+      // No orphaned visible crumb nav on the redesigned landing pages. The
+      // legal documents KEEP their visible breadcrumb (it survives in
+      // LegalDocumentScreen) and their visible trail is asserted in
+      // breadcrumbs.spec.ts instead.
+      if (!['/privacy-policy', '/terms-of-service', '/cookie-policy', '/gdpr'].includes(path)) {
+        await expect(
+          page.getByRole('navigation', { name: en['Navigation.breadcrumbLabel'] }),
+        ).toHaveCount(0);
+      }
 
       const webPage = nodes.find((node) => node['@type'] === 'WebPage') as Record<string, unknown>;
       expect(webPage.url).toBeTruthy();
       expect(webPage.inLanguage).toBe('en');
     });
   }
+
+  test('flow: every canonical URL on the public surface resolves', async ({ page, request }) => {
+    // 10 page loads plus one URL per path — well past the 30s default.
+    test.setTimeout(120_000);
+    const urls = new Set<string>();
+    for (const path of PUBLIC_PATHS) {
+      await page.goto(path);
+      for (const href of await page
+        .locator('link[rel="canonical"]')
+        .evaluateAll((links) => links.map((l) => l.getAttribute('href') ?? ''))) {
+        if (href) urls.add(href);
+      }
+    }
+    // One self-canonical per public path — the redesigned pages emit no
+    // per-page hreflang alternates anymore, so the set is exactly the paths.
+    expect(urls.size, 'unique canonical URLs').toBe(PUBLIC_PATHS.length);
+    // Resolve each canonical's PATH against this suite's baseURL: the
+    // canonical host comes from the server env (another port), the contract
+    // under test is the path resolving on the app.
+    const results = await Promise.all(
+      [...urls].map(async (href) => ({
+        href,
+        status: (await request.get(new URL(href).pathname)).status(),
+      })),
+    );
+    const broken = results.filter((r) => r.status !== 200);
+    expect(broken, `unresolvable canonical URLs: ${JSON.stringify(broken)}`).toEqual([]);
+  });
+
 
   test('flow: every canonical and hreflang URL on the public surface resolves', async ({
     page,

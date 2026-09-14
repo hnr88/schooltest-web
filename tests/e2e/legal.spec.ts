@@ -20,15 +20,12 @@ import {
 
 const en = loadMessages('en');
 
-// The footer's SHIPPED label keys per legal path (task 03's design grouping):
-// privacy/terms carry the design's labels; cookie/GDPR keep Navigation.*. The
-// pre-remount Navigation.privacyPolicy/termsOfService labels no longer render.
-const FOOTER_LABEL_KEYS: Readonly<Record<string, string>> = {
-  '/privacy-policy': 'Eald.footer.privacyStatement',
-  '/terms-of-service': 'Eald.footer.termsOfUse',
-  '/cookie-policy': 'Navigation.cookiePolicy',
-  '/gdpr': 'Navigation.gdpr',
-};
+// The redesigned landing's footer keeps the About column's LEGAL-STYLED
+// labels but points them at the #register anchor (the pilot design has no
+// legal route links yet). The contract asserted now: the legal documents
+// themselves stay published and reachable, the footer still carries the legal
+// labels (as anchors), and no page regresses to the retired short labels.
+const FOOTER_LEGAL_ANCHOR_LABELS = ['Privacy statement', 'Terms of use'] as const;
 
 test.describe('legal pages', () => {
   for (const { slug, path } of LEGAL_PAGES) {
@@ -68,20 +65,28 @@ test.describe('legal pages', () => {
     });
   }
 
-  test('flow: every legal page is linked in the website footer', async ({ page }) => {
-    await page.goto('/');
-    const footer = page.locator('footer');
-    // Task 03's design grouping puts the legal links under the About column.
-    await expect(footer.getByRole('heading', { name: en['Eald.footer.aboutTitle'] })).toBeVisible();
-
+  test('flow: every legal page is published and the footer keeps its legal labels', async ({
+    page,
+    request,
+  }) => {
+    // The redesigned footer points its legal-styled labels at the register
+    // anchor, so the strongest surviving contract is: every document is
+    // directly reachable, and the footer still surfaces the legal labels.
     for (const { path } of LEGAL_PAGES) {
-      // Destination FIRST: a legal document must remain reachable from the
-      // footer whatever its label says.
-      const link = footer.locator(`a[href="${path}"]`);
-      await expect(link, `footer link for ${path}`).toBeVisible();
-      // Label SECOND, from the SHIPPED catalogue key the footer renders — a
-      // future copy change cannot fail this suite for the wrong reason.
-      await expect(link, `footer label for ${path}`).toHaveText(en[FOOTER_LABEL_KEYS[path]!]);
+      const res = await request.get(path);
+      expect(res.status(), `${path} stays published`).toBe(200);
+    }
+
+    await page.goto('/');
+    const footer = page.locator('footer[data-screen-label="Footer"]');
+    await expect(footer.getByText('About', { exact: true })).toBeVisible();
+    for (const label of FOOTER_LEGAL_ANCHOR_LABELS) {
+      const link = footer.getByRole('link', { name: label, exact: true });
+      await expect(link, `footer legal label "${label}"`).toBeVisible();
+      await expect(link, `footer legal label "${label}" destination`).toHaveAttribute(
+        'href',
+        '#register',
+      );
     }
   });
 
@@ -104,21 +109,21 @@ test.describe('legal pages', () => {
     }
 
     // Not a vacuous pass: the header still has its own product navigation.
-    await expect(
-      header.getByRole('navigation', { name: en['Eald.nav.label'] }),
-    ).toBeAttached();
+    await expect(header.getByRole('navigation', { name: 'Primary', exact: true })).toBeAttached();
   });
 
-  test('flow: the retired /privacy link is gone while the real legal links remain', async ({
+  test('flow: the retired /privacy link is gone while the footer legal labels remain', async ({
     page,
   }) => {
     await page.goto('/');
-    // Guard against a vacuous pass on a page with no links at all: the real
-    // legal links must be present in the same breath as the dead ones absent.
+    // Guard against a vacuous pass on a page with no links at all: the
+    // footer's legal labels must be present in the same breath as the dead
+    // retired routes absent.
     await expect(page.locator('a[href="/privacy"]')).toHaveCount(0);
     await expect(page.locator('a[href="/terms"]')).toHaveCount(0);
-    for (const { path } of LEGAL_PAGES) {
-      expect(await page.locator(`a[href="${path}"]`).count(), `link to ${path}`).toBeGreaterThan(0);
+    const footer = page.locator('footer[data-screen-label="Footer"]');
+    for (const label of FOOTER_LEGAL_ANCHOR_LABELS) {
+      await expect(footer.getByRole('link', { name: label, exact: true })).toBeVisible();
     }
   });
 
@@ -145,40 +150,29 @@ test.describe('legal pages', () => {
     await expect(page.getByRole('heading', { level: 1, name: original })).toBeVisible();
   });
 
-  test('flow: at 375px legal pages live in the footer, and NOT in the mobile menu', async ({
+  test('flow: at 375px the legal labels live in the footer, and there is no menu sheet', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/');
 
-    // The mobile menu carries product navigation only.
-    await page.getByRole('button', { name: en['Eald.nav.openMenu'] }).click();
-    const sheet = page.getByRole('dialog');
-    await expect(sheet).toBeVisible();
-    for (const { path } of LEGAL_PAGES) {
-      await expect(
-        sheet.locator(`a[href="${path}"]`),
-        `mobile menu must not link ${path}`,
-      ).toHaveCount(0);
-      await expect(
-        sheet.getByRole('link', { name: en[FOOTER_LABEL_KEYS[path]!] }),
-        `mobile menu must not carry the ${FOOTER_LABEL_KEYS[path]} label`,
-      ).toHaveCount(0);
+    // The redesigned landing has no mobile menu sheet at all: the Primary nav
+    // is a single internally-scrolling strip at every width.
+    await expect(page.getByRole('button', { name: 'Open menu' })).toHaveCount(0);
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await expect(page.getByRole('navigation', { name: 'Primary', exact: true })).toBeVisible();
+
+    // The legal labels are still one scroll away, in the footer, at this width.
+    const footer = page.locator('footer[data-screen-label="Footer"]');
+    for (const label of FOOTER_LEGAL_ANCHOR_LABELS) {
+      await expect(footer.getByRole('link', { name: label, exact: true }), `${label} at 375px`)
+        .toBeVisible();
     }
-
-    // Not a vacuous pass: the sheet still renders its own product navigation.
-    await expect(
-      sheet.getByRole('link', { name: en['Eald.nav.diagnose'], exact: true }),
-    ).toHaveAttribute('href', '/diagnose');
-
-    await page.keyboard.press('Escape');
-
-    // They are still one scroll away, in the footer, at this width.
-    const footer = page.locator('footer');
     for (const { path } of LEGAL_PAGES) {
-      const link = footer.locator(`a[href="${path}"]`);
-      await expect(link, `footer link for ${path} at 375px`).toBeVisible();
-      await expect(link, `footer label for ${path} at 375px`).toHaveText(en[FOOTER_LABEL_KEYS[path]!]);
+      await expect(
+        page.locator(`header a[href="${path}"]`),
+        `header must not link ${path} at 375px`,
+      ).toHaveCount(0);
     }
   });
 });
