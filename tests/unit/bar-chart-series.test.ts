@@ -7,19 +7,15 @@ import { afterEach, beforeEach, describe, expect, test } from 'vitest';
 import { BarChart } from '@/modules/design-system/components/bar-chart';
 import { BAR_CHART_SERIES_CLASSES } from '@/modules/design-system/constants/bar-chart.constants';
 import type { BarChartItem } from '@/modules/design-system/types/record.types';
-import { FigureCard } from '@/modules/eald/components/FigureCard';
 
 /**
- * Task 01 (landing-pages figure kit) — the grouped-series BarChart and the
- * FigureCard chrome. The load-bearing assertions:
+ * The grouped-series BarChart unit coverage. The load-bearing assertions:
  * - omitting `series`/`bands` renders EXACTLY the markup the single-series
  *   chart shipped before this task (byte-identical outerHTML, pinned below);
  * - 1–4 series per category render grouped bars, a legend and per-series
  *   screen-reader rows, coloured only from the --chart-1..5 tokens;
  * - the y-axis takes an ordered band list (ACARA bottom→top, or a numeric
- *   ladder with its ceiling label on top);
- * - FigureCard composes DataPanel (the surface is DataPanel's, never its own)
- *   and its caption is not a heading.
+ *   ladder with its ceiling label on top).
  */
 
 (globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
@@ -219,52 +215,5 @@ describe('BarChart — the banded / numeric y-axis', () => {
       '2',
       '0',
     ]);
-  });
-});
-
-describe('FigureCard', () => {
-  test('renders figure + figcaption and composes DataPanel for its surface', () => {
-    const screen = render(
-      createElement(
-        FigureCard,
-        {
-          title: 'Figure 1 — Phase by skill',
-          context: 'Year 9 · three sittings',
-          footnote: 'Illustrative sample data.',
-        },
-        createElement(BarChart, { items: SINGLE_ITEMS, ariaLabel: 'Inner' }),
-      ),
-    );
-    expect(screen.querySelector('figure[data-slot="figure-card"]')).not.toBeNull();
-    expect(screen.querySelector('figcaption')?.textContent).toContain('Figure 1 — Phase by skill');
-    expect(screen.querySelector('figcaption')?.textContent).toContain('Year 9 · three sittings');
-    expect(screen.querySelector('figure > figcaption')).not.toBeNull();
-    expect(screen.querySelector('figcaption [data-slot="panel-header-row"]')).not.toBeNull();
-    expect(screen.querySelector('[data-slot="data-panel"]')).not.toBeNull();
-    expect(screen.querySelector('[data-slot="figure-card-footnote"]')?.textContent).toBe(
-      'Illustrative sample data.',
-    );
-    expect(screen.querySelector('[data-slot="bar-chart"]')).not.toBeNull();
-  });
-
-  test('the panel surface classes exist only on the composed DataPanel, the caption is no heading, and wide bodies scroll in place', () => {
-    const screen = render(
-      createElement(FigureCard, { title: 'T' }, createElement('p', null, 'body')),
-    );
-    screen.querySelectorAll('[data-slot="figure-card"] *').forEach((node) => {
-      if (node.getAttribute('data-slot') === 'data-panel') return;
-      expect(node.className).not.toContain('rounded-panel');
-      expect(node.className).not.toContain('shadow-sm');
-    });
-    expect(screen.querySelector('figcaption h1, figcaption h2, figcaption h3')).toBeNull();
-    const body = screen.querySelector('[data-slot="figure-card-body"]');
-    expect(body?.className).toContain('overflow-x-auto');
-    expect(screen.querySelector('figcaption')?.textContent).not.toContain('undefined');
-  });
-
-  test('context and footnote are optional', () => {
-    const screen = render(createElement(FigureCard, { title: 'T' }, createElement('p', null, 'b')));
-    expect(screen.querySelector('figcaption')?.textContent).toBe('T');
-    expect(screen.querySelector('[data-slot="figure-card-footnote"]')).toBeNull();
   });
 });

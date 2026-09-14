@@ -1,18 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import {
-  CohortSection,
-  EaldCtaBand,
-  EaldFooter,
-  EaldHeader,
-  IndividualSection,
-  NextSectionNav,
-  PredictHero,
-  QuoteBand,
-  PREDICT_NEXT_SECTIONS,
-} from '@/modules/eald';
-import { PublicBreadcrumb } from '@/modules/navigation';
+import { LandingPredictContent } from '@/modules/landing';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings } from '@/modules/settings';
 
@@ -22,7 +11,7 @@ interface PredictPageProps {
 
 export async function generateMetadata({ params }: PredictPageProps): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations('Eald.meta');
+  const t = await getTranslations('Landing.meta');
   const settings = await getPublicSettings();
   return buildPageMetadata({
     title: t('predictTitle'),
@@ -35,32 +24,18 @@ export async function generateMetadata({ params }: PredictPageProps): Promise<Me
 
 export default async function PredictPage({ params }: PredictPageProps) {
   const { locale } = await params;
-  const t = await getTranslations('Eald');
+  const t = await getTranslations('Landing.meta');
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <EaldHeader activePage="predict" />
+    <>
       <BreadcrumbJsonLd pathname="/predict" locale={locale} />
       <PublicPageJsonLd
         pathname="/predict"
         locale={locale}
-        title={t('meta.predictTitle')}
-        description={t('meta.predictDescription')}
+        title={t('predictTitle')}
+        description={t('predictDescription')}
       />
-      <PublicBreadcrumb pathname="/predict" />
-      <main id="main-content" tabIndex={-1}>
-        <PredictHero />
-        <IndividualSection />
-        <CohortSection />
-        <QuoteBand
-          quote={t.rich('predict.quote', {
-            br: () => <br />,
-          })}
-        />
-        <NextSectionNav sections={PREDICT_NEXT_SECTIONS} />
-        <EaldCtaBand />
-      </main>
-      <EaldFooter />
-    </div>
+      <LandingPredictContent />
+    </>
   );
 }

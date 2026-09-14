@@ -40,7 +40,7 @@ import {
 //     these tags renders fresh.
 // `revalidatePath` would also be immediate and legal, but it cannot express
 // what these tags cover without enumerating every public route that reads
-// tagged data — `platform-settings` feeds PublicSiteBanner and EaldHeader, so
+// tagged data — `platform-settings` feeds PublicSiteBanner and the landing header, so
 // that list is "every public page" and would silently rot the day a new one
 // ships. The tag already names the exact surface; only its expiry was wrong.
 export async function POST(request: NextRequest): Promise<NextResponse> {

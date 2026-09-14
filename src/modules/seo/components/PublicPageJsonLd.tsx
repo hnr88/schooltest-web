@@ -27,7 +27,7 @@ async function PublicPageJsonLd({
   dateModified,
 }: PublicPageJsonLdProps) {
   const t = await getTranslations({ locale });
-  const siteDescription = t('Eald.footer.tagline');
+  const siteDescription = t('Landing.footer.tagline');
 
   return (
     <>

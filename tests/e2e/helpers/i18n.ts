@@ -31,8 +31,10 @@ export function loadMessages(locale: AnyLocale): Messages {
   const raw = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>;
 
   // D-01-REVISED: the localized landing bundles were retired with the
-  // SaaS landing; every surviving namespace (Eald.*, Seo.*, …) resolves from
-  // the base catalogues alone.
+  // SaaS landing; every surviving namespace (Landing.*, Seo.*, …) resolves
+  // from the base catalogues alone. The redesigned landing renders its copy
+  // hardcoded in JSX — only Landing.nav/meta/notice/footer remain catalog
+  // driven (labels + meta), so landing specs assert most content literally.
 
   return flatten(raw, '', {});
 }

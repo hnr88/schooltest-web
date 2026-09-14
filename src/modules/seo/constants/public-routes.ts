@@ -14,10 +14,11 @@ import type { PublicRoute } from '@/modules/seo/types/seo.types';
  */
 export const PUBLIC_ROUTES: readonly PublicRoute[] = [
   { pathname: '/', changeFrequency: 'weekly', priority: 1, llmsLabelKey: 'Navigation.home' },
-  { pathname: '/diagnose', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.diagnose' },
-  { pathname: '/teach', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.teach' },
-  { pathname: '/track', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.track' },
-  { pathname: '/predict', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Eald.nav.predict' },
+  { pathname: '/diagnose', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Landing.nav.diagnose' },
+  { pathname: '/teach', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Landing.nav.teach' },
+  { pathname: '/track', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Landing.nav.track' },
+  { pathname: '/predict', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Landing.nav.predict' },
+  { pathname: '/report', changeFrequency: 'monthly', priority: 0.8, llmsLabelKey: 'Landing.nav.report' },
 ];
 
 /**

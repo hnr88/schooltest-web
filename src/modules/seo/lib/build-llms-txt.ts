@@ -18,7 +18,7 @@ export async function buildLlmsTxt({ locale, legal }: BuildLlmsTxtInput): Promis
   const lines: string[] = [
     `# ${SITE_NAME}`,
     '',
-    `> ${t('Eald.footer.tagline')}`,
+    `> ${t('Landing.footer.tagline')}`,
     '',
     t('Seo.llmsIntro'),
     '',

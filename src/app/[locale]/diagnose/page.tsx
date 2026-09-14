@@ -1,18 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import {
-  DiagnoseHero,
-  EaldCtaBand,
-  EaldFooter,
-  EaldHeader,
-  NextSectionNav,
-  QuoteBand,
-  SameScoreSection,
-  UnpackSection,
-  DIAGNOSE_NEXT_SECTIONS,
-} from '@/modules/eald';
-import { PublicBreadcrumb } from '@/modules/navigation';
+import { LandingDiagnoseContent } from '@/modules/landing';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings } from '@/modules/settings';
 
@@ -22,7 +11,7 @@ interface DiagnosePageProps {
 
 export async function generateMetadata({ params }: DiagnosePageProps): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations('Eald.meta');
+  const t = await getTranslations('Landing.meta');
   const settings = await getPublicSettings();
   return buildPageMetadata({
     title: t('diagnoseTitle'),
@@ -35,28 +24,18 @@ export async function generateMetadata({ params }: DiagnosePageProps): Promise<M
 
 export default async function DiagnosePage({ params }: DiagnosePageProps) {
   const { locale } = await params;
-  const t = await getTranslations('Eald');
+  const t = await getTranslations('Landing.meta');
 
   return (
-    <div className="min-h-screen bg-white text-foreground">
-      <EaldHeader activePage="diagnose" />
+    <>
       <BreadcrumbJsonLd pathname="/diagnose" locale={locale} />
       <PublicPageJsonLd
         pathname="/diagnose"
         locale={locale}
-        title={t('meta.diagnoseTitle')}
-        description={t('meta.diagnoseDescription')}
+        title={t('diagnoseTitle')}
+        description={t('diagnoseDescription')}
       />
-      <PublicBreadcrumb pathname="/diagnose" />
-      <main id="main-content" tabIndex={-1}>
-        <DiagnoseHero />
-        <UnpackSection />
-        <SameScoreSection />
-        <QuoteBand quote={t.rich('diagnose.quote', { br: () => <br /> })} />
-        <NextSectionNav sections={DIAGNOSE_NEXT_SECTIONS} />
-        <EaldCtaBand />
-      </main>
-      <EaldFooter />
-    </div>
+      <LandingDiagnoseContent />
+    </>
   );
 }

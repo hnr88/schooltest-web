@@ -26,7 +26,7 @@ interface OpengraphImageProps {
 // `openGraph` block does not get the file-convention image merged in, so
 // relying on the convention alone shipped pages with no og:image at all.
 export default async function OpengraphImage({ params }: OpengraphImageProps) {
-  const t = await getTranslations({ locale: params.locale, namespace: 'Eald' });
+  const t = await getTranslations({ locale: params.locale, namespace: 'Landing' });
 
   return new ImageResponse(
     <OgCard siteName={SITE_NAME} title={t('meta.homeTitle')} tagline={t('footer.tagline')} />,

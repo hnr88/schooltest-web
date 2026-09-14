@@ -1,0 +1,149 @@
+/* landing hover/focus states — generated from the verified design build */
+/* index */
+[data-index-f="0"]:focus { left:12px !important; top:12px !important }
+[data-index-h="0"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-index-h="1"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-index-h="2"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-index-h="3"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-index-h="4"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-index-h="5"]:hover { color:#0E2350 !important; text-decoration:underline !important }
+[data-index-h="6"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-index-h="7"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-index-h="8"]:hover { border:1.5px solid #FFFFFF !important; background:rgba(255,255,255,.08) !important; color:#FFFFFF !important }
+[data-index-h="9"]:hover { gap:11px !important; color:#0E2350 !important }
+[data-index-h="10"]:hover { gap:11px !important; color:#0E2350 !important }
+[data-index-h="11"]:hover { gap:11px !important; color:#0E2350 !important }
+[data-index-h="12"]:hover { gap:11px !important; color:#0E2350 !important }
+[data-index-h="13"]:hover { gap:11px !important; color:#0E2350 !important }
+[data-index-h="14"]:hover { gap:12px !important; background:#7DF3DE !important }
+[data-index-h="15"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-index-h="16"]:hover { background:#1D4ED8 !important }
+[data-index-h="17"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-index-h="18"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-index-h="19"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-index-h="20"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-index-h="21"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-index-h="22"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-index-h="23"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-index-h="24"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-index-h="25"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+/* diagnose */
+[data-diagnose-f="0"]:focus { left:12px !important; top:12px !important }
+[data-diagnose-h="0"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-diagnose-h="1"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-diagnose-h="2"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-diagnose-h="3"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-diagnose-h="4"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-diagnose-h="5"]:hover { color:#0E2350 !important; text-decoration:underline !important }
+[data-diagnose-h="6"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-diagnose-h="7"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-diagnose-h="8"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-diagnose-h="9"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-diagnose-h="10"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-diagnose-h="11"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-diagnose-h="12"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-diagnose-h="13"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-diagnose-h="14"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-diagnose-h="15"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-diagnose-h="16"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-diagnose-h="17"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-diagnose-h="18"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-diagnose-h="19"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-diagnose-h="20"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-diagnose-h="21"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+/* teach */
+[data-teach-f="0"]:focus { left:12px !important; top:12px !important }
+[data-teach-h="0"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-teach-h="1"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-teach-h="2"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-teach-h="3"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-teach-h="4"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-teach-h="5"]:hover { color:#0E2350 !important; text-decoration:underline !important }
+[data-teach-h="6"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-teach-h="7"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-teach-h="8"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-teach-h="9"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-teach-h="10"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-teach-h="11"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-teach-h="12"]:hover { border:1.5px solid #FFFFFF !important; background:rgba(255,255,255,.08) !important; color:#FFFFFF !important }
+[data-teach-h="13"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-teach-h="14"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-teach-h="15"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-teach-h="16"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-teach-h="17"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-teach-h="18"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-teach-h="19"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-teach-h="20"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-teach-h="21"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+/* track */
+[data-track-f="0"]:focus { left:12px !important; top:12px !important }
+[data-track-h="0"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-track-h="1"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-track-h="2"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-track-h="3"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-track-h="4"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-track-h="5"]:hover { color:#0E2350 !important; text-decoration:underline !important }
+[data-track-h="6"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-track-h="7"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-track-h="8"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-track-h="9"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-track-h="10"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-track-h="11"]:hover { border:1.5px solid #FFFFFF !important; background:rgba(255,255,255,.08) !important; color:#FFFFFF !important }
+[data-track-h="12"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-track-h="13"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-track-h="14"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-track-h="15"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-track-h="16"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-track-h="17"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-track-h="18"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-track-h="19"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-track-h="20"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+/* predict */
+[data-predict-f="0"]:focus { left:12px !important; top:12px !important }
+[data-predict-h="0"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-predict-h="1"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-predict-h="2"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-predict-h="3"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-predict-h="4"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-predict-h="5"]:hover { color:#0E2350 !important; text-decoration:underline !important }
+[data-predict-h="6"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-predict-h="7"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-predict-h="8"]:hover { text-decoration:underline !important; color:#0E2350 !important }
+[data-predict-h="9"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-predict-h="10"]:hover { border:1.5px solid #FFFFFF !important; background:rgba(255,255,255,.08) !important; color:#FFFFFF !important }
+[data-predict-h="11"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-predict-h="12"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-predict-h="13"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-predict-h="14"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-predict-h="15"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-predict-h="16"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-predict-h="17"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-predict-h="18"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-predict-h="19"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+/* report */
+[data-report-f="0"]:focus { left:12px !important; top:12px !important }
+[data-report-h="0"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-report-h="1"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-report-h="2"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-report-h="3"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-report-h="4"]:hover { border-bottom:3px solid #CBD5E1 !important; color:#0E2350 !important }
+[data-report-h="5"]:hover { color:#0E2350 !important; text-decoration:underline !important }
+[data-report-h="6"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-report-h="7"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-report-h="8"]:hover { background:#1D4ED8 !important; color:#FFFFFF !important }
+[data-report-h="9"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-report-h="10"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-report-h="11"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-report-h="12"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+[data-report-h="13"]:hover { color:#FFFFFF !important; text-decoration:underline !important }
+/* Scoped design-context reset: the verified design renders on browser defaults
+   (content-box), the app runs Tailwind preflight (border-box). Restore the
+   design context inside the landing wrapper only. */
+.st-landing, .st-landing *, .st-landing *::before, .st-landing *::after { box-sizing: content-box; }
+.st-landing { line-height: normal; font-family: 'Google Sans', -apple-system, 'Segoe UI', system-ui, sans-serif; color: #475569; -webkit-font-smoothing: antialiased; }
+
+/* Material-3-style landing cards — hover lift + link emphasis */
+.st-gcard:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(14,35,80,.12); border-color: #DBEAFE; }
+.st-gcard-dark:hover { box-shadow: 0 16px 40px rgba(14,35,80,.28); }
+.st-gcard:hover .st-gcard-link span:first-child { filter: brightness(.95); }
+.st-usp-cta:hover { filter: brightness(1.05); }

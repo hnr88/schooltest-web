@@ -34,7 +34,7 @@ async function PublicSiteBanner({ settings }: PublicSiteBannerProps) {
       <Container className="flex max-w-eald flex-wrap items-center gap-3 py-3">
         {maintenance ? <Icon aria-hidden="true" className="size-4.5 shrink-0" /> : null}
         <span className="inline-flex shrink-0 items-center rounded-md bg-navy-900 px-2.5 py-1 text-xs font-bold tracking-widest text-white uppercase">
-          {t('Eald.notice.label')}
+          {t('Landing.notice.label')}
         </span>
         <p className="min-w-0 text-body-sm font-medium break-words">
           {message}{' '}
@@ -42,7 +42,7 @@ async function PublicSiteBanner({ settings }: PublicSiteBannerProps) {
             href="/#register"
             className="font-semibold text-primary underline-offset-2 hover:underline"
           >
-            {t('Eald.notice.cta')}
+            {t('Landing.notice.cta')}
           </Link>
         </p>
       </Container>

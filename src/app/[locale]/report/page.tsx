@@ -1,41 +1,41 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { LandingTeachContent } from '@/modules/landing';
+import { LandingReportContent } from '@/modules/landing';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
 import { getPublicSettings } from '@/modules/settings';
 
-interface TeachPageProps {
+interface ReportPageProps {
   params: Promise<{ locale: string }>;
 }
 
-export async function generateMetadata({ params }: TeachPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ReportPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations('Landing.meta');
   const settings = await getPublicSettings();
   return buildPageMetadata({
-    title: t('teachTitle'),
-    description: t('teachDescription'),
-    pathname: '/teach',
+    title: t('reportTitle'),
+    description: t('reportDescription'),
+    pathname: '/report',
     locale,
     siteName: settings.site_name,
   });
 }
 
-export default async function TeachPage({ params }: TeachPageProps) {
+export default async function ReportPage({ params }: ReportPageProps) {
   const { locale } = await params;
   const t = await getTranslations('Landing.meta');
 
   return (
     <>
-      <BreadcrumbJsonLd pathname="/teach" locale={locale} />
+      <BreadcrumbJsonLd pathname="/report" locale={locale} />
       <PublicPageJsonLd
-        pathname="/teach"
+        pathname="/report"
         locale={locale}
-        title={t('teachTitle')}
-        description={t('teachDescription')}
+        title={t('reportTitle')}
+        description={t('reportDescription')}
       />
-      <LandingTeachContent />
+      <LandingReportContent />
     </>
   );
 }

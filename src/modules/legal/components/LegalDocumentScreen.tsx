@@ -1,7 +1,7 @@
 import { getFormatter, getTranslations } from 'next-intl/server';
 
 import { Container } from '@/modules/design-system';
-import { EaldFooter, EaldHeader } from '@/modules/eald';
+import { LandingFooter, LandingHeader } from '@/modules/landing';
 import { LegalSection } from '@/modules/legal/components/LegalSection';
 import { LegalTableOfContents } from '@/modules/legal/components/LegalTableOfContents';
 import { PublicBreadcrumb } from '@/modules/navigation';
@@ -25,7 +25,7 @@ async function LegalDocumentScreen({ document, pathname, locale }: LegalDocument
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <EaldHeader />
+      <LandingHeader />
       <BreadcrumbJsonLd pathname={pathname} locale={locale} currentLabel={document.title} />
       <PublicPageJsonLd
         pathname={pathname}
@@ -66,7 +66,7 @@ async function LegalDocumentScreen({ document, pathname, locale }: LegalDocument
           </div>
         </Container>
       </main>
-      <EaldFooter />
+      <LandingFooter />
     </div>
   );
 }
