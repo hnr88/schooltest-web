@@ -15,7 +15,7 @@ function TrendDelta({ label, tone = 'neutral', showIcon = true, className }: Tre
     <span
       data-slot="trend-delta"
       className={cn(
-        'inline-flex items-center gap-1.5 text-meta font-semibold',
+        'inline-flex min-w-0 max-w-full items-center gap-1.5 text-meta font-semibold',
         TONE_CLASSES[tone],
         className,
       )}
@@ -23,7 +23,9 @@ function TrendDelta({ label, tone = 'neutral', showIcon = true, className }: Tre
       {showIcon ? (
         <Icon aria-hidden="true" className="size-3.5 shrink-0" strokeWidth={2.6} />
       ) : null}
-      {label}
+      <span className="min-w-0 truncate" title={label}>
+        {label}
+      </span>
     </span>
   );
 }

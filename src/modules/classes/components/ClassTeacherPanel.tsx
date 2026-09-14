@@ -73,9 +73,11 @@ export function ClassTeacherPanel({ schoolClass }: ClassTeacherPanelProps) {
         ) : (
           <li
             data-slot="class-teacher-chip"
-            className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card pr-1.5 pl-3.5 text-sm font-medium text-body"
+            className="inline-flex h-9 min-w-0 max-w-full items-center gap-1.5 rounded-full border border-border bg-card pr-1.5 pl-3.5 text-sm font-medium text-body"
           >
-            <span>{teacherName}</span>
+            <span className="min-w-0 truncate" title={teacherName}>
+              {teacherName}
+            </span>
             <IconButton
               icon={XIcon}
               size="sm"

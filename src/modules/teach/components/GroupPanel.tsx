@@ -40,11 +40,12 @@ export function GroupPanel({ groups, onSelectStudent }: GroupPanelProps) {
             </div>
             <ul className="flex flex-wrap gap-x-3 gap-y-1">
               {group.student_refs.map((ref, index) => (
-                <li key={`${ref}-${index}`}>
+                <li key={`${ref}-${index}`} className="min-w-0 max-w-full">
                   <button
                     type="button"
+                    title={ref}
                     onClick={() => onSelectStudent(ref)}
-                    className="rounded-lg px-1 py-0.5 text-sm font-medium text-primary transition-colors duration-150 hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    className="max-w-full truncate rounded-lg px-1 py-0.5 text-sm font-medium text-primary transition-colors duration-150 hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
                     {ref}
                   </button>

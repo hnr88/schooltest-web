@@ -47,7 +47,9 @@ export function OpsImportPreviewTables({ preview }: OpsImportPreviewTablesProps)
                 {preview.skip_existing.map((row) => (
                   <TableRow key={row.row}>
                     <TableCell>{row.row}</TableCell>
-                    <TableCell>{row.student_documentId}</TableCell>
+                    <TableCell className="max-w-[220px] truncate" title={row.student_documentId}>
+                      {row.student_documentId}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -70,7 +72,9 @@ export function OpsImportPreviewTables({ preview }: OpsImportPreviewTablesProps)
                 {preview.reject.map((row) => (
                   <TableRow key={row.row}>
                     <TableCell>{row.row}</TableCell>
-                    <TableCell>{row.reason}</TableCell>
+                    <TableCell className="max-w-[320px] truncate" title={row.reason}>
+                      {row.reason}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

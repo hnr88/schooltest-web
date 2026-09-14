@@ -37,8 +37,13 @@ export function ReviewStep({ payload, onConfirm, onBack }: ReviewStepProps) {
         <dl className="mt-2 divide-y divide-border rounded-lg border border-border">
           {schoolRows.map(([label, value]) => (
             <div key={label} className="flex justify-between gap-4 px-4 py-2.5">
-              <dt className="text-body-sm text-muted-foreground">{label}</dt>
-              <dd className="text-body-sm font-medium text-foreground">{value}</dd>
+              <dt className="shrink-0 truncate text-body-sm text-muted-foreground">{label}</dt>
+              <dd
+                title={value}
+                className="min-w-0 truncate text-right text-body-sm font-medium text-foreground"
+              >
+                {value}
+              </dd>
             </div>
           ))}
         </dl>
@@ -57,11 +62,17 @@ export function ReviewStep({ payload, onConfirm, onBack }: ReviewStepProps) {
         ) : (
           <ul className="mt-2 divide-y divide-border rounded-lg border border-border">
             {teachers.map((teacher) => (
-              <li key={teacher.email} className="flex flex-col gap-0.5 px-4 py-2.5">
-                <span className="text-body-sm font-medium text-foreground">
+              <li key={teacher.email} className="flex min-w-0 flex-col gap-0.5 px-4 py-2.5">
+                <span
+                  className="truncate text-body-sm font-medium text-foreground"
+                  title={`${teacher.first_name} ${teacher.last_name}`}
+                >
                   {teacher.first_name} {teacher.last_name}
                 </span>
-                <span className="text-body-sm text-muted-foreground">
+                <span
+                  className="truncate text-body-sm text-muted-foreground"
+                  title={`${teacher.email} · ${t(`teachers.roles.${teacher.role}`)}`}
+                >
                   {teacher.email} · {t(`teachers.roles.${teacher.role}`)}
                 </span>
               </li>

@@ -49,7 +49,7 @@ function MetricCard({
           {/* two lines reserved so a row of cards keeps one value baseline in every locale */}
           <span
             className={cn(
-              'line-clamp-2 min-h-10 text-body-sm font-semibold text-balance',
+              'line-clamp-2 min-h-10 min-w-0 break-words text-body-sm font-semibold text-balance',
               LABEL_TONES[tone],
             )}
           >
@@ -65,7 +65,10 @@ function MetricCard({
             <Icon className="size-4" />
           </span>
         </div>
-        <p className={cn('mt-2.5 font-bold tabular-nums', VALUE_SIZES[size], VALUE_TONES[tone])}>
+        <p
+          className={cn('mt-2.5 truncate font-bold tabular-nums', VALUE_SIZES[size], VALUE_TONES[tone])}
+          title={value}
+        >
           {value}
         </p>
         {delta && !isNavy ? (

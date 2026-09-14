@@ -125,16 +125,17 @@ function PillRow({
             aria-pressed={active}
             disabled={disabled}
             data-slot={`directory-filter-pill-${option.value}`}
+            title={option.label}
             onClick={() => write(option.value)}
-            className={`rounded-full border px-3 py-1 text-sm font-medium transition-colors ${
+            className={`flex min-w-0 max-w-full items-center rounded-full border px-3 py-1 text-sm font-medium transition-colors ${
               active
                 ? 'border-primary bg-primary text-primary-foreground'
                 : 'border-border bg-card text-foreground hover:border-primary'
             }`}
           >
-            {option.label}
+            <span className="min-w-0 truncate">{option.label}</span>
             {count === undefined ? null : (
-              <span className={active ? 'ml-2 opacity-80' : 'ml-2 text-muted-foreground'}>
+              <span className={`flex-none ${active ? 'ml-2 opacity-80' : 'ml-2 text-muted-foreground'}`}>
                 {count}
               </span>
             )}

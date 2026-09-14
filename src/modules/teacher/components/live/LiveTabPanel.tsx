@@ -59,7 +59,7 @@ function LiveTabPanel({ classDocumentId, sessionId }: { classDocumentId: string;
       <div>
         <h2 className="text-[20px] font-semibold text-navy-900">{t('title')}</h2>
         {subtitle === null ? null : (
-          <p data-slot="live-subtitle" className="mt-1.5 text-[13.5px] text-[#6B7280]">
+          <p data-slot="live-subtitle" className="mt-1.5 break-words text-[13.5px] text-[#6B7280]">
             {subtitle}
           </p>
         )}

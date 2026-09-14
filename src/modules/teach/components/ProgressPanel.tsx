@@ -66,7 +66,7 @@ export function ProgressPanel({ classId }: ProgressPanelProps) {
                 data-slot="progress-student"
                 className="flex flex-col gap-3 rounded-xl border border-border bg-card px-4 py-3"
               >
-                <span className="text-sm font-semibold text-foreground">
+                <span className="truncate text-sm font-semibold text-foreground" title={row.student.name}>
                   {row.student.name}
                 </span>
                 <ul data-slot="progress-movements" className="flex flex-col gap-2">

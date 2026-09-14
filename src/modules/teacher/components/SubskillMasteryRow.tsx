@@ -32,7 +32,9 @@ function SubskillMasteryRow({ row }: SubskillMasteryRowProps) {
       data-flag={row.flag?.kind}
     >
       <div className="flex flex-wrap items-baseline gap-2.5">
-        <span className="text-[13.5px] font-semibold text-navy-900">{tv(row.labelKey)}</span>
+        <span className="min-w-0 truncate text-[13.5px] font-semibold text-navy-900" title={tv(row.labelKey)}>
+          {tv(row.labelKey)}
+        </span>
         {row.flag === null ? null : (
           <ToneChip tone={INSIGHTS_FLAG_CHIP_TONE[row.flag.kind]} size="xs">
             {tv(row.flag.labelKey)}

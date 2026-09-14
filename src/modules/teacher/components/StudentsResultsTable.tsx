@@ -81,7 +81,8 @@ function StudentsResultsTable({ classDocumentId, view }: StudentsResultsTablePro
             <span
               role="cell"
               data-slot="student-weakest"
-              className={cn(STUDENTS_COLUMN.weakest, 'text-[13.5px] text-[#4B5563]')}
+              className={cn(STUDENTS_COLUMN.weakest, 'truncate text-[13.5px] text-[#4B5563]')}
+              title={row.weakest === null ? undefined : tVm(row.weakest.labelKey)}
             >
               {row.weakest === null ? tKit('noValue') : tVm(row.weakest.labelKey)}
             </span>

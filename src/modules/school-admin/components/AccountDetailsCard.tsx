@@ -33,13 +33,19 @@ export function AccountDetailsCard({ school, adminEmail }: AccountDetailsCardPro
       <PanelHeaderRow as="h2" title={t('account.detailsTitle')} className="pb-4" />
       <KeyValueList className="gap-0">
         <KeyValueRow label={t('account.schoolLabel')} className="py-3.5">
-          {school.name}
+          <span className="block truncate" title={school.name}>
+            {school.name}
+          </span>
         </KeyValueRow>
         <KeyValueRow label={t('account.locationLabel')} className="py-3.5">
-          {location === '' ? t('account.notSet') : location}
+          <span className="block truncate" title={location === '' ? t('account.notSet') : location}>
+            {location === '' ? t('account.notSet') : location}
+          </span>
         </KeyValueRow>
         <KeyValueRow label={t('account.adminLabel')} className="py-3.5">
-          {adminEmail ?? t('account.notSet')}
+          <span className="block truncate" title={adminEmail ?? t('account.notSet')}>
+            {adminEmail ?? t('account.notSet')}
+          </span>
         </KeyValueRow>
         <KeyValueRow label={t('account.statusLabel')} className="py-3.5">
           <span className="inline-flex flex-wrap items-center justify-end gap-2">

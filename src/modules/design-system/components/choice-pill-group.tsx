@@ -27,7 +27,9 @@ function PillBody({ option, selected }: { option: ChoiceOption; selected: boolea
   return (
     <>
       {Icon ? <Icon aria-hidden="true" className="size-3.5 shrink-0" /> : null}
-      <span className="truncate">{option.label}</span>
+      <span className="min-w-0 truncate" title={option.label}>
+        {option.label}
+      </span>
       {selected ? <Check aria-hidden="true" className="size-3 shrink-0 stroke-3" /> : null}
     </>
   );

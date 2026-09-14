@@ -54,16 +54,25 @@ function TopbarBreadcrumb() {
                 {crumb.isCurrent ? (
                   <BreadcrumbPage
                     data-slot="topbar-page-title"
+                    title={label ?? undefined}
                     className="truncate font-semibold text-foreground"
                   >
                     {label}
                   </BreadcrumbPage>
                 ) : crumb.isNonLink ? (
-                  <BreadcrumbPage data-slot="topbar-crumb-text" className={CRUMB_TEXT_CLASSES}>
+                  <BreadcrumbPage
+                    data-slot="topbar-crumb-text"
+                    title={label ?? undefined}
+                    className={CRUMB_TEXT_CLASSES}
+                  >
                     {label}
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink render={<Link href={crumb.href} />} className={CRUMB_LINK_CLASSES}>
+                  <BreadcrumbLink
+                    render={<Link href={crumb.href} />}
+                    title={label ?? undefined}
+                    className={CRUMB_LINK_CLASSES}
+                  >
                     {label}
                   </BreadcrumbLink>
                 )}

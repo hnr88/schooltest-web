@@ -68,7 +68,7 @@ function NotificationFeedItem({
         <NotificationCategoryIcon category={notification.category} />
       </span>
       <div className="flex min-w-0 flex-1 flex-col">
-        <h3 className="text-lede font-semibold text-foreground">
+        <h3 className="truncate text-lede font-semibold text-foreground" title={notification.title}>
           {notification.linkUrl ? (
             <Link
               href={notification.linkUrl}
@@ -83,7 +83,7 @@ function NotificationFeedItem({
         <span className="sr-only">{t(`categories.${notification.category}`)}</span>
         {isUnread ? <span className="sr-only">{t('unread')}</span> : null}
         {notification.body ? (
-          <p className="mt-0.5 text-caption leading-normal text-body">{notification.body}</p>
+          <p className="mt-0.5 text-caption leading-normal text-body break-words">{notification.body}</p>
         ) : null}
         <p className="mt-1.25 text-meta text-muted-foreground">
           <time dateTime={notification.createdAt}>{timeLabel}</time>

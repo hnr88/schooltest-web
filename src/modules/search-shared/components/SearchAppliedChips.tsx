@@ -33,7 +33,9 @@ function SearchAppliedChips({ chips, emptyLabel, removeLabel }: SearchAppliedChi
             'duration-200 ease-out-expo animate-in fade-in zoom-in-95 motion-reduce:animate-none',
           )}
         >
-          <span className="max-w-40 truncate">{chip.label}</span>
+          <span className="max-w-40 truncate" title={chip.label}>
+            {chip.label}
+          </span>
           <X aria-hidden="true" className="size-3 shrink-0 stroke-3" />
         </button>
       ))}

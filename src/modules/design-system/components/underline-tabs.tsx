@@ -43,7 +43,9 @@ function UnderlineTabs({
       <TabsList variant="line" aria-label={ariaLabel} className={LIST_CLASSES}>
         {options.map((option) => (
           <TabsTrigger key={option.value} value={option.value} className={TRIGGER_CLASSES}>
-            {option.label}
+            <span className="min-w-0 truncate" title={option.label}>
+              {option.label}
+            </span>
           </TabsTrigger>
         ))}
       </TabsList>

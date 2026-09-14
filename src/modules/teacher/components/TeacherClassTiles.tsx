@@ -36,7 +36,9 @@ function TeacherClassTile({ row }: { row: ClassRowView }) {
         <span className="flex min-w-0 items-center gap-3">
           <ClassBadge code={row.badge} size="md" />
           <span className="min-w-0">
-            <span className="block truncate text-[15px] font-semibold text-navy-900">{row.name}</span>
+            <span className="block truncate text-[15px] font-semibold text-navy-900" title={row.name}>
+              {row.name}
+            </span>
             {meta === null ? null : <span className="mt-0.5 block text-[12.5px] text-[#6B7280]">{meta}</span>}
           </span>
         </span>

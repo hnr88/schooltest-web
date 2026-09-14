@@ -44,9 +44,14 @@ export function OpsAccountCard() {
         {initial}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-[15px] font-semibold text-[#0E2350]">{name || t('title')}</p>
+        <p className="truncate text-[15px] font-semibold text-[#0E2350]" title={name || t('title')}>
+          {name || t('title')}
+        </p>
         {actor ? (
-          <p className="mt-0.5 text-[13px] text-[#7C8698]">
+          <p
+            className="mt-0.5 truncate text-[13px] text-[#7C8698]"
+            title={`${actor.email} · ${t('role')}`}
+          >
             {actor.email} · {t('role')}
           </p>
         ) : null}

@@ -18,6 +18,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  MissingDependencyNotice,
   SelectField,
 } from '@/modules/design-system';
 import {
@@ -47,7 +48,6 @@ import {
 } from '@/modules/ops/lib/student-actions';
 import {
   OPS_STUDENT_YEAR_LEVELS,
-  opsStudentClassOptions,
   opsStudentDestinationClassOptions,
   opsStudentFullName,
   opsStudentStatusFilterValue,
@@ -60,7 +60,6 @@ import {
   type MoveStudentClassTarget,
 } from '@/modules/ops/queries/use-student-actions.mutation';
 import { useClassesListQuery } from '@/modules/ops/queries/use-classes-list.query';
-import { useTeachersListQuery } from '@/modules/ops/queries/use-teachers-list.query';
 import { useStudentsListQuery } from '@/modules/ops/queries/use-students-list.query';
 
 import type { OpsStudentsTabProps } from '@/modules/ops/types/students-list.types';
@@ -126,8 +125,12 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   // identical — gating it on `blockedReason()` would leave an operator whose
   // connection dropped with a dead confirm and no Retry.
   const locked = writeGate.readOnly;
-  const teachers = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
-  const classOptions = opsStudentClassOptions(teachers.data?.data ?? []);
+  // The class filter reads the school's OWN class list — every class appears
+  // even when it has no teacher assigned (the old teacher-directory-derived
+  // options silently hid unstaffed classes). One always-on read now feeds
+  // both this filter and the move-class destination picker below.
+  const classesList = useClassesListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
+  const classOptions = opsStudentDestinationClassOptions(classesList.data?.data ?? []);
   const [profileDocumentId, setProfileDocumentId] = useState<string | null>(null);
   const [lifecycleConfirm, setLifecycleConfirm] = useState<LifecycleConfirmState | null>(null);
   const [moveTargetRows, setMoveTargetRows] = useState<readonly OpsStudentRow[] | null>(null);
@@ -193,12 +196,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   const students = useStudentsListQuery(schoolDocumentId, query, true);
   const total = students.data?.meta.pagination.total ?? 0;
 
-  const destinationClasses = useClassesListQuery(
-    schoolDocumentId,
-    { pageSize: 200 },
-    moveTargetRows !== null,
-  );
-  const destinationOptions = opsStudentDestinationClassOptions(destinationClasses.data?.data ?? []);
+  const destinationOptions = opsStudentDestinationClassOptions(classesList.data?.data ?? []);
 
   const invalidateStudents = () => {
     void queryClient.invalidateQueries({ queryKey: ['ops', 'schools', schoolDocumentId, 'students'] });
@@ -377,15 +375,22 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
               {t('studentsMoveClassBody', { count: moveTargetRows?.length ?? 1 })}
             </DialogDescription>
           </DialogHeader>
-          <SelectField
-            id="ops-students-move-class-destination"
-            label={t('studentsMoveClassDestinationLabel')}
-            placeholder={t('studentsMoveClassPlaceholder')}
-            value={destinationClassDocumentId}
-            onValueChange={setDestinationClassDocumentId}
-            options={destinationOptions}
-            disabled={moveRunner.state.status === 'running'}
-          />
+          {/* No dependent dropdown renders empty: with no other class to move
+              to, the picker is replaced by the refusal. The CTA above is dead
+              anyway — its guard requires a destination. */}
+          {!classesList.isPending && destinationOptions.length === 0 ? (
+            <MissingDependencyNotice kind="destinationClasses" />
+          ) : (
+            <SelectField
+              id="ops-students-move-class-destination"
+              label={t('studentsMoveClassDestinationLabel')}
+              placeholder={t('studentsMoveClassPlaceholder')}
+              value={destinationClassDocumentId}
+              onValueChange={setDestinationClassDocumentId}
+              options={destinationOptions}
+              disabled={moveRunner.state.status === 'running' || classesList.isPending}
+            />
+          )}
           <DialogFooter>
             <Button
               type="button"

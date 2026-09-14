@@ -28,8 +28,13 @@ export function ClassDetailHeader({
       >
         {classBadge(schoolClass.name)}
       </span>
-      <div className="min-w-[200px] flex-1">
-        <h1 className="text-portal-heading font-medium text-foreground">{schoolClass.name}</h1>
+      <div className="min-w-0 flex-1">
+        <h1
+          className="truncate text-portal-heading font-medium text-foreground"
+          title={schoolClass.name ?? undefined}
+        >
+          {schoolClass.name}
+        </h1>
         <p className="mt-1 text-body-md text-[#7C8698]">
           {t('studentCount', { count: schoolClass.student_count })}
         </p>

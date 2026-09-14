@@ -30,6 +30,7 @@ import { STATUS_TONE } from '@/modules/teach/constants/components.constants';
 // strand.
 export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldownProps) {
   const t = useTranslations('Teach.diagnostic');
+  const heading = t('drilldownTitle', { student: row.student_ref });
 
   return (
     <section
@@ -38,8 +39,8 @@ export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldow
       className="flex flex-col gap-3 rounded-xl border border-primary bg-card px-4 py-4"
     >
       <div className="flex items-center justify-between gap-4">
-        <h3 className="text-lg font-semibold text-foreground">
-          {t('drilldownTitle', { student: row.student_ref })}
+        <h3 className="min-w-0 truncate text-lg font-semibold text-foreground" title={heading}>
+          {heading}
         </h3>
         <button
           type="button"
@@ -61,7 +62,9 @@ export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldow
               data-status={attribute?.status ?? 'none'}
               className="flex items-center justify-between gap-4 rounded-lg border border-border px-3 py-2"
             >
-              <span className="text-sm font-medium text-foreground">{t(`areas.${code}`)}</span>
+              <span className="min-w-0 truncate text-sm font-medium text-foreground" title={t(`areas.${code}`)}>
+                {t(`areas.${code}`)}
+              </span>
               {attribute ? (
                 <StatusPill tone={STATUS_TONE[attribute.status]}>
                   {t(`status.${attribute.status}`)}

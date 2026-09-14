@@ -17,7 +17,9 @@ export function StudentDetailSubtitle({ student }: StudentDetailSubtitleProps) {
 
   return (
     <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-body">
-      <span>{student.class.name}</span>
+      <span className="max-w-full truncate" title={student.class.name ?? undefined}>
+        {student.class.name}
+      </span>
       <span aria-hidden className="text-muted-foreground">
         |
       </span>

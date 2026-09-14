@@ -18,14 +18,16 @@ export function StaffNameCell({ row }: { row: StaffRow }) {
   const name = `${row.first_name} ${row.last_name}`.trim() || row.email;
 
   return (
-    <PersonCell
-      name={name}
-      secondary={
-        row.expires_at
-          ? t('expiresOn', { date: format(new Date(row.expires_at), 'd MMM yyyy') })
-          : undefined
-      }
-    />
+    <span className="block min-w-0 truncate" title={name}>
+      <PersonCell
+        name={name}
+        secondary={
+          row.expires_at
+            ? t('expiresOn', { date: format(new Date(row.expires_at), 'd MMM yyyy') })
+            : undefined
+        }
+      />
+    </span>
   );
 }
 

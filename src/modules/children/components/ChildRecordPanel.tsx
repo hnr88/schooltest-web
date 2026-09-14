@@ -21,7 +21,9 @@ function FactList({ facts }: { facts: ChildProfileFact[] }) {
     <KeyValueList>
       {facts.map((fact) => (
         <KeyValueRow key={fact.label} label={fact.label}>
-          {fact.value}
+          <span className="block truncate text-right" title={fact.value ?? undefined}>
+            {fact.value}
+          </span>
         </KeyValueRow>
       ))}
     </KeyValueList>

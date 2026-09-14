@@ -31,21 +31,25 @@ function IdleClassChips({
       </h2>
       {classes.length > 0 ? (
         <ul className="mt-3 flex flex-wrap gap-2">
-          {classes.map((klass) => (
-            <li key={klass.classDocumentId}>
-              <button
-                type="button"
-                data-class-id={klass.classDocumentId}
-                onClick={() => onStart(klass.classDocumentId)}
-                className={cn(
-                  'cursor-pointer rounded-[8px] border border-transparent bg-[#F5F6F8] px-[13px] py-[7px] text-[13px] font-medium text-[#374151] transition-colors hover:border-navy-900 motion-reduce:transition-none',
-                  KIT_FOCUS_RING,
-                )}
-              >
-                {t('idleChip', { name: klass.name, count: klass.studentCount })}
-              </button>
-            </li>
-          ))}
+          {classes.map((klass) => {
+            const label = t('idleChip', { name: klass.name, count: klass.studentCount });
+            return (
+              <li key={klass.classDocumentId} className="min-w-0 max-w-full">
+                <button
+                  type="button"
+                  data-class-id={klass.classDocumentId}
+                  onClick={() => onStart(klass.classDocumentId)}
+                  title={label}
+                  className={cn(
+                    'block max-w-full cursor-pointer truncate rounded-[8px] border border-transparent bg-[#F5F6F8] px-[13px] py-[7px] text-[13px] font-medium text-[#374151] transition-colors hover:border-navy-900 motion-reduce:transition-none',
+                    KIT_FOCUS_RING,
+                  )}
+                >
+                  {label}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p className="mt-3 text-[13px] text-[#6B7280]">{t('idleEmpty')}</p>

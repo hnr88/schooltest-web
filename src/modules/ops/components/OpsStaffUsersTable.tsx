@@ -621,9 +621,13 @@ export function OpsStaffUsersTable({
                 {initial}
               </span>
               <span className="flex min-w-0 flex-col">
-                <span className="truncate text-[14.5px] font-semibold text-foreground">{title}</span>
+                <span className="truncate text-[14.5px] font-semibold text-foreground" title={title}>
+                  {title}
+                </span>
                 {email !== null && email !== title ? (
-                  <span className="mt-0.5 truncate text-[12.5px] text-[#7C8698]">{email}</span>
+                  <span className="mt-0.5 truncate text-[12.5px] text-[#7C8698]" title={email}>
+                    {email}
+                  </span>
                 ) : null}
               </span>
             </span>
@@ -646,7 +650,14 @@ export function OpsStaffUsersTable({
         key: 'specialty',
         header: t('columnSpecialty'),
         grid: 'text',
-        cell: (row) => noValueIfMissing(row.kind === 'user' ? row.row.teaching_specialty : null),
+        cell: (row) => {
+          const specialty = noValueIfMissing(row.kind === 'user' ? row.row.teaching_specialty : null);
+          return (
+            <span className="block max-w-[200px] truncate" title={specialty}>
+              {specialty}
+            </span>
+          );
+        },
       },
       {
         key: 'last_active_at',

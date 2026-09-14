@@ -28,7 +28,12 @@ function CompletionCell({ value, display, ariaLabel, className }: CompletionCell
           style={{ width: `${width}%` }}
         />
       </span>
-      <span className="shrink-0 text-meta font-semibold text-body tabular-nums">{display}</span>
+      <span
+        className="max-w-full shrink-0 truncate text-meta font-semibold text-body tabular-nums"
+        title={display}
+      >
+        {display}
+      </span>
     </div>
   );
 }

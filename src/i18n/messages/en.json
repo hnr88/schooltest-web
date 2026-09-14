@@ -3220,7 +3220,7 @@
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
       "teacherLoadError": "We could not load your teachers",
-      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "teacherLoadErrorDescription": "We could not verify the teachers, so the class cannot be created yet. Check your connection and try again.",
       "importTitle": "Import students",
       "importDescription": "Upload a CSV or paste student data below",
       "importErrorsTitle": "Some rows could not be read",
@@ -3232,7 +3232,8 @@
       "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
-      "errorToast": "That did not work. Try again."
+      "errorToast": "That did not work. Try again.",
+      "retry": "Try again"
     },
     "studentDetailMeta": {
       "title": "Student results - SchoolTest",
@@ -3289,8 +3290,10 @@
       "successTitle": "Teachers assigned",
       "successDescription": "{teachers, plural, one {# teacher} other {# teachers}} set on {classes, plural, one {# class} other {# classes}}.",
       "cancel": "Cancel",
-      "submit": "Assign"
-    }
+      "submit": "Assign",
+      "noClasses": "No classes to assign yet."
+    },
+    "noEligibleTeachersHint": "No eligible teachers yet — invite a teacher to create a class."
   },
   "SchoolStudents": {
     "meta": {
@@ -3426,7 +3429,8 @@
       "seatCapToast": "Your school has no seats left. Contact SchoolTest to add seats.",
       "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
       "forbiddenToast": "You do not have permission to change students.",
-      "genericToast": "That did not work. Try again."
+      "genericToast": "That did not work. Try again.",
+      "classNoClassesHint": "No classes yet — create one under Classes to place this student."
     },
     "validation": {
       "givenNameRequired": "Enter the student's given name.",
@@ -3456,7 +3460,9 @@
       "alreadyImportedToast": "Every student in this file is already in your school.",
       "successSkippedToast": "{created} imported, {skipped, plural, one {# already enrolled} other {# already enrolled}}.",
       "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
-      "tooBigToast": "That file is too large. The limit is 5 MB."
+      "tooBigToast": "That file is too large. The limit is 5 MB.",
+      "classLoadErrorTitle": "We could not load your classes",
+      "classLoadErrorDescription": "Check your connection and try again."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -4048,7 +4054,8 @@
         "formSummary": "{count, plural, one {# field needs attention} other {# fields need attention}}",
         "saveErrorGeneric": "Couldn't save the class — nothing was changed",
         "savedToast": "{name} updated",
-        "createdToast": "{name} created"
+        "createdToast": "{name} created",
+        "noWindowsHint": "No test windows yet — leave this empty, or create one first."
       },
       "rosterSearchPlaceholder": "Search students",
       "rosterCount": "{count, plural, =0 {No students} one {# student} other {# students}}",
@@ -4163,7 +4170,8 @@
             "body": "Students stay enrolled at the school but the classes are hidden from teachers.",
             "cta": "Archive {count}"
           }
-        }
+        },
+        "teacherSkip": "{skipped} with no teacher"
       },
       "reassign": {
         "title": "Reassign teacher",
@@ -5180,7 +5188,32 @@
     "toggleSidebar": "Toggle Sidebar",
     "loading": "Loading",
     "commandPalette": "Command Palette",
-    "commandPaletteDescription": "Search for a command to run..."
+    "commandPaletteDescription": "Search for a command to run...",
+    "missingDependency": {
+      "classes": {
+        "title": "No classes yet",
+        "description": "You need at least one class before you can continue. Create a class first.",
+        "cta": "Create a class"
+      },
+      "destinationClasses": {
+        "title": "No other class to move to",
+        "description": "There is no other class to move to yet. Create another class first."
+      },
+      "teachers": {
+        "title": "No teachers yet",
+        "description": "There are no teachers to assign yet. You can continue without one, or invite a teacher first.",
+        "cta": "Invite a teacher"
+      },
+      "eligibleTeachers": {
+        "title": "No eligible teachers",
+        "description": "Creating a class needs at least one active teacher. Invite a teacher first, then create the class.",
+        "cta": "Invite a teacher"
+      },
+      "forms": {
+        "title": "No reading forms available",
+        "description": "This needs at least one reading form. Create a form first, then try again."
+      }
+    }
   },
   "Directory": {
     "defaults": {

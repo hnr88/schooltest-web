@@ -23,10 +23,11 @@ export function StudentLevelBadge({ phase, compact }: StudentLevelBadgeProps) {
   return (
     <span
       data-slot="student-level-badge"
+      title={t(`form.acaraPhaseOption.${level}`)}
       className={
         compact
-          ? 'inline-block rounded-full px-3 py-[5px] text-xs font-semibold'
-          : 'inline-block rounded-full px-[13px] py-1.5 text-xs font-semibold'
+          ? 'inline-block max-w-full truncate rounded-full px-3 py-[5px] text-xs font-semibold'
+          : 'inline-block max-w-full truncate rounded-full px-[13px] py-1.5 text-xs font-semibold'
       }
       style={{ color: tone.fg, backgroundColor: tone.bg }}
     >

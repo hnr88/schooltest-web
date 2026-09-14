@@ -41,12 +41,15 @@ export function WizardChipGroup({
           {...getItemProps(option.value)}
           data-slot="wizard-chip"
           className={cn(
+            'max-w-full',
             WIZARD_CHIP,
             size === 'wide' ? 'px-4.5' : 'px-3.75',
             option.value === value ? WIZARD_CHIP_SELECTED : WIZARD_CHIP_IDLE,
           )}
         >
-          <span className="truncate">{option.label}</span>
+          <span className="min-w-0 truncate" title={option.label}>
+            {option.label}
+          </span>
         </button>
       ))}
     </div>

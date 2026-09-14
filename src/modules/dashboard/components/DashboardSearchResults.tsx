@@ -61,8 +61,21 @@ export function DashboardSearchResults({
                   index === activeIndex && 'bg-muted',
                 )}
               >
-                <span>{getStudentDisplayName(student, tChildren('unknownStudent'))}</span>
-                <span className="text-xs font-normal text-muted-foreground">
+                <span
+                  className="min-w-0 truncate"
+                  title={getStudentDisplayName(student, tChildren('unknownStudent'))}
+                >
+                  {getStudentDisplayName(student, tChildren('unknownStudent'))}
+                </span>
+                <span
+                  className="min-w-0 truncate text-xs font-normal text-muted-foreground"
+                  title={[
+                    student.year_level ? t('yearLevelOption', { level: student.year_level }) : null,
+                    student.email,
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')}
+                >
                   {[
                     student.year_level ? t('yearLevelOption', { level: student.year_level }) : null,
                     student.email,

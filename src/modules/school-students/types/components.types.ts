@@ -3,6 +3,7 @@ import type { DirectoryFilterDef, DirectoryMeta, DirectoryQueryStatus, Directory
 import type { StudentFormTarget } from '@/modules/school-students/types/hooks.types';
 import type { SchoolStudentFormValues } from '@/modules/school-students/schemas/school-student.schema';
 import type { SchoolStudent, SchoolStudentRecord } from '@/modules/school-students/types/school-students.types';
+import type { StudentImportClassesState } from '@/modules/student-import/types/components.types';
 import type { UseFormReturn } from 'react-hook-form';
 
 export interface ArchiveStudentDialogProps {
@@ -53,7 +54,7 @@ export interface StudentLevelBadgeProps {
 }
 
 export interface StudentImportDialogProps {
-  classes: SchoolClass[];
+  classes: StudentImportClassesState;
   onClose: () => void;
 }
 

@@ -44,10 +44,15 @@ export function AccountPlanCard({ entitlement }: AccountPlanCardProps) {
             <div className="text-meta font-semibold uppercase tracking-overline text-navy-muted">
               {t('account.currentPlanLabel')}
             </div>
-            <div className="mt-2.5 text-portal-heading font-bold">
+            <div
+              className="mt-2.5 truncate text-portal-heading font-bold"
+              title={t(`account.plan.${entitlement.plan}`)}
+            >
               {t(`account.plan.${entitlement.plan}`)}
             </div>
-            <div className="mt-1.5 text-body-sm text-navy-muted">{note}</div>
+            <div className="mt-1.5 truncate text-body-sm text-navy-muted" title={note}>
+              {note}
+            </div>
           </div>
           <div className="text-right">
             <div className="text-meta text-navy-muted">{t('account.seatsUsedLabel')}</div>
@@ -62,7 +67,10 @@ export function AccountPlanCard({ entitlement }: AccountPlanCardProps) {
         {entitlement.seats_remaining === 0 ? (
           <div className="relative mt-5.5 flex items-center gap-2.75 rounded-xl bg-surface-glass px-4 py-3.25 text-body-sm text-danger-soft-2">
             <CircleAlertIcon aria-hidden="true" className="size-4 shrink-0" strokeWidth={2.2} />
-            <span>
+            <span
+              className="min-w-0 truncate"
+              title={`${t('entitlement.seatCapTitle')} — ${t('entitlement.seatCapReached')}`}
+            >
               {t('entitlement.seatCapTitle')} — {t('entitlement.seatCapReached')}
             </span>
           </div>
@@ -70,10 +78,10 @@ export function AccountPlanCard({ entitlement }: AccountPlanCardProps) {
       </div>
       <div className="flex flex-wrap items-center justify-between gap-4 rounded-card bg-card p-6 px-7.5 shadow-sm">
         <div className="flex min-w-0 flex-col gap-0.5">
-          <span className="text-body-sm font-semibold text-foreground">
+          <span className="truncate text-body-sm font-semibold text-foreground" title={t('account.fullLicenseLabel')}>
             {t('account.fullLicenseLabel')}
           </span>
-          <span className="text-meta text-muted-foreground">
+          <span className="truncate text-meta text-muted-foreground" title={t('account.fullLicenseDescription')}>
             {t('account.fullLicenseDescription')}
           </span>
         </div>

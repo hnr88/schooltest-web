@@ -53,7 +53,10 @@ export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/t
           >
             {t('backLink')}
           </Link>
-          <h1 className="text-2xl font-semibold text-foreground">
+          <h1
+            className="truncate text-2xl font-semibold text-foreground"
+            title={data?.class.name ?? t('title')}
+          >
             {data?.class.name ?? t('title')}
           </h1>
           <p className="max-w-xl text-sm text-body">{t('subtitle')}</p>

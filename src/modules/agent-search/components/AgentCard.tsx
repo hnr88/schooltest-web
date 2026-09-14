@@ -41,12 +41,14 @@ function AgentCard({ hit }: { hit: AgentHit }) {
           />
         )}
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-panel-title font-bold text-foreground">{hit.name}</h3>
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <h3 className="min-w-0 max-w-full truncate text-panel-title font-bold text-foreground" title={hit.name}>
+              {hit.name}
+            </h3>
             {hit.verified ? <StatusPill tone="success">{t('verified')}</StatusPill> : null}
           </div>
           {subtitle ? (
-            <p className="line-clamp-2 text-body-sm text-muted-foreground">{subtitle}</p>
+            <p className="line-clamp-2 break-words text-body-sm text-muted-foreground">{subtitle}</p>
           ) : null}
         </div>
       </div>

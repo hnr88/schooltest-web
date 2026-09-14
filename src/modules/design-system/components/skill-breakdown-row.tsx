@@ -28,7 +28,9 @@ function SkillBreakdownRow({
       aria-label={`${label} ${verdict}`}
       className={cn('grid grid-cols-skill-row items-center gap-2.5 py-1.5', className)}
     >
-      <span className="truncate text-meta text-body">{label}</span>
+      <span className="min-w-0 truncate text-meta text-body" title={label}>
+        {label}
+      </span>
       <span className="block h-2.25 w-full overflow-hidden rounded-full bg-divider">
         <span
           className={cn(

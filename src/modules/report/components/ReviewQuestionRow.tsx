@@ -55,7 +55,10 @@ function ReviewQuestionRow({
       <div className="flex flex-wrap items-center gap-2.5">
         <span className="text-[13.5px] font-bold">{t('questionNumber', { n })}</span>
         {item.area ? (
-          <span className="rounded-full border border-[#ECEEF2] bg-[#F5F6F8] px-[11px] py-1 text-[12.5px] font-medium text-[#4B5563]">
+          <span
+            title={item.area}
+            className="max-w-full truncate rounded-full border border-[#ECEEF2] bg-[#F5F6F8] px-[11px] py-1 text-[12.5px] font-medium text-[#4B5563]"
+          >
             {item.area}
           </span>
         ) : null}
@@ -81,7 +84,7 @@ function ReviewQuestionRow({
           <p className={REVIEW_EYEBROW}>{t('theyAnswered')}</p>
           <p
             data-slot="review-given"
-            className={cn('mt-[5px] text-sm leading-[normal] font-semibold', unreached && 'font-normal text-[#9CA3AF] italic')}
+            className={cn('mt-[5px] text-sm leading-[normal] font-semibold break-words', unreached && 'font-normal text-[#9CA3AF] italic')}
           >
             {unreached ? t('unreached') : print(answerOf(item.given))}
           </p>
@@ -89,7 +92,7 @@ function ReviewQuestionRow({
         {(item.is_correct === false || unreached) && key.kind !== 'none' ? (
           <div className={REVIEW_ANSWER_BOX}>
             <p className={REVIEW_EYEBROW}>{t('correctAnswer')}</p>
-            <p data-slot="review-key" className="mt-[5px] text-sm leading-[normal] font-semibold text-[#1F7A4D]">
+            <p data-slot="review-key" className="mt-[5px] text-sm leading-[normal] font-semibold break-words text-[#1F7A4D]">
               {print(key)}
             </p>
           </div>

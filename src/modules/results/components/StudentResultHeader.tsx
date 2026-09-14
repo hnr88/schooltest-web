@@ -42,14 +42,14 @@ export function StudentResultHeader({ view, student }: { view: ResultView; stude
   const nonReading = skillSchema.options.filter((skill) => skill !== view.skill);
 
   return (
-    <header data-slot="result-header" className="flex flex-col gap-2">
+    <header data-slot="result-header" className="flex min-w-0 flex-col gap-2">
       <div className="flex items-center gap-3">
         <span aria-hidden className="flex size-10 items-center justify-center rounded-full bg-primary-soft text-sm font-bold text-primary-ink">
           {initialsOf(student)}
         </span>
-        <div>
-          <h1 className="text-h3 font-bold">{student.name}</h1>
-          <p className="text-caption text-muted-foreground">{student.className}</p>
+        <div className="min-w-0">
+          <h1 className="truncate text-h3 font-bold" title={student.name}>{student.name}</h1>
+          <p className="truncate text-caption text-muted-foreground" title={student.className}>{student.className}</p>
         </div>
       </div>
 
@@ -61,13 +61,18 @@ export function StudentResultHeader({ view, student }: { view: ResultView; stude
           <span
             data-slot="growth-pill"
             data-delta={growth}
-            className="rounded-full bg-primary-soft px-2 py-0.5 text-caption font-semibold text-primary-ink"
+            title={arrow ? t('deltaPts', { arrow, growth }) : growth}
+            className="max-w-full truncate rounded-full bg-primary-soft px-2 py-0.5 text-caption font-semibold text-primary-ink"
           >
             {arrow ? t('deltaPts', { arrow, growth }) : growth}
           </span>
         ) : null}
         {view.acara_phase !== null ? (
-          <span data-slot="acara-badge" className="rounded-full bg-muted px-2 py-0.5 text-caption font-semibold">
+          <span
+            data-slot="acara-badge"
+            title={t('acaraBadge', { phase: view.acara_phase })}
+            className="max-w-full truncate rounded-full bg-muted px-2 py-0.5 text-caption font-semibold"
+          >
             {t('acaraBadge', { phase: view.acara_phase })}
           </span>
         ) : null}
@@ -75,8 +80,9 @@ export function StudentResultHeader({ view, student }: { view: ResultView; stude
           <span
             data-slot="gate-badge"
             data-gate={view.gate.passed ? 'passed' : 'not_yet'}
+            title={view.gate.passed ? t('gatePassed') : t('gateNotYet')}
             className={cn(
-              'rounded-full px-2 py-0.5 text-caption font-semibold',
+              'max-w-full truncate rounded-full px-2 py-0.5 text-caption font-semibold',
               view.gate.passed ? 'bg-success-soft text-success-ink' : 'bg-warning-soft text-warning-ink',
             )}
           >
@@ -88,21 +94,24 @@ export function StudentResultHeader({ view, student }: { view: ResultView; stude
       {/* Skill switcher (§4.1): reading is the only assessed skill; the rest are
           honest coming-soon entries, never a silent empty tab. */}
       <nav data-slot="skill-switcher" aria-label={t('ariaSkillSwitcher')} className="flex gap-1">
-        {[view.skill, ...nonReading].map((skill) => (
-          <span
-            key={skill}
-            data-slot="skill-tab"
-            data-active={skill === view.skill}
-            aria-current={skill === view.skill ? 'page' : undefined}
-            className={cn(
-              'rounded-full px-3 py-1 text-caption font-semibold capitalize',
-              skill === view.skill ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground',
-            )}
-          >
-            {t(SKILL_KEY[skill] ?? skill)}
-            {skill === view.skill ? null : ` — ${t('comingSoon')}`}
-          </span>
-        ))}
+        {[view.skill, ...nonReading].map((skill) => {
+          const label = t(SKILL_KEY[skill] ?? skill) + (skill === view.skill ? '' : ` — ${t('comingSoon')}`);
+          return (
+            <span
+              key={skill}
+              data-slot="skill-tab"
+              data-active={skill === view.skill}
+              aria-current={skill === view.skill ? 'page' : undefined}
+              title={label}
+              className={cn(
+                'min-w-0 max-w-full truncate rounded-full px-3 py-1 text-caption font-semibold capitalize',
+                skill === view.skill ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground',
+              )}
+            >
+              {label}
+            </span>
+          );
+        })}
       </nav>
     </header>
   );

@@ -48,7 +48,12 @@ export function ErrorPatternsPanel({ view, studentName }: { view: ResultView; st
           return (
             <li key={pattern.type} data-slot="error-pattern" data-type={pattern.type} data-pct={pattern.pct} className="flex flex-col gap-1">
               <div className="flex items-baseline justify-between gap-2">
-                <span className="text-caption font-bold">{known !== undefined ? t(`errorPattern.${known}.label`) : pattern.type}</span>
+                <span
+                  className="min-w-0 truncate text-caption font-bold"
+                  title={known !== undefined ? t(`errorPattern.${known}.label`) : pattern.type}
+                >
+                  {known !== undefined ? t(`errorPattern.${known}.label`) : pattern.type}
+                </span>
                 <span className="text-caption tabular-nums text-muted-foreground">{pattern.pct}%</span>
               </div>
               <span className="h-1.5 w-full rounded-full bg-muted">

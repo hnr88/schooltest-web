@@ -32,7 +32,9 @@ function CriterionRow({ criterion }: { criterion: ReviewCriterion }) {
   return (
     <li className="rounded-lg border border-[#ECEEF2] px-[15px] py-[13px]">
       <div className="flex flex-wrap items-center gap-2.5">
-        <span className="min-w-[180px] flex-1 text-[13.5px] font-semibold">{criterion.name}</span>
+        <span className="min-w-[180px] flex-1 truncate text-[13.5px] font-semibold" title={criterion.name}>
+          {criterion.name}
+        </span>
         <span className={cn(REVIEW_CHIP, REVIEW_TONE_CHIP[criterion.tone])}>
           {criterion.max === null
             ? criterion.level
@@ -112,7 +114,7 @@ function ReviewAssistBlock({ item, controls }: { item: ReviewItem; controls: Rea
         <p className={REVIEW_EYEBROW}>{t('theyWrote')}</p>
         <p
           data-slot="review-answer"
-          className={cn('mt-[7px] text-sm leading-[1.6] whitespace-pre-wrap', text === null && 'text-[#9CA3AF] italic')}
+          className={cn('mt-[7px] text-sm leading-[1.6] break-words whitespace-pre-wrap', text === null && 'text-[#9CA3AF] italic')}
         >
           {text ?? t('blankText')}
         </p>

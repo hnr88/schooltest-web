@@ -153,7 +153,11 @@ export function TeachersTable({ rows }: TeachersTableProps) {
         // block owns the size/truncation, the cell only re-inks it.
         grid: 'text',
         className: 'min-w-[120px] flex-[2_1_150px]',
-        cell: (row) => <span className="text-[#7C8698]">{row.email}</span>,
+        cell: (row) => (
+          <span className="block truncate text-[#7C8698]" title={row.email}>
+            {row.email}
+          </span>
+        ),
       },
       {
         key: 'classes',

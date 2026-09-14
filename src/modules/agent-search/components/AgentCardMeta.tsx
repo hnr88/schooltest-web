@@ -23,14 +23,24 @@ function AgentCardMeta({ hit }: { hit: AgentHit }) {
   return (
     <div className="flex flex-col gap-3">
       {services.length > 0 ? (
-        <p className="line-clamp-1 text-meta text-muted-foreground">{services.join(' · ')}</p>
+        <p className="line-clamp-1 break-words text-meta text-muted-foreground" title={services.join(' · ')}>
+          {services.join(' · ')}
+        </p>
       ) : null}
       <KeyValueList>
         {hit.countriesServed.length > 0 ? (
-          <KeyValueRow label={t('card.countries')}>{hit.countriesServed.join(', ')}</KeyValueRow>
+          <KeyValueRow label={t('card.countries')}>
+            <span className="block truncate" title={hit.countriesServed.join(', ')}>
+              {hit.countriesServed.join(', ')}
+            </span>
+          </KeyValueRow>
         ) : null}
         {hit.languages.length > 0 ? (
-          <KeyValueRow label={t('card.languages')}>{hit.languages.join(', ')}</KeyValueRow>
+          <KeyValueRow label={t('card.languages')}>
+            <span className="block truncate" title={hit.languages.join(', ')}>
+              {hit.languages.join(', ')}
+            </span>
+          </KeyValueRow>
         ) : null}
       </KeyValueList>
       <p className="flex flex-wrap items-center gap-x-1.5 text-meta text-muted-foreground">

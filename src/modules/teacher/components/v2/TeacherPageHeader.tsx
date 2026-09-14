@@ -20,10 +20,15 @@ function TeacherPageHeader({ title, subtitle, meta, actions, className }: Teache
       )}
     >
       <div className="min-w-0">
-        <h1 className="m-0 text-[24px] leading-[normal] font-semibold tracking-[-0.025em] text-navy-900">
+        <h1
+          className="m-0 truncate text-[24px] leading-[normal] font-semibold tracking-[-0.025em] text-navy-900"
+          title={typeof title === 'string' ? title : undefined}
+        >
           {title}
         </h1>
-        {subtitle ? <p className="mt-2 text-[13.5px] text-[#6B7280]">{subtitle}</p> : null}
+        {subtitle ? (
+          <p className="mt-2 break-words text-[13.5px] text-[#6B7280]">{subtitle}</p>
+        ) : null}
       </div>
       {hasAside ? (
         <div className="flex flex-wrap items-center gap-4">

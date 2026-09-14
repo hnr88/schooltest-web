@@ -28,7 +28,9 @@ function RecentActivityCard({ sittingDocumentId }: RecentActivityCardProps) {
           <li key={`${entry.occurred_at}-${entry.action}`} data-slot="insights-activity-row" className="flex items-start gap-3">
             <span aria-hidden="true" className="mt-1.5 size-[7px] flex-none rounded-full bg-[#C6CFDD]" />
             <div className="min-w-0">
-              <div className="text-[13.5px] text-navy-900">{entry.action}</div>
+              <div className="truncate text-[13.5px] text-navy-900" title={entry.action}>
+                {entry.action}
+              </div>
               <div className="mt-0.5 text-[12px] text-[#6B7280]">
                 {format.dateTime(new Date(entry.occurred_at), INSIGHTS_ACTIVITY_TIME_FORMAT)}
               </div>

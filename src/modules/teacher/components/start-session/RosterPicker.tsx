@@ -73,6 +73,7 @@ function RosterPicker({
             {entry.picked ? <Check className="size-3 text-white" strokeWidth={3} /> : null}
           </span>
           <span
+            title={entry.name}
             className={cn(
               'min-w-0 flex-1 truncate text-[14px] font-medium',
               entry.blocked ? 'text-[#9AA6B8]' : 'text-navy-900',
@@ -81,7 +82,10 @@ function RosterPicker({
             {entry.name}
           </span>
           {entry.blocked ? (
-            <span className="shrink-0 rounded-full bg-[#FDF3E0] px-2.5 py-1 text-[12px] font-semibold text-[#92610B]">
+            <span
+              title={note(entry.blocked)}
+              className="max-w-full truncate rounded-full bg-[#FDF3E0] px-2.5 py-1 text-[12px] font-semibold text-[#92610B]"
+            >
               {note(entry.blocked)}
             </span>
           ) : null}

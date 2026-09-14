@@ -20,7 +20,7 @@ import type {
 // sticky footer. Every header value is one the caller holds from a live row or
 // the review served; an unknown one is left out, never filled in.
 
-const HEADER_CHIP = 'rounded-full px-[13px] py-1.5 text-[12.5px] font-semibold';
+const HEADER_CHIP = 'min-w-0 max-w-full truncate rounded-full px-[13px] py-1.5 text-[12.5px] font-semibold';
 
 const isPhase = (value: string): value is ReviewPhase =>
   (REVIEW_PHASES as readonly string[]).includes(value);
@@ -71,11 +71,14 @@ function ReviewDrawerHeader({
           </span>
         ) : null}
         <div className="min-w-0 flex-1">
-          <SheetTitle className="text-[19px] leading-[normal] font-semibold tracking-[-0.01em] text-[#0E2350]">
+          <SheetTitle
+            className="truncate text-[19px] leading-[normal] font-semibold tracking-[-0.01em] text-[#0E2350]"
+            title={name ?? t('title')}
+          >
             {name ?? t('title')}
           </SheetTitle>
           {meta ? (
-            <SheetDescription className="mt-[3px] text-[13px] text-[#6B7280]">{meta}</SheetDescription>
+            <SheetDescription className="truncate mt-[3px] text-[13px] text-[#6B7280]" title={meta}>{meta}</SheetDescription>
           ) : null}
         </div>
         <SheetClose
@@ -99,7 +102,9 @@ function ReviewDrawerHeader({
             </span>
           </>
         )}
-        {phase === null ? null : <span className={cn(HEADER_CHIP, 'bg-[#F5F6F8]')}>{phase}</span>}
+        {phase === null ? null : (
+          <span className={cn(HEADER_CHIP, 'bg-[#F5F6F8]')} title={phase}>{phase}</span>
+        )}
         <span data-slot="review-note-summary" className={cn(HEADER_CHIP, 'border border-[#ECEEF2] bg-white text-[#6B7280]')}>
           {t('noteSummary', { count: noteCount })}
         </span>

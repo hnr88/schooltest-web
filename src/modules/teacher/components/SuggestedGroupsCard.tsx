@@ -23,7 +23,7 @@ function SuggestedGroupsCard({ groups }: SuggestedGroupsCardProps) {
             data-count={group.count}
             className="rounded-[10px] border border-[#ECEEF2] px-5 py-[18px]"
           >
-            <div className="text-[15px] font-semibold text-navy-900">
+            <div className="truncate text-[15px] font-semibold text-navy-900" title={group.labelKey === null ? group.attribute : tv(group.labelKey)}>
               {group.labelKey === null ? group.attribute : tv(group.labelKey)}
             </div>
             <div className="mt-[3px] text-[12.5px] text-[#6B7280]">{t('groups.count', { count: group.count })}</div>
@@ -32,7 +32,8 @@ function SuggestedGroupsCard({ groups }: SuggestedGroupsCardProps) {
                 <li
                   key={`${member}-${index}`}
                   data-slot="insights-group-member"
-                  className="rounded-full border border-[#ECEEF2] bg-[#F5F6F8] px-3 py-1.5 text-[12.5px] font-medium text-navy-900"
+                  title={member}
+                  className="max-w-full truncate rounded-full border border-[#ECEEF2] bg-[#F5F6F8] px-3 py-1.5 text-[12.5px] font-medium text-navy-900"
                 >
                   {member}
                 </li>

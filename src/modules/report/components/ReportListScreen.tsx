@@ -108,21 +108,30 @@ export function ReportListScreen() {
       {
         key: 'phase',
         header: t('acaraPhaseLabel'),
-        cell: (row) => (
-          <span
-            data-slot="report-list-row"
-            className="block truncate font-medium text-foreground"
-          >
-            {row.acara_phase !== null
-              ? row.acara_phase
-              : t(phaseLabelKeyOf(row))}
-          </span>
-        ),
+        cell: (row) => {
+          const phase = row.acara_phase !== null ? row.acara_phase : t(phaseLabelKeyOf(row));
+          return (
+            <span
+              data-slot="report-list-row"
+              className="block truncate font-medium text-foreground"
+              title={phase}
+            >
+              {phase}
+            </span>
+          );
+        },
       },
       {
         key: 'skill',
         header: t('skillLabel'),
-        cell: (row) => (row.skill ? t(`skills.${row.skill}`) : t('skillCombined')),
+        cell: (row) => {
+          const skill = row.skill ? t(`skills.${row.skill}`) : t('skillCombined');
+          return (
+            <span className="block truncate" title={skill}>
+              {skill}
+            </span>
+          );
+        },
       },
       {
         key: 'published',

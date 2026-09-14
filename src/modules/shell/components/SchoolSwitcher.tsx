@@ -50,8 +50,12 @@ function MembershipRow({ school, active }: { school: SchoolMembership; active: b
         {schoolBadgeLabel(school.name)}
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-px">
-        <span className="truncate text-body-sm font-semibold text-foreground">{school.name}</span>
-        <span className="truncate text-xs text-body">{subLine(school, t)}</span>
+        <span className="truncate text-body-sm font-semibold text-foreground" title={school.name ?? undefined}>
+          {school.name}
+        </span>
+        <span className="truncate text-xs text-body" title={subLine(school, t)}>
+          {subLine(school, t)}
+        </span>
       </span>
       {active ? <Check aria-hidden="true" className="size-3.5 shrink-0 text-foreground" /> : null}
     </>
@@ -116,8 +120,15 @@ function SchoolSwitcher() {
           {schoolBadgeLabel(identity.name)}
         </span>
         <span className="flex min-w-0 flex-1 flex-col gap-px group-data-[collapsible=icon]:hidden">
-          <span className="truncate text-body-sm font-semibold text-foreground">{identity.name}</span>
-          <span className="truncate text-xs text-body">{subLine(identity, t)}</span>
+          <span
+            className="truncate text-body-sm font-semibold text-foreground"
+            title={identity.name ?? undefined}
+          >
+            {identity.name}
+          </span>
+          <span className="truncate text-xs text-body" title={subLine(identity, t)}>
+            {subLine(identity, t)}
+          </span>
         </span>
         <ChevronsUpDown
           aria-hidden="true"

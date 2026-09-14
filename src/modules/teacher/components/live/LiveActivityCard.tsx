@@ -65,7 +65,12 @@ function LiveActivityCard({ sittingDocumentId }: { sittingDocumentId: string }) 
               <time dateTime={entry.occurred_at} className="w-11 flex-none text-[12.5px] font-semibold text-[#4B5563]">
                 {clockLabel(entry.occurred_at, locale)}
               </time>
-              <span className="min-w-0 flex-1 text-[13.5px] leading-normal text-navy-900">{entry.action}</span>
+              <span
+                className="min-w-0 flex-1 truncate text-[13.5px] leading-normal text-navy-900"
+                title={entry.action}
+              >
+                {entry.action}
+              </span>
               <span className="flex-none text-[12.5px] text-[#6B7280]">{entry.actor_label}</span>
             </li>
           ))}

@@ -36,7 +36,7 @@ export function ProgressTransitionRow({ transition }: ProgressTransitionRowProps
           delta > 0 ? ICON_TONE.up : delta < 0 ? ICON_TONE.down : ICON_TONE.steady,
         )}
       />
-      <span className="text-sm text-foreground">{label}</span>
+      <span className="min-w-0 break-words text-sm text-foreground">{label}</span>
       <span className="flex items-center gap-1">
         <StatusPill tone={PROGRESS_STATUS_TONE[transition.from_status]}>
           {td(`status.${transition.from_status}`)}

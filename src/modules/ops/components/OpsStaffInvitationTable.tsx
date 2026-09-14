@@ -74,8 +74,11 @@ export function OpsStaffInvitationTable({
                     >
                       {staffInvitationInitial(row)}
                     </span>
-                    <span className="flex flex-col">
-                      <span className="font-medium text-foreground">
+                    <span className="flex min-w-0 flex-col">
+                      <span
+                        className="truncate font-medium text-foreground"
+                        title={row.display_name ?? t('noName')}
+                      >
                         {row.display_name ?? t('noName')}
                       </span>
                       <span className="text-meta text-muted-foreground">
@@ -87,7 +90,9 @@ export function OpsStaffInvitationTable({
                     </span>
                   </div>
                 </TableCell>
-                <TableCell className="align-top">{row.email ?? t('noValue')}</TableCell>
+                <TableCell className="max-w-[240px] truncate align-top" title={row.email ?? t('noValue')}>
+                  {row.email ?? t('noValue')}
+                </TableCell>
                 <TableCell className="align-top">
                   {row.role === null ? t('roleUnknown') : t(`role.${row.role}`)}
                 </TableCell>

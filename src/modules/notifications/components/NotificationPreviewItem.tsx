@@ -54,6 +54,7 @@ function NotificationPreviewItem({
           {isUnread ? <span className="sr-only">{t('unread')}</span> : null}
           <span className="flex items-baseline gap-2">
             <span
+              title={notification.title}
               className={cn(
                 'min-w-0 flex-1 truncate text-sm text-foreground',
                 isUnread ? 'font-semibold' : 'font-medium',
@@ -69,7 +70,7 @@ function NotificationPreviewItem({
             </time>
           </span>
           {notification.body ? (
-            <span className="truncate text-caption font-normal text-muted-foreground">
+            <span className="truncate text-caption font-normal text-muted-foreground" title={notification.body}>
               {notification.body}
             </span>
           ) : null}

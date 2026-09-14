@@ -7,6 +7,7 @@ import { teacherLabel } from '@/modules/classes/lib/class-form.helpers';
 import {
   Alert,
   Input,
+  MissingDependencyNotice,
   NativeSelect,
   NativeSelectOption,
   OPS_CONTROL_CLASS,
@@ -80,18 +81,25 @@ export function EditClassDialog({ schoolClass, onClose }: EditClassDialogProps) 
                 />
               </OpsFieldShell>
               <OpsFieldShell id="edit-class-teacher" label={t('teacherLabel')}>
-                <NativeSelect
-                  id="edit-class-teacher"
-                  className={NATIVE_SELECT_CLASS}
-                  {...register('teacher_documentId')}
-                >
-                  <NativeSelectOption value="">{t('teacherUnassigned')}</NativeSelectOption>
-                  {(teachersQuery.data ?? []).map((teacher) => (
-                    <NativeSelectOption key={teacher.documentId} value={teacher.documentId}>
-                      {teacherLabel(teacher)}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
+                {/* No dependent dropdown renders empty: zero teachers swaps
+                    the picker for the refusal + "Invite a teacher" CTA, while
+                    the rename field and save stay usable. */}
+                {(teachersQuery.data ?? []).length === 0 ? (
+                  <MissingDependencyNotice kind="teachers" ctaHref="/dashboard/school/teachers" />
+                ) : (
+                  <NativeSelect
+                    id="edit-class-teacher"
+                    className={NATIVE_SELECT_CLASS}
+                    {...register('teacher_documentId')}
+                  >
+                    <NativeSelectOption value="">{t('teacherUnassigned')}</NativeSelectOption>
+                    {(teachersQuery.data ?? []).map((teacher) => (
+                      <NativeSelectOption key={teacher.documentId} value={teacher.documentId}>
+                        {teacherLabel(teacher)}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                )}
               </OpsFieldShell>
             </OpsDialogBody>
             <OpsDialogFooter>

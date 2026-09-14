@@ -38,9 +38,15 @@ export function StudentRecordPanel({ student, onEdit }: StudentRecordPanelProps)
       />
       <KeyValueList>
         <KeyValueRow label={t('detail.studentIdLabel')}>{student.documentId}</KeyValueRow>
-        <KeyValueRow label={t('form.email')}>{student.email ?? t('table.notSet')}</KeyValueRow>
+        <KeyValueRow label={t('form.email')}>
+          <span className="block truncate" title={student.email ?? t('table.notSet')}>
+            {student.email ?? t('table.notSet')}
+          </span>
+        </KeyValueRow>
         <KeyValueRow label={t('table.columnClass')}>
-          {student.class?.name ?? t('table.classNone')}
+          <span className="block truncate" title={student.class?.name ?? t('table.classNone')}>
+            {student.class?.name ?? t('table.classNone')}
+          </span>
         </KeyValueRow>
         <KeyValueRow label={t('table.columnFirstLanguage')}>
           {language ? t(`form.firstLanguageOption.${language}`) : t('table.notSet')}

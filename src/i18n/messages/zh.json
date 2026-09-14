@@ -2731,7 +2731,7 @@
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
       "teacherLoadError": "We could not load your teachers",
-      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "teacherLoadErrorDescription": "无法核实教师信息，因此暂时无法创建班级。请检查网络连接后重试。",
       "importTitle": "Import students",
       "importDescription": "Upload a CSV or paste student data below",
       "importErrorsTitle": "Some rows could not be read",
@@ -2743,7 +2743,8 @@
       "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
-      "errorToast": "That did not work. Try again."
+      "errorToast": "That did not work. Try again.",
+      "retry": "重试"
     },
     "studentDetailMeta": {
       "title": "学生成绩 - SchoolTest",
@@ -2800,8 +2801,10 @@
       "successTitle": "教师已分配",
       "successDescription": "已为 {classes} 个班级设置 {teachers} 位教师。",
       "cancel": "取消",
-      "submit": "分配"
-    }
+      "submit": "分配",
+      "noClasses": "还没有可分配的班级。"
+    },
+    "noEligibleTeachersHint": "还没有可用的教师——请先邀请教师，才能创建班级。"
   },
   "SchoolStudents": {
     "meta": {
@@ -2937,7 +2940,8 @@
       "seatCapToast": "您学校的席位已用完。请联系 SchoolTest 增加席位。",
       "schoolInactiveToast": "您的学校账户未激活，暂时无法添加学生。",
       "forbiddenToast": "您没有修改学生的权限。",
-      "genericToast": "操作失败，请重试。"
+      "genericToast": "操作失败，请重试。",
+      "classNoClassesHint": "还没有班级——请先在“班级”中创建，再安排这名学生。"
     },
     "validation": {
       "givenNameRequired": "请输入学生的名字。",
@@ -2967,7 +2971,9 @@
       "alreadyImportedToast": "此文件中的学生均已在本校注册。",
       "successSkippedToast": "已导入 {created} 人，{skipped, plural, other {人已注册}}。",
       "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
-      "tooBigToast": "That file is too large. The limit is 5 MB."
+      "tooBigToast": "That file is too large. The limit is 5 MB.",
+      "classLoadErrorTitle": "无法加载班级列表",
+      "classLoadErrorDescription": "请检查网络连接后重试。"
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3559,7 +3565,8 @@
         "formSummary": "{count, plural, other {# 个字段需要注意}}",
         "saveErrorGeneric": "无法保存班级 — 未做任何更改",
         "savedToast": "{name} 已更新",
-        "createdToast": "{name} 已创建"
+        "createdToast": "{name} 已创建",
+        "noWindowsHint": "还没有测试窗口——可以留空，或先创建一个。"
       },
       "rosterSearchPlaceholder": "搜索学生",
       "rosterCount": "{count, plural, =0 {没有学生} other {# 名学生}}",
@@ -3891,7 +3898,8 @@
             "body": "学生仍保留在学校的注册状态，但这些班级会对教师隐藏。",
             "cta": "归档 {count} 个"
           }
-        }
+        },
+        "teacherSkip": "{skipped} 个无教师"
       },
       "reassign": {
         "title": "重新分配教师",
@@ -5180,7 +5188,32 @@
     "toggleSidebar": "切换侧边栏",
     "loading": "加载中",
     "commandPalette": "命令面板",
-    "commandPaletteDescription": "搜索要运行的命令..."
+    "commandPaletteDescription": "搜索要运行的命令...",
+    "missingDependency": {
+      "classes": {
+        "title": "还没有班级",
+        "description": "继续之前至少需要一个班级。请先创建班级。",
+        "cta": "创建班级"
+      },
+      "destinationClasses": {
+        "title": "没有可移动到的其他班级",
+        "description": "目前还没有其他班级可以移动。请先创建另一个班级。"
+      },
+      "teachers": {
+        "title": "还没有教师",
+        "description": "目前没有可分配的教师。你可以暂不分配，或先邀请一位教师。",
+        "cta": "邀请教师"
+      },
+      "eligibleTeachers": {
+        "title": "没有可用的教师",
+        "description": "创建班级至少需要一名在职教师。请先邀请教师，再创建班级。",
+        "cta": "邀请教师"
+      },
+      "forms": {
+        "title": "暂无可用的阅读试卷",
+        "description": "这里至少需要一份阅读试卷。请先创建试卷，然后重试。"
+      }
+    }
   },
   "Directory": {
     "defaults": {

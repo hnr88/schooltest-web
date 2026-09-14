@@ -11,6 +11,18 @@ export interface StudentImportClassOption {
   name: string;
 }
 
+/**
+ * The class picker's dependency state, not just its options. A dependent
+ * dropdown never renders empty: `'pending'` and `'error'` are honest states
+ * the dialog renders as its own arms, and an EMPTY array means the school
+ * genuinely has no classes — the dialog must refuse the import and point at
+ * class creation instead of offering a zero-option select.
+ */
+export type StudentImportClassesState =
+  | 'pending'
+  | 'error'
+  | readonly StudentImportClassOption[];
+
 // The class selector is optional by construction: Classes (spec §2) creates the
 // class in the same submit and omits `classes`, Students (spec §4) passes the
 // school's classes and the selector appears. `onChange` reports BOTH the parsed

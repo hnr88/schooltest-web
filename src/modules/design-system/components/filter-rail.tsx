@@ -22,7 +22,9 @@ function FilterRail({ title, action, footer, children, className }: FilterRailPr
       )}
     >
       <div className="flex shrink-0 items-center justify-between gap-3 border-b border-border px-5 py-4">
-        <h2 className="text-panel-title font-semibold text-foreground">{title}</h2>
+        <h2 className="min-w-0 truncate text-panel-title font-semibold text-foreground" title={title}>
+          {title}
+        </h2>
         {action ? <div className="shrink-0">{action}</div> : null}
       </div>
       <div data-slot="filter-rail-body" className="scroll-region flex-1 px-5">

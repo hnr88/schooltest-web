@@ -110,8 +110,11 @@ export function StudentsTable({
                 {name.charAt(0).toUpperCase()}
               </span>
               <span className="flex min-w-0 flex-col">
-                <span className="flex flex-wrap items-center gap-2">
-                  <span className="truncate text-[14.5px] font-semibold text-foreground">
+                <span className="flex min-w-0 flex-wrap items-center gap-2">
+                  <span
+                    className="min-w-0 truncate text-[14.5px] font-semibold text-foreground"
+                    title={name}
+                  >
                     {name}
                   </span>
                   {student.email_fix_requested ? (
@@ -121,7 +124,14 @@ export function StudentsTable({
                     <StatusPill tone="neutral">{t('table.statusArchived')}</StatusPill>
                   ) : null}
                 </span>
-                <span className="mt-0.5 truncate text-meta text-[#7C8698]">
+                <span
+                  className="mt-0.5 truncate text-meta text-[#7C8698]"
+                  title={t('table.firstLanguageLine', {
+                    language: language
+                      ? t(`form.firstLanguageOption.${language}`)
+                      : t('table.notSet'),
+                  })}
+                >
                   {t('table.firstLanguageLine', {
                     language: language
                       ? t(`form.firstLanguageOption.${language}`)
@@ -138,7 +148,11 @@ export function StudentsTable({
         header: t('table.columnClass'),
         grid: 'text',
         cell: (student) =>
-          student.class?.name ?? (
+          student.class?.name ? (
+            <span className="block truncate" title={student.class.name}>
+              {student.class.name}
+            </span>
+          ) : (
             <span className="text-muted-foreground">{t('table.classNone')}</span>
           ),
       },

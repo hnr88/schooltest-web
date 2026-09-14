@@ -41,12 +41,20 @@ export function OpsImportCreateTable({ rows }: OpsImportCreateTableProps) {
             {rows.map((row) => (
               <TableRow key={row.row}>
                 <TableCell>{row.row}</TableCell>
-                <TableCell>{row.given_name}</TableCell>
-                <TableCell>{row.family_name}</TableCell>
+                <TableCell className="max-w-[220px] truncate" title={row.given_name}>
+                  {row.given_name}
+                </TableCell>
+                <TableCell className="max-w-[220px] truncate" title={row.family_name}>
+                  {row.family_name}
+                </TableCell>
                 <TableCell>{row.date_of_birth}</TableCell>
                 <TableCell>{row.year_level}</TableCell>
-                <TableCell>{row.first_language}</TableCell>
-                <TableCell>{row.student_key ?? ''}</TableCell>
+                <TableCell className="max-w-[220px] truncate" title={row.first_language}>
+                  {row.first_language}
+                </TableCell>
+                <TableCell className="max-w-[220px] truncate" title={row.student_key ?? ''}>
+                  {row.student_key ?? ''}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

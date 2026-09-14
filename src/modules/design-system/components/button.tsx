@@ -32,6 +32,14 @@ function Button({
     loading && 'disabled:opacity-85',
     className,
   );
+  const label =
+    typeof children === 'string' ? (
+      <span className="min-w-0 truncate" title={children}>
+        {children}
+      </span>
+    ) : (
+      children
+    );
   if (href !== undefined) {
     // Link semantics (D21): forward caller props (aria-*, data-*, target, …) to the anchor.
     // They are plain DOM props at runtime; Base UI's button-generic handler types are nominal.
@@ -51,7 +59,7 @@ function Button({
         {...anchorProps}
       >
         {loading ? <Spinner aria-hidden="true" /> : null}
-        {children}
+        {label}
       </Link>
     );
   }
@@ -67,7 +75,7 @@ function Button({
       {...props}
     >
       {loading ? <Spinner aria-hidden="true" /> : null}
-      {children}
+      {label}
     </ButtonPrimitive>
   );
 }

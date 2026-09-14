@@ -98,8 +98,10 @@ export function ClassTeachersPickerDialog({
                     disabled={busy}
                     onCheckedChange={(checked) => toggle(candidate.documentId, checked === true)}
                   />
-                  <span className="font-medium text-foreground">{teacherLabel(candidate)}</span>
-                  <span className="ml-auto truncate text-xs text-muted-foreground">
+                  <span className="min-w-0 truncate font-medium text-foreground" title={teacherLabel(candidate)}>
+                    {teacherLabel(candidate)}
+                  </span>
+                  <span className="ml-auto min-w-0 truncate text-xs text-muted-foreground" title={candidate.email}>
                     {candidate.email}
                   </span>
                 </label>

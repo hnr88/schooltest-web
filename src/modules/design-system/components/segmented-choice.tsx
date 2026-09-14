@@ -68,7 +68,9 @@ function SegmentedChoice({
               option.disabled && 'cursor-not-allowed opacity-55 hover:bg-transparent',
             )}
           >
-            <span className="truncate">{option.label}</span>
+            <span className="min-w-0 truncate" title={option.label}>
+              {option.label}
+            </span>
           </button>
         );
       })}

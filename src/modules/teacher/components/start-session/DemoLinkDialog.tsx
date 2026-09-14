@@ -53,6 +53,7 @@ function DemoLinkDialog() {
             <div className="mt-[18px] flex items-center gap-2 rounded-[12px] border-[1.5px] border-[#DBE3EF] bg-[#F4F7FC] py-1.5 pr-1.5 pl-3.5">
               <span
                 data-slot="demo-link-url"
+                title={demoLink.link.web_url}
                 className="min-w-0 flex-1 truncate font-mono text-[13.5px] font-semibold text-[#16326E]"
               >
                 {demoLink.link.web_url}

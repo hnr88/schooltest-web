@@ -30,8 +30,8 @@ export function AccountIdentityPanel() {
           {user.username.slice(0, 1).toUpperCase()}
         </span>
         <div className="flex min-w-0 flex-1 flex-col">
-          <p className="truncate text-lede font-semibold text-foreground">{user.username}</p>
-          <p className="mt-0.5 truncate text-caption text-body">{user.email}</p>
+          <p className="truncate text-lede font-semibold text-foreground" title={user.username}>{user.username}</p>
+          <p className="mt-0.5 truncate text-caption text-body" title={user.email}>{user.email}</p>
         </div>
       </div>
       <KeyValueList className="mt-5 [&_dt]:text-body">

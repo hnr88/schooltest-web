@@ -35,7 +35,8 @@ export function ParentReportView({ view }: { view: FamilyPreviewView }) {
           {view.phase.label !== null ? (
             <span
               data-slot="report-parent-phase"
-              className="rounded-full bg-primary-soft px-3 py-0.5 text-caption font-semibold text-primary-ink"
+              title={t('parentPhaseLabel', { phase: view.phase.label })}
+              className="max-w-full truncate rounded-full bg-primary-soft px-3 py-0.5 text-caption font-semibold text-primary-ink"
             >
               {t('parentPhaseLabel', { phase: view.phase.label })}
             </span>

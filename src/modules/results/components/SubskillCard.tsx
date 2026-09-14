@@ -69,7 +69,7 @@ export function SubskillCard({
         tag === 'focus' && 'ring-1 ring-warning',
       )}
     >
-      <span className="text-meta font-semibold">{t(SKILL_KEY[skill] ?? skill)}</span>
+      <span className="truncate text-meta font-semibold" title={t(SKILL_KEY[skill] ?? skill)}>{t(SKILL_KEY[skill] ?? skill)}</span>
 
       {!assessed ? (
         <span data-slot="skill-gap" className="text-caption font-semibold">
@@ -91,7 +91,11 @@ export function SubskillCard({
         <span
           data-slot="skill-band"
           data-band={status}
-          className={cn('w-fit rounded-full px-2 py-0.5 text-caption font-bold uppercase', BAND_CHIP_CLASS[status])}
+          title={t(BAND_KEY[status] ?? status)}
+          className={cn(
+            'max-w-full truncate rounded-full px-2 py-0.5 text-caption font-bold uppercase',
+            BAND_CHIP_CLASS[status],
+          )}
         >
           {t(BAND_KEY[status] ?? status)}
         </span>

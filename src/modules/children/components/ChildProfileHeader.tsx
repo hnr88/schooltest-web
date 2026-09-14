@@ -52,8 +52,13 @@ export function ChildProfileHeader({ student, detail }: ChildProfileHeaderProps)
           {getStudentInitials(student)}
         </span>
         <div className="flex min-w-50 flex-1 flex-col gap-1">
-          <h1 className="text-portal-heading font-medium text-foreground">{name}</h1>
-          <p className="text-body-md text-body">
+          <h1 className="truncate text-portal-heading font-medium text-foreground" title={name}>
+            {name}
+          </h1>
+          <p
+            className="truncate text-body-md text-body"
+            title={facts.length > 0 ? facts.join(' · ') : t('heroNoDetails')}
+          >
             {facts.length > 0 ? facts.join(' · ') : t('heroNoDetails')}
           </p>
         </div>

@@ -53,8 +53,12 @@ export function StudentImportRejectList({
           <TableBody>
             {rows.map((entry, index) => (
               <TableRow key={`${entry.row}-${index}`}>
-                <TableCell>{entry.row}</TableCell>
-                <TableCell>{entry.reason}</TableCell>
+                <TableCell className="whitespace-nowrap tabular-nums">{entry.row}</TableCell>
+                <TableCell className="w-full max-w-0">
+                  <span className="block truncate" title={entry.reason}>
+                    {entry.reason}
+                  </span>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -23,7 +23,10 @@ function RankRow({ rank, name, initials, score, tone = 'blue', className }: Rank
         {rank}
       </span>
       <AvatarTint initials={initials} tone={tone} />
-      <span className="min-w-0 flex-1 truncate text-body-sm font-semibold text-foreground">
+      <span
+        className="min-w-0 flex-1 truncate text-body-sm font-semibold text-foreground"
+        title={name}
+      >
         {name}
       </span>
       <span className="shrink-0 text-caption font-bold text-foreground tabular-nums">{score}</span>

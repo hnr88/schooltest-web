@@ -112,9 +112,12 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
               >
                 {heading.charAt(0).toUpperCase()}
               </span>
-              <div className="min-w-[220px] flex-1">
+              <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="text-[28px] leading-tight font-medium tracking-[-0.02em] text-foreground">
+                  <h1
+                    className="min-w-0 max-w-full truncate text-[28px] leading-tight font-medium tracking-[-0.02em] text-foreground"
+                    title={heading}
+                  >
                     {heading}
                   </h1>
                   <StudentLevelBadge phase={student.acara_phase} />
@@ -131,7 +134,7 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
                     </span>
                   )}
                 </div>
-                <p className="mt-[5px] text-sm text-[#7C8698]">
+                <p className="mt-[5px] break-words text-sm text-[#7C8698]">
                   {t('detail.metaLine', {
                     language: language
                       ? t(`form.firstLanguageOption.${language}`)

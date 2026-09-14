@@ -136,8 +136,13 @@ export function OpsStudentsTable({
                 {(name.charAt(0) || '?').toUpperCase()}
               </span>
               <span className="flex min-w-0 flex-col">
-                <span className="truncate text-[14.5px] font-semibold text-foreground">{name}</span>
-                <span className="mt-0.5 truncate text-[12.5px] text-[#7C8698]">
+                <span className="truncate text-[14.5px] font-semibold text-foreground" title={name}>
+                  {name}
+                </span>
+                <span
+                  className="mt-0.5 truncate text-[12.5px] text-[#7C8698]"
+                  title={noValueIfMissing(row.class?.name ?? null)}
+                >
                   {noValueIfMissing(row.class?.name ?? null)}
                 </span>
               </span>
@@ -165,11 +170,14 @@ export function OpsStudentsTable({
         header: t('columnLatestResult'),
         grid: 'text',
         // The design's last text column is the muted one (`:404`).
-        cell: (row) => (
-          <span className="text-[12.5px] text-[#9AA6B8]">
-            {opsStudentLatestResultLabel(row, formatDate) ?? t('studentsNoResult')}
-          </span>
-        ),
+        cell: (row) => {
+          const latest = opsStudentLatestResultLabel(row, formatDate) ?? t('studentsNoResult');
+          return (
+            <span className="block max-w-[200px] truncate text-[12.5px] text-[#9AA6B8]" title={latest}>
+              {latest}
+            </span>
+          );
+        },
       },
       {
         key: 'status',

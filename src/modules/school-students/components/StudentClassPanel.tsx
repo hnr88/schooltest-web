@@ -10,6 +10,7 @@ import {
   Button,
   KeyValueList,
   KeyValueRow,
+  MissingDependencyNotice,
   NativeSelect,
   NativeSelectOption,
   PanelHeaderRow,
@@ -58,12 +59,13 @@ export function StudentClassPanel({ student, classes }: StudentClassPanelProps) 
       ) : null}
       <KeyValueList>
         <KeyValueRow label={t('currentLabel')}>
-          <span data-slot="student-class-current" className="truncate">
+          <span data-slot="student-class-current" className="block min-w-0 truncate">
             {current === null || current.name === null ? (
               t('none')
             ) : (
               <Link
                 href={`/dashboard/school/classes/${current.documentId}`}
+                title={current.name}
                 className="underline-offset-2 hover:underline"
               >
                 {current.name}
@@ -74,7 +76,15 @@ export function StudentClassPanel({ student, classes }: StudentClassPanelProps) 
       </KeyValueList>
       <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
         {options.length === 0 ? (
-          <p className="text-sm text-body">{t('noClasses')}</p>
+          /* The empty arm names WHICH dependency is missing: no classes at all
+             points at class creation; classes that exist but are all the
+             student's current one refuse the move without a dead select. */
+          <MissingDependencyNotice
+            {...(classes.length === 0
+              ? { kind: 'classes' as const, ctaHref: '/dashboard/school/classes' }
+              : { kind: 'destinationClasses' as const })}
+            className="flex-1"
+          />
         ) : (
           <div className="flex min-w-0 flex-col gap-1.5">
             <label htmlFor="student-class-assign" className="text-meta text-body">

@@ -75,7 +75,10 @@ function ScheduledSessionCard({
       className={cn('flex flex-col rounded-[11px] border border-[#ECEEF2] bg-[#FAFBFC]', skin.root)}
     >
       <div className="flex items-baseline justify-between gap-2.5">
-        <h3 className={cn('text-[14.5px] text-navy-900', skin.title)}>
+        <h3
+          className={cn('min-w-0 flex-1 truncate text-[14.5px] text-navy-900', skin.title)}
+          title={variant === 'live' ? (booking.formLabel ?? noValue) : booking.className}
+        >
           {variant === 'live' ? (booking.formLabel ?? noValue) : booking.className}
         </h3>
         {when ? (
@@ -84,13 +87,15 @@ function ScheduledSessionCard({
           </ToneChip>
         ) : null}
       </div>
-      <p data-slot="scheduled-session-when" className={cn('text-[13.5px]', skin.when)}>
+      <p data-slot="scheduled-session-when" className={cn('break-words text-[13.5px]', skin.when)}>
         {when ? t('when', { date: when.date, start: when.start, end: when.end }) : noValue}
       </p>
       {variant === 'live' ? null : (
-        <p className="text-[12.5px] text-[#6B7280]">{booking.formLabel ?? noValue}</p>
+        <p className="truncate text-[12.5px] text-[#6B7280]" title={booking.formLabel ?? noValue}>
+          {booking.formLabel ?? noValue}
+        </p>
       )}
-      <p className="text-[12.5px] text-[#6B7280]">{who}</p>
+      <p className="break-words text-[12.5px] text-[#6B7280]">{who}</p>
       <div className={cn('flex flex-wrap gap-2', skin.actions)}>
         <TeacherButton size="sm" className={skin.button} onClick={() => setConfirming('start')}>
           {t('startNow')}

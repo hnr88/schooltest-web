@@ -16,7 +16,7 @@ import type { RosterStudentCellsProps } from '@/modules/teacher/types/students-t
 // is the view model's (`studentsTabRow`): nothing is re-derived here, and a
 // missing value renders the kit's dash — never a 0 and never a guessed phase.
 
-const NAME_CLASS = 'block text-[14.5px] font-semibold';
+const NAME_CLASS = 'block truncate text-[14.5px] font-semibold';
 const LINK_CLASS =
   "text-[#1A3B8B] outline-none hover:underline after:absolute after:inset-0 after:rounded-[8px] after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-navy-900/30 focus-visible:after:ring-inset";
 
@@ -29,11 +29,11 @@ export function RosterStudentCell({ row, href }: RosterStudentCellsProps & { hre
       <InitialsAvatar initials={row.initials} className="flex-none" />
       <span className="min-w-0">
         {href === null ? (
-          <span data-slot="student-name" className={cn(NAME_CLASS, 'text-navy-900')}>
+          <span data-slot="student-name" title={row.name} className={cn(NAME_CLASS, 'text-navy-900')}>
             {row.name}
           </span>
         ) : (
-          <Link href={href} data-slot="student-name" className={cn(NAME_CLASS, LINK_CLASS)}>
+          <Link href={href} data-slot="student-name" title={row.name} className={cn(NAME_CLASS, LINK_CLASS)}>
             {row.name}
           </Link>
         )}

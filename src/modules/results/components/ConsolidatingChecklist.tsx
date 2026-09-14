@@ -57,7 +57,7 @@ export function ConsolidatingChecklist({ view }: { view: ResultView }) {
       <ul className="flex flex-col gap-1.5">
         {attributeRows.map((row) => (
           <li key={row.key} data-slot="checklist-row" data-row={row.key} data-met={row.met} className="flex items-center justify-between gap-2">
-            <span className="text-body-md font-semibold">
+            <span className="min-w-0 truncate text-body-md font-semibold" title={row.label}>
               <span aria-hidden className={cn('mr-2', row.met ? 'text-success-ink' : 'text-muted-foreground')}>
                 {row.met ? '✓' : '○'}
               </span>
@@ -69,7 +69,7 @@ export function ConsolidatingChecklist({ view }: { view: ResultView }) {
           </li>
         ))}
         <li data-slot="checklist-row" data-row="gate" data-met={view.gate.passed === true} className="flex items-center justify-between gap-2">
-          <span className="text-body-md font-semibold">
+          <span className="min-w-0 truncate text-body-md font-semibold" title={t('exitGateSection3')}>
             <span aria-hidden className={cn('mr-2', view.gate.passed === true ? 'text-success-ink' : 'text-muted-foreground')}>
               {view.gate.passed === true ? '✓' : '○'}
             </span>

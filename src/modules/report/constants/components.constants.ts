@@ -35,7 +35,7 @@ export const REVIEW_FOCUS = 'outline-none focus-visible:ring-3 focus-visible:rin
 export const REVIEW_EYEBROW =
   'text-[11.5px] font-semibold tracking-[0.05em] text-[#9CA3AF] uppercase';
 
-export const REVIEW_CHIP = 'rounded-full px-[11px] py-1 text-xs font-semibold';
+export const REVIEW_CHIP = 'max-w-full truncate rounded-full px-[11px] py-1 text-xs font-semibold';
 
 export const REVIEW_ANSWER_BOX = 'flex-[1_1_200px] rounded-[8px] border border-[#ECEEF2] px-3.5 py-[11px]';
 

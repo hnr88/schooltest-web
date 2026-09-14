@@ -200,7 +200,10 @@ export function ClassStudentsTable({
             >
               {studentDisplayName(row).charAt(0)}
             </span>
-            <span className="text-[14.5px] font-semibold text-foreground">
+            <span
+              className="min-w-0 truncate text-[14.5px] font-semibold text-foreground"
+              title={studentDisplayName(row)}
+            >
               {studentDisplayName(row)}
             </span>
           </span>

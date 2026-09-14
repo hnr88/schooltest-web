@@ -75,8 +75,14 @@ function UserMenu({ skin = 'default' }: { skin?: ShellSkin }) {
           {getUserInitials(displayName, isTeacherSkin ? 1 : 2)}
         </span>
         <span className={classes.text}>
-          <span className={classes.name}>{displayName}</span>
-          {roleLabel !== null ? <span className={classes.role}>{roleLabel}</span> : null}
+          <span className={classes.name} title={displayName}>
+            {displayName}
+          </span>
+          {roleLabel !== null ? (
+            <span className={classes.role} title={roleLabel}>
+              {roleLabel}
+            </span>
+          ) : null}
         </span>
         {isTeacherSkin ? (
           <ChevronUp

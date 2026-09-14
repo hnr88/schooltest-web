@@ -224,18 +224,23 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
           />
           <div className="min-w-[220px] flex-1">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-[30px] leading-tight font-medium tracking-[-0.02em] text-foreground">
+              <h1
+                className="truncate text-[30px] leading-tight font-medium tracking-[-0.02em] text-foreground"
+                title={school.name}
+              >
                 {school.name}
               </h1>
               {/* Design 214: fixed tone pair per lifecycle status, 12/600 pill. */}
               <span
-                className={`rounded-full px-[13px] py-1.5 text-xs font-semibold ${STATUS_PILL_TONES[detail.portal_status]}`}
+                className={`shrink-0 rounded-full px-[13px] py-1.5 text-xs font-semibold ${STATUS_PILL_TONES[detail.portal_status]}`}
               >
                 {tSchools(portalStatusLabelKey(detail.portal_status))}
               </span>
             </div>
             {detailMeta ? (
-              <p className="mt-[5px] text-sm text-[#7C8698]">{detailMeta}</p>
+              <p className="mt-[5px] truncate text-sm text-[#7C8698]" title={detailMeta}>
+                {detailMeta}
+              </p>
             ) : null}
           </div>
           <div className="flex flex-wrap items-center gap-2.5">

@@ -75,7 +75,13 @@ export function SchoolStudentForm({ target, classes, showAcaraPhase, onCancel, o
           </NativeSelect>
         </OpsFieldShell>
       </div>
-      <OpsFieldShell id="student-class" label={t('classLabel')}>
+      <OpsFieldShell
+        id="student-class"
+        label={t('classLabel')}
+        /* Class is optional here, so the empty case is a hint, not a block:
+           the field stays usable and the admin learns where to create one. */
+        helperText={classes.length === 0 ? t('classNoClassesHint') : undefined}
+      >
         <NativeSelect id="student-class" className={NATIVE_SELECT_CLASS} {...register('class_documentId')}>
           <NativeSelectOption value="">{t('classNone')}</NativeSelectOption>
           {classes.map((schoolClass) => (

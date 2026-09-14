@@ -36,7 +36,9 @@ export function ProgressMovementRow({
         className="flex items-center gap-2 text-sm text-body"
       >
         <Minus aria-hidden className="size-4" />
-        {label}: {notAssessed}
+        <span className="min-w-0 truncate" title={`${label}: ${notAssessed}`}>
+          {label}: {notAssessed}
+        </span>
       </li>
     );
   }
@@ -49,7 +51,12 @@ export function ProgressMovementRow({
         className="flex items-center gap-2 text-sm text-foreground"
       >
         <TrendingUp aria-hidden className="size-4 text-primary" />
-        {label}: {capitalise(bandBefore)} → {capitalise(bandAfter)}
+        <span
+          className="min-w-0 truncate"
+          title={`${label}: ${capitalise(bandBefore)} → ${capitalise(bandAfter)}`}
+        >
+          {label}: {capitalise(bandBefore)} → {capitalise(bandAfter)}
+        </span>
       </li>
     );
   }
@@ -74,7 +81,9 @@ export function ProgressMovementRow({
               : 'text-primary',
         )}
       />
-      {label}: {deltaDisplay === 'steady' ? t('transitionSteadyShort') : deltaDisplay}
+      <span className="min-w-0 truncate" title={`${label}: ${deltaDisplay === 'steady' ? t('transitionSteadyShort') : deltaDisplay}`}>
+        {label}: {deltaDisplay === 'steady' ? t('transitionSteadyShort') : deltaDisplay}
+      </span>
     </li>
   );
 }

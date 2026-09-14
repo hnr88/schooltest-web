@@ -38,7 +38,9 @@ function AskAiDrawer({ open, onClose, strings, ask }: AskAiDrawerProps) {
               <Sparkle aria-hidden="true" className="size-[17px] text-[#8FA6EA]" strokeWidth={2} />
             </div>
             <div className="min-w-0 flex-1">
-              <Dialog.Title className="text-[14px] font-semibold tracking-[0.01em]">{strings.title}</Dialog.Title>
+              <Dialog.Title className="truncate text-[14px] font-semibold tracking-[0.01em]" title={strings.title}>
+                {strings.title}
+              </Dialog.Title>
               <Dialog.Description className="mt-px text-[11px] text-[#9AA1AD]">
                 {ask.speak ? t('speakStatus') : strings.grounded}
               </Dialog.Description>

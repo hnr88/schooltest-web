@@ -38,6 +38,7 @@ function TeacherClassRow({ row, exports }: TeacherClassRowProps) {
           <div className="min-w-0">
             <Link
               href={row.href}
+              title={row.name}
               className="block truncate text-[14.5px] font-medium text-navy-900 outline-none after:absolute after:inset-0 after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-navy-900/30 focus-visible:after:ring-inset"
             >
               {row.name}

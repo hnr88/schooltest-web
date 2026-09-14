@@ -146,16 +146,34 @@ export function OpsTeachersTableRow({
       data-slot="ops-teacher-row"
       data-teacher-email={row.email ?? undefined}
     >
-      <td className="py-2 pr-3">{row.first_name ?? '—'}</td>
-      <td className="py-2 pr-3">{row.last_name ?? '—'}</td>
-      <td className="py-2 pr-3">{row.email ?? '—'}</td>
-      <td className="py-2 pr-3 text-muted-foreground" data-slot="ops-teacher-specialty">
+      <td className="max-w-[180px] truncate py-2 pr-3" title={row.first_name ?? '—'}>
+        {row.first_name ?? '—'}
+      </td>
+      <td className="max-w-[180px] truncate py-2 pr-3" title={row.last_name ?? '—'}>
+        {row.last_name ?? '—'}
+      </td>
+      <td className="max-w-[240px] truncate py-2 pr-3" title={row.email ?? '—'}>
+        {row.email ?? '—'}
+      </td>
+      <td
+        className="max-w-[180px] truncate py-2 pr-3 text-muted-foreground"
+        data-slot="ops-teacher-specialty"
+        title={specialty}
+      >
         {specialty}
       </td>
-      <td className="py-2 pr-3 text-muted-foreground" data-slot="ops-teacher-classes">
+      <td
+        className="max-w-[220px] truncate py-2 pr-3 text-muted-foreground"
+        data-slot="ops-teacher-classes"
+        title={classes || t('noClasses')}
+      >
         {classes || t('noClasses')}
       </td>
-      <td className="py-2 pr-3 text-muted-foreground" data-slot="ops-teacher-last-active">
+      <td
+        className="max-w-[180px] truncate py-2 pr-3 text-muted-foreground"
+        data-slot="ops-teacher-last-active"
+        title={lastActive}
+      >
         {lastActive}
       </td>
       <td className="py-2">

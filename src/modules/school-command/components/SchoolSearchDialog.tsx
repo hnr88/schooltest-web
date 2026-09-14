@@ -82,7 +82,9 @@ export function SchoolSearchDialog({
                     <span className="grid size-8 flex-none place-items-center rounded-[10px] bg-[#EEF1F6] text-xs font-semibold text-[#0E2350]">
                       {badge(item.label)}
                     </span>
-                    <span className="min-w-0 truncate font-semibold text-[#0E2350]">{item.label}</span>
+                    <span className="min-w-0 truncate font-semibold text-[#0E2350]" title={item.label}>
+                      {item.label}
+                    </span>
                   </CommandPrimitive.Item>
                 ))}
               </CommandPrimitive.Group>
@@ -103,9 +105,16 @@ export function SchoolSearchDialog({
                       {badge(item.label)}
                     </span>
                     <span className="flex min-w-0 flex-col">
-                      <span className="truncate text-sm font-semibold text-[#0E2350]">{item.label}</span>
+                      <span
+                        className="truncate text-sm font-semibold text-[#0E2350]"
+                        title={item.label}
+                      >
+                        {item.label}
+                      </span>
                       {item.meta ? (
-                        <span className="truncate text-[12.5px] text-[#7C8698]">{item.meta}</span>
+                        <span className="truncate text-[12.5px] text-[#7C8698]" title={item.meta}>
+                          {item.meta}
+                        </span>
                       ) : null}
                     </span>
                   </CommandPrimitive.Item>
@@ -132,9 +141,16 @@ export function SchoolSearchDialog({
                       {badge(item.label)}
                     </span>
                     <span className="flex min-w-0 flex-col">
-                      <span className="truncate text-sm font-semibold text-[#0E2350]">{item.label}</span>
+                      <span
+                        className="truncate text-sm font-semibold text-[#0E2350]"
+                        title={item.label}
+                      >
+                        {item.label}
+                      </span>
                       {item.meta ? (
-                        <span className="truncate text-[12.5px] text-[#7C8698]">{item.meta}</span>
+                        <span className="truncate text-[12.5px] text-[#7C8698]" title={item.meta}>
+                          {item.meta}
+                        </span>
                       ) : null}
                     </span>
                   </CommandPrimitive.Item>

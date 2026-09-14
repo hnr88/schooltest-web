@@ -2741,7 +2741,7 @@
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
       "teacherLoadError": "We could not load your teachers",
-      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "teacherLoadErrorDescription": "교사를 확인할 수 없어 학급을 만들 수 없습니다. 연결을 확인하고 다시 시도해 주세요.",
       "importTitle": "Import students",
       "importDescription": "Upload a CSV or paste student data below",
       "importErrorsTitle": "Some rows could not be read",
@@ -2753,7 +2753,8 @@
       "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
-      "errorToast": "That did not work. Try again."
+      "errorToast": "That did not work. Try again.",
+      "retry": "다시 시도"
     },
     "assignTeachersButton": "교사 배정",
     "assignTeachers": {
@@ -2769,7 +2770,8 @@
       "successTitle": "교사가 배정되었습니다",
       "successDescription": "{classes}개 반에 교사 {teachers}명이 지정되었습니다.",
       "cancel": "취소",
-      "submit": "배정"
+      "submit": "배정",
+      "noClasses": "아직 배정할 학급이 없습니다."
     },
     "studentDetailMeta": {
       "title": "학생 결과 - SchoolTest",
@@ -2811,7 +2813,8 @@
         "inference": "추론",
         "critical": "비판적 읽기"
       }
-    }
+    },
+    "noEligibleTeachersHint": "아직 이용 가능한 교사가 없습니다 — 학급을 만들려면 먼저 교사를 초대해 주세요."
   },
   "SchoolStudents": {
     "meta": {
@@ -2947,7 +2950,8 @@
       "seatCapToast": "학교의 남은 좌석이 없습니다. SchoolTest에 문의하여 좌석을 추가하세요.",
       "schoolInactiveToast": "학교 계정이 활성 상태가 아니어서 지금은 학생을 추가할 수 없습니다.",
       "forbiddenToast": "학생을 변경할 권한이 없습니다.",
-      "genericToast": "작업이 실패했습니다. 다시 시도하세요."
+      "genericToast": "작업이 실패했습니다. 다시 시도하세요.",
+      "classNoClassesHint": "아직 학급이 없습니다 — 학급 메뉴에서 먼저 만들어 이 학생을 배치하세요."
     },
     "validation": {
       "givenNameRequired": "학생의 이름을 입력하세요.",
@@ -2977,7 +2981,9 @@
       "alreadyImportedToast": "이 파일의 학생은 모두 이미 학교에 등록되어 있습니다.",
       "successSkippedToast": "{created}명 가져왔습니다, {skipped, plural, other {명 이미 등록됨}}.",
       "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
-      "tooBigToast": "That file is too large. The limit is 5 MB."
+      "tooBigToast": "That file is too large. The limit is 5 MB.",
+      "classLoadErrorTitle": "학급 목록을 불러오지 못했습니다",
+      "classLoadErrorDescription": "연결을 확인하고 다시 시도해 주세요."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3569,7 +3575,8 @@
         "formSummary": "{count, plural, other {필드 #개에 확인이 필요합니다}}",
         "saveErrorGeneric": "클래스를 저장하지 못했습니다 — 변경 사항이 없습니다",
         "savedToast": "{name} 수정됨",
-        "createdToast": "{name} 생성됨"
+        "createdToast": "{name} 생성됨",
+        "noWindowsHint": "아직 테스트 창이 없습니다 — 비워 두거나 먼저 만들어 주세요."
       },
       "rosterSearchPlaceholder": "학생 검색",
       "rosterCount": "{count, plural, =0 {학생 없음} other {학생 #명}}",
@@ -3901,7 +3908,8 @@
             "body": "학생은 학교에 계속 등록된 상태로 유지되지만 이 학급들은 교사에게 보이지 않습니다.",
             "cta": "{count}개 보관"
           }
-        }
+        },
+        "teacherSkip": "{skipped}개는 교사 없음"
       },
       "reassign": {
         "title": "교사 재배정",
@@ -5190,7 +5198,32 @@
     "toggleSidebar": "사이드바 전환",
     "loading": "불러오는 중",
     "commandPalette": "명령 팔레트",
-    "commandPaletteDescription": "실행할 명령을 검색하세요..."
+    "commandPaletteDescription": "실행할 명령을 검색하세요...",
+    "missingDependency": {
+      "classes": {
+        "title": "아직 학급이 없습니다",
+        "description": "계속하려면 학급이 최소 하나 필요합니다. 먼저 학급을 만들어 주세요.",
+        "cta": "학급 만들기"
+      },
+      "destinationClasses": {
+        "title": "이동할 다른 학급이 없습니다",
+        "description": "아직 이동할 다른 학급이 없습니다. 먼저 다른 학급을 만들어 주세요."
+      },
+      "teachers": {
+        "title": "아직 교사가 없습니다",
+        "description": "아직 배정할 교사가 없습니다. 교사 없이 계속하거나 먼저 교사를 초대할 수 있습니다.",
+        "cta": "교사 초대하기"
+      },
+      "eligibleTeachers": {
+        "title": "이용 가능한 교사가 없습니다",
+        "description": "학급을 만들려면 활성 상태의 교사가 최소 한 명 필요합니다. 먼저 교사를 초대한 후 학급을 만들어 주세요.",
+        "cta": "교사 초대하기"
+      },
+      "forms": {
+        "title": "사용할 수 있는 읽기 폼이 없습니다",
+        "description": "읽기 폼이 최소 하나 필요합니다. 먼저 폼을 만든 후 다시 시도해 주세요."
+      }
+    }
   },
   "Directory": {
     "defaults": {

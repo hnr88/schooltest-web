@@ -164,7 +164,9 @@ export function ClassesTable({ rows, completions, onEdit, query = IDLE_QUERY }: 
             >
               {classBadge(row.name)}
             </span>
-            <span className="text-[14.5px] font-semibold text-foreground">{row.name}</span>
+            <span className="min-w-0 truncate text-[14.5px] font-semibold text-foreground" title={row.name}>
+              {row.name}
+            </span>
           </span>
         ),
       },
@@ -180,7 +182,9 @@ export function ClassesTable({ rows, completions, onEdit, query = IDLE_QUERY }: 
           return teacher === '' ? (
             <span className="text-[#9AA6B8]">{table('teacherNone')}</span>
           ) : (
-            teacher
+            <span className="block truncate" title={teacher}>
+              {teacher}
+            </span>
           );
         },
       },

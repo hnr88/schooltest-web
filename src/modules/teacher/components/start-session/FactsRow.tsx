@@ -41,7 +41,9 @@ function FactsRow({
     <dl data-slot="start-session-facts" className="mt-5 flex flex-wrap gap-3.5">
       {facts.map((fact) => (
         <div key={fact.key} data-fact={fact.key} className="min-w-0 flex-[1_1_150px] rounded-[10px] bg-[#FAFBFC] px-[18px] py-4">
-          <dt className="text-[11.5px] font-semibold tracking-[0.05em] text-[#6B7280] uppercase">{fact.label}</dt>
+          <dt className="truncate text-[11.5px] font-semibold tracking-[0.05em] text-[#6B7280] uppercase" title={fact.label}>
+            {fact.label}
+          </dt>
           <dd className="mt-1.5 text-[15px] font-semibold text-navy-900">{fact.value}</dd>
         </div>
       ))}

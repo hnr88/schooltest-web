@@ -14,10 +14,19 @@ export function ParticipationClassRow({ row }: ParticipationClassRowProps) {
 
   return (
     <tr data-slot="participation-row" className="border-b border-border last:border-b-0">
-      <th scope="row" className="px-4 py-3 text-left text-sm font-semibold text-foreground">
+      <th
+        scope="row"
+        className="max-w-[220px] truncate px-4 py-3 text-left text-sm font-semibold text-foreground"
+        title={row.name ?? t('unnamedClass')}
+      >
         {row.name ?? t('unnamedClass')}
       </th>
-      <td className="px-4 py-3 text-sm text-body">{row.teacher ?? t('noTeacher')}</td>
+      <td
+        className="max-w-[220px] truncate px-4 py-3 text-sm text-body"
+        title={row.teacher ?? t('noTeacher')}
+      >
+        {row.teacher ?? t('noTeacher')}
+      </td>
       <td className="px-4 py-3 text-sm text-body tabular-nums">{row.roster_count}</td>
       {[row.test_a, row.test_b].map((buckets, index) => (
         <td key={index} className="px-4 py-3 text-sm text-body">

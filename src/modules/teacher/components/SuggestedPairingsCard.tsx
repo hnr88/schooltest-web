@@ -50,7 +50,9 @@ function SuggestedPairingsCard({ pairings }: SuggestedPairingsCardProps) {
 function PairSide({ name, label, tone }: { name: string; label: string; tone: string }) {
   return (
     <div className="min-w-0 flex-1 text-center">
-      <div className="text-[14px] font-semibold text-navy-900">{name}</div>
+      <div className="truncate text-[14px] font-semibold text-navy-900" title={name}>
+        {name}
+      </div>
       <div className={cn('mt-0.5 text-[11.5px] font-semibold', tone)}>{label}</div>
     </div>
   );

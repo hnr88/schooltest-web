@@ -48,8 +48,8 @@ function LiveSessionsByClass({
           >
             <div className="flex flex-wrap items-center gap-3">
               <ClassBadge code={classBadgeCode(group.name)} tone="soft" />
-              <div className="min-w-[180px] flex-1">
-                <h2 id={headingId} className="text-[15px] font-medium text-navy-900">
+              <div className="min-w-0 flex-1">
+                <h2 id={headingId} className="truncate text-[15px] font-medium text-navy-900" title={group.name}>
                   {group.name}
                 </h2>
                 <p className="mt-0.5 text-[12.5px] text-[#6B7280]">

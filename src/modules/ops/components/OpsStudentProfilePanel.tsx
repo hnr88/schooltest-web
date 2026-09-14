@@ -70,7 +70,12 @@ export function OpsStudentProfilePanel({ schoolDocumentId, studentDocumentId }: 
       <PanelHeaderRow as="h2" title={opsStudentFullName(student)} />
       <KeyValueList>
         <KeyValueRow label={tStudents('table.columnClass')}>
-          {student.class?.name ?? tStudents('table.classNone')}
+          <span
+            className="block truncate"
+            title={student.class?.name ?? tStudents('table.classNone')}
+          >
+            {student.class?.name ?? tStudents('table.classNone')}
+          </span>
         </KeyValueRow>
         <KeyValueRow label={tStudents('form.dateOfBirth')}>
           {student.date_of_birth === null

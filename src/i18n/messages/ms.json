@@ -2741,7 +2741,7 @@
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
       "teacherLoadError": "We could not load your teachers",
-      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "teacherLoadErrorDescription": "Guru tidak dapat disahkan, jadi kelas tidak boleh dicipta lagi. Semak sambungan anda dan cuba lagi.",
       "importTitle": "Import students",
       "importDescription": "Upload a CSV or paste student data below",
       "importErrorsTitle": "Some rows could not be read",
@@ -2753,7 +2753,8 @@
       "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
-      "errorToast": "That did not work. Try again."
+      "errorToast": "That did not work. Try again.",
+      "retry": "Cuba lagi"
     },
     "assignTeachersButton": "Tugaskan guru",
     "assignTeachers": {
@@ -2769,7 +2770,8 @@
       "successTitle": "Guru ditugaskan",
       "successDescription": "{teachers} guru ditetapkan pada {classes} kelas.",
       "cancel": "Batal",
-      "submit": "Tugaskan"
+      "submit": "Tugaskan",
+      "noClasses": "Tiada kelas untuk ditugaskan lagi."
     },
     "studentDetailMeta": {
       "title": "Keputusan murid - SchoolTest",
@@ -2811,7 +2813,8 @@
         "inference": "Inferens",
         "critical": "Bacaan kritis"
       }
-    }
+    },
+    "noEligibleTeachersHint": "Tiada guru layak lagi — jemput guru untuk mencipta kelas."
   },
   "SchoolStudents": {
     "meta": {
@@ -2947,7 +2950,8 @@
       "seatCapToast": "Sekolah anda tidak mempunyai tempat kosong. Hubungi SchoolTest untuk menambah tempat.",
       "schoolInactiveToast": "Akaun sekolah anda tidak aktif, jadi murid tidak dapat ditambah buat masa ini.",
       "forbiddenToast": "Anda tidak mempunyai kebenaran untuk mengubah murid.",
-      "genericToast": "Itu tidak berjaya. Cuba lagi."
+      "genericToast": "Itu tidak berjaya. Cuba lagi.",
+      "classNoClassesHint": "Tiada kelas lagi — cipta satu di bawah Kelas untuk menempatkan murid ini."
     },
     "validation": {
       "givenNameRequired": "Masukkan nama diberi murid.",
@@ -2977,7 +2981,9 @@
       "alreadyImportedToast": "Semua pelajar dalam fail ini sudah berdaftar di sekolah anda.",
       "successSkippedToast": "{created} diimport, {skipped, plural, other {sudah berdaftar}}.",
       "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
-      "tooBigToast": "That file is too large. The limit is 5 MB."
+      "tooBigToast": "That file is too large. The limit is 5 MB.",
+      "classLoadErrorTitle": "Kelas anda tidak dapat dimuatkan",
+      "classLoadErrorDescription": "Semak sambungan anda dan cuba lagi."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3569,7 +3575,8 @@
         "formSummary": "{count, plural, other {# medan memerlukan perhatian}}",
         "saveErrorGeneric": "Tidak dapat menyimpan kelas — tiada apa yang berubah",
         "savedToast": "{name} dikemas kini",
-        "createdToast": "{name} dicipta"
+        "createdToast": "{name} dicipta",
+        "noWindowsHint": "Belum ada tetingkap ujian — biarkan kosong, atau cipta satu dahulu."
       },
       "rosterSearchPlaceholder": "Cari murid",
       "rosterCount": "{count, plural, =0 {Tiada murid} other {# murid}}",
@@ -3901,7 +3908,8 @@
             "body": "Murid kekal berdaftar di sekolah tetapi kelas-kelas ini disembunyikan daripada guru.",
             "cta": "Arkibkan {count}"
           }
-        }
+        },
+        "teacherSkip": "{skipped} tanpa guru"
       },
       "reassign": {
         "title": "Tugaskan semula guru",
@@ -5190,7 +5198,32 @@
     "toggleSidebar": "Togol bar sisi",
     "loading": "Memuatkan",
     "commandPalette": "Palet Perintah",
-    "commandPaletteDescription": "Cari perintah untuk dijalankan..."
+    "commandPaletteDescription": "Cari perintah untuk dijalankan...",
+    "missingDependency": {
+      "classes": {
+        "title": "Tiada kelas lagi",
+        "description": "Anda memerlukan sekurang-kurangnya satu kelas untuk teruskan. Cipta kelas dahulu.",
+        "cta": "Cipta kelas"
+      },
+      "destinationClasses": {
+        "title": "Tiada kelas lain untuk dialihkan",
+        "description": "Tiada kelas lain untuk dialihkan buat masa ini. Cipta kelas lain dahulu."
+      },
+      "teachers": {
+        "title": "Tiada guru lagi",
+        "description": "Tiada guru untuk ditugaskan buat masa ini. Anda boleh teruskan tanpa guru, atau jemput guru dahulu.",
+        "cta": "Jemput guru"
+      },
+      "eligibleTeachers": {
+        "title": "Tiada guru layak",
+        "description": "Pembuatan kelas memerlukan sekurang-kurangnya satu guru aktif. Jemput guru dahulu, kemudian cipta kelas.",
+        "cta": "Jemput guru"
+      },
+      "forms": {
+        "title": "Tiada borang bacaan tersedia",
+        "description": "Ini memerlukan sekurang-kurangnya satu borang bacaan. Cipta borang dahulu, kemudian cuba lagi."
+      }
+    }
   },
   "Directory": {
     "defaults": {

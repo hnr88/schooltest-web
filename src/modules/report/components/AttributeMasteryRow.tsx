@@ -54,7 +54,10 @@ export function AttributeMasteryRow({
       className={ROW_CLASS}
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-        <span className="rounded-md bg-muted px-2 py-0.5 text-meta font-bold text-secondary-foreground tabular-nums">
+        <span
+          className="max-w-full truncate rounded-md bg-muted px-2 py-0.5 text-meta font-bold text-secondary-foreground tabular-nums"
+          title={name}
+        >
           {name}
         </span>
         <StatusPill tone={row.state === 'assessed' ? ATTRIBUTE_STATUS_TONE[row.status] : 'neutral'}>

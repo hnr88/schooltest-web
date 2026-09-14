@@ -255,16 +255,23 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
           >
             {initialsOf(row.first_name, row.last_name, row.email)}
           </span>
-          <div className="min-w-[220px] flex-1">
+          <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-3">
               {/* pixel-audit 2026-09-11 — the design's 28px/500/-0.02em detail
                   h1 (`School Admin Portal.dc.html:622`). */}
-              <h1 className="text-[28px] leading-tight font-medium tracking-[-0.02em] text-foreground">
+              <h1
+                className="min-w-0 max-w-full truncate text-[28px] leading-tight font-medium tracking-[-0.02em] text-foreground"
+                title={displayName}
+              >
                 {displayName}
               </h1>
               {statusPill}
             </div>
-            <p data-slot="teacher-detail-meta" className="mt-[5px] truncate text-body-md text-muted-foreground">
+            <p
+              data-slot="teacher-detail-meta"
+              title={[row.email, roleLabel, lastActiveLabel].join(' · ')}
+              className="mt-[5px] truncate text-body-md text-muted-foreground"
+            >
               {[row.email, roleLabel, lastActiveLabel].join(' · ')}
             </p>
           </div>
@@ -374,7 +381,7 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
                       {klass.name.trim().split(/\s+/)[0]}
                     </span>
                     <span className="block min-w-[150px] flex-[3_1_200px]">
-                      <span className="block truncate text-[14.5px] font-semibold text-foreground">
+                      <span className="block truncate text-[14.5px] font-semibold text-foreground" title={klass.name}>
                         {klass.name}
                       </span>
                       {participation ? (
@@ -446,7 +453,7 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
                 className="flex items-baseline justify-between gap-4 border-b border-[#EEF1F6] py-3 last:border-b-0"
               >
                 <dt className="text-[13px] text-muted-foreground">{field.label}</dt>
-                <dd className="truncate text-body-sm text-right font-semibold text-foreground">
+                <dd className="truncate text-body-sm text-right font-semibold text-foreground" title={field.value}>
                   {field.value}
                 </dd>
               </div>
@@ -567,7 +574,14 @@ export function TeacherDetailScreen({ documentId }: { documentId: string }) {
                     }`}
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[14px] font-semibold text-foreground">
+                    <p
+                      className="truncate text-[14px] font-semibold text-foreground"
+                      title={
+                        event.type === 'sitting_opened'
+                          ? t('activity.opened', { class: event.class.name ?? t('activity.unnamedClass') })
+                          : t('activity.closed', { class: event.class.name ?? t('activity.unnamedClass') })
+                      }
+                    >
                       {event.type === 'sitting_opened'
                         ? t('activity.opened', {
                             class: event.class.name ?? t('activity.unnamedClass'),

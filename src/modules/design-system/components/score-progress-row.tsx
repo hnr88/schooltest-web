@@ -38,7 +38,9 @@ function ScoreProgressRow({
         className={cn('flex flex-col gap-1.75', className)}
       >
         <span className="flex items-baseline justify-between gap-3 text-body-sm">
-          <span className="min-w-0 truncate font-semibold text-foreground">{label}</span>
+          <span className="min-w-0 truncate font-semibold text-foreground" title={label}>
+            {label}
+          </span>
           <span className="shrink-0 font-bold text-foreground tabular-nums">{display}</span>
         </span>
         {track}
@@ -53,7 +55,9 @@ function ScoreProgressRow({
       aria-label={`${label} ${display}`}
       className={cn('grid grid-cols-score-row items-center gap-3.5', className)}
     >
-      <span className="truncate text-body-sm font-semibold text-foreground">{label}</span>
+      <span className="min-w-0 truncate text-body-sm font-semibold text-foreground" title={label}>
+        {label}
+      </span>
       {track}
       <span className="text-right text-body-sm font-bold text-foreground tabular-nums">
         {display}

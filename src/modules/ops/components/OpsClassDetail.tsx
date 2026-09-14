@@ -26,6 +26,7 @@ import {
   DialogTitle,
   IconButton,
   Input,
+  MissingDependencyNotice,
   SelectField,
   Skeleton,
   StatusPill,
@@ -418,7 +419,10 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
         </span>
         <div className="min-w-[200px] flex-1">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-[-0.015em] text-foreground">
+            <h1
+              className="truncate text-2xl font-semibold tracking-[-0.015em] text-foreground"
+              title={classDetail.name ?? undefined}
+            >
               {classDetail.name}
             </h1>
             {classStatus ? (
@@ -430,7 +434,10 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
               </StatusPill>
             ) : null}
           </div>
-          <div className="mt-1 text-[13.5px] text-[#7C8698]">
+          <div
+            className="mt-1 truncate text-[13.5px] text-[#7C8698]"
+            title={classDetail.test_window?.title ?? t('noWindowAssigned')}
+          >
             {noValueIfMissing(classDetail.year_band)}
             {' · '}
             {classDetail.test_window?.title ?? t('noWindowAssigned')}
@@ -509,7 +516,9 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
             ) : null}
             <div className="min-w-0">
               <div className="mb-[3px] text-xs text-[#9AA6B8]">{t('classTeacher')}</div>
-              <div className="text-[15px] font-semibold text-foreground">{teacherName}</div>
+              <div className="truncate text-[15px] font-semibold text-foreground" title={teacherName}>
+                {teacherName}
+              </div>
             </div>
           </div>
         </dl>
@@ -655,18 +664,30 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
                       {studentInitial(student)}
                     </span>
                     <div className="min-w-0">
-                      <div className="text-[14.5px] font-semibold text-foreground">
+                      <div
+                        className="truncate text-[14.5px] font-semibold text-foreground"
+                        title={noValueIfMissing(studentFullName(student))}
+                      >
                         {noValueIfMissing(studentFullName(student))}
                       </div>
-                      <div className="mt-0.5 truncate text-[12.5px] text-[#7C8698]">
+                      <div
+                        className="mt-0.5 truncate text-[12.5px] text-[#7C8698]"
+                        title={studentDetail(student)}
+                      >
                         {studentDetail(student)}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="min-w-0 flex-[1_1_80px] truncate border-0 p-0 align-middle text-[13px] text-[#3D4A5C]">
+                  <TableCell
+                    className="min-w-0 flex-[1_1_80px] truncate border-0 p-0 align-middle text-[13px] text-[#3D4A5C]"
+                    title={studentLevel(student)}
+                  >
                     {studentLevel(student)}
                   </TableCell>
-                  <TableCell className="min-w-0 flex-[1_1_100px] truncate border-0 p-0 align-middle text-[12.5px] text-[#9AA6B8]">
+                  <TableCell
+                    className="min-w-0 flex-[1_1_100px] truncate border-0 p-0 align-middle text-[12.5px] text-[#9AA6B8]"
+                    title={studentLastActivity(student)}
+                  >
                     {studentLastActivity(student)}
                   </TableCell>
                   <TableCell className="flex-none border-0 p-0 align-middle">
@@ -809,15 +830,22 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
               {sharedT('studentsMoveClassBody', { count: moveTargetRows?.length ?? 1 })}
             </DialogDescription>
           </DialogHeader>
-          <SelectField
-            id="ops-class-roster-move-destination"
-            label={sharedT('studentsMoveClassDestinationLabel')}
-            placeholder={sharedT('studentsMoveClassPlaceholder')}
-            value={destinationClassDocumentId}
-            onValueChange={setDestinationClassDocumentId}
-            options={destinationOptions}
-            disabled={moveRunner.state.status === 'running'}
-          />
+          {/* No dependent dropdown renders empty: when this school has no
+              OTHER class, the picker is replaced by the refusal instead of a
+              zero-option select. */}
+          {!classesQuery.isPending && destinationOptions.length === 0 ? (
+            <MissingDependencyNotice kind="destinationClasses" />
+          ) : (
+            <SelectField
+              id="ops-class-roster-move-destination"
+              label={sharedT('studentsMoveClassDestinationLabel')}
+              placeholder={sharedT('studentsMoveClassPlaceholder')}
+              value={destinationClassDocumentId}
+              onValueChange={setDestinationClassDocumentId}
+              options={destinationOptions}
+              disabled={moveRunner.state.status === 'running' || classesQuery.isPending}
+            />
+          )}
           <DialogFooter>
             <Button
               type="button"

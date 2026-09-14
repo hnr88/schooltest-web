@@ -8,6 +8,7 @@ import { isAxiosError } from 'axios';
 import {
   Alert,
   Input,
+  MissingDependencyNotice,
   OPS_CONTROL_CLASS,
   OpsDialog,
   OpsDialogBody,
@@ -121,6 +122,12 @@ export function OpsEditClassDialog({
 
   const teachersQuery = useTeachersListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const teachers = teachersQuery.data?.data ?? [];
+  // Eligibility, judged BEFORE the form renders: a class is created with a
+  // teacher, so CREATE with no eligible (non-blocked) teacher is refused at
+  // the door instead of after the operator has filled the form. EDIT stays
+  // usable — rename and year band are still valid edits without one.
+  const eligibleTeachers = teachers.filter((teacher) => !teacher.blocked);
+  const createBlockedOnEligibility = !isEdit && !teachersQuery.isPending && eligibleTeachers.length === 0;
 
   const windowsQuery = useResultWindowsQuery(schoolDocumentId, { page: 1, pageSize: 200 });
   const windows = windowsQuery.data?.data ?? [];
@@ -303,9 +310,14 @@ export function OpsEditClassDialog({
       <OpsDialogContent className="sm:max-w-[560px]">
         <OpsDialogHeader
           title={isEdit ? t('title') : createT('title')}
-          sub={isEdit ? t('description') : createT('description')}
+          sub={createBlockedOnEligibility ? undefined : isEdit ? t('description') : createT('description')}
         />
 
+        {createBlockedOnEligibility ? (
+          <div data-slot="ops-create-class-ineligible">
+            <MissingDependencyNotice kind="eligibleTeachers" />
+          </div>
+        ) : (
         <form onSubmit={submit} noValidate>
           <OpsDialogBody>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -379,14 +391,28 @@ export function OpsEditClassDialog({
               ) : null}
             </div>
 
-            <OpsFieldShell id="ops-class-form-window" label={formT('testWindowLabel')}>
+            <OpsFieldShell
+              id="ops-class-form-window"
+              label={formT('testWindowLabel')}
+              /* Rule 3 gated at the CONTROL, not at submit: without a teacher
+                 the window cannot be chosen at all, so the operator never
+                 fills the form only to be refused on submit. The schema's
+                 blocking arm stays as the final guard. */
+              helperText={
+                !waitingOnDetail && teacherDocumentId === null
+                  ? formT('windowNeedsTeacher')
+                  : !windowsQuery.isPending && windows.length === 0
+                    ? formT('noWindowsHint')
+                    : undefined
+              }
+            >
               <SelectField
                 id="ops-class-form-window"
                 label={formT('testWindowLabel')}
                 placeholder={formT('noWindowOption')}
                 hideLabel
                 value={testWindowDocumentId ?? ''}
-                disabled={waitingOnDetail || windowsQuery.isPending}
+                disabled={waitingOnDetail || windowsQuery.isPending || teacherDocumentId === null}
                 options={[
                   { value: '', label: formT('noWindowOption') },
                   ...windows.map((window) => ({
@@ -428,6 +454,7 @@ export function OpsEditClassDialog({
             </OpsDialogCta>
           </OpsDialogFooter>
         </form>
+        )}
       </OpsDialogContent>
     </OpsDialog>
   );

@@ -17,12 +17,18 @@ function StatusPill({ tone = 'neutral', children, className }: StatusPillProps) 
       data-slot="status-pill"
       data-tone={tone}
       className={cn(
-        'inline-flex w-fit items-center rounded-full px-[13px] py-[5px] text-[12px] font-semibold',
+        'inline-flex w-fit max-w-full items-center truncate rounded-full px-[13px] py-[5px] text-[12px] font-semibold',
         TONE_CLASSES[tone],
         className,
       )}
     >
-      {children}
+      {typeof children === 'string' ? (
+        <span className="min-w-0 truncate" title={children}>
+          {children}
+        </span>
+      ) : (
+        children
+      )}
     </span>
   );
 }

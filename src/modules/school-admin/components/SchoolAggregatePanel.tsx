@@ -98,8 +98,10 @@ export function SchoolAggregatePanel({ classes, onSelectClass }: SchoolAggregate
                 onClick={() => onSelectClass(klass.documentId)}
                 className="flex w-full items-center justify-between gap-3 py-3.5 text-left transition-colors duration-200 ease-out-expo hover:bg-surface-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring motion-reduce:transition-none"
               >
-                <span className="text-lede font-semibold text-foreground">{klass.name}</span>
-                <span className="text-caption text-body tabular-nums">
+                <span className="min-w-0 truncate text-lede font-semibold text-foreground" title={klass.name}>
+                  {klass.name}
+                </span>
+                <span className="shrink-0 text-caption text-body tabular-nums">
                   {t('classStudentsLine', { count: klass.student_count })}
                 </span>
               </button>

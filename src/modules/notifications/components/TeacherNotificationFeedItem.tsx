@@ -56,7 +56,7 @@ function TeacherNotificationFeedItem({
         <Bell aria-hidden="true" className="size-5" />
       </span>
       <div className="flex min-w-0 flex-1 flex-col">
-        <h3 className="text-lede font-semibold text-foreground">
+        <h3 className="truncate text-lede font-semibold text-foreground" title={notification.title}>
           {notification.link ? (
             <Link
               href={notification.link}
@@ -71,7 +71,7 @@ function TeacherNotificationFeedItem({
         </h3>
         {isUnread ? <span className="sr-only">{t('unread')}</span> : null}
         {notification.body ? (
-          <p className="mt-0.5 text-caption leading-normal text-body">{notification.body}</p>
+          <p className="mt-0.5 text-caption leading-normal text-body break-words">{notification.body}</p>
         ) : null}
         <p className="mt-1.25 text-meta text-muted-foreground">
           <time dateTime={notification.createdAt}>{timeLabel}</time>

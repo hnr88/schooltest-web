@@ -26,7 +26,9 @@ export function MediaPreview({ media, isImage, previewAlt, removeLabel, onRemove
         />
       ) : (
         <div className="flex flex-col gap-2 p-4">
-          <span className="truncate text-sm font-medium text-foreground">{media.name}</span>
+          <span className="truncate text-sm font-medium text-foreground" title={media.name}>
+            {media.name}
+          </span>
           <audio controls src={media.url} className="w-full">
             {media.name}
           </audio>

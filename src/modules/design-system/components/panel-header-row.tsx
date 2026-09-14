@@ -24,12 +24,13 @@ function PanelHeaderRow({
       <div className="flex min-w-0 flex-col gap-1">
         <Heading
           id={titleId}
-          className="text-panel-title font-semibold text-balance text-foreground"
+          className="min-w-0 truncate text-panel-title font-semibold text-foreground"
+          title={title}
         >
           {title}
         </Heading>
         {description ? (
-          <p className="text-body-sm text-muted-foreground">{description}</p>
+          <p className="break-words text-body-sm text-muted-foreground">{description}</p>
         ) : null}
       </div>
       {action ? <div className="flex shrink-0 items-center gap-2">{action}</div> : null}

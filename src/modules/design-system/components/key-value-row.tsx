@@ -30,7 +30,12 @@ function KeyValueRow({ label, children, className }: KeyValueRowProps) {
       )}
     >
       <dt className="shrink-0 text-muted-foreground">{label}</dt>
-      <dd className="min-w-0 text-right font-semibold text-foreground">{children}</dd>
+      <dd
+        className="min-w-0 truncate text-right font-semibold text-foreground"
+        title={typeof children === 'string' ? children : undefined}
+      >
+        {children}
+      </dd>
     </div>
   );
 }

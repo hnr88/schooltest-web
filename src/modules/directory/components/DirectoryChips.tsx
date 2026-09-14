@@ -43,14 +43,15 @@ export function DirectoryChips({ filter, value, onValueChange }: DirectoryChipsP
             aria-pressed={active}
             data-slot="directory-chip"
             data-value={option.value}
+            title={label}
             onClick={() => onValueChange(option.value)}
-            className={`inline-flex h-[34px] items-center rounded-full border-[1.5px] px-3.5 text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none pointer-coarse:min-h-11 ${
+            className={`inline-flex h-[34px] min-w-0 max-w-full items-center rounded-full border-[1.5px] px-3.5 text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none pointer-coarse:min-h-11 ${
               active
                 ? 'border-[#0E2350] bg-[#0E2350] text-white'
                 : 'border-[#D8DFEA] bg-white text-[#3D4A5C] hover:border-[#0E2350]'
             }`}
           >
-            {label}
+            <span className="min-w-0 truncate">{label}</span>
           </button>
         );
       })}

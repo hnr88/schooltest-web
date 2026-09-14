@@ -26,9 +26,13 @@ function PersonCell({
         size={size}
       />
       <span className="flex min-w-0 flex-col">
-        <span className="truncate text-body-sm font-semibold text-foreground">{name}</span>
+        <span className="truncate text-body-sm font-semibold text-foreground" title={name}>
+          {name}
+        </span>
         {secondary ? (
-          <span className="truncate text-meta text-muted-foreground">{secondary}</span>
+          <span className="truncate text-meta text-muted-foreground" title={secondary}>
+            {secondary}
+          </span>
         ) : null}
       </span>
       {trailing ? <span className="ml-auto shrink-0">{trailing}</span> : null}

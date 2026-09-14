@@ -30,7 +30,9 @@ function SubjectProgressCard({
       )}
     >
       <div className="flex items-baseline justify-between gap-2 text-body-sm">
-        <span className="truncate font-bold text-foreground">{subject}</span>
+        <span className="min-w-0 truncate font-bold text-foreground" title={subject}>
+          {subject}
+        </span>
         <span className={cn('shrink-0 font-bold tabular-nums', VALUE_CLASSES[tone])}>
           {valueLabel}
         </span>
@@ -43,7 +45,11 @@ function SubjectProgressCard({
           FILL_CLASSES[tone],
         )}
       />
-      {meta ? <span className="text-meta text-muted-foreground">{meta}</span> : null}
+      {meta ? (
+        <span className="min-w-0 truncate text-meta text-muted-foreground" title={meta}>
+          {meta}
+        </span>
+      ) : null}
     </article>
   );
 }

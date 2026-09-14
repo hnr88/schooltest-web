@@ -448,8 +448,18 @@ export function OpsSchoolsTable() {
               className="size-13 shrink-0 rounded-[14px]"
             />
             <div className="flex min-w-0 flex-col">
-              <span className="text-[15.5px] font-semibold text-foreground">{school.name ?? t('unnamedSchool')}</span>
-              <span className="mt-[3px] truncate text-[12.5px] text-body">{metaLine(school, t, locale)}</span>
+              <span
+                className="truncate text-[15.5px] font-semibold text-foreground"
+                title={school.name ?? t('unnamedSchool')}
+              >
+                {school.name ?? t('unnamedSchool')}
+              </span>
+              <span
+                className="mt-[3px] truncate text-[12.5px] text-body"
+                title={metaLine(school, t, locale)}
+              >
+                {metaLine(school, t, locale)}
+              </span>
             </div>
           </div>
         ),

@@ -25,18 +25,21 @@ export function ItemTypeHeatmap({ rows }: ItemTypeHeatmapProps) {
       <p className="max-w-xl text-xs text-muted-foreground">
         {t('heatmapLegend', { floor: floorPct, secure: securePct })}
       </p>
-      {sections.map(([section, cells]) => (
-        <section key={section} className="flex flex-col gap-2" aria-label={t('sectionHeading', { section })}>
-          <h4 className="text-sm font-semibold text-foreground">
-            {t('sectionHeading', { section })}
-          </h4>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-            {cells.map((cell) => (
-              <HeatmapCell key={`${cell.item_code}-${cell.section}`} row={cell} />
-            ))}
-          </div>
-        </section>
-      ))}
+      {sections.map(([section, cells]) => {
+        const heading = t('sectionHeading', { section });
+        return (
+          <section key={section} className="flex flex-col gap-2" aria-label={heading}>
+            <h4 className="truncate text-sm font-semibold text-foreground" title={heading}>
+              {heading}
+            </h4>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {cells.map((cell) => (
+                <HeatmapCell key={`${cell.item_code}-${cell.section}`} row={cell} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }

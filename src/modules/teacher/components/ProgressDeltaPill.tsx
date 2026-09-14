@@ -43,14 +43,17 @@ interface ProgressDeltaPillProps {
 function ProgressDeltaPill({ direction, change }: ProgressDeltaPillProps) {
   const t = useTranslations('Teacher.results.progress');
   const Icon = PROGRESS_DIRECTION_ICON[direction];
+  const label = t(PROGRESS_DIRECTION_LABEL_KEY[direction], { change });
 
   return (
     <StatusPill
       tone={PROGRESS_DIRECTION_TONE[direction]}
-      className="gap-1 tabular-nums normal-case"
+      className="max-w-full gap-1 tabular-nums normal-case"
     >
-      <Icon aria-hidden="true" className="size-3.5" />
-      {t(PROGRESS_DIRECTION_LABEL_KEY[direction], { change })}
+      <Icon aria-hidden="true" className="size-3.5 flex-none" />
+      <span className="truncate" title={label}>
+        {label}
+      </span>
     </StatusPill>
   );
 }

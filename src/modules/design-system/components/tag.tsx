@@ -11,11 +11,13 @@ function Tag({ label, onRemove, removeLabel, className }: TagProps) {
     <span
       data-slot="tag"
       className={cn(
-        'inline-flex h-7 items-center gap-1 rounded-full bg-secondary px-3 text-sm font-medium text-secondary-foreground',
+        'inline-flex h-7 max-w-full items-center gap-1 rounded-full bg-secondary px-3 text-sm font-medium text-secondary-foreground',
         className,
       )}
     >
-      {label}
+      <span className="min-w-0 truncate" title={label}>
+        {label}
+      </span>
       {onRemove ? (
         <button
           type="button"

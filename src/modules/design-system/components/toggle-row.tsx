@@ -48,10 +48,15 @@ function ToggleRow({
     >
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         <Label id={labelId} htmlFor={id} className="text-sm font-semibold text-foreground">
-          {label}
+          <span className="min-w-0 truncate" title={label}>
+            {label}
+          </span>
         </Label>
         {description ? (
-          <span id={descriptionId} className="text-body-sm text-muted-foreground">
+          <span
+            id={descriptionId}
+            className="break-words text-body-sm text-muted-foreground"
+          >
             {description}
           </span>
         ) : null}

@@ -10,10 +10,12 @@ import { AssignTeachersDialog } from '@/modules/classes/components/AssignTeacher
 import { EditClassDialog } from '@/modules/classes/components/EditClassDialog';
 import { ClassesTable } from '@/modules/classes/components/ClassesTable';
 import { testsCompletedByClass } from '@/modules/classes/lib/classes-table.helpers';
+import { isEligibleClassTeacher } from '@/modules/classes/lib/class-form.helpers';
 import { useSchoolClassesQuery } from '@/modules/classes/queries/use-school-classes.query';
 import type { SchoolClass } from '@/modules/classes/types/classes.types';
 import { Alert, Button, Skeleton } from '@/modules/design-system';
 import { useParticipationQuery } from '@/modules/school-admin';
+import { useTeachersQuery } from '@/modules/teachers';
 
 // School admin Classes screen (spec §2): the C-CLS-01 roster joined with the
 // C-RPT-04 per-test completion, plus create (the add-class modal), edit
@@ -26,6 +28,13 @@ export function ClassesScreen() {
   const enabled = hydrated && Boolean(token);
   const classesQuery = useSchoolClassesQuery(enabled);
   const participationQuery = useParticipationQuery(enabled);
+  // Eligibility for "Add class" is judged BEFORE the dialog opens: creation
+  // needs at least one eligible teacher (an active staff row that is not the
+  // admin), so the trigger carries the refusal instead of letting the admin
+  // fill a form they cannot submit.
+  const teachersQuery = useTeachersQuery(enabled);
+  const eligibleTeacherCount = (teachersQuery.data ?? []).filter(isEligibleClassTeacher).length;
+  const canAddClass = !teachersQuery.isPending && !teachersQuery.isError && eligibleTeacherCount > 0;
   const [addOpen, setAddOpen] = useState(false);
   const [assignOpen, setAssignOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<SchoolClass | null>(null);
@@ -57,12 +66,19 @@ export function ClassesScreen() {
             variant="navy"
             className="h-11 rounded-tile px-5 text-sm font-semibold"
             onClick={() => setAddOpen(true)}
+            disabled={!canAddClass}
           >
             <Plus className="size-[15px]" strokeWidth={2.2} aria-hidden />
             {t('addButton')}
           </Button>
         </div>
       </div>
+      {/* The why under the blocked trigger — never a silent dead button. */}
+      {teachersQuery.isSuccess && eligibleTeacherCount === 0 ? (
+        <p className="-mt-3 text-sm text-[#7C8698]" data-slot="add-class-blocked-hint">
+          {t('noEligibleTeachersHint')}
+        </p>
+      ) : null}
       {isPending ? (
         <div className="flex flex-col gap-3">
           <Skeleton className="h-10 w-full" />

@@ -2750,7 +2750,7 @@
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
       "teacherLoadError": "We could not load your teachers",
-      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "teacherLoadErrorDescription": "Không thể xác minh danh sách giáo viên nên chưa thể tạo lớp. Vui lòng kiểm tra kết nối và thử lại.",
       "importTitle": "Import students",
       "importDescription": "Upload a CSV or paste student data below",
       "importErrorsTitle": "Some rows could not be read",
@@ -2762,7 +2762,8 @@
       "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
-      "errorToast": "That did not work. Try again."
+      "errorToast": "That did not work. Try again.",
+      "retry": "Thử lại"
     },
     "assignTeachersButton": "Phân công giáo viên",
     "assignTeachers": {
@@ -2778,7 +2779,8 @@
       "successTitle": "Đã phân công giáo viên",
       "successDescription": "Đã đặt {teachers} giáo viên cho {classes} lớp.",
       "cancel": "Hủy",
-      "submit": "Phân công"
+      "submit": "Phân công",
+      "noClasses": "Chưa có lớp nào để phân công."
     },
     "studentDetailMeta": {
       "title": "Kết quả học sinh - SchoolTest",
@@ -2820,7 +2822,8 @@
         "inference": "Suy luận",
         "critical": "Đọc phản biện"
       }
-    }
+    },
+    "noEligibleTeachersHint": "Chưa có giáo viên đủ điều kiện — hãy mời giáo viên để tạo lớp."
   },
   "SchoolStudents": {
     "meta": {
@@ -2956,7 +2959,8 @@
       "seatCapToast": "Trường bạn đã hết chỗ. Hãy liên hệ SchoolTest để thêm chỗ.",
       "schoolInactiveToast": "Tài khoản trường của bạn chưa hoạt động nên hiện chưa thể thêm học sinh.",
       "forbiddenToast": "Bạn không có quyền thay đổi học sinh.",
-      "genericToast": "Thao tác không thành công. Hãy thử lại."
+      "genericToast": "Thao tác không thành công. Hãy thử lại.",
+      "classNoClassesHint": "Chưa có lớp nào — hãy tạo lớp trong mục Lớp để xếp học sinh này."
     },
     "validation": {
       "givenNameRequired": "Nhập tên của học sinh.",
@@ -2986,7 +2990,9 @@
       "alreadyImportedToast": "Tất cả học sinh trong tệp này đã được ghi danh tại trường của bạn.",
       "successSkippedToast": "Đã nhập {created}, {skipped, plural, other {đã ghi danh}}.",
       "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
-      "tooBigToast": "That file is too large. The limit is 5 MB."
+      "tooBigToast": "That file is too large. The limit is 5 MB.",
+      "classLoadErrorTitle": "Không thể tải danh sách lớp của bạn",
+      "classLoadErrorDescription": "Vui lòng kiểm tra kết nối và thử lại."
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3578,7 +3584,8 @@
         "formSummary": "{count, plural, other {# trường cần được chú ý}}",
         "saveErrorGeneric": "Không thể lưu lớp — không có gì thay đổi",
         "savedToast": "Đã cập nhật {name}",
-        "createdToast": "Đã tạo {name}"
+        "createdToast": "Đã tạo {name}",
+        "noWindowsHint": "Chưa có cửa sổ bài kiểm tra — để trống, hoặc tạo một cái trước."
       },
       "rosterSearchPlaceholder": "Tìm học sinh",
       "rosterCount": "{count, plural, =0 {Không có học sinh} other {# học sinh}}",
@@ -3910,7 +3917,8 @@
             "body": "Học sinh vẫn được ghi danh tại trường nhưng các lớp học này sẽ bị ẩn khỏi giáo viên.",
             "cta": "Lưu trữ {count}"
           }
-        }
+        },
+        "teacherSkip": "{skipped} lớp không có giáo viên"
       },
       "reassign": {
         "title": "Đổi giáo viên",
@@ -5199,7 +5207,32 @@
     "toggleSidebar": "Bật/tắt thanh bên",
     "loading": "Đang tải",
     "commandPalette": "Bảng lệnh",
-    "commandPaletteDescription": "Tìm kiếm lệnh để chạy..."
+    "commandPaletteDescription": "Tìm kiếm lệnh để chạy...",
+    "missingDependency": {
+      "classes": {
+        "title": "Chưa có lớp nào",
+        "description": "Bạn cần có ít nhất một lớp trước khi tiếp tục. Hãy tạo lớp trước.",
+        "cta": "Tạo lớp"
+      },
+      "destinationClasses": {
+        "title": "Không có lớp khác để chuyển đến",
+        "description": "Hiện chưa có lớp nào khác để chuyển đến. Hãy tạo lớp khác trước."
+      },
+      "teachers": {
+        "title": "Chưa có giáo viên",
+        "description": "Hiện chưa có giáo viên để phân công. Bạn có thể tiếp tục mà không cần giáo viên, hoặc mời giáo viên trước.",
+        "cta": "Mời giáo viên"
+      },
+      "eligibleTeachers": {
+        "title": "Không có giáo viên đủ điều kiện",
+        "description": "Việc tạo lớp cần ít nhất một giáo viên đang hoạt động. Hãy mời giáo viên trước rồi tạo lớp.",
+        "cta": "Mời giáo viên"
+      },
+      "forms": {
+        "title": "Chưa có đề đọc hiểu nào",
+        "description": "Cần có ít nhất một đề đọc hiểu. Hãy tạo đề trước rồi thử lại."
+      }
+    }
   },
   "Directory": {
     "defaults": {

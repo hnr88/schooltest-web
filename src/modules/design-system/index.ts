@@ -13,6 +13,11 @@ export { ScrollReveal } from './components/ScrollReveal';
 export { useScrollReveal } from './hooks/use-scroll-reveal';
 export type { ScrollRevealProps, ScrollRevealVariant } from './types/scroll-reveal.types';
 export { Alert } from './components/alert';
+export { MissingDependencyNotice } from './components/missing-dependency';
+export type {
+  MissingDependencyKind,
+  MissingDependencyNoticeProps,
+} from './components/missing-dependency';
 export { ProgressBar } from './components/progress-bar';
 export { StatCard } from './components/stat-card';
 export { MetricCard } from './components/metric-card';

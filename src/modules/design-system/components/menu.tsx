@@ -47,6 +47,7 @@ function DropdownMenuSubContent({
 
 function DropdownMenuItem({
   className,
+  children,
   ...props
 }: ComponentProps<typeof DropdownMenuItemPrimitive>) {
   return (
@@ -54,12 +55,21 @@ function DropdownMenuItem({
       data-slot="dropdown-menu-item"
       className={cn(ITEM_CLASSES, DESTRUCTIVE_HOVER_CLASSES, className)}
       {...props}
-    />
+    >
+      {typeof children === 'string' ? (
+        <span className="min-w-0 truncate" title={children}>
+          {children}
+        </span>
+      ) : (
+        children
+      )}
+    </DropdownMenuItemPrimitive>
   );
 }
 
 function DropdownMenuSubTrigger({
   className,
+  children,
   ...props
 }: ComponentProps<typeof DropdownMenuSubTriggerPrimitive>) {
   return (
@@ -67,12 +77,21 @@ function DropdownMenuSubTrigger({
       data-slot="dropdown-menu-sub-trigger"
       className={cn(ITEM_CLASSES, className)}
       {...props}
-    />
+    >
+      {typeof children === 'string' ? (
+        <span className="min-w-0 truncate" title={children}>
+          {children}
+        </span>
+      ) : (
+        children
+      )}
+    </DropdownMenuSubTriggerPrimitive>
   );
 }
 
 function DropdownMenuCheckboxItem({
   className,
+  children,
   ...props
 }: ComponentProps<typeof DropdownMenuCheckboxItemPrimitive>) {
   return (
@@ -80,12 +99,21 @@ function DropdownMenuCheckboxItem({
       data-slot="dropdown-menu-checkbox-item"
       className={cn(ITEM_CLASSES, className)}
       {...props}
-    />
+    >
+      {typeof children === 'string' ? (
+        <span className="min-w-0 truncate" title={children}>
+          {children}
+        </span>
+      ) : (
+        children
+      )}
+    </DropdownMenuCheckboxItemPrimitive>
   );
 }
 
 function DropdownMenuRadioItem({
   className,
+  children,
   ...props
 }: ComponentProps<typeof DropdownMenuRadioItemPrimitive>) {
   return (
@@ -93,7 +121,15 @@ function DropdownMenuRadioItem({
       data-slot="dropdown-menu-radio-item"
       className={cn(ITEM_CLASSES, className)}
       {...props}
-    />
+    >
+      {typeof children === 'string' ? (
+        <span className="min-w-0 truncate" title={children}>
+          {children}
+        </span>
+      ) : (
+        children
+      )}
+    </DropdownMenuRadioItemPrimitive>
   );
 }
 

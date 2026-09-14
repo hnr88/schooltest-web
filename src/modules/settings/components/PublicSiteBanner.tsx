@@ -36,7 +36,7 @@ async function PublicSiteBanner({ settings }: PublicSiteBannerProps) {
         <span className="inline-flex shrink-0 items-center rounded-md bg-navy-900 px-2.5 py-1 text-xs font-bold tracking-widest text-white uppercase">
           {t('Eald.notice.label')}
         </span>
-        <p className="text-body-sm font-medium">
+        <p className="min-w-0 text-body-sm font-medium break-words">
           {message}{' '}
           <Link
             href="/#register"

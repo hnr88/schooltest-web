@@ -78,32 +78,11 @@ export function opsStudentLatestResultLabel(
 }
 
 /**
- * The class filter options. Reuses the ops staff directory that already backs
- * the Classes tab (`/api/ops/schools/:documentId/teachers`) rather than adding
- * a second class read; classes are de-duplicated because a class appears once
- * per teacher and are ordered by the label the operator sees.
- */
-export function opsStudentClassOptions(
-  teachers: readonly { classes: readonly { documentId: string; name: string | null }[] }[],
-): { value: string; label: string }[] {
-  const byDocumentId = new Map<string, string>();
-  for (const teacher of teachers) {
-    for (const klass of teacher.classes) {
-      if (!byDocumentId.has(klass.documentId)) {
-        byDocumentId.set(klass.documentId, klass.name ?? klass.documentId);
-      }
-    }
-  }
-  return [...byDocumentId.entries()]
-    .map(([value, label]) => ({ value, label }))
-    .sort((left, right) => left.label.localeCompare(right.label));
-}
-
-/**
  * The Move class destination picker's options (C-OPS-PORTAL-028 classes of
  * THIS school only — the endpoint is already school-scoped, the server
  * re-asserts it on write). A class with no stored name cannot be offered: the
- * label is how the operator tells classes apart.
+ * label is how the operator tells classes apart. Also backs the Students tab's
+ * class filter, so a class with no assigned teacher still appears there.
  */
 export function opsStudentDestinationClassOptions(
   classes: readonly { documentId: string; name: string | null }[],

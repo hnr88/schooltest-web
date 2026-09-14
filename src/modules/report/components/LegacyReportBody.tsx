@@ -46,7 +46,7 @@ export function LegacyReportBody({ view }: { view: LegacyResultView }) {
                 key={code}
                 className="flex items-center justify-between gap-4 px-4 py-3"
               >
-                <span className="text-sm font-medium text-foreground">{code}</span>
+                <span className="min-w-0 truncate text-sm font-medium text-foreground" title={code}>{code}</span>
                 <span className="text-sm text-muted-foreground">
                   {t(statusLabelKey(status))}
                 </span>

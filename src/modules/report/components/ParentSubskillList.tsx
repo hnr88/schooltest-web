@@ -43,9 +43,10 @@ function GroupRow({ group, revealed }: { group: ParentSubskillGroup; revealed: b
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         <span
           className={cn(
-            'inline-flex w-fit items-center rounded-full px-3 py-0.5 text-meta font-bold tracking-wide uppercase',
+            'inline-flex w-fit min-w-0 max-w-full items-center truncate rounded-full px-3 py-0.5 text-meta font-bold tracking-wide uppercase',
             PARENT_TONE_SURFACE[group.state],
           )}
+          title={t(`parentSubskillStates.${group.state}`)}
         >
           {t(`parentSubskillStates.${group.state}`)}
         </span>

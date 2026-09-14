@@ -60,10 +60,12 @@ function LiveResitQueue({
               data-reason={entry.reason}
               className="flex min-w-[230px] items-center gap-[11px] rounded-[10px] border border-[#ECEEF2] px-[15px] py-[11px]"
             >
-              <InitialsAvatar name={entry.name} size="xs" />
+              <InitialsAvatar name={entry.name} size="xs" className="flex-none" />
               <div className="min-w-0">
-                <p className="text-[13.5px] font-semibold text-navy-900">{entry.name}</p>
-                <p className="mt-0.5 text-[12px] text-[#92610B]">{t(`resit.reason.${entry.reason}`)}</p>
+                <p className="truncate text-[13.5px] font-semibold text-navy-900" title={entry.name}>
+                  {entry.name}
+                </p>
+                <p className="mt-0.5 truncate text-[12px] text-[#92610B]">{t(`resit.reason.${entry.reason}`)}</p>
               </div>
             </li>
           ))}

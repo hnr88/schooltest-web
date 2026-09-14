@@ -28,17 +28,19 @@ function FamilyReportRowItem({ row, onPreview, onRelease, onRecall }: FamilyRepo
       data-status={row.status.kind}
       className="flex flex-wrap items-start gap-4 border-b border-[#EEF1F6] px-5 py-4 last:border-b-0"
     >
-      <InitialsAvatar initials={row.initials} size="sm" tone="soft" className="text-[12px]" />
+      <InitialsAvatar initials={row.initials} size="sm" tone="soft" className="flex-none text-[12px]" />
       <div className="min-w-[200px] flex-[2_1_240px]">
         <div className="flex flex-wrap items-center gap-[9px]">
-          <span className="text-[14.5px] font-semibold text-navy-900">{row.name}</span>
+          <span className="min-w-0 truncate text-[14.5px] font-semibold text-navy-900" title={row.name}>
+            {row.name}
+          </span>
           {row.expected === null ? null : (
             <ToneChip tone={EXPECTED_CHIP_TONE[row.expected.kind]} size="sm">
               {tView(row.expected.labelKey)}
             </ToneChip>
           )}
         </div>
-        <p className="mt-1.5 max-w-[70ch] text-[12.5px] leading-[1.5] text-[#6B7280]">{tView(row.whyKey, { at })}</p>
+        <p className="mt-1.5 max-w-[70ch] break-words text-[12.5px] leading-[1.5] text-[#6B7280]">{tView(row.whyKey, { at })}</p>
       </div>
       <div
         data-slot="family-report-score"

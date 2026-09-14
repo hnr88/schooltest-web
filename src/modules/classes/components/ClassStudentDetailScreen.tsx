@@ -82,7 +82,12 @@ export function ClassStudentDetailScreen({
             }}
           />
           <div className="flex flex-col gap-1">
-            <h1 className="text-xl font-semibold text-foreground">{studentDisplayName(student)}</h1>
+            <h1
+              className="truncate text-xl font-semibold text-foreground"
+              title={studentDisplayName(student)}
+            >
+              {studentDisplayName(student)}
+            </h1>
             <StudentDetailSubtitle student={student} />
           </div>
           <div className="flex flex-col gap-4">

@@ -88,21 +88,27 @@ export function SchoolHomeScreen() {
       className="flex flex-1 flex-col gap-5.5 px-4 py-6 sm:px-6 lg:px-8"
     >
       <div className="flex flex-wrap items-end justify-between gap-5">
-        <div>
-          <h1 className="text-h2 font-medium text-foreground">{school.name}</h1>
+        <div className="min-w-0">
+          <h1 className="truncate text-h2 font-medium text-foreground" title={school.name}>
+            {school.name}
+          </h1>
           <p className="mt-2 text-lede text-muted-foreground">{t('home.subtitle')}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex max-w-full flex-wrap items-center gap-2.5">
           <span
-            className={`inline-flex items-center gap-2 rounded-full px-3.75 py-2 text-caption font-semibold ${ACCOUNT_PILL_TONES[school.account_status]}`}
+            title={t(`accountStatus.${school.account_status}`)}
+            className={`inline-flex max-w-full items-center gap-2 rounded-full px-3.75 py-2 text-caption font-semibold ${ACCOUNT_PILL_TONES[school.account_status]}`}
           >
-            <span aria-hidden="true" className="size-1.75 rounded-full bg-current" />
-            {t(`accountStatus.${school.account_status}`)}
+            <span aria-hidden="true" className="size-1.75 shrink-0 rounded-full bg-current" />
+            <span className="truncate">{t(`accountStatus.${school.account_status}`)}</span>
           </span>
           <span
-            className={`inline-flex items-center rounded-full px-3.75 py-2 text-caption font-semibold ${ONBOARDING_PILL_TONES[school.onboarding_status]}`}
+            title={`${t('home.onboardingStatusLabel')} ${t(`onboardingStatus.${school.onboarding_status}`)}`}
+            className={`inline-flex max-w-full items-center rounded-full px-3.75 py-2 text-caption font-semibold ${ONBOARDING_PILL_TONES[school.onboarding_status]}`}
           >
-            {t('home.onboardingStatusLabel')} {t(`onboardingStatus.${school.onboarding_status}`)}
+            <span className="truncate">
+              {t('home.onboardingStatusLabel')} {t(`onboardingStatus.${school.onboarding_status}`)}
+            </span>
           </span>
         </div>
       </div>

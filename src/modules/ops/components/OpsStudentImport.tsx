@@ -11,6 +11,7 @@ import {
   Button,
   Input,
   Label,
+  MissingDependencyNotice,
   OPS_CONTROL_CLASS,
   OpsDialogCancel,
   OpsDialogCta,
@@ -155,49 +156,77 @@ export function OpsStudentImport({
         </div>
       )}
 
-      <SelectField
-        id="ops-import-class"
-        label={t('classLabel')}
-        placeholder={t('classPlaceholder')}
-        options={classOptions}
-        value={importer.classDocumentId ?? ''}
-        onValueChange={(value) => importer.onClassChange(value)}
-        helperText={t('classHelper')}
-        required
-        triggerClassName={OPS_CONTROL_CLASS}
-      />
+      {/* The class picker's dependency is checked before anything uploadable
+          renders: a school with no classes cannot import anywhere, so the
+          whole CSV block is replaced by the refusal — never an empty select. */}
+      {!classes.isPending && classOptions.length === 0 ? (
+        <MissingDependencyNotice kind="classes" />
+      ) : (
+        <>
+          <SelectField
+            id="ops-import-class"
+            label={t('classLabel')}
+            placeholder={t('classPlaceholder')}
+            options={classOptions}
+            value={importer.classDocumentId ?? ''}
+            onValueChange={(value) => importer.onClassChange(value)}
+            helperText={t('classHelper')}
+            disabled={classes.isPending}
+            required
+            triggerClassName={OPS_CONTROL_CLASS}
+          />
 
-      <div
-        data-surface="ops-import-dropzone"
-        data-dragging={dragging || undefined}
-        onDragOver={(event) => {
-          event.preventDefault();
-          setDragging(true);
-        }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={onDrop}
-        className={`flex flex-col items-center rounded-[16px] border-[1.5px] border-dashed px-5 py-6 text-center transition-colors ${
-          dragging ? 'border-[#2563EB] bg-[#F8FAFF]' : 'border-[#C4CEDC] bg-white'
-        }`}
-      >
-        <div className="mb-3 grid size-[46px] place-items-center rounded-full bg-[#EEF1F6]">
-          <Upload aria-hidden="true" className="size-5 text-[#0E2350]" />
-        </div>
-        <p className="text-sm font-semibold text-[#0E2350]">
-          {dragging ? t('dropActive') : t('dropTitle')}
-        </p>
-        <p className="mt-0.5 text-[12.5px] text-[#7C8698]">{t('dropHint')}</p>
-        <Label htmlFor="ops-import-file" className="sr-only">
-          {t('fileLabel')}
-        </Label>
-        <Input
-          id="ops-import-file"
-          type="file"
-          accept=".csv,text/csv"
-          className="mt-3 max-w-72 text-xs"
-          onChange={(event) => void importer.onFile(event.target.files?.[0])}
-        />
-      </div>
+          <div
+            data-surface="ops-import-dropzone"
+            data-dragging={dragging || undefined}
+            onDragOver={(event) => {
+              event.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={onDrop}
+            className={`flex flex-col items-center rounded-[16px] border-[1.5px] border-dashed px-5 py-6 text-center transition-colors ${
+              dragging ? 'border-[#2563EB] bg-[#F8FAFF]' : 'border-[#C4CEDC] bg-white'
+            }`}
+          >
+            <div className="mb-3 grid size-[46px] place-items-center rounded-full bg-[#EEF1F6]">
+              <Upload aria-hidden="true" className="size-5 text-[#0E2350]" />
+            </div>
+            <p className="text-sm font-semibold text-[#0E2350]">
+              {dragging ? t('dropActive') : t('dropTitle')}
+            </p>
+            <p className="mt-0.5 text-[12.5px] text-[#7C8698]">{t('dropHint')}</p>
+            <Label htmlFor="ops-import-file" className="sr-only">
+              {t('fileLabel')}
+            </Label>
+            <Input
+              id="ops-import-file"
+              type="file"
+              accept=".csv,text/csv"
+              className="mt-3 max-w-72 text-xs"
+              onChange={(event) => void importer.onFile(event.target.files?.[0])}
+            />
+          </div>
+
+          <div className="flex items-start gap-[11px] rounded-[14px] bg-[#F4F6FA] px-4 py-3.5 text-[13px] leading-relaxed text-[#3D4A5C]">
+            <Info aria-hidden="true" className="mt-0.5 size-4 flex-none text-[#2563EB]" />
+            <p data-surface="ops-import-template">
+              <span data-surface="ops-import-template-columns">
+                {t('templateColumnsLabel')} {PORTAL_IMPORT_TEMPLATE_COLUMNS.join(', ')}.
+              </span>{' '}
+              <button
+                type="button"
+                data-surface="ops-import-template-download"
+                disabled={template.downloading}
+                onClick={() => void template.download()}
+                className="font-semibold text-[#2563EB] underline-offset-2 hover:underline disabled:opacity-60"
+              >
+                {t('templateDownloadLink')}
+              </button>
+            </p>
+          </div>
+        </>
+      )}
 
       {tone === null ? null : (
         <div
@@ -206,7 +235,15 @@ export function OpsStudentImport({
         >
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-[13.5px] font-semibold text-[#0E2350]">
+              <p
+                className="truncate text-[13.5px] font-semibold text-[#0E2350]"
+                title={t(`card.${importer.card}.title`, {
+                  name: importer.fileName ?? '',
+                  created: importer.preview?.create.length ?? 0,
+                  skipped: importer.preview?.skip_existing.length ?? 0,
+                  rejected: importer.preview?.reject.length ?? 0,
+                })}
+              >
                 {/* Every variable every card title can use is passed each
                     time: the dupes title needs {skipped} and next-intl throws
                     FORMATTING_ERROR (console noise on a live modal) when a
@@ -263,24 +300,6 @@ export function OpsStudentImport({
           {t('reconcileBody')}
         </Alert>
       ) : null}
-
-      <div className="flex items-start gap-[11px] rounded-[14px] bg-[#F4F6FA] px-4 py-3.5 text-[13px] leading-relaxed text-[#3D4A5C]">
-        <Info aria-hidden="true" className="mt-0.5 size-4 flex-none text-[#2563EB]" />
-        <p data-surface="ops-import-template">
-          <span data-surface="ops-import-template-columns">
-            {t('templateColumnsLabel')} {PORTAL_IMPORT_TEMPLATE_COLUMNS.join(', ')}.
-          </span>{' '}
-          <button
-            type="button"
-            data-surface="ops-import-template-download"
-            disabled={template.downloading}
-            onClick={() => void template.download()}
-            className="font-semibold text-[#2563EB] underline-offset-2 hover:underline disabled:opacity-60"
-          >
-            {t('templateDownloadLink')}
-          </button>
-        </p>
-      </div>
 
       {importer.errorMessage && onCancel ? null : importer.errorMessage ? (
         <Alert variant="error" title={t('errorToast')}>

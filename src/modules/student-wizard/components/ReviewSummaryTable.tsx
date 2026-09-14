@@ -21,10 +21,13 @@ export function ReviewSummaryTable({ rows, emptyLabel }: ReviewSummaryTableProps
             index < rows.length - 1 && 'border-b border-divider',
           )}
         >
-          <dt className="shrink-0 text-body-sm text-muted-foreground">{row.label}</dt>
+          <dt className="shrink-0 truncate text-body-sm text-muted-foreground" title={row.label}>
+            {row.label}
+          </dt>
           <dd
+            title={row.value ?? emptyLabel}
             className={cn(
-              'min-w-0 text-right text-body-sm font-semibold',
+              'min-w-0 truncate text-right text-body-sm font-semibold',
               row.value ? 'text-foreground' : 'font-normal text-muted-foreground',
             )}
           >

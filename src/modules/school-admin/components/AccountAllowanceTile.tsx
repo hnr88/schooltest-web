@@ -24,12 +24,14 @@ export function AccountAllowanceTile({ allowance }: AccountAllowanceTileProps) {
       }`}
     >
       <span
-        className={`text-body-md font-semibold ${granted ? 'text-foreground' : 'text-slate-400'}`}
+        title={t(`testType.${allowance.test_type}`)}
+        className={`truncate text-body-md font-semibold ${granted ? 'text-foreground' : 'text-slate-400'}`}
       >
         {t(`testType.${allowance.test_type}`)}
       </span>
       <span
-        className={`text-caption ${granted ? 'text-teal-700' : 'text-slate-400'}`}
+        title={t('allowanceRemaining', { count: allowance.remaining })}
+        className={`truncate text-caption ${granted ? 'text-teal-700' : 'text-slate-400'}`}
       >
         {t('allowanceRemaining', { count: allowance.remaining })}
       </span>

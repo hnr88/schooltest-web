@@ -53,10 +53,14 @@ export function ChildCard({ student }: ChildCardProps) {
             aria-label={t('viewProfileLabel', { name })}
             className="text-h4 font-semibold text-foreground transition-colors duration-200 ease-out-expo group-hover:text-primary after:absolute after:inset-0 after:rounded-card focus-visible:outline-none motion-reduce:transition-none"
           >
-            <span className="block truncate">{name}</span>
+            <span className="block truncate" title={name}>
+              {name}
+            </span>
           </Link>
           {meta ? (
-            <span className="truncate text-caption text-muted-foreground">{meta}</span>
+            <span className="truncate text-caption text-muted-foreground" title={meta}>
+              {meta}
+            </span>
           ) : null}
         </div>
         <StatusPill tone={getStatusTone(student.status)} className="shrink-0">

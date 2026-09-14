@@ -7,6 +7,7 @@ import { useAddClassForm } from '@/modules/classes/hooks/use-add-class-form';
 import { teacherOption } from '@/modules/classes/lib/class-form.helpers';
 import {
   Input,
+  MissingDependencyNotice,
   OPS_CONTROL_CLASS,
   OpsDialogBody,
   OpsDialogCancel,
@@ -50,18 +51,24 @@ export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
           <Controller
             control={control}
             name="teacher_documentId"
-            render={({ field }) => (
-              <SelectField
-                id="add-class-teacher"
-                label={t('teacher')}
-                placeholder={t('teacherPlaceholder')}
-                options={teachers.map(teacherOption)}
-                value={field.value}
-                onValueChange={field.onChange}
-                disabled={teachers.length === 0}
-                triggerClassName={OPS_CONTROL_CLASS}
-              />
-            )}
+            render={({ field }) =>
+              /* Defensive only — the dialog refuses to mount this form without
+                 an eligible teacher. If it is ever reached empty, the blocking
+                 refusal renders instead of an empty select. */
+              teachers.length === 0 ? (
+                <MissingDependencyNotice kind="eligibleTeachers" ctaHref="/dashboard/school/teachers" />
+              ) : (
+                <SelectField
+                  id="add-class-teacher"
+                  label={t('teacher')}
+                  placeholder={t('teacherPlaceholder')}
+                  options={teachers.map(teacherOption)}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  triggerClassName={OPS_CONTROL_CLASS}
+                />
+              )
+            }
           />
         </div>
       </OpsDialogBody>
@@ -69,7 +76,9 @@ export function AddClassForm({ teachers, onClose }: AddClassFormProps) {
         <OpsDialogCancel type="button" onClick={onClose} disabled={pending}>
           {t('cancel')}
         </OpsDialogCancel>
-        <OpsDialogCta type="submit" loading={pending}>
+        {/* Defensive: the dialog gates creation on eligible teachers before
+            this form mounts, so a teacherless render must never submit. */}
+        <OpsDialogCta type="submit" loading={pending} disabled={teachers.length === 0}>
           {pending ? t('submitting') : t('submit')}
         </OpsDialogCta>
       </OpsDialogFooter>

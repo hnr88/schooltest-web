@@ -81,11 +81,19 @@ export function OpsSchoolInvitationPanel({ documentId, enabled }: OpsSchoolInvit
         className="flex flex-wrap items-baseline gap-x-2 text-sm"
       >
         <dt className="text-body">{t('primaryContact')}</dt>
-        <dd data-field="primary-contact" className="mr-6 font-medium text-foreground">
+        <dd
+          data-field="primary-contact"
+          className="mr-6 max-w-full truncate font-medium text-foreground"
+          title={state.contactName ?? t('contactMissing')}
+        >
           {state.contactName ?? t('contactMissing')}
         </dd>
         <dt className="text-body">{t('contactEmail')}</dt>
-        <dd data-field="contact-email" className="font-medium text-foreground">
+        <dd
+          data-field="contact-email"
+          className="max-w-full truncate font-medium text-foreground"
+          title={state.contactEmail ?? t('contactMissing')}
+        >
           {state.contactEmail ?? t('contactMissing')}
         </dd>
       </dl>

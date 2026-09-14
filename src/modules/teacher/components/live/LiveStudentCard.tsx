@@ -57,10 +57,13 @@ function LiveStudentCard({
         />
         <InitialsAvatar name={row.name} size="md" />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[14.5px] font-semibold text-navy-900">{row.name}</p>
+          <p className="truncate text-[14.5px] font-semibold text-navy-900" title={row.name}>
+            {row.name}
+          </p>
           {row.hasIdentity ? (
             <p
               data-slot="live-student-email"
+              title={row.email ?? t('emailNeeded')}
               className={cn('mt-px truncate text-[12px]', row.email === null ? 'text-[#92610B]' : 'text-[#6B7280]')}
             >
               {row.email ?? t('emailNeeded')}
@@ -81,7 +84,10 @@ function LiveStudentCard({
           </ToneChip>
         )}
       </div>
-      <p data-slot="live-student-detail" className="text-[12.5px] leading-[1.4] text-[#6B7280]">
+      <p
+        data-slot="live-student-detail"
+        className="break-words text-[12.5px] leading-[1.4] text-[#6B7280]"
+      >
         {detail === null ? tKit('noValue') : t(`detail.${detail.key}`, detail.values)}
       </p>
     </article>

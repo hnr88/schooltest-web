@@ -35,15 +35,20 @@ function Breadcrumbs({ items, back, className }: BreadcrumbsProps) {
           const last = index === items.length - 1;
           return (
             <Fragment key={`${index}-${item.label}`}>
-              <BreadcrumbItem>
+              <BreadcrumbItem className="min-w-0">
                 {last ? (
-                  <BreadcrumbPage className="font-semibold text-navy-900">{item.label}</BreadcrumbPage>
+                  <BreadcrumbPage className="truncate font-semibold text-navy-900" title={item.label}>
+                    {item.label}
+                  </BreadcrumbPage>
                 ) : item.href === undefined ? (
-                  <span className="font-medium text-[#6B7280]">{item.label}</span>
+                  <span className="truncate font-medium text-[#6B7280]" title={item.label}>
+                    {item.label}
+                  </span>
                 ) : (
                   <BreadcrumbLink
                     render={<Link href={item.href} />}
-                    className={cn('rounded-[4px] font-medium text-[#6B7280] hover:text-navy-900', KIT_FOCUS_RING)}
+                    className={cn('truncate rounded-[4px] font-medium text-[#6B7280] hover:text-navy-900', KIT_FOCUS_RING)}
+                    title={item.label}
                   >
                     {item.label}
                   </BreadcrumbLink>

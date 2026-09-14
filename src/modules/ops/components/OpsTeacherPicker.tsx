@@ -94,8 +94,13 @@ export function OpsTeacherPicker({
               {label.charAt(0).toUpperCase()}
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-semibold text-[#0E2350]">{label}</span>
-              <span className="mt-px block truncate text-xs text-[#7C8698]">
+              <span className="block truncate text-sm font-semibold text-[#0E2350]" title={label}>
+                {label}
+              </span>
+              <span
+                className="mt-px block truncate text-xs text-[#7C8698]"
+                title={t('subLabel', { email: teacher.email ?? '—', count: teacher.classes.length })}
+              >
                 {t('subLabel', { email: teacher.email ?? '—', count: teacher.classes.length })}
               </span>
             </span>

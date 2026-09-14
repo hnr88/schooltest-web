@@ -60,10 +60,15 @@ function ChoiceCard({
         {checked ? <span className={cn('block rounded-full bg-white', drawn.inner)} /> : null}
       </span>
       <span className="min-w-0 flex-1">
-        <span className={cn('block font-semibold', drawn.label, disabled ? 'text-[#9AA6B8]' : 'text-navy-900')}>
+        <span
+          className={cn('block truncate font-semibold', drawn.label, disabled ? 'text-[#9AA6B8]' : 'text-navy-900')}
+          title={label}
+        >
           {label}
         </span>
-        {description ? <span className={cn('block text-[#6B7280]', drawn.desc)}>{description}</span> : null}
+        {description ? (
+          <span className={cn('block break-words text-[#6B7280]', drawn.desc)}>{description}</span>
+        ) : null}
       </span>
     </label>
   );

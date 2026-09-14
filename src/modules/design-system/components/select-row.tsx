@@ -58,6 +58,7 @@ function SelectRow({
             value ? 'font-medium text-foreground' : 'text-muted-foreground',
             disabled && 'text-body',
           )}
+          title={value ?? placeholder}
         >
           {value ?? placeholder}
         </span>

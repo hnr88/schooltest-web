@@ -23,7 +23,9 @@ function StatCard({
     <Card data-slot="stat-card" className={className}>
       <CardContent className="flex flex-col">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-sm text-muted-foreground">{label}</span>
+          <span className="min-w-0 truncate text-sm text-muted-foreground" title={label}>
+            {label}
+          </span>
           <span
             aria-hidden="true"
             className={cn(
@@ -34,9 +36,13 @@ function StatCard({
             <Icon className="size-4" />
           </span>
         </div>
-        <p className="mt-2.5 text-4xl leading-tight font-bold tracking-tight">{value}</p>
+        <p className="mt-2.5 truncate text-4xl leading-tight font-bold tracking-tight" title={value}>
+          {value}
+        </p>
         {delta ? (
-          <p className={cn('mt-1 text-sm font-medium', DELTA_TONES[deltaTone])}>{delta}</p>
+          <p className={cn('mt-1 truncate text-sm font-medium', DELTA_TONES[deltaTone])} title={delta}>
+            {delta}
+          </p>
         ) : null}
         {progress !== undefined ? (
           <ProgressBar value={progress} tone="gradient" ariaLabel={label} className="mt-3" />

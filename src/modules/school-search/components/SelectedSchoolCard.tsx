@@ -34,9 +34,13 @@ function SelectedSchoolCard({ hit }: { hit: SchoolHit }) {
         {hit.state ?? <School className="size-4.5" strokeWidth={2} />}
       </span>
       <div className="min-w-0">
-        <p className="truncate text-body-md font-semibold text-foreground">{hit.name}</p>
+        <p className="truncate text-body-md font-semibold text-foreground" title={hit.name}>
+          {hit.name}
+        </p>
         {meta.length > 0 ? (
-          <p className="truncate text-meta text-muted-foreground">{meta.join(' · ')}</p>
+          <p className="truncate text-meta text-muted-foreground" title={meta.join(' · ')}>
+            {meta.join(' · ')}
+          </p>
         ) : null}
       </div>
       <button

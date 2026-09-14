@@ -98,7 +98,11 @@ export function MasteryTable({ rows, onSelect, query }: MasteryTableProps) {
         header: t('columnStudent'),
         sortable: true,
         sortValues: { asc: 'name:asc', desc: 'name:desc' },
-        cell: (row) => <span className="font-medium text-foreground">{row.student_ref}</span>,
+        cell: (row) => (
+          <span className="block truncate font-medium text-foreground" title={row.student_ref}>
+            {row.student_ref}
+          </span>
+        ),
       },
       ...MASTERY_AREA_CODES.map((code) => ({
         key: code,
@@ -155,7 +159,8 @@ function ReportLink({ row, label }: { row: DiagnosticMasteryRow; label: string }
       data-slot="mastery-report-link"
       href={`${REPORTS_HREF}/${row.latest_result_document_id}`}
       aria-label={label}
-      className="w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      className="block w-fit max-w-full truncate text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      title={label}
     >
       {label}
     </Link>

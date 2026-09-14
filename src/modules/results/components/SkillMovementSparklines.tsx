@@ -116,7 +116,7 @@ export function SkillMovementSparklines({ view }: { view: ResultView }) {
       <ul className="flex flex-col gap-1.5">
         {rows.map((row) => (
           <li key={row.skill} data-slot="movement-row" data-skill={row.skill} className="flex items-center gap-3">
-            <span className="w-24 shrink-0 text-caption font-semibold">{t(SKILL_KEY[row.skill] ?? row.skill)}</span>
+            <span className="w-24 shrink-0 truncate text-caption font-semibold" title={t(SKILL_KEY[row.skill] ?? row.skill)}>{t(SKILL_KEY[row.skill] ?? row.skill)}</span>
             <Sparkline points={row.points} label={t('ariaScoreMovement')} />
             {row.deltaDisplay !== null ? (
               <span data-slot="movement-delta" data-delta={row.deltaDisplay} className="text-caption font-semibold">

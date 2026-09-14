@@ -22,10 +22,23 @@ export function ChildResultRow({ result }: { result: ChildProgressResult }) {
   return (
     <li className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-divider py-4 last:border-b-0">
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="truncate text-body-md font-semibold text-foreground">
+        <span
+          className="truncate text-body-md font-semibold text-foreground"
+          title={getChildResultTitle(result, t('untitledResult'))}
+        >
           {getChildResultTitle(result, t('untitledResult'))}
         </span>
-        <span className="truncate text-caption text-muted-foreground">
+        <span
+          className="truncate text-caption text-muted-foreground"
+          title={[
+            result.skill ? t(`resultSkills.${result.skill}`) : null,
+            result.publishedAt
+              ? format.dateTime(new Date(result.publishedAt), { dateStyle: 'medium' })
+              : t('notPublished'),
+          ]
+            .filter(Boolean)
+            .join(' · ')}
+        >
           {[
             result.skill ? t(`resultSkills.${result.skill}`) : null,
             result.publishedAt

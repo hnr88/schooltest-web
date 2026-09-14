@@ -102,7 +102,9 @@ export function AssignClassesDialog({
                       htmlFor={`assign-classes-${klass.documentId}`}
                       className="flex min-w-0 flex-1 items-center justify-between gap-2 text-sm font-normal"
                     >
-                      <span className="truncate">{klass.name}</span>
+                      <span className="min-w-0 truncate" title={klass.name}>
+                        {klass.name}
+                      </span>
                       {klass.year_band ? (
                         <span className="shrink-0 text-meta text-body">{klass.year_band}</span>
                       ) : null}

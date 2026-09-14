@@ -49,8 +49,10 @@ export function DashboardChildRow({ student, last }: DashboardChildRowProps) {
         tone={getAvatarTone(student.documentId)}
       />
       <span className="flex min-w-0 flex-col sm:w-47.5 sm:flex-none">
-        <span className="truncate text-button font-semibold text-foreground">{name}</span>
-        <span className="mt-0.5 truncate text-meta text-body">
+        <span className="truncate text-button font-semibold text-foreground" title={name}>
+          {name}
+        </span>
+        <span className="mt-0.5 truncate text-meta text-body" title={meta === '' ? undefined : meta}>
           {meta === '' ? t('profileMetaMissing') : meta}
         </span>
       </span>
@@ -61,8 +63,9 @@ export function DashboardChildRow({ student, last }: DashboardChildRowProps) {
       <span className="col-span-3 flex min-w-0 items-center gap-4 sm:contents">
         <DashboardReadinessRail fields={fields} />
         <span
+          title={entryPlan === null ? t('childRowPlanNeeded') : t('childRowPlan', { plan: entryPlan })}
           className={cn(
-            'flex-none rounded-full px-3.25 py-1.5 text-meta font-semibold',
+            'max-w-full truncate flex-none rounded-full px-3.25 py-1.5 text-meta font-semibold',
             entryPlan === null
               ? 'bg-warning-soft text-warning-ink'
               : 'bg-blue-50 text-primary',

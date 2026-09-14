@@ -63,10 +63,20 @@ export function DashboardFocusCard({ overview }: { overview: DashboardOverview }
               tone={getAvatarTone(focus.student.documentId)}
             />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-body-sm font-semibold text-foreground">
+              <p
+                className="truncate text-body-sm font-semibold text-foreground"
+                title={getStudentDisplayName(focus.student, t('unknownProfile'))}
+              >
                 {getStudentDisplayName(focus.student, t('unknownProfile'))}
               </p>
-              <p className="truncate text-meta text-body">
+              <p
+                className="truncate text-meta text-body"
+                title={
+                  getDashboardYearLabel(focus.student, (level) =>
+                    t('yearLevelOption', { level }),
+                  ) ?? t('profileMetaMissing')
+                }
+              >
                 {getDashboardYearLabel(focus.student, (level) =>
                   t('yearLevelOption', { level }),
                 ) ?? t('profileMetaMissing')}

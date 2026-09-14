@@ -78,8 +78,11 @@ export function OpsOverviewTab({ school }: { school: SchoolDetail }) {
               key={row.label}
               className="flex justify-between gap-4 border-b border-[#EEF1F6] py-3 last:border-b-0"
             >
-              <dt className="text-[13px] text-[#7C8698]">{row.label}</dt>
-              <dd className="min-w-0 text-right text-[13.5px] font-semibold text-foreground">
+              <dt className="shrink-0 text-[13px] text-[#7C8698]">{row.label}</dt>
+              <dd
+                className="min-w-0 truncate text-right text-[13.5px] font-semibold text-foreground"
+                title={row.value}
+              >
                 {row.value}
               </dd>
             </div>

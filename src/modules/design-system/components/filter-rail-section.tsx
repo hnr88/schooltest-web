@@ -25,7 +25,10 @@ function FilterRailSection({
   const panelId = useId();
   const [open, setOpen] = useState(defaultOpen);
   const label = (
-    <span className="text-overline font-bold tracking-rail text-muted-foreground uppercase">
+    <span
+      className="min-w-0 truncate text-overline font-bold tracking-rail text-muted-foreground uppercase"
+      title={title}
+    >
       {title}
     </span>
   );

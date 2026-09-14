@@ -30,8 +30,14 @@ function UpcomingEventRow({
         <span className="text-sm leading-none font-bold text-foreground tabular-nums">{day}</span>
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="truncate text-body-sm font-semibold text-foreground">{title}</span>
-        {meta ? <span className="truncate text-meta text-muted-foreground">{meta}</span> : null}
+        <span className="truncate text-body-sm font-semibold text-foreground" title={title}>
+          {title}
+        </span>
+        {meta ? (
+          <span className="truncate text-meta text-muted-foreground" title={meta}>
+            {meta}
+          </span>
+        ) : null}
       </span>
       {trailing ? <span className="shrink-0">{trailing}</span> : null}
     </div>

@@ -72,20 +72,29 @@ export function AssignTeachersDialog({
                 {t('classesLegend', { count: selectedClasses.length })}
               </legend>
               <div className="max-h-44 overflow-y-auto rounded-[14px] border border-[#EEF1F6] p-2">
-                {classes.map((klass) => (
-                  <div key={klass.documentId} className="flex items-center gap-2 px-2 py-1">
-                    <Checkbox
-                      id={`assign-class-${klass.documentId}`}
-                      checked={selectedClasses.includes(klass.documentId)}
-                      onCheckedChange={() =>
-                        toggle(selectedClasses, setSelectedClasses, klass.documentId)
-                      }
-                    />
-                    <Label htmlFor={`assign-class-${klass.documentId}`} className="text-sm font-normal">
-                      {klass.name}
-                    </Label>
-                  </div>
-                ))}
+                {/* Defensive: the screen-level trigger is disabled while the
+                    school has no classes, but the dialog still refuses to draw
+                    an empty list if it is ever reached. */}
+                {classes.length === 0 ? (
+                  <p className="px-2 py-1 text-sm text-body">{t('noClasses')}</p>
+                ) : (
+                  classes.map((klass) => (
+                    <div key={klass.documentId} className="flex items-center gap-2 px-2 py-1">
+                      <Checkbox
+                        id={`assign-class-${klass.documentId}`}
+                        checked={selectedClasses.includes(klass.documentId)}
+                        onCheckedChange={() =>
+                          toggle(selectedClasses, setSelectedClasses, klass.documentId)
+                        }
+                      />
+                      <Label htmlFor={`assign-class-${klass.documentId}`} className="min-w-0 text-sm font-normal">
+                        <span className="block truncate" title={klass.name}>
+                          {klass.name}
+                        </span>
+                      </Label>
+                    </div>
+                  ))
+                )}
               </div>
             </fieldset>
             <fieldset className="flex flex-col gap-2">
@@ -104,10 +113,16 @@ export function AssignTeachersDialog({
                     />
                     <Label
                       htmlFor={`assign-teacher-${teacher.documentId}`}
-                      className="text-sm font-normal"
+                      className="min-w-0 text-sm font-normal"
                     >
-                      {[teacher.first_name, teacher.last_name].filter(Boolean).join(' ') ||
-                        teacher.email}
+                      <span
+                        className="block truncate"
+                        title={[teacher.first_name, teacher.last_name].filter(Boolean).join(' ') ||
+                          teacher.email}
+                      >
+                        {[teacher.first_name, teacher.last_name].filter(Boolean).join(' ') ||
+                          teacher.email}
+                      </span>
                     </Label>
                   </div>
                 ))}

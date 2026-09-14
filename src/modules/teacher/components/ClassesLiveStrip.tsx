@@ -49,13 +49,20 @@ function ClassesLiveStrip({ cards }: ClassesLiveStripProps) {
             <TeacherStatusPill status="live" size="xs" className="flex-none" />
             <span className="min-w-0">
               <span className="flex items-baseline gap-2">
-                <span className="text-[14px] font-semibold text-white">{card.className}</span>
-                <span className="text-[12px] font-medium tracking-[0.04em] text-[#9FB3D9] tabular-nums">
+                <span
+                  className="min-w-0 truncate text-[14px] font-semibold text-white"
+                  title={card.className}
+                >
+                  {card.className}
+                </span>
+                <span className="flex-none text-[12px] font-medium tracking-[0.04em] text-[#9FB3D9] tabular-nums">
                   {card.code ?? tKit('noValue')}
                 </span>
               </span>
               {card.testLabel === null ? null : (
-                <span className="mt-0.5 block truncate text-[12px] text-[#B9C6DD]">{card.testLabel}</span>
+                <span className="mt-0.5 block truncate text-[12px] text-[#B9C6DD]" title={card.testLabel}>
+                  {card.testLabel}
+                </span>
               )}
             </span>
           </Link>

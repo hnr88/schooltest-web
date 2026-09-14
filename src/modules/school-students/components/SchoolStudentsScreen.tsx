@@ -73,7 +73,15 @@ export function SchoolStudentsScreen() {
         />
       ) : null}
       {importOpen ? (
-        <StudentImportDialog classes={classes} onClose={() => setImportOpen(false)} />
+        <StudentImportDialog
+          /* The picker's dependency state rides in raw — the dialog owns the
+             pending/error/no-classes arms, so this screen never renders (or
+             opens into) an empty class dropdown. */
+          classes={
+            classesQuery.isPending ? 'pending' : classesQuery.isError ? 'error' : classes
+          }
+          onClose={() => setImportOpen(false)}
+        />
       ) : null}
       {archive.archiveTarget ? (
         <ArchiveStudentDialog

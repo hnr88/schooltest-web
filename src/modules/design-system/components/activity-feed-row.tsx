@@ -38,7 +38,7 @@ function ActivityFeedRow({
         <Icon className="size-3.25" />
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="text-caption leading-relaxed text-body [&_strong]:font-semibold [&_strong]:text-foreground">
+        <span className="break-words text-caption leading-relaxed text-body [&_strong]:font-semibold [&_strong]:text-foreground">
           {children}
         </span>
         <span className="text-overline text-muted-foreground">{timestamp}</span>
@@ -54,7 +54,7 @@ function DotActivityRow({ tone = 'brand', children, className }: DotActivityRowP
         aria-hidden="true"
         className={cn('mt-1.75 size-2 shrink-0 rounded-full', DOT_TONES[tone])}
       />
-      <span className="min-w-0 flex-1 text-body-sm text-body [&_strong]:font-semibold [&_strong]:text-foreground">
+      <span className="min-w-0 flex-1 break-words text-body-sm text-body [&_strong]:font-semibold [&_strong]:text-foreground">
         {children}
       </span>
     </div>

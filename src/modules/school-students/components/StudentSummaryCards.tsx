@@ -61,7 +61,10 @@ export function StudentSummaryCards({ student }: StudentSummaryCardsProps) {
           <div className="text-xs font-semibold tracking-[0.05em] text-[#9AA6B8] uppercase">
             {card.label}
           </div>
-          <div className="mt-[9px] truncate text-[26px] font-bold tracking-[-0.02em] text-foreground">
+          <div
+            className="mt-[9px] truncate text-[26px] font-bold tracking-[-0.02em] text-foreground"
+            title={card.value}
+          >
             {card.value}
           </div>
           {card.sub === undefined ? null : (

@@ -39,8 +39,10 @@ function ClassResultsHeader({ classCard, classes, onSwitchClass }: ClassResultsH
       />
       <div className="flex flex-wrap items-center gap-[18px]">
         <ClassBadge code={classBadgeCode(classCard.name)} size="lg" tone="navy" />
-        <div className="min-w-[220px] flex-1">
-          <h1 className="text-[28px] font-medium tracking-[-0.02em] text-navy-900">{classCard.name}</h1>
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-[28px] font-medium tracking-[-0.02em] text-navy-900" title={classCard.name}>
+            {classCard.name}
+          </h1>
           <p data-slot="class-meta" className="mt-1 text-[14px] text-[#6B7280]">
             {meta}
           </p>

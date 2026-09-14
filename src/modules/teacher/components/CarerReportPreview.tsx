@@ -62,7 +62,10 @@ function CarerReportPreview({ report, classDocumentId, className, onClose, onRel
           <InitialsAvatar initials={report.initials} size="lg" tone="soft" />
           <div className="min-w-0 flex-1">
             <p className="text-[11.5px] font-semibold tracking-[0.07em] text-[#6B7280] uppercase">{t('preview.eyebrow')}</p>
-            <OpsDialogTitle className="mt-[7px] text-[20px] font-semibold tracking-[-0.01em] text-navy-900">
+            <OpsDialogTitle
+              className="mt-[7px] truncate text-[20px] font-semibold tracking-[-0.01em] text-navy-900"
+              title={report.name}
+            >
               {report.name}
             </OpsDialogTitle>
             <p className="mt-1 text-[12.5px] text-[#6B7280]">

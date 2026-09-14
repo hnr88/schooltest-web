@@ -108,7 +108,9 @@ export function OpsSchoolActivity({ documentId }: { documentId: string }) {
                   className={`mt-1.5 size-2 flex-none rounded-full ${activityDotTone(index, ageDays)}`}
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="text-[13.5px] font-semibold text-foreground">{row.summary}</div>
+                  <div className="truncate text-[13.5px] font-semibold text-foreground" title={row.summary}>
+                    {row.summary}
+                  </div>
                   <div className="mt-0.5 text-[12.5px] text-[#7C8698]">
                     {format.relativeTime(new Date(row.timestamp), { now })}
                   </div>

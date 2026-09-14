@@ -2741,7 +2741,7 @@
       "teacher": "Assign teacher",
       "teacherPlaceholder": "Select a teacher",
       "teacherLoadError": "We could not load your teachers",
-      "teacherLoadErrorDescription": "You can still create the class and assign a teacher later.",
+      "teacherLoadErrorDescription": "ไม่สามารถตรวจสอบรายชื่อครูได้ จึงยังสร้างชั้นเรียนไม่ได้ กรุณาตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
       "importTitle": "Import students",
       "importDescription": "Upload a CSV or paste student data below",
       "importErrorsTitle": "Some rows could not be read",
@@ -2753,7 +2753,8 @@
       "createdWithStudentsToast": "{name} was added with {count, plural, one {# student} other {# students}}.",
       "importFailedToast": "{name} was added, but {count, plural, one {# student} other {# students}} could not be imported.",
       "forbiddenToast": "You do not have permission to add classes.",
-      "errorToast": "That did not work. Try again."
+      "errorToast": "That did not work. Try again.",
+      "retry": "ลองอีกครั้ง"
     },
     "assignTeachersButton": "มอบหมายครู",
     "assignTeachers": {
@@ -2769,7 +2770,8 @@
       "successTitle": "มอบหมายครูแล้ว",
       "successDescription": "กำหนดครู {teachers} คนให้ {classes} ชั้นเรียน",
       "cancel": "ยกเลิก",
-      "submit": "มอบหมาย"
+      "submit": "มอบหมาย",
+      "noClasses": "ยังไม่มีชั้นเรียนให้มอบหมาย"
     },
     "studentDetailMeta": {
       "title": "ผลการทดสอบของนักเรียน - SchoolTest",
@@ -2811,7 +2813,8 @@
         "inference": "การอนุมาน",
         "critical": "การอ่านเชิงวิพากษ์"
       }
-    }
+    },
+    "noEligibleTeachersHint": "ยังไม่มีครูที่พร้อมใช้งาน — เชิญครูก่อนจึงจะสร้างชั้นเรียนได้"
   },
   "SchoolStudents": {
     "meta": {
@@ -2947,7 +2950,8 @@
       "seatCapToast": "โรงเรียนของคุณไม่มีที่นั่งเหลือ ติดต่อ SchoolTest เพื่อเพิ่มที่นั่ง",
       "schoolInactiveToast": "บัญชีโรงเรียนของคุณไม่ได้ใช้งาน จึงไม่สามารถเพิ่มนักเรียนได้ในขณะนี้",
       "forbiddenToast": "คุณไม่มีสิทธิ์เปลี่ยนแปลงนักเรียน",
-      "genericToast": "การดำเนินการไม่สำเร็จ ลองอีกครั้ง"
+      "genericToast": "การดำเนินการไม่สำเร็จ ลองอีกครั้ง",
+      "classNoClassesHint": "ยังไม่มีชั้นเรียน — สร้างชั้นเรียนในหน้าชั้นเรียนก่อนเพื่อจัดชั้นเรียนให้นักเรียนคนนี้"
     },
     "validation": {
       "givenNameRequired": "กรอกชื่อของนักเรียน",
@@ -2977,7 +2981,9 @@
       "alreadyImportedToast": "นักเรียนในไฟล์นี้ลงทะเบียนอยู่แล้วทั้งหมด",
       "successSkippedToast": "นำเข้า {created} คน, {skipped, plural, other {ลงทะเบียนแล้ว}}.",
       "noRowsToast": "This file has no rows to import — add at least one student under the header row.",
-      "tooBigToast": "That file is too large. The limit is 5 MB."
+      "tooBigToast": "That file is too large. The limit is 5 MB.",
+      "classLoadErrorTitle": "ไม่สามารถโหลดชั้นเรียนของคุณได้",
+      "classLoadErrorDescription": "กรุณาตรวจสอบการเชื่อมต่อแล้วลองใหม่อีกครั้ง"
     },
     "detailMeta": {
       "title": "Student - SchoolTest",
@@ -3569,7 +3575,8 @@
         "formSummary": "{count, plural, other {# ช่องต้องการความสนใจ}}",
         "saveErrorGeneric": "ไม่สามารถบันทึกชั้นเรียนได้ — ไม่มีการเปลี่ยนแปลง",
         "savedToast": "อัปเดต {name} แล้ว",
-        "createdToast": "สร้าง {name} แล้ว"
+        "createdToast": "สร้าง {name} แล้ว",
+        "noWindowsHint": "ยังไม่มีช่วงเวลาสอบ — เว้นว่างไว้ หรือสร้างก่อน"
       },
       "rosterSearchPlaceholder": "ค้นหานักเรียน",
       "rosterCount": "{count, plural, =0 {ไม่มีนักเรียน} other {นักเรียน # คน}}",
@@ -3901,7 +3908,8 @@
             "body": "นักเรียนยังคงลงทะเบียนกับโรงเรียนอยู่ แต่ชั้นเรียนเหล่านี้จะถูกซ่อนจากครู",
             "cta": "เก็บถาวร {count} รายการ"
           }
-        }
+        },
+        "teacherSkip": "{skipped} รายการไม่มีครู"
       },
       "reassign": {
         "title": "มอบหมายครูใหม่",
@@ -5190,7 +5198,32 @@
     "toggleSidebar": "สลับแถบด้านข้าง",
     "loading": "กำลังโหลด",
     "commandPalette": "ชุดคำสั่ง",
-    "commandPaletteDescription": "ค้นหาคำสั่งที่ต้องการเรียกใช้..."
+    "commandPaletteDescription": "ค้นหาคำสั่งที่ต้องการเรียกใช้...",
+    "missingDependency": {
+      "classes": {
+        "title": "ยังไม่มีชั้นเรียน",
+        "description": "ต้องมีชั้นเรียนอย่างน้อยหนึ่งชั้นก่อนจึงจะดำเนินการต่อได้ กรุณาสร้างชั้นเรียนก่อน",
+        "cta": "สร้างชั้นเรียน"
+      },
+      "destinationClasses": {
+        "title": "ไม่มีชั้นเรียนอื่นสำหรับย้ายไป",
+        "description": "ยังไม่มีชั้นเรียนอื่นที่จะย้ายไปได้ กรุณาสร้างชั้นเรียนอื่นก่อน"
+      },
+      "teachers": {
+        "title": "ยังไม่มีครู",
+        "description": "ยังไม่มีครูให้มอบหมาย คุณสามารถดำเนินการต่อโดยไม่ต้องมีครู หรือเชิญครูก่อน",
+        "cta": "เชิญครู"
+      },
+      "eligibleTeachers": {
+        "title": "ไม่มีครูที่พร้อมใช้งาน",
+        "description": "การสร้างชั้นเรียนต้องมีครูอย่างน้อยหนึ่งคน กรุณาเชิญครูก่อนจึงจะสร้างชั้นเรียนได้",
+        "cta": "เชิญครู"
+      },
+      "forms": {
+        "title": "ยังไม่มีแบบทดสอบการอ่าน",
+        "description": "ต้องมีแบบทดสอบการอ่านอย่างน้อยหนึ่งฉบับ กรุณาสร้างแบบทดสอบก่อนแล้วลองอีกครั้ง"
+      }
+    }
   },
   "Directory": {
     "defaults": {

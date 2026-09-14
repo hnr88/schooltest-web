@@ -18,8 +18,10 @@ export function SchoolSectionScreen({
       data-surface={surface}
       className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
     >
-      <div>
-        <h1 className="text-portal-title font-medium text-foreground">{title}</h1>
+      <div className="min-w-0">
+        <h1 className="truncate text-portal-title font-medium text-foreground" title={title}>
+          {title}
+        </h1>
         <p className="mt-1.75 text-body-md text-muted-foreground">{description}</p>
       </div>
       <div className="rounded-card bg-card px-7.5 py-14 text-center shadow-sm">

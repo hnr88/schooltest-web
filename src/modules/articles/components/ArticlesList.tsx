@@ -104,8 +104,10 @@ export function ArticlesList() {
         key: 'title',
         header: t('columnTitle'),
         cell: (row) => (
-          <span className="flex items-center gap-2 font-medium text-foreground">
-            <span className="truncate">{row.title}</span>
+          <span className="flex min-w-0 items-center gap-2 font-medium text-foreground">
+            <span className="min-w-0 flex-1 truncate" title={row.title}>
+              {row.title}
+            </span>
             {row.featured ? <Badge variant="accent">{t('featuredBadge')}</Badge> : null}
           </span>
         ),

@@ -47,11 +47,13 @@ function SegmentedControl({
           key={option.value}
           value={option.value}
           className={cn(
-            'relative font-semibold text-body transition-colors duration-200 ease-out-expo after:absolute after:inset-x-0 hover:text-foreground aria-pressed:bg-card aria-pressed:text-foreground aria-pressed:shadow-sm data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-sm motion-reduce:transition-none',
+            'relative min-w-0 font-semibold text-body transition-colors duration-200 ease-out-expo after:absolute after:inset-x-0 hover:text-foreground aria-pressed:bg-card aria-pressed:text-foreground aria-pressed:shadow-sm data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-sm motion-reduce:transition-none',
             ITEM[size],
           )}
         >
-          {option.label}
+          <span className="min-w-0 truncate" title={option.label}>
+            {option.label}
+          </span>
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

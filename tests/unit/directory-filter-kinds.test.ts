@@ -139,7 +139,8 @@ describe('D-02 — counts render on counted ONLY and come from meta, never rows'
 
   test('counts absent render no number — never a zero that was not verified', () => {
     render([{ ...COUNTED, counts: undefined }]);
-    expect(host.querySelector('[data-slot="directory-filter-pills"]')?.querySelector('span')).toBeNull();
+    const pills = host.querySelector('[data-slot="directory-filter-pills"]');
+    expect(pills?.textContent).not.toMatch(/\d/);
   });
 
   test('counts on a non-counted kind render nothing — the renderer takes no rows at all', () => {

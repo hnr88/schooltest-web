@@ -37,12 +37,17 @@ function LiveSessionCard({ sitting, classLabel }: { sitting: LiveRollupSitting; 
           status="live"
           size="sm"
           label={tKit('status.liveShort')}
-          className="gap-[5px] pl-[7px] text-[10px]"
+          className="flex-none gap-[5px] pl-[7px] text-[10px]"
         />
-        <h3 className="flex-1 text-[14px] font-medium text-navy-900">{sitting.formLabel ?? noValue}</h3>
+        <h3
+          className="min-w-0 flex-1 truncate text-[14px] font-medium text-navy-900"
+          title={sitting.formLabel ?? noValue}
+        >
+          {sitting.formLabel ?? noValue}
+        </h3>
         <span
           data-slot="live-session-code"
-          className="text-[13px] font-medium tracking-[0.04em] text-[#6B7280] tabular-nums"
+          className="flex-none text-[13px] font-medium tracking-[0.04em] text-[#6B7280] tabular-nums"
         >
           {sitting.code ?? noValue}
         </span>

@@ -50,11 +50,13 @@ function SchoolCard({ hit }: { hit: SchoolHit }) {
         <div className="flex min-w-0 items-start gap-3">
           {hit.coverImage ? null : <SchoolCardCover coverImage={null} alt={coverAlt} />}
           <div className="min-w-0 flex-1">
-            <h3 className="text-body-lg leading-snug font-semibold text-balance text-foreground">
+            <h3 className="truncate text-body-lg leading-snug font-semibold text-foreground" title={hit.name}>
               {hit.name}
             </h3>
             {meta.length > 0 ? (
-              <p className="mt-1 text-body-sm text-muted-foreground">{meta.join(' · ')}</p>
+              <p className="mt-1 truncate text-body-sm text-muted-foreground" title={meta.join(' · ')}>
+                {meta.join(' · ')}
+              </p>
             ) : null}
           </div>
         </div>

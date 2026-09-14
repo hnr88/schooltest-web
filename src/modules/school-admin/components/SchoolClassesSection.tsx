@@ -55,10 +55,13 @@ export function SchoolClassesSection({ classes }: SchoolClassesSectionProps) {
                       {classBadge(schoolClass.name)}
                     </span>
                     <span className="min-w-[130px] flex-[3_1_160px] overflow-hidden">
-                      <span className="block truncate text-lede font-semibold text-foreground">
+                      <span className="block truncate text-lede font-semibold text-foreground" title={schoolClass.name}>
                         {schoolClass.name}
                       </span>
-                      <span className="mt-0.5 block truncate text-meta text-muted-foreground">
+                      <span
+                        className="mt-0.5 block truncate text-meta text-muted-foreground"
+                        title={teachers === '' ? tClasses('teachersNone') : teachers}
+                      >
                         {teachers === '' ? tClasses('teachersNone') : teachers}
                       </span>
                     </span>

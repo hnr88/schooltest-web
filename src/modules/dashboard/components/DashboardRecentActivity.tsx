@@ -74,7 +74,10 @@ export function DashboardRecentActivity({ overview }: { overview: DashboardOverv
                 </span>
                 <span aria-hidden="true" className="h-8.5 w-px flex-none bg-divider" />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-body-md font-semibold text-foreground">
+                  <span
+                    className="block truncate text-body-md font-semibold text-foreground"
+                    title={getStudentDisplayName(entry.student, t('unknownProfile'))}
+                  >
                     {getStudentDisplayName(entry.student, t('unknownProfile'))}
                   </span>
                   <span className="mt-0.5 block truncate text-body-sm text-body">

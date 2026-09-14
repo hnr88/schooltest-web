@@ -63,7 +63,11 @@ function PreviousSessions({
               index < rows.length - 1 && 'border-b border-[#EEF1F6]',
             )}
           >
-            <span role="cell" className={cn(TEST.className, 'text-[14px] font-semibold text-navy-900')}>
+            <span
+              role="cell"
+              className={cn(TEST.className, 'min-w-0 truncate text-[14px] font-semibold text-navy-900')}
+              title={row.test ?? noValue}
+            >
               {row.test ?? noValue}
             </span>
             <span role="cell" className={cn(CODE.className, CELL, 'font-semibold tracking-[0.02em] tabular-nums')}>

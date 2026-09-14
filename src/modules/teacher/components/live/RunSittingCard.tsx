@@ -62,9 +62,12 @@ function RunSittingCard({
       </div>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-px border-b border-[#EEF1F6] bg-[#EEF1F6]">
         <JoinCodeCell sitting={sitting} monitor={monitor} />
-        <div data-slot="run-sitting-test" className="flex flex-col bg-white px-6 py-[22px]">
+        <div data-slot="run-sitting-test" className="flex min-w-0 flex-col bg-white px-6 py-[22px]">
           <span className={LIVE_EYEBROW_CLASS}>{t('test')}</span>
-          <p className="mt-3 text-[16px] font-semibold text-navy-900">
+          <p
+            className="mt-3 truncate text-[16px] font-semibold text-navy-900"
+            title={t('testTitle', { className: sitting.class.name, test: sitting.form?.label ?? noValue })}
+          >
             {t('testTitle', { className: sitting.class.name, test: sitting.form?.label ?? noValue })}
           </p>
           <p data-slot="run-sitting-stall" className="mt-[5px] text-[13px] leading-normal text-[#6B7280]">

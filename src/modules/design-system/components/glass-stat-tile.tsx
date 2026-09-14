@@ -18,10 +18,15 @@ function GlassStatTile({ value, label, tone = 'default', className }: GlassStatT
         className,
       )}
     >
-      <span className={cn('text-h3 leading-none font-bold tabular-nums', VALUE_TONES[tone])}>
+      <span
+        className={cn('max-w-full truncate text-h3 leading-none font-bold tabular-nums', VALUE_TONES[tone])}
+        title={value}
+      >
         {value}
       </span>
-      <span className="text-meta text-navy-muted">{label}</span>
+      <span className="max-w-full truncate text-meta text-navy-muted" title={label}>
+        {label}
+      </span>
     </div>
   );
 }

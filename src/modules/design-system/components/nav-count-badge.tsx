@@ -11,11 +11,13 @@ function NavCountBadge({ count, className }: NavCountBadgeProps) {
       data-slot="nav-count-badge"
       aria-hidden="true"
       className={cn(
-        'inline-grid h-5 min-w-5 place-items-center rounded-full bg-blue-50 px-1.5 text-overline font-bold text-blue-600',
+        'inline-grid h-5 max-w-full min-w-5 place-items-center truncate rounded-full bg-blue-50 px-1.5 text-overline font-bold text-blue-600',
         className,
       )}
     >
-      {count}
+      <span className="min-w-0 truncate" title={String(count)}>
+        {count}
+      </span>
     </span>
   );
 }

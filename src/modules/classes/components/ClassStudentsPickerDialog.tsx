@@ -133,10 +133,16 @@ export function ClassStudentsPickerDialog({
                           disabled={busy}
                           onCheckedChange={(checked) => toggle(student.documentId, checked === true)}
                         />
-                        <span className="font-medium text-foreground">
+                        <span
+                          className="min-w-0 truncate font-medium text-foreground"
+                          title={studentDisplayName(student)}
+                        >
                           {studentDisplayName(student)}
                         </span>
-                        <span className="ml-auto truncate text-right text-xs text-muted-foreground">
+                        <span
+                          className="ml-auto min-w-0 truncate text-right text-xs text-muted-foreground"
+                          title={hint === null ? t('noClassHint') : t('currentClassHint', { className: hint })}
+                        >
                           {hint === null ? t('noClassHint') : t('currentClassHint', { className: hint })}
                         </span>
                       </label>

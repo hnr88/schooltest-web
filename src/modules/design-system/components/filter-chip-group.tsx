@@ -25,13 +25,15 @@ function FilterChipGroup({
             aria-pressed={isActive}
             onClick={() => onValueChange(option.value)}
             className={cn(
-              'inline-flex items-center rounded-full px-3.5 py-1 text-meta transition duration-200 ease-out-expo focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none pointer-coarse:min-h-11',
+              'inline-flex max-w-full min-w-0 items-center rounded-full px-3.5 py-1 text-meta transition duration-200 ease-out-expo focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none pointer-coarse:min-h-11',
               isActive
                 ? 'border border-primary bg-primary font-semibold text-primary-foreground'
                 : 'border border-input bg-card font-medium text-muted-foreground hover:border-primary/40 hover:bg-blue-50 hover:text-secondary-foreground',
             )}
           >
-            {option.label}
+            <span className="min-w-0 truncate" title={option.label}>
+              {option.label}
+            </span>
           </button>
         );
       })}

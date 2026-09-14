@@ -43,8 +43,15 @@ export function DashboardRecommended({ overview }: { overview: DashboardOverview
                 {index + 1}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-body-md font-semibold text-foreground">{title}</p>
-                <p className="mt-0.25 text-meta text-body">{t(keys.meta, { name, percent })}</p>
+                <p className="truncate text-body-md font-semibold text-foreground" title={title}>
+                  {title}
+                </p>
+                <p
+                  className="mt-0.25 truncate text-meta text-body"
+                  title={t(keys.meta, { name, percent })}
+                >
+                  {t(keys.meta, { name, percent })}
+                </p>
               </div>
               {/* Three rows would otherwise ship three links all named "Open".
                   The label keeps the visible word first (WCAG 2.5.3) and adds the

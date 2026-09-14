@@ -25,10 +25,16 @@ function StatStrip({ items, size = 'md', ariaLabel, className, wrap = false }: S
               VALUE_SIZES[size],
               VALUE_TONES[item.tone ?? 'default'],
             )}
+            title={item.value}
           >
             {item.value}
           </dd>
-          <dt className={cn('order-2 text-meta text-muted-foreground', !wrap && 'truncate')}>{item.label}</dt>
+          <dt
+            className={cn('order-2 text-meta text-muted-foreground', !wrap && 'truncate')}
+            title={item.label}
+          >
+            {item.label}
+          </dt>
         </div>
       ))}
     </dl>

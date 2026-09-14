@@ -42,7 +42,12 @@ function TimelineRow({
           {tag}
         </span>
       ) : null}
-      <span className="min-w-0 flex-1 truncate text-sm font-semibold text-foreground">{title}</span>
+      <span
+        className="min-w-0 flex-1 truncate text-sm font-semibold text-foreground"
+        title={title}
+      >
+        {title}
+      </span>
       {trailing ? <span className="shrink-0">{trailing}</span> : null}
     </div>
   );

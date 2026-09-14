@@ -54,7 +54,9 @@ function SkillTabs({
             <TabsTrigger key={skill} value={skill} data-skill={skill} className={cn(SKILL_TAB_CLASS, tone.root)}>
               <Icon aria-hidden="true" className={cn('size-[18px] flex-none', tone.icon)} strokeWidth={1.8} />
               <span className="min-w-0 flex-1">
-                <span className="block text-[13.5px] font-semibold">{t(`skills.${skill}`)}</span>
+                <span className="block truncate text-[13.5px] font-semibold" title={t(`skills.${skill}`)}>
+                  {t(`skills.${skill}`)}
+                </span>
                 <span className={cn('block text-[11px] font-medium', tone.sub)}>
                   {live ? t('liveNow') : t('comingSoon')}
                 </span>

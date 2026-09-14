@@ -18,6 +18,7 @@ import {
   DialogTitle,
   FieldShell,
   Input,
+  MissingDependencyNotice,
   NativeSelect,
   NativeSelectOption,
   StatusPill,
@@ -316,7 +317,14 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
             label: tActions(action.labelKey),
             write: action.write,
             disabled: action.write && locked,
+            // Eligibility judged BEFORE the run, at selection: a window is
+            // refused for a class with no teacher, so those rows are skipped
+            // up front with the reason stated — never submitted to bounce.
+            eligible: (row: unknown) => (row as ClassRow).primary_teacher !== null,
+            skipLabel: (skipped: number) => tActions('bulk.teacherSkip', { skipped }),
             onRun: (_rows: readonly unknown[], targets: readonly OpsActionTarget[]) => {
+              // Zero eligible → nothing to open; the skip label already said why.
+              if (targets.length === 0) return;
               if (refuseIfReadOnly()) setSetWindowTargets(targets);
             },
           };
@@ -353,10 +361,16 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
               {classBadgeLabel(row)}
             </span>
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-[14.5px] font-semibold text-foreground">
+              <span
+                className="truncate text-[14.5px] font-semibold text-foreground"
+                title={noValueIfMissing(row.name)}
+              >
                 {noValueIfMissing(row.name)}
               </span>
-              <span className="mt-0.5 block truncate text-[12.5px] text-[#7C8698]">
+              <span
+                className="mt-0.5 block truncate text-[12.5px] text-[#7C8698]"
+                title={row.test_window === null ? t('noWindow') : row.test_window.title}
+              >
                 {row.test_window === null ? t('noWindow') : row.test_window.title}
               </span>
             </div>
@@ -367,10 +381,17 @@ export function OpsClassesTab({ schoolDocumentId }: { schoolDocumentId: string }
         key: 'teacher',
         header: t('columnTeacher'),
         grid: 'text',
-        cell: (row) =>
-          row.primary_teacher === null
-            ? t('noTeacher')
-            : opsTeacherLabel({ ...row.primary_teacher, email: null }),
+        cell: (row) => {
+          const teacher =
+            row.primary_teacher === null
+              ? t('noTeacher')
+              : opsTeacherLabel({ ...row.primary_teacher, email: null });
+          return (
+            <span className="block max-w-[220px] truncate" title={teacher}>
+              {teacher}
+            </span>
+          );
+        },
       },
       {
         key: 'students',
@@ -674,68 +695,76 @@ function ClassSetTestWindowDialog({
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description', { count: targets.length })}</DialogDescription>
         </DialogHeader>
-        <form onSubmit={(event) => void submit(event)} noValidate className="flex flex-col gap-4">
-          {createErrorMessage ? (
-            <Alert variant="error" title={createErrorMessage}>
-              {null}
-            </Alert>
-          ) : null}
-          <FieldShell id="ops-set-window-title" label={t('titleLabel')} required>
-            <Input
-              id="ops-set-window-title"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-            />
-          </FieldShell>
-          <FieldShell id="ops-set-window-timezone" label={t('timezoneLabel')} required>
-            <Input
-              id="ops-set-window-timezone"
-              value={timezone}
-              onChange={(event) => setTimezone(event.target.value)}
-            />
-          </FieldShell>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FieldShell id="ops-set-window-opens" label={t('opensLabel')} required>
+        {/* The reading form is a REQUIRED dependency of the window: with no
+            forms to attach, the form cannot be submitted at all, so the whole
+            body is replaced by the refusal instead of an empty select. */}
+        {!forms.isPending && (forms.data ?? []).length === 0 ? (
+          <MissingDependencyNotice kind="forms" />
+        ) : (
+          <form onSubmit={(event) => void submit(event)} noValidate className="flex flex-col gap-4">
+            {createErrorMessage ? (
+              <Alert variant="error" title={createErrorMessage}>
+                {null}
+              </Alert>
+            ) : null}
+            <FieldShell id="ops-set-window-title" label={t('titleLabel')} required>
               <Input
-                id="ops-set-window-opens"
-                type="datetime-local"
-                value={opensAt}
-                onChange={(event) => setOpensAt(event.target.value)}
+                id="ops-set-window-title"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
               />
             </FieldShell>
-            <FieldShell id="ops-set-window-closes" label={t('closesLabel')} required>
+            <FieldShell id="ops-set-window-timezone" label={t('timezoneLabel')} required>
               <Input
-                id="ops-set-window-closes"
-                type="datetime-local"
-                value={closesAt}
-                onChange={(event) => setClosesAt(event.target.value)}
+                id="ops-set-window-timezone"
+                value={timezone}
+                onChange={(event) => setTimezone(event.target.value)}
               />
             </FieldShell>
-          </div>
-          <FieldShell id="ops-set-window-form" label={t('formLabel')} required>
-            <NativeSelect
-              id="ops-set-window-form"
-              className="w-full"
-              value={formDocumentId}
-              onChange={(event) => setFormDocumentId(event.target.value)}
-            >
-              <NativeSelectOption value="">{t('formPlaceholder')}</NativeSelectOption>
-              {(forms.data ?? []).map((form) => (
-                <NativeSelectOption key={form.documentId} value={form.documentId}>
-                  {form.form_code}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FieldShell>
-          <DialogFooter>
-            <Button type="button" size="lg" variant="outline" onClick={onCancel} disabled={busy}>
-              {t('cancel')}
-            </Button>
-            <Button type="submit" size="lg" loading={busy} disabled={invalid}>
-              {busy ? t('submitting') : t('submit')}
-            </Button>
-          </DialogFooter>
-        </form>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <FieldShell id="ops-set-window-opens" label={t('opensLabel')} required>
+                <Input
+                  id="ops-set-window-opens"
+                  type="datetime-local"
+                  value={opensAt}
+                  onChange={(event) => setOpensAt(event.target.value)}
+                />
+              </FieldShell>
+              <FieldShell id="ops-set-window-closes" label={t('closesLabel')} required>
+                <Input
+                  id="ops-set-window-closes"
+                  type="datetime-local"
+                  value={closesAt}
+                  onChange={(event) => setClosesAt(event.target.value)}
+                />
+              </FieldShell>
+            </div>
+            <FieldShell id="ops-set-window-form" label={t('formLabel')} required>
+              <NativeSelect
+                id="ops-set-window-form"
+                className="w-full"
+                value={formDocumentId}
+                onChange={(event) => setFormDocumentId(event.target.value)}
+                disabled={forms.isPending}
+              >
+                <NativeSelectOption value="">{t('formPlaceholder')}</NativeSelectOption>
+                {(forms.data ?? []).map((form) => (
+                  <NativeSelectOption key={form.documentId} value={form.documentId}>
+                    {form.form_code}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </FieldShell>
+            <DialogFooter>
+              <Button type="button" size="lg" variant="outline" onClick={onCancel} disabled={busy}>
+                {t('cancel')}
+              </Button>
+              <Button type="submit" size="lg" loading={busy} disabled={invalid}>
+                {busy ? t('submitting') : t('submit')}
+              </Button>
+            </DialogFooter>
+          </form>
+        )}
       </DialogContent>
     </Dialog>
   );

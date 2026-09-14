@@ -16,11 +16,11 @@ export function HeatmapCell({ row }: HeatmapCellProps) {
       data-slot="heatmap-cell"
       data-tone={tone}
       className={cn(
-        'flex flex-col gap-1 rounded-lg border px-3 py-2',
+        'flex min-w-0 flex-col gap-1 rounded-lg border px-3 py-2',
         HEATMAP_TONE_CLASSES[tone],
       )}
     >
-      <span className="text-sm font-bold">{row.item_code}</span>
+      <span className="truncate text-sm font-bold" title={row.item_code}>{row.item_code}</span>
       <span className="text-xs font-medium">
         {formatHeatmapValue(row.correct, row.responses, row.fraction)}
       </span>
