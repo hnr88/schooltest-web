@@ -5,7 +5,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme inline { /* fluid-type */
   /* DS type scale — the eight steps the design's typography board publishes
      (.qa/design/screens/ds--typography.html, spec §3.1). Provenance form:
      "<step> <size>/<line-height>/<tracking>". Display is the one fluid step: its
@@ -13,17 +13,20 @@
   --text-display: clamp(2.25rem, 1.25rem + 3.2vw, 3.5rem); /* Display 56/1.05/-0.03em */
   --text-display--line-height: 1.05;
   --text-display--letter-spacing: -0.03em;
-  --text-h1: 2.5rem; /* H1 40/1.15/-0.02em */
+  /* H1/H2 stay on the board's desktop sizes from ~640px up and shed size toward
+     phones, so 40px/32px steps never set one word per line on a 320–375px
+     viewport (the fluid pattern --text-display already establishes). */
+  --text-h1: clamp(1.75rem, 0.9375rem + 4vw, 2.5rem); /* H1 40/1.15/-0.02em */
   --text-h1--line-height: 1.15;
   --text-h1--letter-spacing: -0.02em;
-  --text-h2: 2rem; /* H2 32/1.2/-0.015em */
+  --text-h2: clamp(1.5rem, 1rem + 2.4vw, 2rem); /* H2 32/1.2/-0.015em */
   --text-h2--line-height: 1.2;
   --text-h2--letter-spacing: -0.015em;
   --text-h3: 1.5rem; /* H3 24/1.3/normal */
   --text-h3--line-height: 1.3;
   --text-h4: 1.125rem; /* H4 18/1.4/normal */
   --text-h4--line-height: 1.4;
-  --text-flow: 2.125rem;
+  --text-flow: clamp(1.5rem, 0.875rem + 2.9333vw, 2.125rem);
   --text-flow--line-height: 1.25;
   --text-flow--letter-spacing: -0.02em;
   --text-cta-title: 2.625rem;

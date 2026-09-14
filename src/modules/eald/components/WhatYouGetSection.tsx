@@ -38,7 +38,9 @@ async function WhatYouGetSection() {
               )}
             >
               <ScrollReveal delay={index * 90}>
-                <div className="flex items-center gap-6 p-6 sm:gap-7 sm:p-8">
+                {/* Stacks on phones: the fixed tile plus the nowrap pill leave
+                    ~60px of text on a 320px row otherwise. */}
+                <div className="flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center sm:gap-7 sm:p-8">
                   <span
                     aria-hidden="true"
                     className={cn(

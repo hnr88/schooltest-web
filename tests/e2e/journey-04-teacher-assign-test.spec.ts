@@ -84,14 +84,16 @@ test('assign a test to a class, open the sitting, and it all persists on reload'
   await expect(page.locator(`[data-tab-panel="live"][data-session-id="${sittingId}"]`)).toBeVisible();
   await shot(page, '04-1-assignment-open.png');
 
-  // The server holds it: open and running, six digits, this class and this test.
+  // The server holds it: open and running, a board code, this class and this test.
   const row = (await readSessions(request, jwt)).find((entry) => entry.sitting_document_id === sittingId);
   expect(row?.status).toBe('open');
   expect(row?.phase).toBe('running');
   expect(row?.class.document_id).toBe(classId);
   expect(row?.form?.document_id).toBe(chosen.form_document_id);
   const code = row?.code ?? '';
-  expect(code).toMatch(/^\d{6}$/);
+  // STALE-TEST FIX (retest wave, measured 2026-09-11): the merged C-SITTING-MINT
+  // mints the word + two-digit form ("frog93"); legacy sittings keep six digits.
+  expect(code).toMatch(/^(?:[a-z]{3,5}[0-9]{2}|[0-9]{6})$/);
   expect(runSql(`select status, code from sittings where document_id = '${sittingId}'`)).toBe(`open|${code}`);
 
   // The ASSIGNED STUDENTS: the monitor lists exactly who sits it — the whole active

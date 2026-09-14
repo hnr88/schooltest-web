@@ -89,7 +89,11 @@ function BarChart({ items, series, bands, ariaLabel, max, className }: BarChartP
 
   return (
     <div className="min-w-0 overflow-x-auto">
-      <div className="flex min-w-80 flex-col gap-4 py-2">
+      {/* The 320px floor only survives from sm up: on a 320–375px phone the
+          card body is ~270px, and this floor then overflows the DOCUMENT
+          itself (Chromium does not contain it — the whole page zooms out),
+          instead of scrolling here. 256px still scrolls internally at 320. */}
+      <div className="flex min-w-64 flex-col gap-4 py-2 sm:min-w-80">
         {hasSeries ? <BarChartLegend series={series} /> : null}
         <div className="flex items-stretch gap-3">
           {hasBands ? (

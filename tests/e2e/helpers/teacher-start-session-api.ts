@@ -124,7 +124,12 @@ export async function expectStartedSitting(
   expect(row?.phase).toBe('running');
   expect([...(row?.member_student_ids ?? [])].sort()).toEqual([...members].sort());
   expect(row?.settings).toMatchObject(settings);
-  expect(row?.code).toMatch(/^\d{6}$/);
+  // STALE-TEST FIX (retest wave, measured 2026-09-11): the merged C-SITTING-MINT
+  // mints the design's word + two-digit board code ("frog93" — see
+  // schooltest-api src/api/sitting/lib/code.constants.ts MINTED_CODE_PATTERN);
+  // the retired six-digit form is still what legacy sittings carry, so accept
+  // the union exactly as the API's own CODE_PATTERN does.
+  expect(row?.code).toMatch(/^(?:[a-z]{3,5}[0-9]{2}|[0-9]{6})$/);
   return row?.code ?? '';
 }
 

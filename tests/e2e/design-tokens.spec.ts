@@ -244,8 +244,10 @@ const TYPE_STEPS = {
   ],
   375: [
     ['text-display', '36px', '37.8px', '-1.08px'],
-    ['text-h1', '40px', '46px', '-0.8px'],
-    ['text-h2', '32px', '38.4px', '-0.48px'],
+    // h1/h2/flow are fluid (clamp) — 30px / 25px are their 375px points; both
+    // clamp back to the published 40px / 32px from ~640px up.
+    ['text-h1', '30px', '34.5px', '-0.6px'],
+    ['text-h2', '25px', '30px', '-0.375px'],
     ['text-h3', '24px', '31.2px', 'normal'],
     ['text-h4', '18px', '25.2px', 'normal'],
     ['text-body-lg', '16px', '25.6px', 'normal'],
