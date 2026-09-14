@@ -2,6 +2,7 @@ import { getFormatter, getTranslations } from 'next-intl/server';
 
 import { Container } from '@/modules/design-system';
 import { LandingFooter, LandingHeader } from '@/modules/landing';
+import { PublicSiteBanner, getPublicSettings } from '@/modules/settings';
 import { LegalSection } from '@/modules/legal/components/LegalSection';
 import { LegalTableOfContents } from '@/modules/legal/components/LegalTableOfContents';
 import { PublicBreadcrumb } from '@/modules/navigation';
@@ -22,9 +23,13 @@ async function LegalDocumentScreen({ document, pathname, locale }: LegalDocument
     month: 'long',
     day: 'numeric',
   });
+  // C-SET-01: the ops-authored announcement/maintenance banner rides ABOVE the
+  // public header chrome (renders null while both are off).
+  const settings = await getPublicSettings();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <PublicSiteBanner settings={settings} />
       <LandingHeader />
       <BreadcrumbJsonLd pathname={pathname} locale={locale} currentLabel={document.title} />
       <PublicPageJsonLd

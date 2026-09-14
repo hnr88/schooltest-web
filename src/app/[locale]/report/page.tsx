@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { LandingReportContent } from '@/modules/landing';
 import { BreadcrumbJsonLd, PublicPageJsonLd, buildPageMetadata } from '@/modules/seo';
-import { getPublicSettings } from '@/modules/settings';
+import { getPublicSettings, PublicSiteBanner } from '@/modules/settings';
 
 interface ReportPageProps {
   params: Promise<{ locale: string }>;
@@ -25,9 +25,13 @@ export async function generateMetadata({ params }: ReportPageProps): Promise<Met
 export default async function ReportPage({ params }: ReportPageProps) {
   const { locale } = await params;
   const t = await getTranslations('Landing.meta');
+  // C-SET-01: the ops-authored announcement/maintenance banner rides ABOVE the
+  // public masthead on every marketing page (renders null while both are off).
+  const settings = await getPublicSettings();
 
   return (
     <>
+      <PublicSiteBanner settings={settings} />
       <BreadcrumbJsonLd pathname="/report" locale={locale} />
       <PublicPageJsonLd
         pathname="/report"
