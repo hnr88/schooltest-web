@@ -248,6 +248,24 @@
       "doneBody": "Your password has been updated. Log in with your new password to return to the portal."
     }
   },
+  "MagicLink": {
+    "meta": {
+      "title": "Finishing sign-in — SchoolTest",
+      "description": "Completing your SchoolTest sign-in link."
+    },
+    "pending": "Signing you in…",
+    "successTitle": "You're signed in",
+    "successBody": {
+      "student": "You're signed in on this device for this browser session. You can close this window, or open the SchoolTest app to keep going.",
+      "teacher": "You're signed in on this device for this browser session. You can close this window, or open the SchoolTest app to start your trial."
+    },
+    "errorTitle": "We couldn't sign you in",
+    "errorBody": {
+      "student": "This sign-in link isn't valid. Ask your parent to send a new one.",
+      "teacher": "This sign-in link isn't valid. Ask for a new trial link."
+    },
+    "backHome": "Back to home"
+  },
   "LocaleSwitcher": {
     "label": "Language"
   },

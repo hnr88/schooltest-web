@@ -248,6 +248,24 @@
       "doneBody": "비밀번호가 변경되었습니다. 새 비밀번호로 로그인하여 포털로 돌아가세요."
     }
   },
+  "MagicLink": {
+    "meta": {
+      "title": "로그인 마무리 — SchoolTest",
+      "description": "SchoolTest 로그인 링크를 완료하는 중입니다."
+    },
+    "pending": "로그인하는 중…",
+    "successTitle": "로그인되었습니다",
+    "successBody": {
+      "student": "이 기기의 브라우저 세션으로 로그인되었습니다. 이 창을 닫거나 SchoolTest 앱을 열어 계속할 수 있어요.",
+      "teacher": "이 기기의 브라우저 세션으로 로그인되었습니다. 이 창을 닫거나 SchoolTest 앱을 열어 체험을 시작할 수 있어요."
+    },
+    "errorTitle": "로그인할 수 없습니다",
+    "errorBody": {
+      "student": "이 로그인 링크는 유효하지 않아요. 부모님께 새 링크를 보내달라고 요청해 주세요.",
+      "teacher": "이 로그인 링크는 유효하지 않아요. 새 체험 링크를 요청해 주세요."
+    },
+    "backHome": "홈으로 돌아가기"
+  },
   "LocaleSwitcher": {
     "label": "Language"
   },

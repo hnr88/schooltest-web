@@ -248,6 +248,24 @@
       "doneBody": "Mật khẩu của bạn đã được cập nhật. Đăng nhập bằng mật khẩu mới để quay lại cổng thông tin."
     }
   },
+  "MagicLink": {
+    "meta": {
+      "title": "Hoàn tất đăng nhập — SchoolTest",
+      "description": "Đang hoàn tất liên kết đăng nhập SchoolTest của bạn."
+    },
+    "pending": "Đang đăng nhập…",
+    "successTitle": "Bạn đã đăng nhập",
+    "successBody": {
+      "student": "Bạn đã đăng nhập trên thiết bị này cho phiên trình duyệt này. Bạn có thể đóng cửa sổ này hoặc mở ứng dụng SchoolTest để tiếp tục.",
+      "teacher": "Bạn đã đăng nhập trên thiết bị này cho phiên trình duyệt này. Bạn có thể đóng cửa sổ này hoặc mở ứng dụng SchoolTest để bắt đầu dùng thử."
+    },
+    "errorTitle": "Chúng tôi không thể đăng nhập cho bạn",
+    "errorBody": {
+      "student": "Liên kết đăng nhập này không hợp lệ. Hãy nhờ phụ huynh gửi liên kết mới.",
+      "teacher": "Liên kết đăng nhập này không hợp lệ. Hãy yêu cầu liên kết dùng thử mới."
+    },
+    "backHome": "Về trang chủ"
+  },
   "LocaleSwitcher": {
     "label": "Language"
   },

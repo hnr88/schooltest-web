@@ -248,6 +248,24 @@
       "doneBody": "您的密码已更新。请使用新密码登录以返回门户。"
     }
   },
+  "MagicLink": {
+    "meta": {
+      "title": "正在完成登录 — SchoolTest",
+      "description": "正在完成您的 SchoolTest 登录链接。"
+    },
+    "pending": "正在登录…",
+    "successTitle": "您已登录",
+    "successBody": {
+      "student": "您已在此设备的本次浏览器会话中登录。可以关闭此窗口，或打开 SchoolTest 应用继续。",
+      "teacher": "您已在此设备的本次浏览器会话中登录。可以关闭此窗口，或打开 SchoolTest 应用开始试用。"
+    },
+    "errorTitle": "我们无法让您登录",
+    "errorBody": {
+      "student": "此登录链接无效。请让家长重新发送一个新链接。",
+      "teacher": "此登录链接无效。请重新申请试用链接。"
+    },
+    "backHome": "返回首页"
+  },
   "LocaleSwitcher": {
     "label": "Language"
   },

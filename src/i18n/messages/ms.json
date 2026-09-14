@@ -248,6 +248,24 @@
       "doneBody": "Kata laluan anda telah dikemas kini. Log masuk dengan kata laluan baharu anda untuk kembali ke portal."
     }
   },
+  "MagicLink": {
+    "meta": {
+      "title": "Menyelesaikan log masuk — SchoolTest",
+      "description": "Melengkapkan pautan log masuk SchoolTest anda."
+    },
+    "pending": "Melog masuk…",
+    "successTitle": "Anda telah log masuk",
+    "successBody": {
+      "student": "Anda telah log masuk pada peranti ini untuk sesi pelayar ini. Anda boleh tutup tetingkap ini, atau buka aplikasi SchoolTest untuk teruskan.",
+      "teacher": "Anda telah log masuk pada peranti ini untuk sesi pelayar ini. Anda boleh tutup tetingkap ini, atau buka aplikasi SchoolTest untuk mula percubaan anda."
+    },
+    "errorTitle": "Kami tidak dapat log masuk anda",
+    "errorBody": {
+      "student": "Pautan log masuk ini tidak sah. Mintalah ibu bapa anda menghantar pautan baharu.",
+      "teacher": "Pautan log masuk ini tidak sah. Mohon pautan percubaan baharu."
+    },
+    "backHome": "Kembali ke laman utama"
+  },
   "LocaleSwitcher": {
     "label": "Language"
   },
