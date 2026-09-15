@@ -2,10 +2,14 @@
 
 import { useEffect } from 'react';
 
-import { useRouter } from '@/i18n/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import { SCHOOL_ADMIN_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
 import { useMeQuery } from '@/modules/auth/queries/use-me.query';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+// NIGHT-2 AUTH-018: the anonymous bounce carries the attempted route
+// so sign-in can return the visitor to where they were heading.
+import { signInHref } from '@/modules/auth/lib/sign-in-redirect';
 
 // Client guard primitive for school_admin-only routes: hydrates the JWT from
 // localStorage, then resolves the identity through GET /api/users/me — whose
@@ -18,6 +22,7 @@ export function useRequireSchoolAdmin() {
   const hydrated = useAuthStore((state) => state.hydrated);
   const hydrate = useAuthStore((state) => state.hydrate);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!hydrated) hydrate();
@@ -31,17 +36,22 @@ export function useRequireSchoolAdmin() {
   const isRejected = meQuery.isError;
 
   useEffect(() => {
-    if (hydrated && !hasToken) router.replace('/sign-in');
-  }, [hydrated, hasToken, router]);
+    if (hydrated && !hasToken) router.replace(signInHref(pathname));
+  }, [hydrated, hasToken, pathname, router]);
 
   useEffect(() => {
     if (!isResolved) return;
     if (isRejected) {
-      router.replace('/sign-in');
+      router.replace(signInHref(pathname));
       return;
     }
-    if (!isSchoolAdmin) router.replace('/dashboard');
-  }, [isResolved, isRejected, isSchoolAdmin, router]);
+    // NIGHT-2 (W8): a resolved PARENT keeps the guard mounted so the caller
+    // renders ParentViewsUnavailable (the mask, not a silent redirect).
+    if (!isSchoolAdmin) {
+      if (roleType === PARENT_ROLE_TYPE) return;
+      router.replace('/dashboard');
+    }
+  }, [isResolved, isRejected, isSchoolAdmin, pathname, roleType, router]);
 
   return {
     isReady: isResolved && !isRejected && isSchoolAdmin,

@@ -1485,7 +1485,8 @@
       "B2": "B2",
       "C1": "C1"
     },
-    "cardAdded": "Added {date}"
+    "cardAdded": "Added {date}",
+    "resultReportLink": "ดูรายงาน"
   },
   "Onboarding": {
     "meta": {
@@ -1924,6 +1925,30 @@
       "suggestionInvariant": "Nothing is recorded on the student’s report until you accept or set the mark, and the evidence above is the exact text it read.",
       "title": "Question-by-question review",
       "unmarked": "Not marked yet"
+    },
+    "family": {
+      "yourChild": "บุตรหลานของคุณ",
+      "heldTitle": "ยังไม่ได้เผยแพร่รายงาน",
+      "heldBody": "{child} ทำแบบทดสอบนี้เสร็จแล้ว โรงเรียนจะเผยแพร่รายงานครอบครัวเมื่อพร้อม — จะไม่มีการแชร์ก่อนนั้น",
+      "heldWhen": "ทำแบบทดสอบเสร็จแล้ว รายงานพร้อม: {date}",
+      "soon": "เมื่อโรงเรียนเผยแพร่",
+      "recalledTitle": "โรงเรียนได้เรียกคืนรายงาน",
+      "recalledBody": "โรงเรียนได้เรียกคืนรายงานครอบครัวนี้เพื่อทบทวน ขณะนี้จะไม่แสดงที่นี่ — โรงเรียนจะเผยแพร่อีกครั้งเมื่ออัปเดตแล้ว",
+      "recalledAt": "เรียกคืนเมื่อ {date}",
+      "listHeading": "รายงานครอบครัว",
+      "listDescription": "รายงานของบุตรหลานของคุณ ใหม่สุดก่อน รายงานจะปรากฏที่นี่เมื่อโรงเรียนเผยแพร่",
+      "listEmptyTitle": "ยังไม่มีรายงาน",
+      "listEmptyBody": "เมื่อบุตรหลานของคุณทำแบบทดสอบเสร็จและโรงเรียนเผยแพร่รายงาน รายงานจะปรากฏที่นี่",
+      "notPublished": "ยังไม่เผยแพร่",
+      "openReport": "ดูรายงาน",
+      "state": {
+        "held": "รอเผยแพร่",
+        "released": "เผยแพร่แล้ว",
+        "recalled": "เรียกคืนแล้ว"
+      },
+      "commentaryHeading": "สิ่งที่หมายถึง",
+      "commentarySource": "สรุปด้วยภาษาง่ายจากผลการประเมินที่โรงเรียนแชร์กับครอบครัวของคุณ",
+      "backToChildren": "กลับไปที่บุตรหลาน"
     }
   },
   "SchoolOnboarding": {
@@ -5249,6 +5274,11 @@
         "title": "กลุ่มที่แนะนำ",
         "description": "นักเรียนที่จัดกลุ่มตามด้านการอ่านที่ยังเป็นอุปสรรคในขณะนี้",
         "count": "{count, plural, other {นักเรียน # คน}}"
+      },
+      "errorPatterns": {
+        "title": "รูปแบบข้อผิดพลาดที่ควรสอนซ้ำ",
+        "description": "ข้อผิดพลาดที่พบบ่อยที่สุดจากคำตอบที่ตรวจแล้วของชั้นเรียน จากการวิเคราะห์รายผลลัพธ์ของเครื่องมือให้คะแนน",
+        "students": "{count} จาก {total} คน"
       }
     },
     "familyReports": {

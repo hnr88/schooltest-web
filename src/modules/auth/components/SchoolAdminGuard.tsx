@@ -2,6 +2,8 @@
 
 import type { ReactNode } from 'react';
 
+import { ParentViewsUnavailable } from '@/modules/auth/components/ParentViewsUnavailable';
+import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import { useRequireSchoolAdmin } from '@/modules/auth/hooks/use-require-school-admin';
 import { Skeleton } from '@/modules/design-system';
 
@@ -11,10 +13,17 @@ import type { SchoolAdminGuardProps } from '@/modules/auth/types/components.type
 // while the token hydrates and /api/users/me resolves, then either the guarded
 // content or nothing at all while useRequireSchoolAdmin redirects — /sign-in
 // with no (or a rejected) token, /dashboard for a signed-in non-school_admin.
+//
+// NIGHT-2 (W8): a signed-in PARENT is the one wrong-role that does NOT bounce —
+// the guard stays mounted and renders ParentViewsUnavailable (the mask, not an
+// error, not a silent redirect). Staff and other roles are unchanged.
 export function SchoolAdminGuard({ children }: SchoolAdminGuardProps) {
-  const { isReady } = useRequireSchoolAdmin();
+  const { isReady, roleType } = useRequireSchoolAdmin();
 
   if (!isReady) {
+    if (roleType === PARENT_ROLE_TYPE) {
+      return <ParentViewsUnavailable />;
+    }
     return (
       <div
         data-slot="school-admin-guard-pending"

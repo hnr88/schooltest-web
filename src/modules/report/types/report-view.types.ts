@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 // E11-10. The report is ONE route, ONE C-4 read and ONE result; the audience is
 // a MODE over that result, never a second report with a second fetch.
 export type ReportViewMode = 'teacher' | 'parent';
@@ -31,3 +33,12 @@ export type ParentSubskillsView =
   | { state: 'not_derived' }
   | { state: 'not_applicable' };
 
+
+// C-PAR-REPORT (NIGHT-2 W8). The two /dashboard/reports routes serve ONE
+// audience decision and TWO faces: the staff face (teacher/SA/ops — the
+// TeacherReportScreen family) and the family face (the C-PAR-REPORT screens).
+// The gate owns the role read; the page owns the slots.
+export interface ReportAudienceGateProps {
+  staff: ReactNode;
+  parent: ReactNode;
+}

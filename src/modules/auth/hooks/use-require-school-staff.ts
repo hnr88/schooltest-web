@@ -2,10 +2,14 @@
 
 import { useEffect } from 'react';
 
-import { useRouter } from '@/i18n/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import { SCHOOL_ADMIN_ROLE_TYPE, TEACHER_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
 import { useMeQuery } from '@/modules/auth/queries/use-me.query';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+// NIGHT-2 AUTH-018: the anonymous bounce carries the attempted route
+// so sign-in can return the visitor to where they were heading.
+import { signInHref } from '@/modules/auth/lib/sign-in-redirect';
 
 // Client guard primitive for school-staff routes (D-16a, task 113): admits
 // teacher AND school_admin, mirroring the API's global::is-school-staff policy
@@ -19,6 +23,7 @@ export function useRequireSchoolStaff() {
   const hydrated = useAuthStore((state) => state.hydrated);
   const hydrate = useAuthStore((state) => state.hydrate);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!hydrated) hydrate();
@@ -32,17 +37,22 @@ export function useRequireSchoolStaff() {
   const isRejected = meQuery.isError;
 
   useEffect(() => {
-    if (hydrated && !hasToken) router.replace('/sign-in');
+    if (hydrated && !hasToken) router.replace(signInHref(pathname));
   }, [hydrated, hasToken, router]);
 
   useEffect(() => {
     if (!isResolved) return;
     if (isRejected) {
-      router.replace('/sign-in');
+      router.replace(signInHref(pathname));
       return;
     }
-    if (!isSchoolStaff) router.replace('/dashboard');
-  }, [isResolved, isRejected, isSchoolStaff, router]);
+    // NIGHT-2 (W8): a resolved PARENT keeps the guard mounted so the caller
+    // renders ParentViewsUnavailable (the mask, not a silent redirect).
+    if (!isSchoolStaff) {
+      if (roleType === PARENT_ROLE_TYPE) return;
+      router.replace('/dashboard');
+    }
+  }, [isResolved, isRejected, isSchoolStaff, roleType, router]);
 
   return {
     isReady: isResolved && !isRejected && isSchoolStaff,

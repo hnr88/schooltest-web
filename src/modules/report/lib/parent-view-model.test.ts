@@ -69,7 +69,7 @@ describe('the allow-list view model (task 35)', () => {
 
   test('with nothing assessed there are no strengths and NO invented advice', () => {
     const attributes = Object.fromEntries(
-      Object.keys(view.attributes).map((key) => [key, { status: 'not_assessed', items_seen: 0 }]),
+      Object.keys(view.attributes).map((key) => [key, { status: 'not_assessed' as const, items_seen: 0 }]),
     );
     const model = buildFamilyPreview({ ...view, attributes });
     expect(model.strengths).toEqual([]);

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { Link, useRouter } from '@/i18n/navigation';
+import { sanitizeReturnPath } from '@/modules/auth/lib/sign-in-redirect';
 import { SignInForm } from '@/modules/auth/components/SignInForm';
 import { SignInLockedState } from '@/modules/auth/components/SignInLockedState';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
@@ -20,7 +21,10 @@ export function SignInCard({
   hasGoogleError = false,
   hasSessionExpired = false,
   showConfirmedBanner = false,
+  returnTo,
 }: SignInCardProps) {
+  // NIGHT-2 AUTH-018: only in-app dashboard paths survive the round-trip.
+  const redirectTo = sanitizeReturnPath(returnTo);
   const t = useTranslations('Auth');
   const tShell = useTranslations('Shell.sidebar');
   const router = useRouter();
@@ -90,7 +94,7 @@ export function SignInCard({
               {null}
             </Alert>
           ) : null}
-          <SignInForm onLocked={setLockout} />
+          <SignInForm onLocked={setLockout} returnTo={redirectTo} />
           <p className="text-[13.5px] leading-relaxed text-[#64748B]">{t('portal.invitationNote')}</p>
         </>
       )}

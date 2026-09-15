@@ -1485,7 +1485,8 @@
       "B2": "B2",
       "C1": "C1"
     },
-    "cardAdded": "Added {date}"
+    "cardAdded": "Added {date}",
+    "resultReportLink": "查看报告"
   },
   "Onboarding": {
     "meta": {
@@ -1924,6 +1925,30 @@
       "suggestionInvariant": "Nothing is recorded on the student’s report until you accept or set the mark, and the evidence above is the exact text it read.",
       "title": "Question-by-question review",
       "unmarked": "Not marked yet"
+    },
+    "family": {
+      "yourChild": "您的孩子",
+      "heldTitle": "报告尚未发布",
+      "heldBody": "{child}已完成本次测试。学校准备好后会发布家庭报告——在此之前不会共享任何内容。",
+      "heldWhen": "测试已完成。报告可用时间：{date}",
+      "soon": "学校发布后即可查看",
+      "recalledTitle": "学校已撤回报告",
+      "recalledBody": "学校正在复核该家庭报告，已将其撤回。此处不再显示——更新后学校会重新发布。",
+      "recalledAt": "已于 {date} 撤回。",
+      "listHeading": "家庭报告",
+      "listDescription": "您孩子的报告，最新优先。学校发布后即会显示在这里。",
+      "listEmptyTitle": "暂无报告",
+      "listEmptyBody": "当您的孩子完成测试且学校发布报告后，报告会显示在这里。",
+      "notPublished": "尚未发布",
+      "openReport": "查看报告",
+      "state": {
+        "held": "待发布",
+        "released": "已发布",
+        "recalled": "已撤回"
+      },
+      "commentaryHeading": "这说明什么",
+      "commentarySource": "根据评估结果生成的通俗语言摘要，由学校与您的家庭共享。",
+      "backToChildren": "返回孩子列表"
     }
   },
   "SchoolOnboarding": {
@@ -5239,6 +5264,11 @@
         "title": "建议分组",
         "description": "按目前制约学生的阅读领域分组。",
         "count": "{count, plural, other {# 名学生}}"
+      },
+      "errorPatterns": {
+        "title": "需重讲的错误模式",
+        "description": "来自评分引擎逐题分析的全班最常见失误类型。",
+        "students": "{total} 名学生中的 {count} 名"
       }
     },
     "familyReports": {

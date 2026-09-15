@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 interface SignInPageProps {
-  searchParams: Promise<{ error?: string; confirmed?: string }>;
+  searchParams: Promise<{ error?: string; confirmed?: string; from?: string }>;
 }
 
 // §14.1 split-panel layout (C-UI-AUTH-PAGES) — navy brand panel ≥1024px, the
@@ -27,7 +27,7 @@ interface SignInPageProps {
 // ?confirmed=1 (C-AUTH-CONFIRM redirect target) renders the email-confirmed
 // success strip above the form.
 export default async function SignInPage({ searchParams }: SignInPageProps) {
-  const { error, confirmed } = await searchParams;
+  const { error, confirmed, from } = await searchParams;
 
   return (
     <AuthSplitLayout>
@@ -35,6 +35,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
         hasGoogleError={error === 'google'}
         hasSessionExpired={error === 'session'}
         showConfirmedBanner={confirmed === '1'}
+        returnTo={typeof from === 'string' ? from : undefined}
       />
     </AuthSplitLayout>
   );

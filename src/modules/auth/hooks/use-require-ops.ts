@@ -4,9 +4,13 @@ import { useEffect } from 'react';
 
 import { isOpsPortalRole } from '@schooltest/ops-contracts';
 
-import { useRouter } from '@/i18n/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import { useMeQuery } from '@/modules/auth/queries/use-me.query';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
+// NIGHT-2 AUTH-018: the anonymous bounce carries the attempted route
+// so sign-in can return the visitor to where they were heading.
+import { signInHref } from '@/modules/auth/lib/sign-in-redirect';
 
 // Client guard primitive for ops-only routes (/dashboard/ops/*): hydrates the
 // JWT from localStorage, then resolves the identity through GET /api/users/me —
@@ -22,6 +26,7 @@ export function useRequireOps() {
   // kept-alive tree instead of yanking the operator to /sign-in.
   const sessionExpired = useAuthStore((state) => state.sessionExpired);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!hydrated) hydrate();
@@ -40,18 +45,23 @@ export function useRequireOps() {
 
   useEffect(() => {
     if (sessionExpired) return;
-    if (hydrated && !hasToken) router.replace('/sign-in');
-  }, [sessionExpired, hydrated, hasToken, router]);
+    if (hydrated && !hasToken) router.replace(signInHref(pathname));
+  }, [sessionExpired, hydrated, hasToken, pathname, router]);
 
   useEffect(() => {
     if (sessionExpired) return;
     if (!isResolved) return;
     if (isRejected) {
-      router.replace('/sign-in');
+      router.replace(signInHref(pathname));
       return;
     }
-    if (!isOps) router.replace('/dashboard');
-  }, [sessionExpired, isResolved, isRejected, isOps, router]);
+    // NIGHT-2 (W8): a resolved PARENT keeps the guard mounted so the caller
+    // renders ParentViewsUnavailable (the mask, not a silent redirect).
+    if (!isOps) {
+      if (roleType === PARENT_ROLE_TYPE) return;
+      router.replace('/dashboard');
+    }
+  }, [sessionExpired, isResolved, isRejected, isOps, pathname, roleType, router]);
 
   return {
     isReady: isResolved && !isRejected && isOps,

@@ -20,7 +20,7 @@ import type { SignInFormProps } from '@/modules/auth/types/components.types';
 
 const ERROR_ALERT_CLASS = 'flex gap-3 rounded-xl border border-[#FECACA] bg-[#FEF2F2] px-[18px] py-4';
 
-export function SignInForm({ onLocked }: SignInFormProps) {
+export function SignInForm({ onLocked, returnTo }: SignInFormProps) {
   const t = useTranslations('Auth');
   const router = useRouter();
   const login = useLoginMutation();
@@ -36,7 +36,9 @@ export function SignInForm({ onLocked }: SignInFormProps) {
       {
         onSuccess: () => {
           toast.success(t('signedIn'));
-          router.push('/dashboard');
+          // NIGHT-2 AUTH-018: return the visitor to the page the guard bounced
+          // them from (sanitized in SignInCard — always an in-app path).
+          router.push(returnTo ?? '/dashboard');
         },
         onError: (error) => {
           const nextFailure = classifySignInError(error);

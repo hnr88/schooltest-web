@@ -4,6 +4,7 @@ import { BarChart3 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { EmptyState } from '@/modules/design-system';
+import { ClassErrorPatternsCard } from '@/modules/teacher/components/ClassErrorPatternsCard';
 import { CohortGlanceCard } from '@/modules/teacher/components/CohortGlanceCard';
 import { InsightsKpiRow } from '@/modules/teacher/components/InsightsKpiRow';
 import { RecentActivityCard } from '@/modules/teacher/components/RecentActivityCard';
@@ -54,6 +55,9 @@ function TeachingInsightsPanel({ rows, classDocumentId }: TeachingInsightsPanelP
               {hasGroups ? <SuggestedGroupsCard groups={view.groups} /> : null}
             </div>
           ) : null}
+          {/* TEA-005: the class roll-up of the scorer's per-result error patterns —
+              renders nothing when no result carries pattern data. */}
+          <ClassErrorPatternsCard rows={rows} />
           <TeacherExportPanel
             request={{ kind: 'insights', classDocumentId }}
             headingId="teaching-insights-export-heading"

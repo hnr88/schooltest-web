@@ -1485,7 +1485,8 @@
       "B2": "B2",
       "C1": "C1"
     },
-    "cardAdded": "Added {date}"
+    "cardAdded": "Added {date}",
+    "resultReportLink": "View report"
   },
   "Onboarding": {
     "meta": {
@@ -1924,6 +1925,30 @@
       "suggestionInvariant": "Nothing is recorded on the student’s report until you accept or set the mark, and the evidence above is the exact text it read.",
       "title": "Question-by-question review",
       "unmarked": "Not marked yet"
+    },
+    "family": {
+      "yourChild": "Your child",
+      "heldTitle": "Report not released yet",
+      "heldBody": "{child} has completed this test. The school releases the family report when it is ready — nothing is shared before then.",
+      "heldWhen": "Test completed. Report available: {date}",
+      "soon": "as soon as the school releases it",
+      "recalledTitle": "Report recalled by the school",
+      "recalledBody": "The school has recalled this family report while it is reviewed. It is no longer visible here — the school will release it again when it is updated.",
+      "recalledAt": "Recalled on {date}.",
+      "listHeading": "Family reports",
+      "listDescription": "Reports for your children, newest first. A report appears here once the school releases it.",
+      "listEmptyTitle": "No reports yet",
+      "listEmptyBody": "When your child completes a test and the school releases the report, it will appear here.",
+      "notPublished": "Not published yet",
+      "openReport": "View report",
+      "state": {
+        "held": "Held",
+        "released": "Released",
+        "recalled": "Recalled"
+      },
+      "commentaryHeading": "What this means",
+      "commentarySource": "Plain-language summary generated from the assessment results and shared with your family by the school.",
+      "backToChildren": "Back to children"
     }
   },
   "SchoolOnboarding": {
@@ -5239,6 +5264,11 @@
         "title": "Suggested groups",
         "description": "Students grouped by the reading area currently holding them back.",
         "count": "{count, plural, one {# student} other {# students}}"
+      },
+      "errorPatterns": {
+        "title": "Error patterns to reteach",
+        "description": "The most common slip types across the class’s marked answers, from the scorer’s per-result analysis.",
+        "students": "{count, plural, one {# of {total} students} other {# of {total} students}}"
       }
     },
     "familyReports": {

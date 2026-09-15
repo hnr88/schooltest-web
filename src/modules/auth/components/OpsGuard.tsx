@@ -4,6 +4,8 @@ import type { ReactNode } from 'react';
 
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { OpsSessionExpiredCard } from '@/modules/auth/components/OpsSessionExpiredCard';
+import { ParentViewsUnavailable } from '@/modules/auth/components/ParentViewsUnavailable';
+import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import { useRequireOps } from '@/modules/auth/hooks/use-require-ops';
 import { Skeleton } from '@/modules/design-system';
 // Imported by path, not through the `@/modules/ops` barrel: the barrel is
@@ -29,8 +31,12 @@ import type { OpsGuardProps } from '@/modules/auth/types/components.types';
 // live authenticated ops guard is up and the session is NOT expired, so an
 // expired or non-ops token never issues the ops-only request, and the card
 // receives the last good answer from the cache while it shows.
+//
+// NIGHT-2 (W8): a signed-in PARENT is the one wrong-role that does NOT bounce —
+// the guard stays mounted and renders ParentViewsUnavailable (the mask, not an
+// error, not a silent redirect). Staff and other roles are unchanged.
 export function OpsGuard({ children }: OpsGuardProps) {
-  const { isReady } = useRequireOps();
+  const { isReady, roleType } = useRequireOps();
   const sessionExpired = useAuthStore((state) => state.sessionExpired);
   const settings = usePlatformSettingsQuery(isReady && !sessionExpired);
 
@@ -54,6 +60,10 @@ export function OpsGuard({ children }: OpsGuardProps) {
         <OpsSessionExpiredCard timeoutMinutes={settings.data?.session_timeout_minutes} />
       </>
     );
+  }
+
+  if (!isReady && roleType === PARENT_ROLE_TYPE) {
+    return <ParentViewsUnavailable />;
   }
 
   return content;

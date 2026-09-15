@@ -2,17 +2,18 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
 import { StatusPill } from '@/modules/design-system';
 import { getChildResultTitle } from '@/modules/children/lib/child-profile-display';
 import { getResultStatusTone } from '@/modules/children/lib/child-results';
 import type { ChildProgressResult } from '@/modules/children/types/children.types';
 
-// §B.6 ResultRow — the name/date stack, then the trailing facts. The design's
-// trailing cells are `B1 · 74%`, `+6% vs May` and a `Report` link: the percentage
-// is B-3, the delta is B-10 (no `previousResultDocumentId` in this payload) and the
-// report target is BLOCKED-NO-API (`GET /api/results/:id` is not granted to a
-// parent — G2). What is left is what the API really published: the band, the
-// readiness and the lifecycle status.
+// §B.6 ResultRow — the name/date stack, then the trailing facts. NIGHT-2 (W8):
+// the trailing cell is the design's `Report` link again. The family-report read
+// exists now (C-PAR-REPORT, GET /api/my/results/:id is parent-authorised), so
+// the old BLOCKED-NO-API comment no longer holds. The progress feed lists only
+// RELEASED rows (the service filters held/recalled out), so every link opens a
+// released family report face.
 export function ChildResultRow({ result }: { result: ChildProgressResult }) {
   const t = useTranslations('Children');
   const format = useFormatter();
@@ -63,6 +64,13 @@ export function ChildResultRow({ result }: { result: ChildProgressResult }) {
           {t(`resultStatus.${result.status}`)}
         </StatusPill>
       )}
+      <Link
+        href={`/dashboard/reports/${result.documentId}`}
+        data-slot="child-result-report-link"
+        className="shrink-0 rounded-full border border-border px-3 py-1.5 text-caption font-semibold text-foreground hover:bg-muted"
+      >
+        {t('resultReportLink')}
+      </Link>
     </li>
   );
 }

@@ -1,4 +1,4 @@
-import type { Band, ResultView } from '@schooltest/scoring-contracts';
+import type { Band } from '@schooltest/scoring-contracts';
 
 import { bandToParentState } from '@/modules/report/lib/parent-tone';
 
@@ -60,11 +60,26 @@ function familyStateFor(band: Band): FamilySubskillGroup['state'] {
   return bandToParentState(band);
 }
 
-export function buildFamilyPreview(view: ResultView): FamilyPreviewView {
+/**
+ * The minimal face of a ResultView buildFamilyPreview consumes. The C-4
+ * ResultView structurally satisfies it (extra audit keys allowed), and so does
+ * the C-PAR-REPORT family wire view after its one-field adapter
+ * (`familyReportToPreviewInput`) — the SAME allow-list builder serves the
+ * teacher's parent-mode preview and the parent's own report face.
+ */
+export interface FamilyPreviewInput {
+  overall: { domain_score: number | null } | null;
+  acara_phase: string | null;
+  skill: string | null;
+  published_at: string | null;
+  attributes: Record<string, { status: Band; domain_score?: number | null }>;
+}
+
+export function buildFamilyPreview(view: FamilyPreviewInput): FamilyPreviewView {
   const assessed = Object.entries(view.attributes).flatMap(([skill, attribute]) =>
     attribute.status === 'not_assessed'
       ? []
-      : [{ skill, score: attribute.domain_score, state: familyStateFor(attribute.status) }],
+      : [{ skill, score: attribute.domain_score ?? 0, state: familyStateFor(attribute.status) }],
   );
 
   const byScore = [...assessed].sort((a, b) => b.score - a.score);
@@ -90,7 +105,7 @@ export function buildFamilyPreview(view: ResultView): FamilyPreviewView {
   });
 
   return {
-    overall: { score: view.overall.domain_score },
+    overall: { score: view.overall?.domain_score ?? null },
     phase: { label: view.acara_phase },
     skill: view.skill,
     publishedAt: view.published_at,

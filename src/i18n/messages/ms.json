@@ -1485,7 +1485,8 @@
       "B2": "B2",
       "C1": "C1"
     },
-    "cardAdded": "Added {date}"
+    "cardAdded": "Added {date}",
+    "resultReportLink": "Lihat laporan"
   },
   "Onboarding": {
     "meta": {
@@ -1924,6 +1925,30 @@
       "suggestionInvariant": "Nothing is recorded on the student’s report until you accept or set the mark, and the evidence above is the exact text it read.",
       "title": "Question-by-question review",
       "unmarked": "Not marked yet"
+    },
+    "family": {
+      "yourChild": "Anak anda",
+      "heldTitle": "Laporan belum dikeluarkan",
+      "heldBody": "{child} telah menyelesaikan ujian ini. Sekolah akan mengeluarkan laporan keluarga apabila sedia — tiada apa yang dikongsi sebelum itu.",
+      "heldWhen": "Ujian selesai. Laporan tersedia: {date}",
+      "soon": "sebaik sahaja sekolah mengeluarkannya",
+      "recalledTitle": "Laporan ditarik balik oleh sekolah",
+      "recalledBody": "Sekolah telah menarik balik laporan keluarga ini untuk semakan. Ia tidak lagi dipaparkan di sini — sekolah akan mengeluarkannya semula apabila dikemas kini.",
+      "recalledAt": "Ditarik balik pada {date}.",
+      "listHeading": "Laporan keluarga",
+      "listDescription": "Laporan untuk anak anda, terbaharu dahulu. Laporan muncul di sini setelah sekolah mengeluarkannya.",
+      "listEmptyTitle": "Tiada laporan lagi",
+      "listEmptyBody": "Apabila anak anda menamatkan ujian dan sekolah mengeluarkan laporan, ia akan dipaparkan di sini.",
+      "notPublished": "Belum diterbitkan",
+      "openReport": "Lihat laporan",
+      "state": {
+        "held": "Ditahan",
+        "released": "Dikeluarkan",
+        "recalled": "Ditarik balik"
+      },
+      "commentaryHeading": "Apa maksudnya",
+      "commentarySource": "Ringkasan bahasa mudah daripada hasil pentaksiran yang dikongsi sekolah dengan keluarga anda.",
+      "backToChildren": "Kembali ke anak"
     }
   },
   "SchoolOnboarding": {
@@ -5249,6 +5274,11 @@
         "title": "Kumpulan dicadangkan",
         "description": "Pelajar dikumpulkan mengikut bidang bacaan yang sedang menghalang mereka.",
         "count": "{count, plural, one {# pelajar} other {# pelajar}}"
+      },
+      "errorPatterns": {
+        "title": "Corak kesilapan untuk diajar semula",
+        "description": "Jenis kesilapan paling biasa merentas jawapan bertanda kelas, daripada analisis setiap keputusan penmarker.",
+        "students": "{count} daripada {total} murid"
       }
     },
     "familyReports": {

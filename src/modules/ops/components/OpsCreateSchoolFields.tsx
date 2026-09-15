@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormState } from 'react-hook-form';
 
 import {
   describedBy,
@@ -45,7 +45,11 @@ export interface OpsCreateSchoolFieldsProps {
  */
 export function OpsCreateSchoolFields({ form, emailWarning, statusWarning }: OpsCreateSchoolFieldsProps) {
   const t = useTranslations('Ops.createSchool');
-  const { errors } = form.formState;
+  // This component does NOT own the useForm call, so reading `form.formState`
+  // here sees a snapshot only — after a failed submit the per-field inline
+  // errors (and aria-invalid) never appeared, just the footer summary. The
+  // canonical RHF fix: subscribe this component to the control's formState.
+  const { errors } = useFormState({ control: form.control });
 
   const textField = (
     id: string,
@@ -176,7 +180,9 @@ export interface OpsEditSchoolFieldsProps {
  */
 export function OpsEditSchoolFields({ form, emailWarning }: OpsEditSchoolFieldsProps) {
   const t = useTranslations('Ops.createSchool');
-  const { errors } = form.formState;
+  // Same subscription as the create body above: non-owner components need
+  // useFormState to see post-submit validation errors at all.
+  const { errors } = useFormState({ control: form.control });
   const showEmailWarning = emailWarning && !errors.contact_email?.message;
 
   const editInput = (className?: string) => `h-12 rounded-xl ${className ?? OPS_CONTROL_CLASS}`;

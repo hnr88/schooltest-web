@@ -4,6 +4,8 @@ import type { ReactNode } from 'react';
 
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 import { OpsSessionExpiredCard } from '@/modules/auth/components/OpsSessionExpiredCard';
+import { ParentViewsUnavailable } from '@/modules/auth/components/ParentViewsUnavailable';
+import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import { useRequireTeacher } from '@/modules/auth/hooks/use-require-teacher';
 import { Skeleton } from '@/modules/design-system';
 
@@ -21,8 +23,13 @@ import type { TeacherGuardProps } from '@/modules/auth/types/components.types';
 // A deliberate sign-out never raises the flag, so the normal redirect paths are
 // untouched. Same direct-path import OpsGuard.tsx:6 uses (R-23: no rename, no
 // data-slot change, no barrel export).
+//
+// NIGHT-2 (W8): a signed-in PARENT is the one wrong-role that does NOT bounce —
+// the guard stays mounted and renders ParentViewsUnavailable, the same honest
+// "not part of this release" mask a parent gets in the portal tree (mask, not
+// an error, not a silent redirect). Staff and other roles are unchanged.
 export function TeacherGuard({ children }: TeacherGuardProps) {
-  const { isReady } = useRequireTeacher();
+  const { isReady, roleType } = useRequireTeacher();
   const sessionExpired = useAuthStore((state) => state.sessionExpired);
 
   const content = isReady ? (
@@ -45,6 +52,10 @@ export function TeacherGuard({ children }: TeacherGuardProps) {
         <OpsSessionExpiredCard />
       </>
     );
+  }
+
+  if (!isReady && roleType === PARENT_ROLE_TYPE) {
+    return <ParentViewsUnavailable />;
   }
 
   return content;

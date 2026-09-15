@@ -1485,7 +1485,8 @@
       "B2": "B2",
       "C1": "C1"
     },
-    "cardAdded": "Added {date}"
+    "cardAdded": "Added {date}",
+    "resultReportLink": "리포트 보기"
   },
   "Onboarding": {
     "meta": {
@@ -1924,6 +1925,30 @@
       "suggestionInvariant": "Nothing is recorded on the student’s report until you accept or set the mark, and the evidence above is the exact text it read.",
       "title": "Question-by-question review",
       "unmarked": "Not marked yet"
+    },
+    "family": {
+      "yourChild": "자녀",
+      "heldTitle": "아직 공개되지 않은 리포트",
+      "heldBody": "{child}이(가) 이 평가를 완료했습니다. 학교가 준비되면 가족 리포트를 공개합니다 — 그 전까지는 공유되지 않습니다.",
+      "heldWhen": "평가 완료. 리포트 공개: {date}",
+      "soon": "학교가 공개하는 대로",
+      "recalledTitle": "학교가 리포트를 회수했습니다",
+      "recalledBody": "학교가 검토를 위해 이 가족 리포트를 회수했습니다. 더 이상 여기에 표시되지 않으며, 업데이트되면 다시 공개됩니다.",
+      "recalledAt": "{date}에 회수됨.",
+      "listHeading": "가족 리포트",
+      "listDescription": "자녀의 리포트, 최신순. 학교가 공개하면 여기에 표시됩니다.",
+      "listEmptyTitle": "아직 리포트가 없습니다",
+      "listEmptyBody": "자녀가 평가를 완료하고 학교가 리포트를 공개하면 여기에 나타납니다.",
+      "notPublished": "아직 미공개",
+      "openReport": "리포트 보기",
+      "state": {
+        "held": "보류",
+        "released": "공개됨",
+        "recalled": "회수됨"
+      },
+      "commentaryHeading": "이 의미",
+      "commentarySource": "평가 결과에서 생성되어 학교가 가족과 공유하는 쉬운 언어 요약입니다.",
+      "backToChildren": "자녀로 돌아가기"
     }
   },
   "SchoolOnboarding": {
@@ -5249,6 +5274,11 @@
         "title": "추천 그룹",
         "description": "현재 발목을 잡고 있는 읽기 영역별로 묶은 학생들입니다.",
         "count": "{count, plural, other {학생 #명}}"
+      },
+      "errorPatterns": {
+        "title": "다시 지도할 오류 패턴",
+        "description": "채점 엔진의 결과별 분석에서 나온 학급 전체의 가장 흔한 실수 유형입니다.",
+        "students": "{total}명 중 {count}명의 학생"
       }
     },
     "familyReports": {

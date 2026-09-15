@@ -38,6 +38,11 @@ export interface ForgotPasswordFormProps {
 export interface ForgotPasswordSentStateProps {
   rateLimited?: boolean;
   retrySeconds?: number;
+  /** Wired by ForgotPasswordCard (NIGHT-2 AUTH-007): mounts the shared
+   * ResendCountdownButton so the sent state can re-send the reset mail after
+   * its 60 s window. Absent → no resend affordance renders. */
+  onResend?: () => void;
+  isResendPending?: boolean;
 }
 
 export interface GoogleButtonProps {
@@ -105,10 +110,15 @@ export interface SignInCardProps {
   hasGoogleError?: boolean;
   hasSessionExpired?: boolean;
   showConfirmedBanner?: boolean;
+  /** NIGHT-2 AUTH-018: sanitized `?from=` return path — where a successful
+   * sign-in lands instead of the role-gated overview. */
+  returnTo?: string;
 }
 
 export interface SignInFormProps {
   onLocked: (lockout: LoginLockout) => void;
+  /** NIGHT-2 AUTH-018: sanitized return path pushed after a successful login. */
+  returnTo?: string;
 }
 
 export interface SignInLockedStateProps {

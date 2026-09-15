@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 
 import { Link } from '@/i18n/navigation';
 import { Logo } from '@/modules/design-system';
+import { LocaleSwitcher } from '@/modules/i18n/components/LocaleSwitcher';
 
 import { SPLIT_STATS } from '@/modules/auth/constants/components.constants';
 import type { AuthSplitLayoutProps } from '@/modules/auth/types/components.types';
@@ -63,16 +64,25 @@ export function AuthSplitLayout({ children }: AuthSplitLayoutProps) {
       </aside>
       <div className="flex flex-1 flex-col justify-center px-6 py-12 sm:px-10 lg:px-12 lg:py-14">
         <div className="mx-auto w-full max-w-auth">
-          <nav aria-label={t('chrome.breadcrumbLabel')} className="text-[12.5px] text-[#64748B]">
-            <Link
-              href="/"
-              className="font-semibold text-[#475569] no-underline hover:text-[#0E2350] hover:underline"
-            >
-              {t('chrome.breadcrumbHome')}
-            </Link>
-            <span className="px-2">/</span>
-            {t('chrome.breadcrumbCurrent')}
-          </nav>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <nav aria-label={t('chrome.breadcrumbLabel')} className="text-[12.5px] text-[#64748B]">
+              <Link
+                href="/"
+                className="font-semibold text-[#475569] no-underline hover:text-[#0E2350] hover:underline"
+              >
+                {t('chrome.breadcrumbHome')}
+              </Link>
+              <span className="px-2">/</span>
+              {t('chrome.breadcrumbCurrent')}
+            </nav>
+            {/* AUTH-037 (NIGHT-2): the auth screens' language switcher. The
+                component already existed with URL-as-source-of-truth semantics
+                (as-needed prefix, no cookie) but was never mounted, so the
+                auth screen shipped no way to leave English. Mounted in the
+                card column's chrome row; a choice re-renders the auth copy in
+                the chosen language and every portal Link keeps the locale. */}
+            <LocaleSwitcher />
+          </div>
           {children}
           <footer className="mt-9 flex flex-wrap gap-5 border-t border-[#EEF2F7] pt-5">
             <Link

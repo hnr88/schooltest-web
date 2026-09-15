@@ -1485,7 +1485,8 @@
       "B2": "B2",
       "C1": "C1"
     },
-    "cardAdded": "Added {date}"
+    "cardAdded": "Added {date}",
+    "resultReportLink": "Xem báo cáo"
   },
   "Onboarding": {
     "meta": {
@@ -1924,6 +1925,30 @@
       "suggestionInvariant": "Nothing is recorded on the student’s report until you accept or set the mark, and the evidence above is the exact text it read.",
       "title": "Question-by-question review",
       "unmarked": "Not marked yet"
+    },
+    "family": {
+      "yourChild": "Con của bạn",
+      "heldTitle": "Báo cáo chưa được phát hành",
+      "heldBody": "{child} đã hoàn thành bài kiểm tra này. Trường sẽ phát hành báo cáo gia đình khi sẵn sàng — không có gì được chia sẻ trước đó.",
+      "heldWhen": "Đã hoàn thành bài kiểm tra. Báo cáo có sẵn: {date}",
+      "soon": "ngay khi trường phát hành",
+      "recalledTitle": "Trường đã thu hồi báo cáo",
+      "recalledBody": "Trường đã thu hồi báo cáo gia đình này để xem lại. Nó không còn hiển thị ở đây — trường sẽ phát hành lại khi được cập nhật.",
+      "recalledAt": "Đã thu hồi vào {date}.",
+      "listHeading": "Báo cáo gia đình",
+      "listDescription": "Báo cáo của các con bạn, mới nhất trước tiên. Báo cáo xuất hiện ở đây khi trường phát hành.",
+      "listEmptyTitle": "Chưa có báo cáo",
+      "listEmptyBody": "Khi con bạn hoàn thành bài kiểm tra và trường phát hành báo cáo, nó sẽ xuất hiện tại đây.",
+      "notPublished": "Chưa xuất bản",
+      "openReport": "Xem báo cáo",
+      "state": {
+        "held": "Đang giữ",
+        "released": "Đã phát hành",
+        "recalled": "Đã thu hồi"
+      },
+      "commentaryHeading": "Điều này có nghĩa là gì",
+      "commentarySource": "Tóm tắt ngôn ngữ đơn giản từ kết quả đánh giá mà trường chia sẻ với gia đình bạn.",
+      "backToChildren": "Quay lại danh sách con"
     }
   },
   "SchoolOnboarding": {
@@ -5258,6 +5283,11 @@
         "title": "Nhóm gợi ý",
         "description": "Học sinh được nhóm theo lĩnh vực đọc đang cản trở các em.",
         "count": "{count, plural, other {# học sinh}}"
+      },
+      "errorPatterns": {
+        "title": "Các dạng lỗi cần giảng lại",
+        "description": "Những dạng sai phổ biến nhất trong bài làm của lớp, từ phân tích từng kết quả của bộ chấm.",
+        "students": "{count} trên {total} học sinh"
       }
     },
     "familyReports": {

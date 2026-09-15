@@ -4,16 +4,23 @@ import { Check, Clock3 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { formatCountdown } from '@/modules/auth/lib/format-countdown';
+import { ResendCountdownButton } from '@/modules/auth/components/ResendCountdownButton';
 
 import type { ForgotPasswordSentStateProps } from '@/modules/auth/types/components.types';
 
 // Sent state of the forgot-password card (design 'sent' scenario): teal check
 // circle, enumeration-safe copy, and a rate-limit strip only when the request
-// that produced this state was throttled (429). No resend affordance — the
-// design has none; the back link stays on the parent card.
+// that produced this state was throttled (429). NIGHT-2 AUTH-007: when the
+// parent card wires `onResend`, the shared ResendCountdownButton mounts here —
+// the button stays disabled through its 60 s window, then re-sends the reset
+// mail (server budget 2/hour/email includes the first send, so ONE resend fits
+// and a further request renders the 429 strip). The back link stays on the
+// parent card.
 export function ForgotPasswordSentState({
   rateLimited = false,
   retrySeconds,
+  onResend,
+  isResendPending = false,
 }: ForgotPasswordSentStateProps) {
   const t = useTranslations('Auth');
 
@@ -43,6 +50,9 @@ export function ForgotPasswordSentState({
               : t('portal.rateLimitBodyNoTime')}
           </span>
         </p>
+      ) : null}
+      {onResend ? (
+        <ResendCountdownButton onResend={onResend} isPending={isResendPending} />
       ) : null}
     </div>
   );
