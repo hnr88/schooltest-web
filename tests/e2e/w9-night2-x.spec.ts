@@ -208,10 +208,12 @@ async function provisionS08(request: APIRequestContext): Promise<{ sittingId: st
     }, teacherJwt);
     if (res.status === 201) {
       const body = res.json as { sitting_document_id: string; code: string };
-      const j = await apiCall(request, 'POST', '/api/sittings/join', { code: body.code, email: 'proof.s08@schooltest.local' });
-      if (j.status !== 200) continue;
-      const jb = j.json as { jwt: string; session: { documentId: string } };
-      return { sittingId: body.sitting_document_id, code: body.code, jwt: jb.jwt, sessionId: jb.session.documentId, studentId: s08.documentId };
+      let jb: { jwt: string; session: { documentId: string } } | null = null;
+      try {
+        const j = await apiCall(request, 'POST', '/api/sittings/join', { code: body.code, email: 'proof.s08@schooltest.local' });
+        if (j.status === 200) jb = j.json as { jwt: string; session: { documentId: string } };
+      } catch { /* connection storm — retry the whole mint+join */ }
+      if (jb) return { sittingId: body.sitting_document_id, code: body.code, jwt: jb.jwt, sessionId: jb.session.documentId, studentId: s08.documentId };
     }
   }
   return null;
@@ -221,9 +223,16 @@ test.afterAll(async ({ request }) => {
   if (sittingId) await apiCall(request, 'POST', `/api/sittings/${sittingId}/close`, undefined, teacherJwt);
 });
 
-test.skip(!fixturesReady, 'proof fixtures contended');
 test('X-018 — join flips the tile within one poll; per-student pause touches one tile; absent flips it back', async ({ page }) => {
+  test.skip(!fixturesReady, 'proof fixtures contended — X-012 covers the live legs independently');
   await openLive(page);
+
+  // the JOIN is the trigger: (re)join both students — a fresh join flips the
+  // tiles to joined within one monitor poll even after an idle stall
+  for (const slug of ['s07', 's08'] as const) {
+    const j = await apiCall(page.request, 'POST', '/api/sittings/join', { code, email: `proof.${slug}@schooltest.local` });
+    expect(j.status, `rejoin ${slug}`).toBe(200);
+  }
 
   // joined within one monitor poll (5s poll; patient window for fleet load)
   const s07tile = page.locator(`[data-slot="live-student-card"][data-student-id="${studentIds.s07}"]`);
@@ -250,6 +259,7 @@ test('X-018 — join flips the tile within one poll; per-student pause touches o
   await apiCall(page.request, 'POST', `/api/sittings/${sittingId}/students/${studentIds.s07}/resume`, undefined, teacherJwt);
 });
 
+  test.skip(!fixturesReady, 'proof fixtures contended');
 test('X-037 — pause/extend/relaunch of ONE student; room-level controls untouched', async ({ page }) => {
   await openLive(page);
   const grid = page.locator('[data-slot="live-students"]');
@@ -288,6 +298,7 @@ test('X-037 — pause/extend/relaunch of ONE student; room-level controls untouc
   await page.screenshot({ path: `${SHOTS}/x037-per-student-controls.png`, fullPage: true });
 });
 
+  test.skip(!fixturesReady, 'proof fixtures contended');
 test('X-027 — proctoring events land in the teacher connection surface', async ({ page }) => {
   const batch = {
     events: [
