@@ -1,3 +1,4 @@
+import { YEAR_LEVEL_OPTIONS } from '@/modules/school-students/constants/schemas.constants';
 import {
   ACARA_PHASE_OPTIONS,
   DEFAULT_DIAGNOSTIC_STATUS,
@@ -20,6 +21,18 @@ export function toAcaraPhase(value: string | null): AcaraPhase | null {
 
 export function toFirstLanguage(value: string | null): FirstLanguage | null {
   return FIRST_LANGUAGE_OPTIONS.find((language) => language === value) ?? null;
+}
+
+/** The wire carries the year as a number (C-CHD-06); the form speaks the
+ * picklist enum. Anything outside the contract list — or absent — reads as
+ * the enum's own "not set" (`''`). */
+export function toYearLevelOption(
+  value: number | null | undefined,
+): (typeof YEAR_LEVEL_OPTIONS)[number] {
+  const candidate = value === null || value === undefined ? '' : String(value);
+  return (YEAR_LEVEL_OPTIONS as readonly string[]).includes(candidate)
+    ? (candidate as (typeof YEAR_LEVEL_OPTIONS)[number])
+    : '';
 }
 
 // The Diagnostic column has no "not set" state — spec §4 names exactly three

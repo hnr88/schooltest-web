@@ -8,6 +8,11 @@ import { useForm } from 'react-hook-form';
 import { showOpsToast } from '@/modules/ops/actions';
 import { classifyStudentError } from '@/modules/school-students/lib/classify-student-error';
 import {
+  toAcaraPhase,
+  toFirstLanguage,
+  toYearLevelOption,
+} from '@/modules/school-students/lib/student-level';
+import {
   buildStudentCreateBody,
   buildStudentUpdateBody,
 } from '@/modules/school-students/lib/student-request';
@@ -36,19 +41,20 @@ function initialValues(target: StudentFormTarget): SchoolStudentFormValues {
   // year_level — absent fields stay blank. buildStudentUpdateBody diffs
   // against THESE same defaults, so an untouched edit still sends nothing for
   // an unchanged field (see lib/student-request).
+  // The wire types these three as loose strings/numbers (C-CHD-01/06), but the
+  // form schema narrows each to its picklist enum. Narrow through the same
+  // contract lists the API validates against — an unrecognised stored value
+  // reads as "not set" (blank) exactly like an absent one, never a form error.
   return {
     ...BLANK_VALUES,
     given_name: student.given_name ?? '',
     family_name: student.family_name ?? '',
     class_documentId: student.class?.documentId ?? '',
-    first_language: student.first_language ?? '',
-    acara_phase: student.acara_phase ?? '',
+    first_language: toFirstLanguage(student.first_language) ?? '',
+    acara_phase: toAcaraPhase(student.acara_phase) ?? '',
     email: student.email ?? '',
     date_of_birth: student.date_of_birth ?? '',
-    year_level:
-      student.year_level === null || student.year_level === undefined
-        ? ''
-        : String(student.year_level),
+    year_level: toYearLevelOption(student.year_level),
   };
 }
 
