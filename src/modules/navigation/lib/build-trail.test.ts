@@ -71,4 +71,34 @@ describe('buildTrail — page-less registry paths are label-only', () => {
     expect(ancestor, '/dashboard/school/classes is an ancestor here').toBeDefined();
     expect(isLinkable(ancestor as TrailCrumb), 'it has a page, so it must stay a link').toBe(true);
   });
+
+  // NIGHT-2 (W-R3, SA-046): the school-admin students drill-down must end the
+  // trail at the RECORD (the student's name), never at the section — before the
+  // registry entry the id segment matched nothing and the published record
+  // label was dropped, so a student-detail page read as "Students".
+  it('the students drill-down trail ends at the student record when the page publishes its name', () => {
+    const path = '/dashboard/school/students/abcdef1234567890';
+    const { crumbs } = buildTrail(path, { recordLabel: 'W3 Probe Crumb', includeRoot: false });
+
+    const students = crumbs.find((entry) => entry.href === '/dashboard/school/students');
+    expect(students, 'the Students level still appears').toBeDefined();
+
+    const record = crumbs.at(-1);
+    expect(record?.href, 'the trail ends at the record href').toBe(path);
+    expect(record?.isRecord, 'the record segment is a record').toBe(true);
+    expect(record?.isCurrent, 'the record is the current crumb').toBe(true);
+    // The renderer's substitution is `crumb.label ?? recordLabel` — the trail
+    // carries no built-in label for records, the page's published name wins.
+    expect(record?.label ?? 'W3 Probe Crumb', 'the published name is what renders').toBe(
+      'W3 Probe Crumb',
+    );
+  });
+
+  it('an unpublished students drill-down still dead-ends at the section (no raw id ever)', () => {
+    const { crumbs } = buildTrail('/dashboard/school/students/abcdef1234567890', {
+      includeRoot: false,
+    });
+    expect(crumbs.at(-1)?.href).toBe('/dashboard/school/students');
+    expect(crumbs.some((entry) => entry.href?.includes('abcdef'))).toBe(false);
+  });
 });

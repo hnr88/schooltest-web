@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { PARENT_ROLE_TYPE } from '@/modules/auth/constants/hooks.constants';
 import { TEACHER_ROLE_TYPE } from '@/modules/auth/constants/role.constants';
-import { useMeQuery } from '@/modules/auth/queries/use-me.query';
+import { isAuthRejection, useMeQuery } from '@/modules/auth/queries/use-me.query';
 import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 // NIGHT-2 AUTH-018: the anonymous bounce carries the attempted route
 // so sign-in can return the visitor to where they were heading.
@@ -50,6 +50,11 @@ export function useRequireTeacher({ bounce = true }: RequireRoleOptions = {}) {
     if (sessionExpired) return;
     if (!isResolved) return;
     if (isRejected) {
+      // NIGHT-2 (W-R3): a TRANSIENT me failure (transport reset, exhausted 429,
+      // recompile-window 5xx) is not a sign-out — only a true auth rejection
+      // (401 / unauthenticated 403) ends the session. Bouncing on any error
+      // ejected signed-in teachers to the login form under load.
+      if (!isAuthRejection(meQuery.error)) return;
       router.replace(signInHref(pathname));
       return;
     }
@@ -63,7 +68,7 @@ export function useRequireTeacher({ bounce = true }: RequireRoleOptions = {}) {
       if (roleType === PARENT_ROLE_TYPE) return;
       router.replace('/dashboard');
     }
-  }, [sessionExpired, isResolved, isRejected, isTeacher, pathname, roleType, router]);
+  }, [sessionExpired, isResolved, isRejected, isTeacher, meQuery.error, pathname, roleType, router]);
 
   return {
     isReady: isResolved && !isRejected && isTeacher,

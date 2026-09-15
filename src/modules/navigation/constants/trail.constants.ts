@@ -111,6 +111,13 @@ export const TRAIL_RECORD_PATTERNS: readonly string[] = [
   '/dashboard/reports/[resultDocumentId]',
   '/dashboard/school/classes/[documentId]',
   '/dashboard/school/classes/[documentId]/students/[studentDocumentId]',
+  // NIGHT-2 (W-R3, SA-046): the school-admin STUDENTS drill-down was missing
+  // here, so patternFor() never matched its id segment and the trail dead-ended
+  // at "Students" — the page's own <RecordCrumb label={student name}/> was
+  // published but the trail builder dropped the record segment anyway (a raw
+  // documentId must never be a crumb, and an unnamed level is dropped, so the
+  // registry is the only place this can be fixed).
+  '/dashboard/school/students/[documentId]',
   '/dashboard/teach/classes/[documentId]',
   '/dashboard/teach/results/[classId]',
   '/dashboard/results/[classDocumentId]',

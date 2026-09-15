@@ -15,6 +15,11 @@ import { loginAs } from './helpers/roles';
 // deliberate), so every locator here is role/aria or data-slot based.
 const en = loadMessages('en');
 
+// Tests are deliberately INDEPENDENT (config runs fullyParallel): the
+// teacher-lifecycle battery mints its own invitation through the real
+// POST /schools/me/invitations when it does not inherit one from the invite
+// test's worker, so no shared module state is load-bearing.
+
 async function patientLogin(page: Page, role: 'schoolAdmin' | 'teacher' = 'schoolAdmin') {
   // Overnight the shared dev server recompiles constantly (other workers edit
   // src) and its chunk loads intermittently strand the sign-in shell without a
@@ -61,12 +66,13 @@ test('SA-001 + SA-002 + SA-042: school home renders status pills, entitlement an
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
 
   await page.goto('/dashboard/school');
   const home = page.locator('[data-surface="school-admin-home"]');
-  await expect(home).toBeVisible();
+  await expect(home).toBeVisible({ timeout: 30_000 });
 
   // SA-001: account status pill + entitlement summary (trial plan)
   await expect(home.getByText(cat(en, 'SchoolAdmin.accountStatus.active'), { exact: true }).first()).toBeVisible();
@@ -85,12 +91,13 @@ test('SA-004: the students list shows an honest empty state when nothing matches
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
 
   await page.goto('/dashboard/school/students');
   const screen = page.locator('[data-surface="school-admin-students"]');
-  await expect(screen).toBeVisible();
+  await expect(screen).toBeVisible({ timeout: 30_000 });
 
   // Add + Import CTAs are reachable from the list header
   await expect(
@@ -111,14 +118,15 @@ test('SA-005 + SA-006 + SA-007: new-student form refuses empty submits with inli
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
   const STAMP = Date.now();
   const given = `W3Form ${STAMP}`;
 
   await page.goto('/dashboard/school/students/new');
   const screen = page.locator('[data-surface="school-admin-student-new"]');
-  await expect(screen).toBeVisible();
+  await expect(screen).toBeVisible({ timeout: 30_000 });
 
   // SA-006: submit with required fields empty -> inline field errors, no submit
   await screen.getByRole('button', { name: cat(en, 'SchoolStudents.form.submitCreate') }).click();
@@ -138,20 +146,21 @@ test('SA-005 + SA-006 + SA-007: new-student form refuses empty submits with inli
   // The created student appears in the list
   await page.goto('/dashboard/school/students');
   const list = page.locator('[data-surface="school-admin-students"]');
-  await expect(list).toBeVisible();
+  await expect(list).toBeVisible({ timeout: 30_000 });
   const row = page.getByRole('row', { name: new RegExp(given) }).first();
   await expect(row).toBeVisible({ timeout: 20_000 });
 
   // SA-007 round-trip: open the edit dialog; the language survives unchanged.
   await row.click();
   const detail = page.locator('[data-surface="school-admin-student-detail"]');
-  await expect(detail).toBeVisible();
+  await expect(detail).toBeVisible({ timeout: 30_000 });
   await expect(detail).toContainText(lang);
   await detail.getByRole('button', { name: cat(en, 'SchoolStudents.detail.editDetailsButton') }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
-  // The trigger renders the chosen option label
-  await expect(dialog.getByText(lang).first()).toBeVisible();
+  await expect(dialog.getByLabel(cat(en, 'SchoolStudents.form.firstLanguage'), { exact: true })).toHaveValue(
+    'mandarin_chinese',
+  );
 
   // SA-009 (same dialog): change the family name and save; persists after reload
   await dialog.getByLabel(cat(en, 'SchoolStudents.form.familyName')).fill('EALD Renamed');
@@ -178,7 +187,8 @@ test('SA-008 + SA-010: student detail carries record/class/test panels; archive 
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
   const STAMP = Date.now();
   const given = `W3Arch ${STAMP}`;
@@ -195,7 +205,7 @@ test('SA-008 + SA-010: student detail carries record/class/test panels; archive 
 
   await page.goto(`/dashboard/school/students/${kidId}`);
   const detail = page.locator('[data-surface="school-admin-student-detail"]');
-  await expect(detail).toBeVisible();
+  await expect(detail).toBeVisible({ timeout: 30_000 });
   // SA-008: summary + record panel + class panel present (test history lives on the results tab if seated)
   await expect(detail.getByText(cat(en, 'SchoolStudents.detail.panelTitle'))).toBeVisible();
   await expect(detail.getByRole('heading', { name: cat(en, 'SchoolStudents.detail.classPanel.title') })).toBeVisible();
@@ -211,7 +221,7 @@ test('SA-008 + SA-010: student detail carries record/class/test panels; archive 
   // The archived student leaves the ACTIVE roster (default status filter)
   await page.goto('/dashboard/school/students');
   const list = page.locator('[data-surface="school-admin-students"]');
-  await expect(list).toBeVisible();
+  await expect(list).toBeVisible({ timeout: 30_000 });
   await expect(list.getByRole('row', { name: new RegExp(given) })).toHaveCount(0, { timeout: 20_000 });
 });
 
@@ -220,14 +230,15 @@ test('SA-019 + SA-020 + SA-021: classes page creates, renames, and deletes with 
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
   const STAMP = Date.now();
   const name = `W3 UI Class ${STAMP}`;
 
   await page.goto('/dashboard/school/classes');
   const screen = page.locator('[data-surface="school-admin-classes"]');
-  await expect(screen).toBeVisible();
+  await expect(screen).toBeVisible({ timeout: 30_000 });
 
   // create
   await screen.getByRole('button', { name: cat(en, 'Classes.addButton') }).click();
@@ -244,7 +255,7 @@ test('SA-019 + SA-020 + SA-021: classes page creates, renames, and deletes with 
   await row.click();
   // open detail, use its edit dialog
   const detail = page.locator('[data-surface="school-admin-class-detail"]');
-  await expect(detail).toBeVisible();
+  await expect(detail).toBeVisible({ timeout: 30_000 });
   await detail.getByRole('button', { name: cat(en, 'Classes.detail.editClass') }).click();
   const editDialog = page.getByRole('dialog');
   await expect(editDialog).toBeVisible();
@@ -270,7 +281,8 @@ test('SA-023 + SA-024 + SA-025: class roster quick-remove, the student picker, a
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
   const STAMP = Date.now();
   const jwt = await schoolAdminJwt(page.request);
@@ -297,7 +309,7 @@ test('SA-023 + SA-024 + SA-025: class roster quick-remove, the student picker, a
   try {
     await page.goto(`/dashboard/school/classes/${classId}`);
     const detail = page.locator('[data-surface="school-admin-class-detail"]');
-    await expect(detail).toBeVisible();
+    await expect(detail).toBeVisible({ timeout: 30_000 });
 
     // SA-023: the roster row carries a per-student remove quick-action
     const rosterRow = detail.locator('[data-directory-row]').filter({ hasText: `W3Picker ${STAMP}` });
@@ -334,14 +346,15 @@ test('SA-028 + SA-029 + SA-030: teachers table invites a staff member, Mailpit c
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
   const STAMP = Date.now();
   const email = `w3-invite-${STAMP}@schooltest.local`;
 
   await page.goto('/dashboard/school/teachers');
   const screen = page.locator('[data-surface="school-admin-teachers"]');
-  await expect(screen).toBeVisible();
+  await expect(screen).toBeVisible({ timeout: 30_000 });
 
   // SA-028: the ONE table carries live staff rows with status chips
   await expect(
@@ -389,10 +402,22 @@ test('SA-028 + SA-029 + SA-030: teachers table invites a staff member, Mailpit c
 test('SA-031 + SA-032 + SA-033 + SA-034 + SA-035: the accepted teacher is edited, class-assigned, deactivated, reactivated, and their detail renders', async ({
   page,
 }) => {
-  test.skip(!throwawayTeacher, 'needs the invitation from the previous test');
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
-  const email = throwawayTeacher!.email;
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
+  let email = throwawayTeacher?.email;
+
+  if (!email) {
+    // Parallel worker: module state from the invite test never transfers here,
+    // so mint the invitation through the REAL school-admin endpoint.
+    const jwt = await schoolAdminJwt(page.request);
+    email = `w3-invite-${Date.now()}@schooltest.local`;
+    const mint = await page.request.post('http://127.0.0.1:5500/api/schools/me/invitations', {
+      headers: { Authorization: `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+      data: { first_name: 'W3', last_name: 'Invitee', email, role: 'teacher' },
+    });
+    expect(mint.status(), await mint.text()).toBe(201);
+  }
 
   // accept the invitation through the REAL /invite/<token> surface
   const token = runSql(`select token from invitations where email='${email}' order by id desc limit 1`);
@@ -411,7 +436,7 @@ test('SA-031 + SA-032 + SA-033 + SA-034 + SA-035: the accepted teacher is edited
   await patientLogin(page);
   await page.goto('/dashboard/school/teachers');
   const screen = page.locator('[data-surface="school-admin-teachers"]');
-  await expect(screen).toBeVisible();
+  await expect(screen).toBeVisible({ timeout: 30_000 });
   const row = screen.locator('[data-directory-row]').filter({ hasText: email });
   await expect(row).toBeVisible({ timeout: 20_000 });
 
@@ -430,7 +455,7 @@ test('SA-031 + SA-032 + SA-033 + SA-034 + SA-035: the accepted teacher is edited
   await expect(renamedRow).toBeVisible({ timeout: 20_000 });
   await renamedRow.getByRole('link').first().click();
   const detail = page.locator('[data-surface="school-admin-teacher-detail"]');
-  await expect(detail).toBeVisible();
+  await expect(detail).toBeVisible({ timeout: 30_000 });
 
   // SA-035: the detail's stat cards and panels render
   await expect(detail.getByText(cat(en, 'Teachers.detail.stats.classes'))).toBeVisible();
@@ -490,7 +515,8 @@ test('SA-036 + SA-037 + SA-038 + SA-039: account tabs carry details, plan and se
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
   const jwt = await schoolAdminJwt(page.request);
 
@@ -503,7 +529,7 @@ test('SA-036 + SA-037 + SA-038 + SA-039: account tabs carry details, plan and se
 
   await page.goto('/dashboard/school/account');
   const account = page.locator('[data-surface="school-admin-account"]');
-  await expect(account).toBeVisible();
+  await expect(account).toBeVisible({ timeout: 30_000 });
 
   // SA-036: details tab + plan tab content
   await expect(account.getByText(cat(en, 'SchoolAdmin.account.detailsTitle'))).toBeVisible();
@@ -530,7 +556,8 @@ test('SA-036 + SA-037 + SA-038 + SA-039: account tabs carry details, plan and se
 // ---------------------------------------------------------------------------
 test('SA-040: participation renders per-class sitting rates', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
 
   await page.goto('/dashboard/school/participation');
@@ -546,7 +573,8 @@ test('SA-041 + SA-043 + SA-048: analytics renders, the results export downloads,
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
 
   // SA-041: the analytics screen renders the school -> class list
@@ -577,13 +605,14 @@ test('SA-041 + SA-043 + SA-048: analytics renders, the results export downloads,
 // ---------------------------------------------------------------------------
 test('SA-044: the legacy children deep links land on students and the create form', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page);
 
   await page.goto('/dashboard/school/children');
   await page.waitForURL(/dashboard\/school\/students$/, { timeout: 30_000 });
   const list = page.locator('[data-surface="school-admin-students"]');
-  await expect(list).toBeVisible();
+  await expect(list).toBeVisible({ timeout: 30_000 });
 
   await page.goto('/dashboard/school/children/new');
   await page.waitForURL(/students\/new$/, { timeout: 30_000 });
@@ -595,7 +624,8 @@ test('SA-047: a teacher JWT on /dashboard/school is bounced by the school layout
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  page.setDefaultTimeout(30_000);
+  page.setDefaultTimeout(60_000);
+  page.setDefaultNavigationTimeout(90_000);
   await patientLogin(page, 'teacher');
 
   await page.goto('/dashboard/school');
