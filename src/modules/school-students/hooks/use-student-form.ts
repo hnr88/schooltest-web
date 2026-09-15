@@ -27,13 +27,28 @@ function initialValues(target: StudentFormTarget): SchoolStudentFormValues {
     return BLANK_VALUES;
   }
   const { student } = target;
-  // The C-CHD-01 row carries name/class/status only; every other field stays
-  // blank so an untouched edit sends nothing for it (see lib/student-request).
+  // NIGHT-2 (W-R3, SA-007 / IMP-1): every field the record carries is shown AS
+  // STORED — the edit dialog used to blank first_language (and email, DOB,
+  // year level, ACARA phase) even for a student who had one, so the form
+  // contradicted the record it was editing (the IMP-1 import-vs-edit
+  // disagreement alive in the dialog). The list row carries
+  // first_language/acara_phase; the detail read adds email, date_of_birth and
+  // year_level — absent fields stay blank. buildStudentUpdateBody diffs
+  // against THESE same defaults, so an untouched edit still sends nothing for
+  // an unchanged field (see lib/student-request).
   return {
     ...BLANK_VALUES,
     given_name: student.given_name ?? '',
     family_name: student.family_name ?? '',
     class_documentId: student.class?.documentId ?? '',
+    first_language: student.first_language ?? '',
+    acara_phase: student.acara_phase ?? '',
+    email: student.email ?? '',
+    date_of_birth: student.date_of_birth ?? '',
+    year_level:
+      student.year_level === null || student.year_level === undefined
+        ? ''
+        : String(student.year_level),
   };
 }
 

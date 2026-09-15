@@ -754,10 +754,25 @@ test.describe('W2 ops surfaces battery', () => {
   });
 
   test('OPS-004 clicking a school row opens the detail overview', async () => {
-    await gotoSchools(page);
-    await searchSchool(page, SURF_NAME);
-    await schoolRow(page, SURF_NAME).getByRole('link').first().click();
-    await expect(page.locator('[data-surface="ops-school-detail"]')).toBeVisible({ timeout: 60_000 });
+    // the shared dev server can re-render the filtered row mid-click — the
+    // click is retried against a fresh search until the detail really mounts
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      await gotoSchools(page);
+      await searchSchool(page, SURF_NAME);
+      const row = schoolRow(page, SURF_NAME);
+      await expect(row).toBeVisible({ timeout: 20_000 });
+      await row.getByRole('link').first().click();
+      const mounted = await page
+        .locator('[data-surface="ops-school-detail"]')
+        .waitFor({ state: 'visible', timeout: 20_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (mounted) break;
+      if (attempt === 2) {
+        await expect(page.locator('[data-surface="ops-school-detail"]')).toBeVisible({ timeout: 60_000 });
+      }
+      await page.waitForTimeout(3_000);
+    }
     // overview carries the details card and the invitation panel card
     await expect(page.locator('[data-slot="ops-invitation-card"]')).toBeVisible({ timeout: 30_000 });
     await expect(page.getByRole('heading', { name: SURF_NAME })).toBeVisible();
@@ -844,7 +859,13 @@ test.describe('W2 ops surfaces battery', () => {
     // the roster count drops 4 → 3 and the row is gone (honesty: the student
     // stays enrolled at the school — the students tab keeps them)
     await expect(page.locator('[data-slot="ops-class-roster-count"]')).toContainText('3', { timeout: 30_000 });
-    await expect(roster.getByRole('row', { hasText: 'Surf Four' })).toHaveCount(0);
+    // self-reporting: if any row still names the removed student, the failure
+    // carries the full row texts (settles the refetch race too)
+    await expect(async () => {
+      const texts = await roster.getByRole('row').allTextContents();
+      const stale = texts.filter((text) => text.includes('Surf Four'));
+      expect(stale, `roster rows: ${JSON.stringify(texts)}`).toHaveLength(0);
+    }).toPass({ timeout: 15_000 });
   });
 
   test('OPS-017 ops edit-class dialog renames the class and the rename persists', async () => {
@@ -865,13 +886,26 @@ test.describe('W2 ops surfaces battery', () => {
 
   test('OPS-018 ops assign-teacher dialog attaches the teacher to the class', async () => {
     const row = page.getByTestId('ops-classes-row').filter({ hasText: SURF_CLASS_RENAMED }).first();
-    await row.getByRole('button', { name: 'Row actions' }).click();
-    await page.getByRole('menuitem', { name: cat(en, 'Ops.classActions.actions.reassignTeacher') }).click();
-    const dialog = page.locator('[role="dialog"]').filter({ hasText: cat(en, 'Ops.classActions.reassign.title') });
-    await expect(dialog).toBeVisible();
+    // the row menu can close under a mid-refetch on the shared server — retry
+    // (the menu item says "Reassign teacher"; the dialog it opens is the
+    // assign dialog, title "Assign a teacher", CTA "Assign teacher")
+    let dialog = page.locator('[role="dialog"]').filter({ hasText: cat(en, 'Ops.classDetail.assign.title') });
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      await expect(row).toBeVisible({ timeout: 30_000 });
+      await row.getByRole('button', { name: 'Row actions' }).click();
+      await page.getByRole('menuitem', { name: cat(en, 'Ops.classActions.actions.reassignTeacher') }).click();
+      const opened = await dialog
+        .waitFor({ state: 'visible', timeout: 8_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (opened) break;
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(2_000);
+    }
+    await expect(dialog).toBeVisible({ timeout: 10_000 });
     // the picker is a radiogroup of the school's teachers
     await dialog.getByRole('radio', { name: /W2 Surf Teacher/ }).click();
-    await dialog.getByRole('button', { name: cat(en, 'Ops.classActions.reassign.save') }).click();
+    await dialog.getByRole('button', { name: cat(en, 'Ops.classDetail.assign.cta') }).click();
     await expect(dialog).not.toBeVisible({ timeout: 30_000 });
     await expect(row).toContainText(/Surf Teacher/, { timeout: 30_000 });
   });

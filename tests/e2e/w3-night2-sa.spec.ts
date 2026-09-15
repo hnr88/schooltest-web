@@ -210,19 +210,31 @@ test('SA-008 + SA-010: student detail carries record/class/test panels; archive 
   await expect(detail.getByText(cat(en, 'SchoolStudents.detail.panelTitle'))).toBeVisible();
   await expect(detail.getByRole('heading', { name: cat(en, 'SchoolStudents.detail.classPanel.title') })).toBeVisible();
 
-  // SA-010: archive through the confirm dialog
-  const archive = detail.getByRole('button', { name: cat(en, 'SchoolStudents.actions.archive') }).first();
-  await archive.click();
+  // SA-010: archive through the LIST row's Actions menu — the archive control
+  // lives in the students-table row menu (studentRowActions), not on the detail
+  // screen; the morning battery pointed at the detail page and never ran green.
+  await page.goto('/dashboard/school/students');
+  const list = page.locator('[data-surface="school-admin-students"]');
+  await expect(list).toBeVisible({ timeout: 30_000 });
+  const search = list.getByLabel(cat(en, 'SchoolStudents.filters.searchLabel'), { exact: true });
+  await search.fill(given);
+  // Let the debounced refetch settle to EXACTLY the probe row — interacting
+  // mid-refetch swapped the row under the menu and its click landed nowhere.
+  const row = list.locator('[data-directory-row]').filter({ hasText: given });
+  await expect(row).toHaveCount(1, { timeout: 20_000 });
+  await row.getByRole('button', { name: cat(en, 'SchoolStudents.list.rowMenuLabel'), exact: true }).click();
+  await page.getByRole('menuitem', { name: cat(en, 'SchoolStudents.actions.archive') }).click();
   const dialog = page.getByRole('dialog');
-  await expect(dialog).toBeVisible();
+  await expect(dialog).toBeVisible({ timeout: 15_000 });
+  // The confirm copy states the impact: the seat frees, the record stays.
+  await expect(dialog).toContainText(
+    cat(en, 'SchoolStudents.archiveDialog.description').slice(0, 40),
+  );
   await dialog.getByRole('button', { name: cat(en, 'SchoolStudents.archiveDialog.confirm') }).click();
   await expect(page.locator('[data-sonner-toast]')).toBeVisible();
 
   // The archived student leaves the ACTIVE roster (default status filter)
-  await page.goto('/dashboard/school/students');
-  const list = page.locator('[data-surface="school-admin-students"]');
-  await expect(list).toBeVisible({ timeout: 30_000 });
-  await expect(list.getByRole('row', { name: new RegExp(given) })).toHaveCount(0, { timeout: 20_000 });
+  await expect(row).toHaveCount(0, { timeout: 20_000 });
 });
 
 // ---------------------------------------------------------------------------
@@ -248,11 +260,14 @@ test('SA-019 + SA-020 + SA-021: classes page creates, renames, and deletes with 
   await addDialog.getByRole('button', { name: cat(en, 'Classes.addForm.submit') }).click();
   await expect(page.locator('[data-sonner-toast]')).toContainText(name);
 
-  // The list paginates — filter to the new class before opening it.
+  // The list paginates — filter to the new class and let the debounced
+  // refetch SETTLE (interacting mid-refetch swapped the row under the click).
   await screen.getByLabel(cat(en, 'Classes.list.searchLabel'), { exact: true }).fill(name);
-  const row = page.getByRole('row', { name: new RegExp(name) }).first();
-  await expect(row).toBeVisible({ timeout: 20_000 });
-  await row.click();
+  const row = page.locator('[data-directory-row]').filter({ hasText: name });
+  await expect(row).toHaveCount(1, { timeout: 20_000 });
+  // The row's first-cell anchor is the ONE link to the detail view (§L-rownav).
+  await row.locator('a[data-row-href]').click();
+  await page.waitForURL(/\/dashboard\/school\/classes\/[a-z0-9]+$/, { timeout: 30_000 });
   // open detail, use its edit dialog
   const detail = page.locator('[data-surface="school-admin-class-detail"]');
   await expect(detail).toBeVisible({ timeout: 30_000 });
@@ -531,14 +546,24 @@ test('SA-036 + SA-037 + SA-038 + SA-039: account tabs carry details, plan and se
   const account = page.locator('[data-surface="school-admin-account"]');
   await expect(account).toBeVisible({ timeout: 30_000 });
 
-  // SA-036: details tab + plan tab content
+  // SA-036: details tab + plan tab content. The Plan panel IS the entitlement
+  // section (plan card + allowance card, C-ENT-01) — the design gives it no
+  // separate "Plan and seats" heading, so anchor on the plan card's content.
   await expect(account.getByText(cat(en, 'SchoolAdmin.account.detailsTitle'))).toBeVisible();
   await account.getByRole('tab', { name: cat(en, 'SchoolAdmin.account.tabs.plan') }).click();
+  const planCard = account.locator('[data-slot="account-plan-card"]');
   await expect(
-    account.getByText(cat(en, 'SchoolAdmin.account.planTitle')),
+    planCard.getByText(cat(en, 'SchoolAdmin.account.currentPlanLabel')),
   ).toBeVisible({ timeout: 20_000 });
-  if (entitlement?.seats_used !== undefined) {
-    await expect(account.getByText(String(entitlement.seats_used).trim(), { exact: true }).first()).toBeVisible();
+  // SA-037: the seats readout is the served entitlement's used/total pair.
+  if (entitlement?.seats_used !== undefined && entitlement?.seats_total !== undefined) {
+    await expect(
+      planCard.getByText(
+        cat(en, 'SchoolAdmin.account.seatsValue')
+          .replace('{used}', String(entitlement.seats_used))
+          .replace('{total}', String(entitlement.seats_total)),
+      ),
+    ).toBeVisible({ timeout: 20_000 });
   }
 
   // SA-038: the settings tab renders (an honest placeholder panel in this build)
