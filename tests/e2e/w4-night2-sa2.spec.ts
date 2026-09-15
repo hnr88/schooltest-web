@@ -295,10 +295,21 @@ test('TEA-011..014: schedule a window, edit it with settings, cancel with confir
   await expect(schedule.locator('input[data-field="date"]')).toBeVisible();
   await expect(schedule.locator('input[data-field="opens"]')).toBeVisible();
   await expect(schedule.locator('input[data-field="closes"]')).toBeVisible();
+  // Book a real future window: an EMPTY date blocks every roster student
+  // (bookedInWindow matches everything), and tomorrow 09:00 already carries the
+  // wave's own bookings — a week out is clash-free, so the whole class is free.
+  const future = new Date(Date.now() + 8 * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  await schedule.locator('input[data-field="date"]').fill(future);
+  await schedule.locator('input[data-field="opens"]').fill('09:00');
+  await schedule.locator('input[data-field="closes"]').fill('10:00');
 
   // A booking still needs its cohort: the CTA says so until students are chosen.
+  // In schedule mode the whole-class card's label is the everyoneLater copy, so
+  // pick the card by its radiogroup position, not by text.
   await setupTab(page, 'Students').click();
-  await page.locator('label').filter({ hasText: 'Whole class' }).click(); // sr-only input: click the card label
+  const scopeGroup = page.locator('[data-slot="start-session-students"] [role="radiogroup"]');
+  await expect(scopeGroup).toBeVisible({ timeout: 30_000 });
+  await scopeGroup.locator('label').first().click(); // the whole-class scope card
 
   // ── TEA-014: the Settings tab toggles the design switches; they persist below.
   await setupTab(page, 'Settings').click();
@@ -682,7 +693,7 @@ async function signInSchoolAdmin(page: Page): Promise<void> {
  */
 async function parkQueryDevtools(page: Page): Promise<void> {
   await page.addStyleTag({
-    content: 'tsqd-parent-container{display:none!important;pointer-events:none!important;}',
+    content: '.tsqd-parent-container{display:none!important;pointer-events:none!important;}',
   });
 }
 
@@ -1090,10 +1101,16 @@ test('TEA-051: student Ask-AI answers within the student drilldown', async ({ pa
   test.setTimeout(300_000);
   const jwt = await teacherJwt(request);
   const studentId = runSql(
-    `select r.student_document_id from results r
-      join classes c on c.id = r.class_id
-     where c.document_id = '${PROOF_CLASS}'
-     order by r.id desc limit 1`,
+    `select s.student_document_id from results r
+      join sessions s on s.document_id = r.session_document_id
+     where r.cefr_band is not null
+       and s.student_document_id in (
+       select st.document_id from students st
+         join students_class_lnk l on l.student_id = st.id
+         join classes c on c.id = l.class_id
+        where c.document_id = '${PROOF_CLASS}'
+     )
+     limit 1`,
   ).trim();
   test.skip(!studentId || studentId.includes('__e2e-db-unavailable__'), 'no Proof 10X result reachable');
 
@@ -1132,7 +1149,9 @@ test('TEA-052: empty prompt keeps send disabled; an API failure shows an honest 
   await drawer.getByLabel('Your question', { exact: true }).fill('Summarise this class.');
   await send.click();
   await expect(drawer.getByText('No answer — the server could not be reached')).toBeVisible({ timeout: 30_000 });
-  expect(await drawer.locator('[data-slot="ask-ai-answer-title"]').count()).toBe(0);
+  // The thread holds exactly the question + the failure turn — nothing beyond it.
+  expect(await drawer.locator('[data-slot="ask-ai-message"]').count()).toBe(2);
+  expect(await drawer.locator('[data-slot="ask-ai-grounding"]').count()).toBe(0);
   await page.screenshot({ path: path.join(PROOFS, 'tea-052-askai-failure.png'), animations: 'disabled' });
 });
 
@@ -1312,17 +1331,18 @@ test('TEA-072: a zero-class teacher sees the classes empty state', async ({ page
   test.skip(!token || token.includes('__e2e-db-unavailable__'), 'the invitation token is not reachable');
 
   await page.goto(`/invite/${token}`);
-  await page.getByLabel('Password', { exact: true }).fill('ZeroClass1234!');
-  await page.getByLabel(/confirm/i).fill('ZeroClass1234!');
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 60_000 });
+  // The acceptance form: set a password and submit (W3's proven recipe — the
+  // fields' labels are sentence-long, so match by pattern, not exactly).
+  await page.getByLabel(/password/i).first().fill('ZeroClass1234!');
+  const confirm = page.getByLabel(/confirm/i).first();
+  if (await confirm.isVisible().catch(() => false)) await confirm.fill('ZeroClass1234!');
   await page.getByRole('button', { name: /activate|accept|submit|join/i }).click();
-  await page.waitForURL('**/dashboard**', { timeout: 60_000 });
+  await page.waitForURL(/dashboard/, { timeout: 60_000 });
 
-  // Sign back in as the fresh teacher and read the classes face.
-  await page.goto('/sign-in');
-  await page.getByLabel('Email address', { exact: true }).fill(email);
-  await page.getByLabel('Password', { exact: true }).fill('ZeroClass1234!');
-  await page.getByRole('button', { name: 'Log in', exact: true }).click();
-  await page.waitForURL('**/dashboard', { timeout: 60_000 });
+  // The accept signs the fresh teacher IN (the session cookie is live), so
+  // /sign-in would bounce straight back to /dashboard — read the classes face
+  // directly as the accepted zero-class teacher.
   await page.goto('/dashboard/results');
   const list = page.locator('[data-slot="teacher-classes-list"]');
   await expect(list).toBeVisible({ timeout: 90_000 });
@@ -1358,14 +1378,13 @@ test('TEA-071: the trial flow mints a demo sitting and End-trial cleans it up', 
   });
   expect([200, 201]).toContain(started.status());
   const trial = (await started.json()) as {
+    session?: { document_id?: string };
     session_document_id?: string;
     document_id?: string;
     documentId?: string;
-    resumed?: boolean;
-    data?: { document_id?: string; session?: { document_id?: string } };
   };
   const trialId =
-    trial.session_document_id ?? trial.document_id ?? trial.documentId ?? trial.data?.session?.document_id ?? trial.data?.document_id;
+    trial.session?.document_id ?? trial.session_document_id ?? trial.document_id ?? trial.documentId;
   expect(trialId, 'the trial session is identified').toBeTruthy();
 
   // C-TT-END: the single end path — trial branch writes status/ended_at and
