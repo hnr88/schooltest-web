@@ -70,12 +70,16 @@ async function openAsParent(page: Page, path: string): Promise<void> {
   // load event for minutes while the app is interactive long before that; the
   // patient expects below own the readiness waits. On-demand dev compiles can
   // also blow the whole navigation — retry those patiently (a carer refreshes).
+  // MEASURED tonight: a cold on-demand compile of /dashboard/children/[id]
+  // exceeded the 60s goto three times in a row while the whole fleet drove the
+  // same dev server — six attempts is the honest patience budget, not a flake
+  // mask (each retry is a full navigation a real user would also do).
   for (let attempt = 0; ; attempt += 1) {
     try {
-      await page.goto(path, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+      await page.goto(path, { waitUntil: 'domcontentloaded', timeout: 90_000 });
       break;
     } catch {
-      if (attempt >= 3) throw new Error(`navigation to ${path} never settled`);
+      if (attempt >= 5) throw new Error(`navigation to ${path} never settled`);
       await page.waitForTimeout(5000);
     }
   }
@@ -284,8 +288,9 @@ test('PAR-013 — release → parent sees released; recall → the face flips ba
   // Reload: the released view is gone, the held/recalled face is up.
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expectFamilyFace(page, 'recalled');
-  expect(await face.locator('[data-slot="report-parent-score"]').count()).toBe(0);
-  const text = await face.innerText();
+  const recalledFace = page.locator('[data-surface="family-report"][data-state="recalled"]');
+  expect(await recalledFace.locator('[data-slot="report-parent-score"]').count()).toBe(0);
+  const text = await recalledFace.innerText();
   expect(text).not.toMatch(/\d+\s*%/);
 });
 
@@ -404,11 +409,15 @@ test('PAR-023 — the unified search page returns combined results with the agen
   await expect(main).toBeVisible({ timeout: 90000 });
   const input = main.locator('[data-slot="unified-search-pill"] input').first();
   await expect(input).toBeVisible({ timeout: 90000 });
-  await input.fill('Belmore');
-  await input.press('Enter');
-  await expect
-    .poll(async () => (await main.innerText()).toLowerCase(), { timeout: 90000 })
-    .toContain('all saints grammar');
+  // The directory read can 429/stall on tonight's saturated shared stack — the
+  // poll may need a carer's refresh, exactly like the family-face wait above.
+  const deadline = Date.now() + 90_000;
+  while (!(await main.innerText()).toLowerCase().includes('all saints grammar') && Date.now() < deadline) {
+    await input.fill('Belmore');
+    await input.press('Enter');
+    await page.waitForTimeout(5000);
+  }
+  await expect(main).toContainText('all saints grammar', { timeout: 90000, ignoreCase: true });
 });
 
 test('PAR-024 — a parent opening a teacher-only view gets the mask, not an error', async ({ page }) => {
@@ -533,7 +542,8 @@ test('PAR-008 — archive asks for confirmation; archived child leaves the roste
   await expect(card).toBeVisible();
   await card.getByRole('button', { name: /actions for/i }).click();
   // The confirm dialog names the child and demands an explicit Archive click.
-  await page.getByRole('button', { name: cat(en, 'Children.archive'), exact: true }).first().click();
+  // The ⋯ menu entry is a menuitem (DropdownMenuItem), not a button.
+  await page.getByRole('menuitem', { name: cat(en, 'Children.archive'), exact: true }).click();
   const dialog = page.getByRole('alertdialog');
   await expect(dialog).toBeVisible();
   expect(await dialog.innerText()).toContain('Wizard');
