@@ -16,6 +16,7 @@ import { SCHOOL_CHILDREN_PAGE_SIZE } from '@/modules/school-students/constants/q
 import { ACARA_PHASE_OPTIONS } from '@/modules/school-students/constants/student-picklists.constants';
 import type {
   SchoolStudentLevelFilter,
+  SchoolStudentStatusFilter,
   SchoolStudentsQuery,
 } from '@/modules/school-students/types/school-students.types';
 
@@ -48,6 +49,22 @@ export function useStudentsFilters(classes: readonly SchoolClass[]): StudentsFil
 
   const defs = useMemo<readonly DirectoryFilterDef[]>(
     () => [
+      {
+        // NIGHT-2 (W-R3, SA-010): the designed Status filter (School Admin
+        // Portal: "All statuses / Active / …"). The scaffold — i18n keys, the
+        // SchoolStudentStatusFilter union and the `status` wire param in
+        // use-school-students.query — shipped, but the control itself was never
+        // wired, so an archived student had no reachable "archived list" and
+        // could not leave the active view, contradicting the archive dialog's
+        // own copy ("they move to the archived list").
+        key: 'status',
+        label: t('statusLabel'),
+        options: [
+          { value: DIRECTORY_ALL, label: t('statusAll') },
+          { value: 'active', label: t('statusActive') },
+          { value: 'archived', label: t('statusArchived') },
+        ],
+      },
       {
         key: 'class',
         label: t('classLabel'),
@@ -94,12 +111,18 @@ function toLevelFilter(raw: string | undefined): SchoolStudentLevelFilter {
 
 /**
  * The kit's derived params mapped 1:1 onto the C-CHD-01 query. The status
- * param keeps its spec §4 shape — ROSTER_STATUS stays `all` (omitted on the
- * wire), so archived students remain in the default roster exactly as before.
+ * param keeps its spec §4 shape — the URL's `all` (and its absence) maps to
+ * ROSTER_STATUS, which stays omitted on the wire, so the DEFAULT roster keeps
+ * showing every student exactly as before; picking Active or Archived narrows
+ * server-side (NIGHT-2 W-R3, SA-010 — the designed status filter is now
+ * reachable).
  */
 export function rosterQueryFrom(params: DirectoryQueryParams): SchoolStudentsQuery {
+  const rawStatus = params.filters.status;
+  const status: SchoolStudentStatusFilter =
+    rawStatus === 'active' || rawStatus === 'archived' ? rawStatus : ROSTER_STATUS;
   return {
-    status: ROSTER_STATUS,
+    status,
     classId: params.filters.class ?? DIRECTORY_ALL,
     level: toLevelFilter(params.filters.level),
     q: params.q ?? '',

@@ -53,6 +53,10 @@ async function deleteStudentViaOps(request: APIRequestContext, documentId: strin
 }
 
 test.setTimeout(300_000);
+// The shared dev server compiles routes on demand under fleet load; the config
+// default 5s expect budget is too tight for cold first renders (e.g. the
+// /invite acceptance page). Scoped to THIS file — no other suite is affected.
+test.use({ expect: { timeout: 15_000 } });
 
 const toDelete: string[] = [];
 let throwawayTeacher: { email: string; name: string } | null = null;
@@ -224,7 +228,8 @@ test('SA-008 + SA-010: student detail carries record/class/test panels; archive 
   await expect(row).toHaveCount(1, { timeout: 20_000 });
   await row.getByRole('button', { name: cat(en, 'SchoolStudents.list.rowMenuLabel'), exact: true }).click();
   await page.getByRole('menuitem', { name: cat(en, 'SchoolStudents.actions.archive') }).click();
-  const dialog = page.getByRole('dialog');
+  // The kit's confirm renders role=alertdialog (OpsConfirmDialog), not dialog.
+  const dialog = page.getByRole('alertdialog');
   await expect(dialog).toBeVisible({ timeout: 15_000 });
   // The confirm copy states the impact: the seat frees, the record stays.
   await expect(dialog).toContainText(
@@ -233,7 +238,19 @@ test('SA-008 + SA-010: student detail carries record/class/test panels; archive 
   await dialog.getByRole('button', { name: cat(en, 'SchoolStudents.archiveDialog.confirm') }).click();
   await expect(page.locator('[data-sonner-toast]')).toBeVisible();
 
-  // The archived student leaves the ACTIVE roster (default status filter)
+  // SA-010: the archive moves the student to the archived list. Per the design
+  // (School Admin Portal "All statuses"), the DEFAULT roster keeps the row with
+  // its Archived pill; the Status filter — wired in NIGHT-2 (W-R3), the
+  // scaffold existed without the control — narrows the ACTIVE roster without them.
+  await expect(
+    row.getByText(cat(en, 'SchoolStudents.table.statusArchived'), { exact: true }),
+  ).toBeVisible({ timeout: 20_000 });
+  await list
+    .getByLabel(cat(en, 'SchoolStudents.filters.statusLabel'), { exact: true })
+    .click();
+  await page
+    .getByRole('option', { name: cat(en, 'SchoolStudents.filters.statusActive') })
+    .click();
   await expect(row).toHaveCount(0, { timeout: 20_000 });
 });
 
@@ -280,15 +297,26 @@ test('SA-019 + SA-020 + SA-021: classes page creates, renames, and deletes with 
   await expect(editDialog).toBeHidden();
   await expect(detail.getByRole('heading', { name: renamed })).toBeVisible({ timeout: 20_000 });
 
-  // SA-021: delete states the roster impact (students are NOT deleted)
-  await detail.getByRole('button', { name: cat(en, 'Classes.actions.delete') }).click();
-  const delDialog = page.getByRole('dialog');
-  await expect(delDialog).toBeVisible();
+  // SA-021: delete states the roster impact (students are NOT deleted). The
+  // delete control is a LIST row-menu action (ClassesTable rowActions), not a
+  // detail-page button; the confirm renders role=alertdialog.
+  await page.goto('/dashboard/school/classes');
+  const listAgain = page.locator('[data-surface="school-admin-classes"]');
+  await expect(listAgain).toBeVisible({ timeout: 30_000 });
+  await listAgain.getByLabel(cat(en, 'Classes.list.searchLabel'), { exact: true }).fill(renamed);
+  const renamedRow = page.locator('[data-directory-row]').filter({ hasText: renamed });
+  await expect(renamedRow).toHaveCount(1, { timeout: 20_000 });
+  await renamedRow.getByRole('button', { name: cat(en, 'Classes.list.rowMenuLabel'), exact: true }).click();
+  await page.getByRole('menuitem', { name: cat(en, 'Classes.actions.delete') }).click();
+  const delDialog = page.getByRole('alertdialog');
+  await expect(delDialog).toBeVisible({ timeout: 15_000 });
   await expect(delDialog).toContainText(
     cat(en, 'Classes.deleteDialog.description').slice(0, 40),
   );
   await delDialog.getByRole('button', { name: cat(en, 'Classes.deleteDialog.confirm') }).click();
   await expect(delDialog).toBeHidden();
+  // The deleted class leaves the list (the filter now matches nothing).
+  await expect(renamedRow).toHaveCount(0, { timeout: 20_000 });
 });
 
 // ---------------------------------------------------------------------------
@@ -437,7 +465,9 @@ test('SA-031 + SA-032 + SA-033 + SA-034 + SA-035: the accepted teacher is edited
   // accept the invitation through the REAL /invite/<token> surface
   const token = runSql(`select token from invitations where email='${email}' order by id desc limit 1`);
   await page.goto(`/invite/${token}`);
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  // Cold route + fleet compile: this acceptance page needs more than the 5s
+  // default when first hit tonight.
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 30_000 });
   // the acceptance form: set a password and submit
   const password = 'W3Teacher123!';
   const pw = page.getByLabel(/password/i).first();
@@ -447,35 +477,68 @@ test('SA-031 + SA-032 + SA-033 + SA-034 + SA-035: the accepted teacher is edited
   await page.getByRole('button', { name: /activate|accept|submit|join/i }).click();
   await page.waitForURL(/dashboard/, { timeout: 30_000 });
 
-  // back as the school admin
+  // back as the school admin. The acceptance flow just signed this BROWSER in
+  // as the new TEACHER, and /sign-in bounce-redirects any authenticated user
+  // (SignInCard) — the sign-in form would never render for patientLogin. Drop
+  // the session the same way the portal's sign-out does (clears the persisted
+  // token) before signing back in.
+  await page.evaluate(() => window.localStorage.removeItem('app.auth.token'));
   await patientLogin(page);
   await page.goto('/dashboard/school/teachers');
   const screen = page.locator('[data-surface="school-admin-teachers"]');
   await expect(screen).toBeVisible({ timeout: 30_000 });
-  const row = screen.locator('[data-directory-row]').filter({ hasText: email });
-  await expect(row).toBeVisible({ timeout: 20_000 });
+  // The staff table is the directory kit's TABLE layout (real rows) and every
+  // action lives in the row's ⋯ menu (sa-lists-audit — no inline quick icons).
+  // The school's seeded staff spans several pages, so SEARCH (name + email)
+  // narrows to the new teacher's row before any interaction.
+  const searchTeachers = (needle: string) =>
+    screen
+      .getByLabel(cat(en, 'Teachers.table.searchLabel'), { exact: true })
+      .fill(needle);
+  const rowFor = (needle: string) => screen.getByRole('row', { name: new RegExp(needle) });
+  const menuButton = (row: ReturnType<Page['getByRole']>) =>
+    row.getByRole('button', { name: cat(en, 'Teachers.table.rowMenuLabel') });
+  searchTeachers(email);
+  const row = rowFor(email);
+  // The staff list refetches on mount under fleet load — give the first
+  // appearance a full 30s window.
+  await expect(row).toBeVisible({ timeout: 30_000 });
 
-  // SA-031: edit the teacher's name; persists
-  await row.hover();
-  await screen.getByRole('button', { name: 'Edit W3 Invitee' }).click();
+  // SA-031: edit the teacher's name from the row menu; persists
+  await menuButton(row).click();
+  await page
+    .getByRole('menuitem', {
+      name: cat(en, 'Teachers.actions.editLabel').replace('{name}', 'W3 Invitee'),
+    })
+    .click();
   const editDialog = page.getByRole('dialog');
   await expect(editDialog).toBeVisible();
   await editDialog.getByLabel(cat(en, 'Teachers.edit.firstName')).fill('W3 Renamed');
   await editDialog.getByRole('button', { name: cat(en, 'Teachers.edit.submit') }).click();
   await expect(page.locator('[data-sonner-toast]')).toContainText('W3 Renamed');
 
-  // open the detail
+  // open the detail via the row's name link
   await page.goto('/dashboard/school/teachers');
-  const renamedRow = screen.locator('[data-directory-row]').filter({ hasText: email });
+  searchTeachers(email);
+  const renamedRow = rowFor(email);
   await expect(renamedRow).toBeVisible({ timeout: 20_000 });
-  await renamedRow.getByRole('link').first().click();
+  await renamedRow.locator('a[data-row-href]').first().click();
+  await page.waitForURL(/\/dashboard\/school\/teachers\/[a-z0-9]+$/, { timeout: 30_000 });
   const detail = page.locator('[data-surface="school-admin-teacher-detail"]');
-  await expect(detail).toBeVisible({ timeout: 30_000 });
+  // First hit of this route in a session compiles it under fleet load — 60s.
+  await expect(detail).toBeVisible({ timeout: 60_000 });
 
-  // SA-035: the detail's stat cards and panels render
-  await expect(detail.getByText(cat(en, 'Teachers.detail.stats.classes'))).toBeVisible();
-  await expect(detail.getByText(cat(en, 'Teachers.detail.classesPanel.title'))).toBeVisible();
-  await expect(detail.getByText(cat(en, 'Teachers.detail.accountPanel.title'))).toBeVisible();
+  // SA-035: the detail's stat cards and panels render (the word "Classes"
+  // recurs across the KPI tile, panel title and copy — scope each assertion).
+  await expect(
+    detail.getByText(cat(en, 'Teachers.detail.stats.classes')).first(),
+  ).toBeVisible();
+  await expect(
+    detail.getByText(cat(en, 'Teachers.detail.classesPanel.title')),
+  ).toBeVisible();
+  await expect(
+    detail.getByText(cat(en, 'Teachers.detail.accountPanel.title')),
+  ).toBeVisible();
 
   // SA-032: the assign-classes dialog ticks a class and saves
   await detail.getByRole('button', { name: cat(en, 'Teachers.detail.assignButton') }).click();
@@ -490,14 +553,15 @@ test('SA-031 + SA-032 + SA-033 + SA-034 + SA-035: the accepted teacher is edited
     await assignDialog.getByRole('button', { name: cat(en, 'Teachers.detail.assignDialog.cancel') }).click();
   }
 
-  // SA-033: deactivate with its confirm copy
+  // SA-033: deactivate with its confirm copy (row menu -> alertdialog)
   await page.goto('/dashboard/school/teachers');
-  const renamedRow2 = screen.locator('[data-directory-row]').filter({ hasText: email });
+  searchTeachers(email);
+  const renamedRow2 = rowFor(email);
   await expect(renamedRow2).toBeVisible({ timeout: 20_000 });
-  await renamedRow2.getByRole('button', { name: cat(en, 'Teachers.table.rowMenuLabel') }).click();
+  await menuButton(renamedRow2).click();
   await page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.deactivate') }).click();
-  const confirm = page.getByRole('dialog');
-  await expect(confirm).toBeVisible();
+  const confirm = page.getByRole('alertdialog');
+  await expect(confirm).toBeVisible({ timeout: 15_000 });
   await expect(confirm).toContainText('Deactivate W3 Renamed');
   await confirm.getByRole('button', { name: cat(en, 'Teachers.actions.deactivateConfirm') }).click();
   await expect(page.locator('[data-sonner-toast]')).toContainText('W3 Renamed', { timeout: 20_000 });
@@ -506,23 +570,28 @@ test('SA-031 + SA-032 + SA-033 + SA-034 + SA-035: the accepted teacher is edited
   ).toBeVisible({ timeout: 20_000 });
 
   // SA-034: reactivate back to active
-  await renamedRow2.getByRole('button', { name: cat(en, 'Teachers.table.rowMenuLabel') }).click();
+  await menuButton(renamedRow2).click();
   await page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.reactivate') }).click();
-  const reactConfirm = page.getByRole('dialog');
-  await expect(reactConfirm).toBeVisible();
+  const reactConfirm = page.getByRole('alertdialog');
+  await expect(reactConfirm).toBeVisible({ timeout: 15_000 });
   await reactConfirm.getByRole('button', { name: cat(en, 'Teachers.actions.reactivateConfirm') }).click();
   await expect(page.locator('[data-sonner-toast]')).toContainText('W3 Renamed', { timeout: 20_000 });
 
-  // final cleanup: remove the throwaway teacher from the school
-  await renamedRow2.getByRole('button', { name: cat(en, 'Teachers.table.rowMenuLabel') }).click();
-  const removeItem = page.getByRole('menuitem', { name: cat(en, 'Teachers.actions.remove') });
-  if (await removeItem.isVisible().catch(() => false)) {
-    await removeItem.click();
-    const removeDialog = page.getByRole('dialog');
-    await expect(removeDialog).toBeVisible();
-    await removeDialog.getByRole('button', { name: cat(en, 'Teachers.actions.removeConfirm') }).click();
-    await expect(page.locator('[data-sonner-toast]')).toBeVisible();
-  }
+  // final cleanup: remove the throwaway teacher from the school (row menu ->
+  // alertdialog; the confirm button is "Remove permanently"). The menu item is
+  // the kit's removeLabel with the row's name interpolated.
+  const removeItem = page.getByRole('menuitem', {
+    name: cat(en, 'Teachers.actions.removeLabel').replace('{name}', 'W3 Renamed'),
+  });
+  await expect(page.getByRole('alertdialog')).toBeHidden();
+  await menuButton(renamedRow2).click();
+  await expect(removeItem).toBeVisible({ timeout: 15_000 });
+  await removeItem.click();
+  const removeDialog = page.getByRole('alertdialog');
+  await expect(removeDialog).toBeVisible({ timeout: 15_000 });
+  await removeDialog.getByRole('button', { name: cat(en, 'Teachers.actions.removeConfirm') }).click();
+  // Earlier success toasts may still be stacked — assert ANY removal toast.
+  await expect(page.locator('[data-sonner-toast]').first()).toBeVisible();
 });
 
 // ---------------------------------------------------------------------------
