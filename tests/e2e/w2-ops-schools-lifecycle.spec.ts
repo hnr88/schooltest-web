@@ -494,12 +494,13 @@ test.describe('W2 ops surfaces battery', () => {
   let page: import('@playwright/test').Page;
   let surfId = '';
   let surfClassId = '';
+  let onboardSchoolId = '';
 
   test.setTimeout(600_000);
 
   /** One authenticated ops call against the live API, riding out 429 walls. */
   async function opsApi(
-    method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
+    method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE',
     path: string,
     body?: unknown,
     extraHeaders: Record<string, string> = {},
@@ -565,7 +566,7 @@ test.describe('W2 ops surfaces battery', () => {
   async function mailpitText(email: string): Promise<string> {
     for (let attempt = 0; attempt < 12; attempt += 1) {
       const search = await page.request.get(
-        `http://localhost:8125/api/v1/search?to=${encodeURIComponent(email)}`,
+        `http://localhost:8125/api/v1/search?query=to:${encodeURIComponent(email)}`,
       );
       if (search.status() === 200) {
         const found = (await search.json()) as { messages?: { ID: string }[] };
@@ -632,6 +633,34 @@ test.describe('W2 ops surfaces battery', () => {
       renewal_date: '2027-12-31',
     });
     expect(entitlement.status, `entitlement PUT: ${JSON.stringify(entitlement.json)}`).toBe(200);
+
+    // Walk the onboarding wizard over the API (link → complete): the portal
+    // status precedence resolves a school to portal-Active only once onboarding
+    // reached its terminal state — bulk lifecycle eligibility depends on it.
+    const surfLink = await opsApi('POST', `/api/schools/${surfId}/onboarding-link`, {
+      first_name: 'Surf',
+      last_name: 'Owner',
+      contact_email: `w2-surf-admin-${STAMP}@schooltest.local`,
+    });
+    expect(surfLink.status, `onboarding link: ${JSON.stringify(surfLink.json)}`).toBe(201);
+    const surfToken = String(surfLink.json.data.token ?? '');
+    expect(surfToken, 'surf onboarding token').not.toBe('');
+    const surfComplete = await page.request.post(
+      `${API}/api/school-onboarding/${surfToken}/complete`,
+      {
+        data: {
+          payload: { steps: { details: true } },
+          admin: {
+            first_name: 'Surf',
+            last_name: 'Owner',
+            email: `w2-surf-admin-${STAMP}@schooltest.local`,
+            password: 'W2SurfOwner123!',
+          },
+          teachers: [],
+        },
+      },
+    );
+    expect(surfComplete.status(), 'surf onboarding completed').toBe(200);
 
     // Three students straight into the class through the VERSIONED import
     // commit (the same endpoint the import wizard drives).
@@ -721,6 +750,9 @@ test.describe('W2 ops surfaces battery', () => {
       if (deleted.status !== 200) {
         console.warn(`[w2] surfaces school not deleted (${deleted.status}) — scratch row kept`);
       }
+    } catch { /* best effort */ }
+    try {
+      if (onboardSchoolId) await opsApi('DELETE', `/api/ops/schools/${onboardSchoolId}`);
     } catch { /* best effort */ }
     await page.close();
   });
@@ -849,7 +881,7 @@ test.describe('W2 ops surfaces battery', () => {
   test('OPS-016 class detail roster: removing a student confirms and the roster shrinks', async () => {
     // scoped to the roster section so a leftover dialog table can never match
     const roster = page.locator(`section[aria-label="${cat(en, 'Ops.classDetail.rosterTitle')}"]`);
-    const victim = roster.getByRole('row', { hasText: 'Surf Four' }).first();
+    const victim = roster.getByRole('row').filter({ hasText: 'Surf Four' }).first();
     await expect(victim).toBeVisible({ timeout: 30_000 });
     await victim.getByRole('button', { name: cat(en, 'Ops.detail.actions.menuLabel') }).click();
     await page.getByRole('menuitem', { name: cat(en, 'Ops.classDetail.rosterActionRemove') }).click();
@@ -920,9 +952,45 @@ test.describe('W2 ops surfaces battery', () => {
     await dialog.locator('#ops-set-window-timezone').fill('Australia/Melbourne');
     await dialog.locator('#ops-set-window-opens').fill('2026-09-20T09:00');
     await dialog.locator('#ops-set-window-closes').fill('2026-09-27T17:00');
-    await dialog.locator('#ops-set-window-form').selectOption({ index: 1 });
-    await dialog.getByRole('button', { name: cat(en, 'Ops.classActions.setTestWindow.submit') }).click();
-    await expect(dialog).not.toBeVisible({ timeout: 60_000 });
+    // the D-WIN guard honestly refuses a reading form that already carries
+    // submitted sessions (409) — on this shared stack the first seeded forms
+    // are burned, so walk the picker until a schedulable form takes
+    const formSelect = dialog.locator('#ops-set-window-form');
+    const submit = dialog.getByRole('button', { name: cat(en, 'Ops.classActions.setTestWindow.submit') });
+    // the picker is disabled while the reading-forms query loads — wait for
+    // the real options (placeholder + at least one form) before counting
+    await expect
+      .poll(async () => formSelect.locator('option').count(), { timeout: 45_000 })
+      .toBeGreaterThan(1);
+    const optionCount = await formSelect.locator('option').count();
+    let scheduled = false;
+    const attempts: string[] = [];
+    for (let index = 1; index < Math.min(optionCount, 16) && !scheduled; index += 1) {
+      await formSelect.selectOption({ index });
+      const responsePromise = page
+        .waitForResponse(
+          (response) =>
+            response.url().includes('/result-windows') && response.request().method() === 'POST',
+          { timeout: 30_000 },
+        )
+        .catch(() => null);
+      await submit.click();
+      const response = await responsePromise;
+      if (response === null) {
+        attempts.push(`form#${index}: no create request left the page`);
+        continue;
+      }
+      if (response.status() < 300) {
+        attempts.push(`form#${index}: created (${response.status()})`);
+        scheduled = true;
+      } else {
+        attempts.push(`form#${index}: ${response.status()} ${await response.text().catch(() => '')}`);
+      }
+    }
+    if (!scheduled) {
+      throw new Error(`window create never succeeded; attempts: ${attempts.join(' | ')}`);
+    }
+    await expect(dialog).not.toBeVisible({ timeout: 30_000 });
     // the class row now names its test window
     await expect(row).toContainText(WINDOW_TITLE, { timeout: 30_000 });
     await row.getByRole('checkbox').click(); // clear the selection
@@ -930,23 +998,54 @@ test.describe('W2 ops surfaces battery', () => {
 
   test('OPS-019 students tab lists students with search and pagination', async () => {
     await gotoSurfDetail('students');
-    await expect(page.getByText(cat(en, 'Ops.schoolTables.studentsSearchPlaceholder'))).toBeVisible({ timeout: 60_000 });
+    const search = page.getByPlaceholder(cat(en, 'Ops.schoolTables.studentsSearchPlaceholder'));
+    await expect(search).toBeVisible({ timeout: 60_000 });
     // the honest total for the seeded roster (4 school students at this point)
     await expect(page.getByText(/4 students/)).toBeVisible({ timeout: 20_000 });
-    const search = page.getByPlaceholder(cat(en, 'Ops.schoolTables.studentsSearchPlaceholder'));
     await search.fill('Surf Two');
-    await page.waitForTimeout(600);
-    await expect(page.getByRole('row', { hasText: 'Surf Two' }).first()).toBeVisible({ timeout: 20_000 });
-    await expect(page.getByRole('row', { hasText: 'Surf One' })).toHaveCount(0);
+    await expect(page.getByRole('row').filter({ hasText: 'Surf Two' }).first()).toBeVisible({ timeout: 20_000 });
+    // self-reporting: every remaining row must be the search hit
+    await expect(async () => {
+      const texts = (await page.getByRole('row').allTextContents()).filter((text) => text.trim() !== '');
+      const misses = texts.filter((text) => !text.includes('Surf Two'));
+      expect(misses, `rows after search 'Surf Two': ${JSON.stringify(texts)}`).toHaveLength(0);
+    }).toPass({ timeout: 20_000 });
   });
 
   test('OPS-020 ops student profile panel opens from a row', async () => {
-    const row = page.getByRole('row', { hasText: 'Surf Two' }).first();
-    await row.getByRole('button', { name: 'Row actions' }).click();
-    await page.getByRole('menuitem', { name: cat(en, 'Ops.schoolTables.opsProfileOpen') }).click();
-    await expect(page.locator('[data-slot="ops-student-profile"]')).toBeVisible({ timeout: 30_000 });
+    // capture the profile wire exchange so a failure names the real response
+    const profileWire: string[] = [];
+    page.on('response', (response) => {
+      if (response.url().includes('/profile')) {
+        void response
+          .text()
+          .then((body) => profileWire.push(`${response.status()} ${body.slice(0, 220)}`))
+          .catch(() => profileWire.push(`${response.status()} <unreadable>`));
+      }
+    });
+    // the row menu can close under a mid-refetch on the shared server — retry
+    // WITH a fresh navigation each attempt (a reload also picks up freshly
+    // compiled bundles; Escape opens the global search palette, never use it)
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      await gotoSurfDetail('students');
+      const row = page.getByRole('row').filter({ hasText: 'Surf Two' }).first();
+      await expect(row).toBeVisible({ timeout: 20_000 });
+      await row.getByRole('button', { name: 'Row actions' }).click();
+      await page.getByRole('menuitem', { name: cat(en, 'Ops.schoolTables.opsProfileOpen') }).click();
+      const opened = await page
+        .locator('[data-slot="ops-student-profile"]')
+        .waitFor({ state: 'visible', timeout: 20_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (opened) break;
+      if (attempt === 2) {
+        await expect(
+          page.locator('[data-slot="ops-student-profile"]'),
+          `profile wire: ${profileWire.join(' || ') || 'no /profile response seen'}`,
+        ).toBeVisible({ timeout: 30_000 });
+      }
+    }
     await expect(page.locator('[data-slot="ops-student-profile"]')).toContainText('Surf Two');
-    await page.keyboard.press('Escape');
   });
 
   test('OPS-021 ops student deactivate confirms and removes the student from the active list', async () => {
@@ -954,15 +1053,23 @@ test.describe('W2 ops surfaces battery', () => {
     const search = page.getByPlaceholder(cat(en, 'Ops.schoolTables.studentsSearchPlaceholder'));
     await search.fill('');
     await page.waitForTimeout(600);
-    const row = page.getByRole('row', { hasText: 'Surf Three' }).first();
+    const row = page.getByRole('row').filter({ hasText: 'Surf Three' }).first();
     await row.getByRole('button', { name: 'Row actions' }).click();
     await page.getByRole('menuitem', { name: cat(en, 'Ops.schoolTables.studentsActionDeactivate') }).click();
     await expect(page.getByText(/Deactivate .*Surf Three/)).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: cat(en, 'Ops.schoolTables.studentsDeactivateConfirmCta') }).click();
-    // the active list drops them: the honest filtered-miss state, not a crash
-    await search.fill('Surf Three');
-    await page.waitForTimeout(600);
-    await expect(page.getByRole('row', { hasText: 'Surf Three' })).toHaveCount(0, { timeout: 20_000 });
+    // the ACTIVE list drops them (the status chip drives the URL filter):
+    // status=active → gone; status=archived → honestly listed as archived
+    await gotoRetry(page, `/dashboard/ops/schools/${surfId}?tab=students&status=active`, () =>
+      expect(page.locator('[data-surface="ops-school-detail"]')).toBeVisible({ timeout: 60_000 }),
+    );
+    const activeSearch = page.getByPlaceholder(cat(en, 'Ops.schoolTables.studentsSearchPlaceholder'));
+    await activeSearch.fill('Surf Three');
+    await expect(page.getByRole('row').filter({ hasText: 'Surf Three' })).toHaveCount(0, { timeout: 20_000 });
+    await gotoRetry(page, `/dashboard/ops/schools/${surfId}?tab=students&status=archived`, () =>
+      expect(page.locator('[data-surface="ops-school-detail"]')).toBeVisible({ timeout: 60_000 }),
+    );
+    await expect(page.getByRole('row').filter({ hasText: 'Surf Three' }).first()).toBeVisible({ timeout: 20_000 });
   });
 
   test('OPS-022 teachers tab lists the teacher and the status filter narrows', async () => {
@@ -979,7 +1086,7 @@ test.describe('W2 ops surfaces battery', () => {
   });
 
   test('OPS-023 ops teacher row action suspends and reactivates with confirm', async () => {
-    const row = page.getByRole('row', { hasText: 'Surf Teacher' }).first();
+    const row = page.getByRole('row').filter({ hasText: 'Surf Teacher' }).first();
     await row.getByRole('button', { name: 'Row actions' }).click();
     await page.getByRole('menuitem', { name: cat(en, 'Ops.schoolTables.actions.suspendTeacher') }).click();
     await expect(page.getByText(/Suspend .*Surf Teacher\?/)).toBeVisible();
@@ -990,7 +1097,7 @@ test.describe('W2 ops surfaces battery', () => {
     );
     await expect(page.getByText(/Surf Teacher/).first()).toBeVisible({ timeout: 30_000 });
     // reactivate through the same row action
-    const suspendedRow = page.getByRole('row', { hasText: 'Surf Teacher' }).first();
+    const suspendedRow = page.getByRole('row').filter({ hasText: 'Surf Teacher' }).first();
     await suspendedRow.getByRole('button', { name: 'Row actions' }).click();
     await page.getByRole('menuitem', { name: cat(en, 'Ops.schoolTables.actions.reactivateTeacher') }).click();
     await page.getByRole('button', { name: cat(en, 'Ops.schoolTables.actions.confirm.reactivateTeacher.cta') }).click();
@@ -1008,7 +1115,28 @@ test.describe('W2 ops surfaces battery', () => {
   });
 
   test('OPS-032 onboarding modal mints the link, Send dispatches the email', async () => {
-    await gotoSurfDetail();
+    // the surf school is onboarded in beforeAll (its panel is past Send) —
+    // the Send flow needs a school whose onboarding is NOT started: mint one
+    const onboardName = `W2 Onboard ${STAMP}`;
+    const onboard = await opsApi(
+      'POST',
+      '/api/schools',
+      {
+        name: onboardName,
+        suburb: 'Fitzroy',
+        state: 'VIC',
+        sector: 'government',
+        contact_name: 'W2 Onboard Owner',
+        contact_email: `w2-onboard-${STAMP}@schooltest.local`,
+        portal: { plan: 'standard', status: 'active', send_owner_invitation: false },
+      },
+      { 'Idempotency-Key': `w2-onboard-${STAMP}` },
+    );
+    expect(onboard.status, 'onboard fixture school').toBe(201);
+    onboardSchoolId = onboard.json.data.documentId as string;
+    await gotoRetry(page, `/dashboard/ops/schools/${onboardSchoolId}`, () =>
+      expect(page.locator('[data-surface="ops-school-detail"]')).toBeVisible({ timeout: 60_000 }),
+    );
     const panel = page.locator('[data-slot="ops-invitation-card"]');
     await panel.getByRole('button', { name: cat(en, 'Ops.onboard.button') }).click();
     const dialog = page.locator('[data-slot="ops-onboard-dialog"]');
@@ -1078,8 +1206,9 @@ test.describe('W2 ops surfaces battery', () => {
     await gotoSchools(page);
     await searchSchool(page, SURF_NAME);
     await schoolRow(page, SURF_NAME).getByRole('checkbox').click();
-    const bar = page.locator('[role="region"][aria-label*="selected"]');
+    const bar = page.locator('[data-slot="directory-bulk-bar"]');
     await expect(bar).toBeVisible({ timeout: 20_000 });
+    await expect(bar.locator('[role="status"]')).toContainText(/1 \w+ selected/);
     await expect(bar).toContainText(cat(en, 'Ops.schools.bulkExport'));
     await expect(bar).toContainText(cat(en, 'Ops.schools.bulkSuspend'));
     await expect(bar).toContainText(cat(en, 'Ops.schools.bulkArchive'));
@@ -1087,34 +1216,120 @@ test.describe('W2 ops surfaces battery', () => {
   });
 
   test('OPS-013 bulk suspend applies to all selected schools with per-school feedback', async () => {
-    // second active target: the chain school's account_status is honestly
-    // flipped back through the sanctioned PATCH (the UI restore path lands
-    // pending_setup by design)
-    const patched = await opsApi('PATCH', `/api/schools/${documentId}`, { account_status: 'active' });
-    expect(patched.status, `chain school re-activated for the bulk run: ${JSON.stringify(patched.json)}`).toBe(200);
+    // second target: a scratch EMPTY school minted here (active by the D-11
+    // concierge default) so the run is self-contained; empty → deletable in
+    // cleanup, unlike the seeded-classes surfaces school
+    const buddyName = `W2 Surfaces Buddy ${STAMP}`;
+    const buddy = await opsApi(
+      'POST',
+      '/api/schools',
+      {
+        name: buddyName,
+        suburb: 'Fitzroy',
+        state: 'VIC',
+        sector: 'government',
+        contact_name: 'W2 Bulk Buddy',
+        contact_email: `w2-bulk-buddy-${STAMP}@schooltest.local`,
+        portal: { plan: 'standard', status: 'active', send_owner_invitation: false },
+      },
+      { 'Idempotency-Key': `w2-bulk-buddy-${STAMP}` },
+    );
+    expect(buddy.status, `buddy school create: ${JSON.stringify(buddy.json)}`).toBe(201);
+    const buddyId = buddy.json.data.documentId as string;
+    // onboard the buddy too — bulkSuspend eligibility is portal-Active, and
+    // the portal precedence only reads Active once onboarding is terminal
+    const buddyLink = await opsApi('POST', `/api/schools/${buddyId}/onboarding-link`, {
+      first_name: 'Buddy',
+      last_name: 'Owner',
+      contact_email: `w2-buddy-admin-${STAMP}@schooltest.local`,
+    });
+    expect(buddyLink.status, 'buddy onboarding link').toBe(201);
+    const buddyToken = String(buddyLink.json.data.token ?? '');
+    const buddyComplete = await page.request.post(
+      `${API}/api/school-onboarding/${buddyToken}/complete`,
+      {
+        data: {
+          payload: { steps: { details: true } },
+          admin: {
+            first_name: 'Buddy',
+            last_name: 'Owner',
+            email: `w2-buddy-admin-${STAMP}@schooltest.local`,
+            password: 'W2BuddyOwner123!',
+          },
+          teachers: [],
+        },
+      },
+    );
+    expect(buddyComplete.status(), 'buddy onboarding completed').toBe(200);
 
-    await gotoSchools(page);
-    await searchSchool(page, 'W2');
+    // the directory reads its filter from the URL; the run stamp matches ONLY
+    // this run's two fixtures (older runs' schools share just the prefix)
+    await gotoRetry(page, `/dashboard/ops/schools?q=${STAMP}`, () =>
+      expect(page.locator('[data-surface="ops-schools"]')).toBeVisible({ timeout: 60_000 }),
+    );
+    await expect(schoolRow(page, SURF_NAME)).toBeVisible({ timeout: 30_000 });
     await schoolRow(page, SURF_NAME).getByRole('checkbox').click();
-    await schoolRow(page, CHAIN_NAME).getByRole('checkbox').click();
-    const bar = page.locator('[role="region"][aria-label*="selected"]');
-    await expect(bar).toContainText('2 schools selected', { timeout: 20_000 });
-    await bar.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend') }).click();
-    // the design's bulk confirm owns the dispatch
-    const confirm = page.locator('[role="dialog"]').filter({ hasText: /Suspend 2 selected schools/ });
-    await expect(confirm).toBeVisible({ timeout: 20_000 });
-    await confirm.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend') }).click();
+    await schoolRow(page, buddyName).getByRole('checkbox').click();
+    const bar = page.locator('[data-slot="directory-bulk-bar"]');
+    await expect(bar.locator('[role="status"]')).toContainText(/2 \w+ selected/, { timeout: 20_000 });
+    // The design's bulk confirm owns the dispatch: bar click → confirm → CTA.
+    // The decisive proof is the WIRE: exactly two single-school suspend POSTs
+    // (one per selected school — the kit loops the proven single write).
+    const suspendPosts: number[] = [];
+    page.on('response', (response) => {
+      if (response.url().includes('/suspend') && response.request().method() === 'POST') {
+        suspendPosts.push(response.status());
+      }
+    });
+    // OpsConfirmDialog renders role="alertdialog" (not dialog)
+    const anyDialog = page.locator('[role="alertdialog"]');
+    const bulkButton = bar.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend') });
+    // the ops write gate flips read-only whenever /ops/capabilities hiccups
+    // (API hot-reloads on the shared rig) — wait it out, then dispatch
+    for (let attempt = 0; attempt < 4; attempt += 1) {
+      const enabled = await bulkButton
+        .waitFor({ state: 'visible', timeout: 15_000 })
+        .then(() => bulkButton.isEnabled())
+        .catch(() => false);
+      if (enabled) {
+        await bulkButton.click();
+        const opened = await anyDialog
+          .waitFor({ state: 'visible', timeout: 6_000 })
+          .then(() => true)
+          .catch(() => false);
+        if (opened) break;
+      }
+      await page.waitForTimeout(5_000);
+    }
+    await expect(anyDialog).toBeVisible({ timeout: 20_000 });
+    await anyDialog.getByRole('button', { name: cat(en, 'Ops.schools.bulkSuspend') }).click();
+    await expect
+      .poll(() => suspendPosts.filter((status) => status === 200).length, { timeout: 60_000 })
+      .toBe(2);
     // the per-run disposition toast counts what the run PROVED (never the selection size)
     await expect(page.getByText('2 schools updated.')).toBeVisible({ timeout: 60_000 });
     // the rows flip to Suspended
     await expect(schoolRow(page, SURF_NAME)).toContainText('Suspended', { timeout: 30_000 });
-    await expect(schoolRow(page, CHAIN_NAME)).toContainText('Suspended', { timeout: 30_000 });
+    await expect(schoolRow(page, buddyName)).toContainText('Suspended', { timeout: 30_000 });
     // the toast's Undo reverts EVERY school inside its 6s window
     await page.getByRole('button', { name: cat(en, 'Ops.detail.actions.undo') }).click().catch(() => {});
-    await expect(schoolRow(page, SURF_NAME)).not.toContainText('Suspended', { timeout: 20_000 }).catch(async () => {
-      // undo missed its window — the API path is the honest cleanup, noted here
+    const undone = await expect
+      .poll(async () => {
+        const texts = await page.getByRole('row').allTextContents();
+        const stillSuspended = texts.some(
+          (text) => text.includes(SURF_NAME) && text.includes('Suspended'),
+        );
+        return stillSuspended ? 'still-suspended' : 'ok';
+      }, { timeout: 20_000 })
+      .toBe('ok')
+      .then(() => true)
+      .catch(() => false);
+    if (!undone) {
+      // undo missed the toast window — the API path is the honest cleanup
       console.warn('[w2] bulk undo missed the toast window; reactivating via the API');
-      await opsApi('POST', `/api/ops/schools/${surfId}/activate`, {});
-    });
+      await opsApi('POST', `/api/ops/schools/${buddyId}/activate`, {});
+    }
+    // hygiene: the buddy is empty, so the sanctioned DELETE takes it away
+    await opsApi('DELETE', `/api/ops/schools/${buddyId}`);
   });
 });

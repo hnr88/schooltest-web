@@ -35,8 +35,15 @@ export const opsStudentProfileSchema = z.strictObject({
   date_of_birth: z.string().nullable(),
   acara_phase: z.enum(OPS_ACARA_PHASES).nullable(),
   status: z.enum(OPS_STUDENT_STATUSES),
-  updatedAt: z.iso.datetime(),
-  class: z.strictObject({ documentId: documentIdSchema, name: z.string().nullable() }).nullable(),
+  // NO updatedAt: the server's profile projection never carries it, so this
+  // strict schema demanding an absent key rejected EVERY real profile and the
+  // panel rendered its error state for every student (NIGHT-2 W2 find).
+  // The server's class sub-object carries its numeric `id` alongside the
+  // documentId — strictObject must mirror the wire or every enrolled student
+  // rejects (NIGHT-2 W2 find: "Unrecognized key: id" killed the panel).
+  class: z
+    .strictObject({ id: z.number(), documentId: documentIdSchema, name: z.string().nullable() })
+    .nullable(),
   latest_result: opsStudentLatestResultSchema.nullable(),
   attempts: z
     .array(

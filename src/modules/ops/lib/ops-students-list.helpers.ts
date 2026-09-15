@@ -46,8 +46,15 @@ export function opsStudentStatusTone(
   return 'secondary';
 }
 
-/** "Emma Tran" / "Emma" — a mononym keeps its single name, never a filler. */
-export function opsStudentFullName(row: OpsStudentRow): string {
+/**
+ * "Emma Tran" / "Emma" — a mononym keeps its single name, never a filler.
+ * Takes a structural subset (the student profile read has the same two name
+ * fields but no list-row `updatedAt`), so both the Students tab rows and the
+ * profile panel share one name formatter.
+ */
+export function opsStudentFullName(
+  row: Pick<OpsStudentRow, 'given_name' | 'family_name'>,
+): string {
   const family = (row.family_name ?? '').trim();
   return family === '' ? row.given_name.trim() : `${row.given_name.trim()} ${family}`;
 }
