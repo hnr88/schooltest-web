@@ -94,5 +94,3 @@ export function ClassErrorPatternsCard({ rows }: ClassErrorPatternsCardProps) {
     </SectionCard>
   );
 }
-
-export { ClassErrorPatternsCard };
