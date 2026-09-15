@@ -10,13 +10,15 @@ import { useAuthStore } from '@/modules/auth/stores/use-auth-store';
 // NIGHT-2 AUTH-018: the anonymous bounce carries the attempted route
 // so sign-in can return the visitor to where they were heading.
 import { signInHref } from '@/modules/auth/lib/sign-in-redirect';
+import type { RequireRoleOptions } from '@/modules/auth/types/hooks.types';
 
 // Client guard primitive for teacher-only routes (F-WEB-TEACHER-REPORT):
 // hydrates the JWT from localStorage, then resolves the identity through
 // GET /api/users/me — whose payload already carries `role.type` — and sends
 // anyone who is not a teacher back to a route they can actually open. This is
 // navigation hygiene only; C-4/C-11 answer 403 to a wrong-role JWT regardless.
-export function useRequireTeacher() {
+// NIGHT-2 (W-R4, TEA-063): `bounce: false` for multi-role audience gates.
+export function useRequireTeacher({ bounce = true }: RequireRoleOptions = {}) {
   const token = useAuthStore((state) => state.token);
   const hydrated = useAuthStore((state) => state.hydrated);
   const hydrate = useAuthStore((state) => state.hydrate);
@@ -56,7 +58,8 @@ export function useRequireTeacher() {
     // NIGHT-2 (W8): except a resolved PARENT — the guard stays mounted so the
     // caller can render ParentViewsUnavailable (the mask, not an error, and
     // not a silent redirect that looks like a broken link).
-    if (!isTeacher) {
+    // NIGHT-2 (W-R4): unless the caller opted out (multi-role audience gate).
+    if (!isTeacher && bounce) {
       if (roleType === PARENT_ROLE_TYPE) return;
       router.replace('/dashboard');
     }

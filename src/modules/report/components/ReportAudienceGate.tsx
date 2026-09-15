@@ -51,9 +51,15 @@ export function ReportAudienceGate({ staff, parent }: ReportAudienceGateProps) {
   const hydrate = useAuthStore((state) => state.hydrate);
   const sessionExpired = useAuthStore((state) => state.sessionExpired);
   const router = useRouter();
-  const teacher = useRequireTeacher();
-  const schoolAdmin = useRequireSchoolAdmin();
-  const ops = useRequireOps();
+  // NIGHT-2 (W-R4, TEA-063): `bounce: false` on all three — this gate mounts
+  // them simultaneously, so each non-matching hook's wrong-role bounce would
+  // yank the caller off the page the instant /api/users/me resolved (a teacher
+  // landed on /dashboard/reports and was immediately sent to /dashboard, then
+  // /dashboard/results — the reports list was unreachable for every role).
+  // Arm selection and routing stay here, below, where the resolved role is known.
+  const teacher = useRequireTeacher({ bounce: false });
+  const schoolAdmin = useRequireSchoolAdmin({ bounce: false });
+  const ops = useRequireOps({ bounce: false });
 
   useEffect(() => {
     if (!hydrated) hydrate();
