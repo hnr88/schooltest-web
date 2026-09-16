@@ -25,7 +25,8 @@ export function studentDetail(result: ResultView): StudentDetailView {
       latest: { value: score, satAt: history.at(-1)?.sat_at ?? null },
       growth,
       span: series.length < 2 || baseline === null ? null : scoreSpan(baseline.value, score),
-      sittings: { count: history.length, since: history.at(0)?.sat_at ?? null },
+      // Scored sittings only: an empty or under-floor attempt is not a sitting on this trend.
+      sittings: { count: series.length, since: baseline?.satAt ?? null },
     },
     series,
     chart: studentChart(series),

@@ -45,7 +45,8 @@ describe('studentDetail — recorded Dilnoza (GET /results/:id, 8 sittings, 3 sc
       latest: { value: 41, satAt: '2026-09-10' },
       growth: view.overall.growth,
       span: { from: 76, to: 41, difference: -35 },
-      sittings: { count: 8, since: '2026-09-10' },
+      // 8 history points, 3 scored: only scored sittings count.
+      sittings: { count: 3, since: '2026-09-10' },
     });
   });
 
@@ -160,7 +161,7 @@ describe('studentDetail — recorded Amara (single-strand vocabulary, scored gat
       baseline: { n: 4, satAt: '2026-09-10', value: 42 },
       latest: { value: 42, satAt: '2026-09-11' },
       span: { from: 42, to: 42, difference: 0 },
-      sittings: { count: 8, since: '2026-09-10' },
+      sittings: { count: 5, since: '2026-09-10' },
     });
   });
 });
