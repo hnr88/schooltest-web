@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expect as baseExpect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 import { apiClassDetail, schoolAdminJwt } from './helpers/class-detail';
 import { runSql } from './helpers/auth-db';
@@ -14,6 +14,11 @@ import { loginAs } from './helpers/roles';
 // div[role=row] grids (no <table>, no column-header row — DirectoryRows.tsx is
 // deliberate), so every locator here is role/aria or data-slot based.
 const en = loadMessages('en');
+
+// The shared dev server compiles routes on demand under fleet load; the config
+// default 5s expect budget is too tight for cold first renders (e.g. the
+// /invite acceptance page). Scoped to THIS file — no other suite is affected.
+const expect = baseExpect.configure({ timeout: 15_000 });
 
 // Tests are deliberately INDEPENDENT (config runs fullyParallel): the
 // teacher-lifecycle battery mints its own invitation through the real
@@ -53,10 +58,6 @@ async function deleteStudentViaOps(request: APIRequestContext, documentId: strin
 }
 
 test.setTimeout(300_000);
-// The shared dev server compiles routes on demand under fleet load; the config
-// default 5s expect budget is too tight for cold first renders (e.g. the
-// /invite acceptance page). Scoped to THIS file — no other suite is affected.
-test.use({ expect: { timeout: 15_000 } });
 
 const toDelete: string[] = [];
 let throwawayTeacher: { email: string; name: string } | null = null;

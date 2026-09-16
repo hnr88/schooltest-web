@@ -112,7 +112,7 @@ test('D7: double-clicking "Log in" fires exactly ONE POST /api/auth/local', asyn
   // (the button label flips to "Logging in…" a re-render after click one).
   await button.click();
   await page.evaluate(() => {
-    const form = document.querySelector('button[type="submit"]')?.form;
+    const form = document.querySelector<HTMLButtonElement>('button[type="submit"]')?.form;
     if (form) form.requestSubmit();
   });
 

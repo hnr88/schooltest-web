@@ -26,8 +26,8 @@ import { signInTeacher } from '../helpers/teacher-rail';
 /** The API base the web app itself points at, IPv4-pinned for Node (see teacher-contract-live.spec.ts). */
 const API_BASE = (() => {
   const raw = readFileSync(path.resolve(process.cwd(), '.env'), 'utf8');
-  const line = raw.split('\n').find((l) => l.startsWith('NEXT_PUBLIC_API_BASE_URL='));
-  const url = new URL((line ?? '=').slice(line.indexOf('=') + 1).replace(/^['"]|['"]$/g, ''));
+  const line = raw.split('\n').find((l) => l.startsWith('NEXT_PUBLIC_API_BASE_URL=')) ?? '=';
+  const url = new URL(line.slice(line.indexOf('=') + 1).replace(/^['"]|['"]$/g, ''));
   if (url.hostname === 'localhost') url.hostname = '127.0.0.1';
   return url.origin;
 })();
