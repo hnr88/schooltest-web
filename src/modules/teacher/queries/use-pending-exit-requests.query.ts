@@ -12,16 +12,20 @@ import type { PendingExitRequest } from '@/modules/teacher/schemas/exit-request.
 
 // SEMANTIC contract: GET the pending exit requests for the teacher's
 // supervised sittings. The endpoint takes NO sitting parameter — the queue is
-// the teacher-wide one and the panel filters by being mounted for its own
-// sitting. Answers a BARE array of wire rows (nested snake_cased student/
+// the teacher-wide one, so it is narrowed HERE to the sitting the panel is
+// mounted for (another open sitting's requests belong to that sitting's Live
+// tab). Answers a BARE array of wire rows (nested snake_cased student/
 // sitting), Zod-parsed then mapped to the panel's row shape so a shape the
 // contract does not describe throws HERE.
-async function fetchPendingExitRequests(): Promise<PendingExitRequest[]> {
+async function fetchPendingExitRequests(sittingDocumentId: string): Promise<PendingExitRequest[]> {
   const response = await strapi.get(`/api/exit-requests/pending`);
   const wire = pendingExitRequestsWireResponseSchema.parse(response.data);
   return wire
     .map(pendingExitRequestFromWire)
-    .filter((request): request is PendingExitRequest => request !== null);
+    .filter(
+      (request): request is PendingExitRequest =>
+        request !== null && request.sittingDocumentId === sittingDocumentId,
+    );
 }
 
 /**
@@ -31,7 +35,7 @@ async function fetchPendingExitRequests(): Promise<PendingExitRequest[]> {
 export function pendingExitRequestsQueryOptions(sittingDocumentId: string) {
   return queryOptions({
     queryKey: ['teacher', 'exit-requests', 'pending', sittingDocumentId],
-    queryFn: () => fetchPendingExitRequests(),
+    queryFn: () => fetchPendingExitRequests(sittingDocumentId),
     staleTime: 0,
     retry: false,
   });

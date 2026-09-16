@@ -5610,13 +5610,14 @@
         }
       },
       "exitRequests": {
-        "title": "テスト退出の申請（{count, plural, other {#件が待機中}}）",
-        "loading": "退出申請を読み込んでいます…",
-        "loadError": "退出申請を読み込めませんでした。",
-        "empty": "このテストの退出を待っている生徒はいません。",
-        "approve": "承認",
-        "deny": "却下",
-        "testFallback": "このテスト"
+        "title": "Permintaan keluar ({count, plural, one {# menunggu} other {# menunggu}})",
+        "loading": "Memuatkan permintaan keluar…",
+        "loadError": "Permintaan keluar tidak dapat dimuatkan.",
+        "empty": "Tiada pelajar menunggu untuk keluar dari ujian ini.",
+        "approve": "Luluskan",
+        "deny": "Tolak",
+        "testFallback": "Ujian ini",
+        "decisionError": "Permintaan itu tidak dapat dijawab — pelajar mungkin telah menariknya balik. Senarai telah dimuat semula."
       },
       "header": {
         "title": "Hari ujian",

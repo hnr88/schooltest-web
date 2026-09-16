@@ -99,6 +99,54 @@ describe('the live tab pending-exit-requests panel', () => {
     expect(strapi.get).toHaveBeenCalledWith('/api/exit-requests/pending');
   });
 
+  test('draws only the requests of the sitting the panel is mounted for', async () => {
+    const otherSitting = {
+      ...REQUEST,
+      id: 'req-2',
+      reason: 'Another class',
+      sitting: { ...REQUEST.sitting, document_id: 'sitting-doc-2' },
+    };
+    await act(async () => {
+      mount(<PendingExitRequestsPanel sittingDocumentId={SITTING} />, [REQUEST, otherSitting]);
+    });
+    await flushUntil(
+      () => (host as HTMLDivElement).querySelectorAll('[data-slot="pending-exit-request"]').length > 0,
+    );
+    const view = host as HTMLDivElement;
+
+    expect(view.querySelectorAll('[data-slot="pending-exit-request"]')).toHaveLength(1);
+    expect(view.querySelector('[data-request-id="req-2"]')).toBeNull();
+    expect(view.textContent).not.toContain('Another class');
+  });
+
+  test('a refused decision (the student withdrew) says so and refetches the queue', async () => {
+    await act(async () => {
+      mount(<PendingExitRequestsPanel sittingDocumentId={SITTING} />, QUEUE);
+    });
+    await flushUntil(
+      () => (host as HTMLDivElement).querySelectorAll('[data-slot="pending-exit-request"]').length > 0,
+    );
+    strapi.post.mockRejectedValue(Object.assign(new Error('409'), { response: { status: 409 } }));
+    strapi.get.mockResolvedValue({ data: [] });
+    const approve = (host as HTMLDivElement)
+      .querySelector('[data-request-id="req-1"]')
+      ?.querySelector<HTMLButtonElement>('button:first-of-type');
+
+    await act(async () => {
+      approve?.click();
+    });
+    await flushUntil(
+      () => (host as HTMLDivElement).querySelector('[data-slot="pending-exit-requests-empty"]') !== null,
+    );
+    const view = host as HTMLDivElement;
+
+    expect(view.querySelector('[data-slot="pending-exit-requests-decision-error"]')?.textContent).toContain(
+      'could not be answered',
+    );
+    expect(view.querySelectorAll('[data-slot="pending-exit-request"]')).toHaveLength(0);
+    expect(strapi.get).toHaveBeenCalledTimes(2);
+  });
+
   test('an empty queue says so instead of drawing rows', async () => {
     await act(async () => {
       mount(<PendingExitRequestsPanel sittingDocumentId={SITTING} />, []);

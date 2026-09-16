@@ -102,6 +102,11 @@ export function PendingExitRequestsPanel({ sittingDocumentId }: PendingExitReque
           {t('loadError')}
         </p>
       ) : null}
+      {decide.isError ? (
+        <p role="alert" data-slot="pending-exit-requests-decision-error" className="px-4 pt-3 text-[13px] text-[#B42318]">
+          {t('decisionError')}
+        </p>
+      ) : null}
       {!queue.isPending && !queue.isError && requests.length === 0 ? (
         <p data-slot="pending-exit-requests-empty" className="px-4 py-6 text-[13.5px] text-[#6B7280]">
           {t('empty')}

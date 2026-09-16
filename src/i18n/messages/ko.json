@@ -5610,13 +5610,14 @@
         }
       },
       "exitRequests": {
-        "title": "Permintaan keluar ({count, plural, one {# menunggu} other {# menunggu}})",
-        "loading": "Memuatkan permintaan keluar…",
-        "loadError": "Permintaan keluar tidak dapat dimuatkan.",
-        "empty": "Tiada pelajar menunggu untuk keluar dari ujian ini.",
-        "approve": "Luluskan",
-        "deny": "Tolak",
-        "testFallback": "Ujian ini"
+        "title": "퇴장 요청({count, plural, other {#개 대기 중}})",
+        "loading": "퇴장 요청을 불러오는 중…",
+        "loadError": "퇴장 요청을 불러올 수 없습니다.",
+        "empty": "이 시험을 떠나기를 기다리는 학생이 없습니다.",
+        "approve": "승인",
+        "deny": "거부",
+        "testFallback": "이 시험",
+        "decisionError": "이 요청에 응답할 수 없습니다. 학생이 요청을 취소했을 수 있습니다. 목록을 새로 고쳤습니다."
       },
       "header": {
         "title": "시험일",

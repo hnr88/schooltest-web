@@ -28,14 +28,15 @@ async function decideExitRequest(
 
 /**
  * Approve (`decision: 'approved'`) or deny (`decision: 'denied'`) a pending
- * exit request by id. Success invalidates the queue — the answered request
- * leaves it, and an approved sitting flag lands with the next monitor read.
+ * exit request by id. The queue is refetched whatever the outcome — a success
+ * removes the answered request, and a failure (typically a 409: the student
+ * withdrew it meanwhile) must not leave a stale row with live buttons.
  */
 export function useExitRequestDecisionMutation() {
   const queryClient = useQueryClient();
   return useMutation<ExitRequestDecisionResponse, unknown, { requestId: string; decision: ExitRequestDecision }>({
     mutationFn: ({ requestId, decision }) => decideExitRequest(requestId, decision),
-    onSuccess: () => {
+    onSettled: () => {
       // Invalidate by prefix: every sitting's pending queue the portal cached.
       void queryClient.invalidateQueries({ queryKey: ['teacher', 'exit-requests'] });
     },

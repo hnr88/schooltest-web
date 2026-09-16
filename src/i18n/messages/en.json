@@ -5606,7 +5606,8 @@
         "empty": "No student is waiting to leave this test.",
         "approve": "Approve",
         "deny": "Deny",
-        "testFallback": "This test"
+        "testFallback": "This test",
+        "decisionError": "That request could not be answered — the student may have withdrawn it. The list has been refreshed."
       },
       "header": {
         "title": "Test day",

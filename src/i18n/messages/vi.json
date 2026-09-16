@@ -5619,13 +5619,14 @@
         }
       },
       "exitRequests": {
-        "title": "Permintaan keluar ({count, plural, other {# menunggu}})",
-        "loading": "Memuatkan permintaan keluar…",
-        "loadError": "Permintaan keluar tidak dapat dimuatkan.",
-        "empty": "Tiada pelajar menunggu untuk keluar dari ujian ini.",
-        "approve": "Luluskan",
-        "deny": "Tolak",
-        "testFallback": "Ujian ini"
+        "title": "Yêu cầu rời bài kiểm tra ({count, plural, other {# đang chờ}})",
+        "loading": "Đang tải yêu cầu rời bài…",
+        "loadError": "Không thể tải các yêu cầu rời bài.",
+        "empty": "Không có học sinh nào đang chờ rời bài kiểm tra này.",
+        "approve": "Chấp thuận",
+        "deny": "Từ chối",
+        "testFallback": "Bài kiểm tra này",
+        "decisionError": "Không thể trả lời yêu cầu này — học sinh có thể đã rút lại. Danh sách đã được làm mới."
       },
       "header": {
         "title": "Ngày kiểm tra",
