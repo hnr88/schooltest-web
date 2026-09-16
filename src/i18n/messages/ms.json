@@ -5582,6 +5582,15 @@
           }
         }
       },
+      "exitRequests": {
+        "title": "テスト退出の申請（{count, plural, other {#件が待機中}}）",
+        "loading": "退出申請を読み込んでいます…",
+        "loadError": "退出申請を読み込めませんでした。",
+        "empty": "このテストの退出を待っている生徒はいません。",
+        "approve": "承認",
+        "deny": "却下",
+        "testFallback": "このテスト"
+      },
       "header": {
         "title": "Hari ujian",
         "subtitleLive": "{className} · {test} · {count, plural, other {# murid}} · sedang berjalan",

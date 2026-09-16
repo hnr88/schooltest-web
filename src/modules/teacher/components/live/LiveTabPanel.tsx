@@ -8,6 +8,7 @@ import { ConnectionAccordion } from '@/modules/teacher/components/live/Connectio
 import { LiveActivityCard } from '@/modules/teacher/components/live/LiveActivityCard';
 import { LiveStudentsSection } from '@/modules/teacher/components/live/LiveStudentsSection';
 import { NoSittingCard } from '@/modules/teacher/components/live/NoSittingCard';
+import { PendingExitRequestsPanel } from '@/modules/teacher/components/live/PendingExitRequestsPanel';
 import { PreviousSessions } from '@/modules/teacher/components/live/PreviousSessions';
 import { RunSittingCard } from '@/modules/teacher/components/live/RunSittingCard';
 import { TeacherButton } from '@/modules/teacher/components/v2/TeacherButton';
@@ -87,6 +88,7 @@ function LiveTabPanel({ classDocumentId, sessionId }: { classDocumentId: string;
             monitor={live.monitor}
             settings={live.settings}
           />
+          <PendingExitRequestsPanel sittingDocumentId={sitting.sitting_document_id} />
           <ConnectionAccordion
             sittingDocumentId={sitting.sitting_document_id}
             monitor={live.monitor}

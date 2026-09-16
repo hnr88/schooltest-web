@@ -5572,6 +5572,15 @@
           }
         }
       },
+      "exitRequests": {
+        "title": "Exit requests ({count, plural, one {# waiting} other {# waiting}})",
+        "loading": "Loading exit requests…",
+        "loadError": "The exit requests could not be loaded.",
+        "empty": "No student is waiting to leave this test.",
+        "approve": "Approve",
+        "deny": "Deny",
+        "testFallback": "This test"
+      },
       "header": {
         "title": "Test day",
         "subtitleLive": "{className} · {test} · {count, plural, one {# student} other {# students}} · live now",

@@ -5582,6 +5582,15 @@
           }
         }
       },
+      "exitRequests": {
+        "title": "퇴장 요청({count, plural, other {#개 대기 중}})",
+        "loading": "퇴장 요청을 불러오는 중…",
+        "loadError": "퇴장 요청을 불러올 수 없습니다.",
+        "empty": "이 시험을 떠나기를 기다리는 학생이 없습니다.",
+        "approve": "승인",
+        "deny": "거부",
+        "testFallback": "이 시험"
+      },
       "header": {
         "title": "วันสอบ",
         "subtitleLive": "{className} · {test} · นักเรียน {count} คน · กำลังสอบอยู่",
