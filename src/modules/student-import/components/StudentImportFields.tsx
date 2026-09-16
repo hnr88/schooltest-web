@@ -30,6 +30,9 @@ export function StudentImportFields({
   return (
     <div data-slot="student-import-fields" className={cn('flex flex-col gap-4', className)}>
       <CsvTemplateLink />
+      <p data-slot="student-import-required-columns" className="text-meta text-muted-foreground">
+        {t('requiredColumnsHint')}
+      </p>
       <CsvDropZone
         inputRef={fields.inputRef}
         isDragging={fields.isDragging}

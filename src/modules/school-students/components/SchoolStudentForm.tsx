@@ -58,6 +58,7 @@ export function SchoolStudentForm({ target, classes, showAcaraPhase, onCancel, o
         label={t('email')}
         helperText={t('emailHint')}
         errorText={errors.email?.message}
+        required
       >
         <Input id="student-email" type="email" autoComplete="off" className={OPS_CONTROL_CLASS} {...register('email')} />
       </OpsFieldShell>

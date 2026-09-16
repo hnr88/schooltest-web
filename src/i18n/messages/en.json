@@ -2989,6 +2989,7 @@
     "validation": {
       "givenNameRequired": "Enter the student's given name.",
       "emailInvalid": "Enter a valid email address.",
+      "emailRequired": "Enter the student's email. They use it to join a test.",
       "tooLong": "That is too long.",
       "dobInvalid": "Enter a valid date of birth.",
       "yearsInvalid": "Enter a number of years, for example 2.5.",
@@ -3402,6 +3403,7 @@
       "classHelper": "Students are added to this class. The CSV has no class column.",
       "templateColumnsLabel": "Template columns:",
       "templateDownloadLink": "Download the CSV template",
+      "templateRequiredNote": "Every column is required, and each student needs their own email address to join a test.",
       "progressPending": "Working. Progress appears once the server reports it.",
       "progressPercent": "{pct}% of rows processed",
       "progressLabel": "Import progress",
@@ -4320,6 +4322,7 @@
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
     "pastePlaceholder": "given name,family name,email,date of birth,year level,home language",
+    "requiredColumnsHint": "Every column is required. Each student needs their own email address. It is how they sign in and join a test.",
     "classLabel": "Class",
     "classPlaceholder": "Select a class",
     "rejectHeading": "{count, plural, one {# row could not be imported} other {# rows could not be imported}}",

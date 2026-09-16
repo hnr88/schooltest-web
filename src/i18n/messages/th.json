@@ -2999,6 +2999,7 @@
     "validation": {
       "givenNameRequired": "กรอกชื่อของนักเรียน",
       "emailInvalid": "กรุณากรอกอีเมลที่ถูกต้อง",
+      "emailRequired": "กรอกอีเมลของนักเรียน นักเรียนใช้อีเมลนี้เพื่อเข้าสอบ",
       "tooLong": "ยาวเกินไป",
       "dobInvalid": "กรอกวันเกิดที่ถูกต้อง",
       "yearsInvalid": "กรอกจำนวนปี เช่น 2.5",
@@ -3412,6 +3413,7 @@
       "classHelper": "นักเรียนจะถูกเพิ่มเข้าชั้นเรียนนี้ ไฟล์ CSV ไม่มีคอลัมน์ชั้นเรียน",
       "templateColumnsLabel": "คอลัมน์ของแม่แบบ:",
       "templateDownloadLink": "ดาวน์โหลดแม่แบบ CSV",
+      "templateRequiredNote": "ต้องกรอกทุกคอลัมน์ และนักเรียนแต่ละคนต้องมีอีเมลของตนเองเพื่อเข้าสอบ",
       "progressPending": "กำลังดำเนินการ ความคืบหน้าจะแสดงเมื่อเซิร์ฟเวอร์รายงาน",
       "progressPercent": "ประมวลผลแล้ว {pct}% ของแถว",
       "progressLabel": "ความคืบหน้าการนำเข้า",
@@ -4330,6 +4332,7 @@
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
     "pastePlaceholder": "ชื่อจริง,นามสกุล,อีเมล,วันเกิด,ระดับชั้น,ภาษาแม่",
+    "requiredColumnsHint": "ต้องกรอกทุกคอลัมน์ นักเรียนแต่ละคนต้องมีอีเมลของตนเอง ใช้สำหรับเข้าสู่ระบบและเข้าสอบ",
     "classLabel": "Class",
     "classPlaceholder": "Select a class",
     "rejectHeading": "{count, plural, one {# row could not be imported} other {# rows could not be imported}}",

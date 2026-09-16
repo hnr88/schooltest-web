@@ -442,6 +442,7 @@ function OpsStudentEditForm({
           label={tForm('email')}
           helperText={tForm('emailHint')}
           errorText={errors.email?.message}
+          required
         >
           <Input
             id="ops-student-email"

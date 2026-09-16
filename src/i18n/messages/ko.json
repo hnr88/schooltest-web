@@ -2999,6 +2999,7 @@
     "validation": {
       "givenNameRequired": "학생의 이름을 입력하세요.",
       "emailInvalid": "올바른 이메일 주소를 입력하세요.",
+      "emailRequired": "학생 이메일을 입력하세요. 학생은 이 이메일로 시험에 참여합니다.",
       "tooLong": "내용이 너무 깁니다.",
       "dobInvalid": "올바른 생년월일을 입력하세요.",
       "yearsInvalid": "연수를 입력하세요. 예: 2.5.",
@@ -3412,6 +3413,7 @@
       "classHelper": "학생은 이 학급에 추가됩니다. CSV에는 학급 열이 없습니다.",
       "templateColumnsLabel": "템플릿 열:",
       "templateDownloadLink": "CSV 템플릿 다운로드",
+      "templateRequiredNote": "모든 열은 필수이며, 학생마다 시험에 참여할 고유한 이메일 주소가 필요합니다.",
       "progressPending": "처리 중입니다. 서버가 진행 상황을 보고하면 표시됩니다.",
       "progressPercent": "전체 행의 {pct}% 처리",
       "progressLabel": "가져오기 진행률",
@@ -4330,6 +4332,7 @@
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
     "pastePlaceholder": "이름,성,이메일,생년월일,학년,모국어",
+    "requiredColumnsHint": "모든 열은 필수입니다. 학생마다 고유한 이메일 주소가 필요하며, 이 주소로 로그인하고 시험에 참여합니다.",
     "classLabel": "Class",
     "classPlaceholder": "Select a class",
     "rejectHeading": "{count, plural, one {# row could not be imported} other {# rows could not be imported}}",

@@ -216,6 +216,7 @@ export function OpsStudentImport({
               <span data-surface="ops-import-template-columns">
                 {t('templateColumnsLabel')} {PORTAL_IMPORT_TEMPLATE_COLUMNS.join(', ')}.
               </span>{' '}
+              <span data-surface="ops-import-template-required">{t('templateRequiredNote')}</span>{' '}
               <button
                 type="button"
                 data-surface="ops-import-template-download"

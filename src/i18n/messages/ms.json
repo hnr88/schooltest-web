@@ -2999,6 +2999,7 @@
     "validation": {
       "givenNameRequired": "Masukkan nama diberi murid.",
       "emailInvalid": "Masukkan alamat e-mel yang sah.",
+      "emailRequired": "Masukkan e-mel pelajar. Pelajar menggunakannya untuk menyertai ujian.",
       "tooLong": "Itu terlalu panjang.",
       "dobInvalid": "Masukkan tarikh lahir yang sah.",
       "yearsInvalid": "Masukkan bilangan tahun, contohnya 2.5.",
@@ -3412,6 +3413,7 @@
       "classHelper": "Murid ditambah ke kelas ini. CSV tiada lajur kelas.",
       "templateColumnsLabel": "Lajur templat:",
       "templateDownloadLink": "Muat turun templat CSV",
+      "templateRequiredNote": "Setiap lajur wajib diisi, dan setiap pelajar memerlukan alamat e-mel sendiri untuk menyertai ujian.",
       "progressPending": "Sedang berjalan. Kemajuan muncul sebaik pelayan melaporkannya.",
       "progressPercent": "{pct}% baris telah diproses",
       "progressLabel": "Kemajuan import",
@@ -4330,6 +4332,7 @@
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
     "pastePlaceholder": "nama pertama,nama keluarga,emel,tarikh lahir,tahun persekolahan,bahasa utama",
+    "requiredColumnsHint": "Setiap lajur wajib diisi. Setiap pelajar memerlukan alamat e-mel sendiri untuk log masuk dan menyertai ujian.",
     "classLabel": "Class",
     "classPlaceholder": "Select a class",
     "rejectHeading": "{count, plural, one {# row could not be imported} other {# rows could not be imported}}",

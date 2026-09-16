@@ -3008,6 +3008,7 @@
     "validation": {
       "givenNameRequired": "Nhập tên của học sinh.",
       "emailInvalid": "Nhập một địa chỉ email hợp lệ.",
+      "emailRequired": "Nhập email của học sinh. Học sinh dùng email này để vào bài kiểm tra.",
       "tooLong": "Nội dung quá dài.",
       "dobInvalid": "Nhập ngày sinh hợp lệ.",
       "yearsInvalid": "Nhập số năm, ví dụ 2.5.",
@@ -3421,6 +3422,7 @@
       "classHelper": "Học sinh được thêm vào lớp này. Tệp CSV không có cột lớp.",
       "templateColumnsLabel": "Các cột của mẫu:",
       "templateDownloadLink": "Tải mẫu CSV",
+      "templateRequiredNote": "Tất cả các cột đều bắt buộc và mỗi học sinh cần một địa chỉ email riêng để vào bài kiểm tra.",
       "progressPending": "Đang xử lý. Tiến độ sẽ hiện khi máy chủ báo về.",
       "progressPercent": "Đã xử lý {pct}% số dòng",
       "progressLabel": "Tiến độ nhập",
@@ -4339,6 +4341,7 @@
     "fileInputLabel": "Choose a CSV file",
     "pasteLabel": "Or paste CSV data",
     "pastePlaceholder": "tên,tên họ,email,ngày sinh,khối lớp,ngôn ngữ chính",
+    "requiredColumnsHint": "Tất cả các cột đều bắt buộc. Mỗi học sinh cần một địa chỉ email riêng để đăng nhập và vào bài kiểm tra.",
     "classLabel": "Class",
     "classPlaceholder": "Select a class",
     "rejectHeading": "{count, plural, one {# row could not be imported} other {# rows could not be imported}}",

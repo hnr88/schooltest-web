@@ -86,7 +86,14 @@ export function createSchoolStudentFormSchema(tv: (key: string) => string) {
   return z.object({
     given_name: z.string().trim().min(1, tv('givenNameRequired')).max(100, tv('tooLong')),
     family_name: z.string().trim().max(100, tv('tooLong')),
-    email: z.literal('').or(z.string().trim().max(254, tv('tooLong')).pipe(z.email(tv('emailInvalid')))),
+    // REQUIRED: a student's email is how they sign in and join a test, and the
+    // API refuses a student without one (EMAIL_REQUIRED).
+    email: z
+      .string()
+      .trim()
+      .min(1, tv('emailRequired'))
+      .max(254, tv('tooLong'))
+      .pipe(z.email(tv('emailInvalid'))),
     date_of_birth: z
       .string()
       .refine((value) => value === '' || isValidDateOfBirth(value), tv('dobInvalid')),

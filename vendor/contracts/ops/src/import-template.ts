@@ -8,9 +8,10 @@
  * portal columns existed nowhere at all.
  *
  * Two vocabularies live here on purpose (D-COMPAT):
- *  - LEGACY (no `X-Ops-Portal-Version` header) is the six-column, email-keyed
- *    template the CURRENT preview/commit parser accepts, unchanged. A caller
- *    that omits the header must keep downloading a file that still imports.
+ *  - LEGACY (no `X-Ops-Portal-Version` header) is the email-keyed template
+ *    with a `class` column: first name, last name, email, date of birth, year
+ *    level, first language, class, proficiency level (optional). A caller that
+ *    omits the header downloads exactly the file its parser accepts.
  *  - PORTAL (`X-Ops-Portal-Version: 1`) is the pictured template
  *    (mvp/ops/Ops Portal.dc.html:802) plus a REQUIRED `email` column: given
  *    name, family name, email, date of birth, year level, home language. The
@@ -49,11 +50,18 @@ export const PORTAL_IMPORT_TEMPLATE_COLUMNS = [
  */
 export const PORTAL_IMPORT_TEMPLATE_OPTIONAL_COLUMNS = ['student key'] as const;
 
-/** The six columns today's preview/commit parser requires. Frozen by D-COMPAT. */
+/**
+ * The legacy (unversioned) columns, in download order. Every one must be
+ * present in the header; `proficiency level` is the only cell that may be
+ * blank. A student needs an email, a date of birth and a year level to sit a
+ * test and be reported, so the legacy vocabulary carries them too.
+ */
 export const LEGACY_IMPORT_TEMPLATE_COLUMNS = [
   'first name',
   'last name',
   'email',
+  'date of birth',
+  'year level',
   'first language',
   'class',
   'proficiency level',
@@ -90,6 +98,8 @@ const LEGACY_SAMPLE: Readonly<Record<string, string>> = Object.freeze({
   // RFC 2606 reserved domain: deliverable to nobody, so a sample row that is
   // committed by accident cannot reach a real person.
   email: 'sample.student@example.com',
+  'date of birth': '2013-03-04',
+  'year level': '8',
   'first language': 'english',
   'proficiency level': 'emerging',
 });
