@@ -128,7 +128,7 @@ export function OpsStaffInvitationDialog({
 
   return (
     <OpsDialog open={open} onOpenChange={onOpenChange}>
-      <OpsDialogContent data-slot="ops-staff-invitations-dialog" className="sm:max-w-4xl">
+      <OpsDialogContent data-slot="ops-staff-invitations-dialog" size="wide">
         <OpsDialogHeader title={t('title')} sub={t('description')} />
         <OpsDialogBody>
           <StaffInviteForm schoolDocumentId={schoolDocumentId} />

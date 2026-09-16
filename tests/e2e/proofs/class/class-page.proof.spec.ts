@@ -232,7 +232,8 @@ test('4. edit class modal renames the class and the API persists it', async ({ p
   const modal = page.getByRole('dialog');
   await expect(modal).toBeVisible({ timeout: 10_000 });
   const box = await modal.boundingBox();
-  expect(box?.width ?? 0).toBeLessThanOrEqual(560 + 1);
+  // Modals size to their content under a max width; they only have to fit the viewport.
+  expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(page.viewportSize()?.width ?? 0);
   await shot(page, '04-edit-class-modal.png');
 
   const nameField = page.locator('#ops-class-form-name');
@@ -264,7 +265,8 @@ test('5. assign teacher modal swaps the teacher and the API persists it', async 
   await page.getByRole('button', { name: 'Assign teacher', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible({ timeout: 10_000 });
-  expect((await dialog.boundingBox())?.width ?? 0).toBeLessThanOrEqual(520 + 1);
+  const assignBox = await dialog.boundingBox();
+  expect((assignBox?.x ?? 0) + (assignBox?.width ?? 0)).toBeLessThanOrEqual(page.viewportSize()?.width ?? 0);
   await shot(page, '05-assign-teacher-modal.png');
 
   // Pick a DIFFERENT, eligible (non-blocked) teacher with a real name.
@@ -318,7 +320,8 @@ test('6+7. import students end to end (template, preview, commit, roster, export
   await expect(dialog).toBeVisible({ timeout: 10_000 });
   await expect(page.locator('[data-surface="ops-import-dropzone"]')).toBeVisible();
   await expect(page.locator('[data-surface="ops-import-template-columns"]')).toBeVisible();
-  expect((await dialog.boundingBox())?.width ?? 0).toBeLessThanOrEqual(560 + 1);
+  const importBox = await dialog.boundingBox();
+  expect((importBox?.x ?? 0) + (importBox?.width ?? 0)).toBeLessThanOrEqual(page.viewportSize()?.width ?? 0);
   await shot(page, '06-import-modal.png');
 
   // Template download from the SERVER.

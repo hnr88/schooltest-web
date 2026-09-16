@@ -105,7 +105,7 @@ export function OpsCreateSchoolDialog() {
         {t('button')}
       </Button>
       <OpsDialog open={open} onOpenChange={close}>
-        <OpsDialogContent data-slot="ops-create-school-dialog" className="sm:max-w-[640px]">
+        <OpsDialogContent data-slot="ops-create-school-dialog">
           <OpsDialogHeader title={t('title')} sub={t('description')} />
           <form
             noValidate

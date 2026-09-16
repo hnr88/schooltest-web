@@ -84,7 +84,7 @@ export function ClassStudentsPickerDialog({
         if (!next) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader title={t('title')} sub={t('description', { className })} />
         <OpsDialogBody className="py-5">
           <p className="text-sm font-medium text-warning-ink" data-slot="class-students-move-warning">

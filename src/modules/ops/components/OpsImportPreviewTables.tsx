@@ -47,7 +47,7 @@ export function OpsImportPreviewTables({ preview }: OpsImportPreviewTablesProps)
                 {preview.skip_existing.map((row) => (
                   <TableRow key={row.row}>
                     <TableCell>{row.row}</TableCell>
-                    <TableCell className="max-w-[220px] truncate" title={row.student_documentId}>
+                    <TableCell className="whitespace-normal [overflow-wrap:anywhere]" title={row.student_documentId}>
                       {row.student_documentId}
                     </TableCell>
                   </TableRow>
@@ -72,7 +72,7 @@ export function OpsImportPreviewTables({ preview }: OpsImportPreviewTablesProps)
                 {preview.reject.map((row) => (
                   <TableRow key={row.row}>
                     <TableCell>{row.row}</TableCell>
-                    <TableCell className="max-w-[320px] truncate" title={row.reason}>
+                    <TableCell className="whitespace-normal [overflow-wrap:anywhere]" title={row.reason}>
                       {row.reason}
                     </TableCell>
                   </TableRow>

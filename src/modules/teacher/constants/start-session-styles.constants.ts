@@ -8,7 +8,7 @@
  * 88vh + 60 tall at most (`modal-start-test--test.png`: x 368–1072, y 24–876).
  */
 export const START_SESSION_PANEL_CLASS =
-  'block w-[704px] max-h-[calc(88vh+60px)] rounded-[11px] bg-[#FAFBFC] px-8 py-[30px] leading-[normal]';
+  'block max-h-[calc(88vh+60px)] rounded-[11px] bg-[#FAFBFC] px-8 py-[30px] leading-[normal]';
 
 export const FOCUS_RING_CLASS =
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-900';
@@ -70,7 +70,7 @@ export const CHOICE_CARD_SIZES = {
  * 30/32 padding. The panel is content-box in the design, so its drawn width is
  * 560 + 64 (`overlay-demo-link.png`: x 410–1030).
  */
-export const DEMO_LINK_PANEL_CLASS = 'block w-[624px] max-w-full rounded-[16px] bg-white px-8 py-[30px] leading-[normal]';
+export const DEMO_LINK_PANEL_CLASS = 'block rounded-[16px] bg-white px-8 py-[30px] leading-[normal]';
 
 /** The demo token's own expiry, printed as a time a teacher can read. */
 export const DEMO_LINK_EXPIRY_FORMAT = { hour: '2-digit', minute: '2-digit' } as const;

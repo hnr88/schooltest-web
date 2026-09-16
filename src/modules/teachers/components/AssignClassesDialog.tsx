@@ -77,7 +77,7 @@ export function AssignClassesDialog({
         if (!next) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader title={t('title')} sub={t('description', { name: teacherName })} />
 
         {classes.length === 0 ? (

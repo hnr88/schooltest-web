@@ -117,7 +117,7 @@ export function OpsAdminsTab({
       />
 
       <Dialog open={target !== null} onOpenChange={(open) => (open ? null : setTarget(null))}>
-        <DialogContent data-slot="ops-make-owner-dialog">
+        <DialogContent data-slot="ops-make-owner-dialog" size="confirm">
           <DialogHeader>
             <DialogTitle>
               {t('makeOwnerConfirmTitle', {

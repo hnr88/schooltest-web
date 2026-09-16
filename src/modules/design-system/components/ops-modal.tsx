@@ -7,7 +7,9 @@ import { CircleAlert, X } from 'lucide-react';
 
 import { Button } from '@/modules/design-system/components/button';
 import { cn } from '@/lib/utils';
+import { DIALOG_HEIGHT_CLASS, DIALOG_SIZE_CLASSES } from '@/modules/design-system/constants/dialog-size.constants';
 import { errorId, helperId } from '@/modules/design-system/lib/field-ids';
+import type { DialogSize } from '@/modules/design-system/types/primitives.types';
 
 // Ops modal chrome (`Ops Portal.dc.html:547-842`), built directly on
 // @base-ui/react/dialog so the vendored `components/ui/dialog` stays untouched.
@@ -26,7 +28,11 @@ function OpsDialogClose({ ...props }: DialogPrimitive.Close.Props) {
   return <DialogPrimitive.Close data-slot="ops-dialog-close" {...props} />;
 }
 
-function OpsDialogContent({ className, ...props }: DialogPrimitive.Popup.Props) {
+function OpsDialogContent({
+  className,
+  size = 'form',
+  ...props
+}: DialogPrimitive.Popup.Props & { size?: DialogSize }) {
   return (
     <DialogPrimitive.Portal data-slot="ops-dialog-portal">
       <DialogPrimitive.Backdrop
@@ -36,7 +42,9 @@ function OpsDialogContent({ className, ...props }: DialogPrimitive.Popup.Props) 
       <DialogPrimitive.Popup
         data-slot="ops-dialog-content"
         className={cn(
-          'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 max-h-[88dvh] overflow-y-auto rounded-[24px] bg-white text-[#0E2350] shadow-[0_28px_56px_rgba(0,0,0,0.22)] outline-none animate-om-rise',
+          'fixed top-1/2 left-1/2 z-50 grid -translate-x-1/2 -translate-y-1/2 rounded-[24px] bg-white text-[#0E2350] shadow-[0_28px_56px_rgba(0,0,0,0.22)] outline-none animate-om-rise',
+          DIALOG_HEIGHT_CLASS,
+          DIALOG_SIZE_CLASSES[size],
           className,
         )}
         {...props}

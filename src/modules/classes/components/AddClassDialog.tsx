@@ -83,7 +83,7 @@ export function AddClassDialog({ onClose }: AddClassDialogProps) {
         if (!next) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader
           title={t('title')}
           sub={canAct ? t('description') : undefined}

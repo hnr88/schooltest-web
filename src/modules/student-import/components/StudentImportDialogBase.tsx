@@ -110,7 +110,7 @@ export function StudentImportDialogBase({
         if (!next) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-3xl">
+      <OpsDialogContent size="wide">
         <OpsDialogHeader
           title={t('title')}
           sub={

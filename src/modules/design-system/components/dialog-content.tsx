@@ -2,23 +2,44 @@
 
 import type { ComponentProps } from 'react';
 
+import { AlertDialogContent as AlertDialogContentPrimitive } from '@/components/ui/alert-dialog';
 import { DialogContent as DialogContentPrimitive } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import {
+  ALERT_DIALOG_SIZE_CLASS,
+  DIALOG_HEIGHT_CLASS,
+  DIALOG_SIZE_CLASSES,
+} from '@/modules/design-system/constants/dialog-size.constants';
+import type { DialogSize } from '@/modules/design-system/types/primitives.types';
 
 /**
- * journeys-and-bugs BUG-002 — the ONE canonical modal size, layered from the
- * wrapper (the vendored primitive stays untouched): width 540px, radius 24px,
- * generous 24px padding. A dialog the design draws wider or narrower passes
- * its own `className` (e.g. the 640px school form, the 460px confirm).
+ * journeys-and-bugs BUG-002 — the canonical modal chrome, layered from the
+ * wrapper (the vendored primitive stays untouched): radius 24px, generous 24px
+ * padding. Width follows the shared sizing rule (`dialog-size.constants.ts`):
+ * the dialog sizes to its content under the cap of its `size`.
  */
-function DialogContent({ className, ...props }: ComponentProps<typeof DialogContentPrimitive>) {
+function DialogContent({
+  className,
+  size = 'form',
+  ...props
+}: ComponentProps<typeof DialogContentPrimitive> & { size?: DialogSize }) {
   return (
     <DialogContentPrimitive
       data-slot="dialog-content"
-      className={cn('rounded-3xl p-6 sm:max-w-[540px]', className)}
+      className={cn('rounded-3xl p-6', DIALOG_HEIGHT_CLASS, DIALOG_SIZE_CLASSES[size], className)}
       {...props}
     />
   );
 }
 
-export { DialogContent };
+/** The alert dialog on the same sizing rule, always a confirm. */
+function AlertDialogContent({ className, ...props }: ComponentProps<typeof AlertDialogContentPrimitive>) {
+  return (
+    <AlertDialogContentPrimitive
+      className={cn(DIALOG_HEIGHT_CLASS, ALERT_DIALOG_SIZE_CLASS, className)}
+      {...props}
+    />
+  );
+}
+
+export { AlertDialogContent, DialogContent };

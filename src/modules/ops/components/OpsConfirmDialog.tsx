@@ -164,7 +164,7 @@ export function OpsConfirmDialog({
   ) : null;
   return (
     <OpsDialog open={open} onOpenChange={onOpenChange} disablePointerDismissal>
-      <OpsDialogContent role="alertdialog" className={cn(skinClasses.panel, className)}>
+      <OpsDialogContent role="alertdialog" size="confirm" className={cn(skinClasses.panel, className)}>
         <div className={skinClasses.inner}>
           {media ? <div className="mb-4">{media}</div> : null}
           {teacher ? null : (

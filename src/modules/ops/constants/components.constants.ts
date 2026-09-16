@@ -13,7 +13,7 @@ export const SCHOOL_PLAN_OPTIONS: readonly SchoolPlan[] = ['trial', 'full_licens
 // + 30px sides, -0.01em title, #6B7280 / 1.55 body, 46px r8 buttons, 700 CTA, no border.
 export const OPS_CONFIRM_SKIN_CLASSES = {
   ops: {
-    panel: 'sm:max-w-[460px]',
+    panel: '',
     inner: 'p-7',
     title: 'text-[19px] leading-tight',
     description: 'mt-2.5 text-sm leading-relaxed text-[#64748B]',
@@ -22,7 +22,7 @@ export const OPS_CONFIRM_SKIN_CLASSES = {
     cta: '',
   },
   teacher: {
-    panel: 'rounded-[11px] bg-[#FAFBFC] sm:max-w-[500px]',
+    panel: 'rounded-[11px] bg-[#FAFBFC]',
     inner: 'px-[30px] py-7',
     title: 'text-[19px] leading-[normal] tracking-[-0.01em]',
     description: 'mt-2.5 text-sm leading-[1.55] text-pretty text-[#6B7280]',

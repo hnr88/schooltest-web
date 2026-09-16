@@ -54,7 +54,7 @@ export function OpsOnboardSchoolDialog({
 
   return (
     <OpsDialog open={open} onOpenChange={close}>
-      <OpsDialogContent data-slot="ops-onboard-dialog" className="sm:max-w-[540px]">
+      <OpsDialogContent data-slot="ops-onboard-dialog">
         <OpsDialogHeader title={t('dialogTitle')} sub={t('dialogDescription')} />
         <form onSubmit={submit} noValidate>
           <OpsDialogBody>

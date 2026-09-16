@@ -93,7 +93,7 @@ export function OpsAssignTeacherDialog({
         if (!next && !assign.isPending) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader
           title={t('assign.title')}
           sub={t('assign.description', { className })}

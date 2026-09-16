@@ -29,7 +29,7 @@ function TeacherExportPreviewDialog({
       <DialogContent
         showCloseButton={false}
         data-slot="teacher-export-preview"
-        className="max-h-[calc(100dvh-2rem)] gap-0 overflow-hidden p-0 sm:max-w-2xl"
+        className="max-h-[calc(100dvh-2rem)] gap-0 overflow-hidden p-0"
       >
         <DialogHeader className="relative border-b border-divider px-5 py-5 pr-14 sm:px-7">
           <DialogTitle className="text-panel-title font-semibold">{t('previewTitle')}</DialogTitle>

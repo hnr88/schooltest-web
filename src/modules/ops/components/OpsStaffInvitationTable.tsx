@@ -90,7 +90,7 @@ export function OpsStaffInvitationTable({
                     </span>
                   </div>
                 </TableCell>
-                <TableCell className="max-w-[240px] truncate align-top" title={row.email ?? t('noValue')}>
+                <TableCell className="whitespace-normal [overflow-wrap:anywhere] align-top" title={row.email ?? t('noValue')}>
                   {row.email ?? t('noValue')}
                 </TableCell>
                 <TableCell className="align-top">

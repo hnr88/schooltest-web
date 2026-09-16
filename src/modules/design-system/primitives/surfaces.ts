@@ -42,12 +42,11 @@ export {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-export { DialogContent } from '@/modules/design-system/components/dialog-content';
+export { AlertDialogContent, DialogContent } from '@/modules/design-system/components/dialog-content';
 export {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
-  AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,

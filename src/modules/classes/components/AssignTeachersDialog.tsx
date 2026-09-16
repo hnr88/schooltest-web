@@ -49,7 +49,7 @@ export function AssignTeachersDialog({
 
   return (
     <OpsDialog open onOpenChange={(next) => { if (!next) onClose(); }}>
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader title={t('title')} sub={t('description')} />
 
         {teachersQuery.isPending ? (

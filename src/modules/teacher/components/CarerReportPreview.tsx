@@ -57,7 +57,7 @@ function CarerReportPreview({ report, classDocumentId, className, onClose, onRel
       <OpsDialogContent
         data-slot="carer-report-preview"
         data-result-id={report.resultDocumentId}
-        className="rounded-[11px] leading-[normal] sm:max-w-[560px]"
+        className="rounded-[11px] leading-[normal]"
       >
         <div className="flex items-start gap-3.5 border-b border-[#ECEEF2] px-[30px] pt-[26px] pb-5">
           <InitialsAvatar initials={report.initials} size="lg" tone="soft" />

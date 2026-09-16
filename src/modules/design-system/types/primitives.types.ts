@@ -6,6 +6,9 @@ import type { AvatarTintSize, AvatarTintTone } from '@/modules/design-system/typ
 export type IconButtonSize = 'sm' | 'md' | 'lg';
 export type IconButtonTone = 'outline' | 'ghost' | 'soft' | 'danger';
 
+/** A modal's content kind, which picks its width floor and cap (`dialog-size.constants.ts`). */
+export type DialogSize = 'confirm' | 'form' | 'wide';
+
 export interface IconButtonProps extends Omit<
   ComponentPropsWithoutRef<'button'>,
   'children' | 'aria-label'

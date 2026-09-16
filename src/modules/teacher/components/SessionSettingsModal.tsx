@@ -82,7 +82,7 @@ function SessionSettingsModal({
       <OpsDialogContent
         data-slot="session-settings-modal"
         data-settings-count={`${onCount} of ${ROW_ORDER.length} on`}
-        className="flex max-h-[82vh] flex-col gap-0 overflow-hidden rounded-[12px] p-0 leading-[normal] shadow-[0_28px_56px_rgba(0,0,0,0.22)] sm:max-w-[620px]"
+        className="flex max-h-[82vh] flex-col gap-0 overflow-hidden rounded-[12px] p-0 leading-[normal] shadow-[0_28px_56px_rgba(0,0,0,0.22)]"
       >
         <div className="flex flex-row items-center gap-3.5 border-b border-[#ECEEF2] px-[26px] py-[22px] text-left">
           <div className="min-w-0 flex-1">

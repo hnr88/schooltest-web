@@ -54,10 +54,8 @@ export function StudentImportRejectList({
             {rows.map((entry, index) => (
               <TableRow key={`${entry.row}-${index}`}>
                 <TableCell className="whitespace-nowrap tabular-nums">{entry.row}</TableCell>
-                <TableCell className="w-full max-w-0">
-                  <span className="block truncate" title={entry.reason}>
-                    {entry.reason}
-                  </span>
+                <TableCell className="w-full whitespace-normal [overflow-wrap:anywhere]">
+                  {entry.reason}
                 </TableCell>
               </TableRow>
             ))}

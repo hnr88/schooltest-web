@@ -43,21 +43,21 @@ export function OpsImportCreateTable({ rows }: OpsImportCreateTableProps) {
             {rows.map((row) => (
               <TableRow key={row.row}>
                 <TableCell>{row.row}</TableCell>
-                <TableCell className="max-w-[220px] truncate" title={row.given_name}>
+                <TableCell className="whitespace-normal [overflow-wrap:anywhere]" title={row.given_name}>
                   {row.given_name}
                 </TableCell>
-                <TableCell className="max-w-[220px] truncate" title={row.family_name}>
+                <TableCell className="whitespace-normal [overflow-wrap:anywhere]" title={row.family_name}>
                   {row.family_name}
                 </TableCell>
-                <TableCell className="max-w-[220px] truncate" title={row.email}>
+                <TableCell className="whitespace-normal [overflow-wrap:anywhere]" title={row.email}>
                   {row.email}
                 </TableCell>
                 <TableCell>{row.date_of_birth}</TableCell>
                 <TableCell>{row.year_level}</TableCell>
-                <TableCell className="max-w-[220px] truncate" title={row.first_language}>
+                <TableCell className="whitespace-normal [overflow-wrap:anywhere]" title={row.first_language}>
                   {row.first_language}
                 </TableCell>
-                <TableCell className="max-w-[220px] truncate" title={row.student_key ?? ''}>
+                <TableCell className="whitespace-normal [overflow-wrap:anywhere]" title={row.student_key ?? ''}>
                   {row.student_key ?? ''}
                 </TableCell>
               </TableRow>

@@ -49,7 +49,7 @@ export function EditClassDialog({ schoolClass, onClose }: EditClassDialogProps) 
         if (!next) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader title={t('title')} sub={t('description')} />
         {teachersQuery.isPending ? (
           <OpsDialogBody>

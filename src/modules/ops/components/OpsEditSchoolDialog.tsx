@@ -61,7 +61,7 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
         cancelLabel: t('dirtyCloseCancel'),
       }}
     >
-      <OpsDialogContent data-slot="ops-edit-school-dialog" className="sm:max-w-[640px]">
+      <OpsDialogContent data-slot="ops-edit-school-dialog">
         <OpsDialogHeader title={t('editTitle')} sub={t('editDescription', { name: school.name })} />
         <FormShell
           id="ops-edit-school"

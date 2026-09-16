@@ -237,7 +237,7 @@ export function OpsStudentEditModal({
           if (!open) onClose();
         }}
       >
-        <OpsDialogContent data-testid="ops-student-edit-modal" className="sm:max-w-3xl">
+        <OpsDialogContent data-testid="ops-student-edit-modal">
           <OpsDialogHeader
             title={
               mode === 'create' ? (

@@ -80,7 +80,7 @@ export function InviteTeacherDialog({
 
   return (
     <OpsDialog open={open} onOpenChange={close}>
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader title={t('title')} sub={t('description')} />
         <form onSubmit={handleSubmit(submit)} noValidate>
           <OpsDialogBody>

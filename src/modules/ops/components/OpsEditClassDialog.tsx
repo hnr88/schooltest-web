@@ -307,7 +307,7 @@ export function OpsEditClassDialog({
         if (!next && !closing) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-3xl">
+      <OpsDialogContent>
         <OpsDialogHeader
           title={isEdit ? t('title') : createT('title')}
           sub={createBlockedOnEligibility ? undefined : isEdit ? t('description') : createT('description')}

@@ -22,7 +22,7 @@ export const CSV_CONTENT_TYPE = 'text/csv;charset=utf-8';
  * design's div is content-box, so its declared 640 draws 640 + 2×32 = 704 wide (overlay-reports.png).
  */
 export const REPORTS_PANEL_CLASS =
-  'block w-[704px] animate-none rounded-[11px] bg-[#FAFBFC] px-8 py-[30px] leading-[normal]';
+  'block animate-none rounded-[11px] bg-[#FAFBFC] px-8 py-[30px] leading-[normal]';
 
 export const REPORTS_LABEL_CLASS = 'mb-[9px] block text-[12.5px] font-semibold text-navy-900';
 

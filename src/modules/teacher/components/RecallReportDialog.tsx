@@ -25,7 +25,7 @@ function RecallReportDialog({ actions, name }: RecallReportDialogProps) {
 
   return (
     <OpsDialog open onOpenChange={(open) => (open ? undefined : actions.close())} disablePointerDismissal>
-      <OpsDialogContent role="alertdialog" data-slot="recall-report-dialog" className="sm:max-w-[440px]">
+      <OpsDialogContent role="alertdialog" data-slot="recall-report-dialog" size="confirm">
         <div className="p-7">
           <div
             aria-hidden="true"

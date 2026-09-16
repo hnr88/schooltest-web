@@ -60,7 +60,7 @@ export function OpsAccountCard() {
         <DialogTrigger render={<Button type="button" variant="outline" data-testid="ops-account-edit" className="rounded-full border-[#D8DFEA] px-[18px] py-2.5 text-[13px] font-semibold text-[#0E2350] hover:border-[#0E2350]" />}>
           {t('edit')}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[440px]">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>{t('title')}</DialogTitle>
           </DialogHeader>

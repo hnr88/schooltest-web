@@ -72,7 +72,7 @@ export function EditTeacherDialog({ row, onClose }: EditTeacherDialogProps) {
         if (!next) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader title={t('title')} sub={t('description')} />
         <form onSubmit={handleSubmit(submit)} noValidate>
           <OpsDialogBody>

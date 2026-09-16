@@ -148,10 +148,11 @@ describe('OpsConfirmDialog — skin', () => {
   const panelClass = () => document.body.querySelector('[data-slot="ops-dialog-content"]')?.className ?? '';
   const buttons = () => [...document.body.querySelectorAll('button')];
 
-  test('default (ops): tone tile, Cancel then the action in a right-aligned pill row, 460px r24 white panel', () => {
+  test('default (ops): tone tile, Cancel then the action in a right-aligned pill row, content-sized r24 white confirm panel', () => {
     mount(<OpsConfirmDialog {...BASE} tone="destructive" />);
     expect(buttonTexts()).toEqual(['Cancel', 'Remove']);
-    expect(panelClass()).toContain('sm:max-w-[460px]');
+    expect(panelClass()).toContain('w-max');
+    expect(panelClass()).toContain('max-w-[min(32rem,calc(100vw-2rem))]');
     expect(panelClass()).toContain('rounded-[24px]');
     expect(panelClass()).toContain('bg-white');
     expect(buttons()[0]?.parentElement?.className).toContain('justify-end');
@@ -162,7 +163,8 @@ describe('OpsConfirmDialog — skin', () => {
   test('teacher: no tone tile, the action leads a left-aligned row of 46px r8 buttons in the #FAFBFC r11 panel', () => {
     mount(<OpsConfirmDialog {...BASE} tone="destructive" skin="teacher" />);
     expect(buttonTexts()).toEqual(['Remove', 'Cancel']);
-    expect(panelClass()).toContain('sm:max-w-[500px]');
+    expect(panelClass()).toContain('w-max');
+    expect(panelClass()).toContain('max-w-[min(32rem,calc(100vw-2rem))]');
     expect(panelClass()).toContain('rounded-[11px]');
     expect(panelClass()).toContain('bg-[#FAFBFC]');
     expect(panelClass()).not.toContain('rounded-[24px]');

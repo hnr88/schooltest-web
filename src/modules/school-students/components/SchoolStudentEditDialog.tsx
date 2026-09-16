@@ -35,7 +35,7 @@ export function SchoolStudentEditDialog({ student, classes, onClose }: SchoolStu
         if (!next) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-3xl">
+      <OpsDialogContent>
         <OpsDialogHeader
           title={t('editTitle', { name: studentDisplayName(student) })}
           sub={t('editDescription')}

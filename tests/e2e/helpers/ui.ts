@@ -63,3 +63,71 @@ export async function waitForAnimationsSettled(page: Page): Promise<void> {
     ),
   );
 }
+
+/** How an open modal sits in the viewport and whether anything in it scrolls sideways or clips. */
+export interface DialogFit {
+  width: number;
+  height: number;
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  viewportWidth: number;
+  viewportHeight: number;
+  /** Scroll containers (the dialog included) whose content is wider than their box. */
+  horizontalOverflow: string[];
+  /** Table header cells whose text does not fit their cell. */
+  clippedHeaders: string[];
+  /** Ellipsized text anywhere in the dialog (informational: truncation the markup opts into). */
+  ellipsized: string[];
+}
+
+/** The top-most open modal surface (ops chrome, the dialog primitive, or the alert dialog). */
+export function openDialog(page: Page): Locator {
+  return page
+    .locator('[role="dialog"], [role="alertdialog"]')
+    .filter({ visible: true })
+    .last();
+}
+
+/** Measures `dialog` once its entrance animation settles. Form controls scroll their own text and are skipped. */
+export async function measureDialogFit(dialog: Locator): Promise<DialogFit> {
+  await expect(dialog).toBeVisible();
+  await waitForAnimationsSettled(dialog.page());
+  return dialog.evaluate((root) => {
+    const label = (el: Element) => {
+      const slot = el.getAttribute('data-slot');
+      return `<${el.tagName.toLowerCase()}${slot ? ` data-slot=${slot}` : ''}> ${el.scrollWidth}>${el.clientWidth}`;
+    };
+    const horizontalOverflow: string[] = [];
+    const ellipsized: string[] = [];
+    for (const el of [root, ...root.querySelectorAll('*')]) {
+      if (el.closest('input, textarea, select')) continue;
+      const style = getComputedStyle(el);
+      const overflows = el.scrollWidth > el.clientWidth + 1;
+      if (overflows && (style.overflowX === 'auto' || style.overflowX === 'scroll')) {
+        horizontalOverflow.push(label(el));
+      }
+      if (overflows && style.textOverflow === 'ellipsis') {
+        ellipsized.push((el.textContent ?? '').trim().slice(0, 60));
+      }
+    }
+    const clippedHeaders = [...root.querySelectorAll('th')]
+      .filter((th) => th.scrollWidth > th.clientWidth + 1 || th.getBoundingClientRect().right > root.getBoundingClientRect().right + 1)
+      .map((th) => (th.textContent ?? '').trim());
+    const rect = root.getBoundingClientRect();
+    return {
+      width: Math.round(rect.width),
+      height: Math.round(rect.height),
+      left: Math.round(rect.left),
+      top: Math.round(rect.top),
+      right: Math.round(rect.right),
+      bottom: Math.round(rect.bottom),
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
+      horizontalOverflow,
+      clippedHeaders,
+      ellipsized,
+    };
+  });
+}

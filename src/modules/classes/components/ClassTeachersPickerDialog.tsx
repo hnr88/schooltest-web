@@ -61,7 +61,7 @@ export function ClassTeachersPickerDialog({
         if (!next) onClose();
       }}
     >
-      <OpsDialogContent className="sm:max-w-[520px]">
+      <OpsDialogContent>
         <OpsDialogHeader
           title={t('pickerTitle')}
           sub={t('pickerDescription', { className })}
