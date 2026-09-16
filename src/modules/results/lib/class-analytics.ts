@@ -56,7 +56,10 @@ export function secureCounts(rows: readonly ResultView[]): SecureCount[] {
   const counts = new Map<DisplaySkill, { secure: number; assessed: number }>();
   for (const row of rows) {
     for (const tile of displaySkills(row)) {
-      if (tile.source === 'gate' || tile.status === null) continue; // no band on the gate; a gap is not a band either
+      // No band on the gate; a gap is not a band either. The Vocabulary tile carries the
+      // blend's own `status`, which is the literal "not_assessed" (not null) when no strand
+      // was assessed — so the score is checked too, or it counts as assessed ("9 of 15").
+      if (tile.source === 'gate' || tile.status === null || tile.domain_score === null) continue;
       const seen = counts.get(tile.skill) ?? { secure: 0, assessed: 0 };
       counts.set(tile.skill, {
         secure: seen.secure + (tile.status === 'secure' ? 1 : 0),

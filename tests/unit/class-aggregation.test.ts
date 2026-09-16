@@ -306,6 +306,18 @@ describe('secureCounts — counted as sent, Critical absent by construction', ()
     expect(bySkill.get('Vocabulary')).toEqual({ skill: 'Vocabulary', secure: 1, assessed: 2 });
     expect(counts.map((c) => c.skill)).not.toContain('Critical'); // no band on the gate — no tally
   });
+
+  test('a not-assessed vocabulary blend (status "not_assessed", blended null) is not counted as assessed', () => {
+    const rows = withScores([
+      { overall: { ...fixture.overall, domain_score: 80 } },
+      {
+        overall: { ...fixture.overall, domain_score: null },
+        vocab: { ...fixture.vocab, blended: null, status: 'not_assessed' as const },
+      },
+    ]);
+    const vocabulary = secureCounts(rows).find((c) => c.skill === 'Vocabulary');
+    expect(vocabulary?.assessed).toBe(1);
+  });
 });
 
 describe('vocabStrandMeans — single-strand students are absent from the strand they did not sit', () => {
