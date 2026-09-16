@@ -1,9 +1,0 @@
-{"url":"/dashboard/reports","outcome":"rendered","note":"http://localhost:3002/dashboard/reports"}
-{"url":"/dashboard/reports/zzf10notreal0000000000","outcome":"rendered","note":"http://localhost:3002/dashboard/reports/zzf10notreal0000000000"}
-{"url":"/dashboard/results","outcome":"rendered","note":"http://localhost:3002/dashboard/results"}
-{"url":"/dashboard/results/zzf10notreal0000000000","outcome":"rendered","note":"http://localhost:3002/dashboard/results/zzf10notreal0000000000"}
-{"url":"/dashboard/results/zzf10notreal0000000000/students/zzf10notreal0000000000","outcome":"rendered","note":"http://localhost:3002/dashboard/results/zzf10notreal0000000000/students/zzf10notreal0000000000"}
-{"url":"/dashboard/school","outcome":"redirect-role","note":"http://localhost:3002/dashboard/results"}
-{"url":"/dashboard/school/account","outcome":"redirect-role","note":"http://localhost:3002/dashboard/results"}
-{"url":"/dashboard/school/analytics","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
-{"url":"/dashboard/school/children","outcome":"redirect-role","note":"http://localhost:3002/dashboard/results"}

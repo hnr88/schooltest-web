@@ -1,9 +1,0 @@
-{"url":"/dashboard/school/children/new","outcome":"threw","note":"Error: page.waitForTimeout: Target page, context or browser has been closed"}
-{"url":"/dashboard/school/classes","outcome":"threw","note":"Error: page.goto: Target page, context or browser has been closed"}
-{"url":"/dashboard/school/classes/zzf10notreal0000000000","outcome":"threw","note":"Error: page.goto: Target page, context or browser has been closed"}
-{"url":"/dashboard/school/classes/zzf10notreal0000000000/students/zzf10notreal0000000000","outcome":"threw","note":"Error: page.goto: Target page, context or browser has been closed"}
-{"url":"/dashboard/school/participation","outcome":"threw","note":"Error: page.goto: Target page, context or browser has been closed"}
-{"url":"/dashboard/school/students","outcome":"threw","note":"Error: page.goto: Target page, context or browser has been closed"}
-{"url":"/dashboard/school/students/zzf10notreal0000000000","outcome":"threw","note":"Error: page.goto: Target page, context or browser has been closed"}
-{"url":"/dashboard/school/students/new","outcome":"threw","note":"Error: page.goto: Target page, context or browser has been closed"}
-{"url":"/dashboard/school/teachers","outcome":"threw","note":"Error: page.goto: Target page, context or browser has been closed"}

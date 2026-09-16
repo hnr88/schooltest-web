@@ -1,9 +1,0 @@
-{"url":"/dashboard/school/teachers/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fteachers%2Fzzf10notreal0000000000"}
-{"url":"/dashboard/search","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fsearch"}
-{"url":"/dashboard/search/agents","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fsearch%2Fagents"}
-{"url":"/dashboard/search/schools","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fsearch%2Fschools"}
-{"url":"/dashboard/settings","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fsettings"}
-{"url":"/dashboard/teach","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fresults"}
-{"url":"/dashboard/teach/classes/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fteach%2Fclasses%2Fzzf10notreal0000000000"}
-{"url":"/dashboard/teach/classes/zzf10notreal0000000000/test-day","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fteach%2Fclasses%2Fzzf10notreal0000000000%2Ftest-day"}
-{"url":"/dashboard/teach/notifications","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fteach%2Fnotifications"}

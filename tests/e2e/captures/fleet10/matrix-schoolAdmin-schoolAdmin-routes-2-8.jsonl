@@ -1,9 +1,0 @@
-{"url":"/dashboard/children/zzf10notreal0000000000","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
-{"url":"/dashboard/children/zzf10notreal0000000000/edit","outcome":"redirect-role","note":"http://localhost:3002/dashboard/school"}
-{"url":"/dashboard/children/new","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
-{"url":"/dashboard/notifications","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
-{"url":"/dashboard/ops","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
-{"url":"/dashboard/ops/schools","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
-{"url":"/dashboard/ops/schools/zzf10notreal0000000000","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
-{"url":"/dashboard/ops/schools/zzf10notreal0000000000/classes/zzf10notreal0000000000","outcome":"redirect-role","note":"http://localhost:3002/dashboard/school"}
-{"url":"/dashboard/ops/settings","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
