@@ -19,7 +19,7 @@
  */
 import { z } from 'zod';
 import { type OpsOperation } from './core';
-/** api::student.student `status` enum, stored verbatim. `enrolled` is the
+/** api::student.student `student_status` enum, stored verbatim. `enrolled` is the
  *  roster row that has not finished setup; the UI labels it "Pending setup"
  *  but the wire value is never renamed. */
 export declare const OPS_STUDENT_STATUSES: readonly ["active", "archived", "enrolled"];
@@ -75,7 +75,7 @@ export declare const opsStudentRowSchema: z.ZodObject<{
         developing: "developing";
         consolidating: "consolidating";
     }>>;
-    status: z.ZodEnum<{
+    student_status: z.ZodEnum<{
         active: "active";
         archived: "archived";
         enrolled: "enrolled";
@@ -131,7 +131,7 @@ export declare const opsStudentsListResponseSchema: z.ZodObject<{
             developing: "developing";
             consolidating: "consolidating";
         }>>;
-        status: z.ZodEnum<{
+        student_status: z.ZodEnum<{
             active: "active";
             archived: "archived";
             enrolled: "enrolled";

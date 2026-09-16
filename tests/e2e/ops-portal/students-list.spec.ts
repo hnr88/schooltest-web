@@ -159,7 +159,7 @@ test.describe('OPS-045 ops Students tab', () => {
   test('status, year and search filters re-query the server', async ({ page, request }) => {
     const jwt = await opsJwt(request);
     const served = await apiStudents(request, jwt);
-    const archived = served.data.filter((row) => row.status === 'archived').length;
+    const archived = served.data.filter((row) => row.student_status === 'archived').length;
 
     await signInAsOps(page);
     await openStudentsTab(page);

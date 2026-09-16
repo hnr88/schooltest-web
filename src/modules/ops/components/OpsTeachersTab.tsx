@@ -36,12 +36,10 @@ const CLASSES_SCOPED_PARAMS = [
 export function OpsTeachersTab({
   schoolDocumentId,
   active,
-  onManage,
   onInvite,
 }: {
   schoolDocumentId: string;
   active: boolean;
-  onManage: () => void;
   onInvite: () => void;
 }) {
   const t = useTranslations('Ops.schoolTables');
@@ -98,30 +96,21 @@ export function OpsTeachersTab({
         onInvite={onInvite}
         onViewClasses={viewClasses}
         // ops-tabs-audit — design `:353-368`: the header row carries the card's
-        // actions on the title's right. Manage teachers is the outline
-        // secondary-shape control and Invite staff the navy primary; both move
-        // ONTO the card header (OpsStaffUsersTable) instead of floating above
-        // the table. `ops-teachers-invite` keeps its testid through the move.
+        // actions on the title's right. Invite staff is the navy primary and
+        // lives ONTO the card header (OpsStaffUsersTable) instead of floating
+        // above the table. (The former "Manage teachers" outline secondary is
+        // gone — its edit lives in each row's ⋯ menu now.) `ops-teachers-invite`
+        // keeps its testid through the move.
         headerPrimary={
-          <>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onManage}
-              className="h-10 rounded-[12px] border-[#D8DFEA] px-4 text-[13.5px] font-semibold text-[#3D4A5C] hover:border-navy-900 hover:bg-transparent hover:text-navy-900"
-            >
-              {t('manageTeachers')}
-            </Button>
-            <Button
-              type="button"
-              variant="navy"
-              data-testid="ops-teachers-invite"
-              onClick={onInvite}
-              className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
-            >
-              {t('inviteStaff')}
-            </Button>
-          </>
+          <Button
+            type="button"
+            variant="navy"
+            data-testid="ops-teachers-invite"
+            onClick={onInvite}
+            className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
+          >
+            {t('inviteStaff')}
+          </Button>
         }
       />
     </div>

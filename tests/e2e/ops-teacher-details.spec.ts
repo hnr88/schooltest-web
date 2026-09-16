@@ -15,6 +15,9 @@ import { cat, loadMessages } from './helpers/i18n';
 // is no NEXT_PUBLIC_MOCK transport interception in play anywhere in this spec.
 const en = loadMessages('en');
 const API = process.env.E2E_API_URL ?? 'http://127.0.0.1:5500';
+// The shared server refetches mid-interaction; give the row menu and the
+// dialog's server round-trips room instead of the framework default.
+const ACTION_TIMEOUT = 30_000;
 
 interface ApiSchool {
   documentId: string;
@@ -45,8 +48,8 @@ async function signInAsOps(page: Page): Promise<void> {
   await page.waitForURL('**/dashboard');
 }
 
-test.describe('ops teacher details dialog (OPS-teacher-details)', () => {
-  test('directory opens from the Teachers tab, edits inline with server validation, removes with confirm', async ({
+test.describe('ops teacher details (OPS-teacher-details)', () => {
+  test('the Teachers tab row menu edits details with server validation and removes with confirm', async ({
     page,
     request,
   }) => {
@@ -93,53 +96,71 @@ test.describe('ops teacher details dialog (OPS-teacher-details)', () => {
 
     try {
       await signInAsOps(page);
-      // ops/16 (R-23 spec rewrite): arrive directly on the drawn Teachers tab
-      // rather than clicking the Teachers count card (that duplicate mount is
-      // task 43's, wave 6) — then open the SAME manage-teachers dialog through
-      // its surviving "Manage teachers" control (`OpsSchoolTables.tsx:180-184`).
+      // The manage-teachers modal is gone (its edit now lives in the row ⋯
+      // menu): arrive directly on the drawn Teachers tab and work on the
+      // merged staff directory's row for the minted teacher.
       await page.goto(`/en/dashboard/ops/schools/${school.documentId}?tab=teachers`);
 
-      // The Teachers tab's "Manage teachers" control opens the directory
-      // (content assertions — the dialog identifies by its own copy and the
-      // row by its own email).
-      await page.getByRole('button', { name: cat(en, 'Ops.schoolTables.manageTeachers') }).click();
-      const dialog = page.getByRole('dialog');
-      await expect(dialog).toBeVisible();
-      await expect(dialog).toContainText(cat(en, 'Ops.teachers.title'));
-      const row = dialog.locator(`tr[data-teacher-email="${teacherEmail}"]`);
-      await expect(row).toBeVisible();
+      // The Teachers tab lists the accepted teacher (row identity: the email
+      // sublabel under the name) — content assertions on the row itself.
+      const row = page.getByRole('row').filter({ hasText: teacherEmail });
+      await expect(row).toBeVisible({ timeout: 30_000 });
       await expect(row).toContainText('Original');
-      await expect(row).toContainText(cat(en, 'Ops.teachers.noClasses'));
 
-      // Inline edit: rename, save, assert the server round-trip (psql).
-      await row.getByRole('button', { name: cat(en, 'Ops.teachers.edit') }).click();
-      await row.getByLabel(cat(en, 'Ops.teachers.columnFirstName')).fill('Renamed');
-      await row.getByRole('button', { name: cat(en, 'Ops.teachers.save') }).click();
-      await expect(row).toContainText('Renamed');
+      // Opens the row's ⋯ menu → "Edit details" and waits for the dialog,
+      // prefilled with the row's C-TCH-04 whitelist (first/last/email).
+      const openEditDetails = async () => {
+        await row.getByRole('button', { name: 'Row actions' }).click();
+        await page
+          .getByRole('menuitem', { name: cat(en, 'Ops.schoolTables.actions.editDetails') })
+          .click();
+        const dialog = page.locator('[data-slot="ops-edit-details-dialog"]');
+        await expect(dialog).toBeVisible({ timeout: ACTION_TIMEOUT });
+        return dialog;
+      };
+
+      // Edit details: rename, save, assert the server round-trip (psql).
+      let dialog = await openEditDetails();
+      await dialog
+        .getByLabel(cat(en, 'Ops.schoolTables.editDetailsFirstName'))
+        .fill('Renamed', { timeout: ACTION_TIMEOUT });
+      await dialog
+        .getByRole('button', { name: cat(en, 'Ops.schoolTables.editDetailsSave') })
+        .click();
+      await expect(dialog).toHaveCount(0);
+      await expect(row).toContainText('Renamed', { timeout: ACTION_TIMEOUT });
       const dbFirst = runSql(`select first_name from up_users where email = '${teacherEmail}'`);
       expect(dbFirst.trim()).toBe('Renamed');
 
       // Duplicate email: the API's 400 message renders inline (C-TCH-04).
-      await row.getByRole('button', { name: cat(en, 'Ops.teachers.edit') }).click();
-      await row.getByLabel(cat(en, 'Ops.teachers.columnEmail')).fill('teacher@schooltest.local');
-      await row.getByRole('button', { name: cat(en, 'Ops.teachers.save') }).click();
-      await expect(dialog.getByText(/already in use/i)).toBeVisible();
-      await row.getByRole('button', { name: cat(en, 'Ops.teachers.cancel') }).click();
+      dialog = await openEditDetails();
+      await dialog
+        .getByLabel(cat(en, 'Ops.schoolTables.editDetailsEmail'))
+        .fill('teacher@schooltest.local', { timeout: ACTION_TIMEOUT });
+      await dialog
+        .getByRole('button', { name: cat(en, 'Ops.schoolTables.editDetailsSave') })
+        .click();
+      await expect(dialog.getByText(/already in use/i)).toBeVisible({ timeout: ACTION_TIMEOUT });
+      await dialog
+        .getByRole('button', { name: cat(en, 'Ops.schoolTables.editDetailsCancel') })
+        .click();
 
-      // Remove: confirm strip, then the REAL C-TCH-03 revocation. The
-      // presence assertion BEFORE the delete makes the absence assertion
-      // after it falsifiable — "we watched it disappear", not "we did not
-      // see it". DB proof: blocked + unlinked (revocation, not deletion).
+      // Remove: the SAME row menu already carries it (the removed modal's
+      // inline trash is gone — no duplicate affordance). The confirm's CTA is
+      // asserted, then the REAL C-TCH-03 revocation. DB proof: blocked +
+      // unlinked (revocation, not deletion).
       await expect(row).toBeVisible();
       await expect(row).toContainText(teacherEmail);
-      await row.getByRole('button', { name: cat(en, 'Ops.teachers.remove') }).click();
-      await expect(
-        dialog.getByText(cat(en, 'Ops.teachers.removeConfirm').replace('{email}', teacherEmail)),
-      ).toBeVisible();
-      await dialog
-        .getByRole('button', { name: cat(en, 'Ops.teachers.removeConfirmAction') })
+      await row.getByRole('button', { name: 'Row actions' }).click();
+      await page
+        .getByRole('menuitem', { name: cat(en, 'Ops.schoolTables.actions.removeFromSchool') })
         .click();
-      await expect(row).toHaveCount(0);
+      await page
+        .getByRole('button', {
+          name: cat(en, 'Ops.schoolTables.actions.confirm.removeTeacher.cta'),
+        })
+        .click();
+      await expect(row).toHaveCount(0, { timeout: ACTION_TIMEOUT });
       const after = runSql(
         `select blocked, (select count(*) from up_users_school_lnk l join up_users u on u.id = l.user_id where u.email = '${teacherEmail}') as links
          from up_users where email = '${teacherEmail}'`,

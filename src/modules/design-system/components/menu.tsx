@@ -17,8 +17,8 @@ import {
 
 // Spec (DS doc §11): container = white card, border #E3E8F0, radius 12, shadow-lg, 6px
 // padding; items = 13.5/500 navy, slate icons, subtle #F1F5F9 (muted) hover — the
-// vendored primitives hover with bg-accent (teal in this token set), which the spec
-// never uses for menu highlights.
+// spec never uses teal for menu highlights, so the vendored primitives were
+// re-pointed from bg-accent to bg-muted at the source.
 function DropdownMenuContent({
   className,
   ...props

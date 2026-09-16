@@ -12,9 +12,12 @@
  *    template the CURRENT preview/commit parser accepts, unchanged. A caller
  *    that omits the header must keep downloading a file that still imports.
  *  - PORTAL (`X-Ops-Portal-Version: 1`) is the pictured template
- *    (mvp/ops/Ops Portal.dc.html:802): given name, family name, date of birth,
- *    year level, home language. The class comes from the modal's "Add to class"
- *    picker, never from a CSV column, and no email is required or invented.
+ *    (mvp/ops/Ops Portal.dc.html:802) plus a REQUIRED `email` column: given
+ *    name, family name, email, date of birth, year level, home language. The
+ *    class comes from the modal's "Add to class" picker, never from a CSV
+ *    column, and the email is required so every committed row provisions the
+ *    student's account from a real, deliverable address instead of the
+ *    `<student_key>@students.schooltest.invalid` fallback.
  *
  * Pure data + pure functions: no Strapi, no DOM, no node builtins, because both
  * applications import this file.
@@ -24,10 +27,16 @@ import { z } from 'zod';
 import type { PortalMode } from './compatibility';
 import { documentIdSchema, type OpsOperation } from './core';
 
-/** The pictured portal columns, in the pictured order. */
+/**
+ * The portal columns, in the pictured order — plus the REQUIRED `email` column
+ * the picture never had: a committed row must provision a working
+ * users-permissions account, and the create-time provisioning middleware only
+ * has a real address to provision from when the row carries one.
+ */
 export const PORTAL_IMPORT_TEMPLATE_COLUMNS = [
   'given name',
   'family name',
+  'email',
   'date of birth',
   'year level',
   'home language',
@@ -67,6 +76,9 @@ export const IMPORT_TEMPLATE_FILENAME = 'student-import-template.csv';
 const PORTAL_SAMPLE: Readonly<Record<string, string>> = Object.freeze({
   'given name': 'Sample',
   'family name': 'Student',
+  // RFC 2606 reserved domain: deliverable to nobody, so a sample row that is
+  // committed by accident cannot reach a real person.
+  email: 'sample.student@example.com',
   'date of birth': '2013-03-04',
   'year level': '8',
   'home language': 'english',

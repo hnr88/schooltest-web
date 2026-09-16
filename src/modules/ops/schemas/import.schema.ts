@@ -53,6 +53,8 @@ export const portalImportCreateRowSchema = z.object({
   student_key: z.string().nullable(),
   given_name: z.string(),
   family_name: z.string(),
+  // The REQUIRED, normalised email the student's account is provisioned from.
+  email: z.string(),
   date_of_birth: z.string(),
   year_level: z.number(),
   first_language: z.string(),

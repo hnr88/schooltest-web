@@ -21,7 +21,15 @@ function SelectItem({ className, ...props }: ComponentProps<typeof SelectItemPri
   return (
     <SelectItemPrimitive
       data-slot="select-item"
-      className={cn('rounded-[10px] px-3 py-2.5 text-[13.5px] font-medium focus:bg-muted focus:text-foreground', className)}
+      // The vendored item now defaults to bg-muted/text-foreground on the
+      // focused/highlighted arm. These explicit variants pin the same values —
+      // including the child-level `**:text-foreground` chains — so a future
+      // change to the base classes cannot silently re-introduce white-on-light
+      // text on this surface.
+      className={cn(
+        'rounded-[10px] px-3 py-2.5 text-[13.5px] font-medium focus:bg-muted focus:text-foreground data-highlighted:bg-muted data-highlighted:text-foreground not-data-[variant=destructive]:focus:**:text-foreground not-data-[variant=destructive]:data-highlighted:**:text-foreground',
+        className,
+      )}
       {...props}
     />
   );

@@ -111,7 +111,7 @@ export function OpsAdminsTab({
             onClick={onInvite}
             className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
           >
-            {t('inviteStaff')}
+            {t('inviteAdmin')}
           </Button>
         }
       />

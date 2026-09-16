@@ -3,16 +3,18 @@ import { z } from 'zod';
 import {
   STUDENT_IMPORT_ALL_COLUMNS,
   STUDENT_IMPORT_DOB_PATTERN,
+  STUDENT_IMPORT_EMAIL_PATTERN,
   STUDENT_IMPORT_YEAR_LEVEL_MAX,
   STUDENT_IMPORT_YEAR_LEVEL_MIN,
 } from '@/modules/student-import/constants/student-import.constants';
 
 // The judge for one mapped CSV row. Every rule here mirrors the SERVER rule the
 // preview/commit engine enforces (schooltest-api validatePortalRows): given
-// name required, family name required, date of birth a real YYYY-MM-DD date,
-// year level a whole number 7-12, home language required, student key
-// optional. A row that passes is a row the endpoint accepts — the parser is
-// deliberately exactly as strict as the server, never stricter.
+// name required, family name required, email required AND well-formed (the
+// same pattern the server tests), date of birth a real YYYY-MM-DD date, year
+// level a whole number 7-12, home language required, student key optional. A
+// row that passes is a row the endpoint accepts — the parser is deliberately
+// exactly as strict as the server, never stricter.
 
 /** `Number.isNaN(Date.parse(v))` — the same real-date check the server runs. */
 const isRealDate = (value: string): boolean => !Number.isNaN(Date.parse(value));
@@ -22,6 +24,7 @@ export const studentImportRowSchema = z.object({
   student_key: z.string().min(1).nullable(),
   given_name: z.string().min(1),
   family_name: z.string().min(1),
+  email: z.string().min(1).regex(STUDENT_IMPORT_EMAIL_PATTERN),
   date_of_birth: z.string().regex(STUDENT_IMPORT_DOB_PATTERN).refine(isRealDate),
   year_level: z
     .number()
@@ -37,6 +40,7 @@ export const studentImportRowErrorSchema = z.object({
   reason: z.enum([
     'givenNameRequired',
     'familyNameRequired',
+    'emailInvalid',
     'dobInvalid',
     'yearLevelInvalid',
     'homeLanguageRequired',

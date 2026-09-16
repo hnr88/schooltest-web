@@ -480,15 +480,17 @@ test.describe('W2 ops surfaces battery', () => {
   const SURF_INVITE_PASSWORD = 'W2SurfInvite123!';
   const WINDOW_TITLE = `W2 Surf Window ${STAMP}`;
   const IMPORT_CSV = [
-    'given name,family name,date of birth,year level,home language',
-    'Surf One,W2 Student,2012-03-01,7,english',
-    'Surf Two,W2 Student,2012-03-02,7,mandarin_chinese',
-    'Surf Three,W2 Student,2012-03-03,7,other',
+    'given name,family name,email,date of birth,year level,home language',
+    'Surf One,W2 Student,w2-surf-one@test.invalid,2012-03-01,7,english',
+    'Surf Two,W2 Student,w2-surf-two@test.invalid,2012-03-02,7,mandarin_chinese',
+    'Surf Three,W2 Student,w2-surf-three@test.invalid,2012-03-03,7,other',
   ].join('\n');
   const IMPORT_CSV_ROUND2 = [
-    'given name,family name,date of birth,year level,home language',
-    `Surf Four ${STAMP},W2 Student,2012-03-04,7,english`,
-    'Surf Bad,W2 Student,2012-03-05,3,english',
+    'given name,family name,email,date of birth,year level,home language',
+    `Surf Four ${STAMP},W2 Student,w2-surf-four-${STAMP}@test.invalid,2012-03-04,7,english`,
+    // The reject row fails on its YEAR LEVEL only: its email is well-formed and
+    // unused, so the reject reason stays the one the assertions look for.
+    'Surf Bad,W2 Student,w2-surf-bad@test.invalid,2012-03-05,3,english',
   ].join('\n');
 
   let page: import('@playwright/test').Page;
@@ -1105,13 +1107,24 @@ test.describe('W2 ops surfaces battery', () => {
     await expect(page.getByText(/Surf Teacher/).first()).toBeVisible({ timeout: 30_000 });
   });
 
-  test('OPS-024 ops teachers dialog opens a teacher detail with classes and contact', async () => {
+  test('OPS-024 ops teacher row menu opens the edit-details dialog with the row identity', async () => {
     await gotoSurfDetail('teachers');
-    await page.getByRole('button', { name: cat(en, 'Ops.schoolTables.manageTeachers') }).click();
-    const dialog = page.locator('[data-slot="ops-teachers-dialog"]');
+    // The manage-teachers modal is gone: the row's own ⋯ menu now carries
+    // "Edit details", prefilled with exactly the row's C-TCH-04 whitelist.
+    const row = page.getByRole('row').filter({ hasText: SURF_TEACHER_EMAIL }).first();
+    await expect(row).toBeVisible({ timeout: 30_000 });
+    await row.getByRole('button', { name: 'Row actions' }).click();
+    await page
+      .getByRole('menuitem', { name: cat(en, 'Ops.schoolTables.actions.editDetails') })
+      .click();
+    const dialog = page.locator('[data-slot="ops-edit-details-dialog"]');
     await expect(dialog).toBeVisible({ timeout: 30_000 });
-    await expect(dialog).toContainText(SURF_TEACHER_EMAIL, { timeout: 30_000 });
+    await expect(
+      dialog.getByLabel(cat(en, 'Ops.schoolTables.editDetailsEmail')),
+    ).toHaveValue(SURF_TEACHER_EMAIL, { timeout: 30_000 });
+    // keyboard-closable, like the dialog it replaced
     await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
   });
 
   test('OPS-032 onboarding modal mints the link, Send dispatches the email', async () => {

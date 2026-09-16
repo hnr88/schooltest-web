@@ -343,7 +343,7 @@ test('SA-023 + SA-024 + SA-025: class roster quick-remove, the student picker, a
       'Idempotency-Key': `w3-roster-ui-${STAMP}-aaaaaa`,
     },
     data: {
-      csv: `given name,family name,date of birth,year level,home language\nW3Picker ${STAMP},Probe,2012-06-06,7,english`,
+      csv: `given name,family name,email,date of birth,year level,home language\nW3Picker ${STAMP},Probe,w3-picker-${STAMP}@test.invalid,2012-06-06,7,english`,
       class_documentId: classId,
     },
   });

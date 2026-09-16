@@ -159,7 +159,7 @@ test.describe('school admin dashboard redesign', () => {
     for await (const chunk of stream) chunks.push(chunk as Buffer);
     const header = Buffer.concat(chunks).toString('utf8').split('\n')[0].trim();
     // The ONE vocabulary shared with the ops portal and the server's validator.
-    expect(header).toBe('given name,family name,date of birth,year level,home language');
+    expect(header).toBe('given name,family name,email,date of birth,year level,home language');
   });
 
   test('Teachers: roster renders live rows and the edit modal opens', async ({ page }) => {

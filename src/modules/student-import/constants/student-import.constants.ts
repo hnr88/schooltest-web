@@ -46,10 +46,19 @@ export const STUDENT_IMPORT_YEAR_LEVEL_MAX = PORTAL_IMPORT_YEAR_LEVEL_MAX;
 
 export const STUDENT_IMPORT_YEAR_PATTERN = /^\d+$/;
 
+/**
+ * The REQUIRED email cell. The same grammar the server's validator enforces
+ * (schooltest-api src/api/ops/lib/import.constants.ts EMAIL_PATTERN): the
+ * client parser is deliberately exactly as strict as the server, never stricter
+ * and never looser — a row rejected here is a row preview would refuse.
+ */
+export const STUDENT_IMPORT_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 // Zod issue path -> the template column and the message key a consumer renders.
 export const STUDENT_IMPORT_FIELD_ERRORS = {
   given_name: { column: 'given name', reason: 'givenNameRequired' },
   family_name: { column: 'family name', reason: 'familyNameRequired' },
+  email: { column: 'email', reason: 'emailInvalid' },
   date_of_birth: { column: 'date of birth', reason: 'dobInvalid' },
   year_level: { column: 'year level', reason: 'yearLevelInvalid' },
   first_language: { column: 'home language', reason: 'homeLanguageRequired' },

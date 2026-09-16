@@ -22,11 +22,11 @@ export function useChildrenList() {
     [allRows, selectedStudentId],
   );
   const activeCount = useMemo(
-    () => allChildren.filter((child) => child.status === 'active').length,
+    () => allChildren.filter((child) => child.student_status === 'active').length,
     [allChildren],
   );
   const archivedCount = useMemo(
-    () => allChildren.filter((child) => child.status === 'archived').length,
+    () => allChildren.filter((child) => child.student_status === 'archived').length,
     [allChildren],
   );
 

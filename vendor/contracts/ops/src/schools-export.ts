@@ -122,7 +122,19 @@ export const SCHOOL_SUSPENDED_ACCOUNT_STATUS = 'suspended';
 export function derivePortalSchoolStatus(row: SchoolLifecycleRow): PortalStatus {
   if (row.account_status === SCHOOL_ARCHIVED_ACCOUNT_STATUS) return 'archived';
   if (row.account_status === SCHOOL_SUSPENDED_ACCOUNT_STATUS) return 'suspended';
-  if (row.account_status !== 'active' || row.onboarding_status !== 'complete') {
+  // The onboarding wizard's terminal state is `submitted`
+  // (school-onboarding completeOnboarding "flip the school to submitted");
+  // nothing in the product ever writes `complete`. Accepting the terminal
+  // `submitted` here keeps the documented precedence — a school whose
+  // onboarding never finished stays Pending setup — without pinning every
+  // onboarded school to Pending setup forever, which hid the
+  // Suspend/Reactivate primary affordances behind an unreachable state.
+  // The wizard-complete path leaves account_status at `invited` (the link-mint
+  // value); once setup is SUBMITTED the school is live, so the pre-payment
+  // invited/invoiced account states count as onboarded too.
+  const onboarded = row.onboarding_status === 'complete' || row.onboarding_status === 'submitted';
+  const liveAccount = ['active', 'invited', 'invoiced'].includes(String(row.account_status));
+  if (!liveAccount || !onboarded) {
     return 'pending_setup';
   }
   return row.plan === 'trial' ? 'trial' : 'active';

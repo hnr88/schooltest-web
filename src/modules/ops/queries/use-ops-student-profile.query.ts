@@ -35,6 +35,19 @@ export const opsStudentProfileSchema = z.strictObject({
   date_of_birth: z.string().nullable(),
   acara_phase: z.enum(OPS_ACARA_PHASES).nullable(),
   student_status: z.enum(OPS_STUDENT_STATUSES),
+  // The six C-OPS-STU-EDIT contact/EAL/D fields the profile projection gains
+  // (the same keys the PATCH/POST bodies carry). `nullish`, not bare
+  // `.nullable()`: until the server deploys the edit contract these keys are
+  // ABSENT, and a bare nullable field would reject every profile in the
+  // transition window — the exact failure mode the updatedAt note below
+  // records. Absent reads as "not set" (null), identical to the school
+  // students' roster precedent.
+  email: z.string().nullish().transform((value) => value ?? null),
+  other_languages: z.array(z.string()).nullish().transform((value) => value ?? null),
+  l1_literate: z.boolean().nullish().transform((value) => value ?? null),
+  prior_schooling_interrupted: z.boolean().nullish().transform((value) => value ?? null),
+  time_learning_english_yrs: z.number().nullish().transform((value) => value ?? null),
+  time_in_australia_months: z.number().int().nullish().transform((value) => value ?? null),
   // NO updatedAt: the server's profile projection never carries it, so this
   // strict schema demanding an absent key rejected EVERY real profile and the
   // panel rendered its error state for every student (NIGHT-2 W2 find).

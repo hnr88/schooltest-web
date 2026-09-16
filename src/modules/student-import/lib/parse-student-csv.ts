@@ -70,20 +70,22 @@ function isHeaderRecord(cells: readonly string[]): boolean {
 const cellAt = (cells: readonly string[], index: number): string => cells[index] ?? '';
 
 function toCandidate(cells: readonly string[], line: number): Record<string, unknown> {
-  const yearRaw = cellAt(cells, 3);
-  const studentKey = cellAt(cells, 5);
+  const emailRaw = cellAt(cells, 2);
+  const yearRaw = cellAt(cells, 4);
+  const studentKey = cellAt(cells, 6);
   return {
     line,
     given_name: cellAt(cells, 0),
     family_name: cellAt(cells, 1),
-    date_of_birth: cellAt(cells, 2),
+    email: emailRaw.toLowerCase(),
+    date_of_birth: cellAt(cells, 3),
     // A whole number parses to its number (the schema range-checks it); anything
     // else travels as the raw text so the schema rejects it and the error row
     // can quote the offending value.
     year_level: STUDENT_IMPORT_YEAR_PATTERN.test(yearRaw)
       ? Number.parseInt(yearRaw, 10)
       : yearRaw,
-    first_language: cellAt(cells, 4),
+    first_language: cellAt(cells, 5),
     student_key: studentKey === '' ? null : studentKey,
   };
 }

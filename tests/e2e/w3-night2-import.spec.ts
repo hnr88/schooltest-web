@@ -107,8 +107,8 @@ test('SA-011 + SA-018: class-page dialog fixes the class and the template downlo
   const path = await download.path();
   const content = readFileSync(path!, 'utf8');
   expect(content).toBe(
-    'given name,family name,date of birth,year level,home language\r\n' +
-      'Sample,Student,2013-03-04,8,english\r\n',
+    'given name,family name,email,date of birth,year level,home language\r\n' +
+      'Sample,Student,sample.student@example.com,2013-03-04,8,english\r\n',
   );
   await testInfo.attach('w3-sa011-template.csv', {
     body: Buffer.from(content),
@@ -132,11 +132,11 @@ test('SA-012 + SA-014 + SA-015: dropzone upload previews, per-row rejects name l
   const dialog = await openClassImportDialog(page, classId);
   const good = [`W3 Drop ${STAMP} A`, `W3 Drop ${STAMP} B`];
   const csv = [
-    'given name,family name,date of birth,year level,home language',
-    `${good[0]},Probe,2012-04-01,8,english`,
-    `${good[1]},Probe,2012-04-02,8,korean`,
-    ',NoGivenName,2012-04-03,8,english',
-    'Broken Dob,Row,14/05/2012,8,english',
+    'given name,family name,email,date of birth,year level,home language',
+    `${good[0]},Probe,w3-drop-${STAMP}-a@test.invalid,2012-04-01,8,english`,
+    `${good[1]},Probe,w3-drop-${STAMP}-b@test.invalid,2012-04-02,8,korean`,
+    `,NoGivenName,w3-drop-${STAMP}-c@test.invalid,2012-04-03,8,english`,
+    `Broken Dob,Row,w3-drop-${STAMP}-d@test.invalid,14/05/2012,8,english`,
   ].join('\n');
 
   // SA-012: a REAL file through the dropzone's hidden input.
@@ -198,9 +198,9 @@ test('SA-013: paste-a-list parses into the same preview on the class page and th
     .getByLabel(cat(en, 'StudentImport.pasteLabel'))
     .fill(
       [
-        'given name,family name,date of birth,year level,home language',
-        `W3 Paste ${STAMP} A,Probe,2012-04-01,8,english`,
-        `W3 Paste ${STAMP} B,Probe,2012-04-02,8,vietnamese`,
+        'given name,family name,email,date of birth,year level,home language',
+        `W3 Paste ${STAMP} A,Probe,w3-paste-${STAMP}-a@test.invalid,2012-04-01,8,english`,
+        `W3 Paste ${STAMP} B,Probe,w3-paste-${STAMP}-b@test.invalid,2012-04-02,8,vietnamese`,
       ].join('\n'),
     );
   await expect(dialog).toContainText('2 rows ready to import');
@@ -219,7 +219,7 @@ test('SA-013: paste-a-list parses into the same preview on the class page and th
   await page.getByRole('option', { name: `W3 Paste Class ${STAMP}` }).click();
   await pickerDialog
     .getByLabel(cat(en, 'StudentImport.pasteLabel'))
-    .fill(`W3 Paste ${STAMP} C,Probe,2012-04-03,8,english`);
+    .fill(`W3 Paste ${STAMP} C,Probe,w3-paste-${STAMP}-c@test.invalid,2012-04-03,8,english`);
   await expect(pickerDialog).toContainText('1 student ready to import');
   await pickerDialog.getByRole('button', { name: cat(en, 'SchoolStudents.import.cancel') }).click();
 });
@@ -234,13 +234,14 @@ test('SA-017: duplicates follow the dedupe rule — re-upload skips, in-file rep
   classRegister.push(classId);
   const before = await classStudentCount(page.request, jwt, classId);
 
-  const row = `W3 Dup ${STAMP},Probe,2012-04-01,8,english`;
+  const row = `W3 Dup ${STAMP},Probe,w3-dup-${STAMP}@test.invalid,2012-04-01,8,english`;
+  const header = 'given name,family name,email,date of birth,year level,home language';
 
   // First import: the student exists after this.
   const dialog1 = await openClassImportDialog(page, classId);
   await dialog1
     .getByLabel(cat(en, 'StudentImport.pasteLabel'))
-    .fill(`given name,family name,date of birth,year level,home language\n${row}`);
+    .fill(`${header}\n${row}`);
   await dialog1.getByRole('button', { name: cat(en, 'Classes.detail.import.submit') }).click();
   await expect(page.locator('[data-sonner-toast]')).toContainText('1 student was imported');
   const afterFirst = await classStudentCount(page.request, jwt, classId);
@@ -256,7 +257,7 @@ test('SA-017: duplicates follow the dedupe rule — re-upload skips, in-file rep
   const dialog2 = await openClassImportDialog(page, classId);
   await dialog2
     .getByLabel(cat(en, 'StudentImport.pasteLabel'))
-    .fill(`given name,family name,date of birth,year level,home language\n${row}`);
+    .fill(`${header}\n${row}`);
   await dialog2.getByRole('button', { name: cat(en, 'Classes.detail.import.submit') }).click();
   await expect(page.locator('[data-sonner-toast]')).toContainText(
     'Every student in this file is already in your school.',
@@ -269,7 +270,7 @@ test('SA-017: duplicates follow the dedupe rule — re-upload skips, in-file rep
   await dialog3
     .getByLabel(cat(en, 'StudentImport.pasteLabel'))
     .fill(
-      `given name,family name,date of birth,year level,home language\n${row}\nW3 Fresh ${STAMP},Probe,2012-04-02,8,english`,
+      `${header}\n${row}\nW3 Fresh ${STAMP},Probe,w3-fresh-${STAMP}@test.invalid,2012-04-02,8,english`,
     );
   await dialog3.getByRole('button', { name: cat(en, 'Classes.detail.import.submit') }).click();
   await expect(page.locator('[data-sonner-toast]')).toContainText('1 imported, 1 already enrolled');
@@ -281,10 +282,10 @@ test('SA-017: duplicates follow the dedupe rule — re-upload skips, in-file rep
 
   // A repeat WITHIN one file: the second row is refused BY ROW, not merged.
   const dialog4 = await openClassImportDialog(page, classId);
-  const twin = `W3 Twin ${STAMP},Probe,2012-04-05,8,english`;
+  const twin = `W3 Twin ${STAMP},Probe,w3-twin-${STAMP}@test.invalid,2012-04-05,8,english`;
   await dialog4
     .getByLabel(cat(en, 'StudentImport.pasteLabel'))
-    .fill(`given name,family name,date of birth,year level,home language\n${twin}\n${twin}`);
+    .fill(`${header}\n${twin}\n${twin}`);
   await dialog4.getByRole('button', { name: cat(en, 'Classes.detail.import.submit') }).click();
   await expect(page.locator('[data-sonner-toast]')).toContainText('1 of 2 students were imported');
   const rejects = dialog4.locator('[data-slot="student-import-rejects"]');
@@ -309,9 +310,13 @@ test('SA-016: an oversized CSV is refused with the 5 MB message and imports noth
 
   const dialog = await openClassImportDialog(page, classId);
   // > 5 MiB of valid-looking rows: the server's byte gate fires BEFORE parsing.
-  const line = 'W3 Big,Row,2012-04-01,8,english,padding-to-make-each-line-fat-'.padEnd(600, 'x');
-  const rows = ['given name,family name,date of birth,year level,home language,student key'];
-  for (let i = 0; i < 9500; i += 1) rows.push(`${line}${i}`);
+  // Each row is portal-VALID (required email included) so the client parser
+  // still counts 9,500 ready rows — the refusal must come from the byte gate,
+  // never from a bad row.
+  const rows = ['given name,family name,email,date of birth,year level,home language,student key'];
+  for (let i = 0; i < 9500; i += 1) {
+    rows.push(`W3 Big,Row,w3-big-${STAMP}-${i}@test.invalid,2012-04-01,8,english,padding-to-make-each-line-fat-`.padEnd(640, 'x'));
+  }
   const csv = rows.join('\n');
   expect(Buffer.byteLength(csv, 'utf8')).toBeGreaterThan(5 * 1024 * 1024);
 

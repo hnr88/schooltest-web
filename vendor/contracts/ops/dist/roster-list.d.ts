@@ -47,7 +47,7 @@ export declare const rosterListResponseSchema: z.ZodObject<{
             developing: "developing";
             consolidating: "consolidating";
         }>>;
-        status: z.ZodEnum<{
+        student_status: z.ZodEnum<{
             active: "active";
             archived: "archived";
             enrolled: "enrolled";

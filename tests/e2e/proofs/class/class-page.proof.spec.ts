@@ -331,12 +331,14 @@ test('6+7. import students end to end (template, preview, commit, roster, export
   expect(templateCsv.trim().length).toBeGreaterThan(0);
   writeFileSync(path.join(SHOTS, '06-import-proof.json'), JSON.stringify({ templateHead: templateCsv.split('\n')[0] }, null, 2));
 
-  // Build the probe CSV with the template's own header.
+  // Build the probe CSV with the template's own header. Every row carries the
+  // REQUIRED email (unique per row, `.invalid` domain) so both rows still
+  // preview as creates.
   const header = templateCsv.split('\n')[0];
   const csv = [
     header,
-    `${given()},One,2013-05-04,7,English`,
-    `${given()},Two,2013-06-11,7,Mandarin`,
+    `${given()},One,zzprobe.${ts}.one@test.invalid,2013-05-04,7,English`,
+    `${given()},Two,zzprobe.${ts}.two@test.invalid,2013-06-11,7,Mandarin`,
   ].join('\n');
   const csvPath = path.join(SHOTS, '06-probe-students.csv');
   writeFileSync(csvPath, csv);

@@ -18,10 +18,11 @@
  *  - Teachers (:1321–1327): View classes · Edit access · Resend invite ·
  *    Suspend/Reactivate teacher · Remove from school
  *
- * `staffAccountRowActions`/`staffAccountBulkActions` below cover the FOUR
+ * `staffAccountRowActions`/`staffAccountBulkActions` below cover the
  * account-lifecycle actions common to an ACCEPTED user of either surface
  * (Edit access, Suspend/Reactivate, Remove — Teachers additionally gets View
- * classes, which is `write: false` and has no confirm). "Resend invite" is
+ * classes, which is `write: false` and has no confirm, and the teacher-only
+ * Edit details, the C-TCH-04 dialog). "Resend invite" is
  * NOT one of them: an accepted account has no open invitation to resend, so
  * that action exists only for a PENDING invitation row — Admins wires it in
  * `OpsStaffUsersTable.tsx` off the existing `Ops.staffInvitations` actions
@@ -31,7 +32,13 @@
 export type StaffActionSurface = 'admin' | 'teacher';
 export type StaffAccountStatus = 'active' | 'suspended';
 
-export type StaffRowActionKey = 'editAccess' | 'viewClasses' | 'suspend' | 'reactivate' | 'remove';
+export type StaffRowActionKey =
+  | 'editAccess'
+  | 'editDetails'
+  | 'viewClasses'
+  | 'suspend'
+  | 'reactivate'
+  | 'remove';
 
 export interface StaffConfirmCopy {
   titleKey: string;
@@ -64,6 +71,17 @@ const VIEW_CLASSES: StaffRowAction = {
   key: 'viewClasses',
   labelKey: 'actions.viewClasses',
   write: false,
+  danger: false,
+  confirm: null,
+};
+
+// Teacher surface only: the C-TCH-04 details whitelist (first/last/email) —
+// the edit the removed manage-teachers modal owned, now a row-menu dialog. No
+// confirm step; the dialog itself carries the server's duplicate-email refusal.
+const EDIT_DETAILS: StaffRowAction = {
+  key: 'editDetails',
+  labelKey: 'actions.editDetails',
+  write: true,
   danger: false,
   confirm: null,
 };
@@ -117,7 +135,9 @@ export function staffAccountRowActions(
   status: StaffAccountStatus,
 ): readonly StaffRowAction[] {
   const tail = [suspendOrReactivate(surface, status), removeFromSchool(surface)];
-  return surface === 'teacher' ? [VIEW_CLASSES, EDIT_ACCESS, ...tail] : [EDIT_ACCESS, ...tail];
+  return surface === 'teacher'
+    ? [VIEW_CLASSES, EDIT_ACCESS, EDIT_DETAILS, ...tail]
+    : [EDIT_ACCESS, ...tail];
 }
 
 export type StaffBulkActionKey = 'suspend' | 'remove';

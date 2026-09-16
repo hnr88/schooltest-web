@@ -25,7 +25,7 @@ import { documentIdSchema, type OpsOperation } from './core';
  * Bounds — the exact numbers the server validates and the tests assert.
  * ------------------------------------------------------------------ */
 
-/** api::student.student `status` enum, stored verbatim. `enrolled` is the
+/** api::student.student `student_status` enum, stored verbatim. `enrolled` is the
  *  roster row that has not finished setup; the UI labels it "Pending setup"
  *  but the wire value is never renamed. */
 export const OPS_STUDENT_STATUSES = ['active', 'archived', 'enrolled'] as const;
@@ -95,7 +95,7 @@ export const opsStudentRowSchema = z.strictObject({
     .nullable(),
   first_language: z.string().max(FIRST_LANGUAGE_MAX).nullable(),
   acara_phase: opsAcaraPhaseSchema.nullable(),
-  status: opsStudentStatusSchema,
+  student_status: opsStudentStatusSchema,
   class: opsStudentClassRefSchema.nullable(),
   latest_result: opsStudentLatestResultSchema.nullable(),
   updatedAt: z.iso.datetime(),

@@ -11,7 +11,6 @@ import { OpsClassesTab } from '@/modules/ops/components/OpsClassesTab';
 import { OpsOverviewTab } from '@/modules/ops/components/OpsOverviewTab';
 import { OpsStaffInvitationDialog } from '@/modules/ops/components/OpsStaffInvitationDialog';
 import { OpsStudentsTab } from '@/modules/ops/components/OpsStudentsTab';
-import { OpsTeachersDialog } from '@/modules/ops/components/OpsTeachersDialog';
 import { OpsTeachersTab } from '@/modules/ops/components/OpsTeachersTab';
 
 import type { OpsSchoolTablesProps } from '@/modules/ops/types/components.types';
@@ -69,7 +68,6 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [teachersOpen, setTeachersOpen] = useState(false);
   // GAP-1 (task 15): the staff invitations dialog — the pictured INVITE MODAL
   // plus its table — opened from BOTH staff tabs. One instance for the whole
   // tab block, mounted unconditionally like OpsOnboardSchoolDialog: closing
@@ -185,11 +183,18 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
       className="flex flex-col gap-4"
     >
       {/* Design 292-297: underline tabs — 14px text, 12px 16px padding, active
-          600 weight with a 2.5px underline overlapping a full-width 1px rule. */}
+          600 weight with a 2.5px underline overlapping a full-width 1px rule.
+          `items-end` is load-bearing for that overlap: the primitive centers
+          list items, which halves the active trigger's -1px margin shift and
+          leaves a sliver of the 1px rule under its 2.5px underline (the
+          "double border"). Bottom-aligned, the margin sinks the trigger a full
+          1px so the underline covers the rule. `flex-wrap` — never
+          overflow-x-auto — is what absorbs narrow widths: the tab row must
+          wrap, not scroll. */}
       <TabsList
         aria-label={t('title')}
         variant="line"
-        className="w-full justify-start gap-1 overflow-x-auto rounded-none border-b border-[#DFE5EE] bg-transparent px-1 py-0 group-data-horizontal/tabs:h-auto"
+        className="w-full flex-wrap items-end justify-start gap-1 rounded-none border-b border-[#DFE5EE] bg-transparent px-1 py-0 group-data-horizontal/tabs:h-auto"
       >
         {TAB_ORDER.map((key) => {
           // The design's tab count badges (`:296-298`), fed from the detail
@@ -210,7 +215,7 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
             <TabsTrigger
               key={key}
               value={key}
-              className="h-auto flex-none justify-center gap-2 rounded-none border-0 border-b-[2.5px] border-b-transparent bg-transparent px-4 py-3 text-sm font-medium text-[#7C8698] hover:text-foreground data-active:mb-[-1px] data-active:border-b-[#0E2350] data-active:bg-transparent data-active:font-semibold data-active:text-foreground data-active:after:opacity-0"
+              className="h-auto flex-none justify-center gap-2 rounded-none border-0 border-b-[2.5px] border-b-transparent bg-transparent px-4 py-3 text-sm font-medium text-[#7C8698] hover:text-foreground data-active:mb-[-1px] data-active:border-b-[#0E2350] data-active:bg-transparent data-active:font-semibold data-active:text-foreground data-active:after:hidden"
             >
               {t(`tab.${key}`)}
               {count !== null && count > 0 ? (
@@ -247,7 +252,6 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
         <OpsTeachersTab
           schoolDocumentId={schoolDocumentId}
           active={effectiveTab === 'teachers'}
-          onManage={() => setTeachersOpen(true)}
           onInvite={openInvitations}
         />
       </TabsContent>
@@ -260,11 +264,6 @@ export function OpsSchoolTables({ schoolDocumentId, school }: OpsSchoolTablesPro
         <OpsStudentsTab schoolDocumentId={schoolDocumentId} />
       </TabsContent>
 
-      <OpsTeachersDialog
-        schoolDocumentId={schoolDocumentId}
-        open={teachersOpen}
-        onOpenChange={setTeachersOpen}
-      />
       <OpsStaffInvitationDialog
         schoolDocumentId={schoolDocumentId}
         open={inviteOpen}

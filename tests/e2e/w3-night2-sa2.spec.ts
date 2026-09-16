@@ -289,7 +289,7 @@ test('SA-026: a roster row drills down to the student detail inside the class co
       'Idempotency-Key': `w3-drill-${stamp}-aaaaaa`,
     },
     data: {
-      csv: `given name,family name,date of birth,year level,home language\nW3 Drill ${stamp},Probe,2012-06-06,7,english`,
+      csv: `given name,family name,email,date of birth,year level,home language\nW3 Drill ${stamp},Probe,w3-drill-${stamp}@test.invalid,2012-06-06,7,english`,
       class_documentId: classId,
     },
   });

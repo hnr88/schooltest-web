@@ -46,7 +46,7 @@ export function ClassStudentsPickerDialog({
   const [picked, setPicked] = useState<ReadonlySet<string>>(new Set());
   const [submitting, setSubmitting] = useState(false);
   const studentsQuery = useSchoolStudentsQuery(
-    { page: 1, pageSize: 100, student_status: 'active', classId: 'all', q: '' },
+    { page: 1, pageSize: 100, status: 'active', classId: 'all', q: '' },
     true,
   );
 

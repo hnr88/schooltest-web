@@ -51,7 +51,7 @@ export function AskAiPanel({
             data-slot="ask-ai-chip"
             onClick={() => setQuestion(t(key))}
             title={t(key)}
-            className="print-hidden max-w-full truncate rounded-full bg-muted px-3 py-1 text-caption font-semibold text-muted-foreground hover:bg-accent"
+            className="print-hidden max-w-full truncate rounded-full bg-muted px-3 py-1 text-caption font-semibold text-muted-foreground hover:bg-slate-200"
           >
             {t(key)}
           </button>

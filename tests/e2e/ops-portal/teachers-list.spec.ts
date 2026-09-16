@@ -6,10 +6,10 @@
  * the versioned body. Three things are proven that a 200 alone does not:
  *  1. the live response validates against the SHARED contract schema (the same
  *     module the server projects to), so client and server cannot drift;
- *  2. the filters and paging are SERVER work — the total the footer reports is
- *     the query's own count, not the number of rows on screen;
- *  3. the two portal columns render their stored value or their empty
- *     fallback, never a value derived from the person's name.
+ *  2. the Teachers tab renders that read — its header summary carries the
+ *     query's own server total, not the number of rows on screen;
+ *  3. the tab's search, empty state and pager are SERVER work — an unmatched
+ *     search is an honest empty, and paging never repeats a page-1 row.
  * Captures run at the reference desktop viewport and at 375px with a fixed
  * clock, so the visual review compares like with like.
  */
@@ -44,6 +44,7 @@ const API = process.env.E2E_API_URL ?? process.env.E2E_API_BASE_URL ?? 'http://1
 // Fixture school with one teacher, created in beforeAll through the real
 // contracts (the seeded demo school this spec once pinned is absent at HEAD).
 let schoolId = '';
+let teacherEmail = '';
 const ledger = new OpsFixtureLedger();
 const OPS_EMAIL = 'apiadmin@schooltest.local';
 const ACTION_TIMEOUT = 10_000;
@@ -71,23 +72,18 @@ async function signInAsOps(page: Page): Promise<void> {
   await page.waitForURL('**/dashboard', { timeout: ACTION_TIMEOUT });
 }
 
-// ops/16 (R-23 spec rewrite): the drawn Teachers TAB is now the entry point —
-// a direct arrival on `?tab=teachers` — rather than the Teachers count card
-// this helper used to click through (that duplicate mount is task 43's, wave
-// 6). The dialog this opens, and every assertion below on its contents, is
-// UNCHANGED: `OpsTeachersDialog`'s own "Manage teachers" control is the
-// surviving mount (`OpsSchoolTables.tsx:180-184`) of the exact same dialog.
-async function openDirectory(page: Page) {
+// The manage-teachers modal is gone (its edit moved into the row ⋯ menu —
+// see ops-teacher-details.spec). The drawn Teachers TAB is now the only
+// directory surface: its search/chips/pager are the server's, and its header
+// summary is fed by the SAME versioned C-OPS-PORTAL-021 read this spec pins.
+async function openTeachersTab(page: Page) {
   await page.goto(`/en/dashboard/ops/schools/${schoolId}?tab=teachers`);
-  await page
-    .getByRole('button', { name: cat(en, 'Ops.schoolTables.manageTeachers') })
-    .click({ timeout: ACTION_TIMEOUT });
-  const dialog = page.locator('[data-slot="ops-teachers-dialog"]');
-  await expect(dialog).toBeVisible({ timeout: ACTION_TIMEOUT });
-  await expect(dialog.locator('[data-slot="ops-teachers-table"]')).toBeVisible({
+  const directory = page.locator('[data-slot="directory"]');
+  await expect(directory).toBeVisible({ timeout: ACTION_TIMEOUT });
+  await expect(directory.getByRole('row').filter({ hasText: teacherEmail }).first()).toBeVisible({
     timeout: ACTION_TIMEOUT,
   });
-  return dialog;
+  return directory;
 }
 
 test.describe('C-OPS-PORTAL-021 ops teachers directory', () => {
@@ -96,7 +92,8 @@ test.describe('C-OPS-PORTAL-021 ops teachers directory', () => {
     await namedRetry('ops-031', 'create the fixture school and teacher', async () => {
       const school = await createOpsFixtureSchool(request, ledger, 'ops-031');
       schoolId = school.documentId;
-      await createOpsFixtureTeacher(request, ledger, schoolId, 'ops-031');
+      const teacher = await createOpsFixtureTeacher(request, ledger, schoolId, 'ops-031');
+      teacherEmail = teacher.email;
     });
   });
 
@@ -119,7 +116,7 @@ test.describe('C-OPS-PORTAL-021 ops teachers directory', () => {
     expect(parsed.success, JSON.stringify(parsed.error?.issues ?? [], null, 2)).toBe(true);
   });
 
-  test('the directory renders the portal columns and pages on the server total', async ({
+  test('the tab renders the fixture teacher and the header summary carries the server total', async ({
     page,
     request,
   }) => {
@@ -131,42 +128,41 @@ test.describe('C-OPS-PORTAL-021 ops teachers directory', () => {
       if (req.url().includes('/teachers')) requests.push(req.url());
     });
 
-    const dialog = await openDirectory(page);
-    await expect(dialog).toContainText(cat(en, 'Ops.teachers.title'));
-    await expect(dialog.locator('[data-slot="ops-teachers-filters"]')).toBeVisible();
-
-    const rows = dialog.locator('[data-slot="ops-teacher-row"]');
+    const directory = await openTeachersTab(page);
+    const rows = directory.getByRole('row').filter({ hasText: teacherEmail });
     await expect(rows.first()).toBeVisible({ timeout: ACTION_TIMEOUT });
-    const rowCount = await rows.count();
-    expect(rowCount).toBeGreaterThan(0);
 
-    // Both portal columns exist on every row — a stored value or the fallback.
-    for (let index = 0; index < rowCount; index += 1) {
-      await expect(rows.nth(index).locator('[data-slot="ops-teacher-specialty"]')).toHaveCount(1);
-      await expect(rows.nth(index).locator('[data-slot="ops-teacher-last-active"]')).toHaveCount(1);
-    }
+    // The tab's OWN versioned read fired, scoped to this school's teachers.
+    expect(requests.some((url) => url.includes('role=teacher'))).toBe(true);
 
-    // The footer reports the SERVER's total, taken from the same request the
-    // browser made — not the number of rows painted.
+    // The header summary reports the SERVER's total, taken from the same
+    // versioned body the browser fetched — not the number of rows painted.
+    // (The fixture teacher belongs to no class, so "classes covered" is 0.)
     const jwt = await opsJwt(request);
-    const api = await request.get(`${API}/api/ops/schools/${schoolId}/teachers?pageSize=25`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-        [OPS_PORTAL_VERSION_HEADER]: OPS_PORTAL_VERSION,
+    const api = await request.get(
+      `${API}/api/ops/schools/${schoolId}/teachers?pageSize=200&role=teacher`,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          [OPS_PORTAL_VERSION_HEADER]: OPS_PORTAL_VERSION,
+        },
       },
-    });
-    const body = teachersListResponseSchema.parse(await api.json());
-    await expect(dialog.locator('[data-slot="ops-teachers-page-status"]')).toContainText(
-      String(body.meta.pagination.total),
     );
-    expect(requests.some((url) => url.includes('pageSize=25'))).toBe(true);
+    const body = teachersListResponseSchema.parse(await api.json());
+    await expect(
+      page.getByText(
+        cat(en, 'Ops.schoolTables.teachersHeaderSummary')
+          .replace('{teachers}', String(body.meta.pagination.total))
+          .replace('{classes}', '0'),
+      ),
+    ).toBeVisible({ timeout: ACTION_TIMEOUT });
 
     await mkdir(CAPTURES, { recursive: true });
     await page.setViewportSize(REFERENCE_VIEWPORT);
     expect(REFERENCE_DEVICE_SCALE_FACTOR).toBe(1);
-    await page.screenshot({ path: path.join(CAPTURES, 'teachers-directory-1440.png') });
+    await page.screenshot({ path: path.join(CAPTURES, 'teachers-tab-1440.png') });
     await page.setViewportSize(MOBILE_VIEWPORT);
-    await page.screenshot({ path: path.join(CAPTURES, 'teachers-directory-375.png') });
+    await page.screenshot({ path: path.join(CAPTURES, 'teachers-tab-375.png') });
   });
 
   test('search narrows the result server-side and an unmatched search is an honest empty state', async ({
@@ -174,22 +170,21 @@ test.describe('C-OPS-PORTAL-021 ops teachers directory', () => {
   }) => {
     await page.clock.setFixedTime(new Date(REFERENCE_CLOCK_ISO));
     await signInAsOps(page);
-    const dialog = await openDirectory(page);
+    const directory = await openTeachersTab(page);
 
-    const search = dialog.locator('[data-slot="ops-teachers-search"]');
+    const search = directory.getByPlaceholder(cat(en, 'Ops.schoolTables.searchPlaceholder'));
     await search.fill('zzz-no-such-teacher-zzz', { timeout: ACTION_TIMEOUT });
-    await expect(dialog.locator('[data-slot="ops-teachers-empty"]')).toBeVisible({
+    await expect(directory.locator('[data-slot="directory-empty"]')).toBeVisible({
       timeout: ACTION_TIMEOUT,
     });
-    await expect(dialog.locator('[data-slot="ops-teacher-row"]')).toHaveCount(0);
-    await expect(dialog.locator('[data-slot="ops-teachers-page-status"]')).toContainText('0');
+    await expect(directory.getByRole('row').filter({ hasText: teacherEmail })).toHaveCount(0);
 
     await mkdir(CAPTURES, { recursive: true });
     await page.setViewportSize(REFERENCE_VIEWPORT);
-    await page.screenshot({ path: path.join(CAPTURES, 'teachers-directory-empty-1440.png') });
+    await page.screenshot({ path: path.join(CAPTURES, 'teachers-tab-empty-1440.png') });
 
     await search.fill('', { timeout: ACTION_TIMEOUT });
-    await expect(dialog.locator('[data-slot="ops-teacher-row"]').first()).toBeVisible({
+    await expect(directory.getByRole('row').filter({ hasText: teacherEmail }).first()).toBeVisible({
       timeout: ACTION_TIMEOUT,
     });
   });
@@ -197,22 +192,21 @@ test.describe('C-OPS-PORTAL-021 ops teachers directory', () => {
   test('paging controls follow the server pageCount', async ({ page }) => {
     await page.clock.setFixedTime(new Date(REFERENCE_CLOCK_ISO));
     await signInAsOps(page);
-    const dialog = await openDirectory(page);
+    const directory = await openTeachersTab(page);
 
-    const previous = dialog.locator('[data-slot="ops-teachers-prev"]');
-    const next = dialog.locator('[data-slot="ops-teachers-next"]');
+    const pagination = directory.locator('[data-slot="directory-pagination"]');
+    await expect(pagination).toBeVisible({ timeout: ACTION_TIMEOUT });
+    const previous = pagination.getByRole('button', { name: cat(en, 'Directory.defaults.previous') });
+    const next = pagination.getByRole('button', { name: cat(en, 'Directory.defaults.next') });
     await expect(previous).toBeDisabled({ timeout: ACTION_TIMEOUT });
 
     if (await next.isEnabled()) {
-      const firstEmail = await dialog
-        .locator('[data-slot="ops-teacher-row"]')
-        .first()
-        .getAttribute('data-teacher-email');
       await next.click({ timeout: ACTION_TIMEOUT });
       await expect(previous).toBeEnabled({ timeout: ACTION_TIMEOUT });
-      await expect(
-        dialog.locator('[data-slot="ops-teacher-row"]').first(),
-      ).not.toHaveAttribute('data-teacher-email', firstEmail ?? '');
+      // the fixture teacher lives on page 1 — page 2 must not list them again
+      await expect(directory.getByRole('row').filter({ hasText: teacherEmail })).toHaveCount(0, {
+        timeout: ACTION_TIMEOUT,
+      });
     }
   });
 });

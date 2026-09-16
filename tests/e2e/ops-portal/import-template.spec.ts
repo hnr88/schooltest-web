@@ -36,10 +36,11 @@ const CAPTURES = path.resolve(
   '../../../../.codephant/missions/msn-ab5a6a54-f385-42e1-826a-aeba2bbdbc66/captures/ops-056',
 );
 
-/** The pictured portal columns, written out rather than imported (see the API spec). */
+/** The portal columns (required email included), written out rather than imported (see the API spec). */
 const PORTAL_COLUMNS = [
   'given name',
   'family name',
+  'email',
   'date of birth',
   'year level',
   'home language',
@@ -79,8 +80,8 @@ test.describe('OPS-056 import template download', () => {
     const columns = panel.locator('[data-surface="ops-import-template-columns"]');
     await expect(columns).toBeVisible({ timeout: ACTION_TIMEOUT });
     await expect(columns).toContainText(PORTAL_COLUMNS.join(', '));
-    // …and never the legacy email column the portal template dropped.
-    await expect(columns).not.toContainText('email');
+    // …including the REQUIRED email column the account provisioning needs.
+    await expect(columns).toContainText('email');
 
     const [request, download] = await Promise.all([
       page.waitForRequest(
@@ -103,7 +104,9 @@ test.describe('OPS-056 import template download', () => {
     for await (const chunk of stream) chunks.push(chunk as Buffer);
     const csv = Buffer.concat(chunks).toString('utf8');
     expect(csv.split('\r\n')[0]).toBe(PORTAL_HEADER_LINE);
-    expect(csv).not.toContain('@');
+    // The sample row's REQUIRED email is the RFC 2606 reserved address — the
+    // sample can never reach a real person if it is committed by accident.
+    expect(csv.split('\r\n')[1]).toContain('sample.student@example.com');
 
     await mkdir(CAPTURES, { recursive: true });
     await panel.screenshot({ path: path.join(CAPTURES, 'import-template-desktop-1440.png') });

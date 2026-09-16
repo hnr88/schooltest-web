@@ -9,12 +9,11 @@ import type { OpsStudentRow } from '@schooltest/ops-contracts';
 import { Link } from '@/i18n/navigation';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+// The menu ROOT only comes from the vendored primitive; Content/Item must come
+// from the design-system wrappers, which apply the spec's typography and muted
+// hover (the vendored base also defaults to muted since the teal-accent fix).
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
+import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/modules/design-system';
 import {
   Alert,
   Button,
@@ -47,7 +46,7 @@ import { OpsAssignTeacherDialog } from '@/modules/ops/components/OpsAssignTeache
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
 import { OpsEditClassDialog } from '@/modules/ops/components/OpsEditClassDialog';
 import { OpsStudentImportDialog } from '@/modules/ops/components/OpsStudentImportDialog';
-import { OpsStudentProfilePanel } from '@/modules/ops/components/OpsStudentProfilePanel';
+import { OpsStudentEditModal } from '@/modules/ops/components/OpsStudentEditModal';
 import {
   classHeaderBadge,
   classModalCefrLevel,
@@ -181,9 +180,11 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
   const classesQuery = useClassesListQuery(schoolDocumentId, { page: 1, pageSize: ALL_PAGE_SIZE }, true);
   const thisClassRow = (classesQuery.data?.data ?? []).find((row) => row.documentId === classDocumentId);
   const classStatus = thisClassRow ? classRowStatus(thisClassRow) : null;
-  const destinationOptions = opsStudentDestinationClassOptions(classesQuery.data?.data ?? []).filter(
-    (option) => option.value !== classDocumentId,
-  );
+  // The student-edit modal's class picker offers EVERY class (the student's
+  // current one included, preselected); the MOVE dialog below keeps excluding
+  // it — moving a student to the class they are already in is not a move.
+  const classOptions = opsStudentDestinationClassOptions(classesQuery.data?.data ?? []);
+  const destinationOptions = classOptions.filter((option) => option.value !== classDocumentId);
 
   const writeGate = useOpsWriteGate();
   const [profileDocumentId, setProfileDocumentId] = useState<string | null>(null);
@@ -642,9 +643,17 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
               {rosterRows.map((student) => (
                 <TableRow
                   key={student.documentId}
-                  className="flex flex-wrap items-center gap-x-3 gap-y-2.5 rounded-[10px] border-[#EEF1F6] px-2.5 py-[15px] hover:bg-[#F8FAFC]"
+                  className="flex cursor-pointer flex-wrap items-center gap-x-3 gap-y-2.5 rounded-[10px] border-[#EEF1F6] px-2.5 py-[15px] hover:bg-[#F8FAFC]"
+                  // Row click opens the student's record modal — the same
+                  // navigation a row click performs on the Students tab. The
+                  // checkbox and ⋯ menu cells stop propagation so selecting
+                  // or opening the menu never opens the modal.
+                  onClick={() => setProfileDocumentId(student.documentId)}
                 >
-                  <TableCell className="flex-none border-0 p-0 align-middle">
+                  <TableCell
+                    className="flex-none border-0 p-0 align-middle"
+                    onClick={(event) => event.stopPropagation()}
+                  >
                     <Checkbox
                       aria-label={studentFullName(student)}
                       className="size-5 rounded-md"
@@ -702,7 +711,10 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
                       noValueIfMissing(student.student_status)
                     )}
                   </TableCell>
-                  <TableCell className="flex-none border-0 p-0 align-middle">
+                  <TableCell
+                    className="flex-none border-0 p-0 align-middle"
+                    onClick={(event) => event.stopPropagation()}
+                  >
                     <DropdownMenu>
                       <DropdownMenuTrigger
                         render={
@@ -787,7 +799,18 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
         ) : null}
       </section>
 
-      <OpsStudentProfilePanel schoolDocumentId={schoolDocumentId} studentDocumentId={profileDocumentId} />
+      {/* Row click / View profile on the roster — the student's record modal
+          (the same surface the Students tab opens). Mounted fresh per student. */}
+      {profileDocumentId === null ? null : (
+        <OpsStudentEditModal
+          key={profileDocumentId}
+          mode="edit"
+          schoolDocumentId={schoolDocumentId}
+          studentDocumentId={profileDocumentId}
+          classOptions={classOptions}
+          onClose={() => setProfileDocumentId(null)}
+        />
+      )}
 
       <OpsStudentImportDialog
         schoolDocumentId={schoolDocumentId}

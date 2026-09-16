@@ -24,6 +24,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  FieldShell,
+  Input,
   SelectField,
   StatusPill,
 } from '@/modules/design-system';
@@ -70,8 +72,10 @@ import {
   useStaffInvitationsQuery,
 } from '@/modules/ops/queries/use-staff-invitations.query';
 import { staffUsersSchoolKey, useStaffUsersQuery } from '@/modules/ops/queries/use-staff-users.query';
+import { useOpsTeacherUpdateMutation } from '@/modules/ops/queries/use-teachers-list.query';
+import { serverMessage } from '@/modules/teachers';
 
-import type { OpsStaffUsersTableProps } from '@/modules/ops/types/components.types';
+import type { OpsEditDetailsState, OpsStaffUsersTableProps } from '@/modules/ops/types/components.types';
 
 /** The server applies these; the client never filters or sorts a loaded page. */
 const SORTS = [{ value: 'name:asc', label: 'Name' }] as const;
@@ -97,6 +101,13 @@ function invitationRoleOf(role: StaffUserRole): 'school_admin' | 'teacher' | nul
 type StaffDirectoryRow =
   | { kind: 'user'; row: StaffUserRow }
   | { kind: 'invitation'; row: StaffInvitationRow };
+
+/**
+ * The client-side email shape check for the edit-details dialog — the same
+ * loose pattern the removed manage-teachers modal enforced (the server decides
+ * what actually counts as a deliverable address; this only catches typos).
+ */
+const EDIT_DETAILS_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function rowTarget(row: StaffDirectoryRow): OpsActionTarget {
   return { kind: row.kind, documentId: row.row.documentId };
@@ -371,6 +382,77 @@ export function OpsStaffUsersTable({
     });
   };
 
+  /* ---------------------------- edit details -------------------------------- */
+
+  // Teacher surface only (`staff-actions.ts` never returns `editDetails` for
+  // 'admin') — the C-TCH-04 whitelist edit the removed manage-teachers modal
+  // owned, re-homed into the row menu. The PATCH runs through the SAME
+  // mutation that dialog used, so its invalidation of the versioned teachers
+  // read (`['ops','schools',id,'teachers']`) cannot drift from this caller.
+  const updateTeacherDetails = useOpsTeacherUpdateMutation();
+  const [editDetails, setEditDetails] = useState<OpsEditDetailsState | null>(null);
+
+  const openEditDetails = (row: StaffUserRow) => {
+    if (refuseIfBlocked()) return;
+    setEditDetails({
+      row,
+      values: {
+        first_name: row.first_name ?? '',
+        last_name: row.last_name ?? '',
+        email: row.email ?? '',
+      },
+    });
+  };
+
+  const confirmEditDetails = async () => {
+    if (editDetails === null) return;
+    const { row, values } = editDetails;
+    try {
+      await updateTeacherDetails.mutateAsync({
+        schoolDocumentId,
+        teacherDocumentId: row.documentId,
+        first_name: values.first_name.trim(),
+        last_name: values.last_name.trim(),
+        // Same normalisation the removed dialog saved with: the API matches
+        // emails case-insensitively, so a mixed-case edit would read back as a
+        // change it is not.
+        email: values.email.trim().toLowerCase(),
+      });
+    } catch {
+      // The refusal (the C-TCH-04 duplicate-email 400, …) renders verbatim in
+      // the dialog — that is the whole point of keeping it open.
+      return;
+    }
+    setEditDetails(null);
+    // The mutation already dropped the versioned teachers read; the directory
+    // row itself is a staff-users cache entry, invalidated here so the edited
+    // name and email repaint without a reload.
+    await queryClient.invalidateQueries({ queryKey: staffUsersSchoolKey(schoolDocumentId) });
+    showOpsToast({
+      tone: 'ok',
+      message: t('editDetailsSuccess', { name: row.display_name ?? row.email ?? '' }),
+    });
+  };
+
+  // Rendered inside the dialog: the server's verbatim refusal, or the generic
+  // fallback when it sent none. Cleared by the next submit attempt.
+  const editDetailsError =
+    editDetails === null || !updateTeacherDetails.isError
+      ? null
+      : (serverMessage(updateTeacherDetails.error) ?? t('editDetailsError'));
+  const editDetailsEmailInvalid =
+    editDetails !== null &&
+    editDetails.values.email !== '' &&
+    !EDIT_DETAILS_EMAIL_PATTERN.test(editDetails.values.email);
+  // C-TCH-04: three REQUIRED fields — a blank first/last/email or a malformed
+  // email keeps Save inert (the server would refuse the same payload).
+  const editDetailsInvalid =
+    editDetails === null ||
+    editDetails.values.first_name.trim() === '' ||
+    editDetails.values.last_name.trim() === '' ||
+    editDetails.values.email.trim() === '' ||
+    editDetailsEmailInvalid;
+
   /* --------------------------- invitation actions --------------------------- */
 
   const resendAction = useMemo(
@@ -458,6 +540,12 @@ export function OpsStaffUsersTable({
     const actions = staffAccountRowActions(surface, status).map((action) => {
       if (action.key === 'editAccess') {
         return toDirectoryAction(action, t(action.labelKey), () => openEditAccess(user), locked);
+      }
+      // Teacher surface only (`staffAccountRowActions` never returns this key
+      // for 'admin'). Write-gated like Edit access — `refuseIfBlocked` runs in
+      // `openEditDetails` — but it opens the details dialog, not a confirm.
+      if (action.key === 'editDetails') {
+        return toDirectoryAction(action, t(action.labelKey), () => openEditDetails(user), locked);
       }
       // Teacher surface only (`staffAccountRowActions` never returns this key
       // for 'admin'). `write: false`, no confirm — a read-only navigation, so
@@ -900,6 +988,87 @@ export function OpsStaffUsersTable({
             </Button>
             <Button type="button" loading={setRoleRunner.state.status === 'running'} onClick={() => void confirmEditAccess()}>
               {t('editAccessSave')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={editDetails !== null}
+        onOpenChange={(open) => (open ? null : setEditDetails(null))}
+      >
+        <DialogContent data-slot="ops-edit-details-dialog">
+          <DialogHeader>
+            <DialogTitle>
+              {t('editDetailsTitle', {
+                name: editDetails?.row.display_name ?? editDetails?.row.email ?? '',
+              })}
+            </DialogTitle>
+            <DialogDescription>{t('editDetailsDescription')}</DialogDescription>
+          </DialogHeader>
+          {editDetails === null ? null : (
+            <div className="flex flex-col gap-3">
+              <FieldShell id="ops-edit-details-first-name" label={t('editDetailsFirstName')} required>
+                <Input
+                  id="ops-edit-details-first-name"
+                  type="text"
+                  value={editDetails.values.first_name}
+                  onChange={(e) =>
+                    setEditDetails({
+                      ...editDetails,
+                      values: { ...editDetails.values, first_name: e.target.value },
+                    })
+                  }
+                />
+              </FieldShell>
+              <FieldShell id="ops-edit-details-last-name" label={t('editDetailsLastName')} required>
+                <Input
+                  id="ops-edit-details-last-name"
+                  type="text"
+                  value={editDetails.values.last_name}
+                  onChange={(e) =>
+                    setEditDetails({
+                      ...editDetails,
+                      values: { ...editDetails.values, last_name: e.target.value },
+                    })
+                  }
+                />
+              </FieldShell>
+              <FieldShell
+                id="ops-edit-details-email"
+                label={t('editDetailsEmail')}
+                required
+                errorText={
+                  editDetailsEmailInvalid
+                    ? t('editDetailsInvalidEmail')
+                    : (editDetailsError ?? undefined)
+                }
+              >
+                <Input
+                  id="ops-edit-details-email"
+                  type="email"
+                  value={editDetails.values.email}
+                  onChange={(e) =>
+                    setEditDetails({
+                      ...editDetails,
+                      values: { ...editDetails.values, email: e.target.value },
+                    })
+                  }
+                />
+              </FieldShell>
+            </div>
+          )}
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setEditDetails(null)}>
+              {t('editDetailsCancel')}
+            </Button>
+            <Button
+              type="button"
+              loading={updateTeacherDetails.isPending}
+              disabled={editDetailsInvalid}
+              onClick={() => void confirmEditDetails()}
+            >
+              {t('editDetailsSave')}
             </Button>
           </DialogFooter>
         </DialogContent>

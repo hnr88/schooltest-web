@@ -27,7 +27,7 @@ const core_1 = require("./core");
 /* ------------------------------------------------------------------ *
  * Bounds — the exact numbers the server validates and the tests assert.
  * ------------------------------------------------------------------ */
-/** api::student.student `status` enum, stored verbatim. `enrolled` is the
+/** api::student.student `student_status` enum, stored verbatim. `enrolled` is the
  *  roster row that has not finished setup; the UI labels it "Pending setup"
  *  but the wire value is never renamed. */
 exports.OPS_STUDENT_STATUSES = ['active', 'archived', 'enrolled'];
@@ -86,7 +86,7 @@ exports.opsStudentRowSchema = zod_1.z.strictObject({
         .nullable(),
     first_language: zod_1.z.string().max(FIRST_LANGUAGE_MAX).nullable(),
     acara_phase: exports.opsAcaraPhaseSchema.nullable(),
-    status: exports.opsStudentStatusSchema,
+    student_status: exports.opsStudentStatusSchema,
     class: exports.opsStudentClassRefSchema.nullable(),
     latest_result: exports.opsStudentLatestResultSchema.nullable(),
     updatedAt: zod_1.z.iso.datetime(),

@@ -6,9 +6,9 @@ import { cat, loadMessages } from './helpers/i18n';
 import { loginAs } from './helpers/roles';
 
 // GAP-1 visual proof — the ops staff invitations flow through the REAL portal:
-// the "Invite staff" control on the Admins and Teachers tabs, the dialog's
-// invite form, filters and invitations table, and the per-status eligibility
-// of the Resend/Revoke actions column.
+// the "Invite staff" control on the Teachers tab and the "Invite admin" control
+// on the Admins tab, the dialog's invite form, filters and invitations table,
+// and the per-status eligibility of the Resend/Revoke actions column.
 //
 // RENDER-LEVEL ONLY: this spec never submits, resends or revokes anything —
 // the only writes it may trigger are the sign-in itself. Exactly ONE login

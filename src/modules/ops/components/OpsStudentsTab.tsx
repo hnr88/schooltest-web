@@ -36,8 +36,8 @@ import {
   type DirectoryRowAction,
 } from '@/modules/ops/directory';
 import { OpsConfirmDialog } from '@/modules/ops/components/OpsConfirmDialog';
+import { OpsStudentEditModal } from '@/modules/ops/components/OpsStudentEditModal';
 import { OpsStudentImportDialog } from '@/modules/ops/components/OpsStudentImportDialog';
-import { OpsStudentProfilePanel } from '@/modules/ops/components/OpsStudentProfilePanel';
 import { OpsStudentsTable } from '@/modules/ops/components/OpsStudentsTable';
 import {
   DEACTIVATE_ACTION,
@@ -131,7 +131,9 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   // both this filter and the move-class destination picker below.
   const classesList = useClassesListQuery(schoolDocumentId, { page: 1, pageSize: 200 }, true);
   const classOptions = opsStudentDestinationClassOptions(classesList.data?.data ?? []);
-  const [profileDocumentId, setProfileDocumentId] = useState<string | null>(null);
+  const [editDocumentId, setEditDocumentId] = useState<string | null>(null);
+  // The header's Add-student CTA opens the SAME modal in create mode.
+  const [createOpen, setCreateOpen] = useState(false);
   const [lifecycleConfirm, setLifecycleConfirm] = useState<LifecycleConfirmState | null>(null);
   const [moveTargetRows, setMoveTargetRows] = useState<readonly OpsStudentRow[] | null>(null);
   const [destinationClassDocumentId, setDestinationClassDocumentId] = useState('');
@@ -183,7 +185,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
       page: state.params.page,
       pageSize: state.params.pageSize,
       q: state.params.q,
-      student_status: opsStudentStatusFilterValue(state.params.filters.status),
+      status: opsStudentStatusFilterValue(state.params.filters.status),
       class: state.params.filters.class,
       year_level:
         state.params.filters.year_level === undefined
@@ -244,7 +246,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
       disabled: action.write && locked,
       onSelect: () => {
         if (action.key === 'viewProfile') {
-          setProfileDocumentId(row.documentId);
+          setEditDocumentId(row.documentId);
           return;
         }
         if (action.key === 'moveClass') {
@@ -290,15 +292,27 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
     title: t('tab.students'),
     summary: t('studentsHeaderSummary', { count: total }),
     primary: (
-      <Button
-        type="button"
-        variant="navy"
-        onClick={() => setImportOpen(true)}
-        className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
-      >
-        <Plus className="size-3.5" strokeWidth={2.2} aria-hidden="true" />
-        {t('studentsImportCta')}
-      </Button>
+      <div className="flex items-center gap-2.5">
+        <Button
+          type="button"
+          variant="outline"
+          data-testid="ops-students-add-student"
+          onClick={() => setCreateOpen(true)}
+          className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
+        >
+          <Plus className="size-3.5" strokeWidth={2.2} aria-hidden="true" />
+          {t('studentsAddCta')}
+        </Button>
+        <Button
+          type="button"
+          variant="navy"
+          onClick={() => setImportOpen(true)}
+          className="h-10 rounded-[12px] px-[18px] text-[13.5px] font-semibold"
+        >
+          <Plus className="size-3.5" strokeWidth={2.2} aria-hidden="true" />
+          {t('studentsImportCta')}
+        </Button>
+      </div>
     ),
   };
 
@@ -327,15 +341,36 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
           state.params.filters.year_level,
         ]}
         rowActions={rowActions}
-        onRowSelect={(row) => setProfileDocumentId(row.documentId)}
+        onRowSelect={(row) => setEditDocumentId(row.documentId)}
         // filters-audit 2026-09-11: the design's pill toolbar arrangement
         // (hidden labels, count right) like every other ops tab.
         toolbarVariant="pill"
       />
-      <OpsStudentProfilePanel
-        schoolDocumentId={schoolDocumentId}
-        studentDocumentId={profileDocumentId}
-      />
+      {/* Row click / View profile — the student's record modal. Mounted fresh
+          per student, so its form defaults always match the row opened. */}
+      {editDocumentId === null ? null : (
+        <OpsStudentEditModal
+          key={editDocumentId}
+          mode="edit"
+          schoolDocumentId={schoolDocumentId}
+          studentDocumentId={editDocumentId}
+          classOptions={classOptions}
+          onClose={() => setEditDocumentId(null)}
+        />
+      )}
+
+      {/* The header's Add-student CTA — the same modal, create mode. It closes
+          itself on success (the modal owns the toast); the create mutation's
+          onSuccess has already invalidated list/classes/school. */}
+      {createOpen ? (
+        <OpsStudentEditModal
+          key="create"
+          mode="create"
+          schoolDocumentId={schoolDocumentId}
+          classOptions={classOptions}
+          onClose={() => setCreateOpen(false)}
+        />
+      ) : null}
 
       {/* ops/26 — the design's IMPORT STUDENTS MODAL (`:745-817`), opened from
           this tab's primary button. No class is in scope here, so it opens

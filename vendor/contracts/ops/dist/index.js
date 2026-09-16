@@ -82,3 +82,6 @@ __exportStar(require("./inspection"), exports);
 /* --- ledger 10 / D-008: the ops legal-document editor (C-LEG-02 read +
    C-LEG-03 ops write) --- */
 __exportStar(require("./legal-documents"), exports);
+/* --- C-OPS-STU-CREATE / C-OPS-STU-PATCH: the ops portal's create + full
+   edit of a student record (the write half of C-OPS-PORTAL-035's roster) --- */
+__exportStar(require("./students-write"), exports);

@@ -119,10 +119,10 @@ function toLevelFilter(raw: string | undefined): SchoolStudentLevelFilter {
  */
 export function rosterQueryFrom(params: DirectoryQueryParams): SchoolStudentsQuery {
   const rawStatus = params.filters.status;
-  const student_status: SchoolStudentStatusFilter =
+  const status: SchoolStudentStatusFilter =
     rawStatus === 'active' || rawStatus === 'archived' ? rawStatus : ROSTER_STATUS;
   return {
-    student_status,
+    status,
     classId: params.filters.class ?? DIRECTORY_ALL,
     level: toLevelFilter(params.filters.level),
     q: params.q ?? '',

@@ -1,7 +1,7 @@
 import type { SchoolDetail, StaffUserRole, StaffUserRow } from '@schooltest/ops-contracts';
 
 import type { PortalImportPreview } from '@/modules/ops/schemas/import.schema';
-import type { OpsSchool, OpsTeacherRow } from '@/modules/ops/types/ops.types';
+import type { OpsSchool } from '@/modules/ops/types/ops.types';
 import type { OpsSchoolAdminInviteMode } from '@/modules/ops/lib/ops-school-admin-invite';
 import type { SchoolPlan } from '@/modules/school-admin';
 
@@ -38,30 +38,6 @@ export interface OpsSchoolSeatsPanelProps {
 export interface OpsSchoolPlanPanelProps {
   documentId: string;
   plan: SchoolPlan | null;
-}
-
-export interface EditState {
-  documentId: string;
-  values: { first_name: string; last_name: string; email: string };
-}
-
-export interface OpsTeachersDialogProps {
-  schoolDocumentId: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
-
-export interface OpsTeachersTableRowProps {
-  row: OpsTeacherRow;
-  editing: EditState | null;
-  onEditingChange: (next: EditState | null) => void;
-  removing: boolean;
-  onRemovingChange: (documentId: string | null) => void;
-  onSave: () => void;
-  onRemove: () => void;
-  savePending: boolean;
-  removePending: boolean;
-  error: string | null;
 }
 
 export interface OpsSchoolCountCardsProps {
@@ -118,4 +94,14 @@ export interface OpsStaffUsersTableProps {
   classCounts?: Record<string, number>;
   /** Omitted hides the ownership column entirely. */
   ownership?: OpsStaffOwnership;
+}
+
+/**
+ * The teacher row being edited in the Teachers tab's row-menu "Edit details"
+ * dialog (the C-TCH-04 whitelist — first/last/email — that the removed
+ * manage-teachers modal owned), carried with the live form values.
+ */
+export interface OpsEditDetailsState {
+  row: StaffUserRow;
+  values: { first_name: string; last_name: string; email: string };
 }

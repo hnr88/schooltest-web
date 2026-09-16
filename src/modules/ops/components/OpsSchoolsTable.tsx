@@ -714,10 +714,14 @@ export function OpsSchoolsTable() {
   const hasFilters = Object.values(state.params.filters).some((value) => value !== DIRECTORY_ALL);
 
   return (
+    // Bounded flex column: `min-h-0 overflow-hidden` makes this surface exactly
+    // the shell scrollport's height, so the header, status pills and toolbar
+    // stay pinned and the row card (the `[data-surface='ops-schools']` rules
+    // in globals.css) is the ONLY scroller — never a second page scrollbar.
     <main
       data-slot="ops-schools"
       data-surface="ops-schools"
-      className="flex flex-1 flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8"
+      className="flex min-h-0 flex-1 flex-col gap-5 overflow-hidden px-4 py-6 sm:px-6 lg:px-8"
     >
       {/* BUG-004 (journeys-and-bugs) — the design's header row: caption + 32px
           title on the left; the 44px pill search and the 44px pill Create

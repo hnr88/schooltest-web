@@ -115,10 +115,10 @@ test.beforeAll(async ({ browser }) => {
   classDocumentId = ((await klass.json()) as { data: { documentId: string } }).data
     .documentId;
   const csv = [
-    'given name,family name,date of birth,year level,home language',
-    `Probe,StudentA,2013-04-01,7,english`,
-    `Probe,StudentB,2013-05-02,7,english`,
-    `Probe,StudentC,2013-06-03,7,english`,
+    'given name,family name,email,date of birth,year level,home language',
+    `Probe,StudentA,w3-proof-a-${fixtureId}@test.invalid,2013-04-01,7,english`,
+    `Probe,StudentB,w3-proof-b-${fixtureId}@test.invalid,2013-05-02,7,english`,
+    `Probe,StudentC,w3-proof-c-${fixtureId}@test.invalid,2013-06-03,7,english`,
     '',
   ].join('\n');
   const commit = await page.request.post(

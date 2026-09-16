@@ -10,14 +10,14 @@ import { cefrBandSchema } from '../../../schooltest-api/src/contracts/vocab';
 
 import { runSql } from './helpers/auth-db';
 
-const statusSchema = householdProgressChildSchema.shape.status;
+const statusSchema = householdProgressChildSchema.shape.student_status;
 
 const TOP_PARENT = `(select user_id from students_parent_lnk group by user_id
    order by count(*) desc, user_id limit 1)`;
 
 const HOUSEHOLD_SQL = `select
   (select count(*) from students s join students_parent_lnk l on l.student_id = s.id
-     where l.user_id = ${TOP_PARENT} and s.status in ('active', 'enrolled')),
+     where l.user_id = ${TOP_PARENT} and s.student_status in ('active', 'enrolled')),
   (select count(*) from sessions se where se.status = 'complete' and se.student_document_id in
      (select s.document_id from students s join students_parent_lnk l on l.student_id = s.id
         where l.user_id = ${TOP_PARENT})),
@@ -28,7 +28,7 @@ const HOUSEHOLD_SQL = `select
 
 const CHILDREN_SQL = `select coalesce(json_agg(json_build_object(
     'documentId', s.document_id, 'givenName', s.given_name, 'familyName', s.family_name,
-    'yearLevel', s.year_level, 'status', s.status) order by s.id), '[]'::json)
+    'yearLevel', s.year_level, 'student_status', s.student_status) order by s.id), '[]'::json)
   from students s join students_parent_lnk l on l.student_id = s.id
   where l.user_id = ${TOP_PARENT}`;
 
@@ -52,8 +52,8 @@ function realChildren() {
 }
 
 test.describe('C-DASH-HOUSEHOLD stage-1 contract vs the real dev database', () => {
-  test('every students.status value in the database parses against the child status enum', () => {
-    const statuses = rows('select distinct status from students where status is not null');
+  test('every students.student_status value in the database parses against the child status enum', () => {
+    const statuses = rows('select distinct student_status from students where student_status is not null');
     expect(statuses.length).toBeGreaterThan(0);
     for (const status of statuses) {
       expect(statusSchema.safeParse(status).success, status).toBe(true);

@@ -9,7 +9,7 @@ import type { StudentWizardOutput } from '@/modules/student-wizard';
 import type { UpdateStudentVars } from '@/modules/children/types/queries.types';
 
 // C-STUDENT-UPDATE: PUT /api/students/:documentId { data } — the parent write
-// path (owner asserted server-side, `status` stripped). The edit wizard reuses
+// path (owner asserted server-side, `student_status` stripped). The edit wizard reuses
 // the create schema, so the same by-construction payload builder ships only
 // whitelist keys. On success invalidate the ['dashboard','students'] prefix so
 // the list + detail refetch.

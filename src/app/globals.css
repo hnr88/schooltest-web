@@ -1038,3 +1038,21 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+/* ops-schools double scroll — this one surface is a bounded flex column that
+   exactly fills the dashboard shell (main[data-surface='ops-schools'] carries
+   min-h-0 overflow-hidden), so the shell's scrollport never engages: the page
+   header, status pills, toolbar row and pager stay pinned and the card region
+   is the ONLY scroller, sized by flex instead of the viewport cap. Scoped to
+   this surface; every other directory consumer keeps `.ops-grid-scroll`
+   unchanged. Unlayered for the same cascade reason as the rule above — a
+   utility max-height loses to it. */
+[data-surface='ops-schools'] [data-slot='directory'] {
+  flex: 1 1 0%;
+  min-height: 0;
+}
+
+[data-surface='ops-schools'] [data-slot='directory'] > .ops-grid-scroll {
+  min-height: 0;
+  max-height: none;
+}

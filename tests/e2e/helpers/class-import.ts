@@ -26,26 +26,31 @@ export const IMPORT_CAPTURES =
 /**
  * A well-formed file: the portal columns — the ONE vocabulary shared with the
  * ops portal and the server's preview/commit validator — then one row per name.
+ * Every row carries the REQUIRED email (unique per row, derived from its own
+ * name on the RFC 2606 `.invalid` domain), so the rows still preview as
+ * creates: the account provisioning provisions from this address.
  */
 export function csvFor(names: readonly string[]): string {
-  const header = 'given name,family name,date of birth,year level,home language';
+  const header = 'given name,family name,email,date of birth,year level,home language';
   const rows = names.map((name) => {
     const [given, ...rest] = name.split(' ');
-    return `${given},${rest.join(' ')},2013-03-04,8,english`;
+    const email = `${name.toLowerCase().replace(/\s+/g, '.')}@test.invalid`;
+    return `${given},${rest.join(' ')},${email},2013-03-04,8,english`;
   });
   return [header, ...rows].join('\n');
 }
 
 /**
  * The same file plus the two rows the SERVER refuses: line 4 has no given name,
- * line 5 has a date of birth that is not a date. The good rows stay on lines
- * 2-3, so a spec can assert the exact lines that are named back.
+ * line 5 has a date of birth that is not a date. Both bad rows still carry a
+ * well-formed email, so each fails on exactly ONE field. The good rows stay on
+ * lines 2-3, so a spec can assert the exact lines that are named back.
  */
 export function csvWithBadRows(names: readonly string[]): string {
   return [
     csvFor(names),
-    ',NoGivenName,2013-03-04,8,english',
-    'Broken Dob,Row,not-a-date,8,english',
+    ',NoGivenName,no.given.name@test.invalid,2013-03-04,8,english',
+    'Broken Dob,Row,broken.dob@test.invalid,not-a-date,8,english',
   ].join('\n');
 }
 

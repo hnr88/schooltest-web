@@ -10,7 +10,7 @@ const studentMediaSchema = z.object({
 });
 
 // C-STUDENT-LIST-EXT detail read: GET /api/my/students/:documentId. Every
-// C-STUDENT-CREATE scalar + status/createdAt/updatedAt + photo/voice_intro media
+// C-STUDENT-CREATE scalar + student_status/createdAt/updatedAt + photo/voice_intro media
 // object|null. `passport_number` is API-private (private:true) → NEVER returned,
 // so it is deliberately absent from this schema (the edit wizard renders it empty).
 export const studentDetailSchema = z.object({

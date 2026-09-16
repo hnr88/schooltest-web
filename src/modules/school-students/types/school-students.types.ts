@@ -62,7 +62,7 @@ export interface SchoolStudentsPage {
 // level is optional so those picker callers, which never narrow by phase, keep
 // their existing call shape.
 export interface SchoolStudentsQuery {
-  student_status: SchoolStudentStatusFilter;
+  status: SchoolStudentStatusFilter;
   classId: string;
   q: string;
   page: number;

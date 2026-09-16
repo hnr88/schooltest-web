@@ -48,3 +48,4 @@ export * from './comms-console';
 export * from './flags-console';
 export * from './inspection';
 export * from './legal-documents';
+export * from './students-write';
