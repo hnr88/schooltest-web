@@ -23,7 +23,7 @@ export const LIVE_FILTER_STATUSES: Record<Exclude<LiveFilter, 'all'>, readonly L
   inProgress: ['in_progress'],
   paused: ['paused'],
   submitted: ['submitted'],
-  attention: ['stalled', 'scoring_failed'],
+  attention: ['stalled', 'scoring_failed', 'exited'],
   notJoined: ['not_joined', 'absent'],
 };
 
@@ -35,6 +35,7 @@ export const LIVE_STATUS_TONE: Record<LiveStudentStatus, ToneChipTone> = {
   stalled: 'today',
   paused: 'today',
   absent: 'slate',
+  exited: 'slate',
   not_joined: 'danger',
   scoring_failed: 'danger',
 };

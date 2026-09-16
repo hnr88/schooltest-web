@@ -16,7 +16,8 @@ export type SittingStudentState =
   | 'stalled'
   | 'scoring_failed'
   | 'absent'
-  | 'paused';
+  | 'paused'
+  | 'exited';
 
 // One row of the teacher-scoped GET /api/sittings list (core route, the owning
 // teacher filter is forced server-side).

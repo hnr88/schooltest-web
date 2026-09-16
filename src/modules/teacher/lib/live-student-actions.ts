@@ -35,6 +35,9 @@ export function rowActionsFor(row: LiveStudentRow, retried: ReadonlySet<string>)
       return [act('markAbsent', true)];
     case 'absent':
       return [act('undoAbsent')];
+    case 'exited':
+      // Let out by the teacher: nothing is in flight to pause, extend or submit.
+      return [];
     case 'paused':
       return [act('resume'), act('forceSubmit', true)];
     case 'stalled':

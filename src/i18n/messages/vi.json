@@ -5468,7 +5468,8 @@
           "stalled": "Đứng yên",
           "submitted": "Đã nộp",
           "scoring_failed": "Chấm điểm thất bại",
-          "absent": "Vắng mặt"
+          "absent": "Vắng mặt",
+          "exited": "Đã rời bài kiểm tra"
         },
         "connection": {
           "online": "Trực tuyến",
@@ -5479,6 +5480,7 @@
           "notJoined": "Chưa đăng nhập lần nào",
           "joined": "Đang chờ bắt đầu",
           "absent": "Được đánh dấu vắng mặt ở buổi thi này",
+          "exited": "Đã rời bài với sự chấp thuận của bạn — chưa nộp bài",
           "scoringFailed": "Máy chủ không chấm được bài làm này",
           "idle": "Không hoạt động {minutes} phút",
           "stage": "Chặng {stage} trên {total}",
@@ -5613,6 +5615,7 @@
           "start": "Mở buổi thi bù · {count, plural, other {# học sinh}}",
           "reason": {
             "absent": "Được đánh dấu vắng mặt ở buổi thi này",
+            "exited": "Đã rời bài với sự chấp thuận của bạn",
             "scoringFailed": "Chấm điểm thất bại · bài làm được giữ lại",
             "neverSat": "Chưa làm phiên bản nào"
           }

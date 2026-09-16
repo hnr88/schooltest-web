@@ -43,6 +43,8 @@ export const monitorStateSchema = z.enum([
   'scoring_failed',
   'absent',
   'paused',
+  // The teacher approved the student's exit request: out of the test, not handed in.
+  'exited',
 ]);
 
 /**

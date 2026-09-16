@@ -5459,7 +5459,8 @@
           "stalled": "정체됨",
           "submitted": "제출됨",
           "scoring_failed": "채점 실패",
-          "absent": "결석"
+          "absent": "결석",
+          "exited": "시험에서 나감"
         },
         "connection": {
           "online": "온라인",
@@ -5470,6 +5471,7 @@
           "notJoined": "아직 로그인하지 않음",
           "joined": "시작 대기 중",
           "absent": "이 시험에서 결석 처리됨",
+          "exited": "교사 승인으로 시험에서 나감 — 제출되지 않음",
           "scoringFailed": "서버가 답안을 채점하지 못함",
           "idle": "{minutes}분 동안 활동 없음",
           "stage": "{total}단계 중 {stage}단계",
@@ -5604,6 +5606,7 @@
           "start": "보충 세션 시작 · {count, plural, other {학생 #명}}",
           "reason": {
             "absent": "이 시험에서 결석 처리됨",
+            "exited": "교사 승인으로 시험에서 나감",
             "scoringFailed": "채점 실패 · 답안은 보관됨",
             "neverSat": "아직 어떤 버전도 응시하지 않음"
           }

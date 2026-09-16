@@ -89,6 +89,7 @@ export function notSignedInCount(rows: readonly LiveStudentRow[]): number {
 
 function resitReason(row: LiveStudentRow): LiveResitReason | null {
   if (row.status === 'absent') return 'absent';
+  if (row.status === 'exited') return 'exited';
   if (row.status === 'scoring_failed') return 'scoringFailed';
   return row.neverSat && row.status === 'not_joined' ? 'neverSat' : null;
 }
@@ -150,6 +151,8 @@ export function detailOf(row: LiveStudentRow): LiveDetail | null {
       return { key: 'joined' };
     case 'absent':
       return { key: 'absent' };
+    case 'exited':
+      return { key: 'exited' };
     case 'scoring_failed':
       return { key: 'scoringFailed' };
     case 'stalled':

@@ -5459,7 +5459,8 @@
           "stalled": "Terhenti",
           "submitted": "Dihantar",
           "scoring_failed": "Pemarkahan gagal",
-          "absent": "Tidak hadir"
+          "absent": "Tidak hadir",
+          "exited": "Keluar dari ujian"
         },
         "connection": {
           "online": "Dalam talian",
@@ -5470,6 +5471,7 @@
           "notJoined": "Belum log masuk",
           "joined": "Menunggu untuk mula",
           "absent": "Ditanda tidak hadir dalam sesi ini",
+          "exited": "Keluar dari ujian dengan kelulusan anda — tidak dihantar",
           "scoringFailed": "Pelayan tidak dapat memarkah percubaan ini",
           "idle": "Tiada aktiviti selama {minutes} min",
           "stage": "Peringkat {stage} daripada {total}",
@@ -5604,6 +5606,7 @@
           "start": "Mulakan sesi susulan · {count, plural, other {# murid}}",
           "reason": {
             "absent": "Ditanda tidak hadir dalam sesi ini",
+            "exited": "Keluar dari ujian dengan kelulusan anda",
             "scoringFailed": "Pemarkahan gagal · percubaan dikekalkan",
             "neverSat": "Belum menduduki mana-mana versi"
           }

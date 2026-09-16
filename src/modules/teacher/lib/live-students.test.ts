@@ -323,3 +323,17 @@ describe('control errors', () => {
     expect(controlErrorOf(new Error('offline'))).toBe('generic');
   });
 });
+
+describe('a student the teacher let out (exited)', () => {
+  it('reads Left the test, offers no in-flight action, and joins the resit queue', () => {
+    const qadir = named(rowsOf(t2LiveRunning), 'Qadir');
+    const rows = rowsOf(withState(t2LiveRunning, qadir.studentId, 'exited'));
+    const exited = named(rows, 'Qadir');
+
+    expect(exited.status).toBe('exited');
+    expect(keys(exited)).toEqual([]);
+    expect(visibleRows(rows, 'attention', '').map((row) => row.studentId)).toContain(qadir.studentId);
+    expect(visibleRows(rows, 'inProgress', '').map((row) => row.studentId)).not.toContain(qadir.studentId);
+    expect(resitQueue(rows)).toContainEqual({ studentId: qadir.studentId, name: exited.name, reason: 'exited' });
+  });
+});

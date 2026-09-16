@@ -77,7 +77,7 @@ export interface LiveBatchPlan {
   selectedCount: number;
 }
 
-export type LiveResitReason = 'absent' | 'scoringFailed' | 'neverSat';
+export type LiveResitReason = 'absent' | 'exited' | 'scoringFailed' | 'neverSat';
 
 export interface LiveResitEntry {
   studentId: string;
@@ -112,7 +112,7 @@ export interface LiveStudentsSectionProps {
 
 /** The row's third line: a key under `detail.*` plus the numbers it interpolates. */
 export interface LiveDetail {
-  key: 'notJoined' | 'joined' | 'absent' | 'scoringFailed' | 'idle' | 'stage' | 'stageOnly';
+  key: 'notJoined' | 'joined' | 'absent' | 'exited' | 'scoringFailed' | 'idle' | 'stage' | 'stageOnly';
   values?: Record<string, number>;
 }
 

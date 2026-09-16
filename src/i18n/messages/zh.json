@@ -5449,7 +5449,8 @@
           "stalled": "停滞",
           "submitted": "已提交",
           "scoring_failed": "评分失败",
-          "absent": "缺考"
+          "absent": "缺考",
+          "exited": "已离开测试"
         },
         "connection": {
           "online": "在线",
@@ -5460,6 +5461,7 @@
           "notJoined": "尚未登录",
           "joined": "等待开始",
           "absent": "本场考试已标记为缺考",
+          "exited": "经你批准离开测试——未交卷",
           "scoringFailed": "服务器无法为该次作答评分",
           "idle": "已有 {minutes} 分钟没有动作",
           "stage": "第 {stage} 阶段，共 {total} 阶段",
@@ -5594,6 +5596,7 @@
           "start": "开始补考场次 · {count, plural, other {# 名学生}}",
           "reason": {
             "absent": "本场考试已标记为缺考",
+            "exited": "经你批准离开测试",
             "scoringFailed": "评分失败 · 作答已保留",
             "neverSat": "还没有考过任何版本"
           }

@@ -18,6 +18,7 @@ export const sittingStudentStateSchema = z.enum([
   'scoring_failed',
   'absent',
   'paused',
+  'exited',
 ]);
 
 // Teacher-scoped GET /api/sittings row (create returns the same shape, so one

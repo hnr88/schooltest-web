@@ -5449,7 +5449,8 @@
           "stalled": "Stalled",
           "submitted": "Submitted",
           "scoring_failed": "Scoring failed",
-          "absent": "Absent"
+          "absent": "Absent",
+          "exited": "Left the test"
         },
         "connection": {
           "online": "Online",
@@ -5460,6 +5461,7 @@
           "notJoined": "No sign-in yet",
           "joined": "Waiting to start",
           "absent": "Marked absent in this sitting",
+          "exited": "Left the test with your approval — not handed in",
           "scoringFailed": "Server could not score the attempt",
           "idle": "No activity for {minutes} min",
           "stage": "Stage {stage} of {total}",
@@ -5594,6 +5596,7 @@
           "start": "Start a catch-up session · {count, plural, one {# student} other {# students}}",
           "reason": {
             "absent": "Marked absent in this sitting",
+            "exited": "Left the test with your approval",
             "scoringFailed": "Scoring failed · attempt kept",
             "neverSat": "Has not sat any version yet"
           }
