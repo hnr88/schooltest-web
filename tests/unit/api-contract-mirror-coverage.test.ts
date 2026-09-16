@@ -62,6 +62,10 @@ const UNMIRRORED_BASELINE: readonly string[] = [
   'my-lists',
   'notifications',
   'parent-child-progress',
+  // Parent Portal W8 (C-PAR-REPORT) mirrors this contract by hand in
+  // src/modules/report/schemas/family-report.schema.ts, but no parent parity
+  // spec pairs them yet — pairing is follow-up work, the gap is named here.
+  'parent-family-report',
   'parent-household-progress',
   'proctoring-events',
   'push-subscription',
