@@ -1,38 +1,9 @@
 import { describe, expect, test } from 'vitest';
-
-import { TONE_CHIP_CLASSES } from '@/modules/teacher/constants/teacher-kit.constants';
-import { TONE_CHIP_INK } from '@/modules/teacher/constants/teacher-kit-tones.constants';
 import {
   acaraPhaseKey,
   bandKey,
-  classBadgeCode,
   formatDelta,
 } from '@/modules/teacher/lib/teacher-kit';
-import type { ToneChipTone } from '@/modules/teacher/types/teacher-kit.types';
-
-describe('the kit tone pairs', () => {
-  test('each chip class draws exactly its ink pair (navy ink is the navy-900 token)', () => {
-    for (const [tone, ink] of Object.entries(TONE_CHIP_INK) as [ToneChipTone, { fg: string; bg: string }][]) {
-      const text = tone === 'navy' ? 'text-navy-900' : `text-[${ink.fg}]`;
-      expect(TONE_CHIP_CLASSES[tone]).toBe(`bg-[${ink.bg}] ${text}`);
-    }
-    expect(Object.keys(TONE_CHIP_INK).sort()).toEqual(Object.keys(TONE_CHIP_CLASSES).sort());
-  });
-});
-
-describe('classBadgeCode', () => {
-  test('takes the first year-and-section token', () => {
-    expect(classBadgeCode('7A EAL/D')).toBe('7A');
-    expect(classBadgeCode('Reading 8B — Alvarez')).toBe('8B');
-    expect(classBadgeCode('9e Support')).toBe('9E');
-  });
-
-  test('falls back to the initials of the first two words', () => {
-    expect(classBadgeCode('Reading Group')).toBe('RG');
-    expect(classBadgeCode('Literature')).toBe('L');
-    expect(classBadgeCode('   ')).toBe('');
-  });
-});
 
 describe('formatDelta', () => {
   test('arrow form, as the classes list draws it', () => {

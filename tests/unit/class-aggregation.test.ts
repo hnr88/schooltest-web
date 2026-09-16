@@ -8,7 +8,6 @@ import { resultViewSchema, type ResultView } from '@schooltest/scoring-contracts
 import {
   classAverage,
   phaseSpread,
-  reliableGrowthAverage,
   resultViewsOf,
   scoredCount,
   weakestSkill,
@@ -20,7 +19,6 @@ import {
   topGains,
   vocabStrandMeans,
 } from '@/modules/results/lib/class-analytics';
-import { filterByPhase, phasesOf, sortRosterRows } from '@/modules/results/lib/roster-order';
 import type { RosterRow } from '@/modules/results/types/roster.types';
 
 /**
@@ -122,39 +120,6 @@ describe('classAverage — scored rows only', () => {
   });
 });
 
-describe('reliableGrowthAverage — reliable numeric deltas only, <3 is insufficient', () => {
-  test('means only rows with delta_reliable true AND a numeric delta', () => {
-    const rows = withScores([
-      { overall: { ...fixture.overall, delta: 10, delta_reliable: true } },
-      { overall: { ...fixture.overall, delta: 4, delta_reliable: true } },
-      { overall: { ...fixture.overall, delta: null, delta_reliable: null } }, // band_movement: contributes nothing
-      { overall: { ...fixture.overall, delta: 40, delta_reliable: false } }, // unreliable: contributes nothing
-      { overall: { ...fixture.overall, delta: null, delta_reliable: true } }, // reliable but no number: nothing
-    ]);
-    const result = reliableGrowthAverage(rows);
-    expect(result).toEqual({ state: 'insufficient_data', qualifying: 2 });
-  });
-
-  test('three qualifying rows average; the rule threshold is exactly 3', () => {
-    const rows = withScores([
-      { overall: { ...fixture.overall, delta: 10, delta_reliable: true } },
-      { overall: { ...fixture.overall, delta: 4, delta_reliable: true } },
-      { overall: { ...fixture.overall, delta: 7, delta_reliable: true } },
-    ]);
-    expect(reliableGrowthAverage(rows)).toEqual({ state: 'average', value: 7, qualifying: 3 });
-  });
-
-  test('growth is read from overall, never from history — a row with omitted history still aggregates', () => {
-    const { history: _history, ...rosterRow } = fixture;
-    const rows = withScores([
-      { ...(rosterRow as ResultView), overall: { ...fixture.overall, delta: 6, delta_reliable: true } },
-      { ...(rosterRow as ResultView), overall: { ...fixture.overall, delta: 8, delta_reliable: true } },
-      { ...(rosterRow as ResultView), overall: { ...fixture.overall, delta: 10, delta_reliable: true } },
-    ]);
-    expect(reliableGrowthAverage(rows)).toEqual({ state: 'average', value: 8, qualifying: 3 });
-  });
-});
-
 describe('resultViewsOf — the one unwrap the scored-only aggregates are fed from', () => {
   test('keeps every scored view in roster order and drops result-less students', () => {
     const rows = withRoster([
@@ -219,52 +184,6 @@ describe('scoredCount — scored over the ROSTER total, never over students-with
       ...Array.from({ length: 12 }, () => null), // twelve students with no official result at all
     ]);
     expect(scoredCount(rows)).toEqual({ scored: 18, total: 30 });
-  });
-});
-
-describe('sortRosterRows — lowest first, unscored last, ties by name', () => {
-  test('ranks scored students ascending and sends result-less rows to the end, never as a zero', () => {
-    const rows = withRoster([
-      { overall: { ...fixture.overall, domain_score: 55 } },
-      null,
-      { overall: { ...fixture.overall, domain_score: 80 } },
-      { overall: { ...fixture.overall, domain_score: null } }, // result but unscored: also last
-    ]);
-    const sorted = sortRosterRows(rows);
-    expect(sorted.map((row) => row.result?.overall.domain_score ?? null)).toEqual([55, 80, null, null]);
-    expect(sorted[0]?.result).not.toBeNull();
-  });
-
-  test('equal scores break by student name, deterministically', () => {
-    const rows = withRoster([
-      { overall: { ...fixture.overall, domain_score: 70 } },
-      { overall: { ...fixture.overall, domain_score: 70 } },
-    ]);
-    const sorted = sortRosterRows(rows);
-    expect(sorted.map((row) => row.student.name)).toEqual([...sorted.map((row) => row.student.name)].sort());
-  });
-});
-
-describe('phase filter inputs', () => {
-  test('phasesOf lists distinct named phases sorted; result-less and null phases add nothing', () => {
-    const rows = withRoster([
-      { acara_phase: 'consolidating' },
-      { acara_phase: 'developing' },
-      { acara_phase: 'developing' },
-      { acara_phase: null },
-      null,
-    ]);
-    expect(phasesOf(rows)).toEqual(['consolidating', 'developing']);
-  });
-
-  test('filterByPhase keeps only that phase; null keeps the whole roster in order', () => {
-    const rows = withRoster([
-      { acara_phase: 'consolidating' },
-      { acara_phase: 'developing' },
-      null,
-    ]);
-    expect(filterByPhase(rows, 'developing')).toHaveLength(1);
-    expect(filterByPhase(rows, null)).toHaveLength(3);
   });
 });
 

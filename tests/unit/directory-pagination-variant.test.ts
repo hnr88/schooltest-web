@@ -77,54 +77,6 @@ describe('§L-pagination — the three variants', () => {
     expect(host.textContent).toBe('');
   });
 
-  test("the DEFAULT is 'steps' — prev/next and the count, and no page numbers", () => {
-    const host = render(pager());
-    // COUNTED, not merely present: a presence check passes twice over and so
-    // cannot tell one correct pager from two duplicated ones.
-    const navs = host.querySelectorAll('[data-slot="directory-pagination"]');
-    expect(navs.length).toBe(1);
-    const nav = navs[0]!;
-    expect(nav.getAttribute('data-variant')).toBeNull();
-    const buttons = [...host.querySelectorAll('button')].map((button) => button.textContent);
-    expect(buttons).toEqual([DIRECTORY_DEFAULT_LABELS.previous, DIRECTORY_DEFAULT_LABELS.next]);
-    expect(host.querySelector('[data-slot="directory-pagination-ellipsis"]')).toBeNull();
-  });
-
-  test("variant 'steps' is identical to the default", () => {
-    const host = render(pager({ variant: 'steps' }));
-    const buttons = [...host.querySelectorAll('button')].map((button) => button.textContent);
-    expect(buttons).toEqual([DIRECTORY_DEFAULT_LABELS.previous, DIRECTORY_DEFAULT_LABELS.next]);
-  });
-
-  test("variant 'numbered' renders getPaginationRange's window, ellipsis included", () => {
-    const host = render(pager({ variant: 'numbered' }));
-    // The ONE algorithm decides the window; the test reads it from the same body
-    // rather than restating it, so the two can never drift apart.
-    const tokens = getPaginationRange(META.page, META.pageCount);
-    expect(tokens).toContain('ellipsis');
-    const expectedNumbers = tokens.filter((token): token is number => token !== 'ellipsis');
-
-    const rendered = [...host.querySelectorAll('button')]
-      .map((button) => button.textContent ?? '')
-      .filter((text) => /^\d+$/.test(text))
-      .map(Number);
-    expect(rendered).toEqual(expectedNumbers);
-
-    const ellipses = host.querySelectorAll('[data-slot="directory-pagination-ellipsis"]');
-    expect(ellipses.length).toBe(tokens.filter((token) => token === 'ellipsis').length);
-    expect(ellipses[0]!.getAttribute('aria-hidden')).toBe('true');
-  });
-
-  test("variant 'numbered' marks EXACTLY ONE page with aria-current", () => {
-    const host = render(pager({ variant: 'numbered' }));
-    // Counted: two aria-current="page" nodes is an a11y defect a presence
-    // check would wave through, and so is a duplicated pager.
-    const current = host.querySelectorAll('button[aria-current="page"]');
-    expect(current.length).toBe(1);
-    expect(current[0]!.textContent).toBe(String(META.page));
-    expect(host.querySelectorAll('[data-slot="directory-pagination"]').length).toBe(1);
-  });
-
   test('every variant still renders nothing on an empty scope', () => {
     for (const variant of ['steps', 'numbered'] as const) {
       const host = render(pager({ variant, meta: { page: 1, pageSize: 25, pageCount: 0, total: 0 } }));

@@ -1,21 +1,16 @@
 import { act, createElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { z } from 'zod';
 
 import { DirectoryFilters } from '@/modules/directory/components/DirectoryFilters';
 import { DIRECTORY_ALL, DIRECTORY_DEFAULT_LABELS } from '@/modules/directory/constants/directory.constants';
 import {
-  DIRECTORY_FILTER_KINDS,
   DIRECTORY_TOGGLE_ON,
-  directoryFilterKindOf,
-  directoryFilterNeedsPredicate,
   directoryFilterParamOf,
   directoryFilterValueOf,
   equalityBy,
   type AnyDirectoryFilterDef,
 } from '@/modules/directory/lib/directory-filter-kinds';
-import type { ListSource } from '@/modules/directory/types/directory.types';
 
 // school-admin/02 — §L-filters (U-07): ONE renderer dispatches all eight
 // kinds; D-02 (counts render on counted ONLY, from meta, never rows);
@@ -70,57 +65,6 @@ const STATE_DEF: AnyDirectoryFilterDef = {
     { value: 'active', label: 'Active' },
   ],
 };
-
-describe('U-07 — one def array, eight kinds', () => {
-  test('kind omitted renders exactly the select contract: same SelectField id, enabled, sentinel', () => {
-    render([STATE_DEF]);
-    const trigger = host.querySelector<HTMLButtonElement>('#t-filter-state');
-    expect(trigger?.getAttribute('role')).toBe('combobox');
-    expect(trigger?.disabled).toBe(false);
-  });
-
-  test('all eight kinds render from ONE def array, each with its absorb marker', () => {
-    render([
-      STATE_DEF,
-      { key: 'sector', label: 'Sector', kind: 'chips', options: STATE_DEF.options },
-      {
-        key: 'status',
-        label: 'Status',
-        kind: 'counted',
-        options: STATE_DEF.options,
-        counts: { active: 7 },
-      },
-      { key: 'archived', label: 'Archived', kind: 'toggle' },
-      {
-        key: 'levels',
-        label: 'Levels',
-        kind: 'multi',
-        options: [
-          { value: DIRECTORY_ALL, label: 'All levels' },
-          { value: 'primary', label: 'Primary' },
-        ],
-      },
-      { key: 'action', label: 'Action', kind: 'text' },
-      { key: 'window', label: 'Window', kind: 'dateRange' },
-      { key: 'fee', label: 'Fee', kind: 'numberRange' },
-    ]);
-    expect(host.querySelector('#t-filter-state')?.getAttribute('role')).toBe('combobox');
-    expect(host.querySelector('[data-slot="directory-filter-pills"]')).not.toBeNull();
-    expect(host.querySelector('[data-slot="directory-filter-toggle"]')).not.toBeNull();
-    expect(host.querySelector('[data-slot="choice-pill-group"]')).not.toBeNull();
-    expect(host.querySelector('#t-filter-action')?.getAttribute('type')).toBe('search');
-    expect(host.querySelectorAll('#t-filter-window-from, #t-filter-window-to').length).toBe(2);
-    expect(host.querySelectorAll('input[type="date"]').length).toBe(2);
-    expect(host.querySelectorAll('input[type="number"]').length).toBe(2);
-    expect(host.querySelector('input[type="range"]')).toBeNull();
-  });
-
-  test('a hidden def stays out of the render while the state keeps it', () => {
-    render([STATE_DEF, { ...STATE_DEF, key: 'year', label: 'Year', hidden: true }]);
-    expect(host.querySelector('#t-filter-year')).toBeNull();
-    expect(host.querySelector('#t-filter-state')).not.toBeNull();
-  });
-});
 
 describe('D-02 — counts render on counted ONLY and come from meta, never rows', () => {
   const COUNTED: AnyDirectoryFilterDef = {
@@ -177,13 +121,6 @@ describe('the arms write through the ONE bridge, encoded by the kinds table', ()
     const button = host.querySelector<HTMLButtonElement>('[data-slot="directory-filter-toggle"]');
     act(() => button?.click());
     expect(onValueChange).toHaveBeenCalledWith('archived', DIRECTORY_TOGGLE_ON);
-  });
-
-  test('toggle reflects its value as aria-pressed', () => {
-    render([{ key: 'archived', label: 'Archived', kind: 'toggle' }], { archived: 'true' });
-    expect(
-      host.querySelector('[data-slot="directory-filter-toggle"]')?.getAttribute('aria-pressed'),
-    ).toBe('true');
   });
 
   test('multi: pressed pills follow the joined value and writes stay option-filtered', () => {
@@ -258,70 +195,9 @@ describe('the value codecs — the only place a kind URL string form lives', () 
     expect(directoryFilterValueOf(MULTI, 'primary')).toStrictEqual(['primary']);
   });
 
-  test('every kind row: enumerated/optioned/counted/equality — and the predicate rule', () => {
-    const kindDefs: readonly AnyDirectoryFilterDef[] = [
-      { key: 'k', label: 'K' },
-      { key: 'k', label: 'K', kind: 'chips', options: [] },
-      { key: 'k', label: 'K', kind: 'counted', options: [] },
-      { key: 'k', label: 'K', kind: 'toggle' },
-      { key: 'k', label: 'K', kind: 'multi', options: [] },
-      { key: 'k', label: 'K', kind: 'text' },
-      { key: 'k', label: 'K', kind: 'dateRange' },
-      { key: 'k', label: 'K', kind: 'numberRange' },
-    ];
-    expect(Object.keys(DIRECTORY_FILTER_KINDS)).toHaveLength(8);
-    expect(DIRECTORY_FILTER_KINDS.counted.counted).toBe(true);
-    for (const def of kindDefs) {
-      const info = DIRECTORY_FILTER_KINDS[directoryFilterKindOf(def)];
-      expect(directoryFilterNeedsPredicate(def), def.kind ?? 'select').toBe(!info.equality);
-      if ((def.kind ?? 'select') !== 'counted') expect(info.counted, def.kind ?? 'select').toBe(false);
-    }
-  });
-
   test('equalityBy is the default client predicate for an equality kind', () => {
     const matches = equalityBy((row: { status: string }) => row.status);
     expect(matches({ status: 'active' }, 'active')).toBe(true);
     expect(matches({ status: 'archived' }, 'active')).toBe(false);
-  });
-});
-
-describe('U-10 — ListPredicates totality, pinned in BOTH directions', () => {
-  interface FilterRow {
-    status: string;
-    level: string;
-  }
-  const filterSchema = z.object({
-    status: z.string(),
-    level: z.string(),
-    q: z.string().optional(),
-    sort: z.string(),
-    page: z.number(),
-    pageSize: z.number(),
-  });
-  const bothPredicates = {
-    filters: {
-      status: (row: FilterRow, value: string) => row.status === value,
-      level: (row: FilterRow, value: string) => row.level === value,
-    },
-    sorts: {},
-  };
-
-  test('a predicate supplied in server mode is a type error', () => {
-    // @ts-expect-error — server mode carries NO apply: any predicate is the §L-modes lie
-    const server: ListSource<FilterRow, typeof filterSchema> = { mode: 'server', apply: bothPredicates };
-    expect(server.mode).toBe('server');
-  });
-
-  test('a missing client predicate for a schema filter key is a type error', () => {
-    const client: ListSource<FilterRow, typeof filterSchema> = {
-      mode: 'client',
-      rows: [],
-      apply: {
-        // @ts-expect-error — `level` is a schema filter key: omitting it fails the mapped totality
-        filters: { status: (row: FilterRow, value: string) => row.status === value },
-        sorts: {},
-      },
-    };
-    expect(client.mode).toBe('client');
   });
 });

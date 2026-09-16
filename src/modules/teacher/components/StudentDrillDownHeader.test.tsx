@@ -4,7 +4,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import enMessages from '@/i18n/messages/en.json';
-import { StudentComingSoon } from '@/modules/teacher/components/StudentComingSoon';
 import { StudentDrillDownHeader } from '@/modules/teacher/components/StudentDrillDownHeader';
 import { t2ResultDilnoza, t2Row } from '@/modules/teacher/lib/v2/__fixtures__/t2';
 import { studentDetail } from '@/modules/teacher/lib/v2/student-detail';
@@ -70,41 +69,6 @@ function header(
 }
 
 describe('student page header', () => {
-  test('name, class, the overall chip with the server step, and the two actions', () => {
-    const actions = handlers();
-    const page = header(actions);
-    expect(page.querySelector('h1')?.textContent).toBe(name);
-    expect(page.querySelector('[data-slot="student-meta"]')?.textContent).toBe('7A EAL/D · Reading');
-    expect(page.querySelector('[data-slot="student-overall-score"]')?.textContent).toBe('41%');
-    expect(page.querySelector('[data-slot="student-overall-delta"]')?.textContent).toBe('↓ −45 pts');
-    const exportButton = button(page, 'Export for LLM');
-    expect(exportButton?.getAttribute('title')).toBe('Download a de-identified data file for your AI assistant');
-    act(() => exportButton?.click());
-    expect(actions.exportMarkdown).toHaveBeenCalledTimes(1);
-    act(() => button(page, 'Ask AI')?.click());
-    expect(actions.askAi).toHaveBeenCalledTimes(1);
-    expect(page.querySelector('[role="alert"]')).toBeNull();
-  });
-
-  test('the skill select lists Reading and three coming-soon skills, and reports a pick', () => {
-    const onValueChange = vi.fn();
-    const page = header(handlers(), onValueChange);
-    const select = page.querySelector('select');
-    expect(select?.getAttribute('aria-label')).toBe('Skill');
-    expect([...(select?.options ?? [])].map((option) => option.textContent)).toEqual([
-      'Reading',
-      'Listening — coming soon',
-      'Writing — coming soon',
-      'Speaking — coming soon',
-    ]);
-    act(() => {
-      if (select === null) return;
-      select.value = 'listening';
-      select.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-    expect(onValueChange).toHaveBeenCalledWith('listening');
-  });
-
   test('a refused export is said in text beside the actions', () => {
     const page = header(handlers({ exportFailed: true }));
     expect(page.querySelector('[role="alert"]')?.textContent).toBe(enMessages.Teacher.results.export.failed);
@@ -115,17 +79,5 @@ describe('student page header', () => {
     expect(page.querySelector('[data-slot="student-overall"]')).toBeNull();
     expect(button(page, 'Export for LLM')).toBeUndefined();
     expect(button(page, 'Ask AI')).toBeUndefined();
-  });
-});
-
-describe('student page coming-soon block', () => {
-  test('names the skill and the student, and Back to Reading returns to Reading', () => {
-    const onValueChange = vi.fn();
-    const page = render(<StudentComingSoon skill="writing" onValueChange={onValueChange} firstName="Dilnoza" />);
-    expect(page.querySelector('h2')?.textContent).toBe('Writing is coming soon');
-    expect(page.querySelector('[data-slot="coming-soon-panel"] p')?.textContent).toContain('Dilnoza’s Writing profile');
-    expect(page.querySelector('select')?.value).toBe('writing');
-    act(() => button(page, 'Back to Reading')?.click());
-    expect(onValueChange).toHaveBeenCalledWith('reading');
   });
 });

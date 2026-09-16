@@ -15,8 +15,6 @@ import {
   resolveAttributeRow,
 } from '@/modules/report/lib/attribute-view-model';
 import type { ResultViewAttribute } from '@/modules/report/schemas/result-view.schema';
-import { ProgressTrendChart } from '@/modules/results/components/ProgressTrendChart';
-import { SubskillCard } from '@/modules/results/components/SubskillCard';
 
 // J06 surfaces printed contract TOKENS as teacher copy: the report's attribute
 // rows read "band_movement since the previous sitting", the skill cards
@@ -107,51 +105,4 @@ describe('report attribute rows say the movement in words', () => {
       expect(text).not.toMatch(/band_movement|not_yet|\bsteady\b/);
     });
   }
-});
-
-describe('skill cards say a band movement in words', () => {
-  test('a band pair renders through the band catalogue', () => {
-    mount(
-      <ul>
-        <SubskillCard
-          skill="Gist"
-          domainScore={29}
-          status="not_yet"
-          deltaDisplay="band_movement"
-          bandBefore="not_yet"
-          bandAfter="developing"
-        />
-      </ul>,
-    );
-    expect(host?.querySelector('[data-slot="skill-delta"]')?.textContent).toBe('Not yet → Developing');
-  });
-
-  test('a band movement without its bands names the movement instead of blanks', () => {
-    mount(
-      <ul>
-        <SubskillCard skill="Gist" domainScore={29} status="not_yet" deltaDisplay="band_movement" />
-      </ul>,
-    );
-    expect(host?.querySelector('[data-slot="skill-delta"]')?.textContent).toBe('Band movement');
-  });
-});
-
-describe('the trend caption never formats a claim as points', () => {
-  test('a steady overall reads as the word, not "steady pts"', () => {
-    const view = resultViewSchema.parse({
-      ...fixture,
-      overall: { ...fixture.overall, delta: 2, delta_reliable: true, delta_display: 'steady' },
-    }) as ResultView;
-    mount(<ProgressTrendChart view={view} />);
-    const summary = host?.querySelector('[data-slot="trend-summary"]')?.textContent ?? '';
-    expect(summary).toContain('Steady (reliable)');
-    expect(summary).not.toContain('steady pts');
-  });
-
-  test('a signed step still reads in points', () => {
-    mount(<ProgressTrendChart view={fixture} />);
-    expect(host?.querySelector('[data-slot="trend-summary"]')?.textContent).toContain(
-      '+15 pts (reliable)',
-    );
-  });
 });

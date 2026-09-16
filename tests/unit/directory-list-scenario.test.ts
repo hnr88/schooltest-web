@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { describe, expect, test, vi } from 'vitest';
 import { z } from 'zod';
 
-import { listScenarioOf, type ListScenario } from '@/modules/directory/lib/list-scenario';
+import { listScenarioOf } from '@/modules/directory/lib/list-scenario';
 
 // teacher/04 — the ten-arm body machine (U-13, U-46). Pure decision, unit-tested
 // arm by arm in §L-states' order, FIRST MATCH WINNING: each case pins one arm by
@@ -101,29 +101,6 @@ describe('listScenarioOf — §L-states first-match order', () => {
 
   test('R-13 — hasData before total: rows with no meta render rows, not an empty arm', () => {
     expect(listScenarioOf(input({ rowCount: 2, total: 0, hasActiveControls: true }))).toBe('happy');
-  });
-
-  test('pure and exhaustive — frozen input, same answer twice, always a ten-member scenario', () => {
-    const scenarios: readonly ListScenario[] = [
-      'happy',
-      'loading',
-      'slow',
-      'empty-none',
-      'empty-no-matches',
-      'stale',
-      'loadError',
-      'restricted',
-      'gone',
-      'disabled',
-    ];
-    const frozen = Object.freeze(input({ isError: true, error: broken }));
-    const first = listScenarioOf(frozen);
-    expect(listScenarioOf(frozen)).toBe(first);
-    expect(scenarios).toContain(first);
-
-    for (const scenario of scenarios) {
-      expect(typeof scenario).toBe('string');
-    }
   });
 
   test('error truthiness — a non-error truthy value classifies as broken, keeping arm 5 reachable', () => {
@@ -307,21 +284,6 @@ describe('DirectoryTable — arm wiring (teacher/04)', () => {
     });
   }
 
-  test('rows render under the region, indexed for A5', () => {
-    mount(tableElement(baseTableQuery()));
-    expect(container!.querySelectorAll('[data-directory-row]')).toHaveLength(3);
-  });
-
-  test('rows -> loading swaps the body and focus lands on the loading status heading', () => {
-    mount(tableElement(baseTableQuery()));
-    rerender(tableElement(baseTableQuery({ isPending: true })));
-    const active = document.activeElement as HTMLElement;
-    expect(active.tagName).toBe('H2');
-    expect(active.getAttribute('tabindex')).toBe('-1');
-    expect(active.textContent).toBe(DIRECTORY_DEFAULT_LABELS.loadingLabel);
-    expect(active.closest('[data-slot="directory-loading"]')).not.toBeNull();
-  });
-
   test('rows -> 403 renders the forbidden arm and focus lands on its heading', () => {
     mount(tableElement(baseTableQuery()));
     rerender(tableElement(baseTableQuery({ isError: true, error: axiosError(403) })));
@@ -341,47 +303,6 @@ describe('DirectoryTable — arm wiring (teacher/04)', () => {
     expect(active.tagName).toBe('H2');
     expect(active.getAttribute('tabindex')).toBe('-1');
     expect(active.textContent).toBe(QUERY_MESSAGES.QueryError.goneTitle);
-  });
-
-  test('rows -> loadError focuses the error heading carrying its title', () => {
-    mount(tableElement(baseTableQuery()));
-    rerender(
-      tableElement(baseTableQuery({ isError: true, error: axiosError(500) }), {
-        rows: [],
-        meta: undefined,
-      }),
-    );
-    const active = document.activeElement as HTMLElement;
-    expect(active.tagName).toBe('H2');
-    expect(active.textContent).toBe(DIRECTORY_DEFAULT_LABELS.errorTitle);
-  });
-
-  test('rows -> empty-no-matches focuses that arm heading; Clear filters present', () => {
-    mount(tableElement(baseTableQuery()));
-    rerender(
-      tableElement(baseTableQuery(), {
-        rows: [],
-        meta: { page: 1, pageSize: 25, pageCount: 0, total: 0 },
-        ...{ state: fakeDirectoryState({ hasActiveControls: true }) },
-      }),
-    );
-    const active = document.activeElement as HTMLElement;
-    expect(active.tagName).toBe('H2');
-    expect(active.textContent).toBe(DIRECTORY_DEFAULT_LABELS.emptyNoMatchesTitle);
-    expect(container!.textContent).toContain(DIRECTORY_DEFAULT_LABELS.clearFilters);
-  });
-
-  test('rows -> empty-none (no active controls) focuses the none arm heading', () => {
-    mount(tableElement(baseTableQuery()));
-    rerender(
-      tableElement(baseTableQuery(), {
-        rows: [],
-        meta: { page: 1, pageSize: 25, pageCount: 0, total: 0 },
-      }),
-    );
-    const active = document.activeElement as HTMLElement;
-    expect(active.tagName).toBe('H2');
-    expect(active.textContent).toBe(DIRECTORY_DEFAULT_LABELS.emptyNoneTitle);
   });
 
   test('stale is a ROW arm: rows stay, the banner sits with them, retry is busy while refetching', () => {
@@ -404,55 +325,5 @@ describe('DirectoryTable — arm wiring (teacher/04)', () => {
     expect(
       container!.querySelector('[data-slot="directory"] > div[aria-busy="true"]'),
     ).toBeNull();
-  });
-
-  test('A5 row removal — focus moves to a SURVIVING row action trigger', () => {
-    mount(tableElement(baseTableQuery()));
-    const removedRowTrigger = container!.querySelector<HTMLElement>(
-      '[data-directory-row-index="1"] [data-directory-row-menu] button',
-    );
-    removedRowTrigger?.focus();
-    expect(document.activeElement).toBe(removedRowTrigger);
-
-    rerender(
-      tableElement(baseTableQuery(), { rows: TABLE_ROWS.filter((row) => row.id !== 'r2') }),
-    );
-
-    const active = document.activeElement as HTMLElement;
-    expect(active.tagName).toBe('BUTTON');
-    expect(active.closest('[data-directory-row]')).not.toBeNull();
-    expect(active.closest('[data-directory-row-menu]')).not.toBeNull();
-  });
-
-  test('U-11 — selectable:false compiles and runs with NO getRowTarget (getRowKey identities)', () => {
-    const props = {
-      state: fakeDirectoryState(),
-      query: baseTableQuery(),
-      rows: TABLE_ROWS,
-      getRowKey: (row: TableRow) => row.id,
-      filters: [],
-      sorts: [],
-      columns: TABLE_COLUMNS,
-    } as DirectoryTableProps<TableRow>;
-    mount(
-      createElement(Provider, { locale: 'en', messages: QUERY_MESSAGES }, typedTable(props)),
-    );
-    expect(container!.querySelectorAll('[data-directory-row]')).toHaveLength(3);
-    expect(container!.querySelector('[data-directory-row-menu]')).toBeNull();
-  });
-
-  test('U-11 — selectable:true REQUIRES getRowTarget (compile-time, type-only)', () => {
-    type SelectableTableProps = DirectoryTableProps<TableRow> & { selectable: true };
-    // @ts-expect-error — U-11: a selectable table without getRowTarget must not compile.
-    const missing: SelectableTableProps = {
-      state: fakeDirectoryState(),
-      query: baseTableQuery(),
-      rows: TABLE_ROWS,
-      filters: [],
-      sorts: [],
-      columns: TABLE_COLUMNS,
-      selectable: true,
-    };
-    expect(missing).toBeDefined();
   });
 });

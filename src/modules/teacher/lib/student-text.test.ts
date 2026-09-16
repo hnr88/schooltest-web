@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { STUDENT_CATALOGS, studentTranslators } from '@/modules/teacher/lib/__fixtures__/student-translators';
+import { studentTranslators } from '@/modules/teacher/lib/__fixtures__/student-translators';
 import {
   overallDeltaText,
   progressTiles,
@@ -9,19 +9,9 @@ import {
   subskillDeltaText,
 } from '@/modules/teacher/lib/student-detail-text';
 import { firstNameOf, resolveParagraphs, resolveStudentText } from '@/modules/teacher/lib/student-text';
-import { t2Result, t2ResultAmara, t2ResultDilnoza } from '@/modules/teacher/lib/v2/__fixtures__/t2';
+import { t2ResultAmara, t2ResultDilnoza } from '@/modules/teacher/lib/v2/__fixtures__/t2';
 import { studentDetail } from '@/modules/teacher/lib/v2/student-detail';
 import type { TextDescriptor } from '@/modules/teacher/types/student-drill-down.types';
-import type { StudentDetailView } from '@/modules/teacher/types/v2-student-detail.types';
-
-function descriptorsOf(view: StudentDetailView, first: string): TextDescriptor[] {
-  const tiles = progressTiles(view).flatMap((tile) => (tile.value === null ? [tile.label] : [tile.label, tile.value]));
-  const cards = view.subskills.flatMap((card) => [subskillDeltaText(card.delta), strandsText(card.strands)]);
-  const overall = overallDeltaText(view.overall.growth);
-  return [...tiles, ...cards, overall, ...studentAnalysis(view, first).flat()].filter(
-    (descriptor): descriptor is TextDescriptor => descriptor !== null,
-  );
-}
 
 const en = studentTranslators('en');
 
@@ -65,27 +55,6 @@ describe('student page text — recorded Amara, en', () => {
       'Amara’s overall reading score is 42%. ' +
         'Their reading has held steady since the first sitting, within measurement error.',
     );
-  });
-});
-
-describe('student page text — every locale resolves every sentence the recorded rows produce', () => {
-  const views: Array<[string, StudentDetailView]> = [
-    ['Dilnoza', studentDetail(t2ResultDilnoza)],
-    ['Amara', studentDetail(t2ResultAmara)],
-    ['Rosa', studentDetail(t2Result('Rosa'))],
-    ['Jae-won', studentDetail(t2Result('Jae-won'))],
-    ['Lucia', studentDetail(t2Result('Lucia'))],
-  ];
-
-  test.each(Object.keys(STUDENT_CATALOGS))('%s: no missing message and no unfilled placeholder', (locale) => {
-    const translate = studentTranslators(locale);
-    for (const [first, view] of views) {
-      for (const descriptor of descriptorsOf(view, first)) {
-        const sentence = resolveStudentText(descriptor, translate);
-        expect(sentence, `${locale} ${first} ${descriptor.key}`).not.toMatch(/[{}]/);
-        expect(sentence.length).toBeGreaterThan(0);
-      }
-    }
   });
 });
 

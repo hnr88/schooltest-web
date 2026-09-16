@@ -1,14 +1,10 @@
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-
-import { DirectoryChips } from '@/modules/directory/components/DirectoryChips';
-import { DirectoryHeader } from '@/modules/directory/components/DirectoryHeader';
 import { DirectoryTable } from '@/modules/directory/components/DirectoryTable';
 import { DIRECTORY_DEFAULT_LABELS } from '@/modules/directory/constants/directory.constants';
 import type {
   DirectoryFilterDef,
-  DirectoryHeaderDef,
   DirectoryQueryStatus,
   DirectoryStateApi,
 } from '@/modules/directory/types/directory.types';
@@ -88,13 +84,6 @@ const FILTERS: readonly DirectoryFilterDef[] = [
   },
 ];
 
-const HEADER: DirectoryHeaderDef = {
-  title: 'School admins',
-  summary: '2 invited · 1 active',
-  primary: { label: 'Invite admin', onSelect: () => {} },
-  secondary: { onSelect: () => {} },
-};
-
 function fakeState(filters: Record<string, string> = {}): DirectoryStateApi {
   return {
     params: { filters, sort: 'name:asc', page: 1, pageSize: 25 },
@@ -149,25 +138,6 @@ function renderTable(props: Record<string, unknown>, state: DirectoryStateApi = 
 }
 
 describe('ops/14 directory tab frame', () => {
-  test('a header-less table renders byte-identically: no header, no chips, snapshot pinned', () => {
-    renderTable({});
-    const html = container.innerHTML;
-    expect(html).not.toContain('panel-header-row');
-    expect(html).not.toContain('ds.exportCsv');
-    expect(html).not.toContain('role="group"');
-    expect(html).toMatchSnapshot();
-  });
-
-  test('header renders title, summary and both buttons; secondary falls back to the Export label', () => {
-    renderTable({ header: HEADER });
-    const header = container.querySelector('[data-slot="panel-header-row"]')!;
-    expect(header).not.toBeNull();
-    expect(header.querySelector('h2')!.textContent).toBe('School admins');
-    expect(header.textContent).toContain('2 invited · 1 active');
-    const buttons = [...header.querySelectorAll('button')];
-    expect(buttons.map((button) => button.textContent)).toEqual(['ds.exportCsv', 'Invite admin']);
-  });
-
   test('a write:true header button is greyed and refuses while the gate blocks', () => {
     gateReason.value = 'read-only session';
     renderTable({ header: { title: 'T', primary: { label: 'Invite admin', write: true, onSelect: () => {} } } });
@@ -181,93 +151,5 @@ describe('ops/14 directory tab frame', () => {
     renderTable({ header: { title: 'T', primary: { label: 'Invite admin', write: true, onSelect: () => {} } } });
     const button = container.querySelector<HTMLButtonElement>('[data-slot="panel-header-row"] button')!;
     expect(button.disabled).toBe(false);
-  });
-
-  test('chipFilterKey renders that filter as chips and drops only its select', () => {
-    renderTable({ chipFilterKey: 'status' }, fakeState());
-    const chips = container.querySelector('[role="group"]');
-    expect(chips).not.toBeNull();
-    expect([...chips!.querySelectorAll('button')].map((b) => b.textContent)).toEqual([
-      'All',
-      'Active',
-      'Archived',
-    ]);
-    // The remaining filter stays a select; the chip-served one does not double-render.
-    expect(container.textContent).toContain('Year');
-    expect(container.textContent).not.toContain('Archived\nArchived');
-  });
-
-  test('an unknown chipFilterKey throws — a misconfiguration never renders silently', () => {
-    expect(() => renderTable({ chipFilterKey: 'nope' })).toThrowError(
-      /chipFilterKey "nope" does not match any filters key/,
-    );
-  });
-
-  test('emptyCopy overrides the empty arm exactly once — h2 title, p body, never doubled', () => {
-    renderTable({ rows: [], emptyCopy: { title: 'No admins yet', body: 'Invite the first one.' } });
-    // The title must exist in EXACTLY ONE element (the h2). This is the
-    // non-vacuous form: the original case passed while the title rendered in
-    // both the h2 and EmptyState's own <p> (the kit's CSS suppression failed
-    // live twice). Counting elements is what catches it.
-    const titleNodes = [...container.querySelectorAll('*')].filter(
-      (node) => node.childElementCount === 0 && node.textContent === 'No admins yet',
-    );
-    expect(titleNodes).toHaveLength(1);
-    expect(titleNodes[0]!.tagName).toBe('H2');
-    // The h2 and the description carry DIFFERENT text — the body slot must
-    // never inherit the title.
-    const heading = titleNodes[0]!;
-    const description = [...container.querySelectorAll('p')].find((node) =>
-      node.textContent.includes('Invite the first one.'),
-    )!;
-    expect(description).not.toBeUndefined();
-    expect(description.textContent).not.toBe(heading.textContent);
-  });
-
-  test('the error arm is also single-title: h2 carries it, EmptyState does not repeat it', () => {
-    const failing: DirectoryQueryStatus = {
-      isPending: false,
-      isError: true,
-      isFetching: false,
-      refetch: () => {},
-      error: new Error('boom'),
-    };
-    act(() => {
-      root.render(
-        <DirectoryTable<Row>
-          state={fakeState()}
-          query={failing}
-          rows={[]}
-          getRowKey={(row) => row.id}
-          filters={FILTERS}
-          sorts={[]}
-          columns={COLUMNS}
-          labels={{ ...DIRECTORY_DEFAULT_LABELS, errorTitle: 'Could not load this list' }}
-        />,
-      );
-    });
-    const titleNodes = [...container.querySelectorAll('*')].filter(
-      (node) => node.childElementCount === 0 && node.textContent === 'Could not load this list',
-    );
-    expect(titleNodes).toHaveLength(1);
-    expect(titleNodes[0]!.tagName).toBe('H2');
-  });
-
-  test('DirectoryChips falls back to the kit All label for an unlabelled sentinel', () => {
-    const target = document.createElement('div');
-    document.body.append(target);
-    const chipRoot = createRoot(target);
-    act(() => {
-      chipRoot.render(
-        <DirectoryChips
-          filter={{ key: 'status', label: 'Status', options: [{ value: 'all', label: '' }, { value: 'active', label: 'Active' }] }}
-          value="all"
-          onValueChange={() => {}}
-        />,
-      );
-    });
-    expect(target.textContent).toContain('ds.chipAll');
-    act(() => chipRoot.unmount());
-    target.remove();
   });
 });

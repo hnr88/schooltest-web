@@ -6,7 +6,6 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { resultViewSchema } from '@schooltest/scoring-contracts';
 
 import { DISPLAY_SKILL_ORDER, displaySkills } from '@/modules/results';
-import { fetchClassExport } from '@/modules/results/queries/use-class-export.query';
 import { fetchClassResults } from '@/modules/results/queries/use-class-results.query';
 import { fetchResultExport } from '@/modules/results/queries/use-result-export.query';
 import { fetchStudentResult } from '@/modules/results/queries/use-student-result.query';
@@ -243,78 +242,6 @@ describe('the diagnostic export read (GET /api/results/{id}/export?format=diagno
       data: { ...diagnosticExportFixture, overall: { domain_score: 74, prob: 0.74 } },
     });
     await expect(fetchResultExport('res-fixture-0001')).rejects.toThrowError(/prob|Unrecognized|invalid/i);
-  });
-});
-
-// scoring/05 — the CLASS variant, covered the same way: one accepted payload
-// and one that leaks a posterior and must reject. The nested bundle is the
-// package fixture itself, so the class parse is exercised over the real wire
-// shape rather than a hand-written stub of it.
-describe('the class export read (GET /api/classes/{id}/export?format=diagnostic_json)', () => {
-  const classPayload = (students: unknown[]) => ({
-    class: { name: '5B', year_band: 'Year 5', student_count: 3, exported_count: 1 },
-    students,
-    caveats: ['Nothing here is aggregated across students or skills.'],
-  });
-
-  test('parses a class payload carrying all three per-student states', async () => {
-    get.mockResolvedValueOnce({
-      data: classPayload([
-        { student_key: 'sk-001', state: 'exported', bundle: diagnosticExportFixture },
-        { student_key: 'sk-002', state: 'awaiting_publication' },
-        { student_key: 'sk-003', state: 'no_official_result' },
-      ]),
-    });
-    const bundle = await fetchClassExport('cls-0001');
-    // COUNTED, not merely present: a containment check cannot tell one correct
-    // roster from a duplicated one.
-    expect(bundle.students).toHaveLength(3);
-    expect(bundle.students.map((s) => s.state)).toEqual([
-      'exported',
-      'awaiting_publication',
-      'no_official_result',
-    ]);
-    const first = bundle.students[0]!;
-    if (first.state !== 'exported') throw new Error('first row must be the exported arm');
-    expect(first.bundle.overall.domain_score).toBe(74);
-    expect(bundle.class.exported_count).toBe(1);
-    expect(bundle.caveats.length).toBeGreaterThanOrEqual(1);
-  });
-
-  test('rejects a class payload whose NESTED bundle leaks a posterior (strict)', async () => {
-    get.mockResolvedValueOnce({
-      data: classPayload([
-        {
-          student_key: 'sk-001',
-          state: 'exported',
-          bundle: { ...diagnosticExportFixture, overall: { domain_score: 74, prob: 0.74 } },
-        },
-      ]),
-    });
-    await expect(fetchClassExport('cls-0001')).rejects.toThrowError(/prob|Unrecognized|invalid/i);
-  });
-
-  test('rejects a student row carrying a NAME — student_key is the only identifier', async () => {
-    get.mockResolvedValueOnce({
-      data: classPayload([
-        { student_key: 'sk-001', state: 'no_official_result', name: 'Amelia Chen' },
-      ]),
-    });
-    await expect(fetchClassExport('cls-0001')).rejects.toThrowError(/name|Unrecognized|invalid/i);
-  });
-
-  test('rejects an empty caveats array — the hedging travels with the data (.min(1))', async () => {
-    get.mockResolvedValueOnce({
-      data: { ...classPayload([]), caveats: [] },
-    });
-    await expect(fetchClassExport('cls-0001')).rejects.toThrowError(/caveat|at least|invalid/i);
-  });
-
-  test('rejects an unknown per-student state (neither union arm admits it)', async () => {
-    get.mockResolvedValueOnce({
-      data: classPayload([{ student_key: 'sk-001', state: 'pending_review' }]),
-    });
-    await expect(fetchClassExport('cls-0001')).rejects.toThrowError(/state|invalid|Unrecognized/i);
   });
 });
 

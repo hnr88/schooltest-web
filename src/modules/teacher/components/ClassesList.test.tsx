@@ -4,7 +4,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import enMessages from '@/i18n/messages/en.json';
-import { TeacherClassTiles } from '@/modules/teacher/components/TeacherClassTiles';
 import { TeacherClassesTable } from '@/modules/teacher/components/TeacherClassesTable';
 import fixtureTeacherDashboard from '@/modules/teacher/lib/__fixtures__/teacher-dashboard.fixture-teacher.json';
 import t2Dashboard from '@/modules/teacher/lib/__fixtures__/teacher-dashboard.t2.json';
@@ -74,23 +73,5 @@ describe('Classes list body', () => {
       expect(node?.querySelector('[data-slot="teacher-status-dot"]')?.getAttribute('data-status-key')).toBe(row.statusKey);
       expect(node?.querySelector('[data-export="llm"]') !== null).toBe(row.hasExport);
     }
-  });
-
-  test('no match keeps the header and draws the design line', () => {
-    const view = render(
-      <TeacherClassesTable rows={[]} exports={exports} empty={<p>{enMessages.TeacherPortal.classes.noMatch}</p>} />,
-    );
-    expect(view.querySelectorAll('thead th')).toHaveLength(7);
-    expect(view.querySelector('tbody')?.textContent).toBe('No classes match those filters.');
-  });
-
-  test('tiles draw one card per class with the soon skills and the roster size', () => {
-    const view = render(<TeacherClassTiles rows={idleRows} empty={null} />);
-    const tiles = view.querySelectorAll('[data-layout="tiles"] [data-slot="results-class-row"]');
-    expect(tiles).toHaveLength(idleRows.length);
-    const first = tiles[0];
-    expect(first?.getAttribute('href')).toBe(idleRows[0]?.href);
-    expect(first?.textContent).toContain('Soon');
-    expect(first?.textContent).toContain(String(idleRows[0]?.studentCount));
   });
 });

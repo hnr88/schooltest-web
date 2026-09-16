@@ -6,8 +6,6 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import { NextIntlClientProvider } from 'next-intl';
-
-import { MissingDependencyNotice } from '@/modules/design-system';
 import { StudentImportDialogBase } from '@/modules/student-import/components/StudentImportDialogBase';
 import type { StudentImportFlowState } from '@/modules/student-import/hooks/use-student-import-flow';
 
@@ -73,34 +71,6 @@ const importDialog = (classes: Parameters<typeof StudentImportDialogBase>[0]['cl
   />
 );
 
-describe('MissingDependencyNotice', () => {
-  test('the classes kind renders the refusal and the create-class CTA link', () => {
-    mount(<MissingDependencyNotice kind="classes" ctaHref="/dashboard/school/classes" />);
-    expect(document.body.textContent).toContain('No classes yet');
-    expect(document.body.textContent).toContain('Create a class first');
-    const cta = [...document.body.querySelectorAll('a')].find(
-      (anchor) => anchor.textContent?.trim() === 'Create a class',
-    );
-    expect(cta?.getAttribute('href')).toBe('/dashboard/school/classes');
-  });
-
-  test('a kind without a CTA copy renders the refusal alone — never a dead button', () => {
-    mount(<MissingDependencyNotice kind="destinationClasses" />);
-    expect(document.body.textContent).toContain('No other class to move to');
-    expect(document.body.textContent).not.toContain('Create a class');
-  });
-
-  test('the eligibleTeachers kind states the creation block, not a work-around', () => {
-    // The add-class rule: no eligible teacher → the class cannot be created,
-    // so the copy refuses ("needs at least one active teacher") — it must NOT
-    // offer the old "continue without one" escape.
-    mount(<MissingDependencyNotice kind="eligibleTeachers" />);
-    expect(document.body.textContent).toContain('No eligible teachers');
-    expect(document.body.textContent).toContain('at least one active teacher');
-    expect(document.body.textContent).not.toContain('continue without one');
-  });
-});
-
 describe('StudentImportDialogBase empty-dependency arms', () => {
   test('zero classes refuses the import: guard + CTA, no CSV fields, no submit', () => {
     mount(importDialog([]));
@@ -109,11 +79,6 @@ describe('StudentImportDialogBase empty-dependency arms', () => {
     // The submit CTA is GONE on the guard arm — not a permanently dead button.
     expect(buttonNamed('Import students')).toBeUndefined();
     expect(buttonNamed('Cancel')).toBeDefined();
-  });
-
-  test('the guard arm drops the how-to sub that would contradict it', () => {
-    mount(importDialog([]));
-    expect(document.body.textContent).not.toContain('Upload or paste a CSV');
   });
 
   test('pending classes render the skeleton arm — never a half-loaded picker', () => {

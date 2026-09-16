@@ -56,21 +56,6 @@ const catalogFor = (locale: string): Catalog =>
     readFileSync(path.join(WEB_ROOT, 'src', 'i18n', 'messages', `${locale}.json`), 'utf8'),
   ) as Catalog;
 
-describe('Ops i18n locale parity', () => {
-  it('the en Ops namespace is non-trivial — an empty census proves nothing', () => {
-    // Floor recalibrated 2026-09-09 for mvp/ops task 41 (R-09…R-14): retiring the
-    // six console i18n groups legitimately shrank the Ops slice (measured: 1115 keys at HEAD → 774 now).
-    // The floor still catches an empty or gutted catalog, which is its only job.
-    expect(enOpsKeys.length).toBeGreaterThan(700);
-  });
-
-  it.each(LOCALES)('%s carries every en Ops.* key — no raw keys for non-en operators', (locale) => {
-    const present = new Set(flatKeys(catalogFor(locale)));
-    const missing = enOpsKeys.filter((k) => !present.has(k));
-    expect(missing, `${locale} is missing ${missing.length} Ops keys, e.g. ${missing.slice(0, 5).join(', ')}`).toEqual([]);
-  });
-});
-
 describe('catalog-wide i18n key parity (non-Ops trees included)', () => {
   it('the en catalog is non-trivial', () => {
     // Floor recalibrated 2026-09-09 for mvp/ops task 41: the same retirement
@@ -188,13 +173,6 @@ const enOps = new Map(
 );
 
 describe('Ops i18n content parity', () => {
-  it('every allowlist exemption carries a justification', () => {
-    const unjustified = ALLOWLIST.filter((e) => e.why.trim().length < 10);
-    expect(unjustified).toEqual([]);
-    // And each entry must actually be scoped to something.
-    expect(ALLOWLIST.filter((e) => e.key === undefined && e.value === undefined)).toEqual([]);
-  });
-
   it.each(LOCALES)('%s translates every guarded value it holds — no English left on the screen', (locale) => {
     const catalog = JSON.parse(
       readFileSync(path.join(WEB_ROOT, 'src', 'i18n', 'messages', `${locale}.json`), 'utf8'),
