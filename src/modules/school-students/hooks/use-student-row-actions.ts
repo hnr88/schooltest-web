@@ -7,6 +7,7 @@ import type { DirectoryRowAction } from '@/modules/directory';
 import { showOpsToast } from '@/modules/ops/actions';
 import { classifyStudentError } from '@/modules/school-students/lib/classify-student-error';
 import { useArchiveStudentMutation } from '@/modules/school-students/queries/use-archive-student.mutation';
+import { useUnarchiveStudentMutation } from '@/modules/school-students/queries/use-unarchive-student.mutation';
 import type { SchoolStudent } from '@/modules/school-students/types/school-students.types';
 
 export function studentDisplayName(student: SchoolStudent): string {
@@ -17,6 +18,7 @@ export function studentDisplayName(student: SchoolStudent): string {
 export interface StudentRowActionHandlers {
   onEdit: (student: SchoolStudent) => void;
   onArchive: (student: SchoolStudent) => void;
+  onUnarchive: (student: SchoolStudent) => void;
 }
 
 // Task 31 — the roster's row actions as the directory kit's declared list
@@ -24,11 +26,12 @@ export interface StudentRowActionHandlers {
 // actions keep their old semantics: Edit opens the screen-level edit dialog
 // (dialog-opening writes are `write: true` — the ops MOVE_CLASS convention),
 // Archive first opens the C-CHD-04 confirm and only the confirm fires the
-// mutation. Archived students keep offering Edit and no Archive, exactly as
-// the old menu did.
+// mutation. D10: an ARCHIVED row keeps Edit and gains Unarchive — the same
+// confirm-then-mutate pattern, restoring the seat-occupying status — and
+// still offers no Archive, exactly as the old menu did.
 export function studentRowActions(
   student: SchoolStudent,
-  labels: { edit: string; archive: string },
+  labels: { edit: string; archive: string; unarchive: string },
   handlers: StudentRowActionHandlers,
 ): readonly DirectoryRowAction<SchoolStudent>[] {
   const actions: DirectoryRowAction<SchoolStudent>[] = [
@@ -44,6 +47,15 @@ export function studentRowActions(
       write: true,
       destructive: true,
       onSelect: () => handlers.onArchive(student),
+    });
+  }
+  if (student.student_status === 'archived') {
+    // Restoring is the opposite of the destructive act, so it is not
+    // flagged destructive — the confirm still gates the write.
+    actions.push({
+      label: labels.unarchive,
+      write: true,
+      onSelect: () => handlers.onUnarchive(student),
     });
   }
   return actions;
@@ -86,5 +98,46 @@ export function useStudentArchive() {
     closeArchive: () => setTarget(null),
     confirmArchive,
     archivePending: archive.isPending,
+  };
+}
+
+/**
+ * D10 — Unarchive wiring for the roster table: the same screen-level confirm
+ * pattern as `useStudentArchive` (the kit renders the row menu, so a menu
+ * action only names a target), with the C-CHD-04b endpoint behind it. Success
+ * invalidates the roster + entitlement queries inside the mutation, so the
+ * row flips back to active and the seat math re-counts without a reload.
+ */
+export function useStudentUnarchive() {
+  const t = useTranslations('SchoolStudents.unarchiveDialog');
+  const [target, setTarget] = useState<SchoolStudent | null>(null);
+  const unarchive = useUnarchiveStudentMutation();
+
+  const confirmUnarchive = async () => {
+    if (target === null) return;
+    try {
+      await unarchive.mutateAsync(target.documentId);
+      showOpsToast({
+        tone: 'ok',
+        message: t('successToast', { name: studentDisplayName(target) }),
+      });
+      setTarget(null);
+    } catch (error) {
+      // Unarchive can only 403 on role/school scope, mirroring archive — the
+      // contract codes collapse to the generic failure here.
+      const kind = classifyStudentError(error);
+      showOpsToast({
+        tone: 'error',
+        message: t(kind === 'forbidden' ? 'forbiddenToast' : 'genericToast'),
+      });
+    }
+  };
+
+  return {
+    unarchiveTarget: target,
+    requestUnarchive: setTarget,
+    closeUnarchive: () => setTarget(null),
+    confirmUnarchive,
+    unarchivePending: unarchive.isPending,
   };
 }

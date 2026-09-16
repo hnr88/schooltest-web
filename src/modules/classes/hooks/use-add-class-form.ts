@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { showOpsToast } from '@/modules/ops/actions';
 import { CLASSES_QUERY_KEY } from '@/modules/classes/constants/queries.constants';
 import { useCreateClassMutation } from '@/modules/classes/queries/use-create-class.mutation';
+import type { StrapiErrorEnvelope } from '@/modules/classes/types/hooks.types';
 import {
   createAddClassFormSchema,
   type AddClassFormValues,
@@ -39,6 +40,25 @@ export function useAddClassForm(onClose: () => void) {
           values.teacher_documentId === '' ? [] : [values.teacher_documentId],
       });
     } catch (error) {
+      // D5: the duplicate-name refusal is a FIELD error — the server answers
+      // 400 CLASS_NAME_TAKEN naming `name`, so it surfaces INLINE on the name
+      // input (the edit form's verbatim-server-message pattern) instead of a
+      // generic toast that reads as an outage. Everything else keeps the old
+      // toast contract.
+      const envelope = isAxiosError(error)
+        ? (error.response?.data as StrapiErrorEnvelope | undefined)
+        : undefined;
+      if (
+        isAxiosError(error) &&
+        error.response?.status === 400 &&
+        envelope?.error?.details?.code === 'CLASS_NAME_TAKEN'
+      ) {
+        form.setError('name', {
+          type: 'server',
+          message: envelope.error?.message ?? t('errorToast'),
+        });
+        return;
+      }
       const forbidden = isAxiosError(error) && error.response?.status === 403;
       showOpsToast({ tone: 'error', message: forbidden ? t('forbiddenToast') : t('errorToast') });
       return;

@@ -26,9 +26,14 @@ export async function generateMetadata(): Promise<Metadata> {
 // notification panel: it renders that control from INSIDE itself on both the happy
 // path and the load-error path, so it is never mounted separately here.
 //
+// D8 landmark hygiene: the dashboard shell already provides THE page <main>
+// (SidebarInset renders <main data-slot="sidebar-inset"> in
+// dashboard/layout.tsx), so this surface renders a plain div — a second <main>
+// here was a nested landmark, not a second page body.
+//
 // The notification component name is written in WORDS in the original comment
-// below, not quoted: this row's own gate greps `src` for it and requires the count
-// to be UNCHANGED from HEAD, and a comment naming it reads to `grep` exactly like
+// below, not quoted: this row's own gate greps `src` for it and requires the
+// count to be UNCHANGED from HEAD, and a comment naming it reads to `grep` exactly like
 // a real import. The section heading reuses the translated tabs copy
 // (Settings.tabs.notifications) so no new message keys are needed in any locale.
 export default async function TeachSettingsPage() {
@@ -36,7 +41,7 @@ export default async function TeachSettingsPage() {
   const tTabs = await getTranslations('Settings.tabs');
 
   return (
-    <main
+    <div
       data-surface="staff-settings"
       className={cn(
         PORTAL_SCREEN_CLASS,
@@ -57,6 +62,6 @@ export default async function TeachSettingsPage() {
         </h2>
         <NotificationPreferencesPanel />
       </section>
-    </main>
+    </div>
   );
 }

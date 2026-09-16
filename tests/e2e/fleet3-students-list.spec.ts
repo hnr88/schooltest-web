@@ -105,7 +105,8 @@ test.describe('F3 ops students tab: ?status= param, profile panel, deactivate/re
     // DEACTIVATE via the row menu -> confirm dialog.
     await rowOf(page, 0).locator('[data-directory-row-menu] button').click();
     await page.getByRole('menuitem', { name: 'Deactivate student', exact: true }).click();
-    const confirm = page.getByRole('dialog').filter({ hasText: 'Deactivate' });
+    // The confirm renders as role=alertdialog (OpsConfirmDialog), not dialog.
+    const confirm = page.getByRole('alertdialog').filter({ hasText: 'Deactivate' });
     await expect(confirm).toBeVisible({ timeout: 30_000 });
     await page.screenshot({ path: path.join(CAPTURES, '22-deactivate-confirm.png') });
     console.log('CAPTURE 22');

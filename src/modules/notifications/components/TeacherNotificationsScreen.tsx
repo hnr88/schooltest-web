@@ -107,7 +107,10 @@ function TeacherNotificationsScreen() {
   );
 
   return (
-    <main
+    // D8 landmark hygiene: the dashboard shell owns THE page <main>
+    // (SidebarInset's <main data-slot="sidebar-inset">), so this surface is a
+    // plain div — a second <main> here was a nested landmark, not a page body.
+    <div
       data-surface="teacher-notifications"
       className={cn(
         PORTAL_SCREEN_CLASS,
@@ -147,7 +150,7 @@ function TeacherNotificationsScreen() {
           )}
         />
       </DataPanel>
-    </main>
+    </div>
   );
 }
 

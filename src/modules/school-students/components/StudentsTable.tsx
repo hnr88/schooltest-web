@@ -31,6 +31,7 @@ export interface StudentsTableProps {
   meta?: DirectoryMeta;
   onEdit: (student: SchoolStudent) => void;
   onArchive: (student: SchoolStudent) => void;
+  onUnarchive: (student: SchoolStudent) => void;
 }
 
 // Task 31 — the spec §4 roster table ON the shared directory kit, SERVER mode:
@@ -51,6 +52,7 @@ export function StudentsTable({
   meta,
   onEdit,
   onArchive,
+  onUnarchive,
 }: StudentsTableProps) {
   const t = useTranslations('SchoolStudents');
 
@@ -82,10 +84,14 @@ export function StudentsTable({
     (student: SchoolStudent): readonly DirectoryRowAction<SchoolStudent>[] =>
       studentRowActions(
         student,
-        { edit: t('actions.edit'), archive: t('actions.archive') },
-        { onEdit, onArchive },
+        {
+          edit: t('actions.edit'),
+          archive: t('actions.archive'),
+          unarchive: t('actions.unarchive'),
+        },
+        { onEdit, onArchive, onUnarchive },
       ),
-    [t, onEdit, onArchive],
+    [t, onEdit, onArchive, onUnarchive],
   );
 
   // School Admin Portal design (VIEW 5, :787-800): the row is identity block

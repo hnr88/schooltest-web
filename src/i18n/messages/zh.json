@@ -1774,7 +1774,9 @@
       "world_knowledge": "常识背景",
       "vocab_guess": "词义猜测",
       "orthographic_neighbour": "形近词",
-      "semantic_neighbour": "语义近邻"
+      "semantic_neighbour": "语义近邻",
+      "grammatical_decoy": "语法干扰项",
+      "phonological_neighbour": "音近词"
     },
     "errorPatternsSource": "由诊断导出根据本次测评记录的作答汇总而成。只有当同一干扰项类型在某属性上至少被选中两次时才会出现。这些内容不进入掌握模型，也不进入任何分数。",
     "errorPatternsNoneObserved": "未观察到反复出现的错误模式",
@@ -2916,7 +2918,8 @@
     "actions": {
       "menuLabel": "{name} 的操作",
       "edit": "编辑学生",
-      "archive": "归档学生"
+      "archive": "归档学生",
+      "unarchive": "取消归档学生"
     },
     "archiveDialog": {
       "title": "归档 {name}？",
@@ -2984,6 +2987,7 @@
       "schoolInactiveToast": "您的学校账户未激活，暂时无法添加学生。",
       "forbiddenToast": "您没有修改学生的权限。",
       "genericToast": "操作失败，请重试。",
+      "emailInUseToast": "该邮箱已被使用。",
       "classNoClassesHint": "还没有班级——请先在“班级”中创建，再安排这名学生。"
     },
     "validation": {
@@ -3044,6 +3048,15 @@
         "errorDescription": "请检查网络连接后重试。"
       },
       "metaLine": "第一语言：{language} · 级别：{level} · {class} · ID {id}"
+    },
+    "unarchiveDialog": {
+      "title": "取消归档 {name}？",
+      "description": "取消归档后，学生将立即回到有效名单。其档案和成绩保持不变。",
+      "cancel": "取消",
+      "confirm": "取消归档学生",
+      "successToast": "已取消归档 {name}。学生已恢复为有效状态。",
+      "forbiddenToast": "您没有取消归档学生的权限。",
+      "genericToast": "操作失败，请重试。"
     }
   },
   "Ops": {
@@ -3403,6 +3416,7 @@
       "classHelper": "学生将被加入此班级。CSV 中没有班级列。",
       "templateColumnsLabel": "模板列：",
       "templateDownloadLink": "下载 CSV 模板",
+      "templateError": "无法下载模板，请检查网络连接后重试。",
       "templateRequiredNote": "所有列均为必填，每位学生都需要自己的电子邮箱地址才能加入测试。",
       "progressPending": "正在处理。服务器返回进度后即会显示。",
       "progressPercent": "已处理 {pct}% 的行",

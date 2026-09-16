@@ -9,12 +9,16 @@ import { SchoolStudentEditDialog } from '@/modules/school-students/components/Sc
 import { StudentImportDialog } from '@/modules/school-students/components/StudentImportDialog';
 import { StudentsHeader } from '@/modules/school-students/components/StudentsHeader';
 import { StudentsTable } from '@/modules/school-students/components/StudentsTable';
+import { UnarchiveStudentDialog } from '@/modules/school-students/components/UnarchiveStudentDialog';
 import { ROSTER_COUNT_QUERY } from '@/modules/school-students/constants/queries.constants';
 import {
   rosterQueryFrom,
   useStudentsFilters,
 } from '@/modules/school-students/hooks/use-students-filters';
-import { useStudentArchive } from '@/modules/school-students/hooks/use-student-row-actions';
+import {
+  useStudentArchive,
+  useStudentUnarchive,
+} from '@/modules/school-students/hooks/use-student-row-actions';
 import { useSchoolStudentsQuery } from '@/modules/school-students/queries/use-school-students.query';
 import type { SchoolStudent } from '@/modules/school-students/types/school-students.types';
 
@@ -36,6 +40,7 @@ export function SchoolStudentsScreen() {
   const [editTarget, setEditTarget] = useState<SchoolStudent | null>(null);
   const [importOpen, setImportOpen] = useState(false);
   const archive = useStudentArchive();
+  const unarchive = useStudentUnarchive();
 
   const classesQuery = useSchoolClassesQuery(enabled);
   const classes = classesQuery.data ?? [];
@@ -64,6 +69,7 @@ export function SchoolStudentsScreen() {
         meta={studentsQuery.data?.pagination}
         onEdit={setEditTarget}
         onArchive={archive.requestArchive}
+        onUnarchive={unarchive.requestUnarchive}
       />
       {editTarget ? (
         <SchoolStudentEditDialog
@@ -92,6 +98,17 @@ export function SchoolStudentsScreen() {
           }}
           pending={archive.archivePending}
           onConfirm={() => void archive.confirmArchive()}
+        />
+      ) : null}
+      {unarchive.unarchiveTarget ? (
+        <UnarchiveStudentDialog
+          student={unarchive.unarchiveTarget}
+          open
+          onOpenChange={(open) => {
+            if (!open) unarchive.closeUnarchive();
+          }}
+          pending={unarchive.unarchivePending}
+          onConfirm={() => void unarchive.confirmUnarchive()}
         />
       ) : null}
     </main>

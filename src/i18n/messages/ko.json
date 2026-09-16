@@ -1774,7 +1774,9 @@
       "world_knowledge": "세계 지식",
       "vocab_guess": "어휘 추측",
       "orthographic_neighbour": "철자 유사어",
-      "semantic_neighbour": "의미 유사어"
+      "semantic_neighbour": "의미 유사어",
+      "grammatical_decoy": "문법적 함정",
+      "phonological_neighbour": "발음 유사어"
     },
     "errorPatternsSource": "이번 응시에 기록된 응답으로부터 진단 내보내기가 구성합니다. 동일한 오답지 유형이 한 속성에서 최소 두 문항에 선택된 경우에만 나타납니다. 여기의 내용은 숙달 모형이나 어떤 점수에도 들어가지 않습니다.",
     "errorPatternsNoneObserved": "반복되는 오답 패턴이 관찰되지 않았습니다",
@@ -2926,7 +2928,8 @@
     "actions": {
       "menuLabel": "{name} 작업",
       "edit": "학생 편집",
-      "archive": "학생 보관"
+      "archive": "학생 보관",
+      "unarchive": "학생 보관 취소"
     },
     "archiveDialog": {
       "title": "{name}을(를) 보관하시겠습니까?",
@@ -2994,6 +2997,7 @@
       "schoolInactiveToast": "학교 계정이 활성 상태가 아니어서 지금은 학생을 추가할 수 없습니다.",
       "forbiddenToast": "학생을 변경할 권한이 없습니다.",
       "genericToast": "작업이 실패했습니다. 다시 시도하세요.",
+      "emailInUseToast": "그 이메일은 이미 사용 중입니다.",
       "classNoClassesHint": "아직 학급이 없습니다 — 학급 메뉴에서 먼저 만들어 이 학생을 배치하세요."
     },
     "validation": {
@@ -3054,6 +3058,15 @@
         "errorDescription": "연결 상태를 확인하고 다시 시도하세요."
       },
       "metaLine": "모국어: {language} · 레벨: {level} · {class} · ID {id}"
+    },
+    "unarchiveDialog": {
+      "title": "{name}을(를) 보관 취소하시겠습니까?",
+      "description": "보관 취소하면 즉시 다시 활동 명단으로 돌아갑니다. 기록과 결과는 그대로 유지됩니다.",
+      "cancel": "취소",
+      "confirm": "학생 보관 취소",
+      "successToast": "{name}을(를) 보관 취소했습니다. 다시 활동 중입니다.",
+      "forbiddenToast": "학생 보관을 취소할 권한이 없습니다.",
+      "genericToast": "작업이 실패했습니다. 다시 시도하세요."
     }
   },
   "Ops": {
@@ -3413,6 +3426,7 @@
       "classHelper": "학생은 이 학급에 추가됩니다. CSV에는 학급 열이 없습니다.",
       "templateColumnsLabel": "템플릿 열:",
       "templateDownloadLink": "CSV 템플릿 다운로드",
+      "templateError": "템플릿을 다운로드할 수 없습니다. 연결을 확인하고 다시 시도하세요.",
       "templateRequiredNote": "모든 열은 필수이며, 학생마다 시험에 참여할 고유한 이메일 주소가 필요합니다.",
       "progressPending": "처리 중입니다. 서버가 진행 상황을 보고하면 표시됩니다.",
       "progressPercent": "전체 행의 {pct}% 처리",

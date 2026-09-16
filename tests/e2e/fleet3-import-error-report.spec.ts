@@ -18,6 +18,7 @@ import {
   openImportModal,
   pickClass,
   portalRow,
+  signInAsOps,
   trackRequests,
 } from './fleet3-helpers';
 

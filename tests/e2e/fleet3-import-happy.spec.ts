@@ -25,6 +25,7 @@ import {
   pickClass,
   portalRow,
   schoolDetail,
+  signInAsOps,
   trackRequests,
 } from './fleet3-helpers';
 
@@ -42,8 +43,12 @@ test.describe('F3 import happy path: auto-preview -> ready -> commit -> undo', (
     const schoolId = await liveDemoSchoolId();
     const jwt = await apiJwt(request);
 
-    const alpha = `f3.happy.alpha.${stamp}@import.invalid`;
-    const beta = `f3.happy.beta.${stamp}@import.invalid`;
+    // The preview/commit pipeline normalizes emails to lowercase (the saved
+    // cell shows the normalized form), so the addresses embed a LOWERCASED
+    // stamp for the exact-text cell assertions below.
+    const lstamp = stamp.toLowerCase();
+    const alpha = `f3.happy.alpha.${lstamp}@import.invalid`;
+    const beta = `f3.happy.beta.${lstamp}@import.invalid`;
     const csv = [PORTAL_HEADER, portalRow('F3', `Alpha ${stamp}`, alpha), portalRow('F3', `Beta ${stamp}`, beta)].join('\n');
 
     // Counts BEFORE, straight from the live API.

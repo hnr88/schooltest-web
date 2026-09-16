@@ -1,4 +1,4 @@
-export type StudentErrorKind = 'seatCap' | 'schoolInactive' | 'forbidden' | 'generic';
+export type StudentErrorKind = 'seatCap' | 'schoolInactive' | 'forbidden' | 'generic' | 'emailInUse';
 
 export interface StrapiErrorEnvelope {
   error?: {

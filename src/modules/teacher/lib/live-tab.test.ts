@@ -129,7 +129,7 @@ describe('settings', () => {
 
   test('a never-written column reads as the defaults the server merges onto', () => {
     expect(effectiveSettings(null)).toBe(DEFAULT_SITTING_SETTINGS);
-    expect(settingsOnCount(effectiveSettings(null))).toBe(8);
+    expect(settingsOnCount(effectiveSettings(null))).toBe(9);
   });
 });
 

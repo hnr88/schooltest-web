@@ -24,8 +24,22 @@ import type {
   UseStudentImportOptions,
 } from '@/modules/ops/types/import.types';
 
-/** The contract's own ceiling, checked in the browser AND again on the server. */
+/** The max-bytes ceiling is the contract's own, checked in the browser AND again on the server. */
 const MAX_BYTES = 5 * 1024 * 1024;
+
+/**
+ * Cheap, stable content fingerprint for the auto-preview attempt key: length
+ * plus a djb2 roll over the whole csv. A full re-fires only when the content
+ * (or the class — see the attempt key) actually changed; two different rosters
+ * colliding on length + 32-bit roll is not a realistic operator path.
+ */
+function csvFingerprint(csv: string): string {
+  let hash = 5381;
+  for (let index = 0; index < csv.length; index += 1) {
+    hash = ((hash << 5) + hash + csv.charCodeAt(index)) >>> 0;
+  }
+  return `${csv.length}:${hash.toString(36)}`;
+}
 
 const CSV_TYPES = ['text/csv', 'application/vnd.ms-excel', 'text/plain'];
 
@@ -161,19 +175,31 @@ export function useStudentImport(
     runPreviewRef.current = runPreview;
   });
 
+  // The input-pair key of the last auto-preview attempt (class + csv content).
+  // A ref, not state: bumping it must never re-trigger the effect that reads it.
+  const lastAttemptKeyRef = useRef<string | null>(null);
+
   // ops/26 (`:1220-1225`) — the design validates the moment a file lands, with
   // no separate "Preview" click. A real preview needs the destination class
-  // too (duplicates are judged per class), so this fires once both are set;
-  // `preview !== null` in the guard stops it firing again on its own result.
+  // too (duplicates are judged per class), so this fires once both are set.
+  //
+  // RE-FIRE RULE (fleet-caught: a file change after a FAILED preview used to
+  // leave the card stuck on `failed` forever): the effect fires only when the
+  // input pair — class + csv content — differs from the last ATTEMPTED pair.
+  // An attempt is recorded before the request, so a failure settles silently
+  // (no loop: identical inputs never re-fire), while ANY input change — new
+  // file or different class — produces a fresh key and re-arms automatically.
+  // This replaces the earlier `previewMutation.isError` guard, which raced the
+  // async `reset()` in `invalidate()` on the file path (csv lands a microtask
+  // after the reset, and the effect could observe the stale error state).
   useEffect(() => {
     if (csv.trim() === '' || classDocumentId === null) return;
     if (localReject !== null || preview !== null || previewMutation.isPending) return;
-    // A 400/other preview failure leaves `preview` null and `isPending` false;
-    // without this guard the effect would refire on that transition and retry
-    // the same doomed request forever.
-    if (previewMutation.isError) return;
+    const attemptKey = `${classDocumentId}|${csvFingerprint(csv)}`;
+    if (lastAttemptKeyRef.current === attemptKey) return;
+    lastAttemptKeyRef.current = attemptKey;
     void runPreviewRef.current();
-  }, [csv, classDocumentId, localReject, preview, previewMutation.isPending, previewMutation.isError]);
+  }, [csv, classDocumentId, localReject, preview, previewMutation.isPending]);
 
   /** Shared by the persistent Undo button and the clean-outcome toast action. */
   const performUndo = async (importDocumentId: string) => {

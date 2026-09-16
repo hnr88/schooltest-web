@@ -62,7 +62,7 @@ export const DEFAULT_SITTING_SETTINGS: SittingSettings = {
   allowClose: false,
   warn5: true,
   autoSubmit: true,
-  showScore: false,
+  showScore: true,
   timeLimit: 40,
 };
 

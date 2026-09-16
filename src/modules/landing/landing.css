@@ -147,3 +147,23 @@
 .st-gcard-dark:hover { box-shadow: 0 16px 40px rgba(14,35,80,.28); }
 .st-gcard:hover .st-gcard-link span:first-child { filter: brightness(.95); }
 .st-usp-cta:hover { filter: brightness(1.05); }
+
+/* D6 (2026-09-16) — the masthead row is `flex-wrap: nowrap` inline, so at
+   phone widths the `flex: 0 0 auto` logo + sign-in cluster squeezed the
+   primary nav (`flex: 1 1 auto; min-width: 0`) to ZERO width: fully styled,
+   in the DOM, invisible (tests/e2e/captures/fleet4/22-landing-375px-nav.png).
+   Below 700px the nav wraps onto its own full-width strip under the brand row
+   and scrolls horizontally when the six labels overflow. The !important flags
+   are required: the elements carry the design's layout as INLINE styles. */
+@media (max-width: 700px) {
+  .st-masthead-row { flex-wrap: wrap !important; row-gap: 0 !important; }
+  .st-masthead-nav {
+    order: 3 !important;
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .st-masthead-nav::-webkit-scrollbar { display: none; }
+}

@@ -68,7 +68,20 @@ export function OpsAccountCard() {
           <form
             onSubmit={async (event) => {
               await handleSubmit(event);
-              setOpen(false);
+              // D11: RHF's handleSubmit RESOLVES even when validation failed,
+              // so an unconditional close threw the draft away and the zod
+              // field error was never seen. Close only when NO field error
+              // survived the submit, i.e. exactly the resolver-passed path.
+              // Read through getFieldState, NOT formState.errors: the rendered
+              // formState object is a render snapshot and is stale inside this
+              // async closure, while getFieldState hits the control's live
+              // state.
+              const invalid =
+                Boolean(form.getFieldState('first_name').error) ||
+                Boolean(form.getFieldState('last_name').error);
+              if (!invalid) {
+                setOpen(false);
+              }
             }}
             className="flex flex-col gap-4"
           >

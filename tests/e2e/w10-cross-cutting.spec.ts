@@ -238,7 +238,7 @@ test('CROSS-005..026 school-admin shell journeys', async ({ page }, testInfo) =>
     /\/dashboard\/teach\/settings$/,
   );
   await expect(
-    page.locator('main[data-surface="staff-settings"]'),
+    page.locator('[data-surface="staff-settings"]'),
     'the staff settings page renders (no guard bounce)',
   ).toBeVisible({ timeout: 20_000 });
   // CROSS-019: every RENDERED show/hide password toggle carries a label

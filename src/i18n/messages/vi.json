@@ -1774,7 +1774,9 @@
       "world_knowledge": "Kiến thức thế giới",
       "vocab_guess": "Đoán từ vựng",
       "orthographic_neighbour": "Từ gần chính tả",
-      "semantic_neighbour": "Từ gần ngữ nghĩa"
+      "semantic_neighbour": "Từ gần ngữ nghĩa",
+      "grammatical_decoy": "Bẫy ngữ pháp",
+      "phonological_neighbour": "Từ gần âm"
     },
     "errorPatternsSource": "Do bản xuất chẩn đoán soạn ra từ các phản hồi được ghi trong lượt làm bài này. Một cụm chỉ xuất hiện khi cùng một loại phương án gây nhiễu được chọn ở ít nhất hai câu của một thuộc tính. Không nội dung nào ở đây đi vào mô hình thành thạo hay bất kỳ điểm số nào.",
     "errorPatternsNoneObserved": "Không quan sát thấy mẫu lỗi lặp lại",
@@ -2935,7 +2937,8 @@
     "actions": {
       "menuLabel": "Thao tác cho {name}",
       "edit": "Sửa học sinh",
-      "archive": "Lưu trữ học sinh"
+      "archive": "Lưu trữ học sinh",
+      "unarchive": "Bỏ lưu trữ học sinh"
     },
     "archiveDialog": {
       "title": "Lưu trữ {name}?",
@@ -3003,6 +3006,7 @@
       "schoolInactiveToast": "Tài khoản trường của bạn chưa hoạt động nên hiện chưa thể thêm học sinh.",
       "forbiddenToast": "Bạn không có quyền thay đổi học sinh.",
       "genericToast": "Thao tác không thành công. Hãy thử lại.",
+      "emailInUseToast": "Email đó đã được sử dụng.",
       "classNoClassesHint": "Chưa có lớp nào — hãy tạo lớp trong mục Lớp để xếp học sinh này."
     },
     "validation": {
@@ -3063,6 +3067,15 @@
         "errorDescription": "Vui lòng kiểm tra kết nối và thử lại."
       },
       "metaLine": "Ngôn ngữ đầu tiên: {language} · Cấp độ: {level} · {class} · ID {id}"
+    },
+    "unarchiveDialog": {
+      "title": "Bỏ lưu trữ {name}?",
+      "description": "Bỏ lưu trữ sẽ đưa em quay lại danh sách hoạt động ngay lập tức. Hồ sơ và kết quả vẫn được giữ nguyên.",
+      "cancel": "Huỷ",
+      "confirm": "Bỏ lưu trữ học sinh",
+      "successToast": "Đã bỏ lưu trữ {name}. Em đang hoạt động trở lại.",
+      "forbiddenToast": "Bạn không có quyền bỏ lưu trữ học sinh.",
+      "genericToast": "Thao tác không thành công. Hãy thử lại."
     }
   },
   "Ops": {
@@ -3422,6 +3435,7 @@
       "classHelper": "Học sinh được thêm vào lớp này. Tệp CSV không có cột lớp.",
       "templateColumnsLabel": "Các cột của mẫu:",
       "templateDownloadLink": "Tải mẫu CSV",
+      "templateError": "Không thể tải mẫu xuống. Hãy kiểm tra kết nối và thử lại.",
       "templateRequiredNote": "Tất cả các cột đều bắt buộc và mỗi học sinh cần một địa chỉ email riêng để vào bài kiểm tra.",
       "progressPending": "Đang xử lý. Tiến độ sẽ hiện khi máy chủ báo về.",
       "progressPercent": "Đã xử lý {pct}% số dòng",

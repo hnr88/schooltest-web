@@ -178,9 +178,12 @@ test('non-csv file type: badType card with ZERO preview requests', async ({ page
 
   await expect(panel).toHaveAttribute('data-card', 'badType', { timeout: 30_000 });
   await expect(panel.getByText("isn't a CSV")).toBeVisible();
-  // The CTA is soft-disabled (opacity, still clickable) and its guard refuses
-  // with the form-level message — never a request.
-  await panel.locator('[data-surface="ops-import-cta"]').click();
+  // The CTA is soft-disabled (aria-disabled + opacity, still clickable —
+  // `OpsStudentImport.tsx` keeps the guard in runCta, not a native disabled)
+  // but Playwright's actionability check refuses aria-disabled elements, so
+  // the guard-probing click is forced. It still refuses with the form-level
+  // message — never a request.
+  await panel.locator('[data-surface="ops-import-cta"]').click({ force: true });
   await expect(panel.getByText("This file can't be imported. Choose another file.")).toBeVisible();
   expect(previews.count(), 'client-side type refusal sends NOTHING').toBe(0);
   await page.waitForTimeout(QUIET_MS);
@@ -258,8 +261,10 @@ test('duplicate emails inside one file: create + legible duplicate-row reject', 
   await expect(
     preview.getByText('this file already lists a student with this email', { exact: true }),
   ).toBeVisible();
+  // The summary is ICU-pluralized (en.json previewSummary): count 1 renders
+  // the singular — "1 student will be created … 1 row needs fixing".
   await expect(
-    preview.getByText('1 students will be created, 0 already exist, 1 rows need fixing', {
+    preview.getByText('1 student will be created, 0 already exist, 1 row needs fixing', {
       exact: true,
     }),
   ).toBeVisible();

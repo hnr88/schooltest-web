@@ -14,6 +14,15 @@ export interface ArchiveStudentDialogProps {
   onConfirm: () => void;
 }
 
+// D10 — the archived row's confirm, the mirror of ArchiveStudentDialogProps.
+export interface UnarchiveStudentDialogProps {
+  student: SchoolStudent;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  pending: boolean;
+  onConfirm: () => void;
+}
+
 export interface StudentEaldFieldsProps {
   form: UseFormReturn<SchoolStudentFormValues>;
   showAcaraPhase: boolean;
@@ -36,6 +45,7 @@ export interface StudentsTableProps {
   meta?: DirectoryMeta;
   onEdit: (student: SchoolStudent) => void;
   onArchive: (student: SchoolStudent) => void;
+  onUnarchive: (student: SchoolStudent) => void;
 }
 
 export interface SchoolStudentDetailScreenProps {

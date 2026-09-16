@@ -20,6 +20,7 @@ import {
   pickClass,
   portalRow,
   schoolDetail,
+  signInAsOps,
   trackRequests,
 } from './fleet3-helpers';
 

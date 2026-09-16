@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CircleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -28,36 +28,60 @@ export function SignInForm({ onLocked, returnTo }: SignInFormProps) {
   const { register, handleSubmit, clearErrors, setError, formState: { errors } } =
     useForm<SignInInput>({ resolver: zodResolver(signInSchema), defaultValues: { email: '', password: '' } });
 
-  const onSubmit = handleSubmit((values) => {
-    setFailure(null);
-    clearErrors('password');
-    login.mutate(
-      { identifier: values.email, password: values.password },
-      {
-        onSuccess: () => {
-          toast.success(t('signedIn'));
-          // NIGHT-2 AUTH-018: return the visitor to the page the guard bounced
-          // them from (sanitized in SignInCard — always an in-app path).
-          router.push(returnTo ?? '/dashboard');
-        },
-        onError: (error) => {
-          const nextFailure = classifySignInError(error);
-          if (nextFailure.lockout) {
-            onLocked(nextFailure.lockout);
-            toast.error(t('accountLockedTitle'));
-            return;
-          }
-          setFailure(nextFailure);
-          if (nextFailure.attemptsRemaining !== undefined) {
-            setError('password', { type: 'server', message: 'incorrectPassword' });
-          }
-          toast.error(
-            t(nextFailure.attemptsRemaining !== undefined ? 'loginErrorTitle' : nextFailure.key),
-          );
-        },
+  // FLEETFIX-D7: the login button only visually disables once `login.isPending`
+  // flips — which happens a re-render AFTER the async zod resolver has run — so
+  // a double-click inside that window fired two POST /api/auth/local. This
+  // synchronous ref is checked and set on the raw DOM submit event, before any
+  // await, so exactly one request can ever be in flight. It is released on
+  // every error path (validation failure included) so the button is retryable,
+  // and deliberately held on success: navigation unmounts the form, and
+  // releasing it would reopen the double-fire window during the redirect.
+  const submitInFlightRef = useRef(false);
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    if (submitInFlightRef.current) {
+      event.preventDefault();
+      return;
+    }
+    submitInFlightRef.current = true;
+    handleSubmit(
+      (values) => {
+        setFailure(null);
+        clearErrors('password');
+        login.mutate(
+          { identifier: values.email, password: values.password },
+          {
+            onSuccess: () => {
+              toast.success(t('signedIn'));
+              // NIGHT-2 AUTH-018: return the visitor to the page the guard bounced
+              // them from (sanitized in SignInCard — always an in-app path).
+              router.push(returnTo ?? '/dashboard');
+            },
+            onError: (error) => {
+              submitInFlightRef.current = false;
+              const nextFailure = classifySignInError(error);
+              if (nextFailure.lockout) {
+                onLocked(nextFailure.lockout);
+                toast.error(t('accountLockedTitle'));
+                return;
+              }
+              setFailure(nextFailure);
+              if (nextFailure.attemptsRemaining !== undefined) {
+                setError('password', { type: 'server', message: 'incorrectPassword' });
+              }
+              toast.error(
+                t(nextFailure.attemptsRemaining !== undefined ? 'loginErrorTitle' : nextFailure.key),
+              );
+            },
+          },
+        );
       },
-    );
-  });
+      // Invalid per the schema — the mutation never started, so let the user retry.
+      () => {
+        submitInFlightRef.current = false;
+      },
+    )(event);
+  };
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">

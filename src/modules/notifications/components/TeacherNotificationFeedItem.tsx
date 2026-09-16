@@ -16,6 +16,11 @@ import type { SchoolNotification } from '@/modules/notifications/types/school-no
 // the C-NOT-01 shape - a neutral bell glyph (the school feed exposes no
 // category), `read` instead of readAt, `link` instead of linkUrl. Opening a
 // linked row marks it read, so the dot and the title link share one handler.
+//
+// The root is a DIV, not an <li>: this row is mounted through DirectoryTable's
+// `renderRow`, and the kit's list track (DirectoryList) already wraps each row
+// in its own <li> — an <li> here nested a list item inside a list item and
+// broke hydration on the teacher feed (D8).
 function TeacherNotificationFeedItem({
   notification,
   now,
@@ -40,7 +45,7 @@ function TeacherNotificationFeedItem({
         : format.dateTime(createdAt, { day: 'numeric', month: 'long' });
 
   return (
-    <li
+    <div
       data-slot="school-notification-item"
       data-notification-id={notification.documentId}
       data-read={String(notification.read)}
@@ -89,7 +94,7 @@ function TeacherNotificationFeedItem({
       ) : (
         <span aria-hidden="true" className="mt-1.5 size-2 shrink-0 rounded-full" />
       )}
-    </li>
+    </div>
   );
 }
 

@@ -1774,7 +1774,9 @@
       "world_knowledge": "World knowledge",
       "vocab_guess": "Vocabulary guess",
       "orthographic_neighbour": "Orthographic neighbour",
-      "semantic_neighbour": "Semantic neighbour"
+      "semantic_neighbour": "Semantic neighbour",
+      "grammatical_decoy": "Grammatical decoy",
+      "phonological_neighbour": "Phonological neighbour"
     },
     "errorPatternsSource": "Composed by the diagnostic export from the responses recorded in this sitting. A phrase appears only where the same distractor type was chosen on at least two items of an attribute. Nothing here enters the attribute model or any score.",
     "errorPatternsNoneObserved": "No repeated error pattern was observed",
@@ -2916,7 +2918,8 @@
     "actions": {
       "menuLabel": "Actions for {name}",
       "edit": "Edit student",
-      "archive": "Archive student"
+      "archive": "Archive student",
+      "unarchive": "Unarchive student"
     },
     "archiveDialog": {
       "title": "Archive {name}?",
@@ -2984,6 +2987,7 @@
       "schoolInactiveToast": "Your school account is not active, so students cannot be added right now.",
       "forbiddenToast": "You do not have permission to change students.",
       "genericToast": "That did not work. Try again.",
+      "emailInUseToast": "That email is already in use.",
       "classNoClassesHint": "No classes yet — create one under Classes to place this student."
     },
     "validation": {
@@ -3044,6 +3048,15 @@
         "errorDescription": "Check your connection and try again."
       },
       "metaLine": "First language: {language} · Level: {level} · {class} · ID {id}"
+    },
+    "unarchiveDialog": {
+      "title": "Unarchive {name}?",
+      "description": "Unarchiving puts them back on the active roster straight away. Their record and results stay exactly as they were.",
+      "cancel": "Cancel",
+      "confirm": "Unarchive student",
+      "successToast": "{name} was unarchived. They are active again.",
+      "forbiddenToast": "You do not have permission to unarchive students.",
+      "genericToast": "That did not work. Try again."
     }
   },
   "Ops": {
@@ -3403,6 +3416,7 @@
       "classHelper": "Students are added to this class. The CSV has no class column.",
       "templateColumnsLabel": "Template columns:",
       "templateDownloadLink": "Download the CSV template",
+      "templateError": "The template could not be downloaded. Check your connection and try again.",
       "templateRequiredNote": "Every column is required, and each student needs their own email address to join a test.",
       "progressPending": "Working. Progress appears once the server reports it.",
       "progressPercent": "{pct}% of rows processed",

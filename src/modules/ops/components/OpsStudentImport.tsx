@@ -117,6 +117,15 @@ export function OpsStudentImport({
     </OpsDialogDangerCancel>
   );
 
+  const errorReportButton =
+    // The `row,reason` CSV is only meaningful when the preview actually
+    // rejected rows; both the modal footer and the inline row render it.
+    importer.preview && importer.preview.reject.length > 0 ? (
+      <Button type="button" variant="ghost" onClick={() => void importer.downloadErrorReport()}>
+        {t('errorReportButton')}
+      </Button>
+    ) : null;
+
   const actions = onCancel ? (
     <OpsDialogFooter error={importer.errorMessage}>
       <OpsDialogCancel type="button" onClick={onCancel}>
@@ -124,6 +133,9 @@ export function OpsStudentImport({
       </OpsDialogCancel>
       {importer.card === 'uploading' ? cancelImportButton : null}
       {importer.card === 'uploading' ? null : ctaButton}
+      {/* Fleet-caught (2026-09-16): the modal is the only shipped flow, so the
+          error report must be reachable here, not just in the inline row. */}
+      {importer.card === 'uploading' ? null : errorReportButton}
     </OpsDialogFooter>
   ) : (
     <div className="flex flex-wrap items-center gap-3">
@@ -139,11 +151,7 @@ export function OpsStudentImport({
       ) : (
         ctaButton
       )}
-      {importer.preview && importer.preview.reject.length > 0 ? (
-        <Button type="button" variant="ghost" onClick={() => void importer.downloadErrorReport()}>
-          {t('errorReportButton')}
-        </Button>
-      ) : null}
+      {errorReportButton}
     </div>
   );
 
@@ -227,6 +235,18 @@ export function OpsStudentImport({
                 {t('templateDownloadLink')}
               </button>
             </p>
+            {/* Fleet-caught (2026-09-16): a refused download saved nothing but
+                said nothing either — the failure state was tracked and never
+                rendered. */}
+            {template.failed ? (
+              <p
+                data-surface="ops-import-template-error"
+                role="alert"
+                className="mt-1 font-semibold text-[#B42318]"
+              >
+                {t('templateError')}
+              </p>
+            ) : null}
           </div>
         </>
       )}

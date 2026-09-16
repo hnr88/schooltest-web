@@ -1774,7 +1774,9 @@
       "world_knowledge": "Pengetahuan dunia",
       "vocab_guess": "Teka kata",
       "orthographic_neighbour": "Jiran ortografi",
-      "semantic_neighbour": "Jiran semantik"
+      "semantic_neighbour": "Jiran semantik",
+      "grammatical_decoy": "Umpan tatabahasa",
+      "phonological_neighbour": "Jiran fonologi"
     },
     "errorPatternsSource": "Disusun oleh eksport diagnostik daripada jawapan yang direkodkan dalam sesi ujian ini. Satu frasa muncul hanya apabila jenis pengganggu yang sama dipilih pada sekurang-kurangnya dua item bagi sesuatu atribut. Tiada apa-apa di sini masuk ke dalam model penguasaan atau sebarang skor.",
     "errorPatternsNoneObserved": "Tiada corak kesilapan berulang diperhatikan",
@@ -2926,7 +2928,8 @@
     "actions": {
       "menuLabel": "Tindakan untuk {name}",
       "edit": "Edit murid",
-      "archive": "Arkib murid"
+      "archive": "Arkib murid",
+      "unarchive": "Nyaharkib murid"
     },
     "archiveDialog": {
       "title": "Arkibkan {name}?",
@@ -2994,6 +2997,7 @@
       "schoolInactiveToast": "Akaun sekolah anda tidak aktif, jadi murid tidak dapat ditambah buat masa ini.",
       "forbiddenToast": "Anda tidak mempunyai kebenaran untuk mengubah murid.",
       "genericToast": "Itu tidak berjaya. Cuba lagi.",
+      "emailInUseToast": "E-mel itu telah digunakan.",
       "classNoClassesHint": "Tiada kelas lagi — cipta satu di bawah Kelas untuk menempatkan murid ini."
     },
     "validation": {
@@ -3054,6 +3058,15 @@
         "errorDescription": "Semak sambungan anda dan cuba lagi."
       },
       "metaLine": "Bahasa pertama: {language} · Peringkat: {level} · {class} · ID {id}"
+    },
+    "unarchiveDialog": {
+      "title": "Nyaharkibkan {name}?",
+      "description": "Nyaharkib memulangkan mereka ke senarai aktif serta-merta. Rekod dan keputusan mereka kekal seperti sedia ada.",
+      "cancel": "Batal",
+      "confirm": "Nyaharkib murid",
+      "successToast": "{name} telah dinyaharkib. Mereka kini aktif semula.",
+      "forbiddenToast": "Anda tidak mempunyai kebenaran untuk menyaharkibkan murid.",
+      "genericToast": "Itu tidak berjaya. Cuba lagi."
     }
   },
   "Ops": {
@@ -3413,6 +3426,7 @@
       "classHelper": "Murid ditambah ke kelas ini. CSV tiada lajur kelas.",
       "templateColumnsLabel": "Lajur templat:",
       "templateDownloadLink": "Muat turun templat CSV",
+      "templateError": "Templat tidak dapat dimuat turun. Semak sambungan anda dan cuba lagi.",
       "templateRequiredNote": "Setiap lajur wajib diisi, dan setiap pelajar memerlukan alamat e-mel sendiri untuk menyertai ujian.",
       "progressPending": "Sedang berjalan. Kemajuan muncul sebaik pelayan melaporkannya.",
       "progressPercent": "{pct}% baris telah diproses",

@@ -263,7 +263,9 @@ export async function createOpsFixtureStudents(
           email: `${crypto.randomUUID()}@fixture.schooltest.local`,
           year_level: 7,
           first_language: 'english',
-          status: 'active',
+          // `status` is NOT a create key: the schema calls it `student_status`
+          // and the controller forces it to 'active' server-side, so sending
+          // `status` here is rejected by the strict body validator.
           school: schoolDocumentId,
         },
       },

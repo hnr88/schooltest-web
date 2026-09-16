@@ -10,6 +10,7 @@
 import { expect, test } from '@playwright/test';
 
 import {
+  classify,
   dumpF10Console,
   horizontalOverflow,
   rawKeySlugs,

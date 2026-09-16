@@ -215,9 +215,9 @@ export async function uiSignIn(page: Page, email: string, password: string): Pro
   }
 }
 
-/** Unique F9 stamp for every piece of created data. */
+/** Unique stamp for every piece of created data. F9B = the finisher re-run. */
 export function f9stamp(): string {
-  return `F9-${Date.now()}`;
+  return `F9B-${Date.now()}`;
 }
 
 /** Full wizard-whitelist student payload (C-STUDENT-CREATE) with F9 markers. */
