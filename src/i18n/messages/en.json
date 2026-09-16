@@ -5203,6 +5203,12 @@
       "emptyRoster": "No students on this class roster yet.",
       "pdfTitle": "Download this student's reading report as a PDF",
       "llmTitle": "Download a de-identified Markdown profile for an AI assistant",
+      "noScoreReason": {
+        "no_answers": "No questions were answered, so there is no score.",
+        "too_few_answers": "Not enough questions were answered to work out a score.",
+        "pending": "The score is not ready yet.",
+        "failed": "The score could not be worked out."
+      },
       "export": {
         "popupBlocked": "Allow pop-ups to download the report as a PDF.",
         "opened": "{name}’s reading report opened — save as PDF from the print dialog.",

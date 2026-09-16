@@ -4,6 +4,7 @@ import { growthFromServer } from '@/modules/teacher/lib/v2/growth';
 import { phaseOfResult, phaseRank } from '@/modules/teacher/lib/v2/phase';
 import { toScoredSkill } from '@/modules/teacher/lib/v2/skill-refs';
 import type {
+  StudentNoScoreReason,
   StudentsSort,
   StudentsTabOptions,
   StudentsTabRow,
@@ -31,6 +32,19 @@ const ROW_ORDER: Readonly<Record<StudentsSort, RowOrder>> = {
   phase: (a, b) => phaseRank(b.phase) - phaseRank(a.phase) || byName(a, b),
 };
 
+/**
+ * The result's own state says why it carries no score (the desktop's attempt
+ * reasons, app cc6e6e2): still being scored, scoring failed, or — for a
+ * complete row — how many items were really answered (`items_answered` never
+ * counts not-reached items). A teacher sees held results, so "held" is no reason here.
+ */
+function noScoreReasonOf(result: RosterRow['result'], score: number | null): StudentNoScoreReason | null {
+  if (result === null || score !== null) return null;
+  if (result.status === 'scoring_failed' || result.status === 'manual_scoring') return 'failed';
+  if (result.status !== 'complete') return 'pending';
+  return result.items_answered === 0 ? 'no_answers' : 'too_few_answers';
+}
+
 export function studentsTabRow(row: RosterRow): StudentsTabRow {
   const { result, student } = row;
   const score = result === null ? null : result.overall.domain_score;
@@ -46,6 +60,7 @@ export function studentsTabRow(row: RosterRow): StudentsTabRow {
     phase: phaseOfResult(result),
     hasResult: result !== null,
     isScored: score !== null,
+    noScoreReason: noScoreReasonOf(result, score),
   };
 }
 

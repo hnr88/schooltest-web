@@ -15,6 +15,9 @@ export interface StudentsTabOptions {
   sort?: StudentsSort;
 }
 
+/** Why a row that holds a result has no score — the reasons the desktop results surfaces state. */
+export type StudentNoScoreReason = 'no_answers' | 'too_few_answers' | 'pending' | 'failed';
+
 export interface StudentsTabRow {
   studentDocumentId: string;
   resultDocumentId: string | null;
@@ -27,6 +30,8 @@ export interface StudentsTabRow {
   phase: PhaseView | null;
   hasResult: boolean;
   isScored: boolean;
+  /** Null when scored or when there is no result at all. */
+  noScoreReason: StudentNoScoreReason | null;
 }
 
 export interface StudentsTabView {

@@ -20,9 +20,10 @@ const NAME_CLASS = 'block truncate text-[14.5px] font-semibold';
 const LINK_CLASS =
   "text-[#1A3B8B] outline-none hover:underline after:absolute after:inset-0 after:rounded-[8px] after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-navy-900/30 focus-visible:after:ring-inset";
 
-/** Avatar, name and "{Phase} phase". A scored student's name is the row's link, stretched over the row. */
+/** Avatar, name and "{Phase} phase" — or, for an unscored result, why it has no score. A scored student's name is the row's link, stretched over the row. */
 export function RosterStudentCell({ row, href }: RosterStudentCellsProps & { href: string | null }) {
   const tVm = useTranslations('TeacherPortal.viewModel');
+  const tStudents = useTranslations('TeacherPortal.students');
 
   return (
     <span role="cell" data-slot="student-cell" className={cn(STUDENTS_COLUMN.student, 'flex items-center gap-3')}>
@@ -37,9 +38,13 @@ export function RosterStudentCell({ row, href }: RosterStudentCellsProps & { hre
             {row.name}
           </Link>
         )}
-        {row.phase === null ? null : (
+        {row.phase !== null ? (
           <span className="mt-px block text-[12px] text-[#6B7280]">{tVm(row.phase.subLabelKey)}</span>
-        )}
+        ) : row.noScoreReason !== null ? (
+          <span data-slot="student-no-score-reason" className="mt-px block text-[12px] text-[#6B7280]">
+            {tStudents(`noScoreReason.${row.noScoreReason}`)}
+          </span>
+        ) : null}
       </span>
     </span>
   );

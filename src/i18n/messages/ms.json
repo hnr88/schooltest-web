@@ -5213,6 +5213,12 @@
       "emptyRoster": "Belum ada murid dalam senarai kelas ini.",
       "pdfTitle": "Muat turun laporan bacaan murid ini sebagai PDF",
       "llmTitle": "Muat turun profil Markdown tanpa pengenalan untuk pembantu AI",
+      "noScoreReason": {
+        "no_answers": "Tiada soalan dijawab, jadi tiada skor.",
+        "too_few_answers": "Tidak cukup soalan dijawab untuk mengira skor.",
+        "pending": "Skor belum sedia lagi.",
+        "failed": "Skor tidak dapat dikira."
+      },
       "export": {
         "popupBlocked": "Benarkan tetingkap timbul untuk memuat turun laporan sebagai PDF.",
         "opened": "Laporan bacaan {name} telah dibuka — simpan sebagai PDF daripada dialog cetak.",

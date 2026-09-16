@@ -5222,6 +5222,12 @@
       "emptyRoster": "Danh sách lớp này chưa có học sinh nào.",
       "pdfTitle": "Tải báo cáo đọc của học sinh này dưới dạng PDF",
       "llmTitle": "Tải hồ sơ Markdown đã ẩn danh cho trợ lý AI",
+      "noScoreReason": {
+        "no_answers": "Không có câu hỏi nào được trả lời nên không có điểm.",
+        "too_few_answers": "Chưa trả lời đủ câu hỏi để tính điểm.",
+        "pending": "Điểm chưa sẵn sàng.",
+        "failed": "Không thể tính được điểm."
+      },
       "export": {
         "popupBlocked": "Hãy cho phép cửa sổ bật lên để tải báo cáo dưới dạng PDF.",
         "opened": "Đã mở báo cáo đọc của {name} — lưu thành PDF từ hộp thoại in.",

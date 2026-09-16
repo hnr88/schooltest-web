@@ -79,6 +79,7 @@ describe('studentsTabRows — recorded t2 roster (Reading 8B, 20 students)', () 
       },
       hasResult: true,
       isScored: true,
+      noScoreReason: null,
     });
   });
 
@@ -91,6 +92,19 @@ describe('studentsTabRows — recorded t2 roster (Reading 8B, 20 students)', () 
       weakest: null,
       growth: { kind: 'none' },
     });
+  });
+
+  test('an unscored row states WHY there is no score — the desktop results reasons', () => {
+    // Recorded Lucia: 0 answered. Recorded Nour: 50 answered, under the evidence floor.
+    expect(rowOf('Lucia').noScoreReason).toBe('no_answers');
+    expect(rowOf('Nour').noScoreReason).toBe('too_few_answers');
+    const lucia = t2Row('Lucia');
+    if (lucia.result === null) throw new Error('recorded Lucia has a result');
+    const withStatus = (status: 'scoring' | 'scoring_failed'): RosterRow[] => [
+      { ...lucia, result: { ...lucia.result, status } as typeof lucia.result },
+    ];
+    expect(studentsTabRows(withStatus('scoring')).rows[0].noScoreReason).toBe('pending');
+    expect(studentsTabRows(withStatus('scoring_failed')).rows[0].noScoreReason).toBe('failed');
   });
 
   test('recorded Amara: the weakest subskill can be the vocabulary blend', () => {
@@ -120,6 +134,7 @@ describe('studentsTabRows — recorded t2 roster (Reading 8B, 20 students)', () 
       phase: null,
       weakest: null,
       growth: { kind: 'none' },
+      noScoreReason: null,
     });
   });
 });
