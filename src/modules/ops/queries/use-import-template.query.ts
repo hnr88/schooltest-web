@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { IMPORT_TEMPLATE_FALLBACK_FILENAME } from '@schooltest/ops-contracts';
+import { IMPORT_TEMPLATE_FILENAME } from '@schooltest/ops-contracts';
 
 import { strapi } from '@/lib/axios/strapi';
 import { saveCsvDownload } from '@/modules/school-admin';
@@ -38,9 +38,9 @@ async function fetchImportTemplate(
   );
   return {
     csv: res.data,
-    // The server owns the scope-specific name; the shared fallback only applies
-    // when Content-Disposition is not readable by the browser.
-    filename: attachmentFilename(res.headers['content-disposition']) ?? IMPORT_TEMPLATE_FALLBACK_FILENAME,
+    // The name is the contract's ONE filename; this fallback only applies when
+    // Content-Disposition is not readable by the browser.
+    filename: attachmentFilename(res.headers['content-disposition']) ?? IMPORT_TEMPLATE_FILENAME,
   };
 }
 

@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ImportTemplateOperation = exports.importTemplateResponseSchema = exports.importTemplateQuerySchema = exports.IMPORT_TEMPLATE_FALLBACK_FILENAME = exports.PORTAL_IMPORT_YEAR_LEVEL_MAX = exports.PORTAL_IMPORT_YEAR_LEVEL_MIN = exports.PORTAL_IMPORT_DOB_FORMAT = exports.LEGACY_IMPORT_TEMPLATE_COLUMNS = exports.PORTAL_IMPORT_TEMPLATE_OPTIONAL_COLUMNS = exports.PORTAL_IMPORT_TEMPLATE_COLUMNS = void 0;
+exports.ImportTemplateOperation = exports.importTemplateResponseSchema = exports.importTemplateQuerySchema = exports.IMPORT_TEMPLATE_FILENAME = exports.PORTAL_IMPORT_YEAR_LEVEL_MAX = exports.PORTAL_IMPORT_YEAR_LEVEL_MIN = exports.PORTAL_IMPORT_DOB_FORMAT = exports.LEGACY_IMPORT_TEMPLATE_COLUMNS = exports.PORTAL_IMPORT_TEMPLATE_OPTIONAL_COLUMNS = exports.PORTAL_IMPORT_TEMPLATE_COLUMNS = void 0;
 exports.importTemplateColumns = importTemplateColumns;
 exports.importTemplateSampleRow = importTemplateSampleRow;
-exports.importTemplateFilename = importTemplateFilename;
 /**
  * OPS-056 — C-OPS-PORTAL-046 `GET /api/ops/schools/{documentId}/import-students/template.csv`.
  *
@@ -54,10 +53,13 @@ exports.LEGACY_IMPORT_TEMPLATE_COLUMNS = [
 exports.PORTAL_IMPORT_DOB_FORMAT = 'YYYY-MM-DD';
 exports.PORTAL_IMPORT_YEAR_LEVEL_MIN = 7;
 exports.PORTAL_IMPORT_YEAR_LEVEL_MAX = 12;
-/** Used when the response's Content-Disposition is unreadable (no CORS expose). */
-exports.IMPORT_TEMPLATE_FALLBACK_FILENAME = 'student-import-template.csv';
-const FILENAME_STEM = 'student-import-template';
-const FILENAME_SCOPE_MAX = 48;
+/**
+ * The ONE template filename, for every school, every class and every import:
+ * the download is the same file everywhere, so it carries no scope slug. The
+ * Content-Disposition header always carries exactly this value (it used to be
+ * only the fallback for an unreadable header — that case cannot differ now).
+ */
+exports.IMPORT_TEMPLATE_FILENAME = 'student-import-template.csv';
 /** One example row per vocabulary. Invented people, never a seeded student. */
 const PORTAL_SAMPLE = Object.freeze({
     'given name': 'Sample',
@@ -94,22 +96,6 @@ function importTemplateSampleRow(mode, className) {
     if (className === null || className.trim() === '')
         return null;
     return { ...LEGACY_SAMPLE, class: className };
-}
-/**
- * A safe, scope-specific attachment filename: ASCII, lowercase, no quotes, no
- * path separators, no spaces — so it cannot break the `Content-Disposition`
- * header or escape a download directory. A scope that slugifies to nothing
- * (e.g. a school named only in a non-Latin script) falls back to the stem
- * instead of producing `student-import-template-.csv`.
- */
-function importTemplateFilename(scope) {
-    const slug = (scope ?? '')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .slice(0, FILENAME_SCOPE_MAX)
-        .replace(/-+$/g, '');
-    return slug === '' ? `${FILENAME_STEM}.csv` : `${FILENAME_STEM}-${slug}.csv`;
 }
 /**
  * Query string. Strict: an unknown or misspelt key is a 400, never a silently

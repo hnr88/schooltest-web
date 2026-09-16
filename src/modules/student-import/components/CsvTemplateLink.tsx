@@ -6,9 +6,10 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/modules/design-system';
 import { downloadStudentCsvTemplate } from '@/modules/student-import/lib/student-csv-template';
 
-// Spec §2: "Download CSV template" — the blank header-only file that gives
-// schools the format without guesswork. Built and saved in the browser, so it
-// is a button, never a link to a route that does not exist.
+// Spec §2: "Download CSV template" — the ONE shared template (header plus the
+// contract's sample row), byte-identical to the ops portal's server download.
+// Built and saved in the browser, so it is a button, never a link to a route
+// that does not exist.
 export function CsvTemplateLink() {
   const t = useTranslations('StudentImport');
 

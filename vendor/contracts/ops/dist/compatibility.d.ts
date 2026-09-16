@@ -1,7 +1,7 @@
 /** Responses whose body depends on the version header must Vary on it. */
 export declare const PORTAL_VARY_HEADERS: readonly ["X-Ops-Portal-Version"];
 /** Headers a browser must be allowed to SEND cross-origin. */
-export declare const PORTAL_CORS_ALLOW_HEADERS: readonly ["Content-Type", "Authorization", "X-Ops-Portal-Version", "Idempotency-Key", "If-Match"];
+export declare const PORTAL_CORS_ALLOW_HEADERS: readonly ["Content-Type", "Authorization", "X-Ops-Portal-Version", "Idempotency-Key", "If-Match", "X-School-DocumentId"];
 /** Headers a browser must be allowed to READ cross-origin. */
 export declare const PORTAL_CORS_EXPOSE_HEADERS: readonly ["Content-Disposition", "Retry-After"];
 export type PortalMode = 'legacy' | 'versioned';

@@ -33,7 +33,7 @@ export function ChildrenRowActions({ student }: ChildrenRowActionsProps) {
   const archive = useArchiveStudentMutation();
   const unarchive = useUnarchiveStudentMutation();
 
-  const isArchived = student.status === 'archived';
+  const isArchived = student.student_status === 'archived';
   const name = getStudentDisplayName(student, t('unknownStudent'));
 
   const handleArchive = async () => {

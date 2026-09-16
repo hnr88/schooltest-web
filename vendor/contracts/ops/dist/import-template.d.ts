@@ -36,8 +36,13 @@ export declare const LEGACY_IMPORT_TEMPLATE_COLUMNS: readonly ["first name", "la
 export declare const PORTAL_IMPORT_DOB_FORMAT = "YYYY-MM-DD";
 export declare const PORTAL_IMPORT_YEAR_LEVEL_MIN = 7;
 export declare const PORTAL_IMPORT_YEAR_LEVEL_MAX = 12;
-/** Used when the response's Content-Disposition is unreadable (no CORS expose). */
-export declare const IMPORT_TEMPLATE_FALLBACK_FILENAME = "student-import-template.csv";
+/**
+ * The ONE template filename, for every school, every class and every import:
+ * the download is the same file everywhere, so it carries no scope slug. The
+ * Content-Disposition header always carries exactly this value (it used to be
+ * only the fallback for an unreadable header — that case cannot differ now).
+ */
+export declare const IMPORT_TEMPLATE_FILENAME = "student-import-template.csv";
 /** The columns a request in `mode` must download. */
 export declare function importTemplateColumns(mode: PortalMode): readonly string[];
 /**
@@ -50,14 +55,6 @@ export declare function importTemplateColumns(mode: PortalMode): readonly string
  * own template.
  */
 export declare function importTemplateSampleRow(mode: PortalMode, className: string | null): Readonly<Record<string, string>> | null;
-/**
- * A safe, scope-specific attachment filename: ASCII, lowercase, no quotes, no
- * path separators, no spaces — so it cannot break the `Content-Disposition`
- * header or escape a download directory. A scope that slugifies to nothing
- * (e.g. a school named only in a non-Latin script) falls back to the stem
- * instead of producing `student-import-template-.csv`.
- */
-export declare function importTemplateFilename(scope: string | null | undefined): string;
 /**
  * Query string. Strict: an unknown or misspelt key is a 400, never a silently
  * ignored filter that would hand back a template for the wrong class.

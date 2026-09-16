@@ -14,7 +14,7 @@ export const childProgressStudentSchema = z.strictObject({
   current_year_level: z.string().nullable(),
   target_entry_year: z.string().nullable(),
   target_entry_term: z.string().nullable(),
-  status: z.enum(['active', 'archived', 'enrolled']),
+  student_status: z.enum(['active', 'archived', 'enrolled']),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });

@@ -12,13 +12,13 @@ import { ALL_STATUSES } from '@/modules/dashboard/constants/queries.constants';
 // C-STUDENT-LIST-EXT: the /my/* convention route — the controller forces
 // filters[parent][documentId][$eq]=<caller> server-side, so this always returns
 // only the signed-in parent's own students. By default archived rows are
-// excluded server-side; passing `filters[status][$in]` re-includes them.
+// excluded server-side; passing `filters[student_status][$in]` re-includes them.
 async function fetchStudentsPage(includeArchived: boolean, page = 1): Promise<StudentsResponse> {
   const res = await strapi.get('/api/my/students', {
     params: {
       sort: ['createdAt:desc'],
       pagination: { page, pageSize: 100 },
-      ...(includeArchived ? { filters: { status: { $in: ALL_STATUSES } } } : {}),
+      ...(includeArchived ? { filters: { student_status: { $in: ALL_STATUSES } } } : {}),
     },
   });
   return studentsResponseSchema.parse(res.data);

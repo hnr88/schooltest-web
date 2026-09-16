@@ -96,8 +96,8 @@ export function OpsStudentProfilePanel({ schoolDocumentId, studentDocumentId }: 
             : `${student.latest_result.percentage === null ? '' : `${student.latest_result.percentage}% · `}${formatDate(student.latest_result.completed_at)}`}
         </KeyValueRow>
         <KeyValueRow label={t('studentsStatusLabel')}>
-          <Badge variant={opsStudentStatusTone(student.status)}>
-            {t(opsStudentStatusLabelKey(student.status))}
+          <Badge variant={opsStudentStatusTone(student.student_status)}>
+            {t(opsStudentStatusLabelKey(student.student_status))}
           </Badge>
         </KeyValueRow>
       </KeyValueList>

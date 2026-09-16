@@ -120,7 +120,7 @@ export function StudentsTable({
                   {student.email_fix_requested ? (
                     <StatusPill tone="warning">{t('table.emailFixRequested')}</StatusPill>
                   ) : null}
-                  {student.status === 'archived' ? (
+                  {student.student_status === 'archived' ? (
                     <StatusPill tone="neutral">{t('table.statusArchived')}</StatusPill>
                   ) : null}
                 </span>
@@ -193,7 +193,7 @@ export function StudentsTable({
       regionAttrs={{ 'data-slot': 'school-students-table' }}
       rowAttrs={(student) => ({
         'data-slot': 'school-students-row',
-        'data-student-status': student.status ?? '',
+        'data-student-status': student.student_status ?? '',
       })}
     />
   );

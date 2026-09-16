@@ -691,15 +691,15 @@ export function OpsClassDetail({ classDocumentId, schoolDocumentId }: OpsClassDe
                     {studentLastActivity(student)}
                   </TableCell>
                   <TableCell className="flex-none border-0 p-0 align-middle">
-                    {student.status ? (
+                    {student.student_status ? (
                       <StatusPill
-                        tone={STUDENT_STATUS_TONE[student.status] ?? 'neutral'}
+                        tone={STUDENT_STATUS_TONE[student.student_status] ?? 'neutral'}
                         className="w-24 justify-center px-[13px] py-1.5 text-xs font-semibold"
                       >
-                        {student.status}
+                        {student.student_status}
                       </StatusPill>
                     ) : (
-                      noValueIfMissing(student.status)
+                      noValueIfMissing(student.student_status)
                     )}
                   </TableCell>
                   <TableCell className="flex-none border-0 p-0 align-middle">

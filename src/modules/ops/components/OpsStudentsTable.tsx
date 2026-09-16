@@ -187,10 +187,10 @@ export function OpsStudentsTable({
         // solid `Badge`.
         cell: (row) => (
           <StatusPill
-            tone={STUDENT_STATUS_TONE[row.status]}
+            tone={STUDENT_STATUS_TONE[row.student_status]}
             className={OPS_TAB_STATUS_PILL_CLASS}
           >
-            {t(opsStudentStatusLabelKey(row.status))}
+            {t(opsStudentStatusLabelKey(row.student_status))}
           </StatusPill>
         ),
       },

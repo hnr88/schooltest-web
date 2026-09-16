@@ -38,7 +38,7 @@ export function studentRowActions(
       onSelect: () => handlers.onEdit(student),
     },
   ];
-  if (student.status === 'active') {
+  if (student.student_status === 'active') {
     actions.push({
       label: labels.archive,
       write: true,

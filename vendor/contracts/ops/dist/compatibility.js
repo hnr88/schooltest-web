@@ -35,6 +35,9 @@ exports.PORTAL_CORS_ALLOW_HEADERS = [
     core_1.OPS_PORTAL_VERSION_HEADER,
     'Idempotency-Key',
     'If-Match',
+    // Multi-tenant school switcher: every scoped /api/schools/me/** browser call
+    // carries the active-school header once a school_admin picks a school — CORS
+    // preflight rejects it unless allow-listed (school-admin lists all died).
     'X-School-DocumentId',
 ];
 /** Headers a browser must be allowed to READ cross-origin. */

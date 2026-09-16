@@ -29,7 +29,7 @@ export const studentListRowSchema = studentSchema.extend({
   current_year_level: z.string().nullable(),
   target_entry_year: z.string().nullable(),
   target_entry_term: z.string().nullable(),
-  status: z.string().nullable(),
+  student_status: z.string().nullable(),
 });
 
 const studentsPaginationSchema = z.object({

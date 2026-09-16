@@ -44,9 +44,9 @@ export function StudentSummaryCards({ student }: StudentSummaryCardsProps) {
     {
       label: t('filters.statusLabel'),
       value:
-        student.status === null
+        student.student_status === null
           ? t('table.notSet')
-          : t(student.status === 'archived' ? 'table.statusArchived' : 'table.statusActive'),
+          : t(student.student_status === 'archived' ? 'table.statusArchived' : 'table.statusActive'),
     },
   ];
 

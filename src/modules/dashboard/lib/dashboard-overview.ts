@@ -143,8 +143,8 @@ export function getDashboardOverview(students: StudentListRow[]): DashboardOverv
 
   return {
     totalStudents,
-    activeStudents: students.filter((student) => student.status === 'active').length,
-    enrolledStudents: students.filter((student) => student.status === 'enrolled').length,
+    activeStudents: students.filter((student) => student.student_status === 'active').length,
+    enrolledStudents: students.filter((student) => student.student_status === 'enrolled').length,
     studentsWithEntryPlan,
     studentsMissingEntryPlan: totalStudents - studentsWithEntryPlan,
     entryPlanCompletion:

@@ -58,9 +58,9 @@ export function StudentRecordPanel({ student, onEdit }: StudentRecordPanelProps)
           {t(`table.diagnosticOption.${toDiagnosticStatus(student.diagnostic_status)}`)}
         </KeyValueRow>
         <KeyValueRow label={t('filters.statusLabel')}>
-          {student.status === null
+          {student.student_status === null
             ? t('table.notSet')
-            : t(student.status === 'archived' ? 'table.statusArchived' : 'table.statusActive')}
+            : t(student.student_status === 'archived' ? 'table.statusArchived' : 'table.statusActive')}
         </KeyValueRow>
       </KeyValueList>
     </section>

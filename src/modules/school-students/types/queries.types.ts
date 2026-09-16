@@ -4,7 +4,7 @@ import type { ParsedStudentRow } from '@/modules/student-import';
 
 export interface ArchiveStudentResult {
   documentId: string;
-  status: string;
+  student_status: string;
 }
 
 export interface UpdateStudentInput {

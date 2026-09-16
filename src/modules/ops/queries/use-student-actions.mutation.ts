@@ -33,34 +33,34 @@ export type MoveStudentClassResult = z.infer<typeof moveStudentClassResultSchema
 
 export const deactivateStudentResultSchema = z.strictObject({
   documentId: documentIdSchema,
-  status: z.literal('archived'),
+  student_status: z.literal('archived'),
   seat_released: z.boolean(),
 });
 export type DeactivateStudentResult = z.infer<typeof deactivateStudentResultSchema>;
 
 export const reactivateStudentResultSchema = z.strictObject({
   documentId: documentIdSchema,
-  status: z.literal('active'),
+  student_status: z.literal('active'),
   reactivated: z.boolean(),
 });
 export type ReactivateStudentResult = z.infer<typeof reactivateStudentResultSchema>;
 
 /** The narrow read-back shape the action-kit's `readBack`/`isEligible` need — never the full profile. */
 const studentReadBackSchema = z.object({
-  status: opsStudentStatusSchema,
+  student_status: opsStudentStatusSchema,
   class: z.object({ documentId: documentIdSchema }).nullable(),
 });
 
 async function fetchStudentReadBack(
   schoolDocumentId: string,
   studentDocumentId: string,
-): Promise<{ status: string; classDocumentId: string | null }> {
+): Promise<{ student_status: string; classDocumentId: string | null }> {
   const res = await strapi.get<{ data: unknown }>(
     opsStudentProfilePath(schoolDocumentId, studentDocumentId),
     { opsPortalVersioned: true },
   );
   const parsed = studentReadBackSchema.parse(res.data.data);
-  return { status: parsed.status, classDocumentId: parsed.class?.documentId ?? null };
+  return { student_status: parsed.student_status, classDocumentId: parsed.class?.documentId ?? null };
 }
 
 function studentsListQueryPrefix(schoolDocumentId: string) {
@@ -202,10 +202,10 @@ export function deactivateStudentAction(schoolDocumentId: string): OpsActionDefi
       await deactivateStudent({ schoolDocumentId, studentDocumentId: target.documentId });
     },
     async readBack(target) {
-      return (await fetchStudentReadBack(schoolDocumentId, target.documentId)).status === 'archived';
+      return (await fetchStudentReadBack(schoolDocumentId, target.documentId)).student_status === 'archived';
     },
     async isEligible(target) {
-      return (await fetchStudentReadBack(schoolDocumentId, target.documentId)).status !== 'archived';
+      return (await fetchStudentReadBack(schoolDocumentId, target.documentId)).student_status !== 'archived';
     },
   };
 }
@@ -218,10 +218,10 @@ export function reactivateStudentAction(schoolDocumentId: string): OpsActionDefi
       await reactivateStudent({ schoolDocumentId, studentDocumentId: target.documentId });
     },
     async readBack(target) {
-      return (await fetchStudentReadBack(schoolDocumentId, target.documentId)).status === 'active';
+      return (await fetchStudentReadBack(schoolDocumentId, target.documentId)).student_status === 'active';
     },
     async isEligible(target) {
-      return (await fetchStudentReadBack(schoolDocumentId, target.documentId)).status !== 'active';
+      return (await fetchStudentReadBack(schoolDocumentId, target.documentId)).student_status !== 'active';
     },
   };
 }

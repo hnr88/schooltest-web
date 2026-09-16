@@ -96,8 +96,8 @@ test.describe('OPS-056 import template download', () => {
     expect(request.headers()['x-ops-portal-version']).toBe('1');
     expect(request.headers().authorization).toContain('Bearer ');
 
-    // The file the browser saved is the SERVER's, named by the server.
-    expect(download.suggestedFilename()).toMatch(/^student-import-template.*\.csv$/);
+    // The file the browser saved is the SERVER's — the contract's ONE name.
+    expect(download.suggestedFilename()).toBe('student-import-template.csv');
     const stream = await download.createReadStream();
     const chunks: Buffer[] = [];
     for await (const chunk of stream) chunks.push(chunk as Buffer);

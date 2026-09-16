@@ -20,7 +20,7 @@ async function fetchSchoolStudents(query: SchoolStudentsQuery): Promise<SchoolSt
     params: {
       page: query.page,
       pageSize: query.pageSize ?? SCHOOL_CHILDREN_PAGE_SIZE,
-      ...(query.status !== 'all' ? { status: query.status } : {}),
+      ...(query.student_status !== 'all' ? { student_status: query.student_status } : {}),
       ...(query.classId !== 'all' ? { class: query.classId } : {}),
       ...(query.level !== undefined && query.level !== 'all' ? { level: query.level } : {}),
       ...(query.q !== '' ? { q: query.q } : {}),

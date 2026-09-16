@@ -24,7 +24,7 @@ export function ChildCard({ student }: ChildCardProps) {
   const tWizard = useTranslations('StudentWizard');
   const format = useFormatter();
   const name = getStudentDisplayName(student, t('unknownStudent'));
-  const status = getStatusMeta(student.status);
+  const status = getStatusMeta(student.student_status);
   const meta = getChildCardMeta(student);
   const metrics = getChildCardMetrics(student, {
     formatYear: (year) => tWizard('education.yearOption', { n: year }),
@@ -63,7 +63,7 @@ export function ChildCard({ student }: ChildCardProps) {
             </span>
           ) : null}
         </div>
-        <StatusPill tone={getStatusTone(student.status)} className="shrink-0">
+        <StatusPill tone={getStatusTone(student.student_status)} className="shrink-0">
           {t(status.labelKey)}
         </StatusPill>
         <div className="relative z-10 shrink-0">

@@ -21,7 +21,7 @@ export interface SchoolStudent {
   documentId: string;
   given_name: string | null;
   family_name: string | null;
-  status: string | null;
+  student_status: string | null;
   email_fix_requested: boolean;
   first_language: string | null;
   acara_phase: string | null;
@@ -62,7 +62,7 @@ export interface SchoolStudentsPage {
 // level is optional so those picker callers, which never narrow by phase, keep
 // their existing call shape.
 export interface SchoolStudentsQuery {
-  status: SchoolStudentStatusFilter;
+  student_status: SchoolStudentStatusFilter;
   classId: string;
   q: string;
   page: number;

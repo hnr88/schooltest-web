@@ -34,7 +34,7 @@ export const opsStudentProfileSchema = z.strictObject({
   first_language: z.string().nullable(),
   date_of_birth: z.string().nullable(),
   acara_phase: z.enum(OPS_ACARA_PHASES).nullable(),
-  status: z.enum(OPS_STUDENT_STATUSES),
+  student_status: z.enum(OPS_STUDENT_STATUSES),
   // NO updatedAt: the server's profile projection never carries it, so this
   // strict schema demanding an absent key rejected EVERY real profile and the
   // panel rendered its error state for every student (NIGHT-2 W2 find).

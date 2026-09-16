@@ -13,7 +13,7 @@ import { cat, loadMessages } from './helpers/i18n';
 import { loginAs } from './helpers/roles';
 
 // NIGHT-2 W3 — the school-admin import journey chain (SA-011..SA-018):
-//   SA-011 the template download is the header-only portal CSV
+//   SA-011 the template download is the shared portal CSV (header + sample row)
 //   SA-012 a filled template uploads through the dropzone and previews before commit
 //   SA-013 the paste-a-list intake feeds the same preview (class page + students page)
 //   SA-014 invalid rows land in the per-row reject list; valid rows still preview
@@ -83,7 +83,7 @@ async function classStudentCount(request: APIRequestContext, jwt: string, classI
   return detail.student_count;
 }
 
-test('SA-011 + SA-018: class-page dialog fixes the class and the template download is the header-only portal CSV', async ({
+test('SA-011 + SA-018: class-page dialog fixes the class and the template download is the shared portal CSV', async ({
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -98,14 +98,18 @@ test('SA-011 + SA-018: class-page dialog fixes the class and the template downlo
   await expect(dialog).toContainText(`Every row is added to W3 Template Class ${STAMP}`);
   await expect(dialog.getByLabel(cat(en, 'StudentImport.classLabel'))).toHaveCount(0);
 
-  // SA-011: the template download is built in the browser and is HEADER-ONLY.
+  // SA-011: the template is built in the browser from the contract — the SAME
+  // file the ops portal's server download produces (header + sample row, CRLF).
   const downloadPromise = page.waitForEvent('download');
   await dialog.getByRole('button', { name: cat(en, 'StudentImport.downloadTemplate') }).click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toBe('student-import-template.csv');
   const path = await download.path();
   const content = readFileSync(path!, 'utf8');
-  expect(content).toBe('given name,family name,date of birth,year level,home language\n');
+  expect(content).toBe(
+    'given name,family name,date of birth,year level,home language\r\n' +
+      'Sample,Student,2013-03-04,8,english\r\n',
+  );
   await testInfo.attach('w3-sa011-template.csv', {
     body: Buffer.from(content),
     contentType: 'text/csv',

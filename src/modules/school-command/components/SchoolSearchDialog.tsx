@@ -49,7 +49,7 @@ export function SchoolSearchDialog({
     <OpsDialog open={open} onOpenChange={onOpenChange}>
       <OpsDialogContent
         data-slot="school-search-dialog"
-        className="top-[120px] left-1/2 translate-y-0 -translate-x-1/2 overflow-hidden rounded-[20px] sm:max-w-[560px]"
+        className="top-[120px] left-1/2 translate-y-0 -translate-x-1/2 overflow-hidden rounded-[20px] sm:max-w-3xl"
       >
         <OpsDialogTitle className="sr-only">{t('triggerLabel')}</OpsDialogTitle>
         <OpsDialogDescription className="sr-only">{t('placeholder')}</OpsDialogDescription>

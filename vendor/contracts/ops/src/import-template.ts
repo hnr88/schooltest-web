@@ -55,11 +55,13 @@ export const PORTAL_IMPORT_DOB_FORMAT = 'YYYY-MM-DD';
 export const PORTAL_IMPORT_YEAR_LEVEL_MIN = 7;
 export const PORTAL_IMPORT_YEAR_LEVEL_MAX = 12;
 
-/** Used when the response's Content-Disposition is unreadable (no CORS expose). */
-export const IMPORT_TEMPLATE_FALLBACK_FILENAME = 'student-import-template.csv';
-
-const FILENAME_STEM = 'student-import-template';
-const FILENAME_SCOPE_MAX = 48;
+/**
+ * The ONE template filename, for every school, every class and every import:
+ * the download is the same file everywhere, so it carries no scope slug. The
+ * Content-Disposition header always carries exactly this value (it used to be
+ * only the fallback for an unreadable header — that case cannot differ now).
+ */
+export const IMPORT_TEMPLATE_FILENAME = 'student-import-template.csv';
 
 /** One example row per vocabulary. Invented people, never a seeded student. */
 const PORTAL_SAMPLE: Readonly<Record<string, string>> = Object.freeze({
@@ -101,23 +103,6 @@ export function importTemplateSampleRow(
   if (mode === 'versioned') return PORTAL_SAMPLE;
   if (className === null || className.trim() === '') return null;
   return { ...LEGACY_SAMPLE, class: className };
-}
-
-/**
- * A safe, scope-specific attachment filename: ASCII, lowercase, no quotes, no
- * path separators, no spaces — so it cannot break the `Content-Disposition`
- * header or escape a download directory. A scope that slugifies to nothing
- * (e.g. a school named only in a non-Latin script) falls back to the stem
- * instead of producing `student-import-template-.csv`.
- */
-export function importTemplateFilename(scope: string | null | undefined): string {
-  const slug = (scope ?? '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, FILENAME_SCOPE_MAX)
-    .replace(/-+$/g, '');
-  return slug === '' ? `${FILENAME_STEM}.csv` : `${FILENAME_STEM}-${slug}.csv`;
 }
 
 /**

@@ -1,4 +1,5 @@
 import {
+  IMPORT_TEMPLATE_FILENAME,
   PORTAL_IMPORT_DOB_FORMAT,
   PORTAL_IMPORT_TEMPLATE_COLUMNS,
   PORTAL_IMPORT_TEMPLATE_OPTIONAL_COLUMNS,
@@ -29,7 +30,8 @@ export const STUDENT_IMPORT_ALL_COLUMNS = [
 /** The template download stays the REQUIRED columns only, like the server's. */
 export const STUDENT_IMPORT_HEADER_ROW = STUDENT_IMPORT_COLUMNS.join(',');
 
-export const STUDENT_IMPORT_TEMPLATE_FILENAME = 'student-import-template.csv';
+/** The ONE template filename — the same file as the ops portal's download. */
+export const STUDENT_IMPORT_TEMPLATE_FILENAME = IMPORT_TEMPLATE_FILENAME;
 
 export const STUDENT_IMPORT_FILE_ACCEPT = '.csv,text/csv';
 

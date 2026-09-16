@@ -33,7 +33,7 @@ export const studentDetailSchema = z.object({
   parent_guardian_phone: z.string().nullable(),
   parent_guardian_wechat: z.string().nullable(),
   preferred_contact_channel: z.string().nullable(),
-  status: z.string(),
+  student_status: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
   photo: studentMediaSchema.nullable(),

@@ -77,6 +77,10 @@ export function useStudentImport(
     setErrorMessage(null);
     setUnresolved(false);
     setRequestKey(null);
+    // A failed preview must not auto-retry: clear the mutation's error state
+    // only when the inputs change, so the auto-preview effect below can fire
+    // again for the NEW csv/class without looping on the failed one.
+    previewMutation.reset();
   };
 
   const onCsvChange = (value: string) => {
@@ -164,8 +168,12 @@ export function useStudentImport(
   useEffect(() => {
     if (csv.trim() === '' || classDocumentId === null) return;
     if (localReject !== null || preview !== null || previewMutation.isPending) return;
+    // A 400/other preview failure leaves `preview` null and `isPending` false;
+    // without this guard the effect would refire on that transition and retry
+    // the same doomed request forever.
+    if (previewMutation.isError) return;
     void runPreviewRef.current();
-  }, [csv, classDocumentId, localReject, preview, previewMutation.isPending]);
+  }, [csv, classDocumentId, localReject, preview, previewMutation.isPending, previewMutation.isError]);
 
   /** Shared by the persistent Undo button and the clean-outcome toast action. */
   const performUndo = async (importDocumentId: string) => {

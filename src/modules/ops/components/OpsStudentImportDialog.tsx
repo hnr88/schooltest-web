@@ -52,7 +52,7 @@ export function OpsStudentImportDialog({
 
   return (
     <OpsDialog open={open} onOpenChange={handleOpenChange}>
-      <OpsDialogContent data-slot="ops-student-import-dialog" className="sm:max-w-[560px]">
+      <OpsDialogContent data-slot="ops-student-import-dialog" className="sm:max-w-3xl">
         <OpsDialogHeader
           title={t('title')}
           sub={

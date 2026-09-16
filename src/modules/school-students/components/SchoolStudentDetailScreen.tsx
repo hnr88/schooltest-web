@@ -55,7 +55,7 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
   const language = student === null ? null : toFirstLanguage(student.first_language);
   const level = student === null ? null : toAcaraPhase(student.acara_phase);
   const statusTone =
-    student?.status === 'archived'
+    student?.student_status === 'archived'
       ? STUDENT_STATUS_PILL_TONES.archived
       : STUDENT_STATUS_PILL_TONES.active;
 
@@ -121,13 +121,13 @@ export function SchoolStudentDetailScreen({ documentId }: SchoolStudentDetailScr
                     {heading}
                   </h1>
                   <StudentLevelBadge phase={student.acara_phase} />
-                  {student.status === null ? null : (
+                  {student.student_status === null ? null : (
                     <span
                       className="rounded-full px-[13px] py-1.5 text-xs font-semibold"
                       style={{ color: statusTone.fg, backgroundColor: statusTone.bg }}
                     >
                       {t(
-                        student.status === 'archived'
+                        student.student_status === 'archived'
                           ? 'table.statusArchived'
                           : 'table.statusActive',
                       )}

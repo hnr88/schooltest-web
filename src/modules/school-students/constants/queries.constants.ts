@@ -16,7 +16,7 @@ export const SCHOOL_CHILDREN_PAGE_SIZE = 25;
 // longer one of the school's students. Only meta.pagination.total is used, so
 // the smallest legal page is requested.
 export const ROSTER_COUNT_QUERY: SchoolStudentsQuery = {
-  status: 'active',
+  student_status: 'active',
   classId: 'all',
   q: '',
   page: 1,

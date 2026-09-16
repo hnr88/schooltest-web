@@ -183,7 +183,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
       page: state.params.page,
       pageSize: state.params.pageSize,
       q: state.params.q,
-      status: opsStudentStatusFilterValue(state.params.filters.status),
+      student_status: opsStudentStatusFilterValue(state.params.filters.status),
       class: state.params.filters.class,
       year_level:
         state.params.filters.year_level === undefined
@@ -237,7 +237,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
   };
 
   const rowActions = (row: OpsStudentRow): readonly DirectoryRowAction<OpsStudentRow>[] =>
-    studentRowActions(row.status).map((action) => ({
+    studentRowActions(row.student_status).map((action) => ({
       label: t(action.labelKey),
       write: action.write,
       destructive: action.danger,
@@ -267,7 +267,7 @@ export function OpsStudentsTab({ schoolDocumentId }: OpsStudentsTabProps) {
       write: true,
       destructive: true,
       disabled: locked,
-      eligible: (row) => (row as OpsStudentRow).status !== 'archived',
+      eligible: (row) => (row as OpsStudentRow).student_status !== 'archived',
       skipLabel: (count) => t('studentsBulkDeactivateSkip', { count }),
       onRun: (_rows, targets) => {
         void deactivateRunner.run(targets).then((summary) => {

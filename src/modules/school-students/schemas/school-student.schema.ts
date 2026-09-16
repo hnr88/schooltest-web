@@ -17,7 +17,7 @@ export const schoolStudentSchema = z.object({
   documentId: z.string(),
   given_name: z.string().nullable(),
   family_name: z.string().nullable(),
-  status: z.string().nullable(),
+  student_status: z.string().nullable(),
   email_fix_requested: z.boolean(),
   // Absent and null are the same thing to the roster: only the C-CHD-01 list
   // projection carries the EAL/D pair and the computed diagnostic status (the
