@@ -3522,6 +3522,24 @@
       "forbiddenToast": "Hanya akaun operasi boleh menetapkan pelan.",
       "errorToast": "Kami tidak dapat menukar pelan. Cuba lagi."
     },
+    "seats": {
+      "title": "Tempat",
+      "description": "Tempat pelajar yang dilesenkan kepada sekolah ini. Menambah pelajar, mengaktifkan semula atau mengimport senarai akan ditolak apabila semua tempat telah digunakan.",
+      "meter": "{used} daripada {total} tempat digunakan",
+      "remaining": "{remaining} tempat berbaki",
+      "remainingNone": "Tiada tempat berbaki — sekolah ini tidak boleh menambah pelajar sehingga had dinaikkan.",
+      "label": "Jumlah tempat",
+      "helper": "Had tempat bagi sekolah ini. Tempat yang digunakan dikira secara langsung daripada pelajar aktif; mengarkibkan pelajar membebaskan tempatnya serta-merta.",
+      "belowUsedHelper": "Ini kurang daripada {used} tempat yang sudah digunakan. Pelajar sedia ada kekal, tetapi pelajar baharu tidak boleh ditambah sehingga had dinaikkan.",
+      "save": "Simpan tempat",
+      "saving": "Menyimpan…",
+      "savedToast": "Tempat ditetapkan kepada {total}.",
+      "invalidToast": "Masukkan nombor bulat tempat, 0 atau lebih.",
+      "forbiddenToast": "Hanya akaun ops boleh menetapkan tempat.",
+      "errorToast": "Kami tidak dapat menukar tempat. Cuba lagi.",
+      "loadError": "Kami tidak dapat memuatkan tempat sekolah ini.",
+      "readOnly": "Akaun anda mempunyai akses baca sahaja."
+    },
     "teachers": {
       "title": "Guru",
       "description": "Akaun kakitangan yang dipautkan ke sekolah ini — edit butiran atau buang akaun.",
@@ -5093,6 +5111,11 @@
       "askAi": "Tanya AI",
       "askAiTitle": "Tanya soalan tentang data kelas ini",
       "switcherLabel": "Tukar kelas",
+      "liveCode": {
+        "label": "Kod sertai sesi langsung",
+        "others": "Sesi langsung yang lain",
+        "select": "Tunjukkan kod sertai untuk {test}"
+      },
       "skillsLabel": "Skop kemahiran",
       "skills": {
         "reading": "Membaca",

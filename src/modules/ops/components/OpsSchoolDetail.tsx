@@ -11,6 +11,7 @@ import { OpsEditSchoolDialog } from '@/modules/ops/components/OpsEditSchoolDialo
 import { OpsSchoolCountCards } from '@/modules/ops/components/OpsSchoolCountCards';
 import { OpsSchoolInvitationPanel } from '@/modules/ops/components/OpsSchoolInvitationPanel';
 import { OpsSchoolLifecycleBanner } from '@/modules/ops/components/OpsSchoolLifecycleBanner';
+import { OpsSchoolSeatsPanel } from '@/modules/ops/components/OpsSchoolSeatsPanel';
 import { OpsSchoolSuspendPanel } from '@/modules/ops/components/OpsSchoolSuspendPanel';
 import { OpsSchoolTables } from '@/modules/ops/components/OpsSchoolTables';
 import {
@@ -289,6 +290,10 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
         >
           <OpsSchoolInvitationPanel documentId={documentId} enabled={hydrated && Boolean(token)} />
         </section>
+        {/* Seats are the gate on the whole roster — a school on zero seats
+            cannot take its first student — so the assignment surface lives on
+            the school's own page, next to the invitation it arrives with. */}
+        <OpsSchoolSeatsPanel documentId={documentId} enabled={hydrated && Boolean(token)} />
       </div>
       <OpsSchoolCountCards school={detail} />
       <OpsSchoolTables schoolDocumentId={documentId} school={detail} />

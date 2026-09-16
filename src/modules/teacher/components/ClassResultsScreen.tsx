@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, Button, Tabs } from '@/modules/design-system';
 import { useRecordCrumb } from '@/modules/shell';
 import { ClassAskAiDrawer } from '@/modules/teacher/components/ClassAskAiDrawer';
+import { ClassLiveCodeBar } from '@/modules/teacher/components/ClassLiveCodeBar';
 import { ClassReportsDialog } from '@/modules/teacher/components/ClassReportsDialog';
 import { ClassResultsHeader } from '@/modules/teacher/components/ClassResultsHeader';
 import { ClassResultsTabPanels } from '@/modules/teacher/components/ClassResultsTabPanels';
@@ -99,6 +100,15 @@ function ClassResultsScreen({ classDocumentId }: ClassResultsScreenProps) {
           className="gap-5"
         >
           <div data-slot="class-detail-sticky" className={CLASS_DETAIL_STICKY_CLASS}>
+            {/* The join code of whatever this class has live, inside the block that
+                is already pinned to the scroll column — so it is on screen and
+                copyable on every tab, not only on Live sessions. It draws nothing
+                when no sitting is open. */}
+            <ClassLiveCodeBar
+              classDocumentId={classDocumentId}
+              sessionId={detail.session}
+              onSelectSitting={detail.setSession}
+            />
             <ClassResultsHeader classCard={classCard} classes={classes} onSwitchClass={detail.switchClass} />
             <SkillTabs value={detail.skill} onValueChange={detail.setSkill} />
             {reading ? <ClassResultsTabs /> : null}

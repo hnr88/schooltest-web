@@ -3512,6 +3512,24 @@
       "forbiddenToast": "Only an ops account can assign a plan.",
       "errorToast": "We could not change the plan. Try again."
     },
+    "seats": {
+      "title": "Seats",
+      "description": "Student seats licensed to this school. Adding a student, reactivating one or importing a roster is refused once every seat is used.",
+      "meter": "{used} of {total} seats used",
+      "remaining": "{remaining} seats remaining",
+      "remainingNone": "No seats remaining — this school cannot add another student until you raise the cap.",
+      "label": "Total seats",
+      "helper": "The seat cap for this school. Seats in use are counted live from active students; archiving a student frees its seat immediately.",
+      "belowUsedHelper": "This is below the {used} seats already in use. Existing students keep their places, but no new student can be added until the cap is raised.",
+      "save": "Save seats",
+      "saving": "Saving…",
+      "savedToast": "Seats set to {total}.",
+      "invalidToast": "Enter a whole number of seats, 0 or more.",
+      "forbiddenToast": "Only an ops account can assign seats.",
+      "errorToast": "We could not change the seats. Try again.",
+      "loadError": "We could not load this school's seats.",
+      "readOnly": "Your account has read-only access."
+    },
     "teachers": {
       "title": "Teachers",
       "description": "The staff accounts linked to this school — edit details or remove an account.",
@@ -5083,6 +5101,11 @@
       "askAi": "Ask AI",
       "askAiTitle": "Ask a question about this class's data",
       "switcherLabel": "Switch class",
+      "liveCode": {
+        "label": "Live sitting join code",
+        "others": "Other live sittings",
+        "select": "Show the join code for {test}"
+      },
       "skillsLabel": "Skill scope",
       "skills": {
         "reading": "Reading",

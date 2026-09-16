@@ -2,6 +2,7 @@ export { TestSessionsScreen } from './components/TestSessionsScreen';
 export { ResultsScreen } from './components/ResultsScreen';
 export { ClassResultsScreen } from './components/ClassResultsScreen';
 export { ClassResultsTabs } from './components/ClassResultsTabs';
+export { ClassLiveCodeBar } from './components/ClassLiveCodeBar';
 export { ExitPredictionsPanel } from './components/ExitPredictionsPanel';
 export { TeachingInsightsPanel } from './components/TeachingInsightsPanel';
 export { StudentsTabPanel } from './components/StudentsTabPanel';
@@ -147,6 +148,9 @@ export type {
   ClassResultsHeaderProps,
   ComingSoonPanelProps,
   ClassResultsScreenProps,
+  ClassLiveCodeBarProps,
+  ClassLiveCodeView,
+  ClassLiveCodesState,
 } from './types/results-shell.types';
 export type {
   StudentsTabPanelProps,

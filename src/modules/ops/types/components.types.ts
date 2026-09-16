@@ -30,6 +30,11 @@ export interface OpsSchoolInvitationPanelProps {
   enabled: boolean;
 }
 
+export interface OpsSchoolSeatsPanelProps {
+  documentId: string;
+  enabled: boolean;
+}
+
 export interface OpsSchoolPlanPanelProps {
   documentId: string;
   plan: SchoolPlan | null;

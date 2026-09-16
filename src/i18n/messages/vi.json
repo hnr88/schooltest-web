@@ -3531,6 +3531,24 @@
       "forbiddenToast": "Chỉ tài khoản vận hành mới gán được gói.",
       "errorToast": "Không đổi được gói. Vui lòng thử lại."
     },
+    "seats": {
+      "title": "Chỗ ngồi",
+      "description": "Số chỗ học sinh được cấp phép cho trường này. Khi dùng hết chỗ, việc thêm học sinh, kích hoạt lại hoặc nhập danh sách sẽ bị từ chối.",
+      "meter": "Đã dùng {used} trên {total} chỗ",
+      "remaining": "Còn lại {remaining} chỗ",
+      "remainingNone": "Không còn chỗ — trường này không thể thêm học sinh cho đến khi bạn nâng giới hạn.",
+      "label": "Tổng số chỗ",
+      "helper": "Giới hạn chỗ của trường này. Số chỗ đang dùng được đếm trực tiếp từ học sinh đang hoạt động; lưu trữ một học sinh sẽ giải phóng chỗ ngay lập tức.",
+      "belowUsedHelper": "Giá trị này thấp hơn {used} chỗ đang được dùng. Học sinh hiện tại vẫn giữ chỗ, nhưng không thể thêm học sinh mới cho đến khi nâng giới hạn.",
+      "save": "Lưu số chỗ",
+      "saving": "Đang lưu…",
+      "savedToast": "Đã đặt số chỗ thành {total}.",
+      "invalidToast": "Nhập một số nguyên chỗ, từ 0 trở lên.",
+      "forbiddenToast": "Chỉ tài khoản vận hành mới có thể cấp chỗ.",
+      "errorToast": "Chúng tôi không thể thay đổi số chỗ. Vui lòng thử lại.",
+      "loadError": "Chúng tôi không tải được số chỗ của trường này.",
+      "readOnly": "Tài khoản của bạn chỉ có quyền đọc."
+    },
     "teachers": {
       "title": "Giáo viên",
       "description": "Các tài khoản nhân viên được liên kết với trường này — chỉnh sửa thông tin hoặc xóa tài khoản.",
@@ -5102,6 +5120,11 @@
       "askAi": "Hỏi AI",
       "askAiTitle": "Đặt câu hỏi về dữ liệu của lớp này",
       "switcherLabel": "Chuyển lớp",
+      "liveCode": {
+        "label": "Mã tham gia của ca thi đang diễn ra",
+        "others": "Các ca thi khác đang diễn ra",
+        "select": "Hiện mã tham gia cho {test}"
+      },
       "skillsLabel": "Phạm vi kỹ năng",
       "skills": {
         "reading": "Đọc",

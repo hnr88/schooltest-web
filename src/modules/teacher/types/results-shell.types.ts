@@ -58,14 +58,41 @@ export interface ClassDetailParams {
   session: string | null;
 }
 
-/** One tab or skill change; the other URL params ride along untouched. */
-export type ClassDetailPatch = Partial<Pick<ClassDetailParams, 'tab' | 'skill'>>;
+/** One tab, skill or sitting change; the other URL params ride along untouched. */
+export type ClassDetailPatch = Partial<Pick<ClassDetailParams, 'tab' | 'skill' | 'session'>>;
 
 export interface ClassDetailParamsState extends ClassDetailParams {
   setTab: (next: ResultsTabValue) => void;
   setSkill: (next: SkillScopeValue) => void;
+  /** The sitting the detail is pointed at (`?session=`); null drops the param. */
+  setSession: (next: string | null) => void;
   /** Opens another of the teacher's classes on the same tab and skill. */
   switchClass: (classDocumentId: string) => void;
+}
+
+/** One live sitting as the sticky code bar draws it. */
+export interface ClassLiveCodeView {
+  sittingId: string;
+  /** The served join code; null only while the server has not issued one. */
+  code: string | null;
+  testLabel: string | null;
+}
+
+/** The code bar's read: every live sitting of the class, and the one it shows large. */
+export interface ClassLiveCodesState {
+  sittings: readonly ClassLiveCodeView[];
+  active: ClassLiveCodeView | null;
+}
+
+/**
+ * The join code pinned over every tab of the class detail. `sessionId` is
+ * `?session=`; `onSelectSitting` writes it, which is how a class with more than
+ * one live sitting picks the code the bar shows.
+ */
+export interface ClassLiveCodeBarProps {
+  classDocumentId: string;
+  sessionId: string | null;
+  onSelectSitting: (sittingDocumentId: string) => void;
 }
 
 /**

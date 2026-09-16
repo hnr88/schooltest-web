@@ -3512,6 +3512,24 @@
       "forbiddenToast": "只有运维账户才能分配方案。",
       "errorToast": "方案更改失败，请重试。"
     },
+    "seats": {
+      "title": "席位",
+      "description": "授权给该学校的学生席位。席位用尽后，添加学生、重新启用学生或导入名册都会被拒绝。",
+      "meter": "已使用 {total} 个席位中的 {used} 个",
+      "remaining": "剩余 {remaining} 个席位",
+      "remainingNone": "没有剩余席位——在提高上限之前，该学校无法再添加学生。",
+      "label": "席位总数",
+      "helper": "该学校的席位上限。已用席位根据在读学生实时统计；归档学生会立即释放其席位。",
+      "belowUsedHelper": "该值低于已使用的 {used} 个席位。现有学生保留席位，但在提高上限之前无法添加新学生。",
+      "save": "保存席位",
+      "saving": "保存中…",
+      "savedToast": "席位已设为 {total}。",
+      "invalidToast": "请输入 0 或以上的整数席位数。",
+      "forbiddenToast": "只有运营账号才能分配席位。",
+      "errorToast": "我们无法修改席位。请重试。",
+      "loadError": "我们无法加载该学校的席位信息。",
+      "readOnly": "您的账号为只读权限。"
+    },
     "teachers": {
       "title": "教师",
       "description": "关联到本校的教职工账号——可编辑详情或移除账号。",
@@ -5083,6 +5101,11 @@
       "askAi": "问 AI",
       "askAiTitle": "就本班数据提问",
       "switcherLabel": "切换班级",
+      "liveCode": {
+        "label": "进行中考试的加入码",
+        "others": "其他进行中的考试",
+        "select": "显示 {test} 的加入码"
+      },
       "skillsLabel": "技能范围",
       "skills": {
         "reading": "阅读",

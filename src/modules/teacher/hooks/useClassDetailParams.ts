@@ -33,6 +33,7 @@ export function useClassDetailParams(): ClassDetailParamsState {
     ...params,
     setTab: (tab) => replaceQuery({ tab }),
     setSkill: (skill) => replaceQuery({ skill }),
+    setSession: (session) => replaceQuery({ session }),
     switchClass: (classDocumentId) => router.push(switchClassHref(classDocumentId, params)),
   };
 }

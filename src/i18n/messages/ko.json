@@ -3522,6 +3522,24 @@
       "forbiddenToast": "플랜은 운영 계정만 지정할 수 있습니다.",
       "errorToast": "플랜을 변경하지 못했습니다. 다시 시도하세요."
     },
+    "seats": {
+      "title": "좌석",
+      "description": "이 학교에 부여된 학생 좌석입니다. 모든 좌석이 사용되면 학생 추가, 재활성화, 명단 가져오기가 거부됩니다.",
+      "meter": "{total}석 중 {used}석 사용 중",
+      "remaining": "{remaining}석 남음",
+      "remainingNone": "남은 좌석이 없습니다 — 상한을 늘려야 학생을 추가할 수 있습니다.",
+      "label": "총 좌석 수",
+      "helper": "이 학교의 좌석 상한입니다. 사용 중인 좌석은 활성 학생 수로 실시간 계산되며, 학생을 보관 처리하면 좌석이 즉시 반환됩니다.",
+      "belowUsedHelper": "이미 사용 중인 {used}석보다 적습니다. 기존 학생은 그대로 유지되지만, 상한을 올리기 전에는 새 학생을 추가할 수 없습니다.",
+      "save": "좌석 저장",
+      "saving": "저장 중…",
+      "savedToast": "좌석을 {total}석으로 설정했습니다.",
+      "invalidToast": "0 이상의 정수를 입력하세요.",
+      "forbiddenToast": "운영 계정만 좌석을 배정할 수 있습니다.",
+      "errorToast": "좌석을 변경하지 못했습니다. 다시 시도하세요.",
+      "loadError": "이 학교의 좌석 정보를 불러오지 못했습니다.",
+      "readOnly": "귀하의 계정은 읽기 전용입니다."
+    },
     "teachers": {
       "title": "교사",
       "description": "이 학교에 연결된 교직원 계정입니다 — 세부 정보를 편집하거나 계정을 제거할 수 있습니다.",
@@ -5093,6 +5111,11 @@
       "askAi": "AI에게 묻기",
       "askAiTitle": "이 학급의 데이터에 대해 질문하기",
       "switcherLabel": "반 전환",
+      "liveCode": {
+        "label": "진행 중인 시험의 참가 코드",
+        "others": "진행 중인 다른 시험",
+        "select": "{test}의 참가 코드 보기"
+      },
       "skillsLabel": "기능 범위",
       "skills": {
         "reading": "읽기",

@@ -87,13 +87,18 @@ function setOrDrop(params: URLSearchParams, key: string, value: string, fallback
 }
 
 /**
- * The query string after one tab or skill change. Every other param rides along
- * (`session`, the Students table's own state); a default value drops out.
+ * The query string after one tab, skill or sitting change. Every other param
+ * rides along (the Students table's own state); a default value drops out, and
+ * a null sitting drops `session` rather than writing an empty one.
  */
 export function withClassDetailParam(params: SearchParamsLike, patch: ClassDetailPatch): string {
   const next = new URLSearchParams(params.toString());
   if (patch.tab !== undefined) setOrDrop(next, 'tab', patch.tab, DEFAULT_RESULTS_TAB);
   if (patch.skill !== undefined) setOrDrop(next, 'skill', patch.skill, DEFAULT_SKILL_SCOPE);
+  if (patch.session !== undefined) {
+    if (patch.session === null) next.delete('session');
+    else next.set('session', patch.session);
+  }
   return next.toString();
 }
 
