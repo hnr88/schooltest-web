@@ -5595,6 +5595,7 @@
         "pause": "Jeda ujian",
         "resume": "Sambung ujian",
         "start": "Mula ujian",
+        "startedToast": "Ujian bermula. {count, plural, =0 {Belum ada murid menunggu — mereka terus masuk sebaik sahaja menyertai.} other {# murid telah dimasukkan ke soalan 1.}}",
         "extend": "+{minutes} min",
         "closeConfirm": {
           "bodyNone": "Semua orang telah menghantar atau diambil kira, jadi menutup {code} hanya menghalang kod itu digunakan lagi. Tindakan ini tidak boleh dibuat asal.",

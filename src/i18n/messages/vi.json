@@ -5604,6 +5604,7 @@
         "pause": "Tạm dừng bài kiểm tra",
         "resume": "Tiếp tục bài kiểm tra",
         "start": "Bắt đầu bài kiểm tra",
+        "startedToast": "Đã bắt đầu bài kiểm tra. {count, plural, =0 {Chưa có học sinh nào chờ — các em sẽ vào thẳng khi tham gia.} other {# học sinh đã được đưa vào câu 1.}}",
         "extend": "+{minutes} phút",
         "closeConfirm": {
           "bodyNone": "Mọi người đã nộp hoặc đã được xử lý, nên đóng {code} chỉ khiến mã này không dùng được nữa. Không thể hoàn tác thao tác này.",

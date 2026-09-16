@@ -140,3 +140,42 @@ export const sittingStudentControlStateSchema = z.strictObject({
   result_document_id: documentIdSchema.nullable(),
 });
 export type SittingStudentControlState = z.infer<typeof sittingStudentControlStateSchema>;
+
+/**
+ * C-SITTING-START answers a BARE `{ sitting }` — NOT the `{ data }` envelope
+ * pause / resume / extend answer with. The two halves are written by different
+ * controllers: schooltest-api `src/api/sitting/controllers/code.ts:137`
+ * (`startSitting`) assigns the lifecycle body to `ctx.body` unwrapped, while
+ * `src/api/sitting/controllers/controls.ts:35` wraps every room control through
+ * `answer()` (`ctx.body = { data }`). Reading start's reply as `{ data }` made a
+ * release that the server HAD performed report failure to the teacher.
+ */
+export const sittingStartStateSchema = z.object({
+  sitting: z.object({
+    document_id: documentIdSchema,
+    code: z.string().nullable(),
+    status: sittingStatusSchema,
+    phase: z.literal('running'),
+    started_at: z.iso.datetime(),
+  }),
+});
+export type SittingStartState = z.infer<typeof sittingStartStateSchema>['sitting'];
+
+/** The `{ data }` envelope the pause / resume / extend controls answer with. */
+const dataEnvelopeSchema = z.object({ data: z.unknown() });
+
+/** What a settled room control produced: a started sitting, or the running room. */
+export type RoomControlResult =
+  | { action: 'start'; start: SittingStartState }
+  | { action: 'room'; room: SittingRoomState };
+
+/** Parse one room control's reply under the envelope THAT endpoint actually answers with. */
+export function parseRoomControlResponse(
+  action: RoomControlRequest['action'],
+  body: unknown,
+): RoomControlResult {
+  if (action === 'start') {
+    return { action: 'start', start: sittingStartStateSchema.parse(body).sitting };
+  }
+  return { action: 'room', room: sittingRoomStateSchema.parse(dataEnvelopeSchema.parse(body).data) };
+}

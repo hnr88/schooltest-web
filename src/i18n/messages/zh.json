@@ -5585,6 +5585,7 @@
         "pause": "暂停考试",
         "resume": "继续考试",
         "start": "开始测试",
+        "startedToast": "测试已开始。{count, plural, =0 {目前还没有学生等待，学生加入后将直接进入。} other {# 名学生已进入第 1 题。}}",
         "extend": "+{minutes} 分钟",
         "closeConfirm": {
           "bodyNone": "所有人都已提交或已处理，因此关闭 {code} 只会让这个加入码不能再使用。此操作无法撤销。",

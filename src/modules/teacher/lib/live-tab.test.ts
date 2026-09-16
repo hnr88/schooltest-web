@@ -22,6 +22,7 @@ import {
   teacherTestSessionSchema,
   testSessionMonitorResponseSchema,
 } from '@/modules/teacher/schemas/teacher-session.schema';
+import { parseRoomControlResponse } from '@/modules/test-day';
 
 // Every input is a response recorded from the live API as t2 (`_source` in the
 // fixture); edge cases are derived from a recorded response, never invented.
@@ -204,5 +205,68 @@ describe('labels', () => {
   test('clock and day-month in the given zone', () => {
     expect(clockLabel('2026-09-11T20:24:52.989Z', 'en', 'UTC')).toBe('20:24');
     expect(dayMonthLabel('2026-09-11T20:24:52.838Z', 'en', 'UTC')).toBe('11 Sep');
+  });
+});
+
+// The two envelopes the room control endpoints answer with, transcribed from the
+// API source (the t2 probe recorded refusals but no control 200 body):
+//  - start  — schooltest-api src/api/sitting/services/lifecycle.ts:391-399 returns
+//    `{ sitting: {...} }`, assigned to `ctx.body` UNWRAPPED by
+//    src/api/sitting/controllers/code.ts:137-143 (`startSitting`).
+//  - pause / resume / extend — src/api/sitting/controllers/controls.ts:35-38
+//    (`answer`) wraps every one of them in `{ data }`.
+// Reading start's reply as `{ data }` is what made a release the server HAD
+// performed report failure to the teacher.
+const START_BODY = {
+  sitting: {
+    document_id: 'sit_8b_reading',
+    code: '410475',
+    status: 'open',
+    phase: 'running',
+    started_at: '2026-09-11T20:24:52.838Z',
+  },
+};
+
+const ROOM_BODY = {
+  data: {
+    sitting_document_id: 'sit_8b_reading',
+    phase: 'running',
+    paused: true,
+    paused_at: '2026-09-11T20:24:52.989Z',
+    extra_seconds: 300,
+    extensions: 1,
+    pause_credit_seconds: 0,
+  },
+};
+
+describe('parseRoomControlResponse', () => {
+  test('start reads the BARE { sitting } envelope C-SITTING-START answers with', () => {
+    expect(parseRoomControlResponse('start', START_BODY)).toEqual({
+      action: 'start',
+      start: {
+        document_id: 'sit_8b_reading',
+        code: '410475',
+        status: 'open',
+        phase: 'running',
+        started_at: '2026-09-11T20:24:52.838Z',
+      },
+    });
+  });
+
+  test('start does NOT read the { data } envelope — the regression that broke the release', () => {
+    expect(() => parseRoomControlResponse('start', { data: START_BODY.sitting })).toThrow();
+  });
+
+  test('pause, resume and extend keep reading the { data } envelope', () => {
+    for (const action of ['pause', 'resume', 'extend'] as const) {
+      expect(parseRoomControlResponse(action, ROOM_BODY)).toEqual({
+        action: 'room',
+        room: ROOM_BODY.data,
+      });
+    }
+  });
+
+  test('a room control answered with start’s bare body is refused, not half-read', () => {
+    expect(() => parseRoomControlResponse('pause', START_BODY)).toThrow();
   });
 });

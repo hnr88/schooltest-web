@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { showOpsToast } from '@/modules/ops/actions';
 import { CONTROL_FAILURE_KEY } from '@/modules/teacher/constants/live-tab.constants';
 import { controlFailure, hasPausable, roomState } from '@/modules/teacher/lib/live-tab';
-import { useRoomControlMutation } from '@/modules/test-day';
+import { useRoomControlMutation, type RoomControlResult } from '@/modules/test-day';
 import type { RoomConfirm, RoomControlsState } from '@/modules/teacher/types/live-tab.types';
 import type { TestSessionMonitorResponse } from '@/modules/teacher/types/teacher-session.types';
 
@@ -23,12 +23,23 @@ export function useRoomControls(
   monitor: TestSessionMonitorResponse | null,
 ): RoomControlsState {
   const t = useTranslations('TeacherPortal.live.room.errors');
+  const tRoom = useTranslations('TeacherPortal.live.room');
   const control = useRoomControlMutation();
   const [confirm, setConfirm] = useState<RoomConfirm | null>(null);
   const room = monitor === null ? null : roomState(monitor.sitting);
+  /** The lobby the release admits, counted exactly as the lobby meta line counts it. */
+  const waiting = monitor === null ? 0 : monitor.summary.joined + monitor.summary.stalled;
 
   const settle = {
-    onSuccess: () => setConfirm(null),
+    onSuccess: (result: RoomControlResult) => {
+      setConfirm(null);
+      // Start is the one control whose effect lands off-screen, on the students'
+      // devices, so it says so out loud: pause/resume/extend are already legible
+      // from the room cell itself.
+      if (result.action === 'start') {
+        showOpsToast({ tone: 'ok', message: tRoom('startedToast', { count: waiting }) });
+      }
+    },
     onError: (error: unknown) => {
       setConfirm(null);
       showOpsToast({ tone: 'error', message: t(CONTROL_FAILURE_KEY[controlFailure(error)]) });

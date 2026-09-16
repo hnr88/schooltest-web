@@ -69,7 +69,10 @@ async function freeProofStudent(request: APIRequestContext, jwt: string): Promis
 }
 
 /** Create the lobby (start:false) and sign the proof student into it, as the seed does. */
-async function createLobby(request: APIRequestContext, jwt: string): Promise<string> {
+async function createLobby(
+  request: APIRequestContext,
+  jwt: string,
+): Promise<{ sittingId: string; studentJwt: string }> {
   const create = await request.post(`${API_BASE}/api/teacher/test-sessions`, {
     headers: { Authorization: `Bearer ${jwt}` },
     data: {
@@ -87,7 +90,27 @@ async function createLobby(request: APIRequestContext, jwt: string): Promise<str
     data: { code: body.code, email: STUDENT_EMAIL },
   });
   expect(join.status()).toBe(200);
-  return body.sitting_document_id;
+  const { jwt: studentJwt } = (await join.json()) as { jwt: string };
+  return { sittingId: body.sitting_document_id, studentJwt };
+}
+
+/**
+ * C-SIT-STATUS read as the STUDENT — the very poll the waiting room consumes to
+ * hand the class into the runner. `phase: 'running'` here IS "the kids can do the
+ * thing"; asserting it with the student's own join JWT proves the release
+ * reached them, not merely that the teacher's own screen changed.
+ */
+async function studentSeesPhase(
+  request: APIRequestContext,
+  studentJwt: string,
+  sittingId: string,
+): Promise<string> {
+  const res = await request.get(`${API_BASE}/api/sittings/${sittingId}/status`, {
+    headers: { Authorization: `Bearer ${studentJwt}` },
+  });
+  expect(res.status()).toBe(200);
+  const { phase } = (await res.json()) as { phase: string };
+  return phase;
 }
 
 /** The teacher monitor read — the same payload the Live tab polls. */
@@ -115,7 +138,7 @@ test('canonical chain: lobby → Start → pause → resume → extend → force
   test.setTimeout(180_000);
   const jwt = await teacherJwt(request);
   await freeProofStudent(request, jwt);
-  const sittingId = await createLobby(request, jwt);
+  const { sittingId, studentJwt } = await createLobby(request, jwt);
 
   // The Proof 10X class is owned by the seed teacher t1 — not the shared `teacher` alias.
   await signInTeacher(page, 't1@schooltest.local');
@@ -130,6 +153,7 @@ test('canonical chain: lobby → Start → pause → resume → extend → force
   const extendButtons = controls.getByRole('button', { name: /^\+\d+ min$/ });
   await expect(extendButtons).toHaveCount(2);
   for (const button of await extendButtons.all()) await expect(button).toBeDisabled();
+  expect(await studentSeesPhase(request, studentJwt, sittingId), 'student waits before the release').toBe('open');
 
   // ── START: the confirm admits the waiting student; the room turns running ──
   await toggle.click();
@@ -139,6 +163,19 @@ test('canonical chain: lobby → Start → pause → resume → extend → force
   await expect(controls).toHaveAttribute('data-lobby', 'false');
   await expect(toggle).toHaveText(/Pause test/i);
   expect((await monitorSitting(request, jwt, sittingId)).phase).toBe('running');
+
+  // The release REPORTED itself. Start answers a bare `{ sitting }` while every
+  // other room control answers `{ data }`; parsing it as `{ data }` made a start
+  // the server HAD performed raise the red "That did not go through" toast, and
+  // the room still flipped to running underneath (the mutation invalidates the
+  // monitor whether it settled ok or not) — so the chain above passed while the
+  // teacher was told it had failed. These two assertions are that regression.
+  await expect(page.locator('[data-sonner-toast][data-type="error"]')).toHaveCount(0);
+  await expect(page.locator('[data-sonner-toast]')).toContainText('has been admitted to question 1');
+
+  // And the students really were released: the waiting room's own poll, read
+  // with the student's join JWT, now hands them into the runner.
+  expect(await studentSeesPhase(request, studentJwt, sittingId), 'student is admitted').toBe('running');
 
   // ── PAUSE: confirm first, then the paused takeover state ──
   await toggle.click();

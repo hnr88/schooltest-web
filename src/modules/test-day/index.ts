@@ -9,6 +9,8 @@ export type { ClassSitting, SittingMonitor, MonitorStudent } from './types/test-
 export { useSittingActivityQuery } from './queries/use-sitting-activity.query';
 export { useLogIncidentMutation } from './queries/use-log-incident.mutation';
 export { useRoomControlMutation } from './queries/use-room-control.mutation';
+export { parseRoomControlResponse } from './schemas/test-day.schema';
+export type { RoomControlResult } from './schemas/test-day.schema';
 export { useStudentControlMutation } from './queries/use-student-control.mutation';
 export { useSittingMonitorQuery } from './queries/use-sitting-monitor.query';
 export { useMarkAbsentMutation } from './queries/use-mark-absent.mutation';

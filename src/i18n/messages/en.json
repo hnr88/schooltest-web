@@ -5585,6 +5585,7 @@
         "pause": "Pause test",
         "resume": "Resume test",
         "start": "Start test",
+        "startedToast": "Test started. {count, plural, =0 {Nobody was waiting yet — students go straight in as they join.} one {# student has been admitted to question 1.} other {# students have been admitted to question 1.}}",
         "extend": "+{minutes} min",
         "closeConfirm": {
           "bodyNone": "Everyone has submitted or been accounted for, so closing {code} only stops the code being used again. This cannot be undone.",
