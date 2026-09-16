@@ -56,12 +56,12 @@ describe('teachingInsights — recorded t2 roster and recorded class diagnostic'
   test('cohort at a glance: phase spread, ±5 growth, vocabulary strand means', () => {
     expect(view.cohort).toEqual({
       phases: [
-        { phase: 'Beginning', labelKey: 'phase.beginning', count: 12, width: 86, fg: '#B42318' },
-        { phase: 'Emerging', labelKey: 'phase.emerging', count: 2, width: 14, fg: '#92610B' },
+        { phase: 'Beginning', labelKey: 'phase.beginning', count: 11, width: 100, fg: '#B42318' },
+        { phase: 'Emerging', labelKey: 'phase.emerging', count: 0, width: 0, fg: '#92610B' },
         { phase: 'Developing', labelKey: 'phase.developing', count: 0, width: 0, fg: '#1A3B8B' },
         { phase: 'Consolidating', labelKey: 'phase.consolidating', count: 0, width: 0, fg: '#1F7A4D' },
       ],
-      phased: 14,
+      phased: 11,
       growth: { improved: 1, held: 2, slipped: 1, paired: 4 },
       vocab: { a2: 25, a2Assessed: 11, b1: 25, b1Assessed: 12 },
     });

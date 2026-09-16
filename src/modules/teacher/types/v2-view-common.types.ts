@@ -2,7 +2,7 @@ import type { AssessedBand, DisplaySkill } from '@schooltest/scoring-contracts';
 
 export type AcaraPhaseName = 'Beginning' | 'Emerging' | 'Developing' | 'Consolidating';
 
-export type PhaseSource = 'server' | 'score';
+export type PhaseSource = 'server';
 
 export interface ViewTone {
   fg: string;

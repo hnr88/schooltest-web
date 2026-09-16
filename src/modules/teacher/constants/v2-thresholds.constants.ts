@@ -23,14 +23,6 @@ export const FILTER_RELEASE_KINDS: Readonly<Record<FamilyFilter, readonly Roster
 
 export const PHASE_ORDER: readonly AcaraPhaseName[] = ['Beginning', 'Emerging', 'Developing', 'Consolidating'];
 
-export const PHASE_SCORE_CUTS: ReadonlyArray<{ phase: AcaraPhaseName; min: number }> = [
-  { phase: 'Consolidating', min: 80 },
-  { phase: 'Developing', min: 62 },
-  { phase: 'Emerging', min: 45 },
-];
-
-export const PHASE_SCORE_FLOOR: AcaraPhaseName = 'Beginning';
-
 export const SERVER_PHASE_MAP: Readonly<Partial<Record<string, AcaraPhaseName>>> = {
   beginning: 'Beginning',
   emerging: 'Emerging',

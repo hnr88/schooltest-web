@@ -6,7 +6,7 @@ import { SectionCard } from '@/modules/teacher/components/v2/SectionCard';
 import type { CohortGlanceCardProps } from '@/modules/teacher/types/class-analytics.types';
 
 // Teaching insights · Cohort at a glance (`:801–820`): the ACARA phase spread of the
-// students with a phase (the server's phase; score cuts only where it sent none), the
+// students with a phase (the server's crosswalk phase only), the
 // ±5 growth counts over the server deltas, and the two vocabulary strand means.
 function CohortGlanceCard({ cohort }: CohortGlanceCardProps) {
   const t = useTranslations('TeacherPortal.insights');

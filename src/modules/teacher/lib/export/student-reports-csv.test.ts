@@ -83,9 +83,9 @@ describe('studentReportsCsv — the recorded t2 roster', () => {
     expect(recordOf(t2Row('Dilnoza').student.name).slice(1, 4)).toEqual(['41', viewModel('phase.beginning'), '-45']);
   });
 
-  test('Amara: score-derived phase, the server "steady" growth, the failed exit gate', () => {
+  test('Amara: no server phase (empty cell), the server "steady" growth, the failed exit gate', () => {
     const record = recordOf(t2Row('Amara').student.name);
-    expect(record.slice(1, 4)).toEqual(['42', viewModel('phase.beginning'), viewModel('growth.steady')]);
+    expect(record.slice(1, 4)).toEqual(['42', '', viewModel('growth.steady')]);
     expect(skillCells(record, 'Critical')[1]).toBe(viewModel('gate.notYet'));
   });
 });

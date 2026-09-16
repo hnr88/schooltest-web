@@ -3,9 +3,9 @@ import { describe, expect, test } from 'vitest';
 
 import { t2Result, t2ResultDilnoza } from '@/modules/teacher/lib/v2/__fixtures__/t2';
 import { growthFromServer, parseSignedDisplay, scoreSpan } from '@/modules/teacher/lib/v2/growth';
-import { phaseFromScore, phaseFromServer, phaseOfResult } from '@/modules/teacher/lib/v2/phase';
+import { phaseFromServer, phaseOfResult } from '@/modules/teacher/lib/v2/phase';
 
-describe('phaseOfResult — server acara_phase first, the design score cuts only when it is null', () => {
+describe('phaseOfResult — the server acara_phase only; no phase is derived from the score', () => {
   test('recorded Jae-won: server "beginning" becomes Beginning, sourced from the server', () => {
     expect(phaseOfResult(t2Result('Jae-won'))).toEqual({
       phase: 'Beginning',
@@ -16,17 +16,14 @@ describe('phaseOfResult — server acara_phase first, the design score cuts only
     });
   });
 
-  test('recorded Bilal: null server phase with score 54 falls back to Emerging from the score', () => {
-    expect(phaseOfResult(t2Result('Bilal'))).toMatchObject({
-      phase: 'Emerging',
-      source: 'score',
-      tone: { fg: '#92610B', bg: '#FDF4E3' },
-    });
+  test('recorded Bilal: a null server phase stays no phase even with a score (54)', () => {
+    expect(t2Result('Bilal').overall.domain_score).not.toBeNull();
+    expect(phaseOfResult(t2Result('Bilal'))).toBeNull();
   });
 
-  test('recorded Rosa sits on the Emerging cut (45); recorded Amara (42) is Beginning', () => {
-    expect(phaseOfResult(t2Result('Rosa'))?.phase).toBe('Emerging');
-    expect(phaseOfResult(t2Result('Amara'))?.phase).toBe('Beginning');
+  test('recorded Rosa (45) and Amara (42): a score never stands in for the crosswalk placement', () => {
+    expect(phaseOfResult(t2Result('Rosa'))).toBeNull();
+    expect(phaseOfResult(t2Result('Amara'))).toBeNull();
   });
 
   test('recorded Lucia: null phase and null score yield no phase at all', () => {
@@ -48,17 +45,6 @@ describe('phaseOfResult — server acara_phase first, the design score cuts only
     ]);
     expect(phaseFromServer('pre_a1')).toBeNull();
     expect(phaseFromServer(null)).toBeNull();
-  });
-
-  test('the design score cuts are 80 / 62 / 45', () => {
-    expect([80, 79, 62, 61, 45, 44].map((score) => phaseFromScore(score))).toEqual([
-      'Consolidating',
-      'Developing',
-      'Developing',
-      'Emerging',
-      'Emerging',
-      'Beginning',
-    ]);
   });
 });
 

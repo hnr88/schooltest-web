@@ -150,9 +150,9 @@ describe('studentDetail — recorded Amara (single-strand vocabulary, scored gat
     expect(card(view, 'Vocabulary').tag?.kind).toBe('focus');
   });
 
-  test('overall is steady and the phase comes from the score cut', () => {
+  test('overall is steady and a result with no server phase has no phase', () => {
     expect(view.overall.growth.kind).toBe('steady');
-    expect(view.phase).toMatchObject({ phase: 'Beginning', source: 'score' });
+    expect(view.phase).toBeNull();
   });
 
   test('tiles', () => {

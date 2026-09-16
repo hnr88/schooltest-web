@@ -50,10 +50,14 @@ describe('studentsTabRows — recorded t2 roster (Reading 8B, 20 students)', () 
   test('ACARA phase sort puts the most advanced phase first and students with no phase last', () => {
     const { rows } = studentsTabRows(t2Roster, { sort: 'phase' });
     expect(rows.slice(0, 2).map((row) => [row.name, row.phase?.phase])).toEqual([
-      ['Bilal Baptiste', 'Emerging'],
-      ['Rosa Baptiste', 'Emerging'],
+      ['Dilnoza Baptiste', 'Beginning'],
+      ['Eitan Baptiste', 'Beginning'],
     ]);
-    expect(rows.slice(-6).map((row) => row.name)).toEqual(UNSCORED);
+    // A scored result the crosswalk did not place (recorded Bilal 54, Rosa 45) has
+    // no phase, so it sorts with the unplaced rows rather than under a score cut.
+    const unplaced = rows.filter((row) => row.phase === null).map((row) => row.name);
+    expect(rows.slice(-unplaced.length).map((row) => row.name)).toEqual(unplaced);
+    expect(unplaced).toEqual(expect.arrayContaining([...UNSCORED, 'Bilal Baptiste', 'Rosa Baptiste']));
   });
 
   test('recorded Dilnoza: score, server growth, weakest subskill and server phase', () => {

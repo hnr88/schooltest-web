@@ -117,10 +117,10 @@ describe('student detail text — recorded Amara (server "steady", single B1 str
     expect(strandsText(card(view, 'Vocabulary').strands)).toEqual({ key: 'subskills.strandB1', values: { b1: 25 } });
   });
 
-  test('analysis: score-cut phase, held steady, Gist vs Vocabulary, B1 only', () => {
+  test('analysis: no server phase so none is named, held steady, Gist vs Vocabulary, B1 only', () => {
     expect(studentAnalysis(view, 'Amara')).toEqual([
       [
-        { key: 'analysis.overall', values: { first: 'Amara', score: 42 }, labels: { phase: 'phase.beginning' } },
+        { key: 'analysis.overallNoPhase', values: { first: 'Amara', score: 42 } },
         { key: 'analysis.growthSteady' },
       ],
       [
@@ -143,7 +143,7 @@ describe('student detail text — other recorded roster rows', () => {
     expect(tile(view, 'growth')).toMatchObject({ value: { key: 'tiles.growthUp', values: { points: 5 } }, fg: '#1F7A4D' });
     const analysis = studentAnalysis(view, 'Rosa');
     expect(analysis[0]).toEqual([
-      { key: 'analysis.overall', values: { first: 'Rosa', score: 45 }, labels: { phase: 'phase.emerging' } },
+      { key: 'analysis.overallNoPhase', values: { first: 'Rosa', score: 45 } },
       { key: 'analysis.growthUpReliable', values: { points: 5 } },
     ]);
     expect(keysOf(analysis).some((key) => key.startsWith('analysis.vocab'))).toBe(false);

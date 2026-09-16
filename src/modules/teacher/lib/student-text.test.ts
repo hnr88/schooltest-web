@@ -62,7 +62,7 @@ describe('student page text — recorded Amara, en', () => {
     const view = studentDetail(t2ResultAmara);
     expect(resolveStudentText(overallDeltaText(view.overall.growth) ?? { key: 'missing' }, en)).toBe('steady');
     expect(resolveParagraphs(studentAnalysis(view, 'Amara'), en)[0]).toBe(
-      'Amara’s overall reading score is 42%, placing them in the Beginning phase of the ACARA English progression. ' +
+      'Amara’s overall reading score is 42%. ' +
         'Their reading has held steady since the first sitting, within measurement error.',
     );
   });

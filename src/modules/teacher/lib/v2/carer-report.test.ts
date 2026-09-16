@@ -41,7 +41,7 @@ describe('carerReport — recorded results', () => {
       { attribute: 'Detail', key: 'carer.next.detail' },
     ]);
     expect(view.expected).toBeNull();
-    expect(view.phase).toMatchObject({ phase: 'Beginning', source: 'score' });
+    expect(view.phase).toBeNull();
     expect(view.satAt).toBe('2026-09-11');
   });
 

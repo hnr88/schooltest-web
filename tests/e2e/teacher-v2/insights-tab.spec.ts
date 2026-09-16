@@ -105,12 +105,19 @@ test.describe('S5 — Teaching insights tab', () => {
     expect(focus.flag).toBe('focus');
     await expect(panel.locator('[data-slot="insights-mastery-row"]').first()).toContainText(viewModel('flag.classFocus'));
 
-    // Cohort: the phase spread counts sum to the scored students.
+    // Cohort: each phase bar counts the students the server's crosswalk placed in that
+    // phase. A scored result with a null acara_phase is in no bar — never a score cut.
     const phaseCounts = await panel
       .locator('[data-slot="insights-phase-bar"]')
-      .evaluateAll((bars) => bars.map((bar) => Number(bar.getAttribute('data-count'))));
-    expect(phaseCounts).toHaveLength(4);
-    expect(phaseCounts.reduce((sum, count) => sum + count, 0)).toBe(kpis.scored);
+      .evaluateAll((bars) => bars.map((bar) => [bar.getAttribute('data-phase'), Number(bar.getAttribute('data-count'))]));
+    const serverPhase = (code: string): string => (code === 'developing_to_consolidating' ? 'developing' : code);
+    const placed = roster.flatMap((row) => (row.result?.acara_phase ? [serverPhase(row.result.acara_phase)] : []));
+    expect(phaseCounts).toEqual(
+      ['Beginning', 'Emerging', 'Developing', 'Consolidating'].map((phase) => [
+        phase,
+        placed.filter((code) => code === phase.toLowerCase()).length,
+      ]),
+    );
 
     // Pairings on the class focus, by the design's rule over the live scores.
     const pairings = panel.locator('[data-insights-section="pairings"]');

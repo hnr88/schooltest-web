@@ -99,11 +99,11 @@ describe('buildStudentReportHtml — recorded Dilnoza (41, server phase, reliabl
   });
 });
 
-describe('buildStudentReportHtml — recorded Amara (score-derived phase, steady, single strand, gate)', () => {
+describe('buildStudentReportHtml — recorded Amara (no server phase, steady, single strand, gate)', () => {
   const doc = render(inputFor('Amara'));
 
-  test('a score-derived phase, the server "steady" growth and the failed exit gate', () => {
-    expect(texts(doc, '.kpi .v')).toEqual(['42%', 'Beginning', viewModel('growth.steady')]);
+  test('no server phase prints the dash, the server "steady" growth and the failed exit gate', () => {
+    expect(texts(doc, '.kpi .v')).toEqual(['42%', '—', viewModel('growth.steady')]);
     const critical = Array.from(doc.querySelectorAll('tbody tr')).find(
       (row) => row.querySelector('td')?.textContent === 'Critical reading',
     );
