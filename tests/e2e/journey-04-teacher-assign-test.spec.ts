@@ -91,9 +91,10 @@ test('assign a test to a class, open the sitting, and it all persists on reload'
   expect(row?.class.document_id).toBe(classId);
   expect(row?.form?.document_id).toBe(chosen.form_document_id);
   const code = row?.code ?? '';
-  // STALE-TEST FIX (retest wave, measured 2026-09-11): the merged C-SITTING-MINT
-  // mints the word + two-digit form ("frog93"); legacy sittings keep six digits.
-  expect(code).toMatch(/^(?:[a-z]{3,5}[0-9]{2}|[0-9]{6})$/);
+  // STALE-TEST FIX (product-owner override, 2026-09-16): the merged C-SITTING-MINT
+  // mints exactly six random digits, zero-padded ("482913"); the retired
+  // word + two-digit form survives only on legacy sittings.
+  expect(code).toMatch(/^[0-9]{6}$/);
   expect(runSql(`select status, code from sittings where document_id = '${sittingId}'`)).toBe(`open|${code}`);
 
   // The ASSIGNED STUDENTS: the monitor lists exactly who sits it — the whole active

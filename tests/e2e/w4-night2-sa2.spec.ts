@@ -726,7 +726,7 @@ test('TEA-007: Copy code flashes Copied and the clipboard holds the join code', 
   const sittingId = await startProofSitting(request, jwt);
   try {
     const code = await codeOf(request, jwt, sittingId);
-    expect(code).toMatch(/^[a-z]+\d{2}$/i); // animal + 2 digits, the C-SJ-1 shape
+    expect(code).toMatch(/^\d{6}$/); // exactly six digits (2026-09-16 product-owner override)
 
     await signInTeacher(page, TEACHER);
     await page.goto(`/dashboard/results/${PROOF_CLASS}?tab=live&session=${sittingId}`);
@@ -738,7 +738,7 @@ test('TEA-007: Copy code flashes Copied and the clipboard holds the join code', 
     await copy.click();
     await expect(copy).toContainText('Copied');
     const clip = await page.evaluate(() => navigator.clipboard.readText());
-    expect(clip.trim(), 'clipboard holds the animal+2-digit code').toBe(code);
+    expect(clip.trim(), 'clipboard holds the six-digit code').toBe(code);
     // The flash is a flash (~1.6 s): the label reverts on its own.
     await expect(copy).toContainText('Copy code', { timeout: 5_000 });
     await page.screenshot({ path: path.join(PROOFS, 'tea-007-copied.png'), animations: 'disabled' });
