@@ -21,7 +21,12 @@ import type { DiagnosticDashboardProps } from '@/modules/teach/types/components.
 // under the class mastery view. ACARA phase is never on the wire and never
 // rendered here (mvp spec 4.4). The `actions` slot carries the page-level
 // affordances (task 77: the C-RPT-03 markdown export button).
-export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/teach' }: DiagnosticDashboardProps) {
+export function DiagnosticDashboard({
+  classId,
+  actions,
+  backHref = '/dashboard/teach',
+  reportHref,
+}: DiagnosticDashboardProps) {
   const t = useTranslations('Teach.diagnostic');
   const query = useClassDiagnosticQuery(classId);
   const [selectedRef, setSelectedRef] = useState<string | null>(null);
@@ -90,9 +95,14 @@ export function DiagnosticDashboard({ classId, actions, backHref = '/dashboard/t
               rows={data.mastery}
               onSelect={toggleSelected}
               query={query}
+              reportHref={reportHref}
             />
             {selectedRow ? (
-              <StudentMasteryDrilldown row={selectedRow} onClose={() => setSelectedRef(null)} />
+              <StudentMasteryDrilldown
+                row={selectedRow}
+                onClose={() => setSelectedRef(null)}
+                reportHref={reportHref}
+              />
             ) : null}
             {/* Tasks 95-96 (spec 4.9/4.10): the differentiation groups sit below
                 the mastery list and above the heat map, so mastery stays the

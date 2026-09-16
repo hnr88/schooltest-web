@@ -66,6 +66,12 @@ export function AdminAnalyticsScreen() {
           classId={selectedClassId}
           backHref="/dashboard/school/analytics"
           actions={<ResultsExportButton />}
+          // "View full report" opens this school's own student page: the
+          // teacher report route admits teachers only and sent a school admin
+          // back to the dashboard.
+          reportHref={(row) =>
+            `/dashboard/school/classes/${selectedClassId}/students/${row.student_document_id}`
+          }
         />
         <ProgressPanel classId={selectedClassId} />
       </>

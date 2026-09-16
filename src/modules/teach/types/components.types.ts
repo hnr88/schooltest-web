@@ -9,6 +9,13 @@ export interface DiagnosticDashboardProps {
   // Task 78: the school-admin analytics reuses this dashboard verbatim at
   // school scope; the back link defaults to the teacher home it always had.
   backHref?: string;
+  /**
+   * Where a student's "View full report" goes. Defaults to the teacher report
+   * (`/dashboard/reports/:result`, TeacherGuard); the school-admin analytics
+   * passes its own student page, because the teacher route turns a school
+   * admin away to the dashboard.
+   */
+  reportHref?: (row: DiagnosticMasteryRow) => string;
 }
 
 export interface DiagnosticPrintHeaderProps {
@@ -35,6 +42,7 @@ export interface MasteryTableProps {
   rows: DiagnosticMasteryRow[];
   onSelect: (studentRef: string) => void;
   query: DirectoryQueryStatus;
+  reportHref?: (row: DiagnosticMasteryRow) => string;
 }
 
 export interface ProgressPanelProps {
@@ -48,4 +56,5 @@ export interface ProgressTransitionRowProps {
 export interface StudentMasteryDrilldownProps {
   row: DiagnosticMasteryRow;
   onClose: () => void;
+  reportHref?: (row: DiagnosticMasteryRow) => string;
 }

@@ -5,7 +5,7 @@ import { X } from 'lucide-react';
 
 import { Link } from '@/i18n/navigation';
 import { StatusPill } from '@/modules/design-system';
-import { REPORTS_HREF } from '@/modules/shell';
+import { teacherReportHref } from '@/modules/teach/components/MasteryTable';
 import {
   masteryAreaAttribute,
   MASTERY_AREA_CODES,
@@ -28,7 +28,7 @@ import { STATUS_TONE } from '@/modules/teach/constants/components.constants';
 // the wire attributes instead named them by their raw code (a missing
 // `Teach.diagnostic.areas.Decoding` key) and listed Vocabulary twice, once per
 // strand.
-export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldownProps) {
+export function StudentMasteryDrilldown({ row, onClose, reportHref = teacherReportHref }: StudentMasteryDrilldownProps) {
   const t = useTranslations('Teach.diagnostic');
   const heading = t('drilldownTitle', { student: row.student_ref });
 
@@ -79,7 +79,7 @@ export function StudentMasteryDrilldown({ row, onClose }: StudentMasteryDrilldow
       {row.latest_result_document_id ? (
         <Link
           data-slot="drilldown-report-link"
-          href={`${REPORTS_HREF}/${row.latest_result_document_id}`}
+          href={reportHref(row)}
           className="w-fit text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
           {t('reportLink')}

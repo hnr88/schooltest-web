@@ -38,7 +38,7 @@ import type { DiagnosticMasteryRow } from '@/modules/teach/types/diagnostic.type
 // student's cells by model attribute — so the cell asks `masteryAreaAttribute`
 // which of the row's attributes lands on the column, never `code === code`.
 
-export function MasteryTable({ rows, onSelect, query }: MasteryTableProps) {
+export function MasteryTable({ rows, onSelect, query, reportHref = teacherReportHref }: MasteryTableProps) {
   const t = useTranslations('Teach.diagnostic');
 
   const sorts = useMemo<readonly DirectorySortDef[]>(
@@ -114,10 +114,12 @@ export function MasteryTable({ rows, onSelect, query }: MasteryTableProps) {
       {
         key: 'report',
         header: t('columnReport'),
-        cell: (row) => <ReportLink row={row} label={t('mastery.viewFullReport', { student: row.student_ref })} />,
+        cell: (row) => (
+          <ReportLink row={row} href={reportHref(row)} label={t('mastery.viewFullReport', { student: row.student_ref })} />
+        ),
       },
     ],
-    [t],
+    [t, reportHref],
   );
 
   return (
@@ -152,12 +154,16 @@ function AreaCell({ row, code }: { row: DiagnosticMasteryRow; code: string }) {
   );
 }
 
-function ReportLink({ row, label }: { row: DiagnosticMasteryRow; label: string }) {
+/** The teacher report for the row's latest result — the default "View full report" target. */
+export const teacherReportHref = (row: DiagnosticMasteryRow): string =>
+  `${REPORTS_HREF}/${row.latest_result_document_id}`;
+
+function ReportLink({ row, href, label }: { row: DiagnosticMasteryRow; href: string; label: string }) {
   if (!row.latest_result_document_id) return null;
   return (
     <Link
       data-slot="mastery-report-link"
-      href={`${REPORTS_HREF}/${row.latest_result_document_id}`}
+      href={href}
       aria-label={label}
       className="block w-fit max-w-full truncate text-sm font-semibold text-primary transition-colors duration-150 hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       title={label}
