@@ -25,8 +25,12 @@ import {
 } from '@/modules/ops/hooks/use-visual-reference';
 
 import { roleCredentials } from '../helpers/credentials';
-import { fixtureSchoolId } from '../helpers/fixture-ids';
 import { cat, loadMessages } from '../helpers/i18n';
+// F3 2026-09-16: fixtureSchoolId() resolves through the docker-exec psql
+// fallback, which on this machine holds a STALE database (the live API on :5500
+// serves host port 5540 and 404s those ids). Resolve the demo school's natural
+// key from the LIVE database instead.
+import { liveDemoSchoolId } from '../fleet3-helpers';
 
 const en = loadMessages('en');
 const OPS = roleCredentials('ops');
@@ -61,7 +65,14 @@ async function signInAsOps(page: Page): Promise<void> {
   await page.getByLabel(cat(en, 'Auth.passwordLabel'), { exact: true }).fill(OPS.password);
   await page.getByRole('button', { name: cat(en, 'Auth.portal.loginButton'), exact: true }).click();
   await page.waitForURL('**/dashboard/ops/schools', { timeout: 90_000 });
-  await page.goto(`/dashboard/ops/schools/${fixtureSchoolId()}`);
+  const schoolDocumentId = await liveDemoSchoolId();
+  await page.goto(`/dashboard/ops/schools/${schoolDocumentId}?tab=students`);
+  await expect(page.getByRole('tabpanel', { name: 'Students' })).toBeVisible({ timeout: 20_000 });
+  // ops/26: the import surface opens INSIDE the modal launched from the
+  // Students tab's header button — it is no longer inline on the page.
+  await page
+    .getByRole('button', { name: 'Import students', exact: true })
+    .click({ timeout: 20_000 });
   await expect(panelOf(page)).toBeVisible({ timeout: 20_000 });
 }
 

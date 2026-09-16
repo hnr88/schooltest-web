@@ -124,11 +124,13 @@ test.describe('C-OPS-PORTAL-067 settings read', () => {
     await expect(page.locator(READY)).toBeVisible({ timeout: ACTION_TIMEOUT });
     console.log('CAPTURE', await capture(page, 'settings-mobile'));
 
-    // The read moved to task 04's session-expired card; this screen must not
-    // reissue it on its own account.
+    // D-14 (task 04) put the configured session-timeout read INSIDE OpsGuard,
+    // which wraps this route: exactly ONE GET /api/platform-settings fires per
+    // settings load (the guard's, versioned '1'), and nothing else — the
+    // screen's own content (account card) must not reissue it.
     expect(
       reads,
-      'the settings screen must not read GET /api/platform-settings any more',
-    ).toEqual([]);
+      'exactly the guard read may fire; the screen content must not read platform settings',
+    ).toEqual(['1']);
   });
 });

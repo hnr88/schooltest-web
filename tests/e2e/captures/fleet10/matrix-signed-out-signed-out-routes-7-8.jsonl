@@ -1,0 +1,9 @@
+{"url":"/gdpr","outcome":"rendered","note":"http://localhost:3002/gdpr"}
+{"url":"/invite/zzf10notreal0000000000","outcome":"rendered","note":"http://localhost:3002/invite/zzf10notreal0000000000"}
+{"url":"/onboarding","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fonboarding"}
+{"url":"/predict","outcome":"rendered","note":"http://localhost:3002/predict"}
+{"url":"/privacy-policy","outcome":"rendered","note":"http://localhost:3002/privacy-policy"}
+{"url":"/report","outcome":"rendered","note":"http://localhost:3002/report"}
+{"url":"/reset-password","outcome":"rendered","note":"http://localhost:3002/reset-password"}
+{"url":"/school-onboarding/zzf10notreal0000000000","outcome":"rendered","note":"http://localhost:3002/school-onboarding/zzf10notreal0000000000"}
+{"url":"/sign-in","outcome":"signin","note":"http://localhost:3002/sign-in"}

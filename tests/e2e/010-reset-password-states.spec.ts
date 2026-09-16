@@ -15,6 +15,12 @@ const DESKTOP = { width: 1440, height: 900 };
 const NEW_PASSWORD = 'NewPass1234!';
 const usedEmails: string[] = [];
 
+// F1 (2026-09-16): the flow legitimately runs ~29s on this stack (register →
+// Mailpit confirm → reset + expired legs), inside the 30s DEFAULT cap — any
+// parallel load flipped it into a bare timeout failure. The stack's working
+// budget for live dev-server specs is 90s (tests/e2e/fleet1-*.spec.ts).
+test.setTimeout(90_000);
+
 test.afterAll(() => {
   for (const email of usedEmails) deleteAuthEmailRows(email);
 });

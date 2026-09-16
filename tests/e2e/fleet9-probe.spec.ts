@@ -2,6 +2,7 @@ import path from 'node:path';
 
 import { expect, test } from '@playwright/test';
 
+import { roleCredentials } from './helpers/credentials';
 import { API_BASE_URL } from './helpers/mailpit';
 
 // F9 PROBE (scratch): what does the LIVE portal actually render for the parent?
@@ -16,7 +17,7 @@ const SHOTS = '/tmp/fleet9-shots';
 test('probe: parent lands on /dashboard/children as parent@schooltest.local', async ({ page }) => {
   test.setTimeout(90_000);
   const login = await page.request.post(`${API_BASE_URL}/api/auth/local`, {
-    data: { identifier: 'parent@schooltest.local', password: process.env.SEED_PARENT_PASSWORD },
+    data: { identifier: roleCredentials('parent').email, password: roleCredentials('parent').password },
   });
   expect(login.ok(), await login.text()).toBeTruthy();
   const { jwt } = (await login.json()) as { jwt: string };

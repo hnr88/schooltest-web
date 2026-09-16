@@ -1,0 +1,9 @@
+{"url":"/dashboard/children/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fchildren%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/children/zzf10notreal0000000000/edit","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fchildren%2Fzzf10notreal0000000000%2Fedit"}
+{"url":"/dashboard/children/new","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fchildren%2Fnew"}
+{"url":"/dashboard/notifications","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fnotifications"}
+{"url":"/dashboard/ops","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fops"}
+{"url":"/dashboard/ops/schools","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fops%2Fschools"}
+{"url":"/dashboard/ops/schools/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fops%2Fschools%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/ops/schools/zzf10notreal0000000000/classes/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fops%2Fschools%2Fzzf10notreal0000000000%2Fclasses%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/ops/settings","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fops%2Fsettings"}

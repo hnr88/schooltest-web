@@ -14,7 +14,7 @@ export function rosterSize(classDocumentId: string): number {
       `select count(*) from students s
          join students_class_lnk scl on scl.student_id = s.id
          join classes c on c.id = scl.class_id
-        where c.document_id = '${classDocumentId}' and s.status = 'active'`,
+        where c.document_id = '${classDocumentId}' and s.student_status = 'active'`,
     ),
   );
 }

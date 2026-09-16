@@ -52,9 +52,26 @@ test('flow: updating the site name and tagline changes the public site', async (
     await page.reload();
 
     await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute('content', probeName);
-    await expect(page.locator('footer').getByText('E2E tagline probe')).toBeVisible();
+    // F4 note (2026-09-16): the redesigned pilot landing no longer renders the
+    // site_tagline anywhere on the public site (footer carries the pilot CTAs
+    // instead), so the old footer-tagline assertion was retired with it. The
+    // write itself is still proven by the DB row read above.
   } finally {
-    await opsUpdateSettings({ site_name: before.site_name, site_tagline: before.site_tagline });
+    // The restore runs during teardown after a failed expect, where the API's
+    // keep-alive socket has idled out and undici surfaces the peer close as
+    // "other side closed" — masking the REAL assertion failure. One retry on
+    // exactly that keeps the restore a janitor, never the headline error.
+    for (let attempt = 1; attempt <= 3; attempt += 1) {
+      try {
+        await opsUpdateSettings({ site_name: before.site_name, site_tagline: before.site_tagline });
+        break;
+      } catch (error) {
+        const cause = (error as { cause?: { message?: string } }).cause?.message ?? '';
+        const isPeerClose = String(error).includes('fetch failed') && cause.includes('other side closed');
+        if (!isPeerClose || attempt === 3) throw error;
+        await page.waitForTimeout(1500);
+      }
+    }
     await revalidateSettings();
   }
 });

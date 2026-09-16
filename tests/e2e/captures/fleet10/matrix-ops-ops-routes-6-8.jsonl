@@ -1,0 +1,9 @@
+{"url":"/dashboard/teach/results/zzf10notreal0000000000","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
+{"url":"/dashboard/teach/run-sheet","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
+{"url":"/dashboard/teach/settings","outcome":"redirect-role","note":"http://localhost:3002/dashboard/ops/schools"}
+{"url":"/dashboard/teacher/results/zzf10notreal0000000000/family","outcome":"notfound","note":"http://localhost:3002/dashboard/teacher/results/zzf10notreal0000000000/family"}
+{"url":"/dashboard/test-sessions","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
+{"url":"/dashboard/test-sessions/zzf10notreal0000000000","outcome":"redirect-role","note":"http://localhost:3002/dashboard"}
+{"url":"/design-system","outcome":"rendered","note":"http://localhost:3002/design-system"}
+{"url":"/diagnose","outcome":"rendered","note":"http://localhost:3002/diagnose"}
+{"url":"/forgot-password","outcome":"rendered","note":"http://localhost:3002/forgot-password"}

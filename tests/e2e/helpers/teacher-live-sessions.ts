@@ -17,7 +17,7 @@ export const liveOf = (rows: readonly TeacherTestSession[]): TeacherTestSession[
 export function freeStudents(classDocumentId: string): string[] {
   const out = runSql(`select s.document_id from students s
       join students_class_lnk l on l.student_id = s.id join classes c on c.id = l.class_id
-     where c.document_id = '${classDocumentId}' and s.status = 'active'
+     where c.document_id = '${classDocumentId}' and s.student_status = 'active'
        and not exists (select 1 from sessions se join sessions_student_lnk sl on sl.session_id = se.id
                         where sl.student_id = s.id and se.status = 'in_progress')
        and not exists (select 1 from sittings si join sittings_class_lnk scl on scl.sitting_id = si.id

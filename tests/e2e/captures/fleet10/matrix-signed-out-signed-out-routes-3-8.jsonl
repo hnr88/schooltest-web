@@ -1,0 +1,9 @@
+{"url":"/dashboard/reports","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Freports"}
+{"url":"/dashboard/reports/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Freports%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/results","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fresults"}
+{"url":"/dashboard/results/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fresults%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/results/zzf10notreal0000000000/students/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fresults%2Fzzf10notreal0000000000%2Fstudents%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/school","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool"}
+{"url":"/dashboard/school/account","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Faccount"}
+{"url":"/dashboard/school/analytics","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fanalytics"}
+{"url":"/dashboard/school/children","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fchildren"}

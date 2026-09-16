@@ -54,9 +54,11 @@ interface OpsStudentImportChromeProps extends OpsStudentImportPanelProps {
 // and nothing else, so the bar is indeterminate rather than animated when the
 // server has no numbers yet.
 //
-// ops/26 — mounted twice: standalone as the `OpsSchoolDetail.tsx` panel, and
-// inside `OpsStudentImportDialog` for the design's modal (`:744-817`). Both
-// share this one implementation — Law 2.
+// ops/26 — mounted inside `OpsStudentImportDialog` only (from the Students tab
+// and the class detail page; the former standalone `OpsSchoolDetail` panel
+// mount was removed when the import moved behind the modal — verified in the
+// live DOM, fleet e2e 2026-09-16). Both entry points share this one
+// implementation — Law 2.
 export function OpsStudentImport({
   documentId,
   initialClassDocumentId,

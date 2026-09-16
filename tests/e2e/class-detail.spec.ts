@@ -21,6 +21,9 @@ const en = loadMessages('en');
 const SCREENSHOTS = path.resolve(process.cwd(), '.qa', 'screenshots');
 
 test.describe.configure({ mode: 'serial' });
+// The kit's URL round-trips go through the dev server's on-demand compiles,
+// and the shared server serves several suites at once — give the waits room.
+test.setTimeout(120_000);
 
 test.describe('class detail (spec §1)', () => {
   test('flow 1: a school_admin reaches the class detail from the Classes list', async ({
@@ -95,11 +98,15 @@ test.describe('class detail (spec §1)', () => {
     const detail = await apiClassDetail(page.request, await schoolAdminJwt(page.request));
     await gotoClassDetail(page);
 
-    const rows = page.locator('[data-surface="school-admin-class-detail"] tbody tr');
+    // ops/30 grid: the roster renders as an ARIA grid of div rows (the old
+    // `<tbody><tr>` table is gone), each row's first cell carrying the name.
+    const rows = page.locator('[data-surface="school-admin-class-detail"] [data-directory-row]');
     await expect(rows).toHaveCount(detail.students.length);
 
-    // Row order matches the server's order, name for name.
-    const rendered = await rows.locator('td:first-child').allInnerTexts();
+    // Row order matches the server's order, name for name. The name is the
+    // titled span inside the row's first-cell link (the avatar span is
+    // aria-hidden and untitled).
+    const rendered = await rows.locator('[data-row-href] span[title]').allInnerTexts();
     expect(rendered.map((value) => value.trim())).toEqual(detail.students.map(fullName));
 
     // A completed Test A renders Done + its real score + its real phase. The
@@ -152,10 +159,14 @@ test.describe('class detail (spec §1)', () => {
     expect(text.toLowerCase()).not.toContain('children');
     expect(text).not.toContain('No active children');
 
-    // Every ACARA cell is a canonical phase label or the em dash — never "Phase 1".
+    // Every ACARA cell is a canonical phase label or the em dash — never
+    // "Phase N". Grid cells: student, A status, A score, A ACARA, B status,
+    // B score, B ACARA, then the row-menu cell — so children 4 and 7.
     expect(text).not.toMatch(/Phase\s*\d/);
     const acaraCells = await surface
-      .locator('tbody tr td:nth-child(4), tbody tr td:nth-child(7)')
+      .locator(
+        '[data-directory-row] [role="cell"]:nth-child(4), [data-directory-row] [role="cell"]:nth-child(7)',
+      )
       .allInnerTexts();
     for (const cell of acaraCells) {
       const value = cell.trim();
@@ -211,7 +222,10 @@ test.describe('class detail (spec §1)', () => {
     await expect(
       table.getByRole('heading', { name: cat(en, 'Classes.detail.roster.filteredEmptyTitle') }),
     ).toBeVisible();
+    // The toolbar AND the no-matches arm each render a Clear filters button —
+    // scope to the empty state's own pill.
     await table
+      .locator('[data-slot="directory-empty"]')
       .getByRole('button', { name: cat(en, 'Classes.detail.roster.clearFilters') })
       .click();
     await expect(table.locator('[data-directory-row]')).toHaveCount(detail.students.length);
@@ -248,11 +262,13 @@ test.describe('class detail (spec §1)', () => {
     await page
       .getByRole('option', { name: cat(en, 'Classes.detail.roster.sortNameDesc'), exact: true })
       .click();
-    await page.waitForURL(/sort=name:desc/);
+    // The router percent-encodes the colon in the query value
+    // (?sort=name%3Adesc), so accept either form.
+    await page.waitForURL(/sort=name(?::|%3A)desc/);
     await expect(table.locator('[data-directory-row]')).toHaveCount(bucket.count);
-    const names = (await table.locator('[data-directory-row] td:first-child').allInnerTexts()).map(
-      (value) => value.trim(),
-    );
+    const names = (
+      await table.locator('[data-directory-row] [data-row-href] span[title]').allInnerTexts()
+    ).map((value) => value.trim());
     expect(names).toEqual([...names].sort((a, b) => b.localeCompare(a)));
   });
 });

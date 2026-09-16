@@ -1,0 +1,9 @@
+{"url":"/","outcome":"rendered","note":"http://localhost:3002/"}
+{"url":"/f10-zz-no-such-page","outcome":"notfound","note":"http://localhost:3002/f10-zz-no-such-page"}
+{"url":"/articles","outcome":"rendered","note":"http://localhost:3002/articles"}
+{"url":"/auth/google/callback","outcome":"signin","note":"http://localhost:3002/sign-in?error=google"}
+{"url":"/auth/student/verify","outcome":"rendered","note":"http://localhost:3002/auth/student/verify"}
+{"url":"/auth/teacher/verify","outcome":"rendered","note":"http://localhost:3002/auth/teacher/verify"}
+{"url":"/cookie-policy","outcome":"rendered","note":"http://localhost:3002/cookie-policy"}
+{"url":"/dashboard","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard"}
+{"url":"/dashboard/children","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fchildren"}

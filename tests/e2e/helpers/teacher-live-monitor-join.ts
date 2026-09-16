@@ -17,7 +17,7 @@ export function rosterEmails(classDocumentId: string): string[] {
        join classes c on c.id = scl.class_id
        left join students_user_lnk sul on sul.student_id = s.id
        left join up_users u on u.id = sul.user_id
-      where c.document_id = '${classDocumentId}' and s.status = 'active'
+      where c.document_id = '${classDocumentId}' and s.student_status = 'active'
       order by s.family_name`,
   );
   return rows

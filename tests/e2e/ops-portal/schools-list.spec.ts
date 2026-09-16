@@ -70,8 +70,12 @@ test('the directory renders server-driven rows, the gap pills and the pager', as
 
   const pills = page.locator('[data-slot="ops-schools-pills"]');
   await expect(pills).toBeVisible();
-  // GAP-12/16 recorded on screen: five pictured status pills, non-functional.
-  await expect(page.locator('[data-slot="ops-schools-pills"] [data-gap]')).toHaveCount(5);
+  // GAP-12/16 RESOLVED on screen: the five pictured decorative gap pills are
+  // retired — the bar is now the functional status pill bar (All + 5 statuses),
+  // real buttons carrying aria-pressed and the server status counts.
+  await expect(
+    page.locator('[data-slot="ops-schools-pills"] [data-slot^="ops-schools-pill-"]'),
+  ).toHaveCount(6);
 
   const pager = page.locator('[data-slot="ops-schools-pagination"]');
   await expect(pager).toBeVisible();

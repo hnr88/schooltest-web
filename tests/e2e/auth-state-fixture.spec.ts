@@ -16,6 +16,11 @@ import { formSignInCount, signedInContext, signedOutContext } from './helpers/au
  * passes for a reason unrelated to the property it names.
  */
 test.describe('the auth-state fixture', () => {
+  // F1 (2026-09-16): minting drives the real form; under parallel fleet load
+  // the dev server took >25s of the 30s DEFAULT cap and failed both minting
+  // tests as bare timeouts. 90s is this stack's live budget.
+  test.setTimeout(90_000);
+
   test('a signed-in context reaches the dashboard WITHOUT driving the form', async ({ browser }) => {
     const before = formSignInCount();
     const { context, page } = await signedInContext(browser, 'teacher');

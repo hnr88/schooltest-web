@@ -9,6 +9,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 
 // Stacks whose local dev env lives in schooltest-api/.env.dev (st-mvp-pivot
@@ -105,6 +106,93 @@ function containerAvailable(name: string): boolean {
   return present;
 }
 
+/**
+ * Absolute path of the `pg` driver, resolved from the SIBLING schooltest-api
+ * checkout first (it already owns the database contract), then this repo.
+ * Null when neither ships pg — callers degrade to the docker last resort.
+ */
+function resolvePgPath(): string | null {
+  for (const from of [API_ENV_PATH, path.join(process.cwd(), 'package.json')]) {
+    try {
+      return createRequire(from).resolve('pg');
+    } catch {
+      // try the next root
+    }
+  }
+  return null;
+}
+
+/**
+ * Run one statement against the LIVE dev database over TCP using the sibling
+ * API's own pg client — the durable answer for hosts without a psql CLI.
+ *
+ * WHY THIS EXISTS (F1, 2026-09-16): on this stack the compose container named
+ * below holds a STALE COPY of the database (its up_users lagged the live one
+ * by hundreds of rows), so the docker-exec fallback silently answered every
+ * runSql from the WRONG dataset. The observable damage: registerAndConfirmParent
+ * polled userRoleType against the stale copy, never saw the parent-role grant
+ * the LIVE database had actually written, and failed 010/014/change-password
+ * against a perfectly healthy app. psql over TCP to DATABASE_HOST:DATABASE_PORT
+ * — the same values the API itself is configured with — is the truth; docker
+ * stays only as the last resort for hosts where the container IS the dev DB.
+ *
+ * Output mirrors `psql -t -A`: one row per line, fields joined by '|',
+ * booleans as t/f, nulls as '', timestamps in psql's `YYYY-MM-DD
+ * HH:mm:ss.SSS+00` shape. Returns NULL only when pg is unavailable or the
+ * server is unreachable (connection-level failure) so the caller can fall
+ * through to docker; a SQL error throws, preserving ON_ERROR_STOP semantics.
+ */
+function execSqlOverTcp(sql: string): string | null {
+  const pgPath = resolvePgPath();
+  if (!pgPath) return null;
+  const script = `
+    const { Client } = require(${JSON.stringify(pgPath)});
+    const cell = (v) => {
+      if (v === null || v === undefined) return '';
+      if (typeof v === 'boolean') return v ? 't' : 'f';
+      if (v instanceof Date) return v.toISOString().replace('T', ' ').replace('Z', '+00');
+      return String(v);
+    };
+    const c = new Client({
+      host: process.env.F1_DB_HOST, port: Number(process.env.F1_DB_PORT),
+      user: process.env.F1_DB_USER, password: process.env.F1_DB_PASSWORD,
+      database: process.env.F1_DB_NAME,
+    });
+    (async () => {
+      await c.connect();
+      const r = await c.query(process.argv[1]);
+      process.stdout.write(r.rows.map((row) => r.fields.map((f) => cell(row[f.name])).join('|')).join('\\n'));
+      await c.end();
+    })().catch((e) => {
+      // Connection-level failures (ECONNREFUSED/ETIMEDOUT/...) exit 3 so the
+      // caller may fall through; SQL failures exit 1 and stay loud.
+      if (e && typeof e.code === 'string' && /^E[A-Z]+$/.test(e.code)) process.exit(3);
+      console.error(e.message);
+      process.exit(1);
+    });
+  `;
+  try {
+    return execFileSync(
+      process.execPath,
+      ['-e', script, sql],
+      {
+        env: {
+          ...process.env,
+          F1_DB_HOST: apiEnv('DATABASE_HOST'),
+          F1_DB_PORT: apiEnv('DATABASE_PORT'),
+          F1_DB_USER: apiEnv('DATABASE_USERNAME'),
+          F1_DB_NAME: apiEnv('DATABASE_NAME'),
+          F1_DB_PASSWORD: apiEnv('DATABASE_PASSWORD'),
+        },
+        encoding: 'utf8',
+      },
+    ).trim();
+  } catch (error) {
+    if ((error as { status?: number }).status === 3) return null;
+    throw error;
+  }
+}
+
 /** Raw executor: the marker when unreachable, otherwise psql's own outcome. */
 function execSql(sql: string): string {
   const args = [
@@ -127,9 +215,12 @@ function execSql(sql: string): string {
   try {
     return execFileSync('psql', args, { env, encoding: 'utf8' }).trim();
   } catch (error) {
-    // Hosts without a psql client (st-mvp-pivot sandbox) reach the same dev
-    // database through the compose postgres container's own psql instead.
+    // Hosts without a psql client (st-mvp-pivot sandbox) talk TCP to the LIVE
+    // database first (execSqlOverTcp above) — the compose container below is
+    // only the LAST resort because on this stack it holds a stale dataset.
     if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    const overTcp = execSqlOverTcp(sql);
+    if (overTcp !== null) return overTcp;
     // Overridable: the compose project name is not universal, so the historic
     // default does not exist on every host, and an absent container must never
     // read as "the query ran and failed".

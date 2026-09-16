@@ -142,16 +142,33 @@ test.describe('student drill-down (spec §2)', () => {
       await expect(card.locator('[data-slot="tint-tile"]')).toHaveCount(0);
     }
 
-    // A row with NEITHER test started is not a link (nothing to drill into).
+    // A student with NEITHER test started: the ops/30 kit made every row's
+    // first cell a link (the old `<tbody><tr>` "not clickable" contract is
+    // gone), so the row must NAVIGATE to the drill-down, which then shows the
+    // muted not-completed line for both slots instead of any fabricated card.
     const untouched = detail.students.find((student) =>
       student.tests.every((test) => test.status === 'not_started'),
     );
     expect(untouched, 'need a student with no test started').toBeTruthy();
     await gotoClassDetail(page);
     const row = page
-      .locator('[data-surface="school-admin-class-detail"] tbody tr')
+      .locator('[data-surface="school-admin-class-detail"] [data-directory-row]')
       .filter({ hasText: fullName(untouched!) })
       .first();
-    await expect(row.getByRole('link')).toHaveCount(0);
+    await row.locator('[data-row-href]').click();
+    await page.waitForURL(
+      new RegExp(`/classes/${detail.documentId}/students/${untouched!.documentId}$`),
+    );
+    const untouchedSurface = page.locator('[data-surface="school-admin-class-student-detail"]');
+    await expect(untouchedSurface).toContainText(
+      cat(en, 'Classes.studentDetail.notCompleted').replace('{slot}', 'A'),
+    );
+    await expect(untouchedSurface).toContainText(
+      cat(en, 'Classes.studentDetail.notCompleted').replace('{slot}', 'B'),
+    );
+    // No test card is fabricated for an untouched student (the history panel
+    // aside, the A/B sections only exist once a test completes).
+    await expect(untouchedSurface.locator('section[aria-labelledby="test-A-heading"]')).toHaveCount(0);
+    await expect(untouchedSurface.locator('section[aria-labelledby="test-B-heading"]')).toHaveCount(0);
   });
 });

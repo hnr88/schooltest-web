@@ -194,7 +194,7 @@ export function studentsMidAttempt(classDocumentId: string): string[] {
        join sessions_student_lnk sl on sl.student_id = s.id
        join sessions se on se.id = sl.session_id
       where c.document_id = '${classDocumentId.replace(/'/g, "''")}'
-        and s.status <> 'archived' and se.status = 'in_progress'`,
+        and s.student_status <> 'archived' and se.status = 'in_progress'`,
   );
   return rows === '' ? [] : rows.split('\n').map((row) => row.trim()).filter((row) => row !== '');
 }
@@ -220,7 +220,7 @@ export function officialResultsOfClass(classDocumentId: string): Map<string, Sto
        join students_class_lnk scl on scl.student_id = s.id
        join classes c on c.id = scl.class_id
       where c.document_id = '${classDocumentId.replace(/'/g, "''")}'
-        and s.status <> 'archived' and r.destination = 'official'
+        and s.student_status <> 'archived' and r.destination = 'official'
         and (r.model_version is null or r.model_version <> 'legacy-r7')`,
   );
   const stored = new Map<string, StoredResult>();
@@ -245,7 +245,7 @@ export function freeStudentCount(classDocumentId: string): number {
     `select count(*) from students s
        join students_class_lnk l on l.student_id = s.id
        join classes c on c.id = l.class_id
-      where c.document_id = '${classDocumentId.replace(/'/g, "''")}' and s.status = 'active'
+      where c.document_id = '${classDocumentId.replace(/'/g, "''")}' and s.student_status = 'active'
         and not exists (select 1 from sessions se
                           join sessions_student_lnk sl on sl.session_id = se.id
                          where sl.student_id = s.id and se.status = 'in_progress')`,

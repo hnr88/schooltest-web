@@ -1,0 +1,9 @@
+{"url":"/dashboard/school/children/new","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fchildren%2Fnew"}
+{"url":"/dashboard/school/classes","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fclasses"}
+{"url":"/dashboard/school/classes/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fclasses%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/school/classes/zzf10notreal0000000000/students/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fclasses%2Fzzf10notreal0000000000%2Fstudents%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/school/participation","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fparticipation"}
+{"url":"/dashboard/school/students","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fstudents"}
+{"url":"/dashboard/school/students/zzf10notreal0000000000","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fstudents%2Fzzf10notreal0000000000"}
+{"url":"/dashboard/school/students/new","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fstudents%2Fnew"}
+{"url":"/dashboard/school/teachers","outcome":"signin","note":"http://localhost:3002/sign-in?from=%2Fdashboard%2Fschool%2Fteachers"}

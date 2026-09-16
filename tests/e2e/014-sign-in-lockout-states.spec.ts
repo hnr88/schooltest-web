@@ -15,6 +15,11 @@ const WRONG_PASSWORD = 'WrongPassword123!';
 const ATTEMPT_INTERVAL_MS = 3100;
 const usedEmails: string[] = [];
 
+// F1 (2026-09-16): five paced wrong-password attempts (3.1s apart) plus page
+// loads run ~28s — right against the 30s DEFAULT cap, so parallel load turned
+// the spec into a bare timeout failure. 90s is this stack's live budget.
+test.setTimeout(90_000);
+
 test.afterAll(() => {
   for (const email of usedEmails) {
     const escapedEmail = email.replaceAll("'", "''");
