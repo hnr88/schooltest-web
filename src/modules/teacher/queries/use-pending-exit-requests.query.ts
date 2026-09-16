@@ -4,18 +4,24 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 
 import { strapi } from '@/lib/axios/strapi';
 import { PENDING_EXIT_REQUESTS_POLL_INTERVAL_MS } from '@/modules/teacher/constants/exit-requests.constants';
-import { pendingExitRequestsResponseSchema } from '@/modules/teacher/schemas/exit-request.schema';
+import {
+  pendingExitRequestFromWire,
+  pendingExitRequestsWireResponseSchema,
+} from '@/modules/teacher/schemas/exit-request.schema';
 import type { PendingExitRequest } from '@/modules/teacher/schemas/exit-request.schema';
 
 // SEMANTIC contract: GET the pending exit requests for the teacher's
-// supervised sittings, filtered to ONE sitting — the one the Live tab is
-// showing. Answers a BARE array; Zod-parsed so a shape the contract does not
-// describe throws HERE.
-async function fetchPendingExitRequests(sittingDocumentId: string): Promise<PendingExitRequest[]> {
-  const response = await strapi.get(`/api/exit-requests/pending`, {
-    params: { sitting: sittingDocumentId },
-  });
-  return pendingExitRequestsResponseSchema.parse(response.data);
+// supervised sittings. The endpoint takes NO sitting parameter — the queue is
+// the teacher-wide one and the panel filters by being mounted for its own
+// sitting. Answers a BARE array of wire rows (nested snake_cased student/
+// sitting), Zod-parsed then mapped to the panel's row shape so a shape the
+// contract does not describe throws HERE.
+async function fetchPendingExitRequests(): Promise<PendingExitRequest[]> {
+  const response = await strapi.get(`/api/exit-requests/pending`);
+  const wire = pendingExitRequestsWireResponseSchema.parse(response.data);
+  return wire
+    .map(pendingExitRequestFromWire)
+    .filter((request): request is PendingExitRequest => request !== null);
 }
 
 /**
@@ -25,7 +31,7 @@ async function fetchPendingExitRequests(sittingDocumentId: string): Promise<Pend
 export function pendingExitRequestsQueryOptions(sittingDocumentId: string) {
   return queryOptions({
     queryKey: ['teacher', 'exit-requests', 'pending', sittingDocumentId],
-    queryFn: () => fetchPendingExitRequests(sittingDocumentId),
+    queryFn: () => fetchPendingExitRequests(),
     staleTime: 0,
     retry: false,
   });

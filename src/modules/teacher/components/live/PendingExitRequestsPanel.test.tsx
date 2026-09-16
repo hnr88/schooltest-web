@@ -22,13 +22,22 @@ vi.mock('@/lib/axios/strapi', async (importOriginal) => ({
 }));
 
 const SITTING = 'sitting-doc-1';
+// The WIRE row the api's bare `GET /api/exit-requests/pending` array hands
+// out — nested snake_cased student/sitting; the query layer maps it to the
+// panel's row (studentName joined, sitting code as the test label).
 const REQUEST = {
   id: 'req-1',
-  studentName: 'Dilnoza Karimova',
-  sittingDocumentId: SITTING,
-  testLabel: 'Reading A',
+  status: 'pending',
   reason: 'I feel sick and need to go to the office',
   createdAt: '2026-09-16T09:00:00.000Z',
+  student: { document_id: 'stud-1', given_name: 'Dilnoza', family_name: 'Karimova' },
+  sitting: {
+    document_id: SITTING,
+    code: 'Reading A',
+    mode: 'progress',
+    skill: 'reading',
+    phase: 'running',
+  },
 };
 const QUEUE = [REQUEST];
 
@@ -85,10 +94,9 @@ describe('the live tab pending-exit-requests panel', () => {
     expect(view.textContent).toContain('Dilnoza Karimova');
     expect(view.textContent).toContain('Reading A');
     expect(view.textContent).toContain(REQUEST.reason);
-    // The queue rides the sitting-scoped teacher read.
-    expect(strapi.get).toHaveBeenCalledWith('/api/exit-requests/pending', {
-      params: { sitting: SITTING },
-    });
+    // The queue rides the teacher-wide pending read (the endpoint takes no
+    // sitting parameter — the panel is mounted per sitting).
+    expect(strapi.get).toHaveBeenCalledWith('/api/exit-requests/pending');
   });
 
   test('an empty queue says so instead of drawing rows', async () => {

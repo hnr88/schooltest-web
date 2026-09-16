@@ -28,6 +28,63 @@ export const pendingExitRequestSchema = z.object({
 /** `GET /api/exit-requests/pending` answers a BARE array of these. */
 export const pendingExitRequestsResponseSchema = z.array(pendingExitRequestSchema);
 
+/**
+ * The WIRE shape one pending queue row arrives in from the API — the bare
+ * projection `api::exit-request.exit-request.listPending` hands out: the
+ * student and sitting are nested, snake_cased, and neither `studentName` nor
+ * `testLabel` exists server-side. The query layer parses THIS, then maps to
+ * `pendingExitRequestSchema` — so a shape the contract does not describe still
+ * throws at the boundary.
+ */
+export const pendingExitRequestWireSchema = z.object({
+  id: str,
+  status: z.literal('pending'),
+  reason: str,
+  createdAt: str,
+  student: z
+    .object({
+      document_id: str,
+      given_name: z.string().nullable(),
+      family_name: z.string().nullable(),
+    })
+    .optional(),
+  sitting: z
+    .object({
+      document_id: str,
+      code: z.string().nullable(),
+      mode: z.string().nullable(),
+      skill: z.string().nullable(),
+      phase: z.string().nullable(),
+    })
+    .optional(),
+});
+
+/** `GET /api/exit-requests/pending` answers a BARE array of wire rows. */
+export const pendingExitRequestsWireResponseSchema = z.array(pendingExitRequestWireSchema);
+
+export type PendingExitRequestWire = z.infer<typeof pendingExitRequestWireSchema>;
+
+/**
+ * Wire row → the panel's queue row. A row without its sitting cannot say
+ * where it came from and is dropped (null); the display name joins the
+ * student's given/family parts, and the sitting code stands in as the test
+ * label (the panel's own `testFallback` covers a null one).
+ */
+export function pendingExitRequestFromWire(wire: PendingExitRequestWire): PendingExitRequest | null {
+  if (!wire.sitting) return null;
+  const studentName = [wire.student?.given_name, wire.student?.family_name]
+    .filter((part): part is string => Boolean(part))
+    .join(' ');
+  return {
+    id: wire.id,
+    studentName: studentName.length > 0 ? studentName : 'Unknown student',
+    sittingDocumentId: wire.sitting.document_id,
+    testLabel: wire.sitting.code,
+    reason: wire.reason,
+    createdAt: wire.createdAt,
+  };
+}
+
 /** `POST /api/exit-requests/:id/approve | /deny` answers the decided request. */
 export const exitRequestDecisionResponseSchema = z.object({
   id: str,
