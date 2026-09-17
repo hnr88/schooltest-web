@@ -5215,7 +5215,7 @@
       "llmTitle": "Muat turun profil Markdown tanpa pengenalan untuk pembantu AI",
       "noScoreReason": {
         "no_answers": "Tiada soalan dijawab, jadi tiada skor.",
-        "too_few_answers": "Tidak cukup soalan dijawab untuk mengira skor.",
+        "incomplete": "Bukan semua soalan dijawab, jadi tiada skor bacaan.",
         "pending": "Skor belum sedia lagi.",
         "failed": "Skor tidak dapat dikira."
       },

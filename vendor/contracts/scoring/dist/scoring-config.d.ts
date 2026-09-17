@@ -26,6 +26,14 @@ import { z } from 'zod';
  * Every key is REQUIRED: `loadScoringConfig` faults naming the missing key
  * rather than falling back to a literal in code (task 05 fail-loud rule).
  *
+ * `require_complete_attempt` (operator decision 2026-09-17, the night before
+ * the client demo): when `true`, a reading attempt that left ANY scored item of
+ * its own stage plan unanswered (not reached, timed out, teacher-ended, early
+ * hand-in) stores no headline score, no phase/CEFR/label/readiness and no
+ * skill levels — the withheld shape — with an `incomplete_attempt` scoring
+ * warning. Supplementary items never count. `false` restores the older rule
+ * (score what was answered once the evidence floor is met).
+ *
  * `low_confidence_se_threshold` is typed `null` ON PURPOSE (orchestrator
  * ruling, task 05): spec v2 line 252 sources low_confidence from "the SE
  * thresholds in the data contract", but the data contract never specifies an
@@ -43,6 +51,7 @@ export declare const scoringConfigSchema: z.ZodObject<{
     min_errors_for_patterns: z.ZodNumber;
     anchored_skills: z.ZodArray<z.ZodString>;
     low_confidence_se_threshold: z.ZodNull;
+    require_complete_attempt: z.ZodBoolean;
 }, z.core.$strip>;
 /** The parsed scoring-keys object `loadScoringConfig` returns. */
 export type ScoringConfigKeys = z.infer<typeof scoringConfigSchema>;

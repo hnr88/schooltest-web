@@ -5205,7 +5205,7 @@
       "llmTitle": "Download a de-identified Markdown profile for an AI assistant",
       "noScoreReason": {
         "no_answers": "No questions were answered, so there is no score.",
-        "too_few_answers": "Not enough questions were answered to work out a score.",
+        "incomplete": "Not every question was answered, so there is no reading score.",
         "pending": "The score is not ready yet.",
         "failed": "The score could not be worked out."
       },

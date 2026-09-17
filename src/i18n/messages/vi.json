@@ -5224,7 +5224,7 @@
       "llmTitle": "Tải hồ sơ Markdown đã ẩn danh cho trợ lý AI",
       "noScoreReason": {
         "no_answers": "Không có câu hỏi nào được trả lời nên không có điểm.",
-        "too_few_answers": "Chưa trả lời đủ câu hỏi để tính điểm.",
+        "incomplete": "Không phải câu hỏi nào cũng được trả lời nên không có điểm đọc.",
         "pending": "Điểm chưa sẵn sàng.",
         "failed": "Không thể tính được điểm."
       },

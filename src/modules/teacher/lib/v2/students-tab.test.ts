@@ -95,9 +95,9 @@ describe('studentsTabRows — recorded t2 roster (Reading 8B, 20 students)', () 
   });
 
   test('an unscored row states WHY there is no score — the desktop results reasons', () => {
-    // Recorded Lucia: 0 answered. Recorded Nour: 50 answered, under the evidence floor.
+    // Recorded Lucia: 0 answered. Recorded Nour: 50 answered — not every question, so no score.
     expect(rowOf('Lucia').noScoreReason).toBe('no_answers');
-    expect(rowOf('Nour').noScoreReason).toBe('too_few_answers');
+    expect(rowOf('Nour').noScoreReason).toBe('incomplete');
     const lucia = t2Row('Lucia');
     if (lucia.result === null) throw new Error('recorded Lucia has a result');
     const withStatus = (status: 'scoring' | 'scoring_failed'): RosterRow[] => [

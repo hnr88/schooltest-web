@@ -5215,7 +5215,7 @@
       "llmTitle": "AI 어시스턴트용 비식별 Markdown 프로필 다운로드",
       "noScoreReason": {
         "no_answers": "답변한 문항이 없어 점수가 없습니다.",
-        "too_few_answers": "점수를 산출할 만큼 답변한 문항이 충분하지 않습니다.",
+        "incomplete": "모든 문항에 답변하지 않아 읽기 점수가 없습니다.",
         "pending": "점수가 아직 준비되지 않았습니다.",
         "failed": "점수를 산출하지 못했습니다."
       },

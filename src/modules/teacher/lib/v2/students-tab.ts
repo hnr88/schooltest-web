@@ -36,13 +36,15 @@ const ROW_ORDER: Readonly<Record<StudentsSort, RowOrder>> = {
  * The result's own state says why it carries no score (the desktop's attempt
  * reasons, app cc6e6e2): still being scored, scoring failed, or — for a
  * complete row — how many items were really answered (`items_answered` never
- * counts not-reached items). A teacher sees held results, so "held" is no reason here.
+ * counts not-reached items): none, or not every one — the api scores a reading
+ * attempt only when every scored question was answered (api 39c8c6c). A
+ * teacher sees held results, so "held" is no reason here.
  */
 function noScoreReasonOf(result: RosterRow['result'], score: number | null): StudentNoScoreReason | null {
   if (result === null || score !== null) return null;
   if (result.status === 'scoring_failed' || result.status === 'manual_scoring') return 'failed';
   if (result.status !== 'complete') return 'pending';
-  return result.items_answered === 0 ? 'no_answers' : 'too_few_answers';
+  return result.items_answered === 0 ? 'no_answers' : 'incomplete';
 }
 
 export function studentsTabRow(row: RosterRow): StudentsTabRow {

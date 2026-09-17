@@ -16,7 +16,7 @@ export interface StudentsTabOptions {
 }
 
 /** Why a row that holds a result has no score — the reasons the desktop results surfaces state. */
-export type StudentNoScoreReason = 'no_answers' | 'too_few_answers' | 'pending' | 'failed';
+export type StudentNoScoreReason = 'no_answers' | 'incomplete' | 'pending' | 'failed';
 
 export interface StudentsTabRow {
   studentDocumentId: string;
