@@ -1690,6 +1690,13 @@
     "displayLabelSource": "해당 영역의 활성 크로스워크에서 산출됩니다. 커트라인이나 영역 통합 점수는 사용하지 않습니다.",
     "crosswalkEyebrow": "크로스워크 조회 값",
     "acaraPhaseLabel": "ACARA 단계",
+    "acaraPhases": {
+      "beginning": "시작",
+      "emerging": "도입",
+      "developing": "발달",
+      "developing_to_consolidating": "발달 → 정착",
+      "consolidating": "정착"
+    },
     "cefrBandLabel": "CEFR 등급",
     "readinessLabel": "준비도",
     "confidenceLabel": "측정 신뢰도",

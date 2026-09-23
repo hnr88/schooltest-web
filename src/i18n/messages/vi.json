@@ -1690,6 +1690,13 @@
     "displayLabelSource": "Được suy ra từ bảng đối chiếu đang áp dụng cho kỹ năng này. Không dùng điểm sàn và không dùng điểm tổng hợp giữa các kỹ năng.",
     "crosswalkEyebrow": "Giá trị tra từ bảng đối chiếu",
     "acaraPhaseLabel": "Giai đoạn ACARA",
+    "acaraPhases": {
+      "beginning": "Bắt đầu",
+      "emerging": "Mới hình thành",
+      "developing": "Đang phát triển",
+      "developing_to_consolidating": "Đang phát triển → Củng cố",
+      "consolidating": "Củng cố"
+    },
     "cefrBandLabel": "Bậc CEFR",
     "readinessLabel": "Mức sẵn sàng",
     "confidenceLabel": "Độ tin cậy của phép đo",

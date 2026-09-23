@@ -4,6 +4,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 
 import { Eyebrow } from '@/modules/design-system';
 import { ParentSubskillList } from '@/modules/report/components/ParentSubskillList';
+import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
 import type { FamilyPreviewView } from '@/modules/report/lib/parent-view-model';
 
 /**
@@ -15,6 +16,7 @@ import type { FamilyPreviewView } from '@/modules/report/lib/parent-view-model';
 export function ParentReportView({ view }: { view: FamilyPreviewView }) {
   const t = useTranslations('Report');
   const format = useFormatter();
+  const phase = useAcaraPhaseText()(view.phase.label);
 
   return (
     <div data-slot="report-parent-view" data-arm="family" className="flex flex-col gap-6">
@@ -32,13 +34,13 @@ export function ParentReportView({ view }: { view: FamilyPreviewView }) {
           >
             {view.overall.score === null ? '—' : `${view.overall.score}%`}
           </span>
-          {view.phase.label !== null ? (
+          {phase !== null ? (
             <span
               data-slot="report-parent-phase"
-              title={t('parentPhaseLabel', { phase: view.phase.label })}
+              title={t('parentPhaseLabel', { phase })}
               className="max-w-full truncate rounded-full bg-primary-soft px-3 py-0.5 text-caption font-semibold text-primary-ink"
             >
-              {t('parentPhaseLabel', { phase: view.phase.label })}
+              {t('parentPhaseLabel', { phase })}
             </span>
           ) : null}
         </div>

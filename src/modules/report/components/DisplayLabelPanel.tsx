@@ -4,14 +4,15 @@ import { useFormatter, useTranslations } from 'next-intl';
 
 import { Eyebrow, StatusPill } from '@/modules/design-system';
 import { EvidenceSummary } from '@/modules/report/components/EvidenceSummary';
+import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
 import { getDisplayLabelState } from '@/modules/report/lib/display-label';
 import { getResultStatusTone } from '@/modules/report/lib/report-status';
 import type { AttributeEvidence } from '@/modules/report/types/attribute.types';
 import type { ResultView } from '@/modules/report/types/report.types';
 
 // E11-01 — the primary teacher-facing claim: the Crosswalk `acara_phase`
-// (Doc 2a s.9). The label is SERVER-derived and rendered verbatim; this panel
-// never composes or alters it.
+// (Doc 2a s.9). The phase is SERVER-derived; this panel only names the stored
+// code in words (`useAcaraPhaseText`) and never composes or alters it.
 export function DisplayLabelPanel({
   result,
   evidence,
@@ -21,6 +22,7 @@ export function DisplayLabelPanel({
 }) {
   const t = useTranslations('Report');
   const format = useFormatter();
+  const phaseText = useAcaraPhaseText();
   const state = getDisplayLabelState(result);
   const absentKey = state === 'pending' ? 'displayLabelPending' : 'displayLabelNotApplicable';
 
@@ -38,7 +40,7 @@ export function DisplayLabelPanel({
           data-slot="report-display-label-value"
           className="text-portal-heading font-bold text-balance text-foreground"
         >
-          {result.acara_phase}
+          {phaseText(result.acara_phase)}
         </h1>
       ) : (
         <div className="flex flex-col gap-2">

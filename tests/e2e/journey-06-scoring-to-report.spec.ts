@@ -103,8 +103,9 @@ test.describe('journey 06 — scoring to teacher report', () => {
       await page.goto(`/dashboard/reports/${view.document_id}`);
       await expect(page.locator('[data-surface="teacher-report"]')).toBeVisible({ timeout: 30_000 });
       if (view.acara_phase !== null) {
+        // The stored phase CODE, named through the catalogue (never the raw key).
         await expect(page.locator('[data-slot="report-display-label-value"]')).toHaveText(
-          view.acara_phase,
+          en[`Report.acaraPhases.${view.acara_phase}`] ?? view.acara_phase,
         );
       }
       // This surface is keyed by MODEL ATTRIBUTE (Vocab_A2/Vocab_B1 separately),

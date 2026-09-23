@@ -1690,6 +1690,13 @@
     "displayLabelSource": "由该技能当前启用的对照表推导得出。不使用分数线，也不使用跨技能综合分。",
     "crosswalkEyebrow": "对照表查得值",
     "acaraPhaseLabel": "ACARA 阶段",
+    "acaraPhases": {
+      "beginning": "起步",
+      "emerging": "初显",
+      "developing": "发展中",
+      "developing_to_consolidating": "发展中 → 巩固",
+      "consolidating": "巩固"
+    },
     "cefrBandLabel": "CEFR 等级",
     "readinessLabel": "准备度",
     "confidenceLabel": "测量置信度",

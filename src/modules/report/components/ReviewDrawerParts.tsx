@@ -8,6 +8,7 @@ import { SheetClose, SheetDescription, SheetTitle } from '@/components/ui/sheet'
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { REVIEW_FOCUS, REVIEW_PHASES } from '@/modules/report/constants/components.constants';
+import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
 import { reviewInitials, submittedAgo } from '@/modules/report/lib/review-display';
 import type {
   ReviewHeaderContext,
@@ -34,6 +35,7 @@ function ReviewDrawerHeader({
   tally: ReviewTally | null;
   noteCount: number;
 }) {
+  const phaseText = useAcaraPhaseText();
   const t = useTranslations('TeacherPortal.review');
   const format = useFormatter();
   const now = useNow({ updateInterval: 60_000 });
@@ -59,7 +61,7 @@ function ReviewDrawerHeader({
         ? t('phaseNotSet')
         : isPhase(context.phase)
           ? t(`phase.${context.phase}`)
-          : context.phase;
+          : phaseText(context.phase);
   const scored = tally !== null && tally.total > 0 ? tally : null;
 
   return (

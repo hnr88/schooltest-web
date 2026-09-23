@@ -13,6 +13,7 @@ import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
 import { ReviewSubmissionLauncher } from '@/modules/report/components/ReviewSubmissionLauncher';
 import { TeacherReportBody } from '@/modules/report/components/TeacherReportBody';
 import { ViewToggle } from '@/modules/report/components/ViewToggle';
+import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
 import { buildAttributePanel } from '@/modules/report/lib/attribute-view-model';
 import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
 import { reportCrumbLabel } from '@/modules/report/lib/report-crumb';
@@ -29,6 +30,7 @@ import { RecordCrumb } from '@/modules/shell';
 // posterior value are absent from the DOM, not merely invisible (E11-15).
 export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: string }) {
   const t = useTranslations('Report');
+  const phaseText = useAcaraPhaseText();
   const format = useFormatter();
   const [view, setView] = useState<ReportViewMode>('teacher');
   const { data, error, isError, isFetching, isLoading, refetch } = useResultQuery(resultDocumentId);
@@ -70,7 +72,7 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
   // they render their stored statements as text via `LegacyReportBody`. With no
   // stored label the trail ends at Reports — a raw documentId is never a crumb.
   if (data.kind === 'legacy') {
-    const legacyCrumb = data.view.display_label ?? data.view.acara_phase;
+    const legacyCrumb = data.view.display_label ?? phaseText(data.view.acara_phase);
     return (
       <main
         data-surface="teacher-report"
@@ -92,7 +94,7 @@ export function TeacherReportScreen({ resultDocumentId }: { resultDocumentId: st
     (skill) => t(`skills.${skill}`),
     (iso) => format.dateTime(new Date(iso), { dateStyle: 'medium' }),
   );
-  const parentCrumb = parent.phase.label ?? t('parentHeadlinePending');
+  const parentCrumb = phaseText(parent.phase.label) ?? t('parentHeadlinePending');
 
   return (
     <main

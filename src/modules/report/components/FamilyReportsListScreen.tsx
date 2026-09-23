@@ -7,6 +7,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { Button, StatusPill } from '@/modules/design-system';
 import { useRouter } from '@/i18n/navigation';
 import { QueryErrorFallback } from '@/modules/query-errors';
+import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
 import { useFamilyReportListQuery } from '@/modules/report/queries/use-family-report.query';
 import type { FamilyReportListRow } from '@/modules/report/schemas/family-report.schema';
 
@@ -22,6 +23,7 @@ export function FamilyReportsListScreen() {
   const t = useTranslations('Report.family');
   const tList = useTranslations('Report');
   const format = useFormatter();
+  const phaseText = useAcaraPhaseText();
   const router = useRouter();
   const { data, error, isError, isFetching, isLoading, refetch } = useFamilyReportListQuery();
 
@@ -94,7 +96,7 @@ export function FamilyReportsListScreen() {
                   </span>
                   <span className="truncate text-caption text-muted-foreground">
                     {[
-                      row.display_label ?? row.acara_phase ?? null,
+                      row.display_label ?? phaseText(row.acara_phase),
                       row.published_at
                         ? format.dateTime(new Date(row.published_at), { dateStyle: 'medium' })
                         : t('notPublished'),

@@ -18,6 +18,7 @@ import {
   type DirectorySortDef,
 } from '@/modules/directory';
 import { StatusPill } from '@/modules/design-system';
+import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
 import { getDisplayLabelState } from '@/modules/report/lib/display-label';
 import { getResultStatusTone } from '@/modules/report/lib/report-status';
 import { useMyStudentResultsQuery } from '@/modules/report/queries/use-my-student-results.query';
@@ -47,6 +48,7 @@ function publishedMs(row: MyStudentsResultsRow): number {
 // "filter by student".
 export function ReportListScreen() {
   const t = useTranslations('Report');
+  const phaseText = useAcaraPhaseText();
   const format = useFormatter();
   const router = useRouter();
   const resultsQuery = useMyStudentResultsQuery();
@@ -109,7 +111,7 @@ export function ReportListScreen() {
         key: 'phase',
         header: t('acaraPhaseLabel'),
         cell: (row) => {
-          const phase = row.acara_phase !== null ? row.acara_phase : t(phaseLabelKeyOf(row));
+          const phase = phaseText(row.acara_phase) ?? t(phaseLabelKeyOf(row));
           return (
             <span
               data-slot="report-list-row"
@@ -151,7 +153,7 @@ export function ReportListScreen() {
         ),
       },
     ],
-    [t, format],
+    [t, format, phaseText],
   );
 
   const rowActions = useCallback(
@@ -171,7 +173,7 @@ export function ReportListScreen() {
     state.params,
     {
       searchText: (row) => [
-        row.acara_phase !== null ? row.acara_phase : t(phaseLabelKeyOf(row)),
+        phaseText(row.acara_phase) ?? t(phaseLabelKeyOf(row)),
         row.skill ? t(`skills.${row.skill}`) : t('skillCombined'),
         t(`resultStatus.${row.status}`),
       ],

@@ -7,6 +7,7 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Eyebrow, InsightCallout } from '@/modules/design-system';
 import { EvidenceSummary } from '@/modules/report/components/EvidenceSummary';
+import { useAcaraPhaseText } from '@/modules/report/hooks/useAcaraPhaseText';
 import { getCrosswalkFieldState } from '@/modules/report/lib/display-label';
 import type { AttributeEvidence } from '@/modules/report/types/attribute.types';
 import type { DisplayLabelState } from '@/modules/report/types/report-view.types';
@@ -59,6 +60,7 @@ export function CrosswalkFactPanel({
   evidence: AttributeEvidence | null;
 }) {
   const t = useTranslations('Report');
+  const phaseText = useAcaraPhaseText();
 
   return (
     <section
@@ -72,7 +74,7 @@ export function CrosswalkFactPanel({
         <CrosswalkFact
           label={t('acaraPhaseLabel')}
           state={getCrosswalkFieldState(result, result.acara_phase)}
-          value={result.acara_phase}
+          value={phaseText(result.acara_phase)}
         />
         <CrosswalkFact
           label={t('cefrBandLabel')}

@@ -39,7 +39,8 @@ test('flag on: the family preview renders the allow-list surface', async ({ page
   await page.goto(SCREEN_ROUTE);
   await expect(page.locator('[data-arm="family"]')).toBeVisible();
   await expect(page.locator('[data-slot="report-parent-score"]')).toHaveText('74%');
-  await expect(page.locator('[data-slot="report-parent-phase"]')).toContainText('developing');
+  // The stored code in words (Report.acaraPhases), never the raw key.
+  await expect(page.locator('[data-slot="report-parent-phase"]')).toContainText('Developing');
   await expect(page.locator('[data-slot="report-family-strength"]')).toHaveCount(2);
   await expect(page.locator('[data-slot="report-family-strength"][data-skill="Gist"]')).toHaveCount(0);
   await expect(page.locator('[data-slot="report-family-strength"][data-skill="Critical"]')).toHaveCount(0);

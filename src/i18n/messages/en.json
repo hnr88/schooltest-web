@@ -1690,6 +1690,13 @@
     "displayLabelSource": "Derived from the active crosswalk for this skill. No cut score and no cross-skill composite is used.",
     "crosswalkEyebrow": "Crosswalk lookups",
     "acaraPhaseLabel": "ACARA phase",
+    "acaraPhases": {
+      "beginning": "Beginning",
+      "emerging": "Emerging",
+      "developing": "Developing",
+      "developing_to_consolidating": "Developing → Consolidating",
+      "consolidating": "Consolidating"
+    },
     "cefrBandLabel": "CEFR band",
     "readinessLabel": "Readiness",
     "confidenceLabel": "Measurement confidence",

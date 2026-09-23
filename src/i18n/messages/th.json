@@ -1690,6 +1690,13 @@
     "displayLabelSource": "สรุปจากตารางเทียบที่ใช้งานอยู่ของทักษะนี้ ไม่มีการใช้คะแนนตัดสินและไม่มีคะแนนรวมข้ามทักษะ",
     "crosswalkEyebrow": "ค่าที่เทียบจากตารางเทียบ",
     "acaraPhaseLabel": "ระยะ ACARA",
+    "acaraPhases": {
+      "beginning": "เริ่มต้น",
+      "emerging": "เริ่มก่อตัว",
+      "developing": "กำลังพัฒนา",
+      "developing_to_consolidating": "กำลังพัฒนา → มั่นคง",
+      "consolidating": "มั่นคง"
+    },
     "cefrBandLabel": "ระดับ CEFR",
     "readinessLabel": "ความพร้อม",
     "confidenceLabel": "ความเชื่อมั่นของการวัด",
