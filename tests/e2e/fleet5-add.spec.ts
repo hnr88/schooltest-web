@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 import {
   apiChildren,
+  apiCreateStudent,
   apiLogin,
   dbStudentUserLink,
   realErrors,
@@ -178,7 +179,7 @@ test.describe('fleet5: add student (happy)', () => {
     expect(realErrors(errors), realErrors(errors).join('\n')).toEqual([]);
   });
 
-  test('11 create WITHOUT an email still provisions the deterministic fallback account', async ({
+  test('11 create WITHOUT an email is refused: inline email error, 400 EMAIL_REQUIRED on the wire, no row', async ({
     page,
     request,
   }) => {
@@ -188,35 +189,36 @@ test.describe('fleet5: add student (happy)', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const jwt = await apiLogin(request);
     const family = `${STAMP}NoMail`;
+    const creates: string[] = [];
+    page.on('request', (req) => {
+      if (req.method() === 'POST' && req.url().includes('/api/schools/me/children')) creates.push(req.url());
+    });
 
     await signIn(page);
     await page.goto(NEW);
     const form = page.locator('[data-slot="school-student-new"]');
     await form.getByLabel('Given name').fill('Noah');
     await form.getByLabel('Family name', { exact: true }).fill(family);
-    // No email — the middleware mints <student_key>@students.schooltest.invalid.
+    await form.getByLabel('Year level', { exact: true }).selectOption('8');
+    // No email: every student needs its own (sign-in + sitting join), so the
+    // form refuses before sending and the API refuses the same create.
     await form.getByRole('button', { name: 'Add student', exact: true }).click();
-    await page.waitForURL('**/dashboard/school/students', { timeout: 30_000 });
-    // Toast is transient and often dismissed while navigation settles; the
-    // API row + provisioning asserts below are the hard proof.
-    try {
-      await expect(
-        page.getByText(`Noah ${family} was added to your students.`, { exact: true }),
-      ).toBeVisible({ timeout: 4_000 });
-    } catch {
-      console.log('[fleet5] no-email create: toast not captured; row + DB asserts follow');
-    }
-    await shot(page, '11a-created-without-email');
+    await expect(
+      page.getByText("Enter the student's email. They use it to join a test.", { exact: true }),
+    ).toBeVisible({ timeout: 30_000 });
+    expect(new URL(page.url()).pathname).toContain('/students/new');
+    expect(creates, 'the form sent no create').toEqual([]);
+    await shot(page, '11a-no-email-refused-inline');
 
+    const refused = await apiCreateStudent(request, jwt, {
+      given_name: 'Noah',
+      family_name: family,
+      year_level: 8,
+    });
+    expect(refused.status, JSON.stringify(refused.error)).toBe(400);
+    expect((refused.error as { details?: { code?: string } }).details?.code).toBe('EMAIL_REQUIRED');
     const { rows } = await apiChildren(request, jwt, `q=${family}`);
-    expect(rows).toHaveLength(1);
-    const link = await dbStudentUserLink(rows[0]!.documentId);
-    expect(link, 'email-less student still gets a linked account').toBeTruthy();
-    expect(link!.email).toMatch(/@students\.schooltest\.invalid$/);
-    expect(link!.role_type).toBe('student');
-    expect(link!.provider).toBe('magic-link');
-    expect(link!.confirmed).toBe(true);
-    await shot(page, '11b-noemail-still-provisioned');
+    expect(rows, 'neither refusal wrote a student').toHaveLength(0);
     expect(realErrors(errors), realErrors(errors).join('\n')).toEqual([]);
   });
 });

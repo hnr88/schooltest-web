@@ -126,9 +126,10 @@ test('SA-005 + SA-006 + SA-007: new-student form refuses empty submits with inli
     screen.getByText(cat(en, 'SchoolStudents.validation.givenNameRequired')),
   ).toBeVisible();
 
-  // SA-005: fill the form (given name is the only hard-required field) and save
+  // SA-005: fill the form (given name and email are the hard-required fields) and save
   await page.getByLabel(cat(en, 'SchoolStudents.form.givenName')).fill(given);
   await page.getByLabel(cat(en, 'SchoolStudents.form.familyName')).fill('EALD Probe');
+  await screen.getByLabel(cat(en, 'SchoolStudents.form.email')).fill(`w3form-${STAMP}@schooltest.local`);
   // SA-007: pick an EAL/D first language off the closed vocabulary
   const lang = 'Mandarin Chinese';
   await page.getByLabel(cat(en, 'SchoolStudents.form.firstLanguage'), { exact: true }).selectOption({ label: lang });
@@ -189,7 +190,13 @@ test('SA-008 + SA-010: student detail carries record/class/test panels; archive 
   // probe student via the real contract
   const mk = await page.request.post('http://127.0.0.1:5500/api/schools/me/children', {
     headers: { Authorization: `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-    data: { given_name: given, family_name: 'Archive Probe', date_of_birth: '2012-09-09', year_level: 7 },
+    data: {
+      given_name: given,
+      family_name: 'Archive Probe',
+      email: `w3arch-${STAMP}@schooltest.local`,
+      date_of_birth: '2012-09-09',
+      year_level: 7,
+    },
   });
   expect(mk.status(), await mk.text()).toBe(201);
   const kidId = ((await mk.json()) as { data: { documentId: string } }).data.documentId;

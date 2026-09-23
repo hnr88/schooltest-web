@@ -462,7 +462,9 @@ async function seedClassesStudentsWindow(opsJwt, school) {
     'english', 'other', 'english', 'arabic',
     'vietnamese', 'english', 'other', 'english',
   ];
-  const header = 'given name,family name,date of birth,year level,home language';
+  const header = 'given name,family name,email,date of birth,year level,home language';
+  // Every student needs its own email (sign-in + sitting join); unique per run.
+  const runStamp = Date.now();
   let imported = 0;
 
   for (const [index, klass] of classes.entries()) {
@@ -474,7 +476,11 @@ async function seedClassesStudentsWindow(opsJwt, school) {
     const dobs = firsts.map((_, i) => `${birthYear}-0${(i % 9) + 1}-1${(i % 2) + 4}`);
     const csv = [
       header,
-      ...firsts.map((g, i) => `${g},${lasts[i]},${dobs[i]},${klass.year},${langs[i]}`),
+      ...firsts.map(
+        (g, i) =>
+          `${g},${lasts[i]},seed-${g.toLowerCase()}.${lasts[i].toLowerCase()}-${runStamp}@demo.schooltest.local,` +
+          `${dobs[i]},${klass.year},${langs[i]}`,
+      ),
     ].join('\n');
 
     // Preview first (contract: the only place rejection reasons are cheap).

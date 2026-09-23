@@ -120,6 +120,7 @@ test('SA-003: the students list searches, filters by class, pages, and rows link
   const probeA = await createChild(page.request, jwt, {
     given_name: `W3 List ${stamp} A`,
     family_name: 'Probe',
+    email: `w3-list-a-${stamp}@schooltest.local`,
     year_level: 7,
     class_documentId: classId,
   });
@@ -127,6 +128,7 @@ test('SA-003: the students list searches, filters by class, pages, and rows link
   const probeB = await createChild(page.request, jwt, {
     given_name: `W3 List ${stamp} B`,
     family_name: 'Probe',
+    email: `w3-list-b-${stamp}@schooltest.local`,
     year_level: 7,
     class_documentId: classId,
   });
@@ -420,6 +422,7 @@ test('SA-046: breadcrumbs walk School > Students > student and back without losi
   const kidId = await createChild(page.request, jwt, {
     given_name: `W3 Crumb ${stamp}`,
     family_name: 'Probe',
+    email: `w3-crumb-${stamp}@schooltest.local`,
     year_level: 7,
   });
   studentsToDelete.push(kidId);
