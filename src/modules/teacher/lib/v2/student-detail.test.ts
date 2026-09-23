@@ -82,7 +82,7 @@ describe('studentDetail — recorded Dilnoza (GET /results/:id, 8 sittings, 3 sc
   test('Everyday and Classroom Vocabulary: two cards, each its own label, blurb, band and band movement — no blended "-65"', () => {
     for (const [skill, labelKey, blurbKey] of [
       ['Vocab_A2', 'attribute.vocabA2', 'skillBlurb.vocabulary'],
-      ['Vocab_B1', 'attribute.vocabB1', 'skillBlurb.vocabB1'],
+      ['Vocab_B1', 'attribute.vocabB1', 'skillBlurb.vocabulary'],
     ] as const) {
       expect(card(view, skill)).toMatchObject({
         labelKey,
