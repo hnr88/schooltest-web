@@ -13,6 +13,7 @@ import { RECEPTIVE_SKILLS } from '@/modules/report/constants/lib.constants';
  */
 interface SkilledResult {
   skill: ReportSkill | null;
+  scope?: string;
 }
 
 // One applicability rule for every crosswalk-derived field, plus the receptive
@@ -25,6 +26,7 @@ export function getCrosswalkFieldState(
   value: string | boolean | null,
 ): DisplayLabelState {
   if (value !== null) return 'derived';
+  if (result.scope === 'combined') return 'not_applicable';
   if (result.skill !== null && !RECEPTIVE_SKILLS.includes(result.skill)) return 'not_applicable';
   return 'pending';
 }

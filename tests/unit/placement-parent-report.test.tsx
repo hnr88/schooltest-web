@@ -16,6 +16,7 @@ vi.mock('@/lib/axios/strapi', () => ({
 import { strapi } from '@/lib/axios/strapi';
 
 import { PlacementReportBody } from '@/modules/report/components/PlacementReportBody';
+import { getDisplayLabelState } from '@/modules/report/lib/display-label';
 import { fetchMyStudentResults } from '@/modules/report/queries/use-my-student-results.query';
 import type { LegacyResultView } from '@/modules/report/schemas/result-view.schema';
 import { fetchStudentResult } from '@/modules/results/queries/use-student-result.query';
@@ -98,6 +99,16 @@ describe('placement parent — C-4 read, C-11 list and the report body', () => {
       v2Child.document_id,
       live.preRewrite.document_id,
     ]);
+  });
+
+  test('C-11: the placement row carries no phase by design, so it reads "not applicable", never "Not derived yet"', async () => {
+    get.mockResolvedValueOnce({ data: [currentParent, live.preRewrite] });
+
+    const rows = await fetchMyStudentResults();
+
+    expect(rows.map((row) => getDisplayLabelState(row))).toEqual(['not_applicable', 'not_applicable']);
+    expect(getDisplayLabelState({ skill: 'reading', acara_phase: null })).toBe('pending');
+    expect(getDisplayLabelState({ skill: null, acara_phase: null })).toBe('pending');
   });
 
   test('the report renders the current-model child with the teacher blocks, not the legacy caveat', async () => {
