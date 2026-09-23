@@ -8,6 +8,7 @@ import { PrintReportButton } from '@/modules/results';
 import { QueryErrorFallback } from '@/modules/query-errors';
 import { ParentReportView } from '@/modules/report/components/ParentReportView';
 import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
+import { familyCommentaryKeys } from '@/modules/report/lib/family-commentary';
 import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
 import type { FamilyPreviewView } from '@/modules/report/lib/parent-view-model';
 import { useFamilyReportQuery } from '@/modules/report/queries/use-family-report.query';
@@ -21,8 +22,9 @@ import type { FamilyReportDetail } from '@/modules/report/schemas/family-report.
  * The read is the parent-authorised GET /api/my/results/:documentId, whose
  * server-side allow-list projection carries ONLY family-safe content:
  * - released → score + phase + skills (ParentReportView over the shared
- *   FamilyPreviewView builder) PLUS the plain-language commentary the family
- *   contract always attaches (the carer's "teacher commentary");
+ *   FamilyPreviewView builder) PLUS "What this means": localized carer lines
+ *   built from the structured attributes (`familyCommentaryKeys`), never the
+ *   API's English audit narrative (probabilities, CEFR, internal keys);
  * - held / recalled → the lifecycle face with NO measures on the wire, so "no
  *   score digits anywhere" is structural (PAR-012/013). A recalled report is
  *   the held face plus the recall fact — the released payload is never cached
@@ -33,6 +35,7 @@ export function FamilyReportScreen({ resultDocumentId }: { resultDocumentId: str
   const format = useFormatter();
   const t = useTranslations('Report');
   const tFam = useTranslations('Report.family');
+  const tCarer = useTranslations('TeacherPortal.viewModel');
 
   if (isLoading) return <ReportSkeleton />;
 
@@ -113,9 +116,7 @@ export function FamilyReportScreen({ resultDocumentId }: { resultDocumentId: str
     published_at: view.published_at,
     attributes: view.attributes,
   });
-  const commentary = (view.narrative?.plain_language ?? []).filter(
-    (line): line is string => typeof line === 'string' && line.length > 0,
-  );
+  const commentary = familyCommentaryKeys(view.attributes);
 
   return (
     <main
@@ -142,9 +143,9 @@ export function FamilyReportScreen({ resultDocumentId }: { resultDocumentId: str
             {tFam('commentaryHeading')}
           </h2>
           <ul className="flex flex-col gap-2">
-            {commentary.map((line) => (
-              <li key={line} data-slot="family-report-commentary-line" className="text-body-md text-foreground">
-                {line}
+            {commentary.map((key) => (
+              <li key={key} data-slot="family-report-commentary-line" className="text-body-md text-foreground">
+                {tCarer(key)}
               </li>
             ))}
           </ul>
