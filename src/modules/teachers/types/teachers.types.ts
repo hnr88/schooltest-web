@@ -49,6 +49,7 @@ export interface StaffRow {
   status: StaffRowStatus;
   // The teacher's COMPLETE assignment set: the C-TCH-01 `classes` grouping (the
   // singular `class.teacher` owner) unioned with the C-CLS-01 `teachers` m2m.
+  // For an invitation: the classes waiting on it (C-CLS-01 `pending_teacher`).
   classes: SchoolTeacherClass[];
   // How many of those classes carry sittings or results (C-RPT-04), driving the
   // spec section 3 removal warning. `null` = participation could not be read, so

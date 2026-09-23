@@ -2486,7 +2486,7 @@
       "columnStatus": "Trạng thái",
       "columnActions": "Thao tác",
       "empty": "Chưa có nhân viên hay lời mời nào. Gửi lời mời đầu tiên để bắt đầu.",
-      "classesPending": "Được phân công sau khi tham gia",
+      "classesWaiting": "Sẽ được phân công vào {classes} khi tham gia",
       "classesNone": "Chưa có lớp",
       "expiresOn": "Hết hạn {date}",
       "status": {
@@ -2831,7 +2831,9 @@
       "successDescription": "Đã đặt {teachers} giáo viên cho {classes} lớp.",
       "cancel": "Hủy",
       "submit": "Phân công",
-      "noClasses": "Chưa có lớp nào để phân công."
+      "noClasses": "Chưa có lớp nào để phân công.",
+      "skippedTitle": "{count, plural, other {# lớp giữ nguyên giáo viên}}",
+      "skippedDescription": "Giáo viên được mời chỉ chờ ở lớp chưa có giáo viên, nên {classes} sẽ không bị thay đổi. Để thay giáo viên của một lớp, hãy chỉnh sửa lớp đó."
     },
     "studentDetailMeta": {
       "title": "Kết quả học sinh - SchoolTest",

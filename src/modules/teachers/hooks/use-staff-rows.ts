@@ -35,7 +35,7 @@ function teacherRow(
   };
 }
 
-function invitationRow(invitation: SchoolInvitation): StaffRow | null {
+function invitationRow(invitation: SchoolInvitation, schoolClasses: SchoolClass[] | undefined): StaffRow | null {
   // Accepted invitations are represented by the staff account itself; revoked
   // ones are withdrawn access kept only for the audit trail (C-INV-07).
   if (invitation.status === 'accepted' || invitation.status === 'revoked') return null;
@@ -46,7 +46,11 @@ function invitationRow(invitation: SchoolInvitation): StaffRow | null {
     first_name: invitation.first_name,
     last_name: invitation.last_name,
     status: invitation.status,
-    classes: [],
+    // BUG-006: the classes already waiting on this invitation (C-CLS-01
+    // pending_teacher) — linked to the account the moment it is accepted.
+    classes: (schoolClasses ?? [])
+      .filter((klass) => klass.pending_teacher?.documentId === invitation.documentId)
+      .map((klass) => ({ documentId: klass.documentId, name: klass.name })),
     // No account, so no class links and nothing reporting can be attached to.
     reportingClassCount: null,
     expires_at: invitation.expires_at,
@@ -70,7 +74,7 @@ export function useStaffRows({
     const rows: StaffRow[] = [
       ...(teachers ?? []).map((teacher) => teacherRow(teacher, classes, reportingIds)),
       ...(invitations ?? [])
-        .map(invitationRow)
+        .map((invitation) => invitationRow(invitation, classes))
         .filter((row): row is StaffRow => row !== null),
     ];
     return rows.sort((a, b) => {

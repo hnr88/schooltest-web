@@ -21,4 +21,7 @@ export interface UpdateClassInput {
   teacher_documentIds?: string[];
   // BUG-006: set (invitation documentId) or clear (null); omitted = unchanged.
   pending_teacher_documentId?: string | null;
+  // BUG-006 follow-up: the explicit consent to remove the class's current
+  // teachers when it is put on an invited teacher (the server refuses otherwise).
+  replace_teachers?: boolean;
 }

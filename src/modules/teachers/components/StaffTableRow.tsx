@@ -1,7 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 
 import { PersonCell } from '@/modules/design-system';
 
@@ -32,12 +32,20 @@ export function StaffNameCell({ row }: { row: StaffRow }) {
 }
 
 // The design's Classes column is a plain text count ("3 classes" / "No
-// classes"); the class list itself lives on the detail screen.
+// classes"); the class list itself lives on the detail screen. An invitation
+// has no detail screen, so it names the classes already waiting on it
+// (BUG-006), or reads like any teacher with none.
 export function StaffClassesCell({ row }: { row: StaffRow }) {
   const t = useTranslations('Teachers.table');
+  const format = useFormatter();
 
-  if (row.kind === 'invitation') {
-    return <span>{t('classesPending')}</span>;
+  if (row.kind === 'invitation' && row.classes.length > 0) {
+    const text = t('classesWaiting', { classes: format.list(row.classes.map((klass) => klass.name)) });
+    return (
+      <span className="block min-w-0 truncate" title={text} data-slot="staff-invite-classes">
+        {text}
+      </span>
+    );
   }
   if (row.classes.length === 0) {
     return <span>{t('classesNone')}</span>;

@@ -2477,7 +2477,7 @@
       "columnStatus": "Status",
       "columnActions": "Tindakan",
       "empty": "Belum ada kakitangan atau jemputan. Hantar jemputan pertama anda untuk bermula.",
-      "classesPending": "Ditetapkan selepas menyertai",
+      "classesWaiting": "Ditugaskan ke {classes} sebaik sahaja menyertai",
       "classesNone": "Belum ada kelas",
       "expiresOn": "Luput {date}",
       "status": {
@@ -2822,7 +2822,9 @@
       "successDescription": "{teachers} guru ditetapkan pada {classes} kelas.",
       "cancel": "Batal",
       "submit": "Tugaskan",
-      "noClasses": "Tiada kelas untuk ditugaskan lagi."
+      "noClasses": "Tiada kelas untuk ditugaskan lagi.",
+      "skippedTitle": "{count, plural, other {# kelas mengekalkan guru mereka}}",
+      "skippedDescription": "Guru yang dijemput hanya menunggu di kelas tanpa guru, jadi {classes} tidak akan diubah. Untuk menggantikan guru sesebuah kelas, edit kelas itu."
     },
     "studentDetailMeta": {
       "title": "Keputusan murid - SchoolTest",

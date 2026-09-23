@@ -42,9 +42,11 @@ interface ClassRow {
 }
 
 let school: FreshSchool | null = null;
-const firstTeacher = teacherPerson('bug006-first');
-const secondTeacher = teacherPerson('bug006-second');
-const thirdTeacher = teacherPerson('bug006-third');
+// Distinct first names: teacherPerson stamps all three in the same millisecond,
+// so their full names would otherwise be identical in every picker and row.
+const firstTeacher = { ...teacherPerson('bug006-first'), first: 'First' };
+const secondTeacher = { ...teacherPerson('bug006-second'), first: 'Second' };
+const thirdTeacher = { ...teacherPerson('bug006-third'), first: 'Third' };
 const STAMP = Date.now();
 const FIRST_CLASS = `BUG006 Pending 7A ${STAMP}`;
 const SECOND_CLASS = `BUG006 Revoked 7B ${STAMP}`;
@@ -284,7 +286,9 @@ test('BUG-006: the class detail shows the pending teacher; assigning a real teac
   // Assign a REAL teacher from the detail page.
   await detail.getByRole('button', { name: cat(en, 'Classes.detail.teachers.add'), exact: true }).click();
   const picker = page.getByRole('dialog');
-  await picker.getByRole('checkbox', { name: fullName(firstTeacher), exact: true }).check();
+  // The picker row is a <label> wrapping the checkbox, the name and the email,
+  // so the checkbox's accessible name is the whole row; the email is unique.
+  await picker.locator('label', { hasText: firstTeacher.email }).getByRole('checkbox').check();
   const patch = page.waitForRequest((req) => req.method() === 'PATCH' && req.url().includes(`/api/schools/me/classes/${classDocumentId}`));
   await picker.getByRole('button', { name: cat(en, 'Classes.detail.teachers.save'), exact: true }).click();
   expect((await patch).postDataJSON()).toEqual({ teacher_documentIds: [firstTeacherDocumentId] });

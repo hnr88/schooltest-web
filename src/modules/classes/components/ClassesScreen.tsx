@@ -129,6 +129,7 @@ export function ClassesScreen() {
             documentId: row.documentId,
             name: row.name,
             hasPendingTeacher: row.pending_teacher !== null,
+            hasTeacher: row.teachers.length > 0,
           }))}
           onClose={() => setAssignOpen(false)}
         />

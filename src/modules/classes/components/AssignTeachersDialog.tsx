@@ -16,10 +16,15 @@ import {
 } from '@/modules/design-system';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { AssignSkippedNotice } from '@/modules/classes/components/AssignSkippedNotice';
 import { PicksClearedNotice } from '@/modules/classes/components/PicksClearedNotice';
 import { useAssignableTeachers } from '@/modules/classes/hooks/use-assignable-teachers';
 import { useTeacherPicks } from '@/modules/classes/hooks/use-teacher-picks';
-import { assignmentFromPicks, teacherPickOptions } from '@/modules/classes/lib/class-teacher-picker';
+import {
+  assignmentFromPicks,
+  classesForInvitedAssign,
+  teacherPickOptions,
+} from '@/modules/classes/lib/class-teacher-picker';
 import { useAssignTeachersMutation } from '@/modules/classes/queries/use-assign-teachers.mutation';
 
 // Task 025 multi-picker (School Admin Portal overlays artboard): "multi-picker
@@ -30,12 +35,14 @@ import { useAssignTeachersMutation } from '@/modules/classes/queries/use-assign-
 // plural the api asserts against the school's own staff). No numbers exist in
 // this dialog other than the two live list lengths.
 // BUG-006: invited teachers still pending activation are listed too (labelled
-// "Invited — pending"); at most one can be picked, sent as the pending teacher.
+// "Invited — pending"); at most one can be picked, sent as the pending teacher —
+// and only to selected classes WITHOUT a teacher (the others are skipped and
+// named; the bulk assign never removes a class's teachers).
 export function AssignTeachersDialog({
   classes,
   onClose,
 }: {
-  classes: { documentId: string; name: string; hasPendingTeacher: boolean }[];
+  classes: { documentId: string; name: string; hasPendingTeacher: boolean; hasTeacher: boolean }[];
   onClose: () => void;
 }) {
   const t = useTranslations('Classes.assignTeachers');
@@ -54,8 +61,12 @@ export function AssignTeachersDialog({
     teachersQuery.invitations,
     (name) => tp('pendingOption', { name }),
   );
-  const canSubmit =
-    selectedClasses.length > 0 && selectedTeachers.length > 0 && !assignMutation.isPending;
+  const assignment = assignmentFromPicks(selectedTeachers);
+  const { eligible, skipped } =
+    assignment.pending_teacher_documentId !== null
+      ? classesForInvitedAssign(classes, selectedClasses)
+      : { eligible: selectedClasses, skipped: [] };
+  const canSubmit = eligible.length > 0 && selectedTeachers.length > 0 && !assignMutation.isPending;
 
   return (
     <OpsDialog open onOpenChange={(next) => { if (!next) onClose(); }}>
@@ -141,6 +152,8 @@ export function AssignTeachersDialog({
           </OpsDialogBody>
         )}
 
+        <AssignSkippedNotice classNames={skipped.map((klass) => klass.name)} />
+
         {assignMutation.isSuccess ? (
           <div className="px-7 pb-4">
             <Alert variant="success" title={t('successTitle')}>
@@ -171,10 +184,9 @@ export function AssignTeachersDialog({
             onClick={() =>
               assignMutation.mutate(
                 {
-                  classDocumentIds: selectedClasses,
-                  teacherDocumentIds: assignmentFromPicks(selectedTeachers).teacher_documentIds,
-                  pendingTeacherDocumentId:
-                    assignmentFromPicks(selectedTeachers).pending_teacher_documentId,
+                  classDocumentIds: eligible,
+                  teacherDocumentIds: assignment.teacher_documentIds,
+                  pendingTeacherDocumentId: assignment.pending_teacher_documentId,
                   classesWithPendingTeacher: classes
                     .filter((klass) => klass.hasPendingTeacher)
                     .map((klass) => klass.documentId),

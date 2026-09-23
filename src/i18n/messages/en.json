@@ -2477,7 +2477,7 @@
       "columnStatus": "Status",
       "columnActions": "Actions",
       "empty": "No staff or invitations yet. Send your first invitation to get started.",
-      "classesPending": "Assigned after joining",
+      "classesWaiting": "Assigned to {classes} once they join",
       "classesNone": "No classes yet",
       "expiresOn": "Expires {date}",
       "status": {
@@ -2853,7 +2853,9 @@
       "successDescription": "{teachers, plural, one {# teacher} other {# teachers}} set on {classes, plural, one {# class} other {# classes}}.",
       "cancel": "Cancel",
       "submit": "Assign",
-      "noClasses": "No classes to assign yet."
+      "noClasses": "No classes to assign yet.",
+      "skippedTitle": "{count, plural, one {# class keeps its teacher} other {# classes keep their teachers}}",
+      "skippedDescription": "An invited teacher only waits on a class with no teacher, so {classes} won't be changed. To replace a class's teacher, edit that class."
     }
   },
   "SchoolStudents": {

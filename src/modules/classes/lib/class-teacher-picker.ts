@@ -5,6 +5,7 @@ import type {
   ClassPendingTeacher,
   ClassTeacherAssignment,
 } from '@/modules/classes/types/classes.types';
+import type { UpdateClassInput } from '@/modules/classes/types/queries.types';
 import type { SchoolInvitation, SchoolTeacher } from '@/modules/teachers';
 
 // BUG-006: an invitation is assignable while it is a TEACHER invitation that is
@@ -92,4 +93,38 @@ export function togglePick(picks: readonly string[], value: string, checked: boo
 // what the picker must announce instead of unticking them silently.
 export function droppedByToggle(before: readonly string[], after: readonly string[], value: string): string[] {
   return before.filter((entry) => entry !== value && !after.includes(entry));
+}
+
+// BUG-006 follow-up: what the Edit class PATCH says about the teacher — NOTHING
+// unless the pick changed, so a rename never touches a lapsed invitation's
+// "reassign teacher" state (or a co-teacher the single select does not show).
+// An invited pick on a class that has a teacher is the explicit replace the
+// server requires; any other pick clears a pending teacher the class holds.
+export function editTeacherChange(
+  pick: string,
+  initialPick: string,
+  target: { teacher?: { documentId: string } | null; pending_teacher?: ClassPendingTeacher | null },
+): Pick<UpdateClassInput, 'teacher_documentIds' | 'pending_teacher_documentId' | 'replace_teachers'> {
+  if (pick === initialPick) return {};
+  const assignment = assignmentFromPicks([pick]);
+  const invited = assignment.pending_teacher_documentId !== null;
+  return {
+    teacher_documentIds: assignment.teacher_documentIds,
+    ...(invited || target.pending_teacher ? { pending_teacher_documentId: assignment.pending_teacher_documentId } : {}),
+    ...(invited && target.teacher ? { replace_teachers: true } : {}),
+  };
+}
+
+// BUG-006 follow-up: the bulk assign never takes a class's teachers away. With
+// an invited pick, a selected class that already has a teacher is SKIPPED (and
+// named to the admin) — an invited teacher only waits on a class with none.
+export function classesForInvitedAssign<Row extends { documentId: string; hasTeacher: boolean }>(
+  classes: readonly Row[],
+  selected: readonly string[],
+): { eligible: string[]; skipped: Row[] } {
+  const picked = classes.filter((row) => selected.includes(row.documentId));
+  return {
+    eligible: picked.filter((row) => !row.hasTeacher).map((row) => row.documentId),
+    skipped: picked.filter((row) => row.hasTeacher),
+  };
 }

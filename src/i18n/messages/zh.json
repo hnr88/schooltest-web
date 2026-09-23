@@ -2477,7 +2477,7 @@
       "columnStatus": "状态",
       "columnActions": "操作",
       "empty": "暂无员工或邀请。发送第一份邀请即可开始。",
-      "classesPending": "加入后分配",
+      "classesWaiting": "加入后分配到 {classes}",
       "classesNone": "暂无班级",
       "expiresOn": "{date} 到期",
       "status": {
@@ -2853,7 +2853,9 @@
       "successDescription": "已为 {classes} 个班级设置 {teachers} 位教师。",
       "cancel": "取消",
       "submit": "分配",
-      "noClasses": "还没有可分配的班级。"
+      "noClasses": "还没有可分配的班级。",
+      "skippedTitle": "{count} 个班级保留原有教师",
+      "skippedDescription": "受邀教师只能等待分配到没有教师的班级，因此 {classes} 不会被更改。如需更换班级教师，请编辑该班级。"
     }
   },
   "SchoolStudents": {

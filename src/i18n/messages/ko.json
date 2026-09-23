@@ -2477,7 +2477,7 @@
       "columnStatus": "상태",
       "columnActions": "작업",
       "empty": "아직 교직원이나 초대가 없습니다. 첫 초대를 보내 시작하세요.",
-      "classesPending": "합류 후 배정",
+      "classesWaiting": "합류하면 {classes}에 배정됨",
       "classesNone": "아직 학급 없음",
       "expiresOn": "{date} 만료",
       "status": {
@@ -2822,7 +2822,9 @@
       "successDescription": "{classes}개 반에 교사 {teachers}명이 지정되었습니다.",
       "cancel": "취소",
       "submit": "배정",
-      "noClasses": "아직 배정할 학급이 없습니다."
+      "noClasses": "아직 배정할 학급이 없습니다.",
+      "skippedTitle": "{count}개 학급은 기존 교사를 유지합니다",
+      "skippedDescription": "초대된 교사는 교사가 없는 학급에만 배정되므로 {classes}은(는) 변경되지 않습니다. 학급의 교사를 바꾸려면 해당 학급을 편집하세요."
     },
     "studentDetailMeta": {
       "title": "학생 결과 - SchoolTest",
