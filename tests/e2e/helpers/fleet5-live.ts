@@ -6,6 +6,7 @@ import { expect, type APIRequestContext, type Page } from '@playwright/test';
 import { cat, loadMessages } from './i18n';
 import { apiEnv } from './auth-db';
 import { namedRetry } from './api-named-retry';
+import { roleCredentials } from './credentials';
 
 /**
  * Fleet 5 live helpers — scratch support for tests/e2e/fleet5-*.spec.ts.
@@ -46,10 +47,7 @@ export async function signIn(page: Page): Promise<void> {
   });
 }
 
-export const CREDS = {
-  email: 'schooladmin-a@schooltest.local',
-  password: 'Schooladmin1234!',
-};
+export const CREDS = roleCredentials('schoolAdmin');
 
 export interface ChildRow {
   documentId: string;
@@ -167,8 +165,10 @@ export interface StudentUserLink {
  * created Student must own a linked, confirmed, passwordless student-role user.
  */
 export async function dbStudentUserLink(studentDocumentId: string): Promise<StudentUserLink | null> {
-  const requireFrom = (await import('node:module')).createRequire(__filename);
-  const pg = requireFrom('/home/hnr/Code/schooltest/schooltest-api/node_modules/pg') as {
+  const requireFrom = (await import('node:module')).createRequire(
+    path.resolve(process.cwd(), '..', 'schooltest-api', 'package.json'),
+  );
+  const pg = requireFrom('pg') as {
     Client: new (config: Record<string, unknown>) => {
       connect(): Promise<void>;
       query(sql: string, values?: unknown[]): Promise<{ rows: Record<string, unknown>[] }>;

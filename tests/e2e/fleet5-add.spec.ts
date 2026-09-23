@@ -39,7 +39,7 @@ async function fillStudentForm(
   const form = page.locator('[data-slot="school-student-new"]');
   await form.getByLabel('Given name').fill(values.given);
   await form.getByLabel('Family name', { exact: true }).fill(values.family);
-  await form.getByLabel('Email', { exact: true }).fill(values.email);
+  await form.getByLabel(/^Email/).fill(values.email);
   await form.getByLabel('Year level', { exact: true }).selectOption('8');
 }
 

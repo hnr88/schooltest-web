@@ -92,7 +92,7 @@ test.describe('fleet5: add student (unhappy)', () => {
     const form = page.locator('[data-slot="school-student-new"]');
     await form.getByLabel('Given name').fill('Dup');
     await form.getByLabel('Family name', { exact: true }).fill(`${STAMP}DupA`);
-    await form.getByLabel('Email', { exact: true }).fill(email);
+    await form.getByLabel(/^Email/).fill(email);
     await form.getByLabel('Year level', { exact: true }).selectOption('7');
     await submit(page);
     await page.waitForURL('**/dashboard/school/students', { timeout: 30_000 });
@@ -103,7 +103,7 @@ test.describe('fleet5: add student (unhappy)', () => {
     await expect(page.locator('[data-slot="school-student-new"]')).toBeVisible();
     await form.getByLabel('Given name').fill('Dup');
     await form.getByLabel('Family name', { exact: true }).fill(`${STAMP}DupB`);
-    await form.getByLabel('Email', { exact: true }).fill(email);
+    await form.getByLabel(/^Email/).fill(email);
     await submit(page);
     // The refusal is a toast — whichever wording lands, the form must stay
     // open and name a failure (NOT navigate back to the roster as success).
@@ -124,12 +124,11 @@ test.describe('fleet5: add student (unhappy)', () => {
       email,
       year_level: 7,
     });
-    expect(second.status, `duplicate email must refuse: ${JSON.stringify(second.error)}`).toBe(403);
+    expect(second.status, `duplicate email must refuse: ${JSON.stringify(second.error)}`).toBe(400);
+    expect((second.error as { details?: { code?: string } }).details?.code).toBe('EMAIL_IN_USE');
 
-    // ...but TODAY'S PROVISIONING CHANGE writes the row BEFORE provisioning
-    // refuses, and nothing rolls it back: the refused create leaves an orphan
-    // student row (no account, seat consumed). This assert is DELIBERATELY
-    // strict — it failing IS the recorded product defect [BUG-fleet5-orphan].
+    // ...and the provisioning gate refuses BEFORE any write, so neither refused
+    // create may leave a student row behind (no orphan, no seat consumed).
     const orphan = await apiChildren(request, jwt, `q=${STAMP}DupB`);
     const orphanC = await apiChildren(request, jwt, `q=${STAMP}DupC`);
     expect(orphan.total, '[BUG] refused duplicate-email create left an orphan student row').toBe(0);

@@ -458,8 +458,8 @@ async function seedClassesStudentsWindow(opsJwt, school) {
     'Bergman', 'Sato', 'Petrov', 'Ngata', 'Mensah', 'Vo',
   ];
   const LANGUAGES = [
-    'english', 'arabic', 'vietnamese', 'mandarin',
-    'english', 'other', 'english', 'arabic',
+    'english', 'other', 'vietnamese', 'mandarin_chinese',
+    'english', 'other', 'english', 'other',
     'vietnamese', 'english', 'other', 'english',
   ];
   const header = 'given name,family name,email,date of birth,year level,home language';
