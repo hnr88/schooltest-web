@@ -10,7 +10,7 @@ export const PROOFS = path.resolve(process.cwd(), 'tests', 'e2e', 'proofs', 'tea
 
 export const modal = (page: Page) => page.locator('[data-surface="start-session-modal"]');
 
-/** A radio card: a "When" mode, a form id, or a Students scope ("whole" | "some"). */
+/** A radio card: a "When" mode, a skill, or a form id. */
 export const choice = (scope: Locator, value: string) =>
   scope.locator(`[data-slot="start-choice"][data-value="${value}"]`);
 

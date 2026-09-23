@@ -71,11 +71,7 @@ function StartSessionBody({
           onTab={vm.setTab}
           subs={{
             test: t('tabs.testSub', { variant: vm.test?.variant ?? '', className }),
-            students: vm.isChecking
-              ? tKit('noValue')
-              : form.scope === 'whole'
-                ? t('tabs.studentsAvailable', { free: vm.free.length, total: vm.entries.length })
-                : t('tabs.studentsSelected', { count: vm.pickedFree.length }),
+            students: vm.isChecking ? tKit('noValue') : t('tabs.studentsSelected', { count: vm.pickedFree.length }),
             settings: t(form.settings.skip ? 'tabs.settingsSkipOn' : 'tabs.settingsSkipOff', { limit: form.settings.timeLimit }),
           }}
           panels={{
@@ -84,12 +80,11 @@ function StartSessionBody({
               <StudentsTab
                 mode={form.mode}
                 className={className}
-                scope={form.scope}
-                onScope={vm.setScope}
                 entries={vm.entries}
                 freeCount={vm.free.length}
                 pickedCount={vm.pickedFree.length}
                 onToggle={vm.toggleStudent}
+                onSelectAll={() => vm.selectStudents(vm.free)}
                 isLoading={vm.data.rosterPending}
                 hasError={vm.data.rosterError || vm.data.busyError}
                 onRetry={vm.data.retry}

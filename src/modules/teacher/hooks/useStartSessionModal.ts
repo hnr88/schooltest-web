@@ -13,10 +13,8 @@ import {
 import { busyStudents } from '@/modules/teacher/lib/student-availability';
 import {
   bookingBody,
-  bookingMembers,
   bookingUpdateBody,
   ctaView,
-  sittingCount,
   startNowBody,
 } from '@/modules/teacher/lib/start-session-payload';
 import { scheduleErrors, windowIso, zonedParts } from '@/modules/teacher/lib/start-session-schedule';
@@ -67,7 +65,7 @@ export function useStartSessionModal({ initial, classes, tests, editSittingId }:
   const blocked = mergeBlocked(known, submit.failure?.blocked ?? NO_BLOCKED);
   const free = freeIds(data.roster, blocked);
   const pickedFree = pickedFreeIds(data.roster, blocked, form.picked);
-  const count = sittingCount(form.scope, free, pickedFree);
+  const count = pickedFree.length;
   const cta = ctaView({ mode: form.mode, isEdit, count, scheduleErrorCount: errors.length });
   const isChecking = data.rosterPending || data.busyPending;
   const test = tests.find((entry) => entry.form_document_id === form.formId);
@@ -90,7 +88,7 @@ export function useStartSessionModal({ initial, classes, tests, editSittingId }:
       return;
     }
     if (window === null) return;
-    const members = bookingMembers(form.scope, rosterIds.length, free, pickedFree);
+    const members = [...pickedFree];
     if (editSittingId) submit.saveBooking(editSittingId, bookingUpdateBody(form, window, members));
     else submit.book(bookingBody(form, window, members));
   };

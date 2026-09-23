@@ -68,10 +68,9 @@ test('S8 — Start now makes a real session the desktop joins; schedule, edit an
       await page.locator('[data-slot="start-session-button"]').click();
       await expect(dialog.getByRole('heading', { name: t('title') })).toBeVisible();
       await waitForModalData(page);
-      const free = klass.student_count - busy.size;
-      await expect(modalTab(dialog, 'students')).toContainText(t('tabs.studentsAvailable', { free, total: klass.student_count }));
-      await expect(cta).toHaveText(t('cta.start', { count: free }));
-      await expect(cta).not.toHaveAttribute('aria-disabled', 'true');
+      await expect(modalTab(dialog, 'students')).toContainText(t('tabs.studentsSelected', { count: 0 }));
+      await expect(cta).toHaveText(t('cta.selectToStart'));
+      await expect(cta).toHaveAttribute('aria-disabled', 'true');
       const last = await lastSessionOpenedAt(request, jwt, klass.class_document_id);
       await expect(dialog.locator('[data-fact="last"] dd')).toHaveText(await lastSessionText(page, last, t('facts.noneYet')));
       await expect(choice(dialog, 'now')).toHaveAttribute('data-checked', '');
@@ -95,7 +94,6 @@ test('S8 — Start now makes a real session the desktop joins; schedule, edit an
     let outsider = '';
     await test.step('Students: the busy greyed exactly as the server rule says; two free students picked', async () => {
       await modalTab(dialog, 'students').click();
-      await choice(dialog, 'some').click();
       await expect(dialog.locator('[data-slot="start-session-student"]')).toHaveCount(klass.student_count);
       await expect(dialog.locator('[data-slot="start-session-student"][data-blocked]')).toHaveCount(busy.size);
       for (const id of busy) await expect(dialog.locator(`[data-student-id="${id}"]`)).toHaveAttribute('data-blocked', 'sitting');
@@ -149,6 +147,10 @@ test('S8 — Start now makes a real session the desktop joins; schedule, edit an
       await openFromClasses(page, t('title'));
       await choice(dialog, 'later').click();
       await expect(dialog.getByText(t('sub.later'))).toBeVisible();
+      await waitForModalData(page);
+      await expect(cta).toHaveText(t('cta.selectToSchedule'));
+      await modalTab(dialog, 'students').click();
+      await dialog.locator('[data-slot="start-session-select-all"]').click();
       const closes = dialog.locator('[data-field="closes"]');
       await closes.fill('09:20');
       await expect(dialog.locator('[data-slot="start-session-schedule-errors"]')).toContainText(t('schedule.errors.windowShort', { window: 20, limit: 40 }));

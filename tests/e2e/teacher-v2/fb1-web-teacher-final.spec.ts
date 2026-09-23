@@ -227,7 +227,6 @@ test('3 · start a two-student session through the Start-a-session modal', async
   await expect(choice(dialog, 'now')).toHaveAttribute('data-checked', '');
 
   await modalTab(dialog, 'students').click();
-  await choice(dialog, 'some').click();
   await expect(dialog.locator('[data-slot="start-session-student"]')).toHaveCount(
     klass.student_count,
   );

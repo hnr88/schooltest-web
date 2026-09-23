@@ -2,7 +2,6 @@ import type {
   CtaView,
   SessionWindowIso,
   StartSessionFormState,
-  StudentScope,
 } from '@/modules/teacher/types/start-session-modal.types';
 import type { StartSessionMode } from '@/modules/teacher/types/start-session.types';
 import type {
@@ -10,30 +9,7 @@ import type {
   UpdateTestSessionBody,
 } from '@/modules/teacher/types/teacher-session.types';
 
-/** How many sit it: every free student, or the picked free ones (`mCount2`). */
-export function sittingCount(
-  scope: StudentScope,
-  free: readonly string[],
-  pickedFree: readonly string[],
-): number {
-  return scope === 'whole' ? free.length : pickedFree.length;
-}
-
-/** A booking's members: null when the whole class is free, else the free or picked list. */
-export function bookingMembers(
-  scope: StudentScope,
-  rosterSize: number,
-  free: readonly string[],
-  pickedFree: readonly string[],
-): string[] | null {
-  if (scope === 'some') return [...pickedFree];
-  return free.length === rosterSize ? null : [...free];
-}
-
-/**
- * Start now: the whole class sends no ids, so the server decides WHO with its
- * own busy rule (null, or the free students); selected students are sent.
- */
+/** Start now: WHO sits it is always the picked free students, named explicitly. */
 export function startNowBody(
   form: StartSessionFormState,
   pickedFree: readonly string[],
@@ -41,7 +17,7 @@ export function startNowBody(
   return {
     class_document_id: form.classId,
     form_document_id: form.formId,
-    ...(form.scope === 'some' ? { student_document_ids: [...pickedFree] } : {}),
+    student_document_ids: [...pickedFree],
     settings: { ...form.settings },
     start: true,
   };
@@ -51,22 +27,22 @@ export function startNowBody(
 export function bookingBody(
   form: StartSessionFormState,
   window: SessionWindowIso,
-  members: string[] | null,
+  members: string[],
 ): CreateTestSessionBody {
   return {
     class_document_id: form.classId,
     form_document_id: form.formId,
-    ...(members ? { student_document_ids: members } : {}),
+    student_document_ids: members,
     settings: { ...form.settings },
     window,
   };
 }
 
-/** Edit a booking: everything the modal shows; `null` members is the whole class again. */
+/** Edit a booking: everything the modal shows, the members named explicitly. */
 export function bookingUpdateBody(
   form: StartSessionFormState,
   window: SessionWindowIso,
-  members: string[] | null,
+  members: string[],
 ): UpdateTestSessionBody {
   return {
     window,

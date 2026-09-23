@@ -62,9 +62,8 @@ test('creating with NO student selected refuses before any POST', async () => {
   await expect(modal).toBeVisible({ timeout: 120_000 });
   await shot(page, '30-create-modal-default');
 
-  // Scope "some students" but pick NONE.
+  // Pick NONE.
   await modal.getByRole('tab', { name: /students/i }).click();
-  await modal.locator('[data-slot="start-choice"][data-value="some"]').click();
   await expect(modal.locator('[data-slot="start-session-student"]').first()).toBeVisible({ timeout: 30_000 });
   await shot(page, '31-create-modal-none-picked');
 
@@ -89,12 +88,11 @@ test('create for two students -> lands on the Live tab monitoring the new sittin
   await page.locator('[data-slot="start-session-button"]').first().click();
   const modal = page.locator('[data-surface="start-session-modal"]');
   await expect(modal).toBeVisible({ timeout: 120_000 });
-  await expect(modal.locator('[data-slot="start-session-cta"]')).not.toHaveAttribute('aria-disabled', 'true', {
+  await expect(modal.locator('[data-slot="start-session-cta"]')).not.toHaveAttribute('aria-busy', 'true', {
     timeout: 30_000,
   });
 
   await modal.getByRole('tab', { name: /students/i }).click();
-  await modal.locator('[data-slot="start-choice"][data-value="some"]').click();
   const free = modal.locator('[data-slot="start-session-student"]:not([data-blocked])');
   await expect(free.nth(1)).toBeVisible({ timeout: 30_000 });
   await free.nth(0).click();

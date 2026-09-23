@@ -10,16 +10,21 @@ import type { BlockedReason, RosterEntry } from '@/modules/teacher/types/start-s
  * The roster checklist (`mRoster`, `:1465–1480`): real students; a busy one is
  * greyed with why ("Already sitting …" / "Booked into … at HH:MM") and cannot be
  * ticked — native checkboxes, so Space toggles and a disabled one is skipped.
+ * "Select all" ticks every free student; the ids are still sent one by one.
  */
 function RosterPicker({
   entries,
+  freeCount,
   pickedCount,
   onToggle,
+  onSelectAll,
   className,
 }: {
   entries: readonly RosterEntry[];
+  freeCount: number;
   pickedCount: number;
   onToggle: (id: string) => void;
+  onSelectAll: () => void;
   className: string;
 }) {
   const t = useTranslations('TeacherPortal.startSession.students');
@@ -35,11 +40,19 @@ function RosterPicker({
       data-slot="start-session-roster"
       className="mt-2.5 max-h-[240px] overflow-y-auto rounded-[12px] border border-[#ECEEF2] px-4"
     >
-      <div
-        aria-live="polite"
-        className="sticky top-0 z-[1] border-b border-[#F5F6F8] bg-white pt-[13px] pb-2.5 text-[12px] font-semibold text-[#6B7280]"
-      >
-        {pickedCount > 0 ? t('pickCount', { count: pickedCount, total: entries.length }) : t('pickNone')}
+      <div className="sticky top-0 z-[1] flex items-center justify-between gap-3 border-b border-[#F5F6F8] bg-white pt-[13px] pb-2.5 text-[12px] font-semibold text-[#6B7280]">
+        <span aria-live="polite">
+          {pickedCount > 0 ? t('pickCount', { count: pickedCount, total: entries.length }) : t('pickNone')}
+        </span>
+        <button
+          type="button"
+          data-slot="start-session-select-all"
+          onClick={onSelectAll}
+          disabled={freeCount === 0 || pickedCount === freeCount}
+          className="cursor-pointer rounded-[6px] text-navy-900 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-900 disabled:cursor-default disabled:text-[#9AA6B8] disabled:no-underline"
+        >
+          {t('selectAll')}
+        </button>
       </div>
       {entries.map((entry) => (
         <label

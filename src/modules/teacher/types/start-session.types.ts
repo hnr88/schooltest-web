@@ -33,7 +33,7 @@ export interface StartSessionOptions {
   classId?: string;
   /** "Start now" | "Schedule a window" | "Teacher demo". */
   mode?: StartSessionMode;
-  /** Pre-selects these students (the "Selected students" scope). */
+  /** Pre-selects these students on the roster. */
   studentIds?: readonly string[];
   /** Opens on this tab (a catch-up session opens on "students"). */
   tab?: StartSessionTab;

@@ -12,7 +12,7 @@ function toggled<T>(list: readonly T[], item: T): T[] {
 }
 
 /**
- * The modal's own UI state (`mWhen`, `mTab`, `mClass`, `mTest`, `mScope`,
+ * The modal's own UI state (`mWhen`, `mTab`, `mClass`, `mTest`,
  * `mMembers`, `mSettings`, `mDate/mStart/mEnd`, `mSecs`). The body is keyed by
  * the store's `openCount`, so `initial` seeds a fresh form on every open.
  */
@@ -29,7 +29,6 @@ export function useStartSessionForm(
     // Picks belong to one class's roster; a new class starts with none.
     setClass: (classId) => patch({ classId, picked: [] }),
     setTest: (formId) => patch({ formId }),
-    setScope: (scope) => patch({ scope }),
     setDate: (date) => patch({ date }),
     setOpens: (opens) => patch({ opens }),
     setCloses: (closes) => patch({ closes }),
@@ -38,6 +37,7 @@ export function useStartSessionForm(
     toggleSetting: (key) =>
       setForm((current) => ({ ...current, settings: { ...current.settings, [key]: !current.settings[key] } })),
     toggleStudent: (id) => setForm((current) => ({ ...current, picked: toggled(current.picked, id) })),
+    selectStudents: (ids) => patch({ picked: [...ids] }),
     toggleSection: (id) =>
       setForm((current) => ({ ...current, openSections: toggled(current.openSections, id) })),
   };

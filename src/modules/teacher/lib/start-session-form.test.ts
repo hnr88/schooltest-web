@@ -25,13 +25,12 @@ const seed = {
 };
 
 describe('initialFormState', () => {
-  test('the design reset: start now, Test tab, whole class, default settings, tomorrow 09:00–10:00', () => {
+  test('the design reset: start now, Test tab, nobody picked, default settings, tomorrow 09:00–10:00', () => {
     expect(initialFormState(seed)).toEqual({
       mode: 'now',
       tab: 'test',
       classId: seed.classId,
       formId: seed.formId,
-      scope: 'whole',
       picked: [],
       settings: DEFAULT_SITTING_SETTINGS,
       date: '2026-09-12',
@@ -43,7 +42,7 @@ describe('initialFormState', () => {
 
   test('a catch-up arrives with its students picked, on the tab it asked for', () => {
     const state = initialFormState({ ...seed, studentIds: [rosterIds[0]], tab: 'students' });
-    expect(state).toMatchObject({ scope: 'some', picked: [rosterIds[0]], tab: 'students' });
+    expect(state).toMatchObject({ picked: [rosterIds[0]], tab: 'students' });
   });
 });
 
@@ -67,7 +66,7 @@ describe('resolveInitialForm', () => {
       booking: null,
       tomorrow: '2026-09-12',
     });
-    expect(state).toMatchObject({ classId: classes[0].class_document_id, scope: 'whole', picked: [] });
+    expect(state).toMatchObject({ classId: classes[0].class_document_id, picked: [] });
   });
 });
 
@@ -96,7 +95,6 @@ describe('formFromBooking', () => {
       mode: 'later',
       classId: row.class.document_id,
       formId: fixture.tests.tests[1].form_document_id,
-      scope: 'some',
       picked: [rosterIds[0], rosterIds[1]],
       date: '2026-09-14',
       opens: '09:15',
@@ -105,8 +103,9 @@ describe('formFromBooking', () => {
     expect(state.settings.timeLimit).toBe(50);
   });
 
-  test('a whole-class booking with no saved settings reads as the whole class on the defaults', () => {
+  test('a legacy whole-class booking with no saved settings opens with nobody picked, on the defaults', () => {
     const state = formFromBooking({ ...booking, member_student_ids: null, settings: null }, initialFormState(seed));
-    expect(state).toMatchObject({ scope: 'whole', picked: [], settings: DEFAULT_SITTING_SETTINGS });
+    expect(state).toMatchObject({ picked: [], settings: DEFAULT_SITTING_SETTINGS });
+    expect(state).not.toHaveProperty('scope');
   });
 });

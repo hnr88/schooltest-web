@@ -233,7 +233,6 @@ test('TEA-010: selected students in the roster picker start a partial sitting', 
   const body = page.locator('[data-slot="start-session-body"]');
   await body.locator('[data-slot="start-session-class"]').selectOption(PROOF_CLASS); // option labels carry the year/count meta
   await setupTab(page, 'Students').click();
-  await page.locator('label').filter({ hasText: 'Selected students' }).click(); // sr-only input: click the card label
   const roster = page.locator('[data-slot="start-session-roster"]');
   await expect(roster).toBeVisible({ timeout: 30_000 });
   // The row is a label wrapping an sr-only checkbox — click the ROW (the input
@@ -304,12 +303,11 @@ test('TEA-011..014: schedule a window, edit it with settings, cancel with confir
   await schedule.locator('input[data-field="closes"]').fill('10:00');
 
   // A booking still needs its cohort: the CTA says so until students are chosen.
-  // In schedule mode the whole-class card's label is the everyoneLater copy, so
-  // pick the card by its radiogroup position, not by text.
+  // Select all ticks every student free in that window.
   await setupTab(page, 'Students').click();
-  const scopeGroup = page.locator('[data-slot="start-session-students"] [role="radiogroup"]');
-  await expect(scopeGroup).toBeVisible({ timeout: 30_000 });
-  await scopeGroup.locator('label').first().click(); // the whole-class scope card
+  const selectAll = page.locator('[data-slot="start-session-select-all"]');
+  await expect(selectAll).toBeEnabled({ timeout: 30_000 });
+  await selectAll.click();
 
   // ── TEA-014: the Settings tab toggles the design switches; they persist below.
   await setupTab(page, 'Settings').click();
@@ -552,7 +550,6 @@ test('TEA-040: a student already sitting is blocked in the roster picker', async
   const body = page.locator('[data-slot="start-session-body"]');
   await body.locator('[data-slot="start-session-class"]').selectOption(PROOF_CLASS); // option labels carry the year/count meta
   await setupTab(page, 'Students').click();
-  await page.locator('label').filter({ hasText: 'Selected students' }).click(); // sr-only input: click the card label
   const roster = page.locator('[data-slot="start-session-roster"]');
   await expect(roster).toBeVisible({ timeout: 30_000 });
 
@@ -609,6 +606,9 @@ test('TEA-041: a passed window is flagged and the fix-timing path is offered', a
   await page.locator('label').filter({ hasText: 'Schedule a window' }).click(); // sr-only input: click the card label
   const schedule = page.locator('[data-slot="start-session-schedule"]');
   await expect(schedule).toBeVisible({ timeout: 30_000 });
+  // Pick the cohort first: with nobody picked the CTA asks for students, not timing.
+  await setupTab(page, 'Students').click();
+  await page.locator('[data-slot="start-session-select-all"]').click();
   await schedule.locator('input[data-field="date"]').fill(date);
   const cta = page.locator('[data-slot="start-session-cta"]');
   await expect(cta).toHaveText(/Fix the timing to schedule/, { timeout: 15_000 });

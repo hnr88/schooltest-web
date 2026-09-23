@@ -230,7 +230,6 @@ test('1 · Classes → the class → a real session for two named students', asy
   await choice(dialog, 'now').click();
 
   await modalTab(dialog, 'students').click();
-  await choice(dialog, 'some').click();
   await expect(dialog.locator('[data-slot="start-session-student"]')).toHaveCount(klass.student_count);
   const free = dialog.locator('[data-slot="start-session-student"]:not([data-blocked])');
   joiner.id = (await free.nth(0).getAttribute('data-student-id')) ?? '';

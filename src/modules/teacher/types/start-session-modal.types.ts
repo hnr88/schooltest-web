@@ -4,9 +4,6 @@ import type {
   StartSessionTab,
 } from '@/modules/teacher/types/start-session.types';
 
-/** "Whole class" (everyone free) or "Selected students". */
-export type StudentScope = 'whole' | 'some';
-
 export type SettingsSectionId = 'during' | 'access' | 'security' | 'timing';
 
 /** The ten switches; `timeLimit` is the Timing section's select. */
@@ -68,7 +65,6 @@ export interface StartSessionFormState {
   tab: StartSessionTab;
   classId: string;
   formId: string;
-  scope: StudentScope;
   picked: readonly string[];
   settings: SittingSettings;
   date: string;
@@ -122,13 +118,13 @@ export interface StartSessionFormActions {
   setTab: (tab: StartSessionTab) => void;
   setClass: (classId: string) => void;
   setTest: (formId: string) => void;
-  setScope: (scope: StudentScope) => void;
   setDate: (date: string) => void;
   setOpens: (opens: string) => void;
   setCloses: (closes: string) => void;
   setTimeLimit: (timeLimit: number) => void;
   toggleSetting: (key: SettingToggleKey) => void;
   toggleStudent: (id: string) => void;
+  selectStudents: (ids: readonly string[]) => void;
   toggleSection: (id: SettingsSectionId) => void;
 }
 
