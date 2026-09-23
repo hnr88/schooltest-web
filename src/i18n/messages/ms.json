@@ -2804,7 +2804,8 @@
       "retry": "Cuba lagi"
     },
     "teacherPicker": {
-      "pendingOption": "{name} (Dijemput — belum aktif)"
+      "pendingOption": "{name} (Dijemput — belum aktif)",
+      "picksCleared": "Guru yang dijemput ditugaskan secara bersendirian, jadi {names} telah dinyahtanda."
     },
     "assignTeachersButton": "Tugaskan guru",
     "assignTeachers": {

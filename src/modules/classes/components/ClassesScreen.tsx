@@ -63,11 +63,15 @@ export function ClassesScreen() {
             <UsersRound className="size-4" aria-hidden />
             {t('assignTeachersButton')}
           </Button>
+          {/* aria-disabled, not disabled: a blocked trigger stays focusable so a
+              keyboard or screen-reader user reaches it and hears the hint. */}
           <Button
             variant="navy"
-            className="h-11 rounded-tile px-5 text-sm font-semibold"
-            onClick={() => setAddOpen(true)}
-            disabled={!canAddClass}
+            className="h-11 rounded-tile px-5 text-sm font-semibold aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-navy-900"
+            onClick={() => {
+              if (canAddClass) setAddOpen(true);
+            }}
+            aria-disabled={canAddClass ? undefined : true}
             aria-describedby={showTeacherRequiredHint ? 'add-class-teacher-required-hint' : undefined}
           >
             <Plus className="size-[15px]" strokeWidth={2.2} aria-hidden />
@@ -79,7 +83,7 @@ export function ClassesScreen() {
       {showTeacherRequiredHint ? (
         <p
           id="add-class-teacher-required-hint"
-          className="-mt-3 text-sm text-[#7C8698] sm:self-end"
+          className="-mt-3 text-sm text-body sm:self-end"
           data-slot="add-class-blocked-hint"
         >
           {tAdd('teacherRequiredHint')}

@@ -16,8 +16,10 @@ import {
 } from '@/modules/design-system';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { PicksClearedNotice } from '@/modules/classes/components/PicksClearedNotice';
 import { useAssignableTeachers } from '@/modules/classes/hooks/use-assignable-teachers';
-import { assignmentFromPicks, teacherPickOptions, togglePick } from '@/modules/classes/lib/class-teacher-picker';
+import { useTeacherPicks } from '@/modules/classes/hooks/use-teacher-picks';
+import { assignmentFromPicks, teacherPickOptions } from '@/modules/classes/lib/class-teacher-picker';
 import { useAssignTeachersMutation } from '@/modules/classes/queries/use-assign-teachers.mutation';
 
 // Task 025 multi-picker (School Admin Portal overlays artboard): "multi-picker
@@ -41,7 +43,7 @@ export function AssignTeachersDialog({
   const teachersQuery = useAssignableTeachers(true);
   const assignMutation = useAssignTeachersMutation();
   const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
-  const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
+  const { picks: selectedTeachers, dropped, toggle: toggleTeacher } = useTeacherPicks();
 
   const toggle = (list: string[], setList: (next: string[]) => void, id: string) => {
     setList(list.includes(id) ? list.filter((entry) => entry !== id) : [...list, id]);
@@ -115,9 +117,7 @@ export function AssignTeachersDialog({
                     <Checkbox
                       id={`assign-teacher-${teacher.value}`}
                       checked={selectedTeachers.includes(teacher.value)}
-                      onCheckedChange={(checked) =>
-                        setSelectedTeachers(togglePick(selectedTeachers, teacher.value, checked === true))
-                      }
+                      onCheckedChange={(checked) => toggleTeacher(teacher.value, checked === true)}
                     />
                     <Label
                       htmlFor={`assign-teacher-${teacher.value}`}
@@ -133,6 +133,10 @@ export function AssignTeachersDialog({
                   <p className="px-2 py-1 text-sm text-body">{t('noTeachers')}</p>
                 ) : null}
               </div>
+              <PicksClearedNotice
+                dropped={dropped}
+                labelOf={(value) => teachers.find((option) => option.value === value)?.label ?? value}
+              />
             </fieldset>
           </OpsDialogBody>
         )}

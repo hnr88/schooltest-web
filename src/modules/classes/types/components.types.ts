@@ -99,6 +99,12 @@ export interface ClassTeacherPanelProps {
   pendingTeacher?: ClassPendingTeacher | null;
 }
 
+export interface PicksClearedNoticeProps {
+  // Option values a toggle unticked (BUG-005 a11y), and how each one reads.
+  dropped: readonly string[];
+  labelOf: (value: string) => string;
+}
+
 export interface ClassTeachersPickerDialogProps {
   className: string;
   currentTeacher: ClassDetailTeacher | null;

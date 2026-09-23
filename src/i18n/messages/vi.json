@@ -2813,7 +2813,8 @@
       "retry": "Thử lại"
     },
     "teacherPicker": {
-      "pendingOption": "{name} (Đã mời — đang chờ)"
+      "pendingOption": "{name} (Đã mời — đang chờ)",
+      "picksCleared": "Giáo viên được mời chỉ được phân công một mình, nên {names} đã bị bỏ chọn."
     },
     "assignTeachersButton": "Phân công giáo viên",
     "assignTeachers": {

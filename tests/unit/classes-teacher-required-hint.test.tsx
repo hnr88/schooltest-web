@@ -40,6 +40,9 @@ vi.mock('@/modules/classes/queries/use-school-classes.query', () => ({
   useSchoolClassesQuery: () => ({ data: [], isPending: false, isError: false, isFetching: false }),
 }));
 vi.mock('@/modules/classes/components/ClassesTable', () => ({ ClassesTable: () => null }));
+vi.mock('@/modules/classes/components/AddClassDialog', () => ({
+  AddClassDialog: () => <div data-slot="add-class-dialog-stub" />,
+}));
 
 let root: Root | null = null;
 let host: HTMLDivElement | null = null;
@@ -93,31 +96,60 @@ function invitation(status: string, expiresAt: string, role = 'teacher') {
   };
 }
 
+function isBlocked(button: HTMLButtonElement): boolean {
+  return button.getAttribute('aria-disabled') === 'true';
+}
+
 describe('Classes screen — teacher-required hint (BUG-005)', () => {
-  test('no assignable teacher: Add class is disabled and the hint explains the next step', () => {
+  test('no assignable teacher: Add class is blocked and the hint explains the next step', () => {
     useTeachersQuery.mockReturnValue(teachers([{ blocked: false, role: 'school_admin' }]));
     mount();
     const button = addClassButton();
-    expect(button.disabled).toBe(true);
+    expect(isBlocked(button)).toBe(true);
     const hint = document.querySelector('[data-slot="add-class-blocked-hint"]');
     expect(hint?.textContent).toBe(enMessages.Classes.addForm.teacherRequiredHint);
     expect(hint?.textContent).toMatch(/^Invite a teacher first/);
     expect(button.getAttribute('aria-describedby')).toBe(hint?.id);
   });
 
+  // BUG-005 a11y follow-up: a natively disabled button is skipped by Tab, so a
+  // keyboard user never reached the control the hint describes.
+  test('the blocked trigger stays focusable (aria-disabled, never disabled) and a click opens nothing', () => {
+    useTeachersQuery.mockReturnValue(teachers([{ blocked: false, role: 'school_admin' }]));
+    mount();
+    const button = addClassButton();
+    expect(button.disabled).toBe(false);
+    expect(button.hasAttribute('disabled')).toBe(false);
+    act(() => button.focus());
+    expect(document.activeElement).toBe(button);
+    act(() => button.click());
+    expect(document.querySelector('[data-slot="add-class-dialog-stub"]')).toBeNull();
+  });
+
+  test('the hint uses the Body ink token (#475569, AA on the page), not the 3.7:1 grey', () => {
+    useTeachersQuery.mockReturnValue(teachers([{ blocked: false, role: 'school_admin' }]));
+    mount();
+    const hint = document.querySelector('[data-slot="add-class-blocked-hint"]');
+    expect(hint?.classList.contains('text-body')).toBe(true);
+    expect(hint?.className).not.toContain('7C8698');
+  });
+
   test('a blocked teacher is not assignable — the hint stays', () => {
     useTeachersQuery.mockReturnValue(teachers([{ blocked: true, role: 'teacher' }]));
     mount();
-    expect(addClassButton().disabled).toBe(true);
+    expect(isBlocked(addClassButton())).toBe(true);
     expect(document.querySelector('[data-slot="add-class-blocked-hint"]')).not.toBeNull();
   });
 
-  test('an active teacher exists: no hint, and Add class is enabled', () => {
+  test('an active teacher exists: no hint, and Add class is live and opens the dialog', () => {
     useTeachersQuery.mockReturnValue(teachers([{ blocked: false, role: 'teacher' }]));
     mount();
     expect(document.querySelector('[data-slot="add-class-blocked-hint"]')).toBeNull();
-    expect(addClassButton().disabled).toBe(false);
-    expect(addClassButton().hasAttribute('aria-describedby')).toBe(false);
+    const button = addClassButton();
+    expect(button.hasAttribute('aria-disabled')).toBe(false);
+    expect(button.hasAttribute('aria-describedby')).toBe(false);
+    act(() => button.click());
+    expect(document.querySelector('[data-slot="add-class-dialog-stub"]')).not.toBeNull();
   });
 
   test('while teachers load, no hint is guessed', () => {
@@ -135,7 +167,7 @@ describe('Classes screen — teacher-required hint (BUG-005)', () => {
     );
     mount();
     expect(document.querySelector('[data-slot="add-class-blocked-hint"]')).toBeNull();
-    expect(addClassButton().disabled).toBe(false);
+    expect(isBlocked(addClassButton())).toBe(false);
   });
 
   test('lapsed, revoked and school-admin invitations do not count — the hint stays', () => {
@@ -153,6 +185,6 @@ describe('Classes screen — teacher-required hint (BUG-005)', () => {
     );
     mount();
     expect(document.querySelector('[data-slot="add-class-blocked-hint"]')).not.toBeNull();
-    expect(addClassButton().disabled).toBe(true);
+    expect(isBlocked(addClassButton())).toBe(true);
   });
 });

@@ -2794,7 +2794,8 @@
       "retry": "重试"
     },
     "teacherPicker": {
-      "pendingOption": "{name}（已邀请 — 待激活）"
+      "pendingOption": "{name}（已邀请 — 待激活）",
+      "picksCleared": "受邀教师只能单独分配，因此已取消勾选 {names}。"
     },
     "studentDetailMeta": {
       "title": "学生成绩 - SchoolTest",

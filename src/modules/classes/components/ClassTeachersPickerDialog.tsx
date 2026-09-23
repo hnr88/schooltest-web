@@ -3,8 +3,10 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { PicksClearedNotice } from '@/modules/classes/components/PicksClearedNotice';
 import { useAssignableTeachers } from '@/modules/classes/hooks/use-assignable-teachers';
-import { pickDocumentId, teacherPickOptions, togglePick } from '@/modules/classes/lib/class-teacher-picker';
+import { useTeacherPicks } from '@/modules/classes/hooks/use-teacher-picks';
+import { pickDocumentId, teacherPickOptions } from '@/modules/classes/lib/class-teacher-picker';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Alert,
@@ -31,7 +33,7 @@ export function ClassTeachersPickerDialog({
   const t = useTranslations('Classes.detail.teachers');
   const tp = useTranslations('Classes.teacherPicker');
   const teachersQuery = useAssignableTeachers(true);
-  const [picked, setPicked] = useState<readonly string[]>([]);
+  const { picks: picked, dropped, toggle } = useTeacherPicks();
   const [submitting, setSubmitting] = useState(false);
 
   // BUG-006: invited teachers still pending activation are offered only while
@@ -45,10 +47,6 @@ export function ClassTeachersPickerDialog({
   const emailByValue = new Map(
     [...teachersQuery.allTeachers, ...teachersQuery.invitations].map((row) => [row.documentId, row.email]),
   );
-
-  function toggle(value: string, checked: boolean) {
-    setPicked((current) => togglePick(current, value, checked));
-  }
 
   async function submit() {
     setSubmitting(true);
@@ -115,6 +113,10 @@ export function ClassTeachersPickerDialog({
                 );
               })}
             </div>
+            <PicksClearedNotice
+              dropped={dropped}
+              labelOf={(value) => candidates.find((candidate) => candidate.value === value)?.label ?? value}
+            />
           </OpsDialogBody>
         )}
         <OpsDialogFooter>

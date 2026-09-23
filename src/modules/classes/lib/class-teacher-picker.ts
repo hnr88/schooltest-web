@@ -87,3 +87,9 @@ export function togglePick(picks: readonly string[], value: string, checked: boo
   const kept = picks.filter((entry) => !isInvitedTeacherValue(entry));
   return kept.includes(value) ? kept : [...kept, value];
 }
+
+// BUG-005 a11y: the picks a toggle took away besides the toggled one itself —
+// what the picker must announce instead of unticking them silently.
+export function droppedByToggle(before: readonly string[], after: readonly string[], value: string): string[] {
+  return before.filter((entry) => entry !== value && !after.includes(entry));
+}

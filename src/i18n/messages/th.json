@@ -2804,7 +2804,8 @@
       "retry": "ลองอีกครั้ง"
     },
     "teacherPicker": {
-      "pendingOption": "{name} (เชิญแล้ว — รอเปิดใช้งาน)"
+      "pendingOption": "{name} (เชิญแล้ว — รอเปิดใช้งาน)",
+      "picksCleared": "ครูที่ได้รับเชิญจะได้รับมอบหมายเพียงคนเดียว จึงยกเลิกการเลือก {names} แล้ว"
     },
     "assignTeachersButton": "มอบหมายครู",
     "assignTeachers": {

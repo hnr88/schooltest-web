@@ -2804,7 +2804,8 @@
       "retry": "다시 시도"
     },
     "teacherPicker": {
-      "pendingOption": "{name} (초대됨 — 대기 중)"
+      "pendingOption": "{name} (초대됨 — 대기 중)",
+      "picksCleared": "초대된 교사는 단독으로만 배정되므로 {names}의 선택이 해제되었습니다."
     },
     "assignTeachersButton": "교사 배정",
     "assignTeachers": {

@@ -2794,7 +2794,8 @@
       "retry": "Try again"
     },
     "teacherPicker": {
-      "pendingOption": "{name} (Invited — pending)"
+      "pendingOption": "{name} (Invited — pending)",
+      "picksCleared": "An invited teacher is assigned on their own, so {names} {count, plural, one {was} other {were}} unticked."
     },
     "studentDetailMeta": {
       "title": "Student results - SchoolTest",
