@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import type { DirectoryRowAction } from '@/modules/directory';
@@ -71,9 +71,21 @@ export function useStudentArchive() {
   const t = useTranslations('SchoolStudents.archiveDialog');
   const [target, setTarget] = useState<SchoolStudent | null>(null);
   const archive = useArchiveStudentMutation();
+  // The confirm disables on `isPending`, which re-renders a tick after
+  // mutate(): a double-click's second press reaches this handler first, so
+  // the guard is a ref, set synchronously. It stays set after a success (a
+  // late press on the closing dialog sends nothing) and clears on a failure
+  // (the press may be retried) or when a new confirm opens.
+  const pressed = useRef(false);
+
+  const requestArchive = (student: SchoolStudent | null) => {
+    pressed.current = false;
+    setTarget(student);
+  };
 
   const confirmArchive = async () => {
-    if (target === null) return;
+    if (target === null || pressed.current) return;
+    pressed.current = true;
     try {
       await archive.mutateAsync(target.documentId);
       showOpsToast({
@@ -82,6 +94,7 @@ export function useStudentArchive() {
       });
       setTarget(null);
     } catch (error) {
+      pressed.current = false;
       // Archive can only 403 on role/school scope — the seat gate lives on
       // create — so the contract codes collapse to the generic failure here.
       const kind = classifyStudentError(error);
@@ -94,7 +107,7 @@ export function useStudentArchive() {
 
   return {
     archiveTarget: target,
-    requestArchive: setTarget,
+    requestArchive,
     closeArchive: () => setTarget(null),
     confirmArchive,
     archivePending: archive.isPending,
@@ -112,9 +125,17 @@ export function useStudentUnarchive() {
   const t = useTranslations('SchoolStudents.unarchiveDialog');
   const [target, setTarget] = useState<SchoolStudent | null>(null);
   const unarchive = useUnarchiveStudentMutation();
+  // Same double-press guard as useStudentArchive.
+  const pressed = useRef(false);
+
+  const requestUnarchive = (student: SchoolStudent | null) => {
+    pressed.current = false;
+    setTarget(student);
+  };
 
   const confirmUnarchive = async () => {
-    if (target === null) return;
+    if (target === null || pressed.current) return;
+    pressed.current = true;
     try {
       await unarchive.mutateAsync(target.documentId);
       showOpsToast({
@@ -123,6 +144,7 @@ export function useStudentUnarchive() {
       });
       setTarget(null);
     } catch (error) {
+      pressed.current = false;
       // Unarchive can only 403 on role/school scope, mirroring archive — the
       // contract codes collapse to the generic failure here.
       const kind = classifyStudentError(error);
@@ -135,7 +157,7 @@ export function useStudentUnarchive() {
 
   return {
     unarchiveTarget: target,
-    requestUnarchive: setTarget,
+    requestUnarchive,
     closeUnarchive: () => setTarget(null),
     confirmUnarchive,
     unarchivePending: unarchive.isPending,
