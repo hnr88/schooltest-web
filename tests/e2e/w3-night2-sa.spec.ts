@@ -1,13 +1,13 @@
 import { readFileSync } from 'node:fs';
 
-import { expect as baseExpect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expect as baseExpect, test, type Page } from '@playwright/test';
 
 import { apiClassDetail, schoolAdminJwt } from './helpers/class-detail';
 import { runSql } from './helpers/auth-db';
 import { cat, loadMessages } from './helpers/i18n';
 import { MAILPIT_API } from './helpers/mailpit';
-import { ROLE_CREDENTIALS } from './helpers/roles';
 import { loginAs } from './helpers/roles';
+import { deleteStudents } from './helpers/student-cleanup';
 
 // NIGHT-2 W3 — remaining school-admin scenarios (SA-001..SA-010, SA-019..SA-048)
 // verified against the CURRENT directory-kit screens: the school lists render as
@@ -42,28 +42,15 @@ async function patientLogin(page: Page, role: 'schoolAdmin' | 'teacher' = 'schoo
   await loginAs(page, role);
 }
 
-async function opsJwt(request: APIRequestContext): Promise<string> {
-  const res = await request.post('http://127.0.0.1:5500/api/auth/local', {
-    data: { identifier: ROLE_CREDENTIALS.ops.email, password: ROLE_CREDENTIALS.ops.password },
-  });
-  expect(res.ok(), 'ops login').toBeTruthy();
-  return ((await res.json()) as { jwt: string }).jwt;
-}
-
-async function deleteStudentViaOps(request: APIRequestContext, documentId: string) {
-  const jwt = await opsJwt(request);
-  await request.delete(`http://127.0.0.1:5500/api/students/${documentId}`, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
-}
-
 test.setTimeout(300_000);
 
 const toDelete: string[] = [];
 let throwawayTeacher: { email: string; name: string } | null = null;
 
+// Deleted when the probe has no history, deactivated when it has; the outcome
+// is checked (helpers/student-cleanup).
 test.afterEach(async ({ request }) => {
-  for (const id of toDelete.splice(0)) await deleteStudentViaOps(request, id);
+  await deleteStudents(request, toDelete.splice(0));
 });
 
 // ---------------------------------------------------------------------------

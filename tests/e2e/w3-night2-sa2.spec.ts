@@ -8,7 +8,8 @@ import {
 
 import { schoolAdminJwt } from './helpers/class-detail';
 import { cat, loadMessages } from './helpers/i18n';
-import { ROLE_CREDENTIALS, loginAs } from './helpers/roles';
+import { loginAs } from './helpers/roles';
+import { deleteStudents } from './helpers/student-cleanup';
 
 // NIGHT-2 W3 wave 2 — the school-admin surfaces the first battery does not
 // cover: SA-003 (students list search/filters/pagination + row link),
@@ -54,14 +55,6 @@ async function patientLogin(page: Page) {
   await loginAs(page, 'schoolAdmin');
 }
 
-async function opsJwt(request: APIRequestContext): Promise<string> {
-  const res = await request.post(`${API}/api/auth/local`, {
-    data: { identifier: ROLE_CREDENTIALS.ops.email, password: ROLE_CREDENTIALS.ops.password },
-  });
-  expect(res.ok(), 'ops login').toBeTruthy();
-  return ((await res.json()) as { jwt: string }).jwt;
-}
-
 async function createClass(request: APIRequestContext, jwt: string, name: string): Promise<string> {
   const res = await apiRetry(() =>
     request.post(`${API}/api/schools/me/classes`, {
@@ -96,12 +89,9 @@ const studentsToDelete: string[] = [];
 const classesToDelete: { documentId: string; schoolDocumentId?: string }[] = [];
 
 test.afterEach(async ({ request }) => {
-  const ops = await opsJwt(request);
-  for (const id of studentsToDelete.splice(0)) {
-    await request.delete(`${API}/api/students/${id}`, {
-      headers: { Authorization: `Bearer ${ops}` },
-    });
-  }
+  // Deleted when the probe has no history, deactivated when it has; the
+  // outcome is checked (helpers/student-cleanup).
+  await deleteStudents(request, studentsToDelete.splice(0));
   const sa = await schoolAdminJwt(request);
   for (const { documentId, schoolDocumentId } of classesToDelete.splice(0)) {
     await request.delete(`${API}/api/schools/me/classes/${documentId}`, {
