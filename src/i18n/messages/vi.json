@@ -5927,6 +5927,7 @@
         "note": "Mở trong {window} phút · bài kiểm tra {limit} phút · tự động đóng lúc {closes}. Giờ học là 07:00 đến 19:00.",
         "noteError": "Phiên diễn ra trong khoảng 07:00 đến 19:00.",
         "zoneNote": "Thời gian tính theo {zone}, múi giờ của trường.",
+        "zoneNoteDevice": "Thời gian tính theo {zone}, múi giờ của thiết bị này, vì chưa có múi giờ của trường.",
         "errors": {
           "pickDate": "Chọn ngày cho phiên này.",
           "datePassed": "Ngày đó đã qua.",

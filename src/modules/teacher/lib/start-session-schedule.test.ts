@@ -5,6 +5,8 @@ import {
   minutesOf,
   scheduleErrors,
   schoolTimeZone,
+  timeZoneLabel,
+  timeZoneSource,
   windowIso,
   windowsOverlap,
   zonedParts,
@@ -150,5 +152,33 @@ describe('BUG-002 — the window is built in the SCHOOL zone, never the device z
   test('Melbourne DST ends 2027-04-04: 09:00 moves back to UTC+10', () => {
     expect(zonedWallTimeToIso('2027-04-03', '09:00', MELBOURNE)).toBe('2027-04-02T22:00:00.000Z');
     expect(zonedWallTimeToIso('2027-04-04', '09:00', MELBOURNE)).toBe('2027-04-03T23:00:00.000Z');
+  });
+});
+
+describe('BUG-002 follow-up — the zone note names the zone in the reader\'s language, and says whose it is', () => {
+  test('a zone the server named is the school\'s; only the no-zone fallback is the device\'s', () => {
+    expect(timeZoneSource('Australia/Melbourne', undefined)).toBe('school');
+    expect(timeZoneSource(undefined, 'Australia/Melbourne')).toBe('school');
+    expect(timeZoneSource(undefined, null)).toBe('device');
+    expect(timeZoneSource('', '')).toBe('device');
+  });
+
+  test('the label is the localized generic name with the IANA id after it', () => {
+    expect(timeZoneLabel('Australia/Melbourne', 'en')).toBe('Australian Eastern Time (Australia/Melbourne)');
+    expect(timeZoneLabel('Australia/Melbourne', 'zh')).toBe('澳大利亚东部时间 (Australia/Melbourne)');
+    expect(timeZoneLabel('Australia/Melbourne', 'vi')).toBe('Giờ Miền Đông Australia (Australia/Melbourne)');
+  });
+
+  test('every locale gets a real name, never the bare IANA id', () => {
+    for (const locale of ['en', 'ko', 'ms', 'th', 'vi', 'zh']) {
+      const label = timeZoneLabel('Australia/Melbourne', locale);
+      expect(label, locale).toMatch(/^.+ \(Australia\/Melbourne\)$/);
+      expect(label.startsWith('Australia/Melbourne'), locale).toBe(false);
+    }
+  });
+
+  test('a zone with only an offset generic name falls back to its long name; an unknown zone is the id alone', () => {
+    expect(timeZoneLabel('UTC', 'en')).toBe('Coordinated Universal Time (UTC)');
+    expect(timeZoneLabel('Not/AZone', 'en')).toBe('Not/AZone');
   });
 });

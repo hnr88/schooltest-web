@@ -38,6 +38,9 @@ export interface ZonedParts {
   time: string;
 }
 
+/** Whose zone the window is shown in: the school's (named by the server), or the device's fallback. */
+export type TimeZoneSource = 'school' | 'device';
+
 export interface SessionWindowIso {
   opens_at: string;
   closes_at: string;

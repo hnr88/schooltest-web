@@ -56,6 +56,7 @@ function StartSessionBody({
           closes={form.closes}
           timeLimit={form.settings.timeLimit}
           timeZone={vm.data.timeZone}
+          timeZoneSource={vm.data.timeZoneSource}
           errors={vm.errors}
           serverMessages={vm.failure?.scheduleMessages ?? []}
           onDate={vm.setDate}

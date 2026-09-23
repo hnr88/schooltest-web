@@ -1,7 +1,7 @@
 'use client';
 
 import { useId } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { TIME_INPUT_BOUNDS } from '@/modules/teacher/constants/start-session.constants';
 import {
@@ -9,8 +9,8 @@ import {
   SCHEDULE_INPUT_CLASS,
   SCHEDULE_LABEL_CLASS,
 } from '@/modules/teacher/constants/start-session-styles.constants';
-import { minutesOf } from '@/modules/teacher/lib/start-session-schedule';
-import type { ScheduleError } from '@/modules/teacher/types/start-session-modal.types';
+import { minutesOf, timeZoneLabel } from '@/modules/teacher/lib/start-session-schedule';
+import type { ScheduleError, TimeZoneSource } from '@/modules/teacher/types/start-session-modal.types';
 
 /** "Schedule a window": date, opens, closes, the window note and the design's errors (`:1370–1400`). */
 function SchedulePanel({
@@ -19,6 +19,7 @@ function SchedulePanel({
   closes,
   timeLimit,
   timeZone,
+  timeZoneSource,
   errors,
   serverMessages,
   onDate,
@@ -30,6 +31,7 @@ function SchedulePanel({
   closes: string;
   timeLimit: number;
   timeZone: string;
+  timeZoneSource: TimeZoneSource;
   errors: readonly ScheduleError[];
   serverMessages: readonly string[];
   onDate: (value: string) => void;
@@ -37,6 +39,7 @@ function SchedulePanel({
   onCloses: (value: string) => void;
 }) {
   const t = useTranslations('TeacherPortal.startSession.schedule');
+  const locale = useLocale();
   const id = useId();
   const messages = [
     ...errors.map((error) => t(`errors.${error.key}`, error.values ?? {})),
@@ -72,7 +75,9 @@ function SchedulePanel({
         {errors.length > 0
           ? t('noteError')
           : t('note', { window: minutesOf(closes) - minutesOf(opens), limit: timeLimit, closes })}{' '}
-        <span data-slot="start-session-schedule-zone">{t('zoneNote', { zone: timeZone })}</span>
+        <span data-slot="start-session-schedule-zone" data-source={timeZoneSource}>
+          {t(timeZoneSource === 'school' ? 'zoneNote' : 'zoneNoteDevice', { zone: timeZoneLabel(timeZone, locale) })}
+        </span>
       </p>
       {messages.length > 0 ? (
         <div role="alert" data-slot="start-session-schedule-errors" className={SCHEDULE_ERROR_BOX_CLASS}>

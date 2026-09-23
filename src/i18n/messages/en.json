@@ -5908,6 +5908,7 @@
         "note": "Open for {window} minutes · {limit} minute test · closes automatically at {closes}. School hours are 07:00 to 19:00.",
         "noteError": "Sessions run between 07:00 and 19:00.",
         "zoneNote": "Times are in {zone}, the school's time zone.",
+        "zoneNoteDevice": "Times are in {zone}, this device's time zone, because the school's time zone isn't available.",
         "errors": {
           "pickDate": "Pick a date for this session.",
           "datePassed": "That date has already passed.",

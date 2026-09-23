@@ -3,6 +3,7 @@ import type {
   ScheduleError,
   ScheduleInput,
   SessionWindowIso,
+  TimeZoneSource,
   ZonedParts,
 } from '@/modules/teacher/types/start-session-modal.types';
 
@@ -108,4 +109,37 @@ export function schoolTimeZone(
   deviceZone: string = browserTimeZone(),
 ): string {
   return classZone || bookingZone || deviceZone;
+}
+
+/** 'school' when the server named the zone (the class's, or a booking's echo); 'device' for the fallback. */
+export function timeZoneSource(
+  classZone: string | null | undefined,
+  bookingZone: string | null | undefined,
+): TimeZoneSource {
+  return classZone || bookingZone ? 'school' : 'device';
+}
+
+function localizedZoneName(
+  timeZone: string,
+  locale: string,
+  style: 'longGeneric' | 'long',
+): string | null {
+  try {
+    const name = new Intl.DateTimeFormat(locale, { timeZone, timeZoneName: style })
+      .formatToParts(new Date())
+      .find((part) => part.type === 'timeZoneName')?.value;
+    return name && !/^GMT[+-]/.test(name) ? name : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The zone in the reader's language — "Australian Eastern Time
+ * (Australia/Melbourne)" — with the IANA id kept so zones sharing a name stay
+ * distinct. A zone the locale cannot name reads as the id alone.
+ */
+export function timeZoneLabel(timeZone: string, locale: string): string {
+  const name = localizedZoneName(timeZone, locale, 'longGeneric') ?? localizedZoneName(timeZone, locale, 'long');
+  return name && name !== timeZone ? `${name} (${timeZone})` : timeZone;
 }

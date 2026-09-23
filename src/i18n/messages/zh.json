@@ -5908,6 +5908,7 @@
         "note": "开放 {window} 分钟 · {limit} 分钟考试 · 于 {closes} 自动结束。在校时间为 07:00 至 19:00。",
         "noteError": "考试在 07:00 至 19:00 之间进行。",
         "zoneNote": "时间以学校时区 {zone} 为准。",
+        "zoneNoteDevice": "由于无法获取学校时区，时间以本设备的时区 {zone} 为准。",
         "errors": {
           "pickDate": "请为本场考试选择日期。",
           "datePassed": "该日期已经过去。",

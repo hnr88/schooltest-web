@@ -5,7 +5,7 @@ import { useQueries } from '@tanstack/react-query';
 import { useClassResultsQuery } from '@/modules/results';
 import { LAST_SESSION_PAGE_SIZE } from '@/modules/teacher/constants/start-session.constants';
 import { toRosterStudents } from '@/modules/teacher/lib/start-session-members';
-import { schoolTimeZone } from '@/modules/teacher/lib/start-session-schedule';
+import { schoolTimeZone, timeZoneSource } from '@/modules/teacher/lib/start-session-schedule';
 import { lastSessionAt } from '@/modules/teacher/lib/start-session-view';
 import { sittingsNeedingMonitor } from '@/modules/teacher/lib/student-availability';
 import { testSessionMonitorQueryOptions } from '@/modules/teacher/queries/use-test-session-monitor.query';
@@ -45,6 +45,7 @@ export function useStartSessionClassData(
   const monitors = Object.fromEntries(wholeClassIds.map((id, index) => [id, monitorReads[index]?.data]));
   const bookingRows = needsBookings ? (bookings.data?.sessions ?? []) : [];
   const busyReads = [open, ...monitorReads, ...(needsBookings ? [bookings] : [])];
+  const bookingZone = bookingRows.find((row) => row.window)?.window?.timezone;
 
   return {
     roster: toRosterStudents(roster.data ?? []),
@@ -57,7 +58,8 @@ export function useStartSessionClassData(
     busyError: busyReads.some((read) => read.isError),
     lastSessionAt: lastSessionAt(closed.data?.sessions ?? []),
     lastSessionPending: closed.isPending,
-    timeZone: schoolTimeZone(classZone, bookingRows.find((row) => row.window)?.window?.timezone),
+    timeZone: schoolTimeZone(classZone, bookingZone),
+    timeZoneSource: timeZoneSource(classZone, bookingZone),
     retry: () => {
       for (const read of [roster, closed, ...busyReads]) void read.refetch();
     },
