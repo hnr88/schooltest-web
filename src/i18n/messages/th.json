@@ -4145,6 +4145,8 @@
       "timezone": "เขตเวลา",
       "timezonePlaceholder": "เลือกเขตเวลา",
       "timezoneHelper": "ใช้เขตเวลาของรัฐ เว้นแต่คุณจะเลือกเขตเวลาอื่นที่นี่ เวลาของรอบสอบจะตรวจสอบตามเขตเวลานี้",
+      "timezoneAutomatic": "อัตโนมัติ (ตามรัฐ)",
+      "timezoneAutomaticZone": "อัตโนมัติ (ตามรัฐ): {zone}",
       "sectorOptions": {
         "government": "รัฐบาล",
         "catholic": "คาทอลิก",

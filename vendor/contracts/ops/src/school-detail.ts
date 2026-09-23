@@ -140,6 +140,12 @@ export const schoolDetailSchema = z.strictObject({
    * read an API that predates the field, so the web can deploy first.
    */
   timezone: z.string().max(64).nullable().optional(),
+  /**
+   * BUG-002: true when a person chose `timezone` (it is then kept through state
+   * changes); false when it follows the school's state. Optional for the same
+   * web-first deploy reason as `timezone`.
+   */
+  timezone_manual: z.boolean().optional(),
 
   /* ---- timestamps ------------------------------------------------------ */
   createdAt: z.string().nullable(),

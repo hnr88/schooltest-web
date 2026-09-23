@@ -4145,6 +4145,8 @@
       "timezone": "시간대",
       "timezonePlaceholder": "시간대를 선택하세요",
       "timezoneHelper": "여기에서 선택하지 않으면 주에 따라 정해집니다. 세션 시간은 이 시간대로 확인됩니다.",
+      "timezoneAutomatic": "자동(주 기준)",
+      "timezoneAutomaticZone": "자동(주 기준): {zone}",
       "sectorOptions": {
         "government": "공립",
         "catholic": "가톨릭",

@@ -4135,6 +4135,8 @@
       "timezone": "时区",
       "timezonePlaceholder": "请选择时区",
       "timezoneHelper": "默认使用所在州的时区，除非在此另行选择。测试时段按此时区核对。",
+      "timezoneAutomatic": "自动（跟随所在州）",
+      "timezoneAutomaticZone": "自动（跟随所在州）：{zone}",
       "sectorOptions": {
         "government": "公立",
         "catholic": "天主教",

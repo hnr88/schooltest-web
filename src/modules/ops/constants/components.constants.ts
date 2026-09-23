@@ -23,6 +23,10 @@ export const SCHOOL_TIMEZONE_OPTIONS = [
   'Australia/Lord_Howe',
 ] as const;
 
+// BUG-002: the Timezone select's "Automatic (from state)" value — the zone
+// follows the school's state instead of a zone chosen by hand.
+export const SCHOOL_TIMEZONE_AUTOMATIC = 'automatic';
+
 // OpsConfirmDialog's `skin`, one class string per part. `ops` (the default) is the
 // portal's own confirm (`Ops Portal.dc.html:819-841`) and stays exactly as it was;
 // `teacher` is `Teacher Portal v2.dc.html:1846-1853`: #FAFBFC r11 panel of 440 content

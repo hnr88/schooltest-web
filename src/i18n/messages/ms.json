@@ -4145,6 +4145,8 @@
       "timezone": "Zon waktu",
       "timezonePlaceholder": "Pilih zon waktu",
       "timezoneHelper": "Mengikut zon waktu negeri melainkan anda memilih zon lain di sini. Masa sesi disemak mengikut zon ini.",
+      "timezoneAutomatic": "Automatik (ikut negeri)",
+      "timezoneAutomaticZone": "Automatik (ikut negeri): {zone}",
       "sectorOptions": {
         "government": "Kerajaan",
         "catholic": "Katolik",

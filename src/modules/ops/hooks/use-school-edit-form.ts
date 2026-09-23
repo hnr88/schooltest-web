@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { showOpsToast } from '@/modules/ops/actions/lib/ops-toast';
+import { SCHOOL_TIMEZONE_AUTOMATIC } from '@/modules/ops/constants/components.constants';
 import {
   findDuplicateSchoolName,
   schoolFieldIssues,
@@ -63,7 +64,7 @@ export function useSchoolEditForm({
         contact_name: school.contact_name ?? '',
         contact_email: school.contact_email ?? '',
         phone: school.phone ?? '',
-        timezone: school.timezone ?? '',
+        timezone: school.timezone_manual ? (school.timezone ?? '') : SCHOOL_TIMEZONE_AUTOMATIC,
       }) as SchoolEditFormValues,
     [school]
   );
@@ -74,6 +75,10 @@ export function useSchoolEditForm({
   });
 
   const emailDomainWarning = schoolEmailDomainWarning(form.watch('contact_email'));
+  // The zone "Automatic" stands for — known only while the school is automatic
+  // and the state is the stored one (a new state's zone is derived on save).
+  const automaticZone =
+    !school.timezone_manual && form.watch('state') === (school.state ?? '') ? school.timezone : null;
   const { errors } = form.formState;
   const fieldErrorCount = Object.keys(errors).filter((key) => key !== 'root').length;
 
@@ -124,7 +129,7 @@ export function useSchoolEditForm({
     }
   });
 
-  return { form, submit, isPending: edit.isPending, emailDomainWarning, fieldErrorCount };
+  return { form, submit, isPending: edit.isPending, emailDomainWarning, fieldErrorCount, automaticZone };
 }
 
 /**
@@ -144,8 +149,11 @@ export function schoolEmailDomainWarning(email: string): boolean {
 
 /**
  * The EDIT patch carries only what the operator can see and change. The zone
- * rides ONLY when the operator changed it: a state change alone lets the API
- * re-derive the zone from the new state (BUG-002).
+ * rides ONLY when the operator changed the choice (BUG-002): a zone picked on
+ * an automatic school is sent even when it equals the automatic zone, and the
+ * API records it as chosen; "Automatic" on a chosen zone sends
+ * `timezone_manual: false` and the API re-derives it; an untouched automatic
+ * zone sends nothing, so a state change alone re-derives it from the new state.
  */
 export function buildEditPatch(
   values: SchoolEditFormValues,
@@ -167,6 +175,10 @@ export function buildEditPatch(
   // The portal tier is the school's commercial plan; portal STATUS is a
   // lifecycle decision and stays with task 12's services.
   if (school.portal_plan) patch.portal_plan = values.plan;
-  if (values.timezone && values.timezone !== (school.timezone ?? '')) patch.timezone = values.timezone;
+  if (values.timezone === SCHOOL_TIMEZONE_AUTOMATIC) {
+    if (school.timezone_manual) patch.timezone_manual = false;
+  } else if (values.timezone && (!school.timezone_manual || values.timezone !== (school.timezone ?? ''))) {
+    patch.timezone = values.timezone;
+  }
   return patch;
 }

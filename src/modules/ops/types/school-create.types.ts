@@ -34,6 +34,8 @@ export interface SchoolEditDraft {
   plan: string | null;
   portal_plan: string | null;
   timezone: string | null;
+  /** True when a person chose `timezone`; false when it follows the state. */
+  timezone_manual: boolean;
   updatedAt: string;
 }
 

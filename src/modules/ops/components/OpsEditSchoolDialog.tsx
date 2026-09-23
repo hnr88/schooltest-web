@@ -40,7 +40,7 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
   // Licence tier (`plan`, distinct from the form's `portal_plan` select above):
   // reuses the plan panel's own `Ops.plan` copy verbatim (D-33).
   const tPlan = useTranslations('Ops.plan');
-  const { form, submit, isPending, emailDomainWarning, fieldErrorCount } = useSchoolEditForm({
+  const { form, submit, isPending, emailDomainWarning, fieldErrorCount, automaticZone } = useSchoolEditForm({
     school,
     onDone,
   });
@@ -76,7 +76,7 @@ export function OpsEditSchoolDialog({ school, onDone }: OpsEditSchoolDialogProps
             <p className="text-[13px] leading-relaxed text-[#7C8698]">
               {t('editVersionNote', { version: school.updatedAt })}
             </p>
-            <OpsEditSchoolFields form={form} emailWarning={emailDomainWarning} />
+            <OpsEditSchoolFields form={form} emailWarning={emailDomainWarning} automaticZone={automaticZone} />
             <SelectField
               id="edit-school-license-plan"
               label={tPlan('label')}

@@ -4154,6 +4154,8 @@
       "timezone": "Múi giờ",
       "timezonePlaceholder": "Chọn múi giờ",
       "timezoneHelper": "Mặc định theo múi giờ của tiểu bang, trừ khi bạn chọn múi giờ khác ở đây. Giờ phiên kiểm tra được xét theo múi giờ này.",
+      "timezoneAutomatic": "Tự động (theo tiểu bang)",
+      "timezoneAutomaticZone": "Tự động (theo tiểu bang): {zone}",
       "sectorOptions": {
         "government": "Công lập",
         "catholic": "Công giáo",

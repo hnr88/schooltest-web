@@ -315,6 +315,7 @@ export function OpsSchoolDetail({ documentId }: OpsSchoolDetailProps) {
             plan: detail.plan,
             portal_plan: detail.portal_plan,
             timezone: detail.timezone ?? null,
+            timezone_manual: detail.timezone_manual ?? false,
             updatedAt: detail.updatedAt,
           }}
           onDone={() => {

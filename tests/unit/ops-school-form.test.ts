@@ -32,7 +32,12 @@ import {
 } from '@/modules/ops/queries/use-school-create.mutation';
 import { isStatusActiveWarning } from '@/modules/ops/hooks/use-school-create-form';
 import { buildEditPatch, schoolEmailDomainWarning } from '@/modules/ops/hooks/use-school-edit-form';
-import { SCHOOL_TIMEZONE_OPTIONS } from '@/modules/ops/constants/components.constants';
+import { schoolPatchSchema } from '@schooltest/ops-contracts';
+
+import {
+  SCHOOL_TIMEZONE_AUTOMATIC,
+  SCHOOL_TIMEZONE_OPTIONS,
+} from '@/modules/ops/constants/components.constants';
 import type { SchoolEditDraft } from '@/modules/ops/types/school-create.types';
 
 const get = vi.mocked(strapi.get);
@@ -331,6 +336,7 @@ describe('BUG-002 — the school timezone on the ops edit form', () => {
     plan: 'trial',
     portal_plan: null,
     timezone: 'Australia/Melbourne',
+    timezone_manual: false,
     updatedAt: '2026-09-23T00:00:00.000Z',
   };
   const values = {
@@ -344,11 +350,12 @@ describe('BUG-002 — the school timezone on the ops edit form', () => {
     contact_name: 'Jamie Lee',
     contact_email: 'jamie.lee@riverbend.edu.au',
     phone: '',
-    timezone: 'Australia/Melbourne',
+    timezone: SCHOOL_TIMEZONE_AUTOMATIC as string,
   };
 
   it('the edit schema carries the zone the select holds', () => {
     expect(schema.safeParse(values).success).toBe(true);
+    expect(schema.safeParse({ ...values, timezone: 'Australia/Melbourne' }).success).toBe(true);
     expect(schema.safeParse({ ...values, timezone: 'x'.repeat(65) }).success).toBe(false);
   });
 
@@ -366,6 +373,36 @@ describe('BUG-002 — the school timezone on the ops edit form', () => {
 
   it('an empty select on a school with no stored zone sends nothing', () => {
     expect(buildEditPatch({ ...values, timezone: '' }, { ...school, timezone: null })).not.toHaveProperty('timezone');
+  });
+
+  it('a zone picked EQUAL to the automatic one is still sent, so the API records it as chosen', () => {
+    const sa = { ...school, state: 'SA', timezone: 'Australia/Adelaide' };
+    const patch = buildEditPatch({ ...values, state: 'SA', timezone: 'Australia/Adelaide' }, sa);
+    expect(patch.timezone).toBe('Australia/Adelaide');
+    expect(patch).not.toHaveProperty('timezone_manual');
+    expect(schoolPatchSchema.safeParse(patch).success).toBe(true);
+  });
+
+  it('a chosen zone left as it is sends nothing; a different zone is sent', () => {
+    const chosen = { ...school, state: 'SA', timezone: 'Australia/Melbourne', timezone_manual: true };
+    const kept = buildEditPatch({ ...values, state: 'QLD', timezone: 'Australia/Melbourne' }, chosen);
+    expect(kept).not.toHaveProperty('timezone');
+    expect(kept).not.toHaveProperty('timezone_manual');
+    expect(buildEditPatch({ ...values, state: 'SA', timezone: 'Australia/Perth' }, chosen).timezone).toBe('Australia/Perth');
+  });
+
+  it('"Automatic" on a chosen zone sends timezone_manual false and no zone', () => {
+    const chosen = { ...school, state: 'QLD', timezone: 'Australia/Adelaide', timezone_manual: true };
+    const patch = buildEditPatch({ ...values, state: 'QLD', timezone: SCHOOL_TIMEZONE_AUTOMATIC }, chosen);
+    expect(patch.timezone_manual).toBe(false);
+    expect(patch).not.toHaveProperty('timezone');
+    expect(schoolPatchSchema.safeParse(patch).success).toBe(true);
+  });
+
+  it('"Automatic" on an automatic school sends neither key', () => {
+    const patch = buildEditPatch({ ...values, state: 'WA', timezone: SCHOOL_TIMEZONE_AUTOMATIC }, school);
+    expect(patch).not.toHaveProperty('timezone');
+    expect(patch).not.toHaveProperty('timezone_manual');
   });
 
   it('offers only real IANA zones, covering every state capital', () => {

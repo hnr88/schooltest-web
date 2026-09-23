@@ -10,7 +10,7 @@ import {
   OpsFieldShell,
   SelectField,
 } from '@/modules/design-system';
-import { SCHOOL_TIMEZONE_OPTIONS } from '@/modules/ops/constants/components.constants';
+import { SCHOOL_TIMEZONE_AUTOMATIC, SCHOOL_TIMEZONE_OPTIONS } from '@/modules/ops/constants/components.constants';
 import type { SchoolCreateFormValues, SchoolEditFormValues } from '@/modules/ops/schemas/school-create.schema';
 
 const STATE_CODES = ['VIC', 'NSW', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'];
@@ -171,6 +171,8 @@ export interface OpsEditSchoolFieldsProps {
   form: import('react-hook-form').UseFormReturn<SchoolEditFormValues>;
   /** A valid-but-non-school-domain email WARNS without blocking (task 10). */
   emailWarning?: boolean;
+  /** The zone the "Automatic (from state)" option stands for, when known. */
+  automaticZone?: string | null;
 }
 
 /**
@@ -179,7 +181,7 @@ export interface OpsEditSchoolFieldsProps {
  * the status-at-creation control (a create-only decision), and renders the
  * non-school-domain email warning without blocking.
  */
-export function OpsEditSchoolFields({ form, emailWarning }: OpsEditSchoolFieldsProps) {
+export function OpsEditSchoolFields({ form, emailWarning, automaticZone }: OpsEditSchoolFieldsProps) {
   const t = useTranslations('Ops.createSchool');
   // Same subscription as the create body above: non-owner components need
   // useFormState to see post-submit validation errors at all.
@@ -297,14 +299,21 @@ export function OpsEditSchoolFields({ form, emailWarning }: OpsEditSchoolFieldsP
           render={({ field }) => {
             const value = String(field.value ?? '');
             const zones: readonly string[] = SCHOOL_TIMEZONE_OPTIONS;
-            const options = value && !zones.includes(value) ? [value, ...zones] : zones;
+            const isOffList = value !== '' && value !== SCHOOL_TIMEZONE_AUTOMATIC && !zones.includes(value);
+            const options = isOffList ? [value, ...zones] : zones;
+            const automaticLabel = automaticZone
+              ? t('timezoneAutomaticZone', { zone: automaticZone })
+              : t('timezoneAutomatic');
             return (
               <SelectField
                 id="edit-school-timezone"
                 label={t('timezone')}
                 placeholder={t('timezonePlaceholder')}
                 helperText={t('timezoneHelper')}
-                options={options.map((zone) => ({ value: zone, label: zone }))}
+                options={[
+                  { value: SCHOOL_TIMEZONE_AUTOMATIC, label: automaticLabel },
+                  ...options.map((zone) => ({ value: zone, label: zone })),
+                ]}
                 value={value}
                 onValueChange={field.onChange}
                 errorText={errors.timezone?.message}

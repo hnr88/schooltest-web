@@ -64,6 +64,7 @@ export declare const schoolPatchSchema: z.ZodObject<{
     }>>>;
     contact_name: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     timezone: z.ZodOptional<z.ZodString>;
+    timezone_manual: z.ZodOptional<z.ZodBoolean>;
 }, z.core.$strict>;
 export type SchoolPatch = z.infer<typeof schoolPatchSchema>;
 /** A lifecycle key arriving through the form patch is an explicit 409-boundary rejection. */

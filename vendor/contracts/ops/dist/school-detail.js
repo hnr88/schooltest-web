@@ -123,6 +123,12 @@ exports.schoolDetailSchema = zod_1.z.strictObject({
      * read an API that predates the field, so the web can deploy first.
      */
     timezone: zod_1.z.string().max(64).nullable().optional(),
+    /**
+     * BUG-002: true when a person chose `timezone` (it is then kept through state
+     * changes); false when it follows the school's state. Optional for the same
+     * web-first deploy reason as `timezone`.
+     */
+    timezone_manual: zod_1.z.boolean().optional(),
     /* ---- timestamps ------------------------------------------------------ */
     createdAt: zod_1.z.string().nullable(),
     updatedAt: zod_1.z.string(),

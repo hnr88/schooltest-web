@@ -61,8 +61,17 @@ exports.schoolPatchSchema = zod_1.z
     // reads it). Correctable, never clearable — so optional, not nullish. The
     // API refuses a name that is not a real IANA zone with a `timezone` issue.
     timezone: zod_1.z.string().trim().min(1).max(TIMEZONE_MAX).optional(),
+    // BUG-002: whether a person chose the zone. A `timezone` sent here is
+    // recorded as chosen (true) by the API; `false` hands the zone back to the
+    // state — the API re-derives it from the (new) state and it follows every
+    // later state change. `false` together with a `timezone` is contradictory.
+    timezone_manual: zod_1.z.boolean().optional(),
 })
-    .refine((body) => Object.keys(body).length > 0, { message: 'an empty patch is not a valid edit' });
+    .refine((body) => Object.keys(body).length > 0, { message: 'an empty patch is not a valid edit' })
+    .refine((body) => !(body.timezone !== undefined && body.timezone_manual === false), {
+    message: 'a timezone sent with timezone_manual false is contradictory: send one or the other',
+    path: ['timezone_manual'],
+});
 /** A lifecycle key arriving through the form patch is an explicit 409-boundary rejection. */
 function patchLifecycleKeys(input) {
     return exports.PATCH_REJECTED_LIFECYCLE_KEYS.filter((key) => key in input);
