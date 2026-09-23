@@ -78,7 +78,9 @@ describe('the student Ask AI drawer', () => {
     expect(drawer()).toBeNull();
     act(() => useClassOverlaysStore.getState().openAskAi({ scope: 'student', studentDocumentId: STUDENT }));
     expect(drawer()?.textContent).toContain('Ask about Dilnoza’s reading');
-    expect(drawer()?.textContent).toContain('Answers are grounded only in the 8 forms Dilnoza has sat this year.');
+    // The intro names the same count as the Sittings tile (the design pairs "4 since Feb" with
+    // "the four forms"): 8 history points, 3 scored, so 3 forms.
+    expect(drawer()?.textContent).toContain('Answers are grounded only in the 3 forms Dilnoza has sat this year.');
     expect(chips()).toEqual([
       'What changed in Dilnoza’s score?',
       'What should I focus on next?',

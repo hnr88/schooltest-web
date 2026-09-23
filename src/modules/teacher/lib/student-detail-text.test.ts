@@ -52,7 +52,8 @@ describe('student detail text — recorded Dilnoza (reliable fall, 8 sittings, 3
       {
         id: 'sittings',
         label: { key: 'tiles.sittings' },
-        value: { key: 'tiles.sittingsSince', values: { count: 8 }, months: { month: '2026-09-10' } },
+        // 8 history points, 3 scored: the tile counts the scored sittings the trend plots.
+        value: { key: 'tiles.sittingsSince', values: { count: 3 }, months: { month: '2026-09-10' } },
         fg: null,
       },
     ]);

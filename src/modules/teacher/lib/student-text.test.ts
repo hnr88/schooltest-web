@@ -23,7 +23,8 @@ describe('student page text — recorded Dilnoza, en', () => {
       ['Baseline (Sep)', '76%'],
       ['Latest (Sep)', '41%'],
       ['Growth', '−45 pts'],
-      ['Sittings', '8 since Sep'],
+      // 8 history points, 3 scored: only scored sittings count.
+      ['Sittings', '3 since Sep'],
     ]);
   });
 
