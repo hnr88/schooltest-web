@@ -1962,7 +1962,8 @@
       },
       "commentaryHeading": "Điều này có nghĩa là gì",
       "commentarySource": "Tóm tắt ngôn ngữ đơn giản từ kết quả đánh giá mà trường chia sẻ với gia đình bạn.",
-      "backToChildren": "Quay lại danh sách con"
+      "backToChildren": "Quay lại danh sách con",
+      "phaseHeading": "Tiếng Anh giai đoạn {phase}"
     }
   },
   "SchoolOnboarding": {

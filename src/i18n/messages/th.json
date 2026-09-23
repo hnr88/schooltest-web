@@ -1962,7 +1962,8 @@
       },
       "commentaryHeading": "สิ่งที่หมายถึง",
       "commentarySource": "สรุปด้วยภาษาง่ายจากผลการประเมินที่โรงเรียนแชร์กับครอบครัวของคุณ",
-      "backToChildren": "กลับไปที่บุตรหลาน"
+      "backToChildren": "กลับไปที่บุตรหลาน",
+      "phaseHeading": "ภาษาอังกฤษระยะ{phase}"
     }
   },
   "SchoolOnboarding": {

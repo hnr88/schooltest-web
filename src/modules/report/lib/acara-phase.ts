@@ -25,3 +25,14 @@ export function acaraPhaseText(value: string, label: (code: AcaraPhaseCode) => s
   const code = acaraPhaseCode(value);
   return code === null ? value : label(code);
 }
+
+/**
+ * The rung a phase-ladder crosswalk (reading v4 on) wrote. It stores the rung's
+ * CODE exactly, and its display label ("Consolidating English") only names that
+ * rung in English, so the label can be said again in the reader's language from
+ * the code. The v1–v3 models stored a Title-Cased phase ("Emerging") beside an
+ * unrelated display label ("Sentence Reader"), so only an exact code is a rung.
+ */
+export function acaraRungCode(value: string | null): AcaraPhaseCode | null {
+  return value !== null && (ACARA_PHASE_CODES as readonly string[]).includes(value) ? (value as AcaraPhaseCode) : null;
+}

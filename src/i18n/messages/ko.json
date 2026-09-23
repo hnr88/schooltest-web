@@ -1962,7 +1962,8 @@
       },
       "commentaryHeading": "이 의미",
       "commentarySource": "평가 결과에서 생성되어 학교가 가족과 공유하는 쉬운 언어 요약입니다.",
-      "backToChildren": "자녀로 돌아가기"
+      "backToChildren": "자녀로 돌아가기",
+      "phaseHeading": "영어 {phase} 단계"
     }
   },
   "SchoolOnboarding": {

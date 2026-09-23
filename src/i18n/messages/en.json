@@ -1962,7 +1962,8 @@
       },
       "commentaryHeading": "What this means",
       "commentarySource": "Plain-language summary generated from the assessment results and shared with your family by the school.",
-      "backToChildren": "Back to children"
+      "backToChildren": "Back to children",
+      "phaseHeading": "{phase} English"
     }
   },
   "SchoolOnboarding": {

@@ -8,6 +8,7 @@ import { PrintReportButton } from '@/modules/results';
 import { QueryErrorFallback } from '@/modules/query-errors';
 import { ParentReportView } from '@/modules/report/components/ParentReportView';
 import { ReportSkeleton } from '@/modules/report/components/ReportSkeleton';
+import { useRungHeading } from '@/modules/report/hooks/useRungHeading';
 import { familyCommentaryKeys } from '@/modules/report/lib/family-commentary';
 import { buildFamilyPreview } from '@/modules/report/lib/parent-view-model';
 import type { FamilyPreviewView } from '@/modules/report/lib/parent-view-model';
@@ -36,6 +37,7 @@ export function FamilyReportScreen({ resultDocumentId }: { resultDocumentId: str
   const t = useTranslations('Report');
   const tFam = useTranslations('Report.family');
   const tCarer = useTranslations('TeacherPortal.viewModel');
+  const rungHeading = useRungHeading();
 
   if (isLoading) return <ReportSkeleton />;
 
@@ -125,7 +127,7 @@ export function FamilyReportScreen({ resultDocumentId }: { resultDocumentId: str
       className="flex flex-1 animate-in flex-col gap-6 px-4 py-6 duration-300 ease-out-expo slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6 lg:px-8 lg:py-7"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Eyebrow>{view.display_label ?? t('backToList')}</Eyebrow>
+        <Eyebrow>{rungHeading(view.acara_phase) ?? view.display_label ?? t('backToList')}</Eyebrow>
         {/* §4.9 print — JF-040: the print affordance lives on the parent face
             itself now; the shared print CSS pair strips it off the paper. */}
         <PrintReportButton studentName={childName || tFam('yourChild')} satAt={view.published_at === null ? null : view.published_at.slice(0, 10)} />

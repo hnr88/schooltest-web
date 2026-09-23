@@ -1962,7 +1962,8 @@
       },
       "commentaryHeading": "这说明什么",
       "commentarySource": "根据评估结果生成的通俗语言摘要，由学校与您的家庭共享。",
-      "backToChildren": "返回孩子列表"
+      "backToChildren": "返回孩子列表",
+      "phaseHeading": "英语{phase}阶段"
     }
   },
   "SchoolOnboarding": {
